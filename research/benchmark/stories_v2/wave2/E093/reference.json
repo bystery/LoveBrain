@@ -1,0 +1,516 @@
+{
+ "story_id": "E093",
+ "turns": {
+  "E093_T01": {
+   "case_id": "E093_T01",
+   "current_action": "接住她拼车落定的得意，答应或附条件地接下周五代收生鲜快递的托付，顺口问一句牛腱子要存到什么时候取。",
+   "acceptable_actions": [
+    "爽快答应代收寄存，提醒她生鲜别放太久，周日一早就来取",
+    "答应寄存，但先确认快递具体送达时段，避免周五当天家里没人",
+    "答应并顺口确认牛腱子是冷冻整箱还是冷链分装，好安排冰箱位置"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A01",
+     "subject": "SHARED",
+     "relation": "ride_booked",
+     "value": "拼车群里约到王师傅周五晚 23:30 北门送机，她分摊 80 元",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T01", "message_id": "m0", "quote": "约到王师傅，周五晚上 23:30 小区北门上车"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A02",
+     "subject": "SHARED",
+     "relation": "courier_deposit",
+     "value": "生鲜快递托大周五代收寄存，她周日回取",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T01", "message_id": "m1", "quote": "帮我签收了搁你那儿，我周日回来取"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A03",
+     "subject": "SHARED",
+     "relation": "gift_purpose",
+     "value": "牛腱子是她送给表哥婚宴的伴手礼",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T01", "message_id": "m1", "quote": "牛腱子是给我表哥喜酒的伴手礼"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：答应得爽快一点，她今天风头正顺，别泼冷水，只把取货时间钉一下。",
+   "unknowns": ["快递具体送达时段未定", "牛腱子包装与保存要求未提"],
+   "protected_expressions": ["帮我签收了搁你那儿"],
+   "forbidden_factual_claims": ["不得答应超出租借冰箱合理范围的长期寄存", "不得虚构王师傅的车牌与车型"]
+  },
+  "E093_T02": {
+   "case_id": "E093_T02",
+   "current_action": "肯定她排班顺得漂亮，把调班人情记下，轻轻垫一句：出发前把航班短信再看一遍，别光靠脑子记。",
+   "acceptable_actions": [
+    "肯定人情一进一出刚好平，提醒出发前一天再核对航班时间",
+    "顺带问她打包需不需要借工具或搭把手",
+    "提醒周五半天假提前和组长打好招呼，交接留书面"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A04",
+     "subject": "HER",
+     "relation": "leave_scheduled",
+     "value": "她请了周五半天假用于收拾打包",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T02", "message_id": "m0", "quote": "请了周五半天假"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A05",
+     "subject": "SHARED",
+     "relation": "shift_swap",
+     "value": "她与小蒋对调早班：小蒋顶她周六周日早班，她下周一顶小蒋",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T02", "message_id": "m0", "quote": "周六周日早班都请小蒋替我顶，下周一早班我替她顶"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸得实在一点，'再看一遍短信'这句放轻松说，别像叮嘱。",
+   "unknowns": ["航班实际日期此处尚未暴露"],
+   "protected_expressions": ["人情一来一回刚好平"],
+   "forbidden_factual_claims": ["不得替她断言排班已无变数", "不得虚构小蒋的态度"]
+  },
+  "E093_T03": {
+   "case_id": "E093_T03",
+   "current_action": "接住日期记错的引爆现场：先稳住她，把要重排的事一项项列清（周四的班、周五的假、快递与伴手礼），别让她在自责里打转。",
+   "acceptable_actions": [
+    "先认下'谁都会记错'，再按轻重排序：周四下午的班最急",
+    "指出快递与牛腱子有解法，先去啃最难的小蒋换班",
+    "提醒她把更正后的时间在群里跟王师傅确认一遍，留个截图"
+   ],
+   "applicable_dimensions": ["time_state", "attribution", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A06",
+     "subject": "SHARED",
+     "relation": "booking_day_corrected",
+     "value": "拼车与航班实际均为周四晚，她此前从头到尾记成周五",
+     "valid_time": "2026-11-04",
+     "status": "corrected",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E093_T03", "message_id": "m0", "quote": "航班就是周四 23:55 的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A07",
+     "subject": "SHARED",
+     "relation": "friday_plan_suspended",
+     "value": "基于周五日期的请假、顶班与快递安排全部悬空",
+     "valid_time": "2026-11-04",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E093_T03", "message_id": "m1", "quote": "所有事都是按周五办的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A08",
+     "subject": "SHARED",
+     "relation": "shift_swap_suspended",
+     "value": "小蒋顶班与半天假的既定安排因日期更正而悬空",
+     "valid_time": "2026-11-02/2026-11-04",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E093_T02", "message_id": "m0", "quote": "周六周日早班都请小蒋替我顶"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E093_A09",
+     "subject": "HER",
+     "relation": "recurring_date_error",
+     "value": "她有把日期记错的前科：例会记成周三实为周四",
+     "valid_time": "既往",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "lessons", "quote": "把部门例会记成周三"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接情绪再理清单，别笑话她；例会那次旧账只放在心里当参照，不许说出口。",
+   "unknowns": ["小蒋是否可能松口未知", "周四缺班的最终补法未知"],
+   "protected_expressions": ["我从头到尾记成周五了"],
+   "forbidden_factual_claims": ["不得替小蒋答应换班", "不得断言所有安排都能无损挽回"]
+  },
+  "E093_T04": {
+   "case_id": "E093_T04",
+   "current_action": "接住二次换班被拒：肯定小蒋拒绝得在理（票已买），把思路引向她自己的资源——年假、调休或远程补位，别让她去磨小蒋。",
+   "acceptable_actions": [
+    "肯定小蒋有权拒绝，劝她别把自己逼成道德绑架",
+    "建议她找组长说明情况，申请周四下午调休或动用年假",
+    "提醒她留痕：把更正后的航班时间同步给小蒋和组长，别再靠脑子记"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A10",
+     "subject": "THIRD",
+     "relation": "second_swap_refused",
+     "value": "小蒋以已约看展为由拒绝再次换班",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E093_T04", "message_id": "m0", "quote": "她一口回绝"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A11",
+     "subject": "SHARED",
+     "relation": "thursday_flight_fact",
+     "value": "航班与拼车实证为周四晚，须以周四为轴重排",
+     "valid_time": "2026-11-04",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T03", "message_id": "m0", "quote": "航班就是周四 23:55 的"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把小蒋的拒绝说成正常边界，把解决方向递到她自己手里，不替她去谈。",
+   "unknowns": ["组长是否批年假未知", "周四班表的最终去向未知"],
+   "protected_expressions": ["票都买好了"],
+   "forbidden_factual_claims": ["不得劝她再缠着小蒋换班", "不得虚构组长的审批结果"]
+  },
+  "E093_T05": {
+   "case_id": "E093_T05",
+   "current_action": "确认周四缺口已用年假补上、周五假以远程报表补偿；面对升级的代寄请求（开箱、真空、冷链寄老家），按自己的实际情况答应或给出替代方案，运费转账金额先核对。",
+   "acceptable_actions": [
+    "答应代寄，确认周五在家时段与冷链寄递时效，接下转账",
+    "答应代寄但提出简化：开箱拍照确认后原箱原冰袋直寄，不做真空",
+    "说明周五确实不便，提出改约闪送或让她联系快递改址直发老家"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A12",
+     "subject": "HER",
+     "relation": "annual_leave_patch",
+     "value": "周四下午缺口以半天年假补上，周五假以远程报表补偿小蒋",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T05", "message_id": "m0", "quote": "周四下午我拿半天年假补上"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A13",
+     "subject": "SHARED",
+     "relation": "courier_upgraded",
+     "value": "快递托付升级为大周代开箱、真空打包并冷链寄往老家县城，运费她承担",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T05", "message_id": "m0", "quote": "发个顺丰冷链直接寄我老家县城"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A14",
+     "subject": "SHARED",
+     "relation": "courier_origin",
+     "value": "托付起点是周五代收生鲜寄存、周日回取",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T01", "message_id": "m1", "quote": "帮我签收了搁你那儿"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她自己留了台阶，答应要落在具体动作上；要是接不了，给她替代方案而不是空拒绝。",
+   "unknowns": ["冷链时效能否周六下午四点前到县城未知", "运费实际金额未知"],
+   "protected_expressions": ["大不了牛腱子我下次回去再带"],
+   "forbidden_factual_claims": ["不得承诺投递时效", "不得虚构真空袋来源与运费数额"]
+  },
+  "E093_T06": {
+   "case_id": "E093_T06",
+   "current_action": "接住出发夜的换车惊魂：肯定她'群里截图加核对车牌'的处理是对的，顺一句'周四总算过完了'，叮嘱落地报个平安。",
+   "acceptable_actions": [
+    "肯定她的核实流程，提醒以后上车前先对车牌再放行李",
+    "接住'生怕是骗子'的后怕，叮嘱落地发个消息",
+    "把话题落在明天快递到货的衔接上，确认代寄安排不变"
+   ],
+   "applicable_dimensions": ["time_state", "interaction", "emotion_relation", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A15",
+     "subject": "THIRD",
+     "relation": "vehicle_changed",
+     "value": "王师傅因限行临时换表弟的白色 SUV 接机，车牌更换",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T06", "message_id": "m0", "quote": "换他表弟的白色 SUV"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A16",
+     "subject": "SHARED",
+     "relation": "pickup_verified",
+     "value": "通过群里接单截图与车牌核对完成身份核实后上车",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T06", "message_id": "m0", "quote": "对了半天车牌才敢上"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A17",
+     "subject": "SHARED",
+     "relation": "departure_night",
+     "value": "本周四晚为实际出发夜，旅程已开始",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T03", "message_id": "m0", "quote": "航班就是周四 23:55 的"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她已自己完成核实，别再讲一遍安全课，收个尾把平安消息约上。",
+   "unknowns": ["落地具体时间未知"],
+   "protected_expressions": ["生怕是骗子"],
+   "forbidden_factual_claims": ["不得断言换车理由真假", "不得替她修改已确认的行程"]
+  },
+  "E093_T07": {
+   "case_id": "E093_T07",
+   "current_action": "确认快递已到并按约定检查打包，回复单号与寄出时间让她安心盯物流；运费转账核对金额，不足直说。",
+   "acceptable_actions": [
+    "报单号和寄出时间，提醒冷链件让她盯住县城末端派送",
+    "说明开箱检查结果一切正常，按约定打包寄出",
+    "如快递未到或开箱异常，第一时间告知并给补救选项"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A18",
+     "subject": "SHARED",
+     "relation": "courier_execution",
+     "value": "周五快递到后由大周检查打包寄出，她要求回传单号",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T07", "message_id": "m1", "quote": "寄出后把单号甩我一下"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A19",
+     "subject": "SHARED",
+     "relation": "courier_upgrade_recall",
+     "value": "托付已升级为代寄冷链至老家县城，运费她出",
+     "valid_time": "2026-11-04",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T05", "message_id": "m0", "quote": "发个顺丰冷链直接寄我老家县城"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她的deadline（周六下午四点）要接住，能力范围内给准话，给不了就给进度。",
+   "unknowns": ["快递实际送达时间未知", "冷链时效是否赶得上未知"],
+   "protected_expressions": ["周六下午四点前必须到县城"],
+   "forbidden_factual_claims": ["不得虚构物流进度", "不得承诺提前送达"]
+  },
+  "E093_T08": {
+   "case_id": "E093_T08",
+   "current_action": "接住伴手礼送达与婚礼圆满的双重好消息，把小蒋顶班的人情记回账上，轻调侃一句两杯就上头。",
+   "acceptable_actions": [
+    "恭喜表哥喜酒圆满，调侃她两杯就上头",
+    "把'又欠小蒋一层'接住，提醒下周一顶班别迟到",
+    "问她高铁还是飞机回来，到家说一声"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "interaction", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A20",
+     "subject": "SHARED",
+     "relation": "gift_delivered",
+     "value": "牛腱子周六下午三点送达县城，赶上了婚宴",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T08", "message_id": "m0", "quote": "好在下午三点送到，赶上了晚上的婚宴"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A21",
+     "subject": "SHARED",
+     "relation": "favor_ledger",
+     "value": "婚礼次日早班由小蒋顶替，她自觉人情又欠一层",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T08", "message_id": "m0", "quote": "明天上午的班是小蒋的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：好消息一起乐，人情账她自己在记，不用替她升华。",
+   "unknowns": ["回程交通方式未提"],
+   "protected_expressions": ["明天上午的班是小蒋的"],
+   "forbidden_factual_claims": ["不得虚构婚礼细节", "不得替小蒋表态人情已清"]
+  },
+  "E093_T09": {
+   "case_id": "E093_T09",
+   "current_action": "接住她的疲惫与犯愁：肯定她提前背流程是靠谱做法，给 6:40 到岗一个可执行的早起方案，别让承诺压成心理负担。",
+   "acceptable_actions": [
+    "给一个具体早起方案：双闹钟、前一晚把衣服放玄关",
+    "接住'答应太痛快'的后悔，提醒这是她自己选的人情还法，还完就清",
+    "劝她别反悔，早睡加路上补觉比纠结有用"
+   ],
+   "applicable_dimensions": ["goal", "emotion_relation", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A22",
+     "subject": "HER",
+     "relation": "duty_dread",
+     "value": "她为周一 6:40 顶班能否早起而犯愁",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T09", "message_id": "m0", "quote": "6:40 到岗，我起不来怎么办啊"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A23",
+     "subject": "SHARED",
+     "relation": "swap_promise",
+     "value": "下周一顶小蒋早班的承诺是她换班时定下的",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T02", "message_id": "m0", "quote": "下周一早班我替她顶"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：方案给一个就够，她这会儿要的是'能办到'的底气，不是道理。",
+   "unknowns": ["周一她实际起床情况未知"],
+   "protected_expressions": ["我起不来怎么办啊"],
+   "forbidden_factual_claims": ["不得怂恿她爽约", "不得虚构小蒋的期待"]
+  },
+  "E093_T10": {
+   "case_id": "E093_T10",
+   "current_action": "恭喜顶班顺利收工、人情两讫，接住小蒋的企鹅玩笑把气氛放轻。",
+   "acceptable_actions": [
+    "夸她说话算话，人情账清了心里踏实",
+    "顺着企鹅玩笑收个梗",
+    "问她这周状态，别让连轴转攒下疲惫"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A24",
+     "subject": "SHARED",
+     "relation": "shift_fulfilled",
+     "value": "她提前到岗替小蒋顶完周一早班并带早餐赔罪",
+     "valid_time": "2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T10", "message_id": "m0", "quote": "我 6 点半就到了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A25",
+     "subject": "SHARED",
+     "relation": "favor_cleared",
+     "value": "她认定调班人情已两讫",
+     "valid_time": "2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T10", "message_id": "m0", "quote": "欠的人情算是还清了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸就夸到底，别再教育她以后少先斩后奏，这轮她自己已经复盘过了。",
+   "unknowns": [],
+   "protected_expressions": ["像没睡醒的企鹅"],
+   "forbidden_factual_claims": ["不得替小蒋下人情已清的结论", "不得引入新承诺"]
+  },
+  "E093_T11": {
+   "case_id": "E093_T11",
+   "current_action": "接下'日期复核员'这个新角色：答应或以玩笑方式接住，把她的防错流程夸成可复用的习惯。",
+   "acceptable_actions": [
+    "答应当复核员，约好下单前发截图的规矩",
+    "夸截图加日历双保险的方法，建议行程类都这么办",
+    "顺势问她 12 月回去几天，提前把日子圈出来"
+   ],
+   "applicable_dimensions": ["memory_use", "interaction", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A26",
+     "subject": "HER",
+     "relation": "lesson_workflow",
+     "value": "她立下截图存档、日历双记、出发前核对的防错流程",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T11", "message_id": "m0", "quote": "群里所有接龙我都截图存相册"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A27",
+     "subject": "SHARED",
+     "relation": "date_checker_role",
+     "value": "她请大周担任 12 月回家购票的日期复核员",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T11", "message_id": "m0", "quote": "你当我的日期复核员"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：接得痛快一点，这是她把乌龙消化成流程的标志，成全她。",
+   "unknowns": ["12 月具体行程日期未定"],
+   "protected_expressions": ["日历上日期写两遍"],
+   "forbidden_factual_claims": ["不得替她确认 12 月具体日期", "不得承诺替她操作购票"]
+  },
+  "E093_T12": {
+   "case_id": "E093_T12",
+   "current_action": "笑纳火锅之谢并确认周三赴约，把'人形日历'的梗接住，以抢毛肚玩笑轻松收尾。",
+   "acceptable_actions": [
+    "答应周三赴约，认领看日历的岗位",
+    "把'人形日历'的梗回一句，气氛收轻",
+    "提醒她这顿算谢礼，下次复核费收毛肚双份"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E093_A28",
+     "subject": "SHARED",
+     "relation": "hotpot_thanks",
+     "value": "她定周三老地方火锅宴谢大周收寄快递与人形日历之劳",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T12", "message_id": "m0", "quote": "周三晚上老地方火锅，我请"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E093_A29",
+     "subject": "SHARED",
+     "relation": "courier_callback",
+     "value": "火锅之谢回扣此前代收并冷链代寄快递一节",
+     "valid_time": "2026-11-04/2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E093_T05", "message_id": "m0", "quote": "发个顺丰冷链直接寄我老家县城"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把这一串折腾说成值得，别翻回去讲道理。",
+   "unknowns": [],
+   "protected_expressions": ["不许跟我抢毛肚"],
+   "forbidden_factual_claims": ["不得引入新议题", "不得虚构火锅店细节"]
+  }
+ }
+}

@@ -1,0 +1,263 @@
+{
+ "episode_id": "E148",
+ "persona": {
+  "her": {
+   "name": "祁一一",
+   "traits": [
+    "对门邻居",
+    "养英短麻薯",
+    "爱查攻略但易被人一句话带偏"
+   ],
+   "boundaries": [
+    "猫的事以医生意见为准",
+    "不喜欢被说小题大做"
+   ]
+  },
+  "me": {
+   "name": "阿灿",
+   "traits": [
+    "养过五年猫",
+    "换粮驱虫门道熟",
+    "手机存着猫体检记录表"
+   ]
+  },
+  "relationship_stage": "近邻朋友期（邻居两年，互相帮过喂猫）"
+ },
+ "initial_kb": {
+  "me": "我养过五年猫，换粮、驱虫的门道懂一些，手机里存着猫的体检记录表，信医生不信门店话术。",
+  "her": "祁一一是对门邻居，养了只叫麻薯的英短，凡事爱查攻略，容易被人一句话带偏，对猫的事上心。",
+  "warmth": "邻居两年，她出差我帮她喂过猫，她回回带特产谢我，楼道里聊得来。",
+  "style": "她连发消息像写日记，我回重点加一句宽心话，不堆术语。",
+  "stage": "近邻朋友期。"
+ },
+ "turns": [
+  {
+   "case_id": "E148_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "给麻薯换新粮啦！店里说三天换完就行，今天第一天，新旧按三分之一混的，它吃得挺欢。",
+      "ts": "2026-11-03 20:05"
+     }
+    ],
+    "clock": "2026-11-03 20:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "轻快开局，按门店口径执行"
+   }
+  },
+  {
+   "case_id": "E148_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "第二天……麻薯的便便有点软。我在门口捡猫砂盆的时候心咯噔一下，是不是新粮不行？",
+      "ts": "2026-11-04 21:10"
+     }
+    ],
+    "clock": "2026-11-04 21:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "软便出现，紧张上升"
+   }
+  },
+  {
+   "case_id": "E148_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我问店里，店员说'正常，扛过去就好'。可我刷到的攻略说软便要停一停，俩说法打架，我听谁的？",
+      "ts": "2026-11-05 12:25"
+     }
+    ],
+    "clock": "2026-11-05 12:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "两个信源打架，决策悬空"
+   }
+  },
+  {
+   "case_id": "E148_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天带麻薯做常规体检，顺便问了医生。医生说三天换完太快，得拉长到七天到十天，软便就退回上一个比例。店员那套……不靠谱。",
+      "ts": "2026-11-06 19:35"
+     }
+    ],
+    "clock": "2026-11-06 19:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "更正类冲突落定：医嘱推翻门店口径"
+   }
+  },
+  {
+   "case_id": "E148_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "退回四分之一新粮了，我建了个备忘录，每天记便便状态和粮食比例，跟做实验似的。",
+      "ts": "2026-11-06 22:25"
+     }
+    ],
+    "clock": "2026-11-06 22:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "按医嘱执行，进入记录模式"
+   }
+  },
+  {
+   "case_id": "E148_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "两天过去，成型了！开始往二分之一加。麻薯全然不知自己成了观察对象，嘿嘿。",
+      "ts": "2026-11-08 20:55"
+     }
+    ],
+    "clock": "2026-11-08 21:00",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "数据转好，节奏按医嘱推进"
+   }
+  },
+  {
+   "case_id": "E148_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "二分之一稳了三天，胃口精神都正常。我把换粮日历改成十天版本，打印出来贴冰箱上了。",
+      "ts": "2026-11-10 20:35"
+     }
+    ],
+    "clock": "2026-11-10 20:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "方案固化，仪式感上墙"
+   }
+  },
+  {
+   "case_id": "E148_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "同事听说我搞十天换粮，说我小题大做，'猫哪有这么娇气'。我刚才还雄心壮志的，这下有点动摇了……",
+      "ts": "2026-11-12 13:15"
+     }
+    ],
+    "clock": "2026-11-12 13:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "外部质疑引发动摇"
+   }
+  },
+  {
+   "case_id": "E148_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "医生助理回访微信，说每只猫肠道敏感度不一样，按自家节奏来。我定了：不听同事的，按日历走。",
+      "ts": "2026-11-13 21:05"
+     }
+    ],
+    "clock": "2026-11-13 21:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "获得专业回访背书，动摇清零"
+   }
+  },
+  {
+   "case_id": "E148_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "第八天，新粮占到四分之三，没有软便！拍了张便便……啊不，拍了张粮碗的照片给你看，干干净净。",
+      "ts": "2026-11-15 20:25"
+     }
+    ],
+    "clock": "2026-11-15 20:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "数据兑现，得意分享"
+   }
+  },
+  {
+   "case_id": "E148_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "换粮完成！旧粮还剩小半袋，我想捐给楼下流浪猫救助站，你要不要也凑一袋？凑一起送。",
+      "ts": "2026-11-17 19:15"
+     }
+    ],
+    "clock": "2026-11-17 19:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "任务闭环，发起公益邀约"
+   }
+  },
+  {
+   "case_id": "E148_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "捐了两袋过去，站里的橘猫抢着吃，站长说以后每月都能送。我打算固定捐，你入不入伙？",
+      "ts": "2026-11-19 21:35"
+     }
+    ],
+    "clock": "2026-11-19 21:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "公益闭环并升级为长期计划"
+   }
+  }
+ ]
+}

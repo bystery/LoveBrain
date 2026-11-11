@@ -1,0 +1,473 @@
+{
+ "story_id": "E172",
+ "turns": {
+  "E172_T01": {
+   "case_id": "E172_T01",
+   "current_action": "给托运流程一个先后的起步指引",
+   "acceptable_actions": [
+    "建议先向航司申请有氧舱再办证",
+    "建议先核免疫证时效再定顺序",
+    "建议把航班日期证件时效列成倒排清单"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T01_A01",
+     "subject": "SHARED",
+     "relation": "托运计划",
+     "value": "HER 定了1月30日机票拟带芝麻航空托运回渝州",
+     "valid_time": "2026-01-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T01", "quote": "我定了1月30日回渝州的机票", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T01_A02",
+     "subject": "ME",
+     "relation": "托运经验",
+     "value": "ME 去年托运过自家猫，被 HER 视为流程信源",
+     "valid_time": "2026-01-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T01", "quote": "你家去年托过猫", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "经验只给路径不给包票，提醒她以航司官方为准。",
+   "unknowns": ["航司有氧舱余位未知", "具体证件要求未知"],
+   "protected_expressions": ["想把芝麻一起托运回去"],
+   "forbidden_factual_claims": ["不得虚构航司托运细则"],
+   "may_decline": false
+  },
+  "E172_T02": {
+   "case_id": "E172_T02",
+   "current_action": "确认航班改至1月28日并接住全部手续换轨",
+   "acceptable_actions": [
+    "确认28号并提醒托运仓位跟着改",
+    "确认并提醒票面改签后重新确认舱位",
+    "确认并说省下二百四够买航空箱"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T02_A01",
+     "subject": "SHARED",
+     "relation": "航班日期更正",
+     "value": "机票改买1月28日早班，托运手续随之按28号走",
+     "valid_time": "2026-01-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T02", "quote": "改买了1月28日早上的", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T02_A02",
+     "subject": "SHARED",
+     "relation": "原航班日期",
+     "value": "此前1月30日的航班安排作废",
+     "valid_time": "2026-01-30",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E172_T02", "quote": "原来说的30号你就当没听见", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：两个日期都要接住，明确以28号为准。",
+   "unknowns": ["28号有氧舱是否可改未知"],
+   "protected_expressions": ["改买了1月28日早上的"],
+   "forbidden_factual_claims": ["不得按30号口径回应"],
+   "may_decline": false
+  },
+  "E172_T03": {
+   "case_id": "E172_T03",
+   "current_action": "就免疫证21天时效压线给出核实建议",
+   "acceptable_actions": [
+    "建议直接打航司客服确认压线是否可托",
+    "建议把免疫证照片发给客服预审",
+    "建议同时问机场柜台现场尺度留双保险"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T03_A01",
+     "subject": "SHARED",
+     "relation": "免疫证时效",
+     "value": "疫苗1月5日接种，航司要求免疫证满21天，1月26日才满",
+     "valid_time": "2026-01-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T03", "quote": "免疫证满21天才能托运", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T03_A02",
+     "subject": "SHARED",
+     "relation": "航班日期更正",
+     "value": "航班按1月28日执行的新口径",
+     "valid_time": "2026-01-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T02", "quote": "改买了1月28日早上的", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "压线的事不拍胸脯，推她去官方核实。",
+   "unknowns": ["航司对压线两天的执行尺度未知"],
+   "protected_expressions": ["免疫证满21天才能托运"],
+   "forbidden_factual_claims": ["不得断言压线必过或必不过"],
+   "may_decline": false
+  },
+  "E172_T04": {
+   "case_id": "E172_T04",
+   "current_action": "确认检疫证要求并认可倒排清单",
+   "acceptable_actions": [
+    "确认三天时效并提醒约早不约晚",
+    "确认并提醒现场要带猫应激有准备",
+    "确认并说清单少一项补一项"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T04_A01",
+     "subject": "SHARED",
+     "relation": "检疫证要求",
+     "value": "动物检疫合格证明须起飞前三天内办理，需带猫和免疫证现场",
+     "valid_time": "2026-01-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T04", "quote": "起飞前三天内办", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T04_A02",
+     "subject": "SHARED",
+     "relation": "免疫证时效",
+     "value": "免疫证满21天的时效约束既存",
+     "valid_time": "2026-01-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T03", "quote": "免疫证满21天才能托运", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "两证两时效，帮她把清单立住。",
+   "unknowns": ["检疫办理点排队时长未知"],
+   "protected_expressions": ["起飞前三天内办"],
+   "forbidden_factual_claims": ["不得虚构检疫办理细则"],
+   "may_decline": false
+  },
+  "E172_T05": {
+   "case_id": "E172_T05",
+   "current_action": "接住借箱撤回并认可按尺寸买新箱",
+   "acceptable_actions": [
+    "认可买新箱并提醒带固定碗款",
+    "认可并提醒留收据以备核对",
+    "打趣说自家箱子超两公分不冤"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T05_A01",
+     "subject": "SHARED",
+     "relation": "借箱撤回",
+     "value": "ME 家闲置航空箱单边42公分超限两公分，借箱方案撤销",
+     "valid_time": "2026-01-20",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E172_T05", "quote": "超了两公分，我算了下用不了", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T05_A02",
+     "subject": "SHARED",
+     "relation": "航空箱尺寸规则",
+     "value": "航司要求箱体单边不超40公分",
+     "valid_time": "2026-01-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T05", "quote": "航司单边限40", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她撤得干脆，回应轻巧即可。",
+   "unknowns": ["新箱具体型号未知"],
+   "protected_expressions": ["超了两公分，我算了下用不了"],
+   "forbidden_factual_claims": ["不得坚持出借超规箱子"],
+   "may_decline": false
+  },
+  "E172_T06": {
+   "case_id": "E172_T06",
+   "current_action": "确认新箱合规并帮她看清单余项",
+   "acceptable_actions": [
+    "确认39公分合规并说清单差不多了",
+    "确认并提醒身份牌写两个电话",
+    "确认并提醒尿垫多备两片"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T06_A01",
+     "subject": "SHARED",
+     "relation": "新箱落定",
+     "value": "新箱长39高28合规，四十九元购入",
+     "valid_time": "2026-01-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T06", "quote": "长39，高28，合规", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T06_A02",
+     "subject": "SHARED",
+     "relation": "借箱撤回",
+     "value": "借箱方案已撤，转向自购新箱",
+     "valid_time": "2026-01-20",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E172_T05", "quote": "还是买新的吧", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "数字对数字，确认干脆。",
+   "unknowns": [],
+   "protected_expressions": ["长39，高28，合规"],
+   "forbidden_factual_claims": ["不得声称旧箱可用"],
+   "may_decline": false
+  },
+  "E172_T07": {
+   "case_id": "E172_T07",
+   "current_action": "确认二次改签与检疫窗口的重新推算",
+   "acceptable_actions": [
+    "确认29号并复述26到29的窗口",
+    "确认并提醒26号一早办最稳",
+    "确认并提醒改签后重新确认有氧舱"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T07_A01",
+     "subject": "SHARED",
+     "relation": "航班二次改签",
+     "value": "28号航班因延误风险改至29日早七点五十，改签费八十",
+     "valid_time": "2026-01-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T07", "quote": "改到29日早上七点五十的", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T07_A02",
+     "subject": "SHARED",
+     "relation": "检疫窗口重算",
+     "value": "检疫证须26到29之间办理，HER 约26号一早",
+     "valid_time": "2026-01-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T07", "quote": "26到29之间办都行", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：旧日期28号作废要明确，窗口重算要复述。",
+   "unknowns": ["26号检疫点是否开门未知"],
+   "protected_expressions": ["改到29日早上七点五十的"],
+   "forbidden_factual_claims": ["不得按28号航班口径回应"],
+   "may_decline": false
+  },
+  "E172_T08": {
+   "case_id": "E172_T08",
+   "current_action": "确认检疫证办成且有效期罩住29号航班",
+   "acceptable_actions": [
+    "确认并说清单一行没白划",
+    "确认并提醒出发前把两证拍照备份",
+    "确认并问芝麻应激后要不要缓一天再装箱"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T08_A01",
+     "subject": "SHARED",
+     "relation": "检疫证办成",
+     "value": "检疫证1月26日办下，有效期至29号覆盖航班",
+     "valid_time": "2026-01-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T08", "quote": "证有效期到29号", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T08_A02",
+     "subject": "SHARED",
+     "relation": "航班二次改签",
+     "value": "29日早七点五十的航班口径",
+     "valid_time": "2026-01-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T07", "quote": "改到29日早上七点五十的", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "证件落地是最大险情解除，语气可以松一格。",
+   "unknowns": [],
+   "protected_expressions": ["证有效期到29号"],
+   "forbidden_factual_claims": ["不得虚构检疫证细节"],
+   "may_decline": false
+  },
+  "E172_T09": {
+   "case_id": "E172_T09",
+   "current_action": "确认镇定剂禁用口径并对猫薄荷给保守建议",
+   "acceptable_actions": [
+    "确认禁用镇定剂并建议不喂猫薄荷",
+    "确认并建议箱内放旧衣服代替安抚",
+    "确认并提醒提前问柜台现场要求"
+   ],
+   "applicable_dimensions": ["factuality", "boundary", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T09_A01",
+     "subject": "PUBLIC",
+     "relation": "镇定剂禁区",
+     "value": "航空托运禁用镇定剂的说法待 HER 与官方确认",
+     "valid_time": "2026-01-29",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T09", "quote": "航空托运禁用", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T09_A02",
+     "subject": "SHARED",
+     "relation": "检疫证办成",
+     "value": "两证齐备的既定状态",
+     "valid_time": "2026-01-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T08", "quote": "证有效期到29号", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "安全边界上不试探，答案往最保守给。",
+   "unknowns": ["猫薄荷对芝麻的实际反应未知"],
+   "protected_expressions": ["航空托运禁用"],
+   "forbidden_factual_claims": ["不得建议使用镇定剂"],
+   "may_decline": false
+  },
+  "E172_T10": {
+   "case_id": "E172_T10",
+   "current_action": "接住值机三关全过的好消息并简短叮嘱",
+   "acceptable_actions": [
+    "叮嘱落地来个信",
+    "叮嘱取猫时先别急着开箱",
+    "简短回复说一路顺风"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T10_A01",
+     "subject": "SHARED",
+     "relation": "值机交接",
+     "value": "箱子6.8公斤未超重，尺寸合规，两证收走复印",
+     "valid_time": "2026-01-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T10", "quote": "箱子过秤6.8公斤没超重", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T10_A02",
+     "subject": "SHARED",
+     "relation": "航班二次改签",
+     "value": "29日早班机执行的既定口径",
+     "valid_time": "2026-01-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T07", "quote": "改到29日早上七点五十的", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她正要登机，一句话就够。",
+   "unknowns": [],
+   "protected_expressions": ["箱子过秤6.8公斤没超重"],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E172_T11": {
+   "case_id": "E172_T11",
+   "current_action": "接住平安落地的消息并关心猫的状态",
+   "acceptable_actions": [
+    "关心芝麻蔫多久算正常",
+    "祝贺平安并提醒让她慢慢喝水",
+    "祝贺并说她爸接得快"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T11_A01",
+     "subject": "SHARED",
+     "relation": "抵达平安",
+     "value": "芝麻随1月29日航班抵达渝州，略蔫但能喝水",
+     "valid_time": "2026-01-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T11", "quote": "落地渝州，芝麻活着出来了", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T11_A02",
+     "subject": "SHARED",
+     "relation": "值机交接",
+     "value": "出发时三关全过的既定状态",
+     "valid_time": "2026-01-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T10", "quote": "免疫证检疫证都收走复印了", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "先关心猫，再夸她自己。",
+   "unknowns": ["芝麻应激恢复时长未知"],
+   "protected_expressions": ["落地渝州，芝麻活着出来了"],
+   "forbidden_factual_claims": ["不得给兽医式诊断"],
+   "may_decline": false
+  },
+  "E172_T12": {
+   "case_id": "E172_T12",
+   "current_action": "接下致谢并对腊肠口味之问轻快回应",
+   "acceptable_actions": [
+    "回答要辣的并说年后茶我请",
+    "回答两根都要并打趣芝麻",
+    "收下谢意并说流程你也跑得稳"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E172_T12_A01",
+     "subject": "SHARED",
+     "relation": "年后回礼",
+     "value": "HER 约年后请茶并捎两根腊肠，口味待 ME 定",
+     "valid_time": "2026-01-29之后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T12", "quote": "老家腊肠给你捎两根", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E172_T12_A02",
+     "subject": "SHARED",
+     "relation": "抵达平安",
+     "value": "芝麻已在老家恢复活动的既定状态",
+     "valid_time": "2026-01-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E172_T12", "quote": "开始翻我爸的鞋柜了", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，口味问题答得干脆，别拖泥带水。",
+   "unknowns": ["年后回城具体日期未知"],
+   "protected_expressions": ["老家腊肠给你捎两根"],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  }
+ }
+}

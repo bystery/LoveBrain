@@ -1,0 +1,439 @@
+{
+ "story_id": "E127",
+ "turns": {
+  "E127_T01": {
+   "case_id": "E127_T01",
+   "current_action": "接受试键盘的邀请,夸轴的手感并约定过去的时间",
+   "acceptable_actions": [
+    "说过去摸两下,问她这轴偏清脆还是偏软弹",
+    "答应午休过去,顺便带上她上次说的色板问题",
+    "接'就是这把'的梗,确认昨天聊的就是同款"
+   ],
+   "applicable_dimensions": ["interaction", "initiative", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A01",
+     "subject": "ME",
+     "relation": "past_help",
+     "value": "江野曾帮覃小满修过一次色板导出脚本",
+     "valid_time": "半年内",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "帮她修过一次色板导出脚本"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E127_A02",
+     "subject": "HER",
+     "relation": "new_gear",
+     "value": "她的客制化键盘(佳达隆轴)已到工位",
+     "valid_time": "2026-11-03 到货",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T01", "message_id": "m0", "quote": "我的客制化键盘到工位了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她晒装备时最开心,顺着装备聊,别急着转工作",
+   "unknowns": ["键盘具体型号与配列未说明"],
+   "protected_expressions": ["要不要来摸两下"],
+   "forbidden_factual_claims": ["不得虚构键盘的购买价格"]
+  },
+  "E127_T02": {
+   "case_id": "E127_T02",
+   "current_action": "痛快接受她的借用规矩,表明自己本来也守这个",
+   "acceptable_actions": [
+    "说规矩合理,摸之前先洗手,绝不碰键帽和轴",
+    "接'就摸一下'的梗,表示自己从不讲这句",
+    "干脆利落答应,顺手夸她爱惜装备"
+   ],
+   "applicable_dimensions": ["boundary", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A03",
+     "subject": "HER",
+     "relation": "lending_rule",
+     "value": "她的键帽和轴不外借,试手可以但须先洗手",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E127_T02", "message_id": "m0", "quote": "键帽和轴我都不外借"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E127_A04",
+     "subject": "HER",
+     "relation": "lending_principle",
+     "value": "装备借人前必须打招呼是她的通用原则",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "装备借人前必须打招呼"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是她的通用规矩不是针对谁,接得痛快就是加分",
+   "unknowns": ["邻座等其他同事是否知晓此规矩未提"],
+   "protected_expressions": ["键帽和轴我都不外借"],
+   "forbidden_factual_claims": ["不得虚构她过去借东西的纠纷"]
+  },
+  "E127_T03": {
+   "case_id": "E127_T03",
+   "current_action": "接下做提示牌的请求,问清牌子的尺寸和放置位置",
+   "acceptable_actions": [
+    "答应做牌,问她是立牌还是贴条,放键盘旁边吗",
+    "答应,提议写上'借用先签字,先问再拿'两句",
+    "接她的'再给一次机会',说这牌子写得客气点好"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A05",
+     "subject": "THIRD",
+     "relation": "borrow_violation",
+     "value": "邻座又拿了她的备用数据线,且上周说好的借用登记没签",
+     "valid_time": "2026-11-05 当天",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T03", "message_id": "m0", "quote": "上周说好的打借用板他没签"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E127_A03",
+     "subject": "HER",
+     "relation": "lending_rule",
+     "value": "她的键帽和轴不外借,试手可以但须先洗手",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E127_T02", "message_id": "m0", "quote": "键帽和轴我都不外借"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她要的是提示牌不是控诉书,手做得巧一点",
+   "unknowns": ["邻座的姓名与部门未提"],
+   "protected_expressions": ["写'先问再拿'"],
+   "forbidden_factual_claims": ["不得虚构邻座的真实姓名"]
+  },
+  "E127_T04": {
+   "case_id": "E127_T04",
+   "current_action": "为第三方归还并守规矩松口气,轻推她别断定,观察就好",
+   "acceptable_actions": [
+    "说'以后都先问'是好的开始,观察一周靠谱",
+    "夸牌子立功,提醒她别表扬太早",
+    "问她牌子贴哪儿了,说回头复制一份给自己桌面"
+   ],
+   "applicable_dimensions": ["interaction", "boundary", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A05",
+     "subject": "THIRD",
+     "relation": "borrow_violation",
+     "value": "邻座又拿了她的备用数据线,且上周说好的借用登记没签",
+     "valid_time": "2026-11-05 当天",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T03", "message_id": "m0", "quote": "上周说好的打借用板他没签"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E127_A06",
+     "subject": "THIRD",
+     "relation": "rule_compliance",
+     "value": "邻座已归还数据线并口头答应以后先问,她决定观察一周",
+     "valid_time": "2026-11-06 至 2026-11-13 观察期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T04", "message_id": "m0", "quote": "他把线还回来了,还说以后都先问"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她嘴上'行吧',其实松了口气,顺着接别泼冷水",
+   "unknowns": ["观察期后是否再犯未知"],
+   "protected_expressions": ["行吧,观察一周"],
+   "forbidden_factual_claims": ["不得断言邻座已经彻底改好"]
+  },
+  "E127_T05": {
+   "case_id": "E127_T05",
+   "current_action": "给出199与145之间的分析:看急用程度与代购风险",
+   "acceptable_actions": [
+    "建议看她急不急:不急走145,但确认代购货源和售后",
+    "分析差价54块买三周等待是否值得,倾向旗舰店保平安",
+    "反问她打油严重程度,再给建议"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A07",
+     "subject": "HER",
+     "relation": "purchase_decision",
+     "value": "她想换PBT键帽,旗舰店199一套,代购145但要等三周",
+     "valid_time": "2026-11-07 询价",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T05", "message_id": "m0", "quote": "旗舰店一套199,代购145但等三周"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E127_A08",
+     "subject": "HER",
+     "relation": "budget_principle",
+     "value": "她的垫钱上限原则是不替人垫超过200元",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "垫钱上限200"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "比价要给她实际维度:时间、售后、货源,别只说便宜",
+   "unknowns": ["代购渠道的具体信誉未知"],
+   "protected_expressions": ["旗舰店一套199,代购145但等三周"],
+   "forbidden_factual_claims": ["不得虚构其他店铺报价"]
+  },
+  "E127_T06": {
+   "case_id": "E127_T06",
+   "current_action": "答应拉她进拼团群,并明确承诺不垫钱",
+   "acceptable_actions": [
+    "答应拉群进群,笑她叮嘱'别替我垫'像在防我",
+    "确认她自付,说只负责递链接不碰钱",
+    "答应进群,提醒拼团记得看发货条款"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A07",
+     "subject": "HER",
+     "relation": "purchase_decision",
+     "value": "她想换PBT键帽,旗舰店199一套,代购145但要等三周",
+     "valid_time": "2026-11-07 询价",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T05", "message_id": "m0", "quote": "旗舰店一套199,代购145但等三周"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E127_A09",
+     "subject": "HER",
+     "relation": "payment_boundary",
+     "value": "她明确要求ME不替她垫付,键帽145她自付",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E127_T06", "message_id": "m0", "quote": "别替我垫,我自己付"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她立金钱边界时最认真,这轮一个字都不逗'我来付'",
+   "unknowns": ["拼团群的具体规则未知"],
+   "protected_expressions": ["别替我垫,我自己付"],
+   "forbidden_factual_claims": ["不得声称已替她下单"]
+  },
+  "E127_T07": {
+   "case_id": "E127_T07",
+   "current_action": "轻轻接住等待的状态,安慰凑团发货常见",
+   "acceptable_actions": [
+    "说凑满30套才发是拼团常态,等着不亏",
+    "接'等着呗'的佛系,表示到货了喊他围观",
+    "提醒她留意拼团截止时间就行,不多展开"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A10",
+     "subject": "HER",
+     "relation": "order_status",
+     "value": "她已在拼团群下单,需凑满30套才发货,等待期不定",
+     "valid_time": "2026-11-10 下单",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T07", "message_id": "m0", "quote": "要凑满30套才发货"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "短消息,接住情绪即可",
+   "unknowns": ["最终是否成团未知"],
+   "protected_expressions": ["要凑满30套才发货"],
+   "forbidden_factual_claims": ["不得断言一定会成团"]
+  },
+  "E127_T08": {
+   "case_id": "E127_T08",
+   "current_action": "明确支持她守住边界:不是小气,规矩事先讲清就不亏心",
+   "acceptable_actions": [
+    "坚定说没做错,规矩都贴牌了还叫小气那没天理",
+    "肯定她直接拒绝比憋着好,邻里那点闲话不值钱",
+    "接'不得劲',先共情情绪再回到原则上"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A03",
+     "subject": "HER",
+     "relation": "lending_rule",
+     "value": "她的键帽和轴不外借,试手可以但须先洗手",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E127_T02", "message_id": "m0", "quote": "键帽和轴我都不外借"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E127_A11",
+     "subject": "THIRD",
+     "relation": "boundary_pressure",
+     "value": "邻座再次借键盘被她拒绝后说她小气",
+     "valid_time": "2026-11-12 上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T08", "message_id": "m0", "quote": "他说我小气"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这轮她要的是支持不是分析,先站队再讲理",
+   "unknowns": ["邻座后续反应未知"],
+   "protected_expressions": ["我觉得没做错"],
+   "forbidden_factual_claims": ["不得替她决定与邻座的关系走向"]
+  },
+  "E127_T09": {
+   "case_id": "E127_T09",
+   "current_action": "接受她的感谢,夸贴纸办法好,顺嘴要一张",
+   "acceptable_actions": [
+    "说不客气,贴纸这招比嘴上解释省力,自己也想要一张",
+    "夸她把规则产品化了,很设计师",
+    "接住感谢,提醒观察期还剩几天一起看结果"
+   ],
+   "applicable_dimensions": ["interaction", "initiative", "emotion_relation", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A11",
+     "subject": "THIRD",
+     "relation": "boundary_pressure",
+     "value": "邻座再次借键盘被她拒绝后说她小气",
+     "valid_time": "2026-11-12 上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T08", "message_id": "m0", "quote": "他说我小气"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E127_A12",
+     "subject": "HER",
+     "relation": "rule_artifact",
+     "value": "她把借用规则写成贴纸,谁问就发谁",
+     "valid_time": "2026-11-12 晚起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T09", "message_id": "m0", "quote": "我把借用规则写成了贴纸"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的状态转好,这轮多给一点轻松的肯定",
+   "unknowns": ["贴纸文案内容未透露"],
+   "protected_expressions": ["谢谢你说'没做错'"],
+   "forbidden_factual_claims": ["不得虚构贴纸的具体印刷数量"]
+  },
+  "E127_T10": {
+   "case_id": "E127_T10",
+   "current_action": "接住开箱快乐,夸配色,答应周六开黑",
+   "acceptable_actions": [
+    "说奶白配灰耐看,周六开黑报上名字",
+    "问她新键帽打字声变化,顺口应下开黑",
+    "接'闭眼夸'的梗,让她留一张键帽特写"
+   ],
+   "applicable_dimensions": ["interaction", "initiative", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A10",
+     "subject": "HER",
+     "relation": "order_status",
+     "value": "她已在拼团群下单,需凑满30套才发货,等待期不定",
+     "valid_time": "2026-11-10 下单",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T07", "message_id": "m0", "quote": "要凑满30套才发货"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E127_A13",
+     "subject": "HER",
+     "relation": "gear_arrival",
+     "value": "键帽已到货,奶白配灰配色,成团比预期快",
+     "valid_time": "2026-11-14 到货",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T10", "message_id": "m0", "quote": "键帽到货了,比想象中快"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她终于等到货,快乐要接满",
+   "unknowns": ["周六开黑的具体时间未定"],
+   "protected_expressions": ["周六线上开黑你上不上"],
+   "forbidden_factual_claims": ["不得虚构键帽品牌与价格细节"]
+  },
+  "E127_T11": {
+   "case_id": "E127_T11",
+   "current_action": "接住开黑战果和'得先问我'的玩笑,表态规矩执行到位",
+   "acceptable_actions": [
+    "笑她连借鼠标都要走流程,说自己周五先交申请",
+    "接两连胜的喜气,说键盘手感功劳占一半",
+    "答应'先问再拿',顺势问备用鼠标什么型号"
+   ],
+   "applicable_dimensions": ["interaction", "boundary", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A12",
+     "subject": "HER",
+     "relation": "rule_artifact",
+     "value": "她把借用规则写成贴纸,谁问就发谁",
+     "valid_time": "2026-11-12 晚起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T09", "message_id": "m0", "quote": "我把借用规则写成了贴纸"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E127_A14",
+     "subject": "HER",
+     "relation": "mouse_offer",
+     "value": "她愿意把备用鼠标借给ME,前提是先问她",
+     "valid_time": "2026-11-15 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E127_T11", "message_id": "m0", "quote": "下回把我的备用鼠标借你,注意是借,得先问我"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她拿规矩开玩笑,说明边界被ME尊重过,可以轻松对答",
+   "unknowns": ["备用鼠标型号未提"],
+   "protected_expressions": ["注意是借,得先问我"],
+   "forbidden_factual_claims": ["不得虚构开黑的游戏名"]
+  },
+  "E127_T12": {
+   "case_id": "E127_T12",
+   "current_action": "日常收尾,应下中午看尾款链接,守住'只看不垫'",
+   "acceptable_actions": [
+    "说链接发来瞅一眼,保证只看不掏钱",
+    "接键帽顺眼的碎碎念,祝开会顺利",
+    "回个表情级的轻快应答,等中午链接"
+   ],
+   "applicable_dimensions": ["interaction", "boundary", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E127_A09",
+     "subject": "HER",
+     "relation": "payment_boundary",
+     "value": "她明确要求ME不替她垫付,键帽145她自付",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E127_T06", "message_id": "m0", "quote": "别替我垫,我自己付"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "早晨碎碎念,轻收,别开新话题",
+   "unknowns": ["尾款金额是否与145一致未说明"],
+   "protected_expressions": ["不垫钱只看链接"],
+   "forbidden_factual_claims": ["不得虚构尾款具体金额"]
+  }
+ }
+}

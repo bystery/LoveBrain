@@ -1,0 +1,942 @@
+{
+ "story_id": "E161",
+ "turns": {
+  "E161_T01": {
+   "case_id": "E161_T01",
+   "current_action": "接住突发求助：先安抚，再帮她把两处缺插座的处置排个顺序（岛台优先、冰箱后待验证是否故意留空），并提醒拍照图纸发工头核对",
+   "acceptable_actions": [
+    "先安抚情绪，指出岛台必须补、冰箱后那处先别动手，建议拍照图纸找工头书面确认是否故意留空",
+    "顺着她的排查肯定铅笔画圈的做法，提醒两处性质不同：岛台是刚需，冰箱后可能是设计考虑，先分开处理",
+    "接住火锅梗轻轻调侃一句，再给出先确认后补点的两步走建议"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T01_A01",
+     "subject": "HER",
+     "relation": "发现厨房水电图缺插座的位置",
+     "value": "岛台和冰箱后面两个位置在水电图上都没有画插座",
+     "valid_time": "2026-11-02上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T01",
+      "message_id": "m0",
+      "quote": "岛台和冰箱后面一个插座都没画"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T01_A02",
+     "subject": "SHARED",
+     "relation": "厨房水电图纸的来源",
+     "value": "水电图是她自己照着销售给的套餐图改的，可能改丢了内容",
+     "valid_time": "2026-11-02上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T01",
+      "message_id": "m0",
+      "quote": "这图不是照着销售给的套餐图改的吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：让她感到这事有章法可循，不用陪她一起慌",
+   "unknowns": [
+    "冰箱后无插座是遗漏还是设计考虑",
+    "工头尚未回复"
+   ],
+   "protected_expressions": [
+    "岛台和冰箱后面一个插座都没画"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言冰箱后插座一定是故意留空",
+    "不得编造工头已确认补点的价格"
+   ],
+   "may_decline": false
+  },
+  "E161_T02": {
+   "case_id": "E161_T02",
+   "current_action": "回应她的自查：肯定岛台刚需的判断，对冰箱后那处给出中性验证办法（量机身深度、看预留线头），别替她拍死",
+   "acceptable_actions": [
+    "肯定岛台画圈的判断，冰箱后那处建议量一下冰箱深度和看有没有预留暗盒再下结论",
+    "接住火锅的梗回一句，再提醒冰箱插座可以留意是否预留了移位线，别急着补",
+    "分别给两处定性：岛台必补，冰箱后存疑待验证，建议拍图纸问工头留没留线"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T02_A01",
+     "subject": "HER",
+     "relation": "确认岛台需要插座的理由",
+     "value": "岛台边上必须有插座，否则吃火锅要拖插排",
+     "valid_time": "2026-11-02中午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T02",
+      "message_id": "m0",
+      "quote": "不然吃火锅得拖插排"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T02_A02",
+     "subject": "HER",
+     "relation": "昨日发现的图纸缺口位置",
+     "value": "岛台和冰箱后面两处缺插座，她已用铅笔在冰箱处画圈标记",
+     "valid_time": "2026-11-02上午起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T01",
+      "message_id": "m0",
+      "quote": "岛台和冰箱后面一个插座都没画"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E161_E161_T02_A03",
+     "subject": "HER",
+     "relation": "对冰箱后缺插座的存疑解释",
+     "value": "冰箱后面没画插座可能是怕机身顶住插座，尚未验证",
+     "valid_time": "2026-11-02中午",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T02",
+      "message_id": "m0",
+      "quote": "怕冰箱机身顶住插座"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：稳住节奏，把两处拆成确定与存疑两档",
+   "unknowns": [
+    "冰箱后是否预留线头或暗盒"
+   ],
+   "protected_expressions": [
+    "不然吃火锅得拖插排"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言冰箱后确实是预留设计",
+    "不得声称已看过图纸实物"
+   ],
+   "may_decline": false
+  },
+  "E161_T03": {
+   "case_id": "E161_T03",
+   "current_action": "接比价问题：提醒一百八大概率是单项口径，让她当面问清含不含开槽布线和辅料；对限时报价的催促给一句对策（书面留价）",
+   "acceptable_actions": [
+    "提示她问一百八含不含开槽布线与封槽，并建议让工头把报价发微信留痕，别被当天有效话术催着定",
+    "结合自己当年补点位的经验给口径清单：开槽、布线、暗盒、面板是否分开算，让她照单问",
+    "先接住她被催的烦躁情绪，再给一句报价留痕的实办法"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T03_A01",
+     "subject": "THIRD",
+     "relation": "工头对补点位的首次报价",
+     "value": "补一个点位报一百八，两个三百六，并口头称报价次日不一定作数",
+     "valid_time": "2026-11-03晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T03",
+      "message_id": "m0",
+      "quote": "补一个点位报一百八，两个就是三百六"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T03_A02",
+     "subject": "HER",
+     "relation": "待补插座的缺口清单",
+     "value": "岛台和冰箱后两处缺插座待补，是她比价的基数",
+     "valid_time": "2026-11-02起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T01",
+      "message_id": "m0",
+      "quote": "岛台和冰箱后面一个插座都没画"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E161_E161_T03_A03",
+     "subject": "HER",
+     "relation": "对报价口径的疑问",
+     "value": "一百八是否含开槽布线尚未确认",
+     "valid_time": "2026-11-03晚",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T03",
+      "message_id": "m0",
+      "quote": "这个一百八是含开槽布线的吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：帮她把口径问全，而不是替她砍价",
+   "unknowns": [
+    "一百八的实际包含范围"
+   ],
+   "protected_expressions": [
+    "今天这个价明天不一定作数"
+   ],
+   "forbidden_factual_claims": [
+    "不得替工头确认一百八含开槽布线",
+    "不得虚构自己补点位的确切花费数字"
+   ],
+   "may_decline": false
+  },
+  "E161_T04": {
+   "case_id": "E161_T04",
+   "current_action": "接更正：确认暗装二百六的口径已问清，对她砍掉冰箱后那处的想法给倾向性意见（可行，岛台刚需优先），并提醒等自查完图纸再定",
+   "acceptable_actions": [
+    "认可先补岛台、冰箱后缓一缓的思路，提醒正好用周六前的空档把图纸再核一遍",
+    "肯定她把明装暗装问清了，建议补点决定等图纸复核后再落锤，避免来回改",
+    "直接表态支持只补岛台，并顺手提醒暗装五百二降成二百六的账要跟工头对一遍"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T04_A01",
+     "subject": "THIRD",
+     "relation": "补点位报价口径的更正",
+     "value": "一百八是明装盒价格，暗装每个二百六，两处合计五百二",
+     "valid_time": "2026-11-04上午",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T04",
+      "message_id": "m0",
+      "quote": "一百八是明装盒的价，要走暗装得二百六一个"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T04_A02",
+     "subject": "HER",
+     "relation": "砍掉冰箱后补点的倾向",
+     "value": "她倾向砍掉冰箱后面那个点位，只补岛台一处，尚待ME意见",
+     "valid_time": "2026-11-04上午",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T04",
+      "message_id": "m0",
+      "quote": "冰箱后面那个先砍掉，只补岛台那个"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T04_A03",
+     "subject": "HER",
+     "relation": "最初的两处缺口",
+     "value": "岛台和冰箱后两处缺插座是本轮所有决策的起点",
+     "valid_time": "2026-11-02上午起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T01",
+      "message_id": "m0",
+      "quote": "岛台和冰箱后面一个插座都没画"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：意见给得干脆，落锤留给她",
+   "unknowns": [
+    "最终补几处未定"
+   ],
+   "protected_expressions": [
+    "要走暗装得二百六一个"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称冰箱后那处确定不用补",
+    "不得把二百六说成含面板的最终总价"
+   ],
+   "may_decline": false
+  },
+  "E161_T05": {
+   "case_id": "E161_T05",
+   "current_action": "回答推不推复尺：给出明确倾向——点位没定就先推，排期紧可以让工头先把复尺挂在下周三备选，两头不耽误",
+   "acceptable_actions": [
+    "明确建议推，理由是点位没定复尺无意义，同时提醒让工头锁下周三的备选档期防排期被占",
+    "支持推掉本周六，并给一个折中：让工头先出橱柜下单前置条件清单，复尺晚点也不误排产",
+    "顺着她打鼓的心情接一句，再干脆表态：推，但要让工头口头锁定新时间"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T05_A01",
+     "subject": "SHARED",
+     "relation": "橱柜复尺的原定安排",
+     "value": "橱柜复尺原定本周六上午，因点位未定她考虑推迟",
+     "valid_time": "原定2026-11-07上午",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T05",
+      "message_id": "m0",
+      "quote": "本来橱柜约的是这周六上午来复尺"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T05_A02",
+     "subject": "THIRD",
+     "relation": "补点位报价口径",
+     "value": "暗装每个二百六、点位未定死，是复尺是否推迟的依据",
+     "valid_time": "2026-11-04上午起",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T04",
+      "message_id": "m0",
+      "quote": "要走暗装得二百六一个"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E161_E161_T05_A03",
+     "subject": "THIRD",
+     "relation": "工头排期压力",
+     "value": "周工头称下下周排期就满，是她打鼓的原因",
+     "valid_time": "2026-11-04晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T05",
+      "message_id": "m0",
+      "quote": "下下周他排期就满了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：给明确答案不骑墙，顺带消解她对工头的担心",
+   "unknowns": [
+    "工头是否同意推迟并保留档期"
+   ],
+   "protected_expressions": [
+    "我怕复了也白复"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言工头已同意改期",
+    "不得编造橱柜厂商的复尺规则"
+   ],
+   "may_decline": false
+  },
+  "E161_T06": {
+   "case_id": "E161_T06",
+   "current_action": "答应借测距仪：确认周六来取的时间与爱护约定，顺手嘱咐一句充好电、别摔镜头，语气回到平时的调侃",
+   "acceptable_actions": [
+    "爽快答应周六借出，约定取用时间，顺带交代仪器充电和轻拿轻放两个小注意事项",
+    "答应之余调侃她爱惜东西的保证听过就要兑现，再确认周六具体几点方便",
+    "直接说好，并补一句用完随时还、不急着要，让她别有欠人情负担"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T06_A01",
+     "subject": "SHARED",
+     "relation": "复尺改期的决定",
+     "value": "复尺从本周六推迟到下周三，等岛台点位定死再叫人",
+     "valid_time": "2026-11-05上午定，改至2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T06",
+      "message_id": "m0",
+      "quote": "复尺推到下周三"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T06_A02",
+     "subject": "HER",
+     "relation": "向ME借用激光测距仪的请求与承诺",
+     "value": "这周六去ME家取激光测距仪借用几天，承诺用完马上还、爱惜使用",
+     "valid_time": "原定2026-11-07取用",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T06",
+      "message_id": "m0",
+      "quote": "你家那台激光测距仪，这周六我去你家拿，借用几天，用完马上还你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T06_A03",
+     "subject": "ME",
+     "relation": "持有可外借的激光测距仪",
+     "value": "ME去年装修留下一台激光测距仪，熟人借用从不收费",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "有一台激光测距仪，熟人借用从不收费"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：答应得痛快，把借用的边界（时间、爱护）说清但不生分",
+   "unknowns": [
+    "周六取用具体时间未定"
+   ],
+   "protected_expressions": [
+    "我一向爱惜东西的"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称测距仪是全新或贵重到不能外借",
+    "不得虚构借用的收费"
+   ],
+   "may_decline": false
+  },
+  "E161_T07": {
+   "case_id": "E161_T07",
+   "current_action": "接更正：爽快同意改到周三、放小区门岗的方式，顺手化解她的不好意思（陪姐姐是正事），确认门岗登记她名字可行",
+   "acceptable_actions": [
+    "同意改周三并走门岗交接，安慰她陪姐姐不是麻烦，叮嘱中午取用时看下电量",
+    "爽快答应，顺带说门岗代收这事他熟，让她别再客气，约定当天下午还回就行",
+    "先接住她的歉意回一句轻松话，再确认周三早上放门岗、下午送回的新安排"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T07_A01",
+     "subject": "SHARED",
+     "relation": "测距仪取用安排的更正",
+     "value": "因周六要陪姐姐办事，取用改到周三复尺当天，早上放小区门岗，当天下午归还",
+     "valid_time": "2026-11-06晚定，改至2026-11-11",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T07",
+      "message_id": "m0",
+      "quote": "测距仪能不能改到周三复尺那天？你早上顺手放我们小区门岗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T07_A02",
+     "subject": "HER",
+     "relation": "被更正掉的周六取用原计划",
+     "value": "原计划这周六去ME家取测距仪，现已取消",
+     "valid_time": "原定2026-11-07",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T06",
+      "message_id": "m0",
+      "quote": "这周六我去你家拿，借用几天，用完马上还你"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E161_E161_T07_A03",
+     "subject": "HER",
+     "relation": "周六缺席的原因",
+     "value": "周六要陪姐姐去办事，所以去不了ME家",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T07",
+      "message_id": "m0",
+      "quote": "我姐明天办事要人陪着，周六去不了你家了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：把改期说成小事，重点确认新交接方式可行",
+   "unknowns": [
+    "周三她中午能否顺利取到"
+   ],
+   "protected_expressions": [
+    "又麻烦你，怪不好意思的"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已认识门岗代收流程细节",
+    "不得把陪姐姐的事编出更多情节"
+   ],
+   "may_decline": false
+  },
+  "E161_T08": {
+   "case_id": "E161_T08",
+   "current_action": "接重大更正：先轻轻笑她看串行不笑话她，确认撤回冰箱后补点、省二百六，再肯定定金抵勾缝的安排顺路合理",
+   "acceptable_actions": [
+    "接住乌龙开个无伤大雅的玩笑，确认撤回省二百六，并提醒把勾缝抵扣也落在微信文字里",
+    "夸她自查救了二百六，顺势确认现在口径：只补岛台暗装一处，勾缝手工从定金走",
+    "先笑一句符号像开关这锅得图纸背，再肯定抵扣安排并提醒留痕"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T08_A01",
+     "subject": "HER",
+     "relation": "冰箱后插座的乌龙更正",
+     "value": "原图纸冰箱后面其实一直有插座，是她把插座符号看成开关，补点需求已向工头撤回，省下二百六",
+     "valid_time": "2026-11-07下午",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T08",
+      "message_id": "m0",
+      "quote": "冰箱后面那个插座其实一直有，是插座符号画得跟开关太像，我看串行了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T08_A02",
+     "subject": "THIRD",
+     "relation": "定金抵扣勾缝的安排",
+     "value": "定金里说好的瓷砖勾缝手工费仍在，撤回的补点费用正好拿来抵扣",
+     "valid_time": "2026-11-07下午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T08",
+      "message_id": "m0",
+      "quote": "定金里说好的那笔瓷砖勾缝手工还在，正好拿这个抵"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T08_A03",
+     "subject": "THIRD",
+     "relation": "被更正的暗装单价",
+     "value": "此前口径暗装每个二百六，是她砍需求的计价基础",
+     "valid_time": "2026-11-04起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T04",
+      "message_id": "m0",
+      "quote": "要走暗装得二百六一个"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：玩笑分寸要轻，重点是把新口径复述一遍让她踏实",
+   "unknowns": [
+    "勾缝抵扣是否需要书面确认"
+   ],
+   "protected_expressions": [
+    "我看串行了"
+   ],
+   "forbidden_factual_claims": [
+    "不得否认冰箱后有插座",
+    "不得把省下的钱说成是工头让利"
+   ],
+   "may_decline": false
+  },
+  "E161_T09": {
+   "case_id": "E161_T09",
+   "current_action": "确认最终口径：岛台补一个暗装、二百六不变；对USB面板升级给务实意见——先问工头换面板是否加价加工期，不加再升",
+   "acceptable_actions": [
+    "先确认二百六的口径没变，再建议USB款先让工头报加价和货期，两项都干净再升",
+    "肯定岛台一个暗装的最终方案，提醒USB面板涉及面板钱是否另算，问清再定",
+    "接住她又冒新想法的劲儿，给一句两百多的预算别为面板翻车的提醒，并让她问货期"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T09_A01",
+     "subject": "SHARED",
+     "relation": "最终的补点决定",
+     "value": "只补岛台一个暗装点位，二百六不变，USB面板升级待议",
+     "valid_time": "2026-11-08上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T09",
+      "message_id": "m0",
+      "quote": "现在就定岛台补一个暗装，二百六这个数不变吧"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T09_A02",
+     "subject": "HER",
+     "relation": "已撤回的冰箱后补点",
+     "value": "冰箱后插座乌龙澄清后补点需求已撤回，省下二百六",
+     "valid_time": "2026-11-07下午起",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T08",
+      "message_id": "m0",
+      "quote": "刚才跟周工头说了不要补了，省下二百六"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E161_E161_T09_A03",
+     "subject": "HER",
+     "relation": "USB面板升级念头",
+     "value": "想把岛台面板换成带USB款，担心冒出额外费用",
+     "valid_time": "2026-11-08上午",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T09",
+      "message_id": "m0",
+      "quote": "干脆升一下，换成带USB的那种面板"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：先把定案复述锁死，再谈升级，防止口径又飘",
+   "unknowns": [
+    "USB面板是否加价加货期"
+   ],
+   "protected_expressions": [
+    "二百六这个数不变吧"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称USB面板一定不加钱",
+    "不得改变岛台二百六的既定口径"
+   ],
+   "may_decline": false
+  },
+  "E161_T10": {
+   "case_id": "E161_T10",
+   "current_action": "确认全流程：普通五孔、周三上午十点复尺、门岗交接与下午两点前归还的时间表复述一遍，让她拿着就能执行",
+   "acceptable_actions": [
+    "把面板定普通五孔、周三十点复尺、早放门岗下午两点前还的时间表复述确认，补一句祝复尺顺利",
+    "认可她不等USB款的决定，按她的清单逐项应下，提醒周三早上把测距仪提前充好电",
+    "接一句她砍货期的爽快，再把周三的交接流程原样回给她核对"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T10_A01",
+     "subject": "SHARED",
+     "relation": "面板与复尺的最终安排",
+     "value": "面板选普通五孔，USB款渠道要等半个月所以放弃；复尺定周三上午十点",
+     "valid_time": "2026-11-09晚定，复尺2026-11-11上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T10",
+      "message_id": "m0",
+      "quote": "复尺定了周三上午十点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T10_A02",
+     "subject": "SHARED",
+     "relation": "测距仪交接的既定方式",
+     "value": "周三早上放小区门岗、她中午取用、当天归还，沿用她更正后的方案",
+     "valid_time": "2026-11-06晚定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T07",
+      "message_id": "m0",
+      "quote": "你早上顺手放我们小区门岗，登记我名字就行"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E161_E161_T10_A03",
+     "subject": "HER",
+     "relation": "放弃USB款的原因",
+     "value": "USB款周工头渠道要等半个月，她选择不等",
+     "valid_time": "2026-11-09晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T10",
+      "message_id": "m0",
+      "quote": "带USB那款周工头说他渠道要等半个月，我不等"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：像对接工作一样把时间表回给她，不拖泥带水",
+   "unknowns": [
+    "周三复尺结果"
+   ],
+   "protected_expressions": [
+    "下午两点前给你送回你那儿"
+   ],
+   "forbidden_factual_claims": [
+    "不得改动周三十点与门岗交接的既定安排",
+    "不得声称USB款当天能到货"
+   ],
+   "may_decline": false
+  },
+  "E161_T11": {
+   "case_id": "E161_T11",
+   "current_action": "收下归还：确认收到并谢软布袋，接她介绍人的玩笑，肯定她当天还、说话算话，不必客套过度",
+   "acceptable_actions": [
+    "回复已收到、软布袋很喜欢，接介绍人梗回一句，夸她当天归还说话算话",
+    "确认仪器完好收到，调侃她把油烟机高度都量了是物尽其用，再说介绍人那事回头算他广告费",
+    "简短收下并致谢，明确说当天还这事办得敞亮，让她别再客气"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T11_A01",
+     "subject": "SHARED",
+     "relation": "测距仪归还的兑现",
+     "value": "周三复尺当天一点半她把测距仪送回挂ME门把手上，履行当天归还承诺，还垫了软布",
+     "valid_time": "2026-11-11 13:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T11",
+      "message_id": "m0",
+      "quote": "你的测距仪一点半就挂你门把手上了，里面垫了块软布"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T11_A02",
+     "subject": "SHARED",
+     "relation": "当天归还的既定约定",
+     "value": "此前约定周三取用当天下午两点前送回，她提前兑现",
+     "valid_time": "2026-11-09晚定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T10",
+      "message_id": "m0",
+      "quote": "下午两点前给你送回你那儿"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E161_E161_T11_A03",
+     "subject": "HER",
+     "relation": "归还时的额外表态",
+     "value": "她称以后邻居装修要借可以当介绍人",
+     "valid_time": "2026-11-11下午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T11",
+      "message_id": "m0",
+      "quote": "以后邻居装修要借，我还能给你当介绍人"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：轻松收下，把靠谱这件事正面点破一次就够",
+   "unknowns": [],
+   "protected_expressions": [
+    "说话算话"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称仪器有损坏",
+    "不得虚构介绍人已带来实际借用"
+   ],
+   "may_decline": false
+  },
+  "E161_T12": {
+   "case_id": "E161_T12",
+   "current_action": "收尾对账：把插座、复尺、下单三件事简短复盘，接下完工请客的约定（可调侃抢买单），对表妹出租屋的钩子表示接得住",
+   "acceptable_actions": [
+    "顺着她的总账补一句 confirmed，玩笑式争一下买单权，答应表妹的事到时候帮忙参谋",
+    "复述三条结论确认无误，接受完工请客并约定到时看进度，主动问一句表妹出租屋想先改哪",
+    "简短收尾恭喜厨房过关键节点，请客的事应下并留一句到时候别换地方的调侃，钩子接住"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E161_E161_T12_A01",
+     "subject": "SHARED",
+     "relation": "本周关键节点的对账结论",
+     "value": "岛台插座定死暗装二百六，复尺周三上午已过，橱柜即将下单等排产",
+     "valid_time": "2026-11-11晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T12",
+      "message_id": "m0",
+      "quote": "岛台插座定死一个暗装二百六，复尺周三上午也过了，橱柜这就下单等排产"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T12_A02",
+     "subject": "SHARED",
+     "relation": "测距仪借用闭环",
+     "value": "测距仪已按当天归还的约定还回，本次借用完结",
+     "valid_time": "2026-11-11 13:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T11",
+      "message_id": "m0",
+      "quote": "你的测距仪一点半就挂你门把手上了"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E161_E161_T12_A03",
+     "subject": "SHARED",
+     "relation": "完工请客的约定",
+     "value": "厨房装完后她请ME吃一顿好的，并且不让ME抢着买单",
+     "valid_time": "厨房完工后，日期未定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T12",
+      "message_id": "m0",
+      "quote": "等厨房装完我请你吃顿好的，你别跟我抢着买单"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E161_E161_T12_A04",
+     "subject": "THIRD",
+     "relation": "表妹出租屋改造的新钩子",
+     "value": "下个月表妹来住几天，出租屋想小改改，届时向ME取经",
+     "valid_time": "下个月",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E161_T12",
+      "message_id": "m0",
+      "quote": "她那出租屋也想小改改"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：收尾不拖，把谢意接住，钩子自然接住即可",
+   "unknowns": [
+    "橱柜排产时间",
+    "请客与表妹事宜的具体日期"
+   ],
+   "protected_expressions": [
+    "你别跟我抢着买单"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称橱柜已进场安装",
+    "不得替表妹的改造下结论"
+   ],
+   "may_decline": true
+  }
+ },
+ "cross_story_refs": [],
+ "pair_note": "A篇（E161）。B篇E162通过reference.json的cross_story_refs与跨篇引用原子指向本篇E161_T01/T06/T08/T09/T11/T12，本篇不引用E162任何内容，不含未来剧情。"
+}

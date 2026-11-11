@@ -1,0 +1,516 @@
+{
+ "story_id": "E080",
+ "turns": {
+  "E080_T01": {
+   "case_id": "E080_T01",
+   "current_action": "接住误食嫌疑的惊：先稳住她，给一个动作——把糯米放回笼里看精神，别去掰嘴掏；珠子下落先按'未知'处理，不顺着'吞了'下结论。",
+   "acceptable_actions": [
+    "先问精神状态，让她吹口哨或递零食看反应",
+    "明确别掰嘴别催吐，鸟自己窝着不等于出事",
+    "让她清点首饰盘，把'少几颗、什么珠'数清楚再说"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A01",
+     "subject": "SHARED",
+     "relation": "bead_missing",
+     "value": "她清点后发现首饰盘少了一颗白珠子",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T01", "message_id": "m0", "quote": "少了一颗白珠子"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A02",
+     "subject": "THIRD",
+     "relation": "bird_lethargic",
+     "value": "糯米窝在笼子里不动，行为异常待判",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T01", "message_id": "m0", "quote": "窝在笼子里不动"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A03",
+     "subject": "HER",
+     "relation": "accident_claim",
+     "value": "首饰盘被糯米掀翻在地上",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T01", "message_id": "m0", "quote": "把茶几上我首饰盘掀了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：第一条消息只给一个动作，把她的'是不是吞了'先按住不接。",
+   "unknowns": ["珠子是否被吞未知", "打翻的确切时间未知"],
+   "protected_expressions": ["是不是吞了"],
+   "forbidden_factual_claims": ["不得断言已误食", "不得虚构误食的后果"]
+  },
+  "E080_T02": {
+   "case_id": "E080_T02",
+   "current_action": "接住观察首报：三项指标平稳；肯定她的记录，把'下午两点前还好'的时间陈述先照单收下并记为待核实，叮嘱夜里再报一次。",
+   "acceptable_actions": [
+    "肯定三项平稳，让她睡前再报一次便便",
+    "提醒她再找找珠子，地面沙发缝拖鞋里都可能",
+    "顺着口哨互动夸一句，把她的慌压下去"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A03b",
+     "subject": "THIRD",
+     "relation": "bird_stable",
+     "value": "糯米精神回应口哨、便便成型、小米吃了大半",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T02", "message_id": "m0", "quote": "吹了声口哨它还回我"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A05",
+     "subject": "HER",
+     "relation": "time_claim",
+     "value": "她凭记忆称下午两点出门前首饰盘还完好",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T02", "message_id": "m0", "quote": "下午两点我出门前盘还好好摆着的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'照单收下'但口吻里留一句'再找找'，给后面翻案留口子。",
+   "unknowns": ["打翻时间是否如其所说未知", "珠子数量是否只少一颗未知"],
+   "protected_expressions": ["中午那顿小米吃了大半"],
+   "forbidden_factual_claims": ["不得把她的时间记忆当实证", "不得断言只吞了一颗"]
+  },
+  "E080_T03": {
+   "case_id": "E080_T03",
+   "current_action": "接住数量与时间双更正：'不止一颗、早上就没'推翻了下午的口径；先稳她的自责，把两件事落成行动——继续满屋找珠、把观察起点改到早上。",
+   "acceptable_actions": [
+    "肯定她自己翻出更正，比含糊强",
+    "把观察窗改按早上算，今晚到明早是关键段",
+    "让她列个珠子清单：几颗、什么色、都在哪丢的"
+   ],
+   "applicable_dimensions": ["time_state", "factuality", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A06",
+     "subject": "SHARED",
+     "relation": "count_revised",
+     "value": "丢失珠子由一颗更正为可能两颗，'只少一颗'的口径被推翻",
+     "valid_time": "2026-10-27",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E080_T01", "message_id": "m0", "quote": "少了一颗白珠子"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E080_A07",
+     "subject": "HER",
+     "relation": "count_revision",
+     "value": "耳坠珠与盘中珠俱失，加起来可能两颗",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T03", "message_id": "m0", "quote": "加起来可能两颗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A08",
+     "subject": "HER",
+     "relation": "time_revision",
+     "value": "打翻时间由下午两点更正为早上化妆时段，'下午两点前完好'被推翻",
+     "valid_time": "2026-10-27",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E080_T02", "message_id": "m0", "quote": "下午两点我出门前盘还好好摆着的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：更正接得干脆，自责别放大，把'十来个小时'压成'所以今晚更要盯'。",
+   "unknowns": ["两颗是否都被吞未知", "耳坠珠下落未知"],
+   "protected_expressions": ["我心提到嗓子眼了"],
+   "forbidden_factual_claims": ["不得断言吞下两颗", "不得虚构珠子在消化道的路径"]
+  },
+  "E080_T04": {
+   "case_id": "E080_T04",
+   "current_action": "接住呕吐与就医决定：支持拍片这条路，明确否掉喂香油的土办法，让她去医院前把珠子的数量、颜色、材质写下来带给医生。",
+   "acceptable_actions": [
+    "明确别喂香油，网上偏方在异宠上翻车得多",
+    "支持拍片，让她把约的时间地点发一份给自己",
+    "叮嘱她记录呕吐物的样子，医生问起来有用"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A10",
+     "subject": "THIRD",
+     "relation": "regurgitation",
+     "value": "糯米出现甩头呕吐一次，就医决断被触发",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T04", "message_id": "m0", "quote": "糯米甩头吐了一次"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A09",
+     "subject": "SHARED",
+     "relation": "vet_booked",
+     "value": "她约了上午十一点江北异宠医院拍片",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T04", "message_id": "m0", "quote": "约了十一点江北那家异宠医院"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A34",
+     "subject": "SHARED",
+     "relation": "count_doubt_loaded",
+     "value": "'可能两颗'的数量存疑是就医决断的加重砝码",
+     "valid_time": "2026-10-27/2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T03", "message_id": "m0", "quote": "加起来可能两颗"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'蠢问题'这个说法接住但纠正——问出口比瞎喂强。",
+   "unknowns": ["呕吐是否与珠子相关未知", "拍片结果未知"],
+   "protected_expressions": ["网上说喂香油能滑出来，喂不喂"],
+   "forbidden_factual_claims": ["不得断言香油必然有害或无效到具体程度", "不得虚构异宠医院资质"]
+  },
+  "E080_T05": {
+   "case_id": "E080_T05",
+   "current_action": "接住拍片结果：消化道确认一颗高密度异物、医嘱观察三天垫白纸数便便、香油被医生否掉；把'片子上只有一颗'的两颗疑云按医生口径挂起，让她回家接着找。",
+   "acceptable_actions": [
+    "把医嘱复述成三条给她带走：观察三天、垫白纸、数便便",
+    "肯定医生否掉香油，让她彻底死心别再搜偏方",
+    "提醒她找珠子先查拖鞋鞋窝和沙发缝"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A12",
+     "subject": "THIRD",
+     "relation": "xray_finding",
+     "value": "拍片显示消化道内有一个高密度小异物，圆润可自行排出",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T05", "message_id": "m0", "quote": "消化道里有一个高密度小异物"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A14",
+     "subject": "THIRD",
+     "relation": "vet_rejects_remedy",
+     "value": "医生否决喂香油滑珠的土办法，称滑不出来还添乱",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E080_T05", "message_id": "m0", "quote": "滑不出来还添乱"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A15",
+     "subject": "THIRD",
+     "relation": "vomit_triggered_visit",
+     "value": "误食后的呕吐是她当日就医决断的直接动因",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T04", "message_id": "m0", "quote": "糯米甩头吐了一次"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：医嘱复述要整齐，'两颗'疑云只挂不猜，别替医生解读片子。",
+   "unknowns": ["另一颗珠子是否被吞未知", "异物排出时间未知"],
+   "protected_expressions": ["让我回去接着找"],
+   "forbidden_factual_claims": ["不得断言另一颗已被吞", "不得虚构拍片影像细节"]
+  },
+  "E080_T06": {
+   "case_id": "E080_T06",
+   "current_action": "接住观察第一晚：便便正常、精神没心没肺；肯定记录，回答饮食之问按医嘱口径（照常吃），夜里慌给一个'数便便就是干活'的落点。",
+   "acceptable_actions": [
+    "确认饮食照常，别因怕就克扣口粮",
+    "把'半夜慌'引到'数便便是正经活'上，给她事做",
+    "顺着'没事鸟'的梗接一句，松一松夜里的弦"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A16",
+     "subject": "SHARED",
+     "relation": "paper_tray",
+     "value": "笼底垫上白纸以便观察排便",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T06", "message_id": "m0", "quote": "白纸垫上了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A17",
+     "subject": "THIRD",
+     "relation": "droppings_normal",
+     "value": "当晚排便5次均正常",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T06", "message_id": "m0", "quote": "便便5次都正常"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夜里反扑的慌不讲道理，给活干比给安慰管用。",
+   "unknowns": ["异物何时排出未知"],
+   "protected_expressions": ["我半夜想起来还是慌"],
+   "forbidden_factual_claims": ["不得断言当晚无风险", "不得虚构饮食禁忌"]
+  },
+  "E080_T07": {
+   "case_id": "E080_T07",
+   "current_action": "接住中段焦虑与复拍冲动：按医嘱口径支持她——48小时内不排再复拍，现在去是白花钱白折腾；给一个数频次的小活把焦虑接住。",
+   "acceptable_actions": [
+    "明确支持医嘱：不到48小时不复拍",
+    "肯定她先打电话问而不是直接冲医院",
+    "让她把每回便便拍下来记时间，复诊带上就是证据"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A20",
+     "subject": "THIRD",
+     "relation": "vet_phone_advice",
+     "value": "医生电话叮嘱48小时内不排再复拍，勿自行加拍",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T07", "message_id": "m0", "quote": "48小时内不排再复拍"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A19",
+     "subject": "HER",
+     "relation": "recheck_urged",
+     "value": "她动过再拍一次片的念头，因费用与不确定搁置",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T07", "message_id": "m0", "quote": "想再抱去拍一次片"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'一天看八回'先笑一下再收，焦虑正常化但不加码。",
+   "unknowns": ["异物当天是否排出未知"],
+   "protected_expressions": ["我一天跑去看八回"],
+   "forbidden_factual_claims": ["不得断言三天必排出", "不得虚构复拍风险"]
+  },
+  "E080_T08": {
+   "case_id": "E080_T08",
+   "current_action": "共享排出实物的狂喜与数量收口：一颗随粪便排出、另一颗在拖鞋里找到——'两颗都吞了'的说法被推翻；接住她的兴奋，叮嘱拍照发医生确认。",
+   "acceptable_actions": [
+    "先跟着高兴一下，再让她把实物拍照发医生",
+    "把'白担心一半'接成正经结论：吞的就一颗，数量收口",
+    "提醒拖鞋里的珠子洗干净收走，别来第二次"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A21",
+     "subject": "SHARED",
+     "relation": "bead_passed",
+     "value": "白纸上发现排出的白珠实物一颗",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T08", "message_id": "m0", "quote": "白纸上躺着一颗白珠"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A22",
+     "subject": "SHARED",
+     "relation": "count_doubt_resolved",
+     "value": "'可能两颗'被推翻：另一颗在拖鞋里找到，实际吞下一颗",
+     "valid_time": "2026-10-27/2026-10-30",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E080_T03", "message_id": "m0", "quote": "加起来可能两颗"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E080_A23",
+     "subject": "HER",
+     "relation": "second_bead_found",
+     "value": "第二颗珠子在拖鞋鞋窝中被踩到，证实未被吞",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E080_T08", "message_id": "m0", "quote": "第二颗压根没吞"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：狂喜先接住，结论收口说得干脆，不翻'早说找找就找了'的旧账。",
+   "unknowns": ["医生对实物的最终确认未知"],
+   "protected_expressions": ["我白担心了一半"],
+   "forbidden_factual_claims": ["不得断言消化道再无残留", "不得虚构排出过程细节"]
+  },
+  "E080_T09": {
+   "case_id": "E080_T09",
+   "current_action": "接住医生确认与延长观察：排出获确认、再观察两天防划伤；把加餐接住，叮嘱这两天仍按数便便的规矩来。",
+   "acceptable_actions": [
+    "肯定她把照片发医嘱闭环的做法",
+    "提醒再观察两天别提前撤白纸",
+    "顺着'差点上新闻'的梗接一句，把紧绷拆掉"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A24",
+     "subject": "THIRD",
+     "relation": "vet_confirmed",
+     "value": "医生确认珠子排出且边缘光滑未划伤",
+     "valid_time": "2026-10-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T09", "message_id": "m0", "quote": "医生确认排出"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A25",
+     "subject": "THIRD",
+     "relation": "extended_watch",
+     "value": "医嘱延长观察两天以防万一，饮食照旧",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T09", "message_id": "m0", "quote": "再观察两天防万一"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：确认的消息接得稳，把'再观察两天'说成收尾动作而非新警报。",
+   "unknowns": [],
+   "protected_expressions": ["它不知道自己差点上新闻"],
+   "forbidden_factual_claims": ["不得断言此后永无风险", "不得虚构医生的其他叮嘱"]
+  },
+  "E080_T10": {
+   "case_id": "E080_T10",
+   "current_action": "接住环境重建：首饰盘收进带盖抽屉、站架收纳盒下单；肯定她把钱花在防线上，顺带检查一遍还有没有别的小件裸放。",
+   "acceptable_actions": [
+    "肯定收纳升级，让她顺手查一遍别的小件",
+    "提醒站架到位后逐步延长放风时间别急",
+    "接一句'这钱省不得'，认同她的排序"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A26",
+     "subject": "HER",
+     "relation": "environment_fixed",
+     "value": "首饰盘全部收进带盖抽屉，茶几隐患清零",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T10", "message_id": "m0", "quote": "首饰盘全收进带盖抽屉"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A27",
+     "subject": "HER",
+     "relation": "gear_ordered",
+     "value": "下单笼外站架与两个收纳盒",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T10", "message_id": "m0", "quote": "下单了个笼外站架和俩收纳盒"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：重建清单接得像队友复盘，别上'养鸟须知'的课。",
+   "unknowns": ["站架到货时间未知"],
+   "protected_expressions": ["这钱省不得"],
+   "forbidden_factual_claims": ["不得虚构商品细节与价格"]
+  },
+  "E080_T11": {
+   "case_id": "E080_T11",
+   "current_action": "接住总结陈词：一千二医药费换三条规矩、体重还重两克；肯定这账算得明白，把'异常先看精神便便吃饭'这三件事点成她这次做对的功劳。",
+   "acceptable_actions": [
+    "肯定三条规矩，说这就是一千二买来的真货",
+    "把观察三件事的功劳记到她头上，是她自己盯下来的",
+    "顺着'还挺补'接一句玩笑收住沉重感"
+   ],
+   "applicable_dimensions": ["memory_use", "emotion_relation", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A28",
+     "subject": "HER",
+     "relation": "lesson_cost",
+     "value": "一场虚惊花费一千二医药费，换来三条养鸟规矩",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T11", "message_id": "m0", "quote": "一千二医药费"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A36",
+     "subject": "SHARED",
+     "relation": "passed_object_confirmed",
+     "value": "排出实物为白珠一颗，构成误食事件的最终确认依据",
+     "valid_time": "2026-10-30/2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T08", "message_id": "m0", "quote": "白纸上躺着一颗白珠"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：功劳分她大头，医药费不心疼给她听，玩笑落在体重上。",
+   "unknowns": [],
+   "protected_expressions": ["好家伙它还挺补"],
+   "forbidden_factual_claims": ["不得虚构体重数据口径", "不得断言三条规矩从此零风险"]
+  },
+  "E080_T12": {
+   "case_id": "E080_T12",
+   "current_action": "接住验收之约与剪指甲求援：答应下周见糯米这位'老熟人'，剪指甲的教学应下并给一句防记仇小贴士，轻快收尾不引入新议题。",
+   "acceptable_actions": [
+    "答应下周验收，点名要糯米站肩膀叙旧",
+    "应下剪指甲教学，叮嘱只剪透明端见血线就停",
+    "顺着'记仇'的梗接一句，说记仇的鸟聪明"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E080_A30",
+     "subject": "SHARED",
+     "relation": "visit_plan",
+     "value": "她约下周带糯米到ME家接受前辈验收并学剪指甲",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T12", "message_id": "m0", "quote": "下周我带它来你家"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E080_A32",
+     "subject": "THIRD",
+     "relation": "watch_period_closed",
+     "value": "医嘱的延长观察期于本周末届满，事件闭环",
+     "valid_time": "2026-10-30/2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E080_T09", "message_id": "m0", "quote": "再观察两天防万一"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，剪指甲出血的旧事接成玩笑，别让她再自责一轮。",
+   "unknowns": ["下周见面具体日子未定"],
+   "protected_expressions": ["我上次剪出血了它记仇到现在"],
+   "forbidden_factual_claims": ["不得虚构剪指甲教学的专业细节到操作层面", "不得引入新的宠物健康议题"]
+  }
+ }
+}

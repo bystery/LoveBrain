@@ -1,0 +1,41 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A7 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T09",
+  "长程32轮",
+  "三线并行：展会筹备/羽毛球固定场/老家事务",
+  "更正链：展位号/档期级联/车次/寄送内容",
+  "取消-不复活",
+  "条件式重启钩"
+ ],
+ "title": "展位 C14 与周四之夜",
+ "may_decline_turns": [
+  "E338_T08",
+  "E338_T21",
+  "E338_T32"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "展会筹备",
+ "primary_topic": "T09",
+ "lineage_group_id": "LG-E338",
+ "frozen_at": "2026-11-08T04:15:04+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E338/runner_episode.json",
+ "kind": "long_32t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A7",
+ "hashes": {
+  "episode.json": "1c6878befb3f85612c9a1a838a474d7a2be02b60eb4dd1b7833d66a9fa2db856",
+  "reference.json": "e4785cfc40bdf2019411944d52844ae5859447ee4ac9ca525f16f64fe5f13575",
+  "timeline.json": "dd8fd4b2497bb21ad8c3074f6c16724ebbcb3e2bde223278c43acf60f50c3be5",
+  "audit.md": "e21b0ec7b875518ca0a7166032ab7744b59c398e935cd6620618815ce5e36dd5"
+ }
+}

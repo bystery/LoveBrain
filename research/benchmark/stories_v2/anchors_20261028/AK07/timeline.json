@@ -1,0 +1,41 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "AK07",
+ "turn_clocks": [
+  {
+   "case_id": "AK07_T01",
+   "clock": "2026-12-14 21:46"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "AK07_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "quote": "模考过了两门 剩那门实务我最没底",
+   "ts": "2026-12-14 21:30"
+  },
+  {
+   "case_id": "AK07_T01",
+   "message_id": "m1",
+   "speaker": "ME",
+   "quote": "那门我去年也是靠刷真题 周六图书馆一起弄两小时",
+   "ts": "2026-12-14 21:36"
+  },
+  {
+   "case_id": "AK07_T01",
+   "message_id": "m2",
+   "speaker": "HER",
+   "quote": "行 周六下午我去 你带那本真题",
+   "ts": "2026-12-14 21:44"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "AK07_E1",
+   "case_id": "AK07_T01",
+   "summary": "备考｜反馈=positive｜意图=周六下午图书馆一起攻实务那门两小时",
+   "source_turn": "AK07_T01"
+  }
+ ]
+}

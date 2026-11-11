@@ -1,0 +1,593 @@
+{
+ "story_id": "E077",
+ "turns": {
+  "E077_T01": {
+   "case_id": "E077_T01",
+   "current_action": "接住她的手气与伴娘兴奋，顺她的话聊发型，同时把一句轻提醒垫进去：出发前点开订单详情把日期、集合点再核一遍。",
+   "acceptable_actions": [
+    "先接发型这个话题给个倾向，再提醒她核对订单详情",
+    "恭喜抢到车，顺口问她拼车群里成团没有",
+    "分享一条跨城顺风车的准点经验，顺势让她确认司机联系方式"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A01",
+     "subject": "SHARED",
+     "relation": "rideshare_claim",
+     "value": "她称抢到11月7日早7点20出发去青川的顺风车",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T01", "message_id": "m0", "quote": "11月7号早上7点20出发"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A02",
+     "subject": "HER",
+     "relation": "bridesmaid_claim",
+     "value": "她将在雨桐婚礼担任伴娘，自认为日期是11月8日",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T01", "message_id": "m1", "quote": "11月8号当伴娘"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A03",
+     "subject": "SHARED",
+     "relation": "carpool_one_short",
+     "value": "顺风车拼车群还差一位即可成团",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T01", "message_id": "m0", "quote": "还差一位就成团"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先当她的观众，再把'看一眼订单'说成顺手事，不说教。",
+   "unknowns": ["她是否真的点开过订单详情未知", "集合点具体位置未提"],
+   "protected_expressions": ["还差一位就成团"],
+   "forbidden_factual_claims": ["不得断言订单真实日期与她的说法不符", "不得虚构婚礼流程细节"]
+  },
+  "E077_T02": {
+   "case_id": "E077_T02",
+   "current_action": "接住她的'完美'闭环汇报：请假获批、礼服取件已约；把'跟组长书面确认日期'和'取件别卡死最后一天'两颗钉子轻敲进去，不点破她可能记错。",
+   "acceptable_actions": [
+    "肯定请假顺利，建议跟组长再文字确认一遍日期",
+    "提醒礼服取件别约最后一天，留出缓冲",
+    "问她行李开始收拾没有，把核单的由头自然带出"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A04",
+     "subject": "HER",
+     "relation": "leave_filed_wrong",
+     "value": "她已向组长报备11月7、8日请假两天",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T02", "message_id": "m0", "quote": "跟组长报了11月7号8号两天"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A05",
+     "subject": "SHARED",
+     "relation": "dress_pickup_plan",
+     "value": "礼服预约11月5日下班后取件",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T02", "message_id": "m0", "quote": "约了11月5号下班去取"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A06",
+     "subject": "THIRD",
+     "relation": "leader_approved",
+     "value": "组长已批准她的请假申请并负责找人顶班",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T02", "message_id": "m0", "quote": "组长痛快批了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她的'完美'先肯定，提醒以'顺手确认'的姿态给，不制造被检查感。",
+   "unknowns": ["组长是否书面确认过具体日期未知", "礼服店取件是否可改期未知"],
+   "protected_expressions": ["加急的钱都省了"],
+   "forbidden_factual_claims": ["不得断言她的日期记忆有错", "不得虚构组长的审批口径"]
+  },
+  "E077_T03": {
+   "case_id": "E077_T03",
+   "current_action": "接住拼车成团与火锅邀约：AA细节应下，火锅之约给一个有条件的答应或明确改期口子，并提醒她群里那句'周六见'最好带上具体日期，免得各记各的。",
+   "acceptable_actions": [
+    "答应火锅并主动认领刷锅，让她带排骨别带别的",
+    "应下AA，同时建议她在群里把'周六见'改成写明日期",
+    "以'到时候看那天安排'留活口，先不把话说死"
+   ],
+   "applicable_dimensions": ["boundary", "interaction", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A07",
+     "subject": "THIRD",
+     "relation": "toll_AA",
+     "value": "同车乘客贾姐带娃回娘家，两人约定高速费AA",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T03", "message_id": "m0", "quote": "说好高速费我们俩AA"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A08",
+     "subject": "SHARED",
+     "relation": "hotpot_booked",
+     "value": "她与ME约定11月1日周日中午在ME家涮火锅",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T03", "message_id": "m1", "quote": "11月1号周日中午我去你家涮锅"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A09",
+     "subject": "SHARED",
+     "relation": "group_confirmed",
+     "value": "她在拼车群以'周六见'确认行程，未写明具体日期",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T03", "message_id": "m0", "quote": "群里我回了句'周六见'"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：火锅这事接得热络些，'带日期'的建议说成群里通用礼数，不冲着她的记性去。",
+   "unknowns": ["贾姐理解的周六是哪一天未知", "她11月1日真实行程尚未被她自己意识到"],
+   "protected_expressions": ["别又拿外卖糊弄我"],
+   "forbidden_factual_claims": ["不得断言贾姐与她日期理解不一致", "不得替她拒绝火锅"]
+  },
+  "E077_T04": {
+   "case_id": "E077_T04",
+   "current_action": "接住她的行程倒推与路况担心：告诉她城北高速口集合的大致应对（提前踩点、早到十分钟），并顺势让她把订单详情截图发来一起看一眼。",
+   "acceptable_actions": [
+    "建议集合当天早到十五分钟，把摸不着路的风险吃掉",
+    "让她把订单详情截图发来，帮核一遍时间与集合点",
+    "顺着彩排时间帮她倒推倒计时，问她到青川谁接站"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A10",
+     "subject": "THIRD",
+     "relation": "rehearsal_slot",
+     "value": "雨桐要求周六下午三点到酒店彩排",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T04", "message_id": "m0", "quote": "周六下午三点酒店彩排"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A11",
+     "subject": "HER",
+     "relation": "arrival_estimate",
+     "value": "她估算7点20的车中午十二点多抵达青川",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T04", "message_id": "m0", "quote": "中午十二点多到青川"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A12",
+     "subject": "SHARED",
+     "relation": "meeting_point",
+     "value": "顺风车集合点定在城北高速口",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T04", "message_id": "m1", "quote": "集合点在城北高速口"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：路况担心按正经事答，'发我看看订单'说成你顺便帮她算时间。",
+   "unknowns": ["她是否已把订单截图发出未知", "青川当天接站安排未知"],
+   "protected_expressions": ["我怕摸不着路"],
+   "forbidden_factual_claims": ["不得虚构城北高速口的实际路况", "不得断言顺风车必然准点"]
+  },
+  "E077_T05": {
+   "case_id": "E077_T05",
+   "current_action": "接住时间线倒错引爆：订单实证出发是明早7点20、婚礼是后天；先稳住她，把'哪些还能动、哪些必须今晚动'分出来，指出班次是当前最急的一环。",
+   "acceptable_actions": [
+    "先安抚'记错能改回来'，再让她按急缓列今晚必办清单",
+    "直接点出明早早班是死结，建议她立刻联系组长或换班对象",
+    "提醒她先截图订单与请柬存证，再逐项对请假、取件、火锅排处理顺序"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "factuality", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A13",
+     "subject": "SHARED",
+     "relation": "rideshare_date_corrected",
+     "value": "订单详情证实出发日期为10月31日07:20，11月7日之说被推翻",
+     "valid_time": "2026-10-30",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E077_T05", "message_id": "m0", "quote": "出发日期写着10月31号07:20"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A14",
+     "subject": "THIRD",
+     "relation": "wedding_date_corrected",
+     "value": "请柬照片证实婚礼日期为11月1日，11月8日之说被推翻",
+     "valid_time": "2026-10-30",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E077_T05", "message_id": "m0", "quote": "婚礼是11月1号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A15",
+     "subject": "SHARED",
+     "relation": "rideshare_claim_overturned",
+     "value": "她此前主张的11月7日车次被订单实证推翻",
+     "valid_time": "2026-10-26/2026-10-30",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E077_T01", "message_id": "m0", "quote": "11月7号早上7点20出发"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：先接她的慌，别急着说'我早说过'；把今晚的目标压到'明早能上车、班有人顶'两件事。",
+   "unknowns": ["她是否会当场退单重订未知", "司机是否知晓她记错日期未知"],
+   "protected_expressions": ["我全程记成下礼拜了"],
+   "forbidden_factual_claims": ["不得断言退改免手续费", "不得替她决定放弃婚礼行程"]
+  },
+  "E077_T06": {
+   "case_id": "E077_T06",
+   "current_action": "接住班次死结：明早早班还排着她、组长联系不上；给'打电话还是发消息'一个明确倾向（先电话后补文字），并给她备好小蒋这条线的说法。",
+   "acceptable_actions": [
+    "明确建议直接打电话，深夜消息容易被压到早晨",
+    "教她给小蒋开口的话术：人情加一次性顶明早，条件后谈",
+    "提醒同时给组长发一条说明短信，两头不耽误"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A16",
+     "subject": "HER",
+     "relation": "shift_conflict",
+     "value": "她发现本周六早班仍排着自己，行程与班表正面相撞",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T06", "message_id": "m0", "quote": "这周六还排着我的班"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A17",
+     "subject": "THIRD",
+     "relation": "leader_unreachable",
+     "value": "组长电话打不通，人在丈人生日聚餐饮酒后休息",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T06", "message_id": "m0", "quote": "组长电话打不通"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A19",
+     "subject": "SHARED",
+     "relation": "deadline_tonight",
+     "value": "车次实为明早，明早早班必须今晚解决",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T05", "message_id": "m0", "quote": "出发日期写着10月31号07:20"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：深夜求助要给确定答案，不摆两个选项让她更慌；顺带认下她张不开嘴的心情。",
+   "unknowns": ["小蒋是否会答应顶班未知", "组长何时回联未知"],
+   "protected_expressions": ["你说我直接打电话还是先发消息"],
+   "forbidden_factual_claims": ["不得虚构小蒋的作息与联系方式", "不得断言组长一定会追责"]
+  },
+  "E077_T07": {
+   "case_id": "E077_T07",
+   "current_action": "接住顶班落定与讽刺巧合：7号的假空出来正好顶班还人情；确认这套对冲成立，提醒她明早给组长的假条要写清挪期前后，别留模糊。",
+   "acceptable_actions": [
+    "肯定小蒋够意思，提醒人情记得用奶茶或早饭还上",
+    "帮她把假条话术拟一句：原假作废、挪至本周末、原因一句话",
+    "顺势催她赶紧睡，明早6点前出门才是头等大事"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A20",
+     "subject": "SHARED",
+     "relation": "shift_covered",
+     "value": "小蒋答应顶10月31日早班，条件是下周六由她顶回",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T07", "message_id": "m0", "quote": "明早的班他顶"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A21",
+     "subject": "SHARED",
+     "relation": "leave_refiled",
+     "value": "11月7、8日请假作废，假期挪至本周末重批",
+     "valid_time": "2026-10-31",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E077_T07", "message_id": "m1", "quote": "7号8号那两张作废"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A22",
+     "subject": "HER",
+     "relation": "leave_overturned",
+     "value": "此前获批的11月7、8日请假被整体推翻挪期",
+     "valid_time": "2026-10-27/2026-10-31",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E077_T02", "message_id": "m0", "quote": "跟组长报了11月7号8号两天"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把讽刺说成运气找补，别翻'早看订单'的旧账；催睡放在最后一句。",
+   "unknowns": ["组长次晨反应未知", "下周六顶班是否最终兑现未知"],
+   "protected_expressions": ["你说讽刺不讽刺"],
+   "forbidden_factual_claims": ["不得断言组长必然爽快重批", "不得虚构公司请假制度细节"]
+  },
+  "E077_T08": {
+   "case_id": "E077_T08",
+   "current_action": "接住上车报平安：掐点成功、贾姐就等她一个、AA已转；给她一句定心的，把话题放到路上补觉和到青川的时间上。",
+   "acceptable_actions": [
+    "夸她一夜处理完没耽误车，劝她车上眯一会儿",
+    "顺着司机那句玩笑搭一句，把气氛接住",
+    "提醒她到青川给雨桐报个到，彩排别迟到"
+   ],
+   "applicable_dimensions": ["time_state", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A23",
+     "subject": "SHARED",
+     "relation": "boarded",
+     "value": "10月31日7点12分她抵达集合点并登车",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T08", "message_id": "m0", "quote": "7点12分冲到集合点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A24",
+     "subject": "THIRD",
+     "relation": "jia_onboard",
+     "value": "贾姐带娃在后座等她一人后发车",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T08", "message_id": "m0", "quote": "贾姐抱着娃在后座冲我招手"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A26",
+     "subject": "SHARED",
+     "relation": "rehearsal_binding",
+     "value": "周六下午三点彩排的时间约束今日生效",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T04", "message_id": "m0", "quote": "周六下午三点酒店彩排"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：报平安要接得轻快，一句'成了'就够，别再复盘。",
+   "unknowns": ["到青川实际时刻未知", "贾姐是否知晓她曾记错日期未知"],
+   "protected_expressions": ["姑娘掐点掐得真准"],
+   "forbidden_factual_claims": ["不得虚构高速行程时长", "不得断言后续行程无风险"]
+  },
+  "E077_T09": {
+   "case_id": "E077_T09",
+   "current_action": "接住第二个险情：伴娘服还在市里、原取件预约作废；帮她把加急寄送的方案过一遍风险（到件时间、验收方式），认可运费该花。",
+   "acceptable_actions": [
+    "肯定加急方案可行，提醒她跟店家要快递单号盯到件",
+    "给备手：万一明早没到，先问雨桐有没有备用伴娘服",
+    "顺着'冤'字接一句玩笑，再回到盯快递的正题"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A27",
+     "subject": "SHARED",
+     "relation": "rehearsal_done",
+     "value": "她12点55分抵达青川并赶上下午三点彩排",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T09", "message_id": "m0", "quote": "彩排赶上了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A28",
+     "subject": "SHARED",
+     "relation": "dress_mislocated",
+     "value": "伴娘服仍挂在市里礼服店，原取件安排与真实婚期冲突",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T09", "message_id": "m0", "quote": "还挂在市里那家店里"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A30",
+     "subject": "SHARED",
+     "relation": "dress_plan_overturned",
+     "value": "11月5日取礼服的预约与真实婚期冲突，原方案作废",
+     "valid_time": "2026-10-27/2026-10-31",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E077_T02", "message_id": "m0", "quote": "约了11月5号下班去取"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：88块先认下'该花'，别让她在钱上犹豫；玩笑要顺着她的自嘲走。",
+   "unknowns": ["顺丰能否明早11点前送达未知", "雨桐处有无备用礼服未知"],
+   "protected_expressions": ["这钱花得比抢错车还冤"],
+   "forbidden_factual_claims": ["不得虚构礼服店发货流程", "不得断言快递必然准点到"]
+  },
+  "E077_T10": {
+   "case_id": "E077_T10",
+   "current_action": "接住礼服到手与火锅改约：原取件订单取消处理妥当，11月1日火锅之约取消；接下7号周六晚的新约，给她一句'婚礼要紧'的台阶。",
+   "acceptable_actions": [
+    "答应7号晚的火锅，认领刷锅并调侃排骨双份",
+    "把'食言'轻轻接掉：婚礼面前火锅让路天经地义",
+    "提醒她5号原单取消后确认退款到账"
+   ],
+   "applicable_dimensions": ["boundary", "interaction", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A31",
+     "subject": "SHARED",
+     "relation": "dress_arrived",
+     "value": "礼服8点半送达青川酒店前台，试穿合身",
+     "valid_time": "2026-10-31",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T10", "message_id": "m0", "quote": "8点半送到前台"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A32",
+     "subject": "SHARED",
+     "relation": "old_order_cancelled",
+     "value": "11月5日原取件订单已电话取消",
+     "valid_time": "2026-10-31",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E077_T10", "message_id": "m0", "quote": "5号那单我打电话退了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A34",
+     "subject": "SHARED",
+     "relation": "hotpot_cancelled",
+     "value": "11月1日火锅之约因婚礼当日无法兑现而取消",
+     "valid_time": "2026-10-28/2026-10-31",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E077_T03", "message_id": "m1", "quote": "11月1号周日中午我去你家涮锅"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：改约接得痛快，别让她带着歉意进婚礼；'补我'这个说法顺她的梗用。",
+   "unknowns": ["退款到账时间未知", "7号她顶班结束的具体钟点未知"],
+   "protected_expressions": ["你锅刷三遍"],
+   "forbidden_factual_claims": ["不得虚构退款政策细节", "不得断言她顶班必然准点结束"]
+  },
+  "E077_T11": {
+   "case_id": "E077_T11",
+   "current_action": "共享婚礼圆满的现场感：堵门红包、敬酒落泪、头饰不舍摘；把这一幕接住，夸她连夜折腾没白费。",
+   "acceptable_actions": [
+    "顺着堵门狠题接一句玩笑，问她红包分没分",
+    "肯定她这两天连轴转的执行力，值得这一场圆满",
+    "让她把头饰拍张照留着，别急着摘"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A35",
+     "subject": "THIRD",
+     "relation": "wedding_held",
+     "value": "雨桐婚礼11月1日圆满举行，堵门环节收了六百红包",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T11", "message_id": "m0", "quote": "婚礼圆满"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A36",
+     "subject": "THIRD",
+     "relation": "bride_gratitude",
+     "value": "雨桐敬酒时感谢她连夜赶场，她感动落泪",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T11", "message_id": "m0", "quote": "亏你连夜折腾还赶上了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A37",
+     "subject": "HER",
+     "relation": "keepsake",
+     "value": "伴娘头饰她舍不得摘，想留作纪念",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T11", "message_id": "m0", "quote": "到现在还别在头上没舍得摘"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：让她把感动说尽，不加分析；日期风波一句都不提。",
+   "unknowns": [],
+   "protected_expressions": ["我眼泪差点下来"],
+   "forbidden_factual_claims": ["不得虚构婚礼其他环节细节", "不得替雨桐补话"]
+  },
+  "E077_T12": {
+   "case_id": "E077_T12",
+   "current_action": "以备忘录自嘲与三个闹钟收尾：确认7号晚火锅之约成立，接住头饰纪念的话题，轻快落幕不引入新议题。",
+   "acceptable_actions": [
+    "确认火锅之约，说自己把锅提前刷出三遍的架势",
+    "顺着备忘录补一句'日期类的事，你发我一眼比三个闹钟保险'",
+    "接头饰的话题，约她到时候戴着来也行"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E077_A38",
+     "subject": "HER",
+     "relation": "lesson_logged",
+     "value": "她把'任何票先看订单再说出口'写进手机备忘录",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T12", "message_id": "m0", "quote": "任何票，先看订单再说出口"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A39",
+     "subject": "SHARED",
+     "relation": "hotpot_confirmed",
+     "value": "7号周六晚火锅新约被她再次确认并设闹钟防错",
+     "valid_time": "2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T12", "message_id": "m1", "quote": "周六晚上火锅别忘了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E077_A40",
+     "subject": "SHARED",
+     "relation": "hotpot_rescheduled",
+     "value": "补约的11月7日晚火锅之约成立，她承诺排骨双份",
+     "valid_time": "2026-10-31/2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E077_T10", "message_id": "m1", "quote": "7号周六我顶完班，晚上去你家"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把她的教训接成'以后你订票我帮你看一眼'的默契，别上价值。",
+   "unknowns": ["7号顶班具体结束时间未知"],
+   "protected_expressions": ["我拿日历设了三个闹钟"],
+   "forbidden_factual_claims": ["不得引入新的出行计划", "不得断言她此后不再记错日期"]
+  }
+ }
+}

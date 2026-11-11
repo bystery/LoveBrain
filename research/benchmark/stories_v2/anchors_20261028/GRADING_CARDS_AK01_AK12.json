@@ -1,0 +1,1129 @@
+{
+ "kind": "grading_cards_stories_v2",
+ "stage": "anchors_20261028",
+ "built_at": "2026-10-28T13:08:23",
+ "source": "同故事 reference.json 逐字派生（本工具不新写判据）",
+ "schema": [
+  "case_id",
+  "current_action",
+  "acceptable_actions",
+  "applicable_dimensions",
+  "required_memory_atoms",
+  "private_guidance",
+  "unknowns",
+  "protected_expressions",
+  "forbidden_factual_claims",
+  "may_decline",
+  "intent"
+ ],
+ "schema_note": "Stage1 十键 + intent（Stage1 卡丢失 intent，goal 维评审看不到当前有效目标；此处原样搬运 reference 的 intent，不新造判据）",
+ "use": "评估侧专用：不进入候选可见输入；不声称独立封存",
+ "stories": {
+  "AK01": {
+   "positions": 1,
+   "episode_sha256": "ec51f51ffaa3555912020f228cd3193f19e83895b9b3accd8eea0ffe0a409ca1",
+   "reference_sha256": "9c64030c428e7306fd9b7a06dc69d1643d62ef02d42d01b9a2a52fa38e38a7e6",
+   "exposure_sha256": "ec4cd2131fe55706ff39c0db2d31bd234e594e4db41281bf701ee66a7e5326af",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK02": {
+   "positions": 1,
+   "episode_sha256": "2ab292ffa3cde8f912f687a13c323fc9c6eac41ed9a6d78e301078941ff2205c",
+   "reference_sha256": "4013891a0cc3de0c33e8980cf324d4403e7a8fd04a88eabd12ed1c6b7f7cc51b",
+   "exposure_sha256": "444506508305ab65735dca6ae460e8194696aff669e71815a652acfb667a8b32",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK03": {
+   "positions": 1,
+   "episode_sha256": "6f059b6bcc90863043934f57ee8eead3fd11d859c8aa76419cb75928cb689514",
+   "reference_sha256": "afc179674e2ef3da0b39f0062fdf0ba0d4d5f2dfdd49a2829911eb1335645c3b",
+   "exposure_sha256": "676f0aaa22b04a80c95bf763ab1f1baadefe3c791878327b5a3e6c82b4252e25",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK04": {
+   "positions": 1,
+   "episode_sha256": "486611719aa3789b252c6ab1e3c2693ff9fca2fb7b911fd08529b89ddfe56931",
+   "reference_sha256": "0f3c3a92f415780d1cc3cb2ba82ef8503670d0c3593ad0c017ddb4ab920ac44f",
+   "exposure_sha256": "9b81d8d5204af462d43b8fe09fd66cd23ef015f5d3961d2e5d783a701338a366",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK05": {
+   "positions": 1,
+   "episode_sha256": "a990c28715aeca6d626a4c40daa16d55dbbbb37d6c4fd0cb83360c128c080f41",
+   "reference_sha256": "fc57669c3995d9133edba866a2f3025a65929673e6f0d2e2c99dba4848343a93",
+   "exposure_sha256": "7cfb276999c75fbd83421382e0b42d71eb8551978f7fe8bc9ae23efd084ea24f",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK06": {
+   "positions": 1,
+   "episode_sha256": "da13bd014781d27df38deb7b927022b1e68c25ce34284893f60335e4d7396294",
+   "reference_sha256": "279672998ad2fe92be0bada582862fb8277cbb91a7f49fcb561d8ba078476a95",
+   "exposure_sha256": "11353d1e8a3d6bec5de9da117393204c2541c8d95a47a9b2f59376665b8fa94e",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": [
+    "AK06_T01"
+   ]
+  },
+  "AK07": {
+   "positions": 1,
+   "episode_sha256": "7930ae4ee0cabc2e0a7356c3af01e6bde2af7684ac795db328925df1e69cb006",
+   "reference_sha256": "839cdd692abf45cdf9ff1e29a724ce68659b9920e52d3a9af7dbb287d7738305",
+   "exposure_sha256": "59e617f971ab01504ccafea259c8d32faf240c7571772efda67158261cf1b545",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK08": {
+   "positions": 1,
+   "episode_sha256": "41dd56c3d7c7cee14fad6ca7d3acaa4861d88d76a4a7473b2cd0d47cb0dddf66",
+   "reference_sha256": "8feadf4e7f41b8ac3b7b624006a7d03e33e737e4c826048d496adf7a2530a9e4",
+   "exposure_sha256": "a57dc63c0885922b9cfd79d6c76b588058277f2c117ec03f4f76144326b4798c",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK09": {
+   "positions": 1,
+   "episode_sha256": "278f286fcf7019beca7c36c1ad473821db8b9108146ea6923a841428e49bd6ba",
+   "reference_sha256": "aee311e9e28fab275abbddf5d9b74d6c379c30c33a629ec87c150f55ba4f532a",
+   "exposure_sha256": "2f03adbcc657e6dcd8ae724166b9c47c7f6dc4f44bfbe868f1e16ce1a085aeb1",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": [
+    "AK09_T01"
+   ]
+  },
+  "AK10": {
+   "positions": 1,
+   "episode_sha256": "253b2054a3b7476cfb1b1f769bac908e8f225c241f6594d82afdab418bea3d3e",
+   "reference_sha256": "05b0a01b624196655c9296b669340dbb25b61aa08e59d96497cde0c443e388d7",
+   "exposure_sha256": "e0f818d91bc660e73714b2cbb811cc4d13789da571f24cdb4cdaf91a5a250542",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK11": {
+   "positions": 1,
+   "episode_sha256": "a5171f3522b1163fdb783aa5696db379ff60b5469a07ddce8e89cf86543d3e9c",
+   "reference_sha256": "c7b564798e120020945ba2e032b65584266683e28c901b3587a380e6c2bd6fc9",
+   "exposure_sha256": "f28e880a75e55425298e04ecf9eb363b4f181d070aa3d58bf24be215d8083c0a",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK12": {
+   "positions": 1,
+   "episode_sha256": "3c1cf7852c9c9ff734348a283f13ea519256d58a28e7236252baba3457526d6e",
+   "reference_sha256": "1539e7a4a7f591aad314f242ed20a2982dcc12c25052dc7c731b2df025007486",
+   "exposure_sha256": "b2228ccd2f08f16b6402b0f7ee51914fc5289d20229071bbe40091377b359408",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": [
+    "AK12_T01"
+   ]
+  }
+ },
+ "counts": {
+  "stories": 12,
+  "cards": 12
+ },
+ "checks": {
+  "errors": [],
+  "passed": true
+ },
+ "cards": [
+  {
+   "case_id": "AK01_T01",
+   "current_action": "她给了具体日子（周五六点）还说要从医院那边过来——把时间和集合点当场定死，别再'到时候再说'",
+   "acceptable_actions": [
+    "确认周五六点+定集合点",
+    "确认+问她要不要先慢走一圈再决定距离",
+    "确认+提自己带水或计时"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK01_A01",
+     "subject": "她",
+     "relation": "约束",
+     "value": "医生说只能快走还不能跑",
+     "valid_time": "2026-12-01 12:48",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK01_T01",
+      "message_id": "m1",
+      "quote": "医生说可以快走 先别跑"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK01_A02",
+     "subject": "她",
+     "relation": "时间",
+     "value": "周五晚六点下班早，可从医院那边过来",
+     "valid_time": "2026-12-03 21:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK01_T01",
+      "message_id": "m3",
+      "quote": "周五晚上我下班早 六点行不"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在主动把自己的行程交出来；这一步的要害是确定性，不是热情。",
+   "unknowns": [
+    "集合点定在哪一侧",
+    "她六点下班后多久能到"
+   ],
+   "protected_expressions": [
+    "周五晚上我下班早"
+   ],
+   "forbidden_factual_claims": [
+    "不要把距离或配速说成已经定好",
+    "不要提'跑步'当作已经安排（医生只允许快走）"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把周五晚的复健快走落成具体时间地点",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  {
+   "case_id": "AK02_T01",
+   "current_action": "她的犹豫是两层（要补觉+不敢用力）——承认这两层并把目标改成更轻或改期，不是继续说服",
+   "acceptable_actions": [
+    "改到午后或周一再约",
+    "改成更短的平地散步并说随时停",
+    "让她先休息，本周取消并留明确下一步"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK02_A01",
+     "subject": "她",
+     "relation": "顾虑",
+     "value": "周六想补觉且脚还不敢用力",
+     "valid_time": "2026-12-05 13:04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK02_T01",
+      "message_id": "m1",
+      "quote": "周六我本来想补觉"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK02_A02",
+     "subject": "她",
+     "relation": "约束",
+     "value": "医生说只能快走不能跑",
+     "valid_time": null,
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "上周下坡崴了右脚"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK02_A03",
+     "subject": "她",
+     "relation": "既往",
+     "value": "此前已说过先别跑",
+     "valid_time": null,
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "lessons",
+      "quote": "她脚伤是硬约束"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "含糊不是拒绝，但把'补觉+不敢用力'推平为'那就周六七点别迟到'是越权。",
+   "unknowns": [
+    "她到底想改期还是想减量",
+    "她想睡到几点"
+   ],
+   "protected_expressions": [
+    "脚还是不太敢用力"
+   ],
+   "forbidden_factual_claims": [
+    "不要把她说的'想补觉'当成客套继续推进",
+    "不要说'运动对谁都好'这类替她下结论的话"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把周六早上的复健快走落成具体时间地点",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  {
+   "case_id": "AK03_T01",
+   "current_action": "她连今晚都被占用——目标当轮让位：不追问改哪天、不施压，先让她顾上班里的事，留一个不逼人的开口",
+   "acceptable_actions": [
+    "让她先忙+说我这周都空随时讲",
+    "只回一句轻的关心",
+    "取消并明确不用她回复"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK03_A01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "今晚临时加疫苗门诊八点才走，明天也排班",
+     "valid_time": "2026-12-07 19:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK03_T01",
+      "message_id": "m1",
+      "quote": "今晚院里临时加疫苗门诊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK03_A02",
+     "subject": "双方",
+     "relation": "原定计划",
+     "value": "明晚六点老地方复健快走",
+     "valid_time": "2026-12-07 19:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK03_T01",
+      "message_id": "m0",
+      "quote": "明晚六点老地方"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的忙碌是排班不是态度；此时最忌讳追问'那到底哪天有空'。",
+   "unknowns": [
+    "她这周还有没有空档"
+   ],
+   "protected_expressions": [
+    "今晚院里临时加疫苗门诊"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她总是忙（把一次排班推成人品结论）",
+    "不要把'等你有空'写成需要她给承诺"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "明晚六点复健快走",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  {
+   "case_id": "AK04_T01",
+   "current_action": "约定已经成形（周六八点）——按她的条件接住：带水别带话，别临时加建议或拉别人",
+   "acceptable_actions": [
+    "确认周六八点+只带水",
+    "确认+说坐第一排不互动",
+    "确认+问她要不要留票给同事"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK04_A01",
+     "subject": "她",
+     "relation": "事件",
+     "value": "周六被排进开放麦，五分钟首台",
+     "valid_time": "2026-12-09 22:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK04_T01",
+      "message_id": "m0",
+      "quote": "老板给我排进周六了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK04_A02",
+     "subject": "她",
+     "relation": "条件",
+     "value": "要我带水别带话",
+     "valid_time": "2026-12-09 22:32",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK04_T01",
+      "message_id": "m2",
+      "quote": "你带水别带话"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK04_A03",
+     "subject": "双方",
+     "relation": "约定",
+     "value": "周六八点鼓楼",
+     "valid_time": "2026-12-09 22:32",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK04_T01",
+      "message_id": "m2",
+      "quote": "周六八点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'带水别带话'是她把需求说清楚了；照着做就是接住，讲道理是越界。",
+   "unknowns": [
+    "是否要提前到场",
+    "她同事去不去"
+   ],
+   "protected_expressions": [
+    "你带水别带话"
+   ],
+   "forbidden_factual_claims": [
+    "不要临场提出帮她改段子",
+    "不要把'坐第一排'升级成要上台互动"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六八点去鼓楼看她第一次开放麦",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  {
+   "case_id": "AK05_T01",
+   "current_action": "她把需求（想对词）和顾虑（怕我觉得不好笑）同时摆出来——先答她想不想我听，再讲自己立场，不空夸也不催",
+   "acceptable_actions": [
+    "答应听并声明不点评",
+    "问她想要哪种反馈再决定",
+    "答应+说听完只回一句有没有笑点"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK05_A01",
+     "subject": "她",
+     "relation": "意愿",
+     "value": "上台前想找人对一遍",
+     "valid_time": "2026-12-11 23:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK05_T01",
+      "message_id": "m1",
+      "quote": "我明天上台前想找人过一遍"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK05_A02",
+     "subject": "她",
+     "relation": "顾虑",
+     "value": "怕我听完觉得不好笑",
+     "valid_time": "2026-12-11 23:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK05_T01",
+      "message_id": "m1",
+      "quote": "怕你听完觉得不好笑"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK05_A03",
+     "subject": "双方",
+     "relation": "既定",
+     "value": "周六八点我已取票",
+     "valid_time": "2026-12-11 22:50",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK05_T01",
+      "message_id": "m0",
+      "quote": "明晚八点我票都取好了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "含糊处在于她要的是安全感的确认；把'那我不听'或'肯定好笑'任一极端甩回去都算失职。",
+   "unknowns": [
+    "她想要的是彩排还是打气"
+   ],
+   "protected_expressions": [
+    "又怕你听完觉得不好笑"
+   ],
+   "forbidden_factual_claims": [
+    "不要保证'一定好笑'",
+    "不要主动要求逐段点评"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六八点到场看她首台并坐第一排",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  {
+   "case_id": "AK06_T01",
+   "current_action": "她在算时间会不会错过开场——给可执行的方案（我去占座、她到场直接上台前热身），不让她在愧疚里做选择",
+   "acceptable_actions": [
+    "说我去占座她按自己时间到",
+    "问要不要我帮她跟老板打招呼晚一分钟",
+    "只确认不用她管我"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK06_A01",
+     "subject": "她",
+     "relation": "约束",
+     "value": "顶晚托七点半才能走，可能赶不上开场",
+     "valid_time": "2026-12-12 18:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK06_T01",
+      "message_id": "m1",
+      "quote": "我得七点半才走"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK06_A02",
+     "subject": "双方",
+     "relation": "既定",
+     "value": "明晚八点半演出",
+     "valid_time": "2026-12-12 18:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK06_T01",
+      "message_id": "m0",
+      "quote": "明晚八点半我到"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true：她已经给出信息不需我做决定，只回一句'不用管我'也合法；但她没说取消，别擅自改成'那算了'。",
+   "unknowns": [
+    "她能否赶上自己的场次"
+   ],
+   "protected_expressions": [
+    "班里临时让我顶晚托"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她肯定迟到",
+    "不要把演出取消当成默认方案"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "周六晚到场看她首台",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  {
+   "case_id": "AK07_T01",
+   "current_action": "她答应并指定我带真题——把下午的具体时点、楼层座位和带什么讲清楚",
+   "acceptable_actions": [
+    "定下午两点+说带哪本",
+    "定时间+问她要不要先看错题",
+    "确认+说两小时后散"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK07_A01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "模考三门过两门，实务最没底",
+     "valid_time": "2026-12-14 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK07_T01",
+      "message_id": "m0",
+      "quote": "模考过了两门"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK07_A02",
+     "subject": "她",
+     "relation": "请求",
+     "value": "要我带那本真题",
+     "valid_time": "2026-12-14 21:44",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK07_T01",
+      "message_id": "m2",
+      "quote": "你带那本真题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK07_A03",
+     "subject": "我",
+     "relation": "依据",
+     "value": "去年过实务靠刷真题",
+     "valid_time": null,
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "考第二年中过一门"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'你带那本真题'是任务指派，必须回应在不在手上；把约定停在'周六见'就漏了。",
+   "unknowns": [
+    "真题册在不在家",
+    "图书馆周六是否开放"
+   ],
+   "protected_expressions": [
+    "你带那本真题"
+   ],
+   "forbidden_factual_claims": [
+    "不要承诺真题一定能押中题",
+    "不要把她'过两门'说成一定拿证"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六下午图书馆一起攻实务那门两小时",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  {
+   "case_id": "AK08_T01",
+   "current_action": "她在认真算负荷并征求判断——给出我的实际看法+她需要权衡的具体变量，同时保留目标不空转；不能只说'你觉得呢'回抛",
+   "acceptable_actions": [
+    "给出自己怎么看（撤/不撤的理由）+问每周可投入几小时",
+    "建议先按一门排两周再看",
+    "承认两门确实超量并改小目标"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK08_A01",
+     "subject": "她",
+     "relation": "倾向",
+     "value": "想撤一门但怕更不学",
+     "valid_time": "2026-12-16 22:28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK08_T01",
+      "message_id": "m1",
+      "quote": "我想撤一门"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK08_A02",
+     "subject": "她",
+     "relation": "既往",
+     "value": "容易自责、怕半途而废",
+     "valid_time": null,
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "lessons",
+      "quote": "她说'可能太多'时是真在算时间"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK08_A03",
+     "subject": "双方",
+     "relation": "原定",
+     "value": "周六下午两小时",
+     "valid_time": "2026-12-16 22:18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK08_T01",
+      "message_id": "m0",
+      "quote": "周六下午两小时"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'含糊'不等于不表态：她有真实问题要答案。回避给判断、把选择全推回给她，是没接住。",
+   "unknowns": [
+    "她每周实际能挤出几小时",
+    "报名费是否可退"
+   ],
+   "protected_expressions": [
+    "报了俩根本啃不完"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'你开心就好'这类不担责的话",
+    "不要替她断言'撤了肯定考不过'"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六下午图书馆两小时攻实务",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  {
+   "case_id": "AK09_T01",
+   "current_action": "她明确收尾（'先睡了 你别等'）——合法不回；若回就一句不要求应答的短收尾，别把两小时安排继续摊给她",
+   "acceptable_actions": [
+    "不回（她已收尾，合法）",
+    "一句'睡吧 明早的题我留着'不再问",
+    "只把材料放好不说时间"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK09_A01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "背到十二点、明早六点半起",
+     "valid_time": "2026-12-19 23:56",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK09_T01",
+      "message_id": "m1",
+      "quote": "明天六点半起"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK09_A02",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "先睡了，别等",
+     "valid_time": "2026-12-19 23:56",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK09_T01",
+      "message_id": "m1",
+      "quote": "你别等"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "此处不回不是冷淡，是尊重她已给出的收尾；但要避免把'不回'写成对所有疲惫场景的默认。",
+   "unknowns": [
+    "她要不要我把题留着"
+   ],
+   "protected_expressions": [
+    "先睡了 你别等"
+   ],
+   "forbidden_factual_claims": [
+    "不要追问'那明天几点开始'",
+    "不要把她早睡说成不自律"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "周六下午图书馆两小时攻实务",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  {
+   "case_id": "AK10_T01",
+   "current_action": "链条已成形（笼先放画室→我接→九点手术）——把周六早上谁几点拿笼、停车点讲清楚",
+   "acceptable_actions": [
+    "确认+约定拿笼时间",
+    "确认+说提前十分钟到",
+    "确认+问她要不要留她备用钥匙"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK10_A01",
+     "subject": "她",
+     "relation": "既定",
+     "value": "手术周六九点已确认",
+     "valid_time": "2026-12-21 20:22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK10_T01",
+      "message_id": "m0",
+      "quote": "周六九点手术确认了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK10_A02",
+     "subject": "她",
+     "relation": "限制",
+     "value": "抱猫笼无法挤地铁",
+     "valid_time": "2026-12-21 20:22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK10_T01",
+      "message_id": "m0",
+      "quote": "我抱猫笼挤地铁真的不行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK10_A03",
+     "subject": "双方",
+     "relation": "安排",
+     "value": "猫笼先放我画室",
+     "valid_time": "2026-12-21 20:38",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK10_T01",
+      "message_id": "m2",
+      "quote": "我就把猫笼先放你画室"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给了具体的分工；漏掉'笼什么时候过去'就是承诺执行不完整。",
+   "unknowns": [
+    "术后要不要直接回家还是去她租处",
+    "医院停车点"
+   ],
+   "protected_expressions": [
+    "我就把猫笼先放你画室"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'猫没事放心吧'这类替医生做的保证",
+    "不要把接人时间说成已经确定（六点四十是我提议）"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六送她带猫去医院并接她回家",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  {
+   "case_id": "AK11_T01",
+   "current_action": "她提出改期但没确定——先把改期的可执行项接住（问医院能否改、我下周同步空），不让她在两件重要的事之间选一个",
+   "acceptable_actions": [
+    "答应改期+提醒尽快打医院电话",
+    "问她要不要我先接她去车站再回来处理猫",
+    "确认下周某天并说明我那天也行"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK11_A01",
+     "subject": "第三人",
+     "relation": "事件",
+     "value": "她妈明天要来，她得先去车站",
+     "valid_time": "2026-12-23 21:12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK11_T01",
+      "message_id": "m1",
+      "quote": "我妈说明天要来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK11_A02",
+     "subject": "双方",
+     "relation": "原定",
+     "value": "明早六点四十吾悦接她做手术",
+     "valid_time": "2026-12-23 21:02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK11_T01",
+      "message_id": "m0",
+      "quote": "明早六点四十吾悦门口接你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK11_A03",
+     "subject": "第三人",
+     "relation": "既往",
+     "value": "她父母周末从老家来是常事",
+     "valid_time": null,
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "lessons",
+      "quote": "她爸妈周末会从老家来"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'要不改到下周'是征求不是通知；直接改时间或坚持原计划，两种都算没问。",
+   "unknowns": [
+    "下周医院是否约得上",
+    "她妈待几天"
+   ],
+   "protected_expressions": [
+    "手术要不改到下周"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'你妈重要还是猫重要'这类逼她表态的话",
+    "不要声称医院一定能改到下周"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六上午陪她带猫做手术",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  {
+   "case_id": "AK12_T01",
+   "current_action": "她明确收尾并设了下次通知点（结果出来再说）——合法不回或一句不再要求应答的收尾；不要继续追问手术细节或再提帮请假",
+   "acceptable_actions": [
+    "不回（她已收尾，合法）",
+    "一句'好 我周一下午空着'不再问",
+    "只说一句不用她回"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK12_A01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "手术改到周一下午、要请假、头疼",
+     "valid_time": "2026-12-28 22:26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK12_T01",
+      "message_id": "m0",
+      "quote": "手术拖到周一下午了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK12_A02",
+     "subject": "她",
+     "relation": "边界",
+     "value": "结果出来再说，先这样",
+     "valid_time": "2026-12-28 22:48",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK12_T01",
+      "message_id": "m2",
+      "quote": "结果出来我再说"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK12_A03",
+     "subject": "我",
+     "relation": "提议",
+     "value": "提出帮她顶半天假",
+     "valid_time": "2026-12-28 22:32",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK12_T01",
+      "message_id": "m1",
+      "quote": "需要我帮你顶半天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'谢了'加'先这样吧'是收尾信号；此时追问细节就是把互动继续占住。不回在此合法，但不能推论成'她烦我'。",
+   "unknowns": [
+    "周一下午是否还需要接送"
+   ],
+   "protected_expressions": [
+    "结果出来我再说"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她不想聊了",
+    "不要重复追问请假或手术细节"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "陪她带猫完成手术并接她回家",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ ]
+}

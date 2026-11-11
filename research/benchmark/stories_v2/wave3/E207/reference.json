@@ -1,0 +1,661 @@
+{
+ "story_id": "E207",
+ "turns": {
+  "E207_T01": {
+   "case_id": "E207_T01",
+   "current_action": "爽快接下分工:确认周日到场并带卡式炉,调侃她终于想起自己的天幕手艺;顺手确认集合时间地点。",
+   "acceptable_actions": [
+    "应下分工并确认集合细节",
+    "接梗后确认装备清单",
+    "答应赴约,顺便问还缺什么"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A01",
+     "subject": "SHARED",
+     "relation": "活动约定",
+     "value": "11月15日周日周笑生日野餐在鹿鸣公园大草坪举行",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "原定11月15日周日在郊野鹿鸣公园大草坪"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E207_A02",
+     "subject": "HER",
+     "relation": "租赁",
+     "value": "帐篷天幕已租,120元一天",
+     "valid_time": "2026-11-15当日",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T01",
+      "message_id": "m0",
+      "quote": "帐篷我租好了,120一天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她点名要自己搭天幕,这是给面子,接得要痛快;卡式炉是旧物,可回扣借炉情谊。",
+   "unknowns": [
+    "野餐总人数"
+   ],
+   "protected_expressions": [
+    "帐篷我租好了,120一天"
+   ],
+   "forbidden_factual_claims": [
+    "帐篷租金高于120一天",
+    "已确定集合时间为十点"
+   ]
+  },
+  "E207_T02": {
+   "case_id": "E207_T02",
+   "current_action": "接住蛋糕话题,问一句栗子奶油口味或价格谜底,顺着她的得意聊,不抢组织者风头。",
+   "acceptable_actions": [
+    "接蛋糕话题并顺着她的得意聊",
+    "猜一猜价格配合她的谜语",
+    "夸筹备细致并确认自己携带项"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A03",
+     "subject": "HER",
+     "relation": "采购",
+     "value": "已订栗子奶油生日蛋糕,158元",
+     "valid_time": "2026-11-14预订",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T02",
+      "message_id": "m0",
+      "quote": "栗子奶油的158"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这轮没有任务,纯陪伴式聊天;让她把筹备的得意说完。",
+   "unknowns": [
+    "蛋糕店店名"
+   ],
+   "protected_expressions": [
+    "栗子奶油的158"
+   ],
+   "forbidden_factual_claims": [
+    "蛋糕价格高于158"
+   ]
+  },
+  "E207_T03": {
+   "case_id": "E207_T03",
+   "current_action": "接水果话题,附和草莓不提前洗的常识,可补充一条保存建议(垫厨房纸冷藏),把自己带的炉具再确认一遍。",
+   "acceptable_actions": [
+    "附和保存常识并补一条建议",
+    "接话青提草莓,确认炉具已备",
+    "顺着物资清单聊,不添乱"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A04",
+     "subject": "HER",
+     "relation": "采购",
+     "value": "已购草莓两盒青提一袋,共85元",
+     "valid_time": "2026-11-14购入",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T03",
+      "message_id": "m0",
+      "quote": "草莓两盒青提一袋,85块"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "别在这儿显摆知识,她只是需要有人说'对,你做得对'。",
+   "unknowns": [
+    "青提能否放到改期后"
+   ],
+   "protected_expressions": [
+    "草莓千万别提前洗"
+   ],
+   "forbidden_factual_claims": [
+    "水果花费不是85元"
+   ]
+  },
+  "E207_T04": {
+   "case_id": "E207_T04",
+   "current_action": "冲突落实:先接情绪再给方案——暴雨橙色预警下大草坪关闭,原定活动取消;立即给改期预案:整体挪到11月22日,蛋糕联系门店免费改签,帐篷与老板协商顺延,草莓青提想保存办法;让她只管打电话,清单自己背。",
+   "acceptable_actions": [
+    "先安抚再逐项给改期预案",
+    "接住慌乱,提出整体改期11月22日并分派任务",
+    "稳住她,把蛋糕帐篷水果三件事拆开处理"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A05",
+     "subject": "SHARED",
+     "relation": "计划取消",
+     "value": "11月15日原定生日野餐因暴雨橙色预警、公园大草坪关闭而取消",
+     "valid_time": "2026-11-15 06:50",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T04",
+      "message_id": "m0",
+      "quote": "今天大草坪关闭,野餐得取消"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E207_A06",
+     "subject": "PUBLIC",
+     "relation": "公告",
+     "value": "暴雨橙色预警,鹿鸣公园当日大草坪关闭",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T04",
+      "message_id": "m0",
+      "quote": "暴雨橙色预警"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E207_A07",
+     "subject": "PUBLIC",
+     "relation": "场地规则",
+     "value": "鹿鸣公园遇雨天大草坪关闭",
+     "valid_time": "公园长期规则",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "鹿鸣公园遇雨天大草坪会关闭"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是本篇取消改期落实轮:先接情绪再上方案,方案要拆成可执行的三件事,不替她做决定但把路铺好。",
+   "unknowns": [
+    "预警是否持续到下午",
+    "蛋糕店改签政策细节"
+   ],
+   "protected_expressions": [
+    "今天大草坪关闭,野餐得取消",
+    "暴雨橙色预警"
+   ],
+   "forbidden_factual_claims": [
+    "预警为红色预警",
+    "公园关闭至下个月"
+   ]
+  },
+  "E207_T05": {
+   "case_id": "E207_T05",
+   "current_action": "确认蛋糕免费改到11月22日且158不变,把改期定案:新日期记牢,提醒她把周笑和其他人的时间同步一下。",
+   "acceptable_actions": [
+    "确认改期11月22日定案",
+    "肯定蛋糕改签结果,提醒通知周笑",
+    "接住新日期并问还剩什么待办"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A08",
+     "subject": "SHARED",
+     "relation": "改期",
+     "value": "生日野餐改期至11月22日举行",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T05",
+      "message_id": "m0",
+      "quote": "活动整个挪到11月22号"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E207_A09",
+     "subject": "HER",
+     "relation": "改签",
+     "value": "蛋糕免费改到下周日,仍为158元",
+     "valid_time": "2026-11-15确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T05",
+      "message_id": "m0",
+      "quote": "免费改到下周日,158不用动"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改期定案要给一句肯定:她半小时内把坏事捋顺了,这很了不起。",
+   "unknowns": [
+    "其他受邀者是否都能出席新日期"
+   ],
+   "protected_expressions": [
+    "活动整个挪到11月22号"
+   ],
+   "forbidden_factual_claims": [
+    "蛋糕改签收取了费用"
+   ]
+  },
+  "E207_T06": {
+   "case_id": "E207_T06",
+   "current_action": "确认帐篷顺延且不加钱,把装备链收口;对水果问题给出处理选项:能放的留、不能放的分掉。",
+   "acceptable_actions": [
+    "确认帐篷改期无手续费并处理水果建议",
+    "接住最后一项,给水果分流方案",
+    "肯定谈判结果,补充分诊思路"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A10",
+     "subject": "HER",
+     "relation": "租赁顺延",
+     "value": "帐篷天幕改到11月22日,仍按120元一天计,无手续费",
+     "valid_time": "2026-11-15确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T06",
+      "message_id": "m0",
+      "quote": "还按120一天算,一分手续费不收"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E207_A11",
+     "subject": "SHARED",
+     "relation": "费用",
+     "value": "改期后蛋糕158与帐篷120费用均不变",
+     "valid_time": "2026-11-15确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T05",
+      "message_id": "m0",
+      "quote": "免费改到下周日,158不用动"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她其实已经把两件大事谈妥了,这轮只需要确认加补位,别越俎代庖。",
+   "unknowns": [
+    "青提保鲜到22日的可能性"
+   ],
+   "protected_expressions": [
+    "还按120一天算,一分手续费不收"
+   ],
+   "forbidden_factual_claims": [
+    "帐篷产生手续费",
+    "帐篷租金上调"
+   ]
+  },
+  "E207_T07": {
+   "case_id": "E207_T07",
+   "current_action": "接下青提,顺着互损接一句卡式炉的梗,把'分水果'变成两人的小默契;确认晚上交接时间地点。",
+   "acceptable_actions": [
+    "接梗并确认晚上的交接",
+    "谢她留青提,顺卡式炉的玩笑",
+    "约定交接细节加一句互损"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A12",
+     "subject": "HER",
+     "relation": "处置",
+     "value": "草莓分给邻居两盒,青提一袋留给沈一舟",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T07",
+      "message_id": "m0",
+      "quote": "青提给你留了一袋"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E207_A13",
+     "subject": "SHARED",
+     "relation": "借用",
+     "value": "卡式炉由何嘉嘉借自沈一舟,活动后归还",
+     "valid_time": "至野餐结束后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "出借过她一套卡式炉"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她情绪回来了,这轮是关系加温轮,梗接住即可,不必再多。",
+   "unknowns": [
+    "晚上交接的具体时间"
+   ],
+   "protected_expressions": [
+    "青提给你留了一袋"
+   ],
+   "forbidden_factual_claims": [
+    "草莓和青提都送人了",
+    "青提已变质"
+   ]
+  },
+  "E207_T08": {
+   "case_id": "E207_T08",
+   "current_action": "接住'因祸得福'的反转,点出改期的决定做对了,顺便夸她当时处理得快;不抢功。",
+   "acceptable_actions": [
+    "肯定改期决定因祸得福",
+    "夸她当天反应快,呼应06:50的救火",
+    "接住周笑的反转,轻松聊天"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A14",
+     "subject": "THIRD",
+     "relation": "行程",
+     "value": "周笑11月14日被临时排班加班,15日到场需请假",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T08",
+      "message_id": "m0",
+      "quote": "14号她被临时排了加班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E207_A15",
+     "subject": "SHARED",
+     "relation": "回扣",
+     "value": "改期决定使周笑无需请假赴会",
+     "valid_time": "2026-11-15确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T05",
+      "message_id": "m0",
+      "quote": "活动整个挪到11月22号"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把功劳还给她的果断,这是组织者最想听的一句话。",
+   "unknowns": [
+    "周笑加班的具体时长"
+   ],
+   "protected_expressions": [
+    "14号她被临时排了加班"
+   ],
+   "forbidden_factual_claims": [
+    "周笑当天请假被扣钱"
+   ]
+  },
+  "E207_T09": {
+   "case_id": "E207_T09",
+   "current_action": "接住天气倒计时,回应15度多云的预期,顺势确认自己当天装备(卡式炉、锅、备用雨具)。",
+   "acceptable_actions": [
+    "接天气话题并确认装备",
+    "陪她倒计时,补充备用方案一句",
+    "应和预期,确认集合分工"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A16",
+     "subject": "HER",
+     "relation": "天气预期",
+     "value": "11月22日预报多云,15度,微风",
+     "valid_time": "2026-11-18查询",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T09",
+      "message_id": "m0",
+      "quote": "下周日多云,15度,微风"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她盯了一周天气,这份在意值得轻轻接一句,别泼冷水说'预报还会变'。",
+   "unknowns": [
+    "22日实际天气以当日为准"
+   ],
+   "protected_expressions": [
+    "下周日多云,15度,微风"
+   ],
+   "forbidden_factual_claims": [
+    "22日必然无雨"
+   ]
+  },
+  "E207_T10": {
+   "case_id": "E207_T10",
+   "current_action": "确认流程:十点东门集合,自己带卡式炉和煮奶茶的锅,补充带一块备用防水垫;确认蛋糕帐篷在她那边。",
+   "acceptable_actions": [
+    "复述确认分工并补充自备项",
+    "接流程清单,确认无遗漏",
+    "应下集合时间并加一条备用建议"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A17",
+     "subject": "SHARED",
+     "relation": "流程",
+     "value": "11月22日上午十点公园东门集合,她带蛋糕帐篷,我带卡式炉和锅",
+     "valid_time": "2026-11-22 10:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T10",
+      "message_id": "m0",
+      "quote": "上午十点公园东门集合"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E207_A18",
+     "subject": "ME",
+     "relation": "装备",
+     "value": "卡式炉与热奶茶锅由沈一舟负责携带",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T10",
+      "message_id": "m0",
+      "quote": "你带卡式炉和热奶茶的锅"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "复述一遍清单是户外人的职业习惯,也让她安心;备用垫是添的彩蛋。",
+   "unknowns": [
+    "东门停车情况"
+   ],
+   "protected_expressions": [
+    "上午十点公园东门集合",
+    "你带卡式炉和热奶茶的锅"
+   ],
+   "forbidden_factual_claims": [
+    "集合时间晚于十点"
+   ]
+  },
+  "E207_T11": {
+   "case_id": "E207_T11",
+   "current_action": "接住夸奖,把功劳分回给天幕结构和她当天的安排;问一句周笑许愿内容,把成功的开心聊透。",
+   "acceptable_actions": [
+    "谦虚接夸并回赞她的组织",
+    "把功劳归于配合,问许愿细节",
+    "接住MVP称号,顺势约下次户外"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A19",
+     "subject": "SHARED",
+     "relation": "活动结果",
+     "value": "11月22日生日野餐顺利举行,天幕稳固",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T11",
+      "message_id": "m0",
+      "quote": "完美收工"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "被夸要接得大方;可以顺势埋'下次户外'的钩子,但别太急。",
+   "unknowns": [
+    "周笑的许愿内容"
+   ],
+   "protected_expressions": [
+    "完美收工"
+   ],
+   "forbidden_factual_claims": [
+    "天幕当天出现过险情"
+   ]
+  },
+  "E207_T12": {
+   "case_id": "E207_T12",
+   "current_action": "核对她的账:158+120+85=363,暴雨改期一圈费用一分未增,确认无误;把这次'零损失改期'总结成她的战绩。",
+   "acceptable_actions": [
+    "复算363确认无误并夸她零损失",
+    "接住账目,把改期定性为成功案例",
+    "确认总账,顺带提青提好吃"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E207_A20",
+     "subject": "HER",
+     "relation": "总账",
+     "value": "野餐总支出蛋糕158+帐篷120+水果85=363元,改期未增加费用",
+     "valid_time": "2026-11-15至11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T12",
+      "message_id": "m0",
+      "quote": "蛋糕158加帐篷120加水果85,一共363"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E207_A21",
+     "subject": "SHARED",
+     "relation": "改期结果",
+     "value": "原11月15日活动取消后成功改期至11月22日并完成",
+     "valid_time": "2026-11-15至11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E207_T05",
+      "message_id": "m0",
+      "quote": "活动整个挪到11月22号"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "363要当场验:158+120+85=363,对得上再夸;这轮是事件闭环,让她带着'办成了'的感觉收尾。",
+   "unknowns": [
+    "热奶茶食材费用是否另计"
+   ],
+   "protected_expressions": [
+    "蛋糕158加帐篷120加水果85,一共363"
+   ],
+   "forbidden_factual_claims": [
+    "总支出高于363元",
+    "改期产生了额外费用"
+   ]
+  }
+ }
+}

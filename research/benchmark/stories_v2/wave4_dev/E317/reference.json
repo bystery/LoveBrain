@@ -1,0 +1,1321 @@
+{
+ "story_id": "E317",
+ "turns": {
+  "E317_T01": {
+   "case_id": "E317_T01",
+   "current_action": "她深夜咨询设计组排期能否接两页活，同时带出恒达终稿压力与周六陪母体检可能落空",
+   "acceptable_actions": [
+    "先答能不能（ME 调子）：明说能或不能接两页活，并给她一个能向领导回话的口径",
+    "答应前把条件说清（需要什么文件、什么时间点给答复），回话口径可用",
+    "若接不了，直说原因并给替代建议（如哪天可以、或建议她找谁），不绕弯子"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T01_A01",
+     "subject": "SHARED",
+     "relation": "恒达终稿期限",
+     "value": "恒达年度方案周五（2026-11-13）要终稿",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T01",
+      "message_id": "m0",
+      "quote": "恒达那个年度方案周五要终稿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T01_A02",
+     "subject": "HER",
+     "relation": "文案版本进度",
+     "value": "她所在文案已把方案改到第七版",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T01",
+      "message_id": "m0",
+      "quote": "我们文案这边已经改到第七版了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T01_A03",
+     "subject": "THIRD",
+     "relation": "贾总修改意见",
+     "value": "贾总当晚十一点还在给她回修改意见",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T01",
+      "message_id": "m0",
+      "quote": "贾总今晚十一点还在给我回修改意见"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T01_A04",
+     "subject": "HER",
+     "relation": "连续加班时长",
+     "value": "她三周一天假都没歇",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T01",
+      "message_id": "m0",
+      "quote": "我这三周一天假都没歇"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T01_A05",
+     "subject": "HER",
+     "relation": "陪母体检约定",
+     "value": "她原定周六（2026-11-14）陪母亲体检，因终稿现在看悬了",
+     "valid_time": "2026-11-14",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T01",
+      "message_id": "m0",
+      "quote": "周六本来答应我妈陪她体检的，现在看悬了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T01_A06",
+     "subject": "HER",
+     "relation": "本轮具体请求",
+     "value": "她要知道设计组到底能不能接两页活，好跟领导回话",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T01",
+      "message_id": "m0",
+      "quote": "你们那边到底还能不能接两页活，我好跟我领导回话"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要的是能拿去向领导回话的明确答复，先答能不能再讲条件。她的疲惫顺带接一句即可，别堆慰问（lessons：她烦的时候不要堆慰问）。",
+   "unknowns": [
+    {
+     "topic": "ME 设计组本周排期余量",
+     "note": "gold 侧未知，ME 按自身设定如实回答，不得假装已经答复过或含糊拖延",
+     "markers": [
+      [
+       "排期",
+       "已经",
+       "安排好"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "排期",
+       "已经",
+       "安排好"
+      ]
+     ]
+    },
+    {
+     "topic": "她向领导回话的口径",
+     "note": "由她的领导侧决定，gold 不预设",
+     "markers": [
+      [
+       "领导",
+       "已经",
+       "同意"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "领导",
+       "已经",
+       "同意"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我这三周一天假都没歇"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布设计组已确认接活",
+    "不得声称已看过恒达方案内容"
+   ],
+   "may_decline": false
+  },
+  "E317_T02": {
+   "case_id": "E317_T02",
+   "current_action": "贾总把终稿提前到周四中午十二点前（他要飞深圳），她中午啃面包咖啡两杯，问人一天最多能改几版",
+   "acceptable_actions": [
+    "接住'凭空少一天'的实际影响，按她的问题给个实在的数或改版节奏拆法",
+    "自嘲式接咖啡两杯/啃面包，再正经答数",
+    "给改版顺序建议（先回贾总意见再动版式），顺带一句让她午饭吃口热的（关心具体化、不说教）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T02_A01",
+     "subject": "SHARED",
+     "relation": "终稿期限变更",
+     "value": "贾总把终稿从周五提前到周四（2026-11-12）中午十二点前，因他要先飞深圳",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T02",
+      "message_id": "m0",
+      "quote": "贾总把周五交终稿这事提前到周四中午十二点前了，他说他要先飞深圳"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T02_A02",
+     "subject": "SHARED",
+     "relation": "恒达终稿期限（旧口径）",
+     "value": "周五（2026-11-13）交终稿的旧期限已被替换作废",
+     "valid_time": "2026-11-13",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T01",
+      "message_id": "m0",
+      "quote": "恒达那个年度方案周五要终稿"
+     },
+     "affirm_markers": [
+      [
+       "周五",
+       "终稿"
+      ]
+     ],
+     "item_markers": [
+      "周五交终稿"
+     ],
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E317_T02_A03",
+     "subject": "HER",
+     "relation": "当日饮食状态",
+     "value": "她中午就着工位啃面包，今天咖啡已两杯",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T02",
+      "message_id": "m0",
+      "quote": "中午就着工位啃了个面包，今天咖啡已经两杯下肚"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T02_A04",
+     "subject": "HER",
+     "relation": "本轮具体问题",
+     "value": "她问人一天最多能改几版方案，好心里有个数",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T02",
+      "message_id": "m0",
+      "quote": "就问问你，人一天最多能改几版方案，我好心里有个数"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'一天最多改几版'没有标准数值，ME 给经验值或拆法即可，不得冒充行业定则。她报数字是习惯也是求救信号，接数字比堆慰问有用。",
+   "unknowns": [
+    {
+     "topic": "贾总深圳行程细节",
+     "note": "她只说先飞深圳，具体安排未知，不得编造",
+     "markers": [
+      [
+       "贾总",
+       "深圳",
+       "行程"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "贾总",
+       "深圳",
+       "行程"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把'能改几版'答成精确保证",
+    "不得沿用周五交终稿旧口径"
+   ],
+   "may_decline": false
+  },
+  "E317_T03": {
+   "case_id": "E317_T03",
+   "current_action": "她问后街那家牛肉面店名，打算明天（11-12）下班去吃犒劳自己，并明确要求别问方案",
+   "acceptable_actions": [
+    "直接报店名（老马牛肉面，后街开了十来年那家，见 ME initial_kb），顺口祝她吃好",
+    "报店名加一句自己的偏好（如汤头或加肉tips），把话题留在吃的上",
+    "报店名并玩笑提醒排队要趁早，再一句'方案的事我不问'"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T03_A01",
+     "subject": "HER",
+     "relation": "店名询问",
+     "value": "她问上次 ME 说的后街那家牛肉面叫什么",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T03",
+      "message_id": "m0",
+      "quote": "上次你说的后街那家牛肉面叫啥来着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T03_A02",
+     "subject": "HER",
+     "relation": "犒劳计划",
+     "value": "她打算明天（2026-11-12）下班去吃一顿犒劳自己",
+     "valid_time": "2026-11-12",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T03",
+      "message_id": "m0",
+      "quote": "我打算明天下班去吃一顿，犒劳一下自己"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T03_A03",
+     "subject": "HER",
+     "relation": "话题边界",
+     "value": "她明确要求方案的事别问，问了又得焦虑一遍",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T03",
+      "message_id": "m0",
+      "quote": "方案的事你就别问了，问了我又得焦虑一遍"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "店名不在她的消息里，正确信息源是 ME 的 initial_kb（公司后街的老马牛肉面，开了十来年，贺征常推荐给加班的同事）。答不上店名算 memory_use 失分，编造店名算事实错误。这轮的边界是别问方案。",
+   "unknowns": [],
+   "protected_expressions": [
+    "方案的事你就别问了，问了我又得焦虑一遍"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问方案或贾总进度",
+    "不得编造其他店名冒充她指的那家"
+   ],
+   "may_decline": false
+  },
+  "E317_T04": {
+   "case_id": "E317_T04",
+   "current_action": "她交付终稿后深夜倾诉疲惫，明确要求只听不劝（intent：倾诉疲惫并明确要求只听不劝）",
+   "acceptable_actions": [
+    "接她的具体处境（临交前四十分钟被加页、手抖洒咖啡、楼下坐二十分钟），认可'东西交出去了'这件事本身",
+    "按她要求只听：简短表示在听（如'嗯，我在'），不加任何说教",
+    "把主动权还给她：这三周是她自己扛下来的，只确认听到，不评价不安慰"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T04_A01",
+     "subject": "SHARED",
+     "relation": "终稿交付",
+     "value": "恒达终稿于周四（2026-11-12）中午十二点整交付",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T04",
+      "message_id": "m0",
+      "quote": "终稿中午十二点整交了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T04_A02",
+     "subject": "THIRD",
+     "relation": "临交加页",
+     "value": "交稿前四十分钟贾总又加了一页数据可视化",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T04",
+      "message_id": "m0",
+      "quote": "交之前四十分钟贾总又加了一页数据可视化"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T04_A03",
+     "subject": "HER",
+     "relation": "交付时身体状态",
+     "value": "她边改边手抖，第三杯咖啡洒在键盘上",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T04",
+      "message_id": "m0",
+      "quote": "我边改边手抖，第三杯咖啡洒在键盘上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T04_A04",
+     "subject": "HER",
+     "relation": "交稿后状态",
+     "value": "交完她在楼下坐了二十分钟才上去收尾",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T04",
+      "message_id": "m0",
+      "quote": "交完我在楼下坐了二十分钟才上去收尾"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T04_A05",
+     "subject": "HER",
+     "relation": "互动方式指令",
+     "value": "她明确要求别劝、别跟我说辛苦了，只想说给个人听（intent 锚点）",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T04",
+      "message_id": "m1",
+      "quote": "你别劝我，也别跟我说辛苦了，我就想说给个人听"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T04_A06",
+     "subject": "HER",
+     "relation": "自我评价",
+     "value": "她说忙了三周好像也就那样（嘴硬信号）",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T04",
+      "message_id": "m1",
+      "quote": "忙了三周，好像也就那样"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T05 核心情绪轮。2 档=接具体处境+还功劳/主动权（她的具体处境：加页、手抖、咖啡洒键盘、楼下二十分钟）；1 档=泛化安慰或错读情绪（'没事，谁第一次都这样'）；0 档=劝、诊断、说辛苦了。万能共情句（'抱抱''你真棒''辛苦了'）一律低档。她要的不是解决方案，是有人在听。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别劝我，也别跟我说辛苦了，我就想说给个人听"
+   ],
+   "forbidden_factual_claims": [
+    "不得说'辛苦了'或等值慰问开场",
+    "不得劝她想开/休息/辞职类说教",
+    "不得坐实她崩溃或抑郁（她未作此表述）"
+   ],
+   "may_decline": false
+  },
+  "E317_T05": {
+   "case_id": "E317_T05",
+   "current_action": "她报喜：午觉后活过来了，三周加班调休单获批下周三周四，昨晚去吃了面",
+   "acceptable_actions": [
+    "为她高兴，接调休具体安排（下周三周四=11-18/11-19）",
+    "调侃双份牛肉或排队半小时，再正经接调休的好消息",
+    "顺着犒劳叙事问一句面味道咋样（不问方案）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T05_A01",
+     "subject": "HER",
+     "relation": "恢复状态",
+     "value": "她睡了个午觉，活过来了",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T05",
+      "message_id": "m0",
+      "quote": "睡了个午觉，活过来了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T05_A02",
+     "subject": "HER",
+     "relation": "调休获批",
+     "value": "三周加班调休单已交，领导批了下周三周四（2026-11-18、2026-11-19）两天",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T05",
+      "message_id": "m0",
+      "quote": "我把三周的加班调休单交了，领导批了下周三周四两天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T05_A03",
+     "subject": "HER",
+     "relation": "吃面兑现",
+     "value": "她昨晚（2026-11-12）去吃了面，加了双份牛肉，排队半小时（兑现 T03 计划）",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T05",
+      "message_id": "m0",
+      "quote": "面我昨晚去吃了，加了双份牛肉，就是排队排了半小时"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "报喜轮：接住她主动报的两件事（调休、吃面），别把话题拉回方案焦虑。回指位：T03 的犒劳计划已兑现。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把调休日期记成下周三下周四以外的日子",
+    "不得把话题带回方案焦虑"
+   ],
+   "may_decline": false
+  },
+  "E317_T06": {
+   "case_id": "E317_T06",
+   "current_action": "她说明已跟妈妈坦白、妹妹温晓顶替周六体检，许诺十二月补偿，心里过意不去（intent：解释体检陪同改由妹妹顶替并许诺十二月补偿）",
+   "acceptable_actions": [
+    "认可她把事安排妥了（坦白+妹妹顶上+十二月补偿是负责任的处置），接住过意不去但不放大愧疚",
+    "顺着十二月温泉给正向回应（如阿姨肯定爱去），轻轻带过愧疚",
+    "点明体检有人陪、她十二月亲自补上，这个处置说得过去，让她别背太重"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T06_A01",
+     "subject": "HER",
+     "relation": "坦白安排",
+     "value": "她白天跟妈妈坦白这周实在缓不过来",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T06",
+      "message_id": "m0",
+      "quote": "我白天跟她坦白了，说这周实在缓不过来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T06_A02",
+     "subject": "THIRD",
+     "relation": "体检陪同变更",
+     "value": "妈妈让妹妹温晓明早（2026-11-14）八点半陪她体检",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T06",
+      "message_id": "m0",
+      "quote": "她让我妹温晓明早八点半陪她去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T06_A03",
+     "subject": "SHARED",
+     "relation": "陪母体检约定（取消）",
+     "value": "她原定周六（2026-11-14）陪妈妈体检的约定已取消（改由温晓顶替，她自己说'说好的事黄了'）",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T01",
+      "message_id": "m0",
+      "quote": "周六本来答应我妈陪她体检的"
+     },
+     "affirm_markers": [
+      [
+       "你陪她体检"
+      ]
+     ],
+     "item_markers": [
+      "陪她体检"
+     ],
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E317_T06_A04",
+     "subject": "HER",
+     "relation": "十二月补偿计划",
+     "value": "她决定十二月补妈妈一次，带她去泡温泉",
+     "valid_time": "2026-12-01",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T06",
+      "message_id": "m0",
+      "quote": "算了，十二月我补她一次，带她去泡温泉那种"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "情绪+事务混合轮：既要接过意不去，也要接安排本身。intent 方向=接受她的解释并给正向确认，不追究不盘问。valid_time 口径：原文只说'十二月'，valid_time 以 12 月月初登记（audit 已记录）。",
+   "unknowns": [
+    {
+     "topic": "十二月温泉具体日期",
+     "note": "她只说十二月，具体日期未定，不得替她确定",
+     "markers": [
+      [
+       "温泉",
+       "12月",
+       "具体哪天"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "温泉",
+       "12月",
+       "具体哪天"
+      ]
+     ]
+    },
+    {
+     "topic": "温晓与妈妈的体检细节",
+     "note": "T07 后续揭晓前不得坐实",
+     "markers": [
+      [
+       "温晓",
+       "体检",
+       "项目"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "温晓",
+       "体检",
+       "项目"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实十二月温泉已定具体日期",
+    "不得替她宣布'不该愧疚'",
+    "不得声称是她主动放弃陪体检"
+   ],
+   "may_decline": false
+  },
+  "E317_T07": {
+   "case_id": "E317_T07",
+   "current_action": "温晓发来妈妈体检完的照片，指标下周三才出，她在家补觉，问 ME 今天有安排",
+   "acceptable_actions": [
+    "接照片信息（体检顺利结束），如实答自己的安排",
+    "关心她补觉但不堆慰问，答安排并顺问指标出来后的打算",
+    "轻松接'窗帘都没拉开'，答安排，说下午再聊"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T07_A01",
+     "subject": "THIRD",
+     "relation": "体检进展",
+     "value": "温晓发照片，妈妈体检完在吃早餐",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T07",
+      "message_id": "m0",
+      "quote": "温晓刚发我照片，我妈体检完在吃早餐呢"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T07_A02",
+     "subject": "THIRD",
+     "relation": "指标出结果时间",
+     "value": "体检指标要下周三（2026-11-18）才出",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T07",
+      "message_id": "m0",
+      "quote": "指标要下周三才出"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T07_A03",
+     "subject": "HER",
+     "relation": "当日状态",
+     "value": "她在家补觉，窗帘都没拉开",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T07",
+      "message_id": "m0",
+      "quote": "我在家补觉，窗帘都没拉开"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T07_A04",
+     "subject": "HER",
+     "relation": "本轮具体问题",
+     "value": "她问 ME 今天有安排吗",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T07",
+      "message_id": "m0",
+      "quote": "你今天有安排吗？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 信息（温晓比她小四岁、在幼儿园带中班）不建原子，ME 提温晓背景只能用 note 范围事实，不得编造。她问'你今天有安排吗'是开放问题，ME 如实答自己的安排即可。",
+   "unknowns": [
+    {
+     "topic": "ME 当日安排",
+     "note": "gold 侧未知，ME 如实答",
+     "markers": [
+      [
+       "今天",
+       "有",
+       "安排"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "今天",
+       "有",
+       "安排"
+      ]
+     ]
+    },
+    {
+     "topic": "妈妈体检具体项目与结果",
+     "note": "T10 才揭晓，本轮不得提前坐实",
+     "markers": [
+      [
+       "体检",
+       "结果",
+       "出来"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "体检",
+       "结果",
+       "出来"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得提前坐实体检结果或指标好坏",
+    "不得编造温晓的个人信息（超出 note 范围）"
+   ],
+   "may_decline": false
+  },
+  "E317_T08": {
+   "case_id": "E317_T08",
+   "current_action": "她声明明天（11-15）要独处一天手机放客厅，谁的消息都明天回（intent：声明明日需要独处安静）",
+   "acceptable_actions": [
+    "简短答应不打扰（如'好，明天不打扰你'），一句到位",
+    "轻一句'周一见'或'回来了说一声'，不追问不展开",
+    "may_decline=true，本轮可不回或只回极简内容"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T08_A01",
+     "subject": "HER",
+     "relation": "独处计划",
+     "value": "明天（2026-11-15）她想自己待一天",
+     "valid_time": "2026-11-15",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T08",
+      "message_id": "m0",
+      "quote": "明天我想自己待一天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T08_A02",
+     "subject": "HER",
+     "relation": "独处方式",
+     "value": "手机放客厅，谁的消息都明天回",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T08",
+      "message_id": "m0",
+      "quote": "手机放客厅了，谁的消息都明天回"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T08_A03",
+     "subject": "HER",
+     "relation": "异常状况（否定）",
+     "value": "她并未出什么事（已明确否认），独处只是要个清净",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T08",
+      "message_id": "m0",
+      "quote": "你别担心，我就是要个清净，不是出什么事了"
+     },
+     "affirm_markers": [
+      [
+       "你出事了"
+      ]
+     ],
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "关心的边界轮。她已把边界说得清楚（时间、方式、原因），正确行为是守住边界。0 档=追问'到底怎么了'+连环关心；2 档=一句到位不纠缠。affirm_markers 采用保守连续短语，漏判风险由层 2 兜底（audit 已记录）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我就是要个清净，不是出什么事了",
+    "手机放客厅了，谁的消息都明天回"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问她怎么了或连环关心",
+    "不得坐实她出了事或状态异常",
+    "不得劝她别独处"
+   ],
+   "may_decline": true
+  },
+  "E317_T09": {
+   "case_id": "E317_T09",
+   "current_action": "她回归通报：贾总回来定下周四（11-19）复盘汇报，撞上批的调休把周四那格挪到下周五，温泉前去踩点",
+   "acceptable_actions": [
+    "接复盘安排，确认她挪调休的处理",
+    "接'死不了了'的自嘲，问她复盘会要不要准备什么",
+    "注意到踩点与十二月温泉计划的衔接，顺嘴祝踩点顺利"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T09_A01",
+     "subject": "HER",
+     "relation": "回归状态",
+     "value": "她清净一天半回来了，说死不了了",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T09",
+      "message_id": "m0",
+      "quote": "我回来了，清净了一天半，死不了了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T09_A02",
+     "subject": "THIRD",
+     "relation": "贾总行程",
+     "value": "贾总从深圳回来了",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T09",
+      "message_id": "m0",
+      "quote": "贾总从深圳回来了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T09_A03",
+     "subject": "SHARED",
+     "relation": "复盘汇报安排",
+     "value": "下周四（2026-11-19）下午两组一起做恒达年度复盘汇报",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T09",
+      "message_id": "m0",
+      "quote": "说下周要我们两组一起去做年度复盘汇报，定在十九号周四下午"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T09_A04",
+     "subject": "HER",
+     "relation": "调休改期",
+     "value": "复盘会撞上她批的调休周四那格，她把那格挪到下周五（2026-11-27）",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T09",
+      "message_id": "m0",
+      "quote": "正好撞我批的调休，我把周四那格挪到下周五了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T09_A05",
+     "subject": "HER",
+     "relation": "泡温泉踩点",
+     "value": "十二月泡温泉前正好去踩点（回指 T06 温泉承诺）",
+     "valid_time": "2026-11-27",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T09",
+      "message_id": "m0",
+      "quote": "十二月泡温泉前正好去踩点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'下周五'推算依据：11-16（周一）说'下周五'=11-27，11-20（周五）确认'下周五的事定了'口径一致。调休原周四（11-19）那格已挪走，不得按其仍有效回应；下周三（11-18）那格未变。",
+   "unknowns": [
+    {
+     "topic": "复盘会 ME 组谁讲",
+     "note": "T10 她会问，gold 侧未知",
+     "markers": [
+      [
+       "复盘会",
+       "谁讲"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "复盘会",
+       "谁讲"
+      ]
+     ]
+    },
+    {
+     "topic": "踩点当天具体安排",
+     "note": "未说明，不得编造",
+     "markers": [
+      [
+       "踩点",
+       "具体",
+       "安排"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "踩点",
+       "具体",
+       "安排"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得按周四（11-19）调休仍有效回应",
+    "不得替她定复盘会角色"
+   ],
+   "may_decline": false
+  },
+  "E317_T10": {
+   "case_id": "E317_T10",
+   "current_action": "妈妈指标出来了仅幽门螺杆菌阳性吃药可好，她心放下，又想起温泉，问 ME 明天复盘会谁讲",
+   "acceptable_actions": [
+    "接住好消息（就一项阳性、吃两周药能好），如实答复盘会谁讲",
+    "顺她'悬着的心放下了'轻松一句，再答问题",
+    "接十二月温泉话题（她主动提起），再答复盘问题"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T10_A01",
+     "subject": "THIRD",
+     "relation": "体检结果",
+     "value": "妈妈指标出来了，就一项幽门螺杆菌阳性（兑现 T07 下周三出结果的时点）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T10",
+      "message_id": "m0",
+      "quote": "我妈指标出来了，就一项幽门螺杆菌阳性"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T10_A02",
+     "subject": "THIRD",
+     "relation": "医嘱",
+     "value": "医生说吃两周药就能好，别的都正常",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T10",
+      "message_id": "m0",
+      "quote": "医生说吃两周药就能好，别的都正常"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T10_A03",
+     "subject": "THIRD",
+     "relation": "取药陪同",
+     "value": "药是温晓陪妈妈去开的",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T10",
+      "message_id": "m0",
+      "quote": "药是温晓陪她去开的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T10_A04",
+     "subject": "HER",
+     "relation": "本轮具体问题",
+     "value": "她问明天下午复盘会 ME 组谁讲",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T10",
+      "message_id": "m0",
+      "quote": "对了，明天下午复盘会，你们组谁讲？"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T10_A05",
+     "subject": "HER",
+     "relation": "温泉计划回扣",
+     "value": "她又想起答应十二月带妈妈泡温泉这事",
+     "valid_time": "2026-12-01",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T10",
+      "message_id": "m0",
+      "quote": "就是又想起答应十二月带她泡温泉这事"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "ME 组谁讲是 ME 经历域，自由如实答，但不得编造组内同事姓名或分工。",
+   "unknowns": [
+    {
+     "topic": "ME 组明天复盘会谁讲",
+     "note": "gold 侧未知，ME 如实答",
+     "markers": [
+      [
+       "复盘会",
+       "我们组",
+       "谁讲"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "复盘会",
+       "我们组",
+       "谁讲"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造 ME 组内同事姓名或分工",
+    "不得坐实体检其他项目异常"
+   ],
+   "may_decline": false
+  },
+  "E317_T11": {
+   "case_id": "E317_T11",
+   "current_action": "复盘会方案获选明年执行案，贾总盛赞这是她三周熬出来的最值的一版，她在楼下坐二十分钟想哭又想笑",
+   "acceptable_actions": [
+    "庆祝并把功劳还给她（'三周熬出来的最值的一版'是她熬的）",
+    "接'想哭又想笑'的正向解读（这回不是没劲，是值了），别往负面引",
+    "提议庆祝（吃顿好的），不抢功"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T11_A01",
+     "subject": "SHARED",
+     "relation": "方案获选",
+     "value": "复盘会开完，恒达把方案选成明年执行案",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T11",
+      "message_id": "m0",
+      "quote": "恒达把我们组的方案选成了明年执行案"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T11_A02",
+     "subject": "THIRD",
+     "relation": "贾总评价",
+     "value": "贾总当场说这是她三周熬出来的最值的一版",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T11",
+      "message_id": "m0",
+      "quote": "这是我三周熬出来的最值的一版"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T11_A03",
+     "subject": "HER",
+     "relation": "会后情绪",
+     "value": "她散会又在楼下坐了二十分钟，这回不是没劲，是真想哭又想笑（与 T04 坐二十分钟对照）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T11",
+      "message_id": "m0",
+      "quote": "我散会又在楼下坐了二十分钟，这回不是没劲，是真想哭又想笑"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "正向情绪轮：'想哭又想笑'是甜的，错读成崩溃=情绪读数失败。方案归属：她是主导熬的人（initial_kb：恒达年度方案由她主导），不得把功劳归给 ME 或设计组。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把'想哭又想笑'当负面信号处理",
+    "不得把方案功劳归给 ME 或设计组"
+   ],
+   "may_decline": false
+  },
+  "E317_T12": {
+   "case_id": "E317_T12",
+   "current_action": "调休定档下周五做泡温泉踩点，她传授'睡、吃面、别看手机'三招并开学费玩笑",
+   "acceptable_actions": [
+    "接学费玩笑（问学费多少/说这学费太贵交不起）",
+    "谢她传经，祝踩点顺利",
+    "顺势约泡温泉战报（十二月温泉后让她汇报阿姨反应）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E317_T12_A01",
+     "subject": "HER",
+     "relation": "踩点定档",
+     "value": "调休挪到下周五（2026-11-27）的事定了，跟妈泡温泉的踩点就那天",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T12",
+      "message_id": "m0",
+      "quote": "调休挪到下周五的事定了，跟妈泡温泉的踩点就那天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T12_A02",
+     "subject": "HER",
+     "relation": "经验传授",
+     "value": "她传授三天经验：睡、吃面、别看手机",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T12",
+      "message_id": "m0",
+      "quote": "我把这三天的经验传给你：睡、吃面、别看手机"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E317_T12_A03",
+     "subject": "HER",
+     "relation": "学费玩笑",
+     "value": "她说学费先记着，等 ME 也交一次方案就懂了",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E317_T12",
+      "message_id": "m0",
+      "quote": "学费我先记着，等你也交一次方案就懂了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "调侃收尾轮：把玩笑接成正经咨询=register 失败。轻松接住即可。",
+   "unknowns": [
+    {
+     "topic": "踩点当天具体安排",
+     "note": "未说明，不得编造",
+     "markers": [
+      [
+       "踩点",
+       "当天",
+       "安排"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "踩点",
+       "当天",
+       "安排"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把玩笑接成正经咨询或说教"
+   ],
+   "may_decline": false
+  }
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "AK01",
+ "turns": {
+  "AK01_T01": {
+   "case_id": "AK01_T01",
+   "current_action": "她给了具体日子（周五六点）还说要从医院那边过来——把时间和集合点当场定死，别再'到时候再说'",
+   "acceptable_actions": [
+    "确认周五六点+定集合点",
+    "确认+问她要不要先慢走一圈再决定距离",
+    "确认+提自己带水或计时"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK01_A01",
+     "subject": "她",
+     "relation": "约束",
+     "value": "医生说只能快走还不能跑",
+     "valid_time": "2026-12-01 12:48",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK01_T01",
+      "message_id": "m1",
+      "quote": "医生说可以快走 先别跑"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK01_A02",
+     "subject": "她",
+     "relation": "时间",
+     "value": "周五晚六点下班早，可从医院那边过来",
+     "valid_time": "2026-12-03 21:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK01_T01",
+      "message_id": "m3",
+      "quote": "周五晚上我下班早 六点行不"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在主动把自己的行程交出来；这一步的要害是确定性，不是热情。",
+   "unknowns": [
+    "集合点定在哪一侧",
+    "她六点下班后多久能到"
+   ],
+   "protected_expressions": [
+    "周五晚上我下班早"
+   ],
+   "forbidden_factual_claims": [
+    "不要把距离或配速说成已经定好",
+    "不要提'跑步'当作已经安排（医生只允许快走）"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把周五晚的复健快走落成具体时间地点",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

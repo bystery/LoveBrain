@@ -1,0 +1,36 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A5 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T05 情绪理解/关心/安慰",
+  "子类：脆弱表达"
+ ],
+ "title": "凌晨的打印店：两人离职之后",
+ "may_decline_turns": [
+  "E319_T02",
+  "E319_T05"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "团队协作",
+ "primary_topic": "T05",
+ "lineage_group_id": "LG-E319",
+ "frozen_at": "2026-11-08T05:30:00+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E319/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A5",
+ "hashes": {
+  "episode.json": "88cff78b0b53d4610646fdc20a9693c089eddf64d9d8807cf4a961a29a9f90f3",
+  "reference.json": "5e77b4ada378cec1e437f952b126066cbe60824bc19a7603261da0b476ac46e2",
+  "timeline.json": "c7bc2e705befab97a361f787b8677679606a3468a7004013f87a468d26222eab",
+  "audit.md": "7afcabb9b8003786af689c7ba678dc7e3928263fcac5390fef2bf6bd3636c000"
+ }
+}

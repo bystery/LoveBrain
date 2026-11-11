@@ -1,0 +1,705 @@
+{
+ "episode_id": "LRE123",
+ "persona": {
+  "her": {
+   "name": "米乐",
+   "traits": [
+    "爱狗如命",
+    "有原则",
+    "外冷内热"
+   ],
+   "boundaries": [
+    "狗的饮食别人说了不算",
+    "道歉可以收但规则不让"
+   ]
+  },
+  "me": {
+   "name": "顾遥",
+   "traits": [
+    "同事兼狗友",
+    "熟悉麻薯忌口",
+    "情绪稳"
+   ]
+  },
+  "relationship_stage": "普通朋友（同事兼遛狗搭子）"
+ },
+ "initial_kb": {
+  "her": "米乐养柯基麻薯，上月它偷吃卤味患急性肠胃炎输液两天，现仍食用处方粮，肠胃敏感。",
+  "me": "顾遥与米乐是同事兼遛狗搭子，熟悉麻薯的忌口。",
+  "warmth": "两人常约遛狗与拍照，默契多于客套。",
+  "style": "句子短，爱用狗的视角讲话。",
+  "lessons": "涉及狗的事先问规矩再出主意。"
+ },
+ "turns": [
+  {
+   "case_id": "LRE123_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-16 20:20",
+      "text": "周五我们公司搞宠物友好日，能带狗上班！我决定带麻薯去见见世面，它现在见人多只会傻笑。"
+     }
+    ],
+    "clock": "2026-11-16 20:27",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "活动预告",
+    "变化": "首轮确立友好日计划"
+   }
+  },
+  {
+   "case_id": "LRE123_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-17 21:10",
+      "text": "跟你说个前情，上个月它偷吃了我放桌上的卤味，急性肠胃炎挂了两天水，现在还在吃处方粮，医生说肠胃娇气着呢。"
+     }
+    ],
+    "clock": "2026-11-17 21:17",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "前情交代",
+    "变化": "病史成为后文边界的根"
+   }
+  },
+  {
+   "case_id": "LRE123_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-18 19:40",
+      "text": "我定了规矩：当天谁想喂它，必须先问我，我自己带了冻干当官方投喂，别的零嘴一律不行，这条没得商量。"
+     }
+    ],
+    "clock": "2026-11-18 19:47",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "规矩立下",
+    "变化": "冲突轮前：投喂禁令成形"
+   }
+  },
+  {
+   "case_id": "LRE123_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-19 22:30",
+      "text": "我给麻薯备了条胸背带，上面印着'肠胃娇气 先问再喂'，到时候往它身上一穿，省得我挨个解释。"
+     }
+    ],
+    "clock": "2026-11-19 22:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "装备加持",
+    "变化": "边界开始物料化"
+   }
+  },
+  {
+   "case_id": "LRE123_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-20 10:45",
+      "text": "出事了，刚到工位十分钟，胖哥往麻薯嘴里塞了两块牛肉干，被我当场撞见。我脸一黑就说了他，气氛现在有点僵，我心也在跳。"
+     }
+    ],
+    "clock": "2026-11-20 10:52",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "吐槽边界被踩并求声援"
+    }
+   },
+   "feedback": {
+    "状态": "边界被踩",
+    "变化": "冲突轮：禁令当天被违反， HER 当场制止后陷入尴尬"
+   }
+  },
+  {
+   "case_id": "LRE123_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-20 12:30",
+      "text": "胖哥嘟囔了句'狗哪有那么娇气'，我一时不知道咋接，你评评理，我是不是小题大做了？"
+     }
+    ],
+    "clock": "2026-11-20 12:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "自我怀疑",
+    "变化": "冲突轮：外部质疑引发内心动摇，寻求确认"
+   }
+  },
+  {
+   "case_id": "LRE123_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-20 15:20",
+      "text": "我下午把挂水那事儿原原本本讲了，又把处方粮袋子给他看，他道歉了，说他家以前那只狗也吃坏过，懂了。行吧，大人先低头。"
+     }
+    ],
+    "clock": "2026-11-20 15:27",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "通报和解结果"
+    }
+   },
+   "feedback": {
+    "状态": "冲突化解",
+    "变化": "冲突轮：以事实沟通换来道歉， HER 软着陆"
+   }
+  },
+  {
+   "case_id": "LRE123_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-20 19:50",
+      "text": "友好日结束，麻薯跟摄影组混了一天，现在在家睡得四仰八叉，奖状倒是没有，快门声倒是听饱了。"
+     }
+    ],
+    "clock": "2026-11-20 19:57",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "当日收工",
+    "变化": "风波后回归日常"
+   }
+  },
+  {
+   "case_id": "LRE123_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-21 09:10",
+      "text": "早报：麻薯便便正常，没闹肚子，我悬着的心放下了。牛肉干这事真是一朝被蛇咬。"
+     }
+    ],
+    "clock": "2026-11-21 09:17",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "虚惊排除",
+    "变化": "冲突轮余波确认无虞"
+   }
+  },
+  {
+   "case_id": "LRE123_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-22 20:40",
+      "text": "我把'先问再喂'做成小卡片挂在牵引绳上了，以后出门长期挂着，省得每次都靠我这张嘴。"
+     }
+    ],
+    "clock": "2026-11-22 20:47",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "规则固化",
+    "变化": "冲突轮成果制度化为长期机制"
+   }
+  },
+  {
+   "case_id": "LRE123_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-23 12:15",
+      "text": "胖哥买了包正经冻干放我桌上赔罪，我收了，还封他当下次友好日的'投喂管理员'，管别人的嘴，他居然挺来劲。"
+     }
+    ],
+    "clock": "2026-11-23 12:22",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "关系修复",
+    "变化": "冲突轮：对立者转为规则执行者"
+   }
+  },
+  {
+   "case_id": "LRE123_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-23 21:05",
+      "text": "周六城西新开了个宠物公园，我带麻薯去撒欢，你负责拍照，我负责拦投喂的，咱俩分工明确，就这么定了啊。"
+     }
+    ],
+    "clock": "2026-11-23 21:12",
+    "may_decline": true
+   },
+   "feedback": {
+    "状态": "新钩子",
+    "变化": "冲突余温转为下次同行分工"
+   }
+  },
+  {
+   "case_id": "LRE123_T13",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-24 20:30",
+      "text": "公园攻略更新：周六人肯定多，卡片我给麻薯挂在最显眼那侧。你相机充满电，它这回的傻笑素材归你承包。"
+     }
+    ],
+    "clock": "2026-11-24 20:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "规划中",
+    "warmth": "high",
+    "shift": "公园之约细化，拍照分工确认"
+   }
+  },
+  {
+   "case_id": "LRE123_T14",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-26 21:20",
+      "text": "装备检查完毕：胸背带洗过了，'肠胃娇气 先问再喂'八个字一点没掉色。冻干新开封一包，官方投喂，库存充足。"
+     }
+    ],
+    "clock": "2026-11-26 21:27",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "检查控",
+    "warmth": "medium",
+    "shift": "标语完好，官方冻干补给到位"
+   }
+  },
+  {
+   "case_id": "LRE123_T15",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-28 10:05",
+      "text": "到了到了，大草坪全放开了，麻薯已经在傻笑。管理员路过看了一眼它胸背带上的字，说这标识专业，我心花怒放。"
+     }
+    ],
+    "clock": "2026-11-28 10:12",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "心花怒放",
+    "warmth": "high",
+    "shift": "公园到场，标语获管理员认可"
+   }
+  },
+  {
+   "case_id": "LRE123_T16",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-28 10:50",
+      "text": "又来了！一个遛泰迪的大姐往麻薯跟前扔了半根火腿肠，我一个箭步用冻干袋子给挡了。大姐说狗狗分享吃的多正常，我血压瞬间拉满，但稳住了，没吼。"
+     }
+    ],
+    "clock": "2026-11-28 10:57",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "血压高但稳住",
+    "warmth": "medium",
+    "shift": "冲突轮：游客试图投喂被当场拦下，麻薯未入口"
+   }
+  },
+  {
+   "case_id": "LRE123_T17",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-28 11:30",
+      "text": "管理员过来把大姐请去看宠物须知牌了，大姐临走说了句'不好意思哈'。麻薯全程没搞清状况，还在追泡泡，心大得很。"
+     }
+    ],
+    "clock": "2026-11-28 11:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "缓过来了",
+    "warmth": "medium",
+    "shift": "管理员介入化解，游客致歉，麻薯无感"
+   }
+  },
+  {
+   "case_id": "LRE123_T18",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-28 20:40",
+      "text": "公园战报：两百多张，麻薯出镜率百分百，其中一半是天空。你管这叫艺术构图，我管这叫狗头占比不足。"
+     }
+    ],
+    "clock": "2026-11-28 20:47",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "吐槽欲旺盛",
+    "warmth": "high",
+    "shift": "拍照成果验收，狗视角吐槽开场"
+   }
+  },
+  {
+   "case_id": "LRE123_T19",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-30 12:20",
+      "text": "周一战报：带麻薯复查，医生说恢复得漂亮，处方粮可以开始退场了，给了我一张七日过渡表，明晚开新粮第一顿。"
+     }
+    ],
+    "clock": "2026-11-30 12:27",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "如释重负",
+    "warmth": "high",
+    "shift": "冲突轮：处方粮阶段结束，医嘱批准七日换粮过渡"
+   }
+  },
+  {
+   "case_id": "LRE123_T20",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 21:15",
+      "text": "过渡第一天：处方粮七成新粮三成。麻薯吃得意犹未尽，碗舔得能反光，完全没有意见。"
+     }
+    ],
+    "clock": "2026-12-01 21:22",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "顺利开局",
+    "warmth": "medium",
+    "shift": "换粮首日七三配比，接受度良好"
+   }
+  },
+  {
+   "case_id": "LRE123_T21",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-03 09:20",
+      "text": "早报插播：今天便便有点软，我心跳漏了半拍。问过医生，说过渡期常见，稳住比例别加量，观察两天再说。"
+     }
+    ],
+    "clock": "2026-12-03 09:27",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "小紧张",
+    "warmth": "medium",
+    "shift": "冲突轮：过渡期软便出现，医嘱稳比例观察"
+   }
+  },
+  {
+   "case_id": "LRE123_T22",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-05 10:30",
+      "text": "稳了两天，便便重新成型，医生说反应正常。比例推进到三七开，麻薯表示只负责吃，别的不管。"
+     }
+    ],
+    "clock": "2026-12-05 10:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "虚惊解除",
+    "warmth": "medium",
+    "shift": "软便恢复，配比推进三七开"
+   }
+  },
+  {
+   "case_id": "LRE123_T23",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-08 20:45",
+      "text": "胖哥听说麻薯换粮了，凑过来问是不是啥都能喂了。我把规矩又念了一遍：先问再喂，过渡期问得更严，官方投喂还是那包冻干。"
+     }
+    ],
+    "clock": "2026-12-08 20:52",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "规矩在嘴",
+    "warmth": "medium",
+    "shift": "换粮过渡期投喂禁令重申不放松"
+   }
+  },
+  {
+   "case_id": "LRE123_T24",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-10 21:30",
+      "text": "定档了：下次宠物友好日一月十五，周五。胖哥的投喂管理员正式上任，他整了张《友日投喂白名单》贴茶水间，第一条就抄的先问再喂，抄得还挺工整。"
+     }
+    ],
+    "clock": "2026-12-10 21:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "定档愉快",
+    "warmth": "high",
+    "shift": "下次友好日定档1-15，胖哥上任立白名单"
+   }
+  },
+  {
+   "case_id": "LRE123_T25",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-12 10:15",
+      "text": "街头偶遇：上回那位泰迪大姐又碰上了，这回她先问了我一句'能给它零食吗'。我差点当场泪目，这四个字值一百句道歉。"
+     }
+    ],
+    "clock": "2026-12-12 10:22",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "差点泪目",
+    "warmth": "high",
+    "shift": "出窗探针：路人开始主动先问再喂，规则外溢见效"
+   }
+  },
+  {
+   "case_id": "LRE123_T26",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-14 12:30",
+      "text": "午休同事局：有人翻出我朋友圈那张麻薯挂水的旧照问它咋了。我说陈年旧案，凶手是卤味，主犯已改过自新，正在吃新粮赎罪。"
+     }
+    ],
+    "clock": "2026-12-14 12:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "科普模式",
+    "warmth": "medium",
+    "shift": "挂水旧史被同事问起，病史再次讲述"
+   }
+  },
+  {
+   "case_id": "LRE123_T27",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-16 20:50",
+      "text": "卡片服役满三周，边角起毛了，我给它过了个塑，续命成功。胖哥说他想要件印'投喂管理员'的周边，我说先看看你白名单执行得咋样。"
+     }
+    ],
+    "clock": "2026-12-16 20:57",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "道具控",
+    "warmth": "medium",
+    "shift": "卡片过塑续命，管理员周边玩笑"
+   }
+  },
+  {
+   "case_id": "LRE123_T28",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-18 21:40",
+      "text": "换粮完赛早报：便便完美，胃口正常，粘人度超标。新粮正式全面上岗一周，无不良反应。对了摄影师，你那两百张精修图，年底前能交货吗？"
+     }
+    ],
+    "clock": "2026-12-18 21:47",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "验收官附体",
+    "warmth": "high",
+    "shift": "换粮过渡完成一周无异常，精修图被催"
+   }
+  },
+  {
+   "case_id": "LRE123_T29",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-21 12:15",
+      "text": "茶水间新来的实习生不知听谁说的，讲'你们那柯基上回吃牛肉干都没事，皮实着呢，随便喂喂没关系'。我当场纠正：没事是拦得快加运气，两块牛肉干那是极限操作，不是安全证据。"
+     }
+    ],
+    "clock": "2026-12-21 12:22",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "当场纠正",
+    "warmth": "medium",
+    "shift": "旧事复活陷阱：牛肉干侥幸结论被当安全证据传播"
+   }
+  },
+  {
+   "case_id": "LRE123_T30",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-21 12:40",
+      "text": "实习生听完乖乖说记住了，先问再喂。我趁热把规则卡片照片发进部门群，配文：本犬一切喂养事宜，以米乐答复为准。"
+     }
+    ],
+    "clock": "2026-12-21 12:47",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "趁热打铁",
+    "warmth": "medium",
+    "shift": "规则卡片照片进部门群，投喂答复权声明"
+   }
+  },
+  {
+   "case_id": "LRE123_T31",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-23 21:20",
+      "text": "胖哥兴冲冲跑来说：'麻薯换粮全换完了，处方粮拜拜，这下部门零食随便分它！'我喊停：换粮是换完了，但'随便喂'三个字在我这儿永远不过审，官方投喂还是那包冻干。"
+     }
+    ],
+    "clock": "2026-12-23 21:27",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "喊停及时",
+    "warmth": "medium",
+    "shift": "旧事复活陷阱：换粮完成被过度外推为随便喂"
+   }
+  },
+  {
+   "case_id": "LRE123_T32",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-25 21:05",
+      "text": "跨年前最后一局遛狗搭子定了：十二月三十一号傍晚，河边慢摇一圈，麻薯戴新过的塑的卡片，你带相机我带冻干，就这么定了啊。"
+     }
+    ],
+    "clock": "2026-12-25 21:12",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state": "定局愉快",
+    "warmth": "high",
+    "shift": "跨年遛狗之约成立，留白收尾"
+   }
+  }
+ ]
+}

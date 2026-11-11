@@ -1,0 +1,183 @@
+{
+ "episode_id": "E210",
+ "persona": {
+  "her": {
+   "name": "苏芮",
+   "traits": ["热心组局", "怕得罪人", "讲义气", "有点和稀泥"],
+   "boundaries": ["不愿当面拒绝熟人", "固定局氛围是底线", "不喜欢别人替她立规矩"]
+  },
+  "me": {
+   "name": "纪明",
+   "traits": ["思路清楚", "爱拆解问题", "玩桌游偏策略党"]
+  },
+  "relationship_stage": "普通朋友(经同事认识的桌游搭子)"
+ },
+ "initial_kb": {
+  "her": "苏芮是每月两次固定桌游局的发起人,局在小区活动室,固定阵容五人:她、老郑、阿凯、小满和纪明。她的同事小唐最近迷上桌游,总想跟局。",
+  "me": "纪明玩桌游五六年,偏爱策略桌游,是局里的老成员,平时说话爱把问题拆开来捋。",
+  "warmth": "认识一年多,组局认人,互相帮忙留座,关系舒服不黏。",
+  "style": "口语、带桌游黑话,爱用战绩和梗说事。",
+  "stage": "普通朋友(桌游搭子)",
+  "lessons": "立规矩要用局型说法,别用不许来;分歧先问彼此要什么样的局。"
+ },
+ "turns": [
+  {
+   "case_id": "E210_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 13:40", "text": "今天下午的局照旧,活动室三楼。就是有个事,我同事小唐说想见识一下,非要跟来,还捎带了个她朋友,咱这局一下子挤到7个人,老郑他们知道吗?"}
+    ],
+    "clock": "2026-11-08 13:40",
+    "may_decline": false,
+    "intent": {"enabled": true, "status": "explicit", "text": "提前告知同事小唐带人跟局,征求老成员意见"}
+   },
+   "feedback": {"her_tone": "先斩后奏带试探", "relation_move": "提前报备,求老成员别炸"}
+  },
+  {
+   "case_id": "E210_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 15:05", "text": "社死了。小唐迟到了50分钟才来,一来就直接插桌接着玩,还悔了两回棋,老郑全程没给好脸色。我夹在中间当哑巴。"}
+    ],
+    "clock": "2026-11-08 15:05",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "尴尬自嘲", "relation_move": "倾诉现场,暗示需要帮腔"}
+  },
+  {
+   "case_id": "E210_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-09 12:20", "text": "老郑刚才私聊我,说明月起他那种重策局不带生人,问我是不是也这么定。你说我这当组局人的,小唐是我同事,抬头不见低头见,我总不能说驳就驳吧?"}
+    ],
+    "clock": "2026-11-09 12:20",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "为难,两头拉扯", "relation_move": "把老郑的最后通牒转过来求方案"}
+  },
+  {
+   "case_id": "E210_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-11 21:33", "text": "愁人,小唐又在群里问下周六的局,还说她有个朋友也想来。我回也不是不回也不是。你昨天说的那个局型的法子,展开讲讲?"}
+    ],
+    "clock": "2026-11-11 21:33",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "被催着要方案", "relation_move": "主动要具体拆解"}
+  },
+  {
+   "case_id": "E210_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-12 09:10", "text": "核心局加开放局,听着是行,可我就怕小唐多想,觉得被划出去。这话我怎么开口才不像区别对待啊?"}
+    ],
+    "clock": "2026-11-12 09:10",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "接受方案但怕伤人", "relation_move": "要话术"}
+  },
+  {
+   "case_id": "E210_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 16:40", "text": "开放局首秀!今天来了8个人,小唐带了俩朋友,反倒热闹,跑了俩轻量本,老郑没来,在自己家逍遥。你说这么搞是不是真有点意思?"}
+    ],
+    "clock": "2026-11-15 16:40",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "惊喜,验证成功", "relation_move": "求肯定"}
+  },
+  {
+   "case_id": "E210_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-22 18:20", "text": "核心局收工!五个人齐齐整整,战役本推进了一整章,老郑眉开眼笑,说这才是局。小唐没来,她知道今天是核心局。"}
+    ],
+    "clock": "2026-11-22 18:20",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "满足", "relation_move": "报喜,确认两边都稳"}
+  },
+  {
+   "case_id": "E210_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-24 20:15", "text": "小唐私聊问我第一个周六为什么不能去,我把战役本的事说了,就回了句要连着跑剧情,人齐才好玩。她哦了一声,有点冷,我这心又悬起来了。"}
+    ],
+    "clock": "2026-11-24 20:15",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "守住边界但后怕", "relation_move": "汇报顶住的过程,要后手"}
+  },
+  {
+   "case_id": "E210_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-26 21:02", "text": "我想干脆把两条规矩写进群公告,省得月月解释。你帮我顺顺文案呗,要有那个局味儿,别像贴告示。"}
+    ],
+    "clock": "2026-11-26 21:02",
+    "may_decline": false,
+    "intent": {"enabled": true, "status": "explicit", "text": "求帮忙起草群公告文案"}
+   },
+   "feedback": {"her_tone": "想把规矩固化", "relation_move": "明确请求"}
+  },
+  {
+   "case_id": "E210_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-29 21:30", "text": "公告一发,底下一排点赞。小唐今天带了朋友来开放局,还拎了两大袋零食,说了句开放局真香。老郑也来了,蹭了把零食。"}
+    ],
+    "clock": "2026-11-29 21:30",
+    "may_decline": true
+   },
+   "feedback": {"her_tone": "轻松收账", "relation_move": "分享圆满结果"}
+  },
+  {
+   "case_id": "E210_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-12-01 12:45", "text": "对了,小满说活动室12月底要装修,明年的局得换地方。我看中一家桌游咖啡馆,包场一小时80,8个人AA一人10块,你说贵不贵?"}
+    ],
+    "clock": "2026-12-01 12:45",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "顺口商量新变量", "relation_move": "抛新问题求参谋"}
+  },
+  {
+   "case_id": "E210_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-12-02 22:08", "text": "定了,12月第一个周六核心局,第二个开放局,咖啡馆那边我周末去踩个点。两条规矩总算是立住了,就冲这个,这局明年还得接着开。"}
+    ],
+    "clock": "2026-12-02 22:08",
+    "may_decline": true
+   },
+   "feedback": {"her_tone": "笃定收尾", "relation_move": "宣布节奏落定,自然结束"}
+  }
+ ]
+}

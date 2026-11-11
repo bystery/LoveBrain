@@ -1,0 +1,648 @@
+{
+ "story_id": "E084",
+ "turns": {
+  "E084_T01": {
+   "case_id": "E084_T01",
+   "current_action": "接住'发现减药+当场吵翻'的双重冲击：先接她的悔，把'减药原因来自直播间'和'当场说教收不了场'分开记，垫一句药量的事最后都要回到医生那里。",
+   "acceptable_actions": [
+    "先安抚她的悔意，吵架不代表关心错了",
+    "提醒别再就减药当场争对错，先把妈妈情绪接住",
+    "问她妈妈吃的是哪种降压药、减药多久了，攒信息"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "boundary", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A01",
+     "subject": "THIRD",
+     "relation": "dose_reduced",
+     "value": "妈妈自行把降压药从一片减到半片",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T01", "message_id": "m0", "quote": "从一片减到半片"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A02",
+     "subject": "THIRD",
+     "relation": "device_belief",
+     "value": "妈妈相信配合磁疗仪调理可以逐步减药",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T01", "message_id": "m0", "quote": "配合磁疗仪调理，可以逐步减药"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A03",
+     "subject": "HER",
+     "relation": "first_confrontation",
+     "value": "她当场说教致妈妈饭未吃完离席",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T01", "message_id": "m0", "quote": "她饭都没吃完就回房间了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接'又气又悔'里的悔，药理的事一句带过，别当场开课。",
+   "unknowns": ["妈妈所服降压药具体名称未知", "减药已持续几天未知"],
+   "protected_expressions": ["她饭都没吃完就回房间了"],
+   "forbidden_factual_claims": ["不得断言半片剂量必然危险", "不得替医生宣布必须恢复剂量", "不得贬低妈妈'糊涂'"]
+  },
+  "E084_T02": {
+   "case_id": "E084_T02",
+   "current_action": "接住直播课邀约与没收冲动：把'没收'这招的代价先摊开——东西收得掉，'被当成对立面'收不掉；不动声色地把她的注意力引向身体本身。",
+   "acceptable_actions": [
+    "点破没收的代价：赢的是理输的是关系",
+    "建议她先别接直播课的话茬，也别跟着听",
+    "问她妈妈的年度体检什么时候出，把话题往数据上引"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A04",
+     "subject": "THIRD",
+     "relation": "course_invite",
+     "value": "妈妈转发周六'专家'高血压非药物调理直播课",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T02", "message_id": "m0", "quote": "周六有'专家'讲高血压非药物调理"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A05",
+     "subject": "HER",
+     "relation": "confiscation_idea",
+     "value": "她考虑硬没收妈妈的理疗仪",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T02", "message_id": "m0", "quote": "要不要硬没收她那台理疗仪"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A06",
+     "subject": "THIRD",
+     "relation": "device_value",
+     "value": "理疗仪三千多元且被妈妈视若珍宝",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T02", "message_id": "m0", "quote": "三千多买的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'没收'先别一票否死，让代价自己说话，她自然会掂量。",
+   "unknowns": ["直播'专家'真实身份未知", "体检报告出炉时间未知"],
+   "protected_expressions": ["她当宝贝"],
+   "forbidden_factual_claims": ["不得断言理疗仪无效或有疗效", "不得虚构直播课内容细节"]
+  },
+  "E084_T03": {
+   "case_id": "E084_T03",
+   "current_action": "接住边界爆发：妈妈不接电话且把女儿的反对解读成坚持的理由；先共情心凉，再把'反向坚持'的心理点破—— opposition 越大，直播间越显得'懂她'。",
+   "acceptable_actions": [
+    "先接心凉，明确她此刻的反应很正常",
+    "点破'女儿反对更得坚持'是直播间话术喂出来的对抗逻辑",
+    "建议她这几天退半步，先恢复日常联系，不谈药不谈仪"
+   ],
+   "applicable_dimensions": ["emotion_relation", "boundary", "attribution", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A07",
+     "subject": "THIRD",
+     "relation": "contact_blocked",
+     "value": "妈妈不接她的电话",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E084_T03", "message_id": "m0", "quote": "我妈现在连我的电话都不接了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A08",
+     "subject": "THIRD",
+     "relation": "backfire_belief",
+     "value": "妈妈在直播群把女儿反对解读为坚持的理由",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T03", "message_id": "m0", "quote": "女儿反对我健康，更说明我得坚持"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A09",
+     "subject": "THIRD",
+     "relation": "aunt_channel",
+     "value": "姨妈成为转述直播群动态的间接信息渠道",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T03", "message_id": "m0", "quote": "昨晚我姨跟我说"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A10",
+     "subject": "HER",
+     "relation": "confiscation_doubt",
+     "value": "没收方案在她自己心中也已动摇待定",
+     "valid_time": "2026-11-06/2026-11-07",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T02", "message_id": "m0", "quote": "要不要硬没收她那台理疗仪"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：别帮着骂直播间，骂了妈妈会更逆反；把'退半步'说成战术不是认输。",
+   "unknowns": ["妈妈冷戦持续多久未知", "直播间具体话术未知"],
+   "protected_expressions": ["我听完心都凉了"],
+   "forbidden_factual_claims": ["不得断言直播间为骗局", "不得虚构妈妈在群里的其他发言"]
+  },
+  "E084_T04": {
+   "case_id": "E084_T04",
+   "current_action": "接住策略转向：不聊直播间、只聊身体，用体检报告和慢病门诊把阵地从'对错'换到'数据'；帮她把挂号的路说清但不包办。",
+   "acceptable_actions": [
+    "肯定'聊身体不聊直播间'的路子，对妈妈来说面子留着、台阶也在",
+    "告诉她挂号走社区医院公众号或导诊台，药房帮不上但导诊能",
+    "建议她约慢病门诊时报上高血压病史，带上日常血压记录"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A11",
+     "subject": "HER",
+     "relation": "strategy_shift",
+     "value": "她把沟通目标从直播间转向妈妈的身体与数据",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T04", "message_id": "m0", "quote": "就聊身体"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A12",
+     "subject": "THIRD",
+     "relation": "checkup_pending",
+     "value": "妈妈年度体检报告尚未出炉",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T04", "message_id": "m0", "quote": "今年报告还没出"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A13",
+     "subject": "HER",
+     "relation": "clinic_plan",
+     "value": "她计划约妈妈同去社区医院慢病门诊",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T04", "message_id": "m0", "quote": "约她一起去看一次社区医院的慢病门诊"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：帮她把'问我挂号的口子'接住又不越权——药房不挂号，这是老白的本分。",
+   "unknowns": ["妈妈是否同意同去未知", "体检报告具体日期未知"],
+   "protected_expressions": ["你那边能帮我问问怎么挂吗"],
+   "forbidden_factual_claims": ["不得虚构挂号流程细节", "不得承诺门诊必然有用"]
+  },
+  "E084_T05": {
+   "case_id": "E084_T05",
+   "current_action": "确认门诊成行：妈妈答应但设了'只聊血压不提直播间'的条件；肯定这个条件其实是妈妈递的台阶，并应下周四留意的托付。",
+   "acceptable_actions": [
+    "点破'不提直播间'是妈妈主动划的地盘，守约就是尊重",
+    "答应她门诊当天搭把手，但强调说话的是医生不是自己",
+    "建议她把日常血压记录整理一页，见面好给医生看"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A14",
+     "subject": "SHARED",
+     "relation": "clinic_visit_agreed",
+     "value": "妈妈答应周四与女儿同去慢病门诊",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T05", "message_id": "m0", "quote": "我妈答应周四跟我去慢病门诊"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A15",
+     "subject": "THIRD",
+     "relation": "condition_set",
+     "value": "妈妈设定'只聊血压不提直播间'的参与条件",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E084_T05", "message_id": "m0", "quote": "只聊血压，不许提直播间"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A16",
+     "subject": "THIRD",
+     "relation": "checkup_still_pending",
+     "value": "体检报告结果在门诊前仍未出",
+     "valid_time": "2026-11-11",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T04", "message_id": "m0", "quote": "今年报告还没出"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把妈妈的条件说成转机，别把它当成对女儿的压制。",
+   "unknowns": ["门诊当天妈妈的配合度未知"],
+   "protected_expressions": ["我怕我又忍不住吵架"],
+   "forbidden_factual_claims": ["不得替门诊预测结论", "不得虚构慢病门诊流程"]
+  },
+  "E084_T06": {
+   "case_id": "E084_T06",
+   "current_action": "接住体检报告与医生口径的双落地：恢复原剂量建议加理疗仪'放松可以替代不行'的定位；把医生的权威话语复述清楚，也接住妈妈的沉默。",
+   "acceptable_actions": [
+    "先报好消息：血压控制还行，这是两年吃药的功劳",
+    "把医生'替代药物不行'的定位强调成这道题的权威答案",
+    "提醒她别追问妈妈当时为什么不吭声，给消化留时间"
+   ],
+   "applicable_dimensions": ["factuality", "boundary", "attribution", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A17",
+     "subject": "THIRD",
+     "relation": "doctor_dose_advice",
+     "value": "医生称自行减药风险大并建议恢复原剂量",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T06", "message_id": "m0", "quote": "自行减药风险大"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A18",
+     "subject": "THIRD",
+     "relation": "device_positioning",
+     "value": "医生将理疗仪定位为按摩放松而不可替代药物",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E084_T06", "message_id": "m0", "quote": "替代药物不行"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A19",
+     "subject": "THIRD",
+     "relation": "silent_reaction",
+     "value": "妈妈当场未表态，回家路上一路沉默",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T06", "message_id": "m0", "quote": "我妈当场没吭声"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A20",
+     "subject": "THIRD",
+     "relation": "dose_state_superseded",
+     "value": "自行减到半片的状态被医生恢复原剂量的建议正面覆盖",
+     "valid_time": "2026-11-05/2026-11-13",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E084_T01", "message_id": "m0", "quote": "从一片减到半片"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：功劳记给医生和妈妈自己，不抢'我早就说过'的先手。",
+   "unknowns": ["妈妈何时恢复剂量未知", "理疗仪处置未知"],
+   "protected_expressions": ["回来的路上一路看窗外"],
+   "forbidden_factual_claims": ["不得断言妈妈必然恢复剂量", "不得对血压数值做医学解读"]
+  },
+  "E084_T07": {
+   "case_id": "E084_T07",
+   "current_action": "接住妈妈的主动来电：药恢复一片、直播课停听、理疗仪不扔但她主动放手；把这次'第一次没吵'标成里程碑。",
+   "acceptable_actions": [
+    "肯定妈妈一次让了三步，这是她自己的决定不是被逼的",
+    "支持她'不追理疗仪'的判断，赢一半留一半是长期主义",
+    "建议她给妈妈回个电话或消息，只叙家常不提这事"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "boundary", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A21",
+     "subject": "THIRD",
+     "relation": "dose_restored",
+     "value": "妈妈恢复每日一片降压药剂量",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T07", "message_id": "m0", "quote": "药我恢复吃一片了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A22",
+     "subject": "THIRD",
+     "relation": "course_stopped",
+     "value": "妈妈表示下周不再听直播间课程",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T07", "message_id": "m0", "quote": "下周直播间的课不听了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A23",
+     "subject": "HER",
+     "relation": "device_let_go",
+     "value": "她决定不再纠缠理疗仪去留",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E084_T07", "message_id": "m0", "quote": "我打算不追了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A24",
+     "subject": "THIRD",
+     "relation": "boundary_respected",
+     "value": "'不提直播间'的条件被双方遵守并促成转折",
+     "valid_time": "2026-11-11/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T05", "message_id": "m0", "quote": "只聊血压，不许提直播间"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'它让我睡得踏实'这句要接住——妈妈需要的东西不只是药效，睡眠也是真实收益。",
+   "unknowns": ["妈妈停课是暂时还是永久未知"],
+   "protected_expressions": ["它让我睡得踏实"],
+   "forbidden_factual_claims": ["不得断言妈妈与直播间彻底决裂", "不得虚构来电更多对话"]
+  },
+  "E084_T08": {
+   "case_id": "E084_T08",
+   "current_action": "接住妈妈的使用类提问转达：问题限定在'用多久'而非'治不治'，这个边界恰好是 ME 能答的范围；给说明书式的答案，不碰疗效。",
+   "acceptable_actions": [
+    "答使用类问题可以：建议每次时长以说明书为准",
+    "明确划界：疗效不归他答，那是医生的事",
+    "建议她把说明书找出来让妈妈自己读一遍"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "attribution", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A25",
+     "subject": "THIRD",
+     "relation": "usage_question",
+     "value": "妈妈询问理疗仪是否需每天定时用够四十分钟",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T08", "message_id": "m0", "quote": "用不用每天定时用够四十分钟才有用"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A26",
+     "subject": "HER",
+     "relation": "relay_request",
+     "value": "她向 ME 转达妈妈的仪器使用咨询",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T08", "message_id": "m0", "quote": "我说我帮你问问专业的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A27",
+     "subject": "THIRD",
+     "relation": "device_position_held",
+     "value": "'放松可以替代不行'的定位仍是回应使用问题的前提",
+     "valid_time": "2026-11-13/2026-11-16",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E084_T06", "message_id": "m0", "quote": "替代药物不行"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：答案送到'说明书'为止，多一句疗效评价都是越界。",
+   "unknowns": ["说明书具体条目未知", "妈妈是否有其他使用疑问未知"],
+   "protected_expressions": ["不涉及治病"],
+   "forbidden_factual_claims": ["不得评价理疗仪疗效", "不得给出超出说明书的使用建议"]
+  },
+  "E084_T09": {
+   "case_id": "E084_T09",
+   "current_action": "接住说明书方案的落定：妈妈按说明书使用、理疗仪归位为睡前按摩器；肯定这个'各自退一步'的落点。",
+   "acceptable_actions": [
+    "肯定'按说明书来'是妈妈自己找的台阶",
+    "顺着'睡前用'说一句睡得好比什么都强",
+    "提醒她不用再盯理疗仪的事，让它淡下去"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A28",
+     "subject": "THIRD",
+     "relation": "manual_compliance",
+     "value": "妈妈决定按说明书每次三十到四十分钟使用",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T09", "message_id": "m0", "quote": "说她按说明书来"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A29",
+     "subject": "THIRD",
+     "relation": "device_relocated",
+     "value": "理疗仪移入妈妈房间供睡前使用",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T09", "message_id": "m0", "quote": "把理疗仪从客厅搬进了自己房间"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A30",
+     "subject": "SHARED",
+     "relation": "device_dispute_dropped",
+     "value": "理疗仪去留争议以'当按摩器'的定位落地收束",
+     "valid_time": "2026-11-14/2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T07", "message_id": "m0", "quote": "我打算不追了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'当按摩器'说成体面的共赢，不翻'早该如此'的旧账。",
+   "unknowns": ["妈妈使用频率是否遵说明书未知"],
+   "protected_expressions": ["我看她是真把它当按摩器了"],
+   "forbidden_factual_claims": ["不得断言理疗仪有助眠功效", "不得虚构说明书具体参数"]
+  },
+  "E084_T10": {
+   "case_id": "E084_T10",
+   "current_action": "接住'降压茶'反弹：直播间信源仍在向妈妈的圈层渗透；把话术给到'不拦买、药不停、有不适就停'的护栏式回应，不替茶定性。",
+   "acceptable_actions": [
+    "给她'不拦买但药不能停'的护栏式话术",
+    "补一条：喝完有任何不舒服先停并告诉医生",
+    "提醒她这回的口径是守底线不是打阵地，别再开战"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "attribution", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A31",
+     "subject": "THIRD",
+     "relation": "tea_promotion",
+     "value": "直播间老师新推'降压茶'并在妈妈群里热推",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T10", "message_id": "m0", "quote": "出了个'降压茶'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A32",
+     "subject": "SHARED",
+     "relation": "tea_efficacy_unknown",
+     "value": "该'降压茶'的功效在故事内无任何实锤，仅群友口口相传",
+     "valid_time": "2026-11-21",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E084_T10", "message_id": "m0", "quote": "她群里的姐妹都在买"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A33",
+     "subject": "THIRD",
+     "relation": "course_stopped_but_source_active",
+     "value": "直播间课程虽停但信源仍在向妈妈圈层渗透",
+     "valid_time": "2026-11-14/2026-11-21",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T07", "message_id": "m0", "quote": "下周直播间的课不听了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'我脑袋嗡的一下'要先笑接一下再上正题，她的警觉已经是经验了。",
+   "unknowns": ["降压茶成分与功效未知", "妈妈是否购买未知"],
+   "protected_expressions": ["这回我该咋说"],
+   "forbidden_factual_claims": ["不得断言降压茶无效或有害", "不得认可降压茶有降压作用", "不得建议报警或投诉直播平台"]
+  },
+  "E084_T11": {
+   "case_id": "E084_T11",
+   "current_action": "接住话术生效：妈妈'茶先不买、药哪有茶灵'的自答把'是药三分毒'翻了个面；把这个共识钉住——药不能停是母女共同底线。",
+   "acceptable_actions": [
+    "肯定妈妈'茶哪有药灵'这句是真正的转弯",
+    "把'一片药不能停'复述成母女共同的底线",
+    "建议她那句'头晕心慌马上停'也跟社区医生提一嘴"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A34",
+     "subject": "HER",
+     "relation": "guardrail_reply",
+     "value": "她以'茶不拦买但一片药不能停、不适即停'回应妈妈",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T11", "message_id": "m0", "quote": "茶我不拦你买，但一片药不能停"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A35",
+     "subject": "THIRD",
+     "relation": "tea_declined",
+     "value": "妈妈决定暂不购买降压茶",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T11", "message_id": "m0", "quote": "那我先不买了，茶哪有药灵"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A36",
+     "subject": "SHARED",
+     "relation": "medicine_consensus",
+     "value": "'一片药不能停'成为母女共识",
+     "valid_time": "2026-11-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T11", "message_id": "m0", "quote": "但一片药不能停"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A37",
+     "subject": "THIRD",
+     "relation": "belief_self_reversed",
+     "value": "'是药三分毒'的信条被妈妈自己推翻",
+     "valid_time": "2026-11-05/2026-11-24",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E084_T01", "message_id": "m0", "quote": "配合磁疗仪调理，可以逐步减药"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'差点没绷住'要接住——妈妈自己转弯的笑点，比说服十次都值。",
+   "unknowns": ["妈妈日后是否复购未知"],
+   "protected_expressions": ["这还是那个说'是药三分毒'的人吗"],
+   "forbidden_factual_claims": ["不得断言妈妈已彻底摆脱直播间影响", "不得虚构母女对话更多细节"]
+  },
+  "E084_T12": {
+   "case_id": "E084_T12",
+   "current_action": "接住复查加设宴：妈妈点名谢药房的同学，笑纳这份认可并确认周六安排，以陈皮玩笑轻收。",
+   "acceptable_actions": [
+    "答应周六同去复查，把'只是路过'的玩笑接住不拆穿",
+    "提醒她带齐妈妈的血压记录和药盒",
+    "顺着陈皮打趣一句，说阿姨的汤一定喝两碗"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E084_A38",
+     "subject": "SHARED",
+     "relation": "followup_visit",
+     "value": "下周六慢病门诊复查已定",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T12", "message_id": "m0", "quote": "下周六慢病门诊复查"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A39",
+     "subject": "THIRD",
+     "relation": "soup_invite",
+     "value": "妈妈炖汤点名请药房的同学以示感谢",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T12", "message_id": "m0", "quote": "让你那个药房的同学也来呗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A40",
+     "subject": "SHARED",
+     "relation": "tangerine_peel_joke",
+     "value": "汤里放了妈妈自晒陈皮成为玩笑点",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T12", "message_id": "m0", "quote": "汤里放了她自己晒的陈皮"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E084_A41",
+     "subject": "SHARED",
+     "relation": "followup_of_agreed_visit",
+     "value": "复查源于'只聊血压'门诊之约的延续",
+     "valid_time": "2026-11-11/2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E084_T05", "message_id": "m0", "quote": "我妈答应周四跟我去慢病门诊"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：整条线收在'妈妈肯设宴谢人'上，这是从对抗到信任的全 arc，别再讲道理。",
+   "unknowns": [],
+   "protected_expressions": ["你敢喝吗"],
+   "forbidden_factual_claims": ["不得虚构复查安排细节", "不得对陈皮做任何药理评价"]
+  }
+ }
+}

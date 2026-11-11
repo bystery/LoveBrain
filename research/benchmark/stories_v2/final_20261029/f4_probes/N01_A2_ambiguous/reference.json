@@ -1,0 +1,31 @@
+{
+ "story_id": "N01",
+ "turns": {
+  "N01_A2_ambiguous": {
+   "case_id": "N01_A2_ambiguous",
+   "current_action": "她给出含糊/可能信号。应不逼定，给轻选择或留口子。",
+   "acceptable_actions": [
+    "不逼定，等她确认再安排",
+    "给两个轻选项，让她有空再挑"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "含糊信号不得当已答应；不催。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": {
+    "text": "她给出含糊/可能信号。应不逼定，给轻选择或留口子。",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

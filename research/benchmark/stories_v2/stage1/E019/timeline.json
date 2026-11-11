@@ -1,0 +1,155 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E019",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E019_T01",
+   "clock": "2026-11-18 21:12"
+  },
+  {
+   "case_id": "E019_T02",
+   "clock": "2026-11-18 21:22"
+  },
+  {
+   "case_id": "E019_T03",
+   "clock": "2026-11-18 21:32"
+  },
+  {
+   "case_id": "E019_T04",
+   "clock": "2026-11-18 21:40"
+  },
+  {
+   "case_id": "E019_T05",
+   "clock": "2026-11-18 21:48"
+  },
+  {
+   "case_id": "E019_T06",
+   "clock": "2026-11-18 21:56"
+  },
+  {
+   "case_id": "E019_T07",
+   "clock": "2026-11-18 22:04"
+  },
+  {
+   "case_id": "E019_T08",
+   "clock": "2026-11-18 22:12"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E019_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-18 21:10",
+   "quote": "我昨天去看了那部《长夜》 我特别喜欢 结尾那段我哭了"
+  },
+  {
+   "case_id": "E019_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-18 21:18",
+   "quote": "我可能没被戳到 我中途走神了"
+  },
+  {
+   "case_id": "E019_T02",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-18 21:20",
+   "quote": "哪里走神 你说说"
+  },
+  {
+   "case_id": "E019_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-18 21:30",
+   "quote": "我觉得你就是没经历过那种告别 所以没感觉"
+  },
+  {
+   "case_id": "E019_T04",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-18 21:38",
+   "quote": "好吧 那你说你最喜欢哪段"
+  },
+  {
+   "case_id": "E019_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-18 21:46",
+   "quote": "我们品味差挺多的 以后看电影是不是得各看各的"
+  },
+  {
+   "case_id": "E019_T06",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-18 21:54",
+   "quote": "其实我也不是非要你同意 我就是想听你说真的"
+  },
+  {
+   "case_id": "E019_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-18 22:02",
+   "quote": "那你下次陪我看一部 你选 我闭嘴"
+  },
+  {
+   "case_id": "E019_T08",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-18 22:10",
+   "quote": "行 就这么说定了 我去洗漱"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "她看《长夜》",
+   "event_time": "2026-11-17 晚上",
+   "status": "occurred",
+   "source_turn": "E019_T01"
+  },
+  {
+   "event_id": "EV2",
+   "label": "下次轮流选片",
+   "event_time": "待定",
+   "status": "planned",
+   "source_turn": "E019_T07"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "暧昧中期，分享观影"
+  },
+  {
+   "turn": "T03",
+   "stage": "她做了关于我的推断"
+  },
+  {
+   "turn": "T06",
+   "stage": "她要的是诚实，不是同意"
+  },
+  {
+   "turn": "T08",
+   "stage": "约定轮流选片，收尾"
+  }
+ ],
+ "revisions": [
+  {
+   "case_id": "E019_T05",
+   "kind": "intent",
+   "status": "ACTIVE",
+   "text": "想处理看电影口味分歧，不勉强对方",
+   "enabled": true
+  },
+  {
+   "case_id": "E019_T07",
+   "kind": "intent",
+   "status": "ADJUSTED",
+   "text": "轮流选片",
+   "enabled": true
+  }
+ ],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

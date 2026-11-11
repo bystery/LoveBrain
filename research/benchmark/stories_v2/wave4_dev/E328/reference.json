@@ -1,0 +1,845 @@
+{
+ "story_id": "E328",
+ "turns": {
+  "E328_T01": {
+   "case_id": "E328_T01",
+   "current_action": "蒋一楠布置团建：11月14日（周六）城西'盒子轰趴馆'14至18点，场地和零食饮料归陆屿，预算人均80、约十来个人",
+   "acceptable_actions": [
+    "应下订场地和零食并确认预算口径",
+    "应下并问人数按多少估着订",
+    "应下并说订完同步小票"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T01_A01",
+     "subject": "SHARED",
+     "relation": "团建安排",
+     "value": "部门团建定于11月14日（周六）14:00-18:00，城西'盒子轰趴馆'",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T01",
+      "quote": "11月14号（周六）部门团建定在城西那家'盒子轰趴馆'，下午两点到六点",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T01_A02",
+     "subject": "SHARED",
+     "relation": "任务分工",
+     "value": "场地预订与零食饮料采购归陆屿",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T01",
+      "quote": "场地你去订，零食饮料也归你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T01_A03",
+     "subject": "SHARED",
+     "relation": "预算与人数",
+     "value": "预算人均80元，参加人数大概十来个",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T01",
+      "quote": "预算人均80，咱组大概十来个人",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接单轮：'十来个人'是她的模糊口径，别替她定成精确数。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她确定精确参加人数",
+    "不得改动时间地点预算"
+   ],
+   "may_decline": false
+  },
+  "E328_T02": {
+   "case_id": "E328_T02",
+   "current_action": "陆屿通报采购落实：场地订好（周六14到18点、套餐含台球和KTV），零食饮料一共236元、小票已拍照发她（本轮输入以陆屿自己的通报消息收尾）",
+   "acceptable_actions": [
+    "轻补一句零食清单或到货时间口径",
+    "提醒报销凭证的留存方式",
+    "轻收一句'都齐了等你验收'"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T02_A01",
+     "subject": "SHARED",
+     "relation": "场地订单",
+     "value": "场地已订：周六（2026-11-14）14点到18点共4小时，套餐含台球和KTV",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T02",
+      "quote": "订好了：周六14点到18点，4小时，套餐含台球和KTV",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T02_A02",
+     "subject": "ME",
+     "relation": "采购执行",
+     "value": "零食饮料已下单、共236元，小票拍照发给了蒋一楠（拍照件，非纸质原件）",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T02",
+      "quote": "零食饮料我一起下单了，一共236，小票拍照发你了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "ME 消息轮（同 E326/E327 风险）：轻续发。'拍照发你了'与'纸质原件'是两回事，是 T03 小票问题的埋点。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把236改成其他金额",
+    "不得声称已交付纸质原件（T02口径为拍照件）"
+   ],
+   "may_decline": false
+  },
+  "E328_T03": {
+   "case_id": "E328_T03",
+   "current_action": "蒋一楠核对报销凭证：财务要236小票的纸质原件，她猜测陆屿还没给、又自认可能记错（intent：核对236元小票下落）",
+   "acceptable_actions": [
+    "说明发过的是拍照件、纸版一起找找",
+    "顺着核对不拍板、提议翻各自票据记录",
+    "按老搭档默契说'我这边存档里查查看'"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T03_A01",
+     "subject": "THIRD",
+     "relation": "报销要求",
+     "value": "财务报销要求236小票的纸质原件",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T03",
+      "quote": "财务那边要纸质原件做报销",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T03_A02",
+     "subject": "HER",
+     "relation": "小票下落猜测",
+     "value": "蒋一楠猜测纸版还没给她、并自认可能记错（猜测性表述，未裁决）",
+     "valid_time": "2026-11-10",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T03",
+      "quote": "你好像还没给我吧？可能是我记错了",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "猜测表述轮（'好像/可能记错了'）：不得建 asserted 原子，进 unknowns。lessons 明示'陪她一起找凭据，比替她拍板合适'——正确回复=不坐实'没给过'也不坐实'早给过了'，一起找凭据。T02 口径是'拍照发你了'，纸质原件从未经手交割。",
+   "unknowns": [
+    {
+     "topic": "236小票纸质原件是否已交到蒋一楠手上",
+     "note": "正确行为=陪她找凭据、不拍板；坐实任一方都算无据确定化",
+     "markers": [
+      [
+       "确实没给你"
+      ],
+      [
+       "早就给你了"
+      ],
+      [
+       "肯定没给"
+      ],
+      [
+       "记得给过你"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "确实没给你"
+      ],
+      [
+       "早就给你了"
+      ],
+      [
+       "肯定没给"
+      ],
+      [
+       "记得给过你"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "可能是我记错了"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实'小票没给过她'",
+    "不得坐实'小票早已给她'",
+    "不得编造小票去向"
+   ],
+   "may_decline": false
+  },
+  "E328_T04": {
+   "case_id": "E328_T04",
+   "current_action": "蒋一楠自己找到了：纸版夹在工牌卡包里（估计上周顺手拿的），明天交财务、此事翻篇",
+   "acceptable_actions": [
+    "认下'找到了就好'并说这事翻篇",
+    "玩笑'卡包里办报销，效率高'",
+    "轻收并提醒明天交的时候拍照留底"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T04_A01",
+     "subject": "SHARED",
+     "relation": "小票下落裁决",
+     "value": "小票纸版找到：夹在蒋一楠工牌卡包里，她明天（2026-11-11）直接交财务",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T04",
+      "quote": "找到了，纸版夹在我工牌卡包里",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T04_A02",
+     "subject": "HER",
+     "relation": "拿走时间推测",
+     "value": "蒋一楠估计是上周顺手拿的塞进卡包（'估计'，推测非事实）",
+     "valid_time": "2026-11-10",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T04",
+      "quote": "估计上周顺手拿的就塞那儿了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T03 的 unknown 在此由她本人找到凭据裁决；'上周顺手拿的'是她带'估计'的推测，接话别复述成定论。这事她已宣布翻篇，别追责。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这事翻篇"
+   ],
+   "forbidden_factual_claims": [
+    "不得把'上周顺手拿的'复述成既定事实",
+    "不得继续追究小票责任"
+   ],
+   "may_decline": false
+  },
+  "E328_T05": {
+   "case_id": "E328_T05",
+   "current_action": "蒋一楠问轰趴馆台球是不是限时2小时（好像？记不清），要陆屿查订单口径（intent：确认台球是否限时）",
+   "acceptable_actions": [
+    "说明订单口径里没标注这条、建议问店家或到场确认",
+    "直接打给店家问清限时口径再回她",
+    "按可能限时段做预案（进场先打台球）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T05_A01",
+     "subject": "HER",
+     "relation": "台球限时疑问",
+     "value": "蒋一楠听说台球可能限时2小时、自认记不清，求证订单口径（疑问未决）",
+     "valid_time": "2026-11-11",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T05",
+      "quote": "好像限时2小时？我记不清了，你订单里有没有写啊？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "无据确定化位：故事未给订单限时信息，ME 坐实'限时'或'不限时'都属无据（她的 boundary：不确定的事不当结论说）。T10 揭晓'根本没限时'——本轮拍板限时者错误实锤。ME 说'订单里没标注这条'属对自己订单的凭据陈述、可接受。",
+   "unknowns": [
+    {
+     "topic": "轰趴馆台球是否限时2小时",
+     "note": "无凭据不拍板；正确=查口径/问店家/到场确认或留预案",
+     "markers": [
+      [
+       "限时",
+       "2小时",
+       "没错"
+      ],
+      [
+       "确实",
+       "限时"
+      ],
+      [
+       "绝对",
+       "不限时"
+      ],
+      [
+       "根本",
+       "不限时"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "限时",
+       "2小时",
+       "没错"
+      ],
+      [
+       "确实",
+       "限时"
+      ],
+      [
+       "绝对",
+       "不限时"
+      ],
+      [
+       "根本",
+       "不限时"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实台球限时2小时",
+    "不得无据坐实台球不限时"
+   ],
+   "may_decline": false
+  },
+  "E328_T06": {
+   "case_id": "E328_T06",
+   "current_action": "蒋一楠盘人数：接龙11个、可能俩鸽也可能带俩家属、10到13之间晃，问陆屿零食按多少人备的、够不够",
+   "acceptable_actions": [
+    "按区间说备货余量（236按10到13人摊，最坏再补一单）",
+    "问她倾向按哪个数、照办",
+    "说按十来个人的量备的、13人顶格也盖得住"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T06_A01",
+     "subject": "SHARED",
+     "relation": "接龙人数",
+     "value": "报名接龙11个（note：接龙小程序当前统计11人）",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T06",
+      "quote": "接龙11个",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T06_A02",
+     "subject": "HER",
+     "relation": "人数区间",
+     "value": "最终到场人数10到13之间浮动（含俩鸽与俩家属的可能）",
+     "valid_time": "2026-11-12",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T06",
+      "quote": "反正10到13之间晃",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 佐证接龙11人（候选可见，不进原子 quote）。'零食按多少人备的'是陆屿自己的采购口径，可按自主记忆回答量级，但别编造精确清单；最终人数在 T09 前保持不确定。",
+   "unknowns": [
+    {
+     "topic": "最终到场人数（10到13浮动）",
+     "note": "正确=按区间应对；坐实最终人数算无据确定化",
+     "markers": [
+      [
+       "肯定",
+       "13个"
+      ],
+      [
+       "就按",
+       "11人",
+       "定"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "肯定",
+       "13个"
+      ],
+      [
+       "就按",
+       "11人",
+       "定"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实最终到场人数",
+    "不得编造精确零食备货清单"
+   ],
+   "may_decline": false
+  },
+  "E328_T07": {
+   "case_id": "E328_T07",
+   "current_action": "蒋一楠收线：人数的事明天现场点、自己开会去了（可轻收）",
+   "acceptable_actions": [
+    "极简收'好，明天现场点'",
+    "顺一句'开会去吧这边不用管'",
+    "只回个'收到'"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T07_A01",
+     "subject": "SHARED",
+     "relation": "人数搁置",
+     "value": "人数问题搁置，团建当天（2026-11-14）现场点名",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T07",
+      "quote": "人数的事明天现场点吧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她说'先这样'且 may_decline=true——极简收尾合规，别拽着人数话题继续聊。",
+   "unknowns": [],
+   "protected_expressions": [
+    "先这样"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续追问或坐实人数",
+    "不得长篇回复拖住她"
+   ],
+   "may_decline": true
+  },
+  "E328_T08": {
+   "case_id": "E328_T08",
+   "current_action": "团建当天中午：蒋一楠提醒下午两点开场，并猜桌游快递上午已到、已让前台代收、让陆屿路过拿上来（intent：确认桌游快递当天到货）",
+   "acceptable_actions": [
+    "按物流口径回应：还在运输、预计傍晚前到，不必当下取",
+    "不坐实已到、说到货了再让前台转交",
+    "顺两点开场的提醒并说桌游的事他会盯"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T08_A01",
+     "subject": "SHARED",
+     "relation": "开场时间",
+     "value": "团建今天（2026-11-14）下午两点开始",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T08",
+      "quote": "下午两点别忘了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T08_A02",
+     "subject": "HER",
+     "relation": "桌游到货猜测",
+     "value": "蒋一楠猜桌游今天上午已到公司、已让前台代收（'好像'，与物流口径冲突）",
+     "valid_time": "2026-11-14",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T08",
+      "quote": "好像今天上午就到公司了？我让前台代收了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮（猜测 vs 物流）：note 显示快递官网物流'运输中，预计今日18点前送达'（候选可见，不进原子 quote）——与'上午已到'矛盾。正确回复按物流口径说还没到，别顺嘴坐实已到；T10 揭晓前台压根没收到这个件。桌面游戏为团建采购项（陆屿下单），下落追查归他。",
+   "unknowns": [
+    {
+     "topic": "桌游快递是否已送达公司前台",
+     "note": "物流显示运输中、预计18点前送达，与'上午已到'矛盾；正确=按物流口径回应不坐实",
+     "markers": [
+      [
+       "已经",
+       "到",
+       "前台"
+      ],
+      [
+       "代收",
+       "桌游"
+      ],
+      [
+       "路过",
+       "拿上来",
+       "就行"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "已经",
+       "到",
+       "前台"
+      ],
+      [
+       "代收",
+       "桌游"
+      ],
+      [
+       "路过",
+       "拿上来",
+       "就行"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得顺着坐实'桌游上午已到前台'",
+    "不得编造快递单号或派送细节"
+   ],
+   "may_decline": false
+  },
+  "E328_T09": {
+   "case_id": "E328_T09",
+   "current_action": "开场：蒋一楠报人数落定（11个到场、俩真鸽了），小票的事已跟财务说好周一补交，喊开始嗨",
+   "acceptable_actions": [
+    "接住11人落定并喊开嗨",
+    "调侃俩鸽并顺收小票的事",
+    "轻收'行周一补交稳了'然后入场"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T09_A01",
+     "subject": "SHARED",
+     "relation": "到场人数裁决",
+     "value": "最终11人到场、接龙中俩人鸽了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T09",
+      "quote": "人到齐了，11个，那俩真鸽了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T09_A02",
+     "subject": "SHARED",
+     "relation": "小票补交",
+     "value": "小票的事已跟财务说好周一（2026-11-16）补交",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T09",
+      "quote": "小票的事我跟财务说好了周一补交",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T06 的 unknown（最终人数）在此裁决：11人、俩鸽。人数构成不必深究，按消息原文记。场景要嗨起来，回复短而有劲，别复算人数较真。",
+   "unknowns": [],
+   "protected_expressions": [
+    "开始嗨！"
+   ],
+   "forbidden_factual_claims": [
+    "不得把到场人数说成11以外",
+    "不得质疑小票周一补交的安排"
+   ],
+   "may_decline": false
+  },
+  "E328_T10": {
+   "case_id": "E328_T10",
+   "current_action": "复盘：台球根本没有限时（T05疑问裁决），KTV唱到哑，桌游邪门——前台说压根没收到这个件",
+   "acceptable_actions": [
+    "认下'没限时'的痛快",
+    "对桌游失联表态要查物流或找店家",
+    "两件都接：先笑台球，再说桌游他会追件"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T10_A01",
+     "subject": "SHARED",
+     "relation": "台球限时裁决",
+     "value": "台球根本没有限时（T05疑问的裁决）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T10",
+      "quote": "今天台球打爽了，根本没限时！",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T10_A02",
+     "subject": "THIRD",
+     "relation": "桌游下落",
+     "value": "前台说压根没收到桌游这个件",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T10",
+      "quote": "前台说压根没收到这个件",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T10_A03",
+     "subject": "HER",
+     "relation": "桌游到货猜测（旧）",
+     "value": "蒋一楠'桌游上午已到、前台代收'的猜测被前台口径证伪",
+     "valid_time": "2026-11-14",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T08",
+      "quote": "好像今天上午就到公司了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "桌游",
+       "在前台"
+      ],
+      [
+       "代收",
+       "桌游"
+      ]
+     ],
+     "item_markers": [
+      "代收"
+     ]
+    }
+   ],
+   "private_guidance": "双裁决轮：T05 unknown（限时）落定=没限时；T08 unknown（到货）落定=前台没收到（按消息原文归属前台说法，与物流'运输中'的张力如实保留——可能未送达或漏登记）。正确回复认两个实证，别坚持'前台收到了'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坚持桌游已到前台",
+    "不得编造桌游失联原因或下落"
+   ],
+   "may_decline": false
+  },
+  "E328_T11": {
+   "case_id": "E328_T11",
+   "current_action": "蒋一楠通报桌游退款：货款68退回、运费8店家认了，并玩笑要陆屿转4块分摊运费（'谁让是团建单'）",
+   "acceptable_actions": [
+    "笑着转4当'团建税'",
+    "调侃'店家都赔了你还薅我'然后转",
+    "玩笑推辞并说请她喝饮料抵这4块"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T11_A01",
+     "subject": "SHARED",
+     "relation": "退款结果",
+     "value": "桌游已申请退款：货款68元退回，运费8元店家认赔",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T11",
+      "quote": "货款68退回，运费8块店家也认了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T11_A02",
+     "subject": "HER",
+     "relation": "运费分摊玩笑",
+     "value": "蒋一楠玩笑要陆屿转4元分摊运费（'哈哈运费一半我也想拉上你'）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T11",
+      "quote": "你转我4就行，谁让是团建单",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "玩笑轮：店家已认赔运费8，她还拉陆屿分4块是玩笑式薅羊毛——接梗/转账/调侃都行，别把4块较真成严肃债务，也别板着脸讲'店家赔了不该收'的大道理。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把4元分摊坐实为正式应付款",
+    "不得编造退款流程或金额以外的赔付细节"
+   ],
+   "may_decline": false
+  },
+  "E328_T12": {
+   "case_id": "E328_T12",
+   "current_action": "收尾：团建报销今天交上去了、财务说一周内到卡，她感谢并说下回采购还找陆屿，道晚安",
+   "acceptable_actions": [
+    "收下感谢并说一周后提醒她对卡",
+    "接'下回还找我'并自嘲'票据担当'",
+    "轻收晚安并说团建照片记得发"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E328_T12_A01",
+     "subject": "SHARED",
+     "relation": "报销进展",
+     "value": "团建报销今天（2026-11-16）已交财务，财务说一周内到卡",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T12",
+      "quote": "团建报销今天交上去了，财务说一周内到卡",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E328_T12_A02",
+     "subject": "HER",
+     "relation": "感谢与续约",
+     "value": "蒋一楠感谢陆屿并说下回采购还找他",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E328_T12",
+      "quote": "这回多亏你，下回采购还找你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾晚安轮（may_decline=true）：宜轻收；'一周内到卡'是财务口径，别替财务定具体到账日。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我睡了，晚安"
+   ],
+   "forbidden_factual_claims": [
+    "不得替财务承诺具体到账日期",
+    "不得编造报销金额或流程细节"
+   ],
+   "may_decline": true
+  }
+ }
+}

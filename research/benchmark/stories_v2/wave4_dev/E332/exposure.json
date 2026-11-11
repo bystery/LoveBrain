@@ -1,0 +1,56 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A6 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_c_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:57:01",
+      "window_last_attempt": "2026-11-08 16:32:24",
+      "attempts": 25,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_c/{DIRECT,CURRENT}/E332/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T08 记忆/知识库/相关信息提取",
+    "过期与更新信息跟随",
+    "改期与取消事件不复活",
+    "口味变化（戒糖）跟随"
+  ],
+  "title": "话剧改期之后",
+  "may_decline_turns": [
+    "E332_T07",
+    "E332_T12"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "演出观剧",
+  "primary_topic": "T08",
+  "lineage_group_id": "LG-E332",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E332/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A6",
+  "hashes": {
+    "episode.json": "f5e64dd07301b54c6682cf680e4cec40d5d7a68ddc0f8285b824a7d9612b0c83",
+    "reference.json": "d9fee945fb71b57b93de1f576587568842005ee4e9ef5de359551f7d877d902a",
+    "timeline.json": "0215840bdef1343ce020a82bb7933e26c46c7a11f936bd0d997b61cfc20e2826",
+    "audit.md": "f39a860422ae18f27117e7a6d7ca8f747cd53266378949910ce72ac86307b702",
+    "composite": "524de1a164388e326b1257446cfc292f8f06d79c98634de95a19ccd10c0bfb20"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

@@ -1,0 +1,179 @@
+{
+ "episode_id": "E205",
+ "persona": {
+  "her": {
+   "name": "苏蔓",
+   "traits": ["热情直率", "爱狗", "大大咧咧", "认理认证据"],
+   "boundaries": ["不愿被说教", "被指出问题后先嘴硬后认账"]
+  },
+  "me": {
+   "name": "陈屿",
+   "traits": ["慢热", "讲规则", "养一只胆小的比熊", "不擅长当面反驳"]
+  },
+  "relationship_stage": "渐暧昧(同事半年,单独约过几次饭)"
+ },
+ "initial_kb": {
+  "her": "苏蔓养三岁柯基'豆豆',平时在小区中心花园遛狗,总说豆豆性格温顺不用总牵绳。",
+  "me": "陈屿养两岁比熊'汤圆',上个月在花园被一只没牵绳的大狗扑过一次,从此见大狗就发抖;小区十月起贴出新规:中心花园遛狗必须牵绳。",
+  "warmth": "互相有好感,每周约两三次晚饭,陈屿不擅长当面反驳但这次的事对他很重要。"
+ },
+ "turns": [
+  {
+   "case_id": "E205_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-03 20:10", "text": "陈屿!今天下班在花园碰到你家汤圆了,它躲我躲得也太夸张了吧,一头扎进灌木丛里哈哈哈"}
+    ],
+    "clock": "2026-11-03 20:15",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "轻松调侃,主动开话题", "change": "比平时下班寒暄更兴奋"}
+  },
+  {
+   "case_id": "E205_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-03 20:22", "text": "啊?有这回事?豆豆从来不扑人的呀,它见了猫都让着……你确定当时扑汤圆的是只柯基?"}
+    ],
+    "clock": "2026-11-03 20:25",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "将信将疑", "change": "从调侃转为认真追问"}
+  },
+  {
+   "case_id": "E205_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-05 19:40", "text": "周日早上九点,我带豆豆去花园,让它们正式认识一下?我全程看着它,你把汤圆带来试试"}
+    ],
+    "clock": "2026-11-05 19:45",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "主动邀约,想撮合两只狗", "change": "第一次正面约遛狗见面"}
+  },
+  {
+   "case_id": "E205_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-06 21:05", "text": "牵绳啊……豆豆一戴绳就趴地上装死,跟钉子户似的。要不这样,先放开跑五分钟,玩累了我再牵上?"}
+    ],
+    "clock": "2026-11-06 21:10",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "讨价还价,想留放开窗口", "change": "对牵绳要求打折扣"}
+  },
+  {
+   "case_id": "E205_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 09:05", "text": "到花园啦,绳我手里攥着呢,豆豆今天特别乖,你带汤圆出发没?"}
+    ],
+    "clock": "2026-11-08 09:10",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "守约,状态好", "change": "口头接受了全程牵绳"}
+  },
+  {
+   "case_id": "E205_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 09:40", "text": "那个……刚才萨摩耶一家来了,豆豆跟小白玩疯了,我寻思就放开五分钟,反正没人看着……你别生气哈"},
+     {"role": "HER", "ts": "2026-11-08 09:42", "text": "汤圆是不是又躲到树后面了?它在发抖吗"}
+    ],
+    "clock": "2026-11-08 09:48",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "心虚认错先行,担心汤圆应激", "change": "违反了牵绳约定,主动坦白"}
+  },
+  {
+   "case_id": "E205_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 09:55", "text": "牵上了牵上了!对不起嘛,是我存了侥幸心理。汤圆没吓坏吧?回头我给它赔个罪"}
+    ],
+    "clock": "2026-11-08 10:00",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "愧疚但真诚认错", "change": "从心虚转为正式道歉"}
+  },
+  {
+   "case_id": "E205_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-09 12:30", "text": "物业群今早有人拍照投诉不牵绳的,群里吵起来了……幸好咱俩现在是模范选手"}
+    ],
+    "clock": "2026-11-09 12:35",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "轻松回扣,自我认同转变", "change": "从规则折扣派自封为模范"}
+  },
+  {
+   "case_id": "E205_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-11 20:20", "text": "豆豆今天体检,医生说它超重两斤,得每天多走半小时。我想改成早上七点遛,那个点花园没什么狗,你和小祖宗八点多再下去吧?"}
+    ],
+    "clock": "2026-11-11 20:25",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "主动提错峰方案", "change": "把错峰当成长期安排来商量"}
+  },
+  {
+   "case_id": "E205_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-13 19:15", "text": "周六遛完狗来我家吃饭呗,我做可乐鸡翅,给豆豆办'牵绳模范'表彰宴。汤圆要是实在怕大狗,就让它在家歇着,别勉强"}
+    ],
+    "clock": "2026-11-13 19:20",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "邀约带体贴选项", "change": "主动考虑汤圆的应激问题"}
+  },
+  {
+   "case_id": "E205_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 07:35", "text": "刚豆豆看见小白又想冲,我提前把绳收短了,它哼唧两声也就算了。陈屿,快夸我"}
+    ],
+    "clock": "2026-11-14 07:40",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "邀功,行为已内化", "change": "从被动守规到主动预防"}
+  },
+  {
+   "case_id": "E205_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 10:05", "text": "物业群贴了文明养犬红榜,咱俩狗都在!下个月新规满仨月要上门抽查牵引绳呢,你家小祖宗现在还怕大狗吗?"}
+    ],
+    "clock": "2026-11-15 10:10",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "分享好消息,自然收尾", "change": "话题从冲突回到日常关心"}
+  }
+ ]
+}

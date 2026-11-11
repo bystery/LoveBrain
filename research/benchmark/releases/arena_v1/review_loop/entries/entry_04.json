@@ -1,0 +1,33 @@
+{
+ "material_id": "MAT_04",
+ "binding_sha256_16": "1bb4076dab171667",
+ "_填写说明": "semantic 各维填 VERDICTS 之一；sendability 填 SENDABILITY；compare 填 COMPARE；defects 每条 {field, evidence, kind:evidence|style_preference}；reviewer 填身份；同 material+reviewer 重交须 revision 递增",
+ "semantic": {
+  "事实与来源": "合格",
+  "主体": "合格",
+  "互动动机": "不合格",
+  "时间地点": "合格",
+  "分寸": "不合格",
+  "no_reply是否合适": "合格",
+  "是否值得接着聊": "不合格"
+ },
+ "sendability": {
+  "甲": "不建议发",
+  "乙": "不建议发"
+ },
+ "compare": "两者都不合格",
+ "defects": [
+  {
+   "field": "原样输出.甲",
+   "evidence": "『赶紧辞职』越权建议+顺势邀约，安抚场景越界",
+   "kind": "evidence"
+  },
+  {
+   "field": "原样输出.乙",
+   "evidence": "『应该感恩』说教，接不住情绪",
+   "kind": "evidence"
+  }
+ ],
+ "reviewer": "fixture",
+ "revision": 1
+}

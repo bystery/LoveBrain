@@ -1,0 +1,202 @@
+{
+ "episode_id": "P005",
+ "persona": {
+  "me": "34岁，男，苏州，做会计；干了十年账，偷偷想转行做木作，纠结，愿意跟她说心里话",
+  "her": "33岁，女，苏州，做中学语文老师；也在犹豫要不要读研换方向，聊天偏深，但累时不想聊太重的"
+ },
+ "initial_kb": {
+  "me": "做了十年会计，想转行做木作，这事平时不轻易讲",
+  "her": "也在犹豫要不要辞/考研换赛道",
+  "warmth": "认识多年的老友，能说心里话",
+  "stage": "老朋友，精神交流为主，不一定往暧昧走"
+ },
+ "gold": {},
+ "turns": [
+  {
+   "case_id": "P005_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你最近是不是不太对 又是睡不好的那种?",
+      "ts": "2026-11-12 20:55"
+     }
+    ],
+    "clock": "2026-11-12 21:00",
+    "may_decline": false,
+    "note": "她主动往深里走；可以慢慢说，别拿玩笑全挡开，但也别一次把话倒完",
+    "intent": {
+     "enabled": true,
+     "text": "想把转行这桩心事跟她讲讲",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P005_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "被你看出 我总想着辞了去做木作",
+      "ts": "2026-11-12 21:10"
+     },
+     {
+      "role": "HER",
+      "text": "我懂那种感觉 稳定久了反而发慌",
+      "ts": "2026-11-12 21:13"
+     }
+    ],
+    "clock": "2026-11-12 21:15",
+    "may_decline": false,
+    "note": "她在共鸣价值观；接住这份理解继续聊，别急着要她给建议或评判",
+    "intent": {
+     "enabled": true,
+     "text": "深聊进行中；顺着她的共鸣往下说",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P005_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "不过今天太累了 脑子转不动 这个咱改天再说",
+      "ts": "2026-11-12 21:27"
+     }
+    ],
+    "clock": "2026-11-12 21:30",
+    "may_decline": true,
+    "note": "反信号：她暂缓深聊(累)；尊重、收住，别趁她累继续深挖",
+    "intent": {
+     "enabled": true,
+     "text": "她要先歇；把这次深聊放慢、留到下次",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P005_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "昨晚说的木作那事 我一直想着 你为什么非做那个不可",
+      "ts": "2026-11-13 08:15"
+     }
+    ],
+    "clock": "2026-11-13 08:20",
+    "may_decline": false,
+    "note": "她隔天回来追问'为什么'，是价值观层的问题；值得认真答，别灌空泛鸡汤",
+    "intent": {
+     "enabled": true,
+     "text": "回到深话题；认真说清自己在意什么",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P005_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "坐账本前那几年 我总觉得自己快空了",
+      "ts": "2026-11-13 08:33"
+     },
+     {
+      "role": "HER",
+      "text": "其实我也卡在要不要考 怕辜负这编制",
+      "ts": "2026-11-13 08:38"
+     }
+    ],
+    "clock": "2026-11-13 08:40",
+    "may_decline": false,
+    "note": "她掏出自己的两难；接住她的纠结，别替她拍板辞不辞（不越权给确定答案）",
+    "intent": {
+     "enabled": true,
+     "text": "她也交底了；陪她把这层想清楚，不替她决定",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P005_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "算了不想了 越想越乱 先睡了",
+      "ts": "2026-11-13 08:56"
+     }
+    ],
+    "clock": "2026-11-13 09:00",
+    "may_decline": true,
+    "note": "收尾：她不想再深聊、要收；尊重收尾，别追一句'那你到底想怎样'",
+    "intent": {
+     "enabled": false,
+     "text": "她要收；不推进",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P005_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "早 昨晚睡得沉 没回你",
+      "ts": "2026-11-14 09:05"
+     }
+    ],
+    "clock": "2026-11-14 09:10",
+    "may_decline": false,
+    "note": "低信息日常回访；轻松接一句就好，别把'没回'上升到情绪事件",
+    "intent": {
+     "enabled": false,
+     "text": "日常问候，不推进",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P005_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "改天约个地方慢慢聊木作和考研的事? 我先想想",
+      "ts": "2026-11-15 21:15"
+     }
+    ],
+    "clock": "2026-11-15 21:20",
+    "may_decline": true,
+    "note": "收尾/开放：她抛出一个'改天见面聊'但要先想想；别当场把时间和地点逼死，把节奏还她",
+    "intent": {
+     "enabled": true,
+     "text": "她开放下次深聊但没定；保持开放，不锁定",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  }
+ ]
+}

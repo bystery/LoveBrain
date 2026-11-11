@@ -1,0 +1,156 @@
+{
+ "episode_id": "E135",
+ "persona": {
+  "her": {
+   "name": "姜好",
+   "traits": ["互联网运营，备考12月日语N1", "计划性强，讨厌打卡变形式主义", "加班多但自控力在线", "爱用日剧梗调节气氛"],
+   "boundaries": ["状态断档时宁可暂停也不硬撑", "不想被打卡记录绑架"]
+  },
+  "me": {
+   "name": "方屿",
+   "traits": ["备考N2的语言搭子", "做打卡记录表，擅长把目标拆小", "情绪稳定，擅长给计划留余地"]
+  },
+  "relationship_stage": "学习搭子（认识半年，渐熟）"
+ },
+ "initial_kb": {
+  "her": "姜好报了12月日语N1考试，词汇是弱项，十年真题已刷三套，和方屿组了每日打卡搭子",
+  "me": "方屿备考N2，负责做两人的打卡记录表，之前陪姜好刷过两轮语法",
+  "warmth": "半年学习搭子，打卡互相监督，偶尔分享日剧台词当彩蛋",
+  "stage": "学习搭子"
+ },
+ "turns": [
+  {
+   "case_id": "E135_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-01 10:00", "text": "方屿！还有50天就N1了，我做了个冲刺表：每天60个新词+一套真题精读，从今天起咱俩打卡别断！"}],
+    "clock": "2026-11-01 10:02",
+    "may_decline": false,
+    "intent": {"enabled": true, "status": "proposed", "text": "发起50天N1冲刺每日打卡搭子计划"}
+   },
+   "gold": {},
+   "feedback": {"her_state": "冲刺启动的高昂状态"}
+  },
+  {
+   "case_id": "E135_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-04 21:30", "text": "连着四天打卡了，词汇正确率从六成涨到七成五，真题精读也追上了，感觉状态来了。"}],
+    "clock": "2026-11-04 21:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "执行顺利的正反馈"}
+  },
+  {
+   "case_id": "E135_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-08 09:45", "text": "有个糟心事先说：公司新项目这周上线，接下来两周我得天天加班到九点，冲刺表大概率跟不上，我想先把打卡按暂停，别让断卡毁心态。"}],
+    "clock": "2026-11-08 09:47",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "主动按暂停的理性但带懊恼"}
+  },
+  {
+   "case_id": "E135_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-08 20:10", "text": "你说的降档我可以试试：别提60个词了，每天通勤路上刷10分钟词就行，真题就先欠着，上线完了我再补。"}],
+    "clock": "2026-11-08 20:12",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "接受降档方案，主动权收回"}
+  },
+  {
+   "case_id": "E135_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-15 22:20", "text": "项目今天总算过了灰度，我这两周就真只刷了词，10分钟档倒是没断，睡前来一条，仪式感还在。"}],
+    "clock": "2026-11-15 22:22",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "项目收尾的松一口气，小坚持的自豪"}
+  },
+  {
+   "case_id": "E135_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-18 21:05", "text": "昨天做了套2018年的真题，词汇部分还行，听力拉胯，错了一半，看来暂停的代价主要在耳朵上。"}],
+    "clock": "2026-11-18 21:07",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "重启后的短板暴露，自我诊断清晰"}
+  },
+  {
+   "case_id": "E135_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-20 10:30", "text": "考试定档了，还有25天，冲刺表重启！从今天起恢复60词+两天一套真题，听力每天加30分钟精听，这回打卡必须一路干到考前。"}],
+    "clock": "2026-11-20 10:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "重启的高亢，带着补课的紧迫"}
+  },
+  {
+   "case_id": "E135_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-26 23:15", "text": "精听到一半，鼻子有点塞，可能是降温着凉了……先去睡了，明天的量明天补，别祝我发烧就行。"}],
+    "clock": "2026-11-26 23:18",
+    "may_decline": true
+   },
+   "gold": {},
+   "feedback": {"her_state": "身体不适的深夜短消息，允许不接"}
+  },
+  {
+   "case_id": "E135_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-30 20:40", "text": "这个月最后一天，汇报：60词档全勤，真题补到第7套，精听21天。降档那两周真没白费，词汇一直在。"}],
+    "clock": "2026-11-30 20:42",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "月度复盘的踏实成就感"}
+  },
+  {
+   "case_id": "E135_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-06 09:20", "text": "考前一周，计划收尾：只过错题本和错词本，不做新题。准考证打印了，考场在城东外语学校，有点远，周日先去踩个点。"}],
+    "clock": "2026-12-06 09:22",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "考前一周的收束节奏"}
+  },
+  {
+   "case_id": "E135_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-07 18:55", "text": "踩点回来了，考场离地铁口500米，中午吃饭的地方也看好了。明早7点半出门，晚上10点前必须睡，手机都准备放客厅充电。"}],
+    "clock": "2026-12-07 18:57",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "考前最后的执行细节汇报"}
+  },
+  {
+   "case_id": "E135_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-14 19:30", "text": "考完啦！词汇和阅读稳，听力最后两道有点蒙。先不管了，出分前我把《四重奏》二刷了当奖励。N2你也快考了，加油，等你好消息。"}],
+    "clock": "2026-12-14 19:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "考后释放，反向给搭子打气"}
+  }
+ ]
+}

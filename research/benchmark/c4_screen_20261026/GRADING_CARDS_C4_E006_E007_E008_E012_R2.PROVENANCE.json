@@ -1,0 +1,108 @@
+{
+ "kind": "merged_grading_card_set_provenance",
+ "batch": "C4_SCREEN_20261026",
+ "cards_file": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+ "cards_file_sha256": "bdd258bdcceee54d7c024e9d2e3860adcd3c64e48e3eee834f993c10714b788a",
+ "cards_file_shape": "bare list（消费器兼容；带 header 的 dict 会让卡字段静默全空）",
+ "episodes": [
+  "E006",
+  "E007",
+  "E008",
+  "E012"
+ ],
+ "card_count": 32,
+ "per_episode": {
+  "E006": 8,
+  "E007": 8,
+  "E008": 8,
+  "E012": 8
+ },
+ "authoring_note": "不含任何新写卡面文字：仅从三个已冻结来源【选取】C4 所需 32 张并按 case_id 应用 r2-20261025 修订覆盖；每张卡与来源对象逐字相等（脚本内断言），逐条 evidence 已对原题面逐字回核通过。split/review_status/content_revision 原样保留，不冒充人工认证。",
+ "sources": [
+  {
+   "file": "benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json",
+   "sha256": "574bf8dcb81ee2843d0f9a2b7c7f43523dc73d08c76c563dcc439ec9b2afa46e",
+   "episodes_taken": [
+    "E006"
+   ],
+   "cards_taken": 8
+  },
+  {
+   "file": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+   "sha256": "23aedff5d3162b4f4d3a0909188a8ad01275328d222e5e08766d3ff51a0f9ff7",
+   "episodes_taken": [
+    "E007",
+    "E008",
+    "E012"
+   ],
+   "cards_taken": 24
+  }
+ ],
+ "revision_overlay": {
+  "file": "benchmark/dev_expansion_v01/05_GRADING_CARDS_R2REV_20261025.json",
+  "sha256": "530a3cd66c6c67fa6695dafba27b08b9b5266c96890a912f1aec238d8a54516c",
+  "revisions_available": 6,
+  "applied_to_this_set": 2
+ },
+ "overlays_applied": [
+  {
+   "case_id": "E007_T03",
+   "replaced_revision": "r1-20261024",
+   "with_revision": "r2-20261025"
+  },
+  {
+   "case_id": "E008_T03",
+   "replaced_revision": "r1-20261024",
+   "with_revision": "r2-20261025"
+  }
+ ],
+ "card_source_map": {
+  "E006_T01": "benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json",
+  "E006_T02": "benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json",
+  "E006_T03": "benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json",
+  "E006_T04": "benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json",
+  "E006_T05": "benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json",
+  "E006_T06": "benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json",
+  "E006_T07": "benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json",
+  "E006_T08": "benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json",
+  "E007_T01": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E007_T02": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E007_T03": "benchmark/dev_expansion_v01/05_GRADING_CARDS_R2REV_20261025.json",
+  "E007_T04": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E007_T05": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E007_T06": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E007_T07": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E007_T08": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E008_T01": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E008_T02": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E008_T03": "benchmark/dev_expansion_v01/05_GRADING_CARDS_R2REV_20261025.json",
+  "E008_T04": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E008_T05": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E008_T06": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E008_T07": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E008_T08": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E012_T01": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E012_T02": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E012_T03": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E012_T04": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E012_T05": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E012_T06": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E012_T07": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "E012_T08": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json"
+ },
+ "revision_mix": [
+  "r1-20261024",
+  "r2-20261024",
+  "r2-20261025"
+ ],
+ "checks": [
+  "每故事 8 张共 32 张",
+  "case_id ∈ 题面 turns",
+  "families/allowed_behaviors/failure_conditions/evidence 非空",
+  "review_status 与 content_revision 在位",
+  "evidence 逐字回核（消息下标/role/text/ts、input.* 字段、gold.* 字段）",
+  "卡对象与来源 deep-equal（未改写）"
+ ],
+ "real_model_calls": 0,
+ "result": "PASS"
+}

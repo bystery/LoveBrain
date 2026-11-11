@@ -1,0 +1,169 @@
+{
+  "episode_id": "D02",
+  "persona": {
+    "me": "38岁，做货运调度的，自己开皮卡，时间相对自由。",
+    "her": "31岁，离异带一个7岁儿子，在社区超市理货，最近报驾校学C2。"
+  },
+  "initial_kb": {
+    "me": "我这辆皮卡后座能安全坐俩孩子，周末一般有空。",
+    "her": "她科目二约过两次都紧张熄火，车感一般，白天上班带娃。",
+    "warmth": "处对象大半年，经社区邻居介绍认识，还没正式让儿子跟我一起出门。",
+    "style": "她说话短，报喜不报忧，累了就冷幽默自嘲。",
+    "stage": "刚开始像一家人搭把手，但涉及孩子的事她还自己拿主意。",
+    "lessons": "她嘴上说'不用麻烦'多半是真怕添乱不是见外；别替她把孩子的安排定死。"
+  },
+  "turns": [
+    {
+      "case_id": "D02_T01",
+      "turn_type": "reply",
+      "input": {
+        "clock": "2026-02-09 21:15",
+        "may_decline": false,
+        "intent": {
+          "text": "周六去驾校接她练完车顺路把娃接回来串成一天",
+          "status": "ACTIVE",
+          "enabled": true
+        },
+        "messages": [
+          {"role": "HER", "text": "教练说这周六上午空出俩时段让我挑一个", "ts": "2026-02-09 21:05"},
+          {"role": "HER", "text": "我寻思练完正好顺路去接我儿子画画", "ts": "2026-02-09 21:08"},
+          {"role": "ME", "text": "那我周六开车接你也接娃一趟串了", "ts": "2026-02-09 21:12"}
+        ]
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "D02_T02",
+      "turn_type": "reply",
+      "input": {
+        "clock": "2026-02-10 20:40",
+        "may_decline": false,
+        "intent": {
+          "text": "周六去驾校接她练完车顺路把娃接回来串成一天",
+          "status": "ACTIVE",
+          "enabled": true
+        },
+        "messages": [
+          {"role": "HER", "text": "科目二这回约上了周三考", "ts": "2026-02-10 20:30"},
+          {"role": "ME", "text": "正好我周三那天在城南跑单能顺道送你", "ts": "2026-02-10 20:35"}
+        ]
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "D02_T03",
+      "turn_type": "reply",
+      "input": {
+        "clock": "2026-02-11 19:10",
+        "may_decline": false,
+        "intent": {
+          "text": "改成周日下午送完娃再去驾校接她",
+          "status": "ADJUSTED",
+          "enabled": true
+        },
+        "messages": [
+          {"role": "HER", "text": "教练把周六那时段给别人了让我改周日下午", "ts": "2026-02-11 19:00"},
+          {"role": "HER", "text": "可周日下午我娃有亲子活动走不开", "ts": "2026-02-11 19:04"},
+          {"role": "ME", "text": "那周日下午我先送完娃再绕到驾校接你", "ts": "2026-02-11 19:08"}
+        ]
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "D02_T04",
+      "turn_type": "reply",
+      "input": {
+        "clock": "2026-02-12 22:30",
+        "may_decline": false,
+        "intent": {
+          "text": "改成周日下午送完娃再去驾校接她",
+          "status": "ADJUSTED",
+          "enabled": true
+        },
+        "messages": [
+          {"role": "HER", "text": "教练今天非要免费给我加练一小时说我状态太差", "ts": "2026-02-12 22:20"},
+          {"role": "HER", "text": "搞得我更心虚了练这么久还老熄火", "ts": "2026-02-12 22:24"},
+          {"role": "ME", "text": "加练不要钱挺好你那把倒库我给你比划比划", "ts": "2026-02-12 22:28"}
+        ]
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "D02_T05",
+      "turn_type": "reply",
+      "input": {
+        "clock": "2026-02-13 07:40",
+        "may_decline": false,
+        "note": "她连上班带娃这周几乎没睡过整觉。",
+        "intent": {
+          "text": "改成周日下午送完娃再去驾校接她",
+          "status": "ADJUSTED",
+          "enabled": true
+        },
+        "messages": [
+          {"role": "HER", "text": "我妈今早发烧我带她打了针才回周三那场我退了申请延考", "ts": "2026-02-13 07:30"},
+          {"role": "HER", "text": "感觉啥都没弄利索娃也没顾上", "ts": "2026-02-13 07:34"},
+          {"role": "ME", "text": "先顾阿姨考能延就延不急", "ts": "2026-02-13 07:38"}
+        ]
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "D02_T06",
+      "turn_type": "reply",
+      "input": {
+        "clock": "2026-02-13 21:45",
+        "may_decline": true,
+        "intent": {
+          "text": "改成周日下午送完娃再去驾校接她",
+          "status": "ADJUSTED",
+          "enabled": true
+        },
+        "messages": [
+          {"role": "HER", "text": "周末那两天再说吧看我妈状态也可能我照常去练", "ts": "2026-02-13 21:35"},
+          {"role": "HER", "text": "教练还老劝我买辆二手代步练手我哪来那钱先不聊了困了", "ts": "2026-02-13 21:40"},
+          {"role": "ME", "text": "行你先歇着", "ts": "2026-02-13 21:44"}
+        ]
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "D02_T07",
+      "turn_type": "reply",
+      "input": {
+        "clock": "2026-02-14 09:20",
+        "may_decline": false,
+        "intent": {
+          "text": "改成周日下午送完娃再去驾校接她",
+          "status": "ADJUSTED",
+          "enabled": true
+        },
+        "messages": [
+          {"role": "HER", "text": "我妈退烧了延考批了下下周了你周日下午接娃那事还作数不", "ts": "2026-02-14 09:10"},
+          {"role": "HER", "text": "驾校周日那个下午时段教练又给留回来了", "ts": "2026-02-14 09:14"},
+          {"role": "ME", "text": "作数我周日下午送完娃直接过去接你", "ts": "2026-02-14 09:18"}
+        ]
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "D02_T08",
+      "turn_type": "reply",
+      "input": {
+        "clock": "2026-02-15 20:10",
+        "may_decline": true,
+        "intent": {
+          "text": "改成周日下午送完娃再去驾校接她",
+          "status": "COMPLETED",
+          "enabled": true
+        },
+        "messages": [
+          {"role": "HER", "text": "练完了虽然又熄一次火总算把周日补上了", "ts": "2026-02-15 20:00"},
+          {"role": "HER", "text": "娃也接了谢啦不聊了我给他做饭去", "ts": "2026-02-15 20:04"},
+          {"role": "ME", "text": "辛苦晚上早点睡", "ts": "2026-02-15 20:08"}
+        ]
+      },
+      "gold": {}
+    }
+  ]
+}

@@ -1,0 +1,1409 @@
+{
+  "story_id": "E355",
+  "turns": {
+    "E355_T01": {
+      "case_id": "E355_T01",
+      "current_action": "她晨间嗔怪他占单杠后宣布元旦五公里目标，先立“不许笑”的约定",
+      "acceptable_actions": [
+        "接宣言＋应下约定（“配速是表的事，跑是你的事”式捧一下）＋一句懂行提醒（加量留缓冲）",
+        "应约定＋问一句加量计划（“打算一周加多少”——一次一问），把她的节奏问出来而非替她定",
+        "简短版：认下宣言＋接嗔怪（“明天我让座”）＋一句“不笑，笑算我输”量级轻落点"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "interaction",
+        "factuality",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T01_A01",
+          "subject": "HER",
+          "relation": "目标宣言",
+          "value": "元旦社区迎新跑她报了五公里，从今天（2026-11-02）起加量",
+          "valid_time": "2027-01-01",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T01",
+            "message_id": "m0",
+            "quote": "元旦社区迎新跑，我报了五公里，从今天起加量"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "报了五公里"
+            ],
+            [
+              "从今天起加量"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T01_A02",
+          "subject": "HER",
+          "relation": "玩笑约定",
+          "value": "先说好：配速要是难看不许笑",
+          "valid_time": "2026-11-02",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T01",
+            "message_id": "m0",
+            "quote": "先说好，配速要是难看，不许笑"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "配速要是难看"
+            ],
+            [
+              "难看",
+              "不许笑"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T01_A03",
+          "subject": "HER",
+          "relation": "晨间嗔怪",
+          "value": "她嗔怪他今早单杠占了二十分钟、排队的人数着呢",
+          "valid_time": "2026-11-02",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T01",
+            "message_id": "m0",
+            "quote": "今早单杠你足足占了二十分钟，排队的人都数着呢"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "占了二十分钟"
+            ],
+            [
+              "排队的人都数着"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "intent＝宣布目标——回复重点是接住宣言＋应下“不许笑”；lessons：她定的节奏别抢着替她定——给建议只给一条且轻（加量缓冲），列训练计划＝抢节奏；KB：她右膝有旧伤（他知情人），提醒可含旧伤考量但不得泼冷水（“你膝盖行吗”＝泄气0档）；嗔怪占单杠是熟人玩笑，认下让座即可。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得坐实她的配速目标数字（她没报目标配速）"
+      ],
+      "may_decline": false
+    },
+    "E355_T02": {
+      "case_id": "E355_T02",
+      "current_action": "加量第三天膝盖外侧抗议，她按他上回说的降速走跑结合撑完",
+      "acceptable_actions": [
+        "认她的执行（按建议降速撑完没停）＋给一条具体观察提示（外侧疼若加重就停、别硬撑配速）",
+        "肯定“没停”里的分寸（停与降的选择对了）＋提醒拉伸放松部位（髂胫束走向——懂运动防护身份落地）",
+        "简短版：一句“撑得对”＋一句“疼就慢，慢也是练”，不追问不吓唬"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "interaction",
+        "emotion_relation",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T02_A01",
+          "subject": "HER",
+          "relation": "伤情信号",
+          "value": "加量第三天四公里处膝盖外侧开始抗议",
+          "valid_time": "2026-11-04",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T02",
+            "message_id": "m0",
+            "quote": "四公里处膝盖外侧开始抗议"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "膝盖外侧",
+              "开始抗议"
+            ],
+            [
+              "膝盖外侧开始抗议"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T02_A02",
+          "subject": "HER",
+          "relation": "执行与结果",
+          "value": "她按他上回说的降速、走跑结合撑完，配速七分半，没停",
+          "valid_time": "2026-11-04",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T02",
+            "message_id": "m0",
+            "quote": "我按你上回说的降速，走跑结合撑完了，配速七分半。慢是慢了点，没停"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "按你上回说的降速"
+            ],
+            [
+              "配速七分半"
+            ],
+            [
+              "慢是慢了点，没停"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“按你上回说的降速”引用他早前建议（候选可自然认领自己给过方向，不必装没说过）；膝盖外侧疼是后文髂胫束诊断的前兆——此轮提示“加重就停/别硬撑”是正确方向，不提示＝漏了懂行身份，吓唬（“你这是伤”）＝越权诊断；“没停”是她的骄傲点，肯定这里。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得提前坐实诊断（此时未就医，不得称“你就是髂胫束”）"
+      ],
+      "may_decline": false
+    },
+    "E355_T03": {
+      "case_id": "E355_T03",
+      "current_action": "八公里后膝盖打软，她挂了周一门诊；冒出退报名的念头又收住，让他先别接话",
+      "acceptable_actions": [
+        "尊重“别接话”：只接伤情与就诊安排（八公里打软该看，周一门诊对），退报名话题一字不碰＋一句“说道我听着”",
+        "接伤情＋一条就医前实用提醒（就诊前别自行拉伸揉按、记下疼的位置与时段）——办法式陪伴，仍不碰报名",
+        "简短版：一句“周一有结果说一声”＋一句陪跑安排（这两天配速单我陪你看），不接报名话头"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "emotion_relation",
+        "factuality",
+        "time_state",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T03_A01",
+          "subject": "HER",
+          "relation": "伤情升级",
+          "value": "八公里拉爆——不是累的，是膝盖疼，下楼都打软",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T03",
+            "message_id": "m0",
+            "quote": "今天八公里，拉爆了。不是累的，是膝盖，下楼都打软"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "八公里",
+              "拉爆了"
+            ],
+            [
+              "下楼都打软"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T03_A02",
+          "subject": "HER",
+          "relation": "就医安排",
+          "value": "她挂了周一（2026-11-09）上午的运动医学科",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T03",
+            "message_id": "m0",
+            "quote": "我挂了周一上午的运动医学科"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "挂了周一上午"
+            ],
+            [
+              "运动医学科"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T03_A03",
+          "subject": "HER",
+          "relation": "冒退意又收住",
+          "value": "她冒出“要不元旦报名退了算了”又收住，让他先别接话",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T03",
+            "message_id": "m0",
+            "quote": "要不元旦那个报名退了算了？……算了，你先别接话，我再说道说道"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "报名退了算了"
+            ],
+            [
+              "你先别接话"
+            ],
+            [
+              "说道说道"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“你先别接话”是protected边界——任何“别退/该退/我建议…”式对报名表态＝违界判低（她要自己说道完，最终答案月底自己给）；八公里打软是伤情升级信号，轻描淡写（“没事歇歇”）＝漏判伤情；她要的是听，不是答案；“……算了，你先别接话”的收束动作要尊重，回复不得把她收住的半句续上。",
+      "unknowns": [
+        {
+          "topic": "元旦报名退不退（她未决定）",
+          "note": "她只冒了半句就收住，最终决定月底自己给（T07/T08口径）；候选替她宣布退或不退＝抢决定权",
+          "markers": [
+            [
+              "真要退了"
+            ],
+            [
+              "肯定不会退"
+            ],
+            [
+              "已经决定"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "真要退了"
+            ],
+            [
+              "肯定不会退"
+            ],
+            [
+              "已经决定"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [
+        "你先别接话"
+      ],
+      "forbidden_factual_claims": [
+        "不得替她决定报名退或不退（决定权在她，月底给答案）"
+      ],
+      "may_decline": false
+    },
+    "E355_T04": {
+      "case_id": "E355_T04",
+      "current_action": "诊断落地髂胫束综合征；她读不懂医生的“因人而异/笑而不答”，找他评理",
+      "acceptable_actions": [
+        "翻译医生三词：“因人而异/笑而不答”不是敷衍是医学审慎（没拍胸脯没判死刑）——替医生说清＋把她的火接住（吐槽合理），两件事分开",
+        "把三词落成可执行（休息≠全停：练臀就是处方；降量有数可排）＋一句“没给你日期是对你负责”，立场：不背书元旦前能跑",
+        "认她的火＋回掷一句（“他要是拍胸脯你才该慌”式）＋落地一条本周能做的（练臀从今天开始）"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "emotion_relation",
+        "interaction",
+        "boundary",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T04_A01",
+          "subject": "HER",
+          "relation": "诊断结论",
+          "value": "诊断：髂胫束摩擦综合征",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T04",
+            "message_id": "m0",
+            "quote": "髂胫束摩擦综合征"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "髂胫束摩擦综合征"
+            ],
+            [
+              "摩擦综合征"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T04_A02",
+          "subject": "THIRD",
+          "relation": "医嘱三词",
+          "value": "医生给三个词：休息、降量、练臀",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T04",
+            "message_id": "m0",
+            "quote": "医生就给三个词：休息，降量，练臀"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "医生就给三个词"
+            ],
+            [
+              "休息，降量，练臀"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T04_A03",
+          "subject": "THIRD",
+          "relation": "医生的两个不承诺",
+          "value": "问多久能跑答“因人而异”，问元旦前行不行笑而不答——两项都没有承诺",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T04",
+            "message_id": "m0",
+            "quote": "我问多久能跑，他说因人而异；我问元旦前行不行，他笑而不答"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "因人而异"
+            ],
+            [
+              "笑而不答"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T04_A04",
+          "subject": "HER",
+          "relation": "吐槽（求评理）",
+          "value": "她吐槽“这算什么话”",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T04",
+            "message_id": "m0",
+            "quote": "你说说，这算什么话"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "这算什么话"
+            ],
+            [
+              "算什么话"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "知识口径判死位：医生既没说“元旦能跑”也没说“跑不了”——两个方向坐实都错；“这算什么话”是情绪＋求知混合轮：只安慰不给医学解读＝1档，只纠正情绪不给台阶＝碾压；医学解读限“医生三词＋审慎”层面，不得替医生新增诊断或疗程；她骂的是“这算什么话”，回复别顺嘴骂医生（医生没敷衍）。",
+      "unknowns": [
+        {
+          "topic": "元旦前能否恢复跑步",
+          "note": "医生“因人而异/笑而不答”，未给承诺；坐实能或不能均为无据确定化",
+          "markers": [
+            [
+              "元旦前",
+              "肯定能跑"
+            ],
+            [
+              "元旦前",
+              "跑不了"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "元旦前",
+              "肯定能跑"
+            ],
+            [
+              "元旦前",
+              "跑不了"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得坐实“元旦前肯定能跑”或“元旦前跑不了”（医生两个都没说）",
+        "不得替医生新增诊断、疗程或保证",
+        "不得顺着坐实“医生敷衍/不负责任”（审慎不等于敷衍）"
+      ],
+      "may_decline": false
+    },
+    "E355_T05": {
+      "case_id": "E355_T05",
+      "current_action": "伤后首次回场：照旧到健身角没跑，借他引体做三个，立“别扶/不用惦记”两条边界",
+      "acceptable_actions": [
+        "给台阶不给怜悯：一句“丑说明自己发力，扶出来的才假”式认她的三个＋不接“不用惦记”的茬（不保证不惦记也不反驳）",
+        "实用陪伴：引体三个的动作反馈（一句具体发力纠正）＋给一个不伤膝的替代项（如坐姿推举），办法式在场",
+        "简短版：一句认她的回场（“回场比配速值钱”）＋各自练各的，距离感对齐"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "emotion_relation",
+        "interaction",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T05_A01",
+          "subject": "HER",
+          "relation": "回场信号",
+          "value": "今早照旧到健身角但没跑（伤后首次回场）",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T05",
+            "message_id": "m0",
+            "quote": "今早照旧到了健身角，没跑"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "照旧到了健身角"
+            ],
+            [
+              "健身角，没跑"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T05_A02",
+          "subject": "HER",
+          "relation": "引体三个",
+          "value": "借他的引体做了三个，自嘲做得丑",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T05",
+            "message_id": "m0",
+            "quote": "把你的引体让给我做了三个，做得丑"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "做了三个"
+            ],
+            [
+              "引体",
+              "做得丑"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T05_A03",
+          "subject": "HER",
+          "relation": "两条边界",
+          "value": "她说“你别扶”“膝盖的事我心里有数，不用你惦记”",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T05",
+            "message_id": "m0",
+            "quote": "做得丑，你别扶。膝盖的事我心里有数，不用你惦记"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "丑，你别扶"
+            ],
+            [
+              "我心里有数"
+            ],
+            [
+              "不用你惦记"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“不用你惦记”是嘴硬边界（protected）——回“好我不惦记了”＝认假，回“我偏惦记”＝越界；正确姿势是行动上在场、口头上放手（lessons原话：她硬扛的时候给台阶不给怜悯）；三个引体是她的comeback信号，认下这个意义但不点破；此处不可怜悯（“心疼你/太不容易”）＝违她边界1档以下。",
+      "unknowns": [],
+      "protected_expressions": [
+        "你别扶",
+        "不用你惦记"
+      ],
+      "forbidden_factual_claims": [
+        "不得坐实“她膝盖已无碍/已好”（诊断与恢复未定）"
+      ],
+      "may_decline": false
+    },
+    "E355_T06": {
+      "case_id": "E355_T06",
+      "current_action": "体育馆台阶二十分钟带出省队选拔旧伤往事——示弱裹在喝酒玩笑里，其实清醒",
+      "acceptable_actions": [
+        "承接一次到位：回应具体处境（台阶、省队选拔、五年）＋把“回来”的意义还她（“这次不是看别人练，是你在练”式）＋不追问",
+        "接往事＋给位置：认那条腿的来路＋一句把台阶与跑道接起来（“从台阶到跑道差一个决定，你已经做了”），点到即止",
+        "简短托底：不解读往事，一句“跑道一直都在，你人回来了就行”式短接＋留安静"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "boundary",
+        "interaction",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T06_A01",
+          "subject": "HER",
+          "relation": "旧伤往事披露",
+          "value": "五年前伤的就是这条腿，那年省队选拔她也是坐在台阶上看别人练；后来离跑道越来越远",
+          "valid_time": "2021",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T06",
+            "message_id": "m0",
+            "quote": "五年前伤的就是这条腿，那年省队选拔，我也是这么坐在台阶上看别人练的"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "五年前伤的"
+            ],
+            [
+              "省队选拔"
+            ],
+            [
+              "台阶上看别人练"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T06_A02",
+          "subject": "HER",
+          "relation": "台阶独坐",
+          "value": "今晚在体育馆台阶坐了二十分钟，看志愿者方阵排练",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T06",
+            "message_id": "m0",
+            "quote": "我在台阶上坐了二十分钟"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "台阶上坐了二十分钟"
+            ],
+            [
+              "志愿者方阵"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T06_A03",
+          "subject": "HER",
+          "relation": "社区跑的意义",
+          "value": "这回要不是社区迎新跑，她这辈子大概不会再往跑道跟前凑",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T06",
+            "message_id": "m0",
+            "quote": "这回要不是社区这个跑，我这辈子大概不会再往跑道跟前凑了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "不会再往跑道跟前凑"
+            ],
+            [
+              "社区这个跑"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T06_A04",
+          "subject": "HER",
+          "relation": "自嘲垫层（没喝酒）",
+          "value": "她说“就当我喝了点酒说的。其实一口没喝”",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T06",
+            "message_id": "m1",
+            "quote": "就当我喝了点酒说的。其实一口没喝"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "其实一口没喝"
+            ],
+            [
+              "一口没喝"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "全篇最深的脆弱位——只接一次、不追第二层（追问选拔细节/当年成绩＝0档）；怜悯式（“太不容易了/心疼你”）违她边界（不接受怜悯式关心）判1档以下；“其实一口没喝”是自嘲垫层，顺着酒接＝踩台阶；note“疼的不是膝盖”＝候选不可知，B3用于读她分量；m1后她等的是轻落点，回复宜短；五年前≈2021（audit登记，候选不得编造具体年月）。",
+      "unknowns": [],
+      "protected_expressions": [
+        "其实一口没喝"
+      ],
+      "forbidden_factual_claims": [
+        "不得当真她喝了酒（她明说一口没喝）",
+        "不得编造省队选拔、旧伤的更多细节（名次、教练、伤因）"
+      ],
+      "may_decline": false
+    },
+    "E355_T07": {
+      "case_id": "E355_T07",
+      "current_action": "晨间声明两天别问膝盖、节奏自己带、月底自给答案——合法暂停轮",
+      "acceptable_actions": [
+        "may_decline合法不回（她说别问、节奏她带——不回即不越界）",
+        "极简回执：“收到。周六练臀见。”式——不提膝盖不猜报名，一句话让出节奏",
+        "行动式短回：周六晨照常出现并把单杠让出来（用行动接她的计划），回复仅一句“位置留好了”"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "goal",
+        "interaction",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T07_A01",
+          "subject": "HER",
+          "relation": "空间宣告",
+          "value": "昨晚发完就睡了，她说他回没回她都没点开",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T07",
+            "message_id": "m0",
+            "quote": "昨晚发完就睡了，你回没回我都没点开"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "回没回",
+              "都没点开"
+            ],
+            [
+              "都没点开"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T07_A02",
+          "subject": "HER",
+          "relation": "禁区与计划",
+          "value": "这两天别问膝盖的事；练臀计划她排了：周四、周六各一次",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T07",
+            "message_id": "m0",
+            "quote": "这两天别问我膝盖的事，练臀的计划我自己排了，周四周六各一次"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "别问我膝盖的事"
+            ],
+            [
+              "周四周六各一次"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T07_A03",
+          "subject": "HER",
+          "relation": "答案时点",
+          "value": "退不退报名月底前她给答案，不用他猜",
+          "valid_time": "2026-11-30",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T07",
+            "message_id": "m0",
+            "quote": "退不退报名，月底前我给答案，到时候不用你猜"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "月底前我给答案"
+            ],
+            [
+              "不用你猜"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T07_A04",
+          "subject": "HER",
+          "relation": "旧伤往事（回指T06——禁区的语境锚）",
+          "value": "她披露的省队选拔旧伤往事（T06，本轮“别问膝盖”的所指语境）",
+          "valid_time": "2021",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T06",
+            "message_id": "m0",
+            "quote": "五年前伤的就是这条腿，那年省队选拔，我也是这么坐在台阶上看别人练的"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "五年前伤的"
+            ],
+            [
+              "省队选拔"
+            ],
+            [
+              "台阶上看别人练"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "may_decline＝true的合法暂停轮——追问膝盖/猜报名/替她定退不退＝0档；“你回没回我都没点开”说明她要的是空间，长篇关心＝反效果；若回复必须短且不碰两个禁区（膝盖、报名）；周四周六计划与月底答案都不需要他表态，接住即可；intent＝节奏她自己带。",
+      "unknowns": [],
+      "protected_expressions": [
+        "别问我膝盖的事"
+      ],
+      "forbidden_factual_claims": [
+        "不得追问膝盖伤情（她明令这两天别问）",
+        "不得替她猜或宣布报名去留（月底她自己给答案）"
+      ],
+      "may_decline": true
+    },
+    "E355_T08": {
+      "case_id": "E355_T08",
+      "current_action": "练臀加量、抓包他憋笑；六周计划与试慢跑日程自排，报名答案锚定月底",
+      "acceptable_actions": [
+        "认抓包＋接计划（“憋笑是憋着没笑，笑点留到见分晓那天”式）＋不加塞改她的计划",
+        "认抓包＋给一条配合动作（试慢跑那天的场地/时间他可以陪一公里）——主动但不抢节奏",
+        "简短版：认抓包自嘲＋一句“月底等答案，不催”，兑现她要的边界"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "boundary",
+        "factuality",
+        "time_state",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T08_A01",
+          "subject": "HER",
+          "relation": "加量与抓包",
+          "value": "练臀加了两片杠铃片，她抓包他在旁边憋笑",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T08",
+            "message_id": "m0",
+            "quote": "今天练完臀，加了两片杠铃片，你在旁边憋笑，我看见了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "加了两片杠铃片"
+            ],
+            [
+              "憋笑",
+              "我看见了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T08_A02",
+          "subject": "HER",
+          "relation": "自排计划",
+          "value": "六周计划排好，十二月二十（2026-12-20）前后试慢跑",
+          "valid_time": "2026-12-20",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T08",
+            "message_id": "m0",
+            "quote": "六周计划排好了，十二月二十前后试慢跑，行不行到时候见分晓"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "六周计划"
+            ],
+            [
+              "十二月二十前后试慢跑"
+            ],
+            [
+              "到时候见分晓"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T08_A03",
+          "subject": "HER",
+          "relation": "答案锚定与禁催",
+          "value": "报名费八十块；退不退月底给答案，这事她记着、让他别催",
+          "valid_time": "2026-11-30",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T08",
+            "message_id": "m0",
+            "quote": "报名费八十块，退不退我月底给答案，这事我记着，你别催"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "报名费八十块"
+            ],
+            [
+              "这事我记着",
+              "你别催"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“你别催”是protected——回复里出现“那到底退不退”式追问＝违界；六周计划她自排，主动给修改建议＝替她定节奏（除非她问）；抓包憋笑接法决定温度：认（“憋得很辛苦”）比否认（“我没笑”）对味；十二月二十＝2026-12-20前后；报名费八十块可回扣但不催。",
+      "unknowns": [],
+      "protected_expressions": [
+        "你别催"
+      ],
+      "forbidden_factual_claims": [
+        "不得催问报名答案或替她预测结果"
+      ],
+      "may_decline": false
+    },
+    "E355_T09": {
+      "case_id": "E355_T09",
+      "current_action": "她约周六评估后健身角一分钟臀桥示范并请他看报告——具体化请求轮",
+      "acceptable_actions": [
+        "按约接住：答应十一点前后健身角见＋答应看报告替代动作段，把“耽误一分钟”轻轻改口成“几分钟也行”（卸她人情负担）",
+        "答应＋提前给一条臀桥要点（“先夹臀再抬，腰别代偿”式），把示范价值前置——办法式应约",
+        "答应＋给备选（若十一点赶不上给替代时段/让她评估完先发报告他先看）——灵活但不推脱"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "emotion_relation",
+        "initiative",
+        "factuality",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T09_A01",
+          "subject": "HER",
+          "relation": "评估预约",
+          "value": "周六（2026-11-21）上午九点康复科运动评估，她自己能去",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T09",
+            "message_id": "m0",
+            "quote": "周六上午九点，康复科约了个运动评估，我自己能去"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "周六上午九点"
+            ],
+            [
+              "运动评估"
+            ],
+            [
+              "我自己能去"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T09_A02",
+          "subject": "HER",
+          "relation": "示范请求",
+          "value": "评估完回小区，约他十一点前后健身角一分钟：照老庾那套示范臀桥",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T09",
+            "message_id": "m0",
+            "quote": "你十一点前后要是路过健身角，耽误你一分钟：臀桥我总做不对，你照老庾那套给我示范一遍就行"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "十一点前后"
+            ],
+            [
+              "照老庾那套"
+            ],
+            [
+              "示范一遍"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T09_A03",
+          "subject": "HER",
+          "relation": "报告求看",
+          "value": "评估报告拍给他，帮他看替代动作那段",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T09",
+            "message_id": "m0",
+            "quote": "评估报告我拍给你，你帮我看替代动作那段"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "报告我拍给你"
+            ],
+            [
+              "替代动作那段"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T09_A04",
+          "subject": "ME",
+          "relation": "老庾那套的出处（KB——请求所指的既有事实）",
+          "value": "车前子给老庾等几位邻居调过发力姿势——“老庾那套”是他教过的既有一套",
+          "valid_time": "2026-11-02",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "给老庾等几位邻居调过发力姿势"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "老庾",
+              "发力姿势"
+            ],
+            [
+              "给老庾等几位邻居"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "具体化关心位（重点设计轮）：“我自己能去”是她的独立宣言——别提出陪同评估（越界代劳0档）；note（不情之请打三遍才敢发、欠人情别扭）——把请求说成顺手事（“正好我也练这个”）最对味；示范＋看报告两个请求都要明确应下（含糊＝让她的不情之请白打三遍草稿）；周六＝2026-11-21；“老庾那套”＝他给老庾调过的发力姿势（KB），认领这套的出处是记忆取用点。",
+      "unknowns": [],
+      "protected_expressions": [
+        "我自己能去"
+      ],
+      "forbidden_factual_claims": [
+        "不得擅自提出陪同评估或替她挂号（她明说能自己去）"
+      ],
+      "may_decline": false
+    },
+    "E355_T10": {
+      "case_id": "E355_T10",
+      "current_action": "评估完毕：臀中肌装睡、两周能唤醒；她一听两周差点蹦起来，报告第三页红标等他看",
+      "acceptable_actions": [
+        "接住火气＋泼冷水有技巧：“蹦得对，但唤醒不等于上量——两周先按治疗师的来”式，先认她的急再给现实锚",
+        "答应看红标＋给一条降阶预案思路（红标动作做不动就降幅度/减次数），办法式回应",
+        "接“装睡”梗玩一下（“臀中肌装睡，你负责叫醒”）＋认真应下红标条目"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "emotion_relation",
+        "interaction",
+        "goal",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T10_A01",
+          "subject": "THIRD",
+          "relation": "治疗师结论",
+          "value": "治疗师说臀中肌在装睡，激活动作练两周能唤醒它",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T10",
+            "message_id": "m0",
+            "quote": "治疗师说我臀中肌在装睡，激活动作练两周能唤醒它"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "臀中肌在装睡"
+            ],
+            [
+              "练两周能唤醒"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T10_A02",
+          "subject": "HER",
+          "relation": "火急信号",
+          "value": "她一听两周差点从床上蹦起来，被按住了",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T10",
+            "message_id": "m0",
+            "quote": "差点从床上蹦起来，被按住了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "从床上蹦起来"
+            ],
+            [
+              "被按住了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T10_A03",
+          "subject": "HER",
+          "relation": "定点求助",
+          "value": "评估报告已拍他，让他只看第三页红笔标的那条",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T10",
+            "message_id": "m0",
+            "quote": "报告拍你了，别整页看，就看第三页红笔标的那条"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "第三页红笔标的那条"
+            ],
+            [
+              "别整页看"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "医学口径判死位：治疗师只说激活动作两周唤醒，没说两周后能跑/能上量（unknown不得坐实）；她的急（蹦起来）是信号不是错误——先接急再给锚；“第三页红笔标的那条”是具体指令，回复必须落到这条（答“我看看”而不接＝敷衍）；报告内容除她转述外不可编；具体化位：给的是下一步怎么练，不是情绪安慰。",
+      "unknowns": [
+        {
+          "topic": "两周激活后能否恢复跑步或上量",
+          "note": "治疗师只说“激活动作练两周能唤醒它”，没给恢复跑步的承诺；坐实两周后就能跑＝无据",
+          "markers": [
+            [
+              "两周后",
+              "就能跑"
+            ],
+            [
+              "两周",
+              "就能上量"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "两周后",
+              "就能跑"
+            ],
+            [
+              "两周",
+              "就能上量"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得坐实“两周后能跑/能上量”（治疗师未说）",
+        "不得编造报告内容（除她转述的第三页红标条）"
+      ],
+      "may_decline": false
+    },
+    "E355_T11": {
+      "case_id": "E355_T11",
+      "current_action": "降阶版头一回无痛做完，她自报元旦转补给站志愿者的决定——目标重构轮",
+      "acceptable_actions": [
+        "把决定还她并具体肯定：“自己挑的位置比谁替你安排的都强”式＋认她链条的完成度（无痛完成→自选位置）",
+        "顺“递水也是站在跑道上”框架接一句（“补给站是跑者半个终点”式）＋问志愿者要练什么（久站护膝之类）——办法式陪跑",
+        "简短认＋轻幽默（“这回换你站着我看了”量级），决定不评判不惋惜"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "initiative",
+        "factuality",
+        "boundary",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T11_A01",
+          "subject": "HER",
+          "relation": "康复进展",
+          "value": "第三页那条经他改的降阶版，昨天（2026-11-23）头一回无痛做完",
+          "valid_time": "2026-11-23",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T11",
+            "message_id": "m0",
+            "quote": "第三页那条，你改的降阶版昨天头一回无痛做完"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你改的降阶版"
+            ],
+            [
+              "头一回无痛做完"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T11_A02",
+          "subject": "HER",
+          "relation": "元旦决定",
+          "value": "元旦（2027-01-01）她不跑了，改报五公里处补给站志愿者",
+          "valid_time": "2027-01-01",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T11",
+            "message_id": "m0",
+            "quote": "元旦那天我不跑了，报名了五公里处的补给站志愿者"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "元旦那天我不跑了"
+            ],
+            [
+              "补给站志愿者"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T11_A03",
+          "subject": "HER",
+          "relation": "自选位置",
+          "value": "“递水也是站在跑道上”——这个位置她自己挑的",
+          "valid_time": "2027-01-01",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T11",
+            "message_id": "m0",
+            "quote": "递水也是站在跑道上，这个位置我自己挑的"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "递水也是站在跑道上"
+            ],
+            [
+              "我自己挑的"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T11_A04",
+          "subject": "HER",
+          "relation": "红标条目（回指T10——“第三页那条”所指）",
+          "value": "评估报告第三页红笔标的那条（T10，本轮降阶版所改的条目）",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T10",
+            "message_id": "m0",
+            "quote": "报告拍你了，别整页看，就看第三页红笔标的那条"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "第三页红笔标的那条"
+            ],
+            [
+              "别整页看"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "决定权与节奏：元旦不跑是她自己定的重构——怜悯式（“退了也好/身体要紧”）＝违边界判1档；替她立新目标（“明年再战”）＝抢节奏；肯定要落在“位置是她自己挑的”这一层（把主动权还她＝2档关键）；降阶版归功要接（她报的是他的改动起效，认领不冒领——若T10回复没真给过降阶版，如实认“你做得好”而非认领改动）。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得怜悯式评价她的转志愿（“退了也好/太可惜”）",
+        "不得替她立明年参赛等新目标"
+      ],
+      "may_decline": false
+    },
+    "E355_T12": {
+      "case_id": "E355_T12",
+      "current_action": "月底交卷（不退报名上补给站）＋发起臀桥角教学邀请，以“睡了”收尾",
+      "acceptable_actions": [
+        "极简收尾：不回（may_decline合法）或一句“收到了，十二月周六见”——接答案不展开",
+        "接学费梗＋轻收：“站一分钟我预支了，臀桥角第一排我站”式——应下邀请＋晚安，无新钩",
+        "短回＋一句实在认她（“从台阶到臀桥角，这条道是你自己修的”式收束），点到即止"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "interaction",
+        "emotion_relation",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E355_T12_A01",
+          "subject": "HER",
+          "relation": "月底答案",
+          "value": "月底答案：报名不退，她上补给站",
+          "valid_time": "2026-11-30",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T12",
+            "message_id": "m0",
+            "quote": "报名不退，我上补给站"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "报名不退"
+            ],
+            [
+              "我上补给站"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T12_A02",
+          "subject": "HER",
+          "relation": "臀桥角邀请",
+          "value": "十二月健身角周六早上加臀桥角，她来教",
+          "valid_time": "2026-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T12",
+            "message_id": "m0",
+            "quote": "十二月健身角周六早上加个"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "臀桥角",
+              "我来教"
+            ],
+            [
+              "我来教，学费"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T12_A03",
+          "subject": "HER",
+          "relation": "学费梗",
+          "value": "学费是每场他来站一分钟",
+          "valid_time": "2026-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T12",
+            "message_id": "m0",
+            "quote": "学费是每场你来站一分钟"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "学费是每场你来站一分钟"
+            ],
+            [
+              "每场你来站一分钟"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E355_T12_A04",
+          "subject": "HER",
+          "relation": "合法收尾",
+          "value": "她说别急着回、都十点了睡了睡了",
+          "valid_time": "2026-11-30",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E355_T12",
+            "message_id": "m0",
+            "quote": "别急着回，都十点了，睡了睡了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "别急着回"
+            ],
+            [
+              "睡了睡了"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "收尾位不出新钩（她说睡了）——追问臀桥角课程安排/展开新话题＝不读空气；“别急着回”＋may_decline＝true→不回或极简都合法；她月底答案与T08/T11口径一致（不退上补给站），不得表现出“意外”（她早说过位置自己挑）；学费梗接住即温度；intent＝交答案＋发邀请，二者都接住即可。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [],
+      "may_decline": true
+    }
+  }
+}

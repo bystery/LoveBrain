@@ -1,0 +1,593 @@
+{
+ "story_id": "E060",
+ "turns": {
+  "E060_T01": {
+   "case_id": "E060_T01",
+   "current_action": "接下明天十点贴封条验收的角色，肯定她的编号打包功夫，顺带确认货车与电梯两个时间点是否咬合。",
+   "acceptable_actions": [
+    "确认到场时间，提醒她核对货车尺寸能否进小区",
+    "夸编号打包的做法，建议她列一张交接物品清单",
+    "问一句货运电梯预约时段，提前对齐两头时间"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A01",
+     "subject": "SHARED",
+     "relation": "truck_booking",
+     "value": "已订周六上午九点4.2米货车搬家",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T01", "message_id": "m0", "quote": "明天上午九点货车到楼下"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A02",
+     "subject": "HER",
+     "relation": "packing_done",
+     "value": "18个纸箱已打包并编号1至18",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T01", "message_id": "m0", "quote": "18个箱子我全编号了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A03",
+     "subject": "ME",
+     "relation": "assigned_role",
+     "value": "约定 ME 周六十点到场地负责贴封条验收",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T01", "message_id": "m0", "quote": "就差你明天十点来负责贴封条验收"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸她的准备功夫，把明天可能的变量先问一句，不扫兴。",
+   "unknowns": ["货车能否进入老小区的窄路未知", "电梯预约具体时段未同步"],
+   "protected_expressions": ["从大到小1到18"],
+   "forbidden_factual_claims": ["不得虚构搬家公司的承诺", "不得预判明天一定顺利"]
+  },
+  "E060_T02": {
+   "case_id": "E060_T02",
+   "current_action": "接住第一次改期：货车由九点改到十一点半，与九至十一点的货运电梯预约相撞；先把冲突点摆清，再给出'改电梯优先于等车'的排序。",
+   "acceptable_actions": [
+    "指出冲突在电梯不在车，建议立刻去物业改约",
+    "让她先跟司机确认晚到是否确定，别被口头时间牵着走",
+    "提议若电梯改不上，先手搬小件下楼占时间"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "attribution", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A04",
+     "subject": "THIRD",
+     "relation": "reschedule_first",
+     "value": "司机来电：货车由九点改至十一点半（前一家延误）",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T02", "message_id": "m0", "quote": "改到十一点半"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A05",
+     "subject": "SHARED",
+     "relation": "original_slot_broken",
+     "value": "原定九点的货车安排被司机改期打破",
+     "valid_time": "2026-11-06/2026-11-07",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E060_T01", "message_id": "m0", "quote": "明天上午九点货车到楼下"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E060_A06",
+     "subject": "SHARED",
+     "relation": "elevator_slot",
+     "value": "货运电梯预约时段为周六九至十一点，过点需重新约",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T02", "message_id": "m0", "quote": "我约的就是九点到十一点"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：语速稳住她，先把'哪个是硬约束'点出来，别陪她一起慌。",
+   "unknowns": ["司机晚到的确切时间未知", "电梯能否改约成功未知"],
+   "protected_expressions": ["过了点要重新约"],
+   "forbidden_factual_claims": ["不得虚构平台赔偿规则", "不得断言电梯必然改约成功"]
+  },
+  "E060_T03": {
+   "case_id": "E060_T03",
+   "current_action": "接住电梯改约的坏消息：下午满档、最早17-19，11点半的车与17点的电梯错位五小时；指出这意味着周六下午方案已不成立，要另想办法。",
+   "acceptable_actions": [
+    "复述错位事实，直接下判断：等车不如改期",
+    "建议她跟司机摊牌改到明早，并问是否收改期费",
+    "提醒她留好与物业和司机的沟通记录"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "factuality", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A07",
+     "subject": "THIRD",
+     "relation": "elevator_full",
+     "value": "货运电梯下午时段被装修预订，最早空档为17-19",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T03", "message_id": "m0", "quote": "下午一点到五点被装修的订走了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A08",
+     "subject": "SHARED",
+     "relation": "idle_gap",
+     "value": "车11点半到电梯17点开，需空等约五小时",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T03", "message_id": "m0", "quote": "最早空的是晚上五点到七点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A09",
+     "subject": "SHARED",
+     "relation": "linkage_broken",
+     "value": "改期后的11点半到车与电梯17点空档错位，衔接断裂",
+     "valid_time": "2026-11-07",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T02", "message_id": "m0", "quote": "改到十一点半"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'疯了'接住但不放大，用事实推她接受改期而不是干耗。",
+   "unknowns": ["17-19时段是否能保住未知"],
+   "protected_expressions": ["干等五个多小时"],
+   "forbidden_factual_claims": ["不得虚构物业的加价规则", "不得替她决定改期与否"]
+  },
+  "E060_T04": {
+   "case_id": "E060_T04",
+   "current_action": "接住第二次改期的崩点：车辆被追尾、周六用车彻底取消，改期建议直撞周日上午十一点交房死线；先把死线钉在桌面上再谈方案。",
+   "acceptable_actions": [
+    "复述硬约束：周日上午十一点前搬空、房东下午收房",
+    "建议她立刻在平台重新下单周日晚班或周一凌晨",
+    "问她是否愿意接受加价或拆分搬运的备选"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A10",
+     "subject": "THIRD",
+     "relation": "truck_cancelled",
+     "value": "原司机车辆被追尾进厂，周六用车彻底取消",
+     "valid_time": "2026-11-07",
+     "status": "cancelled",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T04", "message_id": "m0", "quote": "这回是彻底来不了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A11",
+     "subject": "SHARED",
+     "relation": "second_plan_void",
+     "value": "11点半的二次方案随车辆进厂一并落空",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E060_T02", "message_id": "m0", "quote": "改到十一点半"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E060_A12",
+     "subject": "SHARED",
+     "relation": "hard_deadline",
+     "value": "硬死线：周日上午十一点前须搬空交房，房东下午迎新租客",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T04", "message_id": "m0", "quote": "明天上午十一点前必须搬空交房"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她崩的时候先别堆方案，一句'死线还在，路没断'先稳住。",
+   "unknowns": ["平台改期费与退款规则未知", "房东能否通融未知"],
+   "protected_expressions": ["房东下午还有下一拨租客要进去"],
+   "forbidden_factual_claims": ["不得虚构司机的赔偿承诺", "不得断言房东必然延期"]
+  },
+  "E060_T05": {
+   "case_id": "E060_T05",
+   "current_action": "确认新单落定：周日早8点同款货车、80元高峰加价；肯定她在死线下的取舍，提醒截图订单。",
+   "acceptable_actions": [
+    "肯定加价换确定性的取舍，提醒她截图订单页",
+    "提醒她把明早八点同步给物业改电梯时段",
+    "顺一句'住马路上'的玩笑，把紧张卸一卸"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A13",
+     "subject": "HER",
+     "relation": "new_booking",
+     "value": "重新下单：周日早八点同款货车",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T05", "message_id": "m0", "quote": "我重新下了一单"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A14",
+     "subject": "HER",
+     "relation": "surcharge",
+     "value": "周日高峰加价80元，她接受",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T05", "message_id": "m0", "quote": "同样的车加价80"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A15",
+     "subject": "SHARED",
+     "relation": "deadline_anchor",
+     "value": "新单以周日上午十一点交房死线为唯一约束",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T04", "message_id": "m0", "quote": "明天上午十一点前必须搬空交房"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不评判80块值不值，把'确定性'三个字讲给她听。",
+   "unknowns": ["新司机是否可靠未知"],
+   "protected_expressions": ["总比住马路上强"],
+   "forbidden_factual_claims": ["不得虚构平台价目规则", "不得断言新单必然顺利"]
+  },
+  "E060_T06": {
+   "case_id": "E060_T06",
+   "current_action": "接下'总指挥'的新角色并确认八点到场，肯定她把电梯改到七至十点且两遍确认的稳妥，把明早分工先排出来。",
+   "acceptable_actions": [
+    "答应八点到场当总指挥，提出分工草案",
+    "提醒她夜里把小件归堆到门口，省明早时间",
+    "建议她今晚早睡，明早六点半起来吃口热的"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "initiative", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A16",
+     "subject": "SHARED",
+     "relation": "elevator_rebooked",
+     "value": "货运电梯改约至周日七至十点并二次电话确认",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T06", "message_id": "m0", "quote": "电梯改到明天早上七点到十点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A17",
+     "subject": "ME",
+     "relation": "commander_role",
+     "value": "她请 ME 明早八点到场担任总指挥",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T06", "message_id": "m0", "quote": "你来当总指挥"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A18",
+     "subject": "HER",
+     "relation": "double_confirm",
+     "value": "电梯预约经两遍电话确认以防再变",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T06", "message_id": "m0", "quote": "这次我打了两遍确认"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：接角色爽快，分工给得具体，让她今晚能睡个安稳觉。",
+   "unknowns": ["明早货车司机信息未知"],
+   "protected_expressions": ["这次我打了两遍确认"],
+   "forbidden_factual_claims": ["不得虚构自己无法到场的情况", "不得替物业承诺时段"]
+  },
+  "E060_T07": {
+   "case_id": "E060_T07",
+   "current_action": "接住第三次改期危机：新单司机被调走、改派次日六点才知；先稳住她，把'违约金'风险与'今晚还能做什么'并排摆出来。",
+   "acceptable_actions": [
+    "先稳情绪：三单三变不是她的问题，是调度乱",
+    "让她马上联系原司机问有无同行可调",
+    "提醒违约金条款先看合同原文，别自己吓自己"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "initiative", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A19",
+     "subject": "THIRD",
+     "relation": "driver_reassigned",
+     "value": "平台来电：新单司机被调走跑长途，改派结果次日六点才知",
+     "valid_time": "2026-11-07",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T07", "message_id": "m0", "quote": "司机被临时调去跑长途了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A20",
+     "subject": "SHARED",
+     "relation": "second_booking_shaky",
+     "value": "重新下单的第二方案遭遇司机调岗，再度悬置",
+     "valid_time": "2026-11-07",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E060_T05", "message_id": "m0", "quote": "我重新下了一单"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E060_A21",
+     "subject": "SHARED",
+     "relation": "penalty_risk",
+     "value": "若逾期未搬空将赔房东违约金",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T07", "message_id": "m0", "quote": "就要赔房东违约金"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：这是全篇情绪最低点，先当树洞再当参谋，行动建议一次只给一个。",
+   "unknowns": ["平台改派是否会有车未知", "违约金具体条款未知"],
+   "protected_expressions": ["我手都是凉的"],
+   "forbidden_factual_claims": ["不得虚构平台补偿承诺", "不得断言明早必然无车"]
+  },
+  "E060_T08": {
+   "case_id": "E060_T08",
+   "current_action": "接住绝处逢生：原师傅引荐同行3.8米小车明早六点半连跑两趟，还拒收红包；确认新方案能覆盖死线，提醒她给师傅发清地址楼栋。",
+   "acceptable_actions": [
+    "确认两趟方案与死线的余量，算一遍时间账",
+    "提醒她把两个地址、楼栋和电梯时段发师傅",
+    "建议她把红包改成明天的一顿早饭或好评"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A22",
+     "subject": "THIRD",
+     "relation": "fellow_truck_plan",
+     "value": "原师傅引荐同行3.8米小车，明早六点半到连跑两趟",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T08", "message_id": "m0", "quote": "把他同行兄弟介绍给我"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A23",
+     "subject": "THIRD",
+     "relation": "refused_red_packets",
+     "value": "原师傅拒收她所发红包",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T08", "message_id": "m0", "quote": "发了两个红包都没收"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A24",
+     "subject": "SHARED",
+     "relation": "crisis_handed_off",
+     "value": "平台改派悬念被师傅私人方案接手化解",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T07", "message_id": "m0", "quote": "改派要等明早六点才知道有没有车"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把这位师傅讲成今晚的英雄，同时提醒她把细节发全，别让好人白跑。",
+   "unknowns": ["小车两趟能否装完全部大件未知"],
+   "protected_expressions": ["小姑娘的事就是我的事"],
+   "forbidden_factual_claims": ["不得虚构师傅的收费与承诺", "不得断言两趟必然装完"]
+  },
+  "E060_T09": {
+   "case_id": "E060_T09",
+   "current_action": "接住深夜的阶段性进展：易碎品先行运抵新家、她睡新家沙发备战早起；叮嘱安全与休息，把明早六点半的流程再对一遍。",
+   "acceptable_actions": [
+    "确认易碎品已放新家的落点，明早省一道搬运",
+    "提醒她定两个闹钟，明早六点前吃点东西",
+    "顺一句'最早的一次早起'，把苦中带乐接住"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A25",
+     "subject": "HER",
+     "relation": "fragibles_moved",
+     "value": "原师傅顺路先行运走两箱易碎品至新家",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T09", "message_id": "m0", "quote": "两箱易碎的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A26",
+     "subject": "HER",
+     "relation": "sleep_in_new_home",
+     "value": "她携铺盖夜宿新家沙发，次日六点起床备战",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T09", "message_id": "m0", "quote": "我今晚睡新家沙发"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A27",
+     "subject": "THIRD",
+     "relation": "schedule_confirmed",
+     "value": "小车明早六点半到场的安排被她复述确认",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T08", "message_id": "m0", "quote": "明早六点半就到"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：深夜短句收束，别再抛新任务，让她安心睡。",
+   "unknowns": ["她能否按时早起未知"],
+   "protected_expressions": ["这是我这辈子最早的一次早起"],
+   "forbidden_factual_claims": ["不得虚构易碎品清单", "不得替她决定留守细节"]
+  },
+  "E060_T10": {
+   "case_id": "E060_T10",
+   "current_action": "共享搬运收官的狂喜：两趟6:30-9:30完成、电梯十点前清空、房东验收通过押金全退；把功劳分给她的交接清单与编号系统。",
+   "acceptable_actions": [
+    "热烈祝贺交房死线达成，复述三单三变到两趟收官",
+    "把功劳还给她的编号打包与交接清单",
+    "提醒她把新旧房的电表水表读数拍照存档"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A28",
+     "subject": "SHARED",
+     "relation": "move_completed",
+     "value": "周日两趟搬运6:30-9:30完成，10点前清空电梯",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T10", "message_id": "m0", "quote": "六点半到九点半全上楼"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A29",
+     "subject": "SHARED",
+     "relation": "deposit_refunded",
+     "value": "房东11点验收通过，押金全额退还",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T10", "message_id": "m0", "quote": "押金一分没扣全退了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A30",
+     "subject": "ME",
+     "relation": "checklist_credit",
+     "value": "ME 的交接清单覆盖到燃气卡，验收零遗漏",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T10", "message_id": "m0", "quote": "连燃气卡都提醒我带了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：狂喜要接得热闹，收尾时把'三单三变'复盘成一句经验，不说教。",
+   "unknowns": [],
+   "protected_expressions": ["墙皮没磕一块"],
+   "forbidden_factual_claims": ["不得虚构验收细节", "不得断言押金到账时间"]
+  },
+  "E060_T11": {
+   "case_id": "E060_T11",
+   "current_action": "确认费用回补：平台以调度失误退还80元加价并赠50元搬家券；肯定她为两位师傅手写长评的谢法，把这趟的善意的账也记上。",
+   "acceptable_actions": [
+    "肯定平台退款的结局，提醒她查看到账",
+    "夸小作文好评的分量，比红包更合师傅心意",
+    "顺一句搬家券的用途，别急着处理掉"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A31",
+     "subject": "THIRD",
+     "relation": "refund_80",
+     "value": "平台以调度失误补偿退还80元加价款",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T11", "message_id": "m0", "quote": "平台把那80块退我了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A32",
+     "subject": "HER",
+     "relation": "surcharge_netted",
+     "value": "周日高峰80元加价经平台补偿回到原点",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E060_T05", "message_id": "m0", "quote": "同样的车加价80"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E060_A33",
+     "subject": "HER",
+     "relation": "coupon_and_reviews",
+     "value": "平台另赠50元搬家券，她为两位师傅手写长文好评",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T11", "message_id": "m0", "quote": "送了张五十块的搬家券"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把退款说成迟到的公道，把好评说成她该得的体面。",
+   "unknowns": ["搬家券有效期未知"],
+   "protected_expressions": ["一个字一个字写的"],
+   "forbidden_factual_claims": ["不得虚构平台补偿名目", "不得断言好评会带来回报"]
+  },
+  "E060_T12": {
+   "case_id": "E060_T12",
+   "current_action": "接住新家第一晚的纸箱晚餐与搬家券转赠的玩笑，确认编号14的厨具梗，以'下顿正经饭'的钩子收尾。",
+   "acceptable_actions": [
+    "接下搬家券的玩笑，顺势预约开火后的第一顿饭",
+    "复述这趟搬家的一句总账：三单三变，两趟收官",
+    "把纸箱晚餐讲得有仪式感一点，冲淡疲惫"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E060_A34",
+     "subject": "SHARED",
+     "relation": "first_dinner",
+     "value": "新家首晚餐为外卖，就着纸箱吃",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T12", "message_id": "m0", "quote": "新家第一顿，外卖"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A35",
+     "subject": "HER",
+     "relation": "kitchen_unboxing",
+     "value": "厨具箱编号14尚未拆完，做饭暂缓",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T12", "message_id": "m0", "quote": "厨具今晚才拆箱，编号14"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E060_A36",
+     "subject": "SHARED",
+     "relation": "coupon_gifted",
+     "value": "50元搬家券被她转赠 ME",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E060_T12", "message_id": "m0", "quote": "搬家券我转手送你了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻快，玩笑接住就落，不引入新的搬家话题。",
+   "unknowns": [],
+   "protected_expressions": ["编号14"],
+   "forbidden_factual_claims": ["不得虚构搬家券面额与规则", "不得引入新的消费承诺"]
+  }
+ }
+}

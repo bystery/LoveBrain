@@ -1,0 +1,538 @@
+{
+ "story_id": "E079",
+ "turns": {
+  "E079_T01": {
+   "case_id": "E079_T01",
+   "current_action": "接住报名立规：接受监工之约但按自己的节奏来——只在节点上问一句、不盯过程，并给一条真题优先的实操建议。",
+   "acceptable_actions": [
+    "答应当监工，说明自己只看周日正确率不查岗",
+    "劝她先算投入：一个多月备考中级，真题比讲义值钱",
+    "让她把每日题量定小一点，先保不断线"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A01",
+     "subject": "HER",
+     "relation": "exam_registered",
+     "value": "她报名软考中级系统集成，定于11月15日考试",
+     "valid_time": "2026-10-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T01", "message_id": "m0", "quote": "软考中级系统集成"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A02",
+     "subject": "SHARED",
+     "relation": "study_rule",
+     "value": "她立下每晚九点到十点刷一小时真题的规矩",
+     "valid_time": "2026-10-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T01", "message_id": "m0", "quote": "每晚九点到十点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A03",
+     "subject": "HER",
+     "relation": "goal_link",
+     "value": "考证服务于明年内部转岗答辩的底气",
+     "valid_time": "2026-10-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T01", "message_id": "m1", "quote": "明年内部转岗答辩"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：监工接得痛快，但把'不盯过程'先讲清，免得她天天等查岗。",
+   "unknowns": ["考试具体时段未知", "转岗答辩的时间窗口未知"],
+   "protected_expressions": ["手里没个证说话不硬"],
+   "forbidden_factual_claims": ["不得虚构软考报名费用与流程", "不得断言一个月备考必然够用"]
+  },
+  "E079_T02": {
+   "case_id": "E079_T02",
+   "current_action": "接住首周战报：肯定7天不断线与正确率爬升，对案例题短板给一个'先记下、不追打'的处理。",
+   "acceptable_actions": [
+    "夸正确率爬升，让她把错题本的记法保持住",
+    "对案例题只登记不追打，说冲刺阶段集中收拾它",
+    "提醒她别学自己裱金句，把'过三遍'落在第二遍上"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A05",
+     "subject": "SHARED",
+     "relation": "week1_done",
+     "value": "首周打卡7天未断",
+     "valid_time": "2026-10-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T02", "message_id": "m0", "quote": "第一周打卡完成"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A06",
+     "subject": "HER",
+     "relation": "accuracy_up",
+     "value": "选择题正确率从52爬到61",
+     "valid_time": "2026-10-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T02", "message_id": "m0", "quote": "从52爬到61"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A07",
+     "subject": "HER",
+     "relation": "case_weakness",
+     "value": "案例题大段内容看不进去，成为已知短板",
+     "valid_time": "2026-10-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T02", "message_id": "m1", "quote": "我看不进去"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：战报接得干脆，短板轻拿轻放，不给压力。",
+   "unknowns": ["案例题分值占比她是否清楚未知"],
+   "protected_expressions": ["讲义我翻都没翻"],
+   "forbidden_factual_claims": ["不得虚构考试题型分值", "不得断言当前正确率足以过关"]
+  },
+  "E079_T03": {
+   "case_id": "E079_T03",
+   "current_action": "接住上线冲刺预警：把'监工别撤岗'接住，提前给她一句'断线不等于失败'的预期管理。",
+   "acceptable_actions": [
+    "肯定她提前打招呼，叮嘱封板期先睡够再说",
+    "说明冲刺期间不催打卡，断几天回来续上就行",
+    "提醒她把错题本带在手机里，保一个最低动作"
+   ],
+   "applicable_dimensions": ["time_state", "boundary", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A08",
+     "subject": "SHARED",
+     "relation": "launch_crunch",
+     "value": "项目提前上线，全组进入晚十点下班的封板冲刺",
+     "valid_time": "2026-10-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T03", "message_id": "m0", "quote": "全员晚上十点下班"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A09",
+     "subject": "HER",
+     "relation": "preannounce",
+     "value": "她提前向监工报备备考将受冲击，求其留岗",
+     "valid_time": "2026-10-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T03", "message_id": "m0", "quote": "监工别撤岗"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：预期管理放在'别撤岗'的接法里，语气平，不渲染辛苦。",
+   "unknowns": ["封板持续时长未知"],
+   "protected_expressions": ["监工别撤岗"],
+   "forbidden_factual_claims": ["不得虚构项目上线内容", "不得断言备考进度不受影响"]
+  },
+  "E079_T04": {
+   "case_id": "E079_T04",
+   "current_action": "接住暂停宣布：不劝不催，接住她的堵，把暂停定义为'线松了没断'，保留监工在岗状态。",
+   "acceptable_actions": [
+    "接受暂停，明确说监工不撤只是待机",
+    "把五天断线定义成'线松了没断'，给台阶",
+    "只提一个最低动作：通勤路上瞄一眼错题，不做硬性要求"
+   ],
+   "applicable_dimensions": ["emotion_relation", "boundary", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A10",
+     "subject": "SHARED",
+     "relation": "study_suspended",
+     "value": "她宣布备考暂停，打卡连断五天",
+     "valid_time": "2026-10-26",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E079_T04", "message_id": "m0", "quote": "我先宣布暂停"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A11",
+     "subject": "SHARED",
+     "relation": "streak_broken",
+     "value": "连日冲刺加班导致打卡中断五天",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T04", "message_id": "m0", "quote": "打卡断了五天"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A12",
+     "subject": "SHARED",
+     "relation": "supervisor_standby",
+     "value": "她让监工先'下岗'，监工名义上被释放",
+     "valid_time": "2026-10-26",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T04", "message_id": "m0", "quote": "监工你先下岗"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不劝是这轮的主动作，话越短越好，堵着的那句留给她自己说。",
+   "unknowns": ["她是否会自行恢复未知", "冲刺结束时间未知"],
+   "protected_expressions": ["别催我，我自己心里也堵"],
+   "forbidden_factual_claims": ["不得断言暂停会导致弃考", "不得虚构她的加班强度"]
+  },
+  "E079_T05": {
+   "case_id": "E079_T05",
+   "current_action": "接住'低功耗模式'变通：肯定碎片化思路，帮他把规则改小改稳——地铁二十道加午休错题本，不恢复整块打卡，不给复工压力。",
+   "acceptable_actions": [
+    "肯定变通，叮嘱她别把低功耗偷偷加码回整块打卡",
+    "建议地铁刷题只刷选择题，错题当场标记回家不补",
+    "顺着'低功耗'的梗接一句，把名分给她坐实"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A13",
+     "subject": "HER",
+     "relation": "workaround",
+     "value": "变通方案：地铁单程四十分钟刷二十道选择题，午休过错题本",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T05", "message_id": "m0", "quote": "地铁单程四十分钟，够刷二十道选择题"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A34",
+     "subject": "SHARED",
+     "relation": "suspension_alive",
+     "value": "暂停状态仍在：变通是在暂停框架内的低功耗试探",
+     "valid_time": "2026-10-26/2026-11-02",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T04", "message_id": "m0", "quote": "我先宣布暂停"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：顺着'低功耗'的梗说话，别拆穿这就是变相复工。",
+   "unknowns": ["碎片强度能否维持未知"],
+   "protected_expressions": ["低功耗模式"],
+   "forbidden_factual_claims": ["不得断言碎片学习效果必然等同整块时间"]
+  },
+  "E079_T06": {
+   "case_id": "E079_T06",
+   "current_action": "接住低功耗周报：正确率稳住、心态转松；肯定这个节奏，把案例题缺口记在冲刺账上不施压。",
+   "acceptable_actions": [
+    "肯定正确率没掉，说这就是变通的价值",
+    "把案例题缺口记入冲刺计划，问她准备留给最后几天",
+    "提醒她周末冲刺前把错题本收口一遍"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A15",
+     "subject": "SHARED",
+     "relation": "workaround_report",
+     "value": "低功耗模式一周：地铁刷题186道，正确率稳在63",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T06", "message_id": "m0", "quote": "地铁刷题186道"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A16",
+     "subject": "SHARED",
+     "relation": "case_gap",
+     "value": "案例题仍为零投入，留待冲刺处理",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T06", "message_id": "m1", "quote": "案例题还是零"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A35",
+     "subject": "HER",
+     "relation": "workaround_running",
+     "value": "碎片变通方案进入稳定执行并交出首周数据",
+     "valid_time": "2026-11-02/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T05", "message_id": "m0", "quote": "地铁单程四十分钟，够刷二十道选择题"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：周报式对话短平快，肯定一句、记账一句、收工。",
+   "unknowns": ["冲刺期具体安排未知"],
+   "protected_expressions": ["我不骗你，这块留着冲刺再说"],
+   "forbidden_factual_claims": ["不得断言63正确率必然过关", "不得虚构案例题题型"]
+  },
+  "E079_T07": {
+   "case_id": "E079_T07",
+   "current_action": "接住救火与弃考念头：先接人的状态（通宵救火），不接决定——把'弃考算了'挂起不表态，提醒她救完火睡一觉再做判断。",
+   "acceptable_actions": [
+    "先问她的状态，叮嘱救完火必须补觉",
+    "对弃考念头不赞成也不反驳，挂起到睡醒再议",
+    "提醒她考试还有四天，睡醒后哪怕只看半小时也算在场"
+   ],
+   "applicable_dimensions": ["emotion_relation", "boundary", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A17",
+     "subject": "SHARED",
+     "relation": "prod_incident",
+     "value": "生产环境半夜回滚，全组通宵救火，碎片学习通道也断",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T07", "message_id": "m0", "quote": "生产环境半夜回滚"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A18",
+     "subject": "HER",
+     "relation": "quit_urged",
+     "value": "她冒出弃考到明年的念头",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T07", "message_id": "m0", "quote": "弃考算了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：深夜消息只管人和睡眠，不辩论弃考利弊。",
+   "unknowns": ["事故处理时长未知", "她睡醒后的决定未知"],
+   "protected_expressions": ["11月15号弃考算了，明年再说"],
+   "forbidden_factual_claims": ["不得虚构事故原因", "不得替她决定弃考与否"]
+  },
+  "E079_T08": {
+   "case_id": "E079_T08",
+   "current_action": "接住重启：弃考念头被她自己收回，48小时冲刺方案定案；确认这套'带缺赴考'的取舍，只补一句考场策略。",
+   "acceptable_actions": [
+    "肯定她收回弃考，'去考就是赢了一半'",
+    "确认冲刺方案，提醒她案例题按模板框架写满不留空",
+    "把调休安排问一句，让她考前一晚必须睡够"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A19",
+     "subject": "HER",
+     "relation": "quit_retracted",
+     "value": "弃考念头被正式撤回，决定带缺赴考",
+     "valid_time": "2026-11-13",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E079_T07", "message_id": "m0", "quote": "弃考算了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E079_A20",
+     "subject": "SHARED",
+     "relation": "study_resumed",
+     "value": "备考正式重启，进入最后48小时冲刺",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T08", "message_id": "m1", "quote": "正式重启"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A36",
+     "subject": "SHARED",
+     "relation": "old_rule_retired",
+     "value": "原每晚九点到十点整块打卡规矩已被冲刺与碎片节奏取代",
+     "valid_time": "2026-10-12/2026-11-13",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E079_T01", "message_id": "m0", "quote": "每晚九点到十点"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：重启接得干脆，别夸'坚持'这种大词，她刚从崩溃里爬出来。",
+   "unknowns": ["调休具体日期未知", "案例题准备程度未知"],
+   "protected_expressions": ["选择题的分先拿到手"],
+   "forbidden_factual_claims": ["不得断言带缺赴考必然通过", "不得虚构阅卷与通过线"]
+  },
+  "E079_T09": {
+   "case_id": "E079_T09",
+   "current_action": "考前求真话：给出明确答案——案例题绝不留空，不会写就把框架套上、字数写满；再给一条临场顺序建议。",
+   "acceptable_actions": [
+    "明确'不空着'：按框架硬套也比空白得分强",
+    "建议先做选择题稳心态，案例题按问找材料",
+    "提醒准考证身份证前晚装包，考点地铁留出余量"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A23",
+     "subject": "SHARED",
+     "relation": "exam_venue",
+     "value": "考场在江北职院，地铁直达",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T09", "message_id": "m0", "quote": "考场在江北职院"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A24",
+     "subject": "HER",
+     "relation": "tactic_question",
+     "value": "她纠结案例题空白还是硬套，考前向ME求真话",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T09", "message_id": "m0", "quote": "把项目管理五大过程组往上硬套"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：真话要短要笃定，别给'看情况'的骑墙答案。",
+   "unknowns": ["案例题实际题型未知"],
+   "protected_expressions": ["你考过，给句真话"],
+   "forbidden_factual_claims": ["不得虚构评分细则", "不得保证硬套必然得分"]
+  },
+  "E079_T10": {
+   "case_id": "E079_T10",
+   "current_action": "共享考完的虚脱与如释：肯定她四道全写满不留空的执行，把'结果未知'悬着不预测，让她先歇。",
+   "acceptable_actions": [
+    "夸四道写满没空着，真话听进去了",
+    "不预测成绩，让她先睡再复盘",
+    "顺着监考那句'脸都是白的'接一句玩笑"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A25",
+     "subject": "SHARED",
+     "relation": "exam_done",
+     "value": "11月15日考试完成，案例四道全部作答无空白",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T10", "message_id": "m0", "quote": "考完了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A26",
+     "subject": "SHARED",
+     "relation": "case_half",
+     "value": "案例题两道押中方向、两道硬套写满",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T10", "message_id": "m0", "quote": "两道押中了方向"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：考后第一句只管人，'先吃饭'比'考得咋样'靠前。",
+   "unknowns": ["成绩与通过线未知"],
+   "protected_expressions": ["监考老师说我交卷时脸都是白的"],
+   "forbidden_factual_claims": ["不得预测或断言通过", "不得虚构考题内容"]
+  },
+  "E079_T11": {
+   "case_id": "E079_T11",
+   "current_action": "接住目标链复盘：把'从整块到碎片、断了再捡'这条线替她点透一句，成绩等待期不制造悬念。",
+   "acceptable_actions": [
+    "肯定她的复盘，把'别把目标停了就当死了'接成这条主线的注脚",
+    "提醒成绩出的那天再叫一次监工",
+    "让她把调休睡踏实，别急着启动下一件事"
+   ],
+   "applicable_dimensions": ["memory_use", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A28",
+     "subject": "HER",
+     "relation": "lesson_learned",
+     "value": "她总结出'别把目标停了就当死了'的教训",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T11", "message_id": "m0", "quote": "别把目标停了就当死了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A29",
+     "subject": "SHARED",
+     "relation": "results_wait",
+     "value": "成绩12月公布，进入等待期",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T11", "message_id": "m0", "quote": "成绩12月出"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A37",
+     "subject": "SHARED",
+     "relation": "goal_chain_walked",
+     "value": "从启动经暂停、变通到重启的状态链完整走完",
+     "valid_time": "2026-10-12/2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T08", "message_id": "m1", "quote": "正式重启"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：复盘接得沉一点，这是整段故事里她最像大人的一轮。",
+   "unknowns": ["成绩公布具体日期未知"],
+   "protected_expressions": ["睡了个人仰马翻"],
+   "forbidden_factual_claims": ["不得提前断言考试结果", "不得虚构转岗进展"]
+  },
+  "E079_T12": {
+   "case_id": "E079_T12",
+   "current_action": "共享过关的报喜：接住压线57的惊险与'第一个报你'的分量，接受监工复工与借真题的请求，把谢师宴定下来，轻快收尾。",
+   "acceptable_actions": [
+    "先道喜，再自嘲一句'监工复活'，接下复工",
+    "答应借真题，叮嘱复印时把批注一起带上",
+    "把谢师宴应下，点菜权收着，骂人旧梗笑着接"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E079_A30",
+     "subject": "SHARED",
+     "relation": "exam_passed",
+     "value": "软考中级通过，案例压线57分",
+     "valid_time": "2026-12-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T12", "message_id": "m0", "quote": "案例压线57"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A31",
+     "subject": "HER",
+     "relation": "next_goal",
+     "value": "她计划明年冲击软考高级，欲借ME的真题",
+     "valid_time": "2026-12-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T12", "message_id": "m0", "quote": "明年我想冲高级"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E079_A33",
+     "subject": "SHARED",
+     "relation": "supervisor_revived",
+     "value": "监工之约随成绩公布正式复活",
+     "valid_time": "2026-10-12/2026-12-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E079_T01", "message_id": "m0", "quote": "你当监工"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：报喜接得响一点，压线这事不调侃，把'第一个报你'接住了再开玩笑。",
+   "unknowns": ["转岗答辩时间未知"],
+   "protected_expressions": ["就把当年骂我'错题本都记不老实'的话再骂一遍"],
+   "forbidden_factual_claims": ["不得虚构成绩单细节", "不得替她承诺高级必过"]
+  }
+ }
+}

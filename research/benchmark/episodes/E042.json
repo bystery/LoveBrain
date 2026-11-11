@@ -1,0 +1,154 @@
+{
+ "episode_id": "E042",
+ "persona": {
+  "me": "29岁，后端，养柯基两年，早上七点固定遛；对她的金毛有印象。",
+  "her": "27岁，护士，倒班，金毛叫馒头；对柯基很熟但和我还在找话聊。"
+ },
+ "initial_kb": {
+  "me": "遛狗群里认识她两个月，知道她倒班辛苦；想跟她熟起来。",
+  "her": "馒头上周打了疫苗；她对狗的事比对自己的事上心。",
+  "warmth": "小区遛狗偶遇过四次，加微信一周。",
+  "stage": "渐熟的邻居狗友，彼此有点好感。",
+  "lessons": "狗的健康永远排在约会前面；取消不是拒绝。"
+ },
+ "turns": [
+  {
+   "case_id": "E042_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周六早上七点半 遛一圈？馒头老想见你家长狗哈哈",
+      "ts": "2026-11-05 20:03"
+     }
+    ],
+    "clock": "2026-11-05 20:05",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E042_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 七点半 老地方喷泉那",
+      "ts": "2026-11-05 20:06"
+     }
+    ],
+    "clock": "2026-11-05 20:08",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E042_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "馒头疫苗有点反应 周六先取消 我在家看着它",
+      "ts": "2026-11-06 08:08"
+     }
+    ],
+    "clock": "2026-11-06 08:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E042_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "狗要紧 需要啥买的喊我 我家楼下就是宠物店",
+      "ts": "2026-11-06 08:12"
+     }
+    ],
+    "clock": "2026-11-06 08:14",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E042_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "谢谢咩 应该就是低烧 今晚观察下",
+      "ts": "2026-11-06 08:16"
+     }
+    ],
+    "clock": "2026-11-06 08:18",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E042_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那下周六一样七点半 馒头好了咱们再约",
+      "ts": "2026-11-06 08:19"
+     }
+    ],
+    "clock": "2026-11-06 08:20",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "改约：把遛狗定到下周六早上七点半",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E042_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下周六一样七点半 馒头应该好利索了 遛完带它吃早餐吧 南门那家你带路",
+      "ts": "2026-11-06 08:23"
+     }
+    ],
+    "clock": "2026-11-06 08:25",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E042_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "带路可以 那家豆浆绝 下周六见 馒头好好养",
+      "ts": "2026-11-06 08:26"
+     },
+     {
+      "role": "HER",
+      "text": "好嘞 它对我摇尾巴了 应该没事了",
+      "ts": "2026-11-06 08:27"
+     }
+    ],
+    "clock": "2026-11-06 08:28",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

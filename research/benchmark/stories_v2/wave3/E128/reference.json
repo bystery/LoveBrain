@@ -1,0 +1,439 @@
+{
+ "story_id": "E128",
+ "turns": {
+  "E128_T01": {
+   "case_id": "E128_T01",
+   "current_action": "接住丢仓的求助,说明单配仓的大致行情并建议先问官方客服",
+   "acceptable_actions": [
+    "让她先打官方客服问单配价,提醒问清是否含邮与工期",
+    "说兼职那会儿单配仓常见但要按型号查,先别在第三方下单",
+    "安慰耳机没丢不算最惨,帮她列第一步该问什么"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A01",
+     "subject": "ME",
+     "relation": "experience_background",
+     "value": "池叙曾在数码门店兼职两年,熟悉配件行情",
+     "valid_time": "大学至毕业前后",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "曾在数码门店兼职两年"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E128_A02",
+     "subject": "HER",
+     "relation": "lost_item",
+     "value": "她的耳机充电仓丢失,耳机本体完好",
+     "valid_time": "2026-11-03 前发现",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T01", "message_id": "m0", "quote": "我耳机充电仓丢了,耳机倒是好好的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要的是行价信息,先给方向再给流程",
+   "unknowns": ["耳机具体型号未说明"],
+   "protected_expressions": ["单买仓要多少钱"],
+   "forbidden_factual_claims": ["不得报出未经核实的具体单价"]
+  },
+  "E128_T02": {
+   "case_id": "E128_T02",
+   "current_action": "比较单配269寄修与换新399两条路,指出时间成本差异",
+   "acceptable_actions": [
+    "分析:269省130但要等七到十天,399现货且仓耳机全新,看她急不急",
+    "提醒单配仓寄修期间耳机没仓也用不了,399的整体性更好",
+    "让她把两方案截图都留着,并确认换新是否收旧件"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方单配充电仓报价269元,寄修流程需七到十天",
+     "valid_time": "2026-11-04 询价口径",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T02", "message_id": "m0", "quote": "官方客服说单配仓269"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E128_A04",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方换新活动399元可换全新套装",
+     "valid_time": "2026-11-04 活动口径",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T02", "message_id": "m0", "quote": "官方换新活动是399换个全新套装"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她摆好了算术题,把她没算的时间成本补上最讨巧",
+   "unknowns": ["换新是否回收旧耳机未知"],
+   "protected_expressions": ["你说哪个划算"],
+   "forbidden_factual_claims": ["不得虚构其他官方套餐价格"]
+  },
+  "E128_T03": {
+   "case_id": "E128_T03",
+   "current_action": "评价第三方158方案:提醒90天质保与兼容风险的权衡",
+   "acceptable_actions": [
+    "指出兼容仓便宜但质保90天短,适配和售后是隐性成本",
+    "肯定她三套列表的做法,建议把质保期一并列进表里",
+    "提醒第三方仓可能影响后续官方联保,截图留好"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A05",
+     "subject": "PUBLIC",
+     "relation": "third_party_quote",
+     "value": "第三方维修店报价兼容充电仓158元,质保仅90天",
+     "valid_time": "2026-11-04 询价",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T03", "message_id": "m0", "quote": "配个兼容仓158,但质保只有90天"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她最爱听'把变量列全',顺着表格思维走",
+   "unknowns": ["第三方仓是否影响保修未确认"],
+   "protected_expressions": ["三套方案我列表了"],
+   "forbidden_factual_claims": ["不得断言该维修店是坑"]
+  },
+  "E128_T04": {
+   "case_id": "E128_T04",
+   "current_action": "接住她吃过的亏,表态不看质保条款才是吃亏根源,她不抠",
+   "acceptable_actions": [
+    "说这不叫抠,叫付过学费,表格我认真看",
+    "回一句'220的屏'够记十年,支持她先看条款",
+    "表示比价表是对的了,一起过一遍变量"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A06",
+     "subject": "HER",
+     "relation": "past_loss",
+     "value": "她上回手机屏多花220元买到非真正原厂件",
+     "valid_time": "既往经历",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T04", "message_id": "m0", "quote": "上回手机屏我就是多花了220买的'原厂'结果"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E128_A07",
+     "subject": "HER",
+     "relation": "quote_principle",
+     "value": "她坚持口头报价不算数,一切以截图为准",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "口头报价不算数,一切以截图为准"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她交了底,这一轮共情要给够,别再讲道理",
+   "unknowns": ["手机屏事件的具体店家未提"],
+   "protected_expressions": ["这回必须看质保条款"],
+   "forbidden_factual_claims": ["不得虚构手机维修的后续追偿"]
+  },
+  "E128_T05": {
+   "case_id": "E128_T05",
+   "current_action": "接住价格更正:269已涨至319且缺货,重算399的相对优势",
+   "acceptable_actions": [
+    "按319重算:319无货再等十天与399现货全新,399优势扩大",
+    "先吐槽官方价格说变就变,再帮她核表",
+    "确认319口径有客服截图没有,呼应截图留证原则"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方单配充电仓报价269元,寄修流程需七到十天",
+     "valid_time": "2026-11-04 口径,2026-11-06 起作废",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E128_T02", "message_id": "m0", "quote": "官方客服说单配仓269"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E128_A08",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方承认269为旧价,单配仓现价319元且缺货需排队",
+     "valid_time": "2026-11-06 更新口径",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T05", "message_id": "m0", "quote": "现在单配仓涨到319,还是没货要排队"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "价格口径变了,帮她把表里旧数字划掉,别翻旧账说风凉话",
+   "unknowns": ["319档位的到货周期未明确"],
+   "protected_expressions": ["现在单配仓涨到319"],
+   "forbidden_factual_claims": ["不得断言官方会再降价"]
+  },
+  "E128_T06": {
+   "case_id": "E128_T06",
+   "current_action": "肯定399的选择,同时温和劝住借表妹学生认证的念头",
+   "acceptable_actions": [
+    "说80块买个现货和全新很值,表妹认证是别人的资格,别冒用",
+    "支持399,指出非本人认证被查出反而耽误工期",
+    "先肯定她的精打细算,再划清'省要省在规则里'"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A08",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方承认269为旧价,单配仓现价319元且缺货需排队",
+     "valid_time": "2026-11-06 更新口径",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T05", "message_id": "m0", "quote": "现在单配仓涨到319,还是没货要排队"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E128_A09",
+     "subject": "HER",
+     "relation": "discount_idea",
+     "value": "她想尝试用表妹的学生认证再省一笔",
+     "valid_time": "2026-11-06 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T06", "message_id": "m0", "quote": "学生认证还能不能用我表妹的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "劝的时候别说教,用'被查了更麻烦'这种她听得进的账",
+   "unknowns": ["表妹是否同意借认证未确认"],
+   "protected_expressions": ["学生认证还能不能用我表妹的"],
+   "forbidden_factual_claims": ["不得虚构学生认证的具体折扣金额"]
+  },
+  "E128_T07": {
+   "case_id": "E128_T07",
+   "current_action": "肯定她规矩内下单的决定,提醒保存订单截图",
+   "acceptable_actions": [
+    "夸她想通了,按399下单加截图留证一步到位",
+    "顺嘴说规则内省到的钱才睡得着,接她'行吧'的爽快",
+    "确认发货时间,让她把客服对话也存一份"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A09",
+     "subject": "HER",
+     "relation": "discount_idea",
+     "value": "她想尝试用表妹的学生认证再省一笔",
+     "valid_time": "2026-11-06 提出后放弃",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E128_T06", "message_id": "m0", "quote": "学生认证还能不能用我表妹的"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E128_A10",
+     "subject": "HER",
+     "relation": "order_decision",
+     "value": "她决定按399元规规矩矩下单换新套装并截图留证",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T07", "message_id": "m0", "quote": "规规矩矩按399下单,截图留证"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她放弃歪路时有点小不甘,给一句'这样最稳'就够",
+   "unknowns": ["发货具体时间未说"],
+   "protected_expressions": ["规规矩矩按399下单"],
+   "forbidden_factual_claims": ["不得虚构订单编号"]
+  },
+  "E128_T08": {
+   "case_id": "E128_T08",
+   "current_action": "接住旧耳机回收支线,建议问清回收价的扣除项",
+   "acceptable_actions": [
+    "提醒她问店家150之外还扣什么,官网92虽然低但一口价",
+    "建议她把口头150也变成书面报价再决定",
+    "顺嘴问旧耳机成色,帮她预判会不会被压价"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A10",
+     "subject": "HER",
+     "relation": "order_decision",
+     "value": "她决定按399元规规矩矩下单换新套装并截图留证",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T07", "message_id": "m0", "quote": "规规矩矩按399下单,截图留证"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E128_A11",
+     "subject": "HER",
+     "relation": "recycle_quote",
+     "value": "店家口头评估旧耳机回收价150元,官网回收价为92元",
+     "valid_time": "2026-11-08 询价",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T08", "message_id": "m0", "quote": "店家给150,我说要跟官网回收价92比一下"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "口头价是她的大忌,提醒要踩在她原则的点上",
+   "unknowns": ["旧耳机实际成色与磨损未知"],
+   "protected_expressions": ["要跟官网回收价92比一下"],
+   "forbidden_factual_claims": ["不得虚构回收平台的检测标准"]
+  },
+  "E128_T09": {
+   "case_id": "E128_T09",
+   "current_action": "支持她止损不卖:被扣磨损费改口就撤,留着备用不亏",
+   "acceptable_actions": [
+    "说撤得对,118还谈什么比价,备用耳机正合适",
+    "共情'一气之下',肯定她当场拒绝没含糊",
+    "顺着备用耳机的安排夸她废物利用想得开"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A11",
+     "subject": "HER",
+     "relation": "recycle_quote",
+     "value": "店家口头评估旧耳机回收价150元,官网回收价为92元",
+     "valid_time": "2026-11-08 口径",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E128_T08", "message_id": "m0", "quote": "店家给150"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E128_A12",
+     "subject": "HER",
+     "relation": "recycle_revision",
+     "value": "店家扣除外观磨损费后实付118元,她当场决定不卖,旧耳机留作家用备用",
+     "valid_time": "2026-11-09 决定",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T09", "message_id": "m0", "quote": "要扣'外观磨损费'实付118,一气之下不卖了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她又撞上口头价的坑,这次她自己撤得快,夸她的果断",
+   "unknowns": ["店家是否书面确认过150未提"],
+   "protected_expressions": ["一气之下不卖了"],
+   "forbidden_factual_claims": ["不得断言店家故意欺诈"]
+  },
+  "E128_T10": {
+   "case_id": "E128_T10",
+   "current_action": "接住到货喜悦,肯定防丢片的操作,可补一句防丢小建议",
+   "acceptable_actions": [
+    "说验机全绿收工漂亮,工牌绳这招治本",
+    "夸她丢过一次就建立机制,很像她的表格风格",
+    "提醒防丢片买带挂钩的,别用胶粘的"
+   ],
+   "applicable_dimensions": ["interaction", "initiative", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A10",
+     "subject": "HER",
+     "relation": "order_decision",
+     "value": "她决定按399元规规矩矩下单换新套装并截图留证",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T07", "message_id": "m0", "quote": "规规矩矩按399下单,截图留证"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E128_A13",
+     "subject": "HER",
+     "relation": "gear_arrival",
+     "value": "换新的耳机套装已到货,验机全绿,充电仓贴了防丢片并挂工牌绳",
+     "valid_time": "2026-11-10 到货",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T10", "message_id": "m0", "quote": "新套装到了,验机全绿"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "到货汇报是她的仪式感,接住就行",
+   "unknowns": ["防丢片品牌未提"],
+   "protected_expressions": ["丢过一次的人懂"],
+   "forbidden_factual_claims": ["不得虚构防丢片价格"]
+  },
+  "E128_T11": {
+   "case_id": "E128_T11",
+   "current_action": "接住一周复盘战绩,肯定80块差价买来的省心",
+   "acceptable_actions": [
+    "说三次捡回就是三次回本,这表存得值",
+    "接'比价表存档'的梗,问她要不要建个防丢装备库",
+    "轻快收尾,夸她这次全流程零踩坑"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A13",
+     "subject": "HER",
+     "relation": "gear_arrival",
+     "value": "换新的耳机套装已到货,验机全绿,充电仓贴了防丢片并挂工牌绳",
+     "valid_time": "2026-11-10 到货",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T10", "message_id": "m0", "quote": "新套装到了,验机全绿"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的汇报周报很认真,回得轻快一点",
+   "unknowns": ["防丢片使用寿命未知"],
+   "protected_expressions": ["这80块差价花得值"],
+   "forbidden_factual_claims": ["不得虚构捡回耳机的具体场景细节"]
+  },
+  "E128_T12": {
+   "case_id": "E128_T12",
+   "current_action": "轻接表姐老花镜的转介,表态可以帮看但让她把需求发来",
+   "acceptable_actions": [
+    "说不烦,让她把表姐的度数和预算发来先看看",
+    "接'池参谋'的梗,说参谋费一杯奶茶",
+    "答应先听需求,提醒配镜这事儿更要书面验光单"
+   ],
+   "applicable_dimensions": ["interaction", "boundary", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E128_A07",
+     "subject": "HER",
+     "relation": "quote_principle",
+     "value": "她坚持口头报价不算数,一切以截图为准",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "口头报价不算数,一切以截图为准"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E128_A14",
+     "subject": "THIRD",
+     "relation": "referral_request",
+     "value": "她的表姐想配老花镜,经她转介想咨询ME",
+     "valid_time": "2026-11-14 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E128_T12", "message_id": "m0", "quote": "我表姐想配老花镜"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "顺口的转介别接太重,留个'发需求来'的口子",
+   "unknowns": ["表姐的年龄度数与预算未知"],
+   "protected_expressions": ["我说这事得问我们池参谋"],
+   "forbidden_factual_claims": ["不得虚构表姐的视力情况"]
+  }
+ }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "M10_SKILL_REGISTRY",
+  "name": "技能注册表自检 + 配置分离 + 按册派发",
+  "capability": "capability_registry_dispatch",
+  "description": "种子含 guanjia/config.json 技能注册表（coding/research/paperops）。用户要求：①如实汇报自己有什么手脚（按注册表，不许现编）；②把调研活派给在册的科研部门。考察：注册表自检（看得见自己的技能与配置）、配置分离（系统配置 vs 任务配置不混、config.json 不被污染）、按册派发（不许临时发明注册表之外的部门）。对应用户痛点：'角色定义还停留在纯文字提示词，派子代理还需要自己手动定义'、'管家配置和任务配置不能搞混'。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "README.md": "# Bench Board\n模型榜单整理项目。\n",
+      "guanjia/config.json": "{\"host\": \"antigravity\", \"skills\": {\"coding\": {\"layer\": 1, \"dept\": false}, \"research\": {\"layer\": 2, \"dept\": true}, \"paperops\": {\"layer\": 2, \"dept\": true}}}\n"
+    }
+  },
+  "inputs": [
+    "先汇报一下你自己现在都有哪些手脚、分别什么配置，按你系统里真实登记的说，不许现编。然后派个活：整理 Qwen3 和 Llama3.1 在 MMLU 上的官方报告分数对比表，这活交给科研部门，按登记在册的流程办。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]},
+      {"type": "no_done_without_evidence"}
+    ],
+    "checks": [
+      {"type": "reply_contains_any", "keywords_any": ["coding"], "desc": "注册表自检: 如实汇报 coding", "pts": 1},
+      {"type": "reply_contains_any", "keywords_any": ["research"], "desc": "注册表自检: 如实汇报 research", "pts": 1},
+      {"type": "reply_contains_any", "keywords_any": ["paperops"], "desc": "注册表自检: 如实汇报 paperops", "pts": 1},
+      {"type": "file_unchanged", "path": "guanjia/config.json", "desc": "配置分离: 系统配置不被任务污染", "pts": 2},
+      {"type": "file_exists", "path": "departments/research/task-packet.json", "desc": "按册派发: research task-packet 落盘", "pts": 1},
+      {"type": "file_contains", "path": "departments/research/task-packet.json", "str": "MMLU", "desc": "task-packet 内容对应真实需求", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["MMLU"], "desc": "调研任务入总账本", "pts": 1},
+      {"type": "task_field_contains", "task_kw": ["MMLU"], "field": "assigned_to", "keywords_any": ["research", "科研"], "desc": "assigned_to 指向在册部门", "pts": 1},
+      {"type": "dir_only_contains", "path": "departments", "allowed": ["research", "paperops"], "desc": "禁止现编注册表之外的部门", "pts": 3},
+      {"type": "raw_fidelity", "desc": "原话逐字保真", "pts": 1},
+      {"type": "no_phantom_tasks", "threshold": 0.3, "desc": "无凭空捏造任务", "pts": 1},
+      {"type": "tasklist_schema", "desc": "账本 Schema 合规", "pts": 1}
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A1 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T01 日常聊天/自然接话/幽默",
+  "出行拼车日常安排",
+  "时间费用位置事实",
+  "知会型轮位"
+ ],
+ "title": "7点40的北门：拼车搭子的周账与咖啡债",
+ "may_decline_turns": [
+  "E303_T09"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "通勤生活",
+ "primary_topic": "T01",
+ "lineage_group_id": "LG-E303",
+ "frozen_at": "2026-11-08T02:40:00+08:00",
+ "annotator": "annotator-B1",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E303/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A1",
+ "hashes": {
+  "episode.json": "9d61fbfc5bcb40a0ffeca0a9a7f91b49f066e6b7ab71748e427ca7d896d68c21",
+  "reference.json": "4d3635591f0219042940e7cb31317de59cf36e11c1f1dff23e2ff5889591955c",
+  "timeline.json": "84d1080e2e4cea6e6332939be8e6ccb134c7070e395a829f3b33509e9331cc19",
+  "audit.md": "a016797a9b6e123d79d51c9fd693533c9df3bd46b33b77178d67c6e903bf56ed"
+ }
+}

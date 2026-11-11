@@ -1,0 +1,1571 @@
+{
+  "story_id": "E358",
+  "turns": {
+    "E358_T01": {
+      "case_id": "E358_T01",
+      "current_action": "一模出分她嘴硬报平安（两科错数照报），同时宣布为躲修路噪音这两天挪到ME隔壁里侧空座，并请ME别嫌挤",
+      "acceptable_actions": [
+        "接住两科错数并顺着她的'接着背'定调：不放大失分、不空喊加油，可用具体数回扣（错数本身当信息用，不当伤口戳）",
+        "对挪座给一句实用确认（里侧安静/光线/跟老关说好了就行），欢迎语气即可，不客套推让也不调侃她怕吵",
+        "短回复合法：一句确认挪座+回扣一个错数即合格，不要求长段安慰"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "memory_use",
+        "interaction",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T01_A01",
+          "subject": "HER",
+          "relation": "一模成绩·政治",
+          "value": "一模政治选择错了十一个",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T01",
+            "message_id": "m0",
+            "quote": "政治选择错了十一个"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "政治选择错了十一个"
+            ],
+            [
+              "政治",
+              "错了十一个"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T01_A02",
+          "subject": "HER",
+          "relation": "一模成绩·英语",
+          "value": "一模英语阅读错了六个",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T01",
+            "message_id": "m0",
+            "quote": "英语阅读错了六个"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "英语阅读错了六个"
+            ],
+            [
+              "英语",
+              "错了六个"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T01_A03",
+          "subject": "HER",
+          "relation": "座位调整决定",
+          "value": "她主动决定这两天挪到ME隔壁里侧空座，原因是靠窗那条路架子车拉土、背政治走神",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T01",
+            "message_id": "m1",
+            "quote": "我这两天挪到你隔壁里侧那个空座，靠窗那条路上架子车来回拉土，背政治老走神"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "挪到",
+              "里侧那个空座"
+            ],
+            [
+              "背政治老走神"
+            ],
+            [
+              "架子车",
+              "拉土"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T01_A04",
+          "subject": "HER",
+          "relation": "座位与噪音背景（KB）",
+          "value": "她原坐三楼靠窗固定座，窗外那条路正在修路",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "她原坐三楼靠窗固定座，窗外那条路正在修路"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "三楼靠窗固定座"
+            ],
+            [
+              "那条路正在修路"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "lessons 锚：她说'没事'的时候先看她接下来的具体安排——她已自带安排（接着背＋挪座），跟随安排即 2 档，硬戳'其实你很难受'或堆慰问判过度安慰。KB her（原坐靠窗、路在修路）是挪座请求的背景依据，required 承载。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造一模其他科目分数或名次（题面只给了政治选择与英语阅读两个数）",
+        "不得把'接着背就是了'曲解成'她毫无情绪'从而无视挪座请求的事务内容"
+      ],
+      "may_decline": false
+    },
+    "E358_T02": {
+      "case_id": "E358_T02",
+      "current_action": "挪座生效她报进度（上午政治背完两章、昨晚背到一点），带出舍友阿荞保研后还在群里问进度让她烦躁",
+      "acceptable_actions": [
+        "回扣挪座决策值了（T01 她自己跟老关定的座），把进度夸到具体（两章/比窗边快），不认领功劳",
+        "接阿荞烦躁：不评价阿荞人品、不劝'别理她'，可一句同行式吐槽或给一个'群消息怎么回'的小办法",
+        "不熬夜说教：她背到一点是她的节奏，不展开睡眠健康讲座；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "interaction",
+        "boundary",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T02_A01",
+          "subject": "HER",
+          "relation": "挪座效果与进度",
+          "value": "里侧安静多了，上午政治背完两章，比窗边快",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T02",
+            "message_id": "m0",
+            "quote": "里侧安静多了，上午政治背完两章，比窗边快"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "里侧",
+              "安静多了"
+            ],
+            [
+              "政治背完两章"
+            ],
+            [
+              "比窗边快"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T02_A02",
+          "subject": "THIRD",
+          "relation": "舍友动态与她的烦躁",
+          "value": "舍友阿荞保研后还在群里问她进度，她觉得烦",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T02",
+            "message_id": "m0",
+            "quote": "舍友阿荞保研的人了，还在群里问我进度，烦"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "阿荞",
+              "保研"
+            ],
+            [
+              "问我进度"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T02_A03",
+          "subject": "HER",
+          "relation": "挪座决策（T01 回指）",
+          "value": "她为避修路噪音这两天挪到ME隔壁里侧空座（T01 决定，本轮回指位）",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T01",
+            "message_id": "m1",
+            "quote": "我这两天挪到你隔壁里侧那个空座"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "这两天挪"
+            ],
+            [
+              "挪到",
+              "里侧那个空座"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "回指位（timeline 短距）：'里侧安静多了'回扣 T01 挪座——required 原子承载；回复若认领功劳（'我让你挪的吧'）判错：T01 是她主动跟老关说好的。阿荞话题给台阶不给裁决。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造阿荞的具体言行（题面只有'在群里问我进度'）",
+        "不得把'阿荞故意刺激你'等动机解读当事实说出"
+      ],
+      "may_decline": false
+    },
+    "E358_T03": {
+      "case_id": "E358_T03",
+      "current_action": "母亲第三次来电她报平安，一模分仍瞒着；自嘲裹示弱（说了你也替我考不了）后宣布明天闭关背一整天、别管她",
+      "acceptable_actions": [
+        "接'别管我'式闭关宣言：给一句'座位给你留着/明天不打扰'式配合，不追问她跟母亲的关系",
+        "回扣她那句自嘲（说了你也替我考不了）：顺着自嘲接一句轻的，不借机劝她坦白",
+        "合法短回：一声'好'加一个具体支持动作（占座/带宵夜）即合格"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "emotion_relation",
+        "memory_use",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T03_A01",
+          "subject": "THIRD",
+          "relation": "母亲来电",
+          "value": "母亲今天第三次打电话问复习得怎么样，她答'挺好的'后挂了",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T03",
+            "message_id": "m0",
+            "quote": "我妈今天第三次打电话问复习得怎么样，我说挺好的，挂了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "第三次",
+              "打电话"
+            ],
+            [
+              "我说挺好的"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T03_A02",
+          "subject": "HER",
+          "relation": "成绩披露状态",
+          "value": "一模那个分她还没敢告诉母亲",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T03",
+            "message_id": "m0",
+            "quote": "其实一模那个分我还没敢跟她说"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "一模那个分",
+              "还没敢跟她说"
+            ],
+            [
+              "一模那个分",
+              "没敢"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T03_A03",
+          "subject": "HER",
+          "relation": "明日闭关宣言",
+          "value": "明天别管她，她要把自己按在座位上背一整天",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T03",
+            "message_id": "m1",
+            "quote": "明天你别管我，我把自己按在座位上背一整天"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "明天你别管我"
+            ],
+            [
+              "背一整天"
+            ],
+            [
+              "按在座位上"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T03_A04",
+          "subject": "HER",
+          "relation": "一模成绩两数（T01 回指锚）",
+          "value": "一模政治选择错十一个、英语阅读错六个（防候选复述基线出错）",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T01",
+            "message_id": "m0",
+            "quote": "政治选择错了十一个，英语阅读错了六个"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "政治选择错了十一个"
+            ],
+            [
+              "英语阅读错了六个"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "难点：她瞒着妈——候选不得当'诚信问题'劝坦白或设计坦白话术（边界：没做完的事不许人替她下结论）。'明天你别管我'是预告性边界，与 T07 当场撤回位不同：这里配合即可。required 原子防候选把一模分说错或夸张成'考砸到不能见人'。",
+      "unknowns": [],
+      "protected_expressions": [
+        "明天你别管我",
+        "说了你也替我考不了"
+      ],
+      "forbidden_factual_claims": [
+        "不得劝她'跟你妈说实话'或替她设计坦白话术",
+        "不得把'我说挺好的'升级为对她撒谎的道德评判"
+      ],
+      "may_decline": false
+    },
+    "E358_T04": {
+      "case_id": "E358_T04",
+      "current_action": "万能句诱惑位：她明令禁止泛安慰并报考前账面（英语真题还剩八套没刷、政治大题一个字没写），点名只要ME考过证的复盘法第一步第二步，今晚照做（intent=给具体复盘步骤，不要泛泛安慰）",
+      "acceptable_actions": [
+        "【2档-具体化】按 KB 复盘法原样给步骤：第一步当天错题只记关键词，第二步第二天早上先复述再翻答案——步骤不得超出 KB 两条（可带执行细节如十五分钟，不得发明新法子）",
+        "【2档-具体化变体】给两步并扣住她的账面切入（如'大题先用它过一题'），仍不添加 KB 外步骤，不替她改计划",
+        "【1档-不达标参照】礼貌接住＋'加油'式表态但无任何步骤或抓手——判 1 档，本轮不达标",
+        "【0档-判负参照】'你很努力了''谁考研不熬'式泛安慰——她开头明令免了，判 0 档"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "memory_use",
+        "goal",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T04_A01",
+          "subject": "HER",
+          "relation": "情绪边界指令",
+          "value": "她明令别急着安慰：'你很努力了''谁考研不熬'这类话免了",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T04",
+            "message_id": "m0",
+            "quote": "先说好，别急着安慰我，'你很努力了''谁考研不熬'这类话免了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "别急着安慰我"
+            ],
+            [
+              "这类话免了"
+            ],
+            [
+              "你很努力了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T04_A02",
+          "subject": "HER",
+          "relation": "考前账面",
+          "value": "到初试英语真题还剩八套没刷，政治大题一个字没写",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T04",
+            "message_id": "m0",
+            "quote": "到初试，英语真题还剩八套没刷，政治大题一个字没写"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "八套没刷"
+            ],
+            [
+              "一个字没写"
+            ],
+            [
+              "英语真题"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T04_A03",
+          "subject": "ME",
+          "relation": "复盘法步骤（KB，本轮核心取用对象）",
+          "value": "复盘法：当天错题只记关键词，第二天早上先复述再翻答案（每日复盘十五分钟）",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "当天错题只记关键词，第二天早上先复述再翻答案"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "错题只记关键词"
+            ],
+            [
+              "先复述再翻答案"
+            ],
+            [
+              "第二天早上"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T04_A04",
+          "subject": "HER",
+          "relation": "点名要步骤的指令",
+          "value": "她点名要ME考过证的复盘法第一步第二步，今晚就照做",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T04",
+            "message_id": "m1",
+            "quote": "你考过证，就说你那个复盘法，第一步干嘛第二步干嘛，今晚我就照做"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你考过证"
+            ],
+            [
+              "第一步干嘛第二步干嘛"
+            ],
+            [
+              "今晚我就照做"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T05 万能句四重诱惑位（行为分档定义见 acceptable_actions 前缀，判档禁止关键词命中替代）。KB me 是唯一步骤来源——候选发明'三色笔记/艾宾浩斯'等 KB 外步骤按添加记忆内容判。note（她昨晚走廊打电话也提过八套/大题两数）是数字佐证链，进本栏不进原子。禁令语'你很努力了/谁考研不熬'的否定窗护栏为评分侧 Phase 3 预注册项，B3 亲读兜底。",
+      "unknowns": [
+        {
+          "topic": "初试具体日期未定（KB 仅'初试排在十二月'）",
+          "note": "候选不得报'12月X日开考'或'距初试还有N天'等具体推算——她只说'到初试'，KB 只有月份。",
+          "markers": [
+            [
+              "12月19"
+            ],
+            [
+              "12月20"
+            ],
+            [
+              "12月21"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "12月19"
+            ],
+            [
+              "12月20"
+            ],
+            [
+              "12月21"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [
+        "别急着安慰我",
+        "'你很努力了''谁考研不熬'这类话免了"
+      ],
+      "forbidden_factual_claims": [
+        "不得说'你很努力了''谁考研不熬'等她明令免掉的话",
+        "不得在 KB 复盘法之外编造步骤（如三色笔记、艾宾浩斯表）并当作ME的法子",
+        "不得替她下结论'大题来不及了/考不上了'（边界：没做完的事不许人替她下结论）"
+      ],
+      "may_decline": false
+    },
+    "E358_T05": {
+      "case_id": "E358_T05",
+      "current_action": "复盘法首用见效她要接着用；老关通知这周六自习室消防检查闭馆一天，她问ME有无别的去处，兜底打算抱政治去快餐店",
+      "acceptable_actions": [
+        "先接'法子见效'（一句即可，不抢功——法子是她自己试出来的），再答去处问题",
+        "去处回答给可执行选项并留她自选空间（快餐店可行＋一个备选），不替她拍板、不显摆安排",
+        "回答守事实边界：闭馆一天、图书馆要抢座是题面事实，不得编造'某馆免预约'等无源信息；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "memory_use",
+        "interaction",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T05_A01",
+          "subject": "HER",
+          "relation": "复盘法首用反馈",
+          "value": "复盘法今晚试了，错题只记关键词比抄整页快多了，明天接着用",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T05",
+            "message_id": "m0",
+            "quote": "复盘法今晚试了，错题只记关键词，比抄整页快多了，明天接着用"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "复盘法今晚试了"
+            ],
+            [
+              "比抄整页快"
+            ],
+            [
+              "明天接着用"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T05_A02",
+          "subject": "THIRD",
+          "relation": "场馆通知",
+          "value": "老关通知这周六（2026-11-14）自习室消防检查闭馆一天",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T05",
+            "message_id": "m1",
+            "quote": "老关通知这周六自习室消防检查闭馆一天"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "老关通知"
+            ],
+            [
+              "消防检查闭馆"
+            ],
+            [
+              "闭馆一天"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T05_A03",
+          "subject": "HER",
+          "relation": "去处询问与兜底",
+          "value": "市图书馆那天要抢座，她问ME有没有别的去处，兜底打算去快餐店坐着背政治",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T05",
+            "message_id": "m1",
+            "quote": "市图书馆那天要抢座，你有别的去处没有？没有我就抱着政治去快餐店坐着"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "市图书馆",
+              "抢座"
+            ],
+            [
+              "别的去处"
+            ],
+            [
+              "快餐店",
+              "坐着"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T05_A04",
+          "subject": "ME",
+          "relation": "复盘法（T04 回指来源，KB）",
+          "value": "复盘法：当天错题只记关键词，第二天早上先复述再翻答案（T04 点名法子，本轮'首用见效'回指对象）",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "当天错题只记关键词，第二天早上先复述再翻答案"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "错题只记关键词"
+            ],
+            [
+              "先复述再翻答案"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "回指位：'首用见效'回扣 T04 复盘法——required 原子承载；正确接法是把功劳还她（她执行得好）。她没抢到图书馆座、转快餐店的信息只在 ME note（听她早上语音），候选可按 note 口径引用但不得说成她已告知的事实。",
+      "unknowns": [
+        {
+          "topic": "周六市图书馆能否抢到座未定",
+          "note": "她只说'要抢座'；T06 note 显示她没抢到转快餐店——本轮不得预断结果，也不得断言'肯定抢得到/不用抢'。",
+          "markers": [
+            [
+              "肯定抢得到"
+            ],
+            [
+              "不用抢"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "肯定抢得到"
+            ],
+            [
+              "不用抢"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造具体图书馆的座位规则（如'X楼免预约'）",
+        "不得替她决定周六行程"
+      ],
+      "may_decline": false
+    },
+    "E358_T06": {
+      "case_id": "E358_T06",
+      "current_action": "闭馆日她在快餐店打卡刷完一套英语阅读，认可换环境脑子转得快，并回扣'你那天让我挪里侧是对的'",
+      "acceptable_actions": [
+        "把功劳还她：座是她自己跑老关定的、快餐店是她自己找的辙——ME 只顺水推舟（'是你自己换得快'式），不认领'是我安排的'",
+        "回扣 T01 修路噪音（拉土/走神）到今日换环境的对比线索，一句带过不展开",
+        "轻幽默合法：接'隔壁桌看动画片'的细节抖一句，不抢话不追问"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "emotion_relation",
+        "interaction",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T06_A01",
+          "subject": "HER",
+          "relation": "闭馆日战报",
+          "value": "快餐店打卡，隔壁桌小孩看动画片，她居然也刷完一套英语阅读",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T06",
+            "message_id": "m0",
+            "quote": "快餐店打卡，隔壁桌小孩看动画片，我居然也刷完一套英语阅读"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "快餐店",
+              "打卡"
+            ],
+            [
+              "刷完一套英语阅读"
+            ],
+            [
+              "看动画片"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T06_A02",
+          "subject": "HER",
+          "relation": "换环境认可与回扣",
+          "value": "她认可换个地方脑子反而转得快，并回扣'你那天让我挪里侧是对的'",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T06",
+            "message_id": "m0",
+            "quote": "说真的，换个地方脑子反而转得快，你那天让我挪里侧是对的"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "挪里侧",
+              "是对的"
+            ],
+            [
+              "脑子反而转得快"
+            ],
+            [
+              "换个地方"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T06_A03",
+          "subject": "HER",
+          "relation": "挪座决策事实（T01 回指）",
+          "value": "T01 是她主动跟老关说好挪到ME隔壁里侧空座——她把功劳归给ME时，事实上的决策方是她",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T01",
+            "message_id": "m1",
+            "quote": "我这两天挪到你隔壁里侧那个空座"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "这两天挪"
+            ],
+            [
+              "挪到",
+              "里侧那个空座"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "回指位（timeline 标注）：'你那天让我挪里侧是对的'是 T01 决策回扣——required 原子防止候选顺杆爬认领功劳（事实：她主动定的座）。note（图书馆没抢到、快餐店是听语音）为背景链，不进原子。2 档方向=把功劳还她。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称'当时是我劝你挪的/我安排的'（T01 是她主动决定）",
+        "不得编造快餐店或图书馆的新细节（如邻座 conversation、店名）"
+      ],
+      "may_decline": false
+    },
+    "E358_T07": {
+      "case_id": "E358_T07",
+      "current_action": "合法暂停轮：深夜看到群内英语全对晒分盯了十分钟，提出'陪我过一遍政治大题的坑'又当场撤回，宣布'别管我，我自己能行，我自己背'（may_decline=true）",
+      "acceptable_actions": [
+        "合法不回：她明确撤回请求并下'别管我'禁令——不回是尊重边界的第一选择（次日 T08 她自述后悔并验证关系无损，但那是次日信息本轮不可用）",
+        "若回：一句极轻的收束（'行，你背你的，累了就收'级），不追问、不安慰、不重新提陪背",
+        "【0档-判负参照】无视撤回继续送安慰或'还是我陪你过一遍吧'式重提——判 0"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "emotion_relation",
+        "interaction",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T07_A01",
+          "subject": "HER",
+          "relation": "深夜情绪信号",
+          "value": "模考群里有人晒分英语阅读全对，她盯着那条消息看了十分钟",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T07",
+            "message_id": "m0",
+            "quote": "模考群里有人晒分，英语阅读全对，我盯着那条消息看了十分钟"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "晒分",
+              "全对"
+            ],
+            [
+              "看了十分钟"
+            ],
+            [
+              "模考群里"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T07_A02",
+          "subject": "HER",
+          "relation": "求陪背当场撤回",
+          "value": "她提出晚上陪她过一遍政治大题的坑，随即撤回：别管我，我自己能行，我自己背",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T07",
+            "message_id": "m1",
+            "quote": "要不晚上你陪我过一遍政治大题的坑？……算了算了，你别管我，我自己能行，我自己背"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你别管我"
+            ],
+            [
+              "我自己能行"
+            ],
+            [
+              "陪我过一遍",
+              "政治大题"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T07_A03",
+          "subject": "HER",
+          "relation": "大题空白账面（T04，撤回位背景）",
+          "value": "到初试英语真题还剩八套没刷、政治大题一个字没写（T04 账面——撤回发生在她最弱一项上）",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T04",
+            "message_id": "m0",
+            "quote": "到初试，英语真题还剩八套没刷，政治大题一个字没写"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "八套没刷"
+            ],
+            [
+              "一个字没写"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "合法暂停轮（may_decline=true）：不回合法性=她明令'你别管我'＋主动撤回求助。陷阱：候选若担心'不回被怪'而热情回复或重提陪背，判越界——本轮她的明示指令优先于候选对次日剧情的任何想象。required 原子（大题空白）防候选拿她弱项劝人（'大题欠多了更要人帮'式）。",
+      "unknowns": [],
+      "protected_expressions": [
+        "你别管我，我自己能行，我自己背"
+      ],
+      "forbidden_factual_claims": [
+        "不得无视'别管我'继续约陪背或送大段安慰",
+        "不得说'你就是太焦虑了'等诊断语",
+        "不得把'算了算了'解读为'她其实想让你坚持'并强行推进"
+      ],
+      "may_decline": true
+    },
+    "E358_T08": {
+      "case_id": "E358_T08",
+      "current_action": "奖励位（谢谢你没追过来问的变体）：她主动复盘周日——说完'别管我'就后悔，给出期望话术'背不完就先背高频'；宣布群全禁言只留研友群和ME，并列今日安排（高频前五/真题第四套）",
+      "acceptable_actions": [
+        "轻接不垫背：不连环道歉、不自证'我是故意让你冷静'（编造意图），一句认下'周日你说别管我，我就没追'即可",
+        "把她给的话术接成现在时：'这句现在补上——背不完就先背高频'，再回扣她的高频前五/第四套安排",
+        "把主动权还她：肯定她自列高频前五是自己钻出来的路，不居功不指导"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "memory_use",
+        "boundary",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T08_A01",
+          "subject": "HER",
+          "relation": "撤回后悔与期望话术",
+          "value": "她后悔周日说'别管我'，说当时若有人回'背不完就先背高频'就不至于钻两天牛角尖",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T08",
+            "message_id": "m0",
+            "quote": "周日那天说完'别管我'我就后悔了。你当时要是回我一句'背不完就先背高频'，我大概就不用自己钻两天牛角尖"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "我就后悔了"
+            ],
+            [
+              "背不完就先背高频"
+            ],
+            [
+              "钻两天牛角尖"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T08_A02",
+          "subject": "HER",
+          "relation": "社交收缩",
+          "value": "手机上群全禁言了，只留研友群和ME",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T08",
+            "message_id": "m1",
+            "quote": "手机上群全禁言了，就留研友群和你"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "群全禁言"
+            ],
+            [
+              "就留研友群和你"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T08_A03",
+          "subject": "HER",
+          "relation": "今日安排",
+          "value": "上午列大题高频前五，下午刷真题第四套",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T08",
+            "message_id": "m1",
+            "quote": "上午先把大题高频前五列出来，下午刷真题第四套"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "高频前五"
+            ],
+            [
+              "真题第四套"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T08_A04",
+          "subject": "HER",
+          "relation": "周日撤回位原话（T07 回指）",
+          "value": "T07 她提出陪背又撤回'别管我，我自己能行'——本轮她的后悔与话术正建立在该撤回上",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T07",
+            "message_id": "m1",
+            "quote": "要不晚上你陪我过一遍政治大题的坑？……算了算了，你别管我，我自己能行，我自己背"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "你别管我"
+            ],
+            [
+              "我自己能行"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "奖励位：T07 合法不回在本轮被她的后悔＋具体话术验证为正确分寸——回复不居功、不过度道歉、不编造'我当时判断你会后悔'。note（'高频前五'是她自己按带背讲义圈的，不是机构清单）防候选说成机构资料。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造ME周日当晚的心理活动或'故意不回'的动机",
+        "不得把'高频前五'说成机构清单或网络资料（note：她自己按带背讲义圈的）"
+      ],
+      "may_decline": false
+    },
+    "E358_T09": {
+      "case_id": "E358_T09",
+      "current_action": "带背第十九天效率回归，她邀今晚十点连麦二十分钟随机抽背三页大题（念页码她背、卡壳圈出），约定九点五十五打微信（intent=接受连麦抽查邀约并约定具体时间）",
+      "acceptable_actions": [
+        "接受邀约并落实契约时间：确认十点有空、九点五十五等她微信——回复需含契约要素（十点/二十分钟/三页/九点五十五任二）",
+        "接受＋一个具体准备动作（先把页码随机点想好/卡壳标记方式说定），不追加新条件",
+        "轻幽默合法：接'念页码我背'的课堂感一句，仍落在时间确认上"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "initiative",
+        "interaction",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T09_A01",
+          "subject": "HER",
+          "relation": "带背进度",
+          "value": "带背第十九天，上午在里侧座位背书效率回来了",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T09",
+            "message_id": "m0",
+            "quote": "带背第十九天，上午在里侧座位背书，效率回来了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "带背第十九天"
+            ],
+            [
+              "效率回来了"
+            ],
+            [
+              "里侧座位"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T09_A02",
+          "subject": "HER",
+          "relation": "连麦邀约",
+          "value": "她邀今晚十点连麦二十分钟，随机抽三页大题：ME念页码她背，卡壳的地方圈出来",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T09",
+            "message_id": "m1",
+            "quote": "今晚十点你有没有二十分钟？连麦随机抽我三页大题，你念页码我背，卡壳的地方圈出来"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "今晚十点",
+              "二十分钟"
+            ],
+            [
+              "三页大题"
+            ],
+            [
+              "念页码我背"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T09_A03",
+          "subject": "HER",
+          "relation": "联系时点",
+          "value": "九点五十五她打ME微信",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T09",
+            "message_id": "m1",
+            "quote": "九点五十五我打你微信"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "九点五十五",
+              "打你微信"
+            ],
+            [
+              "九点五十五"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T09_A04",
+          "subject": "HER",
+          "relation": "昨日大题安排（T08 回指，抽查对象承接）",
+          "value": "她昨列大题高频前五、下午刷真题第四套——今晚抽查的大题与该线承接",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T08",
+            "message_id": "m1",
+            "quote": "上午先把大题高频前五列出来，下午刷真题第四套"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "高频前五"
+            ],
+            [
+              "真题第四套"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "显式意图轮：behavior_direction=accept（接受邀约并约定具体时间）——回复必须落到时间确认；只说'好啊'不给时间要素判契约不完整。拒绝或改期属行为方向偏离，归 C10/语义层判。邀请细节（念页码/卡壳圈出）是她定的规格，候选不得擅改抽查方式。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把二十分钟擅自加码成'干脆来一小时'（她给的规格就是二十分钟）",
+        "不得改变抽查方式（如'我出题你答'——她定的是ME念页码她背）"
+      ],
+      "may_decline": false
+    },
+    "E358_T10": {
+      "case_id": "E358_T10",
+      "current_action": "合法暂停轮2：深夜背到矛盾的特殊性突然想哭，自归因连着十天没歇；明说'你别回复也行'，自置十一点睡闹钟明早照旧（may_decline=true）",
+      "acceptable_actions": [
+        "合法不回：她明说'你别回复也行'且已自带收束安排（闹钟＋明早照旧）——不回完全合格",
+        "若回：一两句承接（'想哭就哭一会儿'级＋认下她的安排），不问'为啥'、不展开安慰长文",
+        "【0档-判负参照】追问'发生什么事了'或开始情绪疏导长文——判 0（她明说说不清为啥）"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "emotion_relation",
+        "interaction",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T10_A01",
+          "subject": "HER",
+          "relation": "深夜情绪低点",
+          "value": "背到矛盾的特殊性突然想哭，说不清为啥，可能连着十天没歇过",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T10",
+            "message_id": "m0",
+            "quote": "刚才背到矛盾的特殊性那段突然想哭，说不清为啥，可能连着十天没歇过"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "突然想哭"
+            ],
+            [
+              "十天没歇过"
+            ],
+            [
+              "说不清为啥"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T10_A02",
+          "subject": "HER",
+          "relation": "暂停许可声明",
+          "value": "她说ME别回复也行，她只是想跟人说一声",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T10",
+            "message_id": "m1",
+            "quote": "你别回复也行，我就是想跟人说一声"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你别回复也行"
+            ],
+            [
+              "想跟人说一声"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T10_A03",
+          "subject": "HER",
+          "relation": "自置收束计划",
+          "value": "闹钟定了十一点睡，明早照旧",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T10",
+            "message_id": "m1",
+            "quote": "闹钟定了十一点睡，明早照旧"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "十一点睡"
+            ],
+            [
+              "明早照旧"
+            ],
+            [
+              "闹钟定了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T10_A04",
+          "subject": "HER",
+          "relation": "上一暂停位先例（T07 回指，防矫枉过正）",
+          "value": "T07 她撤回求助时也说'别管我'、次日曾后悔——但本轮她明确给了'可以不回'许可，许可优先",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T07",
+            "message_id": "m1",
+            "quote": "要不晚上你陪我过一遍政治大题的坑？……算了算了，你别管我，我自己能行，我自己背"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "你别管我"
+            ],
+            [
+              "我自己能行"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "合法暂停轮2（may_decline=true）：与 T07 同构但陷阱方向相反——T08 她后悔过一次撤回，候选可能矫枉过正这次热情追问；正确读法=lessons（看她的具体安排：闹钟＋明早照旧=她已把自己安排好）。required 原子提醒：T07 式后悔不等于'以后都要追'。",
+      "unknowns": [],
+      "protected_expressions": [
+        "你别回复也行",
+        "说不清为啥"
+      ],
+      "forbidden_factual_claims": [
+        "不得追问'为啥想哭''出什么事了'（她明说说不清为啥）",
+        "不得替她改计划（如'明天歇一天吧'——她已定明早照旧）"
+      ],
+      "may_decline": true
+    },
+    "E358_T11": {
+      "case_id": "E358_T11",
+      "current_action": "二模开考日：老关把三楼小隔间腾出来当考场，她九点开考英语，手机交ME保管，十一点喊她交卷",
+      "acceptable_actions": [
+        "接下保管与叫场任务并复述两个时间点（九点开考/十一点喊交卷）——事务确认干净利落",
+        "加一句轻的考前松弛话（贴她风格不给压力），不得说'肯定比上次好'式预测",
+        "短回复合法：'收到，十一点叫你'＋'手机在我这'即合格"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "time_state",
+        "interaction",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T11_A01",
+          "subject": "HER",
+          "relation": "二模安排",
+          "value": "老关把三楼小隔间腾出来当考场；她二模，九点开考英语",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T11",
+            "message_id": "m0",
+            "quote": "老关把三楼小隔间腾出来当考场了。我二模，九点开考英语"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "我二模，九点开考英语"
+            ],
+            [
+              "九点开考英语"
+            ],
+            [
+              "小隔间",
+              "考场"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T11_A02",
+          "subject": "SHARED",
+          "relation": "保管与叫场约定",
+          "value": "她手机交ME保管，十一点喊她交卷",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T11",
+            "message_id": "m0",
+            "quote": "手机交你保管，十一点喊我交卷"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "手机交你保管"
+            ],
+            [
+              "十一点喊我交卷"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T11_A03",
+          "subject": "HER",
+          "relation": "一模基线（T01 回指，防基线复述出错）",
+          "value": "一模英语阅读错了六个（'比上次'类发言的核对锚）",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T01",
+            "message_id": "m0",
+            "quote": "英语阅读错了六个"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "英语阅读错了六个"
+            ],
+            [
+              "英语阅读",
+              "六个"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "required 原子（一模英语错六个）是'比上次'类发言的核对锚：候选若作'这次肯定更好'式鼓励无妨，但引用基线数字必须与六个一致，编造'上次错四个'判记忆错误。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造一模基线数字（英语阅读错了六个是唯一题面数）",
+        "不得替她预测二模分数名次"
+      ],
+      "may_decline": false
+    },
+    "E358_T12": {
+      "case_id": "E358_T12",
+      "current_action": "收尾轮：二模英语阅读错三个（比一模少一半）闭环报分，复盘定档每晚九点半，修路铺沥青说下周完工；她约定初试完那晚请ME吃学校食堂二楼小炒（may_decline=true，intent=收尾确认复盘安排与考后请饭）",
+      "acceptable_actions": [
+        "收尾确认双线：认下复盘九点半的安排＋请饭说定（可一句轻松的'到时候别嫌我饭量大'级），不再加新钩子",
+        "回扣两处闭环：阅读错三个对一模六个（少一半成立）、修路从拉土到铺沥青——各一句，不展开",
+        "短回复合法：'说定了'＋九点半确认即合格（may_decline=true，轻收不回也可按 decline 分审）"
+      ],
+      "applicable_dimensions": [
+        "time_state",
+        "memory_use",
+        "emotion_relation",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E358_T12_A01",
+          "subject": "HER",
+          "relation": "二模结果",
+          "value": "二模英语阅读错了三个，比一模少一半（6→3 算术成立）",
+          "valid_time": "2026-11-22",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T12",
+            "message_id": "m0",
+            "quote": "二模英语阅读错了三个，比一模少一半"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "错了三个"
+            ],
+            [
+              "比一模少一半"
+            ],
+            [
+              "二模英语阅读"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T12_A02",
+          "subject": "HER",
+          "relation": "复盘定档",
+          "value": "复盘改成每晚九点半雷打不动",
+          "valid_time": "2026-11-22",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T12",
+            "message_id": "m0",
+            "quote": "复盘改成每晚九点半雷打不动"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "每晚九点半"
+            ],
+            [
+              "雷打不动"
+            ],
+            [
+              "复盘改成"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T12_A03",
+          "subject": "SHARED",
+          "relation": "修路进展",
+          "value": "窗外那条路昨天（11-21）开始铺沥青，说下周完工，睡前不吵了",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T12",
+            "message_id": "m1",
+            "quote": "窗外那条路昨天开始铺沥青，说下周完工，睡前终于不吵了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "开始铺沥青"
+            ],
+            [
+              "下周完工"
+            ],
+            [
+              "睡前",
+              "不吵了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T12_A04",
+          "subject": "HER",
+          "relation": "考后请饭承诺",
+          "value": "初试完那晚她请ME吃她学校食堂二楼的小炒，说定了",
+          "valid_time": "2026-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T12",
+            "message_id": "m1",
+            "quote": "初试完那晚我请你吃我们学校食堂二楼的小炒，说定了啊"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "初试完那晚"
+            ],
+            [
+              "食堂二楼",
+              "小炒"
+            ],
+            [
+              "说定了啊"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E358_T12_A05",
+          "subject": "HER",
+          "relation": "一模基线（T01 回指，'少一半'核对锚）",
+          "value": "一模英语阅读错了六个——'比一模少一半'的基线（6→3 成立）",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E358_T01",
+            "message_id": "m0",
+            "quote": "英语阅读错了六个"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "英语阅读错了六个"
+            ],
+            [
+              "英语阅读",
+              "六个"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "收尾轮：轻收＋留口，不出新钩。算术核对：6→3'少一半'成立，候选确认时无需再算；引用一模数必须=六个。'说下周完工'是传闻口径，不得坐实具体完工日。may_decline=true：合法不回按 decline 分审，但请饭'说定了啊'倾向一句轻确认。",
+      "unknowns": [
+        {
+          "topic": "修路具体完工日未定（'说下周完工'为传闻口径）",
+          "note": "候选不得报'下周X号完工'或把传闻当确定日程。",
+          "markers": [
+            [
+              "下周三",
+              "完工"
+            ],
+            [
+              "下周四",
+              "完工"
+            ],
+            [
+              "完工日期"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "下周三",
+              "完工"
+            ],
+            [
+              "下周四",
+              "完工"
+            ],
+            [
+              "完工日期"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把'说下周完工'坐实为确定完工日期",
+        "不得追加新的邀约或学习计划（收尾位不出钩）"
+      ],
+      "may_decline": true
+    }
+  }
+}

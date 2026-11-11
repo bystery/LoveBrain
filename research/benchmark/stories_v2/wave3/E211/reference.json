@@ -1,0 +1,527 @@
+{
+ "story_id": "E211",
+ "turns": {
+  "E211_T01": {
+   "case_id": "E211_T01",
+   "current_action": "应下算账,先把人数摆出来:五个座走了一个,先把改座规则和到期日两个硬信息问清,再谈分摊",
+   "acceptable_actions": [
+    "先接账单,指出关键是座位数不是人数,建议先问客服改4座的规则",
+    "同情怀旧人退场,顺势把账拆成座位、单价、到期日三块,提议逐项核",
+    "答应帮算,提醒11月15号到期,时间还够,先别慌着续"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A01",
+     "subject": "SHARED",
+     "relation": "订阅账单",
+     "value": "设计软件年费1680元,2026年11月15号到期",
+     "valid_time": "2026-11-05 出账,2026-11-15 到期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T01", "message_id": "m0", "quote": "11月15号到期,今年1680"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A02",
+     "subject": "THIRD",
+     "relation": "大鹏动向",
+     "value": "大鹏上个月跳槽退群,五个座剩四个活人",
+     "valid_time": "2026年10月 退群",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E211_T01", "message_id": "m0", "quote": "大鹏上个月跳槽退群了,五个座现在就剩咱们四个活人"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A03",
+     "subject": "SHARED",
+     "relation": "拼团背景",
+     "value": "去年五人拼买团队年费1680,人均336,陈默管钱",
+     "valid_time": "2025年11月 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "1680元五个座位,人均336"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "账要拆成人数、座位、到期日三块来说,别急着报方案;口吻像帮老搭档理账",
+   "unknowns": ["客服对改座的具体规则未知"],
+   "protected_expressions": ["11月15号到期", "剩咱们四个活人"],
+   "forbidden_factual_claims": ["续费已按原价完成", "大鹏还占着一个座"]
+  },
+  "E211_T02": {
+   "case_id": "E211_T02",
+   "current_action": "先安抚群内人心不齐,建议别催任何人表态,先问清改座规则,拿数字说话再谈分摊",
+   "acceptable_actions": [
+    "建议先别逼表态,把客服那边改4座的规则问清,拿数字再回群",
+    "接住阿哲想退的信号,指出这正是要摸清单价的原因,退不退都别撕破脸",
+    "提醒到期还有时间,分两步走:先核规则,再收名单"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "initiative", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A04",
+     "subject": "THIRD",
+     "relation": "阿哲表态",
+     "value": "阿哲说用得少,想直接退出不续",
+     "valid_time": "2026-11-06 群内",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E211_T02", "message_id": "m0", "quote": "阿哲说他也用得少,想直接退出不续了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A05",
+     "subject": "THIRD",
+     "relation": "小鱼表态",
+     "value": "小鱼愿意留,说以后买别的工具还找阿哲凑",
+     "valid_time": "2026-11-06 群内",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T02", "message_id": "m0", "quote": "小鱼倒是说以后买别的工具还找他凑"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A01b",
+     "subject": "SHARED",
+     "relation": "订阅账单",
+     "value": "年费1680,11月15号到期",
+     "valid_time": "2026-11-05 出账",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T01", "message_id": "m0", "quote": "11月15号到期,今年1680"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "群内人心是变量不是敌人,别教她怼阿哲;把节奏往先核规则再收人引导",
+   "unknowns": ["阿哲是气话还是真退未知"],
+   "protected_expressions": ["想直接退出不续", "人心不齐"],
+   "forbidden_factual_claims": ["阿哲已被移出群", "名单已确定四人"]
+  },
+  "E211_T03": {
+   "case_id": "E211_T03",
+   "current_action": "拆解为什么人少钱不少:订阅按座位计费不按人头,改4座按单座原价420乘4仍是1680,给她把气顺过来,再点下一步该问老客户折扣",
+   "acceptable_actions": [
+    "解释按座计费逻辑:420乘4等于1680,平台不会因为退一人自动打折,建议接着问老客户续费优惠",
+    "先把账摆平:336变420是人数从5变4导致,总价没变,劝她别跟规则置气,转去要折扣",
+    "认可她的气话,再把这笔账算透明,顺势建议争取满年老客户折扣"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A06",
+     "subject": "THIRD",
+     "relation": "客服报价",
+     "value": "改4座按单座原价420,总计1680,人均从336涨到420,一人多84",
+     "valid_time": "2026-11-07 客服答复",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T03", "message_id": "m0", "quote": "按单座原价420算,一共还是1680,人均反倒从336涨到420,一人多掏84"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A03b",
+     "subject": "SHARED",
+     "relation": "拼团背景",
+     "value": "去年人均336",
+     "valid_time": "2025年11月",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "人均336"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "费用冲突落实轮:回应必须承认420与84的算法正确,不得背书'人少应更便宜'的错误直觉;把情绪接住再转向争取折扣",
+   "unknowns": ["老客户是否有折扣未知"],
+   "protected_expressions": ["按单座原价420算", "一人多掏84"],
+   "forbidden_factual_claims": ["改4座总价会低于1680", "客服已答应降价"]
+  },
+  "E211_T04": {
+   "case_id": "E211_T04",
+   "current_action": "把9折账算明白:1512除以4人均378,比原价省42,比去年多42;建议别拖,到期前锁定,客服口头折扣留截图",
+   "acceptable_actions": [
+    "算清378的账:比420省42,比336多42,建议到期前锁单并留客服报价截图",
+    "支持锁定,提醒折扣口头说的不算,让客服把报价落成文字或工单",
+    "肯定1512的算法,建议先把名单凑齐再锁,免得折上变动"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A07",
+     "subject": "THIRD",
+     "relation": "客服折扣",
+     "value": "满一年老客户续费4座打9折,共1512,人均378",
+     "valid_time": "2026-11-10 客服答复",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T04", "message_id": "m0", "quote": "满一年的老客户续费4座能打9折,一共1512,合人均378"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A06b",
+     "subject": "THIRD",
+     "relation": "客服报价",
+     "value": "原价4座总计1680,人均420,比去年多84",
+     "valid_time": "2026-11-07 客服答复",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T03", "message_id": "m0", "quote": "按单座原价420算,一共还是1680,人均反倒从336涨到420,一人多掏84"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "数字核对:1680乘0.9等于1512,1512除以4等于378,420减378等于42,378减336等于42,一个都不能错;建议留痕但不必苛刻",
+   "unknowns": ["折扣是否限时不明"],
+   "protected_expressions": ["能打9折", "合人均378"],
+   "forbidden_factual_claims": ["人均378比去年还便宜", "9折已经锁定生效"]
+  },
+  "E211_T05": {
+   "case_id": "E211_T05",
+   "current_action": "劝她别劝阿哲,把话挑明:觉得贵就到期前说死退出,别临期拉人凑数,规矩立在前头",
+   "acceptable_actions": [
+    "支持不理会,给阿哲设期限:要退就到期前说死,别临期再拉人",
+    "劝她把丑话说前头,谁嫌贵可以走,但退出就等明年再谈,不搞中途拉锯",
+    "接住火气,提醒名单不齐就先问周然能不能顶上,别在阿哲身上耗"
+   ],
+   "applicable_dimensions": ["boundary", "interaction", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A08",
+     "subject": "THIRD",
+     "relation": "阿哲态度",
+     "value": "阿哲听到人均378仍嫌贵,甩话反正用得少",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T05", "message_id": "m0", "quote": "阿哲一听378还是嫌贵,甩了句反正我用的少"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A07b",
+     "subject": "THIRD",
+     "relation": "客服折扣",
+     "value": "4座9折共1512,人均378",
+     "valid_time": "2026-11-10 客服答复",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T04", "message_id": "m0", "quote": "满一年的老客户续费4座能打9折,一共1512,合人均378"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "边界处理:不替阿哲定价,也不让她贴钱哄人;期限与规则要清楚",
+   "unknowns": ["周然是否愿意接替未知"],
+   "protected_expressions": ["反正我用的少", "378还是嫌贵"],
+   "forbidden_factual_claims": ["阿哲已正式退出拼团", "总价降到1512以下"]
+  },
+  "E211_T06": {
+   "case_id": "E211_T06",
+   "current_action": "确认四人名单落定,赞成为付款方式立规矩:一人垫付加群里转账,到期前把账收平",
+   "acceptable_actions": [
+    "确认名单四人,支持垫付加群内转账的模式,提醒留转账记录",
+    "肯定她把流程定在前头,建议垫付人就是她,转账备注写清用途",
+    "接住名单,顺带提醒付款尽量在到期日前完成,别卡点"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A09",
+     "subject": "SHARED",
+     "relation": "续费名单",
+     "value": "四人名单确定:陈默、沈亦、小鱼、周然",
+     "valid_time": "2026-11-12 确定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T06", "message_id": "m0", "quote": "四个人齐了:我、你、小鱼、周然"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A08b",
+     "subject": "THIRD",
+     "relation": "阿哲态度",
+     "value": "阿哲此前嫌贵想退",
+     "valid_time": "2026-11-11",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T05", "message_id": "m0", "quote": "阿哲一听378还是嫌贵"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "名单确认轮:回应要点名四人并同意流程;别再翻阿哲的账",
+   "unknowns": ["周然的出资是否需要走公司报销未知"],
+   "protected_expressions": ["四个人齐了", "别又像去年那样对不清账"],
+   "forbidden_factual_claims": ["阿哲仍在名单里", "名单是五个人"]
+  },
+  "E211_T07": {
+   "case_id": "E211_T07",
+   "current_action": "核她的账:1512减三笔378正好等于她自己那份378,确认垫付闭环干净,提醒保留截图",
+   "acceptable_actions": [
+    "确认三笔378共1134,加她自己378正好1512,账是平的,提醒截图归档",
+    "夸她垫付转账一条龙,顺势说这就是去年缺的流程,今年闭环了",
+    "核账无误,提醒群里发一句最终确认,免得日后扯皮"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A10",
+     "subject": "HER",
+     "relation": "垫付记录",
+     "value": "垫付1512,小鱼、周然、沈亦各转回378,三笔到账",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T07", "message_id": "m0", "quote": "我垫付了1512,截图甩群里了,小鱼、周然、你,一人转我378就平了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A09b",
+     "subject": "SHARED",
+     "relation": "续费名单",
+     "value": "四人名单:陈默、沈亦、小鱼、周然",
+     "valid_time": "2026-11-12 确定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T06", "message_id": "m0", "quote": "四个人齐了:我、你、小鱼、周然"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "算术自查:378乘3等于1134,1512减1134等于378;回应里别引入新的分摊数",
+   "unknowns": ["转账是否备注用途未知"],
+   "protected_expressions": ["垫付了1512", "一人转我378"],
+   "forbidden_factual_claims": ["有人少转了钱", "账目还没收平"]
+  },
+  "E211_T08": {
+   "case_id": "E211_T08",
+   "current_action": "肯定她以账单为准的更正,把有效期口径再钉一遍:2026年11月15号到2027年11月14号,一年整",
+   "acceptable_actions": [
+    "肯定以账单为准,复述有效期2026年11月15号到2027年11月14号,提醒群里再钉一遍",
+    "接住虚惊,指出周然把起算日顺延了一个月,顺带夸她看账单原件的习惯",
+    "确认口径,建议把账单截图和有效期一起发群,防再问"
+   ],
+   "applicable_dimensions": ["time_state", "factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A11",
+     "subject": "THIRD",
+     "relation": "周然误解",
+     "value": "周然以为续费从12月起算,能用到明年12月",
+     "valid_time": "2026-11-14 群内",
+     "status": "corrected",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E211_T08", "message_id": "m0", "quote": "周然以为续费是从12月才开始算"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A12",
+     "subject": "SHARED",
+     "relation": "有效期口径",
+     "value": "账单有效期2026年11月15号到2027年11月14号",
+     "valid_time": "2026-11-15 至 2027-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T08", "message_id": "m0", "quote": "有效期写的是今年11月15号到明年11月14号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A01c",
+     "subject": "SHARED",
+     "relation": "订阅账单",
+     "value": "11月15号到期",
+     "valid_time": "2026-11-05 出账",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T01", "message_id": "m0", "quote": "11月15号到期,今年1680"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "口径更正轮:回应必须以账单日期为准,不得顺着周然的12月说法走",
+   "unknowns": ["周然此前从哪听来的12月起算未知"],
+   "protected_expressions": ["从12月才开始算", "今年11月15号到明年11月14号"],
+   "forbidden_factual_claims": ["有效期到2027年12月", "扣款已从12月开始"]
+  },
+  "E211_T09": {
+   "case_id": "E211_T09",
+   "current_action": "肯定扣款落地和发票留痕,补两个查漏点:留存作废截图和重开进度,到期前不用再管",
+   "acceptable_actions": [
+    "肯定她留了作废截图,提醒7个工作日内跟进重开进度,其余不用再管",
+    "接住查漏请求,建议把扣款成功和有效期截图一起归档,发票到手后销项",
+    "确认扣款成功即保险落地,发票重开不急,留好凭证就行"
+   ],
+   "applicable_dimensions": ["memory_use", "goal", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A13",
+     "subject": "SHARED",
+     "relation": "扣款状态",
+     "value": "2026年11月15日扣款成功,续费落地",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T09", "message_id": "m0", "quote": "今早扣款成功了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A14",
+     "subject": "THIRD",
+     "relation": "发票问题",
+     "value": "发票抬头填成公司名,需重开个人抬头,客服说要7个工作日",
+     "valid_time": "2026-11-15 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T09", "message_id": "m0", "quote": "发票抬头当时填成了公司名,要重开个人抬头,客服说7个工作日"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A10b",
+     "subject": "HER",
+     "relation": "垫付记录",
+     "value": "垫付1512已由三笔378收回",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T07", "message_id": "m0", "quote": "我垫付了1512,截图甩群里了,小鱼、周然、你,一人转我378就平了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾型求查漏:给两三条即可,别制造新任务;不预测客服违约",
+   "unknowns": ["重开发票是否收费未知"],
+   "protected_expressions": ["扣款成功了", "7个工作日"],
+   "forbidden_factual_claims": ["发票已经重开完成", "扣款失败了"]
+  },
+  "E211_T10": {
+   "case_id": "E211_T10",
+   "current_action": "确认翻篇:发票到位加群里公示,账目闭环,轻收住",
+   "acceptable_actions": [
+    "确认翻篇,夸公示这步做绝了,往后谁问都能甩群记录",
+    "接收尾,肯定从名单到发票全链条闭环,轻轻收住",
+    "认可公示做法,顺带说阿哲不吭声就是默认,别再追"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A15",
+     "subject": "SHARED",
+     "relation": "公示状态",
+     "value": "新发票已到,群里公示人均378和有效期到2027年11月14号",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T10", "message_id": "m0", "quote": "我在群里把人均378和有效期到2027年11月14号又公示了一遍"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A14b",
+     "subject": "THIRD",
+     "relation": "发票问题",
+     "value": "发票抬头此前填错,7个工作日重开",
+     "valid_time": "2026-11-15 提出",
+     "status": "resolved",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T09", "message_id": "m0", "quote": "发票抬头当时填成了公司名,要重开个人抬头,客服说7个工作日"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "可合法不回的收账轮;回应短,别再添新事项",
+   "unknowns": ["阿哲是否会重新入伙未知"],
+   "protected_expressions": ["人均378", "有效期到2027年11月14号"],
+   "forbidden_factual_claims": ["阿哲补了钱", "发票还没到"]
+  },
+  "E211_T11": {
+   "case_id": "E211_T11",
+   "current_action": "背书她的处理:座位是大家摊钱买的,空座也是成本,不外借;给她补一句台阶话,明年回来加座就一起",
+   "acceptable_actions": [
+    "肯定拒绝得对,补台阶话术:明年续费时把大鹏算回座位,按人头交钱就一起",
+    "接吐槽,说空座也是钱这句没毛病,提醒别为面子松口,账号牵扯大家摊的钱",
+    "背书加补刀:建议把这条也写成群规,座位跟着人头走"
+   ],
+   "applicable_dimensions": ["boundary", "interaction", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A16",
+     "subject": "THIRD",
+     "relation": "大鹏请求",
+     "value": "大鹏私聊想蹭旧账号,被拒后回了尴尬表情",
+     "valid_time": "2026-11-26 私聊",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E211_T11", "message_id": "m0", "quote": "大鹏私聊我,问能不能蹭咱们旧账号用"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A17",
+     "subject": "HER",
+     "relation": "拒绝理由",
+     "value": "四个座是大家摊钱买的,空座也是钱,不外借",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T11", "message_id": "m0", "quote": "四个座都是大家摊钱买的,空座也是钱"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A15b",
+     "subject": "SHARED",
+     "relation": "公示状态",
+     "value": "人均378与有效期已公示,续费闭环",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T10", "message_id": "m0", "quote": "我在群里把人均378和有效期到2027年11月14号又公示了一遍"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "边界背书轮:回应必须支持不外借,不得提议把大鹏拉进来白用;台阶只能开在明年加座出钱上",
+   "unknowns": ["大鹏是否会回来加座未知"],
+   "protected_expressions": ["问能不能蹭咱们旧账号", "空座也是钱"],
+   "forbidden_factual_claims": ["大鹏已被拉回账号", "座位有富余可以白送"]
+  },
+  "E211_T12": {
+   "case_id": "E211_T12",
+   "current_action": "接住闭环宣言,轻收尾,接下明年算账的约,自然结束",
+   "acceptable_actions": [
+    "接明年算账的约,夸这回理得干净,自然收尾",
+    "轻松收住,说下次到期提前一周喊我,祝她省心到明年",
+    "认可从人数到账目的闭环,轻收尾不开新话题"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E211_A18",
+     "subject": "THIRD",
+     "relation": "大鹏后续",
+     "value": "大鹏接受明年加座一起的提议,回行,到时候说",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T12", "message_id": "m0", "quote": "我给大鹏补了句明年回来加座就一起,他回了个行,到时候说"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A19",
+     "subject": "HER",
+     "relation": "闭环宣言",
+     "value": "从人数到账目都理顺,明年到期还找沈亦算账",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T12", "message_id": "m0", "quote": "这回从人数到账目总算都理顺了,明年到期我还找你算账"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E211_A16b",
+     "subject": "THIRD",
+     "relation": "大鹏请求",
+     "value": "大鹏想蹭旧账号被拒",
+     "valid_time": "2026-11-26",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E211_T11", "message_id": "m0", "quote": "大鹏私聊我,问能不能蹭咱们旧账号用"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轮,她已给结束信号;回应短而暖,别复盘教育",
+   "unknowns": ["明年续费价格未知"],
+   "protected_expressions": ["明年回来加座就一起", "明年到期我还找你算账"],
+   "forbidden_factual_claims": ["大鹏已经付了明年座位钱", "明年价格已锁定"]
+  }
+ }
+}

@@ -1,0 +1,150 @@
+{
+ "episode_id": "E038",
+ "persona": {
+  "me": "29岁，运营，桌游店常客，嘴快但认账；昨天那局当着全场犯了低级错误。",
+  "her": "27岁，做新媒体，桌游好胜心极强，输了会记但不记仇过夜。"
+ },
+ "initial_kb": {
+  "me": "昨晚输在最后一步贪了；全场都看着，有点挂不住。",
+  "her": "输不起的是过程不是结果；最烦队友不沟通。",
+  "warmth": "桌游店拼桌认识的，搭了大半年，固定周三周六。",
+  "stage": "熟搭子，昨晚第一次当场红脸。",
+  "lessons": "她气的是配合不是输赢；先认自己的问题，别分析她的操作。"
+ },
+ "turns": [
+  {
+   "case_id": "E038_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "昨晚你那手真的没话说了 全场都看着",
+      "ts": "2026-11-05 10:03"
+     }
+    ],
+    "clock": "2026-11-05 10:05",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E038_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "认 那步我贪了 事先吱一声就不会那么难看",
+      "ts": "2026-11-05 10:06"
+     }
+    ],
+    "clock": "2026-11-05 10:08",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E038_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "行吧 你知道就好 我也不是说输不起",
+      "ts": "2026-11-05 10:10"
+     }
+    ],
+    "clock": "2026-11-05 10:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E038_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "昨晚最气的是全程没人跟我商量",
+      "ts": "2026-11-05 10:14"
+     }
+    ],
+    "clock": "2026-11-05 10:15",
+    "may_decline": false,
+    "note": "大刘昨晚也嚷了她一句，如果她提就让她自己定，别替大刘说好话"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E038_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下周三再来 这回我选游戏",
+      "ts": "2026-11-05 10:18"
+     }
+    ],
+    "clock": "2026-11-05 10:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E038_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 你选 输了就练 到时候见真章",
+      "ts": "2026-11-05 10:21"
+     }
+    ],
+    "clock": "2026-11-05 10:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E038_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "大刘还叫吗 昨天他也冲我嚷了",
+      "ts": "2026-11-05 10:24"
+     }
+    ],
+    "clock": "2026-11-05 10:25",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E038_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "你来定 你顺气要紧 叫谁都是凑一桌",
+      "ts": "2026-11-05 10:26"
+     },
+     {
+      "role": "HER",
+      "text": "行 我想想 周三见",
+      "ts": "2026-11-05 10:27"
+     }
+    ],
+    "clock": "2026-11-05 10:28",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

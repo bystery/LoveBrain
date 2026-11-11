@@ -1,0 +1,38 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A3 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "买房与生活的价值排序",
+  "储蓄派与体验派之争",
+  "交锋中的让步与坚持",
+  "先复述立场再表态"
+ ],
+ "title": "不买房，先生活",
+ "may_decline_turns": [
+  "E309_T06",
+  "E309_T12"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "生活观念",
+ "primary_topic": "T03",
+ "lineage_group_id": "LG-E309",
+ "frozen_at": "2026-11-08T03:16:17+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E309/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A3",
+ "hashes": {
+  "episode.json": "db2ca655f4140d87923f33a210b6897294cc5d84ef99c2a1474e190a1b3292ef",
+  "reference.json": "a477e3b44cfd56b88dd375b1399591c4b69f45998132ba9680807674a5446111",
+  "timeline.json": "65b54889cc26c9e7324d637c327d76fe282a494c04e383c9ab1d4ef580179357",
+  "audit.md": "b9a094993c6a3e30fac9674bcd051f9544040b73c8440d0370ddf87b56771db6"
+ }
+}

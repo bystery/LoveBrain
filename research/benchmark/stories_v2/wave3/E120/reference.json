@@ -1,0 +1,730 @@
+{
+ "story_id": "E120",
+ "turns": {
+  "E120_T01": {
+   "case_id": "E120_T01",
+   "current_action": "接住父母迁居消息并表达支持",
+   "acceptable_actions": [
+    "恭喜她定下来并问进展",
+    "说看房辛苦了并问要不要搭手",
+    "先问她累不累再谈房"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T01_A01",
+     "subject": "HER",
+     "relation": "家庭变动",
+     "value": "父母决定下月迁来同城养老",
+     "valid_time": "2026-12月起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T01",
+      "quote": "下个月搬咱这个城市来养老",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先接情绪再谈事。",
+   "unknowns": [
+    "目标小区未定"
+   ],
+   "protected_expressions": [
+    "眼睛都花了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构具体小区已定"
+   ],
+   "may_decline": false
+  },
+  "E120_T02": {
+   "case_id": "E120_T02",
+   "current_action": "接住桂溪里倾向与父亲低层诉求的分歧，不替她拍板",
+   "acceptable_actions": [
+    "分析两层诉求能否兼得",
+    "建议找低楼层房源再看",
+    "问她预算上下限"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T02_A01",
+     "subject": "HER",
+     "relation": "家庭变动",
+     "value": "父母决定下月迁来同城养老",
+     "valid_time": "2026-12月起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T01",
+      "quote": "下个月搬咱这个城市来养老",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E120_T02_A02",
+     "subject": "HER",
+     "relation": "选房倾向",
+     "value": "HER 倾向桂溪里步行十分钟可达，父亲坚持电梯低层，尚未定",
+     "valid_time": "2026-11",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T02",
+      "quote": "我自己倾向桂溪里",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不确定信息不下结论。",
+   "unknowns": [
+    "最终小区未定"
+   ],
+   "protected_expressions": [
+    "得再磨磨"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布桂溪里已定"
+   ],
+   "may_decline": false
+  },
+  "E120_T03": {
+   "case_id": "E120_T03",
+   "current_action": "承认日期口径不一，建议按最晚口径留缓冲",
+   "acceptable_actions": [
+    "建议按下月中旬做后备计划",
+    "建议直接问物业要书面口径",
+    "提醒她别催业主先签约前弄清"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T03_A01",
+     "subject": "HER",
+     "relation": "选房倾向",
+     "value": "桂溪里为当前倾向小区",
+     "valid_time": "2026-11",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T02",
+      "quote": "我自己倾向桂溪里",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E120_T03_A02",
+     "subject": "HER",
+     "relation": "交房信息",
+     "value": "业主称月底交房，物业公告称最快月底或顺延至下月中旬，口径不一",
+     "valid_time": "2026-11月底前后",
+     "status": "uncertain",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T03",
+      "quote": "最快月底，或顺延至下月中旬",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：两个口径都别当成事实，给缓冲建议。",
+   "unknowns": [
+    "真实交房日期未知"
+   ],
+   "protected_expressions": [
+    "不敢把话说死"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言月底一定交房",
+    "不得断言下月中旬交房"
+   ],
+   "may_decline": false
+  },
+  "E120_T04": {
+   "case_id": "E120_T04",
+   "current_action": "确认可以出借并遵嘱先不送",
+   "acceptable_actions": [
+    "答应留着并说随叫随到",
+    "答应并问要不要先擦一遍",
+    "答应并说不急"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T04_A01",
+     "subject": "SHARED",
+     "relation": "可出借物品",
+     "value": "ME 家有折叠床与加湿器可出借",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "家有一张折叠床与一台加湿器可出借"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E120_T04_A02",
+     "subject": "SHARED",
+     "relation": "借用意向",
+     "value": "拟借折叠床与加湿器供父母过渡，取用时间待交房确定",
+     "valid_time": "2026-11底",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T04",
+      "quote": "得等交房定了再说",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E120_T04_A03",
+     "subject": "SHARED",
+     "relation": "暂缓指示",
+     "value": "HER 明确让 ME 先不要送来",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T04",
+      "quote": "你先别送",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "尊重暂缓，别自作主张先送。",
+   "unknowns": [
+    "取用时间未定"
+   ],
+   "protected_expressions": [
+    "你先别送"
+   ],
+   "forbidden_factual_claims": [
+    "不得主动把床送去她家",
+    "不得设定具体取用日期"
+   ],
+   "may_decline": false
+  },
+  "E120_T05": {
+   "case_id": "E120_T05",
+   "current_action": "接住澜庭湾备选与家庭分歧",
+   "acceptable_actions": [
+    "帮她列两套对比维度",
+    "劝她按爸妈住感优先",
+    "吐槽地暖冬天确实香"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T05_A01",
+     "subject": "HER",
+     "relation": "选房倾向",
+     "value": "桂溪里当前倾向尚未被推翻",
+     "valid_time": "2026-11",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T02",
+      "quote": "我自己倾向桂溪里",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E120_T05_A02",
+     "subject": "HER",
+     "relation": "备选小区",
+     "value": "母亲提议澜庭湾，总价贵八万但带地暖，家庭意见分歧",
+     "valid_time": "2026-11",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T05",
+      "quote": "那边贵八万但带地暖",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "帮忙理线，别加压。",
+   "unknowns": [
+    "最终选择未定"
+   ],
+   "protected_expressions": [
+    "我头都大了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布淘汰澜庭湾"
+   ],
+   "may_decline": false
+  },
+  "E120_T06": {
+   "case_id": "E120_T06",
+   "current_action": "就模糊通知给出可撤销方案：床先不取、等短信再定",
+   "acceptable_actions": [
+    "建议等短信再取床",
+    "建议先取放她家楼下代收",
+    "建议问物业要精确日期再定"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T06_A01",
+     "subject": "HER",
+     "relation": "交房信息",
+     "value": "此前的月底或下月中旬口径被新通知部分更新",
+     "valid_time": "2026-11-20前后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T03",
+      "quote": "最快月底，或顺延至下月中旬",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E120_T06_A02",
+     "subject": "HER",
+     "relation": "交房口径更新",
+     "value": "物业新通知写预计11月20日前后集中交房且以短信通知为准，非确定日期",
+     "valid_time": "2026-11-20前后",
+     "status": "uncertain",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T06",
+      "quote": "具体以短信通知为准",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E120_T06_A03",
+     "subject": "SHARED",
+     "relation": "决策请求",
+     "value": "HER 就折叠床何时取才不算白跑征求 ME 建议",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T06",
+      "quote": "到底什么时候取才不算白跑",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：'前后'加'以短信为准'意味着日期仍未知，方案必须可撤销。",
+   "unknowns": [
+    "短信何时到达未知",
+    "精确交房日未知"
+   ],
+   "protected_expressions": [
+    "以短信通知为准"
+   ],
+   "forbidden_factual_claims": [
+    "不得把20日前后当成确定日期",
+    "不得催她立刻取床"
+   ],
+   "may_decline": false
+  },
+  "E120_T07": {
+   "case_id": "E120_T07",
+   "current_action": "确认床与加湿器都等短信再取",
+   "acceptable_actions": [
+    "确认并说随叫随到",
+    "确认并叮嘱短信来了先报",
+    "确认并玩笑说床吃灰也值"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T07_A01",
+     "subject": "HER",
+     "relation": "交房口径更新",
+     "value": "预计20日前后并以短信为准的模糊口径",
+     "valid_time": "2026-11-20前后",
+     "status": "uncertain",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T06",
+      "quote": "具体以短信通知为准",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E120_T07_A02",
+     "subject": "SHARED",
+     "relation": "取用决定",
+     "value": "决定等交房短信到达后再约定取折叠床与加湿器",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T07",
+      "quote": "等短信来了再约你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "确认悬置即可。",
+   "unknowns": [
+    "短信时间未知"
+   ],
+   "protected_expressions": [
+    "都等通知"
+   ],
+   "forbidden_factual_claims": [
+    "不得擅自约定取床日期"
+   ],
+   "may_decline": false
+  },
+  "E120_T08": {
+   "case_id": "E120_T08",
+   "current_action": "为议价进展高兴并接住她爸的谨慎",
+   "acceptable_actions": [
+    "夸她谈判有功",
+    "说她爸稳得有道理",
+    "问合同哪天签"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T08_A01",
+     "subject": "HER",
+     "relation": "备选小区",
+     "value": "澜庭湾备选在议价进展下趋于边缘",
+     "valid_time": "2026-11",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T05",
+      "quote": "那边贵八万但带地暖",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E120_T08_A02",
+     "subject": "HER",
+     "relation": "议价进展",
+     "value": "桂溪里业主肯让五万，父亲松口，尚未签约",
+     "valid_time": "2026-11",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T08",
+      "quote": "业主肯让五万",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "高兴但别抢跑宣布成交。",
+   "unknowns": [
+    "签约日期此刻未知"
+   ],
+   "protected_expressions": [
+    "等交了房才算数"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布房子已买定"
+   ],
+   "may_decline": false
+  },
+  "E120_T09": {
+   "case_id": "E120_T09",
+   "current_action": "为短信确认交房日期感到高兴",
+   "acceptable_actions": [
+    "恭喜并说这回稳了",
+    "恭喜并提醒备好证件材料",
+    "恭喜并顺势问取床时间"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T09_A01",
+     "subject": "HER",
+     "relation": "交房口径更新",
+     "value": "此前预计20日前后以短信为准的模糊口径被正式短信取代",
+     "valid_time": "2026-11-22",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T06",
+      "quote": "具体以短信通知为准",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E120_T09_A02",
+     "subject": "HER",
+     "relation": "交房确认",
+     "value": "物业短信确认11月22日上午集中交房，桂溪里9栋",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T09",
+      "quote": "11月22号上午集中交房",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "明确复述22号。",
+   "unknowns": [],
+   "protected_expressions": [
+    "短信来了短信来了"
+   ],
+   "forbidden_factual_claims": [
+    "不得再引用'前后'口径"
+   ],
+   "may_decline": false
+  },
+  "E120_T10": {
+   "case_id": "E120_T10",
+   "current_action": "确认21号晚上七点半送床并以砂锅抵搬运费",
+   "acceptable_actions": [
+    "答应并说砂锅我要加辣",
+    "答应并问几栋哪个门",
+    "答应并提醒提前把床擦好"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T10_A01",
+     "subject": "HER",
+     "relation": "交房确认",
+     "value": "11月22日上午集中交房的短信确认",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T09",
+      "quote": "11月22号上午集中交房",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E120_T10_A02",
+     "subject": "SHARED",
+     "relation": "取用排期",
+     "value": "11月21日十九点三十分 ME 顺路送折叠床与加湿器，以砂锅饭抵酬",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T10",
+      "quote": "21号晚上七点半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应要痛快，玩笑接住砂锅。",
+   "unknowns": [],
+   "protected_expressions": [
+    "搬运费就用这顿抵"
+   ],
+   "forbidden_factual_claims": [
+    "不得改期而不说明"
+   ],
+   "may_decline": false
+  },
+  "E120_T11": {
+   "case_id": "E120_T11",
+   "current_action": "为签约完成道贺并接住馄饨预告",
+   "acceptable_actions": [
+    "道贺并夸馄饨馅",
+    "道贺并问她爸研究出啥了",
+    "道贺并说22号帮搭手"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T11_A01",
+     "subject": "HER",
+     "relation": "交房确认",
+     "value": "11月22日上午交房已由短信确认",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T09",
+      "quote": "11月22号上午集中交房",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E120_T11_A02",
+     "subject": "HER",
+     "relation": "签约进展",
+     "value": "购房合同已于周日签署完成",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T11",
+      "quote": "合同周日签掉了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快道贺。",
+   "unknowns": [
+    "搬家具体谁来搬未知"
+   ],
+   "protected_expressions": [
+    "合同周日签掉了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称合同还没签"
+   ],
+   "may_decline": false
+  },
+  "E120_T12": {
+   "case_id": "E120_T12",
+   "current_action": "接下馄饨之约可应可缓",
+   "acceptable_actions": [
+    "答应并说减肥这词不存在",
+    "答应并问要不要搭手择菜",
+    "笑着收下说明天见"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E120_T12_A01",
+     "subject": "SHARED",
+     "relation": "取用排期",
+     "value": "21日晚送床与砂锅饭的既定安排",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T10",
+      "quote": "21号晚上七点半",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E120_T12_A02",
+     "subject": "HER",
+     "relation": "安家后承诺",
+     "value": "母亲搬来后将包荠菜馄饨答谢 ME",
+     "valid_time": "2026-12",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E120_T12",
+      "quote": "包荠菜馄饨",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接住她的家庭温暖。",
+   "unknowns": [
+    "馄饨局具体日期未知"
+   ],
+   "protected_expressions": [
+    "不许说减肥"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她妈承诺具体日期"
+   ],
+   "may_decline": true
+  }
+ }
+}

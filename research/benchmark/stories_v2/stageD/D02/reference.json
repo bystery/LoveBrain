@@ -1,0 +1,158 @@
+{
+  "story_id": "D02",
+  "turns": {
+    "D02_T01": {
+      "case_id": "D02_T01",
+      "current_action": "她把教练空出周六上午两个时段、又提到练完顺路接儿子画画这两件事一起抛出，这一轮最该做的是接住话头、主动提议把接她和接娃串成一条线并挑一个偏后的上午时段，同时把涉及孩子的具体顺序留给她点头。",
+      "acceptable_actions": [
+        "帮她往周六上午靠后挑一个时段，好留出接娃的余量",
+        "先问她儿子画画班几点散，把两趟先后理顺但不替她定死"
+      ],
+      "applicable_dimensions": ["goal", "initiative", "boundary", "interaction"],
+      "required_memory_atoms": [
+        {"atom_id": "D02_T01_a1", "subject": "me", "relation": "car_capacity", "value": "皮卡后座能安全坐俩孩子", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "initial_kb", "key": "me", "quote": "后座能安全坐俩孩子"}, "required_this_turn": false},
+        {"atom_id": "D02_T01_a2", "subject": "her", "relation": "pickup_hook", "value": "练完顺路接儿子画画", "valid_time": "2026-02-14前", "status": "proposed", "negation": false, "source": {"kind": "message", "case_id": "D02_T01", "message_id": "m1", "quote": "练完正好顺路去接我儿子画画"}, "required_this_turn": false}
+      ],
+      "private_guidance": "她在留话头等我提议，这是主动推进窗口；但孩子的事她习惯自己拿主意，能提议不能替她把安排拍死。",
+      "unknowns": ["她儿子画画班具体几点散"],
+      "protected_expressions": ["让我挑一个"],
+      "forbidden_factual_claims": ["不能替她把周六时段直接选定说成已约好", "不能把她接娃的安排讲成已经敲定"],
+      "may_decline": false,
+      "intent": {"text": "周六去驾校接她练完车顺路把娃接回来串成一天", "status": "ACTIVE", "enabled": true}
+    },
+    "D02_T02": {
+      "case_id": "D02_T02",
+      "current_action": "她说科目二这回约上了、周三考，这一轮最该做的是把这个暂定信息记下来、呼应我周三顺道送她，但不把周三去考/能过当成板上钉钉。",
+      "acceptable_actions": [
+        "把周三送考记进安排，顺带提醒她按平时练的来别紧张熄火",
+        "确认她周三几点在考场，好对齐我跑单那条线"
+      ],
+      "applicable_dimensions": ["goal", "time_state", "memory_use", "factuality"],
+      "required_memory_atoms": [
+        {"atom_id": "D02_T02_a1", "subject": "her", "relation": "exam_booked", "value": "科目二约上了周三考", "valid_time": "2026-02-12", "status": "tentative", "negation": false, "source": {"kind": "message", "case_id": "D02_T02", "message_id": "m0", "quote": "周三考"}, "required_this_turn": false},
+        {"atom_id": "D02_T02_a2", "subject": "her", "relation": "weak_point", "value": "一紧张就熄火车感一般", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "initial_kb", "key": "her", "quote": "紧张熄火"}, "required_this_turn": false}
+      ],
+      "private_guidance": "这是更正陷阱的起点，现在别把周三考说死，为后面她退考延考留余地。",
+      "unknowns": ["她这次周三到底能不能去成"],
+      "protected_expressions": ["这回约上了"],
+      "forbidden_factual_claims": ["不能断言她周三一定去考或一定能过", "不能替她宣布拿证时间已定"],
+      "may_decline": false,
+      "intent": {"text": "周六去驾校接她练完车顺路把娃接回来串成一天", "status": "ACTIVE", "enabled": true}
+    },
+    "D02_T03": {
+      "case_id": "D02_T03",
+      "current_action": "她转达教练把周六时段给了别人、让她改周日下午，可周日下午娃又有亲子活动，这一轮最该做的是接受目标真实改到周日下午、并把'先送娃再去接她'的顺序理顺，同时把改期归到教练那边而非她的失误。",
+      "acceptable_actions": [
+        "认可改到周日下午，把先送娃再接她的先后顺序理清楚",
+        "问她周日下午大概练到几点，好安排娃那边不撞车"
+      ],
+      "applicable_dimensions": ["goal", "time_state", "attribution", "initiative"],
+      "required_memory_atoms": [
+        {"atom_id": "D02_T03_a1", "subject": "her", "relation": "old_plan", "value": "原计划周六上午挑时段", "valid_time": "2026-02-09", "status": "superseded", "negation": true, "source": {"kind": "message", "case_id": "D02_T01", "message_id": "m0", "quote": "教练说这周六上午空出俩时段"}, "required_this_turn": false},
+        {"atom_id": "D02_T03_a2", "subject": "教练", "relation": "slot_moved", "value": "教练把时段给别人改到周日下午", "valid_time": "2026-02-11", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "D02_T03", "message_id": "m0", "quote": "让我改周日下午"}, "required_this_turn": false}
+      ],
+      "private_guidance": "时段被教练挪走不是她弄丢的，别说成她没安排好；这里必须体现时间真从周六改到周日。",
+      "unknowns": ["周日下午的亲子活动能不能错开或请假"],
+      "protected_expressions": ["教练把周六那时段给别人了"],
+      "forbidden_factual_claims": ["不能把改期说成她主动放弃周六", "不能断定周日下午这个时段已经稳妥给她留着"],
+      "may_decline": false,
+      "intent": {"text": "改成周日下午送完娃再去驾校接她", "status": "ADJUSTED", "enabled": true}
+    },
+    "D02_T04": {
+      "case_id": "D02_T04",
+      "current_action": "她说教练非要免费给她加练一小时、嫌她状态差，让她更心虚，这一轮最该做的是接住她的没底、把加练框成不要钱的好事，并用她一直倒库熄火这个长期事实具体安慰，同时别把教练单方面提议的加练当成已排定。",
+      "acceptable_actions": [
+        "回应她的心虚：她历来一紧张就熄火，加练正好补这块，别把它当丢人",
+        "提醒她加练别跟周日下午接人那趟撞，具体排在几点再跟她确认"
+      ],
+      "applicable_dimensions": ["emotion_relation", "attribution", "memory_use", "initiative"],
+      "required_memory_atoms": [
+        {"atom_id": "D02_T04_a1", "subject": "her", "relation": "weak_point", "value": "科目二一紧张就熄火", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "initial_kb", "key": "her", "quote": "紧张熄火"}, "required_this_turn": true},
+        {"atom_id": "D02_T04_a2", "subject": "教练", "relation": "extra_practice_offer", "value": "教练主动提出免费加练一小时", "valid_time": "2026-02-12", "status": "offer", "negation": false, "source": {"kind": "message", "case_id": "D02_T04", "message_id": "m0", "quote": "教练今天非要免费给我加练一小时"}, "required_this_turn": false}
+      ],
+      "private_guidance": "加练是教练提的，不是她自己报的，别写成已报名；此刻她需要被肯定而不是被讲道理。",
+      "unknowns": ["教练把加练排在哪个时段"],
+      "protected_expressions": ["练这么久还老熄火"],
+      "forbidden_factual_claims": ["不能把教练主动加练说成她报名要加的", "不能保证加练后一定不熄火或一定能过"],
+      "may_decline": false,
+      "intent": {"text": "改成周日下午送完娃再去驾校接她", "status": "ADJUSTED", "enabled": true}
+    },
+    "D02_T05": {
+      "case_id": "D02_T05",
+      "current_action": "她说带发烧的妈妈打完针才回、把周三那场退了申请延考，又自责啥都没弄利索、娃也没顾上，这一轮最该做的是先承接她的疲惫和愧疚、同意延考不急，并在心里把'周三考'这个旧事实作废，别在这时候推练车接娃计划。",
+      "acceptable_actions": [
+        "先接住她的累和愧疚，让她专心陪阿姨，练车和接娃那趟先放下",
+        "明确我已经记下她退了周三那场、改延考，等她缓过来再重排周末"
+      ],
+      "applicable_dimensions": ["emotion_relation", "time_state", "factuality", "memory_use"],
+      "required_memory_atoms": [
+        {"atom_id": "D02_T05_a1", "subject": "her", "relation": "exam_old", "value": "此前约的周三考", "valid_time": "2026-02-10", "status": "superseded", "negation": true, "source": {"kind": "message", "case_id": "D02_T02", "message_id": "m0", "quote": "周三考"}, "required_this_turn": true},
+        {"atom_id": "D02_T05_a2", "subject": "her", "relation": "exam_postponed", "value": "周三那场已退申请延考", "valid_time": "2026-02-13", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "D02_T05", "message_id": "m0", "quote": "周三那场我退了申请延考"}, "required_this_turn": false}
+      ],
+      "private_guidance": "情绪让位不等于沉默：要回应她的自责，但此刻硬塞练车接车计划就是错的；同时要把周三考这个旧事实标记作废。",
+      "unknowns": ["延考申请能不能批下来、批到什么时候"],
+      "protected_expressions": ["感觉啥都没弄利索"],
+      "forbidden_factual_claims": ["不能还当周三那场照常去考", "不能替她保证延考一定批、一定不影响拿证"],
+      "may_decline": false,
+      "intent": {"text": "改成周日下午送完娃再去驾校接她", "status": "ADJUSTED", "enabled": true}
+    },
+    "D02_T06": {
+      "case_id": "D02_T06",
+      "current_action": "她说周末那两天'再说吧'、也可能照常去练，又转述教练老劝她买二手代步车并自嘲没钱、然后喊困收尾，这一轮她已明确今晚到此为止，最该做的是不逼她当场定周末、不把'再说吧/也可能'当答应、也不把教练劝买车当成她想买（可不回）。",
+      "acceptable_actions": [
+        "简短让她先睡，周末等她看妈妈状态再定，不追问也不替她拍板",
+        "顺着她不买车这茬，不擅自把周日的接送安排坐实、更不替她把娃的安排定死"
+      ],
+      "applicable_dimensions": ["boundary", "factuality", "emotion_relation", "initiative"],
+      "required_memory_atoms": [
+        {"atom_id": "D02_T06_a1", "subject": "her", "relation": "misread_rule", "value": "别替她把孩子的安排定死", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "initial_kb", "key": "lessons", "quote": "别替她把孩子的安排定死"}, "required_this_turn": true},
+        {"atom_id": "D02_T06_a2", "subject": "her", "relation": "weekend_ambiguous", "value": "再说吧也可能照常去练", "valid_time": "周末", "status": "tentative", "negation": false, "source": {"kind": "message", "case_id": "D02_T06", "message_id": "m0", "quote": "再说吧"}, "required_this_turn": false}
+      ],
+      "private_guidance": "含糊不是同意：'也可能我照常去练'不等于定了；但她已喊困收尾，此时既不能强推也不能玩消失、更不能替她和娃把安排敲死。",
+      "unknowns": ["她妈妈状态会不会好转、周末到底练不练"],
+      "protected_expressions": ["我哪来那钱"],
+      "forbidden_factual_claims": ["不能把教练劝买车当成她已答应买二手车", "不能把'再说吧'当她已经确认周日照常去练"],
+      "may_decline": true,
+      "intent": {"text": "改成周日下午送完娃再去驾校接她", "status": "ADJUSTED", "enabled": true}
+    },
+    "D02_T07": {
+      "case_id": "D02_T07",
+      "current_action": "周六上午她说妈妈退烧了、延考批到下下周、周日时段教练又给留回来了，并问我周日下午接娃那事还作数不，这一轮最该做的是确认作数、把串线定下来（先用皮卡送完娃再去驾校接她），并且用最新事实：考试已延到下下周、不再提周三那场。",
+      "acceptable_actions": [
+        "明确周日照旧：皮卡后座能坐俩孩子，先送完娃直接去驾校接她",
+        "接住延考到下下周这件新变化、把心思放回周日练车，不重提已作废的周三考试"
+      ],
+      "applicable_dimensions": ["memory_use", "time_state", "goal", "initiative"],
+      "required_memory_atoms": [
+        {"atom_id": "D02_T07_a1", "subject": "her", "relation": "exam_postponed", "value": "已退周三申请延考", "valid_time": "2026-02-13", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "D02_T05", "message_id": "m0", "quote": "周三那场我退了申请延考"}, "required_this_turn": true},
+        {"atom_id": "D02_T07_a2", "subject": "me", "relation": "car_capacity", "value": "皮卡后座能坐俩孩子可送娃", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "initial_kb", "key": "me", "quote": "后座能安全坐俩孩子"}, "required_this_turn": true},
+        {"atom_id": "D02_T07_a3", "subject": "her", "relation": "sunday_slot", "value": "改到周日下午的练车时段", "valid_time": "2026-02-15", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "D02_T03", "message_id": "m0", "quote": "让我改周日下午"}, "required_this_turn": false}
+      ],
+      "private_guidance": "必须用旧事才答对：记得考试已延（不是周三）、周日时段、以及我能载俩娃这条长期信息；退回周三旧版本就是错。",
+      "unknowns": ["周日亲子活动和她练车这次还会不会撞"],
+      "protected_expressions": ["延考批了下下周"],
+      "forbidden_factual_claims": ["不能还说她周三去考试", "不能把周日下午时段说成从没被挪动过"],
+      "may_decline": false,
+      "intent": {"text": "改成周日下午送完娃再去驾校接她", "status": "ADJUSTED", "enabled": true}
+    },
+    "D02_T08": {
+      "case_id": "D02_T08",
+      "current_action": "收工后她说练完了虽又熄一次火但总算把周日补上了、娃也接了、道谢说要去做饭不再聊，这一轮最该做的是把这趟串线当作真正办完收尾、认可她把周日这把补上、并接受她已明确不必再回。",
+      "acceptable_actions": [
+        "替这天收个尾（人和娃都接到、熄火别往心里去），让她安心去做饭",
+        "简短认可办成，不展开新话题、不把她又熄火说成再次失败"
+      ],
+      "applicable_dimensions": ["goal", "time_state", "emotion_relation", "boundary"],
+      "required_memory_atoms": [
+        {"atom_id": "D02_T08_a1", "subject": "me&her", "relation": "relationship_stage", "value": "处对象大半年还没正式带娃一起出门", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "initial_kb", "key": "warmth", "quote": "处对象大半年"}, "required_this_turn": false},
+        {"atom_id": "D02_T08_a2", "subject": "her", "relation": "outcome", "value": "总算把周日这把练车补上了", "valid_time": "2026-02-15", "status": "done", "negation": false, "source": {"kind": "message", "case_id": "D02_T08", "message_id": "m0", "quote": "总算把周日补上了"}, "required_this_turn": false}
+      ],
+      "private_guidance": "目标已COMPLETED，别再拉回ACTIVE或塞买车/新计划；她要去做饭，硬找话回反而越界。",
+      "unknowns": ["她延考之后大概什么时候再约"],
+      "protected_expressions": ["不聊了我给他做饭去"],
+      "forbidden_factual_claims": ["不能把这趟说成还在待定没办成", "不能替她断定下次延考一定能过"],
+      "may_decline": true,
+      "intent": {"text": "改成周日下午送完娃再去驾校接她", "status": "COMPLETED", "enabled": true}
+    }
+  }
+}

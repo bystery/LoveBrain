@@ -1,0 +1,1956 @@
+{
+ "story_id": "LRE126",
+ "turns": {
+  "LRE126_T01": {
+   "case_id": "LRE126_T01",
+   "current_action": "接下今晚的邀约,顺势问问辣度和到店时间",
+   "acceptable_actions": [
+    "爽快答应,问她几点取号要不要先踩点",
+    "答应并自嘲吃不了特辣,请她掌勺点菜",
+    "接'口碑高得离谱'的梗,问是不是又是水军,然后答应去验货"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A01",
+     "subject": "HER",
+     "relation": "spicy_preference",
+     "value": "乔一琳无辣不欢,吃湘菜要特辣",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "无辣不欢"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE126_A02",
+     "subject": "SHARED",
+     "relation": "dinner_plan",
+     "value": "两人约好今晚下班去公司对面新开的湘菜小馆拔草",
+     "valid_time": "2026-11-04 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T01",
+      "message_id": "m0",
+      "quote": "今晚下班一起拔草"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她邀约时兴致高,回应要利落别晾着",
+   "unknowns": [
+    "该店人均价格未知"
+   ],
+   "protected_expressions": [
+    "今晚下班一起拔草"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构该店评分具体分数"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T02": {
+   "case_id": "LRE126_T02",
+   "current_action": "确认六点半碰头安排,回应辣度规矩",
+   "acceptable_actions": [
+    "答应六点半到,笑她立规矩立得比店规还快",
+    "确认七点开吃没问题,承诺绝不点微辣",
+    "问她排号要不要帮忙盯着,自己晚几分钟也行"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A03",
+     "subject": "SHARED",
+     "relation": "meeting_arrangement",
+     "value": "她已取号,约定六点半到店,预计七点排到开吃",
+     "valid_time": "2026-11-04 18:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T02",
+      "message_id": "m0",
+      "quote": "我取了号,六点半到"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把细节都安排好了,配合就行,别添乱",
+   "unknowns": [
+    "当天实际排队时长未知"
+   ],
+   "protected_expressions": [
+    "别拿微辣糊弄我"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构排队具体桌数"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T03": {
+   "case_id": "LRE126_T03",
+   "current_action": "接住她的取消与道歉,利落同意改明晚,不让内疚发酵",
+   "acceptable_actions": [
+    "说复盘会要紧,明晚正好,让她别对不起对不起了",
+    "心疼她临时会一秒,顺嘴确认明晚时间她定",
+    "答应改期,调侃今晚的号退得比插会还果断"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A03",
+     "subject": "SHARED",
+     "relation": "meeting_arrangement",
+     "value": "她已取号,约定六点半到店,预计七点排到开吃",
+     "valid_time": "2026-11-04 18:30",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T02",
+      "message_id": "m0",
+      "quote": "我取了号,六点半到"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE126_A04",
+     "subject": "SHARED",
+     "relation": "reschedule_proposal",
+     "value": "今晚的号已退,聚餐改期到明晚(11月5日)",
+     "valid_time": "2026-11-05 晚",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T03",
+      "message_id": "m0",
+      "quote": "今晚的号我退了,湘菜跑不了,改明晚行吗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE126_A05",
+     "subject": "HER",
+     "relation": "work_conflict",
+     "value": "组里临时插入复盘会,六点开始时长未知",
+     "valid_time": "2026-11-04 18:00 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T03",
+      "message_id": "m0",
+      "quote": "组里临时插了个复盘会"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她最怕被说放鸽子,先给台阶再定新时间",
+   "unknowns": [
+    "复盘会何时结束未知"
+   ],
+   "protected_expressions": [
+    "今晚的号我退了",
+    "改明晚行吗"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构复盘会的议题内容"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T04": {
+   "case_id": "LRE126_T04",
+   "current_action": "确认明晚七点的预约安排,肯定她的升级操作",
+   "acceptable_actions": [
+    "夸她从排号进化到预约号,明晚七点准时",
+    "确认时间,顺嘴问预约号能不能选位",
+    "接'稳得多'的梗,说自己把日历也定了"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A06",
+     "subject": "SHARED",
+     "relation": "rebooked_arrangement",
+     "value": "改期后的聚餐定于明晚七点湘菜小馆,她已取预约号",
+     "valid_time": "2026-11-06 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T04",
+      "message_id": "m0",
+      "quote": "明晚七点湘菜小馆"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这一轮主要是确认,简短给足安全感",
+   "unknowns": [
+    "预约号是否指定座位未知",
+    "改期日期在'改明晚(11-04口径=11-05)'与'明晚七点(11-05发出=11-06)'之间存在一日漂移,按T05在11-06晨仍能退'晚上的预约'取11-06,不得断言唯一日期"
+   ],
+   "protected_expressions": [
+    "这次是预约号不是排号"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构预约平台的名称"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T05": {
+   "case_id": "LRE126_T05",
+   "current_action": "接住第二次取消,表达理解并让她安心出差,补约不急",
+   "acceptable_actions": [
+    "说出差要紧,预约退了对,回来第一顿我等着",
+    "关心她高铁时间早不早,让她别惦记这顿饭",
+    "答应等她回来,调侃湘菜是跑不掉的钉子户"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A06",
+     "subject": "SHARED",
+     "relation": "rebooked_arrangement",
+     "value": "改期后的聚餐定于明晚七点湘菜小馆,她已取预约号",
+     "valid_time": "2026-11-06 19:00",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T04",
+      "message_id": "m0",
+      "quote": "明晚七点湘菜小馆"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE126_A07",
+     "subject": "HER",
+     "relation": "business_trip",
+     "value": "她被安排明早七点二十高铁去杭州出差,当晚预约再退",
+     "valid_time": "2026-11-07 07:20 出发",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T05",
+      "message_id": "m0",
+      "quote": "高铁是明早七点二十"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "连续第二次取消,她的愧疚在叠加,这轮只做减负",
+   "unknowns": [
+    "出差几天未明确"
+   ],
+   "protected_expressions": [
+    "回来第一顿补给你"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构总监安排出差的缘由"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T06": {
+   "case_id": "LRE126_T06",
+   "current_action": "接住云点菜的提议,答应替她探店拍菜单",
+   "acceptable_actions": [
+    "答应今晚去拍菜单,让她在杭州远程点",
+    "接'云点菜'的梗,问要不要顺便直播香味",
+    "答应去吃,提醒她别隔着屏幕咽口水"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A07",
+     "subject": "HER",
+     "relation": "business_trip",
+     "value": "她被安排明早七点二十高铁去杭州出差,当晚预约再退",
+     "valid_time": "2026-11-07 07:20 出发",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T05",
+      "message_id": "m0",
+      "quote": "高铁是明早七点二十"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE126_A08",
+     "subject": "SHARED",
+     "relation": "cloud_dinner_plan",
+     "value": "她提议ME今晚替她去店里拍菜单,她远程云点菜",
+     "valid_time": "2026-11-06 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T06",
+      "message_id": "m0",
+      "quote": "拍菜单发我,我远程云点菜"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给补偿方案时带点小得意,接住这份心意",
+   "unknowns": [
+    "今晚店里排队情况未知",
+    "她到杭时间(11-06午)早于T05所述'明早七点二十'(11-07晨)出发,行程口径自相矛盾,按已到杭理解,不得替她圆场或断言实际出发时刻"
+   ],
+   "protected_expressions": [
+    "我远程云点菜"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构菜单具体菜品价格"
+   ],
+   "may_decline": true
+  },
+  "LRE126_T07": {
+   "case_id": "LRE126_T07",
+   "current_action": "围绕她选的辣汤聊两句,确认菜单已存、回来照单执行",
+   "acceptable_actions": [
+    "确认前三名记下没问题,提醒别光记辣的留个汤底",
+    "调侃她出差还不忘存菜单,是干粮型选手",
+    "答应回来陪她按单吃,顺便汇报辣汤真实杀伤力"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A08",
+     "subject": "SHARED",
+     "relation": "cloud_dinner_plan",
+     "value": "她提议ME今晚替她去店里拍菜单,她远程云点菜",
+     "valid_time": "2026-11-06 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T06",
+      "message_id": "m0",
+      "quote": "拍菜单发我,我远程云点菜"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE126_A09",
+     "subject": "SHARED",
+     "relation": "menu_shortlist",
+     "value": "她存下菜单并记下前三名,出差回来按此点单",
+     "valid_time": "2026-11-06 起有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T07",
+      "message_id": "m0",
+      "quote": "前三名我都记下了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她隔着屏幕馋,聊吃的时候放开点",
+   "unknowns": [
+    "前三名具体是哪三道未在台词列出"
+   ],
+   "protected_expressions": [
+    "前三名我都记下了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她列出具体前三菜品"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T08": {
+   "case_id": "LRE126_T08",
+   "current_action": "确认周四晚的改期安排,回应出差延期的状态",
+   "acceptable_actions": [
+    "说周四正好,让她安心看直播等回来",
+    "关心出差延期累不累,确认周四不用再动",
+    "接周中免取号的信息,夸她连这都摸清了"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A10",
+     "subject": "HER",
+     "relation": "trip_extension",
+     "value": "出差延长至周三,当晚乘高铁返回",
+     "valid_time": "2026-11-11 晚返回",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T08",
+      "message_id": "m0",
+      "quote": "出差延到周三,晚上才有高铁"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE126_A11",
+     "subject": "SHARED",
+     "relation": "rebooked_arrangement",
+     "value": "聚餐第三次改期定于周四晚上,依据是周中人少不用取号",
+     "valid_time": "2026-11-12 晚",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T08",
+      "message_id": "m0",
+      "quote": "那就定周四晚"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第三次定档,态度上要稳住'这次算数'",
+   "unknowns": [
+    "周四是否还有变数未知"
+   ],
+   "protected_expressions": [
+    "那就定周四晚"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构直播平台信息"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T09": {
+   "case_id": "LRE126_T09",
+   "current_action": "接住她的落地报平安和奶茶赌约,承诺绝不放鸽子",
+   "acceptable_actions": [
+    "应下赌约,说自己先请一个月奶茶当保险",
+    "欢迎回来,确认周四晚七点老位置不变",
+    "接闹钟的梗,说自己也定了双闹钟"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A11",
+     "subject": "SHARED",
+     "relation": "rebooked_arrangement",
+     "value": "聚餐第三次改期定于周四晚上,依据是周中人少不用取号",
+     "valid_time": "2026-11-12 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T08",
+      "message_id": "m0",
+      "quote": "那就定周四晚"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE126_A12",
+     "subject": "SHARED",
+     "relation": "punctuality_bet",
+     "value": "双方约定谁再放鸽子谁请下个月奶茶",
+     "valid_time": "2026-11-11 立约",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T09",
+      "message_id": "m0",
+      "quote": "谁再放鸽子谁请下个月奶茶"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "赌约是她的幽默,接梗要快",
+   "unknowns": [
+    "奶茶口味偏好未知"
+   ],
+   "protected_expressions": [
+    "谁再放鸽子谁请下个月奶茶"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她的航班车次"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T10": {
+   "case_id": "LRE126_T10",
+   "current_action": "临行前再确认,答应下班直接过去赴约",
+   "acceptable_actions": [
+    "答应直接过去,让她在门口等时先占遮风的位置",
+    "说'啥事没有'是好兆头,明晚见",
+    "回一句准时到场,让她把特辣的胆量留好"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A12",
+     "subject": "SHARED",
+     "relation": "punctuality_bet",
+     "value": "双方约定谁再放鸽子谁请下个月奶茶",
+     "valid_time": "2026-11-11 立约",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T09",
+      "message_id": "m0",
+      "quote": "谁再放鸽子谁请下个月奶茶"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "短句确认即可,别啰嗦",
+   "unknowns": [
+    "当天是否有临时加班未知"
+   ],
+   "protected_expressions": [
+    "我提前十分钟到门口等你"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构当天工作安排"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T11": {
+   "case_id": "LRE126_T11",
+   "current_action": "夸她的战果,回应'没笑话',给云南菜之约留口子",
+   "acceptable_actions": [
+    "说半盘鱼头是战绩不是笑话,云南菜预约上",
+    "夸这家选得值,问她收藏夹第二家有多辣",
+    "接梗说下次提前练辣,月底就安排"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A11",
+     "subject": "SHARED",
+     "relation": "rebooked_arrangement",
+     "value": "聚餐第三次改期定于周四晚上,依据是周中人少不用取号",
+     "valid_time": "2026-11-12 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T08",
+      "message_id": "m0",
+      "quote": "那就定周四晚"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE126_A13",
+     "subject": "SHARED",
+     "relation": "next_dinner_hook",
+     "value": "她提出下个月带ME吃收藏夹第二家云南菜",
+     "valid_time": "2026年12月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T11",
+      "message_id": "m0",
+      "quote": "下个月带你吃我收藏夹第二家,云南菜"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "饭吃成了,气氛可以放松些,钩子接稳",
+   "unknowns": [
+    "云南菜店的具体信息未透露"
+   ],
+   "protected_expressions": [
+    "你没笑话我吧"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构鱼头价格"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T12": {
+   "case_id": "LRE126_T12",
+   "current_action": "周末闲聊接住奶茶债的回扣,轻轻收尾",
+   "acceptable_actions": [
+    "接'跑不掉'的梗,说奶茶债已列入十二月账单",
+    "回个想念后厨的玩笑,祝她周末躺平愉快",
+    "简单回应并约下周午饭搭子照旧"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE126_A12",
+     "subject": "SHARED",
+     "relation": "punctuality_bet",
+     "value": "双方约定谁再放鸽子谁请下个月奶茶",
+     "valid_time": "2026-11-11 立约",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T09",
+      "message_id": "m0",
+      "quote": "谁再放鸽子谁请下个月奶茶"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "周末闲聊,轻收尾,不硬造新话题",
+   "unknowns": [
+    "下个月云南菜的具体日期未定"
+   ],
+   "protected_expressions": [
+    "下个月的奶茶债我还记着"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构后厨照片内容"
+   ],
+   "may_decline": true
+  },
+  "LRE126_T13": {
+   "case_id": "LRE126_T13",
+   "current_action": "接住食堂窗口回归的日常分享,顺着出差话题轻聊",
+   "acceptable_actions": [
+    "接'晦气清零'的梗,问酸汤肥牛含不含辣",
+    "提议明天午饭照旧,把搭子日程续上",
+    "简单附和,让她安心干饭"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "HER",
+     "relation": "trip_extension",
+     "value": "出差延长至周三,当晚乘高铁返回",
+     "valid_time": "2026-11-11 晚返回",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T08",
+      "quote": "出差延到周三,晚上才有高铁",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A10"
+    },
+    {
+     "subject": "HER",
+     "relation": "routine_back",
+     "value": "食堂酸汤肥牛窗口恢复,她出差后的午饭搭子日常回轨",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T13",
+      "quote": "酸汤肥牛窗口回来了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A14"
+    }
+   ],
+   "private_guidance": "日常回轨轮,轻快接住即可,别上价值",
+   "unknowns": [
+    "酸汤肥牛辣度未知"
+   ],
+   "protected_expressions": [
+    "酸汤肥牛窗口回来了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构窗口停开原因",
+    "不得断言她出差具体天数"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T14": {
+   "case_id": "LRE126_T14",
+   "current_action": "接下提前的云南菜邀约,确认周六档期",
+   "acceptable_actions": [
+    "爽快答应周六,问她要不要先订位",
+    "接'汽锅鸡我先占'的梗,说要跟她拼半份",
+    "答应并提醒上次约饭翻过车,这回稳字当头"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "next_dinner_hook",
+     "value": "她提出下个月带ME吃收藏夹第二家云南菜",
+     "valid_time": "2026年12月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T11",
+      "quote": "下个月带你吃我收藏夹第二家,云南菜",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A13"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "yunnan_plan",
+     "value": "云南菜之约提前:定于2026-11-21周六,她先点汽锅鸡",
+     "valid_time": "2026-11-17",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T14",
+      "quote": "收藏夹第二家云南菜我等不到下个月了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A15"
+    }
+   ],
+   "private_guidance": "她把月度钩子提前,积极度说明在意,回应别晾着",
+   "unknowns": [
+    "具体到店时间未定",
+    "订位方式未定"
+   ],
+   "protected_expressions": [
+    "收藏夹第二家云南菜我等不到下个月了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构云南菜店名与位置",
+    "不得替她确认必吃到店"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T15": {
+   "case_id": "LRE126_T15",
+   "current_action": "确认散台方案,肯定她要来老板娘电话的路子",
+   "acceptable_actions": [
+    "说散台靠窗比包间舒服,确认周六可行",
+    "夸她连老板娘电话都搞到了,情报能力满分",
+    "提醒周五确认一遍,防手滑被放位"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "yunnan_plan",
+     "value": "云南菜之约提前:定于2026-11-21周六,她先点汽锅鸡",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T14",
+      "quote": "收藏夹第二家云南菜我等不到下个月了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A15"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "booking_constraint",
+     "value": "云南菜店仅电话订位,周六晚市包间需满8人,两人只能订散台",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T15",
+      "quote": "包间要满8人",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A16"
+    }
+   ],
+   "private_guidance": "信息同步轮,给足确认感",
+   "unknowns": [
+    "老板娘电话号码未透露",
+    "散台位置是否真的靠窗待定"
+   ],
+   "protected_expressions": [
+    "包间要满8人"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构老板娘姓名",
+    "不得断言包间最低消费"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T16": {
+   "case_id": "LRE126_T16",
+   "current_action": "接住歇业消息,肯定她手快钉位的果断",
+   "acceptable_actions": [
+    "说这就是收藏夹选手的嗅觉,周六稳了",
+    "提醒周五电话确认时顺便问半价活动",
+    "接'最后一个晚市'的梗,说吃出告别演出的仪式感"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "booking_constraint",
+     "value": "云南菜店仅电话订位,周六晚市包间需满8人,两人只能订散台",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T15",
+      "quote": "包间要满8人",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A16"
+    },
+    {
+     "subject": "PUBLIC",
+     "relation": "shop_closure",
+     "value": "云南菜店11-23起装修歇业半个月,11-21周六为其歇业前最后一个晚市",
+     "valid_time": "2026-11-19 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T16",
+      "quote": "下周一装修歇业半个月",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A17"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "yunnan_booked",
+     "value": "已订11-21(周六)18:30散台,周五电话确认",
+     "valid_time": "2026-11-21 18:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T16",
+      "quote": "18:30的散台已经钉死了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A18"
+    }
+   ],
+   "private_guidance": "她抢到位子很有成就感,先接成就感再说细节",
+   "unknowns": [
+    "装修工期是否恰好半个月未确认"
+   ],
+   "protected_expressions": [
+    "下周一装修歇业半个月"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构歇业原因",
+    "不得替老板娘承诺回归日期"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T17": {
+   "case_id": "LRE126_T17",
+   "current_action": "接住团建撞档的取消与认赌,利落免除她的心理负担",
+   "acceptable_actions": [
+    "说团建是总监的锅不是她的,赌约愿赌服输这态度很体面",
+    "心疼她拓展一天,让她周六好好歇着别愧疚",
+    "接'接龙没爬出来'的梗,再确认奶茶债执行细节"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "yunnan_booked",
+     "value": "已订11-21(周六)18:30散台,周五电话确认",
+     "valid_time": "2026-11-21 18:30",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T16",
+      "quote": "18:30的散台已经钉死了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A18"
+    },
+    {
+     "subject": "HER",
+     "relation": "team_building",
+     "value": "公司周六全天团建拓展,与她订好的云南菜聚餐冲突",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T17",
+      "quote": "周六全天拓展",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A19"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "bet_triggered",
+     "value": "奶茶赌约条款首次触发:她因团建取消聚餐,按约定请一个月奶茶",
+     "valid_time": "2026-11-20",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T17",
+      "quote": "愿赌服输",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A20"
+    }
+   ],
+   "private_guidance": "她最怕被说放鸽子,这次她自己先认赌,顺势给她台阶",
+   "unknowns": [
+    "团建地点与内容未说明"
+   ],
+   "protected_expressions": [
+    "周六全天拓展"
+   ],
+   "forbidden_factual_claims": [
+    "不得幸灾乐祸式调侃放鸽子",
+    "不得虚构总监通知原话"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T18": {
+   "case_id": "LRE126_T18",
+   "current_action": "接住奶茶债生效,报出自己的口味偏好",
+   "acceptable_actions": [
+    "报口味,顺带心疼她拓展后的腿",
+    "说口味随意,重点是这份说到做到",
+    "接'人没散架算赢'的梗,约下周搭子饭照旧"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "punctuality_bet",
+     "value": "双方约定谁再放鸽子谁请下个月奶茶",
+     "valid_time": "2026-11-11 立约",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T09",
+      "quote": "谁再放鸽子谁请下个月奶茶",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A12"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "bet_execution",
+     "value": "奶茶债执行:她为ME请一个月奶茶,自2026-11-21起",
+     "valid_time": "2026-11-21 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T18",
+      "quote": "奶茶债今天正式生效",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A22"
+    }
+   ],
+   "private_guidance": "赌约执行的第一步,口味说得具体点她会记清单",
+   "unknowns": [
+    "ME口味偏好在源篇未设定,按本轮答复为准"
+   ],
+   "protected_expressions": [
+    "奶茶债今天正式生效"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构奶茶品牌与价格",
+    "不得替她确认每月预算"
+   ],
+   "may_decline": true
+  },
+  "LRE126_T19": {
+   "case_id": "LRE126_T19",
+   "current_action": "对盲选给出反馈,肯定她的执行速度",
+   "acceptable_actions": [
+    "说生椰拿铁可以,盲选水平不错",
+    "若不对口味则换茶,但夸她'不含勉强条款'体贴",
+    "提醒她别把一个月奶茶喝成负债"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "bet_execution",
+     "value": "奶茶债执行:她为ME请一个月奶茶,自2026-11-21起",
+     "valid_time": "2026-11-21 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T18",
+      "quote": "奶茶债今天正式生效",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A22"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "bet_delivery",
+     "value": "奶茶债第一杯已送达,生椰拿铁为盲选,口味可随时调整",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T19",
+      "quote": "第一杯送达:生椰拿铁",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A23"
+    }
+   ],
+   "private_guidance": "第一杯是态度,反馈要即时明确,别让她猜",
+   "unknowns": [
+    "ME对生椰拿铁的实际接受度以本轮答复为准"
+   ],
+   "protected_expressions": [
+    "第一杯送达:生椰拿铁"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构奶茶店内菜单",
+    "不得断言后续口味必然固定"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T20": {
+   "case_id": "LRE126_T20",
+   "current_action": "确认米线垫场方案,肯定她不等不凑合的态度",
+   "acceptable_actions": [
+    "说米线正合适,周五下班就吃",
+    "夸她收藏夹管理有序,第三梯队都排上了",
+    "提醒云南菜回归周再战,仪式感补上"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "PUBLIC",
+     "relation": "shop_closure",
+     "value": "云南菜店11-23起装修歇业半个月,11-21周六为其歇业前最后一个晚市",
+     "valid_time": "2026-11-19 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T16",
+      "quote": "下周一装修歇业半个月",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A17"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "backup_plan",
+     "value": "替代方案:改吃公司后街蒙自米线,云南菜待12月中回归后再补",
+     "valid_time": "2026-11-23",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T20",
+      "quote": "收藏夹第三梯队翻出一家蒙自米线",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A24"
+    }
+   ],
+   "private_guidance": "改期方案清晰,确认即可,别纠结原计划",
+   "unknowns": [
+    "米线店具体店名未透露",
+    "云南菜回归具体日期未定"
+   ],
+   "protected_expressions": [
+    "收藏夹第三梯队翻出一家蒙自米线"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构米线店评分",
+    "不得断言12月中一定回归"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T21": {
+   "case_id": "LRE126_T21",
+   "current_action": "接住踩点报告与辣度放话,确认周五安排",
+   "acceptable_actions": [
+    "确认周五下班就它,承诺绝不点微辣",
+    "接'舀红油架势'的梗,说后厨师傅是辣度代言人",
+    "问她特辣自己扛不扛得住"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "HER",
+     "relation": "spicy_preference",
+     "value": "乔一琳无辣不欢,吃湘菜要特辣",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "无辣不欢"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A01"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "mixian_recon",
+     "value": "米线店踩点:招牌酸汤米线分微辣中辣特辣,定周五下班前往",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T21",
+      "quote": "招牌酸汤米线分微辣中辣特辣",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A25"
+    }
+   ],
+   "private_guidance": "辣度规矩是两人的老梗,接梗要快,承诺要真",
+   "unknowns": [
+    "ME对特辣的承受力未设定"
+   ],
+   "protected_expressions": [
+    "招牌酸汤米线分微辣中辣特辣"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构米线价格",
+    "不得断言特辣的具体辣度单位"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T22": {
+   "case_id": "LRE126_T22",
+   "current_action": "接住旧预约复活推送的乌龙,肯定她识别删除的果断",
+   "acceptable_actions": [
+    "说系统推送也怕她放鸽子,连旧单都搬出来了",
+    "肯定当场删除,周五只认米线一家",
+    "接'阴魂不散'的梗,笑她预约软件都比别人执着"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "rebooked_arrangement",
+     "value": "改期后的聚餐定于明晚七点湘菜小馆,她已取预约号",
+     "valid_time": "2026-11-06 19:00",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T04",
+      "quote": "明晚七点湘菜小馆",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A06"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "stale_booking_resurrect",
+     "value": "已退的湘菜小馆旧预约单被系统复活推送",
+     "valid_time": "2026-11-25 晨",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T22",
+      "quote": "早就退掉的旧预约单",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A26"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "stale_booking_dismissed",
+     "value": "旧预约推送被识别删除,不影响周五米线安排",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T22",
+      "quote": "当场删除",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A27"
+    }
+   ],
+   "private_guidance": "这是旧预约复活的关键识别轮,正确路径是认定旧单已退,别跟着推送走",
+   "unknowns": [
+    "推送来自哪个平台未说明"
+   ],
+   "protected_expressions": [
+    "早就退掉的旧预约单"
+   ],
+   "forbidden_factual_claims": [
+    "不得把旧预约当作仍有效的安排",
+    "不得虚构周五晚七点湘菜行程"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T23": {
+   "case_id": "LRE126_T23",
+   "current_action": "接住她跨店清单的自我纠正,认同现场看单的做法",
+   "acceptable_actions": [
+    "说清单归清单,店归店,她的判断对",
+    "夸她舍得删',前三名'的执念",
+    "确认周五现场按辣度重新选"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "menu_shortlist",
+     "value": "她存下菜单并记下前三名,出差回来按此点单",
+     "valid_time": "2026-11-06 起有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T07",
+      "quote": "前三名我都记下了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A09"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "menu_scope",
+     "value": "旧菜单前三名仅适用于湘菜店,不跨店照搬到米线店",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T23",
+      "quote": "那是湘菜的清单",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A28"
+    }
+   ],
+   "private_guidance": "她自我纠正得漂亮,肯定但不夸张",
+   "unknowns": [
+    "前三名是否长期保留未说明"
+   ],
+   "protected_expressions": [
+    "那是湘菜的清单"
+   ],
+   "forbidden_factual_claims": [
+    "不得把湘菜菜单前三名用于米线店点单",
+    "不得虚构米线菜单内容"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T24": {
+   "case_id": "LRE126_T24",
+   "current_action": "接住角色互换云点菜,答应看菜单远程点一份",
+   "acceptable_actions": [
+    "答应远程点,让她拍全辣度分区",
+    "接'换个方向还'的梗,说云点菜也要讲礼尚往来",
+    "提醒总部食堂辣度可能超纲,让她量力"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "cloud_dinner_plan",
+     "value": "她提议ME今晚替她去店里拍菜单,她远程云点菜",
+     "valid_time": "2026-11-06 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T06",
+      "quote": "拍菜单发我,我远程云点菜",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A08"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "cloud_order_reverse",
+     "value": "角色互换云点菜:她周五午拍菜单,由ME远程点一份",
+     "valid_time": "2026-11-27 午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T24",
+      "quote": "你远程给我点一回",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A29"
+    }
+   ],
+   "private_guidance": "上次是她出的云点菜,这次反向,接得有点创意最好",
+   "unknowns": [
+    "总部对稿的具体安排未知"
+   ],
+   "protected_expressions": [
+    "你远程给我点一回"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构总部菜单内容",
+    "不得断言远程点单必然好吃"
+   ],
+   "may_decline": true
+  },
+  "LRE126_T25": {
+   "case_id": "LRE126_T25",
+   "current_action": "接战报,夸烤饵块点评到位",
+   "acceptable_actions": [
+    "说汤底见底就是最高认证",
+    "接'手气得留着'的梗,约定下次继续远程",
+    "回应加粉的下回之约"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "cloud_order_reverse",
+     "value": "角色互换云点菜:她周五午拍菜单,由ME远程点一份",
+     "valid_time": "2026-11-27 午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T24",
+      "quote": "你远程给我点一回",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A29"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "mixian_result",
+     "value": "米线首吃达成:她特辣吃到底汤,ME远程点的烤饵块获好评",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T25",
+      "quote": "酸汤米线特辣,我一滴水没喝",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A30"
+    }
+   ],
+   "private_guidance": "战报轮,情绪价值拉满,别泼冷水",
+   "unknowns": [
+    "烤饵块价格未知",
+    "米线人均未知"
+   ],
+   "protected_expressions": [
+    "酸汤米线特辣,我一滴水没喝"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构烤饵块做法细节",
+    "不得断言ME点单水平"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T26": {
+   "case_id": "LRE126_T26",
+   "current_action": "接周报与口味规律,纠正或认可记录表",
+   "acceptable_actions": [
+    "认可周中偏甜的规律,补一句周五苦是加班味",
+    "接'比你本人好懂'的梗,说工位贴表是公开处刑",
+    "提醒下月奶茶债预算让她悠着点"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "bet_execution",
+     "value": "奶茶债执行:她为ME请一个月奶茶,自2026-11-21起",
+     "valid_time": "2026-11-21 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T18",
+      "quote": "奶茶债今天正式生效",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A22"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "bet_week1",
+     "value": "奶茶债第一周5杯付清,她记录ME口味规律(周中偏甜周五偏苦)",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T26",
+      "quote": "第一周五杯付清",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A31"
+    }
+   ],
+   "private_guidance": "轻松周报轮,接梗为主",
+   "unknowns": [
+    "口味规律是否准确未经确认"
+   ],
+   "protected_expressions": [
+    "第一周五杯付清"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构记录表内容",
+    "不得断言规律科学成立"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T27": {
+   "case_id": "LRE126_T27",
+   "current_action": "接回归日期,确认12-11定档",
+   "acceptable_actions": [
+    "说半价回归天作之合,12-11锁定",
+    "夸她蹲点蹲得勤,回归日都摸到了",
+    "提醒提前订位,半价周人多"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "PUBLIC",
+     "relation": "shop_closure",
+     "value": "云南菜店11-23起装修歇业半个月,11-21周六为其歇业前最后一个晚市",
+     "valid_time": "2026-11-19 至 2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T16",
+      "quote": "下周一装修歇业半个月",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A17"
+    },
+    {
+     "subject": "PUBLIC",
+     "relation": "reopen_date",
+     "value": "云南菜店定于2026-12-11(周五)装修回归,回归周汽锅鸡半价",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T27",
+      "quote": "12月11号周五回归",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A32"
+    }
+   ],
+   "private_guidance": "定档轮,给足'这次算数'的确定感",
+   "unknowns": [
+    "回归后菜单是否调整未说明"
+   ],
+   "protected_expressions": [
+    "12月11号周五回归"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构半价幅度",
+    "不得替老板娘承诺营业时间"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T28": {
+   "case_id": "LRE126_T28",
+   "current_action": "确认四人桌订位,接'剩俩座位'的试探",
+   "acceptable_actions": [
+    "说四人桌好,剩下俩座位留给下一家故事",
+    "夸老板娘会做人,剪彩嘉宾安排明白",
+    "确认12-11晚七点不见不散"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "PUBLIC",
+     "relation": "reopen_date",
+     "value": "云南菜店定于2026-12-11(周五)装修回归,回归周汽锅鸡半价",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T27",
+      "quote": "12月11号周五回归",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A32"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "yunnan_booked2",
+     "value": "12-11云南菜聚餐订妥:靠窗四人桌,两人赴约",
+     "valid_time": "2026-12-11 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T28",
+      "quote": "是老板娘留的靠窗四人桌",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A33"
+    }
+   ],
+   "private_guidance": "'剩俩座位'带一点关系试探,接得大方别躲",
+   "unknowns": [
+    "四人桌另外两位是否真有安排未定"
+   ],
+   "protected_expressions": [
+    "是老板娘留的靠窗四人桌"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构老板娘的承诺",
+    "不得断言剪彩说法是真实活动"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T29": {
+   "case_id": "LRE126_T29",
+   "current_action": "接例行汇报,肯定备忘录标题的幽默",
+   "acceptable_actions": [
+    "接《一百种证明》的梗,说标题就值五杯",
+    "问收藏夹第四页留给谁",
+    "确认12-11倒计时,搭子饭照旧"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "bet_week1",
+     "value": "奶茶债第一周5杯付清,她记录ME口味规律(周中偏甜周五偏苦)",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T26",
+      "quote": "第一周五杯付清",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A31"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "bet_running",
+     "value": "她自报奶茶债累计15杯执行中,备忘录记账",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T29",
+      "quote": "累计十五杯",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A34"
+    }
+   ],
+   "private_guidance": "轻松汇报轮,幽默回敬",
+   "unknowns": [
+    "备忘录是否共享未知",
+    "她自报奶茶债累计15杯与前两周各5杯的累计口径存在出入,以她的备忘录口径为准,不代为澄清纠正"
+   ],
+   "protected_expressions": [
+    "累计十五杯"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构备忘录内容",
+    "不得断言奶茶债金额"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T30": {
+   "case_id": "LRE126_T30",
+   "current_action": "接'忠诚'的玩笑,轻巧回应",
+   "acceptable_actions": [
+    "说这算忠诚,建议申报年度吃货奖",
+    "接'留胃'的梗,说期待值已经拉满",
+    "简单附和,不展开"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "PUBLIC",
+     "relation": "reopen_date",
+     "value": "云南菜店定于2026-12-11(周五)装修回归,回归周汽锅鸡半价",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T27",
+      "quote": "12月11号周五回归",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A32"
+    },
+    {
+     "subject": "HER",
+     "relation": "loyalty_bit",
+     "value": "她拒绝食堂仿冒汽锅鸡,为12-11正餐留胃",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T30",
+      "quote": "给12月11号的正经汽锅鸡留胃",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A35"
+    }
+   ],
+   "private_guidance": "可短回的玩笑轮,轻接即可",
+   "unknowns": [
+    "仿冒版与正版的差距纯属玩笑"
+   ],
+   "protected_expressions": [
+    "给12月11号的正经汽锅鸡留胃"
+   ],
+   "forbidden_factual_claims": [
+    "不得评价食堂菜品真实质量",
+    "不得虚构汽锅鸡做法"
+   ],
+   "may_decline": true
+  },
+  "LRE126_T31": {
+   "case_id": "LRE126_T31",
+   "current_action": "接最终确认,承诺准时到场",
+   "acceptable_actions": [
+    "复述明晚七点云南菜四人桌,答应准时",
+    "接'没有团建没有复盘会没有高铁'的排比,说这次万事俱备",
+    "提醒她截图收好,到场只带胃口"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "yunnan_booked2",
+     "value": "12-11云南菜聚餐订妥:靠窗四人桌,两人赴约",
+     "valid_time": "2026-12-11 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T28",
+      "quote": "是老板娘留的靠窗四人桌",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A33"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "final_confirmation",
+     "value": "12-11晚七点云南菜聚餐最终确认:靠窗四人桌,预约单已发",
+     "valid_time": "2026-12-11 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T31",
+      "quote": "明晚七点,云南菜,靠窗四人桌",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A36"
+    }
+   ],
+   "private_guidance": "最终确认轮,短句笃定,别再引入变数话题",
+   "unknowns": [
+    "奶茶债剩余三杯的口味未定"
+   ],
+   "protected_expressions": [
+    "明晚七点,云南菜,靠窗四人桌"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构预约单编号",
+    "不得替她预测汽锅鸡口味"
+   ],
+   "may_decline": false
+  },
+  "LRE126_T32": {
+   "case_id": "LRE126_T32",
+   "current_action": "接打卡完成的餍足,接下翻牌权",
+   "acceptable_actions": [
+    "接下翻牌权,说会认真翻,翻完发她收藏夹",
+    "恭喜打卡完成,等装修一个月值回票价",
+    "提醒特辣老规矩她别反悔"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "final_confirmation",
+     "value": "12-11晚七点云南菜聚餐最终确认:靠窗四人桌,预约单已发",
+     "valid_time": "2026-12-11 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T31",
+      "quote": "明晚七点,云南菜,靠窗四人桌",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE126_A36"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "yunnan_done",
+     "value": "12-11云南菜聚餐完成,收藏夹第二家打卡",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T32",
+      "quote": "收藏夹第二家打卡完成",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A37"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "next_pick",
+     "value": "下一家探店由ME翻牌决定,她负责订位和特辣",
+     "valid_time": "2026年1月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE126_T32",
+      "quote": "翻牌权交你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE126_A38"
+    }
+   ],
+   "private_guidance": "收尾轮,把翻牌权接稳,给下一次留钩子",
+   "unknowns": [
+    "下家具体时间未定"
+   ],
+   "protected_expressions": [
+    "收藏夹第二家打卡完成"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构汽锅鸡半价结算金额",
+    "不得替她预定下一家店"
+   ],
+   "may_decline": false
+  }
+ }
+}

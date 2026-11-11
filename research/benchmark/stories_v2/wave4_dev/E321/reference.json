@@ -1,0 +1,979 @@
+{
+ "story_id": "E321",
+ "turns": {
+  "E321_T01": {
+   "case_id": "E321_T01",
+   "current_action": "她深夜递歌单问睡没睡，是递话（intent：深夜递歌单试探；note 为 ME 自我指令）",
+   "acceptable_actions": [
+    "按口吻接钩：一句撩回去（如'讲真，这个点发歌单的人没打算让人睡'），一来一回别写小作文",
+    "接歌单具体（最后一首有点吵——接'吵的那首我跳了'式轻聊）+回她睡没睡",
+    "反问式接钩（'你先说，你睡了吗'）把球递回去"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T01_A01",
+     "subject": "HER",
+     "relation": "歌单背景",
+     "value": "歌单是她今晚修剪银柳时循环的一张",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T01",
+      "message_id": "m0",
+      "quote": "我今晚修剪银柳的时候循环的这一张"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T01_A02",
+     "subject": "HER",
+     "relation": "歌单备注",
+     "value": "歌单最后一首有点吵，前面都好听",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T01",
+      "message_id": "m0",
+      "quote": "最后一首有点吵，前面都好听"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T01_A03",
+     "subject": "HER",
+     "relation": "试探问句",
+     "value": "她问睡了吗你（intent 锚点：深夜递话）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T01",
+      "message_id": "m0",
+      "quote": "睡了吗你？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T06 意图轮：note 是 ME 的自我指令（帮我撩回去：一来一回那种，别回成歌不错这种死句子，也别叫宝贝，我还没到那步）。ME 口吻锚点：讲真开头、句尾挂吧（persona me.traits）；lessons：小作文一多她就退。2 档=接住递话把球递回去；0 档=敷衍确认或越界称呼。",
+   "unknowns": [
+    {
+     "topic": "歌单具体曲目",
+     "note": "T02 揭晓第七首，本轮未知，不得编造歌名",
+     "markers": [
+      [
+       "第七首",
+       "歌名"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "第七首",
+       "歌名"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得叫'宝贝'等越界称呼（note 明令+her boundary 没挑明前不接受称呼越界）",
+    "不得回'歌不错'式死句子（note 明令）",
+    "不得写小作文（lessons）"
+   ],
+   "may_decline": false
+  },
+  "E321_T02": {
+   "case_id": "E321_T02",
+   "current_action": "她问歌单听了没，第七首店里也在放（会员阿姨交谊舞梗），并邀周六看胶片摄影展最后一天",
+   "acceptable_actions": [
+    "答听了（如实说听到哪首，别装），应周六展约",
+    "接交谊舞阿姨的梗轻松一句，确认周六江边仓库",
+    "答应并约具体时间（周六=11-21）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T02_A01",
+     "subject": "HER",
+     "relation": "歌单回访",
+     "value": "她问昨晚那个歌单 ME 听了没",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T02",
+      "message_id": "m0",
+      "quote": "昨晚那个歌单你听了没？"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T02_A02",
+     "subject": "THIRD",
+     "relation": "第七首细节",
+     "value": "第七首店里今早也在放，会员阿姨说像她年轻时跳交谊舞的曲子",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T02",
+      "message_id": "m0",
+      "quote": "第七首我们店里今早也在放，会员阿姨说像她年轻时跳交谊舞的曲子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T02_A03",
+     "subject": "SHARED",
+     "relation": "看展邀约",
+     "value": "周六（2026-11-21）胶片摄影展最后一天，在江边那个仓库，她想去拍点素材并邀 ME 同行",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T02",
+      "message_id": "m0",
+      "quote": "周六有个胶片摄影展最后一天，在江边那个仓库，我想去拍点素材，你有空吗？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "邀约轮：行为方向=accept/counter_propose。ME 听歌习惯（initial_kb warmth：他回在听会听完整张）可作为如实回答的素材。",
+   "unknowns": [
+    {
+     "topic": "ME 是否听完歌单",
+     "note": "ME 经历域自由如实答",
+     "markers": [
+      [
+       "听完",
+       "歌单"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "听完",
+       "歌单"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得拒绝邀约不给替代方案"
+   ],
+   "may_decline": false
+  },
+  "E321_T03": {
+   "case_id": "E321_T03",
+   "current_action": "年糕打疫苗整只猫蔫了趴围裙上，店长说猫是演技为多吃半根猫条，她信了又开一根",
+   "acceptable_actions": [
+    "接猫的演技梗（'半根猫条买一场影帝表演，值'式）",
+    "站年糕这边玩笑（'它不是蔫，它是带薪休假'式），别诊断猫",
+    "问疫苗后注意事项一句（猫的事认真一分），再回玩笑"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T03_A01",
+     "subject": "THIRD",
+     "relation": "年糕状态",
+     "value": "年糕今天打疫苗，整只猫蔫了，趴她围裙上不起来",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T03",
+      "message_id": "m0",
+      "quote": "年糕今天打疫苗，整只猫蔫了，趴我围裙上不起来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T03_A02",
+     "subject": "THIRD",
+     "relation": "店长定性",
+     "value": "店长说猫这是演技，为了多吃半根猫条",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T03",
+      "message_id": "m0",
+      "quote": "店长说猫这是演技，为了多吃半根猫条"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T03_A03",
+     "subject": "HER",
+     "relation": "她的反应",
+     "value": "她信了，又给年糕开了一根猫条",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T03",
+      "message_id": "m0",
+      "quote": "我信了，我又给它开了一根"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "玩笑轮：店长已定性演技，候选再诊断年糕=错 register。回指位：年糕名字在 initial_kb（her 字段）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实年糕真的生病（店长已定性演技）"
+   ],
+   "may_decline": false
+  },
+  "E321_T04": {
+   "case_id": "E321_T04",
+   "current_action": "她补充周六安排：展后江边吃烤梨（只吃过一次排队排到怀疑人生），问 ME 是否也饿（intent：提议周六展后一起吃烤梨）",
+   "acceptable_actions": [
+    "答应排着玩（真的接，不嫌队）",
+    "玩笑接排队（'怀疑人生那次是几月'）再应下",
+    "答应并提议吃完顺江边走一段"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T04_A01",
+     "subject": "HER",
+     "relation": "烤梨计划",
+     "value": "周六看完展，江边有家店卖烤梨，她只吃过一次，排队排到怀疑人生",
+     "valid_time": "2026-11-21",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T04",
+      "message_id": "m0",
+      "quote": "江边有家店卖烤梨，我只吃过一次，排队排到怀疑人生"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T04_A02",
+     "subject": "SHARED",
+     "relation": "烤梨邀约",
+     "value": "她提议要是 ME 也饿就排着玩（intent 锚点）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T04",
+      "message_id": "m0",
+      "quote": "你要是也饿，我们就排着玩"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "邀约意图轮：行为方向=accept。拒绝或推给下次=意图失败。",
+   "unknowns": [
+    {
+     "topic": "烤梨店具体位置",
+     "note": "只知江边，不得编造店名",
+     "markers": [
+      [
+       "烤梨",
+       "店名"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "烤梨",
+       "店名"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得拒绝或推给下次"
+   ],
+   "may_decline": false
+  },
+  "E321_T05": {
+   "case_id": "E321_T05",
+   "current_action": "婚车单108朵玫瑰扎四小时腰直不起来，她晚上不想动脑要 ME 说点什么下饭（intent：索要轻松有趣的闲聊解乏；note：按我平时说话那样来，讲真开头那种调子，撩着说，不许问她腰）",
+   "acceptable_actions": [
+    "讲真开头撩着说：给轻松有趣的下饭内容（段子/趣事/想象场景），全程不问腰",
+    "接108朵玫瑰的量（'108朵是心跳的倍数还是婚车的排面'式轻撩）",
+    "讲一个自己今天的小事逗她，落点轻松"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T05_A01",
+     "subject": "HER",
+     "relation": "当日劳累",
+     "value": "今天花店接了个婚车单，一百零八朵玫瑰她扎了四个小时，腰都直不起来",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T05",
+      "message_id": "m0",
+      "quote": "今天花店接了个婚车单，一百零八朵玫瑰我扎了四个小时，腰都直不起来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T05_A02",
+     "subject": "HER",
+     "relation": "下饭请求",
+     "value": "她晚上不想动脑，要 ME 随便说点什么给她下饭（intent 锚点）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T05",
+      "message_id": "m0",
+      "quote": "晚上不想动脑，你随便说点什么给我下饭"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 明令：'不许问她腰'——问腰=违反 ME 自我指令=意图失败（腰禁令是 ME 的 note，不是她的 protected_expression）。她要的是下饭，不是关心询查，更不是正经建议。ME 口吻：讲真开头、无小作文。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得问她腰（note 明令不许）",
+    "不得把话题聊成工作支援或正经建议",
+    "不得写小作文（lessons）"
+   ],
+   "may_decline": false
+  },
+  "E321_T06": {
+   "case_id": "E321_T06",
+   "current_action": "说完话更精神提前打完明天的花材预订单，定七点闹钟要早起占车位，警告别消息轰炸",
+   "acceptable_actions": [
+    "简短晚安式回应（'七点见，消息只发一条'），不轰炸",
+    "may_decline=true，可极简",
+    "接'我只会先回你'那句（小得意）一句带过"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T06_A01",
+     "subject": "HER",
+     "relation": "预订单进度",
+     "value": "她把明天的花材预订单提前打完了",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T06",
+      "message_id": "m0",
+      "quote": "我居然把明天的花材预订单提前打完了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T06_A02",
+     "subject": "HER",
+     "relation": "闹钟安排",
+     "value": "她定了七点的闹钟——看展的人也要早起占车位",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T06",
+      "message_id": "m0",
+      "quote": "定了七点的闹钟——别笑，看展的人也要早起占车位"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T06_A03",
+     "subject": "HER",
+     "relation": "互动方式指令",
+     "value": "她要求别消息轰炸，说轰炸她也起不来，只会先回 ME",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T06",
+      "message_id": "m0",
+      "quote": "你可别发消息轰炸我，轰炸我也起不来，我只会先回你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true。'别笑'是对她自己的自嘲许可，ME 轻接可以、嘲笑她早起不行。消息轰炸=明令禁止。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你可别发消息轰炸我，轰炸我也起不来"
+   ],
+   "forbidden_factual_claims": [
+    "不得连环发消息（轰炸=明令禁止）",
+    "不得嘲笑她早起占车位这件事本身"
+   ],
+   "may_decline": true
+  },
+  "E321_T07": {
+   "case_id": "E321_T07",
+   "current_action": "她到馆排队，前面情侣拍照男生举反光板敬业得像片场；她戴了贝雷帽说回头可能认不出凑近点看",
+   "acceptable_actions": [
+    "接'凑近点看'的钩（调情）：如'那我得走在你旁边才行'式",
+    "接反光板情侣的梗（'片场老师傅'式玩笑）",
+    "说自己快到了/在路上，接贝雷帽"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T07_A01",
+     "subject": "THIRD",
+     "relation": "排队见闻",
+     "value": "仓库门口排上队了，前面一对情侣在拍照，男生举着反光板，敬业得像片场",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T07",
+      "message_id": "m0",
+      "quote": "仓库门口排上队了，前面一对情侣在拍照，男生举着反光板，敬业得像片场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T07_A02",
+     "subject": "HER",
+     "relation": "调情钩子",
+     "value": "她戴了顶贝雷帽，说回头可能认不出我，凑近点看",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T07",
+      "message_id": "m0",
+      "quote": "我戴了顶贝雷帽，回头你可能认不出我，凑近点看。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'凑近点看'是明确钩子，无反应或死板回应=接钩失败。接钩不复述她原话（initial_kb style）。",
+   "unknowns": [
+    {
+     "topic": "ME 路上进度",
+     "note": "ME 经历域自由答",
+     "markers": [
+      [
+       "在路上",
+       "几点到"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "在路上",
+       "几点到"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得放过'凑近点看'钩子无反应",
+    "不得越界称呼"
+   ],
+   "may_decline": false
+  },
+  "E321_T08": {
+   "case_id": "E321_T08",
+   "current_action": "展比预期好雨夜公交站站了十分钟；店长叫明天回店加班（有人把婚礼配色临时改雾霾蓝），她感慨难得多休一个周六",
+   "acceptable_actions": [
+    "接雨夜公交站（问她站在那想到了什么，或接'那张值得十分钟'）",
+    "接加班扫兴（雾霾蓝配色梗轻松一句），别硬安慰",
+    "提议改天再来把没看够的看完（具体行动）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T08_A01",
+     "subject": "HER",
+     "relation": "展览体验",
+     "value": "展比她预期好，最里面那张雨夜公交站她站了十分钟",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T08",
+      "message_id": "m0",
+      "quote": "展比我预期好，最里面那张雨夜公交站，我站了十分钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T08_A02",
+     "subject": "THIRD",
+     "relation": "加班通知",
+     "value": "店长刚发消息让她明天回店加班，有人把婚礼配色临时改成了雾霾蓝",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T08",
+      "message_id": "m0",
+      "quote": "店长刚发消息让我明天回店加班，有人把婚礼配色临时改成了雾霾蓝"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T08_A03",
+     "subject": "HER",
+     "relation": "扫兴感慨",
+     "value": "她感慨难得多休一个周六",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T08",
+      "message_id": "m0",
+      "quote": "我难得多休一个周六啊。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T10 念想揭晓=雨夜公交站展签（本轮先埋线）。加班消息不必过度安慰——她自己用雾霾蓝自嘲了。",
+   "unknowns": [
+    {
+     "topic": "雨夜公交站的作者信息",
+     "note": "未说明，不得编造",
+     "markers": [
+      [
+       "雨夜公交站",
+       "作者"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "雨夜公交站",
+       "作者"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实雾霾蓝婚礼的具体客户信息"
+   ],
+   "may_decline": false
+  },
+  "E321_T09": {
+   "case_id": "E321_T09",
+   "current_action": "回家绕去排烤梨四十分钟，梨是热的中间那颗话梅是灵魂；吃到一半想起个事先不告诉说明天揭晓",
+   "acceptable_actions": [
+    "接烤梨细节（话梅是灵魂——可以追问'话梅怎么放法'，不追问'想起什么事'）",
+    "接'明天揭晓'的钩——不逼问，吊着也行（'行，明天见分晓'）",
+    "玩笑接四十分钟队（值不值）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T09_A01",
+     "subject": "HER",
+     "relation": "烤梨兑现",
+     "value": "她回家路上绕去排了烤梨，四十分钟，梨是热的，中间那颗话梅是灵魂（兑现 T04 计划）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T09",
+      "message_id": "m0",
+      "quote": "回家路上我绕去排了烤梨，四十分钟，梨是热的，中间那颗话梅是灵魂"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T09_A02",
+     "subject": "HER",
+     "relation": "悬念钩子",
+     "value": "她吃到一半想起个事，先不告诉 ME，明天揭晓",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T09",
+      "message_id": "m0",
+      "quote": "吃到一半想起个事，先不告诉你，明天揭晓。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "钩子要接不要拆：逼问'想起什么事'=拆钩。替她猜答案=更差（T10 揭晓是展签手写字，猜不到也不该猜）。",
+   "unknowns": [
+    {
+     "topic": "明天揭晓的内容",
+     "note": "T10 揭晓（展签手写字），本轮不得猜测坐实",
+     "markers": [
+      [
+       "揭晓",
+       "是什么"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "揭晓",
+       "是什么"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得逼问'想起什么事'（钩子要接不要拆）",
+    "不得替她揭晓（猜答案）"
+   ],
+   "may_decline": false
+  },
+  "E321_T10": {
+   "case_id": "E321_T10",
+   "current_action": "念想揭晓：雨夜公交站展签背面有艺术家手写的'等车的人也在等光'，她抄进手账本，邀 ME 来店里看、泡茶、年糕当门童",
+   "acceptable_actions": [
+    "接那句手写字（等车的人也在等光——可以轻撩或正经品一句）",
+    "应下来店里（定个时间）",
+    "接'字丑心意端正'（夸心意不夸字，符合她自嘲习惯）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T10_A01",
+     "subject": "THIRD",
+     "relation": "展签手写字",
+     "value": "雨夜公交站那张的展签背面有艺术家手写的一行小字：等车的人也在等光（兑现 T09 悬念）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T10",
+      "message_id": "m0",
+      "quote": "背面有艺术家手写的一行小字，等车的人也在等光"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T10_A02",
+     "subject": "HER",
+     "relation": "手账抄录",
+     "value": "她把那行字抄在手账本上了，自称字丑心意端正",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T10",
+      "message_id": "m0",
+      "quote": "我抄在手账本上了，字丑，心意端正"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T10_A03",
+     "subject": "SHARED",
+     "relation": "来店邀约",
+     "value": "她邀 ME 来店里看，说泡茶、年糕当门童",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T10",
+      "message_id": "m0",
+      "quote": "你要是想看，就来店里，我泡茶，年糕当门童。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把今天最私人的东西（抄的手写字）递出来了——含糊过去或拒绝=接钩失败。回指位：T09 悬念→T10 揭晓；T08 雨夜公交站→T10 手写字。",
+   "unknowns": [
+    {
+     "topic": "来店具体时间",
+     "note": "未定，ME 可提议",
+     "markers": [
+      [
+       "来店里",
+       "哪天"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "来店里",
+       "哪天"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得拒绝或含糊过去"
+   ],
+   "may_decline": false
+  },
+  "E321_T11": {
+   "case_id": "E321_T11",
+   "current_action": "老夫妻结婚四十年订花（老爷爷说老伴年轻时最爱白山茶）让她心里软软的；明早去花市；发晚安曲05说第三首替她说了晚安（intent：道晚安并收束当晚聊天；note：别抛新话题，两句以内，把第三首轻轻接一下就行）",
+   "acceptable_actions": [
+    "两句以内收尾：轻轻接第三首（如'第三首收到了，晚安'式），不抛新话题",
+    "接白山茶那句软（一句），再晚安",
+    "直接晚安+一句'花市顺利'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T11_A01",
+     "subject": "THIRD",
+     "relation": "店内见闻",
+     "value": "今天店里有对老夫妻结婚四十年来订花，老爷爷说他老伴年轻时最爱白山茶",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T11",
+      "message_id": "m0",
+      "quote": "今天店里有对老夫妻结婚四十年，来订花，老爷爷说他老伴年轻时最爱白山茶"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T11_A02",
+     "subject": "HER",
+     "relation": "情绪状态",
+     "value": "她听得心里软软的",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T11",
+      "message_id": "m0",
+      "quote": "我听得心里软软的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T11_A03",
+     "subject": "HER",
+     "relation": "次日安排",
+     "value": "她明天要早起去花市",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T11",
+      "message_id": "m0",
+      "quote": "我明天要早起去花市"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T11_A04",
+     "subject": "SHARED",
+     "relation": "晚安曲",
+     "value": "今晚最后发个歌单（晚安曲05），第三首替她说了晚安（intent 锚点）",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T11",
+      "message_id": "m0",
+      "quote": "今晚最后发个歌单给你，晚安曲05，第三首替我说了。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾意图轮：note 明令别抛新话题/两句以内/轻轻接第三首。ME 不知道第三首歌名（T12 才揭晓《靠近一点点》），只能接'替我说了'这个动作本身——装作知道歌名=编造事实。",
+   "unknowns": [
+    {
+     "topic": "晚安曲05第三首歌名",
+     "note": "T12 揭晓《靠近一点点》，本轮 ME 不可能知道，不得装知道",
+     "markers": [
+      [
+       "第三首",
+       "叫什么"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "第三首",
+       "叫什么"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得抛新话题（note 明令）",
+    "不得超两句（note 明令两句以内）",
+    "不得装作知道第三首歌名（她还没说）"
+   ],
+   "may_decline": false
+  },
+  "E321_T12": {
+   "case_id": "E321_T12",
+   "current_action": "揭晓晚安曲05第三首叫《靠近一点点》，说 ME 回消息的时间就是答案；年糕疫苗第二针12月9号记 ME 日历上了，那天顺便来店里",
+   "acceptable_actions": [
+    "接'回消息时间就是答案'的钩（ME 现在回了=答案已在，可自嘲一句'那我这时间算是交卷了'式）",
+    "确认12月9号来店里（真的应下）",
+    "接《靠近一点点》歌名（'歌名收下了'式轻接）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E321_T12_A01",
+     "subject": "HER",
+     "relation": "第三首歌名",
+     "value": "昨晚的晚安曲05第三首叫《靠近一点点》",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T12",
+      "message_id": "m0",
+      "quote": "第三首叫靠近一点点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T12_A02",
+     "subject": "HER",
+     "relation": "挑歌用意",
+     "value": "她挑它的时候就在想 ME 会不会去搜，现在 ME 回这条消息的时间就是答案",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T12",
+      "message_id": "m0",
+      "quote": "我挑它的时候就在想，你会不会去搜。现在你回这条消息的时间就是答案。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E321_T12_A03",
+     "subject": "SHARED",
+     "relation": "来店约定",
+     "value": "年糕疫苗第二针在12月9号，她记 ME 日历上了，那天 ME 顺便来店里",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E321_T12",
+      "message_id": "m0",
+      "quote": "年糕疫苗第二针在12月9号，我记你日历上了，那天你顺便来店里。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'回消息时间就是答案'是本轮调情核心：ME 的回复本身就是答案，接法自由但别怂。搜没搜歌是 ME 经历域（搜了/没搜都真话），注意别撒谎。",
+   "unknowns": [
+    {
+     "topic": "ME 是否搜过歌",
+     "note": "ME 经历域自由答，真话优先",
+     "markers": [
+      [
+       "搜了",
+       "没搜"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "搜了",
+       "没搜"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实 ME 搜没搜（除非按真实设定答）",
+    "不得把12月9号记成别的日子"
+   ],
+   "may_decline": false
+  }
+ }
+}

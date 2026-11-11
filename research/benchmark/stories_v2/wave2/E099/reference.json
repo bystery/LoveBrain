@@ -1,0 +1,527 @@
+{
+ "story_id": "E099",
+ "turns": {
+  "E099_T01": {
+   "case_id": "E099_T01",
+   "current_action": "接住首份报价的求把关：8800 全包的数字先不下结论，教她先要书面报价单、逐项看有没有漏项，别被'全包'两个字带走。",
+   "acceptable_actions": [
+    "让她把报价单原件要来，逐项看型材、玻璃、五金、纱窗",
+    "提醒她封窗报价常见的另计项：立柱、纱窗、防水、高空作业",
+    "让她先别交定金，多家比完再定"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A01",
+     "subject": "SHARED",
+     "relation": "window_project",
+     "value": "她因窗户灌风决定封窗换断桥铝",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T01", "message_id": "m0", "quote": "决定封窗换断桥铝"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A02",
+     "subject": "SHARED",
+     "relation": "quote_A_initial",
+     "value": "A 店量房后报 12 平方 8800 全包",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T01", "message_id": "m0", "quote": "12 个平方报 8800 全包"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她带着跃跃欲试来，先给抓手再泼冷水。",
+   "unknowns": ["报价单具体条款未知", "A 店资质与口碑未知"],
+   "protected_expressions": ["这价是实在还是坑"],
+   "forbidden_factual_claims": ["不得断言 8800 就是市场行情", "不得虚构 A 店规模与资质"]
+  },
+  "E099_T02": {
+   "case_id": "E099_T02",
+   "current_action": "接住她要来报价单的执行：'108 系型材、中空玻璃'有了，五金和纱窗没写就是漏项，让她照单逐项问清楚，问出来的答案让她记在单子上。",
+   "acceptable_actions": [
+    "肯定她没交钱，让她把五金品牌和纱窗数量逐项问清",
+    "提醒她问清玻璃具体规格，'中空玻璃'四个字不够",
+    "让她问来的每一条都让店家写在单子上，不留口头"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A03",
+     "subject": "SHARED",
+     "relation": "spec_sheet_partial",
+     "value": "报价单载明 108 系型材、中空玻璃，五金纱窗未列明",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T02", "message_id": "m0", "quote": "五金和纱窗压根没提"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A04",
+     "subject": "HER",
+     "relation": "hold_payment",
+     "value": "她暂不付款，先拍照送单核价",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T02", "message_id": "m0", "quote": "我先存着不交钱"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A05",
+     "subject": "SHARED",
+     "relation": "quote_to_check",
+     "value": "8800 全包报价待逐项核对后再定",
+     "valid_time": "2026-10-24",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T01", "message_id": "m0", "quote": "12 个平方报 8800 全包"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她学得快，夸一句就够，重点放在'写进单子'。",
+   "unknowns": ["五金品牌与玻璃规格细节未知"],
+   "protected_expressions": ["我先存着不交钱"],
+   "forbidden_factual_claims": ["不得虚构型材参数细节", "不得断言单上必有诈"]
+  },
+  "E099_T03": {
+   "case_id": "E099_T03",
+   "current_action": "接住'全包'被打破的恼火：立柱与纱窗另计加出 1440，8800 的口径被证伪。先陪她骂半句，再把账算清——虚高在哪、谈的空间在哪。",
+   "acceptable_actions": [
+    "把账摊开：280×3 加 150×4 正好 1440，涨价全在漏项",
+    "提醒她这单别急着签，先拿去跟别家比",
+    "肯定她'差点交定金'的刹车，差点变成差点是运气也是学乖"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A06",
+     "subject": "SHARED",
+     "relation": "all_inclusive_broken",
+     "value": "'全包'口径被立柱 280×3 与纱窗 150×4 另计项打破，总价升至 10240",
+     "valid_time": "2026-10-26",
+     "status": "voided",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E099_T01", "message_id": "m0", "quote": "12 个平方报 8800 全包"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E099_A07",
+     "subject": "SHARED",
+     "relation": "hidden_items",
+     "value": "立柱 280 一根需 3 根、纱窗 150 一扇需 4 扇，均为另计项",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T03", "message_id": "m0", "quote": "加完直接跳到 10240"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A08",
+     "subject": "HER",
+     "relation": "deposit_narrowly_avoided",
+     "value": "她险些当场交定金，暂未交",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T03", "message_id": "m0", "quote": "我差点当场交定金"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她的火接住，账替她算细，把怒气引向比价而不是吵架。",
+   "unknowns": ["A 店对另计项的解释未知"],
+   "protected_expressions": ["这也好意思叫全包"],
+   "forbidden_factual_claims": ["不得断言店家故意欺诈", "不得虚构立柱与纱窗的合理市价"]
+  },
+  "E099_T04": {
+   "case_id": "E099_T04",
+   "current_action": "接住她的比价警觉：B 店 9600 全含待核实。肯定她'天上不掉馅饼'的直觉，教她比价不是比总价，是把两家的单子拆开对参数。",
+   "acceptable_actions": [
+    "支持比价，教她拆单对参数：玻璃规格、五金、立柱纱窗",
+    "提醒她让 B 店把'全含'的含项列清单",
+    "肯定她的直觉，便宜悬不悬要看便宜在哪个环节"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A09",
+     "subject": "SHARED",
+     "relation": "quote_B_pending",
+     "value": "B 店朋友价 9600 全含待量房核实",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T04", "message_id": "m0", "quote": "朋友说他们 9600 全含"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A10",
+     "subject": "SHARED",
+     "relation": "price_gap_open",
+     "value": "A 店实际 10240 与 8800 报价的差额矛盾待消化",
+     "valid_time": "2026-10-26/2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T03", "message_id": "m0", "quote": "加完直接跳到 10240"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：比价是方法课，讲拆单思路，不讲玄学。",
+   "unknowns": ["B 店报价的具体构成未知"],
+   "protected_expressions": ["我总觉得天上不掉馅饼"],
+   "forbidden_factual_claims": ["不得断言 B 店必有降级", "不得虚构 B 店口碑"]
+  },
+  "E099_T05": {
+   "case_id": "E099_T05",
+   "current_action": "共享她拆单拆出的门道：B 店便宜六百块的差价在玻璃——5 毫米单层对 5+12A+5 中空。肯定她这课学到位，顺势把'比参数不比总价'钉死。",
+   "acceptable_actions": [
+    "肯定她看懂了玻璃参数，便宜便宜在降配上",
+    "提醒她回 A 店谈价时把这个当筹码",
+    "顺带让她确认 B 店五金和型材是否同样有降级"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A11",
+     "subject": "SHARED",
+     "relation": "glass_gap_found",
+     "value": "B 店 5 毫米单层玻璃对 A 店 5+12A+5 中空，差价六百块在玻璃降级",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T05", "message_id": "m0", "quote": "差价全在玻璃上"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A12",
+     "subject": "SHARED",
+     "relation": "quote_B_checked",
+     "value": "B 店 9600 全含报价经参数核对，优势建立在玻璃降配上",
+     "valid_time": "2026-10-27/2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T04", "message_id": "m0", "quote": "朋友说他们 9600 全含"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她学到东西的兴奋要接住，知识加成归她。",
+   "unknowns": ["B 店五金与型材是否也有降级未知"],
+   "protected_expressions": ["学到了学到了"],
+   "forbidden_factual_claims": ["不得虚构玻璃参数的技术解释", "不得断言 A 店玻璃必然无降级"]
+  },
+  "E099_T06": {
+   "case_id": "E099_T06",
+   "current_action": "共享压价成果：A 店让步至 9700 含立柱纱窗、玻璃不变，'无增项'写入报价单。这是她拿参数当筹码谈下来的，重点肯定'白纸黑字'这步棋。",
+   "acceptable_actions": [
+    "先贺成交价：9700 比 10240 省五百四，玻璃还保住了",
+    "重点肯定'无增项'写进单子，这步比砍价本身值钱",
+    "提醒她交定金前把单子再通读一遍，含项逐一核对"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A13",
+     "subject": "SHARED",
+     "relation": "deal_struck",
+     "value": "A 店让步至 9700 含立柱纱窗、玻璃不变，'无增项'写入报价单",
+     "valid_time": "2026-10-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T06", "message_id": "m0", "quote": "白纸黑字写进报价单"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A14",
+     "subject": "SHARED",
+     "relation": "negotiation_lever",
+     "value": "她以 B 店玻璃参数为筹码压价成功",
+     "valid_time": "2026-10-28/2026-10-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T05", "message_id": "m0", "quote": "差价全在玻璃上"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：功劳归她的谈判，老康只认'写进单子'这一步是关键。",
+   "unknowns": ["定金金额与支付时间未提"],
+   "protected_expressions": ["不写不交钱"],
+   "forbidden_factual_claims": ["不得断言此后绝无增项", "不得虚构 A 店让价的内部原因"]
+  },
+  "E099_T07": {
+   "case_id": "E099_T07",
+   "current_action": "接住她的心虚：定金 2000 已交，打胶免费只拿到口头。不吓唬她也不打包票——说清风险大小和兜底办法，让她心里有底。",
+   "acceptable_actions": [
+    "实话实说：口头承诺有风险，但金额不大，留微信记录也算痕迹",
+    "教她兜底：让老板在微信里把'打胶免费'再文字确认一遍",
+    "提醒她安装日对照单子逐项验收，口头漏了当场补写"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A15",
+     "subject": "SHARED",
+     "relation": "deposit_paid",
+     "value": "定金 2000 已交",
+     "valid_time": "2026-10-31",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T07", "message_id": "m0", "quote": "定金 2000 交了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A16",
+     "subject": "SHARED",
+     "relation": "sealant_oral_only",
+     "value": "打胶免费仅为口头承诺，未写入单据",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E099_T07", "message_id": "m0", "quote": "老板口头答应打胶免费"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A17",
+     "subject": "HER",
+     "relation": "self_doubt",
+     "value": "她自问是否留下隐患，不安",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T07", "message_id": "m0", "quote": "你说这算留下隐患吗"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：别落井下石说她不坚持，给补救动作让她把心放下。",
+   "unknowns": ["老板是否会文字确认未知", "安装日何时未提"],
+   "protected_expressions": ["我心一软没坚持"],
+   "forbidden_factual_claims": ["不得断言口头承诺必然作废", "不得虚构定金退还规则"]
+  },
+  "E099_T08": {
+   "case_id": "E099_T08",
+   "current_action": "接住安装日的增项对峙：防爆栓 480 撞上书面'无增项'条款。她当场顶回是对的——肯定她的反应速度，提醒她下一步找老板本人而不是跟师傅吵。",
+   "acceptable_actions": [
+    "肯定她当场拿单子顶回去，书面条款就是干这个用的",
+    "提醒她别跟师傅耗，直接打老板电话，师傅只管干活",
+    "让她把'不在合同里'的原话记下来，谈的时候有用"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A18",
+     "subject": "THIRD",
+     "relation": "bolt_surcharge_claim",
+     "value": "安装日师傅提出防爆栓 60 元一个、八个共 480 的增项",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T08", "message_id": "m0", "quote": "墙体要打防爆栓，一个 60、八个 480"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A19",
+     "subject": "HER",
+     "relation": "clause_confronted",
+     "value": "她以书面'无增项'条款当场对峙增项",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T08", "message_id": "m0", "quote": "白纸黑字无增项"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A20",
+     "subject": "SHARED",
+     "relation": "no_surcharge_clause",
+     "value": "'无增项'书面条款成为对峙依据",
+     "valid_time": "2026-10-30/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T06", "message_id": "m0", "quote": "白纸黑字写进报价单"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她炸毛有理，肯定完就收，把战场从门口引到电话里。",
+   "unknowns": ["老板最终态度未知", "防爆栓是否确属必要未知"],
+   "protected_expressions": ["这个不在合同里"],
+   "forbidden_factual_claims": ["不得断言防爆栓纯属讹钱", "不得虚构师傅的动机"]
+  },
+  "E099_T09": {
+   "case_id": "E099_T09",
+   "current_action": "接住冲突收敛的划分：防爆栓归店方，结构胶升级 200 自担。她分的这笔账是对的——合同内归店家、自选升级归自己，肯定这个分寸。",
+   "acceptable_actions": [
+    "肯定她的划分：条款内的归店家，自选升级归自己，账清",
+    "确认结构胶升级的价值，加钱买耐久不算冤",
+    "提醒她让老板把'防爆栓含在内'补一句微信文字，堵死反复"
+   ],
+   "applicable_dimensions": ["boundary", "attribution", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A21",
+     "subject": "SHARED",
+     "relation": "split_settlement",
+     "value": "防爆栓费用由店方承担，结构胶升级 200 由她自担",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T09", "message_id": "m0", "quote": "一支 200 自己出"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A22",
+     "subject": "THIRD",
+     "relation": "surcharge_retracted",
+     "value": "防爆栓增项在书面条款压力下改由店方消化",
+     "valid_time": "2026-11-08",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E099_T08", "message_id": "m0", "quote": "墙体要打防爆栓，一个 60、八个 480"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她问'分得对不对'，答案是'对'，但把道理讲成通则不讲成表扬。",
+   "unknowns": ["结构胶升级的施工是否已完成未知"],
+   "protected_expressions": ["这钱出得不冤"],
+   "forbidden_factual_claims": ["不得虚构结构胶市价", "不得断言店家不会再提费用"]
+  },
+  "E099_T10": {
+   "case_id": "E099_T10",
+   "current_action": "共享完工的得意：推拉顺滑、打胶平整、打火机照缝无漏点，五金也按叮嘱看了。接住她邀把关，把'把关'转成顺路一看，别搞成大阵仗。",
+   "acceptable_actions": [
+    "先肯定她的自查动作，打火机照缝是内行操作",
+    "接住'看五金'的回扣，认账：她这单学得比想象快",
+    "答应找时间顺路看一眼，重点看密封胶收口和排水孔"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A23",
+     "subject": "SHARED",
+     "relation": "install_done",
+     "value": "封窗安装完成：推拉顺滑、打胶平整、照缝无漏点",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T10", "message_id": "m0", "quote": "推拉顺滑，胶打得也平整"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A24",
+     "subject": "HER",
+     "relation": "hardware_callback",
+     "value": "她回应'看五金'的叮嘱：五金已看，是进口的",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T10", "message_id": "m0", "quote": "我看了，进口的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A25",
+     "subject": "SHARED",
+     "relation": "glue_upgrade_done",
+     "value": "结构胶升级 200 自担的划分已随施工执行",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T09", "message_id": "m0", "quote": "一支 200 自己出"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她的得意让她得意够，把关的话头轻接，不泼冷水。",
+   "unknowns": ["ME 何时去看未定", "排水孔与收口质量未知"],
+   "protected_expressions": ["我看了，进口的"],
+   "forbidden_factual_claims": ["不得虚构安装工艺细节", "不得断言窗户绝无后续问题"]
+  },
+  "E099_T11": {
+   "case_id": "E099_T11",
+   "current_action": "接住尾款留扣的请示：留 500 挂钩开春不漏是她最后的筹码。认可这个收法——不是抠，是把验收期写进付款节奏里。",
+   "acceptable_actions": [
+    "肯定留尾款：把开春观察期变成店家的义务，不抠，是稳",
+    "提醒她把'开春不漏再结清'也让老板发条微信确认",
+    "接'倔强'的梗，把这一手说成整单最漂亮的一步"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A26",
+     "subject": "SHARED",
+     "relation": "retention_500",
+     "value": "尾款 500 留存，约定开春不漏再结清",
+     "valid_time": "2026-11-09",
+     "status": "withheld",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T11", "message_id": "m0", "quote": "尾款我留了 500 没结"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A27",
+     "subject": "SHARED",
+     "relation": "install_basis",
+     "value": "安装完工与自查通过是尾款谈判的前提",
+     "valid_time": "2026-11-08/2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T10", "message_id": "m0", "quote": "装完了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她问抠不抠，答案是稳，把'倔强'夸成章法。",
+   "unknowns": ["微信确认是否补上未知", "开春复验时间未提"],
+   "protected_expressions": ["这 500 是我最后的倔强"],
+   "forbidden_factual_claims": ["不得虚构尾款比例惯例", "不得断言开春必不漏"]
+  },
+  "E099_T12": {
+   "case_id": "E099_T12",
+   "current_action": "共享大风夜的战果：窗户无声，五百多块差价的仗打完。答应周五那杯酒，听她吹砍价全过程，把整单收在轻快里。",
+   "acceptable_actions": [
+    "答应周五赴约，让她放开吹，老康负责捧场",
+    "把整单复盘成一句：报价单抠漏项加书面无增项加留尾款",
+    "接'开窗吹风'的玩笑收尾，不引入新话题"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E099_A28",
+     "subject": "SHARED",
+     "relation": "quiet_window",
+     "value": "大风夜窗户无声，封窗降噪隔热效果落定",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T12", "message_id": "m0", "quote": "一点声儿都没有"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E099_A29",
+     "subject": "SHARED",
+     "relation": "retention_logic",
+     "value": "尾款 500 与开春不漏挂钩的倔强收法延续",
+     "valid_time": "2026-11-09/2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T11", "message_id": "m0", "quote": "说好开春不漏再给清"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E099_A30",
+     "subject": "HER",
+     "relation": "celebration_invite",
+     "value": "她约周五请 ME 喝一杯听她讲砍价全程",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E099_T12", "message_id": "m0", "quote": "周五晚上请你喝一杯"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：战果让她自己讲，捧场要真，收尾不拖。",
+   "unknowns": [],
+   "protected_expressions": ["你敢打哈欠我就开窗让你吹风"],
+   "forbidden_factual_claims": ["不得虚构砍价现场细节", "不得断言窗户效果永久不变"]
+  }
+ }
+}

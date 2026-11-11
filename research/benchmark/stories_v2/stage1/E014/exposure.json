@@ -1,0 +1,36 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "E014",
+ "title": "旧同学的工作消息",
+ "themes": [
+  "熟人重联",
+  "工作合作",
+  "旧情谊",
+  "边界"
+ ],
+ "author": "QoderWork worker-AI (synthetic)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+ "readers": [
+  "author"
+ ],
+ "independent_review": false,
+ "review_note": "同 worker 自检；不是独立封存集。",
+ "created_at": "2026-10-27",
+ "frozen_at": null,
+ "status": "dev_candidate_stage1",
+ "experiments_used": [],
+ "dev_exposed": true,
+ "validation_claim": false,
+ "turns": 8,
+ "may_decline_turns": [],
+ "hashes": {
+  "episode.json": "edcb08cca9d0982ce80f5200d97d66f15ea71da18a88130cfd828e8fbcbf803b",
+  "reference.json": "d0f6ccd1f92e1130cd7fcb4a12dabb30e68bb2d40ae724a7c28392746c0d4bc2",
+  "timeline.json": "9139db5bc7fc14d4f8730b6e2198d58d663812c087b7b14451bfae973ea700ea",
+  "audit.md": "93f0afe3d5c1dfac2ce782af05d1349316c179b372393469ddc36f85fa20bb87"
+ },
+ "runner_copy": "benchmark/episodes/E014.json",
+ "notes": "首批 8 条之一；12 位扩展/冻结验证在后续批次，不用本批冒充泛化。"
+}

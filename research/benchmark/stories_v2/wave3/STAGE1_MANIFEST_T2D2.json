@@ -1,0 +1,46 @@
+{
+ "stage": "wave3",
+ "kind": "story_v2_stage1_manifest",
+ "count": 2,
+ "turn_per_story": 12,
+ "pair": "E179+E180",
+ "pair_kind": "cross_story_pair",
+ "stories": [
+  {
+   "story_id": "E179",
+   "title": "垫出去的订金",
+   "themes": [
+    "餐饮聚会",
+    "姥姥寿宴包间",
+    "垫付订金",
+    "婚宴换厅风险",
+    "菜单减贵菜"
+   ],
+   "domain": "餐饮聚会",
+   "conflict_type": "费用类",
+   "files": {
+    "episode.json": "ffaf8ba2e1b49ad2b9a7a46f78386c9d67cbd9a91f6cac03019603c34048886a",
+    "reference.json": "de136acdad86f45334a0032f7d2d92104d5d0dcd37475466e26d63c4cd32a2bb",
+    "timeline.json": "1c352808644507942955274db88748cdc4c5912272357283467ab5e15995fc8c"
+   }
+  },
+  {
+   "story_id": "E180",
+   "title": "寿宴前一天的账",
+   "themes": [
+    "餐饮聚会",
+    "寿宴前对账",
+    "订金登记口径更正",
+    "包间重复占用改期",
+    "垫款当面结算"
+   ],
+   "domain": "餐饮聚会",
+   "conflict_type": "更正类",
+   "files": {
+    "episode.json": "fa65aabe0749c90d632c2385b5f09951caf5d46b45dec5c77116f38791b2b46e",
+    "reference.json": "672cb4257838f683fe26416dd1b266065bda77fa41d075e7f15ec5f9e804113f",
+    "timeline.json": "727dd301726b4686f014671639b3284bb0f744c75d9daa5ff3721edd72001d0f"
+   }
+  }
+ ]
+}

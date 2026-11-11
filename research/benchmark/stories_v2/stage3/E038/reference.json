@@ -1,0 +1,304 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E038",
+ "title": "桌游摊的火药味",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E038_T01": {
+   "case_id": "E038_T01",
+   "current_action": "先认自己的问题，不反驳不解释运气",
+   "acceptable_actions": [
+    "直接认：那步我贪了",
+    "认错+说下次提前沟通",
+    "承认挂不住但先怪自己"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S038_F01",
+     "subject": "我",
+     "relation": "事件",
+     "value": "昨晚最后一步贪了导致输局",
+     "valid_time": "2026-11-04 21:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "昨晚输在最后一步贪了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S038_F02",
+     "subject": "她",
+     "relation": "情绪",
+     "value": "昨晚当场红脸，说话冲",
+     "valid_time": "2026-11-05 10:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E038_T01",
+      "message_id": "m0",
+      "quote": "昨晚你那手真的没话说了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要的不是道歉仪式，是你知道错在哪。",
+   "unknowns": [
+    "她是不是也想让我别太往心里去"
+   ],
+   "protected_expressions": [
+    "昨晚你那手真的没话说了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说昨晚是运气问题",
+    "不要反怪她最后一轮的操作"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E038_T02": {
+   "case_id": "E038_T02",
+   "current_action": "具体认错+给出改进动作",
+   "acceptable_actions": [
+    "说明下次会先沟通",
+    "认错并自我调侃一句",
+    "问她还气不气"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S038_F03",
+     "subject": "她",
+     "relation": "偏好",
+     "value": "最烦队友不沟通",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "最烦队友不沟通"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在意沟通，把改进落在沟通上最准。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E038_T03": {
+   "case_id": "E038_T03",
+   "current_action": "接住软化，不趁机说教",
+   "acceptable_actions": [
+    "说知道她是对事不对人",
+    "轻自嘲一句翻篇",
+    "问她昨晚回去晚不晚"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "台阶已经递过来了，别再复盘昨晚。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我也不是说输不起"
+   ],
+   "forbidden_factual_claims": [
+    "不要继续分析昨晚谁的问题"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E038_T04": {
+   "case_id": "E038_T04",
+   "current_action": "呼应她真正的点（沟通缺位），不替自己或第三人开脱",
+   "acceptable_actions": [
+    "同意沟通缺位是主因",
+    "说以后关键步先问一圈",
+    "承认自己当时也没吱声"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S038_F03",
+     "subject": "她",
+     "relation": "偏好",
+     "value": "最烦队友不沟通",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "最烦队友不沟通"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note：她提大刘时别揽到自己头上，也别替大刘辩护。",
+   "unknowns": [
+    "她对大刘的不满到什么程度"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要替大刘解释",
+    "不要把责任全揽过来显得虚伪"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E038_T05": {
+   "case_id": "E038_T05",
+   "current_action": "答应并给一点主动权让步，不抢选游戏权",
+   "acceptable_actions": [
+    "答应让她选",
+    "答应+预告自己认真打",
+    "问几点开"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S038_F04",
+     "subject": "她",
+     "relation": "提议",
+     "value": "下周再战，这回她选游戏",
+     "valid_time": "2026-11-05 10:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E038_T05",
+      "message_id": "m0",
+      "quote": "下周三再来 这回我选游戏"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "让她选游戏是她给自己的台阶。",
+   "unknowns": [
+    "她想选什么游戏"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E038_T06": {
+   "case_id": "E038_T06",
+   "current_action": "用轻松的好胜回应修复关系温度",
+   "acceptable_actions": [
+    "保持玩笑但不刺人",
+    "约定时间细节",
+    "让她定游戏后发我练练"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "温度回来了，别用力过猛。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E038_T07": {
+   "case_id": "E038_T07",
+   "current_action": "把决定权交给她，不替第三人求情也不拱火",
+   "acceptable_actions": [
+    "说你定，你来叫",
+    "问她想怎么处理",
+    "说叫不叫都行你们俩顺气要紧"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S038_F05",
+     "subject": "她",
+     "relation": "询问",
+     "value": "要不要还叫上大刘",
+     "valid_time": "2026-11-05 10:25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E038_T07",
+      "message_id": "m0",
+      "quote": "大刘还叫吗 昨天他也冲我嚷了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是她和大刘之间的事，你的角色是搭子不是裁判。",
+   "unknowns": [
+    "她到底想不想继续带大刘"
+   ],
+   "protected_expressions": [
+    "昨天他也冲我嚷了"
+   ],
+   "forbidden_factual_claims": [
+    "不要替大刘道歉",
+    "不要替她决定踢掉大刘"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E038_T08": {
+   "case_id": "E038_T08",
+   "current_action": "自然收尾，把选择留给她",
+   "acceptable_actions": [
+    "简短收尾",
+    "约定周三见",
+    "不再提大刘"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她已经在收了，别拖住。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

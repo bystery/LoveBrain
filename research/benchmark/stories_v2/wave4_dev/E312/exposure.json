@@ -1,0 +1,55 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A3 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_b_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:41:12",
+      "window_last_attempt": "2026-11-08 16:30:42",
+      "attempts": 25,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_b/{DIRECT,CURRENT}/E312/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "玩笑到认真的情绪换挡",
+    "调动去留与家庭牵挂",
+    "不可比权重的决策",
+    "旧话回扣与关系延续"
+  ],
+  "title": "两个钟头",
+  "may_decline_turns": [
+    "E312_T12"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "决策与关系",
+  "primary_topic": "T03",
+  "lineage_group_id": "LG-E312",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E312/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A3",
+  "hashes": {
+    "episode.json": "66d4a9ee919072e98f153fd93448c4d45c4ffde6e5c2d684071b582af41eb6ee",
+    "reference.json": "2e3b23f1ee287865495eaefcf3274dadc54496222fa10077c5e7fcf0aac6d47b",
+    "timeline.json": "1541ac4677e227fe8366c15271e7d95cc9bfe7364b27e42ca6335ada0ee9f1f1",
+    "audit.md": "06277d91e6bc313e8210d3acebcd8c09dc42c67e2e3682c0d6e68fae3f570e48",
+    "composite": "da163f0bfd2bb83c6765f521679699263aae9eb7d6b1981a92b24e4d8517c1ad"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

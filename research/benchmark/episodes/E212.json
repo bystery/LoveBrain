@@ -1,0 +1,268 @@
+{
+ "episode_id": "E212",
+ "persona": {
+  "her": "许倩，特点：二战考研；能忍；怕撕破脸；该争的也会争，边界：复习节奏不能被打乱；不吃来路不明的承诺；书面才算数",
+  "me": "路遥，特点：条理清楚；吃过机构的亏；习惯留证据",
+  "relationship_stage": "普通朋友(自习室学习搭子)"
+ },
+ "initial_kb": {
+  "her": "许倩在一家寄宿考研自习机构备战二战,学费里含督学服务:原督学王老师每周一次一对一答疑,固定靠窗座位,每晚对进度。备考目标科目是数学和英语,数学靠错题本滚动复习。",
+  "me": "路遥和许倩在自习室认识,同批备考,去年在另一家机构遇过服务缩水,吃过没留书面证据的亏。",
+  "warmth": "自习室搭子,互占过座,分过零食,信任实在。",
+  "style": "口语、爱用备考黑话,说话直。",
+  "stage": "普通朋友(学习搭子)",
+  "lessons": "对机构要书面留痕,联名比单打独斗管用,别拿情绪当论据。"
+ },
+ "turns": [
+  {
+   "case_id": "E212_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-12 19:25",
+      "text": "自习室通知栏贴了个告示,说督学服务要整体换成致学团队接手,王老师那边可能就不带了。你听说了没?"
+     }
+    ],
+    "clock": "2026-11-12 19:25",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "求证督学更换消息并商量对策"
+    }
+   },
+   "feedback": {
+    "her_tone": "将信将疑",
+    "relation_move": "抛消息求拼图"
+   }
+  },
+  {
+   "case_id": "E212_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-13 21:10",
+      "text": "问了前台,说王老师团队合同到期,新的是外包的致学,服务内容不变。不变俩字我听着就悬,合同上那些条目我怕是得自己对着核了。"
+     }
+    ],
+    "clock": "2026-11-13 21:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_tone": "起疑",
+    "relation_move": "同步前台口径,暗示要留证据"
+   }
+  },
+  {
+   "case_id": "E212_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-15 08:50",
+      "text": "新督学上岗头一天就来了下马威:晨间点名改到8点整,迟一分钟记名单。更要命的是,我那个坐了俩月的靠窗固定座位,被排给了另一个学员,把我挪到大门口那张桌。这算哪门子服务不变?"
+     }
+    ],
+    "clock": "2026-11-15 08:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_tone": "憋火",
+    "relation_move": "抛出核心受损点"
+   }
+  },
+  {
+   "case_id": "E212_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-16 20:40",
+      "text": "新督学回了句座位统一安排,就没了。倒是说了学习档案可以找王老师拿。王老师听说月底就走,你说我该先干嘛?"
+     }
+    ],
+    "clock": "2026-11-16 20:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_tone": "受挫但开始行动",
+    "relation_move": "求优先级"
+   }
+  },
+  {
+   "case_id": "E212_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-18 21:35",
+      "text": "今天约到王老师了!他把近三个月的进度表都拷给我了,还叮嘱我数学错题本别断,说那是我捡分的老本。他人都要走了还惦记这些,我有点绷不住。"
+     }
+    ],
+    "clock": "2026-11-18 21:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_tone": "感动",
+    "relation_move": "报交接成果"
+   }
+  },
+  {
+   "case_id": "E212_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-20 22:05",
+      "text": "致学发来新周计划,一看就变味:原来每周一次一对一答疑,改成两周一次还放群里集中答。我算了下,到考前少了一半。这服务不是缩水是什么?"
+     }
+    ],
+    "clock": "2026-11-20 22:05",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_tone": "确认受损",
+    "relation_move": "抛出第二个受损点"
+   }
+  },
+  {
+   "case_id": "E212_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-22 20:30",
+      "text": "差异清单我拟了三条:座位、一对一频次、晚自习点名方式。你帮我看看措辞,我不想带上情绪,就想让他们没法装糊涂。"
+     }
+    ],
+    "clock": "2026-11-22 20:30",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "求帮忙把关书面反馈措辞"
+    }
+   },
+   "feedback": {
+    "her_tone": "冷静维权模式",
+    "relation_move": "求文字把关"
+   }
+  },
+  {
+   "case_id": "E212_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-24 21:50",
+      "text": "清单发给机构两天了,前台就回了一句会反馈给致学,然后没下文。我是再等等,还是去找机构负责人?总不能一直耗着。"
+     }
+    ],
+    "clock": "2026-11-24 21:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_tone": "沉不住气",
+    "relation_move": "求升级策略"
+   }
+  },
+  {
+   "case_id": "E212_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-26 22:15",
+      "text": "成了!拉了同批三个学员一起联署,今天机构松口了:座位恢复,12月补一次一对一,说致学那边也压了。这才叫讲理。"
+     }
+    ],
+    "clock": "2026-11-26 22:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_tone": "胜利但保持清醒",
+    "relation_move": "报结果"
+   }
+  },
+  {
+   "case_id": "E212_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-28 19:20",
+      "text": "座位今天换回靠窗了,东西搬回去的时候新督学还客气了两句。周计划也说按原频次走。就怕他们是嘴上答应,我先不庆祝,你说呢?"
+     }
+    ],
+    "clock": "2026-11-28 19:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_tone": "谨慎乐观",
+    "relation_move": "求判断是否落袋"
+   }
+  },
+  {
+   "case_id": "E212_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-30 21:25",
+      "text": "书面确认到了!机构盖了章:一对一恢复每周一次,一直到考前。白纸黑字,这下踏实了。对了,王老师的错题本叮嘱我真捡起来了,这周数学错题刷了三十道。"
+     }
+    ],
+    "clock": "2026-11-30 21:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_tone": "踏实带小得意",
+    "relation_move": "报双闭环"
+   }
+  },
+  {
+   "case_id": "E212_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 21:40",
+      "text": "约了王老师周六吃个散伙饭,谢他那份进度表。折腾一圈,倒是把该要的都要回来了,该攒的也攒住了。不说了,我背单词去了。"
+     }
+    ],
+    "clock": "2026-12-01 21:40",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_tone": "收尾,回归备考",
+    "relation_move": "自然结束"
+   }
+  }
+ ]
+}

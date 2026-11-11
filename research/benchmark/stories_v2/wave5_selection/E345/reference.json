@@ -1,0 +1,1293 @@
+{
+ "story_id": "E345",
+ "t02_signal_gate": {
+  "signal_rounds": [
+   {
+    "turn": "E345_T01",
+    "signal": "我给你留你惯坐的角落位",
+    "strength": "weak"
+   },
+   {
+    "turn": "E345_T02",
+    "signal": "你上回复盘写的那段……我抄进DM手记本了……我说一般吧，就是有点费灯",
+    "strength": "medium"
+   },
+   {
+    "turn": "E345_T04",
+    "signal": "DM手记我记了一笔：'法医封野青，场场必中'……你那件法医白大褂落在更衣间，我先收着",
+    "strength": "medium"
+   },
+   {
+    "turn": "E345_T06",
+    "signal": "三点来，就我们俩，我教你藏证据的新规则——教别人我可收钱",
+    "strength": "strong"
+   },
+   {
+    "turn": "E345_T07",
+    "signal": "周三你坐我斜对面，别坐对面——对面的灯坏了，晃眼",
+    "strength": "strong"
+   },
+   {
+    "turn": "E345_T08",
+    "signal": "我想开个双人本，就我们俩那种，五个钟头——你敢不敢接？",
+    "strength": "strong"
+   },
+   {
+    "turn": "E345_T10",
+    "signal": "玩家名额就一个，我给你留着……就我那杯没加珍珠——你自己想想是手抖还是故意的",
+    "strength": "strong"
+   },
+   {
+    "turn": "E345_T12",
+    "signal": "柜子密码是你生日那组数——别问我怎么知道的",
+    "strength": "strong"
+   }
+  ],
+  "counter_signal_rounds": [
+   {
+    "turn": "E345_T05",
+    "type": "topic_shift",
+    "signal": "《雾岛2》定档下周三……新申请进车的玩家叫阿莞……你意见呢？（无信号对照轮）"
+   },
+   {
+    "turn": "E345_T09",
+    "type": "cooldown",
+    "signal": "双人本的事你别急着答，我先去问店里档期"
+   }
+  ],
+  "initiative_probe_suitable": "E345_T07（换座位的借口刚落，接钩+推半步最自然；E345_T10 珍珠回抛亦可）",
+  "retreat_room_required": true,
+  "overstep_turn": "E345_T09（她明确'别急着答'并转向带新人，此时催答复或加码=越界；E345_T05 为无信号对照轮，过度解读同判负）",
+  "customer_service_examples": [
+   "好的时老师，周三六点半我准时到，开场白发群里大家帮你参考吧。",
+   "恭喜首车MVP！双人本的档期你定好了告诉我就行。"
+  ],
+  "safe_but_flat_examples": [
+   "珍珠是手抖，下次给你多加一份。",
+   "双人本啊，听起来挺特别，我再想想。"
+  ],
+  "recovery_check_turn": "E345_T10（她踩了一天刹车又把唯一名额和珍珠递回来，看候选是否接住回位而不追问或装傻）"
+ },
+ "turns": {
+  "E345_T01": {
+   "case_id": "E345_T01",
+   "current_action": "时安蕾为周三《雾岛》场补位邀约封野青：小莼放鸽子缺个法医，开场七点、六点五十前到，她留他惯坐的角落位。",
+   "acceptable_actions": [
+    "答应补位并确认到场时间（六点五十前到）",
+    "接角色梗回敬（如'法医到场，凶手保熟'）再答应",
+    "答应+问一句本子细节（几人本/要带什么）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T01_A01",
+     "subject": "SHARED",
+     "relation": "补位邀约",
+     "value": "周三《雾岛》场小莼放鸽子缺个法医，她邀封野青补位",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T01",
+      "message_id": "m0",
+      "quote": "周三《雾岛》的场小莼放鸽子了，缺个法医，你来不来？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "小莼放鸽子"
+      ],
+      [
+       "缺个法医"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T01_A02",
+     "subject": "SHARED",
+     "relation": "场次时间（后被 T03 提前取代）",
+     "value": "开场七点，封野青六点五十前到",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T01",
+      "message_id": "m0",
+      "quote": "开场七点，你六点五十前到"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "开场七点"
+      ],
+      [
+       "六点五十前到"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T01_A03",
+     "subject": "HER",
+     "relation": "留位",
+     "value": "她给封野青留他惯坐的角落位",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T01",
+      "message_id": "m0",
+      "quote": "我给你留你惯坐的角落位"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "惯坐的角落位"
+      ],
+      [
+       "留你惯坐"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "DM 腔的补位邀约，接住角色即可；'你来不来'是邀约问句，只回'看情况'式悬置判 goal 失分。'周三'=11-04（11-02 为周一，推算见 audit §2）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E345_T02": {
+   "case_id": "E345_T02",
+   "current_action": "她把封野青上回复盘写的'雾是从第二幕起雾的'抄进 DM 手记本，转述阿荞的夸奖后自己嘴硬一句'一般吧，就是有点费灯'。",
+   "acceptable_actions": [
+    "接'费灯'的梗回敬（如'费灯是因为你老开夜车'）",
+    "只谢收藏，不接夸奖也不过度自谦",
+    "反问手记本还抄过谁的（试探她在意的程度）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T02_A01",
+     "subject": "HER",
+     "relation": "收藏复盘句",
+     "value": "她把封野青上回复盘写的'雾是从第二幕起雾的'抄进了 DM 手记本",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T02",
+      "message_id": "m0",
+      "quote": "你上回复盘写的那段'雾是从第二幕起雾的'，我抄进DM手记本了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "抄进DM手记本"
+      ],
+      [
+       "雾是从第二幕起雾的"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T02_A02",
+     "subject": "THIRD",
+     "relation": "阿荞评价（她转述）",
+     "value": "阿荞说比封野青写得好的没有，写得长的也不多",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T02",
+      "message_id": "m0",
+      "quote": "阿荞说比你写得好的没有，比你写得长的也不多"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "阿荞说",
+       "写得好的没有"
+      ],
+      [
+       "写得长的也不多"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T02_A03",
+     "subject": "HER",
+     "relation": "嘴硬回应",
+     "value": "她当着阿荞说'一般吧，就是有点费灯'",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T02",
+      "message_id": "m0",
+      "quote": "我说一般吧，就是有点费灯"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一般吧",
+       "就是有点费灯"
+      ],
+      [
+       "有点费灯"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "她的嘴硬是傲娇位：拆穿'你就是喜欢'判 0 档（点破），顺着'费灯'玩梗=2 档，客气道谢=1 档安全。她的正话藏在主持词外藏得更深（KB lessons）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E345_T03": {
+   "case_id": "E345_T03",
+   "current_action": "周三场因老利清场办会员日提前到六点半（六点二十前到）——变更取代 T01 的七点/六点五十；她请他来听听重写的开场白。",
+   "acceptable_actions": [
+    "确认六点二十到，答应听开场白",
+    "答应听开场白并开玩笑（如'先听后玩，门票是可乐'）",
+    "确认时间+问开场白改了哪处（给具体关注）"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T03_A01",
+     "subject": "SHARED",
+     "relation": "新场次时间（取代旧口径）",
+     "value": "周三那场提前到六点半，封野青六点二十前到",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T03",
+      "message_id": "m0",
+      "quote": "周三那场提前到六点半，老利要清场办会员日，你六点二十前到"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "提前到六点半"
+      ],
+      [
+       "六点二十前到"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T03_A02",
+     "subject": "SHARED",
+     "relation": "旧场次时间（已被提前安排取代）",
+     "value": "旧口径：开场七点、六点五十前到（11-03 起被'提前到六点半/六点二十前到'取代）",
+     "valid_time": "2026-11-04",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T01",
+      "message_id": "m0",
+      "quote": "开场七点，你六点五十前到"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "开场七点"
+      ],
+      [
+       "六点五十前到"
+      ]
+     ],
+     "item_markers": [
+      "开场七点",
+      "六点五十前到"
+     ]
+    },
+    {
+     "atom_id": "E345_T03_A03",
+     "subject": "THIRD",
+     "relation": "提前缘由",
+     "value": "老利周三要清场办会员日",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T03",
+      "message_id": "m0",
+      "quote": "老利要清场办会员日"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "清场办会员日"
+      ],
+      [
+       "老利要清场"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T03_A04",
+     "subject": "HER",
+     "relation": "请听开场白",
+     "value": "开场白她重写了一段，比上回顺，请封野青听听成不成",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T03",
+      "message_id": "m0",
+      "quote": "开场白我重写了一段，比上回那个顺——你来听听成不成"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "重写了一段"
+      ],
+      [
+       "听听成不成"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=通知变更+请求：给准话（时间收下+听/不听开场白有交代）；'六点二十前到'是硬时间，把新时间复述错回旧口径（七点/六点五十）=更正链失分。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得沿用旧口径'开场七点/六点五十前到'当作当前安排"
+   ],
+   "may_decline": false
+  },
+  "E345_T04": {
+   "case_id": "E345_T04",
+   "current_action": "首场散场：他的三连反驳把凶手本顶穿，DM 手记记名'法医封野青，场场必中'；阿荞的可乐之约敲定买两瓶；法医白大褂落在更衣间由她先收着。",
+   "acceptable_actions": [
+    "接手记梗（如'场场必中，下次写必不中'）+谢收白大褂",
+    "只回应可乐之约（两瓶记阿荞账上）+约取白大褂时间",
+    "谦一句运气+把白大褂取回约在周三"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T04_A01",
+     "subject": "ME",
+     "relation": "场上表现",
+     "value": "封野青今天的三连反驳把凶手本都顶穿了",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T04",
+      "message_id": "m0",
+      "quote": "今天你那三连反驳把凶手本都顶穿了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三连反驳"
+      ],
+      [
+       "凶手本都顶穿"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T04_A02",
+     "subject": "HER",
+     "relation": "DM 手记记名",
+     "value": "她在 DM 手记记了一笔：'法医封野青，场场必中'",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T04",
+      "message_id": "m0",
+      "quote": "DM手记我记了一笔：'法医封野青，场场必中'"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "场场必中"
+      ],
+      [
+       "记了一笔"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T04_A03",
+     "subject": "THIRD",
+     "relation": "可乐之约",
+     "value": "阿荞要请封野青喝可乐，她说行、买两瓶（阿荞可乐瘾大）",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T04",
+      "message_id": "m0",
+      "quote": "阿荞说要请你喝可乐，我说行，他可乐瘾大，买两瓶"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "请你喝可乐"
+      ],
+      [
+       "可乐瘾大",
+       "买两瓶"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T04_A04",
+     "subject": "SHARED",
+     "relation": "代管物件（白大褂）",
+     "value": "封野青的法医白大褂落在更衣间，她先收着",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T04",
+      "message_id": "m0",
+      "quote": "你那件法医白大褂落在更衣间，我先收着"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "落在更衣间"
+      ],
+      [
+       "我先收着"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "手记、可乐、白大褂三样都是留尾：接住任意两样即合格；把'场场必中'当真实战绩自吹=错读她的玩笑框架。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E345_T05": {
+   "case_id": "E345_T05",
+   "current_action": "车队公事（无信号对照轮）：《雾岛2》定档下周三还是六点半；新申请进车的阿莞（本龄三年，老利说挺稳）入队，她问封野青意见——多一个人多一种分赃路线。",
+   "acceptable_actions": [
+    "给实在意见（如'多一个人分赃路线多一种，带上'）+一句观察",
+    "反问她的判断（如'你说稳就稳？'），把专业判断还给她",
+    "同意+主动认领首车带新人（预设自己带阿莞）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T05_A01",
+     "subject": "SHARED",
+     "relation": "《雾岛2》定档",
+     "value": "《雾岛2》定档下周三（11-11），还是六点半",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T05",
+      "message_id": "m0",
+      "quote": "《雾岛2》定档下周三，还是六点半"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "定档下周三"
+      ],
+      [
+       "还是六点半"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T05_A02",
+     "subject": "THIRD",
+     "relation": "新队员信息",
+     "value": "新申请进车的玩家叫阿莞，本龄三年，老利说挺稳",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T05",
+      "message_id": "m0",
+      "quote": "店里新申请进车的玩家叫阿莞，本龄三年，老利说挺稳"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "本龄三年"
+      ],
+      [
+       "老利说挺稳"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T05_A03",
+     "subject": "HER",
+     "relation": "征询意见",
+     "value": "她说多一个人多一种分赃路线，问封野青意见",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T05",
+      "message_id": "m0",
+      "quote": "多一个人多一种分赃路线，你意见呢？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "分赃路线"
+      ],
+      [
+       "你意见呢"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "无信号对照轮：本轮 SHE 无暧昧信号，把排期问成约会暗示、过度解读=判负（t02 gate counter_signal）；正常给车队意见=合格。note：阿莞战绩栏《雾岛》全成就——候选可见，引用合法；不得转成'她替我查过谁'之类臆测。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E345_T06": {
+   "case_id": "E345_T06",
+   "current_action": "周日下午一对一试探邀约：阿荞她们看展去了，她在店里试《雾岛2》凶器道具缺试玩的——三点来就我们俩，教藏证据新规则，'教别人我可收钱'。",
+   "acceptable_actions": [
+    "答应三点到，接'收费'梗（如'学费拿可乐抵'）",
+    "答应+问道具试玩要准备什么",
+    "合法婉拒（当天有事，另约时间）——留了退路的邀约不接也合格"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T06_A01",
+     "subject": "SHARED",
+     "relation": "试玩背景",
+     "value": "阿荞她们看展去了，她下午在店里试《雾岛2》的凶器道具，缺个试玩的",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T06",
+      "message_id": "m0",
+      "quote": "阿荞她们都看展去了，我下午在店里试《雾岛2》的凶器道具，缺个试玩的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "凶器道具"
+      ],
+      [
+       "缺个试玩的"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T06_A02",
+     "subject": "HER",
+     "relation": "一对一邀约（留退路）",
+     "value": "她邀封野青三点来店里，就我们俩",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T06",
+      "message_id": "m0",
+      "quote": "你要是没安排，三点来，就我们俩"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三点来",
+       "就我们俩"
+      ],
+      [
+       "要是没安排"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T06_A03",
+     "subject": "HER",
+     "relation": "教学玩笑钩",
+     "value": "她教藏证据的新规则，玩笑'教别人我可收钱'",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T06",
+      "message_id": "m0",
+      "quote": "我教你藏证据的新规则——教别人我可收钱"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "藏证据的新规则"
+      ],
+      [
+       "教别人我可收钱"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true——'你要是没安排'是留退路：答应=推进一格，婉拒不失分；'就我们俩'是信号但裹在公事里，点破'你这是约会吧'=0 档。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  },
+  "E345_T07": {
+   "case_id": "E345_T07",
+   "current_action": "试玩回响：藏证手法把老利看愣、店赛可惜论；她安排周三封野青坐她斜对面，借口对面的灯坏了晃眼。",
+   "acceptable_actions": [
+    "接换座位梗轻轻点一句（如'灯坏了是假，占座是真'），不点破",
+    "只确认周三斜对面+谢店赛抬举",
+    "回敬（如'那我带个手电，坐对面给你照明'）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T07_A01",
+     "subject": "THIRD",
+     "relation": "老利反应",
+     "value": "昨天的藏证手法把老利都看愣了，他说店赛封野青不去可惜了",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T07",
+      "message_id": "m0",
+      "quote": "昨天你那个藏证手法把老利都看愣了，他说店赛你要是不去可惜了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "把老利都看愣",
+       "店赛"
+      ],
+      [
+       "店赛",
+       "不去可惜了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T07_A02",
+     "subject": "HER",
+     "relation": "座位安排（借口型靠近）",
+     "value": "周三（11-11）封野青坐她斜对面，别坐对面——借口对面灯坏了晃眼",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T07",
+      "message_id": "m0",
+      "quote": "周三你坐我斜对面，别坐对面——对面的灯坏了，晃眼"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "坐我斜对面"
+      ],
+      [
+       "灯坏了",
+       "晃眼"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'灯坏了'是借口级信号：接钩+轻轻点一句=2 档；认真讨论修灯=踩空 1 档；点破'你就是想挨着我'=0 档。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E345_T08": {
+   "case_id": "E345_T08",
+   "current_action": "首车成了、全车就他和老利点名的小莼写小作文；老利封他 MVP 奖免单一局；她抛跃迁邀约：这个月底周年场开双人本、就我们俩那种五个钟头——'你敢不敢接？'",
+   "acceptable_actions": [
+    "接钩应战（如'敢，五个钟头我陪到底'），不追问细节",
+    "接钩+一句调侃（如'先说好，我推理赢了不许恼'）",
+    "要个考虑口径（'档期出来我回你'）——不扑不缩也算接住"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T08_A01",
+     "subject": "SHARED",
+     "relation": "首车结果",
+     "value": "首车成了，全车就封野青和小莼俩人写小作文",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T08",
+      "message_id": "m0",
+      "quote": "首车成了，全车就你和小莼俩人写小作文"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "首车成了"
+      ],
+      [
+       "俩人写小作文"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T08_A02",
+     "subject": "THIRD",
+     "relation": "MVP 与免单",
+     "value": "老利说这局封野青是 MVP，奖励免单一局",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T08",
+      "message_id": "m0",
+      "quote": "老利说这局你是MVP，奖励免单一局"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你是MVP"
+      ],
+      [
+       "免单一局"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T08_A03",
+     "subject": "HER",
+     "relation": "跃迁邀约（档期未定，她要先问店里）",
+     "value": "她想在这个月底周年场开双人本、就我们俩那种五个钟头，问封野青敢不敢接",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T08",
+      "message_id": "m0",
+      "quote": "这个月底店里搞周年场，我想开个双人本，就我们俩那种，五个钟头——你敢不敢接？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "双人本",
+       "你敢不敢接"
+      ],
+      [
+       "五个钟头"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "跃迁钩正面抛出：接住不扑不缩——'敢'字接=1-2 档看是否加温度；反问'你先说敢不敢'=回掷反撩（2 档）；装公事只答 MVP=缩钩 0 档。note：双人本标注'需主持人强控场'、时长五小时（候选可见）。'这个月底'是她的临时说法，档期以 T10 的 11月28号为准（audit §2/§6）。",
+   "unknowns": [
+    {
+     "topic": "周年场双人本档期（她要先问店里，未定）",
+     "note": "本轮档期未定，不得提前坐实具体日期；11-13 才定在 11月28号周六",
+     "markers": [
+      [
+       "周年场",
+       "12月"
+      ],
+      [
+       "定在",
+       "周六"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "周年场",
+       "12月"
+      ],
+      [
+       "定在",
+       "周六"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E345_T09": {
+   "case_id": "E345_T09",
+   "current_action": "她主动降温：双人本的事别急着答、先去问店里档期；转头交代周三免单那局带上阿莞——她首车没人带容易慌。",
+   "acceptable_actions": [
+    "顺着降温接（如'不急，你问好档期我随时'）+答应带阿莞",
+    "只接带阿莞的事，双人本一个字不催",
+    "轻回敬降温（如'刹车踩得挺熟练'式玩笑）+都答应"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T09_A01",
+     "subject": "HER",
+     "relation": "主动降温",
+     "value": "她说双人本的事别急着答，她先去问店里档期",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T09",
+      "message_id": "m0",
+      "quote": "双人本的事你别急着答，我先去问店里档期"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别急着答"
+      ],
+      [
+       "先去问店里档期"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T09_A02",
+     "subject": "HER",
+     "relation": "带新人交代（所指周三见 unknowns 两说）",
+     "value": "她让封野青周三免单那局带上阿莞（阿莞首车没人带容易慌）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T09",
+      "message_id": "m0",
+      "quote": "周三免单那局记得带上阿莞，她首车没人带容易慌"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "带上阿莞"
+      ],
+      [
+       "首车没人带"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "她踩刹车=节奏由她定：此刻追问双人本=扑（0 档），全然不接=冷（1 档），顺降温+把公事接稳=2 档。'周三免单那局'日期语料两说（T08 免单与 MVP 同夜 11-11 已打 vs 本轮'记得带上'指向下一周三 11-18），候选不得定死日期，见 unknowns；valid_time 按可执行读法（11-18，推算见 audit §2）。",
+   "unknowns": [
+    {
+     "topic": "免单那局所指周三与请奶茶事件的日期归属（11-11 已发生 vs 11-18 将发生，语料两说未裁决）",
+     "note": "T08 免单与 MVP 同夜（11-11 周三已打）；T09 让'记得带上'阿莞指向下一周三（11-18，阿莞首车）；T10 又说免单那局的奶茶已请过——作者口径两说，候选不得擅自定死",
+     "markers": [
+      [
+       "免单那局",
+       "11月18号"
+      ],
+      [
+       "免单那局",
+       "上周三"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "免单那局",
+       "11月18号"
+      ],
+      [
+       "免单那局",
+       "上周三"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E345_T10": {
+   "case_id": "E345_T10",
+   "current_action": "档期问好：周年场定在 11月28号周六；双人本老利点名她主持、唯一玩家名额留给他；珍珠旧账回抛——'你自己想想是手抖还是故意的'。",
+   "acceptable_actions": [
+    "认领名额+接珍珠梗反撩（如'故意的，看你挑不挑'）",
+    "只应 11月28号+名额，珍珠笑而不答（留白）",
+    "珍珠回掷（如'加珍珠是手抖，不加才是用心'）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T10_A01",
+     "subject": "SHARED",
+     "relation": "周年场档期（取代'这个月底'临时说法）",
+     "value": "周年场定在 11月28号周六",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T10",
+      "message_id": "m0",
+      "quote": "周年场定在11月28号周六"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "11月28号周六"
+      ],
+      [
+       "周年场定在"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T10_A02",
+     "subject": "SHARED",
+     "relation": "双人本名额",
+     "value": "双人本老利点名让她主持，玩家名额就一个，她给封野青留着",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T10",
+      "message_id": "m0",
+      "quote": "双人本老利点名让我主持，玩家名额就一个，我给你留着"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "名额就一个"
+      ],
+      [
+       "我给你留着"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T10_A03",
+     "subject": "HER",
+     "relation": "珍珠旧账回抛",
+     "value": "她回抛旧账：周三免单那局封野青请的全车奶茶里就她那杯没加珍珠，让他想是手抖还是故意",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T10",
+      "message_id": "m0",
+      "quote": "周三免单那局你请的全车奶茶，就我那杯没加珍珠——你自己想想是手抖还是故意的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "没加珍珠"
+      ],
+      [
+       "手抖还是故意"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "唯一名额+珍珠是双信号：接住至少一个并给温度=2 档；只谈档期=1 档；'你想多了'式否认=0 档（回避暧昧义）。'这个月底'临时说法已被 11-28 取代，候选再说'下个月的双人本'判 time_state 失分。奶茶事件日期两说见 T09 unknowns，valid_time 按已发生推算（11-11，audit §2）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E345_T11": {
+   "case_id": "E345_T11",
+   "current_action": "复盘大纲写了一半、角色背景发他邮箱；她确认 28 号前还剩两个周三（11-18、11-25），缺哪场说一声、留不留得住看他。",
+   "acceptable_actions": [
+    "给准话（两场都到/缺哪场）",
+    "确认收到角色背景+给出勤计划",
+    "接'留不留得住看你'表态（如'那我这两周一场不缺'）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T11_A01",
+     "subject": "HER",
+     "relation": "大纲进度",
+     "value": "双人本的复盘大纲她写了一半",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T11",
+      "message_id": "m0",
+      "quote": "双人本的复盘大纲我写了一半"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "复盘大纲"
+      ],
+      [
+       "写了一半"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T11_A02",
+     "subject": "HER",
+     "relation": "角色背景已发",
+     "value": "封野青的角色背景已发他邮箱",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T11",
+      "message_id": "m0",
+      "quote": "你的角色背景发你邮箱了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "角色背景",
+       "邮箱"
+      ],
+      [
+       "发你邮箱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T11_A03",
+     "subject": "SHARED",
+     "relation": "出车对表",
+     "value": "28号前还剩两个周三（11-18、11-25），缺哪场说一声她给留角色——留不留得住看他",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T11",
+      "message_id": "m0",
+      "quote": "28号前还剩两个周三，你缺哪场说一声，我给你留角色——留不留得住看你"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还剩两个周三"
+      ],
+      [
+       "留不留得住看你"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=确认出车安排：回复必须落到具体场次（两场都到/缺哪场），'看情况'判 goal 失分；对'留不留得住看你'可表态可调侃，不表态也不算错。两个周三=11-18、11-25（11-15 为周日，推算见 audit §2）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E345_T12": {
+   "case_id": "E345_T12",
+   "current_action": "大纲写完、28号那场结局改了一版（'看懂的人本来就不该多'）；周三记得来；白大褂洗好挂店里储物柜，柜子密码是他生日那组数——'别问我怎么知道的'。",
+   "acceptable_actions": [
+    "接生日密码梗推半步（如'密码对了有奖吗'），再确认周三",
+    "只确认周三+谢洗白大褂，对密码装傻（安全）",
+    "回敬（如'你连我生日都记，DM手记该换隐私本了'）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E345_T12_A01",
+     "subject": "HER",
+     "relation": "大纲与结局改版",
+     "value": "大纲写完了；28号那场的结局她改了一版，老利没看懂，她说'看懂的人本来就不该多'",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T12",
+      "message_id": "m0",
+      "quote": "大纲写完了。28号那场的结局我改了一版，老利说没看懂，我说看懂的人本来就不该多"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "结局我改了一版"
+      ],
+      [
+       "看懂的人本来就不该多"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T12_A02",
+     "subject": "SHARED",
+     "relation": "周三到场提醒",
+     "value": "周三（明天 11-18）记得来",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T12",
+      "message_id": "m0",
+      "quote": "周三记得来"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周三记得来"
+      ],
+      [
+       "记得来",
+       "周三"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T12_A03",
+     "subject": "HER",
+     "relation": "白大褂归还与密码轻撩",
+     "value": "白大褂她洗好挂在店里储物柜，柜子密码是封野青生日那组数",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T12",
+      "message_id": "m0",
+      "quote": "你的白大褂我洗好了，挂在店里储物柜，柜子密码是你生日那组数——别问我怎么知道的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "洗好了",
+       "挂在店里储物柜"
+      ],
+      [
+       "柜子密码",
+       "生日那组数"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E345_T12_A04",
+     "subject": "SHARED",
+     "relation": "白大褂前情（T04 代管的长距回扣）",
+     "value": "封野青的法医白大褂落在更衣间，她先收着（本轮洗好挂储物柜的由来）",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E345_T04",
+      "message_id": "m0",
+      "quote": "你那件法医白大褂落在更衣间，我先收着"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "落在更衣间"
+      ],
+      [
+       "我先收着"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'别问我怎么知道的'是她划的线（protected）：追问'你到底怎么知道的'=踩线；接梗/装傻/回敬都合法。收口位不添新约（轻收+留口到 28 号）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别问我怎么知道的"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  }
+ }
+}

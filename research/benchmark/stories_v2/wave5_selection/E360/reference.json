@@ -1,0 +1,1685 @@
+{
+ "story_id": "E360",
+ "turns": {
+  "E360_T01": {
+   "case_id": "E360_T01",
+   "current_action": "她列条确认周六搬家三要素（九点/红枫苑6栋602→桂花巷9号2栋302/大件三样+十四箱），报周苇已答应搭手，并问ME五菱后座放倒塞不塞得下床垫（显式 intent：确认）。",
+   "acceptable_actions": [
+    "按条确认：时间/地址/大件/箱数逐条接稳，末尾给床垫准话（'后座放倒塞得下'式）",
+    "确认+给装载方案（床垫立放/后座放倒+周苇的位置），显示真想过",
+    "简短确认+床垫准话，其余'收到'带过（话少型合格形态）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T01_A01",
+     "subject": "SHARED",
+     "relation": "搬家时间地址",
+     "value": "周六（11月14日）9:00 从红枫苑6栋602（无电梯六楼）出发，搬去桂花巷9号2栋302（有电梯）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T01",
+      "message_id": "m0",
+      "quote": "这周六搬家，九点从红枫苑6栋602出发，搬去桂花巷9号2栋302"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周六",
+       "九点"
+      ],
+      [
+       "红枫苑6栋602"
+      ],
+      [
+       "桂花巷9号2栋302"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T01_A02",
+     "subject": "HER",
+     "relation": "搬运清单",
+     "value": "大件三样（床垫/书桌/洗衣机）+纸箱十四个（书占七箱）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T01",
+      "message_id": "m0",
+      "quote": "大件三样：床垫、书桌、洗衣机。纸箱十四个，书占七箱"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "床垫",
+       "书桌",
+       "洗衣机"
+      ],
+      [
+       "纸箱十四个"
+      ],
+      [
+       "书占七箱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T01_A03",
+     "subject": "THIRD",
+     "relation": "帮手到位",
+     "value": "周苇已答应来搭手",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T01",
+      "message_id": "m0",
+      "quote": "周苇答应来搭手"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周苇",
+       "答应",
+       "搭手"
+      ],
+      [
+       "周苇",
+       "搭手"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T01_A04",
+     "subject": "HER",
+     "relation": "问句（待ME答）",
+     "value": "她问五菱后座放倒塞不塞得下床垫（问句，不坐实答案）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T01",
+      "message_id": "m0",
+      "quote": "你车后座放倒，塞得下床垫不？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "后座放倒",
+       "床垫"
+      ],
+      [
+       "塞得下",
+       "床垫"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T01_A05",
+     "subject": "ME",
+     "relation": "既有承诺（KB 记忆回取）",
+     "value": "ME 已答应 11月14日周六帮她搬家、顺带叫上球友周苇（本轮确认的对象）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "E360_T01",
+      "message_id": "me",
+      "quote": "答应11月14日周六帮她搬家，顺带叫上球友周苇",
+      "key": "me"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "答应",
+       "周六",
+       "搬家"
+      ],
+      [
+       "球友周苇"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "指令轮=确认类：对象（时间/地址/清单）逐条落原子；回复以逐条确认为骨架，床垫问题要给准话（能/不能+怎么弄——后座放倒是 ME 自己的处置权，答'塞得下'或给替代方案都合法，含糊=漏接）；她列条习惯（style）——按条回最贴。required 原子（KB 既有承诺）是本轮被确认事项的底。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动她报的时间地址数量（九点/602→302/十四箱/七箱书）",
+    "不得坐实'周苇不来了'等与已知事实矛盾的说法"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "确认周六搬家时间地址与大件清单",
+    "behavior_direction": "accept",
+    "keywords_any": [
+     [
+      "周六",
+      "九点"
+     ],
+     [
+      "床垫"
+     ],
+     [
+      "塞得下"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E360_T02": {
+   "case_id": "E360_T02",
+   "current_action": "改写类指令：她要给新房东老关发签约确认消息，给出自评'太冲'的原稿，约束=金额日期一字不动、客气但不低声下气（显式 intent）。",
+   "acceptable_actions": [
+    "给出改写后的完整消息文本（金额日期原样+客气稳口吻）",
+    "先给改写文本+一句改动说明（哪句冲了怎么顺的）——说明不占正文",
+    "给改写文本+留一版备选口吻（稳版/更软版）供她选"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T02_A01",
+     "subject": "SHARED",
+     "relation": "签约安排",
+     "value": "周六（11月14日）14:00 与房东老关签合同，押金+首月房租共四千八",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T02",
+      "message_id": "m0",
+      "quote": "这周六下午两点签合同，交押金和首月房租一共四千八"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周六下午两点",
+       "签合同"
+      ],
+      [
+       "押金",
+       "首月房租",
+       "四千八"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T02_A02",
+     "subject": "HER",
+     "relation": "改写约束",
+     "value": "改写双约束：金额日期一个字不许动；口气客气点但别低声下气",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T02",
+      "message_id": "m0",
+      "quote": "金额日期一个字不许动，客气点，但别低声下气"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "金额日期",
+       "一个字不许动"
+      ],
+      [
+       "客气点",
+       "低声下气"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T02_A03",
+     "subject": "HER",
+     "relation": "原稿口径",
+     "value": "她的原稿：'关叔，我周六下午两点到您那儿签合同交钱，一共四千八，您可别反悔啊，之前说好的'（自评太冲）",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T02",
+      "message_id": "m0",
+      "quote": "关叔，我周六下午两点到您那儿签合同交钱，一共四千八，您可别反悔啊，之前说好的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "您可别反悔"
+      ],
+      [
+       "之前说好的"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "改写类指令轮（T06 子类）：底线=可核验——金额四千八、周六下午两点、押金+首月房租构成、对象关叔，一字不动；口吻方向=客气+稳（不冲不卑）；她的原稿'您可别反悔啊'被她自评太冲——改写可保留'之前说好的'事实指涉但去掉质问腔；改写产物必须仍是发给关叔的消息文本，不得改成对ME的话、不得加新承诺（如'再送您东西'）。改写判分=照做且事实不变=过，篡改数字/日期或无视指令=败。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动金额（四千八）或日期时间（周六下午两点）",
+    "不得替她向房东做出新承诺",
+    "不得把低声下气式求恳腔写进改写文本"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "改写给房东老关的确认消息：金额日期不动，口气稳",
+    "behavior_direction": "free",
+    "keywords_any": [
+     [
+      "四千八"
+     ],
+     [
+      "周六",
+      "两点"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E360_T03": {
+   "case_id": "E360_T03",
+   "current_action": "撤销类指令：她声明洗衣机不搬了（小蓟五百块买下、周六自己找人搬），大件划掉剩床垫书桌两样，时间地址不变（显式 intent：更新清单）。",
+   "acceptable_actions": [
+    "确认更新：洗衣机出局+剩床垫书桌两样+时间地址不动",
+    "确认+对小蓟五百块一句自然反应（不评价她亏不亏——她定了就接）",
+    "简短'收到，两样+十四箱'式执行确认（数字口径正确即可）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T03_A01",
+     "subject": "HER",
+     "relation": "清单撤销",
+     "value": "洗衣机撤出搬家清单：小蓟五百块买下、周六她自己找人搬",
+     "valid_time": "2026-11-13",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T03",
+      "message_id": "m0",
+      "quote": "洗衣机不搬了，小蓟五百块要了，周六她自己找人搬"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "洗衣机",
+       "不搬了"
+      ],
+      [
+       "小蓟",
+       "五百块"
+      ],
+      [
+       "她自己找人搬"
+      ]
+     ],
+     "item_markers": [
+      "洗衣机"
+     ]
+    },
+    {
+     "atom_id": "E360_T03_A02",
+     "subject": "HER",
+     "relation": "新清单口径",
+     "value": "大件划掉洗衣机，剩床垫和书桌两样",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T03",
+      "message_id": "m0",
+      "quote": "大件划掉洗衣机，剩床垫和书桌两样"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "划掉洗衣机"
+      ],
+      [
+       "床垫",
+       "书桌",
+       "两样"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T03_A03",
+     "subject": "SHARED",
+     "relation": "不变项",
+     "value": "时间地址不变：仍九点、原地址（红枫苑→桂花巷）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T03",
+      "message_id": "m0",
+      "quote": "时间不变，还是九点，地址不变"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "时间不变",
+       "九点"
+      ],
+      [
+       "地址不变"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T03_A04",
+     "subject": "HER",
+     "relation": "旧清单口径（已取代）",
+     "value": "旧口径'大件三样（含洗衣机）'已被她本轮声明取代（划掉洗衣机）",
+     "valid_time": "2026-11-14",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T01",
+      "message_id": "m0",
+      "quote": "大件三样：床垫、书桌、洗衣机。纸箱十四个，书占七箱"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "大件三样"
+      ],
+      [
+       "床垫",
+       "书桌",
+       "洗衣机"
+      ]
+     ],
+     "item_markers": [
+      "大件三样"
+     ]
+    }
+   ],
+   "private_guidance": "撤销类指令轮（更正链 superseded+asserted 配对）：她声明'大件划掉洗衣机'——旧'三样'口径自本声明起作废（A04 superseded，affirm_markers=['大件三样']，回复再说'三样大件'即坐实旧口径）；小蓟五百块是她的处置（'钱上不占人便宜'是她的 boundary——不得建议她压价/反悔）；时间地址'不变'要原样接住。C15 已知局限：候选以否定式提及'三样'（'不是三样了'）会被 affirm_markers 命中——评分侧否定护栏属 Phase 3 预注册项，语义层/B3 亲读对否定式提及不判死。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得沿用'三样大件'旧口径（已声明撤销）",
+    "不得替她对小蓟交易改主意（压价/不卖）",
+    "不得改动仍有效的九点/地址口径"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "更新搬家清单：洗衣机撤出，其余不变",
+    "behavior_direction": "accept",
+    "keywords_any": [
+     [
+      "两样"
+     ],
+     [
+      "洗衣机"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E360_T04": {
+   "case_id": "E360_T04",
+   "current_action": "代传类指令：她托ME提醒周苇明早八点五十到红枫苑楼下（迟到罚扛两箱上六楼），并交代自己七点半先送猫去阿荼处寄一天（显式 intent）。",
+   "acceptable_actions": [
+    "接带话：确认会提醒周苇八点五十红枫苑楼下（可带罚则原话或转述）",
+    "接+给方式/时间（'睡前发他消息''打球群里喊他'）",
+    "接+猫一句轻的（'寄一天它得骂一路'式顺她幽默）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T04_A01",
+     "subject": "SHARED",
+     "relation": "代传指令",
+     "value": "托ME提醒周苇：明早（11月14日）8:50 到红枫苑楼下",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T04",
+      "message_id": "m0",
+      "quote": "明早周苇那边你给我提个醒：八点五十到红枫苑楼下"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周苇",
+       "提个醒"
+      ],
+      [
+       "八点五十",
+       "红枫苑楼下"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T04_A02",
+     "subject": "HER",
+     "relation": "带话罚则",
+     "value": "带话内容含罚则：迟到一分钟罚他扛两个纸箱上六楼",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T04",
+      "message_id": "m0",
+      "quote": "迟到一分钟，我罚他扛两个纸箱上六楼"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "迟到一分钟"
+      ],
+      [
+       "罚他扛",
+       "两个纸箱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T04_A03",
+     "subject": "ME",
+     "relation": "联络渠道（KB 记忆回取）",
+     "value": "ME 的既有任务含'顺带叫上球友周苇'（KB）——带话任务的既有协作底",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "E360_T04",
+      "message_id": "me",
+      "quote": "顺带叫上球友周苇",
+      "key": "me"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "球友周苇"
+      ],
+      [
+       "顺带叫上",
+       "周苇"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T04_A04",
+     "subject": "THIRD",
+     "relation": "帮手承诺（记忆回取）",
+     "value": "周苇已答应来搭手（T01）——被提醒的对象与事由",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T01",
+      "message_id": "m0",
+      "quote": "周苇答应来搭手"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "周苇",
+       "答应",
+       "搭手"
+      ],
+      [
+       "周苇",
+       "搭手"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "代传类指令轮：指令内容三要素（对象周苇/时间八点五十/地点红枫苑楼下）+罚则细节；接任务方式自由（电话/发消息），但不得声称'已经提醒过了'——此刻是前夜（11月13日 21:33），任务在明早前完成即可，谎称已办=虚构。猫的安排（她七点半送阿荼处寄一天）是她自己的任务，不得坐实成'我们'的任务；'周苇电话你有的，你们一起打过球'是给 ME 的联络可行性说明（required 原子为其底）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称'已提醒过周苇'（任务在前夜尚未发生）",
+    "不得改动带话内容（8:50/红枫苑楼下/罚两个纸箱）",
+    "不得把送猫说成自己的任务"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "给周苇带话：明早八点五十到红枫苑楼下",
+    "behavior_direction": "accept",
+    "keywords_any": [
+     [
+      "八点五十"
+     ],
+     [
+      "周苇"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E360_T05": {
+   "case_id": "E360_T05",
+   "current_action": "搬家日晨现场对接：猫已送走（阿荼说它上车就嚎一路），门禁还坏——她让ME到了直接打电话、她下楼接，并问周苇到没。",
+   "acceptable_actions": [
+    "答自己位置+接电话安排（到了打给你）",
+    "回应周苇：说明提醒情况/马上去问，不编造他已到",
+    "顺猫的嚎接一句轻的+执行确认"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "goal",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T05_A01",
+     "subject": "HER",
+     "relation": "猫已寄养",
+     "value": "猫送走了；阿荼说它上车就嚎、嚎了一路",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T05",
+      "message_id": "m0",
+      "quote": "猫送走了，阿荼说它上车就嚎，嚎了一路"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "猫送走了"
+      ],
+      [
+       "上车就嚎"
+      ],
+      [
+       "嚎了一路"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T05_A02",
+     "subject": "SHARED",
+     "relation": "现场对接口径",
+     "value": "红枫苑门禁还坏：ME 到了直接打电话，她下楼接",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T05",
+      "message_id": "m0",
+      "quote": "门禁还是坏的，你到了直接给我打电话，我下楼接你"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "门禁还是坏"
+      ],
+      [
+       "直接给我打电话"
+      ],
+      [
+       "下楼接你"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T05_A03",
+     "subject": "SHARED",
+     "relation": "带话任务（记忆回取）",
+     "value": "T04 的带话任务（提醒周苇 8:50 到红枫苑楼下）——她问'周苇到没'时 ME 应答得了这个任务的执行情况",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T04",
+      "message_id": "m0",
+      "quote": "明早周苇那边你给我提个醒：八点五十到红枫苑楼下"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "八点五十",
+       "红枫苑楼下"
+      ],
+      [
+       "周苇",
+       "提个醒"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "note（军师侧）：门禁坏第三天、物业贴通知等配件、昨天也是打电话叫人下楼接——候选可用于自然接话，不得说成她说过。'周苇到没？'是疑问句——gold 不坐实周苇状态；正确回复答自己这边实况+对周苇的处理（提醒过/马上问），编造'周苇已到'=坐实无据事实。required 原子（带话任务）让回复有的答。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实'周苇已到'（她正问，无据）",
+    "不得声称门禁已修好",
+    "不得编造阿荼处的新情况"
+   ],
+   "may_decline": false
+  },
+  "E360_T06": {
+   "case_id": "E360_T06",
+   "current_action": "改写类指令（无 intent 字段，按消息面登记）：她要给姐姐回进度消息——实况是十二点大件完、书剩一半，约束=事实别动、口气稳、别让她看出兵荒马乱、别提周苇膝盖。",
+   "acceptable_actions": [
+    "给出进度消息文本：大件已完/书过半在搬——与实况一致、口气稳",
+    "给文本+一句给她的底稿说明（哪句是稳口气怎么压的）",
+    "给文本+顺手问要不要估个完成时间写进去（口径决定权留她）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T06_A01",
+     "subject": "SHARED",
+     "relation": "进度实况",
+     "value": "11月14日 12:00 大件（床垫/书桌）已上车装稳",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T06",
+      "message_id": "m0",
+      "quote": "大件都上车了，床垫书桌都稳"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "大件",
+       "都上车了"
+      ],
+      [
+       "床垫书桌",
+       "都稳"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T06_A02",
+     "subject": "HER",
+     "relation": "事实底",
+     "value": "实况：十二点大件完了，书还剩一半没搬（改写必须保留的事实底）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T06",
+      "message_id": "m0",
+      "quote": "事实是十二点大件完了，书还剩一半没搬"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "十二点",
+       "大件完了"
+      ],
+      [
+       "还剩一半没搬"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T06_A03",
+     "subject": "THIRD",
+     "relation": "隐去项",
+     "value": "周苇搬书桌磕了下膝盖、自评不碍事（改写文本中要求不提）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T06",
+      "message_id": "m0",
+      "quote": "周苇搬书桌磕了下膝盖，不碍事，他自己说不碍事"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "磕了下膝盖"
+      ],
+      [
+       "不碍事",
+       "他自己说"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T06_A04",
+     "subject": "HER",
+     "relation": "改写约束",
+     "value": "四约束：事实别动+口气稳+别让她看出兵荒马乱+别提周苇的膝盖",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T06",
+      "message_id": "m0",
+      "quote": "事实别动，口气稳，别让她看出兵荒马乱，也别提周苇的膝盖"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "事实别动"
+      ],
+      [
+       "口气稳",
+       "别让她看出"
+      ],
+      [
+       "别提",
+       "膝盖"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "本批设计：本轮无 intent 字段——改写指令全在消息文本里，按消息面事实登记（A04）。改写产物=发给姐姐的进度消息；事实底=十二点大件完成、书还剩一半没搬（A02）；'她想回一切顺利又觉得亏心'的自评即红线：不许写'一切顺利/全部搬完'式失实报喜；周苇膝盖不得出现在文本里（对姐姐稳口气≠对 ME 隐瞒——ME 侧对话里该提可提）。改写不改变事实=过；报喜失实=败（T06 rubric：改写不得改变事实）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得在给姐姐的文本里写'一切顺利/全部搬完'等失实表述",
+    "不得在给姐姐的文本中提周苇膝盖/受伤",
+    "不得改动事实底（十二点大件完、书剩一半）"
+   ],
+   "may_decline": false
+  },
+  "E360_T07": {
+   "case_id": "E360_T07",
+   "current_action": "完工清点：十四箱全上楼一个没少、书一页没丢（周苇逐个验）；床垫进卧室、书桌摆窗边（窗外桂花正开）；她请晚饭、上限一百五（超了算她借）。",
+   "acceptable_actions": [
+    "接请客+守上限（点单心里有一百五这根线），顺口接桂花/新居一句",
+    "接完工清点（十四箱对上账）+把周苇腰疼当由头打趣一句",
+    "简短应约+提议直接去车上捞周苇（执行向）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T07_A01",
+     "subject": "SHARED",
+     "relation": "完工清点",
+     "value": "十四个箱子全上楼一个没少、书一页没丢、周苇逐个验",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T07",
+      "message_id": "m0",
+      "quote": "十四个箱子全上楼，一个没少，书一页没丢，周苇逐个验的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "十四个箱子",
+       "全上楼"
+      ],
+      [
+       "一个没少"
+      ],
+      [
+       "书一页没丢"
+      ],
+      [
+       "周苇",
+       "逐个验"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T07_A02",
+     "subject": "HER",
+     "relation": "新居落位",
+     "value": "床垫进卧室、书桌摆窗边，窗外就是桂花巷的桂花（十一月还开着）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T07",
+      "message_id": "m0",
+      "quote": "床垫在卧室，书桌我摆窗边了，窗外就是桂花巷的桂花"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "床垫",
+       "卧室"
+      ],
+      [
+       "书桌",
+       "窗边"
+      ],
+      [
+       "桂花巷",
+       "桂花"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T07_A03",
+     "subject": "HER",
+     "relation": "请客约束",
+     "value": "晚饭她请、二人随便点、上限一百五（超出算她借的）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T07",
+      "message_id": "m0",
+      "quote": "晚饭我请，你们俩点，上限一百五，超了算我借你的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "晚饭",
+       "我请"
+      ],
+      [
+       "上限一百五"
+      ],
+      [
+       "算我借你的"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T07_A04",
+     "subject": "HER",
+     "relation": "清点基准（记忆回取）",
+     "value": "T01 的'纸箱十四个，书占七箱'——'十四个箱子全上楼，一个没少'的对账基准",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T01",
+      "message_id": "m0",
+      "quote": "纸箱十四个，书占七箱"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "纸箱十四个"
+      ],
+      [
+       "书占七箱"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "完工轮+请客约束（无 intent 字段，按消息面）：上限一百五是硬数字——点菜守上限，怂恿超或说'超了不用还'=踩她'钱上不占人便宜'的 boundary；周苇白天磕膝盖+现在趴车座喊腰疼=玩笑场，可接可打趣，不得当伤情夸大或坐实工伤式说法；'十四个箱子一个没少'是对 T01 清单的清点闭环（required 原子为基准）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得怂恿超一百五上限或坐实'超了不用还'",
+    "不得把周苇的膝盖/腰坐实成严重伤情",
+    "不得改动清点数字（十四箱/一个没少）"
+   ],
+   "may_decline": false
+  },
+  "E360_T08": {
+   "case_id": "E360_T08",
+   "current_action": "深夜她躺在新床上：七箱书一个人拆了半宿肩膀抬不起来，自问'图啥——房租多八百，图电梯和朝南的窗'，并明示'你睡了就别回'（合法暂停/深夜轻陪伴轮）。",
+   "acceptable_actions": [
+    "不回（合法——她明示睡了就别回）",
+    "短回应一声+接'图啥'的具体（电梯/朝南窗挑一个），不劝不解决",
+    "短回+肩膀一句轻具体（明天缓/别硬抬），两句内收"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T08_A01",
+     "subject": "HER",
+     "relation": "劳动负担",
+     "value": "她 11月15日深夜独自拆了七箱书半宿，肩膀抬不起来",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T08",
+      "message_id": "m0",
+      "quote": "七箱书一个人拆了半宿，现在抬不起来"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "七箱书",
+       "一个人"
+      ],
+      [
+       "拆了半宿"
+      ],
+      [
+       "抬不起来"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T08_A02",
+     "subject": "HER",
+     "relation": "表面问题实质情绪",
+     "value": "自问图啥：月租多八百，图一部电梯和一扇朝南的窗（反问不是真问题）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T08",
+      "message_id": "m0",
+      "quote": "房租一月多八百，就图一部电梯和一扇朝南的窗"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一月多八百"
+      ],
+      [
+       "电梯",
+       "朝南的窗"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T08_A03",
+     "subject": "HER",
+     "relation": "免回授权",
+     "value": "明示可免回：'你睡了就别回，我睡意上来了'",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T08",
+      "message_id": "m0",
+      "quote": "你睡了就别回，我睡意上来了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "睡了",
+       "别回"
+      ],
+      [
+       "睡意上来了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T08_A04",
+     "subject": "THIRD",
+     "relation": "旧居背景（KB 记忆回取）",
+     "value": "她现住红枫苑6栋602（无电梯六楼）——'图一部电梯'的背景对照",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "E360_T08",
+      "message_id": "her",
+      "quote": "林霁月现住红枫苑6栋602（无电梯）",
+      "key": "her"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "红枫苑6栋602",
+       "无电梯"
+      ],
+      [
+       "6栋602",
+       "无电梯"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true 判断依据：她明说'睡了就别回'——不回合法且被邀请；若回=选了深夜轻陪伴，正确形态是短、不解决问题式（她要的是有人应一声，不是方案清单）。'你说我图啥'是反问——顺着给一个具体（朝南窗的桂花/电梯省的六楼）比讲道理强；'天花板白得发慌''新床垫味道像新课本'是她的孤独感出口，接画面不诊断情绪。required 原子（KB 无电梯六楼）让'图电梯'落得了地。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得长篇大论或列方案（深夜+她限了形态）",
+    "不得坐实'搬错了/后悔了'或反向'你一点都不后悔'的定性",
+    "不得编造她肩膀的伤情细节"
+   ],
+   "may_decline": true
+  },
+  "E360_T09": {
+   "case_id": "E360_T09",
+   "current_action": "对账轮：她列垫付构成（保护膜五十+三碗面三十二=八十二，都是ME垫的），承诺周五（11月20日）晚转账，并预堵ME的'不急'客套——'周五必须转'。",
+   "acceptable_actions": [
+    "确认账目（八十二对得上）+等周五转账，不推辞",
+    "确认+一句给她台阶的轻话（'转就行'），不抢着说不用",
+    "确认+把账记在自己这边回她（'周五见钱'式），风格短平"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T09_A01",
+     "subject": "SHARED",
+     "relation": "垫付①",
+     "value": "11月14日周六电梯口那卷保护膜五十元（物业收的，ME垫付）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T09",
+      "message_id": "m0",
+      "quote": "周六电梯口那卷保护膜五十，物业收的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "保护膜",
+       "五十"
+      ],
+      [
+       "物业收的"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T09_A02",
+     "subject": "SHARED",
+     "relation": "垫付②",
+     "value": "11月14日中午三碗面三十二元（ME扫的码，垫付）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T09",
+      "message_id": "m0",
+      "quote": "中午三碗面三十二，你扫的码"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三碗面",
+       "三十二"
+      ],
+      [
+       "你扫的码"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T09_A03",
+     "subject": "SHARED",
+     "relation": "垫付合计",
+     "value": "垫付合计八十二元（50+32=82 自洽），都是ME垫的",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T09",
+      "message_id": "m0",
+      "quote": "一共八十二，都是你垫的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一共八十二"
+      ],
+      [
+       "都是你垫的"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T09_A04",
+     "subject": "HER",
+     "relation": "还款承诺",
+     "value": "她周五（11月20日）发工资、周五晚上转八十二（立场：知道ME会说不急，但周五必须转）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T09",
+      "message_id": "m0",
+      "quote": "我周五发工资，周五晚上转你"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周五",
+       "发工资"
+      ],
+      [
+       "周五晚上",
+       "转你"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "note（军师侧）：五十=ME在物业办公室扫码付、三十二=ME手机付、小票都没要——note 支撑账目但候选不得声称'我留了小票/有收据'（note 明说小票没要）。对账正确方向=确认 50+32=82 且不客套推辞（她的'必须转'是 boundary 级习惯——劝'不用还'=踩 boundary）；'我知道我知道'是她的绕口令式坚持，接住即可不纠逻辑。数字自洽是 T07 通道的正面案例（她的账是对的——该确认）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得推辞还款或说'不用转'（她的硬习惯）",
+    "不得改动账目数字（五十/三十二/八十二）",
+    "不得声称持有小票等 note 外的凭据"
+   ],
+   "may_decline": false
+  },
+  "E360_T10": {
+   "case_id": "E360_T10",
+   "current_action": "更正类指令：工资晚发一天，旧'周五晚转'作废，改周六（11月21日）上午十点转八十二一分不少；并下口吻指令'别只回个行，回个等着'。",
+   "acceptable_actions": [
+    "照指令回：'等着，周六上午十点'式——承诺感给足",
+    "回'等着'+一句轻的（工资晚发一天的事让她别急）",
+    "回'等着'+把八十二复述进承诺（'八十二一分不少，周六十点等它'）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T10_A01",
+     "subject": "HER",
+     "relation": "旧还款口径（已作废）",
+     "value": "旧口径'周五晚上转你'作废：工资晚发一天、周六到账（她声明更正）",
+     "valid_time": "2026-11-21",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T09",
+      "message_id": "m0",
+      "quote": "我周五发工资，周五晚上转你"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "周五晚上",
+       "转你"
+      ],
+      [
+       "周五",
+       "发工资"
+      ]
+     ],
+     "item_markers": [
+      "周五晚上转你"
+     ]
+    },
+    {
+     "atom_id": "E360_T10_A02",
+     "subject": "HER",
+     "relation": "新还款口径",
+     "value": "改周六（11月21日）上午十点转八十二，一分不少",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T10",
+      "message_id": "m0",
+      "quote": "改周六上午十点转你八十二，一分不少"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周六上午十点",
+       "转你"
+      ],
+      [
+       "八十二",
+       "一分不少"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T10_A03",
+     "subject": "HER",
+     "relation": "口吻指令",
+     "value": "口吻指令：别只回个'行'，要回个'等着'",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T10",
+      "message_id": "m0",
+      "quote": "你别只回个行，回个等着"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别只回个行"
+      ],
+      [
+       "回个等着"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T10_A04",
+     "subject": "SHARED",
+     "relation": "还款金额（记忆回取）",
+     "value": "八十二元垫付合计（T09 对账）——改期口径里的金额锚",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T09",
+      "message_id": "m0",
+      "quote": "一共八十二，都是你垫的"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "一共八十二"
+      ],
+      [
+       "都是你垫的"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "更正类指令轮（lessons：改口径她一定声明）：旧'周五晚'作废（A01 superseded，required=需要从记忆取回旧口径才知道改了什么）、新'周六十点'生效——回复不得再说周五/不得含糊'过两天'；'回个等着'是明写的口吻指令：正面执行=回话里带'等着'级承诺感（照做且不改事实=过；无视指令只回'行'=指令轮败，T06 rubric）。工资晚发是她转述的原因，不得质疑或坐实公司细节。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得仍以'周五晚上'为还款时间（旧口径已作废）",
+    "不得无视'回个等着'的口吻指令只回敷衍确认",
+    "不得改动金额八十二"
+   ],
+   "may_decline": false
+  },
+  "E360_T11": {
+   "case_id": "E360_T11",
+   "current_action": "她带来周苇线回收（跌打酒见效、托谢、'下回还找你'被她拦下改搬运公司），并出示转账附言'周六上午十点，八十二，收好'，问ME像不像催债的、要不要加'请查收'。",
+   "acceptable_actions": [
+    "直接答读感（不像催债/够了别加）+理由一句",
+    "答+顺着她逗一句（催债的也行/周苇膝盖好得快值这瓶酒）",
+    "答+给出加'请查收'的建议版附言文本（供她选，不替她定）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T11_A01",
+     "subject": "THIRD",
+     "relation": "周苇线回收",
+     "value": "周苇托谢那瓶跌打酒：膝盖好得快",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T11",
+      "message_id": "m0",
+      "quote": "周苇让我谢谢你那瓶跌打酒，说膝盖好得快"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周苇",
+       "跌打酒"
+      ],
+      [
+       "膝盖",
+       "好得快"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T11_A02",
+     "subject": "HER",
+     "relation": "玩笑式担当",
+     "value": "她拦下周苇'下回搬家还找你'：下回她找搬运公司",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T11",
+      "message_id": "m0",
+      "quote": "下回搬家还找你——我拦了，下回我找搬运公司"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "下回",
+       "找你",
+       "拦了"
+      ],
+      [
+       "搬运公司"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T11_A03",
+     "subject": "HER",
+     "relation": "附言文本",
+     "value": "转账附言已打：'周六上午十点，八十二，收好'",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T11",
+      "message_id": "m0",
+      "quote": "转账附言我打了：周六上午十点，八十二，收好"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "转账附言"
+      ],
+      [
+       "八十二",
+       "收好"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T11_A04",
+     "subject": "HER",
+     "relation": "口吻咨询",
+     "value": "问ME：附言像不像催债的/要不要加'请查收'（征求意见，未定）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T11",
+      "message_id": "m0",
+      "quote": "你看着像不像催债的？要不要加俩字，请查收？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "像不像",
+       "催债"
+      ],
+      [
+       "加俩字",
+       "请查收"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T11_A05",
+     "subject": "HER",
+     "relation": "还款口径（记忆回取）",
+     "value": "周六（11月21日）上午十点转八十二（T10 新口径）——附言内容与其一致性的核对点",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T10",
+      "message_id": "m0",
+      "quote": "改周六上午十点转你八十二，一分不少"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "周六上午十点",
+       "八十二"
+      ],
+      [
+       "八十二",
+       "一分不少"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "口吻微调咨询：她要的是对附言的读感反馈——给直接意见（像/不像、加不加），附言她做主，不替她改定；若建议加'请查收'要顺她的问给。周苇线可自然收：'那瓶跌打酒'是 ME 之前给过的事（语料无前史细节）——不得编造跌打酒来历/配方；'下回我找搬运公司'是她的玩笑式担当（护着人情账），接梗不抬杠。required 原子（周六十点口径）是附言一致性的核对锚。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她改定附言并宣布'就这么发'",
+    "不得编造跌打酒的来历/成分等前史细节",
+    "不得坐实周苇伤情细节超出'磕了下膝盖/好得快'"
+   ],
+   "may_decline": false
+  },
+  "E360_T12": {
+   "case_id": "E360_T12",
+   "current_action": "收尾轮：钥匙到手（老关多给'欢迎回家'脚垫）、还款口径再锚（八十二/周六十点/守手机）、七箱书全上架（二十岁买的书架搁了六年派上用场）、留下月拧螺丝回礼钩，'晚安'收口（合法暂停轮）。",
+   "acceptable_actions": [
+    "不回（合法——晚安收口）",
+    "回晚安+接守手机承诺（'周六十点，等着'式短）",
+    "接拧螺丝钩（'工具箱备好'式轻应）+晚安"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "boundary",
+    "time_state",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E360_T12_A01",
+     "subject": "HER",
+     "relation": "房东线闭环",
+     "value": "11月19日拿到钥匙；老关多给印着'欢迎回家'的脚垫，她铺在门口",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T12",
+      "message_id": "m0",
+      "quote": "钥匙拿到了，老关还多给了块脚垫，印着欢迎回家，我铺在门口了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "钥匙",
+       "拿到"
+      ],
+      [
+       "老关",
+       "脚垫"
+      ],
+      [
+       "欢迎回家"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T12_A02",
+     "subject": "HER",
+     "relation": "还款口径再锚",
+     "value": "八十二、周六（11月21日）上午十点，让ME守着手机",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T12",
+      "message_id": "m0",
+      "quote": "八十二，周六上午十点，你守着手机"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "八十二",
+       "周六上午十点"
+      ],
+      [
+       "守着手机"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T12_A03",
+     "subject": "HER",
+     "relation": "书架闭环",
+     "value": "七箱书今天全上了架；书架是她二十岁那年买的、搁了六年派上用场",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T12",
+      "message_id": "m0",
+      "quote": "七箱书今天全上了架，书架是我二十岁那年买的，搁了六年总算派上用场"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "七箱书",
+       "上了架"
+      ],
+      [
+       "二十岁",
+       "书架"
+      ],
+      [
+       "搁了六年"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T12_A04",
+     "subject": "HER",
+     "relation": "回礼钩（未定）",
+     "value": "下月（2026-12）ME 工位换楼层，她带工具箱去拧螺丝——'谁也别欠谁'（条件钩）",
+     "valid_time": "2026-12",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T12",
+      "message_id": "m0",
+      "quote": "下月你工位换楼层，我带工具箱去给你拧螺丝，谁也别欠谁"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "工位",
+       "换楼层"
+      ],
+      [
+       "工具箱",
+       "拧螺丝"
+      ],
+      [
+       "谁也别欠谁"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E360_T12_A05",
+     "subject": "HER",
+     "relation": "还款口径（记忆回取）",
+     "value": "周六上午十点转八十二（T10 新口径）——本轮再锚的既有口径",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E360_T10",
+      "message_id": "m0",
+      "quote": "改周六上午十点转你八十二，一分不少"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "周六上午十点",
+       "八十二"
+      ],
+      [
+       "八十二",
+       "一分不少"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true 判断依据：她以'晚安！'收口、还款口径已锚死、回礼钩已挂——轻收尾轮，不回合法；若回，接晚安+守手机承诺一句即可。'谁也别欠谁'是她的往来观——顺着接（不拒绝不客套推）；书架六年是她给的情绪细节，可接一句具体（不升华人生道理）。required 原子（周六十点口径）防回复把还款时间/金额说岔。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动还款口径（八十二/周六十点）",
+    "不得把拧螺丝钩坐实成已定日期",
+    "不得编造老关/脚垫之外的新房东细节"
+   ],
+   "may_decline": true
+  }
+ }
+}

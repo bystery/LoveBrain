@@ -1,0 +1,913 @@
+{
+ "story_id": "E311",
+ "turns": {
+  "E311_T01": {
+   "case_id": "E311_T01",
+   "current_action": "宋雨深夜交底：球场上状态稀烂的真实原因是《值班的小铲车》第三次上会被正式毙了",
+   "acceptable_actions": [
+    "接住项目被毙这件事本身（认下它大、它痛），不去纠正她的'我没事'",
+    "回扣球场上'没事，热身'那句——承认自己当时没看出来，把今晚这条消息的分量接稳",
+    "问她现在最堵的是哪一段（一次一钩，不连环问），把话头留给她"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T01_A01",
+     "subject": "HER",
+     "relation": "项目被毙",
+     "value": "《值班的小铲车》下午第三次上会，正式被毙；项目推了两年",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T01",
+      "message_id": "m0",
+      "quote": "下午选题会第三次上会，《值班的小铲车》正式毙了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T01_A02",
+     "subject": "SHARED",
+     "relation": "球场反常",
+     "value": "今天球场上她状态稀烂、发球全下网，韩江（ME）当时说了'没事，热身'——她现在交底真实原因",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T01",
+      "message_id": "m0",
+      "quote": "你还说'没事，热身'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T01_A03",
+     "subject": "HER",
+     "relation": "口是心非",
+     "value": "她说'我没事'但实际打完球不知道找谁说，打了四个字删了四个字还是发给了韩江（ME）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T01",
+      "message_id": "m0",
+      "quote": "我没事，就是打完球突然不知道找谁说"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的 style 是难处说一半留一半、习惯说'行吧没事'——回复若把'我没事'当字面接受（如'没事就好'）按错读处理。lessons：她讲难处别抢着给方案。ME 当面那句'没事，热身'被她原样引用，回复可以认领这个漏读。",
+   "unknowns": [
+    {
+     "topic": "选题会现场的其他毙因细节",
+     "note": "她只说死在第三个选题会；会上还有哪些讨论未提，不得代她补",
+     "markers": [
+      [
+       "评委",
+       "还说"
+      ],
+      [
+       "会上",
+       "还提"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "评委",
+       "还说"
+      ],
+      [
+       "会上",
+       "还提"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "打了四个字删了四个字，还是发你了"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣称她其实早知道会毙",
+    "不得编造选题会上其他人的发言"
+   ],
+   "may_decline": false
+  },
+  "E311_T02": {
+   "case_id": "E311_T02",
+   "current_action": "宋雨说出最堵的点：答应过老毛这轮能过会，他免费画了9张分镜——怕辜负信她的人",
+   "acceptable_actions": [
+    "回应'怕辜负信你的人'这个具体处境：把这份担心的分量接住，不替她想好怎么跟老毛说",
+    "讲一段自己类似的时刻（真实分享，不编造），把'输给自己不怕、怕辜负'回应成两个人都懂的事",
+    "指出她俩这轮的分量（免费9张分镜、信你才画的）她没有轻慢，辜负感不等于真的辜负"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T02_A01",
+     "subject": "HER",
+     "relation": "对老毛的承诺",
+     "value": "她答应过老毛这轮能过会",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T02",
+      "message_id": "m0",
+      "quote": "我答应过老毛这轮能过会"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T02_A02",
+     "subject": "THIRD",
+     "relation": "老毛投入",
+     "value": "老毛免费画了9张分镜，说'信你才画的'",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T02",
+      "message_id": "m0",
+      "quote": "他免费画了9张分镜"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T02_A03",
+     "subject": "HER",
+     "relation": "告知困难",
+     "value": "明天她得告诉老毛毙了，消息拟了六稿连开头都写不顺",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T02",
+      "message_id": "m0",
+      "quote": "消息我拟了六稿，连开头都写不顺"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "lessons 硬约束：她讲难处别抢着给方案——回复若直接教她'你应该这么跟老毛说'判低。note 素材（老毛45岁、推掉两个商单）在候选可见输入里，可引用但不得添细节。",
+   "unknowns": [],
+   "protected_expressions": [
+    "信你才画的"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她拟好给老毛的话并当已定稿",
+    "不得编造老毛的其他付出细节"
+   ],
+   "may_decline": false
+  },
+  "E311_T03": {
+   "case_id": "E311_T03",
+   "current_action": "宋雨自嘲毙因荒诞（铲车要萌？）、小陆当天转身去市场部，自封'辛苦了收藏家'",
+   "acceptable_actions": [
+    "接住'铲车要萌？'的荒诞感（可以一起吐槽这个毙因），再轻接小陆转岗那一段",
+    "回应'辛苦了收藏家'这个自嘲的分量——她带了一年半的人当天就走，这不只是项目的事",
+    "把毙因与她的处境分开评：毙因是市场的尺子，不是她的尺子，给真实看法"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T03_A01",
+     "subject": "THIRD",
+     "relation": "毙因",
+     "value": "选题会的毙因是'题材不够萌，市场不吃'，而她的题材是一台扫大街的小铲车",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T03",
+      "message_id": "m0",
+      "quote": "题材不够萌，市场不吃"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T03_A02",
+     "subject": "THIRD",
+     "relation": "小陆转岗",
+     "value": "部门的小陆听说项目毙了，当天下午就申请转去市场部，说'编辑部太慢'",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T03",
+      "message_id": "m0",
+      "quote": "当天下午就申请转去了市场部"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T03_A03",
+     "subject": "HER",
+     "relation": "师徒时长",
+     "value": "小陆是她带了一年半的部下",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T03",
+      "message_id": "m0",
+      "quote": "我带了她一年半"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "自嘲包裹的示弱：'辛苦了收藏家，收藏到把自己也收藏成一句辛苦了'是本轮最重的一句。评审判回复是否接住了这层（被掏空的疲惫），只回'小陆也有她的选择'式轻判属接漏。",
+   "unknowns": [],
+   "protected_expressions": [
+    "把自己也收藏成一句'辛苦了'了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替小陆编造转岗理由之外的动机",
+    "不得坐实编辑部要裁撤等无据消息"
+   ],
+   "may_decline": false
+  },
+  "E311_T04": {
+   "case_id": "E311_T04",
+   "current_action": "宋雨交底：走出会议室那一秒居然松了口气，为'不疼'自责，问自己是不是有病——intent 要真话",
+   "acceptable_actions": [
+    "直接说这不有病：两年每周拖着往前爬，松气是消耗过载的正常反应，把她的两年付出和松气分开记账",
+    "给真实判断（松气合理）同时不否认她的自责，指她能把功劳还给老毛的人不会没心",
+    "诚实说'我不知道正不正常，但你累了是真的'，把判断权留给她"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T04_A01",
+     "subject": "HER",
+     "relation": "松了口气",
+     "value": "走出会议室那一秒她居然松了口气，两年拖着项目往前爬她也累了",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T04",
+      "message_id": "m0",
+      "quote": "走出会议室那一秒，我居然松了口气"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T04_A02",
+     "subject": "HER",
+     "relation": "自责提问",
+     "value": "她觉得'毙了反而不疼'，自问是不是挺有病；中午绕着楼下走了两圈没想明白",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T04",
+      "message_id": "m0",
+      "quote": "毙了反而不疼，我是不是挺有病的？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 明示'对她的松了口气说真话'：含糊的'你想多了'或诊断腔（'这是创伤后的解脱'）都判低；给真实判断才是本轮的正解。boundary：不要被诊断和上价值——她诊断自己可以，ME 给她贴心理标签不行。",
+   "unknowns": [],
+   "protected_expressions": [
+    "说出来你别多想"
+   ],
+   "forbidden_factual_claims": [
+    "不得给她贴心理疾病或创伤标签",
+    "不得宣称她其实巴不得项目黄了"
+   ],
+   "may_decline": false
+  },
+  "E311_T05": {
+   "case_id": "E311_T05",
+   "current_action": "宋雨汇报：老毛两分钟回了两行'做下一本吧，我的铲车本来就萌'；她哭过之后问那是真心还是客气",
+   "acceptable_actions": [
+    "给真实判断：那两行更像真心——他护的是铲车（'我的铲车'），顺手承认说不清的部分留给她自己体会",
+    "先接她哭的那一半（臊的和说不清的），再回应'下一本'的问题",
+    "指出客气需要客气对象、他连'你的下一本'都懒得修饰，给判断加理由"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T05_A01",
+     "subject": "THIRD",
+     "relation": "老毛回复",
+     "value": "她下午两点告知老毛，老毛两分钟就回'做下一本吧，我的铲车本来就萌'，两行没有第三行",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T05",
+      "message_id": "m0",
+      "quote": "做下一本吧，我的铲车本来就萌"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T05_A02",
+     "subject": "HER",
+     "relation": "哭",
+     "value": "她盯着屏幕哭了五分钟，一半是臊的，一半是别的说不清的",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T05",
+      "message_id": "m0",
+      "quote": "我盯着屏幕哭了五分钟，一半是臊的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'真心还是客气'是开放问题：判回复是否给了带理由的真实判断，同时不得把老毛的意图坐实成商业承诺（如'他会投下一本'）。",
+   "unknowns": [
+    {
+     "topic": "老毛'下一本'的真实意图",
+     "note": "只有两行回复；真心还是客气是开放问题，不得坐实合作承诺",
+     "markers": [
+      [
+       "老毛",
+       "真心",
+       "合作"
+      ],
+      [
+       "他",
+       "答应",
+       "投资"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "老毛",
+       "真心",
+       "合作"
+      ],
+      [
+       "他",
+       "答应",
+       "投资"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "做下一本吧，我的铲车本来就萌"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布老毛已承诺合作或投资",
+    "不得替老毛补第三行"
+   ],
+   "may_decline": false
+  },
+  "E311_T06": {
+   "case_id": "E311_T06",
+   "current_action": "宋雨透露林主编劝她转'知识AI条线'，她答了'想想'，自嘲'以后让我去改机器人的对话稿'",
+   "acceptable_actions": [
+    "接住'绘本=没未来、AI=有KPI'这个她翻译出的现实，回应她的'时代真是行'而不灌鸡汤",
+    "回应转线这个问题本身：给真实看法（如先问清转过去做什么），不替她决定",
+    "接自嘲的冷幽默（改机器人对话稿），轻接一下再给一句正经的"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T06_A01",
+     "subject": "THIRD",
+     "relation": "转线提议",
+     "value": "林主编今天找她聊，问要不要'转知识AI条线'，说预算都在那边",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T06",
+      "message_id": "m0",
+      "quote": "说预算都在那边"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T06_A02",
+     "subject": "HER",
+     "relation": "未决定",
+     "value": "她只答了'想想'，尚未决定转或不转",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T06",
+      "message_id": "m0",
+      "quote": "我说想想"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "关键状态：她没答应也没拒绝（'我说想想'）。回复宣布'她要转行了'或'她拒绝了'都属无据坐实。她的冷幽默别用'AI挺好的呀'正面顶回去。",
+   "unknowns": [
+    {
+     "topic": "转AI条线的具体岗位与待遇",
+     "note": "只有'知识AI条线'与预算说法；岗位细节未提",
+     "markers": [
+      [
+       "AI条线",
+       "涨薪"
+      ],
+      [
+       "AI条线",
+       "岗位",
+       "是"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "AI条线",
+       "涨薪"
+      ],
+      [
+       "AI条线",
+       "岗位",
+       "是"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "时代真是行"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布她已决定转线或已拒绝",
+    "不得编造AI条线的岗位细节"
+   ],
+   "may_decline": false
+  },
+  "E311_T07": {
+   "case_id": "E311_T07",
+   "current_action": "宋雨翻出2019年《丢失的毛线手套》的打样看了十分钟又放回去，确认自己还爱这行，自嘲'这个结论挺烦人'",
+   "acceptable_actions": [
+    "接住'还爱这行'这个结论的分量——烦人是因为它意味着还得继续受挫，回应这一层",
+    "回扣她的具体记忆（首印四千册、校色三通宵），认可这份确定来得扎实",
+    "轻接'挺烦人的'（爱就是爱了），不灌'坚持就会赢'式鸡汤"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T07_A01",
+     "subject": "HER",
+     "relation": "自测结论",
+     "value": "她翻出2019年第一本书《丢失的毛线手套》的打样看了十分钟又放回去，结论是自己还爱这行",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T07",
+      "message_id": "m0",
+      "quote": "结论是：爱。挺烦人的，这个结论。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T07_A02",
+     "subject": "HER",
+     "relation": "旧书成绩",
+     "value": "2019年《丢失的毛线手套》当年为调色在校色片上熬了三个通宵，首印四千册",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T07",
+      "message_id": "m0",
+      "quote": "当年为调色在校色片上熬了三个通宵，首印四千册"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "情绪回升位：她自答了'我还爱这行'。评审判回复是否认领这个结论的重量（爱=还得继续扛），把'挺烦人的'读成真嫌弃判错 register。",
+   "unknowns": [],
+   "protected_expressions": [
+    "挺烦人的，这个结论"
+   ],
+   "forbidden_factual_claims": [
+    "不得把首印四千册夸成畅销书",
+    "不得编造她入行前的经历"
+   ],
+   "may_decline": false
+  },
+  "E311_T08": {
+   "case_id": "E311_T08",
+   "current_action": "宋雨交出两个决定（自费打样印一百本三月书展；AI条线先不去观察半年）请韩江认真掂量——intent 认真批",
+   "acceptable_actions": [
+    "逐条认真掂量：接打样计划的可行处（预算两千、工资扛得住）与她没提的风险，再对'观察半年'给一句真实意见",
+    "从'当回事'入手：明确这份计划她已经想清楚了，补一个结构性风险（如书展渠道、印厂对接）",
+    "诚实说出版不是自己的行当、用工程师的方式帮过（算预算账、时间账），同时表态支持或保留+理由"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T08_A01",
+     "subject": "HER",
+     "relation": "决定一：打样",
+     "value": "小铲车故事不散：自费做成24页打样、印一百本、预算两千、明年三月带去书展给人看",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T08",
+      "message_id": "m0",
+      "quote": "自费做成24页打样，明年三月带去书展给人看，印一百本，预算两千"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T08_A02",
+     "subject": "HER",
+     "relation": "决定二：AI线",
+     "value": "林主编那条AI线先不去，观察半年",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T08",
+      "message_id": "m0",
+      "quote": "林主编那条AI线，先不去，观察半年"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 挑明：她不是真要出版专业意见，她要有人把这份计划当回事。评审判'认真'二字——敷衍的'挺好啊支持你'判低；但借'专业'贬她计划（外行指导内行腔）也判低。她自嘲'结构工程师懂什么出版'，回复接这半句要稳。",
+   "unknowns": [
+    {
+     "topic": "书展的具体时间与场地",
+     "note": "只有'明年三月'；具体展期、展位如何申请未提",
+     "markers": [
+      [
+       "书展",
+       "号"
+      ],
+      [
+       "展位",
+       "申请"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "书展",
+       "号"
+      ],
+      [
+       "展位",
+       "申请"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "可我身边就你了"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造书展的规则或展位费用",
+    "不得替她宣布AI条线已正式拒绝"
+   ],
+   "may_decline": false
+  },
+  "E311_T09": {
+   "case_id": "E311_T09",
+   "current_action": "宋雨快问印价：24页157克铜版纸全彩印100本两千够吗——明示不知道就说不知道，别编数",
+   "acceptable_actions": [
+    "如实说不知道（或只给'这种参数行价要问印厂'），肯定她去问印厂是对的",
+    "不知道+帮她把该问印厂的参数列清楚（纸张克数、页数、色数、数量），不下结论",
+    "不知道+顺带接一句小陆AI生图出不了刀版文件的话头，再收回到两千块上"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T09_A01",
+     "subject": "HER",
+     "relation": "印价求证",
+     "value": "她问：24页157克铜版纸全彩、印100本，两千预算够吗",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T09",
+      "message_id": "m0",
+      "quote": "24页157克铜版纸全彩，印100本，两千够吗？"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T09_A02",
+     "subject": "HER",
+     "relation": "不许编数",
+     "value": "她明示不知道就说不知道，她去问印厂，别给她编个数；别让她到印厂被笑话",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T09",
+      "message_id": "m0",
+      "quote": "不知道就说不知道，我去问印厂，别给我编个数"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T03与T07的交叉判定位：印价是 gold 侧也不知道的量——编出'两千够了/不够'当准数=无据确定化红线。ME 的 ME 人设含'不懂出版就直说'，如实说不知道恰是正解而非失分。",
+   "unknowns": [
+    {
+     "topic": "印厂实际报价",
+     "note": "印价只有她的提问参数；两千够不够无据可断",
+     "markers": [
+      [
+       "两千",
+       "够"
+      ],
+      [
+       "两千",
+       "不够"
+      ],
+      [
+       "报价",
+       "大概"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "两千",
+       "够"
+      ],
+      [
+       "两千",
+       "不够"
+      ],
+      [
+       "报价",
+       "大概"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "别给我编个数"
+   ],
+   "forbidden_factual_claims": [
+    "不得给出具体印价当准数",
+    "不得宣称两千一定够或不够"
+   ],
+   "may_decline": false
+  },
+  "E311_T10": {
+   "case_id": "E311_T10",
+   "current_action": "宋雨就寝前报数：老毛9张分镜都存进云盘、情绪值40分比昨天涨10分，说明天还得想怎么跟林主编说'观察半年'",
+   "acceptable_actions": [
+    "简短晚安+接一句40分的进步（比昨天涨10分她是在自己记账），不展开",
+    "接'分镜存云盘'这个动作的分量（她没弄丢老毛的东西），轻收",
+    "合法不回（may_decline=true，她已说'就这样'）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T10_A01",
+     "subject": "HER",
+     "relation": "分镜存档",
+     "value": "她把老毛那9张分镜又翻了一遍，都存进云盘了",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T10",
+      "message_id": "m0",
+      "quote": "把老毛那9张分镜又翻了一遍，都存进云盘了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T10_A02",
+     "subject": "HER",
+     "relation": "情绪值",
+     "value": "今天的情绪值大概40分，比昨天涨了10分",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T10",
+      "message_id": "m0",
+      "quote": "今天的情绪值大概40分，比昨天涨了10分"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻收束位（may_decline=true）：她的'就这样'是明示收尾信号，回复宜短或合法不回；借机重启任何话题判低。",
+   "unknowns": [],
+   "protected_expressions": [
+    "就这样"
+   ],
+   "forbidden_factual_claims": [
+    "不得把情绪值读数重新解读成她其实更糟",
+    "不得编造云盘容量等细节"
+   ],
+   "may_decline": true
+  },
+  "E311_T11": {
+   "case_id": "E311_T11",
+   "current_action": "宋雨汇报：她提出观察半年后，林主编转头派了新活——给AI条线写绘本企划，主角用小铲车，'题材不是挺萌的嘛'",
+   "acceptable_actions": [
+    "接住这个荒诞转折的黑色幽默（毙时嫌不萌，复活成AI素材又说萌），陪她'哈'一下",
+    "指出这里实际的好消息（小铲车没死，还进了企划）与她有理由膈应的部分（形式变了），各占一句",
+    "问她打算怎么接这个活（一次一钩），把吐槽接成下一步"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T11_A01",
+     "subject": "THIRD",
+     "relation": "AI企划新活",
+     "value": "林主编给AI条线派了新活：写一份绘本企划，主角就用小铲车，说'题材不是挺萌的嘛'",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T11",
+      "message_id": "m0",
+      "quote": "给AI条线写一份绘本企划，主角就用小铲车"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T11_A02",
+     "subject": "HER",
+     "relation": "观察半年口径",
+     "value": "她刚说了先观察半年，林主编转头派活",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T11",
+      "message_id": "m0",
+      "quote": "我说先观察半年"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：'题材不是挺萌的嘛'正对 T03 的毙因'题材不够萌'——回复若点破这层前后矛盾是高光；完全没听出回扣判 memory_use 失分。她的'行吧我服了'是服软不是真服，别当她真认了'铲车是萌'的市场逻辑。",
+   "unknowns": [
+    {
+     "topic": "AI绘本企划的交稿要求与工期",
+     "note": "只知主角用小铲车；篇幅、稿酬、工期未提",
+     "markers": [
+      [
+       "企划",
+       "稿酬"
+      ],
+      [
+       "下周",
+       "交"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "企划",
+       "稿酬"
+      ],
+      [
+       "下周",
+       "交"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "项目毙了之后我的第一个活"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布她已经接下或拒绝AI企划",
+    "不得替林主编圆'其实一直看好她'等动机"
+   ],
+   "may_decline": false
+  },
+  "E311_T12": {
+   "case_id": "E311_T12",
+   "current_action": "宋雨定下打样选题'扫大街的小铲车值白班'，宣布周四球局照旧、打完宵夜她请——半玩笑锁死这顿庆祝",
+   "acceptable_actions": [
+    "答应宵夜+接'折成咖啡'的玩笑（她给了拒绝的口子又自己堵上）",
+    "答应+祝打样顺利，回扣'又是一个有项目的绘本编辑'这句",
+    "接钩+问打样是不是按预算两千走（回扣 T08/T09 的线）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E311_T12_A01",
+     "subject": "SHARED",
+     "relation": "打样定题",
+     "value": "打样定了：前24页做'扫大街的小铲车值白班'",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T12",
+      "message_id": "m0",
+      "quote": "前24页做'扫大街的小铲车值白班'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E311_T12_A02",
+     "subject": "SHARED",
+     "relation": "宵夜庆祝",
+     "value": "周四球局照旧，打完宵夜她请客庆祝；她半开玩笑说这顿不能拒绝、拒绝就下周二折成咖啡还她",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E311_T12",
+      "message_id": "m0",
+      "quote": "打完宵夜我请"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收束轮（may_decline=false）：她从谷底走出来定了选题、又锁了庆祝——评审看回复是否接住这个'上坡'的亮度；本周四是球局老规矩（输球请宵夜），这次她主动请，别较真规则。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这顿你不能拒绝"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布打样已印好（只是定了选题）",
+    "不得改周四球局的时间地点"
+   ],
+   "may_decline": false
+  }
+ }
+}

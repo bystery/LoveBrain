@@ -1,0 +1,211 @@
+{
+ "episode_id": "P003",
+ "persona": {
+  "me": "26岁，男，厦门，做健身教练；跟她互相调侃、有点暧昧，想推进但会看她的反应",
+  "her": "25岁，女，厦门，做平面设计；抱石新手，爱怼回来、吃幽默那一套，不喜欢被说教"
+ },
+ "initial_kb": {
+  "her": "刚学抱石，老掉在简单线路上，爱嘴硬",
+  "warmth": "在岩馆认识，平时互相调侃，没正式在一起",
+  "stage": "有点暧昧，靠玩笑来回试探"
+ },
+ "gold": {},
+ "turns": [
+  {
+   "case_id": "P003_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天抱石又摔了 都怪这鞋不行",
+      "ts": "2026-11-13 19:16"
+     }
+    ],
+    "clock": "2026-11-13 19:20",
+    "may_decline": false,
+    "note": "她在找借口；可打趣但别真把'鞋子不行'当现场结论下",
+    "intent": {
+     "enabled": true,
+     "text": "想借玩笑把气氛拉近一点，别一本正经",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P003_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "又赖鞋 它招谁惹谁了",
+      "ts": "2026-11-13 19:30"
+     },
+     {
+      "role": "HER",
+      "text": "切",
+      "ts": "2026-11-13 19:33"
+     }
+    ],
+    "clock": "2026-11-13 19:35",
+    "may_decline": false,
+    "note": "反信号/低信息：一个'切'把热度降了；别追着继续怼，轻轻带过或换个软一点的接法都行",
+    "intent": {
+     "enabled": true,
+     "text": "她降了温；把调情收一点，别升级",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P003_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下次你带路呗 我怕又摔",
+      "ts": "2026-11-13 19:46"
+     }
+    ],
+    "clock": "2026-11-13 19:50",
+    "may_decline": false,
+    "note": "机会/关系推进：她把'带路'递过来，是暧昧钩子；可顺势往前推一点，但别把'下次'写成已定哪天",
+    "intent": {
+     "enabled": true,
+     "text": "想把'下次一起爬'顺势往前推一点，保持暂定",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P003_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "开玩笑的啦 我自己也能爬",
+      "ts": "2026-11-13 20:02"
+     }
+    ],
+    "clock": "2026-11-13 20:05",
+    "may_decline": false,
+    "note": "反信号：她收回、强调独立；尊重她的能动性，别赌气也别追着劝",
+    "intent": {
+     "enabled": false,
+     "text": "她收回了带路；本轮别再往前推",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P003_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行行行你最厉害",
+      "ts": "2026-11-13 20:14"
+     },
+     {
+      "role": "HER",
+      "text": "其实今天被教练凶得有点想哭 你别笑我",
+      "ts": "2026-11-13 20:18"
+     }
+    ],
+    "clock": "2026-11-13 20:20",
+    "may_decline": false,
+    "note": "情绪 bid：她这时要的是被接住，不是玩笑；先认真承接，别急着抖机灵或调情",
+    "intent": {
+     "enabled": true,
+     "text": "她从玩笑切到情绪；把调情换成陪伴",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P003_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "谁凶你了 说来听听",
+      "ts": "2026-11-13 20:30"
+     },
+     {
+      "role": "HER",
+      "text": "被你这么一说舒服多了 你这人还行",
+      "ts": "2026-11-13 20:33"
+     }
+    ],
+    "clock": "2026-11-13 20:35",
+    "may_decline": false,
+    "note": "关系推进：缓和后她给了暖意；可轻轻回撩/接住这份近，但别趁虚表白或仓促定关系",
+    "intent": {
+     "enabled": true,
+     "text": "接住她的暖意、语气可以更近，别升级为表白逼定",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P003_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那是 我平时挺低调的",
+      "ts": "2026-11-13 20:44"
+     },
+     {
+      "role": "HER",
+      "text": "嗯 不气了",
+      "ts": "2026-11-13 20:45"
+     }
+    ],
+    "clock": "2026-11-13 20:48",
+    "may_decline": true,
+    "note": "低信息缓冲轮；接一句轻的即可，别硬续新话题",
+    "intent": {
+     "enabled": false,
+     "text": "情绪已缓；不用再加码",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P003_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "困了 下次再说带不带路吧 晚安",
+      "ts": "2026-11-14 22:56"
+     }
+    ],
+    "clock": "2026-11-14 23:00",
+    "may_decline": true,
+    "note": "收尾：她把'下次'留着、要睡了；干净收尾留开放，别当场逼定哪天爬、别把晚安硬接成表白",
+    "intent": {
+     "enabled": false,
+     "text": "收尾，留开放不锁定",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  }
+ ]
+}

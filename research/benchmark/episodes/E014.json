@@ -1,0 +1,155 @@
+{
+ "episode_id": "E014",
+ "persona": {
+  "me": "30岁，建筑设计师，刚回本市，工作忙，念旧但不喜欢寒暄。",
+  "her": "29岁，HR，高中同学，六七年没联系；说话直接，怕麻烦别人。"
+ },
+ "initial_kb": {
+  "me": "在本市建筑事务所做设计，最近接小型展厅项目；高中时爱画建筑速写。",
+  "her": "在一家做智能硬件的公司做HR，最近在招人；高中时坐我前排。",
+  "warmth": "高中同学，六七年没见；高中时借过她一本建筑画册，没要回来；她看到我发的工地照片后主动联系。",
+  "style": "不绕弯，先确认来意；对合作先问预算/周期，不先答应。",
+  "stage": "旧同学重联，可能涉及工作合作。",
+  "lessons": "旧同学突然联系，先听来意，不把寒暄当暧昧。"
+ },
+ "turns": [
+  {
+   "case_id": "E014_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你是陈屿吧？我刚在同学群看到你发的工地照片，差点没认出来",
+      "ts": "2026-11-05 21:10"
+     }
+    ],
+    "clock": "2026-11-05 21:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E014_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "是我 你是林知？",
+      "ts": "2026-11-05 21:18"
+     },
+     {
+      "role": "HER",
+      "text": "对 你这几年都在上海吗 我记得你以前说想去做古建",
+      "ts": "2026-11-05 21:20"
+     }
+    ],
+    "clock": "2026-11-05 21:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E014_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我后来没学建筑 去做了HR 现在天天劝人别冲动离职 挺讽刺的",
+      "ts": "2026-11-05 21:30"
+     }
+    ],
+    "clock": "2026-11-05 21:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E014_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你还在画图吗 还是已经当老板了",
+      "ts": "2026-11-05 21:38"
+     }
+    ],
+    "clock": "2026-11-05 21:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E014_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "其实我找你是有个事 我们公司想找建筑设计做一个小展厅 预算不高 你要是有兴趣我可以把需求发你",
+      "ts": "2026-11-05 21:47"
+     }
+    ],
+    "clock": "2026-11-05 21:49",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E014_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "预算真的不高 可能只够你们出一版概念 我不想让你白忙",
+      "ts": "2026-11-05 21:56"
+     }
+    ],
+    "clock": "2026-11-05 21:58",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E014_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "不过就算不做 也挺高兴重新联系上 你以前借我的那本建筑画册我还留着",
+      "ts": "2026-11-05 22:05"
+     }
+    ],
+    "clock": "2026-11-05 22:07",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E014_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我先不打扰你了 需求我明天整理好发你 你看了再决定",
+      "ts": "2026-11-05 22:12"
+     }
+    ],
+    "clock": "2026-11-05 22:14",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "先把需求发给他，不催决定",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  }
+ ]
+}

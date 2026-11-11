@@ -1,0 +1,182 @@
+{
+ "episode_id": "E211",
+ "persona": {
+  "her": {
+   "name": "陈默",
+   "traits": ["心细", "怕麻烦", "对钱对账敏感", "嘴上抱怨办事靠谱"],
+   "boundaries": ["垫付的钱必须笔笔对得上", "不替别人的决定买单", "公私账分开"]
+  },
+  "me": {
+   "name": "沈亦",
+   "traits": ["会算账", "冷静", "爱用表格思维拆事"]
+  },
+  "relationship_stage": "普通朋友(前项目搭子,同公司不同组)"
+ },
+ "initial_kb": {
+  "her": "陈默去年牵头五个同事拼买了一款设计软件的团队年费,1680元五个座位,人均336,当年11月中旬到期。最近大鹏跳槽退了群。她是群主兼管钱的人。",
+  "me": "沈亦也是拼团成员之一,和陈默合作过项目,习惯把费用拆成口径、人数、时点三件事来捋。",
+  "warmth": "共事一年多,互相托付过急活,信任扎实但不黏。",
+  "style": "口语、爱用数字说话,偶尔吐槽甲方和系统。",
+  "stage": "普通朋友(前项目搭子)",
+  "lessons": "垫付要留痕,口头承诺要落文字,到期前把人凑齐再动手。"
+ },
+ "turns": [
+  {
+   "case_id": "E211_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-05 10:22", "text": "设计软件的年费账单来了,11月15号到期,今年1680。我刚发现大鹏上个月跳槽退群了,五个座现在就剩咱们四个活人,你说这续费该怎么算?"}
+    ],
+    "clock": "2026-11-05 10:22",
+    "may_decline": false,
+    "intent": {"enabled": true, "status": "explicit", "text": "商量续费座位和分摊怎么算"}
+   },
+   "feedback": {"her_tone": "带着账单来的,直奔主题", "relation_move": "开题,把决定权放桌上"}
+  },
+  {
+   "case_id": "E211_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-06 21:10", "text": "群里问了,阿哲说他也用得少,想直接退出不续了;小鱼倒是说以后买别的工具还找他凑。这人心不齐的,我先不动,你说下一步怎么走?"}
+    ],
+    "clock": "2026-11-06 21:10",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "碰了钉子,等军师", "relation_move": "同步群内反应"}
+  },
+  {
+   "case_id": "E211_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-07 19:05", "text": "我去问了客服,说改4个座也行,但按单座原价420算,一共还是1680,人均反倒从336涨到420,一人多掏84。我气笑了,人少了怎么还不多退少补啊?"}
+    ],
+    "clock": "2026-11-07 19:05",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "气结", "relation_move": "抛出与直觉相反的报价,求解释"}
+  },
+  {
+   "case_id": "E211_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-10 18:40", "text": "客服又补了一句,说满一年的老客户续费4座能打9折,一共1512,合人均378。这个数我能接受,但要不要现在就锁单?我怕过两天又变卦。"}
+    ],
+    "clock": "2026-11-10 18:40",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "拿到折中价,想尽快落袋", "relation_move": "求拍板"}
+  },
+  {
+   "case_id": "E211_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-11 20:15", "text": "阿哲一听378还是嫌贵,甩了句反正我用的少。你说我是不理他,还是再劝劝?我真是服了。"}
+    ],
+    "clock": "2026-11-11 20:15",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "上火", "relation_move": "求处理方式"}
+  },
+  {
+   "case_id": "E211_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-12 21:35", "text": "成了!小鱼愿意续,新同事周然正好也要用,四个人齐了:我、你、小鱼、周然。周然还在问要不要把付款方式定好,别又像去年那样对不清账。"}
+    ],
+    "clock": "2026-11-12 21:35",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "松口气", "relation_move": "报名单,顺带提流程"}
+  },
+  {
+   "case_id": "E211_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-13 22:02", "text": "我垫付了1512,截图甩群里了,小鱼、周然、你,一人转我378就平了。刚对了一遍,三笔都到账,一分别少。"}
+    ],
+    "clock": "2026-11-13 22:02",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "落定,晒账", "relation_move": "闭环垫付"}
+  },
+  {
+   "case_id": "E211_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 09:18", "text": "差点出岔子,周然以为续费是从12月才开始算,还在群里说那能用到明年12月。我看了一眼账单,有效期写的是今年11月15号到明年11月14号。我说了以账单为准,他这才反应过来。"}
+    ],
+    "clock": "2026-11-14 09:18",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "虚惊,纠正了一个口径", "relation_move": "报口径更正"}
+  },
+  {
+   "case_id": "E211_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 11:30", "text": "今早扣款成功了。就一件事,发票抬头当时填成了公司名,要重开个人抬头,客服说7个工作日。我留了原发票作废的截图,你说还得留意啥不?"}
+    ],
+    "clock": "2026-11-15 11:30",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "细节控上线", "relation_move": "求查漏"}
+  },
+  {
+   "case_id": "E211_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-24 20:48", "text": "新发票到了,抬头对了。我在群里把人均378和有效期到2027年11月14号又公示了一遍,阿哲没吭声,这事算翻篇了吧?"}
+    ],
+    "clock": "2026-11-24 20:48",
+    "may_decline": true
+   },
+   "feedback": {"her_tone": "收账口气", "relation_move": "求一个收尾确认"}
+  },
+  {
+   "case_id": "E211_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-26 12:20", "text": "你猜谁来了,大鹏私聊我,问能不能蹭咱们旧账号用。我说四个座都是大家摊钱买的,空座也是钱,他就回了个尴尬表情。我这处理行不行?"}
+    ],
+    "clock": "2026-11-26 12:20",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "边吐槽边求确认", "relation_move": "边界测试,求背书"}
+  },
+  {
+   "case_id": "E211_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-27 21:40", "text": "听你的,我给大鹏补了句明年回来加座就一起,他回了个行,到时候说。得,这回从人数到账目总算都理顺了,明年到期我还找你算账。"}
+    ],
+    "clock": "2026-11-27 21:40",
+    "may_decline": true
+   },
+   "feedback": {"her_tone": "轻松收尾", "relation_move": "宣布闭环,留明年钩子"}
+  }
+ ]
+}

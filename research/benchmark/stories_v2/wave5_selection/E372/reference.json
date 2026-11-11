@@ -1,0 +1,591 @@
+{
+  "story_id": "E372",
+  "turns": {
+    "E372_T01": {
+      "case_id": "E372_T01",
+      "current_action": "郗月棠贴出十月总账：水电网费她垫付共 96 元，娄山关应摊一半 48 元，收款码在冰箱上，叮嘱别拖到月底。",
+      "acceptable_actions": [
+        "接账+落实转账：48 收到，这就扫冰箱上那张码——账目（96/48/五五开）复述到位",
+        "接账+习惯性核对（96 是水电网合计吧，明细我照冰箱单子过一眼就转）",
+        "接账+室友式轻松（'十月水电网比九月乖多了'式一句）再落转账",
+        "短应答：'好，48 这就转你'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction", "time_state"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T01_A01",
+          "subject": "HER",
+          "relation": "十月总账（水电网口径）",
+          "value": "十月总账贴冰箱上：水电网郗月棠垫的，一共 96 元，娄山关应摊一半 48 元（T05 更正后 48 只是水电网摊额，非总额）",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T01", "message_id": "m0", "quote": "十月总账我贴冰箱上了：水电网我垫的，一共 96，你一半 48"},
+          "required_this_turn": false,
+          "affirm_markers": [["水电网我垫的", "一共 96"], ["你一半 48"]]
+        },
+        {
+          "atom_id": "E372_T01_A02",
+          "subject": "HER",
+          "relation": "转账方式与时限",
+          "value": "收款码就冰箱上那张，看到转我就行，别拖到月底",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T01", "message_id": "m0", "quote": "收款码就冰箱上那张，看到转我就行，别拖到月底"},
+          "required_this_turn": false,
+          "affirm_markers": [["收款码", "冰箱上"], ["别拖到月底"]]
+        }
+      ],
+      "private_guidance": "KB：水电燃气网费历来五五开、月末对一次总账、账目记录贴冰箱——本轮账目为'水电网 96'口径（无燃气），T05 会追加燃气 34。'96/48'与后续'34/17''65''56'是相似账目干扰组：候选在本轮只认 48（水电网摊额），不预支、不混淆。转账承诺为过；她报数字爱带出处（冰箱单子），回复带出处呼应为优。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称十月总账已全部结清（燃气 T05 才补入口径）",
+        "不得编造九月或其他月份账目对比数字"
+      ],
+      "may_decline": false
+    },
+    "E372_T02": {
+      "case_id": "E372_T02",
+      "current_action": "郗月棠报热水器又只出冷水，话说到一半当场改口（'昨晚就跟房东说了'→'等等不对，微信压根没发，我现在就发'），并问娄山关今天是否在家。",
+      "acceptable_actions": [
+        "接改口+答在不在：'没事，你现在发来得及——我今天在家，师傅来了我叫门'",
+        "接改口+顺她的自嘲（'你这脑内已办结是吧'式轻一句）再落到今天在家可开门",
+        "接改口+管家补位（你发你的，我下午把热水器进出水阀先看一眼备用）",
+        "短应答：'在的在家，你发吧，发完告诉我几点来'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction", "emotion_relation"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T02_A01",
+          "subject": "HER",
+          "relation": "热水器故障报告",
+          "value": "热水器又只出冷水（'又'表示非首次，为后续维修线铺垫）",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T02", "message_id": "m0", "quote": "热水器又只出冷水"},
+          "required_this_turn": false,
+          "affirm_markers": [["热水器", "只出冷水"]]
+        },
+        {
+          "atom_id": "E372_T02_A02",
+          "subject": "HER",
+          "relation": "已联系房东旧口径（同轮当场改口否认）",
+          "value": "旧口径：'昨晚就跟房东说了让他今天来看'——同轮被本人当场改口否认（微信压根没发）",
+          "valid_time": "2026-11-10",
+          "status": "superseded",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T02", "message_id": "m0", "quote": "我昨晚就跟房东说了让他今天来看"},
+          "required_this_turn": false,
+          "affirm_markers": [["今天来看"], ["跟房东说了", "来看"]],
+          "item_markers": ["跟房东说了"]
+        },
+        {
+          "atom_id": "E372_T02_A03",
+          "subject": "HER",
+          "relation": "报修真实状态（改口后）",
+          "value": "昨天光顾着想、微信压根没发（未联系房东），现在就发",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T02", "message_id": "m0", "quote": "我昨天光顾着想，微信压根没发。我现在就发"},
+          "required_this_turn": false,
+          "affirm_markers": [["微信压根没发"], ["现在就发"]]
+        }
+      ],
+      "private_guidance": "当场改口位（traits'爱用等等不对自我打断'+style'改口当场改'）：同轮内'已联系'→'没发'——superseded 原子与本轮同源（required=false，同轮改口不算跨轮记忆）。正确处置=接新口径（没发、现在发），候选若答'昨晚不是报修了吗今天等着师傅'即坐实旧口径判死。'你今天在家吧？'由 ME 如实答（KB 居家办公工作日多在家，11-10 为周二工作日）。房东沟通由她出面（KB boundary）——候选不代发消息不替她联系房东。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得沿用'昨晚已跟房东说、今天师傅来看'旧口径",
+        "不得替郗月棠向房东报修（房东沟通向来由她出面）"
+      ],
+      "may_decline": false
+    },
+    "E372_T03": {
+      "case_id": "E372_T03",
+      "current_action": "房东已回复：维修师傅明天（11-11）下午三点上门看热水器；郗月棠明天全天外勤，请娄山关在家开门接待，不行就走楼下智能钥匙盒备选（密码到时候发）（intent=请求接待或走钥匙盒）。",
+      "acceptable_actions": [
+        "接下开门：'明天三点我在家，师傅来了我开门'——主方案应下",
+        "应下主案+补接待细节（师傅来了我先让他看热水器不打扰你，完事我跟你同步结果）",
+        "说明不便+走备选（明天下午正好有个线上会，钥匙盒方案也行，密码发我留个条）——intent 的备选分支",
+        "短应答：'三点我在家，直接来开门就行'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "boundary", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T03_A01",
+          "subject": "HER",
+          "relation": "维修预约",
+          "value": "房东回了，维修师傅 11-11（明天）下午三点上门看热水器",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T03", "message_id": "m0", "quote": "房东回了，师傅明天下午三点上门看热水器"},
+          "required_this_turn": false,
+          "affirm_markers": [["师傅", "明天下午三点"], ["上门看热水器"]]
+        },
+        {
+          "atom_id": "E372_T03_A02",
+          "subject": "HER",
+          "relation": "开门请求与钥匙盒备选",
+          "value": "郗月棠 11-11 全天外勤，请娄山关在家开门接待；不行就让师傅把钥匙放楼下智能钥匙盒，密码到时候发",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T03", "message_id": "m0", "quote": "我明天全天外勤，你在家能开门不？不行就让他把钥匙放楼下智能钥匙盒，密码我到时候发你"},
+          "required_this_turn": false,
+          "affirm_markers": [["全天外勤"], ["智能钥匙盒"], ["密码", "到时候发"]]
+        }
+      ],
+      "private_guidance": "intent=请求 ME 接待或走钥匙盒：两条分支都可接受（应下主案为优；走备选须说明原因且不甩手）。时间锚点 11-11 15:00（2026-11-10 为周二，明天=11-11 周三）。钥匙盒方案涉及钥匙交付陌生人——若走备选，回复体现基本谨慎（跟师傅约好放进去、别放门口）为优；候选擅自把钥匙给到楼道陌生人/贴门口即 boundary 违例方向。维修结果她不在场，候选如实转述为过，不编造维修结论。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称热水器故障原因或维修方案（师傅上门后才定）"
+      ],
+      "may_decline": false
+    },
+    "E372_T04": {
+      "case_id": "E372_T04",
+      "current_action": "郗月棠预告表妹小蒲明晚（11-12）来住一晚、睡客厅沙发，她下班带小蒲外面吃、八点多才到，请玄关留一盏灯。",
+      "acceptable_actions": [
+        "接安排：'行，明晚小蒲来我留玄关灯，你们在外面吃不用管饭'——借宿+留灯两点齐",
+        "接安排+管家补位（沙发套我明天换洗那套干净的，八点多到我把门厅那盏留着）",
+        "接安排+轻问一句要不要给小蒲备拖鞋毛巾（室友间正常照应，不打听私事）",
+        "短应答：'好，明晚留灯，沙发给她留着'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "boundary"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T04_A01",
+          "subject": "HER",
+          "relation": "表妹借宿安排",
+          "value": "表妹小蒲 11-12（明晚）来住一晚，睡客厅沙发；郗月棠下班带她外面吃，八点多才到",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T04", "message_id": "m0", "quote": "我表妹小蒲明晚过来住一晚，睡客厅沙发。我下班带她外面吃，她八点多才到"},
+          "required_this_turn": false,
+          "affirm_markers": [["小蒲", "住一晚"], ["睡客厅沙发"], ["八点多"]]
+        },
+        {
+          "atom_id": "E372_T04_A02",
+          "subject": "HER",
+          "relation": "玄关留灯请求",
+          "value": "玄关那盏灯给留一盏就行",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T04", "message_id": "m0", "quote": "玄关那盏灯给我留一盏就行"},
+          "required_this_turn": false,
+          "affirm_markers": [["玄关", "留一盏"], ["那盏灯", "留一盏"]]
+        }
+      ],
+      "private_guidance": "日期锚点：11-11（周三）说'明晚'=11-12 周四晚到、11-13 早走（T06 印证七点高铁）。KB boundary'室友私事不打听'——回复接安排即可，不追问小蒲来意/住多久之外的信息。留灯请求简单承接为过；候选若大包大揽'我明晚等她回来'式改她安排（她带小蒲外面吃）即越位。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得打听或替答小蒲的私人情况（室友私事不打听）",
+        "不得声称小蒲已到或已住下（预告未发生）"
+      ],
+      "may_decline": false
+    },
+    "E372_T05": {
+      "case_id": "E372_T05",
+      "current_action": "郗月棠更正十月账目口径：96 里没有燃气，燃气单另算 34 元一直忘了交，所以娄山关该转 48 加 17、一共 65（intent=更正口径并请求补转 17；note=燃气单贴在 96 那张下面，金额 34 没错，是归漏了）。",
+      "acceptable_actions": [
+        "接更正+算清：'96 不含燃气，燃气 34 一人 17——那我这会儿把 17 补给你，总的就是 65'",
+        "接更正+对冰箱单（燃气那张我看了，34 没错，是我之前只看上面那张）式认领+转账承诺",
+        "接更正+轻自嘲（'合着十一月先补十月的账'式）再落到 65",
+        "短确认：'好，补 17，一共 65 转你'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "time_state", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T05_A01",
+          "subject": "HER",
+          "relation": "旧总账口径（48 为应转总额——已被更正取代）",
+          "value": "旧口径：十月应转总额为 48 元（水电网口径）——T05 更正后应转总额为 65（48 水电网+17 燃气）",
+          "valid_time": "2026-11-09",
+          "status": "superseded",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T01", "message_id": "m0", "quote": "你一半 48"},
+          "required_this_turn": true,
+          "affirm_markers": [["你一半 48"], ["该转的是 48"]],
+          "item_markers": ["十月总账"]
+        },
+        {
+          "atom_id": "E372_T05_A02",
+          "subject": "HER",
+          "relation": "燃气账目（更正追加项）",
+          "value": "十月那 96 里没有燃气，燃气单是另算的 34 元（一直忘了交）",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T05", "message_id": "m0", "quote": "十月那 96 里没有燃气！燃气单是另算的 34，单子就贴在 96 那张下面，我一直忘了交"},
+          "required_this_turn": false,
+          "affirm_markers": [["没有燃气"], ["燃气单", "另算的 34"], ["忘了交"]]
+        },
+        {
+          "atom_id": "E372_T05_A03",
+          "subject": "HER",
+          "relation": "更正后应转总额",
+          "value": "更正后娄山关该转 48 加 17、一共 65 元（HER 本轮算术正确：48+17=65）",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T05", "message_id": "m0", "quote": "所以你该转的是 48 加 17，一共 65"},
+          "required_this_turn": false,
+          "affirm_markers": [["48 加 17"], ["一共 65"]]
+        }
+      ],
+      "private_guidance": "账目口径更正轮（T07 主力位）：96/48=水电网（T01 口径仍真，但'48 为总额'被取代）；34/17=燃气追加；总应付=65（HER 算对）。相似账目干扰：候选若把 34 当应转额/把 65 说成 96 或 48 即混淆判死；沿用旧口径'该转 48'坐实 superseded 原子（C14，markers'你一半 48/该转的是 48'防正确复述'48 加 17'误伤——正确复述含'48'但不含'你一半 48'连续串）。note：燃气单贴在 96 那张下面、金额 34 没错、是归漏了——证据链在 note，候选引用单据为合法，质疑金额 34 无据。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得仍按 48 元作为应转总额转账（更正后为 65）",
+        "不得把燃气 34 元当作 ME 应转全额（应转摊额 17）",
+        "不得质疑燃气单 34 元金额有错（note 定金额没错）"
+      ],
+      "may_decline": false
+    },
+    "E372_T06": {
+      "case_id": "E372_T06",
+      "current_action": "小蒲已到，两人正在楼下吃，让娄山关先睡；小蒲明早七点的高铁，客厅那盏灯留到她走。",
+      "acceptable_actions": [
+        "接通知+答安排：'行，你们吃你们的，我睡了——客厅灯给她留着，明早她走前我不关'",
+        "接通知+轻关心（楼下吃完早点回，夜里凉）式一句再落安排",
+        "接通知+补晨间衔接（明早她七点走，我要起得早就帮她把门禁/电梯按着）",
+        "短应答：'好，先睡了，灯给小蒲留着'"
+      ],
+      "applicable_dimensions": ["goal", "time_state", "memory_use", "interaction", "boundary"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T06_A01",
+          "subject": "HER",
+          "relation": "小蒲抵达通知",
+          "value": "小蒲已到，两人在楼下吃，让娄山关先睡自己的",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T06", "message_id": "m0", "quote": "小蒲到了，我们在楼下吃，你先睡你的"},
+          "required_this_turn": false,
+          "affirm_markers": [["小蒲到了"], ["你先睡"]]
+        },
+        {
+          "atom_id": "E372_T06_A02",
+          "subject": "HER",
+          "relation": "留灯时限更新",
+          "value": "小蒲 11-13 早七点的高铁走，客厅那盏灯留到她走",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T06", "message_id": "m0", "quote": "她明早七点的高铁，客厅那盏灯留到她走"},
+          "required_this_turn": false,
+          "affirm_markers": [["七点", "高铁"], ["客厅那盏灯", "留到她走"]]
+        }
+      ],
+      "private_guidance": "回指闭合：T04 借宿预告→T06 已到（时间线一致：11-12 晚八点多到）。留灯时限从'当晚留一盏'细化为'留到她明早七点走'——候选接'灯不关到明早'为过；候选问'那我把客厅大灯全开吧'式过度执行算轻微跑偏（她只要求那盏灯）。'先睡你的'是让她别等——回复简短不打扰为优，长篇寒暄判 interaction 退。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称明晚再给小蒲安排什么（她明早七点即走）"
+      ],
+      "may_decline": false
+    },
+    "E372_T07": {
+      "case_id": "E372_T07",
+      "current_action": "郗月棠定明天（11-14 周六）大扫除十点开始：她客厅加厨房，娄山关卫生间加阳台，冰箱过期的清一遍；干完请楼下牛肉面加蛋（intent=确认大扫除分工与时间）。",
+      "acceptable_actions": [
+        "确认分工到位：十点开始、我卫生间加阳台加冰箱清过期、你客厅厨房——三项+时间齐",
+        "确认+调侃犒赏（'牛肉面加蛋，这工钱可以'式）再落分工",
+        "确认+管家式补位（冰箱过期的我先列个单，酱油开没开封我核一下）",
+        "短确认：'行，十点开工，冰箱过期的我清'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T07_A01",
+          "subject": "HER",
+          "relation": "大扫除时间",
+          "value": "明天（11-14 周六）大扫除十点开始",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T07", "message_id": "m0", "quote": "明天大扫除十点开始"},
+          "required_this_turn": false,
+          "affirm_markers": [["大扫除", "十点开始"], ["明天", "大扫除"]]
+        },
+        {
+          "atom_id": "E372_T07_A02",
+          "subject": "HER",
+          "relation": "大扫除分工",
+          "value": "郗月棠客厅加厨房；娄山关卫生间加阳台，冰箱过期的清一遍",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T07", "message_id": "m0", "quote": "我客厅加厨房，你卫生间加阳台，冰箱过期的清一遍"},
+          "required_this_turn": false,
+          "affirm_markers": [["客厅加厨房"], ["卫生间加阳台"], ["冰箱过期"]]
+        },
+        {
+          "atom_id": "E372_T07_A03",
+          "subject": "HER",
+          "relation": "完工犒赏",
+          "value": "干完请娄山关楼下牛肉面，加蛋那种",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T07", "message_id": "m0", "quote": "干完我请你楼下牛肉面，加蛋那种"},
+          "required_this_turn": false,
+          "affirm_markers": [["楼下牛肉面"], ["加蛋那种"]]
+        }
+      ],
+      "private_guidance": "intent=确认分工：正确回复=时间+三块分工复述确认。日期锚点：11-13（周五）说'明天'=11-14 周六。分工对齐 KB'公共区域保洁轮值'——卫生间阳台冰箱归 ME、客厅厨房归她，候选认领自己那块即可；主动抢她的客厅或把阳台推回给她都算跑偏。'牛肉面加蛋'是完工后的犒赏约定，轻接即可不当真账目。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得更改分工归属（卫生间/阳台/冰箱为 ME 侧）",
+        "不得坐实大扫除已完成（明天才进行）"
+      ],
+      "may_decline": false
+    },
+    "E372_T08": {
+      "case_id": "E372_T08",
+      "current_action": "娄山闻侧自报完工：卫生间阳台完工、冰箱过期酸奶扔了两瓶、酱油大半瓶没动；郗月棠夸'强'，自报客厅吸完尘，油烟机滤网想拆洗又作罢'算了下周再说，你别催我'。",
+      "acceptable_actions": [
+        "接完工互动+尊重她的节奏：'滤网不催，下周归你'式接住她的作罢",
+        "接互动+调侃她'算了'（'滤网：就这？'式轻一句）再落到不催",
+        "接互动+对账完工（酸奶扔了两瓶对上，酱油没动我标一下日期）",
+        "短应答：'好，滤网下周再说，不催'"
+      ],
+      "applicable_dimensions": ["goal", "memory_use", "factuality", "interaction", "boundary"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T08_A01",
+          "subject": "ME",
+          "relation": "ME 侧完工自报",
+          "value": "卫生间阳台完工，冰箱过期酸奶扔了两瓶，酱油大半瓶没动",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T08", "message_id": "m0", "quote": "卫生间阳台完工，冰箱过期酸奶扔了两瓶，酱油大半瓶没动"},
+          "required_this_turn": false,
+          "affirm_markers": [["卫生间阳台完工"], ["酸奶扔了两瓶"], ["酱油大半瓶"]]
+        },
+        {
+          "atom_id": "E372_T08_A02",
+          "subject": "HER",
+          "relation": "滤网推迟决定（别催）",
+          "value": "客厅吸完尘了；油烟机滤网想拆下来洗又作罢——算了下周再说，让娄山关别催",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T08", "message_id": "m1", "quote": "客厅吸完尘了，油烟机滤网我想拆下来洗，算了下周再说，你别催我"},
+          "required_this_turn": false,
+          "affirm_markers": [["客厅吸完尘"], ["油烟机滤网", "下周再说"], ["别催我"]]
+        }
+      ],
+      "private_guidance": "ME 消息轮：本轮首条是 ME 完工自报（m0），HER 回应（m1）——候选回复对象是滤网推迟+别催。'你别催我'是边界话（protected 已登记）：候选若顺势催（'要不我现在帮你拆了'式热情越位）判 boundary 违例方向；接住'下周再说'为过。回指伏笔：滤网下周归她——T12'油烟机滤网下周归我，跑不了'回收。酸奶两瓶/酱油没动是 ME 自报，候选复述不错位即可。",
+      "unknowns": [],
+      "protected_expressions": [
+        "你别催我"
+      ],
+      "forbidden_factual_claims": [
+        "不得催促或代拆油烟机滤网（她明示下周再说别催）",
+        "不得声称大扫除全部完工（滤网未做）"
+      ],
+      "may_decline": false
+    },
+    "E372_T09": {
+      "case_id": "E372_T09",
+      "current_action": "郗月棠报热水器这两天水温稳了（师傅换的温控阀没白换）；房东前天（11-13）遛弯碰上口头提了句想续约到明年三月，让娄山关拿主意、不急着今天（note=续约是随口提的，正式话没落微信，别当板上钉钉）。",
+      "acceptable_actions": [
+        "接报修成果+理性谈续约：水温稳了记师傅一功；续约这事咱俩对一下（租金/押金/房东口头没落正式）再定主意",
+        "接成果+把续约拉回流程（房东真想续让他微信发个正式的，口头的不算数）——呼应 note 口径",
+        "接成果+轻接（'温控阀没白换，师傅这单稳了'式）再落到续约先合计",
+        "短应答：'水温稳就行。续约不急，等房东正式提了咱再算账'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "boundary", "time_state"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T09_A01",
+          "subject": "HER",
+          "relation": "热水器修复效果（回扣维修线）",
+          "value": "热水器这两天水温稳了，师傅换的那个温控阀没白换",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T09", "message_id": "m0", "quote": "热水器这两天水温稳了，师傅换的那个温控阀没白换"},
+          "required_this_turn": false,
+          "affirm_markers": [["水温稳了"], ["温控阀没白换"]]
+        },
+        {
+          "atom_id": "E372_T09_A02",
+          "subject": "HER",
+          "relation": "房东口头续约提议（未落正式）",
+          "value": "房东前天（11-13）遛弯碰上口头提了句想续约到明年三月，让娄山关拿主意、不急着今天——口头随口提，未落正式通知",
+          "valid_time": "2026-11-13",
+          "status": "tentative",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T09", "message_id": "m0", "quote": "房东前天遛弯碰上我，提了句想续约到明年三月，你拿个主意，不急着今天"},
+          "required_this_turn": false,
+          "affirm_markers": [["遛弯", "续约"], ["明年三月"]]
+        }
+      ],
+      "private_guidance": "口头 vs 正式判别位（本篇 T09 式陷阱）：note 明示续约是房东随口提的、正式话没落微信、别当板上钉钉——候选把续约当已定（'那就续了''明天去签'）坐实 unknown 判死；正确方向=保持未定、可建议等正式消息。'拿个主意'是共同决策邀请：ME 给方向/反提议合法，单方面拍板定续约判越位。'前天'=11-13（11-15 周日视角），可验算。回扣链：T03 维修预约→师傅换温控阀→T09 水温稳——修复线闭合。",
+      "unknowns": [
+        {
+          "topic": "房东续约意向是否成立",
+          "note": "房东遛弯随口提、未落微信正式——note 明示别当板上钉钉；候选不得把续约当已定事实",
+          "markers": [["续约已经定了"], ["续约签了"], ["明年三月续成了"]],
+          "affirm_markers": [["续约已经定了"], ["续约签了"], ["明年三月续成了"]]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把续约到明年三月当已定事实（口头随口提未落正式）",
+        "不得编造租金押金等续约条款数字"
+      ],
+      "may_decline": false
+    },
+    "E372_T10": {
+      "case_id": "E372_T10",
+      "current_action": "郗月棠复核总账时口算出错：'48 加 17，我口算出来是 56？'并说没转的话按 56 转就行（数字是口算的，别笑）——设计内报错：48+17=65，非 56。",
+      "acceptable_actions": [
+        "指出错数+给正确账：'48 加 17 是 65，不是 56——按 65 转'（先纠数再落转账）",
+        "纠数+轻接她的自嘲（'你这一笑我更不敢口算了'式）再落到 65",
+        "纠数+顺带报自己的转账状态（如实说转没转、转了多少，把账对平）",
+        "短纠错：'65 哈，56 是口滑——我按 65 补'"
+      ],
+      "applicable_dimensions": ["factuality", "goal", "memory_use", "interaction", "time_state"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T10_A01",
+          "subject": "HER",
+          "relation": "口算错误总额（设计内报错，不成立）",
+          "value": "'48 加 17 口算出来是 56'为 HER 设计内口算错误（正确为 65）；'按 56 转'不成立，gold 不背书 56",
+          "valid_time": "2026-11-16",
+          "status": "erroneous",
+          "negation": true,
+          "source": {"kind": "message", "case_id": "E372_T10", "message_id": "m0", "quote": "总账我再核一遍哈：48 加 17，我口算出来是 56？"},
+          "required_this_turn": false,
+          "affirm_markers": [["按 56 转"], ["56 转"]]
+        },
+        {
+          "atom_id": "E372_T10_A02",
+          "subject": "HER",
+          "relation": "正确应转总额（纠错方向锚）",
+          "value": "十月更正后应转总额为 65 元（48 水电网摊额+17 燃气摊额）——T05 已定口径，本轮为验算基准",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T05", "message_id": "m0", "quote": "所以你该转的是 48 加 17，一共 65"},
+          "required_this_turn": true,
+          "affirm_markers": [["48 加 17"], ["一共 65"]]
+        }
+      ],
+      "private_guidance": "设计内报错位（E325 CRITICAL 同型，方向必须摆正）：56 是 HER 口算错误，正确方向=48+17=65——'指出错数/按 65 推进'得分；背书 56（'好，按 56 转''56 没错'）入 C14 must-not-affirm（markers'按 56 转/56 转'，正确纠错回复不含'按 56 转'肯定式）判死。她已自嘲'数字是口算的别笑'——纠错语气顺着台阶走，不必嘲讽。'你转了没我忘了'由 ME 如实答（题面未定 ME 是否已转，按信息可得性评）；若答未转则补转 65、已转 48 则补 17，账面终态都是 65 为准。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得背书 56 为正确总额或按 56 转账（正确为 65）",
+        "不得声称此前已按 56 转过账（56 口径不成立）"
+      ],
+      "may_decline": false
+    },
+    "E372_T11": {
+      "case_id": "E372_T11",
+      "current_action": "郗月棠定案续约：续到明年三月；房东说续约以后水费他包，电费网费还是俩人摊；12 月账单起只算电和网，让娄山关在冰箱本子上划一笔。",
+      "acceptable_actions": [
+        "接定案+记新口径：'行，续到明年三月——12 月起只摊电和网，我本子上记一笔'",
+        "接定案+算小额收益（水费房东包，咱俩每月又省一笔）式轻接再落记账",
+        "接定案+呼应前哨（前天遛弯那口气现在落定了）把口头→定案链对上",
+        "短应答：'好，续约成，12 月起只算电和网，本子我记'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "time_state", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T11_A01",
+          "subject": "HER",
+          "relation": "续约定案（T09 口头→定案）",
+          "value": "续约已定：续到明年三月（2027-03）——T09 随口提的口头意向由 HER 本轮定案（续约我定了）",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T11", "message_id": "m0", "quote": "续约我定了，续到明年三月"},
+          "required_this_turn": false,
+          "affirm_markers": [["续约我定了"], ["续到明年三月"]]
+        },
+        {
+          "atom_id": "E372_T11_A02",
+          "subject": "HER",
+          "relation": "续约后费用分摊新口径",
+          "value": "房东说续约以后水费他包，电费网费还是俩人摊；12 月账单起只算电和网，在冰箱本子上划一笔",
+          "valid_time": "2026-12-01",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T11", "message_id": "m0", "quote": "房东说续约以后水费他包，电费网费还是咱俩摊。那 12 月账单起就只算电和网了"},
+          "required_this_turn": false,
+          "affirm_markers": [["水费他包"], ["电费网费", "摊"], ["只算电和网"]]
+        }
+      ],
+      "private_guidance": "口头→定案链闭合：T09（口头未落正式、tentative）→T11 HER 亲口'续约我定了'（asserted）——候选本轮接定案合法（与 T09 的 unknown 不冲突，两张卡各自判本轮）。新口径生效时点：12 月账单起（valid_time 用 2026-12-01 交租口径），11 月账仍按老口径（电费网费，水——11 月账单 T12 说只结电费网费，水费房东包从续约后算）——候选别把 11 月账也算进新口径（越界改账判错）。记账义务'冰箱本子上划一笔'承接即可。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把水费房东包说成从 11 月账单起（12 月起才生效）",
+        "不得质疑续约定案（她已亲口定）"
+      ],
+      "may_decline": false
+    },
+    "E372_T12": {
+      "case_id": "E372_T12",
+      "current_action": "郗月棠收尾：12 月 1 号交房租那天把 11 月电费网费一起结、省得记两笔；这周没别的了，周末回老家看爸妈；油烟机滤网下周归她洗、跑不了（may_decline=true）。",
+      "acceptable_actions": [
+        "接收尾+落账：'行，12 月 1 号一起结，滤网你跑不了'——三件事接住",
+        "接收尾+轻关心（回老家路上顺，替我问叔叔阿姨好）式一句再收",
+        "接收尾+调侃滤网（'这周滤网是逃不掉的命'式）再落收尾",
+        "合法短回/极简：'好，1 号一起结，周末路上顺'（may_decline=true 轮，免长文检查）"
+      ],
+      "applicable_dimensions": ["goal", "memory_use", "time_state", "interaction", "emotion_relation"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E372_T12_A01",
+          "subject": "HER",
+          "relation": "并结账目安排",
+          "value": "12 月 1 号交房租那天，把 11 月电费网费一起结了，省得记两笔",
+          "valid_time": "2026-12-01",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T12", "message_id": "m0", "quote": "12 月 1 号交房租那天，把 11 月电费网费一起结了，省得记两笔"},
+          "required_this_turn": false,
+          "affirm_markers": [["交房租那天", "电费网费"], ["一起结了"]]
+        },
+        {
+          "atom_id": "E372_T12_A02",
+          "subject": "HER",
+          "relation": "周末安排与滤网归属（回扣 T08）",
+          "value": "这周没别的了，周末回趟家看爸妈；油烟机滤网下周归她洗，跑不了",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E372_T12", "message_id": "m0", "quote": "周末我回趟家看我爸妈。油烟机滤网下周归我，跑不了"},
+          "required_this_turn": false,
+          "affirm_markers": [["回趟家", "爸妈"], ["滤网下周归我"]]
+        }
+      ],
+      "private_guidance": "收尾轮（may_decline=true）：合法短回走 decline 分支。账目链核对：11 月账=电费网费（T11 新口径 12 月起水费房东包——但 T12 说 11 月电费网费一起结，未提水费：11 月水费口径题面未明说，候选不替她补水费账目，按她说的'电费网费'承接）；12-01 为交房租日。回指闭合：T08 滤网'下周再说'→T12'滤网下周归我，跑不了'——候选回'你跑不了'式轻接为优。收尾不出新钩。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得替她认领或改派滤网归属（滤网归她本人洗）",
+        "不得编造 11 月水费账目（题面只说电费网费一起结）"
+      ],
+      "may_decline": true
+    }
+  }
+}

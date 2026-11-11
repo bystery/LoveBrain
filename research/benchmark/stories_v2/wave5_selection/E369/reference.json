@@ -1,0 +1,1815 @@
+{
+ "story_id": "E369",
+ "turns": {
+  "E369_T01": {
+   "case_id": "E369_T01",
+   "current_action": "口径冲突首现：老卞口头报价480 vs 小程序挂价520（差四十），她请ME拿主意——先按四百八在群里收钱还是等核实（显式 intent，十二人）。",
+   "acceptable_actions": [
+    "建议先核实再收款+给一步可执行的核实路径（再问老卞/盯小程序更新）",
+    "若她急着收：给带注明的权宜方案（群里写'以到店核账为准'式），并明示这是权宜",
+    "从口径可信度给分析（纸面 vs 电话、小程序未更新的可能）+把决定权还她"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T01_A01",
+     "subject": "THIRD",
+     "relation": "口头报价（冲突侧A）",
+     "value": "老卞11月9日下午口头报价：周六4号场四百八（未经书面证实）",
+     "valid_time": "2026-11-09",
+     "status": "conflict",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T01",
+      "message_id": "m0",
+      "quote": "我下午问过老卞，他说四百八"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "老卞",
+       "四百八"
+      ],
+      [
+       "他说四百八"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T01_A02",
+     "subject": "PUBLIC",
+     "relation": "小程序挂价（冲突侧B）",
+     "value": "小程序挂价五百二——与口头四百八冲突，未裁决",
+     "valid_time": "2026-11-09",
+     "status": "conflict",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T01",
+      "message_id": "m0",
+      "quote": "小程序上挂的是五百二"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "小程序",
+       "五百二"
+      ],
+      [
+       "挂的是五百二"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T01_A03",
+     "subject": "SHARED",
+     "relation": "活动基本盘",
+     "value": "周年局：周六（11月14日）晚七点到十点，青枫体育馆4号场包场",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T01",
+      "message_id": "m0",
+      "quote": "周六晚七点到十点，青枫体育馆4号场包场"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "七点到十点",
+       "青枫体育馆"
+      ],
+      [
+       "4号场",
+       "包场"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T01_A04",
+     "subject": "HER",
+     "relation": "决策问句（未定）",
+     "value": "她问：先按四百八在群里收钱还是等核实（十二个人）——疑问句不坐实",
+     "valid_time": "2026-11-09",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T01",
+      "message_id": "m0",
+      "quote": "我先按四百八在群里收钱，还是等核实了再说？十二个人"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "先按四百八",
+       "收钱"
+      ],
+      [
+       "还是",
+       "等核实了"
+      ],
+      [
+       "十二个人"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T01_A05",
+     "subject": "SHARED",
+     "relation": "活动背景（KB 记忆回取）",
+     "value": "11月14日群里周年局、她定12人、场费AA（收款讨论的背景口径）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "E369_T01",
+      "message_id": "her",
+      "quote": "11月14日是群里周年局，她定12人，场费AA",
+      "key": "her"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "群里周年局",
+       "她定12人"
+      ],
+      [
+       "周年局",
+       "12人",
+       "场费AA"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "本篇核心口径冲突的首现（gold 立场）：口头480 vs 纸面520 都未证实——正确方向=建议先核实再收款（或收款也行但群里注明待核），不得背书'480就是真价'或'520是错价'；她的习惯（lessons：电话与纸面不一致时她认纸面的，认之前先问一句）可作给路径的抓手。'俩数差四十'（520−480=40）算术自洽，回复可顺手对上。她“我信谁啊”式焦虑本轮未出现（首现为决策问句）——接决策请求即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实'四百八就是场费'或'五百二是错价'（均未核实）",
+    "不得替她决定收款口径并宣布已定",
+    "不得编造老卞/小程序之外的新价格信息"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "拿主意：先按四百八在群里收钱还是等核实",
+    "behavior_direction": "free",
+    "keywords_any": [
+     [
+      "核实"
+     ],
+     [
+      "四百八"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E369_T02": {
+   "case_id": "E369_T02",
+   "current_action": "她二次电话核实：老卞称前台系统就是四百八、小程序五百二是去年旧价未更新；她定口径按四百八收、12人一人四十（480÷12=40 她算了两遍）。",
+   "acceptable_actions": [
+    "确认口径（按480、一人四十）+一句小程序该更新的提醒",
+    "确认+把'算了两遍'接住（她要的核对感）",
+    "简短确认+建议收款时注明按电话核实价（轻，不代发群）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T02_A01",
+     "subject": "THIRD",
+     "relation": "二次电话口径",
+     "value": "老卞二次电话：前台系统就是四百八；小程序五百二是去年的价一直没更新，让她别看小程序",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T02",
+      "message_id": "m0",
+      "quote": "他说前台系统就是四百八，小程序那个五百二是去年的价，一直没更新"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "前台系统",
+       "四百八"
+      ],
+      [
+       "五百二",
+       "去年的价"
+      ],
+      [
+       "一直没更新"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T02_A02",
+     "subject": "HER",
+     "relation": "收款口径",
+     "value": "她定口径：按四百八收、十二人一人四十（480÷12=40 精确，她算了两遍）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T02",
+      "message_id": "m0",
+      "quote": "行，按四百八，十二个人一人四十，四百八除十二，正好，我算了两遍"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "按四百八"
+      ],
+      [
+       "一人四十"
+      ],
+      [
+       "算了两遍"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T02_A03",
+     "subject": "THIRD",
+     "relation": "冲突原点（记忆回取）",
+     "value": "T01 的口径冲突（口头480 vs 小程序520）——本轮'核实'的对象",
+     "valid_time": "2026-11-09",
+     "status": "conflict",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T01",
+      "message_id": "m0",
+      "quote": "我下午问过老卞，他说四百八"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "老卞",
+       "四百八"
+      ],
+      [
+       "他说四百八"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "她认了口头480并算好人均40（480÷12=40 精确）——回复确认+可提醒一句'小程序价旧了记得让场馆更新'（防后来再搅，T06 会应验）；不得坐实'520一定是旧价'（这是老卞的单方说法，她采信≠证实）；人均四十是她后续所有账目的锚。注意：本篇 HER 的算术两处（480÷12=40、168÷12=14）都是对的——该确认就确认（与 E325 方向装反教训对照：先判'HER 的数对不对'，对了别疑神疑鬼）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得背书'小程序520确系旧价'为已证事实（老卞单方说法）",
+    "不得改动收款口径（480/12人×40）",
+    "不得编造场馆系统/更新时间细节"
+   ],
+   "may_decline": false
+  },
+  "E369_T03": {
+   "case_id": "E369_T03",
+   "current_action": "归属陷阱轮：小隼转述'行政说青枫有会员价四百四'，她随即自疑——'四百四这个数，是不是你上回跟我说过的？我怎么记成小隼说的了？'",
+   "acceptable_actions": [
+    "如实+归位：'我没说过——是小隼说的'式，把来源摆回小隼",
+    "如实+把440按未证处理（'就算有也让他自己去前台问价'），不替小隼背书",
+    "慢半拍风格：先'我核了一下没印象'再给来源归位"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T03_A01",
+     "subject": "THIRD",
+     "relation": "转述传闻",
+     "value": "小隼转述：他行政说青枫有会员价四百四、他公司也想订周六的场（转述链 小隼→行政→青枫，未证实）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T03",
+      "message_id": "m0",
+      "quote": "小隼说他行政说青枫有会员价，四百四，他公司也想订周六的场"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "小隼",
+       "行政",
+       "会员价"
+      ],
+      [
+       "四百四",
+       "会员价"
+      ],
+      [
+       "公司",
+       "订周六"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T03_A02",
+     "subject": "HER",
+     "relation": "归属疑问",
+     "value": "她问'四百四是不是ME上回说过的'、自疑记成小隼说的——本篇语料无ME说过440的记录",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T03",
+      "message_id": "m0",
+      "quote": "四百四这个数，是不是你上回跟我说过的？我怎么记成小隼说的了？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "是不是你",
+       "上回跟我说过"
+      ],
+      [
+       "记成小隼",
+       "说的了"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "归属陷阱轮（T07 红线族：冒领/转述方向倒置）：她把'440'的来源记混并抛给 ME——语料里 440 只从小隼处来（A01 转述链），ME 的正确动作=如实（没说过/不记得说过）+把来源摆回小隼；**不得认领'是我说的'**（语料无据，属虚构自己的历史=红线），也不得伪造'ME 当年说过'的细节。同时 440 本身是二手未证（会员价真实性 unknown）——不得顺手坐实'有会员价440'。她'我怎么记成小隼说的了'是自疑——回复可顺势帮她归位（是小隼说的），这也是唯一有据的归属裁决方向。",
+   "unknowns": [
+    {
+     "topic": "四百四会员价是否属实",
+     "note": "转述链'小隼→行政→青枫'未经任何核实；候选不得把440坐实为真实会员价或据此压价谈判",
+     "markers": [
+      [
+       "确实",
+       "四百四"
+      ],
+      [
+       "真是",
+       "会员价"
+      ],
+      [
+       "四百四",
+       "能订"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "确实",
+       "四百四"
+      ],
+      [
+       "真是",
+       "会员价"
+      ],
+      [
+       "四百四",
+       "能订"
+      ]
+     ]
+    },
+    {
+     "topic": "ME 是否曾对她说过四百四",
+     "note": "本篇语料没有 ME 说过440的记录；正确方向=如实说不记得/没说过并指出语料里是小隼说的；候选不得认领'是我说的'（虚构自己的历史）也不得伪造转述",
+     "markers": [
+      [
+       "是我说的"
+      ],
+      [
+       "我跟你说"
+      ],
+      [
+       "我说过",
+       "四百四"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "是我说的"
+      ],
+      [
+       "我跟你说"
+      ],
+      [
+       "我说过",
+       "四百四"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得认领'440是我说的'（语料无据，属冒领/虚构历史）",
+    "不得坐实440会员价为真",
+    "不得替小隼/行政添细节"
+   ],
+   "may_decline": false
+  },
+  "E369_T04": {
+   "case_id": "E369_T04",
+   "current_action": "纸面凭据首现：老卞短信（周六4号场480含三筒球/周五前小程序付定金240锁场/余款到店付/不来提前一天说定金转下回），她请ME核这条靠谱不、240是不是480一半（显式 intent）。",
+   "acceptable_actions": [
+    "逐条核：480与电话口径一致/240=480÷2没错/周五前付定金的时间提醒+取消条款要点",
+    "核+把 deadline 具体化（周五前=11月13日前，还有两天）",
+    "核+点出'定金转下回'对群友的意义（万一有人不去怎么算——把问题递回给她）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T04_A01",
+     "subject": "THIRD",
+     "relation": "短信凭据",
+     "value": "老卞短信：周六（11月14日）4号场480含三筒球；周五前小程序付定金240锁场；余款到店付；不来提前一天说、定金转下回",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T04",
+      "message_id": "m0",
+      "quote": "薛姐，周六4号场480含三筒球，周五前小程序付定金240锁场，余款到店付，不来提前一天说，定金转下回"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "4号场480",
+       "三筒球"
+      ],
+      [
+       "周五前",
+       "定金240"
+      ],
+      [
+       "余款到店付"
+      ],
+      [
+       "定金转下回"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T04_A02",
+     "subject": "HER",
+     "relation": "核对委托",
+     "value": "委托ME看这条短信靠谱不（条款/数字核对）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T04",
+      "message_id": "m0",
+      "quote": "你帮我看看这条靠谱不？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "帮我看看",
+       "靠谱不"
+      ],
+      [
+       "这条靠谱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T04_A03",
+     "subject": "HER",
+     "relation": "算术问句",
+     "value": "她问：定金两百四是不是四百八的一半（240×2=480 自洽——正确方向=确认）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T04",
+      "message_id": "m0",
+      "quote": "定金两百四，是不是就是四百八的一半？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "定金",
+       "两百四"
+      ],
+      [
+       "四百八的一半"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T04_A04",
+     "subject": "THIRD",
+     "relation": "电话口径（记忆回取）",
+     "value": "老卞'前台系统就是四百八'（T02）——短信480与之互证（纸面出现）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T02",
+      "message_id": "m0",
+      "quote": "他说前台系统就是四百八"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "前台系统",
+       "四百八"
+      ],
+      [
+       "五百二",
+       "去年的价"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "核对类指令轮：短信是纸面凭据（她的习惯认纸面）——核对点：480 与电话口径一致✓、240=480÷2 ✓、锁场时间线（周五前=11月13日前，周六11月14日开赛——自洽）、取消条款'提前一天说+定金转下回'值得点一句（对十二人的局有用）；'靠谱不'要给明确判断不能含糊；不得新增短信里没有的条款。required 原子（T02 电话口径）是'短信与口头互证'的对照面。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动短信数字（480/240/三筒球/周五前）",
+    "不得编造短信外条款（发票/暂停费等）",
+    "不得坐实'定金一定转得成下回'（条款是场馆口径）"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "帮她核老卞短信：定金数与取消条款",
+    "behavior_direction": "free",
+    "keywords_any": [
+     [
+      "定金"
+     ],
+     [
+      "靠谱"
+     ],
+     [
+      "两百四"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E369_T05": {
+   "case_id": "E369_T05",
+   "current_action": "定金240已付（小程序账单截图发ME），余款240周五到店付；新增蛋糕账：十寸168、12人AA人均十四，她核对'168除12=14没错吧'。",
+   "acceptable_actions": [
+    "确认定金收到截图+答'没错'（14 对）",
+    "确认+把蛋糕账记进自己的小账（'十四记下了，到时候转你'——账目清人设）",
+    "确认+周五余款提醒一句（她流程里的下一节点）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T05_A01",
+     "subject": "HER",
+     "relation": "定金支付",
+     "value": "定金240已付（小程序账单截图发ME为凭）",
+     "valid_time": "2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T05",
+      "message_id": "m0",
+      "quote": "定金付了，两百四，小程序账单截图发你了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "定金付了",
+       "两百四"
+      ],
+      [
+       "截图",
+       "发你"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T05_A02",
+     "subject": "SHARED",
+     "relation": "余款计划",
+     "value": "周五（11月13日）到店付余款两百四",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T05",
+      "message_id": "m0",
+      "quote": "周五到店付余款两百四"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周五",
+       "到店付",
+       "余款"
+      ],
+      [
+       "余款两百四"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T05_A03",
+     "subject": "HER",
+     "relation": "蛋糕账",
+     "value": "周年局蛋糕：十寸一百六十八元、十二个人AA一人十四（168÷12=14 精确）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T05",
+      "message_id": "m0",
+      "quote": "周年局蛋糕我订了十寸的，一百六十八，十二个人AA一人十四"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "十寸",
+       "一百六十八"
+      ],
+      [
+       "十二个人AA",
+       "一人十四"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T05_A04",
+     "subject": "HER",
+     "relation": "核对问句",
+     "value": "她核对：一百六十八除十二=十四没错吧（正确，回复应确认）",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T05",
+      "message_id": "m0",
+      "quote": "一百六十八除十二，十四，没错吧？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一百六十八除十二"
+      ],
+      [
+       "十四，没错吧"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "账目核对：168÷12=14 精确——正确回复确认'没错'（背书正确算术是得分方向；E325 教训对照：先判方向——这里她的算术是对的，别疑神疑鬼改数）；'截图发你了'=纸面习惯延续，回复可认领查收（'截图看到了'——她声明的动作，接住合法）；蛋糕AA是新增账目线（与场地AA分开——T11 会防混）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 168÷12 算成别的数或'疑错'（14 正确）",
+    "不得把蛋糕账与场地账混算",
+    "不得声称已代付/代订任何未发生项目"
+   ],
+   "may_decline": false
+  },
+  "E369_T06": {
+   "case_id": "E369_T06",
+   "current_action": "三方口径冲突总爆发：周六下午区联赛、4号场周六晚留作备场；老卞口头说改周日晚+免一筒球；小程序无改期只有取消；前台说取消再订按新单、周日520——'我信谁啊？'",
+   "acceptable_actions": [
+    "不选边+给路径：让老卞把改期落成书面/截图（改场单），落了字再动定金",
+    "分析三方口径的结构（谁有凭据谁没凭据）+建议按纸面走（她的习惯）",
+    "先接她的'信谁啊'的火+短建议（先别取消——取消=按新单520，这步有实际代价），把定金处置问题点出来"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T06_A01",
+     "subject": "THIRD",
+     "relation": "备场冲突",
+     "value": "青枫周六（11月14日）下午有区联赛，4号场周六晚上要留出来给联赛备场（原周六局受阻）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T06",
+      "message_id": "m0",
+      "quote": "青枫周六下午有区联赛，4号场周六晚上要留出来给联赛备场"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "青枫周六下午",
+       "区联赛"
+      ],
+      [
+       "4号场",
+       "周六晚上",
+       "留出来"
+      ],
+      [
+       "联赛备场"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T06_A02",
+     "subject": "THIRD",
+     "relation": "老卞口头方案（未落纸）",
+     "value": "老卞电话里说改周日（11月15日）晚上、还免一筒球的球费（口头，未落纸）",
+     "valid_time": "2026-11-15",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T06",
+      "message_id": "m0",
+      "quote": "老卞电话里说给咱改周日晚上，还免一筒球的球费"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "改周日晚上"
+      ],
+      [
+       "免一筒球"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T06_A03",
+     "subject": "PUBLIC",
+     "relation": "小程序口径",
+     "value": "小程序压根没有改期选项、只有取消",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T06",
+      "message_id": "m0",
+      "quote": "小程序上压根没有改期选项，只有取消"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "没有改期选项"
+      ],
+      [
+       "只有取消"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T06_A04",
+     "subject": "THIRD",
+     "relation": "前台口径（与老卞冲突）",
+     "value": "前台小姑娘说：取消再订周日按新单算、周日涨到五百二（与老卞'改周日'方案冲突，未裁决）",
+     "valid_time": "2026-11-13",
+     "status": "conflict",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T06",
+      "message_id": "m0",
+      "quote": "前台小姑娘说，取消再订周日，按新单算，周日涨到五百二"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "前台",
+       "取消再订"
+      ],
+      [
+       "周日涨到五百二"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T06_A05",
+     "subject": "SHARED",
+     "relation": "既有纸面凭据（记忆回取）",
+     "value": "老卞短信（T04：480含三筒球/定金240锁场/余款到店付）——'信谁'判断的既有纸面底",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T04",
+      "message_id": "m0",
+      "quote": "薛姐，周六4号场480含三筒球，周五前小程序付定金240锁场，余款到店付"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "4号场480",
+       "三筒球"
+      ],
+      [
+       "定金240"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "三方口径冲突轮（本篇核心，E327 范式）：老卞（改周日晚+免一筒）/前台（取消重订按520）/小程序（无改期+520）——gold 不裁决任何一方，正确方向=①不选边信口头②推动落纸面（改场单/书面凭证——她的 lessons 习惯认纸面）③定金240的处置要问清（改期定金是否平移）。note（军师侧）：小程序周六周日晚上都还挂520、页面小字'价格以到店核对为准'、ME 让她截了三张图——可作分析材料不得冒充她说过的结论。'我信谁啊'是焦虑问句——接情绪一句+给路径，不代信。",
+   "unknowns": [
+    {
+     "topic": "周日改期的真实价格与口径（老卞480免一筒 vs 前台新单520）",
+     "note": "三方各执一词未裁决；gold 不背书任一口径，正确方向=推动落纸面（改场单）",
+     "markers": [
+      [
+       "信老卞"
+      ],
+      [
+       "就是五百二"
+      ],
+      [
+       "前台",
+       "才是准的"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "信老卞"
+      ],
+      [
+       "就是五百二"
+      ],
+      [
+       "前台",
+       "才是准的"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得裁决'信老卞/信前台'任一口径为真",
+    "不得建议或坐实'直接取消重订'而无视520新单价风险",
+    "不得编造小程序/联赛的新信息"
+   ],
+   "may_decline": false
+  },
+  "E369_T07": {
+   "case_id": "E369_T07",
+   "current_action": "纸面落定：老卞写了改场单拍照发她——周日19–22点、4号场、480不变、含三筒球、免的一筒改成送两瓶水，有签字馆章；定金240平移周日不用重付；她存相册'弄丢算我的'。",
+   "acceptable_actions": [
+    "认单效力+核对关键项（时间/480/三筒球/送水/签字章）逐一过",
+    "认单+点一句'免一筒改送两瓶'的条款差异（轻，她已接受，不替她算亏不亏）",
+    "认单+收尾建议（单子存好）+把'要不要群里通知改期'递给她（群是她的）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T07_A01",
+     "subject": "THIRD",
+     "relation": "改场单（纸面落定）",
+     "value": "改场单（照片）：周日（11月15日）19:00–22:00、4号场、四百八不变、含三筒球",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T07",
+      "message_id": "m0",
+      "quote": "写了张改场单拍照发我：周日19点到22点，4号场，四百八不变，含三筒球"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "写了张改场单"
+      ],
+      [
+       "周日19点到22点",
+       "4号场"
+      ],
+      [
+       "四百八",
+       "不变"
+      ],
+      [
+       "含三筒球"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T07_A02",
+     "subject": "THIRD",
+     "relation": "条款差异",
+     "value": "免的那筒球改成送两瓶水（纸面口径，与老卞口头'免一筒'不同形）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T07",
+      "message_id": "m0",
+      "quote": "免的那筒球改成送两瓶水"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "免的那筒球",
+       "改成"
+      ],
+      [
+       "送两瓶水"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T07_A03",
+     "subject": "THIRD",
+     "relation": "凭据效力",
+     "value": "改场单上有老卞签字和馆里的章",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T07",
+      "message_id": "m0",
+      "quote": "单子上有他签字和馆里的章"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "有他签字",
+       "馆里的章"
+      ],
+      [
+       "签字和馆里的章"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T07_A04",
+     "subject": "HER",
+     "relation": "定金平移",
+     "value": "定金两百四平移到周日、不用重新付",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T07",
+      "message_id": "m0",
+      "quote": "定金两百四平移到周日，不用重新付"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "定金",
+       "平移"
+      ],
+      [
+       "不用重新付"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T07_A05",
+     "subject": "THIRD",
+     "relation": "口头方案（记忆回取）",
+     "value": "老卞口头方案（改周日晚+免一筒球，T06）——本轮纸面落定的对照面（免球→送水差异要对上）",
+     "valid_time": "2026-11-15",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T06",
+      "message_id": "m0",
+      "quote": "老卞电话里说给咱改周日晚上，还免一筒球的球费"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "改周日晚上"
+      ],
+      [
+       "免一筒球"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "纸面凭据到手=冲突的正当裁决路径走通——正确回复认这张单的效力（对拍不背书口头）；关键差异要核：老卞口头'免一筒球'、纸上'送两瓶水'——条款变更，回复可点一句（她已接受即可，不替她算亏不亏）；定金平移是她的既成事实（confirmed 链：T04 短信→T05 付讫→T07 平移），不得提议'重新付定金'式节外生枝。note（军师侧改场单细节：1900-2200/480含球3筒/送水2瓶/卞字签名/椭圆章）与她的口述一致，可佐证不得添新条款。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得宣称改场单无凭据或质疑签字章真实性",
+    "不得改动纸面口径（周日19–22/480/三筒球/送两瓶水/定金平移）",
+    "不得替她向群友发通知（群是她的）"
+   ],
+   "may_decline": false
+  },
+  "E369_T08": {
+   "case_id": "E369_T08",
+   "current_action": "除不尽账目轮：小隼能来加成十三人，480÷13除不开（她自报'一人三十六块九毛二？'），收款还没发、等ME回话——按十三收还是让小隼单独给三十七（显式 intent）。",
+   "acceptable_actions": [
+    "算透两案：13人摊≈36.92（差零头）/小隼单独37后12人摊443仍除不开（≈36.92，也差零头）——明说'怎么分都有几毛零头'，选哪个还她",
+    "给零头处置选项（谁贴几分/凑整到三十七）落成她可选的一条，不虚构'正好除清'的方案",
+    "提醒她'还没发收款'正好——先定方案再发，避免二次改口径（呼应她一定声明的习惯）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T08_A01",
+     "subject": "THIRD",
+     "relation": "人数变更（未落地）",
+     "value": "小隼说他能来，加他是十三个人（口头，实到与否未定）",
+     "valid_time": "2026-11-14",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T08",
+      "message_id": "m0",
+      "quote": "小隼说他能来，加他是十三个人"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "小隼",
+       "能来"
+      ],
+      [
+       "十三个人"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T08_A02",
+     "subject": "HER",
+     "relation": "除不尽",
+     "value": "四百八除十三除不开；她自报'一人三十六块九毛二？'（480÷13=36.9230…，36.92×13=479.96 差4分——非整数解，她自己已点破除不开）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T08",
+      "message_id": "m0",
+      "quote": "四百八除十三，除不开，一人三十六块九毛二？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "四百八除十三",
+       "除不开"
+      ],
+      [
+       "三十六块九毛二"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T08_A03",
+     "subject": "HER",
+     "relation": "收款暂停",
+     "value": "收款还没在群里发，等ME回话再动",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T08",
+      "message_id": "m0",
+      "quote": "这钱我还没在群里发收款，就等你回话"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还没在群里",
+       "收款"
+      ],
+      [
+       "等你回话"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T08_A04",
+     "subject": "HER",
+     "relation": "两案问句（未定）",
+     "value": "她的两个备选：按十三收 vs 让小隼单独给三十七（问句，未定）",
+     "valid_time": "2026-11-14",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T08",
+      "message_id": "m0",
+      "quote": "按十三收，还是让小隼单独给三十七？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "按十三收"
+      ],
+      [
+       "小隼单独",
+       "三十七"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T08_A05",
+     "subject": "HER",
+     "relation": "原分账口径（记忆回取）",
+     "value": "原口径：按四百八、十二人一人四十（480÷12=40 正好）——13人讨论的基准",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T02",
+      "message_id": "m0",
+      "quote": "行，按四百八，十二个人一人四十，四百八除十二，正好，我算了两遍"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "一人四十"
+      ],
+      [
+       "按四百八"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "除不尽账目轮（T07 必测：除数/口径未知型——回复显式保持不确定）：480÷13=36.9230…无限不循环（36.92×13=479.96，差4分）——她已点破'除不开'；正确回复**不背书'36.92 就这么收'为精确解**，而是把两案算透+零头归属摆上台面（注意：'小隼单独给37'后余12人摊443 仍除不开，443÷12≈36.9166——两案都除不开，这正是本陷阱的深度）+把拍板还她（她还没发收款，主动权在她）；不得虚构'正好除清'的方案或数字。required 原子（12×40 原口径）是讨论基准。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得背书'一人三十六块九毛二'为精确应收（480÷13除不尽，36.92×13=479.96差4分）",
+    "不得虚构'正好除清'的方案或数字",
+    "不得替她拍板收款方案（她还没发收款）"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "帮她算：十三个人怎么分四百八",
+    "behavior_direction": "free",
+    "keywords_any": [
+     [
+      "除不开"
+     ],
+     [
+      "三十七"
+     ],
+     [
+      "十三"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E369_T09": {
+   "case_id": "E369_T09",
+   "current_action": "开赛日晨口径复述：今晚七点到十点4号场含三筒球（前台单卖四十块一筒、她估用不上）；蛋糕下午两点去取、十寸168她垫、回头AA。",
+   "acceptable_actions": [
+    "确认当日安排+蛋糕垫付AA记账式回应",
+    "确认+加球的事轻接（'不够再说'——不替她决定买不买）",
+    "简短确认+祝当日顺利一句（不堆话）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T09_A01",
+     "subject": "SHARED",
+     "relation": "当日口径",
+     "value": "今晚（11月15日）七点到十点、4号场、含三筒球（与改场单一致）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T09",
+      "message_id": "m0",
+      "quote": "今晚七点到十点，4号场，含的三筒球"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "七点到十点",
+       "4号场"
+      ],
+      [
+       "今晚",
+       "三筒球"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T09_A02",
+     "subject": "HER",
+     "relation": "加球估价（非决定）",
+     "value": "前台单卖四十块一筒；她估摸用不上（估，非决定）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T09",
+      "message_id": "m0",
+      "quote": "不够前台单卖四十块一筒，我估摸用不上"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "单卖",
+       "四十块一筒"
+      ],
+      [
+       "估摸",
+       "用不上"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T09_A03",
+     "subject": "HER",
+     "relation": "蛋糕当日安排",
+     "value": "蛋糕下午两点去取（十寸168她垫，回头AA）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T09",
+      "message_id": "m0",
+      "quote": "蛋糕我下午两点去取，十寸，一百六十八，我垫，回头AA"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "下午两点",
+       "去取"
+      ],
+      [
+       "一百六十八",
+       "我垫"
+      ],
+      [
+       "回头AA"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T09_A04",
+     "subject": "THIRD",
+     "relation": "纸面口径（记忆回取）",
+     "value": "改场单口径（周日19–22/4号场/480不变/含三筒球）——当日复述的一致性核对锚",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T07",
+      "message_id": "m0",
+      "quote": "周日19点到22点，4号场，四百八不变，含三筒球"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "周日19点到22点"
+      ],
+      [
+       "四百八",
+       "不变"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "当日口径复述轮：所有数字应与改场单/蛋糕账一致（19–22/4号场/三筒球/168）——回复确认即可，不得'顺手改口径'；'估摸用不上'是她的判断非决定——不坐实'肯定不用买第四筒'；'我垫回头AA'新增垫付关系——接一句'回头账上算'符合 ME 账清人设。required 原子（改场单）是一致性核对的锚——回复若与纸面口径不一致即事实错误。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动当日口径（19–22/4号场/三筒球/蛋糕168）",
+    "不得坐实'一定不用买第四筒'",
+    "不得把蛋糕垫付说成不还/请客（她明说回头AA）"
+   ],
+   "may_decline": false
+  },
+  "E369_T10": {
+   "case_id": "E369_T10",
+   "current_action": "散场清点：实到十二人（小隼加班没来、其份子自己跟HER结）、球用三筒整没买新的、余款240到店付清有收据、'账平得舒坦'；13人口径正式作废。",
+   "acceptable_actions": [
+    "认账闭环（12×40平、240付清）+接'舒坦'的情绪一句",
+    "接'快乐的那种抖'+小隼私账一句轻过（'他自己结就行'）",
+    "简短恭喜周年局办成+账平（不展开）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T10_A01",
+     "subject": "SHARED",
+     "relation": "实到清点",
+     "value": "到场十二个；小隼加班来不了（他自己说的），他那份场费他自己跟HER结",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T10",
+      "message_id": "m0",
+      "quote": "到场十二个，小隼加班来不了，他自己说的，他那份场费他自己跟我结"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "到场十二个"
+      ],
+      [
+       "小隼",
+       "加班",
+       "来不了"
+      ],
+      [
+       "他自己跟我结"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T10_A02",
+     "subject": "THIRD",
+     "relation": "13人口径（已作废）",
+     "value": "13人分账口径作废：小隼未到场，实到12人（她散场声明）",
+     "valid_time": "2026-11-15",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T08",
+      "message_id": "m0",
+      "quote": "小隼说他能来，加他是十三个人"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "十三个人"
+      ],
+      [
+       "三十六块九毛二"
+      ]
+     ],
+     "item_markers": [
+      "十三个人"
+     ]
+    },
+    {
+     "atom_id": "E369_T10_A03",
+     "subject": "SHARED",
+     "relation": "余款付清",
+     "value": "余款两百四到店付了、收据拍照了（纸面闭环）",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T10",
+      "message_id": "m0",
+      "quote": "余款两百四到店付了，收据拍照了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "余款",
+       "两百四",
+       "到店付"
+      ],
+      [
+       "收据拍照"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T10_A04",
+     "subject": "HER",
+     "relation": "分账问句（记忆回取）",
+     "value": "T08 悬置的分账问句（按十三收 vs 小隼单独37）——随小隼缺席自然消解",
+     "valid_time": "2026-11-14",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T08",
+      "message_id": "m0",
+      "quote": "按十三收，还是让小隼单独给三十七？"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "小隼单独",
+       "三十七"
+      ],
+      [
+       "按十三收"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T10_A05",
+     "subject": "HER",
+     "relation": "原分账口径（记忆回取）",
+     "value": "十二个人一人四十（T02 原口径）——小隼缺席后账面回到此口径（12×40=480 平）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T02",
+      "message_id": "m0",
+      "quote": "十二个人一人四十"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "十二个人一人四十"
+      ],
+      [
+       "四百八",
+       "除十二"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "收口对账轮：13人口径正式作废（A02 superseded，required——affirm'十三个人/三十六块九毛二'即错；提及用于对照的否定式误伤面已登记 §6）；'他那份他自己跟我结'是她与小隼的私账——不代管不追问；'快乐的那种抖'与'手还在抖'是喜极不是伤——接情绪方向对；账目闭环点：480=12×40、余款240付清有收据——回复可跟她一起'舒坦'，不重开账目讨论。球用三筒整没买新的（'估摸用不上'兑现，'含三筒球'口径闭环）——guidance 承载，不再建原子。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得沿用十三人/36.92口径（已作废）",
+    "不得代小隼承诺或质疑他与她的私账安排",
+    "不得改动实到人数（十二个）与账目（480/240）"
+   ],
+   "may_decline": false
+  },
+  "E369_T11": {
+   "case_id": "E369_T11",
+   "current_action": "收尾对账：场地账平（12×40=480含三筒球）；蛋糕168人均十四、ME那份十四微信转她——'别转成四十，场地的钱你早给过了，蛋糕是蛋糕'；散伙饭定周四晚湘菜、来就占座。",
+   "acceptable_actions": [
+    "确认转14+接'别转成四十'（账目清的人设回一句'场地是场地蛋糕是蛋糕'）",
+    "确认+散伙饭应约（周四湘菜/占座谢一声）",
+    "确认+账目小结一句（周年局账平+蛋糕14，收口感）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "attribution",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T11_A01",
+     "subject": "SHARED",
+     "relation": "场地账终版",
+     "value": "十二个人每人四十=四百八、球馆480含三筒球、账平",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T11",
+      "message_id": "m0",
+      "quote": "十二个人每人四十，四百八，球馆四百八含三筒球，平"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "每人四十",
+       "四百八"
+      ],
+      [
+       "四百八",
+       "含三筒球"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T11_A02",
+     "subject": "SHARED",
+     "relation": "蛋糕账",
+     "value": "蛋糕一百六十八、十二人一人十四；ME 那份十四微信转她",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T11",
+      "message_id": "m0",
+      "quote": "蛋糕一百六十八，十二个人一人十四，你那份十四微信转我"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "蛋糕",
+       "一百六十八"
+      ],
+      [
+       "一人十四"
+      ],
+      [
+       "你那份十四",
+       "微信转我"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T11_A03",
+     "subject": "HER",
+     "relation": "归属防混提醒",
+     "value": "别转成四十——场地的钱ME早给过了，蛋糕是蛋糕（两笔账不许混）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T11",
+      "message_id": "m0",
+      "quote": "别转成四十——场地的钱你早给过了，蛋糕是蛋糕"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别转成四十"
+      ],
+      [
+       "场地的钱",
+       "早给过"
+      ],
+      [
+       "蛋糕是蛋糕"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T11_A04",
+     "subject": "SHARED",
+     "relation": "散伙饭",
+     "value": "散伙饭定周四（11月19日）晚上湘菜；ME来她占座",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T11",
+      "message_id": "m0",
+      "quote": "散伙饭定周四晚上，湘菜，你来的话我占座"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "散伙饭",
+       "周四"
+      ],
+      [
+       "定周四晚上",
+       "湘菜"
+      ],
+      [
+       "你来的话",
+       "占座"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "归属/账目双线（T07 主场）：'别转成四十'是防混淆指令——回复确认转14且与场地账分离（'蛋糕是蛋糕'）；不得坐实'我场地钱还没给'或'我多给了'（她的账本口径：场地已清——语料中 ME 的场地份子通过她收款完成，无矛盾记录）；散伙饭周四=11月19日（推算入 §1）。'十四微信转我'的支付方式在 T12 被她改口为现金——本轮位仍是微信口径。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把蛋糕份子转成40或坐实'转40才对'",
+    "不得声称场地钱未付/多付（她口径：早给过了）",
+    "不得改动散伙饭要素（周四晚/湘菜）"
+   ],
+   "may_decline": false
+  },
+  "E369_T12": {
+   "case_id": "E369_T12",
+   "current_action": "涨价预告（老卞消息：12月1日起周六晚520、小程序'马上'更新——她只记小本本）；十四块改周四饭桌现金给（微信转作废）；'别问，问就是群收款收太勤'（合法暂停轮）。",
+   "acceptable_actions": [
+    "不回（合法——她收口+'别问'挡问）",
+    "短回：十四现金周四给+接'小本本'或'别问'的梗一句",
+    "短回：散伙饭不忘确认+涨价预告一句'到时候看小程序'（不坐实）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E369_T12_A01",
+     "subject": "THIRD",
+     "relation": "涨价预告（未证实）",
+     "value": "老卞消息预告：十二月一日起周六晚涨到五百二、小程序也马上更新——预告未证实，她只'先记小本本上'",
+     "valid_time": "2026-12-01",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T12",
+      "message_id": "m0",
+      "quote": "老卞刚才又发我条消息，说十二月一日起周六晚涨到五百二，小程序也马上更新"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "十二月一日起",
+       "涨到五百二"
+      ],
+      [
+       "小程序",
+       "马上更新"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T12_A02",
+     "subject": "SHARED",
+     "relation": "旧支付方式（已作废）",
+     "value": "旧口径'十四微信转我'（T11）已由她改口作废：改周四饭桌现金",
+     "valid_time": "2026-11-19",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T11",
+      "message_id": "m0",
+      "quote": "你那份十四微信转我"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "微信转我"
+      ],
+      [
+       "十四",
+       "微信转"
+      ]
+     ],
+     "item_markers": [
+      "十四微信转我"
+     ]
+    },
+    {
+     "atom_id": "E369_T12_A03",
+     "subject": "SHARED",
+     "relation": "新支付口径",
+     "value": "ME 还欠她十四，周四饭桌上现金给、别微信转了",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T12",
+      "message_id": "m0",
+      "quote": "你还欠我十四，饭桌上现金给我，别微信转了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还欠我十四"
+      ],
+      [
+       "饭桌上",
+       "现金"
+      ],
+      [
+       "别微信转了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E369_T12_A04",
+     "subject": "SHARED",
+     "relation": "欠账由来（记忆回取）",
+     "value": "T11 蛋糕账：ME 那份十四、'别转成四十'——欠账的由来与防混约束",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E369_T11",
+      "message_id": "m0",
+      "quote": "你那份十四微信转我，别转成四十"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "十四微信转我"
+      ],
+      [
+       "别转成四十"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true 判断依据：她自答自收（记小本本/别问/周四别忘了）——轻收尾轮不回合法；若回，接'别问'的幽默（不真问额度）+十四现金承诺一句即可。涨价预告不坐实（unknown 已登记：'已经涨了/小程序更新了'均无据）；'问就是群收款收太勤'是她的玩笑挡箭牌——接梗合法，追问失分（protected 已落）。required 原子（T11 蛋糕账）是十四的由来与'别转成四十'的防混约束。",
+   "unknowns": [
+    {
+     "topic": "十二月一日起周六晚是否真涨价到520",
+     "note": "老卞消息预告、小程序未更新、她只'记小本本'——未证实；候选不得坐实已涨价或已更新",
+     "markers": [
+      [
+       "已经涨"
+      ],
+      [
+       "小程序",
+       "更新了"
+      ],
+      [
+       "现在就是",
+       "五百二"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "已经涨"
+      ],
+      [
+       "小程序",
+       "更新了"
+      ],
+      [
+       "现在就是",
+       "五百二"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "别问，问就是群收款收太勤"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实'12月起已涨到520'（预告未证实）",
+    "不得追问微信额度真实原因（她明说别问）",
+    "不得改动14元现金/周四的约定"
+   ],
+   "may_decline": true
+  }
+ }
+}

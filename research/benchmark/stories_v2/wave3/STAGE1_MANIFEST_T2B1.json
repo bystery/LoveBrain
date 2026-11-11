@@ -1,0 +1,94 @@
+{
+ "kind": "story_v2_wave3_stage1_shard",
+ "stage": "wave3",
+ "date": "2026-11-03",
+ "built_by": "T2-B1",
+ "count": 4,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E163",
+   "title": "两家诊所的两套说法",
+   "themes": [
+    "医疗健康",
+    "牙齿深龋诊断分歧",
+    "牙片复核定方案",
+    "保修口径核书",
+    "陪诊与复查提醒"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E163",
+   "turns": 12,
+   "files": {
+    "episode.json": "9db6312b4f1720e4551b9994f384e92460d5c334e74f4005f30115af3656cb86",
+    "reference.json": "8f3e45935fb91f1846711b82c3f8c326e5a62c14b90ff5c102489688a009b2fe",
+    "timeline.json": "2530c4f290d0bbdc201b2258f47f6631fbd48dc245abac9803b1b321d660a207",
+    "audit.md": "bb840c2d78b4703496af79ef4014f28f1c4bd07e126c0e1543eb06665ec495d0"
+   }
+  },
+  {
+   "story_id": "E164",
+   "title": "次卡年卡的换算账",
+   "themes": [
+    "运动健身",
+    "泳池次卡续费",
+    "价格构成更正",
+    "赠品折现核实",
+    "冻结合卡解冻抉择"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E164",
+   "turns": 12,
+   "files": {
+    "episode.json": "8c0790aa4c47dec1eec9aeb4db6538ae7e2dc5b0f935b0a8e009effa0e66ae04",
+    "reference.json": "b5678ae703e20a3c186d8ad358780f7fca83675ceae244cb4ac9ecf8b780faf4",
+    "timeline.json": "c1aacc85472b8d12c3b3c0f9ab9a712956a707e2bcf4a3564c40432caf294e20",
+    "audit.md": "dcef02078684b92e453f880994140a32121e343b65368352b4e916d3f399800a"
+   }
+  },
+  {
+   "story_id": "E165",
+   "title": "返程被妈妈安排了",
+   "themes": [
+    "出行拼车",
+    "周末回乡顺风车",
+    "长辈第三方代订返程",
+    "儿童增高垫安全",
+    "单程油费重算"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E165",
+   "turns": 12,
+   "files": {
+    "episode.json": "1ef9a98cc42f2c1166c948052b325533371e0e6a65ef64e941dbcff155cc2c16",
+    "reference.json": "a79f0af9f120c0e86461f9e16d79095c97e9654d590155d7bfd12295c4937666",
+    "timeline.json": "5423b81583d7c263f66d36d28e02c9187204166a40ee6b920212452b79248ada",
+    "audit.md": "9e01d8919437d5b88e7e7f16df8664f5a63ab08066bd45751febce2beff5ed3f"
+   }
+  },
+  {
+   "story_id": "E166",
+   "title": "共读会的冬歇与重启",
+   "themes": [
+    "兴趣社交",
+    "共读会十二月降档",
+    "线上短评半期方案",
+    "语音复盘延期",
+    "一月恢复线下"
+   ],
+   "domain": "兴趣社交",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave3/E166",
+   "turns": 12,
+   "files": {
+    "episode.json": "e2d06190eab1d6acfe3094bf295b8417f24c28c515a130f652274feefa367cb5",
+    "reference.json": "0e242cf1b34e5fa70871427bcc6a6615787e9d5c13e2a72c96780e49cc642344",
+    "timeline.json": "4d0ce17d1b0610b4e64625c9d99826a32c1ffbc28d52bc2f14a68efb629412a6",
+    "audit.md": "c037a38432eaeed630b49014cc711f7b5b0029f81ae27b7c1d09797540a6ec22"
+   }
+  }
+ ]
+}

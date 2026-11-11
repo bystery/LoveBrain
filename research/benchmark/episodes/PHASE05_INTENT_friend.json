@@ -1,0 +1,97 @@
+{
+  "episode_id": "PHASE05_INTENT_friend",
+  "hero": "林小满",
+  "city": "合肥",
+  "relation_stage": "熟悉期",
+  "note": "Phase 0.5 严格意图对照：t1-t2 公共历史，t3 起冻结状态分叉 ×4 意图（变体文件同历史仅改 intent+gold）。 变体=friend",
+  "turns": [
+    {
+      "case_id": "INT_t1",
+      "input": {
+        "clock": "2026-11-10 21:30",
+        "messages": [
+          {
+            "role": "HER",
+            "text": "今天好累啊"
+          },
+          {
+            "role": "HER",
+            "text": "项目组天天拉会，烦死了"
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "INT_t2",
+      "input": {
+        "clock": "2026-11-10 21:40",
+        "messages": [
+          {
+            "role": "HER",
+            "text": "对了"
+          },
+          {
+            "role": "HER",
+            "text": "你周五晚上有空吗"
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "INT_t3",
+      "input": {
+        "clock": "2026-11-10 21:50",
+        "messages": [
+          {
+            "role": "HER",
+            "text": "周五出来聚聚呗"
+          },
+          {
+            "role": "HER",
+            "text": "好久没见了"
+          }
+        ],
+        "intent": {
+          "enabled": true,
+          "text": "普通朋友：平常心赴约，不暧昧不冷淡"
+        }
+      },
+      "gold": {
+        "intent_must_not_keywords": [
+          "宝宝",
+          "亲亲",
+          "想你",
+          "抱抱"
+        ]
+      }
+    },
+    {
+      "case_id": "INT_t4",
+      "input": {
+        "clock": "2026-11-10 22:05",
+        "messages": [
+          {
+            "role": "HER",
+            "text": "你还没回我呢"
+          },
+          {
+            "role": "HER",
+            "text": "来不来呀"
+          }
+        ],
+        "intent": {
+          "enabled": true,
+          "text": "普通朋友：平常心赴约，不暧昧不冷淡"
+        }
+      },
+      "gold": {
+        "intent_must_not_keywords": [
+          "宝宝",
+          "亲亲",
+          "想你",
+          "抱抱"
+        ]
+      }
+    }
+  ]
+}

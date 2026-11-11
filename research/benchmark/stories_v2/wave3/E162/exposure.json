@@ -1,0 +1,22 @@
+{
+ "author": "AI",
+ "author_type": "ai_generator",
+ "readers": [
+  "author"
+ ],
+ "frozen_at": null,
+ "experiments_used": [],
+ "dev_exposed": false,
+ "real_user_material": false,
+ "hashes": {
+  "episode.json": "1c87326dfd8c6e583084ebe93ac86efc045b573164739b395f89575ee90ecc6f",
+  "reference.json": "e68bc0ef587020c9de719e68f693fd5fe302c7b639df101778c13ee61edc483c",
+  "timeline.json": "06934a5acb714b674dcc766a46ea0112a3b5a879f98d41abcfaca089e42a15af"
+ },
+ "runner_copy": "benchmark/stories_v2/wave3/E162/runner_episode.json",
+ "kind": "cross_story_pair",
+ "pair": "E161+E162",
+ "role": "B",
+ "conflict_type": "免赔边界与转让信息更正",
+ "notes": "T2-A2隔离生成会话产出；B篇跨篇引用原子经cross_origin字段指向A篇轮id（校验器仅在本故事case_index内检索message来源）"
+}

@@ -1,0 +1,28 @@
+{
+ "material_id": "MAT_12",
+ "binding_sha256_16": "aefa7c6d8066c11e",
+ "_填写说明": "semantic 各维填 VERDICTS 之一；sendability 填 SENDABILITY；compare 填 COMPARE；defects 每条 {field, evidence, kind:evidence|style_preference}；reviewer 填身份；同 material+reviewer 重交须 revision 递增",
+ "semantic": {
+  "事实与来源": "合格",
+  "主体": "合格",
+  "互动动机": "合格",
+  "时间地点": "合格",
+  "分寸": "合格",
+  "no_reply是否合适": "合格",
+  "是否值得接着聊": "合格"
+ },
+ "sendability": {
+  "甲": "原样可发",
+  "乙": "不建议发"
+ },
+ "compare": "甲",
+ "defects": [
+  {
+   "field": "原样输出.乙",
+   "evidence": "组会=周二晚七点线上（initial_kb 契约），乙答成周四线下",
+   "kind": "evidence"
+  }
+ ],
+ "reviewer": "fixture",
+ "revision": 1
+}

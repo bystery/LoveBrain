@@ -1,0 +1,239 @@
+{
+ "episode_id": "E025",
+ "persona": {
+  "me": "27岁，后端程序员，手游打了四年，主玩打野，嘴硬手快；工作日晚上十点后上线。",
+  "her": "25岁，UI设计师，开黑认识的队友；玩射手，手感来了很凶，被坑了会记仇；夜猫子。"
+ },
+ "initial_kb": {
+  "me": "工作日晚上十点后上线，周末白天也打；段位星耀二，卡了两周。",
+  "her": "游戏ID叫'不要抢我线'；段位星耀一；白天上班，深夜排位；最近赶甲方的改稿单。",
+  "warmth": "两个月前匹配到一队，互相吐槽之后加的游戏好友，几乎每晚约两把。",
+  "style": "游戏黑话+短句；输赢都吐槽；不过问到现实身份。",
+  "stage": "游戏搭子，投缘但没见过面。",
+  "lessons": "她坑了自嘲可以跟，我坑了先认；别把游戏情绪带到第二天。"
+ },
+ "turns": [
+  {
+   "case_id": "E025_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "在吗 上号 被队友气死了 需要一个正常的打野",
+      "ts": "2026-11-24 22:05"
+     }
+    ],
+    "clock": "2026-11-24 22:07",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E025_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "来了 你先消消气 咱俩双排",
+      "ts": "2026-11-24 22:08"
+     },
+     {
+      "role": "HER",
+      "text": "你昨晚那个龙团大招空了 我还没说你呢",
+      "ts": "2026-11-24 22:13"
+     }
+    ],
+    "clock": "2026-11-24 22:15",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E025_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "这把我拿不到射手你就玩辅助",
+      "ts": "2026-11-24 22:20"
+     }
+    ],
+    "clock": "2026-11-24 22:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E025_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "辅助可以 你得保证不抢我线",
+      "ts": "2026-11-24 22:24"
+     },
+     {
+      "role": "HER",
+      "text": "我ID都叫不要抢我线了 你还想怎样",
+      "ts": "2026-11-24 22:28"
+     }
+    ],
+    "clock": "2026-11-24 22:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E025_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "气死 最后一波你别闪现上去啊",
+      "ts": "2026-11-24 23:40"
+     }
+    ],
+    "clock": "2026-11-24 23:42",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E025_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那波我错了 但你大龙前那个走位也没好到哪去",
+      "ts": "2026-11-24 23:44"
+     },
+     {
+      "role": "HER",
+      "text": "行 我收回昨晚的话 咱俩半斤八两",
+      "ts": "2026-11-24 23:48"
+     }
+    ],
+    "clock": "2026-11-24 23:50",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E025_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "不打了 有点困 但明天同一时间 必须把段位打回来",
+      "ts": "2026-11-24 23:56"
+     }
+    ],
+    "clock": "2026-11-24 23:58",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E025_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 明晚十点 谁不上谁小狗",
+      "ts": "2026-11-25 00:00"
+     },
+     {
+      "role": "HER",
+      "text": "幼稚 但成交",
+      "ts": "2026-11-25 00:02"
+     }
+    ],
+    "clock": "2026-11-25 00:03",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E025_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今晚我可能上不了 单子改到第八版了 你自己排两把",
+      "ts": "2026-11-25 22:30"
+     }
+    ],
+    "clock": "2026-11-25 22:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E025_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 你忙 别熬太晚",
+      "ts": "2026-11-25 22:35"
+     },
+     {
+      "role": "HER",
+      "text": "设计狗的命 你懂什么",
+      "ts": "2026-11-25 22:38"
+     }
+    ],
+    "clock": "2026-11-25 22:40",
+    "may_decline": true
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E025_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "刚下工 补一句 昨晚你没等我吧",
+      "ts": "2026-11-26 23:50"
+     }
+    ],
+    "clock": "2026-11-26 23:52",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E025_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "排了两把，一胜一负，不亏。你单子改完了？",
+      "ts": "2026-11-26 23:55"
+     },
+     {
+      "role": "HER",
+      "text": "改完了 第八版甲方终于像个人了 周末补你两把 拜拜",
+      "ts": "2026-11-27 00:00"
+     }
+    ],
+    "clock": "2026-11-27 00:02",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

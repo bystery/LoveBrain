@@ -1,0 +1,439 @@
+{
+ "story_id": "E129",
+ "turns": {
+  "E129_T01": {
+   "case_id": "E129_T01",
+   "current_action": "把关报价:铝材壁厚、中空层与安装费拆开核对",
+   "acceptable_actions": [
+    "建议拆开看:型材壁厚、玻璃配置、五金和安装各报多少",
+    "提醒她让店里写清铝材品牌壁厚和保质期再定",
+    "说5200在合理区间,但让她确认是否含防水打胶"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A01",
+     "subject": "ME",
+     "relation": "industry_background",
+     "value": "蔺舟做过两年建材销售,熟悉门窗行情",
+     "valid_time": "既往从业经历",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "做过两年建材销售"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E129_A02",
+     "subject": "SHARED",
+     "relation": "renovation_quote",
+     "value": "她的阳台封窗比价结果:铝材1.4厚加双层中空,一家报5200元含安装,打算周末定",
+     "valid_time": "2026-11-03 询价",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T01", "message_id": "m0", "quote": "一家报5200含安装,我打算周末定"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把关要给具体检查项,别只说行或不行",
+   "unknowns": ["该店品牌与保修期未提"],
+   "protected_expressions": ["一家报5200含安装"],
+   "forbidden_factual_claims": ["不得虚构其他家报价数字"]
+  },
+  "E129_T02": {
+   "case_id": "E129_T02",
+   "current_action": "肯定先问物业的顺序,提示带齐房号和规约条款",
+   "acceptable_actions": [
+    "夸她顺序对,提醒问清报备要哪些材料",
+    "让她问物业时要书面口径,别听口头",
+    "顺嘴说立面要求常见于规约附件,带合同去查"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A02",
+     "subject": "SHARED",
+     "relation": "renovation_quote",
+     "value": "她的阳台封窗比价结果:铝材1.4厚加双层中空,一家报5200元含安装,打算周末定",
+     "valid_time": "2026-11-03 询价",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T01", "message_id": "m0", "quote": "一家报5200含安装,我打算周末定"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E129_A03",
+     "subject": "SHARED",
+     "relation": "property_check",
+     "value": "小区交房时签过临时管理规约,外墙立面疑似有统一要求,她计划次日去物业问",
+     "valid_time": "2026-11-05 前去核实",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T02", "message_id": "m0", "quote": "外墙立面好像有统一要求,我明天去物业问"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她流程意识强,顺着流程补细节就是帮她",
+   "unknowns": ["规约具体条款内容未明说"],
+   "protected_expressions": ["我明天去物业问"],
+   "forbidden_factual_claims": ["不得虚构规约的具体编号"]
+  },
+  "E129_T03": {
+   "case_id": "E129_T03",
+   "current_action": "为报备流程顺利松口气,提醒厂家材料要盖章原件",
+   "acceptable_actions": [
+    "说报备通过是好开头,提醒资质复印件要盖红章",
+    "让她把物业的答复也记下经手人,以备后查",
+    "接'松了口气',顺手问承诺书有什么条款"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A04",
+     "subject": "THIRD",
+     "relation": "property_approval",
+     "value": "物业答复阳台封窗不拦但需报备,提交承诺书和厂家资质复印件",
+     "valid_time": "2026-11-05 口径",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T03", "message_id": "m0", "quote": "阳台封窗不拦,但要报备"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "流程顺利时别泼冷水,只做查漏",
+   "unknowns": ["报备审批时长未知"],
+   "protected_expressions": ["阳台封窗不拦,但要报备"],
+   "forbidden_factual_claims": ["不得虚构承诺书具体内容"]
+  },
+  "E129_T04": {
+   "case_id": "E129_T04",
+   "current_action": "接住传闻的警觉,建议直接找物业核实而非信群消息",
+   "acceptable_actions": [
+    "说群传先别慌,直接问物业要书面通知最稳",
+    "提示若真有统一厂家,重点问原报备是否还有效",
+    "接'咯噔一下',安抚她先核实,别提前焦虑"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A04",
+     "subject": "THIRD",
+     "relation": "property_approval",
+     "value": "物业答复阳台封窗不拦但需报备,提交承诺书和厂家资质复印件",
+     "valid_time": "2026-11-05 口径",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T03", "message_id": "m0", "quote": "阳台封窗不拦,但要报备"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E129_A05",
+     "subject": "PUBLIC",
+     "relation": "unverified_rumor",
+     "value": "业主群传闻物业欲改封窗统一合作厂家集中施工,未经证实",
+     "valid_time": "2026-11-07 传闻出现",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T04", "message_id": "m0", "quote": "说物业打算把封窗换成统一合作厂家"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "传闻阶段她要的是方法,不是站队骂物业",
+   "unknowns": ["传闻真实性与波及范围未知"],
+   "protected_expressions": ["我心里咯噔一下"],
+   "forbidden_factual_claims": ["不得断言传闻为真"]
+  },
+  "E129_T05": {
+   "case_id": "E129_T05",
+   "current_action": "接住物业通知的变卦,帮她理清选项:问清例外条款再谈",
+   "acceptable_actions": [
+    "建议先问关键一句:是否所有阳台一刀切,有无例外情形",
+    "提醒她保留已报备的凭证,问暂停是否影响已交材料",
+    "支持她拖着不签字,先拿到合作厂家报价做对比"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "factuality", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A04",
+     "subject": "THIRD",
+     "relation": "property_approval",
+     "value": "物业答复阳台封窗不拦但需报备,提交承诺书和厂家资质复印件",
+     "valid_time": "2026-11-05 口径",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E129_T03", "message_id": "m0", "quote": "阳台封窗不拦,但要报备"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E129_A06",
+     "subject": "THIRD",
+     "relation": "policy_change",
+     "value": "物业正式通知阳台封窗原则上走合作厂家,报备通道暂停两周",
+     "valid_time": "2026-11-09 通知,暂停两周",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T05", "message_id": "m0", "quote": "报备通道暂停两周"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她憋着火但不想吵,帮她把'讲理的抓手'列出来",
+   "unknowns": ["合作厂家报价未公布"],
+   "protected_expressions": ["报备通道暂停两周"],
+   "forbidden_factual_claims": ["不得虚构物业通知的文号"]
+  },
+  "E129_T06": {
+   "case_id": "E129_T06",
+   "current_action": "肯定个案审批的切口,提醒补交材料一次备齐",
+   "acceptable_actions": [
+    "夸她用凹阳台事实说话,提醒图纸资质一次交齐别来回跑",
+    "建议她把经理的口头同意也做个记录",
+    "接'我这就去要',问厂家那边配合度高不高"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A06",
+     "subject": "THIRD",
+     "relation": "policy_change",
+     "value": "物业正式通知阳台封窗原则上走合作厂家,报备通道暂停两周",
+     "valid_time": "2026-11-09 通知",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T05", "message_id": "m0", "quote": "报备通道暂停两周"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E129_A07",
+     "subject": "SHARED",
+     "relation": "case_by_case_path",
+     "value": "物业经理同意她的凹阳台个案走审批,需补交原厂家图纸与资质",
+     "valid_time": "2026-11-09 晚达成",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T06", "message_id": "m0", "quote": "经理说可以走个案审批"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "通道刚开,提醒落在材料齐套上,别让她跑第二趟",
+   "unknowns": ["个案审批通过率未知"],
+   "protected_expressions": ["经理说可以走个案审批"],
+   "forbidden_factual_claims": ["不得虚构经理姓名"]
+  },
+  "E129_T07": {
+   "case_id": "E129_T07",
+   "current_action": "接住8900对比价,肯定她把差价做成筹码的打法",
+   "acceptable_actions": [
+    "说贵3700就是最好的理由,个案审批更有底气",
+    "提醒审批期内别催,五个工作日按规矩来",
+    "让她把8900报价单也存好,万一要申诉用得上"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A02",
+     "subject": "SHARED",
+     "relation": "renovation_quote",
+     "value": "她的阳台封窗比价结果:铝材1.4厚加双层中空,一家报5200元含安装,打算周末定",
+     "valid_time": "2026-11-03 询价",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T01", "message_id": "m0", "quote": "一家报5200含安装,我打算周末定"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E129_A08",
+     "subject": "PUBLIC",
+     "relation": "competitor_quote",
+     "value": "物业合作厂家同规格报价8900元,比原方案贵3700元",
+     "valid_time": "2026-11-11 获得报价单",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T07", "message_id": "m0", "quote": "8900,同规格贵出三千七"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她拿到了硬证据,这轮给的是背书不是建议",
+   "unknowns": ["合作厂家的施工排期未知"],
+   "protected_expressions": ["8900,同规格贵出三千七"],
+   "forbidden_factual_claims": ["不得虚构合作厂家的品牌名"]
+  },
+  "E129_T08": {
+   "case_id": "E129_T08",
+   "current_action": "祝贺个案获批,认可押金条件的合理性",
+   "acceptable_actions": [
+    "说押金500换原方案落地,这买卖值",
+    "夸她坚持讲流程走出了结果,提醒验收单留好",
+    "接'规矩清楚就不算刁难',认同她的分寸"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A06",
+     "subject": "THIRD",
+     "relation": "policy_change",
+     "value": "物业正式通知阳台封窗原则上走合作厂家,报备通道暂停两周",
+     "valid_time": "2026-11-09 通知",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T05", "message_id": "m0", "quote": "报备通道暂停两周"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E129_A09",
+     "subject": "SHARED",
+     "relation": "approval_result",
+     "value": "个案审批通过,按原方案施工,条件为安装前交施工押金500元,完工验收后退",
+     "valid_time": "2026-11-13 批复",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T08", "message_id": "m0", "quote": "个案批下来了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她赢了但这轮她强调了规则,接住她'讲理赢'的价值观",
+   "unknowns": ["押金退还的具体流程细节未知"],
+   "protected_expressions": ["规矩清楚就不算刁难"],
+   "forbidden_factual_claims": ["不得虚构批复文件细节"]
+  },
+  "E129_T09": {
+   "case_id": "E129_T09",
+   "current_action": "确认排期与重签价格未变,肯定她接受监督的态度",
+   "acceptable_actions": [
+    "说价格还是5200没被动,这轮守得漂亮",
+    "接'欢迎监督',提醒进场当天留好旧栏杆拆除照片",
+    "确认下周五时间,问要不要自己过去帮盯半天"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A09",
+     "subject": "SHARED",
+     "relation": "approval_result",
+     "value": "个案审批通过,按原方案施工,条件为安装前交施工押金500元,完工验收后退",
+     "valid_time": "2026-11-13 批复",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T08", "message_id": "m0", "quote": "个案批下来了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E129_A10",
+     "subject": "SHARED",
+     "relation": "construction_schedule",
+     "value": "原厂家重签合同价仍为5200元,定于下周五进场一天装完,物业专员当天到场",
+     "valid_time": "2026-11-20(下周五)进场",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T09", "message_id": "m0", "quote": "下周五进场,一天装完"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "开工在即,确认类回复别加新变量",
+   "unknowns": ["当天天气与施工窗口未知"],
+   "protected_expressions": ["下周五进场,一天装完"],
+   "forbidden_factual_claims": ["不得虚构施工队人数"]
+  },
+  "E129_T10": {
+   "case_id": "E129_T10",
+   "current_action": "接住完工喜讯,提醒押金退还盯验收单回执",
+   "acceptable_actions": [
+    "夸五个小时严丝合缝,提醒验收单交回要留回执",
+    "接'十张照片存档',说她这套流程能出书",
+    "问隔音和密封体验,验收细节替她高兴"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A10",
+     "subject": "SHARED",
+     "relation": "construction_schedule",
+     "value": "原厂家重签合同价仍为5200元,定于下周五进场一天装完,物业专员当天到场",
+     "valid_time": "2026-11-20 进场",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T09", "message_id": "m0", "quote": "下周五进场,一天装完"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E129_A11",
+     "subject": "SHARED",
+     "relation": "construction_done",
+     "value": "封窗施工当日完工,物业专员查看无异议,押金待验收单交回三个工作日后退",
+     "valid_time": "2026-11-16 完工",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T10", "message_id": "m0", "quote": "今天封好了,五个小时,严丝合缝"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "完工只是差口气,把押金尾巴收好",
+   "unknowns": ["押金实际到账日未知", "进场日口径矛盾:T09(11-15)称'下周五进场'(=11-20),T10(11-16)却称'今天封好了',相差四天,不得替双方圆场或断言实际进场日期"],
+   "protected_expressions": ["严丝合缝"],
+   "forbidden_factual_claims": ["不得虚构密封检测数据"]
+  },
+  "E129_T11": {
+   "case_id": "E129_T11",
+   "current_action": "肯定攻略分享,对评论区非议表态:经验给需要的人就够",
+   "acceptable_actions": [
+    "说攻略第一条就值回票价,不用理杠精",
+    "接'懒得吵',夸她把流程沉淀成公共财富",
+    "轻吐槽评论区,让她留着攻略以后帮别人省事"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "boundary", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A09",
+     "subject": "SHARED",
+     "relation": "approval_result",
+     "value": "个案审批通过,按原方案施工,条件为安装前交施工押金500元,完工验收后退",
+     "valid_time": "2026-11-13 批复",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T08", "message_id": "m0", "quote": "个案批下来了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E129_A12",
+     "subject": "HER",
+     "relation": "deposit_refund",
+     "value": "施工押金500元已退还,全流程攻略已发业主群",
+     "valid_time": "2026-11-18 到账",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T11", "message_id": "m0", "quote": "押金500退回来了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她对非议懒得吵,别替她去吵架,给情绪支撑就好",
+   "unknowns": ["攻略在群里的具体反馈未知"],
+   "protected_expressions": ["我懒得吵"],
+   "forbidden_factual_claims": ["不得虚构评论区的具体言论"]
+  },
+  "E129_T12": {
+   "case_id": "E129_T12",
+   "current_action": "接受道谢与'画施工表'的承诺,轻松收尾",
+   "acceptable_actions": [
+    "说功劳是你自己一步步走出来的,施工表就等以后",
+    "接晒阳台的画面,嘱咐改作业别久坐",
+    "答应她家装修时反过来看她的表,收个尾"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E129_A12",
+     "subject": "HER",
+     "relation": "deposit_refund",
+     "value": "施工押金500元已退还,全流程攻略已发业主群",
+     "valid_time": "2026-11-18 到账",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E129_T11", "message_id": "m0", "quote": "押金500退回来了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾温度落在'互相帮衬'上,别煽情",
+   "unknowns": ["ME未来装修计划未定"],
+   "protected_expressions": ["你那份功劳我记着"],
+   "forbidden_factual_claims": ["不得虚构阳台使用场景细节"]
+  }
+ }
+}

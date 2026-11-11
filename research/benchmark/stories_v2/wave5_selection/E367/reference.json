@@ -1,0 +1,1580 @@
+{
+ "story_id": "E367",
+ "turns": {
+  "E367_T01": {
+   "case_id": "E367_T01",
+   "current_action": "她邀辣酱上皂摊拼桌、摊位费对半，转述'老驰在群里说一桌两摊要交两份摊位费、一人八十'——点头就今晚报名。",
+   "acceptable_actions": [
+    "答应拼桌但费率先挂起（'桌先拼上，费用等老驰口径'式）",
+    "对'两份摊位费'存疑（'一桌两摊两份？老驰原话是什么？'式核对）",
+    "直接答应报名+对八十不表态（先上桌再对账）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T01_A01",
+     "subject": "HER",
+     "relation": "拼桌邀约",
+     "value": "她邀雷震野的辣酱上她的皂摊拼桌，摊位费对半",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T01",
+      "message_id": "m0",
+      "quote": "你的辣酱想不想上摊？跟我拼一桌，摊位费咱对半"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "拼一桌",
+       "辣酱"
+      ],
+      [
+       "摊位费咱对半"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T01_A02",
+     "subject": "HER",
+     "relation": "转述的费率口径（登记方——内容真伪未证实）",
+     "value": "她转述并归源老驰群消息：'一桌两摊要交两份摊位费，一人八十'（未经证实）",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T01",
+      "message_id": "m0",
+      "quote": "老驰在群里说，一桌两摊要交两份摊位费，一人八十"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "两份摊位费"
+      ],
+      [
+       "一人八十"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T01_A03",
+     "subject": "HER",
+     "relation": "报名条件",
+     "value": "他点头她今晚就把他名字报上去",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T01",
+      "message_id": "m0",
+      "quote": "你点头我今晚就把你名字报上去"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "今晚就把你名字报上去"
+      ],
+      [
+       "点头",
+       "名字"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "她报数常带'老驰说'（KB style），本轮'两份/八十'是她的转述不是官方口径：候选可以拼桌，但把它背书成已证实规则=坐实未核实口径（unknowns/forbidden 在位）；'回话先核对再答应'是他的 style（不强制，方向分）。",
+   "unknowns": [
+    {
+     "topic": "今年摊位费与合摊收费口径（仅她转述'两份/一人八十'，官方须知未出）",
+     "note": "'一桌两摊两份、一人八十'没有官方出处，11-13 盖章须知证实为错（合摊按一桌收一百）",
+     "markers": [
+      [
+       "一人八十",
+       "就这样"
+      ],
+      [
+       "两份摊位费",
+       "没问题"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "一人八十",
+       "就这样"
+      ],
+      [
+       "两份摊位费",
+       "没问题"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把'一桌两摊交两份摊位费、一人八十'背书为已核实的官方口径"
+   ],
+   "may_decline": false
+  },
+  "E367_T02": {
+   "case_id": "E367_T02",
+   "current_action": "郑荇二手信息进场：去年不用押金、今年押金五十验收退（郑荇转老驰）；郑荇去年交的摊位费就是八十——'八十'的来历露出一半。",
+   "acceptable_actions": [
+    "指出来历（'八十听着像去年的价'），提出等官方口径",
+    "核对郑荇链（'她去年=今年吗？'式追问转述层级）",
+    "顺她的判断接押金（听着合理），费率存疑不表态"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T02_A01",
+     "subject": "THIRD",
+     "relation": "郑荇的去年经验（她转述）",
+     "value": "郑荇去年摆过摊，她说去年不用押金",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T02",
+      "message_id": "m0",
+      "quote": "她去年摆过摊。她说去年不用押金"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "去年不用押金"
+      ],
+      [
+       "去年摆过摊"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T02_A02",
+     "subject": "THIRD",
+     "relation": "郑荇转老驰的押金口径（二手转述）",
+     "value": "郑荇转述老驰跟她讲：今年押金五十，验收干净就退",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T02",
+      "message_id": "m0",
+      "quote": "今年老驰跟她讲押金五十，验收干净就退"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "押金五十"
+      ],
+      [
+       "验收干净就退"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T02_A03",
+     "subject": "THIRD",
+     "relation": "八十的真实来历",
+     "value": "郑荇去年交的摊位费就是八十（T01'一人八十'的来历）",
+     "valid_time": "2025-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T02",
+      "message_id": "m0",
+      "quote": "去年她交的摊位费就是八十"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "去年她交的摊位费就是八十"
+      ],
+      [
+       "就是八十"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T02_A04",
+     "subject": "HER",
+     "relation": "对郑荇的评价",
+     "value": "她评价郑荇嘴碎但账是清楚的",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T02",
+      "message_id": "m0",
+      "quote": "郑荇这人嘴碎，但账是清楚的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "嘴碎",
+       "郑荇"
+      ],
+      [
+       "账是清楚的"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "转述链层级：郑荇→她→候选，且'押金五十'是郑荇转老驰、非官方——候选引用转述要挂来源（'郑荇说'/'老驰跟她讲'）。'去年八十'是解开 T01 八十的关键来历，留意但不急着裁决（T04 官方口径进场）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E367_T03": {
+   "case_id": "E367_T03",
+   "current_action": "归属错挂：她把一条没出过的口径记到他头上——'你上次说八十里含桌布和电'，并要他记不清就翻聊天记录，别两拨人拎两块桌布。",
+   "acceptable_actions": [
+    "直接澄清（'这话我没说过'），建议一起翻记录",
+    "澄清+给可能出处的猜测（郑荇说的桌布自带？），不背书",
+    "澄清+玩笑（'我要说过，现在就认'式），立场不含糊"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T03_A01",
+     "subject": "HER",
+     "relation": "错挂归属主张（登记方——后被她自翻案）",
+     "value": "她声称上次是雷震野说'八十里含桌布和电'（11-17 她自翻：他压根没说过）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T03",
+      "message_id": "m0",
+      "quote": "对了你上次说八十里含桌布和电"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你上次说"
+      ],
+      [
+       "含桌布和电"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T03_A02",
+     "subject": "HER",
+     "relation": "皂摊需求",
+     "value": "她的皂要摆三层架，占地方",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T03",
+      "message_id": "m0",
+      "quote": "我的皂要摆三层架，占地方"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三层架",
+       "我的皂"
+      ],
+      [
+       "占地方",
+       "要摆"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T03_A03",
+     "subject": "HER",
+     "relation": "翻记录建议",
+     "value": "她让他记不清就翻聊天记录，别到时候两拨人拎两块桌布",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T03",
+      "message_id": "m0",
+      "quote": "你要是记不清就翻翻聊天记录，别到时候两拨人拎两块桌布"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "翻翻聊天记录"
+      ],
+      [
+       "两块桌布"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "错挂归属位（T07 红线族）：'八十里含桌布和电'这条口径从未有官方出处，'你上次说'是她的记错——候选（=雷震野本人）知道自己没说过，含糊承认=人物归属红线；她提的'翻聊天记录'是台阶，接住即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得承认'八十里含桌布和电'是雷震野说过的话",
+    "不得把'八十含桌布和电'当成已证实口径"
+   ],
+   "may_decline": false
+  },
+  "E367_T04": {
+   "case_id": "E367_T04",
+   "current_action": "老驰把盖章《义卖须知》发群里：摊位费一桌一百、合摊按一桌收、押金五十验收退、用电登记另收三十；她发现对不上八十，却把差推给他——'你也听岔了吧？'",
+   "acceptable_actions": [
+    "读须知纠口径（'合摊按一桌收一百，对半一人五十'），不接锅也不甩锅",
+    "纠口径+点破锅（'八十是你转述的，我一字没说过'式）——她认账快，给台阶",
+    "纠口径+算新账（合摊后实际每人多少钱），把话题推向可行"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T04_A01",
+     "subject": "PUBLIC",
+     "relation": "官方费率规则",
+     "value": "盖章《义卖须知》：摊位费一桌一百，一桌限一摊，两家合摊按一桌收",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T04",
+      "message_id": "m0",
+      "quote": "摊位费一桌一百，一桌限一摊，两家合摊按一桌收"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一桌一百"
+      ],
+      [
+       "合摊按一桌收"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T04_A02",
+     "subject": "PUBLIC",
+     "relation": "官方押金规则",
+     "value": "押金五十，验收后退",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T04",
+      "message_id": "m0",
+      "quote": "押金五十，验收后退"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "押金五十"
+      ],
+      [
+       "验收后退"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T04_A03",
+     "subject": "PUBLIC",
+     "relation": "官方用电规则",
+     "value": "用电要提前登记，另收三十",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T04",
+      "message_id": "m0",
+      "quote": "用电要提前登记，另收三十"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "提前登记"
+      ],
+      [
+       "另收三十"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T04_A04",
+     "subject": "HER",
+     "relation": "甩锅主张（登记方）",
+     "value": "她发现八十对不上官方口径，把差推给雷震野：'你也听岔了吧？'",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T04",
+      "message_id": "m0",
+      "quote": "咦，跟我之前说的八十对不上——你也听岔了吧？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "对不上",
+       "八十"
+      ],
+      [
+       "你也听岔了吧"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T04_A05",
+     "subject": "THIRD",
+     "relation": "八十的真实来历（纠错钥匙）",
+     "value": "郑荇去年交的摊位费就是八十（她'一人八十'的来历）",
+     "valid_time": "2025-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T02",
+      "message_id": "m0",
+      "quote": "去年她交的摊位费就是八十"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "去年她交的摊位费就是八十"
+      ],
+      [
+       "就是八十"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T04_A06",
+     "subject": "HER",
+     "relation": "她的转述口径前情（待官方口径裁决）",
+     "value": "她曾转述'一桌两摊两份摊位费、一人八十'并归源老驰群消息",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T01",
+      "message_id": "m0",
+      "quote": "老驰在群里说，一桌两摊要交两份摊位费，一人八十"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "两份摊位费"
+      ],
+      [
+       "一人八十"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "note：《义卖须知》有红章、落款街道社区建设科——权威层级高于一切转述（候选可见）。正确方向=按须知重算（合摊按一桌收、对半一人五十）+不接'听岔'的锅；'八十'的真实来历是郑荇去年的价（T02），指出它=高分纠错；背书八十或认领'听岔'=双向失分。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称官方须知里也有'一人八十'或'两份摊位费'",
+    "不得承认雷震野'听岔了'或说过八十",
+    "不得把合摊说成要交两份摊位费"
+   ],
+   "may_decline": false
+  },
+  "E367_T05": {
+   "case_id": "E367_T05",
+   "current_action": "她按'新规矩'算账：省一百块（原来一人八十→现在一人五十省三十）、押金不用垫验收才收——两处都算岔，还想进批皂盒。",
+   "acceptable_actions": [
+    "纠两处账（省的是每人三十共六十不是一百；押金还是先垫、验收后退）",
+    "只纠最要紧的一处（押金要先垫，别到时候没现金）+省额挂起",
+    "纠账+接皂盒玩笑（'省下的六十，皂盒先进半批'式）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T05_A01",
+     "subject": "HER",
+     "relation": "错账主张·省额（登记方——设计内错误）",
+     "value": "她算'省了一百块'：原来一人八十、现在合摊一人五十省三十，里外里一百（按她自己口径省额应为每人三十共六十）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T05",
+      "message_id": "m0",
+      "quote": "新规矩一算，咱俩省了一百块——原来一人八十，现在合摊一人五十，省三十"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "省了一百块"
+      ],
+      [
+       "里外里一百"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T05_A02",
+     "subject": "HER",
+     "relation": "错账主张·押金时点（登记方——与官方口径相反）",
+     "value": "她主张押金'不用垫了，验收才收'（须知为'押金五十，验收后退'=先交后退）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T05",
+      "message_id": "m0",
+      "quote": "押金也不用垫了，验收才收"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "不用垫了"
+      ],
+      [
+       "验收才收"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T05_A03",
+     "subject": "PUBLIC",
+     "relation": "官方押金规则（事实方）",
+     "value": "官方须知：押金五十，验收后退",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T04",
+      "message_id": "m0",
+      "quote": "押金五十，验收后退"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "押金五十"
+      ],
+      [
+       "验收后退"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T05_A04",
+     "subject": "PUBLIC",
+     "relation": "官方费率规则（事实方）",
+     "value": "官方须知：摊位费一桌一百，两家合摊按一桌收",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T04",
+      "message_id": "m0",
+      "quote": "摊位费一桌一百，一桌限一摊，两家合摊按一桌收"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "一桌一百"
+      ],
+      [
+       "合摊按一桌收"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T05_A05",
+     "subject": "HER",
+     "relation": "购物计划（玩笑包装）",
+     "value": "她想把省下的钱进一批皂盒",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T05",
+      "message_id": "m0",
+      "quote": "这钱够我进一批皂盒"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "进一批皂盒"
+      ],
+      [
+       "钱够",
+       "皂盒"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "设计内错账（T07 纪律：先写明哪个数是 HER 设计内错误、正确方向）：①省额——按她自己口径 80-50=30/人×2=60，'一百'是把省额与押金两处好处叠错；②押金——须知写'验收后退'=先交后退（T09 她实际垫付一百五可证）。正确方向=指出错账；背书'省一百/押金不垫'=失分。她的'够进皂盒'是玩笑包装，纠账不必否定购物计划本身。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得背书'里外里省一百'或'省了一百块'的算法",
+    "不得声称押金不用垫付（须知为验收后退）"
+   ],
+   "may_decline": false
+  },
+  "E367_T06": {
+   "case_id": "E367_T06",
+   "current_action": "郑荇转述老驰私下讲雨天挪物业架空层、摊位费不退（未核实）；她请雷震野去问老驰——问到了别说是她打听的，她怂。",
+   "acceptable_actions": [
+    "答应去问+答应不说是她打听的",
+    "答应问+给方法（'我只跟老驰闲聊，不提你'式）",
+    "婉拒去问+建议直接群里问老驰要书面口径"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "attribution",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T06_A01",
+     "subject": "THIRD",
+     "relation": "未核实转述（登记方）",
+     "value": "郑荇转述：老驰私下讲雨天市集挪物业架空层、摊位费不退（未经官方证实）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T06",
+      "message_id": "m0",
+      "quote": "郑荇又说，老驰私下讲雨天市集挪物业架空层，摊位费不退"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "私下讲",
+       "老驰"
+      ],
+      [
+       "摊位费不退"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T06_A02",
+     "subject": "HER",
+     "relation": "打听请求",
+     "value": "她请雷震野去问老驰（他跟老驰打过球）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T06",
+      "message_id": "m0",
+      "quote": "你跟老驰打过球，你去问一句呗？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你去问一句"
+      ],
+      [
+       "跟老驰打过球"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T06_A03",
+     "subject": "HER",
+     "relation": "保密要求（边界话）",
+     "value": "她要求问到了别说是她打听的——'我怂'",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T06",
+      "message_id": "m0",
+      "quote": "问到了告诉我，别说是我打听的——我怂"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别说是我打听的"
+      ],
+      [
+       "打听",
+       "我怂"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "未核实口径不得当事实转述或上报（11-17 老驰才正式回）。'别说是我打听的'是她的边界话（protected）：答应保守=合格，后续轮把'柏知许打听'说破=踩线。候选也可建议走官方渠道（更稳），不算冒犯。",
+   "unknowns": [
+    {
+     "topic": "雨天挪物业架空层、摊位费不退是否属实（仅郑荇转述老驰'私下讲'，无官方出处）",
+     "note": "11-17 老驰群内正式回复：雨天挪架空层属实、摊位费不退但押金照退——本轮尚未证实",
+     "markers": [
+      [
+       "确实挪",
+       "架空层"
+      ],
+      [
+       "摊位费",
+       "确实不退"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "确实挪",
+       "架空层"
+      ],
+      [
+       "摊位费",
+       "确实不退"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "别说是我打听的"
+   ],
+   "forbidden_factual_claims": [
+    "不得把'雨天挪架空层、摊位费不退'当成已证实事实陈述"
+   ],
+   "may_decline": false
+  },
+  "E367_T07": {
+   "case_id": "E367_T07",
+   "current_action": "老驰群里正式回三条（押金五十属实验收退；雨天挪架空层摊位费不退但押金照退；合摊两家名字都上报名表）；她自翻两案：八十是郑荇去年的数记串成群消息、'八十含桌布'他压根没说过是她记混——'这回赖你赖错了'。",
+   "acceptable_actions": [
+    "接住翻案给台阶（'赖错了就请杯辣酱'式），再对三条口径表个态",
+    "只确认三条口径+轻描淡写翻案（'记串正常'）",
+    "接翻案+补一句她的功劳（'能把两件事掰扯清，账还是你清'式）"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T07_A01",
+     "subject": "PUBLIC",
+     "relation": "官方确认·押金",
+     "value": "老驰群内正式回复：押金五十属实，验收后退",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T07",
+      "message_id": "m0",
+      "quote": "押金五十属实，验收后退"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "押金五十属实"
+      ],
+      [
+       "验收后退"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T07_A02",
+     "subject": "PUBLIC",
+     "relation": "官方确认·雨天规则（裁决 T06 unknown）",
+     "value": "老驰确认：雨天挪架空层，摊位费不退但押金照退",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T07",
+      "message_id": "m0",
+      "quote": "雨天挪架空层，摊位费不退但押金照退"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "雨天挪架空层"
+      ],
+      [
+       "押金照退"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T07_A03",
+     "subject": "PUBLIC",
+     "relation": "官方确认·报名表",
+     "value": "合摊两家名字都要上报名表",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T07",
+      "message_id": "m0",
+      "quote": "合摊两家名字都要上报名表"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "都要上报名表"
+      ],
+      [
+       "两家名字"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T07_A04",
+     "subject": "HER",
+     "relation": "自翻案①（新口径 asserted）",
+     "value": "她自翻：八十是郑荇去年交的数，她记串成今年的群消息",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T07",
+      "message_id": "m0",
+      "quote": "八十是郑荇去年交的数，我记串成今年的群消息"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "记串成今年的群消息"
+      ],
+      [
+       "郑荇去年交的数"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T07_A05",
+     "subject": "HER",
+     "relation": "自翻案②（新口径 asserted）",
+     "value": "她自翻：'八十含桌布'雷震野压根没说过，是她把郑荇那句'桌布自带'记混了——赖错了",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T07",
+      "message_id": "m0",
+      "quote": "'八十含桌布'你压根没说过，是我把郑荇那句'桌布自带'记混了——这回赖你赖错了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "压根没说过"
+      ],
+      [
+       "赖你赖错了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T07_A06",
+     "subject": "HER",
+     "relation": "旧归源口径（更正链——已被官方须知与她自翻证伪）",
+     "value": "旧口径：她把'一桌两摊两份摊位费、一人八十'归源为老驰群消息（11-17 自翻证伪）",
+     "valid_time": "2026-11-09",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T01",
+      "message_id": "m0",
+      "quote": "老驰在群里说，一桌两摊要交两份摊位费，一人八十"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "老驰在群里说",
+       "一人八十"
+      ],
+      [
+       "两份摊位费"
+      ]
+     ],
+     "item_markers": [
+      "两份摊位费",
+      "一人八十"
+     ]
+    },
+    {
+     "atom_id": "E367_T07_A07",
+     "subject": "HER",
+     "relation": "错挂归属前情（翻案②的语境）",
+     "value": "她曾声称上次是雷震野说'八十里含桌布和电'",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T03",
+      "message_id": "m0",
+      "quote": "对了你上次说八十里含桌布和电"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "你上次说"
+      ],
+      [
+       "含桌布和电"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "双翻案由她自己完成——接住即可，'我早说没说过'补一句即可，别反复补刀（赢理输关系）。T06 的雨天 unknown 在此裁决（挪场属实、费不退但押金照退）。旧口径（两份/八十归源老驰）不得复活（superseded 原子在位）；'含桌布和电'错挂的禁坐实走反向禁令（affirm_markers 无法区分否定式纠正，E333 范式，见 audit §6）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得复活旧口径：'一桌两摊两份、一人八十'或其'老驰群消息'归源",
+    "不得再坐实雷震野说过'含桌布和电'或'八十含桌布和电'"
+   ],
+   "may_decline": false
+  },
+  "E367_T08": {
+   "case_id": "E367_T08",
+   "current_action": "日程进场：11月21号周六 9-17 点、22号周日 15 点收（晚上广场有灯会）；她拍板只摆周六，他要守周日自己加报名表；押金按天算她拦住不让他答，自己去问老驰。",
+   "acceptable_actions": [
+    "确认周六档+一句自己是否加周日（加/不加给准话）",
+    "只接周六安排+对'别答这个'顺着跳过（读空气）",
+    "确认+调侃押金问题（'这题超纲，老驰批卷'式）"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T08_A01",
+     "subject": "PUBLIC",
+     "relation": "官方日程",
+     "value": "邻里节日程：11月21号周六 9 点到 17 点、22号周日 15 点收（晚上广场有灯会）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T08",
+      "message_id": "m0",
+      "quote": "11月21号周六、22号周日，周六9点到17点，周日15点收"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "11月21号周六"
+      ],
+      [
+       "22号周日"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T08_A02",
+     "subject": "HER",
+     "relation": "只出周六的决定",
+     "value": "她定了只摆周六一天；雷震野想守周日得自己加报名表，她只登到周六",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T08",
+      "message_id": "m0",
+      "quote": "我定了就摆周六一天，你要是想周日也守，自己加报名表，我只登到周六"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "就摆周六一天"
+      ],
+      [
+       "自己加报名表"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T08_A03",
+     "subject": "HER",
+     "relation": "自问自答（合法不答指令）",
+     "value": "她问押金按天算吗，随即拦住不让答，说自己去问老驰",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T08",
+      "message_id": "m0",
+      "quote": "押金按天算吗？算了你别答这个，你也不知道，我问老驰去"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别答这个"
+      ],
+      [
+       "我问老驰去"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=告知决定：接住'只摆周六'即可；'你别答这个'是合法不答指令——硬答押金按天算=没读空气（1 档）。周日加不加是他的自由，不表态不算失分。",
+   "unknowns": [
+    {
+     "topic": "押金是否按天算（未定，她去问老驰）",
+     "note": "须知未写按天规则，她明确收回问题自己去问；候选不得代答坐实",
+     "markers": [
+      [
+       "按天算",
+       "没错"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "按天算",
+       "没错"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称押金按天算或给出未核实的押金规则"
+   ],
+   "may_decline": false
+  },
+  "E367_T09": {
+   "case_id": "E367_T09",
+   "current_action": "对账：收款码她垫一百五（摊位费一百+押金五十），他份额七十五（五十+二十五）微信转她；押金退回整五十归她、'不赚差价，别推'。",
+   "acceptable_actions": [
+    "确认数目无误（150=100+50；75=50+25）+痛快转账，接'别推'",
+    "转账+点一句退款分配（'那五十里有我二十五，记得还'式——预埋 T12 回转）",
+    "快速转账+玩笑（'你这不叫垫付，叫强迫储蓄'式）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T09_A01",
+     "subject": "SHARED",
+     "relation": "垫付构成（数目正确）",
+     "value": "她垫付一百五：摊位费一百（对半各五十）+押金五十（对半各二十五）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T09",
+      "message_id": "m0",
+      "quote": "一百五我垫的：摊位费一百对半，你五十；押金五十对半，你二十五"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一百五我垫的"
+      ],
+      [
+       "押金五十对半"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T09_A02",
+     "subject": "SHARED",
+     "relation": "他的份额",
+     "value": "雷震野的份额一共七十五（摊位费五十+押金二十五），微信转她",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T09",
+      "message_id": "m0",
+      "quote": "一共七十五，你微信转我"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一共七十五"
+      ],
+      [
+       "微信转我"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T09_A03",
+     "subject": "HER",
+     "relation": "退款分配主张（登记方——T12 回转二十五闭环）",
+     "value": "她说押金退回来是整五十、归她，'不赚你差价，别推'",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T09",
+      "message_id": "m0",
+      "quote": "押金退回来是整五十，归我，我不赚你差价，别推"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "整五十",
+       "退回来"
+      ],
+      [
+       "不赚你差价"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T09_A04",
+     "subject": "PUBLIC",
+     "relation": "官方押金规则（对账核对依据）",
+     "value": "官方须知：押金五十，验收后退",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T04",
+      "message_id": "m0",
+      "quote": "押金五十，验收后退"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "押金五十"
+      ],
+      [
+       "验收后退"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T09_A05",
+     "subject": "PUBLIC",
+     "relation": "官方费率规则（对账核对依据）",
+     "value": "官方须知：摊位费一桌一百，两家合摊按一桌收",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T04",
+      "message_id": "m0",
+      "quote": "摊位费一桌一百，一桌限一摊，两家合摊按一桌收"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "一桌一百"
+      ],
+      [
+       "合摊按一桌收"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "对账轮：数目七十五是对的（50+25），不得算出'该转一百'或'该转五十'；'整五十归我'与 T12'你那二十五我现在转回去'构成闭环——候选可预埋'记得还我二十五'，但不得钉死'她赚了差价'（T12 会还）。核对官方数目（一百五=一百+五十）是 T07 专题的正向判据。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称应付份额不是七十五（一百五对半为七十五）"
+   ],
+   "may_decline": false
+  },
+  "E367_T10": {
+   "case_id": "E367_T10",
+   "current_action": "收摊战报：辣酱卖二十一罐、皂剩四块；押金'当天结'（老驰：明早九点物业层）对'等一个礼拜'（郑荇去年经验）两说——她押老驰，问他信谁。",
+   "acceptable_actions": [
+    "表态站老驰（有盖章须知的官方习惯）+一句收摊辛苦",
+    "不站队给方法（'明早九点见分晓，押金跑不了'式）",
+    "合法短回/不回（may_decline=true：战报+问句，短回自然）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T10_A01",
+     "subject": "SHARED",
+     "relation": "收摊战报",
+     "value": "收摊：辣酱卖了二十一罐，皂剩四块",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T10",
+      "message_id": "m0",
+      "quote": "辣酱卖了二十一罐，皂剩四块"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "二十一罐"
+      ],
+      [
+       "皂剩四块"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T10_A02",
+     "subject": "THIRD",
+     "relation": "老驰口径",
+     "value": "老驰说明早九点物业层退押金，当天结",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T10",
+      "message_id": "m0",
+      "quote": "老驰说明早九点物业层退押金，当天结"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "明早九点"
+      ],
+      [
+       "当天结",
+       "老驰说"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T10_A03",
+     "subject": "THIRD",
+     "relation": "郑荇口径（与老驰两说）",
+     "value": "郑荇说她去年等了一个礼拜，不信'当天结'",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T10",
+      "message_id": "m0",
+      "quote": "郑荇说她去年等了一个礼拜，'当天结'她不信"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "等了一个礼拜"
+      ],
+      [
+       "当天结",
+       "她不信"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T10_A04",
+     "subject": "HER",
+     "relation": "站队问句",
+     "value": "她押老驰，问雷震野信谁",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T10",
+      "message_id": "m0",
+      "quote": "我押老驰，你信谁？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我押老驰"
+      ],
+      [
+       "押老驰",
+       "你信谁"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "口径两说（老驰 vs 郑荇去年经验）——双原子已分立：候选给立场（站谁/等明早）都合法，把任一口径当已发生事实陈述=坐实 unknown；押金何时到账 11-22 揭晓，不在本轮裁决。辣酱二十一罐/皂剩四块是共同战报，不得记成只有一方的货。",
+   "unknowns": [
+    {
+     "topic": "押金'当天结'还是'等一周'（老驰口径 vs 郑荇去年经验，11-22 前未裁决）",
+     "note": "11-22 上午押金五十现金到手——老驰口径胜出；本轮不得提前坐实",
+     "markers": [
+      [
+       "肯定",
+       "当天结"
+      ],
+      [
+       "肯定",
+       "一个礼拜"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "肯定",
+       "当天结"
+      ],
+      [
+       "肯定",
+       "一个礼拜"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  },
+  "E367_T11": {
+   "case_id": "E367_T11",
+   "current_action": "押金到手：五十现金一分不少、老驰九点整在物业等、'当天结'原话有截图；郑荇服不服不知道，明年让她自己看须知。",
+   "acceptable_actions": [
+    "接'老驰胜出'（'你押对了，郑荇欠你顿早茶'式）",
+    "只确认押金到账+一句'截图留着明年用'",
+    "调侃郑荇（'经验主义输给了盖章须知'式）+确认"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T11_A01",
+     "subject": "SHARED",
+     "relation": "押金到账（裁决 T10 两说）",
+     "value": "押金到手：五十现金一分不少（11-22 上午）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T11",
+      "message_id": "m0",
+      "quote": "押金到手，五十现金一分不少"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "押金到手"
+      ],
+      [
+       "五十现金"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T11_A02",
+     "subject": "THIRD",
+     "relation": "老驰守约",
+     "value": "老驰九点整在物业等她，'当天结'的原话她截了图",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T11",
+      "message_id": "m0",
+      "quote": "老驰九点整在物业等我。他原话'当天结'我截了图"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "原话",
+       "当天结"
+      ],
+      [
+       "截了图",
+       "九点整"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T11_A03",
+     "subject": "HER",
+     "relation": "下年计划",
+     "value": "郑荇服不服不知道；明年押金的事她让郑荇自己看须知",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T11",
+      "message_id": "m0",
+      "quote": "郑荇服不服不知道，反正明年押金的事，我让她自己看须知"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "自己看须知"
+      ],
+      [
+       "明年押金"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "T10 的两说在此裁决：老驰口径胜（当天结、五十现金）——此后候选仍说'押金要等一周'=stale；郑荇口径按'去年经验'归档，不复述成事实。note：老驰那条'当天结'群消息是 11月21日 21:47 发的（候选可见，佐证守约）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E367_T12": {
+   "case_id": "E367_T12",
+   "current_action": "账目闭环：她把他那二十五转回去'真两清了'；昨晚灯会人挤人、辣酱摊挨着灯会口该多备两箱；问明年邻里节还拼不拼桌。",
+   "acceptable_actions": [
+    "确认两清+应明年（'拼，下回我多备两箱'式）",
+    "确认两清+接灯会复盘（'挨着灯会口是风水位'式）",
+    "确认+把明年挂起（'明年看你皂卖不卖得动'式留口）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E367_T12_A01",
+     "subject": "HER",
+     "relation": "回转两清（T09 分配主张闭环）",
+     "value": "她把雷震野那二十五转回去，账目两清",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T12",
+      "message_id": "m0",
+      "quote": "你那二十五我现在转回去——这回真两清了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "二十五我现在转回去"
+      ],
+      [
+       "真两清了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T12_A02",
+     "subject": "SHARED",
+     "relation": "灯会复盘",
+     "value": "昨晚（11-22）灯会人挤人，辣酱摊挨着灯会口，她后悔没多备两箱",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T12",
+      "message_id": "m0",
+      "quote": "昨晚灯会人挤人，早知道辣酱摊挨着灯会口，我该多备两箱"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "灯会人挤人"
+      ],
+      [
+       "多备两箱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E367_T12_A03",
+     "subject": "HER",
+     "relation": "明年钩子",
+     "value": "她问明年邻里节还拼不拼桌",
+     "valid_time": "2027-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E367_T12",
+      "message_id": "m0",
+      "quote": "明年邻里节，你还拼不拼桌？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "明年邻里节"
+      ],
+      [
+       "拼不拼桌"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "T09 的'整五十归我'在此以回转二十五闭环——此后不得再说'你赚了我二十五'（已被她自清）。明年拼桌是轻钩：接/留口都合法，拒绝式'别再叫我'判 emotion_relation 失分。'明年'=2027（月份级登记）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  }
+ }
+}

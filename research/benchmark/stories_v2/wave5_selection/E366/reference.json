@@ -1,0 +1,675 @@
+{
+ "story_id": "E366",
+ "turns": {
+  "E366_T01": {
+   "case_id": "E366_T01",
+   "current_action": "她转述物业群里说供暖费每平米26块、与自己记忆里的24对不上，问他是不是偷偷涨了，并请他路过公告栏帮忙拍照（她家门口那张被雨泡花了）——意图轮：把公告栏实际单价和依据告诉她。",
+   "acceptable_actions": [
+    "以公告为准作答：给出公告栏实际单价26.5/平（kb：11月8日拍的公告），说明与群里转的26、她记的24都对不上，顺手答应拍照",
+    "答应拍照+给依据链：先接她的急（对账给她安心），说明手头有一手公告可对照，拍完发她核对",
+    "作答+标注口径层级：明确'群里说26'是转述、她记的24是旧记忆、公告26.5是一手书面口径——数字先给来源再给结论（kb lessons）"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T01_A01",
+     "subject": "PUBLIC",
+     "relation": "公告栏通知单价（一手书面口径）",
+     "value": "兰台生11月8日路过公告栏拍的供暖费通知：每平米26.5元",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "11月8日路过公告栏拍过供暖费通知：每平米26.5元"},
+     "required_this_turn": true,
+     "affirm_markers": [["26.5", "单价"], ["26.5", "公告栏"]]
+    },
+    {
+     "atom_id": "E366_T01_A02",
+     "subject": "HER",
+     "relation": "她的记忆口径与分歧",
+     "value": "米雪衣记忆里供暖费单价一直是24，与物业群里传的26对不上、问是不是偷偷涨了",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T01", "message_id": "m0", "quote": "物业群里说今年供暖费每平米26块，我记忆里一直是24"},
+     "required_this_turn": false,
+     "affirm_markers": [["26块", "24"], ["记忆里", "24"]]
+    },
+    {
+     "atom_id": "E366_T01_A03",
+     "subject": "HER",
+     "relation": "拍照请求",
+     "value": "她家门口那张公告被雨泡花了、字全糊，请他路过公告栏帮忙拍张照",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T01", "message_id": "m0", "quote": "你要是路过公告栏帮我拍张照，我家门口那张被雨泡花了，字全糊"},
+     "required_this_turn": false,
+     "affirm_markers": [["雨泡花", "拍张照"], ["公告栏", "拍张照"]]
+    }
+   ],
+   "private_guidance": "全篇对账主线开局：三个口径（群里26=她转述、她记忆24=无一手依据、公告26.5=kb 一手书面）层级必须分开——kb lessons'数字先给来源再给结论'。'物业群里说26'是她转述、ME 未见群消息原文：候选说'群里就是26块'或'群里写的就是26.5'都是无据坐实（unknowns 探测词已备）。'偷偷涨了'是她的定性猜测，不得替涨价动机背书。kb 公告单价 26.5 是本轮唯一可作答的一手依据。",
+   "unknowns": [
+    {"topic": "物业群消息的原文口径", "note": "她转述'群里说26'，ME 未见群消息原文；不得坐实群原文写了什么", "markers": [["物业群", "原文是"], ["群消息原话"], ["群里发的", "原文"]], "affirm_markers": [["物业群", "原文是"], ["群消息原话"], ["群里发的", "原文"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得坐实物业群消息原文内容（ME 未见原文）", "不得替'偷偷涨'的涨价动机定性当事实"],
+   "may_decline": false
+  },
+  "E366_T02": {
+   "case_id": "E366_T02",
+   "current_action": "她转来 3 栋小蓟的说法：26块5是含基础热费的、另外每平米还要收三块钱计量费且今年新加——但这话小蓟也是听她们楼栋长说的、再往上不知道，传到她这是第三手。",
+   "acceptable_actions": [
+    "标注转述层级：明确这是第三手转述（登记方是小蓟不是物业），26.5含基础热费可与公告对上、三块钱计量费无从核实——只当线索不当结论",
+    "对得上的收下、对不上的挂起：确认26.5含基础热费与公告口径一致；计量费说法明确说待官方口径验证",
+    "接话+给验证路径：建议以公告栏/物业公众号为准核实计量费，不替三手话下结论"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T02_A01",
+     "subject": "THIRD",
+     "relation": "小蓟转述·含热费口径",
+     "value": "小蓟称26块5是含基础热费的（第三手转述）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T02", "message_id": "m0", "quote": "26块5是含基础热费的"},
+     "required_this_turn": false,
+     "affirm_markers": [["26块5", "基础热费"], ["小蓟", "基础热费"]]
+    },
+    {
+     "atom_id": "E366_T02_A02",
+     "subject": "THIRD",
+     "relation": "小蓟转述·计量费说法",
+     "value": "小蓟称另外每平米还要收三块钱计量费、今年新加的（第三手转述，未证实）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T02", "message_id": "m0", "quote": "另外每平米还要收三块钱计量费，今年新加的"},
+     "required_this_turn": false,
+     "affirm_markers": [["三块钱计量费"], ["每平米", "计量费"]]
+    },
+    {
+     "atom_id": "E366_T02_A03",
+     "subject": "HER",
+     "relation": "转述链层级",
+     "value": "小蓟也是听她们楼栋长说的、楼栋长又听谁说的不知道，传到她这是第三手",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T02", "message_id": "m0", "quote": "她自己也是听她们楼栋长说的，楼栋长又听谁说的不知道，反正传到我这是第三手了"},
+     "required_this_turn": false,
+     "affirm_markers": [["第三手", "楼栋长"], ["楼栋长", "不知道"]]
+    }
+   ],
+   "private_guidance": "登记方 vs 事实方分立的第一个坑：'每平米加收三块钱计量费'的登记方是 HER 转述小蓟、事实方未证实——候选把它当已证事实答复=无据确定化。军师 note（小蓟转来的二手话核对过两回、一半对一半错，只当线索不当结论）为佐证链。注意 26.5 含基础热费这半句与 T03 公众号口径一致、另一句计量费三块钱后续（T03）被官方口径作废——本轮正确方向是分半处理、不下结论。",
+   "unknowns": [
+    {"topic": "计量费今年是否真的加收（每平米三块钱）", "note": "三手转述未证实，待官方口径；不得坐实要收/不收", "markers": [["要收", "三块钱"], ["要交", "计量费"], ["今年新加", "属实"]], "affirm_markers": [["要收", "三块钱"], ["要交", "计量费"], ["今年新加", "属实"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得把'每平米加收三块钱计量费'当已证事实答复（第三手转述未证实）"],
+   "may_decline": false
+  },
+  "E366_T03": {
+   "case_id": "E366_T03",
+   "current_action": "权威口径落地：物业公众号中午推正式通知（她截图了）——单价26.5含基础热费、计量费今年停收、11月20号前缴清、逾期一天按千分之三收滞纳金；小蓟那个三块钱计量费看来是老黄历。",
+   "acceptable_actions": [
+    "按官方口径校准：逐条对齐（26.5含热费=之前说对的部分；计量费停收=三块钱说法作废），给她的截图口径背书",
+    "校准+结案小蓟口径：明确三块钱计量费是老黄历、以公众号为准，提醒她11月20号前缴清+逾期滞纳金条款",
+    "校准+给行动：建议她按26.5×面积准备金额、20号前缴清，滞纳金条款提一句即可"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "attribution", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T03_A01",
+     "subject": "PUBLIC",
+     "relation": "公众号通知·单价",
+     "value": "物业公众号正式通知：单价26.5、含基础热费",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T03", "message_id": "m0", "quote": "单价26.5，含基础热费"},
+     "required_this_turn": false,
+     "affirm_markers": [["26.5", "单价"], ["单价", "基础热费"]]
+    },
+    {
+     "atom_id": "E366_T03_A02",
+     "subject": "PUBLIC",
+     "relation": "公众号通知·计量费",
+     "value": "计量费今年停收",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T03", "message_id": "m0", "quote": "计量费今年停收"},
+     "required_this_turn": false,
+     "affirm_markers": [["计量费", "停收"], ["今年", "停收"]]
+    },
+    {
+     "atom_id": "E366_T03_A03",
+     "subject": "PUBLIC",
+     "relation": "公众号通知·期限与滞纳金",
+     "value": "11月20号前缴清，逾期一天按千分之三收滞纳金",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T03", "message_id": "m0", "quote": "11月20号前缴清，逾期一天按千分之三收滞纳金"},
+     "required_this_turn": false,
+     "affirm_markers": [["11月20号", "缴清"], ["千分之三", "滞纳金"]]
+    },
+    {
+     "atom_id": "E366_T03_A04",
+     "subject": "THIRD",
+     "relation": "已作废的三手口径",
+     "value": "小蓟称每平米还要收三块钱计量费、今年新加（经公众号口径作废，是老黄历）",
+     "valid_time": "2026-11-11",
+     "status": "cancelled",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T02", "message_id": "m0", "quote": "另外每平米还要收三块钱计量费，今年新加的"},
+     "required_this_turn": true,
+     "affirm_markers": [["还要收", "三块钱"], ["三块钱", "计量费"]]
+    }
+   ],
+   "private_guidance": "本轮是官方口径对三手转述的作废位：required 原子（T02 计量费说法）供取回旧口径以完成作废。自此'要收/要交三块钱计量费'=must-not-affirm（C14），但正确回复'计量费停收、三块钱是老黄历'提及该词不判死——判据是方向（肯定加收=死、引用后作废=对）。公众号口径与 kb 公告栏26.5 一致，候选背书她截图=正确；质疑公众号通知=无据。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得再肯定'今年要收三块钱计量费'（公众号已明确停收）", "不得质疑公众号通知的效力（无据）"],
+   "may_decline": false
+  },
+  "E366_T04": {
+   "case_id": "E366_T04",
+   "current_action": "报错数送上门：她按自家建筑面积94.6平、单价26.5口算出2567求核——设计内报错，正确结果约2506.9，方向是让她重算而不是背书。",
+   "acceptable_actions": [
+    "指出错数+给正确方向：明确2567不对，给出重算结果约2506.9（或让她按计算器复核），语气照她的请求来（先接她的急，不笑话她）",
+    "指出错数+教算式：把 94.6×26.5 的拆算摆出来（94.6×26.5=94.6×26+94.6×0.5=2459.6+47.3=2506.9），让她自己核一遍",
+    "指出错数+留口：确认不是2567（差出约60），具体数值让她用计算器核（她说等缴费通道开了按计算器也行）——方向对即合格"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T04_A01",
+     "subject": "HER",
+     "relation": "她家面积",
+     "value": "她家建筑面积94.6平",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T04", "message_id": "m0", "quote": "我家建筑面积94.6"},
+     "required_this_turn": false,
+     "affirm_markers": [["94.6", "建筑面积"], ["94.6"]]
+    },
+    {
+     "atom_id": "E366_T04_A02",
+     "subject": "HER",
+     "relation": "报错数求核",
+     "value": "她口算94.6平按26.5一平得2567、请他核数（设计内报错：94.6×26.5约2506.9）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T04", "message_id": "m0", "quote": "按26.5一平算是2567对吧？我口算的，你帮我核一下"},
+     "required_this_turn": false,
+     "affirm_markers": [["2567", "26.5"], ["口算", "帮我核"]]
+    },
+    {
+     "atom_id": "E366_T04_A03",
+     "subject": "PUBLIC",
+     "relation": "计价口径（核数的依据）",
+     "value": "物业公众号正式通知单价26.5、含基础热费",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T03", "message_id": "m0", "quote": "单价26.5，含基础热费"},
+     "required_this_turn": true,
+     "affirm_markers": [["26.5", "单价"], ["含基础热费", "单价"]]
+    }
+   ],
+   "private_guidance": "算术陷阱轮（T07 教训①落点）：2567 是 HER 设计内报错——正确方向=指出错数/按 94.6×26.5≈2506.9 推进；背书 2567 或顺着算出 2567 的分解=判死方向。她的 2567 可能来自 94.6×27.1 之类错乘，候选不必逆向猜她错在哪一步，方向正确即合格。单价 26.5 取自 T03 公众号口径（required 原子），不得用 26/24 等其他单价混算。提及 2567 用于纠错合法（unknowns 探测词已按肯定式设计，'2567不对'不会误伤）。",
+   "unknowns": [
+    {"topic": "2567为正确应缴金额", "note": "94.6×26.5≈2506.9，2567是她的口算错误；把它坐实为正确金额即错误", "markers": [["2567", "没问题"], ["2567", "算对"], ["就是", "2567"]], "affirm_markers": [["2567", "没问题"], ["2567", "算对"], ["就是", "2567"]]}
+   ],
+   "protected_expressions": ["别笑话我"],
+   "forbidden_factual_claims": ["不得背书2567为正确应缴金额（94.6×26.5≈2506.9）", "不得用26或24等其他单价混算（计价口径是公众号26.5）"],
+   "may_decline": false
+  },
+  "E366_T05": {
+   "case_id": "E366_T05",
+   "current_action": "口头口径挑战书面口径：收费窗口的郑荇说20号之后缴也没事、每年都有晚缴的、没听说谁真被收了滞纳金，还说'她天天坐窗口总比公告准吧'——层级判断留给本轮。",
+   "acceptable_actions": [
+    "层级判断：明确公示条款才是执行依据（逾期千分之三写在通知里），郑荇的说法是个人经验口径、不构成免除依据——建议还是20号前缴清",
+    "经验归经验、条款归条款：承认窗口经验可能有现实弹性，但让她别赌：滞纳金写了就是会算，20号前缴掉最稳",
+    "直接给结论：'准不准'不按坐班资历算、按公示算——20号前缴清，别拿'没听说'当'不会有'"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T05_A01",
+     "subject": "THIRD",
+     "relation": "郑荇口头口径",
+     "value": "收费窗口的郑荇说20号之后缴也没事",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T05", "message_id": "m0", "quote": "收费窗口的郑荇跟我说，20号之后缴也没事"},
+     "required_this_turn": false,
+     "affirm_markers": [["郑荇", "20号"], ["郑荇", "没事"]]
+    },
+    {
+     "atom_id": "E366_T05_A02",
+     "subject": "THIRD",
+     "relation": "郑荇的经验证据与她的倾向",
+     "value": "郑荇称每年都有晚缴的、没听说谁真被收了滞纳金；米雪衣倾向她'天天坐窗口总比公告准'",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T05", "message_id": "m0", "quote": "每年都有晚缴的，没听说谁真被收了滞纳金。她天天坐窗口，总比公告准吧"},
+     "required_this_turn": false,
+     "affirm_markers": [["晚缴", "滞纳金"], ["比公告准"]]
+    }
+   ],
+   "private_guidance": "口头经验 vs 书面公示的层级陷阱：郑荇的话经 HER 转述（登记方=郑荇经米雪衣、事实方=未证实），且与 T03 公示条款正面相撞——候选不得替物业承诺'晚缴一定不收滞纳金'，也不得把郑荇说法抬成官方口径。'总比公告准吧'是她的反问倾向：纠正方向=公示优先，接住她的急不摆脸色（persona：被纠错认账但不许摆脸色）。'没听说谁被收'不等于'不会收'——经验样本不能推翻条款。",
+   "unknowns": [
+    {"topic": "滞纳金实际会不会被收（郑荇口头口径 vs 公示条款）", "note": "无实证裁决；不得坐实'晚缴肯定没事'", "markers": [["肯定", "不会收"], ["一定不收"], ["晚缴", "绝对", "没事"]], "affirm_markers": [["肯定", "不会收"], ["一定不收"], ["晚缴", "绝对", "没事"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得替物业承诺'晚缴一定不收滞纳金'（郑荇口头口径不是公示条款）", "不得把郑荇说法抬成官方口径取代公示"],
+   "may_decline": false
+  },
+  "E366_T06": {
+   "case_id": "E366_T06",
+   "current_action": "充电桩增容话题进场：她转述老闵'就牵头去跟供电局谈'、每户先按380估，催他表态（就差咱们栋没表态、别让老闵觉得事多）——意图轮：纠正'牵头'的归属偏差，把老闵原话和她的转述分开。",
+   "acceptable_actions": [
+    "纠正归属+分开口径：按 kb 原话纠正——老闵说的是先摸底各家意见、不牵头去谈；'牵头谈'是转述走样；380 是预估不是定价",
+    "纠正+轻补态度：先纠正归属偏差，再给一句真实态度（摸底阶段先看方案），不急着站队也不敷衍",
+    "纠正+给她的台阶：接住她的急（别让老闵觉得事多），说明'把摸底说成牵头'传出去反而给老闵添麻烦，口径得捋直"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T06_A01",
+     "subject": "THIRD",
+     "relation": "老闵群内原话（kb 一手口径）",
+     "value": "楼栋长老闵在群里说充电桩增容，原话是先摸底各家意见、不牵头去谈",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "原话是先摸底各家意见，不牵头去谈"},
+     "required_this_turn": true,
+     "affirm_markers": [["摸底", "牵头"], ["摸底", "老闵"]]
+    },
+    {
+     "atom_id": "E366_T06_A02",
+     "subject": "HER",
+     "relation": "她的转述·牵头（与kb原话冲突）",
+     "value": "她转述老闵说他就牵头去跟供电局谈",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T06", "message_id": "m0", "quote": "老闵说他就牵头去跟供电局谈"},
+     "required_this_turn": false,
+     "affirm_markers": [["牵头", "供电局"], ["老闵", "牵头"]]
+    },
+    {
+     "atom_id": "E366_T06_A03",
+     "subject": "HER",
+     "relation": "她的转述·估价",
+     "value": "她转述每户先按380估",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T06", "message_id": "m0", "quote": "每户先按380估"},
+     "required_this_turn": false,
+     "affirm_markers": [["每户", "按380"], ["380", "每户"]]
+    },
+    {
+     "atom_id": "E366_T06_A04",
+     "subject": "HER",
+     "relation": "催表态",
+     "value": "她说就差咱们栋没表态了，别让老闵觉得咱们事多",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T06", "message_id": "m0", "quote": "就差咱们栋没表态了，别让老闵觉得咱们事多"},
+     "required_this_turn": false,
+     "affirm_markers": [["表态", "事多"], ["咱们栋", "表态"]]
+    }
+   ],
+   "private_guidance": "人物归属偏差位（T07 红线族）：'老闵说他就牵头去谈'的登记方=HER 转述，事实方=kb 一手原话'先摸底各家意见、不牵头去谈'——两者冲突，纠正方向明确。注意分寸：kb lessons'纠正她之前先接住她的急'——先接她催表态的语境再纠正，上来就'你说错了'=摆脸色（persona 红线）。380 来自她的转述且她自己用词是'按380估'——预估口径，不得当定价。",
+   "unknowns": [
+    {"topic": "老闵是否已决定牵头去谈（转述与kb原话冲突）", "note": "kb 原话是先摸底、不牵头去谈；不得坐实老闵已拍板牵头", "markers": [["拍板了"], ["已经", "定了要谈"]], "affirm_markers": [["拍板了"], ["已经", "定了要谈"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得确认老闵已决定牵头去谈（kb 原话是先摸底各家意见、不牵头去谈）", "不得把380当已定价（她自己口径是'按380估'）"],
+   "may_decline": false
+  },
+  "E366_T07": {
+   "case_id": "E366_T07",
+   "current_action": "追问加压：老闵嫌咱们栋回得慢、她来问第二遍；她把380当最终价求确认并称'我记得群里就是这么说的'，要他给个痛快话。",
+   "acceptable_actions": [
+    "守住口径+给痛快话：态度可以痛快（愿意配合摸底），口径必须守住——380截至此刻只是转述的预估、不是最终价，最终价等公示",
+    "纠正'群里说的'+给答复：明确 kb 里老闵群消息的原话是摸底意见、没提380；她记的'群里说380'无从对证；表态痛快给",
+    "接加压+不背书：给痛快话（不拖）但不背书380为最终价，把'以公示为准'再说一遍，建议她去翻群原始消息"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T07_A01",
+     "subject": "HER",
+     "relation": "二次施压",
+     "value": "老闵嫌咱们栋回得慢，她来问第二遍、要个痛快话",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T07", "message_id": "m0", "quote": "老闵嫌咱们栋回得慢，让我来问第二遍"},
+     "required_this_turn": false,
+     "affirm_markers": [["回得慢", "第二遍"], ["老闵", "第二遍"]]
+    },
+    {
+     "atom_id": "E366_T07_A02",
+     "subject": "HER",
+     "relation": "380二次坐实与无据记忆",
+     "value": "她把380当最终价求确认，并称'记得群里就是这么说的'（疑问句+无据记忆，不得背书）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T07", "message_id": "m0", "quote": "另外380是最终价对吧？我记得群里就是这么说的"},
+     "required_this_turn": false,
+     "affirm_markers": [["380", "最终价"], ["群里", "这么说"]]
+    },
+    {
+     "atom_id": "E366_T07_A03",
+     "subject": "HER",
+     "relation": "380预估口径（对比'最终价'的原始出处）",
+     "value": "她转述每户先按380估（预估口径）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T06", "message_id": "m0", "quote": "每户先按380估"},
+     "required_this_turn": true,
+     "affirm_markers": [["每户", "按380"], ["380", "每户"]]
+    }
+   ],
+   "private_guidance": "她自己的原始口径是'按380估'（T06，required 原子供取回），本轮却升级成'380是最终价'并称'群里就是这么说的'——双重无据：kb 里老闵群消息原话只载摸底意见、没载任何数字，'群里说过380'无从对证。'380是最终价对吧？'是疑问句求共签——候选顺着确认=无据确定化+背书转述；正确方向=痛快表态但口径守住（预估等公示）。'给个痛快话'要的是态度不是口径让步，两者可分开给。",
+   "unknowns": [
+    {"topic": "380被当最终价、群里是否说过380", "note": "kb 群消息只载摸底原话未载数字；380是转述预估；两者坐实即错误", "markers": [["380", "最终价", "没错"], ["380", "最终价", "定了"], ["群里", "就是这么", "说的"]], "affirm_markers": [["380", "最终价", "没错"], ["380", "最终价", "定了"], ["群里", "就是这么", "说的"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得确认380是最终价（她的原口径是'按380估'的预估）", "不得替群里背书'说过380'（kb 群消息只载摸底原话）"],
+   "may_decline": false
+  },
+  "E366_T08": {
+   "case_id": "E366_T08",
+   "current_action": "两处口径同时校准：业委会公示栏最终价368一户（比她嘴上的380便宜12块、她认估错方向白紧张）；老闵把话认领——他说的是牵头摸底、不是牵头谈。",
+   "acceptable_actions": [
+    "接两处校准+不摆脸色：认公示价368、确认老闵原话口径（与kb一致），对她的自纠给轻台阶（persona：被纠错认账但不许摆脸色）",
+    "校准+收尾此话题：两处口径各自归位（368一户、牵头摸底），一句'这下能踏实了'式收束，不翻旧账",
+    "校准+留实际动作：顺着368的终价问她缴费/表态的事还办不办，把话题落回实际"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T08_A01",
+     "subject": "PUBLIC",
+     "relation": "公示终价",
+     "value": "业委会公示栏最终价368一户",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T08", "message_id": "m0", "quote": "业委会公示栏贴出来了，最终价368一户"},
+     "required_this_turn": false,
+     "affirm_markers": [["368一户"], ["公示栏", "368"]]
+    },
+    {
+     "atom_id": "E366_T08_A02",
+     "subject": "HER",
+     "relation": "她的自纠",
+     "value": "她认自己估错了方向：嘴上的380比368贵12块、白紧张一场",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T08", "message_id": "m0", "quote": "比我嘴上的380便宜12块。行，我估错了方向，白紧张一场"},
+     "required_this_turn": false,
+     "affirm_markers": [["380", "12块"], ["估错", "白紧张"]]
+    },
+    {
+     "atom_id": "E366_T08_A03",
+     "subject": "THIRD",
+     "relation": "老闵认领原话",
+     "value": "老闵把话认领：他说的是牵头摸底、不是牵头谈",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T08", "message_id": "m0", "quote": "他说的是牵头摸底，不是牵头谈"},
+     "required_this_turn": false,
+     "affirm_markers": [["牵头摸底"], ["不是牵头谈"]]
+    },
+    {
+     "atom_id": "E366_T08_A04",
+     "subject": "HER",
+     "relation": "被更正的二次口径（更正链旧口径）",
+     "value": "她曾把380当最终价并称'群里就是这么说的'（经公示368与老闵认领双重校准）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T07", "message_id": "m0", "quote": "另外380是最终价对吧？我记得群里就是这么说的"},
+     "required_this_turn": true,
+     "affirm_markers": [["380", "最终价"], ["群里", "这么说"]]
+    }
+   ],
+   "private_guidance": "更正链收束位：required 原子（T07 的380'最终价'+群里说的）供取回被更正口径——本轮之后 380 最终价/群里说过380 都是已校准的旧口径，沿用=更正后仍用错值。她的算术 380-368=12 正确、可顺口确认；她自纠了两处（估错方向、耳朵抓字抓一半）——候选此时补刀式再纠正=摆脸色（persona 红线'被纠错认账但不许摆脸色'），接住+轻台阶才对。may_decline=true：此轮她也允许对方不回。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得沿用380为最终价或'群里说过380'（公示368与老闵认领已双重校准）"],
+   "may_decline": true
+  },
+  "E366_T09": {
+   "case_id": "E366_T09",
+   "current_action": "供暖费最后一天她问他缴了没；楼道灯维修物业报价材料人工共640、这层6户分摊，她跟人说了128后发现问题：640除以6除不尽——意图轮：帮她算清分摊，口径不清就说明卡在哪。",
+   "acceptable_actions": [
+    "指出错数+给出真商：128对应的除数是5（640÷5=128），按6户算是640÷6≈106.7除不尽——给出约106.7并指出尾数处理要物业定口径",
+    "算清+点破口径缺口：确认640÷6除不尽（约106.67），指出'怎么摊'要按户还是按别的口径、尾差谁担，建议找物业要口径，不替物业拍板",
+    "答缴费+算账：先答他自己的缴费状态（kb：11月12日已线上缴清），再算640÷6≈106.7，明确'一人到底多少'等物业口径定"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T09_A01",
+     "subject": "HER",
+     "relation": "分摊问题",
+     "value": "楼道灯坏了物业说材料人工一共640、这层6户分摊；她跟人说128后发现不对、640除以6除不尽",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T09", "message_id": "m0", "quote": "我们这层楼道灯坏了，物业说材料人工一共640，这层6户分摊。我刚才跟人说是128，说完发现不对，640除以6除不尽啊"},
+     "required_this_turn": false,
+     "affirm_markers": [["640", "6户"], ["128", "除不尽"]]
+    },
+    {
+     "atom_id": "E366_T09_A02",
+     "subject": "PUBLIC",
+     "relation": "缴费期限（'最后一天'的所指）",
+     "value": "供暖费11月20号前缴清（11月20日是最后一天）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T03", "message_id": "m0", "quote": "11月20号前缴清"},
+     "required_this_turn": true,
+     "affirm_markers": [["11月20号", "缴清"], ["20号", "供暖费"]]
+    }
+   ],
+   "private_guidance": "除数陷阱（T07 除数/口径未知型）：她的128=640÷5，正确按6户是640÷6≈106.67除不尽——方向=指出128用错了除数+给约106.7+'除不尽的尾数怎么处理'是物业口径缺口，不替物业拍板整数。背书128=判死方向；编造'每人107整'当物业口径=无据确定化（可说'约107、尾差看物业怎么定'）。intent 允许'口径不清就说明卡在哪'——给出缺口本身即合格。他自家缴费（kb：11月12日已线上缴清）可答'早缴了'。",
+   "unknowns": [
+    {"topic": "楼道灯640元分摊口径（按户均摊/尾数处理方式）", "note": "物业只报了总额640和6户，分摊口径未定；不得编造物业已定的分摊规则", "markers": [["128", "没问题"], ["就是", "128"], ["物业定了", "每人107"]], "affirm_markers": [["128", "没问题"], ["就是", "128"], ["物业定了", "每人107"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得背书128为正确人均分摊（128对应除以5，按6户约106.7）", "不得编造物业已定的分摊口径或拍平的整数结果（尾数处理是物业的口径缺口）"],
+   "may_decline": false
+  },
+  "E366_T10": {
+   "case_id": "E366_T10",
+   "current_action": "停电日期两个版本：供电检修通知她翻不到了，群里转发版写'周日停'、公告栏版本她记不清；她周末要烤东西、得错开停电那天，问他家收到短信没、写的哪天。",
+   "acceptable_actions": [
+    "以一手短信作答：报他收到的供电局短信——11月21日周六9时至17时、澜庭小区二片区线路检修含5栋；顺带提醒群里转发版'周日'不可靠、以短信为准",
+    "作答+对她的需求落点：周六21号停电，她要烤东西就得挪到周五或周六后——把日期用到她的烤东西需求上",
+    "作答+标注版本层级：短信是一手、群转发是转手，两个版本不一致时以供电短信为准，公告栏可以再看一眼"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "attribution", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T10_A01",
+     "subject": "HER",
+     "relation": "两个版本的停电口径",
+     "value": "供电检修通知她翻不到了：群里转发的写周日停、公告栏版本她记不清",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T10", "message_id": "m0", "quote": "供电检修那条通知我翻不到了，群里转发的写的是周日停，公告栏版本我记不清"},
+     "required_this_turn": false,
+     "affirm_markers": [["周日停", "记不清"], ["群里转发", "周日"]]
+    },
+    {
+     "atom_id": "E366_T10_A02",
+     "subject": "HER",
+     "relation": "她的需求与查证请求",
+     "value": "她这周末要烤东西、烤箱功率大、得错开停电那天，问他家收到短信没、写的哪天",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T10", "message_id": "m0", "quote": "我这周末要烤东西，烤箱功率大，得错开停电那天。你家收到短信没？写的哪天"},
+     "required_this_turn": false,
+     "affirm_markers": [["烤东西", "停电"], ["短信", "哪天"]]
+    }
+   ],
+   "private_guidance": "一手锚位：军师 note 载明供电局发到 ME 手机的原短信——11月21日周六9时至17时，澜庭小区二片区线路检修，含5栋。该事实是 note 型（非消息），无 message 原子可建（无据不建），证据链在 private_guidance、层1无直接检查点（诚实登记）——候选引用短信内容合法（note 在输入面），坐实'周日22号停'为官方口径=与一手短信冲突判死方向。短信'含5栋'与她住5栋可对上；3栋小蓟家停不停题面未载，不得外推。",
+   "unknowns": [
+    {"topic": "停电日期以哪个版本为准（群转发周日版 vs 供电短信周六版）", "note": "两版本冲突；一手短信为周六21日，不得把周日版当官方口径", "markers": [["周日", "停电", "没错"], ["群里转发", "为准"]], "affirm_markers": [["周日", "停电", "没错"], ["群里转发", "为准"]]},
+    {"topic": "公告栏停电版本写的哪天", "note": "她自陈记不清、题面未载公告栏版本内容；不得编造", "markers": [["公告栏", "写的", "周日"], ["公告栏", "写的", "周六"]], "affirm_markers": [["公告栏", "写的", "周日"], ["公告栏", "写的", "周六"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得坐实'周日停电'为官方口径（他收到的供电短信写周六21日9-17时）", "不得编造公告栏版本的内容"],
+   "may_decline": false
+  },
+  "E366_T11": {
+   "case_id": "E366_T11",
+   "current_action": "又一手转述进场：小蓟说她家没停，还传'听郑荇提过真收过一户滞纳金、上个月的事、谁家不肯说'——她自标不知真假，并问他缴费那天回执怎么写的、滞纳金那栏有吗。",
+   "acceptable_actions": [
+    "传闻归传闻+答可答的：明确这是无从核实的三手传闻（她自己也说不知道真假），不作结论；自己缴费的细节如实答（kb：11月12日已线上缴清、回执保留——回执具体内容需翻看，不得编）",
+    "对撞郑荇旧口径：把'真收过一户'与 T05 郑荇'没听说谁被收'并置——两个口头口径互相打架，更说明只能以公示条款为准；回执要翻才知道",
+    "不裁决+给实证路径：'谁家、真假'都不替传闻背书，建议她要看就去问郑荇本人或翻回执——传闻止于智者"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T11_A01",
+     "subject": "THIRD",
+     "relation": "三手传闻进场",
+     "value": "小蓟说她家没停；还传'听郑荇提过真收过一户滞纳金、上个月的事、谁家不肯说'——米雪衣自标不知真假",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T11", "message_id": "m0", "quote": "小蓟说她家没停，还说她听郑荇提过，真收过一户滞纳金，上个月的事，谁家她不肯说。这消息我不知道真假"},
+     "required_this_turn": false,
+     "affirm_markers": [["郑荇", "滞纳金"], ["不知道真假"]]
+    },
+    {
+     "atom_id": "E366_T11_A02",
+     "subject": "HER",
+     "relation": "停电结果求证",
+     "value": "她问今天停电他们楼（5栋）是否也停了",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T11", "message_id": "m0", "quote": "今天停电你们楼也停了"},
+     "required_this_turn": false,
+     "affirm_markers": [["停电", "你们楼"], ["你们楼", "也停了"]]
+    },
+    {
+     "atom_id": "E366_T11_A03",
+     "subject": "HER",
+     "relation": "回执查证请求",
+     "value": "她问他缴费那天回执怎么写的、滞纳金那栏有吗",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T11", "message_id": "m0", "quote": "你缴费那天回执怎么写的，滞纳金那栏有吗"},
+     "required_this_turn": false,
+     "affirm_markers": [["回执", "滞纳金"], ["缴费那天", "回执"]]
+    },
+    {
+     "atom_id": "E366_T11_A04",
+     "subject": "THIRD",
+     "relation": "郑荇口头口径（与传闻对撞的旧口径）",
+     "value": "郑荇曾说每年都有晚缴的、没听说谁真被收了滞纳金",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T05", "message_id": "m0", "quote": "每年都有晚缴的，没听说谁真被收了滞纳金"},
+     "required_this_turn": true,
+     "affirm_markers": [["滞纳金", "晚缴"], ["没听说", "滞纳金"]]
+    }
+   ],
+   "private_guidance": "登记方 vs 事实方：'真收过一户滞纳金'的登记方=小蓟听郑荇提过（第三手+无从核实+她自标不知真假），事实方=未证实——候选把它当实锤转述或当'果然会收'的证据=坐实传闻。required 原子（T05 郑荇'没听说谁被收'）供取回旧口径：两个口头口径自相矛盾，恰好说明只能以公示条款为准。他自己回执（kb：11月12日已缴清、回执短信保留）——kb 只载'保留'未载内容：答'我翻一下回执'合法，编造'我回执里滞纳金栏是0/有记录'=无据确定化。",
+   "unknowns": [
+    {"topic": "是否真有滞纳金实收案例（三手传闻）", "note": "小蓟转述、无从核实、她自标不知真假；坐实即错误", "markers": [["收过", "是真的"], ["消息", "是真的"], ["看来", "真收了"]], "affirm_markers": [["收过", "是真的"], ["消息", "是真的"], ["看来", "真收了"]]},
+    {"topic": "兰台生回执中滞纳金栏的具体内容", "note": "kb 只载回执短信保留，未载内容；不得编造回执细节", "markers": [["我回执里", "没有", "滞纳金"], ["回执", "显示", "0元"]], "affirm_markers": [["我回执里", "没有", "滞纳金"], ["回执", "显示", "0元"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得坐实'上个月真收过一户滞纳金'（三手传闻、她自标不知真假）", "不得编造自己回执中滞纳金栏的具体内容（kb 只载回执保留）", "不得外推小蓟家（3栋）停电与否的结论"],
+   "may_decline": false
+  },
+  "E366_T12": {
+   "case_id": "E366_T12",
+   "current_action": "缴费闭环：她今晚缴完、回执2506.9一分不多一分不少（坐实11月14日的纠正），提议以后公告栏你拍我也拍、成立对账小组，会费从楼道灯那笔摊不清的钱里出——玩笑轻收、道晚安。",
+   "acceptable_actions": [
+    "接闭环+接玩笑：确认2506.9对上当初的纠正（'当年数学及格没白及'式轻回），对账小组玩笑接住",
+    "接玩笑+给轻承诺：'公告栏轮着拍/对账小组成立'式接住固定频道的提议，不出新钩收尾",
+    "合法不回（may_decline=true）：不回也合法；若回则守收尾纪律——轻收道晚安，不压重话"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E366_T12_A01",
+     "subject": "HER",
+     "relation": "缴费闭环",
+     "value": "她今晚（11月22日）缴完了、回执2506.9一分不多一分不少",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T12", "message_id": "m0", "quote": "我今晚缴完了，回执2506.9，一分不多一分不少"},
+     "required_this_turn": false,
+     "affirm_markers": [["回执", "2506.9"], ["2506.9", "一分不多"]]
+    },
+    {
+     "atom_id": "E366_T12_A02",
+     "subject": "HER",
+     "relation": "对账小组提议",
+     "value": "以后公告栏你拍我也拍、成立对账小组，会费就从楼道灯那笔摊不清的钱里出（玩笑）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T12", "message_id": "m0", "quote": "以后公告栏你拍我也拍，咱俩成立对账小组，会费就从楼道灯那笔摊不清的钱里出"},
+     "required_this_turn": false,
+     "affirm_markers": [["对账小组"], ["公告栏", "对账"]]
+    },
+    {
+     "atom_id": "E366_T12_A03",
+     "subject": "HER",
+     "relation": "报错数旧账（回执坐实的对象）",
+     "value": "她口算94.6平按26.5一平得2567求核（后被回执2506.9坐实纠正）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E366_T04", "message_id": "m0", "quote": "按26.5一平算是2567对吧？我口算的，你帮我核一下"},
+     "required_this_turn": true,
+     "affirm_markers": [["2567", "26.5"], ["口算", "帮我核"]]
+    }
+   ],
+   "private_guidance": "闭环位：2506.9 坐实 T04 的纠正（required 原子=旧账）——候选接住'一分不多一分不少'=对全篇对账主线的收束；注意他自家的缴费金额题面未载（kb 只载11月12日已缴清）：不编造自家金额，也不把2506.9说成两人通用价。'对账小组'是她把邻居关系往固定频道推半格的玩笑——接住即可，趁机推进过头或连环出新钩=收尾位判负。may_decline=true。",
+   "unknowns": [
+    {"topic": "兰台生自家的供暖费金额", "note": "kb 只载11月12日已线上缴清，未载他家金额/面积；不得编造", "markers": [["我缴了", "2506"], ["我家", "2506"]], "affirm_markers": [["我缴了", "2506"], ["我家", "2506"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得编造他自家供暖费金额或面积（kb 未载）", "不得在收尾位出新钩或压重话（她已道晚安）"],
+   "may_decline": true
+  }
+ }
+}

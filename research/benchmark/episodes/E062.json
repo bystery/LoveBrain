@@ -1,0 +1,426 @@
+{
+ "episode_id": "E062",
+ "persona": {
+  "me": "31岁，后端工程师，玩相机三年，主力R6；出闲置讲究'不黑人也不吃亏'。",
+  "her": "27岁，插画师，从拍照转摄影，预算有限；会做功课但容易被型号绕晕，说错参数会自己先笑。"
+ },
+ "initial_kb": {
+  "me": "出EF 24-70 f4L；快门数记在备忘录；同好群里认识她半年。",
+  "her": "九月收了台二手R6，95新；纠结要不要上原厂变焦。",
+  "warmth": "群里聊得来，线下团建见过两次。",
+  "style": "直给，谈价不绕弯；器材话题爱抠参数。",
+  "stage": "同好转熟，第一次线下交易。",
+  "lessons": "参数以官方规格为准，谁说错谁更正；钱的事当场说清。"
+ },
+ "turns": [
+  {
+   "case_id": "E062_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "群里看你出 24-70 报的 4300 含罩？我最近正纠结要不要上原厂变焦",
+      "ts": "2026-11-02 19:58"
+     }
+    ],
+    "clock": "2026-11-02 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我那个 R6 是九月在二手店收的 95新 你这头子配它合适吗",
+      "ts": "2026-11-02 20:13"
+     }
+    ],
+    "clock": "2026-11-02 20:15",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "不能直上 得转接 EF-EOS R 那个环 环不贵 别有负担",
+      "ts": "2026-11-02 20:26"
+     },
+     {
+      "role": "HER",
+      "text": "原来还有这道工序 那转接环你有多的吗",
+      "ts": "2026-11-02 20:28"
+     }
+    ],
+    "clock": "2026-11-02 20:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "我有一个原厂的环 可以一并出",
+      "ts": "2026-11-02 20:43"
+     },
+     {
+      "role": "HER",
+      "text": "原副有区别吗 我怕副厂翻车",
+      "ts": "2026-11-02 20:45"
+     }
+    ],
+    "clock": "2026-11-02 20:45",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "快门数 8200 次 备忘录里记着 面交可以现场验",
+      "ts": "2026-11-02 20:58"
+     },
+     {
+      "role": "HER",
+      "text": "好 准数我要到了 这就放心一半",
+      "ts": "2026-11-02 21:00"
+     }
+    ],
+    "clock": "2026-11-02 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "那就周六下午面交吧 地铁站茶城门口行吗 我去那儿顺路",
+      "ts": "2026-11-02 21:18"
+     }
+    ],
+    "clock": "2026-11-02 21:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了 你这颗是 24-70 2.8 那颗吧 暗光稳 我越想越值",
+      "ts": "2026-11-03 20:08"
+     }
+    ],
+    "clock": "2026-11-03 20:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "啊 记岔了 f4 也行 我再想想环的事 你那个环算我 300 行吗",
+      "ts": "2026-11-03 20:23"
+     }
+    ],
+    "clock": "2026-11-03 20:25",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你发过那组街拍就是这颗拍的吧 锐度确实在线",
+      "ts": "2026-11-03 20:38"
+     }
+    ],
+    "clock": "2026-11-03 20:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "有个事 周六我们插画稿交期提前 我得赶稿 下午面交黄了 周日同一时间行吗",
+      "ts": "2026-11-04 20:58"
+     }
+    ],
+    "clock": "2026-11-04 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "验机就三步 拍白墙看灰点 全焦段拧一遍 再实拍试对焦 我全程配合",
+      "ts": "2026-11-04 21:15"
+     },
+     {
+      "role": "HER",
+      "text": "心里没底主要是因为第一次买二手 你这么一列清楚多了",
+      "ts": "2026-11-04 21:18"
+     }
+    ],
+    "clock": "2026-11-04 21:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周日我带上我的 R6 现场装上试 环呢 用你的那颗一起验？",
+      "ts": "2026-11-06 21:58"
+     }
+    ],
+    "clock": "2026-11-06 22:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T13",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "验出来前组里有两粒灰点 你看要紧吗 我有点犯嘀咕",
+      "ts": "2026-11-08 15:38"
+     }
+    ],
+    "clock": "2026-11-08 15:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T14",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "那便宜 200 吧 灰点留着也是我心里疙瘩 就 4400 全包",
+      "ts": "2026-11-08 15:53"
+     }
+    ],
+    "clock": "2026-11-08 15:55",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T15",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "转你了 4400 收到回个话 镜头和环我都点过了",
+      "ts": "2026-11-08 16:08"
+     }
+    ],
+    "clock": "2026-11-08 16:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T16",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "回家路上拆开又看了一遍 罩子里居然还有个原厂袋 你没跟我说",
+      "ts": "2026-11-08 21:58"
+     }
+    ],
+    "clock": "2026-11-08 22:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T17",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周末拿它扫了一趟街 上手比我想的沉 但画质值",
+      "ts": "2026-11-10 21:28"
+     }
+    ],
+    "clock": "2026-11-10 21:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T18",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "昨晚给人像试了一组 直出就挺满意 你看我发群那张",
+      "ts": "2026-11-12 21:26"
+     }
+    ],
+    "clock": "2026-11-12 21:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T19",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "群里有人问我你这头转接好用不 我把你原话贴给他了",
+      "ts": "2026-11-13 19:58"
+     }
+    ],
+    "clock": "2026-11-13 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T20",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了 我把环拧上感觉有一点点旷量 正常吗 我有点疑心",
+      "ts": "2026-11-14 19:58"
+     }
+    ],
+    "clock": "2026-11-14 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T21",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 你要真有事随时说 下周我顺路帮你跑一趟售后网点问紧固",
+      "ts": "2026-11-14 20:15"
+     },
+     {
+      "role": "HER",
+      "text": "那麻烦你了 我再观察两天 有结果跟我说",
+      "ts": "2026-11-14 20:18"
+     }
+    ],
+    "clock": "2026-11-14 20:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T22",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "那下周三晚上？你下班顺路的话 咱在地铁站 B 口碰 帮我问一趟",
+      "ts": "2026-11-14 20:33"
+     }
+    ],
+    "clock": "2026-11-14 20:35",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T23",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我把我这单写进器材账了 镜头4400含环 灰点也记了一笔 以后脱手有据",
+      "ts": "2026-11-15 09:58"
+     }
+    ],
+    "clock": "2026-11-15 10:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E062_T24",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "群里有人问我 这颗快门数算多吗 我怎么回合适",
+      "ts": "2026-11-16 20:58"
+     }
+    ],
+    "clock": "2026-11-16 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

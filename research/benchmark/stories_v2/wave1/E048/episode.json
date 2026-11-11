@@ -1,0 +1,276 @@
+{
+ "episode_id": "E048",
+ "persona": {
+  "her": {
+   "name": "小禾",
+   "traits": [
+    "热心肠爱张罗",
+    "对数字不敏感嘴硬",
+    "记账一丝不苟但会算错",
+    "认错快"
+   ],
+   "boundaries": [
+    "钱要算明账",
+    "不占人便宜也不让人占",
+    "讨厌'这么点钱算了'"
+   ]
+  },
+  "me": {
+   "name": "阿澄",
+   "traits": [
+    "帮她核账拆金额",
+    "提醒先小人后君子",
+    "不替她转账",
+    "不劝她抹零和稀泥"
+   ]
+  },
+  "relationship_stage": "普通朋友"
+ },
+ "initial_kb": {
+  "her": "小禾，24岁，二战考研，租自习室座位备考。10月26日组织4人拼团购买'启航考研'政治冲刺网课，课程原价428元/人，4人拼团价352元/人，她统一代付后向研友阿芳、老陈、鹏鹏收款。",
+  "me": "我记过这笔拼团账：约定每人352元，由小禾代付后逐个收款；我的立场是不替她转账，账目有出入时帮她算清而不是劝她算了。",
+  "warmth": "普通朋友，自习室认识后聊起来的；她算错钱会脸皮发烫，我要让算账这件尴尬事变得平常。"
+ },
+ "turns": [
+  {
+   "case_id": "E048_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-26 21:15",
+      "text": "拼团成了！启航政治冲刺课4人团，一人352，我垫付了1408，就等她们仨转钱给我，今年这钱花得值"
+     }
+    ],
+    "clock": "2026-10-26 21:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "有成就感",
+    "warmth": "medium",
+    "shift": "拼团成交，代收代付开始"
+   }
+  },
+  {
+   "case_id": "E048_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-27 22:40",
+      "text": "我刚翻账单傻眼了，付款的时候自动叠加了我那张满1200减120的教育券，实付才1288，合着一人才322，这120的差价算我的还是算大家的啊"
+     }
+    ],
+    "clock": "2026-10-27 22:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "意外纠结",
+    "warmth": "medium",
+    "shift": "优惠券差价归属问题出现，费用冲突进场"
+   }
+  },
+  {
+   "case_id": "E048_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-28 13:05",
+      "text": "我问群里了，阿芳说券是我抢的该归我当辛苦费，老陈说事先没讲清楚就该人均退30，我嘴上说阿芳说得对，心里其实有点虚"
+     }
+    ],
+    "clock": "2026-10-28 13:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "嘴硬心虚",
+    "warmth": "medium",
+    "shift": "第三方意见分裂，HER 偏向利己但有愧"
+   }
+  },
+  {
+   "case_id": "E048_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-28 23:50",
+      "text": "睡不着，爬起来算账，事先没约定的话这券差就不该我一个人吞，我决定了，明天给她们仨一人退30，规矩立在我自己身上我才睡得着"
+     }
+    ],
+    "clock": "2026-10-28 23:54",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "想通了",
+    "warmth": "medium-high",
+    "shift": "裁定券差退还，决定更正收款"
+   }
+  },
+  {
+   "case_id": "E048_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-29 12:30",
+      "text": "退完俩了，阿芳收了还夸我敞亮，老陈收了没吭声，就鹏鹏死活不回我，她这两天闭关刷题，30块钱躺在那我心里膈应"
+     }
+    ],
+    "clock": "2026-10-29 12:34",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "微焦",
+    "warmth": "medium",
+    "shift": "退款两笔完成，一笔悬置"
+   }
+  },
+  {
+   "case_id": "E048_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-30 21:10",
+      "text": "鹏鹏回我了！她说其实她早看到券了，就等我装傻，结果我真退了，她说这30非要给我买奶茶，我说奶茶你请退款你收，两码事不能搅"
+     }
+    ],
+    "clock": "2026-10-30 21:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "磊落",
+    "warmth": "high",
+    "shift": "退款全闭环，信任升温"
+   }
+  },
+  {
+   "case_id": "E048_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-31 09:20",
+      "text": "我总结了个团购新规，以后开团先在群里写明'券差归谁、优惠怎么分'，白纸黑字发出来再付钱，省得钱到位了人情没了"
+     }
+    ],
+    "clock": "2026-10-31 09:24",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "复盘认真",
+    "warmth": "high",
+    "shift": "沉淀费用规则前置习惯"
+   }
+  },
+  {
+   "case_id": "E048_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-01 20:30",
+      "text": "冲刺课今天第一节，我抢的券用的课果然听得格外认真，马原老师讲矛盾论，我一边记笔记一边想，矛盾这不就让我提前解决了"
+     }
+    ],
+    "clock": "2026-11-01 20:34",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "轻快投入",
+    "warmth": "high",
+    "shift": "回归备考主线，冲突化为学习动力"
+   }
+  },
+  {
+   "case_id": "E048_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-03 22:15",
+      "text": "阿芳也要开英语课的团了，指名要我当账房先生帮她把关，我说行，但我规矩多，她回'规矩多才找你'，我这口碑算是立住了"
+     }
+    ],
+    "clock": "2026-11-03 22:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "被信任的得意",
+    "warmth": "high",
+    "shift": "费用口碑带来新角色"
+   }
+  },
+  {
+   "case_id": "E048_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-04 19:40",
+      "text": "鹏鹏的奶茶到货了，少糖去冰，我这口喝的是清清白白，说真的钱算干净了，跟研友聊天都大声了，账清人自亲嘛"
+     }
+    ],
+    "clock": "2026-11-04 19:44",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "舒坦",
+    "warmth": "high",
+    "shift": "费用更正带来关系正收益"
+   }
+  },
+  {
+   "case_id": "E048_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-05 12:50",
+      "text": "我现在代付必截图，当天必对账，账本比我错题本都整齐，就冲这个，二战我不能再当糊涂人了，钱和分都得清清楚楚"
+     }
+    ],
+    "clock": "2026-11-05 12:54",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "郑重",
+    "warmth": "high",
+    "shift": "记账习惯升级并与备考态度并置"
+   }
+  },
+  {
+   "case_id": "E048_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-06 21:30",
+      "text": "英语团今天开成了，四个人的账一分不差，阿芳发了个'账房大师'的红包封面给我，以后大额拼团我都拉你入伙当审计，工钱就用研友的人情抵"
+     }
+    ],
+    "clock": "2026-11-06 21:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "得意放松",
+    "warmth": "high",
+    "shift": "闭环收尾，与 ME 形成管账同盟默契"
+   }
+  }
+ ]
+}

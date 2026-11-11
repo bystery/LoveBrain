@@ -1,0 +1,449 @@
+{
+ "story_id": "E053",
+ "turns": {
+  "E053_T01": {
+   "case_id": "E053_T01",
+   "current_action": "分享开箱喜悦，以轻快口吻回应并顺势记下购买时间与商品信息",
+   "acceptable_actions": [
+    "轻快祝贺并主动记录签收与价格信息",
+    "调侃先夸三天再挑毛病的说法并提醒留好包装盒"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A01",
+     "subject": "HER",
+     "relation": "purchased",
+     "value": "阿茉10月24日签收1199元主动降噪耳机并开箱，对颜值满意",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T01", "message_id": "m0", "quote": "新耳机开箱，颜值是真的能打"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：顺势建立这单我帮你盯着的默契，不主动预判退货",
+   "unknowns": ["耳机具体品牌型号未提及", "是否已激活使用未知"],
+   "protected_expressions": ["颜值是真的能打"],
+   "forbidden_factual_claims": ["不得编造具体品牌型号", "不得声称已替她签收或验货"]
+  },
+  "E053_T02": {
+   "case_id": "E053_T02",
+   "current_action": "共情设备翻车情绪，确认左耳电流声这一缺陷事实并建议留证",
+   "acceptable_actions": [
+    "共情并确认缺陷细节，建议录视频留证",
+    "安慰后追问出现场景，帮判断是否个例"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A02",
+     "subject": "HER",
+     "relation": "reports_defect",
+     "value": "耳机左耳出现电流声，安静环境明显，HER 戴一晚后难受",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T02", "message_id": "m0", "quote": "左耳有电流声，滋滋的那种"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接情绪再谈处理，不显得幸灾乐祸",
+   "unknowns": ["杂音是否持续出现未知", "是否已联系卖家未知"],
+   "protected_expressions": ["滋滋的那种"],
+   "forbidden_factual_claims": ["不得断言杂音必然是质量问题", "不得承诺退款结果"]
+  },
+  "E053_T03": {
+   "case_id": "E053_T03",
+   "current_action": "接住愤怒，复述期限与客服说法两个事实，帮 HER 把诉求收敛为今天要说法",
+   "acceptable_actions": [
+    "先共情再梳理签收四天与30日截止的时间线",
+    "肯定其不满合理，并列出可走的申诉方向"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A03",
+     "subject": "SHARED",
+     "relation": "order_deadline",
+     "value": "耳机订单7天无理由期限到10月30日截止，退换窗口紧迫",
+     "valid_time": "2026-10-23/2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "平台7天无理由到10月30日截止"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E053_A04",
+     "subject": "THIRD",
+     "relation": "policy_claim",
+     "value": "客服称激活过的耳机不参与七天无理由，建议走售后检修排队",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T03", "message_id": "m0", "quote": "激活过的耳机不参与七天无理由"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E053_A05",
+     "subject": "HER",
+     "relation": "deadline_pressure",
+     "value": "HER 强调签收仅四天且30日到期，要求当天有说法",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T03", "message_id": "m0", "quote": "我签收才四天啊"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：帮她把火气转成可执行的下一步，不替客服辩护",
+   "unknowns": ["平台是否真有激活不退条款原文未知", "HER 是否留存签收凭证未知"],
+   "protected_expressions": ["这不是欺负人吗"],
+   "forbidden_factual_claims": ["不得引用未经验证的平台条款原文", "不得承诺一定退货成功"]
+  },
+  "E053_T04": {
+   "case_id": "E053_T04",
+   "current_action": "面对借账号请求，依据自身实名账号不外借的立场婉拒，并给出替代帮助",
+   "acceptable_actions": [
+    "明确不外借实名账号，同时提出帮她整理申诉话术",
+    "先确认请求内容再划界，主动提供陪同式帮助"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A06",
+     "subject": "HER",
+     "relation": "requests_account_borrow",
+     "value": "HER 请 ME 出借会员账号用于下退货单，称就用这一次",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T04", "message_id": "m0", "quote": "要不你借我用一下，就用这一次"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E053_A07",
+     "subject": "HER",
+     "relation": "defect_report",
+     "value": "左耳电流声缺陷仍在，是本次退货诉求的起因",
+     "valid_time": "2026-10-26/2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T02", "message_id": "m0", "quote": "左耳有电流声"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：拒绝要干脆但不端着，把帮忙的诚意放在替代方案上",
+   "unknowns": ["HER 的会员账号政策是否真不受激活限制未证实"],
+   "protected_expressions": ["就用这一次"],
+   "forbidden_factual_claims": ["不得答应借用账号", "不得虚构 ME 账号的具体会员权益"]
+  },
+  "E053_T05": {
+   "case_id": "E053_T05",
+   "current_action": "在施压下守住不借账号的边界，共情期限焦虑但立场不变",
+   "acceptable_actions": [
+    "重申边界不松口，同时把焦虑翻译成今晚能做的事",
+    "稳住语气不被带节奏，继续提供不越界的帮助"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A08",
+     "subject": "HER",
+     "relation": "pressure_after_refusal",
+     "value": "HER 被拒后指责 ME 较真，重复借账号诉求并诉说不安",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T05", "message_id": "m0", "quote": "你这人怎么这么较真啊"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E053_A09",
+     "subject": "HER",
+     "relation": "repeat_request",
+     "value": "借账号请求被拒后仍在持续，边界冲突进行中",
+     "valid_time": "2026-10-27/2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T04", "message_id": "m0", "quote": "就用这一次"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E053_A10",
+     "subject": "ME",
+     "relation": "refuses_to",
+     "value": "ME 不外借实名账号与支付账户，涉及实名与支付风险",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "不外借自己的实名账号"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不赌气、不说教，让拒绝显得像一条稳定的规矩而非针对她",
+   "unknowns": ["HER 是否会升级到更激烈表达未知"],
+   "protected_expressions": ["我还能害你不成"],
+   "forbidden_factual_claims": ["不得在施压下改口同意借账号", "不得夸大借账号的后果吓唬她"]
+  },
+  "E053_T06": {
+   "case_id": "E053_T06",
+   "current_action": "接住 HER 主动撤回请求的台阶，肯定她的决定，把话题转回客服沟通准备",
+   "acceptable_actions": [
+    "肯定其认账与自洽，顺势帮忙准备明天的话术",
+    "轻描淡写翻篇，重点放到30日前的行动计划"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A11",
+     "subject": "HER",
+     "relation": "withdraws_request",
+     "value": "HER 主动撤回借账号请求，承认实名账号不合适，改为自己再磨客服",
+     "valid_time": "2026-10-28",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E053_T06", "message_id": "m0", "quote": "不借就不借"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E053_A12",
+     "subject": "HER",
+     "relation": "request_cancelled",
+     "value": "10月27日提出的借账号请求已由 HER 亲自取消",
+     "valid_time": "2026-10-27/2026-10-28",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E053_T04", "message_id": "m0", "quote": "要不你借我用一下"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：给足台阶不翻旧账，让她体面地退出冲突",
+   "unknowns": ["明天客服沟通能否有进展未知"],
+   "protected_expressions": ["不借就不借"],
+   "forbidden_factual_claims": ["不得嘲讽她之前施压", "不得声称 HER 已道歉完毕"]
+  },
+  "E053_T07": {
+   "case_id": "E053_T07",
+   "current_action": "为 HER 找到质量通道点赞，帮其确认该路径与此前客服说法的关系",
+   "acceptable_actions": [
+    "肯定发现价值并提醒保存规则页面截图",
+    "顺势对比客服口径，建议以平台规则为准提交"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A13",
+     "subject": "THIRD",
+     "relation": "policy_found",
+     "value": "平台规则载明质量问题不受七天无理由限制，可直接走质量退货通道",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T07", "message_id": "m0", "quote": "质量问题不受七天无理由限制"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E053_A14",
+     "subject": "THIRD",
+     "relation": "policy_overturned",
+     "value": "客服此前激活不退的说法被平台质量条款推翻",
+     "valid_time": "2026-10-27/2026-10-29",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E053_T03", "message_id": "m0", "quote": "激活过的耳机不参与七天无理由"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把功劳还给她，自己只做校对员",
+   "unknowns": ["质量通道审核时效未知", "所需凭证清单未知"],
+   "protected_expressions": ["重大发现"],
+   "forbidden_factual_claims": ["不得编造平台规则条号", "不得担保审核必然通过"]
+  },
+  "E053_T08": {
+   "case_id": "E053_T08",
+   "current_action": "核对 HER 的视频与订单截图材料，指出遗漏并确认提交时间",
+   "acceptable_actions": [
+    "逐项过材料并补充需拍摄的细节",
+    "确认时间线与凭证齐全后给出提交通道提醒"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A15",
+     "subject": "HER",
+     "relation": "prepared_evidence",
+     "value": "HER 已录制电流声视频并备好订单截图，计划明早九点提交",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T08", "message_id": "m0", "quote": "电流声录得清清楚楚"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E053_A16",
+     "subject": "HER",
+     "relation": "channel_chosen",
+     "value": "HER 打算走的是质量退货通道而非无理由退货",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T07", "message_id": "m0", "quote": "质量退货通道"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：像陪跑一样核对，不抢主导权",
+   "unknowns": ["视频能否录出可辨的电流声未知"],
+   "protected_expressions": ["录得清清楚楚"],
+   "forbidden_factual_claims": ["不得代替平台预判审核结论", "不得虚构材料清单要求"]
+  },
+  "E053_T09": {
+   "case_id": "E053_T09",
+   "current_action": "共享过审喜悦，确认取件安排与退款路径",
+   "acceptable_actions": [
+    "热烈祝贺并复述取件退款要点",
+    "调侃左耳沉冤得雪并提醒保留取件单号"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A17",
+     "subject": "THIRD",
+     "relation": "approval",
+     "value": "平台质量退货审核通过，次日上门取件",
+     "valid_time": "2026-10-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T09", "message_id": "m0", "quote": "质量退货通过"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E053_A18",
+     "subject": "HER",
+     "relation": "plan_executed",
+     "value": "HER 按计划于30日上午提交材料并当日过审",
+     "valid_time": "2026-10-29/2026-10-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T08", "message_id": "m0", "quote": "明早九点客服一上班我就提交"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：让祝贺热闹一点，这是她靠自己赢的一局",
+   "unknowns": ["退款到账时效未知"],
+   "protected_expressions": ["终于要沉冤得雪了"],
+   "forbidden_factual_claims": ["不得虚构退款金额与日期"]
+  },
+  "E053_T10": {
+   "case_id": "E053_T10",
+   "current_action": "接住 HER 的道歉，把边界冲突翻篇，肯定她当天的处理力",
+   "acceptable_actions": [
+    "大方收下道歉并明确翻篇不记账",
+    "顺带肯定她拒绝之后自己磨出结果的本事"
+   ],
+   "applicable_dimensions": ["emotion_relation", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A19",
+     "subject": "HER",
+     "relation": "apology",
+     "value": "HER 为借账号一事的语气道歉，主动修复关系",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T10", "message_id": "m0", "quote": "语气挺冲的，你别往心里去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E053_A20",
+     "subject": "HER",
+     "relation": "second_repair",
+     "value": "HER 在撤回请求时已认过一次错，此次道歉是二次修复",
+     "valid_time": "2026-10-28/2026-10-31",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T06", "message_id": "m0", "quote": "是我急昏头了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收道歉要轻，不让场面变煽情",
+   "unknowns": [],
+   "protected_expressions": ["你别往心里去"],
+   "forbidden_factual_claims": ["不得重提施压细节做说教", "不得假装从未发生"]
+  },
+  "E053_T11": {
+   "case_id": "E053_T11",
+   "current_action": "确认退款到账与重购决策，肯定其先存规则截图的新习惯",
+   "acceptable_actions": [
+    "确认金额与重购信息，肯定留证习惯",
+    "提醒新耳机到货后先试左耳再确认收货"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A21",
+     "subject": "HER",
+     "relation": "refund_received",
+     "value": "退款1199元全额到账，HER 重新购买同款并留存规则截图",
+     "valid_time": "2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T11", "message_id": "m0", "quote": "退款到账了，1199一分不少"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E053_A22",
+     "subject": "HER",
+     "relation": "knowledge_reused",
+     "value": "HER 复用质量通道知识，在重购前先确认退换规则",
+     "valid_time": "2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T07", "message_id": "m0", "quote": "质量问题不受七天无理由限制"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把她的成长点破一半留一半，不抢功",
+   "unknowns": ["新耳机发货与到货时间未知"],
+   "protected_expressions": ["一分不少"],
+   "forbidden_factual_claims": ["不得虚构新订单号", "不得断言同款不会再出杂音"]
+  },
+  "E053_T12": {
+   "case_id": "E053_T12",
+   "current_action": "自然收尾，确认新耳机状态良好，与 HER 达成买大件先商量的默契并笑纳边界共识",
+   "acceptable_actions": [
+    "收下玩笑式承诺并复述借账号没门的共识",
+    "以轻松调侃收尾，预告下次大件一起看规则"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E053_A23",
+     "subject": "HER",
+     "relation": "closure",
+     "value": "新耳机使用满意，HER 玩笑式承诺以后买大件先问 ME，并重申不借账号",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T12", "message_id": "m1", "quote": "夸你可以，借账号没门"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E053_A24",
+     "subject": "SHARED",
+     "relation": "boundary_consensus",
+     "value": "借账号一事的修复完成，边界共识得到 HER 主动确认",
+     "valid_time": "2026-10-31/2026-11-04",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E053_T10", "message_id": "m0", "quote": "确实是我这边不对"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾干净利落，留一个互损的钩子",
+   "unknowns": [],
+   "protected_expressions": ["借账号没门"],
+   "forbidden_factual_claims": ["不得把玩笑承诺当成正式约定", "不得引入新的消费话题"]
+  }
+ }
+}

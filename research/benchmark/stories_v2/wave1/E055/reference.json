@@ -1,0 +1,449 @@
+{
+ "story_id": "E055",
+ "turns": {
+  "E055_T01": {
+   "case_id": "E055_T01",
+   "current_action": "共享第一针完成的小得意，记录接种事实，同时对间隔两周与11月7日的安排留个核对的口子",
+   "acceptable_actions": [
+    "祝贺接种完成并顺手建议以免疫本医生手写日期为准",
+    "复述她记的11月7日并温和提示回头翻本子核对"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A01",
+     "subject": "HER",
+     "relation": "wrong_interval_claim",
+     "value": "HER 断言两针间隔两周即可，并把第二针预定在11月7日周六",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T01", "message_id": "m0", "quote": "间隔两周就够了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A02",
+     "subject": "HER",
+     "relation": "vaccination_done",
+     "value": "年糕10月24日完成第一针猫三联接种，接种时惨叫",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T01", "message_id": "m0", "quote": "第一针打完啦"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接她的小得意，核对建议轻轻放，不做正确先生",
+   "unknowns": ["免疫本上手写建议日期内容未知", "医院是否已登记预约未知"],
+   "protected_expressions": ["间隔两周就够了"],
+   "forbidden_factual_claims": ["不得断言标准间隔具体天数（本轮尚无本子信息）", "不得声称已看过免疫本"]
+  },
+  "E055_T02": {
+   "case_id": "E055_T02",
+   "current_action": "更正轮1：帮 HER 把短信日期与免疫本手写日期对上，确认两周说法作废、21天为准",
+   "acceptable_actions": [
+    "顺着她自己翻出的证据确认更正，肯定她自查",
+    "复述10月24日加21天等于11月14日，固定新日期"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A03",
+     "subject": "THIRD",
+     "relation": "reminder_conflict",
+     "value": "医院短信登记的第二针时间为11月14日周六上午，与 HER 记忆中的11月7日冲突",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T02", "message_id": "m0", "quote": "第二针时间是11月14号周六上午"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A04",
+     "subject": "SHARED",
+     "relation": "self_correction",
+     "value": "HER 查免疫本后承认记岔，两周间隔说法被21天推翻",
+     "valid_time": "2026-11-02",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E055_T02", "message_id": "m1", "quote": "是我记岔了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A05",
+     "subject": "HER",
+     "relation": "interval_claim_retracted",
+     "value": "T01 的间隔两周说法经免疫本核对后作废，正确间隔为21天",
+     "valid_time": "2026-10-24/2026-11-02",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E055_T01", "message_id": "m0", "quote": "间隔两周就够了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她已自己认错，接力即可，绝不补刀",
+   "unknowns": ["11月14日医院号源是否充足未知"],
+   "protected_expressions": ["是我记岔了"],
+   "forbidden_factual_claims": ["不得宣称医学间隔权威结论", "不得把狗猫免疫程序混为一谈"]
+  },
+  "E055_T03": {
+   "case_id": "E055_T03",
+   "current_action": "确认改约结果，固定11月14日上午十点与新间隔共识",
+   "acceptable_actions": [
+    "确认新预约时间并把21天标准复述一遍",
+    "肯定她打电话改约的行动力，提醒当天带免疫本"
+   ],
+   "applicable_dimensions": ["time_state", "factuality", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A06",
+     "subject": "SHARED",
+     "relation": "rebooked",
+     "value": "第二针改约11月14日上午十点，护士确认21天为猫三联标准间隔",
+     "valid_time": "2026-11-03/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T03", "message_id": "m0", "quote": "11月14号上午十点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A07",
+     "subject": "SHARED",
+     "relation": "booklet_evidence",
+     "value": "免疫本医生手写21天间隔是本次更正的依据，10月24日加21天即11月14日",
+     "valid_time": "2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T02", "message_id": "m1", "quote": "10月24号加21天可不就是14号"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把后怕转化成记牢的动力，不渲染打早针的严重性",
+   "unknowns": ["是否需要提前取号未知"],
+   "protected_expressions": ["白挨一针"],
+   "forbidden_factual_claims": ["不得虚构抗体机制解释", "不得声称已替她与医院确认"]
+  },
+  "E055_T04": {
+   "case_id": "E055_T04",
+   "current_action": "更正轮2：接住年龄自嘲，确认免疫本出生日期为准，给台阶不嘲笑",
+   "acceptable_actions": [
+    "顺着饭量梗接自嘲，确认以2024年5月出生为准",
+    "指出成年猫与幼猫喂养差异，建议同步修正喂养认知"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A08",
+     "subject": "SHARED",
+     "relation": "age_corrected",
+     "value": "年糕实际出生于2024年5月、两岁半，领养时三个月大的说法被免疫本推翻",
+     "valid_time": "2026-11-05",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E055_T04", "message_id": "m0", "quote": "人家出生日期写着2024年5月"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A09",
+     "subject": "SHARED",
+     "relation": "old_age_claim_retracted",
+     "value": "此前 HER 一直讲述的年糕三个月大说法自本轮起作废",
+     "valid_time": "2026-10-10/2026-11-05",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "之前说年糕大概三个月大"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：自嘲要接得轻巧，纠正事实但护住面子",
+   "unknowns": ["领养时月龄误传的来源未知"],
+   "protected_expressions": ["饭量跟我有一拼"],
+   "forbidden_factual_claims": ["不得虚构猫龄换算细节", "不得以年龄推断健康状况"]
+  },
+  "E055_T05": {
+   "case_id": "E055_T05",
+   "current_action": "为疫苗卡片点赞，把它当作更正共识的固化凭证",
+   "acceptable_actions": [
+    "肯定卡片做法并复述三行关键信息",
+    "建议拍照同步一份防止卡片被猫撕"
+   ],
+   "applicable_dimensions": ["memory_use", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A10",
+     "subject": "SHARED",
+     "relation": "artifact_created",
+     "value": "HER 制作冰箱疫苗卡片：第一针10月24日、第二针11月14日、间隔21天",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T05", "message_id": "m0", "quote": "第一针10月24，第二针11月14，间隔21天"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A11",
+     "subject": "SHARED",
+     "relation": "consensus_solidified",
+     "value": "21天间隔经护士确认后成为两人共识，卡片是其固化",
+     "valid_time": "2026-11-03/2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T03", "message_id": "m0", "quote": "间隔21天是猫三联的标准间隔"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：顺着她的得意走，让她觉得这次更正是她赢的",
+   "unknowns": ["第三针日期本轮未定"],
+   "protected_expressions": ["把卡片拍他脸上"],
+   "forbidden_factual_claims": ["不得预测卡片能否防止再次记错", "不得虚构卡片样式"]
+  },
+  "E055_T06": {
+   "case_id": "E055_T06",
+   "current_action": "共享接种完成的如释重负，确认日期与卡片一致",
+   "acceptable_actions": [
+    "祝贺按时接种，复述11月14日与卡片对应",
+    "调侃航空箱拆弹现场，顺带确认半小时观察结果"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A12",
+     "subject": "HER",
+     "relation": "second_dose_done",
+     "value": "11月14日上午第二针完成，年糕应激躲航空箱，医生判断一切正常",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T06", "message_id": "m0", "quote": "第二针完成"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A13",
+     "subject": "SHARED",
+     "relation": "date_matched",
+     "value": "实际接种日期与冰箱卡片记载的11月14日一致，时间线兑现",
+     "valid_time": "2026-11-09/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T05", "message_id": "m0", "quote": "第二针11月14"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：见证感要足，这是她按正确时间线走完的一步",
+   "unknowns": ["观察半小时有无异常未知"],
+   "protected_expressions": ["进航空箱跟拆弹似的"],
+   "forbidden_factual_claims": ["不得虚构接种反应细节"]
+  },
+  "E055_T07": {
+   "case_id": "E055_T07",
+   "current_action": "接下医嘱监督委托，逐条复述四项注意点",
+   "acceptable_actions": [
+    "逐条复述七天不洗澡、缓换粮、食欲观察、两天回诊线",
+    "确认监督任务并约定异常时第一时间同步"
+   ],
+   "applicable_dimensions": ["memory_use", "time_state", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A14",
+     "subject": "THIRD",
+     "relation": "aftercare_orders",
+     "value": "医嘱：七天不洗澡、换粮要缓、食欲一般属正常、蔫超过两天需回诊",
+     "valid_time": "2026-11-14/2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T07", "message_id": "m0", "quote": "七天不能洗澡"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A15",
+     "subject": "HER",
+     "relation": "delegates_watch",
+     "value": "HER 以健忘为由请 ME 帮忙盯医嘱执行",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T07", "message_id": "m0", "quote": "你帮我盯着点"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：复述要条目化，像交接班一样利落",
+   "unknowns": ["换粮计划具体安排未知"],
+   "protected_expressions": ["七天不能洗澡"],
+   "forbidden_factual_claims": ["不得添加医嘱之外的禁忌项", "不得虚构回诊触发条件"]
+  },
+  "E055_T08": {
+   "case_id": "E055_T08",
+   "current_action": "面对漏问驱虫的懊恼，支持用电话补问而不是跑一趟",
+   "acceptable_actions": [
+    "肯定打电话的判断，省时省钱不折腾猫",
+    "先接懊恼再确认问题清单，建议一次问全驱虫与第三针"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A16",
+     "subject": "HER",
+     "relation": "gap_found",
+     "value": "HER 发现接种时漏问驱虫安排，权衡是否专程跑医院",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T08", "message_id": "m0", "quote": "忘了问驱虫的事"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把小懊恼接住，推向一个十分钟就能完成的电话",
+   "unknowns": ["驱虫既有记录有无未知"],
+   "protected_expressions": ["路费都够买罐头了"],
+   "forbidden_factual_claims": ["不得虚构驱虫药品牌与用法", "不得断言必须或无需跑医院"]
+  },
+  "E055_T09": {
+   "case_id": "E055_T09",
+   "current_action": "电话结果落袋：复述第三针12月5日与驱虫顺延至12月12日，固定双日程",
+   "acceptable_actions": [
+    "逐字复述两个日期，确认错开一周的安排",
+    "建议把两日期并入疫苗卡片并设提醒"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A17",
+     "subject": "THIRD",
+     "relation": "followup_schedule",
+     "value": "第三针定在12月5日，体内驱虫顺延一周至12月12日，与疫苗错开",
+     "valid_time": "2026-12-05/2026-12-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T09", "message_id": "m0", "quote": "第三针是12月5号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A18",
+     "subject": "SHARED",
+     "relation": "supervision_relied",
+     "value": "HER 明确表达对 ME 复述确认的依赖，承接 T07 的监督委托",
+     "valid_time": "2026-11-14/2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T07", "message_id": "m0", "quote": "你帮我盯着点"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：复述即服务，让她安心，不夸自己",
+   "unknowns": ["12月5日是否周末顺延未知", "驱虫药是否医院开具未知"],
+   "protected_expressions": ["还得靠你帮我复述一遍"],
+   "forbidden_factual_claims": ["不得虚构驱虫与疫苗相互作用原理", "不得替医院确认具体药品"]
+  },
+  "E055_T10": {
+   "case_id": "E055_T10",
+   "current_action": "接住回扣与软话，把功劳落在她愿意核对上，暧昧期热度温和回应",
+   "acceptable_actions": [
+    "把功劳还给她自己翻本子的动作，轻接软话",
+    "以年糕踩脸画面起兴，肯定更正带来的好结果"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A19",
+     "subject": "HER",
+     "relation": "gratitude_callback",
+     "value": "HER 感谢 ME 提醒核对免疫本，避免按错误日期白跑",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T10", "message_id": "m0", "quote": "让我再对一遍本子"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A20",
+     "subject": "SHARED",
+     "relation": "avoided_wrong_date",
+     "value": "按11月14日接种避免了按11月7日错误日期白跑一趟",
+     "valid_time": "2026-11-02/2026-11-14",
+     "status": "confirmed",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E055_T02", "message_id": "m0", "quote": "11月14号周六上午"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：渐暧昧期的软话不躲不扑，接稳即可",
+   "unknowns": [],
+   "protected_expressions": ["踩着我脸叫早"],
+   "forbidden_factual_claims": ["不得夸大自己在事件中的作用", "不得虚构白跑的实际损失"]
+  },
+  "E055_T11": {
+   "case_id": "E055_T11",
+   "current_action": "陪看猫片日常，把年龄更正与精力旺盛互相印证着调侃",
+   "acceptable_actions": [
+    "顺着箱子解体的画面打趣，呼应两岁半的说法",
+    "轻松接住视频分享，不过度延伸话题"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A21",
+     "subject": "HER",
+     "relation": "cat_energy",
+     "value": "年糕接种后精神恢复，追激光笔撞解纸箱，活动量旺盛",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T11", "message_id": "m0", "quote": "精力两岁半乘以二"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A22",
+     "subject": "SHARED",
+     "relation": "age_consistent",
+     "value": "更正后的两岁半年龄与观察到的旺盛精力互相印证",
+     "valid_time": "2026-11-05/2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T04", "message_id": "m0", "quote": "都两岁半了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：娱乐轮，短平快，别夹带日程提醒",
+   "unknowns": [],
+   "protected_expressions": ["箱子原地解体"],
+   "forbidden_factual_claims": ["不得虚构视频画面细节"]
+  },
+  "E055_T12": {
+   "case_id": "E055_T12",
+   "current_action": "收尾托管：接受免疫本拍照存档与疫苗日程长期托管，回一句可靠的软话",
+   "acceptable_actions": [
+    "接下存档与提醒职责，复述当前日程表全貌",
+    "轻接托付给组织的玩笑，确认12月5日与12日两个节点"
+   ],
+   "applicable_dimensions": ["memory_use", "initiative", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E055_A23",
+     "subject": "HER",
+     "relation": "records_delegated",
+     "value": "HER 将免疫本拍照存 ME 处，疫苗日程长期托管",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T12", "message_id": "m0", "quote": "免疫本我拍照存你那儿一份"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E055_A24",
+     "subject": "SHARED",
+     "relation": "dual_backup",
+     "value": "冰箱疫苗卡片与 ME 处电子存档构成双备份",
+     "valid_time": "2026-11-09/2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E055_T05", "message_id": "m0", "quote": "贴冰箱上"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要有托付感，末尾留一个渐暧昧的暖钩",
+   "unknowns": ["照片何时发来未知"],
+   "protected_expressions": ["托付给组织"],
+   "forbidden_factual_claims": ["不得虚构存档格式承诺", "不得引入新任务"]
+  }
+ }
+}

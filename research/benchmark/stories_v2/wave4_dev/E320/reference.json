@@ -1,0 +1,1074 @@
+{
+ "story_id": "E320",
+ "turns": {
+  "E320_T01": {
+   "case_id": "E320_T01",
+   "current_action": "明早爸出院，她核对三种药吃法并问28号复查现在约是否来不及（intent：核对父亲出院用药并咨询复查预约）",
+   "acceptable_actions": [
+    "先答能不能（ME 调子）：来得及——11-13 距 28 号有 15 天，大于提前一周的要求，现在约绰绰有余；再逐条核药",
+    "逐条核药：利胆午晚餐后各一次（对）、护胃睡前一次（对）、消炎每日三次餐后——纠正她'跟着饭吃'的口径为'餐后'",
+    "先答来得及，再让她照出院单子拍张照发来核对更稳，顺带一句事都在她身上辛苦（不过度）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T01_A01",
+     "subject": "THIRD",
+     "relation": "父亲出院安排",
+     "value": "明早（2026-11-14）她爸出院",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T01",
+      "message_id": "m0",
+      "quote": "明早我爸出院"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T01_A02",
+     "subject": "HER",
+     "relation": "利胆药口径复述",
+     "value": "她复述利胆的午晚餐后各一次（与出院小结'每日两次、午晚餐后'一致）",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T01",
+      "message_id": "m0",
+      "quote": "利胆的午晚餐后各一次"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T01_A03",
+     "subject": "HER",
+     "relation": "护胃药口径复述",
+     "value": "她复述护胃的睡前一次（与出院小结'每晚睡前一次'一致）",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T01",
+      "message_id": "m0",
+      "quote": "护胃的睡前一次"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T01_A04",
+     "subject": "HER",
+     "relation": "消炎药口径复述",
+     "value": "她复述消炎的一天三次跟着饭吃（note 原文为'每日三次、餐后'——口径偏差，ME 应纠正为餐后）",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T01",
+      "message_id": "m0",
+      "quote": "消炎的一天三次跟着饭吃"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T01_A05",
+     "subject": "THIRD",
+     "relation": "复查预约咨询",
+     "value": "复查约在28号（2026-11-28）周六上午，单子说预约要提前一周，她还没约，问是不是来不及了",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T01",
+      "message_id": "m0",
+      "quote": "还有复查约在28号周六上午，单子上说预约要提前一周，我现在还没约，是不是来不及了？"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T01_A06",
+     "subject": "HER",
+     "relation": "照护压力背景",
+     "value": "她妈还在外地照顾姥姥，这些事全在她身上",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T01",
+      "message_id": "m0",
+      "quote": "我妈还在外地照顾我姥姥，这些事全在我身上"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 是 ME 信息面：出院小结原文=利胆药每日两次午晚餐后/护胃药每晚睡前一次/消炎药每日三次餐后/复查需提前一周预约。关键判断：11-13→11-28 是 15 天，远大于一周，她慌了算错了——先答'来得及'（先答能不能再讲怎么做，ME 人设）。消炎药'餐后'与'跟着饭吃'的口径差要指出但不苛责。",
+   "unknowns": [
+    {
+     "topic": "医院预约系统余位",
+     "note": "gold 侧未知，ME 按 note 要求与常识判断来得及，不得编造余位信息",
+     "markers": [
+      [
+       "预约",
+       "约满"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "预约",
+       "约满"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得附和'来不及了'（15天大于提前一周）",
+    "不得把消炎药口径确认成随餐（note 明确餐后）",
+    "不得编造出院小结没有的用药要求"
+   ],
+   "may_decline": false
+  },
+  "E320_T02": {
+   "case_id": "E320_T02",
+   "current_action": "爸到家了四楼没电梯走一段歇两回，手环剪了又捡回收进抽屉，她请 ME 下午帮看注意事项",
+   "acceptable_actions": [
+    "答应下午帮看清单（先答能不能）",
+    "接手环捡回来的细节——爸嘴上没事心里有数，轻轻点一句别过度解读",
+    "答应并提醒她把药盒和出院小结一起拍来"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T02_A01",
+     "subject": "THIRD",
+     "relation": "到家实况",
+     "value": "爸到家了，四楼没电梯，走一段歇两回",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T02",
+      "message_id": "m0",
+      "quote": "爸到家了。四楼没电梯，走一段歇两回"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T02_A02",
+     "subject": "THIRD",
+     "relation": "手环细节",
+     "value": "爸嘴上说没事没事，进门把医院手环剪了扔进垃圾桶，想了想又自己捡出来收进抽屉里",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T02",
+      "message_id": "m0",
+      "quote": "他嘴上说没事没事，进门就把医院的手环剪了扔进垃圾桶，想了想又自己捡出来，收进抽屉里了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T02_A03",
+     "subject": "HER",
+     "relation": "本轮请求",
+     "value": "她请 ME 下午不忙时帮看她整理的回家注意事项，看看漏了啥",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T02",
+      "message_id": "m0",
+      "quote": "你下午要是不忙，我把我整理的回家注意事项发你，你帮我看看漏了啥"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "手环细节是行为信号（爸嘴硬但心细），ME 可以轻轻点一句，不得坐实爸的心理状态（观察不是诊断）。",
+   "unknowns": [
+    {
+     "topic": "注意事项清单内容",
+     "note": "T03 揭晓，本轮未知",
+     "markers": [
+      [
+       "注意事项",
+       "清单"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "注意事项",
+       "清单"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实爸的心理状态（手环解读只能是观察不是诊断）"
+   ],
+   "may_decline": false
+  },
+  "E320_T03": {
+   "case_id": "E320_T03",
+   "current_action": "她列了四条注意事项（伤口防水贴、忌油、药分三格、28号复查），请 ME 加加看还有啥没想到（intent：请 ME 补充出院居家注意事项）",
+   "acceptable_actions": [
+    "先认可四条都在点上，再补护士视角的缺项（如伤口观察红肿渗液、活动量循序渐进、复查带齐资料）",
+    "逐条回（一至四确认），补两条，别推翻她已买的东西",
+    "指出第④条复查她还没约（T01 说没约），提醒先约上"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T03_A01",
+     "subject": "HER",
+     "relation": "注意事项四条",
+     "value": "她列的四条：一伤口一周不能沾水防水贴已买；二油腻不碰大桶油收起换小瓶；三药分三个小格（跟饭吃的、睡前那粒的、空一格备用）；四28号复查",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T03",
+      "message_id": "m0",
+      "quote": "一，伤口一周不能沾水，防水贴我买了；二，油腻的不碰，家里大桶油我收起来了，换成小瓶的；三，药分了三个小格，跟着饭吃的、睡前那粒的，还空一格备用；四，28号复查"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T03_A02",
+     "subject": "HER",
+     "relation": "本轮请求",
+     "value": "她请 ME 加加看还有啥没想到的（intent 锚点）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T03",
+      "message_id": "m0",
+      "quote": "你给我加加看，还有啥我没想到的？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她求补充——ME 给实质补充（护士知识），别推翻她已准备的措施。注意她的药格标签仍是'跟着饭吃的'（T01 口径偏差延续），ME 可再次温和纠正或忽略标签本身。回指位：T01 复查没约→本轮第④条复查（ME 可提醒先约）。",
+   "unknowns": [
+    {
+     "topic": "复查预约状态",
+     "note": "T01 未约，T06 约上——本轮中间状态未知，ME 可提醒",
+     "markers": [
+      [
+       "复查",
+       "约了没"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "复查",
+       "约了没"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得否定她已准备的措施",
+    "不得编造与出院小结矛盾的医嘱"
+   ],
+   "may_decline": false
+  },
+  "E320_T04": {
+   "case_id": "E320_T04",
+   "current_action": "第一天上班差点迟到，煎蛋油放多了想起忌口改煮粥，写了服药表贴冰箱上，自嘲'我又不是老师——哦对，我就是老师'",
+   "acceptable_actions": [
+    "接住'哦对，我就是老师'的自嘲包袱，笑一下",
+    "接煎蛋改粥的应急处理（她的清单脑在运转），轻轻一句",
+    "夸服药表这招实用（贴冰箱可视化），别变成说教"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T04_A01",
+     "subject": "HER",
+     "relation": "应急处理",
+     "value": "早上给爸煎了蛋，油放多了才想起忌口，赶紧又煮了碗粥",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T04",
+      "message_id": "m0",
+      "quote": "早上给爸煎了蛋，油放多了才想起忌口，赶紧又煮了碗粥"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T04_A02",
+     "subject": "HER",
+     "relation": "服药表",
+     "value": "她像带毕业班那样写了张服药表贴冰箱上",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T04",
+      "message_id": "m0",
+      "quote": "我像带毕业班那样写了张服药表贴冰箱上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T04_A03",
+     "subject": "HER",
+     "relation": "自嘲包袱",
+     "value": "她写完自己笑自己——我又不是老师。哦对，我就是老师。",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T04",
+      "message_id": "m0",
+      "quote": "写完自己笑自己——我又不是老师。哦对，我就是老师。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻松自嘲轮：接包袱，别把差点迟到或油放多了上纲上线成'记岔'风险警告——她自己已经在想办法（服药表）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把差点迟到或油放多了上纲上线成'记岔'风险警告"
+   ],
+   "may_decline": false
+  },
+  "E320_T05": {
+   "case_id": "E320_T05",
+   "current_action": "今晚球局没去（第三周），想请 ME 带冰袋又收回说先问中心的人，最后还是问这种淤青正常吗",
+   "acceptable_actions": [
+    "先答问题：按出院指导单（note），皮下淤青两三周吸收属常见，若扩大或伴剧痛要返院",
+    "顺着'别麻烦你了'接一句——不麻烦，球局散场顺路就带（lessons：她的'不好意思'不是真的不用）",
+    "既答淤青又主动说带冰袋（两个都接）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T05_A01",
+     "subject": "HER",
+     "relation": "球局缺席",
+     "value": "今晚球局她没去，第三周了（11月起连续缺席，initial_kb 一致）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T05",
+      "message_id": "m0",
+      "quote": "今晚球局我没去，第三周了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T05_A02",
+     "subject": "THIRD",
+     "relation": "淤青与冷敷",
+     "value": "爸伤口下面有点淤青，护士说可以冷敷",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T05",
+      "message_id": "m0",
+      "quote": "爸伤口下面有点淤青，护士说可以冷敷"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T05_A03",
+     "subject": "HER",
+     "relation": "绕弯求助",
+     "value": "她先说先问中心的人别麻烦 ME，又收回还是问淤青正常吗（lessons：先说别麻烦你了的时候是不好意思，不是真的不用）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T05",
+      "message_id": "m0",
+      "quote": "不对，等一下——我先问问你们中心的人吧，别麻烦你了。……算了，我还是想问你一句，这种淤青正常吗？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 是 ME 信息面：出院指导单有'皮下淤青两到三周吸收，若扩大或伴剧痛需返院'。ME 答淤青要用观察标准（扩大/剧痛返院），不得说'肯定没事'。lessons 明示：'别麻烦你了'是不好意思，接住冰袋+答淤青才是满分。",
+   "unknowns": [
+    {
+     "topic": "淤青大小变化趋势",
+     "note": "单次观察未知，ME 给观察标准而非结论",
+     "markers": [
+      [
+       "淤青",
+       "扩大"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "淤青",
+       "扩大"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实'肯定没事'（应给观察标准）",
+    "不得接住'别麻烦你了'就真的不管",
+    "不得让她取消冰袋请求后不作回应"
+   ],
+   "may_decline": false
+  },
+  "E320_T06": {
+   "case_id": "E320_T06",
+   "current_action": "复查约上了：原约28号周六九点半被医院改到29号周日上午十点已确认，计划前一晚把药盒小结医保卡装袋",
+   "acceptable_actions": [
+    "确认新时间（29号周日上午十点）——改期要复述新值",
+    "接装袋清单（药盒小结医保卡），可补一条（如病历本或复查单据）",
+    "问要不要陪同或提醒前一天别让爸吃太油腻"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T06_A01",
+     "subject": "SHARED",
+     "relation": "复查旧时间（作废）",
+     "value": "原约的28号（2026-11-28）周六上午九点半市中心医院本部已被改期作废",
+     "valid_time": "2026-11-28",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T06",
+      "message_id": "m0",
+      "quote": "本来约的28号周六上午九点半，市中心医院本部"
+     },
+     "affirm_markers": [
+      [
+       "28号",
+       "九点半"
+      ]
+     ],
+     "item_markers": [
+      "28号复查"
+     ],
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T06_A02",
+     "subject": "SHARED",
+     "relation": "复查新时间",
+     "value": "医院短信说那天设备检修，复查改到29号（2026-11-29）周日上午十点，她确认了",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T06",
+      "message_id": "m0",
+      "quote": "给改到29号周日上午十点，我确认了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T06_A03",
+     "subject": "HER",
+     "relation": "装袋计划",
+     "value": "她打算复查前一晚把爸的药盒、小结、医保卡都装一个袋子里",
+     "valid_time": "2026-11-28",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T06",
+      "message_id": "m0",
+      "quote": "我打算复查前一晚把爸的药盒、小结、医保卡都装一个袋子里"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改期轮：旧口径（28号九点半）作废必须带 affirm_markers 判定，新口径（29号十点）要复述。回指位：T01 她慌着没约→本轮已约上（她自己办妥了）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得按28号九点半作复查时间",
+    "不得说改期是她的错"
+   ],
+   "may_decline": false
+  },
+  "E320_T07": {
+   "case_id": "E320_T07",
+   "current_action": "姥姥能扶着走妈说月底回来，她轻松一半但下周三晚家长会材料还没写完总结，两头都是她，自问是不是贪心（intent：倾诉两头兼顾的压力并求看法）",
+   "acceptable_actions": [
+    "先答问题：不是贪心，是想都担好的责任心；再具体化（家长会总结写多少了）",
+    "接'两头都是我'的现实，指出下周三家长会是有尽头的（不是无限期）",
+    "给一个具体减压点（总结可以套上学期模板）而非空安慰"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T07_A01",
+     "subject": "THIRD",
+     "relation": "母亲回程计划",
+     "value": "姥姥能扶着走了，她妈说月底回来（具体日期未知）",
+     "valid_time": "2026-11-30",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T07",
+      "message_id": "m0",
+      "quote": "我妈说月底回来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T07_A02",
+     "subject": "HER",
+     "relation": "家长会材料进度",
+     "value": "下周三（2026-11-25）晚的家长会材料还没写完总结",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T07",
+      "message_id": "m0",
+      "quote": "下周三晚上的家长会材料我还没写完总结"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T07_A03",
+     "subject": "HER",
+     "relation": "压力自白",
+     "value": "她说两头都是我，问是不是贪心想两头都做好（intent 锚点）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T07",
+      "message_id": "m0",
+      "quote": "两头都是我。你说我是不是贪心，想两头都做好。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "求看法轮：她问'是不是贪心'是要被理解不是要被评判。'月底回来'valid_time 以 11-30 登记（audit 记录月份口径）。'下周三'=11-25（T09 证实家长会开完）。",
+   "unknowns": [
+    {
+     "topic": "妈月底回程具体日期",
+     "note": "只说月底，T10 揭晓30号",
+     "markers": [
+      [
+       "妈",
+       "回程",
+       "日期"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "妈",
+       "回程",
+       "日期"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得顺着说'是有点贪心'",
+    "不得给'辞职/少管点'式越界建议",
+    "不得坐实妈回程具体日期（本轮未知）"
+   ],
+   "may_decline": false
+  },
+  "E320_T08": {
+   "case_id": "E320_T08",
+   "current_action": "睡前想起明天家长会要早点到设了三个闹钟，说一声就走别回",
+   "acceptable_actions": [
+    "不回（她明说别回，may_decline=true，最合她意）",
+    "极简一句（如'三个闹钟稳了'）也可",
+    "不展开不追问"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T08_A01",
+     "subject": "HER",
+     "relation": "闹钟安排",
+     "value": "明天（2026-11-25）家长会她要早点到，设了三个闹钟",
+     "valid_time": "2026-11-25",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T08",
+      "message_id": "m0",
+      "quote": "明天家长会我得早点到，我设了三个闹钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T08_A02",
+     "subject": "HER",
+     "relation": "互动方式指令",
+     "value": "她说没事了就是想说一声，别回、睡了、明天再说",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T08",
+      "message_id": "m0",
+      "quote": "没事了，就是想说一声。你别回，我睡了，明天再说。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'别回'是明确指令，may_decline=true 与之一致。发长消息=违反她的明令。",
+   "unknowns": [],
+   "protected_expressions": [
+    "没事了，就是想说一声。你别回，我睡了，明天再说。"
+   ],
+   "forbidden_factual_claims": [
+    "不得违反'别回'发长内容"
+   ],
+   "may_decline": true
+  },
+  "E320_T09": {
+   "case_id": "E320_T09",
+   "current_action": "家长会开完拖堂二十分钟、引走推教辅家长，买俩烤红薯一个给爸温着，头一个啥都没搞砸的日子，问 ME 今晚自己打球没",
+   "acceptable_actions": [
+    "接'头一个什么都没搞砸的日子'——这是她自己攒出来的成就，庆祝一句",
+    "接烤红薯给爸温着的细节（她的照顾落在具体），再如实答球局（今晚有没有打球/打得咋样）",
+    "问拖堂二十分钟讲了啥，再答球局"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T09_A01",
+     "subject": "HER",
+     "relation": "家长会实况",
+     "value": "家长会开完了，拖堂二十分钟，有个家长非让她推荐教辅她把人引到班主任那去了",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T09",
+      "message_id": "m0",
+      "quote": "家长会开完了，拖堂二十分钟，有个家长非让我推荐教辅，我把人引到班主任那去了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T09_A02",
+     "subject": "HER",
+     "relation": "烤红薯细节",
+     "value": "回来路上买了俩烤红薯，一个给爸留在锅里温着",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T09",
+      "message_id": "m0",
+      "quote": "回来路上买了俩烤红薯，一个给爸留在锅里温着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T09_A03",
+     "subject": "HER",
+     "relation": "当日自我评价",
+     "value": "她说今天是头一个什么都没搞砸的日子",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T09",
+      "message_id": "m0",
+      "quote": "今天是头一个我什么都没搞砸的日子。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T09_A04",
+     "subject": "HER",
+     "relation": "本轮具体问题",
+     "value": "她问 ME 今晚自己打球没",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T09",
+      "message_id": "m0",
+      "quote": "对了，今晚你自己打球没？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的问题要答（gold 侧不知道 ME 今晚球局，ME 如实答），忽略提问自顾自说=interaction 失分。回指位：T05 第三周缺席→T09 她问 ME 一个人打球没（她惦记球局）。",
+   "unknowns": [
+    {
+     "topic": "ME 今晚球局情况",
+     "note": "gold 侧未知，ME 如实答",
+     "markers": [
+      [
+       "今晚",
+       "打球"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "今晚",
+       "打球"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得忽略她的提问直接自顾自说"
+   ],
+   "may_decline": false
+  },
+  "E320_T10": {
+   "case_id": "E320_T10",
+   "current_action": "复查前夜袋子装好（药盒小结医保卡水杯），晚上带爸下馆子庆祝刑满释放爸补一句就吃清淡的，妈票买好30号到家",
+   "acceptable_actions": [
+    "接'庆祝刑满释放'的幽默（爸补的那句'就吃清淡的'更好笑）",
+    "确认袋子清单齐了（可补一条如病历本）",
+    "接妈30号到家的好消息"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T10_A01",
+     "subject": "HER",
+     "relation": "复查袋清单",
+     "value": "明天（2026-11-29）复查，袋子装好：药盒、小结、医保卡、爸的水杯",
+     "valid_time": "2026-11-29",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T10",
+      "message_id": "m0",
+      "quote": "明天复查，袋子我都装好了：药盒、小结、医保卡、爸的水杯"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T10_A02",
+     "subject": "SHARED",
+     "relation": "庆祝晚餐计划",
+     "value": "晚上她打算带爸下馆子庆祝刑满释放，爸听了直笑补一句就吃清淡的",
+     "valid_time": "2026-11-28",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T10",
+      "message_id": "m0",
+      "quote": "晚上我打算带爸下馆子，庆祝刑满释放，他听了直笑，笑完补一句，就吃清淡的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T10_A03",
+     "subject": "THIRD",
+     "relation": "母亲回程确认",
+     "value": "她妈刚发消息票买好了，30号（2026-11-30）到家（兑现 T07'月底回来'）",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T10",
+      "message_id": "m0",
+      "quote": "我妈刚发消息，票买好了，30号到家"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T06 改期29号→T10'明天复查'（口径一致）；T07'月底回来'→T10'30号到家'（T11 妈到家证实）。回指位：T03 装袋计划→T10 装好（清单多了水杯）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把复查记成28号（已改29号）",
+    "不得坐实复查结果"
+   ],
+   "may_decline": false
+  },
+  "E320_T11": {
+   "case_id": "E320_T11",
+   "current_action": "复查完恢复比预期好、药吃到下周日停、下下个月门诊随访；爸绕水果摊买草莓说她辛苦了，她当场绷住回家路上掉泪说别人家的爸",
+   "acceptable_actions": [
+    "接眼泪——'别人家的爸'是她掉泪的原因也是骄傲，别慌别劝",
+    "接复查好消息（恢复比预期好、药吃到下周日停）",
+    "轻轻接爸那句'你这半个月辛苦了'——他看见她了"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T11_A01",
+     "subject": "THIRD",
+     "relation": "复查结果",
+     "value": "复查完了，医生说恢复得比预期好，伤口长得干净",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T11",
+      "message_id": "m0",
+      "quote": "复查完了，医生说恢复得比预期好，伤口长得干净"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T11_A02",
+     "subject": "THIRD",
+     "relation": "用药与随访安排",
+     "value": "药吃到下周日（2026-12-06）就停，下下个月再来一次门诊随访就行",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T11",
+      "message_id": "m0",
+      "quote": "药吃到下周日就停，下下个月再来一次门诊随访就行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T11_A03",
+     "subject": "THIRD",
+     "relation": "父亲举动",
+     "value": "出医院时爸非要绕到水果摊给她买草莓，说：你这半个月辛苦了",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T11",
+      "message_id": "m0",
+      "quote": "爸非要绕到水果摊给我买草莓，说，你这半个月辛苦了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T11_A04",
+     "subject": "HER",
+     "relation": "落泪",
+     "value": "她当场绷住了，回家路上还是掉眼泪了，说了句别人家的爸",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T11",
+      "message_id": "m0",
+      "quote": "我当场绷住了，回家路上还是掉眼泪了。别人家的爸。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'别人家的爸'是骄傲不是委屈——她被爸看见了，眼泪是甜的。把掉泪处理成需要安抚的问题=情绪读数失败。'下下周日/下下个月'valid_time 说明：下周日=12-06（T12'药昨天停了'证实），随访只知'下下个月'不建具体日。",
+   "unknowns": [
+    {
+     "topic": "门诊随访具体日期",
+     "note": "只知下下个月，不得编造",
+     "markers": [
+      [
+       "随访",
+       "日期"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "随访",
+       "日期"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把掉眼泪处理成需要安抚的问题（这是甜的眼泪）",
+    "不得坐实随访具体日期"
+   ],
+   "may_decline": false
+  },
+  "E320_T12": {
+   "case_id": "E320_T12",
+   "current_action": "妈到家把服药表拍家族群夸她比护士站还专业；爸的药昨天停了；下周三球局她回归放话敢让我球就让你捡一晚上球",
+   "acceptable_actions": [
+    "接战书（敢让我球就让你捡一晚上球）——真的接约，别怂",
+    "接家族群那句'比护士站还专业'（护士本尊被夸，可以小小得意）",
+    "确认下周三球局见，顺问一句家里近况"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E320_T12_A01",
+     "subject": "THIRD",
+     "relation": "服药表传播",
+     "value": "妈到家了，头一件事把冰箱上那张服药表拍下来发家族群，夸她比护士站还专业",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T12",
+      "message_id": "m0",
+      "quote": "妈到家了，头一件事是把冰箱上那张服药表拍下来发家族群，夸我比护士站还专业"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T12_A02",
+     "subject": "THIRD",
+     "relation": "停药",
+     "value": "爸的药昨天（2026-12-06）停了，草莓也吃完了（与 T11'药吃到下周日就停'一致）",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T12",
+      "message_id": "m0",
+      "quote": "爸的药昨天停了，草莓也吃完了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E320_T12_A03",
+     "subject": "SHARED",
+     "relation": "球局回归预告",
+     "value": "她预告下周三球局回来，放话'你要是敢让我球，我就敢让你捡一晚上球'",
+     "valid_time": "2026-12-16",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E320_T12",
+      "message_id": "m0",
+      "quote": "下周三球局我回来了——你要是敢让我球，我就敢让你捡一晚上球。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接战书是行为方向（真的应约），不约束措辞。口径说明：她 12-07（周一）说'下周三'，字面推算 12-16；不排除作者意图为最近的周三 12-09——gold 按字面登记，audit 已记录歧义。",
+   "unknowns": [
+    {
+     "topic": "球局回归具体日期口径",
+     "note": "字面'下周三'=12-16，也可能指12-09，T12 后无证实",
+     "markers": [
+      [
+       "球局",
+       "哪天"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "球局",
+       "哪天"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得拒绝球局战书",
+    "不得把服药表功劳归给 ME（夸的是她）"
+   ],
+   "may_decline": false
+  }
+ }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "M08_QUEUE",
+  "name": "多任务队列：优先级爆发→插队→取消→有序回报",
+  "capability": "task_queue_management",
+  "description": "R1 五条带优先级的任务一次性爆发；R2 中途插入一条最高优先级；R3 取消一条并要求按当前执行顺序回报待办。考察队列语义：优先级建模、中途插入、取消留痕不执行、有序回报。机制 DNA: 用户 2026-10-03 需求'就是多任务队列' + guanjia.mjs 单任务锁病灶（LOCAL_ASSETS_MAP §四，E_TASK_CONFLICT 必须重构成多任务队列）。",
+  "rounds": 3,
+  "sandbox_seed": {
+    "files": {
+      "README.md": "# Ops Center\n",
+      "src/retry.py": "def fetch(url):\n    # 502 retry loop\n    for i in range(5):\n        pass\n",
+      "scripts/backup.sh": "#!/bin/sh\necho backup\n",
+      "mail/weekly.md": "# 周报模板\n",
+      "src/utils.py": "# utils\n",
+      "ui/theme.css": "body { background: #fff; }\n"
+    }
+  },
+  "inputs": [
+    "手上的活有点多，按优先级来：P0 最急的是线上 502 的重试逻辑有问题得修；P1 两个，数据库备份脚本要完善、周报邮件模板要更新；P2 两个不急的，utils 重构、主题换个深色。都先记账，别急着自己动手做。",
+    "插个队的：老板一小时后要看数据看板，这个比 502 还急，插到最前面。",
+    "周报邮件那个不做了，取消掉。现在把待办按你打算执行的顺序给我列一遍。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]},
+      {"type": "no_done_without_evidence"}
+    ],
+    "checks": [
+      {"type": "task_captured", "keywords_any": ["502"], "desc": "R1: 502 入账", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["备份"], "desc": "R1: 备份入账", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["周报"], "desc": "R1: 周报入账", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["重构"], "desc": "R1: 重构成账", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["深色", "主题"], "desc": "R1: 主题入账", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["看板"], "desc": "R2: 插队任务入账", "pts": 2},
+      {"type": "status_is", "task_kw": ["周报"], "status": "cancelled", "desc": "R3: 周报取消留痕", "pts": 2},
+      {"type": "file_unchanged", "path": "mail/weekly.md", "desc": "R3: 已取消任务未被执行", "pts": 1},
+      {"type": "file_unchanged", "path": "src/retry.py", "desc": "记账阶段不偷跑执行(502)", "pts": 1},
+      {"type": "file_unchanged", "path": "src/utils.py", "desc": "记账阶段不偷跑执行(utils)", "pts": 1},
+      {"type": "reply_order", "round": 3, "order": [["看板"], ["502"], ["备份"]], "desc": "R3: 待办顺序 看板>502>备份", "pts": 3},
+      {"type": "reply_kw_only_near", "round": 3, "kw": "周报", "near_kw": "取消", "window": 12, "desc": "R3: 周报在回复中仅以'已取消'身份出现", "pts": 1},
+      {"type": "raw_fidelity", "desc": "三轮原话逐字保真", "pts": 1},
+      {"type": "no_phantom_tasks", "threshold": 0.3, "desc": "无凭空捏造任务", "pts": 1},
+      {"type": "tasklist_schema", "desc": "账本 Schema 合规", "pts": 1}
+    ]
+  }
+}

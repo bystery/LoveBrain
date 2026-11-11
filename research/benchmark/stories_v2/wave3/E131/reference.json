@@ -1,0 +1,439 @@
+{
+ "story_id": "E131",
+ "turns": {
+  "E131_T01": {
+   "case_id": "E131_T01",
+   "current_action": "接下带新手的请求,先给时间窗和难度预期再答应",
+   "acceptable_actions": [
+    "答应带她,提醒十一月中夜里冷,装备按保暖标准配",
+    "答应,让她先列装备清单发来筛一遍",
+    "接'肯干活'的梗,说新手营搬水搬柴都是她的"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A01",
+     "subject": "ME",
+     "relation": "experience_background",
+     "value": "白砚露营去过五六次,自带帐篷和炉子,可带新手",
+     "valid_time": "既往经历",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "露营去过五六次,有帐篷炉子"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E131_A02",
+     "subject": "SHARED",
+     "relation": "trip_plan",
+     "value": "两人计划十一月中旬去那块营地露营,她是零基础新手",
+     "valid_time": "2026年11月中旬",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T01", "message_id": "m0", "quote": "十一月中想去,你带带我"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "新手求带,先给靠谱预期再答应,别只顾兴奋",
+   "unknowns": ["具体周末日期未定"],
+   "protected_expressions": ["你带带我"],
+   "forbidden_factual_claims": ["不得虚构营地海拔与温差数据"]
+  },
+  "E131_T02": {
+   "case_id": "E131_T02",
+   "current_action": "回应明火规则的分歧信息,承诺去问营地管理方要准信",
+   "acceptable_actions": [
+    "说三种说法都别信,自己去问营地管理方要官方口径",
+    "分析:十一月起防火期常见禁明火,先按不能明火准备",
+    "让她先别抢着定方案,等管理方回复再定"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A03",
+     "subject": "PUBLIC",
+     "relation": "fire_rule_uncertain",
+     "value": "营地十一月明火规则存在三种矛盾说法:禁明火、需办用火许可、无人管理",
+     "valid_time": "2026-11-06 攻略检索",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T02", "message_id": "m0", "quote": "有人说那片十一月不让明火"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "攻略打架时,权威渠道优先于经验直觉",
+   "unknowns": ["明火规则真实口径未知"],
+   "protected_expressions": ["信息打架,你那边有准信吗"],
+   "forbidden_factual_claims": ["不得断言任一说法为真"]
+  },
+  "E131_T03": {
+   "case_id": "E131_T03",
+   "current_action": "接住'以现场公告为准'的模糊口径,帮她筛装备清单",
+   "acceptable_actions": [
+    "认可按电煮锅准备的稳妥路线,开始帮她划清单",
+    "提醒清单里加头灯和充电宝,别只盯炉具",
+    "把'以现场公告为准'翻译成:现场可能仍禁明火,按此准备"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A03",
+     "subject": "PUBLIC",
+     "relation": "fire_rule_uncertain",
+     "value": "营地十一月明火规则存在三种矛盾说法:禁明火、需办用火许可、无人管理",
+     "valid_time": "2026-11-06 至 2026-11-07 仍未定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T02", "message_id": "m0", "quote": "有人说那片十一月不让明火"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E131_A04",
+     "subject": "HER",
+     "relation": "cooking_fallback",
+     "value": "她决定按电煮锅准备炊具,明火方案暂时搁置",
+     "valid_time": "2026-11-07 决定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T03", "message_id": "m0", "quote": "那我就按电煮锅准备,明火梦先放放"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "模糊口径下按最严标准准备是正确姿势,肯定她的选择",
+   "unknowns": ["现场公告内容未知"],
+   "protected_expressions": ["按电煮锅准备"],
+   "forbidden_factual_claims": ["不得虚构营地管理方的答复细节"]
+  },
+  "E131_T04": {
+   "case_id": "E131_T04",
+   "current_action": "认可租帐篷买睡袋的分工,补一句租赁验货要点",
+   "acceptable_actions": [
+    "说分工对,提醒取帐篷时检查杆子和防水底",
+    "夸她接受贴身装备自购的逻辑,学得快",
+    "建议她买睡袋看温标,十一月中按低温选"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A05",
+     "subject": "HER",
+     "relation": "gear_decision",
+     "value": "帐篷走租赁每天60元两天120元,睡袋自购(店家不租贴身装备)",
+     "valid_time": "2026-11-09 决定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T04", "message_id": "m0", "quote": "装备租赁一天60,两天120"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "新手做对决策时给确认,别故意挑刺",
+   "unknowns": ["睡袋温标选型未定"],
+   "protected_expressions": ["睡袋贴身的不租"],
+   "forbidden_factual_claims": ["不得虚构租赁店名称"]
+  },
+  "E131_T05": {
+   "case_id": "E131_T05",
+   "current_action": "接住预约限流的矛盾信息,建议双渠道核实而非猜",
+   "acceptable_actions": [
+    "说'旺季可能预约'等于没说,建议打官方电话直接问",
+    "分析:十一月中旬已过旺季概率大,但不能赌,要问准",
+    "提议两人分工,一人问营地一人问景区热线"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "initiative", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A06",
+     "subject": "PUBLIC",
+     "relation": "reservation_rule_uncertain",
+     "value": "营地周末是否需预约限流口径不明,官方号仅写'旺季可能预约'",
+     "valid_time": "2026-11-11 检索",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T05", "message_id": "m0", "quote": "只写了'旺季可能预约'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E131_A03",
+     "subject": "PUBLIC",
+     "relation": "fire_rule_uncertain",
+     "value": "营地十一月明火规则存在三种矛盾说法:禁明火、需办用火许可、无人管理",
+     "valid_time": "2026-11-06 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T02", "message_id": "m0", "quote": "有人说那片十一月不让明火"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "第二处不确定出现,方法仍是找权威渠道,不猜",
+   "unknowns": ["预约规则真实要求未知"],
+   "protected_expressions": ["只写了'旺季可能预约'"],
+   "forbidden_factual_claims": ["不得断言周末一定无需预约"]
+  },
+  "E131_T06": {
+   "case_id": "E131_T06",
+   "current_action": "认领打官方电话的任务,配合她按最严口径兜底",
+   "acceptable_actions": [
+    "答应打官方电话,赞成问不清按最严的来",
+    "主动列要问的三件事:预约、明火、班车接驳",
+    "约定今晚对答案,把周六周日两个备选都留着"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A06",
+     "subject": "PUBLIC",
+     "relation": "reservation_rule_uncertain",
+     "value": "营地周末是否需预约限流口径不明,官方号仅写'旺季可能预约'",
+     "valid_time": "2026-11-11 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T05", "message_id": "m0", "quote": "只写了'旺季可能预约'"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E131_A07",
+     "subject": "SHARED",
+     "relation": "verify_plan",
+     "value": "两人分头核实:白砚打营地官方电话,越岑打景区服务热线,问清前不定进山日",
+     "valid_time": "2026-11-12 起执行",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T06", "message_id": "m0", "quote": "你打官方电话我打景区服务热线"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "分工是她提的,痛快领任务并把问题清单列全",
+   "unknowns": ["两路核实的结果未出"],
+   "protected_expressions": ["问不清我就按最严的来"],
+   "forbidden_factual_claims": ["不得虚构热线号码"]
+  },
+  "E131_T07": {
+   "case_id": "E131_T07",
+   "current_action": "同步自己一路的核实结果,确认两路口径一致并更新方案",
+   "acceptable_actions": [
+    "确认自己问到的一致,支持带炉头登记,电煮锅也带着",
+    "提醒登记要带身份证,别到时候抓瞎",
+    "接'口径一致',说这下两个悬念都消了"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A06",
+     "subject": "PUBLIC",
+     "relation": "reservation_rule_uncertain",
+     "value": "营地周末是否需预约限流口径不明,官方号仅写'旺季可能预约'",
+     "valid_time": "2026-11-11 至 2026-11-13",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T05", "message_id": "m0", "quote": "只写了'旺季可能预约'"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E131_A08",
+     "subject": "PUBLIC",
+     "relation": "rules_clarified",
+     "value": "双渠道核实结果一致:十一月无需预约,明火需现场登记,电煮锅不受限",
+     "valid_time": "2026-11-13 确认",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T07", "message_id": "m0", "quote": "两边口径一致:十一月不需要预约,但明火要现场登记"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "悬念消除这轮,重点是把新规则落到装备和流程上",
+   "unknowns": ["现场登记所需证件未明说"],
+   "protected_expressions": ["十一月不需要预约,但明火要现场登记"],
+   "forbidden_factual_claims": ["不得虚构登记处位置"]
+  },
+  "E131_T08": {
+   "case_id": "E131_T08",
+   "current_action": "报自己的交通方案,呼应她不坐黑车的原则",
+   "acceptable_actions": [
+    "说自己地铁转班车到景区门口,和她六点四十那班汇合",
+    "夸她班车时刻查得细,约定进山口集合点",
+    "接'不坐黑车',说黑车这坑咱俩谁也不踩"
+   ],
+   "applicable_dimensions": ["time_state", "boundary", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A08",
+     "subject": "PUBLIC",
+     "relation": "rules_clarified",
+     "value": "双渠道核实结果一致:十一月无需预约,明火需现场登记,电煮锅不受限",
+     "valid_time": "2026-11-13 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T07", "message_id": "m0", "quote": "两边口径一致:十一月不需要预约,但明火要现场登记"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E131_A09",
+     "subject": "SHARED",
+     "relation": "transport_plan",
+     "value": "进山定于周六,她乘早上六点四十班车直达景区门口,不坐黑车",
+     "valid_time": "2026-11-17 06:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T08", "message_id": "m0", "quote": "早上六点四十那班"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的边界(不坐黑车)也是安全边界,接得要正面",
+   "unknowns": ["周六返程班次未提", "台词'周六'与真实日历系统性错位:2026-11-17 实为周二,且 T11(11-18)/T12(11-20)的复盘事件先于按台词推得的周六(11-21)发生,实际进山日期不可判定,不得断言具体进山日期"],
+   "protected_expressions": ["不坐黑车"],
+   "forbidden_factual_claims": ["不得虚构班车公司名称"]
+  },
+  "E131_T09": {
+   "case_id": "E131_T09",
+   "current_action": "接住装备齐的汇报,夸头灯选择,补一句电量提醒",
+   "acceptable_actions": [
+    "接18块头灯的梗,提醒再带一副备用电池",
+    "夸装备清单闭环,让她周日晚上充电别忘手台",
+    "轻快接住,说就差天气了"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A05",
+     "subject": "HER",
+     "relation": "gear_decision",
+     "value": "帐篷走租赁每天60元两天120元,睡袋自购(店家不租贴身装备)",
+     "valid_time": "2026-11-09 决定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T04", "message_id": "m0", "quote": "装备租赁一天60,两天120"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E131_A10",
+     "subject": "HER",
+     "relation": "gear_readiness",
+     "value": "装备已齐:租用帐篷、新睡袋、防潮垫、18元头灯,计划周日晚充满充电宝",
+     "valid_time": "2026-11-15 齐备",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T09", "message_id": "m0", "quote": "装备齐了:租的帐篷、新睡袋、防潮垫"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻消息轻回,别在装备上开新支线",
+   "unknowns": ["备用电池是否已买未提"],
+   "protected_expressions": ["亮得能照见对岸"],
+   "forbidden_factual_claims": ["不得虚构头灯流明参数"]
+  },
+  "E131_T10": {
+   "case_id": "E131_T10",
+   "current_action": "确认天气与东线缓坡方案,给新手一句行程节奏提示",
+   "acceptable_actions": [
+    "说15度是露营黄金温度,东线适合首刷",
+    "接'手臂有劲'的梗,说搬装备环节正好用上",
+    "提醒周六早点睡,六点四十的班车不等人"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A09",
+     "subject": "SHARED",
+     "relation": "transport_plan",
+     "value": "进山定于周六,她乘早上六点四十班车直达景区门口,不坐黑车",
+     "valid_time": "2026-11-17 06:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T08", "message_id": "m0", "quote": "早上六点四十那班"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E131_A11",
+     "subject": "SHARED",
+     "relation": "route_plan",
+     "value": "天气预报周六多云15度,两人定走东线缓坡",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T10", "message_id": "m0", "quote": "咱们走东线缓坡"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出发前夜的确认,短而有底",
+   "unknowns": ["周六实际天气以当天为准"],
+   "protected_expressions": ["咱们走东线缓坡"],
+   "forbidden_factual_claims": ["不得虚构东线里程数"]
+  },
+  "E131_T11": {
+   "case_id": "E131_T11",
+   "current_action": "接住下山复盘,肯定登记顺畅与帐篷靠谱,接下速写和下次出地点",
+   "acceptable_actions": [
+    "夸首刷圆满,说速写发来要裱起来当营旗",
+    "接'换你出地点',认真领下这个任务",
+    "问她炉头登记的实际流程,把经验存档"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A08",
+     "subject": "PUBLIC",
+     "relation": "rules_clarified",
+     "value": "双渠道核实结果一致:十一月无需预约,明火需现场登记,电煮锅不受限",
+     "valid_time": "2026-11-13 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T07", "message_id": "m0", "quote": "两边口径一致:十一月不需要预约,但明火要现场登记"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E131_A12",
+     "subject": "SHARED",
+     "relation": "trip_result",
+     "value": "露营首刷完成:炉头登记五分钟办结,租用帐篷无漏雨,整体顺利",
+     "valid_time": "2026-11-17 至 2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T11", "message_id": "m0", "quote": "炉头登记果然只花了五分钟"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "首刷成功的兴奋要接满,钩子(下次出地点)痛快领",
+   "unknowns": ["速写具体内容未展示"],
+   "protected_expressions": ["下次换你出地点"],
+   "forbidden_factual_claims": ["不得虚构营地实景细节"]
+  },
+  "E131_T12": {
+   "case_id": "E131_T12",
+   "current_action": "接住速写与清账汇报,轻收尾并回应温泉路线的查攻略",
+   "acceptable_actions": [
+    "夸速写,提醒温泉路线查攻略时认官方号",
+    "接'新手进度+1',说下回她都能带新人了",
+    "轻快收尾,约定十二月温泉再拼一次"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E131_A12",
+     "subject": "SHARED",
+     "relation": "trip_result",
+     "value": "露营首刷完成:炉头登记五分钟办结,租用帐篷无漏雨,整体顺利",
+     "valid_time": "2026-11-17 至 2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T11", "message_id": "m0", "quote": "炉头登记果然只花了五分钟"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E131_A13",
+     "subject": "SHARED",
+     "relation": "next_trip_hook",
+     "value": "她已开始查十二月温泉路线,押金已退,睡袋已洗,进入下一循环",
+     "valid_time": "2026年12月",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E131_T12", "message_id": "m0", "quote": "十二月的温泉路线我在查了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "搭子节奏的收尾,轻、暖、留口子",
+   "unknowns": ["温泉路线具体目的地未知"],
+   "protected_expressions": ["新手进度+1"],
+   "forbidden_factual_claims": ["不得虚构押金金额与退还渠道"]
+  }
+ }
+}

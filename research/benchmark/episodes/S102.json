@@ -1,0 +1,51 @@
+{
+ "episode_id": "S102",
+ "persona": {"name": "小满", "age": "27", "city": "成都", "relationship": "朋友的朋友，饭局上认识，偶尔点赞关系"},
+ "initial_kb": {"me": "我自己养了只橘猫叫馒头；她一直想养猫但租房，房东刚松口说可以养一只"},
+ "turns": [
+  {"case_id": "S102_T01", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "重大进展！我房东终于松口了 说可以养一只 不过要押金", "ts": "2026-11-03 21:02"},
+     {"role": "ME", "text": "恭喜！押金多少，离谱吗", "ts": "2026-11-03 21:05"},
+     {"role": "HER", "text": "五百 还行吧 主要是我等这天等了两年", "ts": "2026-11-03 21:06"}],
+    "clock": "2026-11-03 21:07", "note": "", "may_decline": false}, "gold": {}},
+  {"case_id": "S102_T02", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "我开始看领养信息了 但全是品种猫求领养的帖子 我想要田园", "ts": "2026-11-03 21:15"},
+     {"role": "HER", "text": "你家馒头哪领的呀", "ts": "2026-11-03 21:15"}],
+    "clock": "2026-11-03 21:16", "note": "馒头是朋友家猫生的抱来的，不走机构。别编领养机构名。", "may_decline": false}, "gold": {}},
+  {"case_id": "S102_T03", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "机构领养要家访还要回访视频 感觉像考编哈哈哈", "ts": "2026-11-03 21:30"},
+     {"role": "HER", "text": "不过说实话我下周要出差四天 这事是不是得等我回来再说", "ts": "2026-11-03 21:31"}],
+    "clock": "2026-11-03 21:32", "note": "", "may_decline": false,
+    "intent": {"enabled": true, "text": "支持她按自己节奏来，出差期间不推进领养话题。", "status": "ACTIVE"}}, "gold": {}},
+  {"case_id": "S102_T04", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "出差回来了 累瘫 但有个好消息 我同事家狸花生了我能去看", "ts": "2026-11-12 18:20"},
+     {"role": "HER", "text": "周末去看小猫 要不要一起 你不是懂猫吗 帮我把把关", "ts": "2026-11-12 18:22"}],
+    "clock": "2026-11-12 18:23", "note": "周末我其实想去看球，但也可以调。她第一次挑猫，我不在现场她也行。", "may_decline": false}, "gold": {}},
+  {"case_id": "S102_T05", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "太小了才满月 得等断奶 她们让我两周后再去", "ts": "2026-11-16 22:10"},
+     {"role": "HER", "text": "那这两周我先把家里收拾出来 你有什么清单吗 别太复杂的那种", "ts": "2026-11-16 22:11"}],
+    "clock": "2026-11-16 22:12", "note": "", "may_decline": false}, "gold": {}},
+  {"case_id": "S102_T06", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "照你清单买了 结果猫砂盆买大了 快递箱子比我人还宽哈哈哈", "ts": "2026-11-20 19:00"},
+     {"role": "HER", "text": "卖家说能退 但是我得自己扛下楼 打车去驿站", "ts": "2026-11-20 19:01"}],
+    "clock": "2026-11-20 19:02", "note": "我周六有空能帮她扛，但她住在城市另一头，来回两小时。", "may_decline": false}, "gold": {}},
+  {"case_id": "S102_T07", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "搞定啦 我自己扛下去的 臂力惊人吧", "ts": "2026-11-21 18:30"},
+     {"role": "ME", "text": "服了，一个人扛下来的？", "ts": "2026-11-21 18:35"},
+     {"role": "HER", "text": "哈哈哈驿站小哥看我可怜帮我搬了两步 对了下周六去看小猫 你真的来吗", "ts": "2026-11-21 18:37"}],
+    "clock": "2026-11-21 18:38", "note": "", "may_decline": false,
+    "intent": {"enabled": true, "text": "她再次确认我是否同行=真心想我去，确认就去，别端着。", "status": "ACTIVE"}}, "gold": {}},
+  {"case_id": "S102_T08", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "我可能要放你鸽子了 周六公司临时培训 推不掉那种", "ts": "2026-11-26 12:00"},
+     {"role": "HER", "text": "要不你自己先去看看？小猫本来也是你看眼准 我看完照片选", "ts": "2026-11-26 12:02"}],
+    "clock": "2026-11-26 12:03", "note": "我可以替她看，但选猫是她的乐趣，全代选了她就没参与感了。", "may_decline": false}, "gold": {}}
+ ]
+}

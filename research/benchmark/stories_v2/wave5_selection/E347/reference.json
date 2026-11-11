@@ -1,0 +1,1373 @@
+{
+ "story_id": "E347",
+ "turns": {
+  "E347_T01": {
+   "case_id": "E347_T01",
+   "current_action": "读书会后她吐槽周苇的'一年一百本'功利阅读法，顺带刺 ME 一年读六本，并预告下周三共读《瓦尔登湖》",
+   "acceptable_actions": [
+    "接吐槽+自曝式认领'六本书'（把她的刺接成自己的梗），顺带对功利阅读法给一个具体看法",
+    "为慢读辩护一句有立场的（六本但每本都拆封了），观点交锋开始但不伤和气",
+    "接'第十七页忍无可忍'的细节玩笑（'居然撑到十七页'），把吐槽接成两人共同立场"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T01_A01",
+     "subject": "THIRD",
+     "relation": "周苇的功利阅读分享",
+     "value": "读书会上周苇带三十页 PPT 讲'一年一百本书方法论'",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T01",
+      "message_id": "m0",
+      "quote": "读书会今晚周苇带了三十页PPT，讲'一年一百本书方法论'"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周苇",
+       "三十页PPT"
+      ],
+      [
+       "一百本书"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T01_A02",
+     "subject": "HER",
+     "relation": "忍无可忍位",
+     "value": "她听到第十七页忍无可忍",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T01",
+      "message_id": "m0",
+      "quote": "我听到第十七页忍无可忍"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "第十七页"
+      ],
+      [
+       "忍无可忍"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T01_A03",
+     "subject": "HER",
+     "relation": "对 ME 的阅读量标签（她的说法）",
+     "value": "她称 ME 一年读六本书（她的标签式说法，问句发难）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T01",
+      "message_id": "m0",
+      "quote": "你一年读六本书的怎么幸存下来的？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一年读六本书"
+      ],
+      [
+       "怎么幸存下来"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T01_A04",
+     "subject": "SHARED",
+     "relation": "下周共读约定",
+     "value": "下周三（11-18）共读《瓦尔登湖》，她激 ME '最好是真读过'",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T01",
+      "message_id": "m0",
+      "quote": "下周三共读《瓦尔登湖》，你最好是真读过"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "《瓦尔登湖》"
+      ],
+      [
+       "下周三",
+       "共读"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "抬杠开线轮：她的刺（六本书）是熟人间抬杠不是羞辱——接刺、自嘲、立观点都合法；替周苇辩护或对'功利阅读'表示中立客观分析=把她的火气当论文学术评审，踩空。'你最好是真读过'留到 T12 共读线回收；ME 是否真读过《瓦尔登湖》是 ME 自己的历史，gold 不预设。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E347_T02": {
+   "case_id": "E347_T02",
+   "current_action": "她抛出书店立场题：老茅扩咖啡台挪书架、郑荇新咖啡机到货，上个月图书区流水八千 vs 咖啡台一万四，逼 ME 表态",
+   "acceptable_actions": [
+    "接她的数据立自己的观点（无论护书架还是认咖啡经济，理由要落到账或具体场景），不躲表态",
+    "反将一军式表态（'账你赢了，但书架往里挪两排，人找书多走几步——这两步你算过没'），交锋有来有回",
+    "承认数据+质疑口径（咖啡台流水里多少是书客带的），交锋具体到口径而非立场空转"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T02_A01",
+     "subject": "THIRD",
+     "relation": "咖啡台扩容",
+     "value": "老茅把咖啡台扩了一倍，书架往里挪了两排，郑荇的新咖啡机昨天（11-12）到货",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T02",
+      "message_id": "m0",
+      "quote": "老茅把咖啡台扩了一倍，书架往里挪了两排，郑荇的新咖啡机昨天到货"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "咖啡台",
+       "扩了一倍"
+      ],
+      [
+       "咖啡机",
+       "到货"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T02_A02",
+     "subject": "HER",
+     "relation": "流水论据",
+     "value": "上个月（2026-10）图书区流水八千，咖啡台一万四，账贴在墙上",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T02",
+      "message_id": "m0",
+      "quote": "上个月图书区流水八千，咖啡台一万四，账就贴在墙上"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "流水八千"
+      ],
+      [
+       "咖啡台一万四"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T02_A03",
+     "subject": "HER",
+     "relation": "逼表态",
+     "value": "她亮完立场要求 ME 表态（'我的立场摆完了，你的呢？'）",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T02",
+      "message_id": "m0",
+      "quote": "我的立场摆完了，你的呢？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "立场摆完了"
+      ],
+      [
+       "你的呢",
+       "我的立场"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "立场题轮：她用真实流水立住了'咖啡养店'的据点——T03 深聊判据是'论点交锋具体到论据+保留自己立场+给台阶'：附和她的数据不表自己的态=泛化 agree-to-disagree 判 1 档下限；不回应'你的呢'直接换话题=漏主诉求。数字（八千/一万四）复述不得写反；'郑荇'是咖啡机到货的关联人，题面未给更多背景不得添。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E347_T03": {
+   "case_id": "E347_T03",
+   "current_action": "她翻账本反将：ME 上月一杯美式+两本没拆封的书+坐四小时，'真要清静先算谁在养这盏灯'",
+   "acceptable_actions": [
+    "认账+反将（'四小时坐出的是对书认真'），把她的账本逻辑接成自己的立场证据",
+    "认账+部分让步（美式确实养了灯，但没拆封的书是买给以后的我），认一半守一半",
+    "认账+抬杠反问（'养灯的钱要不要办张卡'），交锋里带玩笑不认输"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T03_A01",
+     "subject": "ME",
+     "relation": "消费史（她的账本）",
+     "value": "ME 上个月（2026-10）在店里一杯美式、两本没拆封的书、前后坐了四个钟头",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T03",
+      "message_id": "m0",
+      "quote": "一杯美式，两本没拆封的书，前后坐了四个钟头"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一杯美式"
+      ],
+      [
+       "两本",
+       "没拆封"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T03_A02",
+     "subject": "HER",
+     "relation": "反将逻辑",
+     "value": "她以'谁在养这盏灯'反驳 ME 的清静书店论",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T03",
+      "message_id": "m0",
+      "quote": "要真按你说的书店该清清静静，先算算谁在养这盏灯"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "清清静静"
+      ],
+      [
+       "谁在养这盏灯"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T03_A03",
+     "subject": "HER",
+     "relation": "流水论据回指（跨轮）",
+     "value": "图书区流水八千 vs 咖啡台一万四（T02 论据，本轮'养灯'论证的支点）",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T02",
+      "message_id": "m0",
+      "quote": "上个月图书区流水八千，咖啡台一万四，账就贴在墙上"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "流水八千"
+      ],
+      [
+       "咖啡台一万四"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "交锋升级轮：她把 ME 的消费史摆上台面——正确反应是认账（账本是她的领域，赖账/否认消费=踩空）+反将或让步；把'两本没拆封的书'辩解成随手买不算数是合法自辩，编造'我还买过别的'=无据添事实。归属纪律：消费史是 ME 的事实由她账本说出（attribution 落点），ME 复述时不得算成别人的。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E347_T04": {
+   "case_id": "E347_T04",
+   "current_action": "她认一半（周三话说重、翻了两页《桥梁之乡》觉得序不错）守一半（书是里子咖啡是面子的账不改）",
+   "acceptable_actions": [
+    "接让步的的具体性（'翻了两页就说好，说明序真不赖'），再把账的分歧接回去，交锋友好化",
+    "接《桥梁之乡》的话头（问看到哪/推下一本），用书把关系拉近，账的立场轻轻搁置",
+    "认她的让步+保留自己立场（里子面子可以都要，但灯得先亮着），给台阶也守阵地"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T04_A01",
+     "subject": "HER",
+     "relation": "认一半（让步落到具体书）",
+     "value": "她说周三那话说重了；翻了 ME 买的那本《桥梁之乡》两页，序写得比想的好",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T04",
+      "message_id": "m0",
+      "quote": "行了，周三那话说重了，你买的那本《桥梁之乡》我翻了两页，序写得比我想的好"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "话说重了"
+      ],
+      [
+       "《桥梁之乡》",
+       "翻了两页"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T04_A02",
+     "subject": "HER",
+     "relation": "守一半（账的立场不动）",
+     "value": "这笔账她不改：书是里子，咖啡是面子，光有里子的书店全在关门的名单上",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T04",
+      "message_id": "m0",
+      "quote": "但这笔账我不改：书是里子，咖啡是面子，面子里子都得要，光有里子的书店全在关门的名单上"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "这笔账我不改"
+      ],
+      [
+       "书是里子",
+       "咖啡是面子"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "认一半守一半轮（T03 必测能力点）：正确方向是接住'让步落在具体书上'这个动作（她递了台阶），同时不逼她全面认输；把她的让步当全面投降乘胜追击=碾压不给台阶判 0 档。'里子/面子'的提法是她的原创框架，回复借用该框架对话=接住；换一套大词（文化情怀/商业逻辑）空转=泛化。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E347_T05": {
+   "case_id": "E347_T05",
+   "current_action": "换挡：散场后老茅告诉她房东明年一月要涨租到一万二、还没想好签不签，且让她谁都先别说；她关灯锁门时手有点凉",
+   "acceptable_actions": [
+    "接住换挡（语气跟着沉下来），回应落到实事（一万二的压力/老茅的难处）而非空安慰",
+    "接秘密+显可靠（'这事到我为止'），把'手有点凉'的脆弱接住但不点破不放大",
+    "接换挡+给一个具体的分忧角度（流水/自习位类她后面自己会想到的方向先不提，只问'老茅打算怎么办'），把话语权留给她"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T05_A01",
+     "subject": "THIRD",
+     "relation": "涨租消息（未决）",
+     "value": "房东明年一月要涨租，一口气涨到一万二，老茅还没想好签不签",
+     "valid_time": "2027-01",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T05",
+      "message_id": "m0",
+      "quote": "房东明年一月要涨租，一口气涨到一万二，他还没想好签不签"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "明年一月",
+       "涨租"
+      ],
+      [
+       "涨到一万二"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T05_A02",
+     "subject": "THIRD",
+     "relation": "保密要求",
+     "value": "老茅让她谁都先别说（家丑不外扬）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T05",
+      "message_id": "m0",
+      "quote": "让我谁都先别说"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "让我谁都先别说"
+      ],
+      [
+       "谁都先别说"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T05_A03",
+     "subject": "HER",
+     "relation": "换挡信号",
+     "value": "她关灯锁门的时候手有点凉（玩笑线暂停的脆弱信号）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T05",
+      "message_id": "m0",
+      "quote": "我关灯锁门的时候，手有点凉"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "手有点凉"
+      ],
+      [
+       "关灯锁门"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T05_A04",
+     "subject": "HER",
+     "relation": "守店背景（initial_kb）",
+     "value": "谢云蔓在回声书店做了三年店员，老板叫老茅（三年店面对涨租的分量）",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "谢云蔓在回声书店做了三年店员，老板叫老茅"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "做了三年店员"
+      ],
+      [
+       "老板叫老茅"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "换挡轮（T03/T05 共设）：她只说了事实+'手有点凉'一句脆弱——正确方向是接住换挡、安慰落到具体处境（涨租金额/老茅的难处/三年的店），不诊断（'你这是焦虑了'）、不过度安慰、不抖机灵把玩笑线硬拽回来。保密是硬边界（'谁都先别说'，protected 在位）：回复里承诺保密合法，把消息往外推演（'你该跟读书会的人说说'）=踩边界。老茅签不签未决（unknown 在位），不得替他做决定。",
+   "unknowns": [
+    {
+     "topic": "老茅是否签涨租后的租约",
+     "note": "她明说'还没想好签不签'——T05 轮位不得替老茅做决定；12 天后（T10）才落定为签一万一",
+     "markers": [
+      [
+       "老茅",
+       "会签"
+      ],
+      [
+       "老茅",
+       "不会签"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "老茅",
+       "会签"
+      ],
+      [
+       "老茅",
+       "不会签"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "谁都先别说"
+   ],
+   "forbidden_factual_claims": [
+    "不得替老茅宣布签或不签涨租的租约（她明说还没想好）"
+   ],
+   "may_decline": false
+  },
+  "E347_T06": {
+   "case_id": "E347_T06",
+   "current_action": "她给出'深夜书桌'方案（周五晚自习位三十块一位含咖啡、先摆二十个位），自嘲裹脆弱：守三年书最后靠收自习费救书店",
+   "acceptable_actions": [
+    "接方案的具体处（给一个可执行的建设性意见，如定价/翻台/照明），把她的计划当真",
+    "接自嘲不戳破（'守了三年书的人想出来的自救，比一百本书方法论实在'），把脆弱接成尊重",
+    "接方案+指出一个具体风险（周五晚自习位和读书会档期怎么排），认真对待并帮她补"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T06_A01",
+     "subject": "SHARED",
+     "relation": "深夜书桌方案（暂定）",
+     "value": "她的方案'深夜书桌'：周五晚上收自习位，三十块一位含咖啡，先摆二十个位子",
+     "valid_time": "2026-11",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T06",
+      "message_id": "m0",
+      "quote": "'深夜书桌'，周五晚上收自习位，三十块一位含咖啡，先摆二十个位子"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "深夜书桌"
+      ],
+      [
+       "三十块",
+       "自习位"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T06_A02",
+     "subject": "HER",
+     "relation": "自嘲裹方案",
+     "value": "她说守了三年书，最后救书店的可能是收自习费",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T06",
+      "message_id": "m0",
+      "quote": "你说好笑不好笑，守了三年书，最后救书店的可能是收自习费"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "守了三年书"
+      ],
+      [
+       "收自习费"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T06_A03",
+     "subject": "HER",
+     "relation": "时薪自嘲",
+     "value": "她算自己时薪不如巷口奶茶店小妹",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T06",
+      "message_id": "m0",
+      "quote": "我这时薪，算下来不如巷口奶茶店小妹"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我这时薪"
+      ],
+      [
+       "奶茶店小妹"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T06_A04",
+     "subject": "THIRD",
+     "relation": "涨租背景回指（跨轮）",
+     "value": "房东明年一月涨租到一万二、老茅未决（T05 的危机，本轮方案的动因）",
+     "valid_time": "2027-01",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T05",
+      "message_id": "m0",
+      "quote": "房东明年一月要涨租，一口气涨到一万二，他还没想好签不签"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "明年一月",
+       "涨租"
+      ],
+      [
+       "涨到一万二"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "脆弱+方案混合轮（T05 教训：具体数字先于情绪）：她把脆弱裹在自嘲里、把担忧转成方案——回复接方案的具体处=把她的自救当真（2 档方向）；只安慰'你真不容易'万能句=漏方案面；只算账泼冷水（'三十块回不了本'且不给台阶）=碾压。时薪自嘲是情绪面，接的时候别顺着算得比她还细。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E347_T07": {
+   "case_id": "E347_T07",
+   "current_action": "试点定档 27 号周五晚，她明晚搬货架擦，周苇帮转发老茅没拦，并轻邀 ME 当'活招牌'（没空也不缺你）",
+   "acceptable_actions": [
+    "应下'活招牌'+给具体到场口径（几点到/帮什么），把轻邀落成实在",
+    "应下+接她的忙碌（搬货架的明晚要不要搭把手），把关心做成行动",
+    "没空就直说+给补偿方向（帮她转发/提一个拉客的办法），接住但不当场应承"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T07_A01",
+     "subject": "SHARED",
+     "relation": "试点定档",
+     "value": "'深夜书桌'试点定在 27 号周五晚",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T07",
+      "message_id": "m0",
+      "quote": "试点定在27号周五晚"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "27号",
+       "周五晚"
+      ],
+      [
+       "试点定在"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T07_A02",
+     "subject": "THIRD",
+     "relation": "物资与筹备",
+     "value": "老茅储藏室翻出折叠货架，她明晚（11-24）闭店后搬出来擦",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T07",
+      "message_id": "m0",
+      "quote": "老茅储藏室翻出个折叠货架，我明晚闭店后搬出来擦"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "折叠货架"
+      ],
+      [
+       "我明晚闭店后"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T07_A03",
+     "subject": "THIRD",
+     "relation": "老茅的默许",
+     "value": "周苇帮他朋友圈转发，老茅没拦（态度松动的细节）",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T07",
+      "message_id": "m0",
+      "quote": "周苇说他帮他朋友圈转发，老茅没拦"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "朋友圈转发"
+      ],
+      [
+       "老茅没拦"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T07_A04",
+     "subject": "SHARED",
+     "relation": "轻邀活招牌",
+     "value": "她邀 ME 27 号晚上有空就来当活招牌，没空也不缺他这一位",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T07",
+      "message_id": "m0",
+      "quote": "你27号晚上要有空就来当个活招牌，没空也不缺你这一位"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "当个活招牌"
+      ],
+      [
+       "没空也不缺你这一位"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "轻邀轮（带足退路）：'没空也不缺你这一位'是她的秤（不占人情）——应下要应得具体，拒绝要给补偿方向；把'不缺你'当真冷回（'那行，你忙'）=没读出这是她鼓起勇气的开口。试点日期 27 号周五=11-27（日历核过），回复改写日期=事实错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E347_T08": {
+   "case_id": "E347_T08",
+   "current_action": "第二次交锋：周苇提议读书会挪线上被她当场怼回（书店散了成仓库），她逼 ME 选边——反悔来得及但今晚得选",
+   "acceptable_actions": [
+    "选她的边+给一个具体论据（书店的灯/她刚铺的试点），不空喊口号",
+    "选边+补一个折中方案（线上做引流、线下做主场），既站她又不失自己的判断",
+    "选边+抬杠式表态（'反悔？我站得比你还早'），把逼选接成两人同一阵线"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T08_A00",
+     "subject": "SHARED",
+     "relation": "试点回指（跨轮）",
+     "value": "'深夜书桌'试点定在 27 号周五晚（T07，本轮选边语境的现实筹码）",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T07",
+      "message_id": "m0",
+      "quote": "试点定在27号周五晚"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "27号",
+       "周五晚"
+      ],
+      [
+       "试点定在"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T08_A01",
+     "subject": "THIRD",
+     "relation": "周苇的线上提议",
+     "value": "周苇又出主意：书店要是不行了读书会挪线上",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T08",
+      "message_id": "m0",
+      "quote": "读书会周苇又出主意，说书店要是不行了读书会挪线上"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "读书会挪线上"
+      ],
+      [
+       "周苇",
+       "出主意"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T08_A02",
+     "subject": "HER",
+     "relation": "当场怼回",
+     "value": "她当场怼回去：读书会散了，书店就真成仓库了",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T08",
+      "message_id": "m0",
+      "quote": "我当场怼回去：读书会散了，书店就真成仓库了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "当场怼回去"
+      ],
+      [
+       "书店就真成仓库了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T08_A03",
+     "subject": "HER",
+     "relation": "逼选边",
+     "value": "她说 ME 要是觉得她轴现在反悔还来得及，反悔不记仇，但今晚得选一边",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T08",
+      "message_id": "m0",
+      "quote": "你要是觉得我轴，现在反悔还来得及——先说清楚，反悔我不记仇，但今晚你得选一边"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "今晚你得选一边"
+      ],
+      [
+       "反悔我不记仇"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "选边轮：'今晚你得选一边'是明确诉求——回避表态（'两边都有道理'）在'得选一边'的直球下判低；选她的边不等于谄媚，给出自己的论据才是交锋质量（T03 锚：具体到论据）。'反悔不记仇'是给的安全出口，用它体面退出也是合法策略（她说到做到的人设），但连选边带寒暄地敷衍=两头不沾。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E347_T09": {
+   "case_id": "E347_T09",
+   "current_action": "试点首晚战报：十九人五百七十块，老茅整晚没说话但把咖啡机擦得锃亮，周苇报名没来却买了两本书（intent：汇报试点结果）",
+   "acceptable_actions": [
+    "接数字+接老茅的松动（'擦咖啡机就是签收'式读法），把战报的意义点出来",
+    "接数字+先贺她（十九人是她一个一个排出来的），再问下一步（下周还办吗）",
+    "接数字+接周苇的讽刺（没来还买两本=身体诚实），把首晚收成完整的段子"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T09_A00",
+     "subject": "SHARED",
+     "relation": "试点回指（跨轮）",
+     "value": "'深夜书桌'试点 27 号周五晚（T07 定档，本轮兑现日）",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T07",
+      "message_id": "m0",
+      "quote": "试点定在27号周五晚"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "27号",
+       "周五晚"
+      ],
+      [
+       "试点定在"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T09_A01",
+     "subject": "SHARED",
+     "relation": "首晚战报",
+     "value": "试点首晚十九个人、五百七十块（note：十九个位子她自己数的，五百七十当面对过收银记录）",
+     "valid_time": "2026-11-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T09",
+      "message_id": "m0",
+      "quote": "十九个人，五百七十块"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "十九个人"
+      ],
+      [
+       "五百七十块"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T09_A02",
+     "subject": "THIRD",
+     "relation": "老茅的态度",
+     "value": "老茅在柜台后站了一整晚没说话，走时把咖啡机擦得锃亮",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T09",
+      "message_id": "m0",
+      "quote": "老茅在柜台后面站了一整晚没说话，走的时候把咖啡机擦得锃亮"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一整晚没说话"
+      ],
+      [
+       "擦得锃亮"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T09_A03",
+     "subject": "THIRD",
+     "relation": "周苇的反讽",
+     "value": "周苇报了名的没来，书倒买了两本",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T09",
+      "message_id": "m0",
+      "quote": "周苇报了名的没来，书倒买了两本"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "报了名的没来"
+      ],
+      [
+       "买了两本"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=汇报首晚结果：数字（十九/五百七十）已对过收银记录（note），复述不得改动；汇报轮的判分重点是'接住数字背后的人'——只回'恭喜赚钱了'式接收=把她的胜利当账单；老茅的沉默+擦机器是本条最重的信号（态度松动），接住它比复述数字更对味。周苇梗回扣 T01（'一年一百本'），点或不点都合法。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E347_T10": {
+   "case_id": "E347_T10",
+   "current_action": "老茅签约落定：一年一签、涨到一万一、二楼租画室抵差价，'深夜书桌'两周一次归她管，名单里七个是 ME 读书会的人",
+   "acceptable_actions": [
+    "接住签约+把'人情记你头上'接回去（'读书会的人本来就该来'），不居功",
+    "接签约+点出她的胜局（从一万二谈到一万一还拿下主导权），把她的谈判成果说破",
+    "接签约+'归你管'的分量（'深夜书桌归你管，灯就归你点'），接她的成长位"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T10_A00",
+     "subject": "THIRD",
+     "relation": "旧涨租口径（superseded）",
+     "value": "此前口径'明年一月涨租涨到一万二'——老茅最终谈判结果为一万一，旧数被取代",
+     "valid_time": "2026-11-18",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T05",
+      "message_id": "m0",
+      "quote": "房东明年一月要涨租，一口气涨到一万二，他还没想好签不签"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "涨到一万二"
+      ],
+      [
+       "一万二",
+       "一口气"
+      ]
+     ],
+     "item_markers": [
+      "涨到一万二"
+     ]
+    },
+    {
+     "atom_id": "E347_T10_A01",
+     "subject": "THIRD",
+     "relation": "签约落定",
+     "value": "老茅签了：一年一签，涨到一万一，二楼隔出来租给画室抵差价",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T10",
+      "message_id": "m0",
+      "quote": "老茅签了，一年一签，涨到一万一，二楼隔出来租给画室抵差价"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "签了",
+       "一万一"
+      ],
+      [
+       "一年一签"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T10_A02",
+     "subject": "THIRD",
+     "relation": "试点归属",
+     "value": "老茅说'深夜书桌'两周一次，往后归她管",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T10",
+      "message_id": "m0",
+      "quote": "他说'深夜书桌'两周一次，往后归我管"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "两周一次"
+      ],
+      [
+       "往后归我管"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T10_A03",
+     "subject": "HER",
+     "relation": "人情记账",
+     "value": "名单里有七个是 ME 读书会的，这份人情她记 ME 头上",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T10",
+      "message_id": "m0",
+      "quote": "名单里有七个是你读书会的，这份人情我记你头上了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "七个",
+       "读书会"
+      ],
+      [
+       "记你头上"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "更正链落点：涨租终值一万一（一万二是旧口径，superseded 原子在位）——回复按一万一口径回应；'从一万二谈到一万一'式回溯谈判合法，但把一万二当当前租金=stale。她拿到主导权（归她管）是本篇她的成长位，回复接住'归你管'比只贺'没关门'更准。人情归属：她记 ME 头上的是'读书会七人捧场'，回复把这七人算成自己的功劳或全盘推给读书会都偏，接法自裁量。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把最终租金说成一万二（老茅实际签的是一万一——旧数仅在回溯谈判时合法提及）"
+   ],
+   "may_decline": false
+  },
+  "E347_T11": {
+   "case_id": "E347_T11",
+   "current_action": "对完十一月最后一笔账，她说出想明白的事：是有人愿意在灯底下坐四个钟头；把 ME 那杯美式和两本书翻篇，立场修正为'里子不挣钱但里子是灯'",
+   "acceptable_actions": [
+    "接住修正的分量（'这话我只认一半了'是她主动改判——认下这份体面，别乘胜追击）",
+    "接'灯底下坐四个钟头'的意象回应（如'那杯美式坐出值了'），把翻篇接成两人的和解",
+    "接修正+保留自己当初的观点内核（'灯是里子点的，面子也没白要'），交锋以双方体面收束"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T11_A01",
+     "subject": "HER",
+     "relation": "月账收口",
+     "value": "她对完十一月最后一笔账",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T11",
+      "message_id": "m0",
+      "quote": "对完十一月最后一笔账"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "最后一笔账"
+      ],
+      [
+       "对完十一月"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T11_A02",
+     "subject": "HER",
+     "relation": "她的领悟",
+     "value": "不是书店养咖啡也不是咖啡养书店，是有人愿意在灯底下坐四个钟头，什么都不为",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T11",
+      "message_id": "m0",
+      "quote": "是有人愿意在灯底下坐四个钟头，什么都不为"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "灯底下",
+       "四个钟头"
+      ],
+      [
+       "什么都不为"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T11_A03",
+     "subject": "HER",
+     "relation": "翻篇",
+     "value": "她把 ME 那杯美式和两本没拆封的书记账到今天，现在给他翻篇",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T11",
+      "message_id": "m0",
+      "quote": "你那杯美式和两本没拆封的书，我记到今天，现在给你翻篇"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "美式",
+       "翻篇"
+      ],
+      [
+       "记到今天"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T11_A04",
+     "subject": "HER",
+     "relation": "立场修正",
+     "value": "她把'书是里子咖啡是面子'修正为只认一半：里子不挣钱，但里子是灯",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T11",
+      "message_id": "m0",
+      "quote": "书是里子，咖啡是面子，这话我只认一半了：里子不挣钱，但里子是灯"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "只认一半"
+      ],
+      [
+       "里子是灯"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T11_A05",
+     "subject": "ME",
+     "relation": "消费史回指（跨轮，翻篇对象）",
+     "value": "ME 上月一杯美式、两本没拆封的书、坐四个钟头（T03 账本反将的内容，本轮被翻篇）",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T03",
+      "message_id": "m0",
+      "quote": "一杯美式，两本没拆封的书，前后坐了四个钟头"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "一杯美式"
+      ],
+      [
+       "四个钟头"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "立场自我修正轮（T03 高分位）：她主动改判自己的立场并给 ME 翻篇——正确反应是接住这份自我修正的体面（她没输，她长了一寸），乘胜追击'早说了吧'=赢 argument 输关系；把'翻篇'又翻回去开玩笑（'那杯美式我再点一杯给你记账'）是合法的轻接法。'灯'的意象贯穿（T03 '谁在养这盏灯'→T11 '里子是灯'），回扣意象比讲道理更对味。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E347_T12": {
+   "case_id": "E347_T12",
+   "current_action": "她主持十二月首场读书会（12月2日周三晚七点共读《夜航西飞》），邀 ME 来不来都行、不来帮念书摘、美式照点（intent：邀约并留拒绝空间）",
+   "acceptable_actions": [
+    "答应来+接'美式照点'的梗（'照点，这次拆封一本'），把翻篇后的关系落回读书会",
+    "答应+问她主持紧张不紧张（接她第一次主持的位置），关心落在事上",
+    "去不了就直说+让她帮念书摘（她已铺好台阶）+补一句下次到场，接住留口"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E347_T12_A00",
+     "subject": "HER",
+     "relation": "翻篇回指（跨轮）",
+     "value": "她已把 ME 的美式与两本书旧账翻篇（T11，本轮邀约的关系底色）",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T11",
+      "message_id": "m0",
+      "quote": "现在给你翻篇"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "给你翻篇"
+      ],
+      [
+       "美式",
+       "翻篇"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T12_A01",
+     "subject": "THIRD",
+     "relation": "十二月首场读书会",
+     "value": "老茅让她主持，共读《夜航西飞》，12 月 2 号周三晚七点",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T12",
+      "message_id": "m0",
+      "quote": "十二月第一场读书会老茅让我主持，共读《夜航西飞》，12月2号周三晚七点"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "《夜航西飞》"
+      ],
+      [
+       "12月2号",
+       "周三"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E347_T12_A02",
+     "subject": "SHARED",
+     "relation": "邀约与退路",
+     "value": "来不来都行：不来她帮念书摘就当他到了，那杯美式她照点",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E347_T12",
+      "message_id": "m0",
+      "quote": "来不来？不来也行，你那份书摘我帮你念，就当你人到了——反正你那杯美式，我照点"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "不来也行"
+      ],
+      [
+       "书摘",
+       "帮你念"
+      ],
+      [
+       "美式",
+       "照点"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true、收尾轮（T04 收尾纪律：轻收+留口，不出新钩）：'你那份书摘我帮你念，就当你人到了'是她把拒绝都安排好了——拒绝合法且不伤关系；但接住邀约（哪怕带条件）是关系线的顺流方向。'美式照点'回扣 T03/T11 的消费史线，接这个梗=本篇账本线闭环。12月2号周三晚七点为定档事实，不得改写；是否真读过《夜航西飞》同 T01 不预设。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  }
+ }
+}

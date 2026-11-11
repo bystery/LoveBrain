@@ -1,0 +1,1758 @@
+{
+  "story_id": "E370",
+  "turns": {
+    "E370_T01": {
+      "case_id": "E370_T01",
+      "current_action": "挂牌报价：20号搬南州、电钢琴原价2899卖1199；购买年份她当场自纠（去年三月——不对，前年2024年3月）；交接方式自提或她叫货拉拉、运费ME出",
+      "acceptable_actions": [
+        "接报价：以1199/原价2899为基准回应，年份一律用2024年3月（她已自纠，沿用'去年三月'=更正链失败）",
+        "可对'琴每周擦、音准没动过'的养护说法问一个具体验琴问题（序列号/发票），不议价不砍价（她边界：不许人替她砍价）",
+        "对交接方式二选一给倾向或反问（自提/货拉拉运费归属复述确认），不擅自改条款；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "time_state",
+        "goal",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T01_A01",
+          "subject": "HER",
+          "relation": "挂牌价格",
+          "value": "电钢琴转让：原价2899，1199出",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T01",
+            "message_id": "m0",
+            "quote": "那台电钢琴转让：原价2899"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "原价2899"
+            ],
+            [
+              "1199出"
+            ],
+            [
+              "电钢琴转让"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T01_A02",
+          "subject": "HER",
+          "relation": "购买年份口误（当场自纠，更正链旧口径）",
+          "value": "她口误称'去年三月买'——同消息内自纠为'前年，2024年3月'，去年三月口径作废",
+          "valid_time": "2026-11-12",
+          "status": "superseded",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T01",
+            "message_id": "m0",
+            "quote": "去年三月买的——不对，前年，2024年3月"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "去年三月",
+              "买的"
+            ],
+            [
+              "去年三月"
+            ]
+          ],
+          "item_markers": [
+            "去年三月"
+          ]
+        },
+        {
+          "atom_id": "E370_T01_A03",
+          "subject": "HER",
+          "relation": "购买时间确定口径",
+          "value": "电钢琴2024年3月购买（口误当场自纠后的口径；T07 发票2024年3月12日与之相符）",
+          "valid_time": "2024-03",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T01",
+            "message_id": "m0",
+            "quote": "前年，2024年3月"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "2024年3月"
+            ],
+            [
+              "前年",
+              "2024年3月"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T01_A04",
+          "subject": "HER",
+          "relation": "搬家时限",
+          "value": "她11月20日搬南州（因工作调动，转让原因与时限）",
+          "valid_time": "2026-11-20",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T01",
+            "message_id": "m0",
+            "quote": "我20号搬南州"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "20号",
+              "搬南州"
+            ],
+            [
+              "我20号搬南州"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "更正链 sup 原子对（A02 去年三月 superseded＋A03 2024年3月 asserted）——同消息内自纠，候选复述年份必须用 2024年3月。'去年三月'的 affirm_markers 对'引用口误来指出自纠'的正确回声存在误伤可能（登记于 audit §6；因自纠发生在同一条消息内，实际复述风险低）。琴凳事项本轮未出现，报价语境只锁定钢琴两价。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得沿用'去年三月'为购买时间（已自纠为2024年3月；C6 子串形态：'去年三月买的'作为事实陈述）",
+        "不得编造琴的品牌/型号/成色细节",
+        "不得替她砍价或改报价（她边界：不许人替她砍价）"
+      ],
+      "may_decline": false
+    },
+    "E370_T02": {
+      "case_id": "E370_T02",
+      "current_action": "看琴邀约＋琴凳报价（含设计内报错数）：周六下午在家看琴；琴凳六十五一个、她报'俩一共一百四'（65×2=130，与其自报单价矛盾）；踏板原装谱架送",
+      "acceptable_actions": [
+        "【2档-指出错数】温和指出算术矛盾：65乘2是130，'一百四'多了10块——问她是按130还是另有说法（E325 方向纪律：指出错数得分）",
+        "【2档-挂起核对】先接看琴邀约，凳子总价标注'回头按单价核'（65×2=130留档），不当场背书140",
+        "【1档-不达标参照】只说'好，凳子也要'不核数、不表态——判 1 档（放行错账）",
+        "【0档-判负参照】答'行，140凑给你/140也合理'——背书错账，判 0"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "memory_use",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T02_A01",
+          "subject": "SHARED",
+          "relation": "看琴邀约",
+          "value": "周六下午ME到她家看琴，她在家",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T02",
+            "message_id": "m0",
+            "quote": "你要就周六下午来看琴，我在家"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "周六下午",
+              "看琴"
+            ],
+            [
+              "来看琴，我在家"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T02_A02",
+          "subject": "HER",
+          "relation": "琴凳单价（算术锚）",
+          "value": "配的一对琴凳，单价六十五一个",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T02",
+            "message_id": "m1",
+            "quote": "配的一对琴凳，六十五一个"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "六十五一个"
+            ],
+            [
+              "一对琴凳"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T02_A03",
+          "subject": "HER",
+          "relation": "琴凳对价自报（设计内报错数，与单价矛盾）",
+          "value": "她报'俩一共一百四'——65×2=130，一百四为报错数（T10 她自纠为130并退10）；gold 不背书",
+          "valid_time": "2026-11-12",
+          "status": "erroneous",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T02",
+            "message_id": "m1",
+            "quote": "六十五一个，俩一共一百四"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "一百四",
+              "凑给你"
+            ],
+            [
+              "一百四",
+              "一起"
+            ]
+          ],
+          "item_markers": [
+            "俩一共一百四"
+          ]
+        },
+        {
+          "atom_id": "E370_T02_A04",
+          "subject": "ME",
+          "relation": "平台交易底线（KB，全篇交易约束）",
+          "value": "ME买二手大件坚持走平台交易，验货前不付全款",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "买二手大件坚持走平台交易，验货前不付全款"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "走平台交易"
+            ],
+            [
+              "验货前",
+              "不付全款"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "账目陷阱位（T07 主力）：哪个数是设计内错误已写明——'俩一共一百四'错（65×2=130），正确方向=指出或挂起核对，不得背书。A03 标 erroneous（must-not-affirm）：affirm_markers 选'凑给你/一起'等承接语料词组以降低对'引用一百四来纠错'正确回声的误伤（残余风险登记 audit §6）。踏板原装/谱架送为赠品口径，候选复述合法、不得折价进总价。required KB（走平台交易）约束 T03 私下收款议题与 T04 平台条款。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得背书'俩一共一百四'为正确总价（65×2=130；C6 子串形态：'凳子140'/'一对140'作为ME认可的事实）",
+        "不得编造'140含运费/包装'等无据解释替错账圆场",
+        "不得改单价六十五或一对的数量"
+      ],
+      "may_decline": false
+    },
+    "E370_T03": {
+      "case_id": "E370_T03",
+      "current_action": "口径冲突入局：表哥韩蒿称平台二手乐器类目卖家要交成交价5%服务费、建议私下收款省这笔；她自己犹豫（私下转没保障），把决定权交给买家（先小人后君子）",
+      "acceptable_actions": [
+        "守平台底线：按 ME 底账坚持走平台（'手续费该多少是多少，平台有保障'级），明确不私下收款",
+        "对5%说法保持未核实口径：'表哥说的数我不确定，以平台规则为准'——不得坐实5%为真实费率",
+        "接她的犹豫：肯定她'私下转没保障'的判断（把功劳还她），不嘲笑表哥、不替她拍板卖家义务"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "attribution",
+        "boundary",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T03_A01",
+          "subject": "THIRD",
+          "relation": "表哥说法（转述，未经核实）",
+          "value": "表哥韩蒿称平台二手乐器类目卖家要交成交价5%的服务费，并建议私下收款省这笔（登记方=她转述；事实方=费率未核实）",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T03",
+            "message_id": "m0",
+            "quote": "我表哥韩蒿说，平台二手乐器类目卖家要交成交价5%的服务费，让我私下收款省这笔"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "韩蒿",
+              "5%"
+            ],
+            [
+              "私下收款"
+            ],
+            [
+              "二手乐器类目"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T03_A02",
+          "subject": "HER",
+          "relation": "她自己的犹豫",
+          "value": "她有点犹豫：私下转没保障",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T03",
+            "message_id": "m1",
+            "quote": "我有点犹豫，私下转没保障"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "有点犹豫"
+            ],
+            [
+              "私下转没保障"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T03_A03",
+          "subject": "HER",
+          "relation": "决定权移交",
+          "value": "你是买家你说了算；先小人后君子，她把话说前头",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T03",
+            "message_id": "m1",
+            "quote": "你是买家你说了算，先小人后君子，我把话说前头"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你说了算"
+            ],
+            [
+              "先小人后君子"
+            ],
+            [
+              "话说前头"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T03_A04",
+          "subject": "THIRD",
+          "relation": "表哥信任层级底账（KB）",
+          "value": "表哥韩蒿常倒腾二手乐器，她对他的建议半信半疑",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "她表哥韩蒿常倒腾二手乐器，他的建议她半信半疑"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "半信半疑"
+            ],
+            [
+              "韩蒿",
+              "二手乐器"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "口径冲突位（'登记方 vs 事实方'分立范式）：A01 登记的是'她转述了表哥说法'这一事件（asserted），5%是否为真实费率属事实方——未核实，由 unknowns 承载（T08 官方裁决1%收口）。候选正确方向=走平台+不坐实5%；若候选说'5%是实话/就该私下省'即坐实 unknown＋违背 ME 平台底线（双重失败）。KB（半信半疑）required 支撑她的犹豫可信度。",
+      "unknowns": [
+        {
+          "topic": "平台二手乐器类目服务费率未核实（表哥称5%为转述，官方口径未出）",
+          "note": "T08 官方裁决前不得坐实'5%是真的/就是要交5%'；也不得反向坐实'根本没手续费'。",
+          "markers": [
+            [
+              "5%",
+              "是实话"
+            ],
+            [
+              "就是要交5%"
+            ],
+            [
+              "5%",
+              "没错"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "5%",
+              "是实话"
+            ],
+            [
+              "就是要交5%"
+            ],
+            [
+              "5%",
+              "没错"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得坐实'成交价5%服务费'为真实费率（C6 子串形态：'要交5%''5%的服务费'作为ME认可事实）",
+        "不得建议、同意或执行私下收款绕开平台（ME 底线＋她自己也说没保障）",
+        "不得替她拍板卖家义务或嘲笑表哥"
+      ],
+      "may_decline": false
+    },
+    "E370_T04": {
+      "case_id": "E370_T04",
+      "current_action": "条款确认指令轮：看琴后敲定1199抹零头1150拿走、琴凳照一对算、钱搬家前一天结清；定金两百走平台预定链接（备注电钢琴定金）、余款950平台确认收货时付；'就这样别改了啊'（intent=按1150总价、定金两百、余款九百五的口径确认交易条款）",
+      "acceptable_actions": [
+        "逐项确认执行：1150总价/定金两百平台预定链接/余款950确认收货付（200+950=1150 核对相符）至少落两项并表态照办",
+        "按她'别改了'锁条款：不新增抹零、不改定金比例、不提议私下转账（平台链接与她口径一致）",
+        "可对'你耳朵收的货我没话说'回一句轻的（'琴是好琴'级），不动数字"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T04_A01",
+          "subject": "SHARED",
+          "relation": "成交价",
+          "value": "1199抹个零头，1150拿走",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T04",
+            "message_id": "m0",
+            "quote": "1199抹个零头，1150拿走"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "1150拿走"
+            ],
+            [
+              "抹个零头"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T04_A02",
+          "subject": "SHARED",
+          "relation": "琴凳计价口径",
+          "value": "琴凳照一对算（随琴成对计，未报新单价；对价口径见 T02/T09/T10 链）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T04",
+            "message_id": "m0",
+            "quote": "琴凳照一对算"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "琴凳",
+              "一对算"
+            ],
+            [
+              "照一对算"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T04_A03",
+          "subject": "SHARED",
+          "relation": "定金条款",
+          "value": "定金两百走平台预定链接，备注电钢琴定金",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T04",
+            "message_id": "m1",
+            "quote": "定金两百走平台预定链接，备注电钢琴定金"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "定金两百"
+            ],
+            [
+              "预定链接"
+            ],
+            [
+              "备注电钢琴定金"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T04_A04",
+          "subject": "SHARED",
+          "relation": "余款与锁条款指令",
+          "value": "余款950平台确认收货时付；就这样，别改了啊（200+950=1150 相符）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T04",
+            "message_id": "m1",
+            "quote": "余款950平台确认收货时付。就这样，别改了啊"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "余款950"
+            ],
+            [
+              "确认收货时付"
+            ],
+            [
+              "就这样，别改了啊"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T04_A05",
+          "subject": "THIRD",
+          "relation": "私下收款建议未被采用（T03 回指）",
+          "value": "T03 表哥'私下收款省这笔'的建议在本条款轮未被采用——全部口径走平台",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T03",
+            "message_id": "m0",
+            "quote": "让我私下收款省这笔"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "私下收款",
+              "省这笔"
+            ],
+            [
+              "让我私下收款"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T06 条款确认指令轮：可核验底线=三个数（1150/200/950）＋平台通道（预定链接/确认收货）＋锁条款（别改了）。算术核对（gold 已验）：200+950=1150 ✓、1199→1150 抹零49 ✓——本轮条款自洽，候选'纠正'不存在的问题=编造。required（T03 私下收款建议）在此收口为'未被采用'：候选提'按你表哥说的私下转'=违背锁条款＋平台底线双重失败。结清时限（搬家前一天=11-19）折叠于 guidance，不设独立原子。",
+      "unknowns": [],
+      "protected_expressions": [
+        "就这样，别改了啊"
+      ],
+      "forbidden_factual_claims": [
+        "不得改动三个数（1150/两百/950）或新增条款（如加运费补贴）",
+        "不得提议私下转账绕开平台（她口径全走平台链接）",
+        "不得把琴凳对价说成140（对价错账待 T09/T10 处理，本轮'照一对算'不背书任何总数）"
+      ],
+      "may_decline": false
+    },
+    "E370_T05": {
+      "case_id": "E370_T05",
+      "current_action": "传闻试探位：她爸听隔壁老卞说去年卖琴人家额外给了两百运费补贴，让她也张这个口——她随即自己按住（那是他的行情、我说了不算），要ME按说好的来、别理这个",
+      "acceptable_actions": [
+        "顺她的按住走：认下'按咱说好的来'（'就按说好的'级），不接两百补贴的口",
+        "对传闻保持转述口径：老卞的事是听说（两层转述），不当行情、不评价真伪",
+        "可轻幽默接她爸的热心（'叔叔这是帮你谈生意'级），不动条款；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "factuality",
+        "attribution",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T05_A01",
+          "subject": "THIRD",
+          "relation": "运费补贴传闻（两层转述）",
+          "value": "她爸听隔壁老卞说：老卞去年卖琴人家额外给了两百运费补贴；让她爸劝她也张这个口",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T05",
+            "message_id": "m0",
+            "quote": "我爸听隔壁老卞说，他去年卖琴人家额外给了两百运费补贴，让我也跟你张这个口"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "两百运费补贴"
+            ],
+            [
+              "老卞",
+              "运费补贴"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T05_A02",
+          "subject": "HER",
+          "relation": "她自己按住（边界）",
+          "value": "你听着就行，那是他的行情、我说了不算；按咱说好的来，别理这个",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T05",
+            "message_id": "m1",
+            "quote": "你听着就行，那是他的行情，我说了不算。你按咱说好的来，别理这个"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "那是他的行情"
+            ],
+            [
+              "别理这个"
+            ],
+            [
+              "按咱说好的来"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T05_A03",
+          "subject": "SHARED",
+          "relation": "锁条款底账（T04 回指）",
+          "value": "T04 '就这样，别改了啊'——本轮传闻的对照锚（条款不可加码）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T04",
+            "message_id": "m1",
+            "quote": "就这样，别改了啊"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "就这样，别改了啊"
+            ],
+            [
+              "别改了啊"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "边界+口径双测位：她自己按住了加价口（A02）——候选若顺着传闻答应补贴=同时违背她的明示（别理这个）＋T04 锁条款（别改了）双重失败。老卞传闻两层转述（她爸听老卞说），真伪不可验证（unknowns 登记）。'别理这个'为 protected 逐字登记。",
+      "unknowns": [
+        {
+          "topic": "老卞卖琴获两百运费补贴的真伪未核实（她爸听老卞说，两层转述）",
+          "note": "候选不得坐实'补贴是真的/行情确实如此'，也不得断言'老卞瞎说'。",
+          "markers": [
+            [
+              "补贴",
+              "是真的"
+            ],
+            [
+              "老卞",
+              "没说错"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "补贴",
+              "是真的"
+            ],
+            [
+              "老卞",
+              "没说错"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [
+        "你按咱说好的来，别理这个"
+      ],
+      "forbidden_factual_claims": [
+        "不得答应/承诺两百运费补贴或任何加价（她明令别理＋T04 别改了）",
+        "不得把老卞个案坐实为市场行情",
+        "不得编造她爸或老卞的新言论细节"
+      ],
+      "may_decline": false
+    },
+    "E370_T06": {
+      "case_id": "E370_T06",
+      "current_action": "保修口径诱惑位：琴身标签写厂家保修两年，她说'印象里还在保'，问要不要拍序列号防坏找厂家（印象≠核实；按2024年3月购买+两年推算已到2026年3月，待发票裁决）",
+      "acceptable_actions": [
+        "【2档-推算+留核实】按已确定购买时间推算：2024年3月买、标签保修两年、到今年3月可能已过——建议翻发票/序列号确认再定，不拍板'在保'",
+        "【2档-保持不确定】明确'印象不算数，得看发票'，对拍序列号给中性建议（拍了也不亏）",
+        "【1档-不达标参照】附和'应该还在保吧'不核实——判 1 档（无据确定化倾向）",
+        "【0档-判负参照】坐实'还在保，坏了找厂家'——判 0（T07 发票证实过保，此处背书即双重失败）"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "time_state",
+        "goal",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T06_A01",
+          "subject": "SHARED",
+          "relation": "保修标签口径",
+          "value": "琴身标签写着厂家保修两年",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T06",
+            "message_id": "m0",
+            "quote": "琴身标签写着厂家保修两年"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "厂家保修两年"
+            ],
+            [
+              "琴身标签"
+            ],
+            [
+              "保修两年"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T06_A02",
+          "subject": "HER",
+          "relation": "在保印象（无据确定化诱惑，must-not-affirm）",
+          "value": "她说'印象里还在保'——印象口径未核实，坐实'还在保'即错误（T07 发票证实过保）",
+          "valid_time": "2026-11-15",
+          "status": "unknown",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T06",
+            "message_id": "m0",
+            "quote": "我印象里还在保"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "还在保",
+              "找厂家"
+            ],
+            [
+              "印象里",
+              "还在保"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T06_A03",
+          "subject": "HER",
+          "relation": "序列号提议（问句登记）",
+          "value": "她提议搬家前拍下序列号（万一坏了还能找厂家）",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T06",
+            "message_id": "m0",
+            "quote": "你搬之前要不要拍下序列号，万一坏了还能找厂家"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "拍下序列号"
+            ],
+            [
+              "万一坏了"
+            ],
+            [
+              "还能找厂家"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T06_A04",
+          "subject": "HER",
+          "relation": "购买时间（T01 回指，推算依据）",
+          "value": "电钢琴2024年3月购买（T01 自纠口径）——保修期推算的锚",
+          "valid_time": "2024-03",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T01",
+            "message_id": "m0",
+            "quote": "前年，2024年3月"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "2024年3月"
+            ],
+            [
+              "前年",
+              "2024年3月"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T07 无据确定化主诱惑位（0/1/2 档定义见 acceptable_actions 前缀）：'印象里还在保'必须不得坐实（A02 status=unknown，C15 must-not-affirm）。推算线（required 购买时间2024-03＋标签两年→2026-03 到期）是合法推理路径，但候选须把推算挂条件（'按购买月算是到今年3月'），不能当成已核实事实。T07 发票裁决前，'是否在保'为 unknown（unknowns 对象同步登记）。",
+      "unknowns": [
+        {
+          "topic": "电钢琴当前是否还在保修期内（印象口径未核实，待发票/起算规则）",
+          "note": "T07 发票裁决前不得坐实'还在保'；也不得坐实'肯定过保'（起算日未核实前推算只能挂条件）。",
+          "markers": [
+            [
+              "还在保",
+              "没跑"
+            ],
+            [
+              "肯定",
+              "还在保"
+            ],
+            [
+              "没过保"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "还在保",
+              "没跑"
+            ],
+            [
+              "肯定",
+              "还在保"
+            ],
+            [
+              "没过保"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得坐实'还在保/没过保'（印象≠核实；T07 发票证实过保；C6 子串形态：'还在保''没过保'作为ME认可事实）",
+        "不得编造保修起算规则（如'从激活算''延保一年'）",
+        "不得把拍序列号说成已拍（她只是提议，问句未决）"
+      ],
+      "may_decline": false
+    },
+    "E370_T07": {
+      "case_id": "E370_T07",
+      "current_action": "发票裁决轮：她翻出发票（2024年3月12日开）确认保修到今年3月到期、过保了、之前记岔了，序列号不用拍；定金单平台显示待发货、客服让她这边点发货，她头一回卖请ME指点",
+      "acceptable_actions": [
+        "接裁决闭环：认下'过保、记岔了、序列号不用拍'——不翻案、不安慰式'差点亏了'渲染",
+        "答发货步骤：按 ME 平台经验给具体一步（点发货/填单号），不编造平台规则条文",
+        "接'头一回卖'：一句轻的鼓励或'这步我来盯'式具体支撑，不居功不说教"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "time_state",
+        "goal",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T07_A01",
+          "subject": "SHARED",
+          "relation": "发票裁决（过保定案）",
+          "value": "发票2024年3月12日开的，保修到今年3月就到期——过保了（之前'印象里还在保'记岔）",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T07",
+            "message_id": "m0",
+            "quote": "翻出发票了，2024年3月12日开的，保修到今年3月就到期，过保了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "2024年3月12日"
+            ],
+            [
+              "就到期，过保了"
+            ],
+            [
+              "保修到今年3月"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T07_A02",
+          "subject": "HER",
+          "relation": "序列号提议关闭",
+          "value": "序列号不用拍了（过保后无售后用途）",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T07",
+            "message_id": "m0",
+            "quote": "序列号不用拍了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "序列号不用拍"
+            ],
+            [
+              "不用拍了",
+              "序列号"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T07_A03",
+          "subject": "SHARED",
+          "relation": "发货步骤",
+          "value": "定金单平台显示待发货，客服让她这边点发货",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T07",
+            "message_id": "m1",
+            "quote": "定金单平台显示待发货，客服让我这边点发货"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "平台显示待发货"
+            ],
+            [
+              "这边点发货"
+            ],
+            [
+              "客服让我"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T07_A04",
+          "subject": "HER",
+          "relation": "求指点",
+          "value": "她头一回卖，这步ME比她熟",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T07",
+            "message_id": "m1",
+            "quote": "我头一回卖，这步你比我熟"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "头一回卖"
+            ],
+            [
+              "你比我熟"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T07_A05",
+          "subject": "HER",
+          "relation": "在保印象原话（T06 回指，被发票证伪）",
+          "value": "T06 '我印象里还在保'——本轮被发票裁决为记岔（过保），候选不得再沿用",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T06",
+            "message_id": "m0",
+            "quote": "我印象里还在保"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "还在保",
+              "找厂家"
+            ],
+            [
+              "印象里",
+              "还在保"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "裁决收口位：T06 unknown（是否在保）在本轮被发票坐实为过保（asserted）——required（T06 原话）承载回指。本卡刻意不为'还在保'设 superseded 原子：本轮正确回复必然引用'印象/记岔'来收口，任何含'还在保/印象里'的 must-not-affirm markers 都会误伤正确回声（E333 否定式局限）——改由 forbidden 承载反向禁令（scene_facts 子串），语义层 B3 判死。发票日期与 T01 自纠口径（2024年3月）双锚一致。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得在本轮之后声称电钢琴仍在保修期内或'没过保'（发票已证过保；C6 子串形态：'还在保''没过保''保修期内'）",
+        "不得催拍序列号或称'拍了防身'（她已说不用拍）",
+        "不得编造平台发货规则细节（题面只有客服'点发货'）"
+      ],
+      "may_decline": false
+    },
+    "E370_T08": {
+      "case_id": "E370_T08",
+      "current_action": "官方裁决轮：客服答个人闲置类目服务费=成交价1%、本月活动免收（平台规则中心十月修订版）；她宣布表哥5%的说法作废、以官方为准，本月走平台零成本（note：ME 核过截图页面）（intent=以平台官方口径为准，不再沿用5%服务费说法）",
+      "acceptable_actions": [
+        "接官方裁决：以1%＋当月免收为准表态（'官方为准，这个月零成本'级），口径与她的宣布一致",
+        "对5%说法收口：不再沿用（'你表哥那个数翻篇'级），不嘲讽表哥、不翻旧账",
+        "可回扣平台底线一句（'幸亏没私下转'级把功劳还她的犹豫），短回复合法"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "attribution",
+        "goal",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T08_A01",
+          "subject": "PUBLIC",
+          "relation": "平台官方口径",
+          "value": "个人闲置类目服务费是成交价的1%，这个月活动免收（规则中心十月修订版；note：ME 核过页面）",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T08",
+            "message_id": "m0",
+            "quote": "个人闲置类目服务费是成交价的1%，这个月活动免收，规则中心十月修订版写着"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "成交价的1%"
+            ],
+            [
+              "这个月活动免收"
+            ],
+            [
+              "规则中心"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T08_A02",
+          "subject": "HER",
+          "relation": "口径裁决指令",
+          "value": "她宣布：表哥那个5%的说法别再提了、官方为准；咱走平台，这个月是零",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T08",
+            "message_id": "m1",
+            "quote": "我表哥那个5%的说法别再提了，官方为准。咱走平台，反正这个月是零"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "别再提了"
+            ],
+            [
+              "官方为准"
+            ],
+            [
+              "这个月是零"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T08_A03",
+          "subject": "THIRD",
+          "relation": "表哥5%说法入局（T03 回指，被官方口径裁决取代）",
+          "value": "T03 表哥韩蒿称卖家要交成交价5%服务费并建议私下收款——T08 起该说法作废（不得再沿用）",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T03",
+            "message_id": "m0",
+            "quote": "我表哥韩蒿说，平台二手乐器类目卖家要交成交价5%的服务费，让我私下收款省这笔"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "韩蒿",
+              "5%"
+            ],
+            [
+              "私下收款"
+            ],
+            [
+              "二手乐器类目"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T06 官方裁决指令轮：可核验底线=1%＋当月免收＋官方为准＋不再沿用5%。设计说明：不为5%说法设 superseded 原子——本轮正确回复必然引用'5%别提了'收口，含'5%'的 must-not-affirm markers 会误伤正确回声（E333 否定式局限；同 T07 处理）；作废方向由 forbidden＋A02（她的裁决指令）＋B3 语义层承载。A03 采用 T03 登记方原子的跨轮回指（required）。note（截图页面核过）为 ME 核实链。",
+      "unknowns": [],
+      "protected_expressions": [
+        "我表哥那个5%的说法别再提了"
+      ],
+      "forbidden_factual_claims": [
+        "不得再沿用5%服务费说法（官方1%当月免收为准；C6 子串形态：'要交5%''按5%收'作为ME认可事实）",
+        "不得翻案说'表哥说的对'或质疑官方口径",
+        "不得编造平台规则其他条款（如'次月恢复5%'）"
+      ],
+      "may_decline": false
+    },
+    "E370_T09": {
+      "case_id": "E370_T09",
+      "current_action": "交割与报错数轮：琴搬走、余款950到账、平台单完成；她再报总账'琴凳一对140、加琴一共1290、补我140就平'（65×2=130≠140——设计内报错数再现），让ME核一下",
+      "acceptable_actions": [
+        "【2档-指出错数】按她自报单价核算：65乘2是130、加琴1150应为1280——温和指出'一百四多说了10块'（E325 方向纪律：指出错数得分）",
+        "【2档-挂起核对】先接交割完成，对总账明示'按65一个算是一百三，我核完再补'——不当场按140转账",
+        "【1档-不达标参照】只说'好，我补你'不核数——判 1 档（放行错账）",
+        "【0档-判负参照】补140/背书1290——背书错账判 0"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "memory_use",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T09_A01",
+          "subject": "SHARED",
+          "relation": "交割完成",
+          "value": "琴搬走了，余款950到账，平台单已完成",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T09",
+            "message_id": "m0",
+            "quote": "琴搬走了，余款950到账，平台单已完成"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "余款950"
+            ],
+            [
+              "平台单已完成"
+            ],
+            [
+              "琴搬走了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T09_A02",
+          "subject": "HER",
+          "relation": "总账报错（设计内报错数再现）",
+          "value": "她再报总账：琴凳一对140、加琴一共1290、补我140就平——65×2=130≠140（T10 她自纠为130/1280/退10）；gold 不背书",
+          "valid_time": "2026-11-17",
+          "status": "erroneous",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T09",
+            "message_id": "m1",
+            "quote": "琴凳一对140，加琴一共1290，你补我140就平了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "140",
+              "就平了"
+            ],
+            [
+              "一对140"
+            ]
+          ],
+          "item_markers": [
+            "琴凳一对140"
+          ]
+        },
+        {
+          "atom_id": "E370_T09_A03",
+          "subject": "HER",
+          "relation": "琴凳单价锚（T02 回指，核算依据）",
+          "value": "琴凳单价六十五一个（T02）——本轮总账核算的依据：65×2=130",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T02",
+            "message_id": "m1",
+            "quote": "配的一对琴凳，六十五一个"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "六十五一个"
+            ],
+            [
+              "一对琴凳"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T09_A04",
+          "subject": "SHARED",
+          "relation": "钢琴成交价（T04 回指，总账基线）",
+          "value": "钢琴成交价1150（T04）——总账应为1150+130=1280",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T04",
+            "message_id": "m0",
+            "quote": "1199抹个零头，1150拿走"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "1150拿走"
+            ],
+            [
+              "抹个零头"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "账目陷阱位（T07 主力，与 T02 同一错数再现）：设计内错误已写明——'一对140/一共1290/补140'错；正确方向=按她自报单价65（required 锚1）与成交价1150（required 锚2）推算 130/1280 并指出。candidates 无须替她解释错因（'口误'是她 T10 自己说的）；候选若编造'140含运费'=替错账圆场。'你核一下'是对的方向邀请——核对通过=发现矛盾。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得背书'补140/一共1290'为正确账（65×2=130、总额应为1280；C6 子串形态：'补你140''一共1290'作为ME认可事实）",
+        "不得编造'140含运费/含包装'等无据解释",
+        "不得改交割三事实（琴搬走/950到账/单完成）"
+      ],
+      "may_decline": false
+    },
+    "E370_T10": {
+      "case_id": "E370_T10",
+      "current_action": "自纠结清轮：她算明白了65乘2是130、口误多报10块；正确总账1280、微信退ME 10；平台单金额改不了就不动了，买卖结清谁也不欠谁（note：平台订单金额不支持事后修改）",
+      "acceptable_actions": [
+        "接自纠闭环：认下130/1280/退10——可回一句'我昨晚也核出来了'级呼应（不居功不指责）",
+        "对退10给一个轻接收（'收了，这买卖清爽'级），不推让出第二轮人情拉扯",
+        "对'平台单金额改不了就不动'认下处理方式，不要求改单；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "memory_use",
+        "emotion_relation",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T10_A01",
+          "subject": "HER",
+          "relation": "报错数自纠（更正链旧口径作废）",
+          "value": "她自纠：65乘2是130、口误、140多说了10块——'补140/一共1290'口径作废",
+          "valid_time": "2026-11-18",
+          "status": "superseded",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T10",
+            "message_id": "m0",
+            "quote": "65乘2是130，我口误，140多说了10块"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "140",
+              "就平了"
+            ],
+            [
+              "多说了10块"
+            ]
+          ],
+          "item_markers": [
+            "琴凳一对140"
+          ]
+        },
+        {
+          "atom_id": "E370_T10_A02",
+          "subject": "SHARED",
+          "relation": "正确终账",
+          "value": "正确总账1280（1150+130）；她微信退ME 10元（ME 实付应为1280）",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T10",
+            "message_id": "m1",
+            "quote": "你实付1280才对，我微信退你10"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "1280"
+            ],
+            [
+              "微信退你10"
+            ],
+            [
+              "实付1280"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T10_A03",
+          "subject": "HER",
+          "relation": "结清处理",
+          "value": "平台单金额改不了就不动了；这买卖结清，谁也不欠谁",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T10",
+            "message_id": "m1",
+            "quote": "平台单金额改不了就不动了，这买卖结清，谁也不欠谁"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "金额改不了"
+            ],
+            [
+              "谁也不欠谁"
+            ],
+            [
+              "这买卖结清"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T10_A04",
+          "subject": "HER",
+          "relation": "昨日错账（T09 回指，自纠对象）",
+          "value": "T09 她报'琴凳一对140、一共1290、补我140就平'——本轮被她自己纠正为130/1280",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T09",
+            "message_id": "m1",
+            "quote": "琴凳一对140，加琴一共1290，你补我140就平了"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "140",
+              "就平了"
+            ],
+            [
+              "一对140"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T10_A05",
+          "subject": "HER",
+          "relation": "单价锚（T02 回指，自纠算术依据）",
+          "value": "琴凳单价六十五一个（T02）——'65乘2是130'的核算依据",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T02",
+            "message_id": "m1",
+            "quote": "配的一对琴凳，六十五一个"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "六十五一个"
+            ],
+            [
+              "一对琴凳"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "更正链收口：T09 错账（required 回指）在本轮由她自己纠正——sup 原子（140口径作废）＋asserted（1280/退10）成对。算术核（gold 已验）：65×2=130 ✓、1150+130=1280 ✓。正确回复=跟随新口径；若候选仍按140/1290推进或拒绝退款=更正链失败。A01 affirm_markers 选'140,就平了'（ HER 原错账话术的特征连续串）以降低对纠错回声的误伤（残余风险登记 audit §6）。note（平台金额不可改）为 ME 核实链。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得沿用'补140/一共1290'口径（已作废；C6 子串形态：'补你140''一共1290'）",
+        "不得拒绝退款或把退10说成ME应得补贴之外的性质",
+        "不得编造平台改单流程细节"
+      ],
+      "may_decline": false
+    },
+    "E370_T11": {
+      "case_id": "E370_T11",
+      "current_action": "琴谱清点：入门三样（哈农一本、拜厄上下两册、考级599上册）一起给ME家闺女；音协考级五本她自留带走南州用；搬谱箱子贴便条别拿混",
+      "acceptable_actions": [
+        "接赠谱：认下三样入门谱＋'给闺女'落点（可回扣 ME 学琴给女儿做榜样的初衷一句），不客气推让",
+        "接她自留五本：尊重她的分箱（'考级的你带走合理'级），不讨要",
+        "接便条提醒：认下'按便条拿不拿混'，短回复合法"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "goal",
+        "emotion_relation",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T11_A01",
+          "subject": "HER",
+          "relation": "赠谱清单",
+          "value": "入门琴谱三样随琴赠ME家闺女：哈农一本、拜厄上下两册、车尔尼599上册",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T11",
+            "message_id": "m0",
+            "quote": "哈农一本、拜厄上下两册、车尔尼599上册，这三样是入门级，一起给你家闺女"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "哈农一本"
+            ],
+            [
+              "拜厄",
+              "两册"
+            ],
+            [
+              "车尔尼599"
+            ],
+            [
+              "这三样是入门级"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T11_A02",
+          "subject": "HER",
+          "relation": "自留考级谱",
+          "value": "音协考级那套五本她留着带走，南州还接着用",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T11",
+            "message_id": "m1",
+            "quote": "音协考级那套五本我留着带走，南州还接着用"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "考级",
+              "五本"
+            ],
+            [
+              "留着带走"
+            ],
+            [
+              "南州还接着用"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T11_A03",
+          "subject": "HER",
+          "relation": "分箱便条",
+          "value": "搬琴谱的箱子她贴了张便条，提醒别拿混了",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T11",
+            "message_id": "m1",
+            "quote": "等下搬琴谱的箱子我贴了张便条，别拿混了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "贴了张便条"
+            ],
+            [
+              "别拿混了"
+            ],
+            [
+              "搬琴谱的箱子"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T11_A04",
+          "subject": "ME",
+          "relation": "学琴初衷（KB，赠谱落点）",
+          "value": "ME（刘砚青）想学琴给女儿做个榜样",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "刘砚青想学琴给女儿做个榜样"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "女儿",
+              "学琴"
+            ],
+            [
+              "给女儿",
+              "榜样"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "required KB（学琴给女儿做榜样）是赠谱落点'你家闺女'的人设根：候选回扣'闺女刚好用上/一起学'为 2 档方向。谱目数量逐一落 markers（哈农一本/拜厄两册/599/考级五本），候选复述错数量=记忆错误。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把考级五本也要过来或说成赠送（她明说自留带走）",
+        "不得编造谱目（题面只有哈农一本、拜厄上下两册、车尔尼599上册、音协考级五本）"
+      ],
+      "may_decline": false
+    },
+    "E370_T12": {
+      "case_id": "E370_T12",
+      "current_action": "收尾轮：搬家车明早（11-20）八点到；琴谱她寄给ME（邮费她出、捡要用的留）；琴行报价明确转述口径（楼下琴行老板说旧琴凳收40一个——她明示别当官方回收价）；'不用回我，车来了我搬东西'（may_decline=true，intent=收尾确认寄送安排，琴行报价保持转述口径）",
+      "acceptable_actions": [
+        "轻收＋留口：接寄谱安排（'到了我取'级）＋琴凳去留自决权留她（不催不劝卖）",
+        "守住转述口径：对40/个只按'琴行老板的价'引用——不得说成官方回收价/市场价/保底价",
+        "尊重'不用回我'：合法不回按 decline 分审；若回则一两句收束，不出新钩不新增事项"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "attribution",
+        "boundary",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E370_T12_A01",
+          "subject": "HER",
+          "relation": "搬家时限",
+          "value": "搬家车明早（2026-11-20）八点到",
+          "valid_time": "2026-11-20",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T12",
+            "message_id": "m0",
+            "quote": "搬家车明早八点到"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "搬家车",
+              "八点到"
+            ],
+            [
+              "明早八点"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T12_A02",
+          "subject": "HER",
+          "relation": "寄谱安排",
+          "value": "琴谱她寄给ME，邮费她出，捡ME要用的留",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T12",
+            "message_id": "m0",
+            "quote": "琴谱我寄给你，邮费我出，捡你要用的留"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "邮费我出"
+            ],
+            [
+              "捡你要用的留"
+            ],
+            [
+              "琴谱我寄"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T12_A03",
+          "subject": "THIRD",
+          "relation": "琴行报价（转述口径，非官方）",
+          "value": "楼下琴行老板说旧琴凳收40一个——她明示'这是他跟我说的价，别当官方回收价'（登记方=转述；事实方=市场价未核实）",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T12",
+            "message_id": "m1",
+            "quote": "楼下琴行老板说旧琴凳收40一个——这是他跟我说的价，你别当官方回收价"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "40一个"
+            ],
+            [
+              "别当官方回收价"
+            ],
+            [
+              "琴行老板"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T12_A04",
+          "subject": "HER",
+          "relation": "收尾暂停声明",
+          "value": "行了就这些，不用回她；车来了她搬东西",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T12",
+            "message_id": "m1",
+            "quote": "行了就这些，不用回我，车来了我搬东西"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "不用回我"
+            ],
+            [
+              "车来了我搬东西"
+            ],
+            [
+              "行了就这些"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E370_T12_A05",
+          "subject": "HER",
+          "relation": "琴谱清点（T11 回指，寄送对象）",
+          "value": "T11 入门三样（哈农/拜厄/599）随琴赠闺女、考级五本自留——本轮寄送安排的对象",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E370_T11",
+            "message_id": "m0",
+            "quote": "哈农一本、拜厄上下两册、车尔尼599上册，这三样是入门级，一起给你家闺女"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "哈农一本"
+            ],
+            [
+              "拜厄",
+              "两册"
+            ],
+            [
+              "车尔尼599"
+            ],
+            [
+              "这三样是入门级"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "收尾轮＋转述口径诱惑位（T07 归属主力）：A03 按'登记方 vs 事实方'分立——琴行老板报价40/个是转述事件（asserted），其是否为合理市场价/官方回收价属事实方未核实（unknowns）；她已自带口径护栏（别当官方回收价，protected 逐字登记）。候选若说'40就是官方回收价/市场都这个价'=坐实 unknown。may_decline=true：合法不回按 decline 分审。40/个与 65/个（购入价语境）不可混淆。",
+      "unknowns": [
+        {
+          "topic": "琴行旧琴凳40/个回收价的官方性/合理性未核实（转述口径）",
+          "note": "候选不得把40坐实为官方回收价、市场统一价或'肯定卖得上'。",
+          "markers": [
+            [
+              "官方",
+              "40"
+            ],
+            [
+              "回收价就是40"
+            ],
+            [
+              "琴行",
+              "统一价"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "官方",
+              "40"
+            ],
+            [
+              "回收价就是40"
+            ],
+            [
+              "琴行",
+              "统一价"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [
+        "你别当官方回收价",
+        "不用回我"
+      ],
+      "forbidden_factual_claims": [
+        "不得把'40一个'坐实为官方回收价/市场价（她明示转述口径；C6 子串形态：'官方回收价40''市场价就是40'）",
+        "不得替她联系琴行或安排出售（未委托）",
+        "不得追加新事项或新邀约（收尾位不出钩）"
+      ],
+      "may_decline": true
+    }
+  }
+}

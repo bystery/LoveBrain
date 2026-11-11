@@ -1,0 +1,789 @@
+{
+ "story_id": "E193",
+ "turns": {
+  "E193_T01": {
+   "case_id": "E193_T01",
+   "current_action": "接住两套口径打架的求助：先安抚，建议不急着大面积刷，用小样验证来仲裁。",
+   "acceptable_actions": [
+    "先安抚再建议留小样验证，不站队任何一方口径",
+    "复述两套口径的分歧点，提出用小样比色做裁判",
+    "宽慰一句后让她把两桶漆的信息拍照，先做事实核对"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A01",
+     "subject": "THIRD",
+     "relation": "批次口径",
+     "value": "工长称新送漆与样板间不是同一个批次但直接刷没事",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T01",
+      "quote": "不是同一个批次，让我直接刷没事",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A02",
+     "subject": "THIRD",
+     "relation": "留样叮嘱",
+     "value": "卖漆小哥叮嘱新批次漆要留小样验证",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T01",
+      "quote": "卖漆的小哥昨天又叮嘱新批次要留小样",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她慌在没人拍板，给流程不给结论。",
+   "unknowns": [
+    "两批次是否真有色差此时尚未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得当场断言两批次必然有色差或必然无色差"
+   ]
+  },
+  "E193_T02": {
+   "case_id": "E193_T02",
+   "current_action": "给出验证方案：先不大面积刷，刷小样干透比色，并把两套口径整理成一句话。",
+   "acceptable_actions": [
+    "布置小样验证步骤并承诺整理口径发她",
+    "只给小样方案，把整理口径留到她回报结果后",
+    "提议由她转告工长先刷小样，避免正面顶撞工期"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A03",
+     "subject": "SHARED",
+     "relation": "验证方案",
+     "value": "先在墙面不显眼处刷小样干透比色再决定是否大面积刷",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T02",
+      "quote": "让工长在墙面不显眼处刷块小样，干透了再比",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A04",
+     "subject": "THIRD",
+     "relation": "口径分歧",
+     "value": "工长说直接刷没事而卖漆小哥叮嘱留小样，两套口径待仲裁",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T01",
+      "quote": "卖漆的小哥昨天又叮嘱新批次要留小样",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "流程分两步走，别一次塞给她太多。",
+   "unknowns": [
+    "工长是否配合刷小样未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称小样验证已开始"
+   ]
+  },
+  "E193_T03": {
+   "case_id": "E193_T03",
+   "current_action": "接住工期压力与被说多虑的委屈：肯定小样不是多虑，给她顶住工长的理由。",
+   "acceptable_actions": [
+    "肯定她的坚持不是多虑，并给一条顶住催促的话术",
+    "接住情绪后把工期问题转成'半天换整墙安全'的账",
+    "让她把工长原话转给自己，出面沟通一轮"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A05",
+     "subject": "THIRD",
+     "relation": "工期压力",
+     "value": "工长要求周四必须刷完客厅并称小样耽误工期",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T03",
+      "quote": "周四必须刷完客厅，小样耽误工期",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A06",
+     "subject": "THIRD",
+     "relation": "色差否认",
+     "value": "工长称批次色差根本看不出来并指 HER 多虑",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T03",
+      "quote": "批次色差根本看不出来",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A07",
+     "subject": "SHARED",
+     "relation": "验证方案",
+     "value": "小样干透比色的验证方案已定",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T02",
+      "quote": "干透了再比",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她被说多虑最委屈，先站稳她的理。",
+   "unknowns": [
+    "工长是否接受小样验证未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得顺着工长说色差无所谓"
+   ]
+  },
+  "E193_T04": {
+   "case_id": "E193_T04",
+   "current_action": "给出可执行标准：自然光下比色，色差超半个色号不能直接刷；并要求拍批次号、把口径写进验收单。",
+   "acceptable_actions": [
+    "给比色标准加批次号取证加验收单话术三件套",
+    "只给比色标准，让她先报结果再谈验收单",
+    "提议自己跟工长直接通话，把标准当面讲清"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A08",
+     "subject": "SHARED",
+     "relation": "比色标准",
+     "value": "小样干透后自然光下比色，色差超过半个色号不能直接刷",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T04",
+      "quote": "色差超过半个色号就不能直接刷",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A09",
+     "subject": "SHARED",
+     "relation": "取证要求",
+     "value": "让 HER 拍两桶漆批次号并问工长敢不敢把口径写进验收单",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T04",
+      "quote": "把两桶漆桶身上的批次号拍给我",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A10",
+     "subject": "THIRD",
+     "relation": "色差否认",
+     "value": "工长坚称批次色差根本看不出来",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T03",
+      "quote": "批次色差根本看不出来",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "标准要具体到能执行，别讲成道理课。",
+   "unknowns": [
+    "批次号差异是否对应色差未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把半个色号标准说成法定国标"
+   ]
+  },
+  "E193_T05": {
+   "case_id": "E193_T05",
+   "current_action": "接住验证结果：批次号一旧一新、小样靠窗发黄超标准，确认色差属实，工长口径被推翻，陪她把下一步转向合同。",
+   "acceptable_actions": [
+    "确认色差坐实，顺势把话题引向合同备注兜底",
+    "先共情她的火气，再要批次号照片存档",
+    "复核她的比色方法无误后，建议整墙暂缓刷涂"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A11",
+     "subject": "SHARED",
+     "relation": "批次号记录",
+     "value": "两桶漆批次号分别为2410与2603",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T05",
+      "quote": "墙上一桶是2410，新送这桶是2603",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A12",
+     "subject": "SHARED",
+     "relation": "色差确认",
+     "value": "小样干透后靠窗位置明显发黄，色差超过半个色号",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T05",
+      "quote": "靠窗那块明显发黄，色差比半个色号大得多",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A13",
+     "subject": "THIRD",
+     "relation": "色差否认被推翻",
+     "value": "工长'批次色差根本看不出来'的说法经小样比色被推翻",
+     "valid_time": "2026-11-09",
+     "status": "negated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T03",
+      "quote": "批次色差根本看不出来",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的验证赢了，让她先出这口气再谈钱。",
+   "unknowns": [
+    "工长是否认账未知"
+   ],
+   "protected_expressions": [
+    "批次号拍到了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称工长已经承认色差"
+   ]
+  },
+  "E193_T06": {
+   "case_id": "E193_T06",
+   "current_action": "把处理路径落到合同：整面墙重刷用同批次漆、工时不由她担，并让她翻出备注拍照。",
+   "acceptable_actions": [
+    "亮出合同备注依据并布置她拍照发工长",
+    "先说事实再给合同路径，把情绪性追责压掉",
+    "提议备注拍照存两份，一份发工长一份自留"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A14",
+     "subject": "SHARED",
+     "relation": "合同备注",
+     "value": "合同备注写明同批次供漆、色差重刷由乙方负责",
+     "valid_time": "2026-10-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "同批次供漆、色差重刷由乙方负责"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E193_A15",
+     "subject": "ME",
+     "relation": "处理口径",
+     "value": "主张按合同整面墙重刷用同批次漆且重刷工时不由 HER 承担",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T06",
+      "quote": "整面墙重刷用同批次漆，重刷的工时不能算你的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "有白纸黑字就不吵，让纸说话。",
+   "unknowns": [
+    "备注原文是否保存完好未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构合同里还有赔偿条款"
+   ]
+  },
+  "E193_T07": {
+   "case_id": "E193_T07",
+   "current_action": "接住工长嘴硬加价：确认她不该出这笔钱，稳住她的理，准备书面回应。",
+   "acceptable_actions": [
+    "明确表态加钱不该她出，并夸她翻出备注的功劳",
+    "接住情绪后让她别回嘴，先把回应措辞拟好",
+    "让她把备注页拍照发来核对原文再回话"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A16",
+     "subject": "THIRD",
+     "relation": "补漆要价",
+     "value": "工长称补漆可以但要加两百块并推迟三天",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T07",
+      "quote": "说补漆可以，但要加两百块，还得推迟三天",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A17",
+     "subject": "SHARED",
+     "relation": "合同备注",
+     "value": "同批次供漆、色差重刷由乙方负责的备注是既有约定",
+     "valid_time": "2026-10-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "同批次供漆、色差重刷由乙方负责"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她问'不该我出吧'，答案必须干脆。",
+   "unknowns": [
+    "工长最终是否让步未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称两百块加价合理"
+   ]
+  },
+  "E193_T08": {
+   "case_id": "E193_T08",
+   "current_action": "给出书面应对口径：备注在先、补漆与工时由乙方承担，私聊解决不在群里吵。",
+   "acceptable_actions": [
+    "给一句可直接转发的口径并叮嘱走私聊",
+    "给口径之外再补一句'先礼后兵'的缓冲",
+    "让她转述口径后等工长回复再定下一步"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A18",
+     "subject": "SHARED",
+     "relation": "应对口径",
+     "value": "回复口径为合同备注在先、同批次补漆与重刷工时由乙方承担",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T08",
+      "quote": "同批次补漆和重刷工时都由乙方承担",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A19",
+     "subject": "THIRD",
+     "relation": "补漆要价",
+     "value": "工长开出的要价是加两百块并推迟三天",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T07",
+      "quote": "要加两百块，还得推迟三天",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E193_A20",
+     "subject": "SHARED",
+     "relation": "沟通方式",
+     "value": "建议私聊解决不在群里吵",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T08",
+      "quote": "别在群里吵，私聊解决更快",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "话要能直接转发，别让她再加工。",
+   "unknowns": [
+    "工长收到口径后的反应未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得教她去闹场或扬言投诉停工"
+   ]
+  },
+  "E193_T09": {
+   "case_id": "E193_T09",
+   "current_action": "接住谈定结果：免费换同批次漆、工期顺延到下周二、不加钱，并化解她'答应太痛快'的疑虑。",
+   "acceptable_actions": [
+    "先恭喜谈成，再解释答应快是因为合同站不住",
+    "确认条件后提醒把结果落成文字留证",
+    "顺着她的疑虑补一句'痛快认账的人最怕对纸面'"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A21",
+     "subject": "SHARED",
+     "relation": "补漆条件落定",
+     "value": "工长同意免费换同批次漆、工期顺延到下周二且不加钱",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T09",
+      "quote": "免费换同批次漆，工期顺到下周二，不加钱",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A22",
+     "subject": "THIRD",
+     "relation": "加价要求撤回",
+     "value": "加两百块并推迟三天的要价被撤回",
+     "valid_time": "2026-11-09",
+     "status": "negated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T07",
+      "quote": "要加两百块，还得推迟三天",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "先让她踏实，再补防反悔的锁。",
+   "unknowns": [
+    "口头承诺是否兑现未知"
+   ],
+   "protected_expressions": [
+    "工期顺到下周二"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称工长书面确认了新条件"
+   ]
+  },
+  "E193_T10": {
+   "case_id": "E193_T10",
+   "current_action": "解读她答应快的心里打鼓，并给出防反悔三件套：验收单写批次号、补刷范围、比色合格再签。",
+   "acceptable_actions": [
+    "解读痛快认账的心理并给出验收单三要素",
+    "给三要素之外再叮嘱批次号写2603那桶",
+    "提议验收当天两人一起到场比色"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A23",
+     "subject": "SHARED",
+     "relation": "验收单三要素",
+     "value": "验收单须写同批次批次号、补刷范围、完工比色合格再签",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T10",
+      "quote": "同批次漆的批次号、补刷范围、完工比色合格再签",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A24",
+     "subject": "SHARED",
+     "relation": "批次号记录",
+     "value": "新送这桶漆批次号为2603",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T05",
+      "quote": "新送这桶是2603",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E193_A25",
+     "subject": "ME",
+     "relation": "疑虑解读",
+     "value": "判断工长答应痛快是因知道合同站不住",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T10",
+      "quote": "答应得痛快说明他知道合同站不住",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把口头承诺换成纸面条款，她才真踏实。",
+   "unknowns": [
+    "验收单实际条款待工长出稿"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称验收单已经签好"
+   ]
+  },
+  "E193_T11": {
+   "case_id": "E193_T11",
+   "current_action": "接住收尾：补漆完成、验收单签署、未多花钱仅顺延三天，陪她把这一课收进经验。",
+   "acceptable_actions": [
+    "恭喜闭环并总结'小样加备注'这条经验",
+    "接住轻快语气，顺势问验收单照片留档没有",
+    "把三天顺延说成值得的代价，肯定她的坚持"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A26",
+     "subject": "SHARED",
+     "relation": "补漆完成",
+     "value": "同批次补漆完成且验收单签署、批次号范围比色齐全",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T11",
+      "quote": "验收单也签了，批次号、范围、比色都写得清清楚楚",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A27",
+     "subject": "SHARED",
+     "relation": "费用结果",
+     "value": "整场色差风波未额外花钱仅工期顺延三天",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T11",
+      "quote": "这趟没多花一分钱，工期也就顺延了三天",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A28",
+     "subject": "SHARED",
+     "relation": "补漆条件落定",
+     "value": "此前谈定的免费换同批次漆如期兑现",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T09",
+      "quote": "免费换同批次漆",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "别居功，把功劳记在'验证加白纸黑字'上。",
+   "unknowns": [
+    "验收单照片是否留存未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称拿到了额外赔偿"
+   ]
+  },
+  "E193_T12": {
+   "case_id": "E193_T12",
+   "current_action": "接住周六开窗散味的邀约和奶茶致谢：应约并顺势给个到场帮手的具体承诺。",
+   "acceptable_actions": [
+    "应约并说好带点除味的小工具一起开窗",
+    "应约之余打趣编外监工转正的事",
+    "应约并提议顺路把她验收单照片归档一份"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E193_A29",
+     "subject": "HER",
+     "relation": "周末邀约",
+     "value": "周六邀 ME 同去新刷的屋开窗散味并请奶茶致谢",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T12",
+      "quote": "周六我去新刷的屋里开窗散味，你要不要一起来",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E193_A30",
+     "subject": "SHARED",
+     "relation": "补漆完成",
+     "value": "补漆已完成是本次邀约的背景",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E193_T11",
+      "quote": "补漆完了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她主动了，接得轻快一点，别扫兴。",
+   "unknowns": [
+    "周六具体时间待定"
+   ],
+   "protected_expressions": [
+    "编外监工"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已确定的具体见面时刻"
+   ]
+  }
+ }
+}

@@ -1,0 +1,606 @@
+{
+ "story_id": "E073",
+ "turns": {
+  "E073_T01": {
+   "case_id": "E073_T01",
+   "current_action": "接住装修收尾的兴奋，确认周六帮忙搬大件的约定，顺口把'31号'这个日期原样记下但不急于背书。",
+   "acceptable_actions": [
+    "爽快应下搬运，让她把小区门禁和电梯情况提前说一声",
+    "提醒床垫电视之外列个清单，一趟搬完别来回折腾",
+    "顺着火锅应承，让她交房当天先通风再进场搬"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A01",
+     "subject": "SHARED",
+     "relation": "reno_finishing",
+     "value": "她的二手房装修进入收尾，油漆和地板已经完工",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T01", "message_id": "m0", "quote": "油漆地板都弄完了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A02",
+     "subject": "THIRD",
+     "relation": "verbal_promise",
+     "value": "装修师傅口头承诺月底保准交房，无书面凭证",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T01", "message_id": "m0", "quote": "月底保准能交"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A03",
+     "subject": "SHARED",
+     "relation": "wrong_date_claim",
+     "value": "她凭记忆认定交房日为10月31日",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T01", "message_id": "m0", "quote": "就按31号算"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A04",
+     "subject": "SHARED",
+     "relation": "help_first_trip",
+     "value": "她约老储10月31日周六帮忙搬床垫和电视",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T01", "message_id": "m0", "quote": "周六10月31号你来帮我搬第一趟"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接兴奋，日期先照单全收但不替她打包票，给后文的合同反转留缝。",
+   "unknowns": ["交房日的合同原文未出示", "10月31日是否为周六她未核对"],
+   "protected_expressions": ["就床垫和电视俩大件", "中午我请火锅"],
+   "forbidden_factual_claims": ["不得确认10月31日就是真实交房日", "不得虚构装修进度细节"]
+  },
+  "E073_T02": {
+   "case_id": "E073_T02",
+   "current_action": "接住她补订保洁的报备，肯定安排周全，对她'全凭脑子记'轻轻打个问号而不说教。",
+   "acceptable_actions": [
+    "肯定搬家加保洁的衔接顺，提醒留出通风时间",
+    "建议把保洁单号截图存一份，免得口说无凭",
+    "顺着她的得意调侃一句，不正面泼冷水"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A05",
+     "subject": "SHARED",
+     "relation": "cleaning_booked",
+     "value": "开荒保洁订在11月1日上午，紧接搬家次日",
+     "valid_time": "2026-10-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T02", "message_id": "m0", "quote": "开荒保洁我订在11月1号上午"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A06",
+     "subject": "HER",
+     "relation": "memory_habit",
+     "value": "她记事全凭脑子，不爱翻凭证",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "记性全凭脑子，从不爱翻凭证"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A07",
+     "subject": "HER",
+     "relation": "cleaning_timing",
+     "value": "保洁安排在搬家第二天，前后衔接紧凑",
+     "valid_time": "2026-10-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T02", "message_id": "m0", "quote": "搬完第二天正好擦一遍"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：调侃要轻，把'凭证'两个字埋进玩笑里，不直接下判断。",
+   "unknowns": ["保洁公司改期规则未知"],
+   "protected_expressions": ["日子都在我脑子里记着呢"],
+   "forbidden_factual_claims": ["不得虚构保洁公司的服务条款", "不得断言她的日期一定错了"]
+  },
+  "E073_T03": {
+   "case_id": "E073_T03",
+   "current_action": "接住师傅15号说法带来的慌乱：不替她背书31号，第一时间推她去翻合同——日期之争只认凭证，不认记忆。",
+   "acceptable_actions": [
+    "直接劝她先翻合同，谁对谁错翻出来就知道",
+    "让她顺手把合同拍照发来，两人一起对",
+    "提醒先别动周六的安排，等合同结果再说"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A08",
+     "subject": "THIRD",
+     "relation": "date_challenge",
+     "value": "师傅问她15号验房来不来，并让她自己翻合同",
+     "valid_time": "2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T03", "message_id": "m0", "quote": "15号验房你来不来"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A09",
+     "subject": "HER",
+     "relation": "doubt_unopened",
+     "value": "她怀疑自己记错但还没敢翻合同",
+     "valid_time": "2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T03", "message_id": "m0", "quote": "我还没敢翻"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A10",
+     "subject": "SHARED",
+     "relation": "wrong_date_claim",
+     "value": "她凭记忆认定的10月31日交房仍是周六全部安排的地基",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T01", "message_id": "m0", "quote": "就按31号算"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：稳住她，把'翻合同'说成一分钟的事，别让她在没凭证时跟师傅争。",
+   "unknowns": ["合同真实交房日未知", "师傅口径的依据未知"],
+   "protected_expressions": ["万一真是我记错了"],
+   "forbidden_factual_claims": ["不得提前断言哪一天是对的", "不得替师傅转述合同内容"]
+  },
+  "E073_T04": {
+   "case_id": "E073_T04",
+   "current_action": "接住合同反转的引爆：确认11月15日为真、31号是她记岔，先收住她的自责，再陪她把搬家、保洁、道歉三件事一件件拆开排。",
+   "acceptable_actions": [
+    "先安抚：记错日子人人有，好在发现得早没白跑",
+    "帮她排顺序：先撤周六之约、再改保洁、最后跟师傅打招呼",
+    "点明这次的价值：所有安排现在都换成合同口径"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A11",
+     "subject": "SHARED",
+     "relation": "true_date",
+     "value": "合同白纸黑字载明交房日为11月15日",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T04", "message_id": "m0", "quote": "合同上白纸黑字写着11月15号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A12",
+     "subject": "SHARED",
+     "relation": "wrong_date_claim",
+     "value": "她此前凭记忆认定的10月31日交房被合同推翻",
+     "valid_time": "2026-10-20/2026-10-26",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E073_T01", "message_id": "m0", "quote": "就按31号算"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E073_A13",
+     "subject": "HER",
+     "relation": "chain_reaction",
+     "value": "一个记错的日期牵动搬家保洁与道歉三件安排",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T04", "message_id": "m0", "quote": "一环错环环错"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接情绪再接事，'记岔了'三个字不重复刺激她，把重点放在补救清单。",
+   "unknowns": ["保洁能否免费改期未知", "师傅是否介意未知"],
+   "protected_expressions": ["31号是我脑子里自己编的日子"],
+   "forbidden_factual_claims": ["不得虚构合同其他条款", "不得断言周六安排必然已造成损失"]
+  },
+  "E073_T05": {
+   "case_id": "E073_T05",
+   "current_action": "确认周六帮忙之约正式作废、搬家改到11月21日周六；肯定她主动道歉的处理，把新日期复述一遍钉牢。",
+   "acceptable_actions": [
+    "爽快认下改期，让她把21号白纸黑字发一遍备忘",
+    "肯定红包赔不是的处理体面，师傅台阶给得也顺",
+    "提醒21号前先去新房通两天风再搬"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A14",
+     "subject": "SHARED",
+     "relation": "help_first_trip",
+     "value": "10月31日帮忙搬家之约正式作废",
+     "valid_time": "2026-10-20/2026-10-26",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E073_T01", "message_id": "m0", "quote": "周六10月31号你来帮我搬第一趟"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E073_A15",
+     "subject": "SHARED",
+     "relation": "new_help_date",
+     "value": "帮忙搬家改到11月21日周六，交房一周后",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T05", "message_id": "m0", "quote": "搬家改到21号周六"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A16",
+     "subject": "HER",
+     "relation": "apology_done",
+     "value": "她已给师傅发红包赔不是，师傅一笑而过",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T05", "message_id": "m0", "quote": "给师傅发红包赔不是"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'作废'说成及时止损，新日子替她复述一遍，替她把新锚点钉住。",
+   "unknowns": ["保洁改期口径未知"],
+   "protected_expressions": ["你别跑空了"],
+   "forbidden_factual_claims": ["不得虚构师傅道歉对话细节", "不得断言11月21日不再变动"]
+  },
+  "E073_T06": {
+   "case_id": "E073_T06",
+   "current_action": "接住保洁改约落定的报备：确认1号改16号且未产生费用，顺带把'提前24小时'这条规则替她记下来。",
+   "acceptable_actions": [
+    "肯定她掐点改约利索，三分钟解决一个隐患",
+    "提醒以后这类预约都留个客服规则截图",
+    "顺带确认16号上午与验房不冲突"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A17",
+     "subject": "SHARED",
+     "relation": "cleaning_rescheduled",
+     "value": "保洁从11月1日改到11月16日上午且免费",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T06", "message_id": "m0", "quote": "1号的改成16号上午"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A18",
+     "subject": "THIRD",
+     "relation": "reschedule_rule",
+     "value": "保洁改期免费但须提前24小时申请",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T06", "message_id": "m0", "quote": "提前24个小时"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A19",
+     "subject": "SHARED",
+     "relation": "cleaning_booked",
+     "value": "原定11月1日的开荒保洁预约已取消",
+     "valid_time": "2026-10-22/2026-10-27",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E073_T02", "message_id": "m0", "quote": "开荒保洁我订在11月1号上午"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'三分钟'夸成她这波补救里最顺的一环，冲淡前两天的懊恼。",
+   "unknowns": [],
+   "protected_expressions": ["我掐着点改完了"],
+   "forbidden_factual_claims": ["不得虚构保洁公司名称与流程", "不得断言16号上午保洁必然不被再改"]
+  },
+  "E073_T07": {
+   "case_id": "E073_T07",
+   "current_action": "接住师傅的窗帘盒考题：把'交房前要准话'的期限和1200的差价都接住，先帮她把题目拆成预算与必要性问题。",
+   "acceptable_actions": [
+    "先确认期限，提醒她别拖到交房当天才答复",
+    "把1200拆成工艺与材料，问她要不要先问明细",
+    "顺着'手痒想砍'接一句，留到下轮给利弊"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A20",
+     "subject": "THIRD",
+     "relation": "curtain_question",
+     "value": "师傅要求她在交房前定夺窗帘盒做不做",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T07", "message_id": "m0", "quote": "窗帘盒要不要做"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A21",
+     "subject": "SHARED",
+     "relation": "budget_pressure",
+     "value": "做窗帘盒需多花1200元",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T07", "message_id": "m0", "quote": "要多花1200"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A22",
+     "subject": "SHARED",
+     "relation": "true_date",
+     "value": "11月15日交房日经合同确认，成为一切排期的锚",
+     "valid_time": "2026-10-26/2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T04", "message_id": "m0", "quote": "合同上白纸黑字写着11月15号"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：替她把期限点在明处，预算的焦虑先接住不急着给答案。",
+   "unknowns": ["窗帘盒工艺明细与报价构成未知"],
+   "protected_expressions": ["看到四位数就手痒想砍"],
+   "forbidden_factual_claims": ["不得虚构窗帘盒市场价格", "不得替她做决定"]
+  },
+  "E073_T08": {
+   "case_id": "E073_T08",
+   "current_action": "应她的点名参谋：给利弊不下结论——窗帘盒遮光利落但积灰贵，罗马杆便宜好换，最终让她自己拍板。",
+   "acceptable_actions": [
+    "给两边各一条硬理由，然后说'你住你定'",
+    "建议先问师傅罗马杆的安装时间是否赶得上交房",
+    "引用她'钱花在看不见的地方'，反问这钱看得见吗"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "factuality", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A23",
+     "subject": "HER",
+     "relation": "lean_option",
+     "value": "她刷帖后倾向不做窗帘盒改用罗马杆",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T08", "message_id": "m0", "quote": "罗马杆好像也够用"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A24",
+     "subject": "HER",
+     "relation": "consult",
+     "value": "她就窗帘盒取舍请老储拿主意",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T08", "message_id": "m0", "quote": "你给我拿个主意呗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A25",
+     "subject": "ME",
+     "relation": "trusted_advisor",
+     "value": "老储帮她逐项对过报价，口头禅是翻凭证别翻记忆",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "翻凭证，别翻记忆"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：参谋要给梯子不给判决，最后一句把决定权还给她。",
+   "unknowns": ["师傅对罗马杆的态度未知"],
+   "protected_expressions": ["钱要花在看不见的地方"],
+   "forbidden_factual_claims": ["不得断言窗帘盒必然过时", "不得虚构帖子里的具体数据"]
+  },
+  "E073_T09": {
+   "case_id": "E073_T09",
+   "current_action": "接住她的决断：窗帘盒不做、1200转投马桶；把这笔'砍下来的钱'定义为她的预算胜利，顺势收掉这个支线。",
+   "acceptable_actions": [
+    "肯定决定干脆，钱省在明处比花在面子上踏实",
+    "顺着马桶接一句，问她挑好型号没有",
+    "把师傅那句'活儿都齐了'接成交房倒计时的好消息"
+   ],
+   "applicable_dimensions": ["goal", "emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A26",
+     "subject": "SHARED",
+     "relation": "curtain_decision",
+     "value": "她决定不做窗帘盒，改用罗马杆",
+     "valid_time": "2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T09", "message_id": "m0", "quote": "不做窗帘盒了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A27",
+     "subject": "HER",
+     "relation": "budget_reallocation",
+     "value": "省下的1200元预算转投更换马桶",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T09", "message_id": "m0", "quote": "省下这1200"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A28",
+     "subject": "SHARED",
+     "relation": "budget_pressure",
+     "value": "1200元的窗帘盒预算项被决策取消",
+     "valid_time": "2026-10-28/2026-11-05",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T07", "message_id": "m0", "quote": "要多花1200"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：功劳记她账上，参谋退到幕后，别趁机邀功。",
+   "unknowns": [],
+   "protected_expressions": ["交房前活儿都齐了"],
+   "forbidden_factual_claims": ["不得虚构马桶型号与价格", "不得断言罗马杆方案无后续问题"]
+  },
+  "E073_T10": {
+   "case_id": "E073_T10",
+   "current_action": "接住验房顺延一天的小变数，重点肯定她'只认书面时间'的新习惯——这正是这一个月用一次引爆换来的进步。",
+   "acceptable_actions": [
+    "肯定她让师傅发书面时间的做法，说这才叫长记性",
+    "提醒对完合同顺手把16号同步给保洁那边",
+    "调侃她现在比监理还监理，接住轻松气氛"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A29",
+     "subject": "THIRD",
+     "relation": "inspection_delay",
+     "value": "师傅因打胶养护把验房改到16号上午",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T10", "message_id": "m0", "quote": "16号上午验房行不行"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A30",
+     "subject": "HER",
+     "relation": "memory_habit",
+     "value": "她放弃全凭脑记，改成一切日子先找凭证",
+     "valid_time": "长期/2026-11-14",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "记性全凭脑子，从不爱翻凭证"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E073_A31",
+     "subject": "HER",
+     "relation": "written_demand",
+     "value": "她要求师傅改发书面时间，由她对着合同核",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T10", "message_id": "m0", "quote": "你发书面时间给我"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把她的转变说成这单装修里最值钱的收获，语气轻，不翻旧账。",
+   "unknowns": ["打胶养护具体原因未知"],
+   "protected_expressions": ["我现在看见日子就先找凭证"],
+   "forbidden_factual_claims": ["不得断言16号验房是最终时间", "不得虚构师傅的书面回复内容"]
+  },
+  "E073_T11": {
+   "case_id": "E073_T11",
+   "current_action": "共享验房完成的踏实：踢脚线翘边师傅认账并承诺18号前补好，肯定她留日期验收单的动作——这就是她的护身符。",
+   "acceptable_actions": [
+    "肯定验收单留得好，有问题单据说话",
+    "提醒18号补完再拍一张对比照存档",
+    "顺势问她21号搬家还要不要加人手"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A32",
+     "subject": "SHARED",
+     "relation": "inspection_done",
+     "value": "16日验房完成，仅踢脚线一处翘边待补",
+     "valid_time": "2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T11", "message_id": "m0", "quote": "踢脚线有一处翘边"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A33",
+     "subject": "THIRD",
+     "relation": "fix_promise",
+     "value": "师傅认账并承诺18号前补好踢脚线",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T11", "message_id": "m0", "quote": "18号前给我补好"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A34",
+     "subject": "SHARED",
+     "relation": "dated_record",
+     "value": "她拍了带日期的验收单存证",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T11", "message_id": "m0", "quote": "带日期的验收单"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸她从'凭脑子'到'留单据'的整段成长，点到为止不煽情。",
+   "unknowns": [],
+   "protected_expressions": ["谁也别想再跟我说'你记错了'仨字"],
+   "forbidden_factual_claims": ["不得虚构验房发现的更多瑕疵", "不得断言18号必然补完"]
+  },
+  "E073_T12": {
+   "case_id": "E073_T12",
+   "current_action": "接住搬家日早上的确认：以'这日子是照着验收单定的'回敬她一句，爽快下楼开工，以火锅与'差点白跑'的玩笑收尾。",
+   "acceptable_actions": [
+    "应声下楼，先点名要搬床垫还是电视",
+    "回敬一句'验收单比你有说服力'，接住玩笑",
+    "提醒毛肚留两片，搬完再吃更香"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E073_A35",
+     "subject": "SHARED",
+     "relation": "moving_day",
+     "value": "11月21日搬家日当天车已在楼下待命",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T12", "message_id": "m0", "quote": "车已经在楼下了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E073_A36",
+     "subject": "SHARED",
+     "relation": "new_help_date",
+     "value": "改期后的11月21日帮忙之约当日兑现",
+     "valid_time": "2026-10-26/2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T05", "message_id": "m0", "quote": "搬家改到21号周六"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E073_A37",
+     "subject": "HER",
+     "relation": "record_kept",
+     "value": "搬家日的日子以验收单凭证为准，凭证习惯延续",
+     "valid_time": "2026-11-14/2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E073_T10", "message_id": "m0", "quote": "我现在看见日子就先找凭证"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻快，'差点白跑'说成这单装修的注脚，不重新翻旧账。",
+   "unknowns": [
+    "16号上午保洁与验房同窗：剧情内未正面安排先后，正确行为是提醒 HER 与保洁确认时间（acceptable_actions 已含）或留待 HER 自理，不得虚构已协调结果"
+   ],
+   "protected_expressions": ["赔你上回差点白跑一趟"],
+   "forbidden_factual_claims": ["不得虚构搬运过程细节", "不得引入新的装修议题"]
+  }
+ }
+}

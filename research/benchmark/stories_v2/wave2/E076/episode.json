@@ -1,0 +1,190 @@
+{
+ "episode_id": "E076",
+ "persona": {
+  "her": {
+   "name": "小满",
+   "traits": [
+    "爱攒户外局，拼车局里她牵头",
+    "性子急但肯垫钱担事",
+    "被垫账收钱磨过之后正琢磨改规矩"
+   ],
+   "boundaries": [
+    "再热心也不替别人的变数买单",
+    "规矩打听在前，改期改费都要落群"
+   ]
+  },
+  "me": {
+   "name": "阿澈",
+   "traits": [
+    "她爬山认识的搭子，话不多但靠谱",
+    "遇变数先问她保什么、舍什么",
+    "不催不劝死，判断留给她拍板"
+   ]
+  },
+  "relationship_stage": "渐熟朋友（一起爬过两回山，局的细节都跟他商量）"
+ },
+ "turns": [
+  {
+   "case_id": "E076_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-26 21:20", "text": "阿澈，成了！建哥那台车11月7号周六去青梧山看红叶，四个座刚好，包车每人150，我先把咱俩的都报上了，一共300。你要是临时不想去，可得赶在72小时前跟我说，规矩我打听好了"}
+    ],
+    "clock": "2026-10-26 21:23",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "攒局得手", "warmth": "high", "shift": "拼车局成行，她垫两人份车费并立退出规矩"}
+  },
+  {
+   "case_id": "E076_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-28 12:30", "text": "团里第四个是网上拼的小白，他说周五晚上可能加班，怕赶不上周六早上7点半集合。我跟他说先按来算，到时候再说，就怕真出岔子"}
+    ],
+    "clock": "2026-10-28 12:33",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "留了个心眼", "warmth": "high", "shift": "第四人自带变数，集合时间定死在7点半"}
+  },
+  {
+   "case_id": "E076_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-30 19:40", "text": "建哥晚上来消息，他妈周六要复查，早上出发可能得往后推两个钟头，要么干脆改周日。他也不想去耽误咱看红叶，问大家意见"}
+    ],
+    "clock": "2026-10-30 19:43",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "措手不及", "warmth": "medium", "shift": "车主家事首次冲击行程，两个备选悬着"}
+  },
+  {
+   "case_id": "E076_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-01 20:10", "text": "群里商量好了：推到9点半出发，山顶那段徒步砍掉，直接开到半山腰观景台。建哥说这样红叶照样看得上，就是辛苦咱早点睡"}
+    ],
+    "clock": "2026-11-01 20:13",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "落定", "warmth": "medium", "shift": "改期#1落地：延后两小时、压缩山顶徒步"}
+  },
+  {
+   "case_id": "E076_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-04 21:30", "text": "计划赶不上变化，建哥他妈复查完医生又给加了一个检查，得他下周陪着。他干脆提议整个改到14号周六，7号这趟取消。阿澈，就怕拖到14号红叶都落没了"}
+    ],
+    "clock": "2026-11-04 21:33",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "心里发紧", "warmth": "medium", "shift": "改期#2引爆：7号行程整体取消迁往14号，红叶窗口告急"}
+  },
+  {
+   "case_id": "E076_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-05 19:15", "text": "小白退出了，说14号他正好出差。按拼车规矩出发前72小时外退，他那150建哥全退了。可这就剩咱们仨，包车还是600，建哥说让我们一人补50，不然他油费过路费不划算"}
+    ],
+    "clock": "2026-11-05 19:18",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "肉疼但讲理", "warmth": "medium", "shift": "成员退出引发费用重摊：四人变三人、每人补50"}
+  },
+  {
+   "case_id": "E076_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-06 12:20", "text": "我琢磨了一中午：红叶就剩最后一波，错过再等一年。补50就补吧，一人200看最后一眼红叶，值。我把咱俩的补差一起垫了，你转我100就行"}
+    ],
+    "clock": "2026-11-06 12:23",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "拍板", "warmth": "medium", "shift": "补差继续成行，她又垫两人份差价"}
+  },
+  {
+   "case_id": "E076_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-07 10:05", "text": "本来今天该在山上的，现在改14号。我把山宿也动了：7号那晚的房退了，老板人不错给全退，14号重新订，就是一晚涨了20，我认了"}
+    ],
+    "clock": "2026-11-07 10:08",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "认账", "warmth": "medium", "shift": "原出行日空转，山宿完成退订重订"}
+  },
+  {
+   "case_id": "E076_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-12 21:40", "text": "刚看了天气预报，说14号山区有雨，概率还挺大。阿澈，我心里咯噔一下，不会白改一回吧？要不要干脆改周日？我到现在还没敢跟建哥提"}
+    ],
+    "clock": "2026-11-12 21:43",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "动摇", "warmth": "medium", "shift": "天气威胁浮出，是否第三次改期悬而未决"}
+  },
+  {
+   "case_id": "E076_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-13 18:50", "text": "建哥自己盯了一天云图，出了个狠招：凌晨5点半出发，赶在午后下雨前上山，看完中午就下。群里都答应了，我定了两个闹钟，就赌这一把"}
+    ],
+    "clock": "2026-11-13 18:53",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "豁出去", "warmth": "medium", "shift": "第三次变动：不挪日期改抢时刻，凌晨方案过会"}
+  },
+  {
+   "case_id": "E076_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 20:30", "text": "赌赢了！！早上山顶红叶挂着雨雾跟仙境似的，我们下山刚上车雨点就砸下来了，建哥那条路线掐得分秒不差。今晚浑身酸，但值了"}
+    ],
+    "clock": "2026-11-14 20:33",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "大赢特赢", "warmth": "high", "shift": "凌晨方案当日兑现，改期三连换来红叶正当时"}
+  },
+  {
+   "case_id": "E076_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-16 19:25", "text": "建哥在群里喊话，说下周想跑趟入海口看芦苇荡，还是老价钱问咱们仨去不去。阿澈，去不去你一句话，这回我可学乖了，先收钱再发车，谁也不垫"}
+    ],
+    "clock": "2026-11-16 19:28",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "学乖带笑", "warmth": "high", "shift": "新局钩子抛出，垫钱规矩升级为先收钱再发车"}
+  }
+ ],
+ "initial_kb": {
+  "her": "小满爱攒户外局，拼车局她牵头，性子急但肯垫钱担事；上次拼车垫账收钱磨得心累，正琢磨把垫钱的老规矩改掉。",
+  "me": "阿澈是她爬山认识的搭子，话不多但靠谱，拼车局里她最信他的判断。",
+  "warmth": "一起爬过两回山，渐熟，局的细节都跟他商量。",
+  "style": "她消息密、爱连发感叹，他回得慢但每条都在点上。"
+ }
+}

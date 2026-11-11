@@ -1,0 +1,40 @@
+{
+ "kind": "story_manifest",
+ "stage": "wave4_dev",
+ "date": "2026-11-08",
+ "built_by": "tools/benchmark_v1/build_wave_manifest.py",
+ "count": 1,
+ "turn_per_story": [
+  12,
+  24,
+  32
+ ],
+ "stories": [
+  {
+   "story_id": "E338",
+   "title": "展位 C14 与周四之夜",
+   "themes": [
+    "T09",
+    "长程32轮",
+    "三线并行：展会筹备/羽毛球固定场/老家事务",
+    "更正链：展位号/档期级联/车次/寄送内容",
+    "取消-不复活",
+    "条件式重启钩"
+   ],
+   "domain": "展会筹备",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E338",
+   "turns": 32,
+   "files": {
+    "episode.json": "1c6878befb3f85612c9a1a838a474d7a2be02b60eb4dd1b7833d66a9fa2db856",
+    "reference.json": "e4785cfc40bdf2019411944d52844ae5859447ee4ac9ca525f16f64fe5f13575",
+    "timeline.json": "dd8fd4b2497bb21ad8c3074f6c16724ebbcb3e2bde223278c43acf60f50c3be5",
+    "exposure.json": "a25eb9f4c1221a145f123f0139aeed9af3732bf8ef846a3446613ebe2f299c98",
+    "audit.md": "e21b0ec7b875518ca0a7166032ab7744b59c398e935cd6620618815ce5e36dd5"
+   },
+   "lineage_group_id": "LG-E338",
+   "primary_topic": "T09"
+  }
+ ],
+ "note": "derived split manifest for mixed-length wave4_dev validation (turns=32)"
+}

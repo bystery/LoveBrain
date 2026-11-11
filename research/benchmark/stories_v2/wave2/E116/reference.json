@@ -1,0 +1,829 @@
+{
+ "story_id": "E116",
+ "turns": {
+  "E116_T01": {
+   "case_id": "E116_T01",
+   "current_action": "接住她的办卡报喜与烧杯子的心意：先应下这份惦记，再对'材料全包'给一句采购口味的轻提醒——口头承诺记得留痕，办卡收据收好，为后面的口径冲突埋下习惯伏笔。",
+   "acceptable_actions": [
+    "应下杯子心意，顺口让她把'全包'那句承诺截图留着",
+    "肯定季卡性价比，提醒她核对课次和有效期",
+    "打趣她终于不用再用失败品当笔筒，问第一个作品想做什么"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A01",
+     "subject": "THIRD",
+     "relation": "full_inclusive_promise",
+     "value": "工作室销售向她承诺季卡材料全包含烧制",
+     "valid_time": "2026-09-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T01",
+      "message_id": "m0",
+      "quote": "销售小妹说材料全包"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A02",
+     "subject": "SHARED",
+     "relation": "season_card_purchase",
+     "value": "她以1280元购入8次课的陶艺季卡",
+     "valid_time": "2026-09-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T01",
+      "message_id": "m0",
+      "quote": "1280，8次课"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A03",
+     "subject": "HER",
+     "relation": "cup_gift_intent",
+     "value": "她的第一个作品定为给ME烧一个杯子",
+     "valid_time": "2026-09-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T01",
+      "message_id": "m0",
+      "quote": "我第一个作品就想给你烧个杯子"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：提醒要说成习惯而非怀疑，'留痕'两个字轻轻放下。",
+   "unknowns": [
+    "收据具体条款她未出示",
+    "季卡有效期未知"
+   ],
+   "protected_expressions": [
+    "你平时喝水的那个都掉瓷了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构工作室名称与地址",
+    "不得断言'全包'承诺真假"
+   ]
+  },
+  "E116_T02": {
+   "case_id": "E116_T02",
+   "current_action": "接住她的课程进展与二次安利：'材料全包，闭眼办'已经传给了小蝶。不泼冷水也不背书，提醒她'闭眼办'这种话要么自己先验过要么收回半句——她替别人拍板的习惯值得点一下。",
+   "acceptable_actions": [
+    "提醒她'闭眼办'说得太满，建议先让小蝶自己看价目表",
+    "肯定她的碗坯进度，问杯子什么时候进窑",
+    "顺带问她小蝶是否知道课次和烧制流程"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A04",
+     "subject": "HER",
+     "relation": "secondhand_endorsement",
+     "value": "她把'材料全包闭眼办'的口径转述给同事小蝶",
+     "valid_time": "2026-10-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T02",
+      "message_id": "m0",
+      "quote": "我跟她说'材料全包，闭眼办'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A05",
+     "subject": "THIRD",
+     "relation": "xiaodie_pending_signup",
+     "value": "小蝶表示发工资就去办卡，尚未成交",
+     "valid_time": "2026-10-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T02",
+      "message_id": "m0",
+      "quote": "她说发了工资就去办"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'说得太满'要点得轻，用玩笑裹着，别扫她学陶艺的兴。",
+   "unknowns": [
+    "小蝶是否已查看价目表未知"
+   ],
+   "protected_expressions": [
+    "材料全包，闭眼办"
+   ],
+   "forbidden_factual_claims": [
+    "不得替小蝶做办卡判断",
+    "不得虚构课程内容细节"
+   ]
+  },
+  "E116_T03": {
+   "case_id": "E116_T03",
+   "current_action": "接住费用口径冲突引爆：进窑被要求每件付30元釉烧费，前台称价目表一直另算。先接她的炸毛，再帮她把冲突定性——这不是现场纠纷是承诺与条款的口径冲突，先别在柜台吵，回去找凭证。",
+   "acceptable_actions": [
+    "劝她当场别吵，先扫码前把价目表拍一张留证",
+    "把冲突定性：口头承诺与书面除外条款的口径之争",
+    "提醒她烧制单押在前台期间，作品归属要说清"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A06",
+     "subject": "SHARED",
+     "relation": "glaze_fee_charged",
+     "value": "进窑时被收取每件30元的釉烧费",
+     "valid_time": "2026-10-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T03",
+      "message_id": "m0",
+      "quote": "让我扫码付'釉烧费，30一件'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A07",
+     "subject": "THIRD",
+     "relation": "front_desk_rebuttal",
+     "value": "前台称价目表一直挂墙上，烧制从来另算",
+     "valid_time": "2026-10-17",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T03",
+      "message_id": "m0",
+      "quote": "价目表一直挂墙上，烧制从来另算"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A08",
+     "subject": "THIRD",
+     "relation": "promise_negated_on_site",
+     "value": "'材料全包'的承诺在现场收费面前被否认",
+     "valid_time": "2026-09-24/2026-10-17",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T01",
+      "message_id": "m0",
+      "quote": "销售小妹说材料全包"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'钓鱼办卡'的指控先接住不附和，把火从柜台引回证据上。",
+   "unknowns": [
+    "价目表张贴起始时间未知"
+   ],
+   "protected_expressions": [
+    "这不是钓鱼办卡吗"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言前台撒谎",
+    "不得虚构价目表全文"
+   ]
+  },
+  "E116_T04": {
+   "case_id": "E116_T04",
+   "current_action": "接住她的凭证自查：聊天记录里'材料、烧制都包含'在，收据却写'含基础泥料，其他详见价目表'——双源打架。肯定她没付钱押单的做法，把'该不该较真'接成'该，但按证据的顺序较'。",
+   "acceptable_actions": [
+    "肯定她留记录的习惯，这次全靠它",
+    "建议她把收据、价目表、聊天记录三样备齐再谈",
+    "指出押单未付是对的，先固定现状再谈判"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A09",
+     "subject": "THIRD",
+     "relation": "chat_evidence",
+     "value": "销售聊天记录载明'材料、烧制都包含，您放心'",
+     "valid_time": "2026-09-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T04",
+      "message_id": "m0",
+      "quote": "她原话'材料、烧制都包含，您放心'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A10",
+     "subject": "SHARED",
+     "relation": "receipt_exclusion_clause",
+     "value": "收据写'含基础泥料，其他详见价目表'",
+     "valid_time": "2026-09-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T04",
+      "message_id": "m0",
+      "quote": "含基础泥料，其他详见价目表"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A11",
+     "subject": "HER",
+     "relation": "payment_withheld",
+     "value": "她当晚未付费，烧制单押在前台",
+     "valid_time": "2026-10-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T04",
+      "message_id": "m0",
+      "quote": "这钱我今晚没付，烧制单先押在前台了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'该不该较真'要给准话——该，但把'吵'换成'摆证据'。",
+   "unknowns": [
+    "收据签署日期与价目表版本未知"
+   ],
+   "protected_expressions": [
+    "你说我该不该较这个真"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她认定收据条款无效",
+    "不得虚构法律结论"
+   ]
+  },
+  "E116_T05": {
+   "case_id": "E116_T05",
+   "current_action": "接住她的谈判准备：差价算清（剩6次课约小两百）、比价在手（社区教室80一节全包）。给她谈判顺序——先摆收据问条款、再摆聊天记录问承诺、最后才亮比价，把'怕被当闹事的'卸掉。",
+   "acceptable_actions": [
+    "给谈判顺序：条款、承诺、比价，三步走不吵架",
+    "肯定她算差价的底牌，但提醒比价最后亮",
+    "建议她带着卡片和收据去，谈完要个书面说法"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A12",
+     "subject": "HER",
+     "relation": "cost_calculated",
+     "value": "她按价目表估算剩余6次课的烧制费还需近两百元",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T05",
+      "message_id": "m0",
+      "quote": "烧制费还得小两百"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A13",
+     "subject": "THIRD",
+     "relation": "alternative_pricing",
+     "value": "社区教室每节80元且材料全包",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T05",
+      "message_id": "m0",
+      "quote": "隔壁社区教室80一节还全包"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A14",
+     "subject": "HER",
+     "relation": "fear_of_being_troublemaker",
+     "value": "她怕开口就吵被当成闹事的",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T05",
+      "message_id": "m0",
+      "quote": "怕一上来就吵，反而被当成闹事的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：谈判顺序说成'让你的证据排队说话'，比'话术'接地气。",
+   "unknowns": [
+    "老板在场时间未知"
+   ],
+   "protected_expressions": [
+    "先摆聊天记录还是先摆收据"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构价目表单价明细",
+    "不得承诺谈判必然成功"
+   ]
+  },
+  "E116_T06": {
+   "case_id": "E116_T06",
+   "current_action": "接住谈判结果：老板认账——承诺是离职销售给的，信用是店里的，季卡期内烧制费全免、记录复印件入档。先把胜利肯定足，再接她'证明自己没说谎还得自己攒证据'的憋屈——这是制度性的别扭，不是她输了。",
+   "acceptable_actions": [
+    "先恭喜：差价全免加凭证入档，是能拿到的最好结果",
+    "接住憋屈：让她把这页当'留痕习惯的第一次分红'",
+    "提醒她把入档的复印件也自己拍一份存着"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "attribution",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A15",
+     "subject": "THIRD",
+     "relation": "owner_resolution",
+     "value": "老板裁定季卡期内烧制费全免，承诺记入会员档案",
+     "valid_time": "2026-10-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T06",
+      "message_id": "m0",
+      "quote": "我的季卡期内烧制费全免"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A16",
+     "subject": "THIRD",
+     "relation": "sales_departed",
+     "value": "涉事销售9月底已离职，责任由店铺信用承接",
+     "valid_time": "2026-10-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T06",
+      "message_id": "m0",
+      "quote": "销售9月底离职了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A17",
+     "subject": "SHARED",
+     "relation": "fee_conflict_resolved",
+     "value": "'全包'与烧制费另收的口径冲突以期内全免落定",
+     "valid_time": "2026-09-24/2026-10-21",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T03",
+      "message_id": "m0",
+      "quote": "让我扫码付'釉烧费，30一件'"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'憋屈'要接得实在——她赢的是账，别扭的是制度，两句话分开说。",
+   "unknowns": [
+    "9折券的使用期限未知"
+   ],
+   "protected_expressions": [
+    "证明自己没说谎，还得自己攒证据"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构老板的更多表态",
+    "不得断言此后永不收费争议"
+   ]
+  },
+  "E116_T07": {
+   "case_id": "E116_T07",
+   "current_action": "接住她的两难：9折续卡诱惑与小蝶催办并存。肯定她'这次不替她拍板'的转变，给交底的话术骨架——把'我听来的'和'人家挂的'分开说，判断权交还小蝶。",
+   "acceptable_actions": [
+    "肯定她不再代拍板的自觉，给交底三句话：听来的、挂着的、算总价的",
+    "提醒她9折券是挽留手段，别因为券动摇对口径的判断",
+    "建议她把烧制费口径如实转给小蝶，让小蝶算总价"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A18",
+     "subject": "THIRD",
+     "relation": "renewal_discount",
+     "value": "老板赠她续卡9折券以挽留",
+     "valid_time": "2026-10-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T07",
+      "message_id": "m0",
+      "quote": "塞我一张续卡9折券"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A19",
+     "subject": "HER",
+     "relation": "no_more_deciding_for_others",
+     "value": "她决定不再替小蝶拍板办卡",
+     "valid_time": "2026-10-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T07",
+      "message_id": "m0",
+      "quote": "这次我不替她拍板了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A20",
+     "subject": "SHARED",
+     "relation": "trust_shaken",
+     "value": "'全包'变'看着办'让她对工作室口径不再踏实",
+     "valid_time": "2026-10-17/2026-10-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T03",
+      "message_id": "m0",
+      "quote": "当初销售小妹亲口说的全包"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'两头为难'要接住，把'不替她拍板'点成她这周的进步。",
+   "unknowns": [
+    "小蝶的预算上限未知"
+   ],
+   "protected_expressions": [
+    "这次我不替她拍板了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她决定是否续卡",
+    "不得虚构9折券面额"
+   ]
+  },
+  "E116_T08": {
+   "case_id": "E116_T08",
+   "current_action": "确认交底完成：小蝶自带计算器按总价算后自主办卡。把她'安利翻车最怕坑朋友'的石头接住——如实交底之后，朋友的决定就不再背她的账。",
+   "acceptable_actions": [
+    "肯定小蝶带计算器是行家做法，双向都体面",
+    "把'石头落了'说成她学会的边界：安利给信息，不给担保",
+    "提醒她别再为小蝶的决定反复揪心"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A21",
+     "subject": "THIRD",
+     "relation": "xiaodie_informed_signup",
+     "value": "小蝶获如实交底后按总价自算并办卡",
+     "valid_time": "2026-10-25/2026-10-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T08",
+      "message_id": "m0",
+      "quote": "小蝶说'那我按总价算，能接受就办'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A22",
+     "subject": "HER",
+     "relation": "endorsement_liability_released",
+     "value": "她通过如实交底卸下二次安利的连带责任",
+     "valid_time": "2026-10-23/2026-10-26",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T07",
+      "message_id": "m0",
+      "quote": "这次我不替她拍板了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'自己带的计算器'这个细节要笑出来，它说明交底到位。",
+   "unknowns": [],
+   "protected_expressions": [
+    "安利翻车最怕的就是坑朋友"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小蝶的办卡金额",
+    "不得断言小蝶此后不会遇到收费争议"
+   ]
+  },
+  "E116_T09": {
+   "case_id": "E116_T09",
+   "current_action": "共享出窑的献宝时刻：裂纹杯出窑、不上架让她白拿、命名'竹里的裂纹杯'。把裂纹接成勋章不是次品——这场纠纷换来的第一件实物，值得正名。",
+   "acceptable_actions": [
+    "把'裂纹'接成这杯子的出处证明，不叫次品叫孤品",
+    "肯定'白拿'是老板给这场纠纷补的人情",
+    "让她拍个杯底特写，手艺进步有据可查"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A23",
+     "subject": "SHARED",
+     "relation": "cracked_cup_delivered",
+     "value": "裂纹杯出窑并被命名'竹里的裂纹杯'归ME",
+     "valid_time": "2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T09",
+      "message_id": "m0",
+      "quote": "叫'竹里的裂纹杯'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A24",
+     "subject": "THIRD",
+     "relation": "owner_goodwill",
+     "value": "老板以裂纹杯不上架白拿的方式补了人情",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T09",
+      "message_id": "m0",
+      "quote": "带裂纹的不上架，让我白拿"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'歪是歪了点'要接成'歪得有手作味'，献宝要接得郑重。",
+   "unknowns": [
+    "杯子是否漏水未验证"
+   ],
+   "protected_expressions": [
+    "歪是歪了点，喝水没毛病"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构烧制温度与工艺细节",
+    "不得断言裂纹不影响使用"
+   ]
+  },
+  "E116_T10": {
+   "case_id": "E116_T10",
+   "current_action": "接住交接之约与轻威胁的俏皮：周六咖啡店交杯、'敢嫌弃就刮了重烧'。笑纳并确认时间，顺带肯定她转投社区教室的衔接——80一节全包正是她比价谈判时就已经看好的路径。",
+   "acceptable_actions": [
+    "确认周六咖啡店赴约，承诺把杯子当传家宝用",
+    "接'刮了重烧'的梗，说要把裂纹当防伪标",
+    "肯定社区教室的选择，全包价让她烧得踏实"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A25",
+     "subject": "SHARED",
+     "relation": "handover_appointment",
+     "value": "双方约周六下午老地方咖啡店交接裂纹杯",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T10",
+      "message_id": "m0",
+      "quote": "周六下午老地方咖啡店，杯子给你带过去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A26",
+     "subject": "HER",
+     "relation": "community_class_signup",
+     "value": "她已报名社区教室，每节80元全包",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T10",
+      "message_id": "m0",
+      "quote": "80一节全包还管茶水"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A27",
+     "subject": "SHARED",
+     "relation": "alternative_fulfilled",
+     "value": "社区教室的选择兑现了谈判期就备好的比价路径",
+     "valid_time": "2026-10-19/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T05",
+      "message_id": "m0",
+      "quote": "隔壁社区教室80一节还全包"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'刮了重烧'的威胁要接得夸张，接梗是这次的主任务。",
+   "unknowns": [
+    "T10 周日说“周六下午老地方”指 11-14，口语微歧义，评审从宽"
+   ],
+   "protected_expressions": [
+    "我就把你名字刮了重烧"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构咖啡店细节",
+    "不得断言社区教室名额充足"
+   ]
+  },
+  "E116_T11": {
+   "case_id": "E116_T11",
+   "current_action": "共享双轨运转的稳态：老师傅手把手、小蝶把烧制费心算进成本反而踏实、三人各烧各的。把'小蝶踏实'接住——如实交底的余温，说明当初没瞒是对的。",
+   "acceptable_actions": [
+    "问杯子手感，把交杯的后续接住",
+    "肯定小蝶'算进成本反而踏实'，这就是交底的价值",
+    "调侃'一个南一个北各烧各的'，约个作品互评"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A28",
+     "subject": "THIRD",
+     "relation": "xiaodie_at_ease",
+     "value": "小蝶把烧制费心算进成本后心态平稳开烧",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T11",
+      "message_id": "m0",
+      "quote": "她说烧制费心算进成本反而踏实"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A29",
+     "subject": "SHARED",
+     "relation": "handover_completed",
+     "value": "裂纹杯已按约完成交接",
+     "valid_time": "2026-11-08/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T10",
+      "message_id": "m0",
+      "quote": "杯子给你带过去"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'各烧各的'要接得有烟火气，别把它说成疏远。",
+   "unknowns": [],
+   "protected_expressions": [
+    "咱仨现在一个南一个北各烧各的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构老师傅的教学细节",
+    "不得断言工作室与社区教室优劣"
+   ]
+  },
+  "E116_T12": {
+   "case_id": "E116_T12",
+   "current_action": "接住茶盘长期工程的立项：配裂纹杯、社区教室全包不另收钱。把'裂纹杯别退休'的叮嘱接住，给这份手艺的长期主义收个尾——钱的事她如今门儿清，手艺的事慢慢来。",
+   "acceptable_actions": [
+    "接下茶盘工程立项，承诺裂纹杯候位不退休",
+    "肯定'全包不另收钱'这句现在说得多有底气",
+    "把这场从纠纷到手艺的两个月收成一句：账清了，手艺才刚开始"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E116_A30",
+     "subject": "HER",
+     "relation": "tea_tray_project",
+     "value": "她立项烧茶盘配套裂纹杯，作长期作品",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T12",
+      "message_id": "m0",
+      "quote": "下个作品我想烧个茶盘"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E116_A31",
+     "subject": "SHARED",
+     "relation": "cup_recurring",
+     "value": "裂纹杯被定为茶盘工程的常驻搭配道具",
+     "valid_time": "2026-11-02/2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E116_T09",
+      "message_id": "m0",
+      "quote": "叫'竹里的裂纹杯'"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要轻要长线，'你等着'回一句'我等着，不催'即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "等烧成那天，裂纹杯别退休"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构茶盘工期",
+    "不得引入新的消费决策"
+   ]
+  }
+ }
+}

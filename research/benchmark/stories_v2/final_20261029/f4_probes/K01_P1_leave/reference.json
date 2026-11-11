@@ -1,0 +1,53 @@
+{
+ "story_id": "K01",
+ "turns": {
+  "K01_P1_leave": {
+   "case_id": "K01_P1_leave",
+   "current_action": "她问年假最后到几号。已确认年假到16号，17号要值班上班；回答应给16号、17号上班。",
+   "acceptable_actions": [
+    "说年假到16号，17号上班",
+    "确认16号结束，17号值班"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_P1_a1",
+     "subject": "her",
+     "relation": "leave_final",
+     "value": "年假到16号，17号要上班",
+     "valid_time": "2026-11-16",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T15",
+      "message_id": "m1",
+      "quote": "批了13到16 之前说15是记错了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "正确回指16号结束、17号上班；不要复活更早的13到17。",
+   "unknowns": [],
+   "protected_expressions": [
+    "批了13到16 之前说15是记错了"
+   ],
+   "forbidden_factual_claims": [
+    "说年假到17号",
+    "说17号不用上班"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "她问年假最后到几号。已确认年假到16号，17号要值班上班；回答应给16号、17号上班。",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

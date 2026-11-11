@@ -1,0 +1,21 @@
+{
+ "case_id": "FIX_allow",
+ "turn_type": "may_decline",
+ "input": {
+  "clock": "2026-10-24 12:30",
+  "messages": [
+   {
+    "role": "HER",
+    "text": "不聊了 我去看剧了",
+    "ts": "2026-10-24 12:28"
+   },
+   {
+    "role": "HER",
+    "text": "拜拜",
+    "ts": "2026-10-24 12:30"
+   }
+  ],
+  "may_decline": true
+ },
+ "gold": {}
+}

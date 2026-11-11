@@ -1,0 +1,914 @@
+{
+ "story_id": "E091",
+ "turns": {
+  "E091_T01": {
+   "case_id": "E091_T01",
+   "current_action": "接住她的小激动，肯定她主动把记账订场担下来；垫一句建议：预交的钱单独放，别和自己的钱混一个账户。",
+   "acceptable_actions": [
+    "夸方案排得干脆，提醒她把收款截止和订场付款的时间差留出来",
+    "建议她建一张收支流水表，从第一天就记，别攒着补",
+    "接住小激动，问她柴火鸡几口锅，把话题往活动本身引"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A01",
+     "subject": "SHARED",
+     "relation": "team_building_plan",
+     "value": "部门团建定于11月14日周六，近郊山月农家院柴火鸡加民宿",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T01",
+      "message_id": "m0",
+      "quote": "11月14号周六，近郊山月农家院"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A02",
+     "subject": "SHARED",
+     "relation": "aa_rule_set",
+     "value": "团建AA规矩定为每人预交300，明晚6点截止",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T01",
+      "message_id": "m0",
+      "quote": "每人预交300，明晚6点截止"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A03",
+     "subject": "HER",
+     "relation": "role_taken",
+     "value": "她负责本次团建的记账与订场",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T01",
+      "message_id": "m0",
+      "quote": "我来记账订场"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'单独放钱'说成省心的习惯，不是防备同事。",
+   "unknowns": [
+    "报名人数尚未收齐",
+    "农家院能否容纳未知"
+   ],
+   "protected_expressions": [
+    "就等收钱了，有点小激动"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构农家院的报价",
+    "不得预判收钱顺利与否"
+   ]
+  },
+  "E091_T02": {
+   "case_id": "E091_T02",
+   "current_action": "接住老贺的一份钱要求：规矩写的是家属按人头，口子不能开；肯定她的犹豫不是软弱，先把'规矩'和'不近人情'分开说。",
+   "acceptable_actions": [
+    "明确口子不能开，一家四口是四份体验就该四份钱",
+    "建议她私下把预算表发给老贺看，让数字说话",
+    "提醒她回复时带一句欢迎家属，规矩和热情分开表达"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A04",
+     "subject": "THIRD",
+     "relation": "lao_he_demand",
+     "value": "老贺要求带全家四口仅按一份300交费",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T02",
+      "message_id": "m0",
+      "quote": "一家四口交一份300"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A05",
+     "subject": "SHARED",
+     "relation": "family_headcount_rule",
+     "value": "她定的规矩包含家属按人头交费一项",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T02",
+      "message_id": "m0",
+      "quote": "家属按人头"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'守规矩'说成对其他13个人的公平，不是针对老贺。",
+   "unknowns": [
+    "老贺的真实顾虑未知",
+    "其他同事会否观望未知"
+   ],
+   "protected_expressions": [
+    "这口子能不能开"
+   ],
+   "forbidden_factual_claims": [
+    "不得替老贺定性为占便宜",
+    "不得断言他必然闹到群里"
+   ]
+  },
+  "E091_T03": {
+   "case_id": "E091_T03",
+   "current_action": "接住私聊被截进小群带节奏：先接住她脸挂不住的委屈，再把这事定性为压力而不是侮辱——被议论不等于她错了。",
+   "acceptable_actions": [
+    "肯定她按人头报价没错，被截图带走节奏是她守规矩的代价",
+    "建议她不在小群回击，把预算算给全部门看更有效",
+    "提醒她盯住效仿苗头，比盯住老贺的话更要紧"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "attribution",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A06",
+     "subject": "THIRD",
+     "relation": "quote_rejected",
+     "value": "老贺拒绝四口1200的按人头报价",
+     "valid_time": "2026-11-07",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T03",
+      "message_id": "m0",
+      "quote": "阿真你这就见外了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A07",
+     "subject": "THIRD",
+     "relation": "private_made_public",
+     "value": "老贺把私聊记录发到小群并称团建成了收钱",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T03",
+      "message_id": "m0",
+      "quote": "团建办着办着就成了收钱"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A08",
+     "subject": "HER",
+     "relation": "imitation_worry",
+     "value": "她担心其他同事效仿少交钱",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T03",
+      "message_id": "m0",
+      "quote": "更怕别的同事学样"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接委屈再讲策略，别让她觉得受气是活该。",
+   "unknowns": [
+    "小群里其他人的反应未知"
+   ],
+   "protected_expressions": [
+    "脸有点挂不住"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小群里的其他发言",
+    "不得替老贺动机下结论"
+   ]
+  },
+  "E091_T04": {
+   "case_id": "E091_T04",
+   "current_action": "接住效仿苗头与踢人两难：给她中间道路——不踢人、不松口，把预算公示成全部门的账，让规矩自己站住。",
+   "acceptable_actions": [
+    "建议她出预算公示表，把'收钱'变成'花钱在明处'",
+    "提醒她回复新人时统一口径：按人头，没有例外",
+    "劝她别把老贺踢出名单，留在规矩里比赶出去有力"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A09",
+     "subject": "THIRD",
+     "relation": "imitation_emerged",
+     "value": "有新人同事试探少交钱的可能",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T04",
+      "message_id": "m0",
+      "quote": "要不我们也少交点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A10",
+     "subject": "HER",
+     "relation": "rule_firm",
+     "value": "她认定口子开一条规矩就全糊",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T04",
+      "message_id": "m0",
+      "quote": "口子开一条规矩就全糊了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A11",
+     "subject": "THIRD",
+     "relation": "pressure_context",
+     "value": "效仿苗头源于老贺小群带节奏的施压",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T03",
+      "message_id": "m0",
+      "quote": "团建办着办着就成了收钱"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'公示'说成她记账本事的舞台，不是防御工事。",
+   "unknowns": [
+    "老贺是否会按规矩交钱未知"
+   ],
+   "protected_expressions": [
+    "划界的话怎么说不伤人"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言公示必然让老贺低头",
+    "不得替新人同事定性"
+   ]
+  },
+  "E091_T05": {
+   "case_id": "E091_T05",
+   "current_action": "接住群公告发出：预算公示、家属按人头、逾期视同退出三条一起立；肯定她手心出汗还是发了，这步就是边界落地。",
+   "acceptable_actions": [
+    "肯定公告写得干净利落，三条规矩一次说全",
+    "提醒她截止时间前别追问老贺，让规矩自己施压",
+    "建议她把公示表同步私发领导一份，留个知情"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A12",
+     "subject": "SHARED",
+     "relation": "budget_published",
+     "value": "预算公示表发布：场地、菜金、民宿人均逐项列明",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T05",
+      "message_id": "m0",
+      "quote": "预算公示表贴出来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A13",
+     "subject": "SHARED",
+     "relation": "deadline_rule",
+     "value": "截止规则发布：明晚6点逾期不交视同退出",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T05",
+      "message_id": "m0",
+      "quote": "逾期不交视同退出"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A14",
+     "subject": "THIRD",
+     "relation": "lao_he_silent",
+     "value": "公告发出后老贺暂未回应",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T05",
+      "message_id": "m0",
+      "quote": "老贺到现在没吭声"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把出汗的紧张说成正常，规矩立住后紧张会自己退。",
+   "unknowns": [
+    "截止前老贺的动向未知",
+    "T05 公告“明晚6点截止”相对 T01 原截止顺延一天，公告本身即承接动作，评审按 time_state 从宽"
+   ],
+   "protected_expressions": [
+    "发完手心全是汗"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构公示表的具体数字",
+    "不得预判老贺必然补交"
+   ]
+  },
+  "E091_T06": {
+   "case_id": "E091_T06",
+   "current_action": "接住老贺补交四份与'账要对明白'的附加条件：规矩赢了，对账要求照单全收——本来就该晒账，这是他给的下台阶也是她的机会。",
+   "acceptable_actions": [
+    "肯定她顶住了，规矩立住比吵赢一百句管用",
+    "建议她把'晒账'承诺做成动作：对完账第一时间公示",
+    "提醒她别翻旧账提小群那茬，往前走"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A15",
+     "subject": "THIRD",
+     "relation": "lao_he_paid_full",
+     "value": "老贺按人头补齐全家四份费用",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T06",
+      "message_id": "m0",
+      "quote": "老贺早上交了四份"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A16",
+     "subject": "THIRD",
+     "relation": "audit_demand",
+     "value": "老贺附条件要求账目对得明明白白",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T06",
+      "message_id": "m0",
+      "quote": "账你得对得明明白白"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A17",
+     "subject": "SHARED",
+     "relation": "roster_locked",
+     "value": "名单锁定：14名同事加3名家属共17份",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T06",
+      "message_id": "m0",
+      "quote": "14个人加3个家属，17份"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A18",
+     "subject": "THIRD",
+     "relation": "pressure_resolved",
+     "value": "老贺此前拒绝按人头并带节奏的僵持以补交告终",
+     "valid_time": "2026-11-06/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T03",
+      "message_id": "m0",
+      "quote": "团建办着办着就成了收钱"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'服软'两个字轻描淡写，重点放在规矩立住了。",
+   "unknowns": [
+    "团建当天是否顺利未知"
+   ],
+   "protected_expressions": [
+    "这下人都齐了"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言老贺心里服气",
+    "不得虚构老贺的原话细节"
+   ]
+  },
+  "E091_T07": {
+   "case_id": "E091_T07",
+   "current_action": "接住账本底稿自查：预收5100、定金支出1800、个人分文未动；帮她把预收与支出两栏分开，把'对明白'的承诺提前兑现一半。",
+   "acceptable_actions": [
+    "建议她把预收款与支出分成两张表，对账时一目了然",
+    "提醒她每笔支出留凭证，截图和小票按日期归档",
+    "肯定她卡里公款私款分明的习惯，这是最大的漏洞补丁"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A19",
+     "subject": "SHARED",
+     "relation": "cash_flow_draft",
+     "value": "账本底稿：预收款5100元，预订定金支出1800元",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T07",
+      "message_id": "m0",
+      "quote": "预收款5100，减预订定金1800"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A20",
+     "subject": "HER",
+     "relation": "no_personal_mix",
+     "value": "团建款项未与个人卡资金混用",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T07",
+      "message_id": "m0",
+      "quote": "卡里的钱我一笔没动"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A21",
+     "subject": "THIRD",
+     "relation": "audit_demand_active",
+     "value": "老贺的对账要求仍是她自查的标准",
+     "valid_time": "2026-11-08/2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T06",
+      "message_id": "m0",
+      "quote": "账你得对得明明白白"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把自查说成她的职业本能，不提老贺的名字压阵。",
+   "unknowns": [
+    "最终实际支出未知"
+   ],
+   "protected_expressions": [
+    "你帮我瞅瞅还有啥漏洞"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构具体金额之外的账目",
+    "不得断言账目必然毫无差错"
+   ]
+  },
+  "E091_T08": {
+   "case_id": "E091_T08",
+   "current_action": "共享团建落成与前嫌冰释：老贺当众认可账目并敬酒；把这句'比会计还细'定性为规矩立住后的自然回报。",
+   "acceptable_actions": [
+    "恭喜团建圆满，肯定她从公告到落成一锤子一锤子敲下来的",
+    "接住敬酒的场面，点一句'当面认可比群里道歉值钱'",
+    "提醒她周一出总账时兑现'晒账'承诺，把这事收圆"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A22",
+     "subject": "THIRD",
+     "relation": "public_praise",
+     "value": "老贺当众称赞她的账记得比会计还细",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T08",
+      "message_id": "m0",
+      "quote": "这账记得比会计还细"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A23",
+     "subject": "SHARED",
+     "relation": "event_done",
+     "value": "团建聚餐柴火鸡如期开席",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T08",
+      "message_id": "m0",
+      "quote": "柴火鸡吃上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A24",
+     "subject": "THIRD",
+     "relation": "audit_demand_context",
+     "value": "老贺的当面认可呼应了他此前对账的要求",
+     "valid_time": "2026-11-08/2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T06",
+      "message_id": "m0",
+      "quote": "算我服软"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把和解说成双方各退半步，不居功也不让她居功过头。",
+   "unknowns": [
+    "总账数字未知"
+   ],
+   "protected_expressions": [
+    "还敬了我一杯"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构酒桌上的其他对话",
+    "不得断言两人此后再无龃龉"
+   ]
+  },
+  "E091_T09": {
+   "case_id": "E091_T09",
+   "current_action": "共享多退少补闭环：人均268、一人退32、老贺家退128、原路退回明细进群；把'下回还让阿真管账'点成她这三年零差账的续章。",
+   "acceptable_actions": [
+    "肯定总账出得漂亮，多退的32块比省下的功夫值口碑",
+    "建议她把公示截图存档，下次收钱直接当模板",
+    "接住'下回'的感慨，问她累不累，把人从账本里捞出来"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A25",
+     "subject": "SHARED",
+     "relation": "refund_executed",
+     "value": "实际人均268元，每人退32元，老贺家退128元并原路到账",
+     "valid_time": "2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T09",
+      "message_id": "m0",
+      "quote": "实际人均268，一人退32，老贺家退128"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A26",
+     "subject": "SHARED",
+     "relation": "records_published",
+     "value": "退款项与明细全部公示进群",
+     "valid_time": "2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T09",
+      "message_id": "m0",
+      "quote": "明细全部进群"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A27",
+     "subject": "SHARED",
+     "relation": "audit_demand_fulfilled",
+     "value": "老贺'对明白'的要求随总账公示兑现",
+     "valid_time": "2026-11-08/2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T06",
+      "message_id": "m0",
+      "quote": "账你得对得明明白白"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把退款说成规矩的尾巴收得漂亮，别煽情。",
+   "unknowns": [],
+   "protected_expressions": [
+    "心里还挺熨帖"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构退款到账时间差异",
+    "不得断言此后无人再质疑账目"
+   ]
+  },
+  "E091_T10": {
+   "case_id": "E091_T10",
+   "current_action": "面对领导'结余放你卡里'的提议：明确支持她的第一反应——公款不过私卡；给台阶式回法：钱退干净，规矩留下，人手随叫随到。",
+   "acceptable_actions": [
+    "建议她回'结余按人头原路退完，下次收钱我还管'",
+    "提醒她截图归档是给领导的交代，也是给自己的清白",
+    "劝她别当面硬顶，用流程代替拒绝最体面"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "attribution",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A28",
+     "subject": "THIRD",
+     "relation": "leader_proposal",
+     "value": "领导提议团建结余先存她卡内下次活动使用",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T10",
+      "message_id": "m0",
+      "quote": "不如先放我卡里"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A29",
+     "subject": "HER",
+     "relation": "boundary_instinct",
+     "value": "她的第一反应是公款不能趴自己卡上",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T10",
+      "message_id": "m0",
+      "quote": "公款不能趴我卡上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A30",
+     "subject": "SHARED",
+     "relation": "refund_context",
+     "value": "结余退还在前，领导的提议紧随其后",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T09",
+      "message_id": "m0",
+      "quote": "退款项今天原路到账"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'守边界'说成护她的清白名声，不上升成原则之争。",
+   "unknowns": [
+    "领导的真实用意未知",
+    "结余总额未知"
+   ],
+   "protected_expressions": [
+    "你说这话怎么回"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她猜测领导动机",
+    "不得断言留存卡内合规或不合规"
+   ]
+  },
+  "E091_T11": {
+   "case_id": "E091_T11",
+   "current_action": "接住边界守住的结果：结余退完、截图归档、'卡里不存公款'说出口、领导回'你办事我放心'；把这句认可定性为比结余值钱的资产。",
+   "acceptable_actions": [
+    "肯定她话术用得稳，边界守住了关系也没伤",
+    "建议她把归档截图存进固定文件夹，形成惯例",
+    "接住'比结余值钱'的感慨，点一句信任是这么攒出来的"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A31",
+     "subject": "SHARED",
+     "relation": "boundary_held",
+     "value": "她以结余退还归档、卡里不存公款回绝留存提议",
+     "valid_time": "2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T11",
+      "message_id": "m0",
+      "quote": "卡里不存公款"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A32",
+     "subject": "THIRD",
+     "relation": "leader_trust",
+     "value": "领导以'你办事我放心'回应她的边界",
+     "valid_time": "2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T11",
+      "message_id": "m0",
+      "quote": "行，你办事我放心"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A33",
+     "subject": "THIRD",
+     "relation": "leader_proposal_context",
+     "value": "领导提议结余留存之事就此了结",
+     "valid_time": "2026-11-16/2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T10",
+      "message_id": "m0",
+      "quote": "不如先放我卡里"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把领导的认可说成边界守信的利息，不是运气。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这句话比结余值钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构归档的具体内容",
+    "不得断言领导此后再无类似提议"
+   ]
+  },
+  "E091_T12": {
+   "case_id": "E091_T12",
+   "current_action": "笑纳老贺的约饭致歉与请教：建议她去，头一句接'这顿我买单我不客气'，把教报名的事当茶余饭后的顺水人情。",
+   "acceptable_actions": [
+    "建议她赴约，头一句接'行啊，这顿我可不跟你抢着付'",
+    "提醒她请教归请教，规矩还是那套，教了别开口子",
+    "把约饭定性为这一仗的最后一笔进账，利落收尾"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E091_A34",
+     "subject": "THIRD",
+     "relation": "lao_he_apology_lunch",
+     "value": "老贺约中午吃饭致歉并请教家属报名事宜",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T12",
+      "message_id": "m0",
+      "quote": "上回是我上头了，这顿我请"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A35",
+     "subject": "THIRD",
+     "relation": "consult_request",
+     "value": "老贺想了解下次带家属如何报名不显得占便宜",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T12",
+      "message_id": "m0",
+      "quote": "下次带家属怎么报名不显得占便宜"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E091_A36",
+     "subject": "THIRD",
+     "relation": "lao_he_arc_callback",
+     "value": "从带节奏到补交再到致歉请教的老贺全弧线",
+     "valid_time": "2026-11-06/2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E091_T06",
+      "message_id": "m0",
+      "quote": "算我服软"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把约饭说成和解的句号，别翻旧账。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你说我去不去"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构饭局谈话内容",
+    "不得引入新的团建议题"
+   ]
+  }
+ }
+}

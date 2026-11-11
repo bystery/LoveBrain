@@ -1,0 +1,798 @@
+{
+ "story_id": "E329",
+ "turns": {
+  "E329_T01": {
+   "case_id": "E329_T01",
+   "current_action": "阮清约定：周三（11-18）至周五（11-20）出差三天，托高澈喂橘猫汤圆，按老规矩猫粮一次半碗、早晚各一次",
+   "acceptable_actions": [
+    "应下三天喂猫并复述老规矩",
+    "应下并问钥匙口粮位置怎么给",
+    "应下并说自己下班顺路先去一趟"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T01_A01",
+     "subject": "HER",
+     "relation": "出差日程",
+     "value": "阮清11月18日（周三）出差走、11月20日（周五）回，共三天",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T01",
+      "quote": "我这周三到周五出差，11月18号（周三）走，11月20号（周五）回",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T01_A02",
+     "subject": "SHARED",
+     "relation": "托猫托付",
+     "value": "出差三天期间汤圆托高澈照看",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T01",
+      "quote": "汤圆这三天拜托你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T01_A03",
+     "subject": "SHARED",
+     "relation": "喂食口径（旧）",
+     "value": "老规矩：猫粮一次半碗，早晚各一次（此口径后被11-21新口径取代）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T01",
+      "quote": "猫粮一次半碗，早晚各一次，老规矩",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "喂食口径链第1步：'一次半碗早晚各一次'是本轮最新口径；lessons 明示'以她最近一次说的为准'——后续 T03/T11 会演进，回话别把旧口径咬死成永久。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动出差日期或天数",
+    "不得编造喂食以外的托付内容"
+   ],
+   "may_decline": false
+  },
+  "E329_T02": {
+   "case_id": "E329_T02",
+   "current_action": "阮清再交代一遍钥匙与口粮位置：备用钥匙在家门外地垫下磁盒，猫粮在阳台白色桶、冻干罐在白桶旁边（intent：交代取钥匙与猫粮位置）",
+   "acceptable_actions": [
+    "复述三处位置确认记牢",
+    "确认并说自己今天先去踩个点",
+    "确认并问磁盒钥匙是不是上次那把"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T02_A01",
+     "subject": "SHARED",
+     "relation": "钥匙位置",
+     "value": "备用钥匙在阮清家门外地垫下的磁盒里",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T02",
+      "quote": "备用钥匙在我家门外地垫下的磁盒里",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T02_A02",
+     "subject": "SHARED",
+     "relation": "口粮位置",
+     "value": "猫粮在阳台白色桶里，冻干罐就在白桶旁边",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T02",
+      "quote": "猫粮在阳台白色桶里，冻干罐就在白桶旁边",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 轮：位置类信息复述确认最稳，地点别串（钥匙=门外垫下，猫粮=阳台白桶）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把钥匙位置说成鞋柜铁盒（那是高澈自家的）",
+    "不得改动三处位置中的任何一处"
+   ],
+   "may_decline": false
+  },
+  "E329_T03": {
+   "case_id": "E329_T03",
+   "current_action": "阮清补充喂食细节：汤圆只吃冻干拌粮、冻干一次拌一小把（多了剩饭），冻干罐用完扣紧防潮",
+   "acceptable_actions": [
+    "复述'冻干一小把'口径确认",
+    "确认并说罐子用完会扣紧",
+    "确认并玩笑'它还挺挑'"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T03_A01",
+     "subject": "SHARED",
+     "relation": "冻干口径",
+     "value": "汤圆只吃冻干拌粮，冻干一次拌一小把就够、多了剩饭（此口径后被11-21新口径取代）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T03",
+      "quote": "汤圆只吃冻干拌粮，一次拌一小把就够，多了它就剩饭",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T03_A02",
+     "subject": "SHARED",
+     "relation": "保存要求",
+     "value": "冻干罐开盖易受潮，用完要扣紧",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T03",
+      "quote": "冻干罐开盖容易受潮，用完记得扣紧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "喂食口径链第2步：T03 冻干'一次一小把（每天拌）'是对 T01 的补充收紧，此时半碗口径未被显式撤销——T11 才全面改。回复认下即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把冻干量复述成一大把",
+    "不得编造其他喂食禁忌"
+   ],
+   "may_decline": false
+  },
+  "E329_T04": {
+   "case_id": "E329_T04",
+   "current_action": "阮清出发（高铁8:40），嘱今天傍晚喂第一顿、钥匙用完码回磁盒原位",
+   "acceptable_actions": [
+    "应下傍晚第一顿并说路上顺利",
+    "应下并说钥匙用完原位放回",
+    "应下并说今晚喂完报个平安"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T04_A01",
+     "subject": "HER",
+     "relation": "出发确认",
+     "value": "阮清已出发，高铁8:40的车",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T04",
+      "quote": "我出发啦，高铁八点四十的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T04_A02",
+     "subject": "SHARED",
+     "relation": "第一顿时间",
+     "value": "今天（2026-11-18）傍晚喂第一顿",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T04",
+      "quote": "今天傍晚你先去喂第一顿",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T04_A03",
+     "subject": "SHARED",
+     "relation": "钥匙归位",
+     "value": "钥匙用地垫下磁盒、用完码回原位",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T04",
+      "quote": "钥匙记得地垫下的磁盒，用完码回原位就行",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "送行语气轻快即可；'第一顿=傍晚'是本轮要接住的时间锚。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把第一顿改到中午",
+    "不得说钥匙会带回自己家"
+   ],
+   "may_decline": false
+  },
+  "E329_T05": {
+   "case_id": "E329_T05",
+   "current_action": "阮清到酒店，交代汤圆习性：认生、躲床底别硬拽，倒好粮水退出门、过十分钟它自己出来吃（可轻收）",
+   "acceptable_actions": [
+    "轻收'收到，不动它'",
+    "接住并说倒好粮水就退出来等",
+    "顺她一句'想得真细'再收"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T05_A01",
+     "subject": "SHARED",
+     "relation": "猫习性应对",
+     "value": "汤圆认生：躲床底别硬拽，倒好粮水退出门、约十分钟后它自己出来吃",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T05",
+      "quote": "汤圆认生，你进去它要是躲床底，别硬拽，倒好粮水退出门就行，过十分钟它自己出来吃",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true，她已说'折腾一天'，回复宜短；喂猫操作要点（别硬拽）接住即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称会硬拽猫或长时间逗留",
+    "不得编造汤圆已出来吃饭的说法"
+   ],
+   "may_decline": true
+  },
+  "E329_T06": {
+   "case_id": "E329_T06",
+   "current_action": "阮清中午想起：①冻干那小把是不是也该减？②上个月体检兽医说汤圆超重——嘱拌的时候悠着点、宁少勿多",
+   "acceptable_actions": [
+    "认下'宁少勿多'口径并说会照办",
+    "接兽医超重的话头并说这三天按减着喂",
+    "问体检单要不要发来对照一下量"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T06_A01",
+     "subject": "THIRD",
+     "relation": "兽医超重结论",
+     "value": "汤圆上个月体检、兽医说超重了（建议控制饮食）",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T06",
+      "quote": "它上个月体检兽医说超重了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T06_A02",
+     "subject": "HER",
+     "relation": "减量提议",
+     "value": "阮清提议冻干小把或该再减、总原则宁少勿多（自我收紧，未定具体数值）",
+     "valid_time": "2026-11-19",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T06",
+      "quote": "第一，冻干那小把是不是也该减？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 佐证：上月体检单照片显示体重6.2公斤、兽医建议控制饮食（候选可见，不进原子 quote）。她的'是不是也该减'是征询式收紧，回应认可即可，别替她定新数值——数值要到 T11 才定。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她拍板新的喂食数值",
+    "不得否认兽医超重结论"
+   ],
+   "may_decline": false
+  },
+  "E329_T07": {
+   "case_id": "E329_T07",
+   "current_action": "阮清汇报完累瘫，确认明天是出差最后一天、明晚到家带特产，明说'不用回我'（可轻收）",
+   "acceptable_actions": [
+    "不回或极简表情/一个'好'字",
+    "极简'嗯，等你回来'",
+    "顺特产问一句想喝的茶叶带不带"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T07_A01",
+     "subject": "HER",
+     "relation": "出差收尾核对",
+     "value": "出差11月20日（周五）结束——她说'明天是最后一天'与既定日程一致（11-19当晚）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T01",
+      "quote": "11月20号（周五）回",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T07_A02",
+     "subject": "HER",
+     "relation": "特产承诺",
+     "value": "阮清说明晚到家给高澈带特产",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T07",
+      "quote": "明晚到家给你带特产",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她明说'不用回我'且 may_decline=true——合法不回或极简收都合规；若回，日期口径=明天（11-20）最后一天，别算错天数。",
+   "unknowns": [],
+   "protected_expressions": [
+    "不用回我"
+   ],
+   "forbidden_factual_claims": [
+    "不得把最后一天说成还有两天",
+    "不得编造特产内容"
+   ],
+   "may_decline": true
+  },
+  "E329_T08": {
+   "case_id": "E329_T08",
+   "current_action": "阮清落地直接回家，嘱高澈不用送钥匙、走时把钥匙放回地垫下磁盒跟原来一样（intent：交代钥匙放回与到家安排）",
+   "acceptable_actions": [
+    "确认放回磁盒原位",
+    "确认并报今天最后一顿已按口径喂完",
+    "确认并说汤圆一切正常、她到家正好接手"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T08_A01",
+     "subject": "SHARED",
+     "relation": "钥匙归还",
+     "value": "不用当面送钥匙，高澈走时把钥匙放回地垫下磁盒、跟原来一样",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T08",
+      "quote": "你走的时候把钥匙放回地垫下的磁盒就行，跟原来一样",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T08_A02",
+     "subject": "HER",
+     "relation": "到家确认",
+     "value": "阮清已落地、直接回家",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T08",
+      "quote": "我落地了，直接回家",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 轮：钥匙放回磁盒是本轮必答题；顺带交班喂食情况自然。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坚持当面交还钥匙",
+    "不得编造猫粮余量等未交代细节"
+   ],
+   "may_decline": false
+  },
+  "E329_T09": {
+   "case_id": "E329_T09",
+   "current_action": "阮清进门（汤圆蹲门口等），玩笑问这几天胖没胖、叮嘱别偷偷开小灶",
+   "acceptable_actions": [
+    "按口径答'宁少勿多、没加餐'",
+    "接玩笑'它倒想，我没给'",
+    "报这几天喂食情况并让她自己验货"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T09_A01",
+     "subject": "HER",
+     "relation": "到家实况",
+     "value": "阮清已进门，汤圆蹲门口等她",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T09",
+      "quote": "进门啦，汤圆蹲门口等我呢",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T09_A02",
+     "subject": "HER",
+     "relation": "开小灶玩笑",
+     "value": "阮清玩笑叮嘱'别偷偷给它开小灶'",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T09",
+      "quote": "你可别偷偷给它开小灶",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "玩笑底下有真口径：执行标准是 T06'宁少勿多'——回答应与口径一致，玩笑自嘲可以，认真承认加餐=口径违规。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得承认违反宁少勿多、加餐多喂",
+    "不得编造体重变化数据"
+   ],
+   "may_decline": false
+  },
+  "E329_T10": {
+   "case_id": "E329_T10",
+   "current_action": "阮清看猫是真没轻，说今天下午带它去宠物医院复查、顺便问冻干能不能彻底停",
+   "acceptable_actions": [
+    "认下复查并说等她的新口径",
+    "顺问复查完要不要同步体重数",
+    "轻收'去忙，等你消息'"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T10_A01",
+     "subject": "SHARED",
+     "relation": "复查计划",
+     "value": "今天（2026-11-21）下午带汤圆去宠物医院复查",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T10",
+      "quote": "今天下午带它去宠物医院复查",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T10_A02",
+     "subject": "HER",
+     "relation": "冻干去留疑问",
+     "value": "阮清打算问医生冻干能否彻底停（待医生裁决）",
+     "valid_time": "2026-11-21",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T10",
+      "quote": "顺便问问冻干能不能彻底停",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冻干去留由医生裁决（T11 落定=控制总量、隔天小半把）——本轮别替医生预判。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替医生预判冻干彻底停或不停",
+    "不得编造复查结果"
+   ],
+   "may_decline": false
+  },
+  "E329_T11": {
+   "case_id": "E329_T11",
+   "current_action": "阮清复查回来传达医生结论并宣布新口径：①猫粮一顿三分之一碗、早晚各一次；②冻干隔天一次、一次小半把——'以后就按这个来'（intent：更新喂猫新口径）",
+   "acceptable_actions": [
+    "复述新口径两要点确认记牢",
+    "确认新口径并问从今晚开始算不算",
+    "确认并顺医生结论说'总量控制稳了'"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T11_A01",
+     "subject": "SHARED",
+     "relation": "猫粮口径（旧）",
+     "value": "T01'猫粮一次半碗、早晚各一次'的口径经复查后被新口径取代",
+     "valid_time": "2026-11-21",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T01",
+      "quote": "猫粮一次半碗，早晚各一次，老规矩",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "半碗",
+       "就行"
+      ],
+      [
+       "还是",
+       "半碗"
+      ]
+     ],
+     "item_markers": [
+      "猫粮一次半碗"
+     ]
+    },
+    {
+     "atom_id": "E329_T11_A02",
+     "subject": "SHARED",
+     "relation": "猫粮口径（新）",
+     "value": "新口径：猫粮一顿三分之一碗，早晚各一次",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T11",
+      "quote": "猫粮一顿三分之一碗，早晚各一次",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T11_A03",
+     "subject": "SHARED",
+     "relation": "冻干口径（旧）",
+     "value": "T03'冻干一次一小把、每天拌'的口径被新口径取代",
+     "valid_time": "2026-11-21",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T03",
+      "quote": "一次拌一小把就够",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "冻干",
+       "每天",
+       "一小把"
+      ],
+      [
+       "还是",
+       "每天",
+       "拌"
+      ]
+     ],
+     "item_markers": [
+      "一小把"
+     ]
+    },
+    {
+     "atom_id": "E329_T11_A04",
+     "subject": "SHARED",
+     "relation": "冻干口径（新）",
+     "value": "新口径：冻干隔天一次，一次小半把",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T11",
+      "quote": "冻干隔天一次，一次小半把",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T11_A05",
+     "subject": "THIRD",
+     "relation": "医生结论",
+     "value": "复查医生说控制总量就行",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T11",
+      "quote": "医生说控制总量就行",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "全篇口径更新主轮：两组 superseded 对齐（半碗→三分之一碗；每天一小把→隔天小半把）。正确回复必须落在新口径上，沿用旧口径=记忆取用错误。",
+   "unknowns": [],
+   "protected_expressions": [
+    "以后就按这个来"
+   ],
+   "forbidden_factual_claims": [
+    "不得沿用'一次半碗'旧口径",
+    "不得沿用'冻干每天一小把'旧口径",
+    "不得质疑新数值或替医生改口"
+   ],
+   "may_decline": false
+  },
+  "E329_T12": {
+   "case_id": "E329_T12",
+   "current_action": "阮清通报特产桂花糕已挂高澈门把手，并预告下周四（11-26）去杭州两天、再托喂猫、按新口径来",
+   "acceptable_actions": [
+    "谢特产并确认26号接活、按新口径",
+    "复述新口径（三分之一碗/隔天小半把）确认",
+    "收特产并说26号那天提前对一下时间"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E329_T12_A01",
+     "subject": "HER",
+     "relation": "特产致谢",
+     "value": "特产桂花糕已挂高澈门把手上，袋子防油",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T12",
+      "quote": "特产是桂花糕，挂你家门把手上了，袋子防油",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T12_A02",
+     "subject": "SHARED",
+     "relation": "再托安排",
+     "value": "下周四（2026-11-26）起阮清去杭州两天，汤圆再托高澈、按新口径执行",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T12",
+      "quote": "下周四我去杭州两天，11月26号（周四）走，汤圆又得麻烦你，按新口径来啊",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E329_T12_A03",
+     "subject": "SHARED",
+     "relation": "新口径延续",
+     "value": "此后喂猫执行11-21新口径（三分之一碗+隔天小半把）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E329_T11",
+      "quote": "以后就按这个来",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T08 记忆取用收束位：11-26 起的托付必须挂在 T11 新口径上（三分之一碗+隔天小半把），候选若回扣 T01/T03 旧口径=记忆取用错误。",
+   "unknowns": [],
+   "protected_expressions": [
+    "按新口径来啊"
+   ],
+   "forbidden_factual_claims": [
+    "不得按旧口径应承下次托付",
+    "不得编造杭州行程细节或桂花糕口味"
+   ],
+   "may_decline": false
+  }
+ }
+}

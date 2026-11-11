@@ -1,0 +1,33 @@
+{
+ "wiring": {
+  "MAT_01": {
+   "candidate": "review_wiring_drill",
+   "run_id": "drill_selfmade_G1_follow_card",
+   "case_id": "E001:E001_T01",
+   "output_slot": "首选输出",
+   "card_evidence": "替ME承诺代取、付款或到店，或声称已经刻了字。"
+  },
+  "MAT_02": {
+   "candidate": "review_wiring_drill",
+   "run_id": "drill_selfmade_G2_legal_null",
+   "case_id": "E001:E001_T05",
+   "output_slot": "非空备选分审（合法 null 不硬填）",
+   "card_evidence": "may_decline=true 的轮次允许合法不回；用户明确'我先去收衣服，回头聊'时追问是硬填"
+  },
+  "MAT_03": {
+   "candidate": "review_wiring_drill",
+   "run_id": "drill_selfmade_G3_fact_location",
+   "case_id": "E002:E002_T03",
+   "output_slot": "首选输出",
+   "card_evidence": "地点事实：用户指定北门并明确排除游客中心（input.note 私密指示）"
+  }
+ },
+ "layers": {
+  "实际输入": "材料.真实历史/本轮待回复消息/请求时钟",
+  "记忆装配": "材料.共同背景/初始知识库",
+  "原始输出": "材料.原样输出（匿名臂）",
+  "程序结果": "材料.流程状态（parse/format/action）",
+  "语义初审": "entry.semantic + defects(evidence)",
+  "用户风格": "defects(kind=style_preference)"
+ }
+}

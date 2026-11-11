@@ -1,0 +1,155 @@
+{
+ "episode_id": "E137",
+ "persona": {
+  "her": {
+   "name": "阿澄",
+   "traits": ["电商运营，看机会半年", "面试手感好但遇变卦容易上头", "决策前爱找人算总账", "嘴硬心软"],
+   "boundaries": ["不喜欢被催做决定", "不愿在第三方传话里被动等待"]
+  },
+  "me": {
+   "name": "老蒋",
+   "traits": ["大学同学，互联网大厂采购", "认识跨境供应链公司的人", "擅长把信息分成'实锤'和'风闻'两档"]
+  },
+  "relationship_stage": "长期熟人（大学上下铺级同学）"
+ },
+ "initial_kb": {
+  "her": "阿澄看机会半年，猎头推了家做跨境供应链公司的运营岗，最看重团队稳定性，已过一面",
+  "me": "老蒋在互联网大厂做采购，认识那家公司的人，帮阿澄打听过团队口碑",
+  "warmth": "大学上下铺交情，毕业后各奔东西，近两年在职业话题上越聊越深",
+  "stage": "长期熟人"
+ },
+ "turns": [
+  {
+   "case_id": "E137_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-04 12:30", "text": "蒋哥！猎头推的那家跨境供应链公司，一面我过了！下周二二面，是运营总监面，你上次帮我打听的那些内部消息，再给我续一续呗？"}],
+    "clock": "2026-11-04 12:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "一面过关的兴奋，要情报续费"}
+  },
+  {
+   "case_id": "E137_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-05 22:10", "text": "你说的那位供应链负责人我查了，果然是从大厂出来的，二面估计会抠数据细节。我把双11复盘的数据模型又过了一遍，心里有底多了。"}],
+    "clock": "2026-11-05 22:12",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "备考式准备，踏实质感"}
+  },
+  {
+   "case_id": "E137_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-11 18:45", "text": "二面面完了！总监当场夸了我们的复盘框架，说让我等通知，猎头说这周内给结果，感觉有戏！"}],
+    "clock": "2026-11-11 18:47",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "二面自评良好的乐观"}
+  },
+  {
+   "case_id": "E137_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-13 15:20", "text": "变天了……猎头刚打电话，说那个部门的编制被总部临时冻结了，全组招聘暂停，让流程'无限期等待'。半年磨一个机会，说没就没？"}],
+    "clock": "2026-11-13 15:22",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "第三方变卦带来的失落与不甘"}
+  },
+  {
+   "case_id": "E137_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-13 21:05", "text": "你说得对，不能在一棵树上吊着。我把简历重新挂出去，明天约了另一家做本地生活的聊聊，那家是朋友内推，节奏快。"}],
+    "clock": "2026-11-13 21:07",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "接受双线建议，行动力回归"}
+  },
+  {
+   "case_id": "E137_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-18 22:40", "text": "本地生活那家一面过了，业务聊得挺投缘，就是base在江北，通勤多了半小时，纠结。"}],
+    "clock": "2026-11-18 22:42",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "新机会成型的同时出现新权衡"}
+  },
+  {
+   "case_id": "E137_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-21 10:15", "text": "猜猜谁复活了！猎头说编制解冻了，优先补我面过的那个岗，让我下周直接终面，连总监都换成了业务VP面。这剧情比追剧还刺激。"}],
+    "clock": "2026-11-21 10:17",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "岗位复活的大起，带点不敢全信"}
+  },
+  {
+   "case_id": "E137_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-25 19:30", "text": "终面完了！VP的问题很直接：如果本地生活那家先给offer怎么办？我实话实说会对比薪资和成长，他笑了笑说'很诚实'。"}],
+    "clock": "2026-11-25 19:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "终面发挥稳，对实话策略得意"}
+  },
+  {
+   "case_id": "E137_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-27 16:50", "text": "跨境这家offer到了！月薪比现在涨35%，但期权说'入职后谈'，写得含糊。本地生活那边也催我本周答复，涨20%但包三餐和班车。"}],
+    "clock": "2026-11-27 16:52",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "双offer并行的兴奋与选择压力"}
+  },
+  {
+   "case_id": "E137_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-28 23:10", "text": "两个offer摆桌上，越算越睡不着……总包差价算完其实差不多。不聊了，明天问猎头最后一轮，把期权条款问清楚。"}],
+    "clock": "2026-11-28 23:12",
+    "may_decline": true
+   },
+   "gold": {},
+   "feedback": {"her_state": "决策焦虑的深夜独白，允许不接"}
+  },
+  {
+   "case_id": "E137_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-29 17:35", "text": "问清楚了！猎头帮我争取到期权书面意向，虽然数量要入职后定，但归属条件写进offer附录了。我定了，去跨境这家，行业我更喜欢。"}],
+    "clock": "2026-11-29 17:37",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "落锤的笃定"}
+  },
+  {
+   "case_id": "E137_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-05 12:00", "text": "提离职顺利，下月中入职！蒋哥，等你那边采购换届时，介绍信我可就指着你了，先说好，谢礼是永远的那顿火锅。"}],
+    "clock": "2026-12-05 12:02",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "尘埃落定后的轻快，人情回扣"}
+  }
+ ]
+}

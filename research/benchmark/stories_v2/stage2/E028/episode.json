@@ -1,0 +1,239 @@
+{
+ "episode_id": "E028",
+ "persona": {
+  "me": "29岁，互联网公司运营，五楼工区；食堂红烧鱼的忠实拥护者。",
+  "her": "28岁，同公司财务，饭点精准；嘴快心细，替全桌人盯着菜量。"
+ },
+ "initial_kb": {
+  "me": "运营岗，月底活动期常加班；食堂特爱红烧鱼，去晚就没有。",
+  "her": "财务部（下月搬三楼）；每月对账期出差；饭卡余额管理严格。",
+  "warmth": "每天中午食堂拼桌三个月，聊天从菜价聊到公司八卦，没断过。",
+  "style": "饭搭子式短句；先说菜再说事；不过问隐私。",
+  "stage": "同事饭搭子，日更交情。",
+  "lessons": "她的饭卡梗别接成真占便宜；公司话题点到为止。"
+ },
+ "turns": [
+  {
+   "case_id": "E028_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天有糖醋排骨 我看了菜单 红烧鱼没了 你死心吧",
+      "ts": "2026-12-07 11:40"
+     }
+    ],
+    "clock": "2026-12-07 11:42",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E028_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那你替我打一份排骨 我占座",
+      "ts": "2026-12-07 11:43"
+     },
+     {
+      "role": "HER",
+      "text": "想得美 我的卡余额只够我自己的",
+      "ts": "2026-12-07 11:45"
+     }
+    ],
+    "clock": "2026-12-07 11:47",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E028_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了财务部在下个月要搬去三楼 你们运营还留五楼吗",
+      "ts": "2026-12-07 12:10"
+     }
+    ],
+    "clock": "2026-12-07 12:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E028_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "留 那你以后吃饭得多走两层",
+      "ts": "2026-12-07 12:14"
+     },
+     {
+      "role": "HER",
+      "text": "所以这是告别饭 糖醋排骨要加倍哀悼",
+      "ts": "2026-12-07 12:16"
+     }
+    ],
+    "clock": "2026-12-07 12:18",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E028_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我明天出差杭州 对账四天 食堂自己吃吧 你别胖回去",
+      "ts": "2026-12-09 21:30"
+     }
+    ],
+    "clock": "2026-12-09 21:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E028_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 注意安全 想吃食堂记得我",
+      "ts": "2026-12-09 21:34"
+     },
+     {
+      "role": "HER",
+      "text": "你可真是 我的思乡对象是食堂 你是食堂附赠的",
+      "ts": "2026-12-09 21:38"
+     }
+    ],
+    "clock": "2026-12-09 21:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E028_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "杭州这个酒店隔音差 我听着隔壁开电话会到十二点",
+      "ts": "2026-12-10 23:44"
+     }
+    ],
+    "clock": "2026-12-10 23:46",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E028_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "他们开到十二点 你听完了吗 有没有重点",
+      "ts": "2026-12-10 23:47"
+     },
+     {
+      "role": "HER",
+      "text": "重点就是他们也没谈成 我心里平衡多了",
+      "ts": "2026-12-10 23:50"
+     }
+    ],
+    "clock": "2026-12-10 23:52",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E028_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "回来了 食堂! 我四天没吃了 你说这算不算接风",
+      "ts": "2026-12-14 11:45"
+     }
+    ],
+    "clock": "2026-12-14 11:47",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E028_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "算 我帮你占座 你打车回来还来得及",
+      "ts": "2026-12-14 11:48"
+     },
+     {
+      "role": "HER",
+      "text": "已经在电梯了 你把那份排骨护住",
+      "ts": "2026-12-14 11:50"
+     }
+    ],
+    "clock": "2026-12-14 11:52",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E028_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "哎对 差补到账了 三楼搬家的事定了吗 我要不要申请跟去三楼",
+      "ts": "2026-12-14 12:20"
+     }
+    ],
+    "clock": "2026-12-14 12:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E028_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "申请什么 三楼食堂没糖醋排骨",
+      "ts": "2026-12-14 12:23"
+     },
+     {
+      "role": "HER",
+      "text": "有道理 为了排骨留下 哈哈 下午见了",
+      "ts": "2026-12-14 12:26"
+     }
+    ],
+    "clock": "2026-12-14 12:28",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

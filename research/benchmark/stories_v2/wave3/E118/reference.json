@@ -1,0 +1,752 @@
+{
+ "story_id": "E118",
+ "turns": {
+  "E118_T01": {
+   "case_id": "E118_T01",
+   "current_action": "接下四人周六自驾栖澜湖的提议与出车分工",
+   "acceptable_actions": [
+    "答应出车并问零食清单",
+    "答应并提议顺路接人",
+    "答应并先看天气再定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T01_A01",
+     "subject": "SHARED",
+     "relation": "出游计划",
+     "value": "HER、ME、阿哲、芝芝四人周六自驾往返栖澜湖一日",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T01",
+      "quote": "咱们四个周六开车去待一天",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E118_T01_A02",
+     "subject": "SHARED",
+     "relation": "用车分工",
+     "value": "ME 出车，HER 负责野餐垫和零食",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T01",
+      "quote": "你出车，我负责订野餐垫和零食",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "积极响应，先别谈钱。",
+   "unknowns": [
+    "天气未确认"
+   ],
+   "protected_expressions": [
+    "你出车"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构第五名同行者"
+   ],
+   "may_decline": false
+  },
+  "E118_T02": {
+   "case_id": "E118_T02",
+   "current_action": "确认七点桂溪里东门集合与阿哲顺路上车点",
+   "acceptable_actions": [
+    "确认并说会算好顺路顺序",
+    "确认并让阿哲别迟到",
+    "确认并提醒带身份证件停车费"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T02_A01",
+     "subject": "SHARED",
+     "relation": "出游计划",
+     "value": "四人周六自驾栖澜湖的既定计划",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T01",
+      "quote": "咱们四个周六开车去待一天",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E118_T02_A02",
+     "subject": "SHARED",
+     "relation": "集合安排",
+     "value": "周六七点桂溪里东门集合，阿哲七点十分在锦帆路路口顺路上车",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T02",
+      "quote": "七点十分在锦帆路路口等",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "利落确认即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "七点十分在锦帆路路口等"
+   ],
+   "forbidden_factual_claims": [
+    "不得更改已定集合时间"
+   ],
+   "may_decline": false
+  },
+  "E118_T03": {
+   "case_id": "E118_T03",
+   "current_action": "就四人均摊口径表态，可痛快答应",
+   "acceptable_actions": [
+    "答应并说司机无特权",
+    "答应并提议建个记账小群",
+    "答应并让她把总数封顶报一下"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T03_A01",
+     "subject": "SHARED",
+     "relation": "出游计划",
+     "value": "四人周六自驾栖澜湖的既定计划",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T01",
+      "quote": "咱们四个周六开车去待一天",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E118_T03_A02",
+     "subject": "SHARED",
+     "relation": "费用口径",
+     "value": "油费、过路费、停车费四人含司机均摊，车辆不另计折旧",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T03",
+      "quote": "咱们四个人均摊",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把口径复述一遍，显得记得牢。",
+   "unknowns": [
+    "总费用此刻未知"
+   ],
+   "protected_expressions": [
+    "四个人均摊"
+   ],
+   "forbidden_factual_claims": [
+    "不得在此轮先提司机免单"
+   ],
+   "may_decline": false
+  },
+  "E118_T04": {
+   "case_id": "E118_T04",
+   "current_action": "接下歌单与无人机的分工，确认油费先垫后算",
+   "acceptable_actions": [
+    "确认垫付并答应找空地",
+    "确认并提醒无人机注意禁飞区",
+    "确认并说回来发收款码"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T04_A01",
+     "subject": "SHARED",
+     "relation": "费用口径",
+     "value": "四人含司机均摊的既定口径",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T03",
+      "quote": "咱们四个人均摊",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E118_T04_A02",
+     "subject": "SHARED",
+     "relation": "垫付约定",
+     "value": "油费由 ME 先行垫付，返程后统一结算",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T04",
+      "quote": "油费你先垫，回来一起算",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "顺手把结算方式定下来。",
+   "unknowns": [
+    "禁飞区具体范围未知"
+   ],
+   "protected_expressions": [
+    "油费你先垫"
+   ],
+   "forbidden_factual_claims": [
+    "不得拒绝垫付后拖账"
+   ],
+   "may_decline": false
+  },
+  "E118_T05": {
+   "case_id": "E118_T05",
+   "current_action": "确认行程不改期，并认可停车费备现金的安排",
+   "acceptable_actions": [
+    "确认不改并说现金我也有备",
+    "确认并夸她想得周全",
+    "确认并提议明早发集合提醒"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T05_A01",
+     "subject": "SHARED",
+     "relation": "出游计划",
+     "value": "四人周六自驾栖澜湖的既定计划",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T01",
+      "quote": "咱们四个周六开车去待一天",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E118_T05_A02",
+     "subject": "SHARED",
+     "relation": "天气确认",
+     "value": "栖澜湖周六多云无雨，行程不改期",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T05",
+      "quote": "多云没雨，不改了哈",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E118_T05_A03",
+     "subject": "SHARED",
+     "relation": "停车费形式",
+     "value": "HER 已备现金应对停车场仅收现金的情况",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T05",
+      "quote": "停车费备成现金了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轻快。",
+   "unknowns": [],
+   "protected_expressions": [
+    "不改了哈"
+   ],
+   "forbidden_factual_claims": [
+    "不得在此时改期"
+   ],
+   "may_decline": false
+  },
+  "E118_T06": {
+   "case_id": "E118_T06",
+   "current_action": "拒绝司机免单，坚持按此前四人均摊口径执行",
+   "acceptable_actions": [
+    "坚持四人均摊并说规矩当天就定了",
+    "婉拒免单并提议把差额捐给下次油钱",
+    "坚持均摊并把每人120直接算给她"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T06_A01",
+     "subject": "SHARED",
+     "relation": "费用口径",
+     "value": "此前白纸黑字立下的四人含司机均摊口径被本句否定",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T03",
+      "quote": "咱们四个人均摊",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E118_T06_A02",
+     "subject": "SHARED",
+     "relation": "费用口径修正",
+     "value": "HER 按拼车群规矩改为司机免单，余三人各一百六十",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T06",
+      "quote": "司机免单，我们仨一人一百六",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E118_T06_A03",
+     "subject": "SHARED",
+     "relation": "费用总额",
+     "value": "油费二百六十、高速一百八十、停车四十共四百八十元",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T06",
+      "quote": "一共四百八",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：引用她自己白天立的规矩，态度温和但立场不退。",
+   "unknowns": [],
+   "protected_expressions": [
+    "规矩就是规矩"
+   ],
+   "forbidden_factual_claims": [
+    "不得默许免单口径",
+    "不得虚报费用总额"
+   ],
+   "may_decline": false
+  },
+  "E118_T07": {
+   "case_id": "E118_T07",
+   "current_action": "确认一人一百二，并对停车费她来出表示接受或回敬",
+   "acceptable_actions": [
+    "接受并谢谢她停车费",
+    "坚持连停车费一起均摊",
+    "接受并玩笑说下回轮到我"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T07_A01",
+     "subject": "SHARED",
+     "relation": "费用口径修正",
+     "value": "司机免单三人各一百六的方案被 ME 拒绝后作废",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T06",
+      "quote": "司机免单，我们仨一人一百六",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E118_T07_A02",
+     "subject": "SHARED",
+     "relation": "费用口径恢复",
+     "value": "四人含司机均摊经协商恢复执行，每人一百二十",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T03",
+      "quote": "咱们四个人均摊",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E118_T07_A03",
+     "subject": "SHARED",
+     "relation": "停车费特例",
+     "value": "停车费四十元由 HER 个人承担",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T07",
+      "quote": "停车费四十必须我出",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接住她的让步，别再推来推去。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一人一百二"
+   ],
+   "forbidden_factual_claims": [
+    "不得再提免单"
+   ],
+   "may_decline": false
+  },
+  "E118_T08": {
+   "case_id": "E118_T08",
+   "current_action": "确认三笔转账到账与现金停车费，宣布账目两清",
+   "acceptable_actions": [
+    "确认到账并宣布散会",
+    "确认并夸记账本",
+    "确认并说下次还找你出车"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T08_A01",
+     "subject": "SHARED",
+     "relation": "费用口径恢复",
+     "value": "四人均摊每人一百二的执行结果",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T07",
+      "quote": "那就按四个人摊",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E118_T08_A02",
+     "subject": "SHARED",
+     "relation": "结算完成",
+     "value": "三笔各一百二十到账，停车费现金结清，总额四百八一分不差",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T08",
+      "quote": "四百八齐了，一分不差",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "干脆收账。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一分不差"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称仍有欠款"
+   ],
+   "may_decline": false
+  },
+  "E118_T09": {
+   "case_id": "E118_T09",
+   "current_action": "接住洗照片的安排，对星空场住一晚可接可缓",
+   "acceptable_actions": [
+    "接钩子并问星空场日期",
+    "接照片缓一缓住一晚",
+    "打趣住一晚谁出车"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T09_A01",
+     "subject": "SHARED",
+     "relation": "结算完成",
+     "value": "四百八十元已全额结清的既定事实",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T08",
+      "quote": "四百八齐了，一分不差",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E118_T09_A02",
+     "subject": "SHARED",
+     "relation": "后续邀约",
+     "value": "栖澜湖十一月有星空场，提议择日住一晚",
+     "valid_time": "2026-11-16之后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T09",
+      "quote": "要不哪天住一晚",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "可以暧昧一丢丢。",
+   "unknowns": [
+    "星空场具体日期未知"
+   ],
+   "protected_expressions": [
+    "要不哪天住一晚"
+   ],
+   "forbidden_factual_claims": [
+    "不得替 HER 定住宿计划"
+   ],
+   "may_decline": true
+  },
+  "E118_T10": {
+   "case_id": "E118_T10",
+   "current_action": "接下保养提醒，可谢谢可自查",
+   "acceptable_actions": [
+    "谢谢并说周末去查",
+    "说自己已经约了",
+    "问清是哪家店再定"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T10_A01",
+     "subject": "SHARED",
+     "relation": "后续邀约",
+     "value": "栖澜湖星空场住一晚的待定提议",
+     "valid_time": "2026-11-16之后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T09",
+      "quote": "要不哪天住一晚",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E118_T10_A02",
+     "subject": "HER",
+     "relation": "车辆提醒",
+     "value": "ME 车辆保养灯亮起，建议尽快做约三百八十元的小保养",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T10",
+      "quote": "保养灯是不是亮了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接受好意但别立刻全盘照办。",
+   "unknowns": [
+    "保养店具体信息未知"
+   ],
+   "protected_expressions": [
+    "别拖"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已做完保养"
+   ],
+   "may_decline": true
+  },
+  "E118_T11": {
+   "case_id": "E118_T11",
+   "current_action": "确认阿哲份额经 HER 中转到账",
+   "acceptable_actions": [
+    "确认到账并谢谢经手",
+    "确认并玩笑着说终于清了",
+    "确认并把备注截图留念"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T11_A01",
+     "subject": "SHARED",
+     "relation": "结算完成",
+     "value": "四百八十元已全额结清的既定事实",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T08",
+      "quote": "四百八齐了，一分不差",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E118_T11_A02",
+     "subject": "SHARED",
+     "relation": "尾款中转",
+     "value": "阿哲份额一百二十元经 HER 中转结清，账目两讫",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T11",
+      "quote": "谁都不欠谁了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "短确认。",
+   "unknowns": [
+    "T08 所称三笔各一百二十已到账与本轮阿哲份额中转到账的先后口径矛盾，实际到账路径未知"
+   ],
+   "protected_expressions": [
+    "谁都不欠谁了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称还有人没转"
+   ],
+   "may_decline": false
+  },
+  "E118_T12": {
+   "case_id": "E118_T12",
+   "current_action": "收下照片与歌单的回礼，轻快收尾",
+   "acceptable_actions": [
+    "谢谢并说今天就去取",
+    "接歌单梗并约下次",
+    "夸照片拍得好"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E118_T12_A01",
+     "subject": "SHARED",
+     "relation": "后续邀约",
+     "value": "星空场住一晚的待定提议",
+     "valid_time": "2026-11-16之后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T09",
+      "quote": "要不哪天住一晚",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E118_T12_A02",
+     "subject": "HER",
+     "relation": "回礼安排",
+     "value": "冲洗水杉照片置于 ME 工位并制作副驾歌单",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E118_T12",
+      "quote": "洗好放你工位了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾带笑。",
+   "unknowns": [],
+   "protected_expressions": [
+    "油费另算"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已听完歌单"
+   ],
+   "may_decline": false
+  }
+ }
+}

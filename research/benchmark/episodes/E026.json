@@ -1,0 +1,244 @@
+{
+ "episode_id": "E026",
+ "persona": {
+  "me": "31岁，土木工程师，健身两年，练腿日经常装死；深蹲100公斤卡了两个月。",
+  "her": "28岁，康复科护士，同一个健身房；健身四年，深蹲130；毒舌但专业，对动作代偿一眼看穿。"
+ },
+ "initial_kb": {
+  "me": "每周三五练；上个月腰有点拉伤，她提醒过发力；练后餐习惯老三样。",
+  "her": "康复科护士；对动作代偿一眼看穿；练后餐那杯蛋白粉冲得像奶茶。",
+  "warmth": "健身房认识半年，固定互相拍视频纠动作，偶尔练完一起吃轻食AA。",
+  "style": "健身房黑话+互怼；她说动作问题必须听；互怼不隔夜。",
+  "stage": "健身房搭子，互怼但互信。",
+  "lessons": "腰伤话题她说了算；别在她面前硬冲重量；毒舌背后是专业。"
+ },
+ "turns": [
+  {
+   "case_id": "E026_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天练腿吗 你躲了三天了",
+      "ts": "2026-11-24 19:30"
+     }
+    ],
+    "clock": "2026-11-24 19:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E026_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "练 但今天只蹲60 不碰100",
+      "ts": "2026-11-24 19:35"
+     },
+     {
+      "role": "HER",
+      "text": "算你有数 腰是自己的",
+      "ts": "2026-11-24 19:40"
+     }
+    ],
+    "clock": "2026-11-24 19:42",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E026_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "一会儿你深蹲我给你拍 有个膝盖内扣我早想说",
+      "ts": "2026-11-24 19:46"
+     }
+    ],
+    "clock": "2026-11-24 19:48",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E026_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "拍 拍完我看看有多丑",
+      "ts": "2026-11-24 19:50"
+     },
+     {
+      "role": "HER",
+      "text": "不看不知道 一看练腿日变恐吓现场",
+      "ts": "2026-11-24 19:53"
+     }
+    ],
+    "clock": "2026-11-24 19:55",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E026_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "补剂吃了吗 蛋白 今天练后餐吃啥",
+      "ts": "2026-11-24 21:10"
+     }
+    ],
+    "clock": "2026-11-24 21:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E026_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "老三样 鸡胸西蓝花米饭 你那杯蛋白粉别又糊弄成奶茶",
+      "ts": "2026-11-24 21:14"
+     },
+     {
+      "role": "HER",
+      "text": "那是好喝的蛋白 你不懂",
+      "ts": "2026-11-24 21:18"
+     }
+    ],
+    "clock": "2026-11-24 21:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E026_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "看了你昨天的视频 说真的 你膝盖内扣比我想的严重 来找我科室看看?",
+      "ts": "2026-11-25 12:30"
+     }
+    ],
+    "clock": "2026-11-25 12:32",
+    "may_decline": false,
+    "intent": {
+     "text": "认真考虑她的康复科建议，先约时间",
+     "status": "ACTIVE",
+     "enabled": true
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E026_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "约 挂你的号有折扣吗",
+      "ts": "2026-11-25 12:34"
+     },
+     {
+      "role": "HER",
+      "text": "我们科不打折 但我请你喝蛋白奶昔",
+      "ts": "2026-11-25 12:38"
+     }
+    ],
+    "clock": "2026-11-25 12:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E026_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周四下午三点你行吗 我帮你约张医生",
+      "ts": "2026-11-25 12:44"
+     }
+    ],
+    "clock": "2026-11-25 12:46",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E026_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 周四三点见",
+      "ts": "2026-11-25 12:48"
+     },
+     {
+      "role": "HER",
+      "text": "练腿日改到周四 练完直接来 别又躲",
+      "ts": "2026-11-25 12:50"
+     }
+    ],
+    "clock": "2026-11-25 12:52",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E026_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "张医生说什么了 我不在场你老实交代",
+      "ts": "2026-11-28 20:00"
+     }
+    ],
+    "clock": "2026-11-28 20:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E026_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "轻微代偿 没伤 让我减重加拉伸",
+      "ts": "2026-11-28 20:05"
+     },
+     {
+      "role": "HER",
+      "text": "早说了吧 下周开始 蹲80给我看",
+      "ts": "2026-11-28 20:10"
+     }
+    ],
+    "clock": "2026-11-28 20:12",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

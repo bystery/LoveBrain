@@ -1,0 +1,648 @@
+{
+  "story_id": "E364",
+  "turns": {
+    "E364_T01": {
+      "case_id": "E364_T01",
+      "current_action": "祝清越上班前委托贾云舟代收当日到货两件（羽绒服申通、猫砂京东），放其玄关，晚上七点半下班自取。",
+      "acceptable_actions": [
+        "接下委托并逐条复述到位：今日两件（羽绒服申通+猫砂京东）都写 3 栋 1202，放玄关，她七点半来拎——按她列条目习惯对齐条目即可",
+        "接委托+顺手补一句自己的可操作性（白天在家、驿站熟），让她放心去上班",
+        "接委托+轻问一句快递到货先后怎么放（如猫砂重、先到先码好），承接她'列条目'风格而非逐字复读",
+        "短应答：'行，放玄关，晚上七点半你过来拿'——自然短回合法，不强迫展开"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "interaction", "memory_use"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T01_A01",
+          "subject": "HER",
+          "relation": "委托代收当日到货快递",
+          "value": "2026-11-09 当日到货两件：羽绒服（申通）与猫砂一箱（京东），都写祝清越家地址 3 栋 1202，放贾云舟家玄关代收",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T01", "message_id": "m0", "quote": "我今天两个件到：一件羽绒服，申通的；一箱猫砂，京东的"},
+          "required_this_turn": false,
+          "affirm_markers": [["两个件", "羽绒服"], ["放你家玄关"]]
+        },
+        {
+          "atom_id": "E364_T01_A02",
+          "subject": "HER",
+          "relation": "自取时间计划",
+          "value": "祝清越计划 11-09 晚七点半下班后过来拎两件（该计划后被 T03 改为次早八点）",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T01", "message_id": "m0", "quote": "我晚上七点半下班过来拎"},
+          "required_this_turn": false,
+          "affirm_markers": [["七点半", "过来拎"], ["晚上七点半"]]
+        }
+      ],
+      "private_guidance": "KB：祝清越交代事情爱列条目、收发件多；贾云舟白天基本在家、玄关常年帮邻居暂存快递——回复按条目承接即可，不必客套。本轮为纯委托轮：两件品名/快递公司/放玄关/七点半取四要素齐全为过；漏件名或漏放玄关位置归语义层记。 HER 邻里两年无正经道谢史（warmth），回复不必过度客气。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称两件已送达或已代收到位（本轮只是委托，货未到）"
+      ],
+      "may_decline": false
+    },
+    "E364_T02": {
+      "case_id": "E364_T02",
+      "current_action": "祝清越更正：羽绒服被商家错填老家地址今日追不回、明日重新发出；今日指令收窄为仅代收猫砂一件（intent=确认今日仅代收猫砂一件、羽绒服顺延至明日）。",
+      "acceptable_actions": [
+        "确认收窄指令：今日只收猫砂一件放玄关，羽绒服等明天重新发出再说——对齐 intent 的确认方向并落到两件各自状态",
+        "确认+主动补位：说明猫砂到了会照原托放玄关，羽绒服那单地址改回前不代签，避免误收",
+        "确认+轻带一句驿站/派送常识（如改地址件一般原单退回重发），给出依据式安抚",
+        "短确认：'好，今天就猫砂一件，羽绒服明天再说'——短回合法"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T02_A01",
+          "subject": "HER",
+          "relation": "旧指令（已被同轮更正取代）",
+          "value": "旧口径：羽绒服 2026-11-09 当日到货并放贾云舟玄关代收（两件都收）——已被 T02 更正取代",
+          "valid_time": "2026-11-09",
+          "status": "superseded",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T01", "message_id": "m0", "quote": "我今天两个件到：一件羽绒服，申通的；一箱猫砂，京东的"},
+          "required_this_turn": true,
+          "affirm_markers": [["羽绒服", "今天到货"], ["羽绒服", "照常"]],
+          "item_markers": ["羽绒服"]
+        },
+        {
+          "atom_id": "E364_T02_A02",
+          "subject": "HER",
+          "relation": "羽绒服物流新状态",
+          "value": "羽绒服那单商家把地址打成老家，11-09 追不回来，11-10 才能重新发出",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T02", "message_id": "m0", "quote": "羽绒服那单商家把我地址打成老家了，快递员说今天追不回来，明天才能重新发出"},
+          "required_this_turn": false,
+          "affirm_markers": [["地址打成老家"], ["重新发出"], ["追不回来"]]
+        },
+        {
+          "atom_id": "E364_T02_A03",
+          "subject": "HER",
+          "relation": "今日代收指令收窄",
+          "value": "11-09 当日到货仅猫砂一件，只收猫砂（羽绒服顺延）",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T02", "message_id": "m0", "quote": "今天到货的就猫砂一件，你只收猫砂就行哈"},
+          "required_this_turn": false,
+          "affirm_markers": [["只收猫砂"], ["猫砂", "一件"]]
+        }
+      ],
+      "private_guidance": "T06 指令确认轮（四类型之'确认'）：intent=确认今日仅代收猫砂一件、羽绒服顺延至明日。判分核心=更正链处置：候选若仍按 T01 旧口径答'两件都收/羽绒服今天到'即坐实 superseded 原子（C14）判死；正确方向=只收猫砂+羽绒服明日重发。KB lessons'指令变了当场说清是哪一条'——回复宜点明变的是哪条（羽绒服那件），不是笼统'收到'。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称羽绒服今日仍照常送达并代收（旧口径已更正）",
+        "不得编造羽绒服改址/拦截的具体新时间安排（题面只说 11-10 重新发出）"
+      ],
+      "may_decline": false
+    },
+    "E364_T03": {
+      "case_id": "E364_T03",
+      "current_action": "祝清越加班到十点改为次早八点出门顺路取猫砂（放弃原今晚七点半取件计划），顺带问猫砂是否已到。",
+      "acceptable_actions": [
+        "确认改期+答到货问：'猫砂到了/在我玄关放着，你明早八点顺路来拎就行'——既接改约又答疑问",
+        "确认改期+叮嘱取件细节（如猫砂重，到门口喊一声帮她拎下楼）",
+        "确认改期+玩笑轻收（如'就一分钟的事说两遍了，给你留门口最顺手的位置'）",
+        "短应答：'改八点没问题，猫砂到了放着呢'"
+      ],
+      "applicable_dimensions": ["goal", "time_state", "memory_use", "interaction", "factuality"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T03_A01",
+          "subject": "HER",
+          "relation": "旧自取计划（已被本轮改期取代）",
+          "value": "旧计划：11-09 晚七点半下班过来拎两件——已被 T03 改为次早八点取猫砂",
+          "valid_time": "2026-11-09",
+          "status": "superseded",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T01", "message_id": "m0", "quote": "我晚上七点半下班过来拎"},
+          "required_this_turn": true,
+          "affirm_markers": [["七点半", "过来拎"], ["晚上七点半"]],
+          "item_markers": ["晚上七点半"]
+        },
+        {
+          "atom_id": "E364_T03_A02",
+          "subject": "HER",
+          "relation": "新自取计划",
+          "value": "11-10 早八点出门顺路到贾云舟家拎猫砂",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T03", "message_id": "m0", "quote": "明早八点出门顺路拎走"},
+          "required_this_turn": false,
+          "affirm_markers": [["明早八点"], ["八点", "拎走"]]
+        },
+        {
+          "atom_id": "E364_T03_A03",
+          "subject": "SHARED",
+          "relation": "猫砂到货与暂存状态",
+          "value": "猫砂为 11-09 唯一到货件，按 T02 指令由贾云舟玄关暂存（祝清越本轮发问'猫砂到了吧'待其如实确认）",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T02", "message_id": "m0", "quote": "今天到货的就猫砂一件"},
+          "required_this_turn": true,
+          "affirm_markers": [["猫砂", "玄关"], ["猫砂", "到了"]]
+        }
+      ],
+      "private_guidance": "回指位：'猫砂到了吧？'是对 T02'今日仅猫砂一件'的回声提问——ME 是实际收件人，如实答到货状态即可；gold 不规定 ME 的观察结果，候选答'到了'与题面链一致。改期处置：旧七点半计划已废，候选若仍说'晚上七点半见'即坐实 superseded 原子。style：她改主意直接说改了——回复不必追问原因，接新时间即可。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得按旧计划约今晚七点半交付"
+      ],
+      "may_decline": false
+    },
+    "E364_T04": {
+      "case_id": "E364_T04",
+      "current_action": "祝清越问羽绒服是否已到（到则放玄关晚上取），并新增转交指令：闺蜜小莼的一箱面粉错填她家地址、明日（11-11）到，小莼明日上午十点来贾云舟家自取。",
+      "acceptable_actions": [
+        "答羽绒服实际状态（作者 timeline 定 11-10 已送达放玄关）+接下小莼转交委托：面粉一箱、明日上午十点、交给她本人",
+        "答羽绒服状态+对转交委托补一句核验细节（问小莼怎么对暗号/要不要发张面粉照片给她认）",
+        "答羽绒服状态+玩笑轻接（'你这快递驿站都快开分站了'）再落实委托",
+        "短应答：'羽绒服到了放玄关了；面粉明天到，十点让小莼来拿就行'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T04_A01",
+          "subject": "HER",
+          "relation": "羽绒服到货后处置与自取计划",
+          "value": "羽绒服 11-10 到货后放贾云舟玄关，祝清越 11-10 晚上来拿（该计划后因加班未执行，T06 自述改期）",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T04", "message_id": "m0", "quote": "到了放玄关就行，我晚上来拿"},
+          "required_this_turn": false,
+          "affirm_markers": [["晚上来拿"], ["放玄关", "晚上"]]
+        },
+        {
+          "atom_id": "E364_T04_A02",
+          "subject": "HER",
+          "relation": "新增转交指令（初版）",
+          "value": "闺蜜小莼网购的一箱面粉错填祝清越家地址，11-11 到货；小莼 11-11 上午十点来贾云舟家自取，交给小莼本人（该时间后被 T05 改为晚八点）",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T04", "message_id": "m0", "quote": "我闺蜜小莼网购的一箱面粉填的我家地址，明天到，她明天上午十点来你家取，你交给她就行"},
+          "required_this_turn": false,
+          "affirm_markers": [["小莼", "面粉"], ["上午十点", "你家取"], ["交给她就行"]]
+        }
+      ],
+      "private_guidance": "疑问句'羽绒服到了没？'内容不坐实为原子（ME 是收件人，有第一手信息）。作者 timeline 定本轮羽绒服已送达玄关：候选答'已到放玄关'与 timeline 一致为优；答'还没到'按信息可得性不判事实错（题面无 ME 观察消息，E303 先例），但答'羽绒服还没重新发出/还在老家'等与 T02 更正链冲突的说法判错。小莼面粉转交指令为新增委托，接单即过；漏'交给小莼'这一对象归语义层记。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称小莼已来取过面粉（转交尚未发生）"
+      ],
+      "may_decline": false
+    },
+    "E364_T05": {
+      "case_id": "E364_T05",
+      "current_action": "祝清越改写转交指令：小莼取面粉由明日上午十点改为明晚八点，并限定范围仅玄关那箱面粉、其余件别拿混（intent=改写代转交指令）。",
+      "acceptable_actions": [
+        "确认改写到位：小莼改明晚八点来取、只交玄关那箱面粉、其余不动——三要素齐全",
+        "确认改写+主动加保险（把她的件先归拢到一边、只留面粉在小莼好拿的位置）",
+        "确认改写+轻问一句要不要跟小莼说声取件口令/放门口自助",
+        "短确认：'行，改明晚八点，只给她面粉那箱'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "boundary"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T05_A01",
+          "subject": "HER",
+          "relation": "旧取件时间（已被本轮改写取代）",
+          "value": "旧口径：小莼 11-11 上午十点来贾云舟家取面粉——已被 T05 改为 11-11 晚八点",
+          "valid_time": "2026-11-11",
+          "status": "superseded",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T04", "message_id": "m0", "quote": "她明天上午十点来你家取"},
+          "required_this_turn": true,
+          "affirm_markers": [["小莼", "上午十点"], ["面粉", "上午十点"]],
+          "item_markers": ["小莼取面粉"]
+        },
+        {
+          "atom_id": "E364_T05_A02",
+          "subject": "HER",
+          "relation": "新取件时间",
+          "value": "小莼 11-11 晚八点来贾云舟家取面粉（小莼上午临时塞了个会）",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T05", "message_id": "m0", "quote": "改成明晚八点来取"},
+          "required_this_turn": false,
+          "affirm_markers": [["明晚八点"], ["八点", "来取"]]
+        },
+        {
+          "atom_id": "E364_T05_A03",
+          "subject": "HER",
+          "relation": "转交范围限定",
+          "value": "只把玄关那箱面粉给小莼，其余件都是祝清越的东西，别拿混",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T05", "message_id": "m0", "quote": "就玄关那箱面粉给她，别的都是我的东西，别拿混"},
+          "required_this_turn": false,
+          "affirm_markers": [["那箱面粉"], ["都是我的东西"], ["面粉", "别拿混"]]
+        }
+      ],
+      "private_guidance": "T06 指令改写轮（四类型之'改写'）：改写不得改变事实——时间 10:00→20:00 是改写对象，'仅限面粉一箱'是范围约束；候选沿用上午十点即坐实 superseded 原子（C14）。'别拿混'是 boundary 话（protected 已登记），回复接住该约束（如'她的件我先分开放'）为优。改写原因（小莼塞了会）不必追问。",
+      "unknowns": [],
+      "protected_expressions": [
+        "别的都是我的东西，别拿混"
+      ],
+      "forbidden_factual_claims": [
+        "不得仍按上午十点安排小莼取件（旧时间已改写）",
+        "不得把转交范围扩大到面粉以外的祝清越件"
+      ],
+      "may_decline": false
+    },
+    "E364_T06": {
+      "case_id": "E364_T06",
+      "current_action": "祝清越说明羽绒服昨晚加班没拿仍在玄关，新增双十一尾程到货三件（显示器、猫条 12 条装、零食大礼包）全部放贾云舟处，计划明天中午一起来拿。",
+      "acceptable_actions": [
+        "接新增三件+确认羽绒服仍代管：'三件到了都放你那儿，羽绒服也没动，明天中午你一起拿'",
+        "接三件+主动交代收纳安排（猫条压不得/显示器不倒放之类的承接，呼应下一轮细则）",
+        "接三件+轻调侃双十一量（'你这双十一尾款是按玄关面积下的单吧'）再确认照办",
+        "短应答：'行，三件加羽绒服都收着，明天中午你来拿'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T06_A01",
+          "subject": "HER",
+          "relation": "羽绒服未取状态",
+          "value": "祝清越 11-10 晚加班未取羽绒服，羽绒服仍在贾云舟玄关",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T06", "message_id": "m0", "quote": "对了羽绒服我昨晚加班没顾上拿，还搁你玄关吧"},
+          "required_this_turn": false,
+          "affirm_markers": [["羽绒服", "没顾上拿"], ["还搁你玄关"]]
+        },
+        {
+          "atom_id": "E364_T06_A02",
+          "subject": "HER",
+          "relation": "双十一尾程到货与存放指令",
+          "value": "11-11（双十一）到货三件：显示器一台、猫条 12 条装一箱、零食大礼包一个，全部放贾云舟处",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T06", "message_id": "m0", "quote": "今天双十一尾程到货三件：一台显示器、一箱猫条 12 条装、一个零食大礼包。都放你那儿"},
+          "required_this_turn": false,
+          "affirm_markers": [["到货三件"], ["显示器", "猫条", "大礼包"], ["都放你那儿"]]
+        },
+        {
+          "atom_id": "E364_T06_A03",
+          "subject": "HER",
+          "relation": "集中取件计划",
+          "value": "祝清越计划 11-12 中午过来一起拿（该计划后被 T09 改为 11-15 周日下午三点清件）",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T06", "message_id": "m0", "quote": "我今晚还加班，明天中午过来一起拿"},
+          "required_this_turn": false,
+          "affirm_markers": [["明天中午", "一起拿"], ["中午过来"]]
+        }
+      ],
+      "private_guidance": "note（军师备注）：下单记录核过，今天派送中就这三件、别的还在路上——note 不进原子；候选若声称当日另有到货件坐实 unknown 判死。羽绒服'还搁你玄关吧'是她-seeking-confirmation，ME 如实确认即可。三件品名与数量（12 条装）为后续 T07 存放细则与 T08 撤销大礼包的锚点，回复照单承接不添不减。",
+      "unknowns": [
+        {
+          "topic": "11-11 当日到货件数是否只有三件",
+          "note": "note（下单记录核过）定：今天显示派送中的就这三件，别的还在路上——候选不得声称当日另有到货件",
+          "markers": [["还有一件", "今天到"], ["今天到货", "不止三件"], ["今天还到", "别的件"]],
+          "affirm_markers": [["还有一件", "今天到"], ["今天到货", "不止三件"], ["今天还到", "别的件"]]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称羽绒服已被祝清越取走（她自述没顾上拿）",
+        "不得编造当日第四件到货"
+      ],
+      "may_decline": false
+    },
+    "E364_T07": {
+      "case_id": "E364_T07",
+      "current_action": "祝清越下达存放与验货细则：猫条箱别压在别的件底下、拆开封条查看有无破损、破了拍照发她找客服；显示器靠墙立放别平躺。",
+      "acceptable_actions": [
+        "照单执行确认：猫条不压底、拆封条验货、破了拍照发她；显示器靠墙立放——四细则齐全",
+        "执行确认+补位（如拆封后把封条原样贴回/验完好拍张照主动报平安）",
+        "执行确认+轻接（'显示器给你站岗，猫条给你躺平'式一句）再落到照办",
+        "短应答：'收到，猫条我拆开看一眼，显示器立墙边'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T07_A01",
+          "subject": "HER",
+          "relation": "猫条存放验货细则",
+          "value": "猫条那箱别压在别的件底下；拆开封条查看有无破损；破了拍照发祝清越找客服",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T07", "message_id": "m0", "quote": "猫条那箱别压在别的件底下，拆开封条看一眼有没有破的，破了拍张照发我找客服"},
+          "required_this_turn": false,
+          "affirm_markers": [["猫条", "别压"], ["拆开封条"], ["拍张照", "发我"]]
+        },
+        {
+          "atom_id": "E364_T07_A02",
+          "subject": "HER",
+          "relation": "显示器存放细则",
+          "value": "显示器靠墙立着放，别平躺",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T07", "message_id": "m0", "quote": "显示器靠墙立着放，别平躺"},
+          "required_this_turn": false,
+          "affirm_markers": [["靠墙立着放"], ["别平躺"]]
+        }
+      ],
+      "private_guidance": "细则轮：判分点在'逐条承接不漏项'——拆封验货是动作委托（ME 白天在家可执行），回复可承诺执行并说明验完好/破损两种去向。万能句诱惑位：'好的没问题放心吧'式笼统应答漏掉验货与立放细则，判语义层低档。本轮无新事实变更，不需状态原子。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称猫条已验货完好或已破损（验货结果未在题面证实，不得代答）"
+      ],
+      "may_decline": false
+    },
+    "E364_T08": {
+      "case_id": "E364_T08",
+      "current_action": "祝清越撤销零食大礼包代收指令（前天已在公司下过重复单寄公司前台），改为到了直接拒收退回、别签别垫运费；显示器和猫条照常（intent=撤销大礼包代收指令）。",
+      "acceptable_actions": [
+        "确认撤销+新处置：大礼包到了直接拒收退回、不签不垫运费，显示器猫条照常收着",
+        "确认撤销+补一句操作细节（拒收时跟快递员说明重复件/不拆封原路退）",
+        "确认撤销+轻接她的马虎（'下两单也是大礼包，猫是亏了还是赚了'式）再落到照办",
+        "短确认：'好，大礼包拒收退回，不垫钱，另两样照常'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "boundary"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T08_A01",
+          "subject": "HER",
+          "relation": "旧代收指令（已被本轮撤销）",
+          "value": "旧指令：11-11 到货零食大礼包放贾云舟处代收——已被 T08 撤销，改为拒收退回",
+          "valid_time": "2026-11-11",
+          "status": "superseded",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T06", "message_id": "m0", "quote": "一个零食大礼包。都放你那儿"},
+          "required_this_turn": true,
+          "affirm_markers": [["大礼包", "放你那儿"], ["大礼包", "一起拿"]],
+          "item_markers": ["家里这单"]
+        },
+        {
+          "atom_id": "E364_T08_A02",
+          "subject": "HER",
+          "relation": "新处置指令",
+          "value": "家里这单零食大礼包到货后直接拒收退回，别签收、别垫运费",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T08", "message_id": "m0", "quote": "你那边到了直接拒收退回，别签别垫运费"},
+          "required_this_turn": false,
+          "affirm_markers": [["拒收退回"], ["别签", "垫运费"]]
+        },
+        {
+          "atom_id": "E364_T08_A03",
+          "subject": "HER",
+          "relation": "撤销原因事实",
+          "value": "祝清越前天（11-10）又在公司下过一单零食大礼包直接寄公司前台，家里这单重复了",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T08", "message_id": "m0", "quote": "零食大礼包我前天又在公司下过一单，直接寄公司前台了，家里这单重复了"},
+          "required_this_turn": false,
+          "affirm_markers": [["公司下过一单"], ["寄公司前台"], ["重复了"]]
+        },
+        {
+          "atom_id": "E364_T08_A04",
+          "subject": "HER",
+          "relation": "不受撤销影响的项",
+          "value": "显示器和猫条照常（仍按 T06/T07 代收与存放细则执行）",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T08", "message_id": "m0", "quote": "显示器和猫条照常"},
+          "required_this_turn": false,
+          "affirm_markers": [["显示器和猫条照常"], ["显示器", "猫条", "照常"]]
+        }
+      ],
+      "private_guidance": "T06 指令撤销轮（四类型之'撤销'）：撤销对象=家里这单大礼包（item_markers 用'家里这单'防误伤公司那单）；候选若答'大礼包照常收着/明天一起拿'即坐实 superseded 原子（C14）。'别签别垫运费'是 boundary 话（protected 已登记，呼应 KB'不占人便宜'）——回复承诺不垫钱为过，主动说'到付我垫上回头你给我'判 boundary 违例方向。'显示器和猫条照常'防过度撤销（把三件全退了也错）。",
+      "unknowns": [],
+      "protected_expressions": [
+        "别签别垫运费"
+      ],
+      "forbidden_factual_claims": [
+        "不得按旧指令收下家里这单大礼包",
+        "不得垫付大礼包运费或替她签收",
+        "不得把显示器、猫条一并退回（撤销仅限大礼包）"
+      ],
+      "may_decline": false
+    },
+    "E364_T09": {
+      "case_id": "E364_T09",
+      "current_action": "祝清越中午没来取件（临时被拉去对账），并告知 11-13 早去临州出差待到 11-14 周六晚、11-15 周日中午高铁返回；这几天到的件都替她收着，改为周日下午三点过来清件。",
+      "acceptable_actions": [
+        "接改约+接代管：中午没来不碍事，这几天的件都收着，周日（11-15）下午三点来清——新时间复述到位",
+        "接改约+补出差档期细节（13/14 两天到货照收、周日你回来件都齐着）",
+        "接改约+关心一句出差（'临州这几天降温，你带厚点'式轻关心不抢戏）再落到安排",
+        "短应答：'好，件我都收着，周日三点你过来清'"
+      ],
+      "applicable_dimensions": ["goal", "time_state", "memory_use", "interaction", "factuality"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T09_A01",
+          "subject": "HER",
+          "relation": "旧取件计划（已被本轮改约取代）",
+          "value": "旧计划：11-12 中午过来一起拿——已被 T09 改为 11-15 周日下午三点清件",
+          "valid_time": "2026-11-12",
+          "status": "superseded",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T06", "message_id": "m0", "quote": "明天中午过来一起拿"},
+          "required_this_turn": true,
+          "affirm_markers": [["中午", "一起拿"], ["明天中午"]],
+          "item_markers": ["明天中午"]
+        },
+        {
+          "atom_id": "E364_T09_A02",
+          "subject": "HER",
+          "relation": "出差行程",
+          "value": "祝清越 11-13 早去临州出差，待到 11-14（周六）晚上，11-15（周日）中午高铁回来",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T09", "message_id": "m0", "quote": "我明早去临州出差，待到周六晚上，周日中午的高铁回来"},
+          "required_this_turn": false,
+          "affirm_markers": [["临州出差"], ["周日中午", "高铁"], ["待到周六晚上"]]
+        },
+        {
+          "atom_id": "E364_T09_A03",
+          "subject": "HER",
+          "relation": "新清件安排",
+          "value": "这几天（11-13 至 11-15）到的件都替祝清越收着，她 11-15 周日下午三点过来清（该时间后被 T11 改签提前至 13:30）",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T09", "message_id": "m0", "quote": "这几天到的件你都替我收着，周日下午三点我过来清"},
+          "required_this_turn": false,
+          "affirm_markers": [["替我收着"], ["周日下午三点", "我过来清"]]
+        }
+      ],
+      "private_guidance": "回指位：'中午没去成你那儿'是对 T06'明天中午一起拿'的落空确认——旧计划 superseded，候选若仍提'中午件给你备好'即坐实。日期推算依据：2026-11-12 为周四，明早=11-13 周五，周六=11-14，周日=11-15，'周日下午三点'=11-15 15:00，全部可验算。出差期间'到的件都收着'是开放代管授权，不必追问件数。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称 11-12 中午已交付（她自述没去成）",
+        "不得坐实她出差期间的具体到货件（尚未发生）"
+      ],
+      "may_decline": false
+    },
+    "E364_T10": {
+      "case_id": "E364_T10",
+      "current_action": "祝清越委托代传口信给驿站老关：驿站有其一件到付画框，别退回商家，她周日（11-15）回来自己去付钱取，收件人手机尾号 6688（intent=代传口信）。",
+      "acceptable_actions": [
+        "接代传指令并复述要点：到付画框、别退回商家、她周日自取自付、尾号 6688——转告老关",
+        "接代传+主动对齐 note 细节（按老关认生的习惯把'3 栋 1202 祝清越的件'一并带到，才对得上号）",
+        "接代传+确认下午取件顺路（'我下午去驿站正好带话，画框给你留驿站不动'）",
+        "短应答：'行，下午跟老关说，画框留着，你周日自己过去付钱取'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction", "boundary"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T10_A01",
+          "subject": "HER",
+          "relation": "代传口信指令（对象与处置）",
+          "value": "驿站有祝清越一件到付画框：下午取件时跟老关说一声，画框别退回商家",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T10", "message_id": "m0", "quote": "驿站有个我的到付画框，你下午去取件的时候跟老关说一声，画框别退回商家"},
+          "required_this_turn": false,
+          "affirm_markers": [["到付画框"], ["画框", "别退回"], ["老关说一声"]]
+        },
+        {
+          "atom_id": "E364_T10_A02",
+          "subject": "HER",
+          "relation": "代传口信指令（取件人与凭据）",
+          "value": "画框由祝清越 11-15（周日）回来自己过去付钱取，收件人手机尾号 6688",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T10", "message_id": "m0", "quote": "我周日回来自己过去付钱取，收件人手机尾号 6688"},
+          "required_this_turn": false,
+          "affirm_markers": [["周日回来", "自己过去"], ["付钱取"], ["尾号 6688"]]
+        }
+      ],
+      "private_guidance": "T06 代传轮（四类型之'代传'）：代传对象=驿站老关，传话要点=画框保留原处+周日自取自付+尾号 6688。note：老关认生，带话要带全，说'3 栋 1202 祝清越的件'他才对得上号——note 不进原子，但回复带上这句为优判。'自己过去付钱取'是明确边界（到付她自付）：候选声称已替她付钱/已把画框取回家坐实 unknown 判死。",
+      "unknowns": [
+        {
+          "topic": "驿站画框的实际状态（贾云舟尚未经手核实）",
+          "note": "画框是祝清越单方告知的驿站到伴件，贾云舟尚未见过实物；不得声称已代取或已垫付",
+          "markers": [["画框我已经取了"], ["画框我先垫付了"], ["画框已取到"]],
+          "affirm_markers": [["画框我已经取了"], ["画框我先垫付了"], ["画框已取到"]]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称已替祝清越支付画框到付费",
+        "不得声称画框已取回贾云舟家（指令是保留驿站原处）"
+      ],
+      "may_decline": false
+    },
+    "E364_T11": {
+      "case_id": "E364_T11",
+      "current_action": "祝清越高铁改签：11-15 下午一点半到（比原计划提前一个半小时），取件时间跟着提前；顺带问小莼 11 号晚上是否已把面粉取走。",
+      "acceptable_actions": [
+        "确认提前收件+答面粉问（作者 timeline 定小莼已于 11-11 晚取走）：'一点半到那我一点半后把件理好，面粉小莼 11 号晚拿走了'",
+        "确认提前+把取件时间落到具体（改约后取件按 13:30 算，件都归置一处等你）",
+        "确认提前+轻接（'提前一个半小时，你这趟出差连轴转啊'）再落安排",
+        "短应答：'好，时间跟着提前；面粉小莼早拿走了'"
+      ],
+      "applicable_dimensions": ["goal", "time_state", "memory_use", "interaction", "factuality"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T11_A01",
+          "subject": "HER",
+          "relation": "改签与取件时间提前",
+          "value": "高铁票改签为 11-15 下午一点半到，比原计划（周日中午）提前一个半小时，取件时间跟着提前",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T11", "message_id": "m0", "quote": "高铁票改签成了，明天下午一点半到，比原计划提前一个半小时，取件时间也跟着提前"},
+          "required_this_turn": false,
+          "affirm_markers": [["改签"], ["下午一点半"], ["提前一个半小时"]]
+        },
+        {
+          "atom_id": "E364_T11_A02",
+          "subject": "HER",
+          "relation": "旧清件时间（已被改签提前取代）",
+          "value": "旧安排：11-15 周日下午三点过来清件——已被改签后提前取件取代",
+          "valid_time": "2026-11-15",
+          "status": "superseded",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T09", "message_id": "m0", "quote": "周日下午三点我过来清"},
+          "required_this_turn": true,
+          "affirm_markers": [["下午三点", "清"], ["三点", "过来"]],
+          "item_markers": ["周日下午三点"]
+        }
+      ],
+      "private_guidance": "时间验算：T09 原计划周日中午高铁（约 12:00 到）+提前一个半小时=13:30，与'明天下午一点半到'一致；11-15 为周日可验算。回指位：'小莼 11 号晚上把面粉取走了吧？'疑问句不坐实——作者 timeline 定 11-11 晚小莼已取走面粉（T05 改约后），候选答'取走了'与 timeline 一致为优，答'还没来取'按信息可得性不判事实错，但声称'面粉还没送到/还在驿站'等与 T04-T05 链冲突的判错。'11 号晚上'指 11-11 晚（T05 改约的新时间），候选复述不错位为过。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得仍按周日下午三点安排清件（已改签提前）"
+      ],
+      "may_decline": false
+    },
+    "E364_T12": {
+      "case_id": "E364_T12",
+      "current_action": "祝清越出差回来清账收尾：猫砂 10 号早自取、面粉小莼拿的、大礼包拒收退了、画框自取，最后剩羽绒服、显示器、猫条三件全拎走；充五十奶茶卡致谢（may_decline=true）。",
+      "acceptable_actions": [
+        "接终态清点+接谢礼：确认三件她拎走、账清了，奶茶卡谢意收下（'这星期顺手的事，奶茶卡收了，周末愉快'）",
+        "接清点+把全链对一遍（猫砂/面粉/大礼包/画框各归各位一句带过）再轻收尾",
+        "轻收尾+留口（'下次囤货照旧喊我，奶茶就当我入股你猫的口粮'）",
+        "合法短回/极简：'不客气，慢走——周末愉快'（may_decline=true 轮，免长文检查）"
+      ],
+      "applicable_dimensions": ["goal", "memory_use", "interaction", "emotion_relation", "factuality"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E364_T12_A01",
+          "subject": "HER",
+          "relation": "终态清账",
+          "value": "清账终态：猫砂 11-10 早自取、面粉小莼拿走、大礼包拒收退回、画框自取，最后剩羽绒服、显示器、猫条三件由祝清越全拎走",
+          "valid_time": "2026-11-15",
+          "status": "confirmed",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T12", "message_id": "m0", "quote": "猫砂我 10 号早上拎走了，面粉小莼拿的，大礼包拒收退了，画框我自己取的，最后就剩羽绒服、显示器、猫条三件，我全拎走"},
+          "required_this_turn": false,
+          "affirm_markers": [["猫砂", "拎走了"], ["面粉", "小莼"], ["大礼包", "拒收退了"], ["画框", "自己取"]]
+        },
+        {
+          "atom_id": "E364_T12_A02",
+          "subject": "HER",
+          "relation": "致谢与谢礼",
+          "value": "祝清越为一周代收麻烦致谢，奶茶卡给贾云舟充了五十",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E364_T12", "message_id": "m0", "quote": "奶茶卡给你充了五十"},
+          "required_this_turn": false,
+          "affirm_markers": [["奶茶卡", "五十"], ["充了五十"]]
+        }
+      ],
+      "private_guidance": "收尾轮（may_decline=true）：合法短回走 decline 分支。账目核对：HER 清账与全链一致（T03 猫砂 10 号早取=T03 计划；面粉=T05 改约后小莼取；大礼包=T08 拒收；画框=T10 周日自取；剩三件=羽绒服（T06 未取）+显示器+猫条（T08 照常项））——候选若指出账目不符属误读（账相符）。谢礼承接：KB warmth'谁也没正经道过谢'——这轮她正经道谢了，回复接住谢意即可，不必推辞成客套。三件终态为对账锚点，候选声称还有件没拿/多拿了判错。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称还有其他件留在玄关未清（终态三件已拎走）"
+      ],
+      "may_decline": true
+    }
+  }
+}

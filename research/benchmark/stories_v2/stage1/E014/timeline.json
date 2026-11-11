@@ -1,0 +1,151 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E014",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E014_T01",
+   "clock": "2026-11-05 21:12"
+  },
+  {
+   "case_id": "E014_T02",
+   "clock": "2026-11-05 21:22"
+  },
+  {
+   "case_id": "E014_T03",
+   "clock": "2026-11-05 21:32"
+  },
+  {
+   "case_id": "E014_T04",
+   "clock": "2026-11-05 21:40"
+  },
+  {
+   "case_id": "E014_T05",
+   "clock": "2026-11-05 21:49"
+  },
+  {
+   "case_id": "E014_T06",
+   "clock": "2026-11-05 21:58"
+  },
+  {
+   "case_id": "E014_T07",
+   "clock": "2026-11-05 22:07"
+  },
+  {
+   "case_id": "E014_T08",
+   "clock": "2026-11-05 22:14"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E014_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 21:10",
+   "quote": "你是陈屿吧？我刚在同学群看到你发的工地照片，差点没认出来"
+  },
+  {
+   "case_id": "E014_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 21:18",
+   "quote": "是我 你是林知？"
+  },
+  {
+   "case_id": "E014_T02",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-05 21:20",
+   "quote": "对 你这几年都在上海吗 我记得你以前说想去做古建"
+  },
+  {
+   "case_id": "E014_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 21:30",
+   "quote": "我后来没学建筑 去做了HR 现在天天劝人别冲动离职 挺讽刺的"
+  },
+  {
+   "case_id": "E014_T04",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 21:38",
+   "quote": "你还在画图吗 还是已经当老板了"
+  },
+  {
+   "case_id": "E014_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 21:47",
+   "quote": "其实我找你是有个事 我们公司想找建筑设计做一个小展厅 预算不高 你要是有兴趣我可以把需求发你"
+  },
+  {
+   "case_id": "E014_T06",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 21:56",
+   "quote": "预算真的不高 可能只够你们出一版概念 我不想让你白忙"
+  },
+  {
+   "case_id": "E014_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 22:05",
+   "quote": "不过就算不做 也挺高兴重新联系上 你以前借我的那本建筑画册我还留着"
+  },
+  {
+   "case_id": "E014_T08",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 22:12",
+   "quote": "我先不打扰你了 需求我明天整理好发你 你看了再决定"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "高中同学群看到工地照",
+   "event_time": "2026-11-05 21:10",
+   "status": "occurred",
+   "source_turn": "E014_T01"
+  },
+  {
+   "event_id": "EV2",
+   "label": "她明天整理展厅需求",
+   "event_time": "2026-11-06 18:00",
+   "status": "planned",
+   "source_turn": "E014_T08"
+  },
+  {
+   "event_id": "EV3",
+   "label": "可能的小展厅合作",
+   "event_time": "2026-11-06 之后",
+   "status": "uncertain",
+   "source_turn": "E014_T05"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "旧同学重新联系"
+  },
+  {
+   "turn": "T05",
+   "stage": "旧同学+潜在甲方"
+  },
+  {
+   "turn": "T08",
+   "stage": "保留旧情谊，工作另说"
+  }
+ ],
+ "revisions": [
+  {
+   "case_id": "E014_T08",
+   "kind": "intent",
+   "status": "ADJUSTED",
+   "text": "先把需求发给他，不催决定",
+   "enabled": true
+  }
+ ],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

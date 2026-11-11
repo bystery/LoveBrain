@@ -1,0 +1,56 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A4 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_b_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:49:41",
+      "window_last_attempt": "2026-11-08 16:50:20",
+      "attempts": 25,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_b/{DIRECT,CURRENT}/E314/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "借她空档主动邀约的时机与理由",
+    "日常拼桌到见面安排的转折",
+    "约定确认",
+    "轻收尾留余地"
+  ],
+  "title": "最后一炉碱水结",
+  "may_decline_turns": [
+    "E314_T05",
+    "E314_T12"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "社区生活",
+  "primary_topic": "T04",
+  "lineage_group_id": "LG-E314",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E314/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A4",
+  "hashes": {
+    "episode.json": "cc1396d120360c1365207620a2f32ec39f10df7fe02c627e4fc322deaac6122d",
+    "reference.json": "882393cb3b6a6b66082be1a6b9e9244d0668a3db36d50d2a6db4145578f86989",
+    "timeline.json": "059ae863583eecffe65edc81ca21a5365265f2dd1e8597d2094569a2b44e7b56",
+    "audit.md": "9fc67bb7b574b810e8d51fa0a6b2f457642963333db9dec61525c84577c8f165",
+    "composite": "5e419b01cbd92ddd9de1c14befb458ef72b8d6a104c61be642ce01d95ec39a5c"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

@@ -1,0 +1,1245 @@
+[
+ {
+  "episode_id": "P001",
+  "persona": {
+   "me": "30岁，男，天津，做物流调度；平时沿海河晨跑，她线下见过两次、有好感，聊天想开新话头但怕冷场",
+   "her": "28岁，女，天津，做口腔诊所前台；也在沿河跑步，这周膝盖不太舒服，聊天看状态、有时一句话带过"
+  },
+  "initial_kb": {
+   "me": "沿海河晨跑，正备半程马拉松",
+   "her": "膝盖最近不舒服，暂时减量、不想硬跑",
+   "warmth": "线下见过两次，聊天聊得来但话头容易断",
+   "stage": "还没确立关系，算有好感的接触初期"
+  },
+  "gold": {},
+  "turns": [
+   {
+    "case_id": "P001_T01",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "今天河边风好大 跑了两公里就顶不住",
+       "ts": "2026-11-11 07:35"
+      }
+     ],
+     "clock": "2026-11-11 07:40",
+     "may_decline": false,
+     "note": "先接住她这句'顶不住'，别一上来就抛新话题/新邀约"
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P001_T02",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "顶不住就早点回 别跟膝盖较劲",
+       "ts": "2026-11-11 07:50"
+      },
+      {
+       "role": "HER",
+       "text": "嗯",
+       "ts": "2026-11-11 07:52"
+      }
+     ],
+     "clock": "2026-11-11 07:55",
+     "may_decline": false,
+     "note": "她这条很干(低信息)；话题快断了。正确动作是接住这份平淡、用她自己的兴趣起一个轻话头，或坦然就这么停——不是连环追问填满",
+     "intent": {
+      "enabled": true,
+      "text": "话题快断了；想用她聊过的兴趣开一个轻量新钩子，但别把话塞太满",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P001_T03",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "那先别跑了 你之前不是提过想骑车? 算不算个方向",
+       "ts": "2026-11-11 08:12"
+      },
+      {
+       "role": "HER",
+       "text": "骑车我倒是有点兴趣 得看我那天状态",
+       "ts": "2026-11-11 08:18"
+      }
+     ],
+     "clock": "2026-11-11 08:20",
+     "may_decline": false,
+     "note": "她给了半句兴趣但带保留(看状态)；这是暂定，可顺势但别把'一起骑车'说成已约好",
+     "intent": {
+      "enabled": true,
+      "text": "她对骑车有兴趣但要'看状态'；把'想约骑'降级成暂定，别催",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P001_T04",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "这周末我可能得排班 不一定骑得成",
+       "ts": "2026-11-11 08:32"
+      }
+     ],
+     "clock": "2026-11-11 08:35",
+     "may_decline": true,
+     "note": "反信号：她推迟并给不确定；记成暂定、别追死到底去不去",
+     "intent": {
+      "enabled": false,
+      "text": "她自己说再看排班；本轮别再往前推",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P001_T05",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "对了 你那个半马到底跑完没呀",
+       "ts": "2026-11-11 20:05"
+      }
+     ],
+     "clock": "2026-11-11 20:10",
+     "may_decline": false,
+     "note": "她把话题从骑车挪到半马；跟着聊半马，别硬拐回骑车/约会",
+     "intent": {
+      "enabled": false,
+      "text": "",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P001_T06",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "跑完了 最后几公里差点走下来",
+       "ts": "2026-11-11 20:22"
+      },
+      {
+       "role": "HER",
+       "text": "哈哈 那你下次再跑 我能在终点给你递瓶水",
+       "ts": "2026-11-11 20:28"
+      }
+     ],
+     "clock": "2026-11-11 20:30",
+     "may_decline": false,
+     "note": "她主动递了个暖话头(递水)；正向接住、高兴一下，但别把'下次'当场敲成具体哪天",
+     "intent": {
+      "enabled": true,
+      "text": "她主动给话头；顺势接住并把大致方向对上，别逼具体日期",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P001_T07",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "或者你定个时间跟我说声 我看排班",
+       "ts": "2026-11-11 20:42"
+      }
+     ],
+     "clock": "2026-11-11 20:45",
+     "may_decline": false,
+     "note": "她把'你定我再看'——仍是开放不是答应；回一句自然即可，别急着把日程铺满",
+     "intent": {
+      "enabled": true,
+      "text": "她愿配合看排班；把话头保持开放，先不锁定",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P001_T08",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "今天有点累 先睡了 水的事我记着",
+       "ts": "2026-11-12 22:00"
+      }
+     ],
+     "clock": "2026-11-12 22:05",
+     "may_decline": true,
+     "note": "她说困了→允许干净收尾，留个开放即可，别又抛新约或长篇",
+     "intent": {
+      "enabled": false,
+      "text": "收尾，无需再推进",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   }
+  ]
+ },
+ {
+  "episode_id": "P002",
+  "persona": {
+   "me": "31岁，男，长沙，做活动策划；爱抖机灵，想多认识人但保持分寸，不越界",
+   "her": "30岁，女，长沙，做行政；爱玩剧本杀，这周正张罗搬家，聊天跳脱、爱改话题"
+  },
+  "initial_kb": {
+   "her": "爱玩剧本杀，这周在收拾搬家的东西",
+   "warmth": "公司团建认识，后来偶尔拼本，属朋友局不是单独约会",
+   "stage": "半熟朋友，想多走动但保持分寸"
+  },
+  "gold": {},
+  "turns": [
+   {
+    "case_id": "P002_T01",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "刚拼完一个本 笑到头掉 你玩过没有",
+       "ts": "2026-11-10 20:26"
+      }
+     ],
+     "clock": "2026-11-10 20:30",
+     "may_decline": false,
+     "note": "她在开新话头；接住剧本杀这个由头，自然聊，别急着组局",
+     "intent": {
+      "enabled": true,
+      "text": "顺着剧本杀这个话头聊开，为以后拼本留个由头，但别当已约",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P002_T02",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "下次有合适的本我叫上你一起?",
+       "ts": "2026-11-10 20:40"
+      },
+      {
+       "role": "HER",
+       "text": "随便啊 都行",
+       "ts": "2026-11-10 20:43"
+      }
+     ],
+     "clock": "2026-11-10 20:45",
+     "may_decline": false,
+     "note": "反信号/低信息：她反应很淡；别追问'到底去不去'，轻松接住或就此放着都行",
+     "intent": {
+      "enabled": true,
+      "text": "她反应淡；把'想组局'降级成不催，有再说",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P002_T03",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "不说了 我搬家那些纸箱还没拆 头大",
+       "ts": "2026-11-10 20:58"
+      }
+     ],
+     "clock": "2026-11-10 21:00",
+     "may_decline": false,
+     "note": "她把话题从剧本杀切到搬家；跟着搬家聊，别硬拽回拼本",
+     "intent": {
+      "enabled": false,
+      "text": "",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P002_T04",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "搬家是大工程 你分几趟弄?",
+       "ts": "2026-11-10 21:10"
+      },
+      {
+       "role": "HER",
+       "text": "你要是有空能帮我搬两箱 我请你喝东西",
+       "ts": "2026-11-10 21:13"
+      }
+     ],
+     "clock": "2026-11-10 21:15",
+     "may_decline": false,
+     "note": "机会/玩笑：她半开玩笑递'帮忙换喝东西'；可接住善意与玩笑，但别把它当成已定的单独约、也别擅自定哪天去搬",
+     "intent": {
+      "enabled": true,
+      "text": "接住她递的话头；私下想多亲近一点，只调口吻，别写成她已答应",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P002_T05",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "哈哈我瞎说的 别当真 我都约好搬家公司了",
+       "ts": "2026-11-10 21:25"
+      }
+     ],
+     "clock": "2026-11-10 21:28",
+     "may_decline": false,
+     "note": "反信号：她收回上一句、说已约好搬家公司；顺势轻松收回，别失落也别硬促成",
+     "intent": {
+      "enabled": false,
+      "text": "她已经收回；别再往前推搬家这事",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P002_T06",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "拆完更乱了",
+       "ts": "2026-11-10 21:38"
+      }
+     ],
+     "clock": "2026-11-10 21:40",
+     "may_decline": true,
+     "note": "低信息平淡轮；接一句就好，别为填满而长篇",
+     "intent": {
+      "enabled": false,
+      "text": "",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P002_T07",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "下周有个新本 人多 我可以喊你拼个群局",
+       "ts": "2026-11-10 21:50"
+      },
+      {
+       "role": "HER",
+       "text": "下周末有本可以给我留个位置 人多热闹",
+       "ts": "2026-11-10 21:53"
+      }
+     ],
+     "clock": "2026-11-10 21:55",
+     "may_decline": false,
+     "note": "机会：她回到拼本话头、主动说'留位置'；正向接住、按多人群局理解，别擅自改成二人约会",
+     "intent": {
+      "enabled": true,
+      "text": "她愿进群局；把话头保持为多人局，先别谈单独",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P002_T08",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "先这样 我那箱书明天要寄快递 困了",
+       "ts": "2026-11-11 23:00"
+      }
+     ],
+     "clock": "2026-11-11 23:05",
+     "may_decline": true,
+     "note": "收尾：她要忙/要睡；自然收，别把快递话题又展成长聊或当场逼定拼本日期",
+     "intent": {
+      "enabled": false,
+      "text": "收尾，无需推进",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   }
+  ]
+ },
+ {
+  "episode_id": "P003",
+  "persona": {
+   "me": "26岁，男，厦门，做健身教练；跟她互相调侃、有点暧昧，想推进但会看她的反应",
+   "her": "25岁，女，厦门，做平面设计；抱石新手，爱怼回来、吃幽默那一套，不喜欢被说教"
+  },
+  "initial_kb": {
+   "her": "刚学抱石，老掉在简单线路上，爱嘴硬",
+   "warmth": "在岩馆认识，平时互相调侃，没正式在一起",
+   "stage": "有点暧昧，靠玩笑来回试探"
+  },
+  "gold": {},
+  "turns": [
+   {
+    "case_id": "P003_T01",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "今天抱石又摔了 都怪这鞋不行",
+       "ts": "2026-11-13 19:16"
+      }
+     ],
+     "clock": "2026-11-13 19:20",
+     "may_decline": false,
+     "note": "她在找借口；可打趣但别真把'鞋子不行'当现场结论下",
+     "intent": {
+      "enabled": true,
+      "text": "想借玩笑把气氛拉近一点，别一本正经",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P003_T02",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "又赖鞋 它招谁惹谁了",
+       "ts": "2026-11-13 19:30"
+      },
+      {
+       "role": "HER",
+       "text": "切",
+       "ts": "2026-11-13 19:33"
+      }
+     ],
+     "clock": "2026-11-13 19:35",
+     "may_decline": false,
+     "note": "反信号/低信息：一个'切'把热度降了；别追着继续怼，轻轻带过或换个软一点的接法都行",
+     "intent": {
+      "enabled": true,
+      "text": "她降了温；把调情收一点，别升级",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P003_T03",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "下次你带路呗 我怕又摔",
+       "ts": "2026-11-13 19:46"
+      }
+     ],
+     "clock": "2026-11-13 19:50",
+     "may_decline": false,
+     "note": "机会/关系推进：她把'带路'递过来，是暧昧钩子；可顺势往前推一点，但别把'下次'写成已定哪天",
+     "intent": {
+      "enabled": true,
+      "text": "想把'下次一起爬'顺势往前推一点，保持暂定",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P003_T04",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "开玩笑的啦 我自己也能爬",
+       "ts": "2026-11-13 20:02"
+      }
+     ],
+     "clock": "2026-11-13 20:05",
+     "may_decline": false,
+     "note": "反信号：她收回、强调独立；尊重她的能动性，别赌气也别追着劝",
+     "intent": {
+      "enabled": false,
+      "text": "她收回了带路；本轮别再往前推",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P003_T05",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "行行行你最厉害",
+       "ts": "2026-11-13 20:14"
+      },
+      {
+       "role": "HER",
+       "text": "其实今天被教练凶得有点想哭 你别笑我",
+       "ts": "2026-11-13 20:18"
+      }
+     ],
+     "clock": "2026-11-13 20:20",
+     "may_decline": false,
+     "note": "情绪 bid：她这时要的是被接住，不是玩笑；先认真承接，别急着抖机灵或调情",
+     "intent": {
+      "enabled": true,
+      "text": "她从玩笑切到情绪；把调情换成陪伴",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P003_T06",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "谁凶你了 说来听听",
+       "ts": "2026-11-13 20:30"
+      },
+      {
+       "role": "HER",
+       "text": "被你这么一说舒服多了 你这人还行",
+       "ts": "2026-11-13 20:33"
+      }
+     ],
+     "clock": "2026-11-13 20:35",
+     "may_decline": false,
+     "note": "关系推进：缓和后她给了暖意；可轻轻回撩/接住这份近，但别趁虚表白或仓促定关系",
+     "intent": {
+      "enabled": true,
+      "text": "接住她的暖意、语气可以更近，别升级为表白逼定",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P003_T07",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "那是 我平时挺低调的",
+       "ts": "2026-11-13 20:44"
+      },
+      {
+       "role": "HER",
+       "text": "嗯 不气了",
+       "ts": "2026-11-13 20:45"
+      }
+     ],
+     "clock": "2026-11-13 20:48",
+     "may_decline": true,
+     "note": "低信息缓冲轮；接一句轻的即可，别硬续新话题",
+     "intent": {
+      "enabled": false,
+      "text": "情绪已缓；不用再加码",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P003_T08",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "困了 下次再说带不带路吧 晚安",
+       "ts": "2026-11-14 22:56"
+      }
+     ],
+     "clock": "2026-11-14 23:00",
+     "may_decline": true,
+     "note": "收尾：她把'下次'留着、要睡了；干净收尾留开放，别当场逼定哪天爬、别把晚安硬接成表白",
+     "intent": {
+      "enabled": false,
+      "text": "收尾，留开放不锁定",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   }
+  ]
+ },
+ {
+  "episode_id": "P004",
+  "persona": {
+   "me": "30岁，男，重庆，做程序员；跟她认识七八年，最近有点好感，但不愿为这个毁友情",
+   "her": "29岁，女，重庆，做私房菜/美食博主；刚结束一段关系，明确说不想谈，爱互损"
+  },
+  "initial_kb": {
+   "her": "会做饭、爱研究吃的，刚和上一段分开不久，暂时不想谈恋爱",
+   "warmth": "认识七八年的老朋友，平时爱互相损",
+   "stage": "老朋友；她目前对恋爱是关着的"
+  },
+  "gold": {},
+  "turns": [
+   {
+    "case_id": "P004_T01",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "第一次试着做你老家那道菜 翻车了哈哈",
+       "ts": "2026-11-10 18:55"
+      }
+     ],
+     "clock": "2026-11-10 19:00",
+     "may_decline": false,
+     "note": "她在分享+自嘲；接住玩笑和这份分享就好，别急着拐到暧昧"
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P004_T02",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "翻车现场呢 发来看看",
+       "ts": "2026-11-10 19:10"
+      },
+      {
+       "role": "HER",
+       "text": "改天吧",
+       "ts": "2026-11-10 19:12"
+      }
+     ],
+     "clock": "2026-11-10 19:15",
+     "may_decline": false,
+     "note": "反信号/低信息：她一句'改天吧'很淡；别追问'到底给不给看'，轻松带过",
+     "intent": {
+      "enabled": true,
+      "text": "她反应淡；先收回一点，别趁势往前",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P004_T03",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "你这是怕留下笑柄啊",
+       "ts": "2026-11-10 19:25"
+      },
+      {
+       "role": "HER",
+       "text": "你每次损我都记仇 要不要找机会来验收我新手艺",
+       "ts": "2026-11-10 19:28"
+      }
+     ],
+     "clock": "2026-11-10 19:30",
+     "may_decline": false,
+     "note": "机会/调侃：她半开玩笑喊'来验收手艺'；可接住这个玩笑与善意，但别把它当成确定的单独约、更别读成她愿意谈",
+     "intent": {
+      "enabled": true,
+      "text": "私下确有好感、想多亲近一点；只体现在口吻，别把她这句玩笑写成她已答应",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P004_T04",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "等等 我说的是几个朋友一起来吃 你别多想 我现在真不想谈那些",
+       "ts": "2026-11-10 19:41"
+      }
+     ],
+     "clock": "2026-11-10 19:45",
+     "may_decline": false,
+     "note": "反信号(强)：她明确澄清是多人朋友局+现在不想谈；必须接住、尊重，别失落绑架、别把'别多想'当欲拒还迎继续推",
+     "intent": {
+      "enabled": false,
+      "text": "她把门关上；本轮停止任何往恋爱方向的推进",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P004_T05",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "想多的是你 我又不催你",
+       "ts": "2026-11-10 19:55"
+      },
+      {
+       "role": "HER",
+       "text": "谢啦 还是你懂我 刚分开确实有点难",
+       "ts": "2026-11-10 19:58"
+      }
+     ],
+     "clock": "2026-11-10 20:00",
+     "may_decline": false,
+     "note": "情绪 bid：她在讲刚分开的难；此刻纯朋友式承接，别趁机表好感或递暧昧信号",
+     "intent": {
+      "enabled": false,
+      "text": "只接情绪，不推进",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P004_T06",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "对了那道菜到底放啥呀 我妈都不告诉我",
+       "ts": "2026-11-10 20:12"
+      }
+     ],
+     "clock": "2026-11-10 20:15",
+     "may_decline": false,
+     "note": "她把话题转到请教做菜；自然给答案就行，别又扯回感情（也无需每轮申明资料不足）",
+     "intent": {
+      "enabled": false,
+      "text": "话题在菜上，不推进",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P004_T07",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "秘方 怕你出师抢我生意",
+       "ts": "2026-11-10 20:25"
+      },
+      {
+       "role": "HER",
+       "text": "我就想把日子先过顺 别的先随缘",
+       "ts": "2026-11-10 20:28"
+      }
+     ],
+     "clock": "2026-11-10 20:30",
+     "may_decline": false,
+     "note": "她透露生活态度/价值观；认真接一句、不评判也别硬灌'你应该怎样'",
+     "intent": {
+      "enabled": true,
+      "text": "她在表态；陪她聊这点，别当推进窗口",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P004_T08",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "不聊了 明天还早起出摊 下次朋友局叫上你",
+       "ts": "2026-11-11 22:26"
+      }
+     ],
+     "clock": "2026-11-11 22:30",
+     "may_decline": true,
+     "note": "收尾：朋友局是开放但不是私人约；别当场逼定、别把'下次'读成承诺",
+     "intent": {
+      "enabled": false,
+      "text": "收尾，留朋友式的开放",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   }
+  ]
+ },
+ {
+  "episode_id": "P005",
+  "persona": {
+   "me": "34岁，男，苏州，做会计；干了十年账，偷偷想转行做木作，纠结，愿意跟她说心里话",
+   "her": "33岁，女，苏州，做中学语文老师；也在犹豫要不要读研换方向，聊天偏深，但累时不想聊太重的"
+  },
+  "initial_kb": {
+   "me": "做了十年会计，想转行做木作，这事平时不轻易讲",
+   "her": "也在犹豫要不要辞/考研换赛道",
+   "warmth": "认识多年的老友，能说心里话",
+   "stage": "老朋友，精神交流为主，不一定往暧昧走"
+  },
+  "gold": {},
+  "turns": [
+   {
+    "case_id": "P005_T01",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "你最近是不是不太对 又是睡不好的那种?",
+       "ts": "2026-11-12 20:55"
+      }
+     ],
+     "clock": "2026-11-12 21:00",
+     "may_decline": false,
+     "note": "她主动往深里走；可以慢慢说，别拿玩笑全挡开，但也别一次把话倒完",
+     "intent": {
+      "enabled": true,
+      "text": "想把转行这桩心事跟她讲讲",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P005_T02",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "被你看出 我总想着辞了去做木作",
+       "ts": "2026-11-12 21:10"
+      },
+      {
+       "role": "HER",
+       "text": "我懂那种感觉 稳定久了反而发慌",
+       "ts": "2026-11-12 21:13"
+      }
+     ],
+     "clock": "2026-11-12 21:15",
+     "may_decline": false,
+     "note": "她在共鸣价值观；接住这份理解继续聊，别急着要她给建议或评判",
+     "intent": {
+      "enabled": true,
+      "text": "深聊进行中；顺着她的共鸣往下说",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P005_T03",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "不过今天太累了 脑子转不动 这个咱改天再说",
+       "ts": "2026-11-12 21:27"
+      }
+     ],
+     "clock": "2026-11-12 21:30",
+     "may_decline": true,
+     "note": "反信号：她暂缓深聊(累)；尊重、收住，别趁她累继续深挖",
+     "intent": {
+      "enabled": true,
+      "text": "她要先歇；把这次深聊放慢、留到下次",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P005_T04",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "昨晚说的木作那事 我一直想着 你为什么非做那个不可",
+       "ts": "2026-11-13 08:15"
+      }
+     ],
+     "clock": "2026-11-13 08:20",
+     "may_decline": false,
+     "note": "她隔天回来追问'为什么'，是价值观层的问题；值得认真答，别灌空泛鸡汤",
+     "intent": {
+      "enabled": true,
+      "text": "回到深话题；认真说清自己在意什么",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P005_T05",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "坐账本前那几年 我总觉得自己快空了",
+       "ts": "2026-11-13 08:33"
+      },
+      {
+       "role": "HER",
+       "text": "其实我也卡在要不要考 怕辜负这编制",
+       "ts": "2026-11-13 08:38"
+      }
+     ],
+     "clock": "2026-11-13 08:40",
+     "may_decline": false,
+     "note": "她掏出自己的两难；接住她的纠结，别替她拍板辞不辞（不越权给确定答案）",
+     "intent": {
+      "enabled": true,
+      "text": "她也交底了；陪她把这层想清楚，不替她决定",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P005_T06",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "算了不想了 越想越乱 先睡了",
+       "ts": "2026-11-13 08:56"
+      }
+     ],
+     "clock": "2026-11-13 09:00",
+     "may_decline": true,
+     "note": "收尾：她不想再深聊、要收；尊重收尾，别追一句'那你到底想怎样'",
+     "intent": {
+      "enabled": false,
+      "text": "她要收；不推进",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P005_T07",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "早 昨晚睡得沉 没回你",
+       "ts": "2026-11-14 09:05"
+      }
+     ],
+     "clock": "2026-11-14 09:10",
+     "may_decline": false,
+     "note": "低信息日常回访；轻松接一句就好，别把'没回'上升到情绪事件",
+     "intent": {
+      "enabled": false,
+      "text": "日常问候，不推进",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P005_T08",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "改天约个地方慢慢聊木作和考研的事? 我先想想",
+       "ts": "2026-11-15 21:15"
+      }
+     ],
+     "clock": "2026-11-15 21:20",
+     "may_decline": true,
+     "note": "收尾/开放：她抛出一个'改天见面聊'但要先想想；别当场把时间和地点逼死，把节奏还她",
+     "intent": {
+      "enabled": true,
+      "text": "她开放下次深聊但没定；保持开放，不锁定",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   }
+  ]
+ },
+ {
+  "episode_id": "P006",
+  "persona": {
+   "me": "32岁，男，昆明，做工程师；家里催婚、相亲认识她，想真诚了解但不装",
+   "her": "31岁，女，昆明，做护士；常和父亲去钓鱼，对家庭节奏有自己的看法，不轻易交底"
+  },
+  "initial_kb": {
+   "her": "常和父亲去钓鱼，节奏慢，不太爱交浅言深",
+   "warmth": "家里介绍相亲，见过两面，还在互相了解",
+   "stage": "相亲初期，她想认真但不快"
+  },
+  "gold": {},
+  "turns": [
+   {
+    "case_id": "P006_T01",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "今天跟我爸去钓鱼 一条没钓上 他还是特开心",
+       "ts": "2026-11-14 20:05"
+      }
+     ],
+     "clock": "2026-11-14 20:10",
+     "may_decline": false,
+     "note": "她在分享、露出家庭/价值观线索；自然接，别急着评价她爸或立刻深挖",
+     "intent": {
+      "enabled": true,
+      "text": "想真诚多了解她一点",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P006_T02",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "空军也开心 你这心态随你爸?",
+       "ts": "2026-11-14 20:18"
+      },
+      {
+       "role": "HER",
+       "text": "我就喜欢这种不用赶的 你家是不是催得紧那种",
+       "ts": "2026-11-14 20:22"
+      }
+     ],
+     "clock": "2026-11-14 20:25",
+     "may_decline": false,
+     "note": "她聊生活节奏、带出'家里催'的价值差异；可真实回应你的看法，别为讨好硬附和、也别评判她",
+     "intent": {
+      "enabled": true,
+      "text": "深聊价值观；如实说自己的看法",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P006_T03",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "诶 你上次不还说自己常钓鱼吗 跟你爸?",
+       "ts": "2026-11-14 20:36"
+      }
+     ],
+     "clock": "2026-11-14 20:40",
+     "may_decline": false,
+     "note": "个人史未知：题面里并没有你'常钓鱼'的记录，她可能记岔。判断的是姿态——别顺着编一段没发生的个人记忆，也别把'我记得我没说过'当成已核实的定论",
+     "intent": {
+      "enabled": true,
+      "text": "她安了个你没说过的话；先弄清事实，不编也不硬顶",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P006_T04",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "我钓鱼其实很少 你记岔啦哈哈",
+       "ts": "2026-11-14 20:50"
+      },
+      {
+       "role": "HER",
+       "text": "逗你呢 不聊了 我要去上夜班了",
+       "ts": "2026-11-14 20:52"
+      }
+     ],
+     "clock": "2026-11-14 20:55",
+     "may_decline": true,
+     "note": "反信号：她把话题收住、去上班；尊重、别追着'你干嘛回避'，也别留长篇",
+     "intent": {
+      "enabled": false,
+      "text": "她要上班；本轮不推进",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P006_T05",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "夜班辛苦 今天能歇会儿不",
+       "ts": "2026-11-15 08:25"
+      },
+      {
+       "role": "HER",
+       "text": "歇一天 想去湖边发发呆 不钓鱼",
+       "ts": "2026-11-15 08:28"
+      }
+     ],
+     "clock": "2026-11-15 08:30",
+     "may_decline": false,
+     "note": "机会：她重新给话头(去湖边发呆)；可接住、给个轻松的陪伴方向，但别擅自把'一起去'说成已约",
+     "intent": {
+      "enabled": true,
+      "text": "接她的话头；给轻松的方向，别擅自定同行",
+      "status": "ACTIVE"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P006_T06",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "发呆也挺好 不用赶",
+       "ts": "2026-11-15 08:40"
+      },
+      {
+       "role": "HER",
+       "text": "我妈老催我找个有房的 我觉得日子是自己过的",
+       "ts": "2026-11-15 08:43"
+      }
+     ],
+     "clock": "2026-11-15 08:45",
+     "may_decline": false,
+     "note": "价值观交底；认真接住她的立场，不评判她母亲、也别替她下'你该怎么办'的结论。此处自然承接她的分享本身就是合格动作，不必再追问",
+     "intent": {
+      "enabled": true,
+      "text": "她在交底；陪她把这点聊开，不评判不代决定",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P006_T07",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "你这想法挺清楚的",
+       "ts": "2026-11-15 08:55"
+      },
+      {
+       "role": "HER",
+       "text": "嗯",
+       "ts": "2026-11-15 08:57"
+      }
+     ],
+     "clock": "2026-11-15 09:00",
+     "may_decline": false,
+     "note": "低信息缓冲轮；接一句轻的或就此停都行，别连环追问填满",
+     "intent": {
+      "enabled": true,
+      "text": "她给个'嗯'；不用再加码",
+      "status": "ADJUSTED"
+     }
+    },
+    "gold": {}
+   },
+   {
+    "case_id": "P006_T08",
+    "turn_type": "reply",
+    "input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "先这样 下周再约也看缘分吧 我睡了",
+       "ts": "2026-11-15 09:16"
+      }
+     ],
+     "clock": "2026-11-15 09:20",
+     "may_decline": true,
+     "note": "收尾：她开放'下周再约'但说'看缘分'、要睡；干净收尾、把主动权还她，别当场把'下周'逼成确定约会",
+     "intent": {
+      "enabled": false,
+      "text": "收尾；'下周'留开放不锁定",
+      "status": "CLOSED"
+     }
+    },
+    "gold": {}
+   }
+  ]
+ }
+]

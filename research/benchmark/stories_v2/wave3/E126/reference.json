@@ -1,0 +1,428 @@
+{
+ "story_id": "E126",
+ "turns": {
+  "E126_T01": {
+   "case_id": "E126_T01",
+   "current_action": "接下今晚的邀约,顺势问问辣度和到店时间",
+   "acceptable_actions": [
+    "爽快答应,问她几点取号要不要先踩点",
+    "答应并自嘲吃不了特辣,请她掌勺点菜",
+    "接'口碑高得离谱'的梗,问是不是又是水军,然后答应去验货"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A01",
+     "subject": "HER",
+     "relation": "spicy_preference",
+     "value": "乔一琳无辣不欢,吃湘菜要特辣",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "无辣不欢"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E126_A02",
+     "subject": "SHARED",
+     "relation": "dinner_plan",
+     "value": "两人约好今晚下班去公司对面新开的湘菜小馆拔草",
+     "valid_time": "2026-11-04 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T01", "message_id": "m0", "quote": "今晚下班一起拔草"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她邀约时兴致高,回应要利落别晾着",
+   "unknowns": ["该店人均价格未知"],
+   "protected_expressions": ["今晚下班一起拔草"],
+   "forbidden_factual_claims": ["不得虚构该店评分具体分数"]
+  },
+  "E126_T02": {
+   "case_id": "E126_T02",
+   "current_action": "确认六点半碰头安排,回应辣度规矩",
+   "acceptable_actions": [
+    "答应六点半到,笑她立规矩立得比店规还快",
+    "确认七点开吃没问题,承诺绝不点微辣",
+    "问她排号要不要帮忙盯着,自己晚几分钟也行"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A03",
+     "subject": "SHARED",
+     "relation": "meeting_arrangement",
+     "value": "她已取号,约定六点半到店,预计七点排到开吃",
+     "valid_time": "2026-11-04 18:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T02", "message_id": "m0", "quote": "我取了号,六点半到"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把细节都安排好了,配合就行,别添乱",
+   "unknowns": ["当天实际排队时长未知"],
+   "protected_expressions": ["别拿微辣糊弄我"],
+   "forbidden_factual_claims": ["不得虚构排队具体桌数"]
+  },
+  "E126_T03": {
+   "case_id": "E126_T03",
+   "current_action": "接住她的取消与道歉,利落同意改明晚,不让内疚发酵",
+   "acceptable_actions": [
+    "说复盘会要紧,明晚正好,让她别对不起对不起了",
+    "心疼她临时会一秒,顺嘴确认明晚时间她定",
+    "答应改期,调侃今晚的号退得比插会还果断"
+   ],
+   "applicable_dimensions": ["time_state", "emotion_relation", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A03",
+     "subject": "SHARED",
+     "relation": "meeting_arrangement",
+     "value": "她已取号,约定六点半到店,预计七点排到开吃",
+     "valid_time": "2026-11-04 18:30",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E126_T02", "message_id": "m0", "quote": "我取了号,六点半到"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E126_A04",
+     "subject": "SHARED",
+     "relation": "reschedule_proposal",
+     "value": "今晚的号已退,聚餐改期到明晚(11月5日)",
+     "valid_time": "2026-11-05 晚",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T03", "message_id": "m0", "quote": "今晚的号我退了,湘菜跑不了,改明晚行吗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E126_A05",
+     "subject": "HER",
+     "relation": "work_conflict",
+     "value": "组里临时插入复盘会,六点开始时长未知",
+     "valid_time": "2026-11-04 18:00 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T03", "message_id": "m0", "quote": "组里临时插了个复盘会"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她最怕被说放鸽子,先给台阶再定新时间",
+   "unknowns": ["复盘会何时结束未知"],
+   "protected_expressions": ["今晚的号我退了", "改明晚行吗"],
+   "forbidden_factual_claims": ["不得虚构复盘会的议题内容"]
+  },
+  "E126_T04": {
+   "case_id": "E126_T04",
+   "current_action": "确认明晚七点的预约安排,肯定她的升级操作",
+   "acceptable_actions": [
+    "夸她从排号进化到预约号,明晚七点准时",
+    "确认时间,顺嘴问预约号能不能选位",
+    "接'稳得多'的梗,说自己把日历也定了"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A06",
+     "subject": "SHARED",
+     "relation": "rebooked_arrangement",
+     "value": "改期后的聚餐定于明晚七点湘菜小馆,她已取预约号",
+     "valid_time": "2026-11-06 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T04", "message_id": "m0", "quote": "明晚七点湘菜小馆"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这一轮主要是确认,简短给足安全感",
+   "unknowns": ["预约号是否指定座位未知", "改期日期在'改明晚(11-04口径=11-05)'与'明晚七点(11-05发出=11-06)'之间存在一日漂移,按T05在11-06晨仍能退'晚上的预约'取11-06,不得断言唯一日期"],
+   "protected_expressions": ["这次是预约号不是排号"],
+   "forbidden_factual_claims": ["不得虚构预约平台的名称"]
+  },
+  "E126_T05": {
+   "case_id": "E126_T05",
+   "current_action": "接住第二次取消,表达理解并让她安心出差,补约不急",
+   "acceptable_actions": [
+    "说出差要紧,预约退了对,回来第一顿我等着",
+    "关心她高铁时间早不早,让她别惦记这顿饭",
+    "答应等她回来,调侃湘菜是跑不掉的钉子户"
+   ],
+   "applicable_dimensions": ["time_state", "emotion_relation", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A06",
+     "subject": "SHARED",
+     "relation": "rebooked_arrangement",
+     "value": "改期后的聚餐定于明晚七点湘菜小馆,她已取预约号",
+     "valid_time": "2026-11-06 19:00",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E126_T04", "message_id": "m0", "quote": "明晚七点湘菜小馆"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E126_A07",
+     "subject": "HER",
+     "relation": "business_trip",
+     "value": "她被安排明早七点二十高铁去杭州出差,当晚预约再退",
+     "valid_time": "2026-11-07 07:20 出发",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T05", "message_id": "m0", "quote": "高铁是明早七点二十"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "连续第二次取消,她的愧疚在叠加,这轮只做减负",
+   "unknowns": ["出差几天未明确"],
+   "protected_expressions": ["回来第一顿补给你"],
+   "forbidden_factual_claims": ["不得虚构总监安排出差的缘由"]
+  },
+  "E126_T06": {
+   "case_id": "E126_T06",
+   "current_action": "接住云点菜的提议,答应替她探店拍菜单",
+   "acceptable_actions": [
+    "答应今晚去拍菜单,让她在杭州远程点",
+    "接'云点菜'的梗,问要不要顺便直播香味",
+    "答应去吃,提醒她别隔着屏幕咽口水"
+   ],
+   "applicable_dimensions": ["initiative", "interaction", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A07",
+     "subject": "HER",
+     "relation": "business_trip",
+     "value": "她被安排明早七点二十高铁去杭州出差,当晚预约再退",
+     "valid_time": "2026-11-07 07:20 出发",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T05", "message_id": "m0", "quote": "高铁是明早七点二十"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E126_A08",
+     "subject": "SHARED",
+     "relation": "cloud_dinner_plan",
+     "value": "她提议ME今晚替她去店里拍菜单,她远程云点菜",
+     "valid_time": "2026-11-06 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T06", "message_id": "m0", "quote": "拍菜单发我,我远程云点菜"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给补偿方案时带点小得意,接住这份心意",
+   "unknowns": ["今晚店里排队情况未知", "她到杭时间(11-06午)早于T05所述'明早七点二十'(11-07晨)出发,行程口径自相矛盾,按已到杭理解,不得替她圆场或断言实际出发时刻"],
+   "protected_expressions": ["我远程云点菜"],
+   "forbidden_factual_claims": ["不得虚构菜单具体菜品价格"]
+  },
+  "E126_T07": {
+   "case_id": "E126_T07",
+   "current_action": "围绕她选的辣汤聊两句,确认菜单已存、回来照单执行",
+   "acceptable_actions": [
+    "确认前三名记下没问题,提醒别光记辣的留个汤底",
+    "调侃她出差还不忘存菜单,是干粮型选手",
+    "答应回来陪她按单吃,顺便汇报辣汤真实杀伤力"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A08",
+     "subject": "SHARED",
+     "relation": "cloud_dinner_plan",
+     "value": "她提议ME今晚替她去店里拍菜单,她远程云点菜",
+     "valid_time": "2026-11-06 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T06", "message_id": "m0", "quote": "拍菜单发我,我远程云点菜"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E126_A09",
+     "subject": "SHARED",
+     "relation": "menu_shortlist",
+     "value": "她存下菜单并记下前三名,出差回来按此点单",
+     "valid_time": "2026-11-06 起有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T07", "message_id": "m0", "quote": "前三名我都记下了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她隔着屏幕馋,聊吃的时候放开点",
+   "unknowns": ["前三名具体是哪三道未在台词列出"],
+   "protected_expressions": ["前三名我都记下了"],
+   "forbidden_factual_claims": ["不得替她列出具体前三菜品"]
+  },
+  "E126_T08": {
+   "case_id": "E126_T08",
+   "current_action": "确认周四晚的改期安排,回应出差延期的状态",
+   "acceptable_actions": [
+    "说周四正好,让她安心看直播等回来",
+    "关心出差延期累不累,确认周四不用再动",
+    "接周中免取号的信息,夸她连这都摸清了"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A10",
+     "subject": "HER",
+     "relation": "trip_extension",
+     "value": "出差延长至周三,当晚乘高铁返回",
+     "valid_time": "2026-11-11 晚返回",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T08", "message_id": "m0", "quote": "出差延到周三,晚上才有高铁"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E126_A11",
+     "subject": "SHARED",
+     "relation": "rebooked_arrangement",
+     "value": "聚餐第三次改期定于周四晚上,依据是周中人少不用取号",
+     "valid_time": "2026-11-12 晚",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T08", "message_id": "m0", "quote": "那就定周四晚"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第三次定档,态度上要稳住'这次算数'",
+   "unknowns": ["周四是否还有变数未知"],
+   "protected_expressions": ["那就定周四晚"],
+   "forbidden_factual_claims": ["不得虚构直播平台信息"]
+  },
+  "E126_T09": {
+   "case_id": "E126_T09",
+   "current_action": "接住她的落地报平安和奶茶赌约,承诺绝不放鸽子",
+   "acceptable_actions": [
+    "应下赌约,说自己先请一个月奶茶当保险",
+    "欢迎回来,确认周四晚七点老位置不变",
+    "接闹钟的梗,说自己也定了双闹钟"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "time_state", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A11",
+     "subject": "SHARED",
+     "relation": "rebooked_arrangement",
+     "value": "聚餐第三次改期定于周四晚上,依据是周中人少不用取号",
+     "valid_time": "2026-11-12 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T08", "message_id": "m0", "quote": "那就定周四晚"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E126_A12",
+     "subject": "SHARED",
+     "relation": "punctuality_bet",
+     "value": "双方约定谁再放鸽子谁请下个月奶茶",
+     "valid_time": "2026-11-11 立约",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T09", "message_id": "m0", "quote": "谁再放鸽子谁请下个月奶茶"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "赌约是她的幽默,接梗要快",
+   "unknowns": ["奶茶口味偏好未知"],
+   "protected_expressions": ["谁再放鸽子谁请下个月奶茶"],
+   "forbidden_factual_claims": ["不得虚构她的航班车次"]
+  },
+  "E126_T10": {
+   "case_id": "E126_T10",
+   "current_action": "临行前再确认,答应下班直接过去赴约",
+   "acceptable_actions": [
+    "答应直接过去,让她在门口等时先占遮风的位置",
+    "说'啥事没有'是好兆头,明晚见",
+    "回一句准时到场,让她把特辣的胆量留好"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A12",
+     "subject": "SHARED",
+     "relation": "punctuality_bet",
+     "value": "双方约定谁再放鸽子谁请下个月奶茶",
+     "valid_time": "2026-11-11 立约",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T09", "message_id": "m0", "quote": "谁再放鸽子谁请下个月奶茶"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "短句确认即可,别啰嗦",
+   "unknowns": ["当天是否有临时加班未知"],
+   "protected_expressions": ["我提前十分钟到门口等你"],
+   "forbidden_factual_claims": ["不得虚构当天工作安排"]
+  },
+  "E126_T11": {
+   "case_id": "E126_T11",
+   "current_action": "夸她的战果,回应'没笑话',给云南菜之约留口子",
+   "acceptable_actions": [
+    "说半盘鱼头是战绩不是笑话,云南菜预约上",
+    "夸这家选得值,问她收藏夹第二家有多辣",
+    "接梗说下次提前练辣,月底就安排"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A11",
+     "subject": "SHARED",
+     "relation": "rebooked_arrangement",
+     "value": "聚餐第三次改期定于周四晚上,依据是周中人少不用取号",
+     "valid_time": "2026-11-12 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T08", "message_id": "m0", "quote": "那就定周四晚"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E126_A13",
+     "subject": "SHARED",
+     "relation": "next_dinner_hook",
+     "value": "她提出下个月带ME吃收藏夹第二家云南菜",
+     "valid_time": "2026年12月",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T11", "message_id": "m0", "quote": "下个月带你吃我收藏夹第二家,云南菜"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "饭吃成了,气氛可以放松些,钩子接稳",
+   "unknowns": ["云南菜店的具体信息未透露"],
+   "protected_expressions": ["你没笑话我吧"],
+   "forbidden_factual_claims": ["不得虚构鱼头价格"]
+  },
+  "E126_T12": {
+   "case_id": "E126_T12",
+   "current_action": "周末闲聊接住奶茶债的回扣,轻轻收尾",
+   "acceptable_actions": [
+    "接'跑不掉'的梗,说奶茶债已列入十二月账单",
+    "回个想念后厨的玩笑,祝她周末躺平愉快",
+    "简单回应并约下周午饭搭子照旧"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E126_A12",
+     "subject": "SHARED",
+     "relation": "punctuality_bet",
+     "value": "双方约定谁再放鸽子谁请下个月奶茶",
+     "valid_time": "2026-11-11 立约",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E126_T09", "message_id": "m0", "quote": "谁再放鸽子谁请下个月奶茶"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "周末闲聊,轻收尾,不硬造新话题",
+   "unknowns": ["下个月云南菜的具体日期未定"],
+   "protected_expressions": ["下个月的奶茶债我还记着"],
+   "forbidden_factual_claims": ["不得虚构后厨照片内容"]
+  }
+ }
+}

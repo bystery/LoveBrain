@@ -1,0 +1,53 @@
+{
+ "story_id": "K02",
+ "turns": {
+  "K02_P2_tile": {
+   "case_id": "K02_P2_tile",
+   "current_action": "她确认瓷砖到货日期。已确认改到11月8号，5号来不及；回答应确认8号。",
+   "acceptable_actions": [
+    "确认8号，5号来不及",
+    "说8号到，旧5号作废"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K02_P2_a1",
+     "subject": "her",
+     "relation": "tile_date",
+     "value": "瓷砖改到11月8号到，5号来不及",
+     "valid_time": "2026-11-08",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K02_T06",
+      "message_id": "m0",
+      "quote": "瓷砖改到11月8号到"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "正确回指8号；5号是旧版本。",
+   "unknowns": [],
+   "protected_expressions": [
+    "瓷砖改到11月8号到"
+   ],
+   "forbidden_factual_claims": [
+    "说5号到是现行",
+    "说日期没定"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "她确认瓷砖到货日期。已确认改到11月8号，5号来不及；回答应确认8号。",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

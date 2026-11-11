@@ -1,0 +1,786 @@
+{
+ "story_id": "E202",
+ "turns": {
+  "E202_T01": {
+   "case_id": "E202_T01",
+   "current_action": "接下配置把关请求，围绕六千五套餐、一千五显示器与八千总预算给出判断",
+   "acceptable_actions": [
+    "认可配置并提醒确认发货时间",
+    "认可大方向并问显卡具体型号再细看",
+    "认可并建议显示器先别急着付款"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T01_A01",
+     "subject": "ME",
+     "relation": "把关承诺",
+     "value": "老周此前答应帮林悦把关配置单",
+     "valid_time": "2026-11-03之前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "答应帮林悦把关配置单"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E202_T01_A02",
+     "subject": "SHARED",
+     "relation": "主机套餐",
+     "value": "HER 拍下六千五的台式机主机套餐",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T01",
+      "quote": "拍了台主机套餐，六千五",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E202_T01_A03",
+     "subject": "HER",
+     "relation": "总预算",
+     "value": "整机预算八千含显示器一千五",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T01",
+      "quote": "整机不超八千",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "前同事熟人口吻，给判断也别抢她拍板的权。",
+   "unknowns": [
+    "显卡具体型号未知",
+    "发货时间未确认"
+   ],
+   "protected_expressions": [
+    "整机不超八千"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构自己看过店铺页面"
+   ],
+   "may_decline": false
+  },
+  "E202_T02": {
+   "case_id": "E202_T02",
+   "current_action": "确认三百定金与五号发货的进展，并就周五晚上上门装机给出答复",
+   "acceptable_actions": [
+    "答应周五晚上上门并说带上装机工具",
+    "答应上门并提醒发货当天看物流",
+    "答应并问她住处电梯好不好搬机箱"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T02_A01",
+     "subject": "SHARED",
+     "relation": "主机套餐",
+     "value": "六千五主机套餐已拍下的既定事实",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T01",
+      "quote": "拍了台主机套餐，六千五",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E202_T02_A02",
+     "subject": "SHARED",
+     "relation": "定金",
+     "value": "已付三百定金且店铺承诺五号发货",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T02",
+      "quote": "付了三百定金",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E202_T02_A03",
+     "subject": "SHARED",
+     "relation": "上门装机约定",
+     "value": "原约定周五晚上 ME 上门装机 HER 打下手",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T02",
+      "quote": "我周五晚上都有空",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "时间一口答应，别拖泥带水。",
+   "unknowns": [
+    "物流实际到货时间未知"
+   ],
+   "protected_expressions": [
+    "我周五晚上都有空"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已查过物流单"
+   ],
+   "may_decline": false
+  },
+  "E202_T03": {
+   "case_id": "E202_T03",
+   "current_action": "回应显示器加购待付款的做法，认可或提醒等主机确认后再付均可",
+   "acceptable_actions": [
+    "认可先加购不付款的做法",
+    "认可并提醒注意价保期",
+    "认可并问她要不要等主机点亮再下单"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T03_A01",
+     "subject": "HER",
+     "relation": "总预算",
+     "value": "整机不超八千且显示器留一千五的预算线",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T01",
+      "quote": "整机不超八千",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E202_T03_A02",
+     "subject": "HER",
+     "relation": "显示器选型",
+     "value": "看中一台2K 144Hz标价一千五的显示器先加购未付款",
+     "valid_time": "2026-11-04",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T03",
+      "quote": "标价一千五正好卡在预算线上",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻回一句即可，别打断她配机的兴头。",
+   "unknowns": [
+    "显示器最终付款时间未知"
+   ],
+   "protected_expressions": [
+    "标价一千五正好卡在预算线上"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言该显示器一定降价或涨价"
+   ],
+   "may_decline": false
+  },
+  "E202_T04": {
+   "case_id": "E202_T04",
+   "current_action": "接住砍单炸毛：确认订单已取消与定金原路退回的事实，并安抚情绪",
+   "acceptable_actions": [
+    "先认她的火气再确认定金是否已到账",
+    "确认砍单事实并指出涨价四百可找平台介入",
+    "接情绪并建议先别急着重新拍"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "memory_use",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T04_A01",
+     "subject": "SHARED",
+     "relation": "主机套餐",
+     "value": "此前拍下的六千五主机套餐被店家缺货砍单，原订单作废",
+     "valid_time": "2026-11-05",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T01",
+      "quote": "拍了台主机套餐，六千五",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E202_T04_A02",
+     "subject": "SHARED",
+     "relation": "定金退回",
+     "value": "三百定金原路退回",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T04",
+      "quote": "三百定金原路退回",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E202_T04_A03",
+     "subject": "SHARED",
+     "relation": "涨价事实",
+     "value": "新页面同款套餐涨到六千九",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T04",
+      "quote": "新页面涨了四百，六千九了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：先接情绪，再给方向，别急着替店家说话。",
+   "unknowns": [
+    "定金是否实时到账未知",
+    "平台是否介入未知"
+   ],
+   "protected_expressions": [
+    "三百定金原路退回"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续按原订单有效来回应",
+    "不得虚构平台介入结果"
+   ],
+   "may_decline": false
+  },
+  "E202_T05": {
+   "case_id": "E202_T05",
+   "current_action": "在等补货与换型号之间给出明确倾向，并尊重她十二点前的决策期限",
+   "acceptable_actions": [
+    "建议换有货套餐并说明等补货的不确定性",
+    "给两条路的利弊让她自己拍板",
+    "倾向换型号并提醒争取让店家补差价"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "interaction",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T05_A01",
+     "subject": "SHARED",
+     "relation": "定金退回",
+     "value": "砍单后三百定金已原路退回的前提",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T04",
+      "quote": "三百定金原路退回",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E202_T05_A02",
+     "subject": "SHARED",
+     "relation": "替代套餐",
+     "value": "店家提供另一档有货显卡的六千九套餐",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T05",
+      "quote": "另一档显卡有货，套餐六千九",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要准话就给准话，但落点还是她自己拍板。",
+   "unknowns": [
+    "补货时间未知"
+   ],
+   "protected_expressions": [
+    "另一档显卡有货，套餐六千九"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构补货日期",
+    "不得替她直接下单"
+   ],
+   "may_decline": false
+  },
+  "E202_T06": {
+   "case_id": "E202_T06",
+   "current_action": "确认换套餐的决定，并肯定她把两百优惠券截图留证",
+   "acceptable_actions": [
+    "确认决定并夸她留了优惠券截图",
+    "确认并提醒发货后核对实付金额",
+    "确认并说两百差价花得不冤"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T06_A01",
+     "subject": "SHARED",
+     "relation": "替代套餐",
+     "value": "六千九替代套餐成为新方案",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T05",
+      "quote": "另一档显卡有货，套餐六千九",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E202_T06_A02",
+     "subject": "SHARED",
+     "relation": "差价补偿",
+     "value": "店家补两百优惠券 HER 自掏两百差额",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T06",
+      "quote": "店家补我两百块优惠券",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "决策已定，多说一句留证就好。",
+   "unknowns": [
+    "新套餐发货时间未知"
+   ],
+   "protected_expressions": [
+    "店家补我两百块优惠券"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称差价为零"
+   ],
+   "may_decline": false
+  },
+  "E202_T07": {
+   "case_id": "E202_T07",
+   "current_action": "确认装机从周五晚改到周日晚，并按新时间安排自己",
+   "acceptable_actions": [
+    "确认改周日晚上并说时间没问题",
+    "确认并说周日会带齐工具一次装完",
+    "确认改期并提醒件到先验外观"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T07_A01",
+     "subject": "SHARED",
+     "relation": "上门装机约定",
+     "value": "原周五晚上上门装机的约定作废",
+     "valid_time": "2026-11-06",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T02",
+      "quote": "我周五晚上都有空",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E202_T07_A02",
+     "subject": "SHARED",
+     "relation": "改期后约定",
+     "value": "装机改到十一月八日周日晚新套餐七号发货",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T07",
+      "quote": "改到周日晚上行吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改期她有理有据，痛快接下别念叨。",
+   "unknowns": [
+    "实际到货是否齐套未知"
+   ],
+   "protected_expressions": [
+    "改到周日晚上行吗"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续按周五晚回应",
+    "不得虚构物流细节"
+   ],
+   "may_decline": false
+  },
+  "E202_T08": {
+   "case_id": "E202_T08",
+   "current_action": "到场开装，确认先不插电、撕膜的顺序并接住她的紧张",
+   "acceptable_actions": [
+    "确认先检查再撕膜通电的顺序",
+    "让她把配件盒都拆开先清点",
+    "安抚她别慌说今晚肯定点亮"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T08_A01",
+     "subject": "SHARED",
+     "relation": "改期后约定",
+     "value": "周日晚上门装机的既定安排",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T07",
+      "quote": "改到周日晚上行吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E202_T08_A02",
+     "subject": "SHARED",
+     "relation": "到货状态",
+     "value": "主机配件已全部到货",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T08",
+      "quote": "件全到了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "现场节奏，回复短句，先清点再通电。",
+   "unknowns": [
+    "配件是否齐套未知"
+   ],
+   "protected_expressions": [
+    "你到了先别急着插电"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构到场前的验货结果"
+   ],
+   "may_decline": false
+  },
+  "E202_T09": {
+   "case_id": "E202_T09",
+   "current_action": "确认点亮与风扇风向正常，接住她的成就感",
+   "acceptable_actions": [
+    "确认风扇风向正常并夸她全程没掉链子",
+    "确认并让她把视频存好当装机纪念",
+    "确认点亮并提议接着装系统跑分"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T09_A01",
+     "subject": "SHARED",
+     "relation": "装机进展",
+     "value": "主机当晚成功点亮",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T09",
+      "quote": "点亮了点亮了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E202_T09_A02",
+     "subject": "HER",
+     "relation": "风扇疑问",
+     "value": "HER 对机箱风扇朝里吹存疑并拍了视频",
+     "valid_time": "2026-11-08",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T09",
+      "quote": "机箱风扇朝里吹你说正常",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E202_T09_A03",
+     "subject": "SHARED",
+     "relation": "改期后约定",
+     "value": "周日晚上门装机的既定安排于当晚兑现",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T07",
+      "quote": "改到周日晚上行吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她正高兴，呼应她的成就感，一句就够。",
+   "unknowns": [],
+   "protected_expressions": [
+    "点亮了点亮了"
+   ],
+   "forbidden_factual_claims": [
+    "不得说风扇装错要返工"
+   ],
+   "may_decline": false
+  },
+  "E202_T10": {
+   "case_id": "E202_T10",
+   "current_action": "确认跑分结果正常，并就显示器九号发货、旧屏过渡给出安排",
+   "acceptable_actions": [
+    "确认跑分正常并认可旧屏过渡方案",
+    "确认并提醒九号到货后再调分辨率",
+    "确认并说主机线今晚可以收工"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T10_A01",
+     "subject": "HER",
+     "relation": "显示器选型",
+     "value": "此前加购未付款的显示器线仍在推进",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T03",
+      "quote": "标价一千五正好卡在预算线上",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E202_T10_A02",
+     "subject": "SHARED",
+     "relation": "压测结果",
+     "value": "跑分与评测对得上未翻车",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T10",
+      "quote": "和评测对得上，没翻车",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收工前把过渡方案说清楚就好。",
+   "unknowns": [
+    "显示器实际到货日未知"
+   ],
+   "protected_expressions": [
+    "和评测对得上，没翻车"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构跑分具体分数"
+   ],
+   "may_decline": false
+  },
+  "E202_T11": {
+   "case_id": "E202_T11",
+   "current_action": "核对她算的总账，确认超支一百五属实并认可她认账的态度",
+   "acceptable_actions": [
+    "确认账目无误并说超一百五在合理范围",
+    "确认并提醒显示器到货再对一次实付",
+    "确认并夸她这笔账算得明白"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T11_A01",
+     "subject": "HER",
+     "relation": "总预算",
+     "value": "整机不超八千的原始预算线",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T01",
+      "quote": "整机不超八千",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E202_T11_A02",
+     "subject": "SHARED",
+     "relation": "总账核算",
+     "value": "主机六千九减两百券为六千七显示器一千四百五合计八千一百五",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T11",
+      "quote": "主机六千九减两百券是六千七，显示器砍到一千四百五",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "账她算对了，确认数字就够，别说教。",
+   "unknowns": [
+    "显示器最终成交价是否仍有变动未知"
+   ],
+   "protected_expressions": [
+    "主机六千九减两百券是六千七，显示器砍到一千四百五"
+   ],
+   "forbidden_factual_claims": [
+    "不得算错总额",
+    "不得否认超支一百五的事实"
+   ],
+   "may_decline": false
+  },
+  "E202_T12": {
+   "case_id": "E202_T12",
+   "current_action": "回应火锅请客与搬柜子出力的回礼安排，可赴约、婉拒或轻量接受",
+   "acceptable_actions": [
+    "接受火锅并说月底搬柜子她请客就免了",
+    "接受并顺势问显示器到货时间",
+    "接受请客并说两清说法见外了"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E202_T12_A01",
+     "subject": "SHARED",
+     "relation": "总账核算",
+     "value": "整单超支一百五的收口事实",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T11",
+      "quote": "一共八千一百五，比预算超了一百五",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E202_T12_A02",
+     "subject": "SHARED",
+     "relation": "回礼安排",
+     "value": "HER 提出请火锅与月底搬柜子出力两笔回礼",
+     "valid_time": "2026-11-09之后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E202_T12",
+      "quote": "今晚火锅我请",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，她讲究两清，接一半推一半刚好。",
+   "unknowns": [
+    "显示器到货时间未知"
+   ],
+   "protected_expressions": [
+    "今晚火锅我请"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称装机收费",
+    "不得替她确认显示器到货日"
+   ],
+   "may_decline": true
+  }
+ }
+}

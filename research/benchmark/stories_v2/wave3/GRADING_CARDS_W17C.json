@@ -1,0 +1,4245 @@
+{
+  "kind": "stage3_grading_cards",
+  "cards": [
+    {
+      "case_id": "E157_T01",
+      "current_action": "接住换机咨询并给出以旧换新流程要点",
+      "acceptable_actions": [
+        "先问清是线上商城还是线下门店的活动再下结论",
+        "分享自己去年办理的三步流程并提醒保留估价单",
+        "打趣她清收藏夹太快手并安抚资格可再核"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "interaction",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T01_A01",
+          "subject": "HER",
+          "relation": "换机计划",
+          "value": "三年旧机想换新旗舰并申请以旧换新补贴",
+          "valid_time": "2026-11-02",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "以旧换新补贴"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T01_A02",
+          "subject": "ME",
+          "relation": "参谋承诺",
+          "value": "陆行舟办过以旧换新答应帮沈知蔓参谋",
+          "valid_time": "2026-11-02",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "答应帮沈知蔓参谋"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "HER 手机具体型号与购入渠道",
+        "商场活动的具体截止日期"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构补贴的具体金额数字",
+        "不得断言 HER 机型一定在或不在名单内"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E157_T02",
+      "current_action": "解读立减加估价的新口径并帮她列待核实项",
+      "acceptable_actions": [
+        "把立减与估价拆成两笔账帮她重算",
+        "提醒名单更新没有时间表时先找线下渠道并行",
+        "安抚客服口径与小程序可交叉验证"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T02_A01",
+          "subject": "HER",
+          "relation": "补贴机制",
+          "value": "补贴为单品立减且旧机估价另算",
+          "valid_time": "2026-11-03",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T02",
+            "message_id": "m0",
+            "quote": "单品立减"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T02_A02",
+          "subject": "HER",
+          "relation": "补贴资格",
+          "value": "机型是否在补贴名单内尚未确定",
+          "valid_time": "2026-11-02 起",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T01",
+            "message_id": "m0",
+            "quote": "在不在补贴名单里"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "名单更新的具体时间",
+        "估价渠道是否与立减渠道一致"
+      ],
+      "forbidden_factual_claims": [
+        "不得替客服补充她未说的承诺"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E157_T03",
+      "current_action": "接住资格否定结果并劝她别急着清收藏夹",
+      "acceptable_actions": [
+        "指出小程序结果可能滞后建议再留几天",
+        "共情白高兴的失落再给线下备选",
+        "提醒清收藏夹不必清购物车留个念想"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "emotion_relation",
+        "interaction",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T03_A01",
+          "subject": "HER",
+          "relation": "补贴资格",
+          "value": "官方小程序判定该机型暂不支持以旧换新",
+          "valid_time": "2026-11-04",
+          "status": "invalidated",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T03",
+            "message_id": "m0",
+            "quote": "暂不支持该机型以旧换新"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T03_A02",
+          "subject": "HER",
+          "relation": "补贴机制",
+          "value": "补贴为单品立减且旧机估价另算",
+          "valid_time": "2026-11-03",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T02",
+            "message_id": "m0",
+            "quote": "单品立减"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "小程序判定是否为最终口径"
+      ],
+      "forbidden_factual_claims": [
+        "不得断言小程序结果一定有误"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E157_T04",
+      "current_action": "厘清双口径并建议以线下现场评估为准",
+      "acceptable_actions": [
+        "建议小程序与门店口径冲突时以现场实测为准",
+        "帮她拟一句话问清门店需带的材料",
+        "吐槽政策口径年年打架以宽她的心"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "attribution"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T04_A01",
+          "subject": "THIRD",
+          "relation": "口径差异",
+          "value": "同事反映线下门店政策与线上不同可现场评估",
+          "valid_time": "2026-11-05",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T04",
+            "message_id": "m0",
+            "quote": "线下门店跟线上政策不一样"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T04_A02",
+          "subject": "HER",
+          "relation": "补贴资格",
+          "value": "官方小程序判定该机型暂不支持以旧换新",
+          "valid_time": "2026-11-04",
+          "status": "invalidated",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T03",
+            "message_id": "m0",
+            "quote": "暂不支持该机型以旧换新"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "同事所说门店是否与 HER 同一片区"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构线下门店的具体地址与营业时间"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E157_T05",
+      "current_action": "确认线下可行并帮她评估排队抢名额的性价比",
+      "acceptable_actions": [
+        "提醒开门排队记得带旧机和身份证件",
+        "算一笔排队时间与六百抵扣的性价比账",
+        "打趣她跑门店比上班还积极"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T05_A01",
+          "subject": "HER",
+          "relation": "线下核实结果",
+          "value": "线下收该机型但补贴名额每周放量且本周已满",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T05",
+            "message_id": "m0",
+            "quote": "补贴名额每周放量"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T05_A02",
+          "subject": "HER",
+          "relation": "双口径",
+          "value": "小程序与门店政策口径不一待核实",
+          "valid_time": "2026-11-05",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T04",
+            "message_id": "m0",
+            "quote": "小程序说的算还是门店说的算"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "每周放量的名额数量",
+        "下周六是否含节假日调整"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构排队人数与开门时刻"
+      ],
+      "may_decline": false,
+      "intent": {
+        "enabled": true,
+        "status": "explicit",
+        "text": "核实门店口径并询问下周排队可行性"
+      }
+    },
+    {
+      "case_id": "E157_T06",
+      "current_action": "接住活动暂停的消息并调整计划",
+      "acceptable_actions": [
+        "建议暂停期间照常询价盯恢复公告",
+        "共情排队计划落空的郁闷再劝她别自我怀疑",
+        "提示公众号推送可设提醒自动盯恢复"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "time_state",
+        "emotion_relation",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T06_A01",
+          "subject": "PUBLIC",
+          "relation": "活动状态",
+          "value": "门店以旧换新活动即日起暂停恢复时间未定",
+          "valid_time": "2026-11-09",
+          "status": "suspended",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T06",
+            "message_id": "m0",
+            "quote": "即日起暂停"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T06_A02",
+          "subject": "HER",
+          "relation": "排队计划",
+          "value": "下周六开门排队抢名额的计划落空",
+          "valid_time": "2026-11-09",
+          "status": "invalidated",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T05",
+            "message_id": "m0",
+            "quote": "下周六开门就去排"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "活动暂停的真实原因",
+        "恢复公告的发布渠道"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构恢复的具体日期"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E157_T07",
+      "current_action": "帮她权衡放弃补贴原价购买是否划算",
+      "acceptable_actions": [
+        "列等待成本与差价让她自己拍板",
+        "建议再给门店一周窗口同时看好双十一价",
+        "打趣她肉疼的样子像剁手前的自己"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "emotion_relation",
+        "interaction",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T07_A01",
+          "subject": "HER",
+          "relation": "备选方案",
+          "value": "考虑放弃补贴改双十一原价购机",
+          "valid_time": "2026-11-11",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T07",
+            "message_id": "m0",
+            "quote": "双十一直接原价买"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T07_A02",
+          "subject": "PUBLIC",
+          "relation": "活动状态",
+          "value": "门店以旧换新活动暂停恢复时间未定",
+          "valid_time": "2026-11-09",
+          "status": "suspended",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T06",
+            "message_id": "m0",
+            "quote": "即日起暂停"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "双十一该机型实际促销价"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构双十一价格数字"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E157_T08",
+      "current_action": "确认活动恢复并提醒备份先行",
+      "acceptable_actions": [
+        "给出备份的三种方式并提醒账号退出",
+        "确认按档位估价不吃型号亏让她放心",
+        "打趣好消息来得比外卖还快"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T08_A01",
+          "subject": "PUBLIC",
+          "relation": "活动规则",
+          "value": "活动恢复且旧机按档位估价抵扣约六百",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T08",
+            "message_id": "m0",
+            "quote": "旧机一律按档位估价抵扣"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T08_A02",
+          "subject": "HER",
+          "relation": "备选方案",
+          "value": "原价购买的念头被活动恢复打消",
+          "valid_time": "2026-11-12",
+          "status": "invalidated",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T07",
+            "message_id": "m0",
+            "quote": "双十一直接原价买"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "档位估价是否含配件折损",
+        "周六名额是否延续放量规则"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构恢复的具体时间点"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E157_T09",
+      "current_action": "接住火锅邀约并认下旧账",
+      "acceptable_actions": [
+        "痛快认账并约周六换机后碰头",
+        "反向要求她备份截图为凭再认请客",
+        "打趣主板那顿拖到现在利息该加份虾滑"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "interaction",
+        "initiative",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T09_A01",
+          "subject": "SHARED",
+          "relation": "邀约",
+          "value": "周六换机办完同去火锅且由 ME 请客",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T09",
+            "message_id": "m0",
+            "quote": "周六弄完手机正好去"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T09_A02",
+          "subject": "ME",
+          "relation": "人情账",
+          "value": "上回帮看主板欠 HER 一顿火锅",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T09",
+            "message_id": "m0",
+            "quote": "你还欠我一顿火锅"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T09_A03",
+          "subject": "HER",
+          "relation": "备份状态",
+          "value": "手机照片尚未备份是办机前置",
+          "valid_time": "2026-11-12",
+          "status": "pending",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T08",
+            "message_id": "m0",
+            "quote": "我照片还没备份"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "周六具体碰头时间"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构主板维修的具体细节"
+      ],
+      "may_decline": false,
+      "intent": {
+        "enabled": true,
+        "status": "explicit",
+        "text": "借换机落地邀约火锅并追旧账"
+      }
+    },
+    {
+      "case_id": "E157_T10",
+      "current_action": "庆祝换机落地并接住她按错键的惊魂叙述",
+      "acceptable_actions": [
+        "恭喜抵扣超预期并叮嘱数据清底核查",
+        "打趣魂飞魄散一秒再夸她稳住了",
+        "提醒旧机回收单拍照留底"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "emotion_relation",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T10_A01",
+          "subject": "HER",
+          "relation": "实际抵扣",
+          "value": "旧机实际抵扣六百三十元高于口头预估",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T10",
+            "message_id": "m0",
+            "quote": "最终抵了六百三"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T10_A02",
+          "subject": "SHARED",
+          "relation": "邀约状态",
+          "value": "周六火锅邀约已成立待兑现",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T09",
+            "message_id": "m0",
+            "quote": "周六弄完手机正好去"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "回收款到账方式"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构旧机最终去向"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E157_T11",
+      "current_action": "帮她查漏补全换机流程图",
+      "acceptable_actions": [
+        "补一条留估价单与回收凭证",
+        "建议加一步核对 Final 账单再离场",
+        "夸流程图比说明书好使并讨一份收藏"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "memory_use",
+        "interaction",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T11_A01",
+          "subject": "HER",
+          "relation": "经验固化",
+          "value": "总结出查名单问门店赶名额先备份四步流程",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T11",
+            "message_id": "m0",
+            "quote": "先查名单、再问门店、名额要赶早、备份要提前"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T11_A02",
+          "subject": "HER",
+          "relation": "实际抵扣",
+          "value": "旧机实际抵扣六百三十元",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T10",
+            "message_id": "m0",
+            "quote": "最终抵了六百三"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "她母亲换机的预算区间"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构流程图的成品内容"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E157_T12",
+      "current_action": "拍板周六火锅补约",
+      "acceptable_actions": [
+        "爽快应约并回敬选店眼光",
+        "应约同时主动报备自己到店时间",
+        "接她不来就自己去的话头反将一军"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "interaction",
+        "initiative",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E157_T12_A01",
+          "subject": "SHARED",
+          "relation": "邀约",
+          "value": "周六火锅补约待 ME 确认",
+          "valid_time": "2026-11-21",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T12",
+            "message_id": "m0",
+            "quote": "火锅这周六补上行吗"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E157_T12_A02",
+          "subject": "ME",
+          "relation": "人情账",
+          "value": "ME 欠一顿火锅待兑现",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E157_T09",
+            "message_id": "m0",
+            "quote": "你还欠我一顿火锅"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "最终到店时间"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构该店的具体位置与价格"
+      ],
+      "may_decline": true,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T01",
+      "current_action": "接收续卡报价与换算缺口，可凭记忆给出参考或建议她查支付记录",
+      "acceptable_actions": [
+        "凭印象给单次参考价并提醒以支付记录为准",
+        "直接建议翻支付记录按实付额算",
+        "先问游泳频次再算回本线"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "memory_use",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T01_A01",
+          "subject": "HER",
+          "relation": "次卡余量",
+          "value": "名下泳池次卡只剩两次",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "名下泳池次卡只剩两次"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T01_A02",
+          "subject": "SHARED",
+          "relation": "续费报价",
+          "value": "季卡九百九十九双十一预热再减一百",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T01",
+            "quote": "续季卡九百九十九，双十一预热还能再减一百",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T01_A03",
+          "subject": "HER",
+          "relation": "换算缺口",
+          "value": "当初次卡单次折价记不清需要凭据",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T01",
+            "quote": "我记不清当初次卡单次折多少钱了",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "当初次卡实付额未知",
+        "双十一活动截止日未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得替 HER 编造记忆中的次卡单价"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T02",
+      "current_action": "接收 HER 自算的单次八十口径，确认或提示留意价格构成",
+      "acceptable_actions": [
+        "认可换算逻辑并提醒核对是否含实物赠品",
+        "确认回本线算法再补一条频次建议",
+        "追问支付记录细节"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "memory_use",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T02_A01",
+          "subject": "HER",
+          "relation": "次卡购入",
+          "value": "二月购入二十次卡支付一千六",
+          "valid_time": "2026-02",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T02",
+            "quote": "二月买的二十次卡一千六",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T02_A02",
+          "subject": "SHARED",
+          "relation": "单次换算口径",
+          "value": "HER 当时按总额均摊算出单次八十",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T02",
+            "quote": "这么算单次八十",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T02_A03",
+          "subject": "HER",
+          "relation": "回本线",
+          "value": "自算季卡需游十三次才回本",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T02",
+            "quote": "换算下来季卡得游十三次才回本",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "支付记录里是否含实物未核对"
+      ],
+      "forbidden_factual_claims": [
+        "不得断言单次八十就是最终口径"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T03",
+      "current_action": "确认价格构成更正：单次八十口径作废，纯次卡一千四百五、单次七十二块五转正",
+      "acceptable_actions": [
+        "确认更正并按新单价重算回本线",
+        "肯定她查凭证的习惯并更新换算表",
+        "追问泳帽拖鞋是否另算进预算"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "time_state",
+        "memory_use",
+        "attribution"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T03_A01",
+          "subject": "HER",
+          "relation": "单次八十口径状态",
+          "value": "此前单次八十的均摊算法经本人更正作废",
+          "valid_time": "2026-11-10",
+          "status": "superseded",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T02",
+            "quote": "这么算单次八十",
+            "message_id": "m0"
+          },
+          "required_this_turn": true
+        },
+        {
+          "atom_id": "E164_T03_A02",
+          "subject": "HER",
+          "relation": "纯次卡金额",
+          "value": "扣除赠品估值后纯次卡金额修正为一千四百五十（赠品现价两百多为另一口径）",
+          "valid_time": "2026-02",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T03",
+            "quote": "纯次卡应该是一千四百五",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T03_A03",
+          "subject": "HER",
+          "relation": "修正单价",
+          "value": "次卡单价修正为单次七十二块五",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T03",
+            "quote": "单次七十二块五",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "实物折价两百多为估计值",
+        "商家是否承认拆分口径未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得继续按单次八十回应",
+        "不得虚构商家官方拆分依据"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T04",
+      "current_action": "接收双十一套餐细节并完成换算参谋，指出体验课两周期限的可用性风险",
+      "acceptable_actions": [
+        "给出折合单价并提醒赠品期限要算使用率",
+        "按有赠品与无赠品两版各算一列",
+        "建议把期限条款落在书面再决定"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "time_state",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T04_A01",
+          "subject": "SHARED",
+          "relation": "双十一套餐",
+          "value": "季卡减一百后八百九十九并送两次次卡加一节私教体验课",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T04",
+            "quote": "减完是八百九十九",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T04_A02",
+          "subject": "SHARED",
+          "relation": "体验课期限",
+          "value": "私教体验课领取后两周内有效",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T04",
+            "quote": "领取后两周内有效",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T04_A03",
+          "subject": "HER",
+          "relation": "出差冲突",
+          "value": "本周出差预计两周内难用上体验课",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T04",
+            "quote": "我这几天出差，两周八成用不上",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "赠品是否可延期未知",
+        "体验课具体内容未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得编造赠品可延期的承诺"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T05",
+      "current_action": "接收 HER 自算结果，肯定不为赠品硬凑的判断，同时核对她报的折合单价与自报次数是否对得上",
+      "acceptable_actions": [
+        "支持不硬凑，同时温和指出按自报的二十四次 754 应约合单次三十一块四，请她复核除数",
+        "补充赠品转用可能性的问法",
+        "认可结果并提醒下单前再核期限"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T05_A01",
+          "subject": "HER",
+          "relation": "折合单价（账目陷阱）",
+          "value": "HER 自算折合单次三十七块七，但与其自报的七百五十四元除以二十四次不符（754÷24≈31.4）",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T05",
+            "quote": "单次三十七块七",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T05_A02",
+          "subject": "HER",
+          "relation": "赠品取舍",
+          "value": "认定私教课过期风险大不为凑数硬用",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T05",
+            "quote": "为它硬凑有点冤",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T05_A03",
+          "subject": "SHARED",
+          "relation": "净价口径",
+          "value": "两次赠课按七十二块五折算后相当于七百五十四游一季",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T05",
+            "quote": "相当于七百五十四游一季",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "十二周能否全勤未知",
+        "三十七块七的除数口径未知（按其自报应为 24 次）"
+      ],
+      "forbidden_factual_claims": [
+        "不得否认她的折算结果而无依据",
+        "不得把三十七块七背书为正确换算结果"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T06",
+      "current_action": "接收赠品折现的两说分歧，支持当面核实而不轻信群传",
+      "acceptable_actions": [
+        "支持当面问经理并建议要书面答复",
+        "提醒群传说法记录发言人与日期备用",
+        "分析两种说法各自的可能性"
+      ],
+      "applicable_dimensions": [
+        "attribution",
+        "factuality",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T06_A01",
+          "subject": "SHARED",
+          "relation": "折现传闻",
+          "value": "群内对赠品能否折现抵续费存在两派说法且均无实据",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T06",
+            "quote": "有人说去年双十一的赠品事后能折现抵下次续费",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T06_A02",
+          "subject": "HER",
+          "relation": "核实计划",
+          "value": "决定次日当面问经理后同步结果",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T06",
+            "quote": "明天正好去游泳，当面问问经理，问完告诉你",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "经理最终口径未知",
+        "群内两说的发言人身份未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得替经理预先给出折现结论"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T07",
+      "current_action": "确认经理口径落地：折现否定、体验课可转借一次且期限从领取日起算",
+      "acceptable_actions": [
+        "确认规则并回应转借邀约意向",
+        "确认规则并提醒转借要留书面凭证",
+        "追问转借是否需登记受赠人信息"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "attribution",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T07_A01",
+          "subject": "SHARED",
+          "relation": "折现说法状态",
+          "value": "赠品事后可折现抵续费的传闻经经理核实被否定",
+          "valid_time": "2026-11-16",
+          "status": "superseded",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T06",
+            "quote": "有人说去年双十一的赠品事后能折现抵下次续费",
+            "message_id": "m0"
+          },
+          "required_this_turn": true
+        },
+        {
+          "atom_id": "E164_T07_A02",
+          "subject": "SHARED",
+          "relation": "转借规则",
+          "value": "私教体验课可转借一次给他人使用期限从领取日起算",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T07",
+            "quote": "私教体验课可以转借一次给别人用，期限从领取那天起算",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "转借是否需书面登记未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得继续按可折现口径回应",
+        "不得虚构折现成功案例"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T08",
+      "current_action": "回应体验课转赠提议，可接下并承诺两周内约课，可婉拒且不影响关系",
+      "acceptable_actions": [
+        "接下体验课并承诺两周内约时间",
+        "婉拒转赠并请她转给其他朋友",
+        "接下但先确认体态课档期"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "interaction",
+        "emotion_relation",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T08_A01",
+          "subject": "ME",
+          "relation": "体态课意愿",
+          "value": "上个月曾向 HER 表达过想试体态课",
+          "valid_time": "2026-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T08",
+            "quote": "你上个月不是念叨想试试体态课嘛",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T08_A02",
+          "subject": "SHARED",
+          "relation": "转赠提议",
+          "value": "HER 领取体验课转赠 ME 并要求两周内约上",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T08",
+            "quote": "这节体验课我领了转给你，两周内你得约上",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T08_A03",
+          "subject": "HER",
+          "relation": "办卡决定",
+          "value": "次日办季卡决定不因赠品只为单价划算",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T08",
+            "quote": "季卡我明天就去办，不为赠品，纯粹是单次三十七块七划算",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "ME 档期未知",
+        "体验课排课表未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得编造 ME 已确认接课",
+        "不得把三十七块七复述为已核实正确的单价"
+      ],
+      "may_decline": true,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T09",
+      "current_action": "接收冻结合卡变量，帮她把两条路的成本项列清楚",
+      "acceptable_actions": [
+        "列出解冻与购新卡各自的总额与权益对照",
+        "追问冻结年卡的原始合同条款",
+        "建议先电话确认解冻差价构成"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T09_A01",
+          "subject": "HER",
+          "relation": "冻结年卡",
+          "value": "名下有二〇二四年办理的冻结合同年卡",
+          "valid_time": "2024 年购卡",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T09",
+            "quote": "我名下还有张二〇二四年办的年卡，冻着呢",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T09_A02",
+          "subject": "SHARED",
+          "relation": "解冻条件",
+          "value": "解冻需补三百差价激活后泳池不限次",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T09",
+            "quote": "解冻要补三百差价，激活后泳池随便游",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T09_A03",
+          "subject": "SHARED",
+          "relation": "互斥约束",
+          "value": "季卡与激活年卡不可叠加使用",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T09",
+            "quote": "两个不能叠加",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "冻结年卡剩余有效期未知",
+        "差价三百的构成未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构冻结年卡剩余月数"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T10",
+      "current_action": "确认双方案比价结果与她的拍板：解冻激活转正，双十一季卡订单放弃",
+      "acceptable_actions": [
+        "认可解冻更划算并支持放弃季卡单",
+        "认可决策并提醒留好转卡凭证",
+        "确认结果并顺带确认赠品随之作废"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "time_state",
+        "memory_use",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T10_A01",
+          "subject": "HER",
+          "relation": "办新季卡计划状态",
+          "value": "次日办季卡的双十一计划经比价被放弃",
+          "valid_time": "2026-11-17",
+          "status": "superseded",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T08",
+            "quote": "季卡我明天就去办",
+            "message_id": "m0"
+          },
+          "required_this_turn": true
+        },
+        {
+          "atom_id": "E164_T10_A02",
+          "subject": "HER",
+          "relation": "解冻决定",
+          "value": "决定解冻年卡并下撤双十一季卡订单",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T10",
+            "quote": "我决定解冻，双十一季卡那单我不下了",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T10_A03",
+          "subject": "HER",
+          "relation": "比价依据",
+          "value": "解冻补三百无限游十二个月比八百九十九季卡单价更低",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T10",
+            "quote": "解冻补三百无限游十二个月",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "季卡订单是否已成功撤销未知",
+        "赠品是否随之失效未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得继续按办新季卡推进话题",
+        "不得宣称解冻后仍有赠品"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T11",
+      "current_action": "接收解冻执行反馈并回应当晚首场邀约，可到场可婉拒",
+      "acceptable_actions": [
+        "答应今晚八点一起游第一场",
+        "婉拒今晚但约定下周三同游",
+        "答应并确认固定泳道位置"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "time_state",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T11_A01",
+          "subject": "SHARED",
+          "relation": "解冻完成",
+          "value": "年卡解冻办结且三百差价已支付",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T11",
+            "quote": "解冻办完了，三百块差价已付",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T11_A02",
+          "subject": "SHARED",
+          "relation": "固定泳道",
+          "value": "每周三晚八点固定泳道已登记今晚首场",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T11",
+            "quote": "前台给我登记了每周三晚八点的固定泳道",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T11_A03",
+          "subject": "HER",
+          "relation": "凭证存档",
+          "value": "差价发票已拍照存档",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T11",
+            "quote": "发票拍照存了档",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "ME 今晚是否到场未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得编造 ME 已到场"
+      ],
+      "may_decline": true,
+      "intent": null
+    },
+    {
+      "case_id": "E164_T12",
+      "current_action": "接收首场反馈与旧次卡消化计划，接住冬训营观望钩子",
+      "acceptable_actions": [
+        "认可首场效果并应下一起研究冬训营规则",
+        "提醒冬训营先看返现条件再决定",
+        "顺带确认剩余两次次卡的使用安排"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "goal",
+        "interaction",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E164_T12_A01",
+          "subject": "SHARED",
+          "relation": "次卡余量状态",
+          "value": "旧次卡剩余两次计划下周三用完",
+          "valid_time": "2026-11-25 前后",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "名下泳池次卡只剩两次"
+          },
+          "required_this_turn": true
+        },
+        {
+          "atom_id": "E164_T12_A02",
+          "subject": "SHARED",
+          "relation": "冬训营活动",
+          "value": "十二月泳馆冬训营打卡返现活动规则未细读暂观望",
+          "valid_time": "2026-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T12",
+            "quote": "十二月泳馆有个冬训营打卡返现的活动",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E164_T12_A03",
+          "subject": "HER",
+          "relation": "首场体感",
+          "value": "首场游完肩颈松快认为差价值得",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E164_T12",
+            "quote": "游完第一场，肩颈松快多了，值回三百",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "冬训营返现规则未知",
+        "剩余两次能否转给他人未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得替她宣布已报名冬训营"
+      ],
+      "may_decline": true,
+      "intent": null
+    },
+    {
+      "case_id": "E170_T01",
+      "current_action": "就烟机位尺寸不符与二次上门费给出第一步处置建议",
+      "acceptable_actions": [
+        "建议先问清量尺记录再谈谁担责",
+        "建议让门店出具书面返工方案",
+        "建议先别付二次上门费等责任认定"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T01_A01",
+          "subject": "SHARED",
+          "relation": "橱柜尺寸不符",
+          "value": "安装当日发现烟机位差两公分，板子挡不上需返厂重做",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T01",
+            "quote": "烟机位差了两公分",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T01_A02",
+          "subject": "SHARED",
+          "relation": "二次上门费争议",
+          "value": "安装方提出二次上门费六百，责任归属存疑",
+          "valid_time": "2026-11-06",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T01",
+            "quote": "还得收第二次上门费六百",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "尺寸差异成因未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得未核事实就断言责任方"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E170_T02",
+      "current_action": "按合同条款确认二次上门费不应由 HER 承担",
+      "acceptable_actions": [
+        "确认条款支持她并建议留合同页照片",
+        "确认并提醒与条款对应的沟通留痕",
+        "确认并让她把条款原文发给门店"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "boundary",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T02_A01",
+          "subject": "SHARED",
+          "relation": "合同上门条款",
+          "value": "合同约定安装费含免费上门一次，客户原因二次上门按每次两百收取",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T02",
+            "quote": "安装费含免费上门一次",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T02_A02",
+          "subject": "SHARED",
+          "relation": "橱柜尺寸不符",
+          "value": "烟机位差两公分待返厂的既定事实",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T01",
+            "quote": "烟机位差了两公分",
+            "message_id": "m0"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "门店是否认账未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得引用合同里不存在的条款"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E170_T03",
+      "current_action": "对量尺记录与现场尺寸对不上的僵局给判断路径",
+      "acceptable_actions": [
+        "建议调取量尺底单与现场复测对照",
+        "建议两口径都留证再逼门店表态",
+        "建议承认成因难判但责任可以先按合同谈"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "attribution",
+        "goal",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T03_A01",
+          "subject": "PUBLIC",
+          "relation": "量尺记录差异",
+          "value": "量尺师傅单子记七十六，现场实为七十四，成因双方说不清",
+          "valid_time": "2026-11-06",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T03",
+            "quote": "他单子上记的是七十六",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T03_A02",
+          "subject": "SHARED",
+          "relation": "合同上门条款",
+          "value": "免费上门一次与二次收费条款的既定文本",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T02",
+            "quote": "安装费含免费上门一次",
+            "message_id": "m0"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "差异到底源于量尺还是土建未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得断言量尺师傅撒谎"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E170_T04",
+      "current_action": "认可门店认责结果并强调书面责任单的必要性",
+      "acceptable_actions": [
+        "认可并提醒责任单写明费用与工期",
+        "认可并建议责任单写清返工范围",
+        "认可并说收到书面再停下一步动作"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "memory_use",
+        "interaction",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T04_A01",
+          "subject": "SHARED",
+          "relation": "品牌认责",
+          "value": "门店电话认复尺漏了烟机位，板材返厂全责费用品牌担",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T04",
+            "quote": "认了是复尺漏了烟机位这一项",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T04_A02",
+          "subject": "HER",
+          "relation": "书面责任单要求",
+          "value": "HER 要求把口头认责写成书面责任单，门店答应次日发",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T04",
+            "quote": "写成书面责任单",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "责任单具体措辞未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得声称已见到书面责任单"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E170_T05",
+      "current_action": "接受返工范围与工期的更正并确认六百费用归属",
+      "acceptable_actions": [
+        "复述侧板顶线都要动与17号二次安装",
+        "确认并提醒工期七天写进责任单",
+        "确认并问尾款节点要不要顺延"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "time_state",
+        "memory_use",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T05_A01",
+          "subject": "SHARED",
+          "relation": "返工范围更正",
+          "value": "只换一块封板的旧理解更正为侧板和顶线都要动",
+          "valid_time": "2026-11-07",
+          "status": "superseded",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T05",
+            "quote": "更正一下昨天我以为只换一块封板",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T05_A02",
+          "subject": "SHARED",
+          "relation": "工期与费用更新",
+          "value": "工期多七天，板子13号到17号二次安装，六百二次上门费由门店承担",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T05",
+            "quote": "工期要多七天",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "17号安装是否再次变动未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得按只换封板回应",
+        "不得按15号完工回应"
+      ],
+      "may_decline": false,
+      "intent": {
+        "enabled": true,
+        "status": "explicit",
+        "text": "更正返工范围与工期并确认费用归属"
+      }
+    },
+    {
+      "case_id": "E170_T06",
+      "current_action": "就拉篮加层是否拖工期加钱给出专业提醒",
+      "acceptable_actions": [
+        "提醒先确认是否算增项再决定",
+        "提醒改配置要另签变更单",
+        "让门店书面答复工期与差价再定"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "boundary",
+        "factuality",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T06_A01",
+          "subject": "SHARED",
+          "relation": "拉篮变更意向",
+          "value": "HER 想借返厂把拉篮从两层改三层",
+          "valid_time": "2026-11-07",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T06",
+            "quote": "拉篮从两层改成三层",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T06_A02",
+          "subject": "SHARED",
+          "relation": "工期与费用更新",
+          "value": "返工工期多七天与17号二次安装的新口径",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T05",
+            "quote": "工期要多七天",
+            "message_id": "m0"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "拉篮差价未知",
+        "对工期影响未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得替门店承诺不加钱"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E170_T07",
+      "current_action": "确认增项落单与两笔费用的分流",
+      "acceptable_actions": [
+        "确认签变更单并夸她账目清楚",
+        "确认并提醒变更单留存照片",
+        "确认并顺带核对六百是否也写在单里"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "factuality",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T07_A01",
+          "subject": "SHARED",
+          "relation": "拉篮增项落单",
+          "value": "拉篮改三层加三百五算增项另签变更单，费用 HER 自担，工期不拖",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T07",
+            "quote": "拉篮改三层加三百五",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T07_A02",
+          "subject": "SHARED",
+          "relation": "费用分流",
+          "value": "当日两笔费用口径：六百门店出，三百五 HER 出",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T07",
+            "quote": "今天一个六百一个三百五",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [
+        "不得把三百五记到门店头上"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E170_T08",
+      "current_action": "就燃气改造改期与表妹夫出差给出连锁判断",
+      "acceptable_actions": [
+        "建议燃气改到20号并说一人也能盯",
+        "建议改期同时让橱柜方书面确认17号",
+        "建议查燃气公司改约费规则再定"
+      ],
+      "applicable_dimensions": [
+        "time_state",
+        "goal",
+        "memory_use",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T08_A01",
+          "subject": "SHARED",
+          "relation": "燃气改造改期",
+          "value": "燃气改造原约18号，因橱柜17号才装完拟改到20号",
+          "valid_time": "2026-11-20",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T08",
+            "quote": "我打算把燃气改到20号",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T08_A02",
+          "subject": "SHARED",
+          "relation": "工期与费用更新",
+          "value": "橱柜17号二次安装的新工期口径",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T05",
+            "quote": "17号二次安装",
+            "message_id": "m0"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "燃气公司改约费标准未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构燃气公司政策"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E170_T09",
+      "current_action": "接住改约费自吞的结果并回应到场把关请求",
+      "acceptable_actions": [
+        "答应17号到场看封板缝和挡水条",
+        "答应并提前说会带塞尺量缝",
+        "答应到场并让她把三份凭证带齐"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "goal",
+        "memory_use",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T09_A01",
+          "subject": "SHARED",
+          "relation": "燃气改约结果",
+          "value": "燃气改约到20号上午，五十元改约费门店不认由 HER 自担",
+          "valid_time": "2026-11-20",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T09",
+            "quote": "改约费五十",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T09_A02",
+          "subject": "SHARED",
+          "relation": "验收把关请求",
+          "value": "HER 请 ME 17号到场重点看封板缝与挡水条",
+          "valid_time": "2026-11-17",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T09",
+            "quote": "17号二次安装你能来帮我看看吗",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "17号 HER 是否还要上班未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得再替她向门店追讨改约费"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E170_T10",
+      "current_action": "确认17号上午九点到场并认可凭证截图习惯",
+      "acceptable_actions": [
+        "确认到场并约定先看缝再签收尾",
+        "确认并提醒把责任单打印一份带现场",
+        "确认并说理账时把五十也摆上桌"
+      ],
+      "applicable_dimensions": [
+        "time_state",
+        "memory_use",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T10_A01",
+          "subject": "SHARED",
+          "relation": "验收之约",
+          "value": "17号上午九点二次安装开工，ME 到场把关已约定",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T10",
+            "quote": "17号上午九点开工",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T10_A02",
+          "subject": "HER",
+          "relation": "凭证留存",
+          "value": "责任单变更单改约短信均已截图留存待理总账",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T10",
+            "quote": "都存了截图",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [
+        "不得虚构尚未发生的验收结果"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E170_T11",
+      "current_action": "按现场情况确认封板缝与挡水条达标并核对费用结算",
+      "acceptable_actions": [
+        "看照片确认达标并夸返工质量",
+        "确认并提醒保修期内缝变大可召回",
+        "确认尾款留存策略稳妥"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "memory_use",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T11_A01",
+          "subject": "SHARED",
+          "relation": "二次安装结果",
+          "value": "封板缝约一根头发丝宽，挡水条做弧形，安装完成",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T11",
+            "quote": "封板缝目测一根头发丝宽",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T11_A02",
+          "subject": "SHARED",
+          "relation": "费用结算落地",
+          "value": "六百与三百五均按单支付，尾款百分之五留至保修满一个月",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T11",
+            "quote": "尾款百分之五留着",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [
+        "不得声称亲眼所见照片以外的细节"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E170_T12",
+      "current_action": "接下致谢与家宴邀请，阳台柜参谋可接可缓",
+      "acceptable_actions": [
+        "答应赴宴并问要不要带嫂子拿手菜",
+        "答应理账并接阳台柜掌眼",
+        "收下感谢并说验收账不见不散"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "emotion_relation",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E170_T12_A01",
+          "subject": "SHARED",
+          "relation": "家宴与理账",
+          "value": "HER 约周六家宴并当面过一遍验收账",
+          "valid_time": "2026-11-17之后",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T12",
+            "quote": "周六家里吃顿饭",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E170_T12_A02",
+          "subject": "HER",
+          "relation": "阳台柜新需求",
+          "value": "HER 看好阳台杂物柜款式，下回请 ME 掌眼",
+          "valid_time": "2026-11-17之后",
+          "status": "uncertain",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E170_T12",
+            "quote": "阳台那个杂物柜",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "阳台柜具体款式与预算未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得替 HER 定阳台柜方案"
+      ],
+      "may_decline": true,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T01",
+      "current_action": "肯定就医决定：两个月反复就该查诱因，叮嘱抽血前后按医生交代，报告出来一起看",
+      "acceptable_actions": [
+        "肯定她终于去查是对的，提醒报告出来先别自己吓自己",
+        "确认过四天出报告的时间线，建议期间继续按原医嘱用药",
+        "接住她的松动情绪，说自己可以帮她先把报告指标看懂"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "goal",
+        "factuality",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A01",
+          "subject": "HER",
+          "relation": "检测执行",
+          "value": "HER因荨麻疹反复两个月完成过敏原抽血检测",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T01",
+            "message_id": "m0",
+            "quote": "过敏原抽血"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E183_A02",
+          "subject": "ME",
+          "relation": "解读边界",
+          "value": "ME在第三方检验实验室工作但坚持诊断归医生",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "天天看报告"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "具体检测套餐项目未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得提前断言过敏原是什么",
+        "不得替代医生下诊断结论"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T02",
+      "current_action": "用大白话讲清临界值：0.62对0.35以下只是超出参考线不高，阴性不代表永不过敏，结论等医生",
+      "acceptable_actions": [
+        "解释临界值含义：略超参考线，程度需要医生结合症状判",
+        "肯定她拍照存档的习惯，提醒报告原文留着复查对比",
+        "讲清阴性与临界的区别，明确说不替医生下结论"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "attribution",
+        "memory_use",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A03",
+          "subject": "SHARED",
+          "relation": "报告结果",
+          "value": "屋尘螨0.62对参考0.35以下卡临界牛肉和虾阴性",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T02",
+            "message_id": "m0",
+            "quote": "屋尘螨0.62"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "该检测方法学的单位与灵敏度未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得断言屋尘螨0.62即确诊过敏",
+        "不得断言阴性即永不过敏"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T03",
+      "current_action": "接住说法打架：指出两说都别全信——妈妈的说法过猛、同事的加查建议也不是医生说的，裁判交给复诊医生",
+      "acceptable_actions": [
+        "分析两种说法各自的来源可靠性，建议都先记下不复述成结论",
+        "明确说临界既不等于确诊也不能当没事，答案让周五的医生给",
+        "肯定她没直接扔地毯的克制，建议把两说整理成问题清单带去"
+      ],
+      "applicable_dimensions": [
+        "attribution",
+        "boundary",
+        "goal",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A04",
+          "subject": "SHARED",
+          "relation": "口径矛盾",
+          "value": "家人称临界即过敏与同事称需加查IgE两种说法矛盾",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T03",
+            "message_id": "m0",
+            "quote": "得再查个什么IgE"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E183_A05",
+          "subject": "SHARED",
+          "relation": "解读基准",
+          "value": "矛盾解读的对象是屋尘螨0.62临界报告",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T02",
+            "message_id": "m0",
+            "quote": "屋尘螨0.62"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "同事所查的具体检测内容不明"
+      ],
+      "forbidden_factual_claims": [
+        "不得当场判定哪种说法正确",
+        "不得建议立即加做任何自费检查"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T04",
+      "current_action": "肯定她的无损动作：卷地毯、烫床单是零成本的环境控制，先做不亏，同时提醒别为不确定的结论花大钱",
+      "acceptable_actions": [
+        "肯定先做无损环境处理的思路，提醒高温烫洗后彻底晒干",
+        "确认这些动作不亏，重申大额检查等医生发话",
+        "接住她的节奏，建议顺手把发作时刻继续记上"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "boundary",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A06",
+          "subject": "HER",
+          "relation": "环境行动",
+          "value": "HER卷起地毯塞阳台并用开水烫洗床单被罩",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T04",
+            "message_id": "m0",
+            "quote": "地毯卷了塞阳台"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [
+        "不得断言地毯就是诱因",
+        "不得虚构高温处理的有效率数据"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T05",
+      "current_action": "支持带记录复诊：发作时间记录很有用，建议连用药时间一起记，周五上午十点的号别迟到",
+      "acceptable_actions": [
+        "肯定带发作记录的想法，建议补上每次用药时间和剂量",
+        "确认带记录有用，提醒同时带上正在吃的药盒",
+        "肯定她的表格习惯，建议把两说的疑问也列进去当面问"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "memory_use",
+        "interaction",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A07",
+          "subject": "SHARED",
+          "relation": "复诊预约",
+          "value": "复诊约在周五上午十点原开单医生",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T05",
+            "message_id": "m0",
+            "quote": "周五上午十点的复诊号"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [
+        "不得虚构复诊流程细节"
+      ],
+      "may_decline": true,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T06",
+      "current_action": "接住发作记录更新：七次都在晚间是有价值的规律线索，提醒记下当晚吃了什么碰了什么，周五正好给医生看",
+      "acceptable_actions": [
+        "肯定记录价值，指出晚间集中这个规律值得给医生看",
+        "提醒发作时连带记录当晚饮食和接触物",
+        "接住发作的小沮丧，肯定记录在册就不慌"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "factuality",
+        "emotion_relation",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A08",
+          "subject": "HER",
+          "relation": "发作记录",
+          "value": "昨晚十一点半小腿发作累计第七次均在晚间",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T06",
+            "message_id": "m0",
+            "quote": "一共七次"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "发作与饮食接触的关联未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得断言晚间发作的成因",
+        "不得虚构发作次数以外的统计"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T07",
+      "current_action": "接住医生收口：确认轻度致敏+环境控制一个月的路径合理，明确同事的加查全套IgE被医生否了这事到此为止",
+      "acceptable_actions": [
+        "肯定医生口径与环境控制路径，确认不必再加查",
+        "呼应自己此前不站队的处理，指出两说都以医生为准收口",
+        "帮她把医嘱拆成清单：环境控制、一个月复查、不加查"
+      ],
+      "applicable_dimensions": [
+        "attribution",
+        "goal",
+        "memory_use",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A09",
+          "subject": "SHARED",
+          "relation": "医生解读",
+          "value": "医生判定屋尘螨0.62仅轻度致敏非唯一原因先环境控制一个月后复查",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T07",
+            "message_id": "m0",
+            "quote": "只是轻度致敏"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E183_A10",
+          "subject": "SHARED",
+          "relation": "加查IgE否决",
+          "value": "全套IgE检查被医生判定不必做同事说法被否",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T07",
+            "message_id": "m0",
+            "quote": "不用专门花钱做全套IgE"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E183_A11",
+          "subject": "SHARED",
+          "relation": "矛盾说法来源",
+          "value": "此前两种矛盾说法中同事的加查说法被医生否定",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T03",
+            "message_id": "m0",
+            "quote": "得再查个什么IgE"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "环境控制的具体项目以医嘱为准"
+      ],
+      "forbidden_factual_claims": [
+        "不得宣称屋尘螨已排除",
+        "不得虚构复查指标项目"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T08",
+      "current_action": "接住忌口松绑：阴性结论与医生口径一致，停酒和辛辣是通用刺激物管理，比全戒好执行",
+      "acceptable_actions": [
+        "呼应阴性结果与医生口径一致，肯定忌口清单改得快",
+        "提醒酒和辛辣是通用刺激因素，先停观察正好对照",
+        "轻快接住好消息，建议把改后的清单也存档给复查对比"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "memory_use",
+        "emotion_relation",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A12",
+          "subject": "SHARED",
+          "relation": "忌口更正",
+          "value": "忌口不需全戒虾牛肉可吃仅先停酒和辛辣",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T08",
+            "message_id": "m0",
+            "quote": "忌口不用全戒"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E183_A13",
+          "subject": "SHARED",
+          "relation": "阴性对照",
+          "value": "牛肉虾阴性结论与医生忌口口径一致",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T02",
+            "message_id": "m0",
+            "quote": "都是阴性"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [
+        "不得宣称虾牛肉绝对安全",
+        "不得虚构额外忌口项目"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T09",
+      "current_action": "评她的采购决策：三百出头的除螨仪够用，每周吸床垫沙发频率合理，提醒吸完集尘盒及时清",
+      "acceptable_actions": [
+        "认可三百出头的预算和每周一次的频率，补一条清理集尘盒",
+        "肯定环境控制在落地，提醒吸床垫时把床品同步换洗",
+        "确认采购合理，建议保留发票以便效果不好时退换"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "memory_use",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A14",
+          "subject": "HER",
+          "relation": "除螨采购",
+          "value": "HER购入三百出头除螨仪计划每周吸一次床垫沙发",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T09",
+            "message_id": "m0",
+            "quote": "三百出头的除螨仪"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [
+        "除螨仪具体型号未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得断言除螨仪必然降低指标",
+        "不得虚构具体品牌推荐"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T10",
+      "current_action": "肯定初步成效：一周一次比之前七次的密度明显降，表格留给复查正好构成前后对照",
+      "acceptable_actions": [
+        "肯定频率下降的趋势，提醒先别提前下结论等复查",
+        "肯定表格对照价值，建议把除螨仪启用日期也标进去",
+        "接住她的轻快，提醒保持当前节奏别加新变量"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "factuality",
+        "emotion_relation",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A15",
+          "subject": "HER",
+          "relation": "症状改善",
+          "value": "一周仅发作一次少于此前并整理记录为表格",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T10",
+            "message_id": "m0",
+            "quote": "就起来过一次"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E183_A16",
+          "subject": "HER",
+          "relation": "记录闭环",
+          "value": "发作记录表格将在复查时交给医生作前后对照",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T06",
+            "message_id": "m0",
+            "quote": "一共七次"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "改善归因于环境控制还是季节因素未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得断言已痊愈",
+        "不得虚构指标数值"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T11",
+      "current_action": "确认复查准备：下周四上午十点同一位医生好对比，纸质报告和表格一起带，问诊顺序建议先说改善再说疑问",
+      "acceptable_actions": [
+        "肯定材料备齐，建议按时间线给医生讲改善过程",
+        "确认同一位医生便于对比，提醒带表格和用药记录",
+        "确认复查安排，建议把想问的问题先写三条"
+      ],
+      "applicable_dimensions": [
+        "time_state",
+        "memory_use",
+        "goal",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A17",
+          "subject": "SHARED",
+          "relation": "复查安排",
+          "value": "复查定下周四上午十点同一位医生并备纸质报告",
+          "valid_time": "2026-11-27",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T11",
+            "message_id": "m0",
+            "quote": "下周四上午十点"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E183_A18",
+          "subject": "SHARED",
+          "relation": "报告基准",
+          "value": "上次屋尘螨0.62临界报告作为本次复查对比基线",
+          "valid_time": "2026-11-27",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T02",
+            "message_id": "m0",
+            "quote": "屋尘螨0.62"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "复查具体查什么以医生安排为准"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构复查项目与费用"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E183_T12",
+      "current_action": "收尾回扣：恭喜指标下降与环境控制见效，回扣她当时没乱花钱做全套的决定，地毯铺回正好收闭环",
+      "acceptable_actions": [
+        "恭喜复查结果，回扣没做全套IgE省下的钱和功夫",
+        "肯定她一个月环境控制的执行力，接住感谢并说医生定方案才是关键",
+        "轻松收尾，回扣地毯铺回和随诊安排，留下次约饭的钩子"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "emotion_relation",
+        "interaction",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E183_A19",
+          "subject": "SHARED",
+          "relation": "复查结果",
+          "value": "复查指标下降环境控制有效下下月随诊一次",
+          "valid_time": "2026-12-03",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T12",
+            "message_id": "m0",
+            "quote": "地毯可以铺回去了"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E183_A20",
+          "subject": "HER",
+          "relation": "决策回扣",
+          "value": "此前未盲目加查全套IgE的立场被复查结果印证",
+          "valid_time": "2026-12-03",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E183_T07",
+            "message_id": "m0",
+            "quote": "不用专门花钱做全套IgE"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "随诊具体时间未定"
+      ],
+      "forbidden_factual_claims": [
+        "不得断言已根治",
+        "不得虚构指标具体数值"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T01",
+      "current_action": "接住满员报喜，确认到场并认领重策大桌的期待。",
+      "acceptable_actions": [
+        "确认到场并呼应重策开大桌",
+        "顺带问要不要帮带茶水零食凑低消",
+        "问她八人局教学打算怎么排"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "emotion_relation",
+        "goal",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A01",
+          "subject": "SHARED",
+          "relation": "拼局人数",
+          "value": "周六晚桌游局报名满八人",
+          "valid_time": "2026-11-04",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T01",
+            "quote": "周六晚的局满员啦，八个人",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E191_A02",
+          "subject": "SHARED",
+          "relation": "费用口径",
+          "value": "包间低消三百六十元八人人均四十五元",
+          "valid_time": "2026-11-04",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T01",
+            "quote": "包间低消三百六，人均四十五",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E191_A03",
+          "subject": "SHARED",
+          "relation": "局次安排",
+          "value": "十一月七日周六晚桌游吧包间局",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "订了十一月七日周六晚的桌游吧包间"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "八人最终到场情况未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构包间具体位置或桌游吧名称"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T02",
+      "current_action": "确认到场，主动认领教学环节的分担角色。",
+      "acceptable_actions": [
+        "确认到场并认领教学帮手角色",
+        "提议提前十分钟到帮她摆桌",
+        "问她重策开哪款好备课"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "initiative",
+        "interaction",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A04",
+          "subject": "ME",
+          "relation": "到场承诺",
+          "value": "确认参加八人局并分担教学环节",
+          "valid_time": "2026-11-04",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T02",
+            "quote": "教学环节搭把手",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T03",
+      "current_action": "夸速查表的结构拆分，点出它对教学时间的实际价值。",
+      "acceptable_actions": [
+        "夸四页结构清晰并问分发方式",
+        "指出得分表那页最容易救场",
+        "提议开局前留五分钟集体读表"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "emotion_relation",
+        "memory_use",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A05",
+          "subject": "HER",
+          "relation": "教学准备",
+          "value": "四页规则速查表含开局回合得分常见坑各一页",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T03",
+            "quote": "四页，开局流程一页，回合结构一页，得分表一页，常见坑一页",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [
+        "不得虚构速查表以外的页数"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T04",
+      "current_action": "把速查表变成流程：提前十分钟到、先读表再开局，省下教学时间。",
+      "acceptable_actions": [
+        "建议发群预热并约定提前到场读表",
+        "让她把速查表打印几份备用",
+        "提议把常见坑那页做成开局面小测"
+      ],
+      "applicable_dimensions": [
+        "initiative",
+        "goal",
+        "time_state",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A06",
+          "subject": "ME",
+          "relation": "流程建议",
+          "value": "提前十分钟到场先读表再开局",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T04",
+            "quote": "周六提前十分钟到，先读表再开局",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T05",
+      "current_action": "接住放鸽的火气，先认可她算清的账，再陪她定补位或照玩的策略。",
+      "acceptable_actions": [
+        "先接情绪，再确认人均重算口径并讨论补位",
+        "建议六人照玩并主动认下差价",
+        "帮她想临时拉人的候选名单但提醒别凑数"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "factuality",
+        "boundary",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A07",
+          "subject": "SHARED",
+          "relation": "拼局人数",
+          "value": "八人局两人临时缺席仅剩六人",
+          "valid_time": "2026-11-07",
+          "status": "cancelled",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T05",
+            "quote": "老康临时加班来不了，小麦发烧也请假，就剩六个人",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E191_A08",
+          "subject": "SHARED",
+          "relation": "人均费用",
+          "value": "六人分摊低消三百六十元人均六十元较原四十五元多十五元",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T05",
+            "quote": "低消三百六摊到六个人头上就是六十",
+            "message_id": "m1"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E191_A09",
+          "subject": "SHARED",
+          "relation": "费用口径",
+          "value": "原口径包间低消三百六十元八人人均四十五元",
+          "valid_time": "2026-11-04",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T01",
+            "quote": "包间低消三百六，人均四十五",
+            "message_id": "m0"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "缺席两人是否事后补偿未提"
+      ],
+      "forbidden_factual_claims": [
+        "不得把人均算成六十以外的数",
+        "不得声称缺席两人会照付份额"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T06",
+      "current_action": "主张六人照玩不凑数，带头认下六十的份额并提醒她把口径在群里说清防扯皮。",
+      "acceptable_actions": [
+        "支持六人照玩并先转自己那份六十",
+        "帮她拟一条群里的人均重算说明",
+        "提醒她垫付前先收齐口头确认"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "initiative",
+        "interaction",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A10",
+          "subject": "ME",
+          "relation": "分摊态度",
+          "value": "自愿按六十元承担并支持六人照玩",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T06",
+            "quote": "我的那份按六十转你",
+            "message_id": "m1"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E191_A11",
+          "subject": "SHARED",
+          "relation": "人均费用",
+          "value": "六人分摊低消人均六十元",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T05",
+            "quote": "低消三百六摊到六个人头上就是六十",
+            "message_id": "m1"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [
+        "不得声称自己那份仍按四十五付"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T07",
+      "current_action": "确认全员认账后爽利垫付三百六，宣布每人还六十的口径并进入开局。",
+      "acceptable_actions": [
+        "确认垫付口径并预祝开局顺利",
+        "顺势夸速查表正好派上用场",
+        "提醒她垫付转账备注写清桌游局"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "emotion_relation",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A12",
+          "subject": "HER",
+          "relation": "垫付分摊",
+          "value": "她垫付包间低消三百六十元每人应还六十元",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T07",
+            "quote": "我现在垫付包间低消三百六，回来你们一人转我六十",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E191_A13",
+          "subject": "HER",
+          "relation": "教学准备",
+          "value": "四页规则速查表当晚启用",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T03",
+            "quote": "四页，开局流程一页，回合结构一页，得分表一页，常见坑一页",
+            "message_id": "m0"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [
+        "不得把垫付金额说成三百以外任何数"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T08",
+      "current_action": "汇报已转六十并反馈速查表实际救场，把她的准备成果落成事实。",
+      "acceptable_actions": [
+        "汇报转账到账并具体夸速查表某页",
+        "复盘一句六人局的体验反差",
+        "提醒她还差几份没到账记得对"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "memory_use",
+        "interaction",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A14",
+          "subject": "ME",
+          "relation": "转账记录",
+          "value": "已转账六十元备注桌游局",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T08",
+            "quote": "六十转你了备注桌游局",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [
+        "不得虚构转账金额为六十以外"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T09",
+      "current_action": "接住对账结果：五份六十共三百到齐，她自担六十，肯定当周结清的做法并接下凑回八人的Flag。",
+      "acceptable_actions": [
+        "复述对账数字确认无误并接下八人目标",
+        "肯定她自担六十的爽气但提醒下局真要凑满",
+        "把速查表群文件化的提议再推一步"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "memory_use",
+        "boundary",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A15",
+          "subject": "SHARED",
+          "relation": "对账结果",
+          "value": "收回五份每人六十共三百元她自担六十元",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T09",
+            "quote": "五份六十都到齐，一共三百",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E191_A16",
+          "subject": "HER",
+          "relation": "垫付分摊",
+          "value": "她垫付包间低消三百六十元每人应还六十元",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T07",
+            "quote": "我现在垫付包间低消三百六，回来你们一人转我六十",
+            "message_id": "m0"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "缺席两人是否参加下局未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得把对账总额算成三百六十以外",
+        "不得声称缺席两人已补付"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T10",
+      "current_action": "调侃一句座位费说法，顺势提议把速查表源文件改成群文件沉淀为组织资产。",
+      "acceptable_actions": [
+        "接住自担六十的玩笑并要速查表源文件",
+        "提议源文件加新人版页签",
+        "让她下次局直接用群文件教学"
+      ],
+      "applicable_dimensions": [
+        "initiative",
+        "interaction",
+        "memory_use",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A17",
+          "subject": "ME",
+          "relation": "共享提议",
+          "value": "速查表源文件改成群文件供新人使用",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T10",
+            "quote": "改改成群文件，以后新人入局不用你重讲",
+            "message_id": "m1"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T11",
+      "current_action": "接住八人局复原的宣布，确认新人补位与人均回四十五，把速查表前移到新人学习环节。",
+      "acceptable_actions": [
+        "祝贺凑回八人并肯定速查表先行",
+        "确认下下周六档期并问开哪款",
+        "提醒新人学完规则再做一轮开局面小测"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A18",
+          "subject": "SHARED",
+          "relation": "拼局人数",
+          "value": "下下周六恢复八人局人均回到四十五元",
+          "valid_time": "2026-11-28",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T11",
+            "quote": "八人齐了，人均又回到四十五",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E191_A19",
+          "subject": "HER",
+          "relation": "凑局目标",
+          "value": "下局要凑回八人把人均打回四十五",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T09",
+            "quote": "下局我要凑回八人，把人均打回四十五",
+            "message_id": "m1"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "新人两口子是否会临时变卦未知"
+      ],
+      "forbidden_factual_claims": [
+        "不得把新人入局时间说成本周六"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E191_T12",
+      "current_action": "接住新人学完规则的好消息与周六之约，接住奶茶并预祝八人重策局顺利。",
+      "acceptable_actions": [
+        "答应周六到场并接住奶茶之约",
+        "夸她新手版加页的做法",
+        "提醒周六提前十分钟到读表开局"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "emotion_relation",
+        "goal",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E191_A20",
+          "subject": "SHARED",
+          "relation": "拼局人数",
+          "value": "小柯两口子补位下下周六恢复八人局",
+          "valid_time": "2026-11-28",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T11",
+            "quote": "同事小柯两口子下下周六入局",
+            "message_id": "m0"
+          },
+          "required_this_turn": true
+        },
+        {
+          "atom_id": "E191_A21",
+          "subject": "HER",
+          "relation": "教学准备",
+          "value": "速查表新增新手版一页",
+          "valid_time": "2026-11-26",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E191_T12",
+            "quote": "新手版我又加了一页",
+            "message_id": "m0"
+          },
+          "required_this_turn": false
+        }
+      ],
+      "unknowns": [],
+      "forbidden_factual_claims": [
+        "不得虚构周六局的开销数字"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E212_T01",
+      "current_action": "接消息但不下结论,建议她直接问前台要书面说法,别靠告示和传闻拼图",
+      "acceptable_actions": [
+        "表示没听说,建议直接问前台要书面说法,别靠告示猜",
+        "接住消息,提醒先把合同里督学服务的条目翻出来备着",
+        "共情换督学的膈应,劝她先求证再定情绪,别自己吓自己"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "interaction",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A01",
+          "subject": "THIRD",
+          "relation": "机构变动传闻",
+          "value": "自习室通知栏告示称督学服务整体换成致学团队接手,王老师可能不带",
+          "valid_time": "2026-11-12 告示",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T01",
+            "message_id": "m0",
+            "quote": "督学服务要整体换成致学团队接手,王老师那边可能就不带了"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A02",
+          "subject": "THIRD",
+          "relation": "原督学服务",
+          "value": "王老师每周一次一对一答疑,固定靠窗座位,每晚对进度",
+          "valid_time": "入读以来",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "王老师每周一次一对一答疑,固定靠窗座位,每晚对进度"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "致学团队的资历与安排未知"
+      ],
+      "forbidden_factual_claims": [
+        "王老师已经确定月底离职",
+        "机构已宣布退费方案"
+      ],
+      "may_decline": false,
+      "intent": {
+        "enabled": true,
+        "status": "explicit",
+        "text": "求证督学更换消息并商量对策"
+      }
+    },
+    {
+      "case_id": "E212_T02",
+      "current_action": "支持她核合同,建议把学费所含服务条目逐项拍照留底,作为以后对表的基准",
+      "acceptable_actions": [
+        "肯定她的怀疑,建议把合同里督学服务条目逐项拍照,以后照单对表",
+        "接住不变俩字,说口头不变不算数,白纸黑字才算,劝她留底",
+        "支持核合同,顺带提醒保留王老师团队的排期作对照基准"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "memory_use",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A03",
+          "subject": "THIRD",
+          "relation": "前台口径",
+          "value": "王老师团队合同到期,新督学是外包的致学,前台称服务内容不变",
+          "valid_time": "2026-11-13 前台答复",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T02",
+            "message_id": "m0",
+            "quote": "王老师团队合同到期,新的是外包的致学,服务内容不变"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A01b",
+          "subject": "THIRD",
+          "relation": "机构变动传闻",
+          "value": "督学换为致学团队",
+          "valid_time": "2026-11-12 告示",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T01",
+            "message_id": "m0",
+            "quote": "督学服务要整体换成致学团队接手,王老师那边可能就不带了"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "合同里督学条目的具体措辞未知"
+      ],
+      "forbidden_factual_claims": [
+        "合同已核对完毕",
+        "致学已被证实缩水"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E212_T03",
+      "current_action": "接住憋火,把两个受损点摆开:座位被重新分配、点名规则加码,建议先把这俩事实原样记下,别跟新督学当场顶",
+      "acceptable_actions": [
+        "先接火气,再把事实摆开:座位被排走加点名提前,劝她先记录在案,别当场顶",
+        "共情服务不变成了空话,建议先把靠窗座位的原状证据留好,再走正规反馈",
+        "接住下马威,劝她别在新督学面前硬碰,把变动逐条记下来攒着说理"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "factuality",
+        "emotion_relation",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A04",
+          "subject": "THIRD",
+          "relation": "座位变动",
+          "value": "坐了俩月的靠窗固定座位被排给别的学员,她被挪到大门口的桌",
+          "valid_time": "2026-11-15",
+          "status": "revoked",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T03",
+            "message_id": "m0",
+            "quote": "坐了俩月的靠窗固定座位,被排给了另一个学员,把我挪到大门口那张桌"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A05",
+          "subject": "THIRD",
+          "relation": "点名规则变动",
+          "value": "晨间点名改到8点整,迟一分钟记名单",
+          "valid_time": "2026-11-15 起",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T03",
+            "message_id": "m0",
+            "quote": "晨间点名改到8点整,迟一分钟记名单"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A03b",
+          "subject": "THIRD",
+          "relation": "前台口径",
+          "value": "前台曾称服务内容不变",
+          "valid_time": "2026-11-13",
+          "status": "superseded",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T02",
+            "message_id": "m0",
+            "quote": "新的是外包的致学,服务内容不变"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "座位重排是个人决定还是新规未知"
+      ],
+      "forbidden_factual_claims": [
+        "座位没有变动",
+        "点名仍是原时间"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E212_T04",
+      "current_action": "给优先级:趁王老师没走先要学习档案和进度资料,座位的事走机构正规反馈,两条线分开",
+      "acceptable_actions": [
+        "排序明确:先约王老师拿学习档案,座位问题写进正式反馈,两条线并行",
+        "支持先拿资料,提醒王老师月底走,时间窗口紧,座位的事别指望新督学",
+        "建议先抢救学习资产,再向机构书面提座位,别在门口桌内耗"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "time_state",
+        "initiative",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A06",
+          "subject": "THIRD",
+          "relation": "新督学答复",
+          "value": "新督学只回了座位统一安排;学习档案可找王老师拿",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T04",
+            "message_id": "m0",
+            "quote": "新督学回了句座位统一安排,就没了"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A07",
+          "subject": "THIRD",
+          "relation": "王老师去向",
+          "value": "王老师月底离开,学习档案找他要",
+          "valid_time": "2026-11-16 转述,月底生效",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T04",
+            "message_id": "m0",
+            "quote": "王老师听说月底就走,你说我该先干嘛"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A04b",
+          "subject": "THIRD",
+          "relation": "座位变动",
+          "value": "靠窗固定座位被重新分配",
+          "valid_time": "2026-11-15",
+          "status": "revoked",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T03",
+            "message_id": "m0",
+            "quote": "把我挪到大门口那张桌"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "王老师手头资料有多少未知"
+      ],
+      "forbidden_factual_claims": [
+        "新督学已同意恢复座位",
+        "王老师已离职"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E212_T05",
+      "current_action": "接住感动,肯定这份交接的价值,建议把进度表归档并按错题本节奏把数学捡紧",
+      "acceptable_actions": [
+        "肯定王老师这份交接珍贵,建议进度表存档,错题本按叮嘱滚动刷",
+        "接感动,劝她把谢意留到面谢,先趁热把资料消化进计划",
+        "夸王老师仗义,提醒进度表配合错题本用,数学这条线别断"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "emotion_relation",
+        "goal",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A08",
+          "subject": "THIRD",
+          "relation": "交接成果",
+          "value": "王老师给了近三个月进度表,叮嘱数学错题本别断,那是捡分的老本",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T05",
+            "message_id": "m0",
+            "quote": "他把近三个月的进度表都拷给我了,还叮嘱我数学错题本别断"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A09",
+          "subject": "HER",
+          "relation": "备考科目",
+          "value": "备考科目为数学和英语,数学靠错题本滚动复习",
+          "valid_time": "备考期间",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "备考目标科目是数学和英语,数学靠错题本滚动复习"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "进度表具体格式未知"
+      ],
+      "forbidden_factual_claims": [
+        "一对一答疑已恢复",
+        "座位已恢复"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E212_T06",
+      "current_action": "确认这算服务缩水,建议对照合同条目把差异写成书面清单:座位、一对一频次、点名方式,逐条对齐",
+      "acceptable_actions": [
+        "定性为缩水,建议按合同条目写书面差异清单,一对一频次这条最硬",
+        "接住算账,劝她把每周变两周的落差写清楚,摆事实不带情绪",
+        "支持维权,提醒清单要对齐合同原文,一条一证据"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "boundary",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A10",
+          "subject": "THIRD",
+          "relation": "服务缩水",
+          "value": "新周计划把每周一次一对一答疑改成两周一次群答疑,到考前少一半",
+          "valid_time": "2026-11-20 周计划",
+          "status": "asserted",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T06",
+            "message_id": "m0",
+            "quote": "原来每周一次一对一答疑,改成两周一次还放群里集中答"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A02b",
+          "subject": "THIRD",
+          "relation": "原督学服务",
+          "value": "原服务为每周一次一对一答疑",
+          "valid_time": "入读以来",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "王老师每周一次一对一答疑"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "合同里一对一频次的原文表述未知"
+      ],
+      "forbidden_factual_claims": [
+        "一对一频次没有变化",
+        "机构已同意补偿"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E212_T07",
+      "current_action": "把关措辞:三条只摆合同事实和现状差异,不写情绪词,末尾给一个明确诉求和回复期限",
+      "acceptable_actions": [
+        "改法:每条先引合同约定再写现状,删情绪词,结尾给诉求和期限",
+        "把关方向:座位、频次、点名三条各配证据,只说差异不说气话",
+        "建议标题写服务对照,正文按条目列事实,附上时间线,别写成控诉信"
+      ],
+      "applicable_dimensions": [
+        "initiative",
+        "factuality",
+        "boundary",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A11",
+          "subject": "HER",
+          "relation": "差异清单",
+          "value": "拟了三条:座位、一对一频次、晚自习点名方式,要求不带情绪",
+          "valid_time": "2026-11-22 拟稿",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T07",
+            "message_id": "m0",
+            "quote": "差异清单我拟了三条:座位、一对一频次、晚自习点名方式"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A10b",
+          "subject": "THIRD",
+          "relation": "服务缩水",
+          "value": "一对一答疑由每周一次改为两周一次群答疑",
+          "valid_time": "2026-11-20",
+          "status": "asserted",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T06",
+            "message_id": "m0",
+            "quote": "原来每周一次一对一答疑,改成两周一次还放群里集中答"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "机构回复时限未知"
+      ],
+      "forbidden_factual_claims": [
+        "清单已经发出",
+        "机构已回应清单"
+      ],
+      "may_decline": false,
+      "intent": {
+        "enabled": true,
+        "status": "explicit",
+        "text": "求帮忙把关书面反馈措辞"
+      }
+    },
+    {
+      "case_id": "E212_T08",
+      "current_action": "给期限策略:再等一天,同时联系同批学员看有没有同样受损,攒联名;到期没回复就找机构负责人",
+      "acceptable_actions": [
+        "给期限:再等一天,同步去问同批学员有没有同样情况,攒联名材料",
+        "支持升级但先攒筹码,拉同批受损学员联署比单打独斗有分量",
+        "劝她别干等,今天就把同批反馈摸一遍,明天没回话就找负责人"
+      ],
+      "applicable_dimensions": [
+        "initiative",
+        "goal",
+        "interaction",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A12",
+          "subject": "THIRD",
+          "relation": "机构反馈进度",
+          "value": "清单发出两天,前台只回会反馈给致学,无下文",
+          "valid_time": "2026-11-22 发出,2026-11-24 催问",
+          "status": "pending",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T08",
+            "message_id": "m0",
+            "quote": "前台就回了一句会反馈给致学,然后没下文"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A11b",
+          "subject": "HER",
+          "relation": "差异清单",
+          "value": "三条差异清单已发给机构",
+          "valid_time": "2026-11-22",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T07",
+            "message_id": "m0",
+            "quote": "差异清单我拟了三条:座位、一对一频次、晚自习点名方式"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "同批学员受损面未知"
+      ],
+      "forbidden_factual_claims": [
+        "机构已拒绝处理",
+        "负责人已出面"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E212_T09",
+      "current_action": "接住胜利,肯定联名的作用,提醒把松口内容落成书面,别停在口头",
+      "acceptable_actions": [
+        "肯定联名见效,提醒让机构把座位恢复和补一对一落成书面确认",
+        "接胜利,夸她没拿情绪当论据,趁热要书面承诺",
+        "肯定结果,提醒补的那次一对一要定具体日期,别悬着"
+      ],
+      "applicable_dimensions": [
+        "initiative",
+        "memory_use",
+        "goal",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A13",
+          "subject": "THIRD",
+          "relation": "机构让步",
+          "value": "联署后机构松口:座位恢复,12月补一次一对一",
+          "valid_time": "2026-11-26",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T09",
+            "message_id": "m0",
+            "quote": "今天机构松口了:座位恢复,12月补一次一对一"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A14",
+          "subject": "HER",
+          "relation": "联名动作",
+          "value": "拉了同批三个学员一起联署",
+          "valid_time": "2026-11-26",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T09",
+            "message_id": "m0",
+            "quote": "拉了同批三个学员一起联署"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A12b",
+          "subject": "THIRD",
+          "relation": "机构反馈进度",
+          "value": "机构此前只有一句会反馈给致学,无下文",
+          "valid_time": "2026-11-24",
+          "status": "superseded",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T08",
+            "message_id": "m0",
+            "quote": "前台就回了一句会反馈给致学,然后没下文"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "补的一对一具体日期未知"
+      ],
+      "forbidden_factual_claims": [
+        "机构已书面盖章",
+        "一对一频次已恢复每周"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E212_T10",
+      "current_action": "赞同先不庆祝,提醒口头答应要等盖章或文字确认才算数,期间每周计划照常执行",
+      "acceptable_actions": [
+        "赞同谨慎,说口头答应不算数,等盖章或文字确认再落袋",
+        "接住她的清醒,建议这周照常按新计划执行,同时催书面",
+        "肯定稳,提醒把每次变化截图,兑现前后好对表"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "memory_use",
+        "goal",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A15",
+          "subject": "THIRD",
+          "relation": "座位恢复",
+          "value": "座位已换回靠窗,新督学态度转好,周计划称按原频次走",
+          "valid_time": "2026-11-28",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T10",
+            "message_id": "m0",
+            "quote": "座位今天换回靠窗了,东西搬回去的时候新督学还客气了两句。周计划也说按原频次走"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A13b",
+          "subject": "THIRD",
+          "relation": "机构让步",
+          "value": "机构口头松口:座位恢复,12月补一对一",
+          "valid_time": "2026-11-26",
+          "status": "pending",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T09",
+            "message_id": "m0",
+            "quote": "今天机构松口了:座位恢复,12月补一次一对一"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "盖章确认哪天到未知"
+      ],
+      "forbidden_factual_claims": [
+        "机构已经盖章确认",
+        "一对一已实际恢复"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E212_T11",
+      "current_action": "接双闭环,肯定盖章确认的分量,回扣错题本进度,鼓励按这个节奏推到考前",
+      "acceptable_actions": [
+        "肯定白纸黑字落地,回扣错题本三十道,说这条线捡起来了就别断",
+        "接双闭环,夸她该要的要回来了该攒的也攒住了,鼓励冲考前",
+        "肯定盖章分量,提醒把确认函归档,错题本按王老师叮嘱滚动"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "goal",
+        "emotion_relation",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A16",
+          "subject": "THIRD",
+          "relation": "书面确认",
+          "value": "机构盖章确认一对一恢复每周一次,一直到考前",
+          "valid_time": "2026-11-30 确认",
+          "status": "accepted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T11",
+            "message_id": "m0",
+            "quote": "机构盖了章:一对一恢复每周一次,一直到考前"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A17",
+          "subject": "HER",
+          "relation": "错题进度",
+          "value": "数学错题本周刷了三十道",
+          "valid_time": "2026-11-30 报告",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T11",
+            "message_id": "m0",
+            "quote": "这周数学错题刷了三十道"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A08b",
+          "subject": "THIRD",
+          "relation": "交接成果",
+          "value": "王老师叮嘱数学错题本别断,那是捡分的老本",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T05",
+            "message_id": "m0",
+            "quote": "还叮嘱我数学错题本别断,说那是我捡分的老本"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "一对一实际排期未知"
+      ],
+      "forbidden_factual_claims": [
+        "确认只是口头",
+        "座位还没恢复"
+      ],
+      "may_decline": false,
+      "intent": null
+    },
+    {
+      "case_id": "E212_T12",
+      "current_action": "接收尾,肯定散伙饭的心意和该要的都回来了,轻收住让她去背单词",
+      "acceptable_actions": [
+        "肯定散伙饭,祝她考试顺,轻收尾",
+        "接该要的要回来了的说法,叮嘱好好背单词,自然结束",
+        "轻收住,说周六替我带句谢,回见"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "emotion_relation",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E212_A18",
+          "subject": "HER",
+          "relation": "收尾安排",
+          "value": "约了王老师周六吃散伙饭,决定回归备考背单词",
+          "valid_time": "2026-12-01",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T12",
+            "message_id": "m0",
+            "quote": "约了王老师周六吃个散伙饭"
+          },
+          "required_this_turn": false
+        },
+        {
+          "atom_id": "E212_A16b",
+          "subject": "THIRD",
+          "relation": "书面确认",
+          "value": "机构盖章确认一对一恢复每周一次至考前",
+          "valid_time": "2026-11-30",
+          "status": "accepted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E212_T11",
+            "message_id": "m0",
+            "quote": "机构盖了章:一对一恢复每周一次,一直到考前"
+          },
+          "required_this_turn": true
+        }
+      ],
+      "unknowns": [
+        "二战最终结果未知"
+      ],
+      "forbidden_factual_claims": [
+        "考研已上岸",
+        "王老师留任了"
+      ],
+      "may_decline": true,
+      "intent": null
+    }
+  ]
+}

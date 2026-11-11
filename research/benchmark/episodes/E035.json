@@ -1,0 +1,239 @@
+{
+ "episode_id": "E035",
+ "persona": {
+  "me": "28岁，程序员，养一只英短叫雪碧；上个月搬家预备，工作忙但猫事上心。",
+  "her": "29岁，宠物医院医生，负责雪碧的主治；随访勤，说话给依据。"
+ },
+ "initial_kb": {
+  "me": "雪碧两岁，英短，雄性未绝育；我工作日加班多，猫独自在家。",
+  "her": "从业六年；随访自己主动做；处方都写在单子上。",
+  "warmth": "医生与主人关系，信任度高，微信保持随访联系。",
+  "style": "医嘱式短句；数据说话；不吓唬人。",
+  "stage": "主治医生与猫主人。",
+  "lessons": "医嘱执行要留观察记录；变化及时报。"
+ },
+ "turns": [
+  {
+   "case_id": "E035_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "雪碧的化验出来了 应激性膀胱炎 先吃药两周 复诊前记录它排尿次数",
+      "ts": "2026-11-02 18:30"
+     }
+    ],
+    "clock": "2026-11-02 18:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E035_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "记了 它一天去六次正常吗",
+      "ts": "2026-11-02 18:34"
+     },
+     {
+      "role": "HER",
+      "text": "吃药后四次以下算好转 两周后带化验单来",
+      "ts": "2026-11-02 18:38"
+     }
+    ],
+    "clock": "2026-11-02 18:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E035_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "药量减半 晚上那顿停 观察 通知我变化",
+      "ts": "2026-11-12 19:00"
+     }
+    ],
+    "clock": "2026-11-12 19:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E035_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "减了 它今天三次 有点闹",
+      "ts": "2026-11-12 19:04"
+     },
+     {
+      "role": "HER",
+      "text": "闹是好事 疼减轻了 继续观察",
+      "ts": "2026-11-12 19:08"
+     }
+    ],
+    "clock": "2026-11-12 19:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E035_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "复诊指标好了 但白细胞还有一点 猫粮换成处方粮 先吃一个月",
+      "ts": "2026-11-16 16:00"
+     }
+    ],
+    "clock": "2026-11-16 16:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E035_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "处方粮它挑食 怎么骗它吃",
+      "ts": "2026-11-16 16:04"
+     },
+     {
+      "role": "HER",
+      "text": "掺旧粮 比例三天递增 我写在单子上",
+      "ts": "2026-11-16 16:08"
+     }
+    ],
+    "clock": "2026-11-16 16:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E035_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "雪碧最近怎么样 我做随访 别忘了十二月十五复查",
+      "ts": "2026-11-30 20:00"
+     }
+    ],
+    "clock": "2026-11-30 20:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E035_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "稳定 但我下周搬家 它可能应激",
+      "ts": "2026-11-30 20:04"
+     },
+     {
+      "role": "HER",
+      "text": "搬家用它的旧猫砂盆 先铺在新家 搬家前三天关笼减敏",
+      "ts": "2026-11-30 20:08"
+     }
+    ],
+    "clock": "2026-11-30 20:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E035_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "搬家了? 雪碧状态如何 尿量记了吗",
+      "ts": "2026-12-06 19:00"
+     }
+    ],
+    "clock": "2026-12-06 19:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E035_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "搬完头两天又频了 按你说的旧猫砂盆 现在恢复四次内",
+      "ts": "2026-12-06 19:04"
+     },
+     {
+      "role": "HER",
+      "text": "好 预案起效了 15号复查别忘",
+      "ts": "2026-12-06 19:08"
+     }
+    ],
+    "clock": "2026-12-06 19:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E035_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "复查结果 全绿 处方粮吃满一个月就换回 停药观察两周",
+      "ts": "2026-12-15 16:00"
+     }
+    ],
+    "clock": "2026-12-15 16:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E035_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "谢了 这两个月它没事全靠你盯着",
+      "ts": "2026-12-15 16:04"
+     },
+     {
+      "role": "HER",
+      "text": "它是我的病人也是我网友 下季度疫苗别忘了 哈哈 拜拜",
+      "ts": "2026-12-15 16:08"
+     }
+    ],
+    "clock": "2026-12-15 16:10",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

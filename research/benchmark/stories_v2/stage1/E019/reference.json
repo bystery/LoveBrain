@@ -1,0 +1,391 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E019",
+ "title": "电影品味分歧",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E019_T01": {
+   "case_id": "E019_T01",
+   "current_action": "先承认她的体验，再决定说不说自己的不同",
+   "acceptable_actions": [
+    "先问她哭的那段",
+    "承认她很喜欢",
+    "说自己也看了但感受不同"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N007_F01",
+     "subject": "她",
+     "relation": "观影",
+     "value": "喜欢《长夜》，结尾看哭了",
+     "valid_time": "2026-11-18 21:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E019_T01",
+      "message_id": "m0",
+      "quote": "我昨天去看了那部《长夜》 我特别喜欢 结尾那段我哭了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她先分享感受；不要一上来就说“那片子很烂”。",
+   "unknowns": [
+    "她是否想听不同意见"
+   ],
+   "protected_expressions": [
+    "结尾那段我哭了"
+   ],
+   "forbidden_factual_claims": [
+    "不要否定她的哭点",
+    "不要编造自己哭了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E019_T02": {
+   "case_id": "E019_T02",
+   "current_action": "给具体理由，不敷衍也不贬低",
+   "acceptable_actions": [
+    "说具体哪场戏走神",
+    "说节奏问题",
+    "承认自己没进入状态"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N007_F02",
+     "subject": "我",
+     "relation": "观影",
+     "value": "没被戳到，中途走神",
+     "valid_time": "2026-11-18 21:18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E019_T02",
+      "message_id": "m0",
+      "quote": "我中途走神了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她问“哪里”，要给具体场景；不要用“就是不好看”打发。",
+   "unknowns": [
+    "她会不会觉得我在挑刺"
+   ],
+   "protected_expressions": [
+    "哪里走神 你说说"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造电影情节",
+    "不要人身攻击喜欢它的人"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E019_T03": {
+   "case_id": "E019_T03",
+   "current_action": "温和反驳她的推断，不编造经历也不接受被定义",
+   "acceptable_actions": [
+    "说感受不同不等于没经历",
+    "说电影触发点因人而异",
+    "承认她被打动但不接受推断"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N007_F03",
+     "subject": "她",
+     "relation": "推断",
+     "value": "她认为我没经历过那种告别，所以没感觉",
+     "valid_time": "2026-11-18 21:30",
+     "status": "inference",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E019_T03",
+      "message_id": "m0",
+      "quote": "我觉得你就是没经历过那种告别 所以没感觉"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在用“你没经历过”解释分歧；别顺着编一个悲伤往事。",
+   "unknowns": [
+    "她是否意识到这是推断"
+   ],
+   "protected_expressions": [
+    "我觉得你就是没经历过"
+   ],
+   "forbidden_factual_claims": [
+    "不要承认自己没经历过",
+    "不要编造告别经历",
+    "不要反过来说她矫情"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E019_T04": {
+   "case_id": "E019_T04",
+   "current_action": "给具体喜欢的一段，不为了迎合改口",
+   "acceptable_actions": [
+    "说一个具体场景",
+    "说喜欢某个镜头/声音",
+    "承认自己偏好慢节奏"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N007_F04",
+     "subject": "她",
+     "relation": "请求",
+     "value": "问我最喜欢哪段",
+     "valid_time": "2026-11-18 21:38",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E019_T04",
+      "message_id": "m0",
+      "quote": "那你说你最喜欢哪段"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给了空间；说真话，别为了讨好说“其实结尾也很好”。",
+   "unknowns": [
+    "她会不会认同我的选择"
+   ],
+   "protected_expressions": [
+    "你最喜欢哪段"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造电影细节",
+    "不要突然改口说都喜欢"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E019_T05": {
+   "case_id": "E019_T05",
+   "current_action": "不把差异升级成分手，给折中方案",
+   "acceptable_actions": [
+    "说各看各的也行",
+    "说轮流选片",
+    "说差异不用解决"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N007_F05",
+     "subject": "她",
+     "relation": "担忧",
+     "value": "觉得我们品味差挺多，可能得各看各的",
+     "valid_time": "2026-11-18 21:46",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E019_T05",
+      "message_id": "m0",
+      "quote": "我们品味差挺多的 以后看电影是不是得各看各的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在试探差异是否致命；别急着保证“以后都听你的”。",
+   "unknowns": [
+    "她是否真的想各看各的"
+   ],
+   "protected_expressions": [
+    "是不是得各看各的"
+   ],
+   "forbidden_factual_claims": [
+    "不要说“那就算了”",
+    "不要保证以后都依她"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "想处理看电影口味分歧，不勉强对方",
+    "status": "ACTIVE"
+   }
+  },
+  "E019_T06": {
+   "case_id": "E019_T06",
+   "current_action": "确认诚实比同意重要",
+   "acceptable_actions": [
+    "说以后都说真的",
+    "说不同意也不影响喜欢她",
+    "承认自己刚才有点防御"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N007_F06",
+     "subject": "她",
+     "relation": "需求",
+     "value": "不是非要我同意，只想听我说真的",
+     "valid_time": "2026-11-18 21:54",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E019_T06",
+      "message_id": "m0",
+      "quote": "我就是想听你说真的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要的是被诚实对待；别把“说真话”变成新的表演。",
+   "unknowns": [
+    "她是否能接受长期分歧"
+   ],
+   "protected_expressions": [
+    "我就是想听你说真的"
+   ],
+   "forbidden_factual_claims": [
+    "不要为了让她安心而改口",
+    "不要过度道歉"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E019_T07": {
+   "case_id": "E019_T07",
+   "current_action": "接受轮流选片，轻松收下",
+   "acceptable_actions": [
+    "说好，我选",
+    "说你别闭嘴，可以吐槽",
+    "说轮流来"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N007_F07",
+     "subject": "她",
+     "relation": "提议",
+     "value": "下次我选一部，她闭嘴",
+     "valid_time": "2026-11-18 22:02",
+     "status": "planned",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E019_T07",
+      "message_id": "m0",
+      "quote": "那你下次陪我看一部 你选 我闭嘴"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在给台阶；接住就好，别把“我选”变成审美考试。",
+   "unknowns": [
+    "下次什么时候"
+   ],
+   "protected_expressions": [
+    "你选 我闭嘴"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她品味差",
+    "不要现在定片单"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "轮流选片",
+    "status": "ADJUSTED"
+   }
+  },
+  "E019_T08": {
+   "case_id": "E019_T08",
+   "current_action": "确认约定，自然收尾",
+   "acceptable_actions": [
+    "说好",
+    "道晚安",
+    "说下次我带片单"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "收尾即可；不要再展开电影争论。",
+   "unknowns": [
+    "下次具体时间"
+   ],
+   "protected_expressions": [
+    "我去洗漱"
+   ],
+   "forbidden_factual_claims": [
+    "不要继续争论",
+    "不要追问她家地址"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "T04_NATURAL_CALL",
+  "name": "自然语言召唤（零未定义 + 顺手小事）",
+  "capability": "natural_language_invocation",
+  "description": "无任何命令前缀的大白话输入，考察语义降级：不许报未定义，闲聊要接得住，顺手小活要接单并真执行。对应管家灵魂拷问 L87。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "README.md": "# MiniShop\n这是一个订单管理系通。\n"
+    }
+  },
+  "inputs": [
+    "在吗在吗？随便问一句，今天合肥天气怎么样？哦对了，你顺手把 README 里的错别字改一下，看着难受。就这俩事，谢啦。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]}
+    ],
+    "checks": [
+      {"type": "task_captured", "keywords_any": ["README", "错别字"], "desc": "错别字修改入账", "pts": 3},
+      {"type": "file_not_contains", "path": "README.md", "str": "系通", "desc": "README 错别字实际修复", "pts": 3},
+      {"type": "reply_contains_any", "keywords_any": ["天气"], "desc": "闲聊（天气）有正常回应", "pts": 2},
+      {"type": "tasklist_schema", "desc": "账本 Schema 合规", "pts": 2}
+    ]
+  }
+}

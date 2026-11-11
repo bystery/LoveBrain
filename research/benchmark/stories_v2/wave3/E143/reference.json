@@ -1,0 +1,708 @@
+{
+ "story_id": "E143",
+ "turns": {
+  "E143_T01": {
+   "case_id": "E143_T01",
+   "current_action": "接住疲惫：先共情加班强度，再点出'一天没刷不等于断链'，给她缓冲选项",
+   "acceptable_actions": [
+    "共情加班，告诉她一天没刷不用上纲上线，明天补上即可",
+    "问她这周还剩几天加班，评估要不要临时降量"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T01_A00",
+     "subject": "HER",
+     "relation": "打卡状态",
+     "value": "本周因加班出现当天未刷题的情况",
+     "valid_time": "2026-11-03 22:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T01",
+      "message_id": "m0",
+      "quote": "打卡要断了"
+     }
+    },
+    {
+     "atom_id": "E143_T01_A01",
+     "subject": "SHARED",
+     "relation": "搭子背景",
+     "value": "祝晓备考法考期间常与 ME 交流学习计划",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "备考明年法考"
+     }
+    }
+   ],
+   "private_guidance": "她自责的时候先卸包袱再谈计划，顺序不能反。",
+   "unknowns": [
+    "本周加班还将持续几天未明"
+   ],
+   "protected_expressions": [
+    "打卡要断了"
+   ],
+   "forbidden_factual_claims": [
+    "不得空洞打气或说教"
+   ],
+   "may_decline": false
+  },
+  "E143_T02": {
+   "case_id": "E143_T02",
+   "current_action": "接住全停提案：不急着否，帮她摆出'全停两周'与'降档保链'的差别，把焦虑的来源点破",
+   "acceptable_actions": [
+    "摆差别：全停是零成本零焦虑，但重启要付心理利息",
+    "建议降档方案：每天十分钟保底，先保住'还在学'的身份"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T02_A00",
+     "subject": "HER",
+     "relation": "打卡状态",
+     "value": "本周因加班出现未刷题情况",
+     "valid_time": "2026-11-03 22:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T01",
+      "message_id": "m0",
+      "quote": "打卡要断了"
+     }
+    },
+    {
+     "atom_id": "E143_T02_A01",
+     "subject": "HER",
+     "relation": "暂停提案",
+     "value": "考虑暂停两周等项目 18 号上线后全速恢复",
+     "valid_time": "2026-11-04 22:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T02",
+      "message_id": "m0",
+      "quote": "停两周"
+     }
+    }
+   ],
+   "private_guidance": "她的真实痛点是焦虑不是懒，方案要对着焦虑开。",
+   "unknowns": [
+    "是否还有其他事务占用时间未明"
+   ],
+   "protected_expressions": [
+    "停两周"
+   ],
+   "forbidden_factual_claims": [
+    "不得直接替她宣布停或不停"
+   ],
+   "may_decline": false
+  },
+  "E143_T03": {
+   "case_id": "E143_T03",
+   "current_action": "目标启停类冲突轮：把'断链恐惧'与'全量超载'拆开，指出第三条路——降档不断档",
+   "acceptable_actions": [
+    "指出搭子说的是别断链，没说必须全量，降档正是两全",
+    "给出具体降档：每天地铁上刷十题保底，周末补一套卷"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T03_A00",
+     "subject": "HER",
+     "relation": "暂停提案",
+     "value": "考虑暂停两周等项目上线后全速恢复",
+     "valid_time": "2026-11-04 22:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T02",
+      "message_id": "m0",
+      "quote": "停两周"
+     }
+    },
+    {
+     "atom_id": "E143_T03_A01",
+     "subject": "THIRD",
+     "relation": "搭子意见",
+     "value": "打卡搭子劝她不要中断打卡",
+     "valid_time": "2026-11-05 21:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T03",
+      "message_id": "m0",
+      "quote": "断一次就捡不起来了"
+     }
+    }
+   ],
+   "private_guidance": "把搭子的'别断'重新解释成'别断链'，她就能下了台阶。",
+   "unknowns": [],
+   "protected_expressions": [
+    "断一次就捡不起来了"
+   ],
+   "forbidden_factual_claims": [
+    "不得把搭子的劝阻曲解为反对休息"
+   ],
+   "may_decline": false
+  },
+  "E143_T04": {
+   "case_id": "E143_T04",
+   "current_action": "确认降档方案成立：全量计划挂起、每日十题保底生效，并强调法考目标不变",
+   "acceptable_actions": [
+    "确认方案：全量挂起、十题保底、周末补卷，三件事说清",
+    "补一句'摆烂的人不会找方案'，帮她回应搭子"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T04_A00",
+     "subject": "HER",
+     "relation": "暂停提案",
+     "value": "暂停两周的提案被降档方案取代",
+     "valid_time": "2026-11-04 22:35",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T02",
+      "message_id": "m0",
+      "quote": "停两周"
+     }
+    },
+    {
+     "atom_id": "E143_T04_A01",
+     "subject": "HER",
+     "relation": "降档决定",
+     "value": "每日通勤刷十题保底、周末补一套卷，全量计划暂挂",
+     "valid_time": "2026-11-06 20:45",
+     "status": "suspended",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T04",
+      "message_id": "m0",
+      "quote": "每天地铁上刷十题保底"
+     }
+    },
+    {
+     "atom_id": "E143_T04_A02",
+     "subject": "HER",
+     "relation": "目标澄清",
+     "value": "没有放弃法考，考试目标保持不变",
+     "valid_time": "2026-11-06 20:45",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T04",
+      "message_id": "m0",
+      "quote": "法考我还是考的"
+     }
+    }
+   ],
+   "private_guidance": "她主动澄清'不是摆烂'，这句要接住——降档是策略不是退败。",
+   "unknowns": [
+    "降档期错题率走向未知"
+   ],
+   "protected_expressions": [
+    "每天地铁上刷十题保底",
+    "法考我还是考的"
+   ],
+   "forbidden_factual_claims": [
+    "不得把她未放弃法考曲解为全量恢复"
+   ],
+   "may_decline": false
+  },
+  "E143_T05": {
+   "case_id": "E143_T05",
+   "current_action": "先兑现肯定：保底链路一周未断是本阶段唯一目标，再把错题率升定位为'疲劳期正常波动'并引向错题分析",
+   "acceptable_actions": [
+    "肯定一周不断链，说明错题率升与疲劳相关，不是退步",
+    "建议把错题按科目归类，找找集中在哪块"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T05_A00",
+     "subject": "HER",
+     "relation": "降档决定",
+     "value": "每日十题保底、周末补卷",
+     "valid_time": "2026-11-06 20:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T04",
+      "message_id": "m0",
+      "quote": "每天地铁上刷十题保底"
+     }
+    },
+    {
+     "atom_id": "E143_T05_A01",
+     "subject": "HER",
+     "relation": "执行反馈",
+     "value": "保底执行一周全部完成但错题率上升",
+     "valid_time": "2026-11-10 22:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T05",
+      "message_id": "m0",
+      "quote": "错题率比之前高"
+     }
+    }
+   ],
+   "private_guidance": "评价标准要跟着阶段走：降档期只考'不断链'，别让她拿全量期标准打自己。",
+   "unknowns": [
+    "错题集中的科目未明"
+   ],
+   "protected_expressions": [
+    "错题率比之前高"
+   ],
+   "forbidden_factual_claims": [
+    "不得把错题率上升判定为能力退步"
+   ],
+   "may_decline": false
+  },
+  "E143_T06": {
+   "case_id": "E143_T06",
+   "current_action": "肯定归因动作：错题集中说明排查有效；网课值不值看她周末精力，给判断标准而不是替她定",
+   "acceptable_actions": [
+    "肯定错题归类，建议网课前提是周末有整块两小时",
+    "建议先试听一节再决定买不买"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T06_A00",
+     "subject": "HER",
+     "relation": "执行反馈",
+     "value": "保底执行一周完成但错题率上升",
+     "valid_time": "2026-11-10 22:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T05",
+      "message_id": "m0",
+      "quote": "错题率比之前高"
+     }
+    },
+    {
+     "atom_id": "E143_T06_A01",
+     "subject": "HER",
+     "relation": "错题归因",
+     "value": "错题八成集中在民法科目",
+     "valid_time": "2026-11-12 22:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T06",
+      "message_id": "m0",
+      "quote": "八成集中在民法"
+     }
+    }
+   ],
+   "private_guidance": "补强方向对了，金额决策别插手太深，给判断标准就好。",
+   "unknowns": [
+    "网课具体价格未明"
+   ],
+   "protected_expressions": [
+    "八成集中在民法"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言网课一定提分"
+   ],
+   "may_decline": false
+  },
+  "E143_T07": {
+   "case_id": "E143_T07",
+   "current_action": "给决策标准：两百九买的是'错题集中期的针对性'，先试听、再看二手，别为省钱买低配",
+   "acceptable_actions": [
+    "建议先试听再决定，两百九对标的是针对性不是名师光环",
+    "提醒她看看二手渠道，法考资料流转很常见"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T07_A00",
+     "subject": "HER",
+     "relation": "错题归因",
+     "value": "错题八成集中在民法",
+     "valid_time": "2026-11-12 22:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T06",
+      "message_id": "m0",
+      "quote": "八成集中在民法"
+     }
+    },
+    {
+     "atom_id": "E143_T07_A01",
+     "subject": "HER",
+     "relation": "课程候选",
+     "value": "看中的民法真题精讲正价两百九",
+     "valid_time": "2026-11-13 21:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T07",
+      "message_id": "m0",
+      "quote": "正价两百九"
+     }
+    }
+   ],
+   "private_guidance": "钱的事给标准不给答案，她自己会算。",
+   "unknowns": [
+    "最终购买渠道未定"
+   ],
+   "protected_expressions": [
+    "正价两百九"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她承诺购买后的效果"
+   ],
+   "may_decline": false
+  },
+  "E143_T08": {
+   "case_id": "E143_T08",
+   "current_action": "接住得意：夸省钱操作，顺带一句'讲义配刷题效果更好'即可；此轮无待办",
+   "acceptable_actions": [
+    "夸她省钱小能手，提醒讲义要配合十题保底一起用",
+    "轻松回一句'三十块的快乐'，不展开"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T08_A00",
+     "subject": "HER",
+     "relation": "课程候选",
+     "value": "看中的民法真题精讲正价两百九",
+     "valid_time": "2026-11-13 21:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T07",
+      "message_id": "m0",
+      "quote": "正价两百九"
+     }
+    },
+    {
+     "atom_id": "E143_T08_A01",
+     "subject": "HER",
+     "relation": "购买结果",
+     "value": "以三十块买到二手讲义并到货",
+     "valid_time": "2026-11-15 19:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T08",
+      "message_id": "m0",
+      "quote": "三十块包邮"
+     }
+    }
+   ],
+   "private_guidance": "纯分享轮，情绪价值优先，建议点到为止。",
+   "unknowns": [],
+   "protected_expressions": [
+    "三十块包邮"
+   ],
+   "forbidden_factual_claims": [
+    "不得泼冷水讲性价比大道理"
+   ],
+   "may_decline": true
+  },
+  "E143_T09": {
+   "case_id": "E143_T09",
+   "current_action": "接住数据：点名'降档没拖后腿'这个关键结论，强化她对新方案的信心",
+   "acceptable_actions": [
+    "恭喜提分，点破'降档保链反而救了节奏'",
+    "让她把 68% 发到群里，顺带回应搭子的担心"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T09_A00",
+     "subject": "HER",
+     "relation": "购买结果",
+     "value": "以三十块买到二手讲义",
+     "valid_time": "2026-11-15 19:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T08",
+      "message_id": "m0",
+      "quote": "三十块包邮"
+     }
+    },
+    {
+     "atom_id": "E143_T09_A01",
+     "subject": "HER",
+     "relation": "阶段成绩",
+     "value": "整卷正确率 68%，较上周提高六个百分点",
+     "valid_time": "2026-11-16 21:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T09",
+      "message_id": "m0",
+      "quote": "整卷 68%"
+     }
+    }
+   ],
+   "private_guidance": "数据是最好的回击，鼓励她把成绩晒给当初劝她别断的搭子。",
+   "unknowns": [],
+   "protected_expressions": [
+    "整卷 68%"
+   ],
+   "forbidden_factual_claims": [
+    "不得夸大提分的因果 certainty"
+   ],
+   "may_decline": false
+  },
+  "E143_T10": {
+   "case_id": "E143_T10",
+   "current_action": "支持定恢复日：肯定'免得又拖'的自觉，建议恢复日留出上线收尾缓冲",
+   "acceptable_actions": [
+    "支持定恢复日，建议留一天上线收尾缓冲再全量",
+    "问上线后有没有调休，把恢复日定在精力高点"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T10_A00",
+     "subject": "HER",
+     "relation": "暂停提案",
+     "value": "暂停两周的提案已被降档取代",
+     "valid_time": "2026-11-04 22:35",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T02",
+      "message_id": "m0",
+      "quote": "停两周"
+     }
+    },
+    {
+     "atom_id": "E143_T10_A01",
+     "subject": "HER",
+     "relation": "重启意向",
+     "value": "项目上线后拟恢复全量计划并确定恢复日",
+     "valid_time": "2026-11-17 21:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T10",
+      "message_id": "m0",
+      "quote": "定个明确的恢复日"
+     }
+    }
+   ],
+   "private_guidance": "她主动要外部约束，这是好信号；恢复日定下来你负责到点戳她。",
+   "unknowns": [
+    "恢复日具体日期未定"
+   ],
+   "protected_expressions": [
+    "定个明确的恢复日"
+   ],
+   "forbidden_factual_claims": [
+    "不得把降档期直接说成失败"
+   ],
+   "may_decline": false
+  },
+  "E143_T11": {
+   "case_id": "E143_T11",
+   "current_action": "确认恢复日：11 月 20 日全量重启，接下'到点戳她'的托付",
+   "acceptable_actions": [
+    "确认 20 号重启，答应当天早上戳她",
+    "建议她把全量第一天的量定在八成，别一上来就满血"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T11_A00",
+     "subject": "HER",
+     "relation": "重启意向",
+     "value": "拟恢复全量计划并确定恢复日",
+     "valid_time": "2026-11-17 21:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T10",
+      "message_id": "m0",
+      "quote": "定个明确的恢复日"
+     }
+    },
+    {
+     "atom_id": "E143_T11_A01",
+     "subject": "HER",
+     "relation": "恢复日确定",
+     "value": "全量计划于 11 月 20 日重启，周四休整",
+     "valid_time": "2026-11-18 22:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T11",
+      "message_id": "m0",
+      "quote": "20 号全量重启"
+     }
+    }
+   ],
+   "private_guidance": "托付要正式接下，到点真戳；'八成起步'的建议轻放。",
+   "unknowns": [],
+   "protected_expressions": [
+    "20 号全量重启"
+   ],
+   "forbidden_factual_claims": [
+    "不得忘记到点提醒的托付"
+   ],
+   "may_decline": false
+  },
+  "E143_T12": {
+   "case_id": "E143_T12",
+   "current_action": "接住邀功：恭喜重启成功，回敬一句'哼什么，我还等着晒你的正确率呢'，闭环",
+   "acceptable_actions": [
+    "恭喜全量重启成功，回一句轻松的'哼'，约下次晒正确率",
+    "把'自我启动'夸到位，收束这个启停周期"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E143_T12_A00",
+     "subject": "HER",
+     "relation": "恢复日确定",
+     "value": "全量计划于 11 月 20 日重启",
+     "valid_time": "2026-11-18 22:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T11",
+      "message_id": "m0",
+      "quote": "20 号全量重启"
+     }
+    },
+    {
+     "atom_id": "E143_T12_A01",
+     "subject": "HER",
+     "relation": "重启结果",
+     "value": "重启首日完成两小时刷题加半小时复盘",
+     "valid_time": "2026-11-20 22:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E143_T12",
+      "message_id": "m0",
+      "quote": "全量第一天打卡完成"
+     }
+    }
+   ],
+   "private_guidance": "启停闭环完成，情绪价值拉满，别再讲方法论。",
+   "unknowns": [],
+   "protected_expressions": [
+    "全量第一天打卡完成"
+   ],
+   "forbidden_factual_claims": [
+    "不得重启说教或加新要求"
+   ],
+   "may_decline": false
+  }
+ }
+}

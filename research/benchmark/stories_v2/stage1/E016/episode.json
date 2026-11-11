@@ -1,0 +1,160 @@
+{
+ "episode_id": "E016",
+ "persona": {
+  "me": "29岁，品牌策划，嘴贫，紧张时容易用玩笑挡；对她认真。",
+  "her": "28岁，编辑，外冷内热；不喜欢被试探，对“随便说说”敏感。"
+ },
+ "initial_kb": {
+  "me": "做品牌策划，最近在准备提案；不太会直接表达喜欢，常用玩笑试探。",
+  "her": "图书编辑，最近在赶一本小说；对关系边界认真，不喜欢被拿来开玩笑。",
+  "warmth": "约会过三次，聊天频率高；她知道我嘴贫，但不喜欢被试探。",
+  "style": "直接说，不绕；她认真时先承认，不辩解。",
+  "stage": "暧昧早期，尚未确定关系。",
+  "lessons": "她认真时不要用玩笑接；先承认，再说真实想法。"
+ },
+ "turns": [
+  {
+   "case_id": "E016_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你上次说我不是你喜欢的类型 我回去想了半天",
+      "ts": "2026-11-10 22:10"
+     }
+    ],
+    "clock": "2026-11-10 22:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E016_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "我那是嘴欠 想看你什么反应",
+      "ts": "2026-11-10 22:18"
+     },
+     {
+      "role": "HER",
+      "text": "所以我是什么反应 好笑吗",
+      "ts": "2026-11-10 22:20"
+     }
+    ],
+    "clock": "2026-11-10 22:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E016_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我不太喜欢这种试探 你直接说就行",
+      "ts": "2026-11-10 22:25"
+     }
+    ],
+    "clock": "2026-11-10 22:26",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E016_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "不过你刚才承认得倒挺快",
+      "ts": "2026-11-10 22:35"
+     }
+    ],
+    "clock": "2026-11-10 22:37",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E016_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "那你到底喜欢我什么 别说什么感觉对了",
+      "ts": "2026-11-10 22:42"
+     }
+    ],
+    "clock": "2026-11-10 22:44",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "想认真表达喜欢，但不急着确定关系",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E016_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你这答案勉强及格",
+      "ts": "2026-11-10 22:50"
+     }
+    ],
+    "clock": "2026-11-10 22:52",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E016_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下次别用这种话试我了 我当真",
+      "ts": "2026-11-10 22:58"
+     }
+    ],
+    "clock": "2026-11-10 23:00",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "以后不试探，直接说",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E016_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天先到这 我困了 明天还要开会",
+      "ts": "2026-11-10 23:05"
+     }
+    ],
+    "clock": "2026-11-10 23:07",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

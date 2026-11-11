@@ -1,0 +1,160 @@
+{
+ "episode_id": "E019",
+ "persona": {
+  "me": "31岁，纪录片剪辑，观点强；不喜欢为了迎合说假话。",
+  "her": "29岁，杂志编辑，爱看电影；争论时认真，但不喜欢被否定感受。"
+ },
+ "initial_kb": {
+  "me": "做纪录片剪辑，喜欢慢节奏电影；对《长夜》这种煽情片不感冒。",
+  "her": "在杂志做文化编辑，喜欢《长夜》，对结尾的告别戏很有共鸣。",
+  "warmth": "约会过四次；聊电影会争论，但还没吵过架。",
+  "style": "说具体理由，不否定她的感受；不同意时先承认她的体验。",
+  "stage": "暧昧中期，开始暴露品味差异。",
+  "lessons": "她喜欢的东西，先承认她的感受，再说自己的不同。"
+ },
+ "turns": [
+  {
+   "case_id": "E019_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我昨天去看了那部《长夜》 我特别喜欢 结尾那段我哭了",
+      "ts": "2026-11-18 21:10"
+     }
+    ],
+    "clock": "2026-11-18 21:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E019_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "我可能没被戳到 我中途走神了",
+      "ts": "2026-11-18 21:18"
+     },
+     {
+      "role": "HER",
+      "text": "哪里走神 你说说",
+      "ts": "2026-11-18 21:20"
+     }
+    ],
+    "clock": "2026-11-18 21:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E019_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我觉得你就是没经历过那种告别 所以没感觉",
+      "ts": "2026-11-18 21:30"
+     }
+    ],
+    "clock": "2026-11-18 21:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E019_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "好吧 那你说你最喜欢哪段",
+      "ts": "2026-11-18 21:38"
+     }
+    ],
+    "clock": "2026-11-18 21:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E019_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我们品味差挺多的 以后看电影是不是得各看各的",
+      "ts": "2026-11-18 21:46"
+     }
+    ],
+    "clock": "2026-11-18 21:48",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "想处理看电影口味分歧，不勉强对方",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E019_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "其实我也不是非要你同意 我就是想听你说真的",
+      "ts": "2026-11-18 21:54"
+     }
+    ],
+    "clock": "2026-11-18 21:56",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E019_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "那你下次陪我看一部 你选 我闭嘴",
+      "ts": "2026-11-18 22:02"
+     }
+    ],
+    "clock": "2026-11-18 22:04",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "轮流选片",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E019_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "行 就这么说定了 我去洗漱",
+      "ts": "2026-11-18 22:10"
+     }
+    ],
+    "clock": "2026-11-18 22:12",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

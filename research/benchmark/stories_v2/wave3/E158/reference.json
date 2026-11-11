@@ -1,0 +1,722 @@
+{
+ "story_id": "E158",
+ "turns": {
+  "E158_T01": {
+   "case_id": "E158_T01",
+   "current_action": "接下监工邀约并给出周六到场安排",
+   "acceptable_actions": [
+    "答应到场并请她先把点位图发自己过一遍",
+    "提醒开工前关总阀并清空灶台周边",
+    "打趣她盯着图看半天看出睡意"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T01_A01",
+     "subject": "HER",
+     "relation": "开工计划",
+     "value": "厨房水电改造定于本周六开工",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "约了本周六开工"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T01_A02",
+     "subject": "ME",
+     "relation": "监工承诺",
+     "value": "邵一帆答应帮看图纸和盯验收",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "答应帮陶蔓青看图纸和盯验收"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应要痛快，但先把图纸要到手再做承诺细节。",
+   "unknowns": [
+    "工长全名与施工队人数"
+   ],
+   "protected_expressions": [
+    "来帮我盯着点吗"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构工长姓名与小区名"
+   ],
+   "may_decline": false
+  },
+  "E158_T02": {
+   "case_id": "E158_T02",
+   "current_action": "肯定她对图核对的做法并圈出关键点位",
+   "acceptable_actions": [
+    "提醒烤箱插座要与嵌入式尺寸配合",
+    "夸她数得细并补一句拍照存档",
+    "打趣烘焙借口藏不住馋"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T02_A01",
+     "subject": "HER",
+     "relation": "图纸要点",
+     "value": "岛台预留两个五孔插座供以后烘焙使用",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T02",
+      "message_id": "m0",
+      "quote": "岛台那儿还有两个五孔的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T02_A02",
+     "subject": "SHARED",
+     "relation": "监工邀约",
+     "value": "HER 邀 ME 周六到场盯水电开工",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T01",
+      "message_id": "m0",
+      "quote": "周六有空来帮我盯着点吗"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "顺着她的清单感逐条过，重点替她记住岛台那两孔。",
+   "unknowns": [
+    "岛台插座的回路是否独立"
+   ],
+   "protected_expressions": [
+    "两个五孔的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构报价单具体金额"
+   ],
+   "may_decline": false
+  },
+  "E158_T03": {
+   "case_id": "E158_T03",
+   "current_action": "确认改期并顺延到场时间",
+   "acceptable_actions": [
+    "答应改到周一并问具体几点开工",
+    "安慰陪考是正事让她别觉得亏欠",
+    "顺势问她周一行程要不要接送搭手"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T03_A01",
+     "subject": "HER",
+     "relation": "开工日期",
+     "value": "开工由周六改至下周一",
+     "valid_time": "2026-11-23",
+     "status": "revised",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T03",
+      "message_id": "m0",
+      "quote": "改到下周一"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T03_A02",
+     "subject": "HER",
+     "relation": "图纸要点",
+     "value": "岛台预留两个五孔插座供以后烘焙使用",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T02",
+      "message_id": "m0",
+      "quote": "岛台那儿还有两个五孔的"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "改期是状态变化，到场承诺跟着顺延并落实。",
+   "unknowns": [
+    "下周一开工具体时间"
+   ],
+   "protected_expressions": [
+    "改到下周一"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构工长女儿的学校信息"
+   ],
+   "may_decline": false
+  },
+  "E158_T04": {
+   "case_id": "E158_T04",
+   "current_action": "接住版本冲突并让她先别删任何记录",
+   "acceptable_actions": [
+    "第一步就让她翻聊天记录找旧版原图",
+    "安抚版本打架常见且可查证",
+    "提醒截图备份旧版与工长的否认原话"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T04_A01",
+     "subject": "THIRD",
+     "relation": "图纸版本",
+     "value": "新版点位图取消岛台两个插座且工长否认旧版曾存在",
+     "valid_time": "2026-11-22",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T04",
+      "message_id": "m0",
+      "quote": "岛台那两个插座没有了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T04_A02",
+     "subject": "HER",
+     "relation": "图纸要点",
+     "value": "上一版明确岛台预留两个五孔插座",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T02",
+      "message_id": "m0",
+      "quote": "两个五孔的"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "冲突落实轮：插座存废被新版图否定，先把证据链守住再谈对错。",
+   "unknowns": [
+    "新版图上岛台区域改成了什么"
+   ],
+   "protected_expressions": [
+    "图纸上从来就没写过"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构新版图的具体改动明细"
+   ],
+   "may_decline": false
+  },
+  "E158_T05": {
+   "case_id": "E158_T05",
+   "current_action": "确认证据效力并给出以书面为准的谈判口径",
+   "acceptable_actions": [
+    "建议以聊天记录为据要求书面更正",
+    "提醒先谈清楚增项费用归属再开工",
+    "打趣工长改口比翻图还快"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "goal",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T05_A01",
+     "subject": "HER",
+     "relation": "证据",
+     "value": "聊天记录证明旧版点位图系工长本人所发",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T05",
+      "message_id": "m0",
+      "quote": "上一版就是工长自己发的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T05_A02",
+     "subject": "THIRD",
+     "relation": "工长口径",
+     "value": "工长否认岛台插座曾见于图纸",
+     "valid_time": "2026-11-22",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T04",
+      "message_id": "m0",
+      "quote": "图纸上从来就没写过"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "证据已在手，把谈判目标定成书面更正加费用归属两条。",
+   "unknowns": [
+    "工长改口的真实原因"
+   ],
+   "protected_expressions": [
+    "旧底稿发错了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构聊天记录的截图内容"
+   ],
+   "may_decline": false
+  },
+  "E158_T06": {
+   "case_id": "E158_T06",
+   "current_action": "确认书面更正落地并提醒开工前再核一遍补充单",
+   "acceptable_actions": [
+    "请她把补充单拍照归档并核对条款逐字",
+    "确认无增项后再允许开工",
+    "夸她这轮守住了书面底线"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T06_A01",
+     "subject": "SHARED",
+     "relation": "更正结果",
+     "value": "按旧版施工岛台插座照留且无增项并落书面补充单",
+     "valid_time": "2026-11-23",
+     "status": "revised",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T06",
+      "message_id": "m0",
+      "quote": "岛台两个插座照留"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T06_A02",
+     "subject": "SHARED",
+     "relation": "争议焦点",
+     "value": "以哪版图纸为准与增项费用归属",
+     "valid_time": "2026-11-23",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T05",
+      "message_id": "m0",
+      "quote": "旧底稿发错了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "更正已落实为白纸黑字，这轮的重心是让她安心。",
+   "unknowns": [
+    "补充单是否注明工期顺延补偿"
+   ],
+   "protected_expressions": [
+    "不产生增项"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构补充单编号与盖章细节"
+   ],
+   "may_decline": false
+  },
+  "E158_T07": {
+   "case_id": "E158_T07",
+   "current_action": "稳住她的担心并区分规范调整与方案变更",
+   "acceptable_actions": [
+    "解释管位移位属规范问题不等于改方案",
+    "要求师傅按规范出具书面说明",
+    "打趣她惊弓之鸟但夸警觉没白练"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T07_A01",
+     "subject": "THIRD",
+     "relation": "施工变量",
+     "value": "煤气管位与图纸冲突需左移十公分",
+     "valid_time": "2026-11-23",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T07",
+      "message_id": "m0",
+      "quote": "往左挪十公分"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T07_A02",
+     "subject": "SHARED",
+     "relation": "更正结果",
+     "value": "书面补充单承诺不产生增项",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T06",
+      "message_id": "m0",
+      "quote": "不产生增项"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "先定性再安抚：规范要求与方案变更是两回事。",
+   "unknowns": [
+    "左移后是否影响其他点位"
+   ],
+   "protected_expressions": [
+    "煤气管位跟图纸冲突"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构燃气规范的具体条款号"
+   ],
+   "may_decline": false
+  },
+  "E158_T08": {
+   "case_id": "E158_T08",
+   "current_action": "确认管位结论并肯定她的核验习惯",
+   "acceptable_actions": [
+    "夸她把签名标注拿到才算数",
+    "确认左移不触碰补充单条款",
+    "顺势约她下次验收同去"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T08_A01",
+     "subject": "THIRD",
+     "relation": "管位结论",
+     "value": "管位左移为燃气规范要求不属方案变更",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T08",
+      "message_id": "m0",
+      "quote": "燃气规范要求"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T08_A02",
+     "subject": "THIRD",
+     "relation": "施工变量",
+     "value": "管位冲突一度引发 HER 对新版本图的担忧",
+     "valid_time": "2026-11-23",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T07",
+      "message_id": "m0",
+      "quote": "煤气管位跟图纸冲突"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "虚惊落地，把功劳记在她的较真上。",
+   "unknowns": [
+    "手写标注是否拍照归档"
+   ],
+   "protected_expressions": [
+    "手写标注还签了名"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构验收规范细节"
+   ],
+   "may_decline": false
+  },
+  "E158_T09": {
+   "case_id": "E158_T09",
+   "current_action": "接下烧鸟谢礼并回叙两次到场的细节",
+   "acceptable_actions": [
+    "爽快应约并夸她验收单做得比模板还齐",
+    "顺势提醒打压数据拍照留存",
+    "打趣烧鸟比监理费划算多了"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T09_A01",
+     "subject": "HER",
+     "relation": "验收结果",
+     "value": "水电完工打压测试一次过验收单全绿",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T09",
+      "message_id": "m0",
+      "quote": "打压测试一次过"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T09_A02",
+     "subject": "ME",
+     "relation": "监工记录",
+     "value": "ME 两次到场协助核验",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T08",
+      "message_id": "m0",
+      "quote": "你来现场看过"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "关系在升温，谢礼接得自然但不越界。",
+   "unknowns": [
+    "烧鸟店的具体位置"
+   ],
+   "protected_expressions": [
+    "请你吃你惦记那家烧鸟"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构烧鸟店名与地址"
+   ],
+   "may_decline": false
+  },
+  "E158_T10": {
+   "case_id": "E158_T10",
+   "current_action": "给出防溅盒的建议并让她按厨房水汽实际定",
+   "acceptable_actions": [
+    "建议水汽大的灶台侧加防溅盒岛台侧可选",
+    "提醒加盒要赶在面板安装前",
+    "打趣她连插座都要养生"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T10_A01",
+     "subject": "HER",
+     "relation": "使用细节",
+     "value": "考虑为岛台备用插座加装防溅盒",
+     "valid_time": "2026-11-28",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T10",
+      "message_id": "m0",
+      "quote": "要不要配防溅盒"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T10_A02",
+     "subject": "SHARED",
+     "relation": "更正结果",
+     "value": "岛台插座按旧版恢复施工",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T06",
+      "message_id": "m0",
+      "quote": "岛台两个插座照留"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "争议后的延伸需求，给建议但决定权还她。",
+   "unknowns": [
+    "师傅加装防溅盒的收费"
+   ],
+   "protected_expressions": [
+    "厨房水汽大"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构防溅盒品牌与价格"
+   ],
+   "may_decline": false
+  },
+  "E158_T11": {
+   "case_id": "E158_T11",
+   "current_action": "呼应她的书面为准教训并补充一条存档建议",
+   "acceptable_actions": [
+    "补一条所有签字页拍照双备份",
+    "夸小本本比装修群公告靠谱",
+    "顺势问厨房收尾还差哪几步"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T11_A01",
+     "subject": "HER",
+     "relation": "经验固化",
+     "value": "教训为装修事项以书面记录为准口头不算数",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T11",
+      "message_id": "m0",
+      "quote": "口头一律不算数"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T11_A02",
+     "subject": "HER",
+     "relation": "证据",
+     "value": "聊天记录作为版本争议的关键证据",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T05",
+      "message_id": "m0",
+      "quote": "上一版就是工长自己发的"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把冲突经验接住并升格成她自己的规则。",
+   "unknowns": [
+    "厨房整体收尾完工日期"
+   ],
+   "protected_expressions": [
+    "口头一律不算数"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小本本内容"
+   ],
+   "may_decline": false
+  },
+  "E158_T12": {
+   "case_id": "E158_T12",
+   "current_action": "应约当开灶试吃员",
+   "acceptable_actions": [
+    "爽快报名试吃并预告会带胃口来",
+    "接她直说不好吃的茬反问敢不敢做辣",
+    "顺势问要不要带点饭后水果搭手"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E158_T12_A01",
+     "subject": "SHARED",
+     "relation": "邀约",
+     "value": "周末开灶试做红烧肉邀 ME 试吃",
+     "valid_time": "2026-12-05",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T12",
+      "message_id": "m0",
+      "quote": "当第一个试吃员"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E158_T12_A02",
+     "subject": "SHARED",
+     "relation": "人情往来",
+     "value": "烧鸟谢礼后两人转入日常往来",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E158_T09",
+      "message_id": "m0",
+      "quote": "请你吃你惦记那家烧鸟"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "关系线收尾，答应得轻快，别把试吃说成评审。",
+   "unknowns": [
+    "开灶具体周末哪一天"
+   ],
+   "protected_expressions": [
+    "第一个试吃员"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构红烧肉的具体做法"
+   ],
+   "may_decline": true
+  }
+ }
+}

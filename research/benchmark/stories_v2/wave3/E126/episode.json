@@ -1,0 +1,155 @@
+{
+ "episode_id": "E126",
+ "persona": {
+  "her": {
+   "name": "乔一琳",
+   "traits": ["广告公司文案", "无辣不欢", "爱发探店链接", "嘴快心软"],
+   "boundaries": ["最反感放鸽子不解释", "出差时不喜欢被塞临时饭局"]
+  },
+  "me": {
+   "name": "顾北",
+   "traits": ["隔壁组策划", "嘴稳", "会踩点"]
+  },
+  "relationship_stage": "渐暧昧(同事三个月,午饭搭子)"
+ },
+ "initial_kb": {
+  "her": "乔一琳,广告公司文案,无辣不欢,收藏夹里存了一堆探店链接,最反感放鸽子不解释。",
+  "me": "顾北,隔壁组策划,和她做了三个月午饭搭子,嘴稳会踩点。",
+  "warmth": "午饭搭子以上没挑明,聊天爱互甩链接。"
+ },
+ "turns": [
+  {
+   "case_id": "E126_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-04 10:12", "text": "公司对面新开了家湘菜小馆,口碑高得离谱,我看了菜单口水都下来了,今晚下班一起拔草?"}],
+    "clock": "2026-11-04 10:15",
+    "may_decline": false,
+    "intent": {"enabled": true, "status": "explicit", "text": "邀约今晚下班一起去吃新开的湘菜馆"}
+   },
+   "feedback": {"tone": "兴奋的安利语气", "change": "首轮直接邀约,主动度高"}
+  },
+  {
+   "case_id": "E126_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-04 15:40", "text": "我取了号,六点半到,排到我们大概七点,先说好我可以吃特辣你随便点,别拿微辣糊弄我。"}],
+    "clock": "2026-11-04 15:45",
+    "may_decline": false
+   },
+   "feedback": {"tone": "得意的先手安排", "change": "她主动取号,把主动权抓在手里,顺带立辣度规矩"}
+  },
+  {
+   "case_id": "E126_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-04 17:05", "text": "完蛋,组里临时插了个复盘会,六点开不知道开多久,今晚的号我退了,湘菜跑不了,改明晚行吗,对不起对不起。"}],
+    "clock": "2026-11-04 17:10",
+    "may_decline": false
+   },
+   "feedback": {"tone": "懊恼加连环道歉", "change": "取消改期轮:她自己提议取消并给出明确的改期方案,不是放鸽子"}
+  },
+  {
+   "case_id": "E126_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-05 11:30", "text": "明晚七点湘菜小馆,我中午就把号取了,这次是预约号不是排号,稳得多。"}],
+    "clock": "2026-11-05 11:35",
+    "may_decline": false
+   },
+   "feedback": {"tone": "吸取教训后的笃定", "change": "改期落实,从排号升级到预约号,她很在意不再翻车"}
+  },
+  {
+   "case_id": "E126_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-06 09:55", "text": "坏消息,总监让我明早去杭州出差,高铁是明早七点二十,晚上的预约我又得退,我先退号,回来第一顿补给你。"}],
+    "clock": "2026-11-06 10:00",
+    "may_decline": false
+   },
+   "feedback": {"tone": "沮丧但先担责任", "change": "第二次取消,连锁于出差,她主动退号并承诺补偿,愧疚感更重"}
+  },
+  {
+   "case_id": "E126_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-06 12:20", "text": "我到杭州了,换个方式,你今晚替我去吃,拍菜单发我,我远程云点菜,等我把辣的都记住。"}],
+    "clock": "2026-11-06 12:25",
+    "may_decline": true
+   },
+   "feedback": {"tone": "稀奇古怪的补偿提议", "change": "抛出云点菜的新玩法,主动修复爽约,接受与否给ME留了空间"}
+  },
+  {
+   "case_id": "E126_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-06 20:40", "text": "你发的辣汤看着就带劲,行,菜单我存了,前三名我都记下了,出差回来按这个点。"}],
+    "clock": "2026-11-06 20:45",
+    "may_decline": false
+   },
+   "feedback": {"tone": "隔着屏幕的馋", "change": "云点菜玩法被她接住并升级成'按这个点'的约定,情绪转暖"}
+  },
+  {
+   "case_id": "E126_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-09 08:30", "text": "出差延到周三,晚上才有高铁,我已经在看他家直播了,主播说周中人少不用取号,那就定周四晚。"}],
+    "clock": "2026-11-09 08:35",
+    "may_decline": false
+   },
+   "feedback": {"tone": "苦中作乐但方案清晰", "change": "改期再次顺延到周四,她给出新依据(周中免取号),改期链条完整"}
+  },
+  {
+   "case_id": "E126_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-11 18:10", "text": "刚落地!明天上班见,周四晚上七点老位置,这回预约号我设了闹钟,谁再放鸽子谁请下个月奶茶。"}],
+    "clock": "2026-11-11 18:15",
+    "may_decline": false
+   },
+   "feedback": {"tone": "落地的松快加立规矩的玩笑", "change": "用奶茶赌约把'不再改期'仪式化,关系里加了共同条款"}
+  },
+  {
+   "case_id": "E126_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-12 22:15", "text": "周四过了大半,啥事没有,我都有点不习惯,你下班直接过去,我提前十分钟到门口等你。"}],
+    "clock": "2026-11-12 22:20",
+    "may_decline": false
+   },
+   "feedback": {"tone": "紧张的期待", "change": "临行确认,她怕再有变数,主动给出到场细节"}
+  },
+  {
+   "case_id": "E126_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-13 22:50", "text": "特辣的鱼头我半盘都是自己扫的,你没笑话我吧,这家值得,下个月带你吃我收藏夹第二家,云南菜。"}],
+    "clock": "2026-11-13 22:55",
+    "may_decline": false
+   },
+   "feedback": {"tone": "吃爽了的坦荡", "change": "兑现成功,立刻抛出下一家店的钩子,推进节奏自然"}
+  },
+  {
+   "case_id": "E126_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-15 11:05", "text": "周末躺平中,翻到那天你拍的后厨照片,突然想念,先说好,下个月的奶茶债我还记着,跑不掉。"}],
+    "clock": "2026-11-15 11:10",
+    "may_decline": true
+   },
+   "feedback": {"tone": "慵懒的闲聊", "change": "闲谈回扣奶茶债,无新事务,可短回也可延展"}
+  }
+ ]
+}

@@ -1,0 +1,742 @@
+{
+ "story_id": "E197",
+ "turns": {
+  "E197_T01": {
+   "case_id": "E197_T01",
+   "current_action": "对荣休答谢宴的场地选择给出支持，并提醒占包间时问清收费口径",
+   "acceptable_actions": [
+    "肯定桂香楼的选择，提醒订包间时先问清服务费和低消",
+    "祝贺饭局敲定，建议把包间保留电话和定金规则记下来",
+    "支持她的安排，顺口问人数和套餐价位定了吗"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A01",
+     "subject": "HER",
+     "relation": "宴局启动",
+     "value": "HER 定下导师荣休答谢宴订在城西桂香楼十一月二十二号周日晚上六点",
+     "valid_time": "2026-11-05 宣布",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T01",
+      "message_id": "m0",
+      "quote": "导师的荣休答谢宴就订城西桂香楼，十一月二十二号周日晚上六点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A02",
+     "subject": "HER",
+     "relation": "场地动作",
+     "value": "HER 表示要先把大包间占上",
+     "valid_time": "2026-11-05 说明",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T01",
+      "message_id": "m0",
+      "quote": "我先把大包间占上"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "用同门搭档的口吻支持她张罗，语气轻快接住感叹号",
+   "unknowns": [
+    "人数与套餐价尚未确定（T04 揭晓）",
+    "包间收费口径未知（T02 抛出）"
+   ],
+   "protected_expressions": [
+    "荣休答谢宴",
+    "大包间"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已确认包间服务费口径",
+    "不得虚构定金已交（T03 才发生）"
+   ]
+  },
+  "E197_T02": {
+   "case_id": "E197_T02",
+   "current_action": "对互相矛盾的服务费说法给出处理建议：以店方书面或电话口径为准，别急着信任何一方",
+   "acceptable_actions": [
+    "建议直接打店里电话核实两种说法，留个截图或录音",
+    "指出陈师姐的说法可能是老黄历，建议以订包间当天的合同为准",
+    "安抚她别慌，提议把两种说法都记下来，定金交之前先问清"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A03",
+     "subject": "THIRD",
+     "relation": "收费说法一",
+     "value": "陈师姐称桂香楼包间要收一成服务费",
+     "valid_time": "2026-11-06 转述",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T02",
+      "message_id": "m0",
+      "quote": "陈师姐说桂香楼包间要收一成服务费"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A04",
+     "subject": "THIRD",
+     "relation": "收费说法二",
+     "value": "小樊称桂香楼包间不收费，低消够了就免",
+     "valid_time": "2026-11-06 转述",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T02",
+      "message_id": "m0",
+      "quote": "小樊又说不收，低消够了就免"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A05",
+     "subject": "HER",
+     "relation": "较真来源",
+     "value": "上次聚餐餐厅多收餐位费被苏芮当场要回，此后她对收费口径格外较真",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "initial_kb",
+      "key": "lessons",
+      "quote": "此后她对收费口径格外较真"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "承认口径打架这一事实本身，不替任何一方背书，把核实路径给她",
+   "unknowns": [
+    "服务费到底收不收未知（T06 仍冲突，T10 以改大厅回避）"
+   ],
+   "protected_expressions": [
+    "一成服务费",
+    "低消"
+   ],
+   "forbidden_factual_claims": [
+    "不得替店里宣布收或不收服务费",
+    "不得断言陈师姐或小樊谁对"
+   ]
+  },
+  "E197_T03": {
+   "case_id": "E197_T03",
+   "current_action": "确认收到定金三百且可抵菜金，把这笔账记入备忘并提醒她收据存好",
+   "acceptable_actions": [
+    "复述三百定金可抵菜金，说已记入备忘录",
+    "确认记账，提醒她把收据原件留好，抵菜金时要用",
+    "回复收到，顺带问她定金收据上写的场次时间对不对"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A06",
+     "subject": "HER",
+     "relation": "定金交付",
+     "value": "HER 交了三百元定金且店里说可抵菜金",
+     "valid_time": "2026-11-07 交付",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T03",
+      "message_id": "m0",
+      "quote": "定金我交了三百，收据拍了照片发你，店里说这钱能抵菜金"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A07",
+     "subject": "HER",
+     "relation": "记账请求",
+     "value": "HER 请 ME 把三百元定金记在账上",
+     "valid_time": "2026-11-07 请求",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T03",
+      "message_id": "m0",
+      "quote": "你帮我记在账上，三百，是三百"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "复述数字时接住她连报两遍的习惯，显得在认真记账",
+   "unknowns": [
+    "收据上是否写明抵菜金条款未知"
+   ],
+   "protected_expressions": [
+    "定金",
+    "抵菜金"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已核对收据原件",
+    "不得虚构定金金额与三百不符"
+   ]
+  },
+  "E197_T04": {
+   "case_id": "E197_T04",
+   "current_action": "给出核算：十二人乘一百二十八等于一千五百三十六，并对照低消口径说明压线情况",
+   "acceptable_actions": [
+    "算给她看：十二乘一百二十八是一千五百三十六，若低消一千五则压线过",
+    "确认人数和单价后给出总额一千五百三十六，提醒若低消含酒水再说",
+    "当场复算一遍并截图发她，顺带问低消是一千五的消息来源"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A08",
+     "subject": "SHARED",
+     "relation": "人数与套餐",
+     "value": "答谢宴连导师共十二人，套餐每位一百二十八元",
+     "valid_time": "2026-11-09 敲定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T04",
+      "message_id": "m0",
+      "quote": "连导师一共十二个，套餐定的一百二十八一位"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A09",
+     "subject": "HER",
+     "relation": "核算请求",
+     "value": "HER 请 ME 帮忙核算这笔账能否站住",
+     "valid_time": "2026-11-09 请求",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T04",
+      "message_id": "m0",
+      "quote": "你帮我算算这账能不能站住"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "账要当面算清，乘法口径一次说透，别只报结果",
+   "unknowns": [
+    "低消一千五的说法来源未知（T05 她自己带出）"
+   ],
+   "protected_expressions": [
+    "十二个",
+    "一百二十八一位"
+   ],
+   "forbidden_factual_claims": [
+    "不得算出与一千五百三十六不符的总价",
+    "不得虚构人数已有变动（T08 才发生）"
+   ]
+  },
+  "E197_T05": {
+   "case_id": "E197_T05",
+   "current_action": "肯定她的压线核算并点出压线方案的脆弱性：人数一变就击穿",
+   "acceptable_actions": [
+    "确认一千五百三十六压线过，提醒只多两人余量，少人就危险",
+    "夸她算得对，顺带问低消含不含酒水，避免周日现场变卦",
+    "认可结果，建议把压线情况提前跟店里说死，免得口说无凭"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A10",
+     "subject": "SHARED",
+     "relation": "低消口径",
+     "value": "包间低消传闻为一千五百元，十二人套餐总价一千五百三十六元恰好压线",
+     "valid_time": "2026-11-11 核算",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T05",
+      "message_id": "m0",
+      "quote": "十二个一百二十八，一千五百三十六，听说低消是一千五，正好压线过"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A11",
+     "subject": "SHARED",
+     "relation": "人数与套餐回扣",
+     "value": "此前敲定连导师十二人、套餐每位一百二十八元",
+     "valid_time": "2026-11-09 敲定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T04",
+      "message_id": "m0",
+      "quote": "连导师一共十二个，套餐定的一百二十八一位"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先肯定算对，再轻点脆弱性，不泼冷水只给保险绳",
+   "unknowns": [
+    "低消是否含酒水未知"
+   ],
+   "protected_expressions": [
+    "压线过",
+    "一千五"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣称店方已确认低消一千五",
+    "不得虚构余量充足的说法"
+   ]
+  },
+  "E197_T06": {
+   "case_id": "E197_T06",
+   "current_action": "承认两个说法正面冲突，建议把口径之争归零：一切以店方电话或书面确认为准",
+   "acceptable_actions": [
+    "指出陈师姐已推翻自己的一成服务费说法，建议别再传话，直接问店",
+    "安抚她被绕晕很正常，提议她打电话让店里给个书面口径",
+    "分析两个说法的时间差，提醒老黄历口径可能过期，以现行规则为准"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "time_state",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A12",
+     "subject": "PUBLIC",
+     "relation": "服务费说法",
+     "value": "桂香楼包间收一成服务费",
+     "valid_time": "2026-11-06 转述",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T02",
+      "message_id": "m0",
+      "quote": "陈师姐说桂香楼包间要收一成服务费"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A13",
+     "subject": "THIRD",
+     "relation": "改口内容",
+     "value": "陈师姐改口称现在根本不收包间费，小樊仍坚持要收",
+     "valid_time": "2026-11-12 转述",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T06",
+      "message_id": "m0",
+      "quote": "她说一成服务费是老黄历，人家店里现在根本不收包间费，可小樊还咬定要收"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是冲突落实轮：明确一成服务费的说法已被推翻（negation），把矛盾指向信息源而非人",
+   "unknowns": [
+    "店方现行口径仍未确认（T07 部分揭晓）"
+   ],
+   "protected_expressions": [
+    "一成服务费",
+    "老黄历"
+   ],
+   "forbidden_factual_claims": [
+    "不得替店里确认现行口径",
+    "不得指责陈师姐或小樊撒谎"
+   ]
+  },
+  "E197_T07": {
+   "case_id": "E197_T07",
+   "current_action": "接住电话核实的部分成果：低消一千五免包间费已获店方承认，服务费悬置则建议做两手预案",
+   "acceptable_actions": [
+    "总结已确认的和悬置的：低消口径落定，服务费现场说，建议做AB预案",
+    "安慰她电话核实不算白费，建议让店里把低消免包间费写进订金单",
+    "认可她的行动，提出若现场要收服务费就当场要求出示价目依据"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A14",
+     "subject": "PUBLIC",
+     "relation": "店方口径",
+     "value": "店方称低消满一千五免包间费，服务费是否收以当天大堂经理口径为准",
+     "valid_time": "2026-11-13 电话确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T07",
+      "message_id": "m0",
+      "quote": "低消满一千五免包间费，服务费收不收现场说"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把已确定和未确定分两栏说清，体现对账习惯",
+   "unknowns": [
+    "服务费现场是否实收未知（最终以改大厅回避）"
+   ],
+   "protected_expressions": [
+    "免包间费",
+    "当天大堂经理"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称服务费问题已解决",
+    "不得虚构书面确认已拿到"
+   ]
+  },
+  "E197_T08": {
+   "case_id": "E197_T08",
+   "current_action": "复算十人账目：一千二百八十元击穿一千五低消，指出压线方案失效需要新选项",
+   "acceptable_actions": [
+    "复述十个一百二十八是一千二百八，低于一千五，包间低消不达标",
+    "确认缺口两百二，提出加菜、换大厅或改人数三个方向",
+    "先接情绪再算账，建议趁早跟店方商量，别拖到当天"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A15",
+     "subject": "SHARED",
+     "relation": "人数变动",
+     "value": "周师弟和小何临时出差，答谢宴人数从十二人降至十人",
+     "valid_time": "2026-11-14 通知",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T08",
+      "message_id": "m0",
+      "quote": "周师弟和小何临时出差，就剩十个人了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A16",
+     "subject": "SHARED",
+     "relation": "击穿低消",
+     "value": "十人总价一千二百八十元低于低消一千五百元，包间低消不再达标",
+     "valid_time": "2026-11-14 核算",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T08",
+      "message_id": "m0",
+      "quote": "十个一百二十八，一千二百八，低消一千五够不着了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "账要立刻重算并报准数，情绪上与她同频但不添乱",
+   "unknowns": [
+    "是否还有人数变动未知（本篇内稳定为十人）"
+   ],
+   "protected_expressions": [
+    "十个人",
+    "够不着"
+   ],
+   "forbidden_factual_claims": [
+    "不得算出十人总价高于一千五",
+    "不得虚构二人可以赶回"
+   ]
+  },
+  "E197_T09": {
+   "case_id": "E197_T09",
+   "current_action": "支持她拒绝临场涨价，把例汤方案定性为违背约定，转向结构性替代方案",
+   "acceptable_actions": [
+    "认同说好的价位不能临场涨，建议直接换不设低消的场地",
+    "站在她这边否定例汤凑数，提出改大厅或分包间两个替代",
+    "支持她守住一百二十八，提醒可以拿低消规则去和店方谈免低消"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A17",
+     "subject": "THIRD",
+     "relation": "涨价方案",
+     "value": "小樊提议每人加三十元例汤把总价凑到一千五百八以过低消",
+     "valid_time": "2026-11-14 提议",
+     "status": "rejected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T09",
+      "message_id": "m0",
+      "quote": "让每人再加个三十的例汤凑到一千五百八"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A18",
+     "subject": "HER",
+     "relation": "价位底线",
+     "value": "HER 坚持说好的一百二十八一位不能临场涨",
+     "valid_time": "2026-11-14 表态",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T09",
+      "message_id": "m0",
+      "quote": "说好的一百二十八不能临场涨"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "明确站她的底线，把数学戳破：加三十只是把低消换个名目收一遍",
+   "unknowns": [
+    "替代场地选项未知（T10 揭晓）"
+   ],
+   "protected_expressions": [
+    "例汤",
+    "临场涨"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称涨价方案已被采纳",
+    "不得虚构店里主动降价"
+   ]
+  },
+  "E197_T10": {
+   "case_id": "E197_T10",
+   "current_action": "确认撤包间改大厅的止损方案成立：大厅不设低消不收服务费，定金三百照抵",
+   "acceptable_actions": [
+    "确认大厅方案两头解套：无低消无服务费争议，定金不浪费",
+    "复述方案要点并补一句：大厅记得确认能不能坐十人一桌",
+    "肯定她止损果断，建议把改大厅的决定同步给全体同门"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A19",
+     "subject": "SHARED",
+     "relation": "包间状态",
+     "value": "桂香楼大包间订单被撤销，改为大厅拼一桌",
+     "valid_time": "2026-11-15 决定",
+     "status": "canceled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T10",
+      "message_id": "m0",
+      "quote": "十个人就撤包间改大厅拼一桌"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A20",
+     "subject": "PUBLIC",
+     "relation": "大厅口径",
+     "value": "大厅不设低消也不收服务费，定金三百照旧抵菜金",
+     "valid_time": "2026-11-15 说明",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T10",
+      "message_id": "m0",
+      "quote": "大厅不设低消也不收服务费，定金三百照旧抵菜金"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A21",
+     "subject": "HER",
+     "relation": "定金回扣",
+     "value": "此前交付的三百元定金据称可抵菜金",
+     "valid_time": "2026-11-07 交付",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T03",
+      "message_id": "m0",
+      "quote": "店里说这钱能抵菜金"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是冲突落实轮：包间订单状态由占定变为撤销（status 变化），确认定金不被没收",
+   "unknowns": [
+    "大厅大圆桌是否确认留给一行人（T11 揭晓）"
+   ],
+   "protected_expressions": [
+    "撤包间改大厅",
+    "照旧抵菜金"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称包间仍保留",
+    "不得虚构服务费在包间场景下已有结论"
+   ]
+  },
+  "E197_T11": {
+   "case_id": "E197_T11",
+   "current_action": "确认店方回话细节已闭环，提醒她把最终安排群发同门并附上导师座位安排",
+   "acceptable_actions": [
+    "确认大厅大圆桌与定金照抵都已落实，建议群里发最终版安排",
+    "认可落地，提醒再跟店方确认导师靠窗座位的通道好走",
+    "接住确认结果，提出把提前到场时间也一并定下来"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A22",
+     "subject": "PUBLIC",
+     "relation": "店方确认",
+     "value": "店方确认留大厅十二人位大圆桌一桌，定金照抵，导师座位在最里侧靠窗",
+     "valid_time": "2026-11-15 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T11",
+      "message_id": "m0",
+      "quote": "大厅十二人位的大圆桌给我们留一桌，定金照抵，导师座位安排在最里侧靠窗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "事项收束时帮她把下一步动作列出，不抢她总管的活",
+   "unknowns": [
+    "最终到场人数是否回升未知（按十人计）"
+   ],
+   "protected_expressions": [
+    "大圆桌",
+    "最里侧靠窗"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构包间被重新要回",
+    "不得声称服务费在大厅会另收"
+   ]
+  },
+  "E197_T12": {
+   "case_id": "E197_T12",
+   "current_action": "接受谢礼之约并回以暖味钩子，预祝答谢宴顺利",
+   "acceptable_actions": [
+    "答应赴约，回一句豆浆谢礼不算，散场送她到地铁口",
+    "预祝明天顺利，调侃她这次账目滴水不漏，接下豆浆之约",
+    "确认时间地点，顺势约散场后一起走那段老路"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E197_A23",
+     "subject": "HER",
+     "relation": "谢礼约定",
+     "value": "HER 约定答谢宴散场后请 ME 喝豆浆当谢礼",
+     "valid_time": "2026-11-21 约定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T12",
+      "message_id": "m0",
+      "quote": "散场我请你喝豆浆当谢礼"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E197_A24",
+     "subject": "SHARED",
+     "relation": "终版安排回扣",
+     "value": "答谢宴定于周日六点在城西桂香楼大厅举行",
+     "valid_time": "2026-11-15 敲定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E197_T10",
+      "message_id": "m0",
+      "quote": "十个人就撤包间改大厅拼一桌"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾留在关系线上，暖而不越，把感谢接住并回敬",
+   "unknowns": [
+    "宴后散步是否有空未知（留白）"
+   ],
+   "protected_expressions": [
+    "喝豆浆当谢礼",
+    "大厅见"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构宴席已散场",
+    "不得改变已敲定的时间地点"
+   ]
+  }
+ }
+}

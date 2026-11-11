@@ -1,0 +1,409 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E017",
+ "title": "周六早上再决定",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E017_T01": {
+   "case_id": "E017_T01",
+   "current_action": "先接住累，不立刻抛邀约",
+   "acceptable_actions": [
+    "接住累",
+    "问她项目是不是快收尾",
+    "说先歇着别硬撑"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N005_F01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "这周很累，周三周四都加班",
+     "valid_time": "2026-11-12 19:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E017_T01",
+      "message_id": "m0",
+      "quote": "这周真的要累死了 周三周四都加班"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她刚说累，第一轮别马上约；先让她喘口气。",
+   "unknowns": [
+    "她周末是否真的能休"
+   ],
+   "protected_expressions": [
+    "周三周四都加班"
+   ],
+   "forbidden_factual_claims": [
+    "不要立刻约周末",
+    "不要讲“年轻人要拼”"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E017_T02": {
+   "case_id": "E017_T02",
+   "current_action": "答事实：到月底、免费、需要预约；不顺势逼约",
+   "acceptable_actions": [
+    "回答三个事实",
+    "说需要预约但可以看情况",
+    "回答后不提邀约"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N005_F02",
+     "subject": "展览",
+     "relation": "事实",
+     "value": "展到月底，免费，但需要预约",
+     "valid_time": "2026-11-12 19:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E017_T02",
+      "message_id": "m0",
+      "quote": "你上次说的那个展 到什么时候啊 是不是免费 要预约吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动问展，是开门；但先把事实答准，别立刻“那周六去”。",
+   "unknowns": [
+    "她问展是想去还是随口"
+   ],
+   "protected_expressions": [
+    "是不是免费 要预约吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造展期/票价",
+    "不要断言她要和你去"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E017_T03": {
+   "case_id": "E017_T03",
+   "current_action": "给空间，不把不确定当拒绝",
+   "acceptable_actions": [
+    "说先看排班",
+    "说不急",
+    "说确定了再说"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N005_F03",
+     "subject": "她",
+     "relation": "时间",
+     "value": "周末可能有一天休，但还不确定",
+     "valid_time": "2026-11-12 19:38",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E017_T03",
+      "message_id": "m0",
+      "quote": "周末我可能有一天能休 但还不确定 不敢答应你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她说“不敢答应”是怕放鸽子；别追问“那到底哪天”。",
+   "unknowns": [
+    "她哪天休息"
+   ],
+   "protected_expressions": [
+    "不敢答应你"
+   ],
+   "forbidden_factual_claims": [
+    "不要逼她现在定",
+    "不要把犹豫说成不感兴趣"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E017_T04": {
+   "case_id": "E017_T04",
+   "current_action": "接受临时约，不追加压力",
+   "acceptable_actions": [
+    "说可以临时约",
+    "说周六早上说一声",
+    "说不来也没关系"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N005_F04",
+     "subject": "我",
+     "relation": "时间",
+     "value": "周六下午都在",
+     "valid_time": "2026-11-12 19:45",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E017_T04",
+      "message_id": "m0",
+      "quote": "我周六下午都在"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动提临时约；接住即可，别加“那说定了”。",
+   "unknowns": [
+    "她周六是否能起来"
+   ],
+   "protected_expressions": [
+    "我们临时约？"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她已答应",
+    "不要安排全天"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "想约她看展，但接受她时间不确定",
+    "status": "ACTIVE"
+   }
+  },
+  "E017_T05": {
+   "case_id": "E017_T05",
+   "current_action": "接受一小时，压缩安排",
+   "acceptable_actions": [
+    "说一小时够了",
+    "说只看展不吃饭",
+    "说随时可以走"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N005_F05",
+     "subject": "她",
+     "relation": "边界",
+     "value": "可能只能待一个小时，别安排太多",
+     "valid_time": "2026-11-12 19:56",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E017_T05",
+      "message_id": "m0",
+      "quote": "不过我可能只能待一个小时 你别安排太多"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在降低承诺；别表现出失望，也别加码。",
+   "unknowns": [
+    "她一小时是否包含路上时间"
+   ],
+   "protected_expressions": [
+    "你别安排太多"
+   ],
+   "forbidden_factual_claims": [
+    "不要嫌一小时短",
+    "不要安排吃饭/电影加场"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E017_T06": {
+   "case_id": "E017_T06",
+   "current_action": "答“免费但需要预约”，给可操作下一步",
+   "acceptable_actions": [
+    "说免费但要预约",
+    "说我可以先看预约入口",
+    "说等她确定再约"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "time_state",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N005_F02",
+     "subject": "展览",
+     "relation": "事实",
+     "value": "展到月底，免费，但需要预约",
+     "valid_time": "2026-11-12 19:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E017_T02",
+      "message_id": "m0",
+      "quote": "你上次说的那个展 到什么时候啊 是不是免费 要预约吗"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是复用她 T02 问过的信息；别编造现场票。",
+   "unknowns": [
+    "预约是否满员"
+   ],
+   "protected_expressions": [
+    "要提前买吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造票价",
+    "不要现在替她预约"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E017_T07": {
+   "case_id": "E017_T07",
+   "current_action": "接受不确定，明确不施压",
+   "acceptable_actions": [
+    "说好，等你消息",
+    "说不来也没关系",
+    "说周六早上不用勉强"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N005_F06",
+     "subject": "她",
+     "relation": "下一步",
+     "value": "周六早上看状态，起来就告诉我，不起来就别等",
+     "valid_time": "2026-11-12 20:14",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E017_T07",
+      "message_id": "m0",
+      "quote": "那我周六早上看状态 起来就告诉你 不起来你就别等我"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给了退出通道；接受它，别用“我一定等你”加负担。",
+   "unknowns": [
+    "她周六是否会来"
+   ],
+   "protected_expressions": [
+    "不起来你就别等我"
+   ],
+   "forbidden_factual_claims": [
+    "不要保证一直等",
+    "不要问她如果不来是不是不想见"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "不催，周六早上等她消息",
+    "status": "ADJUSTED"
+   }
+  },
+  "E017_T08": {
+   "case_id": "E017_T08",
+   "current_action": "自然收尾，不再确认",
+   "acceptable_actions": [
+    "说好，去洗吧",
+    "道晚安",
+    "说周六再说"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N005_F07",
+     "subject": "她",
+     "relation": "下一步",
+     "value": "去洗澡，今天不想动脑子",
+     "valid_time": "2026-11-12 20:24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E017_T08",
+      "message_id": "m0",
+      "quote": "先这样 我去洗澡了 今天不想动脑子"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她明确不想动脑；别再问“那周六几点”。",
+   "unknowns": [
+    "她周六是否发消息"
+   ],
+   "protected_expressions": [
+    "今天不想动脑子"
+   ],
+   "forbidden_factual_claims": [
+    "不要继续追问",
+    "不要现在定时间"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

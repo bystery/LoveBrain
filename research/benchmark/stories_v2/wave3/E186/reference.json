@@ -1,0 +1,743 @@
+{
+ "story_id": "E186",
+ "turns": {
+  "E186_T01": {
+   "case_id": "E186_T01",
+   "current_action": "接住十年聚定档，确认代订安排",
+   "acceptable_actions": [
+    "确认日期地点，调侃托赵磊的靠谱程度",
+    "接住定档，提醒代订要留书面凭证",
+    "答应到时候到场，问包间能坐几人"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A01",
+     "subject": "SHARED",
+     "relation": "聚会安排",
+     "value": "11月7日周六晚六点城西拾光小馆包间大学室友十年聚",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T01",
+      "quote": "11月7号周六晚六点，城西拾光小馆包间",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A02",
+     "subject": "THIRD",
+     "relation": "代订安排",
+     "value": "HER因带军训将订位托付给共同朋友赵磊",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T01",
+      "quote": "订位的事托给赵磊了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接住她的信任，别替第三方打包票",
+   "unknowns": [
+    "包间最低消费未提及",
+    "出席名单未最终确认"
+   ],
+   "protected_expressions": [
+    "十年聚定档了"
+   ],
+   "forbidden_factual_claims": [
+    "宣称自己负责订位",
+    "替赵磊保证不出岔子"
+   ]
+  },
+  "E186_T02": {
+   "case_id": "E186_T02",
+   "current_action": "接包间与低消信息，留意代订口径",
+   "acceptable_actions": [
+    "确认低消688可接受，建议留预订截图",
+    "接住信息，接住'大方过头'的预警",
+    "确认后追问低消是否含酒水"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A03",
+     "subject": "SHARED",
+     "relation": "包间预订",
+     "value": "赵磊代订拾光小馆包间成功，最低消费688元",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T02",
+      "quote": "最低消费688",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A04",
+     "subject": "THIRD",
+     "relation": "代订安排",
+     "value": "订位由第三方赵磊代办理",
+     "valid_time": "2026-11-01起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T01",
+      "quote": "订位的事托给赵磊了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "顺着她的提防说，别急着夸赵磊",
+   "unknowns": [
+    "低消是否含酒水未说明"
+   ],
+   "protected_expressions": [
+    "就怕他大方过头"
+   ],
+   "forbidden_factual_claims": [
+    "断言赵磊绝不出错"
+   ]
+  },
+  "E186_T03": {
+   "case_id": "E186_T03",
+   "current_action": "确认AA预收账目清楚",
+   "acceptable_actions": [
+    "核对150乘8共1200无误，提醒留转账记录",
+    "接住账目，建议多退少补写进群里",
+    "确认预收，顺便问名单有没有带伴"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A05",
+     "subject": "SHARED",
+     "relation": "AA预收",
+     "value": "每人预收150元，8人合计1200元，多退少补",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T03",
+      "quote": "每人150，八个人一共1200",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A06",
+     "subject": "HER",
+     "relation": "名单口径",
+     "value": "名单按老室友圈确定，不多带外人",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T03",
+      "quote": "一个都不多",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "账目数字要复述准确，别添油加醋",
+   "unknowns": [
+    "未到者退款路径未定"
+   ],
+   "protected_expressions": [
+    "多退少补"
+   ],
+   "forbidden_factual_claims": [
+    "报错总金额",
+    "建议临时加人凑数"
+   ]
+  },
+  "E186_T04": {
+   "case_id": "E186_T04",
+   "current_action": "接住第三方变卦，先稳局再定人",
+   "acceptable_actions": [
+    "接住变卦，建议先找赵磊本人单独对质",
+    "共情恼火，提出包间问题与加人问题分开处理",
+    "接住消息，建议当晚先不出声、单线沟通"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A07",
+     "subject": "SHARED",
+     "relation": "包间状态",
+     "value": "原订包间被赵磊表哥公司占用，聚会改大堂圆桌",
+     "valid_time": "2026-11-06",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T04",
+      "quote": "包间让给他表哥的公司用了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A08",
+     "subject": "THIRD",
+     "relation": "擅自加人",
+     "value": "赵磊未经同意拉两位棋友进局",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T04",
+      "quote": "拉了他两个棋友进群",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A09",
+     "subject": "HER",
+     "relation": "名单口径",
+     "value": "原名单八人不带外人的约定被第三方打破",
+     "valid_time": "2026-11-05至2026-11-06",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T03",
+      "quote": "一个都不多",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "第三方错在先，帮她对事不对人地拆解",
+   "unknowns": [
+    "两位棋友是否已付AA未说明",
+    "表哥用包间有无凭证未知"
+   ],
+   "protected_expressions": [
+    "局先不是那个局了"
+   ],
+   "forbidden_factual_claims": [
+    "替赵磊解释成好意",
+    "建议当场忍下不提"
+   ]
+  },
+  "E186_T05": {
+   "case_id": "E186_T05",
+   "current_action": "给退出或留下的判断，不当和事佬",
+   "acceptable_actions": [
+    "支持退出，理由是局已变味",
+    "给两条路让她选，倾向退出",
+    "劝留一晚观察，但明确说退出不丢人"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A10",
+     "subject": "HER",
+     "relation": "退出倾向",
+     "value": "考虑退出十年聚，不愿在大堂给陌生人当主人",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T05",
+      "quote": "要不我退了吧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A11",
+     "subject": "THIRD",
+     "relation": "擅自加人",
+     "value": "第三方擅自加人是她想退出的直接原因",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T04",
+      "quote": "拉了他两个棋友进群",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "给依据不代拍板，尊重她的饭局纪律感",
+   "unknowns": [
+    "退出后AA预收如何处理未定"
+   ],
+   "protected_expressions": [
+    "没法站在大堂里"
+   ],
+   "forbidden_factual_claims": [
+    "指责她小题大做",
+    "替她答应留下来陪笑脸"
+   ],
+   "may_decline": true
+  },
+  "E186_T06": {
+   "case_id": "E186_T06",
+   "current_action": "跟进单独沟通的结果与口径",
+   "acceptable_actions": [
+    "肯定当面谈的做法，问赵磊选哪条",
+    "接住进展，提醒把结果落到文字",
+    "认可两条路，问她自己更想哪条"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A12",
+     "subject": "SHARED",
+     "relation": "沟通方案",
+     "value": "HER向赵磊给出包间坐回去或她退出两条路",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T06",
+      "quote": "给他两条路",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A13",
+     "subject": "SHARED",
+     "relation": "包间状态",
+     "value": "包间被顶替后尚未恢复",
+     "valid_time": "2026-11-06",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T04",
+      "quote": "包间让给他表哥的公司用了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她已行动，回执要接得利落",
+   "unknowns": [
+    "赵磊答复时限未约定"
+   ],
+   "protected_expressions": [
+    "他没敢挂电话"
+   ],
+   "forbidden_factual_claims": [
+    "建议再当众施压"
+   ]
+  },
+  "E186_T07": {
+   "case_id": "E186_T07",
+   "current_action": "接处理结果，确认边界落地",
+   "acceptable_actions": [
+    "确认两桌方案可行，肯定低消差价他补",
+    "接住结果，提醒把'棋友不上桌'当死规矩",
+    "认可处理，问她自己那桌还去不去"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A14",
+     "subject": "SHARED",
+     "relation": "新安排",
+     "value": "包间要不回，大堂拼两桌，低消差价由赵磊补",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T07",
+      "quote": "大堂拼成两桌，低消差价他补",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A15",
+     "subject": "THIRD",
+     "relation": "边界约束",
+     "value": "赵磊两位棋友由其自行招待，不得上老室友桌",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T07",
+      "quote": "不许再进咱们桌",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "确认边界条款逐条落实，不嫌琐碎",
+   "unknowns": [
+    "差价具体金额未说明"
+   ],
+   "protected_expressions": [
+    "包间要不回来"
+   ],
+   "forbidden_factual_claims": [
+    "劝她大度合并两桌"
+   ]
+  },
+  "E186_T08": {
+   "case_id": "E186_T08",
+   "current_action": "尊重退出决定，把钱与礼数算清",
+   "acceptable_actions": [
+    "支持缺席，帮记退款与礼数两件事",
+    "接住决定，建议退款直接找赵磊原路退",
+    "认可决定，提议给周航打招呼留个由头"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A16",
+     "subject": "HER",
+     "relation": "缺席决定",
+     "value": "HER决定不去11月7日的十年聚，礼数到位人缺席",
+     "valid_time": "2026-11-07",
+     "status": "revoked",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T08",
+      "quote": "我想了一晚上还是不去了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A17",
+     "subject": "SHARED",
+     "relation": "退款要求",
+     "value": "要求赵磊退还其预付AA款150元且不少分",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T08",
+      "quote": "把我那份150退回来",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A18",
+     "subject": "SHARED",
+     "relation": "AA预收",
+     "value": "预收款需按退出者份额清退",
+     "valid_time": "2026-11-05起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T03",
+      "quote": "每人150，八个人一共1200",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "退出是她的正当选择，账目要清不添人情债",
+   "unknowns": [
+    "是否补发红包给群里未定"
+   ],
+   "protected_expressions": [
+    "一分不少"
+   ],
+   "forbidden_factual_claims": [
+    "劝她钱算了别要",
+    "宣称她还欠赵磊人情"
+   ]
+  },
+  "E186_T09": {
+   "case_id": "E186_T09",
+   "current_action": "接补救局邀约，给去与不去的依据",
+   "acceptable_actions": [
+    "建议去，理由是这局与赵磊无关",
+    "接住邀约，把决定权还给她并给判断标准",
+    "支持去，提醒别在补救局里翻旧账"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A19",
+     "subject": "SHARED",
+     "relation": "补救局",
+     "value": "周航发起11月8日晚宿舍六人补救局，不经赵磊",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T09",
+      "quote": "今晚他家楼下馆子补一场",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A20",
+     "subject": "HER",
+     "relation": "缺席决定",
+     "value": "对赵磊那局的缺席不影响补救局的取舍",
+     "valid_time": "2026-11-07",
+     "status": "revoked",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T08",
+      "quote": "我想了一晚上还是不去了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把两个局切开：她的怨气针对赵磊，不针对老室友",
+   "unknowns": [
+    "补救局费用口径未说明"
+   ],
+   "protected_expressions": [
+    "不许赵磊沾手"
+   ],
+   "forbidden_factual_claims": [
+    "建议把赵磊也捎上",
+    "劝她十年聚的事翻篇不谈"
+   ]
+  },
+  "E186_T10": {
+   "case_id": "E186_T10",
+   "current_action": "送她出门，轻收尾",
+   "acceptable_actions": [
+    "鼓励出门，说回头想听现场转播",
+    "接住决定，提醒玩得尽兴别聊赵磊",
+    "答应等她战报，顺口让她早点回"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A21",
+     "subject": "HER",
+     "relation": "出行状态",
+     "value": "决定参加补救局并已出门",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T10",
+      "quote": "我这就出门",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A22",
+     "subject": "SHARED",
+     "relation": "补救局",
+     "value": "11月8日晚宿舍六人补救局进行中",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T09",
+      "quote": "今晚他家楼下馆子补一场",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轻快，别再翻第三方旧账",
+   "unknowns": [
+    "到场人数未确认"
+   ],
+   "protected_expressions": [
+    "别为赵磊误了十年这个由头"
+   ],
+   "forbidden_factual_claims": [
+    "再劝她别去"
+   ]
+  },
+  "E186_T11": {
+   "case_id": "E186_T11",
+   "current_action": "接现场报喜与两清信息",
+   "acceptable_actions": [
+    "接住报喜，肯定礼数两清的处理",
+    "回一句舒服多了，问她赵磊有没有来贴脸",
+    "接住到局消息，把话题引向老室友八卦"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A23",
+     "subject": "SHARED",
+     "relation": "垫付水果钱",
+     "value": "HER转200元给周航算垫的水果钱，与赵磊两清",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T11",
+      "quote": "转了200给周航",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A24",
+     "subject": "SHARED",
+     "relation": "补救局",
+     "value": "补救局与赵磊无关，现场证实",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T09",
+      "quote": "不许赵磊沾手",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "呼应她的舒坦，不再算旧账",
+   "unknowns": [
+    "200元是垫付还是出份子未说明"
+   ],
+   "protected_expressions": [
+    "礼数到了，两清"
+   ],
+   "forbidden_factual_claims": [
+    "建议她再向赵磊追讨别的费用"
+   ]
+  },
+  "E186_T12": {
+   "case_id": "E186_T12",
+   "current_action": "接宵夜邀约，定下分享时间",
+   "acceptable_actions": [
+    "接下宵夜之约，问周末哪天",
+    "答应听细节，顺手夸她处理得体",
+    "接住邀请，提出自己带宵夜上门"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E186_A25",
+     "subject": "SHARED",
+     "relation": "宵夜之约",
+     "value": "HER约ME周末宵夜细讲饭局始末",
+     "valid_time": "2026-11-08后的周末",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T12",
+      "quote": "回头宵夜跟你细讲",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E186_A26",
+     "subject": "HER",
+     "relation": "现场评价",
+     "value": "补救局顺利结束，与赵磊的账目礼数两清",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E186_T11",
+      "quote": "礼数到了，两清",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾带期待，把关系往前递半步",
+   "unknowns": [
+    "具体宵夜时间未定"
+   ],
+   "protected_expressions": [
+    "赵磊的表情管理"
+   ],
+   "forbidden_factual_claims": [
+    "把话题拉回对赵磊的惩罚"
+   ]
+  }
+ }
+}

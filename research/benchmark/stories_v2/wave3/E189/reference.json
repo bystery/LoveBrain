@@ -1,0 +1,684 @@
+{
+ "story_id": "E189",
+ "turns": {
+  "E189_T01": {
+   "case_id": "E189_T01",
+   "current_action": "接住她的求救，先稳住情绪，把问题收拢到两道SQL和材料进度上，承诺当晚讲题。",
+   "acceptable_actions": [
+    "先安抚再定晚上讲题时间，让她把材料一并发来",
+    "让她把卡壳的两道题先截图发来，午休先看一眼",
+    "劝她别推翻重写，聚焦卡住的段落"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A01",
+     "subject": "HER",
+     "relation": "备考困难",
+     "value": "笔试两道SQL看不懂材料写了三天卡在第一部分",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T01",
+      "quote": "有两道SQL我完全看不懂",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E189_A02",
+     "subject": "HER",
+     "relation": "内转目标",
+     "value": "备考公司内转数据分析组答辩材料进行中",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "报了公司内转到数据分析组"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她在截止压力下容易自我怀疑，先给确定性再谈内容，别一上来纠错。",
+   "unknowns": [
+    "材料三具体写到哪一段未量化"
+   ],
+   "protected_expressions": [
+    "有两道SQL我完全看不懂"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构笔试具体日期",
+    "不得断言她答辩必然通过"
+   ]
+  },
+  "E189_T02": {
+   "case_id": "E189_T02",
+   "current_action": "午休挤出时间看题，指出两道题分别涉及多表关联与窗口函数，约定晚上八点开讲并索要材料。",
+   "acceptable_actions": [
+    "点明两题考点方向并约定晚上八点讲",
+    "先要材料再定讲解顺序，劝她别推翻重写",
+    "给一个五分钟自查清单，把讲解留到晚上"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A03",
+     "subject": "ME",
+     "relation": "辅导承诺",
+     "value": "当晚八点讲解两道SQL并让她一并发材料",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T02",
+      "quote": "晚上八点我给你讲，你把材料一并发我",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "讲题承诺要具体到时间点，别给模糊的'回头看看'。",
+   "unknowns": [
+    "她最终是否发来完整材料未在本轮确认"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称已替她改写材料"
+   ]
+  },
+  "E189_T03": {
+   "case_id": "E189_T03",
+   "current_action": "接住突破的喜悦，同时正视大促支援通知带来的日程冲击，提示她评估强度。",
+   "acceptable_actions": [
+    "先肯定窗口函数突破，再陪她预估大促对备考的挤占",
+    "顺着支援话题问她被抽去哪个班次",
+    "建议她今晚专心写材料三，支援的事明天问清楚"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A04",
+     "subject": "HER",
+     "relation": "学习进度",
+     "value": "听完窗口函数讲解后材料三当晚可写完一半",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T03",
+      "quote": "材料三我今晚能写完一半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E189_A05",
+     "subject": "SHARED",
+     "relation": "大促支援安排",
+     "value": "双十一大促十一月十一至十五号全员支援客服线她大概率被抽走",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T03",
+      "quote": "双十一大促十一月十一号到十五号全员要支援客服线",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "好消息先接住，坏消息别急着给结论，让她自己说出压力。",
+   "unknowns": [
+    "她是否被正式抽走当时未定"
+   ],
+   "protected_expressions": [
+    "材料三我今晚能写完一半"
+   ],
+   "forbidden_factual_claims": [
+    "不得替部门确认她的排班"
+   ]
+  },
+  "E189_T04": {
+   "case_id": "E189_T04",
+   "current_action": "按大促日程倒排两周计划：八号前完成材料三，九、十号过笔试题，十一号起只看错题本，并提醒她先摸清支援强度。",
+   "acceptable_actions": [
+    "给出倒排计划并让她问清支援强度再定",
+    "把计划拆成每日小块，先保材料三节点",
+    "建议她主动和主管沟通备考与支援的冲突"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A06",
+     "subject": "ME",
+     "relation": "倒排计划",
+     "value": "八号前完成材料三九号十号过笔试题十一号起只看错题本",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T04",
+      "quote": "八号前把材料三写完，九号十号各留一天过一遍笔试题",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "计划要留弹性，别把二十号答辩前每一天都排满。",
+   "unknowns": [
+    "客服线支援的实际强度当时未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构客服线排班细节"
+   ]
+  },
+  "E189_T05": {
+   "case_id": "E189_T05",
+   "current_action": "接住她的暂停决定，明确认可停备考保主业的取舍，不复盘遗憾。",
+   "acceptable_actions": [
+    "认可暂停决定并肯定她材料三如期完成",
+    "先接她语气里的不舍，再确认申请十二月批次的步骤",
+    "陪她把暂停决定复述一遍，确认她不是一时冲动"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "time_state",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A07",
+     "subject": "SHARED",
+     "relation": "备考状态",
+     "value": "备考按下暂停并申请十二月批次",
+     "valid_time": "2026-11-08",
+     "status": "paused",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T05",
+      "quote": "跟主管申请十二月批次，备考先按下暂停键",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E189_A08",
+     "subject": "HER",
+     "relation": "原定答辩计划",
+     "value": "原定十一月二十日内转答辩不再冲击",
+     "valid_time": "2026-11-08",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T05",
+      "quote": "十一月二十号的答辩我不冲了",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E189_A09",
+     "subject": "SHARED",
+     "relation": "大促支援安排",
+     "value": "十一月十一至十五号支援客服线三班倒并有整周复盘",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T03",
+      "quote": "双十一大促十一月十一号到十五号全员要支援客服线",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "暂停是她的决定，别替她惋惜，也别急着说'我早说过'。",
+   "unknowns": [
+    "主管是否批准十二月批次申请未知"
+   ],
+   "protected_expressions": [
+    "备考先按下暂停键"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称她被强制取消答辩资格",
+    "不得虚构十一月二十日答辩照常进行"
+   ]
+  },
+  "E189_T06": {
+   "case_id": "E189_T06",
+   "current_action": "支持暂停判断，给出材料与错题本打包存云盘并标注'十二月重启'的存档办法。",
+   "acceptable_actions": [
+    "认可取舍并给存档清单式建议",
+    "提醒她把错题本一并归档并写重启说明",
+    "问她是否需要帮忙把材料目录理一遍"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A10",
+     "subject": "ME",
+     "relation": "存档建议",
+     "value": "材料连同错题本打包存云盘并标注十二月重启",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T06",
+      "quote": "连同错题本一起打包存云盘",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "存档建议要可执行，落到文件夹名这种具体动作。",
+   "unknowns": [
+    "云盘存档最终命名以她后文说法为准"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称已替她删除或改动材料"
+   ]
+  },
+  "E189_T07": {
+   "case_id": "E189_T07",
+   "current_action": "接住她的动摇，不直接否定玲姐，先让她说出自己的优先级。",
+   "acceptable_actions": [
+    "不站队，先问她自己更在意哪头",
+    "肯定玲姐的关心，再引导她回到已定的判断标准",
+    "让她把玲姐的理由说完，再陪她核对批次开放的不确定性"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A11",
+     "subject": "THIRD",
+     "relation": "劝阻意见",
+     "value": "同事玲姐以内转窗口一年一次为由劝她勿放弃备考",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T07",
+      "quote": "说内转窗口一年就一次",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E189_A12",
+     "subject": "HER",
+     "relation": "备考状态",
+     "value": "暂停决定因玲姐劝阻出现动摇",
+     "valid_time": "2026-11-10",
+     "status": "paused",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T05",
+      "quote": "跟主管申请十二月批次，备考先按下暂停键",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "别贬低玲姐，动摇是真实的，先承认再给框架。",
+   "unknowns": [
+    "十二月批次是否开放当时未确定"
+   ],
+   "protected_expressions": [
+    "内转窗口一年就一次"
+   ],
+   "forbidden_factual_claims": [
+    "不得替公司确认十二月批次开放与否"
+   ]
+  },
+  "E189_T08": {
+   "case_id": "E189_T08",
+   "current_action": "把摇摆转成两案对比，给出唯一判断标准：十一到十五号每天几点下班。",
+   "acceptable_actions": [
+    "摆出A/B两案并把判断标准收敛到支援强度",
+    "建议她去问客服线老同事再定",
+    "让她给两案各打一个通过率估计"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A13",
+     "subject": "ME",
+     "relation": "决策框架",
+     "value": "暂停备考与硬冲二十号两案对比判断标准为十一至十五号每日下班时间",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T08",
+      "quote": "十一到十五号每天几点下班",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "别替她选，把选择标准变成她能自己验证的问题。",
+   "unknowns": [
+    "客服线每日下班时间未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构两案的通过率数字"
+   ]
+  },
+  "E189_T09": {
+   "case_id": "E189_T09",
+   "current_action": "接住她的最终认账，肯定她按实际强度做决定，确认申请与存档都已落实。",
+   "acceptable_actions": [
+    "认可选A并确认申请与云盘存档完成",
+    "先心疼一句十一个小时，再把话题落到已完成的动作上",
+    "提醒她保留申请消息截图，作为十二月批次的凭据"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A14",
+     "subject": "HER",
+     "relation": "最终决定",
+     "value": "在客服三班倒强度下确认选A暂停备考",
+     "valid_time": "2026-11-12",
+     "status": "paused",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T09",
+      "quote": "我认了，选A",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E189_A15",
+     "subject": "HER",
+     "relation": "存档执行",
+     "value": "材料已打包存云盘文件夹名为十二月重启",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T09",
+      "quote": "材料打包存进云盘，文件夹就叫十二月重启",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E189_A16",
+     "subject": "SHARED",
+     "relation": "备考状态",
+     "value": "备考按下暂停并申请十二月批次",
+     "valid_time": "2026-11-08",
+     "status": "paused",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T05",
+      "quote": "跟主管申请十二月批次，备考先按下暂停键",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她认账认得干脆，别再翻旧账说当初。",
+   "unknowns": [
+    "主管批复时间未知"
+   ],
+   "protected_expressions": [
+    "我认了，选A"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称主管已当场批准"
+   ]
+  },
+  "E189_T10": {
+   "case_id": "E189_T10",
+   "current_action": "收束这一段：确认决定稳妥，承诺十二月批次开放后重排计划，让她安心进大促。",
+   "acceptable_actions": [
+    "肯定决定并承诺批次开放后陪她重排计划",
+    "提醒她大促期间照顾好嗓子",
+    "把重启的接力棒交回她手里，只做兜底"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A17",
+     "subject": "ME",
+     "relation": "重启承诺",
+     "value": "十二月批次开放后帮重排计划",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T10",
+      "quote": "十二月批次一开放我就帮你把计划重新排一版",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "承诺要具体到触发条件（批次开放），别泛泛安慰。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构批次开放的具体日期"
+   ]
+  },
+  "E189_T11": {
+   "case_id": "E189_T11",
+   "current_action": "接住双喜：复盘表现获点名与批次确认开放，点明暂停换来的余量此刻兑现。",
+   "acceptable_actions": [
+    "先祝贺复盘表现，再把批次开放和她的暂停决定连起来说",
+    "让她趁热报名并预告重启计划",
+    "开玩笑说客服线练出的查件速度算加分项"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A18",
+     "subject": "HER",
+     "relation": "复盘表现",
+     "value": "客服线查件速度全组第二获主管周会点名",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T11",
+      "quote": "在客服线查件速度全组第二",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E189_A19",
+     "subject": "SHARED",
+     "relation": "批次状态",
+     "value": "十二月批次确认开放名额比往年多",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T11",
+      "quote": "十二月批次确认开放，名额比往年多",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E189_A20",
+     "subject": "SHARED",
+     "relation": "备考状态",
+     "value": "备考按下暂停并申请十二月批次",
+     "valid_time": "2026-11-08",
+     "status": "paused",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T05",
+      "quote": "跟主管申请十二月批次，备考先按下暂停键",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的暂停被结果证明了，点一句就够，别长篇总结。",
+   "unknowns": [],
+   "protected_expressions": [
+    "十二月批次确认开放，名额比往年多"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构名额具体数量"
+   ]
+  },
+  "E189_T12": {
+   "case_id": "E189_T12",
+   "current_action": "接住备考重启的首战汇报和咖啡邀约，痛快答应并给十二月冲刺一句定心话。",
+   "acceptable_actions": [
+    "答应傍晚咖啡并肯定她重启状态在线",
+    "接住'手感还在'，提醒错题本接着用",
+    "把咖啡当成十二月冲刺的启动仪式"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E189_A21",
+     "subject": "HER",
+     "relation": "重启练习",
+     "value": "周六上午两小时刷四道SQL手感仍在",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T12",
+      "quote": "两小时刷了四道",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E189_A22",
+     "subject": "SHARED",
+     "relation": "批次状态",
+     "value": "十二月批次确认开放名额比往年多",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T11",
+      "quote": "十二月批次确认开放，名额比往年多",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E189_A23",
+     "subject": "SHARED",
+     "relation": "备考状态",
+     "value": "备考曾按暂停并申请十二月批次",
+     "valid_time": "2026-11-08",
+     "status": "paused",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E189_T05",
+      "quote": "跟主管申请十二月批次，备考先按下暂停键",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "邀约是正向信号，答应得轻快些，别把这顿咖啡说成庆功。",
+   "unknowns": [
+    "十二月中旬答辩材料是否会换版本未知"
+   ],
+   "protected_expressions": [
+    "敬十二月见"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构十二月批次的考试地点"
+   ]
+  }
+ }
+}

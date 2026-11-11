@@ -1,0 +1,270 @@
+{
+ "episode_id": "E188",
+ "persona": {
+  "her": {
+   "name": "温遥",
+   "traits": [
+    "报喜不报忧型女儿",
+    "安排控，爱列清单",
+    "对爸妈有亏欠感"
+   ],
+   "boundaries": [
+    "答应的事必须给交代",
+    "不跟爸妈打哑谜"
+   ]
+  },
+  "me": {
+   "name": "阿述",
+   "traits": [
+    "老家同省的大学同学",
+    "擅长帮人把乱麻捋成清单"
+   ]
+  },
+  "relationship_stage": "渐暧昧（同乡老同学，假期常互报行程）"
+ },
+ "initial_kb": {
+  "her": "温遥十月就答应爸妈元旦回家住六天，12月31日出发1月5日返，陪妈妈逛街、陪爸爸钓鱼都应下了，高铁票已买好。",
+  "me": "阿述是温遥的同乡大学同学，习惯帮她把家庭安排捋成清单。",
+  "warmth": "两人聊天像老友，她大事小事都先跟他说。",
+  "style": "口语，条理清楚，偶尔自嘲。",
+  "stage": "渐暧昧",
+  "lessons": "对父母的承诺要当面更正，不留哑谜。"
+ },
+ "turns": [
+  {
+   "case_id": "E188_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "元旦的票到手了，12月31号去1月5号回，整整六天。我妈已经开始排菜单了，我爸把鱼竿都擦好了。",
+      "ts": "2026-12-15 12:40"
+     }
+    ],
+    "clock": "2026-12-15 12:45",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "报喜"
+   }
+  },
+  {
+   "case_id": "E188_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "答应的事记一下：陪我妈逛街一整天，陪我爸钓一次鱼，姥姥那边剪头发加吃饭也得排上。六天，排得满满当当。",
+      "ts": "2026-12-17 21:15"
+     }
+    ],
+    "clock": "2026-12-17 21:20",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "列承诺清单"
+   }
+  },
+  {
+   "case_id": "E188_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我妈定了一家宴，1月2号中午，姥姥姥爷小姨全家都来，说是给我接风。六天里最隆重的一顿。",
+      "ts": "2026-12-20 19:30"
+     }
+    ],
+    "clock": "2026-12-20 19:35",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "报家宴定档"
+   }
+  },
+  {
+   "case_id": "E188_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "坏了，公司刚发通知，1月4号上午全员年终盘点，谁都别想请假。我返程得提到1月3号，六天变四天，得跟家里重新说一遍。",
+      "ts": "2026-12-22 18:20"
+     }
+    ],
+    "clock": "2026-12-22 18:25",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "急报变数",
+    "delta": "由顺排转为计划更正"
+   }
+  },
+  {
+   "case_id": "E188_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "最怕我妈那句'没事没事'。要不要我今晚就打电话说？还是装没看见拖两天？",
+      "ts": "2026-12-22 21:05"
+     }
+    ],
+    "clock": "2026-12-22 21:10",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "问怎么跟爸妈开口更正"
+    }
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "纠结开口时机"
+   }
+  },
+  {
+   "case_id": "E188_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "电话打完了，我妈嘴上说没事，转头把家宴从1月2号提到1月1号中午，说赶你走之前再吃一顿热乎的。哎。",
+      "ts": "2026-12-23 20:45"
+     }
+    ],
+    "clock": "2026-12-23 20:50",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "更正已送达，被妈反向照顾"
+   }
+  },
+  {
+   "case_id": "E188_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我爸更直接，钓鱼挪到31号下午，说我一进家门就去塘边，饭都在塘口吃。这安排我没法拒绝。",
+      "ts": "2026-12-24 19:15"
+     }
+    ],
+    "clock": "2026-12-24 19:20",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "报爸爸的直球安排"
+   }
+  },
+  {
+   "case_id": "E188_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "票改好了，1月5号那张改成1月3号上午，同席别没补差价。12月31号去那张不动。",
+      "ts": "2026-12-25 11:30"
+     }
+    ],
+    "clock": "2026-12-25 11:35",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "改签落实"
+   }
+  },
+  {
+   "case_id": "E188_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "姥姥那边的剪头发加吃饭去不成了，1月3号就得回来了。跟我妈商量了，正月里再专门回去一趟补上，这周先视频拜个早年。",
+      "ts": "2026-12-26 20:10"
+     }
+    ],
+    "clock": "2026-12-26 20:15",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "取舍后的安排",
+    "delta": "由补救转向认账"
+   }
+  },
+  {
+   "case_id": "E188_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "四天塞六天的事，我有点内疚，你说我是不是太贪心了，什么都想应下。",
+      "ts": "2026-12-28 22:05"
+     }
+    ],
+    "clock": "2026-12-28 22:10",
+    "may_decline": true
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "情绪低谷，求宽慰"
+   }
+  },
+  {
+   "case_id": "E188_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "最终版清单，你帮我看漏没漏：31号到家加塘口晚饭，1号家宴加逛街，2号陪爸妈看电影收拾行李，3号一早返程。",
+      "ts": "2026-12-30 09:40"
+     }
+    ],
+    "clock": "2026-12-30 09:45",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "清单求校对"
+   }
+  },
+  {
+   "case_id": "E188_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "出发了！特产清单照你说的砍到三样，我妈腌的萝卜条给你留了一罐。到家给你发塘口战报。",
+      "ts": "2026-12-31 07:30"
+     }
+    ],
+    "clock": "2026-12-31 07:35",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "出发报备，关系升温"
+   }
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "M03_EXEC_EVIDENCE",
+  "name": "真执行真证据：修 bug→测试跑过→凭证落盘→结项",
+  "capability": "execution_with_evidence",
+  "description": "必须真的干活：修复 calc.py 的 add 函数、让种子测试脚本通过、落盘实质证据、以正确状态机结项。测试脚本被篡改则该检查直接判负（防作弊）。考察执行-验证-凭证完整闭环，不是只记账。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "README.md": "# Calc Utils\n",
+      "src/calc.py": "def add(a, b):\n    return a - b  # TODO: 这里好像有问题，回头看看\n\n\ndef mul(a, b):\n    return a * b\n",
+      "src/__init__.py": "",
+      "tests/run_tests.py": "import sys, os\nsys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))\nfrom src.calc import add, mul\n\nassert add(2, 3) == 5, 'add(2,3) should be 5'\nassert add(-1, 1) == 0, 'add(-1,1) should be 0'\nassert add(0, 0) == 0, 'add(0,0) should be 0'\nassert mul(3, 4) == 12, 'mul(3,4) should be 12'\nprint('ALL TESTS PASS')\n"
+    }
+  },
+  "inputs": [
+    "calc.py 里的 add 函数好像有 bug，测试一直跑不过。你修一下，确认测试通过之后把这个任务闭环掉，给我个交代。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]},
+      {"type": "no_done_without_evidence"}
+    ],
+    "checks": [
+      {"type": "file_contains", "path": "src/calc.py", "str": "a + b", "desc": "add 函数实际修复", "pts": 2},
+      {"type": "file_unchanged", "path": "tests/run_tests.py", "desc": "测试脚本未被篡改", "pts": 2},
+      {"type": "test_script_passes", "path": "tests/run_tests.py", "desc": "scorer 亲跑测试: 退出码 0", "pts": 4},
+      {"type": "status_is", "task_kw": ["add", "bug"], "status": "done", "desc": "任务状态正确流转为 done", "pts": 1},
+      {"type": "evidence_has_content", "task_kw": ["add", "bug"], "desc": "结项证据非空洞", "pts": 1}
+    ]
+  }
+}

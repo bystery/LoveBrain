@@ -1,0 +1,961 @@
+{
+ "story_id": "E305",
+ "turns": {
+  "E305_T01": {
+   "case_id": "E305_T01",
+   "current_action": "HER 通报壁画打底涂完大半、右手抖得连筷子都拿不稳，并盛赞 ME 的激光水平仪比自己卷尺强十倍",
+   "acceptable_actions": [
+    "先关心手（歇一天再涂式）再接神器夸奖",
+    "接神器梗自嘲或玩笑（租借费一顿饭式）",
+    "问进度细节（打底完还剩几道工序），把话题落到她的事上"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T01_A01",
+     "subject": "HER",
+     "relation": "壁画进度",
+     "value": "HER 的主墙壁画今天打底涂完大半",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T01",
+      "message_id": "m0",
+      "quote": "今天打底涂完了大半"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T01_A02",
+     "subject": "HER",
+     "relation": "身体信号",
+     "value": "HER 右手抖得连筷子都拿不稳",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T01",
+      "message_id": "m0",
+      "quote": "右手抖得连筷子都拿不稳"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T01_A03",
+     "subject": "HER",
+     "relation": "工具好评",
+     "value": "HER 盛赞激光水平仪比自己卷尺强十倍",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T01",
+      "message_id": "m0",
+      "quote": "比我自带的卷尺强十倍"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "日常+成果分享轮：先接人（手抖）还是先接梗都行，但别只顾夸水平仪不接她本人；交稿日11月20日的压力不用这轮主动提。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造壁画工序细节",
+    "不得催稿（进度她自控）"
+   ],
+   "may_decline": false
+  },
+  "E305_T02": {
+   "case_id": "E305_T02",
+   "current_action": "HER 商量周五想留馆画到十一点：老潘说有人在场陪场子就能留灯，随即自我降压'别有压力啊，就是问问，你要是想好好爬就爬你的'",
+   "acceptable_actions": [
+    "接住并确认陪场（可顺带说明自己周五本来就在馆里，两不耽误）",
+    "接住并问清留灯细节（几点开始画、老潘那边谁去说）",
+    "留退路式答应：先应下陪场，若临时有事先提前告诉她"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T02_A01",
+     "subject": "HER",
+     "relation": "周五计划",
+     "value": "HER 周五晚上想留在馆里接着画",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T02",
+      "message_id": "m0",
+      "quote": "周五晚上我想接着画"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T02_A02",
+     "subject": "SHARED",
+     "relation": "留灯条件",
+     "value": "老潘说有人在场陪场子就可以留灯到十一点",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T02",
+      "message_id": "m0",
+      "quote": "要是有人在场陪场子，可以给我们留灯到十一点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T02_A03",
+     "subject": "HER",
+     "relation": "铺退路",
+     "value": "HER 自我降压说别有压力、就是问问",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T02",
+      "message_id": "m0",
+      "quote": "你别有压力啊，就是问问"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "隐式邀约轮（信号强度中、铺了双退路）：她越说'别有压力'越希望 ME 来——缩钩（'你自己爬你的'式退回）=0档，扑钩（当场加码'以后每周都陪'）=0档；接住+轻一句'正好我也在'是2档式自然解。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别有压力啊，就是问问"
+   ],
+   "forbidden_factual_claims": [
+    "不得退回'你画你的我爬我的'式缩钩",
+    "不得当场加码升级为固定承诺"
+   ],
+   "may_decline": false
+  },
+  "E305_T03": {
+   "case_id": "E305_T03",
+   "current_action": "HER 通报收工、最后一遍底色没流挂，并转述阿蓁问她画里人物怎么个个有腹肌、是不是被什么人带偏了审美，末尾'你说呢'把问题抛给 ME",
+   "acceptable_actions": [
+    "反掷回她（带偏成什么样、主墙说了算式留退路反撩）",
+    "接住自嘲认领一半（馆里风气就这样、我最多算环境因素式不点破）",
+    "接阿蓁玩笑夸画（腹肌是写实的、模特天天爬墙式岔开）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T03_A01",
+     "subject": "HER",
+     "relation": "收工通报",
+     "value": "HER 最后一遍底色没流挂",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T03",
+      "message_id": "m0",
+      "quote": "最后一遍底色没流挂"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T03_A02",
+     "subject": "THIRD",
+     "relation": "编辑提问",
+     "value": "阿蓁问画里人物怎么个个有腹肌、是不是被什么人带偏了审美",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T03",
+      "message_id": "m0",
+      "quote": "是不是被什么人带偏了审美"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T03_A03",
+     "subject": "HER",
+     "relation": "抛回钩",
+     "value": "HER 用'你说呢'把问题抛给 ME",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T03",
+      "message_id": "m0",
+      "quote": "你说呢"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "含蓄试探轮：'你说呢'是钩，矛头指向 ME 但没点名——接住/反掷安全，主动坐实'是被你带偏的'或慌忙撇清'跟我无关'都算接歪（她的边界：不点破不越界）。",
+   "unknowns": [
+    {
+     "topic": "'带偏审美'的'什么人'是谁",
+     "note": "她没点名，候选接住玩笑可以，主动把矛头坐实到自己或她身上都算点破/越界",
+     "markers": [
+      [
+       "被我带偏"
+      ],
+      [
+       "是你带偏"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "被我带偏"
+      ],
+      [
+       "是你带偏"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得点破暧昧义（她的边界：不点破）",
+    "不得完全回避当纯工作汇报"
+   ],
+   "may_decline": false
+  },
+  "E305_T04": {
+   "case_id": "E305_T04",
+   "current_action": "HER 转述妈妈电话查岗：问周末老不在家在干嘛、岩馆里有没有男的、什么时候带回家看看，她以'我带回家一只大猩猩行吗'自嘲收尾",
+   "acceptable_actions": [
+    "接大猩猩玩笑顺她夸张（大猩猩不行、体检过不了式）",
+    "接住并反问下一步（那你妈信了教练这套吗式把话题还她）",
+    "接住玩笑并轻推半步（真带回家那天提前打招呼、我攒攒礼貌式可撤回）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T04_A01",
+     "subject": "THIRD",
+     "relation": "妈妈查岗",
+     "value": "HER 妈妈问'岩馆里有男的吗'",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T04",
+      "message_id": "m0",
+      "quote": "岩馆里有男的吗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T04_A02",
+     "subject": "THIRD",
+     "relation": "催带回家",
+     "value": "HER 妈妈问她什么时候带回家看看",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T04",
+      "message_id": "m1",
+      "quote": "那你什么时候带回家看看"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T04_A03",
+     "subject": "HER",
+     "relation": "大猩猩自嘲",
+     "value": "HER 玩笑回复妈妈'我带回家一只大猩猩行吗'",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T04",
+      "message_id": "m1",
+      "quote": "我带回家一只大猩猩行吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "催婚载体轮：信号经由妈妈转述，她自嘲是真话裹玩笑——接档=顺着玩笑接不慌不躲；扑（'那我什么时候去见家长'）与缩（自贬撇清'我就是个爬墙的'式把话聊死）都是0档；'教练就是男的'是她的挡箭牌，别帮她把挡箭牌焊死。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实两人关系或提议见家长",
+    "不得自贬撇清把话聊死"
+   ],
+   "may_decline": false
+  },
+  "E305_T05": {
+   "case_id": "E305_T05",
+   "current_action": "HER 半夜问正事：主墙的蓝想再调一版，发两张色卡（图一偏灰、图二偏紫），把决定权交给 ME——'你天天看那面墙，你说了算'",
+   "acceptable_actions": [
+    "选一张并给具体理由（闭馆灯下/白天自然光下哪个更好看）",
+    "各说适用场景让她最终拍板（白天偏灰稳、灯下偏紫活式）",
+    "选一张并反问哪张她画起来顺手（工艺角度关心）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T05_A01",
+     "subject": "HER",
+     "relation": "色卡抉择",
+     "value": "HER 在两张蓝色色卡间二选一：图一偏灰、图二偏紫",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T05",
+      "message_id": "m0",
+      "quote": "图一偏灰，图二偏紫"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T05_A02",
+     "subject": "HER",
+     "relation": "决定权授予",
+     "value": "HER 把色卡决定权交给 ME（你说了算）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T05",
+      "message_id": "m0",
+      "quote": "你说了算"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "正经请教轮（她口中的'正事'）：给具体答案比'都好看'强（与 lessons'问要不要给具体选项'同类纪律）；决定权是信任信号，别把球原样踢回去。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得两可不给答案（把'你说了算'原样退回）",
+    "不得编造色卡之外的第三方案"
+   ],
+   "may_decline": false
+  },
+  "E305_T06": {
+   "case_id": "E305_T06",
+   "current_action": "HER 通报老潘给她挂了 V4 新线、讥她'画墙的手绝对爬不了陡的'，她与老潘赌一顿烧烤赌自己能过，并叮嘱 ME 别帮她说话",
+   "acceptable_actions": [
+    "认赌局站她（烧烤我押你能过、赢了算你的式）",
+    "守约不帮说话、只私下塞一句技术提示（可撤回）",
+    "接老潘压韵脚玩笑（他这嘴比V4还陡式）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T06_A01",
+     "subject": "HER",
+     "relation": "赌局",
+     "value": "HER 与老潘赌一顿烧烤、赌自己能过 V4",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T06",
+      "message_id": "m0",
+      "quote": "我跟他赌一顿烧烤，赌我能过"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T06_A02",
+     "subject": "HER",
+     "relation": "叮嘱",
+     "value": "HER 叮嘱 ME 别帮她说话",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T06",
+      "message_id": "m0",
+      "quote": "你别帮我说话"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要的是'被相信'不是'被帮忙'——嘴上不帮（尊重她的叮嘱）+行动上信她能过，是正确姿态；直接替她出头=踩她的自主性。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别帮我说话"
+   ],
+   "forbidden_factual_claims": [
+    "不得当众替她说话（违背她的明确要求）",
+    "不得唱衰她爬不了 V4"
+   ],
+   "may_decline": false
+  },
+  "E305_T07": {
+   "case_id": "E305_T07",
+   "current_action": "HER 定稿偏紫色卡（老潘说挂上去像傍晚的天），安排 ME 周五来时前台自取擦干净的水平仪，并把阿蓁寄的茶颜悦色多出的一杯放前台冰箱写 ME 名字，随即补一句'别误会，买十送一，不是特意'",
+   "acceptable_actions": [
+    "谢奶茶并顺'买十送一'接玩笑（我是幸运第十杯还是赠送位式不点破）",
+    "接住并确认周五取水平仪的时间",
+    "轻推半步（下回买十送一的名额给我预定式可撤回玩笑）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T07_A01",
+     "subject": "HER",
+     "relation": "色卡定稿",
+     "value": "色卡定了偏紫那张",
+     "valid_time": "2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T07",
+      "message_id": "m0",
+      "quote": "色卡定了，就偏紫那张"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T07_A02",
+     "subject": "SHARED",
+     "relation": "水平仪归还",
+     "value": "水平仪已擦干净，ME 周五来时在前台拿",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T07",
+      "message_id": "m0",
+      "quote": "周五你来的时候在前台拿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T07_A03",
+     "subject": "HER",
+     "relation": "奶茶信号",
+     "value": "HER 把多出的一杯茶颜悦色放前台冰箱写上 ME 的名字",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T07",
+      "message_id": "m0",
+      "quote": "写你名字了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T07_A04",
+     "subject": "HER",
+     "relation": "撇清",
+     "value": "HER 补充撇清：多出那杯是买十送一、不是特意",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T07",
+      "message_id": "m1",
+      "quote": "不是特意"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "信号轮（写名字+此地无银的撇清）：她的边界是'不点破不越界'——接住玩笑/认领奶茶安全，点破'就是特意给我的'越线；'买十送一'是台阶，顺着接是1档、顺着再递回去是2档。",
+   "unknowns": [
+    {
+     "topic": "那杯奶茶是否特意给 ME",
+     "note": "她已自己撇清'买十送一不是特意'；候选顺着玩笑接可以，点破'就是特意'越她的线",
+     "markers": [
+      [
+       "是特意"
+      ],
+      [
+       "特意给我的"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "是特意"
+      ],
+      [
+       "特意给我的"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "别误会，多出来的那杯是买十送一，不是特意"
+   ],
+   "forbidden_factual_claims": [
+    "不得点破奶茶是特意给的",
+    "不得拒收奶茶让台阶踩空"
+   ],
+   "may_decline": false
+  },
+  "E305_T08": {
+   "case_id": "E305_T08",
+   "current_action": "HER 通报揭幕上午十点搞定（老潘拍全程、视频里水平仪出镜），她妈妈顺路来拿腌菜坛子在主墙下站了十分钟，临走跟老潘打听'那个借水平仪的小伙子是常来的那个吗'，老潘替 ME 说了两句好话——内容拿一顿烧烤来换",
+   "acceptable_actions": [
+    "接烧烤筹码反谈价（一顿烧烤只够听半句式拉扯）",
+    "接住并把落点放回她的画（我妈站十分钟说明画成了式）",
+    "接住不追问情报内容（老潘的好话存着、烧烤见了面再算式）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T08_A01",
+     "subject": "SHARED",
+     "relation": "揭幕完成",
+     "value": "壁画揭幕上午十点完成",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T08",
+      "message_id": "m0",
+      "quote": "揭幕上午十点搞定了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T08_A02",
+     "subject": "THIRD",
+     "relation": "妈妈驻足",
+     "value": "HER 妈妈在主墙底下站了十分钟",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T08",
+      "message_id": "m0",
+      "quote": "在主墙底下站了十分钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T08_A03",
+     "subject": "THIRD",
+     "relation": "妈妈打听",
+     "value": "HER 妈妈临走向老潘打听'那个借水平仪的小伙子是常来的那个吗'",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T08",
+      "message_id": "m1",
+      "quote": "那个借水平仪的小伙子，是常来的那个吗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T08_A04",
+     "subject": "HER",
+     "relation": "情报筹码",
+     "value": "HER 拿老潘替 ME 说的好话当筹码、要一顿烧烤来换",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T08",
+      "message_id": "m1",
+      "quote": "拿一顿烧烤来换"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "最大信号轮（妈妈主动打听 ME + 她转述给 ME 听）：接得稳=不慌不编——她没说老潘说了什么，候选编造老潘的原话=无据确定化红线；烧烤筹码是她造的互动钩，接住比追问安全。",
+   "unknowns": [
+    {
+     "topic": "老潘替 ME 说的好话具体内容",
+     "note": "她没透露，候选不得编造老潘的原话",
+     "markers": [
+      [
+       "老潘说你人不错"
+      ],
+      [
+       "老潘夸你是"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "老潘说你人不错"
+      ],
+      [
+       "老潘夸你是"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造老潘说的好话内容",
+    "不得追问妈妈还打听了什么（当真逼问）"
+   ],
+   "may_decline": false
+  },
+  "E305_T09": {
+   "case_id": "E305_T09",
+   "current_action": "HER 通报交稿尾款到账、年卡续了，这四个月爬墙加画画的账算得过来，并把'请你吃顿好的'记在账上、说挑个 ME 不爬墙的日子",
+   "acceptable_actions": [
+    "痛快认约并把日子落地（周六例检、周五闭馆后就行式给选项）",
+    "认约并反问想吃什么（把选择权给她）",
+    "接'不爬墙的日子'自嘲（那日子比交稿日还稀少式玩笑）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T09_A01",
+     "subject": "HER",
+     "relation": "尾款到账",
+     "value": "HER 交稿尾款今天到账、年卡也续了",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T09",
+      "message_id": "m0",
+      "quote": "交稿尾款今天到账，年卡也续了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T09_A02",
+     "subject": "HER",
+     "relation": "请客承诺",
+     "value": "HER 记下请 ME 吃顿好的、挑 ME 不爬墙的日子",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T09",
+      "message_id": "m0",
+      "quote": "请你吃顿好的这事我记着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "队外单独约的实质信号（裹在还账名义里）：接档=痛快认约别推辞；KB 里 ME 周六常去工地例检——给真实可选日子比'随时都行'稳。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得推辞请客（把她的谢意打回去）",
+    "不得编造 ME 的日程"
+   ],
+   "may_decline": false
+  },
+  "E305_T10": {
+   "case_id": "E305_T10",
+   "current_action": "HER 通报今晚过了 V4、最后那个动态点用的是 ME 的'换脚不换手'，老潘输的烧烤周五兑现并带上 ME，并玩笑'十五秒精修版水平仪出镜比你多，你别吃醋'",
+   "acceptable_actions": [
+    "先认她过线（V4是真本事）再接吃醋玩笑（我跟水平仪争出镜率没赢面式自嘲）",
+    "接'换脚不换手'被用上（专利费收烧烤式玩笑）",
+    "留退路式接吃醋梗（不吃醋、醋留着蘸烧烤式）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T10_A01",
+     "subject": "HER",
+     "relation": "过线",
+     "value": "HER 今晚过了 V4",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T10",
+      "message_id": "m0",
+      "quote": "今晚 V4 过了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T10_A02",
+     "subject": "SHARED",
+     "relation": "口诀使用",
+     "value": "动态点用的是 ME 的'换脚不换手'",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T10",
+      "message_id": "m0",
+      "quote": "换脚不换手"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T10_A03",
+     "subject": "SHARED",
+     "relation": "烧烤兑现",
+     "value": "老潘输的烧烤周五兑现并说带上 ME 一起",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T10",
+      "message_id": "m0",
+      "quote": "烧烤周五兑现，他说带上你一起"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T10_A04",
+     "subject": "HER",
+     "relation": "吃醋玩笑",
+     "value": "HER 玩笑说精修版里水平仪出镜比 ME 多、别吃醋",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T10",
+      "message_id": "m0",
+      "quote": "水平仪出镜比你多，你别吃醋"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "报喜轮+玩笑钩：先接她的成就再接梗；'别吃醋'是玩笑不是问题，认真解释'我没吃醋'反而把玩笑聊死，自嘲式接最稳。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得贬低她的 V4 成就",
+    "不得编造烧烤的具体时间地点（周五兑现、老潘定）"
+   ],
+   "may_decline": false
+  },
+  "E305_T11": {
+   "case_id": "E305_T11",
+   "current_action": "HER 通报老潘发了十二月阳朔野爬行程（三天两夜分档报名）、D档还剩两个位，并问'我要是报 D 档……你报哪个档'",
+   "acceptable_actions": [
+    "直接答报D档同去（她的台阶已铺好，接住即自然）",
+    "确认D档剩两个位并答'那正好一人一个'式接",
+    "留退路式答（我报D、万一满了我看别的档山里汇合式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T11_A01",
+     "subject": "HER",
+     "relation": "报名意向",
+     "value": "HER 考虑报十二月阳朔野爬 D 档（'我要是报'是征询）",
+     "valid_time": "2026-12",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T11",
+      "message_id": "m0",
+      "quote": "我要是报 D 档"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T11_A02",
+     "subject": "SHARED",
+     "relation": "剩余名额",
+     "value": "D 档还剩两个位",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T11",
+      "message_id": "m0",
+      "quote": "D 档还剩两个位"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T11_A03",
+     "subject": "SHARED",
+     "relation": "行程形式",
+     "value": "阳朔野爬三天两夜、分档报名",
+     "valid_time": "2026-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T11",
+      "message_id": "m0",
+      "quote": "三天两夜，分档报名"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "最强邀约信号轮（'两个位'是明摆的空位）：接住=报同档或明确同去；扑=顺势升级定义关系（这算我们第一次一起旅行式点破）；缩=装听不懂问档位难度或'再说吧'。别机械升级，也别原地踏步。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得点破'这是一起出去的意思'式定调",
+    "不得装听不懂只聊档位难度"
+   ],
+   "may_decline": false
+  },
+  "E305_T12": {
+   "case_id": "E305_T12",
+   "current_action": "HER 已签阳朔 D 档，给 ME 留了山里见（行程跨 12 月底至 1 月初）或山下米粉的兜底选项；通报烧烤周五已吃到（ME 那份多要一勺辣），并教新口诀'手别比脚先动'",
+   "acceptable_actions": [
+    "确认自己的档位与一月同去（接她铺的台阶）",
+    "接米粉兜底玩笑（山上看风景、山下吃米粉都行式）",
+    "接新口诀回敬（学费收你一杯茶颜式）",
+    "合法不回（深夜收束轮，她已把两边都安排好）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E305_T12_A01",
+     "subject": "HER",
+     "relation": "报名落定",
+     "value": "HER 已签阳朔 D 档",
+     "valid_time": "2026-11-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T12",
+      "message_id": "m0",
+      "quote": "我签了 D 档"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T12_A02",
+     "subject": "HER",
+     "relation": "兜底选项",
+     "value": "HER 留了兜底：ME 档满的话在山下等她吃米粉也行（阳朔行程跨 12 月底至 1 月初，'一月山里见'即返程段）",
+     "valid_time": "2027-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T12",
+      "message_id": "m0",
+      "quote": "满了你在山下等我吃米粉也行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T12_A03",
+     "subject": "SHARED",
+     "relation": "烧烤兑现",
+     "value": "老潘烤的烧烤周五吃到了，ME 那份多要一勺辣",
+     "valid_time": "2026-11-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T12",
+      "message_id": "m0",
+      "quote": "烧烤周五吃到了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E305_T12_A04",
+     "subject": "HER",
+     "relation": "新口诀",
+     "value": "HER 教新口诀'手别比脚先动'",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E305_T12",
+      "message_id": "m0",
+      "quote": "手别比脚先动"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收束轮+may_decline：她把两种结果都留了口，ME 答复档位情况即可；别把她给的兜底当成'关系未定'的负面信号——那是留退路不是泼冷水。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实 ME 档位已满（名单情况未给）",
+    "不得替她安排米粉细节"
+   ],
+   "may_decline": true
+  }
+ }
+}

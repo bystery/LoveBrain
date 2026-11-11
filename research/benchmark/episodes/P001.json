@@ -1,0 +1,202 @@
+{
+ "episode_id": "P001",
+ "persona": {
+  "me": "30岁，男，天津，做物流调度；平时沿海河晨跑，她线下见过两次、有好感，聊天想开新话头但怕冷场",
+  "her": "28岁，女，天津，做口腔诊所前台；也在沿河跑步，这周膝盖不太舒服，聊天看状态、有时一句话带过"
+ },
+ "initial_kb": {
+  "me": "沿海河晨跑，正备半程马拉松",
+  "her": "膝盖最近不舒服，暂时减量、不想硬跑",
+  "warmth": "线下见过两次，聊天聊得来但话头容易断",
+  "stage": "还没确立关系，算有好感的接触初期"
+ },
+ "gold": {},
+ "turns": [
+  {
+   "case_id": "P001_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天河边风好大 跑了两公里就顶不住",
+      "ts": "2026-11-11 07:35"
+     }
+    ],
+    "clock": "2026-11-11 07:40",
+    "may_decline": false,
+    "note": "先接住她这句'顶不住'，别一上来就抛新话题/新邀约"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P001_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "顶不住就早点回 别跟膝盖较劲",
+      "ts": "2026-11-11 07:50"
+     },
+     {
+      "role": "HER",
+      "text": "嗯",
+      "ts": "2026-11-11 07:52"
+     }
+    ],
+    "clock": "2026-11-11 07:55",
+    "may_decline": false,
+    "note": "她这条很干(低信息)；话题快断了。正确动作是接住这份平淡、用她自己的兴趣起一个轻话头，或坦然就这么停——不是连环追问填满",
+    "intent": {
+     "enabled": true,
+     "text": "话题快断了；想用她聊过的兴趣开一个轻量新钩子，但别把话塞太满",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P001_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那先别跑了 你之前不是提过想骑车? 算不算个方向",
+      "ts": "2026-11-11 08:12"
+     },
+     {
+      "role": "HER",
+      "text": "骑车我倒是有点兴趣 得看我那天状态",
+      "ts": "2026-11-11 08:18"
+     }
+    ],
+    "clock": "2026-11-11 08:20",
+    "may_decline": false,
+    "note": "她给了半句兴趣但带保留(看状态)；这是暂定，可顺势但别把'一起骑车'说成已约好",
+    "intent": {
+     "enabled": true,
+     "text": "她对骑车有兴趣但要'看状态'；把'想约骑'降级成暂定，别催",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P001_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "这周末我可能得排班 不一定骑得成",
+      "ts": "2026-11-11 08:32"
+     }
+    ],
+    "clock": "2026-11-11 08:35",
+    "may_decline": true,
+    "note": "反信号：她推迟并给不确定；记成暂定、别追死到底去不去",
+    "intent": {
+     "enabled": false,
+     "text": "她自己说再看排班；本轮别再往前推",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P001_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了 你那个半马到底跑完没呀",
+      "ts": "2026-11-11 20:05"
+     }
+    ],
+    "clock": "2026-11-11 20:10",
+    "may_decline": false,
+    "note": "她把话题从骑车挪到半马；跟着聊半马，别硬拐回骑车/约会",
+    "intent": {
+     "enabled": false,
+     "text": "",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P001_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "跑完了 最后几公里差点走下来",
+      "ts": "2026-11-11 20:22"
+     },
+     {
+      "role": "HER",
+      "text": "哈哈 那你下次再跑 我能在终点给你递瓶水",
+      "ts": "2026-11-11 20:28"
+     }
+    ],
+    "clock": "2026-11-11 20:30",
+    "may_decline": false,
+    "note": "她主动递了个暖话头(递水)；正向接住、高兴一下，但别把'下次'当场敲成具体哪天",
+    "intent": {
+     "enabled": true,
+     "text": "她主动给话头；顺势接住并把大致方向对上，别逼具体日期",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P001_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "或者你定个时间跟我说声 我看排班",
+      "ts": "2026-11-11 20:42"
+     }
+    ],
+    "clock": "2026-11-11 20:45",
+    "may_decline": false,
+    "note": "她把'你定我再看'——仍是开放不是答应；回一句自然即可，别急着把日程铺满",
+    "intent": {
+     "enabled": true,
+     "text": "她愿配合看排班；把话头保持开放，先不锁定",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P001_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天有点累 先睡了 水的事我记着",
+      "ts": "2026-11-12 22:00"
+     }
+    ],
+    "clock": "2026-11-12 22:05",
+    "may_decline": true,
+    "note": "她说困了→允许干净收尾，留个开放即可，别又抛新约或长篇",
+    "intent": {
+     "enabled": false,
+     "text": "收尾，无需再推进",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  }
+ ]
+}

@@ -1,0 +1,276 @@
+{
+ "episode_id": "E047",
+ "persona": {
+  "her": {
+   "name": "阿棠",
+   "traits": [
+    "手艺人脾气",
+    "报价单背得熟",
+    "耳根软",
+    "认错快"
+   ],
+   "boundaries": [
+    "私单不接熟人白嫖",
+    "21点后不回工作消息",
+    "不用主业公司素材库接私活"
+   ]
+  },
+  "me": {
+   "name": "阿珩",
+   "traits": [
+    "帮她说清报价与边界",
+    "提醒留聊天记录",
+    "不替她接单砍价",
+    "不劝她无限让步"
+   ]
+  },
+  "relationship_stage": "渐暧昧"
+ },
+ "initial_kb": {
+  "her": "阿棠，26岁，设计公司平面设计师，周末接婚礼插画请柬私单，一单800元起，含两轮修改。同组同事钱多多的表哥11月中旬办婚礼，多多想让阿棠'顺手'做请柬。",
+  "me": "我记过她的兼职规矩：一单800元起、定金50%、21点后不回工作消息；我的立场是不替她接单砍价，也不替她在同事面前圆场。",
+  "warmth": "渐暧昧，聊天有点黏但不点破；她谈钱会不好意思，我负责让她谈钱谈得体面。"
+ },
+ "turns": [
+  {
+   "case_id": "E047_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-26 21:40",
+      "text": "多多今天在工位上跟我说，她表哥11月中办婚礼，想让我'顺手'画套请柬，说反正我周末也接活，给我带一个月早餐抵稿费，你说这算什么报价"
+     }
+    ],
+    "clock": "2026-10-26 21:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "哭笑不得",
+    "warmth": "medium",
+    "shift": "同事提出人情价请求，边界议题进场"
+   }
+  },
+  {
+   "case_id": "E047_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-27 12:30",
+      "text": "多多又补了一句'都是同事别见外'，还说她表哥要求不高，随便画画就行，随便画画这四个字我最怕了，改稿地狱警报已拉响"
+     }
+    ],
+    "clock": "2026-10-27 12:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "烦躁",
+    "warmth": "medium",
+    "shift": "'要求不高'话术施压，边界冲突升温"
+   }
+  },
+  {
+   "case_id": "E047_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-28 20:50",
+      "text": "我咬牙报了800，说这价含两轮修改，多多到现在没回我微信，我盯着对话框心里七上八下的，是不是报太高了"
+     }
+    ],
+    "clock": "2026-10-28 20:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "不安等待",
+    "warmth": "medium",
+    "shift": "报价已出，等待回应"
+   }
+  },
+  {
+   "case_id": "E047_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-29 09:40",
+      "text": "她回了，说500行不行，反正你也是练手，练手？？我周末单子排到下个月了还练手？可她是我天天要见的人，我又怕把关系搞僵"
+     }
+    ],
+    "clock": "2026-10-29 09:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "气愤又为难",
+    "warmth": "low-medium",
+    "shift": "砍价施压，价格边界与人际关系拉扯"
+   }
+  },
+  {
+   "case_id": "E047_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-29 22:30",
+      "text": "我想通了，价格不让步，800就是800，但我可以送他一版电子排版小样，他要是嫌贵，我就把我同学工作室推过去，450一单，专业砍价专业改"
+     }
+    ],
+    "clock": "2026-10-29 22:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "拿定主意",
+    "warmth": "medium",
+    "shift": "HER 划出价格边界并备好替代方案"
+   }
+  },
+  {
+   "case_id": "E047_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-30 13:20",
+      "text": "多多琢磨了一晚上，终于同意800了，我以为翻篇了，结果她转头又来一句'那你给我画个头像呗，咱俩这交情还收钱啊'，我一天的好心情碎得明明白白"
+     }
+    ],
+    "clock": "2026-10-30 13:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "无语",
+    "warmth": "medium",
+    "shift": "主冲突缓解，免费请求二次越界"
+   }
+  },
+  {
+   "case_id": "E047_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-30 21:50",
+      "text": "我回她了：头像我只白送家里人，同事走单，200一位童叟无欺，多多回了个'啧'加一个兔子表情，估计得缓缓"
+     }
+    ],
+    "clock": "2026-10-30 21:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "硬气但忐忑",
+    "warmth": "medium",
+    "shift": "免费请求被划界，关系微冷"
+   }
+  },
+  {
+   "case_id": "E047_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-01 14:10",
+      "text": "多多今天把表哥的定金转我了，400整，头像她也认了200那个价，还说'下个月我请你吃火锅'，这关算是过了"
+     }
+    ],
+    "clock": "2026-11-01 14:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "踏实",
+    "warmth": "high",
+    "shift": "定金到账，边界冲突落定"
+   }
+  },
+  {
+   "case_id": "E047_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-02 21:30",
+      "text": "第一稿发出去了，她表哥就提了两处小修，什么'要求不高'，明明是预算不高，好在合同里两轮改稿写得明明白白，我一点不虚"
+     }
+    ],
+    "clock": "2026-11-02 21:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "从容",
+    "warmth": "high",
+    "shift": "合同边界让改稿可控"
+   }
+  },
+  {
+   "case_id": "E047_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-03 09:30",
+      "text": "我总结出来了，兼职的心法就八个字：心软可以，价不能软，往后谁再跟我提'顺手''交情'，我直接把报价单拍过去"
+     }
+    ],
+    "clock": "2026-11-03 09:34",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "飒",
+    "warmth": "high",
+    "shift": "沉淀边界心法"
+   }
+  },
+  {
+   "case_id": "E047_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-05 20:40",
+      "text": "尾款600到账，请柬加头像一共一千整收工，多多的火锅也吃上了，她表哥婚礼还有十天，请柬都印出来了，这波不亏"
+     }
+    ],
+    "clock": "2026-11-05 20:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "满足",
+    "warmth": "high",
+    "shift": "交易闭环，关系无损"
+   }
+  },
+  {
+   "case_id": "E047_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-06 22:10",
+      "text": "对了，以后你给我介绍单子也按报价单走啊，军师不抹零，规矩面前人人平等，不过奶茶我请，这算我给你的人情价"
+     }
+    ],
+    "clock": "2026-11-06 22:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "轻快收束",
+    "warmth": "high",
+    "shift": "与 ME 之间也立规矩，边界共识落地，暧昧钩子留着"
+   }
+  }
+ ]
+}

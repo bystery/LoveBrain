@@ -1,0 +1,53 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A5 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_b_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:58:12",
+      "window_last_attempt": "2026-11-08 14:09:23",
+      "attempts": 24,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_b/{DIRECT,CURRENT}/E317/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T05 情绪理解/关心/安慰",
+    "子类：疲惫与压力"
+  ],
+  "title": "终稿之夜：三周无休后那句好像也就那样",
+  "may_decline_turns": [
+    "E317_T08"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "职场压力",
+  "primary_topic": "T05",
+  "lineage_group_id": "LG-E317",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E317/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A5",
+  "hashes": {
+    "episode.json": "33d6c5b3b427d036e08c8d4cb48216478b04ed49b41b8381a56571b6908f7209",
+    "reference.json": "b6eae82e4a812e7e8599602306ed27c8a0e1fbaf3da57436a4077a6e1354ec54",
+    "timeline.json": "960ecef3fd10fc26421815f020afaaa7d5b42801ebd4cc5cf0cfc81a43c878df",
+    "audit.md": "3375ffdbe196d26d7f5200b3d701435e3b629d21b5b5b2869d9833e9ee31a4dd",
+    "composite": "a3de39c4600e34ddec65ac41806ed515a06747c9dbbd3cecc84cf240f5b06520"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

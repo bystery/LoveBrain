@@ -1,0 +1,34 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "AK08",
+ "turn_clocks": [
+  {
+   "case_id": "AK08_T01",
+   "clock": "2026-12-16 22:30"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "AK08_T01",
+   "message_id": "m0",
+   "speaker": "ME",
+   "quote": "周六下午两小时 我给你留了座",
+   "ts": "2026-12-16 22:18"
+  },
+  {
+   "case_id": "AK08_T01",
+   "message_id": "m1",
+   "speaker": "HER",
+   "quote": "我想撤一门 报了俩根本啃不完 又怕撤了更不学",
+   "ts": "2026-12-16 22:28"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "AK08_E1",
+   "case_id": "AK08_T01",
+   "summary": "备考｜反馈=hesitant｜意图=周六下午图书馆两小时攻实务",
+   "source_turn": "AK08_T01"
+  }
+ ]
+}

@@ -1,0 +1,96 @@
+{
+ "kind": "grading_cards_stories_v2_stage2",
+ "built_at": "2026-10-28T12:26:35",
+ "source": "同故事 reference.json 逐字派生（本工具不新写判据）",
+ "schema": [
+  "case_id",
+  "current_action",
+  "acceptable_actions",
+  "applicable_dimensions",
+  "required_memory_atoms",
+  "private_guidance",
+  "unknowns",
+  "protected_expressions",
+  "forbidden_factual_claims",
+  "may_decline",
+  "intent"
+ ],
+ "schema_note": "Stage1 十键 + intent（Stage1 卡丢失 intent，goal 维评审看不到当前有效目标；此处原样搬运 reference 的 intent，不新造判据）",
+ "use": "评估侧专用：不进入候选可见输入；不声称独立封存",
+ "stories": {
+  "E024": {
+   "positions": 12,
+   "episode_sha256": "85106ce060d5887ea3b4137d2abd15a4b0c6b7c7bc0d1b9d216707d319e844e3",
+   "reference_sha256": "d36fbfc009d3cbf8070bc156610b7f3e1bec46f1ef5f1f46033d09c25843daa3",
+   "exposure_sha256": "9ba8971662815474000d96d4f42ee79243d7472fa9ff59ebb0027656615a3ba5",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": [
+    "E024_T12"
+   ]
+  },
+  "E027": {
+   "positions": 12,
+   "episode_sha256": "e56080f384f6305441234de1b2be53abae5c6ae73888fb03cbeb6b85805b8d19",
+   "reference_sha256": "3090aaa072b83b5190148b0b3f8f54d25fd180a493d31e4caffb2609abc7f3bb",
+   "exposure_sha256": "e0fff8b391b74925b1237f3e4a586fd2b84806aca3b25c4b31ab166f9485ee6b",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": [
+    "E027_T12"
+   ]
+  },
+  "E031": {
+   "positions": 12,
+   "episode_sha256": "44b5d37e837b394b8ecc9eb440dcf52b3d280b94a5bc4cd6fbd1ef20667682ac",
+   "reference_sha256": "7e5fbe21d5c3916772de33e004b0c73b79bd1851bd602b66f2624ef0ce6ab5c0",
+   "exposure_sha256": "de43884da8f623d57cc91404a80dde7e8cd4dd12dff0d055d5c1b5f62f1aee42",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": [
+    "E031_T12"
+   ]
+  },
+  "E034": {
+   "positions": 12,
+   "episode_sha256": "5eff8448c4932cca3f5ce65101f294119df5eea19fb54a556c7dcee6b9eaccd0",
+   "reference_sha256": "9958e00915dc6b2297f577346f93547c825c8891823b1ed62f5b7a593878ad37",
+   "exposure_sha256": "6ee530bb195fcb69e0f631398c23cb3d46b77a14594c871de004ee61cc72d93b",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": [
+    "E034_T12"
+   ]
+  }
+ },
+ "counts": {
+  "stories": 4,
+  "cards": 48
+ },
+ "checks": {
+  "errors": [],
+  "passed": true
+ },
+ "cards_sha256": "078f6d3d552fc36bc9ecd2fcc5e633fef973206caee430e7cbfe714d63ad1bb7",
+ "cards_file": "benchmark/stories_v2/stage2/GRADING_CARDS_E024_E027_E031_E034.json"
+}

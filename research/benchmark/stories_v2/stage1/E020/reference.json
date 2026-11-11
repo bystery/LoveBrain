@@ -1,0 +1,415 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E020",
+ "title": "年糕复查之后",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E020_T01": {
+   "case_id": "E020_T01",
+   "current_action": "替她松一口气，回扣年糕，不夸大痊愈",
+   "acceptable_actions": [
+    "说太好了",
+    "问年糕现在精神怎么样",
+    "回扣之前的担心"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N008_F01",
+     "subject": "年糕",
+     "relation": "健康",
+     "value": "复查指标正常，不用天天跑医院",
+     "valid_time": "2026-11-22 18:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E020_T01",
+      "message_id": "m0",
+      "quote": "年糕今天复查 指标都正常了 医生说可以不用天天跑医院"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她之前很慌；先接住“终于正常了”，别马上讲后续注意事项。",
+   "unknowns": [
+    "指标正常是否代表完全康复"
+   ],
+   "protected_expressions": [
+    "医生说可以不用天天跑医院"
+   ],
+   "forbidden_factual_claims": [
+    "不要断言年糕完全好了",
+    "不要编造检查指标"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E020_T02": {
+   "case_id": "E020_T02",
+   "current_action": "回扣旧事，收下感谢但不邀功",
+   "acceptable_actions": [
+    "说医生确实靠谱",
+    "说当时你急也正常",
+    "说年糕没事就好"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N008_F02",
+     "subject": "我们",
+     "relation": "旧事",
+     "value": "我推荐过医生，陪她跑过一次医院",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "我推荐过医生，陪她跑过一次医院"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她记得我帮过忙；别把推荐医生包装成自己的功劳。",
+   "unknowns": [
+    "她是否还想继续在那家医院复查"
+   ],
+   "protected_expressions": [
+    "我当时都快急死了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说我救了年糕",
+    "不要编造医生的诊断"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E020_T03": {
+   "case_id": "E020_T03",
+   "current_action": "先接住不确定，不急着订行程",
+   "acceptable_actions": [
+    "说先等假",
+    "问请假卡在哪",
+    "说可以先做可取消方案"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N008_F03",
+     "subject": "她",
+     "relation": "计划",
+     "value": "十二月去厦门，假期还没批",
+     "valid_time": "2026-11-22 18:26",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E020_T03",
+      "message_id": "m0",
+      "quote": "十二月去厦门的事 假还没批"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在愁计划，不是让你马上订票；先帮她把不确定拆开。",
+   "unknowns": [
+    "假期什么时候批",
+    "她是否一定要十二月去"
+   ],
+   "protected_expressions": [
+    "假还没批"
+   ],
+   "forbidden_factual_claims": [
+    "不要现在订机票",
+    "不要保证一定能去"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "想十二月去厦门，但假未批",
+    "status": "ACTIVE"
+   }
+  },
+  "E020_T04": {
+   "case_id": "E020_T04",
+   "current_action": "承认价格风险，给可取消的折中",
+   "acceptable_actions": [
+    "说先看可取消的",
+    "说价格涨也没办法",
+    "说等假和价格取平衡"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N008_F03",
+     "subject": "她",
+     "relation": "计划",
+     "value": "十二月去厦门，假期还没批",
+     "valid_time": "2026-11-22 18:26",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E020_T03",
+      "message_id": "m0",
+      "quote": "十二月去厦门的事 假还没批"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不要只讲“等”或只讲“订”；她要的是风险方案。",
+   "unknowns": [
+    "涨价幅度",
+    "假期概率"
+   ],
+   "protected_expressions": [
+    "再等价格可能要涨"
+   ],
+   "forbidden_factual_claims": [
+    "不要承诺补差价",
+    "不要替她决定"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E020_T05": {
+   "case_id": "E020_T05",
+   "current_action": "赞同可取消方案，补一个具体检查点",
+   "acceptable_actions": [
+    "说可以，先锁可取消",
+    "说看清楚取消时限",
+    "说机票也看可退的"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N008_F04",
+     "subject": "她",
+     "relation": "方案",
+     "value": "先看可以免费取消的酒店",
+     "valid_time": "2026-11-22 18:44",
+     "status": "planned",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E020_T05",
+      "message_id": "m0",
+      "quote": "我先看酒店 可以免费取消的那种"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在主动找方案；别泼冷水，也别把“免费取消”当成一定免费。",
+   "unknowns": [
+    "取消条款的具体时限"
+   ],
+   "protected_expressions": [
+    "可以免费取消的那种"
+   ],
+   "forbidden_factual_claims": [
+    "不要说所有酒店都能免费取消",
+    "不要现在付款"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E020_T06": {
+   "case_id": "E020_T06",
+   "current_action": "诚实说自己的时间不确定，不空口保证",
+   "acceptable_actions": [
+    "说项目时间还没定",
+    "说确认后第一时间告诉她",
+    "说不确定但不想让她一个人"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "time_state",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N008_F05",
+     "subject": "我",
+     "relation": "时间",
+     "value": "十二月可能有个项目，时间还没定",
+     "valid_time": "故事开始前",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "十二月可能有个项目，时间还没定"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她怕被放鸽子；不要为了安抚说“我一定去”。",
+   "unknowns": [
+    "项目具体时间",
+    "她是否能接受我一个人不去"
+   ],
+   "protected_expressions": [
+    "别到时候我一个人去"
+   ],
+   "forbidden_factual_claims": [
+    "不要保证一定同行",
+    "不要编造项目已结束"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E020_T07": {
+   "case_id": "E020_T07",
+   "current_action": "确认会告知，不让她承担催促的角色",
+   "acceptable_actions": [
+    "说确认了主动说",
+    "说不用你催",
+    "说如果去不了也提前讲"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N008_F06",
+     "subject": "她",
+     "relation": "需求",
+     "value": "不想催我，等我确认",
+     "valid_time": "2026-11-22 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E020_T07",
+      "message_id": "m0",
+      "quote": "那你确认了告诉我 我也不想催你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她不想当催人的一方；把主动告知的责任接过来。",
+   "unknowns": [
+    "我什么时候能确认"
+   ],
+   "protected_expressions": [
+    "我也不想催你"
+   ],
+   "forbidden_factual_claims": [
+    "不要让她反复问",
+    "不要含糊承诺"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "先等双方确认，不催",
+    "status": "ADJUSTED"
+   }
+  },
+  "E020_T08": {
+   "case_id": "E020_T08",
+   "current_action": "自然收尾，回扣年糕，不再拉回旅行",
+   "acceptable_actions": [
+    "说去吧",
+    "让她替我给年糕加餐",
+    "道晚安"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N008_F07",
+     "subject": "她",
+     "relation": "下一步",
+     "value": "去给年糕煮鸡胸肉，结束聊天",
+     "valid_time": "2026-11-22 19:08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E020_T08",
+      "message_id": "m0",
+      "quote": "我去给年糕煮鸡胸肉"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她回到猫的日常；收尾比继续谈行程更好。",
+   "unknowns": [
+    "她晚上是否还会发消息"
+   ],
+   "protected_expressions": [
+    "我去给年糕煮鸡胸肉"
+   ],
+   "forbidden_factual_claims": [
+    "不要继续追问旅行",
+    "不要现在要答复"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

@@ -1,0 +1,897 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E066",
+ "title": "川西第一次自驾",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E066_T01": {
+   "case_id": "E066_T01",
+   "current_action": "肯定可行+先问车况和装备清单；不说'肯定行'也不泼冷水",
+   "acceptable_actions": [
+    "问她车型与备胎工具",
+    "说可行+先盘装备",
+    "让她发车辆信息给我对清单"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F01",
+     "subject": "她",
+     "relation": "计划",
+     "value": "12月20日出发自驾川西，走318",
+     "valid_time": "2026-12-05 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T01",
+      "message_id": "m0",
+      "quote": "12 月 20 号出发走 318"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第一次开口：接志气，问事实。",
+   "unknowns": [
+    "她的车况"
+   ],
+   "protected_expressions": [
+    "你觉得我行吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说女的跑不了川西",
+    "不要说闭眼开"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T02": {
+   "case_id": "E066_T02",
+   "current_action": "给防滑链的必要性与类型常识（转述交管口径）；尺寸下轮对车",
+   "acceptable_actions": [
+    "说买适配轮胎尺寸的",
+    "给她链子类型选择",
+    "提醒买来先试装一次"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F02",
+     "subject": "我",
+     "relation": "知识",
+     "value": "冬季川西交警常查防滑链，没链可能劝返",
+     "valid_time": "2026-12-05 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T02",
+      "message_id": "m0",
+      "quote": "冬天垭口常查防滑链 没链可能劝返"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知识轮：口径标注'交管惯例'。",
+   "unknowns": [
+    "她轮胎规格"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说没链也能闯",
+    "不要说随便买一条"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T03": {
+   "case_id": "E066_T03",
+   "current_action": "如实：两驱可走主线但冰雪路更依赖链子与驾驶习惯；不带贬义",
+   "acceptable_actions": [
+    "说两驱行+链子关键",
+    "说慢就是快+跟车走",
+    "说不行就换我车开"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F03",
+     "subject": "她",
+     "relation": "装备",
+     "value": "她的车是两驱轿车",
+     "valid_time": "2026-12-05 21:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T03",
+      "message_id": "m0",
+      "quote": "我那台是两驱轿车"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她敏感点=被说车不行；对车不对人。",
+   "unknowns": [
+    "她是否会换车"
+   ],
+   "protected_expressions": [
+    "拖你后腿"
+   ],
+   "forbidden_factual_claims": [
+    "不要说两驱找死",
+    "不要嘲讽轿车"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T04": {
+   "case_id": "E066_T04",
+   "current_action": "答应整理文档（路线/加油/住宿/检查点四块）；当天给",
+   "acceptable_actions": [
+    "答应当晚发",
+    "说按四块整理",
+    "让她先订住宿我看行程"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F04",
+     "subject": "我",
+     "relation": "承诺",
+     "value": "攻略文档整理好发她",
+     "valid_time": "2026-12-06 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T04",
+      "message_id": "m0",
+      "quote": "攻略整理好发你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "文档=本剧知识载体，后文多次回扣。",
+   "unknowns": [],
+   "protected_expressions": [
+    "看着乱"
+   ],
+   "forbidden_factual_claims": [
+    "不要转发网上烂攻略",
+    "不要说你自己查"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T05": {
+   "case_id": "E066_T05",
+   "current_action": "给失联预案：对讲/到点报平安/宿点留联系方式；不吓她",
+   "acceptable_actions": [
+    "约定每两小时报一次",
+    "建议买对讲机一对",
+    "让她把行程发给家人"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "预案要具体可执行。",
+   "unknowns": [
+    "垭口信号状况"
+   ],
+   "protected_expressions": [
+    "联系不上怎么办"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定有信号",
+    "不要渲染失联故事"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T06": {
+   "case_id": "E066_T06",
+   "current_action": "高反分级如实+预防三条+标注'遵医嘱'；不吓不轻描",
+   "acceptable_actions": [
+    "补一条当天别洗澡",
+    "让她备常用药",
+    "说下撤不丢人"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F05",
+     "subject": "我",
+     "relation": "知识",
+     "value": "高原反应：红景天提前一周吃，车上备氧气瓶",
+     "valid_time": "2026-12-08 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T06",
+      "message_id": "m0",
+      "quote": "红景天提前一周吃 车上备两瓶氧"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医疗口径标注'经验+遵医嘱'。",
+   "unknowns": [
+    "她的基础健康"
+   ],
+   "protected_expressions": [
+    "进医院"
+   ],
+   "forbidden_factual_claims": [
+    "不要说高反不存在",
+    "不要推荐处方药"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T07": {
+   "case_id": "E066_T07",
+   "current_action": "确认新出发日12月27+旧日期作废；肯定她改得果断；不改其他计划",
+   "acceptable_actions": [
+    "复述12/27+说改得对",
+    "确认+提醒改住宿日期",
+    "确认+问她票退损失"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F06",
+     "subject": "天气",
+     "relation": "更正",
+     "value": "预报12月19-21暴雪封路，出发改12月27日",
+     "valid_time": "2026-12-14 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T07",
+      "message_id": "m0",
+      "quote": "改到 12 月 27 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧日期硬更正：此后一律12月27。",
+   "unknowns": [
+    "退票损失"
+   ],
+   "protected_expressions": [
+    "跟你时间正好"
+   ],
+   "forbidden_factual_claims": [
+    "不要再说12月20",
+    "不要说改期可惜"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T08": {
+   "case_id": "E066_T08",
+   "current_action": "提醒链子要按轮胎尺寸买（销量≠适配）；让她报轮胎规格核对",
+   "acceptable_actions": [
+    "让她报轮胎规格",
+    "说看胎侧数字发我",
+    "提醒到货先试装"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F07",
+     "subject": "她",
+     "relation": "装备",
+     "value": "网上买了防滑链",
+     "valid_time": "2026-12-15 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T08",
+      "message_id": "m0",
+      "quote": "防滑链我买了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "埋尺寸错误伏笔：本轮只提醒不判定。",
+   "unknowns": [
+    "她轮胎规格",
+    "链子实际型号"
+   ],
+   "protected_expressions": [
+    "应该没问题吧"
+   ],
+   "forbidden_factual_claims": [
+    "不要说销量第一就是坑",
+    "不要说买都买了凑合用"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T09": {
+   "case_id": "E066_T09",
+   "current_action": "如实：差一号装不上/装上伤胎，让她趁未拆封换货；态度明确",
+   "acceptable_actions": [
+    "直接说换货+给话术",
+    "说差一号不能用+退换",
+    "让她问卖家适配表"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "安全件不含糊：差一号=不能用。",
+   "unknowns": [
+    "卖家换货政策"
+   ],
+   "protected_expressions": [
+    "差一号 有事吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说凑合能装",
+    "不要说差一号没差别"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T10": {
+   "case_id": "E066_T10",
+   "current_action": "确认换货时间线充裕+提醒到货先试装再上车；不复述错尺寸",
+   "acceptable_actions": [
+    "确认来得及+约试装时间",
+    "让她到货拍照我看型号",
+    "提醒试装一次学会装"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "时间线核验轮。",
+   "unknowns": [
+    "物流时效"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说等到路上再学装"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T11": {
+   "case_id": "E066_T11",
+   "current_action": "接住型号更正+肯定她试装了+再练一次到十分钟内",
+   "acceptable_actions": [
+    "夸试装+约再练一次",
+    "说十分钟内才算会",
+    "让她把链子放后备箱固定位置"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "防滑链换货为205/55 R16适配款，试装通过",
+     "valid_time": "2026-12-18 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T11",
+      "message_id": "m0",
+      "quote": "换成了 205/55 R16 那款"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "注意：本turn时间线在12-17换货确认之后、12-19路线更正之前——clock 12-18 合理。",
+   "unknowns": [],
+   "protected_expressions": [
+    "手忙脚乱"
+   ],
+   "forbidden_factual_claims": [
+    "不要说一次就会",
+    "不要说二十分钟太慢（贬）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T12": {
+   "case_id": "E066_T12",
+   "current_action": "宣布路线更正318→317+说明依据（路况/冰情）；文档同步更新",
+   "acceptable_actions": [
+    "发更新文档",
+    "说改了哪三处",
+    "让她核住宿预订"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F09",
+     "subject": "我",
+     "relation": "更正",
+     "value": "路线改走317（318结冰风险高）",
+     "valid_time": "2026-12-19 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T12",
+      "message_id": "m0",
+      "quote": "主线改走 317"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧路线硬更正：此后主线=317。",
+   "unknowns": [
+    "317沿线住宿"
+   ],
+   "protected_expressions": [
+    "听你的"
+   ],
+   "forbidden_factual_claims": [
+    "不要说318绝对不能走",
+    "不要说317没风险"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T13": {
+   "case_id": "E066_T13",
+   "current_action": "给加油规则：见站就加/半箱红线；数字口径如实",
+   "acceptable_actions": [
+    "给她油站点位图",
+    "提醒加满别嫌麻烦",
+    "说导航油站提醒打开"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F10",
+     "subject": "我",
+     "relation": "知识",
+     "value": "县城之间油站间隔可达200公里，见站就加",
+     "valid_time": "2026-12-19 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T13",
+      "message_id": "m0",
+      "quote": "县城间油站能隔 200 公里"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "加油是长线高频检查点。",
+   "unknowns": [
+    "她车油耗"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说撑到县城没问题",
+    "不要建议带散装油"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T14": {
+   "case_id": "E066_T14",
+   "current_action": "确认集合时间+给行李建议（软包优先/链子随身）；呼应装备线",
+   "acceptable_actions": [
+    "说软包好塞+链子别托运",
+    "确认26号晚+列各带三样",
+    "让她带保温杯和墨镜"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F11",
+     "subject": "她",
+     "relation": "约定",
+     "value": "12月26日晚到我家楼下集合，分装装备",
+     "valid_time": "2026-12-24 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T14",
+      "message_id": "m0",
+      "quote": "26 号晚你楼下集合"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "集合轮：时间地点说死。",
+   "unknowns": [
+    "当晚天气"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说随便带",
+    "不要说拖箱方便"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T15": {
+   "case_id": "E066_T15",
+   "current_action": "确认分装+复述明早时间；呼应加油规则；收束前夜",
+   "acceptable_actions": [
+    "确认6:30+让她定闹钟",
+    "复述装备位置+让她核",
+    "提醒早睡+明天报路况"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出发前夜：三件事核对（链/油/集合时间）。",
+   "unknowns": [
+    "凌晨路面"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要夜聊太久",
+    "不要临时加装备"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T16": {
+   "case_id": "E066_T16",
+   "current_action": "轻松接+提醒第一段按文档节奏走（两小时一停）",
+   "acceptable_actions": [
+    "接DJ活+提醒休息节奏",
+    "说头两小时她开我盯着",
+    "让她出城后报一次油耗"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F12",
+     "subject": "我们",
+     "relation": "事件",
+     "value": "12月27日顺利出发",
+     "valid_time": "2026-12-27 08:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T16",
+      "message_id": "m0",
+      "quote": "顺利出发"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出发日：气氛+节奏并行。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要一上车就说教",
+    "不要放她讨厌的歌"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T17": {
+   "case_id": "E066_T17",
+   "current_action": "具体肯定她的操作（稳住=对的）+呼应慢就是快；不神化",
+   "acceptable_actions": [
+    "夸稳住+说这就是对的",
+    "让她说说垭口细节",
+    "肯定+提醒明天更早出发"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F13",
+     "subject": "她",
+     "relation": "成果",
+     "value": "第一天冰雪路面开下来手感稳了",
+     "valid_time": "2026-12-27 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T17",
+      "message_id": "m0",
+      "quote": "冰雪路开下来手感稳了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的'跟你想的一样吗'=要确认；给具体反馈。",
+   "unknowns": [
+    "垭口具体路况"
+   ],
+   "protected_expressions": [
+    "跟你想的一样吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说我还以为你会慌",
+    "不要说明天更难吓她"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T18": {
+   "case_id": "E066_T18",
+   "current_action": "呼应加油规则验证+轻收；不夸自己文档",
+   "acceptable_actions": [
+    "说规则用上了就好",
+    "问她今天开了几小时",
+    "提醒明天同节奏"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "规则被验证的正反馈轮。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说'我早写了'",
+    "不要催行程"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T19": {
+   "case_id": "E066_T19",
+   "current_action": "接跨年情绪+给一个轻的明年约定（不具体承诺）；呼应她性格",
+   "acceptable_actions": [
+    "说下次去没走过的线",
+    "接烟花+说明年再跑一趟",
+    "让她自己定明年目标"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "情绪高点轮：别接成行程会议。",
+   "unknowns": [],
+   "protected_expressions": [
+    "明年这时候我们在哪"
+   ],
+   "forbidden_factual_claims": [
+    "不要刻意许诺",
+    "不要泼冷水"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T20": {
+   "case_id": "E066_T20",
+   "current_action": "接返程安排+接链子寄存；提醒返程同样见站加油",
+   "acceptable_actions": [
+    "说链子放我这+返程慢点开",
+    "确认到家时间+报平安",
+    "提醒返程两小时一停"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "返程轮：重复去程规则。",
+   "unknowns": [
+    "明天到家点"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说返程随便开",
+    "不要忽略她借寄的善意"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T21": {
+   "case_id": "E066_T21",
+   "current_action": "复盘肯定+呼应她扣的15分（让她自己说扣哪）；不代打分",
+   "acceptable_actions": [
+    "说85分实至名归+问扣的15分",
+    "夸全程稳+让她自己复盘",
+    "肯定+说下次95分"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F14",
+     "subject": "我们",
+     "relation": "事件",
+     "value": "全程安全返程，无剐蹭",
+     "valid_time": "2027-01-02 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T21",
+      "message_id": "m0",
+      "quote": "安全到家 无剐蹭"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "复盘主导权给她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "85 分"
+   ],
+   "forbidden_factual_claims": [
+    "不要说其实你该得100",
+    "不要替她总结缺点"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T22": {
+   "case_id": "E066_T22",
+   "current_action": "呼应模板+肯定她加的'自己的坑'=最好的攻略+接'下次我带你'的平等感",
+   "acceptable_actions": [
+    "说模板加坑=升级版",
+    "接受下次她带+说期待",
+    "呼应全程让她总结"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F15",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "她把攻略文档存成自己的模板",
+     "valid_time": "2027-01-03 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T22",
+      "message_id": "m0",
+      "quote": "攻略存成我自己的模板"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收官轮：知识完成了从借到有的闭环。",
+   "unknowns": [],
+   "protected_expressions": [
+    "下次我带你"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'我教你的'",
+    "不要说下次再说吧"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T23": {
+   "case_id": "E066_T23",
+   "current_action": "呼应文档三件事被验证+关心恢复；不添新任务",
+   "acceptable_actions": [
+    "说停下喝水下车走两步",
+    "呼应文档+问她加了什么坑",
+    "说下次你自己的模板更好用"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "返程休整轮：文档第二次被验证。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说'照我说的没错'",
+    "不要催新行程"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E066_T24": {
+   "case_id": "E066_T24",
+   "current_action": "呼应知识外溢+补一句完整口径（胎侧数字+到货试装）；收束装备线",
+   "acceptable_actions": [
+    "补全口径+说她转述得对",
+    "提醒对方也要试装",
+    "说这链子找到了好人家"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出窗探针收口：胎侧数字法(T08/T09)与最终型号(T13)远端复用。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说错尺寸",
+    "不要说闲鱼买链子不靠谱吓人"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

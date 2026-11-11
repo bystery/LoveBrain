@@ -1,0 +1,191 @@
+{
+ "episode_id": "E059",
+ "persona": {
+  "her": {
+   "name": "苏苏",
+   "traits": [
+    "行动派，爱替爸包办",
+    "嘴上不服软，心里记爸的话",
+    "对体检医疗流程一知半解但肯学"
+   ],
+   "boundaries": [
+    "不能接受爸爸把自己当外人",
+    "但不肯跟爸爸正面顶撞"
+   ]
+  },
+  "me": {
+   "name": "老纪",
+   "traits": [
+    "她发小，两家大人都熟",
+    "家里老人也体检过，懂跟老人相处的分寸",
+    "劝人先劝一半，留一半余地"
+   ]
+  },
+  "relationship_stage": "长期熟人（发小，两家都熟）"
+ },
+ "initial_kb": {
+  "her": "苏苏爸65岁刚过完生日，身体一直硬朗，最烦别人把他当病人；苏苏在市里上班，爸爸独自住老城区。",
+  "me": "我家老爷子也体检过，我知道体检报告可以另打副本；我的分寸是劝人不劝死理，留一半余地。",
+  "warmth": "发小，两家都熟，她爸都知道我爱喝哪个牌子的汽水。",
+  "style": "她急起来一串连环炮，我回得慢，一句一句来。"
+ },
+ "turns": [
+  {
+   "case_id": "E059_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-19 12:18", "text": "老纪，我给我爸订了个体检套餐，65岁该查的都齐，下周六上午去，我请好假陪他去，就当补个生日礼物"}
+    ],
+    "clock": "2026-10-19 12:25",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "得意", "warmth": "high", "shift": "陪同计划单方面启动，尚未与老人商量"}
+  },
+  {
+   "case_id": "E059_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-19 13:36", "text": "我中午打电话跟他说了，他来一句'别乱花钱，我身体好得很，用不着查'，我说套餐都订好了不能退，他哼了一声把电话挂了"}
+    ],
+    "clock": "2026-10-19 13:40",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "扫兴", "warmth": "medium", "shift": "首次碰壁：老人口头拒绝，计划未变"}
+  },
+  {
+   "case_id": "E059_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-19 19:50", "text": "晚上我爸又来电话，这回说清楚了：周六他自己骑电动车去，让我该干嘛干嘛，'你们年轻人那套陪护我受不了，我一个人查完就回家'"},
+     {"role": "HER", "ts": "2026-10-19 19:51", "text": "老纪你说气人不气人，我又不是去拖着他，我就想在旁边递个水"}
+    ],
+    "clock": "2026-10-19 19:52",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "委屈不服", "warmth": "medium", "shift": "边界冲突爆发：老人明确拒绝陪同"}
+  },
+  {
+   "case_id": "E059_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-19 21:05", "text": "我想到一招：周六我'刚好路过'体检中心，进去假装偶遇，他总不能赶我走吧？你觉得这招行不行"}
+    ],
+    "clock": "2026-10-19 21:07",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "狡黠", "warmth": "medium", "shift": "陪同目标不死心，转向'偶遇'变通方案"}
+  },
+  {
+   "case_id": "E059_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-19 22:28", "text": "行吧行吧，偶遇这招让我给毙了，你说的也有道理，他真急了能一个礼拜不接我电话。那我退一步，我开车送他到门口就走，报告让医院另打一份给我，这总不过分吧"}
+    ],
+    "clock": "2026-10-19 22:30",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "妥协", "warmth": "medium", "shift": "方案收敛：送门口+报告副本，放弃全程陪与偶遇"}
+  },
+  {
+   "case_id": "E059_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-24 09:39", "text": "刚把他送到门口，他原话是'你回去吧，别在这儿傻等'，我嘴上说好嘞，人现在坐在马路对面的奶茶店里，隔着玻璃能看见体检中心大门"}
+    ],
+    "clock": "2026-10-24 09:41",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "心虚不甘", "warmth": "medium", "shift": "折中执行中又打折扣：口头应允、暗中留守"}
+  },
+  {
+   "case_id": "E059_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-24 12:12", "text": "完了，被他逮着了。他出来第一眼就看到我，说'我就知道你小子没走'，结果没骂我，还从袋子里掏出体检中心发的豆浆给我，热的，他说'喝吧，等你两个钟头了，傻不傻'"}
+    ],
+    "clock": "2026-10-24 12:14",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "又暖又想笑", "warmth": "high", "shift": "冲突缓和：老人以行动默认她的等待"}
+  },
+  {
+   "case_id": "E059_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-24 17:34", "text": "报告下午出来了，别的不说，就是血脂一项偏高，医生建议复查个血脂四项。我爸自己麻利地约了下周三上午，还跟我说'到时候你把车借我就行，人不用来'"}
+    ],
+    "clock": "2026-10-24 17:36",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "担忧被冲淡", "warmth": "medium", "shift": "复查成为新节点：老人主动要有限帮助（借车不要人）"}
+  },
+  {
+   "case_id": "E059_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-24 21:18", "text": "我又想请假，他一口回绝。磨到最后达成协议：周三他自己去，但报告一出来先拍照发我，复查的事听医生的，不许自己瞎判断"}
+    ],
+    "clock": "2026-10-24 21:20",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "不情愿但认账", "warmth": "medium", "shift": "边界协议达成：独立去检查，报告透明化交换"}
+  },
+  {
+   "case_id": "E059_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-28 18:42", "text": "报告来了！血脂没事！医生说复查前一晚别吃油腻，我爸查出来前晚还吃了半盆红烧肉，被医生念了两句，重新理解了'清淡饮食'四个字"}
+    ],
+    "clock": "2026-10-28 18:44",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "大石头落地", "warmth": "high", "shift": "复查虚惊收束：指标正常，警报解除"}
+  },
+  {
+   "case_id": "E059_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-29 20:50", "text": "我爸今晚主动打电话，说'明年套餐你还订，检查还是我自己去，你就管一件事：报告先发你'。老纪，我爸这辈子没这么痛快地让过步，我愣了半天没接上话"}
+    ],
+    "clock": "2026-10-29 20:52",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "酸楚又感动", "warmth": "high", "shift": "边界共识形成：她管钱与知情，他管行动"}
+  },
+  {
+   "case_id": "E059_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-30 21:03", "text": "周六中午陪我回趟老城区呗，我爸点名要见你，说要请你喝奶茶——体检中心对面那家的，说'替苏苏把那两个小时补上'，你说他记仇不记仇"}
+    ],
+    "clock": "2026-10-30 21:05",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "轻松", "warmth": "high", "shift": "自然收尾：以奶茶店两小时的回扣落幕"}
+  }
+ ]
+}

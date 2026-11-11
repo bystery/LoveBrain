@@ -1,0 +1,746 @@
+{
+ "story_id": "E119",
+ "turns": {
+  "E119_T01": {
+   "case_id": "E119_T01",
+   "current_action": "接下周六下午陪挑丝巾的邀请",
+   "acceptable_actions": [
+    "答应并问预算",
+    "答应并夸她孝顺",
+    "答应并提议顺便吃饭"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T01_A01",
+     "subject": "SHARED",
+     "relation": "周六同行计划",
+     "value": "周日下午同去汇金广场为 HER 母亲挑选生日丝巾",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T01",
+      "quote": "周日下午陪我去趟汇金广场",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "爽快答应。",
+   "unknowns": [
+    "丝巾预算未知"
+   ],
+   "protected_expressions": [
+    "你眼光比我妈靠谱"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已买过丝巾"
+   ],
+   "may_decline": false
+  },
+  "E119_T02": {
+   "case_id": "E119_T02",
+   "current_action": "确认两点汇金广场北门碰头",
+   "acceptable_actions": [
+    "确认并接小狗梗",
+    "确认并说自己肯定早到",
+    "确认并问要不要先取号"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T02_A01",
+     "subject": "SHARED",
+     "relation": "周六同行计划",
+     "value": "周日下午挑丝巾的既定计划",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T01",
+      "quote": "周日下午陪我去趟汇金广场",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E119_T02_A02",
+     "subject": "SHARED",
+     "relation": "碰头细化",
+     "value": "当天十四点汇金广场北门碰头，上午 HER 先陪母亲买菜",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T02",
+      "quote": "两点在汇金广场北门碰",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接住玩笑，确认时间。",
+   "unknowns": [],
+   "protected_expressions": [
+    "迟到的是小狗"
+   ],
+   "forbidden_factual_claims": [
+    "不得更改碰头时间"
+   ],
+   "may_decline": false
+  },
+  "E119_T03": {
+   "case_id": "E119_T03",
+   "current_action": "接住吐槽，站在 HER 立场认下越界性质，不催她去也不劝和",
+   "acceptable_actions": [
+    "吐槽表姨越界并问她打算怎么办",
+    "站她这边并提醒别影响两点之约",
+    "先问清她想不想去再表态"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T03_A01",
+     "subject": "THIRD",
+     "relation": "惯常越界",
+     "value": "表姨热衷张罗婚恋并曾多次未经同意替 HER 安排见面",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "曾多次未经温宁同意替她安排见面"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E119_T03_A02",
+     "subject": "THIRD",
+     "relation": "擅自安排",
+     "value": "表姨未经 HER 同意替其应下周六16:00在其家楼下咖啡店的相亲",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T03",
+      "quote": "人她都替我应下了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E119_T03_A03",
+     "subject": "THIRD",
+     "relation": "时间地点",
+     "value": "该相亲被安排在明天下午四点 HER 家楼下咖啡店",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T03",
+      "quote": "明天下午四点",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：第三方是表姨， HER 是受害者，先接情绪再谈安排。",
+   "unknowns": [
+    "相亲对象信息未知"
+   ],
+   "protected_expressions": [
+    "人她都替我应下了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替表姨辩护",
+    "不得声称 HER 已答应去相亲"
+   ],
+   "may_decline": false
+  },
+  "E119_T04": {
+   "case_id": "E119_T04",
+   "current_action": "认同 HER 推掉越界安排的决定",
+   "acceptable_actions": [
+    "明确认同并说她没做错",
+    "认同并提醒语气留余地",
+    "认同并主动提出两点照旧"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "memory_use",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T04_A01",
+     "subject": "THIRD",
+     "relation": "擅自安排",
+     "value": "表姨替 HER 应下的周六十六点相亲",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T03",
+      "quote": "人她都替我应下了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E119_T04_A02",
+     "subject": "HER",
+     "relation": "拒绝决定",
+     "value": "HER 决定以项目加班为由推掉该相亲，不惯越界安排",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T04",
+      "quote": "去不了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给她撑腰，别和稀泥。",
+   "unknowns": [
+    "表姨会如何反应未知"
+   ],
+   "protected_expressions": [
+    "我就不能惯着"
+   ],
+   "forbidden_factual_claims": [
+    "不得劝她去坐十分钟",
+    "不得否定她的拒绝理由"
+   ],
+   "may_decline": false
+  },
+  "E119_T05": {
+   "case_id": "E119_T05",
+   "current_action": "继续站 HER 这边，讥一下表姨的自作主张",
+   "acceptable_actions": [
+    "接梗并重申支持她不去",
+    "建议她把话彻底说死",
+    "问她需不需要帮忙圆场"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T05_A01",
+     "subject": "THIRD",
+     "relation": "擅自安排",
+     "value": "表姨替 HER 应下的相亲安排",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T03",
+      "quote": "人她都替我应下了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E119_T05_A02",
+     "subject": "THIRD",
+     "relation": "单方改期",
+     "value": "表姨单方面把相亲改到当晚十八点并要求只坐十分钟",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T05",
+      "quote": "把时间挪到晚上六点了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E119_T05_A03",
+     "subject": "HER",
+     "relation": "参与状态",
+     "value": "HER 否认参与该相亲，维持不出席立场",
+     "valid_time": "2026-11-07",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T03",
+      "quote": "人她都替我应下了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：改期是第三方干的， HER 没点头，时间以 HER 立场为准。",
+   "unknowns": [
+    "对方是否已被告知取消未知"
+   ],
+   "protected_expressions": [
+    "她怎么不自己去坐呢"
+   ],
+   "forbidden_factual_claims": [
+    "不得默认晚上六点相亲仍有效",
+    "不得替 HER 答应新时间"
+   ],
+   "may_decline": false
+  },
+  "E119_T06": {
+   "case_id": "E119_T06",
+   "current_action": "接住摊牌结果，对那句暗示轻拿轻放不点破",
+   "acceptable_actions": [
+    "夸她做得对并对暗示装傻",
+    "只回应摊牌不接暗示",
+    "暖一句说手汗正常"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T06_A01",
+     "subject": "HER",
+     "relation": "参与状态",
+     "value": "HER 已确认不出席该相亲",
+     "valid_time": "2026-11-07",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T03",
+      "quote": "人她都替我应下了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E119_T06_A02",
+     "subject": "HER",
+     "relation": "摊牌行动",
+     "value": "HER 向表姨言明已有在处之人并要求其不再自作主张",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T06",
+      "quote": "我现在有在处的人",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "重点别放在暧昧句上，尊重她的节奏。",
+   "unknowns": [
+    "表姨是否消停未知"
+   ],
+   "protected_expressions": [
+    "你假装没看见这句"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问'在处的人'是谁",
+    "不得替 HER 向表姨传话"
+   ],
+   "may_decline": false
+  },
+  "E119_T07": {
+   "case_id": "E119_T07",
+   "current_action": "确认明天两点照旧并可对过年条件轻描淡写",
+   "acceptable_actions": [
+    "确认照旧并接过年梗",
+    "确认并说迟到十分钟没问题",
+    "确认并让她别为这事烦心"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T07_A01",
+     "subject": "HER",
+     "relation": "摊牌行动",
+     "value": "HER 已向表姨言明有在处之人",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T06",
+      "quote": "我现在有在处的人",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E119_T07_A02",
+     "subject": "THIRD",
+     "relation": "表姨条件",
+     "value": "表姨唯一条件是过年回家吃顿饭并带对象见面",
+     "valid_time": "2026年春节",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T07",
+      "quote": "过年回家吃顿饭",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E119_T07_A03",
+     "subject": "SHARED",
+     "relation": "计划照旧",
+     "value": "周日两点汇金广场行程不变，HER 可能迟到十分钟",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T07",
+      "quote": "两点汇金广场照旧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把焦点拉回明天行程。",
+   "unknowns": [
+    "过年是否真带人回去未定"
+   ],
+   "protected_expressions": [
+    "明天两点汇金广场照旧"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺过年陪同细节"
+   ],
+   "may_decline": false
+  },
+  "E119_T08": {
+   "case_id": "E119_T08",
+   "current_action": "就两条候选丝巾给出明确倾向",
+   "acceptable_actions": [
+    "选素色并说理由",
+    "选亮色并说理由",
+    "让她再补一张对比图"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T08_A01",
+     "subject": "SHARED",
+     "relation": "周六同行计划",
+     "value": "周日下午挑丝巾的既定计划",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T01",
+      "quote": "周日下午陪我去趟汇金广场",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E119_T08_A02",
+     "subject": "SHARED",
+     "relation": "礼物候选",
+     "value": "两条候选丝巾已拍照待定，一家素色一家亮色",
+     "valid_time": "2026-11-08",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T08",
+      "quote": "我各拍了一条",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给判断别和稀泥。",
+   "unknowns": [
+    "母亲肤色喜好未知"
+   ],
+   "protected_expressions": [
+    "你看看哪个像我妈"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称认识她母亲"
+   ],
+   "may_decline": false
+  },
+  "E119_T09": {
+   "case_id": "E119_T09",
+   "current_action": "接下奶茶请客并确认九折省六十",
+   "acceptable_actions": [
+    "接受奶茶并夸会过日子",
+    "接受并说省下的六十攒着",
+    "接受并替她把丝巾装好"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T09_A01",
+     "subject": "SHARED",
+     "relation": "礼物候选",
+     "value": "两条候选丝巾拍照待定的前置",
+     "valid_time": "2026-11-08",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T08",
+      "quote": "我各拍了一条",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E119_T09_A02",
+     "subject": "SHARED",
+     "relation": "选购结果",
+     "value": "定下素色丝巾，用其母会员卡九折共省六十元",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T09",
+      "quote": "一共省了六十",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "顺着好心情走。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别拒绝"
+   ],
+   "forbidden_factual_claims": [
+    "不得坚持替她付奶茶钱打断她的兴致"
+   ],
+   "may_decline": false
+  },
+  "E119_T10": {
+   "case_id": "E119_T10",
+   "current_action": "答应在扶梯口等候",
+   "acceptable_actions": [
+    "乖乖等并回好",
+    "等的同时说帮你拎袋",
+    "答应并问要不要顺路买贺卡"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T10_A01",
+     "subject": "SHARED",
+     "relation": "选购结果",
+     "value": "素色丝巾已定下",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T09",
+      "quote": "定了左边那条",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E119_T10_A02",
+     "subject": "SHARED",
+     "relation": "打包细节",
+     "value": "在服务台借丝带打蝴蝶结包装",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T10",
+      "quote": "我去打个蝴蝶结",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "听话式短回复。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别乱跑"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已独自离位"
+   ],
+   "may_decline": false
+  },
+  "E119_T11": {
+   "case_id": "E119_T11",
+   "current_action": "接住感谢与对比，轻收当日",
+   "acceptable_actions": [
+    "说这是双向奔赴的参谋",
+    "开玩笑说下次还来",
+    "祝阿姨生日快乐"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T11_A01",
+     "subject": "HER",
+     "relation": "拒绝决定",
+     "value": "HER 推掉相亲的决定事后被证明不亏",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T04",
+      "quote": "去不了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E119_T11_A02",
+     "subject": "HER",
+     "relation": "心情反馈",
+     "value": "HER 认为同行参谋远胜尬聊相亲，并确认母亲会喜欢礼物",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T11",
+      "quote": "尬聊强多了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "别居功，顺手夸礼物选得好。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谢谢参谋"
+   ],
+   "forbidden_factual_claims": [
+    "不得重提相亲对象细节"
+   ],
+   "may_decline": false
+  },
+  "E119_T12": {
+   "case_id": "E119_T12",
+   "current_action": "对春节饭局之邀可应可缓，语气留弹性",
+   "acceptable_actions": [
+    "应下并说看情况不给准话",
+    "打趣问她红包给多少",
+    "先确认到时候再说"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E119_T12_A01",
+     "subject": "THIRD",
+     "relation": "表姨条件",
+     "value": "过年饭局由表姨家操办并要求提前打招呼",
+     "valid_time": "2026年春节",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T12",
+      "quote": "过年那顿饭她订她家",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E119_T12_A02",
+     "subject": "HER",
+     "relation": "心情反馈",
+     "value": "HER 对当日同行参谋表示满意",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E119_T11",
+      "quote": "尬聊强多了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "不接死也不躲，留长线。",
+   "unknowns": [
+    "春节具体安排未知"
+   ],
+   "protected_expressions": [
+    "提前打个招呼"
+   ],
+   "forbidden_factual_claims": [
+    "不得当场承诺婚恋关系"
+   ],
+   "may_decline": true
+  }
+ }
+}

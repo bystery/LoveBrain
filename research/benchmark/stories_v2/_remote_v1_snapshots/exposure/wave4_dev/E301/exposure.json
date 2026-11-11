@@ -1,0 +1,38 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A1 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T01 日常聊天/自然接话/幽默",
+  "工作职场摸鱼闲聊",
+  "自嘲式幽默",
+  "旧梗回扣"
+ ],
+ "title": "十四版与打死不改版：交稿后的摸鱼下午",
+ "may_decline_turns": [
+  "E301_T07"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "职场生活",
+ "primary_topic": "T01",
+ "lineage_group_id": "LG-E301",
+ "frozen_at": "2026-11-08T02:10:00+08:00",
+ "annotator": "annotator-B1",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E301/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A1",
+ "hashes": {
+  "episode.json": "3468f4899af2d8d0a1e593a424984bf36ae396abae9b26d4cc169438a27d48d3",
+  "reference.json": "817642072b7fadd1233d961b276c4b6e47ff254bf260217296f0e5b6adeb24f3",
+  "timeline.json": "45df2d458725e27769fa59eddde05bd46eb5ae09f2b847e18d035a5a594fd64a",
+  "audit.md": "719e4a73716a1385c1602141cb67a473f7ead9d76532058982ac2351c4cd85da"
+ }
+}

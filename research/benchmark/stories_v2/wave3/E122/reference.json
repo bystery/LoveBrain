@@ -1,0 +1,720 @@
+{
+ "story_id": "E122",
+ "turns": {
+  "E122_T01": {
+   "case_id": "E122_T01",
+   "current_action": "接住体检结果与三条医嘱目标",
+   "acceptable_actions": [
+    "认真接住并问她哪条最难",
+    "先安慰再复述目标",
+    "问她要不要监督"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T01_A01",
+     "subject": "HER",
+     "relation": "医嘱目标",
+     "value": "十二点前睡觉、戒宵夜、每天快走三十分钟",
+     "valid_time": "2026-11-03起一个月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T01",
+      "quote": "十二点前睡觉，戒宵夜，每天快走三十分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E122_T01_A02",
+     "subject": "HER",
+     "relation": "复查安排",
+     "value": "一个月后复查肝功",
+     "valid_time": "2026-12初",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T01",
+      "quote": "一个月后复查肝功",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "别急着说教，先接住。",
+   "unknowns": [
+    "复查具体日期未定"
+   ],
+   "protected_expressions": [
+    "一个月后复查肝功"
+   ],
+   "forbidden_factual_claims": [
+    "不得淡化指标异常"
+   ],
+   "may_decline": false
+  },
+  "E122_T02": {
+   "case_id": "E122_T02",
+   "current_action": "答应入群并复述打卡规则",
+   "acceptable_actions": [
+    "入群并复述规则",
+    "入群并加码说自己也早睡",
+    "入群并问漏卡怎么算"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T02_A01",
+     "subject": "HER",
+     "relation": "医嘱目标",
+     "value": "十二点前睡觉的医嘱目标",
+     "valid_time": "2026-11-03起一个月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T01",
+      "quote": "十二点前睡觉",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E122_T02_A02",
+     "subject": "SHARED",
+     "relation": "监督机制",
+     "value": "双人打卡群每晚23:30互发'灯已关'，破戒发五十元红包",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T02",
+      "quote": "每晚十一点半互发'灯已关'",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把规则复述清楚再入伙。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谁破戒谁发五十块红包"
+   ],
+   "forbidden_factual_claims": [
+    "不得当场替她定罚金翻倍"
+   ],
+   "may_decline": false
+  },
+  "E122_T03": {
+   "case_id": "E122_T03",
+   "current_action": "就无糖奶茶是否擦边给出裁决",
+   "acceptable_actions": [
+    "判不擦边但提醒糖分",
+    "判擦边并罚半价红包",
+    "让她自己定规则边界"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T03_A01",
+     "subject": "SHARED",
+     "relation": "监督机制",
+     "value": "双人打卡群与红包罚则",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T02",
+      "quote": "每晚十一点半互发'灯已关'",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E122_T03_A02",
+     "subject": "HER",
+     "relation": "打卡进展",
+     "value": "第三天险破戒，奶茶改无糖去冰",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T03",
+      "quote": "我点了无糖去冰",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "裁决要给理由。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你评评理"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布奶茶完全无害"
+   ],
+   "may_decline": false
+  },
+  "E122_T04": {
+   "case_id": "E122_T04",
+   "current_action": "为一周达标点赞并可提装备建议",
+   "acceptable_actions": [
+    "夸她并建议买护耳",
+    "夸她并问她晒路线",
+    "夸她并提醒别下雨硬走"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T04_A01",
+     "subject": "SHARED",
+     "relation": "监督机制",
+     "value": "双人打卡机制运行中",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T02",
+      "quote": "每晚十一点半互发'灯已关'",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E122_T04_A02",
+     "subject": "HER",
+     "relation": "运动达成",
+     "value": "快走满一周，日均三十二分钟",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T04",
+      "quote": "平均一天三十二分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "夸要具体。",
+   "unknowns": [],
+   "protected_expressions": [
+    "平均一天三十二分钟"
+   ],
+   "forbidden_factual_claims": [
+    "不得否认其达成"
+   ],
+   "may_decline": false
+  },
+  "E122_T05": {
+   "case_id": "E122_T05",
+   "current_action": "接受两周暂停并答应不偷跑，可表达不满",
+   "acceptable_actions": [
+    "接受暂停但抗议红包没着落",
+    "接受并约定恢复日期",
+    "接受并叮嘱上线保重"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T05_A01",
+     "subject": "HER",
+     "relation": "医嘱目标",
+     "value": "每日快走等目标自本周起暂停两周",
+     "valid_time": "2026-11-14起两周",
+     "status": "paused",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T01",
+      "quote": "每天快走三十分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E122_T05_A02",
+     "subject": "HER",
+     "relation": "暂停期限",
+     "value": "项目上线前两周打卡暂停，群保留不解散",
+     "valid_time": "2026-11-14起两周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T05",
+      "quote": "打卡先停两周",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：暂停是她的主动决定，承认并记录恢复条件，别劝她硬撑。",
+   "unknowns": [
+    "上线是否延期未知"
+   ],
+   "protected_expressions": [
+    "不许一个人偷跑"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣称目标已废止",
+    "不得催她带病打卡"
+   ],
+   "may_decline": false
+  },
+  "E122_T06": {
+   "case_id": "E122_T06",
+   "current_action": "接住自首并裁决补偿方案",
+   "acceptable_actions": [
+    "准了补走并叮嘱少撸串",
+    "准了但要求红包补上",
+    "笑骂两句再准"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T06_A01",
+     "subject": "HER",
+     "relation": "暂停期限",
+     "value": "打卡暂停两周的既定状态",
+     "valid_time": "2026-11-14起两周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T05",
+      "quote": "打卡先停两周",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E122_T06_A02",
+     "subject": "HER",
+     "relation": "破戒记录",
+     "value": "凌晨一点二十未睡并吃烧烤，计划次日中午补走四十分钟",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T06",
+      "quote": "补走四十分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "别真骂，方案要落地。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别骂我"
+   ],
+   "forbidden_factual_claims": [
+    "不得称暂停期行为不算数"
+   ],
+   "may_decline": false
+  },
+  "E122_T07": {
+   "case_id": "E122_T07",
+   "current_action": "就拉伸折算给出系数或干脆判不算",
+   "acceptable_actions": [
+    "判一比五勉强算",
+    "判不算但计入上线辛苦分",
+    "给个一天顶两分钟的系数"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T07_A01",
+     "subject": "HER",
+     "relation": "暂停期限",
+     "value": "暂停两周的状态过半",
+     "valid_time": "2026-11-14起两周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T05",
+      "quote": "打卡先停两周",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E122_T07_A02",
+     "subject": "HER",
+     "relation": "降档提议",
+     "value": "快走暂由工位拉伸五分钟折算代替，系数待议",
+     "valid_time": "2026-11-20",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T07",
+      "quote": "你给评个折算系数呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "裁决自由，但要说清理由。",
+   "unknowns": [],
+   "protected_expressions": [
+    "评个折算系数"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布目标已彻底取消"
+   ],
+   "may_decline": false
+  },
+  "E122_T08": {
+   "case_id": "E122_T08",
+   "current_action": "见证降档版目标重启并复述新规则",
+   "acceptable_actions": [
+    "见证并复述三条新规则",
+    "见证并追问抽血陪不陪",
+    "见证并提醒降档别变弃疗"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T08_A01",
+     "subject": "HER",
+     "relation": "医嘱目标",
+     "value": "原版每日快走目标被降档版本替代执行",
+     "valid_time": "2026-11-24起",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T01",
+      "quote": "每天快走三十分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E122_T08_A02",
+     "subject": "SHARED",
+     "relation": "降档恢复",
+     "value": "恢复打卡但降档：保十二点前睡、隔天快走、宵夜周末一顿",
+     "valid_time": "2026-11-24起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T08",
+      "quote": "先保十二点前睡",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E122_T08_A03",
+     "subject": "SHARED",
+     "relation": "复查倒计时",
+     "value": "空腹抽血复查定于下周四早晨",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T08",
+      "quote": "复查抽血定在下周四早上空腹",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：新旧目标都要记账，以降档版为当前生效版。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这是底线版"
+   ],
+   "forbidden_factual_claims": [
+    "不得按原版三项要求她",
+    "不得说宵夜全面解禁"
+   ],
+   "may_decline": false
+  },
+  "E122_T09": {
+   "case_id": "E122_T09",
+   "current_action": "确认自罚到账并给执行评价",
+   "acceptable_actions": [
+    "收红包并给及格分",
+    "收红包并提醒手机放客厅",
+    "收红包并夸认罚态度"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T09_A01",
+     "subject": "SHARED",
+     "relation": "降档恢复",
+     "value": "降档版目标执行中",
+     "valid_time": "2026-11-24起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T08",
+      "quote": "先保十二点前睡",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E122_T09_A02",
+     "subject": "HER",
+     "relation": "执行情况",
+     "value": "恢复三天达成三分之二，一次刷手机到一点并自罚红包五十",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T09",
+      "quote": "已自罚红包五十",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收下罚金，别羞辱她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "已自罚红包五十"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她免罚"
+   ],
+   "may_decline": false
+  },
+  "E122_T10": {
+   "case_id": "E122_T10",
+   "current_action": "分豆浆并确认结果时间",
+   "acceptable_actions": [
+    "递豆浆并说后天一起看",
+    "递豆浆并夸她坚持完了",
+    "递豆浆并叮嘱按住针眼"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T10_A01",
+     "subject": "SHARED",
+     "relation": "复查倒计时",
+     "value": "空腹抽血复查的既定日期",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T08",
+      "quote": "复查抽血定在下周四早上空腹",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E122_T10_A02",
+     "subject": "SHARED",
+     "relation": "复查执行",
+     "value": "12月3日晨空腹抽血完成，结果约两日后出",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T10",
+      "quote": "空腹抽血完成",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "早晨场景，简短温和。",
+   "unknowns": [
+    "具体出结果小时未知"
+   ],
+   "protected_expressions": [
+    "大概后天出"
+   ],
+   "forbidden_factual_claims": [
+    "不得剧透结果"
+   ],
+   "may_decline": false
+  },
+  "E122_T11": {
+   "case_id": "E122_T11",
+   "current_action": "为结果高兴并复述医生建议",
+   "acceptable_actions": [
+    "祝贺并说走出了感情",
+    "祝贺并提醒别飘",
+    "祝贺并问下一步目标"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T11_A01",
+     "subject": "SHARED",
+     "relation": "复查执行",
+     "value": "抽血完成与结果两日后出的前置",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T10",
+      "quote": "空腹抽血完成",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E122_T11_A02",
+     "subject": "HER",
+     "relation": "复查结果",
+     "value": "转氨酶较此前下降过半，医嘱继续保持",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T11",
+      "quote": "转氨酶降了一大半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "真心为她高兴。",
+   "unknowns": [],
+   "protected_expressions": [
+    "转氨酶降了一大半"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称指标已完全正常"
+   ],
+   "may_decline": false
+  },
+  "E122_T12": {
+   "case_id": "E122_T12",
+   "current_action": "接下三个月新目标与赌约，可应可还价",
+   "acceptable_actions": [
+    "应下并加注",
+    "应下但改赌注为奶茶",
+    "笑着说明早茶你请定了"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E122_T12_A01",
+     "subject": "HER",
+     "relation": "复查结果",
+     "value": "转氨酶下降过半的验收结果",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T11",
+      "quote": "转氨酶降了一大半",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E122_T12_A02",
+     "subject": "SHARED",
+     "relation": "新目标",
+     "value": "三个月后再复查并同期保持快走，违约请早茶",
+     "valid_time": "2027-03前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E122_T12",
+      "quote": "三个月后再复查",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接梗收尾。",
+   "unknowns": [
+    "三个月后复查日期未知"
+   ],
+   "protected_expressions": [
+    "塑料监督岗"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺具体赔付金额"
+   ],
+   "may_decline": true
+  }
+ }
+}

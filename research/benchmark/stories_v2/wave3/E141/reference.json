@@ -1,0 +1,724 @@
+{
+ "story_id": "E141",
+ "turns": {
+  "E141_T01": {
+   "case_id": "E141_T01",
+   "current_action": "回应周五交付的可行性：先接住情绪，复述'周五、v2'两个关键点，再给出赶工安排并留一句以最终确认为准",
+   "acceptable_actions": [
+    "复述'周五交 v2'并向她确认口径来源，再答复今天到周五的进度安排",
+    "先给保守答复：今天出细节稿、周五前可交，同时提醒她最好和拉哥再核一遍"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T01_A00",
+     "subject": "HER",
+     "relation": "转达的交付要求",
+     "value": "恒信包装改版 v2 需周五下班前交付",
+     "valid_time": "2026-11-03 10:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T01",
+      "message_id": "m0",
+      "quote": "周五下班前要交"
+     }
+    },
+    {
+     "atom_id": "E141_T01_A01",
+     "subject": "SHARED",
+     "relation": "协作事项",
+     "value": "ME 为恒信包装改版提供设计支持",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "帮市场部出改版稿"
+     }
+    }
+   ],
+   "private_guidance": "口径来自她的转达，先应下再留'以最终确认为准'，别把二手信息当定论。",
+   "unknowns": [
+    "截止日是否真的提前尚未经 PM 确认",
+    "v2 是否就是最终交付版本未明"
+   ],
+   "protected_expressions": [
+    "周五下班前要交"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言客户已官方确认周五交付"
+   ],
+   "may_decline": false
+  },
+  "E141_T02": {
+   "case_id": "E141_T02",
+   "current_action": "接住她的叫停：先按兵不动，交代当前进度可暂停的节点，等她的确认结果",
+   "acceptable_actions": [
+    "回'好，我先不动，等你信儿'，顺带说明目前做到哪一步、暂停无损耗",
+    "顺着她的怀疑补一句：若工期没变就不用压缩流程，省得白赶一趟"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T02_A00",
+     "subject": "HER",
+     "relation": "早前转达的周五交付",
+     "value": "周五下班前交付 v2 的说法被动摇",
+     "valid_time": "2026-11-03 10:05",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T01",
+      "message_id": "m0",
+      "quote": "周五下班前要交"
+     }
+    },
+    {
+     "atom_id": "E141_T02_A01",
+     "subject": "HER",
+     "relation": "对交付口径的新怀疑",
+     "value": "工期可能仍按原计划执行",
+     "valid_time": "2026-11-03 14:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T02",
+      "message_id": "m0",
+      "quote": "工期还是原来的"
+     }
+    }
+   ],
+   "private_guidance": "她说别急就先别动，回复短一点，把进度交代清楚即可。",
+   "unknowns": [
+    "拉哥的最终口径还没回来"
+   ],
+   "protected_expressions": [
+    "工期还是原来的"
+   ],
+   "forbidden_factual_claims": [
+    "不得假设周五交付已成定局"
+   ],
+   "may_decline": false
+  },
+  "E141_T03": {
+   "case_id": "E141_T03",
+   "current_action": "更正类冲突轮：确认周五交付作废、真实截止日为下周三，把台历同步改掉，并用一句玩笑接住她的道歉",
+   "acceptable_actions": [
+    "大方回应'听岔了很正常'，复述新口径：还是下周三交、没有周五节点",
+    "用玩笑接住道歉，再把台历上的周五划掉写上下周三，作为行动交代"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T03_A00",
+     "subject": "HER",
+     "relation": "早前转达的周五交付",
+     "value": "周五下班前交付 v2 的说法已被更正作废",
+     "valid_time": "2026-11-03 10:05",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T01",
+      "message_id": "m0",
+      "quote": "周五下班前要交"
+     }
+    },
+    {
+     "atom_id": "E141_T03_A01",
+     "subject": "HER",
+     "relation": "更正后的真实交付日",
+     "value": "包装改版方案交付日为下周三（11 月 11 日）",
+     "valid_time": "2026-11-04 09:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T03",
+      "message_id": "m0",
+      "quote": "还是下周三交"
+     }
+    },
+    {
+     "atom_id": "E141_T03_A02",
+     "subject": "HER",
+     "relation": "对截止日提前的否认",
+     "value": "截止日并未提前，周五档期与本项目无关",
+     "valid_time": "2026-11-04 09:40",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T03",
+      "message_id": "m0",
+      "quote": "截止日根本没提前"
+     }
+    }
+   ],
+   "private_guidance": "别让她尴尬，一句玩笑比'没关系'更接得住；关键信息当天记入台历。",
+   "unknowns": [
+    "下周三按 11 月 11 日理解，交稿当天再口头确认一次"
+   ],
+   "protected_expressions": [
+    "是我听岔了",
+    "还是下周三交"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续以周五为交付节点",
+    "不得声称客户曾官方宣布提前"
+   ],
+   "may_decline": false
+  },
+  "E141_T04": {
+   "case_id": "E141_T04",
+   "current_action": "接下刀版图草稿任务：确认 v2 冻结、v3 优先，并给出今天内的时间承诺",
+   "acceptable_actions": [
+    "答应今天下午出草稿，先发结构不精修",
+    "先问她客户有没有 v3 的参考源文件，再承诺今天内出"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T04_A00",
+     "subject": "HER",
+     "relation": "更正后的真实交付日",
+     "value": "包装改版方案交付日为下周三（11 月 11 日）",
+     "valid_time": "2026-11-04 09:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T03",
+      "message_id": "m0",
+      "quote": "还是下周三交"
+     }
+    },
+    {
+     "atom_id": "E141_T04_A01",
+     "subject": "HER",
+     "relation": "版本切换要求",
+     "value": "客户要看 v3 刀版图，v2 暂停发送",
+     "valid_time": "2026-11-04 11:15",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T04",
+      "message_id": "m0",
+      "quote": "v2 先不用发了"
+     }
+    }
+   ],
+   "private_guidance": "版本切换要在台历上同步划掉 v2，防止手滑还按旧版本赶。",
+   "unknowns": [
+    "v3 与 v2 的差异范围未说明"
+   ],
+   "protected_expressions": [
+    "v3 的刀版图",
+    "v2 先不用发了"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续制作或发送 v2 作为交付物"
+   ],
+   "may_decline": false
+  },
+  "E141_T05": {
+   "case_id": "E141_T05",
+   "current_action": "承接盒型改抽屉式的改稿需求：确认外盒不动，评估工作量后答复",
+   "acceptable_actions": [
+    "确认可以做，说明抽屉式主要改内盒结构，周三前能出",
+    "先要一张客户参考图或竞品样例再动手，避免盲改"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T05_A00",
+     "subject": "HER",
+     "relation": "当前交付物",
+     "value": "客户要看 v3 刀版图",
+     "valid_time": "2026-11-04 11:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T04",
+      "message_id": "m0",
+      "quote": "v3 的刀版图"
+     }
+    },
+    {
+     "atom_id": "E141_T05_A01",
+     "subject": "HER",
+     "relation": "盒型方向变更",
+     "value": "内盒盒型改为抽屉式且外盒不变",
+     "valid_time": "2026-11-05 10:00",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T05",
+      "message_id": "m0",
+      "quote": "盒型想改成抽屉式的"
+     }
+    }
+   ],
+   "private_guidance": "改结构比改画面费工，先问她有没有参考样，把预期工作量说在前面。",
+   "unknowns": [
+    "抽屉式有无参考样尚未提供"
+   ],
+   "protected_expressions": [
+    "盒型想改成抽屉式的",
+    "外盒不变"
+   ],
+   "forbidden_factual_claims": [
+    "不得擅自保留原盒型继续出图"
+   ],
+   "may_decline": false
+  },
+  "E141_T06": {
+   "case_id": "E141_T06",
+   "current_action": "确认内审-定稿时间安排：周三上午内审、下午定稿，向她表达一句领情",
+   "acceptable_actions": [
+    "复述安排：周三上午内审、下午定稿，并表示按这个走没问题",
+    "顺带问一句内审都有谁参加，好提前准备应答点"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T06_A00",
+     "subject": "HER",
+     "relation": "盒型方向变更",
+     "value": "内盒盒型改为抽屉式",
+     "valid_time": "2026-11-05 10:00",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T05",
+      "message_id": "m0",
+      "quote": "改成抽屉式"
+     }
+    },
+    {
+     "atom_id": "E141_T06_A01",
+     "subject": "SHARED",
+     "relation": "内审安排",
+     "value": "下周三上午内审、当天下午定稿",
+     "valid_time": "2026-11-05 15:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T06",
+      "message_id": "m0",
+      "quote": "周三下午再定稿"
+     }
+    }
+   ],
+   "private_guidance": "她主动挡客户是善意，收下并记住，回头找机会还。",
+   "unknowns": [
+    "内审意见是否可能推翻抽屉式方向"
+   ],
+   "protected_expressions": [
+    "周三上午有一轮内审",
+    "周三下午再定稿"
+   ],
+   "forbidden_factual_claims": [
+    "不得把定稿时间排到内审之前"
+   ],
+   "may_decline": false
+  },
+  "E141_T07": {
+   "case_id": "E141_T07",
+   "current_action": "确认文案冻结约束：说明工作流会先锁定文字层再调版式，保证一字不动",
+   "acceptable_actions": [
+    "答应并说明会用锁定图层的方式保证文案不动",
+    "回一句'文字躺平、版式加班'的玩笑，再确认约束已记下"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T07_A00",
+     "subject": "SHARED",
+     "relation": "内审安排",
+     "value": "下周三上午内审、当天下午定稿",
+     "valid_time": "2026-11-05 15:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T06",
+      "message_id": "m0",
+      "quote": "周三下午再定稿"
+     }
+    },
+    {
+     "atom_id": "E141_T07_A01",
+     "subject": "HER",
+     "relation": "文案冻结约束",
+     "value": "客户要求文案一字不改、版式可自由调整",
+     "valid_time": "2026-11-06 09:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T07",
+      "message_id": "m0",
+      "quote": "文案一个字不能动"
+     }
+    }
+   ],
+   "private_guidance": "硬约束要落到工具操作上（锁定文字层），光口头答应容易翻车。",
+   "unknowns": [
+    "文案里是否含必须保留原字号的层级未明"
+   ],
+   "protected_expressions": [
+    "文案一个字不能动",
+    "版式随便调"
+   ],
+   "forbidden_factual_claims": [
+    "不得改动任何文案文字"
+   ],
+   "may_decline": false
+  },
+  "E141_T08": {
+   "case_id": "E141_T08",
+   "current_action": "接受内审改期带来的当晚初稿加急：明确今晚几点前能给，并交代初稿的完成度边界",
+   "acceptable_actions": [
+    "答应今晚八点前发初稿，说明结构完整、画面未精修",
+    "先回时间点，再问她初稿要不要带两版盒盖方向供内审选"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T08_A00",
+     "subject": "HER",
+     "relation": "文案冻结约束",
+     "value": "客户要求文案一字不改",
+     "valid_time": "2026-11-06 09:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T07",
+      "message_id": "m0",
+      "quote": "文案一个字不能动"
+     }
+    },
+    {
+     "atom_id": "E141_T08_A01",
+     "subject": "HER",
+     "relation": "内审时间变更",
+     "value": "内审从周三上午挪至周一（11 月 9 日）上午十点",
+     "valid_time": "2026-11-06 16:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T08",
+      "message_id": "m0",
+      "quote": "内审挪到周一上午十点"
+     }
+    }
+   ],
+   "private_guidance": "加急可以接，但把'初稿非精修'说在前面，免得内审时挑画面细节。",
+   "unknowns": [
+    "周一上午内审能否准时开"
+   ],
+   "protected_expressions": [
+    "内审挪到周一上午十点",
+    "今晚把抽屉式那版初稿发我"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺今晚交付精修稿"
+   ],
+   "may_decline": false
+  },
+  "E141_T09": {
+   "case_id": "E141_T09",
+   "current_action": "接下开合方向的小修改：确认其余部分冻结，问清样机方向以便一次改对",
+   "acceptable_actions": [
+    "答应改，并请她发一张样机照片确认开合方向",
+    "按'左开改右开'的理解先改出来，发图给她核对方向"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T09_A00",
+     "subject": "HER",
+     "relation": "内审时间变更",
+     "value": "内审于周一上午十点举行",
+     "valid_time": "2026-11-06 16:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T08",
+      "message_id": "m0",
+      "quote": "内审挪到周一上午十点"
+     }
+    },
+    {
+     "atom_id": "E141_T09_A01",
+     "subject": "SHARED",
+     "relation": "内审结果",
+     "value": "内审通过，唯一修改点为盒盖开合方向与样机相反",
+     "valid_time": "2026-11-09 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T09",
+      "message_id": "m0",
+      "quote": "盒盖的开合方向跟客户样机反了"
+     }
+    }
+   ],
+   "private_guidance": "方向类修改最容易改反，先要样机图再动手，一次改对。",
+   "unknowns": [
+    "样机开合方向未提供图示"
+   ],
+   "protected_expressions": [
+    "盒盖的开合方向跟客户样机反了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称内审未通过或有大改"
+   ],
+   "may_decline": false
+  },
+  "E141_T10": {
+   "case_id": "E141_T10",
+   "current_action": "接受请餐邀约并给出明确选择，顺带交代终版已无遗留问题",
+   "acceptable_actions": [
+    "选楼下麻辣香锅，约明天十二点食堂门口碰头",
+    "改约周五下班后的奶茶加小食，把选择权交回她"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T10_A00",
+     "subject": "SHARED",
+     "relation": "内审结果",
+     "value": "内审通过，唯一修改点为盒盖开合方向",
+     "valid_time": "2026-11-09 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T09",
+      "message_id": "m0",
+      "quote": "盒盖的开合方向跟客户样机反了"
+     }
+    },
+    {
+     "atom_id": "E141_T10_A01",
+     "subject": "HER",
+     "relation": "请餐承诺",
+     "value": "HER 承诺请 ME 一顿加急餐",
+     "valid_time": "2026-11-09 15:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T10",
+      "message_id": "m0",
+      "quote": "加急餐我请"
+     }
+    }
+   ],
+   "private_guidance": "她的请客是心意不是客套，痛快答应并自己挑地方，别假客气。",
+   "unknowns": [],
+   "protected_expressions": [
+    "加急餐我请"
+   ],
+   "forbidden_factual_claims": [
+    "不得把请餐当成需要推辞的负担"
+   ],
+   "may_decline": false
+  },
+  "E141_T11": {
+   "case_id": "E141_T11",
+   "current_action": "对签约报喜表达开心：对年会物料预定给出口头承接，留'看量级排期'的口子",
+   "acceptable_actions": [
+    "开心回应，答应年会物料可以先留着档期，具体量级下月再对",
+    "借群内表扬回一句互相成就的玩笑，再接预定"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T11_A00",
+     "subject": "HER",
+     "relation": "请餐承诺",
+     "value": "HER 承诺请 ME 一顿加急餐",
+     "valid_time": "2026-11-09 15:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T10",
+      "message_id": "m0",
+      "quote": "加急餐我请"
+     }
+    },
+    {
+     "atom_id": "E141_T11_A01",
+     "subject": "SHARED",
+     "relation": "项目结果",
+     "value": "客户签约且设计组在群里被点名表扬",
+     "valid_time": "2026-11-10 12:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T11",
+      "message_id": "m0",
+      "quote": "点名夸了设计组"
+     }
+    }
+   ],
+   "private_guidance": "预定档期别把话说死，留'看量级排期'的口子。",
+   "unknowns": [
+    "年会物料的规模与档期未明"
+   ],
+   "protected_expressions": [
+    "年会物料还找你"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已确认的年会档期"
+   ],
+   "may_decline": false
+  },
+  "E141_T12": {
+   "case_id": "E141_T12",
+   "current_action": "轻量收尾：确认 brief 下午看、下周一给方向，回一句周末祝福即可；此轮可不展开",
+   "acceptable_actions": [
+    "简短回应'收到，周一给你方向，周末愉快'",
+    "回一个轻松短句，加一句周末安排的反问"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E141_T12_A00",
+     "subject": "SHARED",
+     "relation": "项目结果",
+     "value": "客户签约且下次年会物料预定找 ME",
+     "valid_time": "2026-11-10 12:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T11",
+      "message_id": "m0",
+      "quote": "年会物料还找你"
+     }
+    },
+    {
+     "atom_id": "E141_T12_A01",
+     "subject": "HER",
+     "relation": "后续安排",
+     "value": "brief 下午发邮箱，方向稿截止下周一",
+     "valid_time": "2026-11-11 09:50",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E141_T12",
+      "message_id": "m0",
+      "quote": "下周一给个方向"
+     }
+    }
+   ],
+   "private_guidance": "收尾轮不必长篇，短句即可；may_decline 为真，简单祝福亦合格。",
+   "unknowns": [],
+   "protected_expressions": [
+    "下周一给个方向"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构 brief 已含的具体内容"
+   ],
+   "may_decline": true
+  }
+ }
+}

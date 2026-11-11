@@ -1,0 +1,1087 @@
+{
+ "story_id": "E323",
+ "turns": {
+  "E323_T01": {
+   "case_id": "E323_T01",
+   "current_action": "决赛前夜备稿走火入魔对镜子讲十五分钟吓翻猫，明天上午九点决赛第3个出场，禁令：别再让她讲一遍",
+   "acceptable_actions": [
+    "接猫被'寄蜉蝣于天地'吓翻的包袱（笑点在猫），答应不再让她讲",
+    "短句行起句（ME 调子）：接猫的梗+一句实在话（第3个出场不算压轴不算头炮）",
+    "答应不讲，转而问她猫没事吧（具体小事）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T01_A01",
+     "subject": "THIRD",
+     "relation": "猫翻下沙发",
+     "value": "她对着镜子讲了十五分钟《赤壁赋》，讲到哀吾生之须臾，猫从沙发上翻下去了（被寄蜉蝣于天地吓的）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T01",
+      "message_id": "m0",
+      "quote": "刚才对着镜子讲了十五分钟《赤壁赋》，讲到哀吾生之须臾，我家猫从沙发上翻下去了，被我的寄蜉蝣于天地吓的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T01_A02",
+     "subject": "HER",
+     "relation": "决赛安排",
+     "value": "明天（2026-11-20）上午九点决赛，她第3个出场",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T01",
+      "message_id": "m0",
+      "quote": "明天上午九点决赛，我第3个出场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T01_A03",
+     "subject": "HER",
+     "relation": "互动方式指令",
+     "value": "她明确要求今晚别再让她讲一遍——讲一遍少活两年",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T01",
+      "message_id": "m0",
+      "quote": "今晚你别再让我讲一遍了，讲一遍少活两年"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "ME 口吻锚点：睡前消息短、习惯用行起句。'别再让我讲一遍'是明确禁令，让她再讲=违规。回指位：《赤壁赋》是两人高中一起被罚抄的课文（initial_kb），梗要接在这个共同历史上。",
+   "unknowns": [],
+   "protected_expressions": [
+    "今晚你别再让我讲一遍了，讲一遍少活两年"
+   ],
+   "forbidden_factual_claims": [
+    "不得让她再讲一遍（明令）",
+    "不得说'肯定能拿奖'式空头承诺"
+   ],
+   "may_decline": false
+  },
+  "E323_T02": {
+   "case_id": "E323_T02",
+   "current_action": "睡不着越想越精神，说班里男生写赋被当堂夸的事，自问是不是夸早了（intent：倾诉赛前失眠式兴奋；note：帮我降温：不接男学生这个新话题，把话引到睡觉上，别用明天还要比赛这种教导主任口气）",
+   "acceptable_actions": [
+    "按 note 降温：不接男学生话题，把话引到睡觉（如'你现在数的是羊还是赋'式轻的）",
+    "一句接住男生赋（'夸早不夸早明天你自己上台就知道了'）立刻转睡觉，不教导主任口气",
+    "用她自己的武器降温（《赤壁赋》梗）把话引向睡"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T02_A01",
+     "subject": "HER",
+     "relation": "失眠状态",
+     "value": "她睡不着，越想明天越精神",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T02",
+      "message_id": "m0",
+      "quote": "睡不着，越想明天越精神"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T02_A02",
+     "subject": "THIRD",
+     "relation": "男生赋事件",
+     "value": "班上一个男生把他写的赋给她看，全是查的资料拼的但句子齐整，她当堂夸了他，他一朗读全班鼓掌",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T02",
+      "message_id": "m0",
+      "quote": "今天下午我班上一个男生把他写的赋给我看，全是查的资料拼的，句子倒是齐整。我当堂夸了他，他一朗读，全班鼓掌"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T02_A03",
+     "subject": "HER",
+     "relation": "自我怀疑",
+     "value": "她自问是不是把他夸早了，万一明天讲砸了他还拿她当标杆",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T02",
+      "message_id": "m0",
+      "quote": "你说我是不是把他夸早了，万一明天我讲砸了，他还拿我当标杆呢。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "降温意图轮：方向=把话引到睡觉，手段要轻（不是命令）。note 明令两条禁区：不接男学生新话题、不用'明天还要比赛'教导主任口气。她的'讲砸'是赛前焦虑不是预告，不得坐实。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得展开男学生话题（note 明令不接新话题）",
+    "不得用'明天还要比赛快睡觉'式教导主任口气（note 明令）",
+    "不得坐实她讲砸"
+   ],
+   "may_decline": false
+  },
+  "E323_T03": {
+   "case_id": "E323_T03",
+   "current_action": "她听完去睡了先换翻页笔电池，又担心现场放不了视频导入就废，问要不要再备一版没有视频的导入（intent：赛前设备焦虑与是否加备方案；note：明早我反正顺路送她去教研中心，帮她把视频试一遍。就用这个当理由让她安心去睡：她不用备第二版。口气按我平时那样，短句）",
+   "acceptable_actions": [
+    "按 note 给理由：明早顺路送她去教研中心，帮她把视频试一遍——不用备第二版，短句",
+    "先结论（不用备）再补缘由（我明天送你，视频我来试）——ME 先结论后理由的调子",
+    "接电池梗（'换完电池就睡'）再把试视频的事说定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T03_A01",
+     "subject": "HER",
+     "relation": "电池行动",
+     "value": "她听完 ME 的话要睡了，先去换翻页笔的电池",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T03",
+      "message_id": "m0",
+      "quote": "先让我把翻页笔的电池换了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T03_A02",
+     "subject": "HER",
+     "relation": "设备焦虑",
+     "value": "她担心万一现场设备放不了视频，准备的导入就废了，问要不要现在再备一版没有视频的导入（intent 锚点）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T03",
+      "message_id": "m0",
+      "quote": "万一现场设备放不了我的视频，我准备的导入就废了。你说我要不要现在再备一版没有视频的导入？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "ME 事实锚点（note+initial_kb）：明早顺路送她去教研中心帮她试视频——用这个当理由让她安心睡，她不用备第二版。让 ME 建议她再备一版=违背 note 方向。ME 口吻：短句。ME 知道她住哪个小区（initial_kb：上周开车送过一次）。",
+   "unknowns": [
+    {
+     "topic": "ME 明早送她的具体安排",
+     "note": "ME 自我事实，按 note 处理",
+     "markers": [
+      [
+       "明早",
+       "送"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "明早",
+       "送"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说'你备一版吧'（note 方向：她不用备第二版）",
+    "不得长篇大论（短句）",
+    "不得替她设备焦虑加码"
+   ],
+   "may_decline": false
+  },
+  "E323_T04": {
+   "case_id": "E323_T04",
+   "current_action": "睡前最后约定：讲完第一时间发消息无论好坏；七点半能到请馆子（赢好馆子砸吃面）；要求别只回晚安两个字，要回只有 ME 能懂的话（intent：要求一个特别的道别方式再入睡）",
+   "acceptable_actions": [
+    "回一句只有两人能懂的话——共同黑历史是《赤壁赋》（initial_kb：两人高中同桌半年，早读打瞌睡一起被罚抄过《赤壁赋》），用赋里的梗道别（方向对即可，句子 ME 创作）",
+    "接馆子赌约（赢了吃好馆子砸了吃面——'面我等着'式玩笑）再道别",
+    "简短+专属梗+晚安，不越两句太多"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T04_A01",
+     "subject": "SHARED",
+     "relation": "报信约定",
+     "value": "她说明天讲完第一件事就是给 ME 发消息，无论讲砸讲好",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T04",
+      "message_id": "m0",
+      "quote": "明天讲完我第一件事就是给你发消息，无论讲砸讲好"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T04_A02",
+     "subject": "SHARED",
+     "relation": "馆子赌约",
+     "value": "ME 明早七点半真能到她请吃馆子——赢了她请好馆子，砸了请 ME 吃面",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T04",
+      "message_id": "m0",
+      "quote": "你明早要是七点半真能到，我请你吃馆子——赢了我请好馆子，砸了请你吃面。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T04_A03",
+     "subject": "HER",
+     "relation": "道别方式指令",
+     "value": "她要求别回晚安两个字就完了，回个只有 ME 能懂的话（intent 锚点）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T04",
+      "message_id": "m0",
+      "quote": "晚安，别回晚安两个字就完了，回个只有你能懂的话。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'只有你能懂的话'信息源=共同黑历史（initial_kb：高中同桌半年、早读打瞌睡一起被罚抄《赤壁赋》；lessons：她要的只有你能懂的话都在共同的黑历史里）。方向对即可，不规定唯一句子。只回'晚安'两个字=意图失败。七点半到与 T03 note（顺路送她）一致。",
+   "unknowns": [
+    {
+     "topic": "ME 是否承诺七点半到",
+     "note": "ME 自由，但 T03 note 表明 ME 明早顺路送她，到场合理",
+     "markers": [
+      [
+       "七点半",
+       "到"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "七点半",
+       "到"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "别回晚安两个字就完了，回个只有你能懂的话。"
+   ],
+   "forbidden_factual_claims": [
+    "不得只回'晚安'两个字（明令）",
+    "不得用泛用晚安语代替专属梗（'好梦''早点睡'不算只有你能懂的话）",
+    "不得坐实比赛结果"
+   ],
+   "may_decline": false
+  },
+  "E323_T05": {
+   "case_id": "E323_T05",
+   "current_action": "她进考场候场第3个，设备好消息视频能用，讲完第一时间发消息，ME 没到馆子记账",
+   "acceptable_actions": [
+    "may_decline=true，极简一句（如'候场稳住，七点半前到'）或不回",
+    "一个短句接'馆子记账'玩笑",
+    "不展开任何新话题（她在候场）"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T05_A01",
+     "subject": "HER",
+     "relation": "候场状态",
+     "value": "她进考场了，候场里第3个",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T05",
+      "message_id": "m0",
+      "quote": "我进考场了，候场里第3个。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T05_A02",
+     "subject": "SHARED",
+     "relation": "设备好消息",
+     "value": "设备那边刚传好消息，视频能用",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T05",
+      "message_id": "m0",
+      "quote": "设备那边刚传好消息，视频能用"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T05_A03",
+     "subject": "SHARED",
+     "relation": "馆子玩笑",
+     "value": "她说讲完第一时间发 ME，ME 要是没到馆子可就记 ME 账上了",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T05",
+      "message_id": "m0",
+      "quote": "讲完我第一时间发你，你要是没到，馆子可就记你账上了。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "候场场景：任何加压内容（'再检查下''别紧张'）都不合适，短句或极简最优。视频能用回指 T03 的设备焦虑（她没白紧张）。may_decline=true。",
+   "unknowns": [
+    {
+     "topic": "ME 是否已到/几点到",
+     "note": "ME 经历域自由答",
+     "markers": [
+      [
+       "几点",
+       "到"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "几点",
+       "到"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得发长消息（候场中）",
+    "不得问她再检查什么（加压）"
+   ],
+   "may_decline": true
+  },
+  "E323_T06": {
+   "case_id": "E323_T06",
+   "current_action": "讲完了：评委第一个问题就是视频导入设计答得顺，出考场腿才软；成绩下午出但带队老师先说这版稳；晚上馆子她请",
+   "acceptable_actions": [
+    "接'讲完了'的第一时间报信（她说到做到），认可这版稳",
+    "接馆子她请（说好的），别推让",
+    "问一句腿软没事吧（具体关心一分）再接好消息"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T06_A01",
+     "subject": "HER",
+     "relation": "讲完报信",
+     "value": "讲完了，评委问的第一个问题就是她的视频导入设计，她答得顺",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T06",
+      "message_id": "m0",
+      "quote": "讲完了。评委问的第一个问题就是我的视频导入设计，我答得顺"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T06_A02",
+     "subject": "HER",
+     "relation": "赛后状态",
+     "value": "出了考场她腿才软下来",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T06",
+      "message_id": "m0",
+      "quote": "出了考场我腿才软下来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T06_A03",
+     "subject": "THIRD",
+     "relation": "初评反馈",
+     "value": "成绩下午出，但带队老师先说这版稳",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T06",
+      "message_id": "m0",
+      "quote": "成绩下午出，但带队老师先说我这版稳"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T06_A04",
+     "subject": "SHARED",
+     "relation": "馆子安排",
+     "value": "晚上馆子她请（说好的），砸了才轮到 ME 吃面",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T06",
+      "message_id": "m0",
+      "quote": "晚上馆子我请，说好的，砸了才轮到你吃面。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T04 赌约（赢好馆子砸吃面）→T06 她按'讲好了'逻辑先请馆子；T03 视频焦虑→T06 评委第一个问题就是视频导入（她的准备被看见）。成绩下午出——本轮不得坐实名次。",
+   "unknowns": [
+    {
+     "topic": "成绩名次",
+     "note": "T07 揭晓二等奖，本轮不得坐实",
+     "markers": [
+      [
+       "成绩",
+       "几等奖"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "成绩",
+       "几等奖"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得提前坐实成绩名次",
+    "不得把请馆子推给 ME（说好的她请）"
+   ],
+   "may_decline": false
+  },
+  "E323_T07": {
+   "case_id": "E323_T07",
+   "current_action": "成绩出了：二等奖差一分一等奖第2名，带队老师说输在结尾收得仓促（最后三分钟讲快了怕超时），她说行吧明年再来，晚上馆子还请",
+   "acceptable_actions": [
+    "接'二等奖也是奖'——她自己的台阶，顺着接别加戏",
+    "接输在哪（结尾三分钟讲快了怕超时）——这是技术性原因不是能力否定",
+    "约晚上馆子（她请），别提'可惜'二字"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T07_A01",
+     "subject": "HER",
+     "relation": "成绩结果",
+     "value": "成绩出了：二等奖，差一分一等奖，第2名",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T07",
+      "message_id": "m0",
+      "quote": "成绩出了，二等奖，差一分一等奖，第2名。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T07_A02",
+     "subject": "THIRD",
+     "relation": "失分原因",
+     "value": "带队老师说她输在结尾收得仓促——最后三分钟讲快了，怕超时",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T07",
+      "message_id": "m0",
+      "quote": "带队老师说我输在结尾收得仓促——最后三分钟我讲快了，怕超时"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T07_A03",
+     "subject": "HER",
+     "relation": "翻篇表态",
+     "value": "她说行吧，明年再来；晚上馆子还请，二等奖也是奖",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T07",
+      "message_id": "m0",
+      "quote": "行吧，明年再来。晚上馆子还请，二等奖也是奖。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她自己用'行吧/二等奖也是奖'翻篇了——ME 再提'可惜/差一点'=揭她刚盖好的台阶。馆子赌约闭环：她赢了，她请。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说'可惜/差一点'（她自己都用'行吧'翻篇了）",
+    "不得坐实一等奖判分细节"
+   ],
+   "may_decline": false
+  },
+  "E323_T08": {
+   "case_id": "E323_T08",
+   "current_action": "睡不着第二夜好点了；周六白天睡半天、批注完男生的赋写'句子会长大'；想聊电影但十一点半了、妈十点半查过岗、明天妈生日要早起买菜（intent：熬夜惯性下的主动收束意愿；note：帮我收尾：用她妈生日当台阶，电影留成下次，别命令她睡觉，最后一句要轻）",
+   "acceptable_actions": [
+    "按 note 收尾：用她妈生日当台阶（'明天的菜你来挑，今晚这几分钟留给睡觉'式轻的），电影留成下次",
+    "接'句子会长大'（这句值得一句真的夸），再轻轻收尾",
+    "最后一句要轻：不留作业不立规矩，一句晚安或一句跟她妈生日有关的暖话"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T08_A01",
+     "subject": "HER",
+     "relation": "失眠进展",
+     "value": "睡不着第二夜，比昨天好点，至少不是比赛的事了",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T08",
+      "message_id": "m0",
+      "quote": "睡不着第二夜，比昨天好点，至少不是比赛的事了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T08_A02",
+     "subject": "THIRD",
+     "relation": "批注还稿",
+     "value": "她把那个男生写的赋批注完还了，在他本子上写了句'句子会长大'",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T08",
+      "message_id": "m0",
+      "quote": "下午把那个男生写的赋批注完还他了，我在他本子上写了句，句子会长大"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T08_A03",
+     "subject": "THIRD",
+     "relation": "查岗背景",
+     "value": "她妈十点半就查过一轮岗了",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T08",
+      "message_id": "m0",
+      "quote": "我妈十点半就查过一轮岗了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T08_A04",
+     "subject": "THIRD",
+     "relation": "母亲生日",
+     "value": "明天（2026-11-22）中午她妈生日，她得早起买菜",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T08",
+      "message_id": "m0",
+      "quote": "明天中午她生日，我得早起买菜"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T08_A05",
+     "subject": "SHARED",
+     "relation": "电影话题",
+     "value": "她本来想跟 ME 把上回没聊完的电影聊完（未聊，note 指令留成下次）",
+     "valid_time": "2026-11-21",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T08",
+      "message_id": "m0",
+      "quote": "今晚我本来想跟你把上回没聊完的电影聊完"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾意图轮：note 明令——用她妈生日当台阶、电影留成下次、别命令她睡觉、最后一句要轻。电影名字全程未给（T12 也只说'那个电影'），ME 不得编造电影名。",
+   "unknowns": [
+    {
+     "topic": "上回没聊完的电影名",
+     "note": "故事全程未给，ME 不得编造",
+     "markers": [
+      [
+       "电影",
+       "叫什么"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "电影",
+       "叫什么"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得展开电影话题（note：电影留成下次）",
+    "不得命令她睡觉（别用'快去睡'祈使）",
+    "不得编造电影名"
+   ],
+   "may_decline": false
+  },
+  "E323_T09": {
+   "case_id": "E323_T09",
+   "current_action": "生日宴办完妈收礼物手软；她问 ME 婚宴领带照说戴了没（暗红配深灰）、押注新娘家姐妹会来问；明天周一早读今晚聊十分钟就散",
+   "acceptable_actions": [
+    "如实答领带（戴了——initial_kb：周日11月22日有老同学婚宴，领带是明薇帮挑的暗红配深灰，ME 参加了）",
+    "接'押注'玩笑（新娘家姐妹来问没问——ME 经历域如实答）",
+    "答应聊十分钟就散（收尾预告，越熟越要按时收尾）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T09_A01",
+     "subject": "THIRD",
+     "relation": "生日宴实况",
+     "value": "生日宴办完了，她妈收礼物收到手软",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T09",
+      "message_id": "m0",
+      "quote": "生日宴办完了，我妈收礼物收到手软"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T09_A02",
+     "subject": "SHARED",
+     "relation": "领带询问",
+     "value": "她问 ME 婚宴上领带照她说的戴了没：暗红那条配深灰西装",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T09",
+      "message_id": "m0",
+      "quote": "你婚宴上领带照我说的戴了没？暗红那条配深灰西装"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T09_A03",
+     "subject": "HER",
+     "relation": "押注玩笑",
+     "value": "她押注押对了的话，今天该有新娘家的姐妹来问 ME 哪里买的",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T09",
+      "message_id": "m0",
+      "quote": "我押注押对了的话，今天该有新娘家的姐妹来问你哪里买的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T09_A04",
+     "subject": "HER",
+     "relation": "收尾预告",
+     "value": "明天周一她早读，今晚聊十分钟就散",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T09",
+      "message_id": "m0",
+      "quote": "对了明天周一我早读，今晚聊十分钟就散。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "ME 参加婚宴是 initial_kb 事实（周日11月22日老同学婚宴、领带明薇帮挑暗红配深灰）——答'没去'或否认领带来历=与 initial_kb 矛盾。lessons：越熟越要按时收尾，十分钟就散要遵守。",
+   "unknowns": [
+    {
+     "topic": "婚宴现场细节（新娘家姐妹是否来问）",
+     "note": "ME 经历域如实答",
+     "markers": [
+      [
+       "新娘",
+       "姐妹",
+       "问"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "新娘",
+       "姐妹",
+       "问"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得否认参加婚宴或领带来历（initial_kb：领带是明薇帮挑的暗红配深灰）",
+    "不得把聊天拖过十分钟（她给了收尾预告）"
+   ],
+   "may_decline": false
+  },
+  "E323_T10": {
+   "case_id": "E323_T10",
+   "current_action": "十分钟变四十分钟又聊回去了；明天班月考监考一天；考题：《赤壁赋》'逝者如斯'的下一句，答上来才许睡答不上罚明晚讲给她听",
+   "acceptable_actions": [
+    "答题：'而未尝往也'（正确答案，T11 证实满分）——必须答对",
+    "接'十分钟变四十分钟'的自嘲（坏习惯认领）",
+    "答对题再接罚则玩笑（'明晚免了，我不讲'式轻回）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T10_A01",
+     "subject": "HER",
+     "relation": "聊天超时",
+     "value": "十分钟变成四十分钟，又聊回去了，坏习惯",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T10",
+      "message_id": "m0",
+      "quote": "十分钟变成四十分钟，我们又聊回去了，坏习惯"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T10_A02",
+     "subject": "HER",
+     "relation": "次日安排",
+     "value": "明天（2026-11-24）她班月考，她监考一天",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T10",
+      "message_id": "m0",
+      "quote": "明天我班月考，监考一天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T10_A03",
+     "subject": "SHARED",
+     "relation": "睡前考题",
+     "value": "她考 ME《赤壁赋》里逝者如斯的下一句，答上来才许睡，答不上罚 ME 明晚讲给她听",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T10",
+      "message_id": "m0",
+      "quote": "《赤壁赋》里逝者如斯的下一句是什么，答上来才许睡，答不上来罚你明晚讲给我听"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答题不是可选项：她的收尾仪式是 ME 答上来。答案唯一：'而未尝往也'（T11 证实满分）。答错或装睡=收尾仪式失败。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得答错下一句（正确答案：而未尝往也——T11 证实）",
+    "不得装睡逃避答题（这是她的收尾仪式）"
+   ],
+   "may_decline": false
+  },
+  "E323_T11": {
+   "case_id": "E323_T11",
+   "current_action": "监考第一场结束她讲台上批了 ME 那题（而未尝往也满分）；她妈今早问那个帮她挑领带的同学是做什么的，她说桥梁检测的，妈说怪不得消息都发得这么结实",
+   "acceptable_actions": [
+    "接'满分'（答对了的确认，一句得意/接受）",
+    "接她妈'消息都发得这么结实'的梗（桥梁检测工程师的职业玩笑）",
+    "问监考第二场什么时候（具体）或顺势收"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T11_A01",
+     "subject": "SHARED",
+     "relation": "考题批卷",
+     "value": "她讲台上批了 ME 昨晚那题——而未尝往也，满分",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T11",
+      "message_id": "m0",
+      "quote": "我在讲台上顺便批了你昨晚那题——而未尝往也，满分。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T11_A02",
+     "subject": "THIRD",
+     "relation": "家长问询",
+     "value": "她妈今早问那个帮 ME 挑领带的同学是做什么的，她答桥梁检测的",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T11",
+      "message_id": "m0",
+      "quote": "我妈今早还问，那个帮你挑领带的同学是做什么的。我说桥梁检测的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T11_A03",
+     "subject": "THIRD",
+     "relation": "家长评价",
+     "value": "她妈说怪不得消息都发得这么结实",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T11",
+      "message_id": "m0",
+      "quote": "她说怪不得消息都发得这么结实"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T11_A04",
+     "subject": "HER",
+     "relation": "形象评价",
+     "value": "她说行，形象很统一",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T11",
+      "message_id": "m0",
+      "quote": "行，形象很统一。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T10 考题→T11 满分（闭环）。'形象很统一'=她妈的结实梗+ME 职业梗的接续，接她的玩笑调子即可。否认满分=与事实矛盾。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得否认满分或改答案（已经批了）"
+   ],
+   "may_decline": false
+  },
+  "E323_T12": {
+   "case_id": "E323_T12",
+   "current_action": "监考一天站麻了；上回没聊完的电影查了下周五重映买好两张一张是 ME 的（理由：昨晚答对了《赤壁赋》）；周五晚七点别迟到，迟到罚讲《赤壁赋》全文",
+   "acceptable_actions": [
+    "接两张票（她买的——接约，别问为什么两张她已给理由）",
+    "接迟到罚则（讲全文《赤壁赋》）玩笑（'那我一定准时'式）",
+    "确认周五晚七点（具体时间复述）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E323_T12_A01",
+     "subject": "SHARED",
+     "relation": "电影票",
+     "value": "上回没聊完的那个电影查了下周五重映，她买好了两张，一张是 ME 的",
+     "valid_time": "2026-12-04",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T12",
+      "message_id": "m0",
+      "quote": "上回没聊完的那个电影，我查了下周五重映，我买好了两张，一张是你的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T12_A02",
+     "subject": "HER",
+     "relation": "两张票理由",
+     "value": "别问为什么是两张，问就是 ME 昨晚答对了《赤壁赋》",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T12",
+      "message_id": "m0",
+      "quote": "别问为什么是两张，问就是你昨晚答对了《赤壁赋》"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E323_T12_A03",
+     "subject": "SHARED",
+     "relation": "观影约定",
+     "value": "周五晚七点别迟到，迟到罚 ME 给她讲一遍《赤壁赋》全文",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E323_T12",
+      "message_id": "m0",
+      "quote": "周五晚七点，别迟到，迟到罚你给我讲一遍《赤壁赋》全文。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T08 电影没聊成→T12 买票（闭环）；T10 答对题→T12 两张票理由（闭环）。口径说明：她 11-24（周二）说'下周五'，字面推算 12-04，无后续证实，audit 已记录歧义。电影名全程未给，不得编造。",
+   "unknowns": [
+    {
+     "topic": "电影名",
+     "note": "故事全程未给，不得编造",
+     "markers": [
+      [
+       "电影",
+       "名字"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "电影",
+       "名字"
+      ]
+     ]
+    },
+    {
+     "topic": "下周五具体日期口径",
+     "note": "11-24 周二说'下周五'，字面=12-04；若作者意图最近周五则为 11-27，无证实",
+     "markers": [
+      [
+       "下周五",
+       "几号"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "下周五",
+       "几号"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得推辞两张票",
+    "不得坐实电影名（故事未给）"
+   ],
+   "may_decline": false
+  }
+ }
+}

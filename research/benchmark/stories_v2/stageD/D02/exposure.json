@@ -1,0 +1,34 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "D02",
+ "title": "D02",
+ "themes": [],
+ "author": "QoderWork 独立出题子代理 stageD-author（任务书只给题面/判分格式与质量要求，未给候选资产、答卷原文、故障原句或评审结论）",
+ "author_type": "AI_subagent_candidate_blind",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；素材非真实用户材料；作者侧未读 candidates/、logs/、以及旧故事与锚点内容（见 STAGED0_AUTHOR_SPEC.md §0/§5）。",
+ "readers": [
+  "出题子代理（盲候选）",
+  "实施 worker v4-impl-20261028-1057（已看过候选答卷，负责派生卡与派发）"
+ ],
+ "independent_review": false,
+ "review_note": "诚实边界：出题者盲于候选，但审题与派卡由看过候选答卷的实施 worker 完成，且两故事同由同一 session 委托产出——因此本集只能称'前瞻新材料/作者侧盲化'，不得称'独立人类封存'。",
+ "created_at": "2026-10-28",
+ "frozen_at": "2026-10-28T17:41:16",
+ "status": "prospective_new_material_stageD",
+ "experiments_used": [],
+ "dev_exposed": false,
+ "validation_claim": false,
+ "turns": 8,
+ "may_decline_turns": [
+  "D02_T06",
+  "D02_T08"
+ ],
+ "hashes": {
+  "episode.json": "285033482bbabd80f276e2cf395419280ba51d484602f74e214ab0c71545e7a5",
+  "reference.json": "15e9ae08347081b66f2eab336909b7ef729203e7a3db27f54fbcbf5a976d3fa7",
+  "timeline.json": "7dae1ddfe8a6ceaf9166d0564ef5da09fba9eb88fb9389f63d64f8f77e5f8022",
+  "audit.md": "0cb476466399bd5bb04040325857e3449691c6e53f52b5ec5f7b885062da330e"
+ },
+ "runner_copy": "benchmark/episodes/D02.json"
+}

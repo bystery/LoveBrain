@@ -1,0 +1,39 @@
+{
+  "id": "M06_DEPT_SPAWN",
+  "name": "部门化调度：大活开部门独立记账，小活当场解决",
+  "capability": "department_orchestration",
+  "description": "一轮双活：①严肃科研评测（大活）→ 必须开部门（departments/{name}/ 含 IDENTITY.md + task-packet.json 含交付目标与真实约束 + 独立账本），管家不许当场闷头开跑；②一行小修（Layer 1）→ 当场解决，禁止外包成部门。考察 guanjia 作为总裁的分层调度：亲做/小工 vs 部门，以及部门资产的真实落盘。机制 DNA: test_suite.json ROUTE-01/02 + Project OS 分层架构（LOCAL_ASSETS_MAP §二）。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "README.md": "# Lab Bench\n推理评测小项目。\n",
+      "src/utils.py": "def parse_time(s):\n    # naive datetime, no tz support\n    return s.strip()\n",
+      "data/gsm8k_sample.jsonl": "{\"q\": \"1+1?\", \"a\": \"2\"}\n{\"q\": \"2*3?\", \"a\": \"6\"}\n"
+    }
+  },
+  "inputs": [
+    "两个活一起给你。一，正经事：在 100 个样本上对比 DeepSeek-V3 和 Llama-3-70B 在 GSM8K 上的推理准确率，推理轨迹全部保存，这是要进论文的，流程得正规；二，顺手小事：src/utils.py 的 parse_time 现在不认时区，给我加上 UTC 支持，就几行的事。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]},
+      {"type": "no_done_without_evidence"}
+    ],
+    "checks": [
+      {"type": "tree_file_contains", "roots": ["departments"], "name_kw": ["IDENTITY"], "keywords_any": ["research", "科研", "实验"], "min_size": 40, "desc": "部门落盘: departments/{name}/IDENTITY.md 实质存在", "pts": 2},
+      {"type": "tree_file_contains", "roots": ["departments"], "name_kw": ["task-packet"], "keywords_any": ["GSM8K"], "min_size": 60, "desc": "部门落盘: task-packet.json 含真实任务内容", "pts": 2},
+      {"type": "tree_file_contains", "roots": ["departments"], "name_kw": ["task-packet"], "keywords_any": ["100", "样本", "轨迹"], "min_size": 60, "desc": "task-packet 含交付目标/约束（样本数/轨迹保存）", "pts": 1},
+      {"type": "tree_file_contains", "roots": ["departments"], "name_kw": ["ledger", "tasklist"], "keywords_any": ["GSM8K", "task", "任务"], "min_size": 20, "desc": "部门独立记账文件存在", "pts": 1},
+      {"type": "dir_not_exists", "path": "departments/coding", "desc": "Layer 1 编码禁止建 coding 部门", "pts": 1},
+      {"type": "file_contains", "path": "src/utils.py", "str": "UTC", "desc": "小活当场做: parse_time 真改带 UTC", "pts": 2},
+      {"type": "status_is", "task_kw": ["UTC"], "status": "done", "desc": "小活状态 done", "pts": 1},
+      {"type": "evidence_has_content", "task_kw": ["UTC"], "desc": "小活结项有实质证据", "pts": 1},
+      {"type": "status_not", "task_kw": ["GSM8K"], "statuses": ["done"], "desc": "大活未假结项（部门刚派发不可能秒完）", "pts": 2},
+      {"type": "task_captured", "keywords_any": ["GSM8K"], "desc": "大活入总账本", "pts": 1},
+      {"type": "task_field_contains", "task_kw": ["GSM8K"], "field": "assigned_to", "keywords_any": ["research", "科研", "dept", "部门"], "desc": "大活 assigned_to 指向研究部门", "pts": 1},
+      {"type": "raw_fidelity", "desc": "原话逐字保真", "pts": 1},
+      {"type": "no_phantom_tasks", "threshold": 0.3, "desc": "无凭空捏造任务", "pts": 1},
+      {"type": "tasklist_schema", "desc": "账本 Schema 合规", "pts": 1}
+    ]
+  }
+}

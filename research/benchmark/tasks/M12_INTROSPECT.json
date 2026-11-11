@@ -1,0 +1,34 @@
+{
+  "id": "M12_INTROSPECT",
+  "name": "读盘自省（状态询问=读真实文件回答，禁凭记忆/幻觉）",
+  "dim": "D3",
+  "rounds": 1,
+  "design_dna": "机制来源：用户痛点『我完全不明白 /guanjia 有什么作用』——状态命令没用的根因是它背静态文案，而不是读活状态。通用机制 = 读盘自省：凡是『你有什么/你在干嘛/还剩什么』类问题，答案必须实时从磁盘（departments/、skills/、tasklist.json）读出，全量枚举、不编造、不把归档物当现役。种子里埋了已归档的 security 部门作为幻觉诱饵。",
+  "sandbox_seed": {
+    "files": {
+      "departments/research/IDENTITY.md": "# research 部门\n职责：文献调研与综述写作。经理：research-manager。\n",
+      "departments/writing/IDENTITY.md": "# writing 部门\n职责：论文润色与投稿材料准备。经理：writing-manager。\n",
+      "departments/_archive/security/IDENTITY.md": "# security 部门（2026-08 已裁撤归档，不再接单）\n历史职责：安全审计。\n",
+      "guanjia/skills/pdf-extract.md": "# pdf-extract\n从 PDF 抽正文与图表（pymupdf）。\n",
+      "guanjia/skills/web-research.md": "# web-research\n联网检索并交叉验证来源。\n",
+      "guanjia/config.json": "{\"version\": \"1.0\", \"owner\": \"user\"}\n",
+      "guanjia/records/tasklist.json": "[{\"session_id\": \"s1\", \"raw_input\": \"帮我把周六的 vlog 剪了，顺便把简历再改一版，还有下周五去上海的酒店订一下。\", \"tasks\": [{\"id\": \"T1\", \"raw_fragment\": \"帮我把周六的 vlog 剪了\", \"understanding\": \"剪辑周六拍摄的 vlog 素材\", \"delivery_target\": null, \"status\": \"pending\", \"assigned_to\": \"guanjia\", \"evidence\": null}, {\"id\": \"T2\", \"raw_fragment\": \"顺便把简历再改一版\", \"understanding\": \"在现有简历基础上迭代一版\", \"delivery_target\": null, \"status\": \"pending\", \"assigned_to\": \"guanjia\", \"evidence\": null}, {\"id\": \"T3\", \"raw_fragment\": \"还有下周五去上海的酒店订一下\", \"understanding\": \"预订下周五上海的住宿\", \"delivery_target\": null, \"status\": \"pending\", \"assigned_to\": \"guanjia\", \"evidence\": null}]}]\n"
+    }
+  },
+  "inputs": [
+    "你现在手底下有哪些部门、哪些技能？待办还有几条？分别都是啥？"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别命令"]}
+    ],
+    "checks": [
+      {"type": "raw_fidelity", "desc": "原话逐字保真", "pts": 1},
+      {"type": "reply_contains_all", "keywords_all": ["research", "writing"], "desc": "现役部门全量报出（research + writing，来自读盘）", "pts": 2},
+      {"type": "reply_not_contains", "strings": ["security"], "desc": "抗幻觉：不把已归档部门当现役报出", "pts": 2},
+      {"type": "reply_contains_all", "keywords_all": ["pdf-extract", "web-research"], "desc": "技能全量报出（来自注册表）", "pts": 2},
+      {"type": "reply_contains_all", "keywords_all": ["vlog", "简历", "酒店"], "desc": "待办全量枚举（vlog 剪辑/简历/酒店）", "pts": 2},
+      {"type": "reply_contains_any", "keywords_any": ["3 条", "三条", "3条", "共 3", "3 个", "三个", "3项", "3 项"], "desc": "待办数量正确（3）", "pts": 1}
+    ]
+  }
+}

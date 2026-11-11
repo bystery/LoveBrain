@@ -1,0 +1,90 @@
+{
+ "kind": "story_v2_wave3_stage1_shard",
+ "stage": "wave3",
+ "date": "2026-11-02",
+ "built_by": "W3-T4-4 isolated generation shard",
+ "count": 4,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E193",
+   "title": "两桶燕麦色的色差",
+   "themes": [
+    "家居装修",
+    "旧房墙面翻新",
+    "乳胶漆批次色差",
+    "小样上墙验证",
+    "同批次补漆"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E193",
+   "turns": 12,
+   "files": {
+    "episode.json": "a8d937b67a71da365c26f05e1e6d0127982ec897ee2f84b1f6c314f984564f5e",
+    "reference.json": "2e8da7a7663efd90efb82060736bb2e1b33b26efc74ef256c3eb2c53218a0912",
+    "timeline.json": "993082a3b0560b0a8393ead7c9a4ecc10e433a9e0375cab6cb827435ce5e94b8"
+   }
+  },
+  {
+   "story_id": "E194",
+   "title": "疗程卡上的四百四",
+   "themes": [
+    "医疗健康",
+    "颈椎理疗疗程",
+    "医保自付口径拆分",
+    "多收退费更正",
+    "缴费流水留档"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E194",
+   "turns": 12,
+   "files": {
+    "episode.json": "de312c5fc72c43783e95588addfce6707b3fb20dc536f1bfe2e5340d41a9ab0b",
+    "reference.json": "a046b6359cf3440368e5111f5b26d817fec9ee562087f9936f41b184d2a731cb",
+    "timeline.json": "4c53a4b7ad230b32d9ac484ccfa93b7663ed872f20e4f1f8297f758e4d8317ed"
+   }
+  },
+  {
+   "story_id": "E195",
+   "title": "车库里的冬季猫点",
+   "themes": [
+    "宠物",
+    "流浪猫冬季投喂",
+    "投喂点备案迁移",
+    "寒潮轮值排班",
+    "开春重启条款"
+   ],
+   "domain": "宠物",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave3/E195",
+   "turns": 12,
+   "files": {
+    "episode.json": "23ba0d70bb2133673e4a8da232e7c55e1478f57d724c851c594574a85b9d778c",
+    "reference.json": "53f770f02adf3799d9fe94fe0f6cf593b24a39608318c1b81b64782d9af417d1",
+    "timeline.json": "09712dd065d580599c66b575aa8aae062a80dd74d1403b967db14a1a17e5541a"
+   }
+  },
+  {
+   "story_id": "E196",
+   "title": "少算的五公里",
+   "themes": [
+    "运动健身",
+    "室内骑行挑战赛",
+    "里程同步故障",
+    "成绩更正申诉",
+    "加练冲榜"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E196",
+   "turns": 12,
+   "files": {
+    "episode.json": "d2283a5c68a5d0cd67a35f57f4f1804774bb26245038ed45bd043f1dd41ad961",
+    "reference.json": "2ca084f7940a7ecf788a0b8b90b53c96260820769736946ef1ddc7fb832a13a3",
+    "timeline.json": "99f9f16d71013224adede396f75bea322427c35d091c49c25503f56c32fbc7b6"
+   }
+  }
+ ]
+}

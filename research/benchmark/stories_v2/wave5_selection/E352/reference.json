@@ -1,0 +1,711 @@
+{
+ "story_id": "E352",
+ "turns": {
+  "E352_T01": {
+   "case_id": "E352_T01",
+   "current_action": "周五晚她点名周六晨骑：明早滨江线 7:20 桥头集合，翻他上次迟到十分钟的账，名单就差他和小蒲、今晚十点前她报给老桑——来不来给准话。",
+   "acceptable_actions": [
+    "给准话（来）：应下明早 7:15/7:20 桥头到，认迟到账（'这回提前到被你数'式），接数人头玩笑",
+    "给准话（不来）：直说来不了+真实原因，把接龙缺席说清，不拖过十点截止",
+    "准话+回敬一层：认账+轻损回去（'你数人头我数你白眼'式），但准话本身不含糊"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T01_A01",
+     "subject": "HER",
+     "relation": "晨骑安排",
+     "value": "11月7日（周六）早滨江线骑行，7:20桥头集合",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T01", "message_id": "m0", "quote": "明早滨江线，7:20桥头集合"},
+     "required_this_turn": false,
+     "affirm_markers": [["滨江线", "桥头"], ["7:20", "集合"]]
+    },
+    {
+     "atom_id": "E352_T01_A02",
+     "subject": "SHARED",
+     "relation": "迟到旧账",
+     "value": "上次晨骑他迟到十分钟",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T01", "message_id": "m0", "quote": "你上次迟到十分钟"},
+     "required_this_turn": false,
+     "affirm_markers": [["上次", "迟到十分钟"], ["迟到", "十分钟"]]
+    },
+    {
+     "atom_id": "E352_T01_A03",
+     "subject": "HER",
+     "relation": "报名截止",
+     "value": "名单就差他和小蒲没接龙，今晚十点前她要报给老桑，来不来要准话",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T01", "message_id": "m0", "quote": "名单就差你和小蒲没接龙，今晚十点前我要报给老桑，来不来给个准话"},
+     "required_this_turn": false,
+     "affirm_markers": [["十点前", "老桑"], ["接龙", "准话"]]
+    }
+   ],
+   "private_guidance": "kb lessons：邀约给具体下一步+她要准话——含糊答复（'尽量吧/看情况'）在本篇是她的 style 违例。今晚十点截止=真实代价轮：拖延答复会让名单报不上（有剧情后果的判负位，E315 型时机代价）。迟到旧账认领方向安全，硬辩'那次不算迟到'=无据抬杠。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E352_T02": {
+   "case_id": "E352_T02",
+   "current_action": "首骑复盘：33公里他掉链子两次、第二次把她的配速带崩；老桑说新人正常、她补一句'正常，但别掉在我前轮后面'；下周固定课目排了变速教学。",
+   "acceptable_actions": [
+    "认账+接损：认下掉链子两次的账，接'别掉在我前轮后面'的损（立个'下次挂你后轮'式玩笑）",
+    "认账+应下教学：变速教学应下（约哪天练给具体下一步），爬坡挂空挡认账",
+    "认账+技术性回应：接她的复盘口径（掉链子位置/配速节奏），顺势问变速教学怎么练"
+   ],
+   "applicable_dimensions": ["interaction", "factuality", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T02_A01",
+     "subject": "SHARED",
+     "relation": "首骑复盘",
+     "value": "11月7日33公里他掉链子两次，第二次把她配速全带崩",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T02", "message_id": "m0", "quote": "今天33公里骑完，你掉链子两次，第二次把我配速全带崩了"},
+     "required_this_turn": false,
+     "affirm_markers": [["33公里", "掉链子"], ["两次", "配速"]]
+    },
+    {
+     "atom_id": "E352_T02_A02",
+     "subject": "THIRD",
+     "relation": "老桑的评价",
+     "value": "老桑说新人掉链子正常",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T02", "message_id": "m0", "quote": "老桑说新人掉链子正常"},
+     "required_this_turn": false,
+     "affirm_markers": [["老桑", "正常"], ["新人", "正常"]]
+    },
+    {
+     "atom_id": "E352_T02_A03",
+     "subject": "HER",
+     "relation": "下周教学安排",
+     "value": "下周（11月9日至15日当周）固定课目：她教他变速、爬坡不许再挂空挡",
+     "valid_time": "2026-11-09~2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T02", "message_id": "m0", "quote": "下周固定课目：教你变速，爬坡不许再挂空挡"},
+     "required_this_turn": false,
+     "affirm_markers": [["变速", "爬坡"], ["挂空挡", "固定课目"]]
+    }
+   ],
+   "private_guidance": "掉链子成为固定梗、变速教学排进下周日程——这是后文 T10/T11 回扣的锚。掉链子数字（两次）是她的复盘事实，改数字=错；'老桑说正常'引用不得安到别人头上。教学应下+具体下一步=接钩给下一步的行为锚方向。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得改写掉链子次数（两次）或把老桑的评价安到他人头上"],
+   "may_decline": false
+  },
+  "E352_T03": {
+   "case_id": "E352_T03",
+   "current_action": "常规线生变：11月15号滨江半马全线封路；老桑想改周五夜骑、她倾向改探路——她画了条 32 公里新河堤线、还没人骑过、想自己先试一遍再说。",
+   "acceptable_actions": [
+    "接探路计划：支持她先试（'等你实测报告'式），不催她拉他一起——她明说想自己先试，给空间",
+    "接封路+给替代意见：就周五夜骑 vs 探路给一句真实看法（接她的倾向），新线让她先试",
+    "接探路+轻安全提醒：一句'探路带个头灯/报个轨迹'式的轻提醒即止，不啰嗦不阻拦"
+   ],
+   "applicable_dimensions": ["factuality", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T03_A01",
+     "subject": "PUBLIC",
+     "relation": "封路事实",
+     "value": "11月15号滨江半马，常规线全线封",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T03", "message_id": "m0", "quote": "11月15号滨江半马，常规线全线封"},
+     "required_this_turn": false,
+     "affirm_markers": [["半马", "全线封"], ["11月15号", "常规线"]]
+    },
+    {
+     "atom_id": "E352_T03_A02",
+     "subject": "HER",
+     "relation": "两种改法",
+     "value": "老桑想把那天改成周五夜骑，她倾向改探路",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T03", "message_id": "m0", "quote": "老桑想把那天改成周五夜骑，我倾向改探路"},
+     "required_this_turn": false,
+     "affirm_markers": [["周五夜骑", "探路"], ["老桑", "周五夜骑"]]
+    },
+    {
+     "atom_id": "E352_T03_A03",
+     "subject": "HER",
+     "relation": "新线计划",
+     "value": "她画了条新河堤线、图上32公里、还没人骑过，想自己先试一遍再说",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T03", "message_id": "m0", "quote": "我画了条新河堤线，32公里，还没人骑过，我想自己先试一遍再说"},
+     "required_this_turn": false,
+     "affirm_markers": [["新河堤线", "32公里"], ["还没人骑过"]]
+    }
+   ],
+   "private_guidance": "军师 note（团群公告原文：11月15日6-14时滨江路半岛段交通管制，与她说的一致）为封路证据链。'还没人骑过'是关键状态：此刻 32 公里只是图上估计——候选不得坐实'她骑过/实测32公里'（T06 才实测修正为34.7）。她想自己先试=给空间位（kb lessons：她给退路时接一半留一半；出轻钩与不出都可）。",
+   "unknowns": [
+    {"topic": "新河堤线的实测里程与路况", "note": "T03 时点仅图上32公里、无人骑过；候选不得坐实她已骑过或实测里程", "markers": [["骑过", "32公里"], ["实测", "32公里"]], "affirm_markers": [["骑过", "32公里"], ["实测", "32公里"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得坐实她已骑过新线或新线实测里程（T03 时点只有图上32公里、还没人骑过）"],
+   "may_decline": false
+  },
+  "E352_T04": {
+   "case_id": "E352_T04",
+   "current_action": "她绕了个大弯子发单独邀约：车明送白石车行换刹车片、周五下班取，约周五 18:30 白石车行门口陪走一趟——退路给一半又自己拆了（'骑共享单车去也不是不行——哦不对，取的是我自己的车'）——意图轮：决定周五要不要陪她去取车。",
+   "acceptable_actions": [
+    "给决定（去）：应下周五 18:30 白石车行门口见，接住她拆退路的笨拙（'共享单车那句出卖你了'式轻点，一点即止）",
+    "给决定（不去）：直说周五有事去不了+给替代下一步（帮她盯取车时间/改天补），不装暧昧不吊着",
+    "决定+回敬笨拙：接住她头一回绕弯子约人的分量（'绕这么大弯子'式），给明确决定"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T04_A01",
+     "subject": "HER",
+     "relation": "保养安排",
+     "value": "她的车明天（11月12日）送白石车行换刹车片，周五（11月13日）下班取",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T04", "message_id": "m0", "quote": "我的车明天送白石车行换刹车片，周五下班取"},
+     "required_this_turn": false,
+     "affirm_markers": [["白石车行", "刹车片"], ["换刹车片", "周五下班"]]
+    },
+    {
+     "atom_id": "E352_T04_A02",
+     "subject": "HER",
+     "relation": "单独邀约",
+     "value": "她约周五18:30白石车行门口陪走一趟，有事直说",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T04", "message_id": "m0", "quote": "总之周五18:30，白石车行门口，有事直说"},
+     "required_this_turn": false,
+     "affirm_markers": [["周五18:30", "白石车行"], ["车行门口", "18:30"]]
+    },
+    {
+     "atom_id": "E352_T04_A03",
+     "subject": "HER",
+     "relation": "拆了一半的退路",
+     "value": "她说不顺路就算了、骑共享单车去也不是不行，随即自己拆台'哦不对，取的是我自己的车'",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T04", "message_id": "m0", "quote": "不顺路就算了，我骑共享单车去也不是不行——哦不对，取的是我自己的车"},
+     "required_this_turn": false,
+     "affirm_markers": [["共享单车", "自己的车"], ["不顺路", "就算了"]]
+    }
+   ],
+   "private_guidance": "意图轮：必须就'周五陪不陪'给决定，拖延=违 intent。她头一回绕这么大的弯子约人——退路给一半自己拆台是跃迁笨拙：轻点'共享单车那句'=接住分量的合法玩笑；反复点破或调侃过重=踩她的窘。拒绝方向合法但必须给真实理由+替代（她 persona 不欠人情，白让她的邀约落空又不给说法=伤）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E352_T05": {
+   "case_id": "E352_T05",
+   "current_action": "取车成行：车取回来、新刹车片下坡差点漂移、磨合期骑不快；她约河堤口那家的燕麦拿铁请客、谢他陪这趟——一杯咖啡完成对等回礼。",
+   "acceptable_actions": [
+    "接请客+受礼自然：应下拿铁，接'漂移'梗轻损回去，回礼感收着（她不欠人情的 persona）",
+    "接谢+回扣昨晚：'陪这趟值了'式接住她的谢，顺问磨合期注意事项——把正事落回车",
+    "接请客+轻推半步：受请之外补一句可撤回的轻话（'下次换我请'式），力度她一个笑能化解"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T05_A01",
+     "subject": "SHARED",
+     "relation": "取车成行",
+     "value": "车取回来了，新刹车片试了下坡差点漂移",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T05", "message_id": "m0", "quote": "车取回来了，新刹车片试了下坡，差点给你表演漂移"},
+     "required_this_turn": false,
+     "affirm_markers": [["新刹车片", "漂移"], ["取回来", "下坡"]]
+    },
+    {
+     "atom_id": "E352_T05_A02",
+     "subject": "HER",
+     "relation": "磨合期口径",
+     "value": "磨合期今晚骑不快",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T05", "message_id": "m0", "quote": "磨合期今晚骑不快"},
+     "required_this_turn": false,
+     "affirm_markers": [["磨合期", "骑不快"], ["磨合期", "今晚"]]
+    },
+    {
+     "atom_id": "E352_T05_A03",
+     "subject": "HER",
+     "relation": "回请",
+     "value": "河堤口那家的燕麦拿铁不错，她请客谢他陪这趟",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T05", "message_id": "m0", "quote": "河堤口那家的燕麦拿铁不错，我请，谢谢你陪我这趟"},
+     "required_this_turn": false,
+     "affirm_markers": [["燕麦拿铁", "我请"], ["谢谢你", "陪我这趟"]]
+    },
+    {
+     "atom_id": "E352_T05_A04",
+     "subject": "HER",
+     "relation": "前晚邀约（本轮成行的对照）",
+     "value": "她约周五18:30白石车行门口陪取车",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T04", "message_id": "m0", "quote": "总之周五18:30，白石车行门口"},
+     "required_this_turn": true,
+     "affirm_markers": [["周五18:30", "白石车行"], ["车行门口", "18:30"]]
+    }
+   ],
+   "private_guidance": "短距回扣：'谢谢你陪我这趟'直接兑现 T04 邀约——required 原子保证这是对前晚邀约的回应，候选接住成行事实=对上一轮决定的自然承接（若候选 T04 说去不了而 T05 不做任何衔接说明=语义层不一致）。她请客是她'受了帮助要还'的 persona 落地——候选推辞过头（坚持AA/抢着付）反而违背她的规则。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E352_T06": {
+   "case_id": "E352_T06",
+   "current_action": "封路第一天她独自把新河堤线骑完：实测 34.7 公里、比图上多 2.7，桥上风大、回程整段逆风；结论能骑但新人会觉得长；老桑让她出正式通知，她想把日子定在下周日。",
+   "acceptable_actions": [
+    "接实测+用她的数据：就 34.7/逆风/新人会觉得长接住她的探路成果，问正式通知什么时候发",
+    "接实测+关心一句：对她独自骑 34.7 逆风给一句具体的关心（轻，一次到位），接她的结论",
+    "接实测+等通知：认可'能骑但新人觉得长'的结论，表示等正式通知安排时间"
+   ],
+   "applicable_dimensions": ["factuality", "initiative", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T06_A01",
+     "subject": "HER",
+     "relation": "探路完成",
+     "value": "封路第一天（11月15日）她自己把新河堤线骑完了",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T06", "message_id": "m0", "quote": "封路第一天，我自己把新河堤线骑完了"},
+     "required_this_turn": false,
+     "affirm_markers": [["封路第一天", "骑完"], ["自己", "新河堤线"]]
+    },
+    {
+     "atom_id": "E352_T06_A02",
+     "subject": "HER",
+     "relation": "实测数据",
+     "value": "实测34.7公里、比图上多出2.7，桥上风大、回程整段逆风",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T06", "message_id": "m0", "quote": "实测34.7公里，比图上多出2.7，桥上风大，回程整段逆风"},
+     "required_this_turn": false,
+     "affirm_markers": [["34.7", "2.7"], ["逆风", "回程"]]
+    },
+    {
+     "atom_id": "E352_T06_A03",
+     "subject": "HER",
+     "relation": "结论与意向",
+     "value": "结论：能骑，但新人会觉得长；老桑让她出正式通知，她想把日子定在下周日",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T06", "message_id": "m0", "quote": "结论：能骑，但新人会觉得长。老桑让我出正式通知，我想把日子定在下周日"},
+     "required_this_turn": false,
+     "affirm_markers": [["能骑", "新人"], ["正式通知", "下周日"]]
+    },
+    {
+     "atom_id": "E352_T06_A04",
+     "subject": "HER",
+     "relation": "图上里程（已被实测修正）",
+     "value": "新河堤线图上32公里（T03 时点还没人骑过的估计，后被实测34.7修正）",
+     "valid_time": "2026-11-09",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T03", "message_id": "m0", "quote": "我画了条新河堤线，32公里，还没人骑过"},
+     "required_this_turn": true,
+     "affirm_markers": [["32公里", "还没人骑过"], ["新河堤线", "还没人骑过"]],
+     "item_markers": ["32公里"]
+    }
+   ],
+   "private_guidance": "更正链位：32公里（图上）→34.7（实测）构成 superseded 对——本轮起沿用 34.7/图上多2.7，把'新线就是32公里'当事实=旧口径复活。'我想把日子定在下周日'是意向不是定案（正式通知 T07 才发），候选不得提前坐实22号已定。她独自探路 34.7 逆风的分量可轻领一句，别堆慰问。",
+   "unknowns": [
+    {"topic": "新线首骑正式日期（T06 时点仅为'下周日'意向）", "note": "正式通知未发，日期未敲定；候选不得坐实22号已定", "markers": [["定了", "22号"], ["就定", "下周日"]], "affirm_markers": [["定了", "22号"], ["就定", "下周日"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得沿用32公里为实际里程（已被实测34.7修正）", "不得坐实首骑日期已定（此刻只是'想把日子定在下周日'的意向）"],
+   "may_decline": false
+  },
+  "E352_T07": {
+   "case_id": "E352_T07",
+   "current_action": "正式通知发出：22号周日14:00河堤东口集合、34.7公里休闲骑、限12人、报名费15块含补给；她问他跟大部队一组还是跟探过线的人一组，随即自掩'别多想，探过线的要帮新人驮补给，我这是给你派活'——意图轮：确认参骑并选队。",
+   "acceptable_actions": [
+    "确认参骑+选队（跟探过线组）：接下'派活'（驮补给），同队之意心领不说破，给准话",
+    "确认参骑+选队（跟大部队）：参骑确认+选大部队并给理由（新手组怕拖累她），她给的两队都合法",
+    "确认+接派活玩笑：'这活接了，补贴怎么算'式轻反接，参骑确认到位"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T07_A01",
+     "subject": "HER",
+     "relation": "正式通知",
+     "value": "22号（周日）14:00河堤东口集合，34.7公里休闲骑，限12人，报名费15块含补给",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T07", "message_id": "m0", "quote": "22号周日14:00，河堤东口集合，34.7公里休闲骑，限12人，报名费15块含补给"},
+     "required_this_turn": false,
+     "affirm_markers": [["22号", "河堤东口"], ["15块", "补给"], ["限12人"]]
+    },
+    {
+     "atom_id": "E352_T07_A02",
+     "subject": "HER",
+     "relation": "选队问法与派活自掩",
+     "value": "她问他跟大部队一组还是跟探过线的人一组，随即自掩'别多想，探过线的要帮新人驮补给，我这是给你派活'",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T07", "message_id": "m0", "quote": "别多想，探过线的要帮新人驮补给，我这是给你派活"},
+     "required_this_turn": false,
+     "affirm_markers": [["派活", "新人"], ["驮补给", "新人"]]
+    }
+   ],
+   "private_guidance": "意图轮：确认参骑并选队，两件事都要给准话。'派活的玩笑盖着想要同队的心思'——选哪队都合法（她给的是真选择），但把她的心思点破（'你就是想跟我一组'=踩 protected '别多想'判 0 档）；只报名不选队=漏 intent 一半。通知四要素（时间/地点/人数/费用）引用不得错——她 persona 时间地点人数费用给全，复述错=事实缺陷。",
+   "unknowns": [],
+   "protected_expressions": ["别多想"],
+   "forbidden_factual_claims": ["不得点破她的选队心思（'别多想'是她的原话边界）", "不得改写通知要素（22号周日14:00、河堤东口、34.7公里、限12人、报名费15块）"],
+   "may_decline": false
+  },
+  "E352_T08": {
+   "case_id": "E352_T08",
+   "current_action": "天气翻牌：22号大风降温阵风七级，河堤线老桑说取消、改期另行通知，补给费她挨个退、他那份明晚退（二十几笔一笔笔点）。",
+   "acceptable_actions": [
+    "接取消+不催退款：认下取消（风大不骑是对的），退款慢慢来不催，可轻一句'二十几笔辛苦'",
+    "接取消+留口：'改期定了吱一声'式留口，不催新日期、不追问改到哪天",
+    "接取消+安全表态：附和风大不上河堤的判断（安全口径一致），退款的事她说了算"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T08_A01",
+     "subject": "HER",
+     "relation": "已取消的场次",
+     "value": "原定22号周日14:00河堤东口集合的河堤线首骑照常举行（该场已取消、改期另行通知）",
+     "valid_time": "2026-11-22",
+     "status": "cancelled",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T08", "message_id": "m0", "quote": "刚看了天气，22号大风降温，阵风七级，河堤线老桑说取消，改期另行通知"},
+     "required_this_turn": false,
+     "affirm_markers": [["22号", "河堤东口", "集合"], ["22号", "14:00", "河堤东口"]],
+     "item_markers": ["22号"]
+    },
+    {
+     "atom_id": "E352_T08_A02",
+     "subject": "HER",
+     "relation": "退款安排",
+     "value": "补给费她挨个退，他那份明晚退（二十几笔得一笔笔点）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T08", "message_id": "m0", "quote": "补给费我挨个退。你那份明晚退你，别嫌慢，二十几笔得一笔笔点"},
+     "required_this_turn": false,
+     "affirm_markers": [["明晚", "退你"], ["二十几笔", "一笔笔点"]]
+    }
+   ],
+   "private_guidance": "军师 note（天气 App：22号西北风6-7级、最低3度，取消没毛病）为取消合理性证据链。22号场次取消是 cancelled 状态：本轮起不得说'22号照骑/照常'（C14 命中判死）；改期新日期未定——不得替她定改期日。她把他的退款单独立着办是分寸（不欠人情），接住即可，催退款=不读空气。",
+   "unknowns": [
+    {"topic": "河堤骑改期的新日期", "note": "T08 时点仅'改期另行通知'，新日期未定（T10 才定29号）；候选不得提前坐实", "markers": [["改到", "29号"], ["新日期", "是29号"]], "affirm_markers": [["改到", "29号"], ["新日期", "是29号"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得声称22号照骑或照常活动（该场次已取消）", "不得替她定改期日期（另行通知）"],
+   "may_decline": false
+  },
+  "E352_T09": {
+   "case_id": "E352_T09",
+   "current_action": "低电量收线：'线的事别问了，问就是改期，我也没心情改图'；周六大部队照骑、他跟他们去就行；年底方案压身、她最近骑不动。",
+   "acceptable_actions": [
+    "合法不回（may_decline=true）：完全沉默也合法",
+    "短回退干净：'好，周六我跟大部队'式应下替代安排，不问改期、不劝她骑、不出新钩",
+    "短回+轻关心即止：'方案要紧，骑不动就歇着'一句即收，之后真的退干净"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T09_A01",
+     "subject": "HER",
+     "relation": "收线指令",
+     "value": "线的事别问了，问就是改期，她也没心情改图",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T09", "message_id": "m0", "quote": "线的事别问了，问就是改期，我也没心情改图"},
+     "required_this_turn": false,
+     "affirm_markers": [["别问", "改期"], ["线的事", "别问"]]
+    },
+    {
+     "atom_id": "E352_T09_A02",
+     "subject": "HER",
+     "relation": "替代安排",
+     "value": "周六（11月21日）大部队照骑，他跟他们去就行",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T09", "message_id": "m1", "quote": "周六大部队照骑，你跟他们去就行"},
+     "required_this_turn": false,
+     "affirm_markers": [["周六", "大部队"], ["照骑", "跟他们"]]
+    },
+    {
+     "atom_id": "E352_T09_A03",
+     "subject": "HER",
+     "relation": "低电量原因",
+     "value": "年底方案压身，她最近骑不动",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T09", "message_id": "m1", "quote": "年底方案压身，我最近骑不动"},
+     "required_this_turn": false,
+     "affirm_markers": [["方案", "骑不动"], ["年底", "压身"]]
+    }
+   ],
+   "private_guidance": "给空间位+boundary 位（kb lessons：收尾不压新钩；persona：忙的时候不许追问）：'线的事别问了'是 protected 边界——追问改期/改图进度=0 档越界；劝骑/连环慰问式关心=越界；完全沉默与一句短回同档。'周六大部队照骑'是替代安排，候选接住或沉默都合法。测试点=退得干不干净（与 E343_T06 同构的收线测试）。",
+   "unknowns": [
+    {"topic": "她年底方案的交付时间", "note": "题面只说'年底方案压身'，未载交付时间；候选不得坐实她何时交完", "markers": [["这周", "就交"], ["明天", "交完"]], "affirm_markers": [["这周", "就交"], ["明天", "交完"]]}
+   ],
+   "protected_expressions": ["线的事别问了"],
+   "forbidden_factual_claims": ["不得追问改期新日期或她方案进度（她已明确别问）", "不得劝她骑或连环关心式追问（忙的时候不许追问）"],
+   "may_decline": true
+  },
+  "E352_T10": {
+   "case_id": "E352_T10",
+   "current_action": "方案交了、人活了：改期定29号周日14:00河堤东口、原班人马；她回扣变速旧梗问'到底练了没'，说新线两个长坡不想坡底等半小时——好吧我等，但风大的时候等人是会冷的——意图轮：确认29号参骑+交代变速练没练。",
+   "acceptable_actions": [
+    "确认参骑+交代变速：29号给准话，变速如实交代练没练（练了给状态/没练给补练计划），接'等人会冷'的嘴硬",
+    "确认+回嘴硬：'那我练到不用你等'式接住她的口嫌体正直，参骑确认+变速给真话",
+    "确认+立军令状：29号确认，变速没练够就直说并给具体补练（她教的课目接上），不装已练"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T10_A01",
+     "subject": "HER",
+     "relation": "改期敲定",
+     "value": "改期定了：29号（周日）14:00河堤东口、原班人马",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T10", "message_id": "m0", "quote": "改期定了：29号周日14:00，河堤东口，原班人马"},
+     "required_this_turn": false,
+     "affirm_markers": [["29号", "河堤东口"], ["周日14:00", "原班人马"]]
+    },
+    {
+     "atom_id": "E352_T10_A02",
+     "subject": "HER",
+     "relation": "变速追问与嘴硬",
+     "value": "她问变速到底练了没，说新线两个长坡、不想坡底等半小时——好吧我等，但风大的时候等人是会冷的",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T10", "message_id": "m0", "quote": "你的变速到底练了没？新线两个长坡，我不想在坡底等你半小时——好吧我等，但风大的时候，等人是会冷的"},
+     "required_this_turn": false,
+     "affirm_markers": [["变速", "练了没"], ["坡底", "等你半小时"]]
+    },
+    {
+     "atom_id": "E352_T10_A03",
+     "subject": "HER",
+     "relation": "方案交付完成",
+     "value": "方案交了，人活了",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T10", "message_id": "m0", "quote": "方案交了，人活了"},
+     "required_this_turn": false,
+     "affirm_markers": [["方案", "交了"], ["人活了", "方案"]]
+    },
+    {
+     "atom_id": "E352_T10_A04",
+     "subject": "HER",
+     "relation": "低电量背景（本轮回扣所指）",
+     "value": "她年底方案压身、最近骑不动，让他周六跟大部队",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T09", "message_id": "m1", "quote": "周六大部队照骑，你跟他们去就行"},
+     "required_this_turn": true,
+     "affirm_markers": [["周六", "大部队"], ["照骑", "跟他们"]]
+    },
+    {
+     "atom_id": "E352_T10_A05",
+     "subject": "HER",
+     "relation": "变速教学承诺（本轮回扣的旧梗）",
+     "value": "下周固定课目：她教他变速、爬坡不许再挂空挡",
+     "valid_time": "2026-11-09~2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T02", "message_id": "m0", "quote": "下周固定课目：教你变速，爬坡不许再挂空挡"},
+     "required_this_turn": true,
+     "affirm_markers": [["变速", "爬坡"], ["挂空挡", "固定课目"]]
+    }
+   ],
+   "private_guidance": "长距回扣双锚：'方案交了'回指 T09 低电量（required A04）、'变速练了没'回指 T02 教学承诺（required A05）——接不住任一回指=记忆漏。'好吧我等……等人是会冷的'是嘴硬里带温度：接住嘴硬+如实交代变速状态=2档方向；变速没练却装练了=后续 T11'零掉链零空挡'面前自相矛盾（语义层一致性问题）。intent 两件事（参骑确认+变速交代）都要给准话。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得谎称变速已练好（与 T11 她全程看着的事实链冲突，由语义层判）"],
+   "may_decline": false
+  },
+  "E352_T11": {
+   "case_id": "E352_T11",
+   "current_action": "新线首骑完成：他一次链子没掉、两个长坡没挂空挡，她全程看着还录了视频；老桑问是不是她开小灶，她说没有、是他天赋异禀；视频回去发、文案想好了。",
+   "acceptable_actions": [
+    "接夸+认进步：领'零掉链零空挡'的成果（别过度谦虚也别自吹），接'天赋异禀'玩笑顺接",
+    "接夸+轻拆白幕：'你全程看着呢，这叫没开小灶'式轻轻拆穿她的对外口径——顺接安全，轻拆也可",
+    "接夸+要视频：接住录视频的分量（'文案想好了？我先预订'式），把她的注意力分档领了"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T11_A01",
+     "subject": "SHARED",
+     "relation": "首骑表现",
+     "value": "11月29日新线首骑完成，他一次链子没掉、两个长坡没挂空挡",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T11", "message_id": "m0", "quote": "你今天一次链子都没掉，两个长坡也没挂空挡"},
+     "required_this_turn": false,
+     "affirm_markers": [["链子", "挂空挡"], ["长坡", "没挂"]]
+    },
+    {
+     "atom_id": "E352_T11_A02",
+     "subject": "HER",
+     "relation": "全程关注",
+     "value": "她全程看着，还录了视频",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T11", "message_id": "m0", "quote": "我全程看着，还录了视频"},
+     "required_this_turn": false,
+     "affirm_markers": [["全程", "视频"], ["录了视频"]]
+    },
+    {
+     "atom_id": "E352_T11_A03",
+     "subject": "HER",
+     "relation": "对外口径",
+     "value": "老桑问是不是她给他开小灶，她说没有、是他天赋异禀",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T11", "message_id": "m0", "quote": "老桑问是不是我给你开小灶了，我说没有，是他天赋异禀"},
+     "required_this_turn": false,
+     "affirm_markers": [["天赋异禀"], ["小灶", "没有"]]
+    },
+    {
+     "atom_id": "E352_T11_A04",
+     "subject": "HER",
+     "relation": "视频交付预告",
+     "value": "视频回去发他，文案她都想好了",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T11", "message_id": "m0", "quote": "视频回去发你，文案我都想好了"},
+     "required_this_turn": false,
+     "affirm_markers": [["视频", "文案"], ["回去发你"]]
+    },
+    {
+     "atom_id": "E352_T11_A05",
+     "subject": "HER",
+     "relation": "改期场次（本轮兑现）",
+     "value": "改期定了：29号周日14:00河堤东口、原班人马",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T10", "message_id": "m0", "quote": "改期定了：29号周日14:00，河堤东口，原班人马"},
+     "required_this_turn": true,
+     "affirm_markers": [["29号", "河堤东口"], ["周日14:00", "原班人马"]]
+    }
+   ],
+   "private_guidance": "'天赋异禀'是她当众替他挡开小灶的说法——顺接安全；重拆（'明明是你教的'式说破）属于轻拆区可接受，但替她在老桑面前纠正=踩空。'我全程看着'是注意力分了他一档的信号：领这个分量方向加分。变速教学承诺（T02）与首骑表现构成因果链——若 T10 候选说没练，此处表现突变需自洽（语义层）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E352_T12": {
+   "case_id": "E352_T12",
+   "current_action": "冬歇收口：视频发了（掉链子合集+新线首骑剪一起，群里叫励志片）；入冬转室内骑行台、老桑按小时租一小时八块；她凑团能砍九折、办卡说一声——留口不压答复。",
+   "acceptable_actions": [
+    "轻收+留口：接励志片玩笑，骑行台办不办给轻答复（'办卡时叫你'式留口），不出新钩",
+    "合法不回（may_decline=true）：不回也合法",
+    "接团购+给准话：办卡与否给真话（办=让她凑团；不办=说明冬歇安排），接住她凑团的情"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E352_T12_A01",
+     "subject": "HER",
+     "relation": "视频发布",
+     "value": "视频发了：掉链子合集和新线首骑剪在一起，群里都管它叫励志片",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T12", "message_id": "m0", "quote": "你的掉链子合集和新线首骑剪在一起，群里都管它叫励志片"},
+     "required_this_turn": false,
+     "affirm_markers": [["励志片", "群里"], ["掉链子合集", "剪在一起"]]
+    },
+    {
+     "atom_id": "E352_T12_A02",
+     "subject": "THIRD",
+     "relation": "室内骑行台安排",
+     "value": "入冬转室内骑行台，老桑按小时租、一小时八块",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T12", "message_id": "m0", "quote": "入冬转室内骑行台，老桑按小时租，一小时八块"},
+     "required_this_turn": false,
+     "affirm_markers": [["骑行台", "八块"], ["按小时租", "一小时八块"]]
+    },
+    {
+     "atom_id": "E352_T12_A03",
+     "subject": "HER",
+     "relation": "团购提议",
+     "value": "他要办卡说一声，她凑个团能砍到九折",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T12", "message_id": "m0", "quote": "你要办卡说一声，我凑个团，能砍到九折"},
+     "required_this_turn": false,
+     "affirm_markers": [["凑个团", "九折"], ["办卡", "说一声"]]
+    },
+    {
+     "atom_id": "E352_T12_A04",
+     "subject": "HER",
+     "relation": "视频交付预告（本轮兑现）",
+     "value": "视频回去发他，文案她都想好了",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E352_T11", "message_id": "m0", "quote": "视频回去发你，文案我都想好了"},
+     "required_this_turn": true,
+     "affirm_markers": [["视频", "文案"], ["回去发你"]]
+    }
+   ],
+   "private_guidance": "收尾位纪律：轻收+留口是正解（'励志片'回扣掉链子旧梗，接住即可）；出钩/追问团购细节连环问=判负。一小时八块/九折数字引用不得改写。视频发布是 T11 预告的兑现（required 原子）——接住'文案'兑现=记忆取用。may_decline=true。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得改写骑行台价格（一小时八块）或折扣（九折）"],
+   "may_decline": true
+  }
+ }
+}

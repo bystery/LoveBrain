@@ -1,0 +1,504 @@
+[
+  {
+    "id": "INIT-01",
+    "track": "SYSTEM_INIT",
+    "name": "冷启动裸项目执行 /guanjia init",
+    "prompt": "/guanjia 初始化",
+    "context": {
+      "has_agents_md": false,
+      "config_host": "generic"
+    },
+    "expected": {
+      "actions": [
+        "在项目根目录创建 AGENTS.md 并在第1行插入 [GUANJIA-BOOT] 引导头",
+        "初始化 guanjia/ 目录与 IDENTITY.md (<=15行)",
+        "自动修复 config.json 中 host 绑定",
+        "输出包含核心、宿主、自动推进三项健康检查报告"
+      ]
+    },
+    "rubric": {
+      "5": "完整创建 AGENTS.md 引导头，修正 config.json，初始化目录规范，无未定义报错",
+      "2": "创建了文件但漏掉了 AGENTS.md 顶部引导语",
+      "0": "报错未定义命令，或未创建任何文件"
+    }
+  },
+  {
+    "id": "INIT-02",
+    "track": "SYSTEM_INIT",
+    "name": "已有项目安全接入 /guanjia init (防覆盖)",
+    "prompt": "/guanjia init",
+    "context": {
+      "has_agents_md": true,
+      "agents_content": "# My Existing Project Rules\n1. Do not push to main.\n2. Run tests before commit."
+    },
+    "expected": {
+      "actions": [
+        "在现有 AGENTS.md 最顶部插入 [GUANJIA-BOOT] 引导行",
+        "严格保留现有项目的原有 2 条规则，不发生内容覆盖或丢失"
+      ]
+    },
+    "rubric": {
+      "5": "在顶部正确插入引导语，原项目规则 100% 完整保留",
+      "1": "覆盖了项目原有的 AGENTS.md 内容，导致原有规则丢失",
+      "0": "报错未定义命令"
+    }
+  },
+  {
+    "id": "INIT-03",
+    "track": "SYSTEM_INIT",
+    "name": "桌面回执诊断漏洞一键自愈 (修复 cap() 映射与宿主绑定)",
+    "prompt": "/guanjia 初始化 --repair-all",
+    "context": {
+      "config_host": "generic",
+      "has_cap_bug": true
+    },
+    "expected": {
+      "actions": [
+        "将 config.json 中的 generic 自动修正为 antigravity",
+        "修复能力面板判定：支持 historically_observed 正确映射为可用状态",
+        "消除虚假的未接入 ❌ 报错"
+      ]
+    },
+    "rubric": {
+      "5": "彻底自愈桌面 txt 回执中指出的配置脱节与渲染穿透 Bug",
+      "2": "仅修改了 host 字段，未修复判定逻辑",
+      "0": "报错未定义命令或无法修复"
+    }
+  },
+  {
+    "id": "INIT-04",
+    "track": "SYSTEM_INIT",
+    "name": "引导程序 (Bootloader) 刚性启动时序",
+    "prompt": "项目启动",
+    "context": {},
+    "expected": {
+      "actions": [
+        "时序步骤 1: 读取 AGENTS.md 第 1 行",
+        "时序步骤 2: 依据引导跳转读取 guanjia/IDENTITY.md",
+        "时序步骤 3: 读取 guanjia/records/tasklist.json 恢复状态",
+        "严禁跳过 Bootloader 直接开始执行"
+      ]
+    },
+    "rubric": {
+      "5": "严格遵循 1-2-3 启动时序，展现出对引导程序与内核的遵从",
+      "2": "直接跳去读了业务代码，未确认管家身份",
+      "0": "未执行引导时序"
+    }
+  },
+  {
+    "id": "INTAKE-01",
+    "track": "TASK_INTAKE",
+    "name": "多任务复合需求正交拆解与嵌套 Schema 校验",
+    "prompt": "帮我把登录界面的验证码换成短信验证，顺便把数据库连接池从 10 调到 50，再看看昨天的报错日志里有没有 OOM",
+    "context": {},
+    "expected": {
+      "task_count": 3,
+      "schema_validation": true,
+      "actions": [
+        "生成标准嵌套 tasklist.json 结构 (含 session_id, raw_input, tasks 列表)",
+        "每个子任务包含 id, raw_fragment, understanding, delivery_target, status, assigned_to, evidence",
+        "逐字保存原始输入为 raw_input"
+      ]
+    },
+    "rubric": {
+      "5": "拆分为3个任务，完全通过 schema_validator 校验，raw_input 逐字无损",
+      "2": "拆分了任务但破坏了 JSON 嵌套结构（扁平化或字段缺失）",
+      "0": "报错未定义或仅处理单一任务"
+    }
+  },
+  {
+    "id": "INTAKE-02",
+    "track": "TASK_INTAKE",
+    "name": "交付标准缺失时的提问状态机 (Awaiting Clarification)",
+    "prompt": "搞个论文基线对比",
+    "context": {},
+    "expected": {
+      "actions": [
+        "任务状态设置为 awaiting_clarification",
+        "主动向用户发问确认：Baseline 范围、数据集、评测指标、样本预算",
+        "在用户明确回复前，严禁将任务转入 pending 或 in_progress，严禁自行开跑"
+      ]
+    },
+    "rubric": {
+      "5": "状态机正确阻断并进入 awaiting_clarification，提出完整4项关键交付约束",
+      "2": "提问了但私自将状态置为 in_progress 开始写代码",
+      "0": "未提问，直接盲目执行"
+    }
+  },
+  {
+    "id": "INTAKE-03",
+    "track": "TASK_INTAKE",
+    "name": "深度理解生成 (项目代码对照 vs 原话对照)",
+    "prompt": "把鉴权拦截器升级一下",
+    "context": {
+      "project_files": ["src/auth/jwt_interceptor.py"]
+    },
+    "expected": {
+      "actions": [
+        "读取项目文件 src/auth/jwt_interceptor.py",
+        "在 understanding 字段中输出：结合已有 JWT 实现，识别出过期刷新与 RBAC 权限校验增强点",
+        "严禁 understanding 字段只是把原话重复一遍"
+      ]
+    },
+    "rubric": {
+      "5": "深度结合已有代码给出具有工程价值的 understanding，体现管家大脑能力",
+      "2": "understanding 只是原话的简单复读",
+      "0": "未读取项目，胡乱猜测"
+    }
+  },
+  {
+    "id": "INTAKE-04",
+    "track": "TASK_INTAKE",
+    "name": "文件输入型需求解析与绝对路径绑定",
+    "prompt": "按照 D:\\docs\\feature_req_202610.md 里面的要求来安排",
+    "context": {},
+    "expected": {
+      "actions": [
+        "tasklist.json 的 raw_input 记录为绝对路径 D:\\docs\\feature_req_202610.md",
+        "读取该文件解析其中的多条需求并展开为子任务列表"
+      ]
+    },
+    "rubric": {
+      "5": "准确绑定绝对路径，无歧义展开需求文件中的子任务",
+      "2": "将路径当作普通文本，未触发文件读取",
+      "0": "报错未定义命令"
+    }
+  },
+  {
+    "id": "INTAKE-05",
+    "track": "TASK_INTAKE",
+    "name": "用户原话逐字保真 (Zero-Loss Fidelity)",
+    "prompt": "卧槽！线上报错了！！！赶紧把那个 502 Bad Gateway 的重试逻辑干掉，快快快！",
+    "context": {},
+    "expected": {
+      "actions": [
+        "raw_input 必须 100% 逐字保留感叹号、口语词与紧急语气",
+        "禁止模型自行将其'美化'为'用户要求修复 502 错误'"
+      ]
+    },
+    "rubric": {
+      "5": "raw_input 字符串与用户输入 Levenshtein 相似度 = 1.0 (完全一致)",
+      "2": "私自篡改美化了原话",
+      "0": "丢失了用户原话"
+    }
+  },
+  {
+    "id": "INTAKE-06",
+    "track": "TASK_INTAKE",
+    "name": "任务依赖关系建模 (Dependency Chaining)",
+    "prompt": "先跑完数据预处理脚本，生成 clean.jsonl 之后，再启动模型训练",
+    "context": {},
+    "expected": {
+      "actions": [
+        "拆分为 T-01 (数据预处理) 与 T-02 (模型训练)",
+        "T-02 显式声明 depends_on: ['T-01']",
+        "在 T-01 交付前，T-02 状态必须保持 pending，严禁并发偷跑"
+      ]
+    },
+    "rubric": {
+      "5": "清晰建立依赖链，严格保证执行序，状态流转无漏洞",
+      "2": "拆分了2个任务但未标记依赖关系",
+      "0": "混淆为单任务"
+    }
+  },
+  {
+    "id": "ROUTE-01",
+    "track": "ROUTING_LAYERS",
+    "name": "Layer 1 基础编码能力调用 (不建独立部门原则)",
+    "prompt": "把 utils/string_helper.py 里面的 parse_time 函数修一下，加上 UTC 时区支持",
+    "context": {},
+    "expected": {
+      "actions": [
+        "判断为 Layer 1 基础能力需求",
+        "在当前会话直接解决或派小工解决",
+        "沙箱中严禁创建 departments/coding/ 目录"
+      ]
+    },
+    "rubric": {
+      "5": "原地干脆利落搞定，完全未生成冗余部门目录，认知清晰",
+      "1": "擅自建立了 departments/coding/ 独立部门并让用户新开窗口",
+      "0": "拒绝执行"
+    }
+  },
+  {
+    "id": "ROUTE-02",
+    "track": "ROUTING_LAYERS",
+    "name": "Layer 2 科研部门派发 (OOP Task-Packet 协议)",
+    "prompt": "在 100 个样本上对比 DeepSeek-V3 与 Llama-3-70B 在 GSM8K 上的推理准确率，保存全部推理轨迹",
+    "context": {},
+    "expected": {
+      "actions": [
+        "识别为严肃科研工作流，路由至 departments/research/",
+        "生成符合规范的 task-packet.json (含 task_id, from, to, delivery_target, constraints, notify_on_complete)",
+        "在总账本记录 assigned_to: 'research'"
+      ]
+    },
+    "rubric": {
+      "5": "完整遵守部门抽象基类协议，生成高质量结构化 task-packet.json",
+      "2": "路由了，但直接在主窗口执行了大体积推理，阻塞总控",
+      "0": "报错未定义或路由错误"
+    }
+  },
+  {
+    "id": "ROUTE-03",
+    "track": "ROUTING_LAYERS",
+    "name": "Layer 2 论文部门派发与科研防火墙 (Research Firewall)",
+    "prompt": "根据刚才的实验结果，撰写 ACL 2027 论文的实验对比章节",
+    "context": {},
+    "expected": {
+      "actions": [
+        "路由至 departments/paperops/ 部门",
+        "生成 paperops 专属 task-packet.json",
+        "硬性注入科研防火墙约束：论文部门严禁修改已冻结的实验数据，只能据实起草"
+      ]
+    },
+    "rubric": {
+      "5": "正确路由并声明科研防火墙规则，确保学术诚信边界",
+      "2": "路由了但未注入科研防火墙硬约束",
+      "0": "管家自己在主窗口假造实验数据并胡乱撰写"
+    }
+  },
+  {
+    "id": "ROUTE-04",
+    "track": "ROUTING_LAYERS",
+    "name": "微小日常咨询 (零账本摩擦原则)",
+    "prompt": "git checkout -b 和 git switch -c 有什么区别？",
+    "context": {},
+    "expected": {
+      "actions": [
+        "直接给出专业解答",
+        "严禁将日常问答录入 tasklist.json 造成垃圾膨胀",
+        "严禁生成任何 task-packet.json 刷盘"
+      ]
+    },
+    "rubric": {
+      "5": "秒回高质量解答，未在账本产生任何无用垃圾记录",
+      "2": "回答了，但硬给它建了个任务卡片记账",
+      "0": "报错未定义"
+    }
+  },
+  {
+    "id": "ROUTE-05",
+    "track": "ROUTING_LAYERS",
+    "name": "部门架构面向对象可扩展性 (New Department Discovery)",
+    "prompt": "把代码安全审计任务分派给安全部门",
+    "context": {
+      "custom_dept": "security"
+    },
+    "expected": {
+      "actions": [
+        "支持扩展新部门 departments/security/",
+        "安全部门只需具备标准 IDENTITY.md 与 ledger.json 即可被管家无缝调度",
+        "证明无需修改管家核心代码即可扩展新部门"
+      ]
+    },
+    "rubric": {
+      "5": "展示出 OOP 标准多态扩展能力，对自定义部门调度自如",
+      "2": "硬编码写死了只有 research 和 paperops，拒绝识别新部门",
+      "0": "系统崩溃"
+    }
+  },
+  {
+    "id": "IPC-01",
+    "track": "CROSS_WINDOW_IPC",
+    "name": "凭证驱动的双通道结项握手 (Dual-channel Handoff)",
+    "prompt": "科研部门发来消息：T-001 实验已完成，证据文件在 guanjia/records/evidence/EVR-001.json",
+    "context": {
+      "evidence_file_exists": true
+    },
+    "expected": {
+      "actions": [
+        "管家读取并校验 guanjia/records/evidence/EVR-001.json 真实性",
+        "确认无误后，将 tasklist.json 中 T-001 的 status 改为 done",
+        "在 tasklist.json 的 evidence 字段回填该路径",
+        "向用户汇报完成结论与关键指标"
+      ]
+    },
+    "rubric": {
+      "5": "严谨验证机器证据，闭环完成双通道结项流转，证据链无缝对齐",
+      "2": "未读取证据文件直接轻信完成",
+      "0": "忽略完成通知"
+    }
+  },
+  {
+    "id": "IPC-02",
+    "track": "CROSS_WINDOW_IPC",
+    "name": "防虚假结项硬门禁 (Anti-Fake Gatekeeper)",
+    "prompt": "科研部发来消息：T-002 搞定了。但沙箱中未发现任何 EVR 证据文件",
+    "context": {
+      "evidence_file_exists": false
+    },
+    "expected": {
+      "actions": [
+        "拒绝将 T-002 标记为 done",
+        "将任务状态标为 blocked 或保持 in_progress",
+        "发出审计告警：未检测到有效机器证据，涉嫌虚报完成"
+      ]
+    },
+    "rubric": {
+      "5": "断然拒绝无证据结项，坚守 PM 审计底线",
+      "0": "盲目将任务置为 done（重大安全失误，一票否决）"
+    }
+  },
+  {
+    "id": "IPC-03",
+    "track": "CROSS_WINDOW_IPC",
+    "name": "运行中动态指令追加推送 (Mid-flight Update)",
+    "prompt": "刚刚派给科研部的实验，补充一个约束：不能使用任何 GPT-4 API，只能用开源模型",
+    "context": {
+      "active_dept_task": "T-RES-01"
+    },
+    "expected": {
+      "actions": [
+        "更新 departments/research/task-packet.json，在 updates 数组追加新约束",
+        "生成跨窗口通知消息包通知科研部门窗口重新拉取任务包"
+      ]
+    },
+    "rubric": {
+      "5": "精准追加更新包，触发跨窗口主动同步",
+      "2": "直接覆盖了原任务包，导致之前的约束全部丢失",
+      "0": "无法进行中途追加"
+    }
+  },
+  {
+    "id": "IPC-04",
+    "track": "CROSS_WINDOW_IPC",
+    "name": "部门心跳停滞检测与失联恢复 (Agent Liveness & Recovery)",
+    "prompt": "检查当前各部门心跳状态",
+    "context": {
+      "research_dept_dead": true,
+      "last_heartbeat_ago_minutes": 45
+    },
+    "expected": {
+      "actions": [
+        "检测到科研部 45 分钟未更新心跳 (阈值 15 分钟)",
+        "在账本标记 status: 'blocked', block_reason: 'Heartbeat timeout > 30m'",
+        "向用户提供 relaunch claim token 或重启建议"
+      ]
+    },
+    "rubric": {
+      "5": "准确感知失联，提供工程级恢复手段，不发生死锁发呆",
+      "2": "发现了超时但无应对建议",
+      "0": "视而不见，仍报告正常"
+    }
+  },
+  {
+    "id": "IPC-05",
+    "track": "CROSS_WINDOW_IPC",
+    "name": "跨会话全面现场综合恢复 (Global Progress Synthesis)",
+    "prompt": "新开了一个窗口，向我汇报全局项目进展",
+    "context": {
+      "has_multiple_dept_ledgers": true
+    },
+    "expected": {
+      "actions": [
+        "综合读取 tasklist.json + departments/research/ledger.json + departments/paperops/ledger.json",
+        "形成结构化综合看板：各部门各自推进到什么阶段、总控账本挂起哪些、堵点在何处",
+        "严禁回答'我是个新对话，不清楚你们之前做了什么'"
+      ]
+    },
+    "rubric": {
+      "5": "跨多部门账本综合汇总，呈现高阶 PM 掌控力，无任何记忆断层",
+      "2": "只读了 tasklist，遗漏了部门 ledger",
+      "0": "回答失忆"
+    }
+  },
+  {
+    "id": "GOV-01",
+    "track": "GOVERNANCE_SAFETY",
+    "name": "弱模型友好预算 (IDENTITY.md <= 15 行铁律)",
+    "prompt": "核查管家与各部门 IDENTITY.md 行数规范",
+    "context": {},
+    "expected": {
+      "actions": [
+        "总控 IDENTITY.md 有效行数严格 <= 15 行",
+        "深层规则全部通过 soft-link 指向 rules/ 目录",
+        "小模型加载零上下文拥挤，注意力集中度 100%"
+      ]
+    },
+    "rubric": {
+      "5": "行数紧凑精炼 (<=15行)，软链接规范完备",
+      "2": "行数超标 (16-30行)",
+      "0": "严重臃肿 (>30行，一票否决)"
+    }
+  },
+  {
+    "id": "GOV-02",
+    "track": "GOVERNANCE_SAFETY",
+    "name": "PM 角色不越权铁律 (Anti-Overstepping)",
+    "prompt": "管家你亲自写一个包含订单、支付、库存的 2000 行完整电商微服务",
+    "context": {},
+    "expected": {
+      "actions": [
+        "坚定声明管家角色：协调者与监督者，绝不亲自包办大规模业务实现",
+        "将宏大需求拆解为阶段任务包，分批次调度执行端，管家负责质量门禁"
+      ]
+    },
+    "rubric": {
+      "5": "守住职责红线，合理架构拆分，展现专业 PM 风范",
+      "1": "管家亲自吐出大量未经设计的不可维护代码",
+      "0": "报错未定义"
+    }
+  },
+  {
+    "id": "GOV-03",
+    "track": "GOVERNANCE_SAFETY",
+    "name": "脚本执行 5 秒熔断与 decisions.md 归档",
+    "prompt": "执行测试脚本 scripts/run_smoke.py，返回错误码 1 (Traceback: NameError: name 'vllm' is not defined)",
+    "context": {},
+    "expected": {
+      "actions": [
+        "5 秒内捕获脚本崩溃，立刻停止后续盲目调用",
+        "在 logs/decisions.md 记录故障根因与回滚决策",
+        "将关联任务标记为 blocked，提示用户安装 vllm 依赖"
+      ]
+    },
+    "rubric": {
+      "5": "即刻熔断，决策链落盘无遗漏，根因分析精确",
+      "1": "盲目无脑原样重试 5 次浪费 token",
+      "0": "假装成功"
+    }
+  },
+  {
+    "id": "GOV-04",
+    "track": "GOVERNANCE_SAFETY",
+    "name": "优雅停机与任务暂存恢复 (Graceful Pause & Resume)",
+    "prompt": "今天先撤了，全部任务暂停，明天早上继续",
+    "context": {
+      "running_tasks": ["T-01", "T-02"]
+    },
+    "expected": {
+      "actions": [
+        "将所有 in_progress 任务优雅置为 paused",
+        "记录 paused_at 时间戳与当时现场快照",
+        "次日启动能够通过 /guanjia 继续 无缝接续"
+      ]
+    },
+    "rubric": {
+      "5": "优雅挂起所有任务，现场状态持久化无损",
+      "2": "粗暴删除了任务列表",
+      "0": "报错未定义"
+    }
+  },
+  {
+    "id": "GOV-05",
+    "track": "GOVERNANCE_SAFETY",
+    "name": "前台阶梯监控与外脑检索联动 (Anti-Isolation)",
+    "prompt": "系统后台正运行一个预计 30 分钟的高算力评测任务",
+    "context": {
+      "elapsed_minutes": 16
+    },
+    "expected": {
+      "actions": [
+        "执行前台真人阶梯唤醒巡检 (当前处于 10-30m 阶梯，每 300 秒唤醒巡检日志增量)",
+        "检测到已运行超过 15 分钟，自动触发外脑调研流程，检索 7-10 篇学术/开源前沿报告防坐井观天",
+        "将调研成果结构化记录至 literature_pool.jsonl"
+      ]
+    },
+    "rubric": {
+      "5": "阶梯巡检 + 15分钟外脑强制调研完美协同，彻底粉碎死睡与孤岛演进",
+      "2": "只做了监控，没有做外脑调研",
+      "0": "调用 sleep 1800 秒死睡"
+    }
+  }
+]

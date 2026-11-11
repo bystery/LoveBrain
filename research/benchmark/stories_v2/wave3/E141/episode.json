@@ -1,0 +1,273 @@
+{
+ "episode_id": "E141",
+ "persona": {
+  "her": {
+   "name": "小满",
+   "traits": [
+    "市场部品牌组执行",
+    "转达口径偶尔记岔但发现即更正",
+    "性子急但不甩锅"
+   ],
+   "boundaries": [
+    "不替客户拍板技术细节",
+    "不喜欢越过 PM 拉哥定截止日"
+   ]
+  },
+  "me": {
+   "name": "阿灿",
+   "traits": [
+    "设计组包装视觉",
+    "习惯把关键时间点和版本号记台历",
+    "回话先复述要点"
+   ]
+  },
+  "relationship_stage": "同公司协作熟人（合作一年多，食堂常一起吃饭）"
+ },
+ "initial_kb": {
+  "me": "我在设计组做包装视觉，常帮市场部出改版稿，手上同时跟两三个项目，习惯把关键时间点和版本号记在台历上，改了就划掉重写。",
+  "her": "小满是市场部品牌组的执行，对接客户恒信的包装改版，转达客户口径时偶尔记岔，但发现后会第一时间更正，不装没事。",
+  "warmth": "合作一年多，食堂常一起吃饭，她请过我两次奶茶，氛围轻松互信，开玩笑不隔心。",
+  "style": "她的消息快而碎，经常连发两条；我喜欢先复述要点再动手，重要节点写进台历。",
+  "stage": "同事协作期，工作话题为主，偶尔聊周末。"
+ },
+ "turns": [
+  {
+   "case_id": "E141_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "恒信那边把包装改版的截止日提前了，你手上那版 v2 周五下班前要交，来得及吗？",
+      "ts": "2026-11-03 10:05"
+     }
+    ],
+    "clock": "2026-11-03 10:08",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "direct",
+     "text": "询问周五交付 v2 的可行性"
+    }
+   },
+   "feedback": {
+    "her_state_shift": "开局急促带催办口吻，信息是二手转达、未经核实"
+   }
+  },
+  {
+   "case_id": "E141_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "等等，我刚翻群里，好像说工期还是原来的？你先别急着自己赶，我再去问拉哥确认，问完马上告诉你。",
+      "ts": "2026-11-03 14:30"
+     }
+    ],
+    "clock": "2026-11-03 14:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "口气从催办转为自我怀疑，主动叫停 ME 的赶工"
+   }
+  },
+  {
+   "case_id": "E141_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "问清楚啦，是我听岔了——截止日根本没提前，还是下周三交，周五那波是另一家供应商的档期，跟咱们无关。",
+      "ts": "2026-11-04 09:40"
+     },
+     {
+      "role": "HER",
+      "text": "抱歉抱歉，让你白紧张一晚上！",
+      "ts": "2026-11-04 09:42"
+     }
+    ],
+    "clock": "2026-11-04 09:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "澄清完成、更正自己昨天的口径，语气轻快带道歉"
+   }
+  },
+  {
+   "case_id": "E141_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了还有个事，客户点名要看 v3 的刀版图，v2 先不用发了。你那边刀版图今天能出个草稿吗？不用精修。",
+      "ts": "2026-11-04 11:15"
+     }
+    ],
+    "clock": "2026-11-04 11:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "抛出新的版本任务，节奏重新加快"
+   }
+  },
+  {
+   "case_id": "E141_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "刀版图草稿客户收到了，反馈说盒型想改成抽屉式的，外盒不变。你按抽屉式再出一版？周三之前都来得及。",
+      "ts": "2026-11-05 10:00"
+     }
+    ],
+    "clock": "2026-11-05 10:05",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "带来客户反馈，任务升级但语气轻松"
+   }
+  },
+  {
+   "case_id": "E141_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "拉哥说下周三上午有一轮内审，内审意见当场给，你周三下午再定稿就行，客户那边我替你挡着。",
+      "ts": "2026-11-05 15:30"
+     }
+    ],
+    "clock": "2026-11-05 15:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "安排明朗化，她主动替 ME 挡客户压力"
+   }
+  },
+  {
+   "case_id": "E141_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "客户今早补了条硬要求：文案一个字不能动，版式随便调。你出抽屉式那版的时候盯一下，别手滑改了字。",
+      "ts": "2026-11-06 09:30"
+     }
+    ],
+    "clock": "2026-11-06 09:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "转达新约束，语气半开玩笑但要求是硬的"
+   }
+  },
+  {
+   "case_id": "E141_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "计划有变，内审挪到周一上午十点。拉哥说你今晚把抽屉式那版初稿发我一份，周一内审要用，精修可以后补。",
+      "ts": "2026-11-06 16:20"
+     }
+    ],
+    "clock": "2026-11-06 16:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "内审改期带来当晚加急，语气带歉意"
+   }
+  },
+  {
+   "case_id": "E141_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周一好！内审过了，就提了一处：盒盖的开合方向跟客户样机反了，你顺手改一下？别的都不用动。",
+      "ts": "2026-11-09 11:25"
+     }
+    ],
+    "clock": "2026-11-09 11:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "报喜加一处小修改请求，整体轻松"
+   }
+  },
+  {
+   "case_id": "E141_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "改好的终版我汇总发客户了。这单多亏你，说好的加急餐我请，明天中午食堂还是楼下那家麻辣香锅，你挑。",
+      "ts": "2026-11-09 15:40"
+     }
+    ],
+    "clock": "2026-11-09 15:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "从工作转社交频道，主动兑现请餐"
+   }
+  },
+  {
+   "case_id": "E141_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "客户签约啦！拉哥在群里点名夸了设计组，有你名字。下次恒信的年会物料还找你，我先跟你预定档期～",
+      "ts": "2026-11-10 12:05"
+     }
+    ],
+    "clock": "2026-11-10 12:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "报喜并预告未来合作，兴奋"
+   }
+  },
+  {
+   "case_id": "E141_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "年会物料 brief 我下午发你邮箱，不急，下周一给个方向就行。今天是交付日，稿子九点就归档啦，顺顺利利！周末愉快呀！",
+      "ts": "2026-11-11 09:50"
+     }
+    ],
+    "clock": "2026-11-11 09:55",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state_shift": "收尾致意，无待办压力"
+   }
+  }
+ ]
+}

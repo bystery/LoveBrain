@@ -1,0 +1,191 @@
+{
+ "episode_id": "E099",
+ "persona": {
+  "her": {
+   "name": "文文",
+   "traits": [
+    "精打细算，吃软不吃硬",
+    "砍价上头但认白纸黑字",
+    "吃一堑长一智，学到就用到"
+   ],
+   "boundaries": [
+    "口头承诺不算数，写下来才算",
+    "自己的钱要花在明处，冤枉钱一分不出"
+   ]
+  },
+  "me": {
+   "name": "老康",
+   "traits": [
+    "装过两套房，门窗水电都踩过坑",
+    "看单子先看漏项",
+    "说话直，但从不替人拍板"
+   ]
+  },
+  "relationship_stage": "长期熟人（前同事，住得近）"
+ },
+ "initial_kb": {
+  "her": "文文住老房，卧室窗户一到冬天呜呜灌风，她决定封窗换断桥铝；装修上她还是新手，但肯学，报价单会一条条抠。",
+  "me": "老康前几年装过两套房，封窗报价里的五金、纱窗、立柱这些漏项他都吃过亏；帮人看单子只点问题不替人决定。",
+  "warmth": "前同事，现在住得近，她家上次换锁芯还是他陪去买的。",
+  "style": "她讲话快，算账的时候一句一顿；老康回得稳，先给结论再给理由。",
+  "stage": "长期熟人（前同事），彼此信得过但账目分明。"
+ },
+ "turns": [
+  {
+   "case_id": "E099_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-24 10:18", "text": "老康，问你个专业问题：我家窗户一到冬天就呜呜灌风，我决定封窗换断桥铝。今天 A 店来量了，12 个平方报 8800 全包，你说这价是实在还是坑？"}
+    ],
+    "clock": "2026-10-24 10:22",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "跃跃欲试", "warmth": "high", "shift": "封窗计划启动：首份报价到手，询价兼求把关"}
+  },
+  {
+   "case_id": "E099_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-24 14:52", "text": "听你的，我把报价单要来了。上面写着'108 系型材、中空玻璃'，五金和纱窗压根没提，我先存着不交钱，拍给你看看。"}
+    ],
+    "clock": "2026-10-24 14:56",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "谨慎上心", "warmth": "medium", "shift": "按提醒要来报价单，暂不付款先核漏项"}
+  },
+  {
+   "case_id": "E099_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-26 19:08", "text": "果然有鬼！我问清楚了，立柱另算 280 一根、我家要 3 根，纱窗 150 一扇、要 4 扇，加完直接跳到 10240！这也好意思叫全包？我差点当场交定金。"}
+    ],
+    "clock": "2026-10-26 19:12",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "恼火", "warmth": "medium", "shift": "费用冲突第一波：'全包'口径被另计项打破，总价虚高 1440"}
+  },
+  {
+   "case_id": "E099_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-27 12:31", "text": "我约了 B 店明天来量，朋友说他们 9600 全含。你说会不会便宜得有点悬？我总觉得天上不掉馅饼。"}
+    ],
+    "clock": "2026-10-27 12:35",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "警觉比价", "warmth": "medium", "shift": "比价启动：B 店 9600 全含待核实"}
+  },
+  {
+   "case_id": "E099_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-28 21:26", "text": "B 店报价单让我看明白一件事：他家是 5 毫米单层玻璃，A 店是 5+12A+5 中空，怪不得便宜了六百块，差价全在玻璃上！学到了学到了。"}
+    ],
+    "clock": "2026-10-28 21:30",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "恍然大悟", "warmth": "medium", "shift": "比价核出参数差异：便宜在玻璃降级，B 店优势存疑"}
+  },
+  {
+   "case_id": "E099_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-30 18:42", "text": "我拿着 B 店的参数回头找 A 店谈，老板咬咬牙 9700，立柱纱窗全含，玻璃不变。我让他把'无增项'三个字白纸黑字写进报价单，不写不交钱。"}
+    ],
+    "clock": "2026-10-30 18:46",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "志在必得", "warmth": "high", "shift": "压价成交：9700 全含并将'无增项'写入报价单"}
+  },
+  {
+   "case_id": "E099_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-31 11:24", "text": "定金 2000 交了。老板口头答应打胶免费，我让他写进单子，他说'老客户了写什么写'，我心一软没坚持。你说这算留下隐患吗？"}
+    ],
+    "clock": "2026-10-31 11:28",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "心虚不安", "warmth": "medium", "shift": "定金已交，打胶免费仅口头承诺未落纸（隐患伏笔）"}
+  },
+  {
+   "case_id": "E099_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 09:48", "text": "今天安装，师傅一进门就说墙体要打防爆栓，一个 60、八个 480，'这个不在合同里'。我当场把报价单拍他面前：白纸黑字无增项！"}
+    ],
+    "clock": "2026-11-08 09:52",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "炸毛对峙", "warmth": "medium", "shift": "增项冲突爆发：安装日现场加项，她以书面条款当场顶回"}
+  },
+  {
+   "case_id": "E099_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 12:28", "text": "老板电话里服软了：防爆栓算他的，但我要升级结构胶的话一支 200 自己出。我想了想认了——胶是我自己要升的，这钱出得不冤。你说我分得对不对？"}
+    ],
+    "clock": "2026-11-08 12:32",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "认账但不吃亏", "warmth": "medium", "shift": "冲突收敛：增项由店方消化，自选升级自担，责任划清"}
+  },
+  {
+   "case_id": "E099_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 18:05", "text": "装完了！推拉顺滑，胶打得也平整，我拿打火机沿缝照了一圈没漏点。老康你哪天来把关？虽然你肯定要说'我早让你看五金了'——我看了，进口的！"}
+    ],
+    "clock": "2026-11-08 18:10",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "得意", "warmth": "high", "shift": "安装完工自查通过，回扣五金叮嘱并邀 ME 把关"}
+  },
+  {
+   "case_id": "E099_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-09 20:31", "text": "尾款我留了 500 没结，说好开春不漏再给清。老板嘟囔了两句还是答应了。这 500 是我最后的倔强，你说我抠不抠？"}
+    ],
+    "clock": "2026-11-09 20:35",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "谨慎满意", "warmth": "medium", "shift": "尾款留扣：500 挂钩开春不漏，结算博弈收尾"}
+  },
+  {
+   "case_id": "E099_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-10 21:58", "text": "今晚风挺大，我在窗边站了一会儿，一点声儿都没有！为五百多块的差价掰扯了三天，值了。周五晚上请你喝一杯，听我吹砍价全过程，你敢打哈欠我就开窗让你吹风。"}
+    ],
+    "clock": "2026-11-10 22:02",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "畅快", "warmth": "high", "shift": "自然收尾：大风夜窗户无声，战果回述并约酒"}
+  }
+ ]
+}

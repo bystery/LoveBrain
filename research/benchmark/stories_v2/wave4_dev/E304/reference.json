@@ -1,0 +1,860 @@
+{
+ "story_id": "E304",
+ "turns": {
+  "E304_T01": {
+   "case_id": "E304_T01",
+   "current_action": "HER 私聊托付 ME：自己虾蟹一吃就起疹子，订菜时盯着别点蟹，并解释此事在群里说总显得自己事多",
+   "acceptable_actions": [
+    "给准话答应盯菜（lessons：托付的事给准话）并认下私下处理",
+    "答应并顺手问要不要连虾一起避（虾蟹同族）",
+    "答应并接'群里显得事多'梗（咱私下渠道解决式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T01_A01",
+     "subject": "HER",
+     "relation": "忌口",
+     "value": "HER 虾蟹一吃就起疹子",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T01",
+      "message_id": "m0",
+      "quote": "我虾蟹一吃就起疹子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T01_A02",
+     "subject": "HER",
+     "relation": "托付",
+     "value": "HER 托付 ME 订菜时别点蟹",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T01",
+      "message_id": "m0",
+      "quote": "别点蟹"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T01_A03",
+     "subject": "HER",
+     "relation": "保密动机",
+     "value": "HER 不想在群里提忌口的事（显得事多）",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T01",
+      "message_id": "m0",
+      "quote": "这个事在群里说总显得我事多"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "托付轮：准话优先于幽默；保密是隐形要求（她私下说），回复别提议'我帮你在群里说'。",
+   "unknowns": [
+    {
+     "topic": "蜀香居菜单上蟹类之外的具体菜品",
+     "note": "她只提香辣蟹和跳水鱼，候选不得编造菜单新菜",
+     "markers": [
+      [
+       "菜单上还有一道"
+      ],
+      [
+       "他家招牌还有"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "菜单上还有一道"
+      ],
+      [
+       "他家招牌还有"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "这个事在群里说总显得我事多"
+   ],
+   "forbidden_factual_claims": [
+    "不得建议在群里公开她的忌口",
+    "不得含糊不接托付"
+   ],
+   "may_decline": false
+  },
+  "E304_T02": {
+   "case_id": "E304_T02",
+   "current_action": "HER 确认能吃蛙且蛙是本命，并要求让厨房别太辣——自己上个月贪辣嗓子哑了一个星期、现在唱歌还气泡音",
+   "acceptable_actions": [
+    "认下'别太辣'并接气泡音自嘲（故障模式关不掉式）",
+    "答应转告厨房微辣并夸她拿自己黑历史当警告敬业",
+    "接'本命'梗（蛙见了你都绕道式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T02_A01",
+     "subject": "SHARED",
+     "relation": "换菜",
+     "value": "蟹已退、换成馋嘴蛙",
+     "valid_time": "2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T02",
+      "message_id": "m0",
+      "quote": "蟹我退了，换成馋嘴蛙"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T02_A02",
+     "subject": "HER",
+     "relation": "辣度要求",
+     "value": "HER 要求让厨房别太辣",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T02",
+      "message_id": "m1",
+      "quote": "就是让厨房别太辣"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T02_A03",
+     "subject": "HER",
+     "relation": "嗓子状况",
+     "value": "HER 上个月贪辣嗓子哑了一个星期、现在唱歌还气泡音",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T02",
+      "message_id": "m1",
+      "quote": "嗓子哑了一个星期，现在唱歌还是气泡音"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "忌口健康是 lessons 明示'认真办'项——别太辣要落到行动（转告厨房/点微辣）；气泡音是她的自嘲素材，接住别追问嗓子病情。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得点超辣菜或忽视微辣要求",
+    "不得编造她嗓子的病情细节"
+   ],
+   "may_decline": false
+  },
+  "E304_T03": {
+   "case_id": "E304_T03",
+   "current_action": "HER 通气：周六饭后那几位肯定要嚷嚷唱K，提议两人统一口径'下次一定'，并提醒 ME 别先被套进去",
+   "acceptable_actions": [
+    "接统一口径并演练一遍（你先说还是我先说式）",
+    "认下并加保险（谁被套进去谁买单式互保）",
+    "接'别被套进去'反呛（怕的是你式互损）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T03_A01",
+     "subject": "SHARED",
+     "relation": "统一口径",
+     "value": "两人约定对唱K邀请统一口径'下次一定'",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T03",
+      "message_id": "m0",
+      "quote": "咱俩就统一口径"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T03_A02",
+     "subject": "HER",
+     "relation": "互保提醒",
+     "value": "HER 提醒 ME 别先被套进去",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T03",
+      "message_id": "m0",
+      "quote": "你可别先被我套进去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "同盟玩笑轮：接的是'统一口径'这个合作姿态；这不是真冲突预案，别认真分析'唱K到底去不去'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得拆台答应唱K邀请",
+    "不得把口径说成'看情况'"
+   ],
+   "may_decline": false
+  },
+  "E304_T04": {
+   "case_id": "E304_T04",
+   "current_action": "HER 托付 ME 明天先垫付、散了帮他一起收账，理由是上次小唐收钱被群里追了两个星期，而 ME 面善催账不招人恨",
+   "acceptable_actions": [
+    "答应垫付收账并接'面善'夸奖（催账界的和善面孔式）",
+    "答应并问清楚人均口径（预收多少合适）",
+    "答应并自嘲又要当劳模（呼应组局身份）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T04_A01",
+     "subject": "HER",
+     "relation": "垫付托付",
+     "value": "HER 托付 ME 明天先垫付、散了帮他一起收账",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T04",
+      "message_id": "m0",
+      "quote": "明天你先垫，散了我帮你一起收账"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T04_A02",
+     "subject": "THIRD",
+     "relation": "旧例",
+     "value": "上次小唐收账在群里被追了两个星期",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T04",
+      "message_id": "m0",
+      "quote": "群里追了他两个星期"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "托付轮给准话；'面善不招人恨'是她的真实夸法，接住别谦虚过头把活推掉。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得推掉垫付或收账分工",
+    "不得把小唐的事当笑柄外传"
+   ],
+   "may_decline": false
+  },
+  "E304_T05": {
+   "case_id": "E304_T05",
+   "current_action": "HER 刷评价后一度想换椒麻鱼，随即自己绕晕（鱼能吃、虾蟹才不行），宣布'你当我没说'——提议自我撤回",
+   "acceptable_actions": [
+    "顺她撤回（没听见、刚才风大式玩笑）",
+    "顺势定调菜不动（蛙照点、鱼按原计划，各吃各的）",
+    "接她绕晕自嘲（菜单题超纲了式）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T05_A01",
+     "subject": "HER",
+     "relation": "换菜提议",
+     "value": "HER 一度提议换成椒麻鱼，随即自己撤回不作数",
+     "valid_time": "2026-11-13",
+     "status": "cancelled",
+     "negation": true,
+     "affirm_markers": [
+      [
+       "换成椒麻鱼"
+      ],
+      [
+       "点椒麻鱼"
+      ]
+     ],
+     "item_markers": [
+      "椒麻鱼"
+     ],
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T05",
+      "message_id": "m0",
+      "quote": "要不要换成椒麻鱼"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T05_A02",
+     "subject": "HER",
+     "relation": "撤回声明",
+     "value": "HER 宣布'你当我没说'",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T05",
+      "message_id": "m0",
+      "quote": "你当我没说"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "取消轮：椒麻鱼提议已作废——候选不得复活该提议（analysis.ongoing 不得把椒麻鱼当待办）；正确姿态是顺她收口，鱼蛙安排维持 T02 口径。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你当我没说"
+   ],
+   "forbidden_factual_claims": [
+    "不得复活椒麻鱼提议或改菜"
+   ],
+   "may_decline": false
+  },
+  "E304_T06": {
+   "case_id": "E304_T06",
+   "current_action": "HER 告知明天（周六）是自己的生日，群里谁都没告诉，托付 ME 千万别往外说、帮忙瞒住'谁问都没有'，只想安安静静吃顿饭",
+   "acceptable_actions": [
+    "给准话保密（嘴严、谁问都没有式）且不提任何仪式",
+    "答应并接'安安静静吃顿饭'（那就吃蛙、蛙最安静式玩笑）",
+    "答应并自证不露馅（连祝寿词都不准备的承诺式）"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T06_A01",
+     "subject": "HER",
+     "relation": "生日",
+     "value": "明天（2026-11-14 周六）是 HER 的生日",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T06",
+      "message_id": "m1",
+      "quote": "是我生日"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T06_A02",
+     "subject": "HER",
+     "relation": "知情范围",
+     "value": "群里没人知道 HER 的生日",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T06",
+      "message_id": "m1",
+      "quote": "群里我谁都没告诉"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T06_A03",
+     "subject": "HER",
+     "relation": "保密托付",
+     "value": "HER 托付 ME 帮忙瞒住、谁问都没有",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T06",
+      "message_id": "m1",
+      "quote": "你帮我瞒住，谁问都没有"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "最高保密等级轮：生日不搞仪式是 persona 明示边界（先斩后奏会翻脸）——回复绝不能提前祝寿、不能安排惊喜、不能建议群里庆祝；保密承诺要明确。",
+   "unknowns": [],
+   "protected_expressions": [
+    "千万别往外说",
+    "我就想安安静静吃顿饭"
+   ],
+   "forbidden_factual_claims": [
+    "不得提前祝寿或安排任何生日环节",
+    "不得向任何第三人透露生日"
+   ],
+   "may_decline": false
+  },
+  "E304_T07": {
+   "case_id": "E304_T07",
+   "current_action": "HER 通报已与蜀香居确认：听雨包间4点后随时能进、菜6点准时开做、忌口已交代经理，并顺手应下'订听雨送餐后甜汤'的活动，让 ME 人到就行",
+   "acceptable_actions": [
+    "认她安排周到并接'你人到就行'（人到、胃也到式）",
+    "接甜汤伏笔玩笑（好奇甜汤什么味式）",
+    "合法不回（她已安排完，知会性质）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T07_A01",
+     "subject": "HER",
+     "relation": "忌口确认",
+     "value": "HER 已把忌口跟蜀香居经理交代清楚",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T07",
+      "message_id": "m0",
+      "quote": "忌口我也跟经理交代清楚了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T07_A02",
+     "subject": "SHARED",
+     "relation": "赠品甜汤",
+     "value": "这个月订听雨包间送一份餐后甜汤，HER 顺手应了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T07",
+      "message_id": "m0",
+      "quote": "送一份餐后甜汤"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知会轮+may_decline：她把事都办了，ME 认领'人到'即可；'寿星祝福'环节此刻无人知晓（T10 才揭晓），候选不得预知或剧透。",
+   "unknowns": [
+    {
+     "topic": "甜汤活动是否包含其他环节",
+     "note": "她只说送甜汤，'寿星祝福'环节此时无人知晓，候选不得预知或剧透",
+     "markers": [
+      [
+       "还会唱生日歌"
+      ],
+      [
+       "有惊喜环节"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "还会唱生日歌"
+      ],
+      [
+       "有惊喜环节"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得预知寿星祝福环节",
+    "不得改动她已确认的安排"
+   ],
+   "may_decline": true
+  },
+  "E304_T08": {
+   "case_id": "E304_T08",
+   "current_action": "HER 已到蜀香居楼下，前台说三楼今天俩包间（听雨和听雪），她忘了订的是哪个，自嘲记性全用来记吃的了",
+   "acceptable_actions": [
+    "报'听雨'并顺她自嘲（记吃的那部分超频了式）",
+    "报包间并补方位或电梯指引（实用性）",
+    "报听雨并接'听雪下次再订'玩笑"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T08_A01",
+     "subject": "SHARED",
+     "relation": "包间名",
+     "value": "订的是听雨包间（非听雪）",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T08",
+      "message_id": "m0",
+      "quote": "听雨和听雪"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T08_A02",
+     "subject": "HER",
+     "relation": "求助",
+     "value": "HER 忘了包间名并向 ME 求证",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T08",
+      "message_id": "m0",
+      "quote": "咱是哪个来着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "记忆取用轮：答案只有'听雨'，别答错；顺带一句她的自嘲即可，别翻她'记性很好'的人设旧账。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得答成听雪",
+    "不得编造包间号或楼层细节"
+   ],
+   "may_decline": false
+  },
+  "E304_T09": {
+   "case_id": "E304_T09",
+   "current_action": "HER 迎 ME 进场：蛙给 ME 留了俩最大的，并称今天订位收账全包的 ME 是劳模、多吃两块应得的",
+   "acceptable_actions": [
+    "接蛙并接劳模称号（劳模先吃劳保餐式）",
+    "谢留蛙并把收账的活往后推（吃完了再当苦力式）",
+    "简短入座并回一句（留最大的算工伤补贴式）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T09_A01",
+     "subject": "HER",
+     "relation": "留菜",
+     "value": "HER 给 ME 留了两块最大的蛙",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T09",
+      "message_id": "m1",
+      "quote": "蛙给你留了俩最大的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T09_A02",
+     "subject": "HER",
+     "relation": "劳模称号",
+     "value": "HER 称 ME 今天订位收账全包是劳模",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T09",
+      "message_id": "m1",
+      "quote": "今天你是劳模，订位收账全是你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "饭局开场轮：短句接住即可；劳模梗呼应 T04 托付，别正经讨论分工报酬。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得否定她的劳模安排（如当场要求重新分工）"
+   ],
+   "may_decline": false
+  },
+  "E304_T10": {
+   "case_id": "E304_T10",
+   "current_action": "经理按'听雨套餐默认含寿星祝福'端甜汤带四个服务员给 HER 唱生日歌，全桌跟唱、老魏要张罗蛋糕被摁住；HER 声明不是发火——汤挺好喝就是吓一跳，自嘲早知道订听雪",
+   "acceptable_actions": [
+    "接她的社死自嘲并站她这边（蛋糕帮你摁住了、剩下的交给我式）",
+    "点明这事不是 ME 泄密（套餐默认谁都没想到）再轻玩笑收尾",
+    "接'早知道订听雪'（听雪今天估计也送祝福式玩笑）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T10_A01",
+     "subject": "HER",
+     "relation": "当众祝寿",
+     "value": "经理带着四个服务员给 HER 唱生日歌",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T10",
+      "message_id": "m0",
+      "quote": "带着四个服务员进来给我唱生日歌"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T10_A02",
+     "subject": "SHARED",
+     "relation": "祝寿起因",
+     "value": "起因是这个月听雨套餐默认含寿星祝福",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T10",
+      "message_id": "m0",
+      "quote": "套餐默认含寿星祝福"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T10_A03",
+     "subject": "HER",
+     "relation": "蛋糕处置",
+     "value": "老魏要张罗蛋糕被 HER 摁住了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T10",
+      "message_id": "m0",
+      "quote": "被我摁住了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "意外事件轮：NOTE 明示她社死但心情不差、别接成道歉现场——过度道歉（对不起我没拦住式）错误；ME 履行了 T06 保密承诺（泄密的是套餐默认条款），要点是让她舒服落地，不深究责任。",
+   "unknowns": [
+    {
+     "topic": "是否还有后续生日环节（如蛋糕）",
+     "note": "老魏的蛋糕提议已被摁住，后续是否真没有环节未定，候选不得坐实'接下来没有了'或主动张罗新环节",
+     "markers": [
+      [
+       "蛋糕马上就来"
+      ],
+      [
+       "我再给你补个惊喜"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "蛋糕马上就来"
+      ],
+      [
+       "我再给你补个惊喜"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我不是跟你发火"
+   ],
+   "forbidden_factual_claims": [
+    "不得过度道歉（她明说不是发火）",
+    "不得点破生日是她提前告知的（保密关系仍在）",
+    "不得张罗新的生日环节"
+   ],
+   "may_decline": false
+  },
+  "E304_T11": {
+   "case_id": "E304_T11",
+   "current_action": "HER 到家对账：共640元、8人一人80、ME 垫付，她那份刚转了并多转20当跑腿费不许退，感慨比小唐那两星期痛快多了",
+   "acceptable_actions": [
+    "确认到账并坚持不退20（跑腿费合理、退了伤感情式）",
+    "查账认80并接'比小唐痛快'（催账界的口碑就是这么来的式）",
+    "确认并把20记到下顿（下顿你多点个菜式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T11_A01",
+     "subject": "SHARED",
+     "relation": "餐费账目",
+     "value": "餐费共640元、8人每人80、ME 垫付",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T11",
+      "message_id": "m0",
+      "quote": "一共640，8个人一人80"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T11_A02",
+     "subject": "HER",
+     "relation": "跑腿费",
+     "value": "HER 已转自己那份并多转20当跑腿费、不许 ME 退",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T11",
+      "message_id": "m0",
+      "quote": "多的20算今天跑腿费，别退"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T11_A03",
+     "subject": "HER",
+     "relation": "收账对比",
+     "value": "HER 感慨这次收账比小唐那两星期痛快",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T11",
+      "message_id": "m0",
+      "quote": "比小唐那两星期痛快多了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "账目轮：640/80/多20不退三个口径别错；她给跑腿费是情分，收下比推让符合两人'账清情在'的相处。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得算错账（640/80/20）",
+    "不得坚持退20块破坏她的好意"
+   ],
+   "may_decline": false
+  },
+  "E304_T12": {
+   "case_id": "E304_T12",
+   "current_action": "HER 通报长寿面打包明早当早饭（她妈说生日面第二天吃叫福气匀着来），预告下月自己组局搞清淡锅底，邀 ME 继续当韩组、她当副组并替 ME 分担一半收账",
+   "acceptable_actions": [
+    "接下月组局并认清淡锅底（上火脸有救了式自嘲接住）",
+    "接副组任命并谈条件玩笑（副组只管催账不背锅式）",
+    "接福气匀着来梗并认下月之约"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E304_T12_A01",
+     "subject": "HER",
+     "relation": "长寿面安排",
+     "value": "HER 把长寿面打包明早当早饭（生日面第二天吃叫福气匀着来）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T12",
+      "message_id": "m0",
+      "quote": "我妈说生日面第二天吃，叫福气匀着来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T12_A02",
+     "subject": "HER",
+     "relation": "下月组局",
+     "value": "HER 预告下月自己组局、打算搞清淡锅底",
+     "valid_time": "2026-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T12",
+      "message_id": "m0",
+      "quote": "我打算搞清淡锅底"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E304_T12_A03",
+     "subject": "HER",
+     "relation": "副组分工",
+     "value": "HER 提出自己当副组、替 ME 分担一半收账",
+     "valid_time": "2026-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E304_T12",
+      "message_id": "m0",
+      "quote": "收账的活我替你分担一半"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾+轻钩轮：生日此时她已在饭桌上自己摊开（全桌唱了歌），ME 平常心接住即可，别突然补祝寿仪式感；下月组局钩接住就行，别现在就排菜单。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得补办生日仪式或深情祝寿",
+    "不得替她定下月组局的具体日期菜单"
+   ],
+   "may_decline": false
+  }
+ }
+}

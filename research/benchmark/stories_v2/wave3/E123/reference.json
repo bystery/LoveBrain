@@ -1,0 +1,702 @@
+{
+ "story_id": "E123",
+ "turns": {
+  "E123_T01": {
+   "case_id": "E123_T01",
+   "current_action": "接住带麻薯参加宠物友好日的计划",
+   "acceptable_actions": [
+    "答应当天去围观",
+    "提醒带水碗",
+    "打趣傻笑担当"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T01_A01",
+     "subject": "HER",
+     "relation": "活动计划",
+     "value": "周五公司宠物友好日带麻薯参加",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T01",
+      "quote": "周五我们公司搞宠物友好日",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快起头。",
+   "unknowns": [],
+   "protected_expressions": [
+    "只会傻笑"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构其他参会宠物"
+   ],
+   "may_decline": false
+  },
+  "E123_T02": {
+   "case_id": "E123_T02",
+   "current_action": "接住病史并认可处方粮期的谨慎",
+   "acceptable_actions": [
+    "认可谨慎并说该立规矩",
+    "回忆那场挂水并叹气",
+    "问处方粮还要吃多久"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T02_A01",
+     "subject": "HER",
+     "relation": "健康史",
+     "value": "麻薯上月偷吃卤味患急性肠胃炎输液两天，现仍吃处方粮，肠胃敏感",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "上月它偷吃卤味患急性肠胃炎输液两天，现仍食用处方粮"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E123_T02_A02",
+     "subject": "HER",
+     "relation": "健康史复述",
+     "value": "米乐亲口向 ME 复述的病史与处方粮现状",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T02",
+      "quote": "现在还在吃处方粮",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "认真接前情。",
+   "unknowns": [
+    "处方粮还需吃多久未知"
+   ],
+   "protected_expressions": [
+    "肠胃娇气"
+   ],
+   "forbidden_factual_claims": [
+    "不得说好了就能随便喂"
+   ],
+   "may_decline": false
+  },
+  "E123_T03": {
+   "case_id": "E123_T03",
+   "current_action": "认可先问再喂规矩并确认冻干为唯一官方投喂",
+   "acceptable_actions": [
+    "认可并说这规矩好",
+    "认可并主动请缨帮盯",
+    "认可并问冻干什么味"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T03_A01",
+     "subject": "HER",
+     "relation": "健康史",
+     "value": "麻薯肠胃敏感仍食处方粮的前情",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T02",
+      "quote": "现在还在吃处方粮",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E123_T03_A02",
+     "subject": "HER",
+     "relation": "投喂规则",
+     "value": "当天任何人喂食须先经 HER 同意，官方投喂仅限自带冻干",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T03",
+      "quote": "必须先问我",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把规矩复述一遍表支持。",
+   "unknowns": [],
+   "protected_expressions": [
+    "必须先问我"
+   ],
+   "forbidden_factual_claims": [
+    "不得提议例外零食"
+   ],
+   "may_decline": false
+  },
+  "E123_T04": {
+   "case_id": "E123_T04",
+   "current_action": "夸胸背带主意并确认当日安排",
+   "acceptable_actions": [
+    "夸主意并说想拍它穿上的样子",
+    "夸并问要不要帮忙打印牌子",
+    "夸并确认几点到"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T04_A01",
+     "subject": "HER",
+     "relation": "投喂规则",
+     "value": "先问再喂的投喂禁令",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T03",
+      "quote": "必须先问我",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E123_T04_A02",
+     "subject": "HER",
+     "relation": "防护物料",
+     "value": "备印有'肠胃娇气 先问再喂'字样的胸背带",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T04",
+      "quote": "先问再喂",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "捧场要捧到点上。",
+   "unknowns": [],
+   "protected_expressions": [
+    "先问再喂"
+   ],
+   "forbidden_factual_claims": [
+    "不得把标语内容改掉"
+   ],
+   "may_decline": false
+  },
+  "E123_T05": {
+   "case_id": "E123_T05",
+   "current_action": "先接她的紧张，认可当场制止，不急着断对错",
+   "acceptable_actions": [
+    "先安抚再说她做得对",
+    "先问麻薯状态再评人",
+    "支持她并提议稍后私下讲"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "attribution",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T05_A01",
+     "subject": "HER",
+     "relation": "投喂规则",
+     "value": "先问再喂禁令当日上午即被违反",
+     "valid_time": "2026-11-20",
+     "status": "violated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T03",
+      "quote": "必须先问我",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E123_T05_A02",
+     "subject": "THIRD",
+     "relation": "违规行为",
+     "value": "同事胖哥未经同意投喂麻薯牛肉干两块",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T05",
+      "quote": "往麻薯嘴里塞了两块牛肉干",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E123_T05_A03",
+     "subject": "HER",
+     "relation": "现场处置",
+     "value": "HER 当场制止并当面说了胖哥，气氛僵住",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T05",
+      "quote": "被我当场撞见",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：她的紧张第一，狗的状态第二，胖哥的动机不猜。",
+   "unknowns": [
+    "牛肉干成分未知",
+    "麻薯进食量未知"
+   ],
+   "protected_expressions": [
+    "我心也在跳"
+   ],
+   "forbidden_factual_claims": [
+    "不得当场给胖哥定罪",
+    "不得声称牛肉干必然致病"
+   ],
+   "may_decline": false
+  },
+  "E123_T06": {
+   "case_id": "E123_T06",
+   "current_action": "明确否认小题大做并给出事实依据",
+   "acceptable_actions": [
+    "用挂水前情证明她没错",
+    "否认并建议把处方粮拿给他看",
+    "否认并说娇气的是肠胃不是她"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "emotion_relation",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T06_A01",
+     "subject": "HER",
+     "relation": "现场处置",
+     "value": "HER 当场制止投喂的处置",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T05",
+      "quote": "被我当场撞见",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E123_T06_A02",
+     "subject": "THIRD",
+     "relation": "质疑言论",
+     "value": "胖哥质疑'狗哪有那么娇气'令 HER 产生自我怀疑",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T06",
+      "quote": "狗哪有那么娇气",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：给事实不灌鸡汤。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我是不是小题大做了"
+   ],
+   "forbidden_factual_claims": [
+    "不得附和'确实娇气'说法",
+    "不得把冲突升级到主管层面"
+   ],
+   "may_decline": false
+  },
+  "E123_T07": {
+   "case_id": "E123_T07",
+   "current_action": "认可她的处理方式并接住和解结果",
+   "acceptable_actions": [
+    "夸她讲事实比吵架管用",
+    "接'大人先低头'的梗",
+    "问麻薯下午状态"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T07_A01",
+     "subject": "THIRD",
+     "relation": "质疑言论",
+     "value": "胖哥此前的娇气质疑",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T06",
+      "quote": "狗哪有那么娇气",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E123_T07_A02",
+     "subject": "THIRD",
+     "relation": "和解结果",
+     "value": "HER 讲明病史与处方粮后胖哥道歉，冲突化解",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T07",
+      "quote": "他道歉了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮收口：功劳给她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "大人先低头"
+   ],
+   "forbidden_factual_claims": [
+    "不得替胖哥辩解翻案"
+   ],
+   "may_decline": false
+  },
+  "E123_T08": {
+   "case_id": "E123_T08",
+   "current_action": "接住麻薯的一天并轻收当日",
+   "acceptable_actions": [
+    "要照片发来看看",
+    "打趣快门饱了",
+    "提醒它睡前少喝水"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T08_A01",
+     "subject": "THIRD",
+     "relation": "和解结果",
+     "value": "胖哥已道歉的和解状态",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T07",
+      "quote": "他道歉了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E123_T08_A02",
+     "subject": "HER",
+     "relation": "当日收尾",
+     "value": "麻薯随摄影组活动一天，回家安睡",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T08",
+      "quote": "在家睡得四仰八叉",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻松收尾。",
+   "unknowns": [],
+   "protected_expressions": [
+    "四仰八叉"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造获奖名次"
+   ],
+   "may_decline": false
+  },
+  "E123_T09": {
+   "case_id": "E123_T09",
+   "current_action": "接住健康早报并共享松口气",
+   "acceptable_actions": [
+    "松口气并说以后还得盯",
+    "接一朝被蛇咬的梗",
+    "建议把这事写进规矩"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T09_A01",
+     "subject": "HER",
+     "relation": "现场处置",
+     "value": "昨日当场制止投喂的处置",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T05",
+      "quote": "被我当场撞见",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E123_T09_A02",
+     "subject": "HER",
+     "relation": "健康确认",
+     "value": "次日排便正常未闹肚子",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T09",
+      "quote": "便便正常，没闹肚子",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "安心但别彻底放松。",
+   "unknowns": [],
+   "protected_expressions": [
+    "没闹肚子"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称牛肉干无害论得逞"
+   ],
+   "may_decline": false
+  },
+  "E123_T10": {
+   "case_id": "E123_T10",
+   "current_action": "夸卡片固化并认可长期执行",
+   "acceptable_actions": [
+    "夸并说下次遛狗看看",
+    "夸并提议加个二维码",
+    "夸并问卡片防水吗"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T10_A01",
+     "subject": "HER",
+     "relation": "投喂规则",
+     "value": "先问再喂禁令的既定规则",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T03",
+      "quote": "必须先问我",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E123_T10_A02",
+     "subject": "HER",
+     "relation": "规则固化",
+     "value": "'先问再喂'卡片挂于牵引绳长期使用",
+     "valid_time": "2026-11-22起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T10",
+      "quote": "挂在牵引绳上了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把机制升级夸出来。",
+   "unknowns": [],
+   "protected_expressions": [
+    "挂在牵引绳上了"
+   ],
+   "forbidden_factual_claims": [
+    "不得建议撤掉卡片"
+   ],
+   "may_decline": false
+  },
+  "E123_T11": {
+   "case_id": "E123_T11",
+   "current_action": "接住赔罪冻干与投喂管理员任命",
+   "acceptable_actions": [
+    "笑说以毒攻毒",
+    "问冻干什么牌子",
+    "夸这招管人管狗两开花"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T11_A01",
+     "subject": "THIRD",
+     "relation": "和解结果",
+     "value": "胖哥道歉后的修复进程",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T07",
+      "quote": "他道歉了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E123_T11_A02",
+     "subject": "THIRD",
+     "relation": "关系修复",
+     "value": "胖哥购冻干赔罪被收下，并被任命为下次友好日投喂管理员",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T11",
+      "quote": "投喂管理员",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮余韵：笑纳即胜利。",
+   "unknowns": [],
+   "protected_expressions": [
+    "投喂管理员"
+   ],
+   "forbidden_factual_claims": [
+    "不得质疑任命决定"
+   ],
+   "may_decline": false
+  },
+  "E123_T12": {
+   "case_id": "E123_T12",
+   "current_action": "接下宠物公园邀约与拍照分工可应可缓",
+   "acceptable_actions": [
+    "应下分工并问几点",
+    "应下并说拍照管够",
+    "笑着问拦人有没有津贴"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E123_T12_A01",
+     "subject": "THIRD",
+     "relation": "关系修复",
+     "value": "投喂管理员任命后的缓和氛围",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T11",
+      "quote": "投喂管理员",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E123_T12_A02",
+     "subject": "SHARED",
+     "relation": "后续邀约",
+     "value": "周六带麻薯去城西新开宠物公园，ME 负责拍照",
+     "valid_time": "2026-11-28",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E123_T12",
+      "quote": "城西新开了个宠物公园",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾留笑点。",
+   "unknowns": [
+    "公园具体位置与收费未知"
+   ],
+   "protected_expressions": [
+    "就这么定了啊"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构公园规则"
+   ],
+   "may_decline": true
+  }
+ }
+}

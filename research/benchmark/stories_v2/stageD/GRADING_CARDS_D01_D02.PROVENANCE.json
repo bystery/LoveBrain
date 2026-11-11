@@ -1,0 +1,67 @@
+{
+ "kind": "grading_cards_stories_v2",
+ "stage": "stageD",
+ "built_at": "2026-10-28T17:41:07",
+ "source": "同故事 reference.json 逐字派生（本工具不新写判据）",
+ "schema": [
+  "case_id",
+  "current_action",
+  "acceptable_actions",
+  "applicable_dimensions",
+  "required_memory_atoms",
+  "private_guidance",
+  "unknowns",
+  "protected_expressions",
+  "forbidden_factual_claims",
+  "may_decline",
+  "intent"
+ ],
+ "schema_note": "Stage1 十键 + intent（Stage1 卡丢失 intent，goal 维评审看不到当前有效目标；此处原样搬运 reference 的 intent，不新造判据）",
+ "use": "评估侧专用：不进入候选可见输入；不声称独立封存",
+ "stories": {
+  "D01": {
+   "positions": 8,
+   "episode_sha256": "ed58109e67ef0270ad098dfaef6fb93d33e61fec1914a7b35a82d50c64356842",
+   "reference_sha256": "dc0c4912b0474c3b50df9d221f405185561ee77d08152da574b5269e0cfae68f",
+   "exposure_sha256": "16e3f1f923d55b2ebbd9e3a708684dc1364ec8f4c5e9b40e63e0e9c0fa89a3e2",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": false,
+   "independent_review": false,
+   "author": "QoderWork 独立出题子代理 stageD-author（任务书只给题面/判分格式与质量要求，未给候选资产、答卷原文、故障原句或评审结论）",
+   "may_decline_turns": [
+    "D01_T06",
+    "D01_T08"
+   ]
+  },
+  "D02": {
+   "positions": 8,
+   "episode_sha256": "f24be8a7fa3973c67cc2142b9ad007aabbb3e70e2fb6045b92ce948036557d14",
+   "reference_sha256": "15e9ae08347081b66f2eab336909b7ef729203e7a3db27f54fbcbf5a976d3fa7",
+   "exposure_sha256": "77ab74ffc9df6235b848f2ece872f2d19aa2b6d7b4cbf8b61b851633d267140d",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": false,
+   "independent_review": false,
+   "author": "QoderWork 独立出题子代理 stageD-author（任务书只给题面/判分格式与质量要求，未给候选资产、答卷原文、故障原句或评审结论）",
+   "may_decline_turns": [
+    "D02_T06",
+    "D02_T08"
+   ]
+  }
+ },
+ "counts": {
+  "stories": 2,
+  "cards": 16
+ },
+ "checks": {
+  "errors": [],
+  "passed": true
+ },
+ "cards_sha256": "6712eb2ef31c12df538630e228a313a2ddacd917ade63acb6f1146293dbdd86e",
+ "cards_file": "benchmark/stories_v2/stageD/GRADING_CARDS_D01_D02.json"
+}

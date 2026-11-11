@@ -1,0 +1,571 @@
+{
+ "story_id": "E101",
+ "turns": {
+  "E101_T01": {
+   "case_id": "E101_T01",
+   "current_action": "接住她的重大战报式报喜，肯定两年攒钱圆梦的心意，顺带垫一句接猫前的书面确认（健康与交付细节），把好消息落实成可执行的准备清单。",
+   "acceptable_actions": [
+    "恭喜她订到猫，提醒接猫前确认疫苗记录和体检报告的交付方式",
+    "问她视频里小猫状态，接一句取名相关的轻松互动",
+    "提醒三个月龄接猫前家里需要备的基本用品"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A01",
+     "subject": "SHARED",
+     "relation": "kitten_ordered",
+     "value": "她在软云猫舍订下一只布偶母猫并支付2000元定金",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T01", "message_id": "m0", "quote": "订到一只布偶妹妹啦，定金2000已经付了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A02",
+     "subject": "SHARED",
+     "relation": "pickup_window",
+     "value": "接猫条件为养满三个月龄，原定11月底抱回家",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T01", "message_id": "m0", "quote": "养满三个月龄就能接，11月底我就能把它抱回家"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A03",
+     "subject": "THIRD",
+     "relation": "breeder_channel",
+     "value": "交易对接与接猫安排均经猫舍主理人琳姐进行",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T01", "message_id": "m0", "quote": "琳姐说养满三个月龄就能接"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接住她的兴奋，建议别下命令式，用'要不要顺手确认'的轻口吻。",
+   "unknowns": ["合同或书面条款是否已落文字未知", "尾款金额与支付方式未提"],
+   "protected_expressions": ["照片我都设成屏保了"],
+   "forbidden_factual_claims": ["不得虚构该猫舍的行业口碑或资质", "不得断言接猫必然顺利"]
+  },
+  "E101_T02": {
+   "case_id": "E101_T02",
+   "current_action": "接住主理人持续发视频的上心感，肯定她对'落到文字的承诺'的期待方向，建议把疫苗、驱虫、体检报告三项记成接猫验收清单。",
+   "acceptable_actions": [
+    "建议她把琳姐承诺的疫苗驱虫体检逐项记下来，接猫时逐项验收",
+    "顺着取名夸一句汤圆，把氛围接住",
+    "提醒接猫前视频确认小猫状态留档"
+   ],
+   "applicable_dimensions": ["memory_use", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A04",
+     "subject": "SHARED",
+     "relation": "prepup_care_promise",
+     "value": "琳姐承诺接猫前完成两针疫苗、体内外驱虫并提供体检报告",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T02", "message_id": "m0", "quote": "接猫前两针疫苗、体内外驱虫和体检报告都会做好给我"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A05",
+     "subject": "SHARED",
+     "relation": "cat_named",
+     "value": "小猫已被她取名汤圆",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T02", "message_id": "m0", "quote": "就叫汤圆"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A06",
+     "subject": "THIRD",
+     "relation": "breeder_attentive",
+     "value": "主理人持续发视频跟进，在她眼中确实上心",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T02", "message_id": "m0", "quote": "这主理人是真的上心"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：清单建议说成'顺手的事'，别把信任往泼冷水方向带。",
+   "unknowns": ["疫苗品牌与接种机构未知", "体检报告具体项目未知"],
+   "protected_expressions": ["圆得理直气壮"],
+   "forbidden_factual_claims": ["不得虚构疫苗具体时间表", "不得断言主理人的承诺必然兑现"]
+  },
+  "E101_T03": {
+   "case_id": "E101_T03",
+   "current_action": "接住第三方插入的坏消息：整窝猫瘟阳性隔离复查、接猫延期、定金悬置。先接她的七上八下，把'延期'和'定金风险'拆成两件事看，不急着教她维权。",
+   "acceptable_actions": [
+    "先安抚情绪，指出隔离复查是猫舍的稳妥做法而非刁难",
+    "提醒她确认复查时间表和小猫状态的知情频率",
+    "把定金不退的口头口径记下来，作为后续沟通的对照"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "time_state", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A07",
+     "subject": "SHARED",
+     "relation": "pickup_suspended",
+     "value": "原定11月底的接猫计划被整窝隔离复查打乱，处于悬置",
+     "valid_time": "2026-10-26/2026-11-02",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E101_T01", "message_id": "m0", "quote": "11月底我就能把它抱回家"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E101_A08",
+     "subject": "THIRD",
+     "relation": "litter_quarantine",
+     "value": "猫舍整窝因猫瘟检测阳性被隔离复查，接猫延后约两周",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T03", "message_id": "m0", "quote": "有一只猫瘟检测阳性，整窝都要隔离复查"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A09",
+     "subject": "THIRD",
+     "relation": "deposit_stance",
+     "value": "琳姐口头口径：定金不退但可以一直等",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T03", "message_id": "m0", "quote": "定金不退但可以一直等"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先共情再拆解，别一上来就站'要不要退钱'的立场，把判断材料给她。",
+   "unknowns": ["复查具体时间表未知", "其他小猫检测结果未知"],
+   "protected_expressions": ["我现在心里七上八下的"],
+   "forbidden_factual_claims": ["不得断言汤圆必然被感染或必然没事", "不得虚构猫瘟的医学细节下诊断"]
+  },
+  "E101_T04": {
+   "case_id": "E101_T04",
+   "current_action": "面对'现在退定金止损'的征询：给判断依据而非替她拍板——退与等各算一笔账（行规惯例、书面证据缺失、等待成本），把选择权还给她。",
+   "acceptable_actions": [
+    "说明口头阶段退定金依据不足，建议先要书面承诺再谈退留",
+    "给出等待方案的最坏情况推演，让她带着预期去谈",
+    "明确这是她的钱和她的决定，ME 只摆事实不替拍板"
+   ],
+   "applicable_dimensions": ["goal", "attribution", "interaction", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A10",
+     "subject": "HER",
+     "relation": "refund_consideration",
+     "value": "她在考虑立即要求退还定金及时止损",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T04", "message_id": "m0", "quote": "要不要现在就要求把定金退了及时止损"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A11",
+     "subject": "HER",
+     "relation": "risk_self_assessment",
+     "value": "她自查得到潜伏期整窝阳性基本躲不掉的判断",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T04", "message_id": "m0", "quote": "猫瘟潜伏期整窝阳性基本躲不掉"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A12",
+     "subject": "ME",
+     "relation": "evidence_first_stance",
+     "value": "ME 一贯主张先保证据再谈情面，不替她拍板",
+     "valid_time": "持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "me", "quote": "劝人先保证据再谈情面，不替她拍板"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她带着'你帮我拍板'的期待来，回复要稳，给推演不给命令。",
+   "unknowns": ["猫舍是否同意退定金未知", "行规解释因店而异"],
+   "protected_expressions": ["2000块也是钱"],
+   "forbidden_factual_claims": ["不得虚构定金法律条款", "不得断言退定金必然成功或必然失败"]
+  },
+  "E101_T05": {
+   "case_id": "E101_T05",
+   "current_action": "确认她的止损冲动撤回、转为书面锁定：肯定她'丑话说在前头'的谈法，把书面承诺视为这段悬置期的锚。",
+   "acceptable_actions": [
+    "肯定她没撕破脸又拿到书面回复的处理方式",
+    "提醒截图存两处备份，别只存手机",
+    "把'阴性随时接猫、阳性全额退'复述一遍确认口径完整"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A13",
+     "subject": "HER",
+     "relation": "refund_request_withdrawn",
+     "value": "立即退定金的考虑撤回，转为书面锁定承诺",
+     "valid_time": "2026-11-03",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E101_T04", "message_id": "m0", "quote": "要不要现在就要求把定金退了及时止损"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E101_A14",
+     "subject": "HER",
+     "relation": "screenshot_archive",
+     "value": "她将琳姐的书面承诺截图存档",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T05", "message_id": "m0", "quote": "截图我存好了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'听你的'轻轻还回去，强调是她自己谈得好，ME 不领功。",
+   "unknowns": ["承诺是否涵盖后续涨价情形未知"],
+   "protected_expressions": ["我没撕破脸"],
+   "forbidden_factual_claims": ["不得把微信口头回复当成法律合同", "不得虚构琳姐回复之外的条款"]
+  },
+  "E101_T06": {
+   "case_id": "E101_T06",
+   "current_action": "接住半喜半气的双消息：复查阴性可接是好消息；第三方临时补价300与此前承诺冲突。先恭喜，再站她'价格谈死'的判断，建议拿证据说话。",
+   "acceptable_actions": [
+    "先恭喜汤圆阴性，把情绪接稳再谈补价",
+    "肯定她的判断：谈定的价格被单方变更站不住",
+    "建议她翻出当时的聊天记录作为沟通依据"
+   ],
+   "applicable_dimensions": ["factuality", "boundary", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A15",
+     "subject": "SHARED",
+     "relation": "recheck_negative",
+     "value": "汤圆复查阴性，琳姐确认月底前可接猫",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T06", "message_id": "m0", "quote": "汤圆是阴性，琳姐说月底前就能接"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A16",
+     "subject": "THIRD",
+     "relation": "price_hike_claim",
+     "value": "琳姐以行情上涨为由要求到店再补300元",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T06", "message_id": "m0", "quote": "让我到店再补300块"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A17",
+     "subject": "SHARED",
+     "relation": "price_lock_belief",
+     "value": "她认定购买价格当时已谈定，不应临时加价",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E101_T06", "message_id": "m0", "quote": "价格不是当时就谈死的吗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A18",
+     "subject": "SHARED",
+     "relation": "written_promise_active",
+     "value": "此前书面承诺'阴性随时接猫、阳性全额退'已经兑现了阴性一半，仍有效",
+     "valid_time": "2026-11-03/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T05", "message_id": "m0", "quote": "复查阴性随时接猫，万一阳性定金全额退"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：恭喜要真，站她要稳，但别把她往吵架方向拱，方向是证据与和气。",
+   "unknowns": ["300元补价的口径来源未知", "琳姐是否有意为之未知"],
+   "protected_expressions": ["价格不是当时就谈死的吗"],
+   "forbidden_factual_claims": ["不得断言琳姐故意涨价", "不得虚构行情涨跌的具体数字"]
+  },
+  "E101_T07": {
+   "case_id": "E101_T07",
+   "current_action": "接住她的证据（一口价8000、定金2000抵尾款、不多收一分）与开口方式征询：建议照旧走'不吵不闹+截图说话'的路线，把拿捏感交给文字。",
+   "acceptable_actions": [
+    "建议原样转发当时的聊天记录，只加一句平视的说明",
+    "提醒沟通窗口选白天，别深夜发长段情绪",
+    "预设对方台阶：如果对方认错，接住就好不追打"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "memory_use", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A19",
+     "subject": "SHARED",
+     "relation": "price_evidence",
+     "value": "聊天记录载明一口价8000、定金2000抵尾款、后面不多收一分",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T07", "message_id": "m0", "quote": "一口价8000，定金2000抵尾款，后面不多收一分"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A20",
+     "subject": "HER",
+     "relation": "tactics_consultation",
+     "value": "她征询如何不伤和气地坚持原价",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T07", "message_id": "m0", "quote": "怎么开口不伤和气又能拿捏住"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她要的是'怎么开口'，不是'该不该开口'，别重复论证一遍该不该。",
+   "unknowns": ["琳姐看到记录后的反应未知"],
+   "protected_expressions": ["白纸黑字"],
+   "forbidden_factual_claims": ["不得虚构沟通必胜的结果", "不得替她起草带羞辱性的话术"]
+  },
+  "E101_T08": {
+   "case_id": "E101_T08",
+   "current_action": "接住第三方的让步：补价要求撤回、按原价执行并致歉。肯定她'不吵不闹+截图说话'的打法奏效，把300块没了和和气没伤都点到。",
+   "acceptable_actions": [
+    "肯定她证据在手点到为止的处理，既回了价也留了关系",
+    "提醒接猫时按原价核对尾款金额",
+    "顺着'运营挂错价目表'调侃一句，把气氛放轻"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A21",
+     "subject": "THIRD",
+     "relation": "price_hike_retracted",
+     "value": "补300元的要求被琳姐以挂错价目表为由撤回",
+     "valid_time": "2026-11-08/2026-11-09",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E101_T06", "message_id": "m0", "quote": "让我到店再补300块"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E101_A22",
+     "subject": "THIRD",
+     "relation": "correction_apology",
+     "value": "琳姐承认运营挂错价目表并致歉，承诺按原价执行",
+     "valid_time": "2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T08", "message_id": "m0", "quote": "是运营挂错价目表了，按原来的价"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把功劳记在她的截图和分寸上，别把猫舍说成敌人，纠纷已了就翻篇。",
+   "unknowns": ["接猫当日价格执行是否顺畅未知"],
+   "protected_expressions": ["和气也没伤"],
+   "forbidden_factual_claims": ["不得虚构琳姐的道歉动机分析", "不得断言类似纠纷不会再发生"]
+  },
+  "E101_T09": {
+   "case_id": "E101_T09",
+   "current_action": "接住接猫日的喜与刺：汤圆到家是喜事；左耳疑似耳螨与接前驱虫承诺不符。先恭喜，再帮她把'找琳姐'的方式降温和聚焦：先拍照取证、就事论事。",
+   "acceptable_actions": [
+    "先恭喜接猫圆满，再建议拍照留证、只谈驱虫这一件事",
+    "提醒耳螨常见可治，先别往'猫舍坑人'上升级",
+    "建议陈述事实（承诺了什么、现状是什么）而非问罪"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A23",
+     "subject": "SHARED",
+     "relation": "prepup_care_gap",
+     "value": "琳姐接猫前驱虫与体检都做好的承诺与耳螨现状不符，疑似未兑现",
+     "valid_time": "2026-10-27/2026-11-22",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E101_T02", "message_id": "m0", "quote": "接猫前两针疫苗、体内外驱虫和体检报告都会做好给我"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E101_A24",
+     "subject": "SHARED",
+     "relation": "ear_mite_found",
+     "value": "接猫当日发现汤圆左耳疑似耳螨",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T09", "message_id": "m0", "quote": "左耳朵里有点黑渣渣，上网一查像是耳螨"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A25",
+     "subject": "HER",
+     "relation": "pursue_consultation",
+     "value": "她征询是否就驱虫问题找琳姐",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T09", "message_id": "m0", "quote": "我要不要找她"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：喜事优先，刺要拔但别拔大，给'就事论事'的台阶不给'讨说法'的火。",
+   "unknowns": ["耳螨是否确证未知", "耳螨来源与感染时间未知"],
+   "protected_expressions": ["胖得跟年画似的"],
+   "forbidden_factual_claims": ["不得确诊耳螨或虚构用药方案", "不得断言猫舍必然故意隐瞒"]
+  },
+  "E101_T10": {
+   "case_id": "E101_T10",
+   "current_action": "接住她先处理后沟通的做法与琳姐爽快认账的结局：肯定这套'轻沟通'换来了药钱补偿和后续跟进，把关系修复和责任认领都点到。",
+   "acceptable_actions": [
+    "肯定她没兴师问罪反而拿到认账的结果",
+    "提醒按说明用药并观察耳朵恢复",
+    "把琳姐承诺下月提醒疫苗记成待办"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A26",
+     "subject": "THIRD",
+     "relation": "compensation_covered",
+     "value": "琳姐转账200元承担药费并承诺下月提醒疫苗时间",
+     "valid_time": "2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T10", "message_id": "m0", "quote": "转了我200说'药钱我出，是我疏忽了'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A27",
+     "subject": "HER",
+     "relation": "gentle_handling",
+     "value": "她选择拍照轻沟通而非兴师问罪",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T10", "message_id": "m0", "quote": "我先没兴师问罪"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A28",
+     "subject": "SHARED",
+     "relation": "treatment_started",
+     "value": "她当晚购入洗耳液并为汤圆清理耳道",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T10", "message_id": "m0", "quote": "买了洗耳液，今晚给它清了一遍"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'被哄好'说成双向都体面，功劳给她选的方式，别过度归因于琳姐大方。",
+   "unknowns": ["耳螨痊愈时间未知", "200元是否覆盖全部药费未知"],
+   "protected_expressions": ["小东西乖得让人心疼"],
+   "forbidden_factual_claims": ["不得虚构治疗周期", "不得断言补偿方案已彻底了结"]
+  },
+  "E101_T11": {
+   "case_id": "E101_T11",
+   "current_action": "接住健康收口与经验沉淀：耳螨痊愈、医院确认干净；她把全程记录归档并立下'承诺必须落到文字'的原则。肯定这条原则，再接一句拆沙发的笑点。",
+   "acceptable_actions": [
+    "肯定她的归档习惯和'承诺落文字'原则的含金量",
+    "顺带提醒后续疫苗节点别大意",
+    "接拆沙发的梗，调侃设计师的沙发保住了几件"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A29",
+     "subject": "SHARED",
+     "relation": "ear_mite_resolved",
+     "value": "耳螨痊愈，医院复查确认耳朵干净",
+     "valid_time": "2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T11", "message_id": "m0", "quote": "耳朵很干净"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A30",
+     "subject": "HER",
+     "relation": "archive_lesson",
+     "value": "她把定金到接猫的全程记录归档并立下承诺必须落到文字的原则",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T11", "message_id": "m0", "quote": "承诺必须落到文字"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A31",
+     "subject": "SHARED",
+     "relation": "settling_in",
+     "value": "汤圆适应良好并开始抓挠她的样品沙发",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T11", "message_id": "m0", "quote": "拆我的样品沙发"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：原则她已自己悟到，ME 最多补一句'这次从头到尾就是这么赢的'，别说教。",
+   "unknowns": ["后续疫苗具体日期未知"],
+   "protected_expressions": ["承诺必须落到文字"],
+   "forbidden_factual_claims": ["不得虚构疫苗剩余针数", "不得断言归档习惯从此不变"]
+  },
+  "E101_T12": {
+   "case_id": "E101_T12",
+   "current_action": "接住周六见猫之约与'不打不成交'的玩笑：笑纳邀约（可以按自己安排接或婉转改期），顺着她与琳姐的关系回暖收尾，不引入新话题。",
+   "acceptable_actions": [
+    "答应周六见汤圆，把分一半试吃装接成玩笑",
+    "顺着'维权代表'调侃她如今在养猫群的新身份",
+    "如自己周六有事，坦诚说明并主动提改期"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E101_A32",
+     "subject": "SHARED",
+     "relation": "meetup_invite",
+     "value": "她邀 ME 周六下午见汤圆并分一半试吃装",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T12", "message_id": "m0", "quote": "周六下午带汤圆去见见你呗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E101_A33",
+     "subject": "SHARED",
+     "relation": "dispute_closed",
+     "value": "定金与改价纠纷以按原价成交并关系回暖告终",
+     "valid_time": "2026-11-09/2026-12-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T08", "message_id": "m0", "quote": "按原来的价"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E101_A34",
+     "subject": "THIRD",
+     "relation": "group_invite",
+     "value": "琳姐拉养猫群并把她当作维权代表邀请入群",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E101_T12", "message_id": "m0", "quote": "还把我拉进去当'维权代表'"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，'不打不成交'接成对她分寸感的认可，别翻旧账讲道理。",
+   "unknowns": ["养猫群性质未知"],
+   "protected_expressions": ["不打不成交"],
+   "forbidden_factual_claims": ["不得虚构琳姐在群里的其他言行", "不得引入新的宠物消费话题"]
+  }
+ }
+}

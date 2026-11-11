@@ -1,0 +1,94 @@
+{
+ "kind": "story_v2_wave3_stage1_shard",
+ "stage": "wave3",
+ "date": "2026-11-02",
+ "built_by": "T2-A1",
+ "count": 4,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E157",
+   "title": "旧手机的补贴悬案",
+   "themes": [
+    "数码消费",
+    "旧手机以旧换新",
+    "补贴资格不确定",
+    "门店口径不一",
+    "数据迁移备份"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E157",
+   "turns": 12,
+   "files": {
+    "episode.json": "a9fd69c26e432b8cd5ed10d504ac6c720354530b79bd3b64f216d683c7e9f75d",
+    "reference.json": "4e46bafefabc18a648d79c9cbcf6051aaf8fb31d75dc3395ffa900cd2a6ea05f",
+    "timeline.json": "fefa027b52091d6b4dbc925f2589ab8b12b203f44f7bf77f636336e3d0b1a06f",
+    "audit.md": "60504af93c305e2c6c4f1d2600b42f3513e14cd4743432990cdcb2a3a1348079"
+   }
+  },
+  {
+   "story_id": "E158",
+   "title": "点位图上的两个插座",
+   "themes": [
+    "家居装修",
+    "厨房水电改造",
+    "点位图版本更正",
+    "岛台插座存废",
+    "书面补充单"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E158",
+   "turns": 12,
+   "files": {
+    "episode.json": "6ea2e4df163c9da9fa904e3078556db06e0c6de783ccb9cbf208789398bca391",
+    "reference.json": "c24ecb73d6b7f07ba6f7800a188200eb27e55da0d71b2b7eff118d7b1b63edb1",
+    "timeline.json": "f595c5aaafcb7a0b62e7af09ea5be5e561db59f218a3afbdb37a4c9a36995c1f",
+    "audit.md": "264a6088a9c371a4da231d034e6cfa88973feb6a8824fe862a7ccd95a6754ab2"
+   }
+  },
+  {
+   "story_id": "E159",
+   "title": "钥匙三不原则",
+   "themes": [
+    "宠物",
+    "出差上门喂猫",
+    "代喂人临时更换",
+    "钥匙交接边界",
+    "三步流程书面化"
+   ],
+   "domain": "宠物",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E159",
+   "turns": 12,
+   "files": {
+    "episode.json": "65b85f4d8d117046ffec562226e2604efb6833e3c25a8eddb85d6c7df6d52a06",
+    "reference.json": "a141bb433128f597d89ef095e6a6db09cfc8bb534dfb4684864d90a81c740415",
+    "timeline.json": "b54d5c92008f5c642f546765106085602257802241c83690491a8bb400d70b35",
+    "audit.md": "f01fa2312689f6d769d4cfe40ad078fa249e8b1a4a5e327783d9393e7761fcc9"
+   }
+  },
+  {
+   "story_id": "E160",
+   "title": "人均一百三的算法",
+   "themes": [
+    "餐饮聚会",
+    "部门火锅团建",
+    "酒水摊派口径",
+    "收银串单更正",
+    "垫付回收"
+   ],
+   "domain": "餐饮聚会",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E160",
+   "turns": 12,
+   "files": {
+    "episode.json": "b3ed87e034725a80f4d9a7beb83686889e9952cedeb8c3c2639c9dd17079b64e",
+    "reference.json": "19e4dc419875eaa2942b58eee033903173cc6bfce3ded8f89f09965678b085be",
+    "timeline.json": "1bce33be93afa36f20005ac6089761e6e8c2a72eddc6539cd6d0330d64faecb3",
+    "audit.md": "5ed9fcc809f27390a47a65738d0fedef905f36473af78b13176c2cf56a2fa8f8"
+   }
+  }
+ ]
+}

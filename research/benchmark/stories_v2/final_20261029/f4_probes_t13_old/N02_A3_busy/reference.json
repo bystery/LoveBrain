@@ -1,0 +1,31 @@
+{
+ "story_id": "N02",
+ "turns": {
+  "N02_A3_busy": {
+   "case_id": "N02_A3_busy",
+   "current_action": "她明确忙碌、回得慢。应轻接、不催；短回或安静收住都可以。",
+   "acceptable_actions": [
+    "说没事，先忙",
+    "短接一句，不追加问题"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "忙碌信号：不索取回复。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": {
+    "text": "她明确忙碌、回得慢。应轻接、不催；短回或安静收住都可以。",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

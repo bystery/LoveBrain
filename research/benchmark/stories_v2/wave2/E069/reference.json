@@ -1,0 +1,560 @@
+{
+ "story_id": "E069",
+ "turns": {
+  "E069_T01": {
+   "case_id": "E069_T01",
+   "current_action": "接住她的兴奋，先把复诊陪同和火锅之约应下来，再顺口垫一句让她把预约截图发来对一下时间。",
+   "acceptable_actions": [
+    "答应那天早点溜去接她，并让她发预约截图核对时间",
+    "先确认周三下午自己走得开，再问火锅店要不要提前排号",
+    "顺着火锅话题接梗，同时提醒她跟组长请假要趁早"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A01",
+     "subject": "SHARED",
+     "relation": "appointment_claimed",
+     "value": "她记复诊为11月4号周三下午四点半，医生说要换粗一号钢丝",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T01", "message_id": "m0", "quote": "周三（11月4号）下午四点半复诊"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A02",
+     "subject": "SHARED",
+     "relation": "hotpot_plan",
+     "value": "复诊后两人约好直奔新开的酸汤火锅",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T01", "message_id": "m0", "quote": "接上我直奔酸汤火锅"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A03",
+     "subject": "HER",
+     "relation": "escort_request",
+     "value": "她要ME复诊当天早点下班到诊所接她",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T01", "message_id": "m0", "quote": "你那天早点溜"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先把陪同应得爽快，'对一下截图'要像他自己的职业习惯，不像挑她毛病。",
+   "unknowns": ["预约截图内容尚未出示", "ME当天下午能否离开工位未确认"],
+   "protected_expressions": ["我这种怂人得有人陪"],
+   "forbidden_factual_claims": ["不得替她确认预约真实日期", "不得虚构诊所位置与套餐价格"]
+  },
+  "E069_T02": {
+   "case_id": "E069_T02",
+   "current_action": "接住她请假成功的得意，肯定她的报备到位，把'有人接她'这件事也当承诺收下。",
+   "acceptable_actions": [
+    "肯定她请假利索，承诺不会放鸽子",
+    "顺势问她周三下午两小时够不够，要不要再顺延缓冲",
+    "调侃组长批得快，让她把假条时间发来备一份"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A04",
+     "subject": "HER",
+     "relation": "leave_booked",
+     "value": "她已向组长请准周三下午两小时假",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T02", "message_id": "m0", "quote": "跟组长请好假了，周三下午两小时"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A05",
+     "subject": "SHARED",
+     "relation": "escort_reported",
+     "value": "她已向组长报备复诊当天有人来接她",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T02", "message_id": "m0", "quote": "我都跟他说有人来接我了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'不放鸽子'说成行政人的职业操守，顺她的得意走。",
+   "unknowns": ["组长对请假的容忍度未知", "周三具体请假时段未写明"],
+   "protected_expressions": ["你可不许放我鸽子"],
+   "forbidden_factual_claims": ["不得虚构组长批复细节", "不得断言该请假时段必然成立"]
+  },
+  "E069_T03": {
+   "case_id": "E069_T03",
+   "current_action": "先拦住她当天冲去诊所的冲动：钢丝磨腮常见且可自救降不适，建议先电话问诊再决定，别自作主张提前跑。",
+   "acceptable_actions": [
+    "劝她先打诊所电话描述情况，由师傅决定是否提前处理",
+    "给一个应急缓解办法，比如正畸保护蜡，并强调别自己剪钢丝",
+    "提醒她提前去也可能排不上号，反而打乱周三安排"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "time_state", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A06",
+     "subject": "HER",
+     "relation": "braces_pain",
+     "value": "钢丝末端磨腮，她右边大牙处疼痛明显",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T03", "message_id": "m0", "quote": "右边大牙那钢丝勾得腮帮子生疼"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A07",
+     "subject": "HER",
+     "relation": "impulse_clinic",
+     "value": "她情绪上头想当天下午直接冲去诊所",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T03", "message_id": "m0", "quote": "我想今天下午就冲去诊所"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先安抚'疼是真的'，再给'先问再动'的次序，口气像同事不像医生。",
+   "unknowns": ["钢丝磨腮的具体成因未知", "诊所是否接受临时加号未知"],
+   "protected_expressions": ["你快拦拦我"],
+   "forbidden_factual_claims": ["不得做正畸医学诊断", "不得保证提前就诊一定更快解决"]
+  },
+  "E069_T04": {
+   "case_id": "E069_T04",
+   "current_action": "接住诊所的语音反馈：师傅让她别自行处理、周三复诊一并解决；顺带接住白粥的惨，把节奏安抚下来。",
+   "acceptable_actions": [
+    "肯定她按诊所指引办是对的，把白粥调侃成修行",
+    "提醒她周三复诊时把磨腮位置说给师傅听",
+    "建议今晚备点软食清单，别再啃排骨"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A08",
+     "subject": "THIRD",
+     "relation": "clinic_instruction",
+     "value": "诊所告知勿自行处理钢丝，周三复诊时一并处理",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T04", "message_id": "m0", "quote": "周三复诊一并处理"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A09",
+     "subject": "HER",
+     "relation": "soft_diet",
+     "value": "她遵诊所嘱咐当晚改吃软食，喝了白粥",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T04", "message_id": "m0", "quote": "我喝了两碗白粥"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'忍到周三'说成师傅替她排好的流程，惨话用玩笑接。",
+   "unknowns": ["磨腮能否撑到周三未知", "诊所语音里是否还有其他叮嘱未知"],
+   "protected_expressions": ["我喝了两碗白粥，惨不惨"],
+   "forbidden_factual_claims": ["不得虚构师傅语音的更多内容", "不得预判周三复诊必然顺利"]
+  },
+  "E069_T05": {
+   "case_id": "E069_T05",
+   "current_action": "接住双侧按周三成行的准备状态：确认自己挪会、排号就位，并顺着她的'可别白换'给一颗定心丸。",
+   "acceptable_actions": [
+    "报出自己挪会与排号的进度，让她放心",
+    "提醒她假条带好、下午四点前把手头活收尾",
+    "顺着火锅话题问她想锅底还是直接默认酸汤"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A10",
+     "subject": "ME",
+     "relation": "schedule_adjusted",
+     "value": "ME把周会挪到早上，答应四点半诊所门口碰头",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T05", "message_id": "m0", "quote": "周会挪到早上了，四点半诊所门口见"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A11",
+     "subject": "ME",
+     "relation": "hotpot_queue",
+     "value": "ME答应下班前先排火锅号",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T05", "message_id": "m0", "quote": "火锅号我下班前先排"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A12",
+     "subject": "HER",
+     "relation": "leave_ready",
+     "value": "她假条在手，准备按周三下午四点离岗",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T05", "message_id": "m1", "quote": "我假条都揣兜里了，下午四点准时溜"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：进度报得像交接班，稳，不抢戏。",
+   "unknowns": ["火锅排号具体到几点未知", "她的假条是否已提交审批未知"],
+   "protected_expressions": ["可别到头来钢丝白换，火锅没吃上"],
+   "forbidden_factual_claims": ["不得虚构火锅店排号规则", "不得断言当天必能准点离岗"]
+  },
+  "E069_T06": {
+   "case_id": "E069_T06",
+   "current_action": "时间线倒错爆发：先接住她的社死情绪，随即以预约短信为准把事实钉住——复诊实为11月11号周三上午十点；再陪她盘清三项落空的安排（假、会、号），别急着给方案。",
+   "acceptable_actions": [
+    "先把日期以截图为准钉死，再逐项数落空安排，告诉她损失都可挽回",
+    "先自嘲'幸好问过你截图的事'，把她的羞耻感接住再谈补救",
+    "提醒她假条越早撤越体面，会的挪动他来消化，火锅号作废重排即可"
+   ],
+   "applicable_dimensions": ["time_state", "emotion_relation", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A13",
+     "subject": "SHARED",
+     "relation": "appointment_true",
+     "value": "预约短信证实复诊实为11月11号周三上午十点",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T06", "message_id": "m0", "quote": "写的是11月11号周三上午十点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A14",
+     "subject": "SHARED",
+     "relation": "appointment_claimed",
+     "value": "此前'11月4号周三下午四点半复诊'系她记错，被短信实证推翻",
+     "valid_time": "2026-11-02/2026-11-04",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E069_T01", "message_id": "m0", "quote": "周三（11月4号）下午四点半复诊"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E069_A15",
+     "subject": "SHARED",
+     "relation": "hotpot_plan",
+     "value": "按原日期排的火锅安排因日期更正作废",
+     "valid_time": "2026-11-02/2026-11-04",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E069_T01", "message_id": "m0", "quote": "接上我直奔酸汤火锅"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A16",
+     "subject": "HER",
+     "relation": "leave_booked",
+     "value": "为错误日期请下的周三下午假实际落空",
+     "valid_time": "2026-11-02/2026-11-04",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E069_T02", "message_id": "m0", "quote": "跟组长请好假了，周三下午两小时"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先一句'截图救场'压住她的脚趾抠地，再谈补救；别用'早就说过'的口气。",
+   "unknowns": ["组长对撤假的反应未知", "火锅号能否退改未知"],
+   "protected_expressions": ["我现在坐在工位上脚趾抠地"],
+   "forbidden_factual_claims": ["不得复述短信全文以外的预约细节", "不得断言撤假必然顺利"]
+  },
+  "E069_T07": {
+   "case_id": "E069_T07",
+   "current_action": "接住撤假的社死落地：组长玩笑收场没骂人，帮她把这页翻过去，肯定她当天处理得当。",
+   "acceptable_actions": [
+    "肯定她撤假干脆，把组长的玩笑解读成没往心里去",
+    "顺着'日程贴工位'给她支一招，把糗事变改进",
+    "调侃一句'你这颗牙确实比你项目能折腾'，把气氛化掉"
+   ],
+   "applicable_dimensions": ["emotion_relation", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A17",
+     "subject": "HER",
+     "relation": "leave_withdrawn",
+     "value": "她当天已向组长撤回错请的周三假",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T07", "message_id": "m0", "quote": "跟组长把假条撤了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A18",
+     "subject": "HER",
+     "relation": "leave_booked",
+     "value": "错请的周三下午两小时假已正式撤销",
+     "valid_time": "2026-11-02/2026-11-04",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E069_T02", "message_id": "m0", "quote": "跟组长请好假了，周三下午两小时"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E069_A19",
+     "subject": "THIRD",
+     "relation": "boss_tolerance",
+     "value": "组长未责怪，只建议她十一月把日程贴在工位上",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T07", "message_id": "m0", "quote": "让我十一月把日程贴工位上"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把这次撤假讲成'反应快'而不是'丢人'，给足台阶。",
+   "unknowns": ["组长是否真的不在意未知"],
+   "protected_expressions": ["你这颗牙比你手上项目还折腾"],
+   "forbidden_factual_claims": ["不得替组长补台词", "不得断言她在公司形象受损"]
+  },
+  "E069_T08": {
+   "case_id": "E069_T08",
+   "current_action": "接住新麻烦：更正后的11号上午撞上大促不可请假周，复诊悬空；先确认冲突真实存在，再陪她找换班的口子。",
+   "acceptable_actions": [
+    "确认冲突真实，建议从调班换休方向找解，别硬闯组长红线",
+    "提醒她诊所号紧，先跟诊所说明情况争取保留11号上午号",
+    "帮她把账算清楚：缺这次复诊的代价与换周六顶班的代价"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "factuality", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A20",
+     "subject": "THIRD",
+     "relation": "no_leave_window",
+     "value": "组长放话大促值班当周谁也别想请假",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T08", "message_id": "m0", "quote": "那周谁也别想请假"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A21",
+     "subject": "SHARED",
+     "relation": "date_conflict",
+     "value": "11号上午十点的复诊与不可请假窗口正面相撞",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T06", "message_id": "m0", "quote": "11月11号周三上午十点"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'麻烦'拆成'可解的一件事'，别让她觉得是自己的错在滚雪球。",
+   "unknowns": ["诊所能否改期到其他时段未知", "她的周六是否可换班未知"],
+   "protected_expressions": ["前面酸软都白疼了"],
+   "forbidden_factual_claims": ["不得替诊所宣布可改期", "不得保证组长必批换班"]
+  },
+  "E069_T09": {
+   "case_id": "E069_T09",
+   "current_action": "共享换班成交的好消息：周六全天顶班换11号上午半天，复诊保住；把她的'惨'接成'值得'，并把口头约定落成一句话。",
+   "acceptable_actions": [
+    "先恭喜成交，再提醒她把换班约定跟组长确认成文字",
+    "顺她'惨是惨了点'接一句大促周辛苦费，让她觉得值",
+    "提醒她别忘把新时间同步给诊所，确认上午十点不变"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A22",
+     "subject": "SHARED",
+     "relation": "shift_swap",
+     "value": "她以周六全天顶班换得11号上午半天假，组长批准",
+     "valid_time": "2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T09", "message_id": "m0", "quote": "拿周六全天顶班换11号上午半天"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A23",
+     "subject": "HER",
+     "relation": "swap_cost",
+     "value": "代价是大促那周连上六天班",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T09", "message_id": "m0", "quote": "大促那周我要连上六天"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A25",
+     "subject": "SHARED",
+     "relation": "date_conflict",
+     "value": "11号上午复诊缺口经换班补上，冲突解除",
+     "valid_time": "2026-11-04/2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T08", "message_id": "m0", "quote": "11号上午十点，正好撞上大促值班那周"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'下不为例'翻译成组长给的一次性通行证，功劳记她沟通得当。",
+   "unknowns": ["换班约定是否落成文字未知", "11号上午号是否需要再确认未知"],
+   "protected_expressions": ["行吧，下不为例"],
+   "forbidden_factual_claims": ["不得虚构组长批复原话细节", "不得断言大促周不再有变数"]
+  },
+  "E069_T10": {
+   "case_id": "E069_T10",
+   "current_action": "确认新时间线全面落位：11号上午十点诊所门口碰头、中午火锅补位；响应她截图互存的提议，把'日期以截图为准'说成两人的新规矩。",
+   "acceptable_actions": [
+    "对表确认碰头时间与火锅改期，答应截图互存",
+    "把她'谁也别再记岔'升级成两人固定仪式，主动要截图",
+    "提醒她火锅号重排要趁早，问锅底是否照旧"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A26",
+     "subject": "SHARED",
+     "relation": "plan_rebuilt",
+     "value": "新安排：11号上午十点诊所门口碰头，中午火锅补位",
+     "valid_time": "2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T10", "message_id": "m0", "quote": "你十点诊所门口见我，我十一点半出来，火锅改11号中午"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A27",
+     "subject": "SHARED",
+     "relation": "screenshot_pact",
+     "value": "她把预约截图发ME互存，立下防止再记错的规矩",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T10", "message_id": "m0", "quote": "预约截图我这就发你，你也存一份"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A28",
+     "subject": "SHARED",
+     "relation": "hotpot_plan",
+     "value": "原定复诊后的火锅改期至11号中午，安排未取消",
+     "valid_time": "2026-11-02/2026-11-05",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E069_T01", "message_id": "m0", "quote": "接上我直奔酸汤火锅"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'日期以截图为准'从他嘴里说出来要像自嘲又像立规，不居高临下。",
+   "unknowns": ["火锅重排号时间未知"],
+   "protected_expressions": ["咱俩谁也别再记岔"],
+   "forbidden_factual_claims": ["不得断言此后绝无记错", "不得虚构截图内容"]
+  },
+  "E069_T11": {
+   "case_id": "E069_T11",
+   "current_action": "共享复诊落地的松弛：钢丝换完、酸得漏风但进展好，火锅马上开涮；把'等了一个礼拜'接成值回票价。",
+   "acceptable_actions": [
+    "先恭喜复诊完成，再接酸汤开涮的热乎气",
+    "肯定她换班换得值，这一口等得有意义",
+    "提醒她吃火锅避开太硬太烫的，别刚换完钢丝又遭罪"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A29",
+     "subject": "SHARED",
+     "relation": "recheck_done",
+     "value": "11号上午复诊完成，粗钢丝换上，反应强烈但进展好",
+     "valid_time": "2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T11", "message_id": "m0", "quote": "钢丝换完"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A30",
+     "subject": "THIRD",
+     "relation": "dentist_note",
+     "value": "医生称这副戴完，下回不用换这么狠",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T11", "message_id": "m0", "quote": "下回就不用换这么狠了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A31",
+     "subject": "SHARED",
+     "relation": "hotpot_plan",
+     "value": "改期后的11号中午火锅如期兑现",
+     "valid_time": "2026-11-05/2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T10", "message_id": "m0", "quote": "火锅改11号中午"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：松快为主，医学上只复述医生的说法，不加码。",
+   "unknowns": ["本次调整具体周期未知"],
+   "protected_expressions": ["酸得我说话都漏风"],
+   "forbidden_factual_claims": ["不得对正畸进展做医学判断", "不得虚构火锅店细节"]
+  },
+  "E069_T12": {
+   "case_id": "E069_T12",
+   "current_action": "笑纳'人形日历'奖与充卡陪诊之约：把截图存档立成两人固定仪式，收尾轻，留白下一次复诊。",
+   "acceptable_actions": [
+    "笑纳奖项，宣布截图存档服务长期有效",
+    "接住充卡之约，答应下回复诊继续陪，顺便预约下顿火锅",
+    "回一句'这乌龙也算因祸得福'，把整个时间线轻轻收掉"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E069_A32",
+     "subject": "SHARED",
+     "relation": "screenshot_ritual",
+     "value": "她宣布以后所有预约截图第一时间发ME存档",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T12", "message_id": "m0", "quote": "以后我所有预约截图第一时间发你存档"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A33",
+     "subject": "SHARED",
+     "relation": "card_charged",
+     "value": "她在酸汤火锅店充卡，预约下次复诊仍由ME陪",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T12", "message_id": "m0", "quote": "酸汤火锅店我充卡了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E069_A34",
+     "subject": "SHARED",
+     "relation": "screenshot_pact",
+     "value": "从记错日期到截图互存，两人时间线规矩完成闭环",
+     "valid_time": "2026-11-05/2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E069_T10", "message_id": "m0", "quote": "咱俩谁也别再记岔"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把'乌龙'说成让规矩立起来的由头，不翻旧账。",
+   "unknowns": ["下次复诊日期未知"],
+   "protected_expressions": ["人形日历"],
+   "forbidden_factual_claims": ["不得虚构充卡金额", "不得替她排下一次复诊时间"]
+  }
+ }
+}

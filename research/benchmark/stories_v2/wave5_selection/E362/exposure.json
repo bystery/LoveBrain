@@ -1,0 +1,39 @@
+{
+  "status": "authored_pending_review",
+  "author": "ZCode bm1-sel author-S6 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": false,
+  "experiments_used": [],
+  "themes": [
+    "意图确认",
+    "意图改写",
+    "意图撤销",
+    "意图代传",
+    "拼单旅行"
+  ],
+  "title": "汀溪拼单：四张船票的改写与撤销",
+  "may_decline_turns": [
+    "E362_T12"
+  ],
+  "created_at": "2026-11-09",
+  "domain": "拼单旅行",
+  "primary_topic": "T06",
+  "lineage_group_id": "LG-E362",
+  "kind": "standard_12t",
+  "batch": "W5-SEL-20261109",
+  "session": "AUTHOR-S6",
+  "readers": [
+    "author"
+  ],
+  "runner_copy": "wave5_selection/E362/runner_episode.json",
+  "annotator": "B6",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "hashes": {
+    "episode.json": "bdef59138938ac7aa732c849671c3be3eafad7a23d1404cbd7c72d28dd7ade02",
+    "reference.json": "5e45cce5ef6e9372466bc2ba407683227d2a3723d2ad0687a96594a37247ad0f",
+    "timeline.json": "d393f9e9f74b12f3102c0bf58397af2160103704d9d5df091478fa865a521964",
+    "audit.md": "3ad62b60e262770aa7c902b9bf396596bfa7914871e9a5c703a7d5430c76f913",
+    "composite": "f9c371e192d698bd15878efcb54d9f4704d1dce1f5a53661edb74542c43e8d08"
+  }
+}

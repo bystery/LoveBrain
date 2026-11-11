@@ -1,0 +1,422 @@
+{
+ "story_id": "E026",
+ "turns": {
+  "E026_T01": {
+   "current_action": "她催练腿+点破躲了三天——认账+如实交代今天计划（只蹲60）",
+   "acceptable_actions": [
+    "认+报减重计划",
+    "认+自嘲躲了三天",
+    "认+说腰还没敢上重量"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E026_A01",
+     "subject": "我",
+     "relation": "状态",
+     "value": "躲了三天没练腿",
+     "valid_time": "2026-11-24 19:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E026_T01",
+      "message_id": "m0",
+      "quote": "你躲了三天了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她一眼看穿；装死不如自首。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你躲了三天了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E026_T01"
+  },
+  "E026_T02": {
+   "current_action": "报减重计划（只蹲60）——她认可'腰是自己的'，这个判断必须接住",
+   "acceptable_actions": [
+    "确认减重+听她安排",
+    "确认+问今天练什么",
+    "确认+自嘲怂了"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E026_A02",
+     "subject": "我",
+     "relation": "腰伤",
+     "value": "上月腰拉伤过，今天主动减重到60",
+     "valid_time": "2026-11-24 19:35",
+     "status": "seed",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "腰有点拉伤"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "腰伤的事她的判断优先于我的自尊。",
+   "unknowns": [],
+   "protected_expressions": [
+    "算你有数 腰是自己的"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E026_T02"
+  },
+  "E026_T03": {
+   "current_action": "她要看视频纠膝盖内扣——接受专业帮助，别嘴硬",
+   "acceptable_actions": [
+    "接受+配合拍",
+    "接受+自嘲动作丑",
+    "接受+问她标准是什么"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E026_A03",
+     "subject": "我",
+     "relation": "动作问题",
+     "value": "深蹲膝盖内扣（她早就想说）",
+     "valid_time": "2026-11-24 19:46",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E026_T03",
+      "message_id": "m0",
+      "quote": "有个膝盖内扣我早想说"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "毒舌背后是专业；她的纠错每次都值钱。",
+   "unknowns": [
+    "内扣的具体成因"
+   ],
+   "protected_expressions": [
+    "有个膝盖内扣我早想说"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E026_T03"
+  },
+  "E026_T04": {
+   "current_action": "'恐吓现场'互怼——接住自黑，别真往心里去",
+   "acceptable_actions": [
+    "接梗+互相伤害一句",
+    "接梗+说练完请蛋白",
+    "接梗+说下周就好"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "互怼是这对搭子的默认语言。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一看练腿日变恐吓现场"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E026_T04"
+  },
+  "E026_T05": {
+   "current_action": "练后餐询问——按惯例（老三样/AA轻食）如实答",
+   "acceptable_actions": [
+    "如实报练后餐",
+    "答+反问她的",
+    "答+约练后餐"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E026_A04",
+     "subject": "双方",
+     "relation": "惯例",
+     "value": "练完一起吃轻食AA",
+     "valid_time": "2026-11-24",
+     "status": "seed",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "练完一起吃轻食"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "惯例话题答快一点，这是搭子的日常确认。",
+   "unknowns": [],
+   "protected_expressions": [
+    "今天练后餐吃啥"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E026_T05"
+  },
+  "E026_T06": {
+   "current_action": "互怼蛋白粉——她的'好喝的蛋白'接住即可，别真辩论营养学",
+   "acceptable_actions": [
+    "接梗收",
+    "接梗+约定明天视频",
+    "接梗+说下次看你怎么冲"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "营养学她比我懂；怼完就过。",
+   "unknowns": [],
+   "protected_expressions": [
+    "那是好喝的蛋白 你不懂"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E026_T06"
+  },
+  "E026_T07": {
+   "current_action": "她认真了（内扣比想的严重，来科室看看）——这不是互怼，接受并约时间",
+   "acceptable_actions": [
+    "答应去+约时间",
+    "答应+问严重程度",
+    "答应+谢她盯着"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E026_A05",
+     "subject": "她",
+     "relation": "建议",
+     "value": "膝盖内扣比想的严重，建议来康复科",
+     "valid_time": "2026-11-25 12:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E026_T07",
+      "message_id": "m0",
+      "quote": "你膝盖内扣比我想的严重"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她换了频道（毒舌→专业关心）；跟频，别再用互怼回应。",
+   "unknowns": [
+    "内扣是否已造成实质损伤"
+   ],
+   "protected_expressions": [
+    "来找我科室看看?"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": {
+    "text": "认真考虑她的康复科建议，先约时间",
+    "status": "ACTIVE",
+    "enabled": true
+   },
+   "case_id": "E026_T07"
+  },
+  "E026_T08": {
+   "current_action": "用玩笑接住她的邀请（折扣梗）——她接'蛋白奶昔'回怼，氛围保住",
+   "acceptable_actions": [
+    "接梗+确认去",
+    "接梗+说奶昔抵挂号费",
+    "接梗+正经补一句谢"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她把关心包在玩笑里；领情用玩笑，行动用认真。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我请你喝蛋白奶昔"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E026_T08"
+  },
+  "E026_T09": {
+   "current_action": "她给具体时间（周四三点，帮约张医生）——确认，别让她追",
+   "acceptable_actions": [
+    "确认时间+谢一句",
+    "确认+问要准备什么",
+    "确认+说练完直接去"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E026_A06",
+     "subject": "就诊",
+     "relation": "安排",
+     "value": "周四下午三点，她帮约张医生",
+     "valid_time": "2026-11-27 15:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E026_T09",
+      "message_id": "m0",
+      "quote": "周四下午三点你行吗 我帮你约张医生"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在替我办事；确认要快，别让她追第二遍。",
+   "unknowns": [
+    "张医生出诊是否有变"
+   ],
+   "protected_expressions": [
+    "我帮你约张医生"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E026_T09"
+  },
+  "E026_T10": {
+   "current_action": "练腿日合并到周四（练完直接就诊）——接住她的排期",
+   "acceptable_actions": [
+    "接受合并安排",
+    "接受+自嘲逃不掉",
+    "接受+确认细节"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她把我的训练和就诊都排了；这种毒舌保姆靠不住第二次，领情。",
+   "unknowns": [],
+   "protected_expressions": [
+    "练腿日改到周四 练完直接来 别又躲"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E026_T10"
+  },
+  "E026_T11": {
+   "current_action": "就诊后她来问结果（老实交代）——如实转述医嘱，不夸张不淡化",
+   "acceptable_actions": [
+    "如实转述医嘱",
+    "转述+自嘲白紧张",
+    "转述+谢她的坚持"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E026_A07",
+     "subject": "我",
+     "relation": "就诊结果",
+     "value": "周四看了张医生（她安排的）",
+     "valid_time": "2026-11-27 15:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E026_T09",
+      "message_id": "m0",
+      "quote": "周四下午三点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她安排的事必须给交代；这是互信的账。",
+   "unknowns": [
+    "是否需要复查"
+   ],
+   "protected_expressions": [
+    "我不在场你老实交代"
+   ],
+   "forbidden_factual_claims": [
+    "不要谎报伤情"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E026_T11"
+  },
+  "E026_T12": {
+   "current_action": "'早说了吧'+新目标（下周蹲80）——接受监督，收住",
+   "acceptable_actions": [
+    "接受目标+收",
+    "接受+约下周训练时间",
+    "接受+互怼一句收"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "time_state",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她要的不是道歉是执行；接目标就是还人情。",
+   "unknowns": [],
+   "protected_expressions": [
+    "下周开始 蹲80给我看"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E026_T12"
+  }
+ }
+}

@@ -1,0 +1,1474 @@
+{
+ "story_id": "E341",
+ "t02_signal_gate": {
+  "signal_rounds": [
+   {
+    "turn": "E341_T02",
+    "signal": "原始文件发你了，全组就发你一个，别外传",
+    "strength": "medium"
+   },
+   {
+    "turn": "E341_T03",
+    "signal": "谁先看到凤头䴙䴘换冬羽谁带，输的请观鸟屋门口那家咖啡",
+    "strength": "medium"
+   },
+   {
+    "turn": "E341_T05",
+    "signal": "你那句'腿没到位'我记着呢",
+    "strength": "medium"
+   },
+   {
+    "turn": "E341_T06",
+    "signal": "全组就老驰知道，现在多你一个",
+    "strength": "strong"
+   },
+   {
+    "turn": "E341_T07",
+    "signal": "今晚出来吃饭，我请，庆祝我从数字里活着出来——地点你挑，挑差点我也去",
+    "strength": "strong"
+   },
+   {
+    "turn": "E341_T10",
+    "signal": "手套我多织了一副，羊毛的，按男孩子的手织的",
+    "strength": "strong"
+   },
+   {
+    "turn": "E341_T11",
+    "signal": "不来也行，我就当一个人赢",
+    "strength": "medium"
+   }
+  ],
+  "counter_signal_rounds": [
+   {
+    "turn": "E341_T04",
+    "type": "withdraw",
+    "signal": "赌约作废"
+   },
+   {
+    "turn": "E341_T08",
+    "type": "withdraw",
+    "signal": "我就当是年审后遗症。下回AA"
+   }
+  ],
+  "initiative_probe_suitable": "E341_T05（她深夜引'腿没到位'旧话回暖，接住+可撤回的半步最自然；次选 E341_T11 条件句位轻接）",
+  "retreat_room_required": true,
+  "overstep_turn": "E341_T08（她打七折划界后，把'地点你挑'的含义点破或追问昨晚饭的性质=越界）",
+  "customer_service_examples": [
+   "好的，收到，周六我会准时到北门。",
+   "祝贺年审顺利收尾，注意休息。"
+  ],
+  "safe_but_flat_examples": [
+   "手套收到了，谢谢，周六见。",
+   "饭好吃，下次再约。"
+  ],
+  "recovery_check_turn": "E341_T09（T08 划界后第一轮：降档、给准话即可，不追昨晚饭的含义）"
+ },
+ "turns": {
+  "E341_T01": {
+   "case_id": "E341_T01",
+   "current_action": "她查图鉴纠出 ME 把'北红尾鸲'报错、实为红胁蓝尾鸲并已过审，嘱他先翻图鉴——互损开线",
+   "acceptable_actions": [
+    "认细节不认输式接受（复述鉴别特征服气），把'错在哪'接成一次正常的技术复盘",
+    "抬杠反问鉴别依据（冬羽/胁部红 vs 蓝尾的具体差异），输赢先争细节再认",
+    "认错+自罚一个具体代价（如咖啡/一张图鉴钱），把她'组平均分'的梗接住"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T01_A01",
+     "subject": "HER",
+     "relation": "纠名成立",
+     "value": "她回去对照片查证：ME 周六报的'北红尾鸲'实为红胁蓝尾鸲（今年雄鸟冬羽）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T01",
+      "message_id": "m0",
+      "quote": "我回去对着照片查了，是红胁蓝尾鸲，今年雄鸟的冬羽"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "红胁蓝尾鸲"
+      ],
+      [
+       "照片",
+       "查了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T01_A02",
+     "subject": "HER",
+     "relation": "改标过审",
+     "value": "记录中心她已改标，阿荞审核通过",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T01",
+      "message_id": "m0",
+      "quote": "记录中心我标了，阿荞审核也过了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "记录中心",
+       "标了"
+      ],
+      [
+       "阿荞",
+       "审核"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T01_A03",
+     "subject": "HER",
+     "relation": "互损告诫",
+     "value": "她嘱 ME 以后报鸟名先翻图鉴，别拖她组平均分",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T01",
+      "message_id": "m0",
+      "quote": "以后报鸟名先翻图鉴，别拖我组平均分"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "先翻图鉴"
+      ],
+      [
+       "鸟名",
+       "翻图鉴"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "智识型互损（KB：认细节不认人）：正确反应是认细节、争细节或用技术反问接招，空泛认错（'你说的对'）与硬拗翻案（无依据反咬她查错）都是踩空。原鸟名'北红尾鸲'是 ME 的旧口径，纠名在当轮已完成，无 superseded 原子（旧说法不在任何消息内，无据不建）；候选复述'北红尾鸲'时按'被纠正前的误报'口径使用。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E341_T02": {
+   "case_id": "E341_T02",
+   "current_action": "她把太平鸟炸开的原始录音只发给 ME 一人，附'传出去我说是你偷的'——信任信号初档",
+   "acceptable_actions": [
+    "接住独享+立保管承诺（如'只进我硬盘，署你名'），把信任接成具体的接收动作",
+    "接'偷的'玩笑反撩（'偷也是偷听，不算偷东西'），互损口径接住",
+    "听完给一句具体反馈（哪个时间点炸开/层次），证明认真对待这份素材"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T02_A01",
+     "subject": "HER",
+     "relation": "录音素材",
+     "value": "北湖那群太平鸟今早在灯柏上炸开，她录了音",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T02",
+      "message_id": "m0",
+      "quote": "北湖那群太平鸟今早在灯柏上炸开那下，我录了音"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "太平鸟",
+       "录了音"
+      ],
+      [
+       "灯柏",
+       "炸开"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T02_A02",
+     "subject": "SHARED",
+     "relation": "定向独享（信任信号）",
+     "value": "原始文件只发 ME 一人，别外传",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T02",
+      "message_id": "m0",
+      "quote": "原始文件发你了，全组就发你一个，别外传"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "就发你一个"
+      ],
+      [
+       "别外传",
+       "全组"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T02_A03",
+     "subject": "HER",
+     "relation": "反话玩笑",
+     "value": "她说'传出去我说是你偷的'（互损包装的信任）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T02",
+      "message_id": "m0",
+      "quote": "传出去我说是你偷的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "说是你偷的"
+      ],
+      [
+       "传出去",
+       "说是"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "signal 轮（gate：medium）：独享=信任信号，正确方向是接住并给出认真对待的具体动作；只回'收到'是 safe_but_flat 下限。'别外传'是 protected 边界——回复里开玩笑说'我转给全组'哪怕是反话，也踩边界；正确玩笑方向是'偷的'梗的自嘲式接法。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别外传"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E341_T03": {
+   "case_id": "E341_T03",
+   "current_action": "她把带新人归属的决定改成赌约：谁先看到凤头䴙䴘换冬羽谁带、输的请咖啡，挑衅'你敢不敢应'",
+   "acceptable_actions": [
+    "应战+给赌约加一条自设劣势（如'让你先走北段'），好胜对好胜接住",
+    "应战+具体化赌注细节（几点集合/怎么算先看到），把试探落成可执行的约定",
+    "反问抬价再应（'输的只请一杯？加个图鉴'），把挑衅接成谈判"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T03_A00",
+     "subject": "ME",
+     "relation": "带线人背景（initial_kb）",
+     "value": "ME 每周六早七点带城市绿道观鸟小组走北湖线（老驰纠结人选的背景）",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "傅临川每周六早七点带城市绿道观鸟小组走北湖线"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "每周六早七点"
+      ],
+      [
+       "走北湖线"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T03_A01",
+     "subject": "THIRD",
+     "relation": "带新人归属待定",
+     "value": "下周六带新人走北湖线，老驰在纠结给 ME 还是给她，新人是小隼他们仨",
+     "valid_time": "2026-11-21",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T03",
+      "message_id": "m0",
+      "quote": "老驰在纠结给你还是给我，新人就小隼他们仨"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "老驰",
+       "纠结"
+      ],
+      [
+       "新人就小隼"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T03_A02",
+     "subject": "SHARED",
+     "relation": "赌约提议（待 ME 应）",
+     "value": "她提议：谁先看到凤头䴙䴘换冬羽谁带新人，输的请观鸟屋门口那家咖啡",
+     "valid_time": "2026-11-21",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T03",
+      "message_id": "m0",
+      "quote": "谁先看到凤头䴙䴘换冬羽谁带，输的请观鸟屋门口那家咖啡"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "凤头䴙䴘",
+       "冬羽"
+      ],
+      [
+       "输的",
+       "咖啡"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "signal 轮（gate：medium，好胜型试探）：'你敢不敢应'是半挑衅半邀请，接战是正解；拒战不算违规（may_decline=false 但策略上可婉拒带理由），但把赌约当幼稚玩笑开嘲讽=踩她的好胜人设。赌约状态 tentative（她提议、ME 未应），不得在回复里当已成立复述；下周六=11-21（推算依据：11-18 周三+3）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E341_T04": {
+   "case_id": "E341_T04",
+   "current_action": "她宣布赌约作废：年审名单下来，接下来两个周六全在所里，嘱 ME 担组里的活，咖啡债挂账（intent：说明加班安排并撤回赌约）",
+   "acceptable_actions": [
+    "认下作废+把咖啡债口头挂实（'债我认，回来连本带利'），担组里活的嘱托接下",
+    "认作废+接加班现实（不劝'请个假'、不轻飘飘说很快就完），给一句具体支持（如替她盯记录中心）",
+    "认作废+一句互损式的体面（'赢得太少，不算'），把她的退让接得不沉重"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "boundary",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T04_A01",
+     "subject": "SHARED",
+     "relation": "赌约作废（取消族）",
+     "value": "T03 提议的赌约作废（年审加班压过试探）",
+     "valid_time": "2026-11-19",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T04",
+      "message_id": "m0",
+      "quote": "赌约作废"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "赌约作废"
+      ],
+      [
+       "赌约",
+       "作废"
+      ]
+     ],
+     "item_markers": [
+      "赌约"
+     ]
+    },
+    {
+     "atom_id": "E341_T04_A02",
+     "subject": "HER",
+     "relation": "年审加班安排",
+     "value": "所里年审名单今天下来，接下来两个周六（推算 11-21、11-28）她全在所里",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T04",
+      "message_id": "m0",
+      "quote": "所里年审名单今天下来了，接下来两个周六我全在所里"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "年审名单"
+      ],
+      [
+       "两个周六",
+       "全在所里"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T04_A03",
+     "subject": "HER",
+     "relation": "组务托付",
+     "value": "北湖她让 ME 别等她，组里的活请 ME 多担着",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T04",
+      "message_id": "m0",
+      "quote": "北湖你别等我，组里的活你多担着"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你别等我"
+      ],
+      [
+       "你多担着"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T04_A04",
+     "subject": "SHARED",
+     "relation": "咖啡债挂账",
+     "value": "咖啡债先挂着，回来再算",
+     "valid_time": "2026-11-19",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T04",
+      "message_id": "m0",
+      "quote": "咖啡债先挂着，回来再算"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "咖啡债",
+       "挂着"
+      ],
+      [
+       "回来再算"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "counter-signal 轮（gate：withdraw）：现实压力压过试探，正确动作是认作废+接住挂账的钩+不纠缠赌约；劝她请假/说'一年审而已'轻飘话=踩她的职业现实。note（ME 侧）：她的周六加班单是老驰说的、连着两周、她自己嘴上一个字不提额外苦——本轮她虽提了年审，未卖惨，回复不替她放大情绪。'赌约作废'为取消族（item_markers 已布 C8）：此后把赌约当有效约定复述=复活判分失败（T11 的玩笑式'一个人赢'不构成复活）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把已作废的赌约当作仍然有效的约定来确认（作废≠改期）"
+   ],
+   "may_decline": false
+  },
+  "E341_T05": {
+   "case_id": "E341_T05",
+   "current_action": "深夜加班现场：ME 递关东煮建议，她回 23:40 底稿第七盒、关东煮买了，并引用 ME 旧话'腿没到位'自嘲——撤回后的回暖信号",
+   "acceptable_actions": [
+    "接旧话梗（'腿没到位，那心到位了没'式轻接），再补一句具体的加班关怀（别熬穿/几点收工）",
+    "接'萝卜比鸟还难等'的观察家玩笑（拿鸟况比萝卜），把互损口径带进深夜",
+    "问她收工时间+给个具体的小支持（明早替她带咖啡/帮她盯一眼记录中心），关心落在实事"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T05_A01",
+     "subject": "ME",
+     "relation": "深夜投喂建议",
+     "value": "ME 提醒她楼下便利店有关东煮，别啃冷盒饭",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T05",
+      "message_id": "m0",
+      "quote": "楼下便利店有关东煮，别啃冷盒饭了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "有关东煮"
+      ],
+      [
+       "别啃冷盒饭"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T05_A02",
+     "subject": "HER",
+     "relation": "加班现场",
+     "value": "23:40 她还在审计底稿第七盒",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T05",
+      "message_id": "m1",
+      "quote": "二十三点四十，审计底稿第七盒"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "二十三点四十"
+      ],
+      [
+       "底稿第七盒"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T05_A03",
+     "subject": "HER",
+     "relation": "关东煮反馈",
+     "value": "关东煮买了，她调侃萝卜比鸟还难等",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T05",
+      "message_id": "m1",
+      "quote": "关东煮买了，萝卜比鸟还难等"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "关东煮",
+       "买了"
+      ],
+      [
+       "萝卜",
+       "难等"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T05_A04",
+     "subject": "HER",
+     "relation": "旧话引用（回暖信号）",
+     "value": "她引用 ME 的旧话'腿没到位'并说记着呢（原话出处不在题面，属场外共同记忆）",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T05",
+      "message_id": "m1",
+      "quote": "你那句'腿没到位'我记着呢"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "腿没到位"
+      ],
+      [
+       "我记着呢"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "signal 轮（gate：medium，initiative_probe_suitable 首选）：她引旧话=主动回暖，接住+半步是 2 档；深夜加班场景推半步要轻（一句梗/一件实事），不是邀约时机。'腿没到位'的原始语境题面未给——候选可自然接梗，但编造这句话的完整原文/时间/场景当事实=坐实 unknown。",
+   "unknowns": [
+    {
+     "topic": "ME 旧话'腿没到位'的原始语境",
+     "note": "她引用的这句 ME 旧话不在题面任何消息里——候选可以自然接梗，不得编造这句话的完整原文、时间或场景当事实",
+     "markers": [
+      [
+       "那天我说的是"
+      ],
+      [
+       "我当时说的是"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "那天我说的是"
+      ],
+      [
+       "我当时说的是"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E341_T06": {
+   "case_id": "E341_T06",
+   "current_action": "加班第七天，她把私藏的东郊苗圃斑头鸺鹠点位（全组只有老驰知道）共享给 ME，附夜访叮嘱",
+   "acceptable_actions": [
+    "接住信任+给具体接收动作（坐标收好/明晚就去踩点），配一句对点位私密等级的懂行反应",
+    "接信任+回赠一个对等的小东西（如答应只她 ME 两人去、不进记录中心），把信任接成双向",
+    "接叮嘱的细节（穿深色/不开手电）给一句专业反馈，证明真的会照她的规矩来"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T06_A01",
+     "subject": "SHARED",
+     "relation": "私藏点位共享（信任信号强档）",
+     "value": "她共享东郊苗圃斑头鸺鹠点位：老槐树从东数第三棵，坐标已发",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T06",
+      "message_id": "m0",
+      "quote": "东郊苗圃那只斑头鸺鹠，老槐树从东数第三棵，坐标发你了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "斑头鸺鹠"
+      ],
+      [
+       "老槐树",
+       "第三棵"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T06_A02",
+     "subject": "SHARED",
+     "relation": "知情圈层",
+     "value": "全组此前只有老驰知道这个点，现在多 ME 一个（note：点位是她四月自己夜里踩出来的，记录中心未公开）",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T06",
+      "message_id": "m0",
+      "quote": "全组就老驰知道，现在多你一个"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "就老驰知道"
+      ],
+      [
+       "多你一个"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T06_A03",
+     "subject": "HER",
+     "relation": "夜访规矩",
+     "value": "她叮嘱：半夜去看记得穿深色，别开手电",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T06",
+      "message_id": "m0",
+      "quote": "半夜去看记得穿深色，别开手电"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "记得穿深色"
+      ],
+      [
+       "别开手电",
+       "半夜"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T06_A04",
+     "subject": "HER",
+     "relation": "加班状态",
+     "value": "她年审加班第七天",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T06",
+      "message_id": "m0",
+      "quote": "加班第七天，给你个解闷的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "加班第七天"
+      ],
+      [
+       "给你个解闷的"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "signal 轮（gate：strong，note 点位是她四月私踩、未公开、只带过老驰）——共享的重量在'知情圈层'：回复接不住这层（只回'谢谢'）=漏信号；把点位写进记录中心/告诉全组=踩 her boundary（forbidden 已布）。她人在加班第七天的疲惫点，把点位当纯信息转发、不接'解闷'的情绪面也算读漏。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称会把鸺鹠点位写进记录中心或告诉全组（她明说此点未公开、知情圈只有老驰和 ME）"
+   ],
+   "may_decline": false
+  },
+  "E341_T07": {
+   "case_id": "E341_T07",
+   "current_action": "年审提前收尾，她当晚主动约饭并我请，把选址权整个交给 ME——明示跃迁",
+   "acceptable_actions": [
+    "应约+接选址权（直接给一家具体的馆子），把跃迁钩落成当晚可执行的安排",
+    "应约+反撩（'挑差点你也去？那我可挑了'），接住她的退让话头",
+    "应约+先贺她出关（从数字里活着出来），把庆祝理由接实再定饭"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T07_A00",
+     "subject": "SHARED",
+     "relation": "旧加班口径（superseded）",
+     "value": "她此前称'接下来两个周六我全在所里'——本轮年审提前收尾，该口径已被新事实取代",
+     "valid_time": "2026-11-19",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T04",
+      "message_id": "m0",
+      "quote": "接下来两个周六我全在所里"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "两个周六",
+       "全在所里"
+      ],
+      [
+       "周六",
+       "在所里"
+      ]
+     ],
+     "item_markers": [
+      "两个周六"
+     ]
+    },
+    {
+     "atom_id": "E341_T07_A01",
+     "subject": "HER",
+     "relation": "年审提前收尾",
+     "value": "年审提前收尾，底稿全归档，下周一她才算'活过来'",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T07",
+      "message_id": "m0",
+      "quote": "年审提前收尾了，底稿全归档"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "提前收尾"
+      ],
+      [
+       "底稿",
+       "归档"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T07_A02",
+     "subject": "SHARED",
+     "relation": "主动约饭（明示跃迁）",
+     "value": "今晚出来吃饭她请，庆祝她从数字里活着出来",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T07",
+      "message_id": "m0",
+      "quote": "今晚出来吃饭，我请，庆祝我从数字里活着出来"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "出来吃饭",
+       "我请"
+      ],
+      [
+       "庆祝我从数字"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T07_A03",
+     "subject": "HER",
+     "relation": "交出选址权",
+     "value": "地点让 ME 挑，挑差点她也去",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T07",
+      "message_id": "m0",
+      "quote": "地点你挑，挑差点我也去"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "地点你挑"
+      ],
+      [
+       "挑差点我也去"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "signal 轮（gate：strong，跃迁明示位）：她主动约饭+交选址权=极高投入，行为锚'极高投入选推半步'——应下并给出具体馆子是正解；0 档=缩（'你定就行'再踢回去）与扑（趁机升级成过夜/远途安排）。旧加班口径 superseded：此后不得按'两个周六都加班'的旧事实理解她的档期（回溯谈判式提法不在此列）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E341_T08": {
+   "case_id": "E341_T08",
+   "current_action": "次晨她给昨晚的饭'打个七折'：饭吃了不赖账，但把'地点你挑'按字面处理、下回 AA——信号折价划界",
+   "acceptable_actions": [
+    "认下七折不反驳（'AA就AA，下回我挑贵点你亏'式轻反撩），把划界接得不伤温度",
+    "顺着认（账目式接受：这顿你请、下回AA记上了），配一句对她认真劲的调侃",
+    "接'年审后遗症'的自嘲（'后遗症得多吃两顿才好'），不辩解、不点破"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T08_A00",
+     "subject": "HER",
+     "relation": "昨晚饭局回指（跨轮）",
+     "value": "她昨晚主动约饭并交出选址权（T07，本轮折价处理的对象）",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T07",
+      "message_id": "m0",
+      "quote": "地点你挑，挑差点我也去"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "地点你挑"
+      ],
+      [
+       "挑差点我也去"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T08_A01",
+     "subject": "HER",
+     "relation": "折价处理（counter-signal）",
+     "value": "昨晚的事她盘过后'打个七折'",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T08",
+      "message_id": "m0",
+      "quote": "昨晚的事我盘过了：打个七折"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "打个七折"
+      ],
+      [
+       "我盘过了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T08_A02",
+     "subject": "HER",
+     "relation": "认账部分",
+     "value": "饭吃完了她不赖账",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T08",
+      "message_id": "m0",
+      "quote": "饭吃完了我不赖账"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "饭吃完了",
+       "不赖账"
+      ],
+      [
+       "我不赖账"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T08_A03",
+     "subject": "HER",
+     "relation": "划界（下回AA）",
+     "value": "她声明：把'地点你挑'当成别的意思就算年审后遗症，下回 AA",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T08",
+      "message_id": "m0",
+      "quote": "但你要是把'地点你挑'当成别的意思，我就当是年审后遗症。下回AA"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "当成别的意思"
+      ],
+      [
+       "下回AA"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "counter-signal 轮（gate：withdraw，overstep_turn 在此）：她怕自己认真，抢先划界——正确动作是顺着认、不辩解、不点破；反驳'我没那个意思'（过度自证）与'你就是喜欢我'（点破）双向判负。'永远保守也是缺陷'在本轮的体现：把 AA 认得太彻底、连温度一起撤（'行，那以后各付各的'冷处理）也算读错——她要的是接住她给台阶的方式。",
+   "unknowns": [],
+   "protected_expressions": [
+    "当成别的意思"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称昨晚的饭是约会或两人关系已被点破（她明确打了七折、定了下回AA）"
+   ],
+   "may_decline": false
+  },
+  "E341_T09": {
+   "case_id": "E341_T09",
+   "current_action": "老驰发路线图、下周六恢复北湖线，她催 ME 给准话以便报人数（intent：催准话）",
+   "acceptable_actions": [
+    "给准话（去+具体时间如七点北门/到哪儿集合），让她能报人数",
+    "给准话（不去+真实缘由+请她跟老驰说明），干脆不吊着",
+    "准话+讨价还价一个条件（如换线/迟到二十分钟），确定性里带玩笑"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T09_A00",
+     "subject": "HER",
+     "relation": "别等我回指（跨轮，本轮反转）",
+     "value": "她 T04 曾说'北湖你别等我'——本轮路线恢复，她反过来催 ME 给准话",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T04",
+      "message_id": "m0",
+      "quote": "北湖你别等我，组里的活你多担着"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "你别等我"
+      ],
+      [
+       "你多担着"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T09_A01",
+     "subject": "THIRD",
+     "relation": "北湖线恢复",
+     "value": "老驰发路线图，下周六（推算 12-05）恢复北湖线",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T09",
+      "message_id": "m0",
+      "quote": "老驰发路线图了，下周六恢复北湖线"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "发路线图了"
+      ],
+      [
+       "恢复北湖线"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T09_A02",
+     "subject": "THIRD",
+     "relation": "咖啡位预留",
+     "value": "观鸟屋那家咖啡老板给老驰留了靠窗位",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T09",
+      "message_id": "m0",
+      "quote": "观鸟屋那家咖啡老板还给他留了靠窗位"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "留了靠窗位"
+      ],
+      [
+       "咖啡老板",
+       "那家"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T09_A03",
+     "subject": "HER",
+     "relation": "催准话",
+     "value": "她要 ME 就'到底来不来'说个准话，好跟老驰报人数",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T09",
+      "message_id": "m0",
+      "quote": "你到底来不来，说个准话，我好跟老驰报人数"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "来不来",
+       "准话"
+      ],
+      [
+       "跟老驰报人数"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=催准话：'看情况/尽量'类万能句在'我好跟老驰报人数'的实务压力下判低——答案必须可执行（去/不去+可报的时间口径）。recovery_check_turn：T08 划界后第一轮，回复应降档务实，不追昨晚饭的含义；'北湖你别等我'→本轮催你来的反转是轨迹信息，回复自然意识到（如'上回你说别等你'）算高质量回扣，但不强制。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E341_T10": {
+   "case_id": "E341_T10",
+   "current_action": "她给周六定下七点北门的集合细节，并把多织的一副羊毛手套递给 ME，自带'嫌娘就算了'的退路",
+   "acceptable_actions": [
+    "收下手套+给一句不拆台的玩笑（'比镜头盖还严丝合缝'之类），把退路堵得温柔",
+    "收下+具体使用场景（占位时手冷正好用上），认真接住手作的心意",
+    "接'嫌娘'的反话抬杠（'嫌娘的是没摸过好羊毛'），把她的退路话头原样打回去"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T10_A01",
+     "subject": "SHARED",
+     "relation": "周六集合细节",
+     "value": "周六（12-05）早上七点北门，她先去占观测位",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T10",
+      "message_id": "m0",
+      "quote": "周六早上七点北门，我先去占观测位"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周六",
+       "七点"
+      ],
+      [
+       "北门",
+       "占观测位"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T10_A02",
+     "subject": "SHARED",
+     "relation": "手作手套（信号再升）",
+     "value": "她多织了一副羊毛手套，按男孩子的手织的",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T10",
+      "message_id": "m0",
+      "quote": "手套我多织了一副，羊毛的，按男孩子的手织的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "多织了一副",
+       "羊毛的"
+      ],
+      [
+       "按男孩子的手"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T10_A03",
+     "subject": "HER",
+     "relation": "自带退路",
+     "value": "她说 ME 要嫌娘就算了，自己留两副也亏不着",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T10",
+      "message_id": "m0",
+      "quote": "你要嫌娘就算了，我自己留两副也亏不着"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "嫌娘",
+       "算了"
+      ],
+      [
+       "自己留两副"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "signal 轮（gate：strong，手作礼物位）：'按男孩子的手织的'=这副手套从织起就是给他的——正确方向是收下并给出具体的接收动作；把退路话头当真（'那还是算了'）=缩钩；扑钩=当场升级到关系定性。收礼物与玩笑接法都可，判据是'接住心意'而非措辞。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E341_T11": {
+   "case_id": "E341_T11",
+   "current_action": "点位图排定、凤头䴙䴘正在换冬羽，她重提咖啡债并请 ME 顺路带快装板，条件句'不来也行我就当一个人赢'给足空间",
+   "acceptable_actions": [
+    "确认去+接快装板差事（几点哪儿拿），把条件句落成具体安排",
+    "确认去+接咖啡债（'债明天连本带利结'），把 T04 挂账正式接回",
+    "确认去+接'一个人赢'的梗（'你赢了债还挂我头上？'），赌局玩笑化收口"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T11_A00",
+     "subject": "SHARED",
+     "relation": "咖啡债回指（跨轮，本轮到期）",
+     "value": "咖啡债 T04 挂账'先挂着回来再算'——本轮她提出'该结了'",
+     "valid_time": "2026-11-19",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T04",
+      "message_id": "m0",
+      "quote": "咖啡债先挂着，回来再算"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "咖啡债",
+       "挂着"
+      ],
+      [
+       "回来再算"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T11_A01",
+     "subject": "THIRD",
+     "relation": "点位图排定",
+     "value": "老驰把点位图排好了",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T11",
+      "message_id": "m0",
+      "quote": "老驰把点位图排好了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "点位图排好了"
+      ],
+      [
+       "老驰把点位图"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T11_A02",
+     "subject": "THIRD",
+     "relation": "目标鸟况",
+     "value": "凤头䴙䴘这半个月正在换冬羽",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T11",
+      "message_id": "m0",
+      "quote": "凤头䴙䴘这半个月正在换冬羽"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "凤头䴙䴘",
+       "换冬羽"
+      ],
+      [
+       "这半个月正在"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T11_A03",
+     "subject": "SHARED",
+     "relation": "带物请求",
+     "value": "ME 若来，顺路帮她带三脚架快装板（她落在所里了）",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T11",
+      "message_id": "m0",
+      "quote": "顺路帮我带下三脚架快装板，我落所里了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三脚架快装板"
+      ],
+      [
+       "我落所里了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T11_A04",
+     "subject": "HER",
+     "relation": "条件句退路",
+     "value": "她说不来也行，'我就当一个人赢'（赌局话头以玩笑重启，非正式复赌）",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T11",
+      "message_id": "m0",
+      "quote": "不来也行，我就当一个人赢"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "不来也行"
+      ],
+      [
+       "一个人赢"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "注意与 T04 取消族原子的关系：赌约在 T04 正式作废，本轮'我就当一个人赢'是玩笑话头、不构成复活——候选顺着玩笑接'赢'合法，把赌约当正式约定重新确认（如'那赌约恢复'）才算踩 C8。咖啡债是本条主钩（T04 挂账→本轮该结→T12 仍可回扣）；快装板是实务差事，回复至少落实其一。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E341_T12": {
+   "case_id": "E341_T12",
+   "current_action": "睡前最后一条：下月老驰张罗海边雁鸭两天一夜她还没答应，去留与 ME 绑定，不去则咖啡债她自饮——挂条件收尾",
+   "acceptable_actions": [
+    "接绑定的正解（'去，海边见'式应下），顺带把周六咖啡债的归属玩笑化收口",
+    "应下+给一个具体的下一步（等老驰的日期出来一起看/把周六先定死），把悬念转成安排",
+    "去不了就直说+让周六的债她别独吞（分一口的玩笑），退路合法但不吊着"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E341_T12_A00",
+     "subject": "SHARED",
+     "relation": "咖啡债回指（跨轮）",
+     "value": "咖啡债 T04 挂账，本轮进入她'不去就自己喝掉'的收尾条款",
+     "valid_time": "2026-11-19",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T04",
+      "message_id": "m0",
+      "quote": "咖啡债先挂着，回来再算"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "咖啡债",
+       "挂着"
+      ],
+      [
+       "回来再算"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T12_A01",
+     "subject": "THIRD",
+     "relation": "海边行提议（未定案）",
+     "value": "下个月老驰张罗去海边看雁鸭，两天一夜，她还没答应",
+     "valid_time": "2026-12",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T12",
+      "message_id": "m0",
+      "quote": "下个月老驰张罗去海边看雁鸭，两天一夜，我还没答应"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "海边",
+       "雁鸭"
+      ],
+      [
+       "还没答应"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T12_A02",
+     "subject": "SHARED",
+     "relation": "去留绑定",
+     "value": "她说 ME 去她就去（条件式绑定）",
+     "valid_time": "2026-12",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T12",
+      "message_id": "m0",
+      "quote": "你要是去，我就去"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你要是去",
+       "我就去"
+      ],
+      [
+       "我还没答应"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E341_T12_A03",
+     "subject": "HER",
+     "relation": "自饮条款",
+     "value": "ME 不去的话，周六的咖啡债她自己喝掉，一杯都不分",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E341_T12",
+      "message_id": "m0",
+      "quote": "你要是不去，周六的咖啡债我自己喝掉，一杯都不分你"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "不去",
+       "咖啡债"
+      ],
+      [
+       "一杯都不分你"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true、收尾轮：'你要是去我就去'是她把决定权交出来又假装随便——应下是 2 档正解；拒绝合法但'不去'会同时触发她的自饮条款与周六落空，拒绝需带补偿方向。海边行未定案（她没答应、日期未出），不得当已定安排复述；'晚安'是收尾信号，回复宜轻收、不在此刻抛新钩。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把海边之行说成已定或她已答应（她明说还没答应、日期未出）"
+   ],
+   "may_decline": true
+  }
+ }
+}

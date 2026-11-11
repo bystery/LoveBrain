@@ -1,0 +1,230 @@
+{
+ "seed": 20261022,
+ "materials": [
+  {
+   "case_ref": "E001:E001_T01",
+   "case": {
+    "gid": "E001:E001_T01",
+    "file": "benchmark/dev_pilot_v02/E001.json",
+    "turn": {
+     "case_id": "E001_T01",
+     "turn_type": "reply",
+     "input": {
+      "messages": [
+       {
+        "role": "ME",
+        "text": "你上回做的那个杯子有消息没",
+        "ts": "2026-11-02 19:40"
+       },
+       {
+        "role": "HER",
+        "text": "烧好了，蓝釉比我想的花",
+        "ts": "2026-11-02 19:41"
+       },
+       {
+        "role": "HER",
+        "text": "店里问要不要刻字，我想杯底留空，不刻了",
+        "ts": "2026-11-02 19:42"
+       }
+      ],
+      "clock": "2026-11-02 19:43",
+      "note": "我这周不想再揽跑腿的事，别替我答应代取。",
+      "may_decline": false
+     },
+     "gold": {}
+    },
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "你上回做的那个杯子有消息没",
+       "ts": "2026-11-02 19:40"
+      },
+      {
+       "role": "HER",
+       "text": "烧好了，蓝釉比我想的花",
+       "ts": "2026-11-02 19:41"
+      },
+      {
+       "role": "HER",
+       "text": "店里问要不要刻字，我想杯底留空，不刻了",
+       "ts": "2026-11-02 19:42"
+      }
+     ],
+     "clock": "2026-11-02 19:43",
+     "note": "我这周不想再揽跑腿的事，别替我答应代取。",
+     "may_decline": false
+    },
+    "gold": {},
+    "ep_persona": {
+     "me": "29岁成年人，住杭州；截至故事起点2026-11-02，和对方是认识两年的普通朋友，偶尔一起玩桌游；通常简短接话。后续事件与关系变化以真实消息为准。",
+     "her": "28岁成年人，住杭州；平常会分享工作和生活小事，常连发两句；截至故事起点2026-11-02，双方没有确认恋爱关系。后续事件与关系变化以真实消息为准。"
+    },
+    "ep_initial_kb": {}
+   },
+   "state": "正常",
+   "arm_x": {
+    "reply": "哈哈蓝釉烧出花纹也算限定款，杯底留空挺对的，自己用清爽。烧出来那一刻有没有特想发朋友圈？",
+    "parse_ok": true,
+    "format_ok": true,
+    "action_legal": true
+   },
+   "arm_y": {
+    "reply": "好嘞，刻字的事我帮你去店里说一声，回头我顺路帮你把杯子取回来。",
+    "parse_ok": true,
+    "format_ok": true,
+    "action_legal": true
+   }
+  },
+  {
+   "case_ref": "E001:E001_T05",
+   "case": {
+    "gid": "E001:E001_T05",
+    "file": "benchmark/dev_pilot_v02/E001.json",
+    "turn": {
+     "case_id": "E001_T05",
+     "turn_type": "reply",
+     "input": {
+      "messages": [
+       {
+        "role": "ME",
+        "text": "今天终于出太阳了",
+        "ts": "2026-11-07 16:06"
+       },
+       {
+        "role": "HER",
+        "text": "我先去收衣服，回头聊",
+        "ts": "2026-11-07 16:08"
+       }
+      ],
+      "clock": "2026-11-07 16:09",
+      "may_decline": true
+     },
+     "gold": {}
+    },
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "今天终于出太阳了",
+       "ts": "2026-11-07 16:06"
+      },
+      {
+       "role": "HER",
+       "text": "我先去收衣服，回头聊",
+       "ts": "2026-11-07 16:08"
+      }
+     ],
+     "clock": "2026-11-07 16:09",
+     "may_decline": true
+    },
+    "gold": {},
+    "ep_persona": {
+     "me": "29岁成年人，住杭州；截至故事起点2026-11-02，和对方是认识两年的普通朋友，偶尔一起玩桌游；通常简短接话。后续事件与关系变化以真实消息为准。",
+     "her": "28岁成年人，住杭州；平常会分享工作和生活小事，常连发两句；截至故事起点2026-11-02，双方没有确认恋爱关系。后续事件与关系变化以真实消息为准。"
+    },
+    "ep_initial_kb": {}
+   },
+   "state": "正常",
+   "arm_x": {
+    "reply": null,
+    "parse_ok": true,
+    "format_ok": true,
+    "action_legal": true
+   },
+   "arm_y": {
+    "reply": "收衣服前跟我说说，明天到底去不去？",
+    "parse_ok": true,
+    "format_ok": true,
+    "action_legal": true
+   }
+  },
+  {
+   "case_ref": "E002:E002_T03",
+   "case": {
+    "gid": "E002:E002_T03",
+    "file": "benchmark/dev_pilot_v02/E002.json",
+    "turn": {
+     "case_id": "E002_T03",
+     "turn_type": "reply",
+     "input": {
+      "messages": [
+       {
+        "role": "ME",
+        "text": "要不周六下午一起看？",
+        "ts": "2026-11-06 20:13"
+       },
+       {
+        "role": "HER",
+        "text": "一起可以，周六不行，我得值班",
+        "ts": "2026-11-06 20:15"
+       },
+       {
+        "role": "HER",
+        "text": "周日三点可以，北门见，别走到游客中心那边",
+        "ts": "2026-11-06 20:16"
+       }
+      ],
+      "clock": "2026-11-06 20:17",
+      "note": "周日下午我有空。",
+      "intent": {
+       "enabled": true,
+       "text": "我愿意按她提的周日去，简单确认就好。",
+       "status": "ACTIVE"
+      },
+      "may_decline": false
+     },
+     "gold": {}
+    },
+    "input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "要不周六下午一起看？",
+       "ts": "2026-11-06 20:13"
+      },
+      {
+       "role": "HER",
+       "text": "一起可以，周六不行，我得值班",
+       "ts": "2026-11-06 20:15"
+      },
+      {
+       "role": "HER",
+       "text": "周日三点可以，北门见，别走到游客中心那边",
+       "ts": "2026-11-06 20:16"
+      }
+     ],
+     "clock": "2026-11-06 20:17",
+     "note": "周日下午我有空。",
+     "intent": {
+      "enabled": true,
+      "text": "我愿意按她提的周日去，简单确认就好。",
+      "status": "ACTIVE"
+     },
+     "may_decline": false
+    },
+    "gold": {},
+    "ep_persona": {
+     "me": "26岁成年人，住苏州；截至故事起点2026-11-05，约一周前在街拍活动认识对方，此前尚未单独出门；希望慢慢熟悉，愿意接玩笑。后续事件与关系变化以真实消息为准。",
+     "her": "25岁成年人，住苏州；喜欢看照片，偶尔自嘲；截至故事起点2026-11-05，双方尚未互告住址，也未确认恋爱意向。后续事件与关系变化以真实消息为准。"
+    },
+    "ep_initial_kb": {
+     "me": "目前只用手机拍照，没有相机"
+    }
+   },
+   "state": "正常",
+   "arm_x": {
+    "reply": "收到，周日三点北门等 you，不绕游客中心。到时候你直接找人少的口就行。",
+    "parse_ok": true,
+    "format_ok": true,
+    "action_legal": true
+   },
+   "arm_y": {
+    "reply": "好，那就周日三点游客中心门口集合，那边好找人也热闹。",
+    "parse_ok": true,
+    "format_ok": true,
+    "action_legal": true
+   }
+  }
+ ]
+}

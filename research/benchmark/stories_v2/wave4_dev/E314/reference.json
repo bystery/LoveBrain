@@ -1,0 +1,822 @@
+{
+ "story_id": "E314",
+ "turns": {
+  "E314_T01": {
+   "case_id": "E314_T01",
+   "current_action": "何蔓拼桌闲聊吐槽：负一楼食堂糖醋排骨从三号窗口挪到七号，自己端着餐盘愣半天",
+   "acceptable_actions": [
+    "接吐槽+给个实际经验（如七号窗口那边动线怎么走）",
+    "接'看我跟看傻子似的'的自嘲玩一句",
+    "顺口问改造围到什么时候（轻，不连环问）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T01_A01",
+     "subject": "SHARED",
+     "relation": "食堂窗口变更",
+     "value": "负一楼食堂的糖醋排骨从三号窗口挪到了七号窗口",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T01",
+      "message_id": "m0",
+      "quote": "糖醋排骨从三号窗口挪到七号了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "日常拼桌闲聊位：她的冷幽默（'看傻子似的'）接得住即可；无意图无钩，不出钩也不冷场。评审判自然度，别上价值谈'改造总有阵痛'。",
+   "unknowns": [
+    {
+     "topic": "食堂改造的完工时间",
+     "note": "她只问'什么时候是个头'；无信息",
+     "markers": [
+      [
+       "下个月",
+       "完工"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "下个月",
+       "完工"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造改造完工时间",
+    "不得编造其他窗口的菜品变化"
+   ],
+   "may_decline": false
+  },
+  "E314_T02": {
+   "case_id": "E314_T02",
+   "current_action": "何蔓播报：禾木面包租约到期，最后营业日定在本月22号周日——她吃了三年的碱水结，打算最后几天去囤货冻起来",
+   "acceptable_actions": [
+    "接住'吃了三年'的分量（毕业答辩那年吃到现在），对闭店表示真实的可惜",
+    "接囤货计划+给个实用建议（如冷冻保存、分袋）",
+    "回扣她'碳水胃'的标签调侃一句，再正经说可惜"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T02_A01",
+     "subject": "THIRD",
+     "relation": "禾木闭店",
+     "value": "禾木租约到期，最后营业日定在这个月22号（周日）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T02",
+      "message_id": "m0",
+      "quote": "最后营业日定在这个月 22 号，周日"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T02_A02",
+     "subject": "HER",
+     "relation": "碱水结三年",
+     "value": "禾木的碱水结她从毕业答辩那年吃到现在，整整三年",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T02",
+      "message_id": "m0",
+      "quote": "他家碱水结我从毕业答辩那年吃到现在，整整三年"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T02_A03",
+     "subject": "HER",
+     "relation": "囤货打算",
+     "value": "最后这几天她打算去囤货，冻起来慢慢吃",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T02",
+      "message_id": "m0",
+      "quote": "最后这几天我打算去囤货，冻起来慢慢吃"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "关键锚点轮：22号周日这个日期与囤货打算都会被 T08/T09 回扣。评审判回复是否记住了日期与'三年'的情感分量；只回'一家面包店而已'式轻慢判 emotion_relation 失分。",
+   "unknowns": [
+    {
+     "topic": "禾木闭店后是否有接盘或新店",
+     "note": "只知租约到期闭店；后续未提",
+     "markers": [
+      [
+       "新店",
+       "接"
+      ],
+      [
+       "搬去",
+       "哪里"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "新店",
+       "接"
+      ],
+      [
+       "搬去",
+       "哪里"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "整整三年"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实老板的去向或新店",
+    "不得说'会再开一家'等无据安慰"
+   ],
+   "may_decline": false
+  },
+  "E314_T03": {
+   "case_id": "E314_T03",
+   "current_action": "何蔓封死本周窗口：需求评审开到九点、甲方推翻首页，本周之内别约她吃饭——intent 是应下不约饭并在微信里搭把手",
+   "acceptable_actions": [
+    "明确应下本周不约饭（不解释不讨价），微信里随叫随到的轻承诺",
+    "应下+接'谁提吃的我跟谁急'的梗（发吃的图片都算雷区这类玩笑）",
+    "应下+一句项目顺利的短应援，不追问项目细节"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T03_A01",
+     "subject": "HER",
+     "relation": "本周封窗",
+     "value": "本周之内别约她吃饭，中午也悬；她可能天天靠便利店活着",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T03",
+      "message_id": "m0",
+      "quote": "本周之内别约我吃饭，中午也悬"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T03_A02",
+     "subject": "THIRD",
+     "relation": "项目冲击",
+     "value": "需求评审开到九点，甲方把首页整个推翻重来",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T03",
+      "message_id": "m0",
+      "quote": "甲方把首页整个推翻重来了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "窗口封死轮：lessons 明写'她说忙就是真忙，别当客套猜'——把'本周别约饭'读成客套而继续约饭是双重错误。intent 要求应下+微信搭把手：口头支援到位即可，别真的远程介入她工作。",
+   "unknowns": [],
+   "protected_expressions": [
+    "上线之前谁跟我提吃的我跟谁急",
+    "谁跟我提吃的我跟谁急"
+   ],
+   "forbidden_factual_claims": [
+    "不得在本周内约她吃饭",
+    "不得质疑她忙的真实性"
+   ],
+   "may_decline": false
+  },
+  "E314_T04": {
+   "case_id": "E314_T04",
+   "current_action": "何蔓冲刺周碎碎念：毙了设计师第三版动效、中午只吃三个饺子，顺口问设计院这周忙不忙",
+   "acceptable_actions": [
+    "回答她的问题（设计院忙或不忙的真实情况），再接她吃三个饺子的细节",
+    "接'表演心碎'的冷幽默玩一句，再关心一句吃的（具体到'晚上补个正经饭'）",
+    "回答+让她忙完这阵再战，不追问项目内容"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T04_A01",
+     "subject": "HER",
+     "relation": "倒计时",
+     "value": "项目上线倒计时三天，中午只吃了三个饺子",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T04",
+      "message_id": "m0",
+      "quote": "我中午就吃了三个饺子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T04_A02",
+     "subject": "ME",
+     "relation": "反问ME",
+     "value": "她问设计院这周忙不忙（'不然饭都吃不到一块了'）",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T04",
+      "message_id": "m0",
+      "quote": "你们设计院这周不忙吧，不然饭都吃不到一块了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她一边说'别提吃的'一边报三个饺子——这是她的自嘲式求关心，接住方式是具体（提醒晚上吃口正经的）而非空泛慰问；同时她的反问要正面回答。'提吃的跟谁急'禁的是约饭提议，不是一切食物话题，评审注意分寸。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造设计院本周的排期细节",
+    "不得替她安排具体吃饭时间"
+   ],
+   "may_decline": false
+  },
+  "E314_T05": {
+   "case_id": "E314_T05",
+   "current_action": "深夜何蔓发来周报写完的消息，明示'别回我，我趴十分钟'",
+   "acceptable_actions": [
+    "不回复（尊重明示的'别回我'），次日再自然接话",
+    "若回，只一个极简应答且不开启新话题、不要求她再回"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T05_A01",
+     "subject": "HER",
+     "relation": "别回我",
+     "value": "她周报写完、人还在工位魂已下班，明示别回她，她趴十分钟",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T05",
+      "message_id": "m0",
+      "quote": "别回我，我趴十分钟"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "明示'别回我'+may_decline=true：沉默是正解，回复只要一超过一句就显重。评审对'没回'不扣分、对长回复扣分。深夜批量发消息是她的常态（note 素材），别当异常。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别回我，我趴十分钟"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问项目或周报内容",
+    "不得深夜拉她聊天"
+   ],
+   "may_decline": true
+  },
+  "E314_T06": {
+   "case_id": "E314_T06",
+   "current_action": "周一早何蔓播报：周末睡三个大觉、宜家落地灯装到凌晨一点（脖子还歪），明天项目上线",
+   "acceptable_actions": [
+    "祝明天上线顺利+接装灯装到凌晨的玩笑（脖子歪）",
+    "祝顺利+轻问一句她那盏灯装的效果（一个钩，不连环）",
+    "短应援+不追问，让她专心备战上线"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T06_A01",
+     "subject": "HER",
+     "relation": "上线日",
+     "value": "明天（周二）项目上线，全组绷着",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T06",
+      "message_id": "m0",
+      "quote": "明天项目上线"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T06_A02",
+     "subject": "HER",
+     "relation": "周末状态",
+     "value": "周末睡了三个大觉，去宜家买了盏落地灯装到凌晨一点，脖子还是歪的",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T06",
+      "message_id": "m0",
+      "quote": "装到凌晨一点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "上线前夜位：本周不约饭的约束仍在（明天上线全组绷着）——此刻约饭或提周末安排判不读空气。祝顺利是主旋律，装灯玩笑是辅。",
+   "unknowns": [],
+   "protected_expressions": [
+    "明天项目上线，全组绷着"
+   ],
+   "forbidden_factual_claims": [
+    "不得此刻约饭或提周末安排",
+    "不得编造项目内容细节"
+   ],
+   "may_decline": false
+  },
+  "E314_T07": {
+   "case_id": "E314_T07",
+   "current_action": "何蔓报喜：上线成功、全组吃火锅抢到最后一颗虾滑，这周末不加班正常休——她突然空出来不知道干嘛，反问设计院周末忙不忙",
+   "acceptable_actions": [
+    "恭喜上线成功+接虾滑细节，回答设计院周末忙不忙",
+    "恭喜+接住她'周末空出来不知道干嘛'的空档信号——可顺势给一个轻提议（如周日禾木最后一天、一起去囤货），留退路",
+    "恭喜+把球回她（问她想干嘛），不出钩也可以"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T07_A01",
+     "subject": "HER",
+     "relation": "上线成功",
+     "value": "项目上线成功，全组去吃火锅，她抢到最后一颗虾滑",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T07",
+      "message_id": "m0",
+      "quote": "上线成功！"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T07_A02",
+     "subject": "HER",
+     "relation": "周末空档",
+     "value": "组长说这周末不加班正常休；周六周日两天她突然空出来不知道干嘛",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T07",
+      "message_id": "m0",
+      "quote": "这周末不加班，正常休"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T07_A03",
+     "subject": "ME",
+     "relation": "反问ME",
+     "value": "她反问设计院周末忙不忙",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T07",
+      "message_id": "m0",
+      "quote": "你呢，你们院周末忙不忙？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "自出钩时机位（T04 核心）：她的周末空档+禾木22号闭店+她说过要囤货，是天然有锚的提议位——出轻钩（如周日陪她去禾木排队囤货）或不出钩只接话都可接受；判据是钩要轻要留退路，且必须先恭喜+先回答她的反问。",
+   "unknowns": [
+    {
+     "topic": "她周末两天的具体打算",
+     "note": "'不知道干嘛'是原话；不得替她排满",
+     "markers": [
+      [
+       "你",
+       "周末",
+       "安排",
+       "是"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "你",
+       "周末",
+       "安排",
+       "是"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得此刻定死周末的具体安排",
+    "不得编造设计院周末加班情况"
+   ],
+   "may_decline": false
+  },
+  "E314_T08": {
+   "case_id": "E314_T08",
+   "current_action": "何蔓定下周日去禾木排队囤货（碱水结六个、贝果四个）并发出行邀约：你要不要一起？我八点一刻到那儿",
+   "acceptable_actions": [
+    "答应同去+确认八点一刻到禾木门口（复述时间地点）",
+    "答应+认领购物分工（如帮她拎或自己买四个碱水结）",
+    "答应+接店狗馒头的梗（帆布袋上全是它的脸）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T08_A01",
+     "subject": "SHARED",
+     "relation": "周日邀约",
+     "value": "她发出周日（11月22日）禾木排队囤货的同去邀约：她八点一刻到那儿",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T08",
+      "message_id": "m0",
+      "quote": "你要不要一起？我八点一刻到那儿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T08_A02",
+     "subject": "HER",
+     "relation": "囤货清单",
+     "value": "她的囤货清单：碱水结六个、贝果四个，冻起来慢慢吃",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T08",
+      "message_id": "m0",
+      "quote": "碱水结六个、贝果四个，冻起来慢慢吃"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T08_A03",
+     "subject": "THIRD",
+     "relation": "帆布袋活动",
+     "value": "老板说最后一天前五十名送印着店狗馒头的帆布袋",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T08",
+      "message_id": "m0",
+      "quote": "老板说最后一天前五十名送印着店狗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的邀约给了具体时间地点（八点一刻禾木）——lessons：她不吃'改天'这一套。答应+复述时间地点是正解；'到时候看'判低。若 T07 已由 ME 提过禾木，此轮是她接 ME 的钩，归属互动更顺。",
+   "unknowns": [
+    {
+     "topic": "排队人数与帆布袋发放的最终规则",
+     "note": "只有老板朋友圈'前五十名'的说法；现场规则未验证",
+     "markers": [
+      [
+       "前一百",
+       "也送"
+      ],
+      [
+       "每人",
+       "限"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "前一百",
+       "也送"
+      ],
+      [
+       "每人",
+       "限"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说'改天再去'或改时间",
+    "不得坐实自己一定进前五十"
+   ],
+   "may_decline": false
+  },
+  "E314_T09": {
+   "case_id": "E314_T09",
+   "current_action": "何蔓加班路过禾木：周日出炉就两炉（八点一炉、十一点一炉），求证'咱说好的那个点不变吧'——她冲热出炉去",
+   "acceptable_actions": [
+    "确认不变（八点一刻）+呼应她冲热出炉的执念",
+    "确认+提自己提前到帮她占位或分头行动方案",
+    "确认+接'卖完真收摊'的紧迫感（去晚了连十一点那炉都赶不上）"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T09_A01",
+     "subject": "THIRD",
+     "relation": "出炉两炉",
+     "value": "周日出炉就两炉：八点一炉、十一点一炉，卖完真收摊",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T09",
+      "message_id": "m0",
+      "quote": "周日出炉就两炉，八点一炉、十一点一炉，卖完真收摊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T09_A02",
+     "subject": "SHARED",
+     "relation": "碰头确认",
+     "value": "她求证说好的碰头点（八点一刻禾木门口）不变，她自己反正是冲热出炉去的",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T09",
+      "message_id": "m0",
+      "quote": "咱说好的那个点不变吧？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 是确认周日碰头时间：明确复述'不变/八点一刻'是核心得分点；含糊'应该差不多'判低。lessons：她答应了的事不轻易变，变了会主动说原因——她这次是来求证不是改约。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我反正是冲热出炉去的"
+   ],
+   "forbidden_factual_claims": [
+    "不得改动八点一刻的约定",
+    "不得编造第三炉出炉时间"
+   ],
+   "may_decline": false
+  },
+  "E314_T10": {
+   "case_id": "E314_T10",
+   "current_action": "周六深夜何蔓睡不着翻相册：2023年4月毕业论文盲审刚过后在禾木买的第一个碱水结，一个人站店门口吃完——明天最后一天，有点舍不得",
+   "acceptable_actions": [
+    "接住舍不得的分量（三年+毕业记忆叠在一起），不煽情不轻慢",
+    "分享一句自己类似'一家店/一个物件要没了'的记忆（真实、不编造），让她知道有人懂",
+    "轻接+把明早的期待立起来（热出炉那炉），给她一个向前的落点"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T10_A01",
+     "subject": "HER",
+     "relation": "毕业记忆",
+     "value": "2023年4月她在禾木买的第一个碱水结：那天毕业论文盲审刚过，一个人站在店门口吃完的",
+     "valid_time": "2023-04-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T10",
+      "message_id": "m0",
+      "quote": "那天我毕业论文盲审刚过，一个人站在店门口吃完的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T10_A02",
+     "subject": "HER",
+     "relation": "舍不得",
+     "value": "三年了，明天是最后一天，她突然有点舍不得",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T10",
+      "message_id": "m0",
+      "quote": "明天是最后一天，突然有点舍不得"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "怀旧深夜位：她把毕业记忆和这家店绑在一起交出来了。评审判回复是否接住'舍不得'（情绪在场）而非急着解决或调侃过度；深夜回复宜短。",
+   "unknowns": [
+    {
+     "topic": "碱水结冷冻后的保质期",
+     "note": "她说'冻起来慢慢吃'；能冻多久未提",
+     "markers": [
+      [
+       "冻",
+       "三个月"
+      ],
+      [
+       "保质期",
+       "是"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "冻",
+       "三个月"
+      ],
+      [
+       "保质期",
+       "是"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "一个人站在店门口吃完的"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造 ME 自己的碱水结记忆",
+    "不得把她的舍不得解读成矫情"
+   ],
+   "may_decline": false
+  },
+  "E314_T11": {
+   "case_id": "E314_T11",
+   "current_action": "周日早上八点二十何蔓已到禾木门口（前面十五人左右，馒头已上岗），催程野报到位置——intent 是报位置门口汇合",
+   "acceptable_actions": [
+    "报自己的真实位置（路上几分钟到/已经到哪一段），让她占着队",
+    "报位置+接馒头的梗（已经趴在收银台上岗了）",
+    "报位置+说带了她要的东西（如保温袋），轻加速"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T11_A01",
+     "subject": "HER",
+     "relation": "到场状态",
+     "value": "她已到禾木门口，前面十五个人左右，馒头趴在收银台上岗了；八点开门",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T11",
+      "message_id": "m0",
+      "quote": "我到禾木门口了，前面十五个人左右"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T11_A02",
+     "subject": "ME",
+     "relation": "催报到",
+     "value": "她问程野到哪儿了；热出炉那炉的香味已经飘出来了",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T11",
+      "message_id": "m0",
+      "quote": "你到哪儿了？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 是报自己的位置：回复必须含一个位置信息（几分钟到/在哪），不含位置的纯玩笑判没接住 intent。此刻是周日早上八点二十的赶场节奏，回复宜短。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得建议改时间（今天最后一天）",
+    "不得编造现场队伍的新变化"
+   ],
+   "may_decline": false
+  },
+  "E314_T12": {
+   "case_id": "E314_T12",
+   "current_action": "采购完毕何蔓分账收尾：碱水结她六程野四、贝果对半、帆布袋一人一个，答应把复热大法写给程野，道谢'陪排最后一班队'",
+   "acceptable_actions": [
+    "道谢呼应+等她的复热大法（可回一句'冷藏回温五分钟等着背'）",
+    "接'禾木这一页翻篇了'的收束感+回一句轻的（食堂见/改天再约）",
+    "合法不回（may_decline=true，轻收位）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E314_T12_A01",
+     "subject": "SHARED",
+     "relation": "分账结果",
+     "value": "碱水结她六个程野四个、贝果对半分、帆布袋一人一个，满载而归",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T12",
+      "message_id": "m0",
+      "quote": "碱水结我六个你四个，贝果对半分，帆布袋一人一个"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E314_T12_A02",
+     "subject": "HER",
+     "relation": "复热大法",
+     "value": "她回去会把复热大法写给程野（冷藏回温五分钟，一百八十度烤六分钟，跟新出炉的一样）",
+     "valid_time": "2026-11-22之后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E314_T12",
+      "message_id": "m0",
+      "quote": "回去我把我那套复热大法写给你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮（may_decline=true）：'禾木这一页翻篇了'是她的收束句——不出新钩、不硬接'下次去哪'，轻收+道谢是正解。分账数字（她六我四）是事实，记反了属错记。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谢谢你陪我排这最后一班队"
+   ],
+   "forbidden_factual_claims": [
+    "不得把分账记反（是程野四个不是六个）",
+    "不得新开话题拖长收尾"
+   ],
+   "may_decline": true
+  }
+ }
+}

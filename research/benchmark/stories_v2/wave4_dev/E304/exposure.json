@@ -1,0 +1,56 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A1 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_b_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:09:36",
+      "window_last_attempt": "2026-11-08 15:00:41",
+      "attempts": 25,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_b/{DIRECT,CURRENT}/E304/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T01 日常聊天/自然接话/幽默",
+    "餐饮聚会约饭日常",
+    "餐厅与口味事实",
+    "生日保密线"
+  ],
+  "title": "听雨包间：一份甜汤引发的生日事故",
+  "may_decline_turns": [
+    "E304_T07"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "聚会社交",
+  "primary_topic": "T01",
+  "lineage_group_id": "LG-E304",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "annotator": "annotator-B1",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E304/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A1",
+  "hashes": {
+    "episode.json": "52640a3fba61838043bdd47342bb5c7ce21981bcc46a71c437ffdb4770540622",
+    "reference.json": "9da860e18c582c91fb0deea8d943e6477eff23eb4e8056db6464b417f0d84801",
+    "timeline.json": "5cecca5c9d0920837916ddcaada37ecf280101eab0553ebf168b26ccfe461178",
+    "audit.md": "628f567235a6a02f7598e4580465607364e5a1222db11818cc0b321dea6820dd",
+    "composite": "3d85e2ddfde53cb75093402dd1e2435b279592dcf940ea44a647f866032830bf"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

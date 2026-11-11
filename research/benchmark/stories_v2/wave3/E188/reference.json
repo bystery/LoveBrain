@@ -1,0 +1,741 @@
+{
+ "story_id": "E188",
+ "turns": {
+  "E188_T01": {
+   "case_id": "E188_T01",
+   "current_action": "接票务信息，确认六天框架",
+   "acceptable_actions": [
+    "确认12月31日去1月5日回，接住家宴话题",
+    "接住报喜，提醒把答应爸妈的事记成清单",
+    "确认六天安排，调侃鱼竿都擦好了"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A01",
+     "subject": "HER",
+     "relation": "回家计划",
+     "value": "元旦12月31日出发1月5日返回在家六天",
+     "valid_time": "2026-12-31至2027-01-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T01",
+      "quote": "12月31号去1月5号回，整整六天",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A02",
+     "subject": "HER",
+     "relation": "父母状态",
+     "value": "妈妈已开始排菜单，爸爸擦好鱼竿备钓鱼",
+     "valid_time": "2026-12-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T01",
+      "quote": "我爸把鱼竿都擦好了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "报喜消息接得暖一点，顺手帮她把框架记牢",
+   "unknowns": [
+    "车次席别未说"
+   ],
+   "protected_expressions": [
+    "整整六天"
+   ],
+   "forbidden_factual_claims": [
+    "改她的行程框架",
+    "宣称六天太短不如不去"
+   ]
+  },
+  "E188_T02": {
+   "case_id": "E188_T02",
+   "current_action": "接承诺清单，帮记忆锚定",
+   "acceptable_actions": [
+    "复述三件事确认，建议记进备忘",
+    "接住清单，提醒六天里给爸妈留机动",
+    "确认三件事，问逛街和钓鱼谁先谁后"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A03",
+     "subject": "HER",
+     "relation": "承诺清单",
+     "value": "已答应陪妈妈逛街一整天、陪爸爸钓鱼一次、陪姥姥剪头发加吃饭",
+     "valid_time": "元旦假期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T02",
+      "quote": "陪我妈逛街一整天，陪我爸钓一次鱼",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "三件事逐条复述，别漏掉姥姥那件",
+   "unknowns": [
+    "各事项具体日期未排"
+   ],
+   "protected_expressions": [
+    "排得满满当当"
+   ],
+   "forbidden_factual_claims": [
+    "漏掉任何一件承诺",
+    "替她删减承诺"
+   ]
+  },
+  "E188_T03": {
+   "case_id": "E188_T03",
+   "current_action": "接家宴定档，确认角色",
+   "acceptable_actions": [
+    "接住1月2日家宴，问要不要带东西",
+    "确认家宴时间，调侃接风排场",
+    "记下1月2日中午，提醒那天别排别的"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A04",
+     "subject": "SHARED",
+     "relation": "家宴安排",
+     "value": "1月2日中午家宴，姥姥姥爷小姨全家出席为HER接风",
+     "valid_time": "2027-01-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T03",
+      "quote": "1月2号中午",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A05",
+     "subject": "HER",
+     "relation": "承诺清单",
+     "value": "家宴与逛街等承诺需在同一假期内排布",
+     "valid_time": "元旦假期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T02",
+      "quote": "陪我妈逛街一整天",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把家宴当成假期锚点记下",
+   "unknowns": [
+    "家宴地点未说明"
+   ],
+   "protected_expressions": [
+    "最隆重的一顿"
+   ],
+   "forbidden_factual_claims": [
+    "把家宴日期记成其他日子"
+   ]
+  },
+  "E188_T04": {
+   "case_id": "E188_T04",
+   "current_action": "接通知，帮把更正说清",
+   "acceptable_actions": [
+    "接住变数，建议当晚就给爸妈打电话更正",
+    "先算清四天能装下几件事，再谈怎么开口",
+    "接住消息，提出返程票先改再通知家里"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A06",
+     "subject": "THIRD",
+     "relation": "公司通知",
+     "value": "公司定1月4日上午全员年终盘点且不可请假",
+     "valid_time": "2027-01-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T04",
+      "quote": "1月4号上午全员年终盘点",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A07",
+     "subject": "HER",
+     "relation": "返程更正",
+     "value": "返程由1月5日提前到1月3日，停留由六天改为四天",
+     "valid_time": "2026-12-22确认",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T04",
+      "quote": "返程得提到1月3号，六天变四天",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A08",
+     "subject": "HER",
+     "relation": "回家计划",
+     "value": "原六天框架被公司通知打破",
+     "valid_time": "2026-12-15至2026-12-22",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T01",
+      "quote": "12月31号去1月5号回，整整六天",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "更正要具体到新日期，别只说'有变化'",
+   "unknowns": [
+    "盘点会能否线上参加未说明"
+   ],
+   "protected_expressions": [
+    "六天变四天"
+   ],
+   "forbidden_factual_claims": [
+    "建议请假躲过盘点",
+    "宣称四天能照原样装下六天的事"
+   ]
+  },
+  "E188_T05": {
+   "case_id": "E188_T05",
+   "current_action": "对开口方式给建议",
+   "acceptable_actions": [
+    "支持今晚打电话，别拖出哑谜",
+    "建议视频说，附一个补偿方案",
+    "接住犹豫，提出先打给爸爸探口风"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A09",
+     "subject": "HER",
+     "relation": "开口犹豫",
+     "value": "担心妈妈表面没事心里失落，纠结告知时机",
+     "valid_time": "2026-12-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T05",
+      "quote": "最怕我妈那句'没事没事'",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A10",
+     "subject": "HER",
+     "relation": "返程更正",
+     "value": "更正内容必须由本人亲口告知家里",
+     "valid_time": "2026-12-22",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T04",
+      "quote": "返程得提到1月3号，六天变四天",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "顺着她的边界'不打哑谜'给时机建议",
+   "unknowns": [
+    "爸妈当前知情状态未知"
+   ],
+   "protected_expressions": [
+    "装没看见拖两天"
+   ],
+   "forbidden_factual_claims": [
+    "建议发条微信了事",
+    "替她编一个不回去的理由"
+   ]
+  },
+  "E188_T06": {
+   "case_id": "E188_T06",
+   "current_action": "接电话结果与家宴提前",
+   "acceptable_actions": [
+    "接住结果，肯定妈妈嘴硬心软",
+    "接住提前，提醒1月1日家宴与逛街别撞档",
+    "接住家宴提前，建议把逛街挪到31号或2号"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A11",
+     "subject": "SHARED",
+     "relation": "家宴改期",
+     "value": "家宴由1月2日中午提前至1月1日中午",
+     "valid_time": "2027-01-01",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T06",
+      "quote": "把家宴从1月2号提到1月1号中午",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A12",
+     "subject": "SHARED",
+     "relation": "家宴安排",
+     "value": "原1月2日中午家宴档期已被提前替换",
+     "valid_time": "2026-12-20至2026-12-23",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T03",
+      "quote": "1月2号中午",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "接住妈妈的心意，同时帮她看档期别撞",
+   "unknowns": [
+    "逛街是否定档未知"
+   ],
+   "protected_expressions": [
+    "赶你走之前再吃一顿热乎的"
+   ],
+   "forbidden_factual_claims": [
+    "说妈妈小题大做",
+    "宣称家宴仍是1月2日"
+   ]
+  },
+  "E188_T07": {
+   "case_id": "E188_T07",
+   "current_action": "接钓鱼挪档，确认当日安排",
+   "acceptable_actions": [
+    "接住塘口安排，肯定爸爸式的直球",
+    "接住挪档，提醒31号到家先歇口气也行",
+    "确认31日下午钓鱼，问她行李要不要减负"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A13",
+     "subject": "SHARED",
+     "relation": "钓鱼改期",
+     "value": "陪爸爸钓鱼由假期中段挪至12月31日下午塘口",
+     "valid_time": "2026-12-31",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T07",
+      "quote": "钓鱼挪到31号下午",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A14",
+     "subject": "HER",
+     "relation": "承诺清单",
+     "value": "钓鱼承诺落实时间被前移到到家当天",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T02",
+      "quote": "陪我爸钓一次鱼",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "爸爸的安排照单全收式吐槽即可，别挑刺",
+   "unknowns": [
+    "塘口晚饭由谁做未说明"
+   ],
+   "protected_expressions": [
+    "饭都在塘口吃"
+   ],
+   "forbidden_factual_claims": [
+    "质疑这个安排太赶"
+   ]
+  },
+  "E188_T08": {
+   "case_id": "E188_T08",
+   "current_action": "接改签结果，核对票面",
+   "acceptable_actions": [
+    "确认改签成功，提醒核对3号上午车次",
+    "接住无差价，建议把新票截图存档",
+    "确认票面，问3号几点到工作城市"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A15",
+     "subject": "HER",
+     "relation": "返程票改签",
+     "value": "返程票由1月5日改签至1月3日上午，同席别未补差价",
+     "valid_time": "2026-12-25",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T08",
+      "quote": "1月5号那张改成1月3号上午",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A16",
+     "subject": "HER",
+     "relation": "返程更正",
+     "value": "口头更正已落实到车票",
+     "valid_time": "2026-12-22至2026-12-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T04",
+      "quote": "返程得提到1月3号，六天变四天",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "票面信息复述准确：3号上午、去程不动",
+   "unknowns": [
+    "无"
+   ],
+   "protected_expressions": [
+    "同席别没补差价"
+   ],
+   "forbidden_factual_claims": [
+    "宣称改签收了手续费",
+    "记成5号返程"
+   ]
+  },
+  "E188_T09": {
+   "case_id": "E188_T09",
+   "current_action": "接姥姥安排取消与正月补约",
+   "acceptable_actions": [
+    "接住取舍，肯定正月补上更实在",
+    "接住安排，建议视频拜年时把正月日期说死",
+    "认可先视频，提醒别让姥姥觉得自己被排最后"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A17",
+     "subject": "HER",
+     "relation": "陪姥姥取消",
+     "value": "元旦期间陪姥姥剪头发吃饭取消，改为视频拜年",
+     "valid_time": "2026-12-26",
+     "status": "revoked",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T09",
+      "quote": "姥姥那边的剪头发加吃饭去不成了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A18",
+     "subject": "SHARED",
+     "relation": "正月补约",
+     "value": "约定正月专门回老家一趟补陪姥姥",
+     "valid_time": "2027年正月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T09",
+      "quote": "正月里再专门回去一趟补上",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A19",
+     "subject": "HER",
+     "relation": "承诺清单",
+     "value": "陪姥姥的承诺被更正为延后履行",
+     "valid_time": "元旦假期",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T02",
+      "quote": "姥姥那边剪头发加吃饭",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "取消要有补偿出口，姥姥那件不能无声消失",
+   "unknowns": [
+    "正月具体日期未定"
+   ],
+   "protected_expressions": [
+    "先视频拜个早年"
+   ],
+   "forbidden_factual_claims": [
+    "宣称姥姥的事就算了"
+   ]
+  },
+  "E188_T10": {
+   "case_id": "E188_T10",
+   "current_action": "接内疚情绪，给边界感宽慰",
+   "acceptable_actions": [
+    "否定'贪心'，指出及时更正是负责",
+    "接住内疚，提醒四天清单本身就够诚意",
+    "接住情绪，建议把没法做的事写进正月清单"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A20",
+     "subject": "HER",
+     "relation": "内疚情绪",
+     "value": "HER因四天装六天的事而自责贪心",
+     "valid_time": "2026-12-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T10",
+      "quote": "我是不是太贪心了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A21",
+     "subject": "SHARED",
+     "relation": "正月补约",
+     "value": "正月补约是化解内疚的现实抓手",
+     "valid_time": "2027年正月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T09",
+      "quote": "正月里再专门回去一趟补上",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "先接情绪再讲道理，别一上来纠正她",
+   "unknowns": [
+    "爸妈真实感受未知"
+   ],
+   "protected_expressions": [
+    "什么都想应下"
+   ],
+   "forbidden_factual_claims": [
+    "附和'确实贪心'",
+    "空喊孝顺口号"
+   ],
+   "may_decline": true
+  },
+  "E188_T11": {
+   "case_id": "E188_T11",
+   "current_action": "接最终清单，做查漏",
+   "acceptable_actions": [
+    "按票面与日期逐项核对，指出无漏",
+    "确认清单，提醒3号早班留缓冲",
+    "核对通过，建议把清单发给妈妈备份"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A22",
+     "subject": "SHARED",
+     "relation": "四天清单",
+     "value": "31日到家加塘口晚饭、1日家宴加逛街、2日看电影收拾行李、3日早返程",
+     "valid_time": "2026-12-31至2027-01-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T11",
+      "quote": "31号到家加塘口晚饭",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A23",
+     "subject": "SHARED",
+     "relation": "家宴改期",
+     "value": "清单中家宴档期与1月1日改期一致",
+     "valid_time": "2027-01-01",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T06",
+      "quote": "把家宴从1月2号提到1月1号中午",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E188_A24",
+     "subject": "HER",
+     "relation": "返程票改签",
+     "value": "清单返程与3号上午车票一致",
+     "valid_time": "2027-01-03",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T08",
+      "quote": "1月5号那张改成1月3号上午",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "逐项对票面与改期核对，别大概齐",
+   "unknowns": [
+    "电影场次未定"
+   ],
+   "protected_expressions": [
+    "你帮我看漏没漏"
+   ],
+   "forbidden_factual_claims": [
+    "找出新缺口却不给落位建议"
+   ]
+  },
+  "E188_T12": {
+   "case_id": "E188_T12",
+   "current_action": "送行收尾，接住特产与战报",
+   "acceptable_actions": [
+    "接住出发，答应等塘口战报",
+    "接住萝卜条，说回来当面谢",
+    "送行，提醒路上保暖到家报备"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E188_A25",
+     "subject": "HER",
+     "relation": "出发状态",
+     "value": "12月31日早出发返乡，特产定为三样并给ME留一罐萝卜条",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T12",
+      "quote": "给你留了一罐",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E188_A26",
+     "subject": "SHARED",
+     "relation": "四天清单",
+     "value": "清单当天开始执行，首项为到家加塘口晚饭",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E188_T11",
+      "quote": "31号到家加塘口晚饭",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "送行收尾轻快，别再往清单里加事",
+   "unknowns": [
+    "到家具体时间未知"
+   ],
+   "protected_expressions": [
+    "塘口战报"
+   ],
+   "forbidden_factual_claims": [
+    "临时又往清单里加事"
+   ]
+  }
+ }
+}

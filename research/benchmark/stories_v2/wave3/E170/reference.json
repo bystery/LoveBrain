@@ -1,0 +1,473 @@
+{
+ "story_id": "E170",
+ "turns": {
+  "E170_T01": {
+   "case_id": "E170_T01",
+   "current_action": "就烟机位尺寸不符与二次上门费给出第一步处置建议",
+   "acceptable_actions": [
+    "建议先问清量尺记录再谈谁担责",
+    "建议让门店出具书面返工方案",
+    "建议先别付二次上门费等责任认定"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T01_A01",
+     "subject": "SHARED",
+     "relation": "橱柜尺寸不符",
+     "value": "安装当日发现烟机位差两公分，板子挡不上需返厂重做",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T01", "quote": "烟机位差了两公分", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T01_A02",
+     "subject": "SHARED",
+     "relation": "二次上门费争议",
+     "value": "安装方提出二次上门费六百，责任归属存疑",
+     "valid_time": "2026-11-06",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T01", "quote": "还得收第二次上门费六百", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "表哥口吻稳而快，先给一步能落地的动作。",
+   "unknowns": ["尺寸差异成因未知"],
+   "protected_expressions": ["还得收第二次上门费六百"],
+   "forbidden_factual_claims": ["不得未核事实就断言责任方"],
+   "may_decline": false
+  },
+  "E170_T02": {
+   "case_id": "E170_T02",
+   "current_action": "按合同条款确认二次上门费不应由 HER 承担",
+   "acceptable_actions": [
+    "确认条款支持她并建议留合同页照片",
+    "确认并提醒与条款对应的沟通留痕",
+    "确认并让她把条款原文发给门店"
+   ],
+   "applicable_dimensions": ["factuality", "boundary", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T02_A01",
+     "subject": "SHARED",
+     "relation": "合同上门条款",
+     "value": "合同约定安装费含免费上门一次，客户原因二次上门按每次两百收取",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T02", "quote": "安装费含免费上门一次", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T02_A02",
+     "subject": "SHARED",
+     "relation": "橱柜尺寸不符",
+     "value": "烟机位差两公分待返厂的既定事实",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T01", "quote": "烟机位差了两公分", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "条款在哪、责任在哪，一句话讲清。",
+   "unknowns": ["门店是否认账未知"],
+   "protected_expressions": ["安装费含免费上门一次"],
+   "forbidden_factual_claims": ["不得引用合同里不存在的条款"],
+   "may_decline": false
+  },
+  "E170_T03": {
+   "case_id": "E170_T03",
+   "current_action": "对量尺记录与现场尺寸对不上的僵局给判断路径",
+   "acceptable_actions": [
+    "建议调取量尺底单与现场复测对照",
+    "建议两口径都留证再逼门店表态",
+    "建议承认成因难判但责任可以先按合同谈"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "goal", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T03_A01",
+     "subject": "PUBLIC",
+     "relation": "量尺记录差异",
+     "value": "量尺师傅单子记七十六，现场实为七十四，成因双方说不清",
+     "valid_time": "2026-11-06",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T03", "quote": "他单子上记的是七十六", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T03_A02",
+     "subject": "SHARED",
+     "relation": "合同上门条款",
+     "value": "免费上门一次与二次收费条款的既定文本",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T02", "quote": "安装费含免费上门一次", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "成因存疑就先落责任路径，别陪她纠结土建。",
+   "unknowns": ["差异到底源于量尺还是土建未知"],
+   "protected_expressions": ["他单子上记的是七十六"],
+   "forbidden_factual_claims": ["不得断言量尺师傅撒谎"],
+   "may_decline": false
+  },
+  "E170_T04": {
+   "case_id": "E170_T04",
+   "current_action": "认可门店认责结果并强调书面责任单的必要性",
+   "acceptable_actions": [
+    "认可并提醒责任单写明费用与工期",
+    "认可并建议责任单写清返工范围",
+    "认可并说收到书面再停下一步动作"
+   ],
+   "applicable_dimensions": ["boundary", "memory_use", "interaction", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T04_A01",
+     "subject": "SHARED",
+     "relation": "品牌认责",
+     "value": "门店电话认复尺漏了烟机位，板材返厂全责费用品牌担",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T04", "quote": "认了是复尺漏了烟机位这一项", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T04_A02",
+     "subject": "HER",
+     "relation": "书面责任单要求",
+     "value": "HER 要求把口头认责写成书面责任单，门店答应次日发",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T04", "quote": "写成书面责任单", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她做对了就明确肯定，补一个书面要素清单。",
+   "unknowns": ["责任单具体措辞未知"],
+   "protected_expressions": ["认了是复尺漏了烟机位这一项"],
+   "forbidden_factual_claims": ["不得声称已见到书面责任单"],
+   "may_decline": false
+  },
+  "E170_T05": {
+   "case_id": "E170_T05",
+   "current_action": "接受返工范围与工期的更正并确认六百费用归属",
+   "acceptable_actions": [
+    "复述侧板顶线都要动与17号二次安装",
+    "确认并提醒工期七天写进责任单",
+    "确认并问尾款节点要不要顺延"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T05_A01",
+     "subject": "SHARED",
+     "relation": "返工范围更正",
+     "value": "只换一块封板的旧理解更正为侧板和顶线都要动",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E170_T05", "quote": "更正一下昨天我以为只换一块封板", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T05_A02",
+     "subject": "SHARED",
+     "relation": "工期与费用更新",
+     "value": "工期多七天，板子13号到17号二次安装，六百二次上门费由门店承担",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T05", "quote": "工期要多七天", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：把旧数和新数都接住，别漏六百归属。",
+   "unknowns": ["17号安装是否再次变动未知"],
+   "protected_expressions": ["更正一下昨天我以为只换一块封板"],
+   "forbidden_factual_claims": ["不得按只换封板回应", "不得按15号完工回应"],
+   "may_decline": false
+  },
+  "E170_T06": {
+   "case_id": "E170_T06",
+   "current_action": "就拉篮加层是否拖工期加钱给出专业提醒",
+   "acceptable_actions": [
+    "提醒先确认是否算增项再决定",
+    "提醒改配置要另签变更单",
+    "让门店书面答复工期与差价再定"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "factuality", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T06_A01",
+     "subject": "SHARED",
+     "relation": "拉篮变更意向",
+     "value": "HER 想借返厂把拉篮从两层改三层",
+     "valid_time": "2026-11-07",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T06", "quote": "拉篮从两层改成三层", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T06_A02",
+     "subject": "SHARED",
+     "relation": "工期与费用更新",
+     "value": "返工工期多七天与17号二次安装的新口径",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T05", "quote": "工期要多七天", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "增项要签单这是她哥的职业本能，提醒别越界替她定。",
+   "unknowns": ["拉篮差价未知", "对工期影响未知"],
+   "protected_expressions": ["拉篮从两层改成三层"],
+   "forbidden_factual_claims": ["不得替门店承诺不加钱"],
+   "may_decline": false
+  },
+  "E170_T07": {
+   "case_id": "E170_T07",
+   "current_action": "确认增项落单与两笔费用的分流",
+   "acceptable_actions": [
+    "确认签变更单并夸她账目清楚",
+    "确认并提醒变更单留存照片",
+    "确认并顺带核对六百是否也写在单里"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T07_A01",
+     "subject": "SHARED",
+     "relation": "拉篮增项落单",
+     "value": "拉篮改三层加三百五算增项另签变更单，费用 HER 自担，工期不拖",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T07", "quote": "拉篮改三层加三百五", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T07_A02",
+     "subject": "SHARED",
+     "relation": "费用分流",
+     "value": "当日两笔费用口径：六百门店出，三百五 HER 出",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T07", "quote": "今天一个六百一个三百五", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她账记得清，回应也按两个数对齐。",
+   "unknowns": [],
+   "protected_expressions": ["今天一个六百一个三百五"],
+   "forbidden_factual_claims": ["不得把三百五记到门店头上"],
+   "may_decline": false
+  },
+  "E170_T08": {
+   "case_id": "E170_T08",
+   "current_action": "就燃气改造改期与表妹夫出差给出连锁判断",
+   "acceptable_actions": [
+    "建议燃气改到20号并说一人也能盯",
+    "建议改期同时让橱柜方书面确认17号",
+    "建议查燃气公司改约费规则再定"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T08_A01",
+     "subject": "SHARED",
+     "relation": "燃气改造改期",
+     "value": "燃气改造原约18号，因橱柜17号才装完拟改到20号",
+     "valid_time": "2026-11-20",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T08", "quote": "我打算把燃气改到20号", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T08_A02",
+     "subject": "SHARED",
+     "relation": "工期与费用更新",
+     "value": "橱柜17号二次安装的新工期口径",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T05", "quote": "17号二次安装", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "连锁改期先看依赖顺序，再谈人手。",
+   "unknowns": ["燃气公司改约费标准未知"],
+   "protected_expressions": ["我打算把燃气改到20号"],
+   "forbidden_factual_claims": ["不得虚构燃气公司政策"],
+   "may_decline": false
+  },
+  "E170_T09": {
+   "case_id": "E170_T09",
+   "current_action": "接住改约费自吞的结果并回应到场把关请求",
+   "acceptable_actions": [
+    "答应17号到场看封板缝和挡水条",
+    "答应并提前说会带塞尺量缝",
+    "答应到场并让她把三份凭证带齐"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "memory_use", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T09_A01",
+     "subject": "SHARED",
+     "relation": "燃气改约结果",
+     "value": "燃气改约到20号上午，五十元改约费门店不认由 HER 自担",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T09", "quote": "改约费五十", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T09_A02",
+     "subject": "SHARED",
+     "relation": "验收把关请求",
+     "value": "HER 请 ME 17号到场重点看封板缝与挡水条",
+     "valid_time": "2026-11-17",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T09", "quote": "17号二次安装你能来帮我看看吗", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她认赔五十的度要接住，请求尽量答应。",
+   "unknowns": ["17号 HER 是否还要上班未知"],
+   "protected_expressions": ["改约费五十"],
+   "forbidden_factual_claims": ["不得再替她向门店追讨改约费"],
+   "may_decline": false
+  },
+  "E170_T10": {
+   "case_id": "E170_T10",
+   "current_action": "确认17号上午九点到场并认可凭证截图习惯",
+   "acceptable_actions": [
+    "确认到场并约定先看缝再签收尾",
+    "确认并提醒把责任单打印一份带现场",
+    "确认并说理账时把五十也摆上桌"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T10_A01",
+     "subject": "SHARED",
+     "relation": "验收之约",
+     "value": "17号上午九点二次安装开工，ME 到场把关已约定",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T10", "quote": "17号上午九点开工", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T10_A02",
+     "subject": "HER",
+     "relation": "凭证留存",
+     "value": "责任单变更单改约短信均已截图留存待理总账",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T10", "quote": "都存了截图", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "确认要干脆，顺手把验收顺序说一句。",
+   "unknowns": [],
+   "protected_expressions": ["17号上午九点开工"],
+   "forbidden_factual_claims": ["不得虚构尚未发生的验收结果"],
+   "may_decline": false
+  },
+  "E170_T11": {
+   "case_id": "E170_T11",
+   "current_action": "按现场情况确认封板缝与挡水条达标并核对费用结算",
+   "acceptable_actions": [
+    "看照片确认达标并夸返工质量",
+    "确认并提醒保修期内缝变大可召回",
+    "确认尾款留存策略稳妥"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T11_A01",
+     "subject": "SHARED",
+     "relation": "二次安装结果",
+     "value": "封板缝约一根头发丝宽，挡水条做弧形，安装完成",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T11", "quote": "封板缝目测一根头发丝宽", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T11_A02",
+     "subject": "SHARED",
+     "relation": "费用结算落地",
+     "value": "六百与三百五均按单支付，尾款百分之五留至保修满一个月",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T11", "quote": "尾款百分之五留着", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "验收口径对着单子说，夸要具体。",
+   "unknowns": [],
+   "protected_expressions": ["尾款百分之五留着"],
+   "forbidden_factual_claims": ["不得声称亲眼所见照片以外的细节"],
+   "may_decline": false
+  },
+  "E170_T12": {
+   "case_id": "E170_T12",
+   "current_action": "接下致谢与家宴邀请，阳台柜参谋可接可缓",
+   "acceptable_actions": [
+    "答应赴宴并问要不要带嫂子拿手菜",
+    "答应理账并接阳台柜掌眼",
+    "收下感谢并说验收账不见不散"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E170_T12_A01",
+     "subject": "SHARED",
+     "relation": "家宴与理账",
+     "value": "HER 约周六家宴并当面过一遍验收账",
+     "valid_time": "2026-11-17之后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T12", "quote": "周六家里吃顿饭", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E170_T12_A02",
+     "subject": "HER",
+     "relation": "阳台柜新需求",
+     "value": "HER 看好阳台杂物柜款式，下回请 ME 掌眼",
+     "valid_time": "2026-11-17之后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E170_T12", "quote": "阳台那个杂物柜", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，家宴答应得爽快，掌眼别现在就深聊。",
+   "unknowns": ["阳台柜具体款式与预算未知"],
+   "protected_expressions": ["周六家里吃顿饭"],
+   "forbidden_factual_claims": ["不得替 HER 定阳台柜方案"],
+   "may_decline": true
+  }
+ }
+}

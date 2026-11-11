@@ -1,0 +1,193 @@
+{
+ "kind": "story_v2_stage3_manifest",
+ "date": "2026-10-30",
+ "built_by": "main-zcode-20261030-0052",
+ "count": 8,
+ "stories": [
+  {
+   "story_id": "E061",
+   "title": "甲状腺随访三个月",
+   "themes": [
+    "健康随访",
+    "跨周改期",
+    "医嘱更正",
+    "偏方边界",
+    "陪伴"
+   ],
+   "turns": 24,
+   "facts": 19,
+   "dir": "benchmark/stories_v2/stage4/E061",
+   "runner_copy": "benchmark/episodes/E061.json",
+   "episode_sha256": "55367a3e12380838905f0c8c62ea8db144516802437ff21afea5c93cca8ff43f",
+   "w0304_check": {
+    "facts_total": 19,
+    "required_atom_uses": 18,
+    "atom_mentions": 18,
+    "update_events_detected": 1,
+    "note": "≥12应保留原子/≥3更新机会由 spec 设计保证，此字段为自动清点（更新事件按 label 启发式，权威以 spec corrections 为准）"
+   }
+  },
+  {
+   "story_id": "E062",
+   "title": "一支镜头的转手全流程",
+   "themes": [
+    "二手交易",
+    "参数更正",
+    "验机边界",
+    "跨周改期",
+    "售后跟进"
+   ],
+   "turns": 24,
+   "facts": 20,
+   "dir": "benchmark/stories_v2/stage4/E062",
+   "runner_copy": "benchmark/episodes/E062.json",
+   "episode_sha256": "d4b3f0586808371f7f416b5110f1efb35acbcaee68b5a5673a15148d02a03969",
+   "w0304_check": {
+    "facts_total": 20,
+    "required_atom_uses": 20,
+    "atom_mentions": 20,
+    "update_events_detected": 2,
+    "note": "≥12应保留原子/≥3更新机会由 spec 设计保证，此字段为自动清点（更新事件按 label 启发式，权威以 spec corrections 为准）"
+   }
+  },
+  {
+   "story_id": "E063",
+   "title": "驾照考程四个月",
+   "themes": [
+    "驾考流程",
+    "跨月改期",
+    "规则更正",
+    "陪练陪伴",
+    "补考决策"
+   ],
+   "turns": 24,
+   "facts": 15,
+   "dir": "benchmark/stories_v2/stage4/E063",
+   "runner_copy": "benchmark/episodes/E063.json",
+   "episode_sha256": "a778d01204cb3714ff13c336dba3768394f6297ca98bee282717106e3adcdefa",
+   "w0304_check": {
+    "facts_total": 15,
+    "required_atom_uses": 14,
+    "atom_mentions": 14,
+    "update_events_detected": 1,
+    "note": "≥12应保留原子/≥3更新机会由 spec 设计保证，此字段为自动清点（更新事件按 label 启发式，权威以 spec corrections 为准）"
+   }
+  },
+  {
+   "story_id": "E064",
+   "title": "一只猫的医疗时间线",
+   "themes": [
+    "宠物医疗",
+    "跨月改期",
+    "医嘱更正",
+    "术后护理",
+    "邻里互助"
+   ],
+   "turns": 24,
+   "facts": 15,
+   "dir": "benchmark/stories_v2/stage4/E064",
+   "runner_copy": "benchmark/episodes/E064.json",
+   "episode_sha256": "78bd053be3b6f4711f49859df135dc339ba03bce8194bfc7288ecf8023c25c4c",
+   "w0304_check": {
+    "facts_total": 15,
+    "required_atom_uses": 15,
+    "atom_mentions": 15,
+    "update_events_detected": 1,
+    "note": "≥12应保留原子/≥3更新机会由 spec 设计保证，此字段为自动清点（更新事件按 label 启发式，权威以 spec corrections 为准）"
+   }
+  },
+  {
+   "story_id": "E065",
+   "title": "第一次当房东",
+   "themes": [
+    "房屋出租",
+    "合同条款",
+    "定价更正",
+    "信源分级",
+    "表姐弟互助"
+   ],
+   "turns": 24,
+   "facts": 16,
+   "dir": "benchmark/stories_v2/stage4/E065",
+   "runner_copy": "benchmark/episodes/E065.json",
+   "episode_sha256": "6387266e3471f84d8ef9cd169b787fbace14e902ce24c8c27b85d76b5204e6b8",
+   "w0304_check": {
+    "facts_total": 16,
+    "required_atom_uses": 16,
+    "atom_mentions": 16,
+    "update_events_detected": 1,
+    "note": "≥12应保留原子/≥3更新机会由 spec 设计保证，此字段为自动清点（更新事件按 label 启发式，权威以 spec corrections 为准）"
+   }
+  },
+  {
+   "story_id": "E066",
+   "title": "川西第一次自驾",
+   "themes": [
+    "长途自驾",
+    "路线更正",
+    "装备纠错",
+    "天气改期",
+    "结伴出游"
+   ],
+   "turns": 24,
+   "facts": 15,
+   "dir": "benchmark/stories_v2/stage4/E066",
+   "runner_copy": "benchmark/episodes/E066.json",
+   "episode_sha256": "e0d9192e1e816adb200691139cf0c72de4d915de0397231973cecba19a64d98c",
+   "w0304_check": {
+    "facts_total": 15,
+    "required_atom_uses": 15,
+    "atom_mentions": 15,
+    "update_events_detected": 1,
+    "note": "≥12应保留原子/≥3更新机会由 spec 设计保证，此字段为自动清点（更新事件按 label 启发式，权威以 spec corrections 为准）"
+   }
+  },
+  {
+   "story_id": "E067",
+   "title": "第一次跳槽谈 offer",
+   "themes": [
+    "跳槽决策",
+    "薪资结构",
+    "条款核对",
+    "期限更正",
+    "朋友参谋"
+   ],
+   "turns": 24,
+   "facts": 12,
+   "dir": "benchmark/stories_v2/stage4/E067",
+   "runner_copy": "benchmark/episodes/E067.json",
+   "episode_sha256": "e2a71454e1003b3aca2133c172e052fade31c4d34a6226247559047e74582356",
+   "w0304_check": {
+    "facts_total": 12,
+    "required_atom_uses": 12,
+    "atom_mentions": 12,
+    "update_events_detected": 0,
+    "note": "≥12应保留原子/≥3更新机会由 spec 设计保证，此字段为自动清点（更新事件按 label 启发式，权威以 spec corrections 为准）"
+   }
+  },
+  {
+   "story_id": "E068",
+   "title": "陪护与报销那两周",
+   "themes": [
+    "家人住院",
+    "医保报销",
+    "护理安排",
+    "日期更正",
+    "兄妹分担"
+   ],
+   "turns": 24,
+   "facts": 13,
+   "dir": "benchmark/stories_v2/stage4/E068",
+   "runner_copy": "benchmark/episodes/E068.json",
+   "episode_sha256": "f67821277e51ccb4cc9ad7e6d01dd55c76fbde747a833867a0d3ae20369c9b18",
+   "w0304_check": {
+    "facts_total": 13,
+    "required_atom_uses": 13,
+    "atom_mentions": 13,
+    "update_events_detected": 0,
+    "note": "≥12应保留原子/≥3更新机会由 spec 设计保证，此字段为自动清点（更新事件按 label 启发式，权威以 spec corrections 为准）"
+   }
+  }
+ ],
+ "total_turns": 192
+}

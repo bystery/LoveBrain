@@ -1,0 +1,56 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A3 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_b_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:26:07",
+      "window_last_attempt": "2026-11-08 12:51:33",
+      "attempts": 24,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_b/{DIRECT,CURRENT}/E309/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "买房与生活的价值排序",
+    "储蓄派与体验派之争",
+    "交锋中的让步与坚持",
+    "先复述立场再表态"
+  ],
+  "title": "不买房，先生活",
+  "may_decline_turns": [
+    "E309_T06",
+    "E309_T12"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "生活观念",
+  "primary_topic": "T03",
+  "lineage_group_id": "LG-E309",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E309/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A3",
+  "hashes": {
+    "episode.json": "db2ca655f4140d87923f33a210b6897294cc5d84ef99c2a1474e190a1b3292ef",
+    "reference.json": "a477e3b44cfd56b88dd375b1399591c4b69f45998132ba9680807674a5446111",
+    "timeline.json": "65b54889cc26c9e7324d637c327d76fe282a494c04e383c9ab1d4ef580179357",
+    "audit.md": "b9a094993c6a3e30fac9674bcd051f9544040b73c8440d0370ddf87b56771db6",
+    "composite": "70b43bb460aba2778c70cc828c7eeb081c10258d1010620278e4bf1a5428e4d3"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

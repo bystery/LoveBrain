@@ -1,0 +1,168 @@
+{
+ "episode_id": "E053",
+ "persona": {
+  "her": {
+   "name": "阿茉",
+   "traits": ["直性子", "爱剁手但怕麻烦", "遇事先炸毛后讲理", "认死理"],
+   "boundaries": ["不爱欠人情", "被拒后需要台阶", "不喜欢被说下次注意"]
+  },
+  "me": {
+   "name": "阿则",
+   "traits": ["记性好", "说话稳", "帮她理消费维权流程但不当枪手", "不外借实名账号"]
+  },
+  "relationship_stage": "长期熟人"
+ },
+ "initial_kb": {
+  "her": "阿茉，28岁，做行政。10月23日签收一副1199元主动降噪耳机，是用坏过三个耳机的人。",
+  "me": "我帮她记过这单数码订单：耳机10月23日签收，平台7天无理由到10月30日截止；我自己的立场是不外借自己的实名账号和支付账户。",
+  "warmth": "长期熟人，平时互损但关键时刻靠谱；她这单遇到糟心事，语气可以委屈但不装可怜。"
+ },
+ "turns": [
+  {
+   "case_id": "E053_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-24 11:02", "text": "到啦到啦！！新耳机开箱，颜值是真的能打，盒子都有仪式感，我先夸它三天再挑毛病"}
+    ],
+    "clock": "2026-10-24 11:05",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "兴奋", "warmth": "high", "shift": "开场纯分享，无冲突"}
+  },
+  {
+   "case_id": "E053_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-26 20:41", "text": "完了，左耳有电流声，滋滋的那种，安静的时候特别明显，我戴了一晚上越听越难受"}
+    ],
+    "clock": "2026-10-26 20:45",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "沮丧", "warmth": "medium", "shift": "从开箱喜悦跌到发现瑕疵"}
+  },
+  {
+   "case_id": "E053_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-27 12:18", "text": "客服跟我说激活过的耳机不参与七天无理由，让我走售后服务排队检修，我签收才四天啊，这不是欺负人吗，10月30号就到期了"},
+     {"role": "HER", "ts": "2026-10-27 12:20", "text": "而且态度可标准了，标准得让我想砸手机，我打算今天下班前必须有个说法"}
+    ],
+    "clock": "2026-10-27 12:26",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "愤怒", "warmth": "medium", "shift": "退换期限压力出现，进入博弈"}
+  },
+  {
+   "case_id": "E053_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-27 19:35", "text": "诶我想起来，你那个会员账号退换货政策好，是不是不受激活限制？要不你借我用一下，就用这一次，我拿你的账号下退货单"}
+    ],
+    "clock": "2026-10-27 19:40",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "试探", "warmth": "medium", "shift": "提出借账号请求，边界冲突开始"}
+  },
+  {
+   "case_id": "E053_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-28 09:12", "text": "你这人怎么这么较真啊，就用一次，我还能害你不成？我怕的是30号一到就真退不掉了"}
+    ],
+    "clock": "2026-10-28 09:15",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "急躁", "warmth": "low-medium", "shift": "被拒后施压，情绪升温"}
+  },
+  {
+   "case_id": "E053_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-28 21:47", "text": "行吧行吧，不借就不借，我也知道账号是实名的不合适，是我急昏头了，明天我自己再打客服电话磨一磨"}
+    ],
+    "clock": "2026-10-28 21:52",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "泄气但认账", "warmth": "medium", "shift": "主动撤回请求，冲突缓和"}
+  },
+  {
+   "case_id": "E053_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-29 18:03", "text": "重大发现！平台规则里写了，质量问题不受七天无理由限制，我可以直接走质量退货通道上传凭证，根本不用等30号！"}
+    ],
+    "clock": "2026-10-29 18:08",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "振奋", "warmth": "high", "shift": "自己找到正确路径，气氛回暖"}
+  },
+  {
+   "case_id": "E053_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-29 22:16", "text": "视频我录好了，电流声录得清清楚楚，订单截图也备了，你帮我看看这套材料够不够，明早九点客服一上班我就提交"}
+    ],
+    "clock": "2026-10-29 22:20",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "认真", "warmth": "high", "shift": "请 ME 帮忙核对材料"}
+  },
+  {
+   "case_id": "E053_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-30 10:41", "text": "过了过了！审核说半小时给我回电，刚挂电话：质量退货通过，顺丰明天上门取件，我的左耳，终于要沉冤得雪了"}
+    ],
+    "clock": "2026-10-30 10:45",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "狂喜", "warmth": "high", "shift": "期限博弈获胜"}
+  },
+  {
+   "case_id": "E053_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-31 15:22", "text": "取件小哥走了，我忽然想起来那天跟你嚷嚷借账号的事，语气挺冲的，你别往心里去，确实是我这边不对"}
+    ],
+    "clock": "2026-10-31 15:26",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "柔软", "warmth": "high", "shift": "主动修复关系，回扣借账号一段"}
+  },
+  {
+   "case_id": "E053_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-03 19:30", "text": "退款到账了，1199一分不少，我转头就重新拍了同款，这次下单前先把退换货规则截图存了，你教的这一套我用上了"}
+    ],
+    "clock": "2026-11-03 19:34",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "得意", "warmth": "high", "shift": "闭环完成，学会留证据"}
+  },
+  {
+   "case_id": "E053_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-04 20:15", "text": "新耳机到了，左耳干净得像新世界，以后买大件我都先来问你一句，毕竟能白嫖一个懂规则的人，何乐而不为"},
+     {"role": "HER", "ts": "2026-11-04 20:16", "text": "就一句：夸你可以，借账号没门，哈哈"}
+    ],
+    "clock": "2026-11-04 20:20",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "放松", "warmth": "high", "shift": "自然收尾，主动重申边界共识"}
+  }
+ ]
+}

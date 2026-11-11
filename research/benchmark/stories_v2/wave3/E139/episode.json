@@ -1,0 +1,156 @@
+{
+ "episode_id": "E139",
+ "persona": {
+  "her": {
+   "name": "温柠",
+   "traits": ["会计，跑步两年", "第一次报马拉松既期待又怕跑不完", "理性挂嘴边但容易脑补最坏情况", "发消息爱用感叹号"],
+   "boundaries": ["不确定的事不喜欢被拍胸脯打包票", "训练受伤会自己先扛着"]
+  },
+  "me": {
+   "name": "江野",
+   "traits": ["跑过三个全马，PB430", "常陪温柠夜跑", "关心藏在训练建议里"],
+   "boundaries": []
+  },
+  "relationship_stage": "跑友（认识一年，渐暧昧）"
+ },
+ "initial_kb": {
+  "her": "温柠跑步两年，首次报名明年三月滨海半程马拉松抽签，最好成绩10公里58分，怕中签又怕跑不完",
+  "me": "江野完成过三个全马，PB430，常陪温柠夜跑，两人关系介于跑友和暧昧之间",
+  "warmth": "认识一年，每周两三次约跑，互相分享跑步歌单，聊天已越过纯跑友的边界但谁都没点破",
+  "stage": "跑友渐暧昧"
+ },
+ "turns": [
+  {
+   "case_id": "E139_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-02 08:15", "text": "江野！我脑子一热报了明年三月的滨海半马，抽签制的，听说中签率七成，你说我要是真中了，四个多月备训来得及吗？"}],
+    "clock": "2026-11-02 08:17",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "冲动报名后的半兴奋半心虚"}
+  },
+  {
+   "case_id": "E139_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-04 22:10", "text": "你发的那份16周课表我存了，前八周我先按10公里基础跑维持着，等中签了再上强度，别让我白练就行。"}],
+    "clock": "2026-11-04 22:12",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "有计划的踏实"}
+  },
+  {
+   "case_id": "E139_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-09 12:40", "text": "跑群里有人说今年滨海扩容到两万人，中签率能到八成五，也不知道是哪来的消息，组委会公告里可没写。"}],
+    "clock": "2026-11-09 12:42",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "对未经证实消息的将信将疑"}
+  },
+  {
+   "case_id": "E139_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-13 19:20", "text": "组委会刚发公告，中签结果从原定的15号推迟到'本月内公布'，连个准日子都没有。这悬着的感觉比跑30公里还累，到底是中还是不中啊。"}],
+    "clock": "2026-11-13 19:22",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "不确定被官方延期的悬置焦虑"}
+  },
+  {
+   "case_id": "E139_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-16 21:30", "text": "想通了，就当没中签准备：维持每周三次10公里，顶多加一次间歇跑，等真中签了再拉长距离，免得空欢喜一场还练伤了。"}],
+    "clock": "2026-11-16 21:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "自我消化后的理性方案"}
+  },
+  {
+   "case_id": "E139_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-21 10:05", "text": "！！中签短信来了！！刚刚收到的，'恭喜您获得滨海半程马拉松参赛资格'！！16周课表从今天正式开始，长距离拉练你可得盯着点我！"}],
+    "clock": "2026-11-21 10:07",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "悬置解除的大喜，训练正式开始"}
+  },
+  {
+   "case_id": "E139_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-26 22:45", "text": "今天拉了12公里，右膝外侧有点紧，大概是跑姿老毛病。先冰敷睡了，明天歇一天，别让我看手机，看了就想加练。"}],
+    "clock": "2026-11-26 22:47",
+    "may_decline": true
+   },
+   "gold": {},
+   "feedback": {"her_state": "训练量上来后的身体信号，主动报备"}
+  },
+  {
+   "case_id": "E139_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-30 20:15", "text": "膝盖好多了，你推荐的髂胫束放松动作真管用。对了，跑鞋我看了款碳板的，但柜姐说新手半马不一定要上碳板，你帮我参谋参谋？"}],
+    "clock": "2026-11-30 20:17",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "恢复后回到装备咨询"}
+  },
+  {
+   "case_id": "E139_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-03 21:50", "text": "听了你的，先不买碳板，把训练鞋穿到600公里再换，省下钱置办了压缩腿套和空顶帽，装备党和成绩党，我先当务实的那个。"}],
+    "clock": "2026-12-03 21:52",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "采纳建议后的满足感"}
+  },
+  {
+   "case_id": "E139_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-08 22:05", "text": "16周过三分之一，最远拉到14公里，配速6分10，按这进度三月完赛没问题。周末那顿跑后的牛肉面，什么时候兑现？"}],
+    "clock": "2026-12-08 22:07",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "阶段性成果汇报加约饭试探"}
+  },
+  {
+   "case_id": "E139_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-14 19:40", "text": "寒假我要回老家半个月，训练计划我导出到手表了，老家有滨江跑道，每日打卡拍照发你，帮我云监督，别让课表断在过年。"}],
+    "clock": "2026-12-14 19:42",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "回家前的安排感，主动制造联系理由"}
+  },
+  {
+   "case_id": "E139_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-20 21:30", "text": "农历年后回来，正好赶上赛前八周关键期，到时候长距离你陪我跑不？滨海那场，我想让你在终点线等我冲线。"}],
+    "clock": "2026-12-20 21:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "暧昧推进的关键一问"}
+  }
+ ]
+}

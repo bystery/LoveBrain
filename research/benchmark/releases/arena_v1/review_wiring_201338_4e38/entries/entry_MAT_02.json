@@ -1,0 +1,24 @@
+{
+ "material_id": "MAT_02",
+ "binding_sha256_16": "c20ea866c5d8bdba",
+ "_填写说明": "semantic 各维填 VERDICTS 之一；sendability 填 SENDABILITY；compare 填 COMPARE；defects 每条 {field, evidence, kind:evidence|style_preference}；reviewer 填身份；同 material+reviewer 重交须 revision 递增",
+ "semantic": {
+  "no_reply是否合适": "合格",
+  "分寸": "合格",
+  "是否值得接着聊": "合格"
+ },
+ "sendability": {
+  "甲": "原样可发",
+  "乙": "不建议发"
+ },
+ "compare": "甲",
+ "defects": [
+  {
+   "field": "原样输出.乙",
+   "evidence": "用户'先去收衣服，回头聊'时追问安排=硬填；合法 null 不应硬填：may_decline=true 的轮次允许合法不回；用户明确'我先去收衣服，回头聊'时追问是硬填",
+   "kind": "evidence"
+  }
+ ],
+ "reviewer": "fixture",
+ "revision": 1
+}

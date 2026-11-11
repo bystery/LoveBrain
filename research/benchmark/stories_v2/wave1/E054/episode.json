@@ -1,0 +1,167 @@
+{
+ "episode_id": "E054",
+ "persona": {
+  "her": {
+   "name": "小柚",
+   "traits": ["设计师", "行程排得满", "爱拖到最后一刻", "对电脑依赖极重", "守规则到紧张"],
+   "boundaries": ["讨厌爽约记录", "怕麻烦别人", "规则没吃透前会反复确认"]
+  },
+  "me": {
+   "name": "阿则",
+   "traits": ["她的日程与规则细节外挂", "提醒果断", "复盘不翻旧账"]
+  },
+  "relationship_stage": "普通朋友（渐熟）"
+ },
+ "initial_kb": {
+  "her": "小柚，27岁，设计师，笔记本是吃饭家伙。10月27日晚发现屏幕右上角花屏闪烁，本周四（10月29日）已约品牌官方售后网点下午两点检测。",
+  "me": "我帮小柚记着预约和差旅日历：10月29日下午2点售后检测预约、10月29-31日公司安排去外地驻场；她的取号规则是提前两小时取消不计爽约。",
+  "warmth": "普通朋友偏熟，她把我当记性外挂用，语气直接，会蹦语气词，重要日程喜欢让我复述一遍。"
+ },
+ "turns": [
+  {
+   "case_id": "E054_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-27 21:15", "text": "救命，我电脑屏幕右上角开始花屏，一闪一闪的，改稿改到一半差点没背过去，这可是我吃饭的家伙"}
+    ],
+    "clock": "2026-10-27 21:20",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "惊慌", "warmth": "medium", "shift": "故障突发，开场即焦虑"}
+  },
+  {
+   "case_id": "E054_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-28 10:02", "text": "约好了，周四下午两点官方售后，工单号我发你了，你帮我记一下，检测要带电源适配器和购买凭证"},
+     {"role": "HER", "ts": "2026-10-28 10:04", "text": "对了提醒我提前一小时出门，那地方不好停车"}
+    ],
+    "clock": "2026-10-28 10:10",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "松口气", "warmth": "medium", "shift": "预约落定，交代提醒任务"}
+  },
+  {
+   "case_id": "E054_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-29 08:33", "text": "完了完了，公司临时派我这两天去外地驻场，高铁票都买好了，周四下午两点的预约去不成了，我人已经在车站了"}
+    ],
+    "clock": "2026-10-29 08:40",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "慌乱", "warmth": "medium", "shift": "行程冲突砸中预约，取消改期冲突开始"}
+  },
+  {
+   "case_id": "E054_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-29 09:47", "text": "客服说要提前两小时取消才不计爽约，我现在取消的话刚好来得及，改到下周三上午十点半，他说同一单号爽约两次要拉黑一个月，吓得我手都在抖"}
+    ],
+    "clock": "2026-10-29 09:52",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "后怕", "warmth": "medium", "shift": "改期一落定，怕留爽约记录"}
+  },
+  {
+   "case_id": "E054_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-30 22:05", "text": "驻场第一天结束，备用机凑合用，我说真的，花屏的事一天不解决我心里一天不踏实，周三你可千万再提醒我一遍"}
+    ],
+    "clock": "2026-10-30 22:10",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "不踏实", "warmth": "medium-high", "shift": "出差间隙挂心，主动要提醒"}
+  },
+  {
+   "case_id": "E054_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-03 19:58", "text": "回来了！明天上午十点半售后，我刚把电源适配器和发票塞进包里，这回万无一失"}
+    ],
+    "clock": "2026-11-03 20:02",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "笃定", "warmth": "medium-high", "shift": "赴约准备就绪"}
+  },
+  {
+   "case_id": "E054_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-04 09:21", "text": "啊这，上午九点临时加了个评审会，领导说必须我在场，十点半肯定赶不上售后了，怎么办怎么办，再改一次会不会算我爽约"}
+    ],
+    "clock": "2026-11-04 09:25",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "二次慌", "warmth": "medium", "shift": "会议与预约再度相撞，冲突升级"}
+  },
+  {
+   "case_id": "E054_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-04 11:02", "text": "客服人还挺好，说提前两小时申请改期就不算爽约，帮我改到这周五晚上六点半，下班直接过去，我悬着的心终于放下了"}
+    ],
+    "clock": "2026-11-04 11:06",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "如释重负", "warmth": "medium-high", "shift": "二次改期成功，学会抢在两小时线前"}
+  },
+  {
+   "case_id": "E054_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-06 19:44", "text": "检测出来了，屏幕排线老化，保修期内免费换，但是要订货三到五天，让我下周去取，师傅说这型号排线批次确实有通病"}
+    ],
+    "clock": "2026-11-06 19:50",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "半安半悬", "warmth": "medium-high", "shift": "免费换确定，但要等订货"}
+  },
+  {
+   "case_id": "E054_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-10 13:12", "text": "配件到了！约了周四中午取机，取完当场开机验货，这回我可学精了，验收不过不签字"}
+    ],
+    "clock": "2026-11-10 13:16",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "学精了", "warmth": "medium-high", "shift": "进入取机环节，主动定验收规矩"}
+  },
+  {
+   "case_id": "E054_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-12 12:58", "text": "取回来了！屏幕干干净净一点闪烁都没有，师傅还免费给我清了个灰，从约号到取机折腾了半个月，我终于又是完整的设计师了"}
+    ],
+    "clock": "2026-11-12 13:02",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "圆满", "warmth": "high", "shift": "维修闭环，情绪到达高点"}
+  },
+  {
+   "case_id": "E054_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-13 21:30", "text": "复盘了一下，这次两次改期都是我自己行程打架，以后重要预约我都提前一天设闹钟，再拉你入伙当第二道保险，行不行"}
+    ],
+    "clock": "2026-11-13 21:34",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "自省且松弛", "warmth": "high", "shift": "沉淀习惯，自然收尾"}
+  }
+ ]
+}

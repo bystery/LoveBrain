@@ -1,0 +1,266 @@
+{
+ "episode_id": "E328",
+ "persona": {
+  "her": {
+   "name": "蒋一楠",
+   "traits": [
+    "行政口办活动点子多",
+    "记性跳跃爱自我怀疑",
+    "嘴快"
+   ],
+   "boundaries": [
+    "不确定的事不当结论说",
+    "凭据不全不交差"
+   ]
+  },
+  "me": {
+   "name": "陆屿",
+   "traits": [
+    "采购老手",
+    "票据拍照存档",
+    "快递单号都留"
+   ]
+  },
+  "relationship_stage": "同部门同事四年，团建采购老搭档"
+ },
+ "initial_kb": {
+  "me": "陆屿管过两届部门团建采购，小票发票习惯拍照存档，快递短信单号都留着，自家订单记得住。",
+  "her": "蒋一楠是行政口的，办活动点子多但记性跳跃，转头忘自己刚说过啥，事后爱补一句'可能我记错了'。",
+  "warmth": "同部门四年，团建采购老搭档，她信我的账，我让她的节奏。",
+  "style": "她消息爱连着发两条，第一条铺背景第二条问事，问完爱自嘲一句。",
+  "lessons": "她不确定的事，陪她一起找凭据，比替她拍板合适。"
+ },
+ "turns": [
+  {
+   "case_id": "E328_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "陆屿，11月14号（周六）部门团建定在城西那家'盒子轰趴馆'，下午两点到六点。场地你去订，零食饮料也归你，预算人均80，咱组大概十来个人。",
+      "ts": "2026-11-09 10:12"
+     }
+    ],
+    "clock": "2026-11-09 10:20",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E328_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "订好了：周六14点到18点，4小时，套餐含台球和KTV。零食饮料我一起下单了，一共236，小票拍照发你了。",
+      "ts": "2026-11-09 16:38"
+     }
+    ],
+    "clock": "2026-11-09 16:45",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E328_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了那张236的小票，财务那边要纸质原件做报销。",
+      "ts": "2026-11-10 09:20"
+     },
+     {
+      "role": "HER",
+      "text": "你好像还没给我吧？可能是我记错了，你回头看看有没有印象。",
+      "ts": "2026-11-10 09:22"
+     }
+    ],
+    "clock": "2026-11-10 09:30",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "核对236元小票下落"
+    }
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E328_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "别翻了别翻了，找到了，纸版夹在我工牌卡包里，估计上周顺手拿的就塞那儿了。明天我直接交财务，这事翻篇。",
+      "ts": "2026-11-10 18:02"
+     }
+    ],
+    "clock": "2026-11-10 18:10",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E328_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我问个事，轰趴馆那个台球，好像限时2小时？我记不清了，你订单里有没有写啊？",
+      "ts": "2026-11-11 11:18"
+     }
+    ],
+    "clock": "2026-11-11 11:25",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "确认台球是否限时"
+    }
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E328_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "人数我又盘了一遍：接龙11个，可能有俩鸽，也可能带俩家属来，反正10到13之间晃。零食你按多少人备的，够不够心里有数吗？",
+      "ts": "2026-11-12 20:32"
+     }
+    ],
+    "clock": "2026-11-12 20:40",
+    "may_decline": false,
+    "note": "备注：报名接龙小程序当前统计11人。"
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E328_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "人数的事明天现场点吧，我开会去了，先这样。",
+      "ts": "2026-11-13 09:35"
+     }
+    ],
+    "clock": "2026-11-13 09:40",
+    "may_decline": true
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E328_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下午两点别忘了。对了给团建买的那盒桌游，好像今天上午就到公司了？我让前台代收了，你路过拿上来就行。",
+      "ts": "2026-11-14 12:02"
+     }
+    ],
+    "clock": "2026-11-14 12:10",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "确认桌游快递当天到货"
+    },
+    "note": "备注：快递官网物流显示'运输中，预计今日18点前送达'。"
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E328_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "人到齐了，11个，那俩真鸽了。",
+      "ts": "2026-11-14 13:42"
+     },
+     {
+      "role": "HER",
+      "text": "小票的事我跟财务说好了周一补交，你别管啦。开始嗨！",
+      "ts": "2026-11-14 13:44"
+     }
+    ],
+    "clock": "2026-11-14 13:50",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E328_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天台球打爽了，根本没限时！KTV唱到嗓子哑。就那盒桌游邪门，前台说压根没收到这个件，你说神不神。",
+      "ts": "2026-11-14 17:42"
+     }
+    ],
+    "clock": "2026-11-14 17:50",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E328_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "桌游我申请退款了，货款68退回，运费8块店家也认了。哈哈运费一半我也想拉上你，你转我4就行，谁让是团建单。",
+      "ts": "2026-11-16 09:22"
+     }
+    ],
+    "clock": "2026-11-16 09:30",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E328_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "团建报销今天交上去了，财务说一周内到卡。这回多亏你，下回采购还找你。我睡了，晚安。",
+      "ts": "2026-11-16 21:32"
+     }
+    ],
+    "clock": "2026-11-16 21:40",
+    "may_decline": true
+   },
+   "feedback": {}
+  }
+ ]
+}

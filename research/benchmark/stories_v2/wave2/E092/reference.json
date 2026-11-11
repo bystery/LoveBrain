@@ -1,0 +1,593 @@
+{
+ "story_id": "E092",
+ "turns": {
+  "E092_T01": {
+   "case_id": "E092_T01",
+   "current_action": "接住她报菜名的兴奋，肯定家宴这个由头选得好；顺口问她几个人来，把人数这个还没影的事先放到台面上。",
+   "acceptable_actions": [
+    "接住醋焖鸡的剧透，让她把菜单继续报完",
+    "问她几个人来，提醒她人数定不下来先别买菜",
+    "感慨阿禾回来难得，建议她给阿禾留一道她当年爱吃的"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A01",
+     "subject": "SHARED",
+     "relation": "reunion_lunch_set",
+     "value": "周日中午室友重聚家宴定在念念家开火",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T01", "message_id": "m0", "quote": "周日中午我家开火，室友重聚"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A02",
+     "subject": "HER",
+     "relation": "menu_drafted",
+     "value": "菜单初拟八个菜一个汤，含压箱底的醋焖鸡",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T01", "message_id": "m0", "quote": "八个菜一个汤"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A03",
+     "subject": "THIRD",
+     "relation": "guest_return",
+     "value": "阿禾从外地回来是本次家宴的由头",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T01", "message_id": "m0", "quote": "阿禾从外地回来"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：兴奋要接足，人数提醒放轻，别扫兴。",
+   "unknowns": ["到场人数完全未定", "阿禾行程细节未知"],
+   "protected_expressions": ["醋焖鸡，我压箱底的"],
+   "forbidden_factual_claims": ["不得虚构菜单其余菜品", "不得预判人数"]
+  },
+  "E092_T02": {
+   "case_id": "E092_T02",
+   "current_action": "接住人数口径的含糊：肯定'按大的备'稳妥，同时提醒她备菜可以留活口——能冻的先冻、不能冻的当天买，别把余地一次花完。",
+   "acceptable_actions": [
+    "肯定按6人备的思路，建议把硬菜和叶菜分开定的时间点",
+    "提醒她'尽量''可能'都当没说，等人自己报数",
+    "问她汤想做什么，把话题从人数的悬心引回做饭本身"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A04",
+     "subject": "THIRD",
+     "relation": "ambiguous_responses",
+     "value": "小雅可能带对象、桃子尽量、阿禾未说死、老周仅回一哈",
+     "valid_time": "2026-11-04",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T02", "message_id": "m0", "quote": "可能带对象"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A05",
+     "subject": "HER",
+     "relation": "max_headcount_plan",
+     "value": "她决定按6人上限备菜宁多勿少",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T02", "message_id": "m0", "quote": "按6个人备，宁多勿少"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把悬心说成张罗饭局的家常，别替任何人的话下解读。",
+   "unknowns": ["最终到场人数未知", "老周是否出席未知", "阿禾能否到场未知"],
+   "protected_expressions": ["你说对吧"],
+   "forbidden_factual_claims": ["不得断言谁必然到场或缺席", "不得替'哈'字解读情绪"]
+  },
+  "E092_T03": {
+   "case_id": "E092_T03",
+   "current_action": "接住老周的二手传闻：支持她不问破——传闻没实锤，本人没开口，问破只会把人架住；'当不知道'先执行，备菜口径不变。",
+   "acceptable_actions": [
+    "肯定她不去问的决定，传闻让本人开口才作数",
+    "提醒她桃子的话也只当参考，别往下传",
+    "建议她备菜照旧，老周的份不增不减"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A06",
+     "subject": "THIRD",
+     "relation": "unconfirmed_rumor",
+     "value": "老周疑似在办离职心情不佳可能缺席，信息为桃子转述的二手消息",
+     "valid_time": "2026-11-06",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T03", "message_id": "m0", "quote": "老周好像在办离职"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A07",
+     "subject": "HER",
+     "relation": "not_ask_decision",
+     "value": "她决定不向老周本人求证传闻",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T03", "message_id": "m0", "quote": "问破了他多尴尬"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'不问破'说成她的厚道，不是逃避。",
+   "unknowns": ["老周实际状态未知", "传闻来源真实性未知"],
+   "protected_expressions": ["我当不知道行不行"],
+   "forbidden_factual_claims": ["不得确认或否认离职传闻", "不得断言老周因心情缺席"]
+  },
+  "E092_T04": {
+   "case_id": "E092_T04",
+   "current_action": "接住无人报数的嗔怪：给她换个读法——'来几个做几个'本身就是她递出去的台阶，没人报数先别恼，让她把备菜主动权留在自己手里。",
+   "acceptable_actions": [
+    "肯定'来几个做几个'发得漂亮，这正是备菜的最大弹性",
+    "建议她买菜按上限走，凑不齐的人头就当自己吃",
+    "提醒她别在群里催报数，越催越没人敢出声"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "attribution", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A08",
+     "subject": "HER",
+     "relation": "flexible_invitation",
+     "value": "她在群里发出'来几个我做几个'的弹性邀约",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T04", "message_id": "m0", "quote": "来几个我做几个"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A09",
+     "subject": "THIRD",
+     "relation": "no_headcount",
+     "value": "群内无人报出确定人数",
+     "valid_time": "2026-11-06",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T04", "message_id": "m0", "quote": "没一个人报数"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A10",
+     "subject": "THIRD",
+     "relation": "rumor_context",
+     "value": "老周的缺席传闻悬在群里未消",
+     "valid_time": "2026-11-06",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T03", "message_id": "m0", "quote": "老周好像在办离职"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把没人报数说成可能有别的原因，不让她往'不重视'上想。",
+   "unknowns": ["无人报数的原因未知"],
+   "protected_expressions": ["你说这帮人是不是想气死我"],
+   "forbidden_factual_claims": ["不得断言众人故意不报数", "不得替沉默归因"]
+  },
+  "E092_T05": {
+   "case_id": "E092_T05",
+   "current_action": "接住按大口径采购的落地：肯定她多买的兜底思路；杀鱼没想好正是活口的体现——留到人数落定那天再决定，不算纠结。",
+   "acceptable_actions": [
+    "肯定她多花一百多买的不是菜是余地",
+    "建议杀鱼留到当天上午定，人多就两条人少就一条",
+    "提醒她青菜先吃先烂，叶菜别放过头"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "factuality", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A11",
+     "subject": "HER",
+     "relation": "max_purchase_done",
+     "value": "采购按最大口径完成：鸡两只、鱼两条、青菜6人量，多花一百余元",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T05", "message_id": "m0", "quote": "鸡买了两只，鱼买了两条"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A12",
+     "subject": "HER",
+     "relation": "fish_pending",
+     "value": "杀一条鱼还是两条待人数落定",
+     "valid_time": "2026-11-07",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T05", "message_id": "m0", "quote": "一条还是两条，我还没想好"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A13",
+     "subject": "HER",
+     "relation": "headcount_plan_context",
+     "value": "采购口径源于此前按6人备菜的决定",
+     "valid_time": "2026-11-04/2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T02", "message_id": "m0", "quote": "按6个人备，宁多勿少"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把多花的钱说成买安心，不提浪费二字。",
+   "unknowns": ["最终人数未知", "鱼的处理方式未知"],
+   "protected_expressions": ["安慰自己冻起来也不亏"],
+   "forbidden_factual_claims": ["不得断言多买划算或浪费", "不得虚构菜市场细节"]
+  },
+  "E092_T06": {
+   "case_id": "E092_T06",
+   "current_action": "接住小雅落定与阿禾仍悬：人数上限回落一个，她匀青菜的随机应变值得肯定；提醒她阿禾是客中客，行程没准话可以先问一句路费时间的体面话。",
+   "acceptable_actions": [
+    "肯定她匀青菜处理得机灵，备菜跟着人数走没错",
+    "建议她私下问阿禾一句到不到，别让主宾没着落",
+    "提醒她鸡按两只备不动，鱼的活口继续留着"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A14",
+     "subject": "THIRD",
+     "relation": "xiaoya_confirmed_alone",
+     "value": "小雅因对象加班确定一个人到场",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T06", "message_id": "m0", "quote": "她一个人来"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A15",
+     "subject": "THIRD",
+     "relation": "ahe_unconfirmed",
+     "value": "阿禾在鼓掌表情后仍无准信",
+     "valid_time": "2026-11-07",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T06", "message_id": "m0", "quote": "阿禾那边还是没个准话"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A16",
+     "subject": "HER",
+     "relation": "purchase_adjusted",
+     "value": "她匀出青菜、鸡量维持，按最新人数微调备菜",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T06", "message_id": "m0", "quote": "我把青菜匀出去一半给我妈"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A17",
+     "subject": "HER",
+     "relation": "purchase_context",
+     "value": "调整基于按最大口径完成的采购",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T05", "message_id": "m0", "quote": "鸡买了两只，鱼买了两条"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把调整说成张罗人的手感，不提浪费也不提白买。",
+   "unknowns": ["阿禾是否到场未知", "是否还有新增人数未知"],
+   "protected_expressions": ["人数从可能6个掉到5个"],
+   "forbidden_factual_claims": ["不得断言阿禾必然到场", "不得虚构小雅对象的加班缘由"]
+  },
+  "E092_T07": {
+   "case_id": "E092_T07",
+   "current_action": "接住桃子携母的盲盒时刻：建议她痛快答应——多一位长辈是多一双筷子的事，顺手把人数的账重新排一遍，让备菜跟上。",
+   "acceptable_actions": [
+    "肯定她没犹豫就应下，长辈上门是给足面子",
+    "建议她把桃子妈安排坐主位旁，让老人家被照顾到",
+    "提醒她青菜又得补一把，当天早上顺路买最新鲜"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A18",
+     "subject": "THIRD",
+     "relation": "taozi_mother_joining",
+     "value": "桃子母亲想一同登门见识念念的手艺",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T07", "message_id": "m0", "quote": "她妈听说我做饭，想跟她一起来"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A19",
+     "subject": "HER",
+     "relation": "headcount_back_to_six",
+     "value": "人数随桃子母女加入回到6个",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T07", "message_id": "m0", "quote": "人数又回6个了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A20",
+     "subject": "HER",
+     "relation": "purchase_adjusted_context",
+     "value": "青菜此前已匀出一半，随人数回升需再补",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T06", "message_id": "m0", "quote": "我把青菜匀出去一半给我妈"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'开盲盒'的笑接住，别把变化说成负担。",
+   "unknowns": ["阿禾与老周是否到场仍未知", "桃子母女是否准点未知"],
+   "protected_expressions": ["这顿饭跟开盲盒似的"],
+   "forbidden_factual_claims": ["不得断言总人数就此锁定", "不得虚构桃子妈的口味偏好"]
+  },
+  "E092_T08": {
+   "case_id": "E092_T08",
+   "current_action": "接住老周的'放下东西就走'：肯定她多添一副碗筷两条都杀的直觉——嘴上说走的客人要按坐下的备；一厢情愿与否，饭桌上见分晓。",
+   "acceptable_actions": [
+    "肯定她加备的决定，客气话和真到场向来是两码事",
+    "建议她别问老周为什么来，让他自己说",
+    "提醒她给老周留个离门近的位置，走得方便坐得也自在"
+   ],
+   "applicable_dimensions": ["goal", "attribution", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A21",
+     "subject": "THIRD",
+     "relation": "laozhou_confirms_dropby",
+     "value": "老周确认到场但宣称放下东西就走",
+     "valid_time": "2026-11-08",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T08", "message_id": "m0", "quote": "放下东西就走"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A22",
+     "subject": "HER",
+     "relation": "seated_prep_decision",
+     "value": "她按老周落座口径多添碗筷并杀两条鱼",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T08", "message_id": "m0", "quote": "碗筷多添一副"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A23",
+     "subject": "THIRD",
+     "relation": "rumor_context_active",
+     "value": "老周的异样传闻仍是他'就走'说法的可能底色",
+     "valid_time": "2026-11-06/2026-11-08",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T03", "message_id": "m0", "quote": "老周好像在办离职"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把加备说成张罗人的本能，不给老周的说法下判断。",
+   "unknowns": ["老周停留多久未知", "传闻真假未知"],
+   "protected_expressions": ["我这算不算一厢情愿"],
+   "forbidden_factual_claims": ["不得断言老周必然留下吃饭", "不得解读'放下东西就走'的真实含义"]
+  },
+  "E092_T09": {
+   "case_id": "E092_T09",
+   "current_action": "共享家宴战报：阿禾进门喊饿、老周坐下剥蒜说下回还来、两条鱼见底、桃子妈夸鸡；6人一个不多一个不少，把这场悬了一周的盲盒开成了满堂彩。",
+   "acceptable_actions": [
+    "恭喜盲盒开出隐藏款，备菜的余地一点没白留",
+    "点出老周剥蒜比吃鱼还香，客人的方式各有各的",
+    "提醒她把'下回我还来'当真账记下，下次他还来"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A24",
+     "subject": "SHARED",
+     "relation": "banquet_full_house",
+     "value": "家宴6人到齐，两条鱼吃净，桃子妈夸鸡焖得好",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T09", "message_id": "m0", "quote": "两条鱼吃得干干净净"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A25",
+     "subject": "THIRD",
+     "relation": "laozhou_stayed",
+     "value": "老周落座帮工一下午并约定下回再来",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T09", "message_id": "m0", "quote": "帮着剥了一下午蒜"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A26",
+     "subject": "THIRD",
+     "relation": "ahe_arrived",
+     "value": "主宾阿禾提前到场",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T09", "message_id": "m0", "quote": "一进门就喊饿"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A27",
+     "subject": "HER",
+     "relation": "seated_prep_payoff",
+     "value": "按落座口径加备的碗筷与两条鱼全部用上",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T08", "message_id": "m0", "quote": "碗筷多添一副"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：战报要听得津津有味，把功劳分给每个到场的人。",
+   "unknowns": [],
+   "protected_expressions": ["一个没多一个没少"],
+   "forbidden_factual_claims": ["不得虚构餐桌对话细节", "不得断言老周状态从此好转"]
+  },
+  "E092_T10": {
+   "case_id": "E092_T10",
+   "current_action": "接住人数悬置的解码：小雅点破众人不敢先开口是怕戳老周心事；把这层窗户纸定性为全桌人的体谅，也肯定她一路没问破的分寸。",
+   "acceptable_actions": [
+    "肯定她的'不问破'从第一刻就对到了最后",
+    "点出没人报数的谜底是温柔，不是怠慢",
+    "提醒她这层意思各自知道就好，不必回群里说破"
+   ],
+   "applicable_dimensions": ["attribution", "emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A28",
+     "subject": "THIRD",
+     "relation": "silence_decoded",
+     "value": "小雅点破众人早闻老周离职却都不敢先开口",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T10", "message_id": "m0", "quote": "谁都不敢先开口"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A29",
+     "subject": "HER",
+     "relation": "reassessment",
+     "value": "她重新理解无人报数为众人的不忍",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T10", "message_id": "m0", "quote": "是没人忍心问"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A30",
+     "subject": "THIRD",
+     "relation": "no_headcount_context",
+     "value": "此前的无人报数由此获得解释",
+     "valid_time": "2026-11-06/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T04", "message_id": "m0", "quote": "没一个人报数"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把解码说成暖的，不渲染心酸，不评判任何人。",
+   "unknowns": ["老周本人何时自述未知"],
+   "protected_expressions": ["我这才回过味来"],
+   "forbidden_factual_claims": ["不得把离职传闻升级为事实", "不得替老周宣布任何决定"]
+  },
+  "E092_T11": {
+   "case_id": "E092_T11",
+   "current_action": "接住老周预约掌勺的暖信号与'装到啥时候'的提问：建议继续不问——他自己开口那天自然会说，饭桌的规矩是端上来的是热菜，问出去的是冷话。",
+   "acceptable_actions": [
+    "肯定'下个月他掌勺'是好信号，状态好不好看行动",
+    "建议她维持'他自己说'的节奏，别抢先挑破",
+    "提醒她下次家宴的座位可以还留老周那个剥蒜位"
+   ],
+   "applicable_dimensions": ["emotion_relation", "boundary", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A31",
+     "subject": "THIRD",
+     "relation": "laozhou_next_cook",
+     "value": "老周预约下个月在她家掌勺",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T11", "message_id": "m0", "quote": "下个月他来掌勺"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A32",
+     "subject": "HER",
+     "relation": "open_timing_question",
+     "value": "她对是否继续装不知道拿不定，向 ME 征询",
+     "valid_time": "2026-11-10",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T11", "message_id": "m0", "quote": "还是就等他自己说"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A33",
+     "subject": "THIRD",
+     "relation": "silence_decoded_context",
+     "value": "装不知道的选择建立在众人心照不宣的体谅上",
+     "valid_time": "2026-11-08/2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T10", "message_id": "m0", "quote": "谁都不敢先开口"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'继续等'说成她的分寸感，不把老周的近况当悬案催办。",
+   "unknowns": ["老周离职进展未知", "下月家宴能否成行未知"],
+   "protected_expressions": ["还在你家，行不行"],
+   "forbidden_factual_claims": ["不得预测老周开口的时间", "不得替老周把离职说出口"]
+  },
+  "E092_T12": {
+   "case_id": "E092_T12",
+   "current_action": "笑纳萝卜干与故事的周六之约：答应收下半罐、听醋焖鸡与剥蒜姿势的现场版，以'来几个做几个'的精神利落收尾。",
+   "acceptable_actions": [
+    "答应周六半罐照收，故事要听加长版",
+    "接住'配着萝卜干讲'的梗，说这搭配比下酒菜讲究",
+    "感慨这场从没人报数开成满座的饭局，不翻旧账"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E092_A34",
+     "subject": "THIRD",
+     "relation": "radish_share",
+     "value": "桃子妈的腌萝卜干装罐分她一半",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T12", "message_id": "m0", "quote": "腌的萝卜干给我装了一大罐"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A35",
+     "subject": "SHARED",
+     "relation": "story_delivery_plan",
+     "value": "她提议周六给 ME 送半罐萝卜干并讲饭桌故事",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T12", "message_id": "m0", "quote": "周六给你送半罐去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E092_A36",
+     "subject": "THIRD",
+     "relation": "laozhou_garlic_callback",
+     "value": "老周剥蒜的姿势成为饭桌故事的保留节目",
+     "valid_time": "2026-11-08/2026-11-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E092_T09", "message_id": "m0", "quote": "帮着剥了一下午蒜"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻快，把故事说成余味，别把老周的话题再捡起来。",
+   "unknowns": [],
+   "protected_expressions": ["得配着萝卜干讲"],
+   "forbidden_factual_claims": ["不得虚构周六安排之外的内容", "不得引入新的饭局议题"]
+  }
+ }
+}

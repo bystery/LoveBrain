@@ -1,0 +1,911 @@
+{
+ "story_id": "E209",
+ "turns": {
+  "E209_T01": {
+   "case_id": "E209_T01",
+   "current_action": "应下监督员角色,顺势把自己的减脂打卡也挂上,把姐姐的计划接成姐弟共同目标",
+   "acceptable_actions": [
+    "痛快答应当监督员,并说明自己会同步记饮食,把打卡做成姐弟互相盯",
+    "答应之余先确认规则细节:主食减半怎么算、散步怎么记,再表态入伙",
+    "用玩笑接住将一军,先应下,再提醒爸那边要留台阶别硬管"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A01",
+     "subject": "THIRD",
+     "relation": "爸爸体检结果",
+     "value": "空腹血糖6.8,医生要求先控制晚饭主食",
+     "valid_time": "2026-11-03 前后出结果",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T01",
+      "message_id": "m0",
+      "quote": "空腹血糖6.8,医生说先把晚饭的主食管住"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A02",
+     "subject": "SHARED",
+     "relation": "计划发起",
+     "value": "家庭群立控糖晚餐打卡,晚饭主食减半,饭后陪妈散步半小时",
+     "valid_time": "2026-11-03 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T01",
+      "message_id": "m0",
+      "quote": "在家庭群立个控糖晚餐打卡,晚饭主食减半,饭后陪妈散步半小时"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A03",
+     "subject": "ME",
+     "relation": "自身状态",
+     "value": "我在减脂,平时记录饮食",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "自己也在减脂记饮食"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "口吻可以带姐弟间的互怼,但要显出接住了监督员这个角色;不提前展开方案细节",
+   "unknowns": [
+    "爸爸本人对控糖计划的态度尚未表态"
+   ],
+   "protected_expressions": [
+    "控糖晚餐打卡",
+    "你来当监督员"
+   ],
+   "forbidden_factual_claims": [
+    "爸爸已经确诊糖尿病",
+    "医生要求完全断掉主食"
+   ]
+  },
+  "E209_T02": {
+   "case_id": "E209_T02",
+   "current_action": "回应第一天执行顺利,接住群名和爸的嘟囔做轻松互动,顺带问一句打卡群怎么运作",
+   "acceptable_actions": [
+    "夸妈的手艺和爸的配合,接喂鸟的梗,问群里怎么记打卡",
+    "调侃爸嘴上嘟囔身体诚实,顺势说监督员第一天在岗",
+    "接偷懒表情的梗,回敬一句,再确认明天继续盯"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A04",
+     "subject": "SHARED",
+     "relation": "计划状态",
+     "value": "控糖晚餐打卡第一天执行,家庭群已建,群名控糖三人组",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T02",
+      "message_id": "m0",
+      "quote": "群建好了,叫控糖三人组,第一天执行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A05",
+     "subject": "SHARED",
+     "relation": "打卡计划",
+     "value": "家庭群控糖晚餐打卡,晚饭主食减半,饭后陪妈散步半小时",
+     "valid_time": "2026-11-03 发起,持续中",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T01",
+      "message_id": "m0",
+      "quote": "在家庭群立个控糖晚餐打卡,晚饭主食减半,饭后陪妈散步半小时"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E209_A06",
+     "subject": "THIRD",
+     "relation": "爸爸第一天表现",
+     "value": "嘟囔糙米饭像喂鸟,还是吃了大半碗",
+     "valid_time": "2026-11-04 晚饭",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T02",
+      "message_id": "m0",
+      "quote": "爸嘟囔说跟喂鸟似的,还是吃了大半碗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "保持姐弟打趣的口吻,别把打卡说成严格考核;可自然回扣第一天已启动这一事实",
+   "unknowns": [
+    "打卡群里具体如何记录尚未说明"
+   ],
+   "protected_expressions": [
+    "控糖三人组",
+    "跟喂鸟似的"
+   ],
+   "forbidden_factual_claims": [
+    "爸爸拒绝吃糙米饭",
+    "打卡已经中断"
+   ]
+  },
+  "E209_T03": {
+   "case_id": "E209_T03",
+   "current_action": "先不站队让不让去,给出可操作的两全招:提前吃点垫底、席上多夹菜少主食,别当场扫爸的兴",
+   "acceptable_actions": [
+    "建议让爸去,但提前吃点垫底,席上多夹菜少主食,别当场扫兴",
+    "给出折中:不让去会伤战友情面,改成席前打招呼让妈备点杂粮,散场遛弯补上",
+    "先问清聚会长短,再建议短聚可去、提前垫肚子,回家晚饭减量"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A07",
+     "subject": "THIRD",
+     "relation": "爸爸周六安排",
+     "value": "战友聚会要喝酒吃席,妈拦不住",
+     "valid_time": "2026-11-07(周六)",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T03",
+      "message_id": "m0",
+      "quote": "爸周六有战友聚会,摆明了要喝酒吃席"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A08",
+     "subject": "THIRD",
+     "relation": "爸爸饮食要求",
+     "value": "医生要求控制晚饭主食,正在执行控糖晚餐计划",
+     "valid_time": "2026-11-03 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T01",
+      "message_id": "m0",
+      "quote": "空腹血糖6.8,医生说先把晚饭的主食管住"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "别替姐姐拍板禁足,给台阶式的具体招;体现记得医生管主食这条线",
+   "unknowns": [
+    "聚会的具体时长和规格未知"
+   ],
+   "protected_expressions": [
+    "战友聚会",
+    "还是随他去"
+   ],
+   "forbidden_factual_claims": [
+    "医生禁止爸爸喝酒",
+    "聚会已经取消了"
+   ]
+  },
+  "E209_T04": {
+   "case_id": "E209_T04",
+   "current_action": "接住全勤汇报夸一行,把功劳还给妈的执行,顺带回扣周六聚会那招用上了",
+   "acceptable_actions": [
+    "夸第一周全勤,提妈存步数截图这招好,再回扣周六那顿按说的做了",
+    "幽默认领军师功劳一半,妈执行一半,叮嘱别飘,下周继续",
+    "肯定成果,顺带说这正是打活儿该有的样子,让姐别盯太紧免得爸逆反"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A09",
+     "subject": "SHARED",
+     "relation": "打卡进度",
+     "value": "第一周7天全勤打卡完成",
+     "valid_time": "2026-11-04 至 2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T04",
+      "message_id": "m0",
+      "quote": "第一周7天全勤打卡"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A10",
+     "subject": "THIRD",
+     "relation": "爸爸聚会表现",
+     "value": "按建议先垫了肚子,席上光夹菜,战友夸他养生",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T04",
+      "message_id": "m0",
+      "quote": "先垫了肚子,席上光夹菜,战友都夸他养生"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A11",
+     "subject": "THIRD",
+     "relation": "爸爸周六安排",
+     "value": "周六有战友聚会",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T03",
+      "message_id": "m0",
+      "quote": "爸周六有战友聚会"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "夸要有具体对象(妈的截图、爸的执行),别空喊;不新增要求,守住这波热度",
+   "unknowns": [
+    "爸饭后散步的具体天数未逐日核实"
+   ],
+   "protected_expressions": [
+    "7天全勤打卡",
+    "步数都截图存着"
+   ],
+   "forbidden_factual_claims": [
+    "爸的血糖已经降回正常",
+    "爸每天步行超过一万步"
+   ]
+  },
+  "E209_T05": {
+   "case_id": "E209_T05",
+   "current_action": "接住出差这个客观变化,不逼打卡继续,先应下暂停,把话头引到怎么不停摆上",
+   "acceptable_actions": [
+    "应下先暂停,说明出差盯着打卡不现实,顺势问要不要留个最简版本",
+    "先接情绪再说人不在不是散伙的理由,提议降档不散伙",
+    "认同先别打卡,补一句爸那句是气话,回来再收拢"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A12",
+     "subject": "HER",
+     "relation": "出差安排",
+     "value": "下周去苏州出差,一走两周",
+     "valid_time": "2026-11-16 起 两周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T05",
+      "message_id": "m0",
+      "quote": "我下周去苏州出差,一走两周"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A13",
+     "subject": "SHARED",
+     "relation": "打卡计划状态",
+     "value": "打卡暂停,这周起不再打卡,等她回来再说",
+     "valid_time": "2026-11-13 宣布",
+     "status": "paused",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T05",
+      "message_id": "m0",
+      "quote": "这周先别打卡了,等我回来再说"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A14",
+     "subject": "THIRD",
+     "relation": "爸爸表态",
+     "value": "饭桌上说你姐都懒得管,这玩意儿散了吧",
+     "valid_time": "2026-11-13 晚饭",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T05",
+      "message_id": "m0",
+      "quote": "你姐都懒得管,这玩意儿散了吧"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A15",
+     "subject": "SHARED",
+     "relation": "打卡进度",
+     "value": "第一周7天全勤打卡已完成",
+     "valid_time": "2026-11-04 至 2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T04",
+      "message_id": "m0",
+      "quote": "第一周7天全勤打卡"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是计划停摆的落实轮:回应里不能把计划说成照常进行;语气先接住,再留一个不散伙的口子",
+   "unknowns": [
+    "出差期间爸妈晚饭实际怎么吃还未知"
+   ],
+   "protected_expressions": [
+    "先别打卡了",
+    "一走两周"
+   ],
+   "forbidden_factual_claims": [
+    "打卡仍在每天照常进行",
+    "爸明确同意暂停"
+   ]
+  },
+  "E209_T06": {
+   "case_id": "E209_T06",
+   "current_action": "先共情她的没劲,不硬顶,再提降档不散伙:没人盯就只保最简底线,不用打卡拍照",
+   "acceptable_actions": [
+    "共情一厢情愿的泄气,再提议降档成两条底线,不打卡不拍照",
+    "接住散就散吧的情绪,但指出爸那句更像气话,给出最省事的续命玩法",
+    "先说懂她,再把糙米换成她能接受的杂粮版本,劝降档别散伙"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A16",
+     "subject": "SHARED",
+     "relation": "打卡计划状态",
+     "value": "打卡暂停,这周先不打卡",
+     "valid_time": "2026-11-13 宣布",
+     "status": "paused",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T05",
+      "message_id": "m0",
+      "quote": "这周先别打卡了,等我回来再说"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E209_A17",
+     "subject": "THIRD",
+     "relation": "爸爸口味",
+     "value": "爸不爱吃糙米",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T06",
+      "message_id": "m0",
+      "quote": "爸又不爱吃糙米"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A18",
+     "subject": "HER",
+     "relation": "情绪状态",
+     "value": "觉得计划是姐一厢情愿,想就此散伙",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T06",
+      "message_id": "m0",
+      "quote": "本来就是我们一厢情愿,爸又不爱吃糙米,散就散吧"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "落实轮之后是挽回轮:回应里要么降档要么接住,不能反过来加码要求恢复全勤;别评爸的对错",
+   "unknowns": [
+    "妈此刻的态度未知"
+   ],
+   "protected_expressions": [
+    "散就散吧",
+    "一厢情愿"
+   ],
+   "forbidden_factual_claims": [
+    "打卡已恢复",
+    "爸主动要求继续打卡"
+   ]
+  },
+  "E209_T07": {
+   "case_id": "E209_T07",
+   "current_action": "肯定降档两条底线可行,提醒给爸台阶:周日视频当面说,不点破他没吭声",
+   "acceptable_actions": [
+    "认可两条底线够用,建议周日视频时当面给爸台阶,别说成要坚持",
+    "赞同不打卡不拍照更长久,提示让爸选一样他能干的活,比如遛弯",
+    "确认底线两条,顺带教她视频时用省事说法,别让爸觉得被管"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A19",
+     "subject": "SHARED",
+     "relation": "降档方案",
+     "value": "保两条底线:晚饭有杂粮,饭后走二十分钟,不打卡不拍照",
+     "valid_time": "2026-11-15 提议",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T07",
+      "message_id": "m0",
+      "quote": "就保两条:晚饭有杂粮,饭后走二十分钟,不打卡不拍照"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A20",
+     "subject": "THIRD",
+     "relation": "爸爸表态状态",
+     "value": "爸还没吭声,未明确同意",
+     "valid_time": "2026-11-15",
+     "status": "pending",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T07",
+      "message_id": "m0",
+      "quote": "爸还没吭声"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A21",
+     "subject": "ME",
+     "relation": "联系习惯",
+     "value": "每周日和爸妈视频",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "每周日和爸妈视频"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "回应里要显出记得周日视频这个固定安排;不催爸表态,把节奏交给周日",
+   "unknowns": [
+    "周日视频时爸会不会松口未知"
+   ],
+   "protected_expressions": [
+    "晚饭有杂粮",
+    "爸还没吭声"
+   ],
+   "forbidden_factual_claims": [
+    "爸已经同意降档方案",
+    "妈反对降档"
+   ]
+  },
+  "E209_T08": {
+   "case_id": "E209_T08",
+   "current_action": "接住视频结果报喜,夸爸主动接活儿,确认降档版通过,顺势定下一步谁来盯",
+   "acceptable_actions": [
+    "夸爸主动问焖饭说明上心了,确认降档版通过,提醒出差期间妈别单扛",
+    "幽默说爸这是抢了监督员的活儿,顺势把遛弯正式派给爸",
+    "接报喜,肯定妈接话快,叮嘱把两条底线在群里再念一遍"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A22",
+     "subject": "SHARED",
+     "relation": "降档方案状态",
+     "value": "降档版通过,晚饭杂粮加饭后遛弯,爸主动问杂粮饭谁来焖",
+     "valid_time": "2026-11-16 视频确认",
+     "status": "accepted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T08",
+      "message_id": "m0",
+      "quote": "爸自己问那杂粮饭谁来焖"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A23",
+     "subject": "THIRD",
+     "relation": "爸爸表态状态",
+     "value": "爸此前未吭声",
+     "valid_time": "截至 2026-11-15",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T07",
+      "message_id": "m0",
+      "quote": "爸还没吭声"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是状态翻转轮:回应要承认爸的态度已从沉默转为参与,不能再按没吭声说;语气轻快",
+   "unknowns": [
+    "爸遛弯能否坚持未知"
+   ],
+   "protected_expressions": [
+    "那杂粮饭谁来焖",
+    "降档版通过了"
+   ],
+   "forbidden_factual_claims": [
+    "爸仍不同意方案",
+    "打卡已恢复每天全勤"
+   ]
+  },
+  "E209_T09": {
+   "case_id": "E209_T09",
+   "current_action": "确认新规矩落进群里,回扣她出差那条线,补一个每周日视频晒控糖菜的小钩子",
+   "acceptable_actions": [
+    "确认底线两条写进群了,提议每周日视频晒一次妈做的控糖菜",
+    "肯定谁在家谁执行的说法,顺带回扣她在苏州走着去吃饭",
+    "确认规矩,提醒出差也照旧,周日视频验收"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A24",
+     "subject": "SHARED",
+     "relation": "新规矩状态",
+     "value": "底线两条写进家庭群:谁在家谁执行,不打卡",
+     "valid_time": "2026-11-18 写入",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T09",
+      "message_id": "m0",
+      "quote": "我把新规矩写群里了:底线两条,谁在家谁执行,不打卡"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A25",
+     "subject": "HER",
+     "relation": "出差状态",
+     "value": "在苏州出差,酒店离饭馆近,可走着去吃饭",
+     "valid_time": "2026-11-16 起 两周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T09",
+      "message_id": "m0",
+      "quote": "苏州这边酒店离饭馆近,我也能走着去吃饭"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A26",
+     "subject": "HER",
+     "relation": "出差安排",
+     "value": "去苏州出差一走两周",
+     "valid_time": "2026-11-16 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T05",
+      "message_id": "m0",
+      "quote": "我下周去苏州出差,一走两周"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "回应要显出记得她在苏州出差;钩子要轻,别变成新的打卡任务",
+   "unknowns": [
+    "出差酒店具体位置未知"
+   ],
+   "protected_expressions": [
+    "谁在家谁执行",
+    "苏州这边酒店离饭馆近"
+   ],
+   "forbidden_factual_claims": [
+    "打卡已恢复",
+    "爸妈每天把晚饭拍照上传"
+   ]
+  },
+  "E209_T10": {
+   "case_id": "E209_T10",
+   "current_action": "接住爸两周没碰白米饭的反转,笑骂一句自觉,点出降档没散伙是对的",
+   "acceptable_actions": [
+    "笑说散伙散出自觉,肯定爸自己买燕麦是上了心,等她回来验收",
+    "调侃爸这是憋着给姐惊喜,回扣降档不散伙起了作用",
+    "接好消息,提醒别当面拆穿,让爸保住这份自觉"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A27",
+     "subject": "THIRD",
+     "relation": "爸爸执行情况",
+     "value": "两周晚饭没碰白米饭,还自己买了燕麦片",
+     "valid_time": "2026-11-16 至 2026-11-24 期间",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T10",
+      "message_id": "m0",
+      "quote": "你爸这两周晚饭真没碰白米饭,还自己买了燕麦片"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A28",
+     "subject": "SHARED",
+     "relation": "打卡计划状态",
+     "value": "打卡此前已暂停,降档为底线两条",
+     "valid_time": "2026-11-13 起",
+     "status": "paused",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T05",
+      "message_id": "m0",
+      "quote": "这周先别打卡了,等我回来再说"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E209_A29",
+     "subject": "HER",
+     "relation": "返程安排",
+     "value": "明天从苏州回",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T10",
+      "message_id": "m0",
+      "quote": "我明天回"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻松收住即可,这是可合法不回的分享轮;别趁机重启打卡要求",
+   "unknowns": [
+    "爸是否知道自己被表扬未知"
+   ],
+   "protected_expressions": [
+    "没碰白米饭",
+    "散伙散出个自觉"
+   ],
+   "forbidden_factual_claims": [
+    "爸重新开始了每日打卡",
+    "爸的血糖已经复查过了"
+   ]
+  },
+  "E209_T11": {
+   "case_id": "E209_T11",
+   "current_action": "接群名改回和爸想晒步数的喜气,应下12月中陪爸复查,把目标定成让爸自己想控",
+   "acceptable_actions": [
+    "夸爸想晒步数说明真上心,应下12月中复查,建议定个具体日子",
+    "接群名改回的好消息,同意带爸复查,顺口问要不要提前再测一次空腹",
+    "肯定重启信号,答应复查,提醒带上这两月的饮食变化给医生看"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A30",
+     "subject": "THIRD",
+     "relation": "复查安排",
+     "value": "医生说三个月后复查,考虑12月中带爸去",
+     "valid_time": "2026-11-25 提出,预计12月中",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T11",
+      "message_id": "m0",
+      "quote": "医生说让三个月后复查,12月中带他去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A31",
+     "subject": "SHARED",
+     "relation": "群状态",
+     "value": "群名改回控糖三人组,爸想学晒步数截图",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T11",
+      "message_id": "m0",
+      "quote": "群名改回控糖三人组了,爸还问我步数截图是哪个软件弄的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A32",
+     "subject": "THIRD",
+     "relation": "爸爸执行情况",
+     "value": "两周晚饭没碰白米饭,自己买了燕麦片",
+     "valid_time": "2026-11-16 至 2026-11-24 期间",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T10",
+      "message_id": "m0",
+      "quote": "你爸这两周晚饭真没碰白米饭,还自己买了燕麦片"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "回应要接住重启信号并把复查落成具体动作;别把话说成重启打卡",
+   "unknowns": [
+    "复查具体挂哪个科未知"
+   ],
+   "protected_expressions": [
+    "12月中带他去",
+    "群名改回控糖三人组"
+   ],
+   "forbidden_factual_claims": [
+    "复查已经约在12月15号",
+    "爸的血糖已恢复正常"
+   ]
+  },
+  "E209_T12": {
+   "case_id": "E209_T12",
+   "current_action": "肯定12月15号复查安排和目标改口,轻收尾不拖沓,让她好好歇着(省内往返无时差,不接\"倒时差\"的字面)",
+   "acceptable_actions": [
+    "认可复查定档和让爸自己想控的目标,祝她歇好,自然收尾",
+    "接住不叫打卡改叫自觉的说法,叮嘱到日子提前一天提醒,道晚安收尾",
+    "肯定这轮从停摆到自觉的收成,轻收尾"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E209_A33",
+     "subject": "SHARED",
+     "relation": "复查安排状态",
+     "value": "复查约在12月15号上午,妈陪着去",
+     "valid_time": "2026-12-15 上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T12",
+      "message_id": "m0",
+      "quote": "12月15号上午复查,妈陪着去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A34",
+     "subject": "HER",
+     "relation": "目标口径",
+     "value": "目标不叫打卡了,改叫让爸自己想控",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T12",
+      "message_id": "m0",
+      "quote": "这回目标不叫打卡了,叫让爸自己想控"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E209_A35",
+     "subject": "THIRD",
+     "relation": "复查安排",
+     "value": "医生说三个月后复查",
+     "valid_time": "2026-11-25 提出",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E209_T11",
+      "message_id": "m0",
+      "quote": "医生说让三个月后复查,12月中带他去"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轮,她已给出结束信号;回应要短而暖,别再开新话题,自然结束",
+   "unknowns": [
+    "复查结果未知"
+   ],
+   "protected_expressions": [
+    "12月15号上午复查",
+    "叫让爸自己想控"
+   ],
+   "forbidden_factual_claims": [
+    "打卡计划恢复每日全勤",
+    "复查已完成且结果正常"
+   ]
+  }
+ }
+}

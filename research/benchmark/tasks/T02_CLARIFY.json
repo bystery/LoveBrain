@@ -1,0 +1,25 @@
+{
+  "id": "T02_CLARIFY",
+  "name": "交付标准门禁（缺标准必须问）",
+  "capability": "clarify_before_run",
+  "description": "输入缺乏交付标准，考察管家是否进入 awaiting_clarification 阻塞态并向用户提问，而不是偷跑去执行。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "README.md": "# Lab\n实验工作区。\n"
+    }
+  },
+  "inputs": [
+    "帮我搞个论文基线对比，你看着办吧，尽快。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]}
+    ],
+    "checks": [
+      {"type": "status_is", "task_kw": ["基线"], "status": "awaiting_clarification", "desc": "任务进入待澄清阻塞态", "pts": 4},
+      {"type": "reply_question_count", "min": 2, "desc": "回复至少问出 2 个澄清问题", "pts": 4},
+      {"type": "no_task_status_in", "statuses": ["in_progress", "done"], "desc": "没有任何任务偷跑执行", "pts": 2}
+    ]
+  }
+}

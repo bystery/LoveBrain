@@ -1,0 +1,417 @@
+{
+ "story_id": "E182",
+ "turns": {
+  "E182_T01": {
+   "case_id": "E182_T01",
+   "current_action": "接住求砖参考：推荐靠谱购买渠道与选砖要点（哑光防滑、一次买够同批次），肯定八点进场安排",
+   "acceptable_actions": [
+    "结合自己翻新经验推荐渠道，提醒一次买够避免批次色差",
+    "给选砖三条要点并建议留两箱备用砖",
+    "简答渠道后提醒进场前和师傅确认辅料谁出"
+   ],
+   "applicable_dimensions": ["memory_use", "goal", "interaction", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A01",
+     "subject": "SHARED",
+     "relation": "进场计划",
+     "value": "瓦工定周六早上八点进场铺贴HER家卫生间",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T01", "message_id": "m0", "quote": "周六早上八点进场"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E182_A02",
+     "subject": "ME",
+     "relation": "翻新经验",
+     "value": "ME去年自己翻新过卫生间熟悉选砖与防水流程",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "去年自己翻新过卫生间"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "给具体渠道和选砖要点，不端着不说教，老同学之间搭手的口吻",
+   "unknowns": ["建材城具体品牌未知", "辅料归属未确认"],
+   "protected_expressions": ["周六早上八点进场", "在哪儿买的"],
+   "forbidden_factual_claims": ["不得虚构具体建材品牌门店", "不得断言某品牌砖必然不色差"]
+  },
+  "E182_T02": {
+   "case_id": "E182_T02",
+   "current_action": "核她的买砖账：16平除以每箱0.72平约23箱，加两箱损耗共25箱，确认算法对并肯定搬运到位",
+   "acceptable_actions": [
+    "核对16平与25箱的换算无误，提醒楼道堆放别堵消防通道",
+    "肯定算账清楚，建议贴完剩余整箱别拆留作售后补砖",
+    "确认数量合理，提醒进场时和师傅当面点数签收"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A03",
+     "subject": "SHARED",
+     "relation": "瓷砖采购",
+     "value": "实测16平按每箱0.72平购23箱加2箱损耗共25箱已搬到楼道",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T02", "message_id": "m0", "quote": "搬了25箱"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "当回人形计算器把账核清楚，顺带给一条实务提醒，不啰嗦",
+   "unknowns": ["实际切割损耗率未知"],
+   "protected_expressions": ["一共16平", "搬了25箱"],
+   "forbidden_factual_claims": ["不得算出与16平0.72平25箱矛盾的数量结论"]
+  },
+  "E182_T03": {
+   "case_id": "E182_T03",
+   "current_action": "接住第一次改期：确认挪到下周一的原因在上一家，建议趁周末把砖搬回屋里并和瓦工要一句书面改期",
+   "acceptable_actions": [
+    "分析改期原因可谅解，建议楼道砖搬回屋并约下周一前再确认一次",
+    "接住白搬砖的抱怨，提议让瓦工在群里留一句改期文字",
+    "确认下周一档期，提醒周末正好把水电点位再自查一遍"
+   ],
+   "applicable_dimensions": ["time_state", "emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A04",
+     "subject": "SHARED",
+     "relation": "进场时间变更",
+     "value": "瓦工进场由周六改为下周一原因上一家未收尾",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T03", "message_id": "m0", "quote": "挪到下周一"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E182_A05",
+     "subject": "SHARED",
+     "relation": "原计划作废",
+     "value": "周六早上八点进场的原计划作废",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E182_T01", "message_id": "m0", "quote": "周六早上八点进场"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "不替瓦工说好话也不拱火，落在补救动作上，接住抱怨但给出口",
+   "unknowns": ["下周一是否再变未知"],
+   "protected_expressions": ["周六进不来", "挪到下周一"],
+   "forbidden_factual_claims": ["不得虚构瓦工改期的其他理由", "不得断言下周一一定按时进场"]
+  },
+  "E182_T04": {
+   "case_id": "E182_T04",
+   "current_action": "确认新流程合理：先闭水48小时再贴砖是稳妥顺序，解释这步省得贴完返工，砖码客厅正合适",
+   "acceptable_actions": [
+    "肯定师傅先闭水的顺序专业，解释48小时的来历",
+    "确认流程合理并提醒闭水前把地漏堵好",
+    "接住砖码客厅的小麻烦，建议垫好防潮再码"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A06",
+     "subject": "SHARED",
+     "relation": "闭水试验",
+     "value": "进场后先做闭水试验养够48小时周三看结果再贴砖",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T04", "message_id": "m0", "quote": "养够48小时"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E182_A07",
+     "subject": "SHARED",
+     "relation": "新进场兑现",
+     "value": "改期后的下周一进场已兑现",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T03", "message_id": "m0", "quote": "挪到下周一"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "用自己的踩坑经验背书流程，让她对多出来的两天不烦躁",
+   "unknowns": [],
+   "protected_expressions": ["闭水试验", "养够48小时", "周三来看结果"],
+   "forbidden_factual_claims": ["不得虚构闭水时长标准"]
+  },
+  "E182_T05": {
+   "case_id": "E182_T05",
+   "current_action": "接住返工坏消息：解释沙眼返工常见、铲了重刷是对的，帮她把心理预期放到再等几天",
+   "acceptable_actions": [
+    "共情后解释沙眼成因，肯定铲了重刷的决定正确",
+    "提醒重刷后楼下要再观察48小时，先跟楼下打好招呼",
+    "给出盯工要点：每遍干透再上下一遍，别赶工"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A08",
+     "subject": "SHARED",
+     "relation": "闭水失败",
+     "value": "闭水试验未过楼下天花板洇一小片防水层有沙眼需铲了重刷再养48小时",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T05", "message_id": "m0", "quote": "闭水试验没过"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E182_A09",
+     "subject": "SHARED",
+     "relation": "原贴砖计划取消",
+     "value": "周三看结果再贴砖的原计划作废贴砖推后",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E182_T04", "message_id": "m0", "quote": "周三来看结果再贴"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "先接情绪再讲道理，把返工讲成流程内的正常动作，不吓唬也不敷衍",
+   "unknowns": ["沙眼具体位置与面积未知"],
+   "protected_expressions": ["闭水试验没过", "铲了重刷"],
+   "forbidden_factual_claims": ["不得断言师傅施工必然有问题", "不得虚构返工费用数额"]
+  },
+  "E182_T06": {
+   "case_id": "E182_T06",
+   "current_action": "肯定她的邻里处理：道歉、赔300、拍照留凭证、师傅写说明一套完整，正是该有的样子",
+   "acceptable_actions": [
+    "肯定处理完整，提醒凭证和情况说明存到工程结清后再归档",
+    "接住她认赔的爽气，建议后续完工再送点小礼维护邻里",
+    "肯定做法并提醒让师傅把返工责任也在说明里写清"
+   ],
+   "applicable_dimensions": ["boundary", "memory_use", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A10",
+     "subject": "SHARED",
+     "relation": "邻里赔偿",
+     "value": "楼下印子HER赔偿300元并拍照留凭证师傅写情况说明",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T06", "message_id": "m0", "quote": "赔了300"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "肯定她把人情和凭证都做全，顺带补一条边界提醒，不添堵",
+   "unknowns": ["楼下修复周期未知"],
+   "protected_expressions": ["赔了300", "拍了照留了凭证"],
+   "forbidden_factual_claims": ["不得虚构赔偿金额变动", "不得断言物业定责有误"]
+  },
+  "E182_T07": {
+   "case_id": "E182_T07",
+   "current_action": "支持盯工做法：三遍防水每遍干透再上是对的，补两小桶的料量合理，叮嘱她盯横竖交替刷",
+   "acceptable_actions": [
+    "肯定盯工必要，补一句横竖交替刷和边角重点处理",
+    "确认补料量合理，提醒保留涂料桶上的批次号",
+    "支持她盯每遍干透，建议拍照记录各遍进度"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A11",
+     "subject": "SHARED",
+     "relation": "防水补料",
+     "value": "防水改刷三遍原5公斤涂料不够补购两小桶",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T07", "message_id": "m0", "quote": "又补了两小桶"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给一条能立刻用的盯工细节，让她觉得盯得值，不堆术语",
+   "unknowns": ["涂料品牌型号未知"],
+   "protected_expressions": ["刷三遍", "又补了两小桶"],
+   "forbidden_factual_claims": ["不得虚构涂料用量标准"]
+  },
+  "E182_T08": {
+   "case_id": "E182_T08",
+   "current_action": "接住定档好消息：二次闭水通过、周四早八点进场、文字确认截图做得很对，节奏终于回正",
+   "acceptable_actions": [
+    "肯定二次闭水通过和截图存证的习惯，确认周四档期",
+    "接住好消息并提醒进场前一天和瓦工再口头碰一次",
+    "肯定她被改怕了就落文字的应对，建议把前几次改期也记一笔"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A12",
+     "subject": "SHARED",
+     "relation": "二次闭水定档",
+     "value": "二次闭水通过定档周四早上八点进场并留群文字确认",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T08", "message_id": "m0", "quote": "周四早上八点进场"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E182_A13",
+     "subject": "SHARED",
+     "relation": "返工闭环",
+     "value": "此前防水重做与48小时二次养护已完成并通过",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T05", "message_id": "m0", "quote": "再养48小时"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "和她一起松口气，肯定截图习惯，把改期三连的教训轻轻点一句",
+   "unknowns": [],
+   "protected_expressions": ["二次闭水过了", "周四早上八点进场"],
+   "forbidden_factual_claims": ["不得断言周四之后不会再改期"]
+  },
+  "E182_T09": {
+   "case_id": "E182_T09",
+   "current_action": "确认角阀时机正确：贴砖前换省得后拆，建议顺便买生料带并让瓦工顺手装",
+   "acceptable_actions": [
+    "确认趁贴砖前换角阀是对的，提醒买一体铜芯别省",
+    "确认时机并建议顺便检查软管和地漏",
+    "肯定她查漏补缺，提醒明早七点五金店刚开门别白跑"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A14",
+     "subject": "SHARED",
+     "relation": "角阀决策",
+     "value": "贴砖前先换角阀HER明早七点去五金店购一对",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T09", "message_id": "m0", "quote": "趁贴砖前换"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E182_A15",
+     "subject": "SHARED",
+     "relation": "进场次日",
+     "value": "瓦工周四进场次日为贴砖施工日",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T08", "message_id": "m0", "quote": "周四早上八点进场"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "短平快确认时机对，补一条采购细节，不展开长篇",
+   "unknowns": ["角阀规格是否匹配未知"],
+   "protected_expressions": ["趁贴砖前换", "明早七点"],
+   "forbidden_factual_claims": ["不得虚构角阀品牌价格"]
+  },
+  "E182_T10": {
+   "case_id": "E182_T10",
+   "current_action": "核省料账：25箱剩三箱半说明损耗控制得好，确认师傅匀工钱买地漏的做法可行",
+   "acceptable_actions": [
+    "核账认可损耗小，建议剩下的砖整箱留着补修",
+    "肯定省料结果，提醒地漏买防臭款",
+    "接住师傅匀工钱的人情，建议当面点清以实物落地"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A16",
+     "subject": "SHARED",
+     "relation": "用砖进度",
+     "value": "贴到一半砖剩三箱半损耗小于预期",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T10", "message_id": "m0", "quote": "剩三箱半"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E182_A17",
+     "subject": "SHARED",
+     "relation": "采购基线",
+     "value": "此前共采购25箱其中含2箱计划损耗",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T02", "message_id": "m0", "quote": "搬了25箱"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把小账接住不扫兴，给一条剩余砖处置的实用建议",
+   "unknowns": ["地漏型号预算未知"],
+   "protected_expressions": ["剩三箱半", "不锈钢地漏"],
+   "forbidden_factual_claims": ["不得算出与25箱剩三箱半矛盾的数量"]
+  },
+  "E182_T11": {
+   "case_id": "E182_T11",
+   "current_action": "肯定贴砖完工与增项落单：美缝400写进增项单再开工正是守住边界的做法",
+   "acceptable_actions": [
+    "肯定她坚持增项落单，建议单子上写清美缝范围和质保",
+    "接住贴砖完工的成就感，提醒美缝前保持砖缝干燥",
+    "认可400的行情区间，建议验收时盯十字缝均匀度"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A18",
+     "subject": "SHARED",
+     "relation": "贴砖完成美缝",
+     "value": "砖贴完美缝周日另算400元写入增项单后再开工",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T11", "message_id": "m0", "quote": "写进增项单"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先共情完工的爽，再肯定她守边界的习惯，给一条美缝验收细节",
+   "unknowns": ["美缝剂色号未知"],
+   "protected_expressions": ["砖贴完了", "写进增项单"],
+   "forbidden_factual_claims": ["不得虚构美缝市场价的确切数字"]
+  },
+  "E182_T12": {
+   "case_id": "E182_T12",
+   "current_action": "收尾回扣：恭喜卫生间完工，回扣300赔偿闭环和她全程的靠谱，接住感谢并留完工饭之约",
+   "acceptable_actions": [
+    "恭喜完工，回扣她赔300留凭证的踏实，约个完工饭",
+    "肯定这轮从改期到返工她都接住了，接住感谢并说下次翻新还找自己参谋",
+    "轻松收尾，让她晒前后对比图并留入住暖房钩子"
+   ],
+   "applicable_dimensions": ["memory_use", "emotion_relation", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E182_A19",
+     "subject": "SHARED",
+     "relation": "工程收尾",
+     "value": "美缝收工卫生间完工楼下天花板干透果篮回访完成",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T12", "message_id": "m0", "quote": "拎了果篮"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E182_A20",
+     "subject": "SHARED",
+     "relation": "赔偿闭环",
+     "value": "此前300元赔偿与拍照留凭证闭环落地",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E182_T06", "message_id": "m0", "quote": "拍了照留了凭证"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾有温度，回扣要具体到赔偿和凭证，钩子留给完工饭",
+   "unknowns": [],
+   "protected_expressions": ["美缝也收工", "拎了果篮"],
+   "forbidden_factual_claims": ["不得虚构新的增项或纠纷"]
+  }
+ }
+}

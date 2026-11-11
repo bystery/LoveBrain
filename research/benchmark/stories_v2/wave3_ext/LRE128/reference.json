@@ -1,0 +1,2156 @@
+{
+ "story_id": "LRE128",
+ "turns": {
+  "LRE128_T01": {
+   "case_id": "LRE128_T01",
+   "current_action": "接住丢仓的求助,说明单配仓的大致行情并建议先问官方客服",
+   "acceptable_actions": [
+    "让她先打官方客服问单配价,提醒问清是否含邮与工期",
+    "说兼职那会儿单配仓常见但要按型号查,先别在第三方下单",
+    "安慰耳机没丢不算最惨,帮她列第一步该问什么"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A01",
+     "subject": "ME",
+     "relation": "experience_background",
+     "value": "池叙曾在数码门店兼职两年,熟悉配件行情",
+     "valid_time": "大学至毕业前后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "曾在数码门店兼职两年"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A02",
+     "subject": "HER",
+     "relation": "lost_item",
+     "value": "她的耳机充电仓丢失,耳机本体完好",
+     "valid_time": "2026-11-03 前发现",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T01",
+      "message_id": "m0",
+      "quote": "我耳机充电仓丢了,耳机倒是好好的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要的是行价信息,先给方向再给流程",
+   "unknowns": [
+    "耳机具体型号未说明"
+   ],
+   "protected_expressions": [
+    "单买仓要多少钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得报出未经核实的具体单价"
+   ]
+  },
+  "LRE128_T02": {
+   "case_id": "LRE128_T02",
+   "current_action": "比较单配269寄修与换新399两条路,指出时间成本差异",
+   "acceptable_actions": [
+    "分析:269省130但要等七到十天,399现货且仓耳机全新,看她急不急",
+    "提醒单配仓寄修期间耳机没仓也用不了,399的整体性更好",
+    "让她把两方案截图都留着,并确认换新是否收旧件"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方单配充电仓报价269元,寄修流程需七到十天",
+     "valid_time": "2026-11-04 询价口径",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T02",
+      "message_id": "m0",
+      "quote": "官方客服说单配仓269"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE128_A04",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方换新活动399元可换全新套装",
+     "valid_time": "2026-11-04 活动口径",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T02",
+      "message_id": "m0",
+      "quote": "官方换新活动是399换个全新套装"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她摆好了算术题,把她没算的时间成本补上最讨巧",
+   "unknowns": [
+    "换新是否回收旧耳机未知"
+   ],
+   "protected_expressions": [
+    "你说哪个划算"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构其他官方套餐价格"
+   ]
+  },
+  "LRE128_T03": {
+   "case_id": "LRE128_T03",
+   "current_action": "评价第三方158方案:提醒90天质保与兼容风险的权衡",
+   "acceptable_actions": [
+    "指出兼容仓便宜但质保90天短,适配和售后是隐性成本",
+    "肯定她三套列表的做法,建议把质保期一并列进表里",
+    "提醒第三方仓可能影响后续官方联保,截图留好"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A05",
+     "subject": "PUBLIC",
+     "relation": "third_party_quote",
+     "value": "第三方维修店报价兼容充电仓158元,质保仅90天",
+     "valid_time": "2026-11-04 询价",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T03",
+      "message_id": "m0",
+      "quote": "配个兼容仓158,但质保只有90天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她最爱听'把变量列全',顺着表格思维走",
+   "unknowns": [
+    "第三方仓是否影响保修未确认"
+   ],
+   "protected_expressions": [
+    "三套方案我列表了"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言该维修店是坑"
+   ]
+  },
+  "LRE128_T04": {
+   "case_id": "LRE128_T04",
+   "current_action": "接住她吃过的亏,表态不看质保条款才是吃亏根源,她不抠",
+   "acceptable_actions": [
+    "说这不叫抠,叫付过学费,表格我认真看",
+    "回一句'220的屏'够记十年,支持她先看条款",
+    "表示比价表是对的了,一起过一遍变量"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A06",
+     "subject": "HER",
+     "relation": "past_loss",
+     "value": "她上回手机屏多花220元买到非真正原厂件",
+     "valid_time": "既往经历",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T04",
+      "message_id": "m0",
+      "quote": "上回手机屏我就是多花了220买的'原厂'结果"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE128_A07",
+     "subject": "HER",
+     "relation": "quote_principle",
+     "value": "她坚持口头报价不算数,一切以截图为准",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "口头报价不算数,一切以截图为准"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她交了底,这一轮共情要给够,别再讲道理",
+   "unknowns": [
+    "手机屏事件的具体店家未提"
+   ],
+   "protected_expressions": [
+    "这回必须看质保条款"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构手机维修的后续追偿"
+   ]
+  },
+  "LRE128_T05": {
+   "case_id": "LRE128_T05",
+   "current_action": "接住价格更正:269已涨至319且缺货,重算399的相对优势",
+   "acceptable_actions": [
+    "按319重算:319无货再等十天与399现货全新,399优势扩大",
+    "先吐槽官方价格说变就变,再帮她核表",
+    "确认319口径有客服截图没有,呼应截图留证原则"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方单配充电仓报价269元,寄修流程需七到十天",
+     "valid_time": "2026-11-04 口径,2026-11-06 起作废",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T02",
+      "message_id": "m0",
+      "quote": "官方客服说单配仓269"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A08",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方承认269为旧价,单配仓现价319元且缺货需排队",
+     "valid_time": "2026-11-06 更新口径",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T05",
+      "message_id": "m0",
+      "quote": "现在单配仓涨到319,还是没货要排队"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "价格口径变了,帮她把表里旧数字划掉,别翻旧账说风凉话",
+   "unknowns": [
+    "319档位的到货周期未明确"
+   ],
+   "protected_expressions": [
+    "现在单配仓涨到319"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言官方会再降价"
+   ]
+  },
+  "LRE128_T06": {
+   "case_id": "LRE128_T06",
+   "current_action": "肯定399的选择,同时温和劝住借表妹学生认证的念头",
+   "acceptable_actions": [
+    "说80块买个现货和全新很值,表妹认证是别人的资格,别冒用",
+    "支持399,指出非本人认证被查出反而耽误工期",
+    "先肯定她的精打细算,再划清'省要省在规则里'"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A08",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方承认269为旧价,单配仓现价319元且缺货需排队",
+     "valid_time": "2026-11-06 更新口径",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T05",
+      "message_id": "m0",
+      "quote": "现在单配仓涨到319,还是没货要排队"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A09",
+     "subject": "HER",
+     "relation": "discount_idea",
+     "value": "她想尝试用表妹的学生认证再省一笔",
+     "valid_time": "2026-11-06 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T06",
+      "message_id": "m0",
+      "quote": "学生认证还能不能用我表妹的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "劝的时候别说教,用'被查了更麻烦'这种她听得进的账",
+   "unknowns": [
+    "表妹是否同意借认证未确认"
+   ],
+   "protected_expressions": [
+    "学生认证还能不能用我表妹的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构学生认证的具体折扣金额"
+   ]
+  },
+  "LRE128_T07": {
+   "case_id": "LRE128_T07",
+   "current_action": "肯定她规矩内下单的决定,提醒保存订单截图",
+   "acceptable_actions": [
+    "夸她想通了,按399下单加截图留证一步到位",
+    "顺嘴说规则内省到的钱才睡得着,接她'行吧'的爽快",
+    "确认发货时间,让她把客服对话也存一份"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A09",
+     "subject": "HER",
+     "relation": "discount_idea",
+     "value": "她想尝试用表妹的学生认证再省一笔",
+     "valid_time": "2026-11-06 提出后放弃",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T06",
+      "message_id": "m0",
+      "quote": "学生认证还能不能用我表妹的"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A10",
+     "subject": "HER",
+     "relation": "order_decision",
+     "value": "她决定按399元规规矩矩下单换新套装并截图留证",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T07",
+      "message_id": "m0",
+      "quote": "规规矩矩按399下单,截图留证"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她放弃歪路时有点小不甘,给一句'这样最稳'就够",
+   "unknowns": [
+    "发货具体时间未说"
+   ],
+   "protected_expressions": [
+    "规规矩矩按399下单"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构订单编号"
+   ]
+  },
+  "LRE128_T08": {
+   "case_id": "LRE128_T08",
+   "current_action": "接住旧耳机回收支线,建议问清回收价的扣除项",
+   "acceptable_actions": [
+    "提醒她问店家150之外还扣什么,官网92虽然低但一口价",
+    "建议她把口头150也变成书面报价再决定",
+    "顺嘴问旧耳机成色,帮她预判会不会被压价"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A10",
+     "subject": "HER",
+     "relation": "order_decision",
+     "value": "她决定按399元规规矩矩下单换新套装并截图留证",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T07",
+      "message_id": "m0",
+      "quote": "规规矩矩按399下单,截图留证"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A11",
+     "subject": "HER",
+     "relation": "recycle_quote",
+     "value": "店家口头评估旧耳机回收价150元,官网回收价为92元",
+     "valid_time": "2026-11-08 询价",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T08",
+      "message_id": "m0",
+      "quote": "店家给150,我说要跟官网回收价92比一下"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "口头价是她的大忌,提醒要踩在她原则的点上",
+   "unknowns": [
+    "旧耳机实际成色与磨损未知"
+   ],
+   "protected_expressions": [
+    "要跟官网回收价92比一下"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构回收平台的检测标准"
+   ]
+  },
+  "LRE128_T09": {
+   "case_id": "LRE128_T09",
+   "current_action": "支持她止损不卖:被扣磨损费改口就撤,留着备用不亏",
+   "acceptable_actions": [
+    "说撤得对,118还谈什么比价,备用耳机正合适",
+    "共情'一气之下',肯定她当场拒绝没含糊",
+    "顺着备用耳机的安排夸她废物利用想得开"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A11",
+     "subject": "HER",
+     "relation": "recycle_quote",
+     "value": "店家口头评估旧耳机回收价150元,官网回收价为92元",
+     "valid_time": "2026-11-08 口径",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T08",
+      "message_id": "m0",
+      "quote": "店家给150"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A12",
+     "subject": "HER",
+     "relation": "recycle_revision",
+     "value": "店家扣除外观磨损费后实付118元,她当场决定不卖,旧耳机留作家用备用",
+     "valid_time": "2026-11-09 决定",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T09",
+      "message_id": "m0",
+      "quote": "要扣'外观磨损费'实付118,一气之下不卖了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她又撞上口头价的坑,这次她自己撤得快,夸她的果断",
+   "unknowns": [
+    "店家是否书面确认过150未提"
+   ],
+   "protected_expressions": [
+    "一气之下不卖了"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言店家故意欺诈"
+   ]
+  },
+  "LRE128_T10": {
+   "case_id": "LRE128_T10",
+   "current_action": "接住到货喜悦,肯定防丢片的操作,可补一句防丢小建议",
+   "acceptable_actions": [
+    "说验机全绿收工漂亮,工牌绳这招治本",
+    "夸她丢过一次就建立机制,很像她的表格风格",
+    "提醒防丢片买带挂钩的,别用胶粘的"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A10",
+     "subject": "HER",
+     "relation": "order_decision",
+     "value": "她决定按399元规规矩矩下单换新套装并截图留证",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T07",
+      "message_id": "m0",
+      "quote": "规规矩矩按399下单,截图留证"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A13",
+     "subject": "HER",
+     "relation": "gear_arrival",
+     "value": "换新的耳机套装已到货,验机全绿,充电仓贴了防丢片并挂工牌绳",
+     "valid_time": "2026-11-10 到货",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T10",
+      "message_id": "m0",
+      "quote": "新套装到了,验机全绿"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "到货汇报是她的仪式感,接住就行",
+   "unknowns": [
+    "防丢片品牌未提"
+   ],
+   "protected_expressions": [
+    "丢过一次的人懂"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构防丢片价格"
+   ]
+  },
+  "LRE128_T11": {
+   "case_id": "LRE128_T11",
+   "current_action": "接住一周复盘战绩,肯定80块差价买来的省心",
+   "acceptable_actions": [
+    "说三次捡回就是三次回本,这表存得值",
+    "接'比价表存档'的梗,问她要不要建个防丢装备库",
+    "轻快收尾,夸她这次全流程零踩坑"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A13",
+     "subject": "HER",
+     "relation": "gear_arrival",
+     "value": "换新的耳机套装已到货,验机全绿,充电仓贴了防丢片并挂工牌绳",
+     "valid_time": "2026-11-10 到货",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T10",
+      "message_id": "m0",
+      "quote": "新套装到了,验机全绿"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的汇报周报很认真,回得轻快一点",
+   "unknowns": [
+    "防丢片使用寿命未知"
+   ],
+   "protected_expressions": [
+    "这80块差价花得值"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构捡回耳机的具体场景细节"
+   ]
+  },
+  "LRE128_T12": {
+   "case_id": "LRE128_T12",
+   "current_action": "轻接表姐老花镜的转介,表态可以帮看但让她把需求发来",
+   "acceptable_actions": [
+    "说不烦,让她把表姐的度数和预算发来先看看",
+    "接'池参谋'的梗,说参谋费一杯奶茶",
+    "答应先听需求,提醒配镜这事儿更要书面验光单"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A07",
+     "subject": "HER",
+     "relation": "quote_principle",
+     "value": "她坚持口头报价不算数,一切以截图为准",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "口头报价不算数,一切以截图为准"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A14",
+     "subject": "THIRD",
+     "relation": "referral_request",
+     "value": "她的表姐想配老花镜,经她转介想咨询ME",
+     "valid_time": "2026-11-14 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T12",
+      "message_id": "m0",
+      "quote": "我表姐想配老花镜"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "顺口的转介别接太重,留个'发需求来'的口子",
+   "unknowns": [
+    "表姐的年龄度数与预算未知"
+   ],
+   "protected_expressions": [
+    "我说这事得问我们池参谋"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构表姐的视力情况"
+   ]
+  },
+  "LRE128_T13": {
+   "case_id": "LRE128_T13",
+   "current_action": "接住表姐配镜需求:老花首配建议先正规验光,渠道后谈",
+   "acceptable_actions": [
+    "先让表姐去正规机构验光,没有验光单线上配镜对不了参数",
+    "提醒老花首配要排查散光和适应问题,第一次建议线下配",
+    "让她把表姐平时看手机看报的习惯问清,再谈渠道差价"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A07",
+     "subject": "HER",
+     "relation": "quote_principle",
+     "value": "她坚持口头报价不算数,一切以截图为准",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "口头报价不算数,一切以截图为准"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A15",
+     "subject": "THIRD",
+     "relation": "referral_request",
+     "value": "她的表姐58岁想配老花镜,预算三百左右,先考虑线上配镜渠道",
+     "valid_time": "2026-11-14 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T13",
+      "message_id": "m0",
+      "quote": "预算三百左右"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "转介落地成具体需求了,先给步骤再给渠道意见,别一上来否掉线上",
+   "unknowns": [
+    "表姐是否已有近期验光单未确认",
+    "线上配镜店具体指哪家未说"
+   ],
+   "protected_expressions": [
+    "预算三百左右"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构表姐的老花度数",
+    "不得断言线上配镜必然不准"
+   ]
+  },
+  "LRE128_T14": {
+   "case_id": "LRE128_T14",
+   "current_action": "肯定她对验光单清晰度的坚持,建议实体店重新验光出纸质单",
+   "acceptable_actions": [
+    "说照片糊了没法用,让她陪表姐去店里重新验一次出纸质单",
+    "肯定她把关到位,顺手提醒验光单要标瞳距",
+    "建议把清晰验光单拍照备份,两边渠道都能用"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A07",
+     "subject": "HER",
+     "relation": "quote_principle",
+     "value": "她坚持口头报价不算数,一切以截图为准",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "口头报价不算数,一切以截图为准"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A16",
+     "subject": "THIRD",
+     "relation": "document_issue",
+     "value": "表姐自发来的验光单照片模糊,无法用于配镜",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T14",
+      "message_id": "m0",
+      "quote": "糊得只有俩数字能看清"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在替长辈把关,肯定她的较真,再补一个可执行动作",
+   "unknowns": [
+    "表姐实际屈光度数未知"
+   ],
+   "protected_expressions": [
+    "糊得只有俩数字能看清"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构验光单上的具体数字"
+   ]
+  },
+  "LRE128_T15": {
+   "case_id": "LRE128_T15",
+   "current_action": "比较实体480与线上268:表姐首配老花,建议把调校与售后算进差价",
+   "acceptable_actions": [
+    "提醒212差价里含当天取货、适应期免费调校这些隐性项",
+    "让表姐这个年纪首配稳妥点,线上省的钱可能搭进往返跑",
+    "问她线上268是否含同规格镜片,先把变量列齐"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A17",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "实体店配老花镜报价480元含镜片,线上同款镜架配镜268元,差212元",
+     "valid_time": "2026-11-16 询价",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T15",
+      "message_id": "m0",
+      "quote": "实体店报价480含镜片"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把新战场也变成了比价题,顺着列变量的思路帮她补项",
+   "unknowns": [
+    "线上268是否含同等规格镜片未知",
+    "线上是否含售后调校未知"
+   ],
+   "protected_expressions": [
+    "差212"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构两家店的具体镜片品牌"
+   ]
+  },
+  "LRE128_T16": {
+   "case_id": "LRE128_T16",
+   "current_action": "支持实体店选择,提醒砍价空间有限可谈赠品,首配适应期调校要留",
+   "acceptable_actions": [
+    "说480含当天取和调校,砍不动价就谈赠品或保养",
+    "支持她去谈,提醒别为了砍价把适应期调校砍没了",
+    "肯定表姐要快的诉求合理,实体当天戴上是真优势"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A19",
+     "subject": "HER",
+     "relation": "decision_idea",
+     "value": "她倾向实体店给表姐配镜,并打算先去砍价",
+     "valid_time": "2026-11-17 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T16",
+      "message_id": "m0",
+      "quote": "我倾向实体店,但我先去砍砍价"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "又见她砍价前摇,这次是替长辈办事,支持里带一句分寸",
+   "unknowns": [
+    "店家实际让利空间未知"
+   ],
+   "protected_expressions": [
+    "我倾向实体店,但我先去砍砍价"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构砍价结果"
+   ]
+  },
+  "LRE128_T17": {
+   "case_id": "LRE128_T17",
+   "current_action": "接住砍价结果:降价换保养赠品也可,提醒确认保养条款与调校次数",
+   "acceptable_actions": [
+    "说一年清洗保养值回没降的价,让她把条款拍全",
+    "提醒问清保养含不含适应期免费调校次数",
+    "肯定她没硬砍伤和气,长辈配镜舒服最重要"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A19",
+     "subject": "HER",
+     "relation": "decision_idea",
+     "value": "她倾向实体店给表姐配镜,并打算先去砍价",
+     "valid_time": "2026-11-17 提出,2026-11-18 砍价收场",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T16",
+      "message_id": "m0",
+      "quote": "我倾向实体店,但我先去砍砍价"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A20",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "实体店维持480元报价,改为赠送一年清洗保养,表姐接受",
+     "valid_time": "2026-11-18 确认",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T17",
+      "message_id": "m0",
+      "quote": "480再送一年清洗保养"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她砍价不动就换赠品,这次很顺滑,接住并帮她把条款问细",
+   "unknowns": [
+    "清洗保养的具体次数未写明"
+   ],
+   "protected_expressions": [
+    "480再送一年清洗保养"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构保养服务的市场单价"
+   ]
+  },
+  "LRE128_T18": {
+   "case_id": "LRE128_T18",
+   "current_action": "接住改期提议的分歧:提示199镜架不含镜片与验光,总账未必省",
+   "acceptable_actions": [
+    "提醒199是镜架单价,另配镜片加验光,总价未必低于480",
+    "建议把两边总价列一起给表姐看,让她自己拍板",
+    "说等等也可以,但让女儿把双十一到手价算全再比"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A20",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "实体店维持480元报价,改为赠送一年清洗保养,表姐接受",
+     "valid_time": "2026-11-18 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T17",
+      "message_id": "m0",
+      "quote": "480再送一年清洗保养"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A21",
+     "subject": "THIRD",
+     "relation": "schedule_pressure",
+     "value": "表姐女儿建议等双十一买199元镜架再配,配镜计划面临改期",
+     "valid_time": "2026-11-19 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T18",
+      "message_id": "m0",
+      "quote": "让她等等再配"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她夹在中间需要的是算账支持,不是替她表态站队",
+   "unknowns": [
+    "双十一镜架最终到手价未知",
+    "该镜架是否真同款未确认"
+   ],
+   "protected_expressions": [
+    "让她等等再配"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言双十一必然更贵或更便宜"
+   ]
+  },
+  "LRE128_T19": {
+   "case_id": "LRE128_T19",
+   "current_action": "支持表姐拍板:总价比单件价重要,改期省的小钱抵不过折腾",
+   "acceptable_actions": [
+    "夸这笔账算得清,单件价陷阱又一次被她拆掉",
+    "说长辈配镜图个省心,今天配上最实在",
+    "顺嘴记录:改期提议取消,480含保养的口径不变"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A21",
+     "subject": "THIRD",
+     "relation": "schedule_pressure",
+     "value": "表姐女儿建议等双十一买199元镜架再配,配镜计划面临改期",
+     "valid_time": "2026-11-19 提出,2026-11-20 取消",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T18",
+      "message_id": "m0",
+      "quote": "让她等等再配"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A22",
+     "subject": "THIRD",
+     "relation": "purchase_decision",
+     "value": "表姐决定不等双十一,当天在实体店配老花镜",
+     "valid_time": "2026-11-20 决定",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T19",
+      "message_id": "m0",
+      "quote": "表姐拍板今天就去配"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改期提议死得干脆,给她一句账算得漂亮的肯定就够",
+   "unknowns": [
+    "双十一镜架实际降幅未发生,无从比较"
+   ],
+   "protected_expressions": [
+    "表姐拍板今天就去配"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构双十一当天的真实价格"
+   ]
+  },
+  "LRE128_T20": {
+   "case_id": "LRE128_T20",
+   "current_action": "接住配镜收口的汇报,轻快接梗,提醒一周后可回访调校",
+   "acceptable_actions": [
+    "接参谋费的梗,说先记着,顺手提醒一周后去店里免费紧一次",
+    "夸表姐适应快,老年人首次配镜这样算顺利",
+    "轻松收下谢意,问她480含的保养手册给表姐放好了没"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A23",
+     "subject": "THIRD",
+     "relation": "purchase_outcome",
+     "value": "表姐已在实体店配好老花镜,佩戴两天适应良好",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T20",
+      "message_id": "m0",
+      "quote": "表姐戴两天说看手机清楚多了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "长辈的事办成了,她心情好,轻松接住别讲道理",
+   "unknowns": [
+    "老花镜最终成交价是否仍为480未确认"
+   ],
+   "protected_expressions": [
+    "看手机清楚多了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构表姐的视力细节"
+   ]
+  },
+  "LRE128_T21": {
+   "case_id": "LRE128_T21",
+   "current_action": "接防丢片翘边问题:确认胶粘款易翘,建议换带扣款并清理残胶",
+   "acceptable_actions": [
+    "说胶粘款遇热易翘,换带挂钩款一劳永逸",
+    "提醒撕之前用电吹风软化,残胶别硬抠",
+    "问她当时买防丢片有没有留链接,直接换同店扣款版"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A24",
+     "subject": "HER",
+     "relation": "gear_issue",
+     "value": "她的防丢片出现翘边粘不牢,疑似买了胶粘款",
+     "valid_time": "2026-11-22 发现",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T21",
+      "message_id": "m0",
+      "quote": "是不是买成胶粘款了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "小故障小处理,给一个干脆的换法就行,别展开成长篇",
+   "unknowns": [
+    "防丢片购买渠道与品牌未知"
+   ],
+   "protected_expressions": [
+    "是不是买成胶粘款了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构防丢片的价格与品牌"
+   ]
+  },
+  "LRE128_T22": {
+   "case_id": "LRE128_T22",
+   "current_action": "明确269是十一月初旧价且已被更正,不沿用,建议同事重新问官方现价",
+   "acceptable_actions": [
+    "说269早作废了,后来还涨到过319,同事得自己问现价",
+    "肯定她刹得对,让同事把客服报价截图存下来",
+    "提醒单配还有没有货也得当场问,口径变得快"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方单配充电仓报价269元,寄修流程需七到十天",
+     "valid_time": "2026-11-04 口径,早已作废,不得沿用",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T02",
+      "message_id": "m0",
+      "quote": "官方客服说单配仓269"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她自己挡下了旧价,确认她的谨慎,一个没核实的数字都别往外报",
+   "unknowns": [
+    "单配仓当前现价未知,需同事重新询价"
+   ],
+   "protected_expressions": [
+    "我张口就想说269"
+   ],
+   "forbidden_factual_claims": [
+    "不得报出任何未核实的现价"
+   ]
+  },
+  "LRE128_T23": {
+   "case_id": "LRE128_T23",
+   "current_action": "接住新口径289:以同事当日询价为准,肯定他不折腾的直接配",
+   "acceptable_actions": [
+    "说289有货就别等,价格这东西过夜都可能变",
+    "让同事把289报价截图留好,呼应她那套留证习惯",
+    "顺嘴把289记进她那张装备表,旧价彻底翻篇"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "官方单配充电仓报价269元,寄修流程需七到十天",
+     "valid_time": "2026-11-04 口径,已作废",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T02",
+      "message_id": "m0",
+      "quote": "官方客服说单配仓269"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A25",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "单配仓最新询价289元且有货(同事2026-11-24口径)",
+     "valid_time": "2026-11-24 询价",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T23",
+      "message_id": "m0",
+      "quote": "单配仓降回289"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "新口径来了就认新口径,289是同事当天问的,只按这个用",
+   "unknowns": [
+    "289是否含寄修往返邮费未知"
+   ],
+   "protected_expressions": [
+    "单配仓降回289"
+   ],
+   "forbidden_factual_claims": [
+    "不得预判289之后还会不会再变"
+   ]
+  },
+  "LRE128_T24": {
+   "case_id": "LRE128_T24",
+   "current_action": "接住同事支线收口,轻松接梗表格外传,补一句提醒按现价更新数字",
+   "acceptable_actions": [
+    "说模板送出去是好事,提醒他把数字换成289现价",
+    "接知识付费的梗,问他收了同事几杯奶茶",
+    "夸她的表格成了传家宝,同事少走弯路"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A26",
+     "subject": "HER",
+     "relation": "method_transfer",
+     "value": "同事完成单配仓配置,并向她索取比价表模板",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T24",
+      "message_id": "m0",
+      "quote": "还问我要比价表模板"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快收尾这一小段,顺便埋一句旧数字别照抄的提醒",
+   "unknowns": [
+    "模板被复用时旧数字是否会被误用未知"
+   ],
+   "protected_expressions": [
+    "我把表格发他了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构同事的具体机型"
+   ]
+  },
+  "LRE128_T25": {
+   "case_id": "LRE128_T25",
+   "current_action": "接年会采购求助,列核心注意点:资质、质保、验货、付款方式",
+   "acceptable_actions": [
+    "列四条:供应商资质、书面质保、到货抽检、别预付全款",
+    "提醒先问清要不要对公转账和发票,主体别搞错",
+    "建议20台这种量,合同比聊天记录管用"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A27",
+     "subject": "HER",
+     "relation": "procurement_task",
+     "value": "公司年会需采购20个蓝牙耳机作奖品,总预算一千八百元",
+     "valid_time": "2026-11-26 立项",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T25",
+      "message_id": "m0",
+      "quote": "采购20个蓝牙耳机当奖品,预算一千八"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把个人比价术升级到公司采购,给清单式建议最合她口味",
+   "unknowns": [
+    "耳机档次与品牌偏好未知",
+    "是否需对公发票未说明"
+   ],
+   "protected_expressions": [
+    "预算一千八"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构具体品牌型号推荐"
+   ]
+  },
+  "LRE128_T26": {
+   "case_id": "LRE128_T26",
+   "current_action": "分析预付风险:建议谈验货后付款或分期,质保条款必须书面",
+   "acceptable_actions": [
+    "说1780在预算内不错,但预付全款对20台量级太吃亏",
+    "建议争取验货合格再付,至少留三成尾款",
+    "让她把报价单和质保承诺都要成书面文件"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A28",
+     "subject": "PUBLIC",
+     "relation": "vendor_quote",
+     "value": "供应商报价每台89元共1780元,质保一年,要求预付全款",
+     "valid_time": "2026-11-27 报价",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T26",
+      "message_id": "m0",
+      "quote": "每台89,20台1780,质保一年,但要预付全款"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "价格达标但付款方式是雷,先拆付款方式再夸价格",
+   "unknowns": [
+    "供应商资质与主体未核实"
+   ],
+   "protected_expressions": [
+    "要预付全款"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言该供应商不可信"
+   ]
+  },
+  "LRE128_T27": {
+   "case_id": "LRE128_T27",
+   "current_action": "肯定付款方式谈成,提醒合同写明验收标准与质保起算时间",
+   "acceptable_actions": [
+    "夸这刀砍在点子上,提醒合同里写清验收合格标准",
+    "提醒质保一年从哪天起算要白纸黑字",
+    "建议合同附报价单,金额口径锁死"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A28",
+     "subject": "PUBLIC",
+     "relation": "vendor_quote",
+     "value": "供应商报价每台89元共1780元,质保一年,要求预付全款",
+     "valid_time": "2026-11-27 报价,2026-11-28 付款条件已改",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T26",
+      "message_id": "m0",
+      "quote": "每台89,20台1780,质保一年,但要预付全款"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A29",
+     "subject": "HER",
+     "relation": "contract_progress",
+     "value": "付款方式谈成验货合格后再付款,她正在拟合同",
+     "valid_time": "2026-11-28",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T27",
+      "message_id": "m0",
+      "quote": "可以验货合格再付款"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把付款风险自己谈掉了,补上合同细节就是最好的助攻",
+   "unknowns": [
+    "验收标准具体条目未定"
+   ],
+   "protected_expressions": [
+    "可以验货合格再付款"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构合同具体条款编号"
+   ]
+  },
+  "LRE128_T28": {
+   "case_id": "LRE128_T28",
+   "current_action": "接住涨价更正:先压火,要求书面确认涨价原因,再谈接不接受",
+   "acceptable_actions": [
+    "说火归火她处理得对,一切等文字口径落地",
+    "提醒问清99含不含票和运费,变的是价还是配置",
+    "让她先别急着答应,备选供应商可以开始看了"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A28",
+     "subject": "PUBLIC",
+     "relation": "vendor_quote",
+     "value": "供应商报价每台89元共1780元,质保一年,要求预付全款",
+     "valid_time": "2026-11-27 报价,2026-11-29 被更正作废",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T26",
+      "message_id": "m0",
+      "quote": "每台89,20台1780,质保一年,但要预付全款"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A30",
+     "subject": "PUBLIC",
+     "relation": "price_correction",
+     "value": "供应商更正报价:89元为上一批库存价,现批每台99元",
+     "valid_time": "2026-11-29 更正",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T28",
+      "message_id": "m0",
+      "quote": "89是上一批库存价,现在这批要99"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第三次撞上口径变更,她已经会要书面确认了,夸流程不夸情绪",
+   "unknowns": [
+    "涨价是否伴随发票运费变化未知"
+   ],
+   "protected_expressions": [
+    "现在这批要99"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言供应商坐地起价的主观动机"
+   ]
+  },
+  "LRE128_T29": {
+   "case_id": "LRE128_T29",
+   "current_action": "帮算账:1980超支与95家质保半年的权衡,把质保期折成钱一起比",
+   "acceptable_actions": [
+    "算给她看:95省80但质保少半年,按修理成本折一折",
+    "提醒95那家的牌子型号要报上来,不能只比单价",
+    "说超支180也可以回去跟领导申请,未必非砍预算"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A30",
+     "subject": "PUBLIC",
+     "relation": "price_correction",
+     "value": "供应商更正报价:89元为上一批库存价,现批每台99元",
+     "valid_time": "2026-11-29 更正",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T28",
+      "message_id": "m0",
+      "quote": "89是上一批库存价,现在这批要99"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A31",
+     "subject": "PUBLIC",
+     "relation": "alternative_quote",
+     "value": "另一家供应商报95元但质保仅半年,原家99元总价1980超预算180元",
+     "valid_time": "2026-11-30 报价",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T29",
+      "message_id": "m0",
+      "quote": "另一家报95但质保只有半年"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "比价题又来了,这次帮她把质保期折成变量,而不是替她拍板",
+   "unknowns": [
+    "95家的品牌型号与口碑未知"
+   ],
+   "protected_expressions": [
+    "另一家报95但质保只有半年"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构95家的具体折扣来源"
+   ]
+  },
+  "LRE128_T30": {
+   "case_id": "LRE128_T30",
+   "current_action": "支持选95并落实书面质保与截图留证,呼应她的一贯原则",
+   "acceptable_actions": [
+    "说质保写进合同这步走得稳,截图留证全套照旧",
+    "提醒合同里把型号数量单价三样写死",
+    "夸她把私人比价纪律带进了公司采购"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A07",
+     "subject": "HER",
+     "relation": "quote_principle",
+     "value": "她坚持口头报价不算数,一切以截图为准",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "口头报价不算数,一切以截图为准"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A32",
+     "subject": "HER",
+     "relation": "vendor_decision",
+     "value": "她选定95元供应商,要求质保半年写进合同并留实付截图",
+     "valid_time": "2026-12-01 决定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T30",
+      "message_id": "m0",
+      "quote": "把质保半年写进合同"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的原则在正式场合同样硬,肯定这份一致性",
+   "unknowns": [
+    "合同签署主体与盖章流程未知"
+   ],
+   "protected_expressions": [
+    "把质保半年写进合同"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构合同金额以外的隐藏费用"
+   ]
+  },
+  "LRE128_T31": {
+   "case_id": "LRE128_T31",
+   "current_action": "接住签约进展,提醒留意发货逾期条款,到货时抽检别只检一台",
+   "acceptable_actions": [
+    "说定金三成尾款验货后付这个结构很稳",
+    "提醒五天发货从哪天算,逾期怎么办要有个说法",
+    "建议到货按两成比例抽检,坏一台换一批的说法先谈好"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A33",
+     "subject": "HER",
+     "relation": "order_progress",
+     "value": "采购合同已签:定金三成,尾款验货后付,约定五天内发货",
+     "valid_time": "2026-12-02 签约",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T31",
+      "message_id": "m0",
+      "quote": "定金三成,尾款验货后付"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "签约只是中场,帮她把下一个风险点提前想好",
+   "unknowns": [
+    "逾期违约的具体条款未提"
+   ],
+   "protected_expressions": [
+    "尾款验货后付"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构违约金具体数额"
+   ]
+  },
+  "LRE128_T32": {
+   "case_id": "LRE128_T32",
+   "current_action": "接住缺货改期:年会日期刚性,换款要先核对同级参数再决定",
+   "acceptable_actions": [
+    "说下周四到货太悬,年会等不起,换款是现实选项",
+    "提醒让供应商把93款参数发来,和95款并排比一遍",
+    "改期或换款都要供应商出书面确认,别电话里定"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A33",
+     "subject": "HER",
+     "relation": "order_progress",
+     "value": "采购合同已签:定金三成,尾款验货后付,约定五天内发货",
+     "valid_time": "2026-12-02 签约,2026-12-03 发货安排被打乱",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T31",
+      "message_id": "m0",
+      "quote": "定金三成,尾款验货后付"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A34",
+     "subject": "PUBLIC",
+     "relation": "schedule_change",
+     "value": "95款缺货改期至下周四发货,供应商提出换同级93元现货款",
+     "valid_time": "2026-12-03 提出",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T32",
+      "message_id": "m0",
+      "quote": "95那款要改到下周四"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "时间这回是真约束,帮她把急劲转到核对参数和书面确认上",
+   "unknowns": [
+    "93款具体型号与参数差异未知"
+   ],
+   "protected_expressions": [
+    "95那款要改到下周四"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言93款质量必然更差"
+   ]
+  },
+  "LRE128_T33": {
+   "case_id": "LRE128_T33",
+   "current_action": "肯定换款决策与变更确认函,提醒确认函与合同附在一起存档",
+   "acceptable_actions": [
+    "夸她急而不乱,确认函这一手把改期的责任锁死了",
+    "提醒确认函和原合同放一个文件夹,验收时按93款标准",
+    "差价40块到账了记进她那张总账表"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A34",
+     "subject": "PUBLIC",
+     "relation": "schedule_change",
+     "value": "95款缺货改期至下周四发货,供应商提出换同级93元现货款",
+     "valid_time": "2026-12-03 提出,2026-12-04 决定换款",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T32",
+      "message_id": "m0",
+      "quote": "95那款要改到下周四"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A35",
+     "subject": "HER",
+     "relation": "change_decision",
+     "value": "她改选93元现货款,要求供应商出具变更确认函并退还每台2元差价",
+     "valid_time": "2026-12-04 决定",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T33",
+      "message_id": "m0",
+      "quote": "让供应商出了变更确认函"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "危机处理收口得漂亮,重点夸书面确认函这步棋",
+   "unknowns": [
+    "差价退款到账方式未说明"
+   ],
+   "protected_expressions": [
+    "差价2块一台也退"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构93款的品牌归属"
+   ]
+  },
+  "LRE128_T34": {
+   "case_id": "LRE128_T34",
+   "current_action": "支持抽检留证与当场追责,提醒换新到后再复检一次",
+   "acceptable_actions": [
+    "说拍照录视频留证到位,换新的三天记得盯日历",
+    "提醒换新到货后再复检一遍,别以为换过就没事",
+    "问她杂音是全程还是开机那几下,记录写清楚"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A36",
+     "subject": "PUBLIC",
+     "relation": "quality_issue",
+     "value": "到货抽检发现两台有杂音,供应商认账并答应三天内换新",
+     "valid_time": "2026-12-06 发现",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T34",
+      "message_id": "m0",
+      "quote": "抽检抽了两台有杂音"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "验收环节她全流程在线,补一句复检提醒就够",
+   "unknowns": [
+    "杂音具体成因未查明"
+   ],
+   "protected_expressions": [
+    "抽检抽了两台有杂音"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言该批次全部有问题"
+   ]
+  },
+  "LRE128_T35": {
+   "case_id": "LRE128_T35",
+   "current_action": "接住采购收口汇报:算清总账与省额,肯定全流程留证的做法",
+   "acceptable_actions": [
+    "说从询价到验收每步都有据可查,这60省得漂亮",
+    "接领导夸奖的梗,说参谋费这回该按公司项目结",
+    "提醒把全套截图和确认函归档,年会真出问题找得着人",
+    "发现'省60'与预算1800对不上，如实指出实为超60"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A35",
+     "subject": "HER",
+     "relation": "change_decision",
+     "value": "她改选93元现货款,要求供应商出具变更确认函并退还每台2元差价",
+     "valid_time": "2026-12-04 决定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T33",
+      "message_id": "m0",
+      "quote": "让供应商出了变更确认函"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A37",
+     "subject": "HER",
+     "relation": "procurement_result",
+     "value": "年会采购完成：20台实付1860元，她称比预算省60（预算1800实为超60），全部验收通过",
+     "valid_time": "2026-12-07 收口",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T35",
+      "message_id": "m0",
+      "quote": "总共实付1860,比预算还省60"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "大项目收口,她要的是被见证,给足成就感",
+   "unknowns": [
+    "尾款是否已结清未明确",
+    "预算1800 vs 实付1860：实为超预算60元，HER 称'省60'与账不符——正确行为=发现差额并如实指出或请她核对，不得附和'省60'"
+   ],
+   "protected_expressions": [
+    "总共实付1860,比预算还省60"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构领导的具体评语"
+   ]
+  },
+  "LRE128_T36": {
+   "case_id": "LRE128_T36",
+   "current_action": "明确150是口头价且实际被扣到118并放弃,不沿用该口径,提醒走书面报价",
+   "acceptable_actions": [
+    "提醒她那家最后实付是118还害她放弃,别拿150当卖点",
+    "说回收价按旧口头价推就是挖坑,让同事要书面报价",
+    "建议同事多问一家比价,旧口径不做参考"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "boundary",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A11",
+     "subject": "HER",
+     "relation": "recycle_quote",
+     "value": "店家口头评估旧耳机回收价150元,官网回收价为92元",
+     "valid_time": "2026-11-08 口头口径,2026-11-09 起作废,不得沿用",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T08",
+      "message_id": "m0",
+      "quote": "店家给150"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她顺嘴把旧口头价当卖点,轻轻拉回118的实付事实,别让她难堪",
+   "unknowns": [
+    "该店现在的回收报价未知",
+    "同事旧设备的成色未知"
+   ],
+   "protected_expressions": [
+    "他给150挺爽快"
+   ],
+   "forbidden_factual_claims": [
+    "不得替该店报出任何现价",
+    "不得断言该店惯于压价"
+   ]
+  },
+  "LRE128_T37": {
+   "case_id": "LRE128_T37",
+   "current_action": "肯定她翻存档自证,确认118与未卖是最终事实,夸存档习惯立功",
+   "acceptable_actions": [
+    "说存档表这次救了同事也救了她,七张表没白攒",
+    "确认口径:实付118,没卖,150作废,就按这个记",
+    "笑她一身汗,说这就是截图党的底气"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A11",
+     "subject": "HER",
+     "relation": "recycle_quote",
+     "value": "店家口头评估旧耳机回收价150元,官网回收价为92元",
+     "valid_time": "2026-11-08 口头口径,已作废",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T08",
+      "message_id": "m0",
+      "quote": "店家给150"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A12",
+     "subject": "HER",
+     "relation": "recycle_revision",
+     "value": "店家扣除磨损费后实付118元,她当场决定不卖,旧耳机留作家用备用",
+     "valid_time": "2026-11-09 决定,最终事实",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T09",
+      "message_id": "m0",
+      "quote": "要扣'外观磨损费'实付118,一气之下不卖了"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A38",
+     "subject": "HER",
+     "relation": "archive_check",
+     "value": "她翻比价存档确认回收实付118元且未卖出,纠正自己的记混",
+     "valid_time": "2026-12-09 核实",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T37",
+      "message_id": "m0",
+      "quote": "那家最后扣完磨损费就给118,我压根没卖"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "陷阱被她自己的存档拆掉,夸的就是这套习惯本身",
+   "unknowns": [
+    "该店现行回收政策是否变化未知"
+   ],
+   "protected_expressions": [
+    "我压根没卖"
+   ],
+   "forbidden_factual_claims": [
+    "不得改判该店当日的磨损费是否合理"
+   ]
+  },
+  "LRE128_T38": {
+   "case_id": "LRE128_T38",
+   "current_action": "接互损玩笑,顺势应约,不把玩笑接成正式承诺",
+   "acceptable_actions": [
+    "接梗说记账可以,利息别按复利算",
+    "顺着应一句有空就去,把见面留在口头不落死期",
+    "说她这账本连人情都要计息,不愧是财务"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A39",
+     "subject": "HER",
+     "relation": "relation_gesture",
+     "value": "她以奶茶红包被退的玩笑记账表达感谢,并口头邀约见面",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T38",
+      "message_id": "m0",
+      "quote": "利息按奶茶算"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "纯轻松轮,别讲道理别收尾太正式,把球轻巧接回去",
+   "unknowns": [
+    "见面时间地点均未定"
+   ],
+   "protected_expressions": [
+    "利息按奶茶算"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她定下具体见面日期"
+   ]
+  },
+  "LRE128_T39": {
+   "case_id": "LRE128_T39",
+   "current_action": "肯定她先收需求再转介的升级,表明有验光单再细谈",
+   "acceptable_actions": [
+    "夸她这回学会了先要需求再转人,参谋效率翻倍",
+    "说让新人先把验光单备齐,老规矩截图为准",
+    "接住转介但别接太重,忙的话让她攒着一起发"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "boundary",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A23",
+     "subject": "THIRD",
+     "relation": "purchase_outcome",
+     "value": "表姐已在实体店配好老花镜,佩戴两天适应良好",
+     "valid_time": "2026-11-21 配好,佩戴顺利",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T20",
+      "message_id": "m0",
+      "quote": "表姐戴两天说看手机清楚多了"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A40",
+     "subject": "THIRD",
+     "relation": "referral_request",
+     "value": "表姐的同事经两层转介咨询配镜,她先收集度数预算再转给ME",
+     "valid_time": "2026-12-11 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T39",
+      "message_id": "m0",
+      "quote": "我先要了度数预算再转你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的参谋流程在进化,肯定进化本身,需求没到齐前不展开",
+   "unknowns": [
+    "新咨询者的年龄度数与预算未知"
+   ],
+   "protected_expressions": [
+    "我先要了度数预算再转你"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构新咨询者的视力情况"
+   ]
+  },
+  "LRE128_T40": {
+   "case_id": "LRE128_T40",
+   "current_action": "接复盘收尾:肯定七张存档的价值,轻快接续费梗收束",
+   "acceptable_actions": [
+    "说七张表就是两个月的战果,续费就免了,记账都记你账上",
+    "复盘一句:399换新那次定下的截图规矩一路用到了公司",
+    "轻快收束,问她下一张表打算比什么"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE128_A10",
+     "subject": "HER",
+     "relation": "order_decision",
+     "value": "她决定按399元规规矩矩下单换新套装并截图留证",
+     "valid_time": "2026-11-07 决定,全程被验证正确",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T07",
+      "message_id": "m0",
+      "quote": "规规矩矩按399下单,截图留证"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE128_A41",
+     "subject": "HER",
+     "relation": "period_summary",
+     "value": "她复盘两个月的消费决策,共攒下七张比价存档表",
+     "valid_time": "2026-12-12 总结",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE128_T40",
+      "message_id": "m0",
+      "quote": "存档表攒了七张"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收官轮,回扣要具体到399和存档,续费梗笑着接住就收",
+   "unknowns": [
+    "七张存档表的完整清单未展开"
+   ],
+   "protected_expressions": [
+    "从丢仓399换新到年会1860采购"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构未发生的消费项目"
+   ]
+  }
+ }
+}

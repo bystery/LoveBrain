@@ -1,0 +1,244 @@
+{
+ "episode_id": "E033",
+ "persona": {
+  "me": "30岁，中学老师，装修业主，预算35万；养一只英短，怕地板凉。",
+  "her": "31岁，装修公司设计师，监理风格；报价实，改单快，说话留证据。"
+ },
+ "initial_kb": {
+  "me": "首套房装修，全包给装修公司；工作日都在学校，晚上在家。",
+  "her": "从业八年；工长老周经验足但怕猫；材料单改一次出一版。",
+  "warmth": "朋友介绍的设计师，签约前的咨询期，专业上互相尊重。",
+  "style": "事务式短句；决策点列清楚；不催单。",
+  "stage": "设计师与业主（服务关系，未见熟）。",
+  "lessons": "预算口径要当场确认；变更都留文字。"
+ },
+ "turns": [
+  {
+   "case_id": "E033_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周先生你的量房约在周六上午 老周带队 我随行",
+      "ts": "2026-11-02 10:00"
+     }
+    ],
+    "clock": "2026-11-02 10:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E033_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "周六上午十点可以 我在家",
+      "ts": "2026-11-02 10:04"
+     },
+     {
+      "role": "HER",
+      "text": "好 提前把猫关好 老周怕猫",
+      "ts": "2026-11-02 10:10"
+     }
+    ],
+    "clock": "2026-11-02 10:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E033_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "量房改到下周三晚上了 老周周六有个急活 不好意思",
+      "ts": "2026-11-06 16:00"
+     }
+    ],
+    "clock": "2026-11-06 16:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E033_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "没问题 周三晚我都在",
+      "ts": "2026-11-06 16:04"
+     },
+     {
+      "role": "HER",
+      "text": "晚上七点 老周说让你把户型图找出来",
+      "ts": "2026-11-06 16:08"
+     }
+    ],
+    "clock": "2026-11-06 16:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E033_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "方案初稿出来了 预算按你说的35万 我建议瓷砖全换 成本上你这个钱省不下",
+      "ts": "2026-11-12 15:00"
+     }
+    ],
+    "clock": "2026-11-12 15:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E033_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "瓷砖换地板吧 我养猫 恐凉",
+      "ts": "2026-11-12 15:04"
+     },
+     {
+      "role": "HER",
+      "text": "行 我改材料单 地板加两万 预算37万",
+      "ts": "2026-11-12 15:10"
+     }
+    ],
+    "clock": "2026-11-12 15:12",
+    "may_decline": false,
+    "intent": {
+     "text": "确定地面材料方案并控制预算在37万内",
+     "status": "ACTIVE",
+     "enabled": true
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E033_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "地板到货了 有两箱色差 你要来看吗 老周说能换",
+      "ts": "2026-11-26 14:00"
+     }
+    ],
+    "clock": "2026-11-26 14:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E033_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "换 色差装上以后天天看",
+      "ts": "2026-11-26 14:04"
+     },
+     {
+      "role": "HER",
+      "text": "好 我让老周联系厂家 那两周后铺装",
+      "ts": "2026-11-26 14:08"
+     }
+    ],
+    "clock": "2026-11-26 14:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E033_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "铺装完成 你验收下 有块踢脚线翘了 我让老周明天来修",
+      "ts": "2026-12-10 11:00"
+     }
+    ],
+    "clock": "2026-12-10 11:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E033_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "验收了 整体很稳 踢脚线麻烦老周",
+      "ts": "2026-12-10 11:04"
+     },
+     {
+      "role": "HER",
+      "text": "他明天上午去 顺便把你家猫的挠痕评估下 要不要包个防抓条",
+      "ts": "2026-12-10 11:08"
+     }
+    ],
+    "clock": "2026-12-10 11:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E033_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "尾款结清 工程完结 你家猫现在敢在地上跑了?",
+      "ts": "2026-12-22 10:00"
+     }
+    ],
+    "clock": "2026-12-22 10:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E033_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "敢了 它现在把地板当跑道 还好当时没贴瓷砖",
+      "ts": "2026-12-22 10:04"
+     },
+     {
+      "role": "HER",
+      "text": "所以当初听我的没错 完工快乐 常联系",
+      "ts": "2026-12-22 10:08"
+     }
+    ],
+    "clock": "2026-12-22 10:10",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

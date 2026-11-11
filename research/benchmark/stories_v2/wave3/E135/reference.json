@@ -1,0 +1,694 @@
+{
+ "story_id": "E135",
+ "turns": {
+  "E135_T01": {
+   "current_action": "接下50天N1冲刺搭子邀约，确认冲刺表内容，表个态：打卡一起跑",
+   "acceptable_actions": [
+    "答应入伙，确认每天60词+真题精读的节奏",
+    "答应打卡并提议把记录表共享，互相看得见进度",
+    "接下邀约，顺口提醒她留一天弹性日防断卡"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A01",
+     "subject": "HER",
+     "relation": "备考目标",
+     "value": "报考12月日语N1，词汇是弱项",
+     "valid_time": "至2026-12考试日",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "报了12月日语N1考试，词汇是弱项"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E135_A02",
+     "subject": "SHARED",
+     "relation": "冲刺计划",
+     "value": "50天冲刺：每天60个新词加一套真题精读，两人打卡",
+     "valid_time": "2026-11-01起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T01",
+      "message_id": "m0",
+      "quote": "每天60个新词+一套真题精读，从今天起咱俩打卡别断"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应要干脆，搭子之间不用客套，可加一个日剧彩蛋。",
+   "unknowns": [
+    "打卡记录形式未定"
+   ],
+   "protected_expressions": [
+    "咱俩打卡别断"
+   ],
+   "forbidden_factual_claims": [
+    "不虚构N1考试具体日期"
+   ],
+   "case_id": "E135_T01"
+  },
+  "E135_T02": {
+   "current_action": "为连卡四天的正反馈叫好，肯定正确率涨幅，陪她把劲头保持住",
+   "acceptable_actions": [
+    "祝贺四连卡，肯定正确率提升，鼓励保持",
+    "接住状态来了的说法，让她趁热把最难的语法也带上",
+    "报数据式回应：这涨幅照跑到考前，词汇弱项能补平"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A03",
+     "subject": "HER",
+     "relation": "执行进度",
+     "value": "连卡四天，词汇正确率从六成升至七成五",
+     "valid_time": "2026-11-01至11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T02",
+      "message_id": "m0",
+      "quote": "连着四天打卡了，词汇正确率从六成涨到七成五"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E135_A04",
+     "subject": "HER",
+     "relation": "词汇弱项",
+     "value": "词汇是她的备考弱项",
+     "valid_time": "备考期持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "词汇是弱项"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "正反馈轮要接得热，别泼冷水也别加码。",
+   "unknowns": [],
+   "protected_expressions": [
+    "感觉状态来了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E135_T02"
+  },
+  "E135_T03": {
+   "current_action": "接受按暂停的请求并肯定这是理性止损：项目优先，打卡暂停不等于目标放弃，防止她自责",
+   "acceptable_actions": [
+    "同意暂停，明确表示这不叫断卡失败，是计划让位给现实",
+    "先接住糟心，再说暂停合理，问要不要降档而非全停",
+    "答应暂停打卡记录，提醒她考期还在，回来补就行"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A05",
+     "subject": "SHARED",
+     "relation": "打卡目标状态",
+     "value": "冲刺打卡因项目加班按暂停，预计暂停两周",
+     "valid_time": "2026-11-08起约两周",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T03",
+      "message_id": "m0",
+      "quote": "我想先把打卡按暂停，别让断卡毁心态"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E135_A06",
+     "subject": "SHARED",
+     "relation": "冲刺计划原状态",
+     "value": "原每日60词加真题精读的打卡计划停止执行",
+     "valid_time": "2026-11-08至重启前",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T01",
+      "message_id": "m0",
+      "quote": "每天60个新词+一套真题精读"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "核心是给她台阶：暂停是她做对了的决定，不是失败。",
+   "unknowns": [
+    "项目上线具体日期未定"
+   ],
+   "protected_expressions": [
+    "别让断卡毁心态"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E135_T03"
+  },
+  "E135_T04": {
+   "current_action": "确认降档方案：每天通勤10分钟刷词，真题欠账上线后补，把最低目标钉死",
+   "acceptable_actions": [
+    "确认10分钟档，说这就是保底线，别的都好说",
+    "认可降档并提议把10分钟也记进打卡表，保持仪式感",
+    "同意真题欠着，叮嘱她上线后先把听力捡回来"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A07",
+     "subject": "SHARED",
+     "relation": "降档目标",
+     "value": "暂停期内每天通勤刷词10分钟，真题欠账待补",
+     "valid_time": "暂停期至上线后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T04",
+      "message_id": "m0",
+      "quote": "每天通勤路上刷10分钟词就行，真题就先欠着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E135_A08",
+     "subject": "SHARED",
+     "relation": "打卡目标状态",
+     "value": "冲刺打卡处于暂停中",
+     "valid_time": "2026-11-08起",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T03",
+      "message_id": "m0",
+      "quote": "我想先把打卡按暂停"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把降档说成留火种，别让她觉得是缩水。",
+   "unknowns": [
+    "通勤时长未报出"
+   ],
+   "protected_expressions": [
+    "上线完了我再补"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E135_T04"
+  },
+  "E135_T05": {
+   "current_action": "为项目过灰度和10分钟档没断双重叫好，肯定她暂停期的最低目标守住了",
+   "acceptable_actions": [
+    "祝贺项目收尾，夸10分钟档的坚持，暂停期没白过",
+    "接住仪式感的说法，肯定这就是她说的不自欺的打卡",
+    "双重肯定后轻轻提一句：该回来补真题了"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A09",
+     "subject": "HER",
+     "relation": "降档执行结果",
+     "value": "暂停两周内每日10分钟刷词未断，项目过灰度",
+     "valid_time": "2026-11-08至11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T05",
+      "message_id": "m0",
+      "quote": "我这两周就真只刷了词，10分钟档倒是没断"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E135_A10",
+     "subject": "SHARED",
+     "relation": "降档目标",
+     "value": "暂停期内每天通勤刷词10分钟",
+     "valid_time": "暂停期",
+     "status": "fulfilled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T04",
+      "message_id": "m0",
+      "quote": "每天通勤路上刷10分钟词就行"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她做到了最低目标，这轮要让她的坚持被看见。",
+   "unknowns": [],
+   "protected_expressions": [
+    "仪式感还在"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E135_T05"
+  },
+  "E135_T06": {
+   "current_action": "接住真题重启的短板暴露：认可她暂停代价的自我诊断，给听力补法（精听短篇起步）",
+   "acceptable_actions": [
+    "认同诊断，建议听力从每天精听一篇短文起步",
+    "接住拉胯的自嘲，指出词汇保住了说明降档有用，听力只是欠账",
+    "给她一个具体补听方案并约定互相汇报"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A11",
+     "subject": "HER",
+     "relation": "重启后短板",
+     "value": "2018年真题听力错一半，词汇部分正常",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T06",
+      "message_id": "m0",
+      "quote": "听力拉胯，错了一半，看来暂停的代价主要在耳朵上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E135_A12",
+     "subject": "HER",
+     "relation": "暂停期保底结果",
+     "value": "暂停期词汇通过10分钟档保持未退化",
+     "valid_time": "2026-11-08至11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T05",
+      "message_id": "m0",
+      "quote": "10分钟档倒是没断"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "诊断她已经做对了，别重复她的结论，直接给下一步。",
+   "unknowns": [],
+   "protected_expressions": [
+    "暂停的代价主要在耳朵上"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E135_T06"
+  },
+  "E135_T07": {
+   "current_action": "呼应冲刺表重启：确认新节奏（60词+两天一套真题+30分钟精听），表态记录表跟着重启",
+   "acceptable_actions": [
+    "答应重启打卡，确认新节奏并更新记录表",
+    "接住25天的紧迫感，认可加了精听的补课设计",
+    "呼应重启并提醒她别把两周的量一天补齐"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A13",
+     "subject": "SHARED",
+     "relation": "打卡目标状态",
+     "value": "冲刺表重启：恢复60词加两天一套真题，听力加30分钟精听",
+     "valid_time": "2026-11-20起至考前",
+     "status": "resumed",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T07",
+      "message_id": "m0",
+      "quote": "冲刺表重启！从今天起恢复60词+两天一套真题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E135_A14",
+     "subject": "SHARED",
+     "relation": "打卡目标状态（前态）",
+     "value": "打卡此前处于暂停状态，本次恢复与之相反",
+     "valid_time": "2026-11-08至11-19",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T03",
+      "message_id": "m0",
+      "quote": "我想先把打卡按暂停"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "重启是本故事第二个启停节点，行动要跟得上她的劲头。",
+   "unknowns": [
+    "考试具体日期未报出"
+   ],
+   "protected_expressions": [
+    "这回打卡必须一路干到考前"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E135_T07"
+  },
+  "E135_T08": {
+   "current_action": "深夜身体不适的低压力轮：一句关心加准假即可，不谈计划不施压，允许简短或不回",
+   "acceptable_actions": [
+    "一句快休息加多喝热水式关心，不提打卡",
+    "准她明天补量，叮嘱别硬撑，晚安",
+    "简短关心降温穿衣，别的什么都不说"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A15",
+     "subject": "HER",
+     "relation": "身体状态",
+     "value": "精听中途着凉鼻塞，当晚提前休息",
+     "valid_time": "2026-11-26晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T08",
+      "message_id": "m0",
+      "quote": "鼻子有点塞，可能是降温着凉了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E135_A16",
+     "subject": "SHARED",
+     "relation": "打卡目标状态",
+     "value": "冲刺打卡处于重启后的执行期",
+     "valid_time": "2026-11-20起",
+     "status": "resumed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T07",
+      "message_id": "m0",
+      "quote": "冲刺表重启"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她身体不舒服，恢复期一句不提打卡量才是对的事。",
+   "unknowns": [
+    "次日是否恢复训练未定"
+   ],
+   "protected_expressions": [
+    "明天的量明天补"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E135_T08"
+  },
+  "E135_T09": {
+   "current_action": "为月度全勤汇报鼓掌，点出降档那两周火种的作用，呼应'没白费'的结论",
+   "acceptable_actions": [
+    "祝贺全勤，呼应降档保火种的判断",
+    "接住数据，指出词汇一直在正是暂停没断档的功劳",
+    "夸她把启停玩明白了，鼓励最后冲刺照这个节奏走"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A17",
+     "subject": "HER",
+     "relation": "月度执行结果",
+     "value": "60词档全勤，真题补至第7套，精听21天",
+     "valid_time": "2026-11月",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T09",
+      "message_id": "m0",
+      "quote": "60词档全勤，真题补到第7套，精听21天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E135_A18",
+     "subject": "SHARED",
+     "relation": "降档目标",
+     "value": "暂停期10分钟刷词档为全勤打下基础",
+     "valid_time": "2026-11-08至11-15",
+     "status": "fulfilled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T05",
+      "message_id": "m0",
+      "quote": "10分钟档倒是没断"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "复盘轮要有具体数据回应，别只有'厉害'。",
+   "unknowns": [],
+   "protected_expressions": [
+    "降档那两周真没白费"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E135_T09"
+  },
+  "E135_T10": {
+   "current_action": "认可考前一周收尾策略（只过错题不做新题），支持周日踩点安排",
+   "acceptable_actions": [
+    "肯定收尾策略，支持周日踩点并提醒看考点路线",
+    "接住计划，建议错词本和错题本分早晚各一轮",
+    "认可不做新题的定力，顺口问她要不要搭子陪踩点"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A19",
+     "subject": "HER",
+     "relation": "考前一周计划",
+     "value": "只过错题本和错词本，不做新题，周日踩点城东外语学校",
+     "valid_time": "2026-12-06当周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T10",
+      "message_id": "m0",
+      "quote": "只过错题本和错词本，不做新题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E135_A20",
+     "subject": "SHARED",
+     "relation": "打卡目标状态",
+     "value": "冲刺打卡重启后持续执行中",
+     "valid_time": "2026-11-20起",
+     "status": "resumed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T07",
+      "message_id": "m0",
+      "quote": "冲刺表重启"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "冲刺末期不添新建议，顺着她的收尾节奏走。",
+   "unknowns": [
+    "踩点具体时间未定"
+   ],
+   "protected_expressions": [
+    "周日先去踩个点"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E135_T10"
+  },
+  "E135_T11": {
+   "current_action": "接住考前最后的细节汇报，肯定踩点和作息安排，送一句考前定心话",
+   "acceptable_actions": [
+    "肯定踩点细致，叮嘱10点前睡的手机策略很对",
+    "接住安排，送一句明天正常发挥就行的定心话",
+    "轻松回应手机放客厅的狠劲，祝她考试顺利"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A21",
+     "subject": "HER",
+     "relation": "考前安排",
+     "value": "考点距地铁口500米已踩点，明早7点半出门，10点前睡",
+     "valid_time": "2026-12-07至考试日",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T11",
+      "message_id": "m0",
+      "quote": "明早7点半出门，晚上10点前必须睡"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E135_A22",
+     "subject": "HER",
+     "relation": "考前心态基线",
+     "value": "计划性强，靠细节安排压紧张",
+     "valid_time": "备考期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T10",
+      "message_id": "m0",
+      "quote": "只过错题本和错词本，不做新题"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "考前一周的执行细节汇报，话短一点，稳字当头。",
+   "unknowns": [],
+   "protected_expressions": [
+    "手机都准备放客厅充电"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E135_T11"
+  },
+  "E135_T12": {
+   "current_action": "接住考后的释放，把听力小遗憾说轻，收下她的反向打气并给出自己N2的考期回应，整条冲刺线收尾",
+   "acceptable_actions": [
+    "祝贺考完，接《四重奏》奖励梗，回应自己N2进度",
+    "肯定词汇阅读稳住，听力别对答案自寻烦恼",
+    "收下加油，约定出分那天互相汇报"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E135_A23",
+     "subject": "HER",
+     "relation": "考试表现",
+     "value": "N1考完，词汇阅读稳，听力最后两题不确定",
+     "valid_time": "2026-12-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T12",
+      "message_id": "m0",
+      "quote": "词汇和阅读稳，听力最后两道有点蒙"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E135_A24",
+     "subject": "SHARED",
+     "relation": "目标闭环",
+     "value": "从冲刺启动经暂停降档到重启，N1备考目标执行完毕",
+     "valid_time": "2026-11-01至12-14",
+     "status": "fulfilled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E135_T01",
+      "message_id": "m0",
+      "quote": "还有50天就N1了"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E135_A25",
+     "subject": "ME",
+     "relation": "备考目标",
+     "value": "ME备考N2，考期临近",
+     "valid_time": "至ME考试日",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "方屿备考N2"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾把能量还给她也留给自己，搭子关系是对等的。",
+   "unknowns": [
+    "出分时间与结果未知"
+   ],
+   "protected_expressions": [
+    "等你好消息"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言N1通过与否"
+   ],
+   "case_id": "E135_T12"
+  }
+ }
+}

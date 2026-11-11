@@ -1,0 +1,275 @@
+{
+ "episode_id": "E178",
+ "persona": {
+  "her": {
+   "name": "郗然",
+   "traits": [
+    "久坐办公想重新运动的上班族",
+    "消费前爱先小额试探",
+    "耳根子软但大额消费前会踩刹车"
+   ],
+   "boundaries": [
+    "不办大额年卡，不冲动上私教",
+    "推销可以听，但决定自己做"
+   ]
+  },
+  "me": {
+   "name": "江迟",
+   "traits": [
+    "HER 的邻居兼球友，常年健身房次卡党",
+    "说话直接，最烦推销话术"
+   ]
+  },
+  "relationship_stage": "渐熟邻居（常一起打球）"
+ },
+ "initial_kb": {
+  "me": "江迟，HER 的邻居兼球友，健身只用次卡，办卡这事上劝人冷静过不止一次。",
+  "her": "郗然，久坐办公，肩颈发紧，十年没系统游泳，这次团购了游泳馆体验课。",
+  "warmth": "两人每周打一次羽毛球，输的人请酸奶。",
+  "style": "HER 打字爱用波浪号，说烦心事会连发三条。",
+  "stage": "渐熟邻居，运动搭子，信任在升温。",
+  "lessons": "ME 曾办过年卡闲置大半，此后逢人就劝'先试后买'。"
+ },
+ "turns": [
+  {
+   "case_id": "E178_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-13 19:25",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-13 19:20",
+      "text": "江迟，我团了周六上午的游泳体验课，就在滨江那家馆，你说我要带啥？"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "新运动尝试开场",
+    "变化": "从日常球约切入新项目"
+   }
+  },
+  {
+   "case_id": "E178_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-14 07:35",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-14 07:30",
+      "text": "出发了，十年没下水，有点虚，泳镜刚买了防雾喷雾~"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "临场小紧张",
+    "变化": "期待里掺着忐忑"
+   }
+  },
+  {
+   "case_id": "E178_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-14 12:45",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-14 12:40",
+      "text": "游完啦，教练夸我有底子，就是开始推三千九百八的年卡加私教包，我头都大了~"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "课体验好但推销上来了",
+    "变化": "正反馈被推销搅局"
+   }
+  },
+  {
+   "case_id": "E178_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-14 13:25",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-14 13:20",
+      "text": "他还说我肩颈有问题，必须每周两次私教矫正，说得挺吓人的，我有点被说动了又不太信~"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "推销话术施压，内心摇摆",
+    "变化": "从被推销到被'健康警告'施压"
+   }
+  },
+  {
+   "case_id": "E178_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-14 16:10",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-14 16:05",
+      "text": "想明白了，年卡我不办，私教也不上，先买二十次的次卡自己游四周试试~"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "边界拍板：小额试探",
+    "变化": "摇摆后踩住刹车，给出清晰边界"
+   }
+  },
+  {
+   "case_id": "E178_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-15 10:35",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-15 10:30",
+      "text": "跟教练说了，他也没翻脸，改推一千二的次卡套餐，我寻思这个能接受~"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "边界守住后待遇软化了",
+    "变化": "推销退让，气氛缓和"
+   }
+  },
+  {
+   "case_id": "E178_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-18 20:45",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-18 20:40",
+      "text": "对了，更衣室有个柜子被一把挂锁锁了好久，前台也说不清，我东西都快没地放了~"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "遇到场馆小摩擦",
+    "变化": "话题从推销转到使用体验"
+   }
+  },
+  {
+   "case_id": "E178_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-19 09:20",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-19 09:15",
+      "text": "问到了！柜子当日清空，超时馆里剪锁收工本费，前台让我拍照留证就行~"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "规则问清，摩擦有了出口",
+    "变化": "从憋闷到踏实"
+   }
+  },
+  {
+   "case_id": "E178_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-21 11:55",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-21 11:50",
+      "text": "今天独立游完八百米！下周六你来岸边看我呗，赢你一碗酸奶的那种看~"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "成就感爆棚加邀约",
+    "变化": "进入正向循环，主动拉 ME 入场"
+   }
+  },
+  {
+   "case_id": "E178_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-23 21:15",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-23 21:10",
+      "text": "诶你说神不神，我就按自己节奏游，肩颈反而松了，哪用什么必须私教啊~"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "用体感验证推翻话术",
+    "变化": "从被施压到自信回击"
+   }
+  },
+  {
+   "case_id": "E178_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-25 20:40",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-25 20:35",
+      "text": "跟同班一个宝妈约成晨泳搭子了，每周六早上八点，以后有人互相盯着了~"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "新搭子落定",
+    "变化": "运动习惯开始社会化"
+   }
+  },
+  {
+   "case_id": "E178_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-28 10:10",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-28 10:05",
+      "text": "次卡用了六次，四周之约过半，要是四周后还能保持，我就续次卡，年卡还是不办~"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "边界二次确认",
+    "变化": "收尾复盘，边界固化为原则"
+   }
+  }
+ ]
+}

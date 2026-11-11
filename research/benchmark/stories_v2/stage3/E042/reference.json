@@ -1,0 +1,312 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E042",
+ "title": "金毛和周六早上",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E042_T01": {
+   "case_id": "E042_T01",
+   "current_action": "爽快答应，确认时间地点",
+   "acceptable_actions": [
+    "答应+确认七点半",
+    "答应+问在哪碰",
+    "答应并说带零食"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S042_F01",
+     "subject": "她",
+     "relation": "提议",
+     "value": "约周六早上七点半一起遛狗",
+     "valid_time": "2026-11-05 20:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E042_T01",
+      "message_id": "m0",
+      "quote": "周六早上七点半 遛一圈？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接约要爽快，别端着。",
+   "unknowns": [
+    "集合具体位置"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要推脱改时间"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E042_T02": {
+   "case_id": "E042_T02",
+   "current_action": "敲定集合点",
+   "acceptable_actions": [
+    "确认喷泉集合",
+    "补充自己特征",
+    "说带水"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S042_F01",
+     "subject": "她",
+     "relation": "提议",
+     "value": "约周六早上七点半一起遛狗",
+     "valid_time": "2026-11-05 20:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E042_T01",
+      "message_id": "m0",
+      "quote": "周六早上七点半 遛一圈？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "信息补全即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E042_T03": {
+   "case_id": "E042_T03",
+   "current_action": "先关心狗，再接受取消，不催改期",
+   "acceptable_actions": [
+    "问馒头现在怎么样",
+    "说取消没关系狗要紧",
+    "问需不需要帮忙带东西"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S042_F02",
+     "subject": "她",
+     "relation": "取消",
+     "value": "金毛疫苗反应要观察，周六取消",
+     "valid_time": "2026-11-06 08:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E042_T03",
+      "message_id": "m0",
+      "quote": "馒头疫苗有点反应 周六先取消 我在家看着它"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S042_F05",
+     "subject": "她的狗",
+     "relation": "状态",
+     "value": "馒头上周打了疫苗",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "馒头上周打了疫苗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她此刻的焦点是狗；你的分寸就是你的加分项。",
+   "unknowns": [
+    "疫苗反应严不严重",
+    "要不要看医生"
+   ],
+   "protected_expressions": [
+    "疫苗有点反应"
+   ],
+   "forbidden_factual_claims": [
+    "不要说扫兴/白等了",
+    "不要质疑她小题大做",
+    "不要立刻硬改约"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E042_T04": {
+   "case_id": "E042_T04",
+   "current_action": "提供具体帮助，不越界",
+   "acceptable_actions": [
+    "问要不要带营养品",
+    "说有需要随时喊",
+    "分享疫苗反应经验一句"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "帮忙要具体但别推销式热情。",
+   "unknowns": [
+    "她缺不缺东西"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要替她决定要不要看医生"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E042_T05": {
+   "case_id": "E042_T05",
+   "current_action": "轻收住，把主动权留给她",
+   "acceptable_actions": [
+    "说有变化随时说",
+    "祝馒头快点好",
+    "不再展开"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "此刻多一句都是打扰。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E042_T06": {
+   "case_id": "E042_T06",
+   "current_action": "按 intent 提出改约，不催确认",
+   "acceptable_actions": [
+    "提议下周六",
+    "说等她消息",
+    "改约+问候狗"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "改约轻提，她方便再确认。",
+   "unknowns": [
+    "她下周六是否上班"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要把取消的原时间说成还有效"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "改约：把遛狗定到下周六早上七点半",
+    "status": "ACTIVE"
+   }
+  },
+  "E042_T07": {
+   "case_id": "E042_T07",
+   "current_action": "确认新约+接住她加的早餐提议",
+   "acceptable_actions": [
+    "确认下周六+答应带路",
+    "问几个人（玩笑）",
+    "确认后说定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S042_F03",
+     "subject": "我们",
+     "relation": "新安排",
+     "value": "改到下周六早上七点半",
+     "valid_time": "2026-11-06 08:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E042_T07",
+      "message_id": "m0",
+      "quote": "下周六一样七点半 馒头应该好利索了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S042_F04",
+     "subject": "她",
+     "relation": "推进",
+     "value": "提议遛完顺路吃早餐",
+     "valid_time": "2026-11-06 08:25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E042_T07",
+      "message_id": "m0",
+      "quote": "遛完带它吃早餐吧 南门那家你带路"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动加了早餐，接住但不脑补关系进度。",
+   "unknowns": [
+    "南门早餐店周末排队情况"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要把早餐说成约会（她没这意思）",
+    "不要忘记狗还没好利索"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E042_T08": {
+   "case_id": "E042_T08",
+   "current_action": "收尾+回应狗的好消息",
+   "acceptable_actions": [
+    "为狗高兴",
+    "简短道别",
+    "收住"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "自然收尾，别再追加安排。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

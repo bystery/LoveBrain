@@ -1,0 +1,1139 @@
+{
+ "stories": [
+  {
+   "id": "S067",
+   "public_id": "E067",
+   "title": "第一次跳槽谈 offer",
+   "themes": [
+    "跳槽决策",
+    "薪资结构",
+    "条款核对",
+    "期限更正",
+    "朋友参谋"
+   ],
+   "motive": "她拿到人生第二份 offer，第一次面对一堆条款；真实张力是她怕谈崩又怕吃亏，我要把数字和条款说准、把决定权留给她。",
+   "continuity": "回复期限 12/15→12/19（HR 延期）在 T08；职级 P6→P6+（title 更正）在 T13；base 2.4万→2.45万（她看错邮件）在 T16。",
+   "corrections": "T08 起期限一律 12 月 19；T13 起职级=P6+；T16 起 base=2.45 万。",
+   "persona": {
+    "me": "33岁，后端工程师，跳过两次槽，谈过三轮薪。",
+    "her": "29岁，测试工程师，五年没换过工作；口头强心里慌，数字看快了就过。"
+   },
+   "initial_kb": {
+    "me": "大学同学群认识的，后来成了饭搭子；我跳槽材料都留着。",
+    "her": "现司稳定但涨薪慢；新 offer 是一家做测开平台的中厂。",
+    "warmth": "老友，互揭老底的那种；她拿主意前爱找人把话说死。",
+    "style": "她聊钱不扭捏，但条款看三行就烦。",
+    "stage": "多年朋友，纯参谋不带利益。",
+    "lessons": "她要的是'把条款翻译成人话'；决定必须她签，我只负责看懂。"
+   },
+   "facts": [
+    {
+     "id": "S067_F01",
+     "subject": "她",
+     "relation": "事件",
+     "value": "拿到测开平台中厂offer",
+     "valid_time": "2026-12-10 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T01",
+      "quote": "拿到 offer 了"
+     }
+    },
+    {
+     "id": "S067_F02",
+     "subject": "offer",
+     "relation": "结构",
+     "value": "base 2.4万/月（她初读），14薪，少量期权",
+     "valid_time": "2026-12-10 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T02",
+      "quote": "base 2 万 4 十四薪 期权一点点"
+     }
+    },
+    {
+     "id": "S067_F03",
+     "subject": "我",
+     "relation": "知识",
+     "value": "期权要问四件事：股数/行权价/vesting 周期/离职回购",
+     "valid_time": "2026-12-10 21:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T03",
+      "quote": "股数 行权价 vesting 周期 离职回购 这四件问清"
+     }
+    },
+    {
+     "id": "S067_F04",
+     "subject": "offer",
+     "relation": "期限",
+     "value": "offer 回复期限12月15日18点",
+     "valid_time": "2026-12-11 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T04",
+      "quote": "12 月 15 号下午六点前要答复"
+     }
+    },
+    {
+     "id": "S067_F05",
+     "subject": "我",
+     "relation": "知识",
+     "value": "竞业条款要看：范围/期限/补偿比例，无补偿可拒签",
+     "valid_time": "2026-12-11 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T05",
+      "quote": "范围 期限 补偿比例 没补偿可以拒"
+     }
+    },
+    {
+     "id": "S067_F06",
+     "subject": "HR",
+     "relation": "更正",
+     "value": "回复期限延至12月19日18点",
+     "valid_time": "2026-12-13 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T07",
+      "quote": "延期到 12 月 19 号"
+     }
+    },
+    {
+     "id": "S067_F07",
+     "subject": "她",
+     "relation": "决策",
+     "value": "决定接offer",
+     "valid_time": "2026-12-17 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T10",
+      "quote": "我接了"
+     }
+    },
+    {
+     "id": "S067_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "职级从P6更正为P6+（邮件确认）",
+     "valid_time": "2026-12-18 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T11",
+      "quote": "职级写的是 P6+"
+     }
+    },
+    {
+     "id": "S067_F09",
+     "subject": "她",
+     "relation": "更正",
+     "value": "base实为2.45万（她之前看错）",
+     "valid_time": "2026-12-19 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T12",
+      "quote": "base 是 2 万 45"
+     }
+    },
+    {
+     "id": "S067_F10",
+     "subject": "我",
+     "relation": "知识",
+     "value": "入职要离职证明+社保转移，原司流程提前两周走",
+     "valid_time": "2026-12-20 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T13",
+      "quote": "离职证明和社保转移 提前两周跟原司走流程"
+     }
+    },
+    {
+     "id": "S067_F11",
+     "subject": "她",
+     "relation": "事件",
+     "value": "顺利入职新司",
+     "valid_time": "2027-01-05 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T16",
+      "quote": "入职了"
+     }
+    },
+    {
+     "id": "S067_F12",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "首月感受：节奏快但成长快",
+     "valid_time": "2027-02-05 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S067_T18",
+      "quote": "节奏快但成长快"
+     }
+    }
+   ],
+   "events": [
+    {
+     "event_id": "EV1",
+     "label": "12月15日答复期限（延期）",
+     "event_time": "2026-12-15 18:00",
+     "status": "cancelled",
+     "source_turn": "S067_T05"
+    },
+    {
+     "event_id": "EV2",
+     "label": "12月19日答复期限",
+     "event_time": "2026-12-19 18:00",
+     "status": "done",
+     "source_turn": "S067_T08"
+    },
+    {
+     "event_id": "EV3",
+     "label": "1月5日入职",
+     "event_time": "2027-01-05 09:00",
+     "status": "done",
+     "source_turn": "S067_T20"
+    }
+   ],
+   "relationship": [
+    {
+     "turn": "T01",
+     "stage": "报喜的老友"
+    },
+    {
+     "turn": "T08",
+     "stage": "逐条核条款的参谋"
+    },
+    {
+     "turn": "T13",
+     "stage": "入职前确认员"
+    },
+    {
+     "turn": "T23",
+     "stage": "新阶段的见证人"
+    }
+   ],
+   "turns": [
+    {
+     "clock": "2026-12-10 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "拿到 offer 了 测开平台的中厂 我不知道该不该高兴 你说",
+       "2026-12-10 20:58"
+      ]
+     ],
+     "current_action": "先接喜讯再进正题：把'该不该高兴'拆成待核清单；不泼冷水不吹捧",
+     "acceptable_actions": [
+      "恭喜+让她发offer截图",
+      "恭喜+列要核的三块",
+      "问她纠结点在哪"
+     ],
+     "dims": [
+      "emotion_relation",
+      "goal",
+      "interaction"
+     ],
+     "atoms": [
+      "S067_F01"
+     ],
+     "required": [],
+     "private_guidance": "她'不知道该不该高兴'=信息不足，不是情绪问题。",
+     "unknowns": [
+      "offer具体内容"
+     ],
+     "protected": [
+      "不知道该不该高兴"
+     ],
+     "forbidden": [
+      "不要说中厂不行",
+      "不要说恭喜就完了"
+     ]
+    },
+    {
+     "clock": "2026-12-10 21:20",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "base 2 万 4 十四薪 期权一点点 你帮我看看这数行不行",
+       "2026-12-10 21:18"
+      ]
+     ],
+     "current_action": "给对比锚点（现司涨幅/市场带宽）+指出期权'一点点'要看细则",
+     "acceptable_actions": [
+      "问她现司base+算涨幅",
+      "说涨幅角度可谈+期权细看",
+      "让她发完整包"
+     ],
+     "dims": [
+      "factuality",
+      "goal",
+      "boundary"
+     ],
+     "atoms": [
+      "S067_F02"
+     ],
+     "required": [
+      "S067_F01"
+     ],
+     "private_guidance": "数字轮：先要对照系再评价。",
+     "unknowns": [
+      "她现司薪资"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要拍脑袋说高了低了",
+      "不要替她谈判"
+     ]
+    },
+    {
+     "clock": "2026-12-10 21:40",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "期权一点点也得问清 股数 行权价 vesting 周期 离职回购 这四件问清 不然就是画饼",
+       "2026-12-10 21:36"
+      ],
+      [
+       "HER",
+       "我哪懂这些 你发我一段话术我去问HR",
+       "2026-12-10 21:38"
+      ]
+     ],
+     "current_action": "把期权四问翻译成她能直接发的话术",
+     "acceptable_actions": [
+      "给一段可直接发的话术",
+      "教她按邮件问留痕",
+      "说问题不丢人"
+     ],
+     "dims": [
+      "factuality",
+      "initiative",
+      "memory_use"
+     ],
+     "atoms": [
+      "S067_F03"
+     ],
+     "required": [],
+     "private_guidance": "给话术=把知识变成她的行动。",
+     "unknowns": [
+      "HR回复速度"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要说HR会烦",
+      "不要替她发邮件"
+     ]
+    },
+    {
+     "clock": "2026-12-11 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "HR 回了 股数行权价都有 期限也发了 12 月 15 号下午六点前要答复 我有点赶",
+       "2026-12-11 19:58"
+      ]
+     ],
+     "current_action": "接期限+评估三天够不够核完；给出'不够就问延期'的合法性",
+     "acceptable_actions": [
+      "列三天核完的优先级",
+      "教她问延期的话术",
+      "说15号是惯例不是铁律"
+     ],
+     "dims": [
+      "time_state",
+      "goal",
+      "initiative"
+     ],
+     "atoms": [
+      "S067_F04"
+     ],
+     "required": [
+      "S067_F03"
+     ],
+     "private_guidance": "期限紧张=优先级排序题。",
+     "unknowns": [
+      "背调是否已启动"
+     ],
+     "protected": [
+      "我有点赶"
+     ],
+     "forbidden": [
+      "不要说来不及了慌",
+      "不要说她磨蹭"
+     ]
+    },
+    {
+     "clock": "2026-12-11 20:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "竞业要看三样 范围 期限 补偿比例 没补偿可以拒签 你先拍合同附件给我",
+       "2026-12-11 20:24"
+      ],
+      [
+       "HER",
+       "合同附件里还有竞业协议 范围写得可宽 全行业都像",
+       "2026-12-11 20:28"
+      ]
+     ],
+     "current_action": "给竞业三看（范围/期限/补偿比例）+无补偿可拒签；标注'拒签=可能影响offer'",
+     "acceptable_actions": [
+      "给三看+让她问补偿比例",
+      "说范围宽要写明清单",
+      "提醒保留沟通记录"
+     ],
+     "dims": [
+      "factuality",
+      "boundary",
+      "memory_use"
+     ],
+     "atoms": [
+      "S067_F05"
+     ],
+     "required": [
+      "S067_F01"
+     ],
+     "private_guidance": "竞业是她这行真实的坑，说透但不吓。",
+     "unknowns": [
+      "补偿比例"
+     ],
+     "protected": [
+      "写得可宽"
+     ],
+     "forbidden": [
+      "不要说竞业协议都是废纸",
+      "不要教她硬刚"
+     ]
+    },
+    {
+     "clock": "2026-12-12 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我问了补偿 30% 月薪 补 6 个月 这个算正常吗",
+       "2026-12-12 20:56"
+      ]
+     ],
+     "current_action": "如实给区间感（常见口径）+建议她书面确认触发条件；不拍板",
+     "acceptable_actions": [
+      "说在常见区间+确认触发条件",
+      "让她把口径落到邮件",
+      "提醒补偿按什么基数算"
+     ],
+     "dims": [
+      "factuality",
+      "memory_use",
+      "boundary"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F05"
+     ],
+     "private_guidance": "数字之外，触发条件更关键。",
+     "unknowns": [
+      "基数定义"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要说绝对正常/不正常",
+      "不要让她口头确认"
+     ]
+    },
+    {
+     "clock": "2026-12-13 19:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "HR 主动说 期限延期到 12 月 19 号 让我考虑周全 这算好事吧",
+       "2026-12-13 18:56"
+      ]
+     ],
+     "current_action": "确认新期限12月19+旧15作废；解读为诚意信号（保留判断）",
+     "acceptable_actions": [
+      "确认12/19+说是积极信号",
+      "确认+让她要书面更新",
+      "确认+说时间充裕了按序核"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [
+      "S067_F06"
+     ],
+     "required": [
+      "S067_F04"
+     ],
+     "private_guidance": "本剧期限硬更正：15→19。",
+     "unknowns": [
+      "HR为何延期"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要再说12月15",
+      "不要过度解读HR意图"
+     ]
+    },
+    {
+     "clock": "2026-12-15 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我又把两家待遇拉了张表 越比越乱 你帮我排个主次",
+       "2026-12-15 20:56"
+      ]
+     ],
+     "current_action": "给比较框架：base/稳定性/成长/通勤四轴加权；让她自己填权重",
+     "acceptable_actions": [
+      "给四轴框架让她打分",
+      "让她写每家三条最好最差",
+      "说别只比钱"
+     ],
+     "dims": [
+      "goal",
+      "boundary",
+      "memory_use"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F02"
+     ],
+     "private_guidance": "决策框架给她，结论她出。",
+     "unknowns": [
+      "她的权重偏好"
+     ],
+     "protected": [
+      "越比越乱"
+     ],
+     "forbidden": [
+      "不要替她排序",
+      "不要说钱最重要"
+     ]
+    },
+    {
+     "clock": "2026-12-16 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我跟现司领导提了离职意向 他挽留说年底有调薪 我脑子嗡了一下",
+       "2026-12-16 20:56"
+      ]
+     ],
+     "current_action": "接冲击+给反问清单（调薪幅度/职级/书面?）+提醒别当场答复",
+     "acceptable_actions": [
+      "教她要书面承诺再看",
+      "给三个反问让她带回去",
+      "提醒挽留话术vs实际数字"
+     ],
+     "dims": [
+      "goal",
+      "boundary",
+      "factuality"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F06"
+     ],
+     "private_guidance": "挽留是谈判：一切以书面数字为准。",
+     "unknowns": [
+      "调薪具体幅度"
+     ],
+     "protected": [
+      "脑子嗡了一下"
+     ],
+     "forbidden": [
+      "不要说现司一定画饼",
+      "不要说新司一定更好"
+     ]
+    },
+    {
+     "clock": "2026-12-17 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "想明白了 现司调薪画饼成分大 新司看得见 我接了",
+       "2026-12-17 20:56"
+      ]
+     ],
+     "current_action": "尊重决定+确认书面流程（邮件回复）+肯定她的判断过程",
+     "acceptable_actions": [
+      "恭喜决定+提醒邮件留痕",
+      "肯定过程+让她按期答复",
+      "说接得有依据"
+     ],
+     "dims": [
+      "emotion_relation",
+      "goal",
+      "boundary"
+     ],
+     "atoms": [
+      "S067_F07"
+     ],
+     "required": [
+      "S067_F06"
+     ],
+     "private_guidance": "她拍板我背书，顺序不能反。",
+     "unknowns": [],
+     "protected": [
+      "我接了"
+     ],
+     "forbidden": [
+      "不要说早该接了",
+      "不要说万一后悔"
+     ]
+    },
+    {
+     "clock": "2026-12-18 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "offer 邮件细看 职级写的是 P6+ 不是 P6 我之前看岔了 是好事吧",
+       "2026-12-18 19:56"
+      ]
+     ],
+     "current_action": "确认职级更正P6++落书面（让她回邮件确认）+轻提职级影响试用期考核",
+     "acceptable_actions": [
+      "确认+让她邮件回执",
+      "说P6+影响调薪线",
+      "确认+提醒入职材料带齐"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "goal"
+     ],
+     "atoms": [
+      "S067_F08"
+     ],
+     "required": [
+      "S067_F07"
+     ],
+     "private_guidance": "本剧职级更正：此后一律P6+。",
+     "unknowns": [
+      "试用期考核标准"
+     ],
+     "protected": [
+      "是好事吧"
+     ],
+     "forbidden": [
+      "不要说P6没啥用",
+      "不要放过口头确认"
+     ]
+    },
+    {
+     "clock": "2026-12-19 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "按期答复了 最后核数字发现 base 是 2 万 45 我之前看成 2 万 4 白高兴半档",
+       "2026-12-19 19:56"
+      ]
+     ],
+     "current_action": "确认base更正2.45万+算年包差额给她看（45×12=多5400/年）+祝贺收官",
+     "acceptable_actions": [
+      "算差额+恭喜",
+      "确认数字+让她核对薪条",
+      "说白捡的5400+恭喜"
+     ],
+     "dims": [
+      "factuality",
+      "memory_use",
+      "emotion_relation"
+     ],
+     "atoms": [
+      "S067_F09"
+     ],
+     "required": [
+      "S067_F04",
+      "S067_F08"
+     ],
+     "private_guidance": "本剧数字更正：base=2.45万；算给她看才踏实。",
+     "unknowns": [
+      "绩效系数"
+     ],
+     "protected": [
+      "白高兴半档"
+     ],
+     "forbidden": [
+      "不要说算错数无所谓",
+      "不要又说错别的吓她"
+     ]
+    },
+    {
+     "clock": "2026-12-20 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "入职材料这块 离职证明和社保转移 提前两周跟原司走流程 1 月 5 号入职的话现在就该动了",
+       "2026-12-20 19:52"
+      ],
+      [
+       "HER",
+       "好 我明天就提流程 谢提点",
+       "2026-12-20 19:56"
+      ]
+     ],
+     "current_action": "给入职前流程提醒（离职证明/社保转移/公积金）+时间倒排",
+     "acceptable_actions": [
+      "列流程清单+倒排日期",
+      "提醒年假折算别忘",
+      "让她问新司入职材料清单"
+     ],
+     "dims": [
+      "goal",
+      "time_state",
+      "memory_use"
+     ],
+     "atoms": [
+      "S067_F10"
+     ],
+     "required": [
+      "S067_F07"
+     ],
+     "private_guidance": "流程轮：倒排时间最实用。",
+     "unknowns": [
+      "原司离职流程时长"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要说原司会卡她",
+      "不要列二十条吓她"
+     ]
+    },
+    {
+     "clock": "2026-12-25 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "现司欢送会开了 领导说欢迎回来 我笑着接的 心里有点软",
+       "2026-12-25 20:56"
+      ]
+     ],
+     "current_action": "接她的软：肯定五年感情+尊重她的选择已经做完；不翻烧饼",
+     "acceptable_actions": [
+      "说感情是真的+决定也是对的",
+      "让她把同事联系方式留好",
+      "说往前看不回头的意义"
+     ],
+     "dims": [
+      "emotion_relation",
+      "boundary",
+      "memory_use"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F07"
+     ],
+     "private_guidance": "情绪轮：不讲道理，陪她软一下。",
+     "unknowns": [],
+     "protected": [
+      "心里有点软"
+     ],
+     "forbidden": [
+      "不要说别回头",
+      "不要说现司坏话"
+     ]
+    },
+    {
+     "clock": "2026-12-30 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "offer 里那条竞业 我再问了一次 补偿按全额工资算 写进补充协议了 心里踏实",
+       "2026-12-30 19:56"
+      ]
+     ],
+     "current_action": "确认竞业补偿落到书面+呼应她的坚持；一句话收",
+     "acceptable_actions": [
+      "说这就稳了+存好协议",
+      "肯定她追到位",
+      "提醒入职带一份"
+     ],
+     "dims": [
+      "memory_use",
+      "goal",
+      "emotion_relation"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F05"
+     ],
+     "private_guidance": "竞业伏笔回收：从范围宽到补偿落纸。",
+     "unknowns": [],
+     "protected": [
+      "心里踏实"
+     ],
+     "forbidden": [
+      "不要又说别的风险",
+      "不要说早该这样"
+     ]
+    },
+    {
+     "clock": "2027-01-05 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "入职了 工牌到手 试用期六个月 我又开始了",
+       "2027-01-05 19:56"
+      ]
+     ],
+     "current_action": "恭喜入职+给试用期三条轻建议（周报留痕/问清考核/别急着表现砸了）",
+     "acceptable_actions": [
+      "恭喜+给试用期三条",
+      "让她第一周多听少改",
+      "说六个月后你来报喜"
+     ],
+     "dims": [
+      "goal",
+      "initiative",
+      "emotion_relation"
+     ],
+     "atoms": [
+      "S067_F11"
+     ],
+     "required": [
+      "S067_F10"
+     ],
+     "private_guidance": "新起点轮：建议轻，信心重。",
+     "unknowns": [
+      "团队风格"
+     ],
+     "protected": [
+      "我又开始了"
+     ],
+     "forbidden": [
+      "不要列十条注意事项",
+      "不要说试用期容易挂"
+     ]
+    },
+    {
+     "clock": "2027-01-20 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "第一周差点把测试环境整挂了 导师捞的我 糗",
+       "2027-01-20 20:56"
+      ]
+     ],
+     "current_action": "接糗事+把事故翻译成学习成本+给一个防再犯的小招",
+     "acceptable_actions": [
+      "说新人都会+教她备份环境",
+      "接梗+让她写进工作笔记",
+      "说导师人不错+多请教"
+     ],
+     "dims": [
+      "emotion_relation",
+      "goal",
+      "memory_use"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F11"
+     ],
+     "private_guidance": "糗事轮：轻处理。",
+     "unknowns": [],
+     "protected": [
+      "糗"
+     ],
+     "forbidden": [
+      "不要说你怎么这么不小心",
+      "不要上纲上线"
+     ]
+    },
+    {
+     "clock": "2027-02-05 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "满月总结 节奏快但成长快 期权文档我也全看懂了 四个问题一个没落",
+       "2027-02-05 20:56"
+      ]
+     ],
+     "current_action": "呼应期权四问闭环（她全看懂了）+肯定满月状态",
+     "acceptable_actions": [
+      "说四问全过=入门了",
+      "呼应她成长速度+让她稳住",
+      "让她把文档存档"
+     ],
+     "dims": [
+      "memory_use",
+      "emotion_relation",
+      "factuality"
+     ],
+     "atoms": [
+      "S067_F12"
+     ],
+     "required": [
+      "S067_F03"
+     ],
+     "private_guidance": "出窗探针：期权四问(T03)远端回扣。",
+     "unknowns": [],
+     "protected": [],
+     "forbidden": [
+      "不要说还早呢",
+      "不要泼冷水"
+     ]
+    },
+    {
+     "clock": "2027-02-10 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "问你个老问题 我当时要是不延期直接 15 号答了会怎样",
+       "2027-02-10 19:56"
+      ]
+     ],
+     "current_action": "如实复盘：可能错过P6+与2.45万的两处更正；不下'必亏'结论，事实说话",
+     "acceptable_actions": [
+      "用两处更正事实复盘",
+      "说延期给了核数空间",
+      "说流程稳=结果稳"
+     ],
+     "dims": [
+      "memory_use",
+      "factuality",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F06",
+      "S067_F08",
+      "S067_F09"
+     ],
+     "private_guidance": "出窗探针收口：三处更正一起回扣。",
+     "unknowns": [],
+     "protected": [],
+     "forbidden": [
+      "不要说'不听我的就亏了'",
+      "不要绝对化"
+     ]
+    },
+    {
+     "clock": "2027-02-20 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我把我们这趟从 offer 到入职的流水账写成帖子了 匿名发在小红书 评论区问竞业的最多",
+       "2027-02-20 20:56"
+      ]
+     ],
+     "current_action": "呼应她输出+提醒帖子脱敏（公司名/数字模糊化）；不越权审稿",
+     "acceptable_actions": [
+      "提醒脱敏再发",
+      "说帖子能帮人+注意隐私",
+      "让她把竞业那段展开"
+     ],
+     "dims": [
+      "boundary",
+      "goal",
+      "initiative"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F05"
+     ],
+     "private_guidance": "分享是好事，隐私红线要提。",
+     "unknowns": [
+      "帖子内容"
+     ],
+     "protected": [
+      "匿名"
+     ],
+     "forbidden": [
+      "不要说别发",
+      "不要说教平台的规矩"
+     ]
+    },
+    {
+     "clock": "2027-02-28 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "帖子小爆了 评论区有人骂我凡尔赛 但更多人问细节 我统一回：条款自己看 数字自己算",
+       "2027-02-28 20:56"
+      ]
+     ],
+     "current_action": "接小爆+呼应她回复的口径（自己看自己算=教方法）",
+     "acceptable_actions": [
+      "肯定她回复口径+别跟杠精纠缠",
+      "让她置顶四问模板",
+      "说骂声忽略"
+     ],
+     "dims": [
+      "interaction",
+      "boundary",
+      "emotion_relation"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F03"
+     ],
+     "private_guidance": "网络舆论轮：方法比结论可复制。",
+     "unknowns": [],
+     "protected": [
+      "统一回"
+     ],
+     "forbidden": [
+      "不要教她骂回去",
+      "不要说评论区都是坏人"
+     ]
+    },
+    {
+     "clock": "2027-03-20 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "试用期过半 导师给我反馈 稳住别飘 我顺手问了下转正答辩的流程",
+       "2027-03-20 20:56"
+      ]
+     ],
+     "current_action": "呼应她的稳+给答辩流程常识（材料/评审/指标）并标注'以公司口径为准'",
+     "acceptable_actions": [
+      "让她列答辩材料清单",
+      "说流程以HR口径为准",
+      "提醒别飘两字是真话"
+     ],
+     "dims": [
+      "goal",
+      "memory_use",
+      "factuality"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F08",
+      "S067_F11"
+     ],
+     "private_guidance": "试用期中段轮：流程常识+克制。",
+     "unknowns": [
+      "答辩具体日期"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要编答辩评分",
+      "不要说稳过"
+     ]
+    },
+    {
+     "clock": "2027-07-05 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "转正答辩通过 P6+ 顺利转正 谢你当年那句话 把条款翻译成人话",
+       "2027-07-05 20:56"
+      ]
+     ],
+     "current_action": "收官：呼应全程节点（四问/延期/更正）+把功劳还给她（每个数她核的）",
+     "acceptable_actions": [
+      "说数字都是你自己核的",
+      "呼应全程+说该你请客",
+      "说下次你给别人当参谋"
+     ],
+     "dims": [
+      "emotion_relation",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F08",
+      "S067_F09",
+      "S067_F12"
+     ],
+     "private_guidance": "收官轮：全链闭环，功劳归她。",
+     "unknowns": [],
+     "protected": [
+      "谢你当年那句话"
+     ],
+     "forbidden": [
+      "不要居功",
+      "不要说教式总结"
+     ]
+    },
+    {
+     "clock": "2027-07-06 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "转正第一天 说好请你的饭这周末兑现 你来定地方",
+       "2027-07-06 20:56"
+      ]
+     ],
+     "current_action": "收官：接饭局+回扣全程三处更正与四问闭环+把功劳还她",
+     "acceptable_actions": [
+      "定地方+说这顿该请",
+      "呼应全程节点+说数字都是她自己核的",
+      "接+让她把模板发我存着"
+     ],
+     "dims": [
+      "emotion_relation",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S067_F12",
+      "S067_F08",
+      "S067_F09"
+     ],
+     "private_guidance": "终局轮：饭局=仪式感的收口。",
+     "unknowns": [],
+     "protected": [],
+     "forbidden": [
+      "不要居功",
+      "不要说教"
+     ]
+    }
+   ]
+  }
+ ]
+}

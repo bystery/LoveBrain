@@ -1,0 +1,156 @@
+{
+ "episode_id": "E136",
+ "persona": {
+  "her": {
+   "name": "何笑",
+   "traits": ["医疗器械销售三年", "热情外向，爱拉人组局", "行程被改也不红脸，擅长找替代方案", "讲人情也讲账目清楚"],
+   "boundaries": ["答应的事一定给交代", "不占朋友便宜，费用当面算清"]
+  },
+  "me": {
+   "name": "老周",
+   "traits": ["前同事，转行第三方检测两年", "对行业新设备有真兴趣", "话少，回消息实在"]
+  },
+  "relationship_stage": "普通朋友（前同事，关系回暖）"
+ },
+ "initial_kb": {
+  "her": "何笑做医疗器械销售三年，公司参加11月中旬的城市国际医疗器械展，手里有两张VIP邀请码，想拉前同事老周同行",
+  "me": "老周前同事，转行做第三方检测，对展会检测类新设备感兴趣，与何笑离职后偶有联系、最近因行业话题重新热络",
+  "warmth": "前同事情谊，聊行业话题多，互相帮忙不记账但心里有数",
+  "stage": "普通朋友"
+ },
+ "turns": [
+  {
+   "case_id": "E136_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-03 11:20", "text": "周哥！14、15号城里那个医疗器械展你去不去？我们公司有展位，我搞到两张VIP邀请码，你做检测的正好来看看新设备，顺便帮我撑撑场子？"}],
+    "clock": "2026-11-03 11:22",
+    "may_decline": false,
+    "intent": {"enabled": true, "status": "proposed", "text": "邀老周14、15号同去医疗器械展"}
+   },
+   "gold": {},
+   "feedback": {"her_state": "拉人组局的热络，给足理由"}
+  },
+  {
+   "case_id": "E136_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-05 21:00", "text": "邀请码你注册好啦？那咱就定14号，上午看你们检测方向的展馆，下午三点我们展位有个新品演示，你来正好赶上。"}],
+    "clock": "2026-11-05 21:02",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "行程敲定的安排感"}
+  },
+  {
+   "case_id": "E136_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-11 17:40", "text": "计划有变！大老板临时把华东客户的签约会定在14号，我必须到场，咱改15号行不行？演示时间也挪到15号下午两点，票你放心，邀请码不限日期。"}],
+    "clock": "2026-11-11 17:42",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "改期的抱歉加新方案的利落"}
+  },
+  {
+   "case_id": "E136_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-13 19:15", "text": "又出幺蛾子……主办方刚才发通知，15号上午场馆消防检查，上午场全部取消，只开下午。得，那就15号下午一点半门口见，你检出的新设备咱直接看，演示照旧。"}],
+    "clock": "2026-11-13 19:17",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "二度改期的无奈加自嘲"}
+  },
+  {
+   "case_id": "E136_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-14 22:30", "text": "对了，签约会今天顺利，客户还追加了一单。明天你直接来找我，我把两张证件放前台你名下，报你手机尾号就能领。"}],
+    "clock": "2026-11-14 22:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "签约顺利的好消息加明天的对接细节"}
+  },
+  {
+   "case_id": "E136_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-15 13:50", "text": "你到啦？我在B馆二号门等你，刚才转了一圈，你们检测那家的新款光谱仪真不小，走，先带你去看。"}],
+    "clock": "2026-11-15 13:52",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "展会现场的热络引导"}
+  },
+  {
+   "case_id": "E136_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-15 16:40", "text": "演示圆满！我们那台新样机的自动校准功能把好几个同行都看来了，有个检测机构的老师还留了名片，回头我跟技术对接。"}],
+    "clock": "2026-11-15 16:42",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "演示成功的兴奋，顺势汇报线索"}
+  },
+  {
+   "case_id": "E136_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-16 10:10", "text": "昨天你说想拿资料，我把三家厂商的白皮书和演示视频打包发你了，那家的光谱仪参数我顺手帮你问了，人家说可以约实验室实测。"}],
+    "clock": "2026-11-16 10:12",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "兑现承诺的主动性"}
+  },
+  {
+   "case_id": "E136_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-18 20:30", "text": "实测约上了，就下周三下午，我陪你去，正好我也要回访他们展位，把那张名片的人物关系再顺一顺。"}],
+    "clock": "2026-11-18 20:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "顺路帮忙的安排感"}
+  },
+  {
+   "case_id": "E136_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-26 18:00", "text": "实测结果出来了？9项里过了7项？比我预想的强，看来你们下一批采购有戏，到时候中标了记得请我喝奶茶。"}],
+    "clock": "2026-11-26 18:02",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "为朋友结果高兴，开玩笑要彩头"}
+  },
+  {
+   "case_id": "E136_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-01 11:15", "text": "对了对了，明年三月的春季展我们展位还在这排，VIP码我先给你留两张，这回直接15号下午见，省得再改！"}],
+    "clock": "2026-12-01 11:17",
+    "may_decline": true
+   },
+   "gold": {},
+   "feedback": {"her_state": "提前锁定的经验教训式玩笑"}
+  },
+  {
+   "case_id": "E136_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-03 21:20", "text": "材料都收到了，整理得比我还清楚。先这样，下周三实验室见，中午我请饭，展会的账咱可不能欠。"}],
+    "clock": "2026-12-03 21:22",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "晚间的轻收尾，确认下周安排"}
+  }
+ ]
+}

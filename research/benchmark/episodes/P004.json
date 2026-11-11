@@ -1,0 +1,206 @@
+{
+ "episode_id": "P004",
+ "persona": {
+  "me": "30岁，男，重庆，做程序员；跟她认识七八年，最近有点好感，但不愿为这个毁友情",
+  "her": "29岁，女，重庆，做私房菜/美食博主；刚结束一段关系，明确说不想谈，爱互损"
+ },
+ "initial_kb": {
+  "her": "会做饭、爱研究吃的，刚和上一段分开不久，暂时不想谈恋爱",
+  "warmth": "认识七八年的老朋友，平时爱互相损",
+  "stage": "老朋友；她目前对恋爱是关着的"
+ },
+ "gold": {},
+ "turns": [
+  {
+   "case_id": "P004_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "第一次试着做你老家那道菜 翻车了哈哈",
+      "ts": "2026-11-10 18:55"
+     }
+    ],
+    "clock": "2026-11-10 19:00",
+    "may_decline": false,
+    "note": "她在分享+自嘲；接住玩笑和这份分享就好，别急着拐到暧昧"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P004_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "翻车现场呢 发来看看",
+      "ts": "2026-11-10 19:10"
+     },
+     {
+      "role": "HER",
+      "text": "改天吧",
+      "ts": "2026-11-10 19:12"
+     }
+    ],
+    "clock": "2026-11-10 19:15",
+    "may_decline": false,
+    "note": "反信号/低信息：她一句'改天吧'很淡；别追问'到底给不给看'，轻松带过",
+    "intent": {
+     "enabled": true,
+     "text": "她反应淡；先收回一点，别趁势往前",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P004_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "你这是怕留下笑柄啊",
+      "ts": "2026-11-10 19:25"
+     },
+     {
+      "role": "HER",
+      "text": "你每次损我都记仇 要不要找机会来验收我新手艺",
+      "ts": "2026-11-10 19:28"
+     }
+    ],
+    "clock": "2026-11-10 19:30",
+    "may_decline": false,
+    "note": "机会/调侃：她半开玩笑喊'来验收手艺'；可接住这个玩笑与善意，但别把它当成确定的单独约、更别读成她愿意谈",
+    "intent": {
+     "enabled": true,
+     "text": "私下确有好感、想多亲近一点；只体现在口吻，别把她这句玩笑写成她已答应",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P004_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "等等 我说的是几个朋友一起来吃 你别多想 我现在真不想谈那些",
+      "ts": "2026-11-10 19:41"
+     }
+    ],
+    "clock": "2026-11-10 19:45",
+    "may_decline": false,
+    "note": "反信号(强)：她明确澄清是多人朋友局+现在不想谈；必须接住、尊重，别失落绑架、别把'别多想'当欲拒还迎继续推",
+    "intent": {
+     "enabled": false,
+     "text": "她把门关上；本轮停止任何往恋爱方向的推进",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P004_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "想多的是你 我又不催你",
+      "ts": "2026-11-10 19:55"
+     },
+     {
+      "role": "HER",
+      "text": "谢啦 还是你懂我 刚分开确实有点难",
+      "ts": "2026-11-10 19:58"
+     }
+    ],
+    "clock": "2026-11-10 20:00",
+    "may_decline": false,
+    "note": "情绪 bid：她在讲刚分开的难；此刻纯朋友式承接，别趁机表好感或递暧昧信号",
+    "intent": {
+     "enabled": false,
+     "text": "只接情绪，不推进",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P004_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了那道菜到底放啥呀 我妈都不告诉我",
+      "ts": "2026-11-10 20:12"
+     }
+    ],
+    "clock": "2026-11-10 20:15",
+    "may_decline": false,
+    "note": "她把话题转到请教做菜；自然给答案就行，别又扯回感情（也无需每轮申明资料不足）",
+    "intent": {
+     "enabled": false,
+     "text": "话题在菜上，不推进",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P004_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "秘方 怕你出师抢我生意",
+      "ts": "2026-11-10 20:25"
+     },
+     {
+      "role": "HER",
+      "text": "我就想把日子先过顺 别的先随缘",
+      "ts": "2026-11-10 20:28"
+     }
+    ],
+    "clock": "2026-11-10 20:30",
+    "may_decline": false,
+    "note": "她透露生活态度/价值观；认真接一句、不评判也别硬灌'你应该怎样'",
+    "intent": {
+     "enabled": true,
+     "text": "她在表态；陪她聊这点，别当推进窗口",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P004_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "不聊了 明天还早起出摊 下次朋友局叫上你",
+      "ts": "2026-11-11 22:26"
+     }
+    ],
+    "clock": "2026-11-11 22:30",
+    "may_decline": true,
+    "note": "收尾：朋友局是开放但不是私人约；别当场逼定、别把'下次'读成承诺",
+    "intent": {
+     "enabled": false,
+     "text": "收尾，留朋友式的开放",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  }
+ ]
+}

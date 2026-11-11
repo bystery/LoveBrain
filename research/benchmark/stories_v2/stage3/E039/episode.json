@@ -1,0 +1,150 @@
+{
+ "episode_id": "E039",
+ "persona": {
+  "me": "30岁，建筑设计师，周末爬山两年，装备党但嘴严；对她有意思但还没挑明。",
+  "her": "28岁，插画师，city walk 转徒步新手，兴奋起来发消息不带标点。"
+ },
+ "initial_kb": {
+  "me": "这条线我走过一次，后半段比她想得累；想约她单独去，还没敢说。",
+  "her": "刚买齐装备，第一次走山线；喜欢有人带。",
+  "warmth": "爬山群认识两个月，一起走过一次休闲线，微信常聊。",
+  "stage": "渐熟未明，彼此都有点意思但没人点破。",
+  "lessons": "草稿没发就是没说；别把没发生的事当成已经约好。"
+ },
+ "turns": [
+  {
+   "case_id": "E039_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周六去这条 拦云坳 看云海 我查好了!!!",
+      "ts": "2026-11-05 20:00"
+     }
+    ],
+    "clock": "2026-11-05 20:01",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E039_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "这条我走过 后半段比你想的累 你新鞋磨脚吗",
+      "ts": "2026-11-05 20:05"
+     }
+    ],
+    "clock": "2026-11-05 20:08",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E039_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "新鞋磨过一回了 我贴了创可贴原地复活",
+      "ts": "2026-11-05 20:10"
+     }
+    ],
+    "clock": "2026-11-05 20:12",
+    "may_decline": false,
+    "note": "打了一段想约她单独去的草稿还没发，先看她怎么安排"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E039_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "叫上我室友吧 她也想动动 三个人正好拼车",
+      "ts": "2026-11-05 20:14"
+     }
+    ],
+    "clock": "2026-11-05 20:15",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E039_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 三人正好 我来拼车 你们出人我出driver",
+      "ts": "2026-11-05 20:16"
+     }
+    ],
+    "clock": "2026-11-05 20:18",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E039_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "那就七点半 龙翔桥地铁口C口 别睡过头",
+      "ts": "2026-11-05 20:28"
+     }
+    ],
+    "clock": "2026-11-05 20:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E039_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "明早确认下 天气说有雾 带件防风的 装备都齐吗",
+      "ts": "2026-11-06 20:02"
+     }
+    ],
+    "clock": "2026-11-06 20:05",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "行前确认：装备和天气，群里三人同步",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E039_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "齐了! 雾天云海说不定更值 收工 早睡",
+      "ts": "2026-11-06 20:10"
+     }
+    ],
+    "clock": "2026-11-06 20:12",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

@@ -1,0 +1,162 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E020",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E020_T01",
+   "clock": "2026-11-22 18:12"
+  },
+  {
+   "case_id": "E020_T02",
+   "clock": "2026-11-22 18:20"
+  },
+  {
+   "case_id": "E020_T03",
+   "clock": "2026-11-22 18:28"
+  },
+  {
+   "case_id": "E020_T04",
+   "clock": "2026-11-22 18:38"
+  },
+  {
+   "case_id": "E020_T05",
+   "clock": "2026-11-22 18:46"
+  },
+  {
+   "case_id": "E020_T06",
+   "clock": "2026-11-22 18:54"
+  },
+  {
+   "case_id": "E020_T07",
+   "clock": "2026-11-22 19:02"
+  },
+  {
+   "case_id": "E020_T08",
+   "clock": "2026-11-22 19:10"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E020_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-22 18:10",
+   "quote": "年糕今天复查 指标都正常了 医生说可以不用天天跑医院"
+  },
+  {
+   "case_id": "E020_T02",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-22 18:18",
+   "quote": "上次你推荐那个医生真的帮了大忙 我当时都快急死了"
+  },
+  {
+   "case_id": "E020_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-22 18:26",
+   "quote": "不过我现在又开始愁十二月去厦门的事 假还没批"
+  },
+  {
+   "case_id": "E020_T04",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-22 18:34",
+   "quote": "先别急着订 等你假下来"
+  },
+  {
+   "case_id": "E020_T04",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-22 18:36",
+   "quote": "我也是这么想 但再等价格可能要涨"
+  },
+  {
+   "case_id": "E020_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-22 18:44",
+   "quote": "要不我先看酒店 可以免费取消的那种"
+  },
+  {
+   "case_id": "E020_T06",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-22 18:52",
+   "quote": "你十二月会不会也很忙 别到时候我一个人去"
+  },
+  {
+   "case_id": "E020_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-22 19:00",
+   "quote": "嗯 那你确认了告诉我 我也不想催你"
+  },
+  {
+   "case_id": "E020_T08",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-22 19:08",
+   "quote": "今天先说这么多 我去给年糕煮鸡胸肉"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "年糕复查",
+   "event_time": "2026-11-22 18:00",
+   "status": "occurred",
+   "source_turn": "E020_T01"
+  },
+  {
+   "event_id": "EV2",
+   "label": "十二月厦门旅行",
+   "event_time": "2026-12 月",
+   "status": "uncertain",
+   "source_turn": "E020_T03"
+  },
+  {
+   "event_id": "EV3",
+   "label": "绿色取消酒店方案",
+   "event_time": "待定",
+   "status": "planned",
+   "source_turn": "E020_T05"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "稳定暧昧，分享猫的复查"
+  },
+  {
+   "turn": "T03",
+   "stage": "共同旅行计划不确定"
+  },
+  {
+   "turn": "T07",
+   "stage": "不催，等确认"
+  },
+  {
+   "turn": "T08",
+   "stage": "自然收尾"
+  }
+ ],
+ "revisions": [
+  {
+   "case_id": "E020_T03",
+   "kind": "intent",
+   "status": "ACTIVE",
+   "text": "想十二月去厦门，但假未批",
+   "enabled": true
+  },
+  {
+   "case_id": "E020_T07",
+   "kind": "intent",
+   "status": "ADJUSTED",
+   "text": "先等双方确认，不催",
+   "enabled": true
+  }
+ ],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

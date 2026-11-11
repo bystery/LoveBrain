@@ -1,0 +1,24 @@
+{
+ "material_id": "MAT_03",
+ "binding_sha256_16": "d2f7f4e0c2800501",
+ "_填写说明": "semantic 各维填 VERDICTS 之一；sendability 填 SENDABILITY；compare 填 COMPARE；defects 每条 {field, evidence, kind:evidence|style_preference}；reviewer 填身份；同 material+reviewer 重交须 revision 递增",
+ "semantic": {
+  "事实与来源": "合格",
+  "时间地点": "合格",
+  "分寸": "合格"
+ },
+ "sendability": {
+  "甲": "原样可发",
+  "乙": "不建议发"
+ },
+ "compare": "甲",
+ "defects": [
+  {
+   "field": "原样输出.乙",
+   "evidence": "集合地点与用户指定相反（北门 vs 游客中心）：地点事实：用户指定北门并明确排除游客中心（input.note 私密指示）",
+   "kind": "evidence"
+  }
+ ],
+ "reviewer": "fixture",
+ "revision": 1
+}

@@ -1,0 +1,72 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "AK06",
+ "turns": {
+  "AK06_T01": {
+   "case_id": "AK06_T01",
+   "current_action": "她在算时间会不会错过开场——给可执行的方案（我去占座、她到场直接上台前热身），不让她在愧疚里做选择",
+   "acceptable_actions": [
+    "说我去占座她按自己时间到",
+    "问要不要我帮她跟老板打招呼晚一分钟",
+    "只确认不用她管我"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK06_A01",
+     "subject": "她",
+     "relation": "约束",
+     "value": "顶晚托七点半才能走，可能赶不上开场",
+     "valid_time": "2026-12-12 18:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK06_T01",
+      "message_id": "m1",
+      "quote": "我得七点半才走"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK06_A02",
+     "subject": "双方",
+     "relation": "既定",
+     "value": "明晚八点半演出",
+     "valid_time": "2026-12-12 18:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK06_T01",
+      "message_id": "m0",
+      "quote": "明晚八点半我到"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true：她已经给出信息不需我做决定，只回一句'不用管我'也合法；但她没说取消，别擅自改成'那算了'。",
+   "unknowns": [
+    "她能否赶上自己的场次"
+   ],
+   "protected_expressions": [
+    "班里临时让我顶晚托"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她肯定迟到",
+    "不要把演出取消当成默认方案"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "周六晚到场看她首台",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

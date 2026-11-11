@@ -1,0 +1,660 @@
+{
+ "story_id": "E190",
+ "turns": {
+  "E190_T01": {
+   "case_id": "E190_T01",
+   "current_action": "接住报喜，肯定她的进度，痛快应下周末陪练邀约。",
+   "acceptable_actions": [
+    "先恭喜报名提交，再应下周末陪练",
+    "让她把审核进度和教案一起发来",
+    "提醒她审核期间留意短信通知"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A01",
+     "subject": "HER",
+     "relation": "报名状态",
+     "value": "高中数学教师资格面试报名已提交审核中",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T01",
+      "quote": "报名交上去啦！高中数学，审核中",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E190_A02",
+     "subject": "HER",
+     "relation": "备考目标",
+     "value": "备考高中数学教师资格面试十二月开考",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "覃小鹿十月三十一日提交高中数学教师资格面试报名"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "报喜轮先共情再谈安排，别急着泼冷水讲风险。",
+   "unknowns": [
+    "审核通过时间未知"
+   ],
+   "protected_expressions": [
+    "报名交上去啦"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构面试具体日期",
+    "不得断言审核必然通过"
+   ]
+  },
+  "E190_T02": {
+   "case_id": "E190_T02",
+   "current_action": "应下陪练并要教案，顺带提醒审核通过前保持报名表可修改状态。",
+   "acceptable_actions": [
+    "约定周末并索要教案电子版",
+    "提示她保留报名表可修改状态以备万一",
+    "问她试讲篇目定了没有"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A03",
+     "subject": "ME",
+     "relation": "陪练约定",
+     "value": "周末陪练并要求先发教案",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T02",
+      "quote": "周末可以，你先把教案发我",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "提醒要轻，别把'可修改状态'说成不吉利的预言。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称报名表当前不可修改"
+   ]
+  },
+  "E190_T03": {
+   "case_id": "E190_T03",
+   "current_action": "接教案确认收到，正视她对抢填报名表的不安，把不安转成核对动作。",
+   "acceptable_actions": [
+    "确认教案收到并让她立刻核对报名表",
+    "顺着'有点虚'问她最不放心哪一格",
+    "建议她睡前登系统逐格截图自查"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A04",
+     "subject": "HER",
+     "relation": "填写情境",
+     "value": "报名在宿舍熄灯前十分钟抢着完成下拉框点得飞快",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T03",
+      "quote": "宿舍熄灯前十分钟抢着填的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的不安是有效信号，别安慰了事，推她去核对。",
+   "unknowns": [
+    "报名表是否真有错当时未知"
+   ],
+   "protected_expressions": [
+    "我现在想想有点虚"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言报名表一定填错"
+   ]
+  },
+  "E190_T04": {
+   "case_id": "E190_T04",
+   "current_action": "给出五分钟自查法：登系统逐格截图存档，重点看科目和考区两格。",
+   "acceptable_actions": [
+    "让她逐格截图并点名科目考区两个易错格",
+    "让她截图发来帮着一起看",
+    "建议她对照笔试合格证明核对科目名称"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A05",
+     "subject": "ME",
+     "relation": "自查建议",
+     "value": "登系统逐格截图存档重点看科目与考区",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T04",
+      "quote": "把报名表每格截图存一份",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "自查指令要短、可五分钟执行完，别展开长篇讲风险。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构报名系统页面细节"
+   ]
+  },
+  "E190_T05": {
+   "case_id": "E190_T05",
+   "current_action": "先稳住发抖的她，确认误选事实与'仅可改一次'规则，再谈动手。",
+   "acceptable_actions": [
+    "先稳情绪，再确认科目误选与更正规则",
+    "让她把误选页面和公告原文都截图",
+    "追问更正截止时间，把倒计时先立起来"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "time_state",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A06",
+     "subject": "SHARED",
+     "relation": "报考科目",
+     "value": "报名科目误选为高中信息技术与笔试合格的数学不符",
+     "valid_time": "2026-11-06",
+     "status": "erroneous",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T05",
+      "quote": "科目那格点成'高中信息技术'了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E190_A07",
+     "subject": "SHARED",
+     "relation": "更正规则",
+     "value": "审核驳回前可自行撤回修改但仅限一次",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T05",
+      "quote": "一个人只能改一次",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E190_A08",
+     "subject": "SHARED",
+     "relation": "报考科目",
+     "value": "报名目标科目为高中数学",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T01",
+      "quote": "报名交上去啦！高中数学，审核中",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "更正只有一次机会，语速放慢，先立截图留证再动系统。",
+   "unknowns": [
+    "更正的最终截止时间她尚未说出"
+   ],
+   "protected_expressions": [
+    "一个人只能改一次"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构第二次修改机会",
+    "不得断言误选科目不影响面试资格"
+   ]
+  },
+  "E190_T06": {
+   "case_id": "E190_T06",
+   "current_action": "给三步改错清单：截全页留证、撤回改回高中数学逐字核对、重传等审不连点，改完两版截图都留。",
+   "acceptable_actions": [
+    "按留证、撤回改科目、重传三步走",
+    "让她改完把新旧两版截图都发来核一遍",
+    "提醒她改完别反复进出系统以免触发锁定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A09",
+     "subject": "ME",
+     "relation": "改错清单",
+     "value": "截全页留证撤回改回高中数学逐字核对重传后不连点",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T06",
+      "quote": "撤回，改回高中数学，逐字核对",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E190_A10",
+     "subject": "SHARED",
+     "relation": "更正规则",
+     "value": "审核驳回前可自行撤回修改但仅限一次",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T05",
+      "quote": "一个人只能改一次",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "唯一一次机会花在这三步上，顺序不能乱。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称可以多次撤回修改"
+   ]
+  },
+  "E190_T07": {
+   "case_id": "E190_T07",
+   "current_action": "确认更正完成与新审核状态，肯定她逐字核对和双截图留证，陪她盯新截止时间。",
+   "acceptable_actions": [
+    "祝贺更正完成并确认新截止时间",
+    "让她把新表截图发来最后核一遍",
+    "提醒她把新旧截图归到一个相册里备查"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A11",
+     "subject": "SHARED",
+     "relation": "报考科目",
+     "value": "报考科目已更正回高中数学",
+     "valid_time": "2026-11-07",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T07",
+      "quote": "科目现在是'高中数学'",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E190_A12",
+     "subject": "SHARED",
+     "relation": "更正截止",
+     "value": "审核截止十一月八日下午五点",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T07",
+      "quote": "截止十一月八号下午五点",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E190_A13",
+     "subject": "SHARED",
+     "relation": "报考科目",
+     "value": "报名科目曾误选为高中信息技术",
+     "valid_time": "2026-11-06",
+     "status": "erroneous",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T05",
+      "quote": "科目那格点成'高中信息技术'了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "更正成功了别翻篇太快，截止时间还要盯一天半。",
+   "unknowns": [
+    "重新提交后审核排队时长未知"
+   ],
+   "protected_expressions": [
+    "一个字一个字对的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构更正次数还有剩余"
+   ]
+  },
+  "E190_T08": {
+   "case_id": "E190_T08",
+   "current_action": "睡前盯审核状态的提醒加试讲十分钟卡表规则，把话题从报名切回备考。",
+   "acceptable_actions": [
+    "提醒盯审核状态并给出十分钟卡表练法",
+    "让她把试讲篇目的时间分配先列出来",
+    "约定审核结果出来第一时间同步"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A14",
+     "subject": "ME",
+     "relation": "卡表规则",
+     "value": "试讲按十分钟卡表不得超时",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T08",
+      "quote": "试讲练起来按十分钟卡表",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "十分钟是面试硬约束，提前立规矩，后面超时才有得谈。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构面试实际时长要求"
+   ]
+  },
+  "E190_T09": {
+   "case_id": "E190_T09",
+   "current_action": "共享过审喜悦，确认新表科目无误，肯定她从乌龙里长出的填表习惯。",
+   "acceptable_actions": [
+    "祝贺过审并肯定誊一遍再提交的新规",
+    "让她把审核通过短信也归档留证",
+    "把这次乌龙写成一行教训放进她的错题本"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A15",
+     "subject": "SHARED",
+     "relation": "审核状态",
+     "value": "高中数学报名审核通过并截图留证",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T09",
+      "quote": "审核通过了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E190_A16",
+     "subject": "HER",
+     "relation": "填表新规",
+     "value": "以后填表先在草稿纸上誊一遍再提交",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T09",
+      "quote": "以后填表我都先在草稿纸上誊一遍再提交",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E190_A17",
+     "subject": "SHARED",
+     "relation": "报考科目",
+     "value": "报考科目已更正回高中数学",
+     "valid_time": "2026-11-07",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T07",
+      "quote": "科目现在是'高中数学'",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她把乌龙变成了习惯，这是本篇真正的收获，点出来。",
+   "unknowns": [],
+   "protected_expressions": [
+    "看着就顺眼"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构准考证发放时间"
+   ]
+  },
+  "E190_T10": {
+   "case_id": "E190_T10",
+   "current_action": "敲定次日晚自习室试讲《等差数列》的陪练安排，交代纸质教案和粉笔字帖物料。",
+   "acceptable_actions": [
+    "约定明晚七点试讲并列好物料清单",
+    "让她提前把板书要点写在教案首页",
+    "问她要不要再加一段即兴问答练习"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A18",
+     "subject": "ME",
+     "relation": "陪练安排",
+     "value": "十一月十日晚七点自习室试讲等差数列带纸质教案",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T10",
+      "quote": "明晚七点自习室试讲《等差数列》",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "物料清单提前一天给，试讲当天只管掐表。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构面试指定篇目"
+   ]
+  },
+  "E190_T11": {
+   "case_id": "E190_T11",
+   "current_action": "接住试讲反馈：肯定完整度，直面超时四分钟的事实，帮她从两个例子里选修剪对象。",
+   "acceptable_actions": [
+    "肯定完整度并给出砍例子的选择建议",
+    "把超时归因到例子讲法而不是她的能力",
+    "建议'数学史小故事'改成一句带过保住'生活中的数列'"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A19",
+     "subject": "SHARED",
+     "relation": "试讲时长",
+     "value": "试讲十四分钟超出十分钟规定四分钟",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T11",
+      "quote": "卡表一看十四分钟，超了四分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E190_A20",
+     "subject": "ME",
+     "relation": "卡表规则",
+     "value": "试讲按十分钟卡表不得超时",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T08",
+      "quote": "试讲练起来按十分钟卡表",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "超时是修剪问题不是能力问题，措辞上分清楚。",
+   "unknowns": [
+    "两个例子最终砍哪个由她定"
+   ],
+   "protected_expressions": [
+    "超了四分钟"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称试讲时长无上限"
+   ]
+  },
+  "E190_T12": {
+   "case_id": "E190_T12",
+   "current_action": "接住修剪成果与致谢，确认再挤一分钟的方案，应下考前全流程彩排。",
+   "acceptable_actions": [
+    "认可十一分钟的进展并给她挤时间的具体建议",
+    "答应考前一晚彩排并接住奶茶",
+    "把开场白压缩示范一遍发语音"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E190_A21",
+     "subject": "SHARED",
+     "relation": "试讲时长",
+     "value": "砍例后试讲压至十一分钟还差一分钟",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T12",
+      "quote": "十一分钟，还差一分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E190_A22",
+     "subject": "SHARED",
+     "relation": "试讲时长",
+     "value": "此前试讲十四分钟超出十分钟规定四分钟",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E190_T11",
+      "quote": "卡表一看十四分钟，超了四分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "数字要对得上：十四到十一是砍了三分钟，剩下一分钟从开场白挤，别算错。",
+   "unknowns": [
+    "考前一晚彩排的具体时间未定"
+   ],
+   "protected_expressions": [
+    "我请奶茶"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已达到十分钟达标线"
+   ]
+  }
+ }
+}

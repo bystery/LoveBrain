@@ -1,0 +1,52 @@
+{
+ "story_id": "E106",
+ "kind": "story_timeline_v2",
+ "turn_clocks": [
+  "2026-11-01 20:18",
+  "2026-11-02 12:33",
+  "2026-11-03 09:42",
+  "2026-11-05 21:52",
+  "2026-11-07 15:22",
+  "2026-11-09 08:52",
+  "2026-11-11 13:42",
+  "2026-11-12 22:12",
+  "2026-11-14 19:32",
+  "2026-11-16 18:22",
+  "2026-11-21 10:07",
+  "2026-11-29 21:03"
+ ],
+ "message_index": [
+  {"case_id": "E106_T01", "message_id": "m0", "speaker": "HER", "quote": "晏哥，第三章的错题笔记我整理完了，光易混知识点那张表我就改了四遍，发你看看，给我提提意见", "ts": "2026-11-01 20:15"},
+  {"case_id": "E106_T02", "message_id": "m0", "speaker": "HER", "quote": "部门新来的小蕊不知道从哪听说我在备考，中午跑来问我能不能把笔记发她一份，我还没答应，你说这东西发出去合适吗", "ts": "2026-11-02 12:30"},
+  {"case_id": "E106_T03", "message_id": "m0", "speaker": "HER", "quote": "还是发了。她回我一句'岚姐你救大命了'，就再没下文了，笔记发出去跟石沉大海似的，我心里有点不得劲", "ts": "2026-11-03 09:40"},
+  {"case_id": "E106_T04", "message_id": "m0", "speaker": "HER", "quote": "这两天她天天在工位上逮着我问题，一问就是半小时起步，我晚上回家复习的整块时间全被切成渣了，我自己的进度都慢了", "ts": "2026-11-05 21:50"},
+  {"case_id": "E106_T05", "message_id": "m0", "speaker": "HER", "quote": "今天她更过分，把她做都没做的模拟卷拍照甩给我，说'岚姐你帮我看看哪儿错了'。我说晏哥你评评理，这到底算帮忙还是算我给她打工", "ts": "2026-11-07 15:20"},
+  {"case_id": "E106_T06", "message_id": "m0", "speaker": "HER", "quote": "听你的，我把规矩立了：每周三午休讲一小时，题必须她自己先做，讲完就散。她当时答应得挺痛快", "ts": "2026-11-09 08:50"},
+  {"case_id": "E106_T07", "message_id": "m0", "speaker": "HER", "quote": "今天午休讲题，她卷子压根没做，空着来听，还把隔壁工位的小郑也拉来了，说什么'一起学'。一小时讲完她俩还意犹未尽拽着我，我下午的活都堆着", "ts": "2026-11-11 13:40"},
+  {"case_id": "E106_T08", "message_id": "m0", "speaker": "HER", "quote": "我今晚心一横把那个'一起学'的群退了，跟小蕊直说：笔记是我给自己整理的，不是给你们编的教程。发完手都在抖，你说我是不是太狠了", "ts": "2026-11-12 22:10"},
+  {"case_id": "E106_T09", "message_id": "m0", "speaker": "HER", "quote": "小蕊这两天见了我招呼都不打，办公室气氛怪得要命。我有点慌，万一她跟主管说我摆架子呢，我这考评还在她主管手里", "ts": "2026-11-14 19:30"},
+  {"case_id": "E106_T10", "message_id": "m0", "speaker": "HER", "quote": "反转了！小蕊自己报了个网课，下班还主动来找我，说'岚姐对不起，之前是我想抄近道'。我心里的石头落了地，顺势把周三那一小时也停了", "ts": "2026-11-16 18:20"},
+  {"case_id": "E106_T11", "message_id": "m0", "speaker": "HER", "quote": "刚做完第四套模拟卷，比上回涨了十一分！晏哥，把时间拿回来自己啃，果然比给人当免费讲师强，这笔账我算明白了", "ts": "2026-11-21 10:05"},
+  {"case_id": "E106_T12", "message_id": "m0", "speaker": "HER", "quote": "考前最后一个周日，我把笔记翻到扉页，想在上面印一句话提醒自己，你帮我想想印什么好——要求就一个：别像鸡血，像晏哥会说的话", "ts": "2026-11-29 21:00"}
+ ],
+ "events": [
+  {"event_id": "E106_EV01", "source_turn": "E106_T01", "ts": "2026-11-01 20:15", "kind": "progress", "conflict": false, "summary": "她完成第三章错题笔记并向ME汇报求反馈"},
+  {"event_id": "E106_EV02", "source_turn": "E106_T02", "ts": "2026-11-02 12:30", "kind": "third_party", "conflict": true, "summary": "小蕊首次插入：请求分享笔记，她尚未答应"},
+  {"event_id": "E106_EV03", "source_turn": "E106_T03", "ts": "2026-11-03 09:40", "kind": "aftermath", "conflict": false, "summary": "笔记发出后对方再无下文，她心生失落"},
+  {"event_id": "E106_EV04", "source_turn": "E106_T04", "ts": "2026-11-05 21:50", "kind": "escalation", "conflict": true, "summary": "小蕊每日工位问讲半小时起步，她的复习整块时间被切碎"},
+  {"event_id": "E106_EV05", "source_turn": "E106_T05", "ts": "2026-11-07 15:20", "kind": "escalation", "conflict": true, "summary": "小蕊甩来未做的模拟卷求代查，她向ME讨说法"},
+  {"event_id": "E106_EV06", "source_turn": "E106_T06", "ts": "2026-11-09 08:50", "kind": "boundary", "conflict": true, "summary": "她立规矩：每周三午休讲一小时、题须先做，讲题义务改写"},
+  {"event_id": "E106_EV07", "source_turn": "E106_T07", "ts": "2026-11-11 13:40", "kind": "violation", "conflict": true, "summary": "小蕊空手听讲并拉来小郑，义务外溢到第三人"},
+  {"event_id": "E106_EV08", "source_turn": "E106_T08", "ts": "2026-11-12 22:10", "kind": "hard_boundary", "conflict": true, "summary": "她退群并当面声明笔记非教程，硬边界落地"},
+  {"event_id": "E106_EV09", "source_turn": "E106_T09", "ts": "2026-11-14 19:30", "kind": "aftermath", "conflict": true, "summary": "小蕊冷处理，她担忧职场影响"},
+  {"event_id": "E106_EV10", "source_turn": "E106_T10", "ts": "2026-11-16 18:20", "kind": "resolution", "conflict": false, "summary": "小蕊自报网课并道歉，周三讲题停摆，义务归位"},
+  {"event_id": "E106_EV11", "source_turn": "E106_T11", "ts": "2026-11-21 10:05", "kind": "payoff", "conflict": false, "summary": "模拟卷涨十一分，时间收回的收益兑现"},
+  {"event_id": "E106_EV12", "source_turn": "E106_T12", "ts": "2026-11-29 21:00", "kind": "closure", "conflict": false, "summary": "考前周日请ME拟扉页题词，笔记闭环"}
+ ],
+ "revisions": [
+  {"case_id": "E106_T06", "summary": "讲题义务由随叫随到改写为每周三限定一小时"},
+  {"case_id": "E106_T08", "summary": "退群终结'一起学'外溢模式，边界升级为硬拒绝"},
+  {"case_id": "E106_T10", "summary": "小蕊退出代劳模式自报网课，讲题安排彻底停摆"},
+  {"case_id": "E106_T11", "summary": "时间收回产生实证收益：模拟卷涨十一分"}
+ ]
+}

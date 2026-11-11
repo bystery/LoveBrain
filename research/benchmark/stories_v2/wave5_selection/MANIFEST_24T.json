@@ -1,0 +1,37 @@
+{
+ "kind": "story_manifest",
+ "stage": "wave5_selection",
+ "date": "2026-11-10",
+ "built_by": "tools/benchmark_v1/build_wave_manifest.py",
+ "count": 1,
+ "turn_per_story": [
+  24
+ ],
+ "stories": [
+  {
+   "story_id": "E374",
+   "title": "社区图书馆的排班长线（11 月至 12 月上旬）",
+   "themes": [
+    "志愿排班",
+    "调班",
+    "请假顶班",
+    "取消改期",
+    "跨月状态机",
+    "交接"
+   ],
+   "domain": "社区图书馆志愿排班长线（跨月状态机）",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave5_selection/E374",
+   "turns": 24,
+   "files": {
+    "episode.json": "30acee93a9f7a332a551e211a86028ce00c847eb26dcfae81cefa2560b8780f4",
+    "reference.json": "92a9d0c72f4e3f6c17b3368d24713de1df3fb7b714ae76ca006b15c9022241a4",
+    "timeline.json": "8241f779b7d918af5a6ad43bce0f8843284827b83ee2305507f108375df7379a",
+    "exposure.json": "0e36101296a7a563bb2d72c0080ed10d0690312e17f0a31cd7e63c97b7316f9b",
+    "audit.md": "35b7d5a46b5b0b6ae08c89ad7f7080e6921e0522dc4f33fb3b8a104c861ac815"
+   },
+   "lineage_group_id": "LG-E374",
+   "primary_topic": "T09"
+  }
+ ]
+}

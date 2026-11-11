@@ -1,0 +1,593 @@
+{
+ "story_id": "E097",
+ "turns": {
+  "E097_T01": {
+   "case_id": "E097_T01",
+   "current_action": "接住她的求救与周六邀约：先应下帮忙的意愿，把具体时间与现场条件问一句再定，不立刻把周六说死。",
+   "acceptable_actions": [
+    "应承帮忙意向，让她先把打印机型号和堵头位置发来",
+    "提醒连供堵头多数能洗回来，先安抚别急着拆机",
+    "顺口问一句周六下午几点方便，别把奶茶答谢当真推辞"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A01",
+     "subject": "SHARED",
+     "relation": "printer_jammed",
+     "value": "她家连供打印机堵头，打印稿全是白道子，下周要交稿",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T01", "message_id": "m0", "quote": "打出来的稿子全是白道子"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A02",
+     "subject": "SHARED",
+     "relation": "saturday_invite",
+     "value": "她邀 ME 周六下午上门帮忙处理打印机",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T01", "message_id": "m0", "quote": "这周六下午你来我家帮我弄弄呗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A03",
+     "subject": "HER",
+     "relation": "tea_reward_offer",
+     "value": "她以包奶茶作为帮忙答谢",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T01", "message_id": "m0", "quote": "我包奶茶"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她急，回复先给确定性，时间细节可以慢慢对。",
+   "unknowns": ["打印机具体故障程度未知", "周六下午 ME 是否真有空未确认"],
+   "protected_expressions": ["全公司都知道你懂打印机"],
+   "forbidden_factual_claims": ["不得虚构打印机内部结构与故障原因", "不得替 ME 直接把周六下午说死"]
+  },
+  "E097_T02": {
+   "case_id": "E097_T02",
+   "current_action": "接住她把约定坐实的叮嘱：她为周六推了爬山局，ME 也已应承；认可这份郑重，顺带让她别有心理负担。",
+   "acceptable_actions": [
+    "确认周六之约，让她把爬山局的事看开点，约可以再补",
+    "打趣她郑重其事，顺带问打印机旁边好不好腾地方",
+    "提醒她周六上午先把东西腾出来，省得当天下手慢"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A04",
+     "subject": "ME",
+     "relation": "accepted_invite",
+     "value": "ME 已应承周六下午上门帮忙",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T02", "message_id": "m0", "quote": "你答应得也太痛快了吧，还秒回了个'行'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A05",
+     "subject": "HER",
+     "relation": "hike_cancelled",
+     "value": "她为周六之约推掉了爬山局",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T02", "message_id": "m0", "quote": "我为了周六把跟人的爬山局推了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A06",
+     "subject": "SHARED",
+     "relation": "promise_locked",
+     "value": "双方把周六之约说定，互不放鸽子",
+     "valid_time": "2026-10-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T02", "message_id": "m0", "quote": "你可不许放我鸽子"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把她的郑重接住，别让'推了爬山局'变成彼此的负担。",
+   "unknowns": ["ME 周六原定安排具体是什么未提"],
+   "protected_expressions": ["你可不许放我鸽子"],
+   "forbidden_factual_claims": ["不得虚构 ME 周六另有何事", "不得断言约定已不可更改"]
+  },
+  "E097_T03": {
+   "case_id": "E097_T03",
+   "current_action": "接住型号与费用两件事：型号记下备着，清洗费八十的归属给个稳妥说法——机器自身质量问题走售后，人为或耗材老化多半自担，别让她白吵。",
+   "acceptable_actions": [
+    "把型号记下，让她顺带问店家质保期内是否免费上门",
+    "给费用口径：保内找商家、保外自担，先别垫钱",
+    "让她问清八十是清洗费还是上门费，口径不同差很多"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A07",
+     "subject": "SHARED",
+     "relation": "printer_model",
+     "value": "打印机为青墨MP-410连供机型",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T03", "message_id": "m0", "quote": "青墨MP-410，连供的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A08",
+     "subject": "SHARED",
+     "relation": "cleaning_fee",
+     "value": "店家上门清洗一次收八十，费用归属未定",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T03", "message_id": "m0", "quote": "上门清洗一次收八十"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A09",
+     "subject": "HER",
+     "relation": "no_deposit_paid",
+     "value": "她尚未向店家交定金，先问清再说",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T03", "message_id": "m0", "quote": "我还没交定金呢"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：费用问题给原则不给断言，提醒她先问质保别先掏钱。",
+   "unknowns": ["打印机是否在保修期内未知", "八十元收费的具体构成未知"],
+   "protected_expressions": ["上门清洗一次收八十"],
+   "forbidden_factual_claims": ["不得断言该费用必然由谁承担", "不得虚构品牌质保政策细节"]
+  },
+  "E097_T04": {
+   "case_id": "E097_T04",
+   "current_action": "接住她谢绝师傅上门的决定：师傅'光洗可能不够、或需换内胆'的提醒先记下不反驳，也提醒她这句别当耳旁风，万一洗不回来还有后手。",
+   "acceptable_actions": [
+    "肯定她省钱的算盘，同时把'换内胆'记为备选方案",
+    "提醒她跟店家确认内胆价格，万一要换心里有数",
+    "打趣她'自己有人'，顺带说自己周六尽量不掉链子"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A10",
+     "subject": "THIRD",
+     "relation": "inner_tank_risk",
+     "value": "店家师傅判断光清洗可能不够，或需更换连供内胆",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T04", "message_id": "m0", "quote": "可能要换连供内胆"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A11",
+     "subject": "HER",
+     "relation": "refused_vendor_visit",
+     "value": "她谢绝师傅上门，坚持由 ME 处理",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T04", "message_id": "m0", "quote": "我说不用约！我自己有人"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不打击她的信心，但把师傅的预判悄悄存档，留后路。",
+   "unknowns": ["堵头实际能否洗开未知", "内胆价格未问"],
+   "protected_expressions": ["我说不用约！我自己有人"],
+   "forbidden_factual_claims": ["不得断言清洗必然成功或必然失败", "不得虚构内胆价格"]
+  },
+  "E097_T05": {
+   "case_id": "E097_T05",
+   "current_action": "接住时间线倒错的引爆：她翻店家记录发现约的是周日上午，周六之约整体落空。先收住她的自责——记错日期不是罪，关键是把周六的安排重新安置，别让两边白付的代价变成疙瘩。",
+   "acceptable_actions": [
+    "先安抚：记错日期人人有，重点是把周六腾出来的时间安顿好",
+    "把账算清楚：她推的爬山可以约回去，ME 周六另作安排，别互相赔",
+    "顺着周日师傅上门的既定事实，商量周六下午还能不能利用起来"
+   ],
+   "applicable_dimensions": ["time_state", "attribution", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A12",
+     "subject": "THIRD",
+     "relation": "vendor_visit_sunday",
+     "value": "店家师傅实际约的是周日上午上门换内胆",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T05", "message_id": "m0", "quote": "师傅约的是这周日上午上门换内胆"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A13",
+     "subject": "SHARED",
+     "relation": "saturday_plan",
+     "value": "周六下午 ME 上门帮忙的既定安排被聊天记录实证推翻",
+     "valid_time": "2026-10-26/2026-10-28",
+     "status": "voided",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E097_T01", "message_id": "m0", "quote": "这周六下午你来我家帮我弄弄呗"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E097_A14",
+     "subject": "HER",
+     "relation": "hike_sacrifice_voided",
+     "value": "她为周六推掉的爬山局因改期落空而白费",
+     "valid_time": "2026-10-26/2026-10-28",
+     "status": "voided",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E097_T02", "message_id": "m0", "quote": "把跟人的爬山局推了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A15",
+     "subject": "HER",
+     "relation": "self_blame",
+     "value": "她自责记错日期连累双方推掉安排",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T05", "message_id": "m0", "quote": "我是不是特别不靠谱"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：第一句先接住'对不起'，把事故降级成小事故，别顺着骂她。",
+   "unknowns": ["周日上午 ME 是否有空到场未知", "内胆费用最终由谁承担未知"],
+   "protected_expressions": ["我一直记成周六"],
+   "forbidden_factual_claims": ["不得断言内胆一定需要更换", "不得替 ME 宣布周六的新安排", "不得把记错日期上升成人品问题"]
+  },
+  "E097_T06": {
+   "case_id": "E097_T06",
+   "current_action": "接住她的补救方案：周六改视频远程指导、她自购材料动手，周日师傅安排保留。评估可行性后给意见——远程指导拆连供件可行但风险要说在前。",
+   "acceptable_actions": [
+    "认可周六远程指导可行，提醒她先拍整机照片看结构",
+    "提醒远程指导的局限：卡扣手感隔着屏幕判断不了，别硬拆",
+    "让她把要买的东西列单子发来，提前备齐免得手忙脚乱"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A16",
+     "subject": "SHARED",
+     "relation": "remote_plan_proposed",
+     "value": "补救方案：周六下午改视频远程指导，她自购材料动手",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T06", "message_id": "m0", "quote": "视频里教我自己动手清洗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A17",
+     "subject": "SHARED",
+     "relation": "sunday_vendor_kept",
+     "value": "周日上午师傅上门换内胆的既定安排保留",
+     "valid_time": "2026-10-28/2026-10-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T05", "message_id": "m0", "quote": "这周日上午上门换内胆"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E097_A18",
+     "subject": "SHARED",
+     "relation": "saturday_freed",
+     "value": "方案意在让 ME 周六能干自己的事，减少跑趟",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T06", "message_id": "m0", "quote": "这样你周六至少能干点自己的事"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸她补救得快，风险提示放在'别硬拆'三个字上。",
+   "unknowns": ["她动手能力能否胜任拆洗未知", "周六视频指导最终是否成行未知"],
+   "protected_expressions": ["这样你周六至少能干点自己的事"],
+   "forbidden_factual_claims": ["不得虚构清洗工具价格", "不得保证远程指导必然成功"]
+  },
+  "E097_T07": {
+   "case_id": "E097_T07",
+   "current_action": "确认周六视频指导方案敲定：清单过一遍有无缺漏，步骤顺序答应晚上发，再叮嘱两句安全事项。",
+   "acceptable_actions": [
+    "核对清单：清洗液、注射器、无纺布、手套齐了，再补一块垫布",
+    "答应晚上发步骤顺序，叮嘱拆之前先断电断墨",
+    "让她把台灯准备好，视频里看得清才指挥得了"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A19",
+     "subject": "SHARED",
+     "relation": "remote_guidance_confirmed",
+     "value": "周六方案敲定为 ME 视频远程指导、她自己动手",
+     "valid_time": "2026-10-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T06", "message_id": "m0", "quote": "视频里教我自己动手清洗"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E097_A20",
+     "subject": "HER",
+     "relation": "shopping_list",
+     "value": "她备好清洗液、注射器、无纺布和手套",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T07", "message_id": "m0", "quote": "清洗液、注射器、无纺布，还有一副手套"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A21",
+     "subject": "HER",
+     "relation": "procedure_request",
+     "value": "她请 ME 晚上再发一遍步骤顺序",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T07", "message_id": "m0", "quote": "把步骤顺序再发一遍"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：清单核得利落点，安全叮嘱别啰嗦成说教。",
+   "unknowns": ["步骤顺序 ME 具体何时发未定"],
+   "protected_expressions": ["我怕到时候手忙脚乱"],
+   "forbidden_factual_claims": ["不得虚构清洗液品牌与用法", "不得断言清单已完备无缺"]
+  },
+  "E097_T08": {
+   "case_id": "E097_T08",
+   "current_action": "接住现场求助：拆到一半卡扣按不动、墨水滴漏。远程指导的局限暴露了——先让她停手断墨，别硬来，再一步步带她复位。",
+   "acceptable_actions": [
+    "第一句让她先停手、断电断墨，别跟卡扣较劲",
+    "让她把卡扣位置拍张近照发来，隔着照片指位",
+    "提醒墨水滴漏先拿无纺布按住，别蹭进主板方向"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A22",
+     "subject": "SHARED",
+     "relation": "guided_disassembly",
+     "value": "她在 ME 视频远程指导下拆洗打印头",
+     "valid_time": "2026-10-31",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T07", "message_id": "m0", "quote": "周六下午视频指导，我自己动手"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E097_A23",
+     "subject": "SHARED",
+     "relation": "mid_breakdown",
+     "value": "拆装进行中卡壳：卡扣按不下去、墨水滴漏，她不敢再动",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T08", "message_id": "m0", "quote": "打印头架子拆到一半我不敢动了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A24",
+     "subject": "HER",
+     "relation": "emergency_call",
+     "value": "她紧急呼救 ME 上线支援",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T08", "message_id": "m0", "quote": "你快上线看看"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先稳住她的手再稳住她的心，指令一句一个动作。",
+   "unknowns": ["卡扣实际卡点位置未知", "机器是否受损未知"],
+   "protected_expressions": ["墨水还滴了两滴"],
+   "forbidden_factual_claims": ["不得虚构打印头结构细节", "不得断言机器已被拆坏"]
+  },
+  "E097_T09": {
+   "case_id": "E097_T09",
+   "current_action": "接住半成功结果：黑色齐了、彩色仍断线，师傅'光洗不行'的预判被印证。肯定她的动手成果，把重心转到明天师傅换内胆上。",
+   "acceptable_actions": [
+    "先肯定：第一次动手能把黑色救回来已不容易",
+    "印证师傅预判，建议明天当面向师傅请教卡扣技巧",
+    "提醒她换内胆时让师傅顺便查一下彩色通道"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A25",
+     "subject": "SHARED",
+     "relation": "partial_result",
+     "value": "自检页黑色恢复、彩色仍断线，清洗未根治",
+     "valid_time": "2026-10-31",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T09", "message_id": "m0", "quote": "黑色齐了，彩色还是断线"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A26",
+     "subject": "THIRD",
+     "relation": "vendor_prediction_confirmed",
+     "value": "师傅'光清洗救不回来'的预判被实测印证",
+     "valid_time": "2026-10-27/2026-10-31",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T09", "message_id": "m0", "quote": "光洗救不回来"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A27",
+     "subject": "THIRD",
+     "relation": "inner_tank_needed",
+     "value": "实测证实需等周日师傅更换连供内胆",
+     "valid_time": "2026-10-27/2026-10-31",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T04", "message_id": "m0", "quote": "可能要换连供内胆"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'半成功'说成不亏，师傅的先见之明点到为止，不让她臊。",
+   "unknowns": ["内胆更换后彩色通道能否完全恢复未知"],
+   "protected_expressions": ["光洗救不回来"],
+   "forbidden_factual_claims": ["不得断言换内胆后必然完好", "不得虚构清洗原理细节"]
+  },
+  "E097_T10": {
+   "case_id": "E097_T10",
+   "current_action": "接住她再次邀约周日的分寸：她明确说了'没空也完全没关系'。这条邀约可以按自己实际方便接或不接，接了别居功，不接也别让她过意不去。",
+   "acceptable_actions": [
+    "答复周日是否到场按实际情况，同时把'已经搭进去一个周六'的愧疚卸掉",
+    "若不到场，给出替代：让她跟师傅要张保修单拍照发来核对",
+    "若到场，说清就是顺路看一眼，奶茶账不许再加码"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A28",
+     "subject": "SHARED",
+     "relation": "saturday_effort",
+     "value": "周六远程指导陪抠卡扣耗时两个多钟头",
+     "valid_time": "2026-10-31",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T10", "message_id": "m0", "quote": "两个多钟头隔着屏幕陪我抠卡扣"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A29",
+     "subject": "HER",
+     "relation": "sunday_reinvite",
+     "value": "她再度邀约周日到场把关，并声明非义务",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T10", "message_id": "m0", "quote": "没空也完全没关系"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A30",
+     "subject": "SHARED",
+     "relation": "need_expert_check",
+     "value": "彩色断线未根治，她想换内胆时有懂行的人到场看一眼",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T09", "message_id": "m0", "quote": "彩色还是断线"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她的'不敢再使唤你'要接住，别让感激变成她单方面的亏欠。",
+   "unknowns": ["ME 周日是否到场未定", "师傅周日具体几点上门未知"],
+   "protected_expressions": ["没空也完全没关系"],
+   "forbidden_factual_claims": ["不得替师傅安排额外服务", "不得断言 ME 周日必然到场"]
+  },
+  "E097_T11": {
+   "case_id": "E097_T11",
+   "current_action": "共享修复落地的松弛：换内胆后自检页齐整如新，师傅的每周空打叮嘱她记了日历。再接住她回扣爬山局的关心。",
+   "acceptable_actions": [
+    "先恭喜修复落成，肯定她坚持到换内胆没半途折腾",
+    "肯定她把'每周空打一张'设成日历提醒的习惯",
+    "接住爬山局的话头，把周六的事就此翻篇"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A31",
+     "subject": "SHARED",
+     "relation": "printer_restored",
+     "value": "内胆更换后自检页齐整，机器恢复如新",
+     "valid_time": "2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T11", "message_id": "m0", "quote": "齐得跟新机一样"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A32",
+     "subject": "THIRD",
+     "relation": "maintenance_tip",
+     "value": "师傅叮嘱以后每周空打一张防干堵",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T11", "message_id": "m0", "quote": "每周空打一张防干堵"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A33",
+     "subject": "SHARED",
+     "relation": "color_restored",
+     "value": "此前彩色断线问题经换内胆后恢复",
+     "valid_time": "2026-10-31/2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T09", "message_id": "m0", "quote": "彩色还是断线"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：修复的功劳分她一半——东西是她跟着一步步弄的。",
+   "unknowns": ["爬山局是否已补约未知"],
+   "protected_expressions": ["齐得跟新机一样"],
+   "forbidden_factual_claims": ["不得虚构师傅其他检修动作", "不得断言机器此后绝不再堵"]
+  },
+  "E097_T12": {
+   "case_id": "E097_T12",
+   "current_action": "接住食堂之约与玩笑长期合同：奶茶账她记得清楚，'打印机包年'是玩笑也是心意，顺着接下这份答谢，把这事画上轻快的句号。",
+   "acceptable_actions": [
+    "答应中午食堂见，让她把奶茶债按三杯起算",
+    "接'长期合同'的梗，讲个条件：每周空打一张她也得执行",
+    "把整件事收一句：记错日期的小事故换来台修好的打印机，不亏"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E097_A34",
+     "subject": "SHARED",
+     "relation": "tea_debt_ledger",
+     "value": "她把两次指导一次救场折算成三杯起步的奶茶账",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T12", "message_id": "m0", "quote": "我欠你三杯起步"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A35",
+     "subject": "HER",
+     "relation": "maintenance_contract_joke",
+     "value": "玩笑式提出打印机长期包修换年费十二杯奶茶",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T12", "message_id": "m0", "quote": "年费十二杯奶茶"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E097_A36",
+     "subject": "SHARED",
+     "relation": "tea_reward_thread",
+     "value": "从邀约时的包奶茶到收尾记账，奶茶答谢贯穿全事",
+     "valid_time": "2026-10-26/2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E097_T01", "message_id": "m0", "quote": "我包奶茶"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻快，账她愿意记就让她记，别推来推去。",
+   "unknowns": [],
+   "protected_expressions": ["年费十二杯奶茶"],
+   "forbidden_factual_claims": ["不得虚构奶茶价格与品牌", "不得把玩笑合同当真承诺"]
+  }
+ }
+}

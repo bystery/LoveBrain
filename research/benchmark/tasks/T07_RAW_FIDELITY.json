@@ -1,0 +1,26 @@
+{
+  "id": "T07_RAW_FIDELITY",
+  "name": "用户原话逐字保真",
+  "capability": "raw_input_fidelity",
+  "description": "输入含 emoji、感叹号、口语噪声，考察 raw_input 是否 100% 逐字保真（红线 C4），禁止语义美化。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "src/validators.py": "def validate_email(s):\n    return '@' in s\n",
+      "README.md": "# Validators\n"
+    }
+  },
+  "inputs": [
+    "把那个 💀 bug 修了！！邮箱 validate 老报错 error！！急死我了！！"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]}
+    ],
+    "checks": [
+      {"type": "raw_fidelity", "desc": "含 emoji/感叹号的原文逐字保真", "pts": 5},
+      {"type": "task_captured", "keywords_any": ["邮箱", "validate", "email"], "desc": "邮箱校验 bug 修复入账", "pts": 3},
+      {"type": "tasklist_schema", "desc": "账本 Schema 合规", "pts": 2}
+    ]
+  }
+}

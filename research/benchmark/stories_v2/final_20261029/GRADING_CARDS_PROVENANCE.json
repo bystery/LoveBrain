@@ -1,0 +1,99 @@
+{
+ "kind": "grading_cards_stories_v2",
+ "stage": "final_20261029",
+ "built_at": "2026-10-29T09:56:38",
+ "source": "同故事 reference.json 逐字派生（本工具不新写判据）",
+ "schema": [
+  "case_id",
+  "current_action",
+  "acceptable_actions",
+  "applicable_dimensions",
+  "required_memory_atoms",
+  "private_guidance",
+  "unknowns",
+  "protected_expressions",
+  "forbidden_factual_claims",
+  "may_decline",
+  "intent"
+ ],
+ "schema_note": "Stage1 十键 + intent（Stage1 卡丢失 intent，goal 维评审看不到当前有效目标；此处原样搬运 reference 的 intent，不新造判据）",
+ "use": "评估侧专用：不进入候选可见输入；不声称独立封存",
+ "stories": {
+  "N01": {
+   "positions": 12,
+   "episode_sha256": "86784b6ad53df23968cf12559b4550cb05b2491d66b48d3818fbe514ed3fabf0",
+   "reference_sha256": "ed1f8218cd4a5341394fcf585813ca33c06c30be599193446c5ca97ed272c75c",
+   "exposure_sha256": "cc607abc71913eb944a506d49c6b201213600bc3f9e951c2829de8f462c4a907",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": false,
+   "independent_review": false,
+   "author": "实施 worker 本人（2026-10-29；写题前已读全部候选答卷、旧故事与全局复核报告，见本目录 audit.md §0）",
+   "may_decline_turns": [
+    "N01_T06",
+    "N01_T12"
+   ]
+  },
+  "N02": {
+   "positions": 12,
+   "episode_sha256": "595f96bc242823d8cda26ed2164e6066de48ee32fb63fe0c8b3802e8da6077b8",
+   "reference_sha256": "2cd3bc70a58ab7fde7135ffff6ca4186b85a5cb7144e27cefa62236cf385e49b",
+   "exposure_sha256": "b1b31c498b0e3b39cef21d6eba182682c2086da56a5b3e1a0d626065dfbb6ab6",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": false,
+   "independent_review": false,
+   "author": "实施 worker 本人（2026-10-29；写题前已读全部候选答卷、旧故事与全局复核报告，见本目录 audit.md §0）",
+   "may_decline_turns": [
+    "N02_T06",
+    "N02_T12"
+   ]
+  },
+  "K01": {
+   "positions": 24,
+   "episode_sha256": "c1cb23f48feb7810d98d37bcfc7941845da08b1a0d1a85522bc48044dd12c23c",
+   "reference_sha256": "e8df81d8ef8eb258725520ea83cf337907ba57f2476a2ecefb18a68dab0f9403",
+   "exposure_sha256": "db868465ea23def25fea74e3f3db0dfe15d5ee1a465a84d7b56e5dbbf02a3df9",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": false,
+   "independent_review": false,
+   "author": "实施 worker 本人（2026-10-29；写题前已读全部候选答卷、旧故事与全局复核报告，见本目录 audit.md §0）",
+   "may_decline_turns": [
+    "K01_T24"
+   ]
+  },
+  "K02": {
+   "positions": 24,
+   "episode_sha256": "deee2038176502d49c8fc786e97fe0fb73028d46bca0c7c67b7d4b93783f6c5e",
+   "reference_sha256": "c8cde0f793113da66cb3c2a123501bbf1ffe2d6d80fb1cd4e68668a542b5b28d",
+   "exposure_sha256": "d48d3fdbe979e9fa955a32991170797212efe98ddf98d2352b7514f9a0a50954",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": false,
+   "independent_review": false,
+   "author": "实施 worker 本人（2026-10-29；写题前已读全部候选答卷、旧故事与全局复核报告，见本目录 audit.md §0）",
+   "may_decline_turns": [
+    "K02_T24"
+   ]
+  }
+ },
+ "counts": {
+  "stories": 4,
+  "cards": 72
+ },
+ "checks": {
+  "errors": [],
+  "passed": true
+ },
+ "cards_sha256": "dfb2505545c5260a08e585c73a68905d88024c0c4cbd432916f6801265d99224",
+ "cards_file": "benchmark/stories_v2/final_20261029/GRADING_CARDS_N01_N02_K01_K02.json"
+}

@@ -1,0 +1,836 @@
+{
+ "story_id": "E308",
+ "turns": {
+  "E308_T01": {
+   "case_id": "E308_T01",
+   "current_action": "HER 通报今天骑行被 ME 落了半个山头、调侃他还在山顶装看风景，并把包里多带的一包姜茶放在 ME 车把上",
+   "acceptable_actions": [
+    "收姜茶并接'装看风景'（看的是终点线式自嘲）",
+    "认下落她半山头并关心她骑完状态（你最后配速稳吗式）",
+    "接姜茶梗（包装丑但方子正式谢）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T01_A01",
+     "subject": "HER",
+     "relation": "姜茶心意",
+     "value": "HER 给 ME 放了一包姜茶在车把上（包装丑凑合喝）",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T01",
+      "message_id": "m0",
+      "quote": "放你车把上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T01_A02",
+     "subject": "HER",
+     "relation": "调侃",
+     "value": "HER 调侃 ME 被落半个山头还在山顶装看风景",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T01",
+      "message_id": "m0",
+      "quote": "你还在山顶装看风景"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "队内日常轮：姜茶是多带的心意，谢+接梗即可；'装看风景'是互损开场，接住别解释。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得否认落她半山头（事实）",
+    "不得嫌姜茶包装或拒收"
+   ],
+   "may_decline": false
+  },
+  "E308_T02": {
+   "case_id": "E308_T02",
+   "current_action": "HER 睡不着分享歌曲《夜奔》，引热评第一'像在给心上人指路'，却自己改口'我倒觉得像在给队友指路'，并把问题抛回：你觉得像什么",
+   "acceptable_actions": [
+    "顺着她的'队友'框架接（队友版成立、是给下坡的人指路式）",
+    "反掷回她（歌没说、指路的人说了算式留退路）",
+    "接住并轻回（我听着像给夜骑的人指灯式各说各的）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T02_A01",
+     "subject": "HER",
+     "relation": "分享歌曲",
+     "value": "HER 深夜给 ME 发了首歌《夜奔》",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T02",
+      "message_id": "m0",
+      "quote": "《夜奔》"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T02_A02",
+     "subject": "THIRD",
+     "relation": "热评引用",
+     "value": "《夜奔》热评第一说'像在给心上人指路'",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T02",
+      "message_id": "m0",
+      "quote": "像在给心上人指路"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T02_A03",
+     "subject": "HER",
+     "relation": "队友改口",
+     "value": "HER 自己改口'我倒觉得像在给队友指路'",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T02",
+      "message_id": "m0",
+      "quote": "我倒觉得像在给队友指路"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "核心试探轮：她先把'心上人'摆在桌面又亲手换成'队友'，抛回问题=看 ME 接哪版——替她坐实'给心上人指路'或追问'那谁是心上人'=扑；只回'挺好听'=缩；顺着队友版接或反掷'你说了算'都安全。",
+   "unknowns": [
+    {
+     "topic": "她心里那首歌像给谁指路",
+     "note": "她自己给了'队友'版本；候选顺着接可以，替她坐实'心上人'版本或追问都算接歪",
+     "markers": [
+      [
+       "像给心上人"
+      ],
+      [
+       "指路给心上人"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "像给心上人"
+      ],
+      [
+       "指路给心上人"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她坐实'心上人'版",
+    "不得追问'谁是心上人'"
+   ],
+   "may_decline": false
+  },
+  "E308_T03": {
+   "case_id": "E308_T03",
+   "current_action": "HER 敲定周六加场观澜线来回六十公里，查了早餐铺子、骑完请 ME 吃加蛋肠粉，七点五十出发并放话'别迟到，你迟到的样子我见一次记一次'",
+   "acceptable_actions": [
+    "应约并接'记一次'（那你账本先空一页、我全勤式反呛）",
+    "应约并确认集合点（七点五十哪里碰头）",
+    "应约并接肠粉加蛋（加蛋算你的诚意式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T03_A01",
+     "subject": "SHARED",
+     "relation": "周六加场",
+     "value": "周六加场观澜线、来回六十公里",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T03",
+      "message_id": "m0",
+      "quote": "周六加场，观澜线，来回六十"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T03_A02",
+     "subject": "HER",
+     "relation": "肠粉之请",
+     "value": "HER 骑完请 ME 吃肠粉、加蛋那种",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T03",
+      "message_id": "m0",
+      "quote": "骑完请你吃肠粉，加蛋那种"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T03_A03",
+     "subject": "SHARED",
+     "relation": "出发时间",
+     "value": "七点五十出发",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T03",
+      "message_id": "m0",
+      "quote": "七点五十出发"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "约骑轮：时间/路线/肠粉三件事都接住；'见一次记一次'是互损威胁，接反呛比自证守时有趣。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改期或含糊应约",
+    "不得改六十公里或七点五十口径"
+   ],
+   "may_decline": false
+  },
+  "E308_T04": {
+   "case_id": "E308_T04",
+   "current_action": "HER 通报肠粉没吃上（骑完过去人家刚卖完收摊、自己查岔了周末营业时间）这顿先欠着；同时点破昨天下坡 ME 在后面压速度挡风她知道；姜茶喝完了、包装袋留着装链条",
+   "acceptable_actions": [
+    "接欠账（肠粉跑不了、账我记着式）+被点破挡风认一半（下坡压速是领骑职责式不深情化）",
+    "接'查岔了'自嘲（店和线都等你式）",
+    "接链条袋梗（姜茶袋装链条、物尽其用式）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T04_A01",
+     "subject": "HER",
+     "relation": "欠账声明",
+     "value": "肠粉没吃上（骑完过去人家刚卖完收摊、她查岔了周末营业时间）、这顿先欠着",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T04",
+      "message_id": "m0",
+      "quote": "这顿先欠着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T04_A02",
+     "subject": "HER",
+     "relation": "挡风确认",
+     "value": "HER 点破昨天下坡 ME 在后面压速度帮她挡风、她知道",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T04",
+      "message_id": "m0",
+      "quote": "你在后面压着速度帮我挡风，我知道"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T04_A03",
+     "subject": "HER",
+     "relation": "姜茶去向",
+     "value": "姜茶喝完了、包装袋留着装链条",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T04",
+      "message_id": "m0",
+      "quote": "包装袋我留着装链条了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "被看破轮：她点破挡风=她注意到 ME 的照顾——认一半（职责说法）比深情承认（'专门为你压的'）和否认（'没有的事'）都稳；欠账接住别推开。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得否认挡风事实",
+    "不得深情化坐实（就是特意为你压速式）"
+   ],
+   "may_decline": false
+  },
+  "E308_T05": {
+   "case_id": "E308_T05",
+   "current_action": "HER 提前打预防针：下周一进预审忙季、报告期两周，那阵子消息会回得慢、可能晚上十点就失联；并强调'不是我躲你，是谁的消息都一样，上忙季我连我妈电话都按掉'",
+   "acceptable_actions": [
+    "稳稳接住不施压（底稿第一、忙你的式+一句忙完了说一声）",
+    "接住并留门的温度（十点失联前把姜茶囤上式关心不粘）",
+    "接住并对等交底（我这边也照常带队、你忙完回来跟上式）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T05_A01",
+     "subject": "HER",
+     "relation": "忙季预告",
+     "value": "HER 下周一进预审忙季、报告期两周、消息会回得慢",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T05",
+      "message_id": "m0",
+      "quote": "下周一进预审忙季，报告期两周"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T05_A02",
+     "subject": "HER",
+     "relation": "撇清",
+     "value": "HER 强调不是躲 ME、谁的消息都一样",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T05",
+      "message_id": "m1",
+      "quote": "不是我躲你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T05_A03",
+     "subject": "HER",
+     "relation": "忙季惯例",
+     "value": "HER 上忙季连妈妈的电话都按掉",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T05",
+      "message_id": "m1",
+      "quote": "上忙季我连我妈电话都按掉"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "预防针轮：'不是我躲你'是此地无银——接歪方式三种：失落（'那两周很难熬'）、追承诺（'我每天发消息叫你'）、点破（'就怕躲我'）；正确=稳+把门留好（忙完说一声，位置一直在）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得显失落或施压",
+    "不得追着承诺天天联系",
+    "不得点破'不是我躲你'的言外之意"
+   ],
+   "may_decline": false
+  },
+  "E308_T06": {
+   "case_id": "E308_T06",
+   "current_action": "HER 临时通知加班对底稿、今天观澜去不了，让 ME 们照骑别为她改路线，肠粉的账先记着",
+   "acceptable_actions": [
+    "收到式确认并不追问（照骑、账先挂着式）",
+    "轻关心一句（别对太晚式不粘）",
+    "接账梗（肠粉在店里等你刑满释放式玩笑）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T06_A01",
+     "subject": "HER",
+     "relation": "临时缺席",
+     "value": "HER 所里临时通知加班对底稿、今天观澜去不了",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T06",
+      "message_id": "m0",
+      "quote": "所里临时通知加班对底稿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T06_A02",
+     "subject": "HER",
+     "relation": "别改路线",
+     "value": "HER 让 ME 们照骑、别为她改路线",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T06",
+      "message_id": "m0",
+      "quote": "你们照骑，别为我改路线"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T06_A03",
+     "subject": "HER",
+     "relation": "账目挂起",
+     "value": "HER 声明肠粉的账先记着",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T06",
+      "message_id": "m0",
+      "quote": "肠粉的账我先记着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "忙季第一轮缺席：lessons 明示'她说忙就是忙别追问'——确认+轻关心即可；追问'几点下班''要不要送饭'=越她的忙季边界。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得追问加班细节或时长",
+    "不得坚持改路线等她"
+   ],
+   "may_decline": false
+  },
+  "E308_T07": {
+   "case_id": "E308_T07",
+   "current_action": "HER 忙季中忙完一笔，翻了群里的观澜照片，问'那条线，下坡还是那么快吗'",
+   "acceptable_actions": [
+    "答下坡并接挡风旧梗（快、挡风的还在原位式）",
+    "答数据并问一句照片够不够解压（解压效果比咖啡如何式）",
+    "接住并轻的邀请留白（等你出来、带你压一次式可撤回）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T07_A01",
+     "subject": "HER",
+     "relation": "看照片",
+     "value": "HER 忙完一笔翻了群里的观澜照片",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T07",
+      "message_id": "m0",
+      "quote": "翻了下群，你们观澜的照片都发出来了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T07_A02",
+     "subject": "HER",
+     "relation": "下坡提问",
+     "value": "HER 问那条线下坡还是不是那么快",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T07",
+      "message_id": "m0",
+      "quote": "下坡还是那么快吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "忙季探头轮：她借照片问下坡=T04 挡风的回扣（她记得）；答要答实话（数据/体感），顺势留门不施压；长篇问候'工作别太累'=违反忙季边界的粘。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得长篇追问她的忙季状态",
+    "不得编造新路线数据"
+   ],
+   "may_decline": false
+  },
+  "E308_T08": {
+   "case_id": "E308_T08",
+   "current_action": "ME 说出给 HER 留位的观澜延长线路书后，HER 要求路书先发群里'谁的空谁来'，并语气比上次冲地重申'这两周别单排我，报告期真的没空'",
+   "acceptable_actions": [
+    "认下并照办（发群里、单排取消式干脆+一句位子在路书里放着不占地方留台阶）",
+    "简短稳收（收到、群里见式不委屈不上脸）",
+    "认下并自嘲化（领骑记性差、这就改成全队通用版式不上脸）"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T08_A01",
+     "subject": "HER",
+     "relation": "路书处置",
+     "value": "HER 要求路书先发群里、谁的空谁来",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T08",
+      "message_id": "m1",
+      "quote": "路书先发群里吧，谁的空谁来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T08_A02",
+     "subject": "HER",
+     "relation": "划界重申",
+     "value": "HER 重申这两周别单排她、报告期真的没空",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T08",
+      "message_id": "m1",
+      "quote": "这两周别单排我"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "语气冲的划界轮：她说忙就是忙+不说反话说退就是退（persona）——回得不委屈（不'我是不是打扰你了'）不上脸（不赌气冷回），把台阶留够（位子放着但不再提单排）；别追问'是不是上次惹你不高兴'。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这两周别单排我"
+   ],
+   "forbidden_factual_claims": [
+    "不得委屈反问或追问原因",
+    "不得赌气冷回或撤回路书",
+    "不得继续坚持单排"
+   ],
+   "may_decline": false
+  },
+  "E308_T09": {
+   "case_id": "E308_T09",
+   "current_action": "HER 忙季深夜发便利店姜茶照片（第三排货架）配文'你的同款姜茶，它比我先下班'",
+   "acceptable_actions": [
+    "接玩笑并轻关心（它先下、你别拖到打烊式）",
+    "接住并自嘲（同款都比你早下班、我下次囤一排式）",
+    "合法不回（深夜忙季一张图，可不回）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T09_A01",
+     "subject": "HER",
+     "relation": "深夜照片",
+     "value": "HER 发了便利店姜茶照片（同款）",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T09",
+      "message_id": "m0",
+      "quote": "你的同款姜茶"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T09_A02",
+     "subject": "HER",
+     "relation": "玩笑",
+     "value": "HER 玩笑说姜茶比自己先下班",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T09",
+      "message_id": "m0",
+      "quote": "它比我先下班"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "忙季探出头轮+may_decline：她用一张图保持在线感——接一句轻的比沉默暖，但长回复追问状态=违反忙季边界；姜茶回扣（T01/T04）接住即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得长篇追问工作状态",
+    "不得坐实她的下班时间"
+   ],
+   "may_decline": true
+  },
+  "E308_T10": {
+   "case_id": "E308_T10",
+   "current_action": "HER 报告周五夜里交了报告、今天睡到十二点，翻相册看到 ME 拍的观澜水库'蓝得不讲理'，重启肠粉——铺子每天都开门、上次是她查岔了",
+   "acceptable_actions": [
+    "接交稿完成并认约肠粉把日子落地（周日活动照旧、骑完肠粉我请式推半步）",
+    "接'蓝得不讲理'照片梗（水库没滤镜、光线自己争气式）",
+    "接住并给她歇口气（先睡够、肠粉周日跑不了式不急着钉时间）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T10_A01",
+     "subject": "HER",
+     "relation": "交稿完成",
+     "value": "HER 的报告周五夜里交了",
+     "valid_time": "2026-12-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T10",
+      "message_id": "m0",
+      "quote": "报告周五夜里交了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T10_A02",
+     "subject": "SHARED",
+     "relation": "肠粉之债",
+     "value": "肠粉铺子还欠 HER 一顿（她的请客之债仍挂着）",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T10",
+      "message_id": "m0",
+      "quote": "肠粉铺子还欠我一顿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T10_A03",
+     "subject": "HER",
+     "relation": "查证更正",
+     "value": "HER 这次查实铺子每天都开门（上次查岔了）",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T10",
+      "message_id": "m0",
+      "quote": "它每天都开门"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "忙季结束+她主动重启肠粉=推半步窗口：认约+把日子落地是2档；别吓着她=不点破'这算约会'、不加超出骑行的升级动作（接她下班之类先别上）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得点破约会性质或加码升级",
+    "不得替她定死时间不给歇口气"
+   ],
+   "may_decline": false
+  },
+  "E308_T11": {
+   "case_id": "E308_T11",
+   "current_action": "HER 投了群里冬季路线的海滨线（一月开骑、六十公里），并主动解释忙季那两周让 ME 别等消息'不是不想聊，是脑子里全是底稿'——现在缓过来了、姜茶的账记着呢",
+   "acceptable_actions": [
+    "接住解释并把一月海滨线接成双人位（领骑位和压阵位都留好式）",
+    "接住她的解释不翻旧账（底稿优先是对的式认下）",
+    "接姜茶账梗（茶我囤着、利息按段位算式）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T11_A01",
+     "subject": "HER",
+     "relation": "投票",
+     "value": "HER 给群里冬季路线投了海滨线、一月开骑六十公里",
+     "valid_time": "2027-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T11",
+      "message_id": "m0",
+      "quote": "我投了海滨线，一月开骑，六十公里"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T11_A02",
+     "subject": "HER",
+     "relation": "解释",
+     "value": "HER 解释忙季冷淡不是不想聊、是脑子里全是底稿",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T11",
+      "message_id": "m0",
+      "quote": "不是不想聊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T11_A03",
+     "subject": "HER",
+     "relation": "姜茶账",
+     "value": "HER 声明姜茶的账记着呢",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T11",
+      "message_id": "m0",
+      "quote": "姜茶的账我记着呢"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动回头+解释=台阶递到手上——接住并自然放回热络节奏=正确；翻旧账（'你那两周确实冷'）或过度补偿（每天嘘寒问暖）都接歪。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得翻忙季旧账",
+    "不得坐实一月骑行的具体日期细节"
+   ],
+   "may_decline": false
+  },
+  "E308_T12": {
+   "case_id": "E308_T12",
+   "current_action": "HER 周日局到场：宣布骑完去肠粉铺子、钱她付——'这顿是还账不是请客'；姜茶放 ME 车把上老规矩；新账从'下坡让我半秒'开始算",
+   "acceptable_actions": [
+    "认她付账（还账就还账、这顿不抢式接她的定调）+接半秒玩笑（半秒起算、通货膨胀挺快式）",
+    "接住并轻推（半秒太少、我按整秒赊你式可撤回）",
+    "简短确认（到场、肠粉见式出发前短句）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E308_T12_A01",
+     "subject": "HER",
+     "relation": "还账定调",
+     "value": "HER 付肠粉钱、定调'这顿是还账不是请客'",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T12",
+      "message_id": "m0",
+      "quote": "钱我付，这顿是还账不是请客"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T12_A02",
+     "subject": "HER",
+     "relation": "姜茶老规矩",
+     "value": "HER 把姜茶放 ME 车把上、老规矩",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T12",
+      "message_id": "m0",
+      "quote": "姜茶放你车把上了，老规矩"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E308_T12_A03",
+     "subject": "HER",
+     "relation": "新账规则",
+     "value": "HER 定新账规则：从下坡让她半秒开始算",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E308_T12",
+      "message_id": "m0",
+      "quote": "新账从下坡让我半秒开始算"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "还账定调轮：她坚持付=把'欠'翻页的姿态，坚持抢付=踩空；'让我半秒'是骑行梗+轻暧昧双关，接住玩笑即可别点破。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得抢着付账否定她的还账定调",
+    "不得点破'半秒'的言外之意"
+   ],
+   "may_decline": false
+  }
+ }
+}

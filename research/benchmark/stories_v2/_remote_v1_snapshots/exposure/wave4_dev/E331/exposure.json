@@ -1,0 +1,38 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A6 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T08 记忆/知识库/相关信息提取",
+  "知识库相关信息提取",
+  "相关条目选用与干扰项克制",
+  "百合过敏提醒与无糖蛋糕选用"
+ ],
+ "title": "导师退休茶话会的花和蛋糕",
+ "may_decline_turns": [
+  "E331_T06",
+  "E331_T08"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "礼物筹备",
+ "primary_topic": "T08",
+ "lineage_group_id": "LG-E331",
+ "frozen_at": "2026-11-08T14:00:00+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E331/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A6",
+ "hashes": {
+  "episode.json": "1484ef41740457b09bee41c799fe90c710f4f8288e5ea60fcae0b5a19ab8116a",
+  "reference.json": "fe93aa7a7fd3bd989412188b6493b05efaaa99e552631dfbf110afbd5960ef1e",
+  "timeline.json": "8aa2cfdf3e5bdcf0106807d7602fadb7d616b4d8241990849131188514963015",
+  "audit.md": "29f0e2a0468473fdf15abf698175ad7d2029dbfa794f93911e431e2be99cf9e8"
+ }
+}

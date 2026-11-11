@@ -1,0 +1,158 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E037",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E037_T01",
+   "clock": "2026-11-02 12:10"
+  },
+  {
+   "case_id": "E037_T02",
+   "clock": "2026-11-02 12:18"
+  },
+  {
+   "case_id": "E037_T03",
+   "clock": "2026-11-02 12:20"
+  },
+  {
+   "case_id": "E037_T04",
+   "clock": "2026-11-04 09:58"
+  },
+  {
+   "case_id": "E037_T05",
+   "clock": "2026-11-04 10:02"
+  },
+  {
+   "case_id": "E037_T06",
+   "clock": "2026-11-04 10:05"
+  },
+  {
+   "case_id": "E037_T07",
+   "clock": "2026-11-05 21:32"
+  },
+  {
+   "case_id": "E037_T08",
+   "clock": "2026-11-05 21:40"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E037_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-02 12:08",
+   "quote": "体验课感觉怎么样 腰今天反应大吗"
+  },
+  {
+   "case_id": "E037_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-02 12:12",
+   "quote": "还行 腰没大反应主要就是僵 这周项目上线 天天得到九点"
+  },
+  {
+   "case_id": "E037_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-02 12:19",
+   "quote": "行 那不硬排 周三晚九点我有空档 就给你留着"
+  },
+  {
+   "case_id": "E037_T04",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-04 09:55",
+   "quote": "教练 周三晚九点的课没问题吧 我刚下班"
+  },
+  {
+   "case_id": "E037_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-04 10:00",
+   "quote": "本来是 周三家里有点事 课给你挪到周五晚九点行吗"
+  },
+  {
+   "case_id": "E037_T06",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-04 10:03",
+   "quote": "周五行 那就周五晚九点 谢谢你提前说"
+  },
+  {
+   "case_id": "E037_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 21:30",
+   "quote": "明天课带套换洗的 课前我提前十分钟给你做热身 你腰的事我记住 重点练核心"
+  },
+  {
+   "case_id": "E037_T08",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 21:36",
+   "quote": "行 明天见 带换洗的 听你安排"
+  },
+  {
+   "case_id": "E037_T08",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-05 21:38",
+   "quote": "好 周五晚九点别迟到 腰我们慢慢来"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "周三晚九点私教课（后改期）",
+   "event_time": "2026-11-04 21:00",
+   "status": "planned",
+   "source_turn": "E037_T03"
+  },
+  {
+   "event_id": "EV2",
+   "label": "周五晚九点私教课（改期后）",
+   "event_time": "2026-11-06 21:00",
+   "status": "planned",
+   "source_turn": "E037_T05"
+  },
+  {
+   "event_id": "EV3",
+   "label": "项目上线周",
+   "event_time": "2026-11-02",
+   "status": "occurred",
+   "source_turn": "E037_T02"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "体验课后的新学员"
+  },
+  {
+   "turn": "T05",
+   "stage": "互相配合改期的师生"
+  },
+  {
+   "turn": "T08",
+   "stage": "约好首节正式课"
+  }
+ ],
+ "revisions": [
+  {
+   "case_id": "E037_T04",
+   "kind": "intent",
+   "status": "ACTIVE",
+   "text": "确认周三晚九点的首节课，问要不要提前做点什么准备",
+   "enabled": true
+  },
+  {
+   "case_id": "E037_T06",
+   "kind": "intent",
+   "status": "ADJUSTED",
+   "text": "目标改到周五：把首节课正式定在周五晚九点",
+   "enabled": true
+  }
+ ],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

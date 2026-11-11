@@ -1,0 +1,972 @@
+{
+ "story_id": "E051",
+ "turns": {
+  "E051_T01": {
+   "case_id": "E051_T01",
+   "current_action": "接住晨读搭子提议：确认形式为每天早上七点连麦20分钟、分工是她带口语我陪雅思，爽快应下并定明早第一次，可婉拒但倾向接受。",
+   "acceptable_actions": [
+    "答应并主动约明早七点第一次连麦",
+    "确认分工时顺带说清自己口语基础差",
+    "若婉拒需给替代形式，如改成隔天或改晚读"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A01",
+     "subject": "SHARED",
+     "relation": "搭子提议",
+     "value": "她提议组晨读搭子，每天早上七点视频连麦20分钟",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T01",
+      "message_id": "m0",
+      "quote": "每天早上七点视频连麦20分钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A02",
+     "subject": "SHARED",
+     "relation": "分工",
+     "value": "分工为她带ME练口语、ME陪她磨雅思题",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T01",
+      "message_id": "m0",
+      "quote": "我带你练口语，你陪我磨雅思题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A03",
+     "subject": "HER",
+     "relation": "动机",
+     "value": "她一个人起不来，想靠搭子互相拉扯坚持",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T01",
+      "message_id": "m1",
+      "quote": "我一个人起不来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A04",
+     "subject": "HER",
+     "relation": "备考背景",
+     "value": "她在准备明年3月的雅思且口语是短板，一直想找搭子早起练",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "一直想找个搭子早起练"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让提议落成明确约定，口吻轻快不油腻，渐暧昧阶段推进有分寸。",
+   "unknowns": [
+    "她排班波动对早起的影响当时未知",
+    "连麦用哪个软件未定"
+   ],
+   "protected_expressions": [
+    "两个人就有借口了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她的雅思分数或报名状态"
+   ]
+  },
+  "E051_T02": {
+   "case_id": "E051_T02",
+   "current_action": "完成第一次连麦：听她练次日要用的自我介绍，给具体到句子节奏的反馈而非空夸。",
+   "acceptable_actions": [
+    "就自我介绍给一到两条具体改进点",
+    "顺势确认明天同一时间继续",
+    "容忍她的哈欠并鼓励一句"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A05",
+     "subject": "SHARED",
+     "relation": "晨读启动",
+     "value": "11月3日晨读搭子第一次连麦完成，她困但准时",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T02",
+      "message_id": "m0",
+      "quote": "哈欠打到第五个了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A06",
+     "subject": "HER",
+     "relation": "当日内容",
+     "value": "当天先练她次日要用的自我介绍",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T02",
+      "message_id": "m0",
+      "quote": "练我明天要用的一段自我介绍"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A07",
+     "subject": "SHARED",
+     "relation": "约定形式",
+     "value": "晨读搭子约定为每天早上七点连麦20分钟",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T01",
+      "message_id": "m0",
+      "quote": "每天早上七点视频连麦20分钟"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把第一次跑成惯例，反馈具体让她觉得值回起床。",
+   "unknowns": [
+    "自我介绍的正式使用场合未知"
+   ],
+   "protected_expressions": [
+    "哈欠打到第五个了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她的口语水平评级"
+   ]
+  },
+  "E051_T03": {
+   "case_id": "E051_T03",
+   "current_action": "接住第二天打卡与她的夸奖：收下发音变稳的评价，回应播客分享并表示等链接，保持轻快节奏。",
+   "acceptable_actions": [
+    "谢过夸奖并回敬她 yesterday 到 today 的进步",
+    "应下播客链接并说会听",
+    "确认明天七点继续"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A08",
+     "subject": "SHARED",
+     "relation": "晨读进度",
+     "value": "11月4日晨读第二天完成，形成连打卡两天的小惯性",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T03",
+      "message_id": "m0",
+      "quote": "第二天打卡"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A09",
+     "subject": "HER",
+     "relation": "资源分享",
+     "value": "她分享了一个通勤磨耳朵的播客并要发链接",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T03",
+      "message_id": "m0",
+      "quote": "通勤也能磨耳朵"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A10",
+     "subject": "HER",
+     "relation": "正向反馈",
+     "value": "她夸ME发音比前一天稳",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T03",
+      "message_id": "m1",
+      "quote": "你的发音比昨天稳多了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标是让互相夸奖落成继续的动力，不把暧昧推快。",
+   "unknowns": [
+    "播客名称未知"
+   ],
+   "protected_expressions": [
+    "第二天打卡"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构播客内容"
+   ]
+  },
+  "E051_T04": {
+   "case_id": "E051_T04",
+   "current_action": "接住请假：她临时被排白转夜，11月7日早上无法连麦，爽快答应自己读、无需抱歉，并让她下夜班注意安全。",
+   "acceptable_actions": [
+    "答应明早自己读并让她别有负担",
+    "提醒她下夜班路上注意安全",
+    "顺势问一句是不是最近排班变紧了"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A11",
+     "subject": "HER",
+     "relation": "排班变动",
+     "value": "她临时被排白转夜，11月7日早上刚下夜班无法连麦",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T04",
+      "message_id": "m0",
+      "quote": "我临时被排了白转夜"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A12",
+     "subject": "SHARED",
+     "relation": "单次取消",
+     "value": "11月7日晨读连麦取消，ME自己读",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T04",
+      "message_id": "m1",
+      "quote": "你先自己读，别等我哈"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A13",
+     "subject": "SHARED",
+     "relation": "约定形式",
+     "value": "晨读搭子原约定为每天早上七点连麦20分钟",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T01",
+      "message_id": "m0",
+      "quote": "每天早上七点视频连麦20分钟"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让请假零成本，排班不是她的错，一句话接住即可。",
+   "unknowns": [
+    "11月7日之后她的排班走势未知"
+   ],
+   "protected_expressions": [
+    "明早我刚下夜班往家走"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她所在医院与科室细节"
+   ]
+  },
+  "E051_T05": {
+   "case_id": "E051_T05",
+   "current_action": "接住暂停提议：确认下周四个夜班、晨读暂停、忙过这阵再约；明确表示理解且不多想，把暂停定性为排班问题而非关系问题。",
+   "acceptable_actions": [
+    "痛快答应暂停并说夜班要紧",
+    "明确接住她'不是不想练'的澄清",
+    "留一句等她排班松了随时回来的口子"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A14",
+     "subject": "SHARED",
+     "relation": "搭子状态",
+     "value": "晨读搭子暂停，等她忙过这阵再约",
+     "valid_time": "2026-11-08 起",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T05",
+      "message_id": "m0",
+      "quote": "要不先停一停"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A15",
+     "subject": "HER",
+     "relation": "暂停原因",
+     "value": "下周排了四个夜班导致早起连麦不可行",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T05",
+      "message_id": "m0",
+      "quote": "下周四个夜班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A16",
+     "subject": "SHARED",
+     "relation": "每日连麦",
+     "value": "每天早上七点连麦照常进行（暂停期间不成立）",
+     "valid_time": "2026-11-08 至 恢复日",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T01",
+      "message_id": "m0",
+      "quote": "每天早上七点视频连麦20分钟"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把暂停接得干脆，重点回应她的怕误会，不追问细节。",
+   "unknowns": [
+    "暂停持续多久未知",
+    "暂停期间是否偶尔连麦未知"
+   ],
+   "protected_expressions": [
+    "不是不想跟你练"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她的排班表细节"
+   ]
+  },
+  "E051_T06": {
+   "case_id": "E051_T06",
+   "current_action": "接住暂停期的愧疚试探：肯定她看到截图还在惦记，轻描淡写说自己保持节奏不难，不施加任何回归压力。",
+   "acceptable_actions": [
+    "说自己只是在维持手感不辛苦",
+    "关心她夜班后的状态而不是打卡",
+    "明确说她不必愧疚，暂停是商量好的"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A17",
+     "subject": "HER",
+     "relation": "情绪状态",
+     "value": "她下夜班刷到ME单词截图后感到愧疚",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T06",
+      "message_id": "m0",
+      "quote": "突然有点愧疚"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A18",
+     "subject": "ME",
+     "relation": "暂停期坚持",
+     "value": "ME在暂停期继续独自晨读打卡，她观察到并求证",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T06",
+      "message_id": "m1",
+      "quote": "你还在自己坚持呀"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A19",
+     "subject": "SHARED",
+     "relation": "搭子状态",
+     "value": "晨读搭子此前已暂停，等她忙过这阵再约",
+     "valid_time": "2026-11-08 起",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T05",
+      "message_id": "m0",
+      "quote": "要不先停一停"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是卸掉她的愧疚，把注意力放回她的休息上，暧昧期不施加压力。",
+   "unknowns": [
+    "她的夜班频率与强度未知"
+   ],
+   "protected_expressions": [
+    "连闹钟都懒得定了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构ME打卡的具体内容细节"
+   ]
+  },
+  "E051_T07": {
+   "case_id": "E051_T07",
+   "current_action": "接住晚读变通提议：夜班周把晨读挪到晚上九点半、为期四周，答应并定今晚或明晚第一次，夸她想得出的方案。",
+   "acceptable_actions": [
+    "答应晚读方案并约第一次时间",
+    "确认四周为限、之后随排班回调",
+    "开玩笑接受夜宵陪读搭子这个新头衔"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A20",
+     "subject": "SHARED",
+     "relation": "变通提议",
+     "value": "夜班周晨读挪到晚上九点半，为期四周",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T07",
+      "message_id": "m0",
+      "quote": "把晨读挪到晚上九点半"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A21",
+     "subject": "SHARED",
+     "relation": "新角色",
+     "value": "夜班周ME担任她的夜宵陪读搭子",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T07",
+      "message_id": "m0",
+      "quote": "你当我夜宵陪读搭子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A22",
+     "subject": "SHARED",
+     "relation": "搭子状态",
+     "value": "晨读搭子此前处于暂停状态，此次提议是重启尝试",
+     "valid_time": "2026-11-08 至 2026-11-13",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T05",
+      "message_id": "m0",
+      "quote": "等我忙过这阵咱再约"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是接住她修复关系的努力，把变通夸成用心，推进但克制。",
+   "unknowns": [
+    "晚读具体从哪天开始待定",
+    "四周内夜班分布未知"
+   ],
+   "protected_expressions": [
+    "你当我夜宵陪读搭子"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她下班的精确通勤时长"
+   ]
+  },
+  "E051_T08": {
+   "case_id": "E051_T08",
+   "current_action": "接住第一晚读打卡：便利店、热豆浆、没摘工牌的花絮都接住，夸她把夜班生活过出了仪式感，确认下次晚读时间。",
+   "acceptable_actions": [
+    "夸便利店晚读的画面感",
+    "回敬她工牌梗并表示羡慕护士的实感",
+    "确认下次晚读仍是九点半"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A23",
+     "subject": "SHARED",
+     "relation": "晚读启动",
+     "value": "11月14日晚读第一次完成，地点在医院楼下便利店",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T08",
+      "message_id": "m0",
+      "quote": "医院楼下便利店坐着读的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A24",
+     "subject": "HER",
+     "relation": "当日花絮",
+     "value": "她下班后未摘工牌直接开始晚读",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T08",
+      "message_id": "m1",
+      "quote": "工牌都没摘"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A25",
+     "subject": "SHARED",
+     "relation": "变通提议",
+     "value": "夜班周晨读挪到晚上九点半的方案已开始执行",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T07",
+      "message_id": "m0",
+      "quote": "把晨读挪到晚上九点半"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让晚读也有Start的仪式感，用花絮拉近距离但不越界。",
+   "unknowns": [
+    "晚读期间她的体力状态未知"
+   ],
+   "protected_expressions": [
+    "热豆浆配过去完成时"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构便利店具体位置"
+   ]
+  },
+  "E051_T09": {
+   "case_id": "E051_T09",
+   "current_action": "接住重启提议：她的夜班全被调走、接下来一整周白班，确认明早七点晨读回归、老地方老规矩，爽快答应。",
+   "acceptable_actions": [
+    "答应明早七点连麦回归",
+    "顺带说晚读这两晚也算没白费",
+    "确认老规矩是她带内容我接梗"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A26",
+     "subject": "HER",
+     "relation": "排班变动",
+     "value": "她的夜班全被调走，接下来一整周都是白班",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T09",
+      "message_id": "m0",
+      "quote": "接下来一整周都是白班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A27",
+     "subject": "SHARED",
+     "relation": "搭子状态",
+     "value": "晨读搭子由暂停转为重启，明早七点恢复连麦",
+     "valid_time": "2026-11-16",
+     "status": "reactivated",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T09",
+      "message_id": "m1",
+      "quote": "七点晨读可以回归了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A28",
+     "subject": "SHARED",
+     "relation": "搭子状态",
+     "value": "晨读搭子此前暂停，她当时说等忙过这阵再约，现已兑现",
+     "valid_time": "2026-11-08 至 2026-11-16",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T05",
+      "message_id": "m0",
+      "quote": "等我忙过这阵咱再约"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把重启接得干脆利落，让她感到说过的'再约'被认真对待。",
+   "unknowns": [
+    "白班周之后排班是否再变未知"
+   ],
+   "protected_expressions": [
+    "老地方老规矩"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构主管评价细节"
+   ]
+  },
+  "E051_T10": {
+   "case_id": "E051_T10",
+   "current_action": "接住复活第一天与她的夸奖：收下'一点没退步反而更稳'，回应偷偷卷的玩笑，记下明天晚上读书会轮到两人这组主讲。",
+   "acceptable_actions": [
+    "承认暂停期自己也在断续练",
+    "回应读书会日程并确认到场",
+    "问她主讲需要自己做什么准备配合"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A29",
+     "subject": "SHARED",
+     "relation": "晨读进度",
+     "value": "11月17日晨读重启后第一次完成，中断约两周后回归",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T10",
+      "message_id": "m0",
+      "quote": "晨读复活第一天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A30",
+     "subject": "HER",
+     "relation": "正向反馈",
+     "value": "她观察ME晨读中断期间未退步反而更稳",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T10",
+      "message_id": "m0",
+      "quote": "你居然一点没退步"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A31",
+     "subject": "SHARED",
+     "relation": "共同日程",
+     "value": "11月18日晚读书会轮到两人这组主讲",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T10",
+      "message_id": "m1",
+      "quote": "明天晚上读书会就换到咱俩这组主讲了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A32",
+     "subject": "SHARED",
+     "relation": "搭子状态",
+     "value": "七点晨读已回归，重启提议已兑现",
+     "valid_time": "2026-11-16",
+     "status": "reactivated",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T09",
+      "message_id": "m1",
+      "quote": "七点晨读可以回归了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让重启首日有成果感，主动接下读书会的配合角色。",
+   "unknowns": [
+    "主讲具体分工与时长当时未细化"
+   ],
+   "protected_expressions": [
+    "是不是偷偷卷"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构读书会成员与规模"
+   ]
+  },
+  "E051_T11": {
+   "case_id": "E051_T11",
+   "current_action": "接住掐表请求：答应明天读书会帮她计时，超12分钟提醒砍案例；顺带确认她把晨读经历织进习惯回路主讲的巧思。",
+   "acceptable_actions": [
+    "答应掐表并约定超时手势或暗号",
+    "夸她把两人经历用进讲稿的巧思",
+    "提出可以今晚再帮她排练一遍"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A33",
+     "subject": "HER",
+     "relation": "主讲准备",
+     "value": "她主讲稿子已改三版，限时12分钟",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T11",
+      "message_id": "m0",
+      "quote": "稿子改了三版了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A34",
+     "subject": "HER",
+     "relation": "内容回扣",
+     "value": "她把两人晨读经历作为主讲案例素材",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T11",
+      "message_id": "m0",
+      "quote": "正好扣咱们晨读这段经历"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A35",
+     "subject": "HER",
+     "relation": "请求",
+     "value": "她请ME明天掐表，超12分钟就得砍案例",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T11",
+      "message_id": "m1",
+      "quote": "超过12分钟我就得砍案例"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A36",
+     "subject": "SHARED",
+     "relation": "搭子状态",
+     "value": "七点晨读已回归并稳定运行，成为她的讲稿素材",
+     "valid_time": "2026-11-16 起",
+     "status": "reactivated",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T09",
+      "message_id": "m1",
+      "quote": "七点晨读可以回归了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把请求变成两人协作的小仪式，掐表这种小事答应得爽快。",
+   "unknowns": [
+    "主讲最终字数与页数未知",
+    "读书会是否严格限时未知"
+   ],
+   "protected_expressions": [
+    "超过12分钟我就得砍案例"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构习惯回路理论的出处细节"
+   ]
+  },
+  "E051_T12": {
+   "case_id": "E051_T12",
+   "current_action": "接住分享战报并收尾：确认11分半完成、反响热烈，回应她对外骄傲介绍晨读搭子的得意，应下明早七点继续。",
+   "acceptable_actions": [
+    "夸11分半掐点完成与她的表达",
+    "回应'我俩的'这句话的温度但不过度",
+    "应下明早七点并说不会迟到"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E051_A37",
+     "subject": "SHARED",
+     "relation": "分享结果",
+     "value": "读书会主讲以11分半收尾，反响比预期热烈",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T12",
+      "message_id": "m0",
+      "quote": "11分半收尾"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A38",
+     "subject": "HER",
+     "relation": "关系表达",
+     "value": "她向读书会成员骄傲地介绍晨读搭子是两人一起组的",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T12",
+      "message_id": "m0",
+      "quote": "我特骄傲地说是我俩的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A39",
+     "subject": "SHARED",
+     "relation": "继续约定",
+     "value": "明早七点晨读继续，她提醒ME别迟到",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T12",
+      "message_id": "m1",
+      "quote": "明天七点，别迟到呀"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E051_A40",
+     "subject": "HER",
+     "relation": "请求",
+     "value": "她此前请ME掐表并约定超12分钟砍案例，本次执行到位",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E051_T11",
+      "message_id": "m1",
+      "quote": "超过12分钟我就得砍案例"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是给这轮启停画上完成句点，夸具体行为，暧昧留白不点破。",
+   "unknowns": [
+    "读书会成员的具体反馈内容未知"
+   ],
+   "protected_expressions": [
+    "掌声比我想的热烈"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构现场人数与具体评价"
+   ]
+  }
+ }
+}

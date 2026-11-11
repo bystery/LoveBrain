@@ -1,0 +1,275 @@
+{
+ "episode_id": "E184",
+ "persona": {
+  "her": {
+   "name": "唐果",
+   "traits": [
+    "新手养柯基幼犬豆豆",
+    "遇事较真爱留截图",
+    "嘴上抱怨手上勤快"
+   ],
+   "boundaries": [
+    "合同外费用不认",
+    "缴费必须有票据记录"
+   ]
+  },
+  "me": {
+   "name": "韩叙",
+   "traits": [
+    "养狗八年上过两期训犬课",
+    "熟悉训犬班合同套路",
+    "劝人维权讲步骤"
+   ]
+  },
+  "relationship_stage": "长期熟人(小区遛狗认识的邻居，常拼遛搭手)"
+ },
+ "initial_kb": {
+  "her": "唐果三个月前领养柯基豆豆，正为拆家和咬拖鞋发愁，刚在小区门口报了训犬幼训班。",
+  "me": "韩叙养狗八年，上过两期训犬课，知道合同细则和补课规则常常和销售口头说法对不上。",
+  "warmth": "小区邻居，常一起遛狗，谁出差谁搭手喂猫遛狗都处得来。",
+  "style": "韩叙给步骤和话术参考，唐果自己打电话拍板，爱晒豆豆进步。",
+  "lessons": "合同没有的费用不认，口头承诺落成文字，缴费留截图。"
+ },
+ "turns": [
+  {
+   "case_id": "E184_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-04 20:00",
+      "text": "豆豆把我第三双拖鞋咬报废了，我一狠心报了小区门口的训犬幼训班，销售说1980十二节课随便约，我付钱了。"
+     }
+    ],
+    "clock": "2026-11-04 20:03",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "冲动下单后找确认",
+    "change_note": "被拆家逼到报班，付完钱来求个心安"
+   }
+  },
+  {
+   "case_id": "E184_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-05 12:30",
+      "text": "我睡前翻了翻合同细则，写着十二节课有效期90天，缺席要提前4小时在App取消，不然照扣。幸好我看了。"
+     }
+    ],
+    "clock": "2026-11-05 12:33",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "细读合同",
+    "change_note": "从付款的冲动转入逐条核规则，风险意识上线"
+   }
+  },
+  {
+   "case_id": "E184_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-07 18:40",
+      "text": "昨晚临时加班没赶上，也没来得及取消，今天App显示扣我一节，还多了个50块的补课费待缴！销售说是店里的规矩，可合同里没这条啊。"
+     }
+    ],
+    "clock": "2026-11-07 18:43",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "撞上合同外收费",
+    "change_note": "缺席扣课认了，但合同外的50元触到她的边界"
+   }
+  },
+  {
+   "case_id": "E184_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-08 10:20",
+      "text": "我把合同和App页面都截图了，刚才销售又改口说50能免，但让我加购一节380的私教课意思一下。我说要想想。"
+     }
+    ],
+    "clock": "2026-11-08 10:23",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "识破换汤不换药",
+    "change_note": "对方口径松动但捆绑新消费，她警觉起来"
+   }
+  },
+  {
+   "case_id": "E184_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-09 21:00",
+      "text": "我不想为免50再花380，这不换汤不换药吗。我想按合同来，你说我下一步该找谁说理？"
+     }
+    ],
+    "clock": "2026-11-09 21:03",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state": "定调按合同来",
+    "change_note": "从被动应对转为主动维权，求路径"
+   }
+  },
+  {
+   "case_id": "E184_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-10 19:30",
+      "text": "店长回电了！说50块确实不在合同里，给我免了，早上被扣的那节也恢复了，让我以后都走App取消就行。"
+     }
+    ],
+    "clock": "2026-11-10 19:33",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "维权落地",
+    "change_note": "50免除+课时恢复，据理力争见效"
+   }
+  },
+  {
+   "case_id": "E184_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-12 20:10",
+      "text": "我重新排了课，每周三和周六早上九点，上了三节还剩九节，我就不信凑不齐毕业。"
+     }
+    ],
+    "clock": "2026-11-12 20:13",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "回到正轨",
+    "change_note": "纠纷翻篇，排课定节奏并清点课时"
+   }
+  },
+  {
+   "case_id": "E184_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-14 09:50",
+      "text": "刚下课！豆豆今天学会了坐下和等待，教练夸它比隔壁泰迪稳，说下周开始教随行。"
+     }
+    ],
+    "clock": "2026-11-14 09:53",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "训练见效的兴奋",
+    "change_note": "投入开始有回报，晒进步求共鸣"
+   }
+  },
+  {
+   "case_id": "E184_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-17 21:30",
+      "text": "明天周三我临时要出差，刚才就提前把九点的课在App取消了，离上课还剩二十几个小时，够4小时门槛，一节没扣，规则还是讲道理的。"
+     }
+    ],
+    "clock": "2026-11-17 21:33",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "规则正向验证",
+    "change_note": "按规则操作免扣课，对机构的信任回温"
+   }
+  },
+  {
+   "case_id": "E184_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-21 10:40",
+      "text": "上完今天这节就六节了，随行走得有模有样。销售又开始问我续不续下一期，说明年涨到2280。"
+     }
+    ],
+    "clock": "2026-11-21 10:43",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "续费压力上门",
+    "change_note": "训练顺利但涨价信息带来新的费用议题"
+   }
+  },
+  {
+   "case_id": "E184_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-23 12:00",
+      "text": "我说还剩六节上完再说，销售改口说老学员12月10日前续费还能锁1980的旧价，我让他把这句写进聊天记录。"
+     }
+    ],
+    "clock": "2026-11-23 12:03",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "谈判要落文字",
+    "change_note": "不急续费但锁定窗口，口头承诺必须落成记录"
+   }
+  },
+  {
+   "case_id": "E184_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-29 20:40",
+      "text": "这周又上了两节，还剩四节，豆豆现在能随行一整圈了。续费我想好了：先把锁价记录截图存好，等这期上完再开新一期，不耽误也不吃亏。"
+     }
+    ],
+    "clock": "2026-11-29 20:43",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "决策闭环",
+    "change_note": "续费节奏想清楚，证据习惯贯彻到底，收尾有底气"
+   }
+  }
+ ]
+}

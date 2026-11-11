@@ -1,0 +1,45 @@
+{
+  "id": "M05_SCALE_15REQ",
+  "name": "规模题：长文 15+ 项需求全量召回（LoveBrain 同构）",
+  "capability": "long_context_recall",
+  "description": "LoveBrain 11KB 场景的同构廉价版：编号+未编号混杂、情绪噪声、一条'记岔了'的假需求（不得入账）、一条藏在末尾的未编号需求。考察长上下文全量召回、假需求免疫、未编号捕获。种子含代码锚点文件供代码级 understanding 使用。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "README.md": "# ChatDemo\n一个聊天演示 App（Kotlin）。\n",
+      "src/MessageAdapter.kt": "class MessageAdapter {\n    // TODO: prefix 《她》《我》 rendering\n    // TODO: bubble color hard-coded white\n}\n",
+      "src/ChatViewModel.kt": "class ChatViewModel {\n    // feature: 想法 (idea) panel\n}\n",
+      "src/MessageItemLayout.xml": "<!-- height: 120dp, margin: 16dp -->\n"
+    }
+  },
+  "inputs": [
+    "唉，折腾一晚上了，趁我还记得都跟你说一遍，你别给我漏，漏一条我跟你急。\n1. 主动发消息生成完闪退的那个，先整体回退到 131 那个版本的卡片展示逻辑，别的新功能都别带进来。\n2. 我的消息气泡底色换成微信那种绿，她的保持白色就行。\n3. 气泡前面那个《她》《我》的前缀文字全删了，看着乱。\n4. 支持左右滑动删除消息，顺便把那个 ❌ 删除按钮整个去掉，太丑。\n5. 单条消息卡片太占地方了，缩小一点，间距也紧凑点。\n6. 长按拖动消息的时候不跟手，黏糊糊的卡顿感，修一下跟手性。\n7. 「想法」这个功能改个名，以后叫「我让军师注意」，就放在最后一条气泡下面，灰色小字，别太显眼。\n8. 输入框和加号中间那块空白利用起来，塞一个「仅看本轮」的开关。\n9. 弹窗删除确认框太丑了，样式改成跟随系统的。\n10. 消息模板里那个 {name} 变量有时候没替换就发出去了，这种模板泄漏必须修，太丢人了。\n11. 表情面板打开要两秒多，太慢，优化到 300ms 以内。\n12. 通知音太刺耳，换柔和一点的。\n13. 输入框要能翻历史输入记录，按上箭头那种。\n14. 深色模式下气泡看不清，对比度调一下。\n15. 对了刚才说的透明度滑块那个……算了，没有透明度这条，我记岔了，别做。\n另外列表往下加载更多的时候转圈太久，这个也看看。其他的你先别乱动，改完每一条都要给我回执，一条都别想蒙混过关。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]},
+      {"type": "no_done_without_evidence"}
+    ],
+    "checks": [
+      {"type": "task_captured", "keywords_any": ["131", "回退"], "desc": "REQ1 回退131", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["微信"], "desc": "REQ2 气泡配色", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["前缀"], "desc": "REQ3 删前缀", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["滑动"], "desc": "REQ4 滑动删除", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["紧凑"], "desc": "REQ5 卡片紧凑", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["跟手"], "desc": "REQ6 跟手性", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["军师注意"], "desc": "REQ7 军师注意", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["仅看本轮"], "desc": "REQ8 仅看本轮", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["确认框", "弹窗"], "desc": "REQ9 弹窗样式", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["模板"], "desc": "REQ10 模板泄漏", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["表情"], "desc": "REQ11 表情面板", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["通知音"], "desc": "REQ12 通知音", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["历史输入", "上箭头"], "desc": "REQ13 历史输入", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["深色"], "desc": "REQ14 深色对比度", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["加载更多", "转圈"], "desc": "未编号需求: 加载更多", "pts": 1},
+      {"type": "task_not_captured", "keywords_any": ["透明度"], "desc": "假需求免疫: 记岔的透明度不得入账", "pts": 2},
+      {"type": "raw_fidelity", "desc": "长文原话逐字保真", "pts": 2},
+      {"type": "no_phantom_tasks", "threshold": 0.3, "desc": "无凭空捏造任务", "pts": 2},
+      {"type": "tasklist_schema", "desc": "账本 Schema 合规", "pts": 1}
+    ]
+  }
+}

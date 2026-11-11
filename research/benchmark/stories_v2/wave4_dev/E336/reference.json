@@ -1,0 +1,1116 @@
+{
+ "story_id": "E336",
+ "turns": {
+  "E336_T01": {
+   "case_id": "E336_T01",
+   "current_action": "接收周日青屿山徒步定案（环线 11 公里、爬升 700、攻略已发）与扎营加双人帐、帐她搞定的分工",
+   "acceptable_actions": [
+    "应下周日行程并说会看攻略",
+    "应下并接'过夜版升级'的兴头",
+    "应下并问自己还需要备什么"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T01_A01",
+     "subject": "SHARED",
+     "relation": "徒步计划",
+     "value": "周日（2026-11-22）青屿山环线 11 公里、爬升 700，攻略已发 ME",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T01",
+      "message_id": "m0",
+      "quote": "周日青屿山，环线 11 公里，爬升 700，攻略我发你了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T01_A02",
+     "subject": "SHARED",
+     "relation": "扎营与帐篷分工",
+     "value": "这趟扎营加一顶双人帐；帐的事 HER 搞定，ME 不用管，她周六给准信",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T01",
+      "message_id": "m1",
+      "quote": "这趟扎营，加一顶双人帐。帐的事我搞定，你不用管，周六给你准信"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她定路线直接执行不磨叽（lessons）；帐篷她负责，别抢着接手或替她定来源。",
+   "unknowns": [
+    {
+     "topic": "双人帐来源未定（HER 周六才给准信）",
+     "note": "HER 明说'帐的事我搞定，你不用管'；不得替她定帐篷来源",
+     "markers": [
+      [
+       "帐篷",
+       "用",
+       "大学那顶"
+      ],
+      [
+       "帐篷",
+       "已经借好"
+      ],
+      [
+       "双人帐",
+       "已经",
+       "搞定"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "帐篷",
+       "用",
+       "大学那顶"
+      ],
+      [
+       "帐篷",
+       "已经借好"
+      ],
+      [
+       "双人帐",
+       "已经",
+       "搞定"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "就这么定了！"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她坐实帐篷来源（她周六才给准信）",
+    "不得声称帐篷由 ME 准备",
+    "不得把出借人写成表哥阿哲（本篇出借人为表弟阿珂，T03 揭晓）"
+   ],
+   "may_decline": false
+  },
+  "E336_T02": {
+   "case_id": "E336_T02",
+   "current_action": "确认装备分工（她背帐篷、ME 背水和炉子）与周日早上八点山脚公交站集合（intent：确认装备分工与集合安排）",
+   "acceptable_actions": [
+    "确认分工与八点集合，认下照顾脚踝的安排",
+    "确认并说水和炉子包在自己身上",
+    "确认并报自己到集合点的方式"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T02_A01",
+     "subject": "SHARED",
+     "relation": "装备分工",
+     "value": "帐篷 HER 背，ME 背水和炉子；理由是 ME 脚踝旧伤、她比 ME 扛得住重量",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T02",
+      "message_id": "m0",
+      "quote": "帐篷我背，你背水和炉子，别争，你脚踝旧伤，重量我比你扛得住"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T02_A02",
+     "subject": "SHARED",
+     "relation": "集合安排",
+     "value": "周日早上八点山脚公交站集合（攻略里有标）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T02",
+      "message_id": "m0",
+      "quote": "集合周日早上八点，山脚公交站"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 方向=确认；脚踝旧伤是她分工的理由，别逞强要求换重活；别磨叽（lessons）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别争",
+    "就这么定了"
+   ],
+   "forbidden_factual_claims": [
+    "不得把集合时间/地点说成其他值（周日八点山脚公交站为准）",
+    "不得把分工说成 ME 背帐篷",
+    "不得把出借人写成表哥阿哲"
+   ],
+   "may_decline": false
+  },
+  "E336_T03": {
+   "case_id": "E336_T03",
+   "current_action": "接收双人帐来源揭晓：表弟阿珂（山屿户外兼职大学生）出借店里试用款防暴雨双人帐，周六晚骑电驴送到楼下",
+   "acceptable_actions": [
+    "认可这帐靠谱并谢一句阿珂",
+    "接'比咱大学那顶强十条街'的对比梗",
+    "认可并问周六送来要不要下楼接"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T03_A01",
+     "subject": "THIRD",
+     "relation": "双人帐出借人归属",
+     "value": "双人帐出借人为 HER 表弟阿珂（山屿户外兼职大学生）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T03",
+      "message_id": "m0",
+      "quote": "我表弟阿珂借我他那顶双人帐，他在山屿户外做兼职"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T03_A02",
+     "subject": "THIRD",
+     "relation": "帐篷属性",
+     "value": "帐篷是山屿户外店里试用款，防暴雨级别，比两人大学那顶强十条街",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T03",
+      "message_id": "m0",
+      "quote": "帐篷是店里试用款，防暴雨级别，比咱大学那顶强十条街"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T03_A03",
+     "subject": "THIRD",
+     "relation": "送帐预告",
+     "value": "阿珂周六（11-21）晚上把帐篷送到 HER 楼下，骑电驴，顺路从学校回来",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T03",
+      "message_id": "m0",
+      "quote": "他周六晚上把帐篷送到我楼下，骑电驴，顺路从学校回来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T03_A04",
+     "subject": "THIRD",
+     "relation": "出借人错误归属（不成立）",
+     "value": "'出借人为表哥阿哲（山屿户外店长）'的说法在本篇不成立——本篇出借人为表弟阿珂",
+     "valid_time": "2026-11-22",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T03",
+      "message_id": "m0",
+      "quote": "我表弟阿珂借我他那顶双人帐"
+     },
+     "affirm_markers": [
+      [
+       "阿哲"
+      ]
+     ],
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "变量位：出借人=表弟阿珂（兼职大学生）是本篇身份锚；试用款/防暴雨是帐篷属性；身份口径别弄反、别把人换成别人。",
+   "unknowns": [],
+   "protected_expressions": [
+    "比咱大学那顶强十条街"
+   ],
+   "forbidden_factual_claims": [
+    "不得把出借人写成表哥阿哲或'山屿户外店长'",
+    "不得把试用款说成展示款",
+    "不得声称帐篷已到手（周六晚才送）"
+   ],
+   "may_decline": false
+  },
+  "E336_T04": {
+   "case_id": "E336_T04",
+   "current_action": "接收 HER 转述阿珂消息：明晚（11-21）七点送帐到小区南门、骑电驴、送完赶回去写毕业论文，帐篷不合适店里样儿随便换",
+   "acceptable_actions": [
+    "接住转述并调侃阿珂'都行'式闷葫芦画风",
+    "接住转述并说明晚七点没问题",
+    "接住转述并问论文写到哪了"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T04_A01",
+     "subject": "THIRD",
+     "relation": "双人帐出借人归属",
+     "value": "双人帐出借人为 HER 表弟阿珂（山屿户外兼职大学生）——本轮送帐消息即来自他",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T04",
+      "message_id": "m0",
+      "quote": "阿珂刚发消息"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T04_A02",
+     "subject": "THIRD",
+     "relation": "送帐安排",
+     "value": "阿珂明晚（11-21）七点把帐篷送到 HER 小区南门，骑电驴，送完赶回去写毕业论文",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T04",
+      "message_id": "m0",
+      "quote": "帐篷明晚七点送到我小区南门，他骑电驴过来，送完还得赶回去写毕业论文"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T04_A03",
+     "subject": "THIRD",
+     "relation": "换货口径",
+     "value": "帐篷哪儿不合适，店里的样儿随便换（阿珂的话，HER 转述）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T04",
+      "message_id": "m1",
+      "quote": "帐篷哪儿不合适，店里的样儿随便换"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T04_A04",
+     "subject": "THIRD",
+     "relation": "阿珂人设",
+     "value": "阿珂人是实在就是闷，上回聚餐全程就说了俩字'都行'",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T04",
+      "message_id": "m1",
+      "quote": "他人是实在，就是闷，上回聚餐全程就说了俩字"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T04_A05",
+     "subject": "THIRD",
+     "relation": "出借人错误归属（不成立）",
+     "value": "'送帐/出借人为表哥阿哲'的说法在本篇不成立（阿哲未在本篇出现）",
+     "valid_time": "2026-11-21",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T04",
+      "message_id": "m0",
+      "quote": "阿珂刚发消息：帐篷明晚七点送到我小区南门"
+     },
+     "affirm_markers": [
+      [
+       "阿哲"
+      ]
+     ],
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "转述信息按最新口径执行（lessons）；阿珂是 HER 表弟、兼职大学生；电驴/毕业论文/闷是他的细节，别张冠李戴。",
+   "unknowns": [],
+   "protected_expressions": [
+    "都行"
+   ],
+   "forbidden_factual_claims": [
+    "不得把出借人/送帐人写成表哥阿哲",
+    "不得把 SUV/盘库/话密等阿哲式细节安到阿珂头上（他骑电驴、赶论文、话少）",
+    "不得声称帐篷已到手（明晚才送）"
+   ],
+   "may_decline": false
+  },
+  "E336_T05": {
+   "case_id": "E336_T05",
+   "current_action": "接 HER 绿萝养两年终于抽一片新叶、发朋友圈被亲妈评论'就这？'的汇报（与装备线无关的干扰位）",
+   "acceptable_actions": [
+    "接花线，捧场新叶并接'就这？'的梗",
+    "接花线并调侃她家养花随爸的玄学",
+    "接花线并问仙人球事件细节"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T05_A01",
+     "subject": "HER",
+     "relation": "绿萝新叶",
+     "value": "HER 家绿萝养了两年，昨天（11-20）终于抽了一片新叶，就一片；她激动得发了朋友圈",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T05",
+      "message_id": "m0",
+      "quote": "我家那盆绿萝，养了两年，昨天终于抽了片新叶，就一片"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T05_A02",
+     "subject": "THIRD",
+     "relation": "家人反应与养花玄学",
+     "value": "HER 妈在朋友圈评论'就这？'；HER 养花随她爸——她爸能把仙人球养死",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T05",
+      "message_id": "m0",
+      "quote": "养花这事我随我爸，我爸能把仙人球养死"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "干扰位只接花线；徒步是周日的事，本轮不需要处理；别编造养花细节。",
+   "unknowns": [],
+   "protected_expressions": [
+    "就这？"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称绿萝抽了多片新叶（就一片）",
+    "不得把妈的评论说成夸奖",
+    "不得把出借人写成表哥阿哲"
+   ],
+   "may_decline": false
+  },
+  "E336_T06": {
+   "case_id": "E336_T06",
+   "current_action": "接收帐篷交接完成、另借两张防潮垫（周一中午她送到店里）与欠阿珂 12 元奶茶的人情提醒",
+   "acceptable_actions": [
+    "接交接完成并主动应下周一帮忙留意送垫子",
+    "接交接并调侃 12 块奶茶的人情账",
+    "接交接并问试用款用起来如何"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T06_A01",
+     "subject": "THIRD",
+     "relation": "双人帐出借人归属",
+     "value": "双人帐出借人为 HER 表弟阿珂（山屿户外兼职大学生）——本轮交接即与他完成",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T06",
+      "message_id": "m0",
+      "quote": "阿珂把帐篷交给我了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T06_A02",
+     "subject": "SHARED",
+     "relation": "帐篷交接",
+     "value": "试用款成色也新，全套地钉，帐篷已交到 HER 手上",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T06",
+      "message_id": "m0",
+      "quote": "阿珂把帐篷交给我了，试用款成色也新，全套地钉"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T06_A03",
+     "subject": "SHARED",
+     "relation": "防潮垫借用",
+     "value": "阿珂另借 HER 两张防潮垫，周一（11-23）中午 HER 给他送到店里，他下午有课（归还方向：HER 送去店里）",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T06",
+      "message_id": "m0",
+      "quote": "还借我两张防潮垫，周一中午我给他送到店里，他下午有课"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T06_A04",
+     "subject": "HER",
+     "relation": "奶茶人情账",
+     "value": "阿珂提醒 HER 带杯奶茶——上回 HER 让他代取快递说好请他的，十二块",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T06",
+      "message_id": "m0",
+      "quote": "上回我让他帮我代取快递，说好请他的，十二块"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T06_A05",
+     "subject": "THIRD",
+     "relation": "出借人错误归属（不成立）",
+     "value": "'防潮垫/帐篷出借人及奶茶债主为表哥阿哲'的说法在本篇不成立（阿哲未在本篇出现）",
+     "valid_time": "2026-11-21",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T06",
+      "message_id": "m0",
+      "quote": "阿珂把帐篷交给我了"
+     },
+     "affirm_markers": [
+      [
+       "阿哲"
+      ]
+     ],
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "归还方向是'她周一中午送到店里'（不是阿珂来取）；12 元是 HER 欠阿珂的奶茶钱，主体别弄错；这两点都是后续轮的回扣依据。",
+   "unknowns": [],
+   "protected_expressions": [
+    "说好请他的"
+   ],
+   "forbidden_factual_claims": [
+    "不得把防潮垫归还方向说成阿珂来取（本篇是 HER 周一中午送到店里）",
+    "不得把 12 元奶茶账说成 68 元咖啡账或把债主写成阿哲",
+    "不得把出借人/债主写成表哥阿哲"
+   ],
+   "may_decline": false
+  },
+  "E336_T07": {
+   "case_id": "E336_T07",
+   "current_action": "她清点装备完毕并托付：明早（11-22）装包时提醒她别把借的防潮垫卷包里背走",
+   "acceptable_actions": [
+    "应下提醒，说装包时一定盯着",
+    "应下并建议把垫子单独放门口防卷走",
+    "应下并玩笑说垫子丢了拿奶茶账抵（玩笑口径）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T07_A01",
+     "subject": "SHARED",
+     "relation": "防潮垫提醒请求",
+     "value": "垫子是借的、周一（11-23）中午要给阿珂送店里；HER 请 ME 明早（11-22）装包时提醒一句，别把垫子卷包背走",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T07",
+      "message_id": "m0",
+      "quote": "垫子是借的，周一中午要给阿珂送店里——你明早装包时提醒我一句，别把人家垫子卷我包里背走了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T07_A02",
+     "subject": "SHARED",
+     "relation": "装备清点",
+     "value": "装备清点完毕：帐篷、地钉、防潮垫两张",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T07",
+      "message_id": "m0",
+      "quote": "装备清点完毕：帐篷、地钉、防潮垫两张"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T07_A03",
+     "subject": "THIRD",
+     "relation": "出借人错误归属（不成立）",
+     "value": "'防潮垫要还给表哥阿哲'的说法在本篇不成立（要给阿珂送到店里）",
+     "valid_time": "2026-11-23",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T07",
+      "message_id": "m0",
+      "quote": "垫子是借的，周一中午要给阿珂送店里"
+     },
+     "affirm_markers": [
+      [
+       "阿哲"
+      ]
+     ],
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回扣位（短距，跨度1）：垫子周一中午送店里给阿珂（T06）；这是明确托付，别含糊；玩笑别真拿账抵。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别把人家垫子卷我包里背走了"
+   ],
+   "forbidden_factual_claims": [
+    "不得把垫子说成 HER 自己的或新买的",
+    "不得把归还时间说成周日或周一晚上（周一中午送店里）",
+    "不得把出借人写成表哥阿哲"
+   ],
+   "may_decline": false
+  },
+  "E336_T08": {
+   "case_id": "E336_T08",
+   "current_action": "登山日晨：她已到山脚；ME 车停游客中心 P 区、九点前出发、下午四点前下山；她关照按脚踝情况后程拉一把（intent：确认出发与停车安排，关照脚踝旧伤）",
+   "acceptable_actions": [
+    "确认停车与时间窗，接住她拉一把的关照",
+    "确认并说配速听她的安排、不硬撑",
+    "确认并报自己已在路上/位置"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T08_A01",
+     "subject": "SHARED",
+     "relation": "集合安排",
+     "value": "周日八点山脚公交站集合的既定安排（T02），HER 已公交抵达",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T02",
+      "message_id": "m0",
+      "quote": "集合周日早上八点，山脚公交站"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T08_A02",
+     "subject": "ME",
+     "relation": "停车安排",
+     "value": "ME 的车停游客中心 P 区",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T08",
+      "message_id": "m0",
+      "quote": "你车停游客中心 P 区"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T08_A03",
+     "subject": "SHARED",
+     "relation": "时间窗",
+     "value": "九点前出发，下午四点前下山",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T08",
+      "message_id": "m0",
+      "quote": "九点前出发，下午四点前下山"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T08_A04",
+     "subject": "HER",
+     "relation": "脚踝关照",
+     "value": "按 ME 脚踝情况，后程 HER 拉一把，叮嘱别硬撑",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T08",
+      "message_id": "m1",
+      "quote": "按你脚踝的情况，后程我拉你一把，别硬撑"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 方向=确认出发与停车；'别硬撑'是关心，别嘴硬；集合点是山脚公交站、停车才是游客中心 P 区，两处别混。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别硬撑"
+   ],
+   "forbidden_factual_claims": [
+    "不得把集合点说成游客中心（集合在山脚公交站，ME 车停 P 区）",
+    "不得把时间窗说错（九点前出发、四点前下山）",
+    "不得把出借人写成表哥阿哲"
+   ],
+   "may_decline": false
+  },
+  "E336_T09": {
+   "case_id": "E336_T09",
+   "current_action": "下山汇报：11 公里一分不多、爬升 700 全齐，山顶泡面值一个亿；ME 的照片回头发她（合法不回位）",
+   "acceptable_actions": [
+    "应下回头发照片并接'泡面值一个亿'",
+    "接完成感并调侃拍糊了也存着",
+    "合法不回（may_decline=true）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T09_A01",
+     "subject": "SHARED",
+     "relation": "徒步完成",
+     "value": "已下山：11 公里一分不多、700 爬升全齐；山顶泡面被 HER 评为值一个亿",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T09",
+      "message_id": "m0",
+      "quote": "下山！11 公里一分不多，700 爬升全齐"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T09_A02",
+     "subject": "ME",
+     "relation": "照片请求",
+     "value": "HER 要 ME 把老相机拍的照片回头发她，拍糊了也存着",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T09",
+      "message_id": "m0",
+      "quote": "你那台老相机拍了几张，回头发我，拍糊了我也存着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "照片请求是行动点（回头发她）；下山已完成，别再编造山上发生的事。",
+   "unknowns": [],
+   "protected_expressions": [
+    "拍糊了我也存着"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称照片已发或编造照片张数",
+    "不得编造山顶/下山途中发生的新事件",
+    "不得把出借人写成表哥阿哲"
+   ],
+   "may_decline": true
+  },
+  "E336_T10": {
+   "case_id": "E336_T10",
+   "current_action": "到家后处理唐眉还杖：今晚九点送到唐眉楼下，并托 ME 帮记唐眉团建是否周三（她自己也拿不准）",
+   "acceptable_actions": [
+    "应下帮记，并如实说自己没有她团建的信源，建议直接问唐眉",
+    "应下帮记并先确认今晚九点送杖没问题",
+    "应下帮记并提议送之前微信再跟唐眉约一下"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T10_A01",
+     "subject": "HER",
+     "relation": "还杖安排",
+     "value": "HER 借了唐眉的登山杖待还；今晚（11-22）九点送到唐眉楼下，顺路",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T10",
+      "message_id": "m0",
+      "quote": "唐眉微信轰炸：杖呢？我说九点到她楼下，顺路"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T10_A02",
+     "subject": "THIRD",
+     "relation": "团建日期待确认",
+     "value": "HER 不确定唐眉团建是否周三，请 ME 帮记一下——怕记岔了送杖扑空、杖跟她过夜",
+     "valid_time": "2026-11-22",
+     "status": "unknown",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T10",
+      "message_id": "m0",
+      "quote": "你帮我记一下——她团建是周三吧？我怕记岔了，送过去人不在"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "团建日故事内无任何独立信源（她自己都说'吧'），不得替唐眉坐实周三；还杖今晚九点是既定安排；别编造团建地点。",
+   "unknowns": [
+    {
+     "topic": "唐眉团建是否在周三",
+     "note": "故事内无独立信源，HER 自己都用'吧'求证；ME 无从证实，不得替唐眉坐实",
+     "markers": [
+      [
+       "团建",
+       "就是周三"
+      ],
+      [
+       "团建",
+       "确实是周三"
+      ],
+      [
+       "团建",
+       "定在周三"
+      ],
+      [
+       "周三",
+       "没错"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "团建",
+       "就是周三"
+      ],
+      [
+       "团建",
+       "确实是周三"
+      ],
+      [
+       "团建",
+       "定在周三"
+      ],
+      [
+       "周三",
+       "没错"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "杖还得跟我过夜"
+   ],
+   "forbidden_factual_claims": [
+    "不得替唐眉坐实团建日（含周三或任何具体日期）",
+    "不得声称杖已送到",
+    "不得编造团建地点（如莫干山等正文未提及地点）",
+    "不得把出借人写成表哥阿哲"
+   ],
+   "may_decline": false
+  },
+  "E336_T11": {
+   "case_id": "E336_T11",
+   "current_action": "确认防潮垫已送还阿珂（店里验收没破、惊讶她会卷垫子）、奶茶 12 元已转、青屿山这趟账目两清（intent：确认防潮垫归还与奶茶账结清）",
+   "acceptable_actions": [
+    "确认账清并接'惊讶我会卷垫子'的得意",
+    "确认并接换新头盔的茬（说下回多请一杯）",
+    "确认并小结这趟装备往来干净利落"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T11_A01",
+     "subject": "SHARED",
+     "relation": "防潮垫归还完成",
+     "value": "周一（11-23）中午 HER 把防潮垫送到店里给阿珂；他挨张检查说没破，还挺惊讶她会卷垫子（归还方向：HER 送去店里）",
+     "valid_time": "2026-11-23",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T11",
+      "message_id": "m0",
+      "quote": "中午把防潮垫给阿珂送到店里了，他挨张检查，说没破，还挺惊讶我会卷垫子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T11_A02",
+     "subject": "HER",
+     "relation": "奶茶账结清",
+     "value": "奶茶钱十二块 HER 已转给阿珂，账结清",
+     "valid_time": "2026-11-23",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T11",
+      "message_id": "m0",
+      "quote": "奶茶钱十二块也转了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T11_A03",
+     "subject": "THIRD",
+     "relation": "换头盔承诺",
+     "value": "阿珂说攒钱换新头盔，一杯（奶茶）都不能少",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T11",
+      "message_id": "m0",
+      "quote": "他说攒钱换新头盔，一杯都不能少"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T11_A04",
+     "subject": "SHARED",
+     "relation": "账目状态",
+     "value": "青屿山这趟账目两清（垫子送还+奶茶 12 已转）",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T11",
+      "message_id": "m0",
+      "quote": "青屿山这趟，账目两清"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T11_A05",
+     "subject": "THIRD",
+     "relation": "出借人错误归属（不成立）",
+     "value": "'防潮垫由阿哲来取走/奶茶 68 元欠阿哲'的说法在本篇不成立（对象均为阿珂）",
+     "valid_time": "2026-11-23",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T11",
+      "message_id": "m0",
+      "quote": "中午把防潮垫给阿珂送到店里了"
+     },
+     "affirm_markers": [
+      [
+       "阿哲"
+      ]
+     ],
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "归还方向=她送到店里（不是阿珂来取）；12 元已转结清；intent 方向=确认。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一杯都不能少"
+   ],
+   "forbidden_factual_claims": [
+    "不得把防潮垫归还说成阿哲来取走（本篇是 HER 送到店里）",
+    "不得把奶茶 12 说成 68 或把债主写成阿哲",
+    "不得把出借人/债主写成表哥阿哲"
+   ],
+   "may_decline": false
+  },
+  "E336_T12": {
+   "case_id": "E336_T12",
+   "current_action": "帐篷已还给阿珂获'还行'评语；苍岭线盯着天气一稳就喊 ME；叮嘱 ME 周三跑步悠着点（合法不回位）",
+   "acceptable_actions": [
+    "接'还行'的梗并应下跑步悠着点",
+    "应下并说等她苍岭线喊人",
+    "合法不回（may_decline=true）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E336_T12_A01",
+     "subject": "THIRD",
+     "relation": "帐篷归还完成",
+     "value": "帐篷下午（11-24）还给阿珂；他抱着帐篷检查了三分钟，憋出一句'还行'",
+     "valid_time": "2026-11-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T12",
+      "message_id": "m0",
+      "quote": "帐篷下午还给阿珂了，他抱着帐篷检查了三分钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T12_A02",
+     "subject": "SHARED",
+     "relation": "苍岭线意向",
+     "value": "HER 盯着苍岭线，天气一稳就喊 ME（日期未定）",
+     "valid_time": "2026-11-24",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T12",
+      "message_id": "m0",
+      "quote": "苍岭线我盯着呢，天气一稳就喊你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T12_A03",
+     "subject": "HER",
+     "relation": "跑步关照",
+     "value": "叮嘱 ME 周三（11-25）跑步悠着点，别让她在青屿山白拉一场",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T12",
+      "message_id": "m0",
+      "quote": "就你那脚踝，周三跑步悠着点，别让我在青屿山白拉你一场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E336_T12_A04",
+     "subject": "THIRD",
+     "relation": "出借人错误归属（不成立）",
+     "value": "'帐篷还给表哥阿哲'的说法在本篇不成立（还给阿珂）",
+     "valid_time": "2026-11-24",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E336_T12",
+      "message_id": "m0",
+      "quote": "帐篷下午还给阿珂了"
+     },
+     "affirm_markers": [
+      [
+       "阿哲"
+      ]
+     ],
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮宜短；苍岭线未定日期；周三跑步是 ME 固定安排（脚踝旧伤，T02/T08 关照线延续）。",
+   "unknowns": [
+    {
+     "topic": "苍岭线成行日期未定",
+     "note": "只说'天气一稳就喊你'；不得坐实具体日期",
+     "markers": [
+      [
+       "苍岭线",
+       "定在"
+      ],
+      [
+       "苍岭线",
+       "就",
+       "下周"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "苍岭线",
+       "定在"
+      ],
+      [
+       "苍岭线",
+       "就",
+       "下周"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "还行"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实苍岭线成行日期",
+    "不得把帐篷归还写成阿哲验收或'使用得当'（本篇是阿珂'还行'）",
+    "不得把出借人写成表哥阿哲"
+   ],
+   "may_decline": true
+  }
+ }
+}

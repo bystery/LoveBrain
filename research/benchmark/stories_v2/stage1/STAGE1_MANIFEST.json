@@ -1,0 +1,373 @@
+{
+ "kind": "story_v2_stage1_manifest",
+ "date": "2026-10-27",
+ "batch": "stage1",
+ "count": 8,
+ "turns_per_story": 8,
+ "total_positions": 64,
+ "author": "QoderWork worker-AI (synthetic)",
+ "real_user_material": false,
+ "validation_claim": false,
+ "stories": [
+  {
+   "story_id": "E013",
+   "title": "陶艺课的同桌",
+   "themes": [
+    "破冰",
+    "普通朋友",
+    "自嘲接梗",
+    "自然收尾"
+   ],
+   "turns": 8,
+   "cases": [
+    "E013_T01",
+    "E013_T02",
+    "E013_T03",
+    "E013_T04",
+    "E013_T05",
+    "E013_T06",
+    "E013_T07",
+    "E013_T08"
+   ],
+   "may_decline_turns": [],
+   "intent_revisions": [],
+   "atom_count": 11,
+   "required_atom_count": 0,
+   "files": {
+    "episode.json": "f827efcf303bde02dd3de1ea8a9c85e5612dd72e031630fdc1fce50b4f097fcd",
+    "reference.json": "e3b9fab415f036510fcb3171aeec80c954813ff891377df6a820d363a3e5132c",
+    "timeline.json": "7b99ce57109e7fe4a495b88c9f0f038f8d722a1ec88424c1ca8c54e1a05b7d8f",
+    "exposure.json": "5cfa1ad1746a762946b8d0c4b6c530afe12726f2a61c8c3782005e740ac4234e",
+    "audit.md": "50a968a75edaa613bfcf1dda027a3df3aa398b59e4e6de59586a7a2cd8b6f09d"
+   },
+   "runner_copy": "benchmark/episodes/E013.json",
+   "runner_copy_sha256": "f827efcf303bde02dd3de1ea8a9c85e5612dd72e031630fdc1fce50b4f097fcd"
+  },
+  {
+   "story_id": "E014",
+   "title": "旧同学的工作消息",
+   "themes": [
+    "熟人重联",
+    "工作合作",
+    "旧情谊",
+    "边界"
+   ],
+   "turns": 8,
+   "cases": [
+    "E014_T01",
+    "E014_T02",
+    "E014_T03",
+    "E014_T04",
+    "E014_T05",
+    "E014_T06",
+    "E014_T07",
+    "E014_T08"
+   ],
+   "may_decline_turns": [],
+   "intent_revisions": [
+    {
+     "case_id": "E014_T08",
+     "status": "ADJUSTED"
+    }
+   ],
+   "atom_count": 8,
+   "required_atom_count": 0,
+   "files": {
+    "episode.json": "edcb08cca9d0982ce80f5200d97d66f15ea71da18a88130cfd828e8fbcbf803b",
+    "reference.json": "d0f6ccd1f92e1130cd7fcb4a12dabb30e68bb2d40ae724a7c28392746c0d4bc2",
+    "timeline.json": "9139db5bc7fc14d4f8730b6e2198d58d663812c087b7b14451bfae973ea700ea",
+    "exposure.json": "1d0a5e9b599ef326c27ec7926ffa9a530b8c3cf74b6aa6a94d72638f50b82f86",
+    "audit.md": "93f0afe3d5c1dfac2ce782af05d1349316c179b372393469ddc36f85fa20bb87"
+   },
+   "runner_copy": "benchmark/episodes/E014.json",
+   "runner_copy_sha256": "edcb08cca9d0982ce80f5200d97d66f15ea71da18a88130cfd828e8fbcbf803b"
+  },
+  {
+   "story_id": "E015",
+   "title": "普通朋友的低落",
+   "themes": [
+    "普通朋友",
+    "工作挫败",
+    "先听后劝",
+    "无恋爱目标"
+   ],
+   "turns": 8,
+   "cases": [
+    "E015_T01",
+    "E015_T02",
+    "E015_T03",
+    "E015_T04",
+    "E015_T05",
+    "E015_T06",
+    "E015_T07",
+    "E015_T08"
+   ],
+   "may_decline_turns": [],
+   "intent_revisions": [],
+   "atom_count": 8,
+   "required_atom_count": 1,
+   "files": {
+    "episode.json": "0407886b44cfeceaf33ad03aac7fb27a04fb1218548a44a0ea60a66953a8980e",
+    "reference.json": "b8c904d79dcab83faeff92acfd040b866fa252e799ec11c391fb2574c7d764d0",
+    "timeline.json": "d3f67704460698c2e311477730956cc432590414a7c004301e13a08dfd7c3e25",
+    "exposure.json": "be8567e2c0860b807781c6ad5991a26f428bb806eb3f7104eb94993da83be478",
+    "audit.md": "d2197d8de6b9cf6eaa069ed086a6a5562e8a2cb4a9f06d061aacbe18e422e3e7"
+   },
+   "runner_copy": "benchmark/episodes/E015.json",
+   "runner_copy_sha256": "0407886b44cfeceaf33ad03aac7fb27a04fb1218548a44a0ea60a66953a8980e"
+  },
+  {
+   "story_id": "E016",
+   "title": "玩笑之后的认真",
+   "themes": [
+    "暧昧",
+    "从玩笑到认真",
+    "边界",
+    "直接表达"
+   ],
+   "turns": 8,
+   "cases": [
+    "E016_T01",
+    "E016_T02",
+    "E016_T03",
+    "E016_T04",
+    "E016_T05",
+    "E016_T06",
+    "E016_T07",
+    "E016_T08"
+   ],
+   "may_decline_turns": [],
+   "intent_revisions": [
+    {
+     "case_id": "E016_T05",
+     "status": "ACTIVE"
+    },
+    {
+     "case_id": "E016_T07",
+     "status": "ADJUSTED"
+    }
+   ],
+   "atom_count": 8,
+   "required_atom_count": 1,
+   "files": {
+    "episode.json": "3e042ee1575822ce2a7b17d839110e8fe5ce4edae4c349faad8618fc2a8ed4f5",
+    "reference.json": "3456f976ee92eba7f35fce15be1bdc64107f5c9af5847b4316d95f7c8f9d4a4c",
+    "timeline.json": "2e31946decbcbeac38e0ac53f5ef8ffb1a20627e564eebf0392e3a619b84b983",
+    "exposure.json": "f78c6ba7d2890f83a346009ce896dd250591d878b8f790dfe9f3363362b192b5",
+    "audit.md": "00436c33cb7887e2580a9f5faa21b85c3aac32a9e2a20a9c5f56a7475bcf2db4"
+   },
+   "runner_copy": "benchmark/episodes/E016.json",
+   "runner_copy_sha256": "3e042ee1575822ce2a7b17d839110e8fe5ce4edae4c349faad8618fc2a8ed4f5"
+  },
+  {
+   "story_id": "E017",
+   "title": "周六早上再决定",
+   "themes": [
+    "主动邀约",
+    "对方犹豫",
+    "低压力",
+    "时间不确定"
+   ],
+   "turns": 8,
+   "cases": [
+    "E017_T01",
+    "E017_T02",
+    "E017_T03",
+    "E017_T04",
+    "E017_T05",
+    "E017_T06",
+    "E017_T07",
+    "E017_T08"
+   ],
+   "may_decline_turns": [],
+   "intent_revisions": [
+    {
+     "case_id": "E017_T04",
+     "status": "ACTIVE"
+    },
+    {
+     "case_id": "E017_T07",
+     "status": "ADJUSTED"
+    }
+   ],
+   "atom_count": 8,
+   "required_atom_count": 1,
+   "files": {
+    "episode.json": "4b0a8a44f9679e8a156969b54adae04f424b5335aaac136cde59e09a7d35466b",
+    "reference.json": "de282691c558f235e85f93b8aee2b0efa9c28a30af4994c8123e3aeca1404a01",
+    "timeline.json": "d5d782572552cde2c9f8898bd936f8b9c21809322b8a95a67db40f2d070ff246",
+    "exposure.json": "d765c42878a1f0dee5585bd8ab814b76e8be15dbe988af30cc49773d4456e263",
+    "audit.md": "5d9e7cdc7762c2783a585dae8b0a56c7f0ac929e797ac1001561f43124e7cd04"
+   },
+   "runner_copy": "benchmark/episodes/E017.json",
+   "runner_copy_sha256": "4b0a8a44f9679e8a156969b54adae04f424b5335aaac136cde59e09a7d35466b"
+  },
+  {
+   "story_id": "E018",
+   "title": "她只想躺着",
+   "themes": [
+    "疲惫",
+    "话题枯竭",
+    "允许不回",
+    "低压力陪伴"
+   ],
+   "turns": 8,
+   "cases": [
+    "E018_T01",
+    "E018_T02",
+    "E018_T03",
+    "E018_T04",
+    "E018_T05",
+    "E018_T06",
+    "E018_T07",
+    "E018_T08"
+   ],
+   "may_decline_turns": [
+    "E018_T03",
+    "E018_T04",
+    "E018_T07",
+    "E018_T08"
+   ],
+   "intent_revisions": [],
+   "atom_count": 6,
+   "required_atom_count": 1,
+   "files": {
+    "episode.json": "09e0ac8833e988684e9a5a59e0bf194f854ecbc945ec7bd103505552f70fa2fe",
+    "reference.json": "f737f5c0fde9006087fc5d9b3fa7dd20a9c3b2cc3d577278987cd74b1c5db38a",
+    "timeline.json": "09beb46428afe8f20b5374f05f0bde2794094e81a55fb01c36a45634fa2684eb",
+    "exposure.json": "104c460f5b06c1405766017e3a6aa73e5f6a331f0428c0eaafe247658255f631",
+    "audit.md": "2bb9961e7867919e9ef736686d31301b637f9d7d16625aa22c5eb4c3d28b00ed"
+   },
+   "runner_copy": "benchmark/episodes/E018.json",
+   "runner_copy_sha256": "09e0ac8833e988684e9a5a59e0bf194f854ecbc945ec7bd103505552f70fa2fe"
+  },
+  {
+   "story_id": "E019",
+   "title": "电影品味分歧",
+   "themes": [
+    "分歧",
+    "诚实表达",
+    "不否定感受",
+    "轮流选片"
+   ],
+   "turns": 8,
+   "cases": [
+    "E019_T01",
+    "E019_T02",
+    "E019_T03",
+    "E019_T04",
+    "E019_T05",
+    "E019_T06",
+    "E019_T07",
+    "E019_T08"
+   ],
+   "may_decline_turns": [],
+   "intent_revisions": [
+    {
+     "case_id": "E019_T05",
+     "status": "ACTIVE"
+    },
+    {
+     "case_id": "E019_T07",
+     "status": "ADJUSTED"
+    }
+   ],
+   "atom_count": 7,
+   "required_atom_count": 0,
+   "files": {
+    "episode.json": "64a8379c9a01896400235edd0199b95f31900473350b0db92b19fc8c546e311d",
+    "reference.json": "b0d1dc73a3bc82a42522d63dcebc9baf7e096329a7f2d207cf4f40a34ae891ed",
+    "timeline.json": "dd56d2807ab52edc33058928bca43a672cf20bfa381e32392acf95cde345701e",
+    "exposure.json": "504d46ea7250171e1eaa94985dc2c2d197b057447fb2fe38b917903427c63892",
+    "audit.md": "c7efeab6f4b0540f6cfad30ef34955073ed739612f324358717acf64888bee8a"
+   },
+   "runner_copy": "benchmark/episodes/E019.json",
+   "runner_copy_sha256": "64a8379c9a01896400235edd0199b95f31900473350b0db92b19fc8c546e311d"
+  },
+  {
+   "story_id": "E020",
+   "title": "年糕复查之后",
+   "themes": [
+    "长期回扣",
+    "计划不确定",
+    "诚实承诺",
+    "适时结束"
+   ],
+   "turns": 8,
+   "cases": [
+    "E020_T01",
+    "E020_T02",
+    "E020_T03",
+    "E020_T04",
+    "E020_T05",
+    "E020_T06",
+    "E020_T07",
+    "E020_T08"
+   ],
+   "may_decline_turns": [],
+   "intent_revisions": [
+    {
+     "case_id": "E020_T03",
+     "status": "ACTIVE"
+    },
+    {
+     "case_id": "E020_T07",
+     "status": "ADJUSTED"
+    }
+   ],
+   "atom_count": 8,
+   "required_atom_count": 2,
+   "files": {
+    "episode.json": "03254f5d39b78ee30107c2758dee132b57ef6e8240070d4880bd31004391e3d8",
+    "reference.json": "2c3e26574c65ce218debe11551ea842cca9dba2a23e621ec506a4ed5b85bf83e",
+    "timeline.json": "ff4df7f27cd13c74c5954a2eb25db3c1915e13ed28b85ba78802680f488d6eaf",
+    "exposure.json": "03a40bf9bb1c2726227ddf2278b2779dcff97a200378c8ec2f9bc71b1030adf0",
+    "audit.md": "79f700ff78d1e15cc445015fd339db282d62c1893f3fb5ce45a003efa3b80877"
+   },
+   "runner_copy": "benchmark/episodes/E020.json",
+   "runner_copy_sha256": "03254f5d39b78ee30107c2758dee132b57ef6e8240070d4880bd31004391e3d8"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/stage1/GRADING_CARDS_STAGE1.json",
+ "coverage": {
+  "themes": [
+   "不否定感受",
+   "主动邀约",
+   "从玩笑到认真",
+   "低压力",
+   "低压力陪伴",
+   "允许不回",
+   "先听后劝",
+   "分歧",
+   "对方犹豫",
+   "工作合作",
+   "工作挫败",
+   "无恋爱目标",
+   "旧情谊",
+   "时间不确定",
+   "普通朋友",
+   "暧昧",
+   "熟人重联",
+   "疲惫",
+   "直接表达",
+   "破冰",
+   "自嘲接梗",
+   "自然收尾",
+   "计划不确定",
+   "诚实承诺",
+   "诚实表达",
+   "话题枯竭",
+   "轮流选片",
+   "边界",
+   "适时结束",
+   "长期回扣"
+  ],
+  "has_no_reply": true,
+  "has_intent_changes": true,
+  "has_callback": true,
+  "has_disagreement": true,
+  "has_natural_close": true
+ },
+ "cards_sha256": "11fdc4be26ff83a91a75a27d02a906cd77bffcafeba8a5c5ff81db2e8c7ba3db",
+ "cards_count": 64
+}

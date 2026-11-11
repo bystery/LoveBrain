@@ -1,0 +1,402 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E014",
+ "title": "旧同学的工作消息",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E014_T01": {
+   "case_id": "E014_T01",
+   "current_action": "确认身份，轻松回应，不装熟",
+   "acceptable_actions": [
+    "确认自己是陈屿",
+    "自嘲工地照太土",
+    "问她怎么突然想起联系"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N002_F01",
+     "subject": "她",
+     "relation": "事件",
+     "value": "在同学群看到我发的工地照片，差点没认出来",
+     "valid_time": "2026-11-05 21:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E014_T01",
+      "message_id": "m0",
+      "quote": "我刚在同学群看到你发的工地照片，差点没认出来"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动找来，先确认身份；不要一上来问私事。",
+   "unknowns": [
+    "她只是认人还是有别的事"
+   ],
+   "protected_expressions": [
+    "差点没认出来"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造我也一眼认出她",
+    "不要把她主动联系说成暧昧"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E014_T02": {
+   "case_id": "E014_T02",
+   "current_action": "回答去向，承认旧话但不编造经历",
+   "acceptable_actions": [
+    "说还在本市做设计",
+    "承认以前想做古建但走了别的方向",
+    "简短回答后问她在哪"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N002_F02",
+     "subject": "我",
+     "relation": "旧话",
+     "value": "以前说想去做古建（她记得）",
+     "valid_time": "2026-11-05 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E014_T02",
+      "message_id": "m1",
+      "quote": "我记得你以前说想去做古建"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她记得的是旧话，不是承诺；别把“想做古建”说成已经做成。",
+   "unknowns": [
+    "她问这个只是寒暄还是想找共同话题"
+   ],
+   "protected_expressions": [
+    "我记得你以前说想去做古建"
+   ],
+   "forbidden_factual_claims": [
+    "不要声称自己已经做上古建",
+    "不要编造这些年的项目"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E014_T03": {
+   "case_id": "E014_T03",
+   "current_action": "接住自嘲，不评判她的职业选择",
+   "acceptable_actions": [
+    "接住“讽刺”",
+    "问她HR最难的是什么",
+    "说至少她还在跟人打交道"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N002_F03",
+     "subject": "她",
+     "relation": "职业",
+     "value": "后来没学建筑，去做了HR，天天劝人别冲动离职",
+     "valid_time": "2026-11-05 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E014_T03",
+      "message_id": "m0",
+      "quote": "现在天天劝人别冲动离职 挺讽刺的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在自嘲，不是在求职业建议；别讲“HR也有前途”。",
+   "unknowns": [
+    "她对现在的工作到底有多不满意"
+   ],
+   "protected_expressions": [
+    "挺讽刺的"
+   ],
+   "forbidden_factual_claims": [
+    "不要说HR没技术含量",
+    "不要断言她后悔"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E014_T04": {
+   "case_id": "E014_T04",
+   "current_action": "如实回答，简短，不把自己包装成老板",
+   "acceptable_actions": [
+    "说还在画图",
+    "说离老板还远",
+    "回答后问她公司做什么"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她可能只是找话题；别急着证明自己混得好。",
+   "unknowns": [
+    "她问这个是否与后面的合作有关"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要谎称自己是老板",
+    "不要编造公司规模"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E014_T05": {
+   "case_id": "E014_T05",
+   "current_action": "先问范围/预算/周期，不先答应",
+   "acceptable_actions": [
+    "问预算和周期",
+    "问展厅面积/用途",
+    "说可以先看需求再决定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N002_F04",
+     "subject": "她",
+     "relation": "请求",
+     "value": "公司想找建筑设计做一个小展厅，预算不高",
+     "valid_time": "2026-11-05 21:47",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E014_T05",
+      "message_id": "m0",
+      "quote": "我们公司想找建筑设计做一个小展厅 预算不高"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是工作请求，不是暧昧；先把边界问清。",
+   "unknowns": [
+    "预算具体数字",
+    "项目周期",
+    "她是否是最终决策人"
+   ],
+   "protected_expressions": [
+    "预算不高"
+   ],
+   "forbidden_factual_claims": [
+    "不要先答应接项目",
+    "不要假设预算够",
+    "不要把她找你合作说成想见你"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E014_T06": {
+   "case_id": "E014_T06",
+   "current_action": "坦诚说明边界，给可行/不可行条件",
+   "acceptable_actions": [
+    "说先看需求再判断",
+    "说明一版概念能做什么",
+    "感谢她提前说预算"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N002_F05",
+     "subject": "她",
+     "relation": "边界",
+     "value": "预算只够一版概念，不想让我白忙",
+     "valid_time": "2026-11-05 21:56",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E014_T06",
+      "message_id": "m0",
+      "quote": "预算真的不高 可能只够你们出一版概念 我不想让你白忙"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在保护你不白忙；别为了显得仗义就说“钱不是问题”。",
+   "unknowns": [
+    "一版概念的具体交付边界",
+    "她公司内部是否能加预算"
+   ],
+   "protected_expressions": [
+    "我不想让你白忙"
+   ],
+   "forbidden_factual_claims": [
+    "不要承诺免费做",
+    "不要贬低她的预算",
+    "不要编造类似项目报价"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E014_T07": {
+   "case_id": "E014_T07",
+   "current_action": "接住旧情谊，不把它读成暧昧；可轻回扣画册",
+   "acceptable_actions": [
+    "说很高兴重新联系",
+    "回扣画册还在她那儿",
+    "说改天请她喝咖啡但别绑定合作"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N002_F06",
+     "subject": "她",
+     "relation": "旧物",
+     "value": "还留着我高中借她的建筑画册",
+     "valid_time": "2026-11-05 22:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E014_T07",
+      "message_id": "m0",
+      "quote": "你以前借我的那本建筑画册我还留着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "N002_F08",
+     "subject": "我们",
+     "relation": "旧物",
+     "value": "高中时借过她一本建筑画册，没要回来",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "高中时借过她一本建筑画册，没要回来"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "旧物是情谊，不是定情信物；接住就好，别顺势表白。",
+   "unknowns": [
+    "她留画册是念旧还是随手没还"
+   ],
+   "protected_expressions": [
+    "挺高兴重新联系上"
+   ],
+   "forbidden_factual_claims": [
+    "不要断言她留画册是因为喜欢你",
+    "不要编造画册内容"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E014_T08": {
+   "case_id": "E014_T08",
+   "current_action": "确认下一步，不催",
+   "acceptable_actions": [
+    "说好，等需求",
+    "让她明天不用赶",
+    "说看完再给判断"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N002_F07",
+     "subject": "她",
+     "relation": "下一步",
+     "value": "明天整理需求发我，看了再决定",
+     "valid_time": "2026-11-05 22:12",
+     "status": "planned",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E014_T08",
+      "message_id": "m0",
+      "quote": "需求我明天整理好发你 你看了再决定"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给了明确下一步；收尾确认即可，别再拉长。",
+   "unknowns": [
+    "需求是否真的明天发"
+   ],
+   "protected_expressions": [
+    "你看了再决定"
+   ],
+   "forbidden_factual_claims": [
+    "不要催她今晚就发",
+    "不要现在问合作能不能成"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "先把需求发给他，不催决定",
+    "status": "ADJUSTED"
+   }
+  }
+ }
+}

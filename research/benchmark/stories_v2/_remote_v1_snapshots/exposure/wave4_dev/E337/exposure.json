@@ -1,0 +1,39 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A7 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T09",
+  "长程24轮",
+  "三线并行：搬家/水彩课筹备/宠物与兴趣班",
+  "更正链：日期/时间/数量/地点",
+  "取消-不复活"
+ ],
+ "title": "搬家周记与豆包的减重事业",
+ "may_decline_turns": [
+  "E337_T11",
+  "E337_T24"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "搬家生活",
+ "primary_topic": "T09",
+ "lineage_group_id": "LG-E337",
+ "frozen_at": "2026-11-08T04:15:04+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E337/runner_episode.json",
+ "kind": "long_24t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A7",
+ "hashes": {
+  "episode.json": "74a053bc5763b14a13d837822bba14878a19e4a6600e9e9c5e8f089b4b9d1db3",
+  "reference.json": "5617ed8dc28e1bc2445ccd49ee7cdcb86f6d110a9695e8cc23b4f9eff7f6f128",
+  "timeline.json": "4d1ed3cd1f9497bd4319c8f90d3f449cff65de85d225e31e62b5115929bda99d",
+  "audit.md": "81f10d83e7712b13519fd8b92bfce7992073e805439cfcd7a0e13f6f6e638cc2"
+ }
+}

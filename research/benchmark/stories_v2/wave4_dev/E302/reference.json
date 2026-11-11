@@ -1,0 +1,819 @@
+{
+ "story_id": "E302",
+ "turns": {
+  "E302_T01": {
+   "case_id": "E302_T01",
+   "current_action": "HER 自嘲英语一阅读又错四个、离考试只剩四十天，问'宋老师'是不是可以提前准备二战了",
+   "acceptable_actions": [
+    "接自嘲但不坐实二战，把话头引到错题归型等具体动作上",
+    "先稳住再给抓手：点出完型是强项、阅读可以练（落到她的数据）",
+    "顺着'宋老师'梗反问错题长什么样，把焦虑转成任务"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T01_A01",
+     "subject": "HER",
+     "relation": "模考状况",
+     "value": "HER 英语一阅读又错四个",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T01",
+      "message_id": "m0",
+      "quote": "英语一阅读又错四个"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T01_A02",
+     "subject": "SHARED",
+     "relation": "考试倒计时",
+     "value": "距考试还剩四十天",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T01",
+      "message_id": "m0",
+      "quote": "还剩四十天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T01_A03",
+     "subject": "HER",
+     "relation": "二战自嘲",
+     "value": "HER 以'提前准备二战'自嘲当前阅读状态（玩笑不是决定）",
+     "valid_time": "2026-11-09",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T01",
+      "message_id": "m0",
+      "quote": "我是不是可以提前准备二战了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "自嘲裹真焦虑（lessons：自嘲时顺着接比正面安慰有用）；红线是别拿目标院校和分数开玩笑（persona boundary 明示），也别把二战坐实成决定。",
+   "unknowns": [
+    {
+     "topic": "她是否会二战",
+     "note": "'提前准备二战'是自嘲不是决定，候选不得顺着坐实二战安排，也不得拿分数开玩笑",
+     "markers": [
+      [
+       "你的二战计划"
+      ],
+      [
+       "二战的打算"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "你的二战计划"
+      ],
+      [
+       "二战的打算"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实她会二战",
+    "不得嘲讽她的分数或二战选项"
+   ],
+   "may_decline": false
+  },
+  "E302_T02": {
+   "case_id": "E302_T02",
+   "current_action": "HER 接下归型任务（把四个错题归型发给 ME），并预告归完政治还没背、今晚又要熬到一点",
+   "acceptable_actions": [
+    "放她去归型，顺一句别真熬到一点（轻的，不说教）",
+    "认赌'俩同一型'并约定归完对答案",
+    "接'熬到一点'自嘲（研友式互懂）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T02_A01",
+     "subject": "HER",
+     "relation": "任务接下",
+     "value": "HER 接受把阅读错题归型发 ME 看的安排",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T02",
+      "message_id": "m1",
+      "quote": "行，归型去了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T02_A02",
+     "subject": "HER",
+     "relation": "今晚计划",
+     "value": "HER 预告归完还要背政治、今晚要熬到一点",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T02",
+      "message_id": "m1",
+      "quote": "今晚又要熬到一点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在动身做正事，回复宜短；研友式关心是'别熬太狠'，不是'早点睡多喝水'模板腔。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得阻止她归型或改动她的复习计划"
+   ],
+   "may_decline": false
+  },
+  "E302_T03": {
+   "case_id": "E302_T03",
+   "current_action": "HER 自嘲中午把麻辣香锅打包回自习室被管理员隔老远瞪，只好端着锅在楼梯间吃完、越吃越像做贼",
+   "acceptable_actions": [
+    "接'做贼'自嘲（通缉画像都省了式玩笑）",
+    "关心一句楼梯间吃饭委屈了，再补轻玩笑",
+    "合法不回（趣事自嘲轮，非提问）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T03_A01",
+     "subject": "HER",
+     "relation": "管理员反应",
+     "value": "管理员隔着老远瞪 HER",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T03",
+      "message_id": "m0",
+      "quote": "管理员隔着老远瞪我"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T03_A02",
+     "subject": "HER",
+     "relation": "吃饭地点",
+     "value": "HER 端着锅在楼梯间吃完麻辣香锅",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T03",
+      "message_id": "m0",
+      "quote": "我端着锅在楼梯间吃完的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "破事自嘲轮且 may_decline=true：回复就一句玩笑的事，别上价值'自习室规矩要遵守'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替管理员坐实处罚或升级事态",
+    "不得说教批评她带饭进自习室"
+   ],
+   "may_decline": true
+  },
+  "E302_T04": {
+   "case_id": "E302_T04",
+   "current_action": "HER 通报政治1000题二刷到毛中特、正确率掉到六成有点急，并要求 ME 肖八到了也别报分数",
+   "acceptable_actions": [
+    "先答肖八到没到，再守约不报分数",
+    "接'经不起横向对比'自嘲，把对比换成纵向（比上周的你）",
+    "问毛中特错型分布，把'急'变成具体任务"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T04_A01",
+     "subject": "HER",
+     "relation": "政治进度",
+     "value": "HER 政治二刷到毛中特、正确率掉到六成",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T04",
+      "message_id": "m0",
+      "quote": "正确率掉到六成"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T04_A02",
+     "subject": "HER",
+     "relation": "分数禁令",
+     "value": "HER 要求 ME 肖八到了也别报分数",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T04",
+      "message_id": "m0",
+      "quote": "到了也别报分数啊"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她明说'别报分数'——这是硬约束，ME 即便知道分数也要守约；安慰要落具体（错型/纵向对比），不灌鸡汤。",
+   "unknowns": [],
+   "protected_expressions": [
+    "到了也别报分数啊"
+   ],
+   "forbidden_factual_claims": [
+    "不得报出 ME 肖八的具体分数",
+    "不得拿两人分数做对比刺激她"
+   ],
+   "may_decline": false
+  },
+  "E302_T05": {
+   "case_id": "E302_T05",
+   "current_action": "HER 通报室友半夜追剧开外放、戴着耳塞都能听见男主哭，昨晚基本没睡，今天上自习全靠意志力撑着",
+   "acceptable_actions": [
+    "先接睡眠这个真问题（给一句具体可做的，如白天找空档眯一会）",
+    "接她'意志力'自嘲，不急着给方案",
+    "问今晚怎么安排（室友还放不放），把关心落在今晚"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T05_A01",
+     "subject": "THIRD",
+     "relation": "室友行为",
+     "value": "室友半夜追剧开外放",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T05",
+      "message_id": "m0",
+      "quote": "我室友半夜追剧开外放"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T05_A02",
+     "subject": "HER",
+     "relation": "睡眠状况",
+     "value": "HER 昨晚基本没睡",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T05",
+      "message_id": "m0",
+      "quote": "昨晚基本没睡"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "KB：她和室友关系不错——回应别拉踩室友、别怂恿开战；她要的是被看见'没睡'这件事，不是马上替她审室友。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得拉踩或指责室友（两人关系不错）",
+    "不得怂恿她正面开战"
+   ],
+   "may_decline": false
+  },
+  "E302_T06": {
+   "case_id": "E302_T06",
+   "current_action": "HER 在'买睡眠耳塞升级版忍到考试'与'直接跟室友谈'之间纠结，怕谈崩后最后三十几天天天尴尬",
+   "acceptable_actions": [
+    "给两步方案：先耳塞过渡+挑轻松时机谈（如吃饭时顺口说）",
+    "替她拆风险：谈的是'半夜戴耳机'不是'你别看剧'（对事不对人）",
+    "反问她室友是偶尔还是天天外放，再定建议"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T06_A01",
+     "subject": "HER",
+     "relation": "决策请求",
+     "value": "HER 在升级耳塞与直接跟室友谈之间二选一",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T06",
+      "message_id": "m0",
+      "quote": "还是直接跟她谈"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T06_A02",
+     "subject": "HER",
+     "relation": "顾虑",
+     "value": "HER 怕万一谈崩最后这段天天尴尬",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T06",
+      "message_id": "m0",
+      "quote": "我怕万一谈崩"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她用'要不要'起头（style 键：提要求不下命令）——lessons 明示'问要不要时给具体选项'；方案要具体可执行，别'都行看你'。",
+   "unknowns": [
+    {
+     "topic": "室友能否被说服",
+     "note": "谈崩风险她自己在担心，候选给方案可以，不得打包票'肯定谈不崩'",
+     "markers": [
+      [
+       "肯定不会崩"
+      ],
+      [
+       "保准谈成"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "肯定不会崩"
+      ],
+      [
+       "保准谈成"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得打包票保证谈不崩",
+    "不得建议她硬碰硬摊牌"
+   ],
+   "may_decline": false
+  },
+  "E302_T07": {
+   "case_id": "E302_T07",
+   "current_action": "HER 通报谈成没崩：室友赔了一盒水蜜桃味润喉糖并宣布以后追剧挪去图书馆；润喉糖本来想分 ME 两颗，转念 ME 天天保温杯泡枸杞用不上",
+   "acceptable_actions": [
+    "先恭喜谈成并接枸杞玩笑（枸杞人配不上水蜜桃式自嘲）",
+    "夸她谈得体面（没撕破脸还拿到赔偿）",
+    "反问图书馆追剧体验如何，把话题留在她身上"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T07_A01",
+     "subject": "THIRD",
+     "relation": "室友承诺",
+     "value": "室友宣布以后追剧挪去图书馆",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T07",
+      "message_id": "m0",
+      "quote": "宣布以后追剧挪去图书馆"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T07_A02",
+     "subject": "THIRD",
+     "relation": "赔偿",
+     "value": "室友赔了 HER 一盒水蜜桃味润喉糖",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T07",
+      "message_id": "m0",
+      "quote": "她赔了我一盒润喉糖"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T07_A03",
+     "subject": "HER",
+     "relation": "枸杞玩笑",
+     "value": "HER 玩笑说 ME 天天保温杯泡枸杞用不上润喉糖",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T07",
+      "message_id": "m0",
+      "quote": "转念一想你天天保温杯里泡枸杞，用不上"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动报告了好结果，先接'成了'再接玩笑；枸杞是互怼素材，接住反损回去比一本道谢自然。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把润喉糖说成是给 ME 买的"
+   ],
+   "may_decline": false
+  },
+  "E302_T08": {
+   "case_id": "E302_T08",
+   "current_action": "HER 定下周六上午英语整卷模考（文昌路付费自习室、订两个座、9点到12点），并放话 ME 赖床就把单词打卡断签截图发考研互助群",
+   "acceptable_actions": [
+    "确认赴约并接威胁玩笑（截图随便发式互呛）",
+    "确认时间地点并反问两个座是不是绑定套餐",
+    "爽快应约并放自己的狠话（我七点就到式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T08_A01",
+     "subject": "SHARED",
+     "relation": "模考约定",
+     "value": "周六上午在文昌路付费自习室进行英语整卷模考",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T08",
+      "message_id": "m0",
+      "quote": "周六上午英语整卷模考，文昌路那家付费自习室"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T08_A02",
+     "subject": "HER",
+     "relation": "座位预订",
+     "value": "HER 订了两个座，9点到12点",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T08",
+      "message_id": "m0",
+      "quote": "我订了两个座，9点到12点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T08_A03",
+     "subject": "HER",
+     "relation": "赖床威胁",
+     "value": "HER 放话 ME 赖床就把断签截图发考研互助群",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T08",
+      "message_id": "m0",
+      "quote": "我把你单词打卡断签的截图发到考研互助群"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "意图轮：约定要接死（时间地点可复述）；威胁是玩笑不是真冲突，别一本正经解释'我不会赖床'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得推脱或改期周六模考",
+    "不得当真抗议截图威胁"
+   ],
+   "may_decline": false
+  },
+  "E302_T09": {
+   "case_id": "E302_T09",
+   "current_action": "HER 确认模考座位 A07 和 A08，转述老板迟到超过十分钟就放座的规则，并预告截图已存好、就等一个有缘人",
+   "acceptable_actions": [
+    "复述座位号并接放座规则（留十分钟公交冗余式）",
+    "接'有缘人'梗认领截图打击对象",
+    "确认安排并自嘲打卡287天不能毁在周六"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T09_A01",
+     "subject": "SHARED",
+     "relation": "座位号",
+     "value": "模考座位为 A07 和 A08",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T09",
+      "message_id": "m0",
+      "quote": "A07和A08"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T09_A02",
+     "subject": "SHARED",
+     "relation": "迟到规则",
+     "value": "老板说迟到超过十分钟就放座",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T09",
+      "message_id": "m0",
+      "quote": "迟到超过十分钟就放座"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "事务确认轮（T01 判据：简洁明确也算好）：座位号/规则复述清楚比幽默重要，两处信息别记混。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得记错座位号或时间",
+    "不得把放座规则理解成迟到没事"
+   ],
+   "may_decline": false
+  },
+  "E302_T10": {
+   "case_id": "E302_T10",
+   "current_action": "HER 对完答案通报阅读只错俩（从四个到俩），把功劳部分归于 ME 的'先归型'建议，并催 ME 拿出吹过的75分",
+   "acceptable_actions": [
+    "先认她进步（从四个到俩是真涨分），再接'拿分数来'赌约",
+    "把功劳还她（题是你刷的，归型只是提醒）",
+    "接赌约反将（吹出去的75分拿回来式）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T10_A01",
+     "subject": "HER",
+     "relation": "模考结果",
+     "value": "HER 本次英语模考阅读只错俩",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T10",
+      "message_id": "m0",
+      "quote": "阅读只错俩"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T10_A02",
+     "subject": "HER",
+     "relation": "进步幅度",
+     "value": "阅读错误数从四个进步到俩",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T10",
+      "message_id": "m0",
+      "quote": "从四个到俩"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T10_A03",
+     "subject": "HER",
+     "relation": "催分赌约",
+     "value": "HER 催 ME 兑现吹过的75分",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T10",
+      "message_id": "m0",
+      "quote": "你吹过的75分，拿分数来"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她难得报喜还还了人情（'土归土'），先接进步再接催分；ME 的75分是 KB 事实（目标75、模考70-72），兑现方式由 ME 定，别贬低自己成绩过头也别吹牛编成绩。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得否认她的进步或泼冷水",
+    "不得编造 ME 已出的模考成绩"
+   ],
+   "may_decline": false
+  },
+  "E302_T11": {
+   "case_id": "E302_T11",
+   "current_action": "HER 更完错题本，自曝背政治背到一半突然慌了一秒（剩三十四天、肖八没拆），又自我开解'周六不是比上周进步了吗，人是不是挺奇怪的'",
+   "acceptable_actions": [
+    "接'人是不是挺奇怪'并给具体解释（进步是真的，慌的是没拆的肖八）",
+    "把'一秒'接成常态关怀，顺势把肖八拆了排进日程",
+    "顺着自嘲回一句研友式互懂并轻推拆肖八"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T11_A01",
+     "subject": "HER",
+     "relation": "肖八状态",
+     "value": "HER 的肖八还没拆",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T11",
+      "message_id": "m0",
+      "quote": "肖八我还没拆"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T11_A02",
+     "subject": "SHARED",
+     "relation": "倒计时",
+     "value": "距考试还剩三十四天",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T11",
+      "message_id": "m0",
+      "quote": "就剩三十四天了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T11_A03",
+     "subject": "HER",
+     "relation": "自我开解",
+     "value": "HER 用'周六比上周进步了'自我开解刚才的慌",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T11",
+      "message_id": "m0",
+      "quote": "周六不是比上周进步了吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "NOTE 明示她这周天天熬到半夜、'慌了一秒'是嘴硬——别只接字面的'一秒'玩笑；接她自己的开解（进步为证）比正面安慰有用，顺势给肖八一个具体去处。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得只接'一秒'字面把她的慌翻篇",
+    "不得坐实她状态崩溃"
+   ],
+   "may_decline": false
+  },
+  "E302_T12": {
+   "case_id": "E302_T12",
+   "current_action": "HER 收束今天：约明早六点半单词打卡（ME 回个句号算签到）、道晚安，并重申考完去南门吃烤五花、一人三十串起步、谁怂谁请客",
+   "acceptable_actions": [
+    "确认打卡暗号（句号签到）并道晚安、接烤五花赌约",
+    "接'谁怂谁请客'反呛（怕的不是怂是钱包式）",
+    "简短晚安并确认六点半、留一句考完见"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E302_T12_A01",
+     "subject": "SHARED",
+     "relation": "打卡约定",
+     "value": "明早六点半 HER 发单词打卡，ME 回句号算签到",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T12",
+      "message_id": "m0",
+      "quote": "明早六点半我发单词打卡"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T12_A02",
+     "subject": "SHARED",
+     "relation": "烤五花之约",
+     "value": "考完去南门吃烤五花，一人三十串起步",
+     "valid_time": "2026-12-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T12",
+      "message_id": "m0",
+      "quote": "去南门吃烤五花，一人三十串起步"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E302_T12_A03",
+     "subject": "HER",
+     "relation": "道晚安",
+     "value": "HER 道晚安并重申还剩三十四天",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E302_T12",
+      "message_id": "m0",
+      "quote": "晚安，还剩三十四天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "意图轮+收尾：暗号（句号签到）要接住；烤五花是 KB 既有约定，别当新提议重谈条件。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改掉句号签到暗号",
+    "不得重开烤五花条款谈判"
+   ],
+   "may_decline": false
+  }
+ }
+}

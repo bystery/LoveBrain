@@ -1,0 +1,1488 @@
+{
+ "story_id": "E344",
+ "t02_signal_gate": {
+  "signal_rounds": [
+   {
+    "turn": "E344_T01",
+    "signal": "下课我留十分钟给你讲，别又赶末班地铁跑掉",
+    "strength": "weak"
+   },
+   {
+    "turn": "E344_T02",
+    "signal": "你水杯又落在三号教室窗台，我先收在柜台底下……今天你按音比上周稳，这话我上回可没说过",
+    "strength": "medium"
+   },
+   {
+    "turn": "E344_T03",
+    "signal": "拍完我请你吃面，抵那杯奶茶",
+    "strength": "medium"
+   },
+   {
+    "turn": "E344_T05",
+    "signal": "小蒲说我看你镜头的次数比看谱子多，我说她眼神不好。……中午那顿说到做到，城南老面孔面馆，你现在下楼，还是我先去占座？",
+    "strength": "strong"
+   },
+   {
+    "turn": "E344_T07",
+    "signal": "我给你留了一张——你要是不来，我那首就白练了",
+    "strength": "strong"
+   },
+   {
+    "turn": "E344_T09",
+    "signal": "弹完灯一暗，我第一眼想看到的位置得有人",
+    "strength": "strong"
+   },
+   {
+    "turn": "E344_T10",
+    "signal": "掌声我就记得你的最响",
+    "strength": "medium"
+   }
+  ],
+  "counter_signal_rounds": [
+   {
+    "turn": "E344_T06",
+    "type": "topic_shift",
+    "signal": "我回'是店里老师'，没提摄影师。周二课照常，还是七点半"
+   },
+   {
+    "turn": "E344_T08",
+    "type": "cooldown",
+    "signal": "票的事你回个话，老闵下午登记家属票，要一起报数。……再给我一条雪的吧，落雪不要风声"
+   }
+  ],
+  "initiative_probe_suitable": "E344_T05（半推半就刚摆上桌面，接钩+推半步最自然；E344_T09 夜里回位亦可）",
+  "retreat_room_required": true,
+  "overstep_turn": "E344_T08（她明确退回公事与报数节奏，此时升级暧昧或逼表态=越界）",
+  "customer_service_examples": [
+   "好的黎老师，周日十点前我到店，拍摄还需要我准备什么吗？",
+   "收到，周五演出我一定准时到场，预祝演出圆满成功！"
+  ],
+  "safe_but_flat_examples": [
+   "哈哈，小蒲眼神确实不太好。面就不必了，你忙。",
+   "恭喜视频上线，三千多的播放很不错了。"
+  ],
+  "recovery_check_turn": "E344_T09（她白天撤回公事、夜里把话递回来，看候选是否接住回位而非装傻或扑钩）"
+ },
+ "turns": {
+  "E344_T01": {
+   "case_id": "E344_T01",
+   "current_action": "黎知意通知周二晚课改到七点半开始（老闵盘库她搭把手），并许诺课后留十分钟讲《渔舟唱晚》摇指段，提醒他别又赶末班地铁。",
+   "acceptable_actions": [
+    "接下改课与课后十分钟两个安排，把时间落死（七点半到、下课留着）",
+    "顺'末班地铁'的旧梗轻回一句再应下（如拿末班地铁自嘲）",
+    "只确认改课时间，并问摇指段要不要提前听哪一版，把准备做在前面"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T01_A01",
+     "subject": "SHARED",
+     "relation": "课程安排变更",
+     "value": "周二晚课改到七点半开始",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T01",
+      "message_id": "m0",
+      "quote": "周二晚课改到七点半开始"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "改到七点半"
+      ],
+      [
+       "七点半开始"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T01_A02",
+     "subject": "THIRD",
+     "relation": "改课缘由",
+     "value": "老闵下午到了一批新琴要盘库，黎知意得搭把手",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T01",
+      "message_id": "m0",
+      "quote": "老闵下午到了一批新琴要盘库，我得搭把手"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "新琴要盘库"
+      ],
+      [
+       "搭把手",
+       "老闵"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T01_A03",
+     "subject": "HER",
+     "relation": "课后加练承诺",
+     "value": "她下课后留十分钟给湛若川讲《渔舟唱晚》摇指段",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T01",
+      "message_id": "m0",
+      "quote": "下课我留十分钟给你讲"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "留十分钟给"
+      ],
+      [
+       "下课我留十分钟"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T01_A04",
+     "subject": "ME",
+     "relation": "既往交通习惯（她的提醒）",
+     "value": "她提醒湛若川别又赶末班地铁跑掉",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T01",
+      "message_id": "m0",
+      "quote": "别又赶末班地铁跑掉"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "赶末班地铁"
+      ],
+      [
+       "末班地铁",
+       "跑掉"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "她的'下课留十分钟'是要落地的约定不是客套（KB lessons：落到具体日子的才算数）——只回'好的'不带任何落实动作判 1 档，接'末班地铁'旧梗或给具体到位时间即达 2 档方向；不要求复述原句。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E344_T02": {
+   "case_id": "E344_T02",
+   "current_action": "课后私聊：课间小蓟她们起哄'买一送一'，她代付奶茶记账、收走落在三号教室窗台的水杯（周四来拿），并私下夸他按音比上周稳。",
+   "acceptable_actions": [
+    "认账并接玩笑（如拿记账开利息玩笑），顺带谢收杯",
+    "谢过收杯并确认周四取，对那句罕见夸奖轻轻接住不点破不自夸",
+    "调侃'买一送一'的起哄，把奶茶账往下次课挂"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T02_A01",
+     "subject": "HER",
+     "relation": "代付与记账",
+     "value": "她顺手付了湛若川那杯奶茶，记他账上",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T02",
+      "message_id": "m0",
+      "quote": "你那杯我顺手付了，记你账上"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "顺手付了"
+      ],
+      [
+       "记你账上"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T02_A02",
+     "subject": "THIRD",
+     "relation": "课间起哄说法",
+     "value": "课间小蓟她们起哄，说她是奶茶店买一送一",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T02",
+      "message_id": "m0",
+      "quote": "课间小蓟她们起哄，说我是奶茶店买一送一"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "小蓟",
+       "起哄"
+      ],
+      [
+       "奶茶店买一送一"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T02_A03",
+     "subject": "SHARED",
+     "relation": "代管物件",
+     "value": "湛若川的水杯落在三号教室窗台，她先收在柜台底下，周四来拿",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T02",
+      "message_id": "m0",
+      "quote": "你水杯又落在三号教室窗台，我先收在柜台底下，周四来拿"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三号教室窗台"
+      ],
+      [
+       "柜台底下"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T02_A04",
+     "subject": "HER",
+     "relation": "私下夸奖",
+     "value": "她说湛若川今天按音比上周稳，这话上回没说过",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T02",
+      "message_id": "m0",
+      "quote": "今天你按音比上周稳，这话我上回可没说过"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "按音比上周稳"
+      ],
+      [
+       "上回可没说过"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "账、杯、夸三样都是她递的课外牵连信号：接住任意两样并留一来一回即合格；把夸奖复述成自夸、或把代付说成'她欠我'均判 factuality/interaction 失分。周四取杯=11-05（11-03 为周二，推算见 audit §2）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E344_T03": {
+   "case_id": "E344_T03",
+   "current_action": "她以拍团购宣传视频为名约他周日上午十点到店借手，许诺拍完请吃面抵奶茶，并留了'忙就直说、找老闵儿子顶'的退路。",
+   "acceptable_actions": [
+    "答应周日上午十点到，问清拍什么机位、要不要带设备",
+    "答应并把'抵奶茶'的账接成玩笑（如'那我多吃二两'）",
+    "接下但调一个小条件（如十点半），等她确认——不空答应也不回绝"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T03_A01",
+     "subject": "SHARED",
+     "relation": "拍摄事件",
+     "value": "周日上午店里要拍团购宣传的小视频，一分钟那种",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T03",
+      "message_id": "m0",
+      "quote": "周日上午店里要拍团购宣传的小视频，一分钟那种"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "团购宣传"
+      ],
+      [
+       "一分钟那种"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T03_A02",
+     "subject": "HER",
+     "relation": "借手邀约",
+     "value": "她约湛若川周日上午十点到店帮忙",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T03",
+      "message_id": "m0",
+      "quote": "我寻思问你借个手，周日上午十点到店就行"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "借个手",
+       "周日上午十点"
+      ],
+      [
+       "寻思问你借个手"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T03_A03",
+     "subject": "HER",
+     "relation": "请面抵账承诺",
+     "value": "拍完她请吃面，抵那杯奶茶",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T03",
+      "message_id": "m0",
+      "quote": "拍完我请你吃面，抵那杯奶茶"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "请你吃面"
+      ],
+      [
+       "抵那杯奶茶"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T03_A04",
+     "subject": "ME",
+     "relation": "被转述的拍摄经验（小蒲说的）",
+     "value": "小蒲说湛若川帮朋友拍过片子，她据此来借人",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T03",
+      "message_id": "m0",
+      "quote": "小蒲说你帮朋友拍过片子"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "小蒲说",
+       "帮朋友拍过片子"
+      ],
+      [
+       "拍过片子"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T03_A05",
+     "subject": "HER",
+     "relation": "备选退路",
+     "value": "若湛若川忙，她找老闵儿子顶",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T03",
+      "message_id": "m0",
+      "quote": "你要是忙就直说，我找老闵儿子顶"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "找老闵儿子"
+      ],
+      [
+       "老闵儿子",
+       "我找"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=邀约：给实质回应或反提议才算接住，只回'好啊'不带具体安排判 goal 1 档；她给的退路是留面子不是客套，不必戳破。'周日'=11-08（11-05 为周四，推算见 audit §2）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称两人此前已约好周日拍摄（本轮才是邀约）"
+   ],
+   "may_decline": false
+  },
+  "E344_T04": {
+   "case_id": "E344_T04",
+   "current_action": "拍摄前夜她来要一条现成雨声音效垫明天的视频，并嘱咐标注、别用他拿来卖钱的素材。",
+   "acceptable_actions": [
+    "答应发一条现成雨声并标注非卖品（可带版本/时长说明）",
+    "发素材时带一句行内交代（如未降噪/干声），显音效师的专业分寸",
+    "答应但提小条件（明早发/求署名'音效'），玩笑式交换"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T04_A01",
+     "subject": "HER",
+     "relation": "索素材请求（疑问句不坐实库存）",
+     "value": "她问湛若川音效库里有没有现成雨声，要一条垫明天的视频",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T04",
+      "message_id": "m0",
+      "quote": "我想垫一层雨声，你音效库里有没有现成的，发我一条就够"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "垫一层雨声"
+      ],
+      [
+       "发我一条"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T04_A02",
+     "subject": "HER",
+     "relation": "素材使用约束",
+     "value": "用素材要标注，别用他拿来卖钱的那些",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T04",
+      "message_id": "m0",
+      "quote": "标一下别用你卖钱的那些"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别用你卖钱的"
+      ],
+      [
+       "卖钱的那些"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T04_A03",
+     "subject": "SHARED",
+     "relation": "明天的拍摄安排（'明天'=周日）",
+     "value": "周日（11-08）上午十点到店拍团购宣传视频",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T03",
+      "message_id": "m0",
+      "quote": "周日上午十点到店就行"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "周日上午十点"
+      ],
+      [
+       "到店就行"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "note：雨声那条是湛若川去年六月在自家露台录的、没做过降噪——note 是他自知的情况，引用合法，不得说成她已知。'你音效库里有没有'是疑问句，不得坐实'他音效库里有现成雨声'为已证事实；回复应落在'发一条'的行动上。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别用你卖钱的那些"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E344_T05": {
+   "case_id": "E344_T05",
+   "current_action": "拍摄收尾：三条片子条条能用；小蒲起哄她看镜头比看谱子多、她以'她眼神不好'挡回；当场兑现请吃面（城南老面孔面馆），问他下楼还是她占座。",
+   "acceptable_actions": [
+    "顺着起哄接半步回敬（如'看谱子是工作，看我是抽查'），再应下吃面",
+    "只回吃面安排（下楼/让她占座），对起哄一笑带过",
+    "反问回掷（如'眼神不好还看得那么清？'），把球打回去再约"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T05_A01",
+     "subject": "SHARED",
+     "relation": "拍摄结果",
+     "value": "拍完了，三条片子条条能用",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T05",
+      "message_id": "m0",
+      "quote": "拍完了，三条片子条条能用"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三条片子",
+       "能用"
+      ],
+      [
+       "条条能用"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T05_A02",
+     "subject": "THIRD",
+     "relation": "起哄与她挡回",
+     "value": "小蒲起哄说黎知意看湛若川镜头的次数比看谱子多，她回'她眼神不好'",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T05",
+      "message_id": "m0",
+      "quote": "小蒲说我看你镜头的次数比看谱子多，我说她眼神不好"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "看谱子多"
+      ],
+      [
+       "眼神不好"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T05_A03",
+     "subject": "HER",
+     "relation": "请面抵账承诺（'中午那顿'的前情）",
+     "value": "她说过拍完请吃面抵那杯奶茶",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T03",
+      "message_id": "m0",
+      "quote": "拍完我请你吃面，抵那杯奶茶"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "请你吃面"
+      ],
+      [
+       "抵那杯奶茶"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T05_A04",
+     "subject": "HER",
+     "relation": "当场兑现并邀",
+     "value": "中午那顿说到做到：城南老面孔面馆，现在下楼或她先去占座",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T05",
+      "message_id": "m0",
+      "quote": "中午那顿说到做到，城南老面孔面馆，你现在下楼，还是我先去占座？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "城南老面孔面馆"
+      ],
+      [
+       "先去占座"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "半推半就第一次摆上桌面：接钩+轻回敬=2 档；只谈面不接起哄=1 档；装没听见或点破'你就是在看我'=0 档（点破越线，她已用'眼神不好'把话挡回一次）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E344_T06": {
+   "case_id": "E344_T06",
+   "current_action": "视频上线两小时三千多播放；评论区问弹琴的是谁，她对外只答'是店里老师'没提摄影师；周二课照常七点半。",
+   "acceptable_actions": [
+    "顺着'没提我'打趣（如'教练保密，学员藏功与名'），再接周二课安排",
+    "只确认周二七点半，对播放量道一句辛苦",
+    "调侃三千播放的成色（如问有多少是她自己刷的），轻撩反问"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T06_A01",
+     "subject": "PUBLIC",
+     "relation": "上线数据",
+     "value": "视频发出去了，两个钟头三千多播放",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T06",
+      "message_id": "m0",
+      "quote": "视频发出去了，两个钟头三千多播放"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "两个钟头",
+       "三千多播放"
+      ],
+      [
+       "三千多播放"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T06_A02",
+     "subject": "HER",
+     "relation": "对外口径（未提他）",
+     "value": "评论区问弹琴的是谁，她回'是店里老师'，没提摄影师",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T06",
+      "message_id": "m0",
+      "quote": "评论区都在问弹琴的是谁，我回'是店里老师'，没提摄影师"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "没提摄影师"
+      ],
+      [
+       "是店里老师"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T06_A03",
+     "subject": "SHARED",
+     "relation": "课表确认（11-10 周二）",
+     "value": "周二课照常，还是七点半",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T06",
+      "message_id": "m0",
+      "quote": "周二课照常，还是七点半"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "课照常",
+       "周二"
+      ],
+      [
+       "还是七点半"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "她没对外挂他是分寸不是冷落：把'没提摄影师'读成冷淡、或替她宣布'下次就说你拍的'都判负；接'藏功与名'的玩笑最稳。七点半与 T01 改课口径一致（改回七点是 T11 之后的下下周，见 audit §2）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "没提摄影师"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称她对外公开了摄影师身份或两人关系"
+   ],
+   "may_decline": false
+  },
+  "E344_T07": {
+   "case_id": "E344_T07",
+   "current_action": "她夸摇指总算稳、把扫摇记账，并告知周五周年小演出压轴、票不外卖共三十张、给他留了一张——'你要是不来，我那首就白练了'。",
+   "acceptable_actions": [
+    "爽快应下来周五，接'白练了'那句（如'留着，你的压轴我到场'）",
+    "应下并回敬记账玩笑（如'扫摇先记账，周五拿压轴抵'）",
+    "应下+确认细节（几点开始/要不要提前到）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T07_A01",
+     "subject": "HER",
+     "relation": "夸奖与记账玩笑",
+     "value": "她夸湛若川今天摇指总算稳了，扫摇先记他账上",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T07",
+      "message_id": "m0",
+      "quote": "今天你摇指总算稳了，扫摇先记你账上"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "摇指总算稳了"
+      ],
+      [
+       "扫摇先记"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T07_A02",
+     "subject": "SHARED",
+     "relation": "演出事件（周五）",
+     "value": "周五（11-13）店里周年小演出，学员轮着上，她压轴",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T07",
+      "message_id": "m0",
+      "quote": "周五店里周年小演出，学员轮着上，我压轴"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周年小演出"
+      ],
+      [
+       "我压轴",
+       "学员轮着上"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T07_A03",
+     "subject": "SHARED",
+     "relation": "留票",
+     "value": "票不外卖，老闵统共印了三十张，她给湛若川留了一张",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T07",
+      "message_id": "m0",
+      "quote": "票不外卖，老闵统共印了三十张，我给你留了一张"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "印了三十张"
+      ],
+      [
+       "给你留了一张"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T07_A04",
+     "subject": "HER",
+     "relation": "到场分量话",
+     "value": "她说'你要是不来，我那首就白练了'",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T07",
+      "message_id": "m0",
+      "quote": "你要是不来，我那首就白练了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我那首就白练了"
+      ],
+      [
+       "就白练了"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=告知演出并留票：接住留票并表态到场是主方向；'到时候再说'式悬置=缩钩（T02 0 档）；立刻加码'我要最好的位置'式逼问=扑。'周五'=11-13（11-10 为周二，推算见 audit §2）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E344_T08": {
+   "case_id": "E344_T08",
+   "current_action": "她把话题拉回公事：票的事要回话（老闵下午登记家属票要一起报数）、催第二条视频（还是周日那套规格）、再要一条落雪不要风声的雪声——雨声那条反响不错。",
+   "acceptable_actions": [
+    "直接给票的准话（去不去/家属票怎么报），雪声答应并给交付时间",
+    "回票+接视频单（问清规格期限），对'落雪不要风声'显专业理解",
+    "先回票（这轮最急），视频与雪声约定今晚给答复"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T08_A01",
+     "subject": "HER",
+     "relation": "报数需求",
+     "value": "票的事要回话：老闵下午登记家属票，要一起报数",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T08",
+      "message_id": "m0",
+      "quote": "票的事你回个话，老闵下午登记家属票，要一起报数"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "家属票",
+       "老闵"
+      ],
+      [
+       "一起报数"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T08_A02",
+     "subject": "HER",
+     "relation": "催第二条视频",
+     "value": "店长催第二条视频，还是要周日那套规格",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T08",
+      "message_id": "m0",
+      "quote": "视频第二条店长催了，还是周日那套规格"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "第二条店长催了"
+      ],
+      [
+       "周日那套规格"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T08_A03",
+     "subject": "SHARED",
+     "relation": "雨声反响",
+     "value": "雨声那条用了，反响不错",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T08",
+      "message_id": "m0",
+      "quote": "你雨声那条用了，反响不错"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "反响不错"
+      ],
+      [
+       "雨声那条用了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T08_A04",
+     "subject": "HER",
+     "relation": "雪声新需求",
+     "value": "再要一条雪声音效，落雪不要风声",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T08",
+      "message_id": "m0",
+      "quote": "再给我一条雪的吧，落雪不要风声"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "落雪不要风声"
+      ],
+      [
+       "一条雪的"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T08_A05",
+     "subject": "SHARED",
+     "relation": "留票前情（票的事要回话的对象）",
+     "value": "周五周年演出她给湛若川留了一张票（票不外卖，共三十张）",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T07",
+      "message_id": "m0",
+      "quote": "票不外卖，老闵统共印了三十张，我给你留了一张"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "给你留了一张"
+      ],
+      [
+       "印了三十张"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "本轮是'退回公事'的反信号位：她把票的事压成报数——正确方向是干脆给票的准话（不扑不缩）再接音效单；此时写长段暧昧=越界（t02 gate overstep），只谈公事全无温度=客服腔。note：第二条视频规格=三机位、一分钟、竖版（候选可见）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称家属票已登记完成或报数已提交（等他回话才报）"
+   ],
+   "may_decline": false
+  },
+  "E344_T09": {
+   "case_id": "E344_T09",
+   "current_action": "票登记完：老闵问名字她写'湛'，被问哪个湛时答'雨声那个'，老闵居然秒懂；夜里补一句——周五别迟到，她那首压轴收尾，灯一暗第一眼想看到的位置得有人。",
+   "acceptable_actions": [
+    "接住'第一眼'那句推半步（如'灯一暗你往观众席扫，第一排最中间'）",
+    "只应不迟到+到场，把'雨声那个'当登记名笑点接",
+    "反问回掷（如'万一我迟到，你弹错算谁的？'式调侃）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T09_A01",
+     "subject": "SHARED",
+     "relation": "票登记完成",
+     "value": "票登记完了：老闵问名字她写了'湛'，被问哪个湛她答'雨声那个'，老闵居然秒懂",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T09",
+      "message_id": "m0",
+      "quote": "票登记完了。老闵问名字，我写了'湛'，他问哪个湛，我说雨声那个——他居然秒懂"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "雨声那个"
+      ],
+      [
+       "居然秒懂"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T09_A02",
+     "subject": "HER",
+     "relation": "夜里信号（回位）",
+     "value": "周五别迟到：她那首是收尾，弹完灯一暗，她第一眼想看到的位置得有人",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T09",
+      "message_id": "m0",
+      "quote": "周五你别迟到，我那首是收尾，弹完灯一暗，我第一眼想看到的位置得有人"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "第一眼想看到的位置",
+       "得有人"
+      ],
+      [
+       "我那首是收尾"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "白天撤回夜里回位——拉扯链的'回'步：接住半步+一个可撤回的前进=2 档；装傻只聊登记流程=1 档；直接告白或逼她'把话说清楚'=0 档。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E344_T10": {
+   "case_id": "E344_T10",
+   "current_action": "演出当晚散场报平安：她到家了、曲子没错音、掌声就记得他的最响；夜宵老闵请的省下一顿；奶茶账玩笑继续；扫摇下周二开始教，他要睡了就不吵。",
+   "acceptable_actions": [
+    "简短回一句晚安+认账玩笑（合法短回，深夜档）",
+    "接'掌声最响'回一句（如'今晚最响的掌声给压轴'），再道晚安",
+    "合法不回（may_decline=true：她说睡了就不吵，次日再回也自然）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "time_state",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T10_A01",
+     "subject": "SHARED",
+     "relation": "演出结果",
+     "value": "演出当晚她到家了，曲子没错音",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T10",
+      "message_id": "m0",
+      "quote": "到家了。曲子没错音"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "曲子没错音"
+      ],
+      [
+       "没错音",
+       "到家了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T10_A02",
+     "subject": "HER",
+     "relation": "散场夸奖",
+     "value": "她说掌声就记得湛若川的最响",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T10",
+      "message_id": "m0",
+      "quote": "掌声我就记得你的最响"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "掌声我就记得"
+      ],
+      [
+       "你的最响"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T10_A03",
+     "subject": "THIRD",
+     "relation": "夜宵安排",
+     "value": "夜宵是老闵请的，省下一顿",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T10",
+      "message_id": "m0",
+      "quote": "夜宵是老闵请的，省下一顿"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "老闵请的"
+      ],
+      [
+       "省下一顿"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T10_A04",
+     "subject": "HER",
+     "relation": "账目玩笑（拉扯收尾）",
+     "value": "她说奶茶那顿还在湛若川账上，别想赖",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T10",
+      "message_id": "m0",
+      "quote": "奶茶那顿还在你账上，别想赖"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还在你账上"
+      ],
+      [
+       "奶茶那顿",
+       "别想赖"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T10_A05",
+     "subject": "SHARED",
+     "relation": "扫摇安排",
+     "value": "扫摇下周二（11-17）开始教；他要睡了就不吵他",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T10",
+      "message_id": "m0",
+      "quote": "扫摇下周二开始教，你要是睡了就不吵你，账又不会跑"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "扫摇下周二开始教"
+      ],
+      [
+       "就不吵你"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "账目是拉扯玩笑不是对账请求：认账、耍赖、笑她账本永远清不完都合法，较真对算术不加分。may_decline=true——深夜报平安轮合法不回；回复则宜短，长篇晚安仪式=过度。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  },
+  "E344_T11": {
+   "case_id": "E344_T11",
+   "current_action": "周日问候：周二课改回七点整（老闵盘完库）、第二条视频下个月拍；老闵想找他做店里宣传片音效，她代答'收，明码标价，首单八折'，第三单他自己谈。",
+   "acceptable_actions": [
+    "接课改回七点+对音效单表态（收费可以/要老闵先发需求清单）",
+    "调侃她'代答八折'越权（如'我什么时候说八折了'），再给条件",
+    "全接下但把第三单的价抛回去（如'第三单收你一杯奶茶'）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T11_A01",
+     "subject": "SHARED",
+     "relation": "课表再变更（11-17 周二）",
+     "value": "周二课改回七点整（老闵盘完库了）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T11",
+      "message_id": "m0",
+      "quote": "周二课改回七点整，老闵盘完库了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "改回七点整"
+      ],
+      [
+       "盘完库了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T11_A02",
+     "subject": "SHARED",
+     "relation": "视频二期排期",
+     "value": "第二条视频下个月拍",
+     "valid_time": "2026-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T11",
+      "message_id": "m0",
+      "quote": "第二条视频下个月拍"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "下个月拍"
+      ],
+      [
+       "第二条视频"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T11_A03",
+     "subject": "THIRD",
+     "relation": "老闵合作意向",
+     "value": "老闵想找湛若川给店里做条宣传片的音效，问她收不收费",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T11",
+      "message_id": "m0",
+      "quote": "老闵想找你给店里做条宣传片的音效，问你收不收费"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "宣传片的音效"
+      ],
+      [
+       "收不收费"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T11_A04",
+     "subject": "HER",
+     "relation": "代答报价（她主张，非 ME 承诺）",
+     "value": "她替湛若川答了'收，明码标价，首单八折'，第三单让他自己谈",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T11",
+      "message_id": "m0",
+      "quote": "我说收，明码标价，首单八折——第三单你自己谈"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "首单八折"
+      ],
+      [
+       "第三单你自己谈"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'首单八折'是她的代答不是湛若川的承诺——回复可认领可改价，不得把它说成已定合同；attrib 维看候选是否把报价归给自己或归给老闵。",
+   "unknowns": [
+    {
+     "topic": "老闵宣传片音效单子最终是否成交与定价",
+     "note": "'首单八折'只是她代答的报价主张，老闵未确认、湛若川未答应，成交与否未定",
+     "markers": [
+      [
+       "八折",
+       "成交"
+      ],
+      [
+       "单子",
+       "接了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "八折",
+       "成交"
+      ],
+      [
+       "单子",
+       "接了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称湛若川已答应首单八折或已接下老闵的音效单"
+   ],
+   "may_decline": false
+  },
+  "E344_T12": {
+   "case_id": "E344_T12",
+   "current_action": "课前夜轻收：明晚七点整别迟到、扫摇谱印好了一份来了拿；老闵的音效单子她替他接着了，玩笑'价好说'写在他脸上，她负责收茶水费。",
+   "acceptable_actions": [
+    "确认明晚七点+接茶水费玩笑（如'茶水费对半分'）",
+    "应下取谱，对'价好说'回敬（如'他的脸我信，合同不信'）",
+    "短回确认+让她把老闵的需求清单发来（把单子落纸面）"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E344_T12_A01",
+     "subject": "SHARED",
+     "relation": "明晚课确认",
+     "value": "明晚（11-17 周二）七点整，别迟到",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T12",
+      "message_id": "m0",
+      "quote": "明晚七点整，别迟到"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "明晚七点整"
+      ],
+      [
+       "七点整",
+       "别迟到"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T12_A02",
+     "subject": "HER",
+     "relation": "扫摇谱备好",
+     "value": "扫摇的谱她印好了，就一份，来了拿",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T12",
+      "message_id": "m0",
+      "quote": "扫摇的谱我印好了，就一份，来了拿"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "印好了",
+       "就一份"
+      ],
+      [
+       "扫摇的谱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E344_T12_A03",
+     "subject": "THIRD",
+     "relation": "音效单子进度",
+     "value": "老闵的音效单子她替湛若川接着了，说价好说",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E344_T12",
+      "message_id": "m0",
+      "quote": "老闵的音效单子我替你接着了，他说价好说"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "替你接着了"
+      ],
+      [
+       "他说价好说"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "收尾轻收位：确认+一句玩笑收住即可，再开新钩（约拍视频/约饭）判 initiative 失分（不读空气）。'价好说'仍是玩笑价不是成交价。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  }
+ }
+}

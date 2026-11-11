@@ -1,0 +1,678 @@
+{
+ "story_id": "E147",
+ "turns": {
+  "E147_T01": {
+   "case_id": "E147_T01",
+   "current_action": "接住无奈：确认是第四次代问，先问她自己累不累，不急着给方案",
+   "acceptable_actions": [
+    "接住'第四回'的无奈，问她这次报告要转什么",
+    "先共情她总被当传话筒，再问这次的具体内容"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T01_A00",
+     "subject": "HER",
+     "relation": "代问频率",
+     "value": "表姨今年第四次托 HER 转问医生",
+     "valid_time": "2026-11-04 12:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T01",
+      "message_id": "m0",
+      "quote": "今年第四回了"
+     }
+    },
+    {
+     "atom_id": "E147_T01_A01",
+     "subject": "SHARED",
+     "relation": "朋友关系",
+     "value": "程好与 ME 是每周两次的羽毛球搭子",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "每周打两次球"
+     }
+    }
+   ],
+   "private_guidance": "她绕弯，你先把'这事儿让你为难了'说破，她才好往下讲。",
+   "unknowns": [
+    "这次报告的具体问题未明"
+   ],
+   "protected_expressions": [
+    "今年第四回了"
+   ],
+   "forbidden_factual_claims": [
+    "不得指责表姨或替 HER 决定拒绝"
+   ],
+   "may_decline": false
+  },
+  "E147_T02": {
+   "case_id": "E147_T02",
+   "current_action": "接住心虚：肯定她的觉察，点破代问的隐性成本，把'心虚'变成设立边界的契机而非自责",
+   "acceptable_actions": [
+    "肯定她的觉察，说明阿颖那句话不是说给她一个人的",
+    "点破：帮忙可以有边界，心虚正说明该立规矩了"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T02_A00",
+     "subject": "HER",
+     "relation": "代问频率",
+     "value": "表姨今年第四次托问医生",
+     "valid_time": "2026-11-04 12:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T01",
+      "message_id": "m0",
+      "quote": "今年第四回了"
+     }
+    },
+    {
+     "atom_id": "E147_T02_A01",
+     "subject": "THIRD",
+     "relation": "医生信号",
+     "value": "阿颖朋友圈发'免费咨询真的会累'流露倦意",
+     "valid_time": "2026-11-04 18:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T02",
+      "message_id": "m0",
+      "quote": "免费咨询真的会累"
+     }
+    }
+   ],
+   "private_guidance": "把心虚导向行动而不是自责，她才有力气立边界。",
+   "unknowns": [],
+   "protected_expressions": [
+    "免费咨询真的会累"
+   ],
+   "forbidden_factual_claims": [
+    "不得把阿颖的朋友圈解读为针对 HER"
+   ],
+   "may_decline": false
+  },
+  "E147_T03": {
+   "case_id": "E147_T03",
+   "current_action": "边界类冲突轮：明确指出开药必须本人面诊，这一条不能代，报告转述另说，帮她把两件事分开",
+   "acceptable_actions": [
+    "直接点明：开药必须本人面诊，这条谁也不能代",
+    "建议她回话时把'看报告'和'开药'分开处理"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T03_A00",
+     "subject": "THIRD",
+     "relation": "医生信号",
+     "value": "阿颖朋友圈流露免费咨询的倦意",
+     "valid_time": "2026-11-04 18:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T02",
+      "message_id": "m0",
+      "quote": "免费咨询真的会累"
+     }
+    },
+    {
+     "atom_id": "E147_T03_A01",
+     "subject": "THIRD",
+     "relation": "越界请求",
+     "value": "表姨要求顺便开药寄送",
+     "valid_time": "2026-11-05 09:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T03",
+      "message_id": "m0",
+      "quote": "开点药寄过来"
+     }
+    }
+   ],
+   "private_guidance": "界线要先在你这儿立稳：报告可以传，开药免谈，这不是伤感情是守法。",
+   "unknowns": [],
+   "protected_expressions": [
+    "开点药寄过来"
+   ],
+   "forbidden_factual_claims": [
+    "不得答应任何形式的代开药请求"
+   ],
+   "may_decline": false
+  },
+  "E147_T04": {
+   "case_id": "E147_T04",
+   "current_action": "确认边界成立并给话术：'报告可以帮转、开药得本人挂号面诊'，一句话两个层次",
+   "acceptable_actions": [
+    "给一段可直接发的话：报告帮转，开药须本人挂号面诊",
+    "建议她在话尾加一句'挂号我帮你查流程'，留台阶"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T04_A00",
+     "subject": "THIRD",
+     "relation": "越界请求",
+     "value": "表姨要求顺便开药寄送",
+     "valid_time": "2026-11-05 09:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T03",
+      "message_id": "m0",
+      "quote": "开点药寄过来"
+     }
+    },
+    {
+     "atom_id": "E147_T04_A01",
+     "subject": "HER",
+     "relation": "边界确立",
+     "value": "开药必须本人面诊，HER 明确不代开药",
+     "valid_time": "2026-11-05 21:15",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T04",
+      "message_id": "m0",
+      "quote": "这个忙真不能帮"
+     }
+    }
+   ],
+   "private_guidance": "话术要短、要能复制粘贴，长篇解释只会引来讨价还价。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这个忙真不能帮"
+   ],
+   "forbidden_factual_claims": [
+    "不得教她撒谎或找借口敷衍"
+   ],
+   "may_decline": false
+  },
+  "E147_T05": {
+   "case_id": "E147_T05",
+   "current_action": "接住凉意：'哦'是失望不是决裂，提醒她边界生效的初期都这样，稳住",
+   "acceptable_actions": [
+    "解释'哦'是失望的反应，不代表关系破裂",
+    "提醒她别因凉意追加解释，话已到位不再补"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T05_A00",
+     "subject": "HER",
+     "relation": "边界确立",
+     "value": "开药必须本人面诊，HER 不代开药",
+     "valid_time": "2026-11-05 21:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T04",
+      "message_id": "m0",
+      "quote": "这个忙真不能帮"
+     }
+    },
+    {
+     "atom_id": "E147_T05_A01",
+     "subject": "HER",
+     "relation": "话术执行",
+     "value": "已回复报告可帮转、开药须本人挂号面诊",
+     "valid_time": "2026-11-06 10:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T05",
+      "message_id": "m0",
+      "quote": "开药得本人挂号面诊"
+     }
+    }
+   ],
+   "private_guidance": "这时候最容易回补刀式的长解释，叮嘱她稳住不再补。",
+   "unknowns": [],
+   "protected_expressions": [
+    "开药得本人挂号面诊"
+   ],
+   "forbidden_factual_claims": [
+    "不得建议她收回边界话术"
+   ],
+   "may_decline": false
+  },
+  "E147_T06": {
+   "case_id": "E147_T06",
+   "current_action": "接住施压与自我怀疑：明确告诉她不是不近人情，是把守法的事守住；堵是正常反应",
+   "acceptable_actions": [
+    "明确回答'不是'，守边界与近人情不冲突",
+    "提醒她那句群发言是说给全群听的，不必独自消化"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T06_A00",
+     "subject": "HER",
+     "relation": "话术执行",
+     "value": "已回复开药须本人挂号面诊",
+     "valid_time": "2026-11-06 10:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T05",
+      "message_id": "m0",
+      "quote": "开药得本人挂号面诊"
+     }
+    },
+    {
+     "atom_id": "E147_T06_A01",
+     "subject": "THIRD",
+     "relation": "家族群施压",
+     "value": "表姨在家族群称'现在问个事都难了'",
+     "valid_time": "2026-11-06 22:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T06",
+      "message_id": "m0",
+      "quote": "现在问个事都难了"
+     }
+    }
+   ],
+   "private_guidance": "她要的不是分析是背书：先把'你没做错'说死，再谈怎么办。",
+   "unknowns": [],
+   "protected_expressions": [
+    "现在问个事都难了"
+   ],
+   "forbidden_factual_claims": [
+    "不得和稀泥说她也有不对"
+   ],
+   "may_decline": false
+  },
+  "E147_T07": {
+   "case_id": "E147_T07",
+   "current_action": "接住支持：线上问诊入口是制度化的出路，建议她把流程整理成能发群里的版本",
+   "acceptable_actions": [
+    "肯定这条路，建议把线上问诊流程截图整理好",
+    "提醒发群时加一句自己还能帮什么，留善意出口"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "initiative",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T07_A00",
+     "subject": "THIRD",
+     "relation": "家族群施压",
+     "value": "表姨在家族群称问个事都难",
+     "valid_time": "2026-11-06 22:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T06",
+      "message_id": "m0",
+      "quote": "现在问个事都难了"
+     }
+    },
+    {
+     "atom_id": "E147_T07_A01",
+     "subject": "THIRD",
+     "relation": "医生支持与方案",
+     "value": "阿颖支持 HER 并提供医院线上问诊入口",
+     "valid_time": "2026-11-07 20:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T07",
+      "message_id": "m0",
+      "quote": "医院有线上问诊入口"
+     }
+    }
+   ],
+   "private_guidance": "制度化解法最体面：规则替代人情，谁也不欠谁。",
+   "unknowns": [],
+   "protected_expressions": [
+    "医院有线上问诊入口"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构线上问诊的收费细节"
+   ],
+   "may_decline": false
+  },
+  "E147_T08": {
+   "case_id": "E147_T08",
+   "current_action": "接住她的勇气：公开立规矩是最难的一步，肯定她的发抖与坚定并存",
+   "acceptable_actions": [
+    "肯定这一步的分量，发抖说明在乎，发了说明坚定",
+    "提醒接下来一两天可能安静，别急着补话"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T08_A00",
+     "subject": "THIRD",
+     "relation": "医生支持与方案",
+     "value": "阿颖提供医院线上问诊入口",
+     "valid_time": "2026-11-07 20:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T07",
+      "message_id": "m0",
+      "quote": "医院有线上问诊入口"
+     }
+    },
+    {
+     "atom_id": "E147_T08_A01",
+     "subject": "HER",
+     "relation": "边界公开",
+     "value": "HER 在家族群公开规则：帮转报告但不传话开药",
+     "valid_time": "2026-11-08 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T08",
+      "message_id": "m0",
+      "quote": "我帮转报告但不传话开药"
+     }
+    }
+   ],
+   "private_guidance": "这时候她需要见证者不是评论员，肯定加陪伴即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我帮转报告但不传话开药"
+   ],
+   "forbidden_factual_claims": [
+    "不得预测群成员的具体反应"
+   ],
+   "may_decline": false
+  },
+  "E147_T09": {
+   "case_id": "E147_T09",
+   "current_action": "接住情绪释放：小姨的私聊是关键时刻的背书，让她把眼泪流完",
+   "acceptable_actions": [
+    "肯定小姨的私聊，让她把情绪释放完",
+    "提醒她把这份支持存着，群里安静不代表输了"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T09_A00",
+     "subject": "HER",
+     "relation": "边界公开",
+     "value": "HER 在家族群公开帮转报告不传话开药的规则",
+     "valid_time": "2026-11-08 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T08",
+      "message_id": "m0",
+      "quote": "我帮转报告但不传话开药"
+     }
+    },
+    {
+     "atom_id": "E147_T09_A01",
+     "subject": "THIRD",
+     "relation": "私下支持",
+     "value": "小姨私聊肯定 HER 做得对",
+     "valid_time": "2026-11-09 21:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T09",
+      "message_id": "m0",
+      "quote": "你做得对"
+     }
+    }
+   ],
+   "private_guidance": "情绪轮，先接眼泪再讲道理，顺序不能反。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你做得对"
+   ],
+   "forbidden_factual_claims": [
+    "不得用大道理稀释她的感动"
+   ],
+   "may_decline": false
+  },
+  "E147_T10": {
+   "case_id": "E147_T10",
+   "current_action": "接住反转：肯定表姨的转变，点破'规则没有毁掉关系，反而省了所有人的事'",
+   "acceptable_actions": [
+    "肯定反转，点破规则让关系更轻",
+    "建议她把线上问诊的体验反馈给阿颖，闭环善意"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T10_A00",
+     "subject": "THIRD",
+     "relation": "私下支持",
+     "value": "小姨私聊肯定 HER",
+     "valid_time": "2026-11-09 21:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T09",
+      "message_id": "m0",
+      "quote": "你做得对"
+     }
+    },
+    {
+     "atom_id": "E147_T10_A01",
+     "subject": "THIRD",
+     "relation": "表姨转变",
+     "value": "表姨自行线上挂号并认可线上问诊体验",
+     "valid_time": "2026-11-12 18:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T10",
+      "message_id": "m0",
+      "quote": "医生讲得比转述清楚多了"
+     }
+    }
+   ],
+   "private_guidance": "反转是边界生效的最好证明，肯定时别得意，给她台阶一起下。",
+   "unknowns": [],
+   "protected_expressions": [
+    "医生讲得比转述清楚多了"
+   ],
+   "forbidden_factual_claims": [
+    "不得对表姨冷嘲热讽"
+   ],
+   "may_decline": false
+  },
+  "E147_T11": {
+   "case_id": "E147_T11",
+   "current_action": "回应邀约：三缺一当然到，确认时间地点，顺带一句'赔罪不如说谢罪宴改庆功宴'",
+   "acceptable_actions": [
+    "答应赴约，确认周六时间地点",
+    "玩笑说'这不叫赔罪，叫庆功'，给她卸包袱"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T11_A00",
+     "subject": "THIRD",
+     "relation": "表姨转变",
+     "value": "表姨自行挂号并认可线上问诊",
+     "valid_time": "2026-11-12 18:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T10",
+      "message_id": "m0",
+      "quote": "居然还谢谢我"
+     }
+    },
+    {
+     "atom_id": "E147_T11_A01",
+     "subject": "HER",
+     "relation": "赔罪邀约",
+     "value": "周六约阿颖吃火锅并邀 ME 同行",
+     "valid_time": "2026-11-14 12:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T11",
+      "message_id": "m0",
+      "quote": "约了阿颖吃火锅"
+     }
+    }
+   ],
+   "private_guidance": "邀约干脆答应，时间确认到位，玩笑把她的赔罪心态卸掉。",
+   "unknowns": [],
+   "protected_expressions": [
+    "约了阿颖吃火锅"
+   ],
+   "forbidden_factual_claims": [
+    "不得在邀约上讨价还价"
+   ],
+   "may_decline": false
+  },
+  "E147_T12": {
+   "case_id": "E147_T12",
+   "current_action": "接住落成：'程好条款'这个命名值得大笑一场，回敬她一句名字取得好，收束全程",
+   "acceptable_actions": [
+    "大笑接住'程好条款'，夸命名贴切",
+    "收束：这次立界立出了制度，双赢"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E147_T12_A00",
+     "subject": "HER",
+     "relation": "赔罪邀约",
+     "value": "周六与阿颖火锅局并邀 ME 同行",
+     "valid_time": "2026-11-14 12:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T11",
+      "message_id": "m0",
+      "quote": "约了阿颖吃火锅"
+     }
+    },
+    {
+     "atom_id": "E147_T12_A01",
+     "subject": "THIRD",
+     "relation": "新规则",
+     "value": "阿颖设固定时段接待亲属线上咨询，被称作程好条款",
+     "valid_time": "2026-11-15 21:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E147_T12",
+      "message_id": "m0",
+      "quote": "程好条款"
+     }
+    }
+   ],
+   "private_guidance": "圆满收尾，笑声收场，别再复盘教训。",
+   "unknowns": [],
+   "protected_expressions": [
+    "程好条款"
+   ],
+   "forbidden_factual_claims": [
+    "不得翻旧账重提委屈"
+   ],
+   "may_decline": false
+  }
+ }
+}

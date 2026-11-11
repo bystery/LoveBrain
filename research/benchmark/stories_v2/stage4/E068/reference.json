@@ -1,0 +1,869 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E068",
+ "title": "陪护与报销那两周",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E068_T01": {
+   "case_id": "E068_T01",
+   "current_action": "先稳住+把'浆糊'变成清单；问她医院和床位；不空安慰",
+   "acceptable_actions": [
+    "问医院床位+让她列已有信息",
+    "说先备四样东西",
+    "说我可以陪办住院"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F01",
+     "subject": "她爸",
+     "relation": "病情",
+     "value": "胆结石需做胆囊切除手术",
+     "valid_time": "2026-12-15 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T01",
+      "message_id": "m0",
+      "quote": "胆结石 要做胆囊切除"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S068_F02",
+     "subject": "她",
+     "relation": "安排",
+     "value": "手术定在12月18日",
+     "valid_time": "2026-12-15 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T01",
+      "message_id": "m0",
+      "quote": "手术定在 12 月 18 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她慌=任务化最有效。",
+   "unknowns": [
+    "医院名称",
+    "床位安排"
+   ],
+   "protected_expressions": [
+    "脑子一片浆糊"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定没事",
+    "不要说胆结石是小手术（轻慢）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T02": {
+   "case_id": "E068_T02",
+   "current_action": "给住院四件套清单+让她今晚找齐拍照核",
+   "acceptable_actions": [
+    "让她拍照发我核对",
+    "提醒既往病历去老医院调",
+    "说缺的我这边帮你打复印"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F03",
+     "subject": "我",
+     "relation": "知识",
+     "value": "住院要备：身份证/医保卡/既往病历/押金",
+     "valid_time": "2026-12-15 20:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T02",
+      "message_id": "m0",
+      "quote": "身份证 医保卡 既往病历 押金 这四样"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "清单轮：可执行第一。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要列十条吓她",
+    "不要说这个都不会"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T03": {
+   "case_id": "E068_T03",
+   "current_action": "如实给异地就医口径：先备案，备案了出院直接结算；当天就办",
+   "acceptable_actions": [
+    "教她国家平台线上备案",
+    "说备案后直结+不用跑两趟",
+    "让她打12393确认"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F04",
+     "subject": "我",
+     "relation": "知识",
+     "value": "异地医保先备案，备案后可直接结算",
+     "valid_time": "2026-12-15 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T03",
+      "message_id": "m0",
+      "quote": "先备案 备案了出院直接结"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医保口径是本剧知识主线；标注'以当地口径为准'。",
+   "unknowns": [
+    "她爸参保地"
+   ],
+   "protected_expressions": [
+    "要跑两趟"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定能报",
+    "不要说不用备案"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T04": {
+   "case_id": "E068_T04",
+   "current_action": "接她爸的疑虑+给一句让老人安心的说法+让她把备案回执截图存",
+   "acceptable_actions": [
+    "说跟他说这是省事不是折腾",
+    "让她截图回执给我看",
+    "提醒审核一般很快"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "两代人观念差：给台阶不给道理。",
+   "unknowns": [
+    "审核时长"
+   ],
+   "protected_expressions": [
+    "不信这些"
+   ],
+   "forbidden_factual_claims": [
+    "不要说老人顽固",
+    "不要说别听他的"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T05": {
+   "case_id": "E068_T05",
+   "current_action": "复述新日期12月20+旧18作废+肯定推迟是稳妥不是坏事",
+   "acceptable_actions": [
+    "确认12/20+说调整是负责",
+    "确认+让她把陪护假顺延",
+    "确认+提醒这两天别熬夜"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F05",
+     "subject": "医院",
+     "relation": "更正",
+     "value": "术前评估异常，手术推迟到12月20日",
+     "valid_time": "2026-12-17 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T05",
+      "message_id": "m0",
+      "quote": "推迟到 12 月 20 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧日期硬更正：18→20。",
+   "unknowns": [
+    "指标具体是什么"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要再说12月18",
+    "不要猜指标含义"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T06": {
+   "case_id": "E068_T06",
+   "current_action": "肯定她的准备+给手术日流程（等候区/术后首夜）；我在医院附近随叫随到",
+   "acceptable_actions": [
+    "说我在附近+有事喊我",
+    "让她留医生电话在手机首屏",
+    "提醒带保温杯和充电宝"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "手术前夜：陪伴承诺要具体。",
+   "unknowns": [
+    "手术时长"
+   ],
+   "protected_expressions": [
+    "确认过三遍"
+   ],
+   "forbidden_factual_claims": [
+    "不要说手术风险",
+    "不要说别紧张"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T07": {
+   "case_id": "E068_T07",
+   "current_action": "接住她的憋+陪等+说术后第一时间告诉她注意什么",
+   "acceptable_actions": [
+    "说我就在等候区外",
+    "让她深呼吸+别刷手机",
+    "提醒术后先别喂水"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "手术日晨轮：陪伴为主。",
+   "unknowns": [],
+   "protected_expressions": [
+    "憋着没哭"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定没事",
+    "不要说哭出来吧"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T08": {
+   "case_id": "E068_T08",
+   "current_action": "共同松气+具体肯定她今天的表现+提醒术后首夜注意事项（按医嘱）",
+   "acceptable_actions": [
+    "夸她撑住了+说辛苦",
+    "提醒术后6小时禁食按医嘱",
+    "说今晚我送饭"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F06",
+     "subject": "她爸",
+     "relation": "事件",
+     "value": "12月20日手术顺利完成",
+     "valid_time": "2026-12-20 17:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T08",
+      "message_id": "m0",
+      "quote": "手术做完了 很顺"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "术后即时轮：松一口气+护住细节。",
+   "unknowns": [
+    "麻醉恢复情况"
+   ],
+   "protected_expressions": [
+    "手现在才不抖"
+   ],
+   "forbidden_factual_claims": [
+    "不要编术后护理",
+    "不要说想吃什么随便吃"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T09": {
+   "case_id": "E068_T09",
+   "current_action": "接她的硬撑+建议护工升级+提醒她自己必须睡；把她当家属也当病人看",
+   "acceptable_actions": [
+    "劝她白天必须睡+护工顶上",
+    "说疼叫护士别忍+有止痛医嘱",
+    "说我明天下午替她两小时"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "陪护者的陪护：她也是人。",
+   "unknowns": [
+    "止痛方案"
+   ],
+   "protected_expressions": [
+    "眼睛睁不开"
+   ],
+   "forbidden_factual_claims": [
+    "不要说忍忍就过去",
+    "不要夸她硬撑"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T10": {
+   "case_id": "E068_T10",
+   "current_action": "确认护工全天+呼应'值'；提醒保存护理协议",
+   "acceptable_actions": [
+    "确认+说钱花在刀刃上",
+    "让她留护工联系方式",
+    "确认+提醒护工交接记录"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "护工从白天改为全天（术后三天最累）",
+     "valid_time": "2026-12-21 20:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T10",
+      "message_id": "m0",
+      "quote": "护工改成全天的了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "护工更正落地：此后=全天。",
+   "unknowns": [
+    "护工费用"
+   ],
+   "protected_expressions": [
+    "多花钱但值"
+   ],
+   "forbidden_factual_claims": [
+    "不要说贵了",
+    "不要说护工靠不住"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T11": {
+   "case_id": "E068_T11",
+   "current_action": "确认备案成功+直结口径落地+呼应她当时的疑虑；一句收",
+   "acceptable_actions": [
+    "说这就是备案的意义",
+    "确认+让她把回执收好",
+    "说白担心→现在踏实"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F07",
+     "subject": "她",
+     "relation": "更正",
+     "value": "医保备案完成，出院可直接结算（原以为要回老家报）",
+     "valid_time": "2026-12-22 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T11",
+      "message_id": "m0",
+      "quote": "备案过了 出院直接结"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医保伏笔回收：直结成立。",
+   "unknowns": [
+    "自付比例"
+   ],
+   "protected_expressions": [
+    "白担心一场"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'我早说了'",
+    "不要又提新流程"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T12": {
+   "case_id": "E068_T12",
+   "current_action": "给报销四件套清单+让她出院当天逐项核对",
+   "acceptable_actions": [
+    "给四件套让她逐项打勾",
+    "让她办结算时当场核对清单",
+    "提醒复印多份自留"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F09",
+     "subject": "我",
+     "relation": "知识",
+     "value": "报销材料四件：发票/费用清单/诊断证明/出院小结",
+     "valid_time": "2026-12-23 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T12",
+      "message_id": "m0",
+      "quote": "发票 清单 诊断证明 出院小结 四件套"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "四件套是本剧知识核心。",
+   "unknowns": [
+    "出院具体日"
+   ],
+   "protected_expressions": [
+    "记了半页纸"
+   ],
+   "forbidden_factual_claims": [
+    "不要说档案室会给你",
+    "不要说少一张也行"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T13": {
+   "case_id": "E068_T13",
+   "current_action": "轻松接+呼应恢复良好+提醒溜达幅度听护士的",
+   "acceptable_actions": [
+    "笑+说数地砖=想回家",
+    "提醒活动量按医嘱",
+    "让她顺手问问周五出院确认"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "恢复期的轻松轮。",
+   "unknowns": [],
+   "protected_expressions": [
+    "数地砖"
+   ],
+   "forbidden_factual_claims": [
+    "不要说再住几天吧",
+    "不要说下地太早（吓）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T14": {
+   "case_id": "E068_T14",
+   "current_action": "接住这份'第一次'：不评价她爸，说这是住院换来的相处时间；轻轻的",
+   "acceptable_actions": [
+    "说这段值回所有折腾",
+    "让她多听少拍视频",
+    "说老爷子想聊天是恢复好的信号"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "病房夜话轮：全剧情感高点，收着写。",
+   "unknowns": [],
+   "protected_expressions": [
+    "第一次听他说这些"
+   ],
+   "forbidden_factual_claims": [
+    "不要说老爷子平时太闷",
+    "不要趁机聊钱和流程"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T15": {
+   "case_id": "E068_T15",
+   "current_action": "确认出院日+当场帮她核清单（四件套对照）；说哪项缺让她找护士站",
+   "acceptable_actions": [
+    "对照四件套逐项核",
+    "让她核自付金额栏",
+    "提醒电子发票也要存"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "验收轮：逐项对，不走过场。",
+   "unknowns": [
+    "清单细节"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说应该没问题",
+    "不要替她签任何字"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T16": {
+   "case_id": "E068_T16",
+   "current_action": "接温馨+确认到家安顿+提醒出院小结原件收好（报销用）",
+   "acceptable_actions": [
+    "说老爷子可爱+到家说一声",
+    "提醒小结原件别折",
+    "说休息两天再整理单据"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F10",
+     "subject": "她爸",
+     "relation": "事件",
+     "value": "12月28日出院",
+     "valid_time": "2026-12-28 15:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T16",
+      "message_id": "m0",
+      "quote": "今天出院"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出院日：温馨+最后一道材料提醒。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谢谢那几个护士"
+   ],
+   "forbidden_factual_claims": [
+    "不要说终于解放了（轻慢）",
+    "不要催她马上整理"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T17": {
+   "case_id": "E068_T17",
+   "current_action": "确认直结成功+呼应备案伏笔闭环+让她把结算单拍照存档",
+   "acceptable_actions": [
+    "恭喜闭环+拍照存档",
+    "说备案值回票价",
+    "让她核自付构成"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F11",
+     "subject": "她",
+     "relation": "事件",
+     "value": "医保直接结算成功，自付部分明确",
+     "valid_time": "2026-12-28 16:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T17",
+      "message_id": "m0",
+      "quote": "直接结算成了 自付那一栏清清楚楚"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医保主线闭环。",
+   "unknowns": [
+    "自付金额"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说钱不多别在意",
+    "不要翻流程旧账"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T18": {
+   "case_id": "E068_T18",
+   "current_action": "如实：术后饮食渐进是对的（遵出院医嘱）；不替代医嘱",
+   "acceptable_actions": [
+    "说按出院小结的饮食医嘱",
+    "提醒油腻的先缓缓",
+    "让她把医嘱页拍照存"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "口径权仍在医嘱。",
+   "unknowns": [
+    "医嘱具体条目"
+   ],
+   "protected_expressions": [
+    "要补回来"
+   ],
+   "forbidden_factual_claims": [
+    "不要开食谱",
+    "不要说随便吃"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T19": {
+   "case_id": "E068_T19",
+   "current_action": "呼应输出+把功劳还她（做的人是她）+提醒脱敏（她爸信息）",
+   "acceptable_actions": [
+    "说笔记能帮人+脱敏后发",
+    "呼应那两周+说执行的是她",
+    "让她加一条'先备案'置顶"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "知识完成从借到有的闭环。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要居功",
+    "不要说别发了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T20": {
+   "case_id": "E068_T20",
+   "current_action": "共同高兴+呼应全程（手术推迟→顺利→出院→复查正常）+轻收",
+   "acceptable_actions": [
+    "夸老爷子底子好+她照顾得当",
+    "呼应全程+说这一仗打得漂亮",
+    "让她把复查报告也存档"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F12",
+     "subject": "她爸",
+     "relation": "恢复",
+     "value": "术后复查正常，恢复良好",
+     "valid_time": "2027-01-10 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T20",
+      "message_id": "m0",
+      "quote": "复查正常"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "复查闭环轮。",
+   "unknowns": [],
+   "protected_expressions": [
+    "走路都带风"
+   ],
+   "forbidden_factual_claims": [
+    "不要说以后注意（说教）",
+    "不要翻术后苦账"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T21": {
+   "case_id": "E068_T21",
+   "current_action": "接锦旗玩笑+支持她的拗不过：心意值得被表达",
+   "acceptable_actions": [
+    "帮她想锦旗措辞",
+    "说心意到了就行别铺张",
+    "让她写上那句谢谢"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "轻轮：老人心意别拦。",
+   "unknowns": [],
+   "protected_expressions": [
+    "加急的那种"
+   ],
+   "forbidden_factual_claims": [
+    "不要说锦旗浪费钱",
+    "不要说医生不需要"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T22": {
+   "case_id": "E068_T22",
+   "current_action": "呼应她输出（先备案=最关键一环）+肯定清单价值；不居功",
+   "acceptable_actions": [
+    "说先备案确实该加粗",
+    "让她把四件套也附上",
+    "说这份清单会帮到人"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F13",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "她把报销流程写成清单发给同事",
+     "valid_time": "2027-01-12 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T22",
+      "message_id": "m0",
+      "quote": "写成清单发给同事"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出窗探针：备案(T03)+四件套(T15)远端回扣。",
+   "unknowns": [],
+   "protected_expressions": [
+    "加粗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'我给你的清单吧'",
+    "不要说教"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T23": {
+   "case_id": "E068_T23",
+   "current_action": "接'传承'玩笑+呼应全程闭环+以轻松约定收尾",
+   "acceptable_actions": [
+    "说算+奶茶加珍珠",
+    "呼应她从慌到教别人",
+    "说下一位慌的人有福了"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "收官轮：从求助者到输出者。",
+   "unknowns": [],
+   "protected_expressions": [
+    "算不算传承"
+   ],
+   "forbidden_factual_claims": [
+    "不要居功",
+    "不要说教式总结"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E068_T24": {
+   "case_id": "E068_T24",
+   "current_action": "收官：呼应单据归档与病历本（首尾呼应）+接她的饭局邀请",
+   "acceptable_actions": [
+    "答应吃饭+说给老爷子带水果",
+    "呼应归档+说这一仗完整了",
+    "接+轻说一句阿姨手艺传承"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "终局轮：家的温度收尾。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我妈的拿手菜"
+   ],
+   "forbidden_factual_claims": [
+    "不要提她妈走得早（戳）",
+    "不要说教"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

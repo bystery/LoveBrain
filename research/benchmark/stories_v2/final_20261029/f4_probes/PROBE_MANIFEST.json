@@ -1,0 +1,141 @@
+{
+ "kind": "f4_single_turn_probes",
+ "count": 12,
+ "knowledge": 6,
+ "action": 6,
+ "probes": [
+  {
+   "probe_id": "K01_P1_leave",
+   "story": "K01",
+   "channel": "knowledge",
+   "clock": "2026-11-07 20:10",
+   "message": "我年假最后到几号来着",
+   "prefix_turns": 24,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_K01_resume",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/K01_P1_leave/episode.json"
+  },
+  {
+   "probe_id": "K01_P2_refund",
+   "story": "K01",
+   "channel": "knowledge",
+   "clock": "2026-11-07 20:12",
+   "message": "客栈退款截止几号来着",
+   "prefix_turns": 24,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_K01_resume",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/K01_P2_refund/episode.json"
+  },
+  {
+   "probe_id": "K01_P3_rail",
+   "story": "K01",
+   "channel": "knowledge",
+   "clock": "2026-11-07 20:14",
+   "message": "高铁票几号开售来着",
+   "prefix_turns": 24,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_K01_resume",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/K01_P3_rail/episode.json"
+  },
+  {
+   "probe_id": "K02_P1_budget",
+   "story": "K02",
+   "channel": "knowledge",
+   "clock": "2026-05-23 20:10",
+   "message": "老周后来加的和减的算下来 现在总价多少",
+   "prefix_turns": 24,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_K02_resume",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_K02_resume",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/K02_P1_budget/episode.json"
+  },
+  {
+   "probe_id": "K02_P2_tile",
+   "story": "K02",
+   "channel": "knowledge",
+   "clock": "2026-05-23 20:12",
+   "message": "瓷砖到底哪天到",
+   "prefix_turns": 24,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_K02_resume",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_K02_resume",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/K02_P2_tile/episode.json"
+  },
+  {
+   "probe_id": "K02_P3_measure",
+   "story": "K02",
+   "channel": "knowledge",
+   "clock": "2026-05-23 20:14",
+   "message": "橱柜测量改到几号了",
+   "prefix_turns": 24,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_K02_resume",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_K02_resume",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/K02_P3_measure/episode.json"
+  },
+  {
+   "probe_id": "N01_A1_positive",
+   "story": "N01",
+   "channel": "action",
+   "clock": "2026-03-10 20:00",
+   "message": "今天药房提前下班 心情挺好 想出去走走",
+   "prefix_turns": 12,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_N01",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_N01",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/N01_A1_positive/episode.json"
+  },
+  {
+   "probe_id": "N01_A2_ambiguous",
+   "story": "N01",
+   "channel": "action",
+   "clock": "2026-03-10 20:02",
+   "message": "周末可能空 也可能要加班 还没定",
+   "prefix_turns": 12,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_N01",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_N01",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/N01_A2_ambiguous/episode.json"
+  },
+  {
+   "probe_id": "N01_A3_busy",
+   "story": "N01",
+   "channel": "action",
+   "clock": "2026-03-10 20:04",
+   "message": "这周排班满 回得慢 你别介意",
+   "prefix_turns": 12,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_N01",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_N01",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/N01_A3_busy/episode.json"
+  },
+  {
+   "probe_id": "N02_A1_positive",
+   "story": "N02",
+   "channel": "action",
+   "clock": "2026-04-20 20:00",
+   "message": "年糕新主人发照片来了 今天心情挺好",
+   "prefix_turns": 12,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_N02",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_N02",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/N02_A1_positive/episode.json"
+  },
+  {
+   "probe_id": "N02_A2_ambiguous",
+   "story": "N02",
+   "channel": "action",
+   "clock": "2026-04-20 20:02",
+   "message": "周六也许能见 但要看学校安排",
+   "prefix_turns": 12,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_N02",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_N02",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/N02_A2_ambiguous/episode.json"
+  },
+  {
+   "probe_id": "N02_A3_busy",
+   "story": "N02",
+   "channel": "action",
+   "clock": "2026-04-20 20:04",
+   "message": "这周改作业多 回得慢",
+   "prefix_turns": 12,
+   "source_out": "logs/f3_newmat_live_restart_20261029/candidate_N02",
+   "source_run": "logs/f3_newmat_live_restart_20261029/_iso_run_candidate_N02",
+   "episode": "benchmark/stories_v2/final_20261029/f4_probes/N02_A3_busy/episode.json"
+  }
+ ],
+ "note": "诊断材料，不进入 F3 72 对主表；知识探针在 T24 真实 checkpoint 后追加 T25，行动探针在 T12 checkpoint 后追加 T13，episode_id 沿用原故事。"
+}

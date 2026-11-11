@@ -1,0 +1,894 @@
+{
+ "story_id": "E075",
+ "turns": {
+  "E075_T01": {
+   "case_id": "E075_T01",
+   "current_action": "接住定局的爽快，把垫付结构与分摊口径复述一遍（场地660、押金180、8人AA），帮她把这笔账的原始口径立住。",
+   "acceptable_actions": [
+    "确认报名8人名单，让她发群里留痕",
+    "提醒垫付走转账备注'场地+押金'，别混在一张码里",
+    "顺带问营地要不要提前报人数拿炭火配比"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A01",
+     "subject": "SHARED",
+     "relation": "bbq_plan",
+     "value": "10月24日周六绿堤营地烧烤定局，8人参加",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T01",
+      "message_id": "m0",
+      "quote": "周六去绿堤营地烧烤"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A02",
+     "subject": "SHARED",
+     "relation": "advance_payment",
+     "value": "她垫付840元，含场地660元与押金180元",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T01",
+      "message_id": "m0",
+      "quote": "我先垫840"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A03",
+     "subject": "SHARED",
+     "relation": "deposit_refund_promise",
+     "value": "押金退回后每人退22块5的原退款方案",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T01",
+      "message_id": "m0",
+      "quote": "押金退回来每人退22块5"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸她算得快，口径复述慢半拍，一笔一笔钉牢。",
+   "unknowns": [
+    "营地超时收费规则尚未披露",
+    "HER 说的周六未加消歧，按参考卡 A01 口径理解为 10-24（下周六）；评审时候选按 10-17 理解不算记忆错误，按 time_state 从宽"
+   ],
+   "protected_expressions": [
+    "场地一人82块5"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构营地名称外的场地信息",
+    "不得预判人数不再变化"
+   ]
+  },
+  "E075_T02": {
+   "case_id": "E075_T02",
+   "current_action": "接住人数变动的重算：确认9人头的73元口径与她贴零头的做法，押金那头先挂起。",
+   "acceptable_actions": [
+    "确认73元口径无误，夸她零头贴得大方",
+    "提醒孩子在场的安全位子和炭炉距离留意一下",
+    "让她把9人名单更新到群里免得日后对不上"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A04",
+     "subject": "SHARED",
+     "relation": "headcount_change",
+     "value": "大伟带老婆孩子加入，人数从8变9且孩子免费",
+     "valid_time": "2026-10-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T02",
+      "message_id": "m0",
+      "quote": "人头变9个"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A05",
+     "subject": "SHARED",
+     "relation": "resplit_73",
+     "value": "场地按9人头摊每人73元的临时口径",
+     "valid_time": "2026-10-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T02",
+      "message_id": "m0",
+      "quote": "我说按73收"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A06",
+     "subject": "HER",
+     "relation": "cost_bearer",
+     "value": "她习惯自己贴零头把账面凑干净",
+     "valid_time": "2026-10-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T02",
+      "message_id": "m0",
+      "quote": "多出来的三块我贴"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：重算跟得快，零头的事轻轻夸一句就过。",
+   "unknowns": [
+    "孩子是否到场未知"
+   ],
+   "protected_expressions": [
+    "多出来的三块我贴"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构大伟家属的名字与关系细节",
+    "不得断言73元口径就是最终方案"
+   ]
+  },
+  "E075_T03": {
+   "case_id": "E075_T03",
+   "current_action": "接住超时收费的预告：肯定她提前把超时费算进账的敏感，提醒当天现结时留个凭证。",
+   "acceptable_actions": [
+    "肯定她把口子提前算到，超时费当场让营地开个凭条",
+    "提醒她估摸超一小时就按一小时备现金",
+    "建议她问问超时费能不能并入场地一起开票"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A07",
+     "subject": "THIRD",
+     "relation": "overtime_rule",
+     "value": "营地通知炭火套餐超时每小时加收60元",
+     "valid_time": "2026-10-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T03",
+      "message_id": "m0",
+      "quote": "超时每小时加60"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A08",
+     "subject": "HER",
+     "relation": "overtime_forecast",
+     "value": "她预计要超一小时并打算现结入账",
+     "valid_time": "2026-10-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T03",
+      "message_id": "m0",
+      "quote": "我估摸得超一小时"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：顺着她'烤到天黑'的得意接一句，规则的事点到即止。",
+   "unknowns": [
+    "实际超时时长未知"
+   ],
+   "protected_expressions": [
+    "回头一起算进账里"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构营地其他收费项",
+    "不得断言必然只超一小时"
+   ]
+  },
+  "E075_T04": {
+   "case_id": "E075_T04",
+   "current_action": "接住当天的乱账求援：先把流水理顺（垫900、押金180待退、实花720），人数与阿岳那份的口径留给她睡一觉再定，不催。",
+   "acceptable_actions": [
+    "先把三笔大数对齐：900垫付、180押金、720实花",
+    "告诉她人数摊法不急，睡一觉再算更清楚",
+    "提醒阿岳爽约按群里老规矩办，不用她拍脑袋"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A09",
+     "subject": "SHARED",
+     "relation": "actual_attendance",
+     "value": "当天实到8人：孩子生病没来、阿岳爽约",
+     "valid_time": "2026-10-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T04",
+      "message_id": "m0",
+      "quote": "阿岳临时加班放了鸽子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A10",
+     "subject": "SHARED",
+     "relation": "overtime_charge",
+     "value": "烧烤当天超时1小时实收加收60元",
+     "valid_time": "2026-10-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T04",
+      "message_id": "m0",
+      "quote": "超时1小时加了60"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A11",
+     "subject": "HER",
+     "relation": "advance_total",
+     "value": "她累计垫付900元，含场地押金与超时费",
+     "valid_time": "2026-10-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T04",
+      "message_id": "m0",
+      "quote": "我前后垫了900"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A12",
+     "subject": "HER",
+     "relation": "counting_confusion",
+     "value": "720元实付的摊法把她算乱，向老潘求援",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T04",
+      "message_id": "m0",
+      "quote": "我越算越乱"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：深夜乱账先安人再理数，大数对了就让她睡，别添新问题。",
+   "unknowns": [
+    "阿岳是否主动补摊未知"
+   ],
+   "protected_expressions": [
+    "到场的人怎么摊、阿岳那份算谁的"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她拍板阿岳那份怎么算",
+    "不得虚构孩子病情细节"
+   ]
+  },
+  "E075_T05": {
+   "case_id": "E075_T05",
+   "current_action": "接住她睡醒后的清爽方案：爽约照摊启用群规矩、720摊9份每人80整；确认这个口径把她临时的73元方案顶掉。",
+   "acceptable_actions": [
+    "确认80整的算法干净利落，比73方案更清爽",
+    "提醒她报数时把'爽约照摊'的规矩出处一起带上",
+    "夸她规矩早定此刻省心，一步都没白走"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A13",
+     "subject": "SHARED",
+     "relation": "no_show_pays_rule",
+     "value": "爽约也摊场地钱的群规矩被正式启用",
+     "valid_time": "2026-10-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T05",
+      "message_id": "m0",
+      "quote": "阿岳那份照摊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A14",
+     "subject": "SHARED",
+     "relation": "final_split",
+     "value": "实付720元按9份摊定每人80元整",
+     "valid_time": "2026-10-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T05",
+      "message_id": "m0",
+      "quote": "一人80整"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A15",
+     "subject": "SHARED",
+     "relation": "resplit_73",
+     "value": "每人73元的临时分摊口径被80元方案取代",
+     "valid_time": "2026-10-18/2026-10-25",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T02",
+      "message_id": "m0",
+      "quote": "我说按73收"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'睡一觉算明白'说成她的本事，规矩启用归功于当初定得早。",
+   "unknowns": [
+    "群里对爽约照摊有无异议未知"
+   ],
+   "protected_expressions": [
+    "连一分零头都没有，这数舒坦"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构群规矩的原始出处细节",
+    "不得断言阿岳会痛快接受"
+   ]
+  },
+  "E075_T06": {
+   "case_id": "E075_T06",
+   "current_action": "应她的求硬气：给判断不替她开口——规矩是定在前的，免了这一份，往后每个局都得重新谈；免不免她拍板。",
+   "acceptable_actions": [
+    "明确'开口子比80块钱贵'，建议她守规矩",
+    "提醒可以不免但给个台阶，别把人得罪死",
+    "让她自己定，只帮她说清两种选择的代价"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A16",
+     "subject": "THIRD",
+     "relation": "waiver_request",
+     "value": "阿岳私聊请求免掉他80元的分摊",
+     "valid_time": "2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T06",
+      "message_id": "m0",
+      "quote": "问能不能把他那份免了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A17",
+     "subject": "HER",
+     "relation": "hesitation",
+     "value": "她嘴上敷衍心里不想为免单开口子",
+     "valid_time": "2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T06",
+      "message_id": "m0",
+      "quote": "心里其实不想开这个口子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A18",
+     "subject": "SHARED",
+     "relation": "no_show_pays_rule",
+     "value": "爽约照摊的规矩正被阿岳的免单请求撬动",
+     "valid_time": "2026-10-25/2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T05",
+      "message_id": "m0",
+      "quote": "阿岳那份照摊"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：立场给足但不抢她的决定，'该硬气'由她嘴里说出来才有用。",
+   "unknowns": [
+    "她的最终决定未知"
+   ],
+   "protected_expressions": [
+    "你说我该不该硬气点"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她答复阿岳",
+    "不得虚构阿岳的经济状况"
+   ]
+  },
+  "E075_T07": {
+   "case_id": "E075_T07",
+   "current_action": "接住她的决定：不免但递台阶（下回第一轮啤酒阿岳包）；肯定她规矩守住了、人情也没断。",
+   "acceptable_actions": [
+    "肯定'不免'守住了规矩，台阶递得也漂亮",
+    "点一句这就是'账平了话才好说'的现成例子",
+    "建议她把啤酒的约定也在群里带一嘴，落个见证"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A19",
+     "subject": "HER",
+     "relation": "refusal_decision",
+     "value": "她决定不免阿岳的80元分摊",
+     "valid_time": "2026-10-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T07",
+      "message_id": "m0",
+      "quote": "想了一晚上，不免"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A20",
+     "subject": "HER",
+     "relation": "face_saving",
+     "value": "她以'下回第一轮啤酒阿岳包'递出台阶",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T07",
+      "message_id": "m0",
+      "quote": "下回聚会第一轮啤酒他包"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A21",
+     "subject": "SHARED",
+     "relation": "no_show_pays_rule",
+     "value": "规矩经受住免单请求而未被打破",
+     "valid_time": "2026-10-25/2026-10-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T05",
+      "message_id": "m0",
+      "quote": "阿岳那份照摊"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把结果说成双赢——规矩没破、朋友没丢，功劳对半。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这事算翻篇"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构阿岳的回复情绪",
+    "不得断言啤酒约定必然兑现"
+   ]
+  },
+  "E075_T08": {
+   "case_id": "E075_T08",
+   "current_action": "接住收尾进度的较真：8份到账差阿岳、大伟误转退18；夸她多退少补一分不留的干净。",
+   "acceptable_actions": [
+    "夸她98转98的退法，账面经得起翻",
+    "提醒阿岳那份不催，等台阶起效他自己给",
+    "建议到账记录截图留一份对账用"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A22",
+     "subject": "SHARED",
+     "relation": "collection_progress",
+     "value": "8份分摊款到账，仅差阿岳一份未转",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T08",
+      "message_id": "m0",
+      "quote": "8份到账"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A23",
+     "subject": "HER",
+     "relation": "refund_exact",
+     "value": "大伟误转98元她当场退回18元差价",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T08",
+      "message_id": "m0",
+      "quote": "我给他转回去18"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'干干净净'接成她的招牌，不催阿岳那句说得轻。",
+   "unknowns": [
+    "阿岳何时转账未知"
+   ],
+   "protected_expressions": [
+    "我这一趟的账必须干干净净"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构大伟转账渠道细节",
+    "不得预判收款必然全额到齐"
+   ]
+  },
+  "E075_T09": {
+   "case_id": "E075_T09",
+   "current_action": "接住押金回笼两清：180冲抵垫付、最初'每人退22块5'的方案废止；确认这套合并算法比原方案干净。",
+   "acceptable_actions": [
+    "肯定合并算账比零退每人清爽，口径以最终为准",
+    "提醒她在表格里注明'押金冲抵垫付'这笔",
+    "确认垫付链路全清后她一分不欠任何人"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A24",
+     "subject": "SHARED",
+     "relation": "deposit_refunded",
+     "value": "押金180元原路退回并冲抵她的垫付",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T09",
+      "message_id": "m0",
+      "quote": "押金180退回来了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A25",
+     "subject": "SHARED",
+     "relation": "settled_offset",
+     "value": "押金冲抵后垫付链路里外两清",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T09",
+      "message_id": "m0",
+      "quote": "我直接冲了我垫的账"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A26",
+     "subject": "SHARED",
+     "relation": "deposit_refund_promise",
+     "value": "每人退22块5的原退款方案被合并算法废止",
+     "valid_time": "2026-10-16/2026-10-28",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T01",
+      "message_id": "m0",
+      "quote": "押金退回来每人退22块5"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'两清'两个字帮她钉死，旧方案废止说成算法升级不是反悔。",
+   "unknowns": [],
+   "protected_expressions": [
+    "里外里正好两清"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构押金退还到账时间细节",
+    "不得断言群里对废止方案无异议"
+   ]
+  },
+  "E075_T10": {
+   "case_id": "E075_T10",
+   "current_action": "共享账目表格公示的高光：收支两清、9份80整白纸黑字；把群里齐刷刷的'服'接成她这趟张罗的口碑。",
+   "acceptable_actions": [
+    "把表格里的关键数念一遍收尾：900、180、720、80",
+    "夸她把'爽约照摊'写进表里，规矩从此有据可查",
+    "接住'服'字，说这张表就是她的信用凭证"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A27",
+     "subject": "SHARED",
+     "relation": "ledger_closed",
+     "value": "整本账表格化发群，收支两清获得认可",
+     "valid_time": "2026-10-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T10",
+      "message_id": "m0",
+      "quote": "整本账做成一张表发群里"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A28",
+     "subject": "SHARED",
+     "relation": "group_reaction",
+     "value": "群里以齐刷刷的'服'回应账目公示",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T10",
+      "message_id": "m0",
+      "quote": "齐刷刷发'服'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A29",
+     "subject": "SHARED",
+     "relation": "final_split",
+     "value": "每人80元的最终分摊在表格中执行落地",
+     "valid_time": "2026-10-25/2026-10-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T05",
+      "message_id": "m0",
+      "quote": "一人80整"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：这是她的高光轮，夸要具体到数字，别空喊厉害。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我一分别的没多收"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构表格的更多行项",
+    "不得断言此后再无账目争议"
+   ]
+  },
+  "E075_T11": {
+   "case_id": "E075_T11",
+   "current_action": "接住阿岳的红包与再办喊话：台阶兑现、规矩立信，把'账清情分厚'这层意思点到就收。",
+   "acceptable_actions": [
+    "接住红包的梗，说啤酒钱存得比谁都体面",
+    "点破'打死也到'是规矩给了他台阶，不是钱的事",
+    "顺着11月中再办，问营地要不要趁早订"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A30",
+     "subject": "THIRD",
+     "relation": "red_packet",
+     "value": "阿岳发红包备注存下次啤酒钱并喊话再办",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T11",
+      "message_id": "m0",
+      "quote": "备注'下次啤酒钱先存着'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A31",
+     "subject": "SHARED",
+     "relation": "goodwill_after_clear",
+     "value": "账算清之后朋友情分反而更厚一层",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T11",
+      "message_id": "m0",
+      "quote": "账算清楚，情分反倒厚了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A32",
+     "subject": "HER",
+     "relation": "face_saving",
+     "value": "递给阿岳的啤酒台阶以红包形式兑现",
+     "valid_time": "2026-10-26/2026-10-31",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T07",
+      "message_id": "m0",
+      "quote": "下回聚会第一轮啤酒他包"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'情分反倒厚了'是这局的题眼，接住但不说教。",
+   "unknowns": [],
+   "protected_expressions": [
+    "说这回打死也到"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构红包金额",
+    "不得断言阿岳此后不再爽约"
+   ]
+  },
+  "E075_T12": {
+   "case_id": "E075_T12",
+   "current_action": "接住下一局与她的新声明：账还归她管、这回不垫钱、谁提议谁交定金；作证应下，顺带留个涮肉局的钩子。",
+   "acceptable_actions": [
+    "应下作证，把'不垫先收'当成新规矩复述一遍",
+    "接住涮肉局的钩子，说自己先报名占个位",
+    "调侃她这是被900块教出来的长进"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E075_A33",
+     "subject": "SHARED",
+     "relation": "next_gathering",
+     "value": "11月底室内涮肉局酝酿中，订场又落到她头上",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T12",
+      "message_id": "m0",
+      "quote": "11月底的室内局"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A34",
+     "subject": "HER",
+     "relation": "no_advance_stance",
+     "value": "她声明这回不垫钱，谁提议谁先交定金",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T12",
+      "message_id": "m0",
+      "quote": "谁提议谁先交定金"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E075_A35",
+     "subject": "HER",
+     "relation": "advance_total",
+     "value": "此前垫付900元的经历催生她的不垫新规",
+     "valid_time": "2026-10-24/2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E075_T04",
+      "message_id": "m0",
+      "quote": "我前后垫了900"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾带笑，新规矩替她复述成'经验值升级'，不泼冷水。",
+   "unknowns": [
+    "涮肉局时间与场地未知"
+   ],
+   "protected_expressions": [
+    "一分冤枉钱都不垫",
+    "你给我作个证"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构涮肉店信息",
+    "不得预判新规必然被群里接受"
+   ]
+  }
+ }
+}

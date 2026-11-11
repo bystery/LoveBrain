@@ -1,0 +1,604 @@
+{
+ "story_id": "E100",
+ "turns": {
+  "E100_T01": {
+   "case_id": "E100_T01",
+   "current_action": "接住突发的渗水指控：先按下她的情绪，把'被指认'和'有责任'分开——楼下渗水是真的，但渗水源还没证据；给第一步自查动作，别让她先认锅也别先硬顶。",
+   "acceptable_actions": [
+    "让她先自查：关阀看水表、摸地面、连续淋浴后观察",
+    "提醒她群里回复只讲事实别带情绪，别把话说死",
+    "让她把 402 的群消息和照片存档，后续要用"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A01",
+     "subject": "THIRD",
+     "relation": "seepage_claim",
+     "value": "402 在业主群称其卫生间顶面渗水并指向楼上住户",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T01", "message_id": "m0", "quote": "说她家卫生间顶面渗水"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A02",
+     "subject": "HER",
+     "relation": "no_visible_leak",
+     "value": "她自查家中地面干的，马桶未见漏水",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T01", "message_id": "m0", "quote": "可我自己家地面干的，马桶也没漏水"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A03",
+     "subject": "THIRD",
+     "relation": "blame_directed",
+     "value": "402 要求她给出说法，责任被单方面指向",
+     "valid_time": "2026-10-26",
+     "status": "unproven",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T01", "message_id": "m0", "quote": "给个说法"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她慌，先给动作再讲道理，一句话定调——渗水是真、责任未明。",
+   "unknowns": ["渗水真实来源未知", "402 手里有无其他证据未知"],
+   "protected_expressions": ["这锅怎么就飞我头上了"],
+   "forbidden_factual_claims": ["不得断言渗水责任在 HER 或 402 或 602", "不得虚构渗水成因"]
+  },
+  "E100_T02": {
+   "case_id": "E100_T02",
+   "current_action": "接住她的自查结果：水表不走、地面无积水是'当下无明漏'的证据，但不等于没有慢渗；402 的照片是真的，两边可以同时为真。把'水渍照片说明楼下受损'与'说明来源在你'分开。",
+   "acceptable_actions": [
+    "肯定自查到位，同时点破：水表不动排不掉防水层慢渗",
+    "教她把自查也留痕：拍照记时间，别只凭嘴说",
+    "让她问 402 渗水从什么时候开始、有无时段规律"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A04",
+     "subject": "HER",
+     "relation": "self_check_negative",
+     "value": "她关阀查水表不走、连续淋浴后无积水，当下无明漏",
+     "valid_time": "2026-10-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T02", "message_id": "m0", "quote": "水表关阀后不走字儿"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A05",
+     "subject": "THIRD",
+     "relation": "stain_photo",
+     "value": "402 提供顶面发黄带水渍的照片",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T02", "message_id": "m0", "quote": "就一小片发黄带水渍"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A06",
+     "subject": "THIRD",
+     "relation": "blame_unproven",
+     "value": "责任指向仍无实锤，她追问照片能否定责",
+     "valid_time": "2026-10-26",
+     "status": "unproven",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E100_T02", "message_id": "m0", "quote": "这能说明是我漏吗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A34",
+     "subject": "HER",
+     "relation": "baseline_self_check",
+     "value": "开场时她已完成家中无明水的基础自查",
+     "valid_time": "2026-10-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T01", "message_id": "m0", "quote": "可我自己家地面干的，马桶也没漏水"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：两边都说真话的世界最难办，把这句话讲透但不讲成和稀泥。",
+   "unknowns": ["是否存在防水层慢渗未知", "402 水渍的出现时间未知"],
+   "protected_expressions": ["这能说明是我漏吗"],
+   "forbidden_factual_claims": ["不得断言 HER 家无渗漏可能", "不得断言水渍必然来自 HER 家"]
+  },
+  "E100_T03": {
+   "case_id": "E100_T03",
+   "current_action": "接住各方说法打架：602 否认、张师傅无检测断言'八成'。帮她把口头判断降权——没有检测的'八成'只是猜测，但她也别去怼师傅，把力气花在要检测上。",
+   "acceptable_actions": [
+    "把'八成'定性为无检测的经验猜测，不构成定责依据",
+    "提醒她别跟张师傅硬顶，直接要求走正规检测流程",
+    "把 602 '去年修过防水'记下来，但要留意修过不等于没再坏"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A07",
+     "subject": "THIRD",
+     "relation": "upstairs_denial",
+     "value": "602 称去年修过一次防水，保证不漏",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T03", "message_id": "m0", "quote": "去年就修过一次防水，保证不漏"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A08",
+     "subject": "THIRD",
+     "relation": "unverified_verdict",
+     "value": "物业张师傅未做检测即断言八成是 HER 家防水层老化",
+     "valid_time": "2026-10-27",
+     "status": "unproven",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E100_T03", "message_id": "m0", "quote": "八成是你家防水层老化"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A35",
+     "subject": "HER",
+     "relation": "self_check_evidence",
+     "value": "她关阀查表与淋浴观察的自查证据已留存可用",
+     "valid_time": "2026-10-26/2026-10-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T02", "message_id": "m0", "quote": "水表关阀后不走字儿"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她的'凭什么'有理，把火引向流程，不引向人。",
+   "unknowns": ["张师傅的判断依据未知", "602 防水现状未知"],
+   "protected_expressions": ["他连水都没泼过"],
+   "forbidden_factual_claims": ["不得断言张师傅判断错误", "不得断言责任在 602"]
+  },
+  "E100_T04": {
+   "case_id": "E100_T04",
+   "current_action": "接住八千全包的压力：对方的损失焦虑是真的，但'没定责先全担'不合理。帮她把问题拆成两问——漏不漏在我、修不修我出，先解决第一问。",
+   "acceptable_actions": [
+    "把八千拆开：先定责再谈钱，顺序不能反",
+    "提议闭水试验这类低成本取证动作，先拿证据",
+    "体谅 402 的损失焦虑，让 HER 回复里给个时间表别玩消失"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A09",
+     "subject": "THIRD",
+     "relation": "full_cost_demand",
+     "value": "402 要求她直接出八千砸砖重做防水",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T04", "message_id": "m0", "quote": "直接出八千砸砖重做防水"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A10",
+     "subject": "SHARED",
+     "relation": "dispute_deadlock",
+     "value": "八千全包要求与责任未定之间形成两难僵局",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T04", "message_id": "m0", "quote": "这钱我出得冤不冤"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A36",
+     "subject": "THIRD",
+     "relation": "conflicting_accounts",
+     "value": "602 的否认与张师傅无检测的'八成'判断相互矛盾",
+     "valid_time": "2026-10-27/2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T03", "message_id": "m0", "quote": "八成是你家防水层老化"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她问冤不冤，答案是'现在认才冤'，但别把 402 说成恶人。",
+   "unknowns": ["402 是否接受先取证未知", "八千报价的构成未知"],
+   "protected_expressions": ["可万一不是我家漏的呢"],
+   "forbidden_factual_claims": ["不得断言八千报价合理或不合理", "不得预判闭水试验结果"]
+  },
+  "E100_T05": {
+   "case_id": "E100_T05",
+   "current_action": "确认闭水试验成行：48 小时加拍视频加物业见证，这套组合是对的；'若漏全费我出'的条件略重但换来了对方配合，提醒她把条件也落成文字。",
+   "acceptable_actions": [
+    "肯定试验方案，提醒她把条件写成群消息留痕",
+    "提醒她试验前拍自家地面和 402 顶面的基准照片",
+    "叮嘱试验期间别用卫生间，保证试验有效"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A11",
+     "subject": "SHARED",
+     "relation": "water_test_protocol",
+     "value": "48 小时闭水试验启动：402 拍视频留证、物业群内见证",
+     "valid_time": "2026-10-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T05", "message_id": "m0", "quote": "做 48 小时闭水试验"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A12",
+     "subject": "HER",
+     "relation": "conditional_cost",
+     "value": "她接受'若确认是我家漏则全部费用我出'的先行条件",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T05", "message_id": "m0", "quote": "要是我家漏，全部费用我出"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A13",
+     "subject": "SHARED",
+     "relation": "test_underway",
+     "value": "闭水试验进入执行，结论未出",
+     "valid_time": "2026-10-29/2026-10-31",
+     "status": "ongoing",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T05", "message_id": "m0", "quote": "做 48 小时闭水试验"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她的方案已经很像样，补的只是留痕细节。",
+   "unknowns": ["试验结果未知", "条件是否落成文字未知"],
+   "protected_expressions": ["吵架解决不了问题"],
+   "forbidden_factual_claims": ["不得预判闭水结果", "不得虚构试验操作细节"]
+  },
+  "E100_T06": {
+   "case_id": "E100_T06",
+   "current_action": "接住试验中途的混沌：对方口头说'好像重了'却拿不出对比照片，自家水表不动。指出这正是无实锤格局——两边都可能对，所以更要按流程走完，别中途吵。",
+   "acceptable_actions": [
+    "让她要求 402 按同一角度补拍对比照，光说不算",
+    "提醒她水表数据也拍照记时，两边证据都留",
+    "安抚她'一半是水一半是猜'的烦躁，试验走完再说"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A14",
+     "subject": "THIRD",
+     "relation": "verbal_worsen",
+     "value": "402 口头称渗水'好像重了一点'但拿不出前后对比照片",
+     "valid_time": "2026-10-31",
+     "status": "unproven",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E100_T06", "message_id": "m0", "quote": "拿不出前后对比的照片"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A15",
+     "subject": "HER",
+     "relation": "meter_still",
+     "value": "闭水期间她的水表纹丝不动",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T06", "message_id": "m0", "quote": "我这边水表纹丝不动"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A16",
+     "subject": "SHARED",
+     "relation": "test_inconclusive_mid",
+     "value": "闭水试验进行至 36 小时，双方证据不对称，无实锤",
+     "valid_time": "2026-10-31",
+     "status": "ongoing",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T06", "message_id": "m0", "quote": "这试验一半是水一半是猜"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A37",
+     "subject": "SHARED",
+     "relation": "test_running",
+     "value": "48 小时闭水试验正在执行至中途",
+     "valid_time": "2026-10-29/2026-10-31",
+     "status": "ongoing",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T05", "message_id": "m0", "quote": "做 48 小时闭水试验"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：别替任何一边下结论，教她把'口头'换成'照片'。",
+   "unknowns": ["402 顶面最终状态未知", "试验最终结论未知"],
+   "protected_expressions": ["一半是水一半是猜"],
+   "forbidden_factual_claims": ["不得断言渗水在加重或未加重", "不得预判试验结论"]
+  },
+  "E100_T07": {
+   "case_id": "E100_T07",
+   "current_action": "接住闭水无结论的僵局：各执一词加调解威胁。认下这局的遗憾，把'没定责不等于没事'讲清——调解不是灾难，先准备材料把事实链摆清楚。",
+   "acceptable_actions": [
+    "肯定她守住'没实锤不全担'的底线，僵局不是她输",
+    "劝她接受调解不丢人，把闭水记录、照片、时间线整理成材料",
+    "提醒她调解目标是流程正义，不是争口气"
+   ],
+   "applicable_dimensions": ["goal", "attribution", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A17",
+     "subject": "SHARED",
+     "relation": "test_inconclusive",
+     "value": "闭水试验结束仍两边各执一词，无定责实锤",
+     "valid_time": "2026-11-02",
+     "status": "inconclusive",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T07", "message_id": "m0", "quote": "两边各执一词"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A18",
+     "subject": "THIRD",
+     "relation": "mediation_threat",
+     "value": "402 撂话要找社区调解",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T07", "message_id": "m0", "quote": "撂话要找社区调解"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A19",
+     "subject": "SHARED",
+     "relation": "test_no_hammer",
+     "value": "闭水试验未产出可定责的实锤证据",
+     "valid_time": "2026-10-29/2026-11-02",
+     "status": "inconclusive",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E100_T06", "message_id": "m0", "quote": "这试验一半是水一半是猜"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她的憋屈是真的，接住之后再给'下一步'，别只讲道理。",
+   "unknowns": ["调解是否会发生未知", "检测路径是否可行未知"],
+   "protected_expressions": ["换你你受得了吗"],
+   "forbidden_factual_claims": ["不得断言责任归属", "不得断言调解必然有利或不利"]
+  },
+  "E100_T08": {
+   "case_id": "E100_T08",
+   "current_action": "接住她垫付检测的决定：300 买一个中立第三方的定位，钱花在刀刃上；费用归属没定不要紧，让她保留垫付凭证，账以后算。",
+   "acceptable_actions": [
+    "肯定垫付换进度：检测报告是中立证据，值得",
+    "提醒她把付款凭证和检测报告都拍照存档",
+    "提醒她检测时两家人和物业都在场，别单方送检"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A20",
+     "subject": "SHARED",
+     "relation": "infrared_survey",
+     "value": "第三方红外查漏一次 300 元，能定位但不含开砖后判断",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T08", "message_id": "m0", "quote": "做红外查漏，一次 300"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A21",
+     "subject": "HER",
+     "relation": "advance_paid",
+     "value": "检测费由她垫付，以推动僵局",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T08", "message_id": "m0", "quote": "最后我垫了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A22",
+     "subject": "SHARED",
+     "relation": "deadlock_push",
+     "value": "各执一词的僵局推动第三方检测介入",
+     "valid_time": "2026-11-02/2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T07", "message_id": "m0", "quote": "两边各执一词"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她的'破财免灾'心态别打击，点一句钱没白花。",
+   "unknowns": ["检测结果未知", "垫付费用最终归属未知"],
+   "protected_expressions": ["我就想早点结束这拉锯"],
+   "forbidden_factual_claims": ["不得虚构检测技术细节", "不得预判检测结果"]
+  },
+  "E100_T09": {
+   "case_id": "E100_T09",
+   "current_action": "接住'疑似'级结论：疑似马桶管周微渗、不排除防水层老化、需开砖验证。把这三个词翻译给她听——方向有了但责任仍没锁死，开砖 1500 的决策要先谈风险分摊再动手。",
+   "acceptable_actions": [
+    "把结论翻译清楚：'疑似'是方向不是定论，仍不能定责",
+    "劝她别赌开砖：万一开错，钱和关系双输",
+    "建议她拿这份报告跟 402 谈分摊或折中处置方案"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A23",
+     "subject": "THIRD",
+     "relation": "suspected_result",
+     "value": "检测结论为疑似马桶管周微渗、不排除防水层老化，需开砖验证",
+     "valid_time": "2026-11-05",
+     "status": "unproven",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T09", "message_id": "m0", "quote": "疑似马桶管周微渗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A24",
+     "subject": "SHARED",
+     "relation": "opening_dilemma",
+     "value": "开砖验证需一千五且结论不确定，赌错风险高",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T09", "message_id": "m0", "quote": "开砖验证还要一千五"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A25",
+     "subject": "SHARED",
+     "relation": "survey_bought",
+     "value": "300 元垫付检测换回'疑似'级结论",
+     "valid_time": "2026-11-03/2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T08", "message_id": "m0", "quote": "最后我垫了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'薛定谔的漏水'这个吐槽接住，再把'疑似'两字的分量讲准。",
+   "unknowns": ["真实漏点未知", "开砖后结论未知"],
+   "protected_expressions": ["三百块买了个薛定谔的漏水"],
+   "forbidden_factual_claims": ["不得把'疑似'说成'确诊'", "不得断言开砖必能定位"]
+  },
+  "E100_T10": {
+   "case_id": "E100_T10",
+   "current_action": "接住她的折中方案：600 免砸砖处置加'不作为责任认定'的书面约定。这是把决策从'赌开砖'换成'封顶止损'，方向对；提醒她协议里把复渗处理也写清。",
+   "acceptable_actions": [
+    "肯定方案：小成本处置加责任开放，比赌开砖稳",
+    "提醒协议补两条：复渗时按新证据重新协商、双方留存报告",
+    "提醒她 600 的支出同样留凭证，垫付账一起记"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A26",
+     "subject": "SHARED",
+     "relation": "compromise_plan",
+     "value": "免砸砖渗透防水 600 自费加顶面自修，书面约定不作为责任认定、复渗另行协商",
+     "valid_time": "2026-11-07",
+     "status": "proposed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T10", "message_id": "m0", "quote": "本次处理不作为责任认定"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A27",
+     "subject": "SHARED",
+     "relation": "verification_declined",
+     "value": "权衡后放弃一千五开砖验证，改走封顶止损路线",
+     "valid_time": "2026-11-05/2026-11-07",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E100_T09", "message_id": "m0", "quote": "开砖验证还要一千五"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E100_A28",
+     "subject": "THIRD",
+     "relation": "pending_decision",
+     "value": "402 对折中方案尚在犹豫",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T10", "message_id": "m0", "quote": "她还在犹豫"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她想通了的样子要认，'不算认锅'这层意思帮她站稳。",
+   "unknowns": ["402 是否接受未知", "免砸砖施工方资质未知"],
+   "protected_expressions": ["本次处理不作为责任认定"],
+   "forbidden_factual_claims": ["不得断言免砸砖必然根治", "不得断言协议条款的法律效力细节"]
+  },
+  "E100_T11": {
+   "case_id": "E100_T11",
+   "current_action": "共享方案落地：402 答应，物业留痕、三人群存档、免砸砖做完、顶面暂未见洇。提醒她观察期别松——半个月内按约定节点互发照片。",
+   "acceptable_actions": [
+    "先贺方案落地：三方存档这步做得很规范",
+    "提醒观察期内按节点互发照片，别靠感觉说好没好",
+    "肯定她的'不认锅也不结仇'的走法，邻里账最难就是这么平的"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A29",
+     "subject": "SHARED",
+     "relation": "plan_accepted",
+     "value": "402 接受折中方案，物业群内留痕、三人群存档检测报告与协议",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T11", "message_id": "m0", "quote": "检测报告和协议都拍照存档"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A30",
+     "subject": "THIRD",
+     "relation": "ceiling_rerendered",
+     "value": "402 顶面重批完成，暂未见洇",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T11", "message_id": "m0", "quote": "顶面看着没再洇"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A31",
+     "subject": "SHARED",
+     "relation": "no_liability_clause",
+     "value": "书面'不作为责任认定'条款随方案落地执行",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T10", "message_id": "m0", "quote": "本次处理不作为责任认定"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：松一口气是真的，但'暂未见洇'不等于'好了'，这层别戳破太狠。",
+   "unknowns": ["观察期内是否复渗未知", "漏点根治与否未知"],
+   "protected_expressions": ["剩下就观察半个月"],
+   "forbidden_factual_claims": ["不得断言漏水已根治", "不得断言责任已认定"]
+  },
+  "E100_T12": {
+   "case_id": "E100_T12",
+   "current_action": "接住复盘之问：'算认了还是没认'——答案是都没认也没赖：责任保持开放、代价封顶、关系未破。把这句讲透，收尾落在她睡踏实上。",
+   "acceptable_actions": [
+    "回答她的复盘之问：责任开放、止损封顶，这不叫认锅叫止损",
+    "把整条线复盘成一句：自查、闭水、检测、书面协议，每步都没跳",
+    "接住感谢，把参谋的功劳还给她：每一步都是她自己拍板的"
+   ],
+   "applicable_dimensions": ["attribution", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E100_A32",
+     "subject": "HER",
+     "relation": "final_ledger",
+     "value": "八千未支出，600 加 300 垫付封顶，换来暂不论责的处置",
+     "valid_time": "2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T12", "message_id": "m0", "quote": "六百块买了个'暂不论责'的太平"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E100_A33",
+     "subject": "SHARED",
+     "relation": "observation_period",
+     "value": "渗水处置进入半个月观察期，责任认定保持开放",
+     "valid_time": "2026-11-08/2026-11-09",
+     "status": "observing",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E100_T11", "message_id": "m0", "quote": "剩下就观察半个月"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她要的不是安慰是定性，把'没认也没赖'讲成一句能记住的话。",
+   "unknowns": ["观察期结果未知", "日后是否复渗未知"],
+   "protected_expressions": ["这算我认了还是没认"],
+   "forbidden_factual_claims": ["不得断言责任归属已了结或已认定", "不得断言此事永不再起"]
+  }
+ }
+}

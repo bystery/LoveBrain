@@ -1,0 +1,878 @@
+{
+ "episode_id": "LRE121",
+ "persona": {
+  "her": {
+   "name": "乔安",
+   "traits": [
+    "行动派",
+    "怕被家人念",
+    "重承诺"
+   ],
+   "boundaries": [
+    "请客要还清",
+    "不欠人情"
+   ]
+  },
+  "me": {
+   "name": "秦朗",
+   "traits": [
+    "饭搭子",
+    "周末顺路",
+    "嘴严"
+   ]
+  },
+  "relationship_stage": "普通朋友（公司附近饭搭子）"
+ },
+ "initial_kb": {
+  "her": "乔安母亲入秋后反复催她接种流感疫苗，乔安行动力强但最怕家人唠叨。",
+  "me": "秦朗与乔安在公司附近常搭伙吃早茶，周末顺路。",
+  "warmth": "两人以饭搭子相处，惯用请客与吐槽维系默契。",
+  "style": "语速快，爱用夸张词。",
+  "lessons": "答应的事必须给下文。"
+ },
+ "turns": [
+  {
+   "case_id": "LRE121_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-09 20:30",
+      "text": "我妈又开始催了，说我一个天天空调房的人不打流感疫苗等于裸奔。我约了这周六上午九点半，桂溪社区卫生服务中心。"
+     }
+    ],
+    "clock": "2026-11-09 20:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "计划公布",
+    "变化": "首轮确立接种预约"
+   }
+  },
+  {
+   "case_id": "LRE121_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-10 12:50",
+      "text": "你那天顺路不？陪我去呗，打完请你喝早茶，虾饺我请，肠粉你随意。"
+     }
+    ],
+    "clock": "2026-11-10 12:57",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "拉上陪绑",
+    "变化": "ME 被编入计划，早茶成为固定彩头"
+   }
+  },
+  {
+   "case_id": "LRE121_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-11 21:40",
+      "text": "我查好了，接种前一礼拜不能感冒发烧，要带身份证，打完留观三十分钟。我上次感冒刚好利索，赶上了。"
+     }
+    ],
+    "clock": "2026-11-11 21:47",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "功课做足",
+    "变化": "接种前置条件明确"
+   }
+  },
+  {
+   "case_id": "LRE121_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-13 18:05",
+      "text": "公司刚通知，明天全员到场搞系统封网演练，我那个九点半的号只能取消了，刚在公众号上点完取消，手速快得我自己都心疼。"
+     }
+    ],
+    "clock": "2026-11-13 18:12",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "告知取消预约及原因"
+    }
+   },
+   "feedback": {
+    "状态": "计划被打断",
+    "变化": "冲突轮：预约在临期一夜被取消"
+   }
+  },
+  {
+   "case_id": "LRE121_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-13 21:30",
+      "text": "我刷了下周六的号，上午全没了，只剩下午四点的。可我下下周六晚上约了人吃饭，四点打完留观完也赶得上？我再想想。"
+     }
+    ],
+    "clock": "2026-11-13 21:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "改约犹豫",
+    "变化": "候选方案出现但自我纠结"
+   }
+  },
+  {
+   "case_id": "LRE121_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-14 11:20",
+      "text": "演练终于散场，我在工位吃盒饭。我妈说下下周就降温了，让我必须赶在降温前打上，我好难。"
+     }
+    ],
+    "clock": "2026-11-14 11:27",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "时间窗收紧",
+    "变化": "家人催促叠加降温压力，改约紧迫度上升"
+   }
+  },
+  {
+   "case_id": "LRE121_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-16 20:10",
+      "text": "我想通了，桂溪的免费号等不起，惠民门诊下周六上午九点五十有号，就是自费一百二十八。降温面前，一百二十八就当买个心安，我约了。"
+     }
+    ],
+    "clock": "2026-11-16 20:17",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "敲定改约方案"
+    }
+   },
+   "feedback": {
+    "状态": "改期落定",
+    "变化": "冲突轮：放弃免费号，自费改约新时间新地点"
+   }
+  },
+  {
+   "case_id": "LRE121_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-19 21:30",
+      "text": "周六计划不变哈：九点五十惠民门诊门口集合，早茶改到打完，惠民那条街上有家新开的，正好试试。"
+     }
+    ],
+    "clock": "2026-11-19 21:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "计划更新",
+    "变化": "陪同安排随改约同步刷新"
+   }
+  },
+  {
+   "case_id": "LRE121_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-21 10:35",
+      "text": "打完了打完了，左胳膊一酸一酸的，留观三十分钟已启动，你先进去点虾饺，我十分钟后杀到。"
+     }
+    ],
+    "clock": "2026-11-21 10:42",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "接种完成",
+    "变化": "改约后的计划兑现"
+   }
+  },
+  {
+   "case_id": "LRE121_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-21 11:05",
+      "text": "早茶虾饺名不虚传，我这胳膊举筷子有点费劲，你帮我倒茶，塑料姐妹情就靠这一壶了。"
+     }
+    ],
+    "clock": "2026-11-21 11:12",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "兑现彩头",
+    "变化": "早茶照吃，小狼狈变笑点"
+   }
+  },
+  {
+   "case_id": "LRE121_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-21 21:40",
+      "text": "胳膊酸得我今晚键盘都敲不动，但没发烧，医生说属于正常反应。我妈那边我汇报过了，她发了三个大拇指。"
+     }
+    ],
+    "clock": "2026-11-21 21:47",
+    "may_decline": false
+   },
+   "feedback": {
+    "状态": "平安汇报",
+    "变化": "身体反应正常，家人线闭环"
+   }
+  },
+  {
+   "case_id": "LRE121_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-21 22:30",
+      "text": "对了明年九月底这针还要打，我记在日历里了。到时候你要还这么闲，咱俩一块儿去，我请你吃一整笼虾饺。"
+     }
+    ],
+    "clock": "2026-11-21 22:37",
+    "may_decline": true
+   },
+   "feedback": {
+    "状态": "远期钩子",
+    "变化": "以明年之约收尾，早茶梗升级"
+   }
+  },
+  {
+   "case_id": "LRE121_T13",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-22 10:15",
+      "text": "战报：胳膊不酸了，键盘恢复满速。早茶店我今早又去打卡了，老板看见我直接问'还是虾饺？'，你看，熟客待遇这不就来了。"
+     }
+    ],
+    "clock": "2026-11-22 10:22",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "轻快得意",
+    "warmth": "medium",
+    "shift": "接种后恢复良好，早茶店二刷成半熟客"
+   }
+  },
+  {
+   "case_id": "LRE121_T14",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-23 20:40",
+      "text": "我妈看到我汇报的三个大拇指还没过瘾，说她也想打。我看了下下个周六12月5号惠民上午还有个十点二十的号，先给她锁上了，自费一百二十八她认。"
+     }
+    ],
+    "clock": "2026-11-23 20:47",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "行动派上线",
+    "warmth": "high",
+    "shift": "新线开启：母亲接种预约12-05 10:20惠民"
+   }
+  },
+  {
+   "case_id": "LRE121_T15",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-25 12:30",
+      "text": "大消息：行政小周在群里说，自费疫苗可以走公司补充医保报销。我狂喜完开始翻包，发现那天的小票不知道被我塞哪去了，钱包里只有奶茶小票。"
+     }
+    ],
+    "clock": "2026-11-25 12:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "狂喜转慌",
+    "warmth": "medium",
+    "shift": "报销利好出现，但纸质小票下落不明"
+   }
+  },
+  {
+   "case_id": "LRE121_T16",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-26 21:10",
+      "text": "惠民那边我问到了：凭当天的支付记录和身份证，可以去前台补打印费用凭条。我明天中午就杀过去，奶茶钱都不能白花，疫苗钱更不能。"
+     }
+    ],
+    "clock": "2026-11-26 21:17",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "重燃斗志",
+    "warmth": "medium",
+    "shift": "补开路径明确，明日中午行动"
+   }
+  },
+  {
+   "case_id": "LRE121_T17",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-27 19:45",
+      "text": "补开了！凭条上明明白白：流感疫苗接种费 一百二十八。我把它和支付记录拍照存了俩地方，这次学乖了，重要票据当天归档。"
+     }
+    ],
+    "clock": "2026-11-27 19:52",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "成就感",
+    "warmth": "medium",
+    "shift": "128元费用凭条补开成功并双备份归档"
+   }
+  },
+  {
+   "case_id": "LRE121_T18",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-28 09:05",
+      "text": "周六早茶局走起，今天我请。上回肠粉你随意，这回我直接给你点双份，虾饺照旧我包圆，谁让疫苗平安落地呢。"
+     }
+    ],
+    "clock": "2026-11-28 09:12",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "兴致高",
+    "warmth": "high",
+    "shift": "早茶请客兑现，肠粉彩头升级双份"
+   }
+  },
+  {
+   "case_id": "LRE121_T19",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-29 21:05",
+      "text": "坏了，我妈着凉感冒了，鼻子塞得说话瓮声瓮气。接种前一个礼拜不能感冒发烧这条她自己念过的，我果断把12月5号的号取消了，养好再说。"
+     }
+    ],
+    "clock": "2026-11-29 21:12",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "果断但无奈",
+    "warmth": "medium",
+    "shift": "冲突轮：母亲12-05预约因感冒取消"
+   }
+  },
+  {
+   "case_id": "LRE121_T20",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 12:35",
+      "text": "我刚刷了下下周六12月12号，惠民上午十点二十还有号，先占上占上，我妈退烧了再正式确认，反正取消不扣钱。"
+     }
+    ],
+    "clock": "2026-12-01 12:42",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "稳中带急",
+    "warmth": "medium",
+    "shift": "12-12 10:20候选号已占，待康复确认"
+   }
+  },
+  {
+   "case_id": "LRE121_T21",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-03 20:25",
+      "text": "我妈烧退了，但医生朋友说感冒好了也得缓几天，不能卡着线。我拍板：12号去，要是临了又感冒，就顺延到19号，反正号能退。"
+     }
+    ],
+    "clock": "2026-12-03 20:32",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "拍板冷静",
+    "warmth": "medium",
+    "shift": "12-12主案确立，12-19为顺延预案"
+   }
+  },
+  {
+   "case_id": "LRE121_T22",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-05 10:30",
+      "text": "今天桂溪放十二月的免费号了，老姐妹群里都在约。我妈心动了三秒钟，我给她算账：换地方重新排号折腾一圈，不如稳稳当当在惠民把12号的号守住，她说闺女你算得对。"
+     }
+    ],
+    "clock": "2026-12-05 10:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "算账得意",
+    "warmth": "medium",
+    "shift": "免费号诱惑出现并化解，维持惠民方案"
+   }
+  },
+  {
+   "case_id": "LRE121_T23",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-10 21:15",
+      "text": "周六我妈那场接种我大概率赶不上了，客户回访要盯到中午。你替我陪一趟呗？九点五十到惠民门诊门口，陪我妈打完留观完，早茶我请两家份，双份肠粉升级成三份。"
+     }
+    ],
+    "clock": "2026-12-10 21:22",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "请ME代陪母亲接种"
+    }
+   },
+   "feedback": {
+    "her_state": "拜托模式",
+    "warmth": "high",
+    "shift": "冲突轮：HER缺席，代陪请求发出（可拒）"
+   }
+  },
+  {
+   "case_id": "LRE121_T24",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-11 21:30",
+      "text": "你答应得这么快，我截图发我妈了，她说小伙子看着靠谱。流程我重新排了：你九点五十到门诊门口跟她会合，十点二十接种，打完留观三十分钟，完事儿你带她去吃早茶，我远程遥控买单。"
+     }
+    ],
+    "clock": "2026-12-11 21:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "踏实",
+    "warmth": "high",
+    "shift": "代陪确认，当日流程逐项排定"
+   }
+  },
+  {
+   "case_id": "LRE121_T25",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-12 10:05",
+      "text": "现场连线：你比我妈还早到，靠谱！她进去了，打完留观三十分钟，麻烦你看着她别让她乱逛，身份证你帮我攥着点。"
+     }
+    ],
+    "clock": "2026-12-12 10:12",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "远程操心",
+    "warmth": "high",
+    "shift": "母亲进场接种，留观与证件交接进行中"
+   }
+  },
+  {
+   "case_id": "LRE121_T26",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-12 11:20",
+      "text": "两代接种套餐完成！我妈出来第一句话：'一百二十八打一针，肉疼。'我跟她说，你女儿上个月也这么肉疼过来的，然后咱俩在早茶店点回了本。"
+     }
+    ],
+    "clock": "2026-12-12 11:27",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "圆满调侃",
+    "warmth": "high",
+    "shift": "母亲接种完成，128元肉疼梗两代接续"
+   }
+  },
+  {
+   "case_id": "LRE121_T27",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-13 21:40",
+      "text": "我妈的老姐妹也想约惠民周六的号，我妈手一滑把人家往下午四点档指，说'四点清净'。我赶紧拦住：上午的号明明更好约，四点打完留观天都黑了。"
+     }
+    ],
+    "clock": "2026-12-13 21:47",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "哭笑不得",
+    "warmth": "medium",
+    "shift": "四点档旧况被误当推荐，HER纠正中"
+   }
+  },
+  {
+   "case_id": "LRE121_T28",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-15 20:30",
+      "text": "上次封网演练的复盘报告出来了，行政说以后再搞这种全员演练，提前两周通知。我发了个'早该如此'的表情包，想起我那个被连夜取消的九点半，眼泪流下来。"
+     }
+    ],
+    "clock": "2026-12-15 20:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "感慨",
+    "warmth": "medium",
+    "shift": "演练复盘承诺提前两周通知，旧约取消史回声"
+   }
+  },
+  {
+   "case_id": "LRE121_T29",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-17 21:05",
+      "text": "惠民那条街的早茶店我已经吃成免端茶水的熟客了，老板都记得我不吃香菜。离明年九月底还有九个月，你那一整笼虾饺我先占个座。"
+     }
+    ],
+    "clock": "2026-12-17 21:12",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "得意",
+    "warmth": "high",
+    "shift": "早茶据点固化，明年之约预热"
+   }
+  },
+  {
+   "case_id": "LRE121_T30",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-19 21:50",
+      "text": "寒潮真来了，我妈在老姐妹群里发：'幸亏打得早。'配了五个大拇指，跟当年发我的一样排场。我说你这是把我的作业抄了三遍。"
+     }
+    ],
+    "clock": "2026-12-19 21:57",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "欣慰打趣",
+    "warmth": "high",
+    "shift": "降温兑现，赶在降温前接种的目标闭环"
+   }
+  },
+  {
+   "case_id": "LRE121_T31",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-22 12:40",
+      "text": "你也去打是吧？惠民周中的号好约。注意事项原样转发：带身份证，前一礼拜别感冒发烧，打完留观三十分钟别跑。这套话术我已经倒背如流了。"
+     }
+    ],
+    "clock": "2026-12-22 12:47",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "话术熟练",
+    "warmth": "medium",
+    "shift": "接种注意事项完整转告ME"
+   }
+  },
+  {
+   "case_id": "LRE121_T32",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-24 20:15",
+      "text": "年度总结：我家今年疫苗KPI百分之两百达成，我跟我妈两针都安排上了。明年九月底的日历提醒我设了俩，我的和她的一人一条。"
+     }
+    ],
+    "clock": "2026-12-24 20:22",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "总结控",
+    "warmth": "medium",
+    "shift": "年度接种KPI达成，明年双日历提醒就位"
+   }
+  },
+  {
+   "case_id": "LRE121_T33",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-26 10:10",
+      "text": "陷阱警报：我妈老姐妹刚问她：'乔安不是周六上午九点半在桂溪打的吗？我也想约那个九点半。'我妈差点顺嘴应了，我抢过电话拦住——那个九点半早取消了，我是在惠民打的，九点五十。"
+     }
+    ],
+    "clock": "2026-12-26 10:17",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "警觉拦截",
+    "warmth": "medium",
+    "shift": "旧事复活陷阱：已取消的桂溪九点半旧约被误传"
+   }
+  },
+  {
+   "case_id": "LRE121_T34",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-26 10:35",
+      "text": "我把惠民那条接种记录翻给我妈，她转给老姐妹：11月21号九点五十惠民，一百二十八自费，就这样。老姐妹回了个'明白了，约号看最新短信'，危机解除。"
+     }
+    ],
+    "clock": "2026-12-26 10:42",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "解除警报",
+    "warmth": "medium",
+    "shift": "旧约误述以真实接种记录更正闭环"
+   }
+  },
+  {
+   "case_id": "LRE121_T35",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-29 19:50",
+      "text": "报销到账！一百二十八报了九十块六，到账短信截图我发你。小周说材料月底截止，我让我妈那份也赶紧报，她家凭条我早就帮她收好了。"
+     }
+    ],
+    "clock": "2026-12-29 19:57",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "到账喜悦",
+    "warmth": "medium",
+    "shift": "补充医保报销90.6元到账，母亲份额跟进"
+   }
+  },
+  {
+   "case_id": "LRE121_T36",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-31 11:20",
+      "text": "小周做年度接种统计，表格里把我写成'11月14日 桂溪社区 免费'。我说你抄的是我取消掉的那个号啊！真实情况：11月21日惠民，自费一百二十八，报销九十块六。她秒回'马上改'。"
+     }
+    ],
+    "clock": "2026-12-31 11:27",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "当场抓包",
+    "warmth": "medium",
+    "shift": "旧事复活陷阱：年度统计沿用已取消旧号与免费口径"
+   }
+  },
+  {
+   "case_id": "LRE121_T37",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-31 16:45",
+      "text": "表改好了，小周把我的记录单独标黄：11月21日 惠民门诊 自费128（报销90.6）。她说我是全部门唯一被她写错还当场抓包的人，我说明年争取让她出错率失业。"
+     }
+    ],
+    "clock": "2026-12-31 16:52",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "收账痛快",
+    "warmth": "medium",
+    "shift": "统计更正落表，接种事实链全部留痕闭环"
+   }
+  },
+  {
+   "case_id": "LRE121_T38",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2027-01-05 21:30",
+      "text": "新年新气象：我妈的老姐妹群改名了，叫'今年九月见'。我说你们这觉悟，比我的日历还卷。我妈说，今年你可得再陪我一趟。我说看心情——骗她的，早茶我肯定去。"
+     }
+    ],
+    "clock": "2027-01-05 21:37",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "新年轻快",
+    "warmth": "high",
+    "shift": "母亲老姐妹群更名今年九月见，ME再陪邀约出现"
+   }
+  },
+  {
+   "case_id": "LRE121_T39",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2027-01-08 21:10",
+      "text": "盘一盘这一季：两针疫苗、N顿早茶、一张补开的凭条、一笔到账的报销、一张改对颜色的表。对了，双份肠粉你还欠我一顿回请，我记在小本本上了。"
+     }
+    ],
+    "clock": "2027-01-08 21:17",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "盘点快感",
+    "warmth": "medium",
+    "shift": "季度事实链盘点，肠粉回请账挂起"
+   }
+  },
+  {
+   "case_id": "LRE121_T40",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2027-01-11 22:05",
+      "text": "今年九月底，惠民门诊门口，老地方：虾饺一整笼，肠粉双份，谁先到谁占座。这条消息我存草稿了，到时候原样重发，咱们日历见。"
+     }
+    ],
+    "clock": "2027-01-11 22:12",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state": "留白收尾",
+    "warmth": "high",
+    "shift": "今年九月底之约定格，日历见"
+   }
+  }
+ ]
+}

@@ -1,0 +1,416 @@
+{
+ "episode_id": "E067",
+ "persona": {
+  "me": "33岁，后端工程师，跳过两次槽，谈过三轮薪。",
+  "her": "29岁，测试工程师，五年没换过工作；口头强心里慌，数字看快了就过。"
+ },
+ "initial_kb": {
+  "me": "大学同学群认识的，后来成了饭搭子；我跳槽材料都留着。",
+  "her": "现司稳定但涨薪慢；新 offer 是一家做测开平台的中厂。",
+  "warmth": "老友，互揭老底的那种；她拿主意前爱找人把话说死。",
+  "style": "她聊钱不扭捏，但条款看三行就烦。",
+  "stage": "多年朋友，纯参谋不带利益。",
+  "lessons": "她要的是'把条款翻译成人话'；决定必须她签，我只负责看懂。"
+ },
+ "turns": [
+  {
+   "case_id": "E067_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "拿到 offer 了 测开平台的中厂 我不知道该不该高兴 你说",
+      "ts": "2026-12-10 20:58"
+     }
+    ],
+    "clock": "2026-12-10 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "base 2 万 4 十四薪 期权一点点 你帮我看看这数行不行",
+      "ts": "2026-12-10 21:18"
+     }
+    ],
+    "clock": "2026-12-10 21:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "期权一点点也得问清 股数 行权价 vesting 周期 离职回购 这四件问清 不然就是画饼",
+      "ts": "2026-12-10 21:36"
+     },
+     {
+      "role": "HER",
+      "text": "我哪懂这些 你发我一段话术我去问HR",
+      "ts": "2026-12-10 21:38"
+     }
+    ],
+    "clock": "2026-12-10 21:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "HR 回了 股数行权价都有 期限也发了 12 月 15 号下午六点前要答复 我有点赶",
+      "ts": "2026-12-11 19:58"
+     }
+    ],
+    "clock": "2026-12-11 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "竞业要看三样 范围 期限 补偿比例 没补偿可以拒签 你先拍合同附件给我",
+      "ts": "2026-12-11 20:24"
+     },
+     {
+      "role": "HER",
+      "text": "合同附件里还有竞业协议 范围写得可宽 全行业都像",
+      "ts": "2026-12-11 20:28"
+     }
+    ],
+    "clock": "2026-12-11 20:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我问了补偿 30% 月薪 补 6 个月 这个算正常吗",
+      "ts": "2026-12-12 20:56"
+     }
+    ],
+    "clock": "2026-12-12 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "HR 主动说 期限延期到 12 月 19 号 让我考虑周全 这算好事吧",
+      "ts": "2026-12-13 18:56"
+     }
+    ],
+    "clock": "2026-12-13 19:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我又把两家待遇拉了张表 越比越乱 你帮我排个主次",
+      "ts": "2026-12-15 20:56"
+     }
+    ],
+    "clock": "2026-12-15 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我跟现司领导提了离职意向 他挽留说年底有调薪 我脑子嗡了一下",
+      "ts": "2026-12-16 20:56"
+     }
+    ],
+    "clock": "2026-12-16 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "想明白了 现司调薪画饼成分大 新司看得见 我接了",
+      "ts": "2026-12-17 20:56"
+     }
+    ],
+    "clock": "2026-12-17 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "offer 邮件细看 职级写的是 P6+ 不是 P6 我之前看岔了 是好事吧",
+      "ts": "2026-12-18 19:56"
+     }
+    ],
+    "clock": "2026-12-18 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "按期答复了 最后核数字发现 base 是 2 万 45 我之前看成 2 万 4 白高兴半档",
+      "ts": "2026-12-19 19:56"
+     }
+    ],
+    "clock": "2026-12-19 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T13",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "入职材料这块 离职证明和社保转移 提前两周跟原司走流程 1 月 5 号入职的话现在就该动了",
+      "ts": "2026-12-20 19:52"
+     },
+     {
+      "role": "HER",
+      "text": "好 我明天就提流程 谢提点",
+      "ts": "2026-12-20 19:56"
+     }
+    ],
+    "clock": "2026-12-20 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T14",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "现司欢送会开了 领导说欢迎回来 我笑着接的 心里有点软",
+      "ts": "2026-12-25 20:56"
+     }
+    ],
+    "clock": "2026-12-25 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T15",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "offer 里那条竞业 我再问了一次 补偿按全额工资算 写进补充协议了 心里踏实",
+      "ts": "2026-12-30 19:56"
+     }
+    ],
+    "clock": "2026-12-30 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T16",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "入职了 工牌到手 试用期六个月 我又开始了",
+      "ts": "2027-01-05 19:56"
+     }
+    ],
+    "clock": "2027-01-05 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T17",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "第一周差点把测试环境整挂了 导师捞的我 糗",
+      "ts": "2027-01-20 20:56"
+     }
+    ],
+    "clock": "2027-01-20 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T18",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "满月总结 节奏快但成长快 期权文档我也全看懂了 四个问题一个没落",
+      "ts": "2027-02-05 20:56"
+     }
+    ],
+    "clock": "2027-02-05 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T19",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "问你个老问题 我当时要是不延期直接 15 号答了会怎样",
+      "ts": "2027-02-10 19:56"
+     }
+    ],
+    "clock": "2027-02-10 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T20",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我把我们这趟从 offer 到入职的流水账写成帖子了 匿名发在小红书 评论区问竞业的最多",
+      "ts": "2027-02-20 20:56"
+     }
+    ],
+    "clock": "2027-02-20 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T21",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "帖子小爆了 评论区有人骂我凡尔赛 但更多人问细节 我统一回：条款自己看 数字自己算",
+      "ts": "2027-02-28 20:56"
+     }
+    ],
+    "clock": "2027-02-28 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T22",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "试用期过半 导师给我反馈 稳住别飘 我顺手问了下转正答辩的流程",
+      "ts": "2027-03-20 20:56"
+     }
+    ],
+    "clock": "2027-03-20 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T23",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "转正答辩通过 P6+ 顺利转正 谢你当年那句话 把条款翻译成人话",
+      "ts": "2027-07-05 20:56"
+     }
+    ],
+    "clock": "2027-07-05 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E067_T24",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "转正第一天 说好请你的饭这周末兑现 你来定地方",
+      "ts": "2027-07-06 20:56"
+     }
+    ],
+    "clock": "2027-07-06 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

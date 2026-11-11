@@ -1,0 +1,206 @@
+{
+ "episode_id": "P002",
+ "persona": {
+  "me": "31岁，男，长沙，做活动策划；爱抖机灵，想多认识人但保持分寸，不越界",
+  "her": "30岁，女，长沙，做行政；爱玩剧本杀，这周正张罗搬家，聊天跳脱、爱改话题"
+ },
+ "initial_kb": {
+  "her": "爱玩剧本杀，这周在收拾搬家的东西",
+  "warmth": "公司团建认识，后来偶尔拼本，属朋友局不是单独约会",
+  "stage": "半熟朋友，想多走动但保持分寸"
+ },
+ "gold": {},
+ "turns": [
+  {
+   "case_id": "P002_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "刚拼完一个本 笑到头掉 你玩过没有",
+      "ts": "2026-11-10 20:26"
+     }
+    ],
+    "clock": "2026-11-10 20:30",
+    "may_decline": false,
+    "note": "她在开新话头；接住剧本杀这个由头，自然聊，别急着组局",
+    "intent": {
+     "enabled": true,
+     "text": "顺着剧本杀这个话头聊开，为以后拼本留个由头，但别当已约",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P002_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "下次有合适的本我叫上你一起?",
+      "ts": "2026-11-10 20:40"
+     },
+     {
+      "role": "HER",
+      "text": "随便啊 都行",
+      "ts": "2026-11-10 20:43"
+     }
+    ],
+    "clock": "2026-11-10 20:45",
+    "may_decline": false,
+    "note": "反信号/低信息：她反应很淡；别追问'到底去不去'，轻松接住或就此放着都行",
+    "intent": {
+     "enabled": true,
+     "text": "她反应淡；把'想组局'降级成不催，有再说",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P002_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "不说了 我搬家那些纸箱还没拆 头大",
+      "ts": "2026-11-10 20:58"
+     }
+    ],
+    "clock": "2026-11-10 21:00",
+    "may_decline": false,
+    "note": "她把话题从剧本杀切到搬家；跟着搬家聊，别硬拽回拼本",
+    "intent": {
+     "enabled": false,
+     "text": "",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P002_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "搬家是大工程 你分几趟弄?",
+      "ts": "2026-11-10 21:10"
+     },
+     {
+      "role": "HER",
+      "text": "你要是有空能帮我搬两箱 我请你喝东西",
+      "ts": "2026-11-10 21:13"
+     }
+    ],
+    "clock": "2026-11-10 21:15",
+    "may_decline": false,
+    "note": "机会/玩笑：她半开玩笑递'帮忙换喝东西'；可接住善意与玩笑，但别把它当成已定的单独约、也别擅自定哪天去搬",
+    "intent": {
+     "enabled": true,
+     "text": "接住她递的话头；私下想多亲近一点，只调口吻，别写成她已答应",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P002_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "哈哈我瞎说的 别当真 我都约好搬家公司了",
+      "ts": "2026-11-10 21:25"
+     }
+    ],
+    "clock": "2026-11-10 21:28",
+    "may_decline": false,
+    "note": "反信号：她收回上一句、说已约好搬家公司；顺势轻松收回，别失落也别硬促成",
+    "intent": {
+     "enabled": false,
+     "text": "她已经收回；别再往前推搬家这事",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P002_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "拆完更乱了",
+      "ts": "2026-11-10 21:38"
+     }
+    ],
+    "clock": "2026-11-10 21:40",
+    "may_decline": true,
+    "note": "低信息平淡轮；接一句就好，别为填满而长篇",
+    "intent": {
+     "enabled": false,
+     "text": "",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P002_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "下周有个新本 人多 我可以喊你拼个群局",
+      "ts": "2026-11-10 21:50"
+     },
+     {
+      "role": "HER",
+      "text": "下周末有本可以给我留个位置 人多热闹",
+      "ts": "2026-11-10 21:53"
+     }
+    ],
+    "clock": "2026-11-10 21:55",
+    "may_decline": false,
+    "note": "机会：她回到拼本话头、主动说'留位置'；正向接住、按多人群局理解，别擅自改成二人约会",
+    "intent": {
+     "enabled": true,
+     "text": "她愿进群局；把话头保持为多人局，先别谈单独",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P002_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "先这样 我那箱书明天要寄快递 困了",
+      "ts": "2026-11-11 23:00"
+     }
+    ],
+    "clock": "2026-11-11 23:05",
+    "may_decline": true,
+    "note": "收尾：她要忙/要睡；自然收，别把快递话题又展成长聊或当场逼定拼本日期",
+    "intent": {
+     "enabled": false,
+     "text": "收尾，无需推进",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  }
+ ]
+}

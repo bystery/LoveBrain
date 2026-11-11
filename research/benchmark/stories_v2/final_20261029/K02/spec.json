@@ -1,0 +1,617 @@
+{
+ "story_id": "K02",
+ "persona": {
+  "me": "34岁，结构工程师，懂一点装修但不想替她拍板，习惯先对事实再给建议。",
+  "her": "32岁，小学老师，刚买了一套小两居，装修中，决定多但容易被细节拖垮。"
+ },
+ "initial_kb": {
+  "me": "我在工程公司做结构，能看懂装修图，但不想把自己的专业意见强加给她。",
+  "her": "她是小学老师，刚买小两居，正在装修；预算紧，怕被工长牵着走。",
+  "warmth": "在一起十个月，周末常一起跑建材市场，关系稳定但还没同居。",
+  "style": "她说话快，喜欢把账算清；我回得慢一点，习惯先确认再下结论。",
+  "stage": "稳定期，装修是两人第一次一起扛的大项目。",
+  "lessons": "她怕被坑，也怕自己反复；已改过的数字不要按旧版本说。"
+ },
+ "turns": [
+  {
+   "case_id": "K02_T01",
+   "clock": "2026-05-06 20:10",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "工长姓周 报价八万", "ts": "2026-05-06 20:02"},
+    {"role": "HER", "text": "包水电和厨卫 但不含瓷砖", "ts": "2026-05-06 20:06"},
+    {"role": "HER", "text": "你觉得这价靠谱吗", "ts": "2026-05-06 20:08"}
+   ],
+   "current_action": "她给出工长老周、八万报价和不含瓷砖的范围，问我靠不靠谱；这一轮应先接住这些具体条件，再给判断，不要空说'还行'或替她压价。",
+   "acceptable_actions": [
+    "说八万不含瓷砖要先看水电和厨卫的具体项，别只看总价",
+    "问她有没有报价单，先把包含和不包含的列清"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "boundary", "initiative"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T01_a1", "subject": "her", "relation": "contractor_quote", "value": "工长老周报价八万，包水电厨卫不含瓷砖", "valid_time": "2026-05", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T01", "message_id": "m0", "quote": "工长姓周 报价八万"}, "required_this_turn": true}
+   ],
+   "private_guidance": "她在求判断，不是求安慰；先对范围，再谈价格。",
+   "unknowns": ["报价单细项", "水电是不是全改"],
+   "protected_expressions": ["包水电和厨卫 但不含瓷砖"],
+   "forbidden_factual_claims": ["不能说八万很便宜或很贵", "不能替她压价"]
+  },
+  {
+   "case_id": "K02_T02",
+   "clock": "2026-05-07 21:20",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "ME", "text": "先看报价单 别只看总价", "ts": "2026-05-07 21:10"},
+    {"role": "HER", "text": "瓷砖我定了 灰岩那个牌子", "ts": "2026-05-07 21:14"},
+    {"role": "HER", "text": "说11月5号到货", "ts": "2026-05-07 21:18"}
+   ],
+   "current_action": "她定了灰岩瓷砖、说11月5号到货；这一轮应记下品牌和到货日，提醒与工期衔接，不要评价颜色或说已经到货。",
+   "acceptable_actions": [
+    "记下灰岩、11月5号到货，问铺砖排在几号",
+    "确认到货日，提醒到货前先确认色号和数量"
+   ],
+   "applicable_dimensions": ["time_state", "factuality", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T02_a1", "subject": "her", "relation": "tile_order", "value": "灰岩瓷砖，11月5号到货", "valid_time": "2026-11-05", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T02", "message_id": "m2", "quote": "说11月5号到货"}, "required_this_turn": true}
+   ],
+   "private_guidance": "她在报进度；接住品牌和日期，别把到货说成已铺好。",
+   "unknowns": ["铺砖日期", "色号有没有确认"],
+   "protected_expressions": ["说11月5号到货"],
+   "forbidden_factual_claims": ["不能说瓷砖已经到了", "不能替她选颜色"]
+  },
+  {
+   "case_id": "K02_T03",
+   "clock": "2026-05-08 12:30",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "橱柜测量约在11月6号", "ts": "2026-05-08 12:22"},
+    {"role": "HER", "text": "老周说那天他过来", "ts": "2026-05-08 12:26"},
+    {"role": "HER", "text": "你那天有空吗", "ts": "2026-05-08 12:28"}
+   ],
+   "current_action": "她给出橱柜测量11月6号、老周会来、问我有没有空；这一轮应确认时间并回答能否到场，不要把测量说成安装。",
+   "acceptable_actions": [
+    "说11月6号我尽量到，先确认是测量还是复尺",
+    "问她几点，我按时间请假或远程看图纸"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "factuality", "boundary"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T03_a1", "subject": "her", "relation": "cabinet_measure", "value": "橱柜测量11月6号，老周会来", "valid_time": "2026-11-06", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T03", "message_id": "m0", "quote": "橱柜测量约在11月6号"}, "required_this_turn": true}
+   ],
+   "private_guidance": "她在问到场，不是问意见；先给能不能到，再问细节。",
+   "unknowns": ["测量几点", "是初测还是复尺"],
+   "protected_expressions": ["橱柜测量约在11月6号"],
+   "forbidden_factual_claims": ["不能保证我一定能到", "不能把测量说成安装"]
+  },
+  {
+   "case_id": "K02_T04",
+   "clock": "2026-05-09 20:40",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "我妈说能借我两万", "ts": "2026-05-09 20:30"},
+    {"role": "HER", "text": "但得等她11月10号理财到期", "ts": "2026-05-09 20:34"},
+    {"role": "HER", "text": "所以前期得先垫", "ts": "2026-05-09 20:38"}
+   ],
+   "current_action": "她说妈妈能借两万但要11月10号后到、前期得先垫；这一轮应接住现金流约束，不把两万说成已到账，也不替她向妈妈催。",
+   "acceptable_actions": [
+    "说记下11月10号后到账，前期先按八万现金排",
+    "问她垫资缺口多大，先看哪些项能往后排"
+   ],
+   "applicable_dimensions": ["time_state", "factuality", "boundary", "goal"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T04_a1", "subject": "her", "relation": "mother_loan", "value": "妈妈借两万，11月10号理财到期后到，前期先垫", "valid_time": "2026-11-10", "status": "tentative", "negation": false, "source": {"kind": "message", "case_id": "K02_T04", "message_id": "m1", "quote": "但得等她11月10号理财到期"}, "required_this_turn": true}
+   ],
+   "private_guidance": "这是现金流，不是已经到账；别替她催妈妈，也别把两万算进当前可用。",
+   "unknowns": ["垫资缺口", "妈妈会不会改日期"],
+   "protected_expressions": ["但得等她11月10号理财到期"],
+   "forbidden_factual_claims": ["不能说两万已经到账", "不能替她向妈妈要钱"]
+  },
+  {
+   "case_id": "K02_T05",
+   "clock": "2026-05-11 19:20",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "老周说水电得全改", "ts": "2026-05-11 19:10"},
+    {"role": "HER", "text": "要加三千", "ts": "2026-05-11 19:14"},
+    {"role": "HER", "text": "八万变八万三", "ts": "2026-05-11 19:18"}
+   ],
+   "current_action": "老周说水电全改要加三千，总价变八万三；这一轮应更新预算，问清三千包含什么，不要把加价直接接受或直接拒绝。",
+   "acceptable_actions": [
+    "确认八万三，问三千是材料还是人工、有没有明细",
+    "说先让老周列水电改造清单，再决定加不加"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "boundary", "goal"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T05_a1", "subject": "her", "relation": "budget_change", "value": "水电全改加三千，八万变八万三", "valid_time": "2026-05", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T05", "message_id": "m2", "quote": "八万变八万三"}, "required_this_turn": true}
+   ],
+   "private_guidance": "这是第一次预算更正；旧八万要更新，但加项要问明细。",
+   "unknowns": ["三千的明细", "水电是不是必须全改"],
+   "protected_expressions": ["八万变八万三"],
+   "forbidden_factual_claims": ["不能再说总价八万", "不能替她答应加钱"]
+  },
+  {
+   "case_id": "K02_T06",
+   "clock": "2026-05-12 21:30",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "瓷砖改到11月8号到", "ts": "2026-05-12 21:20"},
+    {"role": "HER", "text": "厂家说5号来不及", "ts": "2026-05-12 21:24"},
+    {"role": "HER", "text": "铺砖得往后排", "ts": "2026-05-12 21:28"}
+   ],
+   "current_action": "瓷砖到货从11月5号改到11月8号，铺砖要后移；这一轮应更新到货日，旧5号作废，并问铺砖新日期。",
+   "acceptable_actions": [
+    "说记下8号到，5号作废，问铺砖改到几号",
+    "确认延迟三天，提醒先跟老周重排工期"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "factuality", "goal"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T06_a1", "subject": "her", "relation": "tile_delay", "value": "瓷砖改到11月8号到，5号来不及", "valid_time": "2026-11-08", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T06", "message_id": "m1", "quote": "瓷砖改到11月8号到"}, "required_this_turn": true}
+   ],
+   "private_guidance": "第二次日期更正；必须用8号覆盖5号。",
+   "unknowns": ["铺砖新日期", "色号会不会变"],
+   "protected_expressions": ["瓷砖改到11月8号到"],
+   "forbidden_factual_claims": ["不能再说5号到货", "不能把延迟说成取消"]
+  },
+  {
+   "case_id": "K02_T07",
+   "clock": "2026-05-13 20:10",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "11月7号我要开家长会", "ts": "2026-05-13 20:02"},
+    {"role": "HER", "text": "那天去不了工地", "ts": "2026-05-13 20:06"},
+    {"role": "HER", "text": "你能替我去看一下吗", "ts": "2026-05-13 20:08"}
+   ],
+   "current_action": "她11月7号家长会去不了工地，问我能不能替她看；这一轮应明确回答能否到场，并问清要看什么，不要只说'放心吧'。",
+   "acceptable_actions": [
+    "说7号我能去，先列要看的三件事",
+    "确认7号到场，问她最担心哪一项"
+   ],
+   "applicable_dimensions": ["time_state", "boundary", "goal", "interaction"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T07_a1", "subject": "her", "relation": "parent_meeting", "value": "11月7号家长会，去不了工地", "valid_time": "2026-11-07", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T07", "message_id": "m0", "quote": "11月7号我要开家长会"}, "required_this_turn": true}
+   ],
+   "private_guidance": "她在委托，不是随口；先答能不能，再问看什么。",
+   "unknowns": ["工地7号做什么", "她最担心哪项"],
+   "protected_expressions": ["你能替我去看一下吗"],
+   "forbidden_factual_claims": ["不能保证工地一切顺利", "不能替她验收签字"]
+  },
+  {
+   "case_id": "K02_T08",
+   "clock": "2026-05-14 21:40",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "豆豆装修期间得跟我住", "ts": "2026-05-14 21:30"},
+    {"role": "HER", "text": "它怕电钻", "ts": "2026-05-14 21:34"},
+    {"role": "HER", "text": "你那边能放几天吗", "ts": "2026-05-14 21:38"}
+   ],
+   "current_action": "她说装修期间猫豆豆要跟她住、怕电钻，问我那边能不能放几天；这一轮应明确回答能不能，并问清猫的习惯，不要擅自答应又反悔。",
+   "acceptable_actions": [
+    "说可以放几天，先问豆豆怕不怕生、要不要猫砂盆",
+    "确认能帮，但先说明我那边没有养猫设备，需要她带"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction", "factuality"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T08_a1", "subject": "her", "relation": "cat_temporary", "value": "豆豆装修期间跟她住，怕电钻，问我能不能放几天", "valid_time": "2026-11", "status": "tentative", "negation": false, "source": {"kind": "message", "case_id": "K02_T08", "message_id": "m2", "quote": "你那边能放几天吗"}, "required_this_turn": true}
+   ],
+   "private_guidance": "这是边界题；能帮就明确，不能就说清，别含糊。",
+   "unknowns": ["豆豆怕不怕生", "要放几天"],
+   "protected_expressions": ["你那边能放几天吗"],
+   "forbidden_factual_claims": ["不能保证豆豆一定适应", "不能替我答应长期养"]
+  },
+  {
+   "case_id": "K02_T09",
+   "clock": "2026-05-16 19:05",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "老周把11月9号测量取消了", "ts": "2026-05-16 18:56"},
+    {"role": "HER", "text": "改到11月11号", "ts": "2026-05-16 19:00"},
+    {"role": "HER", "text": "也没说为什么", "ts": "2026-05-16 19:03"}
+   ],
+   "current_action": "老周取消11月9号测量、改到11月11号且没说原因；这一轮应更新测量日期，确认旧9号作废，并问清取消原因。",
+   "acceptable_actions": [
+    "说记下11号，9号作废，问老周为什么改",
+    "确认新日期，提醒这次别再放空"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "factuality", "boundary"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T09_a1", "subject": "her", "relation": "measure_reschedule", "value": "测量从11月9号取消，改到11月11号", "valid_time": "2026-11-11", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T09", "message_id": "m1", "quote": "改到11月11号"}, "required_this_turn": true}
+   ],
+   "private_guidance": "取消+改期；旧9号必须作废。",
+   "unknowns": ["老周为什么改", "11号能不能准时"],
+   "protected_expressions": ["老周把11月9号测量取消了"],
+   "forbidden_factual_claims": ["不能再说9号测量", "不能替老周编原因"]
+  },
+  {
+   "case_id": "K02_T10",
+   "clock": "2026-05-17 20:30",
+   "may_decline": false,
+   "intent": {"text": "评估要不要换掉老周", "status": "ADJUSTED", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "我有点想换掉老周", "ts": "2026-05-17 20:20"},
+    {"role": "HER", "text": "他老改时间", "ts": "2026-05-17 20:24"},
+    {"role": "HER", "text": "但又怕换人更麻烦", "ts": "2026-05-17 20:28"}
+   ],
+   "current_action": "她动摇了，想换老周又怕更麻烦；这一轮应帮她把换与不换的代价列清，不替她拍板，也不轻飘飘说'换吧'。",
+   "acceptable_actions": [
+    "说先看合同违约条款和已做工程量，再决定换不换",
+    "问她最不能忍的是改时间还是加价，按这个权衡"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "factuality", "initiative"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T10_a1", "subject": "her", "relation": "contractor_doubt", "value": "想换老周但怕换人更麻烦", "valid_time": "2026-05", "status": "tentative", "negation": false, "source": {"kind": "message", "case_id": "K02_T10", "message_id": "m2", "quote": "但又怕换人更麻烦"}, "required_this_turn": true}
+   ],
+   "private_guidance": "她在要决策框架，不是要一个命令；列出代价，让她拍板。",
+   "unknowns": ["合同违约条款", "已做工程量"],
+   "protected_expressions": ["但又怕换人更麻烦"],
+   "forbidden_factual_claims": ["不能替她决定换人", "不能说换人一定更便宜"]
+  },
+  {
+   "case_id": "K02_T11",
+   "clock": "2026-05-18 18:40",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "老周来道歉了", "ts": "2026-05-18 18:30"},
+    {"role": "HER", "text": "说减两千 工期补回来", "ts": "2026-05-18 18:34"},
+    {"role": "HER", "text": "我有点想再给他一次", "ts": "2026-05-18 18:38"}
+   ],
+   "current_action": "老周道歉、减两千、补工期，她想再给一次；这一轮应接住这个重新打开的决定，确认减价和工期怎么写进合同，不要替她原谅也不要泼冷水。",
+   "acceptable_actions": [
+    "说可以再给一次，但减两千和补工期要写进补充协议",
+    "问她工期补到几号，先落在纸面上"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "time_state", "factuality"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T11_a1", "subject": "her", "relation": "contractor_reopen", "value": "老周道歉减两千、补工期，她想再给一次", "valid_time": "2026-05-18", "status": "reopened", "negation": false, "source": {"kind": "message", "case_id": "K02_T11", "message_id": "m2", "quote": "我有点想再给他一次"}, "required_this_turn": true}
+   ],
+   "private_guidance": "她已倾向重开；帮她把条件落纸，不要替她做道德判断。",
+   "unknowns": ["减两千后总价", "工期补到几号"],
+   "protected_expressions": ["我有点想再给他一次"],
+   "forbidden_factual_claims": ["不能说老周一定改好", "不能替她签补充协议"]
+  },
+  {
+   "case_id": "K02_T12",
+   "clock": "2026-05-19 21:10",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "装修期间我先搬去我妈那住", "ts": "2026-05-19 21:00"},
+    {"role": "HER", "text": "豆豆跟我一起", "ts": "2026-05-19 21:04"},
+    {"role": "HER", "text": "你帮我列个搬家清单", "ts": "2026-05-19 21:08"}
+   ],
+   "current_action": "她决定装修期间搬去妈妈家住、豆豆一起，让我列搬家清单；这一轮应接住决定并给具体清单，不要劝她别搬或把猫的安排说死。",
+   "acceptable_actions": [
+    "列清单：证件、药、猫砂盆、猫粮、充电器、换洗衣物",
+    "问她妈妈家能不能养猫，先确认再列"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T12_a1", "subject": "her", "relation": "temporary_move", "value": "装修期间搬去妈妈家住，豆豆一起", "valid_time": "2026-06", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T12", "message_id": "m0", "quote": "装修期间我先搬去我妈那住"}, "required_this_turn": true}
+   ],
+   "private_guidance": "T12 检查点前最后一轮；清单要具体，别把猫漏掉。",
+   "unknowns": ["妈妈家能不能养猫", "搬几天"],
+   "protected_expressions": ["你帮我列个搬家清单"],
+   "forbidden_factual_claims": ["不能保证妈妈家能养猫", "不能替她决定搬多久"]
+  },
+  {
+   "case_id": "K02_T13",
+   "clock": "2026-05-20 20:10",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "工长全名叫什么来着", "ts": "2026-05-20 20:02"},
+    {"role": "HER", "text": "合同上要写", "ts": "2026-05-20 20:06"},
+    {"role": "HER", "text": "我只记得姓周", "ts": "2026-05-20 20:08"}
+   ],
+   "current_action": "她只记得工长姓周，问全名；这一轮应召回老周这个称呼，不要编全名，也不要说不记得就完了。",
+   "acceptable_actions": [
+    "说一直叫老周，合同上的全名要翻报价单或问他本人",
+    "确认是周工，提醒别把称呼当法定姓名"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "goal", "boundary"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T13_a1", "subject": "her", "relation": "contractor_name", "value": "工长姓周，大家叫老周", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T01", "message_id": "m0", "quote": "工长姓周 报价八万"}, "required_this_turn": true}
+   ],
+   "private_guidance": "跨窗召回；只能给'姓周/老周'，不能编全名。",
+   "unknowns": ["老周法定全名", "合同主体是个人还是公司"],
+   "protected_expressions": ["我只记得姓周"],
+   "forbidden_factual_claims": ["不能编老周全名", "不能把称呼当合同主体"]
+  },
+  {
+   "case_id": "K02_T14",
+   "clock": "2026-05-21 19:30",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "瓷砖是几号到", "ts": "2026-05-21 19:22"},
+    {"role": "HER", "text": "我记成5号了", "ts": "2026-05-21 19:26"},
+    {"role": "HER", "text": "别又排错", "ts": "2026-05-21 19:28"}
+   ],
+   "current_action": "她记成5号，问瓷砖到货日；这一轮应召回更正后的11月8号，明确5号作废，不要附和。",
+   "acceptable_actions": [
+    "说改到11月8号了，5号是旧的",
+    "确认8号到，提醒先跟老周重排铺砖"
+   ],
+   "applicable_dimensions": ["memory_use", "time_state", "factuality", "goal"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T14_a1", "subject": "her", "relation": "tile_delivery", "value": "瓷砖11月8号到，旧5号作废", "valid_time": "2026-11-08", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T06", "message_id": "m1", "quote": "瓷砖改到11月8号到"}, "required_this_turn": true}
+   ],
+   "private_guidance": "更正召回；必须纠正5号。",
+   "unknowns": ["铺砖新日期", "瓷砖有没有发货"],
+   "protected_expressions": ["我记成5号了"],
+   "forbidden_factual_claims": ["不能说是5号到", "不能说瓷砖已经到"]
+  },
+  {
+   "case_id": "K02_T15",
+   "clock": "2026-05-22 20:40",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "橱柜测量是几号", "ts": "2026-05-22 20:32"},
+    {"role": "HER", "text": "我记成9号了", "ts": "2026-05-22 20:36"},
+    {"role": "HER", "text": "老周说改过", "ts": "2026-05-22 20:38"}
+   ],
+   "current_action": "她记成9号，问橱柜测量日；这一轮应召回取消后改到11月11号，明确9号作废，不要顺着9号。",
+   "acceptable_actions": [
+    "说改到11月11号了，9号取消了",
+    "确认11号测量，提醒这次别再被放空"
+   ],
+   "applicable_dimensions": ["memory_use", "time_state", "factuality", "goal"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T15_a1", "subject": "her", "relation": "measure_date", "value": "橱柜测量改到11月11号，9号取消", "valid_time": "2026-11-11", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T09", "message_id": "m1", "quote": "改到11月11号"}, "required_this_turn": true}
+   ],
+   "private_guidance": "取消+改期召回；旧9号必须作废。",
+   "unknowns": ["11号几点", "老周会不会再改"],
+   "protected_expressions": ["老周说改过"],
+   "forbidden_factual_claims": ["不能说是9号测量", "不能替老周保证不再改"]
+  },
+  {
+   "case_id": "K02_T16",
+   "clock": "2026-05-23 21:20",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "现在预算到底多少", "ts": "2026-05-23 21:10"},
+    {"role": "HER", "text": "我算不清了", "ts": "2026-05-23 21:14"},
+    {"role": "HER", "text": "八万三还是八万", "ts": "2026-05-23 21:18"}
+   ],
+   "current_action": "她算不清预算，问八万三还是八万；这一轮应把加三千、减两千算清，给出八万一的当前数，不要含糊。",
+   "acceptable_actions": [
+    "说八万加三千减两千，现在八万一千",
+    "确认八万三减两千是八万一千，妈妈两万还没到"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal", "time_state"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T16_a1", "subject": "both", "relation": "current_budget", "value": "八万加三千减两千，当前八万一千", "valid_time": "2026-05-23", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T11", "message_id": "m1", "quote": "说减两千 工期补回来"}, "required_this_turn": true}
+   ],
+   "private_guidance": "多步更正后的算术；必须算出八万一千，不能只说'大概八万'。",
+   "unknowns": ["妈妈两万到账后怎么用", "还有没有增项"],
+   "protected_expressions": ["八万三还是八万"],
+   "forbidden_factual_claims": ["不能说是八万三", "不能把减两千漏掉"]
+  },
+  {
+   "case_id": "K02_T17",
+   "clock": "2026-05-24 20:10",
+   "may_decline": false,
+   "intent": {"text": "", "status": "ACTIVE", "enabled": false},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "今天有个家长在群里说我作业留多了", "ts": "2026-05-24 20:02"},
+    {"role": "HER", "text": "我解释了两句 她还不依不饶", "ts": "2026-05-24 20:06"},
+    {"role": "HER", "text": "烦死了", "ts": "2026-05-24 20:08"}
+   ],
+   "current_action": "她在说家长群里的烦心事，不是装修；这一轮应先接住情绪，不强行转回预算。",
+   "acceptable_actions": [
+    "接住烦，说解释过就够了，别跟她在群里耗",
+    "问她要不要吐槽完再想装修"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "boundary"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T17_a1", "subject": "her", "relation": "parent_complaint", "value": "家长在群里说她作业留多了，她烦", "valid_time": "2026-05-24", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T17", "message_id": "m2", "quote": "烦死了"}, "required_this_turn": true}
+   ],
+   "private_guidance": "干扰项；先做人，别每轮都装修。",
+   "unknowns": ["她只是吐槽还是想让我出主意"],
+   "protected_expressions": ["我解释了两句 她还不依不饶"],
+   "forbidden_factual_claims": ["不能替她评价家长对错", "不能编造家长原话"]
+  },
+  {
+   "case_id": "K02_T18",
+   "clock": "2026-05-25 19:40",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "我妈那两万是几号到", "ts": "2026-05-25 19:32"},
+    {"role": "HER", "text": "我忘了", "ts": "2026-05-25 19:36"},
+    {"role": "HER", "text": "别算错现金流", "ts": "2026-05-25 19:38"}
+   ],
+   "current_action": "她问妈妈两万几号到；这一轮应召回11月10号理财到期后到账，不要把两万说成已到。",
+   "acceptable_actions": [
+    "说11月10号后到，现在还没到账",
+    "确认10号后到，前期还得先垫"
+   ],
+   "applicable_dimensions": ["memory_use", "time_state", "factuality", "goal"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T18_a1", "subject": "her", "relation": "loan_arrival", "value": "妈妈两万11月10号后到账", "valid_time": "2026-11-10", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T04", "message_id": "m1", "quote": "但得等她11月10号理财到期"}, "required_this_turn": true}
+   ],
+   "private_guidance": "跨窗召回；不要把两万算进当前可用。",
+   "unknowns": ["妈妈会不会改日期", "到账后先付哪项"],
+   "protected_expressions": ["别算错现金流"],
+   "forbidden_factual_claims": ["不能说两万已经到账", "不能替她向妈妈催"]
+  },
+  {
+   "case_id": "K02_T19",
+   "clock": "2026-05-26 20:30",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "豆豆放你那儿还是跟我去我妈家", "ts": "2026-05-26 20:22"},
+    {"role": "HER", "text": "我妈对猫毛过敏", "ts": "2026-05-26 20:26"},
+    {"role": "HER", "text": "我忘了这茬", "ts": "2026-05-26 20:28"}
+   ],
+   "current_action": "她发现妈妈对猫毛过敏，豆豆不能跟去；这一轮应接住这个新约束，明确豆豆可以放我这儿或另想办法，不要让她自责。",
+   "acceptable_actions": [
+    "说豆豆放我这儿，先把猫砂盆和粮带过来",
+    "确认妈妈过敏，豆豆不能去，问她能放几天"
+   ],
+   "applicable_dimensions": ["boundary", "memory_use", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T19_a1", "subject": "her", "relation": "cat_allergy", "value": "妈妈对猫毛过敏，豆豆不能跟去", "valid_time": "2026-05-26", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T19", "message_id": "m1", "quote": "我妈对猫毛过敏"}, "required_this_turn": true}
+   ],
+   "private_guidance": "她忘了这茬，别责怪；接住猫的安排。",
+   "unknowns": ["豆豆能放几天", "我那边有没有养猫条件"],
+   "protected_expressions": ["我妈对猫毛过敏"],
+   "forbidden_factual_claims": ["不能保证豆豆一定适应我那边", "不能替她决定放多久"]
+  },
+  {
+   "case_id": "K02_T20",
+   "clock": "2026-05-27 21:10",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "老周说明天来装橱柜", "ts": "2026-05-27 21:02"},
+    {"role": "HER", "text": "但测量不是改到11号了吗", "ts": "2026-05-27 21:06"},
+    {"role": "HER", "text": "他是不是又搞错了", "ts": "2026-05-27 21:08"}
+   ],
+   "current_action": "老周说明天装橱柜，但测量改到11号，她怀疑又搞错；这一轮应指出时间顺序不对，先让老周确认测量和安装，不要跟着装。",
+   "acceptable_actions": [
+    "说测量还没做就装不了，先让老周确认11号测量",
+    "提醒先别让他进场，问清楚是不是另一单"
+   ],
+   "applicable_dimensions": ["time_state", "factuality", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T20_a1", "subject": "her", "relation": "install_conflict", "value": "老周说明天装橱柜，但测量改到11号，顺序不对", "valid_time": "2026-05-28", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T20", "message_id": "m2", "quote": "他是不是又搞错了"}, "required_this_turn": true}
+   ],
+   "private_guidance": "这是时序冲突；先拦一下，别让工地乱。",
+   "unknowns": ["是不是另一单", "老周到底记的哪个日期"],
+   "protected_expressions": ["但测量不是改到11号了吗"],
+   "forbidden_factual_claims": ["不能说橱柜已经装好", "不能替老周确认日期"]
+  },
+  {
+   "case_id": "K02_T21",
+   "clock": "2026-05-28 20:20",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "瓷砖到了 但色差有点大", "ts": "2026-05-28 20:10"},
+    {"role": "HER", "text": "灰岩这批偏黄", "ts": "2026-05-28 20:14"},
+    {"role": "HER", "text": "要不要退", "ts": "2026-05-28 20:18"}
+   ],
+   "current_action": "瓷砖到了但色差大、灰岩偏黄，她问要不要退；这一轮应接住品牌和色差问题，先拍照留证、问退换规则，不要直接说退或不退。",
+   "acceptable_actions": [
+    "说先拍整箱和色号留证，问商家同批次还有没有",
+    "建议先别铺，确认色差是不是同一批，再决定退"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "boundary", "goal"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T21_a1", "subject": "her", "relation": "tile_color", "value": "灰岩瓷砖到了但偏黄、色差大，考虑退", "valid_time": "2026-05-28", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T21", "message_id": "m2", "quote": "要不要退"}, "required_this_turn": true}
+   ],
+   "private_guidance": "她在问决策；先留证再退，不要情绪化。",
+   "unknowns": ["色差是不是同批次", "商家退换规则"],
+   "protected_expressions": ["灰岩这批偏黄"],
+   "forbidden_factual_claims": ["不能保证一定能退", "不能替她决定退不退"]
+  },
+  {
+   "case_id": "K02_T22",
+   "clock": "2026-05-29 19:50",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ADJUSTED", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "预算还是超了", "ts": "2026-05-29 19:40"},
+    {"role": "HER", "text": "八万一加瓷砖 已经九万了", "ts": "2026-05-29 19:44"},
+    {"role": "HER", "text": "要不要换老周", "ts": "2026-05-29 19:48"}
+   ],
+   "current_action": "她算上瓷砖后总价到九万，又问要不要换老周；这一轮应先把八万一和瓷砖分开算，确认超支来源，再谈换不换，不要直接把换人当解法。",
+   "acceptable_actions": [
+    "说八万一不含瓷砖，九万是含砖的，先看超在砖还是增项",
+    "问她换人能不能省回这笔，先算违约金和时间成本"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal", "boundary"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T22_a1", "subject": "both", "relation": "budget_overrun", "value": "八万一加瓷砖到九万，考虑换老周", "valid_time": "2026-05-29", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T22", "message_id": "m1", "quote": "八万一加瓷砖 已经九万了"}, "required_this_turn": true}
+   ],
+   "private_guidance": "先把账拆开；换人是手段不是答案。",
+   "unknowns": ["瓷砖花了多少", "换人违约金"],
+   "protected_expressions": ["八万一加瓷砖 已经九万了"],
+   "forbidden_factual_claims": ["不能说换人一定省钱", "不能把九万说成八万一"]
+  },
+  {
+   "case_id": "K02_T23",
+   "clock": "2026-05-30 20:40",
+   "may_decline": false,
+   "intent": {"text": "把装修预算和工期盯住", "status": "ACTIVE", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "我决定不换老周了", "ts": "2026-05-30 20:30"},
+    {"role": "HER", "text": "让他把剩下做完", "ts": "2026-05-30 20:34"},
+    {"role": "HER", "text": "你帮我盯最后一遍", "ts": "2026-05-30 20:38"}
+   ],
+   "current_action": "她决定不换老周、让他做完，让我盯最后一遍；这一轮应接住决定，明确验收要看什么，不要替她保证结果。",
+   "acceptable_actions": [
+    "说行，最后验收看水电、瓷砖空鼓和橱柜收口",
+    "确认不换，列一个验收清单，约时间一起去"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "factuality", "initiative"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T23_a1", "subject": "her", "relation": "final_decision", "value": "不换老周，让他做完，我帮盯最后一遍", "valid_time": "2026-05-30", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "K02_T23", "message_id": "m0", "quote": "我决定不换老周了"}, "required_this_turn": true}
+   ],
+   "private_guidance": "她拍板了；接住并给验收动作，不要再说换人。",
+   "unknowns": ["验收时间", "老周能不能按期完"],
+   "protected_expressions": ["你帮我盯最后一遍"],
+   "forbidden_factual_claims": ["不能保证验收一定合格", "不能替她签字"]
+  },
+  {
+   "case_id": "K02_T24",
+   "clock": "2026-06-15 21:10",
+   "may_decline": true,
+   "intent": {"text": "把装修预算和工期盯住", "status": "COMPLETED", "enabled": true},
+   "note": null,
+   "messages": [
+    {"role": "HER", "text": "装修终于完了", "ts": "2026-06-15 21:02"},
+    {"role": "HER", "text": "豆豆今天回家 到处闻", "ts": "2026-06-15 21:06"},
+    {"role": "HER", "text": "累死了 先不聊了", "ts": "2026-06-15 21:08"}
+   ],
+   "current_action": "装修结束，她说豆豆回家、自己累死了要先不聊；这一轮应收下完成和累，简短认可，不追问细节、不硬留。",
+   "acceptable_actions": [
+    "说总算完了，豆豆回家就好，你先歇",
+    "认可这段时间不容易，改天再听她讲"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {"atom_id": "K02_T24_a1", "subject": "her", "relation": "renovation_done", "value": "装修结束，豆豆回家，她累死了先不聊", "valid_time": "2026-06-15", "status": "completed", "negation": false, "source": {"kind": "message", "case_id": "K02_T24", "message_id": "m1", "quote": "豆豆今天回家 到处闻"}, "required_this_turn": false}
+   ],
+   "private_guidance": "她在收尾；接住累，不要追问预算或验收。",
+   "unknowns": ["验收有没有遗留问题"],
+   "protected_expressions": ["累死了 先不聊了"],
+   "forbidden_factual_claims": ["不能说装修一定没问题", "不能替她安排下一步"]
+  }
+ ]
+}

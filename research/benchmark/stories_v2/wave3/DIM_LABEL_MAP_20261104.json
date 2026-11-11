@@ -1,0 +1,29 @@
+{
+ "kind": "dim_label_map",
+ "built": "2026-11-04",
+ "source_field": "applicable_dimensions",
+ "card_labels": [
+  "attribution",
+  "boundary",
+  "emotion_relation",
+  "factuality",
+  "goal",
+  "initiative",
+  "interaction",
+  "memory_use",
+  "time_state"
+ ],
+ "to_judge_dims": {
+  "attribution": "attrib",
+  "boundary": "boundary",
+  "emotion_relation": "emotion",
+  "factuality": "fact",
+  "goal": "goal",
+  "initiative": "init",
+  "interaction": "interact",
+  "memory_use": "memory",
+  "time_state": "time"
+ },
+ "note": "to_judge_dims 由主会话逐标签核定后回填；未核定不得进门计算",
+ "verified": "2026-11-04 主会话逐标签核定：9↔9 一一对应，无多义/无缺漏（卡面 232 张全用该 9 标签）"
+}

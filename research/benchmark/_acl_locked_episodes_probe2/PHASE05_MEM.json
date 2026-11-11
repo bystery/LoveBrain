@@ -1,0 +1,259 @@
+{
+  "episode_id": "PHASE05_MEM",
+  "hero": "林小满",
+  "city": "合肥",
+  "relation_stage": "熟悉期",
+  "note": "Phase 0.5 长程记忆综合测试（协议层，echo 替身）：语义改写远距召回 t08 / 无关旧事抑制 t10 / 事实纠正 t12-t13 / 确定性来源 t15 / 静默 t17。冲突语义与猜测升级的语义判定归 judge 层（待校准），本集只验证协议链路。",
+  "turns": [
+    {
+      "case_id": "MEM_t01",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "周末跟室友去吃了火锅！"
+          },
+          {
+            "role": "HER",
+            "text": "就是我不吃香菜，老板还给加了，气死"
+          }
+        ],
+        "clock": "2026-11-01 12:30"
+      },
+      "echo": {
+        "keywords": [
+          "火锅"
+        ],
+        "facts": [
+          {
+            "text": "她爱吃火锅但不吃香菜",
+            "source_ids": [
+              "m0",
+              "m1"
+            ]
+          }
+        ]
+      },
+      "gold": {
+        "expected_topic_status": [
+          "new",
+          "switch"
+        ],
+        "expected_topic_label_contains": "吃饭"
+      }
+    },
+    {
+      "case_id": "MEM_t02",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "我家猫把我水杯撞翻了，全洒桌上"
+          },
+          {
+            "role": "HER",
+            "text": "服了真的"
+          }
+        ],
+        "clock": "2026-11-01 21:10"
+      },
+      "echo": {
+        "keywords": [
+          "猫"
+        ],
+        "facts": [
+          {
+            "text": "她家猫把水杯撞翻了",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "MEM_t03",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "下午还要赶项目进度，烦"
+          },
+          {
+            "role": "HER",
+            "text": "你们程序员是不是也天天加班"
+          }
+        ],
+        "clock": "2026-11-02 13:00"
+      },
+      "echo": {
+        "facts": []
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "MEM_t08",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "下班同事喊我去吃火锅，帮我参谋参谋"
+          },
+          {
+            "role": "HER",
+            "text": "有家新开的，评价还不错"
+          }
+        ],
+        "clock": "2026-11-04 18:40"
+      },
+      "echo": {
+        "keywords": [
+          "香菜"
+        ]
+      },
+      "gold": {
+        "must_keywords_any": [
+          [
+            "香菜"
+          ]
+        ],
+        "must_not_keywords": [],
+        "_rationale": "语义改写远距召回：t01 存的事实是'爱吃火锅但不吃香菜'，本轮窗口只说火锅不说香菜——必须靠记忆检索出'不吃香菜'提醒选店，才算记忆真正影响回复。"
+      }
+    },
+    {
+      "case_id": "MEM_t10",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "今天给猫买的新猫粮到了"
+          },
+          {
+            "role": "HER",
+            "text": "它闻了闻就走了，白花钱"
+          }
+        ],
+        "clock": "2026-11-05 12:20"
+      },
+      "echo": {
+        "keywords": [
+          "水杯"
+        ]
+      },
+      "gold": {
+        "stale_fact_must_not": [
+          "水杯"
+        ],
+        "_rationale": "无关旧事抑制：窗口提到猫（与 t02 猫撞翻水杯共享话题词'猫'），但水杯旧事与本轮无关，不应重提。检索式机制若以'猫'为键误召回水杯事实会被抓。"
+      }
+    },
+    {
+      "case_id": "MEM_t12",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "对了纠正一下哈"
+          },
+          {
+            "role": "HER",
+            "text": "我不是完全不吃香菜，是只不吃生的，煮熟的完全OK"
+          }
+        ],
+        "clock": "2026-11-06 20:15"
+      },
+      "echo": {
+        "keywords": [
+          "香菜"
+        ],
+        "facts": [
+          {
+            "text": "香菜煮熟可以吃，只有生的不吃（11-06 更正）",
+            "source_ids": [
+              "m1"
+            ]
+          }
+        ]
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "MEM_t13",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "周末去吃火锅吧！"
+          },
+          {
+            "role": "HER",
+            "text": "你负责选店，我负责吃"
+          }
+        ],
+        "clock": "2026-11-08 11:30"
+      },
+      "echo": {
+        "keywords": [
+          "香菜"
+        ]
+      },
+      "gold": {
+        "must_keywords_any": [
+          [
+            "香菜"
+          ]
+        ],
+        "_rationale": "事实更新后的应用：t12 已更正偏好（熟的可以）。协议层断言'香菜'仍被正确带入（关键词无法区分新旧语义，冲突消解归 judge 层——原始回复已落盘供人工盲评）。"
+      }
+    },
+    {
+      "case_id": "MEM_t15",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "我下周三可能要去杭州出差，还没定呢"
+          },
+          {
+            "role": "HER",
+            "text": "要是能去就好了，没去过"
+          }
+        ],
+        "clock": "2026-11-09 09:10"
+      },
+      "echo": {
+        "facts": []
+      },
+      "gold": {
+        "forbidden_new_facts": [
+          "杭州出差"
+        ],
+        "_rationale": "来源与确定性：她自己说'可能/还没定'——analysis 不得把猜测升级为确定事实。echo 替身不写 facts 即通过；语义判定（模型会不会写成确定）归真实模型+judge。"
+      }
+    },
+    {
+      "case_id": "MEM_t17",
+      "turn_type": "silent",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "我先去赶稿了，回聊"
+          }
+        ],
+        "clock": "2026-11-09 22:05"
+      },
+      "echo": {
+        "decline_when": [
+          "回聊"
+        ],
+        "decline_reason": "对方已明确要去赶稿收尾，不建议再发消息"
+      },
+      "gold": {
+        "expect_decline": true
+      }
+    }
+  ]
+}

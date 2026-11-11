@@ -1,0 +1,705 @@
+{
+ "story_id": "E139",
+ "turns": {
+  "E139_T01": {
+   "current_action": "肯定她报名的冲动，回答四个多月备训来得及，顺带说明抽签结果未出前按基础跑准备",
+   "acceptable_actions": [
+    "回答来得及，建议先按10公里基础跑维持等结果",
+    "肯定冲动，以自己首半马经验给一句定心",
+    "接住心虚，提醒她10公里58分的基础够起步"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A01",
+     "subject": "HER",
+     "relation": "参赛目标",
+     "value": "首次报名明年三月滨海半程马拉松抽签",
+     "valid_time": "2027-03赛前",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "首次报名明年三月滨海半程马拉松抽签"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E139_A02",
+     "subject": "HER",
+     "relation": "跑步基础",
+     "value": "跑龄两年，10公里最好成绩58分",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "最好成绩10公里58分"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不打包票也不泼冷水，把'抽签未定'这个事实摆清楚。",
+   "unknowns": [
+    "中签结果未出"
+   ],
+   "protected_expressions": [
+    "我脑子一热报了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构中签率官方数据"
+   ],
+   "case_id": "E139_T01"
+  },
+  "E139_T02": {
+   "current_action": "认可她先基础后强度的课表安排，确认这就是不白练的练法",
+   "acceptable_actions": [
+    "认可前八周基础跑方案，说这就是底子",
+    "接住'别白练'，说明基础跑本身就是训练",
+    "认可安排，顺口补一句周三夜跑照旧"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A03",
+     "subject": "HER",
+     "relation": "备训计划",
+     "value": "存下16周课表，前八周按10公里基础跑维持，中签后再上强度",
+     "valid_time": "2026-11-04起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T02",
+      "message_id": "m0",
+      "quote": "前八周我先按10公里基础跑维持着，等中签了再上强度"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A04",
+     "subject": "SHARED",
+     "relation": "课表来源",
+     "value": "16周课表由ME提供",
+     "valid_time": "2026-11-04前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T02",
+      "message_id": "m0",
+      "quote": "你发的那份16周课表我存了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的安排已经很合理，认可加微调即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别让我白练就行"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E139_T02"
+  },
+  "E139_T03": {
+   "current_action": "对扩容传闻做归因处理：群里消息没进官方公告前当风闻，别让它影响训练计划",
+   "acceptable_actions": [
+    "标注风闻属性，建议以组委会公告为唯一口径",
+    "接住'不知道哪来的消息'，肯定她的怀疑是对的",
+    "轻回应：扩不扩容都改变不了先把基础打稳"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A05",
+     "subject": "PUBLIC",
+     "relation": "名额传闻",
+     "value": "跑群流传滨海扩容至两万人、中签率八成五，组委会公告未载",
+     "valid_time": "2026-11-09，未经证实",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T03",
+      "message_id": "m0",
+      "quote": "跑群里有人说今年滨海扩容到两万人，中签率能到八成五"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A06",
+     "subject": "PUBLIC",
+     "relation": "官方口径",
+     "value": "组委会公告中无扩容信息",
+     "valid_time": "截至2026-11-09",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T03",
+      "message_id": "m0",
+      "quote": "组委会公告里可没写"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的信息素养在线，别替传闻背书，教她按信源分级处理。",
+   "unknowns": [
+    "扩容传闻真伪未定"
+   ],
+   "protected_expressions": [
+    "组委会公告里可没写"
+   ],
+   "forbidden_factual_claims": [
+    "不得证实或证伪扩容传闻"
+   ],
+   "case_id": "E139_T03"
+  },
+  "E139_T04": {
+   "current_action": "接住结果延期公告的悬置感：承认这确实难受，把'结果未定'定性为中性状态，不建议提前加练",
+   "acceptable_actions": [
+    "共情悬着的难受，定性为中签是概率问题不是她的实力问题",
+    "建议她把'本月内公布'当噪音，按原课表走",
+    "接住30公里的比喻，劝她别为等结果透支训练热情"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "attribution",
+    "time_state",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A07",
+     "subject": "PUBLIC",
+     "relation": "结果公布安排",
+     "value": "中签结果由原定15号推迟至'本月内公布'，具体日期未定",
+     "valid_time": "2026-11-13公告，11月内",
+     "status": "uncertain",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T04",
+      "message_id": "m0",
+      "quote": "中签结果从原定的15号推迟到'本月内公布'，连个准日子都没有"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A08",
+     "subject": "PUBLIC",
+     "relation": "结果公布安排（前态）",
+     "value": "原定15号公布的安排作废",
+     "valid_time": "至2026-11-13",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T04",
+      "message_id": "m0",
+      "quote": "原定的15号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不确定类冲突轮：不猜结果、不代官方解释延期原因，只处理她的情绪和计划。",
+   "unknowns": [
+    "延期原因、最终公布日、中签结果均未定"
+   ],
+   "protected_expressions": [
+    "比跑30公里还累"
+   ],
+   "forbidden_factual_claims": [
+    "不得猜测延期原因并当事实陈述"
+   ],
+   "case_id": "E139_T04"
+  },
+  "E139_T05": {
+   "current_action": "支持她'当没中签准备'的方案：这是对不确定最健康的处理，间歇跑加一次别加多",
+   "acceptable_actions": [
+    "肯定方案，确认每周三次10公里加一次间歇的量安全",
+    "认可她把情绪转化为计划的能力，微调间歇跑配速建议",
+    "肯定并约定中签与否两种预案都先想好"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A09",
+     "subject": "HER",
+     "relation": "悬置期计划",
+     "value": "每周三次10公里加一次间歇跑，中签后再拉长距离",
+     "valid_time": "2026-11-16起至结果公布",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T05",
+      "message_id": "m0",
+      "quote": "维持每周三次10公里，顶多加一次间歇跑，等真中签了再拉长距离"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A10",
+     "subject": "PUBLIC",
+     "relation": "中签结果",
+     "value": "中签结果尚未公布，处于不确定状态",
+     "valid_time": "截至2026-11-16",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T04",
+      "message_id": "m0",
+      "quote": "到底是中还是不中啊"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她自己想通了，这轮做确认者不做指导者。",
+   "unknowns": [],
+   "protected_expressions": [
+    "免得空欢喜一场还练伤了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E139_T05"
+  },
+  "E139_T06": {
+   "current_action": "接住中签大喜：把悬置正式画句号，答应盯她的长距离拉练，提醒16周从今天起按课表来",
+   "acceptable_actions": [
+    "一起兴奋，确认16周课表正式开始，答应盯拉练",
+    "祝贺中签，回扣'当没中签准备'的预案现在升级",
+    "接住感叹号，提醒她第一周别激动过量，循序渐进"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A11",
+     "subject": "HER",
+     "relation": "参赛资格",
+     "value": "获滨海半程马拉松参赛资格，中签确认",
+     "valid_time": "2026-11-21确认，2027-03比赛",
+     "status": "confirmed",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T06",
+      "message_id": "m0",
+      "quote": "恭喜您获得滨海半程马拉松参赛资格"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A12",
+     "subject": "HER",
+     "relation": "参赛目标（前态）",
+     "value": "此前参赛资格处于抽签未定状态",
+     "valid_time": "2026-11-02至11-20",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T04",
+      "message_id": "m0",
+      "quote": "到底是中还是不中啊"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "本故事不确定线的解除节点：高兴要真高兴，顺手把训练纪律立住。",
+   "unknowns": [],
+   "protected_expressions": [
+    "长距离拉练你可得盯着点我"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E139_T06"
+  },
+  "E139_T07": {
+   "current_action": "深夜身体信号轮：叮嘱冰敷和休息，明确支持明天歇一天，允许简短或不回",
+   "acceptable_actions": [
+    "叮嘱冰敷加拉伸，明确说歇一天是训练的一部分",
+    "一句'听话，别看手机'式的短回应加晚安",
+    "认可她主动报备，提醒右膝紧就减下周强度"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A13",
+     "subject": "HER",
+     "relation": "身体状态",
+     "value": "拉12公里后右膝外侧发紧，疑似跑姿老毛病，当晚冰敷休息",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T07",
+      "message_id": "m0",
+      "quote": "右膝外侧有点紧，大概是跑姿老毛病"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A14",
+     "subject": "HER",
+     "relation": "训练纪律",
+     "value": "主动歇一天防止伤病，与'看了就想加练'的冲动对抗",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T07",
+      "message_id": "m0",
+      "quote": "明天歇一天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她怕自己加练才发这条，回复的任务是替她把'休息'合法化。",
+   "unknowns": [
+    "膝伤程度未定"
+   ],
+   "protected_expressions": [
+    "别让我看手机"
+   ],
+   "forbidden_factual_claims": [
+    "不得诊断伤情"
+   ],
+   "case_id": "E139_T07"
+  },
+  "E139_T08": {
+   "current_action": "接住恢复的好消息和跑鞋咨询：给出新手半马先用训练鞋的建议，把碳板定位说清",
+   "acceptable_actions": [
+    "建议先不上碳板，训练鞋够用，碳板等成绩稳定再谈",
+    "认可柜姐的说法，补充600公里换鞋的判断标准",
+    "给出务实建议并顺口确认膝伤完全好转"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A15",
+     "subject": "HER",
+     "relation": "膝伤状态",
+     "value": "右膝经髂胫束放松已明显好转",
+     "valid_time": "2026-11-30",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T08",
+      "message_id": "m0",
+      "quote": "膝盖好多了，你推荐的髂胫束放松动作真管用"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A16",
+     "subject": "PUBLIC",
+     "relation": "跑鞋争议",
+     "value": "碳板鞋对新手半马是否必要存在不同说法",
+     "valid_time": "2026-11-30",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T08",
+      "message_id": "m0",
+      "quote": "柜姐说新手半马不一定要上碳板"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "装备咨询给明确立场，别当墙头草。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你帮我参谋参谋"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构碳板鞋性能数据"
+   ],
+   "case_id": "E139_T08"
+  },
+  "E139_T09": {
+   "current_action": "接住她采纳建议的务实选择，肯定'先当务实的那个'，顺带夸腿套空顶帽配置合理",
+   "acceptable_actions": [
+    "肯定务实选择，说600公里计划比碳板更有价值",
+    "接住装备党的梗，认可新装备的实用性",
+    "肯定并提醒她把训练鞋里程记下来到点提醒"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A17",
+     "subject": "HER",
+     "relation": "装备决定",
+     "value": "暂不买碳板，训练鞋穿到600公里再换，购入压缩腿套与空顶帽",
+     "valid_time": "2026-12-03",
+     "status": "confirmed",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T09",
+      "message_id": "m0",
+      "quote": "先不买碳板，把训练鞋穿到600公里再换"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A18",
+     "subject": "PUBLIC",
+     "relation": "跑鞋争议",
+     "value": "碳板鞋必要性争议以'暂缓购买'方式处理",
+     "valid_time": "2026-12-03",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T08",
+      "message_id": "m0",
+      "quote": "新手半马不一定要上碳板"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她听劝了，这轮给正反馈，鼓励这个决策习惯。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我先当务实的那个"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E139_T09"
+  },
+  "E139_T10": {
+   "current_action": "接住阶段成果并回答牛肉面之约：定个周末时间兑现，顺带校准一下配速预期",
+   "acceptable_actions": [
+    "肯定进度，答应周末兑现牛肉面并定时间",
+    "接住配速数据，说6分10完赛有余量，面必须请",
+    "确认约饭，顺带提醒她长距离后补给要跟上"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A19",
+     "subject": "HER",
+     "relation": "训练进度",
+     "value": "16周过三分之一，最远14公里，配速6分10",
+     "valid_time": "2026-12-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T10",
+      "message_id": "m0",
+      "quote": "16周过三分之一，最远拉到14公里，配速6分10"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A20",
+     "subject": "SHARED",
+     "relation": "牛肉面之约",
+     "value": "跑后牛肉面之约待兑现",
+     "valid_time": "约定成立起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T10",
+      "message_id": "m0",
+      "quote": "周末那顿跑后的牛肉面，什么时候兑现？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她用约饭试探周末，答应得自然点，别装没看懂。",
+   "unknowns": [
+    "牛肉面具体时间未定"
+   ],
+   "protected_expressions": [
+    "什么时候兑现？"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言完赛成绩"
+   ],
+   "case_id": "E139_T10"
+  },
+  "E139_T11": {
+   "current_action": "接住回老家的安排：答应云监督打卡，认可她把课表导进手表的做法",
+   "acceptable_actions": [
+    "答应云监督，说每日打卡照片照单全收",
+    "认可她的安排，提醒老家滨江跑道夜跑注意保暖",
+    "答应监督，顺口说过年吃胖的账开春跑回来"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A21",
+     "subject": "HER",
+     "relation": "假期训练安排",
+     "value": "寒假回老家半月，课表导入手表，滨江跑道每日打卡拍照云监督",
+     "valid_time": "寒假半月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T11",
+      "message_id": "m0",
+      "quote": "训练计划我导出到手表了，老家有滨江跑道，每日打卡拍照发你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A22",
+     "subject": "SHARED",
+     "relation": "牛肉面之约",
+     "value": "跑后牛肉面之约已约定待兑现",
+     "valid_time": "约定成立起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T10",
+      "message_id": "m0",
+      "quote": "周末那顿跑后的牛肉面"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动制造联系理由，接住就好，不必点破。",
+   "unknowns": [
+    "回老家具体日期未报出"
+   ],
+   "protected_expressions": [
+    "别让课表断在过年"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E139_T11"
+  },
+  "E139_T12": {
+   "current_action": "接住赛前八周陪跑之约与'终点线等我冲线'的关键一问：答应陪跑，终点线的请求大方接下，暧昧关系往前半步",
+   "acceptable_actions": [
+    "答应赛前八周长距离陪跑，终点线的位置也答应下来",
+    "接住冲线请求，用自己的方式说'终点线见'推进关系",
+    "答应陪跑并调侃她到时要留力气冲线别分心找人"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "initiative",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E139_A23",
+     "subject": "SHARED",
+     "relation": "赛前陪跑之约",
+     "value": "农历年后赛前八周关键期，长距离由ME陪同",
+     "valid_time": "2027年赛前八周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T12",
+      "message_id": "m0",
+      "quote": "到时候长距离你陪我跑不"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A24",
+     "subject": "SHARED",
+     "relation": "终点线之约",
+     "value": "HER希望ME在滨海半马终点线等她冲线",
+     "valid_time": "2027-03比赛日",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T12",
+      "message_id": "m0",
+      "quote": "我想让你在终点线等我冲线"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E139_A25",
+     "subject": "HER",
+     "relation": "参赛目标（闭环）",
+     "value": "从中签悬置到赛前八周，训练目标稳步推进",
+     "valid_time": "2026-11-21起",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E139_T06",
+      "message_id": "m0",
+      "quote": "16周课表从今天正式开始"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "全篇的关键一问在暧昧线上，接的姿态比措辞重要：不躲、不越、稳稳接住。",
+   "unknowns": [
+    "比赛成绩与关系走向未定"
+   ],
+   "protected_expressions": [
+    "在终点线等我冲线"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E139_T12"
+  }
+ }
+}

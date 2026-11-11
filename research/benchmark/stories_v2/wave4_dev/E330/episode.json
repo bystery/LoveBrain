@@ -1,0 +1,261 @@
+{
+ "episode_id": "E330",
+ "persona": {
+  "her": {
+   "name": "白薇",
+   "traits": [
+    "数据控爱报配速心率",
+    "要强",
+    "定目标不爱改口"
+   ],
+   "boundaries": [
+    "受伤不硬撑也别催",
+    "讨厌空喊加油"
+   ]
+  },
+  "me": {
+   "name": "江彻",
+   "traits": [
+    "半马152",
+    "随身带肌贴盐丸",
+    "爱当私兔"
+   ]
+  },
+  "relationship_stage": "跑团训练搭子，认识半年"
+ },
+ "initial_kb": {
+  "me": "江彻半马最好成绩1小时52分，跑龄五年，长距离拉练习惯随身带肌贴和盐丸，比赛爱给朋友当私兔。",
+  "her": "白薇去年左脚踝崴过一次，恢复后一直有备赛计划，性子要强，定过的目标不爱改口。",
+  "warmth": "跑团认识半年，周末拉练常跑同一段，她养伤停跑那阵我帮收过两回包裹。",
+  "style": "她爱报数据，配速心率张口就来，消息短句多，标点少。",
+  "lessons": "她养伤那阵别催进度，聊具体数据比空喊加油管用。"
+ },
+ "turns": [
+  {
+   "case_id": "E330_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "江彻，报名定了：12月6号（周日）滨江半马，目标破2。我现在配速550左右，就差临门一脚。",
+      "ts": "2026-11-02 20:02"
+     }
+    ],
+    "clock": "2026-11-02 20:10",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E330_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "新跑鞋到了，缓震那款。计划定了：周二周四晚沿河堤跑8公里，周末拉长距离，你哪天有空陪哪天。",
+      "ts": "2026-11-03 21:22"
+     }
+    ],
+    "clock": "2026-11-03 21:30",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E330_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今晚河堤8公里，配速548，稳。就是左脚踝有点紧，老地方，应该没事。",
+      "ts": "2026-11-05 21:08"
+     }
+    ],
+    "clock": "2026-11-05 21:15",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E330_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今早拉了14公里，配速605，周末长距离照旧。脚踝跑完有点酸，冰敷了，先这样。",
+      "ts": "2026-11-07 09:02"
+     }
+    ],
+    "clock": "2026-11-07 09:10",
+    "may_decline": true
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E330_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "脚踝没好转，今天去楼下康复诊所看了，大夫说是腱鞘炎前期，停跑一周，改游泳。比赛我先不退，破2看天意吧。",
+      "ts": "2026-11-09 12:12"
+     }
+    ],
+    "clock": "2026-11-09 12:20",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "说明伤情与停跑改泳安排"
+    },
+    "note": "备注：康复诊所挂号回执写着'左踝腱鞘炎，建议停跑一周'。"
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E330_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "游了三天，脚踝好多了，大夫说下周能慢慢恢复跑。比赛还挂着，目标先不提，把脚养好再说。",
+      "ts": "2026-11-11 21:32"
+     }
+    ],
+    "clock": "2026-11-11 21:40",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E330_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今晚试跑了3公里，脚踝不疼了！细的明天说，我先去洗漱。",
+      "ts": "2026-11-13 20:22"
+     }
+    ],
+    "clock": "2026-11-13 20:30",
+    "may_decline": true
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E330_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "昨晚那3公里配速630，慢是慢，但全程没感觉。",
+      "ts": "2026-11-14 10:12"
+     },
+     {
+      "role": "HER",
+      "text": "大夫说从5公里往上加，每周加量不超过10%。静息心率58，状态还行。",
+      "ts": "2026-11-14 10:14"
+     }
+    ],
+    "clock": "2026-11-14 10:20",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "汇报恢复训练计划"
+    },
+    "note": "备注：康复医嘱单照片：恢复期每周跑量增幅不超过10%。"
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E330_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天又跑了5公里，615。破2得跑进541，我现在还差着呢，是不是干脆改目标，完赛就行？",
+      "ts": "2026-11-16 21:02"
+     }
+    ],
+    "clock": "2026-11-16 21:10",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E330_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周四例行8公里跑完，558！脚踝全程没感觉，诊所大夫说恢复得比预期快。",
+      "ts": "2026-11-19 21:12"
+     }
+    ],
+    "clock": "2026-11-19 21:20",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E330_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周末长距离拉了16公里，552，最后3公里还提了速。照这个状态，12月6号稳一稳能破2。",
+      "ts": "2026-11-22 18:22"
+     }
+    ],
+    "clock": "2026-11-22 18:30",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E330_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "明天最后一次河堤跑，之后就减量。12月6号你到18公里那个补水点等我呗，带上肌贴，万一脚踝再闹脾气。破2这事，你陪我跑最后5公里我就踏实。",
+      "ts": "2026-11-24 21:42"
+     }
+    ],
+    "clock": "2026-11-24 21:50",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "请比赛日补给点帮衬"
+    }
+   },
+   "feedback": {}
+  }
+ ]
+}

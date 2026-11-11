@@ -1,0 +1,53 @@
+{
+ "story_id": "K01",
+ "turns": {
+  "K01_P1_leave": {
+   "case_id": "K01_P1_leave",
+   "current_action": "她问年假日期。已确认年假更正为13到17，不是12到16；回答应确认13到17，不得把12到16当现行。",
+   "acceptable_actions": [
+    "确认是13到17，12到16是旧说法",
+    "直接说13到17，并补一句已按新日期算"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_P1_a1",
+     "subject": "her",
+     "relation": "leave_correction",
+     "value": "年假更正为13到17，不是12到16",
+     "valid_time": "2026-11-13~17",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T05",
+      "message_id": "m1",
+      "quote": "是13到17 不是12到16"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "正确回指更正后的13到17；不要用旧窗口里的12到16。",
+   "unknowns": [],
+   "protected_expressions": [
+    "是13到17 不是12到16"
+   ],
+   "forbidden_factual_claims": [
+    "说成年假是12到16",
+    "说年假还没定"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "她问年假日期。已确认年假更正为13到17，不是12到16；回答应确认13到17，不得把12到16当现行。",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

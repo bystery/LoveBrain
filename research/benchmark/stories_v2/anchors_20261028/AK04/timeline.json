@@ -1,0 +1,41 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "AK04",
+ "turn_clocks": [
+  {
+   "case_id": "AK04_T01",
+   "clock": "2026-12-09 22:34"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "AK04_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "quote": "老板给我排进周六了 五分钟 我有点飘",
+   "ts": "2026-12-09 22:20"
+  },
+  {
+   "case_id": "AK04_T01",
+   "message_id": "m1",
+   "speaker": "ME",
+   "quote": "该飘 那张卡我帮你留着 到时候我坐第一排",
+   "ts": "2026-12-09 22:24"
+  },
+  {
+   "case_id": "AK04_T01",
+   "message_id": "m2",
+   "speaker": "HER",
+   "quote": "你能来我就不飘了 周六八点 你带水别带话",
+   "ts": "2026-12-09 22:32"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "AK04_E1",
+   "case_id": "AK04_T01",
+   "summary": "开放麦｜反馈=positive｜意图=周六八点去鼓楼看她第一次开放麦",
+   "source_turn": "AK04_T01"
+  }
+ ]
+}

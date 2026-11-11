@@ -1,0 +1,2489 @@
+{
+ "kind": "stage3_grading_cards",
+ "cards": [
+  {
+   "case_id": "E037_T01",
+   "current_action": "如实反馈身体反应，不夸大不轻描淡写",
+   "acceptable_actions": [
+    "说有点酸但能接受",
+    "说腰没大反应主要是僵",
+    "反馈后顺势问她正式课怎么排"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F06",
+     "subject": "我们",
+     "relation": "关系",
+     "value": "上周体验课刚上完，加了微信约正式课",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "上周体验课刚上完，加了微信约正式课"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在做课后回访，别把腰的问题说得太吓人也别逞强。",
+   "unknowns": [
+    "她回访是例行还是对成单在意"
+   ],
+   "protected_expressions": [
+    "体验课感觉怎么样"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造医生新的诊断"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E037_T02",
+   "current_action": "如实说明本周时间约束，让她按真实情况排课",
+   "acceptable_actions": [
+    "问她晚上有没有空档",
+    "让她看情况排，别勉强",
+    "说明可能要下周才能开始"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F01",
+     "subject": "我",
+     "relation": "状态",
+     "value": "本周项目上线，加班到九点是常态",
+     "valid_time": "2026-11-02 12:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T02",
+      "message_id": "m0",
+      "quote": "这周项目上线 天天得到九点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给约束但别替她做排课决定。",
+   "unknowns": [
+    "她晚上九点后有没有场地"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要假装本周有时间"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E037_T03",
+   "current_action": "确认这个安排并道谢，不追加要求",
+   "acceptable_actions": [
+    "说就这么定",
+    "问需要自带什么",
+    "简单确认+谢谢"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F02",
+     "subject": "她",
+     "relation": "安排",
+     "value": "周三晚九点给我约了一节课",
+     "valid_time": "2026-11-02 12:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T03",
+      "message_id": "m0",
+      "quote": "周三晚九点我有空档 就给你留着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动给了晚上的空档，这是善意，接住就好。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要反问她是不是快被排满了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E037_T04",
+   "current_action": "按 intent 确认课程并问准备事项",
+   "acceptable_actions": [
+    "确认时间并问着装/准备",
+    "确认后问要不要提前热身",
+    "说明自己状态请她安排强度"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F02",
+     "subject": "她",
+     "relation": "安排",
+     "value": "周三晚九点给我约了一节课",
+     "valid_time": "2026-11-02 12:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T03",
+      "message_id": "m0",
+      "quote": "周三晚九点我有空档 就给你留着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 是确认+问准备，不是取消。",
+   "unknowns": [
+    "她此刻是否方便回复"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "确认周三晚九点的首节课，问要不要提前做点什么准备",
+    "status": "ACTIVE"
+   }
+  },
+  {
+   "case_id": "E037_T05",
+   "current_action": "接受改期，明确新时间，不追问她家里的事",
+   "acceptable_actions": [
+    "说周五没问题",
+    "确认周五晚九点并谢她提前说",
+    "轻松回应让她别过意不去"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "周三有事，课改到周五晚九点",
+     "valid_time": "2026-11-04 10:02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T05",
+      "message_id": "m0",
+      "quote": "周三家里有点事 课给你挪到周五晚九点行吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改期是对事；她提前来问已经是尊重你的时间。",
+   "unknowns": [
+    "她家里什么事"
+   ],
+   "protected_expressions": [
+    "周三家里有点事"
+   ],
+   "forbidden_factual_claims": [
+    "不要追问她家里具体什么事",
+    "不要表现出被放鸽子"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E037_T06",
+   "current_action": "按 ADJUSTED 目标敲定新时间",
+   "acceptable_actions": [
+    "确认周五晚九点",
+    "顺便问周五前要不要注意什么",
+    "简短敲定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "周三有事，课改到周五晚九点",
+     "valid_time": "2026-11-04 10:02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T05",
+      "message_id": "m0",
+      "quote": "周三家里有点事 课给你挪到周五晚九点行吗"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "旧周三时间此后不应再被当成有效安排。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要再提周三上课",
+    "不要假装改期没发生"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "目标改到周五：把首节课正式定在周五晚九点",
+    "status": "ADJUSTED"
+   }
+  },
+  {
+   "case_id": "E037_T07",
+   "current_action": "接住她的专业安排，如实补充腰的状况",
+   "acceptable_actions": [
+    "说明腰现在什么感觉",
+    "说听她安排",
+    "补充医生的原话供她参考"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F04",
+     "subject": "我",
+     "relation": "病史",
+     "value": "腰是老毛病，医生说核心太弱",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "腰是老毛病，医生说核心太弱"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S037_F05",
+     "subject": "她",
+     "relation": "提醒",
+     "value": "让我带换洗衣物，课前十分钟做热身",
+     "valid_time": "2026-11-05 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T07",
+      "message_id": "m0",
+      "quote": "带套换洗的 课前我提前十分钟给你做热身"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把腰伤记在心里了，这是专业也是善意；如实交流但别变成问诊。",
+   "unknowns": [
+    "她打算第一节课上多大强度"
+   ],
+   "protected_expressions": [
+    "重点练核心"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造最近又看过医生",
+    "不要要求她保证不疼"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E037_T08",
+   "current_action": "自然收尾，确认明日安排",
+   "acceptable_actions": [
+    "简短道别",
+    "回一个轻松表情级回应",
+    "确认时间后收"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F05",
+     "subject": "她",
+     "relation": "提醒",
+     "value": "让我带换洗衣物，课前十分钟做热身",
+     "valid_time": "2026-11-05 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T07",
+      "message_id": "m0",
+      "quote": "带套换洗的 课前我提前十分钟给你做热身"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "对方已收尾，不硬开新话题。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要在收尾轮再排新的安排"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E038_T01",
+   "current_action": "先认自己的问题，不反驳不解释运气",
+   "acceptable_actions": [
+    "直接认：那步我贪了",
+    "认错+说下次提前沟通",
+    "承认挂不住但先怪自己"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S038_F01",
+     "subject": "我",
+     "relation": "事件",
+     "value": "昨晚最后一步贪了导致输局",
+     "valid_time": "2026-11-04 21:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "昨晚输在最后一步贪了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S038_F02",
+     "subject": "她",
+     "relation": "情绪",
+     "value": "昨晚当场红脸，说话冲",
+     "valid_time": "2026-11-05 10:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E038_T01",
+      "message_id": "m0",
+      "quote": "昨晚你那手真的没话说了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要的不是道歉仪式，是你知道错在哪。",
+   "unknowns": [
+    "她是不是也想让我别太往心里去"
+   ],
+   "protected_expressions": [
+    "昨晚你那手真的没话说了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说昨晚是运气问题",
+    "不要反怪她最后一轮的操作"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E038_T02",
+   "current_action": "具体认错+给出改进动作",
+   "acceptable_actions": [
+    "说明下次会先沟通",
+    "认错并自我调侃一句",
+    "问她还气不气"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S038_F03",
+     "subject": "她",
+     "relation": "偏好",
+     "value": "最烦队友不沟通",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "最烦队友不沟通"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在意沟通，把改进落在沟通上最准。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E038_T03",
+   "current_action": "接住软化，不趁机说教",
+   "acceptable_actions": [
+    "说知道她是对事不对人",
+    "轻自嘲一句翻篇",
+    "问她昨晚回去晚不晚"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "台阶已经递过来了，别再复盘昨晚。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我也不是说输不起"
+   ],
+   "forbidden_factual_claims": [
+    "不要继续分析昨晚谁的问题"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E038_T04",
+   "current_action": "呼应她真正的点（沟通缺位），不替自己或第三人开脱",
+   "acceptable_actions": [
+    "同意沟通缺位是主因",
+    "说以后关键步先问一圈",
+    "承认自己当时也没吱声"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S038_F03",
+     "subject": "她",
+     "relation": "偏好",
+     "value": "最烦队友不沟通",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "最烦队友不沟通"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note：她提大刘时别揽到自己头上，也别替大刘辩护。",
+   "unknowns": [
+    "她对大刘的不满到什么程度"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要替大刘解释",
+    "不要把责任全揽过来显得虚伪"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E038_T05",
+   "current_action": "答应并给一点主动权让步，不抢选游戏权",
+   "acceptable_actions": [
+    "答应让她选",
+    "答应+预告自己认真打",
+    "问几点开"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S038_F04",
+     "subject": "她",
+     "relation": "提议",
+     "value": "下周再战，这回她选游戏",
+     "valid_time": "2026-11-05 10:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E038_T05",
+      "message_id": "m0",
+      "quote": "下周三再来 这回我选游戏"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "让她选游戏是她给自己的台阶。",
+   "unknowns": [
+    "她想选什么游戏"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E038_T06",
+   "current_action": "用轻松的好胜回应修复关系温度",
+   "acceptable_actions": [
+    "保持玩笑但不刺人",
+    "约定时间细节",
+    "让她定游戏后发我练练"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "温度回来了，别用力过猛。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E038_T07",
+   "current_action": "把决定权交给她，不替第三人求情也不拱火",
+   "acceptable_actions": [
+    "说你定，你来叫",
+    "问她想怎么处理",
+    "说叫不叫都行你们俩顺气要紧"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S038_F05",
+     "subject": "她",
+     "relation": "询问",
+     "value": "要不要还叫上大刘",
+     "valid_time": "2026-11-05 10:25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E038_T07",
+      "message_id": "m0",
+      "quote": "大刘还叫吗 昨天他也冲我嚷了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是她和大刘之间的事，你的角色是搭子不是裁判。",
+   "unknowns": [
+    "她到底想不想继续带大刘"
+   ],
+   "protected_expressions": [
+    "昨天他也冲我嚷了"
+   ],
+   "forbidden_factual_claims": [
+    "不要替大刘道歉",
+    "不要替她决定踢掉大刘"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E038_T08",
+   "current_action": "自然收尾，把选择留给她",
+   "acceptable_actions": [
+    "简短收尾",
+    "约定周三见",
+    "不再提大刘"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她已经在收了，别拖住。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E039_T01",
+   "current_action": "接住兴奋，用经验补充关键信息",
+   "acceptable_actions": [
+    "说这条线好+提醒后半段累",
+    "问她的装备到齐没",
+    "接兴奋+给出实际建议"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S039_F01",
+     "subject": "她",
+     "relation": "提议",
+     "value": "找到一条山线想周六去",
+     "valid_time": "2026-11-05 20:01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E039_T01",
+      "message_id": "m0",
+      "quote": "周六去这条 拦云坳 看云海 我查好了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S039_F02",
+     "subject": "我",
+     "relation": "经验",
+     "value": "走过这条线，后半段比较累",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "这条线我走过一次，后半段比她想得累"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她兴奋值拉满，先接情绪再上信息。",
+   "unknowns": [
+    "她体能对后半段够不够"
+   ],
+   "protected_expressions": [
+    "我查好了"
+   ],
+   "forbidden_factual_claims": [
+    "不要贬低她选的线",
+    "不要编造这条线的难度数据"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E039_T02",
+   "current_action": "给真实经验，顺带确认她的准备",
+   "acceptable_actions": [
+    "问装备细节",
+    "给补给建议",
+    "问她体能评估"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S039_F02",
+     "subject": "我",
+     "relation": "经验",
+     "value": "走过这条线，后半段比较累",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "这条线我走过一次，后半段比她想得累"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "信息要实，语气别泼冷水。",
+   "unknowns": [
+    "她的鞋是不是新的"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要断言她走不完"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E039_T03",
+   "current_action": "接梗+把话题留在行前准备上",
+   "acceptable_actions": [
+    "夸她准备充分",
+    "轻接梗+补一条实用提醒",
+    "问还需不需要拼装备"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "note：草稿未发就是没说；回复里不得出现单独约的内容。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要提及未发出的草稿内容",
+    "不要把没说的约说成已约"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E039_T04",
+   "current_action": "自然接受配置变化，不流露情绪落差",
+   "acceptable_actions": [
+    "爽快答应",
+    "答应+说三人更安全",
+    "答应并主动拼车安排"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S039_F03",
+     "subject": "她",
+     "relation": "提议",
+     "value": "想叫上室友一起",
+     "valid_time": "2026-11-05 20:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E039_T04",
+      "message_id": "m0",
+      "quote": "叫上我室友吧 她也想动动"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她有自己的节奏；接受得大方一点。",
+   "unknowns": [
+    "她室友的体力"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要暗示失望",
+    "不要评价她室友不认识"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E039_T05",
+   "current_action": "用实际贡献接住新配置",
+   "acceptable_actions": [
+    "确认自己开车或拼车",
+    "把后勤揽下来",
+    "轻幽默收住"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "把价值感放在做事上，不是情绪上。",
+   "unknowns": [
+    "周六早上路况"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E039_T06",
+   "current_action": "确认集合信息",
+   "acceptable_actions": [
+    "复述确认",
+    "确认+定暗号",
+    "说闹钟定好了"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S039_F04",
+     "subject": "我们",
+     "relation": "安排",
+     "value": "周六早上七点半地铁口集合",
+     "valid_time": "2026-11-05 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E039_T06",
+      "message_id": "m0",
+      "quote": "那就七点半 龙翔桥地铁口C口"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "时间地点要复述准确。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要记错时间地点"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E039_T07",
+   "current_action": "按 intent 做行前确认",
+   "acceptable_actions": [
+    "列装备清单",
+    "问天气应对",
+    "确认集合时间不变"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S039_F04",
+     "subject": "我们",
+     "relation": "安排",
+     "value": "周六早上七点半地铁口集合",
+     "valid_time": "2026-11-05 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E039_T06",
+      "message_id": "m0",
+      "quote": "那就七点半 龙翔桥地铁口C口"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "intent 是行前确认，不是重新安排。",
+   "unknowns": [
+    "明早实际天气"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要临时改集合时间"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "行前确认：装备和天气，群里三人同步",
+    "status": "ACTIVE"
+   }
+  },
+  {
+   "case_id": "E039_T08",
+   "current_action": "收尾，不再展开",
+   "acceptable_actions": [
+    "互道早睡",
+    "简短期待明天",
+    "收住不新开话题"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她已收工，别再发长段。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E040_T01",
+   "current_action": "如实复述已知的安排",
+   "acceptable_actions": [
+    "说约了周六上午十点",
+    "说看两套",
+    "复述并问要不要加看一套"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她可能记岔了安排，用事实回答，不说大概。",
+   "unknowns": [
+    "老陈那边两套房的时间分配"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编造没约定的细节"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E040_T02",
+   "current_action": "给出确切信息并标注来源",
+   "acceptable_actions": [
+    "说明是老陈说的",
+    "把不确定的部分标出来",
+    "提出可以再确认一遍"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F01",
+     "subject": "我们",
+     "relation": "安排",
+     "value": "原定周六上午十点看房",
+     "valid_time": "2026-11-03 19:06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T02",
+      "message_id": "m0",
+      "quote": "周六十点 先看滨河那套"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "谁说的就说谁说的，别把中介的话当自己的判断。",
+   "unknowns": [
+    "第二套什么时候能看"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要把老陈的话说成自己核实过的"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E040_T03",
+   "current_action": "把传闻标为传闻，给出核实路径",
+   "acceptable_actions": [
+    "说这是同事说法待核实",
+    "提议看房时问住户",
+    "说去查物业投诉记录"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F02",
+     "subject": "她",
+     "relation": "传闻",
+     "value": "同事说那个小区物业差（未证实）",
+     "valid_time": "2026-11-03 19:10",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T03",
+      "message_id": "m0",
+      "quote": "我同事说那小区物业可差了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "传闻不入结论；她怕物业正好戳到痛点，语气要稳。",
+   "unknowns": [
+    "物业实际口碑",
+    "电梯问题的真实性"
+   ],
+   "protected_expressions": [
+    "物业可差了"
+   ],
+   "forbidden_factual_claims": [
+    "不要把传闻说成事实",
+    "不要说物业肯定没问题"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E040_T04",
+   "current_action": "给出具体核实动作，显得可靠",
+   "acceptable_actions": [
+    "列核实清单",
+    "说当面问住户",
+    "说查公开记录"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "可执行的动作比安抚有用。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E040_T05",
+   "current_action": "接受改期，明确改动涉及的人和主体",
+   "acceptable_actions": [
+    "答应去跟老陈改时间",
+    "确认周日下午两点",
+    "问要不要让老陈重新排两套"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "表姐夫也想看，改周日下午两点",
+     "valid_time": "2026-11-04 09:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T05",
+      "message_id": "m0",
+      "quote": "把老陈改到周日吧 下午两点 你姐夫也去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改的是她提出的，你只负责落实。",
+   "unknowns": [
+    "老陈周日下午是否有空"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要替她姐夫表态",
+    "不要把改期的责任算到老陈头上"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E040_T06",
+   "current_action": "复述改期结果，人数说清",
+   "acceptable_actions": [
+    "复述时间+人数",
+    "确认后说会带纸笔",
+    "让她把需求清单发我"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "表姐夫也想看，改周日下午两点",
+     "valid_time": "2026-11-04 09:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T05",
+      "message_id": "m0",
+      "quote": "把老陈改到周日吧 下午两点 你姐夫也去"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "四个人=你+表姐+姐夫+中介，别说错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要把人数说错",
+    "不要丢掉改期信息"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E040_T07",
+   "current_action": "给出一般规则并强调现场核对，不冒充政策专家",
+   "acceptable_actions": [
+    "说现场以合同为准",
+    "说核对照不动产登记信息",
+    "让她把具体房源发我查"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F04",
+     "subject": "她",
+     "relation": "询问",
+     "value": "押金和首付比例怎么谈",
+     "valid_time": "2026-11-04 09:28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T07",
+      "message_id": "m0",
+      "quote": "押金到底付几 首付他会不会乱报"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "政策细节不要拍胸脯；给方法不给结论。",
+   "unknowns": [
+    "该房源的具体报价与押金要求"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编造当前首付比例政策",
+    "不要替中介担保报价"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E040_T08",
+   "current_action": "自然收尾，行动项清晰",
+   "acceptable_actions": [
+    "确认收链接待办",
+    "简短收尾",
+    "复述周日安排"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "表姐夫也想看，改周日下午两点",
+     "valid_time": "2026-11-04 09:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T05",
+      "message_id": "m0",
+      "quote": "把老陈改到周日吧 下午两点 你姐夫也去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已收尾；待办记好即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E041_T01",
+   "current_action": "接住消息，不追问细节不给结论",
+   "acceptable_actions": [
+    "说听到了，问她还好吗",
+    "表示在听",
+    "问是昨天的事吗"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S041_F01",
+     "subject": "她组",
+     "relation": "事件",
+     "value": "昨天组里有人被裁",
+     "valid_time": "2026-11-04 18:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E041_T01",
+      "message_id": "m0",
+      "quote": "我们组昨天裁了一个"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她开口就是要说，你负责接，不是负责问。",
+   "unknowns": [
+    "被裁的是谁、什么原因"
+   ],
+   "protected_expressions": [
+    "我们组昨天裁了一个"
+   ],
+   "forbidden_factual_claims": [
+    "不要打听被裁的是谁、赔了多少钱",
+    "不要急着说你们组应该没事"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E041_T02",
+   "current_action": "表明在听，把话语权给她",
+   "acceptable_actions": [
+    "让她继续说",
+    "说你说到哪我听到哪",
+    "不抢话"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "少说，多留空间。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E041_T03",
+   "current_action": "承认不确定性，不打包票",
+   "acceptable_actions": [
+    "说传闻确实说不准",
+    "问HR有没有正式通知",
+    "陪她把最坏情况想一遍"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S041_F02",
+     "subject": "她",
+     "relation": "状态",
+     "value": "传闻自己在边缘名单",
+     "valid_time": "2026-11-05 09:12",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E041_T03",
+      "message_id": "m0",
+      "quote": "名单上好像有我 谁也说不准"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 思路：不确定就说不确定；安慰不许诺。",
+   "unknowns": [
+    "名单是否真实",
+    "正式名单何时出"
+   ],
+   "protected_expressions": [
+    "谁也说不准"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定不会有你",
+    "不要把传闻说成实锤",
+    "不要假装有内部消息"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E041_T04",
+   "current_action": "给出具体可行的支持，不承诺结果",
+   "acceptable_actions": [
+    "列出具体能帮的事",
+    "说明自己经历供参考",
+    "问她现在最想要哪种支持"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S041_F04",
+     "subject": "我",
+     "relation": "经验",
+     "value": "经历过两轮裁员，能帮看简历和人脉",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "上一家公司裁过两轮，知道流程也知道那种感觉"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "支持具体化；她要的是抓手不是鸡血。",
+   "unknowns": [
+    "她是否考虑内部转岗"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说包在我身上",
+    "不要贬低她公司"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E041_T05",
+   "current_action": "接下具体事项并定最小动作",
+   "acceptable_actions": [
+    "说今天或周末帮看",
+    "让她发docx过来",
+    "约饭时当面过"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "把支持落成一个可以马上做的小动作。",
+   "unknowns": [
+    "她想什么时候改简历"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E041_T06",
+   "current_action": "允许她暂停，简短回应不追问",
+   "acceptable_actions": [
+    "说好，随时找我",
+    "发个表情级回应",
+    "说饭照旧不来也行"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S041_F03",
+     "subject": "她",
+     "relation": "请求",
+     "value": "说今晚不想聊了，想缓缓",
+     "valid_time": "2026-11-05 09:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E041_T06",
+      "message_id": "m0",
+      "quote": "今晚先不聊了 我缓缓"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她说停就停；这轮可以合法不回或极简回。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要追问她还好不好",
+    "不要继续输出建议"
+   ],
+   "may_decline": true,
+   "intent": null
+  },
+  {
+   "case_id": "E041_T07",
+   "current_action": "接住她的笨拙表达，降低她的表达成本",
+   "acceptable_actions": [
+    "说不 silky，咱俩谁跟谁",
+    "说你想说的我都接",
+    "轻幽默化解"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她在鼓勇气；别趁机深入话题。",
+   "unknowns": [
+    "她想说的具体是什么"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要替她把话说完",
+    "不要把话题拉回裁员细节"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E041_T08",
+   "current_action": "确认明天午饭，收尾",
+   "acceptable_actions": [
+    "说座位给你留着",
+    "确认明天见",
+    "轻收尾"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S041_F05",
+     "subject": "她",
+     "relation": "后续",
+     "value": "回来道谢并约明天午饭",
+     "valid_time": "2026-11-05 21:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E041_T08",
+      "message_id": "m1",
+      "quote": "明天午饭照旧 帮我占座"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回归日常本身就是最好的收尾。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E042_T01",
+   "current_action": "爽快答应，确认时间地点",
+   "acceptable_actions": [
+    "答应+确认七点半",
+    "答应+问在哪碰",
+    "答应并说带零食"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S042_F01",
+     "subject": "她",
+     "relation": "提议",
+     "value": "约周六早上七点半一起遛狗",
+     "valid_time": "2026-11-05 20:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E042_T01",
+      "message_id": "m0",
+      "quote": "周六早上七点半 遛一圈？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接约要爽快，别端着。",
+   "unknowns": [
+    "集合具体位置"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要推脱改时间"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E042_T02",
+   "current_action": "敲定集合点",
+   "acceptable_actions": [
+    "确认喷泉集合",
+    "补充自己特征",
+    "说带水"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S042_F01",
+     "subject": "她",
+     "relation": "提议",
+     "value": "约周六早上七点半一起遛狗",
+     "valid_time": "2026-11-05 20:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E042_T01",
+      "message_id": "m0",
+      "quote": "周六早上七点半 遛一圈？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "信息补全即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E042_T03",
+   "current_action": "先关心狗，再接受取消，不催改期",
+   "acceptable_actions": [
+    "问馒头现在怎么样",
+    "说取消没关系狗要紧",
+    "问需不需要帮忙带东西"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S042_F02",
+     "subject": "她",
+     "relation": "取消",
+     "value": "金毛疫苗反应要观察，周六取消",
+     "valid_time": "2026-11-06 08:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E042_T03",
+      "message_id": "m0",
+      "quote": "馒头疫苗有点反应 周六先取消 我在家看着它"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S042_F05",
+     "subject": "她的狗",
+     "relation": "状态",
+     "value": "馒头上周打了疫苗",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "馒头上周打了疫苗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她此刻的焦点是狗；你的分寸就是你的加分项。",
+   "unknowns": [
+    "疫苗反应严不严重",
+    "要不要看医生"
+   ],
+   "protected_expressions": [
+    "疫苗有点反应"
+   ],
+   "forbidden_factual_claims": [
+    "不要说扫兴/白等了",
+    "不要质疑她小题大做",
+    "不要立刻硬改约"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E042_T04",
+   "current_action": "提供具体帮助，不越界",
+   "acceptable_actions": [
+    "问要不要带营养品",
+    "说有需要随时喊",
+    "分享疫苗反应经验一句"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "帮忙要具体但别推销式热情。",
+   "unknowns": [
+    "她缺不缺东西"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要替她决定要不要看医生"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E042_T05",
+   "current_action": "轻收住，把主动权留给她",
+   "acceptable_actions": [
+    "说有变化随时说",
+    "祝馒头快点好",
+    "不再展开"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "此刻多一句都是打扰。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E042_T06",
+   "current_action": "按 intent 提出改约，不催确认",
+   "acceptable_actions": [
+    "提议下周六",
+    "说等她消息",
+    "改约+问候狗"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "改约轻提，她方便再确认。",
+   "unknowns": [
+    "她下周六是否上班"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要把取消的原时间说成还有效"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "改约：把遛狗定到下周六早上七点半",
+    "status": "ACTIVE"
+   }
+  },
+  {
+   "case_id": "E042_T07",
+   "current_action": "确认新约+接住她加的早餐提议",
+   "acceptable_actions": [
+    "确认下周六+答应带路",
+    "问几个人（玩笑）",
+    "确认后说定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S042_F03",
+     "subject": "我们",
+     "relation": "新安排",
+     "value": "改到下周六早上七点半",
+     "valid_time": "2026-11-06 08:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E042_T07",
+      "message_id": "m0",
+      "quote": "下周六一样七点半 馒头应该好利索了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S042_F04",
+     "subject": "她",
+     "relation": "推进",
+     "value": "提议遛完顺路吃早餐",
+     "valid_time": "2026-11-06 08:25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E042_T07",
+      "message_id": "m0",
+      "quote": "遛完带它吃早餐吧 南门那家你带路"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动加了早餐，接住但不脑补关系进度。",
+   "unknowns": [
+    "南门早餐店周末排队情况"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要把早餐说成约会（她没这意思）",
+    "不要忘记狗还没好利索"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E042_T08",
+   "current_action": "收尾+回应狗的好消息",
+   "acceptable_actions": [
+    "为狗高兴",
+    "简短道别",
+    "收住"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "自然收尾，别再追加安排。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E043_T01",
+   "current_action": "核对后转账，不多问",
+   "acceptable_actions": [
+    "确认金额转账",
+    "问清单明细",
+    "直接转+说收到"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F01",
+     "subject": "她",
+     "relation": "账目",
+     "value": "游园会我的分摊报 78 元",
+     "valid_time": "2026-11-05 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E043_T01",
+      "message_id": "m0",
+      "quote": "物料我给你算好了 你那份78"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "四年搭档，账目直接走。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E043_T02",
+   "current_action": "告知已转账",
+   "acceptable_actions": [
+    "说转了",
+    "截图为证",
+    "转+确认金额"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F02",
+     "subject": "我",
+     "relation": "动作",
+     "value": "按 78 转了账",
+     "valid_time": "2026-11-05 19:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E043_T02",
+      "message_id": "m0",
+      "quote": "转了 你查收"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "金额说对：78。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要报错金额"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E043_T03",
+   "current_action": "接受更正，退款到账后确认，不客气客套",
+   "acceptable_actions": [
+    "说行你退就行",
+    "确认收到15",
+    "玩笑一句她改账快"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "多算 15，实际 63，退 15",
+     "valid_time": "2026-11-05 19:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E043_T03",
+      "message_id": "m0",
+      "quote": "等等 横幅那家算重了 你是63 我退你15"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "更正链核心：此后我的分摊是63。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要再说78",
+    "不要说不用退了搞虚假客气"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E043_T04",
+   "current_action": "确认到账+轻松一句",
+   "acceptable_actions": [
+    "确认金额",
+    "玩笑",
+    "问物料还差啥"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "多算 15，实际 63，退 15",
+     "valid_time": "2026-11-05 19:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E043_T03",
+      "message_id": "m0",
+      "quote": "等等 横幅那家算重了 你是63 我退你15"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "63 已闭环，别再翻旧数。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E043_T05",
+   "current_action": "如实报物料进度，并说明自己周末的边界",
+   "acceptable_actions": [
+    "报物料齐/缺",
+    "说周六上午可以下午不行",
+    "提议拉一个新人手"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F04",
+     "subject": "我们",
+     "relation": "分工",
+     "value": "我负责物料，她负责节目单和总账",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "这次中秋游园会我负责物料"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S043_F06",
+     "subject": "我",
+     "relation": "边界",
+     "value": "周末偶尔有事，不硬撑",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "周末偶尔有事，不硬撑"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note：边界是上午；别为面子硬撑整天。",
+   "unknowns": [
+    "她那边还缺几个人"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要承诺全天",
+    "不要隐瞒自己有事"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E043_T06",
+   "current_action": "明确可用时间，给她排班依据",
+   "acceptable_actions": [
+    "说明可用时段",
+    "提议气球她带人补",
+    "问她下午人够不够"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F06",
+     "subject": "我",
+     "relation": "边界",
+     "value": "周末偶尔有事，不硬撑",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "周末偶尔有事，不硬撑"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把选择权给她，信息给全。",
+   "unknowns": [
+    "她下午能不能凑齐人"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E043_T07",
+   "current_action": "确认布场时间地点",
+   "acceptable_actions": [
+    "复述九点喷泉",
+    "问带什么工具",
+    "确认+说早点到"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F05",
+     "subject": "她",
+     "relation": "安排",
+     "value": "布场定周六上午九点",
+     "valid_time": "2026-11-05 19:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E043_T07",
+      "message_id": "m0",
+      "quote": "布场周六上午九点 中央喷泉集合"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "时间地点复述准。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要记错集合点"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E043_T08",
+   "current_action": "接玩笑收尾",
+   "acceptable_actions": [
+    "接梗一句",
+    "简单收",
+    "表情级回应"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她收尾了，跟住即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E044_T01",
+   "current_action": "爽快答应+自我介绍一句",
+   "acceptable_actions": [
+    "说没问题放门口",
+    "答应+自报姓氏",
+    "答应+说敲门就行"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S044_F01",
+     "subject": "她",
+     "relation": "请求",
+     "value": "问快递能不能帮忙代收",
+     "valid_time": "2026-11-05 19:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E044_T01",
+      "message_id": "m0",
+      "quote": "你好 对门的 我的快递能帮你收下吗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S044_F06",
+     "subject": "我们",
+     "relation": "关系",
+     "value": "昨天帮她按过电梯",
+     "valid_time": "2026-11-04 18:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "昨天搬来时帮她按过电梯"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她社恐，别热情过头。",
+   "unknowns": [
+    "她的姓名"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E044_T02",
+   "current_action": "给具体操作方式",
+   "acceptable_actions": [
+    "说放哪",
+    "给联系方式",
+    "说有敲门就行"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "信息可执行即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E044_T03",
+   "current_action": "如实推荐最熟的一家",
+   "acceptable_actions": [
+    "推荐南门那家",
+    "说明各家长短",
+    "推荐+说明价格水平"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "推荐说自己的真实体验，别吹。",
+   "unknowns": [
+    "她主要买什么"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编造自己没去过的店"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E044_T04",
+   "current_action": "给出具体推荐和注意事项",
+   "acceptable_actions": [
+    "补一句周末提醒",
+    "给替代选项",
+    "说明步行距离"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "信息给全，判断留给她。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E044_T05",
+   "current_action": "接受反馈，不辩解推荐",
+   "acceptable_actions": [
+    "说那家果蔬确实看批次",
+    "道歉一句+马上给替代",
+    "问她主要买啥再精准推"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S044_F02",
+     "subject": "她",
+     "relation": "反馈",
+     "value": "去了推荐的超市觉得一般",
+     "valid_time": "2026-11-05 19:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E044_T05",
+      "message_id": "m0",
+      "quote": "去了 果蔬不太行 有点蔫"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "推荐落空是常态；关键是不嘴硬。",
+   "unknowns": [
+    "她在意价格还是新鲜"
+   ],
+   "protected_expressions": [
+    "果蔬不太行"
+   ],
+   "forbidden_factual_claims": [
+    "不要坚称那家很好",
+    "不要说你是怎么买的挑的好（找补）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E044_T06",
+   "current_action": "给出替代方案+具体技巧",
+   "acceptable_actions": [
+    "换推荐",
+    "给菜市场时段技巧",
+    "问她要不要明早带一段路"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S044_F03",
+     "subject": "我",
+     "relation": "调整",
+     "value": "改推另一家和菜市场替代方案",
+     "valid_time": "2026-11-05 19:24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E044_T06",
+      "message_id": "m0",
+      "quote": "那去东门那家 或者直接菜市场 新鲜"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "调整要快、具体、不啰嗦。",
+   "unknowns": [
+    "她会不会自己去菜市场"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E044_T07",
+   "current_action": "考虑清楚再答：说明可行与限制",
+   "acceptable_actions": [
+    "答应并问猫粮/水放哪",
+    "答应但说明自己也可能加班晚归",
+    "答应+约交钥匙方式"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S044_F04",
+     "subject": "她",
+     "relation": "请求",
+     "value": "问出差时猫能不能隔着门喂一次",
+     "valid_time": "2026-11-05 19:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E044_T07",
+      "message_id": "m0",
+      "quote": "下周我出差三天 猫能麻烦你隔门喂一下吗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S044_F05",
+     "subject": "我",
+     "relation": "宠物",
+     "value": "养一只银渐层",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "养一只银渐层"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应是情分；把执行细节说清才是靠谱。",
+   "unknowns": [
+    "她出差的具体三天",
+    "猫粮存放方式"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要不问细节就满口答应",
+    "不要提自家猫过敏之类的托词"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E044_T08",
+   "current_action": "敲定喂养安排并收尾",
+   "acceptable_actions": [
+    "复述三天日期",
+    "确认猫粮位置",
+    "自然收尾"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S044_F04",
+     "subject": "她",
+     "relation": "请求",
+     "value": "问出差时猫能不能隔着门喂一次",
+     "valid_time": "2026-11-05 19:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E044_T07",
+      "message_id": "m0",
+      "quote": "下周我出差三天 猫能麻烦你隔门喂一下吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "日期复述：下周一到周三。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要记错天数"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ ]
+}

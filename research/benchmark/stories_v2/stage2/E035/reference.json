@@ -1,0 +1,396 @@
+{
+ "story_id": "E035",
+ "turns": {
+  "E035_T01": {
+   "current_action": "接诊断与医嘱（两周药+记录排尿）——执行并开始记录",
+   "acceptable_actions": [
+    "确认医嘱+问记录格式",
+    "确认+问正常排尿频率",
+    "确认+说每天记"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E035_A01",
+     "subject": "雪碧",
+     "relation": "诊断",
+     "value": "应激性膀胱炎，先吃药两周",
+     "valid_time": "2026-11-02 18:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E035_T01",
+      "message_id": "m0",
+      "quote": "应激性膀胱炎 先吃药两周"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医嘱是长期疗程的地基；记录从今天开始。",
+   "unknowns": [],
+   "protected_expressions": [
+    "先吃药两周 复诊前记录它排尿次数"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E035_T01"
+  },
+  "E035_T02": {
+   "current_action": "报观察数据（一天六次）+要基准（四次以下算好转）",
+   "acceptable_actions": [
+    "报数据+问基准",
+    "报+担心",
+    "报+确认复诊要求"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她给了量化基准（四次以下）；这个数是整个疗程的尺子。",
+   "unknowns": [],
+   "protected_expressions": [
+    "吃药后四次以下算好转"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E035_T02"
+  },
+  "E035_T03": {
+   "current_action": "医嘱修正：药量减半、晚顿停——旧剂量作废，按新量执行",
+   "acceptable_actions": [
+    "确认减半+说观察",
+    "确认+问减半后看什么指标",
+    "确认+答应有变化就报"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "factuality",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E035_A02",
+     "subject": "用药",
+     "relation": "修正",
+     "value": "药量减半，晚上那顿停",
+     "valid_time": "2026-11-12 19:00",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E035_T03",
+      "message_id": "m0",
+      "quote": "药量减半 晚上那顿停"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "剂量口径更新；之后报数都按减半后。",
+   "unknowns": [],
+   "protected_expressions": [
+    "药量减半 晚上那顿停"
+   ],
+   "forbidden_factual_claims": [
+    "不要继续按原剂量执行"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E035_T03"
+  },
+  "E035_T04": {
+   "current_action": "报减量后数据（三次+有点闹）——她判断'闹是好事'，接受解读",
+   "acceptable_actions": [
+    "接受解读+继续观察",
+    "追问闹的具体表现",
+    "答应持续记录"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "专业解读优先于我的直觉担忧。",
+   "unknowns": [],
+   "protected_expressions": [
+    "闹是好事 疼减轻了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E035_T04"
+  },
+  "E035_T05": {
+   "current_action": "复诊结果（好转但白细胞残留）+处方粮一个月——新阶段执行",
+   "acceptable_actions": [
+    "确认换粮+问过渡",
+    "确认+说执行",
+    "确认+问白细胞多久消"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E035_A03",
+     "subject": "雪碧",
+     "relation": "复诊",
+     "value": "指标好转，白细胞残留，处方粮一个月",
+     "valid_time": "2026-11-16 16:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E035_T05",
+      "message_id": "m0",
+      "quote": "猫粮换成处方粮"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "好转未痊愈；处方粮是一个月不是永久。",
+   "unknowns": [],
+   "protected_expressions": [
+    "白细胞还有一点"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E035_T05"
+  },
+  "E035_T06": {
+   "current_action": "挑食难题——执行她给的递增掺粮法",
+   "acceptable_actions": [
+    "接受方法+确认单子",
+    "接受+报告第一天反应",
+    "接受+问掺粮比例"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她连操作细节都写单子上——照做。",
+   "unknowns": [],
+   "protected_expressions": [
+    "掺旧粮 比例三天递增"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E035_T06"
+  },
+  "E035_T07": {
+   "current_action": "她主动随访+提醒12-15复查——报稳定+预告搬家应激风险",
+   "acceptable_actions": [
+    "报稳定+预告搬家",
+    "报+确认复查日期",
+    "报+问搬家要注意什么"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E035_A04",
+     "subject": "复查",
+     "relation": "排期",
+     "value": "12月15日复查",
+     "valid_time": "2026-11-30 20:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E035_T07",
+      "message_id": "m0",
+      "quote": "别忘了十二月十五复查"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "随访是她多做的；把搬家风险主动报给她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别忘了十二月十五复查"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E035_T07"
+  },
+  "E035_T08": {
+   "current_action": "她给搬家应激预案（旧猫砂盆先铺/关笼减敏）——逐条执行",
+   "acceptable_actions": [
+    "接受预案+确认细节",
+    "接受+说记下来了",
+    "接受+问减敏具体做法"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E035_A05",
+     "subject": "应激预案",
+     "relation": "内容",
+     "value": "旧猫砂盆先铺新家+搬家前三天关笼减敏",
+     "valid_time": "2026-11-30 20:08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E035_T08",
+      "message_id": "m1",
+      "quote": "搬家用它的旧猫砂盆"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "预案是 T09/T10 的伏笔；逐条照做。",
+   "unknowns": [],
+   "protected_expressions": [
+    "搬家前三天关笼减敏"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E035_T08"
+  },
+  "E035_T09": {
+   "current_action": "她回扣预案问效果——如实报波动与恢复",
+   "acceptable_actions": [
+    "报波动+说预案在用",
+    "报+问要不要加药",
+    "报+感谢提醒"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "如实报'又频了'比报喜不报忧有用。",
+   "unknowns": [],
+   "protected_expressions": [
+    "雪碧状态如何 尿量记了吗"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E035_T09"
+  },
+  "E035_T10": {
+   "current_action": "预案起效的确认——她强调15号复查",
+   "acceptable_actions": [
+    "确认复查+感谢预案",
+    "确认+说继续记录",
+    "确认+问复查要带什么"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "数据好转+预案起效——双向验证。",
+   "unknowns": [],
+   "protected_expressions": [
+    "预案起效了 15号复查别忘"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E035_T10"
+  },
+  "E035_T11": {
+   "current_action": "复查全绿+停药观察两周+处方粮吃满一个月换回——疗程收口执行",
+   "acceptable_actions": [
+    "确认执行+问换粮过渡",
+    "确认+感谢",
+    "确认+说记录继续"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E035_A06",
+     "subject": "复查",
+     "relation": "结果",
+     "value": "12-15复查全绿，停药观察两周",
+     "valid_time": "2026-12-15 16:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E035_T11",
+      "message_id": "m0",
+      "quote": "复查结果 全绿"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "六周疗程收口；后续执行仍有细节（换回粮/观察）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "处方粮吃满一个月就换回 停药观察两周"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E035_T11"
+  },
+  "E035_T12": {
+   "current_action": "'病人也是我网友'——接住她的幽默+确认疫苗（may_decline=true）",
+   "acceptable_actions": [
+    "接梗+答应疫苗",
+    "接梗收",
+    "不回（合法，她已收尾）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "六周的信任收口；疫苗梗是她的长期客户钩子。",
+   "unknowns": [],
+   "protected_expressions": [
+    "它是我的病人也是我网友"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E035_T12"
+  }
+ }
+}

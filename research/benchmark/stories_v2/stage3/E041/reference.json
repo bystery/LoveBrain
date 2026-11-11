@@ -1,0 +1,295 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E041",
+ "title": "名单边缘的那天",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E041_T01": {
+   "case_id": "E041_T01",
+   "current_action": "接住消息，不追问细节不给结论",
+   "acceptable_actions": [
+    "说听到了，问她还好吗",
+    "表示在听",
+    "问是昨天的事吗"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S041_F01",
+     "subject": "她组",
+     "relation": "事件",
+     "value": "昨天组里有人被裁",
+     "valid_time": "2026-11-04 18:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E041_T01",
+      "message_id": "m0",
+      "quote": "我们组昨天裁了一个"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她开口就是要说，你负责接，不是负责问。",
+   "unknowns": [
+    "被裁的是谁、什么原因"
+   ],
+   "protected_expressions": [
+    "我们组昨天裁了一个"
+   ],
+   "forbidden_factual_claims": [
+    "不要打听被裁的是谁、赔了多少钱",
+    "不要急着说你们组应该没事"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E041_T02": {
+   "case_id": "E041_T02",
+   "current_action": "表明在听，把话语权给她",
+   "acceptable_actions": [
+    "让她继续说",
+    "说你说到哪我听到哪",
+    "不抢话"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "少说，多留空间。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E041_T03": {
+   "case_id": "E041_T03",
+   "current_action": "承认不确定性，不打包票",
+   "acceptable_actions": [
+    "说传闻确实说不准",
+    "问HR有没有正式通知",
+    "陪她把最坏情况想一遍"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S041_F02",
+     "subject": "她",
+     "relation": "状态",
+     "value": "传闻自己在边缘名单",
+     "valid_time": "2026-11-05 09:12",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E041_T03",
+      "message_id": "m0",
+      "quote": "名单上好像有我 谁也说不准"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 思路：不确定就说不确定；安慰不许诺。",
+   "unknowns": [
+    "名单是否真实",
+    "正式名单何时出"
+   ],
+   "protected_expressions": [
+    "谁也说不准"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定不会有你",
+    "不要把传闻说成实锤",
+    "不要假装有内部消息"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E041_T04": {
+   "case_id": "E041_T04",
+   "current_action": "给出具体可行的支持，不承诺结果",
+   "acceptable_actions": [
+    "列出具体能帮的事",
+    "说明自己经历供参考",
+    "问她现在最想要哪种支持"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S041_F04",
+     "subject": "我",
+     "relation": "经验",
+     "value": "经历过两轮裁员，能帮看简历和人脉",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "上一家公司裁过两轮，知道流程也知道那种感觉"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "支持具体化；她要的是抓手不是鸡血。",
+   "unknowns": [
+    "她是否考虑内部转岗"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说包在我身上",
+    "不要贬低她公司"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E041_T05": {
+   "case_id": "E041_T05",
+   "current_action": "接下具体事项并定最小动作",
+   "acceptable_actions": [
+    "说今天或周末帮看",
+    "让她发docx过来",
+    "约饭时当面过"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "把支持落成一个可以马上做的小动作。",
+   "unknowns": [
+    "她想什么时候改简历"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E041_T06": {
+   "case_id": "E041_T06",
+   "current_action": "允许她暂停，简短回应不追问",
+   "acceptable_actions": [
+    "说好，随时找我",
+    "发个表情级回应",
+    "说饭照旧不来也行"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S041_F03",
+     "subject": "她",
+     "relation": "请求",
+     "value": "说今晚不想聊了，想缓缓",
+     "valid_time": "2026-11-05 09:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E041_T06",
+      "message_id": "m0",
+      "quote": "今晚先不聊了 我缓缓"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她说停就停；这轮可以合法不回或极简回。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要追问她还好不好",
+    "不要继续输出建议"
+   ],
+   "may_decline": true,
+   "intent": null
+  },
+  "E041_T07": {
+   "case_id": "E041_T07",
+   "current_action": "接住她的笨拙表达，降低她的表达成本",
+   "acceptable_actions": [
+    "说不 silky，咱俩谁跟谁",
+    "说你想说的我都接",
+    "轻幽默化解"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她在鼓勇气；别趁机深入话题。",
+   "unknowns": [
+    "她想说的具体是什么"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要替她把话说完",
+    "不要把话题拉回裁员细节"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E041_T08": {
+   "case_id": "E041_T08",
+   "current_action": "确认明天午饭，收尾",
+   "acceptable_actions": [
+    "说座位给你留着",
+    "确认明天见",
+    "轻收尾"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S041_F05",
+     "subject": "她",
+     "relation": "后续",
+     "value": "回来道谢并约明天午饭",
+     "valid_time": "2026-11-05 21:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E041_T08",
+      "message_id": "m1",
+      "quote": "明天午饭照旧 帮我占座"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回归日常本身就是最好的收尾。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

@@ -1,0 +1,466 @@
+{
+ "story_id": "E033",
+ "turns": {
+  "E033_T01": {
+   "current_action": "确认量房时间（周六上午十点）",
+   "acceptable_actions": [
+    "确认+说在家等",
+    "确认+问要准备什么",
+    "确认+说猫会关好"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E033_A01",
+     "subject": "量房",
+     "relation": "安排",
+     "value": "周六上午十点，老周带队她随行",
+     "valid_time": "2026-11-07 10:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E033_T01",
+      "message_id": "m0",
+      "quote": "量房约在周六上午"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "事务性确认，快且准。",
+   "unknowns": [],
+   "protected_expressions": [
+    "量房约在周六上午"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E033_T01"
+  },
+  "E033_T02": {
+   "current_action": "记住'老周怕猫'（第三人特征）——答复会把猫关好",
+   "acceptable_actions": [
+    "答应关猫+接梗",
+    "答应+问老周几点到",
+    "答应+说猫关卧室"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E033_A02",
+     "subject": "老周",
+     "relation": "特征",
+     "value": "工长，怕猫",
+     "valid_time": "2026-11-02 10:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E033_T02",
+      "message_id": "m1",
+      "quote": "老周怕猫"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第三人的特征是长期协作的记忆点；记下。",
+   "unknowns": [],
+   "protected_expressions": [
+    "老周怕猫"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E033_T02"
+  },
+  "E033_T03": {
+   "current_action": "改期（周六→下周三晚）——接受变更并更新旧安排（周六作废）",
+   "acceptable_actions": [
+    "接受+确认新时间",
+    "接受+问她新时间几点",
+    "接受+说周六的安排取消"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E033_A03",
+     "subject": "量房",
+     "relation": "改期",
+     "value": "周六取消，改下周三晚",
+     "valid_time": "2026-11-06 16:00",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E033_T03",
+      "message_id": "m0",
+      "quote": "量房改到下周三晚上了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "旧时间周六作废；T04 起引用必须用周三。",
+   "unknowns": [
+    "老周急活是什么"
+   ],
+   "protected_expressions": [
+    "量房改到下周三晚上了"
+   ],
+   "forbidden_factual_claims": [
+    "不要再引用周六为量房时间"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E033_T03"
+  },
+  "E033_T04": {
+   "current_action": "确认周三晚七点+准备户型图",
+   "acceptable_actions": [
+    "确认+说找户型图",
+    "确认+问她要带什么",
+    "确认+说家里随时方便"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "配合事项当场应下。",
+   "unknowns": [],
+   "protected_expressions": [
+    "让你把户型图找出来"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E033_T04"
+  },
+  "E033_T05": {
+   "current_action": "接方案初稿与预算口径（35万）——她建议瓷砖全换，先听完整建议再决策",
+   "acceptable_actions": [
+    "问她方案细节再定",
+    "直接表态换地板+说原因",
+    "要材料单再定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E033_A04",
+     "subject": "预算",
+     "relation": "口径",
+     "value": "方案初稿预算35万",
+     "valid_time": "2026-11-12 15:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E033_T05",
+      "message_id": "m0",
+      "quote": "预算按你说的35万"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的建议有专业依据；我的否决理由（猫/怕凉）也要给足。",
+   "unknowns": [
+    "瓷砖与地板的差价明细"
+   ],
+   "protected_expressions": [
+    "预算按你说的35万"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E033_T05"
+  },
+  "E033_T06": {
+   "current_action": "决策修正：瓷砖→地板（养猫怕凉）——预算35→37万，新口径生效",
+   "acceptable_actions": [
+    "确认改单+接受新预算",
+    "确认+问37万明细",
+    "确认+说猫是理由"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E033_A05",
+     "subject": "预算",
+     "relation": "修正",
+     "value": "改地板加两万，预算37万（35作废）",
+     "valid_time": "2026-11-12 15:10",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E033_T06",
+      "message_id": "m1",
+      "quote": "地板加两万 预算37万"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "预算新口径37万；后续所有引用用37万。",
+   "unknowns": [
+    "地板品牌型号"
+   ],
+   "protected_expressions": [
+    "地板加两万 预算37万"
+   ],
+   "forbidden_factual_claims": [
+    "不要再引用35万为有效预算"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "确定地面材料方案并控制预算在37万内",
+    "status": "ACTIVE",
+    "enabled": true
+   },
+   "case_id": "E033_T06"
+  },
+  "E033_T07": {
+   "current_action": "跨两周的到货通知（两箱色差）——决策点：换或收",
+   "acceptable_actions": [
+    "决定换+说理由",
+    "要求先看照片",
+    "问她老周意见"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E033_A06",
+     "subject": "地板",
+     "relation": "问题",
+     "value": "到货两箱色差，可换",
+     "valid_time": "2026-11-26 14:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E033_T07",
+      "message_id": "m0",
+      "quote": "有两箱色差"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "决策要快且给理由；铺装是长期后果。",
+   "unknowns": [
+    "色差程度"
+   ],
+   "protected_expressions": [
+    "有两箱色差"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E033_T07"
+  },
+  "E033_T08": {
+   "current_action": "确认换货+铺装排期（两周后）",
+   "acceptable_actions": [
+    "确认+等铺装通知",
+    "确认+问她盯厂家",
+    "确认+说麻烦老周"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E033_A07",
+     "subject": "铺装",
+     "relation": "排期",
+     "value": "换货后约两周后铺装",
+     "valid_time": "2026-11-26 14:08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E033_T08",
+      "message_id": "m1",
+      "quote": "两周后铺装"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "排期进账；两周后 T09 兑现。",
+   "unknowns": [],
+   "protected_expressions": [
+    "两周后铺装"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E033_T08"
+  },
+  "E033_T09": {
+   "current_action": "铺装完成+遗留问题（踢脚线翘）——验收表态+接受她安排的修复",
+   "acceptable_actions": [
+    "验收表态+同意修",
+    "验收+问要不要在场",
+    "验收+夸整体"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E033_A08",
+     "subject": "铺装",
+     "relation": "结果",
+     "value": "铺装完成，踢脚线翘一块待修",
+     "valid_time": "2026-12-10 11:00",
+     "status": "occurred",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E033_T09",
+      "message_id": "m0",
+      "quote": "铺装完成"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "整体认可+遗留问题明确；不吹不苛。",
+   "unknowns": [
+    "踢脚线翘的原因"
+   ],
+   "protected_expressions": [
+    "有块踢脚线翘了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E033_T09"
+  },
+  "E033_T10": {
+   "current_action": "她主动提防抓条（回扣老周怕猫→关心猫）——接住专业增值建议",
+   "acceptable_actions": [
+    "接受建议+问价格",
+    "接受+说麻烦老周",
+    "接受+夸她周到"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她记得我家猫——服务的记忆点，回应要有温度。",
+   "unknowns": [
+    "防抓条价格"
+   ],
+   "protected_expressions": [
+    "要不要包个防抓条"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E033_T10"
+  },
+  "E033_T11": {
+   "current_action": "尾款结清+工程完结+她回扣猫——收尾回扣（地板决策对了）",
+   "acceptable_actions": [
+    "确认结清+回扣猫和地板",
+    "确认+感谢团队",
+    "确认+说会推荐"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E033_A09",
+     "subject": "工程",
+     "relation": "状态",
+     "value": "尾款结清，工程完结",
+     "valid_time": "2026-12-22 10:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E033_T11",
+      "message_id": "m0",
+      "quote": "尾款结清 工程完结"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "两个月的线收口；回扣要落到具体决策（地板）上。",
+   "unknowns": [],
+   "protected_expressions": [
+    "尾款结清 工程完结"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E033_T11"
+  },
+  "E033_T12": {
+   "current_action": "'还好当时没贴瓷砖'——回扣决策+收尾（may_decline=true）",
+   "acceptable_actions": [
+    "接梗收",
+    "接+说下个项目再合作",
+    "不回（合法，她已收尾）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她的'听我的没错'是专业得意；给她这个胜利。",
+   "unknowns": [],
+   "protected_expressions": [
+    "完工快乐 常联系"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E033_T12"
+  }
+ }
+}

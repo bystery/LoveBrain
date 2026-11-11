@@ -1,0 +1,181 @@
+{
+ "episode_id": "E177",
+ "persona": {
+  "her": {
+   "name": "祝晓",
+   "traits": ["公司搬到产业园后通勤变长的上班族", "做事爱拉小群定规矩", "怕麻烦别人，也怕被放鸽子"],
+   "boundaries": ["不跟不熟的人深夜拼车", "群规矩定了就要认，但反对趁机抬价"]
+  },
+  "me": {
+   "name": "野青",
+   "traits": ["HER 的老同学，自己也坐地铁通勤", "点子多，擅长算时间和账"]
+  },
+  "relationship_stage": "长期熟人（老同学）"
+ },
+ "initial_kb": {
+  "me": "野青，HER 的老同学，熟悉她上下班的片区，给过她地铁换乘建议。",
+  "her": "祝晓，公司下月整体搬去产业园，单程通勤变长，打算发起跨城通勤周拼。",
+  "warmth": "两人隔周约一次夜宵，聊天爱互相拆台。",
+  "style": "HER 消息爱用感叹号，报时间地点很精确。",
+  "stage": "长期熟人，互相帮过搬家和代收快递。",
+  "lessons": "此前拼过一次长途顺风车被临时加价，此后 HER 对口头报价格外谨慎。"
+ },
+ "turns": [
+  {
+   "case_id": "E177_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-10-26 08:20",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-10-26 08:15", "text": "野青，公司下月搬产业园，我想在小区群里发个通勤周拼，周一到周五，你觉得靠谱不？"}
+    ]
+   },
+   "feedback": {"her_signal": "抛出新计划求把把关", "变化": "从闲聊转入通勤大计"}
+  },
+  {
+   "case_id": "E177_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-10-26 21:35",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-10-26 21:30", "text": "成了！邻居老周出车，同小区小赵也进来了，连我四个人。"}
+    ]
+   },
+   "feedback": {"her_signal": "拼车队成型", "变化": "计划落地，人数四齐"}
+  },
+  {
+   "case_id": "E177_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-10-27 12:45",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-10-27 12:40", "text": "油费谈好了，每人每趟十二块，月底一起结，先跑一个月看看。"}
+    ]
+   },
+   "feedback": {"her_signal": "价格口径谈定", "变化": "从人齐到钱清"}
+  },
+  {
+   "case_id": "E177_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-02 08:55",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-11-02 08:50", "text": "第一周跑完，天天准点，早上七点半小区北门集合，稳得很！"}
+    ]
+   },
+   "feedback": {"her_signal": "首周正向反馈", "变化": "运行顺利，情绪上扬"}
+  },
+  {
+   "case_id": "E177_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-03 09:15",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-11-03 09:10", "text": "小赵今早迟到十分钟，老周提议迟到的人下回多摊五块，我说行，规则记群里了。"}
+    ]
+   },
+   "feedback": {"her_signal": "群规则首次补丁", "变化": "从顺利运行进入规则微调"}
+  },
+  {
+   "case_id": "E177_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-06 18:40",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-11-06 18:35", "text": "坏了，老周家开始装修要用车，他说下周一开始周拼暂停，一停停两周！"}
+    ]
+   },
+   "feedback": {"her_signal": "拼车计划暂停", "变化": "运行急停，情绪从稳到急"}
+  },
+  {
+   "case_id": "E177_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-07 09:25",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-11-07 09:20", "text": "我算了下，这两周我地铁四号线转园区班车，单程多二十分钟，先不打车，太贵。"}
+    ]
+   },
+   "feedback": {"her_signal": "过渡方案自算完成", "变化": "从急到有章法"}
+  },
+  {
+   "case_id": "E177_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-16 20:15",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-11-16 20:10", "text": "老周那边装修拖工期，重启只能一三五开车，周二周四我们各自想办法。"}
+    ]
+   },
+   "feedback": {"her_signal": "重启方案缩水", "变化": "重启谈判，班次结构改变"}
+  },
+  {
+   "case_id": "E177_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-17 08:35",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-11-17 08:30", "text": "新价码谈好了，一三五每人每趟十五，二四我走地铁，两本账分开记。"}
+    ]
+   },
+   "feedback": {"her_signal": "价格与记账口径更新", "变化": "新结构下的账目重新立规"}
+  },
+  {
+   "case_id": "E177_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-18 21:20",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-11-18 21:15", "text": "小赵嫌一三五凑不齐想退群，我劝他二四自己坐地铁也行，别为这事散伙。"}
+    ]
+   },
+   "feedback": {"her_signal": "劝留组员中", "变化": "内部出现退意，进入维稳"}
+  },
+  {
+   "case_id": "E177_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-25 08:50",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-11-25 08:45", "text": "新节奏跑一周，挺顺，迟到补五块的规矩到现在没人触发！"}
+    ]
+   },
+   "feedback": {"her_signal": "新结构平稳验证", "变化": "从动荡回到正向运行"}
+  },
+  {
+   "case_id": "E177_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-28 12:05",
+    "may_decline": false,
+    "messages": [
+     {"role": "HER", "ts": "2026-11-28 12:00", "text": "12 月第一个周五拼车队吃砂锅粥，算满月局，你也来，给我把把关价格！"}
+    ]
+   },
+   "feedback": {"her_signal": "满月局邀约", "变化": "收尾转暖，回扣老同学身份"}
+  }
+ ]
+}

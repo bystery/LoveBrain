@@ -1,0 +1,600 @@
+{
+ "story_id": "N02",
+ "turns": {
+  "N02_T01": {
+   "case_id": "N02_T01",
+   "current_action": "她直接开口求助，理由具体；这一轮应明确答应并问清时间地点，不要只说'看情况'。",
+   "acceptable_actions": [
+    "答应周六去，问几点在哪集合、猫笼多大",
+    "说可以，先确认领养日几点开始、要不要提前去占位"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T01_a1",
+     "subject": "her",
+     "relation": "cat_transport_request",
+     "value": "周六请我帮忙送猫去领养日，猫笼太重",
+     "valid_time": "2026-04-11",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T01",
+      "message_id": "m0",
+      "quote": "周六能帮我送只猫去领养日吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她很少主动求人；这次开口是信任信号。先接住，再把细节问清。",
+   "unknowns": [
+    "领养日几点开始",
+    "猫笼多大、要不要车"
+   ],
+   "protected_expressions": [
+    "我一个人搞不定 猫笼太重"
+   ],
+   "forbidden_factual_claims": [
+    "不能说我周六一定全天有空",
+    "不能把领养日说成已经安排好"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六帮她把猫送到领养日",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "N02_T02": {
+   "case_id": "N02_T02",
+   "current_action": "她给了时间地点，又补了猫有猫癣、要单独放；这一轮应接住这个卫生约束，问清要不要手套/隔离袋，不要嫌麻烦也不要装懂。",
+   "acceptable_actions": [
+    "说十点到，问要不要带手套和隔离袋",
+    "确认猫癣不传染人，问清笼子要不要和其他猫隔开"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T02_a1",
+     "subject": "her",
+     "relation": "cat_ringworm",
+     "value": "猫有猫癣，得单独放",
+     "valid_time": "2026-04-11",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T02",
+      "message_id": "m2",
+      "quote": "猫有猫癣 得单独放"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她提前说了麻烦点，是在给我退出的机会；轻松接住比讲卫生课更加分。",
+   "unknowns": [
+    "要不要自带手套",
+    "猫癣会不会传给其他猫"
+   ],
+   "protected_expressions": [
+    "猫有猫癣 得单独放 你别嫌麻烦"
+   ],
+   "forbidden_factual_claims": [
+    "不能说猫癣一定不传染人",
+    "不能保证救助站会提供隔离设备"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六帮她把猫送到领养日",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "N02_T03": {
+   "case_id": "N02_T03",
+   "current_action": "她突然说家长会可能拖到十一点，和十点集合冲突；这一轮应先重排时间，问她能不能让别人先送或改到下午，不要假装冲突不存在。",
+   "acceptable_actions": [
+    "问领养日最晚几点到，能不能我十点先过去等她",
+    "说那就改下午，先确认领养日收不收下午送到的猫"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "boundary",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T03_a1",
+     "subject": "her",
+     "relation": "parent_meeting",
+     "value": "周六上午家长会可能开到十一点",
+     "valid_time": "2026-04-11",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T03",
+      "message_id": "m1",
+      "quote": "开到十一点 不知道来不来得及"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "时间是硬约束；先把冲突摊开，再给她可选项，不要让她自己内疚。",
+   "unknowns": [
+    "家长会几点真正结束",
+    "领养日最晚接收时间"
+   ],
+   "protected_expressions": [
+    "开到十一点 不知道来不来得及"
+   ],
+   "forbidden_factual_claims": [
+    "不能把十一点说成一定结束",
+    "不能保证领养日可以晚到"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "确认周六上午能否按十点出发",
+    "status": "ADJUSTED",
+    "enabled": true
+   }
+  },
+  "N02_T04": {
+   "case_id": "N02_T04",
+   "current_action": "她发了猫的照片和名字，又自嘲年糕不好看；这一轮应接住这只具体的猫，给正向但诚实的回应，不要空夸也不要顺着贬。",
+   "acceptable_actions": [
+    "说年糕挺有辨识度，领养看眼缘，先把照片拍好",
+    "接住她的担心，说不好看不是问题，性格亲人更重要"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T04_a1",
+     "subject": "her",
+     "relation": "cat_name",
+     "value": "猫叫年糕，她担心不好领养",
+     "valid_time": "2026-04-10",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T04",
+      "message_id": "m2",
+      "quote": "是不是长得不太像能领养出去的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她嘴上自嘲，心里在意；先接住年糕这个具体对象，再给实在的领养建议。",
+   "unknowns": [
+    "年糕的性格亲不亲人",
+    "领养日有没有人提前问过它"
+   ],
+   "protected_expressions": [
+    "是不是长得不太像能领养出去的"
+   ],
+   "forbidden_factual_claims": [
+    "不能保证年糕一定被领养",
+    "不能编造年糕的性格"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "确认周六上午能否按十点出发",
+    "status": "ADJUSTED",
+    "enabled": true
+   }
+  },
+  "N02_T05": {
+   "case_id": "N02_T05",
+   "current_action": "她在说被退养的猫和挫败感；这一轮目标应让位，先接住她的无力和怀疑，不急着讲领养流程或给解决方案。",
+   "acceptable_actions": [
+    "先接住难过，说被退回来不是她的错",
+    "承认这事确实让人泄气，问她现在最担心哪只猫"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T05_a1",
+     "subject": "her",
+     "relation": "cat_returned",
+     "value": "一只猫因为抓沙发被退养，她怀疑要不要继续送养",
+     "valid_time": "2026-04-11",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T05",
+      "message_id": "m1",
+      "quote": "领养人说它抓沙发 养了三天就送回来"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她不是来要方案的；先站在她这边，别急着说'下次审核严一点'。",
+   "unknowns": [
+    "她是想继续做还是想停一阵"
+   ],
+   "protected_expressions": [
+    "我有点不知道该不该继续送养"
+   ],
+   "forbidden_factual_claims": [
+    "不能替她断定领养人就是坏人",
+    "不能保证以后不会再被退养"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "",
+    "status": "ACTIVE",
+    "enabled": false
+   }
+  },
+  "N02_T06": {
+   "case_id": "N02_T06",
+   "current_action": "她说周六去不了、想自己待着；这一轮应接受取消，不追问原因、不强行陪，也不要把'自己待着'当成需要被拯救。",
+   "acceptable_actions": [
+    "说行，这周先自己待着，需要跑腿再叫我",
+    "接受取消，留一句不要求回复的关心"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T06_a1",
+     "subject": "her",
+     "relation": "saturday_cancelled",
+     "value": "周六去不了，这周想自己待着",
+     "valid_time": "2026-04-18",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T06",
+      "message_id": "m0",
+      "quote": "周六可能去不了 你自己安排吧"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她低能量时最怕被追问；接受取消比追问'为什么'更尊重。",
+   "unknowns": [
+    "她只是这周丧还是最近状态都不好"
+   ],
+   "protected_expressions": [
+    "我这周有点丧 想自己待着"
+   ],
+   "forbidden_factual_claims": [
+    "不能把她的取消说成对我不满",
+    "不能保证她下周一定想见人"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "尊重她这周不想动，改天再帮",
+    "status": "ADJUSTED",
+    "enabled": true
+   }
+  },
+  "N02_T07": {
+   "case_id": "N02_T07",
+   "current_action": "她重新开口，说还是想我去、一个人搞不定；这一轮应接住这次重新求助，给一个轻量、具体的安排，不要翻旧账。",
+   "acceptable_actions": [
+    "说周六我去，十点先到，你开完会直接来",
+    "说那我全程帮你拎笼子，其他你指挥"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T07_a1",
+     "subject": "her",
+     "relation": "reopen_help",
+     "value": "还是想我去，一个人搞不定年糕",
+     "valid_time": "2026-04-18",
+     "status": "reopened",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T07",
+      "message_id": "m0",
+      "quote": "其实还是想你去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她重新开口不容易；直接接下，不要问'你上次不是说算了'。",
+   "unknowns": [
+    "她家长会几点结束",
+    "年糕这次还是不是同一只"
+   ],
+   "protected_expressions": [
+    "其实还是想你去"
+   ],
+   "forbidden_factual_claims": [
+    "不能把重新开口说成她改变主意很容易",
+    "不能保证年糕这次一定送得出去"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "重新安排周六送猫，尽量不让她累",
+    "status": "ADJUSTED",
+    "enabled": true
+   }
+  },
+  "N02_T08": {
+   "case_id": "N02_T08",
+   "current_action": "她认真问为什么愿意帮、会不会觉得救助站麻烦；这一轮应诚实回答自己的动机，不急着表白也不敷衍，接住她对关系的不确定。",
+   "acceptable_actions": [
+    "说觉得这事值得做，也想多了解她周末在做什么",
+    "承认救助站确实麻烦，但帮她是自己愿意，不用她欠人情"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T08_a1",
+     "subject": "her",
+     "relation": "why_help",
+     "value": "她问我为什么愿意帮，觉不觉得救助站麻烦",
+     "valid_time": "2026-04-13",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T08",
+      "message_id": "m1",
+      "quote": "你为什么愿意帮我"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在探我的动机和边界；回答要真诚、有分寸，不要借机逼她表态。",
+   "unknowns": [
+    "她希望这是普通朋友还是更进一步"
+   ],
+   "protected_expressions": [
+    "我是说 你不觉得救助站很麻烦吗"
+   ],
+   "forbidden_factual_claims": [
+    "不能替她定义我们的关系",
+    "不能说我完全不在乎回报"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "",
+    "status": "ACTIVE",
+    "enabled": false
+   }
+  },
+  "N02_T09": {
+   "case_id": "N02_T09",
+   "current_action": "她问我要不要一起家访，说自己一个人慌；这一轮应明确陪她，同时问清家访要做什么，不替她做决定也不把家访说成已经通过。",
+   "acceptable_actions": [
+    "说一起，问家访要看什么、需要准备什么",
+    "答应陪，但说决定仍由她和救助站做，我只在旁边"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T09_a1",
+     "subject": "her",
+     "relation": "home_visit",
+     "value": "救助站要家访，她一个人去有点慌",
+     "valid_time": "2026-04-18",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T09",
+      "message_id": "m1",
+      "quote": "你要不要一起 我一个人去有点慌"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "陪她去≠替她拍板；先接住'慌'，再明确自己的角色。",
+   "unknowns": [
+    "家访要见谁",
+    "领养人是不是已经定了"
+   ],
+   "protected_expressions": [
+    "你要不要一起 我一个人去有点慌"
+   ],
+   "forbidden_factual_claims": [
+    "不能保证家访一定通过",
+    "不能替她答应领养人任何条件"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六送猫并配合救助站的家访流程",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "N02_T10": {
+   "case_id": "N02_T10",
+   "current_action": "她道谢并主动请吃饭；这一轮应接住感谢和邀请，确认时间地点，不把'请吃饭'自动升级成约会，也不扭捏推掉。",
+   "acceptable_actions": [
+    "说好，问她想吃什么、几点",
+    "接住邀请，说这顿她请、下次我请，先把时间定下"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T10_a1",
+     "subject": "her",
+     "relation": "dinner_invite",
+     "value": "年糕安顿好，她请我吃饭道谢",
+     "valid_time": "2026-04-18",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T10",
+      "message_id": "m1",
+      "quote": "晚上请你吃饭吧 就当谢你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在主动靠近，但理由是道谢；接住邀请，不要替她定义这顿饭的性质。",
+   "unknowns": [
+    "她只是想道谢还是想约会",
+    "她几点方便"
+   ],
+   "protected_expressions": [
+    "晚上请你吃饭吧 就当谢你"
+   ],
+   "forbidden_factual_claims": [
+    "不能把这顿饭说成约会",
+    "不能替她定吃什么"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六送猫并配合救助站的家访流程",
+    "status": "COMPLETED",
+    "enabled": true
+   }
+  },
+  "N02_T11": {
+   "case_id": "N02_T11",
+   "current_action": "她先说别多想、又留了一句'我也拦不住'；这一轮应接住这个半开玩笑的边界，轻松回应，不逼她承认也不装听不懂。",
+   "acceptable_actions": [
+    "接梗说那我不多想，先专心吃饭",
+    "说收到，感谢饭就感谢饭，别的等吃完再说"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T11_a1",
+     "subject": "her",
+     "relation": "playful_boundary",
+     "value": "别多想，就是感谢；但你要真想多想我也拦不住",
+     "valid_time": "2026-04-18",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T11",
+      "message_id": "m2",
+      "quote": "不过你要真想多想 我也拦不住"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在用玩笑试探，也在划线；接住玩笑但不越线，别把'拦不住'当成许可。",
+   "unknowns": [
+    "她到底希望我多想还是别多想"
+   ],
+   "protected_expressions": [
+    "不过你要真想多想 我也拦不住"
+   ],
+   "forbidden_factual_claims": [
+    "不能把'拦不住'说成她答应了什么",
+    "不能替她定义关系"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六送猫并配合救助站的家访流程",
+    "status": "COMPLETED",
+    "enabled": true
+   }
+  },
+  "N02_T12": {
+   "case_id": "N02_T12",
+   "current_action": "她主动说吃饭舒服、年糕有新主人，然后明确去改作业；这一轮应收下正面反馈并自然收尾，不追问关系、不硬留话头。",
+   "acceptable_actions": [
+    "说舒服就好，年糕有家也放心，去忙吧",
+    "认可这顿饭和年糕的结果，简短道别"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N02_T12_a1",
+     "subject": "her",
+     "relation": "positive_close",
+     "value": "昨天吃饭舒服，年糕有新主人，她去改作业",
+     "valid_time": "2026-04-19",
+     "status": "completed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N02_T12",
+      "message_id": "m1",
+      "quote": "年糕的新主人发照片来了 我先不聊了 去改作业"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在给正向反馈后主动收尾；接住即可，不要把'舒服'追问成关系定义。",
+   "unknowns": [
+    "她下次什么时候有空"
+   ],
+   "protected_expressions": [
+    "我先不聊了 去改作业"
+   ],
+   "forbidden_factual_claims": [
+    "不能把'舒服'说成她答应交往",
+    "不能替她安排下次"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "周六送猫并配合救助站的家访流程",
+    "status": "COMPLETED",
+    "enabled": true
+   }
+  }
+ }
+}

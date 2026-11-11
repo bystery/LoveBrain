@@ -1,0 +1,137 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E039",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E039_T01",
+   "clock": "2026-11-05 20:01"
+  },
+  {
+   "case_id": "E039_T02",
+   "clock": "2026-11-05 20:08"
+  },
+  {
+   "case_id": "E039_T03",
+   "clock": "2026-11-05 20:12"
+  },
+  {
+   "case_id": "E039_T04",
+   "clock": "2026-11-05 20:15"
+  },
+  {
+   "case_id": "E039_T05",
+   "clock": "2026-11-05 20:18"
+  },
+  {
+   "case_id": "E039_T06",
+   "clock": "2026-11-05 20:30"
+  },
+  {
+   "case_id": "E039_T07",
+   "clock": "2026-11-06 20:05"
+  },
+  {
+   "case_id": "E039_T08",
+   "clock": "2026-11-06 20:12"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E039_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 20:00",
+   "quote": "周六去这条 拦云坳 看云海 我查好了!!!"
+  },
+  {
+   "case_id": "E039_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 20:05",
+   "quote": "这条我走过 后半段比你想的累 你新鞋磨脚吗"
+  },
+  {
+   "case_id": "E039_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 20:10",
+   "quote": "新鞋磨过一回了 我贴了创可贴原地复活"
+  },
+  {
+   "case_id": "E039_T04",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 20:14",
+   "quote": "叫上我室友吧 她也想动动 三个人正好拼车"
+  },
+  {
+   "case_id": "E039_T05",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 20:16",
+   "quote": "行 三人正好 我来拼车 你们出人我出driver"
+  },
+  {
+   "case_id": "E039_T06",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 20:28",
+   "quote": "那就七点半 龙翔桥地铁口C口 别睡过头"
+  },
+  {
+   "case_id": "E039_T07",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-06 20:02",
+   "quote": "明早确认下 天气说有雾 带件防风的 装备都齐吗"
+  },
+  {
+   "case_id": "E039_T08",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-06 20:10",
+   "quote": "齐了! 雾天云海说不定更值 收工 早睡"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "周六拦云坳徒步（三人）",
+   "event_time": "2026-11-07 07:30",
+   "status": "planned",
+   "source_turn": "E039_T06"
+  },
+  {
+   "event_id": "EV2",
+   "label": "装备确认",
+   "event_time": "2026-11-06 20:00",
+   "status": "planned",
+   "source_turn": "E039_T07"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "渐熟未明"
+  },
+  {
+   "turn": "T04",
+   "stage": "她引入室友（配置变化）"
+  },
+  {
+   "turn": "T08",
+   "stage": "约伴成行，暧昧未点破"
+  }
+ ],
+ "revisions": [
+  {
+   "case_id": "E039_T07",
+   "kind": "intent",
+   "status": "ACTIVE",
+   "text": "行前确认：装备和天气，群里三人同步",
+   "enabled": true
+  }
+ ],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

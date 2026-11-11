@@ -1,0 +1,473 @@
+{
+ "story_id": "E173",
+ "turns": {
+  "E173_T01": {
+   "case_id": "E173_T01",
+   "current_action": "帮核国补加换新的到手价账",
+   "acceptable_actions": [
+    "按官方页核账并确认口径",
+    "核账并提醒抵扣价以评估为准",
+    "核账并提醒活动截止前留出缓冲"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T01_A01",
+     "subject": "SHARED",
+     "relation": "换新账本",
+     "value": "新机3599国补减600旧机抵扣预期600，HER 初算到手2399",
+     "valid_time": "2026-10-13",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T01", "quote": "到手2399", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T01_A02",
+     "subject": "SHARED",
+     "relation": "活动死线",
+     "value": "国补加品牌以旧换新活动10月20日截止",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T01", "quote": "活动20号截止", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "泼冷水式参谋：先挑账里最虚的一环。",
+   "unknowns": ["旧机实际评估价未知"],
+   "protected_expressions": ["活动20号截止"],
+   "forbidden_factual_claims": ["不得确认2399为最终到手价"],
+   "may_decline": false
+  },
+  "E173_T02": {
+   "case_id": "E173_T02",
+   "current_action": "对类目边界存疑给查证路径",
+   "acceptable_actions": [
+    "建议以商品详情页国补标识为准",
+    "建议找同型号普通版比对类目",
+    "建议让客服书面确认能补的型号"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T02_A01",
+     "subject": "PUBLIC",
+     "relation": "补贴类目边界",
+     "value": "国补限平板类目，学习机归教育硬件不参加，型号归属待查",
+     "valid_time": "2026-10-14",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T02", "quote": "国补限平板类目", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T02_A02",
+     "subject": "SHARED",
+     "relation": "活动死线",
+     "value": "10月20日活动截止的既定约束",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T01", "quote": "活动20号截止", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "类目之争别猜，指向可自查的官方页面。",
+   "unknowns": ["具体型号类目归属未知"],
+   "protected_expressions": ["国补限平板类目"],
+   "forbidden_factual_claims": ["不得替平台认定类目归属"],
+   "may_decline": false
+  },
+  "E173_T03": {
+   "case_id": "E173_T03",
+   "current_action": "确认版本选择翻转为普通版",
+   "acceptable_actions": [
+    "确认普通版并认可自装软件思路",
+    "确认并提醒确认学习软件兼容性",
+    "确认并说这个翻转省心"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T03_A01",
+     "subject": "SHARED",
+     "relation": "版本选择落定",
+     "value": "学习版不参加国补，改选普通版自装学习软件",
+     "valid_time": "2026-10-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T03", "quote": "我决定买普通版", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T03_A02",
+     "subject": "PUBLIC",
+     "relation": "补贴类目边界",
+     "value": "类目归属已查实，学习版出局普通版在列",
+     "valid_time": "2026-10-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T03", "quote": "学习版不参加国补，普通版参加", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她翻转得干脆，接住即可。",
+   "unknowns": ["学习软件是否免费未知"],
+   "protected_expressions": ["我决定买普通版"],
+   "forbidden_factual_claims": ["不得替她改回学习版"],
+   "may_decline": false
+  },
+  "E173_T04": {
+   "case_id": "E173_T04",
+   "current_action": "接住抵扣价600改450的更正与到手价重算",
+   "acceptable_actions": [
+    "复述450与2549并说这个账实",
+    "确认并提醒评估照片留存",
+    "确认并说磕碰扣一百五不算黑"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T04_A01",
+     "subject": "SHARED",
+     "relation": "抵扣价更正",
+     "value": "旧平板抵扣由600更正为450，因后盖磕碰",
+     "valid_time": "2026-10-15",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E173_T04", "quote": "抵扣改450", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T04_A02",
+     "subject": "SHARED",
+     "relation": "到手价更新",
+     "value": "到手价更新为2549，2399作废",
+     "valid_time": "2026-10-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T04", "quote": "到手价变成2549", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：旧数作废要接明白，别再提2399。",
+   "unknowns": [],
+   "protected_expressions": ["到手价变成2549"],
+   "forbidden_factual_claims": ["不得沿用2399口径"],
+   "may_decline": false
+  },
+  "E173_T05": {
+   "case_id": "E173_T05",
+   "current_action": "就清晨排队锁单之约表态",
+   "acceptable_actions": [
+    "答应明早陪去排队",
+    "答应并提醒带身份证与旧机",
+    "婉拒陪队但远程盯名额"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T05_A01",
+     "subject": "SHARED",
+     "relation": "名额告急",
+     "value": "门店每日国补名额20个当日已抢完，活动或提前结束",
+     "valid_time": "2026-10-15",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T05", "quote": "每日国补名额20个", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T05_A02",
+     "subject": "SHARED",
+     "relation": "到手价更新",
+     "value": "到手价2549的既定口径",
+     "valid_time": "2026-10-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T04", "quote": "到手价变成2549", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她说不熬夜，顺她的节奏给支持。",
+   "unknowns": ["明日名额投放量未知"],
+   "protected_expressions": ["明早开门就去排队锁单"],
+   "forbidden_factual_claims": ["不得保证明早必有名额"],
+   "may_decline": true
+  },
+  "E173_T06": {
+   "case_id": "E173_T06",
+   "current_action": "接住抢到名额与错选型号，支持立即退单重拍",
+   "acceptable_actions": [
+    "催她立即重拍并盯30分钟窗口",
+    "支持重拍并提醒重拍后再核内存",
+    "支持重拍并提醒留旧订单截图"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T06_A01",
+     "subject": "SHARED",
+     "relation": "名额锁定",
+     "value": "HER 清晨抢到国补名额",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T06", "quote": "名额到手", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T06_A02",
+     "subject": "SHARED",
+     "relation": "型号错选更正",
+     "value": "手滑选了8+128，需退单重拍8+256，30分钟内重拍名额保留",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T06", "quote": "30分钟内取消重拍名额还保留", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "时间紧，回复短促有力。",
+   "unknowns": ["重拍是否成功未知"],
+   "protected_expressions": ["30分钟内取消重拍名额还保留"],
+   "forbidden_factual_claims": ["不得声称重拍已成功"],
+   "may_decline": false
+  },
+  "E173_T07": {
+   "case_id": "E173_T07",
+   "current_action": "确认重拍成功与赠品待发放状态",
+   "acceptable_actions": [
+    "确认2549落袋并夸手快",
+    "确认并提醒保存订单与赠品页截图",
+    "确认并问发票信息要不要复核"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T07_A01",
+     "subject": "SHARED",
+     "relation": "订单落地",
+     "value": "8+256重拍成功，到手价2549，发票开 HER 名",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T07", "quote": "8+256到手价2549", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T07_A02",
+     "subject": "SHARED",
+     "relation": "赠品悬置",
+     "value": "订单赠品栏写触控笔，状态为赠品待发放",
+     "valid_time": "2026-10-16",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T07", "quote": "赠品待发放", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "落袋为安，顺手强调截图习惯。",
+   "unknowns": ["赠品最终是否发放未知"],
+   "protected_expressions": ["8+256到手价2549"],
+   "forbidden_factual_claims": ["不得宣布赠品已到手"],
+   "may_decline": false
+  },
+  "E173_T08": {
+   "case_id": "E173_T08",
+   "current_action": "对赠品资格无法自查的悬置给安抚与对策",
+   "acceptable_actions": [
+    "安抚并说截图就是凭证",
+    "安抚并提醒过发放期再问客服",
+    "安抚并说笔不值几个钱别熬心"
+   ],
+   "applicable_dimensions": ["factuality", "interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T08_A01",
+     "subject": "PUBLIC",
+     "relation": "赠品规则",
+     "value": "前100名送触控笔，HER 单是否在名额内无法自查",
+     "valid_time": "2026-10-17",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T08", "quote": "是不是前100看不出来", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T08_A02",
+     "subject": "SHARED",
+     "relation": "订单落地",
+     "value": "8+256订单落地的既定状态",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T07", "quote": "8+256到手价2549", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "悬置就悬置，别替平台许诺。",
+   "unknowns": ["发放时点未知"],
+   "protected_expressions": ["是不是前100看不出来"],
+   "forbidden_factual_claims": ["不得断言 HER 在前100名内"],
+   "may_decline": false
+  },
+  "E173_T09": {
+   "case_id": "E173_T09",
+   "current_action": "接住赠品兑现并应下装机与管控之约",
+   "acceptable_actions": [
+    "应下装机并问平板何时到",
+    "应下并提醒准备小舟常用账号",
+    "应下并说屏幕时间他准跳票"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T09_A01",
+     "subject": "SHARED",
+     "relation": "赠品兑现",
+     "value": "触控笔已发货，48小时内送达",
+     "valid_time": "2026-10-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T09", "quote": "笔发货了", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T09_A02",
+     "subject": "SHARED",
+     "relation": "装机之约",
+     "value": "平板到货后由 ME 装学习软件并设家人共享屏幕使用时间",
+     "valid_time": "2026-10-22",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T09", "quote": "你来帮小舟装学习软件", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应要痛快，管控那句可以打趣。",
+   "unknowns": ["平板到货日未知"],
+   "protected_expressions": ["你来帮小舟装学习软件"],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E173_T10": {
+   "case_id": "E173_T10",
+   "current_action": "确认地址乌龙更正与回收取件安排",
+   "acceptable_actions": [
+    "确认改派无误并提醒周五在家收货",
+    "确认并提醒回收取件备份资料",
+    "确认并说地址这坑你也踩"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T10_A01",
+     "subject": "SHARED",
+     "relation": "收货地址更正",
+     "value": "发货地址误为 HER 公司，已改派至家，周五送达",
+     "valid_time": "2026-10-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T10", "quote": "我已经让快递改派到家里", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T10_A02",
+     "subject": "SHARED",
+     "relation": "回收取件",
+     "value": "旧平板回收上门取件约在21号上午",
+     "valid_time": "2026-10-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T10", "quote": "约在21号上午", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "乌龙更正接住，重点落到21号取件别撞车。",
+   "unknowns": ["回收现场是否重估未知"],
+   "protected_expressions": ["约在21号上午"],
+   "forbidden_factual_claims": ["不得声称地址无需更正"],
+   "may_decline": false
+  },
+  "E173_T11": {
+   "case_id": "E173_T11",
+   "current_action": "接住装机反馈与回收推进，确认打款窗口",
+   "acceptable_actions": [
+    "确认反馈并提醒盯7个工作日到账",
+    "确认并打趣22点锁屏是小舟天敌",
+    "确认并说回收款到账前别删凭证"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T11_A01",
+     "subject": "SHARED",
+     "relation": "管控落地",
+     "value": "学习软件装好，屏幕使用时间22点自动锁",
+     "valid_time": "2026-10-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T11", "quote": "卡着22点自动锁", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T11_A02",
+     "subject": "SHARED",
+     "relation": "回收打款",
+     "value": "旧平板21号被收走，450承诺7个工作日到账",
+     "valid_time": "2026-10-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T11", "quote": "450那笔说7个工作日到账", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "反馈接得具体，打款窗口帮她记着。",
+   "unknowns": ["回收款实际到账日未知"],
+   "protected_expressions": ["450那笔说7个工作日到账"],
+   "forbidden_factual_claims": ["不得宣称回收款已到账"],
+   "may_decline": false
+  },
+  "E173_T12": {
+   "case_id": "E173_T12",
+   "current_action": "接下烤鱼之约与双十二功课预告",
+   "acceptable_actions": [
+    "答应赴约并接下扫地机功课",
+    "答应并打趣参谋费加一条烤鱼",
+    "答应赴约并说功课到时现查"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E173_T12_A01",
+     "subject": "SHARED",
+     "relation": "烤鱼之约",
+     "value": "HER 订明晚七点烤鱼谢全程参谋",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T12", "quote": "烤鱼我订好了", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E173_T12_A02",
+     "subject": "HER",
+     "relation": "双十二预告",
+     "value": "HER 计划双十二换扫地机器人并预支 ME 的参数功课",
+     "valid_time": "2026-12-12前后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E173_T12", "quote": "双十二我打算给家里换台扫地机器人", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，烤鱼答应爽快，功课先挂账。",
+   "unknowns": ["扫地机器人预算未知"],
+   "protected_expressions": ["烤鱼我订好了"],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  }
+ }
+}

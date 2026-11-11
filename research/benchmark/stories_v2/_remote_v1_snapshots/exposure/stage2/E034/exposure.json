@@ -1,0 +1,39 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "E034",
+ "title": "旧同事的时间线对账",
+ "themes": [
+  "长期事情",
+  "记忆纠错",
+  "第三人老领导",
+  "挖角反转",
+  "互助收尾"
+ ],
+ "author": "ZCode main worker-AI (synthetic)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+ "readers": [
+  "author"
+ ],
+ "independent_review": false,
+ "review_note": "同 worker 自检；不是独立封存集。",
+ "created_at": "2026-10-28",
+ "frozen_at": null,
+ "status": "dev_candidate_stage2",
+ "experiments_used": [],
+ "dev_exposed": true,
+ "validation_claim": false,
+ "turns": 12,
+ "may_decline_turns": [
+  "E034_T12"
+ ],
+ "hashes": {
+  "episode.json": "5eff8448c4932cca3f5ce65101f294119df5eea19fb54a556c7dcee6b9eaccd0",
+  "reference.json": "9958e00915dc6b2297f577346f93547c825c8891823b1ed62f5b7a593878ad37",
+  "timeline.json": "3c434ac1b38a44f72199a5bfed8ee461c8acebc67b9246c54ddb82db6734ae5b",
+  "audit.md": "e5dd0da80fc6adeb4b33dcff8a95f1269afbf8ee583617b23bd61836f72bfe7b"
+ },
+ "runner_copy": "benchmark/episodes/E034.json",
+ "notes": "Stage2 首批（W06）；12位自然故事；冻结与未调参验证在后续批次。"
+}

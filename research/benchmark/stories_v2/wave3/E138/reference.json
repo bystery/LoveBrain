@@ -1,0 +1,671 @@
+{
+ "story_id": "E138",
+ "turns": {
+  "E138_T01": {
+   "current_action": "确认周三球局准时到，回应球拍问题，维持轻快日常",
+   "acceptable_actions": [
+    "确认周三到，答球拍已买或还在挑",
+    "确认老时间老地方，顺口接装备话题",
+    "确认球局并反问一句她最近手感"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A01",
+     "subject": "SHARED",
+     "relation": "例行球局",
+     "value": "每周三晚三号场例行球局，老时间老地方",
+     "valid_time": "每周三晚，长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "每周三晚固定包场馆三号场地已两年"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E138_A02",
+     "subject": "ME",
+     "relation": "换拍打算",
+     "value": "上周提过要换新球拍",
+     "valid_time": "2026-10底提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T01",
+      "message_id": "m0",
+      "quote": "上周你说要换新球拍，买了没？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "例行确认要快，别把简单的事聊复杂。",
+   "unknowns": [],
+   "protected_expressions": [
+    "老时间老地方，三号场"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T01"
+  },
+  "E138_T02": {
+   "current_action": "明确站在她这边：付费包的场没有义务分享，支持她守住边界，同时提醒礼貌回绝留余地",
+   "acceptable_actions": [
+    "表态支持守场，建议她礼貌但明确地拒绝",
+    "指出全年付费包场就是边界，分享是情分不是本分",
+    "赞同她'不对劲'的直觉，提醒她别被资源共享的话术绕进去"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A03",
+     "subject": "THIRD",
+     "relation": "借场请求",
+     "value": "新群二十来人无固定场，想每周借三号场打一半时间，以资源共享为名",
+     "valid_time": "2026-11-05提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T02",
+      "message_id": "m0",
+      "quote": "想每周借我们三号场打一半时间，还说什么'球场资源共享'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E138_A04",
+     "subject": "HER",
+     "relation": "场地权益",
+     "value": "球队全年付费包三号场，包场两年",
+     "valid_time": "包场两年持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T02",
+      "message_id": "m0",
+      "quote": "我们可是包了两年"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "站队要明确，但别怂恿她硬刚，守住场子也守住体面。",
+   "unknowns": [
+    "对方是否还会纠缠未定"
+   ],
+   "protected_expressions": [
+    "听着就不对劲"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T02"
+  },
+  "E138_T03": {
+   "current_action": "肯定她的拒绝干净利落：给替代选项、守住核心时段，这正是标准边界处理，顺带接住吐槽",
+   "acceptable_actions": [
+    "肯定拒绝方式标准：给了替代路径，守住了核心权益",
+    "接住吐槽，指出对方一句'那算了'说明本来就想白嫖",
+    "肯定她没让步，提醒她把回复截图留档防后续扯皮"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A05",
+     "subject": "HER",
+     "relation": "边界声明",
+     "value": "已明确回绝：场为球队全年付费包，可介绍问其他空场，周三晚不动",
+     "valid_time": "2026-11-06起",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T03",
+      "message_id": "m0",
+      "quote": "场是我们队全年付费包的，没商量。可以介绍他们问场馆别的空场，周三晚上这块地不动"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E138_A06",
+     "subject": "THIRD",
+     "relation": "借场请求结果",
+     "value": "对方以'哦，那算了'结束请求",
+     "valid_time": "2026-11-06",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T03",
+      "message_id": "m0",
+      "quote": "他回了个'哦，那算了'"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要的是被认可而非被指导，先给认可再说别的。",
+   "unknowns": [],
+   "protected_expressions": [
+    "周三晚上这块地不动"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T03"
+  },
+  "E138_T04": {
+   "current_action": "接住被阴阳的窝火：肯定队长的公开回应已够分量，支持她不接茬的策略",
+   "acceptable_actions": [
+    "肯定队长回应得体，支持不接茬，阴阳止于智者",
+    "接住窝火，指出事实站他们那边（付费凭证在手）",
+    "劝她别私聊纠缠，让场馆层面的方案去解决"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A07",
+     "subject": "THIRD",
+     "relation": "群内言论",
+     "value": "对方在球友群阴阳球队'占着场子搞小团体'",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T04",
+      "message_id": "m0",
+      "quote": "说'某些人占着场子搞小团体'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E138_A08",
+     "subject": "HER",
+     "relation": "应对策略",
+     "value": "队长公开回应付费事实后，球队选择不接茬",
+     "valid_time": "2026-11-08起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T04",
+      "message_id": "m0",
+      "quote": "队长在群里回了一句'场地全年付费包场，欢迎围观欢迎约友谊赛'，先不接茬了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的'不接茬'是对的，这轮的任务是让她的选择更有底气。",
+   "unknowns": [
+    "对方是否继续纠缠未定"
+   ],
+   "protected_expressions": [
+    "先不接茬了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T04"
+  },
+  "E138_T05": {
+   "current_action": "为场馆方案叫好：对方拿到合规去处、球队权益无损，她的边界守住了还没结仇",
+   "acceptable_actions": [
+    "肯定双赢方案，点出她的坚持是这事有解的前提",
+    "接住舒展情绪，说这是最体面的收场",
+    "肯定结果并顺势带一句带体验课的新鲜事"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A09",
+     "subject": "PUBLIC",
+     "relation": "场馆调解方案",
+     "value": "新群获周二四号场拼团价，球队受邀带体验课课费打折，三号场权益不变",
+     "valid_time": "2026-11-11起",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T05",
+      "message_id": "m0",
+      "quote": "周二四号场给他们拼团价，还让我们去带一节体验课，课费打折"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E138_A10",
+     "subject": "THIRD",
+     "relation": "群内言论状态",
+     "value": "阴阳怪气一方在方案落地后不再发声",
+     "valid_time": "2026-11-11",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T05",
+      "message_id": "m0",
+      "quote": "阴阳怪气那位没再吭声"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把功劳归于她两轮的稳定表现，边界故事要有正反馈收口。",
+   "unknowns": [],
+   "protected_expressions": [
+    "场馆出面了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T05"
+  },
+  "E138_T06": {
+   "current_action": "接受反手加练邀约，定下周球局后留十分钟，顺口接重杀被夸的得意",
+   "acceptable_actions": [
+    "答应加练十分钟，确认下周球局后进行",
+    "答应陪练，顺口点评她反手的问题在手腕",
+    "接住夸奖，答应加练并让她带多一筒球"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A11",
+     "subject": "SHARED",
+     "relation": "加练约定",
+     "value": "下周球局后加练反手十分钟",
+     "valid_time": "2026-11-18球局后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T06",
+      "message_id": "m0",
+      "quote": "下周你陪我加练十分钟反手呗？"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E138_A12",
+     "subject": "HER",
+     "relation": "技术短板",
+     "value": "反手回球软是长期老毛病",
+     "valid_time": "持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T06",
+      "message_id": "m0",
+      "quote": "我这反手还是老毛病，回球软"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动约加练是信任，答应要痛快，点评别太刻薄。",
+   "unknowns": [],
+   "protected_expressions": [
+    "下周你陪我加练十分钟反手呗"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T06"
+  },
+  "E138_T07": {
+   "current_action": "给足肯定：两周加练换来实战能顶回去，这就是训练的意义，顺带接'姿势丑'的自嘲",
+   "acceptable_actions": [
+    "肯定进步，说实战能回后场就是硬标准达成",
+    "接住姿势自嘲，说动作会随球感自然变好看",
+    "肯定她坚持加练，提议保持每周十分钟的节奏"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A13",
+     "subject": "HER",
+     "relation": "技术进步",
+     "value": "反手连练两周后实战能顶回后场",
+     "valid_time": "2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T07",
+      "message_id": "m0",
+      "quote": "反手连练两周，今天实战终于能顶回去了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E138_A14",
+     "subject": "SHARED",
+     "relation": "加练约定",
+     "value": "球局后加练反手十分钟已执行，反手实战能顶回后场",
+     "valid_time": "2026-11-11至11-18",
+     "status": "fulfilled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T06",
+      "message_id": "m0",
+      "quote": "下周你陪我加练十分钟反手呗？"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她要肯定就大方给，教练感别过重。",
+   "unknowns": [],
+   "protected_expressions": [
+    "能把球回到后场就是胜利"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T07"
+  },
+  "E138_T08": {
+   "current_action": "答应组队参赛：确认和她一组，顺口定备赛节奏",
+   "acceptable_actions": [
+    "答应组队，确认参赛并聊两句战术分工",
+    "爽快答应，接住折扣卡奖品的价值梗",
+    "答应出赛，提议先看赛程再定加练计划"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A15",
+     "subject": "SHARED",
+     "relation": "参赛组队",
+     "value": "下月场馆双打邀请赛，路遥与沈川组一队，冠军奖品为一年场地折扣卡",
+     "valid_time": "2026-12月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T08",
+      "message_id": "m0",
+      "quote": "我和你一组怎么样？听说冠军奖品是一年场地折扣卡"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E138_A16",
+     "subject": "HER",
+     "relation": "技术进步",
+     "value": "反手经加练已能实战顶回",
+     "valid_time": "2026-11-19起",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T07",
+      "message_id": "m0",
+      "quote": "反手连练两周，今天实战终于能顶回去了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "组队邀约是对搭档关系的确认，答应里带一点兴奋。",
+   "unknowns": [
+    "比赛具体日期与签表未出"
+   ],
+   "protected_expressions": [
+    "我和你一组怎么样"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T08"
+  },
+  "E138_T09": {
+   "current_action": "接住首轮对手分析与周六战术加练安排：认可录像功课，确认周六到场",
+   "acceptable_actions": [
+    "认可她看录像找空档的功课，确认周六加练",
+    "接住难缠对手的说法，定周六战术演练内容",
+    "确认周六，补一条接发球轮转的应对思路"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A17",
+     "subject": "PUBLIC",
+     "relation": "首轮对手",
+     "value": "首轮对阵馆内教练组合，其接发球轮转存在空档",
+     "valid_time": "比赛首轮",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T09",
+      "message_id": "m0",
+      "quote": "我们第一轮碰上馆里那个教练组合，有点难缠"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E138_A18",
+     "subject": "SHARED",
+     "relation": "备赛安排",
+     "value": "周六加练一次战术",
+     "valid_time": "2026-12-05前后周六",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T09",
+      "message_id": "m0",
+      "quote": "周六加练一次战术"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的战术素养值得肯定，备赛轮聊具体内容。",
+   "unknowns": [
+    "周六加练具体时间未定"
+   ],
+   "protected_expressions": [
+    "接发球轮转有空档"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T09"
+  },
+  "E138_T10": {
+   "current_action": "接住首轮获胜的兴奋：把功劳分回去一半，确认半决赛时间",
+   "acceptable_actions": [
+    "一起兴奋，回扣18平那球，确认下周三半决赛",
+    "肯定她的接发压制是取胜基础，约定半决赛再战",
+    "接住教练拍大腿的梗，叮嘱半决赛别轻敌"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A19",
+     "subject": "SHARED",
+     "relation": "首轮结果",
+     "value": "首轮2比1战胜教练组合，第三局18平关键分假动作致胜",
+     "valid_time": "2026-12-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T10",
+      "message_id": "m0",
+      "quote": "赢啦！！2比1！第三局18平那个球你假动作太绝了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E138_A20",
+     "subject": "PUBLIC",
+     "relation": "赛程推进",
+     "value": "半决赛在下周三，胜者进决赛",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T10",
+      "message_id": "m0",
+      "quote": "半决赛下周三，赢了直接打决赛"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "赢了球一起疯一下没问题，但要把她前面录像和加练的功劳点回来。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你假动作太绝了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T10"
+  },
+  "E138_T11": {
+   "current_action": "接住惜败的释然：肯定'差两分'的含金量与默契的收获，允许简短回应",
+   "acceptable_actions": [
+    "肯定虽败犹荣，说差两分说明战术打出来了",
+    "接住默契值回加练的说法，约定明年再报",
+    "轻收尾，夸她整届比赛的黑马成色"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A21",
+     "subject": "SHARED",
+     "relation": "半决赛结果",
+     "value": "半决赛21比19惜败，止步四强，获业余组黑马评价",
+     "valid_time": "2026-12-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T11",
+      "message_id": "m0",
+      "quote": "半决赛惜败，21比19，差两分"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E138_A22",
+     "subject": "PUBLIC",
+     "relation": "冠军奖品归属",
+     "value": "一年场地折扣卡未获得，赛事目标终止",
+     "valid_time": "2026-12-10",
+     "status": "negated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T08",
+      "message_id": "m0",
+      "quote": "听说冠军奖品是一年场地折扣卡，很值"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "输球轮做减法：肯定+一个轻钩子，别复盘到深夜。",
+   "unknowns": [],
+   "protected_expressions": [
+    "那份默契值回加练了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T11"
+  },
+  "E138_T12": {
+   "current_action": "接住续约好消息：三号场保住且加了体能课权益，边界线圆满闭环，确认周三老时间",
+   "acceptable_actions": [
+    "为续约和新增权益叫好，确认周三老时间见",
+    "点出三号场保住是当初守住边界换来的一劳永逸",
+    "接住'反手继续'，答应把十分钟加练变成固定节目"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E138_A23",
+     "subject": "PUBLIC",
+     "relation": "续约结果",
+     "value": "球队与场馆续约，三号场保留并新增每季一次免费体能课",
+     "valid_time": "2027年度",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T12",
+      "message_id": "m0",
+      "quote": "明年球队和场馆续约了，三号场还是我们的，还加了权益：每季一次免费体能课"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E138_A24",
+     "subject": "HER",
+     "relation": "边界声明（闭环）",
+     "value": "当初拒绝借场、守住三号场的边界决定获长期结果验证",
+     "valid_time": "2026-11-06决定，2027年度兑现",
+     "status": "fulfilled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E138_T03",
+      "message_id": "m0",
+      "quote": "场是我们队全年付费包的，没商量"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾把整条边界线轻轻扣回来：守住的东西最后都守住了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "三号场还是我们的"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E138_T12"
+  }
+ }
+}

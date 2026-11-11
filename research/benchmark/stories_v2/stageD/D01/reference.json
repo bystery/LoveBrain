@@ -1,0 +1,158 @@
+{
+  "story_id": "D01",
+  "turns": {
+    "D01_T01": {
+      "case_id": "D01_T01",
+      "current_action": "她刚被告知周六名额可能没、要在明晚前确认，这一轮最该做的是把'先确认住位置'这件事拍板接下来，并顺一句去落实周日北门备选项，而不是空谈安慰。",
+      "acceptable_actions": [
+        "明确说这趟我盯着，今天就找小王把位置先确认住，别等到明天",
+        "问清楚是名额没了还是截止提前，好决定是直接确认还是转周日北门"
+      ],
+      "applicable_dimensions": ["goal", "initiative", "factuality", "time_state"],
+      "required_memory_atoms": [
+        {"atom_id": "D01_T01_a1", "subject": "her", "relation": "stall_spot_deadline", "value": "明晚之前确认否则给别人", "valid_time": "2026-01-14前", "status": "pending", "negation": false, "source": {"kind": "message", "case_id": "D01_T01", "message_id": "m1", "quote": "明晚之前确认"}, "required_this_turn": false}
+      ],
+      "private_guidance": "她在抛问题留话头，等着我先拿主意；此时讲道理或只是'再聊聊看'都算没接住。",
+      "unknowns": ["是名额彻底没了还是只是截止提前，本轮还没说清"],
+      "protected_expressions": ["明晚之前确认"],
+      "forbidden_factual_claims": ["不能说位置已经保住或已经报名成功", "不能替管理的小王断定名额一定给不回来"],
+      "may_decline": false,
+      "intent": {"text": "把这周六出摊的电和位置办成", "status": "ACTIVE", "enabled": true}
+    },
+    "D01_T02": {
+      "case_id": "D01_T02",
+      "current_action": "她把制冰机付款取货和供电跳闸两件事一起倒出来，这一轮最该做的是接住'电老跳'这个老大难、点出我可以动用家里那套露营电源来兜底，同时记住机器周三取这个暂定信息别当已办妥。",
+      "acceptable_actions": [
+        "提出把600W便携电源带下去顶咖啡机，免得再靠借插座跳闸",
+        "确认机器是先付了钱、周三去取，先把取货这一步记在待办里"
+      ],
+      "applicable_dimensions": ["memory_use", "goal", "initiative", "factuality"],
+      "required_memory_atoms": [
+        {"atom_id": "D01_T02_a1", "subject": "her", "relation": "power_setup", "value": "供电靠借邻居插座常跳闸", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "initial_kb", "key": "her", "quote": "借邻居插座"}, "required_this_turn": false},
+        {"atom_id": "D01_T02_a2", "subject": "her", "relation": "ice_maker_pickup", "value": "师傅说周三能取", "valid_time": "2026-01-14前", "status": "tentative", "negation": false, "source": {"kind": "message", "case_id": "D01_T02", "message_id": "m1", "quote": "周三能取"}, "required_this_turn": false}
+      ],
+      "private_guidance": "电这轮是明确的推进窗口，别把它滑过去只回机器的事。",
+      "unknowns": ["机器是不是本周内一定取得到，师傅只口头说了周三"],
+      "protected_expressions": ["借插座老跳"],
+      "forbidden_factual_claims": ["不能说制冰机已经取到或已经能用了", "不能声称借插座的问题已经解决"],
+      "may_decline": false,
+      "intent": {"text": "把这周六出摊的电和位置办成", "status": "ACTIVE", "enabled": true}
+    },
+    "D01_T03": {
+      "case_id": "D01_T03",
+      "current_action": "她带回消息周六没了、改周日北门、且她周六加班，这一轮最该做的是接受目标从周六改到周日、并顺势把周日北门的确认也拍下来，完成一次真实的目标改写。",
+      "acceptable_actions": [
+        "确认改到周日北门，让我把电和灯按周日那天准备",
+        "追问周日这块要不要也赶在小王截止前报上去别又黄了"
+      ],
+      "applicable_dimensions": ["goal", "time_state", "initiative", "factuality"],
+      "required_memory_atoms": [
+        {"atom_id": "D01_T03_a1", "subject": "her", "relation": "new_slot", "value": "周日北门腾出一块", "valid_time": "2026-01-15", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "D01_T03", "message_id": "m0", "quote": "周日北门倒腾出一块"}, "required_this_turn": false},
+        {"atom_id": "D01_T03_a2", "subject": "her", "relation": "saturday_constraint", "value": "周六加班走不开", "valid_time": "2026-01-17", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "D01_T03", "message_id": "m1", "quote": "周六我加班走不开"}, "required_this_turn": false}
+      ],
+      "private_guidance": "目标是真在动：这里必须体现时间从周六改成周日，不能还停留在'周六再想想'。",
+      "unknowns": ["周日北门这块最终能不能确认到她的手上"],
+      "protected_expressions": ["周六我加班走不开"],
+      "forbidden_factual_claims": ["不能还说这周六出摊", "不能替小王保证周日北门一定给她留着"],
+      "may_decline": false,
+      "intent": {"text": "改成这周日北门出摊把电和位置落实", "status": "ADJUSTED", "enabled": true}
+    },
+    "D01_T04": {
+      "case_id": "D01_T04",
+      "current_action": "她转述供货的老陈说周日能补一趟豆、让她先别囤，又说电先别急着买、她去问隔壁奶茶借，这一轮最该做的是分清老陈的主动提议不等于豆子已订、也别把借电当成已谈成，同时把家里那台600W电源记为兜底方案。",
+      "acceptable_actions": [
+        "顺着她别急着囤豆，等周日老陈那边说准了再定，不替她把进货拍死",
+        "回应借电先别买、但提醒我家里那台电源可以周日直接带去当保底"
+      ],
+      "applicable_dimensions": ["attribution", "factuality", "memory_use", "initiative"],
+      "required_memory_atoms": [
+        {"atom_id": "D01_T04_a1", "subject": "老陈", "relation": "bean_delivery_offer", "value": "老陈主动说周日顺路补一趟豆", "valid_time": "2026-01-18", "status": "offer", "negation": false, "source": {"kind": "message", "case_id": "D01_T04", "message_id": "m0", "quote": "老陈说他周日顺路给我补一趟豆"}, "required_this_turn": false},
+        {"atom_id": "D01_T04_a2", "subject": "me", "relation": "backup_power", "value": "有600W便携电源可兜底", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "initial_kb", "key": "me", "quote": "600W便携电源"}, "required_this_turn": true},
+        {"atom_id": "D01_T04_a3", "subject": "her", "relation": "confirm_deadline_earlier", "value": "小王要求明晚之前确认", "valid_time": "2026-01-15", "status": "superseded", "negation": true, "source": {"kind": "message", "case_id": "D01_T01", "message_id": "m1", "quote": "明晚之前确认"}, "required_this_turn": false}
+      ],
+      "private_guidance": "归属别搞错：补豆是老陈要做的、借电是还没问的，都不能写成她已定的事。",
+      "unknowns": ["隔壁奶茶到底借不借得出电"],
+      "protected_expressions": ["电你先别急着买"],
+      "forbidden_factual_claims": ["不能把老陈的提议说成她已订好豆子", "不能说借电已经谈成或她已答应买新电源"],
+      "may_decline": false,
+      "intent": {"text": "改成这周日北门出摊把电和位置落实", "status": "ADJUSTED", "enabled": true}
+    },
+    "D01_T05": {
+      "case_id": "D01_T05",
+      "current_action": "她说机器主板烧了周三取不了、最快下周三，又自责折腾这么多天心累，这一轮最该做的是先承接她的疲惫和委屈、别急着讲道理或推计划，同时更新事实：机器本周指望不上、'周三能取'作废。",
+      "acceptable_actions": [
+        "先接住她这几天白班加摆摊的累，劝她今天早点睡、机器的事明天再说",
+        "点明机器最快下周三才回，这周日出摊得另想制冰的招，但今天先不逼她定"
+      ],
+      "applicable_dimensions": ["emotion_relation", "time_state", "factuality", "memory_use"],
+      "required_memory_atoms": [
+        {"atom_id": "D01_T05_a1", "subject": "her", "relation": "ice_maker_status", "value": "主板烧了周三取不了最快下周三", "valid_time": "2026-01-16", "status": "active", "negation": true, "source": {"kind": "message", "case_id": "D01_T05", "message_id": "m0", "quote": "主板烧了周三取不了"}, "required_this_turn": false},
+        {"atom_id": "D01_T05_a2", "subject": "her", "relation": "ice_maker_old_claim", "value": "此前说周三能取", "valid_time": "2026-01-14", "status": "superseded", "negation": true, "source": {"kind": "message", "case_id": "D01_T02", "message_id": "m1", "quote": "周三能取"}, "required_this_turn": true}
+      ],
+      "private_guidance": "情绪让位不等于沉默：要回应她的委屈，但此时硬推'那咱赶紧定周日方案'就是错的，先陪、后谋。",
+      "unknowns": ["机器订件会不会再拖过下周三"],
+      "protected_expressions": ["心累"],
+      "forbidden_factual_claims": ["不能还说制冰机周三能取或本周内能拿到", "不能把她的情绪轻描淡成'至于吗'或反过来教训她"],
+      "may_decline": false,
+      "intent": {"text": "改成这周日北门出摊把电和位置落实", "status": "ADJUSTED", "enabled": true}
+    },
+    "D01_T06": {
+      "case_id": "D01_T06",
+      "current_action": "她说隔壁没借成、'再说吧也可能用你那个电源'、先别抬等明早睁眼再说、然后收尾喊困，这一轮她已明确今天到此为止，最该做的是不逼她当场拍板、也不擅自把电源抬下去或认定她答应用电，回一句让她先歇即可（可不回）。",
+      "acceptable_actions": [
+        "顺着她先不折腾、不擅自抬电源，让她明早醒了再由她定用不用",
+        "简短回一句让她睡、电源我放着随时候命，不追问不拍板"
+      ],
+      "applicable_dimensions": ["boundary", "factuality", "emotion_relation", "initiative"],
+      "required_memory_atoms": [
+        {"atom_id": "D01_T06_a1", "subject": "her", "relation": "power_ambiguous", "value": "再说吧也可能用你那个电源", "valid_time": "2026-01-17", "status": "tentative", "negation": false, "source": {"kind": "message", "case_id": "D01_T06", "message_id": "m0", "quote": "再说吧"}, "required_this_turn": false},
+        {"atom_id": "D01_T06_a2", "subject": "her", "relation": "misread_rule", "value": "她说'再说吧'其实是想我先拍板", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "initial_kb", "key": "lessons", "quote": "其实是想我先拍板"}, "required_this_turn": true}
+      ],
+      "private_guidance": "含糊不是同意：别把'也可能用你的电源'当答应就推进；但她已说困了收尾，此时既不能强推也不能完全消失、更别自作主张抬东西。",
+      "unknowns": ["她明早到底决不决定用我这台电源"],
+      "protected_expressions": ["先别抬等明早睁眼再说"],
+      "forbidden_factual_claims": ["不能把她的'再说吧'当成已答应用我的电源", "不能说借电彻底没戏了、电源非用不可"],
+      "may_decline": true,
+      "intent": {"text": "改成这周日北门出摊把电和位置落实", "status": "ADJUSTED", "enabled": true}
+    },
+    "D01_T07": {
+      "case_id": "D01_T07",
+      "current_action": "出摊当天上午，她主动来确认我那台电源带不带得动咖啡机、并说制冰机指望不上要去买食用冰，这一轮最该做的是给出确定答复：600W带咖啡机够用、这就抬过去，并顺着机器还没好的事实认可用食用冰顶替、把出摊最后一步落实。",
+      "acceptable_actions": [
+        "明确600W带咖啡机够用、我这就把电源抬下来送过去",
+        "接住她买食用冰的替补方案、认可今天没有制冰机也能开摊"
+      ],
+      "applicable_dimensions": ["memory_use", "time_state", "goal", "initiative"],
+      "required_memory_atoms": [
+        {"atom_id": "D01_T07_a1", "subject": "me", "relation": "backup_power", "value": "600W便携电源可带咖啡机", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "initial_kb", "key": "me", "quote": "600W便携电源"}, "required_this_turn": true},
+        {"atom_id": "D01_T07_a2", "subject": "her", "relation": "ice_maker_still_broken", "value": "机器最快下周三才回本周没的用", "valid_time": "2026-01-16起", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "D01_T05", "message_id": "m0", "quote": "主板烧了周三取不了"}, "required_this_turn": true},
+        {"atom_id": "D01_T07_a3", "subject": "her", "relation": "no_ice_alternative", "value": "制冰机指望不上改买食用冰", "valid_time": "2026-01-18", "status": "active", "negation": false, "source": {"kind": "message", "case_id": "D01_T07", "message_id": "m2", "quote": "制冰机指望不上了"}, "required_this_turn": false}
+      ],
+      "private_guidance": "这是必须用旧事才答对的点：既要用上家里那台电源的存量信息，又要记得机器已被推迟到下周，别退回周三那个旧版本。",
+      "unknowns": ["两袋食用冰够不够撑一整天客流"],
+      "protected_expressions": ["买两袋食用冰顶一天"],
+      "forbidden_factual_claims": ["不能说制冰机今天能取到或能用", "不能把电源带得动咖啡机说成还没确认"],
+      "may_decline": false,
+      "intent": {"text": "改成这周日北门出摊把电和位置落实", "status": "ADJUSTED", "enabled": true}
+    },
+    "D01_T08": {
+      "case_id": "D01_T08",
+      "current_action": "收摊后她说用电一天没跳、冰也够用、成了，然后道谢说躺了不再聊，这一轮最该做的是把这次出摊当作真正办完收尾、简短回应她的成果、并接受她已明确不必再回。",
+      "acceptable_actions": [
+        "替她把这一天收个尾（电源顶住了、机器回头别自己垫钱），顺势让她睡",
+        "简短认可办成了，不展开新话题、不重提已经翻篇的周六旧安排"
+      ],
+      "applicable_dimensions": ["goal", "time_state", "memory_use", "emotion_relation"],
+      "required_memory_atoms": [
+        {"atom_id": "D01_T08_a1", "subject": "me&her", "relation": "shared_progress", "value": "正商量把钱和设备归置一起", "valid_time": "长期", "status": "active", "negation": false, "source": {"kind": "initial_kb", "key": "stage", "quote": "把钱和设备往一块儿归置"}, "required_this_turn": false},
+        {"atom_id": "D01_T08_a2", "subject": "her", "relation": "outcome", "value": "用你的电源一天没跳冰够用", "valid_time": "2026-01-18", "status": "done", "negation": false, "source": {"kind": "message", "case_id": "D01_T08", "message_id": "m0", "quote": "用你电源一天没跳"}, "required_this_turn": false}
+      ],
+      "private_guidance": "目标已COMPLETED，别再把它写成ACTIVE或塞新任务进去；她说躺了，硬找话回反而越界。",
+      "unknowns": ["机器订件后续谁来垫钱还没最终说定"],
+      "protected_expressions": ["不聊了我躺了"],
+      "forbidden_factual_claims": ["不能把这趟说成还在待定或还没办成", "不能替她断定机器一定不用自己掏钱"],
+      "may_decline": true,
+      "intent": {"text": "改成这周日北门出摊把电和位置落实", "status": "COMPLETED", "enabled": true}
+    }
+  }
+}

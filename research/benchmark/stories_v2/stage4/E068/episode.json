@@ -1,0 +1,416 @@
+{
+ "episode_id": "E068",
+ "persona": {
+  "me": "34岁，产品经理，陪我爸走过一次手术，报销流程门儿清。",
+  "her": "30岁，UI设计师，独生女，第一次当住院家属；单据会夹在病历本里。"
+ },
+ "initial_kb": {
+  "me": "她大学同学，我爸住院时她来帮过忙；我家距她爸医院两条街。",
+  "her": "她爸胆结石要做胆囊切除术；她妈走得早，家里就父女俩。",
+  "warmth": "老友，她只会跟两个人说慌：我和我爸的主治。",
+  "style": "她慌起来会连环发60秒语音；我回文字条。",
+  "stage": "互相欠过人情的同学。",
+  "lessons": "她要的是清单不是安慰；钱的事当场对账。"
+ },
+ "turns": [
+  {
+   "case_id": "E068_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我爸查出胆结石 要做胆囊切除 手术定在 12 月 18 号 我脑子一片浆糊",
+      "ts": "2026-12-15 19:58"
+     }
+    ],
+    "clock": "2026-12-15 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "住院先备四样 身份证 医保卡 既往病历 押金 这四样 缺一样当天干着急",
+      "ts": "2026-12-15 20:36"
+     },
+     {
+      "role": "HER",
+      "text": "好 我现在就翻抽屉",
+      "ts": "2026-12-15 20:38"
+     }
+    ],
+    "clock": "2026-12-15 20:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "医保这块先备案 备案了出院直接结 不用回老家跑 线上就能办 我陪你弄",
+      "ts": "2026-12-15 20:54"
+     },
+     {
+      "role": "HER",
+      "text": "还有个事 我爸医保在老家 异地就医是不是要回来报销 我听同事说要跑两趟",
+      "ts": "2026-12-15 20:58"
+     }
+    ],
+    "clock": "2026-12-15 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "备案我在APP上交了 显示审核中 我爸还在念叨别折腾 他那代人不信这些",
+      "ts": "2026-12-16 19:56"
+     }
+    ],
+    "clock": "2026-12-16 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "出状况 术前评估有个指标不对 手术推迟到 12 月 20 号 先调两天",
+      "ts": "2026-12-17 18:56"
+     }
+    ],
+    "clock": "2026-12-17 19:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "明天手术 我请好假了 主刀是主任 我跟他确认过三遍",
+      "ts": "2026-12-19 20:56"
+     }
+    ],
+    "clock": "2026-12-19 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "送进手术室前 我爸拉着医生的手说麻烦您了 我在旁边憋着没哭",
+      "ts": "2026-12-20 08:26"
+     }
+    ],
+    "clock": "2026-12-20 08:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "手术做完了 很顺 医生说术中比预想的干净 我手现在才不抖",
+      "ts": "2026-12-20 16:56"
+     }
+    ],
+    "clock": "2026-12-20 17:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "术后第一夜 我爸疼得睡不好 我守到三点 眼睛睁不开",
+      "ts": "2026-12-21 19:56"
+     }
+    ],
+    "clock": "2026-12-21 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "听你的 我让中介把护工改成全天的了 多花钱但值",
+      "ts": "2026-12-21 20:18"
+     }
+    ],
+    "clock": "2026-12-21 20:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "备案过了 出院直接结 我之前以为要回老家跑两趟 白担心一场",
+      "ts": "2026-12-22 19:56"
+     }
+    ],
+    "clock": "2026-12-22 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "报销就四件套 发票 清单 诊断证明 出院小结 四件套 办出院时逐项打勾 少一样补起来最费腿",
+      "ts": "2026-12-23 20:52"
+     },
+     {
+      "role": "HER",
+      "text": "护士站说周五能出 教我办出院结算 我记了半页纸",
+      "ts": "2026-12-23 20:56"
+     }
+    ],
+    "clock": "2026-12-23 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T13",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我爸能下地溜达了 天天在走廊数地砖 估计惦记出院",
+      "ts": "2026-12-25 19:56"
+     }
+    ],
+    "clock": "2026-12-25 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T14",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我爸今晚给我讲他年轻时候跑运输的事 讲到午夜 我第一次听他说这些",
+      "ts": "2026-12-26 20:54"
+     }
+    ],
+    "clock": "2026-12-26 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T15",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "出院定在 28 号上午 结算清单我打印了三份 你帮我过一眼",
+      "ts": "2026-12-27 20:56"
+     }
+    ],
+    "clock": "2026-12-27 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T16",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天出院 我爸上车还跟护士站挥手 一路上跟我说谢谢那几个护士",
+      "ts": "2026-12-28 14:56"
+     }
+    ],
+    "clock": "2026-12-28 15:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T17",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "结算也办了 直接结算成了 自付那一栏清清楚楚 没让我多跑一步",
+      "ts": "2026-12-28 15:56"
+     }
+    ],
+    "clock": "2026-12-28 16:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T18",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我爸在家养着 天天研究菜谱说要补回来 我查了说术后饮食要渐进 你看靠谱吗",
+      "ts": "2026-12-30 20:56"
+     }
+    ],
+    "clock": "2026-12-30 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T19",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "公司让我整理一份家属陪护假的操作笔记 我写着写着发现全是那两周你给我的话",
+      "ts": "2027-01-05 19:56"
+     }
+    ],
+    "clock": "2027-01-05 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T20",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我爸今天复查正常 医生说恢复得比同龄人好 他听完走路都带风",
+      "ts": "2027-01-10 19:56"
+     }
+    ],
+    "clock": "2027-01-10 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T21",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我爸非要给主治送锦旗 让我订 加急的那种 我拗不过",
+      "ts": "2027-01-11 19:56"
+     }
+    ],
+    "clock": "2027-01-11 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T22",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我把报销流程写成清单发给同事了 备注写着'先备案'三个字加粗",
+      "ts": "2027-01-12 20:56"
+     }
+    ],
+    "clock": "2027-01-12 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T23",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "同事照我清单办 备案一次过 她说要请我奶茶 你说这算不算传承",
+      "ts": "2027-01-15 19:56"
+     }
+    ],
+    "clock": "2027-01-15 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E068_T24",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我把我爸那沓单据全部归档了 病历本终于不夹东西了 你来我家吃饭 我妈的拿手菜我照着做了",
+      "ts": "2027-01-18 20:56"
+     }
+    ],
+    "clock": "2027-01-18 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

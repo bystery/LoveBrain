@@ -1,0 +1,918 @@
+{
+ "story_id": "E316",
+ "turns": {
+  "E316_T01": {
+   "case_id": "E316_T01",
+   "current_action": "阮清复述明天的安排：集合从北门改到东门、七点五十过时不候，报了五个闹钟，并交代望远镜沈拓带、她的新镜子明天首飞",
+   "acceptable_actions": [
+    "确认东门七点五十的集合与分工（自己带望远镜），接'首飞'的郑重感",
+    "确认+接五个闹钟的玩笑（闹钟阵比闹钟可靠）",
+    "确认+对她的新单筒镜说一句期待（差点意思也担待）"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T01_A01",
+     "subject": "SHARED",
+     "relation": "集合变更",
+     "value": "明天集合从北门改到东门，七点五十，过时不候（宋老师在群里说的）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T01",
+      "message_id": "m0",
+      "quote": "集合从北门改到东门，七点五十，过时不候"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T01_A02",
+     "subject": "SHARED",
+     "relation": "原集合点作废",
+     "value": "原北门集合被宋老师的变更通知取代",
+     "valid_time": "2026-11-14",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T01",
+      "message_id": "m0",
+      "quote": "集合从北门改到东门，七点五十，过时不候"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "北门",
+       "七点五十"
+      ],
+      [
+       "还是",
+       "北门"
+      ],
+      [
+       "改回",
+       "北门"
+      ]
+     ],
+     "item_markers": [
+      "北门"
+     ]
+    },
+    {
+     "atom_id": "E316_T01_A03",
+     "subject": "SHARED",
+     "relation": "装备分工",
+     "value": "望远镜由沈拓（ME）带；阮清的新单筒镜明天首飞，她自谦差点意思请多担待",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T01",
+      "message_id": "m0",
+      "quote": "望远镜你带就行，我的新镜子明天首飞"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她爱报数字和时间（五个闹钟逐个列出）——回复若能呼应她的报数风格是 register 高光。intent 是确认集合：东门+七点五十两个要素都要接住；说成北门是事实红线（有 superseded 原子在）。",
+   "unknowns": [
+    {
+     "topic": "她的新单筒镜的实际表现",
+     "note": "'差点意思你多担待'是她的自谦；明天才知道",
+     "markers": [
+      [
+       "镜子",
+       "不行"
+      ],
+      [
+       "镜子",
+       "退了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "镜子",
+       "不行"
+      ],
+      [
+       "镜子",
+       "退了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "过时不候"
+   ],
+   "forbidden_factual_claims": [
+    "不得说成北门集合",
+    "不得坐实新镜子的光学表现"
+   ],
+   "may_decline": false
+  },
+  "E316_T02": {
+   "case_id": "E316_T02",
+   "current_action": "周六早上七点五十八阮清到东门保安亭边（穿羽绒服还打哆嗦），提议先去北区湖心追小天鹅",
+   "acceptable_actions": [
+    "同意先追小天鹅（过境鸟看一天是一天），对齐北区湖心方向",
+    "同意+接她'穿羽绒服还打哆嗦'的冷（递个暖手的东西或玩笑）",
+    "同意+补充自己的观鸟信息（如观鸟屋占位情况，ME 观鸟两年知道的事）"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T02_A01",
+     "subject": "HER",
+     "relation": "到场报到",
+     "value": "她到了东门保安亭边上，穿着羽绒服还打哆嗦",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T02",
+      "message_id": "m0",
+      "quote": "到东门了，保安亭边上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T02_A02",
+     "subject": "THIRD",
+     "relation": "小天鹅情报",
+     "value": "宋老师昨晚在群里说有小天鹅过境，就在北区湖心",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T02",
+      "message_id": "m0",
+      "quote": "宋老师昨晚在群里说有小天鹅过境，就在北区湖心"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她先到且给了当日目标——回复应含'走/怎么过去'的实质回应。ME 观鸟两年（KB），对追鸟节奏的专业判断是正当发言位，但别压她兴致。",
+   "unknowns": [
+    {
+     "topic": "观鸟屋当前的排队长度",
+     "note": "拍鸟的人常年占位（IDEA备注）；此刻实际队伍情况未提",
+     "markers": [
+      [
+       "排队",
+       "小时"
+      ],
+      [
+       "排到",
+       "号"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "排队",
+       "小时"
+      ],
+      [
+       "排到",
+       "号"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实此刻观鸟屋的队伍长度",
+    "不得改集合点或目标鸟种"
+   ],
+   "may_decline": false
+  },
+  "E316_T03": {
+   "case_id": "E316_T03",
+   "current_action": "阮清在北区湖心目击小天鹅一家四口（拍糊了但看清了：橘色的嘴、嘴基黄斑小），按书上的判据求证自己认得没错",
+   "acceptable_actions": [
+    "确认她认得没错（小天鹅黄斑小、大天鹅黄斑大，按她自己引的判据成立）",
+    "确认+补一条她自己没提的辨认特征（ME 观鸟两年的知识），锦上添花",
+    "先恭喜一家四口全出来，再回答判据问题"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T03_A01",
+     "subject": "HER",
+     "relation": "目击",
+     "value": "她在北区湖心芦苇后目击小天鹅一家四口全出来了；低头换存储卡的空档，拍糊了但看清了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T03",
+      "message_id": "m0",
+      "quote": "它们一家四口全出来了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T03_A02",
+     "subject": "HER",
+     "relation": "辨认判据",
+     "value": "书上判据：小天鹅黄斑小、大天鹅黄斑大；她看到橘色的嘴、嘴基的黄斑小小的，问自己认得没错吧",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T03",
+      "message_id": "m0",
+      "quote": "书上说小天鹅黄斑小、大天鹅黄斑大"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "事实判定：她按自己引的判据（黄斑小）认小天鹅是对的——回复说'你认错了'既与题面证据冲突又挫她兴致；补充 ME 的专业知识可以，唱反调需有她判据之外的新证据且不得坐实。她的零基础首飞成功，认可要真诚。",
+   "unknowns": [
+    {
+     "topic": "那群小天鹅的准确数量构成",
+     "note": "她看到'一家四口'；是否还有其他个体未提",
+     "markers": [
+      [
+       "五只"
+      ],
+      [
+       "还有",
+       "两只"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "五只"
+      ],
+      [
+       "还有",
+       "两只"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我认的没错吧？"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布她认错了（与题面判据矛盾）",
+    "不得坐实天鹅群里还有别只"
+   ],
+   "may_decline": false
+  },
+  "E316_T04": {
+   "case_id": "E316_T04",
+   "current_action": "阮清北岸蹲戴菊十分钟未果（脖子仰酸），提议转场东边芦苇荡找震旦鸦雀——芦苇割掉之前才有得看",
+   "acceptable_actions": [
+    "同意转场+认可'芦苇割掉之前才有得看'的功课（她的信息是扎实的）",
+    "同意+轻接'脖子仰酸'（戴菊是树冠层的小不点，难找是常态，不是她的错）",
+    "同意+补充走线的建议（ME 观鸟两年的路线经验），轻带一句"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T04_A01",
+     "subject": "HER",
+     "relation": "戴菊未果",
+     "value": "北岸有人说看见戴菊，她过去蹲了十分钟，脖子仰酸了也没找着",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T04",
+      "message_id": "m0",
+      "quote": "我过去蹲了十分钟，脖子仰酸了也没找着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T04_A02",
+     "subject": "HER",
+     "relation": "震旦鸦雀情报",
+     "value": "她的功课说东边芦苇荡有震旦鸦雀，芦苇割掉之前才有得看",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T04",
+      "message_id": "m0",
+      "quote": "我做的功课说那儿有震旦鸦雀，芦苇割掉之前才有得看"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "戴菊没看着不是失败——她自己的框架是'留个念想有下回'（T06）。回复若把未果安慰成大遗憾判错读；顺着她的转场提议走并接住她的功课，是本轮正解。",
+   "unknowns": [
+    {
+     "topic": "芦苇荡的具体割除日期",
+     "note": "只有'割掉之前才有得看'；具体日期未提",
+     "markers": [
+      [
+       "下周",
+       "割"
+      ],
+      [
+       "割芦苇",
+       "号"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "下周",
+       "割"
+      ],
+      [
+       "割芦苇",
+       "号"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实芦苇的割除日期",
+    "不得保证震旦鸦雀一定看得到"
+   ],
+   "may_decline": false
+  },
+  "E316_T05": {
+   "case_id": "E316_T05",
+   "current_action": "阮清看到震旦鸦雀两只（比图鉴胖一圈），但两万一千步到顶、腿不是她的了，把'接下来你定'交棒给沈拓",
+   "acceptable_actions": [
+    "接棒+定一个轻的收尾（顺路慢慢往回走/原地歇会儿再看一眼），把她的累当真",
+    "接棒+恭喜两只全入账（一天双目标达成），安排回程",
+    "接棒+确认她的状态（'歇一会儿再走'式），不排新目标"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T05_A01",
+     "subject": "HER",
+     "relation": "震旦鸦雀目击",
+     "value": "她看到了震旦鸦雀两只，比图鉴上胖一圈",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T05",
+      "message_id": "m0",
+      "quote": "看到了！两只，比图鉴上胖一圈"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T05_A02",
+     "subject": "HER",
+     "relation": "体力到顶",
+     "value": "她手机记了两万一千步，上回走这么多还是图书馆搬库那年；腿已经不是她的了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T05",
+      "message_id": "m0",
+      "quote": "手机记了两万一千步"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T05_A03",
+     "subject": "HER",
+     "relation": "交棒",
+     "value": "她说接下来你定，我跟着",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T05",
+      "message_id": "m0",
+      "quote": "接下来你定，我跟着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "lessons：她说累就是真累，不用劝也不用陪她硬撑。交棒给了 ME 决定权——接棒（给出具体安排）是正解，再推回给她（'你想去哪'）判没接住；排高强度新目标判 boundary 失分。",
+   "unknowns": [],
+   "protected_expressions": [
+    "腿已经不是我的了"
+   ],
+   "forbidden_factual_claims": [
+    "不得再排高强度行程",
+    "不得质疑两万一千步的读数"
+   ],
+   "may_decline": false
+  },
+  "E316_T06": {
+   "case_id": "E316_T06",
+   "current_action": "到家泡脚的阮清轻收：公交上睡过一站的小狼狈、照片回去导了发你、'戴菊留个念想，有念想才有下回'",
+   "acceptable_actions": [
+    "接'有念想才有下回'的哲学（轻应，别展开成承诺）",
+    "祝泡脚舒服+等她的照片",
+    "合法不回（may_decline=true，她在收束今天）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T06_A01",
+     "subject": "HER",
+     "relation": "到家收束",
+     "value": "她到家泡上脚了；两万一千步的收场是在公交上睡过了一站",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T06",
+      "message_id": "m0",
+      "quote": "我在公交上睡过了一站"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T06_A02",
+     "subject": "HER",
+     "relation": "念想哲学",
+     "value": "戴菊没看着也好，留个念想——有念想才有下回；照片回去导了发沈拓",
+     "valid_time": "2026-11-14之后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T06",
+      "message_id": "m0",
+      "quote": "戴菊没看着也好，留个念想，有念想才有下回"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻收位（may_decline=true）：她的'有念想才有下回'自己给缺憾找好了安放处——回复顺着接即可，把'下回'立刻坐实成具体日期判接太满。",
+   "unknowns": [],
+   "protected_expressions": [
+    "有念想才有下回"
+   ],
+   "forbidden_factual_claims": [
+    "不得把'下回'坐实成具体日期",
+    "不得催她发照片"
+   ],
+   "may_decline": true
+  },
+  "E316_T07": {
+   "case_id": "E316_T07",
+   "current_action": "阮清导出照片挑了九张发给沈拓（第七张震旦鸦雀芦苇上有蜘蛛），作业要交一张最好的，请他参谋",
+   "acceptable_actions": [
+    "认真参谋：按作业要求给一个倾向（如辨认特征清晰的）+理由，接蜘蛛的构图梗",
+    "参谋+反问作业的评审要点（宋老师要清晰度还是要记录性）再给倾向",
+    "接蜘蛛玩笑（构图瞬间变质）+正经给意见，两头都占"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T07_A01",
+     "subject": "HER",
+     "relation": "九张照片",
+     "value": "她把照片导出来挑了九张发给沈拓",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T07",
+      "message_id": "m0",
+      "quote": "挑了九张发你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T07_A02",
+     "subject": "SHARED",
+     "relation": "作业选片",
+     "value": "观鸟作业要交一张最好的，她挑花眼了，请沈拓帮忙参谋",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T07",
+      "message_id": "m0",
+      "quote": "作业要交一张最好的，我挑花眼了，你帮我参谋参谋？"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T07_A03",
+     "subject": "HER",
+     "relation": "蜘蛛彩蛋",
+     "value": "第七张震旦鸦雀踩的那根芦苇上有只蜘蛛，放大看构图瞬间变质",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T07",
+      "message_id": "m0",
+      "quote": "第七张震旦鸦雀踩的那根芦苇上有只蜘蛛"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "帮忙轮：参谋要真给意见（有倾向+理由）——'都挺好的你定'判敷衍。蜘蛛梗是她先开的玩笑，接住是加分位。照片是发在微信里的九张，评审核对回复是否在'选一张'这个任务上出力。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造九张之外的照片内容",
+    "不得替她最终定稿（决定权在她）"
+   ],
+   "may_decline": false
+  },
+  "E316_T08": {
+   "case_id": "E316_T08",
+   "current_action": "闭馆日盘库一天的阮清（编目编到眼冒金星）闲聊：问沈拓园区门口那棵乌桕红透没有——她每天坐车路过他那站看它从绿变红",
+   "acceptable_actions": [
+    "如实答乌桕现在的样子（按 ME 自己的观察，说不准就说这几天没细看）",
+    "答+接她'一路看它从绿变红'的通勤浪漫（她隔着车窗看了整个秋天）",
+    "答+轻提议哪天带她近看一眼（留口不当场定）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T08_A01",
+     "subject": "HER",
+     "relation": "盘库日",
+     "value": "周一闭馆日她盘了一天库，新书编目编到眼冒金星",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T08",
+      "message_id": "m0",
+      "quote": "闭馆日盘了一天库，新书编目编到眼冒金星"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T08_A02",
+     "subject": "ME",
+     "relation": "乌桕之问",
+     "value": "她问沈拓园区门口那棵乌桕红透没有——她每天下班坐车路过他那站，一路看它从绿变红",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T08",
+      "message_id": "m0",
+      "quote": "你们园区门口那棵乌桕红透没有？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "闲聊位：乌桕的状态只有 ME 视角知道，gold 不预设答案——如实、具体即可，编造精确颜色当铁事实无必要。'每天路过他那站'透露她留了心，接这层但不点破升温。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造乌桕的精确叶色变化日期",
+    "不得替她安排具体来看的日期"
+   ],
+   "may_decline": false
+  },
+  "E316_T09": {
+   "case_id": "E316_T09",
+   "current_action": "阮清通报续课窗口：宋老师下期'冬候鸟'主题12月6号开课还是文化馆302，老学员通道周日晚上就关；她肯定续，问沈拓续不续——intent 是答复续课的事",
+   "acceptable_actions": [
+    "答应续+接'咱俩还坐同桌'或'盯紧你'的玩笑（各自系统报名，她盯进度）",
+    "答应+说这两天就报（赶在周日通道关之前）",
+    "还没想好但给明确时限（通道关之前定）+告诉她别白盯"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T09_A01",
+     "subject": "THIRD",
+     "relation": "下期开课",
+     "value": "宋老师下一期开'冬候鸟'主题，12月6号开课，还是文化馆302",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T09",
+      "message_id": "m0",
+      "quote": "12 月 6 号开课，还是文化馆 302"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T09_A02",
+     "subject": "THIRD",
+     "relation": "报名窗口",
+     "value": "老学员通道周日晚上就关（续课费120元，逾期按新学员200元走）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T09",
+      "message_id": "m0",
+      "quote": "老学员通道周日晚上就关"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T09_A03",
+     "subject": "SHARED",
+     "relation": "续课问询",
+     "value": "她肯定续，问沈拓续不续；报名得各自在系统里操作，她盯紧他别拖到最后一天",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T09",
+      "message_id": "m0",
+      "quote": "我肯定续。你续不续？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答复轮（intent 明示）：她给了两个理由答'续'（冬候鸟主题+同桌）——直接答应是主旋律；'考虑考虑'不给时限判低（她明说别拖到最后一天）。'还是302'、'续费差价'这些细节引用是 memory_use 高光。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你可别拖到最后一天"
+   ],
+   "forbidden_factual_claims": [
+    "不得说通道已经关了（周日还没到）",
+    "不得坐实沈拓已报名（此时还没有）"
+   ],
+   "may_decline": false
+  },
+  "E316_T10": {
+   "case_id": "E316_T10",
+   "current_action": "阮清报上名了，顺带看到名单里沈拓也报了；预告这周末省馆培训两天、下周一闭馆日支援，接下来一周消息会比较哑",
+   "acceptable_actions": [
+    "接'动作挺快'的调侃（两人都报上了）+认领她的哑火期预告",
+    "接名单梗+祝培训顺利，说回来再聊",
+    "接哑火期+一句不打扰的默契（回来等你消息）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T10_A01",
+     "subject": "HER",
+     "relation": "报名成功",
+     "value": "她报上了（老学员通道），还顺带看到名单里沈拓的名字也亮在里面",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T10",
+      "message_id": "m0",
+      "quote": "报上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T10_A02",
+     "subject": "HER",
+     "relation": "哑火期预告",
+     "value": "她这周末去省馆培训两天、下周一闭馆日也搭进去支援，接下来一周消息会比较哑，先打个招呼",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T10",
+      "message_id": "m0",
+      "quote": "接下来这一周我消息会比较哑"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "哑火期预告是她的边界管理（她定好的节奏）——回复的尊重姿势是'不催、回来见'。此刻两人都报名成功，T09 的窗口线收束；回复若还在催报名属状态错乱。",
+   "unknowns": [
+    {
+     "topic": "她培训的具体内容与安排",
+     "note": "只说省馆培训两天；课程内容未提",
+     "markers": [
+      [
+       "培训",
+       "课程",
+       "是"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "培训",
+       "课程",
+       "是"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "先打个招呼"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实培训的具体内容",
+    "不得在她哑火期追问进度"
+   ],
+   "may_decline": false
+  },
+  "E316_T11": {
+   "case_id": "E316_T11",
+   "current_action": "学员群炸了：上周六北区湖心那群小天鹅里有一只带环志（环号F24、2023年冬西伯利亚环志），拍到环的照片能上报环志站；阮清自己拍的全糊，问沈拓长焦当时拍了吗——intent 回她天鹅环志的事",
+   "acceptable_actions": [
+    "如实回答长焦拍没拍到（拍到了翻照片找环/没拍到你糊我也糊），按 ME 的真实记忆走",
+    "如实答+接F24的远距离震撼（西伯利亚来的，就在咱眼前游过）",
+    "答+若照片里真有环，说清下一步（宋老师说的上报流程）；没有就陪她认这个念想"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T11_A01",
+     "subject": "THIRD",
+     "relation": "环志消息",
+     "value": "学员群消息：上周六早上北区湖心那群小天鹅里有一只带环志的，环号F24，2023年冬天在西伯利亚环志；宋老师说谁拍到环的照片能上报环志站",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T11",
+      "message_id": "m0",
+      "quote": "环号 F24，2023 年冬天在西伯利亚环志的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T11_A02",
+     "subject": "HER",
+     "relation": "照片全糊",
+     "value": "她翻了翻自己拍的，全是糊的",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T11",
+      "message_id": "m0",
+      "quote": "我翻了翻自己拍的，全是糊的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E316_T11_A03",
+     "subject": "ME",
+     "relation": "长焦之问",
+     "value": "她问沈拓那台长焦当时拍了吗",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T11",
+      "message_id": "m0",
+      "quote": "你那台长焦当时拍了吗？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "远距回指位（T02/T03 的目击，八天后回扣）+诚实位：拍没拍到只有 ME 知道，如实答是唯一正解——编造'拍到了环志特写已上报'是无据确定化红线（上报需真照片，且她明说上报的是拍到环的照片）。'上周六早上北区湖心那群'的回扣要点破。",
+   "unknowns": [
+    {
+     "topic": "沈拓长焦当时是否拍到环",
+     "note": "只有 ME 本人知道；不得编造拍到或已上报",
+     "markers": [
+      [
+       "拍到了环"
+      ],
+      [
+       "上传",
+       "环志站"
+      ],
+      [
+       "已经上报"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "拍到了环"
+      ],
+      [
+       "上传",
+       "环志站"
+      ],
+      [
+       "已经上报"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造拍到清晰环照并已上报",
+    "不得坐实F24就是她看到的那只（群里只说那群里有一只带环志）"
+   ],
+   "may_decline": false
+  },
+  "E316_T12": {
+   "case_id": "E316_T12",
+   "current_action": "阮清收尾：让沈拓得空翻翻不急（环志上报没有截止日），感叹'从盘库一路聊到西伯利亚这一天挺值'，道晚安",
+   "acceptable_actions": [
+    "晚安+应下得空翻照片（不急）",
+    "晚安+接'从盘库到西伯利亚'的一天总结（好大的一天）",
+    "合法不回（她已说睡了，may_decline=true）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E316_T12_A01",
+     "subject": "HER",
+     "relation": "不急收尾",
+     "value": "环志的事她让沈拓得空翻翻不急，环志上报没有截止日；今天从盘库一路聊到西伯利亚，过得挺值",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E316_T12",
+      "message_id": "m0",
+      "quote": "不急，环志上报没有截止日"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮（may_decline=true）：她的'不急'把 T11 的紧张卸了——回复不出新钩、不连夜翻照片立军令状，轻收+晚安是正解。",
+   "unknowns": [],
+   "protected_expressions": [
+    "不急，环志上报没有截止日"
+   ],
+   "forbidden_factual_claims": [
+    "不得新开话题拖长收尾",
+    "不得承诺当晚必翻照片"
+   ],
+   "may_decline": true
+  }
+ }
+}

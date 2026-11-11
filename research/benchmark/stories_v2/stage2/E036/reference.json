@@ -1,0 +1,401 @@
+{
+ "story_id": "E036",
+ "turns": {
+  "E036_T01": {
+   "current_action": "接账单（我那份128）——核对后转账",
+   "acceptable_actions": [
+    "核对+转账",
+    "转账+要明细",
+    "转账+说下月少开空调"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E036_A01",
+     "subject": "水电账单",
+     "relation": "金额",
+     "value": "我那份128元",
+     "valid_time": "2026-12-01 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E036_T01",
+      "message_id": "m0",
+      "quote": "你那份128"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的账历史可信；但 T03 会修正——先按流程走。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我算好了你那份128"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E036_T01"
+  },
+  "E036_T02": {
+   "current_action": "接构成明细（80是电费）——知道来源即可，不较真",
+   "acceptable_actions": [
+    "接受明细",
+    "自嘲空调电费",
+    "答应下月注意"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "明细是她的工作习惯；T03 会修正——那时再校准。",
+   "unknowns": [],
+   "protected_expressions": [
+    "128里80是电费"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E036_T02"
+  },
+  "E036_T03": {
+   "current_action": "账单修正：128→98，退28——旧口径作废，收退款+确认新数",
+   "acceptable_actions": [
+    "确认退款+认可新数",
+    "确认+夸她主动纠错",
+    "确认+说以后一起核"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E036_A02",
+     "subject": "水电账单",
+     "relation": "修正",
+     "value": "我那份从128改为98，退28",
+     "valid_time": "2026-12-08 20:30",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E036_T03",
+      "message_id": "m0",
+      "quote": "你那份98 重转28"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "128 作废；账目以 98 为准——分摊线的记忆考核点。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我多算你30"
+   ],
+   "forbidden_factual_claims": [
+    "不要再引用128为有效金额"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E036_T03"
+  },
+  "E036_T04": {
+   "current_action": "接'账房先生'夸奖+她的中介吐槽（老李失联）——第三人信息入账",
+   "acceptable_actions": [
+    "接夸+问老李怎么回事",
+    "接+建议发正式函",
+    "接+说留好证据"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E036_A03",
+     "subject": "老李",
+     "relation": "状态",
+     "value": "中介，三个月没回消息，押金悬置",
+     "valid_time": "2026-12-08 20:38",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E036_T04",
+      "message_id": "m1",
+      "quote": "老李 三个月没回消息"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "老李线是 T05 的伏笔；记住押金悬置。",
+   "unknowns": [
+    "押金金额"
+   ],
+   "protected_expressions": [
+    "退押金的事悬着"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E036_T04"
+  },
+  "E036_T05": {
+   "current_action": "老李回复+合同三月到期——接信息+报我的决定",
+   "acceptable_actions": [
+    "接信息+说我三月不续",
+    "接+问押金流程",
+    "接+替她高兴"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E036_A04",
+     "subject": "老李",
+     "relation": "进展",
+     "value": "押金等下个租客进来才退；合同三月到期",
+     "valid_time": "2026-12-22 21:00",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E036_T05",
+      "message_id": "m0",
+      "quote": "押金要等下个租客进来才退"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "老李线推进；我的退租决定在此背景下说出。",
+   "unknowns": [
+    "下个租客何时进"
+   ],
+   "protected_expressions": [
+    "我俩的合同三月到期"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E036_T05"
+  },
+  "E036_T06": {
+   "current_action": "宣布三月不续搬公司附近——重大变更，先给她消化空间",
+   "acceptable_actions": [
+    "宣布+说明原因",
+    "宣布+说会配合找室友",
+    "宣布+说提前一个月说"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "室友间的通知义务：提前说+给过渡方案。",
+   "unknowns": [
+    "新住处具体位置"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E036_T06"
+  },
+  "E036_T07": {
+   "current_action": "她的现实焦虑（一个人摊不起）——接住并给行动",
+   "acceptable_actions": [
+    "安抚+主动帮找室友",
+    "建议降租方案",
+    "两者都提"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她的问题具体（摊不起/找室友/降租）；给具体行动。",
+   "unknowns": [
+    "房子市场价"
+   ],
+   "protected_expressions": [
+    "我一个人摊不起了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E036_T07"
+  },
+  "E036_T08": {
+   "current_action": "我已帮问了两个意向看房——行动兑现承诺",
+   "acceptable_actions": [
+    "报进展+约时间",
+    "报+说帮筛过一遍",
+    "报+问她明天方便吗"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "说到做到——上轮的'给行动'这轮兑现。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E036_T08"
+  },
+  "E036_T09": {
+   "current_action": "第一个定了+接交接——我的退租闭环拼上最后一块",
+   "acceptable_actions": [
+    "接+说交接我来",
+    "接+替她高兴",
+    "接+问新室友情况"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E036_A05",
+     "subject": "新室友",
+     "relation": "进展",
+     "value": "看房定了，月底搬入，接我的交接",
+     "valid_time": "2026-12-28 18:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E036_T09",
+      "message_id": "m0",
+      "quote": "第一个来看的定了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的焦虑解了；交接是我离场的责任。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你退租交接他也接了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E036_T09"
+  },
+  "E036_T10": {
+   "current_action": "'三页清单/当房管'——接住她的调侃",
+   "acceptable_actions": [
+    "接梗+说怕遗漏",
+    "接梗+发清单给她审",
+    "接梗+自嘲职业病"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "清单是对新室友和老李的防线；玩笑归玩笑，清单照交。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你是要当房管吗 哈哈"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E036_T10"
+  },
+  "E036_T11": {
+   "current_action": "验房完成+押金十天内退（直接转我）——老李线收口",
+   "acceptable_actions": [
+    "确认+说等转账",
+    "确认+说麻烦她盯",
+    "确认+说收尾干净"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E036_A06",
+     "subject": "押金",
+     "relation": "进展",
+     "value": "验房完成，十天内退，我那份直接转我",
+     "valid_time": "2027-01-05 17:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E036_T11",
+      "message_id": "m0",
+      "quote": "押金说十天内退"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T04 的'悬着'至此落地；她的盯人有效。",
+   "unknowns": [
+    "押金确切到账日"
+   ],
+   "protected_expressions": [
+    "押金说十天内退"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E036_T11"
+  },
+  "E036_T12": {
+   "current_action": "'物业费单子还想让我算吗'——接住长期接口梗（may_decline=true）",
+   "acceptable_actions": [
+    "接梗+答应",
+    "接梗收",
+    "不回（合法，她已收尾）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她用玩笑给关系留了接口；笑着接。",
+   "unknowns": [],
+   "protected_expressions": [
+    "还想让我算吗 哈哈 拜拜"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E036_T12"
+  }
+ }
+}

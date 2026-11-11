@@ -1,0 +1,851 @@
+{
+ "story_id": "E332",
+ "turns": {
+  "E332_T01": {
+   "case_id": "E332_T01",
+   "current_action": "孟夏报喜：抢到11月21日（周六）14:30小剧场《雾中灯塔》两张（280一张她买了），条件是饭韩东请、扯平",
+   "acceptable_actions": [
+    "应下看剧并接'饭我请'的条件",
+    "应下并顺口确认时间地点",
+    "接抢票战报并夸她手速"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T01_A01",
+     "subject": "SHARED",
+     "relation": "观剧安排",
+     "value": "11月21日（周六）下午两点半小剧场《雾中灯塔》，票已购两张（此档期后被改期）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T01",
+      "quote": "11月21号（周六）下午两点半，《雾中灯塔》，小剧场我抢到两张",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T01_A02",
+     "subject": "SHARED",
+     "relation": "费用口径",
+     "value": "票280一张由孟夏买两张，那顿饭韩东请、扯平",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T01",
+      "quote": "280一张我买了，饭你请就扯平",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "档期起点：11-21 14:30。T03 会改期到12-05——本轮回话不必考虑改期，但'饭你请'的玩笑条件接住有分。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动档期或票价口径",
+    "不得编造剧目剧情细节"
+   ],
+   "may_decline": false
+  },
+  "E332_T02": {
+   "case_id": "E332_T02",
+   "current_action": "孟夏定观剧日午餐：12:50剧院旁边半岛咖啡等，推其脏脏包，重申那顿韩东请",
+   "acceptable_actions": [
+    "确认12:50半岛咖啡见",
+    "接脏脏包安利说尝尝",
+    "接'你请'重申并玩笑记账"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T02_A01",
+     "subject": "SHARED",
+     "relation": "观剧日午餐",
+     "value": "12:50剧院旁边的半岛咖啡等（后被改到山丘面包）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T02",
+      "quote": "12点50剧院旁边的半岛咖啡等你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T02_A02",
+     "subject": "HER",
+     "relation": "脏脏包推荐",
+     "value": "孟夏推半岛咖啡的脏脏包（'一绝'；后被她戒糖取消）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T02",
+      "quote": "他们家脏脏包一绝",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T02_A03",
+     "subject": "SHARED",
+     "relation": "请客重申",
+     "value": "那顿饭韩东请（重申T01口径）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T02",
+      "quote": "先说好，那顿你请",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T02 建立的'半岛咖啡+脏脏包'是后文两处变更（T08 换店、T05 免脏脏包）的旧口径基准。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动12:50时间",
+    "不得编造半岛咖啡其他菜品"
+   ],
+   "may_decline": false
+  },
+  "E332_T03": {
+   "case_id": "E332_T03",
+   "current_action": "孟夏通报改期：《雾中灯塔》延到12月5日（周六）同时间14:30、票不用换，问'那咱们就12月5号见？'（intent：通知演出改期）",
+   "acceptable_actions": [
+    "确认12月5号新档期",
+    "确认并顺短信口径说票通用省事",
+    "确认并说12点50咖啡照旧（时间未动）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T03_A01",
+     "subject": "SHARED",
+     "relation": "观剧档期（旧）",
+     "value": "11月21日（周六）14:30《雾中灯塔》的档期因主办方改期被取代",
+     "valid_time": "2026-11-14",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T01",
+      "quote": "11月21号（周六）下午两点半，《雾中灯塔》",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "21号",
+       "看",
+       "雾中灯塔"
+      ],
+      [
+       "还是",
+       "21号",
+       "两点半"
+      ]
+     ],
+     "item_markers": [
+      "11月21号"
+     ]
+    },
+    {
+     "atom_id": "E332_T03_A02",
+     "subject": "SHARED",
+     "relation": "观剧档期（新）",
+     "value": "《雾中灯塔》延至12月5日（周六）14:30，同剧场同时间",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T03",
+      "quote": "《雾中灯塔》延到12月5号（周六），还是下午两点半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T03_A03",
+     "subject": "SHARED",
+     "relation": "票务口径",
+     "value": "改期后票不用换（原票通用）",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T03",
+      "quote": "票不用换",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 佐证：主办方短信原文'因剧场档期调整，《雾中灯塔》延至12月5日同场次时间，票券通用'（候选可见，不进原子 quote）。改期主轮：正确回复必须落在新档期 12-05 上；'12点50咖啡'未被改期波及，说照旧正确。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得沿用11月21日档期",
+    "不得说票要重买或退票"
+   ],
+   "may_decline": false
+  },
+  "E332_T04": {
+   "case_id": "E332_T04",
+   "current_action": "孟夏感慨改期也好，并自曝记岔：表弟婚礼先说21号、随即自我更正为11月22日（周日）",
+   "acceptable_actions": [
+    "顺新口径确认婚礼22号",
+    "接她'记岔了'的自嘲宽一句",
+    "接'错开就对了'说档期反而舒服"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T04_A01",
+     "subject": "THIRD",
+     "relation": "表弟婚礼",
+     "value": "表弟婚礼在11月22日（周日）（她自我更正后的定值）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T04",
+      "quote": "婚礼是11月22号（周日），我记岔了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T04_A02",
+     "subject": "THIRD",
+     "relation": "婚礼日期口误",
+     "value": "'表弟21号结婚'的说法被她本人随即撤回（口误更正）",
+     "valid_time": "2026-11-16",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T04",
+      "quote": "21号那天我表弟结婚",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "婚礼",
+       "21号"
+      ],
+      [
+       "21号",
+       "结婚"
+      ]
+     ],
+     "item_markers": [
+      "我表弟结婚"
+     ]
+    }
+   ],
+   "private_guidance": "自我更正轮：以她更正后的 11-22 为准（lessons：顺着新说法走她最舒服），别替她重新'考证'回21号；改期后演出在12-05、与22号婚礼天然错开，'错开就对了'接住即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我记岔了"
+   ],
+   "forbidden_factual_claims": [
+    "不得把表弟婚礼说成11月21日",
+    "不得质疑她的更正"
+   ],
+   "may_decline": false
+  },
+  "E332_T05": {
+   "case_id": "E332_T05",
+   "current_action": "孟夏报戒糖第二周：12月5日中午那顿脏脏包免了、改点全麦贝果，医生说甜的先停停",
+   "acceptable_actions": [
+    "确认改全麦贝果",
+    "接她戒糖自律说贝果帮她挑好",
+    "接医生口径说'先停停'照办"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T05_A01",
+     "subject": "SHARED",
+     "relation": "餐点变更",
+     "value": "12月5日中午那顿：脏脏包免了、改点全麦贝果",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T05",
+      "quote": "脏脏包就免了，你帮我点个全麦贝果",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T05_A02",
+     "subject": "HER",
+     "relation": "脏脏包推荐（旧）",
+     "value": "半岛咖啡脏脏包的原推荐经她戒糖决定取消",
+     "valid_time": "2026-11-18",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T02",
+      "quote": "他们家脏脏包一绝",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "脏脏包",
+       "照旧"
+      ],
+      [
+       "还是",
+       "脏脏包"
+      ],
+      [
+       "脏脏包",
+       "一绝",
+       "点"
+      ]
+     ],
+     "item_markers": [
+      "脏脏包"
+     ]
+    },
+    {
+     "atom_id": "E332_T05_A03",
+     "subject": "THIRD",
+     "relation": "医生口径",
+     "value": "医生说甜的先停停",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T05",
+      "quote": "医生说甜的先停停",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T05_A04",
+     "subject": "HER",
+     "relation": "戒糖进展",
+     "value": "孟夏戒糖第二周",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T05",
+      "quote": "戒糖第二周了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "口味变化位①：顺新口径（全麦贝果），不复述'脏脏包一绝'馋她。T09 她会自己松口'兴许点个小的'——那是剧情演进，本轮仍以取消为准。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得给她点脏脏包或含糖甜点",
+    "不得劝她破戒吃甜"
+   ],
+   "may_decline": false
+  },
+  "E332_T06": {
+   "case_id": "E332_T06",
+   "current_action": "孟夏说明：同事那张票退了（12月5日公司年会拉她主持、转不出去就退了），咱俩的不受影响、照旧（intent：说明同事退票不影响咱俩）",
+   "acceptable_actions": [
+    "接住'照旧'确认咱俩不受影响",
+    "顺同事主持年会闲聊一句",
+    "确认两边安排不串场"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T06_A01",
+     "subject": "THIRD",
+     "relation": "同事退票",
+     "value": "她同事那张票退了（12月5日公司年会拉她主持、转不出去就退了）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T06",
+      "quote": "我同事那张票退了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T06_A02",
+     "subject": "SHARED",
+     "relation": "咱俩照旧",
+     "value": "咱俩的票不受影响、12月5日照旧",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T06",
+      "quote": "咱俩的不受影响，照旧",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "归属注意：退票/年会主持都是同事（第三方）的事，别把退票牵连到咱俩的票上；'照旧'指向12-05档期。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把同事退票说成影响咱俩座位",
+    "不得把年会主持安到孟夏头上"
+   ],
+   "may_decline": false
+  },
+  "E332_T07": {
+   "case_id": "E332_T07",
+   "current_action": "婚礼当天：孟夏跑了一天表弟婚礼、嗓子都哑了，话剧的事说都定了不啰嗦、去睡（可轻收）",
+   "acceptable_actions": [
+    "轻收'快歇着、嗓子重要'",
+    "极简关心一句嗓子",
+    "不回或极简表情"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T07_A01",
+     "subject": "HER",
+     "relation": "婚礼当日",
+     "value": "孟夏今天（2026-11-22）跑表弟婚礼、嗓子哑了",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T07",
+      "quote": "今天表弟婚礼跑了一天…嗓子都哑了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true、她说'睡了'——轻收或合法不回；婚礼11-22与她T04更正口径一致（记忆正向验证）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "睡了…"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问婚礼细节拖住她",
+    "不得把婚礼日期说成21号"
+   ],
+   "may_decline": true
+  },
+  "E332_T08": {
+   "case_id": "E332_T08",
+   "current_action": "孟夏改约午餐：半岛咖啡12月5日中午被剧组包场（店家朋友圈说的），改隔壁街山丘面包、还是12点50（intent：改约中午咖啡店）",
+   "acceptable_actions": [
+    "确认山丘面包12:50",
+    "顺包场梗说剧组抢生意",
+    "确认并问山丘有没有贝果、没有就换个吃法"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T08_A01",
+     "subject": "SHARED",
+     "relation": "午餐地点（旧）",
+     "value": "12月5日12:50半岛咖啡的午餐安排因店家包场被取代",
+     "valid_time": "2026-11-26",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T02",
+      "quote": "12点50剧院旁边的半岛咖啡等你",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "半岛咖啡",
+       "等你"
+      ],
+      [
+       "还是",
+       "半岛咖啡"
+      ]
+     ],
+     "item_markers": [
+      "半岛咖啡"
+     ]
+    },
+    {
+     "atom_id": "E332_T08_A02",
+     "subject": "SHARED",
+     "relation": "午餐地点（新）",
+     "value": "改到隔壁街的山丘面包、还是12点50",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T08",
+      "quote": "改到隔壁街的山丘面包吧，还是12点50",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T08_A03",
+     "subject": "THIRD",
+     "relation": "包场信息",
+     "value": "半岛咖啡12月5日中午被剧组包场（来源：店家朋友圈，孟夏转述）",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T08",
+      "quote": "半岛咖啡12月5号中午好像被剧组包场了，店家朋友圈说的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 佐证：半岛咖啡朋友圈原文'12月5日中午包场，暂停堂食'（候选可见，不进原子 quote）。地点变更主轮：superseded 对齐（半岛→山丘），12点50未动；候选若把用餐说回半岛=复活旧口径。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把12月5日午餐说回半岛咖啡",
+    "不得编造山丘面包菜单细节",
+    "不得质疑包场信息来源"
+   ],
+   "may_decline": false
+  },
+  "E332_T09": {
+   "case_id": "E332_T09",
+   "current_action": "孟夏报戒糖满两周、复查指标好转，医生说也没让一口甜的不沾；12月5日那天'兴许点个小的脏脏包解解馋'、嘱别笑话她",
+   "acceptable_actions": [
+    "顺新说法说'小的解馋没问题'",
+    "接'别笑话我'说懂克制的人才配解馋",
+    "提醒点小份就好、别的听医生的"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T09_A01",
+     "subject": "HER",
+     "relation": "戒糖进展",
+     "value": "戒糖满两周、今天复查指标好转",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T09",
+      "quote": "戒糖满两周了，今天复查指标好转",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T09_A02",
+     "subject": "THIRD",
+     "relation": "医生口径（更新）",
+     "value": "医生说也没让一口甜的不沾（口径自T05'甜的先停停'放宽）",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T09",
+      "quote": "医生说也没让一口甜的不沾",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T09_A03",
+     "subject": "HER",
+     "relation": "解馋意向",
+     "value": "12月5日那天兴许点个小的脏脏包解解馋（'兴许'，未定）",
+     "valid_time": "2026-12-05",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T09",
+      "quote": "兴许点个小的脏脏包解解馋",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "口味变化位②（她自己反转）：T05 取消脏脏包 → T09 她松口'兴许点个小的'——正确回应=顺着新说法、不翻'你不是戒糖吗'的旧账（lessons），也不替她加码；本轮不带T05取消原子的must-not-affirm（提脏脏包不再判死），以tentative原子记录'兴许'口径。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你可别笑话我"
+   ],
+   "forbidden_factual_claims": [
+    "不得翻'你不是戒糖吗'的旧账",
+    "不得替她把'小的'加码成大份或替她拍板一定点"
+   ],
+   "may_decline": false
+  },
+  "E332_T10": {
+   "case_id": "E332_T10",
+   "current_action": "孟夏最后核流程：12月5日12:50山丘面包、两点半小剧场，票在她手机里、韩东人到就行",
+   "acceptable_actions": [
+    "逐项确认：12:50山丘、14:30小剧场",
+    "接'人到就行'说门口集合",
+    "确认并说自己提前几分钟到"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T10_A01",
+     "subject": "SHARED",
+     "relation": "当日流程（最终）",
+     "value": "12月5日：12:50山丘面包集合、14:30小剧场",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T10",
+      "quote": "12点50山丘面包，两点半小剧场",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T10_A02",
+     "subject": "SHARED",
+     "relation": "票务口径",
+     "value": "票在孟夏手机里，韩东人到就行",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T10",
+      "quote": "票在我手机里，你人到就行",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "全篇口径汇总轮：12-05/14:30/山丘12:50 落定——候选复述任何旧值（11-21、半岛咖啡）=记忆取用错误。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把店说回半岛咖啡",
+    "不得把档期说回11月21日",
+    "不得改动任一时间值"
+   ],
+   "may_decline": false
+  },
+  "E332_T11": {
+   "case_id": "E332_T11",
+   "current_action": "散场报喜：值回票价！同事那张最后真退掉了、年会主持得挺像样",
+   "acceptable_actions": [
+    "接她的兴奋问观感",
+    "接同事主持的梗",
+    "提议找个地方复盘（老规矩）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T11_A01",
+     "subject": "SHARED",
+     "relation": "演出完成",
+     "value": "《雾中灯塔》已看完（散场）、她评价值回票价",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T11",
+      "quote": "散场了！！值回票价！！",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T11_A02",
+     "subject": "THIRD",
+     "relation": "同事票确认",
+     "value": "同事那张票最后真退掉了、年会她主持得挺像样",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T11",
+      "quote": "同事那张最后真退掉了，年会她主持得还挺像样",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "KB 键 warmth'看完戏必找地方复盘剧情'——提议复盘是正确取用；别质疑她的评价或剧透式分析剧情（故事未给剧情细节）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造剧情或演职人员细节",
+    "不得质疑'值回票价'的评价"
+   ],
+   "may_decline": false
+  },
+  "E332_T12": {
+   "case_id": "E332_T12",
+   "current_action": "散场夜：谢幕差点哭；12月19日《海上钢琴师》先不买票、等主办方别再改期再说；谢谢韩东的贝果和跑腿（可轻收）",
+   "acceptable_actions": [
+    "顺她的观望说等官宣稳了再冲",
+    "接致谢说贝果小意思",
+    "提议现在去吃点热的复盘"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E332_T12_A01",
+     "subject": "HER",
+     "relation": "观后感",
+     "value": "谢幕的时候孟夏差点哭了",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T12",
+      "quote": "谢幕的时候我差点哭了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T12_A02",
+     "subject": "SHARED",
+     "relation": "下场观望",
+     "value": "12月19日《海上钢琴师》她先不买票、等主办方不再改期再说（观望口径）",
+     "valid_time": "2026-12-19",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T12",
+      "quote": "12月19号还有场《海上钢琴师》，我先不买票，等主办方别再改期了再说",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E332_T12_A03",
+     "subject": "HER",
+     "relation": "致谢",
+     "value": "她谢韩东的贝果和跑腿",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E332_T12",
+      "quote": "今天谢谢你的贝果和跑腿",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮（may_decline=true）：她的观望口径（先不买票）必须被接住——替她定12-19安排或怂恿买票=不顺新说法；'贝果和跑腿'回指12-05当天的照应，接住即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我先不买票"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她买票或定12月19日安排",
+    "不得编造《海上钢琴师》场次票价细节"
+   ],
+   "may_decline": true
+  }
+ }
+}

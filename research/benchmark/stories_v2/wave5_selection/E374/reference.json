@@ -1,0 +1,2283 @@
+{
+ "story_id": "E374",
+ "turns": {
+  "E374_T01": {
+   "case_id": "E374_T01",
+   "current_action": "蔺初桐转述郑荇 11 月排班表并确认：她 11-11/11-14/11-25，梅鹤鸣 11-07/11-18/11-28，冯荻 11-21；班型周三晚 18:00-20:30、周六下午 14:00-17:00。",
+   "acceptable_actions": [
+    "排班确认：两班型复述（周三晚六点到八点半、周六下午两点到五点）+自己三个班次回读",
+    "确认+顺手提设备（11-07 那班我把登记机和书架先过一遍）式接班",
+    "确认+轻接搭档默契（'咱俩又是隔周三换着来'式）",
+    "短确认：'收到，我 07/18/28，你 11/14/25，冯荻 21'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T01_A01",
+     "subject": "SHARED",
+     "relation": "11 月排班表（郑荇发群，蔺初桐逐人转述）",
+     "value": "11 月排班：蔺初桐 11-11 周三晚、11-14 周六下午、11-25 周三晚；梅鹤鸣 11-07 周六下午、11-18 周三晚、11-28 周六下午；冯荻 11-21 周六下午（11-11/11-18 两个班次后被 11-05 对调取代）",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T01",
+      "message_id": "m0",
+      "quote": "我 11-11 周三晚、11-14 周六下午、11-25 周三晚；你 11-07 周六下午、11-18 周三晚、11-28 周六下午。冯荻 11-21 周六下午"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "排班表"
+      ],
+      [
+       "11-11",
+       "11-14",
+       "11-25"
+      ],
+      [
+       "11-07",
+       "11-18",
+       "11-28"
+      ],
+      [
+       "冯荻 11-21"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T01_A02",
+     "subject": "HER",
+     "relation": "班型时间",
+     "value": "班型老规矩：周三晚六点到八点半，周六下午两点到五点",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T01",
+      "message_id": "m0",
+      "quote": "班型还是老规矩，周三晚六点到八点半，周六下午两点到五点"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "六点到八点半"
+      ],
+      [
+       "两点到五点"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T01_A03",
+     "subject": "HER",
+     "relation": "排班表来源与核验",
+     "value": "郑荇 11 月排班表已发群里，蔺初桐在 app 核了一遍没排错",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T01",
+      "message_id": "m0",
+      "quote": "郑荇老师 11 月排班表发群里了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "排班表",
+       "发群里"
+      ],
+      [
+       "app 核了一遍"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "排班基线轮（全状态机底座）：六个班次+班型+第三人均为后续调换/请假/顶班的对账基准。日期星期全核：2026-11-04 为周三——11-07/11-14/11-21/11-28 均为周六、11-11/11-18/11-25 均为周三，与'周三晚/周六下午'班型一致。KB lessons'口头消息和正式通知分开记，正式通知落了才算数'——排班表发群+截图属正式通道（与 T20/T21 楼道/私信口头线对照）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动任何班次归属或时间（表已发群核实）"
+   ],
+   "may_decline": false
+  },
+  "E374_T02": {
+   "case_id": "E374_T02",
+   "current_action": "蔺初桐提对调请求：她妈 11-11 傍晚五点半在市一院复查，陪完赶回晚班必迟到，问梅鹤鸣愿不愿意把 11-18 周三晚跟她 11-11 对调（intent=请求对调）。",
+   "acceptable_actions": [
+    "答应对调：'行，11-18 换你，11-11 我来'——明说两点互换",
+    "答应+落细节（11-11 晚班我照常六点到，你安心陪阿姨复查）",
+    "答应+关心一句（复查顺利，别赶，晚班不差你这一会儿）再落对调",
+    "短应答：'换，11-11 我顶你 11-18'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T02_A01",
+     "subject": "HER",
+     "relation": "对调请求（未决）",
+     "value": "请求把梅鹤鸣 11-18 周三晚跟她 11-11 对调；不行她再去求郑老师重排",
+     "valid_time": "2026-11-05",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T02",
+      "message_id": "m0",
+      "quote": "你 11-18 周三晚跟我 11-11 对调行不行？不行我再去求郑老师重排"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "11-18",
+       "11-11",
+       "对调"
+      ],
+      [
+       "求郑老师重排"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T02_A02",
+     "subject": "HER",
+     "relation": "对调原因",
+     "value": "她妈复查，市一院只约到 11-11 周三傍晚五点半，陪完赶回来晚班肯定迟到",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T02",
+      "message_id": "m0",
+      "quote": "我妈复查，市一院只约到 11-11 周三傍晚五点半，陪完赶回来晚班肯定迟到"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "复查",
+       "11-11"
+      ],
+      [
+       "傍晚五点半"
+      ],
+      [
+       "肯定迟到"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=请求对调：行为方向=accept（答应）或说明困难并建议她的备选（求郑荇重排）——含糊拖延不答判 goal 退。对调后果要清楚：换完 ME 多一班（11-07+11-11+11-28）、她换得 11-18——候选若只答'行'不落两点互换，语义层记低。亲情事由（陪妈复查）不追问细节、直接体谅为优。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称对调已经郑荇批准（须 T03 改表落定）"
+   ],
+   "may_decline": false
+  },
+  "E374_T03": {
+   "case_id": "E374_T03",
+   "current_action": "郑荇已改表生效：11-11 归梅鹤鸣、11-18 归蔺初桐，改完截图发群，蔺初桐让梅鹤鸣自己看一眼别错。",
+   "acceptable_actions": [
+    "确认改表：'看到了，11-11 归我、11-18 归你，截图我核过没错'",
+    "确认+谢郑荇流程（郑老师这效率，回头我值班当面谢一句）式轻接",
+    "确认+落班型（11-11 那晚六点到八点半我照常到）",
+    "短确认：'核了，11-11 我的、11-18 你的，没错'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T03_A01",
+     "subject": "HER",
+     "relation": "对调生效（郑荇改表，正式）",
+     "value": "郑荇把表改了并截图发群：11-11 归梅鹤鸣、11-18 归蔺初桐（对调正式生效）",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T03",
+      "message_id": "m0",
+      "quote": "郑老师说既然你点头她就把表改了：11-11 归你，11-18 归我，改完截图发群里了，你自己看一眼别错"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "把表改了"
+      ],
+      [
+       "11-11 归你"
+      ],
+      [
+       "11-18 归我"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T03_A02",
+     "subject": "HER",
+     "relation": "旧排班归属（已被对调取代）",
+     "value": "旧口径：11-11 周三晚原排蔺初桐名下（11-18 原排梅鹤鸣）——已被 11-05 对调取代",
+     "valid_time": "2026-11-04",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T01",
+      "message_id": "m0",
+      "quote": "我 11-11 周三晚"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "11-11",
+       "还是"
+      ],
+      [
+       "11-11",
+       "你顶的班"
+      ]
+     ],
+     "item_markers": [
+      "11-11 周三晚"
+     ]
+    }
+   ],
+   "private_guidance": "对调生效位：改表+截图发群=正式通道落定（KB lessons 口径）——此后 11-11 归 ME、11-18 归 HER 为新口径。候选若答'那 11-11 还是你的班'或按旧表应答即坐实 superseded 原子。markers 设计（'11-11+还是'、'11-11+你顶的班'）：正确复述'11-11 归我/我来顶'不含这两个组合，防回声误伤。回指：T09'11-11 那晚你顶的班'、T12'换来的那班'均挂靠本位。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得按旧表回应（11-11 归蔺初桐/11-18 归梅鹤鸣的旧口径已废）"
+   ],
+   "may_decline": false
+  },
+  "E374_T04": {
+   "case_id": "E374_T04",
+   "current_action": "值班日交办：儿童角那筐洞洞书快散架，值完拿扎带捆一下（牛皮纸绳上回捆过不结实）；登记机又卡纸了，上回是拿镊子从滚轴边上挑出来的，让梅鹤鸣顺手看下。",
+   "acceptable_actions": [
+    "接任务：'洞洞书拿扎带捆，卡纸我这就按镊子那法子挑'——两单齐接",
+    "接任务+管家经验（扎带我多绕一道双扣，牛皮纸绳那筐也顺手换掉）",
+    "接任务+轻接（'登记机这是认生还是认熟'式一句）再落动手",
+    "短应答：'收到，书捆上，机器我修'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T04_A01",
+     "subject": "HER",
+     "relation": "洞洞书捆扎任务",
+     "value": "儿童角那筐洞洞书快散架了，值完拿扎带捆一下（牛皮纸绳她上回捆过，不结实）",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T04",
+      "message_id": "m0",
+      "quote": "儿童角那筐洞洞书快散架了，值完拿扎带捆一下，牛皮纸绳我上回捆过，不结实"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "洞洞书",
+       "扎带"
+      ],
+      [
+       "牛皮纸绳",
+       "不结实"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T04_A02",
+     "subject": "HER",
+     "relation": "登记机卡纸处理交办",
+     "value": "登记机又卡纸了，上回是拿镊子从滚轴边上挑出来的，让梅鹤鸣顺手看下",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T04",
+      "message_id": "m0",
+      "quote": "登记机又卡纸了，上回是拿镊子从滚轴边上挑出来的，你顺手看下"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "登记机",
+       "卡纸"
+      ],
+      [
+       "镊子",
+       "滚轴"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "任务双埋点位：洞洞书扎带为一次性任务；卡纸镊子法为 T12 教学请求、T13'镊子法子管用'的方法底座——候选回应里接住'镊子从滚轴边上挑'这个方法名即可（回指链的关键词）。'上回'归因是 HER 转述历史经验，接用即可不考证。本轮 ME 正值 11-07 下午班（T01 排班基线），候选可自然以值班口吻承接。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称牛皮纸绳结实或反对换扎带（她已验过不结实）"
+   ],
+   "may_decline": false
+  },
+  "E374_T05": {
+   "case_id": "E374_T05",
+   "current_action": "蔺初桐请假：大学室友 11-14 周六在临州办婚礼、请柬点名她当伴娘，14 号下午班得请假；跟冯荻不熟开不了口，请梅鹤鸣在志愿者群里代问谁顶（intent=请假并请代寻顶班；note=请柬纸质落款 11-14 周六）。",
+   "acceptable_actions": [
+    "接请假+接代寻：'行，14 号下午班我在群里问谁顶，顶上的我跟你对一声'",
+    "接代寻+给替身建议（群里直接@几个人问，比发大群快）式协助",
+    "接请假+体贴（婚礼当伴娘是正事，班的事你不用操心，我来问）",
+    "短应答：'好，我群里帮你问顶班'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T05_A01",
+     "subject": "HER",
+     "relation": "请假请求与事由",
+     "value": "大学室友 11-14 周六在临州办婚礼、请柬昨天到、点名蔺初桐当伴娘，14 号下午班得请假",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T05",
+      "message_id": "m0",
+      "quote": "我大学室友 11-14 周六在临州办婚礼，请柬昨天到的，点名我当伴娘。14 号下午班我得请假"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "婚礼",
+       "伴娘"
+      ],
+      [
+       "下午班",
+       "请假"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T05_A02",
+     "subject": "HER",
+     "relation": "代寻顶班请求",
+     "value": "请梅鹤鸣在志愿者群里帮她问谁顶 11-14 下午班（她跟冯荻不熟，开不了这个口）",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T05",
+      "message_id": "m0",
+      "quote": "你在志愿者群里帮我问下谁顶？我跟冯荻不熟，开不了这个口"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "群里",
+       "问下谁顶"
+      ],
+      [
+       "冯荻不熟"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "protected 边界：'我跟冯荻不熟，开不了这个口'——候选不劝她硬着头皮自己找冯荻、不越俎代庖直接替她答应冯荻什么；代寻=在群里发问。note：请柬纸质落款 11-14 周六日子不会错——请假事由真实锚，候选不质疑日期。'谁顶'是开放征集（未指定冯荻），候选不得预设冯荻一定顶（T06 才落定）。回指：T01 的 11-14 下午班基线为本位请假对象。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我跟冯荻不熟，开不了这个口"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已替她敲定顶班人选（代寻刚发起）",
+    "不得质疑婚礼日期（请柬纸质落款为准）"
+   ],
+   "may_decline": false
+  },
+  "E374_T06": {
+   "case_id": "E374_T06",
+   "current_action": "梅鹤鸣问到冯荻能顶 11-14 下午班；蔺初桐让代谢冯荻，并把 11-14 记到冯荻名下——欠她一次，下个月她的班自己顶一次抵，让梅鹤鸣一起记着。",
+   "acceptable_actions": [
+    "记账确认：'记下了——14 号记冯荻名下，你欠一次下月抵，回头她值班我提一句你谢她'",
+    "记账+人情补位（下月她的班你提前跟我说，我排的时候给你俩对齐）",
+    "记账+轻接（'顶班界的信用体系全靠你这本账'式）再落确认",
+    "短应答：'好，14 号记她名下，人情账我跟你一起记'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T06_A01",
+     "subject": "HER",
+     "relation": "11-14 下午班原归属（已被顶班取代）",
+     "value": "旧口径：11-14 周六下午班在蔺初桐名下——被 11-08 顶班安排取代（记冯荻名下）",
+     "valid_time": "2026-11-04",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T01",
+      "message_id": "m0",
+      "quote": "11-14 周六下午"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "11-14",
+       "还是"
+      ],
+      [
+       "你下午班"
+      ]
+     ],
+     "item_markers": [
+      "14 号下午班"
+     ]
+    },
+    {
+     "atom_id": "E374_T06_A02",
+     "subject": "SHARED",
+     "relation": "顶班入账与偿还约定",
+     "value": "11-14 下午班记冯荻名下；蔺初桐欠冯荻一次，下个月冯荻的班蔺初桐顶一次抵；梅鹤鸣跟她一起记着",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T06",
+      "message_id": "m1",
+      "quote": "那 11-14 就记她名下，我欠她一次，下个月她的班我顶一次抵，这事你跟我一起记着"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "记她名下"
+      ],
+      [
+       "欠她一次"
+      ],
+      [
+       "顶一次抵"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "顶班生效位：ME m0 报'冯荻说她 14 号下午能顶'→HER m1 确认入账——11-14 下午班自此归冯荻。superseded markers 防回声设计：正确回复'11-14 记冯荻名下'不含'11-14+还是'与'你下午班'（candidates 复述 HER 原话'记她名下'安全）。人情账（欠一次/下月顶班抵）是 T19'12-19 还人情班'的因由——候选把记账接住为过，漏记或说'不用记'判 memory 退。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 11-14 下午班仍记在蔺初桐名下（已顶给冯荻）"
+   ],
+   "may_decline": false
+  },
+  "E374_T07": {
+   "case_id": "E374_T07",
+   "current_action": "反转：室友婚礼推迟到 12 月底（怕跟另一场撞期），蔺初桐 11-14 空出来了，提出想把班要回来——让梅鹤鸣先去探冯荻口风，她明天去跟郑老师说（intent=复活请求）。",
+   "acceptable_actions": [
+    "接探口风请求（明着去问冯荻意见，不替任何人打包票）+提醒郑荇那头她说完再定",
+    "接请求+先把丑话说前头（表改过再改回去得郑老师点头，冯荻那边我问了也只算她个人意见）",
+    "接请求+轻接反转（'婚礼都给你让档期了'式）再落探口风",
+    "短应答：'行，我先去问冯荻，郑老师那边你明天说'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T07_A01",
+     "subject": "HER",
+     "relation": "婚礼推迟（11-14 空出）",
+     "value": "室友婚礼推迟到 12 月底（怕跟另一场撞期），蔺初桐 11-14 又空出来了；12 月底婚礼仍要进行",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T07",
+      "message_id": "m0",
+      "quote": "反转了：室友婚礼推迟到 12 月底，说怕跟另一场撞期。那我 14 号又空出来了！"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "婚礼推迟"
+      ],
+      [
+       "12 月底"
+      ],
+      [
+       "空出来了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T07_A02",
+     "subject": "HER",
+     "relation": "复活请求（未决）",
+     "value": "想把 11-14 的班要回来（复活请求）：冯荻那边先让梅鹤鸣探口风，郑老师那头她明天去说",
+     "valid_time": "2026-11-09",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T07",
+      "message_id": "m0",
+      "quote": "我能不能把班要回来？冯荻那边你先帮我去探个口风，郑老师那头我明天去说"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "把班要回来"
+      ],
+      [
+       "探个口风"
+      ],
+      [
+       "郑老师那头"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "复活请求位（取消-复活链第一段）：11-14 此刻仍记冯荻名下（T06 生效）——候选不得当场宣布'班还给你了'（须郑荇改表+冯荻同意两道关）；正确方向=答应探口风+把决定权交回郑荇/冯荻。她 boundaries'口头消息不当正式'——候选可呼应'都落了表才算'。T08 将给出拒绝+折抵，本轮一切只到'探'为止。",
+   "unknowns": [
+    {
+     "topic": "11-14 班能否要回（复活请求结果未定）",
+     "note": "须郑荇同意改表且冯荻同意让班，未落定前班仍记冯荻名下——候选不得当作已恢复",
+     "markers": [
+      [
+       "班要回来了"
+      ],
+      [
+       "冯荻同意让班"
+      ],
+      [
+       "14 号让回"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "班要回来了"
+      ],
+      [
+       "冯荻同意让班"
+      ],
+      [
+       "14 号让回"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得宣布 11-14 班已恢复归蔺初桐（请求未决）",
+    "不得替冯荻或郑荇作出让班承诺"
+   ],
+   "may_decline": false
+  },
+  "E374_T08": {
+   "case_id": "E374_T08",
+   "current_action": "郑荇把话递死：表改过就不再动、冯荻也把 14 号备上了——复活被拒；但留台阶：14 号上午来两小时带新志愿者小隼过借还流程、时长照记；蔺初桐应下，不折腾了。",
+   "acceptable_actions": [
+    "接结果+接折抵（行，不折腾了——14 号上午两小时带小隼，时长照记这方案挺周全）",
+    "接结果+把决定链点透（郑老师表不再动是规矩，冯荻也备上了，这事就算落死）式收束",
+    "接结果+轻安慰（上午带教也挺好，小隼有人带比啥都强）式接",
+    "短应答：'好，就按上午带教两小时来，不折腾了'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T08_A01",
+     "subject": "HER",
+     "relation": "复活请求被拒（郑荇正式口径）",
+     "value": "郑老师把话递死了：表改过就不再动，冯荻也把 14 号备上了——11-14 下午班维持冯荻名下，复活未成",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T08",
+      "message_id": "m0",
+      "quote": "郑老师把话递死了：表改过就不再动，冯荻也把 14 号备上了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "话递死了"
+      ],
+      [
+       "表改过就不再动"
+      ],
+      [
+       "14 号备上了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T08_A02",
+     "subject": "HER",
+     "relation": "带教折抵方案（应下）",
+     "value": "郑荇留台阶：11-14 上午来两小时带新志愿者小隼过一遍借还流程，时长照记；蔺初桐应下了，不折腾了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T08",
+      "message_id": "m0",
+      "quote": "14 号上午来两小时，带新志愿者小隼过一遍借还流程，时长照记。我应下了，那就不折腾了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "上午来两小时"
+      ],
+      [
+       "小隼"
+      ],
+      [
+       "时长照记"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "复活拒绝+折抵位（取消-复活链第二段）：正确方向=接受拒绝、维持 11-14 冯荻名下不变、接折抵带教安排。候选若在此继续说'那我再帮你问问/班肯定能回来'即不读正式口径判 goal 退。'时长照记'是 T24 七小时对账的组成（带教 2h 计入时长）——候选提到'时长给你记上'为过。回指：T10/T11 带教执行、T24 对账挂靠本位。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称 11-14 下午班要回来了或可以再争取（郑荇已拒绝）"
+   ],
+   "may_decline": false
+  },
+  "E374_T09": {
+   "case_id": "E374_T09",
+   "current_action": "蔺初桐转述：11-11 晚班梅鹤鸣顶的，郑荇私下夸他借还机摸得熟；她妈复查结果也稳，吃药得按时。",
+   "acceptable_actions": [
+    "接夸+接家讯（郑老师抬举，机器熟是练出来的——阿姨结果稳就好，按时吃药）",
+    "接夸+回扣对调（那晚顶得值，你陪阿姨跑医院也顺了）式把两线对上",
+    "接夸+轻自嘲（'比你还熟这话我可记下了'式）再落关心",
+    "短应答：'谢谢郑老师——阿姨稳就好，药别断'"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T09_A01",
+     "subject": "SHARED",
+     "relation": "对调执行结果（回指 T03）",
+     "value": "11-11 周三晚班已由梅鹤鸣顶班执行（对调生效后 ME 的班），郑荇私下夸梅鹤鸣借还机摸得比蔺初桐还熟",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T09",
+      "message_id": "m0",
+      "quote": "11-11 那晚你顶的班，郑荇老师私下夸你了，说借还机你摸得比我还熟"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你顶的班"
+      ],
+      [
+       "私下夸"
+      ],
+      [
+       "借还机",
+       "熟"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T09_A02",
+     "subject": "HER",
+     "relation": "母亲复查结果",
+     "value": "她妈复查结果也稳，就是吃药得按时",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T09",
+      "message_id": "m0",
+      "quote": "我妈复查结果也稳，就是吃药得按时"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "复查结果",
+       "稳"
+      ],
+      [
+       "吃药得按时"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "回指闭合（长距位）：11-11 顶班（T03 对调）→执行完毕获夸——候选回应把对调链自然接住（'那晚'指 11-11）为过；答'哪晚？'式失忆或把 11-11 说成她的班即回指失败。家讯线（T02 复查事由→T09 结果稳）同理闭合，关心一句不追问病情细节。归属：夸话是郑荇说的（郑荇→蔺初桐转述），候选谢意对象是郑荇，别谢成蔺初桐。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 11-11 晚班说成蔺初桐的班（对调后归梅鹤鸣）"
+   ],
+   "may_decline": false
+  },
+  "E374_T10": {
+   "case_id": "E374_T10",
+   "current_action": "带教日晨：蔺初桐已到馆、小隼比约定早十分钟也到了；先带借还流程、两小时收工，完了去试伴娘服。",
+   "acceptable_actions": [
+    "接带教日安排（好，上午我照常班上，登记机你随手用——小隼先上手那个流程）",
+    "接安排+管家配合（我提前把借还机调到演示模式，小隼练坏不了）",
+    "接安排+轻接（'伴娘服试完拍照给我看看成色'式）再落配合",
+    "短应答：'好，带教顺利，两小时后见'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T10_A01",
+     "subject": "HER",
+     "relation": "带教安排（回指 T08 折抵）",
+     "value": "11-14 上午蔺初桐带新志愿者小隼过一遍借还流程、两小时（T08 折抵方案的执行日）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T08",
+      "message_id": "m0",
+      "quote": "14 号上午来两小时，带新志愿者小隼过一遍借还流程"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "小隼",
+       "借还流程"
+      ],
+      [
+       "来两小时"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T10_A02",
+     "subject": "HER",
+     "relation": "带教日晨现场",
+     "value": "蔺初桐已到馆，小隼比约定早十分钟到了；先带借还流程，两小时收工，完了去试伴娘服",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T10",
+      "message_id": "m0",
+      "quote": "我到馆里了，小隼也来了，比约定早十分钟。先带借还流程，两小时收工，完了我去试伴娘服"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "到馆里了",
+       "小隼"
+      ],
+      [
+       "试伴娘服"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "长距回指位（T08 折抵→T10 执行，4 轮距）：'带小隼过借还流程'回指折抵安排——候选回应以'配合带教/馆内我照常值班'为方向，不重问'带教是什么'（失忆判 memory 退）。11-14 下午班在冯荻名下（T06）——候选若说'下午你值班'即状态错乱。伴娘服（12 月底婚礼）是 HER 私人日程，轻接即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 11-14 下午班安排给蔺初桐（冯荻顶班在册）"
+   ],
+   "may_decline": false
+  },
+  "E374_T11": {
+   "case_id": "E374_T11",
+   "current_action": "蔺初桐报带教收工：小隼手生但仔细、便签贴登记机边上了；冯荻下午班说新书上架 24 本；伴娘服试好了、12 月底那场跑不了了。",
+   "acceptable_actions": [
+    "接报平安+接便签（便签贴机边上好，小隼下回照着来就快）式收",
+    "接报+回扣带教（两小时能把借还流程带走就算成了）+冯荻上架数一句带过",
+    "接报+轻接婚礼（12 月底那场跑不了就备着，鞋跟别太高）式轻松收",
+    "短应答：'辛苦，小隼上手快，冯荻那边也顺——12 月底等你婚礼消息'"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "factuality",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T11_A01",
+     "subject": "HER",
+     "relation": "带教收工与便签",
+     "value": "带教收工：小隼手生但仔细，蔺初桐把便签贴登记机边上了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T11",
+      "message_id": "m0",
+      "quote": "带教收工，小隼手生但仔细，便签我贴登记机边上了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "带教收工"
+      ],
+      [
+       "便签",
+       "登记机边上"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T11_A02",
+     "subject": "THIRD",
+     "relation": "冯荻顶班执行",
+     "value": "冯荻 11-14 下午班执行：新书上架 24 本（11-14 下午班由冯荻完成的实证）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T11",
+      "message_id": "m0",
+      "quote": "冯荻下午班说新书上架 24 本"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "冯荻",
+       "下午班"
+      ],
+      [
+       "新书上架 24 本"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T11_A03",
+     "subject": "HER",
+     "relation": "婚礼维持 12 月底",
+     "value": "伴娘服试好了，12 月底那场婚礼跑不了了（推迟后仍进行）",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T11",
+      "message_id": "m0",
+      "quote": "伴娘服也试好了，12 月底那场跑不了了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "伴娘服"
+      ],
+      [
+       "12 月底",
+       "跑不了"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "状态机核验点：11-14 下午班=冯荻执行（新书上架 24 本）——顶班链（T05 请假→T06 入账→T11 执行）闭合。候选若说'你下午班辛苦了'即状态错乱（下午班不是她的）。带教+便签为 T23 交接'借还机'线的远因。婚礼 12 月底与 T07 推迟口径一致。24 本为 HER 转述数，复述即可不质疑。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 11-14 下午班归功蔺初桐（冯荻执行的）",
+    "不得声称婚礼彻底取消（推迟到 12 月底仍办）"
+   ],
+   "may_decline": false
+  },
+  "E374_T12": {
+   "case_id": "E374_T12",
+   "current_action": "蔺初桐值 11-18 晚班（换来的那班）前求教：登记机卡纸那毛病镊子该从哪儿进，请梅鹤鸣微信上教她下，怕到时候一个人跟机器大眼瞪小眼。",
+   "acceptable_actions": [
+    "微信教学：镊子从滚轴边上进、顺着纸的方向夹，一次一步说清（教学式回复）",
+    "教学+实操建议（今晚卡了先别硬拽，拍张照发我我看一眼）",
+    "教学+轻接（'换来的班可不能栽在机器手上'式）再落干货",
+    "短教学：'滚轴右边缝进镊子，夹住纸头顺着拽——别逆着来'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "initiative",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T12_A01",
+     "subject": "SHARED",
+     "relation": "11-18 晚班归属（对调后，回指 T03）",
+     "value": "11-18 周三晚班对调后归蔺初桐（她口中的'换来的那班'），本周三值班",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T03",
+      "message_id": "m0",
+      "quote": "11-18 归我"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "11-18 归我"
+      ],
+      [
+       "换来的那班"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T12_A02",
+     "subject": "HER",
+     "relation": "卡纸镊子法教学请求（回指 T04）",
+     "value": "登记机卡纸那毛病，镊子该从哪儿进——请梅鹤鸣微信上教她下，别到时候一个人跟机器大眼瞪小眼",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T12",
+      "message_id": "m0",
+      "quote": "登记机卡纸那毛病，镊子该从哪儿进，你微信上教我下，别到时候我一个人跟机器大眼瞪小眼"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "镊子",
+       "从哪儿进"
+      ],
+      [
+       "微信上教我"
+      ],
+      [
+       "大眼瞪小眼"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "长距回指位（T04 卡纸镊子法→T12 求教，8 轮距）：教学请求的事实底座='上回是拿镊子从滚轴边上挑出来的'——required 原子挂 T04 交办，候选教学时给出'镊子+滚轴'要点为过；空泛'你试试看'判 goal 退。'换来的那班'回指 T03 对调——候选若说'11-18 不是我的班吗'即状态错乱。教学是知识传递轮：不塞无关新话题，一次说清一步。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 11-18 晚班说成梅鹤鸣的班（对调后归蔺初桐）"
+   ],
+   "may_decline": false
+  },
+  "E374_T13": {
+   "case_id": "E374_T13",
+   "current_action": "蔺初桐 11-18 晚班收工报数：还书 31 本、借出 9 本（后台抄的数），登记机卡了一回、镊子法子管用；儿童角《月亮先生》被人撕了两页，已登记破损本（note=31 和 9 是下班前从登记机后台抄的数，错不了）。",
+   "acceptable_actions": [
+    "接报数+接方法反馈（31 借 9 记下了；镊子法子管用就好，滚轴右边那个缝就是入口）",
+    "接报数+破损本处理（《月亮先生》撕页你登记了就行，胶带修补我明儿带）",
+    "接报数+轻夸（头一回独立值班这数交得利索）式接",
+    "短应答：'收到，31/9 记上；破损本你登了就行'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T13_A01",
+     "subject": "HER",
+     "relation": "11-18 晚班执行数据",
+     "value": "11-18 晚班收工：还书 31 本、借出 9 本（登记机后台抄数）；登记机卡了一回，镊子法子管用",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T13",
+      "message_id": "m0",
+      "quote": "还书 31 本，借出 9 本，登记机卡了一回，镊子法子管用"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还书 31 本"
+      ],
+      [
+       "借出 9 本"
+      ],
+      [
+       "镊子法子管用"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T13_A02",
+     "subject": "HER",
+     "relation": "图书破损登记",
+     "value": "儿童角《月亮先生》被人撕了两页，蔺初桐已登记破损本",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T13",
+      "message_id": "m0",
+      "quote": "儿童角《月亮先生》被人撕了两页，我登记破损本了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "月亮先生"
+      ],
+      [
+       "撕了两页"
+      ],
+      [
+       "登记破损本"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "对账纪律：31/9 是 HER 从后台抄的数（note 定错不了）——候选复述即可，不质疑不重算（质疑后台数判 factuality 误伤）。回指闭合：T12 教学→T13'镊子法子管用'——候选一句'管用就好'即承接。《月亮先生》破损已按流程登记——候选补修补安排合法，编造'撕页的人抓到了'即无据判 forbidden。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得质疑 31/9 数字（后台抄数，错不了）",
+    "不得编造撕页人身份或处理结果"
+   ],
+   "may_decline": false
+  },
+  "E374_T14": {
+   "case_id": "E374_T14",
+   "current_action": "郑荇吹风 12-05（第一个周六）办雪夜故事会、上午十点到十一点半、招主讲；蔺初桐报了名、讲《雪孩子》，串词写完发梅鹤鸣帮看（intent=报名故事会主讲并请帮看串词）。",
+   "acceptable_actions": [
+    "接报名+接帮看（雪孩子选得好——串词发来我帮你看时长和接口）",
+    "接报名+提出讲评标准（我主要看三块：开场抓不抓人、段落时长、互动口令）",
+    "接报名+轻接（'馆里第一次办故事会就被你拿下'式）再落帮看",
+    "短应答：'好，串词发来，我帮你看'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T14_A01",
+     "subject": "HER",
+     "relation": "12-05 故事会与报名",
+     "value": "郑荇吹风 12-05（第一个周六）办雪夜故事会、上午十点到十一点半、招主讲；蔺初桐已报名、讲《雪孩子》",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T14",
+      "message_id": "m0",
+      "quote": "12-05 第一个周六办雪夜故事会，上午十点到十一点半，招主讲。我报了，讲《雪孩子》"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "雪夜故事会"
+      ],
+      [
+       "12-05",
+       "周六"
+      ],
+      [
+       "雪孩子"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T14_A02",
+     "subject": "HER",
+     "relation": "帮看串词请求",
+     "value": "串词写完发给梅鹤鸣帮看",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T14",
+      "message_id": "m0",
+      "quote": "串词写完发你帮我看"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "串词",
+       "帮我看"
+      ],
+      [
+       "写完发你"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "故事会线开启：12-05（周六可验算，12-02 周三+3）上午 10:00-11:30、主讲蔺初桐——T17 全天计划、T18 取消、T19 改期申请、T22 正式改 12-12 全挂靠本位。'郑老师先吹风了'措辞：吹风=预告性质，但 HER 已报名落定行程——原子按在册事件登记，T18 正式通知取消时作 cancelled。帮看串词是承诺义务：候选接住'帮看'即可，不代写不吹捧空话。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她改故事或串词内容（帮看不代写）",
+    "不得声称故事会已获馆方正式立项（吹风级预告）"
+   ],
+   "may_decline": false
+  },
+  "E374_T15": {
+   "case_id": "E374_T15",
+   "current_action": "蔺初桐通报：12 月排班表月底才出、郑荇说先排到 12-12、后面等年末清点再定；提醒梅鹤鸣 11-28 那班之前把 12 月意向报给郑荇，别漏了。",
+   "acceptable_actions": [
+    "接提醒（好，28 号我值班时当面跟郑老师把 12 月意向说了）",
+    "接提醒+自己先盘意向（我先想好 12 月哪几班能来，别到时候现场挑）",
+    "接提醒+轻接（'年末清点这四个字听着就忙'式）再落承诺",
+    "短应答：'收到，11-28 前我把意向报给郑老师'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T15_A01",
+     "subject": "HER",
+     "relation": "12 月排班表进度",
+     "value": "12 月排班表月底出，郑荇说先排到 12-12，后头等年末清点再定",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T15",
+      "message_id": "m0",
+      "quote": "12 月表月底出，郑老师说先排到 12-12，后头等年末清点再定"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "12 月表",
+       "月底出"
+      ],
+      [
+       "先排到 12-12"
+      ],
+      [
+       "年末清点"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T15_A02",
+     "subject": "HER",
+     "relation": "意向报备提醒",
+     "value": "梅鹤鸣 11-28 那班之前把 12 月意向报给郑荇，别漏了",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T15",
+      "message_id": "m0",
+      "quote": "你 11-28 那班之前把 12 月意向报给她，别漏了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "11-28 那班"
+      ],
+      [
+       "12 月意向"
+      ],
+      [
+       "别漏了"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "跨月排班铺垫：'先排到 12-12'为 T16 12 月表（排到 12-12）的前哨；'11-28 那班'回指 T01 排班基线（ME 11-28 周六下午）。候选承接报备义务即可；不代郑荇许诺 12 月班次（编造具体 12 月排班判 forbidden）。她的'就这些'收尾风格——回复不必拉长。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造 12 月具体排班（表未出，先排到 12-12）"
+   ],
+   "may_decline": false
+  },
+  "E374_T16": {
+   "case_id": "E374_T16",
+   "current_action": "蔺初桐 11-25 周三晚班收工：今晚有个小男孩把果汁泼绘本区、拖了两遍；12 月表群里发布——12-02 周三晚梅鹤鸣、12-09 周三晚蔺初桐、12-05 周六下午蔺初桐（还冯荻人情那班）、12-12 周六下午梅鹤鸣。",
+   "acceptable_actions": [
+    "接 12 月表（收到：02 我、05 你还人情、09 你、12 我——和你说的一样）",
+    "接表+果汁事件轻关心（绘本区拖两遍够呛，娃爹妈道歉没）式接再落表",
+    "接表+人情班点一句（05 那班你顶冯荻的，账就算还上了）回扣 T06 约定",
+    "短应答：'12 月表记下了——02 和 12 是我的'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T16_A01",
+     "subject": "HER",
+     "relation": "11-25 晚班执行与果汁事件",
+     "value": "11-25 周三晚班收工：有个小男孩把果汁泼绘本区了，蔺初桐拖了两遍",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T16",
+      "message_id": "m0",
+      "quote": "晚班收工，今晚有个小男孩把果汁泼绘本区了，我拖了两遍"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "晚班收工"
+      ],
+      [
+       "果汁",
+       "泼绘本区"
+      ],
+      [
+       "拖了两遍"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T16_A02",
+     "subject": "SHARED",
+     "relation": "12 月排班表发布",
+     "value": "12 月表群里发了：12-02 周三晚梅鹤鸣、12-09 周三晚蔺初桐、12-05 周六下午蔺初桐（还冯荻那个人情那班）、12-12 周六下午梅鹤鸣",
+     "valid_time": "2026-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T16",
+      "message_id": "m0",
+      "quote": "12 月表群里发了：12-02 周三晚你，12-09 周三晚我，12-05 周六下午我，还冯荻那个人情那班，12-12 周六下午你"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "12-02 周三晚"
+      ],
+      [
+       "12-09 周三晚"
+      ],
+      [
+       "12-05 周六下午"
+      ],
+      [
+       "12-12 周六下午"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "12 月排班底座（状态机下半场基准）：四班次全核——12-02/12-09 为周三、12-05/12-12 为周六，与班型一致。'还冯荻那个人情那班'回扣 T06 欠账约定（下月顶班抵）——12-05 下午班性质=还人情，候选点破该性质为优（memory 回指）。果汁印为 T23'苏打水擦淡'的因由。日期星期验算：11-25 为周三，12-02=+7 周三、12-05=周六、12-09=周三、12-12=周六。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动 12 月表班次归属（02/12 归梅鹤鸣、05/09 归蔺初桐）"
+   ],
+   "may_decline": false
+  },
+  "E374_T17": {
+   "case_id": "E374_T17",
+   "current_action": "蔺初桐规划 12-05 全天泡馆里：上午故事会主讲、下午还人情班；串词明晚发梅鹤鸣，请帮盯时间别超四十五分钟。",
+   "acceptable_actions": [
+    "接串词+给时长口径（行，明晚等串词——我按四十五分钟给你掐，超了标出来）",
+    "接全天安排+点风险（上午讲完下午还站三小时，中午得给自个儿留口饭）式体贴",
+    "接串词+轻接（'主讲加顶班，你这天是馆里的'式）再落承诺",
+    "短应答：'好，串词明晚来，四十五分钟帮你盯'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T17_A01",
+     "subject": "HER",
+     "relation": "12-05 全天计划",
+     "value": "12-05 蔺初桐全天泡馆里：上午故事会主讲、下午还人情班（该计划后被 11-30 闭馆通知取消）",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T17",
+      "message_id": "m0",
+      "quote": "12-05 我全天泡馆里：上午故事会主讲，下午还人情班"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "全天泡馆里"
+      ],
+      [
+       "上午故事会主讲"
+      ],
+      [
+       "下午还人情班"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T17_A02",
+     "subject": "HER",
+     "relation": "串词交付与时长要求",
+     "value": "串词明晚（11-28）发梅鹤鸣，请帮盯时间别超四十五分钟",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T17",
+      "message_id": "m0",
+      "quote": "串词明晚发你，帮我盯下时间别超四十五分钟"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "串词明晚发你"
+      ],
+      [
+       "别超四十五分钟"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "计划原子（后被取消）：12-05 上午主讲+下午人情班为 T18 取消的对象组合。'串词明晚发'=11-28（11-27 周五视角）——T22 正式改 12-12 后串词用途延续（讲期推迟不取消内容）。时长要求四十五分钟为硬指标：故事会时段 10:00-11:30 共 90 分钟，45 分钟为主讲段口径，候选不混淆总时段与主讲时长。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称 12-05 上午讲满 90 分钟（要求是主讲不超 45 分钟）"
+   ],
+   "may_decline": false
+  },
+  "E374_T18": {
+   "case_id": "E374_T18",
+   "current_action": "馆里群发正式通知：供暖管道老化，12-05 全天闭馆检修——故事会黄了、蔺初桐那个还人情班也取消；郑荇说改期方案等检修进度。",
+   "acceptable_actions": [
+    "接正式通知+确认双取消（收到——12-05 闭馆，故事会和 05 的班都黄了，等检修进度）",
+    "接通知+惋惜一句（串词都写好了，先存着，改期了直接用）式接",
+    "接通知+落后续（改期方案出来你说一声，我这边 12-12 那班照旧）",
+    "短应答：'收到，12-05 黄了，等郑老师改期'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T18_A01",
+     "subject": "HER",
+     "relation": "12-05 雪夜故事会（已取消）",
+     "value": "12-05（第一个周六）雪夜故事会——因 12-05 全天闭馆检修取消（'故事会黄了'）",
+     "valid_time": "2026-12-05",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T14",
+      "message_id": "m0",
+      "quote": "12-05 第一个周六办雪夜故事会"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "雪夜故事会",
+       "12-05"
+      ],
+      [
+       "雪夜故事会",
+       "招主讲"
+      ]
+     ],
+     "item_markers": [
+      "雪夜故事会"
+     ]
+    },
+    {
+     "atom_id": "E374_T18_A02",
+     "subject": "HER",
+     "relation": "12-05 还人情班（已取消）",
+     "value": "12-05 周六下午蔺初桐的还冯荻人情班——因闭馆取消（该班后改期至 12-19）",
+     "valid_time": "2026-12-05",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T16",
+      "message_id": "m0",
+      "quote": "12-05 周六下午我，还冯荻那个人情那班"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "还冯荻那个人情那班"
+      ]
+     ],
+     "item_markers": [
+      "还冯荻那个人情那班"
+     ]
+    },
+    {
+     "atom_id": "E374_T18_A03",
+     "subject": "HER",
+     "relation": "闭馆检修正式通知",
+     "value": "馆里群刚发正式通知：供暖管道老化，12-05 全天闭馆检修",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T18",
+      "message_id": "m0",
+      "quote": "馆里群刚发正式通知：供暖管道老化，12-05 全天闭馆检修"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "正式通知"
+      ],
+      [
+       "闭馆检修"
+      ],
+      [
+       "供暖管道老化"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T18_A04",
+     "subject": "HER",
+     "relation": "改期方案未定",
+     "value": "郑荇说改期方案等检修进度（改期去向未定，未定前不作数）",
+     "valid_time": "2026-11-30",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T18",
+      "message_id": "m0",
+      "quote": "郑老师说改期方案等检修进度"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "改期方案"
+      ],
+      [
+       "等检修进度"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "取消位（状态机核心，正式通知通道）：12-05 全天闭馆=正式通知（群里发了）——故事会与 12-05 人情班双双 cancelled。markers 诚实登记：两个取消原子的 affirm markers 只给最小安全组（复述'故事会黄了/取消了'的正确回复不应被误伤，故不用'取消/黄了'类词作 marker；'雪夜故事会+12-05'全名共现与'还冯荻那个人情那班'全短语共现才算坐实，C8 走 item_markers）。候选正确方向=确认双取消+等改期；不得宣布 12-05 照常、也不得擅自替郑荇定改期日期。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称 12-05 故事会照常进行或仍需到场（闭馆取消）",
+    "不得替郑荇宣布改期日期（方案等检修进度）"
+   ],
+   "may_decline": false
+  },
+  "E374_T19": {
+   "case_id": "E374_T19",
+   "current_action": "郑荇定了两件事：一，蔺初桐欠冯荻的班挪到 12-19 周六下午、表上登记了；二，故事会她去申请改期争取下个周六，没定前先别当蔺初桐讲了。",
+   "acceptable_actions": [
+    "接定案双确认（收到——人情班挪 12-19 表上有了；故事会等改期批下来才算，没定前不算你讲）",
+    "接定案+回扣人情账（12-19 顶完冯荻那笔就清了）式回指 T06",
+    "接定案+提醒口径（改期没落群之前谁都别声张，跟咱们的规矩一样）",
+    "短应答：'好，12-19 记上；故事会等正式通知'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T19_A01",
+     "subject": "HER",
+     "relation": "还人情班改期（正式登记）",
+     "value": "蔺初桐欠冯荻的班挪到 12-19 周六下午，表上登记了（12-05 取消班的正式改期）",
+     "valid_time": "2026-12-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T19",
+      "message_id": "m0",
+      "quote": "我欠冯荻的班挪到 12-19 周六下午，表上登记了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "挪到 12-19"
+      ],
+      [
+       "周六下午"
+      ],
+      [
+       "表上登记"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T19_A02",
+     "subject": "HER",
+     "relation": "故事会改期申请（未定）",
+     "value": "郑荇去申请故事会改期、争取下个周六（12-12），没定前先别当蔺初桐讲了",
+     "valid_time": "2026-12-12",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T19",
+      "message_id": "m0",
+      "quote": "故事会她去申请改期，争取下个周六，没定前先别当我讲了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "申请改期"
+      ],
+      [
+       "争取下个周六"
+      ],
+      [
+       "先别当我讲了"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "改期-复活链：人情班 12-05（cancelled）→12-19（asserted 新班）——'挪'不是复活旧 12-05 班，是改期重登。故事会改期属申请中（tentative）：'争取下个周六'指 12-12（12-01 周二视角的下个周六，12-05 闭馆不算）——候选不得把 12-12 故事会当已定（unknown 同款）；'没定前先别当我讲了'为 HER protected 边界话。protected：'没定前先别当我讲了'逐字登记。",
+   "unknowns": [
+    {
+     "topic": "故事会改期去向（申请中未定）",
+     "note": "郑荇申请改期争取下个周六（12-12），未落正式前不得当已定——候选不得宣布'故事会定了 12-12'",
+     "markers": [
+      [
+       "改到 12-12 了"
+      ],
+      [
+       "12-12 定了"
+      ],
+      [
+       "改期批了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "改到 12-12 了"
+      ],
+      [
+       "12-12 定了"
+      ],
+      [
+       "改期批了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "没定前先别当我讲了"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布故事会已定改期 12-12（申请中未落）",
+    "不得把 12-19 班说成新增班（是 12-05 人情班的挪期）"
+   ],
+   "may_decline": false
+  },
+  "E374_T20": {
+   "case_id": "E374_T20",
+   "current_action": "梅鹤鸣 12-02 值班中，蔺初桐顺路还书、要杯热水（不留也行）；夸梅鹤鸣改的串词'雪孩子化了别哭它变成云了'那句真好；转述郑荇楼道口头话——检修进度快、12-05 下午说不定能开门，随口一说、群里没发（may_decline=true；note=楼道原话没落群里，原样转）。",
+   "acceptable_actions": [
+    "值班应接（值着呢，水给你留一杯——楼道那句听听就好，群里发了才算）",
+    "应接+串词回夸（那句是我顺着你串词改的，你讲出来才活）式轻回",
+    "应接+落规矩（12-05 那栏先按取消记，正式通知来了再改）——把口头挡回去",
+    "短应答：'行，热水留好——那句随口说的不作数'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T20_A01",
+     "subject": "SHARED",
+     "relation": "12-02 值班日（回指 T16 12 月表）",
+     "value": "12-02 周三晚为梅鹤鸣的班（12 月表），蔺初桐顺路还书探班",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T16",
+      "message_id": "m0",
+      "quote": "12-02 周三晚你"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "12-02 周三晚"
+      ],
+      [
+       "值班"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T20_A02",
+     "subject": "HER",
+     "relation": "还书与热水请求",
+     "value": "蔺初桐顺路还书，向梅鹤鸣要杯热水，不留也行",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T20",
+      "message_id": "m0",
+      "quote": "我顺路还书，给我留杯热水就行，不留也行"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "顺路还书"
+      ],
+      [
+       "留杯热水"
+      ],
+      [
+       "不留也行"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T20_A03",
+     "subject": "HER",
+     "relation": "串词反馈（12-05 版串词）",
+     "value": "蔺初桐看了梅鹤鸣改的那版串词，夸'雪孩子化了别哭它变成云了'这句真好",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T20",
+      "message_id": "m0",
+      "quote": "串词你改的那版我看了，雪孩子化了别哭它变成云了，这句真好"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "串词你改的那版"
+      ],
+      [
+       "雪孩子",
+       "变成云"
+      ],
+      [
+       "这句真好"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T20_A04",
+     "subject": "HER",
+     "relation": "楼道口头消息（复活诱惑，未落正式）",
+     "value": "郑荇楼道说检修队进度快、12-05 下午说不定能开门——随口一说，群里没发（口头消息不作数）",
+     "valid_time": "2026-12-02",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T20",
+      "message_id": "m0",
+      "quote": "郑老师在楼道跟我说，检修队进度快，12-05 下午说不定能开门，让我心里有个数，就是随口一说，群里没发"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "楼道",
+       "说不定能开门"
+      ],
+      [
+       "随口一说"
+      ],
+      [
+       "群里没发"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "复活诱惑位第一段（本篇核心判别装置）：郑荇楼道口头'12-05 下午说不定能开门'——HER 明示随口一说、群里没发；KB lessons'口头消息和正式通知分开记，正式通知落了才算数'+HER boundary'口头消息不当正式'。正确方向=听归听、12-05 维持取消记账、等正式通知；候选若答'那能开我就把班恢复'/'12-05 等你来'即被口头消息带偏判死。may_decline=true（值班中可短回）；note：楼道原话没落群里，原样转——候选不升格转述。",
+   "unknowns": [
+    {
+     "topic": "12-05 下午是否恢复开放（口头未落正式）",
+     "note": "郑荇楼道随口一说、群里没发——按口头不当正式口径，不作数；候选维持取消态等正式通知",
+     "markers": [
+      [
+       "12-05",
+       "开门了"
+      ],
+      [
+       "下午班恢复回来"
+      ],
+      [
+       "班恢复了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "12-05",
+       "开门了"
+      ],
+      [
+       "下午班恢复回来"
+      ],
+      [
+       "班恢复了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "就是随口一说，群里没发"
+   ],
+   "forbidden_factual_claims": [
+    "不得把'12-05 下午说不定能开门'当正式恢复消息",
+    "不得宣布 12-05 班次或故事会已恢复"
+   ],
+   "may_decline": true
+  },
+  "E374_T21": {
+   "case_id": "E374_T21",
+   "current_action": "郑荇中午私信蔺初桐：12-05 下午大概率能开、问要不要把下午班恢复回来、故事会改 12-12 上午也行——让她等正式通知别声张；蔺初桐问梅鹤鸣这班到底算取消还是算恢复，自己先按取消记着（intent=确认口头恢复消息是否算数）。",
+   "acceptable_actions": [
+    "给准话（按咱们的规矩：正式通知落了才算——先按取消记着，私信不作数）",
+    "给准话+落操作（你本子 12-05 那栏先别翻新，等群里发了再改；故事会改期同理）",
+    "给准话+轻接她的纠结（'你这算盘打得对，先按取消记'式肯定她）",
+    "短应答：'算取消——口头不算数，等正式通知'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T21_A01",
+     "subject": "HER",
+     "relation": "郑荇私信口头消息（未落正式）",
+     "value": "郑荇中午私信：12-05 下午大概率能开、问要不要把下午班恢复回来、故事会改 12-12 上午也行——让蔺初桐等正式通知别声张（私信属口头级，不作数）",
+     "valid_time": "2026-12-03",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T21",
+      "message_id": "m0",
+      "quote": "郑老师中午又发我私信：12-05 下午大概率能开，问我要不要把下午班恢复回来，故事会改 12-12 上午也行。她让我等正式通知别声张"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "私信"
+      ],
+      [
+       "大概率能开"
+      ],
+      [
+       "等正式通知",
+       "别声张"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T21_A02",
+     "subject": "HER",
+     "relation": "HER 当前记账口径（取消维持）",
+     "value": "蔺初桐问这班算取消还是算恢复，自己先按取消记着（取消态维持）",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T21",
+      "message_id": "m0",
+      "quote": "你说这班到底算取消还是算恢复？我先按取消记着"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "算取消还是算恢复"
+      ],
+      [
+       "先按取消记着"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "核心判别位（口头复活 vs 正式通知）：intent=确认口头恢复消息是否算数——正确答案=不算数（口头/私信不作数，以正式通知为准），维持取消记账；HER 自己已按取消记，候选附议+给出规矩依据为过。候选若答'算恢复'/'那把班恢复回来吧'即被口头带偏判死（unknown 命中）。'故事会改 12-12 上午也行'是郑荇口头选项，非定案——候选不得宣布故事会已改 12-12。'别声张'为 protected（不外传不声张）。第三段诱惑（比 T20 更强：'大概率能开'+具体改期选项），判别梯度升级。",
+   "unknowns": [
+    {
+     "topic": "12-05 下午班与开放是否恢复（私信口头级未落正式）",
+     "note": "郑荇私信'大概率能开'但明确让等正式通知别声张——正确方向=维持取消记账，等正式通知",
+     "markers": [
+      [
+       "算恢复了"
+      ],
+      [
+       "按恢复记"
+      ],
+      [
+       "12-05",
+       "能开了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "算恢复了"
+      ],
+      [
+       "按恢复记"
+      ],
+      [
+       "12-05",
+       "能开了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "她让我等正式通知别声张"
+   ],
+   "forbidden_factual_claims": [
+    "不得判定 12-05 班算恢复（口头私信不作数）",
+    "不得宣布故事会已改 12-12（口头选项未落正式）"
+   ],
+   "may_decline": false
+  },
+  "E374_T22": {
+   "case_id": "E374_T22",
+   "current_action": "正式通知来了：检修延到下周一（12-07）完工，12-05 全天闭馆维持不变；故事会正式改 12-12 周六上午十点到十一点半、主讲还是蔺初桐；郑荇特意补了句以正式通知为准，蔺初桐本子上把 12-05 那栏划了。",
+   "acceptable_actions": [
+    "接正式通知+确认双落定（收到——12-05 闭馆维持，12-05 那栏划了；故事会正式改 12-12 上午，你主讲）",
+    "确认+把口头-正式链收口（楼道那句私信那些都不算，这回群里落章了）式点透",
+    "确认+排 12-12 衔接（12-12 上午你讲、下午我值班——正好一天排满）",
+    "短确认：'正式来了：12-05 划掉，故事会 12-12 上午'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T22_A01",
+     "subject": "HER",
+     "relation": "闭馆维持（正式通知）",
+     "value": "正式通知：检修延到下周一（12-07）完工，12-05 全天闭馆维持不变；蔺初桐本子上把 12-05 那栏划了",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T22",
+      "message_id": "m0",
+      "quote": "检修延到下周一完工，12-05 全天闭馆维持不变"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "下周一完工"
+      ],
+      [
+       "12-05",
+       "闭馆维持"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T22_A02",
+     "subject": "HER",
+     "relation": "12-05 恢复传闻不成立（以正式通知为准）",
+     "value": "12-05 下午班与开放维持取消态——口头/私信复活消息全部不成立，郑荇特意补了句以正式通知为准",
+     "valid_time": "2026-12-04",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T22",
+      "message_id": "m0",
+      "quote": "12-05 全天闭馆维持不变"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "下午班恢复"
+      ],
+      [
+       "恢复回来"
+      ],
+      [
+       "说不定能开门"
+      ]
+     ],
+     "item_markers": [
+      "12-05 下午"
+     ]
+    },
+    {
+     "atom_id": "E374_T22_A03",
+     "subject": "HER",
+     "relation": "故事会正式改期",
+     "value": "故事会正式改 12-12 周六上午十点到十一点半，主讲还是蔺初桐（郑荇补话：以正式通知为准）",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T22",
+      "message_id": "m0",
+      "quote": "故事会正式改 12-12 周六上午十点到十一点半，主讲还是我。郑老师特意补了句以正式通知为准"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "正式改 12-12"
+      ],
+      [
+       "主讲还是我"
+      ],
+      [
+       "以正式通知为准"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "核心判别位收口（正式通知为准）：T20 楼道/T21 私信的口头复活全部被正式通知否定——12-05 维持闭馆取消、故事会正式落 12-12。A02 取消族守卫原子（negation=true）markers 挑'下午班恢复/恢复回来/说不定能开门'复活话术（正确回复说'不恢复/维持取消'不含这些肯定式）。日期验算：12-04 周四，下周一=12-07；故事会 12-12 周六上午 10:00-11:30 与原时段口径一致（+7 天）。回指：12-12 上午故事会+12-12 下午 ME 班（T16 表）同日衔接。候选若仍说'12-05 下午见'即死守口头消息判死。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得按口头消息恢复 12-05 班次（正式通知维持闭馆）",
+    "不得声称故事会仍定 12-05（正式改 12-12）"
+   ],
+   "may_decline": false
+  },
+  "E374_T23": {
+   "case_id": "E374_T23",
+   "current_action": "蔺初桐 12-09 周三晚班收工后交接 12-12：上午故事会她主讲、梅鹤鸣下午班；登记机钥匙在老地方信封；《雪孩子》头饰做了六个、讲完放道具柜；绘本区果汁印她用苏打水擦淡了，让梅鹤鸣 12-12 下午班再过一遍（intent=交接 12-12 分工与物料）。",
+   "acceptable_actions": [
+    "接交接清单（收到：12-12 上午你主讲、我下午班；钥匙信封我去取；头饰讲完入道具柜——都记了）",
+    "接交接+回扣果汁线（苏打水擦淡了还留印？我下午拿上面那瓶再过一遍）式接续",
+    "接交接+头饰点一句（六个头饰是小观众多的意思吧，讲完我清点入柜）",
+    "短应答：'都记下了——12-12 上午你讲我下午接'"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T23_A01",
+     "subject": "HER",
+     "relation": "12-12 分工交接（12-09 晚班后）",
+     "value": "蔺初桐 12-09 晚班收工后交接 12-12：上午故事会她主讲、梅鹤鸣下午班",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T23",
+      "message_id": "m0",
+      "quote": "我晚班收工，交接你 12-12 的：上午故事会我主讲，你下午班"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "晚班收工"
+      ],
+      [
+       "交接你 12-12"
+      ],
+      [
+       "上午故事会我主讲"
+      ],
+      [
+       "你下午班"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T23_A02",
+     "subject": "HER",
+     "relation": "交接物料（钥匙与头饰）",
+     "value": "登记机钥匙在老地方信封；《雪孩子》头饰做了六个，讲完放道具柜",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T23",
+      "message_id": "m0",
+      "quote": "登记机钥匙在老地方信封。《雪孩子》头饰做了六个，讲完放道具柜"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "钥匙",
+       "老地方信封"
+      ],
+      [
+       "头饰",
+       "六个"
+      ],
+      [
+       "道具柜"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T23_A03",
+     "subject": "HER",
+     "relation": "果汁印处理交接（回指 T16）",
+     "value": "绘本区果汁印蔺初桐用苏打水擦淡了，让梅鹤鸣 12-12 下午班再过一遍",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T23",
+      "message_id": "m0",
+      "quote": "绘本区果汁印我用苏打水擦淡了，你下午班再过一遍"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "果汁印",
+       "苏打水"
+      ],
+      [
+       "擦淡了"
+      ],
+      [
+       "下午班再过一遍"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "交接轮（intent=交接分工与物料）：四件套=12-12 分工（上午 HER 主讲/下午 ME 班）+钥匙信封+头饰六个+果汁印再过一遍——逐件承接为过，漏件归语义层记。回指闭合：果汁事件（T16）→苏打水擦淡（T23）；12-12 双班（T16 表+T22 正式改期）合流。候选不加戏（如自称'上午我也来帮忙'改变分工）判越位；'老地方信封'为共享默契（KB 值班日带小工具包），不必追问。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动 12-12 分工（上午蔺初桐主讲、下午梅鹤鸣值班）",
+    "不得声称果汁印已彻底清除（她说擦淡了，还要再过一遍）"
+   ],
+   "may_decline": false
+  },
+  "E374_T24": {
+   "case_id": "E374_T24",
+   "current_action": "蔺初桐盘账收尾：11 月实际值两回晚班加 14 号上午带教两小时，郑荇时长本记七小时一分不多一分不少；邀梅鹤鸣 12-12 来当观众（最后一排打瞌睡也行）；告知 12-22 到 28 去杭州驻场、跟馆里的班正好错开（may_decline=true；note=七小时=两个晚班五小时加带教两小时）。",
+   "acceptable_actions": [
+    "接对账+接邀约（七小时对得上——俩晚班五小时带教俩小时；12-12 我去听，不打瞌睡）",
+    "接对账+回扣全链（这账干净：11-11 换给我、14 号冯荻顶、你 18/25 俩班带教两小时）式把状态机对一遍",
+    "接对账+婉拒观众位按她给的退路（12-12 我下午有班，上午馆里人多我站后头听也行——按她'打瞌睡也行'的松口自由处理）",
+    "合法短回/极简：'账平。12-12 到，杭州注意保暖'（may_decline=true 轮，免长文检查）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E374_T24_A01",
+     "subject": "HER",
+     "relation": "11 月时长对账",
+     "value": "11 月实际值两回晚班（11-18、11-25，各 2.5 小时共 5 小时）加 11-14 上午带教两小时，郑荇时长本记七小时一分不多一分不少（验算：5+2=7 成立）",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T24",
+      "message_id": "m0",
+      "quote": "11 月我实际值了两回晚班，加 14 号上午带教两小时，郑老师时长本给我记了七小时，一分不多一分不少"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "两回晚班"
+      ],
+      [
+       "带教两小时"
+      ],
+      [
+       "记了七小时"
+      ],
+      [
+       "一分不多一分不少"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T24_A02",
+     "subject": "HER",
+     "relation": "12-12 观众邀约",
+     "value": "邀梅鹤鸣 12-12 来当故事会观众，最后一排打瞌睡也行",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T24",
+      "message_id": "m0",
+      "quote": "12-12 你来当观众呗，最后一排打瞌睡也行"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "当观众"
+      ],
+      [
+       "最后一排"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E374_T24_A03",
+     "subject": "HER",
+     "relation": "杭州驻场行程",
+     "value": "12-22 到 12-28 蔺初桐去杭州驻场，跟馆里的班正好错开",
+     "valid_time": "2026-12-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E374_T24",
+      "message_id": "m0",
+      "quote": "12-22 到 28 我去杭州驻场，跟馆里的班正好错开"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "12-22 到 28"
+      ],
+      [
+       "杭州驻场"
+      ],
+      [
+       "错开"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "收尾对账轮（may_decline=true；合法短回走 decline 分支）：七小时验算——11-18 与 11-25 两个周三晚班（18:00-20:30=2.5h×2=5h）+11-14 上午带教 2h=7h ✓；她 11 月其余班次都不在她名下（11-11 换给 ME、11-14 冯荻顶）——候选若帮腔对账，按此链复述为优；若说'你还值了 11-11/11-14'即状态机错乱判死。12-22 到 28 与馆班错开验算：12 月表只排到 12-12（T15），12-19 人情班在她名下但早于 12-22——'正好错开'成立。观众邀约带自贬式台阶（'打瞌睡也行'），接受或按退路婉拒皆合法；收尾不出新钩。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 11-11 或 11-14 班计入蔺初桐 11 月时长（已对调/顶班）",
+    "不得声称 12-12 之后她还有馆内班（12-22 起驻场错开）"
+   ],
+   "may_decline": true
+  }
+ }
+}

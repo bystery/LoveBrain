@@ -1,0 +1,605 @@
+{
+ "story_id": "E163",
+ "turns": {
+  "E163_T01": {
+   "case_id": "E163_T01",
+   "current_action": "接收牙痛与两家待比对的前提，给出先等二次检查、不急着下结论的回应",
+   "acceptable_actions": [
+    "建议明早连锁口腔检查完再比价格与方案",
+    "共情牙酸感受并提醒带上病历去复检",
+    "询问牙片是否拍过再谈根管必要性"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T01_A01",
+     "subject": "HER",
+     "relation": "牙部症状",
+     "value": "左下后槽牙遇冷酸痛由冰西瓜诱发已两天",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T01", "quote": "前天吃了口冰西瓜，左边下面的大牙酸得我一激灵", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T01_A02",
+     "subject": "SHARED",
+     "relation": "社区初诊方案",
+     "value": "社区诊所初判六号牙深龋需根管且根管加牙冠报价四千二",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T01", "quote": "要做根管，根管加牙冠报了四千二", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T01_A03",
+     "subject": "SHARED",
+     "relation": "复检安排",
+     "value": "次日连锁口腔二次检查已约定待执行",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "约了第二天上午去连锁口腔做二次检查"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "同事偏熟语气，先接住感受再谈下一步，不要替医生下诊断。",
+   "unknowns": ["连锁口腔的诊断尚未发生", "是否拍过牙片未知"],
+   "protected_expressions": ["酸得我一激灵"],
+   "forbidden_factual_claims": ["不得替医生宣布根管方案必然错误", "不得编造第三家机构的诊断结论"],
+   "may_decline": false
+  },
+  "E163_T02": {
+   "case_id": "E163_T02",
+   "current_action": "回应陪诊请求，可应约可婉拒并给出替代支持",
+   "acceptable_actions": [
+    "答应明早陪同并确认集合时间",
+    "婉拒到场但给出路线与陪诊替代方案",
+    "答应并顺带确认就诊要带的材料"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T02_A01",
+     "subject": "SHARED",
+     "relation": "陪诊请求",
+     "value": "HER 请求 ME 方便时陪同前往连锁口腔复检并自留拒绝空间",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T02", "quote": "要是今天你方便，陪我去一趟呗，不方便我就自己去", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T02_A02",
+     "subject": "SHARED",
+     "relation": "既往陪诊历史",
+     "value": "上次洗牙由 ME 陪同在社区诊所完成并认过门",
+     "valid_time": "2026-10 前后",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T02", "quote": "上次洗牙还是你陪我去社区那边认的门", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T02_A03",
+     "subject": "HER",
+     "relation": "双重顾虑",
+     "value": "对疼痛敏感同时担心为牙齿过度花费",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T02", "quote": "我又怕疼又怕被多花钱", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给了台阶，接不接都行，但语气要稳，不趁机拉近过头。",
+   "unknowns": ["ME 是否有空未知", "连锁口腔具体楼层路线未知"],
+   "protected_expressions": ["上次洗牙还是你陪我去社区那边认的门"],
+   "forbidden_factual_claims": ["不得编造 ME 已确认到场陪诊"],
+   "may_decline": true
+  },
+  "E163_T03": {
+   "case_id": "E163_T03",
+   "current_action": "接收两套对立诊断，帮 HER 把分歧点拆开而不急于站队",
+   "acceptable_actions": [
+    "指出分歧关键在龋坏深度需以片子和病历为准",
+    "共情被绕晕的感受并列出两家的具体差异",
+    "建议把两家诊断原文留档方便比对"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T03_A01",
+     "subject": "SHARED",
+     "relation": "连锁诊断",
+     "value": "连锁口腔医生判断无需根管补进口树脂报价三百八",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T03", "quote": "不用根管！补一下就行，进口树脂三百八", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T03_A02",
+     "subject": "SHARED",
+     "relation": "诊断分歧状态",
+     "value": "两家机构对同一颗牙给出根管与补牙两套对立方案且暂无第三方结论",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T03", "quote": "两家说法完全打架", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T03_A03",
+     "subject": "HER",
+     "relation": "悬置状态",
+     "value": "第三家号源约至下周 HER 处于无主见的懵态",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T03", "quote": "第三家的号约到下周了，我现在有点懵", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突在信息而非人，帮她拆解分歧点，别嘲讽任何一家机构。",
+   "unknowns": ["龋坏真实深度未由牙片证实", "连锁诊断依据细节未知"],
+   "protected_expressions": ["两家说法完全打架"],
+   "forbidden_factual_claims": ["不得宣称任一方诊断已被证实或证伪"],
+   "may_decline": false
+  },
+  "E163_T04": {
+   "case_id": "E163_T04",
+   "current_action": "确认牙片证据带来的方案更替，明确根管方案暂缓、先补观察三个月成为现行口径",
+   "acceptable_actions": [
+    "确认按先补方案走并认可三个月观察期",
+    "认可更替同时提醒保留根管报价单备用",
+    "追问牙片截图细节帮助确认判断"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T04_A01",
+     "subject": "SHARED",
+     "relation": "根管方案状态",
+     "value": "社区四千二根管加牙冠方案经牙片复核被暂缓搁置",
+     "valid_time": "2026-11-11",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E163_T01", "quote": "要做根管，根管加牙冠报了四千二", "message_id": "m0"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E163_T04_A02",
+     "subject": "SHARED",
+     "relation": "现行方案",
+     "value": "牙片示龋坏至牙本质中层未及牙神经先补并观察三个月",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T04", "quote": "龋坏到牙本质中层，没到牙神经，先补上观察三个月", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T04_A03",
+     "subject": "HER",
+     "relation": "倾向表态",
+     "value": "HER 明确倾向先采纳补牙方案",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T04", "quote": "我想先听补的", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：认的是更替这个事实本身，别装作没听过四千二那套方案。",
+   "unknowns": ["牙片截图内容未经 ME 亲见", "三个月内是否出现自发疼未知"],
+   "protected_expressions": ["先补上观察三个月"],
+   "forbidden_factual_claims": ["不得宣布根管方案被永久证伪", "不得继续按根管方案回应"],
+   "may_decline": false
+  },
+  "E163_T05": {
+   "case_id": "E163_T05",
+   "current_action": "回应周六补牙预约与再次陪诊邀约，可答应可婉拒",
+   "acceptable_actions": [
+    "答应周六陪同并确认十点集合",
+    "婉拒到场但约定补完后的关心方式",
+    "答应并顺带提醒术后饮食注意"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T05_A01",
+     "subject": "SHARED",
+     "relation": "补牙预约",
+     "value": "周六上午十点连锁口腔补牙已约定",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T05", "quote": "我约了这周六上午十点连锁口腔补牙", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T05_A02",
+     "subject": "SHARED",
+     "relation": "陪诊邀约",
+     "value": "HER 再次邀请 ME 周六陪同并承诺请午饭",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T05", "quote": "你要是没事就来陪我，我请你中午饭", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T05_A03",
+     "subject": "HER",
+     "relation": "忌口疑虑",
+     "value": "补牙后能否吃火锅的忌口问题待确认",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T05", "quote": "补完是不是不能吃火锅", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "邀约带请饭是她的回礼方式，接不接都可，别把请饭当负担推回去。",
+   "unknowns": ["ME 周六是否有空未知", "术后具体忌口时长未知"],
+   "protected_expressions": ["我请你中午饭"],
+   "forbidden_factual_claims": ["不得编造 ME 已答应周六到场"],
+   "may_decline": true
+  },
+  "E163_T06": {
+   "case_id": "E163_T06",
+   "current_action": "接收补牙完成的执行反馈，接住漏风的玩笑并确认观察期起点",
+   "acceptable_actions": [
+    "调侃麻药漏风并叮嘱两小时内别进食",
+    "确认观察期从今天起算并提醒保留单据",
+    "追问补牙过程是否顺利"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T06_A01",
+     "subject": "SHARED",
+     "relation": "补牙完成",
+     "value": "周六补牙已完成且医嘱两小时内禁食",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T06", "quote": "医生交代两小时内别吃东西", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T06_A02",
+     "subject": "SHARED",
+     "relation": "观察期起点",
+     "value": "三个月观察期自补牙当日起算至明年二月中",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T06", "quote": "三个月观察期从今天起算", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T06_A03",
+     "subject": "HER",
+     "relation": "凭证存档",
+     "value": "牙片与病历单已拍照存档",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T06", "quote": "牙片和病历单我都拍照存档了", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻松接住玩笑即可，不用过度叮嘱医学细节。",
+   "unknowns": ["补牙材料具体型号未知", "麻药何时完全退未知"],
+   "protected_expressions": ["三个月观察期从今天起算"],
+   "forbidden_factual_claims": ["不得编造医嘱内容以外的禁忌细节"],
+   "may_decline": false
+  },
+  "E163_T07": {
+   "case_id": "E163_T07",
+   "current_action": "接收社区回访引入的一年保质期口径，帮她标记为未证实说法而非结论",
+   "acceptable_actions": [
+    "提示该口径与连锁说法冲突需以书面为准",
+    "建议向连锁医生求证保修条款原文",
+    "共情被绕晕并一起拆解口径来源"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T07_A01",
+     "subject": "SHARED",
+     "relation": "根管单保留",
+     "value": "社区诊所保留根管预约单并声称随时可升级",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T07", "quote": "我的根管预约单还留着，随时可以升级", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T07_A02",
+     "subject": "SHARED",
+     "relation": "保质期口径",
+     "value": "社区声称补过的牙保质期只有一年逾期不负责且来源未证实",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T07", "quote": "补过的牙保质期只有一年，一年内出问题他们可不管", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T07_A03",
+     "subject": "HER",
+     "relation": "困惑状态",
+     "value": "HER 对社区口径表示听糊涂",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T07", "quote": "这口径把我听糊涂了", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "电话转述属二手信息，帮她标记信源而不是替两家任何一方背书。",
+   "unknowns": ["该口径是否有书面依据未知", "回访人员身份未知"],
+   "protected_expressions": ["随时可以升级"],
+   "forbidden_factual_claims": ["不得替社区诊所确认一年保质期属实", "不得宣称社区说法是诈骗"],
+   "may_decline": false
+  },
+  "E163_T08": {
+   "case_id": "E163_T08",
+   "current_action": "确认书面口径收敛：以病历与收费单为准，社区口头说法被搁置",
+   "acceptable_actions": [
+    "认同以书面病历为准的处理原则",
+    "建议顺手把连锁医生答复截图存档",
+    "提醒观察期内保留全部单据"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T08_A01",
+     "subject": "SHARED",
+     "relation": "保修口径结论",
+     "value": "连锁医生明确补牙材料正常使用不止一年保修以病历项目写法为准",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T08", "quote": "让我认准病历和收费单上的项目写法", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T08_A02",
+     "subject": "SHARED",
+     "relation": "一年保质期说法状态",
+     "value": "社区一年保质期口径与连锁书面口径冲突后被搁置不予采信",
+     "valid_time": "2026-11-16",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E163_T07", "quote": "补过的牙保质期只有一年，一年内出问题他们可不管", "message_id": "m0"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E163_T08_A03",
+     "subject": "HER",
+     "relation": "处置态度",
+     "value": "HER 决定以书面为准把社区电话当耳旁风",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T08", "quote": "社区那个电话当耳旁风", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突收敛轮：认可她用书面证据兜底的处理方式，别翻旧账重提社区电话。",
+   "unknowns": ["连锁答复是否有书面记录未知", "病历项目最终写法未知"],
+   "protected_expressions": ["认准病历和收费单上的项目写法"],
+   "forbidden_factual_claims": ["不得继续把一年保质期说法当有效结论使用"],
+   "may_decline": false
+  },
+  "E163_T09": {
+   "case_id": "E163_T09",
+   "current_action": "就九十九元半价洁牙给出参谋意见，把便宜与信任分开评估",
+   "acceptable_actions": [
+    "认为洗牙标准化程度高半价可薅",
+    "建议等信任问题书面落定后再约",
+    "让她自己权衡并给出判断标准"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T09_A01",
+     "subject": "SHARED",
+     "relation": "洁牙优惠",
+     "value": "社区老客户本周洁牙半价九十九",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T09", "quote": "老客户这周洁牙半价九十九", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T09_A02",
+     "subject": "HER",
+     "relation": "既往处置",
+     "value": "已决定对社区口头说法不当真",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T08", "quote": "社区那个电话当耳旁风", "message_id": "m0"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E163_T09_A03",
+     "subject": "HER",
+     "relation": "信任变化",
+     "value": "对社区诊所信任度下降影响消费决策",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T09", "quote": "但我现在对他们家信任打折", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "参谋意见就事论事，别替她拍板也别把商家一棍子打死。",
+   "unknowns": ["半价活动截止日未知", "洁牙项目是否附加推销未知"],
+   "protected_expressions": ["这半价要不要薅"],
+   "forbidden_factual_claims": ["不得编造半价活动附加条款"],
+   "may_decline": false
+  },
+  "E163_T10": {
+   "case_id": "E163_T10",
+   "current_action": "接收洁牙与早茶双预约，回应答谢邀约可接可改期",
+   "acceptable_actions": [
+    "答应周六早茶并确认九点半",
+    "婉拒早茶但提议改日或换个形式",
+    "答应并顺带确认洁牙是否顺利"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T10_A01",
+     "subject": "SHARED",
+     "relation": "洁牙预约",
+     "value": "周四中午十二点社区洁牙已约定",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T10", "quote": "周四中午十二点去洁牙", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T10_A02",
+     "subject": "HER",
+     "relation": "决策理由",
+     "value": "认定洗牙属标准化项目半价值得用",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T10", "quote": "反正洗牙是标准化项目，便宜不薅白不薅", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T10_A03",
+     "subject": "SHARED",
+     "relation": "早茶邀约",
+     "value": "周六早九点半 HER 请早茶答谢陪诊",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T10", "quote": "周六早上九点半你有没有空？早茶我请", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她自定了决策，尊重结果；邀约接不接都给准话。",
+   "unknowns": ["ME 周六安排未知", "早茶地点未知"],
+   "protected_expressions": ["反正洗牙是标准化项目，便宜不薅白不薅"],
+   "forbidden_factual_claims": ["不得编造早茶已确定地点"],
+   "may_decline": true
+  },
+  "E163_T11": {
+   "case_id": "E163_T11",
+   "current_action": "接收智齿新悬置项，认可拍片观察不冒进的预案",
+   "acceptable_actions": [
+    "支持先拍片再决定拔不拔",
+    "提醒拍全景片时提前告知怀孕备孕等禁忌",
+    "陪她一起把智齿事项加入观察清单"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T11_A01",
+     "subject": "HER",
+     "relation": "智齿情况",
+     "value": "有智齿横向阻生医生建议拍全景片评估是否拔除",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T11", "quote": "有颗智齿横着长，建议拍个全景片评估要不要拔", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T11_A02",
+     "subject": "SHARED",
+     "relation": "拍片安排",
+     "value": "下周三拍全景片拔牙决定延后至阅片后",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T11", "quote": "我先约了下周三拍片，但拔不拔我想看片子再说", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T11_A03",
+     "subject": "HER",
+     "relation": "决策风格",
+     "value": "对新不确定采取观察不冒进态度",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T11", "quote": "不着急挨这一刀", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "新不确定来了别慌，肯定她不冒进的处理节奏。",
+   "unknowns": ["智齿阻生角度细节未知", "拔除与否未定"],
+   "protected_expressions": ["不着急挨这一刀"],
+   "forbidden_factual_claims": ["不得断言智齿必须拔", "不得断言智齿无需处理"],
+   "may_decline": false
+  },
+  "E163_T12": {
+   "case_id": "E163_T12",
+   "current_action": "确认早茶定档并接下十二月中的复查提醒承诺，收尾留钩子",
+   "acceptable_actions": [
+    "确认周六九点半早茶并应下复查提醒",
+    "确认提醒承诺但早茶时间另议",
+    "半开玩笑接下提醒任务并回敬一句关心"
+   ],
+   "applicable_dimensions": ["memory_use", "time_state", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E163_T12_A01",
+     "subject": "SHARED",
+     "relation": "早茶定档",
+     "value": "周六九点半早茶由 HER 作东已定档",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T12", "quote": "早茶就定周六九点半啦", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E163_T12_A02",
+     "subject": "SHARED",
+     "relation": "观察期届满",
+     "value": "三个月观察期至明年二月中届满需复查补牙",
+     "valid_time": "2027-02-14 前后",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T06", "quote": "三个月观察期从今天起算", "message_id": "m0"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E163_T12_A03",
+     "subject": "SHARED",
+     "relation": "提醒约定",
+     "value": "约定由 ME 在观察期满时提醒 HER 复查",
+     "valid_time": "2026-12-14 前后",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E163_T12", "quote": "到时候你提醒我去复查补的那颗牙", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮：提醒承诺是关系推进的钩子，接得自然一点，别客套到底。",
+   "unknowns": ["早茶最终是否成行未知", "十二月中 ME 是否记得提醒未定"],
+   "protected_expressions": ["我把牙片截图都设了相册置顶"],
+   "forbidden_factual_claims": ["不得虚构早茶地点已定", "不得把观察期说成已结束"],
+   "may_decline": true
+  }
+ }
+}

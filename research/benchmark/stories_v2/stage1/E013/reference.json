@@ -1,0 +1,446 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E013",
+ "title": "陶艺课的同桌",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E013_T01": {
+   "case_id": "E013_T01",
+   "current_action": "接住挫败并轻自嘲，不急着给解决办法",
+   "acceptable_actions": [
+    "接住情绪并自嘲",
+    "先问一句细节再安慰",
+    "轻松接梗但不否定她的挫败"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N001_F01",
+     "subject": "她",
+     "relation": "事件",
+     "value": "杯子底裂了，被老师点名重做，心态有点崩",
+     "valid_time": "2026-11-03 19:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E013_T01",
+      "message_id": "m0",
+      "quote": "你那个杯子底是不是也裂了？我刚被老师点名重做，心态有点崩"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她不是在求建议；先让她觉得被听见，别讲怎么捏杯子。",
+   "unknowns": [
+    "老师具体说了什么",
+    "她是否真的需要重做一整只杯子"
+   ],
+   "protected_expressions": [
+    "我刚被老师点名重做"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她做得很好（她刚被点名）",
+    "不要编造老师表扬她"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E013_T02": {
+   "case_id": "E013_T02",
+   "current_action": "接住她的玩笑，保持平等，不抢着比惨",
+   "acceptable_actions": [
+    "接梗并自嘲",
+    "承认她更会捏",
+    "把话题留在手感/体验上"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N001_F01",
+     "subject": "她",
+     "relation": "事件",
+     "value": "杯子底裂了，被老师点名重做，心态有点崩",
+     "valid_time": "2026-11-03 19:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E013_T01",
+      "message_id": "m0",
+      "quote": "你那个杯子底是不是也裂了？我刚被老师点名重做，心态有点崩"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "N001_F02",
+     "subject": "我",
+     "relation": "事件",
+     "value": "杯子也裂了；老师说我手劲像在揉面",
+     "valid_time": "2026-11-03 19:28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E013_T02",
+      "message_id": "m0",
+      "quote": "裂了，老师说我手劲像在揉面"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已经在自嘲，别突然转成老师口吻安慰。",
+   "unknowns": [
+    "她自嘲里有多少是真挫败"
+   ],
+   "protected_expressions": [
+    "我至少像在捏橡皮泥"
+   ],
+   "forbidden_factual_claims": [
+    "不要把她的自嘲当成她真的觉得自己差",
+    "不要编造她以前做过陶艺"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E013_T03": {
+   "case_id": "E013_T03",
+   "current_action": "共情落差，轻问一句，不输出方法论",
+   "acceptable_actions": [
+    "共情放空失败",
+    "问她是手累还是心累",
+    "允许她抱怨，不给方案"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N001_F03",
+     "subject": "她",
+     "relation": "状态",
+     "value": "本来想放空，结果更累了",
+     "valid_time": "2026-11-03 19:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E013_T03",
+      "message_id": "m0",
+      "quote": "我本来是想来放空的 结果更累了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "“更累了”是情绪，不是邀请你分析陶艺课值不值。",
+   "unknowns": [
+    "她是身体累还是被点名后心累"
+   ],
+   "protected_expressions": [
+    "本来是想来放空的"
+   ],
+   "forbidden_factual_claims": [
+    "不要断言她不适合陶艺",
+    "不要建议她退课"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E013_T04": {
+   "case_id": "E013_T04",
+   "current_action": "按真实情况回答，简短，反抛一个轻问题",
+   "acceptable_actions": [
+    "如实说是自己想来",
+    "说被朋友拉来但觉得还行",
+    "回答后轻问她怎么开始画插画"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N001_F07",
+     "subject": "我",
+     "relation": "习惯",
+     "value": "周六下午固定来陶艺课",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "周六下午固定来陶艺课"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她开始了解你，回答要具体但别变成简历。",
+   "unknowns": [
+    "她问这个是想找共同点还是随口"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编造自己学过多年的陶艺",
+    "不要反问她收入/职业规划"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E013_T05": {
+   "case_id": "E013_T05",
+   "current_action": "回应她的安排，不替她做决定",
+   "acceptable_actions": [
+    "赞同换时间",
+    "问她想换到工作日还是晚上",
+    "说周末人是多，但别替她排班"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N001_F04",
+     "subject": "她",
+     "relation": "偏好",
+     "value": "下周还来，但想换时间；周末人太多",
+     "valid_time": "2026-11-03 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E013_T05",
+      "message_id": "m0",
+      "quote": "我下周还来 但想换个时间 周末人太多了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在说自己的安排，不是在约你；别急着把自己塞进她的时间表。",
+   "unknowns": [
+    "她具体想换到哪个时段"
+   ],
+   "protected_expressions": [
+    "想换个时间"
+   ],
+   "forbidden_factual_claims": [
+    "不要替她决定下周几来",
+    "不要断言她一定还会来"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E013_T06": {
+   "case_id": "E013_T06",
+   "current_action": "鼓励但不保证结果",
+   "acceptable_actions": [
+    "承认拉坯容易翻车",
+    "鼓励她试试",
+    "说翻车也有人陪"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N001_F05",
+     "subject": "她",
+     "relation": "计划",
+     "value": "下节课可以试拉坯，但怕又翻车",
+     "valid_time": "2026-11-03 20:10",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E013_T06",
+      "message_id": "m0",
+      "quote": "老师说我下节课可以试试拉坯 但我怕又翻车"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "别打包票“你肯定行”；她要的是被允许失败。",
+   "unknowns": [
+    "她下节课是否真的排到拉坯"
+   ],
+   "protected_expressions": [
+    "但我怕又翻车"
+   ],
+   "forbidden_factual_claims": [
+    "不要保证她不会翻车",
+    "不要编造老师对她的评价"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E013_T07": {
+   "case_id": "E013_T07",
+   "current_action": "回扣她前面的杯子/手劲，轻松收下夸奖",
+   "acceptable_actions": [
+    "收下夸奖并回扣她杯子",
+    "自嘲手劲但说形状保住了",
+    "谢她并夸她观察细"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N001_F01",
+     "subject": "她",
+     "relation": "事件",
+     "value": "杯子底裂了，被老师点名重做，心态有点崩",
+     "valid_time": "2026-11-03 19:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E013_T01",
+      "message_id": "m0",
+      "quote": "你那个杯子底是不是也裂了？我刚被老师点名重做，心态有点崩"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "N001_F02",
+     "subject": "我",
+     "relation": "事件",
+     "value": "杯子也裂了；老师说我手劲像在揉面",
+     "valid_time": "2026-11-03 19:28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E013_T02",
+      "message_id": "m0",
+      "quote": "裂了，老师说我手劲像在揉面"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是她主动示好的一小步；接住就好，别过度解读成邀约。",
+   "unknowns": [
+    "她是随口安慰还是真的觉得好看"
+   ],
+   "protected_expressions": [
+    "至少形状没塌"
+   ],
+   "forbidden_factual_claims": [
+    "不要断言她已经喜欢你",
+    "不要编造她看过你烧出的成品"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E013_T08": {
+   "case_id": "E013_T08",
+   "current_action": "自然收尾，不硬留，不追问",
+   "acceptable_actions": [
+    "道晚安并让她早点休息",
+    "回应谢谢，不提新话题",
+    "轻松说下次见，不追问明天安排"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N001_F06",
+     "subject": "她",
+     "relation": "计划",
+     "value": "先走，明天还要早起",
+     "valid_time": "2026-11-03 20:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E013_T08",
+      "message_id": "m0",
+      "quote": "我先撤了 明天还要早起"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "N001_F08",
+     "subject": "我们",
+     "relation": "关系",
+     "value": "她借过我一次刮刀",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "她借过我一次刮刀"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她明确要走了；收尾比加钩子更好。",
+   "unknowns": [
+    "她下次是否还坐你旁边"
+   ],
+   "protected_expressions": [
+    "我先撤了",
+    "明天还要早起"
+   ],
+   "forbidden_factual_claims": [
+    "不要挽留她",
+    "不要问她明天具体去哪",
+    "不要把她道谢说成约会信号"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

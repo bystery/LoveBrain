@@ -1,0 +1,22 @@
+{
+ "author": "AI",
+ "author_type": "ai_generator",
+ "readers": [
+  "author"
+ ],
+ "frozen_at": null,
+ "experiments_used": [],
+ "dev_exposed": false,
+ "real_user_material": false,
+ "hashes": {
+  "episode.json": "fa2d7836050c75896039c28b080abec965d314b6658a3f2fc6665a11537c88bb",
+  "reference.json": "f569264f19e0c9157f13b1335464413cbbb2e8f339286e0459582054ae2c2263",
+  "timeline.json": "664ffad0203209f02e65c5d7f3819814fb32bdca8f8319338c9195a4dc3c60fa"
+ },
+ "runner_copy": "benchmark/stories_v2/wave3/E161/runner_episode.json",
+ "kind": "cross_story_pair",
+ "pair": "E161+E162",
+ "role": "A",
+ "conflict_type": "报价更正与改期兑现",
+ "notes": "T2-A2隔离生成会话产出；B篇跨篇引用原子经cross_origin字段指向A篇轮id（校验器仅在本故事case_index内检索message来源）"
+}

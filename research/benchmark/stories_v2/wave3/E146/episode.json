@@ -1,0 +1,263 @@
+{
+ "episode_id": "E146",
+ "persona": {
+  "her": {
+   "name": "唐棠",
+   "traits": [
+    "县城中学语文老师",
+    "姥姥腿脚不便后管家里采购",
+    "性子细但耳根软"
+   ],
+   "boundaries": [
+    "大件支出必须发票齐全",
+    "不愿占长辈便宜"
+   ]
+  },
+  "me": {
+   "name": "阿灿",
+   "traits": [
+    "在市里上班",
+    "买东西先查参数再比价",
+    "帮表妹家参谋过冰箱洗衣机"
+   ]
+  },
+  "relationship_stage": "表兄妹长期亲近期（从小一起长大，她管我叫哥）"
+ },
+ "initial_kb": {
+  "me": "我在市里上班，家里买东西讲究先查参数再比价，帮表妹家参谋过冰箱和洗衣机，售后条款总是先看。",
+  "her": "唐棠是我表妹，在县城中学教语文，姥姥腿脚不便后她管采购大事，性子细但耳根软，容易被人一句话带偏。",
+  "warmth": "从小一起长大，她管我叫哥，有事第一个找我商量，我给她带过市里的点心。",
+  "style": "她发消息喜欢先甩截图再说话，我给她结论加理由，一条说清。",
+  "stage": "表兄妹长期亲近期。"
+ },
+ "turns": [
+  {
+   "case_id": "E146_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "哥，姥姥那台旧手动轮椅不行了，我想换电动的。今天去门店看了款，报价四千六百八，我先拍给你。",
+      "ts": "2026-11-03 19:25"
+     }
+    ],
+    "clock": "2026-11-03 19:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "带着采购任务开场，信息完整"
+   }
+  },
+  {
+   "case_id": "E146_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "同一型号网上旗舰店才三千九百八，差整整七百！截图发我舅了，你猜他咋说？",
+      "ts": "2026-11-04 12:15"
+     }
+    ],
+    "clock": "2026-11-04 12:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "发现价差后兴奋，抛出舅舅反应的悬念"
+   }
+  },
+  {
+   "case_id": "E146_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我舅一口咬定必须门店买，说电池这种大件网上坏了没保障，多七百买个安心。我俩谁也说服不了谁。",
+      "ts": "2026-11-04 21:05"
+     }
+    ],
+    "clock": "2026-11-04 21:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "费用类冲突正面爆发：渠道之争僵持"
+   }
+  },
+  {
+   "case_id": "E146_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我今天特意问门店老板：网上货到底保不保修？老板说凭发票全国联保两年，电池第一年包换。我舅的担心先去了一半。",
+      "ts": "2026-11-05 20:35"
+     }
+    ],
+    "clock": "2026-11-05 20:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "拿到关键证据，僵局松动"
+   }
+  },
+  {
+   "case_id": "E146_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我舅松口说'那看价格'，但又问：快递谁签收？安装谁弄？老人自己会调吗？好家伙，新问题来了。",
+      "ts": "2026-11-06 21:25"
+     }
+    ],
+    "clock": "2026-11-06 21:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "舅舅让一步又抛新问题"
+   }
+  },
+  {
+   "case_id": "E146_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我查了旗舰店页面：送货上门、师傅免费安装调试，跟门店服务一样，页面截图我发我舅了。",
+      "ts": "2026-11-07 15:45"
+     }
+    ],
+    "clock": "2026-11-07 15:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "第二证据到手，舅舅的防线接近清空"
+   }
+  },
+  {
+   "case_id": "E146_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我舅彻底同意网购了！还说走他账户下单，钱他出，算他孝敬姥姥的。这反转我没想到。",
+      "ts": "2026-11-08 20:15"
+     }
+    ],
+    "clock": "2026-11-08 20:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "舅舅立场反转并主动出资"
+   }
+  },
+  {
+   "case_id": "E146_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下单了！三千九百八，发票抬头开的姥姥名字，保修卡、说明书都齐。就等收货了。",
+      "ts": "2026-11-09 20:55"
+     }
+    ],
+    "clock": "2026-11-09 21:00",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "执行完毕，进入收货等待"
+   }
+  },
+  {
+   "case_id": "E146_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "轮椅到了！师傅上门装好还教姥姥怎么用，姥姥在小区里转了一圈，笑得跟朵花似的。",
+      "ts": "2026-11-11 18:35"
+     }
+    ],
+    "clock": "2026-11-11 18:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "交付成功，情绪高涨"
+   }
+  },
+  {
+   "case_id": "E146_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我舅刚才非要转我三百，说是'平摊'，明明说好他全出的。我收还是不收？收了像买卖，不收怕他多想。",
+      "ts": "2026-11-12 21:25"
+     }
+    ],
+    "clock": "2026-11-12 21:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "人情账新难题，两头为难"
+   }
+  },
+  {
+   "case_id": "E146_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "想明白了：三百我收，转头给姥姥添了两盒钙片一起送过去，账面平了，心意也没缺。",
+      "ts": "2026-11-13 19:45"
+     }
+    ],
+    "clock": "2026-11-13 19:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "按折中方案执行，自我满意"
+   }
+  },
+  {
+   "case_id": "E146_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "姥姥现在天天自己溜达到菜市场，刚才还发照片问我好看不。这钱花得，值！",
+      "ts": "2026-11-15 18:05"
+     }
+    ],
+    "clock": "2026-11-15 18:10",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state_shift": "采购价值兑现，分享幸福日常"
+   }
+  }
+ ]
+}

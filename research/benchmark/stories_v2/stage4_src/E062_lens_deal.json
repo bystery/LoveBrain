@@ -1,0 +1,1271 @@
+{
+ "stories": [
+  {
+   "id": "S062",
+   "public_id": "E062",
+   "title": "一支镜头的转手全流程",
+   "themes": [
+    "二手交易",
+    "参数更正",
+    "验机边界",
+    "跨周改期",
+    "售后跟进"
+   ],
+   "motive": "同好群里认识半年的插画师收我的闲置镜头；真实张力是钱和参数都要当场说清，谁说错谁更正，不留尾巴。",
+   "continuity": "挂价4300含罩 T01；光圈 f4 更正在 T07；面交 周六→周日 更正在 T10；灰点议价后总价 4400 定格 T14；快门数 8200 贯穿 T05/T19/T24。",
+   "corrections": "T07 起此镜头是 f4 不是 2.8；T10 起面交一律周日；T14 起总价 4400（4300+环300-灰点200）。",
+   "persona": {
+    "me": "31岁，后端工程师，玩相机三年，主力R6；出闲置讲究'不黑人也不吃亏'。",
+    "her": "27岁，插画师，从拍照转摄影，预算有限；会做功课但容易被型号绕晕，说错参数会自己先笑。"
+   },
+   "initial_kb": {
+    "me": "出EF 24-70 f4L；快门数记在备忘录；同好群里认识她半年。",
+    "her": "九月收了台二手R6，95新；纠结要不要上原厂变焦。",
+    "warmth": "群里聊得来，线下团建见过两次。",
+    "style": "直给，谈价不绕弯；器材话题爱抠参数。",
+    "stage": "同好转熟，第一次线下交易。",
+    "lessons": "参数以官方规格为准，谁说错谁更正；钱的事当场说清。"
+   },
+   "facts": [
+    {
+     "id": "S062_F01",
+     "subject": "我",
+     "relation": "出售",
+     "value": "出EF 24-70mm f4L IS",
+     "valid_time": "2026-11-02 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T01",
+      "quote": "24-70"
+     }
+    },
+    {
+     "id": "S062_F02",
+     "subject": "我",
+     "relation": "挂价",
+     "value": "挂价4300含原厂遮光罩",
+     "valid_time": "2026-11-02 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T01",
+      "quote": "4300 含罩"
+     }
+    },
+    {
+     "id": "S062_F03",
+     "subject": "她",
+     "relation": "设备",
+     "value": "她的机身是九月收的二手R6",
+     "valid_time": "2026-11-02 20:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T02",
+      "quote": "R6 是九月在二手店收的"
+     }
+    },
+    {
+     "id": "S062_F04",
+     "subject": "我",
+     "relation": "知识",
+     "value": "EF镜头上R6需要EF-EOS R转接环",
+     "valid_time": "2026-11-02 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T03",
+      "quote": "得转接 EF-EOS R 那个环"
+     }
+    },
+    {
+     "id": "S062_F05",
+     "subject": "我",
+     "relation": "附加",
+     "value": "有一个原厂转接环可一并出",
+     "valid_time": "2026-11-02 20:45",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T04",
+      "quote": "我有一个原厂的环 可以一并出"
+     }
+    },
+    {
+     "id": "S062_F06",
+     "subject": "我",
+     "relation": "参数",
+     "value": "镜头快门数8200次",
+     "valid_time": "2026-11-02 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T05",
+      "quote": "8200 次"
+     }
+    },
+    {
+     "id": "S062_F07",
+     "subject": "我们",
+     "relation": "约定",
+     "value": "原定周六下午地铁站茶城门口面交",
+     "valid_time": "2026-11-02 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T06",
+      "quote": "周六下午面交吧 地铁站茶城门口"
+     }
+    },
+    {
+     "id": "S062_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "她原以为是f2.8，实为f4",
+     "valid_time": "2026-11-03 20:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T07",
+      "quote": "你这颗是 24-70 2.8 那颗吧"
+     }
+    },
+    {
+     "id": "S062_F09",
+     "subject": "我们",
+     "relation": "约定",
+     "value": "转接环加价300",
+     "valid_time": "2026-11-03 20:25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T08",
+      "quote": "你那个环算我 300 行吗"
+     }
+    },
+    {
+     "id": "S062_F10",
+     "subject": "我",
+     "relation": "样片",
+     "value": "群里那组街拍样片就是这支镜头拍的",
+     "valid_time": "2026-11-03 20:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T09",
+      "quote": "那组街拍就是这颗拍的"
+     }
+    },
+    {
+     "id": "S062_F11",
+     "subject": "我们",
+     "relation": "更正",
+     "value": "面交改到周日同一时间同一地点",
+     "valid_time": "2026-11-04 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T10",
+      "quote": "周日同一时间行吗"
+     }
+    },
+    {
+     "id": "S062_F12",
+     "subject": "我",
+     "relation": "知识",
+     "value": "验机三步：白墙看灰点/全焦段/实拍对焦",
+     "valid_time": "2026-11-04 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T11",
+      "quote": "拍白墙看灰点 全焦段拧一遍 再实拍试对焦"
+     }
+    },
+    {
+     "id": "S062_F13",
+     "subject": "验机",
+     "relation": "发现",
+     "value": "前组镜片有两粒灰点",
+     "valid_time": "2026-11-08 15:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T13",
+      "quote": "验出来前组里有两粒灰点"
+     }
+    },
+    {
+     "id": "S062_F14",
+     "subject": "我们",
+     "relation": "议价",
+     "value": "降价200，总价4400成交（4300+环300-200）",
+     "valid_time": "2026-11-08 15:55",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T14",
+      "quote": "便宜 200 吧"
+     }
+    },
+    {
+     "id": "S062_F15",
+     "subject": "交易",
+     "relation": "完成",
+     "value": "她转4400，交割镜头+转接环+罩",
+     "valid_time": "2026-11-08 16:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T15",
+      "quote": "转你了 4400"
+     }
+    },
+    {
+     "id": "S062_F16",
+     "subject": "她",
+     "relation": "成果",
+     "value": "拍出第一组满意的人像并发群里",
+     "valid_time": "2026-11-12 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T18",
+      "quote": "昨晚给人像试了一组"
+     }
+    },
+    {
+     "id": "S062_F17",
+     "subject": "她",
+     "relation": "售后",
+     "value": "转接环上机有轻微旷量",
+     "valid_time": "2026-11-14 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T20",
+      "quote": "环拧上感觉有一点点旷量"
+     }
+    },
+    {
+     "id": "S062_F18",
+     "subject": "我",
+     "relation": "承诺",
+     "value": "下周三顺路帮她跑售后网点问紧固",
+     "valid_time": "2026-11-14 20:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T21",
+      "quote": "帮你跑一趟售后网点问紧固"
+     }
+    },
+    {
+     "id": "S062_F19",
+     "subject": "我们",
+     "relation": "约定",
+     "value": "下周三晚上地铁站B口碰面（帮跑售后问询）",
+     "valid_time": "2026-11-14 20:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T22",
+      "quote": "咱在地铁站 B 口碰"
+     }
+    },
+    {
+     "id": "S062_F20",
+     "subject": "她",
+     "relation": "记账",
+     "value": "器材账记录：镜头4400含环，灰点记档",
+     "valid_time": "2026-11-15 10:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S062_T23",
+      "quote": "器材账了 镜头4400含环 灰点也记了一笔"
+     }
+    }
+   ],
+   "events": [
+    {
+     "event_id": "EV1",
+     "label": "周六下午面交（后改期）",
+     "event_time": "2026-11-07 14:00",
+     "status": "cancelled",
+     "source_turn": "S062_T06"
+    },
+    {
+     "event_id": "EV2",
+     "label": "周日面交验机成交",
+     "event_time": "2026-11-08 14:00",
+     "status": "done",
+     "source_turn": "S062_T10"
+    },
+    {
+     "event_id": "EV3",
+     "label": "下周三B口售后问询交接",
+     "event_time": "2026-11-18 19:00",
+     "status": "planned",
+     "source_turn": "S062_T22"
+    }
+   ],
+   "relationship": [
+    {
+     "turn": "T01",
+     "stage": "同好第一次交易洽谈"
+    },
+    {
+     "turn": "T14",
+     "stage": "验机议价中的对手方"
+    },
+    {
+     "turn": "T15",
+     "stage": "交易完成的买卖双方"
+    },
+    {
+     "turn": "T22",
+     "stage": "售后互助的器材朋友"
+    }
+   ],
+   "turns": [
+    {
+     "clock": "2026-11-02 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "群里看你出 24-70 报的 4300 含罩？我最近正纠结要不要上原厂变焦",
+       "2026-11-02 19:58"
+      ]
+     ],
+     "current_action": "确认挂价与配置无误；问她纠结点；不推销不贬自己器材",
+     "acceptable_actions": [
+      "确认4300含罩+问她主要拍什么",
+      "确认+说适合扫街人像",
+      "确认+提醒EF口需配转接环"
+     ],
+     "dims": [
+      "goal",
+      "factuality",
+      "interaction"
+     ],
+     "atoms": [
+      "S062_F01",
+      "S062_F02"
+     ],
+     "required": [],
+     "private_guidance": "开价轮：数字必须说准，4400是后来的成交价现在不能提。",
+     "unknowns": [
+      "她预算上限"
+     ],
+     "protected": [
+      "纠结"
+     ],
+     "forbidden": [
+      "不要说4400",
+      "不要说原厂变焦不值"
+     ]
+    },
+    {
+     "clock": "2026-11-02 20:15",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我那个 R6 是九月在二手店收的 95新 你这头子配它合适吗",
+       "2026-11-02 20:13"
+      ]
+     ],
+     "current_action": "确认R6配这支合适，但如实告知EF口需转接；不隐瞒环节",
+     "acceptable_actions": [
+      "说合适+先说转接环这事",
+      "说画质适配没问题+预告卡口话题",
+      "直接给组合方案"
+     ],
+     "dims": [
+      "factuality",
+      "goal",
+      "interaction"
+     ],
+     "atoms": [
+      "S062_F03"
+     ],
+     "required": [],
+     "private_guidance": "转接环是下轮话头，这轮先把'合适'说实。",
+     "unknowns": [
+      "她R6快门数"
+     ],
+     "protected": [
+      "95新"
+     ],
+     "forbidden": [
+      "不要说随便配",
+      "不要隐瞒需要转接环"
+     ]
+    },
+    {
+     "clock": "2026-11-02 20:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "不能直上 得转接 EF-EOS R 那个环 环不贵 别有负担",
+       "2026-11-02 20:26"
+      ],
+      [
+       "HER",
+       "原来还有这道工序 那转接环你有多的吗",
+       "2026-11-02 20:28"
+      ]
+     ],
+     "current_action": "确认需转接环已说清；接她的'有多的吗'：下轮答环的来历",
+     "acceptable_actions": [
+      "答有原厂环可一并出",
+      "答有+问她预算",
+      "先说有+约面交一起看"
+     ],
+     "dims": [
+      "factuality",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [
+      "S062_F04"
+     ],
+     "required": [],
+     "private_guidance": "知识轮：只说确定的，转接环副厂口碑下轮再说。",
+     "unknowns": [
+      "她是否愿意加环预算"
+     ],
+     "protected": [
+      "原来还有这道工序"
+     ],
+     "forbidden": [
+      "不要说EF能直上",
+      "不要隐瞒转接成本"
+     ]
+    },
+    {
+     "clock": "2026-11-02 20:45",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "我有一个原厂的环 可以一并出",
+       "2026-11-02 20:43"
+      ],
+      [
+       "HER",
+       "原副有区别吗 我怕副厂翻车",
+       "2026-11-02 20:45"
+      ]
+     ],
+     "current_action": "副厂口碑如实转述并标注非实测；不替她拍板",
+     "acceptable_actions": [
+      "口碑转述+标注群友说法非实测",
+      "说原厂省心+副厂争议留给群评测",
+      "给两条路让她选"
+     ],
+     "dims": [
+      "factuality",
+      "boundary",
+      "memory_use"
+     ],
+     "atoms": [
+      "S062_F05"
+     ],
+     "required": [
+      "S062_F04"
+     ],
+     "private_guidance": "口碑=转述，不冒充实测；这是本剧知识锚点之一。",
+     "unknowns": [
+      "副厂环当前价"
+     ],
+     "protected": [
+      "原副有区别吗"
+     ],
+     "forbidden": [
+      "不要把口碑说成我实测",
+      "不要贬副厂"
+     ]
+    },
+    {
+     "clock": "2026-11-02 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "快门数 8200 次 备忘录里记着 面交可以现场验",
+       "2026-11-02 20:58"
+      ],
+      [
+       "HER",
+       "好 准数我要到了 这就放心一半",
+       "2026-11-02 21:00"
+      ]
+     ],
+     "current_action": "接住'放心一半'；不复述错数；顺势问她还顾虑什么",
+     "acceptable_actions": [
+      "认+问其余顾虑",
+      "认+提醒快门数只是参考之一",
+      "认+说面交全部可验"
+     ],
+     "dims": [
+      "factuality",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [
+      "S062_F06"
+     ],
+     "required": [],
+     "private_guidance": "本剧核心数字之一，T24还会考。",
+     "unknowns": [],
+     "protected": [
+      "这就放心一半"
+     ],
+     "forbidden": [
+      "不要说'大概八千多'",
+      "不要虚报"
+     ]
+    },
+    {
+     "clock": "2026-11-02 21:20",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "那就周六下午面交吧 地铁站茶城门口行吗 我去那儿顺路",
+       "2026-11-02 21:18"
+      ]
+     ],
+     "current_action": "确认周六下午茶城门口+约具体时间点",
+     "acceptable_actions": [
+      "确认周六+约两点",
+      "确认地点+问几点她方便",
+      "确认+说带全装备现场验"
+     ],
+     "dims": [
+      "time_state",
+      "goal",
+      "interaction"
+     ],
+     "atoms": [
+      "S062_F07"
+     ],
+     "required": [],
+     "private_guidance": "第一个时间地点锚点；周日更正后此处作废。",
+     "unknowns": [
+      "周六我加班安排"
+     ],
+     "protected": [
+      "顺路"
+     ],
+     "forbidden": [
+      "不要把地点说成别处",
+      "不要说周六上下午都行（模糊）"
+     ]
+    },
+    {
+     "clock": "2026-11-03 20:10",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "对了 你这颗是 24-70 2.8 那颗吧 暗光稳 我越想越值",
+       "2026-11-03 20:08"
+      ]
+     ],
+     "current_action": "立即更正：这支是f4不是2.8；2.8贵一倍多；不让她带错预期面交",
+     "acceptable_actions": [
+      "马上更正f4+说2.8价位差很多",
+      "更正+说f4够她现阶段的用",
+      "更正+发官方规格页"
+     ],
+     "dims": [
+      "factuality",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [
+      "S062_F08"
+     ],
+     "required": [
+      "S062_F01"
+     ],
+     "private_guidance": "本剧第一次参数硬更正：谁说错谁改；拖到面交=坑她。",
+     "unknowns": [
+      "她会不会因f4放弃"
+     ],
+     "protected": [
+      "越想越值"
+     ],
+     "forbidden": [
+      "不要顺着她说2.8",
+      "不要说f4不好"
+     ]
+    },
+    {
+     "clock": "2026-11-03 20:25",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "啊 记岔了 f4 也行 我再想想环的事 你那个环算我 300 行吗",
+       "2026-11-03 20:23"
+      ]
+     ],
+     "current_action": "确认环300可以；给价格汇总口径；不趁更正加价",
+     "acceptable_actions": [
+      "答应300+汇总4300+300",
+      "答应+说面交一起结",
+      "答应+提醒现场验环"
+     ],
+     "dims": [
+      "factuality",
+      "goal",
+      "memory_use"
+     ],
+     "atoms": [
+      "S062_F09"
+     ],
+     "required": [
+      "S062_F08"
+     ],
+     "private_guidance": "价格链起点：4300+300=4600，灰点议价后4400。",
+     "unknowns": [],
+     "protected": [
+      "记岔了"
+     ],
+     "forbidden": [
+      "不要说环白送装大方",
+      "不要把4300说成别的数"
+     ]
+    },
+    {
+     "clock": "2026-11-03 20:40",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "你发过那组街拍就是这颗拍的吧 锐度确实在线",
+       "2026-11-03 20:38"
+      ]
+     ],
+     "current_action": "确认样片出处+如实说明后期程度；不夸大直出",
+     "acceptable_actions": [
+      "认是这颗拍的+说有轻微后期",
+      "认+说直出也够用",
+      "认+发原图对比"
+     ],
+     "dims": [
+      "factuality",
+      "boundary",
+      "memory_use"
+     ],
+     "atoms": [
+      "S062_F10"
+     ],
+     "required": [
+      "S062_F01"
+     ],
+     "private_guidance": "样片=证据但别吹成神话；后期如实说。",
+     "unknowns": [
+      "她后期水平"
+     ],
+     "protected": [
+      "锐度确实在线"
+     ],
+     "forbidden": [
+      "不要说全直出（不实）",
+      "不要贬她现在的设备"
+     ]
+    },
+    {
+     "clock": "2026-11-04 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "有个事 周六我们插画稿交期提前 我得赶稿 下午面交黄了 周日同一时间行吗",
+       "2026-11-04 20:58"
+      ]
+     ],
+     "current_action": "接住改期：周日同一时间同一地点；旧周六作废；不复述错日",
+     "acceptable_actions": [
+      "确认周日+复述时间地点",
+      "确认+问要不要换她方便的地点",
+      "确认周日+说正好我周六加班"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "goal"
+     ],
+     "atoms": [
+      "S062_F11"
+     ],
+     "required": [
+      "S062_F07"
+     ],
+     "private_guidance": "本剧时间硬更正：周六→周日；此后周六作废。",
+     "unknowns": [
+      "周日天气"
+     ],
+     "protected": [
+      "交期提前"
+     ],
+     "forbidden": [
+      "不要再说周六",
+      "不要问她为什么不早说"
+     ]
+    },
+    {
+     "clock": "2026-11-04 21:20",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "验机就三步 拍白墙看灰点 全焦段拧一遍 再实拍试对焦 我全程配合",
+       "2026-11-04 21:15"
+      ],
+      [
+       "HER",
+       "心里没底主要是因为第一次买二手 你这么一列清楚多了",
+       "2026-11-04 21:18"
+      ]
+     ],
+     "current_action": "接住她的踏实感；提醒她带R6现场装；不吹器材没问题",
+     "acceptable_actions": [
+      "提醒带上R6和卡现场装",
+      "说流程再补一条查序列号",
+      "认+说验出问题也算省心"
+     ],
+     "dims": [
+      "factuality",
+      "boundary",
+      "interaction"
+     ],
+     "atoms": [
+      "S062_F12"
+     ],
+     "required": [
+      "S062_F11"
+     ],
+     "private_guidance": "流程真实可执行；灰点伏笔在此埋下（白墙步）。",
+     "unknowns": [],
+     "protected": [
+      "心里没底"
+     ],
+     "forbidden": [
+      "不要说不用验相信我",
+      "不要把流程说得神乎"
+     ]
+    },
+    {
+     "clock": "2026-11-06 22:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "周日我带上我的 R6 现场装上试 环呢 用你的那颗一起验？",
+       "2026-11-06 21:58"
+      ]
+     ],
+     "current_action": "确认现场上机试+我的环一起验；提醒带充电宝/卡",
+     "acceptable_actions": [
+      "说好+环一起验+提醒带卡",
+      "确认+列她要带的东西",
+      "确认+说我带备用电池"
+     ],
+     "dims": [
+      "goal",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S062_F11",
+      "S062_F12"
+     ],
+     "private_guidance": "面交前准备轮，信息要可执行。",
+     "unknowns": [],
+     "protected": [],
+     "forbidden": [
+      "不要说不用带那么全"
+     ]
+    },
+    {
+     "clock": "2026-11-08 15:40",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "验出来前组里有两粒灰点 你看要紧吗 我有点犯嘀咕",
+       "2026-11-08 15:38"
+      ]
+     ],
+     "current_action": "如实评估：灰点常见、多数不影响成像但不打包票；给她三条路：照买/放弃/议价",
+     "acceptable_actions": [
+      "如实说影响有限+给三条路",
+      "说灰点不进光路要害+让她自己定",
+      "建议拍两张实拍看效果再定"
+     ],
+     "dims": [
+      "factuality",
+      "boundary",
+      "emotion_relation"
+     ],
+     "atoms": [
+      "S062_F13"
+     ],
+     "required": [
+      "S062_F12"
+     ],
+     "private_guidance": "诚实轮：不淡化不夸大；她的嘀咕合理。",
+     "unknowns": [
+      "灰点是否影响她实际出片"
+     ],
+     "protected": [
+      "我有点犯嘀咕"
+     ],
+     "forbidden": [
+      "不要说完全没影响",
+      "不要催她快决定"
+     ]
+    },
+    {
+     "clock": "2026-11-08 15:55",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "那便宜 200 吧 灰点留着也是我心里疙瘩 就 4400 全包",
+       "2026-11-08 15:53"
+      ]
+     ],
+     "current_action": "接受4400全包成交；复述总价构成确认；不含糊",
+     "acceptable_actions": [
+      "确认4400全包+说成交",
+      "确认+复述4300+300-200",
+      "答应+当面点清"
+     ],
+     "dims": [
+      "goal",
+      "factuality",
+      "time_state"
+     ],
+     "atoms": [
+      "S062_F14"
+     ],
+     "required": [
+      "S062_F13",
+      "S062_F09"
+     ],
+     "private_guidance": "本剧价格硬更正：此后一律4400；4600/4300不再单独成立。",
+     "unknowns": [],
+     "protected": [
+      "我心里疙瘩"
+     ],
+     "forbidden": [
+      "不要说200太多",
+      "不要算错总价"
+     ]
+    },
+    {
+     "clock": "2026-11-08 16:10",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "转你了 4400 收到回个话 镜头和环我都点过了",
+       "2026-11-08 16:08"
+      ]
+     ],
+     "current_action": "确认收款+交割完成+主动给售后口径；不催评价",
+     "acceptable_actions": [
+      "确认到账+说售后直接找我",
+      "确认+提醒保单/serial拍照存",
+      "确认+说这单利落"
+     ],
+     "dims": [
+      "goal",
+      "memory_use",
+      "emotion_relation"
+     ],
+     "atoms": [
+      "S062_F15"
+     ],
+     "required": [
+      "S062_F14"
+     ],
+     "private_guidance": "交割轮：数字对上就干脆，不磨叽。",
+     "unknowns": [],
+     "protected": [],
+     "forbidden": [
+      "不要又提价",
+      "不要说概不退换（显凉薄）"
+     ]
+    },
+    {
+     "clock": "2026-11-08 22:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "回家路上拆开又看了一遍 罩子里居然还有个原厂袋 你没跟我说",
+       "2026-11-08 21:58"
+      ]
+     ],
+     "current_action": "认（忘了说）+小惊喜不邀功；不编'故意留着给你'",
+     "acceptable_actions": [
+      "认忘了说+说袋归她",
+      "哈哈认账+说白捡",
+      "认+说罩袋一套齐"
+     ],
+     "dims": [
+      "memory_use",
+      "emotion_relation",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S062_F02"
+     ],
+     "private_guidance": "诚实小于面子：忘了就是忘了。",
+     "unknowns": [],
+     "protected": [],
+     "forbidden": [
+      "不要编故意的",
+      "不要说袋不值钱"
+     ]
+    },
+    {
+     "clock": "2026-11-10 21:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "周末拿它扫了一趟街 上手比我想的沉 但画质值",
+       "2026-11-10 21:28"
+      ]
+     ],
+     "current_action": "认+给负重小建议；不吹不劝退",
+     "acceptable_actions": [
+      "认沉+给挂法建议",
+      "说画质对得起重量+给肩带建议",
+      "问她拍了啥+接分享"
+     ],
+     "dims": [
+      "interaction",
+      "memory_use",
+      "emotion_relation"
+     ],
+     "atoms": [],
+     "required": [
+      "S062_F01"
+     ],
+     "private_guidance": "轻松轮；'值'是她自己的结论别抢功。",
+     "unknowns": [],
+     "protected": [
+      "画质值"
+     ],
+     "forbidden": [
+      "不要说我早说过值",
+      "不要劝她上轻的"
+     ]
+    },
+    {
+     "clock": "2026-11-12 21:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "昨晚给人像试了一组 直出就挺满意 你看我发群那张",
+       "2026-11-12 21:26"
+      ]
+     ],
+     "current_action": "看图+具体夸一点（肤色/焦外/构图）+不揽功（镜头只是一半）",
+     "acceptable_actions": [
+      "夸具体一项+说她出力更大",
+      "点评焦外+问她参数",
+      "认进步+鼓励投稿"
+     ],
+     "dims": [
+      "interaction",
+      "emotion_relation",
+      "memory_use"
+     ],
+     "atoms": [
+      "S062_F16"
+     ],
+     "required": [
+      "S062_F01"
+     ],
+     "private_guidance": "夸要具体到画面；'镜头好'不是唯一功劳。",
+     "unknowns": [
+      "她用的光圈"
+     ],
+     "protected": [
+      "直出就挺满意"
+     ],
+     "forbidden": [
+      "不要泛泛说好看",
+      "不要说全是镜头的功"
+     ]
+    },
+    {
+     "clock": "2026-11-13 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "群里有人问我你这头转接好用不 我把你原话贴给他了",
+       "2026-11-13 19:58"
+      ]
+     ],
+     "current_action": "无所谓+提醒转述参数别走样（f4/转接环/8200）",
+     "acceptable_actions": [
+      "随便转+提醒数字别错",
+      "说可以+把我说的口径列一遍",
+      "同意+让她别替我承诺售后"
+     ],
+     "dims": [
+      "boundary",
+      "memory_use",
+      "factuality"
+     ],
+     "atoms": [],
+     "required": [
+      "S062_F04",
+      "S062_F06"
+     ],
+     "private_guidance": "转述边界：她能转话，不能替我承诺。",
+     "unknowns": [
+      "群里谁问的"
+     ],
+     "protected": [
+      "你原话"
+     ],
+     "forbidden": [
+      "不要让她替我报价",
+      "不要说随便吹"
+     ]
+    },
+    {
+     "clock": "2026-11-14 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "对了 我把环拧上感觉有一点点旷量 正常吗 我有点疑心",
+       "2026-11-14 19:58"
+      ]
+     ],
+     "current_action": "如实：轻微旷量在转接环常见（转述经验非实测）；给验证法；不打包票",
+     "acceptable_actions": [
+      "说常见+给架机验证法+留观察",
+      "说规格内旷量不罕见+看对焦是否受影响",
+      "建议先观察两天+异常再找售后"
+     ],
+     "dims": [
+      "factuality",
+      "boundary",
+      "memory_use"
+     ],
+     "atoms": [
+      "S062_F17"
+     ],
+     "required": [
+      "S062_F04"
+     ],
+     "private_guidance": "售后第一环：不甩锅不揽责；'常见'必须标注是转述。",
+     "unknowns": [
+      "旷量是否影响对焦"
+     ],
+     "protected": [
+      "我有点疑心"
+     ],
+     "forbidden": [
+      "不要说绝对正常",
+      "不要说是她拧法不对"
+     ]
+    },
+    {
+     "clock": "2026-11-14 20:20",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "行 你要真有事随时说 下周我顺路帮你跑一趟售后网点问紧固",
+       "2026-11-14 20:15"
+      ],
+      [
+       "HER",
+       "那麻烦你了 我再观察两天 有结果跟我说",
+       "2026-11-14 20:18"
+      ]
+     ],
+     "current_action": "接她的'再观察'：确认我随时可问+不催她决定；只承诺做得到的",
+     "acceptable_actions": [
+      "认+说有结果第一时间说",
+      "认+给她观察时的自查点",
+      "认+不催"
+     ],
+     "dims": [
+      "goal",
+      "emotion_relation",
+      "initiative"
+     ],
+     "atoms": [
+      "S062_F18"
+     ],
+     "required": [
+      "S062_F17"
+     ],
+     "private_guidance": "主动担一点，但只承诺做得到的。",
+     "unknowns": [
+      "网点下班时间"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要说包退包换",
+      "不要催她现在决定"
+     ]
+    },
+    {
+     "clock": "2026-11-14 20:35",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "那下周三晚上？你下班顺路的话 咱在地铁站 B 口碰 帮我问一趟",
+       "2026-11-14 20:33"
+      ]
+     ],
+     "current_action": "确认下周三19:00 B口；不复述成别的时间地点",
+     "acceptable_actions": [
+      "确认周三19点B口",
+      "确认+说问完发她结论",
+      "确认+问要不要带环过去"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "goal"
+     ],
+     "atoms": [
+      "S062_F19"
+     ],
+     "required": [
+      "S062_F18"
+     ],
+     "private_guidance": "第二个时间地点锚点（首个已作废的是周六）。",
+     "unknowns": [
+      "我周三加班与否"
+     ],
+     "protected": [
+      "顺路的话"
+     ],
+     "forbidden": [
+      "不要说成周六",
+      "不要换地点"
+     ]
+    },
+    {
+     "clock": "2026-11-15 10:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我把我这单写进器材账了 镜头4400含环 灰点也记了一笔 以后脱手有据",
+       "2026-11-15 09:58"
+      ]
+     ],
+     "current_action": "认同记账习惯+灰点记档是负责任做法；确认4400数字一致",
+     "acceptable_actions": [
+      "认账本习惯+确认4400",
+      "说灰点记档聪明+以后好脱手",
+      "认+说这单清爽"
+     ],
+     "dims": [
+      "memory_use",
+      "factuality",
+      "emotion_relation"
+     ],
+     "atoms": [
+      "S062_F20"
+     ],
+     "required": [
+      "S062_F14",
+      "S062_F13"
+     ],
+     "private_guidance": "她把灰点写进账=接受这单；别又道歉一遍。",
+     "unknowns": [],
+     "protected": [
+      "以后脱手有据"
+     ],
+     "forbidden": [
+      "不要再说灰点抱歉",
+      "不要算错4400"
+     ]
+    },
+    {
+     "clock": "2026-11-16 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "群里有人问我 这颗快门数算多吗 我怎么回合适",
+       "2026-11-16 20:58"
+      ]
+     ],
+     "current_action": "凭记忆报出快门数8200次并给出'属低使用量'的判断；数字错=记忆失败",
+     "acceptable_actions": [
+      "答低用量+说可引用",
+      "给快门寿命常识+让她放心转",
+      "答+提醒加上'面交验过'更有底气"
+     ],
+     "dims": [
+      "memory_use",
+      "factuality",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S062_F06"
+     ],
+     "private_guidance": "出窗探针收口：8200出自T05，中间隔18轮且期间未重现；数字必须凭记忆取出。",
+     "unknowns": [],
+     "protected": [],
+     "forbidden": [
+      "不要说错快门数",
+      "不要说快门数不重要"
+     ]
+    }
+   ]
+  }
+ ]
+}

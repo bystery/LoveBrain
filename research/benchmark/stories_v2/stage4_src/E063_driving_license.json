@@ -1,0 +1,1213 @@
+{
+ "stories": [
+  {
+   "id": "S063",
+   "public_id": "E063",
+   "title": "驾照考程四个月",
+   "themes": [
+    "驾考流程",
+    "跨月改期",
+    "规则更正",
+    "陪练陪伴",
+    "补考决策"
+   ],
+   "motive": "她在考驾照，我当陪练兼信息员；真实张力是考程一再变动她怕自己'太笨'，我要把流程规则说准又不越界替她做决定。",
+   "continuity": "科目二考期 11/28→12/5（考场系统升级）在 T08；练车时段 工作日晚→周末早 在 T10；教练更换 在 T14；补考间隔 10 天 规则贯穿 T16-T22。",
+   "corrections": "T08 起科目二一律 12 月 5 日；T10 起练车一律周末早上；T14 起教练=王教练；旧日期/旧时段/李教练不得复活。",
+   "persona": {
+    "me": "30岁，程序员，驾照五年无事故；陪她练车时会讲原理但不多嘴。",
+    "her": "26岁，电商运营，科目二挂过一次；越临近考试越嘴硬，实际手心出汗。"
+   },
+   "initial_kb": {
+    "me": "车是家里那台自动挡；周末上午有空。",
+    "her": "科目一 96 分一次过；科目二上个月挂了一次，挂在倒库压线。",
+    "warmth": "同事关系，她知道我驾龄长才来问我；没到暧昧。",
+    "style": "她说话冲但听劝；聊规则爱抠细节。",
+    "stage": "同事兼陪练，第一次挂科后开始常聊。",
+    "lessons": "她自我怀疑时先给事实再给鼓励；规则以驾考中心口径为准，我不装权威。"
+   },
+   "facts": [
+    {
+     "id": "S063_F01",
+     "subject": "她",
+     "relation": "进度",
+     "value": "科目一96分一次过，科目二挂过一次（倒库压线）",
+     "valid_time": "2026-11-20 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T01",
+      "quote": "科目二上个月挂了一次 倒库压线"
+     }
+    },
+    {
+     "id": "S063_F02",
+     "subject": "驾考中心",
+     "relation": "规则",
+     "value": "科目二补考需间隔10天",
+     "valid_time": "2026-11-20 20:50",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T02",
+      "quote": "补考要间隔十天"
+     }
+    },
+    {
+     "id": "S063_F03",
+     "subject": "她",
+     "relation": "安排",
+     "value": "补考约在11月28日",
+     "valid_time": "2026-11-20 20:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T01",
+      "quote": "我补考约在 11 月 28 号"
+     }
+    },
+    {
+     "id": "S063_F04",
+     "subject": "我",
+     "relation": "承诺",
+     "value": "考前周末陪她去场地外练一圈",
+     "valid_time": "2026-11-20 20:50",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T02",
+      "quote": "考前周末我陪你去场地外练一圈"
+     }
+    },
+    {
+     "id": "S063_F05",
+     "subject": "她",
+     "relation": "约定",
+     "value": "工作日晚上在驾校练车",
+     "valid_time": "2026-11-21 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T03",
+      "quote": "我工作日晚上都在驾校加练"
+     }
+    },
+    {
+     "id": "S063_F06",
+     "subject": "驾考中心",
+     "relation": "更正",
+     "value": "11月28日考场系统升级，补考改到12月5日",
+     "valid_time": "2026-11-24 19:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T06",
+      "quote": "考场系统升级 12 月 5 号重考"
+     }
+    },
+    {
+     "id": "S063_F07",
+     "subject": "她",
+     "relation": "更正",
+     "value": "练车时段改到周末早上（工作日晚不排了）",
+     "valid_time": "2026-11-25 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T07",
+      "quote": "我把晚上的班都停了 周末早上练"
+     }
+    },
+    {
+     "id": "S063_F08",
+     "subject": "我",
+     "relation": "知识",
+     "value": "实习期12个月：扣满12分注销驾照",
+     "valid_time": "2026-11-26 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T08",
+      "quote": "实习期一年 扣满 12 分直接注销"
+     }
+    },
+    {
+     "id": "S063_F09",
+     "subject": "驾校",
+     "relation": "更正",
+     "value": "李教练离职，换王教练带她",
+     "valid_time": "2026-11-28 10:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T10",
+      "quote": "李教练离职了 换王教练带"
+     }
+    },
+    {
+     "id": "S063_F10",
+     "subject": "她",
+     "relation": "结果",
+     "value": "12月5日科目二补考通过",
+     "valid_time": "2026-12-05 16:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T14",
+      "quote": "12 月 5 号这场我过了"
+     }
+    },
+    {
+     "id": "S063_F11",
+     "subject": "驾考中心",
+     "relation": "规则",
+     "value": "科目三需科目二合格后另行预约，考场随机",
+     "valid_time": "2026-12-06 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T15",
+      "quote": "科目三要重新约 考场是随机的"
+     }
+    },
+    {
+     "id": "S063_F12",
+     "subject": "她",
+     "relation": "安排",
+     "value": "科目三约在12月26日上午",
+     "valid_time": "2026-12-10 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T17",
+      "quote": "我科目三约在 12 月 26 号上午"
+     }
+    },
+    {
+     "id": "S063_F13",
+     "subject": "我",
+     "relation": "知识",
+     "value": "科目三灯光模拟起步就考，出错直接挂",
+     "valid_time": "2026-12-10 21:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T18",
+      "quote": "灯光模拟一上来就考 出错直接挂"
+     }
+    },
+    {
+     "id": "S063_F14",
+     "subject": "她",
+     "relation": "结果",
+     "value": "12月26日科目三一次过",
+     "valid_time": "2026-12-26 15:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T21",
+      "quote": "一次过"
+     }
+    },
+    {
+     "id": "S063_F15",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "科目四约在1月9日，过了当天拿本",
+     "valid_time": "2026-12-27 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S063_T22",
+      "quote": "1 月 9 号考科目四 过了当天拿本"
+     }
+    }
+   ],
+   "events": [
+    {
+     "event_id": "EV1",
+     "label": "11月28日科目二补考（改期）",
+     "event_time": "2026-11-28 09:00",
+     "status": "cancelled",
+     "source_turn": "S063_T01"
+    },
+    {
+     "event_id": "EV2",
+     "label": "12月5日科目二补考",
+     "event_time": "2026-12-05 09:00",
+     "status": "done",
+     "source_turn": "S063_T06"
+    },
+    {
+     "event_id": "EV3",
+     "label": "12月26日科目三考试",
+     "event_time": "2026-12-26 09:00",
+     "status": "done",
+     "source_turn": "S063_T17"
+    },
+    {
+     "event_id": "EV4",
+     "label": "1月9日科目四考试",
+     "event_time": "2027-01-09 09:00",
+     "status": "planned",
+     "source_turn": "S063_T22"
+    }
+   ],
+   "relationship": [
+    {
+     "turn": "T01",
+     "stage": "挂科后的信息求助"
+    },
+    {
+     "turn": "T08",
+     "stage": "一起消化改期的同事"
+    },
+    {
+     "turn": "T15",
+     "stage": "补考通过的战友"
+    },
+    {
+     "turn": "T22",
+     "stage": "考程末段的默契"
+    }
+   ],
+   "turns": [
+    {
+     "clock": "2026-11-20 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "跟你说个丢人事 科目二上个月挂了一次 倒库压线 我补考约在 11 月 28 号 你说我咋这么笨",
+       "2026-11-20 19:58"
+      ]
+     ],
+     "current_action": "先给事实（补考间隔10天=规则允许内正常节奏）再否定'笨'；不说'肯定能过'",
+     "acceptable_actions": [
+      "摆规则+说挂科常见",
+      "问她挂的细节+给针对性建议",
+      "先接情绪+约陪练"
+     ],
+     "dims": [
+      "goal",
+      "emotion_relation",
+      "factuality",
+      "interaction"
+     ],
+     "atoms": [
+      "S063_F01",
+      "S063_F03"
+     ],
+     "required": [],
+     "private_guidance": "'笨'是自我攻击，用事实拆；不承诺结果。",
+     "unknowns": [
+      "她练了多久"
+     ],
+     "protected": [
+      "丢人事"
+     ],
+     "forbidden": [
+      "不要说你怎么这么笨挂了",
+      "不要打包票说下次必过"
+     ]
+    },
+    {
+     "clock": "2026-11-20 20:50",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "补考要间隔十天 你这个节奏完全正常 不用报陪练班 考前周末我陪你去场地外练一圈",
+       "2026-11-20 20:46"
+      ],
+      [
+       "HER",
+       "那可说好了 你驾龄长 帮我看看我还能救吗",
+       "2026-11-20 20:48"
+      ]
+     ],
+     "current_action": "用规则事实拆'笨'（间隔10天=正常节奏）+给出陪练承诺；不打包票",
+     "acceptable_actions": [
+      "说我陪你就够+约周末",
+      "给陪练班利弊+说先陪练试试",
+      "直接约周末练车时间"
+     ],
+     "dims": [
+      "goal",
+      "boundary",
+      "initiative"
+     ],
+     "atoms": [],
+     "required": [
+      "S063_F01"
+     ],
+     "private_guidance": "不替她花冤枉钱，也不大包大揽。",
+     "unknowns": [
+      "她愿不愿花钱上班"
+     ],
+     "protected": [
+      "还能救吗"
+     ],
+     "forbidden": [
+      "不要说必须报班",
+      "不要说包教包会",
+      "不要催她"
+     ]
+    },
+    {
+     "clock": "2026-11-21 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我工作日晚上都在驾校加练 教练说我倒库有救 就是紧张",
+       "2026-11-21 20:58"
+      ]
+     ],
+     "current_action": "肯定加练节奏+把'紧张'翻译成正常现象；不催不骂",
+     "acceptable_actions": [
+      "说紧张人人有+给考前松弛法",
+      "肯定加练+说考场上慢就是快",
+      "问她教练给什么建议"
+     ],
+     "dims": [
+      "memory_use",
+      "emotion_relation",
+      "interaction"
+     ],
+     "atoms": [
+      "S063_F05"
+     ],
+     "required": [
+      "S063_F01"
+     ],
+     "private_guidance": "她说教练评价时要记住教练是谁（后文换人）。",
+     "unknowns": [
+      "教练姓名此刻未提"
+     ],
+     "protected": [
+      "就是紧张"
+     ],
+     "forbidden": [
+      "不要说紧张就完了",
+      "不要催她别练了"
+     ]
+    },
+    {
+     "clock": "2026-11-23 20:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "周六上午九点 场地外那条断头路 倒库起步都过一遍 我在那等你",
+       "2026-11-23 20:28"
+      ],
+      [
+       "HER",
+       "行 那我周六见 我带瓶水给你",
+       "2026-11-23 20:30"
+      ]
+     ],
+     "current_action": "确认陪练时间地点细节；轻收不拖",
+     "acceptable_actions": [
+      "确认九点+说不用带东西",
+      "确认+提醒她带驾照学习凭证",
+      "确认+说下雨顺延"
+     ],
+     "dims": [
+      "time_state",
+      "goal",
+      "interaction"
+     ],
+     "atoms": [
+      "S063_F04"
+     ],
+     "required": [],
+     "private_guidance": "支线小轮，细节说准就行。",
+     "unknowns": [
+      "周六天气"
+     ],
+     "protected": [
+      "周六见"
+     ],
+     "forbidden": [
+      "不要放她鸽子",
+      "不要把时间说含糊"
+     ]
+    },
+    {
+     "clock": "2026-11-24 19:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "出鬼事 短信说 28 号考不了 我打驾考中心也没人说清 好烦",
+       "2026-11-24 18:58"
+      ]
+     ],
+     "current_action": "接情绪+让她把短信原文发来（信息来源核验）；不猜原因",
+     "acceptable_actions": [
+      "要短信截图看原文",
+      "安抚+说明天一早打中心电话",
+      "说别急+帮她列要问的问题"
+     ],
+     "dims": [
+      "emotion_relation",
+      "factuality",
+      "boundary"
+     ],
+     "atoms": [],
+     "required": [
+      "S063_F03"
+     ],
+     "private_guidance": "改期前奏：先核实再定性。",
+     "unknowns": [
+      "短信具体内容"
+     ],
+     "protected": [
+      "没人说清"
+     ],
+     "forbidden": [
+      "不要瞎猜是爽约拉黑",
+      "不要说肯定能照考"
+     ]
+    },
+    {
+     "clock": "2026-11-24 19:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "客服回了 考场系统升级 12 月 5 号重考 我这十天白练了吗",
+       "2026-11-24 19:28"
+      ]
+     ],
+     "current_action": "复述确认新日期12月5日+旧日期作废；'十天没白练'用事实说",
+     "acceptable_actions": [
+      "复述12/5+说肌肉记忆还在",
+      "认改期+把练车计划顺延",
+      "说正好多练两个周末"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "emotion_relation"
+     ],
+     "atoms": [
+      "S063_F06"
+     ],
+     "required": [
+      "S063_F03"
+     ],
+     "private_guidance": "本剧第一次硬更正：11/28作废，一律12/5。",
+     "unknowns": [
+      "系统升级时长"
+     ],
+     "protected": [
+      "白练了吗"
+     ],
+     "forbidden": [
+      "不要再说11月28",
+      "不要说白练了就是白练了"
+     ]
+    },
+    {
+     "clock": "2026-11-25 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "改期之后我反而松了 不过工作日晚上加班多 我把晚上的班都停了 周末早上练",
+       "2026-11-25 19:58"
+      ]
+     ],
+     "current_action": "接住新练车时段：周末早上；自己也调整陪练时间呼应",
+     "acceptable_actions": [
+      "确认周末早+对齐我的时间",
+      "说早上场地空更好练",
+      "确认+问周几开始"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "goal"
+     ],
+     "atoms": [
+      "S063_F07"
+     ],
+     "required": [
+      "S063_F05",
+      "S063_F06"
+     ],
+     "private_guidance": "本剧第二次更正：练车时段晚→周末早。",
+     "unknowns": [
+      "驾校周末开门时间"
+     ],
+     "protected": [
+      "反而松了"
+     ],
+     "forbidden": [
+      "不要说晚上练更好（旧口径）",
+      "不要评判她加班多"
+     ]
+    },
+    {
+     "clock": "2026-11-26 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "实习期一年 扣满 12 分直接注销 高速那条要三年内驾龄陪同 这条你再跟官方核一下",
+       "2026-11-26 20:56"
+      ],
+      [
+       "HER",
+       "嗯 我拿本之后第一时间贴实习标 原来还有这么多门道",
+       "2026-11-26 20:58"
+      ]
+     ],
+     "current_action": "如实给实习期规则并标注'高速条款需自行再核'；不装权威",
+     "acceptable_actions": [
+      "重申一年口径+建议查官方",
+      "补一句实习标要求",
+      "让她拿本当天问车管所"
+     ],
+     "dims": [
+      "factuality",
+      "boundary",
+      "memory_use"
+     ],
+     "atoms": [
+      "S063_F08"
+     ],
+     "required": [],
+     "private_guidance": "知识轮：说准+标注来源等级，细节她可再核。",
+     "unknowns": [
+      "高速陪同的精确条款"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要编实习期三年",
+      "不要说随便开没事",
+      "不要把不确定说成确定"
+     ]
+    },
+    {
+     "clock": "2026-11-27 21:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "明天就不说了 12 月 5 号考试 我有点睡不着的那种紧张",
+       "2026-11-27 21:28"
+      ]
+     ],
+     "current_action": "接紧张：把'睡不着'正常化+给考前清单（证件/休息/路线）",
+     "acceptable_actions": [
+      "列考前清单+说紧张正常",
+      "说前一晚别加练+早睡",
+      "说考试当天我楼下等她消息"
+     ],
+     "dims": [
+      "emotion_relation",
+      "goal",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S063_F06"
+     ],
+     "private_guidance": "考试前夜轮：具体清单比'加油'有用。",
+     "unknowns": [],
+     "protected": [
+      "睡不着的那种紧张"
+     ],
+     "forbidden": [
+      "不要说别紧张（空洞）",
+      "不要聊太晚"
+     ]
+    },
+    {
+     "clock": "2026-11-28 10:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "驾校又出鬼事 李教练离职了 换王教练带 我心态有点崩",
+       "2026-11-28 09:58"
+      ]
+     ],
+     "current_action": "接'心态崩'：换教练≠推倒重来，已练进身体的是她的；不评价离职原因",
+     "acceptable_actions": [
+      "说肌肉记忆是她的+新教练只是修正",
+      "让她上一节看看合不合",
+      "接情绪+说不合适可申请换"
+     ],
+     "dims": [
+      "emotion_relation",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [
+      "S063_F09"
+     ],
+     "required": [
+      "S063_F05"
+     ],
+     "private_guidance": "教练更正：此后一律王教练；李教练不再出现。",
+     "unknowns": [
+      "王教练风格"
+     ],
+     "protected": [
+      "心态有点崩"
+     ],
+     "forbidden": [
+      "不要说李教练怎么了",
+      "不要说换教练肯定更差/更好"
+     ]
+    },
+    {
+     "clock": "2026-11-30 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "王教练第一节课就让我把座椅后视镜全重新调 说我原来位置太贴",
+       "2026-11-30 20:58"
+      ]
+     ],
+     "current_action": "解读：新教练从基础纠偏是常规，不是否定她；呼应她原有问题（倒库压线）",
+     "acceptable_actions": [
+      "说调位对症+呼应压线问题",
+      "让她按新教法跑几圈再评",
+      "认+说好教练都抠细节"
+     ],
+     "dims": [
+      "memory_use",
+      "factuality",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S063_F09",
+      "S063_F01"
+     ],
+     "private_guidance": "把换教练的阵痛转成针对性修正的叙事。",
+     "unknowns": [
+      "新调位效果"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要说原来教练白教了",
+      "不要说王教练多此一举"
+     ]
+    },
+    {
+     "clock": "2026-12-01 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "周末早上练真香 场地没人 我倒库这周没压过线",
+       "2026-12-01 20:58"
+      ]
+     ],
+     "current_action": "肯定进步+把进步归因到她的加练；不抢功",
+     "acceptable_actions": [
+      "夸具体进步+归因加练",
+      "说场地空有助稳定+她练得更关键",
+      "问她还练哪些项"
+     ],
+     "dims": [
+      "memory_use",
+      "emotion_relation",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S063_F07"
+     ],
+     "private_guidance": "正反馈轮：归因给她。",
+     "unknowns": [],
+     "protected": [
+      "没压过线"
+     ],
+     "forbidden": [
+      "不要说我陪练的功劳",
+      "不要说别骄傲"
+     ]
+    },
+    {
+     "clock": "2026-12-03 20:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "考前最后问你一次 倒库看点位还是看感觉 我听人说的都不一样",
+       "2026-12-03 20:28"
+      ]
+     ],
+     "current_action": "如实：点位是参照、感觉是熟练结果，两者都要；以她自己练成的为准；不临时改方法",
+     "acceptable_actions": [
+      "说点位保底感觉加分+考前别换法",
+      "建议完全按王教练教的",
+      "说以你练熟的为准+别临场改"
+     ],
+     "dims": [
+      "boundary",
+      "factuality",
+      "memory_use"
+     ],
+     "atoms": [],
+     "required": [
+      "S063_F09"
+     ],
+     "private_guidance": "考前不改法是铁律；我不越权替教练改方法。",
+     "unknowns": [
+      "王教练的具体点位教法"
+     ],
+     "protected": [
+      "听人说的都不一样"
+     ],
+     "forbidden": [
+      "不要教一套新点位",
+      "不要否定王教练方法"
+     ]
+    },
+    {
+     "clock": "2026-12-05 16:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "过了！！！12 月 5 号这场我过了 倒库满分 什么叫翻身仗",
+       "2026-12-05 15:58"
+      ]
+     ],
+     "current_action": "具体庆祝（倒库满分=当初挂的项）+归因她的坚持；不居功",
+     "acceptable_actions": [
+      "夸倒库翻身+归因她加练",
+      "提议吃顿好的庆祝",
+      "让她请王教练喝一杯"
+     ],
+     "dims": [
+      "emotion_relation",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [
+      "S063_F10"
+     ],
+     "required": [
+      "S063_F01",
+      "S063_F06"
+     ],
+     "private_guidance": "庆祝轮：呼应'挂科'起点才有力。",
+     "unknowns": [],
+     "protected": [
+      "什么叫翻身仗"
+     ],
+     "forbidden": [
+      "不要说早说你能过",
+      "不要泼冷水说科目三更难"
+     ]
+    },
+    {
+     "clock": "2026-12-06 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "科目三要重新约 考场是随机的 听说路线很难背 我有点怵",
+       "2026-12-06 19:56"
+      ]
+     ],
+     "current_action": "如实给流程：科目二合格后另约、考场随机；'背路线'用事实降焦虑",
+     "acceptable_actions": [
+      "给流程+说路线理解着记不靠死背",
+      "认怵+给科目三重点项清单",
+      "约周末陪她去考场外围转"
+     ],
+     "dims": [
+      "factuality",
+      "goal",
+      "emotion_relation"
+     ],
+     "atoms": [
+      "S063_F11"
+     ],
+     "required": [
+      "S063_F10"
+     ],
+     "private_guidance": "考程过半，口径继续说准。",
+     "unknowns": [
+      "哪个考场"
+     ],
+     "protected": [
+      "路线很难背"
+     ],
+     "forbidden": [
+      "不要说科目三随便过",
+      "不要编考场分配规则"
+     ]
+    },
+    {
+     "clock": "2026-12-08 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "王教练说我可以约了 他说我灯光操作还不熟 要回家对着表练",
+       "2026-12-08 20:58"
+      ]
+     ],
+     "current_action": "呼应教练判断+给灯光练习法（口诀/对表）；不越教练",
+     "acceptable_actions": [
+      "让她按教练说的练+补个口诀",
+      "说灯光是白给分项别丢",
+      "问她哪几项不熟"
+     ],
+     "dims": [
+      "goal",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S063_F09"
+     ],
+     "private_guidance": "教练是主口径，我是辅助。",
+     "unknowns": [
+      "她的口诀版本"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要跟教练口径打架",
+      "不要说灯光不重要"
+     ]
+    },
+    {
+     "clock": "2026-12-10 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我科目三约在 12 月 26 号上午 考前你能不能再陪我去空地转两圈",
+       "2026-12-10 20:56"
+      ]
+     ],
+     "current_action": "确认12月26日上午+答应考前陪练；复述日期不出错",
+     "acceptable_actions": [
+      "确认12/26上午+约12月下旬陪练",
+      "答应+提醒别占考试前夜",
+      "确认+问她想练哪几项"
+     ],
+     "dims": [
+      "time_state",
+      "goal",
+      "memory_use"
+     ],
+     "atoms": [
+      "S063_F12"
+     ],
+     "required": [
+      "S063_F11"
+     ],
+     "private_guidance": "第三个日期锚点。",
+     "unknowns": [
+      "12月26日我的安排"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要把日期说成别的天",
+      "不要说没空还不给替代"
+     ]
+    },
+    {
+     "clock": "2026-12-10 21:15",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "对 灯光模拟一上来就考 出错直接挂 这项按王教练口诀练熟就是白给分",
+       "2026-12-10 21:12"
+      ],
+      [
+       "HER",
+       "真的假的 那我得回去把口诀再过两遍",
+       "2026-12-10 21:14"
+      ]
+     ],
+     "current_action": "确认灯光规则（标注转述口径）+推她按教练口诀练",
+     "acceptable_actions": [
+      "确认+让她练熟白给分项",
+      "确认+说以教练教法为准",
+      "确认+提醒别熬夜背"
+     ],
+     "dims": [
+      "factuality",
+      "memory_use",
+      "boundary"
+     ],
+     "atoms": [
+      "S063_F13"
+     ],
+     "required": [
+      "S063_F12"
+     ],
+     "private_guidance": "规则知识继续标注口径来源。",
+     "unknowns": [
+      "各地细则差异"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要说灯光不重要",
+      "不要编扣分细节"
+     ]
+    },
+    {
+     "clock": "2026-12-20 09:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "周六早上练完了 周六考完科目三你就能松半口气 剩下就是科目四",
+       "2026-12-20 09:28"
+      ],
+      [
+       "HER",
+       "嗯 转向灯我改口诀记的 王教练说我稳了",
+       "2026-12-20 09:30"
+      ]
+     ],
+     "current_action": "考前陪练收尾：肯定状态+确认考试日物流（几点到场/带什么）",
+     "acceptable_actions": [
+      "确认考试日细节+证件清单",
+      "说状态稳+考前别熬夜",
+      "让考试当天报平安"
+     ],
+     "dims": [
+      "goal",
+      "time_state",
+      "emotion_relation"
+     ],
+     "atoms": [],
+     "required": [
+      "S063_F12",
+      "S063_F13"
+     ],
+     "private_guidance": "支线收束轮。",
+     "unknowns": [
+      "当天集合时间"
+     ],
+     "protected": [
+      "我稳了"
+     ],
+     "forbidden": [
+      "不要加新建议",
+      "不要说别紧张"
+     ]
+    },
+    {
+     "clock": "2026-12-24 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "再问你个规则考完试用的 科目四过了当天拿本 那实习标什么时候贴",
+       "2026-12-24 19:58"
+      ]
+     ],
+     "current_action": "如实：拿本即进实习期，上路即贴实习标；不确定的细节标'以车管所口径为准'",
+     "acceptable_actions": [
+      "答拿本即贴+说以车管所为准",
+      "答+提醒实习期一年内规则",
+      "答+建议拿本当天问发证窗口"
+     ],
+     "dims": [
+      "factuality",
+      "boundary",
+      "memory_use"
+     ],
+     "atoms": [],
+     "required": [
+      "S063_F08"
+     ],
+     "private_guidance": "出窗探针：实习期规则出自T12（已隔12轮），正确复用。",
+     "unknowns": [
+      "电子实习标是否认可"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要编实习标细则",
+      "不要说贴不贴无所谓"
+     ]
+    },
+    {
+     "clock": "2026-12-26 15:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "一次过！！！灯光一点没卡 转向灯口诀救命",
+       "2026-12-26 14:58"
+      ]
+     ],
+     "current_action": "庆祝+具体呼应她的准备项（灯光口诀）；趁势推进科目四安排",
+     "acceptable_actions": [
+      "夸灯光项+问她什么时候约科四",
+      "庆祝+说口诀功夫没白费",
+      "庆祝+提醒科四别拖太久"
+     ],
+     "dims": [
+      "emotion_relation",
+      "memory_use",
+      "initiative"
+     ],
+     "atoms": [
+      "S063_F14"
+     ],
+     "required": [
+      "S063_F13"
+     ],
+     "private_guidance": "第二次庆祝：呼应灯光伏笔。",
+     "unknowns": [],
+     "protected": [
+      "一次过"
+     ],
+     "forbidden": [
+      "不要说科目四更难",
+      "不要催她当天约"
+     ]
+    },
+    {
+     "clock": "2026-12-27 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "1 月 9 号考科目四 过了当天拿本 我记得拿本就进实习期对吧",
+       "2026-12-27 19:58"
+      ]
+     ],
+     "current_action": "确认1月9日+确认实习期规则（引用T12口径）；帮她列拿本后第一周清单",
+     "acceptable_actions": [
+      "确认1/9+复述实习期一年",
+      "确认+列拿本当天流程",
+      "确认+说拿本后陪我跑一次长途"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "factuality"
+     ],
+     "atoms": [
+      "S063_F15"
+     ],
+     "required": [
+      "S063_F08",
+      "S063_F14"
+     ],
+     "private_guidance": "出窗探针：实习期+拿本规则双回扣。",
+     "unknowns": [
+      "1月9日天气"
+     ],
+     "protected": [],
+     "forbidden": [
+      "不要把实习期说成两年",
+      "不要说错拿本流程"
+     ]
+    },
+    {
+     "clock": "2026-12-30 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "这四个月折腾下来 我感觉最值的是挂科那次没躲 谢你没有笑我",
+       "2026-12-30 20:58"
+      ]
+     ],
+     "current_action": "收尾：呼应全程关键节点（挂科→改期→换教练→两次通过）+真诚接谢；不煽情不过度",
+     "acceptable_actions": [
+      "呼应她的坚持+说该谢的是她自己",
+      "接谢+说科四等你好消息",
+      "说这四个月她本来就稳"
+     ],
+     "dims": [
+      "emotion_relation",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S063_F10",
+      "S063_F14"
+     ],
+     "private_guidance": "收尾轮：把功劳还给她，提节点不提自己。",
+     "unknowns": [],
+     "protected": [
+      "没有笑我"
+     ],
+     "forbidden": [
+      "不要说'我还帮你很多'",
+      "不要说教式总结"
+     ]
+    },
+    {
+     "clock": "2027-01-05 20:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "科目四题库刷完了 模拟稳在 95 分 你说 1 月 9 号稳吗",
+       "2027-01-05 19:58"
+      ]
+     ],
+     "current_action": "不打包票：肯定准备量+提醒带齐证件+当天报平安；不催",
+     "acceptable_actions": [
+      "说准备到位+提醒带证件",
+      "不打包票+说她模拟分够稳",
+      "确认1/9+说到时候等她好消息"
+     ],
+     "dims": [
+      "goal",
+      "memory_use",
+      "emotion_relation",
+      "factuality"
+     ],
+     "atoms": [],
+     "required": [
+      "S063_F15"
+     ],
+     "private_guidance": "终局前奏轮：她要的是确认不是预测。",
+     "unknowns": [
+      "考试当天状态"
+     ],
+     "protected": [
+      "稳在 95 分"
+     ],
+     "forbidden": [
+      "不要说稳了",
+      "不要说别紧张"
+     ]
+    }
+   ]
+  }
+ ]
+}

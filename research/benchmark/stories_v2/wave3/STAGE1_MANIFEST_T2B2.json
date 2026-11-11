@@ -1,0 +1,50 @@
+{
+ "stage": "wave3",
+ "kind": "cross_story_pair_batch",
+ "count": 2,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E167",
+   "title": "音乐节的临时换车",
+   "themes": [
+    "出行拼车",
+    "跨城音乐节拼车",
+    "司机临时换人",
+    "车费垫付",
+    "同乘车友续约"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "第三方类",
+   "kind": "cross_story_pair",
+   "pair": "E167+E168",
+   "role": "A",
+   "files": {
+    "episode.json": "5420b3fb916c6f7663b9da7984132e4815accb2cf0ce93532d608685149635bf",
+    "reference.json": "dfde28a5968e94dcd13d3db6d965c1dc9e702f54754127263177ffdc8d57c1ba",
+    "timeline.json": "f06ec7732a8218275e6c49c368f04577f0c75fdce8349359a6a362e39957a70e"
+   }
+  },
+  {
+   "story_id": "E168",
+   "title": "岩馆的垫付款",
+   "themes": [
+    "运动健身",
+    "室内攀岩体验",
+    "教练课费用分摊",
+    "垫付车费归还",
+    "装备押金口径"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "费用类",
+   "kind": "cross_story_pair",
+   "pair": "E167+E168",
+   "role": "B",
+   "files": {
+    "episode.json": "8cdee7a78e32a5fe9fd89d7584f9b769b21d10495fec21e1020748490dce1538",
+    "reference.json": "a89383f23f7e2f0147278b0e9c0093eae355ac5d59fc52bf6dbe3f8ba0eaaa04",
+    "timeline.json": "a1da85d8afb60b0acd8b45f224a966d52f6b840d7816978f2004034f8b12fc8c"
+   }
+  }
+ ]
+}

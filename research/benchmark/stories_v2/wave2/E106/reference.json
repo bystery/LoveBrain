@@ -1,0 +1,856 @@
+{
+ "story_id": "E106",
+ "turns": {
+  "E106_T01": {
+   "case_id": "E106_T01",
+   "current_action": "接住她的成果汇报，肯定笔记的用心，按学长的路数先问一句'你自己检验过没'再谈意见。",
+   "acceptable_actions": [
+    "夸四遍的打磨劲头，约她把易混知识点表发来细看",
+    "先问这张表她自己有没有拿题验过，再看要不要改",
+    "肯定进度，提醒第三章吃透比赶第四章要紧"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A01",
+     "subject": "HER",
+     "relation": "notes_progress",
+     "value": "她完成第三章错题笔记并反复打磨易混知识点表",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T01",
+      "message_id": "m0",
+      "quote": "第三章的错题笔记我整理完了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A02",
+     "subject": "HER",
+     "relation": "polish_effort",
+     "value": "易混知识点表前后修改了四遍",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T01",
+      "message_id": "m0",
+      "quote": "改了四遍"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A03",
+     "subject": "HER",
+     "relation": "review_request",
+     "value": "她请ME为笔记提意见",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T01",
+      "message_id": "m0",
+      "quote": "发你看看，给我提提意见"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：学长的反问是点她不是泼她，肯定要给足。",
+   "unknowns": [
+    "笔记具体质量未知"
+   ],
+   "protected_expressions": [
+    "光易混知识点那张表我就改了四遍"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构考试科目细节",
+    "不得断言笔记内容优劣"
+   ]
+  },
+  "E106_T02": {
+   "case_id": "E106_T02",
+   "current_action": "接住分享请求的犹豫：把'分享'和'承包'分开——发一份笔记可以，讲题陪学是另一回事；让她自己拿主意。",
+   "acceptable_actions": [
+    "点她一句：发不发都行，先把'发了以后被追着问'想清楚",
+    "建议发之前把笔记定位说清，免得对方当成教程",
+    "反问她自己想不想发，别为了面子答应"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A04",
+     "subject": "THIRD",
+     "relation": "share_request",
+     "value": "新同事小蕊请求分享她的备考笔记",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T02",
+      "message_id": "m0",
+      "quote": "能不能把笔记发她一份"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A05",
+     "subject": "HER",
+     "relation": "hesitation",
+     "value": "她尚未答应分享并就分寸征询ME",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T02",
+      "message_id": "m0",
+      "quote": "我还没答应"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不替她决定发不发，只把后果摆出来，口吻轻。",
+   "unknowns": [
+    "小蕊的真实用途未知"
+   ],
+   "protected_expressions": [
+    "你说这东西发出去合适吗"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小蕊动机",
+    "不得替她拍板发或不发"
+   ]
+  },
+  "E106_T03": {
+   "case_id": "E106_T03",
+   "current_action": "接住分享后的失落：一句致谢后石沉大海；把这份不得劲接住，点明分享的价值不在对方回响。",
+   "acceptable_actions": [
+    "安慰她笔记的价值由她自己定义，不等对方捧场",
+    "调侃'救大命'是客气话，别当回执看",
+    "问她要是当初不发会不会更憋屈，帮她把账摆平"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A06",
+     "subject": "SHARED",
+     "relation": "share_done",
+     "value": "笔记已发给小蕊",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T03",
+      "message_id": "m0",
+      "quote": "还是发了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A07",
+     "subject": "THIRD",
+     "relation": "thanks_then_silence",
+     "value": "小蕊致谢后再无互动",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T03",
+      "message_id": "m0",
+      "quote": "就再没下文了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A08",
+     "subject": "HER",
+     "relation": "mixed_feeling",
+     "value": "分享落空后她心里不是滋味",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T03",
+      "message_id": "m0",
+      "quote": "我心里有点不得劲"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不落井下石说她活该，把失落轻轻接住就好。",
+   "unknowns": [
+    "小蕊是否真的在用笔记未知"
+   ],
+   "protected_expressions": [
+    "岚姐你救大命了"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小蕊从此不再用笔记",
+    "不得虚构小蕊的后续行为"
+   ]
+  },
+  "E106_T04": {
+   "case_id": "E106_T04",
+   "current_action": "接住时间被蚕食的现状：讲题从小帮小忙变成每天半小时起步，她的整块复习时间被切碎；先共情，再问她打算怎么办。",
+   "acceptable_actions": [
+    "帮她算账：每天半小时一周就是三个多小时，够做一套卷",
+    "问她要不要趁早定个讲题的边界，别等忍到爆",
+    "先接烦躁，提醒她的备考才是主线，别本末倒置"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A09",
+     "subject": "THIRD",
+     "relation": "daily_questioning",
+     "value": "小蕊每天在工位拉着她问题，每次半小时起步",
+     "valid_time": "2026-11-04/2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T04",
+      "message_id": "m0",
+      "quote": "天天在工位上逮着我问题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A10",
+     "subject": "HER",
+     "relation": "time_fragmented",
+     "value": "她晚间复习整块时间被切碎，进度变慢",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T04",
+      "message_id": "m0",
+      "quote": "整块时间全被切成渣了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把账算给她听，催她自己立规矩，不替她骂小蕊。",
+   "unknowns": [
+    "小蕊是有意还是无意未知"
+   ],
+   "protected_expressions": [
+    "一问就是半小时起步"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小蕊故意占便宜",
+    "不得虚构她的进度损失数值"
+   ]
+  },
+  "E106_T05": {
+   "case_id": "E106_T05",
+   "current_action": "接住她'评评理'的讨说法：代查没做过的卷子越过了帮忙的线；直说这已经从分享滑到代劳，她的时间主权被改写。",
+   "acceptable_actions": [
+    "直接判：这不是帮忙是代劳，该立规矩了",
+    "用反问点她：你替她做错题，谁替你做你的题",
+    "建议把讲题收敛成固定时段，题让她先做"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A11",
+     "subject": "THIRD",
+     "relation": "proxy_grading_request",
+     "value": "小蕊把未做的模拟卷甩给她要求代查错处",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T05",
+      "message_id": "m0",
+      "quote": "把她做都没做的模拟卷拍照甩给我"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A12",
+     "subject": "HER",
+     "relation": "consultation",
+     "value": "她向ME征询这算帮忙还是打工",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T05",
+      "message_id": "m0",
+      "quote": "这到底算帮忙还是算我给她打工"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A13",
+     "subject": "HER",
+     "relation": "core_time_occupied",
+     "value": "她的复习整块时间此前已被挤成碎片",
+     "valid_time": "2026-11-05/2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T04",
+      "message_id": "m0",
+      "quote": "整块时间全被切成渣了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：判得干脆一点，她这回要的是撑腰不是和稀泥。",
+   "unknowns": [
+    "她是否愿意当场拒绝未知"
+   ],
+   "protected_expressions": [
+    "岚姐你帮我看看哪儿错了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构卷子内容与科目",
+    "不得断言小蕊屡教不改"
+   ]
+  },
+  "E106_T06": {
+   "case_id": "E106_T06",
+   "current_action": "确认规矩落地：每周三午休一小时、题须先做；把这一步定义成讲题义务的正式改写，肯定她开口的勇气。",
+   "acceptable_actions": [
+    "肯定规矩立得清楚，提醒她讲满一小时就散别拖",
+    "问她小蕊先做的题她打算抽查，别规矩成空文",
+    "把'答应得痛快'标记出来，等后面看执行"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A14",
+     "subject": "SHARED",
+     "relation": "rule_set",
+     "value": "她立下规矩：每周三午休讲一小时，题须小蕊先做",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T06",
+      "message_id": "m0",
+      "quote": "每周三午休讲一小时，题必须她自己先做"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A15",
+     "subject": "THIRD",
+     "relation": "rule_ack",
+     "value": "小蕊当场答应规矩",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T06",
+      "message_id": "m0",
+      "quote": "答应得挺痛快"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A16",
+     "subject": "SHARED",
+     "relation": "duty_rewrite",
+     "value": "讲题义务由随叫随到收敛为每周限定一小时",
+     "valid_time": "2026-11-07/2026-11-09",
+     "status": "revised",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T05",
+      "message_id": "m0",
+      "quote": "把她做都没做的模拟卷拍照甩给我"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'听你的'接住但不居功，重点夸她敢开口。",
+   "unknowns": [
+    "规矩能否被执行未知"
+   ],
+   "protected_expressions": [
+    "听你的，我把规矩立了"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小蕊必然守规矩",
+    "不得虚构规矩细节之外的条款"
+   ]
+  },
+  "E106_T07": {
+   "case_id": "E106_T07",
+   "current_action": "接住规矩被绕开：小蕊空手来听还拉来小郑，义务外溢到第三人；帮她把'规矩没写不能带人'这层点破，撑她把口子收住。",
+   "acceptable_actions": [
+    "点破：规矩只写了先做题，没写人数，她钻的就是这个空",
+    "撑她：下次当场说不加人，别等事后窝火",
+    "先接窝火，再问她下午的活还堆不堆得住"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A17",
+     "subject": "THIRD",
+     "relation": "rule_bypassed",
+     "value": "小蕊未做题空着手来听讲，还拉来小郑",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T07",
+      "message_id": "m0",
+      "quote": "她卷子压根没做，空着来听"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A18",
+     "subject": "HER",
+     "relation": "workload_backlog",
+     "value": "讲题拖累她下午的工作都堆着",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T07",
+      "message_id": "m0",
+      "quote": "我下午的活都堆着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A19",
+     "subject": "SHARED",
+     "relation": "rule_still_stands",
+     "value": "每周三午休一小时的规矩本是她让步的底线",
+     "valid_time": "2026-11-09/2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T06",
+      "message_id": "m0",
+      "quote": "每周三午休讲一小时"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：分析漏洞要冷静，撑腰要热乎，两头都要有。",
+   "unknowns": [
+    "小郑是否也是备考人未知"
+   ],
+   "protected_expressions": [
+    "说什么'一起学'"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小蕊故意钻空",
+    "不得虚构小郑的态度"
+   ]
+  },
+  "E106_T08": {
+   "case_id": "E106_T08",
+   "current_action": "接住她的硬边界：退群加当面声明；先肯定这一步立得对，再接住她'是不是太狠'的后怕。",
+   "acceptable_actions": [
+    "肯定退群退得对，狠的是事不是人",
+    "反问她：规矩立了被绕，除了硬来还有第二条路吗",
+    "提醒她声明里那句话本身站得住，手抖不抖不重要"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A20",
+     "subject": "HER",
+     "relation": "group_exit",
+     "value": "她退出'一起学'群并当面说清笔记非教程",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T08",
+      "message_id": "m0",
+      "quote": "把那个'一起学'的群退了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A21",
+     "subject": "SHARED",
+     "relation": "group_mode_dissolved",
+     "value": "以退群终结'拉人听讲'的外溢模式",
+     "valid_time": "2026-11-11/2026-11-12",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T07",
+      "message_id": "m0",
+      "quote": "还把隔壁工位的小郑也拉来了"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E106_A22",
+     "subject": "HER",
+     "relation": "self_doubt",
+     "value": "她担心自己做法过狠",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T08",
+      "message_id": "m0",
+      "quote": "你说我是不是太狠了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：撑腰在前，安抚在后，别让她把'拒绝'和'伤人'划等号。",
+   "unknowns": [
+    "小蕊当下反应未知"
+   ],
+   "protected_expressions": [
+    "发完手都在抖"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小蕊会记恨",
+    "不得替她补给小蕊的台词"
+   ]
+  },
+  "E106_T09": {
+   "case_id": "E106_T09",
+   "current_action": "接住冷处理的余波：她担心被主管误解；把'边界没错'和'职场顾虑'分开，提醒她不必抢着示好也不必再退。",
+   "acceptable_actions": [
+    "点她：摆架子和守边界是两回事，主管分得清",
+    "建议照常打招呼，把该有的礼数做足就够了",
+    "提醒她真被问起，把'每周三讲了一小时'摆出来"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "attribution",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A23",
+     "subject": "THIRD",
+     "relation": "cold_war",
+     "value": "小蕊冷处理，见面不打招呼",
+     "valid_time": "2026-11-13/2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T09",
+      "message_id": "m0",
+      "quote": "见了我招呼都不打"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A24",
+     "subject": "HER",
+     "relation": "worry",
+     "value": "她担心被主管误解为摆架子影响考评",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T09",
+      "message_id": "m0",
+      "quote": "万一她跟主管说我摆架子呢"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把最坏情况的应对给她，把恐慌的浓度降下来。",
+   "unknowns": [
+    "主管是否知悉此事未知"
+   ],
+   "protected_expressions": [
+    "办公室气氛怪得要命"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小蕊会告状",
+    "不得虚构考评机制细节"
+   ]
+  },
+  "E106_T10": {
+   "case_id": "E106_T10",
+   "current_action": "接住反转收束：小蕊自报网课、当面道歉认错'想抄近道'；她顺势停掉周三讲题，义务彻底归位——肯定这个收法体面。",
+   "acceptable_actions": [
+    "恭喜这事收得漂亮，双方都体面",
+    "把停掉周三一小时说成顺水推舟，不是赌气",
+    "提醒她收到道歉点头就够，别翻旧账"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A25",
+     "subject": "THIRD",
+     "relation": "self_study_pivot",
+     "value": "小蕊自行报网课并当面道歉，承认此前想抄近道",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T10",
+      "message_id": "m0",
+      "quote": "小蕊自己报了个网课"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A26",
+     "subject": "SHARED",
+     "relation": "tutoring_closed",
+     "value": "每周三午休讲题安排就此停止，义务归位",
+     "valid_time": "2026-11-09/2026-11-16",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T06",
+      "message_id": "m0",
+      "quote": "每周三午休讲一小时"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E106_A27",
+     "subject": "HER",
+     "relation": "relief",
+     "value": "她心里的石头落地",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T10",
+      "message_id": "m0",
+      "quote": "我心里的石头落了地"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把反转讲成她的边界起效了，功劳记她头上。",
+   "unknowns": [
+    "网课效果未知",
+    "两人关系能否回到从前未知"
+   ],
+   "protected_expressions": [
+    "之前是我想抄近道"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言两人从此交好",
+    "不得虚构网课机构"
+   ]
+  },
+  "E106_T11": {
+   "case_id": "E106_T11",
+   "current_action": "共享涨分战报：时间拿回来、模拟卷涨十一分；把她这笔账郑重接住，肯定拒绝换来的不是损失是进度。",
+   "acceptable_actions": [
+    "恭喜涨分，把'账算明白了'接成学长的最高评价",
+    "用反问收尾：当初那句'评评理'，现在有答案了吧",
+    "提醒她别飘，按这个节奏把最后两个多月走完"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A28",
+     "subject": "HER",
+     "relation": "score_jump",
+     "value": "第四套模拟卷比上次涨了十一分",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T11",
+      "message_id": "m0",
+      "quote": "比上回涨了十一分"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A29",
+     "subject": "HER",
+     "relation": "lesson_learned",
+     "value": "她把涨分归因于拿回时间自己啃",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T11",
+      "message_id": "m0",
+      "quote": "把时间拿回来自己啃"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A30",
+     "subject": "SHARED",
+     "relation": "time_reclaimed_payoff",
+     "value": "复习整块时间恢复后备考见效",
+     "valid_time": "2026-11-05/2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T04",
+      "message_id": "m0",
+      "quote": "整块时间全被切成渣了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：战报要接得响亮，再顺手把'拒绝不可耻'钉牢。",
+   "unknowns": [],
+   "protected_expressions": [
+    "比给人当免费讲师强"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构模拟卷分数细节",
+    "不得断言考试必然通过"
+   ]
+  },
+  "E106_T12": {
+   "case_id": "E106_T12",
+   "current_action": "接住扉页题词之约：她想印一句像ME口吻、不像鸡血的话；给一句合学长风格的话或给出拟句思路，以轻收尾。",
+   "acceptable_actions": [
+    "给一句朴素的，比如'先做题，再问人'",
+    "把拟句思路给她：字数越少越像刻在扉页的",
+    "笑她要求高，回一句'你自己先做了没'当题词候选"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E106_A31",
+     "subject": "HER",
+     "relation": "final_sunday",
+     "value": "考前最后一个周日她翻到笔记扉页",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T12",
+      "message_id": "m0",
+      "quote": "考前最后一个周日"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E106_A32",
+     "subject": "SHARED",
+     "relation": "notes_callback",
+     "value": "扉页题词之约承接开篇的错题笔记",
+     "valid_time": "2026-11-01/2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T01",
+      "message_id": "m0",
+      "quote": "第三章的错题笔记我整理完了"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E106_A33",
+     "subject": "HER",
+     "relation": "style_constraint",
+     "value": "她要的题词不像鸡血、要像ME的口吻",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E106_T12",
+      "message_id": "m0",
+      "quote": "别像鸡血，像晏哥会说的话"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：题词要短要像他，收尾停在笔记回到她自己手里这层意思上。",
+   "unknowns": [
+    "T01 考期“还有两个多月”与 T12“考前最后一个周日(11-29)”口径偏移约一个月，属软性张力；评审时考期具体月份按 time_state 从宽，不作为记忆扣分点"
+   ],
+   "protected_expressions": [
+    "想在上面印一句话提醒自己"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构考试日期",
+    "不得写长篇鸡汤式题词"
+   ]
+  }
+ }
+}

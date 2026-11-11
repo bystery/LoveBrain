@@ -1,0 +1,897 @@
+{
+ "story_id": "E201",
+ "turns": {
+  "E201_T01": {
+   "case_id": "E201_T01",
+   "current_action": "接住报喜，确认报班金额、课时与赠课八次的口径被她重复过两遍",
+   "acceptable_actions": [
+    "祝贺并确认三千二十六节与八节赠课的口径",
+    "祝贺并顺势问小蒋有没有写进合同",
+    "祝贺并约这周六琴行见面的初步意向"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T01_A01",
+     "subject": "ME",
+     "relation": "琴行经验",
+     "value": "阿哲去年在乐音琴行上过成人吉他班一学期并熟悉约课流程",
+     "valid_time": "2026-11-02之前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "去年在乐音琴行上过成人吉他班一学期"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T01_A02",
+     "subject": "HER",
+     "relation": "报班计划",
+     "value": "苏晓当晚在乐音琴行定下成人吉他班",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T01",
+      "quote": "把吉他班定下来了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E201_T01_A03",
+     "subject": "SHARED",
+     "relation": "赠课口径",
+     "value": "报名时销售口头承诺送八节陪练且 HER 让其重复两遍",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T01",
+      "quote": "说还送八节陪练",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "老学员口吻，先接喜气再顺口提一句口径落到文字。",
+   "unknowns": [
+    "赠课条款是否写进书面合同未知"
+   ],
+   "protected_expressions": [
+    "说还送八节陪练"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称 HER 已知道自练陪护条款"
+   ],
+   "may_decline": false
+  },
+  "E201_T02": {
+   "case_id": "E201_T02",
+   "current_action": "确认周六下午三点陪她去琴行试琴并答应教换弦",
+   "acceptable_actions": [
+    "答应三点琴行见并教换弦",
+    "答应并问她要不要顺便试赠课陪练",
+    "答应并提醒带好变调夹等小件"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T02_A01",
+     "subject": "HER",
+     "relation": "报班计划",
+     "value": "苏晓已在乐音琴行定下成人吉他班一学期",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T01",
+      "quote": "把吉他班定下来了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T02_A02",
+     "subject": "SHARED",
+     "relation": "周六试琴安排",
+     "value": "周六下午三点同去琴行试面单琴并学换弦",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T02",
+      "quote": "这周六下午三点你有空吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "熟人搭子语气，爽快答应即可。",
+   "unknowns": [
+    "面单琴具体型号未知"
+   ],
+   "protected_expressions": [
+    "这周六下午三点你有空吗"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已与琴行确认试琴房"
+   ],
+   "may_decline": false
+  },
+  "E201_T03": {
+   "case_id": "E201_T03",
+   "current_action": "解答赠课在小程序约课的流程，并结合自己的老经验给建议",
+   "acceptable_actions": [
+    "说明小程序约课步骤并建议周六先约一节",
+    "解释流程并提出当天直接找前台加约",
+    "解答流程并顺带关心她手指疼要不要减量"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T03_A01",
+     "subject": "SHARED",
+     "relation": "周六试琴安排",
+     "value": "周六下午三点同去琴行的既定安排",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T02",
+      "quote": "这周六下午三点你有空吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T03_A02",
+     "subject": "ME",
+     "relation": "约课经验",
+     "value": "阿哲熟悉琴行约课流程可作为经验来源",
+     "valid_time": "2026-11-02之前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "熟悉约课流程"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E201_T03_A03",
+     "subject": "HER",
+     "relation": "赠课约课方式",
+     "value": "HER 询问赠课是否经小程序预约",
+     "valid_time": "2026-11-03",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T03",
+      "quote": "赠课是不是要在小程序上约",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给可执行的步骤，别只说大概。",
+   "unknowns": [
+    "赠课小程序入口的实际名称未知"
+   ],
+   "protected_expressions": [
+    "赠课是不是要在小程序上约"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造小程序具体功能细节"
+   ],
+   "may_decline": false
+  },
+  "E201_T04": {
+   "case_id": "E201_T04",
+   "current_action": "接住冲突：明确认可八次变四次的口径出问题，并回应她对费用构成的质疑",
+   "acceptable_actions": [
+    "先稳情绪再指出先看书面记录再谈钱",
+    "直接建议翻当时的报名聊天记录",
+    "认可她的质疑并提出陪她去前台对账"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T04_A01",
+     "subject": "SHARED",
+     "relation": "赠课口径",
+     "value": "报名时口头承诺的八节陪练被前台告知只有四次，旧口径作废",
+     "valid_time": "2026-11-04",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T01",
+      "quote": "说还送八节陪练",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T04_A02",
+     "subject": "SHARED",
+     "relation": "赠课次数现状",
+     "value": "前台查询显示 HER 账户赠课只有四次",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T04",
+      "quote": "赠课只有四次，不是八次",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E201_T04_A03",
+     "subject": "HER",
+     "relation": "费用疑虑",
+     "value": "HER 质疑三千二元里是否包含八节陪练的费用",
+     "valid_time": "2026-11-04",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T04",
+      "quote": "我付的三千二里有八节陪练的钱吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：先认她的情绪，再把方向引向书面凭证。",
+   "unknowns": [
+    "三千二的费用构成明细未知"
+   ],
+   "protected_expressions": [
+    "赠课只有四次，不是八次"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言三千二里确实含或不含陪练费",
+    "不得假装八次口径没有变化"
+   ],
+   "may_decline": false
+  },
+  "E201_T05": {
+   "case_id": "E201_T05",
+   "current_action": "确认聊天记录条款的价值，并劝她别把责任全揽在自己身上",
+   "acceptable_actions": [
+    "肯定她翻记录的动作并解读括号条款",
+    "肯定记录并建议截图发给小蒋对质",
+    "解读条款并安慰她没细看是人之常情"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T05_A01",
+     "subject": "SHARED",
+     "relation": "赠课次数现状",
+     "value": "前台查询显示赠课只有四次的现状",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T04",
+      "quote": "赠课只有四次，不是八次",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T05_A02",
+     "subject": "SHARED",
+     "relation": "书面条款原文",
+     "value": "小蒋聊天记录原话为送八节陪练课且限体验期内可用",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T05",
+      "quote": "送八节陪练课（体验期内可用）",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E201_T05_A03",
+     "subject": "SHARED",
+     "relation": "自练陪护条款",
+     "value": "记录中还有其中四次为自练陪护的括号说明",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T05",
+      "quote": "其中四次为自练陪护",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把'怪我'轻轻挡回去，重点放在证据已经拿到。",
+   "unknowns": [
+    "体验期的具体起止日期未知"
+   ],
+   "protected_expressions": [
+    "其中四次为自练陪护"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称条款是 HER 现编的",
+    "不得替销售承诺额外补偿"
+   ],
+   "may_decline": false
+  },
+  "E201_T06": {
+   "case_id": "E201_T06",
+   "current_action": "接住她的愤怒与自算差价，肯定算账思路并指出先跟店家谈补偿再谈对错",
+   "acceptable_actions": [
+    "肯定四百差价的算法并建议正式提补偿",
+    "肯定算法并提醒保留对质记录",
+    "认可愤怒并陪她把口径拆解成两笔账"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T06_A01",
+     "subject": "SHARED",
+     "relation": "自练陪护条款",
+     "value": "四次自练陪护的括号条款是小蒋拆分口径的依据",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T05",
+      "quote": "其中四次为自练陪护",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T06_A02",
+     "subject": "SHARED",
+     "relation": "课程单价体系",
+     "value": "正课一节两百元陪练半价一百元的单价口径",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T06",
+      "quote": "正课一节两百，陪练半价一百",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E201_T06_A03",
+     "subject": "HER",
+     "relation": "差价核算",
+     "value": "HER 自算被拆走的四次陪练价值四百元",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T06",
+      "quote": "差四节不就是四百块吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "认账不认气：算法对，但下一步是把账拿到桌面上谈。",
+   "unknowns": [
+    "店家是否愿意补偿未知"
+   ],
+   "protected_expressions": [
+    "差四节不就是四百块吗"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣称店家已同意补偿",
+    "不得否定四百元差价的算法本身"
+   ],
+   "may_decline": false
+  },
+  "E201_T07": {
+   "case_id": "E201_T07",
+   "current_action": "回应她请自己当自练陪护的请求，可答应、答应但婉拒奶茶或提出轻量条件",
+   "acceptable_actions": [
+    "答应周六照旧三点当陪护并婉拒奶茶",
+    "答应陪护并说奶茶改成练完一起喝一次",
+    "答应并说先陪练两周看她手指状态"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T07_A01",
+     "subject": "HER",
+     "relation": "差价核算",
+     "value": "HER 自算四次陪练差价四百元的前提",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T06",
+      "quote": "差四节不就是四百块吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T07_A02",
+     "subject": "SHARED",
+     "relation": "陪护请求",
+     "value": "HER 提出让 ME 顶替四次自练陪护的请求",
+     "valid_time": "2026-11-05",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T07",
+      "quote": "你就当我的自练陪护呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E201_T07_A03",
+     "subject": "HER",
+     "relation": "奶茶抵偿提议",
+     "value": "HER 提出请一个月奶茶抵课时费的补偿方式",
+     "valid_time": "2026-11-05",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T07",
+      "quote": "我请你喝一个月奶茶抵课时费",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给足了退路，回应要给她台阶，别让请求变负担。",
+   "unknowns": [
+    "ME 的周末时间余量未知"
+   ],
+   "protected_expressions": [
+    "你就当我的自练陪护"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布已经放弃找店家补偿"
+   ],
+   "may_decline": true
+  },
+  "E201_T08": {
+   "case_id": "E201_T08",
+   "current_action": "为她的进步高兴，确认周六三点照旧并接住练琴的劲头",
+   "acceptable_actions": [
+    "夸进步并确认周六三点琴行见",
+    "夸进步并提议周六先练换弦再抠和弦",
+    "为按响F和弦庆祝并提醒手指休息"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T08_A01",
+     "subject": "SHARED",
+     "relation": "周六试琴安排",
+     "value": "周六下午三点琴行见面的既定安排",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T02",
+      "quote": "这周六下午三点你有空吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T08_A02",
+     "subject": "HER",
+     "relation": "练琴进展",
+     "value": "正课陪练中老师帮抠F和弦且 HER 按响",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T08",
+      "quote": "老师帮我抠了F和弦",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E201_T08_A03",
+     "subject": "HER",
+     "relation": "换弦准备",
+     "value": "HER 周六前把换弦视频又看了一遍",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T08",
+      "quote": "把换弦视频又看了一遍",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她情绪上来了，回应跟着轻快起来。",
+   "unknowns": [],
+   "protected_expressions": [
+    "老师帮我抠了F和弦"
+   ],
+   "forbidden_factual_claims": [
+    "不得夸大 HER 现在的演奏水平"
+   ],
+   "may_decline": false
+  },
+  "E201_T09": {
+   "case_id": "E201_T09",
+   "current_action": "核对她摆出的两笔账并给出接或不接补偿的明确意见",
+   "acceptable_actions": [
+    "确认两笔都是四百账平建议接下并要书面备注",
+    "确认账平但提醒写明补偿性质再接",
+    "同意接并叮嘱截图留证"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T09_A01",
+     "subject": "SHARED",
+     "relation": "课程单价体系",
+     "value": "正课两百陪练一百的单价口径是核算依据",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T06",
+      "quote": "正课一节两百，陪练半价一百",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T09_A02",
+     "subject": "SHARED",
+     "relation": "补偿方案",
+     "value": "小蒋提出再补两节正课抵四次陪护差价",
+     "valid_time": "2026-11-08",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T09",
+      "quote": "再补两节正课",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E201_T09_A03",
+     "subject": "HER",
+     "relation": "补偿核算",
+     "value": "HER 核算四节陪练四百与两节正课四百两笔持平",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T09",
+      "quote": "这账是平的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "数字她说得对，明确给她一句'账是平的，可以接'。",
+   "unknowns": [
+    "补偿是否附带附加条件未知"
+   ],
+   "protected_expressions": [
+    "再补两节正课"
+   ],
+   "forbidden_factual_claims": [
+    "不得算错两笔金额",
+    "不得替 HER 决定接或不接"
+   ],
+   "may_decline": false
+  },
+  "E201_T10": {
+   "case_id": "E201_T10",
+   "current_action": "确认补偿落地并肯定她截图存证的做法",
+   "acceptable_actions": [
+    "确认落定并夸她留了备注截图",
+    "确认并说这套存证习惯下次报名继续用",
+    "确认并顺势问两节正课约在什么时候"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T10_A01",
+     "subject": "SHARED",
+     "relation": "补偿方案",
+     "value": "小蒋提出补两节正课抵差价的方案",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T09",
+      "quote": "再补两节正课",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T10_A02",
+     "subject": "SHARED",
+     "relation": "补偿执行",
+     "value": "小程序已加两节正课且备注写明补偿",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T10",
+      "quote": "备注写了'补偿'",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E201_T10_A03",
+     "subject": "HER",
+     "relation": "凭证留存",
+     "value": "HER 已截图存证",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T10",
+      "quote": "我截图存好了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收口轮，语气放松，夸到位就走。",
+   "unknowns": [
+    "两节补偿正课的具体排期未知"
+   ],
+   "protected_expressions": [
+    "备注写了'补偿'"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称补偿之外还有其他赔付"
+   ],
+   "may_decline": false
+  },
+  "E201_T11": {
+   "case_id": "E201_T11",
+   "current_action": "回应学员汇演双人曲目的邀约，可爽快接、认真考虑或先问曲目要求",
+   "acceptable_actions": [
+    "接下邀约并提议先定一首简单的曲子",
+    "认真考虑并问她汇演具体哪天",
+    "半玩笑接下并说弹砸了也一起认"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T11_A01",
+     "subject": "ME",
+     "relation": "琴行经验",
+     "value": "阿哲作为琴行老学员具备组双人曲目的基础",
+     "valid_time": "2026-11-02之前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "去年在乐音琴行上过成人吉他班一学期"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T11_A02",
+     "subject": "SHARED",
+     "relation": "学员汇演",
+     "value": "琴行十二月月底有学员汇演",
+     "valid_time": "2026-12月底",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T11",
+      "quote": "十二月月底有学员汇演",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E201_T11_A03",
+     "subject": "SHARED",
+     "relation": "双人曲目邀约",
+     "value": "HER 提出 ME 组队报名双人曲目",
+     "valid_time": "2026-12月底",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T11",
+      "quote": "能报名双人曲目",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "钩子轮，接不接都别让她下不来台。",
+   "unknowns": [
+    "汇演具体日期与曲目要求未知"
+   ],
+   "protected_expressions": [
+    "能报名双人曲目"
+   ],
+   "forbidden_factual_claims": [
+    "不得替琴行确认汇演日期"
+   ],
+   "may_decline": false
+  },
+  "E201_T12": {
+   "case_id": "E201_T12",
+   "current_action": "收下致谢，对汇演给出温和回音，认可她下次白纸黑字的原则",
+   "acceptable_actions": [
+    "收下感谢并说汇演的事给她答复",
+    "认可白纸黑字原则并说汇演她挑曲子",
+    "收下感谢并提醒续费前先对一遍条款"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E201_T12_A01",
+     "subject": "SHARED",
+     "relation": "双人曲目邀约",
+     "value": "学员汇演双人曲目的邀约仍待 ME 答复",
+     "valid_time": "2026-12月底",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T11",
+      "quote": "能报名双人曲目",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E201_T12_A02",
+     "subject": "HER",
+     "relation": "致谢闭环",
+     "value": "HER 就查记录到算账全程向 ME 致谢",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T12",
+      "quote": "从查记录到算账都是你陪着我",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E201_T12_A03",
+     "subject": "HER",
+     "relation": "续费原则",
+     "value": "HER 表示下学期续费与否未定且这次要白纸黑字",
+     "valid_time": "2026-11-08之后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E201_T12",
+      "quote": "这次我可要白纸黑字了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，一句到位，留个暖尾音。",
+   "unknowns": [
+    "续费决定未定",
+    "汇演答复未定"
+   ],
+   "protected_expressions": [
+    "这次我可要白纸黑字了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替 HER 决定续费",
+    "不得虚构汇演已报名成功"
+   ],
+   "may_decline": true
+  }
+ }
+}

@@ -1,0 +1,835 @@
+{
+ "story_id": "E108",
+ "turns": {
+  "E108_T01": {
+   "case_id": "E108_T01",
+   "current_action": "接住她的转正庆祝局：确认周六晚七点与四人位，给准话或问清集合细节。",
+   "acceptable_actions": [
+    "用'行，七点'接约，顺口问一句要不要带东西",
+    "接住'红酸汤一口入魂'，说自己正好验验锅底",
+    "先恭喜转正，再确认周六的局怎么集合"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A01",
+     "subject": "SHARED",
+     "relation": "dinner_plan",
+     "value": "周六晚七点酸汤鱼转正庆祝局，老板留四人位",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T01",
+      "message_id": "m0",
+      "quote": "老板答应给我留一桌四人位"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A02",
+     "subject": "SHARED",
+     "relation": "time_claim_saturday",
+     "value": "她向ME口称的局定在周六晚上七点",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T01",
+      "message_id": "m0",
+      "quote": "就这周六晚上七点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A03",
+     "subject": "HER",
+     "relation": "celebration_motive",
+     "value": "以转正为由头要吃出动静",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T01",
+      "message_id": "m0",
+      "quote": "我转正这顿必须吃出动静"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：三个字接约也行，但周六晚七点要落在字面上，这是后面回扣的锚。",
+   "unknowns": [
+    "老板留桌的具体凭证未知"
+   ],
+   "protected_expressions": [
+    "红酸汤一口入魂"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构酸汤鱼店其他菜品细节",
+    "不得替她改时间"
+   ]
+  },
+  "E108_T02": {
+   "case_id": "E108_T02",
+   "current_action": "接住组织汇报：同事应约、舞蹈课为局让路；把'课都调了'记成她对这局的承诺分量。",
+   "acceptable_actions": [
+    "接住两位同事入场，玩笑说排面起来了",
+    "点她一句：课都调了，这局的违约成本够高的",
+    "确认周六的人齐了，就等饭点"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A04",
+     "subject": "THIRD",
+     "relation": "colleagues_confirmed",
+     "value": "小柯和老潘应约周六的局",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T02",
+      "message_id": "m0",
+      "quote": "小柯和老潘都应了周六的局"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A05",
+     "subject": "HER",
+     "relation": "class_swap",
+     "value": "她把每周六的舞蹈课调到周日，为局让路",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T02",
+      "message_id": "m0",
+      "quote": "每周六的舞蹈课调到周日"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她爱摆组织进度，跟着捧场就行，别泼冷水。",
+   "unknowns": [
+    "同事是否知道老板那边的真实日期未知"
+   ],
+   "protected_expressions": [
+    "这局就没有黄的道理"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构同事的其他安排",
+    "不得断言舞蹈课具体时段"
+   ]
+  },
+  "E108_T03": {
+   "case_id": "E108_T03",
+   "current_action": "接住细节铺排：辣度按人排、ME那份按老规矩；用一句行家口吻接住'你懂的'，把这份用心收下。",
+   "acceptable_actions": [
+    "接住'老规矩'，回一句行家才懂的认可",
+    "夸她连辣度都排好了，这局不用操心了",
+    "问一句老规矩是不是免辣加多酸，逗一下"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A06",
+     "subject": "HER",
+     "relation": "detail_prep",
+     "value": "锅底辣度按人头排定，同事各有口味安排",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T03",
+      "message_id": "m0",
+      "quote": "我连锅底辣度都按人排了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'你懂的'要用懂行的话接，别接成客套。",
+   "unknowns": [
+    "ME的'老规矩'具体内容未知"
+   ],
+   "protected_expressions": [
+    "你那份我按老规矩办"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构老规矩内容细节",
+    "不得替同事改辣度"
+   ]
+  },
+  "E108_T04": {
+   "case_id": "E108_T04",
+   "current_action": "接住倒错引爆：老板一句'周日晚上是不是四位'戳穿记录——她跟老板留的是周日，跟ME和同事说的全是周六；先稳住她，把记录当唯一信源。",
+   "acceptable_actions": [
+    "让她先把记录截图，一切以老板那条为准",
+    "点破：错不在老板也不在记录，在她的记忆",
+    "先接住'当场懵了'，再问她老板那条原文怎么写的"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A07",
+     "subject": "THIRD",
+     "relation": "owner_probe",
+     "value": "老板微信确认'周日晚上是不是四位'引出倒错",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T04",
+      "message_id": "m0",
+      "quote": "周日晚上是不是四位"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A08",
+     "subject": "SHARED",
+     "relation": "saturday_claim_void",
+     "value": "她一直记成周六的口径被留桌记录推翻",
+     "valid_time": "2026-11-02/2026-11-06",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T01",
+      "message_id": "m0",
+      "quote": "就这周六晚上七点"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E108_A09",
+     "subject": "SHARED",
+     "relation": "booking_truth",
+     "value": "她与老板实际约的是周日晚上",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T04",
+      "message_id": "m0",
+      "quote": "我留的居然是周日"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她慌，你别慌；先立'记录为准'的规矩，再让她慢慢捋。",
+   "unknowns": [
+    "老板留桌记录的完整原文未知"
+   ],
+   "protected_expressions": [
+    "我当场懵了"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言她故意记错",
+    "不得虚构老板的其他发言"
+   ]
+  },
+  "E108_T05": {
+   "case_id": "E108_T05",
+   "current_action": "接住三口径对撞：老板周日、ME和同事周六、舞蹈课也被调到周日；帮她把三笔悬空账一笔笔列清，再谈怎么收。",
+   "acceptable_actions": [
+    "帮她列账：老板、ME和同事、舞蹈课，三笔各归各",
+    "点她：最麻烦的不是跟老板，是同事的周六",
+    "先让她别刷屏，一条条捋，别越捋越乱"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "attribution",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A10",
+     "subject": "SHARED",
+     "relation": "three_versions",
+     "value": "跟老板约周日、跟ME和同事说周六，三口径打架",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T05",
+      "message_id": "m0",
+      "quote": "跟你和同事说的全是周六"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A11",
+     "subject": "HER",
+     "relation": "swap_irony",
+     "value": "为周六调到周日的舞蹈课成了空布局",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T05",
+      "message_id": "m0",
+      "quote": "周六空出来的位子像个笑话"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A12",
+     "subject": "SHARED",
+     "relation": "commitment_load",
+     "value": "错误的周六已承载同事应约与调课等承诺",
+     "valid_time": "2026-11-03/2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T02",
+      "message_id": "m0",
+      "quote": "每周六的舞蹈课调到周日"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：用列清单的口吻帮她降温，别跟着一起头大。",
+   "unknowns": [],
+   "protected_expressions": [
+    "跟老板约的是周日"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她向同事改口",
+    "不得断言同事已被通知周日"
+   ]
+  },
+  "E108_T06": {
+   "case_id": "E108_T06",
+   "current_action": "接住改回周六碰壁：周六晚满座排到下周，四人位仅周日中午有空；把这道限制摆成硬约束，提醒她窗口不等人。",
+   "acceptable_actions": [
+    "把限制复述清楚：周六晚间没戏，只剩周日中午",
+    "提醒她窗口紧，趁老板还肯留桌赶紧定",
+    "问她同事们周日中午各自的安排再定"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A13",
+     "subject": "THIRD",
+     "relation": "owner_constraint",
+     "value": "试营业周六晚满座排到下周，四人位仅周日中午有空",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T06",
+      "message_id": "m0",
+      "quote": "四人位只有周日中午有空的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A14",
+     "subject": "HER",
+     "relation": "rebook_attempt",
+     "value": "她试图把桌改回周六未果",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T06",
+      "message_id": "m0",
+      "quote": "想把桌改回周六"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：硬约束就说硬，别安慰成'总会有办法'。",
+   "unknowns": [
+    "下周六是否有位未知"
+   ],
+   "protected_expressions": [
+    "晚间是真挤不进去了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构试营业排期细节",
+    "不得断言下周必有空位"
+   ]
+  },
+  "E108_T07": {
+   "case_id": "E108_T07",
+   "current_action": "接住她的一团乱：周日中午俩同事双双悬空，缩桌与推迟两个选项摆开；帮她把两个选项的代价摆清楚，让她自己挑。",
+   "acceptable_actions": [
+    "把代价摆开：缩桌丢排面，推迟凉了劲头",
+    "反问一句：转正的这顿，拖一周还算数吗",
+    "让她先问同事值不值，再决定缩不缩"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A15",
+     "subject": "THIRD",
+     "relation": "colleague_clash",
+     "value": "小柯周日中午要陪家人看病、老潘要值班，俩同事都悬",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T07",
+      "message_id": "m0",
+      "quote": "小柯周日中午要陪家人看病"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A16",
+     "subject": "HER",
+     "relation": "choice_request",
+     "value": "她在缩桌与推到下周六之间征询ME",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T07",
+      "message_id": "m0",
+      "quote": "还是干脆推到下周六整整齐齐"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A17",
+     "subject": "SHARED",
+     "relation": "saturday_basis_gone",
+     "value": "周六晚已无可订四人位，推下周六意味着局再悬一周",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T06",
+      "message_id": "m0",
+      "quote": "试营业周六晚满得排到下周"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她要'你先答我'，就给个倾向，但把决定权留给她。",
+   "unknowns": [
+    "小柯看病是否可改期未知",
+    "老潘能否调班未知"
+   ],
+   "protected_expressions": [
+    "你先答我这句"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构同事的请假可能",
+    "不得替她向老板改单"
+   ]
+  },
+  "E108_T08": {
+   "case_id": "E108_T08",
+   "current_action": "接住她的拍板：周日中午、四人缩两人、给值班的老潘打包送公司；肯定这个收法——局保住了，人也顾到了。",
+   "acceptable_actions": [
+    "认下这个方案：锅没凉，人情也没凉",
+    "接住打包的安排，说她这算把四人局拆成了三份",
+    "提醒她跟老板确认改单，别再出岔子"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A18",
+     "subject": "SHARED",
+     "relation": "final_decision",
+     "value": "定周日中午，四人缩两人成局",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T08",
+      "message_id": "m0",
+      "quote": "四人缩两人"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A19",
+     "subject": "HER",
+     "relation": "care_package",
+     "value": "给值班的老潘打包酸汤鱼送公司",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T08",
+      "message_id": "m0",
+      "quote": "我给老潘打包一份酸汤鱼送公司去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A20",
+     "subject": "SHARED",
+     "relation": "postpone_rejected",
+     "value": "推到下周六的选项被否，她等不了",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T08",
+      "message_id": "m0",
+      "quote": "推到下周六？我等不了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A21",
+     "subject": "SHARED",
+     "relation": "commitment_repair",
+     "value": "缩桌打包是对值班同事的义务补救",
+     "valid_time": "2026-11-06/2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T07",
+      "message_id": "m0",
+      "quote": "老潘要值班"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：拍板要接得干脆，顺手叮嘱一句改单确认，别让第二次乌龙发生。",
+   "unknowns": [
+    "老板是否确认改单成功未知"
+   ],
+   "protected_expressions": [
+    "转正的劲头都凉了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构打包保温细节",
+    "不得断言同事必然接受缩桌"
+   ]
+  },
+  "E108_T09": {
+   "case_id": "E108_T09",
+   "current_action": "共享成局战报：周日中午吃完、老板赠杨梅汁认账'没白留'；把锅底判断的服气接住，肯定这顿波折饭最终落地。",
+   "acceptable_actions": [
+    "接住'锅底正'的认证，行家风范收下",
+    "把老板那句'没白给你留桌'说成这局的官方盖章",
+    "问她下次还来不来，把这家店记进名单"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A22",
+     "subject": "SHARED",
+     "relation": "dinner_done",
+     "value": "周日中午酸汤鱼局完成，老板白送两杯杨梅汁",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T09",
+      "message_id": "m0",
+      "quote": "白送两杯杨梅汁"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A23",
+     "subject": "THIRD",
+     "relation": "owner_relieved",
+     "value": "老板以'可算没白给你留桌'认下这顿波折",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T09",
+      "message_id": "m0",
+      "quote": "可算没白给你留桌"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A24",
+     "subject": "SHARED",
+     "relation": "booking_honored",
+     "value": "留桌承诺经倒错与补救后最终兑现闭环",
+     "valid_time": "2026-11-02/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T01",
+      "message_id": "m0",
+      "quote": "老板答应给我留一桌四人位"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：战报要接得响亮，把波折说成这顿饭的余味。",
+   "unknowns": [],
+   "protected_expressions": [
+    "酸汤鱼名不虚传"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构菜品价格",
+    "不得断言老板此后果然常留位"
+   ]
+  },
+  "E108_T10": {
+   "case_id": "E108_T10",
+   "current_action": "接住课表笑话：舞蹈课被调成常驻周日班；跟着笑，把这趟波折的最后一笔账收成段子。",
+   "acceptable_actions": [
+    "接住'常驻周日班'，说她这波折还带长期收益",
+    "帮她算：课表这账倒是稳赚，以后周日中午别排饭",
+    "顺着笑收，别把段子聊成新的安排"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A25",
+     "subject": "HER",
+     "relation": "class_outcome",
+     "value": "舞蹈课被老师调成常驻周日班",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T10",
+      "message_id": "m0",
+      "quote": "调成常驻周日班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A26",
+     "subject": "SHARED",
+     "relation": "swap_full_circle",
+     "value": "为局让路的调课从应急变成固定安排",
+     "valid_time": "2026-11-03/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T02",
+      "message_id": "m0",
+      "quote": "每周六的舞蹈课调到周日"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：这是饭后甜点段，轻，短，跟笑就完。",
+   "unknowns": [],
+   "protected_expressions": [
+    "为顿饭我把自己调了个课表"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构课程内容",
+    "不得断言她以后每周日都空闲"
+   ]
+  },
+  "E108_T11": {
+   "case_id": "E108_T11",
+   "current_action": "接住打包兑现：老潘回话'下次头一个到'，四人变两个半、锅没凉；把她认账圆满的这句接稳，给这局盖个章。",
+   "acceptable_actions": [
+    "盖章：局没黄、锅没凉、人情也没欠，三样齐了",
+    "接住老潘那句'头一个到'，说这就是下次的局",
+    "肯定她缩桌打包的收法比硬撑排面体面"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A27",
+     "subject": "THIRD",
+     "relation": "colleague_reply",
+     "value": "老潘收到打包后回话下次这种局头一个到",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T11",
+      "message_id": "m0",
+      "quote": "下次这种局头一个到"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A28",
+     "subject": "SHARED",
+     "relation": "headcount_final",
+     "value": "四人局缩成两个半但锅没凉，她认账圆满",
+     "valid_time": "2026-11-08/2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T11",
+      "message_id": "m0",
+      "quote": "四个人变两个半"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A29",
+     "subject": "SHARED",
+     "relation": "package_carry",
+     "value": "打包送公司兑现了对值班同事的照顾",
+     "valid_time": "2026-11-06/2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T08",
+      "message_id": "m0",
+      "quote": "我给老潘打包一份酸汤鱼送公司去"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：盖章要干脆，把'两个半'接成美谈不是遗憾。",
+   "unknowns": [],
+   "protected_expressions": [
+    "锅倒是没凉"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构打包送达细节",
+    "不得替老潘许诺下次"
+   ]
+  },
+  "E108_T12": {
+   "case_id": "E108_T12",
+   "current_action": "接住收尾：老板留窗边位、她自定'写便签三遍'新规，还问下次信周六还是周日；顺着自嘲接梗，把教训收成一句话。",
+   "acceptable_actions": [
+    "接住便签新规，回一句'老板说了算，便签保管'",
+    "给她定个规矩：以后定局先截图，再群发",
+    "笑她终于承认记录没老板靠谱，收梗结束"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E108_A30",
+     "subject": "THIRD",
+     "relation": "owner_offer",
+     "value": "老板称下回提前吱一声，窗边位给她留着",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T12",
+      "message_id": "m0",
+      "quote": "窗边位给我留着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A31",
+     "subject": "HER",
+     "relation": "new_habit",
+     "value": "她自定定局前先写便签三遍的规矩",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T12",
+      "message_id": "m0",
+      "quote": "先写便签三遍"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E108_A32",
+     "subject": "SHARED",
+     "relation": "lesson_callback",
+     "value": "便签新规源于周六周日记错引发的三口径风波",
+     "valid_time": "2026-11-06/2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E108_T04",
+      "message_id": "m0",
+      "quote": "我一直记成周六"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻快，把'信老板'接成她的自嘲结论，别真替她定日子。",
+   "unknowns": [
+    "原留桌为周日晚上、改约周日中午的理由（舞蹈课调至周日晚）剧情内未明说，依赖读者推断；HER 无自相矛盾，不算缺陷"
+   ],
+   "protected_expressions": [
+    "我是信周六还是信周日"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构下次局的时间地点",
+    "不得断言她记性会变好"
+   ]
+  }
+ }
+}

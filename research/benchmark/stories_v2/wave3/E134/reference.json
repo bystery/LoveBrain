@@ -1,0 +1,702 @@
+{
+ "story_id": "E134",
+ "turns": {
+  "E134_T01": {
+   "current_action": "推荐自己去年用过的查重平台，同时预警一句：下单前看清套餐口径，别被宣传语带偏",
+   "acceptable_actions": [
+    "报出平台名并提醒她核对套餐包含内容再付款",
+    "给平台名，顺带讲一句自己当年多花冤枉钱的教训",
+    "推荐平台并让她把下单页截图发来帮看一眼"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A01",
+     "subject": "ME",
+     "relation": "查重踩坑经历",
+     "value": "去年毕业论文查重踩过平台付费口径的坑",
+     "valid_time": "去年论文季",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "去年毕业论文查重时踩过检测平台付费口径的坑"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E134_A02",
+     "subject": "HER",
+     "relation": "论文进度",
+     "value": "毕业论文初稿完成，准备自费查重",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T01",
+      "message_id": "m0",
+      "quote": "论文初稿终于凑出来了，明天想去查重"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "学长口吻，推荐之外必须带预警，不打包票。",
+   "unknowns": [
+    "她最终选哪家平台未定"
+   ],
+   "protected_expressions": [
+    "学校内网要下个月才开"
+   ],
+   "forbidden_factual_claims": [
+    "不虚构平台具体名称之外的资质信息",
+    "不承诺查重结果与学校口径一致"
+   ],
+   "case_id": "E134_T01"
+  },
+  "E134_T02": {
+   "current_action": "确认她下的单没错，但抓住'一次检测两种报告'这句话提醒她确认报告范围，留个心眼",
+   "acceptable_actions": [
+    "提醒她看清两种报告是格式差异还是内容差异，防止二次付费",
+    "确认标准版够用，顺口说一句商家话术多留心",
+    "肯定她的选择，并让她保存下单页宣传语截图以备万一"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A03",
+     "subject": "HER",
+     "relation": "查重订单",
+     "value": "已购39元标准版，页面宣称一次检测两种报告",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T02",
+      "message_id": "m0",
+      "quote": "首页写着一次检测两种报告，我就下了个标准版，39块"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E134_A04",
+     "subject": "ME",
+     "relation": "平台套路经验",
+     "value": "熟悉查重平台常见付费套路",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "熟悉查重平台常见套路"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "预警点到为止，别把气氛弄紧张，她正在等结果。",
+   "unknowns": [
+    "两种报告的真实含义此时未知"
+   ],
+   "protected_expressions": [
+    "一次检测两种报告"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言平台必然二次收费",
+    "不编造检测原理细节"
+   ],
+   "case_id": "E134_T02"
+  },
+  "E134_T03": {
+   "current_action": "接住她的火气，指出'两种报告'的口径偷换正是付费套路，支持她拿宣传页截图找客服讨说法",
+   "acceptable_actions": [
+    "支持她截图宣传页找客服，教她强调'按页面文字理解'",
+    "先共情再拆解：这就是自己踩过的坑，客服咬文嚼字就要求书面解释",
+    "认同这不合理，建议她保留付款记录和聊天记录一起投诉"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "attribution",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A05",
+     "subject": "PUBLIC",
+     "relation": "报告口径",
+     "value": "平台称两种报告指两种格式而非两次降重分析，降重分析需再付49元",
+     "valid_time": "2026-11-04",
+     "status": "contested",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T03",
+      "message_id": "m0",
+      "quote": "弹窗让我再付一次49，说什么'两种报告'是指两种格式不是两次分析"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E134_A06",
+     "subject": "PUBLIC",
+     "relation": "一次付费承诺",
+     "value": "首页'一次检测两种报告'被理解为一次付费全覆盖，该理解被平台否认",
+     "valid_time": "2026-11-03至11-04",
+     "status": "negated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T02",
+      "message_id": "m0",
+      "quote": "首页写着一次检测两种报告"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E134_A07",
+     "subject": "ME",
+     "relation": "同类踩坑经历",
+     "value": "去年在同一类口径上多花过冤枉钱",
+     "valid_time": "去年论文季",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "踩过检测平台付费口径的坑"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "共情她的火气，但把行动引向留证据、找客服，不煽动情绪升级。",
+   "unknowns": [
+    "客服是否让步未定"
+   ],
+   "protected_expressions": [
+    "这也太会玩文字游戏了吧"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构消费者条款条文",
+    "不得断言投诉必能退款"
+   ],
+   "case_id": "E134_T03"
+  },
+  "E134_T04": {
+   "current_action": "评价这个半赢的结果：书面口径没占到便宜，但补偿券聊胜于无，提醒她把券用法算清楚别再掉一层坑",
+   "acceptable_actions": [
+    "指出满50才能用的券是二次套路，帮她算清用不用得值",
+    "肯定她截图维权的操作，同时点破补偿力度偏小",
+    "劝她见好就收别耗时间，顺手帮忙想想券怎么变现"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A08",
+     "subject": "PUBLIC",
+     "relation": "客服处理结果",
+     "value": "客服否认承诺过两次分析，仅补偿一张满50减10的券",
+     "valid_time": "2026-11-04",
+     "status": "resolved",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T04",
+      "message_id": "m0",
+      "quote": "客服咬死没承诺两次分析，只肯补偿一张10块的券"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E134_A09",
+     "subject": "HER",
+     "relation": "维权证据",
+     "value": "已留存首页宣传语截图",
+     "valid_time": "2026-11-04起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T04",
+      "message_id": "m0",
+      "quote": "把首页宣传语截图发过去了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "别替她做'继续投诉'的决定，把利弊摆清，尊重她翻篇。",
+   "unknowns": [
+    "券最终是否使用未定"
+   ],
+   "protected_expressions": [
+    "这券下次还得满50才能用"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台投诉渠道细则"
+   ],
+   "case_id": "E134_T04"
+  },
+  "E134_T05": {
+   "current_action": "接住她认栽和券变现的梗，笑一下把这事收进'学费'，肯定她止损干脆",
+   "acceptable_actions": [
+    "夸她止损利落，39块买了个看清套路的经验",
+    "接闲鱼回血5块的梗，顺势把话题引回降重",
+    "肯定翻篇，提醒她把这次经历记下来给学弟学妹避坑"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A10",
+     "subject": "HER",
+     "relation": "补偿券处置",
+     "value": "10元券半价挂闲鱼卖出，回血5元，费用纠纷了结",
+     "valid_time": "2026-11-05",
+     "status": "settled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T05",
+      "message_id": "m0",
+      "quote": "那10块券我挂闲鱼半价出了，居然真有人要，也算回血5块"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E134_A11",
+     "subject": "PUBLIC",
+     "relation": "费用纠纷状态",
+     "value": "查重费用争议以认栽和券变现方式了结",
+     "valid_time": "2026-11-05",
+     "status": "closed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T05",
+      "message_id": "m0",
+      "quote": "行吧我认栽，39当学费"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻松收账，不翻旧账，一个梗就够。",
+   "unknowns": [],
+   "protected_expressions": [
+    "39当学费"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E134_T05"
+  },
+  "E134_T06": {
+   "current_action": "深夜赶稿的低压力轮：一句轻鼓励即可，不追问进度、不展开方法论，允许简短或不回",
+   "acceptable_actions": [
+    "一句简短鼓励加早点休息的提醒，不追问",
+    "只说综述本来就是硬仗，稳住就赢，然后闭嘴",
+    "轻松表情级回应，把话语权还给她"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A12",
+     "subject": "HER",
+     "relation": "降重压力点",
+     "value": "文献综述是降重重灾区，深夜赶稿",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T06",
+      "message_id": "m0",
+      "quote": "文献综述降重降到怀疑人生"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E134_A13",
+     "subject": "HER",
+     "relation": "论文重灾区分布",
+     "value": "初稿重复率压力大，文献综述是重灾区",
+     "valid_time": "论文季",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "文献综述是重灾区"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她说了不聊了就别接话头，最忌大段支招。",
+   "unknowns": [],
+   "protected_expressions": [
+    "不聊了不聊了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E134_T06"
+  },
+  "E134_T07": {
+   "current_action": "为重复率大降报喜，点出她把'先换句式再换结构'用对了地方，鼓励她趁手感把综述收尾",
+   "acceptable_actions": [
+    "祝贺降幅，肯定她方法用得对，鼓励趁势收尾",
+    "报喜式回应，顺口问第三章进度是否也顺手了",
+    "夸她执行力，把功劳归于她动手改而不是方法本身"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A14",
+     "subject": "HER",
+     "relation": "重复率变化",
+     "value": "综述重写后重复率从28%降到12%",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T07",
+      "message_id": "m0",
+      "quote": "重复率从28%降到12%了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E134_A15",
+     "subject": "SHARED",
+     "relation": "降重方法",
+     "value": "先换句式再换结构的方法被她采用见效",
+     "valid_time": "2026-11-09前提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T07",
+      "message_id": "m0",
+      "quote": "学长你上次说的'先换句式再换结构'真的有用"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "报喜轮要接得热闹，把功劳还给她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "重复率从28%降到12%了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E134_T07"
+  },
+  "E134_T08": {
+   "current_action": "回应导师反馈：肯定框架过关，提醒她按导师说的等内网免费复查，正好省一笔钱呼应前面的学费教训",
+   "acceptable_actions": [
+    "肯定导师反馈，点出内网免费复查正好呼应省钱教训",
+    "鼓励她收紧第三章，顺带说内网复查是最干净的口径",
+    "轻松回应，建议她把免费复查排进日程别错过开放期"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A16",
+     "subject": "PUBLIC",
+     "relation": "内网查重安排",
+     "value": "学校内网查重下周开放，导师要求免费复查一次",
+     "valid_time": "2026-11-11当周起下周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T08",
+      "message_id": "m0",
+      "quote": "学校内网查重下周开放，让我再免费复查一次"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E134_A17",
+     "subject": "HER",
+     "relation": "论文进度",
+     "value": "导师认可框架，仅需收紧第三章结论",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T08",
+      "message_id": "m0",
+      "quote": "导师看完说框架没问题"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把免费复查与前面花冤枉钱形成轻对照，别变成说教。",
+   "unknowns": [
+    "内网复查具体开放日未报出"
+   ],
+   "protected_expressions": [
+    "让我再免费复查一次"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E134_T08"
+  },
+  "E134_T09": {
+   "current_action": "接住内网结果更低的反转，认可她对付费平台虚标的判断，叮嘱她今晚交材料前再核对格式",
+   "acceptable_actions": [
+    "肯定10.8%的结果，认可虚标判断，提醒交前核对格式",
+    "接住反转梗：39块学费换来这个结论也算值",
+    "祝贺并让她交完材料就休息，别再熬夜盯"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A18",
+     "subject": "HER",
+     "relation": "内网复查结果",
+     "value": "内网复查重复率10.8%，低于付费平台结果",
+     "valid_time": "2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T09",
+      "message_id": "m0",
+      "quote": "内网复查结果出来了，10.8%，比外面平台还低"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E134_A19",
+     "subject": "PUBLIC",
+     "relation": "付费平台口径",
+     "value": "付费平台结果偏高疑为虚标，学校内网为权威口径",
+     "valid_time": "2026-11-16起",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T09",
+      "message_id": "m0",
+      "quote": "看来外面那家是真有点虚标"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "反转要接得爽，别忘提醒她按学校口径为准。",
+   "unknowns": [
+    "送审材料形式审查是否通过未定"
+   ],
+   "protected_expressions": [
+    "看来外面那家是真有点虚标"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言付费平台普遍虚标"
+   ],
+   "case_id": "E134_T09"
+  },
+  "E134_T10": {
+   "current_action": "为送审成功祝贺，接住'心落下一半'的说法，陪她等评审结果",
+   "acceptable_actions": [
+    "祝贺送审成功，接住落下一半的梗，陪等评审",
+    "肯定这一路从降重到送审的推进，让她歇口气",
+    "祝贺并顺口问评审大概多久，帮她把等待期规划轻一点"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A20",
+     "subject": "HER",
+     "relation": "送审状态",
+     "value": "论文送审成功，系统显示待评审",
+     "valid_time": "2026-11-19起",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T10",
+      "message_id": "m0",
+      "quote": "论文送审成功了！系统显示'待评审'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E134_A21",
+     "subject": "HER",
+     "relation": "论文时间线",
+     "value": "下月送审的论文已提前于11月送出",
+     "valid_time": "2026-11-19",
+     "status": "fulfilled",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "大四毕业论文下月送审"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "里程碑祝贺，简短有温度。",
+   "unknowns": [
+    "评审结果与意见未知"
+   ],
+   "protected_expressions": [
+    "我这颗心总算落下一半"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E134_T10"
+  },
+  "E134_T11": {
+   "current_action": "接受答辩旁听邀约，确认时间，顺带一句评审只一个小修改是好兆头",
+   "acceptable_actions": [
+    "答应去旁听并确认下月10号，留座心意收下",
+    "答应去，开玩笑说编外导师要出席验收成果",
+    "答应旁听，顺带提醒她小修改别拖到最后两天"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A22",
+     "subject": "PUBLIC",
+     "relation": "答辩安排",
+     "value": "评审意见仅小修改，答辩定于2026-12-10",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T11",
+      "message_id": "m0",
+      "quote": "答辩定在下月10号"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E134_A23",
+     "subject": "SHARED",
+     "relation": "答辩旁听约定",
+     "value": "ME受邀参加答辩旁听",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T11",
+      "message_id": "m0",
+      "quote": "到时候来不来旁听？来了我给你留座"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应要痛快，这个邀约是她表达感谢的方式。",
+   "unknowns": [
+    "旁听具体教室未定"
+   ],
+   "protected_expressions": [
+    "来了我给你留座"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E134_T11"
+  },
+  "E134_T12": {
+   "current_action": "为答辩通过热烈祝贺，接住39块学费梗，把谢师宴答应下来，整条论文季线收尾",
+   "acceptable_actions": [
+    "热烈祝贺，接39块梗，答应谢师宴",
+    "祝贺并回扣这一路的查重风波和降重苦战",
+    "答应赴宴并让她把学弟学妹避坑经验顺手写下来"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E134_A24",
+     "subject": "HER",
+     "relation": "答辩结果",
+     "value": "答辩通过，毕业流程走完",
+     "valid_time": "2026-12-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T12",
+      "message_id": "m0",
+      "quote": "答辩过了！！"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E134_A25",
+     "subject": "SHARED",
+     "relation": "谢师宴约定",
+     "value": "HER请ME吃谢师宴，以39块学费梗呼应查重风波",
+     "valid_time": "2026-12-10后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E134_T12",
+      "message_id": "m0",
+      "quote": "你可是付过39块学费的编外导师，这顿必须安排"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "结尾兴奋度对齐她的三连感叹号，梗要接住，别端着。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这顿必须安排"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E134_T12"
+  }
+ }
+}

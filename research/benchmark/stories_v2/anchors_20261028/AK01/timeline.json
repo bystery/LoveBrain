@@ -1,0 +1,48 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "AK01",
+ "turn_clocks": [
+  {
+   "case_id": "AK01_T01",
+   "clock": "2026-12-03 21:12"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "AK01_T01",
+   "message_id": "m0",
+   "speaker": "ME",
+   "quote": "你脚还肿不 我这周三晚点有空 想试试慢的",
+   "ts": "2026-12-01 12:40"
+  },
+  {
+   "case_id": "AK01_T01",
+   "message_id": "m1",
+   "speaker": "HER",
+   "quote": "消差不多了 医生说可以快走 先别跑",
+   "ts": "2026-12-01 12:48"
+  },
+  {
+   "case_id": "AK01_T01",
+   "message_id": "m2",
+   "speaker": "ME",
+   "quote": "那就快走 绕小区外圈两圈 不追速度",
+   "ts": "2026-12-01 12:52"
+  },
+  {
+   "case_id": "AK01_T01",
+   "message_id": "m3",
+   "speaker": "HER",
+   "quote": "周五晚上我下班早 六点行不 我从医院那边过来",
+   "ts": "2026-12-03 21:10"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "AK01_E1",
+   "case_id": "AK01_T01",
+   "summary": "夜跑复健｜反馈=positive｜意图=把周五晚的复健快走落成具体时间地点",
+   "source_turn": "AK01_T01"
+  }
+ ]
+}

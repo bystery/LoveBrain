@@ -1,0 +1,216 @@
+{
+ "episode_id": "P006",
+ "persona": {
+  "me": "32岁，男，昆明，做工程师；家里催婚、相亲认识她，想真诚了解但不装",
+  "her": "31岁，女，昆明，做护士；常和父亲去钓鱼，对家庭节奏有自己的看法，不轻易交底"
+ },
+ "initial_kb": {
+  "her": "常和父亲去钓鱼，节奏慢，不太爱交浅言深",
+  "warmth": "家里介绍相亲，见过两面，还在互相了解",
+  "stage": "相亲初期，她想认真但不快"
+ },
+ "gold": {},
+ "turns": [
+  {
+   "case_id": "P006_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天跟我爸去钓鱼 一条没钓上 他还是特开心",
+      "ts": "2026-11-14 20:05"
+     }
+    ],
+    "clock": "2026-11-14 20:10",
+    "may_decline": false,
+    "note": "她在分享、露出家庭/价值观线索；自然接，别急着评价她爸或立刻深挖",
+    "intent": {
+     "enabled": true,
+     "text": "想真诚多了解她一点",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P006_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "空军也开心 你这心态随你爸?",
+      "ts": "2026-11-14 20:18"
+     },
+     {
+      "role": "HER",
+      "text": "我就喜欢这种不用赶的 你家是不是催得紧那种",
+      "ts": "2026-11-14 20:22"
+     }
+    ],
+    "clock": "2026-11-14 20:25",
+    "may_decline": false,
+    "note": "她聊生活节奏、带出'家里催'的价值差异；可真实回应你的看法，别为讨好硬附和、也别评判她",
+    "intent": {
+     "enabled": true,
+     "text": "深聊价值观；如实说自己的看法",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P006_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "诶 你上次不还说自己常钓鱼吗 跟你爸?",
+      "ts": "2026-11-14 20:36"
+     }
+    ],
+    "clock": "2026-11-14 20:40",
+    "may_decline": false,
+    "note": "个人史未知：题面里并没有你'常钓鱼'的记录，她可能记岔。判断的是姿态——别顺着编一段没发生的个人记忆，也别把'我记得我没说过'当成已核实的定论",
+    "intent": {
+     "enabled": true,
+     "text": "她安了个你没说过的话；先弄清事实，不编也不硬顶",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P006_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "我钓鱼其实很少 你记岔啦哈哈",
+      "ts": "2026-11-14 20:50"
+     },
+     {
+      "role": "HER",
+      "text": "逗你呢 不聊了 我要去上夜班了",
+      "ts": "2026-11-14 20:52"
+     }
+    ],
+    "clock": "2026-11-14 20:55",
+    "may_decline": true,
+    "note": "反信号：她把话题收住、去上班；尊重、别追着'你干嘛回避'，也别留长篇",
+    "intent": {
+     "enabled": false,
+     "text": "她要上班；本轮不推进",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P006_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "夜班辛苦 今天能歇会儿不",
+      "ts": "2026-11-15 08:25"
+     },
+     {
+      "role": "HER",
+      "text": "歇一天 想去湖边发发呆 不钓鱼",
+      "ts": "2026-11-15 08:28"
+     }
+    ],
+    "clock": "2026-11-15 08:30",
+    "may_decline": false,
+    "note": "机会：她重新给话头(去湖边发呆)；可接住、给个轻松的陪伴方向，但别擅自把'一起去'说成已约",
+    "intent": {
+     "enabled": true,
+     "text": "接她的话头；给轻松的方向，别擅自定同行",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P006_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "发呆也挺好 不用赶",
+      "ts": "2026-11-15 08:40"
+     },
+     {
+      "role": "HER",
+      "text": "我妈老催我找个有房的 我觉得日子是自己过的",
+      "ts": "2026-11-15 08:43"
+     }
+    ],
+    "clock": "2026-11-15 08:45",
+    "may_decline": false,
+    "note": "价值观交底；认真接住她的立场，不评判她母亲、也别替她下'你该怎么办'的结论。此处自然承接她的分享本身就是合格动作，不必再追问",
+    "intent": {
+     "enabled": true,
+     "text": "她在交底；陪她把这点聊开，不评判不代决定",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P006_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "你这想法挺清楚的",
+      "ts": "2026-11-15 08:55"
+     },
+     {
+      "role": "HER",
+      "text": "嗯",
+      "ts": "2026-11-15 08:57"
+     }
+    ],
+    "clock": "2026-11-15 09:00",
+    "may_decline": false,
+    "note": "低信息缓冲轮；接一句轻的或就此停都行，别连环追问填满",
+    "intent": {
+     "enabled": true,
+     "text": "她给个'嗯'；不用再加码",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "P006_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "先这样 下周再约也看缘分吧 我睡了",
+      "ts": "2026-11-15 09:16"
+     }
+    ],
+    "clock": "2026-11-15 09:20",
+    "may_decline": true,
+    "note": "收尾：她开放'下周再约'但说'看缘分'、要睡；干净收尾、把主动权还她，别当场把'下周'逼成确定约会",
+    "intent": {
+     "enabled": false,
+     "text": "收尾；'下周'留开放不锁定",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  }
+ ]
+}

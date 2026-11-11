@@ -1,0 +1,40 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "E022",
+ "title": "老同学的妹妹补习",
+ "themes": [
+  "普通朋友",
+  "帮忙",
+  "跨日冷场",
+  "改期修正",
+  "第三人事实",
+  "自然收尾"
+ ],
+ "author": "ZCode main worker-AI (synthetic)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+ "readers": [
+  "author"
+ ],
+ "independent_review": false,
+ "review_note": "同 worker 自检；不是独立封存集。",
+ "created_at": "2026-10-28",
+ "frozen_at": null,
+ "status": "dev_candidate_stage2",
+ "experiments_used": [],
+ "dev_exposed": true,
+ "validation_claim": false,
+ "turns": 12,
+ "may_decline_turns": [
+  "E022_T12"
+ ],
+ "hashes": {
+  "episode.json": "72f2523162b9ff1f9e5ad2c4e08c5c79b3edeb5ee7f46702d5a53272297f3059",
+  "reference.json": "250fed9050a4a204e8b4b83385ee49579ffc0e6cde38e24f50e6cfd5e54f6b3a",
+  "timeline.json": "fee8510ba3acc8f39ced84aa1a54070ce44ca18fee6b15e78f2c0425f6bb33d3",
+  "audit.md": "d69a193c92271b5a1656855b0dc700579fa754752563ea4bf97522c7c4e0b8bd"
+ },
+ "runner_copy": "benchmark/episodes/E022.json",
+ "notes": "Stage2 首批（W06）；12位自然故事；冻结与未调参验证在后续批次。"
+}

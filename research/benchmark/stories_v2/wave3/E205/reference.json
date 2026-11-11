@@ -1,0 +1,730 @@
+{
+ "story_id": "E205",
+ "turns": {
+  "E205_T01": {
+   "case_id": "E205_T01",
+   "current_action": "接住她的调侃,顺势说明汤圆上月在花园被没牵绳的大狗扑过、从此怕大狗,语气平和不指责豆豆。",
+   "acceptable_actions": [
+    "平静说明汤圆被扑的旧事和怕大狗的原因",
+    "轻松接梗同时补充汤圆应激的背景",
+    "先接玩笑再认真解释汤圆躲人的原因"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A01",
+     "subject": "HER",
+     "relation": "养",
+     "value": "三岁柯基犬豆豆,苏蔓常带去中心花园遛",
+     "valid_time": "自2023年起持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "三岁柯基'豆豆'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A02",
+     "subject": "ME",
+     "relation": "养",
+     "value": "两岁比熊犬汤圆,性格胆小",
+     "valid_time": "自2024年起持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "两岁比熊'汤圆'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A03",
+     "subject": "HER",
+     "relation": "观察到",
+     "value": "11月3日下班在花园碰到汤圆,汤圆躲进灌木丛",
+     "valid_time": "2026-11-03傍晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T01",
+      "message_id": "m0",
+      "quote": "它躲我躲得也太夸张了吧"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "口吻可带一点无奈的自嘲,不把话题立刻压严肃。",
+   "unknowns": [
+    "当时扑汤圆的大狗是否就是豆豆,双方都未确证"
+   ],
+   "protected_expressions": [
+    "它躲我躲得也太夸张了吧"
+   ],
+   "forbidden_factual_claims": [
+    "汤圆被大狗咬伤",
+    "豆豆咬伤过其他狗或人"
+   ]
+  },
+  "E205_T02": {
+   "case_id": "E205_T02",
+   "current_action": "不把责任钉死在豆豆身上,如实说当时没看清是否是豆豆,只描述'像柯基',并说明汤圆的反应;不附和她也不硬顶。",
+   "acceptable_actions": [
+    "如实说当时没看清狗主人,只描述狗的特征",
+    "承认无法确定是豆豆,但强调汤圆确实受惊",
+    "描述当时情形并提议以后留意"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A04",
+     "subject": "HER",
+     "relation": "主张",
+     "value": "豆豆从不扑人,见了猫都让着",
+     "valid_time": "苏蔓长期观察",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T02",
+      "message_id": "m0",
+      "quote": "豆豆从来不扑人的呀"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A05",
+     "subject": "ME",
+     "relation": "经历",
+     "value": "上个月汤圆在花园被未牵绳大狗扑过一次,从此见大狗发抖",
+     "valid_time": "2026年10月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "上个月在花园被一只没牵绳的大狗扑过一次"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "诚实优先:不确定就说不确定,不用讨好语气替豆豆开脱,也不用猜测伤害苏蔓。",
+   "unknowns": [
+    "扑汤圆那只狗的主人身份",
+    "是否确为豆豆"
+   ],
+   "protected_expressions": [
+    "你确定当时扑汤圆的是只柯基?"
+   ],
+   "forbidden_factual_claims": [
+    "确认扑汤圆的就是豆豆",
+    "汤圆当时被咬伤"
+   ]
+  },
+  "E205_T03": {
+   "case_id": "E205_T03",
+   "current_action": "接受周六早上九点的遛狗见面邀约,同时把条件说在前面:希望这次全程牵绳试一次,给汤圆一个安全的初见。",
+   "acceptable_actions": [
+    "答应邀约并提出全程牵绳的条件",
+    "同意见面并说明牵绳是汤圆安全的前提",
+    "接受邀约,温和坚持自己的要求"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A06",
+     "subject": "SHARED",
+     "relation": "约定",
+     "value": "11月8日周日早上九点中心花园两只狗见面",
+     "valid_time": "2026-11-08 09:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T03",
+      "message_id": "m0",
+      "quote": "周日早上九点,我带豆豆去花园"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应要爽快,提要求要具体,不把牵绳条件包装成对她的指责。",
+   "unknowns": [
+    "苏蔓是否会接受全程牵绳的条件"
+   ],
+   "protected_expressions": [
+    "周日早上九点,我带豆豆去花园"
+   ],
+   "forbidden_factual_claims": [
+    "已确定豆豆就是当时扑汤圆的狗"
+   ]
+  },
+  "E205_T04": {
+   "case_id": "E205_T04",
+   "current_action": "温和但不松口:理解豆豆戴绳不习惯,仍坚持全程牵绳,并引用小区十月起新规——中心花园遛狗必须牵绳。",
+   "acceptable_actions": [
+    "坚持全程牵绳并引用小区新规",
+    "共情豆豆不爱戴绳,同时说明新规与汤圆应激两个理由",
+    "拒绝放开五分钟的折中,给出规则依据"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A07",
+     "subject": "HER",
+     "relation": "提议",
+     "value": "先放开豆豆跑五分钟,玩累了再牵上",
+     "valid_time": "2026-11-06 21:05提出",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T04",
+      "message_id": "m0",
+      "quote": "先放开跑五分钟,玩累了我再牵上?"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A08",
+     "subject": "PUBLIC",
+     "relation": "规定",
+     "value": "小区十月起新规:中心花园遛狗必须牵绳",
+     "valid_time": "2026年10月起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "中心花园遛狗必须牵绳"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "立场要稳,语气要软;规则是台阶,不是武器。",
+   "unknowns": [
+    "新规的具体处罚措施,双方均未提及"
+   ],
+   "protected_expressions": [
+    "先放开跑五分钟,玩累了我再牵上?"
+   ],
+   "forbidden_factual_claims": [
+    "新规有具体罚款金额",
+    "豆豆曾因不牵绳被物业处罚"
+   ]
+  },
+  "E205_T05": {
+   "case_id": "E205_T05",
+   "current_action": "确认自己带汤圆出发中,回扣她'绳在手里'的承诺,轻快约定花园见。",
+   "acceptable_actions": [
+    "回复出发进度并回扣她的牵绳承诺",
+    "轻松确认汇合时间",
+    "应一句并表达对两只狗见面的期待"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A09",
+     "subject": "HER",
+     "relation": "承诺",
+     "value": "见面时豆豆全程由苏蔓牵着",
+     "valid_time": "2026-11-08 09:05确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T05",
+      "message_id": "m0",
+      "quote": "绳我手里攥着呢"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A10",
+     "subject": "SHARED",
+     "relation": "履行",
+     "value": "11月8日周日九点花园见面按约执行",
+     "valid_time": "2026-11-08 09:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T03",
+      "message_id": "m0",
+      "quote": "周日早上九点,我带豆豆去花园"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "短回复即可,当天早晨不必长篇;可埋一句'绳可别松手'的轻调侃。",
+   "unknowns": [
+    "陈屿到花园的准确时间"
+   ],
+   "protected_expressions": [
+    "绳我手里攥着呢"
+   ],
+   "forbidden_factual_claims": [
+    "已经到花园汇合"
+   ]
+  },
+  "E205_T06": {
+   "case_id": "E205_T06",
+   "current_action": "冲突落实:不冲狗也不冲人发作,先确认汤圆状态,随即明确表达边界——按新规与汤圆应激两件事,请她马上把豆豆牵上;并提出如不适应同场,以后错峰遛也可以。",
+   "acceptable_actions": [
+    "先问汤圆状态,再平静而明确地请她立刻牵绳",
+    "引用新规与汤圆应激,要求恢复牵绳,同时给错峰的台阶",
+    "不指责豆豆,把边界说清:要么马上牵绳,要么错峰遛"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A11",
+     "subject": "HER",
+     "relation": "违反承诺",
+     "value": "以'就放开五分钟'为由解开了豆豆牵引绳",
+     "valid_time": "2026-11-08 09:40前后",
+     "status": "violated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T06",
+      "message_id": "m0",
+      "quote": "我寻思就放开五分钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A12",
+     "subject": "ME",
+     "relation": "处境",
+     "value": "汤圆受惊躲到树后发抖,需要安抚",
+     "valid_time": "2026-11-08 09:42",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T06",
+      "message_id": "m1",
+      "quote": "它在发抖吗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A13",
+     "subject": "ME",
+     "relation": "声明边界",
+     "value": "要求立即恢复牵绳,否则错峰遛狗",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "从此见大狗就发抖"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是本篇边界落实轮:对事不对狗,边界句要说出口,不因暧昧关系而吞回去;同时给关系留后路。",
+   "unknowns": [
+    "汤圆是否会留下长期应激",
+    "萨摩耶一家是否知情"
+   ],
+   "protected_expressions": [
+    "我寻思就放开五分钟",
+    "它在发抖吗"
+   ],
+   "forbidden_factual_claims": [
+    "汤圆被豆豆扑倒或咬伤",
+    "物业当场处罚了苏蔓"
+   ]
+  },
+  "E205_T07": {
+   "case_id": "E205_T07",
+   "current_action": "接受道歉,如实汇报汤圆状况:没受伤但还在发抖,正在安抚;不穷追猛打,把'错峰'作为接下来的安排顺下来。",
+   "acceptable_actions": [
+    "汇报汤圆无伤但受惊,接受道歉并落实错峰",
+    "安抚她的愧疚,把重心放在汤圆恢复上",
+    "原谅但明确这次的风险,约定后续错峰"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A14",
+     "subject": "HER",
+     "relation": "认错",
+     "value": "承认自己存了侥幸心理并道歉",
+     "valid_time": "2026-11-08 09:55",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T07",
+      "message_id": "m0",
+      "quote": "是我存了侥幸心理"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A15",
+     "subject": "SHARED",
+     "relation": "状态恢复",
+     "value": "豆豆已重新牵上绳",
+     "valid_time": "2026-11-08 09:55",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T07",
+      "message_id": "m0",
+      "quote": "牵上了牵上了!"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "道歉要接住,底线要守住:原谅这个人,不改这条边界。",
+   "unknowns": [
+    "汤圆应激多久能缓解"
+   ],
+   "protected_expressions": [
+    "牵上了牵上了!",
+    "是我存了侥幸心理"
+   ],
+   "forbidden_factual_claims": [
+    "汤圆当场恢复如常毫无影响"
+   ]
+  },
+  "E205_T08": {
+   "case_id": "E205_T08",
+   "current_action": "接住她的回扣,顺势聊物业群对不牵绳的反应,肯定两人最近的执行,不重提昨天的不愉快来刺她。",
+   "acceptable_actions": [
+    "轻松接话并肯定两人的牵绳执行",
+    "聊物业群投诉风向,点到为止",
+    "顺着'模范选手'的梗回应"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A16",
+     "subject": "PUBLIC",
+     "relation": "舆情",
+     "value": "物业群有人拍照投诉不牵绳遛狗",
+     "valid_time": "2026-11-09上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T08",
+      "message_id": "m0",
+      "quote": "有人拍照投诉不牵绳的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A17",
+     "subject": "SHARED",
+     "relation": "回扣",
+     "value": "周六牵绳风波后两人恢复并遵守牵绳",
+     "valid_time": "2026-11-08至今",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T07",
+      "message_id": "m0",
+      "quote": "牵上了牵上了!"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把昨天的事翻篇,但'模范'这个自我认同比玩笑更值得肯定一句。",
+   "unknowns": [
+    "被投诉的是哪位业主"
+   ],
+   "protected_expressions": [
+    "有人拍照投诉不牵绳的"
+   ],
+   "forbidden_factual_claims": [
+    "投诉对象是苏蔓",
+    "物业已开罚单"
+   ]
+  },
+  "E205_T09": {
+   "case_id": "E205_T09",
+   "current_action": "确认晚九点半错峰可行,说明汤圆的遛狗时间在九点半前已结束,两边不冲突;肯定她为豆豆减重做的调整。",
+   "acceptable_actions": [
+    "确认时间可行并说明汤圆的作息",
+    "同意错峰并夸她认真执行医嘱",
+    "接受新安排,顺带问豆豆体检详情"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A18",
+     "subject": "HER",
+     "relation": "体检结果",
+     "value": "豆豆超重两斤,需每天多走半小时",
+     "valid_time": "2026-11-11体检",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T09",
+      "message_id": "m0",
+      "quote": "超重两斤"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A19",
+     "subject": "SHARED",
+     "relation": "错峰安排",
+     "value": "苏蔓改在早上七点遛豆豆,与陈屿错开",
+     "valid_time": "2026-11-11起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T09",
+      "message_id": "m0",
+      "quote": "改成早上七点遛"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把错峰从权宜之计聊成长期方案,顺便关心豆豆的体重计划。",
+   "unknowns": [
+    "豆豆减重的目标体重"
+   ],
+   "protected_expressions": [
+    "改成早上七点遛"
+   ],
+   "forbidden_factual_claims": [
+    "豆豆有其他疾病"
+   ]
+  },
+  "E205_T10": {
+   "case_id": "E205_T10",
+   "current_action": "接受周六晚饭邀约,决定汤圆留在家不勉强带去,并谢过她把汤圆的应激放在心上。",
+   "acceptable_actions": [
+    "答应赴约并安排汤圆在家休息",
+    "接受邀约,肯定她的体贴选项",
+    "应约吃饭,说明汤圆怕大狗就不带了"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A20",
+     "subject": "HER",
+     "relation": "邀约",
+     "value": "周六遛狗后请陈屿到家吃饭,做可乐鸡翅",
+     "valid_time": "2026-11-14周六晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T10",
+      "message_id": "m0",
+      "quote": "我做可乐鸡翅"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A21",
+     "subject": "SHARED",
+     "relation": "作息",
+     "value": "豆豆已改在早上七点遛,与汤圆错峰",
+     "valid_time": "2026-11-11起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T09",
+      "message_id": "m0",
+      "quote": "改成早上七点遛"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "赴约要干脆;她主动给汤圆留了退路,这份体贴值得点出来。",
+   "unknowns": [
+    "晚饭的完整菜单"
+   ],
+   "protected_expressions": [
+    "我做可乐鸡翅",
+    "就让它在家歇着,别勉强"
+   ],
+   "forbidden_factual_claims": [
+    "汤圆将与豆豆同席吃饭"
+   ]
+  },
+  "E205_T11": {
+   "case_id": "E205_T11",
+   "current_action": "大方夸她:从那天心存侥幸到今天提前收绳,是实打实的进步;回扣小白这只萨摩,说明她现在防的是熟人狗而非陌生狗,更难也更好。",
+   "acceptable_actions": [
+    "具体夸她的进步并回扣小白事件",
+    "肯定她的预防动作,顺带调侃领赏",
+    "夸她并问豆豆这回的反应"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A22",
+     "subject": "HER",
+     "relation": "行为报告",
+     "value": "提前收短牵绳阻止豆豆冲向萨摩小白",
+     "valid_time": "2026-11-14 07:35前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T11",
+      "message_id": "m0",
+      "quote": "我提前把绳收短了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A23",
+     "subject": "THIRD",
+     "relation": "关系",
+     "value": "萨摩耶小白是豆豆在花园的玩伴",
+     "valid_time": "2026-11-08起多次相遇",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T06",
+      "message_id": "m0",
+      "quote": "豆豆跟小白玩疯了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "夸要夸到具体行为上,不空喊'你真棒';可顺势再加固一次边界共识。",
+   "unknowns": [
+    "小白主人对收绳的看法"
+   ],
+   "protected_expressions": [
+    "我提前把绳收短了"
+   ],
+   "forbidden_factual_claims": [
+    "豆豆这次扑到了小白",
+    "现场发生了争执"
+   ]
+  },
+  "E205_T12": {
+   "case_id": "E205_T12",
+   "current_action": "分享汤圆的进步:现在看见大狗会先看人再决定躲不躲,发抖少了;对上门抽查表示欢迎,自然收尾并留后续钩子(红榜照片/下次遛狗)。",
+   "acceptable_actions": [
+    "汇报汤圆的恢复进度并接住抽查话题",
+    "肯定红榜,聊汤圆近况收尾",
+    "欢迎抽查并约定下次花园见"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E205_A24",
+     "subject": "PUBLIC",
+     "relation": "公告",
+     "value": "文明养犬红榜两只狗都上榜,下月新规满三月上门抽查牵引",
+     "valid_time": "2026-11-15起,抽查在下月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E205_T12",
+      "message_id": "m0",
+      "quote": "下个月新规满仨月要上门抽查牵引绳"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E205_A25",
+     "subject": "ME",
+     "relation": "长期状态",
+     "value": "汤圆被大狗扑过之后见大狗发抖,正在恢复",
+     "valid_time": "2026年10月至今",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "从此见大狗就发抖"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轻快,给汤圆一点成长叙事,让这条边界线落成两人的共同成果。",
+   "unknowns": [
+    "上门抽查的具体形式",
+    "红榜公示时长"
+   ],
+   "protected_expressions": [
+    "下个月新规满仨月要上门抽查牵引绳"
+   ],
+   "forbidden_factual_claims": [
+    "汤圆已完全不怕大狗",
+    "抽查日期已确定到具体某天"
+   ]
+  }
+ }
+}

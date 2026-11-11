@@ -1,0 +1,38 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A6 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T07 事实/人物归属/不确定性",
+  "数字与账目验算",
+  "算术错误指出与对账",
+  "分摊口径（含运费对半）"
+ ],
+ "title": "私教卡拼单的两本账",
+ "may_decline_turns": [
+  "E325_T08",
+  "E325_T12"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "运动健身",
+ "primary_topic": "T07",
+ "lineage_group_id": "LG-E325",
+ "frozen_at": "2026-11-08T12:05:00+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E325/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A6",
+ "hashes": {
+  "episode.json": "47c89289a0fd735584cbe332e10eb9c63f873e3c6449877e71ba9a430c4b6ee4",
+  "reference.json": "fd3f65249d2a7a62b408050e20ae3cdaceba08c13b87e22b3c4331f6a0bad65b",
+  "timeline.json": "32ec52e0e141b84ca2637dea3a93ed809ae88e698555c0181c894bbe7ff4eb75",
+  "audit.md": "94f0e9339436fc620aaea1d90db0da2572a93285b8a14f127f716f1fca821c63"
+ }
+}

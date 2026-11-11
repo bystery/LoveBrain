@@ -1,0 +1,27 @@
+{
+ "superseded_by": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.PROVENANCE.json",
+ "why": "首版把 header 塞进卡文件（dict 形态），会让按 list 迭代的消费器把卡字段静默填空；已改为裸列表+PROVENANCE sidecar。本文件仅留跳转，不作证据。",
+ "first_run_leftover": {
+  "out_file": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+  "sha256": "1b19b67c327ac130fc27182ab8bc158fedc6c2954ca195f45a10a285905ad40d",
+  "card_count": 32,
+  "per_episode": {
+   "E006": 8,
+   "E007": 8,
+   "E008": 8,
+   "E012": 8
+  },
+  "overlays_applied": [
+   "E007_T03",
+   "E008_T03"
+  ],
+  "revision_mix": [
+   "r1-20261024",
+   "r2-20261024",
+   "r2-20261025"
+  ],
+  "checks": "verbatim evidence + case_id∈题面 + families/allowed/failure/evidence 非空 + review_status 在位",
+  "real_model_calls": 0,
+  "result": "PASS"
+ }
+}

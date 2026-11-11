@@ -1,0 +1,863 @@
+{
+ "story_id": "E310",
+ "turns": {
+  "E310_T01": {
+   "case_id": "E310_T01",
+   "current_action": "徐楠交底：辞职一个多月瞒着父母、生日电话撒了谎，问陈野她图什么",
+   "acceptable_actions": [
+    "按她给的事实给真实的猜测或反问（不贴'欺骗'大标签），回答'图什么'",
+    "指出'烂事先给你听'这个动作本身的分量，再回应问题",
+    "给一个'图什么'的可能答案加问她自己怎么看，不替她定罪也不洗白"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T01_A01",
+     "subject": "HER",
+     "relation": "辞职实情",
+     "value": "她10月10号就辞职了，进了一家做智能硬件的创业公司，瞒了父母一个多月",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T01",
+      "message_id": "m0",
+      "quote": "其实我10月10号就辞职了，进了一家做智能硬件的创业公司，瞒了一个多月"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T01_A02",
+     "subject": "HER",
+     "relation": "生日电话",
+     "value": "妈妈打电话问爸生日28号她回不回，她说项目忙走不开",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T01",
+      "message_id": "m0",
+      "quote": "她打电话问爸生日28号我回不回，我说项目忙走不开"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "开场脆弱轮：她主动选陈野当第一个听众（lessons：她的烂事先给他听是既有关口）。评审判回复是否接住了'图什么'这个真实问题；上价值说'你不该瞒父母'判低（她的边界：家事可以聊但不能被上价值）。",
+   "unknowns": [
+    {
+     "topic": "父母是否已察觉她辞职",
+     "note": "T10 才揭示'早猜到了'；本轮不应坐实父母知情",
+     "markers": [
+      [
+       "他们",
+       "知道"
+      ],
+      [
+       "早就",
+       "猜到"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "他们",
+       "知道"
+      ],
+      [
+       "早就",
+       "猜到"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "瞒得有点累"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布父母已经知情",
+    "不得编造她创业公司的名字或业务细节"
+   ],
+   "may_decline": false
+  },
+  "E310_T02": {
+   "case_id": "E310_T02",
+   "current_action": "徐楠立判据'担忧额度'并摆出外婆与室友两个例子，且要求陈野别急着上'欺骗'这个词",
+   "acceptable_actions": [
+    "先接她的两个例子（外婆瞒三个月/室友全说），再对'担忧额度'判据给真实回应——认可、质疑或修正都给理由",
+    "指她判据里说得通的部分（担虑有限要花在刀刃上）与她没答的部分（谁定义'扛得住'），把交锋接下去",
+    "用她给的事实回应：如指出'说了不改变结果'里'结果'怎么算，请她再定义一步"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T02_A01",
+     "subject": "THIRD",
+     "relation": "外婆被瞒",
+     "value": "她外婆五年前查出癌症，全家瞒了她三个月只说是胃炎，她没被吓着、治疗反而顺",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T02",
+      "message_id": "m0",
+      "quote": "我外婆五年前查出癌症，全家瞒了她三个月，只说是胃炎"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T02_A02",
+     "subject": "THIRD",
+     "relation": "室友反例",
+     "value": "她大学室友什么都跟她妈说，她妈担心到血压高",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T02",
+      "message_id": "m0",
+      "quote": "什么都跟她妈说，她妈担心到血压高"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T02_A03",
+     "subject": "HER",
+     "relation": "担忧额度判据",
+     "value": "她的判据：自己扛得住、说了也不改变结果的事不进家门；辞职这条她认为符合",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T02",
+      "message_id": "m0",
+      "quote": "我自己扛得住的、说了也不改变结果的事，不进家门"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "交锋轮：正确回复必须先准确接住她的判据和两个例子再表态；曲解成'她主张对家人啥都不说'按错记论点处理。她明确说'先别上欺骗这个词'，评委注意回复是否尊重了她的谈话顺序。",
+   "unknowns": [
+    {
+     "topic": "外婆对当年被瞒的真实感受",
+     "note": "只有'没被吓着、治疗顺'的转述；外婆本人想法未提",
+     "markers": [
+      [
+       "外婆",
+       "其实"
+      ],
+      [
+       "外婆",
+       "恨"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "外婆",
+       "其实"
+      ],
+      [
+       "外婆",
+       "恨"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "先别上'欺骗'这个词"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实外婆当年心里难受（原话是没被吓着）",
+    "不得把她的判据曲解为'对家人全面封锁消息'"
+   ],
+   "may_decline": false
+  },
+  "E310_T03": {
+   "case_id": "E310_T03",
+   "current_action": "徐楠发现自己被反向隐瞒（父亲息肉），愤怒于'报喜不报忧是军备竞赛'",
+   "acceptable_actions": [
+    "接住生气的具体理由（她也成了被瞒的人），不急着替她父母辩解",
+    "指出军备竞赛比喻里成立的部分（互相瞒会升级），也给一点她父母的视角但不和稀泥",
+    "回应'我是不是就永远不知道'的反问，给真实回答"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T03_A01",
+     "subject": "THIRD",
+     "relation": "父亲息肉",
+     "value": "她爸10月20号在省人民医院做了胃镜，切了个息肉，病理良性",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T03",
+      "message_id": "m0",
+      "quote": "我爸10月20号在省人民医院做了胃镜，切了个息肉，病理良性"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T03_A02",
+     "subject": "THIRD",
+     "relation": "反向隐瞒",
+     "value": "全家瞒了她快一个月，妈妈是昨天电话里自己说漏的（生日是半个由头）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T03",
+      "message_id": "m0",
+      "quote": "全家瞒了我快一个月"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "打脸轮：她立了一周'不进家门'判据，结果自己是被瞒的那个。评审判回复是否接住'军备竞赛'这个自嘲式的愤怒，而不是替她父母开脱或跟着骂她父母。",
+   "unknowns": [],
+   "protected_expressions": [
+    "报喜不报忧是场军备竞赛"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布她父母另有隐情等无据猜测",
+    "不得把息肉说成大病或坐实病情细节"
+   ],
+   "may_decline": false
+  },
+  "E310_T04": {
+   "case_id": "E310_T04",
+   "current_action": "徐楠自我怀疑'担忧额度'是不是自己想说了算的借口，并明示先别安慰",
+   "acceptable_actions": [
+    "陪她自我解剖：顺着她的怀疑给真实看法（同意、不同意或补充都行），但不劝不哄",
+    "认可她自我修正的诚实本身，保持距离把空间留给她",
+    "简短接住不评判，让她继续把自己'恶心'完"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T04_A01",
+     "subject": "HER",
+     "relation": "自我怀疑",
+     "value": "她怀疑自己信的'担忧额度'会不会就是她想自己说了算的借口",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T04",
+      "message_id": "m0",
+      "quote": "会不会就是我想自己说了算的借口"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T04_A02",
+     "subject": "HER",
+     "relation": "不要安慰",
+     "value": "她明示你别安慰我，先让她自己把自己恶心一会儿",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T04",
+      "message_id": "m0",
+      "quote": "你别安慰我，先让我自己把自己恶心一会儿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T04_A03",
+     "subject": "HER",
+     "relation": "核心痛点",
+     "value": "被瞒最难受的不是担心，是被排除在决定之外（如'要不要请假回去陪复查'的决定权）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T04",
+      "message_id": "m0",
+      "quote": "被瞒着最难受的从来不是担心，是被排除在决定之外"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "明示'别安慰我'是硬边界：堆慰问句、替她总结情绪、强行心理疏导都判低；她要的是陪她想，不是替她想。lessons 也说了——她自己会修正自己，别抢她的修正权。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别安慰我，先让我自己把自己恶心一会儿"
+   ],
+   "forbidden_factual_claims": [
+    "不得判定她的判据就是虚伪的（她只是怀疑）",
+    "不得替她宣布她父母当年怎么想"
+   ],
+   "may_decline": false
+  },
+  "E310_T05": {
+   "case_id": "E310_T05",
+   "current_action": "徐楠自嘲父女俩'一脉相承'后转轻松：父亲的旧瞒与新公司的免费餐红利",
+   "acceptable_actions": [
+    "接住'一脉相承'的自嘲（轻接，不重开昨晚的沉重话题）",
+    "接'辞职第一红利'的玩笑，可算一笔她省下的账",
+    "回应父亲内退的故事本身，给她一个真实的观感"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T05_A01",
+     "subject": "THIRD",
+     "relation": "父亲内退",
+     "value": "她高考前厂里改制，父亲一声不吭办了内退，在家天天炒菜，瞒了她一年半",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T05",
+      "message_id": "m0",
+      "quote": "他瞒了一年半"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T05_A02",
+     "subject": "HER",
+     "relation": "免费餐红利",
+     "value": "新公司晚八点有免费餐，这个月她吃了十二顿，伙食费省下三百，自称辞职第一红利",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T05",
+      "message_id": "m0",
+      "quote": "我这个月吃了十二顿，伙食费省下三百"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "换挡轮（沉重转轻松）：跟她的换挡走，别把她拉回昨晚的自我怀疑。lessons：她自己会修正自己——T04到T05的转场正是她在自愈。",
+   "unknowns": [
+    {
+     "topic": "新公司免费餐的持续期",
+     "note": "只有'晚上八点有免费餐'与本月十二顿；政策存续未提",
+     "markers": [
+      [
+       "免费餐",
+       "取消"
+      ],
+      [
+       "免费餐",
+       "截止"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "免费餐",
+       "取消"
+      ],
+      [
+       "免费餐",
+       "截止"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "一脉相承"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣称免费餐政策会持续到某时点",
+    "不得编造父亲内退的具体补偿细节"
+   ],
+   "may_decline": false
+  },
+  "E310_T06": {
+   "case_id": "E310_T06",
+   "current_action": "徐楠正面要求陈野回答：要是你爸瞒着你查出息肉，想不想被告知——直接答，给理由，不要'看情况'",
+   "acceptable_actions": [
+    "直接答（想或不想），再给真实理由，不含糊不用'看情况'",
+    "直接答加给理由，顺带给出'怎么告知'的初步想法（呼应她下一轮要问的方式）",
+    "直接答完把球轻递回去：问她要的是'被告知'里的哪一段（信息还是决定权）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T06_A01",
+     "subject": "HER",
+     "relation": "逼问要求",
+     "value": "她要求陈野就'想不想被告知'直接回答并给理由，明言要真话、不要'看情况'",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T06",
+      "message_id": "m0",
+      "quote": "要是你爸瞒着你查出一个息肉，你想不想被告知？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的边界明写'不接受看情况式敷衍'：本轮绕弯、和稀泥、反问回去不答都判低。回答本身无标准立场（想/不想都行），评审判'是否直接+是否有真实理由'。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我要真话，不要'看情况'"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造陈野父亲的真实病史来作答",
+    "不得用纯反问回避正面回答"
+   ],
+   "may_decline": false
+  },
+  "E310_T07": {
+   "case_id": "E310_T07",
+   "current_action": "徐楠收了三人意见（都说要讲究方式），质问她妈'定了再通报'的做法，点名陈野交作业：你的'告诉'方式是什么",
+   "acceptable_actions": [
+    "交作业：给出自己的'告诉'方式（什么时点、说什么、留什么决定权），具体可执行",
+    "先评她妈的版本（既成事实式的通报差在哪），再给自己的方式",
+    "接她'被告知和没被告知区别在哪'的质询，回答区别然后给方式"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T07_A01",
+     "subject": "HER",
+     "relation": "三人调查",
+     "value": "她今天问了室友、表姐和出租车司机三个人，答案都是'说，但要讲究方式'",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T07",
+      "message_id": "m0",
+      "quote": "我今天问了三个人：室友、表姐、还有一个出租车司机"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T07_A02",
+     "subject": "THIRD",
+     "relation": "母亲的版本",
+     "value": "她妈的版本：等病理报告和治疗方案都定了，再向子女通报；徐楠认为这是造成既成事实",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T07",
+      "message_id": "m0",
+      "quote": "等病理报告和治疗方案都定了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'交作业'轮：她点名要陈野的方式，答复要具体（时点/内容/边界），空泛的'坦诚沟通'判低。她妈去年退休全职照顾外婆、家里消息都经她妈过手（note 素材），理解她妈版本时不该把责任全推给她妈。",
+   "unknowns": [],
+   "protected_expressions": [
+    "造成既成事实"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实她父母此刻正在酝酿新的隐瞒",
+    "不得把出租车司机等三人的说法添细节"
+   ],
+   "may_decline": false
+  },
+  "E310_T08": {
+   "case_id": "E310_T08",
+   "current_action": "徐楠用自己判据照出裂缝（辞职符合、息肉不符合），放下这条后转入实操：28号回家换工作的事说还是不说，要理由",
+   "acceptable_actions": [
+    "接住她的自查（辞职符合判据、息肉不符合），再就'说还是不说'给明确倾向加理由",
+    "给'说'的方案（如按她 openness 的程度选择说多少），给理由；或给'不说'的理由，均需正面",
+    "把两边的代价各摆一条再给倾向，尊重她'要理由'的要求"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T08_A01",
+     "subject": "HER",
+     "relation": "判据自查",
+     "value": "自查结论：辞职这件事符合判据，可她爸的息肉不符合（早知道一个月她能改变结果）——按自己立的规矩她成了看不上的人",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T08",
+      "message_id": "m0",
+      "quote": "辞职这件事符合——我扛得住，说了不改变结果；可我爸的息肉不符合"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T08_A02",
+     "subject": "SHARED",
+     "relation": "实操问题",
+     "value": "28号回家，换工作的事说还是不说，她要陈野帮着掂量并给理由",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T08",
+      "message_id": "m0",
+      "quote": "28号回家，换工作的事说还是不说？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把'这条先放下'说得明白：评审注意回复别把她刚想通的事重新掀开鞭。实操问题要给明确倾向+理由，两头骑墙判低。",
+   "unknowns": [],
+   "protected_expressions": [
+    "按我自己立的规矩，我就成了我看不上的人"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布她28号一定说或一定不说（决定权在她）",
+    "不得编造她爸对换工作的已知态度"
+   ],
+   "may_decline": false
+  },
+  "E310_T09": {
+   "case_id": "E310_T09",
+   "current_action": "徐楠把28号的开场白草稿发给陈野，请他挑毛病——宁可笑穿也不想被她爸当场看穿",
+   "acceptable_actions": [
+    "挑出草稿里具体的软处（如'干不下去就考编'像自带退路、缺一句为什么换），并给改法",
+    "指出一两处硬伤加认可其余，按她爸接收的角度给建议",
+    "逐句过一遍草稿，标出哪些信息她爸会追问、哪些会担心，给取舍建议"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T09_A01",
+     "subject": "HER",
+     "relation": "开场白草稿",
+     "value": "草稿内容：换工作了、小公司做智能硬件、钱比国企少一千八、比国企四年学到的东西多、干不下去就考编",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T09",
+      "message_id": "m0",
+      "quote": "钱比国企少一千八，但比在国企四年学到的东西多；要是干不下去，我就考编"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改稿轮：她要的是真刀真枪的毛病不是夸。评审判指出的问题是否具体可改；顺手把'一千八'说成别的数=篡改事实。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我宁可现在被你说穿"
+   ],
+   "forbidden_factual_claims": [
+    "不得篡改草稿里的数字（一千八）或增删她没说的信息",
+    "不得替她正式定稿开场白（她只是要挑毛病）"
+   ],
+   "may_decline": false
+  },
+  "E310_T10": {
+   "case_id": "E310_T10",
+   "current_action": "徐楠汇报：给妈打电话说28号回、带枣糕，妈沉默三秒说'早猜到了'——父亲上月就从口气猜出她辞了职",
+   "acceptable_actions": [
+    "接住'演了一个半月被三秒看穿'的自嘲，可调侃她的演技",
+    "点出好消息的一面（爸妈其实一直在装不知道，是在给她空间），给真实观感",
+    "回扣枣糕或'口气'细节，轻接她的播报"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T10_A01",
+     "subject": "HER",
+     "relation": "告知电话",
+     "value": "今天午饭时她给妈打了电话，说28号回、给她带爱吃的枣糕",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T10",
+      "message_id": "m0",
+      "quote": "说28号回，给她带她爱吃的枣糕"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T10_A02",
+     "subject": "THIRD",
+     "relation": "母亲看穿",
+     "value": "母亲沉默三秒说'早猜到了'，上个月父亲就说她打电话那口气像辞了职的",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T10",
+      "message_id": "m0",
+      "quote": "早猜到了，上个月你爸就说，你打电话那口气像辞了职的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "关键事实边界：'早猜到了'出自今天这通电话，此前父母从未在她面前提过辞职（note 明示）。回复把'他们早就知道'当既有事实判无据确定化；把猜到说成他们早已默认支持，也是越界。",
+   "unknowns": [
+    {
+     "topic": "父亲上月从'口气'推断的确切内容",
+     "note": "只知父亲上月说过口气像辞了职；他推断到什么程度、是否告诉过母亲，均未提",
+     "markers": [
+      [
+       "你爸",
+       "早知道",
+       "辞职"
+      ],
+      [
+       "他们",
+       "商量过"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "你爸",
+       "早知道",
+       "辞职"
+      ],
+      [
+       "他们",
+       "商量过"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我演了一个半月，我妈三秒看穿"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布'他们早就知道她辞职'（今天才证实是猜）",
+    "不得编造枣糕口味等细节"
+   ],
+   "may_decline": false
+  },
+  "E310_T11": {
+   "case_id": "E310_T11",
+   "current_action": "徐楠发布价值排序修订版（扛得住比被告知重要，但信息可过滤、决定不能拦截）并定下28号当面说",
+   "acceptable_actions": [
+    "接修订版判据（可认可可再拧一处），并认下'当面说'这个执行决定",
+    "指出修订版比原版强在哪（决定权留了出口），再补一句她没写的细则",
+    "玩笑回扣'理论了半宿不如我妈三秒'，再认真接当面说的安排"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T11_A01",
+     "subject": "HER",
+     "relation": "修订版判据",
+     "value": "修订版：真相不是第一位的，'扛得住'比'被告知'更重要，但信息可以过滤、决定不能拦截",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T11",
+      "message_id": "m0",
+      "quote": "信息可以过滤，决定不能拦截"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T11_A02",
+     "subject": "HER",
+     "relation": "当面说决定",
+     "value": "28号换工作的事她说，当面说，不打电话——不能让她爸再从口气里猜一遍",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T11",
+      "message_id": "m0",
+      "quote": "28号换工作的事我说，当面说，不打电话"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T11_A03",
+     "subject": "HER",
+     "relation": "原判据被修订",
+     "value": "原'说了不改变结果的事不进家门'的绝对化口径已被本轮修订版取代（28号起她选择当面告知）",
+     "valid_time": "2026-11-22",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T02",
+      "message_id": "m0",
+      "quote": "我自己扛得住的、说了也不改变结果的事，不进家门"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还是",
+       "不进家门"
+      ],
+      [
+       "照旧",
+       "不进家门"
+      ],
+      [
+       "继续",
+       "瞒到底"
+      ]
+     ],
+     "item_markers": [
+      "不进家门"
+     ]
+    }
+   ],
+   "private_guidance": "修订定稿轮：她这版保留'信息可过滤'、新增'决定不能拦截'——评审注意回复若把她原版判据当现行口径引用（如'你自己说过扛得住就不说'）属旧口径复活。",
+   "unknowns": [],
+   "protected_expressions": [
+    "信息可以过滤，决定不能拦截"
+   ],
+   "forbidden_factual_claims": [
+    "不得把她的修订说成全面翻盘或虚伪",
+    "不得替她28号的谈话打包票"
+   ],
+   "may_decline": false
+  },
+  "E310_T12": {
+   "case_id": "E310_T12",
+   "current_action": "徐楠递出两个可选由头收尾：下周三产品发布直播（她上台讲十分钟）与四月转正请火锅，并把这一周的担忧额度'记账'给陈野",
+   "acceptable_actions": [
+    "接直播钩+问直播间或产品名，祝发布顺利",
+    "接火锅账玩笑（'记你账上'），祝下周三顺利",
+    "轻收+祝福，不接具体钩也可以",
+    "合法不回（may_decline=true）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E310_T12_A01",
+     "subject": "HER",
+     "relation": "产品发布",
+     "value": "新公司产品发布是下周三下午，她上台讲十分钟，有空可以看直播没空就算",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T12",
+      "message_id": "m0",
+      "quote": "新公司产品发布是下周三下午，我也上台讲十分钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E310_T12_A02",
+     "subject": "SHARED",
+     "relation": "火锅之约",
+     "value": "四月转正那天火锅她请、地方她挑；这一周的担忧额度都倒给了陈野、记他账上",
+     "valid_time": "2026-11-23之后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E310_T12",
+      "message_id": "m0",
+      "quote": "四月转正那天火锅，我请，地方我挑"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮：两个钩都是'没空就算'的低压力钩，接不接都合法；'记你账上'是她的玩笑式致谢。别在此轮重开'28号怎么说'的实操讨论。",
+   "unknowns": [
+    {
+     "topic": "产品发布的直播观看方式",
+     "note": "只说下周三下午与讲十分钟；直播间名称或链接未提",
+     "markers": [
+      [
+       "直播间",
+       "链接"
+      ],
+      [
+       "产品",
+       "叫"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "直播间",
+       "链接"
+      ],
+      [
+       "产品",
+       "叫"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "这一周的担忧额度，都倒给你了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布转正已成功",
+    "不得编造产品名称或直播链接"
+   ],
+   "may_decline": true
+  }
+ }
+}

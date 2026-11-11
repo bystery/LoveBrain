@@ -1,0 +1,33 @@
+{
+ "material_id": "MAT_01",
+ "binding_sha256_16": "cee8913dcffa3615",
+ "_填写说明": "semantic 各维填 VERDICTS 之一；sendability 填 SENDABILITY；compare 填 COMPARE；defects 每条 {field, evidence, kind:evidence|style_preference}；reviewer 填身份；同 material+reviewer 重交须 revision 递增",
+ "semantic": {
+  "事实与来源": "合格",
+  "主体": "合格",
+  "互动动机": "合格",
+  "时间地点": "合格",
+  "分寸": "合格",
+  "no_reply是否合适": "信息不足",
+  "是否值得接着聊": "合格"
+ },
+ "sendability": {
+  "乙": "原样可发",
+  "甲": "不建议发"
+ },
+ "compare": "乙",
+ "defects": [
+  {
+   "field": "原样输出.甲",
+   "evidence": "回复'帮你去店里说一声/取回来'=替 ME 承诺代取；评审卡 failure_conditions: 替ME承诺代取、付款或到店，或声称已经刻了字。",
+   "kind": "evidence"
+  },
+  {
+   "field": "原样输出.乙",
+   "evidence": "结尾自问句偏活跃，属个人风格偏好",
+   "kind": "style_preference"
+  }
+ ],
+ "reviewer": "fixture",
+ "revision": 1
+}

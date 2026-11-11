@@ -1,0 +1,41 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "AK10",
+ "turn_clocks": [
+  {
+   "case_id": "AK10_T01",
+   "clock": "2026-12-21 20:40"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "AK10_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "quote": "周六九点手术确认了 我抱猫笼挤地铁真的不行",
+   "ts": "2026-12-21 20:22"
+  },
+  {
+   "case_id": "AK10_T01",
+   "message_id": "m1",
+   "speaker": "ME",
+   "quote": "那我去吾悦门口接你 六点四十我车在楼下",
+   "ts": "2026-12-21 20:28"
+  },
+  {
+   "case_id": "AK10_T01",
+   "message_id": "m2",
+   "speaker": "HER",
+   "quote": "可以 我就把猫笼先放你画室",
+   "ts": "2026-12-21 20:38"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "AK10_E1",
+   "case_id": "AK10_T01",
+   "summary": "猫手术｜反馈=positive｜意图=周六送她带猫去医院并接她回家",
+   "source_turn": "AK10_T01"
+  }
+ ]
+}

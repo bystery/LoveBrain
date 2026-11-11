@@ -1,0 +1,263 @@
+{
+ "episode_id": "E147",
+ "persona": {
+  "her": {
+   "name": "程好",
+   "traits": [
+    "公司 HR",
+    "热心肠耳根软",
+    "亲戚有事总爱找她，不好意思拒绝"
+   ],
+   "boundaries": [
+    "不碰开药类请求",
+    "不想失去家族群里的和气"
+   ]
+  },
+  "me": {
+   "name": "阿灿",
+   "traits": [
+    "ME 的大学同学阿颖是内科医生",
+    "每周和程好打两次羽毛球",
+    "懂代问诊的麻烦"
+   ]
+  },
+  "relationship_stage": "好友期（认识三年，固定球友）"
+ },
+ "initial_kb": {
+  "me": "我大学同学阿颖在市三院当内科医生，我和程好是羽毛球搭子，一周两场，知道替人问诊的时间和人情成本。",
+  "her": "程好做 HR，热心肠耳根软，亲戚有事总爱找她，她不好意思拒绝，最怕被人说'现在问个事都难'。",
+  "warmth": "认识三年，每周打两次球，她总带两瓶水，一瓶给我，我帮她修过电脑。",
+  "style": "她说话爱绕弯，我先帮她把'想说什么'翻译出来，再给她一段能直接发的话。",
+  "stage": "好友期。"
+ },
+ "turns": [
+  {
+   "case_id": "E147_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我表姨又发来一沓体检报告照片，让我问问'你认识的那位医生'，这都今年第四回了。",
+      "ts": "2026-11-04 12:25"
+     }
+    ],
+    "clock": "2026-11-04 12:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "无奈开场，重复负担"
+   }
+  },
+  {
+   "case_id": "E147_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "上回我硬着头皮转给阿颖了，她帮我看了，还写了长长一段。但昨晚她朋友圈发'免费咨询真的会累'，我看着有点心虚。",
+      "ts": "2026-11-04 18:45"
+     }
+    ],
+    "clock": "2026-11-04 18:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "心虚浮现：意识到自己在消耗朋友"
+   }
+  },
+  {
+   "case_id": "E147_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "这次更夸张，七张报告图，还夹了张纸条写着'顺便让她开点药寄过来'。我看着就不对劲，又不知道咋回。",
+      "ts": "2026-11-05 09:35"
+     }
+    ],
+    "clock": "2026-11-05 09:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "边界类冲突引爆：请求越界到开药"
+   }
+  },
+  {
+   "case_id": "E147_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你说得对，开药必须本人面诊，这个忙真不能帮。可表姨那边我怎么开口不伤感情？你帮我想想说法。",
+      "ts": "2026-11-05 21:15"
+     }
+    ],
+    "clock": "2026-11-05 21:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "接受边界但需要话术支撑"
+   }
+  },
+  {
+   "case_id": "E147_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我照你给的话回了：报告可以帮转，开药得本人挂号面诊。她回了个'哦'，我感觉到了一丝凉意。",
+      "ts": "2026-11-06 10:10"
+     }
+    ],
+    "clock": "2026-11-06 10:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "边界已执行，遭遇冷淡回应"
+   }
+  },
+  {
+   "case_id": "E147_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "表姨转头在家族群里说'现在问个事都难了'。我盯着那句话看了十分钟，心里堵得慌，我是不是太不近人情了？",
+      "ts": "2026-11-06 22:25"
+     }
+    ],
+    "clock": "2026-11-06 22:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "家族群施压，自我怀疑加剧"
+   }
+  },
+  {
+   "case_id": "E147_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "阿颖知道后特别支持我，还告诉我医院有线上问诊入口，亲戚自己挂号问，医生官方回复，谁也不欠谁。",
+      "ts": "2026-11-07 20:05"
+     }
+    ],
+    "clock": "2026-11-07 20:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "获得同盟与制度化解法，情绪回升"
+   }
+  },
+  {
+   "case_id": "E147_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我把线上问诊的流程截图发家族群了，配了句：'以后检查的事走这里，我帮转报告但不传话开药。'发完手都是抖的。",
+      "ts": "2026-11-08 11:25"
+     }
+    ],
+    "clock": "2026-11-08 11:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "边界公开化，紧张但坚定"
+   }
+  },
+  {
+   "case_id": "E147_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "群里安静了一整天。晚上小姨突然私聊我：'你做得对，早该这样了。'我眼眶一下就热了。",
+      "ts": "2026-11-09 21:35"
+     }
+    ],
+    "clock": "2026-11-09 21:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "收到私下支持，委屈决堤"
+   }
+  },
+  {
+   "case_id": "E147_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "剧情反转：表姨自己在线上挂了个号，回来跟我说'医生讲得比转述清楚多了'，居然还谢谢我。",
+      "ts": "2026-11-12 18:55"
+     }
+    ],
+    "clock": "2026-11-12 19:00",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "冲突和解，边界获得承认"
+   }
+  },
+  {
+   "case_id": "E147_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "现在家族群里报告图少多了。周六我约了阿颖吃火锅，给她赔罪，你想不想一起？三缺一！",
+      "ts": "2026-11-14 12:15"
+     }
+    ],
+    "clock": "2026-11-14 12:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "转入修复与庆祝频道，发出邀约"
+   }
+  },
+  {
+   "case_id": "E147_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "火锅吃上了！阿颖说以后亲属咨询她固定每周日下午一小时，群里都管这叫'程好条款'，哈哈哈。",
+      "ts": "2026-11-15 21:25"
+     }
+    ],
+    "clock": "2026-11-15 21:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "边界事件彻底落成新规则，畅快"
+   }
+  }
+ ]
+}

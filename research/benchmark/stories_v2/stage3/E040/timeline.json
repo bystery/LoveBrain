@@ -1,0 +1,143 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E040",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E040_T01",
+   "clock": "2026-11-03 19:03"
+  },
+  {
+   "case_id": "E040_T02",
+   "clock": "2026-11-03 19:06"
+  },
+  {
+   "case_id": "E040_T03",
+   "clock": "2026-11-03 19:10"
+  },
+  {
+   "case_id": "E040_T04",
+   "clock": "2026-11-03 19:14"
+  },
+  {
+   "case_id": "E040_T05",
+   "clock": "2026-11-04 09:20"
+  },
+  {
+   "case_id": "E040_T06",
+   "clock": "2026-11-04 09:24"
+  },
+  {
+   "case_id": "E040_T07",
+   "clock": "2026-11-04 09:28"
+  },
+  {
+   "case_id": "E040_T08",
+   "clock": "2026-11-04 09:32"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E040_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-03 19:02",
+   "quote": "周六老陈约的几点 来两套还是一套"
+  },
+  {
+   "case_id": "E040_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-03 19:04",
+   "quote": "周六十点 先看滨河那套 老陈说另一套要另约"
+  },
+  {
+   "case_id": "E040_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-03 19:09",
+   "quote": "我同事说那小区物业可差了 电梯老坏"
+  },
+  {
+   "case_id": "E040_T04",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-03 19:12",
+   "quote": "先记成待核实 周六我当面问老陈再看两栋楼的公告栏"
+  },
+  {
+   "case_id": "E040_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-04 09:18",
+   "quote": "把老陈改到周日吧 下午两点 你姐夫也去 他周六才出差回来"
+  },
+  {
+   "case_id": "E040_T06",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-04 09:22",
+   "quote": "行 我跟老陈说 改周日下午两点 四个人一起看"
+  },
+  {
+   "case_id": "E040_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-04 09:26",
+   "quote": "对了 押金到底付几 首付他会不会乱报"
+  },
+  {
+   "case_id": "E040_T08",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-04 09:30",
+   "quote": "周日我带纸质合同模板对照 押金条让老陈写清退款条件 你先把房源链接发我"
+  },
+  {
+   "case_id": "E040_T08",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-04 09:31",
+   "quote": "行 发你了 周日见"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "周六看房（后改期）",
+   "event_time": "2026-11-07 10:00",
+   "status": "planned",
+   "source_turn": "E040_T02"
+  },
+  {
+   "event_id": "EV2",
+   "label": "周日下午看房（改期后，表姐夫加入）",
+   "event_time": "2026-11-08 14:00",
+   "status": "planned",
+   "source_turn": "E040_T05"
+  },
+  {
+   "event_id": "EV3",
+   "label": "物业好坏待核实",
+   "event_time": "2026-11-08 14:00",
+   "status": "planned",
+   "source_turn": "E040_T03"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "亲戚参谋"
+  },
+  {
+   "turn": "T05",
+   "stage": "改期+人员扩大"
+  },
+  {
+   "turn": "T08",
+   "stage": "分工明确待看房"
+  }
+ ],
+ "revisions": [],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

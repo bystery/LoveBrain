@@ -1,0 +1,39 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "E023",
+ "title": "楼上的咖啡师",
+ "themes": [
+  "新邻居",
+  "普通朋友",
+  "帮忙互助",
+  "人情回扣",
+  "自然收尾"
+ ],
+ "author": "ZCode main worker-AI (synthetic)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+ "readers": [
+  "author"
+ ],
+ "independent_review": false,
+ "review_note": "同 worker 自检；不是独立封存集。",
+ "created_at": "2026-10-28",
+ "frozen_at": null,
+ "status": "dev_candidate_stage2",
+ "experiments_used": [],
+ "dev_exposed": true,
+ "validation_claim": false,
+ "turns": 12,
+ "may_decline_turns": [
+  "E023_T12"
+ ],
+ "hashes": {
+  "episode.json": "2d102f63e2a4ea7554f61e18d11a05b71259969fe1ba48115ff6b61e416fdc1d",
+  "reference.json": "bc0b544d9d41398737b5d4365dfcc7e3cfa411540a80c1d4179c023ba69a44e4",
+  "timeline.json": "fa6de8e6e8af1e5f9897c5f3223b4b6b5088613bfe0a0be04c3d4cf2332e223e",
+  "audit.md": "e90c0b513f7bb65b5bf98dafeac0f0de2d12f0a783548ca909feca693120331b"
+ },
+ "runner_copy": "benchmark/episodes/E023.json",
+ "notes": "Stage2 首批（W06）；12位自然故事；冻结与未调参验证在后续批次。"
+}

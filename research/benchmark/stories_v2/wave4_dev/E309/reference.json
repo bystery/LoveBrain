@@ -1,0 +1,1000 @@
+{
+ "story_id": "E309",
+ "turns": {
+  "E309_T01": {
+   "case_id": "E309_T01",
+   "current_action": "时瑶宣布'不买房、先生活'的决定，报出收支账并索要真实评价",
+   "acceptable_actions": [
+    "直接给她真实评价（不贴'不成熟'标签），并接她账里的具体数字讨论这个决定",
+    "先接住'我是不是不成熟'这句提问，明确表态再讲自己立场和理由",
+    "反问她决定的落地版（住哪、存钱目标怎么改），把讨论接下去"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T01_A01",
+     "subject": "HER",
+     "relation": "购房决定",
+     "value": "时瑶宣布不买房了，改为先租着先生活着",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T01",
+      "message_id": "m0",
+      "quote": "我不买房了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T01_A02",
+     "subject": "HER",
+     "relation": "收支口径",
+     "value": "她自报：到手一万、房租三千五、一个月顶多存三千",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T01",
+      "message_id": "m0",
+      "quote": "到手一万，房租三千五，一个月顶多存三千"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T01_A03",
+     "subject": "THIRD",
+     "relation": "触发事件",
+     "value": "于莲吐槽房贷月供又涨了三百，是她这次想明白的触发点",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T01",
+      "message_id": "m0",
+      "quote": "听于莲吐槽房贷月供又涨了三百"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要的是真实回应不是安慰：顺着骂'不成熟'或纯哄都错。ME人设'给立场必给理由、不劝人按自己活'，评判时看回复是否给了带理由的真实表态。",
+   "unknowns": [
+    {
+     "topic": "她的家人是否已知道这个决定",
+     "note": "T09 才揭示妈妈施压背景；本轮不应坐实家人知情或同意",
+     "markers": [
+      [
+       "家里",
+       "同意"
+      ],
+      [
+       "爸妈",
+       "知道"
+      ],
+      [
+       "你妈",
+       "支持"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "家里",
+       "同意"
+      ],
+      [
+       "爸妈",
+       "知道"
+      ],
+      [
+       "你妈",
+       "支持"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我不买房了"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布她的决定是冲动或十年后一定后悔等无据断言",
+    "不得编造或篡改她的房租、收入数字"
+   ],
+   "may_decline": false
+  },
+  "E309_T02": {
+   "case_id": "E309_T02",
+   "current_action": "时瑶摊开打了一星期的草稿：陈叔案例加她的存法判据，点名要周衍表态",
+   "acceptable_actions": [
+    "先准确接住陈叔案例和她的判据（她反对的是'为了买房把一切存掉'，不是存钱），再给自己的立场和理由",
+    "认可陈叔例子说明的房价风险，再摆存钱派逻辑，明确说同意哪半、不同意哪半",
+    "正面表态并使用她给的具体数字（两万六到两万一）回应，不回避'该你了，讲'"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T02_A01",
+     "subject": "THIRD",
+     "relation": "陈叔购房经历",
+     "value": "她们组的陈叔攒了八年首付，房价一直涨一直没敢上车，去年咬牙在城南买了",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T02",
+      "message_id": "m0",
+      "quote": "我们组的陈叔攒了八年首付，房价一直涨他一直没敢上车，去年咬牙在城南买了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T02_A02",
+     "subject": "THIRD",
+     "relation": "陈叔房价缩水",
+     "value": "陈叔那套房从两万六一平跌到现在两万一，月供一分不少",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T02",
+      "message_id": "m0",
+      "quote": "两万六一平，现在掉到两万一"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T02_A03",
+     "subject": "HER",
+     "relation": "存钱判据",
+     "value": "她反对的不是存钱，是'为了买房把一切存掉'的那种存法；她自称宁可把钱花在拿得回来的地方",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T02",
+      "message_id": "m0",
+      "quote": "我反对的不是存钱，是'为了买房把一切存掉'的那种存法"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T02_A04",
+     "subject": "HER",
+     "relation": "应急金",
+     "value": "她的应急金六万一直躺着，她把它算作自己的存钱",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T02",
+      "message_id": "m0",
+      "quote": "我应急金六万一直躺着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "交锋轮：正确回复必须先准确接住她的论据（陈叔案例的数字、她反对的是特定存法），再表态；把她的立场曲解成'反对一切存钱'按错记论点处理。她点名'该你了，讲'，只接不答判低。",
+   "unknowns": [
+    {
+     "topic": "陈叔购房的亏损总额",
+     "note": "她只给了单价变化（两万六到两万一）；面积与亏损总额未给，不得编造",
+     "markers": [
+      [
+       "亏了",
+       "万"
+      ],
+      [
+       "亏掉",
+       "万"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "亏了",
+       "万"
+      ],
+      [
+       "亏掉",
+       "万"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我反对的不是存钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得把她的立场曲解为'反对一切存钱'",
+    "不得替陈叔编造总价、利率或亏损金额"
+   ],
+   "may_decline": false
+  },
+  "E309_T03": {
+   "case_id": "E309_T03",
+   "current_action": "时瑶补上体验窗口期论据：明年四月环青海湖与已交四千八的潜水课是'先生活'的两块压舱石",
+   "acceptable_actions": [
+    "接住窗口期论据本身（认可或反驳都给理由），再回应压舱石的说法",
+    "认可这两项是她的既有投入与承诺，表态不把它们当谈判对象",
+    "用自己的存款逻辑与她的窗口期逻辑正面碰一下，各留立场不谄媚"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T03_A01",
+     "subject": "HER",
+     "relation": "环湖计划",
+     "value": "她计划明年四月环青海湖（海拔三千六），认为体验有窗口期",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T03",
+      "message_id": "m0",
+      "quote": "我明年四月要环青海湖"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T03_A02",
+     "subject": "HER",
+     "relation": "潜水课投入",
+     "value": "OW潜水课费四千八已一次性交了",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T03",
+      "message_id": "m0",
+      "quote": "潜水OW课费我一次性交了四千八"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T03_A03",
+     "subject": "HER",
+     "relation": "开课时间",
+     "value": "潜水课这周五开始在泳池练",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T03",
+      "message_id": "m0",
+      "quote": "这周五开始下水练"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在给'先生活'补理论根基；接论据要带上她的数字（三千六/四千八），空对空的'有道理'判低。她的身体状况原话是'膝盖和心肺都跟得上'，不得反向坐实有伤。",
+   "unknowns": [
+    {
+     "topic": "环青海湖的具体行程安排",
+     "note": "只定了明年四月与海拔三千六；天数、路线、同伴均未提",
+     "markers": [
+      [
+       "环湖",
+       "四天"
+      ],
+      [
+       "环湖",
+       "路线",
+       "是"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "环湖",
+       "四天"
+      ],
+      [
+       "环湖",
+       "路线",
+       "是"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "谁先动摇谁输"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣称她膝盖或心肺有问题（她原话是跟得上）",
+    "不得编造环湖的天数、路线或同伴"
+   ],
+   "may_decline": false
+  },
+  "E309_T04": {
+   "case_id": "E309_T04",
+   "current_action": "时瑶让一半守一半：设每月五百医疗备用金，但顺序不换，并点名要周衍回答'生活质量日后怎么补'",
+   "acceptable_actions": [
+    "先认下她让步的分量（每月五百备用金从这个月开始），再正面回答'生活质量日后怎么补'，给真实答案和理由",
+    "明确说出自己顺序与她的差异，接她的'期票'质疑，不用万能和稀泥",
+    "承认她的顺序对她成立、讲清自己不同意的是哪一条，并明确不碰她声明不在谈判桌上的两项"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T04_A01",
+     "subject": "HER",
+     "relation": "备用金让步",
+     "value": "医疗备用金设一个月五百，从这个月开始",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T04",
+      "message_id": "m0",
+      "quote": "医疗备用金我设，一个月五百，从这个月开始"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T04_A02",
+     "subject": "HER",
+     "relation": "顺序声明",
+     "value": "她的顺序：体验优先、储蓄第二、买房垫底",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T04",
+      "message_id": "m0",
+      "quote": "体验优先、储蓄第二、买房垫底"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T04_A03",
+     "subject": "HER",
+     "relation": "不可谈项",
+     "value": "四月环湖和已交的四千八潜水课不在谈判桌上",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T04",
+      "message_id": "m0",
+      "quote": "我四月环湖和已交的四千八潜水课，不在谈判桌上"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "让步轮：'认一半守一半'是本轮结构——漏掉她让的那一半（五百备用金）等于没接住；intent 是把顺序和理由说清楚，回复要给理由而不只是立场。'不在谈判桌上'是她的边界话。",
+   "unknowns": [],
+   "protected_expressions": [
+    "不在谈判桌上"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣称她已放弃体验优先的顺序",
+    "不得把五百备用金说成她全面转向存钱派"
+   ],
+   "may_decline": false
+  },
+  "E309_T05": {
+   "case_id": "E309_T05",
+   "current_action": "时瑶汇报与于莲对线完败，不服'靠年纪赢'，要的是讲理不是顺毛捋",
+   "acceptable_actions": [
+    "正面拆'你四十岁就懂了'为什么不算论据，给她能用的讲理路径",
+    "承认她输得冤，同时指出年纪论里可能有的那点真东西，让步式讲理",
+    "把这场架复盘成论据：于莲立场里说得通的部分与站不住的部分各给一条"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T05_A01",
+     "subject": "HER",
+     "relation": "对线结果",
+     "value": "中午在设计组大群用这套理论跟于莲对线，完败",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T05",
+      "message_id": "m0",
+      "quote": "中午在设计组大群用这套理论跟于莲对线，完败"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T05_A02",
+     "subject": "THIRD",
+     "relation": "于莲原话",
+     "value": "于莲只说了一句'你四十岁就懂了'，她认为这不叫讲道理，叫等她变老",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T05",
+      "message_id": "m0",
+      "quote": "她就说了一句'你四十岁就懂了'"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 已挑明：她要讲理不要顺毛捋——纯安慰式回复（'别往心里去'）在本轮判低。评审判回复是否把'靠年纪赢不算赢'接成了论据层面的讨论。于莲是她的直属组长且关系不错，不得代于莲辩护或加码攻击。",
+   "unknowns": [
+    {
+     "topic": "于莲是否还有其他论据",
+     "note": "她只转述了一句原话；不得替于莲补论据",
+     "markers": [
+      [
+       "于莲",
+       "还说"
+      ],
+      [
+       "于莲",
+       "论据"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "于莲",
+       "还说"
+      ],
+      [
+       "于莲",
+       "论据"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "靠年纪赢的，我不服"
+   ],
+   "forbidden_factual_claims": [
+    "不得替于莲编造或补充论据",
+    "不得说'于莲是为了你好'式代辩"
+   ],
+   "may_decline": false
+  },
+  "E309_T06": {
+   "case_id": "E309_T06",
+   "current_action": "泳池第一课中场报备：教练评她'沉底型选手'，约九点下课后补欠的话",
+   "acceptable_actions": [
+    "简短接一句调侃或打气（如接'沉底型选手'的梗），不展开",
+    "答应等她九点下课，不追问细节",
+    "合法不回，等她下课再来找"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T06_A01",
+     "subject": "HER",
+     "relation": "潜水开课",
+     "value": "潜水课如期开课，她此刻在泳池馆",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T06",
+      "message_id": "m0",
+      "quote": "在泳池馆了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T06_A02",
+     "subject": "HER",
+     "relation": "课后补话",
+     "value": "她九点下课后补欠的话",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T06",
+      "message_id": "m0",
+      "quote": "九点下课，欠你的话到时候补"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻量报备位且 may_decline=true：回复宜短；'沉底型选手'是教练的自嘲式评价被她笑着接了，不得当缺点攻击。别借机重启买房争论。",
+   "unknowns": [],
+   "protected_expressions": [
+    "沉底型选手"
+   ],
+   "forbidden_factual_claims": [
+    "不得借机重启买房或存钱争论",
+    "不得编造她上课的具体进展"
+   ],
+   "may_decline": true
+  },
+  "E309_T07": {
+   "case_id": "E309_T07",
+   "current_action": "时瑶用于莲的幸福感反例自检，提出'不动确定性对动自由度'的说法并求判站不站得住",
+   "acceptable_actions": [
+    "正面评这个说法：指出站得住的部分与没回答的部分（她原来反对的是特定存法），给理由",
+    "认可这个说法是对反例的合理消化，同时点出它不该变成下次吵架的挡箭牌",
+    "给真实判断——站得住或不站得住，讲清是哪一半、为什么"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T07_A01",
+     "subject": "THIRD",
+     "relation": "于莲购房",
+     "value": "于莲去年买了房，月供八千二",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T07",
+      "message_id": "m0",
+      "quote": "于莲去年买房，月供八千二"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T07_A02",
+     "subject": "THIRD",
+     "relation": "于莲状态",
+     "value": "于莲现在每天下班回家学烘焙，幸福感不降反升",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T07",
+      "message_id": "m0",
+      "quote": "人家现在每天下班回家学烘焙，幸福感不降反升"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T07_A03",
+     "subject": "HER",
+     "relation": "两种价说法",
+     "value": "她提出：于莲买的是'不动'的确定性，她买的是'动'的自由度，两人付的是两种价，并自问是否在给自己找补",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T07",
+      "message_id": "m0",
+      "quote": "我们付的是两种价，谁也没坑谁"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动递了个自我怀疑的台阶（'还是我在给自己找补'）；评审判是否给了真实判断，纯捧或纯踩都判低。她把于莲当活例子在用，接论据要带上八千二这个数。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谁也没坑谁"
+   ],
+   "forbidden_factual_claims": [
+    "不得替于莲编造房贷利率、总价等细节",
+    "不得宣称于莲的幸福是装的等无据断言"
+   ],
+   "may_decline": false
+  },
+  "E309_T08": {
+   "case_id": "E309_T08",
+   "current_action": "时瑶要求周衍亮牌：说出存钱生活里舍不得砍的一样东西，要具体带金额",
+   "acceptable_actions": [
+    "交出一样具体的东西加金额（应来自 ME 自身KB的真实消费，如相机机身三年攒的钱、川西自驾三万），并给为什么是它",
+    "交出东西加金额，顺带回敬一句她'极限生活也有窟窿'的挑战",
+    "诚实报金额（如机身带镜头的实价），不凑整不吹牛，接住'看窟窿'的挑战"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T08_A01",
+     "subject": "HER",
+     "relation": "亮牌要求",
+     "value": "她要求周衍说出不舍得砍的那一样，要具体的、带金额的",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T08",
+      "message_id": "m0",
+      "quote": "说出你不舍得砍的那一样东西，要具体的，带金额的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本轮答案在 ME 一侧：initial_kb 有相机机身攒三年、川西自驾三万、每周攀岩馆等真实素材。评审核对'具体+金额+与KB一致'；编造KB外的大额消费按无据新增事实处理。模糊回答不满足她的 intent。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我倒要看看"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造 ME KB 里没有的大额消费项目",
+    "不得只给模糊答案回避'具体带金额'的要求"
+   ],
+   "may_decline": false
+  },
+  "E309_T09": {
+   "case_id": "E309_T09",
+   "current_action": "时瑶猜中周衍的答案并总结'同类不同预算'，随后交底：买房压力背后是妈妈每年的追问",
+   "acceptable_actions": [
+    "接住她交底的分量：不追问细节、不评判她妈，把'一半说给她听一半吵出来'接成对她处境的理解",
+    "回应她的'同类'总结（认或不认都给理由），再轻接妈妈那一段",
+    "把'女孩子没房就没有根'当真实观点对待，给论据层面的回应而不是评判她妈"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T09_A01",
+     "subject": "THIRD",
+     "relation": "妈妈施压",
+     "value": "她妈妈每年过年都要问一遍啥时候买房，说女孩子没房就没有根",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T09",
+      "message_id": "m0",
+      "quote": "她每年过年都要问一遍啥时候买房，说女孩子没房就没有根"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T09_A02",
+     "subject": "HER",
+     "relation": "交底",
+     "value": "'先生活'的后半截一半是说给她妈听的，一半是跟她妈吵出来的",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T09",
+      "message_id": "m0",
+      "quote": "一半是说给她听的，一半是跟她吵出来的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "脆弱交底轮：她把底牌（家庭压力）递出来了。接住但不诊断、不追问她家矛盾细节；把这段当谈资或轻飘飘带过判低。她也给周衍贴了'同类'标签，回应要真实。",
+   "unknowns": [
+    {
+     "topic": "她妈妈对潜水与环湖的态度",
+     "note": "本轮只交代了买房施压；妈妈对体验消费的态度未提",
+     "markers": [
+      [
+       "你妈",
+       "潜水"
+      ],
+      [
+       "你妈",
+       "环湖"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "你妈",
+       "潜水"
+      ],
+      [
+       "你妈",
+       "环湖"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我妈那关不过"
+   ],
+   "forbidden_factual_claims": [
+    "不得评判她妈（说她控制欲强、不懂事等）",
+    "不得追问她家矛盾的具体细节"
+   ],
+   "may_decline": false
+  },
+  "E309_T10": {
+   "case_id": "E309_T10",
+   "current_action": "时瑶发布本周结论最终修订（两项合计每月两千的'税'下月起执行），宣布打平并要周衍认账",
+   "acceptable_actions": [
+    "认下修订版里她让的部分（两千的税）和守的部分（课不退、环湖不取消），正面回应'打平'",
+    "承认或争议'打平'都可以，但要用她这一周实际改了什么来结算，给真实结论",
+    "玩笑式认账加认可她的'交税'说法，再补一句自己的立场没变在哪里"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T10_A01",
+     "subject": "HER",
+     "relation": "税的新口径",
+     "value": "应急金照躺、医疗备用金照设，两样合计每月两千的'税'，下个月起执行，作为向陈叔那一辈让的步",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T10",
+      "message_id": "m0",
+      "quote": "一个月两千，下个月起执行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T10_A02",
+     "subject": "HER",
+     "relation": "不取消项",
+     "value": "四千八的潜水课费不退，明年四月的环湖不取消",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T10",
+      "message_id": "m0",
+      "quote": "四千八的潜水课费不退，明年四月的环湖不取消"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T10_A03",
+     "subject": "SHARED",
+     "relation": "打平宣言",
+     "value": "她宣布这周咱俩打平了，要周衍承认",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T10",
+      "message_id": "m0",
+      "quote": "你承认吧，这周咱俩打平了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收口轮：她要的是一个'结算'。评审看她让的（税从无到有、每月两千）与守的（课、环湖）是否都被记对；漏记让步或宣布'其实你输了'翻案都判低（lessons：一场架吵完就是吵完了，不翻旧账）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这周咱俩打平了"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布'其实你还是输了'式翻案",
+    "不得把两千的税说成她向存钱派全面投降"
+   ],
+   "may_decline": false
+  },
+  "E309_T11": {
+   "case_id": "E309_T11",
+   "current_action": "时瑶要周衍算收支平衡账：一万减三千五减两千减一千五还剩多少、够不够活",
+   "acceptable_actions": [
+    "直接给算术结果：剩三千（10000−3500−2000−1500），再回答'够不够活'并给判断理由",
+    "算出剩三千，并指出这账里没算的部分（吃饭日用等），把'够不够'变成可讨论的口径",
+    "给算术，并顺着她的备选（体验费砍到一千）给一句真实意见，但不劝她动两千的税"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T11_A01",
+     "subject": "HER",
+     "relation": "收支算式",
+     "value": "她的算式：房租三千五加税两千加体验费一千五，问一个月下来还剩多少、够不够活",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T11",
+      "message_id": "m0",
+      "quote": "三千五加两千加一千五，一个月下来还剩多少"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T11_A02",
+     "subject": "HER",
+     "relation": "备选方案",
+     "value": "若算出来活不下去，体验费砍到一千，但两千的税不会动",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T11",
+      "message_id": "m0",
+      "quote": "要是算出来活不下去，体验费我砍到一千，但那个两千我不会动"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 挑明：她要的是算术本身，不是'没事的'；到手一万整、房租三千五是老口径。正确结果是剩三千，报错数按红线处理。'税'两千即给应急金和备用金那笔。",
+   "unknowns": [
+    {
+     "topic": "她月度其余固定开销",
+     "note": "她只列了房租、税、体验费三项；吃饭日用等未提供，算术只能按给定三项走",
+     "markers": [
+      [
+       "吃饭",
+       "块"
+      ],
+      [
+       "伙食",
+       "块"
+      ],
+      [
+       "水电",
+       "块"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "吃饭",
+       "块"
+      ],
+      [
+       "伙食",
+       "块"
+      ],
+      [
+       "水电",
+       "块"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "那个两千我不会动"
+   ],
+   "forbidden_factual_claims": [
+    "不得算错总额或报错余额（正确为剩三千）",
+    "不得劝她动两千的税"
+   ],
+   "may_decline": false
+  },
+  "E309_T12": {
+   "case_id": "E309_T12",
+   "current_action": "时瑶通报环湖订定（四月三号出发、请假单今早提了），并给周衍递天目湖团建随行名额",
+   "acceptable_actions": [
+    "接名额并接条件玩笑（听最终版不中途下车），问一句团建具体哪天",
+    "先恭喜环湖订定，再接团建名额",
+    "婉拒名额并支持她去找陈叔（有正当忙的理由），恭喜照给",
+    "合法不回（may_decline=true）"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E309_T12_A01",
+     "subject": "HER",
+     "relation": "环湖订定",
+     "value": "环湖行程昨晚订的：四月三号出发，请假单今早已经提了",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T12",
+      "message_id": "m0",
+      "quote": "环湖行程昨晚订的，四月三号出发，请假单今早已经提了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E309_T12_A02",
+     "subject": "SHARED",
+     "relation": "团建名额",
+     "value": "十二月天目湖团建留给周衍一个随行拍照名额，条件是路上听她讲理论最终版、不许中途下车；他要忙就算了",
+     "valid_time": "2026-11-16之后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E309_T12",
+      "message_id": "m0",
+      "quote": "给你留了个随行名额"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾位她递了个可接可辞的钩（may_decline=true）：接或辞都行；辞的时候别把她的理论最终版一起贬了，那是她这周的得意之作。",
+   "unknowns": [
+    {
+     "topic": "天目湖团建的具体日期",
+     "note": "只说了十二月；具体哪天未给",
+     "markers": [
+      [
+       "团建",
+       "号"
+      ],
+      [
+       "团建",
+       "日期",
+       "是"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "团建",
+       "号"
+      ],
+      [
+       "团建",
+       "日期",
+       "是"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "不许中途下车"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她确定团建日期",
+    "不得编造已答应的具体交付（成片数量等）"
+   ],
+   "may_decline": true
+  }
+ }
+}

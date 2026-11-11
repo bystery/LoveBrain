@@ -1,0 +1,87 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "AK02",
+ "turns": {
+  "AK02_T01": {
+   "case_id": "AK02_T01",
+   "current_action": "她的犹豫是两层（要补觉+不敢用力）——承认这两层并把目标改成更轻或改期，不是继续说服",
+   "acceptable_actions": [
+    "改到午后或周一再约",
+    "改成更短的平地散步并说随时停",
+    "让她先休息，本周取消并留明确下一步"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK02_A01",
+     "subject": "她",
+     "relation": "顾虑",
+     "value": "周六想补觉且脚还不敢用力",
+     "valid_time": "2026-12-05 13:04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK02_T01",
+      "message_id": "m1",
+      "quote": "周六我本来想补觉"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK02_A02",
+     "subject": "她",
+     "relation": "约束",
+     "value": "医生说只能快走不能跑",
+     "valid_time": null,
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "上周下坡崴了右脚"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK02_A03",
+     "subject": "她",
+     "relation": "既往",
+     "value": "此前已说过先别跑",
+     "valid_time": null,
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "lessons",
+      "quote": "她脚伤是硬约束"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "含糊不是拒绝，但把'补觉+不敢用力'推平为'那就周六七点别迟到'是越权。",
+   "unknowns": [
+    "她到底想改期还是想减量",
+    "她想睡到几点"
+   ],
+   "protected_expressions": [
+    "脚还是不太敢用力"
+   ],
+   "forbidden_factual_claims": [
+    "不要把她说的'想补觉'当成客套继续推进",
+    "不要说'运动对谁都好'这类替她下结论的话"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把周六早上的复健快走落成具体时间地点",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

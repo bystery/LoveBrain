@@ -1,0 +1,189 @@
+{
+ "episode_id": "E109",
+ "persona": {
+  "her": {
+   "name": "蔓蔓",
+   "traits": [
+    "爽利，想到就干",
+    "对行情不熟但爱比价",
+    "被拒时嘴硬，过后能想通"
+   ],
+   "boundaries": [
+    "不爱欠人情，尤其不爱拿人情去压价"
+   ]
+  },
+  "me": {
+   "name": "老唐",
+   "traits": [
+    "回老家常年坐包车师傅小雷的车，知他为人",
+    "规矩清楚：介绍归介绍，价钱和钱款不经手",
+    "说话短，一句到位"
+   ]
+  },
+  "relationship_stage": "老同学（普通朋友偏熟，一年聚两回）"
+ },
+ "initial_kb": {
+  "her": "蔓蔓这周六要送爸妈回县城，两坛腌菜一坛辣酱外加行李箱，自家小车塞不下，打算包车；她比价比得凶，最怕被当冤大头。",
+  "me": "老唐回老家常年坐包车师傅小雷的车，知道他为人实在、只收市场价；老唐的规矩是介绍归介绍，担保归担保，价钱和钱款从不经手。",
+  "warmth": "老同学，去年她搬家老唐去搭过一把手，两家逢年过节还互相寄东西。",
+  "style": "她消息一串一串发，老唐回得短，爱用一句到位。"
+ },
+ "turns": [
+  {
+   "case_id": "E109_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-02 09:12", "text": "老唐，跟你打听个人：这周六我得送我爸妈回县城，两坛腌菜一坛辣酱再加俩行李箱，我那小轿车后排全占满还塞不下，我想包个车，你有靠谱的师傅吗"}
+    ],
+    "clock": "2026-11-02 09:15",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "着急带点期待", "warmth": "medium", "shift": "包车需求启动，主动来借熟人资源"}
+  },
+  {
+   "case_id": "E109_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-02 12:40", "text": "你把小雷师傅微信推我啦？我加上了，他回话挺痛快，报价八百跑一趟县城，还问我几点出发方便集合。我先压他一百试试水，压不下来就按他说的来"}
+    ],
+    "clock": "2026-11-02 12:45",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "跃跃欲试", "warmth": "medium", "shift": "拿到资源后自主比价，压价动作开始"}
+  },
+  {
+   "case_id": "E109_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-02 19:22", "text": "没压下来，小雷师傅一口咬死八百，说这个点跑县城回程还得空放。老唐你帮我说两句呗，就一句话的事儿，你是老熟人了，让他给抹个零头"}
+    ],
+    "clock": "2026-11-02 19:26",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "不肯罢休", "warmth": "medium", "shift": "议价受挫，转向借 ME 人情压价"}
+  },
+  {
+   "case_id": "E109_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-02 19:58", "text": "行行行，不找你说了。那这样，定金从我卡里转给你，你转给小雷师傅，他信你，我跟他还没熟到直接打钱的份上，这样总行了吧"}
+    ],
+    "clock": "2026-11-02 20:01",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "退而求其次", "warmth": "medium", "shift": "议价诉求撤下，转为资金经手请求，边界压力升级"}
+  },
+  {
+   "case_id": "E109_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-02 21:15", "text": "不转就不转呗，你这人规矩比我家我爸还多。我自己转，大不了我留好截图。哎不过说真的，你们这规矩我倒想听听，是怕麻烦还是怕担责任？"}
+    ],
+    "clock": "2026-11-02 21:18",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "嘴上不服心里琢磨", "warmth": "medium", "shift": "被拒后情绪缓和，开始好奇规矩背后的道理"}
+  },
+  {
+   "case_id": "E109_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-03 12:30", "text": "谈妥了！按八百走，但小雷师傅说回程空放，让我把回程那一半也包了，等于来回一千一，我算了一下比高铁贵一截。你说这空放费收得在理吗，是不是看我人生地不熟想多赚"}
+    ],
+    "clock": "2026-11-03 12:34",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "怀疑又犹豫", "warmth": "medium", "shift": "对空放费起疑，请 ME 判行情"}
+  },
+  {
+   "case_id": "E109_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-03 21:40", "text": "听了你的，我让他把来回一千一写成一条总包价发我，他倒是爽快发了，还多问一句坛子要不要帮着搬上车。哎这师傅人好像还行"}
+    ],
+    "clock": "2026-11-03 21:44",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "疑虑松动", "warmth": "medium", "shift": "总包价落定，对师傅印象回暖"}
+  },
+  {
+   "case_id": "E109_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-06 20:10", "text": "出幺蛾子了，我爸说把他那台老缝纫机也捎回去给我姑修，好家伙现在是一辆车两个老人五个坛子一台缝纫机。我担心塞不下，你说我今晚要不要跟小雷师傅说一声，还是明早再说"}
+    ],
+    "clock": "2026-11-06 20:14",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "慌里慌张", "warmth": "high", "shift": "行李变数出现，主动想到提前沟通"}
+  },
+  {
+   "case_id": "E109_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-07 07:35", "text": "问了！小雷师傅换了他小舅子的七座MPV来，说缝纫机踏板卸了能平放，让我把坛子用旧毛巾隔开。老唐，我上车了，回头见"}
+    ],
+    "clock": "2026-11-07 07:40",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "踏实", "warmth": "high", "shift": "变数解决，行程启动"}
+  },
+  {
+   "case_id": "E109_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-07 18:25", "text": "到家了，全程顺利得离谱。小雷师傅帮我把五个坛子一个个搬下去，还跟我念叨'你那同学老唐介绍的人他从来不亏待'，亏我前几天还想压他一百，臊得我脚趾抠地"}
+    ],
+    "clock": "2026-11-07 18:30",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "又囧又暖", "warmth": "high", "shift": "行程闭环，为先前压价行为不好意思"}
+  },
+  {
+   "case_id": "E109_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 11:05", "text": "我想通了，你那套规矩其实就八个字：介绍归介绍，担保归担保。以后找师傅我自己谈价自己打钱，你只管把人名给我，这分工我服气"}
+    ],
+    "clock": "2026-11-08 11:09",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "服气总结", "warmth": "high", "shift": "边界共识形成，分工明确"}
+  },
+  {
+   "case_id": "E109_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 20:36", "text": "对了我妈让我谢谢你，非塞了袋新小米让小雷师傅捎回来，现在搁我车里，哪天你顺路来拿。就一袋小米，可别又跟我说'不用不用'啊，那袋小米会伤心的"}
+    ],
+    "clock": "2026-11-08 20:40",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "轻松打趣", "warmth": "high", "shift": "以土产谢礼自然收尾"}
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "AK11",
+ "turn_clocks": [
+  {
+   "case_id": "AK11_T01",
+   "clock": "2026-12-23 21:14"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "AK11_T01",
+   "message_id": "m0",
+   "speaker": "ME",
+   "quote": "明早六点四十吾悦门口接你",
+   "ts": "2026-12-23 21:02"
+  },
+  {
+   "case_id": "AK11_T01",
+   "message_id": "m1",
+   "speaker": "HER",
+   "quote": "我妈说明天要来 我得先去车站 手术要不改到下周",
+   "ts": "2026-12-23 21:12"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "AK11_E1",
+   "case_id": "AK11_T01",
+   "summary": "猫手术｜反馈=hesitant｜意图=周六上午陪她带猫做手术",
+   "source_turn": "AK11_T01"
+  }
+ ]
+}

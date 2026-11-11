@@ -1,0 +1,2636 @@
+{
+ "story_id": "LRE125",
+ "turns": {
+  "LRE125_T01": {
+   "case_id": "LRE125_T01",
+   "current_action": "接住聚餐计划,给套餐参谋方向并顺势问她的偏好",
+   "acceptable_actions": [
+    "答应参谋,建议先确认人均预算和包间要求再定套餐",
+    "接梗后请她把报价和人数发来,自己来核算一口",
+    "半开玩笑说包间得留个靠窗位给她记菜单,同时给出务实建议"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A01",
+     "subject": "HER",
+     "relation": "role_in_club",
+     "value": "沈书宁是读书会组织者,负责订场地和记账",
+     "valid_time": "自2026年8月起持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "负责订场地和记账"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE125_A02",
+     "subject": "SHARED",
+     "relation": "plan_dinner",
+     "value": "读书会年终聚餐拟放周五晚在城南蒸菜馆,初报12人",
+     "valid_time": "2026-11-13(周五)晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T01",
+      "message_id": "m0",
+      "quote": "年终聚餐我想放周五晚上"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "语气像平时帮她理清单,别摆出算账师傅的架子",
+   "unknowns": [
+    "最终套餐档位未定",
+    "周五具体日期她未明说"
+   ],
+   "protected_expressions": [
+    "年终聚餐我想放周五晚上"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布包间已订下",
+    "不得虚构蒸菜馆的具体地址门牌"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T02": {
+   "case_id": "LRE125_T02",
+   "current_action": "确认价格与包间规则信息,提醒留个截图或记进清单",
+   "acceptable_actions": [
+    "夸她办事快,建议把88档和满10人规则都记进她的清单",
+    "顺势算一笔:88乘12大约一千出头,够不够包间低消要再问",
+    "调侃她电话打得勤,同时认真确认周晚是否同一价"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "蒸菜馆自助档报价每人88元",
+     "valid_time": "2026-11-03 询价时",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T02",
+      "message_id": "m0",
+      "quote": "88一位的自助档"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE125_A04",
+     "subject": "PUBLIC",
+     "relation": "booking_rule",
+     "value": "蒸菜馆包间需满10人才能预订",
+     "valid_time": "2026年11月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T02",
+      "message_id": "m0",
+      "quote": "包间要满10人才能订"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她爱吃清单,顺着清单思维说话最得劲",
+   "unknowns": [
+    "88档是否含周五晚市未明确"
+   ],
+   "protected_expressions": [
+    "88一位的自助档"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言该价格含酒水",
+    "不得虚构包间低消数字"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T03": {
+   "case_id": "LRE125_T03",
+   "current_action": "接受人数更新,对'算活动经费'客气推让一下但不过分",
+   "acceptable_actions": [
+    "谢过她的经费安排但坚持自己那份照AA出,同时确认按11人报店",
+    "半开玩笑说她这是公款吃喝,转而确认11人是否影响包间",
+    "答应记账时把自己标成备注行,提醒她低消重新算"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A05",
+     "subject": "SHARED",
+     "relation": "headcount",
+     "value": "聚餐人数为11人(报名9人加两人)",
+     "valid_time": "2026-11-04 起按此口径报店",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T03",
+      "message_id": "m0",
+      "quote": "群里报了名的一共9个"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE125_A02",
+     "subject": "SHARED",
+     "relation": "plan_dinner",
+     "value": "读书会年终聚餐拟放周五晚在城南蒸菜馆,初报12人",
+     "valid_time": "2026-11-13(周五)晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T01",
+      "message_id": "m0",
+      "quote": "年终聚餐我想放周五晚上"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE125_A06",
+     "subject": "HER",
+     "relation": "pay_offer",
+     "value": "她提出陈拓的餐费由活动经费承担",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T03",
+      "message_id": "m0",
+      "quote": "你那份别客气,算活动经费"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "对她的照顾心里有数,嘴上轻轻推,别让她尴尬",
+   "unknowns": [
+    "活动经费的来源和上限未说明"
+   ],
+   "protected_expressions": [
+    "算活动经费"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构群里其他报名者的名单"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T04": {
+   "case_id": "LRE125_T04",
+   "current_action": "附议她的'另算自愿'决定,可轻吐槽一句人均卫士",
+   "acceptable_actions": [
+    "支持她的决定,顺嘴问一句K歌地方定了没",
+    "调侃她连人均都要守门,表示自己听指挥",
+    "简单站队'自愿最好',不再展开"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A05",
+     "subject": "SHARED",
+     "relation": "headcount",
+     "value": "聚餐人数为11人(报名9人加两人)",
+     "valid_time": "2026-11-04 起按此口径报店",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T03",
+      "message_id": "m0",
+      "quote": "群里报了名的一共9个"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE125_A07",
+     "subject": "SHARED",
+     "relation": "afterparty_rule",
+     "value": "饭后唱K费用另算且自愿参加",
+     "valid_time": "2026-11-05 宣布",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T04",
+      "message_id": "m0",
+      "quote": "我说要另算自愿"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是条可以短回的消息,别把话题硬拉长",
+   "unknowns": [
+    "唱K地点与时间未定"
+   ],
+   "protected_expressions": [
+    "我说要另算自愿"
+   ],
+   "forbidden_factual_claims": [
+    "不得替群友确认都会去唱K"
+   ],
+   "may_decline": true
+  },
+  "LRE125_T05": {
+   "case_id": "LRE125_T05",
+   "current_action": "稳住她:支持先核实再报数,并表示愿等她电话结果",
+   "acceptable_actions": [
+    "让她放心打电话,承诺等她准信,群友那边她说了算",
+    "推测可能是午晚市差价,提醒她问清档位",
+    "给她递话术:直接问老板周五晚市多少一位"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "蒸菜馆自助档报价每人88元",
+     "valid_time": "2026-11-03 询价时",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T02",
+      "message_id": "m0",
+      "quote": "88一位的自助档"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE125_A08",
+     "subject": "PUBLIC",
+     "relation": "price_uncertain",
+     "value": "88元那档价格可能变动,需她电话核实",
+     "valid_time": "2026-11-06 当晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T05",
+      "message_id": "m0",
+      "quote": "88那档可能变动"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她慌的时候要稳,给方法不给压力",
+   "unknowns": [
+    "价格是否真变、变多少未定"
+   ],
+   "protected_expressions": [
+    "我先打电话核实"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言老板就是在涨价"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T06": {
+   "case_id": "LRE125_T06",
+   "current_action": "接住更正,复核128乘11与低消凑法,肯定她主动核实的做法",
+   "acceptable_actions": [
+    "按128重算给出总数并提醒饮料单价也确认下",
+    "先笑她记岔得离谱,再正经核数,收尾鼓励一句",
+    "顺着她的数核对1408对不对,建议低消不足再补茶位"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "蒸菜馆自助档报价每人88元",
+     "valid_time": "2026-11-03 询价时",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T02",
+      "message_id": "m0",
+      "quote": "88一位的自助档"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE125_A09",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "周五晚市价格为每人128元",
+     "valid_time": "2026-11-07 更正后生效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T06",
+      "message_id": "m0",
+      "quote": "周五晚市是128一位"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE125_A10",
+     "subject": "HER",
+     "relation": "prior_quote_correction",
+     "value": "她承认此前88元每人自助档的口径是自己记岔,予以作废",
+     "valid_time": "2026-11-07",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T06",
+      "message_id": "m0",
+      "quote": "是我记岔了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE125_A11",
+     "subject": "PUBLIC",
+     "relation": "minimum_spend",
+     "value": "蒸菜馆包间低消为1280元",
+     "valid_time": "2026-11-07 起已知",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T06",
+      "message_id": "m0",
+      "quote": "包间低消1280"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是她主动纠错的一轮,重点是把数核对,别让她难堪",
+   "unknowns": [
+    "11人是否最终凑足低消待定"
+   ],
+   "protected_expressions": [
+    "是我记岔了",
+    "周五晚市是128一位"
+   ],
+   "forbidden_factual_claims": [
+    "不得坚称88元仍然有效",
+    "不得虚构菜单定价明细"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T07": {
+   "case_id": "LRE125_T07",
+   "current_action": "认可她的算账与锁包间安排,提醒定金留凭证",
+   "acceptable_actions": [
+    "夸这账算得明白,提醒垫的300留转账截图",
+    "确认1408加饮料凑低消的路子,问AA怎么收",
+    "让她锁包间时再报一遍人数,防止口径对不上"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A09",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "周五晚市价格为每人128元",
+     "valid_time": "2026-11-07 更正后生效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T06",
+      "message_id": "m0",
+      "quote": "周五晚市是128一位"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE125_A12",
+     "subject": "HER",
+     "relation": "deposit_plan",
+     "value": "定金300元由她从活动经费垫付,事后AA收回",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T07",
+      "message_id": "m0",
+      "quote": "定金300我从经费垫"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已经从慌乱回到清单模式,配合她收口即可",
+   "unknowns": [
+    "AA收款方式未定"
+   ],
+   "protected_expressions": [
+    "定金300我从经费垫"
+   ],
+   "forbidden_factual_claims": [
+    "不得此时宣称包间已订妥"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T08": {
+   "case_id": "LRE125_T08",
+   "current_action": "确认包间与菜单,报出自己的忌口或表示都可以",
+   "acceptable_actions": [
+    "确认菜单没问题,顺势问有没有素菜补两个",
+    "表示不忌口,提醒把菜单截图发群里报备",
+    "接她关心忌口的话头,反问她自己想吃什么"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A12",
+     "subject": "HER",
+     "relation": "deposit_plan",
+     "value": "定金300元由她从活动经费垫付,事后AA收回",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T07",
+      "message_id": "m0",
+      "quote": "定金300我从经费垫"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE125_A13",
+     "subject": "SHARED",
+     "relation": "booking_confirmed",
+     "value": "周五包间已付定金留好,初选菜单含蒸腊味拼盘和豆豉蒸鱼",
+     "valid_time": "2026-11-09 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T08",
+      "message_id": "m0",
+      "quote": "包间留好了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE125_A14",
+     "subject": "SHARED",
+     "relation": "menu_item",
+     "value": "菜单初选为蒸腊味拼盘和豆豉蒸鱼",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T08",
+      "message_id": "m0",
+      "quote": "蒸腊味拼盘和豆豉蒸鱼"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动问忌口,是把ME当自己人的信号,回应别冷",
+   "unknowns": [
+    "群友忌口情况未知"
+   ],
+   "protected_expressions": [
+    "你看有没有忌口要换"
+   ],
+   "forbidden_factual_claims": [
+    "不得替老板承诺换菜"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T09": {
+   "case_id": "LRE125_T09",
+   "current_action": "接住人数回到12的变化,确认人均摊薄,表示不嫌闹",
+   "acceptable_actions": [
+    "说不嫌闹,12个正好热闹,提醒签到表加一行",
+    "快速重算人均,确认低消压力更小",
+    "接'小雨男朋友'的梗,问是读书会编外还是预备会员"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A05",
+     "subject": "SHARED",
+     "relation": "headcount",
+     "value": "聚餐人数为11人(报名9人加两人)",
+     "valid_time": "2026-11-04 至 2026-11-10",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T03",
+      "message_id": "m0",
+      "quote": "群里报了名的一共9个"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE125_A15",
+     "subject": "SHARED",
+     "relation": "headcount_revision",
+     "value": "聚餐人数由11人调整为12人,低消1280不变人均摊薄",
+     "valid_time": "2026-11-10 起生效",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T09",
+      "message_id": "m0",
+      "quote": "凑12个正好坐得开"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她'你别嫌闹'是确认情绪,先接情绪再核数",
+   "unknowns": [
+    "新增1人是否会再变动"
+   ],
+   "protected_expressions": [
+    "凑12个正好坐得开",
+    "你别嫌闹"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小雨男朋友的身份背景"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T10": {
+   "case_id": "LRE125_T10",
+   "current_action": "对菜单小更正表示无所谓,肯定她清单更新得勤",
+   "acceptable_actions": [
+    "说清蒸鲈鱼更稳,不挑,让她别为这个道歉",
+    "接'我认了'的梗,夸她清单管理到鱼身上",
+    "简单确认收到更新,不再展开"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A14",
+     "subject": "SHARED",
+     "relation": "menu_item",
+     "value": "菜单初选为蒸腊味拼盘和豆豉蒸鱼",
+     "valid_time": "2026-11-09 至 2026-11-11",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T08",
+      "message_id": "m0",
+      "quote": "蒸腊味拼盘和豆豉蒸鱼"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE125_A16",
+     "subject": "SHARED",
+     "relation": "menu_item",
+     "value": "蒸鱼菜品由豆豉蒸鱼改为清蒸鲈鱼,价格按店方口径执行",
+     "valid_time": "2026-11-11 起",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T10",
+      "message_id": "m0",
+      "quote": "改成了清蒸鲈鱼"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "小更正轻接,别小题大做",
+   "unknowns": [
+    "鲈鱼与原菜品差价是否影响人均未提"
+   ],
+   "protected_expressions": [
+    "改成了清蒸鲈鱼"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言鳜鱼实际市价"
+   ],
+   "may_decline": true
+  },
+  "LRE125_T11": {
+   "case_id": "LRE125_T11",
+   "current_action": "接下分工:带签到表和零钱袋,确认时间地点",
+   "acceptable_actions": [
+    "干脆应下,复述六点半城南蒸菜馆报到",
+    "接桌签的梗,说自己名字签要写得好看点",
+    "应下并提醒她早点睡,周五她最忙"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A13",
+     "subject": "SHARED",
+     "relation": "booking_confirmed",
+     "value": "周五包间已付定金留好,初选菜单含蒸腊味拼盘和豆豉蒸鱼",
+     "valid_time": "2026-11-09 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T08",
+      "message_id": "m0",
+      "quote": "包间留好了"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE125_A17",
+     "subject": "SHARED",
+     "relation": "final_arrangement",
+     "value": "聚餐定于周五晚六点半城南蒸菜馆包间,她提前一刻钟摆桌签,陈拓带签到表和零钱袋",
+     "valid_time": "2026-11-13(周五)18:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T11",
+      "message_id": "m0",
+      "quote": "明晚六点半城南蒸菜馆"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "分工明确时痛快接下,加一句让她放心的保证",
+   "unknowns": [
+    "零钱袋需要备多少零钱未说明"
+   ],
+   "protected_expressions": [
+    "你带下签到表和零钱袋"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构包间号"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T12": {
+   "case_id": "LRE125_T12",
+   "current_action": "共享聚餐的满足感,应下AA收款节奏,对周年展邀约给积极回应",
+   "acceptable_actions": [
+    "说今天确实顺,周年展布展这活儿提前预定",
+    "接'鱼被抢光'的梗,顺便夸她这次张罗得漂亮",
+    "回应收款不急,把周年展当成下一次清单第一行"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE125_A17",
+     "subject": "SHARED",
+     "relation": "final_arrangement",
+     "value": "聚餐定于周五晚六点半城南蒸菜馆包间,她提前一刻钟摆桌签,陈拓带签到表和零钱袋",
+     "valid_time": "2026-11-13(周五)18:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T11",
+      "message_id": "m0",
+      "quote": "明晚六点半城南蒸菜馆"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE125_A18",
+     "subject": "SHARED",
+     "relation": "settlement_plan",
+     "value": "AA收款明细她将于次日早晨发出",
+     "valid_time": "2026-11-15 早",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T12",
+      "message_id": "m0",
+      "quote": "AA收款我明早发你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "深夜复盘话别,温度可以比平时高半度",
+   "unknowns": [
+    "周年展具体时间未提"
+   ],
+   "protected_expressions": [
+    "AA收款我明早发你"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构聚餐现场细节"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T13": {
+   "case_id": "LRE125_T13",
+   "current_action": "核一遍AA收款明细的总额与现金头寸,确认无误后回她",
+   "acceptable_actions": [
+    "逐项核算12人人均132与定金抵扣,回复确认",
+    "核出总额对不上时指出差异请她重查",
+    "确认数字顺手调侃她睡醒就交作业"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "settlement_plan",
+     "value": "AA收款明细她将于次日早晨发出",
+     "valid_time": "2026-11-15 早",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T12",
+      "quote": "AA收款我明早发你",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A18"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "settlement_detail",
+     "value": "AA收款明细按实到12人发出,人均132元",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T13",
+      "quote": "昨晚实到12个,人均132",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A19"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "cash_float",
+     "value": "零钱袋现场收现金六张十元,已记头寸",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T13",
+      "quote": "零钱袋收了六张十块",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A20"
+    }
+   ],
+   "private_guidance": "她把数字交给你核,这是信任,认真核但别端着",
+   "unknowns": [
+    "两瓶大饮料的具体金额未在明细中单列"
+   ],
+   "protected_expressions": [
+    "昨晚实到12个,人均132"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构明细中其他群友的付款状态",
+    "不得断言总额必然无误"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T14": {
+   "case_id": "LRE125_T14",
+   "current_action": "接住错账:指出双重标注的成因,明确表态自己那份照AA,让她照此改表",
+   "acceptable_actions": [
+    "明确说自己走AA,请她把经费抵扣那行删掉重发",
+    "先安抚她别懊恼,再一步步帮她理清两头算法",
+    "半开玩笑说她一个清单狂也能打架,然后给出明确决断"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "HER",
+     "relation": "pay_offer",
+     "value": "她提出陈拓的餐费由活动经费承担",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T03",
+      "quote": "你那份别客气,算活动经费",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A06"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "ledger_conflict",
+     "value": "收款表ME一行同时标注经费抵扣与定金分摊,账目自相矛盾,差ME一份132元",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T14",
+      "quote": "两头都算,账差你一份132",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A21"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "ledger_resolution_pending",
+     "value": "ME餐费走经费还是照AA待ME定夺,她按ME答复改表",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T14",
+      "quote": "你那份到底走经费还是照AA",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A22"
+    }
+   ],
+   "private_guidance": "她的边界是垫付过夜就要对账,这里给决断要快,别让她悬着",
+   "unknowns": [
+    "活动经费的账面余额未说明"
+   ],
+   "protected_expressions": [
+    "你那份到底走经费还是照AA"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她决定经费怎么用",
+    "不得虚构收款表其他行内容"
+   ],
+   "may_decline": true
+  },
+  "LRE125_T15": {
+   "case_id": "LRE125_T15",
+   "current_action": "接受她的更正与道谢,轻接热美式的谢礼",
+   "acceptable_actions": [
+    "说热美式记下了,夸她改表改得快",
+    "接'第二次捞人'的梗,说自己是义务账房",
+    "确认重发的表自己再核一遍,让她放心"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "ledger_conflict",
+     "value": "收款表ME一行同时标注经费抵扣与定金分摊,账目自相矛盾,差ME一份132元",
+     "valid_time": "2026-11-15",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T14",
+      "quote": "两头都算,账差你一份132",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A21"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "settlement_revision",
+     "value": "账目更正:ME餐费照AA收,活动经费不抵扣,收款表重发",
+     "valid_time": "2026-11-15",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T15",
+      "quote": "你那份照AA收,经费不拿来做人情",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A23"
+    },
+    {
+     "subject": "HER",
+     "relation": "pay_offer",
+     "value": "此前'ME餐费算活动经费'的提议作废,ME餐费改按AA",
+     "valid_time": "2026-11-15 起",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T03",
+      "quote": "算活动经费",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A24"
+    }
+   ],
+   "private_guidance": "她主动纠错并道谢,收下心意但别让她觉得欠了人情",
+   "unknowns": [
+    "热美式兑现时间未定"
+   ],
+   "protected_expressions": [
+    "你那份照AA收,经费不拿来做人情"
+   ],
+   "forbidden_factual_claims": [
+    "不得坚称经费抵扣仍然有效",
+    "不得虚构谢礼的具体价格"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T16": {
+   "case_id": "LRE125_T16",
+   "current_action": "对定金闭环表示放心,道晚安收尾",
+   "acceptable_actions": [
+    "说这页翻得干净,祝她睡个好觉",
+    "接'凭证相册'的梗,说她的相册分类比照片还多",
+    "简单确认收到,不再展开"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "HER",
+     "relation": "deposit_plan",
+     "value": "定金300元由她垫付,事后AA收回",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T07",
+      "quote": "定金300我从经费垫",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A12"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "deposit_settled",
+     "value": "定金300元已从AA收款中划回她账户,转账截图存档",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T16",
+      "quote": "300定金从AA款里划回我卡了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A25"
+    }
+   ],
+   "private_guidance": "深夜收尾,一句安心话就够,别拉新话题",
+   "unknowns": [
+    "凭证相册还有哪些存档未说明"
+   ],
+   "protected_expressions": [
+    "300定金从AA款里划回我卡了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构定金到账的具体时刻",
+    "不得替她宣称经费余额"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T17": {
+   "case_id": "LRE125_T17",
+   "current_action": "接下周年展布展邀约,确认日期场地,表示清单发来就帮着过",
+   "acceptable_actions": [
+    "爽快接下,说28号下午先空出来",
+    "接'一圈年轮'的梗,说这名字像她账本的封面",
+    "答应帮看清单,提醒她把书店场地信息一并发来"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "expo_hook",
+     "value": "她在聚餐复盘时提出周年展想拉陈拓一起布展",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T12",
+      "quote": "周年展我还想拉你一起布展",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A28"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "expo_plan",
+     "value": "读书会周年展定于2026-11-28周六下午,先借书店活动区",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T17",
+      "quote": "定在11月28号周六下午",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A26"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "expo_theme",
+     "value": "周年展主题定为'一圈年轮'",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T17",
+      "quote": "一圈年轮",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A27"
+    }
+   ],
+   "private_guidance": "她把T12的钩子变成真邀约,接得越自然她越安心",
+   "unknowns": [
+    "书店活动区的具体位置与容量未说明",
+    "清单内容尚未发出"
+   ],
+   "protected_expressions": [
+    "定在11月28号周六下午"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布书店场地已最终确认",
+    "不得虚构主题的来历"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T18": {
+   "case_id": "LRE125_T18",
+   "current_action": "接住场地被占的坏消息,给出务实建议并稳住她的情绪",
+   "acceptable_actions": [
+    "建议先问签售是全天还是半天,也许能错峰",
+    "支持她换场地,说周年核心是人不奖章",
+    "提议列个备选场地清单,一家家问"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "expo_plan",
+     "value": "读书会周年展定于2026-11-28周六下午,先借书店活动区",
+     "valid_time": "2026-11-16 至 2026-11-18",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T17",
+      "quote": "定在11月28号周六下午",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A26"
+    },
+    {
+     "subject": "PUBLIC",
+     "relation": "venue_conflict",
+     "value": "书店11-28下午活动区被作者签售占用,周年展需更换场地或改期",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T18",
+      "quote": "书店说28号下午活动区被一场作者签售占了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A29"
+    }
+   ],
+   "private_guidance": "她最烦计划被打乱,先稳情绪再给路子",
+   "unknowns": [
+    "签售活动的具体时段未说明",
+    "12月中旬的备选日期未定"
+   ],
+   "protected_expressions": [
+    "书店说28号下午活动区被一场作者签售占了"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言书店故意刁难",
+    "不得虚构签售作者姓名"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T19": {
+   "case_id": "LRE125_T19",
+   "current_action": "肯定她用职业资源解决场地,提醒报备要留书面凭证",
+   "acceptable_actions": [
+    "夸这路子稳,提醒申请表留一份复印件",
+    "问她活动厅多大,够不够摆展架",
+    "接'明天交'的梗,说清单狂的效率从不失手"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "PUBLIC",
+     "relation": "venue_conflict",
+     "value": "书店11-28下午活动区被作者签售占用,周年展需更换场地或改期",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T18",
+      "quote": "书店说28号下午活动区被一场作者签售占了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A29"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "venue_backup",
+     "value": "备选场地为她出版社一楼对外活动厅,报备后免费使用,需自摆桌椅自筹茶歇",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T19",
+      "quote": "我们社一楼有个对外活动厅",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A30"
+    }
+   ],
+   "private_guidance": "她在用自己的人脉帮忙,肯定她的资源,别只夸结果",
+   "unknowns": [
+    "活动厅容量与设备清单未知"
+   ],
+   "protected_expressions": [
+    "我们社一楼有个对外活动厅"
+   ],
+   "forbidden_factual_claims": [
+    "不得替行政承诺一定批",
+    "不得虚构活动厅的门牌楼层"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T20": {
+   "case_id": "LRE125_T20",
+   "current_action": "接下茶歇预算任务,答应搭架子并列出所需数字清单",
+   "acceptable_actions": [
+    "答应搭架子,列出需要她提供的单价项",
+    "提醒复原条件要写进分工表,免得散场抓瞎",
+    "接'我列数字你把关'的梗,说这次分工很科学"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "expo_plan",
+     "value": "读书会周年展定于2026-11-28周六下午,先借书店活动区",
+     "valid_time": "2026-11-16",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T17",
+      "quote": "定在11月28号周六下午",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A26"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "venue_confirmed",
+     "value": "周年展场地更正为出版社一楼活动厅,11-28下午三小时,条件为复原与自筹茶歇",
+     "valid_time": "2026-11-19",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T20",
+      "quote": "28号下午活动厅归我们用三小时",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A31"
+    },
+    {
+     "subject": "PUBLIC",
+     "relation": "venue_conflict",
+     "value": "书店场地被签售占用的问题以换地方式解决",
+     "valid_time": "2026-11-19",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T18",
+      "quote": "要么挪到12月中旬",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A32"
+    }
+   ],
+   "private_guidance": "预算这活正对他胃口,接得痛快,但单价数字要等她给,别自己编",
+   "unknowns": [
+    "茶歇供应商与单价未定"
+   ],
+   "protected_expressions": [
+    "28号下午活动厅归我们用三小时"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构茶歇单价",
+    "不得替行政追加条件"
+   ],
+   "may_decline": true
+  },
+  "LRE125_T21": {
+   "case_id": "LRE125_T21",
+   "current_action": "拦下沿用88旧口径的报价:指出88是蒸菜馆工作日午市价,且茶歇与自助档不是一回事",
+   "acceptable_actions": [
+    "直接指出88是已被更正的旧午市价,不能进新预算",
+    "提醒她茶歇按杯按份算,和自助档口径完全不同",
+    "先笑她旧黄历翻得勤,再让她问清咖啡车单价"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "蒸菜馆自助档报价每人88元",
+     "valid_time": "2026-11-03 询价时",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T02",
+      "quote": "88一位的自助档",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A03"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "budget_draft",
+     "value": "她拟按'人均88元自助档'口径为40人茶歇报价3520元",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T21",
+      "quote": "人均88的自助档",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A33"
+    }
+   ],
+   "private_guidance": "这是旧价复活的关键拦截轮,口径错误要明确指出,语气别嘲讽",
+   "unknowns": [
+    "咖啡车是否承接40杯订单未确认"
+   ],
+   "protected_expressions": [
+    "人均88的自助档"
+   ],
+   "forbidden_factual_claims": [
+    "不得沿用88元口径报价",
+    "不得断言蒸菜馆价格再次变动"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T22": {
+   "case_id": "LRE125_T22",
+   "current_action": "肯定她自查速度,复核按杯计价的新数并提醒饼干预算单列",
+   "acceptable_actions": [
+    "核算40大杯720是否算对,提醒小杯备量",
+    "夸她纠错快,说这份预算行政肯定挑不出毛病",
+    "提醒饼干另算的部分也填进表格别口头报"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "budget_draft",
+     "value": "她拟按'人均88元自助档'口径为40人茶歇报价3520元",
+     "valid_time": "2026-11-20",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T21",
+      "quote": "人均88的自助档",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A33"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "budget_revision",
+     "value": "茶歇预算更正:弃用88元旧口径,改按咖啡车杯数计价,大杯18小杯12,先报40大杯720元",
+     "valid_time": "2026-11-20",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T22",
+      "quote": "大杯18小杯12",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A35"
+    },
+    {
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "蒸菜馆自助档报价每人88元",
+     "valid_time": "2026-11-03 询价时",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T02",
+      "quote": "88一位的自助档",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A03"
+    }
+   ],
+   "private_guidance": "她被点醒后改得干脆,复核数字时给足肯定",
+   "unknowns": [
+    "饼干品类与单价未定",
+    "小杯是否需要未定"
+   ],
+   "protected_expressions": [
+    "大杯18小杯12"
+   ],
+   "forbidden_factual_claims": [
+    "不得重提88口径作为有效报价",
+    "不得虚构饼干单价"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T23": {
+   "case_id": "LRE125_T23",
+   "current_action": "确认当日流程与时间点,顺手夸海报设计",
+   "acceptable_actions": [
+    "确认10点到场,复述全天时间线",
+    "接'年轮似的'的梗,说美工是被耽误的设计师",
+    "提醒海报印出来前再对一遍日期"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "venue_confirmed",
+     "value": "周年展场地更正为出版社一楼活动厅,11-28下午三小时,条件为复原与自筹茶歇",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T20",
+      "quote": "28号下午活动厅归我们用三小时",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A31"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "expo_schedule",
+     "value": "周年展当日流程:28号上午10点进场布展,下午2点正式开场,5点收",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T23",
+      "quote": "28号上午10点进场布展,下午2点正式开场,5点收",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A36"
+    }
+   ],
+   "private_guidance": "流程定档轮,复述确认即可,别添新要求",
+   "unknowns": [
+    "海报印制数量未提"
+   ],
+   "protected_expressions": [
+    "28号上午10点进场布展,下午2点正式开场,5点收"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构海报内容细节",
+    "不得替美工改设计"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T24": {
+   "case_id": "LRE125_T24",
+   "current_action": "接住印错日期的突发,快速给补救选项",
+   "acceptable_actions": [
+    "提议圆标贴纸覆盖,成本最低",
+    "问两百张分发渠道,看多少张已贴出",
+    "先安抚,说日期印错年年有,来得及"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "expo_schedule",
+     "value": "周年展当日流程:28号上午10点进场布展,下午2点正式开场,5点收",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T23",
+      "quote": "28号上午10点进场布展,下午2点正式开场,5点收",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A36"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "poster_error",
+     "value": "海报日期误印为11月30日周一,两百张已印出,需更正",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T24",
+      "quote": "印成'11月30日周一'",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A37"
+    }
+   ],
+   "private_guidance": "她慌的时候要稳,给方案不给指责",
+   "unknowns": [
+    "美工为何听岔未说明",
+    "已散发张数未知"
+   ],
+   "protected_expressions": [
+    "印成'11月30日周一'"
+   ],
+   "forbidden_factual_claims": [
+    "不得指责美工个人",
+    "不得断言重印完全不可行"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T25": {
+   "case_id": "LRE125_T25",
+   "current_action": "接下贴圆标分工,答应明晚到场一半",
+   "acceptable_actions": [
+    "爽快认领一百张,说贴纸比桌签好贴",
+    "提醒贴之前抽检圆标印字有没有错",
+    "接'提前热身'的梗,说热身完请她喝咖啡车小杯"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "poster_error",
+     "value": "海报日期误印为11月30日周一,两百张已印出,需更正",
+     "valid_time": "2026-11-24",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T24",
+      "quote": "印成'11月30日周一'",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A37"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "poster_fix",
+     "value": "海报以'11.28'小圆标覆盖更正,两人分贴两百张",
+     "valid_time": "2026-11-24",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T25",
+      "quote": "美工裁了两百张小圆标",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A38"
+    }
+   ],
+   "private_guidance": "补救方案落定,轻松接下,别再翻旧账",
+   "unknowns": [
+    "圆标贴完后是否抽检未提"
+   ],
+   "protected_expressions": [
+    "美工裁了两百张小圆标"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构圆标数量以外的印刷细节"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T26": {
+   "case_id": "LRE125_T26",
+   "current_action": "接住她的后怕,肯定她翻账核对的习惯",
+   "acceptable_actions": [
+    "夸她差点说错又刹住了,这反应已经及格",
+    "顺势把128和132两个数再报一遍供她存档",
+    "接年度总结帖的梗,说账房署名要加上"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "蒸菜馆自助档报价每人88元",
+     "valid_time": "2026-11-03 询价时",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T02",
+      "quote": "88一位的自助档",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A03"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "per_person_final",
+     "value": "年终聚餐最终口径:当晚128元一位,12人摊完人均132元",
+     "valid_time": "2026-11-14 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T26",
+      "quote": "当晚128一位,12个人摊完132",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A39"
+    }
+   ],
+   "private_guidance": "旧价第二次被拦下,她的敏感度在涨,正面肯定",
+   "unknowns": [
+    "年度总结帖何时发未提"
+   ],
+   "protected_expressions": [
+    "当晚128一位,12个人摊完132"
+   ],
+   "forbidden_factual_claims": [
+    "不得在答复群友时沿用88元",
+    "不得虚构小周的帖子内容"
+   ],
+   "may_decline": true
+  },
+  "LRE125_T27": {
+   "case_id": "LRE125_T27",
+   "current_action": "接住鳜鱼误记的纠正,肯定她当场纠偏",
+   "acceptable_actions": [
+    "说纠正得对,菜单存档就认鲈鱼",
+    "接'老板随口提过'的梗,说随口的话最容易被记成真",
+    "提醒她把鲈鱼写进年度总结帖免得再传错"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "menu_item",
+     "value": "蒸鱼菜品由豆豉蒸鱼改为清蒸鲈鱼,价格按店方口径执行",
+     "valid_time": "2026-11-11 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T10",
+      "quote": "改成了清蒸鲈鱼",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A16"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "menu_fact",
+     "value": "聚餐实际上桌的是清蒸鲈鱼,鳜鱼从未上过桌",
+     "valid_time": "2026-11-26 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T27",
+      "quote": "鳜鱼是老板随口提过的价,从来没上过我们桌",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A40"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "menu_misremember",
+     "value": "'聚餐吃过鳜鱼'的误记当场纠正",
+     "valid_time": "2026-11-26",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T27",
+      "quote": "我当场纠正",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A41"
+    }
+   ],
+   "private_guidance": "误记纠正要利落,别让小周难堪的分寸她也拿捏得刚好",
+   "unknowns": [
+    "小周是否接受纠正未知"
+   ],
+   "protected_expressions": [
+    "鳜鱼是老板随口提过的价,从来没上过我们桌"
+   ],
+   "forbidden_factual_claims": [
+    "不得承认鳜鱼上过桌",
+    "不得虚构鲈鱼的价格"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T28": {
+   "case_id": "LRE125_T28",
+   "current_action": "肯定预付单的做法,说这才是长久之计",
+   "acceptable_actions": [
+    "夸她升级了流程,说公账公走最干净",
+    "提醒预付单附件记得附报价截图",
+    "接'一分别过我口袋'的梗,说这句可以刻在她清单第一行"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "HER",
+     "relation": "deposit_plan",
+     "value": "定金300元由她垫付,事后AA收回",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T07",
+      "quote": "定金300我从经费垫",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A12"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "prepay_method",
+     "value": "茶歇费用改走财务预付单,不经私人垫付,凭证进公账",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T28",
+      "quote": "直接填了财务预付单",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A42"
+    }
+   ],
+   "private_guidance": "她在改自己的老习惯,这种进步要看得见",
+   "unknowns": [
+    "预付单审批人未知"
+   ],
+   "protected_expressions": [
+    "直接填了财务预付单"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构财务流程细节",
+    "不得断言预付一定秒批"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T29": {
+   "case_id": "LRE125_T29",
+   "current_action": "接下展日分工,确认十点集合与携带物品",
+   "acceptable_actions": [
+    "干脆应下,复述十点活动厅门口带签到表零钱袋",
+    "接'票箱蹲阳台'的梗,说它是编外道具",
+    "提醒她明早别又提前两小时到"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "final_arrangement",
+     "value": "聚餐分工:她提前摆桌签,陈拓带签到表和零钱袋",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T11",
+      "quote": "你带下签到表和零钱袋",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A17"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "expo_day_plan",
+     "value": "11-28上午十点活动厅门口集合布展:她摆桌签,ME带签到表和零钱袋,票箱复用",
+     "valid_time": "2026-11-28 10:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T29",
+      "quote": "签到表和零钱袋你带上",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A43"
+    }
+   ],
+   "private_guidance": "老规矩复刻,痛快应下,加一句让她放心的保证",
+   "unknowns": [
+    "票箱是否需要新零钱未提"
+   ],
+   "protected_expressions": [
+    "签到表和零钱袋你带上"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构活动厅门禁细节",
+    "不得替行政安排椅子"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T30": {
+   "case_id": "LRE125_T30",
+   "current_action": "接'另算自愿'复用的梗,认同这条群规",
+   "acceptable_actions": [
+    "说这条已经是祖传群规,照章办事",
+    "接'人均卫士'的自嘲,说卫士保住了大家的钱包",
+    "简单站队,不再展开"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "afterparty_rule",
+     "value": "饭后唱K费用另算且自愿参加",
+     "valid_time": "2026-11-05 宣布",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T04",
+      "quote": "我说要另算自愿",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A07"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "k_rule_reuse",
+     "value": "展后唱K沿用'费用另算且自愿'规则",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T30",
+      "quote": "原样搬出来当群规使",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A44"
+    }
+   ],
+   "private_guidance": "可以短回的轻松轮,接梗即可",
+   "unknowns": [
+    "唱K地点时间未定"
+   ],
+   "protected_expressions": [
+    "原样搬出来当群规使"
+   ],
+   "forbidden_factual_claims": [
+    "不得替群友确认都会去唱K"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T31": {
+   "case_id": "LRE125_T31",
+   "current_action": "确认十点到场,回应物料与垫付安排",
+   "acceptable_actions": [
+    "说十点准时到,让她把签到的笔也数一遍",
+    "提醒垫付的两百留好扫码凭证",
+    "接'不过夜'的梗,说她的财务纪律全年无休"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "expo_day_plan",
+     "value": "11-28上午十点活动厅门口集合布展:她摆桌签,ME带签到表和零钱袋,票箱复用",
+     "valid_time": "2026-11-28 10:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T29",
+      "quote": "签到表和零钱袋你带上",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A43"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "day_of_logistics",
+     "value": "展日晨情:圆标已贴完,行政备椅子35把另搬5把,ME十点到活动厅",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T31",
+      "quote": "椅子行政备了35把",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A45"
+    },
+    {
+     "subject": "HER",
+     "relation": "small_advance",
+     "value": "她垫付200元购茶叶蛋纸杯,当晚票款核销不过夜",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T31",
+      "quote": "茶叶蛋和纸杯我先扫码垫了两百",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A46"
+    }
+   ],
+   "private_guidance": "展日早晨,消息要短要稳,别给她添新任务",
+   "unknowns": [
+    "茶叶蛋备量未知",
+    "雨天预案未提"
+   ],
+   "protected_expressions": [
+    "茶叶蛋和纸杯我先扫码垫了两百"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构到场人数",
+    "不得替行政确认椅子数"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T32": {
+   "case_id": "LRE125_T32",
+   "current_action": "共享战报的喜悦,夸她办成了大事",
+   "acceptable_actions": [
+    "说37个名字就是最好的年终总结",
+    "接'年轮猫'的梗,问猫能不能当下一届吉祥物",
+    "提醒她别急着复盘,先吃饭"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "day_of_logistics",
+     "value": "展日晨情:圆标已贴完,行政备椅子35把另搬5把,ME十点到活动厅",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T31",
+      "quote": "椅子行政备了35把",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A45"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "expo_result",
+     "value": "周年展当日37人签到,超预估5人,留言墙贴满",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T32",
+      "quote": "37个名字签到",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A47"
+    }
+   ],
+   "private_guidance": "深夜战报,情绪价值优先,数字她都报过了不用复核对",
+   "unknowns": [
+    "留言墙内容细节未知"
+   ],
+   "protected_expressions": [
+    "37个名字签到"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构签到者身份",
+    "不得断言留言墙文字内容"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T33": {
+   "case_id": "LRE125_T33",
+   "current_action": "验收结算数字,确认无误后给一句正式认可",
+   "acceptable_actions": [
+    "逐项核预付核销与结余,回复验收通过",
+    "接'没有糊涂账'的梗,说这五个字值一年",
+    "提醒会费信封封口前拍照存档"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "HER",
+     "relation": "small_advance",
+     "value": "她垫付200元购茶叶蛋纸杯,当晚票款核销不过夜",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T31",
+      "quote": "茶叶蛋和纸杯我先扫码垫了两百",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A46"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "expo_settlement",
+     "value": "展后结算:预付720核销,垫付200票款抵回,结余85元入会费,37份签到表扫描存档",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T33",
+      "quote": "净结余85块进会费信封",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A48"
+    }
+   ],
+   "private_guidance": "她把干净账交给你验收,核完给明确结论,别含糊",
+   "unknowns": [
+    "会费信封的存放地点未提"
+   ],
+   "protected_expressions": [
+    "净结余85块进会费信封"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构结余去向",
+    "不得断言扫描件已全数发送"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T34": {
+   "case_id": "LRE125_T34",
+   "current_action": "接住表扬与共同策划的加码,正面回应'跑不掉'",
+   "acceptable_actions": [
+    "爽快认领共同策划,说清单第一行签收",
+    "夸'一圈年轮'实至名归",
+    "接'跑不掉'的梗,说自己是自愿跑不掉"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "expo_hook",
+     "value": "她在聚餐复盘时提出周年展想拉陈拓一起布展",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T12",
+      "quote": "周年展我还想拉你一起布展",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A28"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "finale_plan",
+     "value": "年度末场读书会定于2026-12-26周六",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T34",
+      "quote": "年度最后一场我定在12月26号周六",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A49"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "co_organize",
+     "value": "年度末场由她与ME共同策划",
+     "valid_time": "2026-11-29",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T34",
+      "quote": "共同策划",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A50"
+    }
+   ],
+   "private_guidance": "从帮手到搭档的升级轮,回应要痛快,别打太极",
+   "unknowns": [
+    "年度末场场地与主题未定"
+   ],
+   "protected_expressions": [
+    "年度最后一场我定在12月26号周六"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构主编原话",
+    "不得替她定主题"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T35": {
+   "case_id": "LRE125_T35",
+   "current_action": "接下认领任务,从六行清单里挑自己能扛的两行",
+   "acceptable_actions": [
+    "认领选票设计与现场签到两行",
+    "先问清投票规则再认领,避免返工",
+    "全部应下,让她随便派"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "finale_plan",
+     "value": "年度末场读书会定于2026-12-26周六",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T34",
+      "quote": "年度最后一场我定在12月26号周六",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A49"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "finale_tasks",
+     "value": "年度末场筹备三件事:投票选年度之书,她做投票箱,小奖品预算80元,任务清单六行待ME认领两行",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T35",
+      "quote": "投票箱我来做",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A51"
+    }
+   ],
+   "private_guidance": "派活轮,接得具体一点比全盘答应更让她安心",
+   "unknowns": [
+    "六行清单的其余内容未在消息列出",
+    "奖品具体品类未定"
+   ],
+   "protected_expressions": [
+    "投票箱我来做"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构清单其余行内容",
+    "不得替她改预算数字"
+   ],
+   "may_decline": true
+  },
+  "LRE125_T36": {
+   "case_id": "LRE125_T36",
+   "current_action": "对砍预算的果断表示佩服,肯定美工的赞助",
+   "acceptable_actions": [
+    "说砍得对,帆布袋实用主义万岁",
+    "提醒贡献榜记得同步进年度复盘",
+    "接'贡献榜第一行'的梗,说排名比KPI实在"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "finale_tasks",
+     "value": "年度末场筹备三件事:投票选年度之书,她做投票箱,小奖品预算80元,任务清单六行待ME认领两行",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T35",
+      "quote": "投票箱我来做",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A51"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "prize_budget_fix",
+     "value": "奖品超支40元,方案由精装礼盒更正为帆布袋加书签,书签由美工赞助",
+     "valid_time": "2026-12-02",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T36",
+      "quote": "砍成帆布袋加书签",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A52"
+    }
+   ],
+   "private_guidance": "小更正轻接,她处理得比以前果断,值得点一句",
+   "unknowns": [
+    "帆布袋数量与单价未提"
+   ],
+   "protected_expressions": [
+    "砍成帆布袋加书签"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构礼盒原价",
+    "不得替美工承诺更多赞助"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T37": {
+   "case_id": "LRE125_T37",
+   "current_action": "答应周五看选票模板,肯定糖果的巧思",
+   "acceptable_actions": [
+    "答应周五过模板,提醒留一份电子版",
+    "接'撒糖图个甜'的梗,说年度之书配糖果很配",
+    "问投票箱要不要加封条防作弊"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "prize_budget_fix",
+     "value": "奖品超支40元,方案由精装礼盒更正为帆布袋加书签,书签由美工赞助",
+     "valid_time": "2026-12-02",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T36",
+      "quote": "砍成帆布袋加书签",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A52"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "ballot_progress",
+     "value": "投票箱制作完成,选票模板待ME周五过目,省下40元购糖果散场撒糖",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T37",
+      "quote": "投票箱糊好了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A53"
+    }
+   ],
+   "private_guidance": "推进顺利的阶段,配合节奏即可",
+   "unknowns": [
+    "糖果品类未提",
+    "投票规则细节未提"
+   ],
+   "protected_expressions": [
+    "投票箱糊好了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构投票箱样式",
+    "不得替她定投票规则"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T38": {
+   "case_id": "LRE125_T38",
+   "current_action": "接下年度账本终审任务,答应认真复核",
+   "acceptable_actions": [
+    "答应复核,约定两天内给意见",
+    "接'六处更正'的梗,说每一处都是名场面",
+    "提醒她复核只对数,不动她的记账习惯"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "周五晚市价格为每人128元",
+     "valid_time": "2026-11-07 更正后生效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T06",
+      "quote": "周五晚市是128一位",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A09"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "ledger_archive",
+     "value": "年度账本归档,登记6处更正,封账前请ME终审复核",
+     "valid_time": "2026-12-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T38",
+      "quote": "一共更正过6处",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A54"
+    }
+   ],
+   "private_guidance": "终审是年度信任的顶点,认真接,别玩笑过头",
+   "unknowns": [
+    "六处更正的具体清单未在消息列出"
+   ],
+   "protected_expressions": [
+    "一共更正过6处"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构账本页数或条目数",
+    "不得断言账目必然全对"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T39": {
+   "case_id": "LRE125_T39",
+   "current_action": "接住封账的仪式感,回应复印页",
+   "acceptable_actions": [
+    "说这句总结配得上封面,复印页收下了",
+    "提议明年账本开篇写'少错多核'",
+    "简单致意,不展开"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "ledger_archive",
+     "value": "年度账本归档,登记6处更正,封账前请ME终审复核",
+     "valid_time": "2026-12-08",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T38",
+      "quote": "一共更正过6处",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A54"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "ledger_sealed",
+     "value": "年度账本封账,封皮标注'本年度更正6处,每处都有人接住'",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T39",
+      "quote": "每处都有人接住",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A55"
+    }
+   ],
+   "private_guidance": "仪式感给足,情绪可以比平时高半度",
+   "unknowns": [
+    "复印页份数未知"
+   ],
+   "protected_expressions": [
+    "每处都有人接住"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构账本外观",
+    "不得断言明年零错误"
+   ],
+   "may_decline": false
+  },
+  "LRE125_T40": {
+   "case_id": "LRE125_T40",
+   "current_action": "接住'搭档'的说法,应下周五咖啡与12月26号的约",
+   "acceptable_actions": [
+    "说搭档这个词收下了,周五咖啡准时",
+    "回敬一句:烂尾不可能,有你在的清单没有烂尾过",
+    "接清单第三行的梗,说自己的名字终于进了她的清单"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "subject": "SHARED",
+     "relation": "finale_plan",
+     "value": "年度末场读书会定于2026-12-26周六",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T34",
+      "quote": "年度最后一场我定在12月26号周六",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "atom_id": "LRE125_A49"
+    },
+    {
+     "subject": "SHARED",
+     "relation": "partnership",
+     "value": "年度末场筹备中她将ME列为搭档而非任务,周五咖啡由她请客庆祝",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE125_T40",
+      "quote": "不是任务,是搭档",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "atom_id": "LRE125_A56"
+    }
+   ],
+   "private_guidance": "年末收尾,温度到顶但别越线,把她给的'搭档'稳稳接住",
+   "unknowns": [
+    "周五咖啡的具体时间未定"
+   ],
+   "protected_expressions": [
+    "不是任务,是搭档"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构12月26日流程细节",
+    "不得替她宣布新年计划"
+   ],
+   "may_decline": false
+  }
+ }
+}

@@ -1,0 +1,37 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A3 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "报喜不报忧的家庭信息管理",
+  "担忧额度与知情权",
+  "从具体事件到价值排序",
+  "判据的自我修正"
+ ],
+ "title": "担忧额度",
+ "may_decline_turns": [
+  "E310_T12"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "家庭沟通",
+ "primary_topic": "T03",
+ "lineage_group_id": "LG-E310",
+ "frozen_at": "2026-11-08T03:16:17+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E310/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A3",
+ "hashes": {
+  "episode.json": "27b3600fc0fea8ffa76bad19f524f894c9bede05e0da7d6733808a8d775d246e",
+  "reference.json": "f7fab55194f48747d57a89080d9da9cbb98a9fc3c86535590506c707121420f4",
+  "timeline.json": "95b022e55fcf514f3a1841c3630b6f2295a560e390e60c76e3bd12555bc137af",
+  "audit.md": "7d5c5224dd405eaa034b0a7b216e48fa95abe8bd7367a189ef7de6acfef30ff8"
+ }
+}

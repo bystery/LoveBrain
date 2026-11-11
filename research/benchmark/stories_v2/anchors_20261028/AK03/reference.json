@@ -1,0 +1,72 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "AK03",
+ "turns": {
+  "AK03_T01": {
+   "case_id": "AK03_T01",
+   "current_action": "她连今晚都被占用——目标当轮让位：不追问改哪天、不施压，先让她顾上班里的事，留一个不逼人的开口",
+   "acceptable_actions": [
+    "让她先忙+说我这周都空随时讲",
+    "只回一句轻的关心",
+    "取消并明确不用她回复"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK03_A01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "今晚临时加疫苗门诊八点才走，明天也排班",
+     "valid_time": "2026-12-07 19:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK03_T01",
+      "message_id": "m1",
+      "quote": "今晚院里临时加疫苗门诊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK03_A02",
+     "subject": "双方",
+     "relation": "原定计划",
+     "value": "明晚六点老地方复健快走",
+     "valid_time": "2026-12-07 19:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK03_T01",
+      "message_id": "m0",
+      "quote": "明晚六点老地方"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的忙碌是排班不是态度；此时最忌讳追问'那到底哪天有空'。",
+   "unknowns": [
+    "她这周还有没有空档"
+   ],
+   "protected_expressions": [
+    "今晚院里临时加疫苗门诊"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她总是忙（把一次排班推成人品结论）",
+    "不要把'等你有空'写成需要她给承诺"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "明晚六点复健快走",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

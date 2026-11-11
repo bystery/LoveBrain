@@ -1,0 +1,758 @@
+{
+ "story_id": "E204",
+ "turns": {
+  "E204_T01": {
+   "case_id": "E204_T01",
+   "current_action": "接住报告初读的焦虑，讲清数值与复查流程的分诊常识而不下诊断",
+   "acceptable_actions": [
+    "说明单次箭头常见并指向报告建议的复查",
+    "安抚并建议她带报告找医生面读",
+    "认可她重视并解释复查窗口的意义"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T01_A01",
+     "subject": "ME",
+     "relation": "职业边界",
+     "value": "阿珂作为护士只讲流程与分诊建议不下诊断",
+     "valid_time": "2026-11-02之前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "只讲流程与分诊建议，从不下诊断"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T01_A02",
+     "subject": "HER",
+     "relation": "初检数值",
+     "value": "尿酸四百八十八高于参考上限四百二并带上升箭头",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T01",
+      "quote": "尿酸四百八十八，参考上限四百二",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先接情绪，再给她一句可执行的话，别吓唬也别轻飘飘。",
+   "unknowns": [
+    "具体升高成因未知"
+   ],
+   "protected_expressions": [
+    "尿酸四百八十八，参考上限四百二"
+   ],
+   "forbidden_factual_claims": [
+    "不得下诊断或断言病情严重程度",
+    "不得宣称数值正常无需理会"
+   ],
+   "may_decline": false
+  },
+  "E204_T02": {
+   "case_id": "E204_T02",
+   "current_action": "确认报告上两周内复查的书面医嘱，并把网查矛盾引导回报告本身",
+   "acceptable_actions": [
+    "确认医嘱原文并建议按窗口尽早约",
+    "确认并劝她别再网查越查越慌",
+    "确认并说明复查项要空腹的细节"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T02_A01",
+     "subject": "HER",
+     "relation": "初检数值",
+     "value": "尿酸四百八十八高于上限四百二的初检结果",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T01",
+      "quote": "尿酸四百八十八，参考上限四百二",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T02_A02",
+     "subject": "SHARED",
+     "relation": "复查窗口",
+     "value": "报告书面建议两周内复查肾功能",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T02",
+      "quote": "建议两周内复查肾功能",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把她的注意力从搜索引擎拉回书面报告。",
+   "unknowns": [
+    "网查信息具体来源未知"
+   ],
+   "protected_expressions": [
+    "建议两周内复查肾功能"
+   ],
+   "forbidden_factual_claims": [
+    "不得背书网查的相互矛盾说法",
+    "不得给出窗口外的医疗承诺"
+   ],
+   "may_decline": false
+  },
+  "E204_T03": {
+   "case_id": "E204_T03",
+   "current_action": "回应家族群偏方，肯定她听医生的方向并教她怎么回群",
+   "acceptable_actions": [
+    "支持她听医生并提议把报告发群里",
+    "支持她并建议回复'等复查结果出来再说'",
+    "支持她并提醒偏方视频别转给同事"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T03_A01",
+     "subject": "SHARED",
+     "relation": "复查窗口",
+     "value": "两周内复查肾功能的书面医嘱仍是主线",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T02",
+      "quote": "建议两周内复查肾功能",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T03_A02",
+     "subject": "THIRD",
+     "relation": "偏方主张",
+     "value": "家族群提出苏打水与玉米须煮水两周降尿酸的说法",
+     "valid_time": "2026-11-03",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T03",
+      "quote": "我妈说玉米须煮水两周就能降下来",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不贬她家人，只把权威落回书面报告。",
+   "unknowns": [
+    "偏方视频具体内容未知"
+   ],
+   "protected_expressions": [
+    "我妈说玉米须煮水两周就能降下来"
+   ],
+   "forbidden_factual_claims": [
+    "不得认可偏方能降尿酸",
+    "不得贬损其家人人格"
+   ],
+   "may_decline": false
+  },
+  "E204_T04": {
+   "case_id": "E204_T04",
+   "current_action": "在同事不复查的说法与书面医嘱之间给出明确答复：复查去，以报告和医生为准",
+   "acceptable_actions": [
+    "明确答复复查要去并说明个体差异",
+    "明确答复要去并教她转述给同事",
+    "明确答复要去并把决定落在书面报告上"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T04_A01",
+     "subject": "SHARED",
+     "relation": "复查窗口",
+     "value": "报告建议两周内复查肾功能的书面医嘱",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T02",
+      "quote": "建议两周内复查肾功能",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T04_A02",
+     "subject": "THIRD",
+     "relation": "同事反例",
+     "value": "同事自称尿酸五百二五年未复查并劝 HER 别花冤枉钱",
+     "valid_time": "2026-11-04",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T04",
+      "quote": "她尿酸五百二啥事没有，五年了都没复查过",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E204_T04_A03",
+     "subject": "HER",
+     "relation": "偏方立场",
+     "value": "家族群偏方与同事现身说法均被 HER 置于疑问而非采信",
+     "valid_time": "2026-11-04",
+     "status": "uncertain",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T03",
+      "quote": "我说我要听医生的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：她要一句准话，就给一句准话，别两头糊。",
+   "unknowns": [
+    "同事情况的真实性未知"
+   ],
+   "protected_expressions": [
+    "她尿酸五百二啥事没有，五年了都没复查过"
+   ],
+   "forbidden_factual_claims": [
+    "不得认可同事案例适用于 HER",
+    "不得给出诊断级结论"
+   ],
+   "may_decline": false
+  },
+  "E204_T05": {
+   "case_id": "E204_T05",
+   "current_action": "确认周六社区医院复查的安排，并答清楚空腹时间要求",
+   "acceptable_actions": [
+    "确认空腹要求并说八点前别进食",
+    "确认并提醒带上报告单和身份证",
+    "确认并说当天自己正好班上可以照应"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T05_A01",
+     "subject": "SHARED",
+     "relation": "复查窗口",
+     "value": "两周内复查医嘱被 HER 落实为周六上午九点抽血",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T02",
+      "quote": "建议两周内复查肾功能",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T05_A02",
+     "subject": "SHARED",
+     "relation": "复查安排",
+     "value": "周六早上社区医院九点抽血八点半前到院",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T05",
+      "quote": "我约的九点，八点半之前到",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "执行细节轮，答准时间点，别含糊。",
+   "unknowns": [
+    "当天检验科排队情况未知"
+   ],
+   "protected_expressions": [
+    "我约的九点，八点半之前到"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构空腹具体小时数以外的检查要求"
+   ],
+   "may_decline": false
+  },
+  "E204_T06": {
+   "case_id": "E204_T06",
+   "current_action": "认可她改单忌口的取舍，补一句复查前饮食的稳妥边界",
+   "acceptable_actions": [
+    "认可改单并说清淡一晚足够稳妥",
+    "认可并提醒明早也清淡到抽血完",
+    "认可并开玩笑说六只虾是她的配额"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T06_A01",
+     "subject": "SHARED",
+     "relation": "复查安排",
+     "value": "周六早上九点抽血八点半前到院的复查安排",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T05",
+      "quote": "我约的九点，八点半之前到",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T06_A02",
+     "subject": "HER",
+     "relation": "忌口取舍",
+     "value": "海虾火锅改为清汤锅底虾留六只啤酒全退",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T06",
+      "quote": "锅底换清汤，虾只留六只，啤酒全退",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她自律得很，轻松认可，别再加码。",
+   "unknowns": [],
+   "protected_expressions": [
+    "锅底换清汤，虾只留六只，啤酒全退"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言这样吃必然影响结果"
+   ],
+   "may_decline": false
+  },
+  "E204_T07": {
+   "case_id": "E204_T07",
+   "current_action": "接住复查结果：确认四百五十二较前下降但仍超限，解释一个月干预医嘱的合理性",
+   "acceptable_actions": [
+    "定性为阶段性好消息并复述干预医嘱",
+    "确认数字并提醒十二月复一次是关键节点",
+    "认可下降并陪她把好坏两面都说透"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T07_A01",
+     "subject": "HER",
+     "relation": "初检数值",
+     "value": "此前初检尿酸四百八十八的基线",
+     "valid_time": "2026-11-02",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T01",
+      "quote": "尿酸四百八十八，参考上限四百二",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T07_A02",
+     "subject": "HER",
+     "relation": "复查数值",
+     "value": "复查尿酸四百五十二较上周降三十六但仍超上限",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T07",
+      "quote": "四百五十二，比上周降了三十六，但还是超上限",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E204_T07_A03",
+     "subject": "SHARED",
+     "relation": "干预医嘱",
+     "value": "医生建议饮食加运动干预一个月后十二月再复查",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T07",
+      "quote": "先饮食加运动干预一个月，十二月再复一次",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "数字她念得对，定性时两面都给，别只报喜。",
+   "unknowns": [
+    "十二月复查的具体日期未定"
+   ],
+   "protected_expressions": [
+    "四百五十二，比上周降了三十六，但还是超上限"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣称已经降到正常范围",
+    "不得否认知复查医嘱"
+   ],
+   "may_decline": false
+  },
+  "E204_T08": {
+   "case_id": "E204_T08",
+   "current_action": "确认她顶住偏方归因的做法，并把功劳归到忌口与复查本身",
+   "acceptable_actions": [
+    "肯定她守住书面建议并夸她顶得对",
+    "肯定并建议把复查单和医嘱一起发群里",
+    "肯定并说降的功劳是抽血前后都克制"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T08_A01",
+     "subject": "THIRD",
+     "relation": "偏方主张",
+     "value": "家族群玉米须视频被用来归因下降但仍被 HER 否定",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T03",
+      "quote": "我妈说玉米须煮水两周就能降下来",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T08_A02",
+     "subject": "SHARED",
+     "relation": "干预医嘱",
+     "value": "以书面报告和医生建议为准的执行口径",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T08",
+      "quote": "这回我全是照医生书面建议做的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她这次立场很硬，明确站她这边。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这回我全是照医生书面建议做的"
+   ],
+   "forbidden_factual_claims": [
+    "不得把下降归因给偏方",
+    "不得复述偏方有效"
+   ],
+   "may_decline": false
+  },
+  "E204_T09": {
+   "case_id": "E204_T09",
+   "current_action": "回应一个月干预计划与晚间快走同行的请求，可答应或提条件",
+   "acceptable_actions": [
+    "答应同行并提议固定每周二四六晚",
+    "答应并说监督从打卡截图开始",
+    "答应并提醒啤酒全停这条最关键"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T09_A01",
+     "subject": "SHARED",
+     "relation": "干预医嘱",
+     "value": "饮食加运动干预一个月的医嘱是计划来源",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T07",
+      "quote": "先饮食加运动干预一个月，十二月再复一次",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T09_A02",
+     "subject": "HER",
+     "relation": "干预计划",
+     "value": "啤酒全停每周三次快走四十分钟海鲜内脏不上桌",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T09",
+      "quote": "每周三次晚上快走四十分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她开口求同行，接得利落，约定要具体。",
+   "unknowns": [
+    "ME 的晚间空档未知"
+   ],
+   "protected_expressions": [
+    "每周三次晚上快走四十分钟"
+   ],
+   "forbidden_factual_claims": [
+    "不得替医生追加用药或指标要求"
+   ],
+   "may_decline": true
+  },
+  "E204_T10": {
+   "case_id": "E204_T10",
+   "current_action": "接住首日打卡，点评快走与饮食并保持监督节奏",
+   "acceptable_actions": [
+    "夸首日完成并提醒配速不用急",
+    "夸并说打卡截图这张收下了",
+    "点评并建议明天换条路线防腻"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T10_A01",
+     "subject": "HER",
+     "relation": "干预计划",
+     "value": "每周三次快走四十分钟的计划进入执行",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T09",
+      "quote": "每周三次晚上快走四十分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T10_A02",
+     "subject": "HER",
+     "relation": "首日执行",
+     "value": "首日快走四十分零五秒配速九分半并打卡",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T10",
+      "quote": "昨晚快走四十分零五秒，配速九分半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "打卡轮，短句给反馈，鼓励不吹捧。",
+   "unknowns": [],
+   "protected_expressions": [
+    "昨晚快走四十分零五秒，配速九分半"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构未发生的运动数据"
+   ],
+   "may_decline": false
+  },
+  "E204_T11": {
+   "case_id": "E204_T11",
+   "current_action": "确认十二月七日复查的提醒请求，并认可她备好降级预案",
+   "acceptable_actions": [
+    "答应提醒并说日历上标好了",
+    "答应提醒并确认挂号科室流程",
+    "答应并说预案备着是对的"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T11_A01",
+     "subject": "SHARED",
+     "relation": "干预医嘱",
+     "value": "一个月干预后十二月再复查的医嘱安排",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T07",
+      "quote": "先饮食加运动干预一个月，十二月再复一次",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T11_A02",
+     "subject": "SHARED",
+     "relation": "下次复查",
+     "value": "十二月七日上午复查已约并请 ME 提醒",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T11",
+      "quote": "十二月七号满一个月，我约了那天上午复查",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她怕自己拖，提醒这事要应得明确。",
+   "unknowns": [
+    "若不降则挂号科室的流程细节未知"
+   ],
+   "protected_expressions": [
+    "十二月七号满一个月，我约了那天上午复查"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她保证数值一定下降"
+   ],
+   "may_decline": false
+  },
+  "E204_T12": {
+   "case_id": "E204_T12",
+   "current_action": "收下致谢，回应周六快走的延续约定",
+   "acceptable_actions": [
+    "答应周六快走并说降不降都陪走",
+    "收下感谢并提醒壁纸这句话给自己也适用",
+    "答应并提议走完一起吃清淡早餐"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E204_T12_A01",
+     "subject": "SHARED",
+     "relation": "下次复查",
+     "value": "十二月七日复查与 ME 提醒的约定",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T11",
+      "quote": "十二月七号满一个月，我约了那天上午复查",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E204_T12_A02",
+     "subject": "HER",
+     "relation": "原则内化",
+     "value": "以书面报告和医生为准被 HER 设为壁纸",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E204_T12",
+      "quote": "我截屏设成手机壁纸了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，暖一句，把关系线留在快走上。",
+   "unknowns": [
+    "周六快走具体时间未定"
+   ],
+   "protected_expressions": [
+    "我截屏设成手机壁纸了"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺医疗结果",
+    "不得虚构周六已约的具体时间"
+   ],
+   "may_decline": true
+  }
+ }
+}

@@ -1,0 +1,671 @@
+{
+ "story_id": "E198",
+ "turns": {
+  "E198_T01": {
+   "case_id": "E198_T01",
+   "current_action": "接下副驾之约，确认行程日期与路线要点，顺手接住她的规矩感",
+   "acceptable_actions": [
+    "答应同行，复述出口编号和八点出城确认记住了",
+    "爽快接约，调侃副驾这位置连任三届了",
+    "确认日期，问她后排还缺不缺人要不要拼满"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A01",
+     "subject": "SHARED",
+     "relation": "行程计划",
+     "value": "两人约定十一月二十一号周六自驾去青川古镇，走青阳高速青川出口，八点出城",
+     "valid_time": "2026-11-13 约定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T01",
+      "message_id": "m0",
+      "quote": "下周六十一月二十一号去青川古镇，青阳高速青川出口下，八点出城避开早市"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E198_A02",
+     "subject": "ME",
+     "relation": "座位约定",
+     "value": "ME 被约定为本次行程的固定副驾",
+     "valid_time": "2026-11-13 约定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T01",
+      "message_id": "m0",
+      "quote": "副驾还是你的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "用老搭档口吻接约，复述她的出口编号式细节表示上心",
+   "unknowns": [
+    "后排是否还有空位未知（T02 揭晓）"
+   ],
+   "protected_expressions": [
+    "青阳高速青川出口",
+    "副驾还是你的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已有第四位乘客（T03 才出现）",
+    "不得改变已定日期"
+   ]
+  },
+  "E198_T02": {
+   "case_id": "E198_T02",
+   "current_action": "确认三人定员与载物基线，认同后备箱不塞大件的既定规矩",
+   "acceptable_actions": [
+    "确认三人正好，顺口接一句水和垫子够了别加东西",
+    "认可小唐同行，提醒她后备箱规矩对谁都一样",
+    "接住定员，问她要不要提前把水 和垫子装车"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A03",
+     "subject": "SHARED",
+     "relation": "定员定载",
+     "value": "后排给邻居小唐留一座，共三人，后备箱只放两箱水和野餐垫",
+     "valid_time": "2026-11-15 敲定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T02",
+      "message_id": "m0",
+      "quote": "后排给了邻居小唐一个座，她想去买蓝染布，三个人正好，后备箱就放两箱水和野餐垫"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把载物基线当成共识复述，为后面边界冲突埋好参照",
+   "unknowns": [
+    "是否有更多人想搭车未知（T03 揭晓）"
+   ],
+   "protected_expressions": [
+    "小唐",
+    "野餐垫"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已同意任何人加座或加物",
+    "不得虚构后备箱另有行李"
+   ]
+  },
+  "E198_T03": {
+   "case_id": "E198_T03",
+   "current_action": "对带折叠电动车的搭车请求给出初步判断：加座可以商量，大件按车规不行",
+   "acceptable_actions": [
+    "指出加座和带车是两件事，座可以谈，后备箱规矩不能破",
+    "建议她把丑话说在前头，避免出发当天才发现装不下",
+    "先问清电动车尺寸，再对照后备箱两箱水加垫子的余量给结论"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A04",
+     "subject": "THIRD",
+     "relation": "搭车请求",
+     "value": "同事老蒋请求搭车并携带折叠电动车去古镇代步",
+     "valid_time": "2026-11-17 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T03",
+      "message_id": "m0",
+      "quote": "同事老蒋听说了想搭车，还要把他那台折叠电动车带上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E198_A05",
+     "subject": "HER",
+     "relation": "车规来源",
+     "value": "上回后排塞行李箱令柯蔓心里发毛，此后立了后备箱不塞大件的规矩",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "initial_kb",
+      "key": "lessons",
+      "quote": "之后立了后备箱不塞大件的规矩"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把请求拆成人和物两条线，人可商量物守规矩，替她把边界语言备好",
+   "unknowns": [
+    "老蒋拆叠后的实际尺寸未知"
+   ],
+   "protected_expressions": [
+    "折叠电动车",
+    "搭车"
+   ],
+   "forbidden_factual_claims": [
+    "不得当场替 HER 答应请求",
+    "不得声称后备箱装得下折叠车"
+   ]
+  },
+  "E198_T04": {
+   "case_id": "E198_T04",
+   "current_action": "支持她人上车物不上车的划界，帮把理由说成安全与秩序而非小气",
+   "acceptable_actions": [
+    "肯定她的划法：加座可以，电动车不上车，理由站得住",
+    "补充一条：塞满的后备箱急刹会滚物，安全比面子重要",
+    "建议把规矩今晚就回给老蒋，别拖到出发前夜"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A06",
+     "subject": "HER",
+     "relation": "边界表态",
+     "value": "HER 划定后排可加座但电动车不上车，理由是后备箱塞它会挤走水和垫子",
+     "valid_time": "2026-11-17 深夜表态",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T04",
+      "message_id": "m0",
+      "quote": "后排可以给他加个座，但电动车不行"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把她的犹豫接住并加固，语气站在安全与秩序一边",
+   "unknowns": [
+    "老蒋对划界的反应未知（T05 揭晓）"
+   ],
+   "protected_expressions": [
+    "电动车不行"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构 HER 已同意带车",
+    "不得替老蒋答应加座"
+   ]
+  },
+  "E198_T05": {
+   "case_id": "E198_T05",
+   "current_action": "接住她被说死板的委屈，帮区分死板与守约：规矩先讲在前头是靠谱不是无情",
+   "acceptable_actions": [
+    "反驳死板论：规矩是出发前就立的，守约不叫死板",
+    "共情她的不得劲，建议她别接拆叠尺寸的话头，直接回到车规本身",
+    "指出对方在边界上切香肠，提醒她一句规矩破了后面全破"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A07",
+     "subject": "THIRD",
+     "relation": "施压话术",
+     "value": "老蒋以折叠车拆了很小为由劝 HER 别死板",
+     "valid_time": "2026-11-18 施压",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T05",
+      "message_id": "m0",
+      "quote": "老蒋说折叠车能拆，拆了就小小一块，让我别死板"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E198_A08",
+     "subject": "HER",
+     "relation": "边界表态回扣",
+     "value": "此前 HER 已划定后排可加座但电动车不上车",
+     "valid_time": "2026-11-17 深夜表态",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T04",
+      "message_id": "m0",
+      "quote": "后排可以给他加个座，但电动车不行"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先安抚情绪再给论据，把规矩的时间点提前这点用足",
+   "unknowns": [
+    "HER 是否会最终让步未知（T06 揭晓）"
+   ],
+   "protected_expressions": [
+    "别死板",
+    "不得劲"
+   ],
+   "forbidden_factual_claims": [
+    "不得建议她为和气破例",
+    "不得虚构老蒋已收回要求"
+   ]
+  },
+  "E198_T06": {
+   "case_id": "E198_T06",
+   "current_action": "支持她的最终拒载表态，确认边界落地：电动车不上车成立，加座随对方意愿",
+   "acceptable_actions": [
+    "肯定她说死了的表态，边界守住了没有讨价还价的余地",
+    "接住车是爸爸送的这个理由，说这条比什么都硬",
+    "补一句：爱搭不搭不是赌气，是把选择权还给对方"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A09",
+     "subject": "THIRD",
+     "relation": "带车请求",
+     "value": "老蒋携带折叠电动车同车前往古镇",
+     "valid_time": "2026-11-17 提出",
+     "status": "rejected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T03",
+      "message_id": "m0",
+      "quote": "同事老蒋听说了想搭车，还要把他那台折叠电动车带上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E198_A10",
+     "subject": "HER",
+     "relation": "最终拒载",
+     "value": "HER 明确告知电动车不上车，态度为爱搭不搭",
+     "valid_time": "2026-11-18 表态",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T06",
+      "message_id": "m0",
+      "quote": "电动车就是不上车，爱搭不搭"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是冲突落实轮：带车请求以 negation 落定为被拒，态度上全力挺她不劝和",
+   "unknowns": [
+    "老蒋是否还愿意空手搭车未知（T07 揭晓）"
+   ],
+   "protected_expressions": [
+    "不上车",
+    "爱搭不搭"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称最终同意带车",
+    "不得虚构 HER 向老蒋道歉"
+   ]
+  },
+  "E198_T07": {
+   "case_id": "E198_T07",
+   "current_action": "帮她稳住因小唐尴尬产生的自我怀疑：守规矩与是小气无关，小唐的感受值得单独照顾",
+   "acceptable_actions": [
+    "明确她不小气：规矩定了就认，小唐的尴尬是余波不是错账",
+    "把两件事拆开：对老蒋是边界，对小唐是情绪，分开处理",
+    "建议她找机会跟小唐说清拒的是物不是人"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A11",
+     "subject": "THIRD",
+     "relation": "退出座位",
+     "value": "老蒋连座位也不要了，赌气称改坐高铁前往",
+     "valid_time": "2026-11-19 转述",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T07",
+      "message_id": "m0",
+      "quote": "结果老蒋连座位也不要了，赌气说坐高铁去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E198_A12",
+     "subject": "THIRD",
+     "relation": "情绪波及",
+     "value": "邻居小唐因拒载风波感到尴尬并向 HER 求证是否小气",
+     "valid_time": "2026-11-19 发生",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T07",
+      "message_id": "m0",
+      "quote": "小唐有点尴尬，问我是不是太小气"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先稳她的自我评价，再把修复对象从老蒋转向小唐",
+   "unknowns": [
+    "老蒋是否改坐高铁未最终确认"
+   ],
+   "protected_expressions": [
+    "坐高铁去",
+    "太小气"
+   ],
+   "forbidden_factual_claims": [
+    "不得劝她收回拒载",
+    "不得替小唐宣布不尴尬"
+   ]
+  },
+  "E198_T08": {
+   "case_id": "E198_T08",
+   "current_action": "肯定她对小唐的修复安排，把边界与情分分开收账",
+   "acceptable_actions": [
+    "认可请桂花酿的圆场方式，规矩和情分两不欠",
+    "补一句：对小唐说清拒的是物件不是人，这杯酿就更值",
+    "支持她的安排，顺口调侃桂花酿别喝太多下午买不了布"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A13",
+     "subject": "HER",
+     "relation": "修复计划",
+     "value": "HER 决定周六中午请小唐喝古镇桂花酿以圆尴尬",
+     "valid_time": "2026-11-19 计划",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T08",
+      "message_id": "m0",
+      "quote": "周六中午我请她喝古镇的桂花酿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E198_A14",
+     "subject": "HER",
+     "relation": "边界自评",
+     "value": "HER 自评规矩没立错但决定修复与小唐的关系",
+     "valid_time": "2026-11-19 反思",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T08",
+      "message_id": "m0",
+      "quote": "气归气规矩没立错，但小唐那儿我得圆一下"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "夸她边界与温度都在线，顺带接一句轻玩笑",
+   "unknowns": [
+    "小唐是否接受修复未知（T10 揭晓）"
+   ],
+   "protected_expressions": [
+    "桂花酿",
+    "圆一下"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称老蒋已被请回",
+    "不得虚构修复已完成"
+   ]
+  },
+  "E198_T09": {
+   "case_id": "E198_T09",
+   "current_action": "接下盯导航的任务，复核停车费与出发时间等行程要素",
+   "acceptable_actions": [
+    "复述青川出口与南门停车场十五块，认领盯导航的活",
+    "确认行程要素，提醒她把零钱和停车二维码都备着",
+    "接任务并补一句明早七点五十楼下等，误差不超过两分钟"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A15",
+     "subject": "SHARED",
+     "relation": "行程要素",
+     "value": "路线为青阳高速青川出口下，停南门停车场一天十五元，ME 负责盯导航",
+     "valid_time": "2026-11-20 复核",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T09",
+      "message_id": "m0",
+      "quote": "青阳高速青川出口下，南门停车场一天十五块，我备了零钱，你明早负责盯导航"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E198_A16",
+     "subject": "SHARED",
+     "relation": "路线回扣",
+     "value": "此前约定走青阳高速青川出口前往青川古镇",
+     "valid_time": "2026-11-13 约定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T01",
+      "message_id": "m0",
+      "quote": "青阳高速青川出口下"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "用她的出口编号式风格复述，显得同频",
+   "unknowns": [
+    "当天实际路况未知"
+   ],
+   "protected_expressions": [
+    "南门停车场",
+    "盯导航"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构停车场免费",
+    "不得改变已定路线"
+   ]
+  },
+  "E198_T10": {
+   "case_id": "E198_T10",
+   "current_action": "接住小唐和解的消息，轻松收束余波，不再把老蒋挂嘴边",
+   "acceptable_actions": [
+    "笑接蓝染方巾的梗，夸小唐气性大度",
+    "接住她的笑死，说这趟花絮比古镇还精彩",
+    "顺势收尾：明早早点睡，别再想老蒋那出"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A17",
+     "subject": "THIRD",
+     "relation": "和解信号",
+     "value": "小唐表示不再尴尬并打算给老蒋也带一块蓝染方巾",
+     "valid_time": "2026-11-20 转述",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T10",
+      "message_id": "m0",
+      "quote": "说她不尴尬了，还要给老蒋也带块蓝染方巾"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快收情绪账，不开老蒋的批斗会",
+   "unknowns": [
+    "老蒋是否收到方巾未知"
+   ],
+   "protected_expressions": [
+    "蓝染方巾",
+    "不尴尬了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称老蒋已道歉或回群",
+    "不得虚构小唐退出行程"
+   ]
+  },
+  "E198_T11": {
+   "case_id": "E198_T11",
+   "current_action": "立即响应出发调度，确认七点五十下楼并带好随身物件",
+   "acceptable_actions": [
+    "回已起床出门，复述七点五十楼下集合",
+    "接住雨刮水细节，夸她提前量足，说两分钟后到",
+    "确认带上水和垫子的清单，承诺导航一开就位"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A18",
+     "subject": "SHARED",
+     "relation": "出发微调",
+     "value": "因预报小雨 HER 更换雨刮水并把出发时间提前到七点五十",
+     "valid_time": "2026-11-21 早晨",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T11",
+      "message_id": "m0",
+      "quote": "预报有小雨我换了雨刮水，提前到七点五十出发"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "早晨消息要短平快，执行态不复盘",
+   "unknowns": [
+    "当天路况与天气实况未知"
+   ],
+   "protected_expressions": [
+    "七点五十出发",
+    "雨刮水"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已到古镇",
+    "不得虚构又有人加塞上车"
+   ]
+  },
+  "E198_T12": {
+   "case_id": "E198_T12",
+   "current_action": "接住行程闭环与副驾连任，回以暖味确认并给下次留钩子",
+   "acceptable_actions": [
+    "总结这趟规矩守住了大家都舒服，接下副驾连任",
+    "接住关东煮老规矩，调侃这算年度搭子续约成功",
+    "夸蓝染和桂花酿的战利品，顺势约下次同车路线"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E198_A19",
+     "subject": "HER",
+     "relation": "连任约定",
+     "value": "HER 宣布下回仍由 ME 坐副驾",
+     "valid_time": "2026-11-21 晚间",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T12",
+      "message_id": "m0",
+      "quote": "下回还你坐副驾"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E198_A20",
+     "subject": "SHARED",
+     "relation": "规矩结果回扣",
+     "value": "此前的载物边界最终守住，车保持干净",
+     "valid_time": "2026-11-21 回顾",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E198_T12",
+      "message_id": "m0",
+      "quote": "车规守住了车也干净"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾落在默契与老规矩上，暖而不腻，别再把老蒋翻出来",
+   "unknowns": [
+    "下次行程目的地未知（留白）"
+   ],
+   "protected_expressions": [
+    "关东煮",
+    "下回还你坐副驾"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构老蒋同行返程",
+    "不得声称车载过电动车"
+   ]
+  }
+ }
+}

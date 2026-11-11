@@ -1,0 +1,744 @@
+{
+ "story_id": "E208",
+ "turns": {
+  "E208_T01": {
+   "case_id": "E208_T01",
+   "current_action": "确认明早拼车安排:5:40老地方上车、行李一大一小,顺势提醒她把证件放顺手;口径以群消息为准,先不质疑。",
+   "acceptable_actions": [
+    "确认集合时间与行李分工",
+    "接住确认并提醒证件与闹钟",
+    "简短应下,附一句明早见"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A01",
+     "subject": "SHARED",
+     "relation": "约定",
+     "value": "12月2日早上5:40周师傅在唐棠小区楼下接两人送机",
+     "valid_time": "2026-12-02 05:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "早上5:40在唐棠小区楼下上车"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E208_A02",
+     "subject": "HER",
+     "relation": "转述",
+     "value": "周师傅在群里说五点四十来接",
+     "valid_time": "2026-12-01 20:25前群消息",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T01",
+      "message_id": "m0",
+      "quote": "五点四十来接"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "例行确认轮,回复短而稳;她要的是'稳了吧'这句话本身。",
+   "unknowns": [
+    "周师傅当天是否会提前到"
+   ],
+   "protected_expressions": [
+    "五点四十来接"
+   ],
+   "forbidden_factual_claims": [
+    "接人时间晚于五点四十"
+   ]
+  },
+  "E208_T02": {
+   "case_id": "E208_T02",
+   "current_action": "接住矛盾:不猜谁对谁错,先安抚'别急,这种对得上号',主动提出直接给周师傅打电话核实口径,而不是盯着截图猜。",
+   "acceptable_actions": [
+    "提出打电话向师傅核实",
+    "先安抚焦虑再定核实路径",
+    "指出平台时间可能是默认值,建议问人"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A03",
+     "subject": "HER",
+     "relation": "发现矛盾",
+     "value": "平台订单显示六点整发车,与群内五点四十口径冲突",
+     "valid_time": "2026-12-01 20:50",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T02",
+      "message_id": "m0",
+      "quote": "平台订单上写的是六点整发车"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A04",
+     "subject": "SHARED",
+     "relation": "既定口径",
+     "value": "两人此前约定的上车时间为5:40",
+     "valid_time": "约车时确立",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "早上5:40在唐棠小区楼下上车"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这轮的动词是'打电话':截图是线索不是结论,别让她陷在两张图里。",
+   "unknowns": [
+    "平台为何显示六点整(此时尚未核实)"
+   ],
+   "protected_expressions": [
+    "平台订单上写的是六点整发车"
+   ],
+   "forbidden_factual_claims": [
+    "认定平台时间为准",
+    "认定群消息一定是错的"
+   ]
+  },
+  "E208_T03": {
+   "case_id": "E208_T03",
+   "current_action": "把小蒋的转述降级处理:是二手经验不是本次事实,不影响明早结论;同时记下关键锚点——值机截止7:35,即使车晚半小时也仍有余量,先给她算一遍时间账。",
+   "acceptable_actions": [
+    "降级二手信息并算时间余量",
+    "区分传闻与事实,锚定7:35截止时间",
+    "安抚并给出最坏情况的时间账"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A05",
+     "subject": "THIRD",
+     "relation": "轶事",
+     "value": "小蒋称该师傅上回说五点半实际五点五十才到",
+     "valid_time": "小蒋过往乘车经历",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T03",
+      "message_id": "m0",
+      "quote": "说好五点半结果五点五十才到"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A06",
+     "subject": "SHARED",
+     "relation": "截止锚点",
+     "value": "值机截止时间为7:35",
+     "valid_time": "2026-12-02 07:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T03",
+      "message_id": "m0",
+      "quote": "七点三十五的值机截止"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把'别的乘客的经历'和'今天的事实'分开,是她最需要的思维工具;时间账用减法说到她安心。",
+   "unknowns": [
+    "小蒋所说班次的具体日期"
+   ],
+   "protected_expressions": [
+    "说好五点半结果五点五十才到",
+    "七点三十五的值机截止"
+   ],
+   "forbidden_factual_claims": [
+    "师傅上次的迟到针对唐棠这单",
+    "值机截止为八点整"
+   ]
+  },
+  "E208_T04": {
+   "case_id": "E208_T04",
+   "current_action": "冲突落实:一手信息落地后完成口径合并——接人时间确认为5:40,平台6:00是默认发车时间不作数(对六点整的采信被否定);车牌尾号739银灰GL8作为明早认车依据;同时确认这通电话是谁打的、留下师傅可回拨的联系方式。",
+   "acceptable_actions": [
+    "合并口径:5:40为准,6:00系平台默认值",
+    "确认车牌尾号739并说明认车要点",
+    "把电话核实结果归纳成三句话给她存档"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A07",
+     "subject": "SHARED",
+     "relation": "口径更正",
+     "value": "实际接人时间确认为5:40;平台订单6:00为默认发车时间,不作为接车依据",
+     "valid_time": "2026-12-01 21:28核实",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T04",
+      "message_id": "m0",
+      "quote": "订单上的六点是平台默认发车时间"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A08",
+     "subject": "SHARED",
+     "relation": "认车凭据",
+     "value": "周师傅车辆为银灰色GL8,车牌尾号739",
+     "valid_time": "2026-12-02 05:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T04",
+      "message_id": "m0",
+      "quote": "车牌尾号739,银灰色GL8"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A09",
+     "subject": "SHARED",
+     "relation": "约定",
+     "value": "12月2日早上5:40楼下上车",
+     "valid_time": "2026-12-02 05:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "早上5:40在唐棠小区楼下上车"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是本篇信息不确定落实轮:结论必须落到'5:40为准+尾号739'两个可执行项上, negation 明确否定6:00的采信,不留'都信一点'的和稀泥。",
+   "unknowns": [
+    "师傅明早是否会再提前到达"
+   ],
+   "protected_expressions": [
+    "订单上的六点是平台默认发车时间",
+    "车牌尾号739,银灰色GL8"
+   ],
+   "forbidden_factual_claims": [
+    "接人时间以平台6:00为准",
+    "车牌尾号不是739"
+   ]
+  },
+  "E208_T05": {
+   "case_id": "E208_T05",
+   "current_action": "给出兜底预案:5:50还不见车(或车坏在路上)就直接叫网约车,预估54元两人各27,比赶掉8:05的航班便宜得多;预案写清触发时间和动作,让'万一'有去处。",
+   "acceptable_actions": [
+    "给出门槛明确的兜底:5:50未到即叫网约车",
+    "算一笔对比账:54元两人分摊远低于误机损失",
+    "把触发时间、动作、费用三要素说全"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A10",
+     "subject": "HER",
+     "relation": "请求",
+     "value": "唐棠主动要求为明早留后手预案",
+     "valid_time": "2026-12-01 21:50",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T05",
+      "message_id": "m0",
+      "quote": "要不要留个后手"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A11",
+     "subject": "SHARED",
+     "relation": "既定口径",
+     "value": "接人时间已核实为5:40,认车凭据为尾号739银灰GL8",
+     "valid_time": "2026-12-01 21:28核实",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T04",
+      "message_id": "m0",
+      "quote": "车牌尾号739,银灰色GL8"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "预案要可执行:什么时间(5:50)、什么动作(叫车)、什么代价(54元两人各27),三要素齐了她的焦虑才有地方放。",
+   "unknowns": [
+    "网约车凌晨时段是否加价"
+   ],
+   "protected_expressions": [
+    "要不要留个后手"
+   ],
+   "forbidden_factual_claims": [
+    "兜底车费高于100元",
+    "已实际支付网约车费用"
+   ]
+  },
+  "E208_T06": {
+   "case_id": "E208_T06",
+   "current_action": "接住睡前托付:答应5点准时发消息叫她,顺带确认她把车牌尾号739和师傅电话存进手机,让明早的认车不依赖任何人记忆。",
+   "acceptable_actions": [
+    "应下叫醒任务并确认存车牌",
+    "轻松接托付,补一条存电话建议",
+    "答应多催一遍,顺带报自己闹钟"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A12",
+     "subject": "HER",
+     "relation": "计划",
+     "value": "唐棠闹钟定在4:50,请求顾北5点再催一遍",
+     "valid_time": "2026-12-02 04:50/05:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T06",
+      "message_id": "m0",
+      "quote": "闹钟定了四点五十"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A13",
+     "subject": "SHARED",
+     "relation": "既定口径",
+     "value": "上车时间为5:40,认车凭据尾号739",
+     "valid_time": "2026-12-01核实",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T04",
+      "message_id": "m0",
+      "quote": "车牌尾号739,银灰色GL8"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "哄睡式收尾,轻松但不敷衍;存车牌这个建议是把核实成果固化,值得这轮就说。",
+   "unknowns": [
+    "唐棠实际入睡时间"
+   ],
+   "protected_expressions": [
+    "闹钟定了四点五十"
+   ],
+   "forbidden_factual_claims": [
+    "闹钟时间与四点五十不符"
+   ]
+  },
+  "E208_T07": {
+   "case_id": "E208_T07",
+   "current_action": "报自己的位置与进度:已在楼下,师傅按约定时间前后到;把兜底预案的触发时间再报一遍作为时钟,让她只管下楼。",
+   "acceptable_actions": [
+    "报位置并给时间余量",
+    "确认车辆临近,让她下楼",
+    "把5:50兜底触发点再提一遍稳军心"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A14",
+     "subject": "ME",
+     "relation": "履行",
+     "value": "顾北按约在5点前后叫醒并确认唐棠起床",
+     "valid_time": "2026-12-02 04:46-05:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T06",
+      "message_id": "m0",
+      "quote": "明早五点你记得多催我一遍"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E208_A15",
+     "subject": "SHARED",
+     "relation": "既定口径",
+     "value": "上车时间5:40,兜底触发5:50",
+     "valid_time": "2026-12-02 05:40/05:50",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "早上5:40在唐棠小区楼下上车"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "清晨轮,句子要短;她要的是进度条,不是聊天。",
+   "unknowns": [
+    "师傅当日实际到达分钟数"
+   ],
+   "protected_expressions": [
+    "起了起了"
+   ],
+   "forbidden_factual_claims": [
+    "车辆已迟到触发兜底"
+   ]
+  },
+  "E208_T08": {
+   "case_id": "E208_T08",
+   "current_action": "确认认车三要素吻合(银灰GL8、尾号739、师傅本人),宣布预案未启用;顺手回应师傅的回程邀约:先记下,回程再议。",
+   "acceptable_actions": [
+    "确认车牌吻合并宣布兜底解除",
+    "核对三要素后安心出发",
+    "记下师傅回程邀约,行程优先"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A16",
+     "subject": "SHARED",
+     "relation": "核验通过",
+     "value": "实到车辆银灰GL8尾号739与核实口径一致",
+     "valid_time": "2026-12-02 05:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T08",
+      "message_id": "m0",
+      "quote": "尾号739!对上了上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A17",
+     "subject": "SHARED",
+     "relation": "认车凭据",
+     "value": "昨晚核实车辆为银灰GL8尾号739",
+     "valid_time": "2026-12-01 21:28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T04",
+      "message_id": "m0",
+      "quote": "车牌尾号739,银灰色GL8"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是昨晚那通电话的兑现时刻:一句话点出'核对上了',让方法论自己说话。",
+   "unknowns": [
+    "回程是否由周师傅承运(当日未定)"
+   ],
+   "protected_expressions": [
+    "尾号739!对上了上了"
+   ],
+   "forbidden_factual_claims": [
+    "实到车辆与核实不符",
+    "兜底网约车被叫用"
+   ]
+  },
+  "E208_T09": {
+   "case_id": "E208_T09",
+   "current_action": "接住行程播报:6:40到航站楼,距7:35值机截止余量充足;应下探路,顺带提醒登机口可能变更以现场屏为准。",
+   "acceptable_actions": [
+    "接播报并算时间余量",
+    "应下探路,提醒以现场屏为准",
+    "轻松接梗,确认登机口会合"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A18",
+     "subject": "HER",
+     "relation": "行程",
+     "value": "12月2日6:40到达航站楼,已过安检,B22登机口",
+     "valid_time": "2026-12-02 06:40-07:38",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T09",
+      "message_id": "m0",
+      "quote": "六点四十就到航站楼了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A19",
+     "subject": "SHARED",
+     "relation": "截止锚点",
+     "value": "值机截止7:35,6:40到达仍有55分钟余量",
+     "valid_time": "2026-12-02 07:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T03",
+      "message_id": "m0",
+      "quote": "七点三十五的值机截止"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把余量算出声(6:40到、7:35截止,55分钟),这是她昨晚最想要的安心感的续杯。",
+   "unknowns": [
+    "登机口是否临时变更"
+   ],
+   "protected_expressions": [
+    "六点四十就到航站楼了",
+    "B22登机口"
+   ],
+   "forbidden_factual_claims": [
+    "错过值机截止",
+    "6:40之后仍在小区楼下"
+   ]
+  },
+  "E208_T10": {
+   "case_id": "E208_T10",
+   "current_action": "落地后接她的方法论提问,给出回程三步:先电话核实时间与车牌、存进备注、平台信息只作参考;把昨晚流程抽象成可复用清单。",
+   "acceptable_actions": [
+    "给回程三步核实清单",
+    "把昨晚流程总结成方法论传授",
+    "建议电话核实并留车牌备注"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A20",
+     "subject": "HER",
+     "relation": "意向",
+     "value": "回程想继续找周师傅,主动询问注意事项",
+     "valid_time": "2026-12-02 10:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T10",
+      "message_id": "m0",
+      "quote": "想还找周师傅,你说我该注意啥"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A21",
+     "subject": "SHARED",
+     "relation": "方法论",
+     "value": "以电话核实口径为准、车牌尾号739为认车凭据的经验来自12月1日晚",
+     "valid_time": "2026-12-01 21:28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T04",
+      "message_id": "m0",
+      "quote": "车牌尾号739,银灰色GL8"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她从被兜底变成想学流程,这轮把方法论给足,但别说教,像复盘不像上课。",
+   "unknowns": [
+    "回程日期当时尚未确定"
+   ],
+   "protected_expressions": [
+    "想还找周师傅,你说我该注意啥"
+   ],
+   "forbidden_factual_claims": [
+    "回程已在此轮订妥"
+   ]
+  },
+  "E208_T11": {
+   "case_id": "E208_T11",
+   "current_action": "验收她的执行:回程下周日14:30、周师傅、车牌尾号739与电话已存备注——三步全对;补一句'平台订单发我看眼'当最后一道核。",
+   "acceptable_actions": [
+    "逐项验收她的回程安排",
+    "肯定她照流程办完,补一道核验",
+    "确认14:30与车牌存档无误"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A22",
+     "subject": "SHARED",
+     "relation": "回程约定",
+     "value": "回程订在下周日下午两点半,承运为周师傅",
+     "valid_time": "回程当周周日14:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T11",
+      "message_id": "m0",
+      "quote": "回程订了下周日下午两点半"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A23",
+     "subject": "HER",
+     "relation": "存档",
+     "value": "唐棠已把车牌尾号739和电话存进备注",
+     "valid_time": "2026-12-02 19:50",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T11",
+      "message_id": "m0",
+      "quote": "我把车牌尾号739和电话都存进备注了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A24",
+     "subject": "SHARED",
+     "relation": "认车凭据",
+     "value": "去程核实的认车凭据即尾号739,回程沿用",
+     "valid_time": "2026-12-01确立",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T04",
+      "message_id": "m0",
+      "quote": "车牌尾号739,银灰色GL8"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "验收要具体到三个字段(时间、人、车牌),她的得意需要被逐条确认才踏实。",
+   "unknowns": [
+    "回程具体日期(仅约定下周日14:30)"
+   ],
+   "protected_expressions": [
+    "回程订了下周日下午两点半",
+    "我把车牌尾号739和电话都存进备注了"
+   ],
+   "forbidden_factual_claims": [
+    "回程时间不是14:30",
+    "回程换了陌生司机"
+   ]
+  },
+  "E208_T12": {
+   "case_id": "E208_T12",
+   "current_action": "收下谢意并把功劳还给事件本身:关键是'别拿截图当真相',昨晚一通电话省掉一夜焦虑;接住'下次拼车享福'的玩笑,轻轻收尾。",
+   "acceptable_actions": [
+    "接谢意并重申方法论要点",
+    "把功劳归于'先核实再兜底'本身",
+    "接玩笑收尾,留下次同行的钩子"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E208_A25",
+     "subject": "HER",
+     "relation": "总结",
+     "value": "唐棠总结出'先核实,再兜底,别拿截图当真相'的原则",
+     "valid_time": "2026-12-02 22:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T12",
+      "message_id": "m0",
+      "quote": "先核实,再兜底,别拿截图当真相"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E208_A26",
+     "subject": "SHARED",
+     "relation": "矛盾原点",
+     "value": "当晚焦虑源于平台6:00与群内5:40两口径冲突",
+     "valid_time": "2026-12-01 20:50",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E208_T02",
+      "message_id": "m0",
+      "quote": "平台订单上写的是六点整发车"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轮:把她的总结复述一遍等于给她发毕业证;玩笑接住,关系自然升温,不点破。",
+   "unknowns": [
+    "下次同行的时间"
+   ],
+   "protected_expressions": [
+    "先核实,再兜底,别拿截图当真相"
+   ],
+   "forbidden_factual_claims": [
+    "去程曾误机",
+    "平台6:00才是实际接车时间"
+   ]
+  }
+ }
+}

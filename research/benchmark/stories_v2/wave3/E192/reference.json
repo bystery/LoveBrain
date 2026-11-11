@@ -1,0 +1,661 @@
+{
+ "story_id": "E192",
+ "turns": {
+  "E192_T01": {
+   "case_id": "E192_T01",
+   "current_action": "先接住她对数据的担忧，给出先排查后备份再送修的顺序建议。",
+   "acceptable_actions": [
+    "先安抚数据担忧并给出备份优先的顺序",
+    "让她试外接屏缩小故障范围",
+    "问清预约的具体时段和工单渠道"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A01",
+     "subject": "SHARED",
+     "relation": "设备故障",
+     "value": "笔记本开机后屏幕闪竖条",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T01",
+      "quote": "屏幕就闪竖条",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E192_A02",
+     "subject": "SHARED",
+     "relation": "维修预约",
+     "value": "已预约官方售后周日上午上门检测机身在保内",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T01",
+      "quote": "约了官方售后周日上午上门检测，还在保内",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E192_A03",
+     "subject": "HER",
+     "relation": "数据资产",
+     "value": "笔记本内存有三本绘本源文件",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T01",
+      "quote": "怕里面三本绘本的源文件出事",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的饭碗在这台机器里，数据风险的排序要放在维修前面。",
+   "unknowns": [
+    "故障是屏幕还是排线当时未定"
+   ],
+   "protected_expressions": [
+    "屏幕就闪竖条"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构保外收费金额",
+    "不得断言故障原因已确诊"
+   ]
+  },
+  "E192_T02": {
+   "case_id": "E192_T02",
+   "current_action": "给出最坏情况前置的顺序：少开机折腾，当晚备份源文件，备完之前不送修。",
+   "acceptable_actions": [
+    "定下先备份后送修的顺序并给存储建议",
+    "让她用外接屏先完成备份再谈检修",
+    "提醒她备份完成前拒绝任何恢复出厂操作"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "initiative",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A04",
+     "subject": "ME",
+     "relation": "送修顺序",
+     "value": "先拷绘本源文件到移动硬盘备完前不送修",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T02",
+      "quote": "今晚就把绘本源文件拷移动硬盘，备完之前别送修",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "指令要有先后和完成条件，别只说'记得备份'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称备份可以跳过"
+   ]
+  },
+  "E192_T03": {
+   "case_id": "E192_T03",
+   "current_action": "接住故障定位的好消息，确认备份进度，把剩余备份量排进日程。",
+   "acceptable_actions": [
+    "确认外接屏正常的意义并跟进备份进度",
+    "建议素材库传完前机器别关机断电",
+    "让她把已备份目录列个清单核对"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A05",
+     "subject": "HER",
+     "relation": "故障定位",
+     "value": "外接显示器画面正常故障锁定屏幕线路",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T03",
+      "quote": "外接显示器试了，画面是好的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E192_A06",
+     "subject": "HER",
+     "relation": "备份进度",
+     "value": "绘本源文件与客户合同已拷完素材库待传",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T03",
+      "quote": "绘本源文件和客户合同都拷完了",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她备份分了主次（源文件合同先行，素材库靠后），这个顺序值得肯定。",
+   "unknowns": [
+    "素材库总量多大未提"
+   ],
+   "protected_expressions": [
+    "果然是屏幕这条线的事"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称备份已全部完成"
+   ]
+  },
+  "E192_T04": {
+   "case_id": "E192_T04",
+   "current_action": "给上门前最后清单：备份收尾、清私照、记工单号留取件凭证。",
+   "acceptable_actions": [
+    "列出上门前三件事并强调隐私清理",
+    "让她把工单号和预约短信放一个相册",
+    "提醒她当面确认工程师工牌与工单一致"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A07",
+     "subject": "ME",
+     "relation": "上门前清单",
+     "value": "备份收尾清理私照记录工单号留取件凭证",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T04",
+      "quote": "工单号记下来，取件凭证别弄丢",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "隐私清理是送修常规，说得自然些，别说教。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构工程师人数或上门时长"
+   ]
+  },
+  "E192_T05": {
+   "case_id": "E192_T05",
+   "current_action": "接住取消的火气，肯定她截改约短信的留证动作，确认新预约时段。",
+   "acceptable_actions": [
+    "先接火气再确认周一上午改约与短信凭证",
+    "建议她要一份取消原因的书面或短信说明",
+    "把改期换算成备份缓冲时间宽她的心"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "time_state",
+    "boundary",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A08",
+     "subject": "SHARED",
+     "relation": "维修预约",
+     "value": "十一月八日周日上午上门检测被取消",
+     "valid_time": "2026-11-07",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T05",
+      "quote": "周日上午的上门取消了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E192_A09",
+     "subject": "SHARED",
+     "relation": "改约安排",
+     "value": "上门检测改约至十一月九日周一上午",
+     "valid_time": "2026-11-09",
+     "status": "rescheduled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T05",
+      "quote": "改约到周一上午",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E192_A10",
+     "subject": "SHARED",
+     "relation": "维修预约",
+     "value": "原预约官方售后周日上午上门检测",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T01",
+      "quote": "约了官方售后周日上午上门检测，还在保内",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "取消是商家违约在先，情绪归情绪，证据链（短信）要她留全。",
+   "unknowns": [
+    "周一改约是否兑现当时未知"
+   ],
+   "protected_expressions": [
+    "周日上午的上门取消了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称周日上午上门仍会进行",
+    "不得虚构客服书面道歉"
+   ]
+  },
+  "E192_T06": {
+   "case_id": "E192_T06",
+   "current_action": "把改期转成缓冲期：正好传完素材库，改约短信是追责凭据要存好。",
+   "acceptable_actions": [
+    "把改期重构为备份缓冲期",
+    "提醒她给改约短信做云端备份",
+    "让她周一前再确认一次上门安排"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "initiative",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A11",
+     "subject": "ME",
+     "relation": "留证提醒",
+     "value": "改约短信存好作为再变更时的追责凭据",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T06",
+      "quote": "改约短信存好，万一再变，这就是你追责的凭据",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "坏消息里先找可用时间，再谈风险预案。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": []
+  },
+  "E192_T07": {
+   "case_id": "E192_T07",
+   "current_action": "接住二次改期的无语，确认寄修方案要点：区域维修中心、运费官方承担，让她书面确认后寄。",
+   "acceptable_actions": [
+    "确认寄修条款并建议留书面确认",
+    "对比寄修与再等上门的利弊让她拍板",
+    "提醒她寄修前再次确认数据已清敏感区"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A12",
+     "subject": "SHARED",
+     "relation": "维修方式",
+     "value": "上门再次改期为寄修至区域维修中心运费官方承担",
+     "valid_time": "2026-11-09",
+     "status": "rescheduled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T07",
+      "quote": "让我走寄修，机器寄到区域维修中心",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E192_A13",
+     "subject": "SHARED",
+     "relation": "改约安排",
+     "value": "上门检测曾改约至周一上午",
+     "valid_time": "2026-11-09",
+     "status": "rescheduled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T05",
+      "quote": "改约到周一上午",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "二次改期是她憋火的顶点，先接情绪再谈条款，别催她快点决定。",
+   "unknowns": [
+    "寄修往返总时长未知"
+   ],
+   "protected_expressions": [
+    "来回运费官方出"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称周一上门仍会进行",
+    "不得让寄修运费由她承担"
+   ]
+  },
+  "E192_T08": {
+   "case_id": "E192_T08",
+   "current_action": "认可寄修止损，给寄前三件事：封箱拍视频、工单号写箱单、故障描述只写屏幕闪竖条。",
+   "acceptable_actions": [
+    "给寄修留证三件事并说明理由",
+    "提醒她保留寄修运单号",
+    "让她确认工单上的故障描述与实际一致"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "initiative",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A14",
+     "subject": "ME",
+     "relation": "寄修清单",
+     "value": "封箱拍视频工单号写箱单故障描述只写屏幕闪竖条",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T08",
+      "quote": "封箱拍视频，工单号写箱单上，故障描述只写屏幕闪竖条",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "故障描述宁短勿长，多写一项都可能被算成额外检测费。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得建议她夸大故障描述"
+   ]
+  },
+  "E192_T09": {
+   "case_id": "E192_T09",
+   "current_action": "确认寄出与留证齐活，接住'旧台式机顶一周'的过渡安排。",
+   "acceptable_actions": [
+    "确认封箱视频与工单留证到位",
+    "问她旧台式机能不能带动绘画软件",
+    "提醒她保存寄修运单跟踪节点"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A15",
+     "subject": "HER",
+     "relation": "留证执行",
+     "value": "封箱视频全程拍摄工单号后四位0733写在箱单第一行",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T09",
+      "quote": "封箱视频从贴单拍到封口，工单号后四位0733写在箱单第一行",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E192_A16",
+     "subject": "SHARED",
+     "relation": "寄修状态",
+     "value": "机器已寄出预计七至十个工作日返回",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T09",
+      "quote": "客服说七到十个工作日返回",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "留证动作她全做齐了，确认一遍让她安心。",
+   "unknowns": [],
+   "protected_expressions": [
+    "从贴单拍到封口"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构维修中心地址"
+   ]
+  },
+  "E192_T10": {
+   "case_id": "E192_T10",
+   "current_action": "预打报价针：收到报价短信先核对保内保外再确认，拿不准截图发他。",
+   "acceptable_actions": [
+    "给报价确认的核对步骤",
+    "让她把工单页面的保内标识截图留底",
+    "提醒她确认环节别电话口头答应收费项"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A17",
+     "subject": "SHARED",
+     "relation": "寄修状态",
+     "value": "机器已寄出预计七至十个工作日返回",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T09",
+      "quote": "客服说七到十个工作日返回",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "保内是她的底线，报价环节的坑提前打好预防针。",
+   "unknowns": [
+    "是否会出报价单未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得预先断言维修必然收费"
+   ]
+  },
+  "E192_T11": {
+   "case_id": "E192_T11",
+   "current_action": "共享保内免费换屏的圆满结果，点明前面留证与二次改期忍让换来的零费用结局。",
+   "acceptable_actions": [
+    "祝贺零费用结果并回顾留证的作用",
+    "确认到货时间并提醒开箱再拍一段",
+    "让她把免费换屏的工单结论截图存档"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A18",
+     "subject": "SHARED",
+     "relation": "维修结果",
+     "value": "屏幕总成保内免费更换运费全免零费用",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T11",
+      "quote": "保内免费换，运费全免",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E192_A19",
+     "subject": "SHARED",
+     "relation": "寄修状态",
+     "value": "机器已发回预计明早到",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T11",
+      "quote": "机器已经发回，明早到",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E192_A20",
+     "subject": "SHARED",
+     "relation": "寄修状态",
+     "value": "机器曾寄出预计七至十个工作日返回",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T09",
+      "quote": "客服说七到十个工作日返回",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "实际返回比预期快，点一句'这次售后痛快'，别夸成万无一失。",
+   "unknowns": [
+    "屏幕总成具体型号未知"
+   ],
+   "protected_expressions": [
+    "一分钱没花"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称产生了维修费用",
+    "不得虚构换屏品牌型号"
+   ]
+  },
+  "E192_T12": {
+   "case_id": "E192_T12",
+   "current_action": "接住数据零丢失的圆满与画头像致谢，应下周六之约并肯定她双备份的新习惯。",
+   "acceptable_actions": [
+    "答应周六赴约并接住画头像",
+    "肯定她云盘加硬盘双备份的新规",
+    "建议她借机把旧合同也归档加密"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E192_A21",
+     "subject": "HER",
+     "relation": "数据恢复",
+     "value": "源文件从移动硬盘全部恢复一笔未丢",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T12",
+      "quote": "源文件从硬盘全回来了，一笔没丢",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E192_A22",
+     "subject": "HER",
+     "relation": "备份进度",
+     "value": "此前绘本源文件与客户合同已拷入移动硬盘",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E192_T03",
+      "quote": "绘本源文件和客户合同都拷完了",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "画头像是她的谢意也是职业本能，痛快接住，别客气推辞。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一笔没丢"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称数据曾部分丢失"
+   ]
+  }
+ }
+}

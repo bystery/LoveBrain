@@ -1,0 +1,2368 @@
+{
+ "story_id": "LRE121",
+ "turns": {
+  "LRE121_T01": {
+   "case_id": "LRE121_T01",
+   "current_action": "接住接种计划并可顺带接家人催促的梗",
+   "acceptable_actions": [
+    "夸她终于听劝",
+    "接'裸奔'梗并确认时间",
+    "问要不要陪"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T01_A01",
+     "subject": "HER",
+     "relation": "接种预约",
+     "value": "已约11月14日09:30桂溪社区卫生服务中心接种流感疫苗",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T01",
+      "quote": "这周六上午九点半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快接梗。",
+   "unknowns": [],
+   "protected_expressions": [
+    "等于裸奔"
+   ],
+   "forbidden_factual_claims": [
+    "不得质疑接种必要性"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T02": {
+   "case_id": "LRE121_T02",
+   "current_action": "答应周六陪同接种",
+   "acceptable_actions": [
+    "答应并指定要虾饺",
+    "答应并说顺路",
+    "答应并调侃陪打收费"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T02_A01",
+     "subject": "HER",
+     "relation": "接种预约",
+     "value": "11月14日09:30桂溪社区卫生服务中心的既定预约",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T01",
+      "quote": "这周六上午九点半",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T02_A02",
+     "subject": "SHARED",
+     "relation": "陪同约定",
+     "value": "ME 陪同前往接种，接种后 HER 请早茶",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T02",
+      "quote": "陪我去呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应得爽快。",
+   "unknowns": [],
+   "protected_expressions": [
+    "虾饺我请"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构早茶店家"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T03": {
+   "case_id": "LRE121_T03",
+   "current_action": "认可她的功课并补一句身份证提醒",
+   "acceptable_actions": [
+    "夸功课细并提醒带证件",
+    "确认留观并说等你",
+    "补充让年长者也查一下"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T03_A01",
+     "subject": "SHARED",
+     "relation": "陪同约定",
+     "value": "ME 陪同接种的既定安排",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T02",
+      "quote": "陪我去呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T03_A02",
+     "subject": "HER",
+     "relation": "接种须知",
+     "value": "接种前一周不可感冒发烧，需带身份证，接种后留观三十分钟",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T03",
+      "quote": "留观三十分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "常识性内容简短确认。",
+   "unknowns": [],
+   "protected_expressions": [
+    "留观三十分钟"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造禁忌药物清单"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T04": {
+   "case_id": "LRE121_T04",
+   "current_action": "接住取消消息，先共情再问补救",
+   "acceptable_actions": [
+    "共情并问补号思路",
+    "吐槽演练并陪她想办法",
+    "问她早茶是不是也没了"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T04_A01",
+     "subject": "HER",
+     "relation": "接种预约",
+     "value": "11月14日09:30的接种预约经本人操作取消",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T01",
+      "quote": "这周六上午九点半",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T04_A02",
+     "subject": "HER",
+     "relation": "取消原因",
+     "value": "公司临时通知周六系统封网演练全员到场",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T04",
+      "quote": "全员到场搞系统封网演练",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：明确承认取消已发生，别安慰成'说不定还能打'。",
+   "unknowns": [
+    "补号可行性未知"
+   ],
+   "protected_expressions": [
+    "手速快得我自己都心疼"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称原预约仍有效",
+    "不得编造公众号补偿政策"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T05": {
+   "case_id": "LRE121_T05",
+   "current_action": "帮她把四点号与晚间饭局的衔接算清楚，可建议保留或放弃",
+   "acceptable_actions": [
+    "算时间账建议先锁定四点号",
+    "建议看看别家门诊上午号",
+    "让她先锁号再优化"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T05_A01",
+     "subject": "HER",
+     "relation": "取消原因",
+     "value": "封网演练导致周六无法接种",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T04",
+      "quote": "全员到场搞系统封网演练",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T05_A02",
+     "subject": "HER",
+     "relation": "改约候选",
+     "value": "桂溪下周六上午无号仅剩十六点档，与晚间饭局存在衔接顾虑",
+     "valid_time": "2026-11-21",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T05",
+      "quote": "只剩下午四点的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给算术支持，别替她拍死。",
+   "unknowns": [
+    "她晚间饭局几点未知"
+   ],
+   "protected_expressions": [
+    "我再想想"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言四点号一定来得及"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T06": {
+   "case_id": "LRE121_T06",
+   "current_action": "接住压力并给减负视角",
+   "acceptable_actions": [
+    "说降温前还有两个周末来得及",
+    "建议考虑附近别的门诊",
+    "先让她吃饱再说"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T06_A01",
+     "subject": "HER",
+     "relation": "改约候选",
+     "value": "十六点档候选号仍未决定去留",
+     "valid_time": "2026-11-21",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T05",
+      "quote": "只剩下午四点的",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T06_A02",
+     "subject": "HER",
+     "relation": "时间窗压力",
+     "value": "母亲要求赶在降温前完成接种",
+     "valid_time": "2026-11下旬前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T06",
+      "quote": "赶在降温前打上",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "减压为主。",
+   "unknowns": [
+    "降温确切日期未知"
+   ],
+   "protected_expressions": [
+    "我好难"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造降温日期"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T07": {
+   "case_id": "LRE121_T07",
+   "current_action": "认可改约决定并确认新时间地点与自费金额",
+   "acceptable_actions": [
+    "认可并说心安最值钱",
+    "确认九点五十并说陪",
+    "认可并顺带夸她行动力"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T07_A01",
+     "subject": "HER",
+     "relation": "改约候选",
+     "value": "桂溪十六点档候选号因改约惠民门诊而放弃",
+     "valid_time": "2026-11-21",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T05",
+      "quote": "只剩下午四点的",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T07_A02",
+     "subject": "SHARED",
+     "relation": "改期落定",
+     "value": "改约惠民门诊11月21日09:50接种，自费128元",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T07",
+      "quote": "惠民门诊下周六上午九点五十有号",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T07_A03",
+     "subject": "SHARED",
+     "relation": "费用权衡",
+     "value": "放弃免费号改自费一百二十八元以赶降温前时间窗",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T07",
+      "quote": "自费一百二十八",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：新时间地点金额都要复述一遍。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我约了"
+   ],
+   "forbidden_factual_claims": [
+    "不得仍把桂溪九点半当作有效预约",
+    "不得声称接种免费"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T08": {
+   "case_id": "LRE121_T08",
+   "current_action": "确认九点五十惠民门诊门口集合与早茶新地点",
+   "acceptable_actions": [
+    "确认集合并说早茶我熟门",
+    "确认并问新店特色",
+    "确认并提醒带身份证"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T08_A01",
+     "subject": "SHARED",
+     "relation": "改期落定",
+     "value": "11月21日09:50惠民门诊接种的既定改约",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T07",
+      "quote": "惠民门诊下周六上午九点五十有号",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T08_A02",
+     "subject": "SHARED",
+     "relation": "陪同计划更新",
+     "value": "集合改为11月21日09:50惠民门诊门口，早茶移至接种后",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T08",
+      "quote": "九点五十惠民门诊门口集合",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "确认新地点别再提旧中心。",
+   "unknowns": [
+    "新店口味未知"
+   ],
+   "protected_expressions": [
+    "计划不变哈"
+   ],
+   "forbidden_factual_claims": [
+    "不得把集合点说成桂溪中心"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T09": {
+   "case_id": "LRE121_T09",
+   "current_action": "确认接种完成并先进店点虾饺",
+   "acceptable_actions": [
+    "答应并点好虾饺等她",
+    "答应并说留观别跑",
+    "答应并拍菜单发她"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T09_A01",
+     "subject": "SHARED",
+     "relation": "陪同计划更新",
+     "value": "09:50惠民门诊门口集合的安排",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T08",
+      "quote": "九点五十惠民门诊门口集合",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T09_A02",
+     "subject": "SHARED",
+     "relation": "接种完成",
+     "value": "已完成流感疫苗接种，左臂酸胀，留观三十分钟进行中",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T09",
+      "quote": "留观三十分钟已启动",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "行动派回复。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我十分钟后杀到"
+   ],
+   "forbidden_factual_claims": [
+    "不得让她提前离场"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T10": {
+   "case_id": "LRE121_T10",
+   "current_action": "帮她倒茶并接住玩笑",
+   "acceptable_actions": [
+    "倒茶并说姐妹情满分",
+    "倒茶并调侃左撇子",
+    "倒茶并让她慢点吃"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T10_A01",
+     "subject": "SHARED",
+     "relation": "接种完成",
+     "value": "接种已完成且左臂酸胀",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T09",
+      "quote": "左胳膊一酸一酸的",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T10_A02",
+     "subject": "SHARED",
+     "relation": "早茶兑现",
+     "value": "接种后同吃早茶，HER 因胳膊不便请 ME 协助倒茶",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T10",
+      "quote": "你帮我倒茶",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "小场景小动作。",
+   "unknowns": [],
+   "protected_expressions": [
+    "塑料姐妹情"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称她无须留观即离开"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T11": {
+   "case_id": "LRE121_T11",
+   "current_action": "确认无发热属正常反应并让她早点休息",
+   "acceptable_actions": [
+    "让她热敷别熬夜",
+    "确认正常并说早点睡",
+    "接大拇指梗并祝早日复原"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T11_A01",
+     "subject": "SHARED",
+     "relation": "接种完成",
+     "value": "当日完成接种的既定事实",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T09",
+      "quote": "打完了打完了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T11_A02",
+     "subject": "HER",
+     "relation": "反应正常",
+     "value": "当晚无发热，酸胀属医生认可的正常反应，已向母亲报平安",
+     "valid_time": "2026-11-21晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T11",
+      "quote": "没发烧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "关心但不制造焦虑。",
+   "unknowns": [],
+   "protected_expressions": [
+    "正常反应"
+   ],
+   "forbidden_factual_claims": [
+    "不得夸大不良反应",
+    "不得声称她发烧了"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T12": {
+   "case_id": "LRE121_T12",
+   "current_action": "对明年同去可应可缓",
+   "acceptable_actions": [
+    "应下并说日历也给我记一份",
+    "应下并调侃一整笼虾饺",
+    "笑着说到时候看班表"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T12_A01",
+     "subject": "HER",
+     "relation": "反应正常",
+     "value": "接种后反应正常的当日确认",
+     "valid_time": "2026-11-21晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T11",
+      "quote": "没发烧",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T12_A02",
+     "subject": "HER",
+     "relation": "后续之约",
+     "value": "明年九月底同去接种并请一整笼虾饺",
+     "valid_time": "2027-09底",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T12",
+      "quote": "明年九月底这针还要打",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻收尾。",
+   "unknowns": [
+    "明年档期未知"
+   ],
+   "protected_expressions": [
+    "一整笼虾饺"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺具体明年日期"
+   ],
+   "may_decline": true
+  },
+  "LRE121_T13": {
+   "case_id": "LRE121_T13",
+   "current_action": "接住恢复战报并接熟客待遇梗",
+   "acceptable_actions": [
+    "夸恢复快并约下顿早茶",
+    "接熟客待遇梗",
+    "提醒她别嘚瑟过头"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T13_A01",
+     "subject": "HER",
+     "relation": "身体恢复",
+     "value": "接种后左臂酸胀已消退恢复如常",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T13",
+      "quote": "胳膊不酸了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快接战报。",
+   "unknowns": [],
+   "protected_expressions": [
+    "胳膊不酸了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称仍有发热或不良反应"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T14": {
+   "case_id": "LRE121_T14",
+   "current_action": "接住母亲接种需求并确认12-05新预约",
+   "acceptable_actions": [
+    "确认十点二十预约并说稳",
+    "提醒母亲也带身份证",
+    "调侃家里成了接种大户"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T14_A01",
+     "subject": "HER",
+     "relation": "母亲接种预约",
+     "value": "母亲流感疫苗接种预约12-05 10:20惠民门诊，自费一百二十八元",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T14",
+      "quote": "十点二十的号，先给她锁上了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T14_A02",
+     "subject": "HER",
+     "relation": "母亲接种费用",
+     "value": "母亲接受与HER相同的自费一百二十八元口径",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T14",
+      "quote": "自费一百二十八她认",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "新线开启要复述时间。",
+   "unknowns": [
+    "母亲证件准备情况未知"
+   ],
+   "protected_expressions": [
+    "自费一百二十八她认"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称母亲接种免费"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T15": {
+   "case_id": "LRE121_T15",
+   "current_action": "接住报销利好并共情小票失踪",
+   "acceptable_actions": [
+    "支招电子支付记录也能当凭证",
+    "调侃奶茶小票优先级太高",
+    "建议问行政要材料清单"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T15_A01",
+     "subject": "HER",
+     "relation": "报销政策",
+     "value": "公司补充医保可报销自费流感疫苗费用",
+     "valid_time": "2026-11-25起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T15",
+      "quote": "自费疫苗可以走公司补充医保报销",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T15_A02",
+     "subject": "HER",
+     "relation": "凭证状态",
+     "value": "接种当日纸质小票暂未找到，报销凭证存疑",
+     "valid_time": "2026-11-25",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T15",
+      "quote": "小票不知道被我塞哪去了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "利好与麻烦一起接。",
+   "unknowns": [
+    "小票能否补开未知"
+   ],
+   "protected_expressions": [
+    "奶茶小票"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称报销无需任何凭证"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T16": {
+   "case_id": "LRE121_T16",
+   "current_action": "接补开路径并给出行动建议",
+   "acceptable_actions": [
+    "建议带好支付截图",
+    "陪她核一遍支付时间点",
+    "提醒前台办理时段"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T16_A01",
+     "subject": "HER",
+     "relation": "补开路径",
+     "value": "凭当日支付记录与身份证可至惠民前台补打印费用凭条",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T16",
+      "quote": "凭当天的支付记录和身份证",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T16_A02",
+     "subject": "HER",
+     "relation": "行动安排",
+     "value": "HER计划次日中午前往补开凭条",
+     "valid_time": "2026-11-27",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T16",
+      "quote": "明天中午就杀过去",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给路径不添乱。",
+   "unknowns": [
+    "前台办理时段未知"
+   ],
+   "protected_expressions": [
+    "杀过去"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构补开手续费"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T17": {
+   "case_id": "LRE121_T17",
+   "current_action": "接补开成功并表扬归档意识",
+   "acceptable_actions": [
+    "夸归档意识满分",
+    "接票据梗",
+    "提醒报销材料按行政要求交"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T17_A01",
+     "subject": "HER",
+     "relation": "凭证补开",
+     "value": "一百二十八元接种费用凭条补开成功",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T17",
+      "quote": "一百二十八",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T17_A02",
+     "subject": "HER",
+     "relation": "归档动作",
+     "value": "凭条与支付记录已拍照双备份当天归档",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T17",
+      "quote": "拍照存了俩地方",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "小胜利要接住。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这次学乖了"
+   ],
+   "forbidden_factual_claims": [
+    "不得更改报销相关金额数字"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T18": {
+   "case_id": "LRE121_T18",
+   "current_action": "接早茶之约与双份肠粉彩头",
+   "acceptable_actions": [
+    "答应并说双份安排上",
+    "调侃接种庆祝宴规格",
+    "说顺路准时到"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T18_A01",
+     "subject": "SHARED",
+     "relation": "早茶约定",
+     "value": "11-28早茶由HER请客，ME获双份肠粉",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T18",
+      "quote": "今天我请",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T18_A02",
+     "subject": "SHARED",
+     "relation": "肠粉梗回扣",
+     "value": "11-10'肠粉你随意'的让利梗延续升级",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T02",
+      "quote": "肠粉你随意",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "彩头升级要接住。",
+   "unknowns": [],
+   "protected_expressions": [
+    "肠粉你随意"
+   ],
+   "forbidden_factual_claims": [
+    "不得把请客方向说反"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T19": {
+   "case_id": "LRE121_T19",
+   "current_action": "冲突轮：明确承认母亲预约已取消并接住无奈",
+   "acceptable_actions": [
+    "先确认取消操作完成再安慰",
+    "提醒感冒好透再约不迟",
+    "接她自己念过的规则梗"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T19_A01",
+     "subject": "HER",
+     "relation": "母亲接种预约",
+     "value": "母亲12-05 10:20惠民接种预约因感冒经HER操作取消",
+     "valid_time": "2026-12-05",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T14",
+      "quote": "先给她锁上了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T19_A02",
+     "subject": "HER",
+     "relation": "取消依据",
+     "value": "母亲着凉感冒，接种前一礼拜不能感冒发烧",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T19",
+      "quote": "不能感冒发烧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：先承认取消已发生，别安慰成号还在。",
+   "unknowns": [
+    "感冒病程与康复时间未知"
+   ],
+   "protected_expressions": [
+    "瓮声瓮气"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称取消的12-05号仍有效",
+    "不得催她带病接种"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T20": {
+   "case_id": "LRE121_T20",
+   "current_action": "确认新候选号与先占后确认策略",
+   "acceptable_actions": [
+    "认可先占后确认打法",
+    "提醒别同时占两个号",
+    "说取消不扣钱是真香"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T20_A01",
+     "subject": "HER",
+     "relation": "候选预约",
+     "value": "12-12 10:20惠民候选号已占待母亲康复确认",
+     "valid_time": "2026-12-12",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T20",
+      "quote": "十点二十还有号",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T20_A02",
+     "subject": "HER",
+     "relation": "取消规则",
+     "value": "惠民取消预约不扣费",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T20",
+      "quote": "取消不扣钱",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "候选别替她说死。",
+   "unknowns": [
+    "12-12号段剩余情况未知"
+   ],
+   "protected_expressions": [
+    "先占上占上"
+   ],
+   "forbidden_factual_claims": [
+    "不得把候选说成已确认"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T21": {
+   "case_id": "LRE121_T21",
+   "current_action": "接住康复进度并确认顺延预案",
+   "acceptable_actions": [
+    "认可稳妥预案",
+    "提醒康复后别太赶",
+    "说19号兜底安心"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T21_A01",
+     "subject": "HER",
+     "relation": "接种计划",
+     "value": "12-12接种为主案，临期复发则顺延12-19",
+     "valid_time": "2026-12-12",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T21",
+      "quote": "12号去",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T21_A02",
+     "subject": "HER",
+     "relation": "康复状态",
+     "value": "母亲烧退但仍需缓几天观察",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T21",
+      "quote": "烧退了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "预案给兜底感。",
+   "unknowns": [
+    "感冒是否复发未知"
+   ],
+   "protected_expressions": [
+    "顺延到19号"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣称母亲已完全康复"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T22": {
+   "case_id": "LRE121_T22",
+   "current_action": "认可不折腾决定并算账支持",
+   "acceptable_actions": [
+    "认可稳字当头",
+    "接老姐妹群梗",
+    "说免费号下次再说"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T22_A01",
+     "subject": "HER",
+     "relation": "放号信息",
+     "value": "桂溪社区十二月起放出新一批免费接种号",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T22",
+      "quote": "桂溪放十二月的免费号",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T22_A02",
+     "subject": "HER",
+     "relation": "方案决定",
+     "value": "维持惠民12-12自费方案不改投免费号",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T22",
+      "quote": "把12号的号守住",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "算账站她这边。",
+   "unknowns": [],
+   "protected_expressions": [
+    "她说闺女你算得对"
+   ],
+   "forbidden_factual_claims": [
+    "不得贬低选择免费号的人"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T23": {
+   "case_id": "LRE121_T23",
+   "current_action": "冲突轮：发出代陪请求并可被婉拒",
+   "acceptable_actions": [
+    "直接应下并问细节",
+    "答应但说明只能陪到留观完",
+    "婉拒并建议她改约周中"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T23_A01",
+     "subject": "SHARED",
+     "relation": "代陪请求",
+     "value": "HER因客户回访请ME代陪12-12母亲接种",
+     "valid_time": "2026-12-12",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T23",
+      "quote": "你替我陪一趟呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T23_A02",
+     "subject": "SHARED",
+     "relation": "集合安排",
+     "value": "ME拟12-12 09:50惠民门诊门口与母亲会合",
+     "valid_time": "2026-12-12",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T23",
+      "quote": "九点五十到惠民门诊门口",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T23_A03",
+     "subject": "HER",
+     "relation": "母亲接种预约",
+     "value": "12-12 10:20惠民接种为当前既定安排",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T20",
+      "quote": "十点二十还有号",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "冲突轮：请求可拒，别替ME答应。",
+   "unknowns": [
+    "客户回访结束时间未知"
+   ],
+   "protected_expressions": [
+    "早茶我请两家份"
+   ],
+   "forbidden_factual_claims": [
+    "不得替ME直接答应",
+    "不得说HER当天能到场"
+   ],
+   "may_decline": true
+  },
+  "LRE121_T24": {
+   "case_id": "LRE121_T24",
+   "current_action": "确认代陪成立并交代当日流程",
+   "acceptable_actions": [
+    "确认流程并说有啥随时喊我",
+    "提醒帮母亲拍照留念",
+    "说早茶拍照发我"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T24_A01",
+     "subject": "SHARED",
+     "relation": "代陪确认",
+     "value": "ME应下12-12代陪并与母亲09:50会合",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T24",
+      "quote": "你答应得这么快",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T24_A02",
+     "subject": "SHARED",
+     "relation": "当日流程",
+     "value": "10:20接种，留观三十分钟后由ME陪同早茶",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T24",
+      "quote": "留观三十分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T24_A03",
+     "subject": "HER",
+     "relation": "母亲接种预约",
+     "value": "12-12 10:20惠民接种为当前既定安排",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T20",
+      "quote": "十点二十还有号",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "流程逐项复述。",
+   "unknowns": [],
+   "protected_expressions": [
+    "小伙子看着靠谱"
+   ],
+   "forbidden_factual_claims": [
+    "不得改变10:20接种时间"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T25": {
+   "case_id": "LRE121_T25",
+   "current_action": "现场连线确认留观与证件",
+   "acceptable_actions": [
+    "说身份证在兜里攥着",
+    "发接种门口照片报平安",
+    "说留观完就带母亲吃早茶"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T25_A01",
+     "subject": "HER",
+     "relation": "接种须知",
+     "value": "接种后需留观三十分钟的须知再次执行",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T03",
+      "quote": "留观三十分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T25_A02",
+     "subject": "HER",
+     "relation": "接种须知",
+     "value": "接种需携带身份证以备核对",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T03",
+      "quote": "要带身份证",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T25_A03",
+     "subject": "HER",
+     "relation": "母亲到场",
+     "value": "母亲已进场接种",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T25",
+      "quote": "她进去了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出窗探针：须知原样启用。",
+   "unknowns": [],
+   "protected_expressions": [
+    "现场连线"
+   ],
+   "forbidden_factual_claims": [
+    "不得让母亲缩短留观时间"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T26": {
+   "case_id": "LRE121_T26",
+   "current_action": "接住两代接种完成与费用吐槽",
+   "acceptable_actions": [
+    "接肉疼梗并说值",
+    "提醒早茶多点个虾饺压惊",
+    "说报销后就没那么疼了"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T26_A01",
+     "subject": "HER",
+     "relation": "费用口径",
+     "value": "母亲接种自费一百二十八元并被HER用亲身经历宽慰",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T07",
+      "quote": "自费一百二十八",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T26_A02",
+     "subject": "HER",
+     "relation": "母亲接种完成",
+     "value": "母亲完成流感疫苗接种并同吃早茶",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T26",
+      "quote": "在早茶店点回了本",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出窗探针：金额口径不得漂移。",
+   "unknowns": [],
+   "protected_expressions": [
+    "肉疼"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称母亲接种免费"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T27": {
+   "case_id": "LRE121_T27",
+   "current_action": "纠正四点档误推荐并给正确建议",
+   "acceptable_actions": [
+    "肯定拦得对并说上午更稳",
+    "让她直接发惠民放号信息",
+    "调侃四点档属于历史遗留"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T27_A01",
+     "subject": "HER",
+     "relation": "旧号源状况",
+     "value": "桂溪曾仅剩下午四点档的旧况被误作推荐理由，应以当前号源为准",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T05",
+      "quote": "只剩下午四点的",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T27_A02",
+     "subject": "HER",
+     "relation": "老姐妹求号",
+     "value": "母亲老姐妹亦想预约惠民周六接种号",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T27",
+      "quote": "老姐妹也想约惠民周六的号",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出窗探针：旧况只作对照不作现状。",
+   "unknowns": [
+    "老姐妹最终是否约上未知"
+   ],
+   "protected_expressions": [
+    "手一滑"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称四点档仍是唯一选择"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T28": {
+   "case_id": "LRE121_T28",
+   "current_action": "接演练复盘与旧约取消回声",
+   "acceptable_actions": [
+    "说提前两周是文明进步",
+    "接眼泪流下来梗",
+    "提醒她以后日历可以放心约"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T28_A01",
+     "subject": "HER",
+     "relation": "演练复盘",
+     "value": "封网演练复盘后承诺今后提前两周通知",
+     "valid_time": "2026-12-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T04",
+      "quote": "全员到场搞系统封网演练",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T28_A02",
+     "subject": "HER",
+     "relation": "旧约取消史",
+     "value": "11-14 09:30桂溪预约曾因演练被连夜取消",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T04",
+      "quote": "只能取消了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出窗探针：取消史是旧账不是现状。",
+   "unknowns": [],
+   "protected_expressions": [
+    "眼泪流下来"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称旧预约已恢复"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T29": {
+   "case_id": "LRE121_T29",
+   "current_action": "接早茶熟客战报与明年之约预热",
+   "acceptable_actions": [
+    "应下九月底档期并说先记着",
+    "调侃免端茶水待遇",
+    "说虾饺座位竞争者只有我"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T29_A01",
+     "subject": "SHARED",
+     "relation": "早茶据点",
+     "value": "惠民门诊所在街道的早茶店已成固定据点",
+     "valid_time": "2026-12-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T08",
+      "quote": "惠民那条街上有家新开的",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T29_A02",
+     "subject": "SHARED",
+     "relation": "明年之约",
+     "value": "明年九月底同去接种并请一整笼虾饺之约在日历上",
+     "valid_time": "2027-09底",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T12",
+      "quote": "明年九月底这针还要打",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "出窗探针：地点与远期约都要对得上。",
+   "unknowns": [
+    "明年档期未知"
+   ],
+   "protected_expressions": [
+    "熟客"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺具体明年日期"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T30": {
+   "case_id": "LRE121_T30",
+   "current_action": "接降温兑现与抄作业梗",
+   "acceptable_actions": [
+    "接五个大拇指梗",
+    "说提前打的决策被验证",
+    "提醒寒潮保暖"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T30_A01",
+     "subject": "HER",
+     "relation": "时间窗目标",
+     "value": "赶在降温前完成接种的目标已兑现并获母亲认可",
+     "valid_time": "2026-12-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T06",
+      "quote": "赶在降温前打上",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T30_A02",
+     "subject": "HER",
+     "relation": "母亲反馈",
+     "value": "母亲在老姐妹群感慨幸亏打得早",
+     "valid_time": "2026-12-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T30",
+      "quote": "幸亏打得早",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出窗探针：时间窗逻辑闭环。",
+   "unknowns": [],
+   "protected_expressions": [
+    "五个大拇指"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造新降温日期"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T31": {
+   "case_id": "LRE121_T31",
+   "current_action": "把注意事项话术原样转告ME",
+   "acceptable_actions": [
+    "说收到并截图",
+    "问周中哪天号多",
+    "接倒背如流梗"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T31_A01",
+     "subject": "SHARED",
+     "relation": "接种须知",
+     "value": "接种前一周不可感冒发烧的注意事项再次转告ME",
+     "valid_time": "2026-12-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T03",
+      "quote": "接种前一礼拜不能感冒发烧",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T31_A02",
+     "subject": "SHARED",
+     "relation": "接种须知",
+     "value": "接种后留观三十分钟的须知再次转告",
+     "valid_time": "2026-12-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T03",
+      "quote": "留观三十分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出窗探针：须知内容逐字不走样。",
+   "unknowns": [],
+   "protected_expressions": [
+    "倒背如流"
+   ],
+   "forbidden_factual_claims": [
+    "不得删改注意事项内容"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T32": {
+   "case_id": "LRE121_T32",
+   "current_action": "年度总结接裸奔梗与日历双提醒",
+   "acceptable_actions": [
+    "接百分之两百达成梗",
+    "说俩提醒很稳",
+    "调侃她数字绕晕"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T32_A01",
+     "subject": "HER",
+     "relation": "裸奔梗",
+     "value": "裸奔梗延续为家庭接种自嘲",
+     "valid_time": "2026-12-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T01",
+      "quote": "不打流感疫苗等于裸奔",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T32_A02",
+     "subject": "HER",
+     "relation": "明年提醒",
+     "value": "明年九月底接种提醒已为母女各设一条日历",
+     "valid_time": "2027-09底",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T12",
+      "quote": "明年九月底这针还要打",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "出窗探针：梗与远期日期双锚。",
+   "unknowns": [],
+   "protected_expressions": [
+    "百分之两百达成"
+   ],
+   "forbidden_factual_claims": [
+    "不得把接种次数说成三次"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T33": {
+   "case_id": "LRE121_T33",
+   "current_action": "冲突轮：拦住旧约复活并给出真实信息",
+   "acceptable_actions": [
+    "肯定拦得及时",
+    "建议把惠民记录存成模板",
+    "说旧号信息要归档不能外传"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T33_A01",
+     "subject": "HER",
+     "relation": "旧约复活陷阱",
+     "value": "已取消的桂溪九点半旧预约被误传为可推荐信息，不得沿用",
+     "valid_time": "2026-12-26",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T04",
+      "quote": "只能取消了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T33_A02",
+     "subject": "HER",
+     "relation": "真实接种记录",
+     "value": "实际接种为11-21 09:50惠民门诊",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T07",
+      "quote": "惠民门诊下周六上午九点五十有号",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：旧值作废，只给最新记录。",
+   "unknowns": [
+    "老姐妹最终约号结果未知"
+   ],
+   "protected_expressions": [
+    "九点半在桂溪打的"
+   ],
+   "forbidden_factual_claims": [
+    "不得认可九点半桂溪的说法",
+    "不得把取消的旧约当推荐"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T34": {
+   "case_id": "LRE121_T34",
+   "current_action": "以真实接种记录完成更正闭环",
+   "acceptable_actions": [
+    "夸记录在手天下我有",
+    "接约号看最新短信梗",
+    "说老姐妹觉悟高"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T34_A01",
+     "subject": "HER",
+     "relation": "更正完成",
+     "value": "旧约误述已以真实接种记录更正并向老姐妹澄清",
+     "valid_time": "2026-12-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T34",
+      "quote": "11月21号九点五十惠民",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T34_A02",
+     "subject": "HER",
+     "relation": "旧约历史信息",
+     "value": "原11-14 09:30桂溪预约作为已取消历史信息不再外传",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T01",
+      "quote": "这周六上午九点半",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "冲突轮：更正要落到记录本身。",
+   "unknowns": [],
+   "protected_expressions": [
+    "危机解除"
+   ],
+   "forbidden_factual_claims": [
+    "不得改动真实接种时间地点金额"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T35": {
+   "case_id": "LRE121_T35",
+   "current_action": "接报销到账并推动母亲份额申报",
+   "acceptable_actions": [
+    "说到账截图已阅",
+    "提醒材料别拖过截止",
+    "接凭条收纳表扬"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T35_A01",
+     "subject": "HER",
+     "relation": "报销到账",
+     "value": "HER自费接种费用获补充医保报销九十块六到账",
+     "valid_time": "2026-12-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T35",
+      "quote": "报了九十块六",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T35_A02",
+     "subject": "HER",
+     "relation": "母亲报销跟进",
+     "value": "母亲接种份额将申报补充医保报销",
+     "valid_time": "2026-12-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T35",
+      "quote": "那份也赶紧报",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "金额照念，比例别猜。",
+   "unknowns": [
+    "母亲可报销金额未知"
+   ],
+   "protected_expressions": [
+    "我早就帮她收好了"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造具体报销比例"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T36": {
+   "case_id": "LRE121_T36",
+   "current_action": "冲突轮：指出年度统计表沿用旧记录错误",
+   "acceptable_actions": [
+    "肯定当场抓包",
+    "提醒让她对照支付记录改",
+    "说错误率要跟日历对齐"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T36_A01",
+     "subject": "HER",
+     "relation": "统计误记",
+     "value": "年度统计表所记11-14桂溪免费与事实不符，实为11-21惠民自费",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T07",
+      "quote": "自费一百二十八",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T36_A02",
+     "subject": "HER",
+     "relation": "真实记录",
+     "value": "11-21惠民自费一百二十八、报销九十块六为准确记载",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T36",
+      "quote": "自费一百二十八",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：日期地点费用三项全纠。",
+   "unknowns": [],
+   "protected_expressions": [
+    "马上改"
+   ],
+   "forbidden_factual_claims": [
+    "不得认可11-14桂溪免费的记载"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T37": {
+   "case_id": "LRE121_T37",
+   "current_action": "确认更正落表并年度闭环",
+   "acceptable_actions": [
+    "接标黄梗",
+    "说到账数字对上了",
+    "给小周发个好评"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T37_A01",
+     "subject": "HER",
+     "relation": "更正闭环",
+     "value": "年度统计已更正为11-21惠民自费128并单独标黄",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T37",
+      "quote": "单独标黄",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T37_A02",
+     "subject": "HER",
+     "relation": "事实链盘点",
+     "value": "取消-改约-自费-报销的接种事实链全部留痕",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T17",
+      "quote": "一百二十八",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "闭环要落数字。",
+   "unknowns": [],
+   "protected_expressions": [
+    "出错率失业"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称统计表还有别的错"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T38": {
+   "case_id": "LRE121_T38",
+   "current_action": "接老姐妹群改名与今年陪打邀约",
+   "acceptable_actions": [
+    "应下今年早茶必到",
+    "接比日历卷的梗",
+    "说先把日历建了"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T38_A01",
+     "subject": "HER",
+     "relation": "群名动态",
+     "value": "母亲的老姐妹群更名为今年九月见",
+     "valid_time": "2027-01-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T38",
+      "quote": "今年九月见",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T38_A02",
+     "subject": "SHARED",
+     "relation": "明年邀约",
+     "value": "母亲邀ME今年再次陪同接种，HER以早茶为饵",
+     "valid_time": "2027-09底",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T38",
+      "quote": "今年你可得再陪我一趟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "邀约可缓不虚诺。",
+   "unknowns": [
+    "今年九月底档期未知"
+   ],
+   "protected_expressions": [
+    "看心情"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺具体接种日期"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T39": {
+   "case_id": "LRE121_T39",
+   "current_action": "季度盘点并挂起肠粉回请账",
+   "acceptable_actions": [
+    "认账并约回请时间",
+    "接小本本梗",
+    "说盘点比年报还清楚"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T39_A01",
+     "subject": "SHARED",
+     "relation": "事实链盘点",
+     "value": "两针疫苗、补开凭条、到账报销、改对统计的链条盘点",
+     "valid_time": "2027-01-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T39",
+      "quote": "一笔到账的报销",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE121_T39_A02",
+     "subject": "SHARED",
+     "relation": "回请之约",
+     "value": "ME双份肠粉回请之约挂账待兑现",
+     "valid_time": "2027-01-08起",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T39",
+      "quote": "还欠我一顿回请",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "账目玩笑别较真金额。",
+   "unknowns": [
+    "回请时间未知"
+   ],
+   "protected_expressions": [
+    "小本本"
+   ],
+   "forbidden_factual_claims": [
+    "不得否认请客账目"
+   ],
+   "may_decline": false
+  },
+  "LRE121_T40": {
+   "case_id": "LRE121_T40",
+   "current_action": "轻收尾：明年之约与占座规则",
+   "acceptable_actions": [
+    "应下占座任务",
+    "说日历见",
+    "接草稿重发梗"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE121_T40_A01",
+     "subject": "SHARED",
+     "relation": "明年之约",
+     "value": "今年九月底惠民门诊门口同去接种并吃早茶之约延续至新年",
+     "valid_time": "2027-09底",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T12",
+      "quote": "一整笼虾饺",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE121_T40_A02",
+     "subject": "SHARED",
+     "relation": "占座规则",
+     "value": "虾饺一整笼肠粉双份谁先到谁占座的玩笑规则",
+     "valid_time": "2027-09底",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE121_T40",
+      "quote": "谁先到谁占座",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻收尾留白。",
+   "unknowns": [
+    "今年九月底具体日期未知"
+   ],
+   "protected_expressions": [
+    "日历见"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺具体接种日期"
+   ],
+   "may_decline": true
+  }
+ }
+}

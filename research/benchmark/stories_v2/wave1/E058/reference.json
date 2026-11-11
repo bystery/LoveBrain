@@ -1,0 +1,593 @@
+{
+ "story_id": "E058",
+ "turns": {
+  "E058_T01": {
+   "case_id": "E058_T01",
+   "current_action": "接住请帖与她的顾虑，把妈妈版600口径先记下，帮她把'拿不拿得出手'拆成'来礼对等'和'行情参考'两条线去想。",
+   "acceptable_actions": [
+    "先共情顾虑，再问她表哥家当年随过多少",
+    "建议她翻翻家里的礼账本，用旧账说话",
+    "提醒婚宴前还有几天，金额可以缓两天再定"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A01",
+     "subject": "SHARED",
+     "relation": "wedding_invite",
+     "value": "表哥婚宴定于本周六在市区酒楼举办，请帖已发给她",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T01", "message_id": "m0", "quote": "表哥婚宴的请帖发我了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A02",
+     "subject": "THIRD",
+     "relation": "mom_amount_claim",
+     "value": "妈妈口径：随礼600，称一家人不用讲究",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T01", "message_id": "m0", "quote": "我妈发话了随600"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A03",
+     "subject": "HER",
+     "relation": "amount_doubt",
+     "value": "她对600的口径拿不准，担心失礼",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T01", "message_id": "m1", "quote": "600是不是拿不出手啊"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不替她定数，引导她去翻旧账，把判断权留给她。",
+   "unknowns": ["表哥家当年来礼数额她尚未说", "婚宴是否收礼金台代收未知"],
+   "protected_expressions": ["600是不是拿不出手啊"],
+   "forbidden_factual_claims": ["不得断言当地行情就是某个数", "不得替她决定随礼金额"]
+  },
+  "E058_T02": {
+   "case_id": "E058_T02",
+   "current_action": "确认亲戚群里出现了第二版口径（小姨称行情800起且有人附和），把两版口径并排摆给她，提示先不急着站队。",
+   "acceptable_actions": [
+    "把妈妈版600与群里800并排列出，指出冲突点",
+    "提醒她群里口径多为场面话，不必照单全收",
+    "建议以自家账本来礼为准，行情只做参考"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A04",
+     "subject": "THIRD",
+     "relation": "aunt_market_claim",
+     "value": "小姨在亲戚群称随礼行情800起，获两位亲戚附和",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T02", "message_id": "m0", "quote": "现在行情都800起了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A05",
+     "subject": "THIRD",
+     "relation": "amount_conflict",
+     "value": "妈妈版600与小姨版800两个口径并现，尚无定论",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T01", "message_id": "m0", "quote": "我妈发话了随600"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E058_A06",
+     "subject": "THIRD",
+     "relation": "group_echo",
+     "value": "群内两位亲戚附和800口径",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T02", "message_id": "m0", "quote": "两个亲戚接'对对800'"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把群里的口径说得轻一点，免得她被行情绑架，仍把锚点引向旧账。",
+   "unknowns": ["附和者是否真会按800随未知"],
+   "protected_expressions": ["跟我妈说的对不上了"],
+   "forbidden_factual_claims": ["不得断言小姨口径才是行情", "不得贬损任一方口径的动机"]
+  },
+  "E058_T03": {
+   "case_id": "E058_T03",
+   "current_action": "接住她翻出的旧账证据（2019年表哥家随1000），确认'还礼不低于来礼'的家规成立，支持她把金额修正为1000并由自己承担。",
+   "acceptable_actions": [
+    "肯定账本证据的说服力，复述1000的决定依据",
+    "提醒她提前转账并备注清楚，免得婚宴当天忙乱",
+    "顺带肯定她自己出钱的担当，不评价母女分歧"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A07",
+     "subject": "SHARED",
+     "relation": "ledger_record",
+     "value": "2019年升学宴表哥家随礼1000，账本有记录",
+     "valid_time": "2019/2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T03", "message_id": "m0", "quote": "表哥家随了1000"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A08",
+     "subject": "THIRD",
+     "relation": "mom_amount_superseded",
+     "value": "随礼金额由妈妈版600修正为1000，依还礼不低于来礼",
+     "valid_time": "2026-11-02",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E058_T01", "message_id": "m0", "quote": "我妈发话了随600"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E058_A09",
+     "subject": "HER",
+     "relation": "amount_decision",
+     "value": "她决定自掏1000随礼，不向母亲要差额",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T03", "message_id": "m1", "quote": "我打算随1000"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把决定说成她自己算明白的结果，功劳在账本在她，不在 ME。",
+   "unknowns": ["1000是否会被对方按统一口径退回未知"],
+   "protected_expressions": ["白纸黑字"],
+   "forbidden_factual_claims": ["不得虚构账本其他条目", "不得断言1000必然合乎所有亲戚期待"]
+  },
+  "E058_T04": {
+   "case_id": "E058_T04",
+   "current_action": "接住母女之间的费用承担分歧：妈妈主张她随600、父母补差，她坚持礼金全由自己出；摆出两条路的利弊但不替她选。",
+   "acceptable_actions": [
+    "复述两版承担方案，指出差异只在名义不在总额",
+    "肯定她全出的理由站得住，也提醒别让妈妈下不来台",
+    "建议她跟妈妈把话说开：心意归心意，账目归账目"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A10",
+     "subject": "THIRD",
+     "relation": "mom_split_offer",
+     "value": "妈妈提出她随600、父母补差额的分摊方案",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T04", "message_id": "m0", "quote": "差的我跟你爸补"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A11",
+     "subject": "HER",
+     "relation": "full_pay_stance",
+     "value": "她坚持礼金全由自己出，视作自己的心意",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T04", "message_id": "m0", "quote": "这是我的表哥我的心意"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A12",
+     "subject": "HER",
+     "relation": "rule_basis",
+     "value": "还礼不低于来礼的家规是她定1000的依据",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T03", "message_id": "m0", "quote": "还礼不能低于来礼"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不评判妈妈，把分歧说成两代人记账方式不同，给她台阶也给她底气。",
+   "unknowns": ["妈妈最终是否默认她全出未知"],
+   "protected_expressions": ["她骂我死心眼"],
+   "forbidden_factual_claims": ["不得替她拒绝或接受妈妈的补差", "不得虚构母女对话细节"]
+  },
+  "E058_T05": {
+   "case_id": "E058_T05",
+   "current_action": "确认礼金执行完成：1000元提前微信转账并备注，对方已收；肯定她提前落地避免当天忙乱的做法。",
+   "acceptable_actions": [
+    "确认转账与备注无误，提醒她截图留档",
+    "把账本里这笔记成'支出1000，待婚宴后对账'",
+    "顺口问她红包备注是否会被长辈看到，预判口径问题"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A13",
+     "subject": "HER",
+     "relation": "transfer_executed",
+     "value": "她提前微信转账1000元礼金并备注小满礼金，对方已收",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T05", "message_id": "m0", "quote": "微信转了1000给我表哥"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A14",
+     "subject": "HER",
+     "relation": "transfer_reason",
+     "value": "提前转账理由：怕婚宴当天忙乱出错",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T05", "message_id": "m0", "quote": "我怕周六当天忙乱出岔子"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A15",
+     "subject": "HER",
+     "relation": "plan_executed",
+     "value": "1000元随礼由计划变为已执行",
+     "valid_time": "2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T03", "message_id": "m1", "quote": "我打算随1000"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：夸她提前办妥的利落，顺带一句截图留档，不渲染金额高低。",
+   "unknowns": ["表哥是否会按自家规矩处理这笔钱未知"],
+   "protected_expressions": ["备注'小满礼金'"],
+   "forbidden_factual_claims": ["不得虚构转账渠道细节", "不得预判对方必然全额收下"]
+  },
+  "E058_T06": {
+   "case_id": "E058_T06",
+   "current_action": "接住退回400的意外转折：表哥统一口径每家600、多收退回，原1000转账被修正为实收600；帮她把账目差口先挂起，等婚宴后再平。",
+   "acceptable_actions": [
+    "复述新规矩：统一600、多退少不补，先按600入账",
+    "把'账本差口'记为待办，等婚宴后看全貌再平",
+    "肯定表哥立规矩的用意，让她别觉得心意被退回"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A16",
+     "subject": "THIRD",
+     "relation": "refund_400",
+     "value": "表哥退回400元，实收礼金600",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T06", "message_id": "m0", "quote": "退回来400"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A17",
+     "subject": "HER",
+     "relation": "transfer_superseded",
+     "value": "原1000元转账口径被表哥统一规矩修正，实收600",
+     "valid_time": "2026-11-02/2026-11-03",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E058_T05", "message_id": "m0", "quote": "微信转了1000给我表哥"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E058_A18",
+     "subject": "THIRD",
+     "relation": "unified_rule",
+     "value": "表哥定规矩：来喝酒每家统一随600，多一分不收",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T06", "message_id": "m0", "quote": "每家统一随600"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接住她的懵，再指出钱没少花心思没少，只是形态变了，别让她觉得亏。",
+   "unknowns": ["退回的400她打算如何处理未知", "其他亲戚是否也被退回未知"],
+   "protected_expressions": ["还礼1000的那笔怎么平啊"],
+   "forbidden_factual_claims": ["不得断言账本差口一定无法平", "不得虚构表哥对其他亲戚的处理"]
+  },
+  "E058_T07": {
+   "case_id": "E058_T07",
+   "current_action": "接住婚宴日的喜庆开场，确认她的到场时间与分工，把费用议题轻轻放下，让她专心喝喜酒。",
+   "acceptable_actions": [
+    "祝她喝得开心，提醒手机拍照留点现场",
+    "确认她帮忙摆糖盒的分工，夸她想得周到",
+    "顺一句红裙子，把气氛托住"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A19",
+     "subject": "HER",
+     "relation": "arrival",
+     "value": "婚宴日她九点半到酒楼帮忙摆糖盒",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T07", "message_id": "m0", "quote": "我九点半到酒楼"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A20",
+     "subject": "SHARED",
+     "relation": "banquet_schedule",
+     "value": "婚宴正席定于当日十二点开席",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T07", "message_id": "m0", "quote": "正席十二点开"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A21",
+     "subject": "SHARED",
+     "relation": "ledger_gap_pending",
+     "value": "还礼1000与实收600的账差在婚宴日暂未处理",
+     "valid_time": "2026-11-03/2026-11-07",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T06", "message_id": "m1", "quote": "还礼1000的那笔怎么平啊"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：喜日不谈账，回复短而暖，别翻钱的事。",
+   "unknowns": ["酒楼位置与是否需要接驳未知"],
+   "protected_expressions": ["第一次这么正式地喝我表哥的喜酒"],
+   "forbidden_factual_claims": ["不得虚构婚礼流程细节", "不得在喜日重提金额争议"]
+  },
+  "E058_T08": {
+   "case_id": "E058_T08",
+   "current_action": "共享婚宴的感动与好笑，确认表哥席间亲口以'一家亲'背书600口径，肯定她这趟随礼从金额到心意都落了地。",
+   "acceptable_actions": [
+    "接住她的感动，肯定表哥当众护她这份心意",
+    "顺着'想找地缝又想笑'调侃一句，把尴尬消化掉",
+    "提醒她回家路上报个平安"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A22",
+     "subject": "SHARED",
+     "relation": "toast_scene",
+     "value": "新娘敬酒至她所在桌，婚宴气氛热烈",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T08", "message_id": "m0", "quote": "敬酒敬到我们那桌"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A23",
+     "subject": "THIRD",
+     "relation": "cousin_endorsement",
+     "value": "表哥席间亲口提及她随600，以一家亲回应口径",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T08", "message_id": "m0", "quote": "我妹随的600，一家亲"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A24",
+     "subject": "HER",
+     "relation": "emotional_reaction",
+     "value": "她席间被感动，情绪起伏明显",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T08", "message_id": "m0", "quote": "差点哭了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：喜酒后的汇报用轻松语气接，把表哥的背书点一句，不拔高。",
+   "unknowns": [],
+   "protected_expressions": ["我妹随的600，一家亲"],
+   "forbidden_factual_claims": ["不得虚构敬酒顺序等细节", "不得替表哥补充他没说的话"]
+  },
+  "E058_T09": {
+   "case_id": "E058_T09",
+   "current_action": "接住小姨群里阴阳怪气引发的火气：先站她这边，再肯定她劝住妈妈、先向表哥求证的处理顺序是对的。",
+   "acceptable_actions": [
+    "肯定'让妈先别回'的冷静，把火气接住再降温",
+    "建议她私聊表哥求证，别在群里对线",
+    "提示若需要，妈妈可以只回'问过新郎了'四个字"
+   ],
+   "applicable_dimensions": ["emotion_relation", "attribution", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A25",
+     "subject": "THIRD",
+     "relation": "aunt_jab",
+     "value": "小姨在群里暗讽有人随礼仅600，并@了她的母亲",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T09", "message_id": "m0", "quote": "有的人家就六百六百"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A26",
+     "subject": "THIRD",
+     "relation": "mom_reaction",
+     "value": "母亲情绪被点着，欲在群里回击",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T09", "message_id": "m0", "quote": "把手机抢过去要打字了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A27",
+     "subject": "HER",
+     "relation": "containment",
+     "value": "她劝阻母亲暂不在群里回应，决定先向表哥求证",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T09", "message_id": "m1", "quote": "我让妈先别回"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先骂一句阴阳怪气解气，再把她已经做对的顺序点出来，别添火。",
+   "unknowns": ["小姨发言的真实意图未知", "妈妈最终是否回群未知"],
+   "protected_expressions": ["我让妈先别回"],
+   "forbidden_factual_claims": ["不得给小姨的动机下定论", "不得建议在群里公开对峙"]
+  },
+  "E058_T10": {
+   "case_id": "E058_T10",
+   "current_action": "确认表哥的求证回复与转账凭证：统一600是他有意避免攀比的规矩，小姨的'随少了'指责被事实否定；肯定她求证而非对线的做法。",
+   "acceptable_actions": [
+    "复述凭证要点：亲妹妹也是600，规矩面前一视同仁",
+    "肯定她没在群里对线，事态被按住了",
+    "建议她把截图转给妈妈，让老人家安心"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A28",
+     "subject": "THIRD",
+     "relation": "rule_explanation",
+     "value": "表哥解释统一600意在避免亲友攀比，让小姨有意见找他",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T10", "message_id": "m0", "quote": "不想让大伙儿比来比去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A29",
+     "subject": "THIRD",
+     "relation": "evidence_provided",
+     "value": "表哥出示给亲妹妹随礼600的转账记录为证",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T10", "message_id": "m1", "quote": "600，一分不差"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A30",
+     "subject": "THIRD",
+     "relation": "jab_retracted",
+     "value": "小姨'随少了'的指责被统一规矩与凭证否定",
+     "valid_time": "2026-11-07",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E058_T09", "message_id": "m0", "quote": "有的人家就六百六百"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'凭证'二字说重一点，让她知道自己赢得干净，不追着小姨补刀。",
+   "unknowns": ["小姨此后是否再有议论未知"],
+   "protected_expressions": ["让小姨有意见找他"],
+   "forbidden_factual_claims": ["不得替小姨宣布服气", "不得虚构凭证截图内容"]
+  },
+  "E058_T11": {
+   "case_id": "E058_T11",
+   "current_action": "接住平账的收束：退回的400入人情备用金，妈妈把2019年账本页拍照传她留档；把这笔账从'差口'正式记为'已平'。",
+   "acceptable_actions": [
+    "肯定小金库的做法，人情备用金这名字起得准",
+    "把账本页照片的意义点一句：规矩有了传承",
+    "提醒她账本里补一行：实收600、退回400、差额入备用"
+   ],
+   "applicable_dimensions": ["memory_use", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A31",
+     "subject": "HER",
+     "relation": "reserve_fund",
+     "value": "退回的400元存入人情往来备用小金库",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T11", "message_id": "m0", "quote": "400单独存了个小金库"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A32",
+     "subject": "THIRD",
+     "relation": "ledger_page_keepsake",
+     "value": "母亲将2019年账本页拍照传她留档传承",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T11", "message_id": "m0", "quote": "2019年那页账本拍给我"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A33",
+     "subject": "SHARED",
+     "relation": "ledger_gap_settled",
+     "value": "此前挂起的账差已平：礼金按600入账，差额400入备用金",
+     "valid_time": "2026-11-03/2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T06", "message_id": "m1", "quote": "还礼1000的那笔怎么平啊"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把这一轮说成'账平了、理也顺了'，语气收得温一点。",
+   "unknowns": ["小金库后续用途未定"],
+   "protected_expressions": ["以后轮到你还礼，照着来就行"],
+   "forbidden_factual_claims": ["不得虚构账本其他页内容", "不得断言备用金必须用于随礼"]
+  },
+  "E058_T12": {
+   "case_id": "E058_T12",
+   "current_action": "接下周六的账本饭局邀约，以辣子鸡和两页纸来回账收尾，回扣全程'帮她理账不动手改'的分寸。",
+   "acceptable_actions": [
+    "答应周六赴约，顺便提一句想看看那页2019",
+    "夸她这趟把人情账从金额到人情都理顺了",
+    "玩笑接住厨房小的那句，把收尾落在轻处"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E058_A34",
+     "subject": "SHARED",
+     "relation": "dinner_invite",
+     "value": "她邀 ME 周六来家吃饭并带上账本",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T12", "message_id": "m0", "quote": "请你吃我做的辣子鸡"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A35",
+     "subject": "HER",
+     "relation": "ledger_showcase",
+     "value": "她拟向 ME 展示2019至2026两页人情来回账",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T12", "message_id": "m0", "quote": "两页纸的来回账"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E058_A36",
+     "subject": "THIRD",
+     "relation": "rule_confirmed",
+     "value": "表哥统一600的规矩经婚宴与凭证双重确认",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E058_T10", "message_id": "m0", "quote": "不想让大伙儿比来比去"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻快，把功劳还给她自己的账本，饭局当朋友的份内事。",
+   "unknowns": [],
+   "protected_expressions": ["不许嫌我家厨房小"],
+   "forbidden_factual_claims": ["不得虚构账本页数与内容", "不得引入新的随礼议题"]
+  }
+ }
+}

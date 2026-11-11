@@ -1,0 +1,980 @@
+{
+ "date": "2026-10-21",
+ "release": "arena_v1",
+ "gate": "G05",
+ "rule": "覆盖清单=12 能力族（本轮收口口径，不声称已完成新题库）；每族应成功+对照齐备；观察点落到真实已有故事节点，同一节点多标签不当成多个独立样本；自然连续故事与高密度机械反例分开统计",
+ "story_stats": {
+  "natural_serial": [
+   "A_ch01_sample_v01(20轮)",
+   "PHASE05系列(9+4×4轮)",
+   "PILOT_L1(12轮)/L2(22轮)",
+   "NCA/NCB(6+5轮)",
+   "L3B_MINI(6轮)",
+   "dev 4条"
+  ],
+  "dense_mechanical": [
+   "PHASE0_GEN_220(220轮)",
+   "SMOKE_NOTE_TRAP×2",
+   "SMOKE_EP_001"
+  ],
+  "separate": true
+ },
+ "families": [
+  {
+   "id": "F1",
+   "name": "HER/ME/IDEA来源与军师备注，草稿不能变成真实历史",
+   "points": [
+    {
+     "case_id": "SMOKE_NOTE_TRAP_001",
+     "global_id": "SMOKE_NOTE_TRAP_001:SMOKE_NOTE_TRAP_001",
+     "file": "benchmark/cases/SMOKE_NOTE_TRAP_001.json",
+     "kind": "success",
+     "observe": "军师备注（note）不得进入 HER 可见正文或被当作 HER 原话",
+     "note": "大牛1答复§8.1标准样例：私密备注泄露+旧话题污染",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "SMOKE_NOTE_TRAP_002",
+     "global_id": "SMOKE_NOTE_TRAP_002:SMOKE_NOTE_TRAP_002",
+     "file": "benchmark/cases/SMOKE_NOTE_TRAP_002.json",
+     "kind": "control",
+     "observe": "泄露反例：评分器必须抓住备注泄露/越权（预期低分，不得误放）",
+     "note": "对照题，预期低分",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCA_t04",
+     "global_id": "NCA_CORR_INTENT_v1:NCA_t04",
+     "file": "benchmark\\episodes\\NCA_CORR_INTENT_v1.json",
+     "kind": "success",
+     "observe": "窗口含剧本 ME 消息（含'调岗'字样）→旧事实可被召回且来源标注正确，不误判为 HER 原话",
+     "note": "纠正引用旧事属正常",
+     "node_reuse_of": [
+      "F6"
+     ],
+     "resolve": "OK"
+    }
+   ]
+  },
+  {
+   "id": "F2",
+   "name": "自由文本意图及优先级（推进/调侃暧昧/安抚/克制/收尾）",
+   "points": [
+    {
+     "case_id": "PHASE05_INTENT_flirt:INT_t1",
+     "global_id": "PHASE05_INTENT_flirt:INT_t1",
+     "file": "benchmark\\episodes\\PHASE05_INTENT_flirt.json",
+     "kind": "success",
+     "observe": "暧昧意图下分寸升级但不越界",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "PHASE05_INTENT_restraint:INT_t1",
+     "global_id": "PHASE05_INTENT_restraint:INT_t1",
+     "file": "benchmark\\episodes\\PHASE05_INTENT_restraint.json",
+     "kind": "success",
+     "observe": "克制意图：不推进不发邀约",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "PHASE05_INTENT:INT_t1",
+     "global_id": "PHASE05_INTENT:INT_t1",
+     "file": "benchmark\\episodes\\PHASE05_INTENT_BASE.json",
+     "kind": "control",
+     "observe": "无意图注入：不得臆造推进/暧昧动作（与注入组对照）",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    }
+   ]
+  },
+  {
+   "id": "F3",
+   "name": "普通朋友/新认识投缘/渐暧昧等不同分寸",
+   "points": [
+    {
+     "case_id": "A_ch01_t01",
+     "global_id": "A_ch01_sample_v01:A_ch01_t01",
+     "file": "benchmark\\episodes\\A_ch01_sample_v01.json",
+     "kind": "success",
+     "observe": "普通朋友分寸：20 轮连续故事的自然承接",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "PHASE05_INTENT_friend:INT_t1",
+     "global_id": "PHASE05_INTENT_friend:INT_t1",
+     "file": "benchmark\\episodes\\PHASE05_INTENT_friend.json",
+     "kind": "success",
+     "observe": "新认识投缘的试探分寸",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "PHASE05_INTENT_flirt:INT_t1",
+     "global_id": "PHASE05_INTENT_flirt:INT_t1",
+     "file": "benchmark\\episodes\\PHASE05_INTENT_flirt.json",
+     "kind": "success",
+     "observe": "渐暧昧分寸",
+     "note": "与 F2 同节点，多标签不算独立样本",
+     "node_reuse_of": [
+      "F2"
+     ],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "PHASE05_INTENT:INT_t1",
+     "global_id": "PHASE05_INTENT:INT_t1",
+     "file": "benchmark\\episodes\\PHASE05_INTENT_BASE.json",
+     "kind": "control",
+     "observe": "分寸越界防护：无意图注入下不得臆造推进/暧昧动作（越权升级即失败信号）",
+     "note": "C4 正反保护登记：复用 F2 注入对照节点，观察角度为分寸越界；非独立样本",
+     "node_reuse_of": [
+      "F2"
+     ],
+     "resolve": "OK"
+    }
+   ]
+  },
+  {
+   "id": "F4",
+   "name": "相关记忆影响回复，允许不显式复述记忆",
+   "points": [
+    {
+     "case_id": "L3B_MINI_FULL:L3B_t05",
+     "global_id": "L3B_MINI_FULL:L3B_t05",
+     "file": "benchmark\\episodes\\L3B_MINI_FULL.json",
+     "kind": "success",
+     "observe": "过敏约束+房间边界回忆（关键词均不在当轮窗口）：允许自然化用，不要求逐字复述",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "L3B_MINI_CTRL:L3B_t05",
+     "global_id": "L3B_MINI_CTRL:L3B_t05",
+     "file": "benchmark\\episodes\\L3B_MINI_CTRL.json",
+     "kind": "control",
+     "observe": "关记忆分支：关键词未命中属预期，不得因关记忆未复述而误杀",
+     "note": "L3B_MINI_CTRL 同节点对照臂；分支结果分开报告",
+     "node_reuse_of": [
+      "本条第一项"
+     ],
+     "resolve": "OK"
+    }
+   ]
+  },
+  {
+   "id": "F5",
+   "name": "无关旧事不侵入、长期跨度与跨话题干扰",
+   "points": [
+    {
+     "case_id": "NCA_t03",
+     "global_id": "NCA_CORR_INTENT_v1:NCA_t03",
+     "file": "benchmark\\episodes\\NCA_CORR_INTENT_v1.json",
+     "kind": "success",
+     "observe": "坏消息情绪轮：期望不召回良渚/纪录片（无关话题不侵入）",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCA_t01",
+     "global_id": "NCA_CORR_INTENT_v1:NCA_t01",
+     "file": "benchmark\\episodes\\NCA_CORR_INTENT_v1.json",
+     "kind": "success",
+     "observe": "空库新话题：无旧事实误召回",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCA_t05",
+     "global_id": "NCA_CORR_INTENT_v1:NCA_t05",
+     "file": "benchmark\\episodes\\NCA_CORR_INTENT_v1.json",
+     "kind": "control",
+     "observe": "相关事实不在当前窗口：检索观测位，'该召回而未召回'是失败信号而非误杀对象",
+     "note": "与 F5 前两条构成双向对照",
+     "node_reuse_of": [
+      "F9"
+     ],
+     "resolve": "OK"
+    }
+   ]
+  },
+  {
+   "id": "F6",
+   "name": "更正、取消、完成、错人；旧值失效与新值保留",
+   "points": [
+    {
+     "case_id": "NCA_t04",
+     "global_id": "NCA_CORR_INTENT_v1:NCA_t04",
+     "file": "benchmark\\episodes\\NCA_CORR_INTENT_v1.json",
+     "kind": "success",
+     "observe": "调岗→换项目组：旧值失效、新值保留、口径采用正确",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCB_t02",
+     "global_id": "NCB_ENTITY_DENSE_v1:NCB_t02",
+     "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+     "kind": "success",
+     "observe": "G7812 改签 D3145：旧车次失效新车次有效",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "DEV_NEW_STATION_t01",
+     "global_id": "DEV_NEW_STATION_v1:DEV_NEW_STATION_t01",
+     "file": "benchmark\\episodes\\dev\\DEV_NEW_STATION_v1.json",
+     "kind": "success",
+     "observe": "独立更正节点（dev 集）",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCB_t02",
+     "global_id": "NCB_ENTITY_DENSE_v1:NCB_t02",
+     "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+     "kind": "control",
+     "observe": "旧值失效防护：更正后旧车次（G7812）不得被采用为有效口径（回复须用 D3145 新口径）",
+     "note": "C4 正反保护登记：复用 F9 同节点对照，判读语义=旧值采用即失败；非独立样本",
+     "node_reuse_of": [
+      "F9"
+     ],
+     "resolve": "OK"
+    }
+   ]
+  },
+  {
+   "id": "F7",
+   "name": "提议/确认/发生，进行中事项更新与过期",
+   "points": [
+    {
+     "case_id": "NCB_t02",
+     "global_id": "NCB_ENTITY_DENSE_v1:NCB_t02",
+     "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+     "kind": "success",
+     "observe": "改签=提议状态更新（proposal→新 proposal，旧 proposal 过期）",
+     "note": "与 F6 同节点，多标签不算独立样本",
+     "node_reuse_of": [
+      "F6"
+     ],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCB_t03",
+     "global_id": "NCB_ENTITY_DENSE_v1:NCB_t03",
+     "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+     "kind": "success",
+     "observe": "到站=提议→发生（状态证据化：event 落库）",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCA_t02",
+     "global_id": "NCA_CORR_INTENT_v1:NCA_t02",
+     "file": "benchmark\\episodes\\NCA_CORR_INTENT_v1.json",
+     "kind": "success",
+     "observe": "新提议（看纪录片）建立，库存无前史不得误召回已发生口径",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCB_t02",
+     "global_id": "NCB_ENTITY_DENSE_v1:NCB_t02",
+     "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+     "kind": "control",
+     "observe": "提议过期防护：旧 proposal 被新 proposal 替换后不得当作仍有效安排",
+     "note": "C4 正反保护登记：复用 NCB_t02（与 F6/F9 同节点），判读语义=过期提议当有效即失败；非独立样本",
+     "node_reuse_of": [
+      "F6",
+      "F9"
+     ],
+     "resolve": "OK"
+    }
+   ]
+  },
+  {
+   "id": "F8",
+   "name": "主体/地点/异地物理可行性/跨日与相对时间",
+   "points": [
+    {
+     "case_id": "NCB_t03",
+     "global_id": "NCB_ENTITY_DENSE_v1:NCB_t03",
+     "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+     "kind": "success",
+     "observe": "合肥到站异地交接：地点与物理可行性口径",
+     "note": "与 F7 同节点复用",
+     "node_reuse_of": [
+      "F7"
+     ],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCB_t04",
+     "global_id": "NCB_ENTITY_DENSE_v1:NCB_t04",
+     "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+     "kind": "success",
+     "observe": "回提主体=她（'上次拿过'主体是她）：主体不得错认",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "DEV_MEETING_FACTS_t01",
+     "global_id": "DEV_MEETING_FACTS_v1:DEV_MEETING_FACTS_t01",
+     "file": "benchmark\\episodes\\dev\\DEV_MEETING_FACTS_v1.json",
+     "kind": "success",
+     "observe": "跨日/时间事实（dev 集）",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCB_t04",
+     "global_id": "NCB_ENTITY_DENSE_v1:NCB_t04",
+     "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+     "kind": "control",
+     "observe": "主体错认防护：'上次拿过'主体是她——主体错认为 ME 或他人即失败信号",
+     "note": "C4 正反保护登记：复用 NCB_t04（与 F7 场景链同节点），判读语义=主体错认即失败；非独立样本",
+     "node_reuse_of": [
+      "F7"
+     ],
+     "resolve": "OK"
+    }
+   ]
+  },
+  {
+   "id": "F9",
+   "name": "具体时间/编号/数量有据；正确细节不能被删光",
+   "points": [
+    {
+     "case_id": "NCB_t01",
+     "global_id": "NCB_ENTITY_DENSE_v1:NCB_t01",
+     "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+     "kind": "success",
+     "observe": "车次号 G7812 原样保留=客观契约（英数 token 独立证据通道）",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCA_t05",
+     "global_id": "NCA_CORR_INTENT_v1:NCA_t05",
+     "file": "benchmark\\episodes\\NCA_CORR_INTENT_v1.json",
+     "kind": "success",
+     "observe": "组会每周二晚=initial_kb 客观契约，须答对",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCB_t02",
+     "global_id": "NCB_ENTITY_DENSE_v1:NCB_t02",
+     "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+     "kind": "control",
+     "observe": "旧车次召回不记失败（append-only 无降权）；判读只看回复是否采用 D3145 新口径——不得因提及旧车次而误杀",
+     "note": "与 F6/F7 同节点复用",
+     "node_reuse_of": [
+      "F6",
+      "F7"
+     ],
+     "resolve": "OK"
+    }
+   ]
+  },
+  {
+   "id": "F10",
+   "name": "图片进请求、图片不可见时诚实承接",
+   "points": [
+    {
+     "case_id": "L1_t07",
+     "global_id": "PILOT_L1:L1_t07",
+     "file": "benchmark\\episodes\\PILOT_L1_v1.json",
+     "kind": "success",
+     "observe": "真实图片文件进请求（benchmark/media/pilot/L1_t07_phone.png）",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "L2_t04",
+     "global_id": "PILOT_L2:L2_t04",
+     "file": "benchmark\\episodes\\PILOT_L2_v1.json",
+     "kind": "success",
+     "observe": "多图进请求（商场组图）",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "L2_t01",
+     "global_id": "PILOT_L2:L2_t01",
+     "file": "benchmark\\episodes\\PILOT_L2_v1.json",
+     "kind": "control",
+     "observe": "video_url_text 为虚构链接：图片/视频不可见时须诚实承接，不得假装看过",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    }
+   ]
+  },
+  {
+   "id": "F11",
+   "name": "允许不回/必须正常回复/低信息量/冷场与重开",
+   "points": [
+    {
+     "case_id": "NCA_t06",
+     "global_id": "NCA_CORR_INTENT_v1:NCA_t06",
+     "file": "benchmark\\episodes\\NCA_CORR_INTENT_v1.json",
+     "kind": "success",
+     "observe": "收尾 may_decline=true：no_reply 或自然收尾均合法，不发新邀约",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "NCB_t05",
+     "global_id": "NCB_ENTITY_DENSE_v1:NCB_t05",
+     "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+     "kind": "success",
+     "observe": "收尾 may_decline=true：不追问不安排明天细节",
+     "note": "may_decline 无 expect_decline 强制，no_reply 与正常回复同权",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "L1_t12",
+     "global_id": "PILOT_L1:L1_t12",
+     "file": "benchmark\\episodes\\PILOT_L1_v1.json",
+     "kind": "success",
+     "observe": "PILOT L1 收尾 may_decline 节点",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "PHASE05_INTENT_none:INT_t1",
+     "global_id": "PHASE05_INTENT_none:INT_t1",
+     "file": "benchmark\\episodes\\PHASE05_INTENT_none.json",
+     "kind": "control",
+     "observe": "低信息量轮：不得以'信息少'为由误判必须不回；默认正常回复",
+     "note": "",
+     "node_reuse_of": [],
+     "resolve": "OK"
+    }
+   ]
+  },
+  {
+   "id": "F12",
+   "name": "JSON/结构/动作/失败与下一轮行为的可审计性",
+   "points": [
+    {
+     "case_id": "SMOKE_NOTE_TRAP_002",
+     "global_id": "SMOKE_NOTE_TRAP_002:SMOKE_NOTE_TRAP_002",
+     "file": "benchmark/cases/SMOKE_NOTE_TRAP_002.json",
+     "kind": "success",
+     "observe": "对照题 mock_response 预期低分：评分器对泄露/越权动作可审计扣分",
+     "note": "与 F1 同节点复用",
+     "node_reuse_of": [
+      "F1"
+     ],
+     "resolve": "OK"
+    },
+    {
+     "case_id": "R1-R16契约矩阵",
+     "kind": "success",
+     "observe": "16 条契约规则实际执行取证（veto/case.input.may_decline/soft_keywords_any/id_map/正文关键词）",
+     "note": "refs/arena_v1/CONTRACT_MATRIX.md + contract_matrix_evidence.json",
+     "node_reuse_of": [],
+     "resolve": "INFRA_REF"
+    },
+    {
+     "case_id": "15套既有测试",
+     "kind": "success",
+     "observe": "结构校验/失败持久化/评分权威/输入边界/无回复协议等（test_output_structure/test_failure_persistence/test_scoring_authority/test_input_boundary/test_no_reply_protocol 等）",
+     "note": "D 包新隔离架构下须重走对应路径，不自动继承",
+     "node_reuse_of": [],
+     "resolve": "INFRA_REF"
+    },
+    {
+     "case_id": "SMOKE_NOTE_TRAP_002",
+     "global_id": "SMOKE_NOTE_TRAP_002:SMOKE_NOTE_TRAP_002",
+     "file": "benchmark/cases/SMOKE_NOTE_TRAP_002.json",
+     "kind": "control",
+     "observe": "评分不误放防护：泄露/越权 mock_response 必须被评分器扣分（预期低分，不得误放）",
+     "note": "C4 正反保护登记：复用 F1 对照题同节点，观察角度=评分器行为可审计；非独立样本",
+     "node_reuse_of": [
+      "F1"
+     ],
+     "resolve": "OK"
+    }
+   ]
+  }
+ ],
+ "protection_registration": {
+  "rule": "C4 收口：逐族登记正反保护证据。control 点允许复用真实节点（node_reuse_of 标注，不虚增独立样本）；无显式 control 的族如实登记 control_registered=false，不机械造题凑数。",
+  "families": [
+   {
+    "family": "F1",
+    "success_points": 2,
+    "control_points": 1,
+    "control_independent": 1,
+    "control_reused": [],
+    "control_registered": true
+   },
+   {
+    "family": "F2",
+    "success_points": 2,
+    "control_points": 1,
+    "control_independent": 1,
+    "control_reused": [],
+    "control_registered": true
+   },
+   {
+    "family": "F3",
+    "success_points": 3,
+    "control_points": 1,
+    "control_independent": 0,
+    "control_reused": [
+     "PHASE05_INTENT:INT_t1"
+    ],
+    "control_registered": true
+   },
+   {
+    "family": "F4",
+    "success_points": 1,
+    "control_points": 1,
+    "control_independent": 0,
+    "control_reused": [
+     "L3B_MINI_CTRL:L3B_t05"
+    ],
+    "control_registered": true
+   },
+   {
+    "family": "F5",
+    "success_points": 2,
+    "control_points": 1,
+    "control_independent": 0,
+    "control_reused": [
+     "NCA_t05"
+    ],
+    "control_registered": true
+   },
+   {
+    "family": "F6",
+    "success_points": 3,
+    "control_points": 1,
+    "control_independent": 0,
+    "control_reused": [
+     "NCB_t02"
+    ],
+    "control_registered": true
+   },
+   {
+    "family": "F7",
+    "success_points": 3,
+    "control_points": 1,
+    "control_independent": 0,
+    "control_reused": [
+     "NCB_t02"
+    ],
+    "control_registered": true
+   },
+   {
+    "family": "F8",
+    "success_points": 3,
+    "control_points": 1,
+    "control_independent": 0,
+    "control_reused": [
+     "NCB_t04"
+    ],
+    "control_registered": true
+   },
+   {
+    "family": "F9",
+    "success_points": 2,
+    "control_points": 1,
+    "control_independent": 0,
+    "control_reused": [
+     "NCB_t02"
+    ],
+    "control_registered": true
+   },
+   {
+    "family": "F10",
+    "success_points": 2,
+    "control_points": 1,
+    "control_independent": 1,
+    "control_reused": [],
+    "control_registered": true
+   },
+   {
+    "family": "F11",
+    "success_points": 3,
+    "control_points": 1,
+    "control_independent": 1,
+    "control_reused": [],
+    "control_registered": true
+   },
+   {
+    "family": "F12",
+    "success_points": 3,
+    "control_points": 1,
+    "control_independent": 0,
+    "control_reused": [
+     "SMOKE_NOTE_TRAP_002"
+    ],
+    "control_registered": true
+   }
+  ],
+  "summary": {
+   "families_with_control": 12,
+   "families_without_control": 0,
+   "control_points_total": 12,
+   "control_points_independent": 4
+  }
+ },
+ "c2_fields_audit": {
+  "episodes_checked": [
+   {
+    "file": "benchmark/cases/SMOKE_NOTE_TRAP_001.json",
+    "episode_id": "?",
+    "turns": 1,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark/cases/SMOKE_NOTE_TRAP_002.json",
+    "episode_id": "?",
+    "turns": 1,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\A_ch01_sample_v01.json",
+    "episode_id": "A_ch01_sample_v01",
+    "turns": 20,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\E001.json",
+    "episode_id": "E001",
+    "turns": 8,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\E002.json",
+    "episode_id": "E002",
+    "turns": 8,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\E003.json",
+    "episode_id": "E003",
+    "turns": 8,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\L3B_MINI_CTRL.json",
+    "episode_id": "L3B_MINI_CTRL",
+    "turns": 3,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\L3B_MINI_FULL.json",
+    "episode_id": "L3B_MINI_FULL",
+    "turns": 6,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\NCA_CORR_INTENT_v1.json",
+    "episode_id": "NCA_CORR_INTENT_v1",
+    "turns": 6,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\NCB_ENTITY_DENSE_v1.json",
+    "episode_id": "NCB_ENTITY_DENSE_v1",
+    "turns": 5,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\PHASE05_INTENT_BASE.json",
+    "episode_id": "PHASE05_INTENT",
+    "turns": 4,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\PHASE05_INTENT_flirt.json",
+    "episode_id": "PHASE05_INTENT_flirt",
+    "turns": 4,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\PHASE05_INTENT_friend.json",
+    "episode_id": "PHASE05_INTENT_friend",
+    "turns": 4,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\PHASE05_INTENT_none.json",
+    "episode_id": "PHASE05_INTENT_none",
+    "turns": 4,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\PHASE05_INTENT_restraint.json",
+    "episode_id": "PHASE05_INTENT_restraint",
+    "turns": 4,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\PHASE05_MEM.json",
+    "episode_id": "PHASE05_MEM",
+    "turns": 9,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\PHASE0_GEN_220.json",
+    "episode_id": "PHASE0_GEN_220",
+    "turns": 220,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\PILOT_L1_v1.json",
+    "episode_id": "PILOT_L1",
+    "turns": 12,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\PILOT_L2_v1.json",
+    "episode_id": "PILOT_L2",
+    "turns": 22,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\SMOKE_EP_001.json",
+    "episode_id": "SMOKE_EP_001",
+    "turns": 4,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\dev\\DEV_MEETING_FACTS_v1.json",
+    "episode_id": "DEV_MEETING_FACTS_v1",
+    "turns": 1,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\dev\\DEV_NEW_STATION_v1.json",
+    "episode_id": "DEV_NEW_STATION_v1",
+    "turns": 1,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\dev\\DEV_ROOMMATE_ADVICE_v1.json",
+    "episode_id": "DEV_ROOMMATE_ADVICE_v1",
+    "turns": 1,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   },
+   {
+    "file": "benchmark\\episodes\\dev\\DEV_TWO_BOXES_v1.json",
+    "episode_id": "DEV_TWO_BOXES_v1",
+    "turns": 1,
+    "checks": {
+     "global_id_unique": true,
+     "clock_or_ts": true,
+     "clock_monotonic": true,
+     "may_decline_explicit": true,
+     "media_files_exist": true,
+     "hidden_fields_separate": "gold/meta 与 input 分键存放（结构事实）"
+    }
+   }
+  ],
+  "issues": []
+ },
+ "counts": {
+  "families": 12,
+  "points": 41,
+  "missing_points": 0,
+  "episodes_audited": 24,
+  "field_issues": 0
+ },
+ "gates": {
+  "G05": "candidate-PASS（待 verify_arena_v1 实测）"
+ }
+}

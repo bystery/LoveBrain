@@ -1,0 +1,34 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "AK03",
+ "turn_clocks": [
+  {
+   "case_id": "AK03_T01",
+   "clock": "2026-12-07 19:22"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "AK03_T01",
+   "message_id": "m0",
+   "speaker": "ME",
+   "quote": "明晚六点老地方 我先绕一圈等你",
+   "ts": "2026-12-07 19:10"
+  },
+  {
+   "case_id": "AK03_T01",
+   "message_id": "m1",
+   "speaker": "HER",
+   "quote": "今晚院里临时加疫苗门诊 我八点才走 明天也排了班",
+   "ts": "2026-12-07 19:20"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "AK03_E1",
+   "case_id": "AK03_T01",
+   "summary": "夜跑复健｜反馈=busy｜意图=明晚六点复健快走",
+   "source_turn": "AK03_T01"
+  }
+ ]
+}

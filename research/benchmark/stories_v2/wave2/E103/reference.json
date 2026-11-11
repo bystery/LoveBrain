@@ -1,0 +1,593 @@
+{
+ "story_id": "E103",
+ "turns": {
+  "E103_T01": {
+   "case_id": "E103_T01",
+   "current_action": "接住她的踌躇满志，肯定规划的完整度，顺口垫一句'这些日期你都是从哪儿确认的'——不当场拆穿，只把'以什么为准'这个钩子先挂上。",
+   "acceptable_actions": [
+    "肯定她的规划完整，提醒庆功宴定金留好凭证",
+    "问她27号这个日期是从邮件还是群里口头看的",
+    "顺着母亲要来的话题接一句轻松的"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A01",
+     "subject": "SHARED",
+     "relation": "defense_date_claim",
+     "value": "她认定转正答辩安排在11月27日周五下午",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T01", "message_id": "m0", "quote": "11月27号周五下午"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A02",
+     "subject": "SHARED",
+     "relation": "wrapup_commitment",
+     "value": "手头活动收尾排到26日，紧贴她认定的答辩日",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T01", "message_id": "m0", "quote": "活动收尾排到26号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A03",
+     "subject": "SHARED",
+     "relation": "banquet_booked",
+     "value": "27日晚庆功宴包间已订并支付定金",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T01", "message_id": "m0", "quote": "晚上包间都订好了庆功宴，定金也付了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A04",
+     "subject": "THIRD",
+     "relation": "mom_travel_plan",
+     "value": "母亲已购27日中午到站的高铁票准备参加庆功",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T01", "message_id": "m0", "quote": "27号中午我妈的高铁到"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她的兴奋是真的，钩子要挂得轻，别显得在挑刺。",
+   "unknowns": ["27号日期的真实出处未知", "答辩实际日期未知"],
+   "protected_expressions": ["大日子定了"],
+   "forbidden_factual_claims": ["不得断言27号不是答辩日（此时尚无实证）", "不得虚构答辩流程细节"]
+  },
+  "E103_T02": {
+   "case_id": "E103_T02",
+   "current_action": "接住主管对计划的背书：指出这等于错误日期又多了一层排期绑定，轻提一句'计划一旦上了别人的日程，改动成本会翻倍'。",
+   "acceptable_actions": [
+    "肯定计划获批，顺带点出排期已被主管锚定",
+    "建议把请假条和日历邀请都发出去，让日期过一遍系统",
+    "接'试用期稳的'这句，给她一点踏实感"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A05",
+     "subject": "THIRD",
+     "relation": "supervisor_plan_anchored",
+     "value": "主管按27日口径确认收尾26日交、12月1日接华东专项",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T02", "message_id": "m0", "quote": "活动收尾26号交，12月1号开始接华东渠道专项"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A06",
+     "subject": "HER",
+     "relation": "leave_planned",
+     "value": "她向主管报备27日下午请假两小时答辩",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T02", "message_id": "m0", "quote": "27号下午得请两个小时假答辩"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'改动成本翻倍'点到即止，她此刻不需要被说服，只需要被埋一句提醒。",
+   "unknowns": ["请假条是否已走系统流程未知"],
+   "protected_expressions": ["还说我这试用期稳的"],
+   "forbidden_factual_claims": ["不得断言主管日后会因日期错误追责"]
+  },
+  "E103_T03": {
+   "case_id": "E103_T03",
+   "current_action": "接住模拟答辩邀请：按自己日程接或改期都可以，接下时把模拟安排落实到一个具体时间，顺手把'还有十七天'轻轻记下不反驳。",
+   "acceptable_actions": [
+    "答应周日模拟，让她把PPT初稿提前一天发来",
+    "若周日没空，坦诚说明并主动给两个备选时段",
+    "提醒模拟时按真实流程掐时间，包括自我介绍和提问环节"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A07",
+     "subject": "HER",
+     "relation": "mock_invite",
+     "value": "她邀ME周日帮她模拟一轮答辩",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T03", "message_id": "m0", "quote": "周日你空不空，帮我模拟一轮"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A08",
+     "subject": "HER",
+     "relation": "time_margin_illusion",
+     "value": "她以'还有十七天'自估时间充裕，余量感固化",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T03", "message_id": "m0", "quote": "还有十七天，稳得很"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：答应要痛快，'十七天'不评论——这个数马上会被实证打脸，留着不划算。",
+   "unknowns": ["模拟答辩最终时间未知"],
+   "protected_expressions": ["还有十七天，稳得很"],
+   "forbidden_factual_claims": ["不得虚构她PPT的真实进度"]
+  },
+  "E103_T04": {
+   "case_id": "E103_T04",
+   "current_action": "接住倒计时便利贴的仪式感：肯定她的备赛状态，把母亲参战当喜剧点接住；不碰日期，维持'钩子已挂、等实证'的姿态。",
+   "acceptable_actions": [
+    "接辣酱的梗，调侃评审的口味负担",
+    "肯定倒计时仪式对状态的帮助",
+    "提醒她PPT过半后该预留提问准备时间"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A09",
+     "subject": "SHARED",
+     "relation": "countdown_public",
+     "value": "她把'距转正答辩还有14天'倒计时贴上工位，日期公开化",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T04", "message_id": "m0", "quote": "距转正答辩还有14天"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A10",
+     "subject": "THIRD",
+     "relation": "mom_chili_plan",
+     "value": "母亲宣布带自制辣酱到答辩现场给评审",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T04", "message_id": "m0", "quote": "带一罐她做的辣酱给评审尝尝"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：这一轮是喜剧高峰，让暴风雨前的轻松再飘一会儿，不加预警。",
+   "unknowns": ["辣酱是否真会出场未知"],
+   "protected_expressions": ["我说你可省省吧"],
+   "forbidden_factual_claims": ["不得断言倒计时天数计算有误（尚无实证）"]
+  },
+  "E103_T05": {
+   "case_id": "E103_T05",
+   "current_action": "面对'评评理'的诉求：不站队任何日期，给判据——同批入职的赵姐与她的信息同源，20号的说法值得认真对待；最短路径是翻原文（HR邮件），而不是两个人凭记忆互相说服。",
+   "acceptable_actions": [
+    "建议立刻翻HR全员邮件原文，别靠记忆或群消息",
+    "指出赵姐和她同批，信息源相同，她的'她记串了'未必成立",
+    "提醒她人力群消息可能是转述，邮件才是权威"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A11",
+     "subject": "THIRD",
+     "relation": "colleague_challenge",
+     "value": "同批入职的赵姐提出答辩是20号下午",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T05", "message_id": "m0", "quote": "你不是20号答辩吗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A12",
+     "subject": "HER",
+     "relation": "date_disputed",
+     "value": "她以人力群消息为据否认20号说法，坚持27号",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T05", "message_id": "m0", "quote": "人力群里明明写的是27号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A13",
+     "subject": "SHARED",
+     "relation": "date_versions_contested",
+     "value": "答辩日期出现27号与20号两个版本，她坚持27号版本",
+     "valid_time": "2026-11-05/2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T01", "message_id": "m0", "quote": "11月27号周五下午"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她在等ME站她那边，ME偏不给——但理由要给足，落点是'翻邮件，十秒钟的事'。",
+   "unknowns": ["邮件原文内容未知（本轮尚未查）"],
+   "protected_expressions": ["该不会是她自己串了吧"],
+   "forbidden_factual_claims": ["不得断言赵姐记错", "不得断言27号或20号哪个正确（以原文为准）"]
+  },
+  "E103_T06": {
+   "case_id": "E103_T06",
+   "current_action": "接住实证引爆：邮件白纸黑字20日14:00，27号是她把试用期最后一天当成了答辩日。先接天塌感，再帮她把烂摊子列成清单（而不是安慰完就散）。",
+   "acceptable_actions": [
+    "先接住情绪，肯定她自己去翻邮件没拖延",
+    "帮她列错位清单：备赛时间、收尾排期、请假条、车票、包间",
+    "点破根因：她拿'试用期最后一天'当'答辩日'，两个概念她早混了"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A14",
+     "subject": "SHARED",
+     "relation": "defense_date_confirmed",
+     "value": "HR全员邮件实证转正述职安排在11月20日14:00",
+     "valid_time": "2026-11-17",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T06", "message_id": "m0", "quote": "转正述职安排在11月20日（周五）14:00"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A15",
+     "subject": "SHARED",
+     "relation": "original_date_falsified",
+     "value": "'27号为答辩日'的说法被邮件实证否定，实为她误把试用期最后一天当答辩日",
+     "valid_time": "2026-11-05/2026-11-17",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E103_T01", "message_id": "m0", "quote": "11月27号周五下午"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E103_A16",
+     "subject": "SHARED",
+     "relation": "commitments_cascaded",
+     "value": "倒计时贴、请假条、母亲车票全部建立在错误日期上同时错位",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E103_T06", "message_id": "m0", "quote": "我倒计时贴、请假条、我妈的票，全串了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A17",
+     "subject": "PUBLIC",
+     "relation": "email_authority",
+     "value": "HR全员邮件成为答辩日期的权威来源",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T06", "message_id": "m0", "quote": "HR的全员邮件，白纸黑字"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不说'我早提醒过'，一句都不说；天塌时先递梯子再讲道理。",
+   "unknowns": ["20日前能否完成全部补救未知"],
+   "protected_expressions": ["我把最后一天当成答辩日了"],
+   "forbidden_factual_claims": ["不得虚构邮件其他条款", "不得断言答辩必然通过或失败"]
+  },
+  "E103_T07": {
+   "case_id": "E103_T07",
+   "current_action": "接住补救排序的征询：给明确建议——先找主管（涉及别人日程且最难开口，先卸最重的），再改签（车票有改签费时限），PPT差三成靠熬夜补。",
+   "acceptable_actions": [
+    "建议先找主管坦白，排期是他人的日程越早说越好",
+    "提醒车票改签有费用与时限，今晚就处理",
+    "建议请假条撤回重写一次到位，别分两次麻烦HR"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A18",
+     "subject": "SHARED",
+     "relation": "wrapup_must_move_earlier",
+     "value": "活动收尾需从26日提前到19日，与原排期冲突",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E103_T07", "message_id": "m0", "quote": "活动收尾26号是我自己拍的胸脯，现在得提前到19号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A19",
+     "subject": "HER",
+     "relation": "triage_consultation",
+     "value": "她就补救顺序（改签还是找主管）征询ME",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T07", "message_id": "m0", "quote": "你说我先打哪个电话，改签还是找主管"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A20",
+     "subject": "SHARED",
+     "relation": "ticket_reschedule_needed",
+     "value": "母亲27日车票需改签至答辩相关日期",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T07", "message_id": "m0", "quote": "我妈27号的票得改签"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她要的是排序不是共情（共情上一轮给过了），直接给顺序和理由。",
+   "unknowns": ["车票改签费具体金额未知", "主管反应未知"],
+   "protected_expressions": ["你说我先打哪个电话，改签还是找主管"],
+   "forbidden_factual_claims": ["不得虚构改签规则", "不得断言主管必然同意压缩排期"]
+  },
+  "E103_T08": {
+   "case_id": "E103_T08",
+   "current_action": "接住坦白的结果：主管没骂人反而给背书（收尾次日过一遍、专项照旧、答辩优先）。肯定她'先打最难电话'的选择，把主管那句'以邮件为准'轻轻放大成她自己的口头禅。",
+   "acceptable_actions": [
+    "肯定她先啃硬骨头的处理，臊一秒换全线解套",
+    "建议把'收尾明天过一遍'当场落成日历邀请",
+    "把'下回重要日期以邮件为准'复述成她的新规矩"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A21",
+     "subject": "THIRD",
+     "relation": "supervisor_flex",
+     "value": "主管同意收尾次日一起过、专项照旧，明确答辩比排期重要",
+     "valid_time": "2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T08", "message_id": "m0", "quote": "收尾明天一起过一遍，专项照旧12月1号，答辩比排期重要"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A22",
+     "subject": "THIRD",
+     "relation": "supervisor_reminder",
+     "value": "主管提醒她下回重要日期以邮件为准",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T08", "message_id": "m0", "quote": "下回重要日期以邮件为准啊"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A23",
+     "subject": "SHARED",
+     "relation": "wrapup_resolved",
+     "value": "收尾提前到19日的方案获得主管确认，排期冲突解除",
+     "valid_time": "2026-11-17/2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T07", "message_id": "m0", "quote": "现在得提前到19号"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：主管的宽容不代为解读成'无所谓'，提醒她人情要记，排期要自己盯。",
+   "unknowns": ["请假条撤改是否完成未知"],
+   "protected_expressions": ["我脸上火辣辣的"],
+   "forbidden_factual_claims": ["不得虚构主管的心理活动", "不得断言此后不再出类似差错"]
+  },
+  "E103_T09": {
+   "case_id": "E103_T09",
+   "current_action": "共享答辩通过的狂喜与改期闭环：肯定压缩备赛下的表现（尤其把超支复盘当例子），把票务、包间的改期落定逐项点为'承诺重新兑现'。",
+   "acceptable_actions": [
+    "先恭喜，再点出她把犯错经历讲成复盘亮点这个选择的高明",
+    "把改签、包间改期、免改期费逐项确认为闭环",
+    "提醒20日晚接站和21日宴席的衔接时间"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A24",
+     "subject": "SHARED",
+     "relation": "defense_passed",
+     "value": "11月20日转正答辩通过",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T09", "message_id": "m0", "quote": "答辩过了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A25",
+     "subject": "SHARED",
+     "relation": "ticket_rescheduled",
+     "value": "母亲车票改至20日晚到，改签费60元",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T09", "message_id": "m0", "quote": "我妈的票改到20号晚上到，改签费60"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A26",
+     "subject": "SHARED",
+     "relation": "banquet_moved",
+     "value": "庆功宴包间改至21日且餐厅免收改期费",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T09", "message_id": "m0", "quote": "庆功宴包间改到明天，餐厅没收改期费"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A36",
+     "subject": "SHARED",
+     "relation": "prep_compressed_done",
+     "value": "PPT从差三成的缺口在三天内压缩补齐并完成答辩",
+     "valid_time": "2026-11-17/2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T07", "message_id": "m0", "quote": "PPT还差三成"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：狂喜要接得足，功劳算她三天没日没夜，ME 只提一句模拟的问答用上了。",
+   "unknowns": ["转正流程剩余环节未知"],
+   "protected_expressions": ["说给我留着一楼靠窗的位置"],
+   "forbidden_factual_claims": ["不得虚构评审评分或排名", "不得断言加薪幅度等未提事项"]
+  },
+  "E103_T10": {
+   "case_id": "E103_T10",
+   "current_action": "接住庆功宴的温度：母亲与ME视频互动的暖场接住，再肯定她想到谢赵姐——把'被提醒'从丢面子翻转成受益，这层她想明白了值得点破。",
+   "acceptable_actions": [
+    "接住阿姨式的热情问候，让ME角色被点名这件事落得轻巧",
+    "肯定她谢赵姐的想法，指出那句提醒实际帮她抢回一周",
+    "建议奶茶附一句话条，别只放桌上不署名"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "attribution", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A27",
+     "subject": "THIRD",
+     "relation": "mom_video_greeting",
+     "value": "庆功宴上母亲坚持与ME视频并表达认可",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T10", "message_id": "m0", "quote": "非要跟视频里的你看一眼"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A28",
+     "subject": "HER",
+     "relation": "gratitude_plan",
+     "value": "她决定买奶茶感谢赵姐的日期提醒",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T10", "message_id": "m0", "quote": "赵姐那句提醒得谢人家，明天买杯奶茶放她桌上"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A29",
+     "subject": "SHARED",
+     "relation": "colleague_tip_valued",
+     "value": "赵姐的日期提醒被回看为实际受益的关键线索",
+     "valid_time": "2026-11-17/2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T05", "message_id": "m0", "quote": "你不是20号答辩吗"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：这轮是暖场，接住即可，不把赵姐的事讲成大道理。",
+   "unknowns": ["赵姐收到奶茶的反应未知"],
+   "protected_expressions": ["这就是帮我模拟答辩的那个罗盘吧，靠谱"],
+   "forbidden_factual_claims": ["不得虚构母亲与ME视频的更多对话", "不得断言赵姐当初是否确知内情"]
+  },
+  "E103_T11": {
+   "case_id": "E103_T11",
+   "current_action": "接住转正闭环与教训成文：新工牌、12月1日专项、'邮件加日历双确认'写入备忘录第一条。肯定规则的具体性（可执行而非口号），再接赵姐旧事的呼应笑点。",
+   "acceptable_actions": [
+    "肯定双确认规则的具体可执行，建议日历设提前三天提醒",
+    "接赵姐面试记错一天的旧事，把'人人都有这一天'说轻",
+    "提醒12月1日接专项前把交接清单过一遍邮件确认"
+   ],
+   "applicable_dimensions": ["memory_use", "goal", "emotion_relation", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A30",
+     "subject": "SHARED",
+     "relation": "probation_confirmed",
+     "value": "转正流程完成，新工牌已换，12月1日接华东专项",
+     "valid_time": "2026-11-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T11", "message_id": "m0", "quote": "转正流程走完了，新工牌都换了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A31",
+     "subject": "HER",
+     "relation": "double_check_rule",
+     "value": "她立下重要日期邮件加日历双确认、缺一不可的规则",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T11", "message_id": "m0", "quote": "重要日期双确认，邮件加日历，缺一不可"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A32",
+     "subject": "SHARED",
+     "relation": "lesson_archived",
+     "value": "日期记串的教训被写入备忘录第一条，源自她把试用期最后一天当答辩日",
+     "valid_time": "2026-11-17/2026-11-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T06", "message_id": "m0", "quote": "我把最后一天当成答辩日了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：规矩已成文，ME 不再加码新建议，最多补一个'提前三天提醒'的小钩子。",
+   "unknowns": ["专项交接具体安排未知"],
+   "protected_expressions": ["缺一不可"],
+   "forbidden_factual_claims": ["不得断言她从此不再犯类似错误", "不得虚构专项内容"]
+  },
+  "E103_T12": {
+   "case_id": "E103_T12",
+   "current_action": "接住羽毛球之约与自我玩笑收尾：笑纳'邮件置顶狂魔'的自嘲（自己提过'邮箱说了算'，此刻对上了），确认赴约或按安排改期，输赢奶茶照旧例。",
+   "acceptable_actions": [
+    "答应周日羽毛球，把'这次会看邮件确认场地'接成玩笑",
+    "把她的'进化论'自嘲接住，不拔高成成长叙事",
+    "如周日有事，坦诚说明并主动提改期"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E103_A33",
+     "subject": "SHARED",
+     "relation": "badminton_invite",
+     "value": "她约ME周日老时间打羽毛球并以奶茶设赌注",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T12", "message_id": "m0", "quote": "周日老时间羽毛球"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A34",
+     "subject": "HER",
+     "relation": "self_deprecating_growth",
+     "value": "她以'记错日子的人进化成邮件置顶狂魔'自嘲总结",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T12", "message_id": "m0", "quote": "从'把试用期最后一天当答辩日的人'进化成'邮件置顶狂魔'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E103_A35",
+     "subject": "SHARED",
+     "relation": "date_rule_internalized",
+     "value": "双确认规则已内化为她的日常习惯与新自嘲标签",
+     "valid_time": "2026-11-25/2026-11-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E103_T11", "message_id": "m0", "quote": "缺一不可"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，'邮箱说了算'的旧口头禅可以亮出来对个暗号，不翻旧账。",
+   "unknowns": [],
+   "protected_expressions": ["我这次真的会提前看邮件确认场地订没订"],
+   "forbidden_factual_claims": ["不得引入新的工作话题", "不得虚构羽毛球场地细节"]
+  }
+ }
+}

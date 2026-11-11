@@ -1,0 +1,961 @@
+{
+ "story_id": "E076",
+ "turns": {
+  "E076_T01": {
+   "case_id": "E076_T01",
+   "current_action": "接住攒局成行的报喜：确认11月7日红叶拼车的席位与费用，爽快入局，顺口把72小时退出线复述一遍。",
+   "acceptable_actions": [
+    "应下入局，让她把车主和集合点信息发一份",
+    "提醒7号前一周再看一眼天气，红叶档期有别",
+    "调侃她垫钱垫上瘾，先说好这回账怎么收"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A01",
+     "subject": "SHARED",
+     "relation": "carpool_plan",
+     "value": "11月7日周六青梧山看红叶的四人拼车成行",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T01",
+      "message_id": "m0",
+      "quote": "11月7号周六去青梧山看红叶"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A02",
+     "subject": "SHARED",
+     "relation": "fare_prepaid",
+     "value": "她垫付两人份车费300元，每人150元",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T01",
+      "message_id": "m0",
+      "quote": "我先把咱俩的都报上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A03",
+     "subject": "SHARED",
+     "relation": "cancel_rule",
+     "value": "拼车退出须在出发前72小时以上才退款",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T01",
+      "message_id": "m0",
+      "quote": "赶在72小时前跟我说"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：入局答应得干脆，规矩那句接一句'听你的'，别显出提防。",
+   "unknowns": [
+    "红叶最佳观赏期未核实"
+   ],
+   "protected_expressions": [
+    "我先把咱俩的都报上了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构青梧山路线细节",
+    "不得断言7号必然成行"
+   ]
+  },
+  "E076_T02": {
+   "case_id": "E076_T02",
+   "current_action": "接住第四人自带变数的信息：不放大焦虑，只建议她把'先按来算'的说法在群里留个书面痕迹。",
+   "acceptable_actions": [
+    "建议她在群里说清楚小白迟到不等的原则",
+    "顺着她的担心问一句要不要提前找替补",
+    "安慰一句网上拼的本来就有变数，规矩兜底就行"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A04",
+     "subject": "THIRD",
+     "relation": "fourth_member",
+     "value": "第四位是网上拼来的小白，周五可能加班",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T02",
+      "message_id": "m0",
+      "quote": "网上拼的小白"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A05",
+     "subject": "SHARED",
+     "relation": "assembly_time",
+     "value": "集合时间定为周六早上7点半",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T02",
+      "message_id": "m0",
+      "quote": "周六早上7点半集合"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A06",
+     "subject": "HER",
+     "relation": "worry",
+     "value": "她担心人数在出发前出岔子",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T02",
+      "message_id": "m0",
+      "quote": "就怕真出岔子"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：焦虑接住但降温，把变数归位到小白身上，不怪她攒局。",
+   "unknowns": [
+    "小白是否真加班未知"
+   ],
+   "protected_expressions": [
+    "就怕真出岔子"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小白的身份背景",
+    "不得预判小白必然退出"
+   ]
+  },
+  "E076_T03": {
+   "case_id": "E076_T03",
+   "current_action": "接住车主家事带来的首次冲击：帮她把两个备选摆开（延后两小时vs改周日），提醒集体答复早点给，别让车主干等。",
+   "acceptable_actions": [
+    "建议她先问建哥复查大概几点结束再选",
+    "提醒延后两小时要连带砍哪段行程，先想好",
+    "让她群里拉个意见，别一人扛决定"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A07",
+     "subject": "THIRD",
+     "relation": "driver_conflict",
+     "value": "车主建哥他妈周六要复查，出发受影响",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T03",
+      "message_id": "m0",
+      "quote": "他妈周六要复查"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A08",
+     "subject": "SHARED",
+     "relation": "two_options",
+     "value": "延后两小时或改周日两个备选悬而未决",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T03",
+      "message_id": "m0",
+      "quote": "往后推两个钟头"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A09",
+     "subject": "SHARED",
+     "relation": "carpool_plan",
+     "value": "原定7号早上的拼车行程正被家事冲击",
+     "valid_time": "2026-10-26/2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T01",
+      "message_id": "m0",
+      "quote": "11月7号周六去青梧山看红叶"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：变数是车主家事不是谁的错，语气里别带责备。",
+   "unknowns": [
+    "复查耗时未知",
+    "四个人的意见分布未知",
+    "她妈复查的周六未加消歧，剧情意图为 11-07（出行日）；字面最近周六 10-31，评审时按 time_state 从宽"
+   ],
+   "protected_expressions": [
+    "他也不想去耽误咱看红叶"
+   ],
+   "forbidden_factual_claims": [
+    "不得替建哥做延后或改期的决定",
+    "不得虚构他母亲病情细节"
+   ]
+  },
+  "E076_T04": {
+   "case_id": "E076_T04",
+   "current_action": "确认改期#1落地：推到9点半、砍山顶徒步保红叶；肯定这是'保住主要目标、舍掉次要段'的取舍。",
+   "acceptable_actions": [
+    "肯定取舍聪明，红叶保住了、辛苦换值得",
+    "提醒她把新出发时间在群里再钉一遍",
+    "顺口问半山腰观景台的停车点建哥熟不熟"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A10",
+     "subject": "SHARED",
+     "relation": "delay_settled",
+     "value": "出发推到9点半，改期第一落落地",
+     "valid_time": "2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T04",
+      "message_id": "m0",
+      "quote": "推到9点半出发"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A11",
+     "subject": "SHARED",
+     "relation": "route_trim",
+     "value": "山顶徒步段砍掉，改开到半山腰观景台",
+     "valid_time": "2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T04",
+      "message_id": "m0",
+      "quote": "山顶那段徒步砍掉"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A12",
+     "subject": "SHARED",
+     "relation": "two_options",
+     "value": "改周日的备选被延后两小时方案否掉",
+     "valid_time": "2026-10-30/2026-11-01",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T03",
+      "message_id": "m0",
+      "quote": "要么干脆改周日"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'辛苦早点睡'接成玩笑，取舍的账替她算明白。",
+   "unknowns": [],
+   "protected_expressions": [
+    "就是辛苦咱早点睡"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构观景台景致细节",
+    "不得断言9点半方案不再变动"
+   ]
+  },
+  "E076_T05": {
+   "case_id": "E076_T05",
+   "current_action": "接住改期#2引爆：7号行程整体取消、迁往14号；先接住她对红叶窗口的担心，再帮她把'红叶档期'当成要不要答应的关键变量点出来。",
+   "acceptable_actions": [
+    "先接担心：红叶末期确实要赌，但没到绝路",
+    "提醒她答应前问清14号是不是红叶最后窗口",
+    "建议她让建哥给个准话再群里过会"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "emotion_relation",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A13",
+     "subject": "THIRD",
+     "relation": "medical_escalation",
+     "value": "建哥他妈复查后医生加检查，他下周要陪",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T05",
+      "message_id": "m0",
+      "quote": "医生又给加了一个检查"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A14",
+     "subject": "SHARED",
+     "relation": "full_reschedule",
+     "value": "行程整体改到11月14日周六",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T05",
+      "message_id": "m0",
+      "quote": "整个改到14号周六"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A15",
+     "subject": "SHARED",
+     "relation": "carpool_plan",
+     "value": "原定11月7日的拼车行程整体取消",
+     "valid_time": "2026-10-26/2026-11-04",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T01",
+      "message_id": "m0",
+      "quote": "11月7号周六去青梧山看红叶"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E076_A16",
+     "subject": "HER",
+     "relation": "foliage_worry",
+     "value": "她担心拖到14号红叶落没",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T05",
+      "message_id": "m0",
+      "quote": "红叶都落没了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：担心接在前，取舍分析在后，'红叶窗口'四个字替她点透。",
+   "unknowns": [
+    "14号红叶状态未知",
+    "各成员能否都改到14号未知"
+   ],
+   "protected_expressions": [
+    "就怕拖到14号红叶都落没了"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言14号红叶必然还好看",
+    "不得替群里答应或拒绝改期"
+   ]
+  },
+  "E076_T06": {
+   "case_id": "E076_T06",
+   "current_action": "接住成员退出的连锁：小白依规全退、四人变三人、每人补50；把'依规退'和'补差摊'两件事分开讲清，费用归车主口径。",
+   "acceptable_actions": [
+    "先确认小白退款合规矩，责任不在谁",
+    "把补50拆开算：包车600三人摊，账目透明",
+    "提醒她补差前问建哥要个总价的书面口径"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A17",
+     "subject": "THIRD",
+     "relation": "member_exit",
+     "value": "小白因14号出差退出拼车",
+     "valid_time": "2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T06",
+      "message_id": "m0",
+      "quote": "小白退出了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A18",
+     "subject": "THIRD",
+     "relation": "refund_compliant",
+     "value": "小白按72小时外规矩获全退150元",
+     "valid_time": "2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T06",
+      "message_id": "m0",
+      "quote": "出发前72小时外退"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A19",
+     "subject": "SHARED",
+     "relation": "cost_bump",
+     "value": "包车600元改由三人分摊，每人补50元",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T06",
+      "message_id": "m0",
+      "quote": "一人补50"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A20",
+     "subject": "THIRD",
+     "relation": "fourth_member",
+     "value": "小白退出使四人拼车结构塌成三人",
+     "valid_time": "2026-10-28/2026-11-05",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T02",
+      "message_id": "m0",
+      "quote": "网上拼的小白"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'肉疼但讲理'替她说出口，账算得冷冰冰但话要暖。",
+   "unknowns": [
+    "她和阿澈是否接受补差未知"
+   ],
+   "protected_expressions": [
+    "不然他油费过路费不划算"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小白出差目的地",
+    "不得断言补差金额还有商量"
+   ]
+  },
+  "E076_T07": {
+   "case_id": "E076_T07",
+   "current_action": "接住她补差拍板：一人200看最后一波红叶，值不值她已算完；确认转100的款，把'值'字接牢。",
+   "acceptable_actions": [
+    "先转钱后表态，一句'这200我出得心甘情愿'",
+    "肯定她'错过再等一年'的账算得对",
+    "提醒她把补差转账备注写清，免得跟150混账"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A21",
+     "subject": "HER",
+     "relation": "go_decision",
+     "value": "她拍板接受补差50继续成行看红叶",
+     "valid_time": "2026-11-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T07",
+      "message_id": "m0",
+      "quote": "补50就补吧"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A22",
+     "subject": "SHARED",
+     "relation": "new_fare",
+     "value": "人均车费涨到200元看红叶最后一波",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T07",
+      "message_id": "m0",
+      "quote": "一人200看最后一眼红叶"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A23",
+     "subject": "SHARED",
+     "relation": "diff_prepaid",
+     "value": "她把两人份补差100元一并垫上",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T07",
+      "message_id": "m0",
+      "quote": "你转我100就行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A24",
+     "subject": "SHARED",
+     "relation": "cost_bump",
+     "value": "每人补50的方案被两人接受并付清",
+     "valid_time": "2026-11-05/2026-11-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T06",
+      "message_id": "m0",
+      "quote": "一人补50"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：转钱爽快、夸账算得清，一句话别拆成三段劝。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一人200看最后一眼红叶"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构补差的具体支付方式细节",
+    "不得断言14号必然成行"
+   ]
+  },
+  "E076_T08": {
+   "case_id": "E076_T08",
+   "current_action": "接住原出行日的空转与善后：山宿退订全退、14号重订涨20她认了；把'原定7号'正式翻页成'新锚点14号'。",
+   "acceptable_actions": [
+    "肯定她善后利索，退订重订一条龙",
+    "提醒14号房涨的20认得值，别再为20再折腾",
+    "顺口问她7号这天有没有别的安排补上"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A25",
+     "subject": "SHARED",
+     "relation": "lodge_cancelled",
+     "value": "7号当晚山宿退订且全额退款",
+     "valid_time": "2026-11-07",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T08",
+      "message_id": "m0",
+      "quote": "7号那晚的房退了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A26",
+     "subject": "SHARED",
+     "relation": "lodge_rebooked",
+     "value": "山宿改订14号，每晚涨价20元她认账",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T08",
+      "message_id": "m0",
+      "quote": "14号重新订"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A27",
+     "subject": "SHARED",
+     "relation": "full_reschedule",
+     "value": "14号周六成为行程的新锚点",
+     "valid_time": "2026-11-04/2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T05",
+      "message_id": "m0",
+      "quote": "整个改到14号周六"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：空转的一天带一句'正好歇着'，涨20认账夸她不纠结。",
+   "unknowns": [],
+   "protected_expressions": [
+    "老板人不错给全退"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构山宿名称与位置",
+    "不得断言14号房况无变"
+   ]
+  },
+  "E076_T09": {
+   "case_id": "E076_T09",
+   "current_action": "接住天气威胁下的动摇：不急着劝改周日，先帮她拆'改的成本'与'赌的价值'，提醒跟建哥开口前先看两天的预报趋势。",
+   "acceptable_actions": [
+    "建议她再等一天预报，别拿一晚上的概率做决定",
+    "帮她算改周日的连锁账：房、车、三家时间",
+    "提醒无论改不改都先跟建哥通气，别闷着"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A28",
+     "subject": "SHARED",
+     "relation": "rain_risk",
+     "value": "天气预报称14号山区有雨且概率不低",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T09",
+      "message_id": "m0",
+      "quote": "14号山区有雨"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A29",
+     "subject": "HER",
+     "relation": "hesitation",
+     "value": "她动摇是否改周日且还没敢跟建哥提",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T09",
+      "message_id": "m0",
+      "quote": "还没敢跟建哥提"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A30",
+     "subject": "HER",
+     "relation": "foliage_worry",
+     "value": "对红叶落没的旧担忧被雨天重新点燃",
+     "valid_time": "2026-11-04/2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T05",
+      "message_id": "m0",
+      "quote": "红叶都落没了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：动摇接住但别放大，把'不敢提'点成她其实心里已有倾向。",
+   "unknowns": [
+    "14号实际降雨未知",
+    "建哥对改动的态度未知"
+   ],
+   "protected_expressions": [
+    "我心里咯噔一下"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言14号必然下雨",
+    "不得替她决定改或不改"
+   ]
+  },
+  "E076_T10": {
+   "case_id": "E076_T10",
+   "current_action": "共享凌晨方案的过会：不挪日期改抢时刻，躲开午后雨；肯定这招的狠与稳，提醒她定好闹钟再备一套雨天预案。",
+   "acceptable_actions": [
+    "夸建哥盯云图盯得专业，这招比改期高明",
+    "提醒她前一晚早睡，凌晨的山路别开玩笑",
+    "建议她跟建哥确认下山时间留出余量"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A31",
+     "subject": "THIRD",
+     "relation": "dawn_plan",
+     "value": "建哥提出凌晨5点半出发抢在雨前上山",
+     "valid_time": "2026-11-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T10",
+      "message_id": "m0",
+      "quote": "凌晨5点半出发"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A32",
+     "subject": "SHARED",
+     "relation": "dawn_accepted",
+     "value": "全群接受凌晨方案，她定了两个闹钟",
+     "valid_time": "2026-11-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T10",
+      "message_id": "m0",
+      "quote": "我定了两个闹钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A33",
+     "subject": "SHARED",
+     "relation": "rain_risk",
+     "value": "14号降雨威胁被清晨抢时刻方案规避",
+     "valid_time": "2026-11-12/2026-11-13",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T09",
+      "message_id": "m0",
+      "quote": "14号山区有雨"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'赌这一把'接得带劲，安全提醒一句带过别说教。",
+   "unknowns": [
+    "凌晨路况未知",
+    "云图判断是否准确未知"
+   ],
+   "protected_expressions": [
+    "就赌这一把"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构云图技术细节",
+    "不得保证凌晨方案必然避雨"
+   ]
+  },
+  "E076_T11": {
+   "case_id": "E076_T11",
+   "current_action": "共享赌赢的战报：雨雾红叶如仙境、下山刚上车雨就砸下来；把这一趟的三次改期都收进'值了'两个字里。",
+   "acceptable_actions": [
+    "先贺赌赢，再把三次改期串成一句'折腾全值了'",
+    "接住'浑身酸'，提醒她热水澡加早睡",
+    "顺势问一句照片修好发群里没有"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A34",
+     "subject": "SHARED",
+     "relation": "dawn_success",
+     "value": "清晨抢晴成功，雨雾红叶如仙境",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T11",
+      "message_id": "m0",
+      "quote": "红叶挂着雨雾跟仙境似的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A35",
+     "subject": "THIRD",
+     "relation": "timing_precise",
+     "value": "建哥的路线掐点精准，下山避雨分秒不差",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T11",
+      "message_id": "m0",
+      "quote": "建哥那条路线掐得分秒不差"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A36",
+     "subject": "THIRD",
+     "relation": "dawn_plan",
+     "value": "凌晨5点半方案在14日当日完整兑现",
+     "valid_time": "2026-11-13/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T10",
+      "message_id": "m0",
+      "quote": "凌晨5点半出发"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：战报接得热乎，三次改期的辛苦收进一句'值了'，不翻过程。",
+   "unknowns": [],
+   "protected_expressions": [
+    "今晚浑身酸，但值了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构山上景致的更多细节",
+    "不得断言雨后红叶还能再看一周"
+   ]
+  },
+  "E076_T12": {
+   "case_id": "E076_T12",
+   "current_action": "接住新局钩子与她的学乖：芦苇荡还是老价钱、先收钱再发车；去不去爽快表态，垫钱规矩的升级替她见证。",
+   "acceptable_actions": [
+    "爽快应下去芦苇荡，让她直接在群里接话",
+    "把'先收钱再发车'接成新局规，说早该如此",
+    "调侃她被三次改期磨出来的长进值一张车票"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E076_A37",
+     "subject": "THIRD",
+     "relation": "next_trip",
+     "value": "建哥下周拟组入海口看芦苇荡的新局",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T12",
+      "message_id": "m0",
+      "quote": "看芦苇荡"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A38",
+     "subject": "HER",
+     "relation": "new_rule",
+     "value": "她声明新局先收钱再发车，谁也不垫",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T12",
+      "message_id": "m0",
+      "quote": "先收钱再发车"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E076_A39",
+     "subject": "SHARED",
+     "relation": "diff_prepaid",
+     "value": "此番两度垫钱（车费300、补差100）催生她的不垫新规",
+     "valid_time": "2026-10-26/2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E076_T07",
+      "message_id": "m0",
+      "quote": "你转我100就行"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻快，'学乖'接成夸奖不是调侃她的损失。",
+   "unknowns": [
+    "芦苇荡具体日期未知"
+   ],
+   "protected_expressions": [
+    "去不去你一句话"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构入海口位置与路线",
+    "不得预判新局必然成行"
+   ]
+  }
+ }
+}

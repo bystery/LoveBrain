@@ -1,0 +1,143 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E013",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E013_T01",
+   "clock": "2026-11-03 19:22"
+  },
+  {
+   "case_id": "E013_T02",
+   "clock": "2026-11-03 19:33"
+  },
+  {
+   "case_id": "E013_T03",
+   "clock": "2026-11-03 19:42"
+  },
+  {
+   "case_id": "E013_T04",
+   "clock": "2026-11-03 19:52"
+  },
+  {
+   "case_id": "E013_T05",
+   "clock": "2026-11-03 20:02"
+  },
+  {
+   "case_id": "E013_T06",
+   "clock": "2026-11-03 20:12"
+  },
+  {
+   "case_id": "E013_T07",
+   "clock": "2026-11-03 20:22"
+  },
+  {
+   "case_id": "E013_T08",
+   "clock": "2026-11-03 20:37"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E013_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-03 19:20",
+   "quote": "你那个杯子底是不是也裂了？我刚被老师点名重做，心态有点崩"
+  },
+  {
+   "case_id": "E013_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-03 19:28",
+   "quote": "裂了，老师说我手劲像在揉面"
+  },
+  {
+   "case_id": "E013_T02",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-03 19:31",
+   "quote": "哈哈那你比我惨 我至少像在捏橡皮泥"
+  },
+  {
+   "case_id": "E013_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-03 19:40",
+   "quote": "不过说真的 我本来是想来放空的 结果更累了"
+  },
+  {
+   "case_id": "E013_T04",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-03 19:50",
+   "quote": "你平时也做这个吗 还是也被朋友拉来的"
+  },
+  {
+   "case_id": "E013_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-03 20:00",
+   "quote": "我下周还来 但想换个时间 周末人太多了"
+  },
+  {
+   "case_id": "E013_T06",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-03 20:10",
+   "quote": "老师说我下节课可以试试拉坯 但我怕又翻车"
+  },
+  {
+   "case_id": "E013_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-03 20:20",
+   "quote": "你今天那个盘子烧出来应该挺好看的 至少形状没塌"
+  },
+  {
+   "case_id": "E013_T08",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-03 20:35",
+   "quote": "我先撤了 明天还要早起 今天谢谢你把工具让给我"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "陶艺课第二周",
+   "event_time": "2026-11-03 19:00",
+   "status": "occurred",
+   "source_turn": "E013_T01"
+  },
+  {
+   "event_id": "EV2",
+   "label": "她明天早起",
+   "event_time": "2026-11-04 07:00",
+   "status": "planned",
+   "source_turn": "E013_T08"
+  },
+  {
+   "event_id": "EV3",
+   "label": "下周陶艺课换时间",
+   "event_time": "2026-11-10 19:00",
+   "status": "planned",
+   "source_turn": "E013_T05"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "刚认识的同学"
+  },
+  {
+   "turn": "T05",
+   "stage": "能聊两句的课友"
+  },
+  {
+   "turn": "T08",
+   "stage": "普通同学，自然收尾"
+  }
+ ],
+ "revisions": [],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

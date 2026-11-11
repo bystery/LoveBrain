@@ -1,0 +1,683 @@
+{
+ "story_id": "E148",
+ "turns": {
+  "E148_T01": {
+   "case_id": "E148_T01",
+   "current_action": "接住换粮开工：肯定记录意识，轻问一句麻薯肠胃史，提醒过渡期观察便便",
+   "acceptable_actions": [
+    "肯定开工，问麻薯以前换粮有没有软便史",
+    "提醒过渡期每天看便便状态，有异常随时停"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T01_A00",
+     "subject": "PUBLIC",
+     "relation": "门店口径",
+     "value": "宠物店称换粮三天过渡即可，现按三分之一新粮执行",
+     "valid_time": "2026-11-03 20:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T01",
+      "message_id": "m0",
+      "quote": "三天换完就行"
+     }
+    },
+    {
+     "atom_id": "E148_T01_A01",
+     "subject": "SHARED",
+     "relation": "邻里互助",
+     "value": "祁一一养猫遇事常与 ME 商量",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "换粮、驱虫的门道懂一些"
+     }
+    }
+   ],
+   "private_guidance": "门店口径先不否定，把观察项立起来，数据会说话。",
+   "unknowns": [
+    "麻薯肠胃史未明"
+   ],
+   "protected_expressions": [
+    "三天换完就行"
+   ],
+   "forbidden_factual_claims": [
+    "不得当场断言门店口径错误"
+   ],
+   "may_decline": false
+  },
+  "E148_T02": {
+   "case_id": "E148_T02",
+   "current_action": "接住紧张：软便是过渡期信号不是灾难，先稳住，建议记录并观察精神食欲",
+   "acceptable_actions": [
+    "安抚：软便是换粮常见信号，先看精神食欲",
+    "建议她记录今天比例与便便状态，作为依据"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T02_A00",
+     "subject": "PUBLIC",
+     "relation": "门店口径",
+     "value": "宠物店称三天过渡即可",
+     "valid_time": "2026-11-03 20:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T01",
+      "message_id": "m0",
+      "quote": "三天换完就行"
+     }
+    },
+    {
+     "atom_id": "E148_T02_A01",
+     "subject": "PUBLIC",
+     "relation": "软便出现",
+     "value": "换粮第二天麻薯出现软便",
+     "valid_time": "2026-11-04 21:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T02",
+      "message_id": "m0",
+      "quote": "便便有点软"
+     }
+    }
+   ],
+   "private_guidance": "她一慌就容易乱改比例，先让她把数据记下来再动。",
+   "unknowns": [
+    "麻薯精神食欲状态未明"
+   ],
+   "protected_expressions": [
+    "便便有点软"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言新粮有问题或必须立即停"
+   ],
+   "may_decline": false
+  },
+  "E148_T03": {
+   "case_id": "E148_T03",
+   "current_action": "指出两个信源都不如医生：建议周四常规体检时带上问题，用医嘱定方案",
+   "acceptable_actions": [
+    "建议别急着选边，周四体检时当面问医生",
+    "过渡期先把比例退半步，等医嘱再定"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "initiative",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T03_A00",
+     "subject": "PUBLIC",
+     "relation": "软便出现",
+     "value": "换粮第二天麻薯出现软便",
+     "valid_time": "2026-11-04 21:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T02",
+      "message_id": "m0",
+      "quote": "便便有点软"
+     }
+    },
+    {
+     "atom_id": "E148_T03_A01",
+     "subject": "THIRD",
+     "relation": "店员口径",
+     "value": "店员称软便正常扛过去即可",
+     "valid_time": "2026-11-05 12:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T03",
+      "message_id": "m0",
+      "quote": "正常，扛过去就好"
+     }
+    }
+   ],
+   "private_guidance": "猫的事医生说了算，这条边界在她这儿要先立住。",
+   "unknowns": [
+    "医生最终意见未知"
+   ],
+   "protected_expressions": [
+    "正常，扛过去就好"
+   ],
+   "forbidden_factual_claims": [
+    "不得替医生下结论"
+   ],
+   "may_decline": false
+  },
+  "E148_T04": {
+   "case_id": "E148_T04",
+   "current_action": "更正类冲突轮：确认医嘱更正——过渡期七天到十天、软便退回上一比例，帮她把日历改掉",
+   "acceptable_actions": [
+    "确认医嘱两个要点：拉长到七到十天、软便退回上一比例",
+    "建议她把换粮日历改成十天版本，照医嘱执行"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T04_A00",
+     "subject": "THIRD",
+     "relation": "店员口径",
+     "value": "店员称软便正常扛过去即可",
+     "valid_time": "2026-11-05 12:25",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T03",
+      "message_id": "m0",
+      "quote": "正常，扛过去就好"
+     }
+    },
+    {
+     "atom_id": "E148_T04_A01",
+     "subject": "THIRD",
+     "relation": "医嘱更正",
+     "value": "医生指三天过渡太快，应拉长至七天到十天并退回上一比例",
+     "valid_time": "2026-11-06 19:35",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T04",
+      "message_id": "m0",
+      "quote": "得拉长到七天到十天"
+     }
+    }
+   ],
+   "private_guidance": "医嘱落地就把口径钉死：七天到十天、退回上一比例，别再摇摆。",
+   "unknowns": [],
+   "protected_expressions": [
+    "得拉长到七天到十天"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续按三天过渡执行",
+    "不得夸大软便的病理严重性"
+   ],
+   "may_decline": false
+  },
+  "E148_T05": {
+   "case_id": "E148_T05",
+   "current_action": "确认执行：退回四分之一加每日记录，夸她的实验精神",
+   "acceptable_actions": [
+    "确认比例与记录，夸她像做实验一样靠谱",
+    "提醒记录里加一栏精神食欲，医生回访用得上"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T05_A00",
+     "subject": "THIRD",
+     "relation": "医嘱更正",
+     "value": "过渡期拉长至七天到十天、软便退回上一比例",
+     "valid_time": "2026-11-06 19:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T04",
+      "message_id": "m0",
+      "quote": "得拉长到七天到十天"
+     }
+    },
+    {
+     "atom_id": "E148_T05_A01",
+     "subject": "HER",
+     "relation": "执行动作",
+     "value": "新粮退回四分之一并建立每日记录备忘录",
+     "valid_time": "2026-11-06 22:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T05",
+      "message_id": "m0",
+      "quote": "退回四分之一新粮"
+     }
+    }
+   ],
+   "private_guidance": "记录是好习惯，补一栏精神食欲让它更有用。",
+   "unknowns": [],
+   "protected_expressions": [
+    "退回四分之一新粮"
+   ],
+   "forbidden_factual_claims": [
+    "不得催她加快进度"
+   ],
+   "may_decline": false
+  },
+  "E148_T06": {
+   "case_id": "E148_T06",
+   "current_action": "接住好消息：便便成型说明退比例有效，确认按节奏加量不冒进",
+   "acceptable_actions": [
+    "恭喜成型，确认按节奏往二分之一加",
+    "玩笑接住'观察对象'的梗"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T06_A00",
+     "subject": "HER",
+     "relation": "执行动作",
+     "value": "新粮退回四分之一并每日记录",
+     "valid_time": "2026-11-06 22:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T05",
+      "message_id": "m0",
+      "quote": "退回四分之一新粮"
+     }
+    },
+    {
+     "atom_id": "E148_T06_A01",
+     "subject": "HER",
+     "relation": "阶段进展",
+     "value": "便便成型后新粮加至二分之一",
+     "valid_time": "2026-11-08 20:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T06",
+      "message_id": "m0",
+      "quote": "往二分之一加"
+     }
+    }
+   ],
+   "private_guidance": "节奏对了就别催，顺着她的梗聊两句。",
+   "unknowns": [],
+   "protected_expressions": [
+    "往二分之一加"
+   ],
+   "forbidden_factual_claims": [
+    "不得建议跳步加量"
+   ],
+   "may_decline": false
+  },
+  "E148_T07": {
+   "case_id": "E148_T07",
+   "current_action": "接住固化：十天日历上墙是把医嘱变日常，肯定这个动作",
+   "acceptable_actions": [
+    "肯定日历上墙，医嘱变成看得见的日程",
+    "提醒每加一档都观察两天再加"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T07_A00",
+     "subject": "HER",
+     "relation": "阶段进展",
+     "value": "新粮加至二分之一且状态正常",
+     "valid_time": "2026-11-08 20:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T06",
+      "message_id": "m0",
+      "quote": "往二分之一加"
+     }
+    },
+    {
+     "atom_id": "E148_T07_A01",
+     "subject": "HER",
+     "relation": "方案固化",
+     "value": "换粮日历改为十天版本并贴冰箱执行",
+     "valid_time": "2026-11-10 20:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T07",
+      "message_id": "m0",
+      "quote": "改成十天版本"
+     }
+    }
+   ],
+   "private_guidance": "上墙这个动作要夸，仪式感是坚持的燃料。",
+   "unknowns": [],
+   "protected_expressions": [
+    "改成十天版本"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构日历内容细节"
+   ],
+   "may_decline": false
+  },
+  "E148_T08": {
+   "case_id": "E148_T08",
+   "current_action": "接住动摇：医嘱大于闲言，提醒她动摇的源头是别人一句话而不是新证据",
+   "acceptable_actions": [
+    "点破：动摇来自一句话不是新证据，医嘱没变",
+    "肯定她十天的依据是医生说的，不是娇气"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T08_A00",
+     "subject": "HER",
+     "relation": "方案固化",
+     "value": "换粮日历为十天版本并贴冰箱",
+     "valid_time": "2026-11-10 20:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T07",
+      "message_id": "m0",
+      "quote": "改成十天版本"
+     }
+    },
+    {
+     "atom_id": "E148_T08_A01",
+     "subject": "THIRD",
+     "relation": "外部质疑",
+     "value": "同事称十天换粮小题大做、猫不娇气",
+     "valid_time": "2026-11-12 13:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T08",
+      "message_id": "m0",
+      "quote": "小题大做"
+     }
+    }
+   ],
+   "private_guidance": "别去争论猫娇不娇，把锚点拉回医嘱就稳了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "小题大做"
+   ],
+   "forbidden_factual_claims": [
+    "不得附和同事的质疑"
+   ],
+   "may_decline": false
+  },
+  "E148_T09": {
+   "case_id": "E148_T09",
+   "current_action": "接住定心：专业回访的'按自家节奏'正是她需要的背书，确认她按日历走",
+   "acceptable_actions": [
+    "肯定回访背书，确认按日历走",
+    "建议把回访内容也记进备忘录，下次动摇翻出来看"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T09_A00",
+     "subject": "THIRD",
+     "relation": "外部质疑",
+     "value": "同事称十天换粮小题大做",
+     "valid_time": "2026-11-12 13:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T08",
+      "message_id": "m0",
+      "quote": "小题大做"
+     }
+    },
+    {
+     "atom_id": "E148_T09_A01",
+     "subject": "THIRD",
+     "relation": "回访背书",
+     "value": "医生助理称每只猫肠道敏感度不同应按自家节奏来",
+     "valid_time": "2026-11-13 21:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T09",
+      "message_id": "m0",
+      "quote": "按自家节奏来"
+     }
+    }
+   ],
+   "private_guidance": "专业背书到手，动摇翻篇，别再嚼同事的话。",
+   "unknowns": [],
+   "protected_expressions": [
+    "按自家节奏来"
+   ],
+   "forbidden_factual_claims": [
+    "不得主动挑起与同事的对错之争"
+   ],
+   "may_decline": false
+  },
+  "E148_T10": {
+   "case_id": "E148_T10",
+   "current_action": "接住得意：四分之三顺利说明节奏对了，笑接她口误的梗",
+   "acceptable_actions": [
+    "恭喜四分之三无软便，笑接'便便照片'的口误",
+    "提醒最后冲刺段也按日历走完十天"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T10_A00",
+     "subject": "THIRD",
+     "relation": "回访背书",
+     "value": "医生助理称按自家节奏来",
+     "valid_time": "2026-11-13 21:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T09",
+      "message_id": "m0",
+      "quote": "按自家节奏来"
+     }
+    },
+    {
+     "atom_id": "E148_T10_A01",
+     "subject": "HER",
+     "relation": "阶段进展",
+     "value": "第八天新粮占四分之三且无软便",
+     "valid_time": "2026-11-15 20:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T10",
+      "message_id": "m0",
+      "quote": "新粮占到四分之三"
+     }
+    }
+   ],
+   "private_guidance": "数据好看就接住得意，最后两天别松劲的提醒轻放。",
+   "unknowns": [],
+   "protected_expressions": [
+    "新粮占到四分之三"
+   ],
+   "forbidden_factual_claims": [
+    "不得催促立即切换全量"
+   ],
+   "may_decline": false
+  },
+  "E148_T11": {
+   "case_id": "E148_T11",
+   "current_action": "回应捐粮邀约：答应凑一份，确认送站时间",
+   "acceptable_actions": [
+    "答应凑一袋一起送，问周六下午方不方便",
+    "顺口问救助站缺不缺别的物资"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T11_A00",
+     "subject": "HER",
+     "relation": "阶段进展",
+     "value": "第八天新粮占四分之三且无软便",
+     "valid_time": "2026-11-15 20:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T10",
+      "message_id": "m0",
+      "quote": "新粮占到四分之三"
+     }
+    },
+    {
+     "atom_id": "E148_T11_A01",
+     "subject": "HER",
+     "relation": "捐粮提议",
+     "value": "拟将剩余旧粮捐给楼下流浪猫救助站并邀 ME 同送",
+     "valid_time": "2026-11-17 19:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T11",
+      "message_id": "m0",
+      "quote": "捐给楼下流浪猫救助站"
+     }
+    }
+   ],
+   "private_guidance": "善事邀约痛快答应，时间一次敲定。",
+   "unknowns": [],
+   "protected_expressions": [
+    "捐给楼下流浪猫救助站"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构救助站的需求清单"
+   ],
+   "may_decline": false
+  },
+  "E148_T12": {
+   "case_id": "E148_T12",
+   "current_action": "回应入伙邀约：答应加入每月固定捐，给这个换粮故事一个暖收尾",
+   "acceptable_actions": [
+    "答应入伙每月捐，约定下次一起送",
+    "回味一句'麻薯的旧粮喂了橘猫，这故事圆了'"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E148_T12_A00",
+     "subject": "HER",
+     "relation": "捐粮提议",
+     "value": "拟捐旧粮给流浪猫救助站并邀 ME 同送",
+     "valid_time": "2026-11-17 19:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T11",
+      "message_id": "m0",
+      "quote": "捐给楼下流浪猫救助站"
+     }
+    },
+    {
+     "atom_id": "E148_T12_A01",
+     "subject": "SHARED",
+     "relation": "公益落地",
+     "value": "两袋粮已捐至救助站，拟每月固定捐",
+     "valid_time": "2026-11-19 21:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E148_T12",
+      "message_id": "m0",
+      "quote": "我打算固定捐"
+     }
+    }
+   ],
+   "private_guidance": "收尾落在公益升级上，答应即收，别拖长。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我打算固定捐"
+   ],
+   "forbidden_factual_claims": [
+    "不得推脱邀约还不给替代"
+   ],
+   "may_decline": false
+  }
+ }
+}

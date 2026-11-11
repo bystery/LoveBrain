@@ -1,0 +1,135 @@
+{
+ "kind": "story_v2_stage1_validation",
+ "date": "2026-10-27",
+ "turn_per_story": 8,
+ "expected_count": 8,
+ "passed": true,
+ "stories": [
+  {
+   "story_id": "E013",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "E013",
+    "turns": 8,
+    "atoms": 11,
+    "required_atoms": 0,
+    "may_decline": [],
+    "intents": []
+   }
+  },
+  {
+   "story_id": "E014",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "E014",
+    "turns": 8,
+    "atoms": 8,
+    "required_atoms": 0,
+    "may_decline": [],
+    "intents": [
+     "E014_T08"
+    ]
+   }
+  },
+  {
+   "story_id": "E015",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "E015",
+    "turns": 8,
+    "atoms": 8,
+    "required_atoms": 1,
+    "may_decline": [],
+    "intents": []
+   }
+  },
+  {
+   "story_id": "E016",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "E016",
+    "turns": 8,
+    "atoms": 8,
+    "required_atoms": 1,
+    "may_decline": [],
+    "intents": [
+     "E016_T05",
+     "E016_T07"
+    ]
+   }
+  },
+  {
+   "story_id": "E017",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "E017",
+    "turns": 8,
+    "atoms": 8,
+    "required_atoms": 1,
+    "may_decline": [],
+    "intents": [
+     "E017_T04",
+     "E017_T07"
+    ]
+   }
+  },
+  {
+   "story_id": "E018",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "E018",
+    "turns": 8,
+    "atoms": 6,
+    "required_atoms": 1,
+    "may_decline": [
+     "E018_T03",
+     "E018_T04",
+     "E018_T07",
+     "E018_T08"
+    ],
+    "intents": []
+   }
+  },
+  {
+   "story_id": "E019",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "E019",
+    "turns": 8,
+    "atoms": 7,
+    "required_atoms": 0,
+    "may_decline": [],
+    "intents": [
+     "E019_T05",
+     "E019_T07"
+    ]
+   }
+  },
+  {
+   "story_id": "E020",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "E020",
+    "turns": 8,
+    "atoms": 8,
+    "required_atoms": 2,
+    "may_decline": [],
+    "intents": [
+     "E020_T03",
+     "E020_T07"
+    ]
+   }
+  }
+ ],
+ "errors": [],
+ "unique_cases": 64,
+ "stories_passed": 8
+}

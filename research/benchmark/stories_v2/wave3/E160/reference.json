@@ -1,0 +1,725 @@
+{
+ "story_id": "E160",
+ "turns": {
+  "E160_T01": {
+   "case_id": "E160_T01",
+   "current_action": "接下把关请求并先核一遍人均口径",
+   "acceptable_actions": [
+    "问清十六人是否含不吃饭只陪坐的",
+    "提醒包间费是否摊进人均要问明",
+    "打趣她垫钱的姿势像发年终奖"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T01_A01",
+     "subject": "HER",
+     "relation": "团建安排",
+     "value": "周五部门火锅团建十六人 AA 由 HER 垫付全款",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "她先垫付全款，人均预计一百三"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T01_A02",
+     "subject": "ME",
+     "relation": "管账分工",
+     "value": "温叙白管过班组账答应帮岑悦核账",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "答应帮岑悦核账"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先把口径逐项问清，再夸她张罗得周到。",
+   "unknowns": [
+    "包间是否有低消",
+    "十六人名单是否最终确认"
+   ],
+   "protected_expressions": [
+    "人均预估一百三"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构餐厅名称与包间位置"
+   ],
+   "may_decline": false
+  },
+  "E160_T02": {
+   "case_id": "E160_T02",
+   "current_action": "支持她分摊酒水的公平顾虑",
+   "acceptable_actions": [
+    "建议酒水谁喝谁单结最省心",
+    "提醒开车同事的饮品单独记",
+    "打趣酒桌经济学又开新课题"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T02_A01",
+     "subject": "HER",
+     "relation": "口径分歧",
+     "value": "酒水摊派在均摊与单结之间摇摆",
+     "valid_time": "2026-12-08",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T02",
+      "message_id": "m0",
+      "quote": "让不喝的摊酒钱不公平"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T02_A02",
+     "subject": "HER",
+     "relation": "人均口径",
+     "value": "人均一百三的预估面临酒水变量",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T01",
+      "message_id": "m0",
+      "quote": "人均预估一百三"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她已有公平直觉，替她把方案说到可执行。",
+   "unknowns": [
+    "实际喝酒的人数"
+   ],
+   "protected_expressions": [
+    "锅里锅外一起摊"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构具体酒水价格"
+   ],
+   "may_decline": false
+  },
+  "E160_T03": {
+   "case_id": "E160_T03",
+   "current_action": "确认双轨结算规则并建议群内留痕",
+   "acceptable_actions": [
+    "夸双轨方案清晰并提醒留群公告截图",
+    "建议菜金预估按人头加一档余量",
+    "打趣没人反对就是最好的会议纪要"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T03_A01",
+     "subject": "SHARED",
+     "relation": "结算规则",
+     "value": "锅底菜金人均摊酒水谁喝谁扫码单结",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T03",
+      "message_id": "m0",
+      "quote": "酒水谁喝谁扫码单结"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T03_A02",
+     "subject": "THIRD",
+     "relation": "方案取舍",
+     "value": "锅里锅外均摊方案因不公平被否",
+     "valid_time": "2026-12-09",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T02",
+      "message_id": "m0",
+      "quote": "让不喝的摊酒钱不公平"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "规则落定就盯留痕，别再添新变量。",
+   "unknowns": [
+    "群公告的最终措辞"
+   ],
+   "protected_expressions": [
+    "两不掺和"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构群成员反应细节"
+   ],
+   "may_decline": false
+  },
+  "E160_T04": {
+   "case_id": "E160_T04",
+   "current_action": "接手核账并拆出串单差额",
+   "acceptable_actions": [
+    "让她把总单与预想菜金差额列出来对照",
+    "建议先拍照留单再找收银对账",
+    "稳住她的情绪说明早再去不算晚"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T04_A01",
+     "subject": "THIRD",
+     "relation": "账单异常",
+     "value": "收银把两桌酒水串进一个单子致垫付虚高人均一百五十七",
+     "valid_time": "2026-12-10",
+     "status": "invalidated",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T04",
+      "message_id": "m0",
+      "quote": "人均一下从一百三跳到一百五十七"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T04_A02",
+     "subject": "SHARED",
+     "relation": "结算规则",
+     "value": "双轨结算规则被串单打破",
+     "valid_time": "2026-12-09",
+     "status": "invalidated",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T03",
+      "message_id": "m0",
+      "quote": "酒水谁喝谁扫码单结"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "冲突落实轮：人均口径被串单打破，先算清差额再定交涉策略。",
+   "unknowns": [
+    "两桌酒水的各自金额"
+   ],
+   "protected_expressions": [
+    "从一百三跳到一百五十七"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构账单具体合计金额"
+   ],
+   "may_decline": false
+  },
+  "E160_T05": {
+   "case_id": "E160_T05",
+   "current_action": "支持她拒绝内部分摊并给交涉话术",
+   "acceptable_actions": [
+    "教她以串单是商家责任为由要求重开",
+    "提醒保留对单记录与承认串单的对话",
+    "打趣店长想让同事替收银买单"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T05_A01",
+     "subject": "THIRD",
+     "relation": "商家态度",
+     "value": "店长承认串单却不愿重开只让内部分摊",
+     "valid_time": "2026-12-11",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T05",
+      "message_id": "m0",
+      "quote": "让内部自己分摊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T05_A02",
+     "subject": "THIRD",
+     "relation": "责任归属",
+     "value": "串单责任在收银方",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T04",
+      "message_id": "m0",
+      "quote": "两桌的酒水记进了一个单子"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她怕撕扯，把话术递到嘴边让她能硬起来。",
+   "unknowns": [
+    "发票重开的具体流程时限"
+   ],
+   "protected_expressions": [
+    "摊到不喝酒的人头上"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构店长姓名"
+   ],
+   "may_decline": false
+  },
+  "E160_T06": {
+   "case_id": "E160_T06",
+   "current_action": "确认拆单更正落实并提醒团建前核对",
+   "acceptable_actions": [
+    "确认个人票按实际饮者出并建议开餐前再核",
+    "夸她态度硬对了地方",
+    "提醒新单拍照发群同步口径"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T06_A01",
+     "subject": "THIRD",
+     "relation": "更正结果",
+     "value": "店长同意拆单重开酒水按实际饮者出个人票",
+     "valid_time": "2026-12-11",
+     "status": "revised",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T06",
+      "message_id": "m0",
+      "quote": "两单拆开重出"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T06_A02",
+     "subject": "THIRD",
+     "relation": "商家态度",
+     "value": "店长由拒改转为配合拆单",
+     "valid_time": "2026-12-11",
+     "status": "revised",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T05",
+      "message_id": "m0",
+      "quote": "发票不好重开"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "更正到手别松懈，开餐前再核一遍。",
+   "unknowns": [
+    "个人票当晚能否全部开出"
+   ],
+   "protected_expressions": [
+    "锅底菜金原单不动"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构店长致歉细节"
+   ],
+   "may_decline": false
+  },
+  "E160_T07": {
+   "case_id": "E160_T07",
+   "current_action": "接手盯群收款并确认结算分毫不差",
+   "acceptable_actions": [
+    "应下盯群收款并建议设截止日",
+    "夸人均分毫不差全靠她提前立规",
+    "提醒把拆单后的三张单据归档"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T07_A01",
+     "subject": "SHARED",
+     "relation": "结算结果",
+     "value": "不饮酒者人均一百二十九块五回归预估",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T07",
+      "message_id": "m0",
+      "quote": "每人正好一百二十九块五"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T07_A02",
+     "subject": "THIRD",
+     "relation": "更正结果",
+     "value": "菜金原单与酒水个人票分轨执行",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T06",
+      "message_id": "m0",
+      "quote": "锅底菜金原单不动"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "结算闭环值得庆祝，但收款尾巴先接住。",
+   "unknowns": [
+    "群收款的截止时间"
+   ],
+   "protected_expressions": [
+    "分毫不差"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构参饮人数与酒水总额"
+   ],
+   "may_decline": false
+  },
+  "E160_T08": {
+   "case_id": "E160_T08",
+   "current_action": "分享回收经验并区分延期与失联两种处理",
+   "acceptable_actions": [
+    "建议延期给准信失联先私聊一次",
+    "提醒群内@一次留痕但别公开催",
+    "打趣收款比团建还考验人心"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T08_A01",
+     "subject": "THIRD",
+     "relation": "回收状态",
+     "value": "两人未缴一名申请延期至下周三一名失联",
+     "valid_time": "2026-12-12",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T08",
+      "message_id": "m0",
+      "quote": "另一个三天没回消息了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T08_A02",
+     "subject": "ME",
+     "relation": "回收分工",
+     "value": "ME 应下协助盯群收款",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T07",
+      "message_id": "m0",
+      "quote": "你帮我盯着群收款"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的边界是不当面让人难堪，催款也要有台阶。",
+   "unknowns": [
+    "失联同事未回消息的原因"
+   ],
+   "protected_expressions": [
+    "发工资前手头紧"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小周薪资金额"
+   ],
+   "may_decline": false
+  },
+  "E160_T09": {
+   "case_id": "E160_T09",
+   "current_action": "认可她对小周的宽限并肯定人情分寸",
+   "acceptable_actions": [
+    "点头支持宽限并提醒周三设个提醒",
+    "夸她记得顶班旧情不算糊涂账",
+    "建议失联回款后群里轻描淡写收尾"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T09_A01",
+     "subject": "THIRD",
+     "relation": "回收进展",
+     "value": "失联者补款小周获宽限至周三",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T09",
+      "message_id": "m0",
+      "quote": "小周我决定等等"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T09_A02",
+     "subject": "THIRD",
+     "relation": "延期申请",
+     "value": "小周申请宽限到下周三被接受",
+     "valid_time": "2026-12-12",
+     "status": "revised",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T08",
+      "message_id": "m0",
+      "quote": "想拖到下周三"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "宽限是她的决定，尊重并帮她记住截止点。",
+   "unknowns": [
+    "失联者回款的具体时间"
+   ],
+   "protected_expressions": [
+    "上周他帮我顶过班"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构顶班的具体日期"
+   ],
+   "may_decline": false
+  },
+  "E160_T10": {
+   "case_id": "E160_T10",
+   "current_action": "祝贺账全清并肯定退回利息的分寸",
+   "acceptable_actions": [
+    "夸退钱退得漂亮同事分寸拿捏好",
+    "确认整笔账目归零可结案",
+    "打趣这单比报销流程还曲折"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T10_A01",
+     "subject": "HER",
+     "relation": "回收闭环",
+     "value": "垫付全款全部收回多转部分退回",
+     "valid_time": "2026-12-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T10",
+      "message_id": "m0",
+      "quote": "账全清"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T10_A02",
+     "subject": "THIRD",
+     "relation": "回收状态",
+     "value": "失联者已回款",
+     "valid_time": "2026-12-13",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T09",
+      "message_id": "m0",
+      "quote": "失联那位今天突然转了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "结案时刻，肯定她的账也肯定她的情。",
+   "unknowns": [
+    "退回操作的具体时间"
+   ],
+   "protected_expressions": [
+    "全是同事不兴这个"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构多转金额之外的费用"
+   ],
+   "may_decline": false
+  },
+  "E160_T11": {
+   "case_id": "E160_T11",
+   "current_action": "帮她查模板漏项并补充单据归档一列",
+   "acceptable_actions": [
+    "建议加一列单据照片存档链接",
+    "补一列备注特殊情况如延期原因",
+    "夸模板比部门流程图还实用"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T11_A01",
+     "subject": "HER",
+     "relation": "经验沉淀",
+     "value": "沉淀预估人均菜金明细酒水单结三张表模板",
+     "valid_time": "2026-12-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T11",
+      "message_id": "m0",
+      "quote": "预估人均、菜金明细、酒水单结"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T11_A02",
+     "subject": "THIRD",
+     "relation": "教训",
+     "value": "串单风险促使模板化核账",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T04",
+      "message_id": "m0",
+      "quote": "人均一下从一百三跳到一百五十七"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "顺着她的表格思维补列，不推倒重来。",
+   "unknowns": [
+    "模板是否含包间低消栏"
+   ],
+   "protected_expressions": [
+    "三张表"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构模板表格截图"
+   ],
+   "may_decline": false
+  },
+  "E160_T12": {
+   "case_id": "E160_T12",
+   "current_action": "应约现结小聚并呼应她的不垫钱原则",
+   "acceptable_actions": [
+    "爽快应约并夸现结谁都不垫最省心",
+    "应约同时提议把三张表模板先用起来",
+    "打趣这次终于不用看群收款倒计时"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E160_T12_A01",
+     "subject": "SHARED",
+     "relation": "邀约",
+     "value": "下周五人均五十现结小聚待确认",
+     "valid_time": "2026-12-25",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T12",
+      "message_id": "m0",
+      "quote": "人均五十的小馆子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E160_T12_A02",
+     "subject": "HER",
+     "relation": "人情边界",
+     "value": "同事间不收利息不垫钱的分寸",
+     "valid_time": "2026-12-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E160_T10",
+      "message_id": "m0",
+      "quote": "全是同事不兴这个"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轻快，把她的现结原则接成共识。",
+   "unknowns": [
+    "小馆子的具体名单",
+    "最终到场人数"
+   ],
+   "protected_expressions": [
+    "这次现结谁都不垫"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小馆子名称与地址"
+   ],
+   "may_decline": true
+  }
+ }
+}

@@ -1,0 +1,659 @@
+{
+ "story_id": "E082",
+ "turns": {
+  "E082_T01": {
+   "case_id": "E082_T01",
+   "current_action": "凌晨接住她的惊醒：把'报警一次、复测正常'两条都原样记下，不下任何结论，先安抚并建议今晚把现象再记一笔。",
+   "acceptable_actions": [
+    "让她把每次报警的时间和状态记下来，攒成一份记录",
+    "提醒复测正常是个好信号但不等于结论",
+    "劝她现在别刷手机，先把这一觉睡完"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A01",
+     "subject": "SHARED",
+     "relation": "night_alert",
+     "value": "手表夜间报警称心率超过100持续十分钟",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T01", "message_id": "m0", "quote": "心率超过100连着十分钟"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A02",
+     "subject": "SHARED",
+     "relation": "retest_normal",
+     "value": "她凌晨复测手表显示心率72正常",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T01", "message_id": "m0", "quote": "它又说72正常"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A03",
+     "subject": "SHARED",
+     "relation": "cause_open",
+     "value": "手表是否有故障在她处仍无定论",
+     "valid_time": "2026-11-02",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T01", "message_id": "m0", "quote": "这表是不是有毛病"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：凌晨三点少说多听，先把她的心率和情绪一起放平，别分析成因。",
+   "unknowns": ["报警成因未知", "是设备还是身体问题未知", "既往是否还有类似报警未知"],
+   "protected_expressions": ["这表是不是有毛病"],
+   "forbidden_factual_claims": ["不得断言手表故障", "不得断言她的心脏有问题或没事", "不得替设备解释算法原理"]
+  },
+  "E082_T02": {
+   "case_id": "E082_T02",
+   "current_action": "接住她的自查：佩戴松紧假说与'戴紧仍报警'并存，成因仍未收窄；肯定她做对照实验的思路，但点明单一变量定不了案。",
+   "acceptable_actions": [
+    "肯定她戴紧对照的想法，建议继续按不同戴法各记一晚",
+    "点明松紧只是一个待排除变量，别急着认定",
+    "问她手表固件是不是很久没更新，先攒着信息"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A04",
+     "subject": "HER",
+     "relation": "loosen_hypothesis",
+     "value": "她提出佩戴过松可能导致误测的假说",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T02", "message_id": "m0", "quote": "会不会是没贴紧手腕乱测"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A05",
+     "subject": "SHARED",
+     "relation": "tight_still_alert",
+     "value": "前晚特意戴紧后半夜仍报警一次",
+     "valid_time": "2026-10-31/2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T02", "message_id": "m0", "quote": "我特意戴紧了，半夜它还是报了一次"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A06",
+     "subject": "HER",
+     "relation": "distrust_both_ways",
+     "value": "她对监测数据既不敢全信也不敢不信",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T02", "message_id": "m0", "quote": "不敢全信它，也不敢不信"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸她像做实验一样对照，顺带把'定不了案'说得像正常进度而不是坏消息。",
+   "unknowns": ["佩戴松紧是否为诱因未知", "报警频率规律未知"],
+   "protected_expressions": ["不敢全信它，也不敢不信"],
+   "forbidden_factual_claims": ["不得认定佩戴松紧就是原因", "不得断言数据必然不准"]
+  },
+  "E082_T03": {
+   "case_id": "E082_T03",
+   "current_action": "接住客服口径与网络信息的叠加冲击：把'正常波动是客服话术、不是医学结论'和'网上两派说法都无实锤'分开摆，劝她停止深夜搜索。",
+   "acceptable_actions": [
+    "把客服说法定性为售后口径，不构成对成因的证实或排除",
+    "劝她别再搜了，搜索引擎只会放大最吓人的那部分",
+    "建议把客服说的更新固件先做上，观察期开始"
+   ],
+   "applicable_dimensions": ["factuality", "boundary", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A07",
+     "subject": "THIRD",
+     "relation": "customer_service_line",
+     "value": "客服列出发毛纹身睡姿等影响因素并称属正常波动",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T03", "message_id": "m0", "quote": "属于'正常波动'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A08",
+     "subject": "THIRD",
+     "relation": "firmware_advised",
+     "value": "客服建议更新固件后再观察",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T03", "message_id": "m0", "quote": "让我更新固件再观察"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A09",
+     "subject": "PUBLIC",
+     "relation": "conflicting_advice",
+     "value": "网络说法两派并存：误报说与直接就医说都无实锤",
+     "valid_time": "2026-11-03",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E082_T03", "message_id": "m0", "quote": "有人说误报，也有人建议直接去医院"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A10",
+     "subject": "SHARED",
+     "relation": "tight_case_unexplained",
+     "value": "戴紧仍报警的记录未被客服口径解释",
+     "valid_time": "2026-11-03",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T02", "message_id": "m0", "quote": "我特意戴紧了，半夜它还是报了一次"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'正常波动'四个字要翻译给她听——那是话术不是结论，既别全收也别当谎言。",
+   "unknowns": ["客服判断依据未知", "固件更新后表现未知"],
+   "protected_expressions": ["越搜越心慌"],
+   "forbidden_factual_claims": ["不得断言客服在敷衍", "不得引用网上说法当医学依据", "不得断言误报或真异常"]
+  },
+  "E082_T04": {
+   "case_id": "E082_T04",
+   "current_action": "接住摘表反而更慌的夜：先共情'设备不在手上、担心在心里'的状态，再接就医念头——给她一个'去问专业人士不丢人'的绿灯，不催不拦。",
+   "acceptable_actions": [
+    "肯定去医院问诊是正路，比夜里自己猜强",
+    "建议她白天去社区医院挂个全科，带上记录",
+    "提醒她摘表睡不着说明焦虑已经跑在数据前面，更该找人聊聊"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "interaction", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A11",
+     "subject": "SHARED",
+     "relation": "second_metric_alert",
+     "value": "手表再次夜间报警，此次涉及睡眠呼吸率类指标",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T04", "message_id": "m0", "quote": "这次报的是睡眠呼吸率还是什么指标"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A12",
+     "subject": "HER",
+     "relation": "watch_removed",
+     "value": "她摘表放床头柜入睡反而更睡不着",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T04", "message_id": "m0", "quote": "把手表摘了扔床头柜"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A13",
+     "subject": "HER",
+     "relation": "consult_intent",
+     "value": "她首次明确提出就医念头并向 ME 征询",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T04", "message_id": "m0", "quote": "你说我要不要去医院"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A14",
+     "subject": "SHARED",
+     "relation": "cause_still_unresolved",
+     "value": "夜间报警成因经自查与客服查证后仍无定论",
+     "valid_time": "2026-11-02/2026-11-04",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T01", "message_id": "m0", "quote": "这表是不是有毛病"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'要不要去医院'接得干脆，别让她在'矫情'和'吓自己'之间再耗一晚。",
+   "unknowns": ["新指标报警与心率报警是否同源未知", "她就诊意愿强度未知"],
+   "protected_expressions": ["总觉得自己心脏要出事"],
+   "forbidden_factual_claims": ["不得对'心脏要出事'做证实或证伪", "不得指定她必须做哪项检查"]
+  },
+  "E082_T05": {
+   "case_id": "E082_T05",
+   "current_action": "接住医生口径：数据仅供参考不能下结论、无症状、心电图可选；把医生划的边界复述给她——这个'不能定论'本身就是权威判断的一部分。",
+   "acceptable_actions": [
+    "肯定医生'不能下结论'的说法严谨，这正是该有的边界",
+    "建议她按自己安心程度决定是否约心电图，不替她拍板",
+    "提醒她把'无胸闷心悸'这个问诊结果也记进记录"
+   ],
+   "applicable_dimensions": ["factuality", "boundary", "attribution", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A15",
+     "subject": "THIRD",
+     "relation": "doctor_no_conclusion",
+     "value": "社区医生称手表数据只能参考、单凭它不能下任何结论",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E082_T05", "message_id": "m0", "quote": "单凭这个不能下任何结论"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A16",
+     "subject": "HER",
+     "relation": "no_symptoms",
+     "value": "她向医生否认胸闷心悸症状",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E082_T05", "message_id": "m0", "quote": "问了我有没有胸闷心悸"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A17",
+     "subject": "SHARED",
+     "relation": "ecg_optional",
+     "value": "医生提供普通心电图作为自选安心项目",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T05", "message_id": "m0", "quote": "想图个安心就约个普通心电图"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A18",
+     "subject": "SHARED",
+     "relation": "alert_health_link_unconfirmed",
+     "value": "夜间报警是否提示健康问题未被医生确认",
+     "valid_time": "2026-11-05",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T04", "message_id": "m0", "quote": "这次报的是睡眠呼吸率还是什么指标"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'没查出事也别失望'先说在前面，安心检查查的是心不是病。",
+   "unknowns": ["她是否决定约心电图未知", "报告若做结果未知"],
+   "protected_expressions": ["约不约自己定"],
+   "forbidden_factual_claims": ["不得替医生补诊断", "不得断言手表数据与心脏状况的关系"]
+  },
+  "E082_T06": {
+   "case_id": "E082_T06",
+   "current_action": "接住固件更新说明的解读难题：'算法优化'既不等于承认误报、也不等于问题解决；把这个两头都堵不上口子的状态如实说破。",
+   "acceptable_actions": [
+    "告诉她更新说明就是常规措辞，两头都证明不了",
+    "建议把更新当观察期起点，继续记录",
+    "问她是否还在犹豫约不约心电图，别让观察期变成拖延"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "attribution", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A19",
+     "subject": "THIRD",
+     "relation": "release_note",
+     "value": "固件更新说明含'算法优化了夜间心率监测'字样",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T06", "message_id": "m0", "quote": "算法优化了夜间心率监测"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A20",
+     "subject": "SHARED",
+     "relation": "interpretation_open",
+     "value": "更新说明是否等于承认此前误报无从判断",
+     "valid_time": "2026-11-06",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T06", "message_id": "m0", "quote": "说不清这算不算客服变相承认之前有误报"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A21",
+     "subject": "SHARED",
+     "relation": "service_line_revisited",
+     "value": "客服'正常波动'口径与算法优化说明之间的关系未经证实",
+     "valid_time": "2026-11-06",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T03", "message_id": "m0", "quote": "属于'正常波动'"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'说不清'说成信息本来就不给结论，不是她理解力问题。",
+   "unknowns": ["算法优化具体内容未知", "更新后效果未知"],
+   "protected_expressions": ["我盯着这行字看了半天"],
+   "forbidden_factual_claims": ["不得断言厂商默认此前误报", "不得断言更新后必然不再报警"]
+  },
+  "E082_T07": {
+   "case_id": "E082_T07",
+   "current_action": "凌晨接住复现：三个安静夜晚后的再次报警推翻了'更新见效'的期待；肯定她'不想再猜了'的转身，支持明天就去约心电图。",
+   "acceptable_actions": [
+    "肯定她止损的决定，别再跟半夜的数据缠斗",
+    "提醒她把这次复现也记上，就诊时给医生看完整记录",
+    "劝她现在别再看天花板复盘，先睡"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "emotion_relation", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A22",
+     "subject": "SHARED",
+     "relation": "quiet_then_recur",
+     "value": "固件更新后这两晚安静无报警",
+     "valid_time": "2026-11-06/2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T07", "message_id": "m0", "quote": "更新之后安静了这两晚"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A23",
+     "subject": "SHARED",
+     "relation": "alert_recurred",
+     "value": "安静期后心率报警再次出现一次",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T07", "message_id": "m0", "quote": "结果今晚又震了一次"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A24",
+     "subject": "HER",
+     "relation": "ecg_decision",
+     "value": "她决定次日一早预约心电图",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T07", "message_id": "m0", "quote": "明天一早就去约那个心电图"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A25",
+     "subject": "SHARED",
+     "relation": "firmware_fix_hope",
+     "value": "更新固件或能止住夜间报警的期待被复现报警推翻",
+     "valid_time": "2026-11-06/2026-11-08",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E082_T06", "message_id": "m0", "quote": "算法优化了夜间心率监测"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'是表不行还是我不行'这个问题不接招，答案是去医院拿证据，不是夜里二选一。",
+   "unknowns": ["报警间隔规律未知", "心电图预约能否成功未知"],
+   "protected_expressions": ["我不想再猜了"],
+   "forbidden_factual_claims": ["不得断言报警已解决或必然复发", "不得替她判断表或人哪边的问题"]
+  },
+  "E082_T08": {
+   "case_id": "E082_T08",
+   "current_action": "接住预约落定与连日疲惫：确认时间安排，把'被一块表折腾'的委屈接住，顺带提醒就诊带上完整记录。",
+   "acceptable_actions": [
+    "确认时间并提醒带上手表和报警记录",
+    "建议她今晚早睡，检查前一天别喝太多咖啡",
+    "顺着同事追问的梗让她松口气，没追剧是正事"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A26",
+     "subject": "SHARED",
+     "relation": "ecg_booked",
+     "value": "心电图预约在后天上午十点社区医院",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T08", "message_id": "m0", "quote": "后天上午十点社区医院心电图"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A27",
+     "subject": "HER",
+     "relation": "sleep_deprived",
+     "value": "连日夜间误报致她仅睡四小时白天犯困",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T08", "message_id": "m0", "quote": "我昨晚只睡了四个小时"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A28",
+     "subject": "HER",
+     "relation": "ecg_decision_made",
+     "value": "就医验证从念头落实为具体预约",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T07", "message_id": "m0", "quote": "明天一早就去约那个心电图"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：疲惫是这半个月的真实代价，认可它，但别煽情。",
+   "unknowns": ["检查当日状态未知", "同事是否知情未知"],
+   "protected_expressions": ["被一块表折腾的"],
+   "forbidden_factual_claims": ["不得虚构检查流程细节", "不得断言结果必然正常"]
+  },
+  "E082_T09": {
+   "case_id": "E082_T09",
+   "current_action": "接住检查完成与现场初判：把'未见明显异常'和'以正式报告为准'两层分开传递，顺带肯定医生那句'别拿手表吓自己'的分寸。",
+   "acceptable_actions": [
+    "肯定初判是好信号但等正式报告再定性",
+    "把医生'手表和心电图是两回事'的话复述给她降压",
+    "问她下午报告出来打算第一时间看还是先忙工作"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "boundary", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A29",
+     "subject": "THIRD",
+     "relation": "preliminary_normal",
+     "value": "医生现场初判心电图未见明显异常",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T09", "message_id": "m0", "quote": "未见明显异常"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A30",
+     "subject": "THIRD",
+     "relation": "report_pending",
+     "value": "正式报告下午出具且以报告为准",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T09", "message_id": "m0", "quote": "让我以正式报告为准"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A31",
+     "subject": "THIRD",
+     "relation": "data_caveat",
+     "value": "医生重申手表数据与心电图是两回事，劝她别拿手表吓自己",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T09", "message_id": "m0", "quote": "手表数据和心电图本来就是两回事"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A32",
+     "subject": "SHARED",
+     "relation": "ecg_done",
+     "value": "预约的心电图检查已完成",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T08", "message_id": "m0", "quote": "后天上午十点社区医院心电图"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：初判和正式报告之间留一线，别提前开香槟，也别吓她。",
+   "unknowns": ["正式报告内容未知", "手表夜间报警是否还会出现未知"],
+   "protected_expressions": ["别拿手表吓自己"],
+   "forbidden_factual_claims": ["不得提前宣布最终结果", "不得对手表数据再做归因"]
+  },
+  "E082_T10": {
+   "case_id": "E082_T10",
+   "current_action": "接住正式报告正常与仍戴表入睡的并存：先把'窦性心律未见明显异常'落到实处，再处理'白做与否'的自我怀疑——安心的钱不是白花的。",
+   "acceptable_actions": [
+    "肯定报告正常，明确说这钱买的就是确定",
+    "理解她仍戴表入睡，建议给手表一个观察期再定去留",
+    "点破'万一又报'的担心可以存在，但它不再等于'心脏有事'"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "boundary", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A33",
+     "subject": "SHARED",
+     "relation": "report_normal",
+     "value": "正式心电图报告为窦性心律未见明显异常且无需复查",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T10", "message_id": "m0", "quote": "窦性心律，未见明显异常"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A34",
+     "subject": "HER",
+     "relation": "still_wearing",
+     "value": "她当晚仍打算戴表入睡以防再报警",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T10", "message_id": "m0", "quote": "打算把表戴着睡"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A35",
+     "subject": "HER",
+     "relation": "wasted_doubt",
+     "value": "她怀疑心电图是否白做",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T10", "message_id": "m0", "quote": "你说我这算不算白做了心电图"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A36",
+     "subject": "SHARED",
+     "relation": "night_alert_cause_open",
+     "value": "夜间报警成因至报告出炉仍未有定论，设备是否故障未知",
+     "valid_time": "2026-11-02/2026-11-10",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T07", "message_id": "m0", "quote": "结果今晚又震了一次"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'白做'这个说法要正面挡回去——排除也是结论的一半，但别把话说成'彻底没事'。",
+   "unknowns": ["夜间报警成因始终未定", "手表后续表现未知"],
+   "protected_expressions": ["万一它半夜又报呢"],
+   "forbidden_factual_claims": ["不得宣称问题已查明", "不得断言手表必须退货或留用", "不得把报告正常外推为手表数据全错或全对"]
+  },
+  "E082_T11": {
+   "case_id": "E082_T11",
+   "current_action": "共享安静夜晚的松弛：报警未再现、心率正常、弦松了；肯定她这半个月从乱猜到拿证据的路走得对。",
+   "acceptable_actions": [
+    "肯定她从'越搜越慌'到'医院拿报告'的转身",
+    "顺着'有点不习惯'调侃一句，别吓人才是真休息",
+    "建议她睡眠先补回来，弦松了别再上发条"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A37",
+     "subject": "SHARED",
+     "relation": "quiet_night",
+     "value": "当晚手表未再报警且睡前静息心率68",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T11", "message_id": "m0", "quote": "心率68，它什么都没报"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A38",
+     "subject": "HER",
+     "relation": "string_loosened",
+     "value": "她自述紧绷半月的情绪弦松了",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T11", "message_id": "m0", "quote": "我心里那根弦松了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A39",
+     "subject": "THIRD",
+     "relation": "report_as_baseline",
+     "value": "正式报告成为健康判断的依据基准",
+     "valid_time": "2026-11-10/2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T10", "message_id": "m0", "quote": "窦性心律，未见明显异常"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：安静的价值大于解释，这轮少讲道理，多接情绪。",
+   "unknowns": ["报警是否彻底不再出现未知"],
+   "protected_expressions": ["就是我心里那根弦松了"],
+   "forbidden_factual_claims": ["不得宣布故事已完全闭环", "不得替手表背书或定罪"]
+  },
+  "E082_T12": {
+   "case_id": "E082_T12",
+   "current_action": "接住数码市集邀约：带问题清单当面问品牌方是理性收尾，笑纳并确认同行安排，以烘焙店钩子轻松落幅。",
+   "acceptable_actions": [
+    "答应陪逛，建议她把想问的算法问题列成三句话",
+    "提醒她市集人多，问完顺势逛吃，别把周末过成谈判",
+    "顺着烘焙店说要负责试吃鉴定"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E082_A40",
+     "subject": "SHARED",
+     "relation": "market_visit_plan",
+     "value": "周末数码市集她计划当面询问品牌方夜间监测算法",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T12", "message_id": "m0", "quote": "卖表的那家品牌也在"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A41",
+     "subject": "SHARED",
+     "relation": "bakery_hook",
+     "value": "同行安排含新开烘焙店尝鲜",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T12", "message_id": "m0", "quote": "尝尝那家新开的烘焙店"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E082_A42",
+     "subject": "THIRD",
+     "relation": "doctor_reminder_carried",
+     "value": "医生'别拿手表吓自己'的提醒被她带入后续态度",
+     "valid_time": "2026-11-10/2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E082_T09", "message_id": "m0", "quote": "别拿手表吓自己"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，问题清单是底气不是战场，把周末还给烘焙店。",
+   "unknowns": [],
+   "protected_expressions": ["就当帮我壮胆"],
+   "forbidden_factual_claims": ["不得虚构市集具体品牌与摊位", "不得预判品牌方会给出何种答复"]
+  }
+ }
+}

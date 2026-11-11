@@ -1,0 +1,363 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E018",
+ "title": "她只想躺着",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E018_T01": {
+   "case_id": "E018_T01",
+   "current_action": "关心但不教训，给一个低负担的选项",
+   "acceptable_actions": [
+    "问她现在能不能吃点",
+    "说先垫一口",
+    "只接住累，不安排"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N006_F01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "今天连饭都没顾上吃",
+     "valid_time": "2026-11-15 23:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E018_T01",
+      "message_id": "m0",
+      "quote": "今天连饭都没顾上吃"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "别讲“这样对身体不好”；她已经知道。",
+   "unknowns": [
+    "她现在有没有东西吃"
+   ],
+   "protected_expressions": [
+    "连饭都没顾上吃"
+   ],
+   "forbidden_factual_claims": [
+    "不要教训她",
+    "不要追问为什么不吃"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E018_T02": {
+   "case_id": "E018_T02",
+   "current_action": "尊重不想说，短回，不找话题",
+   "acceptable_actions": [
+    "说那就躺着",
+    "说不用回",
+    "说我在但不打扰"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N006_F02",
+     "subject": "她",
+     "relation": "状态",
+     "value": "只想躺着，什么都不想说",
+     "valid_time": "2026-11-15 23:18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E018_T02",
+      "message_id": "m0",
+      "quote": "现在只想躺着 什么都不想说"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在提前说明状态；不要用“那我们聊点轻松的”违背她。",
+   "unknowns": [
+    "她是否希望我完全别回"
+   ],
+   "protected_expressions": [
+    "什么都不想说"
+   ],
+   "forbidden_factual_claims": [
+    "不要硬找话题",
+    "不要问她怎么了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E018_T03": {
+   "case_id": "E018_T03",
+   "current_action": "安抚她的自责，不要求她表演有趣",
+   "acceptable_actions": [
+    "说没劲也没关系",
+    "说不用找话题",
+    "说累了就歇着"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N006_F03",
+     "subject": "她",
+     "relation": "担心",
+     "value": "怕自己这样很没劲",
+     "valid_time": "2026-11-15 23:25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E018_T03",
+      "message_id": "m0",
+      "quote": "你不用一直找话题 我这样是不是挺没劲的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她怕自己扫兴；别否认她的累，也别夸“你很有趣”。",
+   "unknowns": [
+    "她是否在等我结束对话"
+   ],
+   "protected_expressions": [
+    "我这样是不是挺没劲的"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她没劲",
+    "不要要求她继续聊"
+   ],
+   "may_decline": true,
+   "intent": null
+  },
+  "E018_T04": {
+   "case_id": "E018_T04",
+   "current_action": "接住“嗯”，不追加内容",
+   "acceptable_actions": [
+    "不再追问",
+    "发一个简短晚安",
+    "让她睡"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "“嗯”不是邀请；这时候少说比多说好。",
+   "unknowns": [
+    "她是否已经放下手机"
+   ],
+   "protected_expressions": [
+    "嗯"
+   ],
+   "forbidden_factual_claims": [
+    "不要连发消息",
+    "不要问“你是不是不高兴”"
+   ],
+   "may_decline": true,
+   "intent": null
+  },
+  "E018_T05": {
+   "case_id": "E018_T05",
+   "current_action": "简短道晚安，不再提问",
+   "acceptable_actions": [
+    "道晚安",
+    "让她睡",
+    "说明天再说"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N006_F04",
+     "subject": "她",
+     "relation": "计划",
+     "value": "明天早班，先睡了",
+     "valid_time": "2026-11-15 23:42",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E018_T05",
+      "message_id": "m0",
+      "quote": "明天早班 我先睡了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她明确要睡；不要再接新话题。",
+   "unknowns": [
+    "她明天几点起"
+   ],
+   "protected_expressions": [
+    "我先睡了"
+   ],
+   "forbidden_factual_claims": [
+    "不要问早班几点",
+    "不要挽留"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E018_T06": {
+   "case_id": "E018_T06",
+   "current_action": "确认记得她的提醒，简短",
+   "acceptable_actions": [
+    "说是第一节课",
+    "说我也该睡了",
+    "谢她记得"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "time_state",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N006_F05",
+     "subject": "我",
+     "relation": "计划",
+     "value": "明天早上有第一节课",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "明天早上有第一节课"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她记得我明天早起；这是关心，不要展开成课程安排。",
+   "unknowns": [
+    "她是否只是顺口"
+   ],
+   "protected_expressions": [
+    "你明天不是也要早起"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造明天没课",
+    "不要长篇讲学校"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E018_T07": {
+   "case_id": "E018_T07",
+   "current_action": "回晚安或不再回，不追加",
+   "acceptable_actions": [
+    "回晚安",
+    "不再回",
+    "发一个简短晚安"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N006_F06",
+     "subject": "她",
+     "relation": "下一步",
+     "value": "都睡吧，晚安",
+     "valid_time": "2026-11-15 23:46",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E018_T07",
+      "message_id": "m0",
+      "quote": "那都睡吧 晚安"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是收尾；不要用“明天聊”再挂一个钩子。",
+   "unknowns": [
+    "她是否已睡"
+   ],
+   "protected_expressions": [
+    "那都睡吧"
+   ],
+   "forbidden_factual_claims": [
+    "不要说明天聊",
+    "不要再问问题"
+   ],
+   "may_decline": true,
+   "intent": null
+  },
+  "E018_T08": {
+   "case_id": "E018_T08",
+   "current_action": "不回或只回晚安；允许 no_reply",
+   "acceptable_actions": [
+    "回晚安",
+    "不回",
+    "发一个句号/表情但不追加"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "最后一条“晚安”不需要再回；回也可以，但不要开启新话题。",
+   "unknowns": [
+    "她是否还醒着"
+   ],
+   "protected_expressions": [
+    "晚安"
+   ],
+   "forbidden_factual_claims": [
+    "不要连发",
+    "不要问“睡了吗”"
+   ],
+   "may_decline": true,
+   "intent": null
+  }
+ }
+}

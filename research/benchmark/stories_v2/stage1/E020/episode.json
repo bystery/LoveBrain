@@ -1,0 +1,160 @@
+{
+ "episode_id": "E020",
+ "persona": {
+  "me": "30岁，建筑摄影师，作息不固定；答应的事会记，但不轻易许诺。",
+  "her": "29岁，兽医助理，养猫年糕；遇到猫生病会慌，讨厌被敷衍。"
+ },
+ "initial_kb": {
+  "me": "做建筑摄影，十二月可能有个项目，时间还没定；认识一家宠物医院的医生。",
+  "her": "在宠物医院做助理，养了一只叫年糕的猫；年糕之前肾脏指标不好，最近复查。",
+  "warmth": "约会两个月；她猫生病时我推荐过医生，陪她跑过一次医院。",
+  "style": "先给确定信息，不确定就说不确定；不空口保证。",
+  "stage": "稳定暧昧，开始谈共同旅行。",
+  "lessons": "她慌的时候先给具体信息；不确定的安排不要假装确定。"
+ },
+ "turns": [
+  {
+   "case_id": "E020_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "年糕今天复查 指标都正常了 医生说可以不用天天跑医院",
+      "ts": "2026-11-22 18:10"
+     }
+    ],
+    "clock": "2026-11-22 18:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E020_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "上次你推荐那个医生真的帮了大忙 我当时都快急死了",
+      "ts": "2026-11-22 18:18"
+     }
+    ],
+    "clock": "2026-11-22 18:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E020_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "不过我现在又开始愁十二月去厦门的事 假还没批",
+      "ts": "2026-11-22 18:26"
+     }
+    ],
+    "clock": "2026-11-22 18:28",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "想十二月去厦门，但假未批",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E020_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "先别急着订 等你假下来",
+      "ts": "2026-11-22 18:34"
+     },
+     {
+      "role": "HER",
+      "text": "我也是这么想 但再等价格可能要涨",
+      "ts": "2026-11-22 18:36"
+     }
+    ],
+    "clock": "2026-11-22 18:38",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E020_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "要不我先看酒店 可以免费取消的那种",
+      "ts": "2026-11-22 18:44"
+     }
+    ],
+    "clock": "2026-11-22 18:46",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E020_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你十二月会不会也很忙 别到时候我一个人去",
+      "ts": "2026-11-22 18:52"
+     }
+    ],
+    "clock": "2026-11-22 18:54",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E020_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "嗯 那你确认了告诉我 我也不想催你",
+      "ts": "2026-11-22 19:00"
+     }
+    ],
+    "clock": "2026-11-22 19:02",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "先等双方确认，不催",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E020_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天先说这么多 我去给年糕煮鸡胸肉",
+      "ts": "2026-11-22 19:08"
+     }
+    ],
+    "clock": "2026-11-22 19:10",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

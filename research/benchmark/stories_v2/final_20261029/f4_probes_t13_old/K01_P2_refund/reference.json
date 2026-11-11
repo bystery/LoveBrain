@@ -1,0 +1,53 @@
+{
+ "story_id": "K01",
+ "turns": {
+  "K01_P2_refund": {
+   "case_id": "K01_P2_refund",
+   "current_action": "她问客栈退款截止。已确认客栈换老板后退款截止改为11月10号，房型仍是三晚；回答应给11月10号。",
+   "acceptable_actions": [
+    "说11月10号前可退，三晚不变",
+    "确认10号，并提旧8号已作废"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_P2_a1",
+     "subject": "her",
+     "relation": "refund_deadline",
+     "value": "退款截止改为11月10号，房型仍三晚",
+     "valid_time": "2026-11-10前",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T09",
+      "message_id": "m1",
+      "quote": "退款截止改成11月10号"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "正确回指10号；旧8号是作废版本。",
+   "unknowns": [],
+   "protected_expressions": [
+    "退款截止改成11月10号"
+   ],
+   "forbidden_factual_claims": [
+    "说8号前可退是现行",
+    "说房型变了"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "她问客栈退款截止。已确认客栈换老板后退款截止改为11月10号，房型仍是三晚；回答应给11月10号。",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

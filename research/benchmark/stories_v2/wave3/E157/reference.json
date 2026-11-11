@@ -1,0 +1,745 @@
+{
+ "story_id": "E157",
+ "turns": {
+  "E157_T01": {
+   "case_id": "E157_T01",
+   "current_action": "接住换机咨询并给出以旧换新流程要点",
+   "acceptable_actions": [
+    "先问清是线上商城还是线下门店的活动再下结论",
+    "分享自己去年办理的三步流程并提醒保留估价单",
+    "打趣她清收藏夹太快手并安抚资格可再核"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T01_A01",
+     "subject": "HER",
+     "relation": "换机计划",
+     "value": "三年旧机想换新旗舰并申请以旧换新补贴",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "以旧换新补贴"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T01_A02",
+     "subject": "ME",
+     "relation": "参谋承诺",
+     "value": "陆行舟办过以旧换新答应帮沈知蔓参谋",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "答应帮沈知蔓参谋"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "口径未核实前不下断言，先给可操作的第一步。",
+   "unknowns": [
+    "HER 手机具体型号与购入渠道",
+    "商场活动的具体截止日期"
+   ],
+   "protected_expressions": [
+    "在不在补贴名单里"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构补贴的具体金额数字",
+    "不得断言 HER 机型一定在或不在名单内"
+   ],
+   "may_decline": false
+  },
+  "E157_T02": {
+   "case_id": "E157_T02",
+   "current_action": "解读立减加估价的新口径并帮她列待核实项",
+   "acceptable_actions": [
+    "把立减与估价拆成两笔账帮她重算",
+    "提醒名单更新没有时间表时先找线下渠道并行",
+    "安抚客服口径与小程序可交叉验证"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T02_A01",
+     "subject": "HER",
+     "relation": "补贴机制",
+     "value": "补贴为单品立减且旧机估价另算",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T02",
+      "message_id": "m0",
+      "quote": "单品立减"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T02_A02",
+     "subject": "HER",
+     "relation": "补贴资格",
+     "value": "机型是否在补贴名单内尚未确定",
+     "valid_time": "2026-11-02 起",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T01",
+      "message_id": "m0",
+      "quote": "在不在补贴名单里"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把客服口径翻译成她习惯的小账格式。",
+   "unknowns": [
+    "名单更新的具体时间",
+    "估价渠道是否与立减渠道一致"
+   ],
+   "protected_expressions": [
+    "单品立减"
+   ],
+   "forbidden_factual_claims": [
+    "不得替客服补充她未说的承诺"
+   ],
+   "may_decline": false
+  },
+  "E157_T03": {
+   "case_id": "E157_T03",
+   "current_action": "接住资格否定结果并劝她别急着清收藏夹",
+   "acceptable_actions": [
+    "指出小程序结果可能滞后建议再留几天",
+    "共情白高兴的失落再给线下备选",
+    "提醒清收藏夹不必清购物车留个念想"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T03_A01",
+     "subject": "HER",
+     "relation": "补贴资格",
+     "value": "官方小程序判定该机型暂不支持以旧换新",
+     "valid_time": "2026-11-04",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T03",
+      "message_id": "m0",
+      "quote": "暂不支持该机型以旧换新"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T03_A02",
+     "subject": "HER",
+     "relation": "补贴机制",
+     "value": "补贴为单品立减且旧机估价另算",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T02",
+      "message_id": "m0",
+      "quote": "单品立减"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "先接情绪再给转机，别在她清收藏夹时泼冷水。",
+   "unknowns": [
+    "小程序判定是否为最终口径"
+   ],
+   "protected_expressions": [
+    "暂不支持该机型以旧换新"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小程序结果一定有误"
+   ],
+   "may_decline": false
+  },
+  "E157_T04": {
+   "case_id": "E157_T04",
+   "current_action": "厘清双口径并建议以线下现场评估为准",
+   "acceptable_actions": [
+    "建议小程序与门店口径冲突时以现场实测为准",
+    "帮她拟一句话问清门店需带的材料",
+    "吐槽政策口径年年打架以宽她的心"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T04_A01",
+     "subject": "THIRD",
+     "relation": "口径差异",
+     "value": "同事反映线下门店政策与线上不同可现场评估",
+     "valid_time": "2026-11-05",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T04",
+      "message_id": "m0",
+      "quote": "线下门店跟线上政策不一样"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T04_A02",
+     "subject": "HER",
+     "relation": "补贴资格",
+     "value": "官方小程序判定该机型暂不支持以旧换新",
+     "valid_time": "2026-11-04",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T03",
+      "message_id": "m0",
+      "quote": "暂不支持该机型以旧换新"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "给她一个明确的优先级：现场证据高于线上判定。",
+   "unknowns": [
+    "同事所说门店是否与 HER 同一片区"
+   ],
+   "protected_expressions": [
+    "小程序说的算还是门店说的算"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构线下门店的具体地址与营业时间"
+   ],
+   "may_decline": false
+  },
+  "E157_T05": {
+   "case_id": "E157_T05",
+   "current_action": "确认线下可行并帮她评估排队抢名额的性价比",
+   "acceptable_actions": [
+    "提醒开门排队记得带旧机和身份证件",
+    "算一笔排队时间与六百抵扣的性价比账",
+    "打趣她跑门店比上班还积极"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T05_A01",
+     "subject": "HER",
+     "relation": "线下核实结果",
+     "value": "线下收该机型但补贴名额每周放量且本周已满",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T05",
+      "message_id": "m0",
+      "quote": "补贴名额每周放量"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T05_A02",
+     "subject": "HER",
+     "relation": "双口径",
+     "value": "小程序与门店政策口径不一待核实",
+     "valid_time": "2026-11-05",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T04",
+      "message_id": "m0",
+      "quote": "小程序说的算还是门店说的算"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "口径已核实为门店优先，接下来帮她把名额窗口盯住。",
+   "unknowns": [
+    "每周放量的名额数量",
+    "下周六是否含节假日调整"
+   ],
+   "protected_expressions": [
+    "补贴名额每周放量"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构排队人数与开门时刻"
+   ],
+   "may_decline": false
+  },
+  "E157_T06": {
+   "case_id": "E157_T06",
+   "current_action": "接住活动暂停的消息并调整计划",
+   "acceptable_actions": [
+    "建议暂停期间照常询价盯恢复公告",
+    "共情排队计划落空的郁闷再劝她别自我怀疑",
+    "提示公众号推送可设提醒自动盯恢复"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T06_A01",
+     "subject": "PUBLIC",
+     "relation": "活动状态",
+     "value": "门店以旧换新活动即日起暂停恢复时间未定",
+     "valid_time": "2026-11-09",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T06",
+      "message_id": "m0",
+      "quote": "即日起暂停"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T06_A02",
+     "subject": "HER",
+     "relation": "排队计划",
+     "value": "下周六开门排队抢名额的计划落空",
+     "valid_time": "2026-11-09",
+     "status": "invalidated",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T05",
+      "message_id": "m0",
+      "quote": "下周六开门就去排"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "冲突落实轮：活动状态由有效翻转为暂停，先接住落差再谈等待策略。",
+   "unknowns": [
+    "活动暂停的真实原因",
+    "恢复公告的发布渠道"
+   ],
+   "protected_expressions": [
+    "恢复时间另行通知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构恢复的具体日期"
+   ],
+   "may_decline": false
+  },
+  "E157_T07": {
+   "case_id": "E157_T07",
+   "current_action": "帮她权衡放弃补贴原价购买是否划算",
+   "acceptable_actions": [
+    "列等待成本与差价让她自己拍板",
+    "建议再给门店一周窗口同时看好双十一价",
+    "打趣她肉疼的样子像剁手前的自己"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T07_A01",
+     "subject": "HER",
+     "relation": "备选方案",
+     "value": "考虑放弃补贴改双十一原价购机",
+     "valid_time": "2026-11-11",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T07",
+      "message_id": "m0",
+      "quote": "双十一直接原价买"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T07_A02",
+     "subject": "PUBLIC",
+     "relation": "活动状态",
+     "value": "门店以旧换新活动暂停恢复时间未定",
+     "valid_time": "2026-11-09",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T06",
+      "message_id": "m0",
+      "quote": "即日起暂停"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "别替她做决定，把两条路的账摆平让她选。",
+   "unknowns": [
+    "双十一该机型实际促销价"
+   ],
+   "protected_expressions": [
+    "换机等大促"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构双十一价格数字"
+   ],
+   "may_decline": false
+  },
+  "E157_T08": {
+   "case_id": "E157_T08",
+   "current_action": "确认活动恢复并提醒备份先行",
+   "acceptable_actions": [
+    "给出备份的三种方式并提醒账号退出",
+    "确认按档位估价不吃型号亏让她放心",
+    "打趣好消息来得比外卖还快"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T08_A01",
+     "subject": "PUBLIC",
+     "relation": "活动规则",
+     "value": "活动恢复且旧机按档位估价抵扣约六百",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T08",
+      "message_id": "m0",
+      "quote": "旧机一律按档位估价抵扣"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T08_A02",
+     "subject": "HER",
+     "relation": "备选方案",
+     "value": "原价购买的念头被活动恢复打消",
+     "valid_time": "2026-11-12",
+     "status": "invalidated",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T07",
+      "message_id": "m0",
+      "quote": "双十一直接原价买"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把恢复的好消息落实为本周六的行动清单。",
+   "unknowns": [
+    "档位估价是否含配件折损",
+    "周六名额是否延续放量规则"
+   ],
+   "protected_expressions": [
+    "按档位估价抵扣"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构恢复的具体时间点"
+   ],
+   "may_decline": false
+  },
+  "E157_T09": {
+   "case_id": "E157_T09",
+   "current_action": "接住火锅邀约并认下旧账",
+   "acceptable_actions": [
+    "痛快认账并约周六换机后碰头",
+    "反向要求她备份截图为凭再认请客",
+    "打趣主板那顿拖到现在利息该加份虾滑"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T09_A01",
+     "subject": "SHARED",
+     "relation": "邀约",
+     "value": "周六换机办完同去火锅且由 ME 请客",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T09",
+      "message_id": "m0",
+      "quote": "周六弄完手机正好去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T09_A02",
+     "subject": "ME",
+     "relation": "人情账",
+     "value": "上回帮看主板欠 HER 一顿火锅",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T09",
+      "message_id": "m0",
+      "quote": "你还欠我一顿火锅"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T09_A03",
+     "subject": "HER",
+     "relation": "备份状态",
+     "value": "手机照片尚未备份是办机前置",
+     "valid_time": "2026-11-12",
+     "status": "pending",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T08",
+      "message_id": "m0",
+      "quote": "我照片还没备份"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "旧账痛快认下，但把备份这步盯在她前面。",
+   "unknowns": [
+    "周六具体碰头时间"
+   ],
+   "protected_expressions": [
+    "你还欠我一顿火锅"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构主板维修的具体细节"
+   ],
+   "may_decline": false
+  },
+  "E157_T10": {
+   "case_id": "E157_T10",
+   "current_action": "庆祝换机落地并接住她按错键的惊魂叙述",
+   "acceptable_actions": [
+    "恭喜抵扣超预期并叮嘱数据清底核查",
+    "打趣魂飞魄散一秒再夸她稳住了",
+    "提醒旧机回收单拍照留底"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T10_A01",
+     "subject": "HER",
+     "relation": "实际抵扣",
+     "value": "旧机实际抵扣六百三十元高于口头预估",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T10",
+      "message_id": "m0",
+      "quote": "最终抵了六百三"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T10_A02",
+     "subject": "SHARED",
+     "relation": "邀约状态",
+     "value": "周六火锅邀约已成立待兑现",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T09",
+      "message_id": "m0",
+      "quote": "周六弄完手机正好去"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "悬案闭环的时刻，庆祝为主建议为辅。",
+   "unknowns": [
+    "回收款到账方式"
+   ],
+   "protected_expressions": [
+    "有惊无险"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构旧机最终去向"
+   ],
+   "may_decline": false
+  },
+  "E157_T11": {
+   "case_id": "E157_T11",
+   "current_action": "帮她查漏补全换机流程图",
+   "acceptable_actions": [
+    "补一条留估价单与回收凭证",
+    "建议加一步核对 Final 账单再离场",
+    "夸流程图比说明书好使并讨一份收藏"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T11_A01",
+     "subject": "HER",
+     "relation": "经验固化",
+     "value": "总结出查名单问门店赶名额先备份四步流程",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T11",
+      "message_id": "m0",
+      "quote": "先查名单、再问门店、名额要赶早、备份要提前"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T11_A02",
+     "subject": "HER",
+     "relation": "实际抵扣",
+     "value": "旧机实际抵扣六百三十元",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T10",
+      "message_id": "m0",
+      "quote": "最终抵了六百三"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "顺着她的清单式思维补漏，不推倒重来。",
+   "unknowns": [
+    "她母亲换机的预算区间"
+   ],
+   "protected_expressions": [
+    "照单抓药"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构流程图的成品内容"
+   ],
+   "may_decline": false
+  },
+  "E157_T12": {
+   "case_id": "E157_T12",
+   "current_action": "拍板周六火锅补约",
+   "acceptable_actions": [
+    "爽快应约并回敬选店眼光",
+    "应约同时主动报备自己到店时间",
+    "接她不来就自己去的话头反将一军"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E157_T12_A01",
+     "subject": "SHARED",
+     "relation": "邀约",
+     "value": "周六火锅补约待 ME 确认",
+     "valid_time": "2026-11-21",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T12",
+      "message_id": "m0",
+      "quote": "火锅这周六补上行吗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E157_T12_A02",
+     "subject": "ME",
+     "relation": "人情账",
+     "value": "ME 欠一顿火锅待兑现",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E157_T09",
+      "message_id": "m0",
+      "quote": "你还欠我一顿火锅"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "欠的账这轮兑现，语气轻快收尾。",
+   "unknowns": [
+    "最终到店时间"
+   ],
+   "protected_expressions": [
+    "牛油锅"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构该店的具体位置与价格"
+   ],
+   "may_decline": true
+  }
+ }
+}

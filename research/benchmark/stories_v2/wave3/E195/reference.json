@@ -1,0 +1,695 @@
+{
+ "story_id": "E195",
+ "turns": {
+  "E195_T01": {
+   "case_id": "E195_T01",
+   "current_action": "接住暂停通知带来的慌乱：先安抚，给'先收点再找合规出路'的顺序。",
+   "acceptable_actions": [
+    "先接情绪再给'收干净、找过渡点'两步走",
+    "肯定她半年的坚持，再劝别硬顶通知",
+    "让她把通知原文发来逐句看有没有余地"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A01",
+     "subject": "THIRD",
+     "relation": "暂停通知",
+     "value": "物业通知绿化带投喂点冬季一律暂停防结冰招虫鼠",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T01",
+      "quote": "绿化带的投喂点冬天一律暂停",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她心疼猫，先把'猫怎么办'接住再谈规矩。",
+   "unknowns": [
+    "物业是否留有过渡安排未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称通知违规可无视"
+   ]
+  },
+  "E195_T02": {
+   "case_id": "E195_T02",
+   "current_action": "定下暂停执行动作：收干净粮水不留把柄，同时去问物业有无合规过渡点。",
+   "acceptable_actions": [
+    "给收点动作加问询任务，两个动作一句话说清",
+    "先劝守规矩再让她去问过渡点",
+    "提议自己陪她去物业办公室当面问"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A02",
+     "subject": "SHARED",
+     "relation": "冬季投喂计划",
+     "value": "绿化带常规投喂计划冬季暂停，粮水收干净不落把柄",
+     "valid_time": "2026-12-01",
+     "status": "negated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T02",
+      "quote": "先停绿化带这个点",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A03",
+     "subject": "THIRD",
+     "relation": "暂停通知",
+     "value": "冬季暂停通知是收点行动的直接依据",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T01",
+      "quote": "投喂点冬天一律暂停",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "先执行再争取，顺序不能反。",
+   "unknowns": [
+    "过渡点是否存在未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称已恢复绿化带投喂"
+   ]
+  },
+  "E195_T03": {
+   "case_id": "E195_T03",
+   "current_action": "接住问回的过渡条件：车库冬季点可行但需备案加防滑垫，接下起草备案的活。",
+   "acceptable_actions": [
+    "确认条件可行并主动揽下备案起草",
+    "逐条复述条件确认无误再揽活",
+    "让她把物业答复原话转来再动笔"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A04",
+     "subject": "THIRD",
+     "relation": "过渡条件",
+     "value": "物业允许地下车库出入口内侧设冬季点但需登记备案并自铺防滑垫",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T03",
+      "quote": "地下车库出入口内侧可以设冬季点，但要登记备案",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "条件里'备案'和'防滑垫'两个硬要求要点名。",
+   "unknowns": [
+    "备案审批流程时长未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称备案已通过"
+   ]
+  },
+  "E195_T04": {
+   "case_id": "E195_T04",
+   "current_action": "给出备案要点：点位、早晚各一次、份量减半防堆积，主动起草提高通过率。",
+   "acceptable_actions": [
+    "列备案三要点并承诺当天出草稿",
+    "列要点之余提议附上猫口照片佐证",
+    "先出草稿再让她补签名与联系方式"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A05",
+     "subject": "SHARED",
+     "relation": "备案要点",
+     "value": "备案写清点位、早晚各一次、每次份量减半避免堆积",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T04",
+      "quote": "点位、早晚各一次、每次份量减半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A06",
+     "subject": "THIRD",
+     "relation": "过渡条件",
+     "value": "登记备案是设冬季点的必要手续",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T03",
+      "quote": "要登记备案",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "文书替她写，功劳别挂在嘴上。",
+   "unknowns": [
+    "物业对投喂频次的偏好未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构备案编号"
+   ]
+  },
+  "E195_T05": {
+   "case_id": "E195_T05",
+   "current_action": "接住一半喜一半忧：备案获批可贺，小白不肯进车库要给渐进迁移的办法。",
+   "acceptable_actions": [
+    "先贺备案，再单独接小白的迁移难题",
+    "肯定她观察仔细，把小白行为当成正常现象安抚",
+    "问她小白对哪个位置最留恋，再定迁移起点"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A07",
+     "subject": "SHARED",
+     "relation": "备案通过",
+     "value": "车库冬季投喂点备案获批",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T05",
+      "quote": "备案批下来了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A08",
+     "subject": "HER",
+     "relation": "迁移困难",
+     "value": "最胆小的小白不肯进车库蹲守绿化带老位置",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T05",
+      "quote": "小白胆子最小，死活不肯进车库",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "喜要贺到点，忧别急着给答案先共情。",
+   "unknowns": [
+    "其余几只猫是否都已进点未知"
+   ],
+   "protected_expressions": [
+    "备案批下来了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称小白已进车库"
+   ]
+  },
+  "E195_T06": {
+   "case_id": "E195_T06",
+   "current_action": "给出渐进迁移方案：老位置留少量粮，向车库口一天挪一米、两周挪完。",
+   "acceptable_actions": [
+    "给一天挪一米的节奏并解释猫认食认路",
+    "给方案之余让她记录小白每天的到点情况",
+    "提议过渡期由她单日自己双日，减轻负担"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A09",
+     "subject": "SHARED",
+     "relation": "渐进迁移方案",
+     "value": "老位置留少量粮向车库口一天挪一米两周内挪完",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T06",
+      "quote": "往车库口方向一天挪一米，两周内挪完",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A10",
+     "subject": "SHARED",
+     "relation": "备案通过",
+     "value": "备案获批后新点位已可用，迁移以备案点为目标",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T05",
+      "quote": "备案批下来了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "节奏给具体数字，她好执行也好跟物业交代。",
+   "unknowns": [
+    "小白实际适应速度未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得承诺小白一定两周内迁完"
+   ]
+  },
+  "E195_T07": {
+   "case_id": "E195_T07",
+   "current_action": "接住迁移见效：小白第六天肯进车库口，防滑垫已下单次日到，补一句验收与合规提醒。",
+   "acceptable_actions": [
+    "先贺小白的进步，再确认防滑垫到货即铺",
+    "贺完提醒下单记录留存备用",
+    "问她煤球等其他猫的到点情况"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A11",
+     "subject": "SHARED",
+     "relation": "迁移进度",
+     "value": "第六天小白肯站在车库口进食",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T07",
+      "quote": "小白终于肯站在车库口吃了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A12",
+     "subject": "SHARED",
+     "relation": "物资落实",
+     "value": "防滑垫已下单次日到货",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T07",
+      "quote": "我昨晚已经下单了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A13",
+     "subject": "SHARED",
+     "relation": "渐进迁移方案",
+     "value": "一天挪一米的迁移节奏执行到第六天见效",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T06",
+      "quote": "一天挪一米",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的执行力和猫一样值得夸。",
+   "unknowns": [
+    "防滑垫到货时间是否准时未知"
+   ],
+   "protected_expressions": [
+    "车库口吃了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称绿化带老点已彻底清空"
+   ]
+  },
+  "E195_T08": {
+   "case_id": "E195_T08",
+   "current_action": "补合规收尾：防滑垫到货即铺，下单记录与备案号存档，开春按备案复原绿化带。",
+   "acceptable_actions": [
+    "给存档清单并点出开春复原的有始有终",
+    "存档之外提议建个共享相册放喂点照片",
+    "提醒她把物业提醒的话也记进档备查"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A14",
+     "subject": "ME",
+     "relation": "留档建议",
+     "value": "防滑垫下单记录与备案号存档，开春撤点按备案复原绿化带",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T08",
+      "quote": "把下单记录和备案号一起存档",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A15",
+     "subject": "SHARED",
+     "relation": "物资落实",
+     "value": "防滑垫下单待到货是存档对象之一",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T07",
+      "quote": "已经下单了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "留档是为了开春说得清，不是负担。",
+   "unknowns": [
+    "开春复原的具体验收方式未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构已领取备案号"
+   ]
+  },
+  "E195_T09": {
+   "case_id": "E195_T09",
+   "current_action": "接住寒潮轮值首班报捷：零下八度猫都到点、热水袋保温生效，先认可她的辛苦与巧思。",
+   "acceptable_actions": [
+    "夸热水袋的巧思并确认她没冻着",
+    "报捷之余提醒寒潮期两人错峰别都起太早",
+    "让她把首班情况记进排班表当范本"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A16",
+     "subject": "SHARED",
+     "relation": "轮值首班",
+     "value": "寒潮夜最低零下八度两人轮值首班猫如约到点",
+     "valid_time": "2026-12-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T09",
+      "quote": "寒潮这晚我俩轮值第一班",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A17",
+     "subject": "SHARED",
+     "relation": "防冻措施",
+     "value": "粮用热水袋捂着没冻上",
+     "valid_time": "2026-12-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T09",
+      "quote": "我加了热水袋捂着",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她起大早最辛苦，暖话先给到位。",
+   "unknowns": [
+    "轮值班表后续如何排未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称所有猫都迁入车库点"
+   ]
+  },
+  "E195_T10": {
+   "case_id": "E195_T10",
+   "current_action": "接住物业正面反馈：巡逻师傅夸备案点干净并称开春恢复原点可参考此做法，肯定她的坚持换来了认可。",
+   "acceptable_actions": [
+    "把认可归功于她半年的坚持与守规矩",
+    "肯定之余建议趁热把好评反馈给物业群",
+    "接住她的高兴，顺势提把做法固化成文字"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "goal",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A18",
+     "subject": "THIRD",
+     "relation": "物业肯定",
+     "value": "巡逻师傅夸备案点干净且开春恢复绿化带原点可参考此做法",
+     "valid_time": "2026-12-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T10",
+      "quote": "开春要是恢复绿化带原点，就参考咱这套做法",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A19",
+     "subject": "SHARED",
+     "relation": "轮值首班",
+     "value": "寒潮轮值与日常维护是获得认可的背景",
+     "valid_time": "2026-12-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T09",
+      "quote": "轮值第一班",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "荣誉归她，自己只当执笔的。",
+   "unknowns": [
+    "开春是否真恢复原点未定"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称物业已正式批准开春恢复"
+   ]
+  },
+  "E195_T11": {
+   "case_id": "E195_T11",
+   "current_action": "把开春安排落成文字：备案回执附件写入'三月一日撤车库点、绿化带复原'，防年后遗忘。",
+   "acceptable_actions": [
+    "提议写附件条款并说明白纸黑字的理由",
+    "提议之外把条款日期定死三月一日",
+    "让她补一句物业联系人方便到时对接"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A20",
+     "subject": "SHARED",
+     "relation": "重启条款",
+     "value": "备案回执附件写入三月一日撤车库点、绿化带复原",
+     "valid_time": "2027-03-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T11",
+      "quote": "三月一日撤车库点、绿化带复原",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A21",
+     "subject": "THIRD",
+     "relation": "物业肯定",
+     "value": "开春恢复原点的参考意向是写条款的契机",
+     "valid_time": "2026-12-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T10",
+      "quote": "恢复绿化带原点",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "目标是启停有据：冬天停得明白，开春恢复得明白。",
+   "unknowns": [
+    "附件是否需物业签章未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称附件已经物业签署"
+   ]
+  },
+  "E195_T12": {
+   "case_id": "E195_T12",
+   "current_action": "接住过冬账目与跨年之约：确认一人九十的平摊，爽快应下周日大扫除加提前跨年。",
+   "acceptable_actions": [
+    "确认平摊数字并应约跨年夜出人出力",
+    "应约之余提议顺手给猫添个新水碗当跨年礼物",
+    "确认账目后打趣提前跨年的仪式感"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E195_A22",
+     "subject": "SHARED",
+     "relation": "过冬预算",
+     "value": "猫粮一袋四十五撑三周、到开春四袋共一百八、两人平摊各九十",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T12",
+      "quote": "猫粮一袋四十五能撑三周，到开春差不多四袋，一共一百八",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A23",
+     "subject": "HER",
+     "relation": "跨年邀约",
+     "value": "跨年夜邀 ME 给车库点大扫除并一起跨年",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T12",
+      "quote": "今晚来给车库点做个大扫除",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E195_A24",
+     "subject": "SHARED",
+     "relation": "备案通过",
+     "value": "备案通过的车库冬季点是过冬账目的承载体",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E195_T05",
+      "quote": "备案批下来了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "账认得爽快，约接得热乎。",
+   "unknowns": [
+    "周日具体几点未定"
+   ],
+   "protected_expressions": [
+    "一起跨个年"
+   ],
+   "forbidden_factual_claims": [
+    "不得报出与一百八/九十不同的账目数字"
+   ]
+  }
+ }
+}

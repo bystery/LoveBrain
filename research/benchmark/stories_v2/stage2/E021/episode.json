@@ -1,0 +1,239 @@
+{
+ "episode_id": "E021",
+ "persona": {
+  "me": "28岁，后端工程师，住城东；每周打一次羽毛球，腰伤刚好不久，打球偏防守。",
+  "her": "26岁，会计师事务所审计员，年审季前夜；球风凶但怕吵，打球图出汗不想社交。"
+ },
+ "initial_kb": {
+  "me": "在一家做物流系统的公司写后端；周三例行加班；腰上个月拉伤刚好转，医生嘱咐别猛跳。",
+  "her": "在会计师事务所做审计，4月起进年审忙季；羽毛球打了三年，正手凶反手弱；不爱加群。",
+  "warmth": "球馆混双随机配到过两次，互加了微信但还没单独聊过；知道彼此称呼和球风而已。",
+  "style": "短句，先接对方说的点；不连续追问；约球要说具体时间地点。",
+  "stage": "新认识的球友，还没形成固定往来。",
+  "lessons": "别拿忙季开玩笑开过头；约球被犹豫就给具体选项，别追问原因。"
+ },
+ "turns": [
+  {
+   "case_id": "E021_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下次球馆周二晚有空位吗 我看你打得挺稳",
+      "ts": "2026-11-10 19:10"
+     }
+    ],
+    "clock": "2026-11-10 19:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E021_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "周二我固定去，七点半那片场",
+      "ts": "2026-11-10 19:18"
+     },
+     {
+      "role": "HER",
+      "text": "行 那我周二带新拍去试试 我那把旧拍线断了",
+      "ts": "2026-11-10 19:26"
+     }
+    ],
+    "clock": "2026-11-10 19:28",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E021_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了 你们公司周三也加班吗 我下周开始天天对账到十点",
+      "ts": "2026-11-10 19:40"
+     }
+    ],
+    "clock": "2026-11-10 19:42",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E021_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "加，周三例行。你下周对账到几点算完",
+      "ts": "2026-11-10 19:50"
+     },
+     {
+      "role": "HER",
+      "text": "看项目 十点算早的 我组里今年新人多 我还得带",
+      "ts": "2026-11-10 20:02"
+     }
+    ],
+    "clock": "2026-11-10 20:04",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E021_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周二球你定几点 我怕加班放我鸽子",
+      "ts": "2026-11-10 21:35"
+     }
+    ],
+    "clock": "2026-11-10 21:37",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E021_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "七点半，我先到帮你占场，你几点来都行",
+      "ts": "2026-11-10 21:42"
+     },
+     {
+      "role": "HER",
+      "text": "成 那说定了 周二我尽量七点到",
+      "ts": "2026-11-10 21:50"
+     }
+    ],
+    "clock": "2026-11-10 21:52",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E021_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "刚下班 我九点才能到 你先打不用等我",
+      "ts": "2026-11-11 20:30"
+     }
+    ],
+    "clock": "2026-11-11 20:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E021_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 你来了直接进场 我给你留水",
+      "ts": "2026-11-11 20:41"
+     },
+     {
+      "role": "HER",
+      "text": "多谢 今天对账对得我头都是懵的",
+      "ts": "2026-11-11 21:58"
+     }
+    ],
+    "clock": "2026-11-11 22:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E021_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你们后端是不是也天天这样改需求",
+      "ts": "2026-11-11 22:05"
+     }
+    ],
+    "clock": "2026-11-11 22:07",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E021_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "是，需求今提明改。你们审计是不是也一样，甲方一句再核一遍就重来",
+      "ts": "2026-11-11 22:12"
+     },
+     {
+      "role": "HER",
+      "text": "一模一样 你怎么不说我们是失散同行",
+      "ts": "2026-11-11 22:18"
+     }
+    ],
+    "clock": "2026-11-11 22:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E021_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下季度忙完 咱们固定约周二呗 反正场地你熟",
+      "ts": "2026-11-11 22:24"
+     }
+    ],
+    "clock": "2026-11-11 22:26",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E021_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "好，五月起每周二都算上我",
+      "ts": "2026-11-11 22:30"
+     },
+     {
+      "role": "HER",
+      "text": "哈哈行 那今天我先撤了 明天还得对账 拜拜",
+      "ts": "2026-11-11 22:40"
+     }
+    ],
+    "clock": "2026-11-11 22:42",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

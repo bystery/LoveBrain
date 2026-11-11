@@ -1,0 +1,426 @@
+{
+ "episode_id": "E065",
+ "persona": {
+  "me": "32岁，结构工程师，名下出租过两套房，合同抠得细。",
+  "her": "29岁，护士，外婆留下一套两居，第一次当房东；心软怕麻烦。"
+ },
+ "initial_kb": {
+  "me": "表姐弟，同住一个区；我租房合同模板在她那台打印机旁。",
+  "her": "外婆的房子在老小区三楼，家具齐全；她刚搬进去收拾了一半。",
+  "warmth": "表姐弟，小时候她带过我；她说起外婆就放缓语速。",
+  "style": "她数字不敏感，爱说'差不多就行'；我习惯把钱和日期说死。",
+  "stage": "亲戚互助，第一次在钱的事上合作。",
+  "lessons": "她的'差不多'要先变成数字再签字；亲情归亲情，合同归合同。"
+ },
+ "turns": [
+  {
+   "case_id": "E065_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "外婆那套两居我想挂出去租 中介说挂 3800 你觉得呢 我心里一点谱没有",
+      "ts": "2026-12-01 19:58"
+     }
+    ],
+    "clock": "2026-12-01 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "先记一条 定金受担保约束 订金只是预付款 收条要写法定金 这俩字差的钱不一样",
+      "ts": "2026-12-01 20:36"
+     },
+     {
+      "role": "HER",
+      "text": "难怪人家说别写错 你把这条给我写下来",
+      "ts": "2026-12-01 20:38"
+     }
+    ],
+    "clock": "2026-12-01 20:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "中介发我一份合同模板 三页纸 我看着头晕 你帮我看看有没有坑",
+      "ts": "2026-12-03 20:58"
+     }
+    ],
+    "clock": "2026-12-03 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "租期 押金 维修划分 提前解约这四条必须白纸黑字 尤其维修 我吃过亏",
+      "ts": "2026-12-03 21:26"
+     },
+     {
+      "role": "HER",
+      "text": "行 这四条我拿笔画出来了 缺的我让中介补",
+      "ts": "2026-12-03 21:28"
+     }
+    ],
+    "clock": "2026-12-03 21:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "有人来看房了 一对小情侣 房子还行 就是嫌三楼没电梯",
+      "ts": "2026-12-08 19:58"
+     }
+    ],
+    "clock": "2026-12-08 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "又来看了一组 就问问就走了 我开始焦虑了",
+      "ts": "2026-12-12 20:58"
+     }
+    ],
+    "clock": "2026-12-12 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "外婆那屋我收拾到一半 翻出一箱她的毛线 拾掇着拾掇着就坐下哭了",
+      "ts": "2026-12-15 20:26"
+     }
+    ],
+    "clock": "2026-12-15 20:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "挂了两周没人问 中介让我降价 说行情就这样 我不甘心但又没招",
+      "ts": "2026-12-16 19:58"
+     }
+    ],
+    "clock": "2026-12-16 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "那听你的先降到 3600 试一周 不行再回去",
+      "ts": "2026-12-16 20:14"
+     }
+    ],
+    "clock": "2026-12-16 20:15",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "降价第二天就来电话了 中介说热度上来了",
+      "ts": "2026-12-22 19:58"
+     }
+    ],
+    "clock": "2026-12-22 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "有一对看房人特别有诚意 想交定金 想 2 月 1 号起租 我有点心动",
+      "ts": "2026-12-28 20:56"
+     }
+    ],
+    "clock": "2026-12-28 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "计划有变 我收拾外婆东西比想的慢 搬不赢 2 月 1 号来不及 起租改到 2 月 15 号 我跟他们说好了",
+      "ts": "2027-01-03 19:56"
+     }
+    ],
+    "clock": "2027-01-03 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T13",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "维修那条记得改 自然损耗我修 人为损坏租客修 写进合同 空调老房子最常见",
+      "ts": "2027-01-03 20:26"
+     },
+     {
+      "role": "HER",
+      "text": "对 上回你空调加氟就是房东出的 我记这条了",
+      "ts": "2027-01-03 20:28"
+     }
+    ],
+    "clock": "2027-01-03 20:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T14",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我本来以为是小情侣 签约前中介说 是同事合租两人 平台认证过 我换了个思路 水电费得说清怎么分",
+      "ts": "2027-01-05 20:56"
+     }
+    ],
+    "clock": "2027-01-05 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T15",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "他们说押一付三 押金 3800 我说行 物业费我以为他们交 你说要不要写",
+      "ts": "2027-01-06 19:56"
+     }
+    ],
+    "clock": "2027-01-06 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T16",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "物业费写谁承担谁付 别留口头 你要心疼租客可以在租金里让 但条款要清楚",
+      "ts": "2027-01-06 20:32"
+     },
+     {
+      "role": "HER",
+      "text": "懂了 我跟他们说物业我出 租金就不让了",
+      "ts": "2027-01-06 20:34"
+     }
+    ],
+    "clock": "2027-01-06 20:35",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T17",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "合同改完稿中介发回来了 你再帮我过一遍四要素 我怕我漏",
+      "ts": "2027-01-10 20:56"
+     }
+    ],
+    "clock": "2027-01-10 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T18",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "定金收了 我开的收条 你教的那句'法定金'用上了 对方还挺意外",
+      "ts": "2027-01-20 19:56"
+     }
+    ],
+    "clock": "2027-01-20 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T19",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "后天签约 2 月 15 号起租 我突然紧张 万一租客往后拖欠怎么办",
+      "ts": "2027-02-10 19:56"
+     }
+    ],
+    "clock": "2027-02-10 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T20",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "签了 2 月 15 起租 到账 15200 三千六乘三加三千八 你说我对不对",
+      "ts": "2027-02-15 18:56"
+     }
+    ],
+    "clock": "2027-02-15 19:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T21",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "这个配合应该 街道办能免费备案 租客办居住证要用 你出房产证和身份证复印件陪跑一趟就行",
+      "ts": "2027-02-16 19:52"
+     },
+     {
+      "role": "HER",
+      "text": "租客问能不能办居住证 要我配合啥 我头大",
+      "ts": "2027-02-16 19:56"
+     }
+    ],
+    "clock": "2027-02-16 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T22",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "外婆那屋有主了 我把她的毛线挂在客厅一篮子 这房子又活了 谢你从头到尾",
+      "ts": "2027-02-20 20:56"
+     }
+    ],
+    "clock": "2027-02-20 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T23",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "租客入住第一周 换了锁芯 水电费他们自己建群分 挺省心",
+      "ts": "2027-02-25 19:58"
+     }
+    ],
+    "clock": "2027-02-25 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E065_T24",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "街道备案也办完了 我跟同事显摆说我现在懂行了 你说我当时要死守 3800 是不是就砸手里了",
+      "ts": "2027-03-01 19:58"
+     }
+    ],
+    "clock": "2027-03-01 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

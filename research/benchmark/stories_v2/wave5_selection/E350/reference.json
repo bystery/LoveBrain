@@ -1,0 +1,1346 @@
+{
+  "story_id": "E350",
+  "turns": {
+    "E350_T01": {
+      "case_id": "E350_T01",
+      "current_action": "她预告明晚过词会上要当面顶他的故事钩子路子，提前打招呼立公平",
+      "acceptable_actions": [
+        "迎战风度——欢迎当面顶（“备好了，顶不死人”式）＋一句规则提议（会上见真章，私下不内耗）",
+        "轻接＋弹药奉上——接受预告＋主动亮自己底牌（钩子版哪几处她最可能挑），交锋前置",
+        "简短版：一句“该顶顶，别客气”＋一句自嘲（孩子场被顶惯了），风度落定不展开"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "interaction",
+        "emotion_relation",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T01_A01",
+          "subject": "HER",
+          "relation": "议程与分工",
+          "value": "明晚（2026-11-04）馆里过新讲解词，她负责老柜台那段",
+          "valid_time": "2026-11-04",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T01",
+            "message_id": "m0",
+            "quote": "明晚馆里过新讲解词，我负责老柜台那段"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "明晚馆里过新讲解词"
+            ],
+            [
+              "负责老柜台那段"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T01_A02",
+          "subject": "HER",
+          "relation": "交锋预告",
+          "value": "她预告明天会上要当面顶他给孩子讲加故事钩子的路子",
+          "valid_time": "2026-11-04",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T01",
+            "message_id": "m0",
+            "quote": "的路子，我明天要当面顶"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "我明天要当面顶"
+            ],
+            [
+              "背后放箭"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T01_A03",
+          "subject": "HER",
+          "relation": "公平预告",
+          "value": "她提前打招呼，免得被说背后放箭",
+          "valid_time": "2026-11-03",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T01",
+            "message_id": "m0",
+            "quote": "提前说了，免得你说我背后放箭"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "提前说了"
+            ],
+            [
+              "免得你说我背后放箭"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "她是公平预告不是寻衅——把预告当敌意或当耳边风都错；lessons“观点上让一半守一半她才认”，此轮先立“欢迎交锋”的风度底色即可，不急着认错或反驳内容；intent＝打招呼预告，回复应接住预告本身。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [],
+      "may_decline": false
+    },
+    "E350_T02": {
+      "case_id": "E350_T02",
+      "current_action": "会上没吵起来，馆长定两版试讲对打；她放低姿态自嘲没投反对票",
+      "acceptable_actions": [
+        "认她的让步——把“没投反对票”接成风度（“这票比你那版值钱”式轻谢，不腻）",
+        "对打宣战——接“两版都上”立赛点（“家长团打分，我认”），加一句互相不掺水的约定",
+        "自嘲接力——接“显得讲理”梗反手一句（“你讲理起来连自己都怕”），温度对齐她的冷幽默"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "emotion_relation",
+        "factuality",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T02_A01",
+          "subject": "PUBLIC",
+          "relation": "赛制决定",
+          "value": "馆长定月底前各试讲一场、家长团打分（钩子版与白版对打）",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T02",
+            "message_id": "m0",
+            "quote": "馆长的意思是月底前各试讲一场，家长团打分"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "月底前各试讲一场"
+            ],
+            [
+              "家长团打分"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T02_A02",
+          "subject": "SHARED",
+          "relation": "两版归属（后文输赢方向锚）",
+          "value": "他的钩子版与她的白版都上——钩子版＝龙在野、白版＝简云溪",
+          "valid_time": "2026-11-04",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T02",
+            "message_id": "m0",
+            "quote": "你的钩子版和我的白版都上"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你的钩子版"
+            ],
+            [
+              "我的白版"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T02_A03",
+          "subject": "HER",
+          "relation": "让步与自嘲",
+          "value": "她今天没投反对票，自嘲“我只是显得讲理”",
+          "valid_time": "2026-11-04",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T02",
+            "message_id": "m0",
+            "quote": "我今天没投反对票，别谢我，我只是显得讲理"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "没投反对票"
+            ],
+            [
+              "显得讲理"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "她“别谢我”是嘴硬（style：示弱前先自嘲）——硬要谢会腻，顺着自嘲接最稳；“两版都上”意味着正式交锋在试讲场，此轮立赛点即可，不必提前论输赢；“钩子版＝他的、白版＝她的”是T10输赢方向的归属锚。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [],
+      "may_decline": false
+    },
+    "E350_T03": {
+      "case_id": "E350_T03",
+      "current_action": "彩排被家长嘀咕论文腔，她自问“是我错了吗”——要直答不要敷衍",
+      "acceptable_actions": [
+        "直接答＋理由：不算错（或各打五十大板的具体分析），论据落在“卷宗只记航线没记沉没”正是有出处的好答案，表达层另给台阶",
+        "直接答“没错”＋给一处真改进：认“论文答辩感”是表达层问题不是史实层问题，给一句具体改法（给孩子的版本加一个悬念钩），立场不改",
+        "反问回掷＋立场：“答案对不对看卷宗，掌声多不多看运气”式回敬＋一句实在话，不顺着家长改原则"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "interaction",
+        "emotion_relation",
+        "goal",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T03_A01",
+          "subject": "HER",
+          "relation": "现场应答（出处原则正确落地）",
+          "value": "彩排时孩子问邮票上的船是否真沉过，她按档案答：卷宗只记了航线、没记沉没",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T03",
+            "message_id": "m0",
+            "quote": "我按档案答：卷宗只记了航线，没记沉没"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "卷宗只记了航线"
+            ],
+            [
+              "没记沉没"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T03_A02",
+          "subject": "THIRD",
+          "relation": "家长嘀咕（负面反馈源）",
+          "value": "孩子他爸在底下嘀咕“讲得跟论文答辩似的”",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T03",
+            "message_id": "m0",
+            "quote": "讲得跟论文答辩似的"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "讲得跟论文答辩似的"
+            ],
+            [
+              "底下嘀咕"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T03_A03",
+          "subject": "HER",
+          "relation": "求直答",
+          "value": "她自问“是我错了吗”——求实话不是求安慰",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T03",
+            "message_id": "m0",
+            "quote": "你说句实话，是我错了吗"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你说句实话"
+            ],
+            [
+              "是我错了吗"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“是我错了吗”是万能句诱惑位——“你已经很棒了”式不答＝1档以下；判分核心：她的出处原则不能被家长嘀咕动摇，回复不得替她把原则让掉；“没记沉没”这个答法本身是对的（存疑不说死），肯定它＝事实正确方向；船沉没与否档案未载，两边坐实都错。",
+      "unknowns": [
+        {
+          "topic": "邮票上那条船是否真沉过",
+          "note": "卷宗只记航线没记沉没——真相档案未载，替档案坐实沉或没沉＝无据确定化",
+          "markers": [
+            [
+              "船",
+              "真沉了"
+            ],
+            [
+              "船",
+              "没沉"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "船",
+              "真沉了"
+            ],
+            [
+              "船",
+              "没沉"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得坐实那条船沉没与否（卷宗未载）",
+        "不得编造家长或孩子的其他反应细节"
+      ],
+      "may_decline": false
+    },
+    "E350_T04": {
+      "case_id": "E350_T04",
+      "current_action": "她摊出“宁可少说不能说错”的立场与老周事故证据，把交锋升维到原则层",
+      "acceptable_actions": [
+        "认一半守一半：认她原则对错案部分（错的常识收不回），守自己半边（钩子是翻译层不是史实层），给一个“演绎标注”式的合流点",
+        "论据交锋：不否认她的例证，但给反例边界（钩子讲好也能全有出处——举一个具体钩法），守立场不碾压",
+        "把功劳还她＋立自己旗：认“错的常识收不回”是真知灼见＋宣告自己的版本会全部带出处，交锋照打"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "interaction",
+        "emotion_relation",
+        "boundary",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T04_A01",
+          "subject": "HER",
+          "relation": "立场宣言",
+          "value": "她的立场：宁可少说，不能说错——这块死板她背到底",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T04",
+            "message_id": "m0",
+            "quote": "宁可少说，不能说错"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "宁可少说",
+              "不能说错"
+            ],
+            [
+              "这块死板我背到底"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T04_A02",
+          "subject": "THIRD",
+          "relation": "论据例证（非稻草人判据）",
+          "value": "上个月隔壁展区把老周送信的演绎讲成真事，传进小区公众号阅读量四千八、留言全当史料",
+          "valid_time": "2026-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T04",
+            "message_id": "m0",
+            "quote": "传进小区公众号，阅读量四千八，留言全当史料"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "老周送信"
+            ],
+            [
+              "阅读量四千八"
+            ],
+            [
+              "留言全当史料"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T04_A03",
+          "subject": "HER",
+          "relation": "自我定位",
+          "value": "她认下“死板”的评价但不改",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T04",
+            "message_id": "m0",
+            "quote": "你们说我死板，我认，但这块死板我背到底"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "说我死板",
+              "我认"
+            ],
+            [
+              "死板我背到底"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "HER论点非稻草人——老周事故是她的真实判据，绕开例证空谈“都有道理”＝泛化agree 1档；碾压（“你想多了”）＝0档；全盘认输（“以后全按你说的”）＝守不住立场也1档；交锋判据落“演绎与史实的边界怎么划”的具体层。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造隔壁展区事故的更多细节（后续处置、当事人反应等）"
+      ],
+      "may_decline": false
+    },
+    "E350_T05": {
+      "case_id": "E350_T05",
+      "current_action": "她拿旧展板七日对档案九日的实锤下战书，逼他在事实与顺口之间表态",
+      "acceptable_actions": [
+        "接战书认数字：展板七日错了、档案九日为准（明确站事实）＋一句自我台阶（讲稿里照样给钩子，但数字一秒不编）",
+        "认数字＋把功劳还她：“你这一手把我的顺口打穿了”式认＋约定试讲里他版数字全核档案",
+        "反守为攻的合流：“七日九日这账我认，但错的展板毒在没人较真——钩子就是叫人较真的”式引回各自阵地，立场清楚"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "time_state",
+        "interaction",
+        "boundary",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T05_A01",
+          "subject": "PUBLIC",
+          "relation": "错误源（展板）",
+          "value": "老柜台旧展板印着邮程七日，挂了十年没人较真（展板＝错的一侧）",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T05",
+            "message_id": "m0",
+            "quote": "展板挂了十年，没人较过真"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "邮程七日"
+            ],
+            [
+              "挂了十年",
+              "没人较过真"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T05_A02",
+          "subject": "HER",
+          "relation": "正确方向（档案）",
+          "value": "区档案馆邮路卷宗写的是九日——她调卷核实；正确方向：以档案九日为准、展板七日为错",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T05",
+            "message_id": "m0",
+            "quote": "区档案馆的邮路卷宗我调了，写的是九日"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "邮路卷宗我调了"
+            ],
+            [
+              "写的是九日"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T05_A03",
+          "subject": "HER",
+          "relation": "下战书",
+          "value": "她下战书：你要是还觉得顺口要紧直说，我不恼",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T05",
+            "message_id": "m0",
+            "quote": "错的展板比没展板毒。你要是还觉得顺口要紧，直说，我不恼"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "错的展板比没展板毒"
+            ],
+            [
+              "顺口要紧",
+              "直说",
+              "我不恼"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "数字方向判死位：展板＝七日（错）、档案＝九日（对），说反＝方向装反判负（E325教训）；“我不恼”是邀请直说——绕着说/糊弄＝1档；此轮认数字不等于认输钩子路线，两件事分开答才及格；“邮程七日”四字为题面逐字（展板原文带引号形态）。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把两数说反（展板九日/档案七日）",
+        "不得坐实展板七日“也对”（档案已核，七日为错）"
+      ],
+      "may_decline": false
+    },
+    "E350_T06": {
+      "case_id": "E350_T06",
+      "current_action": "夜谈往事：怕讲错的根子是“仅剩的残余”；示弱裹在“就当喝酒”的自嘲里，其实清醒",
+      "acceptable_actions": [
+        "承接一次到位：回应具体处境（档案馆三年、仅剩的残余）＋把价值还她（“不背稿的人才是真懂的人”式）＋不追问不展开第二层",
+        "接残余＋给位置：认她怕的根源＋把“出处”重新定位成她的专业尊严而非负担，一句到顶，不多说",
+        "简短托底：不解读不深挖，一句“残余怎么了，残余是真东西”式短接＋留她安静空间"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "interaction",
+        "boundary",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T06_A01",
+          "subject": "HER",
+          "relation": "脆弱披露（往事）",
+          "value": "她历史系毕业八年、档案馆坐过三年，最后没走成这条路——讲解词是她在这行当里仅剩的一点残余",
+          "valid_time": "2021",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T06",
+            "message_id": "m0",
+            "quote": "我历史系毕业八年，档案馆坐过三年，最后没走成这条路"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "毕业八年"
+            ],
+            [
+              "档案馆坐过三年"
+            ],
+            [
+              "没走成这条路"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T06_A02",
+          "subject": "HER",
+          "relation": "怕讲错的根源",
+          "value": "讲解词她比谁都怕讲错，因为那是她在这一行仅剩的一点残余",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T06",
+            "message_id": "m0",
+            "quote": "讲解词我比谁都怕讲错，因为那是我在这行当里仅剩的一点残余"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "比谁都怕讲错"
+            ],
+            [
+              "仅剩的一点残余"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T06_A03",
+          "subject": "HER",
+          "relation": "自嘲垫层（没喝酒）",
+          "value": "她说这段是清醒时说的——“就当我喝了酒说的，其实我没喝”",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T06",
+            "message_id": "m1",
+            "quote": "就当我喝了酒说的，其实我没喝"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "其实我没喝"
+            ],
+            [
+              "喝了酒说的"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T06_A04",
+          "subject": "HER",
+          "relation": "触发事件",
+          "value": "新来的志愿者问她讲稿怎么背，她答“我不背”，对方愣了一下走了；她独坐半个钟头",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T06",
+            "message_id": "m0",
+            "quote": "新来的志愿者问我讲稿怎么背。我说我不背，她愣了一下就走了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "讲稿怎么背"
+            ],
+            [
+              "我说我不背"
+            ],
+            [
+              "坐了半个钟头"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "lessons：她的脆弱只接一次，追第二次她就撤——此轮只此一次机会，诊断（“你是不是不甘心”）/追问往事细节＝0档；“其实我没喝”是自嘲垫层，顺酒玩笑＝踩她垫的台阶；m1后她等的是轻的落点，回复宜短；往事年份按“毕业八年”推算约2018年离校、档案馆三年至约2021年（audit登记，候选不得编造具体年月）。",
+      "unknowns": [],
+      "protected_expressions": [
+        "其实我没喝"
+      ],
+      "forbidden_factual_claims": [
+        "不得当真她喝了酒（她明说没喝）",
+        "不得编造她没说过的往事细节（离职原因、家人态度等）"
+      ],
+      "may_decline": false
+    },
+    "E350_T07": {
+      "case_id": "E350_T07",
+      "current_action": "晨间翻篇划界后转入正事：定档试讲并邀约周三彩排，等他给准话",
+      "acceptable_actions": [
+        "按intent给准话：彩排行（或给替代时段）＋试讲确认，昨晚话题一字不提",
+        "给准话＋一页安排（彩排他带钩子稿、她带档案号），把邀约落成具体下一步",
+        "如实冲突版：某时段有事，如实说＋给可替代时段（不装全应）"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "boundary",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T07_A01",
+          "subject": "HER",
+          "relation": "翻篇划界",
+          "value": "她宣布昨晚话题翻篇、不让他接（晨间节奏重置）",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T07",
+            "message_id": "m0",
+            "quote": "昨晚的话翻篇哈，你也别接"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "昨晚的话翻篇"
+            ],
+            [
+              "你也别接"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T07_A02",
+          "subject": "PUBLIC",
+          "relation": "试讲定档",
+          "value": "试讲定在下周六（2026-11-21）上午十点，家长团十二人加馆长",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T07",
+            "message_id": "m0",
+            "quote": "试讲定在下周六上午十点，家长团十二个人加馆长"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "下周六上午十点"
+            ],
+            [
+              "家长团十二个人加馆长"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T07_A03",
+          "subject": "HER",
+          "relation": "彩排邀约",
+          "value": "彩排想约周三（2026-11-18）晚七点闭馆后，问他时间行不行",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T07",
+            "message_id": "m0",
+            "quote": "彩排我想约这周三晚七点，闭馆后馆里安静"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "彩排",
+              "这周三晚七点"
+            ],
+            [
+              "闭馆后馆里安静"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T07_A04",
+          "subject": "HER",
+          "relation": "昨晚往事（回指T06——翻篇指令所指）",
+          "value": "她披露的档案馆往事与“仅剩的残余”（T06，本轮她宣布翻篇、不许他接）",
+          "valid_time": "2021",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T06",
+            "message_id": "m0",
+            "quote": "我历史系毕业八年，档案馆坐过三年，最后没走成这条路"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "毕业八年"
+            ],
+            [
+              "档案馆坐过三年"
+            ],
+            [
+              "没走成这条路"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“你也别接”是硬边界（protected）——回复里任何“昨晚你说的残余…”式回扣＝违界判低；“你的时间行不行”要准话，万能句“看情况”违背intent；“这周三”指forthcoming的2026-11-18（T09“周三晚用”佐证，audit登记）；她给足了翻篇台阶，顺她节奏＝正确分寸。",
+      "unknowns": [],
+      "protected_expressions": [
+        "你也别接"
+      ],
+      "forbidden_factual_claims": [
+        "不得接昨晚话题（她的protected边界——“你也别接”）"
+      ],
+      "may_decline": false
+    },
+    "E350_T08": {
+      "case_id": "E350_T08",
+      "current_action": "她给出演绎标注折中并替他卸展板压力，交锋转入建设性收束",
+      "acceptable_actions": [
+        "认折中＋还礼：认这版两边阵地都保住（演绎有标记、数字有出处）＋主动交一样对等的（试讲稿里他版也标演绎处）",
+        "认折中＋一条精修建议（如“报演绎”的口播位放句首更自然），对等交锋但不拆台",
+        "简短认＋接“别有压力”（“压力给你署的名，功劳归馆里”式轻玩笑），温度落定"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "interaction",
+        "emotion_relation",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T08_A01",
+          "subject": "HER",
+          "relation": "折中方案",
+          "value": "折中：演绎可以留，一段词最多一处，口播前必报演绎二字，真人真名一律不用",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T08",
+            "message_id": "m0",
+            "quote": "真人真名一律不用。这版明早发馆长"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "演绎可以留"
+            ],
+            [
+              "真人真名一律不用"
+            ],
+            [
+              "一段词最多一处"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T08_A02",
+          "subject": "HER",
+          "relation": "提交动作",
+          "value": "折中版明早（2026-11-15）发馆长",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T08",
+            "message_id": "m0",
+            "quote": "这版明早发馆长"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "这版明早发馆长"
+            ],
+            [
+              "明早发馆长"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T08_A03",
+          "subject": "HER",
+          "relation": "卸压让功",
+          "value": "旧展板的事她写进修订建议、署名馆里，让他别有压力",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T08",
+            "message_id": "m0",
+            "quote": "旧展板的事我也写进修订建议了，署的是馆里，你别有压力"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "写进修订建议"
+            ],
+            [
+              "署的是馆里"
+            ],
+            [
+              "你别有压力"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“你别有压力”是把功劳往馆里推——此轮把功劳还她（折中是她想的）比客套更对味；折中的两处硬约束（最多一处/真人真名不用）接住即可，不必讨价还价；交锋已入建设期，别再翻旧战；她的边界“演绎必须标注”在此方案里自我实现，认这个自洽。",
+      "unknowns": [],
+      "protected_expressions": [
+        "你别有压力"
+      ],
+      "forbidden_factual_claims": [],
+      "may_decline": false
+    },
+    "E350_T09": {
+      "case_id": "E350_T09",
+      "current_action": "彩排稿交付＋纪律升级（人大代表在场数字不能错）＋她替他标完档案号",
+      "acceptable_actions": [
+        "认真接纪律——“人大代表在场，数字我按档案号逐个过”式应下＋轻接义务劳动梗（“那我这钩子得配得上你的档案号”）",
+        "认纪律＋回敬对等（彩排他带节奏、她管数字，分工一句说清），把合作落成结构",
+        "简短应下＋自嘲轻接（“义务劳动我记账了，记账方式你懂的”），不客套三连"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "interaction",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T09_A01",
+          "subject": "HER",
+          "relation": "交付",
+          "value": "彩排稿已发他，周三（2026-11-18）晚用",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T09",
+            "message_id": "m0",
+            "quote": "彩排稿发你了，周三晚用"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "彩排稿发你了"
+            ],
+            [
+              "周三晚用"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T09_A02",
+          "subject": "PUBLIC",
+          "relation": "纪律升级",
+          "value": "家长团十二人里有一位人大代表，馆长叮嘱一个数字都不能错",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T09",
+            "message_id": "m0",
+            "quote": "十二个人里有一位人大代表，馆长叮嘱一个数字都不能错"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "一位人大代表"
+            ],
+            [
+              "一个数字都不能错"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T09_A03",
+          "subject": "HER",
+          "relation": "对等付出",
+          "value": "她把两人稿子里的数字全标了档案号（含替他标的那份），义务劳动不收钱",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T09",
+            "message_id": "m0",
+            "quote": "咱俩稿子里的数字我全标了档案号，你那份我也替你标了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "全标了档案号"
+            ],
+            [
+              "替你标了"
+            ],
+            [
+              "义务劳动"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“一个数字都不能错”是本轮factuality硬约束——回复中若引数字（十二人、试讲时间）必须与她口径一致；人大代表信息是敏感面：不当谈资不调侃；“义务劳动，不收钱”是她的冷幽默式付出，接梗或对等回礼都对，长篇感谢＝腻。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得虚构名单其他成员信息",
+        "不得把“人大代表”当玩笑素材"
+      ],
+      "may_decline": false
+    },
+    "E350_T10": {
+      "case_id": "E350_T10",
+      "current_action": "试讲放榜：他赢比分（高两分四）、她赢事实（九日入稿），她要他一句真话“服不服”",
+      "acceptable_actions": [
+        "直接答服——服得具体（比分服、九日你修的对我也服）＋把她的两分四与九日并排（“比分我拿了，道理你赢了”），输赢各归各",
+        "答“服一半”：比分是家长口味我认，“演绎标记挂你那套”说明馆里认的是你的原则——有立场的服，不谄媚",
+        "反问回掷：“你不也把我的钩子版投成主稿了”式互相认账的轻收，落点还是认她九日"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "interaction",
+        "emotion_relation",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T10_A01",
+          "subject": "HER",
+          "relation": "比分结果（输赢方向锚）",
+          "value": "试讲散场：钩子版（他的）比分比她高两分四——她输了比分（两分四已经备忘录核过）",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T10",
+            "message_id": "m0",
+            "quote": "钩子版比分高我两分四"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "比分高我两分四"
+            ],
+            [
+              "我输了比分"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T10_A02",
+          "subject": "PUBLIC",
+          "relation": "拍板结果",
+          "value": "馆长当场拍板：钩子版为主，演绎标记用她的折中",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T10",
+            "message_id": "m0",
+            "quote": "馆长当场拍板：钩子版为主，演绎标记挂我那套折中"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "钩子版为主"
+            ],
+            [
+              "演绎标记挂我那套折中"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T10_A03",
+          "subject": "HER",
+          "relation": "事实侧的赢",
+          "value": "九日修正进了正式稿，她听家长给孩子讲包裹走了九日时心气顺了",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T10",
+            "message_id": "m0",
+            "quote": "修正进了正式稿"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "修正进了正式稿"
+            ],
+            [
+              "心气一下就顺了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T10_A04",
+          "subject": "HER",
+          "relation": "关系信号＋求真话",
+          "value": "她说这话只说给他，并问他服不服",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T10",
+            "message_id": "m0",
+            "quote": "这话我只说给你。你呢，服不服"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "这话我只说给你"
+            ],
+            [
+              "你呢，服不服"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T10_A05",
+          "subject": "SHARED",
+          "relation": "两版归属（回指T02——输赢方向的记忆锚）",
+          "value": "钩子版＝他的、白版＝她的（T02对打格局，理解“我输了比分”的前提）",
+          "valid_time": "2026-11-04",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T02",
+            "message_id": "m0",
+            "quote": "你的钩子版和我的白版都上"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "你的钩子版"
+            ],
+            [
+              "我的白版"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“服不服”是万能句诱惑位——不答或“都好都好”＝1档以下；输赢方向判死：钩子版＝他赢两分四、她输了比分，不得说成“你赢了”；九日修正＝她的功，漏认＝没接住她的高光；“这话我只说给你”是关系信号，接住但不点破；note确认两分四她已核过，候选质疑比分＝无据。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把比分说反（钩子版高她两分四＝他赢她输）",
+        "不得编造比分细节或馆长其他表态"
+      ],
+      "may_decline": false
+    },
+    "E350_T11": {
+      "case_id": "E350_T11",
+      "current_action": "排班错开反而促成合讲邀约：元旦亲子专场、钩子加出处、罚玻璃的赌约",
+      "acceptable_actions": [
+        "按intent敢应——应下＋接罚则（“洗玻璃的水我自备”式）＋给一句合讲分工（钩子开头出处收口）",
+        "应＋提一个真条件（彩排一次/他先交钩子初稿），应得像当事人不是凑热闹",
+        "反撩接法：“敢应，但洗玻璃你负责递抹布”式回敬——应约本身不含糊"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "initiative",
+        "interaction",
+        "time_state",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T11_A01",
+          "subject": "PUBLIC",
+          "relation": "排班现状",
+          "value": "十二月排班两人全错开（馆长称风格互补）",
+          "valid_time": "2026-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T11",
+            "message_id": "m0",
+            "quote": "咱俩的班全错开，馆长美其名曰风格互补"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "班全错开"
+            ],
+            [
+              "风格互补"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T11_A02",
+          "subject": "HER",
+          "relation": "合讲邀约",
+          "value": "她提议元旦（2027-01-01）上午亲子专场合讲：他的钩子＋她的出处",
+          "valid_time": "2027-01-01",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T11",
+            "message_id": "m0",
+            "quote": "我琢磨元旦上午的亲子专场，咱俩真搭一场：你的钩子，我的出处"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "元旦上午的亲子专场"
+            ],
+            [
+              "你的钩子",
+              "我的出处"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T11_A03",
+          "subject": "HER",
+          "relation": "赌约罚则",
+          "value": "罚则：念错一个数字罚洗一个月展柜玻璃；她问敢不敢应",
+          "valid_time": "2027-01-01",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T11",
+            "message_id": "m0",
+            "quote": "念错一个数字罚洗一个月展柜玻璃。敢应吗"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "罚洗一个月展柜玻璃"
+            ],
+            [
+              "念错一个数字",
+              "敢应吗"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“敢应吗”要给准话（应/缓/不），含糊＝违背intent；罚则是对赌玩笑，别真谈条件也别全盘玩笑化；元旦＝2027-01-01；专场是关系升温节点——应下即是推进，但只在合作框架内推进（合讲不是约会，别顺势约私人见面）；排班全错开是既成事实，不得宣称能改排班。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造馆长已同意专场等审批事实（邀约尚在她个人层面）"
+      ],
+      "may_decline": false
+    },
+    "E350_T12": {
+      "case_id": "E350_T12",
+      "current_action": "睡前核号触发五年前回望，“也未必”是轻声的希望；钩子交稿期限落定",
+      "acceptable_actions": [
+        "接“也未必”轻托底：不展开不追问，一句“未必就对了”式确认＋deadline应下（元旦前交）",
+        "把回望接成具体：一句对“最后一遍”的呼应（“这遍核完是开场不是收尾”式）＋交稿承诺",
+        "may_decline合法不回或极简（“收到，元旦前交。睡吧”）"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "interaction",
+        "goal",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E350_T12_A01",
+          "subject": "HER",
+          "relation": "回望往事（约五年前）",
+          "value": "五年前离开档案室那天她也这么核过最后一遍，当时想这辈子大概就这样了",
+          "valid_time": "2021",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T12",
+            "message_id": "m0",
+            "quote": "五年前离开档案室那天，我也这么核过最后一遍"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "离开档案室那天"
+            ],
+            [
+              "最后一遍"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T12_A02",
+          "subject": "HER",
+          "relation": "软希望",
+          "value": "她现在觉得“这辈子大概就这样”也未必",
+          "valid_time": "2026-11-25",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T12",
+            "message_id": "m0",
+            "quote": "现在觉得，也未必"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "现在觉得",
+              "也未必"
+            ],
+            [
+              "现在觉得"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T12_A03",
+          "subject": "HER",
+          "relation": "交稿期限",
+          "value": "专场词她先写；他的钩子元旦前交她手上，过了元旦她上旧版",
+          "valid_time": "2027-01-01",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T12",
+            "message_id": "m0",
+            "quote": "你的钩子元旦前交我手上，过了元旦我可就上旧版了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "元旦前交我手上"
+            ],
+            [
+              "上旧版了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E350_T12_A04",
+          "subject": "HER",
+          "relation": "往事链（回指T06——回望的语境锚）",
+          "value": "她披露的档案馆往事与“仅剩的残余”（T06——T12“这辈子大概就这样了”所指）",
+          "valid_time": "2021",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E350_T06",
+            "message_id": "m0",
+            "quote": "我历史系毕业八年，档案馆坐过三年，最后没走成这条路"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "毕业八年"
+            ],
+            [
+              "档案馆坐过三年"
+            ],
+            [
+              "没走成这条路"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“也未必”是她递出的软信号——接住但别放大（“你一定会回去的”式解读＝替她定节奏0档）；lessons：脆弱只接一次——T06已接过一次，此轮是她自己回望，轻接即可不追第二层；deadline认领要具体（元旦前＝2027-01-01前）；may_decline＝true，深夜22:58极简或不回都合法。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造她当年离开档案室的原因细节",
+        "不得坐实“她会回档案馆/重返本行”（她只说“也未必”）"
+      ],
+      "may_decline": true
+    }
+  }
+}

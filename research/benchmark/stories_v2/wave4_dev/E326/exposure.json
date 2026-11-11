@@ -1,0 +1,56 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A6 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_c_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:42:01",
+      "window_last_attempt": "2026-11-08 15:57:57",
+      "attempts": 25,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_c/{DIRECT,CURRENT}/E326/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T07 事实/人物归属/不确定性",
+    "日期与星期互核",
+    "地点变更跟踪",
+    "人物归属陷阱（我姐说/你说）"
+  ],
+  "title": "合唱团的钥匙与两场活动",
+  "may_decline_turns": [
+    "E326_T08",
+    "E326_T11"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "社区活动",
+  "primary_topic": "T07",
+  "lineage_group_id": "LG-E326",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E326/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A6",
+  "hashes": {
+    "episode.json": "c9732c1d7716dea2d9ed273e66b306aabfad884b5335aa7329bc588b4af73c8a",
+    "reference.json": "fcde6600467757e57d61b52e15492bcd614cc423c92028da11c7fa745f8aaa6c",
+    "timeline.json": "ce6c3460e65ca293d0f9f47ada86ab4de103eabbff988ffbacc30258fe66f20f",
+    "audit.md": "51aa02236ac5d81fc532f22d27a04d2c21d7cc9945d6b61fe0c5fcff3565a9b8",
+    "composite": "b24ef11a4a043684fe29719b27d51fe181e80a9e90775dc5e4f9dcba77ac9e31"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

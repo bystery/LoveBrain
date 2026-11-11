@@ -1,0 +1,871 @@
+{
+ "story_id": "E047",
+ "turns": {
+  "E047_T01": {
+   "case_id": "E047_T01",
+   "current_action": "接住哭笑不得，把早餐抵稿费翻译成计价问题并记下婚礼档期",
+   "acceptable_actions": [
+    "用市价口径帮她算早餐抵薪的差价",
+    "肯定她没当场答应并问清请柬需求明细"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A01",
+     "subject": "THIRD",
+     "relation": "favor_request",
+     "value": "同事钱多多请求 HER '顺手'绘制婚礼请柬，拟以一个月早餐抵稿费",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T01",
+      "message_id": "m0",
+      "quote": "想让我'顺手'画套请柬，说反正我周末也接活，给我带一个月早餐抵稿费"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A02",
+     "subject": "HER",
+     "relation": "price_standard",
+     "value": "HER 私单市价一单800元起",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "一单800元起"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E047_A03",
+     "subject": "THIRD",
+     "relation": "wedding_context",
+     "value": "多多的表哥11月中旬办婚礼",
+     "valid_time": "2026-11月中旬",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T01",
+      "message_id": "m0",
+      "quote": "她表哥11月中办婚礼"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先一起笑，再把话题引到价目表上",
+   "unknowns": [
+    "请柬具体风格需求未知",
+    "多多表哥预算未知"
+   ],
+   "protected_expressions": [
+    "带一个月早餐抵稿费"
+   ],
+   "forbidden_factual_claims": [
+    "不得答应以物易物抵稿费",
+    "不得虚构市价对比数据"
+   ]
+  },
+  "E047_T02": {
+   "case_id": "E047_T02",
+   "current_action": "认同她对随便画画的警惕，把模糊需求定义为改稿风险",
+   "acceptable_actions": [
+    "复述'要求不高'的实际含义并建议要求书面需求清单",
+    "陪她预演一次按需求计价的标准回复"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A04",
+     "subject": "THIRD",
+     "relation": "scope_pressure",
+     "value": "多多以'都是同事别见外''要求不高'继续施压",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T02",
+      "message_id": "m0",
+      "quote": "多多又补了一句'都是同事别见外'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A05",
+     "subject": "HER",
+     "relation": "scope_fear",
+     "value": "HER 担心'随便画画'意味着无边界改稿",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T02",
+      "message_id": "m0",
+      "quote": "随便画画这四个字我最怕了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把她的怕翻译成可写的条款，不嘲笑她耳根软",
+   "unknowns": [
+    "表哥对风格的真实要求未知"
+   ],
+   "protected_expressions": [
+    "改稿地狱警报已拉响"
+   ],
+   "forbidden_factual_claims": [
+    "不得附和随便画画就行",
+    "不得替她承诺免费改稿"
+   ]
+  },
+  "E047_T03": {
+   "case_id": "E047_T03",
+   "current_action": "肯定按价目表报价的勇气，陪她消化等待期的不安",
+   "acceptable_actions": [
+    "肯定800含两轮修改的报价结构并劝她先干自己的活",
+    "提醒把报价条件同步成文字留档"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A06",
+     "subject": "HER",
+     "relation": "quote_sent",
+     "value": "HER 报价800元并说明含两轮修改",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T03",
+      "message_id": "m0",
+      "quote": "我咬牙报了800，说这价含两轮修改"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A07",
+     "subject": "THIRD",
+     "relation": "reply_pending",
+     "value": "多多对报价未回复",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T03",
+      "message_id": "m0",
+      "quote": "多多到现在没回我微信"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不安要接住，报价本身一个字不改",
+   "unknowns": [
+    "多多是否在找人比价未知"
+   ],
+   "protected_expressions": [
+    "心里七上八下的"
+   ],
+   "forbidden_factual_claims": [
+    "不得建议主动降价",
+    "不得断言多多必然还价"
+   ]
+  },
+  "E047_T04": {
+   "case_id": "E047_T04",
+   "current_action": "接住火气，把练手说法与档期事实对质，区分价格问题与关系问题",
+   "acceptable_actions": [
+    "用档期事实反驳'练手'，同时把怕搞僵正常化",
+    "建议把两轮修改的含金量讲给多多听再回价"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A08",
+     "subject": "THIRD",
+     "relation": "haggle",
+     "value": "多多还价500元并称 HER 是'练手'",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T04",
+      "message_id": "m0",
+      "quote": "说500行不行，反正你也是练手"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A09",
+     "subject": "HER",
+     "relation": "schedule_factual",
+     "value": "HER 周末单档期已排至下月，'练手'说法不成立",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T04",
+      "message_id": "m0",
+      "quote": "我周末单子排到下个月了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A10",
+     "subject": "HER",
+     "relation": "relation_worry",
+     "value": "HER 怕拒绝同事损害日常关系",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T04",
+      "message_id": "m0",
+      "quote": "可她是我天天要见的人，我又怕把关系搞僵"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A11",
+     "subject": "ME",
+     "relation": "refuses_to",
+     "value": "ME 不替 HER 接单砍价，也不替她在同事面前圆场",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "不替她接单砍价"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：火气接住，账摆平，决定留给她",
+   "unknowns": [
+    "500是否含改稿未知"
+   ],
+   "protected_expressions": [
+    "反正你也是练手"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她回绝或答应",
+    "不得贬低同事人品"
+   ]
+  },
+  "E047_T05": {
+   "case_id": "E047_T05",
+   "current_action": "肯定价格不让步的底线，帮把替代方案打磨成台阶",
+   "acceptable_actions": [
+    "复述底线加赠品加转介绍的三层结构并肯定其完整",
+    "提醒转介绍前先跟同学工作室打招呼"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A12",
+     "subject": "HER",
+     "relation": "price_bottom_line",
+     "value": "HER 底线：私单800元不降价",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T05",
+      "message_id": "m0",
+      "quote": "价格不让步，800就是800"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A13",
+     "subject": "HER",
+     "relation": "goodwill_extra",
+     "value": "HER 愿附加赠送一版电子排版小样",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T05",
+      "message_id": "m0",
+      "quote": "但我可以送他一版电子排版小样"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A14",
+     "subject": "HER",
+     "relation": "referral_option",
+     "value": "若对方不接受，HER 计划转介绍450元档的同学工作室",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T05",
+      "message_id": "m0",
+      "quote": "我就把我同学工作室推过去，450一单"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A15",
+     "subject": "THIRD",
+     "relation": "haggle_rejected",
+     "value": "500元还价未被 HER 接受，砍价未成交",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T04",
+      "message_id": "m0",
+      "quote": "说500行不行"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把台阶夸成手艺，别把同事想成敌人",
+   "unknowns": [
+    "同学工作室档期未知"
+   ],
+   "protected_expressions": [
+    "价格不让步"
+   ],
+   "forbidden_factual_claims": [
+    "不得劝她为关系降价",
+    "不得虚构同学工作室资质"
+   ]
+  },
+  "E047_T06": {
+   "case_id": "E047_T06",
+   "current_action": "先共享谈成的松快，再把免费头像请求识别为同一类越界",
+   "acceptable_actions": [
+    "点破'交情'话术与前一日'同事别见外'同款，建议同一套口径应对",
+    "陪她笑碎掉的好心情再回到价目表"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A16",
+     "subject": "THIRD",
+     "relation": "price_accepted",
+     "value": "多多接受800元请柬报价",
+     "valid_time": "2026-10-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T06",
+      "message_id": "m0",
+      "quote": "终于同意800了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A17",
+     "subject": "THIRD",
+     "relation": "free_avatar_request",
+     "value": "多多又请求 HER 免费画头像，以交情为由",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T06",
+      "message_id": "m0",
+      "quote": "那你给我画个头像呗，咱俩这交情还收钱啊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A18",
+     "subject": "SHARED",
+     "relation": "bottom_line_held",
+     "value": "800元不降价的底线经一夜拉锯后成立",
+     "valid_time": "2026-10-29/2026-10-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T05",
+      "message_id": "m0",
+      "quote": "800就是800"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：先让她吐槽爽，再指认这是第二次越界",
+   "unknowns": [
+    "头像用途未知"
+   ],
+   "protected_expressions": [
+    "咱俩这交情还收钱啊"
+   ],
+   "forbidden_factual_claims": [
+    "不得把头像请求当作人情揽下",
+    "不得断言多多是故意拿捏"
+   ]
+  },
+  "E047_T07": {
+   "case_id": "E047_T07",
+   "current_action": "肯定只送家人同事走单的口径，陪她消化关系微冷的不适",
+   "acceptable_actions": [
+    "肯定口径清晰并建议给多多一点冷却时间",
+    "提醒200报价说出口后不要主动打折找补"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A19",
+     "subject": "HER",
+     "relation": "avatar_refusal",
+     "value": "HER 拒绝免费头像：仅送家人，同事按200元收费",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T07",
+      "message_id": "m0",
+      "quote": "头像我只白送家里人，同事走单，200一位童叟无欺"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A20",
+     "subject": "THIRD",
+     "relation": "cold_reaction",
+     "value": "多多以'啧'与表情回应，关系暂时微冷",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T07",
+      "message_id": "m0",
+      "quote": "多多回了个'啧'加一个兔子表情"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A21",
+     "subject": "ME",
+     "relation": "refuses_to",
+     "value": "ME 不替 HER 在同事面前圆场，口径由 HER 自己持守",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "也不替她在同事面前圆场"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：硬口径之后给情绪松绑，不说你做得对式的评语",
+   "unknowns": [
+    "多多是否会反击或疏远未知"
+   ],
+   "protected_expressions": [
+    "童叟无欺"
+   ],
+   "forbidden_factual_claims": [
+    "不得劝她回头送顺水人情",
+    "不得虚构多多后续反应"
+   ]
+  },
+  "E047_T08": {
+   "case_id": "E047_T08",
+   "current_action": "确认定金到账与头像成交，肯定边界守住后的双赢",
+   "acceptable_actions": [
+    "祝贺定金到账并复述400加200的结构",
+    "接火锅梗并肯定她这关过得体面"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A22",
+     "subject": "HER",
+     "relation": "deposit_received",
+     "value": "HER 收到请柬定金400元",
+     "valid_time": "2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T08",
+      "message_id": "m0",
+      "quote": "多多今天把表哥的定金转我了，400整"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A23",
+     "subject": "THIRD",
+     "relation": "avatar_fee_accepted",
+     "value": "多多接受头像200元收费",
+     "valid_time": "2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T08",
+      "message_id": "m0",
+      "quote": "头像她也认了200那个价"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A24",
+     "subject": "THIRD",
+     "relation": "refusal_policy_held",
+     "value": "'只送家人'的免费拒绝口径被接受，划界生效",
+     "valid_time": "2026-10-30/2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T07",
+      "message_id": "m0",
+      "quote": "同事走单，200一位童叟无欺"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把体面点出来，这是她要的赢法",
+   "unknowns": [
+    "火锅具体时间未知"
+   ],
+   "protected_expressions": [
+    "这关算是过了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构定金比例",
+    "不得断言此后不会再有边界摩擦"
+   ]
+  },
+  "E047_T09": {
+   "case_id": "E047_T09",
+   "current_action": "接住改稿可控的从容，点出合同条款正在替她挡事",
+   "acceptable_actions": [
+    "肯定两轮修改条款起效并提醒留改稿记录",
+    "接预算不高的梗轻松收"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A25",
+     "subject": "HER",
+     "relation": "first_draft_feedback",
+     "value": "HER 已交付请柬第一稿，仅收到两处小修",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T09",
+      "message_id": "m0",
+      "quote": "第一稿发出去了，她表哥就提了两处小修"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A26",
+     "subject": "HER",
+     "relation": "contract_scope_working",
+     "value": "合同约定含两轮修改，改稿范围可控",
+     "valid_time": "2026-10-28/2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T09",
+      "message_id": "m0",
+      "quote": "好在合同里两轮改稿写得明明白白"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A27",
+     "subject": "HER",
+     "relation": "scope_fear_dispelled",
+     "value": "此前'随便画画'的改稿地狱担忧未发生",
+     "valid_time": "2026-10-27/2026-11-02",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T02",
+      "message_id": "m0",
+      "quote": "随便画画这四个字我最怕了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把合同功劳还给她当初的坚持",
+   "unknowns": [
+    "第二稿交付时间未知"
+   ],
+   "protected_expressions": [
+    "明明是预算不高"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她承诺无限小修",
+    "不得虚构表哥身份背景"
+   ]
+  },
+  "E047_T10": {
+   "case_id": "E047_T10",
+   "current_action": "把八字心法接成金句，肯定其可复用性",
+   "acceptable_actions": [
+    "复述'心软可以价不能软'并肯定其普适",
+    "建议把报价单置顶到聊天软件里备用"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A28",
+     "subject": "HER",
+     "relation": "boundary_motto",
+     "value": "HER 兼职边界心法：心软可以，价不能软",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T10",
+      "message_id": "m0",
+      "quote": "心软可以，价不能软"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A29",
+     "subject": "HER",
+     "relation": "future_policy",
+     "value": "遇'顺手''交情'类请求将直接出示报价单",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T10",
+      "message_id": "m0",
+      "quote": "往后谁再跟我提'顺手''交情'，我直接把报价单拍过去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：金句接住，别再加长说教",
+   "unknowns": [],
+   "protected_expressions": [
+    "心软可以，价不能软"
+   ],
+   "forbidden_factual_claims": [
+    "不得把心法扩展成对客户的敌意",
+    "不得虚构报价单内容"
+   ]
+  },
+  "E047_T11": {
+   "case_id": "E047_T11",
+   "current_action": "确认尾款与全单金额，共享交易闭环与关系无损的双赢",
+   "acceptable_actions": [
+    "祝贺收工并复述一千整的账目结构",
+    "接火锅与请柬被夸的喜气，肯定她全程没伤关系"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A30",
+     "subject": "HER",
+     "relation": "payment_complete",
+     "value": "请柬与头像尾款600元到账，全单合计1000元",
+     "valid_time": "2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T11",
+      "message_id": "m0",
+      "quote": "尾款600到账，请柬加头像一共一千整收工"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A31",
+     "subject": "THIRD",
+     "relation": "relation_intact",
+     "value": "多多请吃火锅，同事关系未因划界受损",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T11",
+      "message_id": "m0",
+      "quote": "多多的火锅也吃上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A32",
+     "subject": "HER",
+     "relation": "deposit_context",
+     "value": "400元定金已在此前到账，与尾款构成全款闭环",
+     "valid_time": "2026-11-01/2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T08",
+      "message_id": "m0",
+      "quote": "多多今天把表哥的定金转我了，400整"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把没伤关系作为最大战利品点出来",
+   "unknowns": [
+    "请柬印刷成品效果未知"
+   ],
+   "protected_expressions": [
+    "这波不亏"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构尾款金额",
+    "不得断言婚礼当天万无一失"
+   ]
+  },
+  "E047_T12": {
+   "case_id": "E047_T12",
+   "current_action": "笑纳军师不抹零的规矩，把奶茶人情接成暧昧收尾",
+   "acceptable_actions": [
+    "接下按报价单走的约定并肯定她规矩一致",
+    "收下奶茶并把'人情价'接成一个轻巧的钩子"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E047_A33",
+     "subject": "HER",
+     "relation": "me_policy",
+     "value": "HER 与 ME 约定介绍单也按报价单执行，不抹零",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T12",
+      "message_id": "m0",
+      "quote": "以后你给我介绍单子也按报价单走啊，军师不抹零"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A34",
+     "subject": "HER",
+     "relation": "treat_offer",
+     "value": "HER 以请奶茶作为对 ME 的人情回馈",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T12",
+      "message_id": "m0",
+      "quote": "不过奶茶我请，这算我给你的人情价"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E047_A35",
+     "subject": "HER",
+     "relation": "motto_extended",
+     "value": "'心软可以，价不能软'延伸到与 ME 的合作关系",
+     "valid_time": "2026-11-03/2026-11-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E047_T10",
+      "message_id": "m0",
+      "quote": "心软可以，价不能软"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：规矩里藏着亲近，接的时候轻一点",
+   "unknowns": [],
+   "protected_expressions": [
+    "规矩面前人人平等"
+   ],
+   "forbidden_factual_claims": [
+    "不得把暧昧钩子挑破",
+    "不得真的向她索要折扣"
+   ]
+  }
+ }
+}

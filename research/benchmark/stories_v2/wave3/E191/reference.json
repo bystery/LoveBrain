@@ -1,0 +1,634 @@
+{
+ "story_id": "E191",
+ "turns": {
+  "E191_T01": {
+   "case_id": "E191_T01",
+   "current_action": "接住满员报喜，确认到场并认领重策大桌的期待。",
+   "acceptable_actions": [
+    "确认到场并呼应重策开大桌",
+    "顺带问要不要帮带茶水零食凑低消",
+    "问她八人局教学打算怎么排"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A01",
+     "subject": "SHARED",
+     "relation": "拼局人数",
+     "value": "周六晚桌游局报名满八人",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T01",
+      "quote": "周六晚的局满员啦，八个人",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E191_A02",
+     "subject": "SHARED",
+     "relation": "费用口径",
+     "value": "包间低消三百六十元八人人均四十五元",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T01",
+      "quote": "包间低消三百六，人均四十五",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E191_A03",
+     "subject": "SHARED",
+     "relation": "局次安排",
+     "value": "十一月七日周六晚桌游吧包间局",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "订了十一月七日周六晚的桌游吧包间"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她拼满八人花了心思，先接住成就感再谈细节。",
+   "unknowns": [
+    "八人最终到场情况未知"
+   ],
+   "protected_expressions": [
+    "终于能开大桌了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构包间具体位置或桌游吧名称"
+   ]
+  },
+  "E191_T02": {
+   "case_id": "E191_T02",
+   "current_action": "确认到场，主动认领教学环节的分担角色。",
+   "acceptable_actions": [
+    "确认到场并认领教学帮手角色",
+    "提议提前十分钟到帮她摆桌",
+    "问她重策开哪款好备课"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A04",
+     "subject": "ME",
+     "relation": "到场承诺",
+     "value": "确认参加八人局并分担教学环节",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T02",
+      "quote": "教学环节搭把手",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "组织者最怕 临场抓瞎，主动认领具体分工。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": []
+  },
+  "E191_T03": {
+   "case_id": "E191_T03",
+   "current_action": "夸速查表的结构拆分，点出它对教学时间的实际价值。",
+   "acceptable_actions": [
+    "夸四页结构清晰并问分发方式",
+    "指出得分表那页最容易救场",
+    "提议开局前留五分钟集体读表"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A05",
+     "subject": "HER",
+     "relation": "教学准备",
+     "value": "四页规则速查表含开局回合得分常见坑各一页",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T03",
+      "quote": "四页，开局流程一页，回合结构一页，得分表一页，常见坑一页",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "夸要夸到结构上：四页各管一段，不是泛泛说'厉害'。",
+   "unknowns": [],
+   "protected_expressions": [
+    "规则速查表做完了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构速查表以外的页数"
+   ]
+  },
+  "E191_T04": {
+   "case_id": "E191_T04",
+   "current_action": "把速查表变成流程：提前十分钟到、先读表再开局，省下教学时间。",
+   "acceptable_actions": [
+    "建议发群预热并约定提前到场读表",
+    "让她把速查表打印几份备用",
+    "提议把常见坑那页做成开局面小测"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A06",
+     "subject": "ME",
+     "relation": "流程建议",
+     "value": "提前十分钟到场先读表再开局",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T04",
+      "quote": "周六提前十分钟到，先读表再开局",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "建议落在时间上：提前十分钟是为速查表服务的，不是客套。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": []
+  },
+  "E191_T05": {
+   "case_id": "E191_T05",
+   "current_action": "接住放鸽的火气，先认可她算清的账，再陪她定补位或照玩的策略。",
+   "acceptable_actions": [
+    "先接情绪，再确认人均重算口径并讨论补位",
+    "建议六人照玩并主动认下差价",
+    "帮她想临时拉人的候选名单但提醒别凑数"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "boundary",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A07",
+     "subject": "SHARED",
+     "relation": "拼局人数",
+     "value": "八人局两人临时缺席仅剩六人",
+     "valid_time": "2026-11-07",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T05",
+      "quote": "老康临时加班来不了，小麦发烧也请假，就剩六个人",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E191_A08",
+     "subject": "SHARED",
+     "relation": "人均费用",
+     "value": "六人分摊低消三百六十元人均六十元较原四十五元多十五元",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T05",
+      "quote": "低消三百六摊到六个人头上就是六十",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E191_A09",
+     "subject": "SHARED",
+     "relation": "费用口径",
+     "value": "原口径包间低消三百六十元八人人均四十五元",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T01",
+      "quote": "包间低消三百六，人均四十五",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "账她自己算对了（三百六除六是六十，多十五），先认账再谈人，别替商家道歉。",
+   "unknowns": [
+    "缺席两人是否事后补偿未提"
+   ],
+   "protected_expressions": [
+    "比说好的人均四十五多了十五"
+   ],
+   "forbidden_factual_claims": [
+    "不得把人均算成六十以外的数",
+    "不得声称缺席两人会照付份额"
+   ]
+  },
+  "E191_T06": {
+   "case_id": "E191_T06",
+   "current_action": "主张六人照玩不凑数，带头认下六十的份额并提醒她把口径在群里说清防扯皮。",
+   "acceptable_actions": [
+    "支持六人照玩并先转自己那份六十",
+    "帮她拟一条群里的人均重算说明",
+    "提醒她垫付前先收齐口头确认"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "initiative",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A10",
+     "subject": "ME",
+     "relation": "分摊态度",
+     "value": "自愿按六十元承担并支持六人照玩",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T06",
+      "quote": "我的那份按六十转你",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E191_A11",
+     "subject": "SHARED",
+     "relation": "人均费用",
+     "value": "六人分摊低消人均六十元",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T05",
+      "quote": "低消三百六摊到六个人头上就是六十",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "带头认差价是给组织者搭台阶，不是施舍，语气要平。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称自己那份仍按四十五付"
+   ]
+  },
+  "E191_T07": {
+   "case_id": "E191_T07",
+   "current_action": "确认全员认账后爽利垫付三百六，宣布每人还六十的口径并进入开局。",
+   "acceptable_actions": [
+    "确认垫付口径并预祝开局顺利",
+    "顺势夸速查表正好派上用场",
+    "提醒她垫付转账备注写清桌游局"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A12",
+     "subject": "HER",
+     "relation": "垫付分摊",
+     "value": "她垫付包间低消三百六十元每人应还六十元",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T07",
+      "quote": "我现在垫付包间低消三百六，回来你们一人转我六十",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E191_A13",
+     "subject": "HER",
+     "relation": "教学准备",
+     "value": "四页规则速查表当晚启用",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T03",
+      "quote": "四页，开局流程一页，回合结构一页，得分表一页，常见坑一页",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "垫付金额和应还口径要说死：三百六、每人六十，不留模糊空间。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一人转我六十"
+   ],
+   "forbidden_factual_claims": [
+    "不得把垫付金额说成三百以外任何数"
+   ]
+  },
+  "E191_T08": {
+   "case_id": "E191_T08",
+   "current_action": "汇报已转六十并反馈速查表实际救场，把她的准备成果落成事实。",
+   "acceptable_actions": [
+    "汇报转账到账并具体夸速查表某页",
+    "复盘一句六人局的体验反差",
+    "提醒她还差几份没到账记得对"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A14",
+     "subject": "ME",
+     "relation": "转账记录",
+     "value": "已转账六十元备注桌游局",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T08",
+      "quote": "六十转你了备注桌游局",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "转账要带备注，这是AA局的信用习惯。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构转账金额为六十以外"
+   ]
+  },
+  "E191_T09": {
+   "case_id": "E191_T09",
+   "current_action": "接住对账结果：五份六十共三百到齐，她自担六十，肯定当周结清的做法并接下凑回八人的Flag。",
+   "acceptable_actions": [
+    "复述对账数字确认无误并接下八人目标",
+    "肯定她自担六十的爽气但提醒下局真要凑满",
+    "把速查表群文件化的提议再推一步"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A15",
+     "subject": "SHARED",
+     "relation": "对账结果",
+     "value": "收回五份每人六十共三百元她自担六十元",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T09",
+      "quote": "五份六十都到齐，一共三百",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E191_A16",
+     "subject": "HER",
+     "relation": "垫付分摊",
+     "value": "她垫付包间低消三百六十元每人应还六十元",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T07",
+      "quote": "我现在垫付包间低消三百六，回来你们一人转我六十",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "账目数字要对上：五份三百加她自担六十正好三百六，别复述错。",
+   "unknowns": [
+    "缺席两人是否参加下局未知"
+   ],
+   "protected_expressions": [
+    "我自己兜底六十"
+   ],
+   "forbidden_factual_claims": [
+    "不得把对账总额算成三百六十以外",
+    "不得声称缺席两人已补付"
+   ]
+  },
+  "E191_T10": {
+   "case_id": "E191_T10",
+   "current_action": "调侃一句座位费说法，顺势提议把速查表源文件改成群文件沉淀为组织资产。",
+   "acceptable_actions": [
+    "接住自担六十的玩笑并要速查表源文件",
+    "提议源文件加新人版页签",
+    "让她下次局直接用群文件教学"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A17",
+     "subject": "ME",
+     "relation": "共享提议",
+     "value": "速查表源文件改成群文件供新人使用",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T10",
+      "quote": "改改成群文件，以后新人入局不用你重讲",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "提议要让她省力而不是添活，落点在'不用重讲'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": []
+  },
+  "E191_T11": {
+   "case_id": "E191_T11",
+   "current_action": "接住八人局复原的宣布，确认新人补位与人均回四十五，把速查表前移到新人学习环节。",
+   "acceptable_actions": [
+    "祝贺凑回八人并肯定速查表先行",
+    "确认下下周六档期并问开哪款",
+    "提醒新人学完规则再做一轮开局面小测"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A18",
+     "subject": "SHARED",
+     "relation": "拼局人数",
+     "value": "下下周六恢复八人局人均回到四十五元",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T11",
+      "quote": "八人齐了，人均又回到四十五",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E191_A19",
+     "subject": "HER",
+     "relation": "凑局目标",
+     "value": "下局要凑回八人把人均打回四十五",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T09",
+      "quote": "下局我要凑回八人，把人均打回四十五",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她兑现了自己立的Flag，点一句'说到做到'比夸新人更重要。",
+   "unknowns": [
+    "新人两口子是否会临时变卦未知"
+   ],
+   "protected_expressions": [
+    "人均又回到四十五"
+   ],
+   "forbidden_factual_claims": [
+    "不得把新人入局时间说成本周六"
+   ]
+  },
+  "E191_T12": {
+   "case_id": "E191_T12",
+   "current_action": "接住新人学完规则的好消息与周六之约，接住奶茶并预祝八人重策局顺利。",
+   "acceptable_actions": [
+    "答应周六到场并接住奶茶之约",
+    "夸她新手版加页的做法",
+    "提醒周六提前十分钟到读表开局"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E191_A20",
+     "subject": "SHARED",
+     "relation": "拼局人数",
+     "value": "小柯两口子补位下下周六恢复八人局",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T11",
+      "quote": "同事小柯两口子下下周六入局",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E191_A21",
+     "subject": "HER",
+     "relation": "教学准备",
+     "value": "速查表新增新手版一页",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E191_T12",
+      "quote": "新手版我又加了一页",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "奶茶是她记着的人情，接住就行，别推让。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你那杯奶茶我记着呢"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构周六局的开销数字"
+   ]
+  }
+ }
+}

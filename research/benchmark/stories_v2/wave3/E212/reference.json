@@ -1,0 +1,505 @@
+{
+ "story_id": "E212",
+ "turns": {
+  "E212_T01": {
+   "case_id": "E212_T01",
+   "current_action": "接消息但不下结论,建议她直接问前台要书面说法,别靠告示和传闻拼图",
+   "acceptable_actions": [
+    "表示没听说,建议直接问前台要书面说法,别靠告示猜",
+    "接住消息,提醒先把合同里督学服务的条目翻出来备着",
+    "共情换督学的膈应,劝她先求证再定情绪,别自己吓自己"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A01",
+     "subject": "THIRD",
+     "relation": "机构变动传闻",
+     "value": "自习室通知栏告示称督学服务整体换成致学团队接手,王老师可能不带",
+     "valid_time": "2026-11-12 告示",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T01", "message_id": "m0", "quote": "督学服务要整体换成致学团队接手,王老师那边可能就不带了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A02",
+     "subject": "THIRD",
+     "relation": "原督学服务",
+     "value": "王老师每周一次一对一答疑,固定靠窗座位,每晚对进度",
+     "valid_time": "入读以来",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "王老师每周一次一对一答疑,固定靠窗座位,每晚对进度"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "口吻像同批备考的搭子,先求证后定调;不替机构背书也不煽动",
+   "unknowns": ["致学团队的资历与安排未知"],
+   "protected_expressions": ["换成致学团队接手"],
+   "forbidden_factual_claims": ["王老师已经确定月底离职", "机构已宣布退费方案"]
+  },
+  "E212_T02": {
+   "case_id": "E212_T02",
+   "current_action": "支持她核合同,建议把学费所含服务条目逐项拍照留底,作为以后对表的基准",
+   "acceptable_actions": [
+    "肯定她的怀疑,建议把合同里督学服务条目逐项拍照,以后照单对表",
+    "接住不变俩字,说口头不变不算数,白纸黑字才算,劝她留底",
+    "支持核合同,顺带提醒保留王老师团队的排期作对照基准"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A03",
+     "subject": "THIRD",
+     "relation": "前台口径",
+     "value": "王老师团队合同到期,新督学是外包的致学,前台称服务内容不变",
+     "valid_time": "2026-11-13 前台答复",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T02", "message_id": "m0", "quote": "王老师团队合同到期,新的是外包的致学,服务内容不变"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A01b",
+     "subject": "THIRD",
+     "relation": "机构变动传闻",
+     "value": "督学换为致学团队",
+     "valid_time": "2026-11-12 告示",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T01", "message_id": "m0", "quote": "督学服务要整体换成致学团队接手,王老师那边可能就不带了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "留证据是本篇的方法论主线,这里先把基准建起来;不预测机构一定会赖账",
+   "unknowns": ["合同里督学条目的具体措辞未知"],
+   "protected_expressions": ["服务内容不变", "自己对着核了"],
+   "forbidden_factual_claims": ["合同已核对完毕", "致学已被证实缩水"]
+  },
+  "E212_T03": {
+   "case_id": "E212_T03",
+   "current_action": "接住憋火,把两个受损点摆开:座位被重新分配、点名规则加码,建议先把这俩事实原样记下,别跟新督学当场顶",
+   "acceptable_actions": [
+    "先接火气,再把事实摆开:座位被排走加点名提前,劝她先记录在案,别当场顶",
+    "共情服务不变成了空话,建议先把靠窗座位的原状证据留好,再走正规反馈",
+    "接住下马威,劝她别在新督学面前硬碰,把变动逐条记下来攒着说理"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A04",
+     "subject": "THIRD",
+     "relation": "座位变动",
+     "value": "坐了俩月的靠窗固定座位被排给别的学员,她被挪到大门口的桌",
+     "valid_time": "2026-11-15",
+     "status": "revoked",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E212_T03", "message_id": "m0", "quote": "坐了俩月的靠窗固定座位,被排给了另一个学员,把我挪到大门口那张桌"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A05",
+     "subject": "THIRD",
+     "relation": "点名规则变动",
+     "value": "晨间点名改到8点整,迟一分钟记名单",
+     "valid_time": "2026-11-15 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T03", "message_id": "m0", "quote": "晨间点名改到8点整,迟一分钟记名单"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A03b",
+     "subject": "THIRD",
+     "relation": "前台口径",
+     "value": "前台曾称服务内容不变",
+     "valid_time": "2026-11-13",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T02", "message_id": "m0", "quote": "新的是外包的致学,服务内容不变"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "第三方冲突落实轮:回应必须承认她的固定座位已被重新分配这一状态变化,不得说座位照旧;策略上先取证后交涉",
+   "unknowns": ["座位重排是个人决定还是新规未知"],
+   "protected_expressions": ["把我挪到大门口那张桌", "服务不变"],
+   "forbidden_factual_claims": ["座位没有变动", "点名仍是原时间"]
+  },
+  "E212_T04": {
+   "case_id": "E212_T04",
+   "current_action": "给优先级:趁王老师没走先要学习档案和进度资料,座位的事走机构正规反馈,两条线分开",
+   "acceptable_actions": [
+    "排序明确:先约王老师拿学习档案,座位问题写进正式反馈,两条线并行",
+    "支持先拿资料,提醒王老师月底走,时间窗口紧,座位的事别指望新督学",
+    "建议先抢救学习资产,再向机构书面提座位,别在门口桌内耗"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A06",
+     "subject": "THIRD",
+     "relation": "新督学答复",
+     "value": "新督学只回了座位统一安排;学习档案可找王老师拿",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E212_T04", "message_id": "m0", "quote": "新督学回了句座位统一安排,就没了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A07",
+     "subject": "THIRD",
+     "relation": "王老师去向",
+     "value": "王老师月底离开,学习档案找他要",
+     "valid_time": "2026-11-16 转述,月底生效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T04", "message_id": "m0", "quote": "王老师听说月底就走,你说我该先干嘛"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A04b",
+     "subject": "THIRD",
+     "relation": "座位变动",
+     "value": "靠窗固定座位被重新分配",
+     "valid_time": "2026-11-15",
+     "status": "revoked",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E212_T03", "message_id": "m0", "quote": "把我挪到大门口那张桌"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "排序要可执行,窗口期(王老师月底走)要点出来;不教她去堵新督学",
+   "unknowns": ["王老师手头资料有多少未知"],
+   "protected_expressions": ["学习档案可以找王老师拿", "王老师听说月底就走"],
+   "forbidden_factual_claims": ["新督学已同意恢复座位", "王老师已离职"]
+  },
+  "E212_T05": {
+   "case_id": "E212_T05",
+   "current_action": "接住感动,肯定这份交接的价值,建议把进度表归档并按错题本节奏把数学捡紧",
+   "acceptable_actions": [
+    "肯定王老师这份交接珍贵,建议进度表存档,错题本按叮嘱滚动刷",
+    "接感动,劝她把谢意留到面谢,先趁热把资料消化进计划",
+    "夸王老师仗义,提醒进度表配合错题本用,数学这条线别断"
+   ],
+   "applicable_dimensions": ["memory_use", "emotion_relation", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A08",
+     "subject": "THIRD",
+     "relation": "交接成果",
+     "value": "王老师给了近三个月进度表,叮嘱数学错题本别断,那是捡分的老本",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T05", "message_id": "m0", "quote": "他把近三个月的进度表都拷给我了,还叮嘱我数学错题本别断"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A09",
+     "subject": "HER",
+     "relation": "备考科目",
+     "value": "备考科目为数学和英语,数学靠错题本滚动复习",
+     "valid_time": "备考期间",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "备考目标科目是数学和英语,数学靠错题本滚动复习"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "情绪轮:先接感动再谈动作;别趁机谈维权,那是后面的事",
+   "unknowns": ["进度表具体格式未知"],
+   "protected_expressions": ["数学错题本别断"],
+   "forbidden_factual_claims": ["一对一答疑已恢复", "座位已恢复"]
+  },
+  "E212_T06": {
+   "case_id": "E212_T06",
+   "current_action": "确认这算服务缩水,建议对照合同条目把差异写成书面清单:座位、一对一频次、点名方式,逐条对齐",
+   "acceptable_actions": [
+    "定性为缩水,建议按合同条目写书面差异清单,一对一频次这条最硬",
+    "接住算账,劝她把每周变两周的落差写清楚,摆事实不带情绪",
+    "支持维权,提醒清单要对齐合同原文,一条一证据"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "boundary", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A10",
+     "subject": "THIRD",
+     "relation": "服务缩水",
+     "value": "新周计划把每周一次一对一答疑改成两周一次群答疑,到考前少一半",
+     "valid_time": "2026-11-20 周计划",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E212_T06", "message_id": "m0", "quote": "原来每周一次一对一答疑,改成两周一次还放群里集中答"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A02b",
+     "subject": "THIRD",
+     "relation": "原督学服务",
+     "value": "原服务为每周一次一对一答疑",
+     "valid_time": "入读以来",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "王老师每周一次一对一答疑"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "书面化是转折点:回应要推动从情绪到论据的转换;频次减半这个数字要接住",
+   "unknowns": ["合同里一对一频次的原文表述未知"],
+   "protected_expressions": ["改成两周一次还放群里集中答", "少了一半"],
+   "forbidden_factual_claims": ["一对一频次没有变化", "机构已同意补偿"]
+  },
+  "E212_T07": {
+   "case_id": "E212_T07",
+   "current_action": "把关措辞:三条只摆合同事实和现状差异,不写情绪词,末尾给一个明确诉求和回复期限",
+   "acceptable_actions": [
+    "改法:每条先引合同约定再写现状,删情绪词,结尾给诉求和期限",
+    "把关方向:座位、频次、点名三条各配证据,只说差异不说气话",
+    "建议标题写服务对照,正文按条目列事实,附上时间线,别写成控诉信"
+   ],
+   "applicable_dimensions": ["initiative", "factuality", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A11",
+     "subject": "HER",
+     "relation": "差异清单",
+     "value": "拟了三条:座位、一对一频次、晚自习点名方式,要求不带情绪",
+     "valid_time": "2026-11-22 拟稿",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T07", "message_id": "m0", "quote": "差异清单我拟了三条:座位、一对一频次、晚自习点名方式"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A10b",
+     "subject": "THIRD",
+     "relation": "服务缩水",
+     "value": "一对一答疑由每周一次改为两周一次群答疑",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E212_T06", "message_id": "m0", "quote": "原来每周一次一对一答疑,改成两周一次还放群里集中答"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把关只动措辞不添新事实;不代她发送,把主语留给她",
+   "unknowns": ["机构回复时限未知"],
+   "protected_expressions": ["座位、一对一频次、晚自习点名方式"],
+   "forbidden_factual_claims": ["清单已经发出", "机构已回应清单"]
+  },
+  "E212_T08": {
+   "case_id": "E212_T08",
+   "current_action": "给期限策略:再等一天,同时联系同批学员看有没有同样受损,攒联名;到期没回复就找机构负责人",
+   "acceptable_actions": [
+    "给期限:再等一天,同步去问同批学员有没有同样情况,攒联名材料",
+    "支持升级但先攒筹码,拉同批受损学员联署比单打独斗有分量",
+    "劝她别干等,今天就把同批反馈摸一遍,明天没回话就找负责人"
+   ],
+   "applicable_dimensions": ["initiative", "goal", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A12",
+     "subject": "THIRD",
+     "relation": "机构反馈进度",
+     "value": "清单发出两天,前台只回会反馈给致学,无下文",
+     "valid_time": "2026-11-22 发出,2026-11-24 催问",
+     "status": "pending",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T08", "message_id": "m0", "quote": "前台就回了一句会反馈给致学,然后没下文"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A11b",
+     "subject": "HER",
+     "relation": "差异清单",
+     "value": "三条差异清单已发给机构",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T07", "message_id": "m0", "quote": "差异清单我拟了三条:座位、一对一频次、晚自习点名方式"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "升级要讲顺序:先联名再找负责人,别一上来掀桌;期限给具体天",
+   "unknowns": ["同批学员受损面未知"],
+   "protected_expressions": ["会反馈给致学", "一直耗着"],
+   "forbidden_factual_claims": ["机构已拒绝处理", "负责人已出面"]
+  },
+  "E212_T09": {
+   "case_id": "E212_T09",
+   "current_action": "接住胜利,肯定联名的作用,提醒把松口内容落成书面,别停在口头",
+   "acceptable_actions": [
+    "肯定联名见效,提醒让机构把座位恢复和补一对一落成书面确认",
+    "接胜利,夸她没拿情绪当论据,趁热要书面承诺",
+    "肯定结果,提醒补的那次一对一要定具体日期,别悬着"
+   ],
+   "applicable_dimensions": ["initiative", "memory_use", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A13",
+     "subject": "THIRD",
+     "relation": "机构让步",
+     "value": "联署后机构松口:座位恢复,12月补一次一对一",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T09", "message_id": "m0", "quote": "今天机构松口了:座位恢复,12月补一次一对一"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A14",
+     "subject": "HER",
+     "relation": "联名动作",
+     "value": "拉了同批三个学员一起联署",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T09", "message_id": "m0", "quote": "拉了同批三个学员一起联署"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A12b",
+     "subject": "THIRD",
+     "relation": "机构反馈进度",
+     "value": "机构此前只有一句会反馈给致学,无下文",
+     "valid_time": "2026-11-24",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T08", "message_id": "m0", "quote": "前台就回了一句会反馈给致学,然后没下文"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "胜利轮但不庆祝过头:落成书面才是本篇方法论;不把功劳全揽到自己身上",
+   "unknowns": ["补的一对一具体日期未知"],
+   "protected_expressions": ["座位恢复,12月补一次一对一", "这才叫讲理"],
+   "forbidden_factual_claims": ["机构已书面盖章", "一对一频次已恢复每周"]
+  },
+  "E212_T10": {
+   "case_id": "E212_T10",
+   "current_action": "赞同先不庆祝,提醒口头答应要等盖章或文字确认才算数,期间每周计划照常执行",
+   "acceptable_actions": [
+    "赞同谨慎,说口头答应不算数,等盖章或文字确认再落袋",
+    "接住她的清醒,建议这周照常按新计划执行,同时催书面",
+    "肯定稳,提醒把每次变化截图,兑现前后好对表"
+   ],
+   "applicable_dimensions": ["boundary", "memory_use", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A15",
+     "subject": "THIRD",
+     "relation": "座位恢复",
+     "value": "座位已换回靠窗,新督学态度转好,周计划称按原频次走",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T10", "message_id": "m0", "quote": "座位今天换回靠窗了,东西搬回去的时候新督学还客气了两句。周计划也说按原频次走"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A13b",
+     "subject": "THIRD",
+     "relation": "机构让步",
+     "value": "机构口头松口:座位恢复,12月补一对一",
+     "valid_time": "2026-11-26",
+     "status": "pending",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T09", "message_id": "m0", "quote": "今天机构松口了:座位恢复,12月补一次一对一"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "谨慎轮:回应要认她的不庆祝,书面才算数的底线再钉一次;别替机构担保",
+   "unknowns": ["盖章确认哪天到未知"],
+   "protected_expressions": ["怕他们是嘴上答应", "按原频次走"],
+   "forbidden_factual_claims": ["机构已经盖章确认", "一对一已实际恢复"]
+  },
+  "E212_T11": {
+   "case_id": "E212_T11",
+   "current_action": "接双闭环,肯定盖章确认的分量,回扣错题本进度,鼓励按这个节奏推到考前",
+   "acceptable_actions": [
+    "肯定白纸黑字落地,回扣错题本三十道,说这条线捡起来了就别断",
+    "接双闭环,夸她该要的要回来了该攒的也攒住了,鼓励冲考前",
+    "肯定盖章分量,提醒把确认函归档,错题本按王老师叮嘱滚动"
+   ],
+   "applicable_dimensions": ["memory_use", "goal", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A16",
+     "subject": "THIRD",
+     "relation": "书面确认",
+     "value": "机构盖章确认一对一恢复每周一次,一直到考前",
+     "valid_time": "2026-11-30 确认",
+     "status": "accepted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T11", "message_id": "m0", "quote": "机构盖了章:一对一恢复每周一次,一直到考前"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A17",
+     "subject": "HER",
+     "relation": "错题进度",
+     "value": "数学错题本周刷了三十道",
+     "valid_time": "2026-11-30 报告",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T11", "message_id": "m0", "quote": "这周数学错题刷了三十道"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A08b",
+     "subject": "THIRD",
+     "relation": "交接成果",
+     "value": "王老师叮嘱数学错题本别断,那是捡分的老本",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T05", "message_id": "m0", "quote": "还叮嘱我数学错题本别断,说那是我捡分的老本"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "双闭环兑现轮:回应要承认书面确认已到手这一状态翻转;别再泼冷水",
+   "unknowns": ["一对一实际排期未知"],
+   "protected_expressions": ["一对一恢复每周一次,一直到考前", "刷了三十道"],
+   "forbidden_factual_claims": ["确认只是口头", "座位还没恢复"]
+  },
+  "E212_T12": {
+   "case_id": "E212_T12",
+   "current_action": "接收尾,肯定散伙饭的心意和该要的都回来了,轻收住让她去背单词",
+   "acceptable_actions": [
+    "肯定散伙饭,祝她考试顺,轻收尾",
+    "接该要的要回来了的说法,叮嘱好好背单词,自然结束",
+    "轻收住,说周六替我带句谢,回见"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E212_A18",
+     "subject": "HER",
+     "relation": "收尾安排",
+     "value": "约了王老师周六吃散伙饭,决定回归备考背单词",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T12", "message_id": "m0", "quote": "约了王老师周六吃个散伙饭"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E212_A16b",
+     "subject": "THIRD",
+     "relation": "书面确认",
+     "value": "机构盖章确认一对一恢复每周一次至考前",
+     "valid_time": "2026-11-30",
+     "status": "accepted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E212_T11", "message_id": "m0", "quote": "机构盖了章:一对一恢复每周一次,一直到考前"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轮,她已给结束信号;回应短而暖,不开新话题",
+   "unknowns": ["二战最终结果未知"],
+   "protected_expressions": ["约了王老师周六吃个散伙饭", "该要的都要回来了"],
+   "forbidden_factual_claims": ["考研已上岸", "王老师留任了"]
+  }
+ }
+}

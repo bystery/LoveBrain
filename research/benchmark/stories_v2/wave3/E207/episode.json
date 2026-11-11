@@ -1,0 +1,179 @@
+{
+ "episode_id": "E207",
+ "persona": {
+  "her": {
+   "name": "何嘉嘉",
+   "traits": ["仪式感强", "组织欲强", "遇挫易蔫但恢复快", "认账不甩锅"],
+   "boundaries": ["自己办砸的事不愿别人代劳收尾"]
+  },
+  "me": {
+   "name": "沈一舟",
+   "traits": ["随和", "动手能力强", "备选方案控", "出借过卡式炉"]
+  },
+  "relationship_stage": "渐暧昧(户外爬山群认识四个月,单独约过两次饭)"
+ },
+ "initial_kb": {
+  "her": "何嘉嘉在筹备闺蜜周笑的生日野餐,原定11月15日周日在郊野鹿鸣公园大草坪;她已订蛋糕并租好帐篷天幕。",
+  "me": "沈一舟在户外群认识何嘉嘉,出借过她一套卡式炉;鹿鸣公园遇雨天大草坪会关闭;生日主角周笑是何嘉嘉的大学室友。",
+  "warmth": "互有好感,聊天常互损,何嘉嘉办活动时最需要人搭手。"
+ },
+ "turns": [
+  {
+   "case_id": "E207_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-13 20:05", "text": "沈一舟!周日生日野餐你可算要派上用场了,周笑点名要看你搭天幕的手艺,帐篷我租好了,120一天,你把卡式炉带上"}
+    ],
+    "clock": "2026-11-13 20:10",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "组织者上线,分工明确", "change": "正式发出参与邀约"}
+  },
+  {
+   "case_id": "E207_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 19:00", "text": "蛋糕订好了!栗子奶油的158,就是周笑念叨了半年的那家,我让她猜多少钱,猜了三次都没对"}
+    ],
+    "clock": "2026-11-14 19:05",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "小得意,筹备顺利", "change": "进入细节分享模式"}
+  },
+  {
+   "case_id": "E207_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 21:25", "text": "水果也囤好了,草莓两盒青提一袋,85块,野餐篮装得冒尖!对了对了,草莓千万别提前洗,我一洗就蔫"}
+    ],
+    "clock": "2026-11-14 21:30",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "兴奋清点物资", "change": "开始操心保存细节"}
+  },
+  {
+   "case_id": "E207_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 06:50", "text": "完了完了,暴雨橙色预警!公园公众号刚发公告,今天大草坪关闭,野餐得取消……周笑在电话里都快哭了,我筹备半个月啊"},
+     {"role": "HER", "ts": "2026-11-15 06:53", "text": "蛋糕今天取还是不取,帐篷咋办,水果咋办,我脑子一团浆糊"}
+    ],
+    "clock": "2026-11-15 07:00",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "慌乱求援", "change": "从筹备模式跌进救火模式"}
+  },
+  {
+   "case_id": "E207_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 07:18", "text": "问了蛋糕店!可以免费改到下周日,158不用动,他们店里就有先例。你刚说的方案我越想越对,活动整个挪到11月22号"}
+    ],
+    "clock": "2026-11-15 07:25",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "按方案逐项执行,情绪回稳", "change": "接受改期并开始落实"}
+  },
+  {
+   "case_id": "E207_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 08:02", "text": "帐篷老板也说直接给我改到下周日,还按120一天算,一分手续费不收!就是水果有点愁人"}
+    ],
+    "clock": "2026-11-15 08:10",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "两件大事落定,只剩水果", "change": "救火清单还剩最后一项"}
+  },
+  {
+   "case_id": "E207_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 09:35", "text": "草莓确实放不到下周,我给楼上邻居分了两盒,青提给你留了一袋!晚上下楼给你,顺便验收一下你借我的卡式炉有没有偷偷想我"}
+    ],
+    "clock": "2026-11-15 09:40",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "情绪恢复,开始互损", "change": "从救火转回打趣"}
+  },
+  {
+   "case_id": "E207_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 20:30", "text": "周笑视频里又哭又笑,说改期反而救了她——14号她被临时排了加班,今天本来要请假杀出来的!这波因祸得福怎么回事"}
+    ],
+    "clock": "2026-11-15 20:35",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "转忧为喜,有分享欲", "change": "改期获得意外正当性"}
+  },
+  {
+   "case_id": "E207_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-18 20:10", "text": "我盯了一周天气预报,下周日多云,15度,微风!鹿鸣公园公众号都开始预热周末露营了,老天爷这是给我赔罪呢"}
+    ],
+    "clock": "2026-11-18 20:15",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "对改期日信心恢复", "change": "开始倒计时式期待"}
+  },
+  {
+   "case_id": "E207_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-21 20:55", "text": "明天流程敲定:上午十点公园东门集合,我带蛋糕和帐篷,你带卡式炉和热奶茶的锅!我再垫个防水垫,万一小雨也不怕"}
+    ],
+    "clock": "2026-11-21 21:00",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "流程控回归", "change": "改期日前夜最终确认"}
+  },
+  {
+   "case_id": "E207_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-22 16:50", "text": "完美收工!天幕是你搭的吧,稳得周笑在上面蹦了两下!她吹蜡烛的时候许愿说'明年还要这样过',你功不可没"}
+    ],
+    "clock": "2026-11-22 17:00",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "活动成功,盛赞ME", "change": "从求援对象变成MVP"}
+  },
+  {
+   "case_id": "E207_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-23 11:15", "text": "对了,账我昨晚理了下:蛋糕158加帐篷120加水果85,一共363,暴雨折腾一圈居然一分没多花!就是水果进了咱俩肚子哈哈"}
+    ],
+    "clock": "2026-11-23 11:20",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "复盘收尾,得意于零损失", "change": "账目闭环,事件完整落幕"}
+  }
+ ]
+}

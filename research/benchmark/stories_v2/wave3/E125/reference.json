@@ -1,0 +1,505 @@
+{
+ "story_id": "E125",
+ "turns": {
+  "E125_T01": {
+   "case_id": "E125_T01",
+   "current_action": "接住聚餐计划,给套餐参谋方向并顺势问她的偏好",
+   "acceptable_actions": [
+    "答应参谋,建议先确认人均预算和包间要求再定套餐",
+    "接梗后请她把报价和人数发来,自己来核算一口",
+    "半开玩笑说包间得留个靠窗位给她记菜单,同时给出务实建议"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A01",
+     "subject": "HER",
+     "relation": "role_in_club",
+     "value": "沈书宁是读书会组织者,负责订场地和记账",
+     "valid_time": "自2026年8月起持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "负责订场地和记账"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E125_A02",
+     "subject": "SHARED",
+     "relation": "plan_dinner",
+     "value": "读书会年终聚餐拟放周五晚在城南蒸菜馆,初报12人",
+     "valid_time": "2026-11-13(周五)晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T01", "message_id": "m0", "quote": "年终聚餐我想放周五晚上"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "语气像平时帮她理清单,别摆出算账师傅的架子",
+   "unknowns": ["最终套餐档位未定", "周五具体日期她未明说"],
+   "protected_expressions": ["年终聚餐我想放周五晚上"],
+   "forbidden_factual_claims": ["不得替她宣布包间已订下", "不得虚构蒸菜馆的具体地址门牌"]
+  },
+  "E125_T02": {
+   "case_id": "E125_T02",
+   "current_action": "确认价格与包间规则信息,提醒留个截图或记进清单",
+   "acceptable_actions": [
+    "夸她办事快,建议把88档和满10人规则都记进她的清单",
+    "顺势算一笔:88乘12大约一千出头,够不够包间低消要再问",
+    "调侃她电话打得勤,同时认真确认周晚是否同一价"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "蒸菜馆自助档报价每人88元",
+     "valid_time": "2026-11-03 询价时",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T02", "message_id": "m0", "quote": "88一位的自助档"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E125_A04",
+     "subject": "PUBLIC",
+     "relation": "booking_rule",
+     "value": "蒸菜馆包间需满10人才能预订",
+     "valid_time": "2026年11月",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T02", "message_id": "m0", "quote": "包间要满10人才能订"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她爱吃清单,顺着清单思维说话最得劲",
+   "unknowns": ["88档是否含周五晚市未明确"],
+   "protected_expressions": ["88一位的自助档"],
+   "forbidden_factual_claims": ["不得断言该价格含酒水", "不得虚构包间低消数字"]
+  },
+  "E125_T03": {
+   "case_id": "E125_T03",
+   "current_action": "接受人数更新,对'算活动经费'客气推让一下但不过分",
+   "acceptable_actions": [
+    "谢过她的经费安排但坚持自己那份照AA出,同时确认按11人报店",
+    "半开玩笑说她这是公款吃喝,转而确认11人是否影响包间",
+    "答应记账时把自己标成备注行,提醒她低消重新算"
+   ],
+   "applicable_dimensions": ["boundary", "interaction", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A05",
+     "subject": "SHARED",
+     "relation": "headcount",
+     "value": "聚餐人数为11人(报名9人加两人)",
+     "valid_time": "2026-11-04 起按此口径报店",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T03", "message_id": "m0", "quote": "群里报了名的一共9个"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E125_A02",
+     "subject": "SHARED",
+     "relation": "plan_dinner",
+     "value": "读书会年终聚餐拟放周五晚在城南蒸菜馆,初报12人",
+     "valid_time": "2026-11-13(周五)晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T01", "message_id": "m0", "quote": "年终聚餐我想放周五晚上"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E125_A06",
+     "subject": "HER",
+     "relation": "pay_offer",
+     "value": "她提出陈拓的餐费由活动经费承担",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T03", "message_id": "m0", "quote": "你那份别客气,算活动经费"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "对她的照顾心里有数,嘴上轻轻推,别让她尴尬",
+   "unknowns": ["活动经费的来源和上限未说明"],
+   "protected_expressions": ["算活动经费"],
+   "forbidden_factual_claims": ["不得虚构群里其他报名者的名单"]
+  },
+  "E125_T04": {
+   "case_id": "E125_T04",
+   "current_action": "附议她的'另算自愿'决定,可轻吐槽一句人均卫士",
+   "acceptable_actions": [
+    "支持她的决定,顺嘴问一句K歌地方定了没",
+    "调侃她连人均都要守门,表示自己听指挥",
+    "简单站队'自愿最好',不再展开"
+   ],
+   "applicable_dimensions": ["interaction", "boundary", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A05",
+     "subject": "SHARED",
+     "relation": "headcount",
+     "value": "聚餐人数为11人(报名9人加两人)",
+     "valid_time": "2026-11-04 起按此口径报店",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T03", "message_id": "m0", "quote": "群里报了名的一共9个"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E125_A07",
+     "subject": "SHARED",
+     "relation": "afterparty_rule",
+     "value": "饭后唱K费用另算且自愿参加",
+     "valid_time": "2026-11-05 宣布",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T04", "message_id": "m0", "quote": "我说要另算自愿"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是条可以短回的消息,别把话题硬拉长",
+   "unknowns": ["唱K地点与时间未定"],
+   "protected_expressions": ["我说要另算自愿"],
+   "forbidden_factual_claims": ["不得替群友确认都会去唱K"]
+  },
+  "E125_T05": {
+   "case_id": "E125_T05",
+   "current_action": "稳住她:支持先核实再报数,并表示愿等她电话结果",
+   "acceptable_actions": [
+    "让她放心打电话,承诺等她准信,群友那边她说了算",
+    "推测可能是午晚市差价,提醒她问清档位",
+    "给她递话术:直接问老板周五晚市多少一位"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "蒸菜馆自助档报价每人88元",
+     "valid_time": "2026-11-03 询价时",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T02", "message_id": "m0", "quote": "88一位的自助档"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E125_A08",
+     "subject": "PUBLIC",
+     "relation": "price_uncertain",
+     "value": "88元那档价格可能变动,需她电话核实",
+     "valid_time": "2026-11-06 当晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T05", "message_id": "m0", "quote": "88那档可能变动"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她慌的时候要稳,给方法不给压力",
+   "unknowns": ["价格是否真变、变多少未定"],
+   "protected_expressions": ["我先打电话核实"],
+   "forbidden_factual_claims": ["不得断言老板就是在涨价"]
+  },
+  "E125_T06": {
+   "case_id": "E125_T06",
+   "current_action": "接住更正,复核128乘11与低消凑法,肯定她主动核实的做法",
+   "acceptable_actions": [
+    "按128重算给出总数并提醒饮料单价也确认下",
+    "先笑她记岔得离谱,再正经核数,收尾鼓励一句",
+    "顺着她的数核对1408对不对,建议低消不足再补茶位"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A03",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "蒸菜馆自助档报价每人88元",
+     "valid_time": "2026-11-03 询价时",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E125_T02", "message_id": "m0", "quote": "88一位的自助档"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E125_A09",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "周五晚市价格为每人128元",
+     "valid_time": "2026-11-07 更正后生效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T06", "message_id": "m0", "quote": "周五晚市是128一位"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E125_A10",
+     "subject": "HER",
+     "relation": "prior_quote_correction",
+     "value": "她承认此前88元每人自助档的口径是自己记岔,予以作废",
+     "valid_time": "2026-11-07",
+     "status": "corrected",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E125_T06", "message_id": "m0", "quote": "是我记岔了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E125_A11",
+     "subject": "PUBLIC",
+     "relation": "minimum_spend",
+     "value": "蒸菜馆包间低消为1280元",
+     "valid_time": "2026-11-07 起已知",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T06", "message_id": "m0", "quote": "包间低消1280"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是她主动纠错的一轮,重点是把数核对,别让她难堪",
+   "unknowns": ["11人是否最终凑足低消待定"],
+   "protected_expressions": ["是我记岔了", "周五晚市是128一位"],
+   "forbidden_factual_claims": ["不得坚称88元仍然有效", "不得虚构菜单定价明细"]
+  },
+  "E125_T07": {
+   "case_id": "E125_T07",
+   "current_action": "认可她的算账与锁包间安排,提醒定金留凭证",
+   "acceptable_actions": [
+    "夸这账算得明白,提醒垫的300留转账截图",
+    "确认1408加饮料凑低消的路子,问AA怎么收",
+    "让她锁包间时再报一遍人数,防止口径对不上"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A09",
+     "subject": "PUBLIC",
+     "relation": "price_quote",
+     "value": "周五晚市价格为每人128元",
+     "valid_time": "2026-11-07 更正后生效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T06", "message_id": "m0", "quote": "周五晚市是128一位"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E125_A12",
+     "subject": "HER",
+     "relation": "deposit_plan",
+     "value": "定金300元由她从活动经费垫付,事后AA收回",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T07", "message_id": "m0", "quote": "定金300我从经费垫"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已经从慌乱回到清单模式,配合她收口即可",
+   "unknowns": ["AA收款方式未定"],
+   "protected_expressions": ["定金300我从经费垫"],
+   "forbidden_factual_claims": ["不得此时宣称包间已订妥"]
+  },
+  "E125_T08": {
+   "case_id": "E125_T08",
+   "current_action": "确认包间与菜单,报出自己的忌口或表示都可以",
+   "acceptable_actions": [
+    "确认菜单没问题,顺势问有没有素菜补两个",
+    "表示不忌口,提醒把菜单截图发群里报备",
+    "接她关心忌口的话头,反问她自己想吃什么"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A12",
+     "subject": "HER",
+     "relation": "deposit_plan",
+     "value": "定金300元由她从活动经费垫付,事后AA收回",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T07", "message_id": "m0", "quote": "定金300我从经费垫"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E125_A13",
+     "subject": "SHARED",
+     "relation": "booking_confirmed",
+     "value": "周五包间已付定金留好,初选菜单含蒸腊味拼盘和豆豉蒸鱼",
+     "valid_time": "2026-11-09 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T08", "message_id": "m0", "quote": "包间留好了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E125_A14",
+     "subject": "SHARED",
+     "relation": "menu_item",
+     "value": "菜单初选为蒸腊味拼盘和豆豉蒸鱼",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T08", "message_id": "m0", "quote": "蒸腊味拼盘和豆豉蒸鱼"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动问忌口,是把ME当自己人的信号,回应别冷",
+   "unknowns": ["群友忌口情况未知"],
+   "protected_expressions": ["你看有没有忌口要换"],
+   "forbidden_factual_claims": ["不得替老板承诺换菜"]
+  },
+  "E125_T09": {
+   "case_id": "E125_T09",
+   "current_action": "接住人数回到12的变化,确认人均摊薄,表示不嫌闹",
+   "acceptable_actions": [
+    "说不嫌闹,12个正好热闹,提醒签到表加一行",
+    "快速重算人均,确认低消压力更小",
+    "接'小雨男朋友'的梗,问是读书会编外还是预备会员"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A05",
+     "subject": "SHARED",
+     "relation": "headcount",
+     "value": "聚餐人数为11人(报名9人加两人)",
+     "valid_time": "2026-11-04 至 2026-11-10",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T03", "message_id": "m0", "quote": "群里报了名的一共9个"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E125_A15",
+     "subject": "SHARED",
+     "relation": "headcount_revision",
+     "value": "聚餐人数由11人调整为12人,低消1280不变人均摊薄",
+     "valid_time": "2026-11-10 起生效",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T09", "message_id": "m0", "quote": "凑12个正好坐得开"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她'你别嫌闹'是确认情绪,先接情绪再核数",
+   "unknowns": ["新增1人是否会再变动"],
+   "protected_expressions": ["凑12个正好坐得开", "你别嫌闹"],
+   "forbidden_factual_claims": ["不得虚构小雨男朋友的身份背景"]
+  },
+  "E125_T10": {
+   "case_id": "E125_T10",
+   "current_action": "对菜单小更正表示无所谓,肯定她清单更新得勤",
+   "acceptable_actions": [
+    "说清蒸鲈鱼更稳,不挑,让她别为这个道歉",
+    "接'我认了'的梗,夸她清单管理到鱼身上",
+    "简单确认收到更新,不再展开"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A14",
+     "subject": "SHARED",
+     "relation": "menu_item",
+     "value": "菜单初选为蒸腊味拼盘和豆豉蒸鱼",
+     "valid_time": "2026-11-09 至 2026-11-11",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T08", "message_id": "m0", "quote": "蒸腊味拼盘和豆豉蒸鱼"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E125_A16",
+     "subject": "SHARED",
+     "relation": "menu_item",
+     "value": "蒸鱼菜品由豆豉蒸鱼改为清蒸鲈鱼,价格按店方口径执行",
+     "valid_time": "2026-11-11 起",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T10", "message_id": "m0", "quote": "改成了清蒸鲈鱼"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "小更正轻接,别小题大做",
+   "unknowns": ["鲈鱼与原菜品差价是否影响人均未提"],
+   "protected_expressions": ["改成了清蒸鲈鱼"],
+   "forbidden_factual_claims": ["不得断言鳜鱼实际市价"]
+  },
+  "E125_T11": {
+   "case_id": "E125_T11",
+   "current_action": "接下分工:带签到表和零钱袋,确认时间地点",
+   "acceptable_actions": [
+    "干脆应下,复述六点半城南蒸菜馆报到",
+    "接桌签的梗,说自己名字签要写得好看点",
+    "应下并提醒她早点睡,周五她最忙"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A13",
+     "subject": "SHARED",
+     "relation": "booking_confirmed",
+     "value": "周五包间已付定金留好,初选菜单含蒸腊味拼盘和豆豉蒸鱼",
+     "valid_time": "2026-11-09 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T08", "message_id": "m0", "quote": "包间留好了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E125_A17",
+     "subject": "SHARED",
+     "relation": "final_arrangement",
+     "value": "聚餐定于周五晚六点半城南蒸菜馆包间,她提前一刻钟摆桌签,陈拓带签到表和零钱袋",
+     "valid_time": "2026-11-13(周五)18:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T11", "message_id": "m0", "quote": "明晚六点半城南蒸菜馆"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "分工明确时痛快接下,加一句让她放心的保证",
+   "unknowns": ["零钱袋需要备多少零钱未说明"],
+   "protected_expressions": ["你带下签到表和零钱袋"],
+   "forbidden_factual_claims": ["不得虚构包间号"]
+  },
+  "E125_T12": {
+   "case_id": "E125_T12",
+   "current_action": "共享聚餐的满足感,应下AA收款节奏,对周年展邀约给积极回应",
+   "acceptable_actions": [
+    "说今天确实顺,周年展布展这活儿提前预定",
+    "接'鱼被抢光'的梗,顺便夸她这次张罗得漂亮",
+    "回应收款不急,把周年展当成下一次清单第一行"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E125_A17",
+     "subject": "SHARED",
+     "relation": "final_arrangement",
+     "value": "聚餐定于周五晚六点半城南蒸菜馆包间,她提前一刻钟摆桌签,陈拓带签到表和零钱袋",
+     "valid_time": "2026-11-13(周五)18:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T11", "message_id": "m0", "quote": "明晚六点半城南蒸菜馆"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E125_A18",
+     "subject": "SHARED",
+     "relation": "settlement_plan",
+     "value": "AA收款明细她将于次日早晨发出",
+     "valid_time": "2026-11-15 早",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E125_T12", "message_id": "m0", "quote": "AA收款我明早发你"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "深夜复盘话别,温度可以比平时高半度",
+   "unknowns": ["周年展具体时间未提"],
+   "protected_expressions": ["AA收款我明早发你"],
+   "forbidden_factual_claims": ["不得虚构聚餐现场细节"]
+  }
+ }
+}

@@ -1,0 +1,88 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "AK12",
+ "turns": {
+  "AK12_T01": {
+   "case_id": "AK12_T01",
+   "current_action": "她明确收尾并设了下次通知点（结果出来再说）——合法不回或一句不再要求应答的收尾；不要继续追问手术细节或再提帮请假",
+   "acceptable_actions": [
+    "不回（她已收尾，合法）",
+    "一句'好 我周一下午空着'不再问",
+    "只说一句不用她回"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK12_A01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "手术改到周一下午、要请假、头疼",
+     "valid_time": "2026-12-28 22:26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK12_T01",
+      "message_id": "m0",
+      "quote": "手术拖到周一下午了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK12_A02",
+     "subject": "她",
+     "relation": "边界",
+     "value": "结果出来再说，先这样",
+     "valid_time": "2026-12-28 22:48",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK12_T01",
+      "message_id": "m2",
+      "quote": "结果出来我再说"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK12_A03",
+     "subject": "我",
+     "relation": "提议",
+     "value": "提出帮她顶半天假",
+     "valid_time": "2026-12-28 22:32",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK12_T01",
+      "message_id": "m1",
+      "quote": "需要我帮你顶半天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'谢了'加'先这样吧'是收尾信号；此时追问细节就是把互动继续占住。不回在此合法，但不能推论成'她烦我'。",
+   "unknowns": [
+    "周一下午是否还需要接送"
+   ],
+   "protected_expressions": [
+    "结果出来我再说"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她不想聊了",
+    "不要重复追问请假或手术细节"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "陪她带猫完成手术并接她回家",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

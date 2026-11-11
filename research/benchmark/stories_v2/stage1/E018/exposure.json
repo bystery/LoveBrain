@@ -1,0 +1,41 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "E018",
+ "title": "她只想躺着",
+ "themes": [
+  "疲惫",
+  "话题枯竭",
+  "允许不回",
+  "低压力陪伴"
+ ],
+ "author": "QoderWork worker-AI (synthetic)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+ "readers": [
+  "author"
+ ],
+ "independent_review": false,
+ "review_note": "同 worker 自检；不是独立封存集。",
+ "created_at": "2026-10-27",
+ "frozen_at": null,
+ "status": "dev_candidate_stage1",
+ "experiments_used": [],
+ "dev_exposed": true,
+ "validation_claim": false,
+ "turns": 8,
+ "may_decline_turns": [
+  "E018_T03",
+  "E018_T04",
+  "E018_T07",
+  "E018_T08"
+ ],
+ "hashes": {
+  "episode.json": "09e0ac8833e988684e9a5a59e0bf194f854ecbc945ec7bd103505552f70fa2fe",
+  "reference.json": "f737f5c0fde9006087fc5d9b3fa7dd20a9c3b2cc3d577278987cd74b1c5db38a",
+  "timeline.json": "09beb46428afe8f20b5374f05f0bde2794094e81a55fb01c36a45634fa2684eb",
+  "audit.md": "2bb9961e7867919e9ef736686d31301b637f9d7d16625aa22c5eb4c3d28b00ed"
+ },
+ "runner_copy": "benchmark/episodes/E018.json",
+ "notes": "首批 8 条之一；12 位扩展/冻结验证在后续批次，不用本批冒充泛化。"
+}

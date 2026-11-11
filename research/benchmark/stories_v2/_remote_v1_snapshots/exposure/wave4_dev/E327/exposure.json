@@ -1,0 +1,38 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A6 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T07 事实/人物归属/不确定性",
+  "多来源信息冲突",
+  "保留不确定与当场核实",
+  "直接证据消歧"
+ ],
+ "title": "索道开不着的两种说法",
+ "may_decline_turns": [
+  "E327_T09",
+  "E327_T12"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "出行出游",
+ "primary_topic": "T07",
+ "lineage_group_id": "LG-E327",
+ "frozen_at": "2026-11-08T12:40:00+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E327/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A6",
+ "hashes": {
+  "episode.json": "ea025ea3eaad3b3be72af96af870fe0207cb4870520cb7b2bed751d3ca7342a3",
+  "reference.json": "171eaa9b9c9d1c5aaee1270930791c54313e63b39199f6013651b2ad409c5b23",
+  "timeline.json": "ee97717a55ec8e91291213d812817ed4ac4bd36f99efa684ea3c024f56510609",
+  "audit.md": "83ae15c9821de352f66d3f6ed0a2671adf5382b73abab9d504aca774f8194a6d"
+ }
+}

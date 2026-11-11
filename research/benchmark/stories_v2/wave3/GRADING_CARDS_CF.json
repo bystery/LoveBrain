@@ -1,0 +1,7126 @@
+{
+ "kind": "wave3_cf_grading_cards",
+ "cards": [
+  {
+   "case_id": "E149_T01",
+   "current_action": "接住她的手气与伴娘兴奋，顺她的话聊发型，同时把一句轻提醒垫进去：出发前点开订单详情把日期、集合点再核一遍。",
+   "acceptable_actions": [
+    "先接发型这个话题给个倾向，再提醒她核对订单详情",
+    "恭喜抢到车，顺口问她拼车群里成团没有",
+    "分享一条跨城顺风车的准点经验，顺势让她确认司机联系方式"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A01",
+     "subject": "SHARED",
+     "relation": "rideshare_claim",
+     "value": "她称抢到11月7日早7点20出发去青川的顺风车",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T01",
+      "message_id": "m0",
+      "quote": "11月7号早上7点20出发"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A02",
+     "subject": "HER",
+     "relation": "bridesmaid_claim",
+     "value": "她将在雨桐婚礼担任伴娘，自认为日期是11月8日",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T01",
+      "message_id": "m1",
+      "quote": "11月8号当伴娘"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A03",
+     "subject": "SHARED",
+     "relation": "carpool_one_short",
+     "value": "顺风车拼车群还差一位即可成团",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T01",
+      "message_id": "m0",
+      "quote": "还差一位就成团"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先当她的观众，再把'看一眼订单'说成顺手事，不说教。",
+   "unknowns": [
+    "她是否真的点开过订单详情未知",
+    "集合点具体位置未提"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言订单真实日期与她的说法不符",
+    "不得虚构婚礼流程细节"
+   ],
+   "protected_expressions": [
+    "还差一位就成团"
+   ]
+  },
+  {
+   "case_id": "E149_T02",
+   "current_action": "接住她的'完美'闭环汇报：请假获批、礼服取件已约；把'跟组长书面确认日期'和'取件别卡死最后一天'两颗钉子轻敲进去，不点破她可能记错。",
+   "acceptable_actions": [
+    "肯定请假顺利，建议跟组长再文字确认一遍日期",
+    "提醒礼服取件别约最后一天，留出缓冲",
+    "问她行李开始收拾没有，把核单的由头自然带出"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A04",
+     "subject": "HER",
+     "relation": "leave_filed_wrong",
+     "value": "她已向组长报备11月7、8日请假两天",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T02",
+      "message_id": "m0",
+      "quote": "跟组长报了11月7号8号两天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A05",
+     "subject": "SHARED",
+     "relation": "dress_pickup_plan",
+     "value": "礼服预约11月5日下班后取件",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T02",
+      "message_id": "m0",
+      "quote": "约了11月5号下班去取"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A06",
+     "subject": "THIRD",
+     "relation": "leader_approved",
+     "value": "组长已批准她的请假申请并负责找人顶班",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T02",
+      "message_id": "m0",
+      "quote": "组长痛快批了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她的'完美'先肯定，提醒以'顺手确认'的姿态给，不制造被检查感。",
+   "unknowns": [
+    "组长是否书面确认过具体日期未知",
+    "礼服店取件是否可改期未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言她的日期记忆有错",
+    "不得虚构组长的审批口径"
+   ],
+   "protected_expressions": [
+    "加急的钱都省了"
+   ]
+  },
+  {
+   "case_id": "E149_T03",
+   "current_action": "接住拼车成团与火锅邀约：AA细节应下，火锅之约给一个有条件的答应或明确改期口子，并提醒她群里那句'周六见'最好带上具体日期，免得各记各的。",
+   "acceptable_actions": [
+    "答应火锅并主动认领刷锅，让她带排骨别带别的",
+    "应下AA，同时建议她在群里把'周六见'改成写明日期",
+    "以'到时候看那天安排'留活口，先不把话说死"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A07",
+     "subject": "THIRD",
+     "relation": "toll_AA",
+     "value": "同车乘客贾姐带娃回娘家，两人约定高速费AA",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T03",
+      "message_id": "m0",
+      "quote": "说好高速费我们俩AA"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A08",
+     "subject": "SHARED",
+     "relation": "hotpot_booked",
+     "value": "她与ME约定11月1日周日中午在ME家涮火锅",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T03",
+      "message_id": "m1",
+      "quote": "11月1号周日中午我去你家涮锅"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A09",
+     "subject": "SHARED",
+     "relation": "group_confirmed",
+     "value": "她在拼车群以'周六见'确认行程，未写明具体日期",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T03",
+      "message_id": "m0",
+      "quote": "群里我回了句'周六见'"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：火锅这事接得热络些，'带日期'的建议说成群里通用礼数，不冲着她的记性去。",
+   "unknowns": [
+    "贾姐理解的周六是哪一天未知",
+    "她11月1日真实行程尚未被她自己意识到"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言贾姐与她日期理解不一致",
+    "不得替她拒绝火锅"
+   ],
+   "protected_expressions": [
+    "别又拿外卖糊弄我"
+   ]
+  },
+  {
+   "case_id": "E149_T04",
+   "current_action": "接住她的行程倒推与路况担心：告诉她城北高速口集合的大致应对（提前踩点、早到十分钟），并顺势让她把订单详情截图发来一起看一眼。",
+   "acceptable_actions": [
+    "建议集合当天早到十五分钟，把摸不着路的风险吃掉",
+    "让她把订单详情截图发来，帮核一遍时间与集合点",
+    "顺着彩排时间帮她倒推倒计时，问她到青川谁接站"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A10",
+     "subject": "THIRD",
+     "relation": "rehearsal_slot",
+     "value": "雨桐要求周日下午三点到酒店彩排",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T04",
+      "message_id": "m0",
+      "quote": "周日下午三点酒店彩排"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A11",
+     "subject": "HER",
+     "relation": "arrival_estimate",
+     "value": "她估算7点20的车中午十二点多抵达青川",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T04",
+      "message_id": "m0",
+      "quote": "中午十二点多到青川"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A12",
+     "subject": "SHARED",
+     "relation": "meeting_point",
+     "value": "顺风车集合点定在城北高速口",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T04",
+      "message_id": "m1",
+      "quote": "集合点在城北高速口"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：路况担心按正经事答，'发我看看订单'说成你顺便帮她算时间。",
+   "unknowns": [
+    "她是否已把订单截图发出未知",
+    "青川当天接站安排未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构城北高速口的实际路况",
+    "不得断言顺风车必然准点"
+   ],
+   "protected_expressions": [
+    "我怕摸不着路"
+   ]
+  },
+  {
+   "case_id": "E149_T05",
+   "current_action": "接住时间线倒错引爆：订单实证出发是明早7点20、婚礼是后天；先稳住她，把'哪些还能动、哪些必须今晚动'分出来，指出班次是当前最急的一环。",
+   "acceptable_actions": [
+    "先安抚'记错能改回来'，再让她按急缓列今晚必办清单",
+    "直接点出明早早班是死结，建议她立刻联系组长或换班对象",
+    "提醒她先截图订单与请柬存证，再逐项对请假、取件、火锅排处理顺序"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A13",
+     "subject": "SHARED",
+     "relation": "rideshare_date_corrected",
+     "value": "订单详情证实出发日期为11月1日07:20，11月7日之说被推翻",
+     "valid_time": "2026-10-30",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T05",
+      "message_id": "m0",
+      "quote": "出发日期写着11月1号07:20"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A14",
+     "subject": "THIRD",
+     "relation": "wedding_date_corrected",
+     "value": "请柬照片证实婚礼日期为11月2日，11月8日之说被推翻",
+     "valid_time": "2026-10-30",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T05",
+      "message_id": "m0",
+      "quote": "婚礼是11月2号"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A15",
+     "subject": "SHARED",
+     "relation": "rideshare_claim_overturned",
+     "value": "她此前主张的11月7日车次被订单实证推翻",
+     "valid_time": "2026-10-26/2026-10-30",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T01",
+      "message_id": "m0",
+      "quote": "11月7号早上7点20出发"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：先接她的慌，别急着说'我早说过'；把今晚的目标压到'明早能上车、班有人顶'两件事。",
+   "unknowns": [
+    "她是否会当场退单重订未知",
+    "司机是否知晓她记错日期未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言退改免手续费",
+    "不得替她决定放弃婚礼行程"
+   ],
+   "protected_expressions": [
+    "我全程记成下礼拜了"
+   ]
+  },
+  {
+   "case_id": "E149_T06",
+   "current_action": "接住班次死结：明早早班还排着她、组长联系不上；给'打电话还是发消息'一个明确倾向（先电话后补文字），并给她备好小蒋这条线的说法。",
+   "acceptable_actions": [
+    "明确建议直接打电话，深夜消息容易被压到早晨",
+    "教她给小蒋开口的话术：人情加一次性顶明早，条件后谈",
+    "提醒同时给组长发一条说明短信，两头不耽误"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A16",
+     "subject": "HER",
+     "relation": "shift_conflict",
+     "value": "她发现本周日早班仍排着自己，行程与班表正面相撞",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T06",
+      "message_id": "m0",
+      "quote": "这周日还排着我的班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A17",
+     "subject": "THIRD",
+     "relation": "leader_unreachable",
+     "value": "组长电话打不通，人在丈人生日聚餐饮酒后休息",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T06",
+      "message_id": "m0",
+      "quote": "组长电话打不通"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A19",
+     "subject": "SHARED",
+     "relation": "deadline_tonight",
+     "value": "车次实为明早，明早早班必须今晚解决",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T05",
+      "message_id": "m0",
+      "quote": "出发日期写着11月1号07:20"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：深夜求助要给确定答案，不摆两个选项让她更慌；顺带认下她张不开嘴的心情。",
+   "unknowns": [
+    "小蒋是否会答应顶班未知",
+    "组长何时回联未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小蒋的作息与联系方式",
+    "不得断言组长一定会追责"
+   ],
+   "protected_expressions": [
+    "你说我直接打电话还是先发消息"
+   ]
+  },
+  {
+   "case_id": "E149_T07",
+   "current_action": "接住顶班落定与讽刺巧合：7号的假空出来正好顶班还人情；确认这套对冲成立，提醒她明早给组长的假条要写清挪期前后，别留模糊。",
+   "acceptable_actions": [
+    "肯定小蒋够意思，提醒人情记得用奶茶或早饭还上",
+    "帮她把假条话术拟一句：原假作废、挪至周日周一、原因一句话",
+    "顺势催她赶紧睡，明早6点前出门才是头等大事"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A20",
+     "subject": "SHARED",
+     "relation": "shift_covered",
+     "value": "小蒋答应顶11月1日早班，条件是下周日由她顶回",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T07",
+      "message_id": "m0",
+      "quote": "周日的班他顶"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A21",
+     "subject": "SHARED",
+     "relation": "leave_refiled",
+     "value": "11月7、8日请假作废，假期挪至11月1、2日重批",
+     "valid_time": "2026-10-31",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T07",
+      "message_id": "m1",
+      "quote": "7号8号那两张作废"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A22",
+     "subject": "HER",
+     "relation": "leave_overturned",
+     "value": "此前获批的11月7、8日请假被整体推翻挪期",
+     "valid_time": "2026-10-27/2026-10-31",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T02",
+      "message_id": "m0",
+      "quote": "跟组长报了11月7号8号两天"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把讽刺说成运气找补，别翻'早看订单'的旧账；催睡放在最后一句。",
+   "unknowns": [
+    "组长次晨反应未知",
+    "下周日顶班是否最终兑现未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言组长必然爽快重批",
+    "不得虚构公司请假制度细节"
+   ],
+   "protected_expressions": [
+    "你说讽刺不讽刺"
+   ]
+  },
+  {
+   "case_id": "E149_T08",
+   "current_action": "接住上车报平安：掐点成功、贾姐就等她一个、AA已转；给她一句定心的，把话题放到路上补觉和到青川的时间上。",
+   "acceptable_actions": [
+    "夸她一夜处理完没耽误车，劝她车上眯一会儿",
+    "顺着司机那句玩笑搭一句，把气氛接住",
+    "提醒她到青川给雨桐报个到，彩排别迟到"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A23",
+     "subject": "SHARED",
+     "relation": "boarded",
+     "value": "11月1日7点12分她抵达集合点并登车",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T08",
+      "message_id": "m0",
+      "quote": "7点12分冲到集合点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A24",
+     "subject": "THIRD",
+     "relation": "jia_onboard",
+     "value": "贾姐带娃在后座等她一人后发车",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T08",
+      "message_id": "m0",
+      "quote": "贾姐抱着娃在后座冲我招手"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A26",
+     "subject": "SHARED",
+     "relation": "rehearsal_binding",
+     "value": "周日下午三点彩排的时间约束今日生效",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T04",
+      "message_id": "m0",
+      "quote": "周日下午三点酒店彩排"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：报平安要接得轻快，一句'成了'就够，别再复盘。",
+   "unknowns": [
+    "到青川实际时刻未知",
+    "贾姐是否知晓她曾记错日期未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构高速行程时长",
+    "不得断言后续行程无风险"
+   ],
+   "protected_expressions": [
+    "姑娘掐点掐得真准"
+   ]
+  },
+  {
+   "case_id": "E149_T09",
+   "current_action": "接住第二个险情：伴娘服还在市里、原取件预约作废；帮她把加急寄送的方案过一遍风险（到件时间、验收方式），认可运费该花。",
+   "acceptable_actions": [
+    "肯定加急方案可行，提醒她跟店家要快递单号盯到件",
+    "给备手：万一明早没到，先问雨桐有没有备用伴娘服",
+    "顺着'冤'字接一句玩笑，再回到盯快递的正题"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A27",
+     "subject": "SHARED",
+     "relation": "rehearsal_done",
+     "value": "她12点55分抵达青川并赶上下午三点彩排",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T09",
+      "message_id": "m0",
+      "quote": "彩排赶上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A28",
+     "subject": "SHARED",
+     "relation": "dress_mislocated",
+     "value": "伴娘服仍挂在市里礼服店，原取件安排与真实婚期冲突",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T09",
+      "message_id": "m0",
+      "quote": "还挂在市里那家店里"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A30",
+     "subject": "SHARED",
+     "relation": "dress_plan_overturned",
+     "value": "11月5日取礼服的预约与真实婚期冲突，原方案作废",
+     "valid_time": "2026-10-27/2026-10-31",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T02",
+      "message_id": "m0",
+      "quote": "约了11月5号下班去取"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：88块先认下'该花'，别让她在钱上犹豫；玩笑要顺着她的自嘲走。",
+   "unknowns": [
+    "顺丰能否明早11点前送达未知",
+    "雨桐处有无备用礼服未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构礼服店发货流程",
+    "不得断言快递必然准点到"
+   ],
+   "protected_expressions": [
+    "这钱花得比抢错车还冤"
+   ]
+  },
+  {
+   "case_id": "E149_T10",
+   "current_action": "接住礼服到手与火锅改约：原取件订单取消处理妥当，11月1日火锅之约取消；接下8号周日晚的新约，给她一句'婚礼要紧'的台阶。",
+   "acceptable_actions": [
+    "答应8号晚的火锅，认领刷锅并调侃排骨双份",
+    "把'食言'轻轻接掉：婚礼面前火锅让路天经地义",
+    "提醒她5号原单取消后确认退款到账"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A31",
+     "subject": "SHARED",
+     "relation": "dress_arrived",
+     "value": "礼服8点半送达青川酒店前台，试穿合身",
+     "valid_time": "2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T10",
+      "message_id": "m0",
+      "quote": "8点半送到前台"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A32",
+     "subject": "SHARED",
+     "relation": "old_order_cancelled",
+     "value": "11月5日原取件订单已电话取消",
+     "valid_time": "2026-11-01",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T10",
+      "message_id": "m0",
+      "quote": "5号那单我打电话退了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A34",
+     "subject": "SHARED",
+     "relation": "hotpot_cancelled",
+     "value": "11月1日火锅之约因当日赴青川无法兑现而取消",
+     "valid_time": "2026-10-28/2026-10-31",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T03",
+      "message_id": "m1",
+      "quote": "11月1号周日中午我去你家涮锅"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：改约接得痛快，别让她带着歉意进婚礼；'补我'这个说法顺她的梗用。",
+   "unknowns": [
+    "退款到账时间未知",
+    "8号她顶班结束的具体钟点未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构退款政策细节",
+    "不得断言她顶班必然准点结束"
+   ],
+   "protected_expressions": [
+    "你锅刷三遍"
+   ]
+  },
+  {
+   "case_id": "E149_T11",
+   "current_action": "共享婚礼圆满的现场感：堵门红包、敬酒落泪、头饰不舍摘；把这一幕接住，夸她连夜折腾没白费。",
+   "acceptable_actions": [
+    "顺着堵门狠题接一句玩笑，问她红包分没分",
+    "肯定她这两天连轴转的执行力，值得这一场圆满",
+    "让她把头饰拍张照留着，别急着摘"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A35",
+     "subject": "THIRD",
+     "relation": "wedding_held",
+     "value": "雨桐婚礼11月1日圆满举行，堵门环节收了六百红包",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T11",
+      "message_id": "m0",
+      "quote": "婚礼圆满"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A36",
+     "subject": "THIRD",
+     "relation": "bride_gratitude",
+     "value": "雨桐敬酒时感谢她连夜赶场，她感动落泪",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T11",
+      "message_id": "m0",
+      "quote": "亏你连夜折腾还赶上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A37",
+     "subject": "HER",
+     "relation": "keepsake",
+     "value": "伴娘头饰她舍不得摘，想留作纪念",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T11",
+      "message_id": "m0",
+      "quote": "到现在还别在头上没舍得摘"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：让她把感动说尽，不加分析；日期风波一句都不提。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得虚构婚礼其他环节细节",
+    "不得替雨桐补话"
+   ],
+   "protected_expressions": [
+    "我眼泪差点下来"
+   ]
+  },
+  {
+   "case_id": "E149_T12",
+   "current_action": "以备忘录自嘲与三个闹钟收尾：确认8号晚火锅之约成立，接住头饰纪念的话题，轻快落幕不引入新议题。",
+   "acceptable_actions": [
+    "确认火锅之约，说自己把锅提前刷出三遍的架势",
+    "顺着备忘录补一句'日期类的事，你发我一眼比三个闹钟保险'",
+    "接头饰的话题，约她到时候戴着来也行"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E149_A38",
+     "subject": "HER",
+     "relation": "lesson_logged",
+     "value": "她把'任何票先看订单再说出口'写进手机备忘录",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T12",
+      "message_id": "m0",
+      "quote": "任何票，先看订单再说出口"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A39",
+     "subject": "SHARED",
+     "relation": "hotpot_confirmed",
+     "value": "8号周日晚火锅新约被她再次确认并设闹钟防错",
+     "valid_time": "2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T12",
+      "message_id": "m1",
+      "quote": "周日晚上火锅别忘了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E149_A40",
+     "subject": "SHARED",
+     "relation": "hotpot_rescheduled",
+     "value": "补约的11月8日晚火锅之约成立，她承诺排骨双份",
+     "valid_time": "2026-11-01/2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E149_T10",
+      "message_id": "m1",
+      "quote": "8号周日我顶完班，晚上去你家"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把她的教训接成'以后你订票我帮你看一眼'的默契，别上价值。",
+   "unknowns": [
+    "8号顶班具体结束时间未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得引入新的出行计划",
+    "不得断言她此后不再记错日期"
+   ],
+   "protected_expressions": [
+    "我拿日历设了三个闹钟"
+   ]
+  },
+  {
+   "case_id": "E150_T01",
+   "current_action": "接住她的组局热情，确认日期与集合安排，给出准话或说明自己九点前起床的难处再表态。",
+   "acceptable_actions": [
+    "直接应下11月15日早八点的局，顺口问一句包车在哪儿集合",
+    "应约的同时交代自己周末起床难，让她放心自己不会咕",
+    "确认包车费用怎么收，再答应参加"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A01",
+     "subject": "SHARED",
+     "relation": "hike_plan_initial",
+     "value": "她发起11月15日北山经典环线徒步局，早八点山脚集合",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T01",
+      "message_id": "m0",
+      "quote": "下下周日11月15号北山经典环线"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A02",
+     "subject": "SHARED",
+     "relation": "bus_cost_initial",
+     "value": "包车费用初定每人摊四十",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T01",
+      "message_id": "m0",
+      "quote": "一人摊四十"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A03",
+     "subject": "SHARED",
+     "relation": "assembly_arrangement",
+     "value": "集合定为早上八点山脚",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T01",
+      "message_id": "m0",
+      "quote": "早上八点山脚集合"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：回短句也行，但日期和集合点要复述一遍，别让她空等准话。",
+   "unknowns": [
+    "ME当天是否已有别的安排未提"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构北山路线细节",
+    "不得替她改集合时间"
+   ],
+   "protected_expressions": [
+    "你来不来"
+   ]
+  },
+  {
+   "case_id": "E150_T02",
+   "current_action": "接住阵容成形的好消息和留登山杖的心意，道谢并玩笑接住装备梗。",
+   "acceptable_actions": [
+    "谢她的登山杖，玩笑说自己一定好借力",
+    "接住三人成行的消息，问还缺什么装备",
+    "调侃她组局效率高，把装备的事记下"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A04",
+     "subject": "SHARED",
+     "relation": "roster_confirmed",
+     "value": "三名同事确认加入徒步局",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T02",
+      "message_id": "m0",
+      "quote": "群里三个同事都应了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A05",
+     "subject": "SHARED",
+     "relation": "gear_gift",
+     "value": "她购入两根登山杖，新的一根留给ME",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T02",
+      "message_id": "m0",
+      "quote": "新的那根给你留着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她爱把细节安排好，回话里给这份心思一个响亮的回应。",
+   "unknowns": [
+    "登山杖何时交接未定"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构登山杖品牌价格",
+    "不得替同事发表态度"
+   ],
+   "protected_expressions": [
+    "上山好借力"
+   ]
+  },
+  {
+   "case_id": "E150_T03",
+   "current_action": "接住首次取消预警：她值白班改不了班，局面临取消；先稳住她情绪，点明这是撞上工作不是她的问题。",
+   "acceptable_actions": [
+    "安抚她别急着说黄，先问公司能否换班",
+    "替她把锅摘了：上班不是咕局，别自责",
+    "问她是否要征求同事意见再定改期"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "attribution",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A06",
+     "subject": "THIRD",
+     "relation": "work_conflict",
+     "value": "公司15号全员盘点，她值白班且无法调班",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T03",
+      "message_id": "m0",
+      "quote": "公司15号那天全员盘点，我值白班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A07",
+     "subject": "SHARED",
+     "relation": "hike_plan_suspended",
+     "value": "北山徒步局因她盘点值班而悬置，面临取消",
+     "valid_time": "2026-11-02/2026-11-05",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T01",
+      "message_id": "m0",
+      "quote": "下下周日11月15号北山经典环线"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'黄了'说成暂时搁置，给她留抢救的空间，不催她做决定。",
+   "unknowns": [
+    "公司是否可调班未知",
+    "同事对新日期的态度未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言局必然取消",
+    "不得虚构她的班次细节"
+   ],
+   "protected_expressions": [
+    "这个局可能要黄"
+   ]
+  },
+  {
+   "case_id": "E150_T04",
+   "current_action": "接住改期投票结果，确认自己22号周日是否可行后给出准话；把她的抢救效率肯定一句。",
+   "acceptable_actions": [
+    "确认22号有空，答应改期后的局",
+    "先夸她投票抢救的动作快，再给准话",
+    "答应22号，顺口问老地方是不是还是山脚"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A08",
+     "subject": "SHARED",
+     "relation": "reschedule_vote",
+     "value": "改期投票多数指向11月22日周日",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T04",
+      "message_id": "m0",
+      "quote": "改到11月22号周日"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A09",
+     "subject": "THIRD",
+     "relation": "colleague_home_ok",
+     "value": "回老家同事确认22号前有空可参加",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T04",
+      "message_id": "m0",
+      "quote": "她22号前都在"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A10",
+     "subject": "SHARED",
+     "relation": "confirm_request",
+     "value": "她向ME确认22号周日早八点能否参加",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T04",
+      "message_id": "m0",
+      "quote": "你看你22号周日行不行"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她要的是准话，给准话比安慰有用，别绕。",
+   "unknowns": [
+    "投票具体票数未提"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构其他同事的投票理由",
+    "不得替她拍板日期"
+   ],
+   "protected_expressions": [
+    "早上八点还是老地方"
+   ]
+  },
+  {
+   "case_id": "E150_T05",
+   "current_action": "确认改期落定：取消预警解除，局重启为22号；接住她重排攻略的劲头，认可这套重启动作。",
+   "acceptable_actions": [
+    "把'定了'复述一遍，让她放心去排攻略",
+    "肯定她从取消到改期只用一晚，效率真高",
+    "叮嘱攻略排好发他一份，别一个人扛全部"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A11",
+     "subject": "SHARED",
+     "relation": "reschedule_confirmed",
+     "value": "徒步局改期落定为11月22日周日",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T05",
+      "message_id": "m0",
+      "quote": "那就定22号"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A12",
+     "subject": "SHARED",
+     "relation": "cancellation_lifted",
+     "value": "11月5日的取消预警解除，局重启",
+     "valid_time": "2026-11-05/2026-11-06",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T03",
+      "message_id": "m0",
+      "quote": "这个局可能要黄"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E150_A13",
+     "subject": "HER",
+     "relation": "rework_promise",
+     "value": "她承诺当晚重排攻略并重新拼包车群",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T05",
+      "message_id": "m0",
+      "quote": "把攻略重新排一遍"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把这次改期说成她把局救活了，功劳记她头上。",
+   "unknowns": [
+    "包车能否如期拼成未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构攻略内容",
+    "不得断言此后不再有变动"
+   ],
+   "protected_expressions": [
+    "等我消息"
+   ]
+  },
+  {
+   "case_id": "E150_T06",
+   "current_action": "接住人数与费用的小更新：表弟加入、包车重算更便宜；轻松收下，顺口确认新人数。",
+   "acceptable_actions": [
+    "接住'还便宜了'，玩笑说人越多越热闹",
+    "确认表弟是否有登山经验，提醒带够水",
+    "把新费用三十二记下，不再纠结旧数"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A14",
+     "subject": "THIRD",
+     "relation": "plus_one",
+     "value": "回老家同事将带表弟加入，人数再加一",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T06",
+      "message_id": "m0",
+      "quote": "人数再加一"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A15",
+     "subject": "SHARED",
+     "relation": "bus_recount",
+     "value": "包车重算后每人摊三十二，比原价便宜",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T06",
+      "message_id": "m0",
+      "quote": "一人摊三十二"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：这是顺风的一段，回轻快点，别把小更新聊成大事。",
+   "unknowns": [
+    "表弟体力与装备情况未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构表弟的情况",
+    "不得断言包车必然成行"
+   ],
+   "protected_expressions": [
+    "还便宜了"
+   ]
+  },
+  {
+   "case_id": "E150_T07",
+   "current_action": "接住乌龙反转：原日因盘点取消而空出，可局已定22号；陪她消化哭笑不得的情绪，把'傻'字接成这局改得值。",
+   "acceptable_actions": [
+    "先笑她这乌龙，再说改到22号不算傻",
+    "把选择摆出来：维持22号或再加一场，让她自己挑",
+    "安慰她折腾不是白折腾，22号阵容更齐"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A16",
+     "subject": "THIRD",
+     "relation": "inventory_cancelled",
+     "value": "主管宣布15号盘点取消，她周日空出",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T07",
+      "message_id": "m0",
+      "quote": "15号的盘点取消了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A17",
+     "subject": "SHARED",
+     "relation": "reschedule_locked",
+     "value": "改期决议已锁定22号，原日复活不自动生效",
+     "valid_time": "2026-11-05/2026-11-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T04",
+      "message_id": "m0",
+      "quote": "改到11月22号周日"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E150_A18",
+     "subject": "HER",
+     "relation": "self_doubt",
+     "value": "她自嘲折腾并向ME讨说法",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T07",
+      "message_id": "m0",
+      "quote": "你说我是不是傻"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接住'是不是傻'的自嘲，再帮她把两个日子的账摆开，不替她选。",
+   "unknowns": [
+    "她是否想加开周日场未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她决定改回15号",
+    "不得虚构主管取消的原因"
+   ],
+   "protected_expressions": [
+    "我周日空出来了"
+   ]
+  },
+  {
+   "case_id": "E150_T08",
+   "current_action": "接住她的拍板：维持22号、不为空出的周日加场、次日独自踩点；肯定她把体面留给所有人。",
+   "acceptable_actions": [
+    "夸她这个决定稳，折腾人确实比黄了难看",
+    "答应接她的踩点情报，提醒踩点注意安全",
+    "把维持22号复述一遍，确认这就是最终答案"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A19",
+     "subject": "SHARED",
+     "relation": "keep_decision",
+     "value": "她拍板维持22号，不为周日临时加场",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T08",
+      "message_id": "m0",
+      "quote": "局维持22号不动"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A20",
+     "subject": "SHARED",
+     "relation": "dilemma_resolved",
+     "value": "双日纠结以维持22号收束",
+     "valid_time": "2026-11-13/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T07",
+      "message_id": "m0",
+      "quote": "可是局已经改到22号了"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E150_A21",
+     "subject": "HER",
+     "relation": "scout_plan",
+     "value": "她计划次日周日独自踩点并记准集合坐标",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T08",
+      "message_id": "m0",
+      "quote": "明天周日我自己先去踩个点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A22",
+     "subject": "SHARED",
+     "relation": "extra_session_rejected",
+     "value": "她明确拒绝为空出的周日另开一场",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T08",
+      "message_id": "m0",
+      "quote": "局维持22号不动"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'不折腾人'夸成分寸感，别把她一个人的兜底说成理所当然。",
+   "unknowns": [
+    "踩点当日的路况未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得鼓动她改主意",
+    "不得虚构同事对维持决定的反应"
+   ],
+   "protected_expressions": [
+    "比黄了还难看"
+   ]
+  },
+  {
+   "case_id": "E150_T09",
+   "current_action": "接住踩点实证：栈道封路堵死经典环线，她当机立断改推西线；肯定踩点的价值，确认改线信息同步给队友。",
+   "acceptable_actions": [
+    "肯定她踩点踩得值，封路提前一天知道",
+    "确认西线多两公里的强度大家扛得住",
+    "提醒她把封路消息和西线方案同步到群里"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A23",
+     "subject": "PUBLIC",
+     "relation": "trail_closure",
+     "value": "北山上段修栈道封至月底，经典环线暂不可走",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T09",
+      "message_id": "m0",
+      "quote": "在修栈道，封到月底"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A24",
+     "subject": "SHARED",
+     "relation": "old_route_suspended",
+     "value": "经典环线因封路走不通，方案搁置",
+     "valid_time": "2026-11-02/2026-11-15",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T01",
+      "message_id": "m0",
+      "quote": "北山经典环线"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E150_A25",
+     "subject": "SHARED",
+     "relation": "route_revised",
+     "value": "路线改推西线，比原环线多两公里",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T09",
+      "message_id": "m0",
+      "quote": "西线能走，多两公里"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接坏消息再接好消息，把她的当机立断点出来，不替路线拍板。",
+   "unknowns": [
+    "西线具体路况未知",
+    "表弟对加量是否接受未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构封路公告细节",
+    "不得断言西线必然畅通"
+   ],
+   "protected_expressions": [
+    "风景不差"
+   ]
+  },
+  {
+   "case_id": "E150_T10",
+   "current_action": "接住人数回退：两人退出使包车口径作废，她改公交并把费用降到十几块；接住'一下少俩'的失落，认可她的变通。",
+   "acceptable_actions": [
+    "先叹口气接住少俩的失落，再夸公交方案干脆",
+    "确认公交集合点在哪，别让变通添新乱",
+    "把三十二的包车账翻篇，认下十几块的新账"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A26",
+     "subject": "THIRD",
+     "relation": "dropout",
+     "value": "回老家同事因临时加班退出，表弟不再随行",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T10",
+      "message_id": "m0",
+      "quote": "临时要加班来不了了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A27",
+     "subject": "SHARED",
+     "relation": "transport_switched",
+     "value": "包车因人数不足改为公交，每人摊十几块",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T10",
+      "message_id": "m0",
+      "quote": "改公交，一人摊十几块就够"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A28",
+     "subject": "SHARED",
+     "relation": "bus_basis_invalid",
+     "value": "五人包车摊三十二的口径作废",
+     "valid_time": "2026-11-10/2026-11-17",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T06",
+      "message_id": "m0",
+      "quote": "一人摊三十二"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她这回处理得利落，重点是让她知道有人接住她的每次变阵。",
+   "unknowns": [
+    "公交班次时刻未知",
+    "退出同事之后是否补场未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得挽留退出者",
+    "不得虚构加班原因"
+   ],
+   "protected_expressions": [
+    "一下少俩"
+   ]
+  },
+  {
+   "case_id": "E150_T11",
+   "current_action": "接住最终报备与她的道谢：方案定案、改局五回、ME零怨言；把'好人'接成愿意陪她折腾的实在话。",
+   "acceptable_actions": [
+    "把周日早八点西线公交集合复述一遍当军令状",
+    "接住'改了五回'，说这五回回回有交代",
+    "回敬她才是把局救回来的那个人"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A29",
+     "subject": "SHARED",
+     "relation": "route_final",
+     "value": "最终方案确认：周日早八点西线公交集合四人成行",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T11",
+      "message_id": "m0",
+      "quote": "周日早八点，西线，公交集合"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A30",
+     "subject": "SHARED",
+     "relation": "route_confirmed_carry",
+     "value": "西线方案经踩点验证后正式定案",
+     "valid_time": "2026-11-15/2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T09",
+      "message_id": "m0",
+      "quote": "西线能走，多两公里"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E150_A31",
+     "subject": "HER",
+     "relation": "gratitude",
+     "value": "她细数改局五回并谢ME无怨言",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T11",
+      "message_id": "m0",
+      "quote": "改了五回"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：道谢要接得实，别敷衍一句'没事'，把五回的折腾说成她的靠谱。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得虚构成行人数",
+    "不得断言周日天气"
+   ],
+   "protected_expressions": [
+    "阿澈你是好人"
+   ]
+  },
+  {
+   "case_id": "E150_T12",
+   "current_action": "接住下山报喜：西线走完体验好，补环线之约成立，登山杖没收梗收尾；笑纳欠账，把这次承诺接稳。",
+   "acceptable_actions": [
+    "认下'欠一次'，约定栈道修好就去补环线",
+    "接住没收登山杖的玩笑，讨价还价一句",
+    "夸这局改了五回值得，西线没白等"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E150_A32",
+     "subject": "SHARED",
+     "relation": "hike_completed",
+     "value": "22号西线徒步顺利完成后好评",
+     "valid_time": "2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T12",
+      "message_id": "m0",
+      "quote": "西线绝了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A33",
+     "subject": "SHARED",
+     "relation": "makeup_promise",
+     "value": "约定栈道修好后补走经典环线",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T12",
+      "message_id": "m0",
+      "quote": "把经典环线补上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E150_A34",
+     "subject": "SHARED",
+     "relation": "classic_callback",
+     "value": "补环线之约源于15日踩点发现封路改线",
+     "valid_time": "2026-11-15/2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T09",
+      "message_id": "m0",
+      "quote": "在修栈道，封到月底"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E150_A35",
+     "subject": "SHARED",
+     "relation": "punctuality_rule",
+     "value": "下次局仍八点集合，迟到没收登山杖",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E150_T12",
+      "message_id": "m0",
+      "quote": "你敢迟到就把你的登山杖没收"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要轻快，把改了五回的局收成'值了'，别翻旧账复盘。",
+   "unknowns": [
+    "栈道修复时间未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构下山后安排",
+    "不得把补环线说成确定日期"
+   ],
+   "protected_expressions": [
+    "算你欠我一次"
+   ]
+  },
+  {
+   "case_id": "E151_T01",
+   "current_action": "接住骑约：周日芦苇荡看日落是好路线，先应下大方向，同时问她一句新山地车首跑长途要不要先列个备件清单。",
+   "acceptable_actions": [
+    "答应周日同去，顺口提醒她山地车首跑前先检查胎压和刹车",
+    "肯定芦苇荡路线选得好，问她日落时间查过没有",
+    "接'没拉过长途'的梗，说自己车倒是很久没拉过她了"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A01",
+     "subject": "SHARED",
+     "relation": "plan_asserted",
+     "value": "周日两人轻装骑行芦苇荡看日落的计划",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T01",
+      "message_id": "m0",
+      "quote": "周日骑行去芦苇荡看日落"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A02",
+     "subject": "HER",
+     "relation": "new_bike_untested",
+     "value": "她的新山地车尚未跑过长途",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T01",
+      "message_id": "m0",
+      "quote": "新山地车还没拉过长途"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A03",
+     "subject": "SHARED",
+     "relation": "route_scope",
+     "value": "路线为沿河绿道一个来回四十公里",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T01",
+      "message_id": "m0",
+      "quote": "沿河绿道一个来回四十公里"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：应得痛快，检修提醒一句带过，别扫兴。",
+   "unknowns": [
+    "周日天气未知",
+    "日落具体时间未查"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构芦苇荡位置与门票",
+    "不得断言新山地车必然无故障"
+   ],
+   "protected_expressions": [
+    "我新山地车还没拉过长途呢"
+   ]
+  },
+  {
+   "case_id": "E151_T02",
+   "current_action": "认下分工并复述确认：她补给水、自己补胎工具，四点半前到堤上；把烤肠摊五点收摊当成硬截止提醒她别路上磨蹭。",
+   "acceptable_actions": [
+    "确认分工，提醒补给按人头分配别少带水",
+    "把四点半前到达复述成硬指标，建议留出爆胎余量",
+    "调侃烤肠摊是这条线路真正的终点线"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A04",
+     "subject": "SHARED",
+     "relation": "division_of_labor",
+     "value": "分工：她带补给和水，ME 带补胎工具",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T02",
+      "message_id": "m0",
+      "quote": "我带补给和水，你带补胎工具"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A05",
+     "subject": "SHARED",
+     "relation": "arrival_deadline",
+     "value": "须在下午四点半前抵达堤上看日落",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T02",
+      "message_id": "m0",
+      "quote": "四点半前得到"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A06",
+     "subject": "SHARED",
+     "relation": "sausage_stall",
+     "value": "堤上烤肠摊五点收摊成为隐性截止线",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T02",
+      "message_id": "m0",
+      "quote": "堤上那家烤肠摊我记得五点收摊"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：派工单口吻正好，截止线说得干脆。",
+   "unknowns": [
+    "烤肠摊周日是否出摊未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构烤肠摊价格",
+    "不得替她决定补给清单明细"
+   ],
+   "protected_expressions": [
+    "日落管够"
+   ]
+  },
+  {
+   "case_id": "E151_T03",
+   "current_action": "接住第三方求入：发小大壮非要跟，情面与队形冲突；先共情她的为难，把选择摆开——带，就得接受队形和节奏跟着改。",
+   "acceptable_actions": [
+    "把利弊摆开：带上他，速度和路线都得为大壮让路",
+    "问她大壮的体能和车况底细，再决定带不带",
+    "接'荒野求生'的梗，说真演起来先求救的是咱俩"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A07",
+     "subject": "THIRD",
+     "relation": "third_party_request",
+     "value": "发小大壮主动要求加入周日骑行",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T03",
+      "message_id": "m0",
+      "quote": "我发小大壮刷到我朋友圈，非要跟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A08",
+     "subject": "THIRD",
+     "relation": "third_party_skill",
+     "value": "大壮骑行资历浅，上回骑车还是初二的老式车",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T03",
+      "message_id": "m0",
+      "quote": "上回骑车还是初二那辆老式车"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A09",
+     "subject": "HER",
+     "relation": "family_pressure",
+     "value": "她因发小情面难以拒绝大壮",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T03",
+      "message_id": "m0",
+      "quote": "不带吧他是我发小"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不替她拍板带不带，把代价说清楚，决定权还她。",
+   "unknowns": [
+    "大壮体能底线未知",
+    "他的车况未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她拒绝大壮",
+    "不得虚构大壮的健身进度"
+   ],
+   "protected_expressions": [
+    "半路给我演荒野求生"
+   ]
+  },
+  {
+   "case_id": "E151_T04",
+   "current_action": "接住拍板：接受新队形——自己领骑定速、她押队看大壮、备用头盔周五借出；把'绿道不通车'的无退路预警郑重说一遍，让大壮自己知情。",
+   "acceptable_actions": [
+    "认下领骑位，要求提前把大壮车况报给自己",
+    "答应借头盔，提醒她周五取时顺便看看刹车皮",
+    "让她把不通车这话原样转给大壮，别到半路才知道"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A10",
+     "subject": "SHARED",
+     "relation": "role_swap",
+     "value": "新分工：ME 领骑定速，她押队照看大壮",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T04",
+      "message_id": "m0",
+      "quote": "你领骑定速，我押队看着他"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A11",
+     "subject": "SHARED",
+     "relation": "helmet_loan",
+     "value": "ME 备用头盔借给大壮，周五她上门取",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T04",
+      "message_id": "m0",
+      "quote": "你那套备用头盔借他一晚"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A12",
+     "subject": "SHARED",
+     "relation": "no_escape_warning",
+     "value": "预先声明绿道不通车，中途没有出租车退路",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T04",
+      "message_id": "m0",
+      "quote": "中途可没有出租车"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A13",
+     "subject": "SHARED",
+     "relation": "duo_plan_retracted",
+     "value": "原两人轻装骑行方案因大壮加入被推翻",
+     "valid_time": "2026-11-04/2026-11-05",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T01",
+      "message_id": "m0",
+      "quote": "就咱俩，轻装"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：答应要爽快，预警要说重，两件事分开说。",
+   "unknowns": [
+    "大壮是否知晓无退路预警未知",
+    "头盔尺寸是否合适未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构绿道沿途补给点",
+    "不得断言大壮一定能骑完全程"
+   ],
+   "protected_expressions": [
+    "丑话说前头"
+   ]
+  },
+  {
+   "case_id": "E151_T05",
+   "current_action": "接住车况警报：大壮的车刹车皮磨得跟纸一样；应下周日出发前帮她瞅一眼刹车，先肯定她打气装尾灯做得对。",
+   "acceptable_actions": [
+    "答应出发前检修刹车，提醒她这几天别让大壮先骑出门",
+    "肯定她备车细致，尾灯是绿道天黑后的保命件",
+    "调侃那车全车就铃铛合格，建议出发前再全面过一遍"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A14",
+     "subject": "THIRD",
+     "relation": "brake_worn",
+     "value": "大壮的车刹车皮严重磨损",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T05",
+      "message_id": "m0",
+      "quote": "刹车皮磨得跟纸一样"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A15",
+     "subject": "SHARED",
+     "relation": "brake_check_request",
+     "value": "她请 ME 周日出发前协助检查大壮车刹车",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T05",
+      "message_id": "m0",
+      "quote": "周日出发前你帮我瞅一眼刹车"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A16",
+     "subject": "HER",
+     "relation": "bike_prep",
+     "value": "她已为大壮的车打足气并装上尾灯",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T05",
+      "message_id": "m0",
+      "quote": "尾灯也装上了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：安全的事说正经，其他照常贫。",
+   "unknowns": [
+    "刹车皮是否需要换新未知",
+    "大壮是否还有其他车况问题未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构刹车更换费用",
+    "不得断言紧一紧就必然够用"
+   ],
+   "protected_expressions": [
+    "就铃铛还响"
+   ]
+  },
+  {
+   "case_id": "E151_T06",
+   "current_action": "接住检修反馈：刹车紧过试骑正常，检修比计划提前完成；确认集合时间与日落时间，给大壮的紧张一点善意。",
+   "acceptable_actions": [
+    "认可试骑结果，提醒明天出发前再空捏两把确认手感",
+    "把6:50集合和17:48日落复述成时间表",
+    "夸大壮定闹钟积极，比健身卡认真"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A17",
+     "subject": "SHARED",
+     "relation": "brake_serviced",
+     "value": "刹车经 ME 紧固后试骑手感正常",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T06",
+      "message_id": "m0",
+      "quote": "捏下去有底气回弹也正常"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A18",
+     "subject": "SHARED",
+     "relation": "brake_check_advanced",
+     "value": "原定周日的刹车检修提前到周六晚完成",
+     "valid_time": "2026-11-06/2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T05",
+      "message_id": "m0",
+      "quote": "周日出发前你帮我瞅一眼刹车"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E151_A19",
+     "subject": "SHARED",
+     "relation": "sunset_time",
+     "value": "周日日落时间为17:48",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T06",
+      "message_id": "m0",
+      "quote": "日落是17:48"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A20",
+     "subject": "THIRD",
+     "relation": "third_party_nerves",
+     "value": "大壮临行紧张，提前定好闹钟",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T06",
+      "message_id": "m0",
+      "quote": "比他当年高考还紧张"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'提前检修'说成顺路，不让大壮觉得被特殊对待。",
+   "unknowns": [
+    "周日凌晨天气未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构检修操作细节",
+    "不得断言刹车问题彻底解决"
+   ],
+   "protected_expressions": [
+    "比他当年高考还紧张"
+   ]
+  },
+  {
+   "case_id": "E151_T07",
+   "current_action": "接住出发：头盔戴反插曲轻轻带过，补给减半包的做法认可，18迈定速应下，押队的担子她背着就好。",
+   "acceptable_actions": [
+    "应下18迈定速，说第一次长途稳字当头",
+    "夸她补给减量想得周到，问水够不够三个人",
+    "调侃头盔戴反的照片留着当大壮第一次长途的纪念"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A21",
+     "subject": "SHARED",
+     "relation": "helmet_backwards",
+     "value": "出发时大壮头盔戴反被她拍下",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T07",
+      "message_id": "m0",
+      "quote": "大壮把头盔戴反了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A22",
+     "subject": "HER",
+     "relation": "supply_reduced",
+     "value": "她为照顾大壮把补给减了半包",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T07",
+      "message_id": "m0",
+      "quote": "补给我减了半包"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A23",
+     "subject": "SHARED",
+     "relation": "speed_cap",
+     "value": "她叮嘱 ME 领骑时速不超过18迈",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T07",
+      "message_id": "m0",
+      "quote": "你领骑别超18迈"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：出发阶段话短，把节奏稳住。",
+   "unknowns": [
+    "大壮能撑多少公里未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构沿途里程标记",
+    "不得预判事故"
+   ],
+   "protected_expressions": [
+    "他那个腿我还得看着"
+   ]
+  },
+  {
+   "case_id": "E151_T08",
+   "current_action": "接住半程爆雷：大壮抽筋加车座磨伤，坐在25公里牌处萌生退意，而无退路预警应验。先处理人再处理车：让他缓一缓，同时把水路退场选项摆出来。",
+   "acceptable_actions": [
+    "先让大壮补水拉伸缓十分钟，再判断是硬骑还是退场",
+    "提醒她下游码头有回程游船能带车，水路退场可行",
+    "接住她的慌：这不是谁的错，体能账出发前就该认"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A24",
+     "subject": "THIRD",
+     "relation": "third_party_breakdown",
+     "value": "大壮半程腿抽筋加车座磨伤，自称不是骑车的料",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T08",
+      "message_id": "m0",
+      "quote": "我可能不是骑车的料"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A25",
+     "subject": "SHARED",
+     "relation": "warning_materialized",
+     "value": "绿道不通车的无退路预警应验，现场无出租车可用",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T04",
+      "message_id": "m0",
+      "quote": "中途可没有出租车"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E151_A26",
+     "subject": "SHARED",
+     "relation": "breakdown_point",
+     "value": "事故发生在25公里牌处",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T08",
+      "message_id": "m0",
+      "quote": "25公里牌子那儿"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先把她的慌接住，归因说'账没算清'不说'人不行的'。",
+   "unknowns": [
+    "抽筋缓解程度未知",
+    "码头游船班次未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构医疗处置",
+    "不得断言大壮必须退出"
+   ],
+   "protected_expressions": [
+    "前不着村后不着店"
+   ]
+  },
+  {
+   "case_id": "E151_T09",
+   "current_action": "确认变通方案：大壮推车到码头坐游船带车回去、船票自理；两人继续骑、日落之约不变、分工对调她领骑自己押队——把这次妥协定义为体面退场。",
+   "acceptable_actions": [
+    "认可方案：大壮体面退场，日落之约保住，各得其所",
+    "提醒她让大壮到码头发定位，确认上船再说定心话",
+    "对分工对调表示欢迎，说押队的经验她也该轮一回"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A27",
+     "subject": "SHARED",
+     "relation": "fallback_plan",
+     "value": "变通方案：大壮推车步行至三公里外租船码头乘游船带车返回",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T09",
+      "message_id": "m0",
+      "quote": "推车步行到前面三公里的租船码头"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A28",
+     "subject": "SHARED",
+     "relation": "sunset_promise_kept",
+     "value": "日落之约保持不变，两人继续骑行",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T02",
+      "message_id": "m0",
+      "quote": "四点半前得到"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E151_A29",
+     "subject": "THIRD",
+     "relation": "third_party_partial_exit",
+     "value": "大壮后半程退出骑行改走水路，加入意愿中止",
+     "valid_time": "2026-11-05/2026-11-08",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T03",
+      "message_id": "m0",
+      "quote": "我发小大壮刷到我朋友圈，非要跟"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E151_A30",
+     "subject": "SHARED",
+     "relation": "role_swap_again",
+     "value": "分工再对调：她转领骑，ME 转押队",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T09",
+      "message_id": "m0",
+      "quote": "我押队改成你押我领"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把大壮退场说成'换条赛道先到'，别让退场听着像淘汰。",
+   "unknowns": [
+    "游船是否准点未知",
+    "大壮独自推车三公里是否顺利未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构船票价格",
+    "不得断言大壮下次必然跟骑"
+   ],
+   "protected_expressions": [
+    "我非骑过瘾不可"
+   ]
+  },
+  {
+   "case_id": "E151_T10",
+   "current_action": "共享抵达的畅快：日落前十分钟到堤上，芦苇荡金黄，大壮游船上先'到'发照自嘲，烤肠摊没赶上欠账记账——把这一趟的曲折算成值回票价。",
+   "acceptable_actions": [
+    "调侃烤肠欠账先记上，日落之约没欠就算圆满",
+    "调侃大壮水路'超车'，让他把照片洗出来裱上",
+    "肯定这一趟队形全乱了但日落没耽误，算圆满"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A31",
+     "subject": "SHARED",
+     "relation": "plan_fulfilled",
+     "value": "周日芦苇荡日落骑行计划兑现",
+     "valid_time": "2026-11-04/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T01",
+      "message_id": "m0",
+      "quote": "周日骑行去芦苇荡看日落"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E151_A32",
+     "subject": "THIRD",
+     "relation": "third_party_water_route",
+     "value": "大壮乘游船先行，发照自称水路骑行第一人",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T10",
+      "message_id": "m0",
+      "quote": "水路骑行第一人"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A33",
+     "subject": "SHARED",
+     "relation": "sausage_missed",
+     "value": "烤肠摊没赶上，她欠 ME 一笔烤肠账",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T10",
+      "message_id": "m0",
+      "quote": "烤肠是没赶上"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：日落时刻话少，把画面感留给她。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得虚构芦苇荡景观细节",
+    "不得断言大壮游船准时到达"
+   ],
+   "protected_expressions": [
+    "金得晃眼"
+   ]
+  },
+  {
+   "case_id": "E151_T11",
+   "current_action": "接住第三方义务了结：大壮红包谢押队、立换车跟骑的flag，她妈在群里夸'带得好'——把发小情面这条线收成双向落地。",
+   "acceptable_actions": [
+    "肯定大壮懂规矩，押队费这红包她受得起",
+    "提醒换车flag让她盯着，别健身卡凉了车先凉",
+    "夸她押队当得称职，她妈的眼睛是雪亮的"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A34",
+     "subject": "THIRD",
+     "relation": "red_packet_thanks",
+     "value": "大壮在老哥们群发备注押队费的红包谢她",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T11",
+      "message_id": "m0",
+      "quote": "备注'押队费'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A35",
+     "subject": "THIRD",
+     "relation": "rejoin_pledge",
+     "value": "大壮宣布达成健身卡首月目标后换车再跟骑",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T11",
+      "message_id": "m0",
+      "quote": "下个月达成健身卡首月目标就换车跟骑"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A36",
+     "subject": "THIRD",
+     "relation": "family_face_settled",
+     "value": "发小情面双向落地：她没驳情面，大壮以红包与flag回敬",
+     "valid_time": "2026-11-05/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T03",
+      "message_id": "m0",
+      "quote": "不带吧他是我发小"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'带得好'说成她应得的，别往家庭关系深处引。",
+   "unknowns": [
+    "红包金额未知",
+    "大壮健身目标能否达成未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构红包金额",
+    "不得断言大壮必然换车"
+   ],
+   "protected_expressions": [
+    "我一年没听过她这么夸我"
+   ]
+  },
+  {
+   "case_id": "E151_T12",
+   "current_action": "接住复盘与新规：车况检查和发小条款进群公告，烤肠欠账周三食堂还——把四十公里虽缺一人但完成的结论落定收尾。",
+   "acceptable_actions": [
+    "认下烤肠欠账，答应周三食堂准时收账",
+    "肯定群公告新规，说车况检查这条迟早救一命",
+    "把'缺了个人但骑完了'接成这次骑行的定论，收尾"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E151_A37",
+     "subject": "SHARED",
+     "relation": "new_rules",
+     "value": "下次团骑出发前人人车况检查、发小条款写入群公告",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T12",
+      "message_id": "m0",
+      "quote": "下次团骑出发前人人车况检查"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E151_A38",
+     "subject": "SHARED",
+     "relation": "labor_rules_carried",
+     "value": "本轮分工规则沿用至后续团骑安排",
+     "valid_time": "2026-11-04/2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T02",
+      "message_id": "m0",
+      "quote": "我带补给和水，你带补胎工具"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E151_A39",
+     "subject": "SHARED",
+     "relation": "sausage_debt",
+     "value": "烤肠欠账约定周三食堂以加菜偿还",
+     "valid_time": "2026-11-08/2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T10",
+      "message_id": "m0",
+      "quote": "欠你的记账上"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E151_A40",
+     "subject": "SHARED",
+     "relation": "ride_completed_with_absence",
+     "value": "四十公里完成但大壮缺席后半程",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E151_T12",
+      "message_id": "m0",
+      "quote": "四十公里虽然缺了个人但总算骑完了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾利落，把欠账说成下次见面的由头。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得虚构食堂菜单",
+    "不得断言下次团骑时间"
+   ],
+   "protected_expressions": [
+    "欠账"
+   ]
+  },
+  {
+   "case_id": "E152_T01",
+   "current_action": "接住救命求助：答应下午来装衣柜挂窗帘杆，顺手把海底捞的谢饭收下，边干边教她认两个步骤。",
+   "acceptable_actions": [
+    "答应下午到，让她把说明书和零件按包分好等着",
+    "答应来装，条件是她在旁边递工具学两手",
+    "先问她租房合同是否允许打孔，再确认到场时间"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A01",
+     "subject": "HER",
+     "relation": "assembly_request",
+     "value": "她请ME下午来装宜家衣柜并挂窗帘杆",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T01",
+      "message_id": "m0",
+      "quote": "来帮我装柜子加挂窗帘杆"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A02",
+     "subject": "SHARED",
+     "relation": "dinner_promise",
+     "value": "她以海底捞晚饭作谢，请饭承诺成立",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T01",
+      "message_id": "m0",
+      "quote": "晚饭我包了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：答应得干脆，'教你两手'带出来，别让她养成纯围观。",
+   "unknowns": [
+    "衣柜型号的具体零件是否齐全未知",
+    "租房合同对打孔的规定未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构宜家说明书内容",
+    "不得预判安装中的具体故障"
+   ],
+   "protected_expressions": [
+    "说明书看得我眼前发黑"
+   ]
+  },
+  {
+   "case_id": "E152_T02",
+   "current_action": "接住完工战报：肯定她盯柜子十分钟的那份珍视，把海底捞的兑现认下，顺着'下回换新菜'给一个轻钩子。",
+   "acceptable_actions": [
+    "夸战果，顺带点评一处她动手参与的小细节",
+    "接住海底捞已兑现，问她下回想学哪道新菜",
+    "提醒她柜子先别塞满，让板材放两天味"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A03",
+     "subject": "SHARED",
+     "relation": "first_job_done",
+     "value": "衣柜与窗帘杆当日安装完成",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T02",
+      "message_id": "m0",
+      "quote": "柜子立住了，窗帘杆也挂上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A04",
+     "subject": "SHARED",
+     "relation": "dinner_promise",
+     "value": "请饭承诺当日兑现，回请预期形成",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T01",
+      "message_id": "m0",
+      "quote": "晚饭我包了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸人只在活干完时给，这次给足，语气别腻。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得虚构衣柜内部结构",
+    "不得替她安排下次改造清单"
+   ],
+   "protected_expressions": [
+    "下回我学个新菜换着来"
+   ]
+  },
+  {
+   "case_id": "E152_T03",
+   "current_action": "接住第二次求助：阳台置物架属合理范围，答应明天上午来，接住'陪球输三局请奶茶'的抵工费玩笑。",
+   "acceptable_actions": [
+    "答应下周六来装置物架，让她提前把包装拆了验零件",
+    "顺着奶茶梗压价：输两局就抵，给她留点赢面",
+    "建议她这次全程上手，装完她的阳台她能自己维护"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A05",
+     "subject": "HER",
+     "relation": "shelf_request",
+     "value": "她请ME明天上午来装阳台置物架",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T03",
+      "message_id": "m0",
+      "quote": "明天上午再来一趟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A06",
+     "subject": "SHARED",
+     "relation": "badminton_barter",
+     "value": "她以陪打球输三局请奶茶抵工费",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T03",
+      "message_id": "m0",
+      "quote": "输三局我请奶茶，抵工费"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：第二次答应不带犹豫，'还是你行'顺着接，不戳破她的小心思。",
+   "unknowns": [
+    "置物架是否需打孔上墙未知",
+    "周六天气是否影响打球未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构置物架品牌与结构",
+    "不得预判打球比分"
+   ],
+   "protected_expressions": [
+    "输三局我请奶茶，抵工费"
+   ]
+  },
+  {
+   "case_id": "E152_T04",
+   "current_action": "接住置物架完工与'顺手清单'的加码苗头：清单先不动声色收下边界态度，同时把闺蜜小雨的好奇接住但不接单。",
+   "acceptable_actions": [
+    "夸置物架完工，但对清单不当场应承，先问她哪些属于急的",
+    "点出门锁水龙头是房东的活，柜门可以教她自己调",
+    "顺小雨的好奇接一句玩笑，不承诺去她家帮忙"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A07",
+     "subject": "SHARED",
+     "relation": "shelf_done",
+     "value": "阳台置物架当日安装完成",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T04",
+      "message_id": "m0",
+      "quote": "置物架装完"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A08",
+     "subject": "HER",
+     "relation": "chore_list",
+     "value": "她开出'门锁松、水龙头滴水、柜门歪'的顺手清单",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T04",
+      "message_id": "m0",
+      "quote": "卧室门锁松、水龙头滴水、厨房柜门歪"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A09",
+     "subject": "THIRD",
+     "relation": "xiaoyu_praise",
+     "value": "闺蜜小雨参观后对ME的手艺大加赞赏",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T04",
+      "message_id": "m0",
+      "quote": "对你的手艺赞不绝口"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A10",
+     "subject": "SHARED",
+     "relation": "dinner_promise",
+     "value": "回请新菜的预期延续到后续请饭账上",
+     "valid_time": "2026-11-07/2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T02",
+      "message_id": "m0",
+      "quote": "下回我学个新菜换着来"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：清单的事不冷脸，用'急活找房东'的口径预埋，为下轮摊牌铺路。",
+   "unknowns": [
+    "清单三项的具体损坏程度未知",
+    "小雨的求助意愿未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小雨的参观评价细节",
+    "不得当场替房东承诺维修范围"
+   ],
+   "protected_expressions": [
+    "追着问你是哪家装修公司的"
+   ]
+  },
+  {
+   "case_id": "E152_T05",
+   "current_action": "边界首次正式生效：清单撤下，急活归房东，ME的规矩立住；接住她'一看到活儿就想喊你'的嘟囔，态度不松但给足台阶。",
+   "acceptable_actions": [
+    "重申清单三项归房东报修，口头表扬她接受得快",
+    "提醒她报修时把滴水位置拍给房东，省一轮来回",
+    "接住'想喊你'的嘟囔，把吃饭的邀请单独留下"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A11",
+     "subject": "SHARED",
+     "relation": "chore_list",
+     "value": "她的顺手清单被撤下，维修义务划归房东报修",
+     "valid_time": "2026-11-14",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T04",
+      "message_id": "m0",
+      "quote": "卧室门锁松、水龙头滴水、厨房柜门歪"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E152_A12",
+     "subject": "HER",
+     "relation": "landlord_report",
+     "value": "她答应次日起向房东报修门锁与水龙头",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T05",
+      "message_id": "m1",
+      "quote": "那我明天就报修"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'结工'两个字要像玩笑不像划清界限，吃饭的口子留着。",
+   "unknowns": [
+    "房东报修响应速度未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构房东的答复",
+    "不得断言清单项都是房东责任之外的判断"
+   ],
+   "protected_expressions": [
+    "我这人就是一看到活儿就想喊你"
+   ]
+  },
+  {
+   "case_id": "E152_T06",
+   "current_action": "第三方插入落点：小雨借人请求正式到场（书架堆半个月+人情抵押'扛过六箱书'）；先接住她替友开口的难处，边界口径不变但给小雨一条正当路径。",
+   "acceptable_actions": [
+    "肯定小雨的人情分量，但把'借朋友'换成'按急活标准看'的口径",
+    "建议小雨直接说清要装什么、多急，由她自己判断",
+    "提醒她别把人情和活绑死，让友谊归友谊"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A13",
+     "subject": "THIRD",
+     "relation": "bookshelf_request",
+     "value": "小雨请托：家中书架在地上堆了半个月，想借ME安装",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T06",
+      "message_id": "m0",
+      "quote": "书架在地上堆了半个月"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A14",
+     "subject": "THIRD",
+     "relation": "favor_collateral",
+     "value": "小雨以曾徒手帮栗子扛六箱书的人情作抵押",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T06",
+      "message_id": "m0",
+      "quote": "徒手扛了六箱书"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：对她'所以你……'的省略号不当场接死，留一句'让小雨自己跟我说'。",
+   "unknowns": [
+    "小雨家书架的具体安装条件未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小雨家的居住情况",
+    "不得答应或拒绝得过于绝对"
+   ],
+   "protected_expressions": [
+    "务必帮她求求你"
+   ]
+  },
+  {
+   "case_id": "E152_T07",
+   "current_action": "边界受压爆发点：微信已被推、清单已直达、'周末闲着'的游说上场；稳住拒绝姿态——周末不是公共资源，大活找师傅，同时不给友谊上刑。",
+   "acceptable_actions": [
+    "明确周末不外借，大活建议小雨找安装师傅或平台",
+    "把'一面墙的活'拆开看：若是急且小的可按急活口径评估",
+    "拒绝时给她台阶：不是不给面子，是不开'推人接单'的头"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A15",
+     "subject": "HER",
+     "relation": "wechat_shared",
+     "value": "她已把ME的微信推给小雨，请求直达",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T07",
+      "message_id": "m0",
+      "quote": "我把你微信推给她了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A16",
+     "subject": "HER",
+     "relation": "weekend_lobby",
+     "value": "她以'周末闲着'游说ME接下小雨的单",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T07",
+      "message_id": "m0",
+      "quote": "你反正周末也闲着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A17",
+     "subject": "ME",
+     "relation": "work_boundary",
+     "value": "'这单清完就结工'的收工约定正被闺蜜推单与周末游说打破",
+     "valid_time": "2026-11-14/2026-11-18",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T05",
+      "message_id": "m0",
+      "quote": "这单清完就结工"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：拒绝要像立规矩不像翻脸，'周末是我的'可以说得半玩笑半认真。",
+   "unknowns": [
+    "小雨清单删减后内容未知",
+    "她是否介意被拒未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小雨发来的清单内容",
+    "不得断言ME必然拒绝全部项目"
+   ],
+   "protected_expressions": [
+    "顺便把我也捎上，我给她打下手"
+   ]
+  },
+  {
+   "case_id": "E152_T08",
+   "current_action": "边界守住后的落点：小雨转平台安装成功且效果不差；肯定这个'专业的事找专业的人'的结果，接住她'我服'的服气，不给拒绝记账。",
+   "acceptable_actions": [
+    "肯定平台方案的效率与价格，边界和事情都圆满",
+    "顺她的'我服'接一句：不是不帮，是各归各位",
+    "提醒她把'周末不外借'说给小雨，免得再尴尬一次"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A18",
+     "subject": "SHARED",
+     "relation": "refusal_landed",
+     "value": "ME以'周末是我的，不外借'婉拒闺蜜单，边界生效",
+     "valid_time": "2026-11-19",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T08",
+      "message_id": "m0",
+      "quote": "周末是我的，不外借"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A19",
+     "subject": "THIRD",
+     "relation": "xiaoyu_platform",
+     "value": "小雨改用跑腿安装平台，四十元一小时装完",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T08",
+      "message_id": "m0",
+      "quote": "找了跑腿安装平台"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A20",
+     "subject": "THIRD",
+     "relation": "bookshelf_request",
+     "value": "小雨借人请求就此撤回，改走专业渠道",
+     "valid_time": "2026-11-18/2026-11-19",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T06",
+      "message_id": "m0",
+      "quote": "务必帮她求求你"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：胜者的姿态收着，重点讲'各归各位'让三方都不亏。",
+   "unknowns": [
+    "平台师傅的具体服务细节未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台收费规则",
+    "不得断言小雨此后不再求助"
+   ],
+   "protected_expressions": [
+    "专业的事交给专业的人"
+   ]
+  },
+  {
+   "case_id": "E152_T09",
+   "current_action": "共享房东履约的结果：三项全修、分文不收、合同内义务；把'该谁管的找谁'这条经验郑重点给她，作为边界课的毕业证。",
+   "acceptable_actions": [
+    "肯定房东履约到位，她的报修操作也干净利落",
+    "把'该谁管的找谁'再补一刀：租客也有自己的边界",
+    "提醒她把学到的两招用起来，下次小活自己上"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A21",
+     "subject": "THIRD",
+     "relation": "landlord_fixed",
+     "value": "房东师傅上门修好门锁水龙头并掰正柜门，分文未收",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T09",
+      "message_id": "m0",
+      "quote": "门锁水龙头全修好了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A22",
+     "subject": "HER",
+     "relation": "boundary_lesson",
+     "value": "她总结出'该谁管的找谁'的省心结论",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T09",
+      "message_id": "m0",
+      "quote": "该谁管的找谁"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A23",
+     "subject": "SHARED",
+     "relation": "chore_list",
+     "value": "原顺手清单三项经房东报修全部归位关闭",
+     "valid_time": "2026-11-14/2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T04",
+      "message_id": "m0",
+      "quote": "卧室门锁松、水龙头滴水、厨房柜门歪"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不说教，让她自己念出的结论值钱，补一句认可就好。",
+   "unknowns": [
+    "房东是否会因报修提高租金未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构合同具体条款",
+    "不得断言房东此后有求必应"
+   ],
+   "protected_expressions": [
+    "早知道我列什么单子"
+   ]
+  },
+  {
+   "case_id": "E152_T10",
+   "current_action": "接住自学战报：洞洞板自己装、挂画三次归正、电钻落定为出借；把'从喊人到上手'的转变点出来，夸在刀刃上。",
+   "acceptable_actions": [
+    "夸洞洞板与挂画的自装成果，挂画三次的梗轻轻接住",
+    "确认电钻借出，提醒她钻头用法与护目镜",
+    "顺着小雨'照抄'的玩笑，建议她出个改造小笔记"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A24",
+     "subject": "HER",
+     "relation": "diy_progress",
+     "value": "她自装洞洞板，挂画第三次才挂正",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T10",
+      "message_id": "m1",
+      "quote": "洞洞板自己装的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A25",
+     "subject": "ME",
+     "relation": "drill_gift",
+     "value": "ME未把电钻相赠，改为外借并要求用完归还",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T10",
+      "message_id": "m0",
+      "quote": "电钻先借你了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'先借你了'当时说得轻，这轮也别翻出来讲重。",
+   "unknowns": [
+    "洞洞板承载物重量未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构电钻型号",
+    "不得断言她已能独立完成全部安装"
+   ],
+   "protected_expressions": [
+    "歪了两次第三次终于正了"
+   ]
+  },
+  {
+   "case_id": "E152_T11",
+   "current_action": "接住人情账平账：两次安装、陪球记满一页、电钻借用另计，明晚海底捞必须到；把账接得郑重，别让她的郑重落空。",
+   "acceptable_actions": [
+    "答应明晚到，肯定她记账平账的规矩感",
+    "顺'拧螺丝手法'的账接一句：教学免费，饭必须吃",
+    "提醒她账别算太清，朋友间的往来说不清才长久"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A26",
+     "subject": "SHARED",
+     "relation": "ledger",
+     "value": "她的人情账记满一页：两次安装、一次陪球，电钻以借用另计",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T11",
+      "message_id": "m0",
+      "quote": "两次安装、一次陪打球"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A27",
+     "subject": "SHARED",
+     "relation": "thank_dinner",
+     "value": "她定明晚海底捞为感谢宴，要求ME必须到",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T11",
+      "message_id": "m0",
+      "quote": "明晚海底捞，你必须到"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A28",
+     "subject": "SHARED",
+     "relation": "badminton_barter",
+     "value": "陪球请奶茶抵工费的玩笑账正式计入人情账",
+     "valid_time": "2026-11-13/2026-11-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T03",
+      "message_id": "m0",
+      "quote": "输三局我请奶茶，抵工费"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她的郑重要接住，'两顿平账'顺着算，别拆台。",
+   "unknowns": [
+    "海底捞具体时间安排未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构账目金额明细",
+    "不得断言平账后往来结束"
+   ],
+   "protected_expressions": [
+    "两顿才勉强平账，你别嫌多"
+   ]
+  },
+  {
+   "case_id": "E152_T12",
+   "current_action": "接住散会宣言与三人约定：'除非屋里塌了'与'动锤子先请火锅'收成默契；笑纳这条边界条款，把故事轻轻收掉。",
+   "acceptable_actions": [
+    "签收'除非屋里塌了'条款，补一句塌了也得先请火锅",
+    "把三人约定复述成一句规矩，散会仪式感给足",
+    "顺她'扶墙进门'的餍足收个轻尾巴，不留新话题"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E152_A29",
+     "subject": "SHARED",
+     "relation": "boundary_pact",
+     "value": "她立约：下回再叫ME装东西只有屋里塌了才行",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T12",
+      "message_id": "m0",
+      "quote": "下回再叫你装东西，除非屋里塌了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A30",
+     "subject": "THIRD",
+     "relation": "xiaoyu_aligned",
+     "value": "小雨也表态以后直接找师傅，加入三人约定",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T12",
+      "message_id": "m0",
+      "quote": "小雨也说以后直接找师傅"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A31",
+     "subject": "SHARED",
+     "relation": "hotpot_rule",
+     "value": "三人约定：谁家动锤子先请另外俩吃火锅",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T12",
+      "message_id": "m0",
+      "quote": "先请另外俩吃火锅再说"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E152_A32",
+     "subject": "SHARED",
+     "relation": "thank_dinner",
+     "value": "感谢宴当晚兑现，人情账完成阶段性平账",
+     "valid_time": "2026-11-27/2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E152_T11",
+      "message_id": "m0",
+      "quote": "明晚海底捞，你必须到"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把边界讲成默契不讲成条款，散会两个字接住。",
+   "unknowns": [
+    "下次动锤子的是谁家未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构宴席菜单与消费金额",
+    "不得引入新的装修议题"
+   ],
+   "protected_expressions": [
+    "除非屋里塌了"
+   ]
+  },
+  {
+   "case_id": "E153_T01",
+   "current_action": "接住'发现减药+当场吵翻'的双重冲击：先接她的悔，把'减药原因来自直播间'和'当场说教收不了场'分开记，垫一句药量的事最后都要回到医生那里。",
+   "acceptable_actions": [
+    "先安抚她的悔意，吵架不代表关心错了",
+    "提醒别再就减药当场争对错，先把妈妈情绪接住",
+    "问她妈妈吃的是哪种降压药、减药多久了，攒信息"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "boundary",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A01",
+     "subject": "THIRD",
+     "relation": "dose_reduced",
+     "value": "妈妈自行把降压药从一片减到半片",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T01",
+      "message_id": "m0",
+      "quote": "从一片减到半片"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A02",
+     "subject": "THIRD",
+     "relation": "device_belief",
+     "value": "妈妈相信配合磁疗仪调理可以逐步减药",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T01",
+      "message_id": "m0",
+      "quote": "配合磁疗仪调理，可以逐步减药"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A03",
+     "subject": "HER",
+     "relation": "first_confrontation",
+     "value": "她当场说教致妈妈饭未吃完离席",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T01",
+      "message_id": "m0",
+      "quote": "她饭都没吃完就回房间了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接'又气又悔'里的悔，药理的事一句带过，别当场开课。",
+   "unknowns": [
+    "妈妈所服降压药具体名称未知",
+    "减药已持续几天未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言半片剂量必然危险",
+    "不得替医生宣布必须恢复剂量",
+    "不得贬低妈妈'糊涂'"
+   ],
+   "protected_expressions": [
+    "她饭都没吃完就回房间了"
+   ]
+  },
+  {
+   "case_id": "E153_T02",
+   "current_action": "接住直播课邀约与没收冲动：把'没收'这招的代价先摊开——东西收得掉，'被当成对立面'收不掉；不动声色地把她的注意力引向身体本身。",
+   "acceptable_actions": [
+    "点破没收的代价：赢的是理输的是关系",
+    "建议她先别接直播课的话茬，也别跟着听",
+    "问她妈妈的年度体检什么时候出，把话题往数据上引"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A04",
+     "subject": "THIRD",
+     "relation": "course_invite",
+     "value": "妈妈转发周六'专家'高血压非药物调理直播课",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T02",
+      "message_id": "m0",
+      "quote": "周六有'专家'讲高血压非药物调理"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A05",
+     "subject": "HER",
+     "relation": "confiscation_idea",
+     "value": "她考虑硬没收妈妈的理疗仪",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T02",
+      "message_id": "m0",
+      "quote": "要不要硬没收她那台理疗仪"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A06",
+     "subject": "THIRD",
+     "relation": "device_value",
+     "value": "理疗仪三千多元且被妈妈视若珍宝",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T02",
+      "message_id": "m0",
+      "quote": "三千多买的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'没收'先别一票否死，让代价自己说话，她自然会掂量。",
+   "unknowns": [
+    "直播'专家'真实身份未知",
+    "体检报告出炉时间未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言理疗仪无效或有疗效",
+    "不得虚构直播课内容细节"
+   ],
+   "protected_expressions": [
+    "她当宝贝"
+   ]
+  },
+  {
+   "case_id": "E153_T03",
+   "current_action": "接住边界爆发：妈妈不接电话且把女儿的反对解读成坚持的理由；先共情心凉，再把'反向坚持'的心理点破—— opposition 越大，直播间越显得'懂她'。",
+   "acceptable_actions": [
+    "先接心凉，明确她此刻的反应很正常",
+    "点破'女儿反对更得坚持'是直播间话术喂出来的对抗逻辑",
+    "建议她这几天退半步，先恢复日常联系，不谈药不谈仪"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "attribution",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A07",
+     "subject": "THIRD",
+     "relation": "contact_blocked",
+     "value": "妈妈不接她的电话",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T03",
+      "message_id": "m0",
+      "quote": "我妈现在连我的电话都不接了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A08",
+     "subject": "THIRD",
+     "relation": "backfire_belief",
+     "value": "妈妈在直播群把女儿反对解读为坚持的理由",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T03",
+      "message_id": "m0",
+      "quote": "女儿反对我健康，更说明我得坚持"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A09",
+     "subject": "THIRD",
+     "relation": "aunt_channel",
+     "value": "姨妈成为转述直播群动态的间接信息渠道",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T03",
+      "message_id": "m0",
+      "quote": "昨晚我姨跟我说"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A10",
+     "subject": "HER",
+     "relation": "confiscation_doubt",
+     "value": "没收方案在她自己心中也已动摇待定",
+     "valid_time": "2026-11-06/2026-11-07",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T02",
+      "message_id": "m0",
+      "quote": "要不要硬没收她那台理疗仪"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：别帮着骂直播间，骂了妈妈会更逆反；把'退半步'说成战术不是认输。",
+   "unknowns": [
+    "妈妈冷戦持续多久未知",
+    "直播间具体话术未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言直播间为骗局",
+    "不得虚构妈妈在群里的其他发言"
+   ],
+   "protected_expressions": [
+    "我听完心都凉了"
+   ]
+  },
+  {
+   "case_id": "E153_T04",
+   "current_action": "接住策略转向：不聊直播间、只聊身体，用体检报告和慢病门诊把阵地从'对错'换到'数据'；帮她把挂号的路说清但不包办。",
+   "acceptable_actions": [
+    "肯定'聊身体不聊直播间'的路子，对妈妈来说面子留着、台阶也在",
+    "告诉她挂号走社区医院公众号或导诊台，药房帮不上但导诊能",
+    "建议她约慢病门诊时报上高血压病史，带上日常血压记录"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A11",
+     "subject": "HER",
+     "relation": "strategy_shift",
+     "value": "她把沟通目标从直播间转向妈妈的身体与数据",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T04",
+      "message_id": "m0",
+      "quote": "就聊身体"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A12",
+     "subject": "THIRD",
+     "relation": "checkup_pending",
+     "value": "妈妈年度体检报告尚未出炉",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T04",
+      "message_id": "m0",
+      "quote": "今年报告还没出"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A13",
+     "subject": "HER",
+     "relation": "clinic_plan",
+     "value": "她计划约妈妈同去社区医院慢病门诊",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T04",
+      "message_id": "m0",
+      "quote": "约她一起去看一次社区医院的慢病门诊"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：帮她把'问我挂号的口子'接住又不越权——药房不挂号，这是老白的本分。",
+   "unknowns": [
+    "妈妈是否同意同去未知",
+    "体检报告具体日期未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构挂号流程细节",
+    "不得承诺门诊必然有用"
+   ],
+   "protected_expressions": [
+    "你那边能帮我问问怎么挂吗"
+   ]
+  },
+  {
+   "case_id": "E153_T05",
+   "current_action": "确认门诊成行：妈妈答应但设了'只聊血压不提直播间'的条件；肯定这个条件其实是妈妈递的台阶，并应下周四留意的托付。",
+   "acceptable_actions": [
+    "点破'不提直播间'是妈妈主动划的地盘，守约就是尊重",
+    "答应她门诊当天搭把手，但强调说话的是医生不是自己",
+    "建议她把日常血压记录整理一页，见面好给医生看"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A14",
+     "subject": "SHARED",
+     "relation": "clinic_visit_agreed",
+     "value": "妈妈答应周四与女儿同去慢病门诊",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T05",
+      "message_id": "m0",
+      "quote": "我妈答应周四跟我去慢病门诊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A15",
+     "subject": "THIRD",
+     "relation": "condition_set",
+     "value": "妈妈设定'只聊血压不提直播间'的参与条件",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T05",
+      "message_id": "m0",
+      "quote": "只聊血压，不许提直播间"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A16",
+     "subject": "THIRD",
+     "relation": "checkup_still_pending",
+     "value": "体检报告结果在门诊前仍未出",
+     "valid_time": "2026-11-11",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T04",
+      "message_id": "m0",
+      "quote": "今年报告还没出"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把妈妈的条件说成转机，别把它当成对女儿的压制。",
+   "unknowns": [
+    "门诊当天妈妈的配合度未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得替门诊预测结论",
+    "不得虚构慢病门诊流程"
+   ],
+   "protected_expressions": [
+    "我怕我又忍不住吵架"
+   ]
+  },
+  {
+   "case_id": "E153_T06",
+   "current_action": "接住体检报告与医生口径的双落地：恢复原剂量建议加理疗仪'放松可以替代不行'的定位；把医生的权威话语复述清楚，也接住妈妈的沉默。",
+   "acceptable_actions": [
+    "先报好消息：血压控制还行，这是两年吃药的功劳",
+    "把医生'替代药物不行'的定位强调成这道题的权威答案",
+    "提醒她别追问妈妈当时为什么不吭声，给消化留时间"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "attribution",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A17",
+     "subject": "THIRD",
+     "relation": "doctor_dose_advice",
+     "value": "医生称自行减药风险大并建议恢复原剂量",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T06",
+      "message_id": "m0",
+      "quote": "自行减药风险大"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A18",
+     "subject": "THIRD",
+     "relation": "device_positioning",
+     "value": "医生将理疗仪定位为按摩放松而不可替代药物",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T06",
+      "message_id": "m0",
+      "quote": "替代药物不行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A19",
+     "subject": "THIRD",
+     "relation": "silent_reaction",
+     "value": "妈妈当场未表态，回家路上一路沉默",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T06",
+      "message_id": "m0",
+      "quote": "我妈当场没吭声"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A20",
+     "subject": "THIRD",
+     "relation": "dose_state_superseded",
+     "value": "自行减到半片的状态被医生恢复原剂量的建议正面覆盖",
+     "valid_time": "2026-11-05/2026-11-13",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T01",
+      "message_id": "m0",
+      "quote": "从一片减到半片"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：功劳记给医生和妈妈自己，不抢'我早就说过'的先手。",
+   "unknowns": [
+    "妈妈何时恢复剂量未知",
+    "理疗仪处置未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言妈妈必然恢复剂量",
+    "不得对血压数值做医学解读"
+   ],
+   "protected_expressions": [
+    "回来的路上一路看窗外"
+   ]
+  },
+  {
+   "case_id": "E153_T07",
+   "current_action": "接住妈妈的主动来电：剂量没恢复仍是半片、直播课停听、理疗仪不扔但她主动放手；把'第一次没吵'标成里程碑，剂量的事轻轻挂起不逼宫。",
+   "acceptable_actions": [
+    "肯定妈妈停课与留仪都是让步，剂量的事等复查让医生说话",
+    "支持她'不追理疗仪'的判断，赢一半留一半是长期主义",
+    "建议她给妈妈回个电话或消息，只叙家常不提这事"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A21",
+     "subject": "THIRD",
+     "relation": "dose_restored",
+     "value": "妈妈未恢复每日一片剂量，仍按半片服用",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T07",
+      "message_id": "m0",
+      "quote": "药我还没恢复，还是半片"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A22",
+     "subject": "THIRD",
+     "relation": "course_stopped",
+     "value": "妈妈表示下周不再听直播间课程",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T07",
+      "message_id": "m0",
+      "quote": "下周直播间的课不听了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A23",
+     "subject": "HER",
+     "relation": "device_let_go",
+     "value": "她决定不再纠缠理疗仪去留",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T07",
+      "message_id": "m0",
+      "quote": "我打算不追了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A24",
+     "subject": "THIRD",
+     "relation": "boundary_respected",
+     "value": "'不提直播间'的条件被双方遵守并促成转折",
+     "valid_time": "2026-11-11/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T05",
+      "message_id": "m0",
+      "quote": "只聊血压，不许提直播间"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'它让我睡得踏实'这句要接住——妈妈需要的东西不只是药效，睡眠也是真实收益。",
+   "unknowns": [
+    "妈妈剂量何时恢复未知",
+    "停课是暂时还是永久未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言妈妈与直播间彻底决裂",
+    "不得虚构来电更多对话"
+   ],
+   "protected_expressions": [
+    "它让我睡得踏实"
+   ]
+  },
+  {
+   "case_id": "E153_T08",
+   "current_action": "接住妈妈的使用类提问转达：问题限定在'用多久'而非'治不治'，这个边界恰好是 ME 能答的范围；给说明书式的答案，不碰疗效。",
+   "acceptable_actions": [
+    "答使用类问题可以：建议每次时长以说明书为准",
+    "明确划界：疗效不归他答，那是医生的事",
+    "建议她把说明书找出来让妈妈自己读一遍"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A25",
+     "subject": "THIRD",
+     "relation": "usage_question",
+     "value": "妈妈询问理疗仪是否需每天定时用够四十分钟",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T08",
+      "message_id": "m0",
+      "quote": "用不用每天定时用够四十分钟才有用"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A26",
+     "subject": "HER",
+     "relation": "relay_request",
+     "value": "她向 ME 转达妈妈的仪器使用咨询",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T08",
+      "message_id": "m0",
+      "quote": "我说我帮你问问专业的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A27",
+     "subject": "THIRD",
+     "relation": "device_position_held",
+     "value": "'放松可以替代不行'的定位仍是回应使用问题的前提",
+     "valid_time": "2026-11-13/2026-11-16",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T06",
+      "message_id": "m0",
+      "quote": "替代药物不行"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：答案送到'说明书'为止，多一句疗效评价都是越界。",
+   "unknowns": [
+    "说明书具体条目未知",
+    "妈妈是否有其他使用疑问未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得评价理疗仪疗效",
+    "不得给出超出说明书的使用建议"
+   ],
+   "protected_expressions": [
+    "不涉及治病"
+   ]
+  },
+  {
+   "case_id": "E153_T09",
+   "current_action": "接住说明书方案的落定：妈妈按说明书使用、理疗仪归位为睡前按摩器；肯定这个'各自退一步'的落点。",
+   "acceptable_actions": [
+    "肯定'按说明书来'是妈妈自己找的台阶",
+    "顺着'睡前用'说一句睡得好比什么都强",
+    "提醒她不用再盯理疗仪的事，让它淡下去"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A28",
+     "subject": "THIRD",
+     "relation": "manual_compliance",
+     "value": "妈妈决定按说明书每次三十到四十分钟使用",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T09",
+      "message_id": "m0",
+      "quote": "说她按说明书来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A29",
+     "subject": "THIRD",
+     "relation": "device_relocated",
+     "value": "理疗仪移入妈妈房间供睡前使用",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T09",
+      "message_id": "m0",
+      "quote": "把理疗仪从客厅搬进了自己房间"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A30",
+     "subject": "SHARED",
+     "relation": "device_dispute_dropped",
+     "value": "理疗仪去留争议以'当按摩器'的定位落地收束",
+     "valid_time": "2026-11-14/2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T07",
+      "message_id": "m0",
+      "quote": "我打算不追了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'当按摩器'说成体面的共赢，不翻'早该如此'的旧账。",
+   "unknowns": [
+    "妈妈使用频率是否遵说明书未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言理疗仪有助眠功效",
+    "不得虚构说明书具体参数"
+   ],
+   "protected_expressions": [
+    "我看她是真把它当按摩器了"
+   ]
+  },
+  {
+   "case_id": "E153_T10",
+   "current_action": "接住'降压茶'反弹：直播间信源仍在向妈妈的圈层渗透；把话术给到'不拦买、药不停、有不适就停'的护栏式回应，不替茶定性。",
+   "acceptable_actions": [
+    "给她'不拦买但药不能停'的护栏式话术",
+    "补一条：喝完有任何不舒服先停并告诉医生",
+    "提醒她这回的口径是守底线不是打阵地，别再开战"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A31",
+     "subject": "THIRD",
+     "relation": "tea_promotion",
+     "value": "直播间老师新推'降压茶'并在妈妈群里热推",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T10",
+      "message_id": "m0",
+      "quote": "出了个'降压茶'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A32",
+     "subject": "SHARED",
+     "relation": "tea_efficacy_unknown",
+     "value": "该'降压茶'的功效在故事内无任何实锤，仅群友口口相传",
+     "valid_time": "2026-11-21",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T10",
+      "message_id": "m0",
+      "quote": "她群里的姐妹都在买"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A33",
+     "subject": "THIRD",
+     "relation": "course_stopped_but_source_active",
+     "value": "直播间课程虽停但信源仍在向妈妈圈层渗透",
+     "valid_time": "2026-11-14/2026-11-21",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T07",
+      "message_id": "m0",
+      "quote": "下周直播间的课不听了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'我脑袋嗡的一下'要先笑接一下再上正题，她的警觉已经是经验了。",
+   "unknowns": [
+    "降压茶成分与功效未知",
+    "妈妈是否购买未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言降压茶无效或有害",
+    "不得认可降压茶有降压作用",
+    "不得建议报警或投诉直播平台"
+   ],
+   "protected_expressions": [
+    "这回我该咋说"
+   ]
+  },
+  {
+   "case_id": "E153_T11",
+   "current_action": "接住话术生效：妈妈'茶先不买、药哪有茶灵'的自答把'是药三分毒'翻了个面；把这个共识钉住——药不能停是母女共同底线。",
+   "acceptable_actions": [
+    "肯定妈妈'茶哪有药灵'这句是真正的转弯",
+    "把'一片药不能停'复述成母女共同的底线",
+    "建议她那句'头晕心慌马上停'也跟社区医生提一嘴"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A34",
+     "subject": "HER",
+     "relation": "guardrail_reply",
+     "value": "她以'茶不拦买但一片药不能停、不适即停'回应妈妈",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T11",
+      "message_id": "m0",
+      "quote": "茶我不拦你买，但一片药不能停"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A35",
+     "subject": "THIRD",
+     "relation": "tea_declined",
+     "value": "妈妈决定暂不购买降压茶",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T11",
+      "message_id": "m0",
+      "quote": "那我先不买了，茶哪有药灵"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A36",
+     "subject": "SHARED",
+     "relation": "medicine_consensus",
+     "value": "'一片药不能停'成为母女共识",
+     "valid_time": "2026-11-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T11",
+      "message_id": "m0",
+      "quote": "但一片药不能停"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A37",
+     "subject": "THIRD",
+     "relation": "belief_self_reversed",
+     "value": "'是药三分毒'的信条被妈妈自己推翻",
+     "valid_time": "2026-11-05/2026-11-24",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T01",
+      "message_id": "m0",
+      "quote": "配合磁疗仪调理，可以逐步减药"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'差点没绷住'要接住——妈妈自己转弯的笑点，比说服十次都值。",
+   "unknowns": [
+    "妈妈日后是否复购未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言妈妈已彻底摆脱直播间影响",
+    "不得虚构母女对话更多细节"
+   ],
+   "protected_expressions": [
+    "这还是那个说'是药三分毒'的人吗"
+   ]
+  },
+  {
+   "case_id": "E153_T12",
+   "current_action": "接住复查加设宴：妈妈点名谢药房的同学，笑纳这份认可并确认周六安排，以陈皮玩笑轻收。",
+   "acceptable_actions": [
+    "答应周六同去复查，把'只是路过'的玩笑接住不拆穿",
+    "提醒她带齐妈妈的血压记录和药盒",
+    "顺着陈皮打趣一句，说阿姨的汤一定喝两碗"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E153_A38",
+     "subject": "SHARED",
+     "relation": "followup_visit",
+     "value": "下周六慢病门诊复查已定",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T12",
+      "message_id": "m0",
+      "quote": "下周六慢病门诊复查"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A39",
+     "subject": "THIRD",
+     "relation": "soup_invite",
+     "value": "妈妈炖汤点名请药房的同学以示感谢",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T12",
+      "message_id": "m0",
+      "quote": "让你那个药房的同学也来呗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A40",
+     "subject": "SHARED",
+     "relation": "tangerine_peel_joke",
+     "value": "汤里放了妈妈自晒陈皮成为玩笑点",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T12",
+      "message_id": "m0",
+      "quote": "汤里放了她自己晒的陈皮"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E153_A41",
+     "subject": "SHARED",
+     "relation": "followup_of_agreed_visit",
+     "value": "复查源于'只聊血压'门诊之约的延续",
+     "valid_time": "2026-11-11/2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E153_T05",
+      "message_id": "m0",
+      "quote": "我妈答应周四跟我去慢病门诊"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：整条线收在'妈妈肯设宴谢人'上，这是从对抗到信任的全 arc，别再讲道理。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得虚构复查安排细节",
+    "不得对陈皮做任何药理评价"
+   ],
+   "protected_expressions": [
+    "你敢喝吗"
+   ]
+  },
+  {
+   "case_id": "E154_T01",
+   "current_action": "接住拼单成团的得意，答应用推车和旧纸箱的借用，顺口提醒一句：380 对半是建立在两人同一天搬成的前提上。",
+   "acceptable_actions": [
+    "爽快答应借推车和纸箱，约好周六来取的时间",
+    "答应借用，顺带提醒她拼单要落成书面：时间、分摊、谁的件多谁先装",
+    "借物之外补一句经验：打包先封不急的，死线前一天留半天空"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A01",
+     "subject": "SHARED",
+     "relation": "carpool_initiated",
+     "value": "她与楼上小冉拼一辆小面包车，费用对半各 190 元",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T01",
+      "message_id": "m0",
+      "quote": "拼一辆小面包车，车主报的 380 一车，一人 190"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A02",
+     "subject": "SHARED",
+     "relation": "tool_borrow",
+     "value": "她向阿灿预借折叠推车与旧纸箱，周六取",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T01",
+      "message_id": "m1",
+      "quote": "折叠推车周六借我用两天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：借物答应得痛快，提醒收在经验里说，不泼她兴头。",
+   "unknowns": [
+    "小冉一方的稳定性未经验证"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小冉的搬家动机",
+    "不得断言拼单必然成行"
+   ],
+   "protected_expressions": [
+    "比单独包车划算一半"
+   ]
+  },
+  {
+   "case_id": "E154_T02",
+   "current_action": "肯定细节对得齐整，把 8:30 装车与借物兑现日记牢，顺口问一句新家那边要不要提前报备物业。",
+   "acceptable_actions": [
+    "确认周六取推车纸箱的时间，提醒她留好车主联系方式",
+    "肯定她打包计划排得细，建议大件提前拆螺丝装袋",
+    "提醒她跟新小区物业打好招呼，货车进出和电梯都要提前问"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A03",
+     "subject": "SHARED",
+     "relation": "schedule_locked",
+     "value": "定于 22 号早上 8:30 车到北门，两家各占半车一趟拉完",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T02",
+      "message_id": "m0",
+      "quote": "22 号早上 8:30 车到北门"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸具体不夸空，'一趟拉完'这种好话别让她全信，留一句变数。",
+   "unknowns": [
+    "新家物业是否需要报备未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构物业规定",
+    "不得替她拍板打包顺序"
+   ],
+   "protected_expressions": [
+    "师傅说一趟拉完"
+   ]
+  },
+  {
+   "case_id": "E154_T03",
+   "current_action": "接住拼单暂停：先认下她懊恼有理，再把小冉续租定性为正当变故而非背约，把问题从'怪谁'转到'接下来怎么办'。",
+   "acceptable_actions": [
+    "肯定小冉续租不搬是正经选择，劝她别记仇",
+    "把账摆开：包整车 380 对她一个人搬的实际需求，看有没有缩量的空间",
+    "提醒她死线还早，先稳住别急着独自扛价"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "emotion_relation",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A04",
+     "subject": "SHARED",
+     "relation": "carpool_recall",
+     "value": "此前成团的拼单是她与小冉各出 190 的对半方案",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T01",
+      "message_id": "m0",
+      "quote": "拼一辆小面包车，车主报的 380 一车，一人 190"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E154_A05",
+     "subject": "SHARED",
+     "relation": "carpool_suspended",
+     "value": "小冉因房东续租退出搬家，拼单中断",
+     "valid_time": "2026-11-17",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T03",
+      "message_id": "m0",
+      "quote": "她当场答应不搬了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A06",
+     "subject": "HER",
+     "relation": "full_price_dilemma",
+     "value": "独自包整车 380 元令她心疼，开始找替代",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T03",
+      "message_id": "m0",
+      "quote": "我一个人包整车 380"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先把'黄了一半'的火气接住，再把它翻译成'暂停不是终局'。",
+   "unknowns": [
+    "小冉闺蜜等潜在替补是否存在未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小冉反悔有错",
+    "不得虚构房东细节"
+   ],
+   "protected_expressions": [
+    "续住半年房租不涨"
+   ]
+  },
+  {
+   "case_id": "E154_T04",
+   "current_action": "回应她的自运加单包方案：给个痛快话——小件自运可行，大件必须留车，并提醒 22 号是死线，方案要留余量。",
+   "acceptable_actions": [
+    "直接给结论：电动车六趟运小件可以，床垫冰箱必须包车，别硬扛",
+    "提醒她算上时间和体力：搬前一周还上班，六趟会拖垮执行",
+    "建议大件小件分开下单，先锁大件的车再慢慢运小件"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A07",
+     "subject": "HER",
+     "relation": "diy_plan",
+     "value": "她考虑电动车分批自运小件、大件单独包车的变通方案",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T04",
+      "message_id": "m0",
+      "quote": "床垫和冰箱这些大件没车根本弄不动"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A08",
+     "subject": "SHARED",
+     "relation": "solo_quote",
+     "value": "平台小面包单独包车报价 260 元",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T04",
+      "message_id": "m0",
+      "quote": "单独包要 260"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A09",
+     "subject": "SHARED",
+     "relation": "suspension_recall",
+     "value": "拼单已因小冉退出而中断",
+     "valid_time": "2026-11-17",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T03",
+      "message_id": "m0",
+      "quote": "她当场答应不搬了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她要痛快话就给痛快话，理由跟在结论后一句带过。",
+   "unknowns": [
+    "她电动车载重与电量未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台价格规则",
+    "不得替她执行自运计划"
+   ],
+   "protected_expressions": [
+    "你给我个痛快话"
+   ]
+  },
+  {
+   "case_id": "E154_T05",
+   "current_action": "接住'等消息'的不踏实：肯定她的警觉，点出陌生拼单的不确定性，把'死线'递到明面上，建议她同步准备保底方案。",
+   "acceptable_actions": [
+    "认可她的直觉：陌生单没拍板前都当没有，先想保底",
+    "把死线摆明：21 号晚是最后决定点，倒推现在该锁什么",
+    "建议她双轨走：保底单先占上，拼单成了再退"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A10",
+     "subject": "SHARED",
+     "relation": "stranger_pool",
+     "value": "车主提出与隔壁栋另一单陌生住户拼车，对方尚未拍板",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T05",
+      "message_id": "m0",
+      "quote": "可以两单拼，可那家人还没拍板"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A11",
+     "subject": "HER",
+     "relation": "deadline_msg",
+     "value": "她自定 21 号晚为最终决定线",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T05",
+      "message_id": "m0",
+      "quote": "21 号晚上再定不下来我就抓瞎了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A12",
+     "subject": "HER",
+     "relation": "deadline_fact",
+     "value": "她的搬迁死线为 11 月 22 号周日搬完，周一要上班",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "定死 11 月 22 号周日搬完"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'等消息'的虚要戳破，但别嘲笑车主，把主动权递回她手里。",
+   "unknowns": [
+    "陌生单最终是否成行未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言陌生单必然黄",
+    "不得虚构车主动机"
+   ],
+   "protected_expressions": [
+    "等消息这三个字我最怕"
+   ]
+  },
+  {
+   "case_id": "E154_T06",
+   "current_action": "肯定她锁保底单的双轨打法，确认周六取推车纸箱照旧，顺口叮嘱她记准退订窗口时间。",
+   "acceptable_actions": [
+    "肯定双轨思路，提醒她把退订截止时间设个闹钟",
+    "确认周六取物照旧，问她打包还缺什么耗材",
+    "提醒她保底单时间也要跟 8:30 装车对齐，别锁错时段"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A13",
+     "subject": "SHARED",
+     "relation": "fallback_locked",
+     "value": "她锁定 22 号 8:30 平台小面包保底单，付定金 30 元",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T06",
+      "message_id": "m0",
+      "quote": "先把平台上 22 号 8:30 的小面包单锁了，定金 30"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她这步走得稳，夸到位就行，退订窗口的叮嘱放轻。",
+   "unknowns": [
+    "保底单司机与车型未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台退订规则细节",
+    "不得断言拼单必然谈成"
+   ],
+   "protected_expressions": [
+    "最坏也有车"
+   ]
+  },
+  {
+   "case_id": "E154_T07",
+   "current_action": "先接住两条拼车道同时断的坏消息，再陪她把账认下：保底单 260 对拼车 190 的 70 元差价，买的是 22 号准时有车的确定性，让她自己拍板。",
+   "acceptable_actions": [
+    "先接情绪：两条拼车道同时断，懊恼很正常",
+    "把 70 元差价摆开：买的是死线当天准时有车的确定性",
+    "提醒她保底单别再动，越临近改约风险越大"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A14",
+     "subject": "SHARED",
+     "relation": "carpool_revived",
+     "value": "拼单复活未成：琪琪外派延期退出，陌生拼单也未谈拢",
+     "valid_time": "2026-11-21",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T07",
+      "message_id": "m0",
+      "quote": "拼车这条道算是全堵死"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A15",
+     "subject": "SHARED",
+     "relation": "price_gap_dilemma",
+     "value": "只剩 260 元保底单，比拼车贵 70 且退订再订还要损失 30",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T07",
+      "message_id": "m1",
+      "quote": "比拼车贵 70"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A16",
+     "subject": "SHARED",
+     "relation": "fallback_exists",
+     "value": "22 号 8:30 平台小面包保底单已锁定并付定金",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T06",
+      "message_id": "m0",
+      "quote": "先把平台上 22 号 8:30 的小面包单锁了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：账算给她看，决定让她下；好消息别让她忘了收尾动作。",
+   "unknowns": [
+    "琪琪延期多久未知",
+    "那家人是否回头未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她操作退订",
+    "不得断言扣款金额与规则之外的费用"
+   ],
+   "protected_expressions": [
+    "比拼车贵 70"
+   ]
+  },
+  {
+   "case_id": "E154_T08",
+   "current_action": "确认她认下差价、保底单转正的账算明白了；把小冉主动请缨来搭手这一节点出来——拼车黄了但邻里情分是健康的。",
+   "acceptable_actions": [
+    "肯定她认差价买确定性的算法，认得干脆",
+    "把小冉主动搭手这事夸到位，提醒她记下这份人情",
+    "建议明晚和她再对一遍时间线：几点装车、谁先谁后"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A17",
+     "subject": "SHARED",
+     "relation": "fallback_cancelled",
+     "value": "她决定不退保底单，按 260 元独自包车执行 22 号搬家",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T08",
+      "message_id": "m0",
+      "quote": "保底单不退了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A18",
+     "subject": "SHARED",
+     "relation": "fallback_recall",
+     "value": "22 号 8:30 保底单与 30 元定金仍是唯一用车方案",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T06",
+      "message_id": "m0",
+      "quote": "先把平台上 22 号 8:30 的小面包单锁了"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E154_A19",
+     "subject": "THIRD",
+     "relation": "relocation_help_offer",
+     "value": "小冉主动提出搬家当天请假来搭手",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T08",
+      "message_id": "m0",
+      "quote": "主动说她那天请假来给我搭把手"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸她的果断，不翻旧账说'早该想到窗口'，琪琪的人情点到为止。",
+   "unknowns": [
+    "装车时段是否对齐未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言 70 元差价值不值",
+    "不得虚构小冉请假细节"
+   ],
+   "protected_expressions": [
+    "这姑娘处得"
+   ]
+  },
+  {
+   "case_id": "E154_T09",
+   "current_action": "接住执行日货梯停运的突发：她住 6 楼、只能人搬，按自己的实际情况答应或婉拒 8 点半帮忙抬床垫；若答应，带好手套捆扎带，给准话。",
+   "acceptable_actions": [
+    "答应 8 点半到，确认楼层与床垫尺寸，带捆扎带手套",
+    "答应但调整到场时间，让她先跟师傅确认装车顺序",
+    "确实不便就直说，并立刻给她替代：物业报备或找师傅加人手"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A20",
+     "subject": "SHARED",
+     "relation": "elevator_breakdown",
+     "value": "货梯当日保养且客梯禁运，六楼需人力搬运",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T09",
+      "message_id": "m0",
+      "quote": "货梯今天保养，客梯又贴着不让运货"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A21",
+     "subject": "SHARED",
+     "relation": "tool_recall",
+     "value": "所借折叠推车因楼梯搬运派不上用场",
+     "valid_time": "2026-11-12/2026-11-22",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T01",
+      "message_id": "m1",
+      "quote": "折叠推车周六借我用两天"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E154_A22",
+     "subject": "SHARED",
+     "relation": "lifting_request",
+     "value": "她请阿灿 8 点半来帮忙抬一趟床垫并管早饭",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T09",
+      "message_id": "m0",
+      "quote": "8 点半来帮我抬一下床垫"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：突发之下她最需要准话，能到就给时间，不能到就马上给替代，别含糊。",
+   "unknowns": [
+    "师傅是否愿意加人未知",
+    "搬完的实际时间未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构物业通知内容",
+    "不得承诺搬运不伤墙面"
+   ],
+   "protected_expressions": [
+    "就一趟"
+   ]
+  },
+  {
+   "case_id": "E154_T10",
+   "current_action": "共享搬完的痛快：爬六楼三趟的硬仗打完了，师傅没加价、小冉来搭手还请了面、钥匙交接顺，把这一天的顺逐项点给她。",
+   "acceptable_actions": [
+    "夸这仗打得漂亮，师傅没加价是车主厚道",
+    "接住小冉请面赔情的人情，提醒她记着回礼",
+    "问她今晚床铺收拾到几点，别让她累过头"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A23",
+     "subject": "SHARED",
+     "relation": "move_completed",
+     "value": "四人爬六楼三趟完成搬运，师傅未加价，新家钥匙交接顺利",
+     "valid_time": "2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T10",
+      "message_id": "m0",
+      "quote": "师傅最后没加一分钱"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：一起痛快，把琪琪、师傅、她自己各记一功。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得虚构搬运过程细节",
+    "不得替师傅表功"
+   ],
+   "protected_expressions": [
+    "四个人爬了六楼三趟"
+   ]
+  },
+  {
+   "case_id": "E154_T11",
+   "current_action": "接住总账复盘：266 对拼车 190 多 76 但保底单稳稳兜住了底，这个账算得踏实；确认这周还推车的时间。",
+   "acceptable_actions": [
+    "认可她的账：多花 76 买个稳当，值",
+    "约好还推车的时间，提醒捆扎带一起拿回来",
+    "建议她把这次的保底单打法记下来，下次搬家直接用"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A24",
+     "subject": "SHARED",
+     "relation": "final_ledger",
+     "value": "总花费 266 元：车费 260、水 6 块",
+     "valid_time": "2026-11-23",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T11",
+      "message_id": "m0",
+      "quote": "一共 266"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A25",
+     "subject": "SHARED",
+     "relation": "tool_return",
+     "value": "推车与捆扎带已清洁待还",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T11",
+      "message_id": "m0",
+      "quote": "推车我擦干净了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：账她算得清，别再纠正数字，把'值'字接住就行。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得替她重算账目",
+    "不得虚构后续费用"
+   ],
+   "protected_expressions": [
+    "好在保底单稳稳兜住了底"
+   ]
+  },
+  {
+   "case_id": "E154_T12",
+   "current_action": "笑纳开火宴与'推车抵押金一顿饭'的安排，确认周六赴约和上门路线，以还物加吃饭收尾。",
+   "acceptable_actions": [
+    "答应周六赴宴收下捎来的推车，确认单元门牌",
+    "把'押金是一顿饭'的梗接住，气氛收轻",
+    "提醒她开火宴别太累，凑三个人的量就够"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E154_A26",
+     "subject": "SHARED",
+     "relation": "housewarming",
+     "value": "周六中午新家开火宴，她捎还推车，以一顿饭作抵押",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T12",
+      "message_id": "m0",
+      "quote": "我把推车捎去顺便付抵押金——一顿饭"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E154_A27",
+     "subject": "SHARED",
+     "relation": "full_chain_recall",
+     "value": "开火宴回扣拼单黄了之后由保底单兜底完成搬家的全链",
+     "valid_time": "2026-11-17/2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E154_T03",
+      "message_id": "m0",
+      "quote": "我的拼车黄了一半"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把这条'黄了又活'的拼单说成圆满，别提如果当初。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得引入新议题",
+    "不得虚构开火宴菜品"
+   ],
+   "protected_expressions": [
+    "别走错"
+   ]
+  },
+  {
+   "case_id": "E155_T01",
+   "current_action": "接住她的揽活得意，肯定挂牌动作利索，同时垫一句：家族群里卖东西，价格和现状写清楚、丑话留个底，后面能省一半麻烦。",
+   "acceptable_actions": [
+    "夸她配图配尺寸做得专业，建议把'自提还是送货'也一并写明",
+    "提醒她收了问价别急着口头答应，立个先到先得的规矩",
+    "接住好酒的梗，问她三叔这酒值不值一张床垫的功夫"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A01",
+     "subject": "SHARED",
+     "relation": "mattress_listed",
+     "value": "三叔的九成新乳胶床垫以900元在家族群挂牌转卖",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T01",
+      "message_id": "m0",
+      "quote": "九成新的乳胶床垫，900块"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A02",
+     "subject": "SHARED",
+     "relation": "reward_promise",
+     "value": "三叔许诺床垫卖出后给苗苗留一瓶好酒作谢礼",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T01",
+      "message_id": "m0",
+      "quote": "卖出去给我留一瓶好酒"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A03",
+     "subject": "THIRD",
+     "relation": "initial_interest",
+     "value": "挂牌当晚已有两名亲戚私聊问价",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T01",
+      "message_id": "m0",
+      "quote": "已经有俩亲戚私聊我问价"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'立规矩'说成给她的活上保险，不是泼冷水。",
+   "unknowns": [
+    "问价亲戚的具体意向未知",
+    "床垫是否有瑕疵说明未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构床垫品牌与购买年份",
+    "不得预判哪家亲戚必然成交"
+   ],
+   "protected_expressions": [
+    "卖出去给我留一瓶好酒"
+   ]
+  },
+  {
+   "case_id": "E155_T02",
+   "current_action": "接住成交在望的喜气：表姑父拍板周六自提现金结清；建议她把时间地点在群里白纸黑字定一遍，口头约定靠不住。",
+   "acceptable_actions": [
+    "恭喜半只脚迈进门槛，提醒她让表姑父在群里把周六的事应下",
+    "建议她提前问清表姑父的车能不能装下床垫，别到时白跑",
+    "顺带问她三叔的腌菜缸买好了没，把腾退日程记住"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A04",
+     "subject": "THIRD",
+     "relation": "uncle_confirmed_buy",
+     "value": "表姑父确认购买并约定周六上午开车自提、当场现金结清",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T02",
+      "message_id": "m0",
+      "quote": "周六上午开车来拉，当场给现金"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A05",
+     "subject": "THIRD",
+     "relation": "garage_schedule",
+     "value": "三叔计划卖完床垫当周腾出车库码腌菜缸",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T02",
+      "message_id": "m0",
+      "quote": "卖完这周日就能腾出来码腌菜缸"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'白纸黑字'说成替亲戚双方都留台阶，不显得防人。",
+   "unknowns": [
+    "周六交割是否顺利未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言成交已成定局",
+    "不得虚构表姑父的更多表态"
+   ],
+   "protected_expressions": [
+    "说卖完这周日就能腾出来码腌菜缸"
+   ]
+  },
+  {
+   "case_id": "E155_T03",
+   "current_action": "接住半途搁浅：丈母娘腰椎只能睡硬床，提货口头顺延'下周再说'；先帮她把风险点破——顺延没有截止日就等于没承诺。",
+   "acceptable_actions": [
+    "肯定她给三叔圆场周到，提醒她给'下周'加个准日子",
+    "劝她把表姑妈的理由当真事看，别往推脱上想",
+    "建议她备一手：顺延期满前先找好下家问价，进可退可守"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "attribution",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A06",
+     "subject": "THIRD",
+     "relation": "buy_suspended",
+     "value": "表姑父方因丈母娘腰椎需睡硬床暂缓提货，交割顺延",
+     "valid_time": "2026-11-04",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T03",
+      "message_id": "m0",
+      "quote": "医生嘱咐睡硬床"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A07",
+     "subject": "THIRD",
+     "relation": "postpone_open_ended",
+     "value": "顺延仅为'下周再说'的口头话，无明确截止日",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T03",
+      "message_id": "m0",
+      "quote": "下周再说"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A08",
+     "subject": "SHARED",
+     "relation": "garage_deal_stalled",
+     "value": "三叔的车库腾退随交割顺延而挂起",
+     "valid_time": "2026-11-04",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T02",
+      "message_id": "m0",
+      "quote": "卖完这周日就能腾出来码腌菜缸"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把风险说成'再补一句就能堵上'，别放大成坏消息。",
+   "unknowns": [
+    "顺延是否有诚意未知",
+    "三叔的耐心余量未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言表姑妈在找借口",
+    "不得虚构丈母娘的病情细节"
+   ],
+   "protected_expressions": [
+    "三叔哼了一声说先放你那儿"
+   ]
+  },
+  {
+   "case_id": "E155_T04",
+   "current_action": "接住正式暂停：一周无动静、三叔催到第三回、表姑妈明确让'先问问别人'；把这单定性为暂停而非失败，给她留重启的口子。",
+   "acceptable_actions": [
+    "肯定她这一周没催没闹，处理得体面",
+    "把黄与没黄分开说：这单停了，床垫还在，路没断",
+    "提醒她向三叔交代时把表姑妈的原话带上，省得他猜"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A09",
+     "subject": "THIRD",
+     "relation": "buyer_withdraw",
+     "value": "表姑妈明确表示顾不上，请她先问问别人",
+     "valid_time": "2026-11-09",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T04",
+      "message_id": "m0",
+      "quote": "要不你先问问别人吧"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A10",
+     "subject": "THIRD",
+     "relation": "uncle_pressure",
+     "value": "三叔因腌菜缸占用车库接连催促",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T04",
+      "message_id": "m0",
+      "quote": "腌菜缸都买回来了就等车库"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A11",
+     "subject": "THIRD",
+     "relation": "postpone_expired",
+     "value": "'下周再说'的顺延到期无果，购买意向作废",
+     "valid_time": "2026-11-04/2026-11-09",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T03",
+      "message_id": "m0",
+      "quote": "下周再说"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'暂停'说得有分量，别让她觉得白忙一场。",
+   "unknowns": [
+    "表姑父方是否会回头未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得替表姑妈定性为失信",
+    "不得断言床垫再无此价卖出"
+   ],
+   "protected_expressions": [
+    "这单是不是彻底黄了"
+   ]
+  },
+  {
+   "case_id": "E155_T05",
+   "current_action": "接住重启尝试：降价至750再吆喝，隐情如实写免得嫌来路；帮她定吆喝词的丑话写法——现状、价格、自提、不退不换一次写全。",
+   "acceptable_actions": [
+    "肯定她写隐情的思路，坦诚比遮掩在家族群更吃得开",
+    "帮她排吆喝词顺序：现状、降价缘由、自提、一口价",
+    "提醒她别写'先到先得'之外的多余承诺，留余地"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "attribution",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A12",
+     "subject": "HER",
+     "relation": "relaunch_price_cut",
+     "value": "她决定降价至750并在家族群重新吆喝",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T05",
+      "message_id": "m0",
+      "quote": "降到位：750"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A13",
+     "subject": "HER",
+     "relation": "backstory_disclosure",
+     "value": "她计划如实写明丈母娘睡不了才出的转手缘由",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T05",
+      "message_id": "m0",
+      "quote": "免得人家嫌来路"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A14",
+     "subject": "THIRD",
+     "relation": "withdraw_context",
+     "value": "此轮重启源于表姑妈方明确退出",
+     "valid_time": "2026-11-09",
+     "status": "retracted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T04",
+      "message_id": "m0",
+      "quote": "要不你先问问别人吧"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'丑话'说成省事的功夫，不是防贼。",
+   "unknowns": [
+    "降价后能否快速成交未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构吆喝后的即时反响",
+    "不得断言750是合理或亏本价"
+   ],
+   "protected_expressions": [
+    "你帮我看看这吆喝词行不行"
+   ]
+  },
+  {
+   "case_id": "E155_T06",
+   "current_action": "接住表弟妹的意向与延后付款诉求：意向是真的、夜长梦多也是真的；给她中间道路——意向可以接，钱要立规矩锁住。",
+   "acceptable_actions": [
+    "建议她接意向但收定金锁期，到期不补尾款按规矩办",
+    "提醒她月底发工资的说法先问清具体日子，别含糊",
+    "劝她把条件在群里说开，让双方都有个见证"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A15",
+     "subject": "THIRD",
+     "relation": "cousin_intent",
+     "value": "表弟妹表态想要床垫但要求月底发工资后全款付清",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T06",
+      "message_id": "m0",
+      "quote": "想等月底发了工资再全款"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A16",
+     "subject": "HER",
+     "relation": "relist_success",
+     "value": "降价吆喝重新唤起问价，重启路径打开",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T05",
+      "message_id": "m0",
+      "quote": "降到位：750"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'立规矩'说成对亲戚感情的保养，不是不信人。",
+   "unknowns": [
+    "表弟妹的付款能力未知",
+    "是否还有其他买家未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她答应或拒绝延后付款",
+    "不得断言表弟妹必然按时付款"
+   ],
+   "protected_expressions": [
+    "我有点心动又怕夜长梦多"
+   ]
+  },
+  {
+   "case_id": "E155_T07",
+   "current_action": "接住重启落定：200定金锁到11月25号、到期不补尾款定金归三叔、群里双双认账；把这套规则夸成她把死棋下活的证据。",
+   "acceptable_actions": [
+    "肯定她规则立得干净，两头都有据可依",
+    "提醒她把定金转账记录和群里对话截图存好",
+    "顺带问三叔那头车库缓到月底有没有怨言"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A17",
+     "subject": "SHARED",
+     "relation": "deposit_rule_set",
+     "value": "定金规则敲定：先转200定金锁到11月25号，到期不补尾款定金不退归三叔",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T07",
+      "message_id": "m0",
+      "quote": "先转200定金锁到11月25号"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A18",
+     "subject": "SHARED",
+     "relation": "group_witness",
+     "value": "定金条款经双方在家族群里认账背书",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T07",
+      "message_id": "m0",
+      "quote": "这话我俩在群里都认了账"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A19",
+     "subject": "THIRD",
+     "relation": "cousin_intent_locked",
+     "value": "表弟妹的购买意向由口头转为定金锁定",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T06",
+      "message_id": "m0",
+      "quote": "想等月底发了工资再全款"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把功劳还给她，ME 只提供规矩的骨架。",
+   "unknowns": [
+    "表弟妹月底是否如期补款未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言定金条款受法律效力约束",
+    "不得虚构群里其他人的评论"
+   ],
+   "protected_expressions": [
+    "我这算不算把死棋下活了"
+   ]
+  },
+  {
+   "case_id": "E155_T08",
+   "current_action": "接住两买家相撞：三叔的老同事全款700当天拉走，表弟妹尾款要等25号；先帮她排优先级——定金承诺在前，群里有背书，动它之前必须先过表弟妹那关。",
+   "acceptable_actions": [
+    "提醒她定金收了就得先问表弟妹，不能绕过直接卖",
+    "建议给表弟妹一个可执行的短期补款窗口，让她自己选",
+    "提醒她跟三叔把两头的账摊开说，别让他觉得她效率低"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "attribution",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A20",
+     "subject": "THIRD",
+     "relation": "cash_buyer_appears",
+     "value": "三叔厂里老同事提出全款700当天自提",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T08",
+      "message_id": "m0",
+      "quote": "全款700，下午就能来拉"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A21",
+     "subject": "THIRD",
+     "relation": "cousin_tailgate_pending",
+     "value": "表弟妹的尾款按约要等到11月25号",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T08",
+      "message_id": "m0",
+      "quote": "尾款要等到25号"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A22",
+     "subject": "SHARED",
+     "relation": "deposit_rule_active",
+     "value": "定金已收且锁期规则仍在生效，构成对新买家的约束",
+     "valid_time": "2026-11-10/2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T07",
+      "message_id": "m0",
+      "quote": "先转200定金锁到11月25号"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把冲突说成'规矩派上用场的时候到了'，不渲染两难。",
+   "unknowns": [
+    "老同事是否愿意等未知",
+    "三叔是否知道定金规矩细节未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言直接卖老同事合法合规",
+    "不得替三叔表态"
+   ],
+   "protected_expressions": [
+    "我这边定金都收了"
+   ]
+  },
+  {
+   "case_id": "E155_T09",
+   "current_action": "接住摊牌结果：表弟妹咬牙补齐尾款、床垫按 750 成交、定金直接抵扣；肯定她规矩立在前，摊牌摊成了正果。",
+   "acceptable_actions": [
+    "肯定她规矩立在前，表弟妹补款补得心服口服",
+    "点出老同事那头回话体面，两头都没伤情分",
+    "提醒她把群里的收尾话说圆，给三叔一个交待"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A23",
+     "subject": "THIRD",
+     "relation": "cousin_voluntary_exit",
+     "value": "表弟妹经一夜掂量补齐 550 尾款，未退出交易",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T09",
+      "message_id": "m0",
+      "quote": "把 550 尾款转过来了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A24",
+     "subject": "SHARED",
+     "relation": "mattress_sold",
+     "value": "床垫由表弟妹补齐尾款后自己约车拉走成交",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T09",
+      "message_id": "m0",
+      "quote": "床垫她自己约车拉走的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A25",
+     "subject": "HER",
+     "relation": "deposit_offset",
+     "value": "200 定金直接抵扣尾款，未发生退款与赔情",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T09",
+      "message_id": "m0",
+      "quote": "200 定金直接抵了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A26",
+     "subject": "THIRD",
+     "relation": "cash_buyer_context",
+     "value": "老同事的全款出价最终未兑现，床垫由表弟妹按约买走",
+     "valid_time": "2026-11-15",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T08",
+      "message_id": "m0",
+      "quote": "全款700，下午就能来拉"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'定金退全额'说成她挣的人情，不提她本可以不退。",
+   "unknowns": [
+    "老同事下次是否再问未知",
+    "表弟妹约车时间未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言处理方式是唯一正解",
+    "不得虚构表弟妹补款时的语气"
+   ],
+   "protected_expressions": [
+    "我这处理还行吧"
+   ]
+  },
+  {
+   "case_id": "E155_T10",
+   "current_action": "面对三叔150跑腿费与'下回不找你'的攻势：给两全路径——收下并当场给个去处，让钱变成心意而不是欠条。",
+   "acceptable_actions": [
+    "建议她收下，跑腿费是三叔的心意不是工钱",
+    "提醒她收了可以转手花在三叔或亲戚身上，人情不断",
+    "劝她别跟三叔在'不收'上拉锯，拗过长辈反而生分"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A27",
+     "subject": "THIRD",
+     "relation": "fee_offer",
+     "value": "三叔坚持塞150元跑腿费并以下回不找她相激",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T10",
+      "message_id": "m0",
+      "quote": "你不收，下回家里这些事我可不敢再找你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A28",
+     "subject": "SHARED",
+     "relation": "sale_completed",
+     "value": "床垫售出、车库腾退完成，谢礼约定进入兑现环节",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T09",
+      "message_id": "m0",
+      "quote": "床垫她自己约车拉走的"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'收钱'说成接住长辈的心意，不是计报酬。",
+   "unknowns": [
+    "她最终是否收下未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她决定收或不收",
+    "不得把三叔的话解读成威胁"
+   ],
+   "protected_expressions": [
+    "这钱我收还是不收"
+   ]
+  },
+  {
+   "case_id": "E155_T11",
+   "current_action": "接住人情两头落定：表弟妹以元旦酱爆螺蛳相邀，150跑腿费转为给表弟妹孩子的红包；把这条'钱转人情'的路径点出来夸她。",
+   "acceptable_actions": [
+    "夸她红包转得巧，跑腿费变成两家人的由头",
+    "提醒她元旦赴约记在日历上，别应了又放空",
+    "顺带问三叔的好酒兑现没有，把这单彻底收口"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A29",
+     "subject": "THIRD",
+     "relation": "cousin_reconciliation",
+     "value": "表弟妹道谢相邀元旦家宴做酱爆螺蛳",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T11",
+      "message_id": "m0",
+      "quote": "元旦你来家，我给你做我拿手的酱爆螺蛳"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A30",
+     "subject": "HER",
+     "relation": "fee_to_redpacket",
+     "value": "她收下150跑腿费转手给表弟妹家娃包了红包",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T11",
+      "message_id": "m0",
+      "quote": "转手给表弟妹家娃包了个红包"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A31",
+     "subject": "THIRD",
+     "relation": "fee_offer_context",
+     "value": "红包的150源于三叔坚持给的跑腿费",
+     "valid_time": "2026-11-15/2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T10",
+      "message_id": "m0",
+      "quote": "三叔非要塞我150跑腿费"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'收了又送出'说成她让钱长脚，不提算计。",
+   "unknowns": [
+    "元旦赴约能否成行未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构红包金额变动",
+    "不得断言表弟妹已知红包来源"
+   ],
+   "protected_expressions": [
+    "两边都齐了"
+   ]
+  },
+  {
+   "case_id": "E155_T12",
+   "current_action": "笑纳腌菜缸照片与'先问苗苗'的口碑：从900挂到750成交的行情曲线当段子讲，好酒该要几瓶的玩笑接住，利落收尾。",
+   "acceptable_actions": [
+    "接住好酒的玩笑，建议她按'仨周折一辆卡车'要两瓶",
+    "肯定三叔的'下回先问苗苗'是比好酒值钱的口碑",
+    "感慨这单从挂牌到腌菜缸就位的全链路，不翻旧账"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E155_A32",
+     "subject": "THIRD",
+     "relation": "garage_in_use",
+     "value": "三叔的腌菜缸已在腾出的车库码放整齐",
+     "valid_time": "2026-11-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T12",
+      "message_id": "m0",
+      "quote": "腌菜缸在车库码得整整齐齐"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A33",
+     "subject": "THIRD",
+     "relation": "reputation_callback",
+     "value": "三叔在群里放话下回闲置物品先问苗苗",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T12",
+      "message_id": "m0",
+      "quote": "下回有闲置的先问苗苗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E155_A34",
+     "subject": "SHARED",
+     "relation": "price_trajectory_callback",
+     "value": "床垫从挂牌900到重启750成交的完整轨迹",
+     "valid_time": "2026-11-02/2026-11-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E155_T01",
+      "message_id": "m0",
+      "quote": "九成新的乳胶床垫，900块"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把仨周的曲折说成值得的，不盘点损失。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得虚构腌菜缸的后续",
+    "不得引入新的转让议题"
+   ],
+   "protected_expressions": [
+    "你说我该找三叔要几瓶好酒"
+   ]
+  },
+  {
+   "case_id": "E156_T01",
+   "current_action": "接住启动：认下搭子身份和规则框架，同时把满配节奏往回收半格——先按每天二十道试一周，跑不动再调，别一上来把弦绷断。",
+   "acceptable_actions": [
+    "认下规则，提议第一周先试运行，周日复盘时再定稿",
+    "答应互发错题，让她把考试科目和章节计划先列出来",
+    "接奶茶条款的梗，说自己错题本早就备好了"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A01",
+     "subject": "SHARED",
+     "relation": "daily_quota_rule",
+     "value": "每天二十道选择题互查的搭子规则",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "每天二十道选择题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A02",
+     "subject": "SHARED",
+     "relation": "evening_checkin",
+     "value": "晚十点前互发错题的打卡约定",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "晚上十点前互发错题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A03",
+     "subject": "SHARED",
+     "relation": "milk_tea_clause",
+     "value": "断更者请奶茶的惩罚条款",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "谁断更谁请奶茶"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：认得爽快，收半格的建议说成经验之谈不说教。",
+   "unknowns": [
+    "她实际可用学习时间未知",
+    "经济法科目基础未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构教材版本与页码",
+    "不得预判她能坚持多久"
+   ],
+   "protected_expressions": [
+    "谁断更谁请奶茶"
+   ]
+  },
+  {
+   "case_id": "E156_T02",
+   "current_action": "接住打卡汇报：财管全对值得夸，经济法的'表见代理'卡点当场用一两句讲透，别攒着。",
+   "acceptable_actions": [
+    "先恭喜财管全对，再把表见代理的认定口径讲清",
+    "把经济法错四道定性为正常曲线，让她把错题发来",
+    "接'我们都活着'的梗，说奶茶基金空仓是好消息"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A04",
+     "subject": "HER",
+     "relation": "finance_perfect",
+     "value": "财管第一章二十道题全对",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T02",
+      "message_id": "m0",
+      "quote": "第一章二十道全对"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A05",
+     "subject": "HER",
+     "relation": "econ_wrong_four",
+     "value": "经济法当日练习错四道题",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T02",
+      "message_id": "m0",
+      "quote": "经济法错四道"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A06",
+     "subject": "SHARED",
+     "relation": "stuck_point",
+     "value": "表见代理如何认定成为她的经济法卡点",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T02",
+      "message_id": "m0",
+      "quote": "表见代理"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：讲知识点要短，像顺口补一句，别开小课堂。",
+   "unknowns": [
+    "错题具体选项未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构法条原文",
+    "不得断言此后不再错"
+   ],
+   "protected_expressions": [
+    "我们都活着"
+   ]
+  },
+  {
+   "case_id": "E156_T03",
+   "current_action": "接住首轮复盘：肯定她把错题抄进本子的动作，'先看选项再回题干'被吸收是搭子机制第一次见效；对'我稳了'的信心上头轻轻降温。",
+   "acceptable_actions": [
+    "肯定错题互抄的做法，提醒复盘重点是错因不是题量",
+    "对'我稳了'泼半勺冷水：现在是第一章，真正的坎在后头",
+    "建议把表见代理那页折角，作为下一个复盘重点"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A07",
+     "subject": "SHARED",
+     "relation": "first_review_done",
+     "value": "首次周日复盘完成，她把 ME 的错题抄进自己的本子",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T03",
+      "message_id": "m0",
+      "quote": "我把你的错题抄进了我的本子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A08",
+     "subject": "SHARED",
+     "relation": "method_adopted",
+     "value": "ME 的'先看选项再回题干'方法被她采用",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T03",
+      "message_id": "m0",
+      "quote": "先看选项再回题干"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：降温点到即止，别把她刚攒的劲说泄了。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得预判后续科目难度细节",
+    "不得虚构多选题题干"
+   ],
+   "protected_expressions": [
+    "我感觉我稳了"
+   ]
+  },
+  {
+   "case_id": "E156_T04",
+   "current_action": "接住外部压力预警：审计提前、连日晚班；准她'欠账'但不降价——欠的题记账，节奏的事等她周末再议，今晚先睡。",
+   "acceptable_actions": [
+    "答应欠账记账，叮嘱她今晚别硬撑，先睡",
+    "提醒她审计高峰前把错题本过一遍，别生疏",
+    "让她周末再提调整方案，现在别做决定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A09",
+     "subject": "SHARED",
+     "relation": "audit_pressure",
+     "value": "年度审计提前进场，她将连上十来天晚班",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T04",
+      "message_id": "m0",
+      "quote": "年度审计提前到下下周进场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A10",
+     "subject": "HER",
+     "relation": "debt_request",
+     "value": "她当日仅完成五道题，请求欠账处理",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T04",
+      "message_id": "m0",
+      "quote": "我先欠着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：准欠账要干脆，'先睡'两个字比一段话管用。",
+   "unknowns": [
+    "晚班具体强度未知",
+    "审计周期多长未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她公司的加班制度",
+    "不得断言审计必然影响考试"
+   ],
+   "protected_expressions": [
+    "眼皮在打架"
+   ]
+  },
+  {
+   "case_id": "E156_T05",
+   "current_action": "接住暂停宣布：她一题没做、明令'别等我'还设了'别劝我'的边界；照单全收——不停、不劝、不说教，认下双份奶茶，只留一句'需要题就说'。",
+   "acceptable_actions": [
+    "照单全收：暂停成立，不劝不停问，双份奶茶记账",
+    "只留一句'你想回来随时说'，其余一个字不多讲",
+    "接住'别劝我'：明确说自己没打算劝，让她安心停"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A11",
+     "subject": "HER",
+     "relation": "pause_declared",
+     "value": "她宣布打卡暂停一周",
+     "valid_time": "2026-11-20",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T05",
+      "message_id": "m0",
+      "quote": "暂停一周"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A12",
+     "subject": "HER",
+     "relation": "double_milk_tea",
+     "value": "她主动承担双份奶茶作为暂停代价",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T05",
+      "message_id": "m0",
+      "quote": "奶茶我照买，双份"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A13",
+     "subject": "SHARED",
+     "relation": "quota_suspended",
+     "value": "每天二十道的规则随暂停宣布而悬置",
+     "valid_time": "2026-11-09/2026-11-20",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "每天二十道选择题"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：这段最忌讳鼓励和讲道理，短句收尾，边界守死。",
+   "unknowns": [
+    "暂停实际会持续多久未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布放弃或坚持",
+    "不得虚构审计底稿细节"
+   ],
+   "protected_expressions": [
+    "我怕一劝就哭"
+   ]
+  },
+  {
+   "case_id": "E156_T06",
+   "current_action": "接住暂停期低温汇报：电梯背词是仅存余温；不推进度不问归期，把'自己按节奏做题'应下，奶茶挂账认下。",
+   "acceptable_actions": [
+    "夸电梯背词是高手行为，别的都不提",
+    "应下自己做题，说错题本给她留着位置",
+    "把奶茶挂账记下，说利息按奶茶算"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A14",
+     "subject": "HER",
+     "relation": "commute_glimmer",
+     "value": "她在通勤电梯里背了两个经济法名词",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T06",
+      "message_id": "m0",
+      "quote": "在电梯里背了两个经济法名词"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A15",
+     "subject": "SHARED",
+     "relation": "milk_tea_on_credit",
+     "value": "奶茶账目挂账待还",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T06",
+      "message_id": "m0",
+      "quote": "奶茶账我先记着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：轻拿轻放，她给的余温接住就好，别加码。",
+   "unknowns": [
+    "加班还要持续几天未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得催她恢复打卡",
+    "不得虚构她的加班内容"
+   ],
+   "protected_expressions": [
+    "奶茶账我先记着"
+   ]
+  },
+  {
+   "case_id": "E156_T07",
+   "current_action": "接住她的变通提案：满配停摆但零配启动——每天一道、她蹲坑做、晚上对答案；认下这个'最小可完成'版本，明确回答：这不算断更。",
+   "acceptable_actions": [
+    "答应每天出题，明确回答这不算断更，算续命",
+    "把规则复述成三步：早上一题、中午蹲坑、晚上对答案",
+    "提醒她别挑太偏的题，一题要有一题的收获"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A16",
+     "subject": "SHARED",
+     "relation": "downgraded_rule",
+     "value": "规则降级为每天一道题的变通版本",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T07",
+      "message_id": "m0",
+      "quote": "改成每天一道题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A17",
+     "subject": "HER",
+     "relation": "continuity_claim",
+     "value": "她主动争取把一题模式认定为不断更",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T07",
+      "message_id": "m0",
+      "quote": "这算不算没断更"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A18",
+     "subject": "SHARED",
+     "relation": "downgrade_cause",
+     "value": "审计晚班压力持续是规则降级的直接原因",
+     "valid_time": "2026-11-17/2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T04",
+      "message_id": "m0",
+      "quote": "年度审计提前到下下周进场"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'不算断更'说痛快，这是她自己挣回来的认定。",
+   "unknowns": [
+    "一题模式能维持几天未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得把降级说成她偷懒",
+    "不得虚构题目内容"
+   ],
+   "protected_expressions": [
+    "这算不算没断更"
+   ]
+  },
+  {
+   "case_id": "E156_T08",
+   "current_action": "接住一题模式首日战报：经济法题答对、表见代理的坑记得；肯定这套'最小可完成'跑通了，顺手把'跟做贼似的'的紧张化成玩笑。",
+   "acceptable_actions": [
+    "恭喜首日跑通，提醒她锁屏这种事习惯就好",
+    "肯定表见代理没白讲，知识在等她回来",
+    "问明天的题想要经济法还是财管，让她点菜"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A19",
+     "subject": "HER",
+     "relation": "one_question_win",
+     "value": "一题模式首日答对经济法题",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T08",
+      "message_id": "m0",
+      "quote": "运行成功"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A20",
+     "subject": "SHARED",
+     "relation": "knowledge_reused",
+     "value": "此前的表见代理知识点在一题模式中发挥作用",
+     "valid_time": "2026-11-11/2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T02",
+      "message_id": "m0",
+      "quote": "表见代理"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'做贼似的'说成排面，让她笑着继续。",
+   "unknowns": [
+    "次日选题科目未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构题目原文",
+    "不得断言知识掌握已牢固"
+   ],
+   "protected_expressions": [
+    "跟做贼似的"
+   ]
+  },
+  {
+   "case_id": "E156_T09",
+   "current_action": "接住重启预告：初稿交付、加班高峰结束、下周一起恢复二十道；确认时间表，把六道'蹲出来的知识'定性为暂停期没有白过的证据。",
+   "acceptable_actions": [
+    "确认下周一恢复二十道，让周末先睡个整觉",
+    "肯定六道存稿是硬成果，暂停期不算空转",
+    "提醒她恢复前把表见代理那类卡点先翻一遍"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A21",
+     "subject": "SHARED",
+     "relation": "audit_delivered",
+     "value": "报表初稿交付，审计晚班高峰结束",
+     "valid_time": "2026-12-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T09",
+      "message_id": "m0",
+      "quote": "报表交了初稿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A22",
+     "subject": "SHARED",
+     "relation": "resume_scheduled",
+     "value": "约定下周一起恢复二十道正式版",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T09",
+      "message_id": "m0",
+      "quote": "下周一起恢复二十道正式版"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A23",
+     "subject": "HER",
+     "relation": "archived_questions",
+     "value": "她把变通期的每日一题存稿共六道",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T09",
+      "message_id": "m0",
+      "quote": "一共六道"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A24",
+     "subject": "HER",
+     "relation": "pause_lifted",
+     "value": "此前的暂停一周宣布随加班结束而解除",
+     "valid_time": "2026-11-20/2026-12-03",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T05",
+      "message_id": "m0",
+      "quote": "暂停一周"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'暂停没白过'说成她自己的功劳，ME 不领功。",
+   "unknowns": [
+    "正式版能否一步到位未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构审计结论",
+    "不得断言状态已完全恢复"
+   ],
+   "protected_expressions": [
+    "全是我蹲出来的知识"
+   ]
+  },
+  {
+   "case_id": "E156_T10",
+   "current_action": "接住重启首晚战报：二十道全做完、错三道全是长投、双份奶茶兑现；把'比暂停前还少一道'当成回来的最好证明，暂停税笑着收下。",
+   "acceptable_actions": [
+    "恭喜重启成功，提醒财管错题发来今晚就看",
+    "把暂停税奶茶收下，说这杯喝着最有滋味",
+    "肯定她状态比暂停前好，让节奏别一下子加满"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A25",
+     "subject": "HER",
+     "relation": "restart_first_night",
+     "value": "重启首晚二十道全做完，错三道均为财管",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T10",
+      "message_id": "m0",
+      "quote": "二十道全做完了，错三道"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A26",
+     "subject": "SHARED",
+     "relation": "milk_tea_fulfilled",
+     "value": "暂停期承诺的双份奶茶于重启首晚兑现",
+     "valid_time": "2026-11-20/2026-12-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T10",
+      "message_id": "m0",
+      "quote": "双份奶茶我明天带来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A27",
+     "subject": "SHARED",
+     "relation": "quota_resumed",
+     "value": "每天二十道的规则恢复运转",
+     "valid_time": "2026-11-09/2026-12-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "每天二十道选择题"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：恭喜要实，节奏提醒一句就够。",
+   "unknowns": [
+    "财管错因未知"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构财管考点内容",
+    "不得断言她已回到巅峰状态"
+   ],
+   "protected_expressions": [
+    "这是暂停税"
+   ]
+  },
+  {
+   "case_id": "E156_T11",
+   "current_action": "接住机制升级：一题模式保留为永久备用档，谁出差加班自动切换；肯定这个'模式的模式'，让她把切换条件写下来。",
+   "acceptable_actions": [
+    "认下备用档机制，建议把触发条件写清楚：连加三天就切",
+    "夸'模式的模式'这名字起得好，收进两人的黑话词典",
+    "提醒她备用档不是后门，切换要在复盘里报备"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A28",
+     "subject": "SHARED",
+     "relation": "fallback_formalized",
+     "value": "一题模式保留为出差加班时的常设备用档",
+     "valid_time": "2026-12-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T11",
+      "message_id": "m0",
+      "quote": "以后谁出差加班，就自动切到每天一题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A29",
+     "subject": "HER",
+     "relation": "self_credits",
+     "value": "她对自己发明的'模式的模式'颇为得意",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T11",
+      "message_id": "m0",
+      "quote": "模式的模式"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：捧她一句，规则落地的话说轻。",
+   "unknowns": [
+    "触发条件细节未定"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构复盘议程细节",
+    "不得把备用档说成她的发明还是自己的功劳"
+   ],
+   "protected_expressions": [
+    "我发明的"
+   ]
+  },
+  {
+   "case_id": "E156_T12",
+   "current_action": "接住结案陈词：暂停虽启动过但从没真正断过、本周她请、错题本借抄到下个月、明年8月考场见分晓——认账、借书、把目标接稳，收尾。",
+   "acceptable_actions": [
+    "认下奶茶清账，答应错题本明天带来",
+    "把'从没真正断过'接成这轮的定论，功劳分她大半",
+    "接'明年8月见分晓'，说自己陪跑到考场外"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A30",
+     "subject": "SHARED",
+     "relation": "milk_tea_settled",
+     "value": "奶茶清账，本周由她请客",
+     "valid_time": "2026-12-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T12",
+      "message_id": "m0",
+      "quote": "本周我请"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A31",
+     "subject": "SHARED",
+     "relation": "clause_reinterpreted",
+     "value": "断更请奶茶条款经暂停事件重新解释后履行完毕",
+     "valid_time": "2026-11-09/2026-12-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "谁断更谁请奶茶"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E156_A32",
+     "subject": "SHARED",
+     "relation": "notebook_loan",
+     "value": "ME 的错题本借她抄到下个月",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T12",
+      "message_id": "m0",
+      "quote": "错题本借我抄到下个月"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A33",
+     "subject": "SHARED",
+     "relation": "never_broke_chain",
+     "value": "暂停期经每日一题变通维持不断更的结论成立",
+     "valid_time": "2026-11-28/2026-12-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T07",
+      "message_id": "m0",
+      "quote": "这算不算没断更"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾郑重一点不违和，目标那句话让她自己说完。",
+   "unknowns": [],
+   "forbidden_factual_claims": [
+    "不得虚构考试报名细节",
+    "不得替她许诺通过考试"
+   ],
+   "protected_expressions": [
+    "考场见分晓"
+   ]
+  }
+ ]
+}

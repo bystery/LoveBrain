@@ -1,0 +1,583 @@
+{
+ "story_id": "E165",
+ "turns": {
+  "E165_T01": {
+   "case_id": "E165_T01",
+   "current_action": "接收下周六回清源的搭车请求与托带清单，确认后备箱可行性",
+   "acceptable_actions": [
+    "确认接送并答复后备箱放得下",
+    "确认去程但对托带件数再核空间",
+    "答应并同步自己的出发准备"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T01_A01",
+     "subject": "SHARED",
+     "relation": "搭车计划",
+     "value": "十一月二十一日周六 HER 搭 ME 车回清源看妈",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "计划十一月二十一日周六搭顾北的车回清源看爸妈"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T01_A02",
+     "subject": "SHARED",
+     "relation": "油费口径",
+     "value": "来回油费按老规矩二百四由 HER 承担",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T01", "quote": "来回油费还是按老规矩二百四，我出", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T01_A03",
+     "subject": "SHARED",
+     "relation": "托带清单",
+     "value": "一箱苹果加一台小音箱需随车带回清源",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T01", "quote": "带一箱苹果回去，还有台小音箱给她跳广场舞用", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "前同事熟络语气，接单爽快点，托带空间没核清前别把话说死。",
+   "unknowns": ["后备箱实际容量未知", "返程具体时刻未定"],
+   "protected_expressions": ["来回油费还是按老规矩二百四，我出"],
+   "forbidden_factual_claims": ["不得编造 ME 已答应免费捎带"],
+   "may_decline": false
+  },
+  "E165_T02": {
+   "case_id": "E165_T02",
+   "current_action": "确认出发与返程时刻及装载分工，可照单认可或微调",
+   "acceptable_actions": [
+    "确认九点出发十六点返程的安排",
+    "认可装载方案并提醒苹果固定防滚",
+    "对返程时刻提出备选"
+   ],
+   "applicable_dimensions": ["time_state", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T02_A01",
+     "subject": "SHARED",
+     "relation": "出发时刻",
+     "value": "去程定周六早上九点出发",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T02", "quote": "去程我想早上九点走", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T02_A02",
+     "subject": "SHARED",
+     "relation": "返程时刻",
+     "value": "返程定周日下午四点避开车流",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T02", "quote": "返程周日下午四点，避开车流", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T02_A03",
+     "subject": "SHARED",
+     "relation": "装载分工",
+     "value": "苹果入后备箱音箱随 HER 坐副驾后座留空",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T02", "quote": "苹果一箱二十来斤放后备箱，音箱不大我抱着坐副驾", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她报的时刻和件数都清楚，照单确认即可。",
+   "unknowns": ["周日路况未知"],
+   "protected_expressions": ["返程周日下午四点，避开车流"],
+   "forbidden_factual_claims": ["不得虚构已订好的路线安排"],
+   "may_decline": false
+  },
+  "E165_T03": {
+   "case_id": "E165_T03",
+   "current_action": "接收母亲与王叔绕开本人定下返程的第三方安排，帮 HER 拆解人情与账目的两难",
+   "acceptable_actions": [
+    "支持她先与王叔本人核实口径",
+    "共情两难并建议保留 ME 车返程备选",
+    "建议把土特产抵费用的价值摆上桌谈"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T03_A01",
+     "subject": "THIRD",
+     "relation": "第三方代订",
+     "value": "母亲未经 HER 确认替她答应乘邻居王叔车周日下午返程",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T03", "quote": "她自作主张替我答应了坐王叔的车回来", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T03_A02",
+     "subject": "THIRD",
+     "relation": "免费口径",
+     "value": "王叔声称不要钱只收土特产致账目模糊",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T03", "quote": "说人家不要钱，塞点土特产就行", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T03_A03",
+     "subject": "HER",
+     "relation": "两难状态",
+     "value": "不愿欠人情账又难驳母亲面子处于两难",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T03", "quote": "不要钱的账最难算，可驳我妈面子又难", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第三方擅自安排的火别冲 HER 发，帮她把账目和面子分开处理。",
+   "unknowns": ["王叔本人是否知情未知", "土特产价值未知"],
+   "protected_expressions": ["不要钱的账最难算"],
+   "forbidden_factual_claims": ["不得断言王叔非要收钱", "不得替 HER 决定驳或不驳母亲"],
+   "may_decline": false
+  },
+  "E165_T04": {
+   "case_id": "E165_T04",
+   "current_action": "确认返程安排更替：ME 车返程取消、只保留周六去程、油费改为单程一百二",
+   "acceptable_actions": [
+    "接受只送去程并确认单程一百二",
+    "接受更替但提议返程仍留备选",
+    "确认费用调整并核对集合时间"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T04_A01",
+     "subject": "SHARED",
+     "relation": "返程搭乘状态",
+     "value": "原定周日搭乘 ME 车返程的计划被取消",
+     "valid_time": "2026-11-22",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E165_T01", "quote": "周日晚上返程", "message_id": "m0"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E165_T04_A02",
+     "subject": "SHARED",
+     "relation": "油费口径更替",
+     "value": "油费从来回二百四改为去程单程一百二",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T04", "quote": "油费二百四改成单程一百二", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T04_A03",
+     "subject": "THIRD",
+     "relation": "返程归属",
+     "value": "返程改乘王叔车且 HER 计划私下补百元油钱",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T04", "quote": "返程依我妈坐王叔车，我私下给王叔转个百八十块的油钱", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：她改的是行程不是对你的态度，认更替结果别多心。",
+   "unknowns": ["王叔是否收下油钱未知", "去程集合点未知"],
+   "protected_expressions": ["油费二百四改成单程一百二"],
+   "forbidden_factual_claims": ["不得继续按来回二百四计费回应", "不得虚构 ME 已拒绝去程"],
+   "may_decline": false
+  },
+  "E165_T05": {
+   "case_id": "E165_T05",
+   "current_action": "接收表哥托带九岁外甥的请求，就儿童乘车安全给出明确前置答复",
+   "acceptable_actions": [
+    "确认车内无增高垫并提出安全前提",
+    "答应捎带但以配齐增高垫为条件",
+    "婉拒托带并给出替代建议"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T05_A01",
+     "subject": "THIRD",
+     "relation": "托带请求",
+     "value": "表哥拟将九岁外甥豆豆交 HER 捎回清源小住",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T05", "quote": "非要把他家豆豆一块交给我捎回去住几天", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T05_A02",
+     "subject": "HER",
+     "relation": "安全前置",
+     "value": "先确认有无安全座椅或增高垫再决定托带",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T05", "quote": "你的车后排有儿童安全座椅或者增高垫吗", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T05_A03",
+     "subject": "THIRD",
+     "relation": "儿童信息",
+     "value": "豆豆九岁想姥姥想同行",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T05", "quote": "豆豆今年九岁", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "安全是她划的线，你的答复要和线一致，别为接单含糊。",
+   "unknowns": ["ME 车内垫具情况未知", "豆豆是否晕车未知"],
+   "protected_expressions": ["你的车后排有儿童安全座椅或者增高垫吗"],
+   "forbidden_factual_claims": ["不得虚构车内已有增高垫"],
+   "may_decline": true
+  },
+  "E165_T06": {
+   "case_id": "E165_T06",
+   "current_action": "接收表哥省事说法与 HER 查证结果的冲突，支持稳妥口径",
+   "acceptable_actions": [
+    "支持按建议标准配增高垫",
+    "补充高速与后排绑带的具体做法",
+    "肯定 HER 的较真并保持安全前提"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T06_A01",
+     "subject": "THIRD",
+     "relation": "省事说法",
+     "value": "表哥称九岁孩子无需座椅后排系安全带即可",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T06", "quote": "我表哥说九岁大孩子不用座椅，后排系安全带就行", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T06_A02",
+     "subject": "HER",
+     "relation": "查证结论",
+     "value": "四岁以下强制座椅九岁建议配增高垫",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T06", "quote": "四岁以下强制用座椅，九岁建议配增高垫", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T06_A03",
+     "subject": "HER",
+     "relation": "责任顾虑",
+     "value": "孩子由自己带来出事无法向表哥交代",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T06", "quote": "出点事我没法跟我哥交代", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "安全问题上不做和事佬，口径跟 HER 的查证走。",
+   "unknowns": ["豆豆体重身高未知", "表哥是否接受查证口径未知"],
+   "protected_expressions": ["四岁以下强制用座椅，九岁建议配增高垫"],
+   "forbidden_factual_claims": ["不得宣称增高垫可有可无"],
+   "may_decline": false
+  },
+  "E165_T07": {
+   "case_id": "E165_T07",
+   "current_action": "确认增高垫借到与出发时间提前到八点的定档",
+   "acceptable_actions": [
+    "确认八点出发并认下豆豆席位安排",
+    "确认定档并提醒增高垫安装方式",
+    "确认时间并核对苹果音箱装载不变"
+   ],
+   "applicable_dimensions": ["time_state", "factuality", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T07_A01",
+     "subject": "THIRD",
+     "relation": "增高垫落实",
+     "value": "表哥从邻居家借到增高垫周六随豆豆带来",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T07", "quote": "我表哥从他们邻居家借到一个增高垫，周六早上随豆豆一起带过来", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T07_A02",
+     "subject": "SHARED",
+     "relation": "出发时间更替",
+     "value": "出发时间由九点提前至八点",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T07", "quote": "周六早上八点出发，比原来说的九点提前一小时", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T07_A03",
+     "subject": "SHARED",
+     "relation": "豆豆席位",
+     "value": "豆豆坐后排左侧使用增高垫",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T07", "quote": "豆豆坐后排左侧用增高垫", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突收敛轮：时间提前与儿童席位都按新口径记，别按九点旧时间回应。",
+   "unknowns": ["增高垫型号与适配未知", "八点集合点未定"],
+   "protected_expressions": ["周六早上八点出发，比原来说的九点提前一小时"],
+   "forbidden_factual_claims": ["不得按九点出发回应", "不得虚构增高垫已安装完成"],
+   "may_decline": false
+  },
+  "E165_T08": {
+   "case_id": "E165_T08",
+   "current_action": "集合日接收人员与装载清单，确认一百六的新费用口径",
+   "acceptable_actions": [
+    "收下一百六并按单程加豆豆口径记账",
+    "认可人数但只收一百二不多收",
+    "确认清单并核对增高垫已安装"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T08_A01",
+     "subject": "SHARED",
+     "relation": "油费新口径",
+     "value": "单程一百二加豆豆四十合计一百六",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T08", "quote": "单程一百二，豆豆算半个人头我再加四十，一共一百六", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T08_A02",
+     "subject": "SHARED",
+     "relation": "集合清单",
+     "value": "豆豆携增高垫到场苹果音箱入后备箱",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T08", "quote": "苹果一箱、音箱一台都在后备箱", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "执行轮短平快，钱怎么收按你自己的边界给准话。",
+   "unknowns": ["豆豆今日状态未知", "集合点拥堵未知"],
+   "protected_expressions": ["一共一百六，你收好别客气"],
+   "forbidden_factual_claims": ["不得虚构返程仍由 ME 承担"],
+   "may_decline": false
+  },
+  "E165_T09": {
+   "case_id": "E165_T09",
+   "current_action": "接收豆豆晕车处置反馈，接住请饭补偿并确认返程归属",
+   "acceptable_actions": [
+    "表示理解并接受或婉拒羊肉汤",
+    "关心豆豆状态并确认后续安排",
+    "认可处置得当不必赔罪"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T09_A01",
+     "subject": "THIRD",
+     "relation": "晕车处置",
+     "value": "豆豆高速晕车呕吐一次服务区停留十分钟后无碍",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T09", "quote": "我们在服务区停了十分钟，清理干净了", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T09_A02",
+     "subject": "SHARED",
+     "relation": "返程归属确认",
+     "value": "返程确认由王叔车接送不经 ME",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T09", "quote": "回来这趟你别管，王叔车接", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T09_A03",
+     "subject": "SHARED",
+     "relation": "补偿提议",
+     "value": "HER 提议中午请清源羊肉汤作补偿",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T09", "quote": "中午我请你吃清源羊肉汤，算赔罪", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "孩子没事就是好事，赔罪的饭接不接都别让她真背愧疚。",
+   "unknowns": ["豆豆是否需要就医未定", "羊肉汤是否成行未知"],
+   "protected_expressions": ["回来这趟你别管，王叔车接"],
+   "forbidden_factual_claims": ["不得虚构豆豆伤情", "不得宣布返程改由 ME 承担"],
+   "may_decline": false
+  },
+  "E165_T10": {
+   "case_id": "E165_T10",
+   "current_action": "接收长辈回礼转达，自行决定辣酱收与不收",
+   "acceptable_actions": [
+    "收下辣酱并道谢",
+    "婉拒并请 HER 代为致意",
+    "收一瓶退一瓶给个台阶"
+   ],
+   "applicable_dimensions": ["boundary", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T10_A01",
+     "subject": "THIRD",
+     "relation": "长辈回礼",
+     "value": "HER 母亲执意赠送两瓶自制辣酱",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T10", "quote": "我妈非要塞你两瓶她做的辣酱", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T10_A02",
+     "subject": "HER",
+     "relation": "传话边界",
+     "value": "HER 只传话不代决定收与不收归 ME",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T10", "quote": "收不收你自己定，我把话带到了", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收与不收都是你的自由，别把长辈的热情当债。",
+   "unknowns": ["辣酱是否被接受未知"],
+   "protected_expressions": ["收不收你自己定，我把话带到了"],
+   "forbidden_factual_claims": ["不得虚构 ME 已收礼"],
+   "may_decline": true
+  },
+  "E165_T11": {
+   "case_id": "E165_T11",
+   "current_action": "接收返程提前与百元油钱转讫的交底，确认不要钱口径已作废",
+   "acceptable_actions": [
+    "认可账目算清并接住豆豆平安的消息",
+    "顺带问她返程提前是否顺利",
+    "认可交底并回一句对母亲的评价"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "attribution", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T11_A01",
+     "subject": "SHARED",
+     "relation": "免费口径状态",
+     "value": "王叔不收钱只收土特产的说法被一百元油钱转账作废",
+     "valid_time": "2026-11-22",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E165_T03", "quote": "说人家不要钱，塞点土特产就行", "message_id": "m0"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E165_T11_A02",
+     "subject": "THIRD",
+     "relation": "返程时间更替",
+     "value": "王叔车返程提前至下午三点半发车",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T11", "quote": "王叔车提前到三点半走", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T11_A03",
+     "subject": "THIRD",
+     "relation": "豆豆平安",
+     "value": "豆豆平安到家未再呕吐表哥托谢 ME",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T11", "quote": "豆豆平安到家，没再吐，我哥让我谢谢你", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突收口轮：她把人情账算清了，认这个结果，别评价王叔本人。",
+   "unknowns": ["土特产最终是否仍送出未知"],
+   "protected_expressions": ["我转了一百块油钱给他，他收了"],
+   "forbidden_factual_claims": ["不得再把王叔车说成免费搭车", "不得虚构返程细节"],
+   "may_decline": false
+  },
+  "E165_T12": {
+   "case_id": "E165_T12",
+   "current_action": "接收生日清源一日游的司机邀约，可应可缓但给答复期限内的准话",
+   "acceptable_actions": [
+    "原则答应并约定确认日期",
+    "表示需看档期承诺本周内回话",
+    "婉拒司机角色但提议换种参与方式"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E165_T12_A01",
+     "subject": "SHARED",
+     "relation": "生日局邀约",
+     "value": "下月 HER 生日拟组不超四人清源一日游邀 ME 司机且费用全包",
+     "valid_time": "2026-12 下旬",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T12", "quote": "想组个清源一日游，你当司机费用我全包", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T12_A02",
+     "subject": "SHARED",
+     "relation": "答复期限",
+     "value": "邀约给出一周内回准话的期限",
+     "valid_time": "2026-11-30 前",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T12", "quote": "不急这周给准话就行", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E165_T12_A03",
+     "subject": "THIRD",
+     "relation": "辣酱回扣",
+     "value": "辣酱若有收讫按先吃度数低的提示处理",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E165_T12", "quote": "辣酱你要是收了记得开封先吃度数低的那瓶", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮：邀约带期限，接不接都别吊着，苹果辣酱的回扣顺手接住。",
+   "unknowns": ["生日具体日期未知", "一日游名单未知"],
+   "protected_expressions": ["不急这周给准话就行"],
+   "forbidden_factual_claims": ["不得编造 ME 已答应当司机", "不得虚构生日日期"],
+   "may_decline": true
+  }
+ }
+}

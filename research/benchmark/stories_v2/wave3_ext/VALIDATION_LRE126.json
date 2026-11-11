@@ -1,0 +1,31 @@
+{
+ "kind": "story_v2_wave3_ext_validation",
+ "date": "2026-10-27",
+ "turn_per_story": 32,
+ "expected_count": 1,
+ "passed": true,
+ "stories": [
+  {
+   "story_id": "LRE126",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "LRE126",
+    "turns": 32,
+    "atoms": 65,
+    "required_atoms": 29,
+    "may_decline": [
+     "LRE126_T06",
+     "LRE126_T12",
+     "LRE126_T18",
+     "LRE126_T24",
+     "LRE126_T30"
+    ],
+    "intents": []
+   }
+  }
+ ],
+ "errors": [],
+ "unique_cases": 32,
+ "stories_passed": 1
+}

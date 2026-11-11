@@ -1,0 +1,136 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E038",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E038_T01",
+   "clock": "2026-11-05 10:05"
+  },
+  {
+   "case_id": "E038_T02",
+   "clock": "2026-11-05 10:08"
+  },
+  {
+   "case_id": "E038_T03",
+   "clock": "2026-11-05 10:12"
+  },
+  {
+   "case_id": "E038_T04",
+   "clock": "2026-11-05 10:15"
+  },
+  {
+   "case_id": "E038_T05",
+   "clock": "2026-11-05 10:20"
+  },
+  {
+   "case_id": "E038_T06",
+   "clock": "2026-11-05 10:22"
+  },
+  {
+   "case_id": "E038_T07",
+   "clock": "2026-11-05 10:25"
+  },
+  {
+   "case_id": "E038_T08",
+   "clock": "2026-11-05 10:28"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E038_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 10:03",
+   "quote": "昨晚你那手真的没话说了 全场都看着"
+  },
+  {
+   "case_id": "E038_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 10:06",
+   "quote": "认 那步我贪了 事先吱一声就不会那么难看"
+  },
+  {
+   "case_id": "E038_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 10:10",
+   "quote": "行吧 你知道就好 我也不是说输不起"
+  },
+  {
+   "case_id": "E038_T04",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 10:14",
+   "quote": "昨晚最气的是全程没人跟我商量"
+  },
+  {
+   "case_id": "E038_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 10:18",
+   "quote": "下周三再来 这回我选游戏"
+  },
+  {
+   "case_id": "E038_T06",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 10:21",
+   "quote": "行 你选 输了就练 到时候见真章"
+  },
+  {
+   "case_id": "E038_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 10:24",
+   "quote": "大刘还叫吗 昨天他也冲我嚷了"
+  },
+  {
+   "case_id": "E038_T08",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 10:26",
+   "quote": "你来定 你顺气要紧 叫谁都是凑一桌"
+  },
+  {
+   "case_id": "E038_T08",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-05 10:27",
+   "quote": "行 我想想 周三见"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "昨晚输局当场红脸",
+   "event_time": "2026-11-04 21:30",
+   "status": "occurred",
+   "source_turn": "E038_T01"
+  },
+  {
+   "event_id": "EV2",
+   "label": "下周三再战（她选游戏）",
+   "event_time": "2026-11-11 19:00",
+   "status": "planned",
+   "source_turn": "E038_T05"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "火药味未散的搭子"
+  },
+  {
+   "turn": "T03",
+   "stage": "开始软化"
+  },
+  {
+   "turn": "T08",
+   "stage": "和好并约了下一局"
+  }
+ ],
+ "revisions": [],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

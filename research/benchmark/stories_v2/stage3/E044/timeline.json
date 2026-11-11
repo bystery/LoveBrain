@@ -1,0 +1,136 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E044",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E044_T01",
+   "clock": "2026-11-05 19:05"
+  },
+  {
+   "case_id": "E044_T02",
+   "clock": "2026-11-05 19:08"
+  },
+  {
+   "case_id": "E044_T03",
+   "clock": "2026-11-05 19:15"
+  },
+  {
+   "case_id": "E044_T04",
+   "clock": "2026-11-05 19:18"
+  },
+  {
+   "case_id": "E044_T05",
+   "clock": "2026-11-05 19:22"
+  },
+  {
+   "case_id": "E044_T06",
+   "clock": "2026-11-05 19:26"
+  },
+  {
+   "case_id": "E044_T07",
+   "clock": "2026-11-05 19:32"
+  },
+  {
+   "case_id": "E044_T08",
+   "clock": "2026-11-05 19:36"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E044_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 19:03",
+   "quote": "你好 对门的 我的快递能帮你收下吗"
+  },
+  {
+   "case_id": "E044_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 19:06",
+   "quote": "没问题 放我家门口对门那 姓陈 你叫我老陈就行"
+  },
+  {
+   "case_id": "E044_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 19:14",
+   "quote": "谢谢 对了 这附近哪家超市靠谱"
+  },
+  {
+   "case_id": "E044_T04",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 19:16",
+   "quote": "南门惠民超市最稳 果蔬肉都行 就是周末人多"
+  },
+  {
+   "case_id": "E044_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 19:20",
+   "quote": "去了 果蔬不太行 有点蔫"
+  },
+  {
+   "case_id": "E044_T06",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 19:24",
+   "quote": "那去东门那家 或者直接菜市场 新鲜 早七点后去别赶早"
+  },
+  {
+   "case_id": "E044_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 19:30",
+   "quote": "谢谢 另外下周我出差三天 猫能麻烦你隔门喂一下吗"
+  },
+  {
+   "case_id": "E044_T08",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 19:34",
+   "quote": "可以 你哪三天 走前把猫粮放门口 我一天喂一次水换两回 我家那只也巴不得有伴"
+  },
+  {
+   "case_id": "E044_T08",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-05 19:35",
+   "quote": "太好了 下周一到周三 谢谢老陈"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "推荐落空与调整",
+   "event_time": "2026-11-05 19:20",
+   "status": "occurred",
+   "source_turn": "E044_T05"
+  },
+  {
+   "event_id": "EV2",
+   "label": "出差三天猫喂养（下周）",
+   "event_time": "2026-11-09",
+   "status": "planned",
+   "source_turn": "E044_T07"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "刚认识的对门"
+  },
+  {
+   "turn": "T06",
+   "stage": "推荐修复后的信任"
+  },
+  {
+   "turn": "T08",
+   "stage": "互相照应的邻居"
+  }
+ ],
+ "revisions": [],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

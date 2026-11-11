@@ -1,0 +1,160 @@
+{
+ "episode_id": "E017",
+ "persona": {
+  "me": "30岁，程序员，周末常去看小展；不喜欢给人压力。",
+  "her": "28岁，活动策划，最近项目收尾，排班乱；对临时约有点警惕。"
+ },
+ "initial_kb": {
+  "me": "做后端开发，周六下午通常有空；喜欢看小展，不愛人多的地方。",
+  "her": "做活动策划，最近连续加班；周末可能有一天休，但不稳定。",
+  "warmth": "交友软件认识两周，见过一次；聊得不错，但还没形成固定约会。",
+  "style": "给选项不逼定；她说忙就收，不追问。",
+  "stage": "暧昧早期，第一次正式邀约。",
+  "lessons": "她时间不确定时，给可取消的方案，不把临时改期当拒绝。"
+ },
+ "turns": [
+  {
+   "case_id": "E017_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "这周真的要累死了 周三周四都加班",
+      "ts": "2026-11-12 19:20"
+     }
+    ],
+    "clock": "2026-11-12 19:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E017_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你上次说的那个展 到什么时候啊 是不是免费 要预约吗",
+      "ts": "2026-11-12 19:30"
+     }
+    ],
+    "clock": "2026-11-12 19:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E017_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周末我可能有一天能休 但还不确定 不敢答应你",
+      "ts": "2026-11-12 19:38"
+     }
+    ],
+    "clock": "2026-11-12 19:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E017_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "没事 你先看排班 我周六下午都在",
+      "ts": "2026-11-12 19:45"
+     },
+     {
+      "role": "HER",
+      "text": "那如果周六我起得来 我们临时约？",
+      "ts": "2026-11-12 19:47"
+     }
+    ],
+    "clock": "2026-11-12 19:49",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "想约她看展，但接受她时间不确定",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E017_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "不过我可能只能待一个小时 你别安排太多",
+      "ts": "2026-11-12 19:56"
+     }
+    ],
+    "clock": "2026-11-12 19:58",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E017_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "门票要提前买吗 还是现场",
+      "ts": "2026-11-12 20:05"
+     }
+    ],
+    "clock": "2026-11-12 20:07",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E017_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "那我周六早上看状态 起来就告诉你 不起来你就别等我",
+      "ts": "2026-11-12 20:14"
+     }
+    ],
+    "clock": "2026-11-12 20:16",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "不催，周六早上等她消息",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E017_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "先这样 我去洗澡了 今天不想动脑子",
+      "ts": "2026-11-12 20:24"
+     }
+    ],
+    "clock": "2026-11-12 20:26",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

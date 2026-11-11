@@ -1,0 +1,53 @@
+{
+ "story_id": "K02",
+ "turns": {
+  "K02_P1_budget": {
+   "case_id": "K02_P1_budget",
+   "current_action": "她问预算加减后的当前总价。已确认八万加三千减两千，当前八万一千；回答应给81000。",
+   "acceptable_actions": [
+    "说现在八万一千",
+    "八万加三千减两千，合计八万一"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K02_P1_a1",
+     "subject": "her",
+     "relation": "budget_current",
+     "value": "八万加三千减两千，当前八万一千",
+     "valid_time": "2026-05-19",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K02_T11",
+      "message_id": "m1",
+      "quote": "说减两千 工期补回来"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "正确回指当前81000。",
+   "unknowns": [],
+   "protected_expressions": [
+    "说减两千 工期补回来"
+   ],
+   "forbidden_factual_claims": [
+    "说还是八万",
+    "漏掉减两千或加三千"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "她问预算加减后的当前总价。已确认八万加三千减两千，当前八万一千；回答应给81000。",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

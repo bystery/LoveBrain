@@ -1,0 +1,35 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A5 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T05 情绪理解/关心/安慰",
+  "子类：具体关心与实际支持"
+ ],
+ "title": "出院第一周：一张服药表和三个药盒",
+ "may_decline_turns": [
+  "E320_T08"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "健康管理",
+ "primary_topic": "T05",
+ "lineage_group_id": "LG-E320",
+ "frozen_at": "2026-11-08T05:30:00+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E320/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A5",
+ "hashes": {
+  "episode.json": "d00e5480d95635c323f640b727e7fb400ec7363e511ebde220148ff720550df1",
+  "reference.json": "0e2caeb491a562bbdd0dcbe88b7e8c029fbc094dbc111b648478d6736893474a",
+  "timeline.json": "7ce2b2ab4766c460ff4831427b538d998cff9dadccf4775dc08d9da9d08a7c97",
+  "audit.md": "1d79571f655b3e71f3d03a5f5b2e710e192bbbecf2de335a8a646f053aa12464"
+ }
+}

@@ -1,0 +1,527 @@
+{
+ "story_id": "E176",
+ "turns": {
+  "E176_T01": {
+   "case_id": "E176_T01",
+   "current_action": "接住乔迁宴消息，确认 14 号档期，给出两三个乔迁礼物方向供她挑",
+   "acceptable_actions": [
+    "确认档期后按姑姑家喜好给两三个礼物方向，让她挑",
+    "先问新家风格和姑姑家忌口，再给礼物建议",
+    "应下参谋并顺带问要不要帮忙排当天的接送"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A01",
+     "subject": "THIRD",
+     "relation": "计划举办",
+     "value": "HER 姑姑 11 月 14 日在城东新家办乔迁宴，HER 带爸妈出席",
+     "valid_time": "2026-11-14（当时计划）",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T01", "message_id": "m0", "quote": "我姑 14 号乔迁宴，新家在城东，我带爸妈一起去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A02",
+     "subject": "HER",
+     "relation": "家庭角色",
+     "value": "HER 家里小辈的活动常由她张罗陪同",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "her", "quote": "姑姑家的乔迁宴由她张罗陪同安排"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "参谋口吻即可，不急着替她定案；日期先复述一遍防记岔",
+   "unknowns": ["姑姑家喜好未详", "14 号是否有变未知"],
+   "protected_expressions": ["14 号乔迁宴"],
+   "forbidden_factual_claims": ["不得声称礼物已买好", "不得虚构姑姑家已发请柬"]
+  },
+  "E176_T02": {
+   "case_id": "E176_T02",
+   "current_action": "认可茶具加茶叶的礼物组合，可补一句保质期或包装的小提醒",
+   "acceptable_actions": [
+    "肯定组合稳妥，提醒茶叶看保质期留出富余",
+    "认可并问她要不要顺手配个礼盒袋显体面",
+    "赞成选茶具，顺带问预算是否覆盖两盒茶叶"
+   ],
+   "applicable_dimensions": ["factuality", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A03",
+     "subject": "HER",
+     "relation": "礼物定案",
+     "value": "乔迁礼物定为一套茶具加两盒茶叶",
+     "valid_time": "2026-11-06 定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T02", "message_id": "m0", "quote": "一套茶具加两盒茶叶"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A04",
+     "subject": "SHARED",
+     "relation": "参谋关系",
+     "value": "发小间常互相参谋家里长辈的事",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "me", "quote": "常互相帮着参谋家里的事"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已拍板就不翻案，只做锦上添花的小提醒",
+   "unknowns": ["茶叶品种与预算未披露"],
+   "protected_expressions": ["一套茶具加两盒茶叶"],
+   "forbidden_factual_claims": ["不得声称礼物已送达", "不得虚构姑姑点名要茶具"]
+  },
+  "E176_T03": {
+   "case_id": "E176_T03",
+   "current_action": "确认蛋糕订单与 14 号下午取件，回扣她截图存证的习惯",
+   "acceptable_actions": [
+    "确认订单信息，顺口夸她截图存证的习惯又立功",
+    "记下取件时间，提醒她留店里的改期电话",
+    "确认后轻问蛋糕尺寸够不够当天人数"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A05",
+     "subject": "SHARED",
+     "relation": "蛋糕订单",
+     "value": "小区门口蛋糕店订蛋糕，原定 11 月 14 日下午取，已截图存证",
+     "valid_time": "2026-11-08 订，14 日取（当时）",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T03", "message_id": "m0", "quote": "订了，14 号下午取，截图存了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A06",
+     "subject": "HER",
+     "relation": "存证习惯",
+     "value": "去年寿宴日期记岔后，HER 订东西先截图存证",
+     "valid_time": "长期习惯",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "lessons", "quote": "此后 HER 订东西先截图存证"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "轻快确认，把她的好习惯点一下就够，别展开教训往事",
+   "unknowns": ["蛋糕款式与金额未披露"],
+   "protected_expressions": ["14 号下午取"],
+   "forbidden_factual_claims": ["不得声称蛋糕已取走", "不得虚构蛋糕店品牌"]
+  },
+  "E176_T04": {
+   "case_id": "E176_T04",
+   "current_action": "接住宴期 14 号改 21 号的变化，安抚她别烦，提醒她连带项逐一顺一遍",
+   "acceptable_actions": [
+    "先安抚情绪，再帮她列连带项：蛋糕、请假、接送",
+    "确认新日期 21 号，问她蛋糕要不要跟着改",
+    "体谅她跑前跑后，建议在群里统一通知免得爸记岔"
+   ],
+   "applicable_dimensions": ["time_state", "emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A07",
+     "subject": "THIRD",
+     "relation": "宴会改期",
+     "value": "因姑姑公司 14 号周年活动，乔迁宴改到 11 月 21 日",
+     "valid_time": "2026-11-09 通报",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E176_T04", "message_id": "m0", "quote": "乔迁宴挪到 21 号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A08",
+     "subject": "THIRD",
+     "relation": "原定档期",
+     "value": "乔迁宴原定 11 月 14 日",
+     "valid_time": "2026-11-05 至 11-09",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T01", "message_id": "m0", "quote": "我姑 14 号乔迁宴"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E176_A09",
+     "subject": "SHARED",
+     "relation": "蛋糕订单",
+     "value": "蛋糕原定 14 号下午取，尚未改期",
+     "valid_time": "截至 2026-11-09 晚",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T03", "message_id": "m0", "quote": "14 号下午取"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改期轮先接情绪再办事，列连带项时别甩一堆命令句",
+   "unknowns": ["21 号是否最终成行未知"],
+   "protected_expressions": ["乔迁宴挪到 21 号"],
+   "forbidden_factual_claims": ["不得声称蛋糕已改期（本轮尚未）", "不得虚构姑姑公司活动细节"]
+  },
+  "E176_T05": {
+   "case_id": "E176_T05",
+   "current_action": "确认蛋糕改到 21 号下午取，肯定她一步跟一步没落下",
+   "acceptable_actions": [
+    "确认改期完成，夸她跟得紧没掉链子",
+    "确认新取件时间，提醒她把改期记录也截个图",
+    "轻快确认，顺带问 21 号家里还有没有别的安排要挪"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A10",
+     "subject": "SHARED",
+     "relation": "蛋糕改期",
+     "value": "蛋糕取件时间由 14 号下午改为 21 号下午，店方已确认",
+     "valid_time": "2026-11-10 改定",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T05", "message_id": "m0", "quote": "改到 21 号下午取"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A11",
+     "subject": "THIRD",
+     "relation": "宴会档期",
+     "value": "乔迁宴现行档期为 11 月 21 日",
+     "valid_time": "2026-11-09 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T04", "message_id": "m0", "quote": "挪到 21 号"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "短确认为主，别重复算日期给她添负担",
+   "unknowns": ["改期是否收手续费未提及"],
+   "protected_expressions": ["改到 21 号下午取"],
+   "forbidden_factual_claims": ["不得声称蛋糕已制作完成", "不得虚构取件时间另改上午"]
+  },
+  "E176_T06": {
+   "case_id": "E176_T06",
+   "current_action": "认可表哥开车带爸妈、她坐地铁汇合的分工，可补一句汇合点建议",
+   "acceptable_actions": [
+    "肯定分工省事，建议提前定好地铁到站后的汇合点",
+    "认可安排，顺口问表哥车里的座位够不够放茶具",
+    "确认分工并提醒她当天给表哥留个提前量"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A12",
+     "subject": "SHARED",
+     "relation": "出行分工",
+     "value": "表哥开车带 HER 爸妈赴宴，HER 自行坐地铁到城东汇合",
+     "valid_time": "2026-11-11 敲定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T06", "message_id": "m0", "quote": "我表哥开车带爸妈去，我坐地铁过去汇合"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A13",
+     "subject": "SHARED",
+     "relation": "宴会档期",
+     "value": "出行安排对应 11 月 21 日的乔迁宴",
+     "valid_time": "2026-11-11 时点",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T05", "message_id": "m0", "quote": "改到 21 号下午取"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "务实认可，补一个具体小建议即可，不重排她的方案",
+   "unknowns": ["汇合点未定", "车位情况未详"],
+   "protected_expressions": ["我坐地铁过去汇合"],
+   "forbidden_factual_claims": ["不得声称已订地铁票", "不得虚构表哥路线"]
+  },
+  "E176_T07": {
+   "case_id": "E176_T07",
+   "current_action": "接住第二次改期与姑婆婆摔伤的消息，先问伤情再谈安排，确认新档期 12 月 5 号",
+   "acceptable_actions": [
+    "先关心姑婆婆伤势，再确认 12 月 5 号新档期",
+    "接住她的'又改了'情绪，问她这次要不要把连带项缓一缓再动",
+    "确认新日期，建议她这次先只改最要紧的一项"
+   ],
+   "applicable_dimensions": ["emotion_relation", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A14",
+     "subject": "THIRD",
+     "relation": "宴会再改期",
+     "value": "因姑婆婆 16 号摔伤，乔迁宴由 21 号再改为 12 月 5 日",
+     "valid_time": "2026-11-17 通报",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E176_T07", "message_id": "m0", "quote": "21 号也办不了，宴挪到 12 月 5 号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A15",
+     "subject": "THIRD",
+     "relation": "前次档期",
+     "value": "乔迁宴此前改定的 11 月 21 日档期作废",
+     "valid_time": "2026-11-09 至 11-17",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T04", "message_id": "m0", "quote": "挪到 21 号"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E176_A16",
+     "subject": "THIRD",
+     "relation": "伤情事件",
+     "value": "姑婆婆于 11 月 16 日摔伤卧床",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T07", "message_id": "m0", "quote": "我姑婆婆 16 号摔了一跤"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "人的事在事的前面：先一句伤情关心，再接改期；不催她立刻改蛋糕",
+   "unknowns": ["姑婆婆伤势程度未知", "12 月 5 号是否终局未知"],
+   "protected_expressions": ["宴挪到 12 月 5 号"],
+   "forbidden_factual_claims": ["不得声称姑婆婆已住院或已痊愈", "不得虚构 21 号宴席照办"]
+  },
+  "E176_T08": {
+   "case_id": "E176_T08",
+   "current_action": "支持她取消 21 号蛋糕订单退款的止损决定，认可'日子定死再重订'的原则",
+   "acceptable_actions": [
+    "赞成取消退款，夸她这次学乖了不再无限跟改",
+    "支持止损，提醒她取消时留退款凭证",
+    "认可原则，顺带说等 12 月 5 号近了再订还更新鲜"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A17",
+     "subject": "SHARED",
+     "relation": "订单取消",
+     "value": "21 号蛋糕订单取消退款，改为宴期定死后重新订购",
+     "valid_time": "2026-11-17 决定",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E176_T08", "message_id": "m0", "quote": "21 号那单蛋糕直接取消退款"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A18",
+     "subject": "HER",
+     "relation": "止损原则",
+     "value": "HER 决定不再跟着宴期无限改蛋糕，只等日子定死重订",
+     "valid_time": "2026-11-17 起",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E176_T08", "message_id": "m0", "quote": "我不想再跟着改了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A19",
+     "subject": "THIRD",
+     "relation": "现行档期",
+     "value": "乔迁宴现行档期为 12 月 5 日",
+     "valid_time": "2026-11-17 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T07", "message_id": "m0", "quote": "宴挪到 12 月 5 号"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把她的决定当成长来夸，一句'这单取消得对'就够，不替她给店里打电话",
+   "unknowns": ["退款到账时间未知"],
+   "protected_expressions": ["直接取消退款"],
+   "forbidden_factual_claims": ["不得声称退款已到账", "不得虚构店里拒绝退款"]
+  },
+  "E176_T09": {
+   "case_id": "E176_T09",
+   "current_action": "确认 12 月 5 号上午十点出发、表哥照旧开车的安排，顺口问她爸妈那边要不要提前一天备着",
+   "acceptable_actions": [
+    "确认出行安排，提醒提前跟表哥确认当天车况",
+    "确认十点出发，建议前一晚把茶具装好袋",
+    "认可照旧安排，问爸妈是否需要备晕车的东西"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A20",
+     "subject": "SHARED",
+     "relation": "出行定档",
+     "value": "12 月 5 日上午十点出发，表哥照旧开车带爸妈",
+     "valid_time": "2026-11-18 敲定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T09", "message_id": "m0", "quote": "12 月 5 号上午十点出发，表哥照旧开车"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A21",
+     "subject": "SHARED",
+     "relation": "前次分工",
+     "value": "此前定下的表哥开车、HER 地铁汇合分工沿用",
+     "valid_time": "2026-11-11 定，11-18 沿用",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T06", "message_id": "m0", "quote": "我表哥开车带爸妈去"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "办事型短回复，给一个提前量建议即可",
+   "unknowns": ["地铁汇合时间未定"],
+   "protected_expressions": ["上午十点出发"],
+   "forbidden_factual_claims": ["不得声称车已约好", "不得虚构出发地点变更"]
+  },
+  "E176_T10": {
+   "case_id": "E176_T10",
+   "current_action": "支持她先视频看新家的折中想法，肯定她惦记长辈的心意",
+   "acceptable_actions": [
+    "赞成视频看新家，说长辈们也会觉得被记挂着",
+    "支持折中方案，建议约个全家都方便的晚上",
+    "先接住她对姑婆婆的牵挂，再附议视频的安排"
+   ],
+   "applicable_dimensions": ["emotion_relation", "initiative", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A22",
+     "subject": "HER",
+     "relation": "折中提议",
+     "value": "HER 提议先视频看新家，给长辈一个交代",
+     "valid_time": "2026-11-19 提议",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T10", "message_id": "m0", "quote": "要不先跟新家视频看看，也算有个交代"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A23",
+     "subject": "THIRD",
+     "relation": "伤情状态",
+     "value": "姑婆婆摔伤后仍卧床休养",
+     "valid_time": "2026-11-19 时点",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T07", "message_id": "m0", "quote": "我姑婆婆 16 号摔了一跤"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E176_A24",
+     "subject": "THIRD",
+     "relation": "宴期悬置",
+     "value": "乔迁宴远在 12 月 5 日，当下无宴可赴",
+     "valid_time": "2026-11-19 时点",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T07", "message_id": "m0", "quote": "宴挪到 12 月 5 号"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是温度轮，重点接住她的心意，视频只是载体；may_decline 允许她只求安慰",
+   "unknowns": ["视频时间未定"],
+   "protected_expressions": ["先跟新家视频看看"],
+   "forbidden_factual_claims": ["不得声称视频已经看完", "不得虚构姑婆婆已能下床"]
+  },
+  "E176_T11": {
+   "case_id": "E176_T11",
+   "current_action": "分享她视频看完的开心，确认 12 月 5 号定死不再动的最终档期",
+   "acceptable_actions": [
+    "替她高兴，把'定死不再动'复述一遍当锚点",
+    "回应新家采光话题，顺带确认蛋糕 12 月 1 号再订的节奏",
+    "肯定折中方案奏效，轻问姑婆婆恢复得怎么样"
+   ],
+   "applicable_dimensions": ["emotion_relation", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A25",
+     "subject": "THIRD",
+     "relation": "档期锁定",
+     "value": "姑姑确认乔迁宴 12 月 5 日定死不再改动",
+     "valid_time": "2026-11-21 确认",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E176_T11", "message_id": "m0", "quote": "12 月 5 号定死不再动了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A26",
+     "subject": "SHARED",
+     "relation": "视频回访",
+     "value": "全家已视频看过城东新家，采光得到好评",
+     "valid_time": "2026-11-21",
+     "status": "resolved",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T11", "message_id": "m0", "quote": "视频看完啦，新家采光真好"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A27",
+     "subject": "THIRD",
+     "relation": "历史改期",
+     "value": "乔迁宴历经 14 号、21 号两次改期后落于 12 月 5 日",
+     "valid_time": "2026-11-05 至 11-21",
+     "status": "resolved",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T04", "message_id": "m0", "quote": "乔迁宴挪到 21 号"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "轻快分享她的开心，把日期锚点复述清楚，不翻旧账",
+   "unknowns": ["姑婆婆恢复情况未详"],
+   "protected_expressions": ["12 月 5 号定死不再动了"],
+   "forbidden_factual_claims": ["不得声称宴期仍可能再改", "不得虚构视频时姑婆婆出席"]
+  },
+  "E176_T12": {
+   "case_id": "E176_T12",
+   "current_action": "应下 12 月 1 号的订蛋糕提醒托付，回扣茶具与新日期，收尾一句'这回一步到位'",
+   "acceptable_actions": [
+    "接下提醒托付，回扣茶具 5 号带上，玩笑说这回稳了",
+    "应约并把 12 月 1 号和 5 号两个日子复述确认",
+    "接提醒并顺口问她蛋糕这回换不换款式"
+   ],
+   "applicable_dimensions": ["memory_use", "interaction", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E176_A28",
+     "subject": "HER",
+     "relation": "提醒托付",
+     "value": "HER 托 ME 在 12 月 1 号提醒她重订蛋糕，茶具 12 月 5 日带去",
+     "valid_time": "2026-11-22 托付",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T12", "message_id": "m0", "quote": "12 月 1 号提醒我订蛋糕"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E176_A29",
+     "subject": "SHARED",
+     "relation": "订单取消",
+     "value": "此前 21 号蛋糕订单已取消退款，等待重订",
+     "valid_time": "2026-11-17 起",
+     "status": "cancelled",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T08", "message_id": "m0", "quote": "直接取消退款"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E176_A30",
+     "subject": "HER",
+     "relation": "礼物定案",
+     "value": "乔迁礼物茶具加茶叶维持原案",
+     "valid_time": "2026-11-06 定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E176_T02", "message_id": "m0", "quote": "一套茶具加两盒茶叶"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轮做靠谱托付人，两个日子复述清楚，语气放松",
+   "unknowns": ["重订蛋糕的款式与数量未定"],
+   "protected_expressions": ["12 月 1 号提醒我订蛋糕"],
+   "forbidden_factual_claims": ["不得声称蛋糕已重新订好", "不得虚构 ME 会代为下单付款"]
+  }
+ }
+}

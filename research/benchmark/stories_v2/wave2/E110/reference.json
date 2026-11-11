@@ -1,0 +1,898 @@
+{
+ "story_id": "E110",
+ "turns": {
+  "E110_T01": {
+   "case_id": "E110_T01",
+   "current_action": "接住她立flag的兴头：肯定挂号启动这步走得正，把三个月处方与爬山之约一起记下，顺带轻轻垫一句医生安排首诊节奏是好事。",
+   "acceptable_actions": [
+    "爽快应下山之约，并提醒她把首诊时间设好提醒",
+    "损她一句'上次健身卡也这么立过'，再正经肯定这次有医生参与不一样",
+    "问她门诊具体位置和要不要陪她去首诊报到"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A01",
+     "subject": "SHARED",
+     "relation": "three_month_plan",
+     "value": "她在社区医院体重管理门诊定下三个月处方计划",
+     "valid_time": "2026-09-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T01",
+      "message_id": "m0",
+      "quote": "排了三个月的处方"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A02",
+     "subject": "SHARED",
+     "relation": "mountain_promise",
+     "value": "她向 ME 立约三个月后请他爬山全程不喘",
+     "valid_time": "2026-09-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T01",
+      "message_id": "m0",
+      "quote": "三个月后我请你去爬咱们那座山，全程不带喘的那种"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A03",
+     "subject": "HER",
+     "relation": "sedentary_baseline",
+     "value": "她的起点状态是久坐发福、爬三层楼就喘",
+     "valid_time": "2026-09 前长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "久坐发福，爬三层楼就喘"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：损一句可以，落点必须是对'有医生背书的计划'的认真对待。",
+   "unknowns": [
+    "处方具体内容未出",
+    "首诊是否需要空腹等细节未知"
+   ],
+   "protected_expressions": [
+    "全程不带喘的那种"
+   ],
+   "forbidden_factual_claims": [
+    "不得对肥胖或健康状态下医学判断",
+    "不得保证三个月必然达标"
+   ]
+  },
+  "E110_T02": {
+   "case_id": "E110_T02",
+   "current_action": "接住处方落地的哀嚎：把两页纸当成好消息复述给她——主食减半、戒泡面、八千步加哑铃都有明确口径；接住泡面玩笑，别真替她放宽。",
+   "acceptable_actions": [
+    "肯定处方具体可执行，顺着接一句泡面梗但不松口",
+    "建议她把'断三天黄色警告'当成提醒机制而不是威胁",
+    "提醒哑铃从轻重量开始，别第一天把自己练废"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A04",
+     "subject": "SHARED",
+     "relation": "diet_prescription",
+     "value": "首诊处方含晚餐主食减半与戒睡前泡面",
+     "valid_time": "2026-09-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T02",
+      "message_id": "m0",
+      "quote": "晚餐主食减半、戒掉睡前那碗泡面"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A05",
+     "subject": "SHARED",
+     "relation": "exercise_prescription",
+     "value": "运动处方为一天八千步加两次哑铃，附打卡小程序",
+     "valid_time": "2026-09-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T02",
+      "message_id": "m0",
+      "quote": "一天八千步加两次哑铃"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A06",
+     "subject": "HER",
+     "relation": "noodle_attachment",
+     "value": "她对睡前泡面有近乎仪式性的依恋",
+     "valid_time": "2026-09-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T02",
+      "message_id": "m0",
+      "quote": "泡面戒了人生还有什么意义"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把哀嚎当撒娇处理，给情绪一个出口，但处方口径一句不松。",
+   "unknowns": [
+    "打卡小程序的具体规则未知"
+   ],
+   "protected_expressions": [
+    "泡面戒了人生还有什么意义"
+   ],
+   "forbidden_factual_claims": [
+    "不得改动或加码医生的处方内容",
+    "不得对泡面与体重的关系下医学结论"
+   ]
+  },
+  "E110_T03": {
+   "case_id": "E110_T03",
+   "current_action": "面对出差引发的全盘暂停冲动：先接住'驻场两周加客户饭局'的现实难处，再把'暂停'和'放弃'分开——暂停可以是计划内的降档，不该是整包扔掉。",
+   "acceptable_actions": [
+    "承认这波确实难，建议她跟医生或小程序看看有没有请假机制",
+    "把问题换成'出差期间保哪几条'，逼她从全停里挑出能保的",
+    "提醒她复诊撞期可以改约，别让复诊跟着一起停"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A07",
+     "subject": "HER",
+     "relation": "pause_impulse",
+     "value": "她因出差决定把整个计划暂停",
+     "valid_time": "2026-09-18",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T03",
+      "message_id": "m0",
+      "quote": "这个计划暂停"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A08",
+     "subject": "SHARED",
+     "relation": "tracking_streak",
+     "value": "打卡小程序的连续性是计划运转的抓手，断三天即警告",
+     "valid_time": "2026-09-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T02",
+      "message_id": "m0",
+      "quote": "断三天就发黄色警告"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E110_A09",
+     "subject": "SHARED",
+     "relation": "recheck_conflict",
+     "value": "出差与复诊档期相撞，需另行改约",
+     "valid_time": "2026-09-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T03",
+      "message_id": "m0",
+      "quote": "复诊也撞上了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不当场拆她的暂停宣言，先共情再提问，让她自己发现'全停'没道理。",
+   "unknowns": [
+    "出差期间住宿与通勤条件未知",
+    "复诊能否改期未知"
+   ],
+   "protected_expressions": [
+    "等我忙完这阵再说"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言出差期间一定打卡失败",
+    "不得替医生决定是否准假"
+   ]
+  },
+  "E110_T04": {
+   "case_id": "E110_T04",
+   "current_action": "接住她预支辩解式的'别劝'：不硬顶，也不附和全停——只把事实摆出来：神仙难保的是顿顿应酬，不是八千步；给她说服自己留个缝。",
+   "acceptable_actions": [
+    "顺着'不可抗力'接一句，再问饭局之外每天有没有二十分钟",
+    "不劝第二遍，只说'行，那复诊改期你今天去约'",
+    "把选择权还给她：全停还是留一条，你说了算，我只提供账"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A10",
+     "subject": "HER",
+     "relation": "preemptive_defense",
+     "value": "她预支辩解并明确抗拒劝阻",
+     "valid_time": "2026-09-19",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T04",
+      "message_id": "m0",
+      "quote": "你也别劝"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A11",
+     "subject": "HER",
+     "relation": "pause_reinforced",
+     "value": "她以不可抗力为由为暂停决定加固",
+     "valid_time": "2026-09-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T04",
+      "message_id": "m0",
+      "quote": "这属于不可抗力，暂停不丢人"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她越说'别劝'越不能硬劝，把话头递回去，让停与不停都归她自己。",
+   "unknowns": [
+    "她是否已在心里松动未知"
+   ],
+   "protected_expressions": [
+    "我这属于不可抗力，暂停不丢人"
+   ],
+   "forbidden_factual_claims": [
+    "不得否认出差饭局的现实压力",
+    "不得替她宣布最终暂停或继续"
+   ]
+  },
+  "E110_T05": {
+   "case_id": "E110_T05",
+   "current_action": "确认变通达成：从全停退到两条底线（八千步、睡前不碰泡面），肯定这是降档不是弃赛，并顺手把底线记牢。",
+   "acceptable_actions": [
+    "肯定两条底线挑得准，一条动一条吃，都攥在自己手里",
+    "建议她把底线写进手机备忘录，饭局当晚只对这两条负责",
+    "调侃一句'泡面人生保住一半'，把轻松感留住"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A12",
+     "subject": "HER",
+     "relation": "bottom_line_set",
+     "value": "出差期间她只保两条底线：一天八千步和睡前不碰泡面",
+     "valid_time": "2026-09-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T05",
+      "message_id": "m0",
+      "quote": "一天八千步和睡前不碰泡面"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A13",
+     "subject": "HER",
+     "relation": "full_pause_retracted",
+     "value": "全盘暂停的念头经劝阻后收回",
+     "valid_time": "2026-09-18/2026-09-21",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T03",
+      "message_id": "m0",
+      "quote": "这个计划暂停"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E110_A14",
+     "subject": "SHARED",
+     "relation": "diet_prescription_echo",
+     "value": "底线中的戒泡面一条源自首诊处方",
+     "valid_time": "2026-09-15/2026-09-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T02",
+      "message_id": "m0",
+      "quote": "戒掉睡前那碗泡面"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'退一步'说成她自己的算术赢了她自己，功劳别揽。",
+   "unknowns": [
+    "底线能否在饭局环境下执行未知"
+   ],
+   "protected_expressions": [
+    "一天八千步和睡前不碰泡面"
+   ],
+   "forbidden_factual_claims": [
+    "不得把底线当成医生处方的新增条款",
+    "不得保证底线一定守得住"
+   ]
+  },
+  "E110_T06": {
+   "case_id": "E110_T06",
+   "current_action": "接住深夜底线告急：烧烤局是现实，撤底线是疲惫话术——先把'今晚这一顿'和'底线本身'拆开，给她一个今晚就能用的凑步方案。",
+   "acceptable_actions": [
+    "建议把剩余步数拆进通勤：早一站下车或饭后绕楼走一圈",
+    "点破撤底线等于把前几天白守，代价算给她听",
+    "允许今晚步数差一截，但泡面那条今晚必须守住"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A15",
+     "subject": "HER",
+     "relation": "bottom_line_crisis",
+     "value": "客户烧烤局打乱步数，她差六千步并动了撤底线的念头",
+     "valid_time": "2026-09-28",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T06",
+      "message_id": "m0",
+      "quote": "要不我把底线也撤了吧"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A16",
+     "subject": "HER",
+     "relation": "environment_constraint",
+     "value": "驻地附近缺少可跑步的场地",
+     "valid_time": "2026-09-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T06",
+      "message_id": "m0",
+      "quote": "连个能跑步的公园都找不着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A17",
+     "subject": "HER",
+     "relation": "bottom_line_commitment",
+     "value": "两天前她定下的两条底线仍在有效期内",
+     "valid_time": "2026-09-21/2026-09-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T05",
+      "message_id": "m0",
+      "quote": "一天八千步和睡前不碰泡面"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：深夜的动摇不较真，方案要小到她躺着都想动一下，撤底线的事不吼。",
+   "unknowns": [
+    "当晚实际完成步数未知"
+   ],
+   "protected_expressions": [
+    "我步数还差六千"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构驻地周边地理",
+    "不得断言她当晚一定补齐步数"
+   ]
+  },
+  "E110_T07": {
+   "case_id": "E110_T07",
+   "current_action": "共享底线守住的早晨战报：通勤凑步法生效、泡面也扛住了、烧烤只吃三串；把'嘴上说轻巧身体很诚实'点出来，趁热把变通固定成习惯。",
+   "acceptable_actions": [
+    "损一句'说得轻巧走得勤快'，肯定通勤凑步这招可持续",
+    "建议她把两点二公里这条路线存成出差标准动作",
+    "提醒她把守住三晚的记录留着，复诊时给医生看"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A18",
+     "subject": "HER",
+     "relation": "bottom_line_held",
+     "value": "她以通勤凑步守住八千步并守住睡前不碰泡面",
+     "valid_time": "2026-09-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T07",
+      "message_id": "m0",
+      "quote": "八千步还真能凑上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A19",
+     "subject": "HER",
+     "relation": "withdraw_urge_retracted",
+     "value": "撤底线的念头经一晚后被收回",
+     "valid_time": "2026-09-28/2026-09-29",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T06",
+      "message_id": "m0",
+      "quote": "要不我把底线也撤了吧"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E110_A20",
+     "subject": "HER",
+     "relation": "commute_trick",
+     "value": "她发现酒店到会场的两点二公里通勤可凑足步数",
+     "valid_time": "2026-09-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T07",
+      "message_id": "m0",
+      "quote": "酒店到会场两点二公里"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：损要损在点上，落点是她自己把变通做成了，夸要夸做法不夸人。",
+   "unknowns": [],
+   "protected_expressions": [
+    "八千步还真能凑上"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她出差期间的全部执行数据",
+    "不得断言此后每晚都能守住"
+   ]
+  },
+  "E110_T08": {
+   "case_id": "E110_T08",
+   "current_action": "共享重启时刻：复诊确认底线没崩、处方升级哑铃加量、'重新开机'；把这两周降档执行定性为计划没断，只是换挡。",
+   "acceptable_actions": [
+    "肯定'重新开机'的说法，点破这叫换挡不叫重启更不叫重来",
+    "提醒她哑铃加量后重量循序渐进，酸痛是正常信号",
+    "建议她把出差降档经验写成一条备忘，下次出差直接复用"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A21",
+     "subject": "SHARED",
+     "relation": "plan_restarted",
+     "value": "复诊后计划重启，医生确认底线未崩并升级处方",
+     "valid_time": "2026-10-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T08",
+      "message_id": "m0",
+      "quote": "断了两周但底线没崩"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A22",
+     "subject": "SHARED",
+     "relation": "prescription_upgraded",
+     "value": "处方新增哑铃从每周两次加到三次",
+     "valid_time": "2026-10-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T08",
+      "message_id": "m0",
+      "quote": "哑铃从两次加到三次"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A23",
+     "subject": "SHARED",
+     "relation": "detour_payoff",
+     "value": "出差期间守住的两条底线成为复诊通过的依据",
+     "valid_time": "2026-09-21/2026-10-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T05",
+      "message_id": "m0",
+      "quote": "一天八千步和睡前不碰泡面"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'底线没崩'四个字还给她听，功劳是她自己守出来的。",
+   "unknowns": [
+    "升级后的具体训练重量未知"
+   ],
+   "protected_expressions": [
+    "我算是重新开机了"
+   ],
+   "forbidden_factual_claims": [
+    "不得对加量训练给出医学强度建议",
+    "不得虚构医生的其他评价"
+   ]
+  },
+  "E110_T09": {
+   "case_id": "E110_T09",
+   "current_action": "接住平台期的终止冲动：先承认两个礼拜不掉秤是真的难熬，再把'卸载'和'了结'拆开——平台期是身体在换挡，不是计划失效；给她一个'先量腰围'的低成本验证。",
+   "acceptable_actions": [
+    "把'秤是慢变量'搬出来，建议她量腰围和穿裤子感受",
+    "问她这一个半月除了秤还有什么变化：睡眠、爬楼、体力",
+    "劝她别卸小程序：记录是复诊时医生判断的依据"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A24",
+     "subject": "HER",
+     "relation": "plateau_stall",
+     "value": "她两周体重纹丝不动进入平台期",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T09",
+      "message_id": "m0",
+      "quote": "两个礼拜秤上一两没掉"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A25",
+     "subject": "HER",
+     "relation": "terminate_impulse",
+     "value": "她想卸载打卡小程序并了结整件事",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T09",
+      "message_id": "m0",
+      "quote": "想把小程序卸了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A26",
+     "subject": "ME",
+     "relation": "slow_variable_credo",
+     "value": "ME 的既有口径是秤是慢变量，腿是快变量",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "秤是慢变量，腿是快变量"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不否定她的挫败，先赔一句'确实气人'再讲慢变量，别让她觉得白努力被轻飘飘带过。",
+   "unknowns": [
+    "平台期具体成因未知",
+    "腰围等围度数据未知"
+   ],
+   "protected_expressions": [
+    "两个礼拜秤上一两没掉"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言平台期何时结束",
+    "不得对体重机制做医学解释"
+   ]
+  },
+  "E110_T10": {
+   "case_id": "E110_T10",
+   "current_action": "共享证据翻案：腰围小两指、裤子变松，秤的叙事被围度推翻；接住她换目标的动作，肯定这个口径更贴近她立计划时的初衷。",
+   "acceptable_actions": [
+    "肯定换目标换得聪明：围度和睡眠本来就更贴她的起点问题",
+    "提醒她秤照常记录，但只当参考线不当判决书",
+    "顺着'裤子诚实'接一句玩笑，把轻松感留住"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A27",
+     "subject": "HER",
+     "relation": "waist_evidence",
+     "value": "她的腰围较九月初小了近两指，裤子变松",
+     "valid_time": "2026-10-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T10",
+      "message_id": "m0",
+      "quote": "比九月初小了快两指"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A28",
+     "subject": "HER",
+     "relation": "goal_redefined",
+     "value": "目标由掉秤十斤改为腰围再小一指加睡眠改善",
+     "valid_time": "2026-10-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T10",
+      "message_id": "m0",
+      "quote": "腰围再小一指加一觉睡到天亮"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A29",
+     "subject": "HER",
+     "relation": "terminate_urge_dissolved",
+     "value": "终止冲动被围度证据化解",
+     "valid_time": "2026-10-26/2026-10-27",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T09",
+      "message_id": "m0",
+      "quote": "想把小程序卸了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：证据说话时把嘴闭上，让'裤子诚实'成为她自己悟出的金句。",
+   "unknowns": [
+    "具体腰围数值未给出"
+   ],
+   "protected_expressions": [
+    "秤骗人，裤子诚实"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她的体重与体脂数字",
+    "不得断言换目标后必然继续改善"
+   ]
+  },
+  "E110_T11": {
+   "case_id": "E110_T11",
+   "current_action": "接住她换目标后的松快：打卡继续、哑铃到位、连医生都说心态对了；把'不拧巴'定义为这套计划真正吃进她生活里的标志。",
+   "acceptable_actions": [
+    "肯定'配合治疗'这评价，点出她是从跟秤怄气变成了跟生活合作",
+    "建议她把换目标的经过记一笔，留给下次卡壳的自己看",
+    "顺着爬山之约问一句周末路线，把兑现提前预热"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A30",
+     "subject": "HER",
+     "relation": "routine_stable",
+     "value": "目标调整后打卡与加量哑铃稳定执行",
+     "valid_time": "2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T11",
+      "message_id": "m0",
+      "quote": "打卡还在继续，哑铃也真加到三次了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A31",
+     "subject": "SHARED",
+     "relation": "mindset_shift",
+     "value": "医生评价她从跟秤怄气转为配合治疗",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T11",
+      "message_id": "m0",
+      "quote": "以前那叫跟秤怄气"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A32",
+     "subject": "SHARED",
+     "relation": "goal_redefinition_confirmed",
+     "value": "换目标的决定经执行一周后稳固",
+     "valid_time": "2026-10-27/2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T10",
+      "message_id": "m0",
+      "quote": "腰围再小一指加一觉睡到天亮"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：肯定要具体到'打卡和哑铃'两件实事，别泛泛夸心态。",
+   "unknowns": [],
+   "protected_expressions": [
+    "以前那叫跟秤怄气"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言她已彻底告别体重焦虑",
+    "不得虚构医生原话之外的诊断"
+   ]
+  },
+  "E110_T12": {
+   "case_id": "E110_T12",
+   "current_action": "接住三个月结业汇报与爬山字据：腰围小三指、泡面戒断、转维持期；爽快应约，把字据兑现，让她那句'山说了算'稳稳落地。",
+   "acceptable_actions": [
+    "答应周六爬山，主动认领带水的活儿",
+    "肯定她把'全程不喘'从吹牛变成验收标准",
+    "提醒她维持期不是放羊，复查频率半年一次记牢"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E110_A33",
+     "subject": "SHARED",
+     "relation": "plan_graduated",
+     "value": "三个月计划结业：腰围小三指、泡面戒断、转维持期半年一复查",
+     "valid_time": "2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T12",
+      "message_id": "m0",
+      "quote": "医生说我结业了，转维持期"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E110_A34",
+     "subject": "SHARED",
+     "relation": "promise_due",
+     "value": "三个月前的爬山之约到期待兑现",
+     "valid_time": "2026-09-07/2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E110_T01",
+      "message_id": "m0",
+      "quote": "三个月后我请你去爬咱们那座山，全程不带喘的那种"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E110_A35",
+     "subject": "HER",
+     "relation": "baseline_closed",
+     "value": "起点'爬三层楼就喘'被三个月后的结业状态覆盖",
+     "valid_time": "2026-09 前长期/2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "爬三层楼就喘"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要轻快，'山说了算'这个梗必须接住，别翻回去讲道理。",
+   "unknowns": [
+    "周六具体时间与天气未定",
+    "T12“三个月到期”较 9-15 处方期提前约两周；T10“比九月初小两指”基线无铺垫，均按 time_state 从宽"
+   ],
+   "protected_expressions": [
+    "我现在喘不喘，山说了算"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构复查的医学指标数值",
+    "不得断言维持期绝对不反弹"
+   ]
+  }
+ }
+}

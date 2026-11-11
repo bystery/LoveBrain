@@ -1,0 +1,583 @@
+{
+ "story_id": "E164",
+ "turns": {
+  "E164_T01": {
+   "case_id": "E164_T01",
+   "current_action": "接收续卡报价与换算缺口，可凭记忆给出参考或建议她查支付记录",
+   "acceptable_actions": [
+    "凭印象给单次参考价并提醒以支付记录为准",
+    "直接建议翻支付记录按实付额算",
+    "先问游泳频次再算回本线"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T01_A01",
+     "subject": "HER",
+     "relation": "次卡余量",
+     "value": "名下泳池次卡只剩两次",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "名下泳池次卡只剩两次"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T01_A02",
+     "subject": "SHARED",
+     "relation": "续费报价",
+     "value": "季卡九百九十九双十一预热再减一百",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T01", "quote": "续季卡九百九十九，双十一预热还能再减一百", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T01_A03",
+     "subject": "HER",
+     "relation": "换算缺口",
+     "value": "当初次卡单次折价记不清需要凭据",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T01", "quote": "我记不清当初次卡单次折多少钱了", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "老熟人语气，先给实在建议，报价数字别凭空编。",
+   "unknowns": ["当初次卡实付额未知", "双十一活动截止日未知"],
+   "protected_expressions": ["续季卡九百九十九，双十一预热还能再减一百"],
+   "forbidden_factual_claims": ["不得替 HER 编造记忆中的次卡单价"],
+   "may_decline": false
+  },
+  "E164_T02": {
+   "case_id": "E164_T02",
+   "current_action": "接收 HER 自算的单次八十口径，确认或提示留意价格构成",
+   "acceptable_actions": [
+    "认可换算逻辑并提醒核对是否含实物赠品",
+    "确认回本线算法再补一条频次建议",
+    "追问支付记录细节"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T02_A01",
+     "subject": "HER",
+     "relation": "次卡购入",
+     "value": "二月购入二十次卡支付一千六",
+     "valid_time": "2026-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T02", "quote": "二月买的二十次卡一千六", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T02_A02",
+     "subject": "SHARED",
+     "relation": "单次换算口径",
+     "value": "HER 当时按总额均摊算出单次八十",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T02", "quote": "这么算单次八十", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T02_A03",
+     "subject": "HER",
+     "relation": "回本线",
+     "value": "自算季卡需游十三次才回本",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T02", "quote": "换算下来季卡得游十三次才回本", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先接她的算法，实物赠品这种坑可以提一句，别显得否定她。",
+   "unknowns": ["支付记录里是否含实物未核对"],
+   "protected_expressions": ["这么算单次八十"],
+   "forbidden_factual_claims": ["不得断言单次八十就是最终口径"],
+   "may_decline": false
+  },
+  "E164_T03": {
+   "case_id": "E164_T03",
+   "current_action": "确认价格构成更正：单次八十口径作废，纯次卡一千四百五、单次七十二块五转正",
+   "acceptable_actions": [
+    "确认更正并按新单价重算回本线",
+    "肯定她查凭证的习惯并更新换算表",
+    "追问泳帽拖鞋是否另算进预算"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T03_A01",
+     "subject": "HER",
+     "relation": "单次八十口径状态",
+     "value": "此前单次八十的均摊算法经本人更正作废",
+     "valid_time": "2026-11-10",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E164_T02", "quote": "这么算单次八十", "message_id": "m0"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E164_T03_A02",
+     "subject": "HER",
+     "relation": "纯次卡金额",
+     "value": "扣除赠品估值后纯次卡金额修正为一千四百五十（赠品现价两百多为另一口径）",
+     "valid_time": "2026-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T03", "quote": "纯次卡应该是一千四百五", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T03_A03",
+     "subject": "HER",
+     "relation": "修正单价",
+     "value": "次卡单价修正为单次七十二块五",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T03", "quote": "单次七十二块五", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：认的是数字更正本身，别翻出旧算法再算一遍。",
+   "unknowns": ["实物折价两百多为估计值", "商家是否承认拆分口径未知"],
+   "protected_expressions": ["单次七十二块五"],
+   "forbidden_factual_claims": ["不得继续按单次八十回应", "不得虚构商家官方拆分依据"],
+   "may_decline": false
+  },
+  "E164_T04": {
+   "case_id": "E164_T04",
+   "current_action": "接收双十一套餐细节并完成换算参谋，指出体验课两周期限的可用性风险",
+   "acceptable_actions": [
+    "给出折合单价并提醒赠品期限要算使用率",
+    "按有赠品与无赠品两版各算一列",
+    "建议把期限条款落在书面再决定"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T04_A01",
+     "subject": "SHARED",
+     "relation": "双十一套餐",
+     "value": "季卡减一百后八百九十九并送两次次卡加一节私教体验课",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T04", "quote": "减完是八百九十九", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T04_A02",
+     "subject": "SHARED",
+     "relation": "体验课期限",
+     "value": "私教体验课领取后两周内有效",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T04", "quote": "领取后两周内有效", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T04_A03",
+     "subject": "HER",
+     "relation": "出差冲突",
+     "value": "本周出差预计两周内难用上体验课",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T04", "quote": "我这几天出差，两周八成用不上", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "算账要落到可用性，别只算名义单价。",
+   "unknowns": ["赠品是否可延期未知", "体验课具体内容未知"],
+   "protected_expressions": ["领取后两周内有效"],
+   "forbidden_factual_claims": ["不得编造赠品可延期的承诺"],
+   "may_decline": false
+  },
+  "E164_T05": {
+   "case_id": "E164_T05",
+   "current_action": "接收 HER 自算结果，肯定不为赠品硬凑的判断，同时核对她报的折合单价与自报次数是否对得上",
+   "acceptable_actions": [
+    "支持不硬凑，同时温和指出按自报的二十四次 754 应约合单次三十一块四，请她复核除数",
+    "补充赠品转用可能性的问法",
+    "认可结果并提醒下单前再核期限"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T05_A01",
+     "subject": "HER",
+     "relation": "折合单价（账目陷阱）",
+     "value": "HER 自算折合单次三十七块七，但与其自报的七百五十四元除以二十四次不符（754÷24≈31.4）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T05", "quote": "单次三十七块七", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T05_A02",
+     "subject": "HER",
+     "relation": "赠品取舍",
+     "value": "认定私教课过期风险大不为凑数硬用",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T05", "quote": "为它硬凑有点冤", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T05_A03",
+     "subject": "SHARED",
+     "relation": "净价口径",
+     "value": "两次赠课按七十二块五折算后相当于七百五十四游一季",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T05", "quote": "相当于七百五十四游一季", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "账目陷阱轮：她思路清楚但三十七块七与自报的二十四次对不上，先认可不硬凑的判断，再请她复核除数，不顺着错数附和也不抢着替她改数。",
+   "unknowns": ["十二周能否全勤未知", "三十七块七的除数口径未知（按其自报应为 24 次）"],
+   "protected_expressions": ["为它硬凑有点冤"],
+   "forbidden_factual_claims": ["不得否认她的折算结果而无依据", "不得把三十七块七背书为正确换算结果"],
+   "may_decline": false
+  },
+  "E164_T06": {
+   "case_id": "E164_T06",
+   "current_action": "接收赠品折现的两说分歧，支持当面核实而不轻信群传",
+   "acceptable_actions": [
+    "支持当面问经理并建议要书面答复",
+    "提醒群传说法记录发言人与日期备用",
+    "分析两种说法各自的可能性"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T06_A01",
+     "subject": "SHARED",
+     "relation": "折现传闻",
+     "value": "群内对赠品能否折现抵续费存在两派说法且均无实据",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T06", "quote": "有人说去年双十一的赠品事后能折现抵下次续费", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T06_A02",
+     "subject": "HER",
+     "relation": "核实计划",
+     "value": "决定次日当面问经理后同步结果",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T06", "quote": "明天正好去游泳，当面问问经理，问完告诉你", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "群传闻当传闻处理，帮她把核实路径走扎实。",
+   "unknowns": ["经理最终口径未知", "群内两说的发言人身份未知"],
+   "protected_expressions": ["当面问问经理"],
+   "forbidden_factual_claims": ["不得替经理预先给出折现结论"],
+   "may_decline": false
+  },
+  "E164_T07": {
+   "case_id": "E164_T07",
+   "current_action": "确认经理口径落地：折现否定、体验课可转借一次且期限从领取日起算",
+   "acceptable_actions": [
+    "确认规则并回应转借邀约意向",
+    "确认规则并提醒转借要留书面凭证",
+    "追问转借是否需登记受赠人信息"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T07_A01",
+     "subject": "SHARED",
+     "relation": "折现说法状态",
+     "value": "赠品事后可折现抵续费的传闻经经理核实被否定",
+     "valid_time": "2026-11-16",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E164_T06", "quote": "有人说去年双十一的赠品事后能折现抵下次续费", "message_id": "m0"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E164_T07_A02",
+     "subject": "SHARED",
+     "relation": "转借规则",
+     "value": "私教体验课可转借一次给他人使用期限从领取日起算",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T07", "quote": "私教体验课可以转借一次给别人用，期限从领取那天起算", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突收敛轮：明确转述的是经理口径，别再把群传当备选。",
+   "unknowns": ["转借是否需书面登记未知"],
+   "protected_expressions": ["期限从领取那天起算"],
+   "forbidden_factual_claims": ["不得继续按可折现口径回应", "不得虚构折现成功案例"],
+   "may_decline": false
+  },
+  "E164_T08": {
+   "case_id": "E164_T08",
+   "current_action": "回应体验课转赠提议，可接下并承诺两周内约课，可婉拒且不影响关系",
+   "acceptable_actions": [
+    "接下体验课并承诺两周内约时间",
+    "婉拒转赠并请她转给其他朋友",
+    "接下但先确认体态课档期"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T08_A01",
+     "subject": "ME",
+     "relation": "体态课意愿",
+     "value": "上个月曾向 HER 表达过想试体态课",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T08", "quote": "你上个月不是念叨想试试体态课嘛", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T08_A02",
+     "subject": "SHARED",
+     "relation": "转赠提议",
+     "value": "HER 领取体验课转赠 ME 并要求两周内约上",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T08", "quote": "这节体验课我领了转给你，两周内你得约上", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T08_A03",
+     "subject": "HER",
+     "relation": "办卡决定",
+     "value": "次日办季卡决定不因赠品只为单价划算",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T08", "quote": "季卡我明天就去办，不为赠品，纯粹是单次三十七块七划算", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "转赠是好意，接或拒都给准话，别拖着不回。",
+   "unknowns": ["ME 档期未知", "体验课排课表未知"],
+   "protected_expressions": ["这节体验课我领了转给你，两周内你得约上"],
+   "forbidden_factual_claims": ["不得编造 ME 已确认接课", "不得把三十七块七复述为已核实正确的单价"],
+   "may_decline": true
+  },
+  "E164_T09": {
+   "case_id": "E164_T09",
+   "current_action": "接收冻结合卡变量，帮她把两条路的成本项列清楚",
+   "acceptable_actions": [
+    "列出解冻与购新卡各自的总额与权益对照",
+    "追问冻结年卡的原始合同条款",
+    "建议先电话确认解冻差价构成"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T09_A01",
+     "subject": "HER",
+     "relation": "冻结年卡",
+     "value": "名下有二〇二四年办理的冻结合同年卡",
+     "valid_time": "2024 年购卡",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T09", "quote": "我名下还有张二〇二四年办的年卡，冻着呢", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T09_A02",
+     "subject": "SHARED",
+     "relation": "解冻条件",
+     "value": "解冻需补三百差价激活后泳池不限次",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T09", "quote": "解冻要补三百差价，激活后泳池随便游", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T09_A03",
+     "subject": "SHARED",
+     "relation": "互斥约束",
+     "value": "季卡与激活年卡不可叠加使用",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T09", "quote": "两个不能叠加", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "新变量出现别急着替她选，先把口径钉平。",
+   "unknowns": ["冻结年卡剩余有效期未知", "差价三百的构成未知"],
+   "protected_expressions": ["解冻要补三百差价，激活后泳池随便游"],
+   "forbidden_factual_claims": ["不得虚构冻结年卡剩余月数"],
+   "may_decline": false
+  },
+  "E164_T10": {
+   "case_id": "E164_T10",
+   "current_action": "确认双方案比价结果与她的拍板：解冻激活转正，双十一季卡订单放弃",
+   "acceptable_actions": [
+    "认可解冻更划算并支持放弃季卡单",
+    "认可决策并提醒留好转卡凭证",
+    "确认结果并顺带确认赠品随之作废"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T10_A01",
+     "subject": "HER",
+     "relation": "办新季卡计划状态",
+     "value": "次日办季卡的双十一计划经比价被放弃",
+     "valid_time": "2026-11-17",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E164_T08", "quote": "季卡我明天就去办", "message_id": "m0"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E164_T10_A02",
+     "subject": "HER",
+     "relation": "解冻决定",
+     "value": "决定解冻年卡并下撤双十一季卡订单",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T10", "quote": "我决定解冻，双十一季卡那单我不下了", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T10_A03",
+     "subject": "HER",
+     "relation": "比价依据",
+     "value": "解冻补三百无限游十二个月比八百九十九季卡单价更低",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T10", "quote": "解冻补三百无限游十二个月", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：拍板是她自己的，认结果别挑刺赠品损失。",
+   "unknowns": ["季卡订单是否已成功撤销未知", "赠品是否随之失效未知"],
+   "protected_expressions": ["我决定解冻，双十一季卡那单我不下了"],
+   "forbidden_factual_claims": ["不得继续按办新季卡推进话题", "不得宣称解冻后仍有赠品"],
+   "may_decline": false
+  },
+  "E164_T11": {
+   "case_id": "E164_T11",
+   "current_action": "接收解冻执行反馈并回应当晚首场邀约，可到场可婉拒",
+   "acceptable_actions": [
+    "答应今晚八点一起游第一场",
+    "婉拒今晚但约定下周三同游",
+    "答应并确认固定泳道位置"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T11_A01",
+     "subject": "SHARED",
+     "relation": "解冻完成",
+     "value": "年卡解冻办结且三百差价已支付",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T11", "quote": "解冻办完了，三百块差价已付", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T11_A02",
+     "subject": "SHARED",
+     "relation": "固定泳道",
+     "value": "每周三晚八点固定泳道已登记今晚首场",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T11", "quote": "前台给我登记了每周三晚八点的固定泳道", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T11_A03",
+     "subject": "HER",
+     "relation": "凭证存档",
+     "value": "差价发票已拍照存档",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T11", "quote": "发票拍照存了档", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "执行轮节奏快，回复可以短，邀约给准话。",
+   "unknowns": ["ME 今晚是否到场未知"],
+   "protected_expressions": ["今晚就是第一场，你游不游"],
+   "forbidden_factual_claims": ["不得编造 ME 已到场"],
+   "may_decline": true
+  },
+  "E164_T12": {
+   "case_id": "E164_T12",
+   "current_action": "接收首场反馈与旧次卡消化计划，接住冬训营观望钩子",
+   "acceptable_actions": [
+    "认可首场效果并应下一起研究冬训营规则",
+    "提醒冬训营先看返现条件再决定",
+    "顺带确认剩余两次次卡的使用安排"
+   ],
+   "applicable_dimensions": ["memory_use", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E164_T12_A01",
+     "subject": "SHARED",
+     "relation": "次卡余量状态",
+     "value": "旧次卡剩余两次计划下周三用完",
+     "valid_time": "2026-11-25 前后",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "名下泳池次卡只剩两次"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E164_T12_A02",
+     "subject": "SHARED",
+     "relation": "冬训营活动",
+     "value": "十二月泳馆冬训营打卡返现活动规则未细读暂观望",
+     "valid_time": "2026-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T12", "quote": "十二月泳馆有个冬训营打卡返现的活动", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E164_T12_A03",
+     "subject": "HER",
+     "relation": "首场体感",
+     "value": "首场游完肩颈松快认为差价值得",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E164_T12", "quote": "游完第一场，肩颈松快多了，值回三百", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮：回扣最初的次卡余量，钩子接住即可不必承诺。",
+   "unknowns": ["冬训营返现规则未知", "剩余两次能否转给他人未知"],
+   "protected_expressions": ["剩下两次次卡我下周三用完"],
+   "forbidden_factual_claims": ["不得替她宣布已报名冬训营"],
+   "may_decline": true
+  }
+ }
+}

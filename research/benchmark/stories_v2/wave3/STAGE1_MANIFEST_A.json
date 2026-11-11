@@ -1,0 +1,175 @@
+{
+ "kind": "story_v2_wave3_stage1_shard",
+ "stage": "wave3",
+ "date": "2026-11-02",
+ "built_by": "W3-T1-A",
+ "count": 8,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E117",
+   "title": "多出来的同乘人",
+   "themes": [
+    "出行拼车",
+    "返乡顺风车",
+    "同乘人数更正",
+    "油费重算",
+    "后备箱取舍"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E117",
+   "turns": 12,
+   "files": {
+    "episode.json": "584a030b8001e62f02f33d19c39a198edf79ac1a8fbeb3e92cf56c1c89ce6a2f",
+    "reference.json": "e518d0b1e5b0a330a38ae745aae07dde5b1129fcfd37f536e6cdfb57c2f58ebd",
+    "timeline.json": "7c3f8bc69babbb6b1d9105c3ce04e665fe17d5a9ec2c4292378fcbf2b085feaa",
+    "audit.md": "393a812e39a514c04adf2f847a5330724658dccb5aea145699345e0fc6a943b6"
+   }
+  },
+  {
+   "story_id": "E118",
+   "title": "司机不免单",
+   "themes": [
+    "出行拼车",
+    "四人自驾出游",
+    "司机免单之争",
+    "均摊口径回摆",
+    "停车费现金"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E118",
+   "turns": 12,
+   "files": {
+    "episode.json": "c5dddcd1d2cca6b2f8f3a9b106e8fa228e29a8861867636ee0eb648e70e93dc5",
+    "reference.json": "d5b21712bea504ce2608b54b051ffa23a1a67e8acdf0c4fcb4f73ce56fd164a9",
+    "timeline.json": "ab23602c8ac239290c72cd5ba03f321e6add693507f6eced32da30c37b16ec81",
+    "audit.md": "2880df4d191b7019e163ed3a4bc242eb7fbdbb75f7b56c1eb03a966a90c52082"
+   }
+  },
+  {
+   "story_id": "E119",
+   "title": "表姨的咖啡局",
+   "themes": [
+    "家庭事务",
+    "亲戚代约相亲",
+    "第三方擅自改期",
+    "当面摊牌",
+    "生日礼物参谋"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E119",
+   "turns": 12,
+   "files": {
+    "episode.json": "56590529d167544001d53f53d385210f987909734895c156ec39756a8851434d",
+    "reference.json": "144c9b5d8ee0feecfdf238f7df2b97ba2f7808962b493996c55eeee0bcbf2a90",
+    "timeline.json": "2f966741b8a6e106be0806e965d992647963f59a8c68b1840ab25213b2fc2643"
+   }
+  },
+  {
+   "story_id": "E120",
+   "title": "交房短信没来",
+   "themes": [
+    "家庭事务",
+    "父母同城养老",
+    "交房日期不确定",
+    "借用暂缓",
+    "短信确认"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E120",
+   "turns": 12,
+   "files": {
+    "episode.json": "64b627f33827432716b0d551c1c83ad66b86a6f8a0dd7d99b465726d117771d2",
+    "reference.json": "0d8b963bebebc99ab1a5a86e36ecdbe1f08ae0fdb9719a42a10c34d9eff6b0fd",
+    "timeline.json": "a3c4d7fcb4f737d6bfac1fede2df304c9180b08d97b71d16fd95c03588c6ef14",
+    "audit.md": "0ed3718d91ce7600c1f4bbf32f31ced5a69382bc7f6079bb84436296a6c4e423"
+   }
+  },
+  {
+   "story_id": "E121",
+   "title": "周六的号取消了",
+   "themes": [
+    "医疗健康",
+    "流感疫苗接种",
+    "封网演练取消",
+    "自费改约",
+    "早茶陪伴"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E121",
+   "turns": 12,
+   "files": {
+    "episode.json": "31592f31eea85545a26ea94b1f4bd99b1a5a4d88d9fb74ba5de0e39f919a48a9",
+    "reference.json": "b301512912faef772bc21daf8d6e3efbbf1fc2085aeca198da4266ceb000473d",
+    "timeline.json": "fbb2a8620e0e54c420d1a4277eaf742b2a3abe5585f54bdf1b25cb5a7419127a",
+    "audit.md": "023c14c7c80f084d4ce75bcdf211cf57d936ca9373b20f5fb2ebb1d8ffef2feb"
+   }
+  },
+  {
+   "story_id": "E122",
+   "title": "十一点半的灯",
+   "themes": [
+    "医疗健康",
+    "肝功复查目标",
+    "双人打卡",
+    "上线期暂停",
+    "降档恢复"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave3/E122",
+   "turns": 12,
+   "files": {
+    "episode.json": "3ccbb795aa993f3937e30b220c66e8dee1455b5ed793c8b2ad47f7309290a396",
+    "reference.json": "a14dd0e98ff237809a5ab84a816eaa5cf6069a0ff018e91c81b7269736c29d28",
+    "timeline.json": "98acd98774b1f204d5b0821635d4ba6e193efa614cf0ee45d8035e6578a94321"
+   }
+  },
+  {
+   "story_id": "E123",
+   "title": "先问再喂",
+   "themes": [
+    "宠物",
+    "公司宠物友好日",
+    "投喂禁令",
+    "边界冲突化解",
+    "规则卡片化"
+   ],
+   "domain": "宠物",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E123",
+   "turns": 12,
+   "files": {
+    "episode.json": "1f3360d6aee3fa30b61d74039ad531bbd82a35071672e6e8d3b4321b55477031",
+    "reference.json": "c12fb6f3238fd0f3b6507f6c93cd83102315ee3578389d1fdc07d98ca1cf81c5",
+    "timeline.json": "9c925dccdb8cc6094c69353d81ff65f6198d6cf375f3577f3f37be2c776f2193",
+    "audit.md": "d6c1f5fc5dccb0b9111418fbc6e3c61d89e6fb34f2048f06114e83f81713a2b5"
+   }
+  },
+  {
+   "story_id": "E124",
+   "title": "术前那两个喷嚏",
+   "themes": [
+    "宠物",
+    "母猫绝育",
+    "术前预检取消",
+    "复查后再约",
+    "术后戴圈护理"
+   ],
+   "domain": "宠物",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E124",
+   "turns": 12,
+   "files": {
+    "episode.json": "98367789cd0d590ad779844facb952408594c9e4d574e3f34676cad6c35de5bd",
+    "reference.json": "9a4bcea80ec2cea3a0cfaf3b39931c5845f28bf90da19f99b7f1be15e6e716d9",
+    "timeline.json": "f2b68fd05db8f824d630773da27b8d21c39d07f23dfdb1628c6ceec9d788ee93"
+   }
+  }
+ ]
+}

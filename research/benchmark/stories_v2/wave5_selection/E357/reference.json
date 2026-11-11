@@ -1,0 +1,1622 @@
+{
+ "story_id": "E357",
+ "turns": {
+  "E357_T01": {
+   "case_id": "E357_T01",
+   "current_action": "西厢地板撬开揭出潮损，老闵给出全换加八千与局部补省一半两条路，她请ME以预算专业角度说实话：这八千花在哪边值。",
+   "acceptable_actions": [
+    "给明确倾向+专业理由（木龙骨酥了的隐患/自住脚感/潮了三年的底子），结尾把拍板权留给她",
+    "拆开算账式回答（八千买什么：龙骨+整体平整+脚感），让她自己核",
+    "先接'大梁没事是好消息'再入正题的缓一拍式（贴ME慢半拍人设），但仍落到具体判断"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T01_A01",
+     "subject": "THIRD",
+     "relation": "施工动态",
+     "value": "11月7日早老闵施工队开工撬西厢地板，一撬开就见不得人",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T01",
+      "message_id": "m0",
+      "quote": "老闵的人今早开工，西厢地板一撬开就见不得人"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "今早开工",
+       "西厢地板"
+      ],
+      [
+       "西厢地板",
+       "撬开"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T01_A02",
+     "subject": "THIRD",
+     "relation": "潮损程度",
+     "value": "西厢地板底下潮了三年、木龙骨酥了，大梁没事",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T01",
+      "message_id": "m0",
+      "quote": "底下潮了三年，木龙骨酥了，大梁没事"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "潮了三年",
+       "木龙骨"
+      ],
+      [
+       "大梁没事"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T01_A03",
+     "subject": "THIRD",
+     "relation": "两方案",
+     "value": "老闵给两条路：全换加八千；局部补省一半（接缝丑、脚感差）",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T01",
+      "message_id": "m0",
+      "quote": "老闵给两条路：全换，加八千；局部补，省一半，接缝丑、脚感差"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "全换",
+       "加八千"
+      ],
+      [
+       "局部补",
+       "省一半"
+      ],
+      [
+       "接缝丑",
+       "脚感差"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "ME 的专业身份（装饰公司预算+业余木工）是答题资源；'你说实话'点名要真话——顺着她说漂亮话=漏接。给判断依据与推荐，拍板留她（lessons：老物件/老宅的事让她自己拿主意，他只搭手不代决）。注意口径：KB 写'11月1日开工翻新'，她这句'今早开工'指西厢地板这道工序开工（11月7日周六，ME 到场日）——gold 不在两者间判矛盾，原子按她的消息面登记。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造老闵报价之外的价格数字",
+    "不得替她直接拍板定方案"
+   ],
+   "may_decline": false
+  },
+  "E357_T02": {
+   "case_id": "E357_T02",
+   "current_action": "收工日：她擦了外婆的蝴蝶牌缝纫机、翻出一沓老照片（含外婆八十岁生日在西厢花窗下那张），照片收进铁盒，并问ME下周末还来不来搭手。",
+   "acceptable_actions": [
+    "应下周六来+给个具体（几点/带什么工具）",
+    "应+顺着缝纫机/老照片问一句她外婆的旧事（把话头递回给她）",
+    "按自己周末节奏给替代安排（'周六上午半天'式），不硬应全天也不消失式不答"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T02_A01",
+     "subject": "HER",
+     "relation": "老物件动作",
+     "value": "她把外婆的蝴蝶牌缝纫机挪出来擦了",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T02",
+      "message_id": "m0",
+      "quote": "东屋外婆那台蝴蝶牌缝纫机我挪出来擦了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "蝴蝶牌",
+       "缝纫机"
+      ],
+      [
+       "挪出来",
+       "擦了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T02_A02",
+     "subject": "HER",
+     "relation": "老照片发现",
+     "value": "老照片：外婆八十岁生日站在西厢花窗底下拍的那张（她赞叹那排窗好看）",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T02",
+      "message_id": "m0",
+      "quote": "有张是外婆八十岁生日站在西厢花窗底下拍的，那排窗真好看"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "外婆八十岁生日",
+       "西厢花窗"
+      ],
+      [
+       "八十岁生日",
+       "照片"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T02_A03",
+     "subject": "HER",
+     "relation": "物件去处",
+     "value": "照片她先收进铁盒了",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T02",
+      "message_id": "m0",
+      "quote": "照片我先收进铁盒了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "收进铁盒"
+      ],
+      [
+       "照片",
+       "铁盒"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T02_A04",
+     "subject": "HER",
+     "relation": "问句邀约",
+     "value": "她问ME下周末是否还来搭手（问句，是否应约未定）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T02",
+      "message_id": "m0",
+      "quote": "下周末还来搭手不？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "下周末",
+       "搭手"
+      ],
+      [
+       "还来搭手"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "疑问句纪律：'下周末还来搭手不？'是问句——gold 不坐实 ME 已应约（E357_T02_A04 登记的是'她问了'这个事实）；回复应答这个问（应约/给替代节奏都合法，不答=漏接）。照片/花窗/铁盒是外婆线的物件锚：本轮只登记不展开——T05 复刻决策与 T07 样式单都以那张照片为依据回扣。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实'下周末已约死'的既成安排（问句未应）",
+    "不得编造外婆/照片的额外细节"
+   ],
+   "may_decline": false
+  },
+  "E357_T03": {
+   "case_id": "E357_T03",
+   "current_action": "冲突轮：老闵施工队把合同写明'保留修缮'的西厢整排花窗按拆除重建误拆，老闵提出赔两扇新实木窗，她嘴硬认下既成事实（'行吧，拆都拆了'）。",
+   "acceptable_actions": [
+    "接事实+接火气：确认合同口径在她那边（保留修缮白纸黑字），不说'算了也好'",
+    "问一句关键具体（老玻璃/窗棂损坏程度——可用 note 视角谨慎提及，不编造）",
+    "短回压住节奏：先别让'赔新窗'的话落死，把补救主动权留给她"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T03_A01",
+     "subject": "THIRD",
+     "relation": "误拆事件",
+     "value": "11月8日老闵施工队把西厢那排花窗整扇整扇拆了（误拆）",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T03",
+      "message_id": "m0",
+      "quote": "老闵的人把西厢那排花窗拆了，整扇整扇往下撬"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "西厢",
+       "花窗",
+       "拆了"
+      ],
+      [
+       "整扇整扇",
+       "往下撬"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T03_A02",
+     "subject": "SHARED",
+     "relation": "合同口径",
+     "value": "合同写明西厢花窗'保留修缮'，施工方照拆除重建干了（违约口径）",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T03",
+      "message_id": "m1",
+      "quote": "合同里明明写着西厢花窗保留修缮，他们照拆除重建干了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "西厢花窗",
+       "保留修缮"
+      ],
+      [
+       "拆除重建"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T03_A03",
+     "subject": "THIRD",
+     "relation": "补救提议（未接受）",
+     "value": "老闵提出赔两扇新实木花窗（'比老的气派'）——她的'行吧'不等于接受该方案",
+     "valid_time": "2026-11-08",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T03",
+      "message_id": "m1",
+      "quote": "老闵说赔两扇新的，实木的，比老的气派"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "赔两扇",
+       "新的"
+      ],
+      [
+       "实木的",
+       "气派"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T03_A04",
+     "subject": "HER",
+     "relation": "嘴硬认场",
+     "value": "她嘴硬认下既成事实（'行吧，拆都拆了'）",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T03",
+      "message_id": "m1",
+      "quote": "行吧，拆都拆了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "行吧，拆都拆了"
+      ],
+      [
+       "拆都拆了"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "note 证据链（军师侧）：老闵在工群发的拆除视频显示花窗整扇撬下直接平放水泥地、没垫东西、西边那扇老玻璃碎一角——候选可引用此细节评估损坏，但这是军师侧观察，不得说成她或老闵讲过、不得把'碎一角'升级成'全碎了'。冲突结构：事实层无争议（拆了），争议在补救方案（赔新窗 vs 复刻 vs 索赔）——方案留到 T05 报价再拍板。'行吧拆都拆了'是嘴硬不是真算了（lessons：她嘴上说着了多半没着），顺着'算了'滑走=错读她的情绪。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替老闵开脱或坐实'赔两扇新的'已成定局",
+    "不得编造花窗损坏程度超出 note 与她所述的细节",
+    "不得顺着'行吧'坐实她已接受新窗方案"
+   ],
+   "may_decline": false
+  },
+  "E357_T04": {
+   "case_id": "E357_T04",
+   "current_action": "她情绪消化期要求暂停：今晚不聊、明天中午再说窗子的事，并明令'别回长消息'（合法暂停轮）。",
+   "acceptable_actions": [
+    "不回（合法——她要求暂停且明令别回长消息）",
+    "三五字内短回（'好，明天说'），不展开不带话题",
+    "一字级回应（'嗯'），零信息量放行"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T04_A01",
+     "subject": "HER",
+     "relation": "暂停请求",
+     "value": "今晚不聊，窗子的事明天中午再说",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T04",
+      "message_id": "m0",
+      "quote": "今晚不聊了，明天中午再说窗子的事"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "今晚不聊了"
+      ],
+      [
+       "明天中午",
+       "再说窗子"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T04_A02",
+     "subject": "HER",
+     "relation": "信息形态边界",
+     "value": "明确要求别回长消息（回了她今晚也看不进去）",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T04",
+      "message_id": "m0",
+      "quote": "你别回长消息，回了我今晚也看不进去"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别回长消息"
+      ],
+      [
+       "看不进去"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "不回是合法选择的判断依据：她把暂停时点（明天中午）和信息形态（别回长消息）都说死了——本轮的 boundary 判据就在消息形态本身：若回，超过两三行即判失分；回复不得提前把窗子话题接回去（她给了'明天中午再说'的再启点）。这是本篇合法暂停位（may_decline=true）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "今晚不聊了",
+    "你别回长消息"
+   ],
+   "forbidden_factual_claims": [
+    "不得提前把窗子话题接回（她指定明天中午）",
+    "不得坐实'花窗事件已有结论'"
+   ],
+   "may_decline": true
+  },
+  "E357_T05": {
+   "case_id": "E357_T05",
+   "current_action": "老闵报价落地：照原样复刻两扇两千四从尾款扣，或装新窗不要钱（铝合金）；她翻出外婆八十岁生日照片（窗棂清楚），倾向复刻但肉疼，请ME拍板（显式 intent）。",
+   "acceptable_actions": [
+    "推荐复刻+理由落在照片窗棂与合同口径（本该保留修缮的东西照原样回来），末尾把决定权还她",
+    "摆两案实账（两千四从尾款扣 vs 铝合金零花费但样式换了）+给倾向",
+    "反问式帮她定（'照片上那排窗棂你天天看得见，两千四肉疼不疼？'）——仍落明确推荐"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T05_A01",
+     "subject": "THIRD",
+     "relation": "复刻报价",
+     "value": "老闵报价：照原样复刻两扇两千四、从尾款里扣",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T05",
+      "message_id": "m0",
+      "quote": "老闵昨晚报了价：照原样复刻两扇两千四，从尾款里扣"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "复刻",
+       "两千四"
+      ],
+      [
+       "尾款里扣"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T05_A02",
+     "subject": "THIRD",
+     "relation": "新窗选项",
+     "value": "另一选项：装新窗他不要钱，材质铝合金（老闵说法，条件未谈）",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T05",
+      "message_id": "m0",
+      "quote": "装新窗他不要钱，铝合金的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "新窗",
+       "不要钱"
+      ],
+      [
+       "铝合金的"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T05_A03",
+     "subject": "HER",
+     "relation": "倾向（未定案）",
+     "value": "她倾向复刻、嫌两千四肉疼（未定案，正因如此才求拍板）",
+     "valid_time": "2026-11-09",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T05",
+      "message_id": "m0",
+      "quote": "我倾向复刻，就是两千四肉疼"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "倾向复刻"
+      ],
+      [
+       "两千四",
+       "肉疼"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T05_A04",
+     "subject": "HER",
+     "relation": "复刻的价值锚（记忆回取）",
+     "value": "外婆八十岁生日站在西厢花窗底下拍的老照片（T02 发现、已收铁盒）——复刻决策的情感与样式依据",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T02",
+      "message_id": "m0",
+      "quote": "有张是外婆八十岁生日站在西厢花窗底下拍的，那排窗真好看"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "外婆八十岁生日",
+       "西厢花窗"
+      ],
+      [
+       "老照片",
+       "花窗"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T05_A05",
+     "subject": "SHARED",
+     "relation": "合同口径（记忆回取）",
+     "value": "合同本写明西厢花窗保留修缮（T03）——'复刻=回到合同应然'的依据",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T03",
+      "message_id": "m1",
+      "quote": "合同里明明写着西厢花窗保留修缮，他们照拆除重建干了"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "西厢花窗",
+       "保留修缮"
+      ],
+      [
+       "合同",
+       "保留修缮"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "她说'帮我拍板'但 lessons 明确'老物件的事让她自己拿主意，他只搭手不代决'——正确形态=给明确推荐+可核理由（照片窗棂/合同口径/两千四从尾款扣的实际成本）+把'最后你定'还她；直接替她拍死=越界代决（0档）；'都行你定'=漏接 intent（0档）。'装新窗不要钱'是老闵的单方说法（unknown 已登记是否附带条件）——不得坐实'白赚'。required 原子（照片+合同）是推荐的事实底，漏用则推荐悬空。",
+   "unknowns": [
+    {
+     "topic": "老闵'装新窗不要钱'是否附带条件",
+     "note": "老闵单方报价口径，她未接受、条款未谈；候选不得坐实'反正是免费的/白赚'",
+     "markers": [
+      [
+       "白赚"
+      ],
+      [
+       "免费",
+       "没条件"
+      ],
+      [
+       "白送",
+       "干嘛不要"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "白赚"
+      ],
+      [
+       "免费",
+       "没条件"
+      ],
+      [
+       "白送",
+       "干嘛不要"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她拍板并宣布已定复刻/新窗",
+    "不得坐实铝合金新窗方案无任何附加条件",
+    "不得编造复刻工期或老闵承诺细节"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "拍板：花窗照原样复刻还是装新窗",
+    "behavior_direction": "free",
+    "keywords_any": [
+     [
+      "复刻"
+     ],
+     [
+      "新窗"
+     ]
+    ],
+    "must_not_keywords": [
+     "都行",
+     "你自己决定"
+    ]
+   }
+  },
+  "E357_T06": {
+   "case_id": "E357_T06",
+   "current_action": "她妈妈又来电劝卖老宅凑首付，她应付着心里烦；明确立场'首付我不要——伸手要了这房子往后就是她的了'，自嘲'装修修到要跟亲妈谈判'。",
+   "acceptable_actions": [
+    "接立场：认她'首付不要'的道理（这房子是她跟外婆的事），不站她妈那边劝和",
+    "接自嘲：顺着'跟亲妈谈判'的荒诞感回一句，让她笑出来",
+    "接烦：不急着给办法，先让她把话说完（问她打算怎么应付——把主动权留她）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T06_A01",
+     "subject": "THIRD",
+     "relation": "家庭施压",
+     "value": "她妈11月9日晚又来电劝卖老宅给女儿凑首付（'又'——多轮施压）",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T06",
+      "message_id": "m0",
+      "quote": "我妈今晚又来电话，说老房子修得再好也是旧的，不如卖了给我凑首付"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我妈",
+       "电话"
+      ],
+      [
+       "卖了",
+       "凑首付"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T06_A02",
+     "subject": "HER",
+     "relation": "明确立场",
+     "value": "她明确拒收首付，理由：伸手要了，这房子往后就是她妈的了",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T06",
+      "message_id": "m0",
+      "quote": "首付我不要——我伸手要了，这房子往后就是她的了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "首付我不要"
+      ],
+      [
+       "伸手要了",
+       "往后就是她的"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T06_A03",
+     "subject": "HER",
+     "relation": "自嘲示弱",
+     "value": "自嘲：全小区大概就她一个，装修修到要跟亲妈谈判",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T06",
+      "message_id": "m0",
+      "quote": "全小区大概就我一个人，装修修到要跟亲妈谈判"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "装修修到",
+       "跟亲妈谈判"
+      ],
+      [
+       "就我一个人"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "立场轮：她已把决定和理由说死（首付不要+房子归属逻辑）——正确方向=接住她的立场与夹生处境，不站她妈那边劝和（'妈妈也是为你好'=1档踩她），不替她出跟妈妈斗的办法（越界代决）；自嘲接法=顺她的幽默但不轻佻。'又来电话'说明是长期矛盾——不得坐实母女关系破裂程度的定性断言。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她决定卖房/要首付的任一方向",
+    "不得编造她妈妈话术之外的新对话细节",
+    "不得断言她母女关系好坏的定性结论"
+   ],
+   "may_decline": false
+  },
+  "E357_T07": {
+   "case_id": "E357_T07",
+   "current_action": "老闵认了复刻（旧料留着、錾花师傅是他表叔）；样式单要她出——她对着照片数出'一扇十六格，横四竖四，四角带回纹'，请ME核一眼防四不像（显式 intent）。",
+   "acceptable_actions": [
+    "直接核：横四竖四=十六格对得上+四角回纹记下，一句落到'照这个做不会四不像'",
+    "核完+把依据锚在照片（'就按你翻的那张'），提醒以照片为准跟师傅交接",
+    "核数+轻问她要不要把照片直接发给老闵（把执行方案递给她选）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T07_A01",
+     "subject": "THIRD",
+     "relation": "复刻落地",
+     "value": "老闵认了复刻方案；旧料答应留着不扔；錾花师傅是老闵表叔",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T07",
+      "message_id": "m0",
+      "quote": "老闵认了复刻，旧料答应留着不扔，錾花师傅他找他表叔"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "认了复刻"
+      ],
+      [
+       "旧料",
+       "留着不扔"
+      ],
+      [
+       "錾花师傅",
+       "表叔"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T07_A02",
+     "subject": "HER",
+     "relation": "样式单",
+     "value": "样式单：一扇十六格（横四竖四，4×4=16 自洽）、四角带回纹，她对照片数的",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T07",
+      "message_id": "m0",
+      "quote": "我对着照片数的，一扇十六格，横四竖四，四角带回纹"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "十六格",
+       "横四竖四"
+      ],
+      [
+       "四角",
+       "回纹"
+      ],
+      [
+       "对着照片数的"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T07_A03",
+     "subject": "HER",
+     "relation": "核数委托",
+     "value": "委托ME核样式单，防老闵做出四不像",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T07",
+      "message_id": "m0",
+      "quote": "你帮我核一眼，别让老闵做出个四不像"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "帮我核一眼"
+      ],
+      [
+       "做出个四不像"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T07_A04",
+     "subject": "HER",
+     "relation": "样式依据（记忆回取）",
+     "value": "她翻出的外婆八十岁生日照片窗棂看得清清楚楚（T05）——样式单的核数依据",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T05",
+      "message_id": "m0",
+      "quote": "照片我翻出来了，外婆八十岁生日那张，窗棂看得清清楚楚"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "窗棂",
+       "清清楚楚"
+      ],
+      [
+       "外婆八十岁生日",
+       "那张"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "数学自洽：4×4=16，她'对着照片数的'——正确回复确认 16=横四竖四 自洽并落在照片依据上（呼应 T05'窗棂清清楚楚'）；不得另编格数或无据怀疑她数错（她的算术是对的——与 E325 教训同款：方向要对，这里该确认）；'四角带回纹'是样式约束，复述不得漏、不得擅自添纹样。委托核数的正确产出=一句明确的'对得上/有出入'，不是'挺好的'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实与'十六格横四竖四'矛盾的格数",
+    "不得编造回纹样式之外的额外纹样要求",
+    "不得代替她向老闵拍板（只核数不出手）"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "帮我核样式单：一扇十六格横四竖四",
+    "behavior_direction": "free",
+    "keywords_any": [
+     [
+      "十六格"
+     ],
+     [
+      "横四竖四"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E357_T08": {
+   "case_id": "E357_T08",
+   "current_action": "工地等排期（复刻窗下下周出货）；外婆在舅舅家睡不惯、天天问翻新进度，她想带外婆来看又怕工地灰大，一时拿不定，并明令'别给我列一二三'。",
+   "acceptable_actions": [
+    "一个抓手式：给单一可行解（如等出货那周灰小了再接她来看），附一句接住外婆的念叨",
+    "先接两难的分量（她在电话那头叹气她听着难受），再轻给一个抓手",
+    "把决定拆给她自己（'哪天灰小哪天接'），不列条不代决"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T08_A01",
+     "subject": "THIRD",
+     "relation": "工期",
+     "value": "复刻的窗子等师傅排期，下下周（11月23日当周）出货",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T08",
+      "message_id": "m0",
+      "quote": "复刻的窗子等师傅排期，下下周出货"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "复刻",
+       "窗子",
+       "排期"
+      ],
+      [
+       "下下周",
+       "出货"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T08_A02",
+     "subject": "THIRD",
+     "relation": "外婆近况",
+     "value": "外婆11月12日又来电：在舅舅家睡不惯，天天问杨家巷翻成什么样了",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T08",
+      "message_id": "m0",
+      "quote": "我外婆，今天又来电话，说在舅舅家睡不惯，天天问杨家巷翻成什么样了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "外婆",
+       "电话"
+      ],
+      [
+       "睡不惯",
+       "舅舅家"
+      ],
+      [
+       "天天问",
+       "杨家巷"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T08_A03",
+     "subject": "HER",
+     "relation": "两难",
+     "value": "带外婆来看怕工地灰大；不带，她在电话那头叹气",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T08",
+      "message_id": "m0",
+      "quote": "想带她来看，工地灰大；不带，她在电话那头叹气"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "带她来看",
+       "灰大"
+      ],
+      [
+       "不带",
+       "叹气"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T08_A04",
+     "subject": "HER",
+     "relation": "形态边界",
+     "value": "明确要求：别给ME列一二三（今天脑子转不动）",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T08",
+      "message_id": "m0",
+      "quote": "你别给我列一二三，今天脑子转不动"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别给我列",
+       "一二三"
+      ],
+      [
+       "脑子转不动"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T08_A05",
+     "subject": "THIRD",
+     "relation": "外婆居住背景（KB 记忆回取）",
+     "value": "外婆十月底已搬去舅舅家——'在舅舅家睡不惯'的背景事实",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "E357_T08",
+      "message_id": "her",
+      "quote": "外婆十月底搬去舅舅家",
+      "key": "her"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "外婆",
+       "舅舅家"
+      ],
+      [
+       "外婆",
+       "搬去",
+       "舅舅家"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'别列一二三'是形态边界（protected）：她平时爱列条（style），此刻明说列条=踩雷——正确回复给'一个抓手'而非一张清单。情绪与事务混合轮：先接外婆叹气的分量再落抓手。'下下周出货'=11月23日起当周（周粒度，推算依据入 §2/本节）。required 原子（KB 外婆十月底搬去舅舅家，月粒度 2026-10）是读懂'睡不惯'的背景。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别给我列一二三"
+   ],
+   "forbidden_factual_claims": [
+    "不得以一二三/清单形态回复（她明令）",
+    "不得坐实'外婆何时被带来'的既成决定",
+    "不得编造外婆身体/舅舅家的新细节"
+   ],
+   "may_decline": false
+  },
+  "E357_T09": {
+   "case_id": "E357_T09",
+   "current_action": "拆东屋墙皮露出外婆的老门框：一排铅笔身高道（1994–2003 一年一道，最高一米五七）；她说'没什么，就是站着看了一会儿，没动'（本篇万能句诱惑位）。",
+   "acceptable_actions": [
+    "接画面+接物证具体处（那排铅笔道/一米五七/站着没动这个动作本身），不说破情绪，留她继续讲",
+    "用 note 的量做具体回应（十道刻痕/最高一道），语气轻，像顺口一提",
+    "简短同在（不落'我懂你'句式），把下一段话的空间留给她"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T09_A01",
+     "subject": "THIRD",
+     "relation": "门框现身",
+     "value": "11月14日拆东屋墙皮，外婆那扇老门框整个露出来",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T09",
+      "message_id": "m0",
+      "quote": "老闵今天拆东屋墙皮，外婆那扇老门框整个露出来了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "东屋墙皮"
+      ],
+      [
+       "老门框",
+       "露出来"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T09_A02",
+     "subject": "THIRD",
+     "relation": "刻痕细节",
+     "value": "门框上一排铅笔身高道：1994–2003年一年一道，最高一米五七（〇三年）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T09",
+      "message_id": "m0",
+      "quote": "上头一排铅笔道，九四年到〇三年一年一道，最高那道一米五七，〇三年的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "铅笔道",
+       "一年一道"
+      ],
+      [
+       "一米五七"
+      ],
+      [
+       "九四年",
+       "〇三年"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T09_A03",
+     "subject": "HER",
+     "relation": "嘴硬+停滞",
+     "value": "'没什么，几道铅笔印而已，我就是站着看了一会儿，没动'（万能句诱惑位的嘴硬位）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T09",
+      "message_id": "m0",
+      "quote": "没什么，几道铅笔印而已，我就是站着看了一会儿，没动"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "没什么",
+       "铅笔印"
+      ],
+      [
+       "站着看了一会儿",
+       "没动"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "本篇万能句诱惑位（rubric T05 行为分档）：0档=万能安慰（'我理解''别难过'）或强行点破'你是想外婆了'式替她定性情绪；1档=礼貌接但不具体（'嗯，老物件就是这样'）；2档=接具体物证（铅笔道年份/一米五七/'站着看了一会儿，没动'的画面本身）+不戳穿'没什么'+把叙事权还她（等她自己往下说）。note 证据链（军师侧）：门框共十道刻痕、〇三年那道旁小字被墙皮糊住、擦开是'星野'——外婆当年拿门框给她和表哥当身高尺——候选可用（'十道里最高那道是你的'式具体化），但不得说成她讲的、不得添 note 外细节。'就是站着看了一会儿，没动'是给ME的画面钩：接画面不接情绪标签。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她定性情绪（'你是想外婆了/你难过'）",
+    "不得编造门框/外婆的新细节",
+    "不得拿身高刻痕开玩笑"
+   ],
+   "may_decline": false
+  },
+  "E357_T10": {
+   "case_id": "E357_T10",
+   "current_action": "她自定门框保留方案（原样留着、老闵刷清漆、刻痕处透明亚克力罩，下下周才能弄），约ME明天（周日）来扶门框、她清墙皮，并借凿子（显式 intent）。",
+   "acceptable_actions": [
+    "接下：明天来+扶门框+带凿子",
+    "接下+专业叮嘱一句（清墙皮别伤着刻痕/凿子用法），不越界改方案",
+    "接下+给个小安排（几点到/带哪些工具——只涉及自己，不替她排工程）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T10_A01",
+     "subject": "HER",
+     "relation": "保留方案",
+     "value": "她决定门框不换：原样留着，老闵回来刷清漆，刻痕那块拿透明亚克力罩上",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T10",
+      "message_id": "m0",
+      "quote": "门框我决定不换了：原样留着，老闵回来刷清漆，刻痕那块拿透明亚克力罩上"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "决定不换"
+      ],
+      [
+       "原样留着"
+      ],
+      [
+       "回来刷清漆"
+      ],
+      [
+       "亚克力罩上"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T10_A02",
+     "subject": "THIRD",
+     "relation": "工期约束",
+     "value": "老闵下下周（11月23日当周）才能弄，墙皮得先清出来",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T10",
+      "message_id": "m0",
+      "quote": "他下下周才能弄，墙皮得先清出来"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "下下周",
+       "才能弄"
+      ],
+      [
+       "墙皮",
+       "先清出来"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T10_A03",
+     "subject": "SHARED",
+     "relation": "周日互助约",
+     "value": "周日（11月15日）：ME来扶着门框，她清墙皮",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T10",
+      "message_id": "m0",
+      "quote": "来帮我扶着门框，我清墙皮"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "扶着门框"
+      ],
+      [
+       "我清墙皮"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T10_A04",
+     "subject": "SHARED",
+     "relation": "借工具",
+     "value": "借凿子（她自嘲：切菜刀旁边那把不算数）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T10",
+      "message_id": "m0",
+      "quote": "凿子借我——我的凿子是切菜刀旁边那把，不算数"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "凿子",
+       "借我"
+      ],
+      [
+       "切菜刀",
+       "不算数"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T10_A05",
+     "subject": "THIRD",
+     "relation": "保护对象细节（记忆回取）",
+     "value": "门框上的铅笔身高道（1994–2003 一年一道，最高一米五七）——'亚克力罩刻痕'的保护对象",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T09",
+      "message_id": "m0",
+      "quote": "上头一排铅笔道，九四年到〇三年一年一道，最高那道一米五七，〇三年的"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "铅笔道",
+       "一年一道"
+      ],
+      [
+       "一米五七"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "主动权在她（她自己定了保留方案，正合 lessons'老物件的事她自己拿主意'）——回复方向=接执行，不复审方案（说'要不要还是换了吧'=越界）；借凿子是专业互助的小回环（ME 业余木工），答应+叮嘱一句安全/用法是自然形态；'下下周'=11月23日当周。required 原子（T09 刻痕）是'亚克力罩刻痕'的所指。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得复审或推翻她已定的门框保留方案",
+    "不得编造老闵排期细节（以'下下周'为准）"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "周日来帮忙扶门框清墙皮，凿子借她",
+    "behavior_direction": "accept",
+    "keywords_any": [
+     [
+      "明天"
+     ],
+     [
+      "扶",
+      "门框"
+     ],
+     [
+      "凿子"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E357_T11": {
+   "case_id": "E357_T11",
+   "current_action": "周日完工：东屋墙皮清完（她手抖了一下午）、门框保住清漆等老闵；她认下一米五七是自己的刻度并自嘲'身高十二岁就用完了'，回扣西厢八千新地板值。",
+   "acceptable_actions": [
+    "接笑点：顺着'十二岁就用完'回一句损/逗（关系许可内的轻调侃）",
+    "接'一米五七是我的'的具体（把外婆量身高线的画面还给她），不升华",
+    "接八千值+认她的决定做得对（功劳归她），加一句地板/新居感受的具体"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T11_A01",
+     "subject": "HER",
+     "relation": "完工汇报",
+     "value": "11月15日东屋墙皮清完，她手抖了一下午、打字还在抖（劳动后生理抖）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T11",
+      "message_id": "m0",
+      "quote": "东屋墙皮清完了，手抖了一下午，现在打字还在抖"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "墙皮清完"
+      ],
+      [
+       "手抖",
+       "一下午"
+      ],
+      [
+       "打字还在抖"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T11_A02",
+     "subject": "THIRD",
+     "relation": "门框状态",
+     "value": "门框保住了，清漆等老闵来做",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T11",
+      "message_id": "m0",
+      "quote": "门框保住了，清漆等老闵"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "门框保住"
+      ],
+      [
+       "清漆",
+       "老闵"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T11_A03",
+     "subject": "HER",
+     "relation": "刻痕归属",
+     "value": "最高那道一米五七是她十二岁（2003年）的身高刻度，现在还是一米五七",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T11",
+      "message_id": "m0",
+      "quote": "最高那道一米五七是我的，〇三年，那年我十二，现在还是一米五七"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一米五七",
+       "是我的"
+      ],
+      [
+       "〇三年",
+       "十二"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T11_A04",
+     "subject": "HER",
+     "relation": "T01 抉择回扣",
+     "value": "西厢按全换做完：她认定那八千的新地板值（踩上去一点声都没有）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T11",
+      "message_id": "m0",
+      "quote": "西厢那八千的新地板值，踩上去一点声都没有"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "八千",
+       "新地板"
+      ],
+      [
+       "踩上去",
+       "一点声都没有"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T11_A05",
+     "subject": "THIRD",
+     "relation": "抉择原始口径（记忆回取）",
+     "value": "T01 的两条路（全换加八千 vs 局部补省一半）——'八千地板值'回扣的原始抉择",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T01",
+      "message_id": "m0",
+      "quote": "老闵给两条路：全换，加八千；局部补，省一半，接缝丑、脚感差"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "全换",
+       "加八千"
+      ],
+      [
+       "局部补",
+       "省一半"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "情绪转亮轮：她主动把一米五七的归属说了（'是我的'）——接她的自嘲笑点是正确通道，不许在此转严肃升华（'其实你长大了很多'=错位）；八千地板是她对 T01 抉择的自主回扣——不抢功（'当初听我的吧'=错位）；'手抖'是劳动后的生理抖，不得坐实成情绪发抖或疾病。required 原子（T01 两条路）是'八千值'的对账依据。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把'手抖'坐实为情绪失控或身体疾病",
+    "不得抢功（'当初是我建议全换'式冒功）",
+    "不得编造刻痕/门框新细节"
+   ],
+   "may_decline": false
+  },
+  "E357_T12": {
+   "case_id": "E357_T12",
+   "current_action": "收尾留钩：老闵下下周三回来装花窗刷清漆（那天能来梯子活归ME、中午管饭）；她备好'妈妈再劝卖房就发门框照片'的预案；'上班要迟到了，回头说'（合法暂停/轻收尾轮）。",
+   "acceptable_actions": [
+    "不回（合法——她赶时间已收口）",
+    "短应钩：那天来/梯子活接下+一句'管饭就行'式轻逗",
+    "短应+预祝装窗顺利（不展开）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E357_T12_A01",
+     "subject": "THIRD",
+     "relation": "收尾工期",
+     "value": "老闵下下周三（推算2026-12-02）回来：装花窗、刷门框清漆",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T12",
+      "message_id": "m0",
+      "quote": "老闵下下周三回来，装花窗、刷门框清漆"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "下下周三",
+       "回来"
+      ],
+      [
+       "装花窗",
+       "刷门框清漆"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T12_A02",
+     "subject": "SHARED",
+     "relation": "条件钩（未定）",
+     "value": "那天ME能来则梯子上的活儿归他、中午她管饭（条件邀约，未定）",
+     "valid_time": "2026-12-02",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T12",
+      "message_id": "m0",
+      "quote": "你那天要是能来，梯子上的活儿归你，中午我管饭"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "梯子上的活儿",
+       "归你"
+      ],
+      [
+       "中午我管饭"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T12_A03",
+     "subject": "HER",
+     "relation": "预案玩笑（未发生）",
+     "value": "预案：妈妈再打电话劝卖房，就把门框照片发过去，看完还劝算她赢",
+     "valid_time": "2026-11-16",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T12",
+      "message_id": "m0",
+      "quote": "我妈要是再打电话劝卖房，我就把门框照片发过去，看完还劝算她赢"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "门框照片",
+       "发过去"
+      ],
+      [
+       "还劝",
+       "算她赢"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E357_T12_A04",
+     "subject": "HER",
+     "relation": "收口信号",
+     "value": "她赶上班：先这样、回头说（轻收口信号）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E357_T12",
+      "message_id": "m0",
+      "quote": "先这样，我上班要迟到了，回头说"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "要迟到了"
+      ],
+      [
+       "回头说",
+       "先这样"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true 判断依据：她自报'上班要迟到、回头说'——晨间留钩收口，不回合法；若回，短平快接一个钩（梯子/管饭/照片预案）即可，不得展开新话题拖住她。'我妈再劝就发照片'是她的预案玩笑——接梗可以，不得当真替她执行或坐实妈妈会再打。'下下周三'推算：11月16日（周一）说'下下周三'=12月2日（周三），依据入本审计 §5；'梯子活归你/管饭'是 conditional——候选不得坐实已应约后的既成安排。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实'已约死装窗当天到场'的既成安排（条件句）",
+    "不得坐实'妈妈一定会再打电话'",
+    "不得编造老闵工期之外的新安排"
+   ],
+   "may_decline": true
+  }
+ }
+}

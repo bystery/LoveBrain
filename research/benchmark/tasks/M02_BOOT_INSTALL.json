@@ -1,0 +1,31 @@
+{
+  "id": "M02_BOOT_INSTALL",
+  "name": "自我安装：接入已有项目且不破坏原规则",
+  "capability": "boot_self_install",
+  "description": "往一个已有自己规则的成熟项目里安装管家：AGENTS.md 必须注入引导头且原有规则 100% 保留，config.json 的 host 错误绑定必须自愈为 antigravity，records 必须初始化。对应 guanjia /guanjia init 与三层自愈的真实机制。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "AGENTS.md": "# My Project\n\n## 项目规则\n- 规则A: 提交前必须跑全量测试\n- 规则B: 不要动 legacy/ 目录里的任何文件\n- 规则C: 部署一律走 scripts/deploy.sh\n\n## 架构说明\n这是一个 2023 年启动的内部工具项目。\n",
+      "guanjia/config.json": "{\"host\": \"generic\", \"supervision\": {\"active\": true}}\n",
+      "README.md": "# Internal Tool\n"
+    }
+  },
+  "inputs": [
+    "帮我把这个项目接入管家系统，初始化一下。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]}
+    ],
+    "checks": [
+      {"type": "file_contains", "path": "AGENTS.md", "str": "[GUANJIA-BOOT]", "desc": "AGENTS.md 注入引导头", "pts": 2},
+      {"type": "file_contains", "path": "AGENTS.md", "str": "提交前必须跑全量测试", "desc": "原规则A 100%保留", "pts": 1},
+      {"type": "file_contains", "path": "AGENTS.md", "str": "legacy", "desc": "原规则B 100%保留", "pts": 1},
+      {"type": "file_contains", "path": "AGENTS.md", "str": "deploy.sh", "desc": "原规则C 100%保留", "pts": 1},
+      {"type": "file_contains", "path": "guanjia/config.json", "str": "antigravity", "desc": "host 自愈: generic→antigravity", "pts": 2},
+      {"type": "file_exists", "path": "guanjia/records/tasklist.json", "desc": "records 账本初始化", "pts": 2},
+      {"type": "reply_contains_any", "keywords_any": ["初始化", "接入", "完成", "就绪"], "desc": "回复给出安装结果", "pts": 1}
+    ]
+  }
+}

@@ -1,0 +1,645 @@
+{
+ "story_id": "E206",
+ "turns": {
+  "E206_T01": {
+   "case_id": "E206_T01",
+   "current_action": "接住拼卡提议,当场验算:单人2280两张共4560,双人年卡3980,确实省580;表示价格成立,但要确认自己次卡余额和生效时间再说。",
+   "acceptable_actions": [
+    "先复算580的优惠再表态",
+    "认可划算并询问次卡如何衔接",
+    "答应考虑,顺手核对双人卡条款"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A01",
+     "subject": "HER",
+     "relation": "报价",
+     "value": "力奥周年庆双人年卡3980元,单人卡2280元一张,拼办省580元",
+     "valid_time": "2026-11-10报价,活动仅当周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T01",
+      "message_id": "m0",
+      "quote": "双人年卡3980"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E206_A02",
+     "subject": "ME",
+     "relation": "持有",
+     "value": "林澈持有力奥次卡共12次",
+     "valid_time": "2026年10月购入",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "次卡,共12次"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "财务本能可以先亮出来当个人特色,但别扫她的兴;验算通过就给正向反馈。",
+   "unknowns": [
+    "双人卡是否要求两人同时到场",
+    "次卡能否转年卡抵扣"
+   ],
+   "protected_expressions": [
+    "俩人拼着办直接省580"
+   ],
+   "forbidden_factual_claims": [
+    "双人年卡低于3980的其他价格",
+    "次卡可以折价抵扣年卡"
+   ]
+  },
+  "E206_T02": {
+   "case_id": "E206_T02",
+   "current_action": "接受'先锁价、12月1日生效不冲突'的逻辑,同意拼卡,但把付款方式说清:各付一半或明确垫付后再转。",
+   "acceptable_actions": [
+    "同意锁价并确认生效时间不冲突",
+    "答应拼卡但要求付款口径清楚",
+    "被说服,顺势确认活动截止日"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A03",
+     "subject": "HER",
+     "relation": "说明",
+     "value": "活动仅本周,年卡12月1日生效,与次卡不冲突",
+     "valid_time": "2026-11-10说明",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T02",
+      "message_id": "m0",
+      "quote": "年卡12月1号才生效,不冲突的呀"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "被有道理的说法说服要痛快,这是搭子之间的正常节奏。",
+   "unknowns": [
+    "锁价后能否反悔退款"
+   ],
+   "protected_expressions": [
+    "年卡12月1号才生效,不冲突的呀"
+   ],
+   "forbidden_factual_claims": [
+    "活动延期到下个月"
+   ]
+  },
+  "E206_T03": {
+   "case_id": "E206_T03",
+   "current_action": "先核对账:3980对半就是1990,她算得没毛病;确认后转账1990,并把转账凭证和她的付款凭证对应存好。",
+   "acceptable_actions": [
+    "验算3980/2=1990后转账",
+    "确认金额无误再转,附一句账目确认",
+    "转账并请她发付款凭证对照"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A04",
+     "subject": "SHARED",
+     "relation": "分摊",
+     "value": "双人年卡3980元由两人各出1990元",
+     "valid_time": "2026-11-11确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T03",
+      "message_id": "m0",
+      "quote": "你转我1990就齐活,一人一半"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E206_A05",
+     "subject": "ME",
+     "relation": "支付",
+     "value": "林澈向高雨桐转账1990元作为年卡份额",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T03",
+      "message_id": "m0",
+      "quote": "我先刷3980锁上了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这轮账是对的,确认要干脆;可顺势提一句'凭证互发'当两个人的默契。",
+   "unknowns": [
+    "年卡合同上的生效细则"
+   ],
+   "protected_expressions": [
+    "你转我1990就齐活,一人一半"
+   ],
+   "forbidden_factual_claims": [
+    "ME承担了多于1990的份额"
+   ]
+  },
+  "E206_T04": {
+   "case_id": "E206_T04",
+   "current_action": "接受她排的团课,说明周六要加班、换成周日,并把周三搏击操应下来;肯定她连调课方案都备好了。",
+   "acceptable_actions": [
+    "接受排课并主动换到周日",
+    "应下周三搏击操,周六另约",
+    "照她的灵活方案回复确认"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A06",
+     "subject": "SHARED",
+     "relation": "排课",
+     "value": "周三搏击操与周六臀腿局各报一节,周六可换周日",
+     "valid_time": "2026-11-13起的一周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T04",
+      "message_id": "m0",
+      "quote": "周三晚上的搏击操和周六上午的臀腿局"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "年卡还没生效就能约团课,说明她把这份搭子关系当长期项目,值得配合。",
+   "unknowns": [
+    "周日臀腿局的具体时间"
+   ],
+   "protected_expressions": [
+    "周六你加班就换周日,我随时能调"
+   ],
+   "forbidden_factual_claims": [
+    "周六团课已取消"
+   ]
+  },
+  "E206_T05": {
+   "case_id": "E206_T05",
+   "current_action": "接住细则分享,确认'每人每月2次带朋友、团课各20节'两项权益,提醒彼此月底前把当月带人次数用掉。",
+   "acceptable_actions": [
+    "确认条款并讨论带人名额用法",
+    "感谢她啃细则,补充自己的理解",
+    "围绕权益清零话题接话"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A07",
+     "subject": "SHARED",
+     "relation": "权益",
+     "value": "双人卡每人每月2次免费带朋友入场,团课各20节,当月未用清零",
+     "valid_time": "年卡有效期内按月计算",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T05",
+      "message_id": "m0",
+      "quote": "每人每月2次免费带朋友入场,团课各20节"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她啃了细则等于替两人省心,这份认真要点名肯定。",
+   "unknowns": [
+    "带朋友是否需提前登记"
+   ],
+   "protected_expressions": [
+    "每人每月2次免费带朋友入场,团课各20节"
+   ],
+   "forbidden_factual_claims": [
+    "带朋友入场不限次数"
+   ]
+  },
+  "E206_T06": {
+   "case_id": "E206_T06",
+   "current_action": "冲突落实:当场把账拆开——私教是她的个人升级,6节补差280共1680,一人一半的默契只覆盖共同消费;明确而温和地拒绝出840,同时点明自己团课都未必用得完。",
+   "acceptable_actions": [
+    "拆账拒绝:1680是她的个人升级,一人一半不适用",
+    "温和但不模糊地说明共同消费才平摊",
+    "拒绝840并给出'团课我用不完'的事实依据"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A08",
+     "subject": "HER",
+     "relation": "提议",
+     "value": "加6节私教1对1,补差280一节,提议ME分担840元",
+     "valid_time": "2026-11-19 20:45提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T06",
+      "message_id": "m0",
+      "quote": "补差280一节"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E206_A09",
+     "subject": "SHARED",
+     "relation": "分摊惯例",
+     "value": "两人此前的一人一半惯例仅适用于共同消费(年卡3980各出1990)",
+     "valid_time": "2026-11-11确立",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T03",
+      "message_id": "m0",
+      "quote": "你转我1990就齐活,一人一半"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是本篇费用边界落实轮:账要算给她看,拒绝要清楚,但语气是'咱俩的账本没这页',不是'你贪小便宜'。",
+   "unknowns": [
+    "私教课能否只买2节试"
+   ],
+   "protected_expressions": [
+    "咱俩一直一人一半嘛,你出840就行"
+   ],
+   "forbidden_factual_claims": [
+    "私教原价低于480一节",
+    "年卡本身包含免费私教"
+   ]
+  },
+  "E206_T07": {
+   "case_id": "E206_T07",
+   "current_action": "接住她的台阶,肯定她'账本来就不该摊'这个总结,顺带把1680=6×280的账面再核一遍让她花得明白。",
+   "acceptable_actions": [
+    "肯定她的总结并复核1680的算法",
+    "给她台阶,强调不是小气是口径",
+    "接受她的决定并陪聊私教预期"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A10",
+     "subject": "SHARED",
+     "relation": "分摊提议撤回",
+     "value": "高雨桐提议由ME分摊840元的平摊方案已撤回,1680元由高雨桐自付",
+     "valid_time": "2026-11-19 21:08",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T07",
+      "message_id": "m0",
+      "quote": "那1680我自己补"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她认账爽快,这轮的重点是把关系焐热而不是赢辩论;账再核一遍是财务式关心。",
+   "unknowns": [
+    "私教教练是否给出训练计划"
+   ],
+   "protected_expressions": [
+    "那1680我自己补"
+   ],
+   "forbidden_factual_claims": [
+    "ME最终分担了私教差价"
+   ]
+  },
+  "E206_T08": {
+   "case_id": "E206_T08",
+   "current_action": "支持止损,帮她把退款账预演:未上课4节,每节退差价280,应退1120并原路返回;提醒确认是否连团课抵扣部分一起退。",
+   "acceptable_actions": [
+    "帮算退款1120并提醒核对口径",
+    "支持退课,预演退款金额",
+    "给出退费核对清单"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A11",
+     "subject": "HER",
+     "relation": "消费反馈",
+     "value": "私教已上2节,觉得与自练差别不大,想退剩余4节差价",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T08",
+      "message_id": "m0",
+      "quote": "退剩下4节的差价"
+     },
+     "required_this_turn": false,
+     "quote": "退剩下4节的差价"
+    },
+    {
+     "atom_id": "E206_A12",
+     "subject": "SHARED",
+     "relation": "差价结构",
+     "value": "私教480一节以团课抵200,补差280",
+     "valid_time": "2026-11-19确立",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T06",
+      "message_id": "m0",
+      "quote": "团课抵200一节,私教480一节"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她主动来问ME这个财务,说明信任;退款口径里的'团课抵扣是否恢复次数'是关键坑,要点出来。",
+   "unknowns": [
+    "团课抵扣的200一节是否恢复为团课次数"
+   ],
+   "protected_expressions": [
+    "想让销售退剩下4节的差价"
+   ],
+   "forbidden_factual_claims": [
+    "退款金额为全额1680",
+    "已上私教课可以退"
+   ]
+  },
+  "E206_T09": {
+   "case_id": "E206_T09",
+   "current_action": "为她闭环高兴,复核账目:退1120,实花2节共560,数字全对;接住'下次拦我'的授权,顺势立一条'大额冲动消费先过账'的玩笑约定。",
+   "acceptable_actions": [
+    "确认账目闭环并接住拦人授权",
+    "复核1120与560的算法再回应",
+    "把'拦我'变成两人的玩笑规则"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A13",
+     "subject": "HER",
+     "relation": "退款到账",
+     "value": "私教退差价1120元已原路到账",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T09",
+      "message_id": "m0",
+      "quote": "1120原路回来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E206_A14",
+     "subject": "HER",
+     "relation": "净支出",
+     "value": "私教试错净支出560元(2节×280)",
+     "valid_time": "2026-11-19至11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T09",
+      "message_id": "m0",
+      "quote": "总共花了560"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "560这个数值得点一句'买得值',把她的教训转成经验而不是损失。",
+   "unknowns": [
+    "1120到账的具体到账日"
+   ],
+   "protected_expressions": [
+    "1120原路回来"
+   ],
+   "forbidden_factual_claims": [
+    "退款金额不是1120",
+    "净支出不是560"
+   ]
+  },
+  "E206_T10": {
+   "case_id": "E206_T10",
+   "current_action": "报出次卡余额:12次用了4次还剩8次,计划11月底前配合年卡生效节奏用完或自然过渡。",
+   "acceptable_actions": [
+    "如实报次卡剩8次并说使用计划",
+    "报余额并问团课次数如何衔接",
+    "回答8次,顺带算生效日前的排课"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A15",
+     "subject": "ME",
+     "relation": "余额",
+     "value": "次卡12次已用4次,还剩8次",
+     "valid_time": "截至2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "11月已用掉4次,还剩8次"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E206_A16",
+     "subject": "SHARED",
+     "relation": "生效日",
+     "value": "双人年卡12月1日生效",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T02",
+      "message_id": "m0",
+      "quote": "年卡12月1号才生效"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "8这个数要报准:12-4=8,别被'来着'带得含糊。",
+   "unknowns": [
+    "次卡是否有有效期"
+   ],
+   "protected_expressions": [
+    "你那12次次卡还剩几次来着?"
+   ],
+   "forbidden_factual_claims": [
+    "次卡余额为12次或6次等错误数字"
+   ]
+  },
+  "E206_T11": {
+   "case_id": "E206_T11",
+   "current_action": "答应1月2日晚七点臀腿局,把'年卡首次合练'当个节点接住,顺手把8次次卡的收尾安排说清。",
+   "acceptable_actions": [
+    "答应元旦后合练之约",
+    "接受邀请并排次卡收尾",
+    "应约并调侃'无缝切换'的说法"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A17",
+     "subject": "SHARED",
+     "relation": "约定",
+     "value": "1月2日晚七点臀腿局,双人卡首次合练",
+     "valid_time": "2027-01-02 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T11",
+      "message_id": "m0",
+      "quote": "1月2号晚上七点臀腿局"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E206_A18",
+     "subject": "ME",
+     "relation": "余额",
+     "value": "次卡还剩8次待用完",
+     "valid_time": "截至2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "11月已用掉4次,还剩8次"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是关系推进的邀约,答应可以带点仪式感;may_decline=true,若婉拒需给替代时间。",
+   "unknowns": [
+    "1月2日是否与假期安排冲突"
+   ],
+   "protected_expressions": [
+    "1月2号晚上七点臀腿局"
+   ],
+   "forbidden_factual_claims": [
+    "已确定当日团课教练"
+   ]
+  },
+  "E206_T12": {
+   "case_id": "E206_T12",
+   "current_action": "谢过她让出带朋友名额,表示这1次留给她自己或下次一起用;给整个拼卡月做个轻松收尾,回扣1990和省580两个数。",
+   "acceptable_actions": [
+    "婉让名额并做月度收尾",
+    "谢她让利,回扣省580的账",
+    "轻松收尾并预约下月合练"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E206_A19",
+     "subject": "HER",
+     "relation": "权益使用",
+     "value": "本月带朋友入场2次已用1次(带姐姐),剩1次",
+     "valid_time": "2026年11月内有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T12",
+      "message_id": "m0",
+      "quote": "我用掉一次带我姐了,还剩1次"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E206_A20",
+     "subject": "SHARED",
+     "relation": "账目",
+     "value": "双人年卡3980元各出1990元,较两张单人卡省580元",
+     "valid_time": "2026-11-11确立",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E206_T03",
+      "message_id": "m0",
+      "quote": "你转我1990就齐活,一人一半"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾把两个人的账本翻页:1990/580/1120/560四个数都干净,这个月算'合作愉快'。",
+   "unknowns": [
+    "12月带朋友名额是否已另有安排"
+   ],
+   "protected_expressions": [
+    "我用掉一次带我姐了,还剩1次"
+   ],
+   "forbidden_factual_claims": [
+    "本月带朋友次数还剩2次",
+    "ME本月使用了带朋友名额"
+   ]
+  }
+ }
+}

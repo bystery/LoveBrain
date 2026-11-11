@@ -1,0 +1,261 @@
+{
+ "episode_id": "E332",
+ "persona": {
+  "her": {
+   "name": "孟夏",
+   "traits": [
+    "剧季爱连看",
+    "消息省略号收尾",
+    "改了不纠结"
+   ],
+   "boundaries": [
+    "改期的事按新说的走",
+    "不重复老黄历"
+   ]
+  },
+  "me": {
+   "name": "韩东",
+   "traits": [
+    "看剧五年票根攒本",
+    "剧场周边门儿清",
+    "接话稳"
+   ]
+  },
+  "relationship_stage": "剧友群认识的看剧搭子，约剧一年"
+ },
+ "initial_kb": {
+  "me": "韩东看话剧五年，票根都夹在一个本子里，剧场周边馆子门儿清。",
+  "her": "孟夏在文化口上班，剧季爱连看几场，最近在戒糖，她同事常跟她换票拼场。",
+  "warmth": "剧友一年，看完戏必找地方复盘剧情，口味聊得来。",
+  "style": "她消息爱用省略号收尾，兴奋起来全是感叹号，改安排从不啰嗦。",
+  "lessons": "改过期的安排她不爱上头，顺着新说法走她最舒服。"
+ },
+ "turns": [
+  {
+   "case_id": "E332_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "韩东，11月21号（周六）下午两点半，《雾中灯塔》，小剧场我抢到两张，280一张我买了，饭你请就扯平。",
+      "ts": "2026-11-10 21:02"
+     }
+    ],
+    "clock": "2026-11-10 21:10",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E332_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "那天中午我早点到，12点50剧院旁边的半岛咖啡等你，他们家脏脏包一绝…先说好，那顿你请。",
+      "ts": "2026-11-12 12:22"
+     }
+    ],
+    "clock": "2026-11-12 12:30",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E332_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "出事了…主办方发通知，《雾中灯塔》延到12月5号（周六），还是下午两点半，票不用换…那咱们就12月5号见？",
+      "ts": "2026-11-14 15:12"
+     }
+    ],
+    "clock": "2026-11-14 15:20",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "通知演出改期"
+    },
+    "note": "备注：主办方短信原文：'因剧场档期调整，《雾中灯塔》延至12月5日同场次时间，票券通用。'"
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E332_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "改期也好，21号那天我表弟结婚…哦不对，婚礼是11月22号（周日），我记岔了，反正错开就对了…",
+      "ts": "2026-11-16 20:32"
+     }
+    ],
+    "clock": "2026-11-16 20:40",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E332_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了戒糖第二周了…12月5号中午那顿，脏脏包就免了，你帮我点个全麦贝果…医生说甜的先停停。",
+      "ts": "2026-11-18 21:22"
+     }
+    ],
+    "clock": "2026-11-18 21:30",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E332_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "跟你说个事…我同事那张票退了。",
+      "ts": "2026-11-20 19:02"
+     },
+     {
+      "role": "HER",
+      "text": "12月5号她们公司年会拉她去主持，那张转不出去就退了…咱俩的不受影响，照旧。",
+      "ts": "2026-11-20 19:04"
+     }
+    ],
+    "clock": "2026-11-20 19:10",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "说明同事退票不影响咱俩"
+    }
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E332_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天表弟婚礼跑了一天…嗓子都哑了。话剧的事都定了就不啰嗦了，睡了…",
+      "ts": "2026-11-22 21:12"
+     }
+    ],
+    "clock": "2026-11-22 21:20",
+    "may_decline": true
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E332_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "半岛咖啡12月5号中午好像被剧组包场了，店家朋友圈说的…改到隔壁街的山丘面包吧，还是12点50，行不？",
+      "ts": "2026-11-26 12:12"
+     }
+    ],
+    "clock": "2026-11-26 12:20",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "改约中午咖啡店"
+    },
+    "note": "备注：半岛咖啡朋友圈原文：'12月5日中午包场，暂停堂食。'"
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E332_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "戒糖满两周了，今天复查指标好转…医生说也没让一口甜的不沾。12月5号那天，兴许点个小的脏脏包解解馋…你可别笑话我。",
+      "ts": "2026-11-29 20:32"
+     }
+    ],
+    "clock": "2026-11-29 20:40",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E332_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "12月5号流程最后核一遍…12点50山丘面包，两点半小剧场。票在我手机里，你人到就行，哈哈…",
+      "ts": "2026-12-02 21:02"
+     }
+    ],
+    "clock": "2026-12-02 21:10",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E332_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "散场了！！值回票价！！同事那张最后真退掉了，年会她主持得还挺像样…",
+      "ts": "2026-12-05 17:42"
+     }
+    ],
+    "clock": "2026-12-05 17:50",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E332_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "谢幕的时候我差点哭了…12月19号还有场《海上钢琴师》，我先不买票，等主办方别再改期了再说…今天谢谢你的贝果和跑腿。",
+      "ts": "2026-12-05 21:22"
+     }
+    ],
+    "clock": "2026-12-05 21:30",
+    "may_decline": true
+   },
+   "feedback": {}
+  }
+ ]
+}

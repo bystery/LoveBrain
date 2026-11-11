@@ -1,0 +1,1189 @@
+{
+ "story_id": "E324",
+ "turns": {
+  "E324_T01": {
+   "case_id": "E324_T01",
+   "current_action": "房东王经理提出明年租金涨8%无余地，她写了冲的稿请 ME 改：意思一点不能变（intent：请 ME 改写给房东的涨价回应；note：委婉但底线一个不能动——8%不接受、续约要三年、可以谈别的方案；别带感叹号，按我平时说话的调子来，数字一个不能错）",
+   "acceptable_actions": [
+    "给改写稿：三条底线齐（8%不接受/可以谈别的方案/续约要三年），无感叹号，ME 调子（先结论再缘由、收尾'……就行'），数字一字不错",
+    "先说一句结论（'能改，意思不动'）再给稿",
+    "给稿并指出原稿哪里会顶死房东（'只能考虑搬走'那句），说明改法"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T01_A01",
+     "subject": "THIRD",
+     "relation": "涨价通知",
+     "value": "房东王经理下午发消息说明年租金涨8%，一点余地没有",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T01",
+      "message_id": "m1",
+      "quote": "房东王经理下午发消息，说明年租金涨8%，一点余地没有"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T01_A02",
+     "subject": "HER",
+     "relation": "原稿全文",
+     "value": "她的原稿：王经理8%太多了、利润本来就薄、坚持8%只能考虑搬走、续约要求签三年一年一年签太折腾人",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T01",
+      "message_id": "m1",
+      "quote": "王经理，8%太多了！我这里利润本来就薄，你要是坚持8%，我只能考虑搬走了！另外续约我要求签三年，一年一年签太折腾人！"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T01_A03",
+     "subject": "SHARED",
+     "relation": "改写底线",
+     "value": "她定的底线意思一点不能变：8%我不接受，可以谈别的方案，续约我要三年（intent 锚点）",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T01",
+      "message_id": "m1",
+      "quote": "帮我改一下，意思一点不能变：8%我不接受，可以谈别的方案，续约我要三年"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T01_A04",
+     "subject": "HER",
+     "relation": "口吻要求",
+     "value": "她要 ME 说话不急不躁的调子",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T01",
+      "message_id": "m1",
+      "quote": "你说话不急不躁，帮我改成你那个调子"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改写类核心轮（T06 专题重点）。底线=数字和立场只核不改（lessons：她的底线写在数字里）。ME 口吻习惯（persona me.traits/initial_kb me）：说话不带感叹号、先讲结论再补一句缘由、收尾爱用'……就行'。改写稿三条底线缺一即意图失败；8%/三年数字错=事实错误。",
+   "unknowns": [
+    {
+     "topic": "房东可能的反应",
+     "note": "T02 揭晓秒回，本轮未知",
+     "markers": [
+      [
+       "王经理",
+       "回复"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "王经理",
+       "回复"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "改写稿不得改变三条底线（8%不接受/可谈别的/续约三年）",
+    "改写稿不得带感叹号（note 明令）",
+    "数字不得错（8%、三年）",
+    "不得在改写稿里新增事实（如编造'别的租客也涨'）"
+   ],
+   "may_decline": false
+  },
+  "E324_T02": {
+   "case_id": "E324_T02",
+   "current_action": "改稿她一字没动直接发给王经理，他秒回'我考虑一下，周五给你答复'（以前隔天回）；12月4号周五读书会主题定了一半卖关子",
+   "acceptable_actions": [
+    "接'一字没动'（信任的分量），秒回的功劳一半是话术一半是她本来就占理",
+    "接卖关子（不逼问读书会主题——她要先说就让她说）",
+    "确认周五等答复（时间锚点）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T02_A01",
+     "subject": "HER",
+     "relation": "改稿发出",
+     "value": "她把改的稿一字没动直接发给王经理了",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T02",
+      "message_id": "m0",
+      "quote": "改完这版我直接发给王经理了，一个字没动"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T02_A02",
+     "subject": "THIRD",
+     "relation": "王经理秒回",
+     "value": "王经理秒回：我考虑一下，周五给你答复",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T02",
+      "message_id": "m0",
+      "quote": "他秒回了一句：我考虑一下，周五给你答复"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T02_A03",
+     "subject": "THIRD",
+     "relation": "回复习惯对照",
+     "value": "以前她发消息王经理都隔天回",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T02",
+      "message_id": "m0",
+      "quote": "以前我发消息他都隔天回"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T02_A04",
+     "subject": "SHARED",
+     "relation": "读书会预告",
+     "value": "12月4号周五读书会的主题她定了一半，先卖个关子",
+     "valid_time": "2026-12-04",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T02",
+      "message_id": "m0",
+      "quote": "12月4号周五读书会的主题我定了一半，先卖个关子"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T01 改稿→T02 一字未动发出（信任闭环）。'周五'=11-27（T04 上午答复证实）。卖关子不拆。",
+   "unknowns": [
+    {
+     "topic": "王经理最终答复",
+     "note": "T04 揭晓降6%签两年，本轮未知",
+     "markers": [
+      [
+       "答复",
+       "内容"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "答复",
+       "内容"
+      ]
+     ]
+    },
+    {
+     "topic": "读书会主题",
+     "note": "T03 揭晓'译者的声音'，本轮未知",
+     "markers": [
+      [
+       "主题",
+       "是什么"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "主题",
+       "是什么"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把周五答复日记错（11-27，T04 证实）",
+    "不得逼问读书会主题（卖关子要让她关满）"
+   ],
+   "may_decline": false
+  },
+  "E324_T03": {
+   "case_id": "E324_T03",
+   "current_action": "12月4号读书会主题定了叫'译者的声音'，她第一个想到 ME：领读 ME 译的《雾港》二十分钟讲语气处理，或当观众，问那天能来吗（intent：邀约 ME 领读读书会；note：ME 草稿=12月4号不行！那天晚上我有讲座，大学那边半年前就定死了！领读你们换别人吧！太冲了。帮我重写：还是去不了，讲座推不掉，领读让她另找人，但要补一句我可以把讲稿思路发给她。别用感叹号，口气按我平时的来，讲座日期不能错）",
+   "acceptable_actions": [
+    "按草稿重写拒绝：12月4号去不了（那晚有讲座，大学半年前定死），领读请她另找人，补一句可以把讲稿思路发她——无感叹号，ME 调子",
+    "先结论（12月4号不行）再缘由（讲座推不掉），领读另找人+讲稿思路两个安排都落实",
+    "拒绝领读但接住'当观众'变体也不行（那晚有讲座，观众也当不了），别留歧义"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T03_A01",
+     "subject": "SHARED",
+     "relation": "读书会安排",
+     "value": "12月4号读书会主题定了，叫译者的声音",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T03",
+      "message_id": "m0",
+      "quote": "12月4号读书会主题定了，叫译者的声音"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T03_A02",
+     "subject": "SHARED",
+     "relation": "领读邀约",
+     "value": "她第一个想到 ME：来领读 ME 译的《雾港》，讲二十分钟，讲翻译时怎么处理语气（intent 锚点）",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T03",
+      "message_id": "m0",
+      "quote": "你来领读你译的《雾港》吧，就讲二十分钟，讲你翻译时怎么处理语气"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T03_A03",
+     "subject": "HER",
+     "relation": "变体与问句",
+     "value": "她说要是嫌麻烦来当观众也行，先问一句那天 ME 能来吗",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T03",
+      "message_id": "m0",
+      "quote": "你要是嫌麻烦，来当观众也行。我先问一句，那天你能来吗？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改写轮+拒答轮混合：行为方向=decline（对 12-4 领读与到场）但补偿必须有（讲稿思路发她）。讲座事实（note）：12月4号晚上有讲座，大学半年前定死——讲座日期不能错（12月4号）。改写稿无感叹号、按 ME 平时调子。回指位：《雾港》是 ME 译作（initial_kb me），书店里有卖。",
+   "unknowns": [
+    {
+     "topic": "讲座的具体地点与主办方细节",
+     "note": "note 只说大学那边定死，ME 回复按 note 范围说，不编造讲座名",
+     "markers": [
+      [
+       "讲座",
+       "哪里"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "讲座",
+       "哪里"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得答应领读或出席（12月4号晚上 ME 有讲座——note 明令去不了）",
+    "讲座日期不得错（12月4号）",
+    "不得用感叹号（note 明令）",
+    "不得只说'去不了'不给讲稿思路补偿（note：补一句讲稿思路）"
+   ],
+   "may_decline": false
+  },
+  "E324_T04": {
+   "case_id": "E324_T04",
+   "current_action": "王经理上午答复：涨幅降到6%但只肯签两年（三年做不了主要问业主）；她决定6%加两年先应下来三年明年再谈；讲稿思路她收下了让微信发她",
+   "acceptable_actions": [
+    "接结果：8%谈到6%、三年谈到两年——这段话开了头（她的谢），认一半功劳就好别抢",
+    "接她的决定（先应下来三年明年再谈）——给她一句实在的肯定",
+    "确认讲稿思路微信发她（答应+什么时候发）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T04_A01",
+     "subject": "THIRD",
+     "relation": "王经理新答复",
+     "value": "王经理上午发消息：涨幅降到6%，但只肯签两年，三年他做不了主，要问业主",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T04",
+      "message_id": "m0",
+      "quote": "王经理上午发消息了：涨幅降到6%，但只肯签两年，三年他做不了主，要问业主"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T04_A02",
+     "subject": "SHARED",
+     "relation": "涨价旧口径（作废）",
+     "value": "明年租金涨8%一点余地没有的旧口径已被替换（降到6%且可签两年）",
+     "valid_time": "2026-11-24",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T01",
+      "message_id": "m1",
+      "quote": "房东王经理下午发消息，说明年租金涨8%，一点余地没有"
+     },
+     "affirm_markers": [
+      [
+       "一点余地没有"
+      ]
+     ],
+     "item_markers": [
+      "涨8%"
+     ],
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E324_T04_A03",
+     "subject": "HER",
+     "relation": "签约决定",
+     "value": "她想了想决定6%加两年先应下来，三年明年再谈",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T04",
+      "message_id": "m0",
+      "quote": "6%加两年，我先应下来，三年明年再谈"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T04_A04",
+     "subject": "HER",
+     "relation": "讲稿思路接收",
+     "value": "读书会那边 ME 说的讲稿思路她收下了，回头 ME 微信发她就行",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T04",
+      "message_id": "m0",
+      "quote": "你说的那个讲稿思路我收下了，回头你微信发我就行"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T01 改稿（8%不接受/续约三年）→T04 谈判结果（6%+两年，三年明年再谈——她的底线起了作用，结果可接受）。别把功劳全抢走（她说'回头看还是你那段话开的头'——认一半即可）。",
+   "unknowns": [
+    {
+     "topic": "业主态度",
+     "note": "三年他做不了主要问业主，业主态度未知",
+     "markers": [
+      [
+       "业主",
+       "态度"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "业主",
+       "态度"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说王经理维持8%（已降到6%）",
+    "不得替她拒绝两年方案（她已决定先应）",
+    "不得坐实业主同意签三年"
+   ],
+   "may_decline": false
+  },
+  "E324_T05": {
+   "case_id": "E324_T05",
+   "current_action": "明天店里两周年，订了四个蛋糕其中一个写感谢街坊让 ME 猜哪个是她自己吃的；明早十点开门有小活动，路过就进来喝一杯不强求",
+   "acceptable_actions": [
+    "猜蛋糕（接她的游戏：自由猜一个，不得说'打工魂'——T06 才揭晓）",
+    "应下来（路过就去——ME 是同小区邻居，路过合理）或说具体几点到",
+    "may_decline=true，轻应一句也行"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T05_A01",
+     "subject": "HER",
+     "relation": "店庆蛋糕",
+     "value": "明天（2026-11-29）店里两周年，她订了四个蛋糕，其中一个写着感谢街坊",
+     "valid_time": "2026-11-29",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T05",
+      "message_id": "m0",
+      "quote": "明天店里两周年，我订了四个蛋糕，其中一个写着感谢街坊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T05_A02",
+     "subject": "SHARED",
+     "relation": "店庆邀约",
+     "value": "明天上午十点开门就有小活动，她邀 ME 路过就进来喝一杯，不路过就算了，不搞强买强卖",
+     "valid_time": "2026-11-29",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T05",
+      "message_id": "m0",
+      "quote": "明天上午十点开门就有小活动，你要是路过就进来喝一杯，不路过就算了，我不搞强买强卖"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻邀约：她说'不路过就算了'给足台阶，ME 按真实情况应或轻应都合法。猜蛋糕是游戏，猜什么都是玩笑——但说'肯定是写打工魂那块'=提前揭晓 T06 揭晓的事实=编造未来事实。",
+   "unknowns": [
+    {
+     "topic": "她自己吃的那块蛋糕写什么",
+     "note": "T06 揭晓（打工魂），本轮不得提前说出",
+     "markers": [
+      [
+       "蛋糕",
+       "写的什么"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "蛋糕",
+       "写的什么"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "不路过就算了，我不搞强买强卖"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实她自己吃的蛋糕写什么（T06 才揭晓）",
+    "不得把邀约当必赴任务压迫感回复（她说不强求）"
+   ],
+   "may_decline": true
+  },
+  "E324_T06": {
+   "case_id": "E324_T06",
+   "current_action": "两周年办完：感谢街坊蛋糕客人吃了、她那块写打工魂；老爷爷买了一本《雾港》说出国孙子想看讲别处的海的书，她打折并报备动用的是 ME 那本的同款尊严",
+   "acceptable_actions": [
+    "接'打工魂'（揭晓了猜谜答案——接梗笑）",
+    "接老爷爷买书的细节（讲别处的海——这句值得一句真的接）",
+    "接'同款尊严'的报备玩笑（'尊严共享'式）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T06_A01",
+     "subject": "HER",
+     "relation": "蛋糕归属",
+     "value": "感谢街坊那个蛋糕最后还是客人吃了，她自己那块写着打工魂",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T06",
+      "message_id": "m0",
+      "quote": "感谢街坊那个蛋糕最后还是客人吃了，我自己那块写着打工魂"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T06_A02",
+     "subject": "THIRD",
+     "relation": "《雾港》售出",
+     "value": "有位老爷爷买了一本《雾港》，说孙子出国前想看一本讲别处的海的书",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T06",
+      "message_id": "m0",
+      "quote": "有位老爷爷买了一本《雾港》，说孙子出国前想看一本讲别处的海的书"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T06_A03",
+     "subject": "HER",
+     "relation": "打折报备",
+     "value": "她给老爷爷打了折，报备动用的是 ME 那本的同款尊严",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T06",
+      "message_id": "m0",
+      "quote": "我给他打了折，跟你报备一下，动用的是你那本的同款尊严"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T05 猜蛋糕→T06 揭晓打工魂（闭环）；《雾港》是 ME 译作（initial_kb）→T06 卖出一本（她的店在卖 ME 的书）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得再猜蛋糕（已揭晓）"
+   ],
+   "may_decline": false
+  },
+  "E324_T07": {
+   "case_id": "E324_T07",
+   "current_action": "她替 ME 回了话：领读换她讲'书店里的译者声音'；写了开场白请 ME 听味儿，觉得'很抱歉'三个字怪怪的（intent：替 ME 补位领读并请 ME 定调开场白；note：她那句很抱歉太低。帮我给一版调整：把道歉改成笃定的说法，比如他有更要紧的事那类，不用夸我，二十个字以内。意思别变：她代我领读，周五我有讲座）",
+   "acceptable_actions": [
+    "给一版调整：把'很抱歉'改成笃定说法（如'他有更要紧的事'式），二十字以内，不用夸 ME，意思别变（她代 ME 领读、周五 ME 有讲座）",
+    "先结论（'抱歉'确实怪）再给改法，符合 ME 先结论后缘由调子",
+    "给改稿并说明为什么（道歉把她自己放低了）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T07_A01",
+     "subject": "HER",
+     "relation": "补位领读",
+     "value": "读书会那边她替 ME 回了话：领读换她，她讲书店里的译者声音",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T07",
+      "message_id": "m0",
+      "quote": "读书会那边，我替你回了话：领读换我，我讲书店里的译者声音"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T07_A02",
+     "subject": "HER",
+     "relation": "开场白草稿",
+     "value": "她的开场白：大家好，今晚我替周衍老师讲一讲他翻译《雾港》时的语气取舍。他本人周五有讲座，很忙，很抱歉。",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T07",
+      "message_id": "m0",
+      "quote": "大家好，今晚我替周衍老师讲一讲他翻译《雾港》时的语气取舍。他本人周五有讲座，很忙，很抱歉。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T07_A03",
+     "subject": "HER",
+     "relation": "定调请求",
+     "value": "她总觉得'很抱歉'三个字怪怪的，请 ME 说怎么调（intent 锚点）",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T07",
+      "message_id": "m0",
+      "quote": "我总觉得很抱歉三个字怪怪的，你说怎么调？"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T07_A04",
+     "subject": "HER",
+     "relation": "备稿询问",
+     "value": "她问 ME 周二到周四是不是都在备讲座，说我不催稿",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T07",
+      "message_id": "m0",
+      "quote": "你周二到周四是不是都在备讲座？我不催稿"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第三次改写轮（T06 专题重点）。她的问句是'怎么调'——ME 必须给出具体改写文本（只说'改一下'不给货=意图失败）。note 约束：道歉改笃定（如'他有更要紧的事'）、不用夸 ME、二十字以内、意思别变（她代 ME 领读+周五 ME 有讲座两个事实都在）。'周五'=12月4号（讲座日，与 T03 note 一致）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "改写稿不得丢掉两个事实：她代 ME 领读/周五 ME 有讲座（note：意思别变）",
+    "改写稿不得夸 ME（note：不用夸我）",
+    "改写稿不得超二十字（note 明令）",
+    "不得保留'很抱歉'低姿态（note：改成笃定说法）"
+   ],
+   "may_decline": false
+  },
+  "E324_T08": {
+   "case_id": "E324_T08",
+   "current_action": "她问明晚讲座几点开始，想关店早的话带店里小张（学翻译正愁没方向）一起去听，请 ME 留个例子讲道歉怎么译（自称听什么都是道歉职业病）",
+   "acceptable_actions": [
+    "答讲座时间（如实）+答应留道歉翻译的例子（真的安排）",
+    "接小张背景（学翻译正愁没方向——ME 可说讲座后可以聊聊）",
+    "接'听什么都是道歉职业病'梗"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T08_A01",
+     "subject": "HER",
+     "relation": "讲座时间询问",
+     "value": "她问明晚（2026-12-04）ME 的讲座几点开始",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T08",
+      "message_id": "m0",
+      "quote": "明晚你的讲座几点开始？"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T08_A02",
+     "subject": "THIRD",
+     "relation": "小张背景",
+     "value": "她想关店早的话带店里的小张一起去听，小张学翻译的，正愁没方向",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T08",
+      "message_id": "m0",
+      "quote": "我关店关得早的话，带店里的小张一起去听，她学翻译的，正愁没方向"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T08_A03",
+     "subject": "SHARED",
+     "relation": "讲座请求",
+     "value": "她请 ME 讲语气那部分留个例子讲道歉怎么译，自称现在听什么都是道歉职业病",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T08",
+      "message_id": "m0",
+      "quote": "你讲语气那部分，能不能留个例子讲道歉怎么译？我这人现在听什么都是道歉，职业病。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T03/T07 讲座（12月4号）→T08 她要来听（12-3 晚问'明晚'，口径一致）。讲座开始时间是 ME 自我事实（自由答）。'道歉怎么译'与 T07 开场白改'很抱歉'呼应（她的职业病来源）。",
+   "unknowns": [
+    {
+     "topic": "讲座具体开始时间",
+     "note": "ME 自我事实自由答",
+     "markers": [
+      [
+       "讲座",
+       "几点开始"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "讲座",
+       "几点开始"
+      ]
+     ]
+    },
+    {
+     "topic": "小张全名",
+     "note": "只知'小张'，不得编造全名",
+     "markers": [
+      [
+       "小张",
+       "全名"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "小张",
+       "全名"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说没有讲座或讲座取消（与 T03/note 矛盾）",
+    "不得编造小张全名"
+   ],
+   "may_decline": false
+  },
+  "E324_T09": {
+   "case_id": "E324_T09",
+   "current_action": "讲座她听到最后二十分钟，小张记六页笔记念'语气是译者的体温'说是 ME 原话；散场人多没挤进去在校门口路灯下站了会儿；读书会今晚也顺讲完满场安静三秒",
+   "acceptable_actions": [
+    "接'语气是译者的体温'被当成 ME 原话（可认领可否认——ME 自由，'是我说的'或'比我原话强'都行）",
+    "接满场安静三秒（她的领读成了）",
+    "接路灯下站了会儿（别追问太多，轻轻一句）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T09_A01",
+     "subject": "SHARED",
+     "relation": "讲座反馈",
+     "value": "讲座她听到了最后二十分钟，小张记了六页笔记，出校门一直在念'语气是译者的体温'，说是 ME 原话",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T09",
+      "message_id": "m0",
+      "quote": "讲座我听到了最后二十分钟，小张记了六页笔记，出校门一直在念，语气是译者的体温，说是你原话"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T09_A02",
+     "subject": "HER",
+     "relation": "散场独处",
+     "value": "散场人太多她没挤进去，在校门口那盏路灯下站了会儿就回来了",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T09",
+      "message_id": "m0",
+      "quote": "散场人太多我没挤进去，在校门口那盏路灯下站了会儿就回来了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T09_A03",
+     "subject": "HER",
+     "relation": "读书会成果",
+     "value": "读书会那边今晚也顺，她讲完满场安静了三秒，值了",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T09",
+      "message_id": "m0",
+      "quote": "读书会那边今晚也顺，我讲完满场安静了三秒，值了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T07 她补位领读→T09 满场安静三秒（她的领读成了）；T08 小张没方向→T09 记六页笔记。'语气是译者的体温'是否 ME 原话是 ME 经历域，认领与否都合法但别含糊。",
+   "unknowns": [
+    {
+     "topic": "'语气是译者的体温'是否 ME 原话",
+     "note": "ME 经历域自由认领",
+     "markers": [
+      [
+       "原话",
+       "是不是"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "原话",
+       "是不是"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实 ME 讲座后与她校门口相见的情节（她没挤进去）"
+   ],
+   "may_decline": false
+  },
+  "E324_T10": {
+   "case_id": "E324_T10",
+   "current_action": "小张定了方向毕业想做文学翻译求介绍远程师父她说试试；王经理没新消息两年就两年把明年账做平；课件截图最后一页'谢谢每一位把语气留下来的人'她说这句要是给她的就收下了",
+   "acceptable_actions": [
+    "接小张方向定了（介绍老师的事她说试试——ME 可真介绍或给联系方式，ME 自由）",
+    "接课件截图那句（'谢谢每一位把语气留下来的人'——ME 是讲座作者，可认领：就是给她的）",
+    "接'两年就两年账做平'的务实"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T10_A01",
+     "subject": "THIRD",
+     "relation": "小张方向",
+     "value": "小张定了方向毕业想去做文学翻译，问能不能介绍那个老师给她当远程师父，她说我试试",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T10",
+      "message_id": "m0",
+      "quote": "她定了方向，毕业想去做文学翻译，问我能不能介绍那个老师给她当远程师父。我说我试试"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T10_A02",
+     "subject": "HER",
+     "relation": "租约现状",
+     "value": "王经理那边没新消息，两年就两年，她把明年的账先做平了",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T10",
+      "message_id": "m0",
+      "quote": "王经理那边没新消息，两年就两年，我把明年的账先做平了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T10_A03",
+     "subject": "SHARED",
+     "relation": "课件结尾句",
+     "value": "ME 讲座的课件群里有人传截图，最后一页写着'谢谢每一位把语气留下来的人'",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T10",
+      "message_id": "m0",
+      "quote": "最后一页写着，谢谢每一位把语气留下来的人"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T10_A04",
+     "subject": "HER",
+     "relation": "收下表态",
+     "value": "她说这句要是给她的，她就收下了",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T10",
+      "message_id": "m0",
+      "quote": "这句要是给我的，我就收下了。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'这句要是给我的，我就收下了'是半试探——ME 是讲座作者，知道那页写没写给谁，可以认领（'就是给你的'）。含糊过去=错失接点。",
+   "unknowns": [
+    {
+     "topic": "课件最后一页那句是否特指她",
+     "note": "ME 是讲座作者，ME 经历域自由认领",
+     "markers": [
+      [
+       "那句",
+       "给谁"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "那句",
+       "给谁"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替 ME 编造课件里没有的话"
+   ],
+   "may_decline": false
+  },
+  "E324_T11": {
+   "case_id": "E324_T11",
+   "current_action": "对账：王经理两年方案签了6%明年谈三年；小张定了方向；《雾港》卖出去两本老爷爷昨天来问续集；读书会下个月第一个周五主题'把话写得像说话'，主讲人点名 ME 跑不掉",
+   "acceptable_actions": [
+    "接'跑不掉'的主讲点名——真的接下（别推，她连'堵你'都备好了）",
+    "接对账（租金6%签两年/《雾港》两本），可夸她这一年理得清",
+    "问下月第一个周五具体几号（时间锚点）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T11_A01",
+     "subject": "SHARED",
+     "relation": "租约落定",
+     "value": "王经理那边两年方案她签了，6%，明年谈三年",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T11",
+      "message_id": "m0",
+      "quote": "王经理那边两年方案我签了，6%，明年谈三年"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T11_A02",
+     "subject": "SHARED",
+     "relation": "《雾港》销量",
+     "value": "《雾港》卖出去两本了，老爷爷昨天来问有没有续集",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T11",
+      "message_id": "m0",
+      "quote": "《雾港》卖出去两本了，老爷爷昨天来问有没有续集"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T11_A03",
+     "subject": "SHARED",
+     "relation": "读书会预告",
+     "value": "读书会下个月第一个周五（日历推算 2027-01-01，作者未明示具体日期），主题定了叫'把话写得像说话'",
+     "valid_time": "2027-01-01",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T11",
+      "message_id": "m0",
+      "quote": "读书会下个月第一个周五，主题我定了，叫把话写得像说话"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T11_A04",
+     "subject": "SHARED",
+     "relation": "主讲点名",
+     "value": "主讲人她先跟 ME 打招呼——这次 ME 跑不掉，跑了去 ME 下一个讲座堵 ME",
+     "valid_time": "2027-01-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T11",
+      "message_id": "m0",
+      "quote": "主讲人我先跟你打招呼——这次你跑不掉，跑了我去你下一个讲座堵你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T04 6%+两年先应下来→T11 签了（闭环）；T06 卖一本→T11 卖两本+问续集。口径说明：她 12-06（周日）说'下个月第一个周五'，按 12-04 是周五的日历推算下月（2027年1月）第一个周五=2027-01-01——推算假设 audit 已记录，不得当作已确认日期使用。《雾港》续集不存在（老爷爷只是问），不得坐实有续集。",
+   "unknowns": [
+    {
+     "topic": "下月第一个周五具体日期",
+     "note": "日历推算 2027-01-01，作者未明示，不得当确认日期",
+     "markers": [
+      [
+       "读书会",
+       "几号"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "读书会",
+       "几号"
+      ]
+     ]
+    },
+    {
+     "topic": "《雾港》续集",
+     "note": "老爷爷只是问，续集不存在",
+     "markers": [
+      [
+       "续集",
+       "有没有"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "续集",
+       "有没有"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得推掉主讲人（她明说跑不掉）",
+    "不得坐实《雾港》续集存在（老爷爷只是问）",
+    "不得把 2027-01-01 当作者确认的日期使用"
+   ],
+   "may_decline": false
+  },
+  "E324_T12": {
+   "case_id": "E324_T12",
+   "current_action": "补账：《雾港》两本里一本是小张买的（给未来的自己垫桌角）；读书会群催主讲人资料，她把 ME 的《雾港》和讲座截图挂群里，想推先问过群里那二十个举手的人",
+   "acceptable_actions": [
+    "接'垫桌角'（书有书的用处——接她的调子'行，垫吧'）",
+    "接主讲人资料（真的交资料或答应交——别再推）",
+    "接'二十个举手的人'玩笑（举白旗式自嘲）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E324_T12_A01",
+     "subject": "THIRD",
+     "relation": "小张购书",
+     "value": "《雾港》那两本里有一本是小张买的，她说是给未来的自己垫桌角",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T12",
+      "message_id": "m0",
+      "quote": "《雾港》那两本里有一本是小张买的，她说是给未来的自己垫桌角"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T12_A02",
+     "subject": "SHARED",
+     "relation": "群内宣传",
+     "value": "读书会群里已经在催主讲人资料，她把 ME 的《雾港》和讲座截图都挂上去了",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T12",
+      "message_id": "m0",
+      "quote": "我把你的《雾港》和你的讲座截图都挂上去了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E324_T12_A03",
+     "subject": "HER",
+     "relation": "推辞拦截",
+     "value": "她说 ME 那天要是还想推，先问过群里那二十个举手的人",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E324_T12",
+      "message_id": "m0",
+      "quote": "你那天要是还想推，先问过群里那二十个举手的人。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮：'二十个举手的人'是她的夸张说法，不得当精确事实核验。两轮点名（T11 跑不掉→T12 群里挂资料）后 ME 再推=没接住意图。",
+   "unknowns": [
+    {
+     "topic": "群里具体人数",
+     "note": "'二十个'是她的说法，不得当精确事实",
+     "markers": [
+      [
+       "群里",
+       "多少人"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "群里",
+       "多少人"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得再推主讲人",
+    "不得把'二十个人'当精确事实核验（是她的夸张说法）"
+   ],
+   "may_decline": false
+  }
+ }
+}

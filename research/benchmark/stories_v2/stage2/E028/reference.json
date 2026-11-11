@@ -1,0 +1,402 @@
+{
+ "story_id": "E028",
+ "turns": {
+  "E028_T01": {
+   "current_action": "接菜单情报（排骨有/红烧鱼没）——接住她的'死心吧'梗，给替代方案",
+   "acceptable_actions": [
+    "接梗+请她代打排骨",
+    "接梗+改吃排骨",
+    "接梗+哀悼红烧鱼"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E028_A01",
+     "subject": "食堂",
+     "relation": "菜单",
+     "value": "今日有糖醋排骨，红烧鱼售罄",
+     "valid_time": "2026-12-07 11:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E028_T01",
+      "message_id": "m0",
+      "quote": "今天有糖醋排骨"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她替我盯菜单是三个月饭搭子的默契；接梗+给行动。",
+   "unknowns": [],
+   "protected_expressions": [
+    "红烧鱼没了 你死心吧"
+   ],
+   "forbidden_factual_claims": [
+    "不要断言明天有没有鱼"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E028_T01"
+  },
+  "E028_T02": {
+   "current_action": "'卡余额只够我自己的'——饭卡梗接住，别真让她付",
+   "acceptable_actions": [
+    "接梗+自己排队",
+    "接梗+说请她刷我的卡",
+    "接梗+说互不欠饭"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "AA 是饭搭子的默认契约；玩笑归玩笑，动作要自己来。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我的卡余额只够我自己的"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E028_T02"
+  },
+  "E028_T03": {
+   "current_action": "公司话题（财务部搬三楼）——如实答+关心她的通勤变化",
+   "acceptable_actions": [
+    "答运营留五楼+问她搬后吃饭",
+    "答+吐槽搬家打包",
+    "答+问她想去吗"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E028_A02",
+     "subject": "财务部",
+     "relation": "计划",
+     "value": "下月搬三楼（未定稿）",
+     "valid_time": "2026-12-07 12:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E028_T03",
+      "message_id": "m0",
+      "quote": "财务部在下个月要搬去三楼"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "公司话题点到为止，但搬家影响饭搭子——这个后果要接。",
+   "unknowns": [
+    "搬家确切日期"
+   ],
+   "protected_expressions": [
+    "财务部在下个月要搬去三楼"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造公司搬迁原因"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E028_T03"
+  },
+  "E028_T04": {
+   "current_action": "'告别饭/加倍哀悼'——接住她的夸张修辞",
+   "acceptable_actions": [
+    "接梗+保证天天找她",
+    "接梗+说三楼也有食堂",
+    "接梗+哀悼式干杯"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她的夸张是撒娇式的在意；接住别较真。",
+   "unknowns": [],
+   "protected_expressions": [
+    "糖醋排骨要加倍哀悼"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E028_T04"
+  },
+  "E028_T05": {
+   "current_action": "她出差四天（缺席预告）——接受+互怼式关心，别煽情",
+   "acceptable_actions": [
+    "接受+让她注意安全",
+    "接受+接'别胖回去'的梗反怼",
+    "接受+约回来第一顿"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E028_A03",
+     "subject": "她",
+     "relation": "缺席",
+     "value": "明天起出差杭州对账四天",
+     "valid_time": "2026-12-09 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E028_T05",
+      "message_id": "m0",
+      "quote": "明天出差杭州 对账四天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "四天空窗她提前打招呼——饭搭子的职业素养。",
+   "unknowns": [
+    "住哪家酒店"
+   ],
+   "protected_expressions": [
+    "我明天出差杭州 对账四天"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E028_T05"
+  },
+  "E028_T06": {
+   "current_action": "'你是食堂附赠的'——接住这个排名梗，反手把她排前面",
+   "acceptable_actions": [
+    "反怼+把自己排食堂前面",
+    "接梗自嘲",
+    "接梗+祝出差顺利收"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她给了个'你不如食堂'的梗——翻盘要轻，输赢不重要。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你是食堂附赠的"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E028_T06"
+  },
+  "E028_T07": {
+   "current_action": "她深夜出差吐槽（隔音差）——接住并让她能睡个好觉",
+   "acceptable_actions": [
+    "接吐槽+让她戴耳塞",
+    "接吐槽+问她明天几点开会",
+    "接吐槽+劝早点睡"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E028_A04",
+     "subject": "她",
+     "relation": "出差状态",
+     "value": "杭州酒店隔音差，隔壁电话会到十二点",
+     "valid_time": "2026-12-10 23:44",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E028_T07",
+      "message_id": "m0",
+      "quote": "杭州这个酒店隔音差"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "深夜吐槽要的是回应不是方案；接一句让她睡。",
+   "unknowns": [
+    "她明天对账几家"
+   ],
+   "protected_expressions": [
+    "我听着隔壁开电话会到十二点"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E028_T07"
+  },
+  "E028_T08": {
+   "current_action": "'他们也没谈成我心里平衡多了'——接住这个平衡学，收住让她睡",
+   "acceptable_actions": [
+    "接梗+催睡",
+    "接梗+说明天再平衡",
+    "接梗+晚安收"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "深夜聊天以让她睡为收尾目标。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我心里平衡多了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E028_T08"
+  },
+  "E028_T09": {
+   "current_action": "她回归报喜（四天没吃食堂）——接住'接风'梗，给具体行动",
+   "acceptable_actions": [
+    "接梗+占座行动",
+    "接梗+说接风算你请",
+    "接梗+问她火车几点到"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E028_A05",
+     "subject": "她",
+     "relation": "回归",
+     "value": "出差四天回来，直奔食堂",
+     "valid_time": "2026-12-14 11:45",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E028_T09",
+      "message_id": "m0",
+      "quote": "回来了 食堂!"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "四天后的第一顿饭想到我——接住，别问出差琐事。",
+   "unknowns": [],
+   "protected_expressions": [
+    "回来了 食堂!"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E028_T09"
+  },
+  "E028_T10": {
+   "current_action": "'你把那份排骨护住'——回扣 T01 排骨梗，行动配合",
+   "acceptable_actions": [
+    "接梗+说排骨已护住",
+    "接梗+多打一份",
+    "接梗+留位子实拍给她"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "排骨从 T01 到 T10 的回扣是这段关系的说明书。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你把那份排骨护住"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E028_T10"
+  },
+  "E028_T11": {
+   "current_action": "她问搬家申请+报差补到账——给出建议（为排骨留下）前先听她想干嘛",
+   "acceptable_actions": [
+    "问她自己想不想搬+给参考",
+    "直接给排骨梗建议",
+    "答不知道+帮她打听"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E028_A06",
+     "subject": "她",
+     "relation": "事务",
+     "value": "差补到账；三楼搬家申请待定",
+     "valid_time": "2026-12-14 12:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E028_T11",
+      "message_id": "m0",
+      "quote": "差补到账了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她抛的是选择题；先接她的犹豫再给梗。",
+   "unknowns": [
+    "三楼食堂菜品"
+   ],
+   "protected_expressions": [
+    "我要不要申请跟去三楼"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E028_T11"
+  },
+  "E028_T12": {
+   "current_action": "'为了排骨留下'——她接了我的梗，收住（may_decline=true）",
+   "acceptable_actions": [
+    "接梗收",
+    "接梗+说下午见",
+    "不回（合法）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她用我的梗收尾=今天聊到位了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "为了排骨留下 哈哈 下午见了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E028_T12"
+  }
+ }
+}

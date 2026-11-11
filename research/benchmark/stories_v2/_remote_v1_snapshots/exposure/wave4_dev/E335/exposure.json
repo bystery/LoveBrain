@@ -1,0 +1,44 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A7 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T10",
+  "T10-G2",
+  "original",
+  "反事实孪生：人物主体变化",
+  "干扰位：无关记忆诱惑",
+  "回指：短距+长距"
+ ],
+ "title": "青屿山双人帐·表哥的帐篷（原始篇）",
+ "may_decline_turns": [
+  "E335_T09",
+  "E335_T12"
+ ],
+ "created_at": "2026-11-08",
+ "twin_group": "T10-G2",
+ "twin_role": "original",
+ "variable_changed": "双人帐出借人归属（T03 事实位）：E335（原始篇）为 HER 表哥阿哲（山屿户外店长）；E336（反事实篇）同位换成 HER 表弟阿珂（山屿户外兼职大学生），交接/归还/欠账等人身绑定细节随人物自然演化，其余事项线一致。",
+ "domain": "户外露营",
+ "primary_topic": "T10",
+ "lineage_group_id": "LG-T10-G2",
+ "frozen_at": "2026-11-08T04:20:00+08:00",
+ "annotator": "annotator-B5",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E335/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A7",
+ "hashes": {
+  "episode.json": "20b5e41fa2cc47dc84b65e90451aed2b3d83f4ff3357a65992a64d94aba062b2",
+  "reference.json": "44e76652a5a7fc80ba1bddded6fa2d7b3e8e2e8f30643390ceda50da65dc07b8",
+  "timeline.json": "800974199fbc17a11ae636c410f79083258acc20701135e2ed75d89021e31457",
+  "audit.md": "2d0a3193c0e10e35858c9b96d5232afb1fcfa6bb92f4c8c77aa326a0cddbee21"
+ }
+}

@@ -1,0 +1,275 @@
+{
+ "episode_id": "E196",
+ "persona": {
+  "her": {
+   "name": "谢安然",
+   "traits": [
+    "办公室久坐族靠骑行回血",
+    "较真数字",
+    "赢要赢得明白"
+   ],
+   "boundaries": [
+    "成绩错了必须更正",
+    "不占不明不白的便宜",
+    "加练不加伤病"
+   ]
+  },
+  "me": {
+   "name": "阿岸",
+   "traits": [
+    "提醒她留证据链",
+    "陪练档位稳",
+    "算里程快"
+   ]
+  },
+  "relationship_stage": "渐暧昧（同公司不同部门，常拼下班加练）"
+ },
+ "initial_kb": {
+  "me": "阿岸也是公司室内骑行挑战赛参赛者，常帮谢安然看里程导出记录，自己暂列第十。",
+  "her": "谢安然参加公司室内骑行台挑战赛，第二周结束实际累计一百五十二公里，平台榜上只显示一百四十七。",
+  "warmth": "两人拼下班一起在骑行台加练，练完常一起去公司食堂。",
+  "lessons": "线上成绩出偏差先留导出记录再申诉，申诉编号要归档。"
+ },
+ "turns": [
+  {
+   "case_id": "E196_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-16 18:32",
+      "text": "挑战赛榜更新了，我骑行台记录明明是一百五十二公里，榜上只有一百四十七，差了整五公里！就这一下我被压到第九，前八名差一位就是有奖品的档位。"
+     }
+    ],
+    "clock": "2026-11-16 18:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "较真的火气上来",
+    "trigger": "榜上里程少五公里压了名次"
+   }
+  },
+  {
+   "case_id": "E196_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "ts": "2026-11-16 19:00",
+      "text": "先别去找组委会吵，把骑行台每天的导出记录都存好，咱们先对出缺的是哪一段。"
+     }
+    ],
+    "clock": "2026-11-16 19:05",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "从找组委会变成先对账",
+    "stance": "留证优先于争执"
+   }
+  },
+  {
+   "case_id": "E196_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-16 20:15",
+      "text": "对出来了！上周三那五公里没同步上去，平台当时还弹过'上传失败'，我当时没当回事。现在榜上第八名一百五十一，我就差这一口气。"
+     }
+    ],
+    "clock": "2026-11-16 20:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "缺口锁定，又气又有了抓手",
+    "resolution": "缺失段定位到上周三"
+   }
+  },
+  {
+   "case_id": "E196_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "ts": "2026-11-16 20:45",
+      "text": "截图两样：导出记录和上传失败提示，一起提交申诉。规则里申诉窗口到周日二十四点，别拖到最后一晚。"
+     }
+    ],
+    "clock": "2026-11-16 20:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "申诉材料齐了，心里有底",
+    "info_flow": "申诉材料与窗口期由 ME 点明"
+   }
+  },
+  {
+   "case_id": "E196_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-20 12:30",
+      "text": "周五我提交申诉了，材料齐全，编号20261120-17。组委会回复要三个工作日核，八成赶不上周日的中段颁奖了。"
+     }
+    ],
+    "clock": "2026-11-20 12:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "申诉交了但等得焦心",
+    "trigger": "审核周期可能错过阶段性颁奖"
+   }
+  },
+  {
+   "case_id": "E196_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "ts": "2026-11-20 12:55",
+      "text": "赶不上阶段性颁奖没关系，规则写明最终榜以更正后为准。你把申诉编号记牢，核结了要对照编号收结果。"
+     }
+    ],
+    "clock": "2026-11-20 13:00",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "被'最终榜'三个字安抚",
+    "stance": "接受阶段性缺席"
+   }
+  },
+  {
+   "case_id": "E196_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-24 09:50",
+      "text": "核完了！组委会认了是平台同步故障，里程更正为一百五十二，我升到第七，还发了更正说明。就是奖品按新名次要月底才补发。"
+     }
+    ],
+    "clock": "2026-11-24 09:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "更正落地，扬眉吐气",
+    "resolution": "成绩更正为152并升至第七"
+   }
+  },
+  {
+   "case_id": "E196_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "ts": "2026-11-24 10:20",
+      "text": "该是你的名次一分都跑不掉。月底领奖时把更正说明和申诉编号一并对一遍，别让补发漏了单。"
+     }
+    ],
+    "clock": "2026-11-24 10:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "得意被补上最后一道保险",
+    "info_flow": "领奖核对清单由 ME 给出"
+   }
+  },
+  {
+   "case_id": "E196_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-24 19:05",
+      "text": "我把编号和更正说明都归档了。看榜单发现第七名奖品是运动水壶，第八名只是毛巾，就差一档，东西倒不大，名次必须对。"
+     }
+    ],
+    "clock": "2026-11-24 19:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "归档完毕，较真得有理有据",
+    "resolution": "证据链闭环"
+   }
+  },
+  {
+   "case_id": "E196_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "ts": "2026-11-24 19:30",
+      "text": "既然较真就较到底：最后两周一起加练，冲前五，前五是骑行手套，正好换掉你那双磨边的。"
+     }
+    ],
+    "clock": "2026-11-24 19:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "被目标点燃",
+    "stance": "加练冲前五"
+   }
+  },
+  {
+   "case_id": "E196_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-24 21:15",
+      "text": "我算过了：前五门槛一百七十八，我一百五十二，还差二十六。两周十四天，每天多骑两公里就补上了，这买卖划算！"
+     }
+    ],
+    "clock": "2026-11-24 21:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "算完账决心落地",
+    "resolution": "加练计划量化成型"
+   }
+  },
+  {
+   "case_id": "E196_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-25 06:25",
+      "text": "首练完成！今早多骑了两公里，腿酸但痛快。明早六点半老时间，你敢不敢再陪一个'加量不加伤'的两公里？"
+     }
+    ],
+    "clock": "2026-11-25 06:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "首练达成，劲头正足",
+    "initiative": "晨练搭子日常化"
+   }
+  }
+ ]
+}

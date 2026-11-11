@@ -1,0 +1,2003 @@
+{
+ "story_id": "LRE139",
+ "turns": {
+  "LRE139_T01": {
+   "current_action": "肯定她报名的冲动，回答四个多月备训来得及，顺带说明抽签结果未出前按基础跑准备",
+   "acceptable_actions": [
+    "回答来得及，建议先按10公里基础跑维持等结果",
+    "肯定冲动，以自己首半马经验给一句定心",
+    "接住心虚，提醒她10公里58分的基础够起步"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A01",
+     "subject": "HER",
+     "relation": "参赛目标",
+     "value": "首次报名明年三月滨海半程马拉松抽签",
+     "valid_time": "2027-03赛前",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "首次报名明年三月滨海半程马拉松抽签"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE139_A02",
+     "subject": "HER",
+     "relation": "跑步基础",
+     "value": "跑龄两年，10公里最好成绩58分",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "最好成绩10公里58分"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不打包票也不泼冷水，把'抽签未定'这个事实摆清楚。",
+   "unknowns": [
+    "中签结果未出"
+   ],
+   "protected_expressions": [
+    "我脑子一热报了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构中签率官方数据"
+   ],
+   "case_id": "LRE139_T01"
+  },
+  "LRE139_T02": {
+   "current_action": "认可她先基础后强度的课表安排，确认这就是不白练的练法",
+   "acceptable_actions": [
+    "认可前八周基础跑方案，说这就是底子",
+    "接住'别白练'，说明基础跑本身就是训练",
+    "认可安排，顺口补一句周三夜跑照旧"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A03",
+     "subject": "HER",
+     "relation": "备训计划",
+     "value": "存下16周课表，前八周按10公里基础跑维持，中签后再上强度",
+     "valid_time": "2026-11-04起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T02",
+      "message_id": "m0",
+      "quote": "前八周我先按10公里基础跑维持着，等中签了再上强度"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A04",
+     "subject": "SHARED",
+     "relation": "课表来源",
+     "value": "16周课表由ME提供",
+     "valid_time": "2026-11-04前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T02",
+      "message_id": "m0",
+      "quote": "你发的那份16周课表我存了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的安排已经很合理，认可加微调即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别让我白练就行"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T02"
+  },
+  "LRE139_T03": {
+   "current_action": "对扩容传闻做归因处理：群里消息没进官方公告前当风闻，别让它影响训练计划",
+   "acceptable_actions": [
+    "标注风闻属性，建议以组委会公告为唯一口径",
+    "接住'不知道哪来的消息'，肯定她的怀疑是对的",
+    "轻回应：扩不扩容都改变不了先把基础打稳"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A05",
+     "subject": "PUBLIC",
+     "relation": "名额传闻",
+     "value": "跑群流传滨海扩容至两万人、中签率八成五，组委会公告未载",
+     "valid_time": "2026-11-09，未经证实",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T03",
+      "message_id": "m0",
+      "quote": "跑群里有人说今年滨海扩容到两万人，中签率能到八成五"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A06",
+     "subject": "PUBLIC",
+     "relation": "官方口径",
+     "value": "组委会公告中无扩容信息",
+     "valid_time": "截至2026-11-09",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T03",
+      "message_id": "m0",
+      "quote": "组委会公告里可没写"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的信息素养在线，别替传闻背书，教她按信源分级处理。",
+   "unknowns": [
+    "扩容传闻真伪未定"
+   ],
+   "protected_expressions": [
+    "组委会公告里可没写"
+   ],
+   "forbidden_factual_claims": [
+    "不得证实或证伪扩容传闻"
+   ],
+   "case_id": "LRE139_T03"
+  },
+  "LRE139_T04": {
+   "current_action": "接住结果延期公告的悬置感：承认这确实难受，把'结果未定'定性为中性状态，不建议提前加练",
+   "acceptable_actions": [
+    "共情悬着的难受，定性为中签是概率问题不是她的实力问题",
+    "建议她把'本月内公布'当噪音，按原课表走",
+    "接住30公里的比喻，劝她别为等结果透支训练热情"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "attribution",
+    "time_state",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A07",
+     "subject": "PUBLIC",
+     "relation": "结果公布安排",
+     "value": "中签结果由原定15号推迟至'本月内公布'，具体日期未定",
+     "valid_time": "2026-11-13公告，11月内",
+     "status": "uncertain",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T04",
+      "message_id": "m0",
+      "quote": "中签结果从原定的15号推迟到'本月内公布'，连个准日子都没有"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A08",
+     "subject": "PUBLIC",
+     "relation": "结果公布安排（前态）",
+     "value": "原定15号公布的安排作废",
+     "valid_time": "至2026-11-13",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T04",
+      "message_id": "m0",
+      "quote": "原定的15号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不确定类冲突轮：不猜结果、不代官方解释延期原因，只处理她的情绪和计划。",
+   "unknowns": [
+    "延期原因、最终公布日、中签结果均未定"
+   ],
+   "protected_expressions": [
+    "比跑30公里还累"
+   ],
+   "forbidden_factual_claims": [
+    "不得猜测延期原因并当事实陈述"
+   ],
+   "case_id": "LRE139_T04"
+  },
+  "LRE139_T05": {
+   "current_action": "支持她'当没中签准备'的方案：这是对不确定最健康的处理，间歇跑加一次别加多",
+   "acceptable_actions": [
+    "肯定方案，确认每周三次10公里加一次间歇的量安全",
+    "认可她把情绪转化为计划的能力，微调间歇跑配速建议",
+    "肯定并约定中签与否两种预案都先想好"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A09",
+     "subject": "HER",
+     "relation": "悬置期计划",
+     "value": "每周三次10公里加一次间歇跑，中签后再拉长距离",
+     "valid_time": "2026-11-16起至结果公布",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T05",
+      "message_id": "m0",
+      "quote": "维持每周三次10公里，顶多加一次间歇跑，等真中签了再拉长距离"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A10",
+     "subject": "PUBLIC",
+     "relation": "中签结果",
+     "value": "中签结果尚未公布，处于不确定状态",
+     "valid_time": "截至2026-11-16",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T04",
+      "message_id": "m0",
+      "quote": "到底是中还是不中啊"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她自己想通了，这轮做确认者不做指导者。",
+   "unknowns": [],
+   "protected_expressions": [
+    "免得空欢喜一场还练伤了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T05"
+  },
+  "LRE139_T06": {
+   "current_action": "接住中签大喜：把悬置正式画句号，答应盯她的长距离拉练，提醒16周从今天起按课表来",
+   "acceptable_actions": [
+    "一起兴奋，确认16周课表正式开始，答应盯拉练",
+    "祝贺中签，回扣'当没中签准备'的预案现在升级",
+    "接住感叹号，提醒她第一周别激动过量，循序渐进"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A11",
+     "subject": "HER",
+     "relation": "参赛资格",
+     "value": "获滨海半程马拉松参赛资格，中签确认",
+     "valid_time": "2026-11-21确认，2027-03比赛",
+     "status": "confirmed",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T06",
+      "message_id": "m0",
+      "quote": "恭喜您获得滨海半程马拉松参赛资格"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A12",
+     "subject": "HER",
+     "relation": "参赛目标（前态）",
+     "value": "此前参赛资格处于抽签未定状态",
+     "valid_time": "2026-11-02至11-20",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T04",
+      "message_id": "m0",
+      "quote": "到底是中还是不中啊"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "本故事不确定线的解除节点：高兴要真高兴，顺手把训练纪律立住。",
+   "unknowns": [],
+   "protected_expressions": [
+    "长距离拉练你可得盯着点我"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T06"
+  },
+  "LRE139_T07": {
+   "current_action": "深夜身体信号轮：叮嘱冰敷和休息，明确支持明天歇一天，允许简短或不回",
+   "acceptable_actions": [
+    "叮嘱冰敷加拉伸，明确说歇一天是训练的一部分",
+    "一句'听话，别看手机'式的短回应加晚安",
+    "认可她主动报备，提醒右膝紧就减下周强度"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A13",
+     "subject": "HER",
+     "relation": "身体状态",
+     "value": "拉12公里后右膝外侧发紧，疑似跑姿老毛病，当晚冰敷休息",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T07",
+      "message_id": "m0",
+      "quote": "右膝外侧有点紧，大概是跑姿老毛病"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A14",
+     "subject": "HER",
+     "relation": "训练纪律",
+     "value": "主动歇一天防止伤病，与'看了就想加练'的冲动对抗",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T07",
+      "message_id": "m0",
+      "quote": "明天歇一天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她怕自己加练才发这条，回复的任务是替她把'休息'合法化。",
+   "unknowns": [
+    "膝伤程度未定"
+   ],
+   "protected_expressions": [
+    "别让我看手机"
+   ],
+   "forbidden_factual_claims": [
+    "不得诊断伤情"
+   ],
+   "case_id": "LRE139_T07"
+  },
+  "LRE139_T08": {
+   "current_action": "接住恢复的好消息和跑鞋咨询：给出新手半马先用训练鞋的建议，把碳板定位说清",
+   "acceptable_actions": [
+    "建议先不上碳板，训练鞋够用，碳板等成绩稳定再谈",
+    "认可柜姐的说法，补充600公里换鞋的判断标准",
+    "给出务实建议并顺口确认膝伤完全好转"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A15",
+     "subject": "HER",
+     "relation": "膝伤状态",
+     "value": "右膝经髂胫束放松已明显好转",
+     "valid_time": "2026-11-30",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T08",
+      "message_id": "m0",
+      "quote": "膝盖好多了，你推荐的髂胫束放松动作真管用"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A16",
+     "subject": "PUBLIC",
+     "relation": "跑鞋争议",
+     "value": "碳板鞋对新手半马是否必要存在不同说法",
+     "valid_time": "2026-11-30",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T08",
+      "message_id": "m0",
+      "quote": "柜姐说新手半马不一定要上碳板"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "装备咨询给明确立场，别当墙头草。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你帮我参谋参谋"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构碳板鞋性能数据"
+   ],
+   "case_id": "LRE139_T08"
+  },
+  "LRE139_T09": {
+   "current_action": "接住她采纳建议的务实选择，肯定'先当务实的那个'，顺带夸腿套空顶帽配置合理",
+   "acceptable_actions": [
+    "肯定务实选择，说600公里计划比碳板更有价值",
+    "接住装备党的梗，认可新装备的实用性",
+    "肯定并提醒她把训练鞋里程记下来到点提醒"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A17",
+     "subject": "HER",
+     "relation": "装备决定",
+     "value": "暂不买碳板，训练鞋穿到600公里再换，购入压缩腿套与空顶帽",
+     "valid_time": "2026-12-03",
+     "status": "confirmed",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T09",
+      "message_id": "m0",
+      "quote": "先不买碳板，把训练鞋穿到600公里再换"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A18",
+     "subject": "PUBLIC",
+     "relation": "跑鞋争议",
+     "value": "碳板鞋必要性争议以'暂缓购买'方式处理",
+     "valid_time": "2026-12-03",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T08",
+      "message_id": "m0",
+      "quote": "新手半马不一定要上碳板"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她听劝了，这轮给正反馈，鼓励这个决策习惯。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我先当务实的那个"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T09"
+  },
+  "LRE139_T10": {
+   "current_action": "接住阶段成果并回答牛肉面之约：定个周末时间兑现，顺带校准一下配速预期",
+   "acceptable_actions": [
+    "肯定进度，答应周末兑现牛肉面并定时间",
+    "接住配速数据，说6分10完赛有余量，面必须请",
+    "确认约饭，顺带提醒她长距离后补给要跟上"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A19",
+     "subject": "HER",
+     "relation": "训练进度",
+     "value": "16周过三分之一，最远14公里，配速6分10",
+     "valid_time": "2026-12-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T10",
+      "message_id": "m0",
+      "quote": "16周过三分之一，最远拉到14公里，配速6分10"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A20",
+     "subject": "SHARED",
+     "relation": "牛肉面之约",
+     "value": "跑后牛肉面之约待兑现",
+     "valid_time": "约定成立起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T10",
+      "message_id": "m0",
+      "quote": "周末那顿跑后的牛肉面，什么时候兑现？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她用约饭试探周末，答应得自然点，别装没看懂。",
+   "unknowns": [
+    "牛肉面具体时间未定"
+   ],
+   "protected_expressions": [
+    "什么时候兑现？"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言完赛成绩"
+   ],
+   "case_id": "LRE139_T10"
+  },
+  "LRE139_T11": {
+   "current_action": "接住回老家的安排：答应云监督打卡，认可她把课表导进手表的做法",
+   "acceptable_actions": [
+    "答应云监督，说每日打卡照片照单全收",
+    "认可她的安排，提醒老家滨江跑道夜跑注意保暖",
+    "答应监督，顺口说过年吃胖的账开春跑回来"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A21",
+     "subject": "HER",
+     "relation": "假期训练安排",
+     "value": "寒假回老家半月，课表导入手表，滨江跑道每日打卡拍照云监督",
+     "valid_time": "寒假半月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T11",
+      "message_id": "m0",
+      "quote": "训练计划我导出到手表了，老家有滨江跑道，每日打卡拍照发你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A22",
+     "subject": "SHARED",
+     "relation": "牛肉面之约",
+     "value": "跑后牛肉面之约已约定待兑现",
+     "valid_time": "约定成立起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T10",
+      "message_id": "m0",
+      "quote": "周末那顿跑后的牛肉面"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动制造联系理由，接住就好，不必点破。",
+   "unknowns": [
+    "回老家具体日期未报出"
+   ],
+   "protected_expressions": [
+    "别让课表断在过年"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T11"
+  },
+  "LRE139_T12": {
+   "current_action": "接住赛前八周陪跑之约与'终点线等我冲线'的关键一问：答应陪跑，终点线的请求大方接下，暧昧关系往前半步",
+   "acceptable_actions": [
+    "答应赛前八周长距离陪跑，终点线的位置也答应下来",
+    "接住冲线请求，用自己的方式说'终点线见'推进关系",
+    "答应陪跑并调侃她到时要留力气冲线别分心找人"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "initiative",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A23",
+     "subject": "SHARED",
+     "relation": "赛前陪跑之约",
+     "value": "农历年后赛前八周关键期，长距离由ME陪同",
+     "valid_time": "2027年赛前八周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T12",
+      "message_id": "m0",
+      "quote": "到时候长距离你陪我跑不"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A24",
+     "subject": "SHARED",
+     "relation": "终点线之约",
+     "value": "HER希望ME在滨海半马终点线等她冲线",
+     "valid_time": "2027-03比赛日",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T12",
+      "message_id": "m0",
+      "quote": "我想让你在终点线等我冲线"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE139_A25",
+     "subject": "HER",
+     "relation": "参赛目标（闭环）",
+     "value": "从中签悬置到赛前八周，训练目标稳步推进",
+     "valid_time": "2026-11-21起",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T06",
+      "message_id": "m0",
+      "quote": "16周课表从今天正式开始"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "全篇的关键一问在暧昧线上，接的姿态比措辞重要：不躲、不越、稳稳接住。",
+   "unknowns": [
+    "比赛成绩与关系走向未定"
+   ],
+   "protected_expressions": [
+    "在终点线等我冲线"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T12"
+  },
+  "LRE139_T13": {
+   "current_action": "接住面约兑现：肯定16公里进度，接住出发前的夜跑之约",
+   "acceptable_actions": [
+    "肯定16公里配速，答应夜跑不缺席",
+    "接住面的香气梗，说这碗面她请得名副其实",
+    "确认夜跑时间，顺带问回家行李清单"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A26",
+     "subject": "SHARED",
+     "relation": "面约兑现",
+     "value": "跑后牛肉面之约已兑现",
+     "valid_time": "2026-12-27",
+     "status": "fulfilled",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T13",
+      "message_id": "m0",
+      "quote": "牛肉面兑现完毕"
+     }
+    },
+    {
+     "atom_id": "LRE139_A27",
+     "subject": "HER",
+     "relation": "训练进度",
+     "value": "长距离拉练完成16公里，配速6分05",
+     "valid_time": "2026-12-27",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T13",
+      "message_id": "m0",
+      "quote": "长距离16公里，配速6分05"
+     }
+    },
+    {
+     "atom_id": "LRE139_A28",
+     "subject": "SHARED",
+     "relation": "牛肉面旧约回扣",
+     "value": "周末跑后牛肉面之约此前待兑现",
+     "valid_time": "2026-12-08约定",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T10",
+      "message_id": "m0",
+      "quote": "周末那顿跑后的牛肉面，什么时候兑现？"
+     }
+    }
+   ],
+   "private_guidance": "出窗回扣轮：面约兑现是这段关系的甜点，接住即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "值得写进日记"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T13"
+  },
+  "LRE139_T14": {
+   "current_action": "接住出发前安排：答应接定位，认可她把课表和装备的安排",
+   "acceptable_actions": [
+    "答应接定位，说云监督已就位",
+    "认可她的行李安排，提醒降温注意保暖",
+    "确认手表课表同步无误，说打卡照单全收"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A29",
+     "subject": "HER",
+     "relation": "出发准备",
+     "value": "回乡行李就绪，课表导入手表、跑鞋与压缩腿套随身",
+     "valid_time": "2026-12-29",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T14",
+      "message_id": "m0",
+      "quote": "课表在手表里，跑鞋在箱子里最上层"
+     }
+    },
+    {
+     "atom_id": "LRE139_A30",
+     "subject": "SHARED",
+     "relation": "云监督回扣",
+     "value": "假期训练由ME云监督、每日打卡拍照",
+     "valid_time": "2026-12-14约定",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T11",
+      "message_id": "m0",
+      "quote": "每日打卡拍照发你"
+     }
+    },
+    {
+     "atom_id": "LRE139_A31",
+     "subject": "HER",
+     "relation": "装备回扣",
+     "value": "压缩腿套为此前置办的装备之一",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T09",
+      "message_id": "m0",
+      "quote": "省下钱置办了压缩腿套和空顶帽"
+     }
+    }
+   ],
+   "private_guidance": "出窗回扣轮：她的安排已经很完整，确认加一句叮嘱就好。",
+   "unknowns": [
+    "到家具体时间未报"
+   ],
+   "protected_expressions": [
+    "云监督要正式上岗了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T14"
+  },
+  "LRE139_T15": {
+   "current_action": "接住假期首跑打卡：笑接她妈妈的提问，认可风大配速掉属正常",
+   "acceptable_actions": [
+    "笑接她妈妈的提问，说陪跑加终点线是全套服务",
+    "认可配速波动正常，风大别硬顶",
+    "肯定首跑打卡，提醒热身充分"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A32",
+     "subject": "HER",
+     "relation": "假期首跑",
+     "value": "老家滨江跑道首跑完成，配速受大风影响略降",
+     "valid_time": "2027-01-01",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T15",
+      "message_id": "m0",
+      "quote": "老家第一跑打卡"
+     }
+    },
+    {
+     "atom_id": "LRE139_A33",
+     "subject": "SHARED",
+     "relation": "终点线之约回扣",
+     "value": "HER此前提出让ME在滨海半马终点线等她冲线",
+     "valid_time": "2026-12-20约定",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T12",
+      "message_id": "m0",
+      "quote": "我想让你在终点线等我冲线"
+     }
+    }
+   ],
+   "private_guidance": "出窗回扣轮：她把终点线之约讲给家人听，接得自然带一点甜。",
+   "unknowns": [],
+   "protected_expressions": [
+    "风景值这个差价"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T15"
+  },
+  "LRE139_T16": {
+   "current_action": "接住寒潮变通：肯定'安全第一改室内'的判断，认可按公里数凑的降档方案",
+   "acceptable_actions": [
+    "肯定改室内的判断，冰面跑步不值得冒险",
+    "认可跑步机凑量的降档方案，回城再上质量",
+    "接住原地赶路的吐槽，提醒机带坡度补一点"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A34",
+     "subject": "PUBLIC",
+     "relation": "寒潮封路",
+     "value": "寒潮预警致滨江跑道结冰无法路跑",
+     "valid_time": "2027-01-04",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T16",
+      "message_id": "m0",
+      "quote": "滨江跑道结冰了"
+     }
+    },
+    {
+     "atom_id": "LRE139_A35",
+     "subject": "HER",
+     "relation": "训练变通",
+     "value": "改县体育馆跑步机完成8公里，质量课回城补",
+     "valid_time": "2027-01-04",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T16",
+      "message_id": "m0",
+      "quote": "改去县体育馆跑步机，8公里完成"
+     }
+    },
+    {
+     "atom_id": "LRE139_A36",
+     "subject": "HER",
+     "relation": "计划降档",
+     "value": "课表暂按公里数凑数，降低质量要求",
+     "valid_time": "2027-01-04起至回城",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T16",
+      "message_id": "m0",
+      "quote": "课表我先按公里数凑，回城再补质量"
+     }
+    }
+   ],
+   "private_guidance": "变通轮：她的方案已经保守得宜，做确认者不做指导者。",
+   "unknowns": [
+    "寒潮持续天数未定"
+   ],
+   "protected_expressions": [
+    "机带上跑着像在原地赶路"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T16"
+  },
+  "LRE139_T17": {
+   "current_action": "旧事复活陷阱（转述失真）：确认正确口径是半马，支持她纠正，别顺着全马接话",
+   "acceptable_actions": [
+    "确认是半马口径，夸她纠正得及时",
+    "接住传话的吐槽，说转述失真很常见",
+    "建议她把报名截图发家族群一锤定音"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A37",
+     "subject": "PUBLIC",
+     "relation": "误传版本",
+     "value": "亲戚间流传路遥报的是全马",
+     "valid_time": "2027-01-07",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T17",
+      "message_id": "m0",
+      "quote": "我姑跟亲戚说我报的是全马"
+     }
+    },
+    {
+     "atom_id": "LRE139_A38",
+     "subject": "HER",
+     "relation": "真实口径回扣",
+     "value": "路遥实际报名的是明年三月滨海半程马拉松",
+     "valid_time": "2026-11-02报名",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T01",
+      "message_id": "m0",
+      "quote": "报了明年三月的滨海半马"
+     }
+    }
+   ],
+   "private_guidance": "陷阱轮：错误版本是'全马'，正确路径是回到11-02报名的半马口径，不沿用误传。",
+   "unknowns": [],
+   "protected_expressions": [
+    "传话这东西，比配速掉得还快"
+   ],
+   "forbidden_factual_claims": [
+    "不得顺着全马口径回应",
+    "不得虚构她改报全马"
+   ],
+   "case_id": "LRE139_T17"
+  },
+  "LRE139_T18": {
+   "current_action": "接住周报：肯定打卡没断的执行力，体重波动轻描淡写不必放大",
+   "acceptable_actions": [
+    "肯定打卡连续，说体重这点波动跑量会找回",
+    "接住爱的重量的梗，说过年这账人人都欠",
+    "认可她的理性，提醒回城别报复性加量"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A39",
+     "subject": "HER",
+     "relation": "打卡执行",
+     "value": "假期第二周训练打卡未中断",
+     "valid_time": "2027-01-11",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T18",
+      "message_id": "m0",
+      "quote": "打卡没断过"
+     }
+    },
+    {
+     "atom_id": "LRE139_A40",
+     "subject": "HER",
+     "relation": "体重波动",
+     "value": "假期体重较出发前增加一公斤半，计划回城减量期处理",
+     "valid_time": "2027-01-11",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T18",
+      "message_id": "m0",
+      "quote": "比走前重了一公斤半"
+     }
+    }
+   ],
+   "private_guidance": "她自嘲是求安抚不是求方案，语气放轻。",
+   "unknowns": [],
+   "protected_expressions": [
+    "碳水化合物里有一半是爱的重量"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T18"
+  },
+  "LRE139_T19": {
+   "current_action": "接住膝紧复现：先肯定她刹车的果断，再提醒按老方法处理观察，不上强度",
+   "acceptable_actions": [
+    "肯定刹车果断，休息是对的",
+    "提醒冰敷加放松，观察两天再恢复",
+    "接住学乖了的自评，说这次处理比上次快"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A41",
+     "subject": "HER",
+     "relation": "膝紧复现",
+     "value": "跑山后右膝外侧再次发紧",
+     "valid_time": "2027-01-14",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T19",
+      "message_id": "m0",
+      "quote": "右膝外侧又有点紧"
+     }
+    },
+    {
+     "atom_id": "LRE139_A42",
+     "subject": "HER",
+     "relation": "主动降档",
+     "value": "当场做髂胫束放松并定次日休息，不再跑山",
+     "valid_time": "2027-01-14起",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T19",
+      "message_id": "m0",
+      "quote": "明天休息，山就到这，不贪"
+     }
+    },
+    {
+     "atom_id": "LRE139_A43",
+     "subject": "HER",
+     "relation": "膝伤旧况回扣",
+     "value": "11月底曾拉12公里后右膝外侧发紧",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T07",
+      "message_id": "m0",
+      "quote": "右膝外侧有点紧"
+     }
+    },
+    {
+     "atom_id": "LRE139_A44",
+     "subject": "HER",
+     "relation": "放松方法回扣",
+     "value": "ME推荐的髂胫束放松动作此前确认有效",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T08",
+      "message_id": "m0",
+      "quote": "你推荐的髂胫束放松动作真管用"
+     }
+    }
+   ],
+   "private_guidance": "伤情信号轮：她已学乖，这轮肯定她的处置速度，别吓唬也别诊断。",
+   "unknowns": [
+    "膝紧程度未定"
+   ],
+   "protected_expressions": [
+    "山就到这，不贪"
+   ],
+   "forbidden_factual_claims": [
+    "不得诊断伤情"
+   ],
+   "case_id": "LRE139_T19"
+  },
+  "LRE139_T20": {
+   "current_action": "低压力恢复轮：接住膝愈的好消息，允许简短回应",
+   "acceptable_actions": [
+    "简短接住：无感就是最好的消息",
+    "肯定睡前仪式的坚持，说恢复就靠这个",
+    "答应云跑，道晚安收尾"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A45",
+     "subject": "HER",
+     "relation": "膝愈确认",
+     "value": "右膝不适消退，恢复慢跑5公里全程无感",
+     "valid_time": "2027-01-17",
+     "status": "resolved",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T20",
+      "message_id": "m0",
+      "quote": "膝盖没事了"
+     }
+    },
+    {
+     "atom_id": "LRE139_A46",
+     "subject": "HER",
+     "relation": "恢复量",
+     "value": "慢跑5公里",
+     "valid_time": "2027-01-17",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T20",
+      "message_id": "m0",
+      "quote": "恢复慢跑5公里"
+     }
+    }
+   ],
+   "private_guidance": "她说了今晚早点睡，回复短一点最合适。",
+   "unknowns": [],
+   "protected_expressions": [
+    "放松动作现在是我的睡前仪式"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T20"
+  },
+  "LRE139_T21": {
+   "current_action": "接住返程安排：答应收下腊肠，确认赛前八周衔接的时间账",
+   "acceptable_actions": [
+    "答应收腊肠，说阿姨想得周到",
+    "接住一天不差，认可她的计划能力",
+    "确认24号接站，说关键期一起开跑"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A47",
+     "subject": "HER",
+     "relation": "返程安排",
+     "value": "1月24日回城",
+     "valid_time": "2027-01-24",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T21",
+      "message_id": "m0",
+      "quote": "24号回城"
+     }
+    },
+    {
+     "atom_id": "LRE139_A48",
+     "subject": "HER",
+     "relation": "腊肠之礼",
+     "value": "妈妈塞的腊肠点名带给陪跑的ME",
+     "valid_time": "2027-01-24",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T21",
+      "message_id": "m0",
+      "quote": "我妈塞的腊肠，说给那个陪跑的也带点"
+     }
+    },
+    {
+     "atom_id": "LRE139_A49",
+     "subject": "SHARED",
+     "relation": "赛前八周回扣",
+     "value": "农历年后回城衔接赛前八周关键期",
+     "valid_time": "2026-12-20约定",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T12",
+      "message_id": "m0",
+      "quote": "正好赶上赛前八周关键期"
+     }
+    }
+   ],
+   "private_guidance": "出窗回扣轮：她连日期都算好了，接住这份用心。",
+   "unknowns": [],
+   "protected_expressions": [
+    "给那个陪跑的也带点"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T21"
+  },
+  "LRE139_T22": {
+   "current_action": "接住回城开练：确认明天合练，认可从14公里起步的稳妥起点",
+   "acceptable_actions": [
+    "确认明天合练时间地点",
+    "认可14公里起步，说两三天就回状态",
+    "接住双线作战，说体重线好办"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A50",
+     "subject": "HER",
+     "relation": "回城确认",
+     "value": "温柠1月24日晚回到城中",
+     "valid_time": "2027-01-24",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T22",
+      "message_id": "m0",
+      "quote": "回城了"
+     }
+    },
+    {
+     "atom_id": "LRE139_A51",
+     "subject": "SHARED",
+     "relation": "合练重启",
+     "value": "次日恢复线下合练，长距离自14公里起步",
+     "valid_time": "2027-01-25起",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T22",
+      "message_id": "m0",
+      "quote": "明天恢复合练，长距离从14公里起步往上加"
+     }
+    },
+    {
+     "atom_id": "LRE139_A52",
+     "subject": "HER",
+     "relation": "里程基准回扣",
+     "value": "此前最远拉到14公里、配速6分10",
+     "valid_time": "2026-12-08",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T10",
+      "message_id": "m0",
+      "quote": "最远拉到14公里，配速6分10"
+     }
+    }
+   ],
+   "private_guidance": "出窗回扣轮：14公里是她十二月的老基准，接住这口气的延续。",
+   "unknowns": [],
+   "protected_expressions": [
+    "先把跑鞋摆在门口"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T22"
+  },
+  "LRE139_T23": {
+   "current_action": "接住合练战报：肯定16公里的状态，接住'科学结论'的梗，确认陪跑接管",
+   "acceptable_actions": [
+    "肯定16公里，说膝盖无感就是满分答卷",
+    "接住科学结论的梗，说陪跑确实稳配速",
+    "确认陪跑接管，把关键期课表排出来"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A53",
+     "subject": "HER",
+     "relation": "合练战报",
+     "value": "合练长距离16公里完成，配速6分08，膝盖无感",
+     "valid_time": "2027-01-28",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T23",
+      "message_id": "m0",
+      "quote": "16公里拉完，配速6分08"
+     }
+    },
+    {
+     "atom_id": "LRE139_A54",
+     "subject": "SHARED",
+     "relation": "陪跑接管",
+     "value": "云监督结束，转为线下陪跑",
+     "valid_time": "2027-01-28起",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T23",
+      "message_id": "m0",
+      "quote": "云监督正式下岗，换成线下陪跑上岗"
+     }
+    },
+    {
+     "atom_id": "LRE139_A55",
+     "subject": "SHARED",
+     "relation": "云监督回扣",
+     "value": "假期期间曾由ME云监督打卡",
+     "valid_time": "2026-12-14至2027-01-24",
+     "status": "fulfilled",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T11",
+      "message_id": "m0",
+      "quote": "帮我云监督"
+     }
+    }
+   ],
+   "private_guidance": "出窗回扣轮：云监督这条线正式收官，收得暖一点。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这属于科学结论"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T23"
+  },
+  "LRE139_T24": {
+   "current_action": "接住分区出错：肯定她立刻申诉的做法，提醒附上证明原件等回复，不猜结果",
+   "acceptable_actions": [
+    "肯定申诉及时，提醒邮件里写清规则依据",
+    "安抚焦急，说成绩证明在手更正有理有据",
+    "建议她保存通话记录和邮件回执"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A56",
+     "subject": "PUBLIC",
+     "relation": "分区异常",
+     "value": "参赛号分区被分D区，与提交的成绩证明不符",
+     "valid_time": "2027-01-31",
+     "status": "uncertain",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T24",
+      "message_id": "m0",
+      "quote": "分区给我分到D区"
+     }
+    },
+    {
+     "atom_id": "LRE139_A57",
+     "subject": "HER",
+     "relation": "申诉动作",
+     "value": "已按组委会要求发邮件附证明申请更正",
+     "valid_time": "2027-01-31",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T24",
+      "message_id": "m0",
+      "quote": "发邮件附证明申请更正"
+     }
+    },
+    {
+     "atom_id": "LRE139_A58",
+     "subject": "HER",
+     "relation": "成绩证明回扣",
+     "value": "10公里最好成绩58分",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "最好成绩10公里58分"
+     }
+    }
+   ],
+   "private_guidance": "信息更正轮：证据在她手里，这轮给她流程信心，不猜组委会结果。",
+   "unknowns": [
+    "更正结果未回"
+   ],
+   "protected_expressions": [
+    "按规则应该在B区"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言更正必然成功"
+   ],
+   "case_id": "LRE139_T24"
+  },
+  "LRE139_T25": {
+   "current_action": "接住更正闭环：肯定她的证据习惯，把这次的流程沉淀为经验",
+   "acceptable_actions": [
+    "肯定存档习惯，说这次处理是模板级",
+    "接住早交早安心，说这条经验值回邮件",
+    "确认B区分区，说起跑位置舒服了"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A59",
+     "subject": "PUBLIC",
+     "relation": "更正结果",
+     "value": "分区经核实更正为B区，新参赛号已发",
+     "valid_time": "2027-02-03",
+     "status": "resolved",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T25",
+      "message_id": "m0",
+      "quote": "核实无误，改成B区"
+     }
+    },
+    {
+     "atom_id": "LRE139_A60",
+     "subject": "HER",
+     "relation": "证据存档",
+     "value": "往来邮件全部存档备查",
+     "valid_time": "2027-02-03起",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T25",
+      "message_id": "m0",
+      "quote": "邮件我全存档"
+     }
+    }
+   ],
+   "private_guidance": "闭环轮：把流程夸到位，别再翻旧焦虑。",
+   "unknowns": [],
+   "protected_expressions": [
+    "早交早安心"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T25"
+  },
+  "LRE139_T26": {
+   "current_action": "接住课表收官：给她点这个赞，回扣当初存课表的起点",
+   "acceptable_actions": [
+    "大方点赞，说一格没跳是硬成绩",
+    "回扣存课表那天，说白练从没发生过",
+    "肯定18公里收工，提醒赛后恢复别省"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A61",
+     "subject": "SHARED",
+     "relation": "课表收官",
+     "value": "16周课表全部走完，长距离18公里收工",
+     "valid_time": "2026-11-21至2027-02-06",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T26",
+      "message_id": "m0",
+      "quote": "16周课表今天走到最后一格"
+     }
+    },
+    {
+     "atom_id": "LRE139_A62",
+     "subject": "HER",
+     "relation": "课表起点回扣",
+     "value": "16周课表由ME提供、她11月初存下",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T02",
+      "message_id": "m0",
+      "quote": "你发的那份16周课表我存了"
+     }
+    }
+   ],
+   "private_guidance": "出窗回扣轮：这是整条训练线的里程碑，把赞给足。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一格没跳"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T26"
+  },
+  "LRE139_T27": {
+   "current_action": "接住换鞋决定：肯定她试过再选的流程，认可务实派守住",
+   "acceptable_actions": [
+    "认可试穿再决定，说心慌就是答案",
+    "肯定轻量训练鞋的选择，比赛稳定优先",
+    "接住务实派的梗，说这派从来没输过"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A63",
+     "subject": "HER",
+     "relation": "里程达标",
+     "value": "训练鞋累计里程达600公里",
+     "valid_time": "2027-02-10",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T27",
+      "message_id": "m0",
+      "quote": "训练鞋里程到600了"
+     }
+    },
+    {
+     "atom_id": "LRE139_A64",
+     "subject": "SHARED",
+     "relation": "换鞋约定回扣",
+     "value": "此前约定训练鞋穿到600公里再换",
+     "valid_time": "2026-12-03约定",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T09",
+      "message_id": "m0",
+      "quote": "把训练鞋穿到600公里再换"
+     }
+    },
+    {
+     "atom_id": "LRE139_A65",
+     "subject": "HER",
+     "relation": "换鞋决定",
+     "value": "试碳板后选同系列轻量训练鞋",
+     "valid_time": "2027-02-10",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T27",
+      "message_id": "m0",
+      "quote": "最后拿了同系列轻量训练鞋"
+     }
+    }
+   ],
+   "private_guidance": "出窗回扣轮：600公里的约定兑现了，强调'试过再选'这个流程价值。",
+   "unknowns": [],
+   "protected_expressions": [
+    "新手就别折腾弹簧了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构碳板鞋性能数据"
+   ],
+   "case_id": "LRE139_T27"
+  },
+  "LRE139_T28": {
+   "current_action": "接住降量周：认可先稳后冲的思路贯穿全程，笑接她口误的梗",
+   "acceptable_actions": [
+    "认可先稳后冲，说这套思路已经是她的了",
+    "接住口误的梗，说全马的事先欠着",
+    "确认降量安排，提醒睡眠补足"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A66",
+     "subject": "SHARED",
+     "relation": "降量安排",
+     "value": "赛前四周进入调整降量周",
+     "valid_time": "2027-02-13起",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T28",
+      "message_id": "m0",
+      "quote": "赛前四周调整周，课表降量"
+     }
+    },
+    {
+     "atom_id": "LRE139_A67",
+     "subject": "HER",
+     "relation": "悬置期预案回扣",
+     "value": "结果未定时曾决定'就当没中签准备'",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T05",
+      "message_id": "m0",
+      "quote": "就当没中签准备"
+     }
+    }
+   ],
+   "private_guidance": "出窗回扣轮：她自己把两个月前的预案串成了方法论，点破这份成长。",
+   "unknowns": [],
+   "protected_expressions": [
+    "先稳后冲"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T28"
+  },
+  "LRE139_T29": {
+   "current_action": "旧事复活陷阱：明确提醒无官方公告的群里协议不能签，回扣上次'公告里可没写'的先例，建议官方渠道核实",
+   "acceptable_actions": [
+    "明确说别签，先查组委会公告和官方APP",
+    "回扣上次传闻先例，说同款套路认得出",
+    "建议她问组委会客服留个书面记录"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A68",
+     "subject": "PUBLIC",
+     "relation": "协议谣言",
+     "value": "跑群流传扩容名额需补签'风险自担协议'否则取消资格",
+     "valid_time": "2027-02-16",
+     "status": "uncertain",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T29",
+      "message_id": "m0",
+      "quote": "扩容的名额要补签'风险自担协议'，不签就取消资格"
+     }
+    },
+    {
+     "atom_id": "LRE139_A69",
+     "subject": "PUBLIC",
+     "relation": "传闻先例回扣",
+     "value": "上次扩容传闻未经组委会公告证实",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T03",
+      "message_id": "m0",
+      "quote": "组委会公告里可没写"
+     }
+    }
+   ],
+   "private_guidance": "陷阱轮：错误版本是'必须补签协议'，正确路径是回到官方公告口径，不沿用传闻、不在群里签任何东西。",
+   "unknowns": [
+    "传闻真伪未定"
+   ],
+   "protected_expressions": [
+    "说得有鼻子有眼"
+   ],
+   "forbidden_factual_claims": [
+    "不得证实传闻",
+    "不得建议在群内签署协议"
+   ],
+   "case_id": "LRE139_T29"
+  },
+  "LRE139_T30": {
+   "current_action": "接住辟谣闭环：肯定她官方核实的路径正确，把信源分级的账算清",
+   "acceptable_actions": [
+    "肯定核实路径，说公告栏是唯一权威口径",
+    "接住同一个坑的梗，说这次是主动免疫",
+    "肯定客服确认+删帖的闭环，翻篇",
+    "提醒她把辟谣截图留在跑群做正面示范"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A70",
+     "subject": "PUBLIC",
+     "relation": "官方核实",
+     "value": "组委会公告与客服均确认无补签协议一事",
+     "valid_time": "2027-02-19",
+     "status": "resolved",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T30",
+      "message_id": "m0",
+      "quote": "公告栏干干净净，什么补充协议都没有"
+     }
+    },
+    {
+     "atom_id": "LRE139_A71",
+     "subject": "THIRD",
+     "relation": "造谣者动态",
+     "value": "跑群发通知者已删帖",
+     "valid_time": "2027-02-19",
+     "status": "resolved",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T30",
+      "message_id": "m0",
+      "quote": "发通知的那位删帖了"
+     }
+    },
+    {
+     "atom_id": "LRE139_A72",
+     "subject": "PUBLIC",
+     "relation": "协议谣言（作废）",
+     "value": "补签协议传闻被官方证实为不实",
+     "valid_time": "2027-02-16至02-19",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T29",
+      "message_id": "m0",
+      "quote": "扩容的名额要补签'风险自担协议'，不签就取消资格"
+     }
+    }
+   ],
+   "private_guidance": "陷阱收口轮：作废的错误版本要点名，肯定她的反应速度。",
+   "unknowns": [],
+   "protected_expressions": [
+    "同一个坑不摔第二次"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T30"
+  },
+  "LRE139_T31": {
+   "current_action": "接住行程敲定：确认周五高铁与住宿，接住灯塔举牌的约定",
+   "acceptable_actions": [
+    "确认周五同行，说灯塔位置记下了",
+    "肯定模拟21公里的余量，说状态正合适",
+    "接住举牌的约定，说终点线见"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A73",
+     "subject": "HER",
+     "relation": "模拟拉练",
+     "value": "赛前减量周模拟21.0975公里，配速6分整",
+     "valid_time": "2027-02-24",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T31",
+      "message_id": "m0",
+      "quote": "今天模拟21.0975公里，配速6分整"
+     }
+    },
+    {
+     "atom_id": "LRE139_A74",
+     "subject": "SHARED",
+     "relation": "赛程行程",
+     "value": "周五下午高铁赴滨海，住宿订在起点一公里内",
+     "valid_time": "2027-02-26出发",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T31",
+      "message_id": "m0",
+      "quote": "周五下午的高铁去滨海，住宿订在起点一公里内"
+     }
+    },
+    {
+     "atom_id": "LRE139_A75",
+     "subject": "SHARED",
+     "relation": "终点线之约回扣",
+     "value": "ME将在终点线等她冲线",
+     "valid_time": "2026-12-20约定",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T12",
+      "message_id": "m0",
+      "quote": "我想让你在终点线等我冲线"
+     }
+    }
+   ],
+   "private_guidance": "出窗回扣轮：终点线之约从口头落到行程，接得稳一点、暖一点。",
+   "unknowns": [
+    "赛前天气未定"
+   ],
+   "protected_expressions": [
+    "有个灯塔，很好认"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T31"
+  },
+  "LRE139_T32": {
+   "current_action": "收尾轮：接住赛前清单与冲线之约，把周六的期待稳稳接下",
+   "acceptable_actions": [
+    "确认周六终点线之约，说灯塔下见",
+    "肯定清单打钩，说万事俱备只等枪响",
+    "接住不许赖，说这话记在账上了"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE139_A76",
+     "subject": "HER",
+     "relation": "赛前准备",
+     "value": "号码布、空顶帽、腿套、能量胶逐项打钩，仅剩轻松跑",
+     "valid_time": "2027-02-28",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T32",
+      "message_id": "m0",
+      "quote": "号码布、空顶帽、腿套、能量胶，逐项打钩"
+     }
+    },
+    {
+     "atom_id": "LRE139_A77",
+     "subject": "SHARED",
+     "relation": "终点线之约回扣",
+     "value": "ME在滨海半马终点线等她冲线",
+     "valid_time": "2027-03-06比赛日",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE139_T12",
+      "message_id": "m0",
+      "quote": "在终点线等我冲线"
+     }
+    }
+   ],
+   "private_guidance": "收尾轮：全篇停在枪响前，钩子就是周六终点线，别再加新线。",
+   "unknowns": [
+    "比赛成绩未定"
+   ],
+   "protected_expressions": [
+    "不许赖"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "LRE139_T32"
+  }
+ }
+}

@@ -1,0 +1,798 @@
+{
+ "story_id": "E301",
+ "turns": {
+  "E301_T01": {
+   "case_id": "E301_T01",
+   "current_action": "HER 交完季度汇报第十四版，用自造文件名'汇报_最终版_打死不改版'自嘲，玩笑要把这五个字纹在工牌上",
+   "acceptable_actions": [
+    "顺着文件名梗接玩笑，可夸张附和她的工牌提议",
+    "夸一句十四版的辛苦，顺势调侃组长不敢再提意见",
+    "接一个情境玩笑并自然延续话题，不新增她没说过的事实"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T01_A01",
+     "subject": "HER",
+     "relation": "汇报进度",
+     "value": "HER 的季度汇报已提交且改到第十四版",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T01",
+      "message_id": "m0",
+      "quote": "交了交了，第十四版"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T01_A02",
+     "subject": "HER",
+     "relation": "文件名梗",
+     "value": "汇报文件名定为'汇报_最终版_打死不改版'并成为组内段子素材",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T01",
+      "message_id": "m0",
+      "quote": "汇报_最终版_打死不改版"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "纯玩笑开场轮：接住她的夸张语气即可，别正经汇报式回应；幽默从她的文件名来，不硬造新梗、不抢她的包袱。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造组长实际又提了新意见",
+    "不得声称汇报已获评审通过"
+   ],
+   "may_decline": false
+  },
+  "E301_T02": {
+   "case_id": "E301_T02",
+   "current_action": "HER 询问后端材料是否已交，并宣布到下班为止属于'合法摸鱼时间'、谁先干活谁输",
+   "acceptable_actions": [
+    "坦白自己还没弄完（如还在补工单），接摸鱼梗认输或讨价还价",
+    "顺她的'谁先干活谁输'立一个摸鱼规矩式玩笑",
+    "简短报进度并接梗，不写成正式工作汇报"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T02_A01",
+     "subject": "HER",
+     "relation": "提问",
+     "value": "HER 询问后端材料是否已交",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T02",
+      "message_id": "m0",
+      "quote": "你们后端的材料交了没"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T02_A02",
+     "subject": "HER",
+     "relation": "摸鱼宣言",
+     "value": "HER 宣布现在到下班属于合法摸鱼时间",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T02",
+      "message_id": "m0",
+      "quote": "现在到下班属于合法摸鱼时间"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要的是一个接得住的对手，不是工作汇报；ME 的真实进度可由回复自定，但口径要与下一轮'还在补俩工单'一致，别自称全部交完。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称所有材料已交完（后文 ME 自述还在补工单）"
+   ],
+   "may_decline": false
+  },
+  "E301_T03": {
+   "case_id": "E301_T03",
+   "current_action": "HER 应下四点半取奶茶送上工位的安排，声明第二杯半价她请，ME 欠她九块钱",
+   "acceptable_actions": [
+    "确认四点半安排并认下九元欠款（可玩笑式立字据）",
+    "确认安排、谢请客，并重复一遍口味要求防再翻车",
+    "认账九元并接'欠债'梗，等她四点半送上来"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T03_A01",
+     "subject": "SHARED",
+     "relation": "奶茶交付安排",
+     "value": "HER 四点半取奶茶并送到 ME 工位",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T03",
+      "message_id": "m1",
+      "quote": "四点半我取了给你送上去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T03_A02",
+     "subject": "ME",
+     "relation": "欠款",
+     "value": "ME 欠 HER 九元奶茶钱",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T03",
+      "message_id": "m1",
+      "quote": "你就欠我九块钱吧"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T03_A03",
+     "subject": "ME",
+     "relation": "口味口径",
+     "value": "ME 奶茶按老样子三分糖去冰",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T03",
+      "message_id": "m0",
+      "quote": "老样子，三分糖去冰"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "意图轮：安排已成立，回复以确认+玩笑收账为主；口味口径（三分糖去冰）是后续五分糖乌龙的伏笔，别改口。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改变九元的金额口径",
+    "不得把'她请'改说成各付各的"
+   ],
+   "may_decline": false
+  },
+  "E301_T04": {
+   "case_id": "E301_T04",
+   "current_action": "HER 通报下单乌龙：ME 的奶茶被她误点成五分糖且店员说改不了了，让 ME 当尝个新",
+   "acceptable_actions": [
+    "接乌龙玩笑，答应尝新（可假装悲壮或好奇）",
+    "玩笑抗议后接受现实，顺带讨一杯'正版三分糖'",
+    "接她的乌龙自嘲节奏，等她的后续补偿"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T04_A01",
+     "subject": "SHARED",
+     "relation": "误点乌龙",
+     "value": "ME 的奶茶被误点成五分糖",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T04",
+      "message_id": "m0",
+      "quote": "把你的点成了五分糖"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T04_A02",
+     "subject": "SHARED",
+     "relation": "乌龙不可逆",
+     "value": "店员表示该订单无法更改口味",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T04",
+      "message_id": "m0",
+      "quote": "店员说改不了了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "乌龙轮：她的语气是看热闹不嫌事大，别真生气也别上纲上线；五分糖与 ME 固定口味三分糖的反差是本轮笑点。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称口味已改回三分糖"
+   ],
+   "may_decline": false
+  },
+  "E301_T05": {
+   "case_id": "E301_T05",
+   "current_action": "HER 把取回的奶茶放 ME 桌上，认下五分糖乌龙并多加一份椰果当'精神损失费'",
+   "acceptable_actions": [
+    "收下奶茶并接椰果精神损失费玩笑",
+    "验收五分糖味道并给一句真实反馈式玩笑",
+    "谢她带上楼，接'三分糖一种人生'的调侃"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T05_A01",
+     "subject": "SHARED",
+     "relation": "奶茶交付完成",
+     "value": "奶茶已取回并放在 ME 桌上",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T05",
+      "message_id": "m0",
+      "quote": "取回来了，放你桌上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T05_A02",
+     "subject": "HER",
+     "relation": "补偿动作",
+     "value": "HER 在奶茶里多加了一份椰果当精神损失费",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T05",
+      "message_id": "m0",
+      "quote": "给你多加了一份椰果"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "交付轮：短回复即可，玩笑密度别高过她；椰果是她的补偿动作，收下比推辞自然。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得否认收到奶茶或椰果"
+   ],
+   "may_decline": false
+  },
+  "E301_T06": {
+   "case_id": "E301_T06",
+   "current_action": "HER 转述茶水间听来的行政段子：某组同事把带吐槽批注的终稿发进大群，怀疑男主角就是隔壁的 ME",
+   "acceptable_actions": [
+    "自认批注侠身份并自嘲（本人认账的旧梗）",
+    "装傻一拍再认领（'批注挺多，人格侮辱不算'式）",
+    "接她的现学现卖，调侃行政转述得有声有色"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T06_A01",
+     "subject": "HER",
+     "relation": "段子转述",
+     "value": "HER 在茶水间听行政讲了'终稿带吐槽批注发大群'的段子",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T06",
+      "message_id": "m0",
+      "quote": "听见行政小姐姐讲段子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T06_A02",
+     "subject": "HER",
+     "relation": "段子指向",
+     "value": "HER 怀疑段子男主角就是隔壁工位的 ME",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T06",
+      "message_id": "m0",
+      "quote": "男主角好像就坐我隔壁"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "旧事回扣轮：批注侠是 ME 认账的旧梗，正确姿态是坦然认领+自嘲；她的 NOTE 是现学现卖没恶意，别接成被冒犯或社死现场。",
+   "unknowns": [
+    {
+     "topic": "段子中批注吐槽的具体内容",
+     "note": "她只说'批注里还全是吐槽'，候选不得编造具体吐槽了谁或什么内容",
+     "markers": [
+      [
+       "批注里骂的是"
+      ],
+      [
+       "吐槽的就是你"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "批注里骂的是"
+      ],
+      [
+       "吐槽的就是你"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造批注里的具体吐槽内容",
+    "不得恼怒否认批注侠事件（本人认账）"
+   ],
+   "may_decline": false
+  },
+  "E301_T07": {
+   "case_id": "E301_T07",
+   "current_action": "HER 下班前知会：九元收款码已发微信，青轴键盘快递已在前台代签放 ME 椅子上",
+   "acceptable_actions": [
+    "确认待会儿转账并谢代签，接'手速更上一层楼'玩笑",
+    "简短谢代签并说转账马上到",
+    "合法不回（她已下班、消息属知会性质，次日补回也自然）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T07_A01",
+     "subject": "HER",
+     "relation": "收款码",
+     "value": "HER 已把九元收款码发到 ME 微信",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T07",
+      "message_id": "m0",
+      "quote": "九块的收款码发你微信了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T07_A02",
+     "subject": "HER",
+     "relation": "代签快递",
+     "value": "ME 的键盘快递已被 HER 代签并放椅子上",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T07",
+      "message_id": "m0",
+      "quote": "放你椅子上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T07_A03",
+     "subject": "SHARED",
+     "relation": "键盘型号",
+     "value": "到货键盘为青轴",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T07",
+      "message_id": "m0",
+      "quote": "青轴，祝你手速更上一层楼"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知会轮+may_decline：她要下班了，回复宜短；次日补回也合法。九元与 T03 的欠款口径一致，别算错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得算错欠款金额（应为九元）",
+    "不得编造青轴之外的键盘型号细节"
+   ],
+   "may_decline": true
+  },
+  "E301_T08": {
+   "case_id": "E301_T08",
+   "current_action": "冷场一夜后 HER 重启话题：组长看完十四版只回了'比13版顺眼'，她自嘲对着这句话坐了半天、十四碗饭白吃",
+   "acceptable_actions": [
+    "把'比13版顺眼'翻译成好评哄她（组长惜字如金式解读）",
+    "接自嘲开饭量玩笑，顺势问组长还说了啥",
+    "肯定十四版的工作量并轻拍一句（别空喊口号）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T08_A01",
+     "subject": "THIRD",
+     "relation": "组长反馈",
+     "value": "组长看完十四版回复'比13版顺眼'",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T08",
+      "message_id": "m0",
+      "quote": "比13版顺眼"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T08_A02",
+     "subject": "HER",
+     "relation": "自嘲",
+     "value": "HER 对组长的一句话自嘲十四碗饭白吃了",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T08",
+      "message_id": "m0",
+      "quote": "感觉那十四碗饭白吃了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冷场重启轮：第一条消息定调，接住她的自嘲比讲道理重要；'比13版顺眼'是组长式含糊好评，别替她放大成挫折，也别空泛安慰。",
+   "unknowns": [
+    {
+     "topic": "组长那句话的确切态度",
+     "note": "'比13版顺眼'语焉不详，候选可以玩笑式解读，不得替组长坐实满意或不满意",
+     "markers": [
+      [
+       "组长其实特别满意"
+      ],
+      [
+       "组长对你很失望"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "组长其实特别满意"
+      ],
+      [
+       "组长对你很失望"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替组长坐实评审结论"
+   ],
+   "may_decline": false
+  },
+  "E301_T09": {
+   "case_id": "E301_T09",
+   "current_action": "HER 用'说正经的'转达下午3点5楼小会议室对数据的安排、点名自己做记录，并问 ME 是否参会、要不要她顺带导 ME 模块的数据",
+   "acceptable_actions": [
+    "确认参会并接受她导数据的顺手帮忙（可叮嘱对齐口径）",
+    "确认参会并谢提议，说自己模块自己导",
+    "确认参会并复述一遍时间地点（防口误）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T09_A01",
+     "subject": "SHARED",
+     "relation": "会议安排",
+     "value": "下午三点在五楼小会议室对数据",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T09",
+      "message_id": "m0",
+      "quote": "下午3点，5楼小会议室对数据"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T09_A02",
+     "subject": "HER",
+     "relation": "会议分工",
+     "value": "组长点名 HER 在会上做记录",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T09",
+      "message_id": "m0",
+      "quote": "组长点名让我做记录"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T09_A03",
+     "subject": "HER",
+     "relation": "帮忙提议",
+     "value": "HER 提出顺手把 ME 模块的数据也导一份",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T09",
+      "message_id": "m0",
+      "quote": "把你模块的数据也导一份"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'说正经的'=转正式频道（style 键明示），回复别再用玩笑糊弄；是否参会由 ME 自己定，但必须给准话，别含糊。",
+   "unknowns": [],
+   "protected_expressions": [
+    "说正经的"
+   ],
+   "forbidden_factual_claims": [
+    "不得含糊不答是否参会",
+    "不得改动会议时间地点"
+   ],
+   "may_decline": false
+  },
+  "E301_T10": {
+   "case_id": "E301_T10",
+   "current_action": "散会后 HER 通报周报文件名手滑存成'周报_打死不改版_真不改_v1'，自己先笑出声，宣布文件名玄学正式过给 ME",
+   "acceptable_actions": [
+    "接玄学传承玩笑（如认领这份'遗产'）",
+    "恭喜她把梗玩成连续剧，顺带问对数据会的结果",
+    "接梗并自嘲自己的文件名也开始不安全"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T10_A01",
+     "subject": "HER",
+     "relation": "文件名乌龙",
+     "value": "HER 存周报时文件名手滑成'周报_打死不改版_真不改_v1'",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T10",
+      "message_id": "m0",
+      "quote": "周报_打死不改版_真不改_v1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T10_A02",
+     "subject": "HER",
+     "relation": "玄学传承",
+     "value": "HER 宣布文件名玄学正式过给 ME",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T10",
+      "message_id": "m0",
+      "quote": "算是你正式过给我了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "长距回扣轮（T01→T10 隔九轮）：她把 T01 的文件名梗自己续上了，回复要显出'记得这梗从哪来'，别当成新鲜事问什么文件名。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把文件名梗当首次听说"
+   ],
+   "may_decline": false
+  },
+  "E301_T11": {
+   "case_id": "E301_T11",
+   "current_action": "HER 回访青轴键盘使用体验，转述老吴隔绿萝问'是不是在装修'，并造句'数字时代的马蹄声'",
+   "acceptable_actions": [
+    "报键盘使用感受并接马蹄声造句",
+    "自嘲吵到同事，玩笑式提出给老吴也整一个",
+    "接'装修'梗继续往下编（下午三点开工式）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T11_A01",
+     "subject": "HER",
+     "relation": "回访提问",
+     "value": "HER 询问 ME 键盘用着怎么样",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T11",
+      "message_id": "m0",
+      "quote": "键盘用着咋样"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T11_A02",
+     "subject": "THIRD",
+     "relation": "老吴反应",
+     "value": "老吴下午隔着绿萝问'你们组是不是在装修'",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T11",
+      "message_id": "m0",
+      "quote": "你们组是不是在装修"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T11_A03",
+     "subject": "HER",
+     "relation": "造句",
+     "value": "HER 把青轴动静形容为数字时代的马蹄声",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T11",
+      "message_id": "m0",
+      "quote": "数字时代的马蹄声"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回访轮（T07 键盘伏笔兑现）：先答键盘这个正题再接玩笑；笑点在'吵'不在'好'，别把键盘夸成静音神器。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称键盘无声或已换静音轴"
+   ],
+   "may_decline": false
+  },
+  "E301_T12": {
+   "case_id": "E301_T12",
+   "current_action": "HER 确认九元已到账，宣布明天还是半价日继续凑单，并把口味决定权交给 ME：改回三分糖还是将错就错五分糖",
+   "acceptable_actions": [
+    "确认到账、选定口味并给理由式玩笑（三分糖是本命五分糖是事故式）",
+    "确认到账并接明天拼单，让她记账本上两栏都留着",
+    "确认到账并玩笑'将错就错'但申明只此一杯"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E301_T12_A01",
+     "subject": "SHARED",
+     "relation": "欠款结清",
+     "value": "HER 已确认九元到账",
+     "valid_time": "2026-11-04",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T12",
+      "message_id": "m0",
+      "quote": "九块看到到账了哈"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T12_A02",
+     "subject": "HER",
+     "relation": "明日拼单",
+     "value": "明天仍是半价日，HER 继续凑单",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T12",
+      "message_id": "m0",
+      "quote": "明天还是半价日"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E301_T12_A03",
+     "subject": "HER",
+     "relation": "口味二选一",
+     "value": "HER 问 ME 明天那杯选三分糖还是将错就错五分糖",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E301_T12",
+      "message_id": "m0",
+      "quote": "你这杯是改回三分糖，还是将错就错五分糖"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮+轻钩：口味二选一是她递的选择题，给出答案比'都行'好；明天拼单钩可接可深化，别为凑热情硬加新安排。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替 HER 决定明天取奶茶的时间",
+    "不得改'九元已到账'的口径"
+   ],
+   "may_decline": false
+  }
+ }
+}

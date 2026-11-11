@@ -1,0 +1,41 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "AK12",
+ "turn_clocks": [
+  {
+   "case_id": "AK12_T01",
+   "clock": "2026-12-28 22:50"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "AK12_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "quote": "手术拖到周一下午了 我还得请假 现在头都是疼的",
+   "ts": "2026-12-28 22:26"
+  },
+  {
+   "case_id": "AK12_T01",
+   "message_id": "m1",
+   "speaker": "ME",
+   "quote": "请假要写什么理由不 需要我帮你顶半天",
+   "ts": "2026-12-28 22:32"
+  },
+  {
+   "case_id": "AK12_T01",
+   "message_id": "m2",
+   "speaker": "HER",
+   "quote": "先这样吧 结果出来我再说 谢了",
+   "ts": "2026-12-28 22:48"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "AK12_E1",
+   "case_id": "AK12_T01",
+   "summary": "猫手术｜反馈=busy｜意图=陪她带猫完成手术并接她回家",
+   "source_turn": "AK12_T01"
+  }
+ ]
+}

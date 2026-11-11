@@ -1,0 +1,404 @@
+{
+ "story_id": "E034",
+ "turns": {
+  "E034_T01": {
+   "current_action": "接住重逢开场（新闻触发）——如实答现状",
+   "acceptable_actions": [
+    "答现状+回问近况",
+    "答+说看到新闻评论了",
+    "答+自嘲还在老东家"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E034_A01",
+     "subject": "我",
+     "relation": "现状",
+     "value": "在老东家第五年",
+     "valid_time": "2026-11-30",
+     "status": "seed",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "在老东家第五年"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "一年没联系的重逢；先答事，热络交给后续。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你还在老项目组吗"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E034_T01"
+  },
+  "E034_T02": {
+   "current_action": "她的'职场第一课'梗（老蔡骂人）——接住第三人梗",
+   "acceptable_actions": [
+    "接梗+回老蔡近况",
+    "接梗+自嘲也挨过骂",
+    "接梗+问她还记不记得细节"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E034_A02",
+     "subject": "老蔡",
+     "relation": "身份",
+     "value": "共同的老领导，带过两人",
+     "valid_time": "2026-11-30",
+     "status": "seed",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "老领导姓蔡"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "老蔡是共同记忆的锚；梗接住即可，别翻旧账细节。",
+   "unknowns": [],
+   "protected_expressions": [
+    "他当年把我骂出职场第一课"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E034_T02"
+  },
+  "E034_T03": {
+   "current_action": "她求证旧大促时间（简历用）——intent 落账，别凭感觉报",
+   "acceptable_actions": [
+    "给记忆版本+标注不确定",
+    "说要去查周报",
+    "报记忆+问她记得几月"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "简历数据要经得起背调；此刻的谨慎是专业。",
+   "unknowns": [
+    "大促确切上线日期（记忆待核）"
+   ],
+   "protected_expressions": [
+    "我简历上写的是3月"
+   ],
+   "forbidden_factual_claims": [
+    "不要把未核实的日期说成确定"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "帮她核对旧大促上线时间线",
+    "status": "ACTIVE",
+    "enabled": true
+   },
+   "case_id": "E034_T03"
+  },
+  "E034_T04": {
+   "current_action": "我报了5月17（凭通宵记忆）——她提出异议（3月）——记忆冲突，不嘴硬",
+   "acceptable_actions": [
+    "承认记忆可能串+说要查",
+    "坚持前先要证据",
+    "接受她的推理方向"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E034_A03",
+     "subject": "她",
+     "relation": "异议",
+     "value": "她认为大促上线是3月（她3月底才离职）",
+     "valid_time": "2026-11-30 20:54",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E034_T04",
+      "message_id": "m1",
+      "quote": "我记得是3月"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "两个'记得清楚'相撞——谁的证据链硬听谁的。",
+   "unknowns": [
+    "我的通宵对应哪个项目"
+   ],
+   "protected_expressions": [
+    "我记得是3月"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E034_T04"
+  },
+  "E034_T05": {
+   "current_action": "她给出证据链（3月28离职→大促在其前）——接受推理，去查存档",
+   "acceptable_actions": [
+    "接受推理+答应查",
+    "承认她链路硬+去查周报",
+    "说给十分钟查存档"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E034_A04",
+     "subject": "她",
+     "relation": "证据",
+     "value": "她3月28离职，大促在其离职前上线",
+     "valid_time": "2026-11-30 21:06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E034_T05",
+      "message_id": "m0",
+      "quote": "我3月28号离职"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的推理已闭环；我要做的是补最后一环（周报）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "翻翻你们周报存档"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E034_T05"
+  },
+  "E034_T06": {
+   "current_action": "查证结果：她对，3月14——认错+修正我的记忆来源（通宵是另一项目）",
+   "acceptable_actions": [
+    "认错+给新事实",
+    "认错+归因记忆串档",
+    "认错+问她怎么记得这么清"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E034_A05",
+     "subject": "大促",
+     "relation": "时间",
+     "value": "上线为3月14号（5月记忆作废）",
+     "valid_time": "2026-11-30 21:10",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E034_T06",
+      "message_id": "m0",
+      "quote": "是3月14号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "认错要快且带修正后的事实——这是 T03 intent 的兑现。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我简历改好了"
+   ],
+   "forbidden_factual_claims": [
+    "不要再引用5月17"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E034_T06"
+  },
+  "E034_T07": {
+   "current_action": "老蔡挖她回任顾问——接消息+回扣职场第一课梗",
+   "acceptable_actions": [
+    "接消息+问待遇",
+    "接梗+说冤家路窄",
+    "接+问她自己怎么想"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "两周冷场后的消息不突兀——老蔡是共同通道。",
+   "unknowns": [
+    "顾问条件"
+   ],
+   "protected_expressions": [
+    "想挖我回去做顾问"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E034_T07"
+  },
+  "E034_T08": {
+   "current_action": "'装作考虑三天'——接她的傲娇式处理",
+   "acceptable_actions": [
+    "接梗+等她答案",
+    "接梗+说老蔡会加码",
+    "接梗+劝她认真考虑"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她要的是观众不是参谋；配合。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我得装作考虑三天"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E034_T08"
+  },
+  "E034_T09": {
+   "current_action": "反转：她不回，但老蔡想挖我——接住并表态",
+   "acceptable_actions": [
+    "表态+给条件",
+    "表态+谢她传话",
+    "表态+自嘲刚站稳"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "我的表态要与我现状一致（中标项目在手）。",
+   "unknowns": [
+    "新项目具体内容"
+   ],
+   "protected_expressions": [
+    "老蔡问你有没有兴趣带他们新项目"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E034_T09"
+  },
+  "E034_T10": {
+   "current_action": "'让他先把中标项目干完'——她当信使带原话",
+   "acceptable_actions": [
+    "接梗+谢传话",
+    "接梗+说原话更硬",
+    "接梗+问她顾问到底接没接"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "立场已表；信任她传话。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我把原话带到 他会笑"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E034_T10"
+  },
+  "E034_T11": {
+   "current_action": "回扣简历线（时间线终于对了）——互助续尾，给写法",
+   "acceptable_actions": [
+    "答应发模板",
+    "答应+提醒背调会核时间",
+    "答应+自嘲我的错例有用"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E034_A06",
+     "subject": "她",
+     "relation": "进度",
+     "value": "简历时间线已改对（3月14）",
+     "valid_time": "2026-12-28 21:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E034_T11",
+      "message_id": "m0",
+      "quote": "我简历时间线终于对了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T03 的 intent 走完全程：从求证到修正到互助。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我简历时间线终于对了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E034_T11"
+  },
+  "E034_T12": {
+   "current_action": "'错的是我'自嘲收尾——接住+收（may_decline=true）",
+   "acceptable_actions": [
+    "接梗收",
+    "接+说新年见",
+    "不回（合法，她已收尾）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "认错认到底，玩笑收到位。",
+   "unknowns": [],
+   "protected_expressions": [
+    "错的都记我本上了 哈哈 新年常联系"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E034_T12"
+  }
+ }
+}

@@ -1,0 +1,461 @@
+{
+ "story_id": "E130",
+ "turns": {
+  "E130_T01": {
+   "case_id": "E130_T01",
+   "current_action": "接住新书房目标,夸硬装收尾,建议细账先拉一遍再启动",
+   "acceptable_actions": [
+    "先恭喜硬装收尾,建议把书柜、桌椅、灯线分项拉细账",
+    "接'满脑子都是书房'的劲,提醒启动前留出冗余预算",
+    "问她升降桌想要电动还是手摇,顺便祝她预算够用"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A01",
+     "subject": "ME",
+     "relation": "renovation_experience",
+     "value": "商陆自己全程监工装过房,有工具有经验",
+     "valid_time": "既往经历",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "自己全程监工装过房"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E130_A02",
+     "subject": "HER",
+     "relation": "project_goal",
+     "value": "她计划下个月启动次卧改书房,整墙书架加升降桌,粗算预算一万五",
+     "valid_time": "2026年12月启动",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T01", "message_id": "m0", "quote": "大概一万五,想下个月启动"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她起心动念时最需要的是帮她把账算实,不是泼冷水",
+   "unknowns": ["书柜具体尺寸未定"],
+   "protected_expressions": ["想下个月启动"],
+   "forbidden_factual_claims": ["不得虚构建材市场价格"]
+  },
+  "E130_T02": {
+   "case_id": "E130_T02",
+   "current_action": "复核她的细账结构,肯定分项思路并提示预留弹性",
+   "acceptable_actions": [
+    "肯定分项法,提醒五千上下的升降桌价差大,先定需求档",
+    "指出灯和走线一千五里要留弱电改造的钱",
+    "接'不一定够',建议先定上限再砍项"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A03",
+     "subject": "HER",
+     "relation": "budget_breakdown",
+     "value": "细账:定制书柜八千,升降桌和椅子四千,灯和走线一千五,总预算一万五偏紧",
+     "valid_time": "2026-11-05 测算",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T02", "message_id": "m0", "quote": "定制书柜要八千,升降桌和椅子四千"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E130_A04",
+     "subject": "HER",
+     "relation": "financial_boundary",
+     "value": "她不透支信用卡搞装修",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "不透支信用卡"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她开始自我预警,这轮补的是客观缺口,别劝她硬上",
+   "unknowns": ["各分项最终报价未知"],
+   "protected_expressions": ["一万五还真不一定够"],
+   "forbidden_factual_claims": ["不得替她拍板具体品牌"]
+  },
+  "E130_T03": {
+   "case_id": "E130_T03",
+   "current_action": "接住旧管加两千的不确定项,建议先让师傅给核实结论再决策",
+   "acceptable_actions": [
+    "提醒先确认旧管是否必须动,有没有不动管的替代方案",
+    "让她把师傅的判断要成书面结论,别按'可能'做预算",
+    "共情预算奔一万七的压力,支持她先缓一步看资金面"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A03",
+     "subject": "HER",
+     "relation": "budget_breakdown",
+     "value": "细账:定制书柜八千,升降桌和椅子四千,灯和走线一千五,总预算一万五偏紧",
+     "valid_time": "2026-11-05 测算",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T02", "message_id": "m0", "quote": "定制书柜要八千,升降桌和椅子四千"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E130_A05",
+     "subject": "SHARED",
+     "relation": "uncertain_cost",
+     "value": "书房墙面内有根旧暖气管,若移位需加约两千,总账逼近一万七",
+     "valid_time": "2026-11-06 师傅初判",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T03", "message_id": "m0", "quote": "动它得加两千"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'可能要加两千'还不是结论,帮她把不确定变成确定",
+   "unknowns": ["旧管实际走向与移位必要性未定"],
+   "protected_expressions": ["动它得加两千"],
+   "forbidden_factual_claims": ["不得断言旧管必须移位"]
+  },
+  "E130_T04": {
+   "case_id": "E130_T04",
+   "current_action": "支持她按下暂停键,肯定这不叫放弃叫止损",
+   "acceptable_actions": [
+    "说暂停是对的,装修贷尾巴没还完前不该再铺开新摊子",
+    "肯定她守住不透支的底线,暂停键按得漂亮",
+    "提议暂停期先做零成本准备,量尺寸存攻略"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A02",
+     "subject": "HER",
+     "relation": "project_goal",
+     "value": "她计划下个月启动次卧改书房,整墙书架加升降桌,粗算预算一万五",
+     "valid_time": "原计划2026年12月启动",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E130_T01", "message_id": "m0", "quote": "大概一万五,想下个月启动"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E130_A06",
+     "subject": "HER",
+     "relation": "project_status",
+     "value": "书房改造项目自2026-11-08起主动暂停,旧管暂不动,资金缓过来再开工",
+     "valid_time": "2026-11-08 起暂停",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T04", "message_id": "m0", "quote": "书房这事先按下暂停键"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她下决心时最怕听到'可惜了',给的是认同不是惋惜",
+   "unknowns": ["暂停到何时未知"],
+   "protected_expressions": ["书房这事先按下暂停键"],
+   "forbidden_factual_claims": ["不得虚构她的还款明细"]
+  },
+  "E130_T05": {
+   "case_id": "E130_T05",
+   "current_action": "接住零成本准备的清单,约好周末帮她量层高净尺",
+   "acceptable_actions": [
+    "答应周末带激光测距仪去量,顺带看旧管走向",
+    "夸她暂停不摆烂,分类贴标签很她",
+    "让她把攻略存成文档,回头一起筛"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A06",
+     "subject": "HER",
+     "relation": "project_status",
+     "value": "书房改造项目自2026-11-08起主动暂停,旧管暂不动,资金缓过来再开工",
+     "valid_time": "2026-11-08 起暂停",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T04", "message_id": "m0", "quote": "书房这事先按下暂停键"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E130_A07",
+     "subject": "HER",
+     "relation": "pause_period_prep",
+     "value": "暂停期间她做零成本准备:量尺寸、存攻略、按开本分类藏书并贴标签",
+     "valid_time": "2026-11-09 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T05", "message_id": "m0", "quote": "量尺寸、存攻略、把现有书按开本分好类"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在暂停期保持节奏,ME的工具和经验正好接上",
+   "unknowns": ["层高净尺具体数值未量"],
+   "protected_expressions": ["我这周末量"],
+   "forbidden_factual_claims": ["不得虚构藏书数量"]
+  },
+  "E130_T06": {
+   "case_id": "E130_T06",
+   "current_action": "肯定她到账也不冲动,再等等看的纪律感",
+   "acceptable_actions": [
+    "夸她绩效到账还按得住,这才是真稳",
+    "帮她算:四千二填坑后仍有一段缺口,等是对的",
+    "提醒别让钱闲着也别让项目抢跑,可以放短期理财"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A08",
+     "subject": "HER",
+     "relation": "windfall",
+     "value": "单位发绩效比预想多四千二,一万七缺口可填大半",
+     "valid_time": "2026-11-12 发放",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T06", "message_id": "m0", "quote": "比我预想多四千二"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E130_A04",
+     "subject": "HER",
+     "relation": "financial_boundary",
+     "value": "她不透支信用卡搞装修",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "不透支信用卡"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "有钱进账她还没松口,别反过来劝她快开工",
+   "unknowns": ["缺口剩余具体金额未算出"],
+   "protected_expressions": ["再等等看"],
+   "forbidden_factual_claims": ["不得虚构绩效发放制度"]
+  },
+  "E130_T07": {
+   "case_id": "E130_T07",
+   "current_action": "接住'暂停不亏'的方案进化,夸砍两千砍得聪明",
+   "acceptable_actions": [
+    "说留白墙挂投影比塞满书架高级,砍得值",
+    "肯定暂停期的思考红利,方案反而更好了",
+    "顺势帮她重算:新方案下预算压力小了一截"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A07",
+     "subject": "HER",
+     "relation": "pause_period_prep",
+     "value": "暂停期间她做零成本准备:量尺寸、存攻略、按开本分类藏书并贴标签",
+     "valid_time": "2026-11-09 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T05", "message_id": "m0", "quote": "量尺寸、存攻略、把现有书按开本分好类"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E130_A09",
+     "subject": "HER",
+     "relation": "design_revision",
+     "value": "方案改为放弃整墙书柜,留一面白墙挂投影,预算可砍两千",
+     "valid_time": "2026-11-15 修订",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T07", "message_id": "m0", "quote": "书柜不要整墙了,留一面白墙挂投影"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她自己想通了最难得,这轮多给肯定少给意见",
+   "unknowns": ["投影设备是否另计预算未提"],
+   "protected_expressions": ["这暂停不亏"],
+   "forbidden_factual_claims": ["不得虚构投影型号价格"]
+  },
+  "E130_T08": {
+   "case_id": "E130_T08",
+   "current_action": "接住旧管八百方案的好消息,确认明管包法的可行性",
+   "acceptable_actions": [
+    "说明管包起来在暖气季前做最合适,时间刚好",
+    "提醒她让师傅确认明管不影响书柜靠墙深度",
+    "接'最大障碍没了',问她还差哪一步才重启"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A05",
+     "subject": "SHARED",
+     "relation": "uncertain_cost",
+     "value": "书房墙面内有根旧暖气管,若移位需加约两千,总账逼近一万七",
+     "valid_time": "2026-11-06 初判,2026-11-17 被更正",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E130_T03", "message_id": "m0", "quote": "动它得加两千"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E130_A10",
+     "subject": "SHARED",
+     "relation": "pipe_solution",
+     "value": "供暖师傅核实旧管可走明管包起来,费用约八百,两千移位方案作废",
+     "valid_time": "2026-11-17 核实",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T08", "message_id": "m0", "quote": "可以走明管包起来,只要八百"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "两千变八百是关键转折,帮她确认细节别让惊喜打折",
+   "unknowns": ["明管走向具体路线未定"],
+   "protected_expressions": ["可以走明管包起来,只要八百"],
+   "forbidden_factual_claims": ["不得虚构供暖改造规范"]
+  },
+  "E130_T09": {
+   "case_id": "E130_T09",
+   "current_action": "接下监工的活,应了三顿饭的工钱,给重启提一条起手建议",
+   "acceptable_actions": [
+    "答应当监工,建议先约量尺别等双十一后才定书柜",
+    "接'三顿饭'的梗,要求其中一顿加鸡腿",
+    "恭喜重启,提醒按一万二封顶把清单再压一遍"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A06",
+     "subject": "HER",
+     "relation": "project_status",
+     "value": "书房改造项目自2026-11-08起主动暂停,旧管暂不动,资金缓过来再开工",
+     "valid_time": "2026-11-08 至 2026-11-19",
+     "status": "resumed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T04", "message_id": "m0", "quote": "书房这事先按下暂停键"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E130_A11",
+     "subject": "HER",
+     "relation": "project_resume",
+     "value": "项目于2026-11-19正式重启,新方案预算一万二封顶,周六约量尺,请商陆全程监工,工钱三顿饭",
+     "valid_time": "2026-11-19 官宣",
+     "status": "resumed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T09", "message_id": "m0", "quote": "定了,书房重启"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "重启官宣要接得响亮,监工的活痛快接下",
+   "unknowns": ["双十一升降桌具体优惠未知"],
+   "protected_expressions": ["定了,书房重启"],
+   "forbidden_factual_claims": ["不得虚构量尺公司的名称"]
+  },
+  "E130_T10": {
+   "case_id": "E130_T10",
+   "current_action": "确认周六量尺安排与二十五天工期,肯定倒排日历",
+   "acceptable_actions": [
+    "确认周六上午十点到,提醒量尺当天顺手定明管位置",
+    "夸倒排工期专业,提醒生产期留一周余量",
+    "问她年前装完的目标要不要把春节前物流算进去"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A11",
+     "subject": "HER",
+     "relation": "project_resume",
+     "value": "项目于2026-11-19正式重启,新方案预算一万二封顶,周六约量尺,请商陆全程监工,工钱三顿饭",
+     "valid_time": "2026-11-19 官宣",
+     "status": "resumed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T09", "message_id": "m0", "quote": "定了,书房重启"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E130_A12",
+     "subject": "SHARED",
+     "relation": "measurement_schedule",
+     "value": "量尺定于周六上午十点,定制生产周期二十五天,目标年前装完,工期已倒排",
+     "valid_time": "2026-11-21(周六)10:00 量尺",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T10", "message_id": "m0", "quote": "量尺约在周六上午十点"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "时间表都排好了,ME只需确认到场",
+   "unknowns": ["生产是否含运输天数未知"],
+   "protected_expressions": ["量尺约在周六上午十点"],
+   "forbidden_factual_claims": ["不得虚构定制厂产能"]
+  },
+  "E130_T11": {
+   "case_id": "E130_T11",
+   "current_action": "接住下单进展,肯定尾款留5%的做法与明管确认",
+   "acceptable_actions": [
+    "夸尾款留验收后付是行家操作,定金单子存好",
+    "说明管方案师傅认了就好,记得施工前再对一次图",
+    "问升降桌定金占比,提醒双十一前锁价条款看清"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A12",
+     "subject": "SHARED",
+     "relation": "measurement_schedule",
+     "value": "量尺定于周六上午十点,定制生产周期二十五天,目标年前装完,工期已倒排",
+     "valid_time": "2026-11-21 量尺",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T10", "message_id": "m0", "quote": "量尺约在周六上午十点"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E130_A13",
+     "subject": "SHARED",
+     "relation": "order_progress",
+     "value": "书柜已下单(尾款5%验收后付),升降桌已付定金,明管包法师傅确认可行",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T11", "message_id": "m0", "quote": "书柜下单了,尾款留了5%验收后付"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在快速推进,回复跟紧进度即可",
+   "unknowns": ["升降桌尾款支付节点未说明"],
+   "protected_expressions": ["尾款留了5%验收后付"],
+   "forbidden_factual_claims": ["不得虚构订单金额"]
+  },
+  "E130_T12": {
+   "case_id": "E130_T12",
+   "current_action": "接住搬书的告别感与开春验收之约,给一个轻快回应",
+   "acceptable_actions": [
+    "接验收标准,说看完一整部电影算我过,不合格返工",
+    "安慰'舍不得'是正常的,新书房会更合她意",
+    "答应开春验收,顺便提醒验收前先通一次风"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E130_A13",
+     "subject": "SHARED",
+     "relation": "order_progress",
+     "value": "书柜已下单(尾款5%验收后付),升降桌已付定金,明管包法师傅确认可行",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T11", "message_id": "m0", "quote": "书柜下单了,尾款留了5%验收后付"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E130_A14",
+     "subject": "SHARED",
+     "relation": "acceptance_plan",
+     "value": "约定开春验收书房,标准是能窝着看完一整部电影",
+     "valid_time": "2027年开春",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E130_T12", "message_id": "m0", "quote": "开春你来验收"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾带点怀旧的暖,别把气氛说重",
+   "unknowns": ["书架安装具体日期未定"],
+   "protected_expressions": ["开春你来验收"],
+   "forbidden_factual_claims": ["不得虚构次卧旧家具的去向"]
+  }
+ }
+}

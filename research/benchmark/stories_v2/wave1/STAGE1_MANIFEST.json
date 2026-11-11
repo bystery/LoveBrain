@@ -1,0 +1,346 @@
+{
+ "kind": "story_v2_wave1_manifest",
+ "stage": "wave1",
+ "date": "2026-11-01",
+ "built_by": "isolation-continuation-20261101 (intake + semantic-review fixes E045/E049/E051/E054/E055/E057)",
+ "count": 16,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E045",
+   "title": "换班与婚礼的赛跑",
+   "themes": [
+    "工作职场",
+    "排班对调",
+    "取消改期",
+    "连锁换班",
+    "兑现闭环"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave1/E045",
+   "turns": 12,
+   "files": {
+    "episode.json": "2cf6a4b676f79f00744869b526437d86172e169f7903704d1fef2c2e17f2e272",
+    "reference.json": "10667601eef0cd3a919c6f113900430e5c68338f9554577d88c2f12e33e30c84",
+    "timeline.json": "dda410cf44b0c8812405b7f97169bce593965532fbae7b190c1064401ef9d007",
+    "audit.md": "d3fa99962cbb6da05efdd69b0b3d03b2259ad85a81e15f95592fa8acc8bb9ada"
+   }
+  },
+  {
+   "story_id": "E046",
+   "title": "白熊动画的两次改口",
+   "themes": [
+    "工作职场",
+    "项目延期",
+    "对上转述",
+    "第三方变卦",
+    "风险说明"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave1/E046",
+   "turns": 12,
+   "files": {
+    "episode.json": "711ab9bc91dddde615f94ef91b7a48dc6d1055e39a5bbd4261a9490f6c3394e6",
+    "reference.json": "c4d2a13ef10b318c882307b7e855cc8751fd9e07704c4a1fa368002d92448af7",
+    "timeline.json": "0d432a750c1938b6011022646fad98e4023a02b6da9c22babc64bcbfb6fad0e7",
+    "audit.md": "81d1816b35a41c62d1f41d1f4a294a0b40485ee62d2723f5f0ead4b4c7a4de6b"
+   }
+  },
+  {
+   "story_id": "E047",
+   "title": "兼职报价单保卫战",
+   "themes": [
+    "工作职场",
+    "兼职私单",
+    "同事砍价",
+    "人情白嫖",
+    "报价边界"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave1/E047",
+   "turns": 12,
+   "files": {
+    "episode.json": "d5e63f491720710319713ca76696eee2c3fdeeec1240ead76e284b2233a4decb",
+    "reference.json": "7ac9765658fb765ea2c43e8842aeb78edaada16019df2e297c6cab47dfec9e91",
+    "timeline.json": "676df7a3f70641aa1ff349463e11598362fec7eff12a4995689d658c3a24c399",
+    "audit.md": "1145bc989eefb5142ab0ecc7b1e01326ea78bb64f791ff29d3b558d5880c8aeb"
+   }
+  },
+  {
+   "story_id": "E048",
+   "title": "拼团券差一百二",
+   "themes": [
+    "学习成长",
+    "考研备考",
+    "拼团代付",
+    "费用更正",
+    "账目清白"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave1/E048",
+   "turns": 12,
+   "files": {
+    "episode.json": "543b1519f29d4f074ddeed9613f38416016e0d0a7356698f03e38d2d688482f8",
+    "reference.json": "beb41e2de7bf7d0e46113fe99f9d348417cda5e393a76f2f3c7acdbfd7af93f9",
+    "timeline.json": "b662707070da396a9aa73955e2a71158849a00283626dfc39ca81f78f80191c6",
+    "audit.md": "87f6ebe9a1a2199f0d3dbec1e1a8337f24e7d57bddc67ff6afe5fe3febabe87d"
+   }
+  },
+  {
+   "story_id": "E049",
+   "title": "报名费的两种口径",
+   "themes": [
+    "学习成长",
+    "报名退费窗口",
+    "费用口径冲突",
+    "长期熟人",
+    "证据与维权"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave1/E049",
+   "turns": 12,
+   "files": {
+    "episode.json": "4b4ccbdfb7591519c4c17df5b2dd94bd452363283beeab10f893184e4e24388a",
+    "reference.json": "57e93bb7bfee1cbc7354ebf8ebd2f6168b5d232cfab7fc4d815701bf20f5ee72",
+    "timeline.json": "d5f40bbb56a5fdfa3b2588e404a2abc70d85fbb6356308d9f7b6de80fefeb727",
+    "audit.md": "e4c73311e8a01044d1c0cb752bcc23c9a44b0ff46aadf60841281088d8fbd181"
+   }
+  },
+  {
+   "story_id": "E050",
+   "title": "考期跨月改约",
+   "themes": [
+    "学习成长",
+    "考期跨月改约",
+    "取消与改期",
+    "计划重建",
+    "边界与拒绝"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave1/E050",
+   "turns": 12,
+   "files": {
+    "episode.json": "5c50cb55b473dfe4fa47b20492c1a35e9b58523bbfc93dccbed47862d08eca0c",
+    "reference.json": "b50fa6a5bff5a25709b56c1110400bb83fdbf4299b1c3c8ba4ac438eed6f04bd",
+    "timeline.json": "7f3dc65215ae3965eab26c0550a17cedda128364f69070657c2b4c0d0aa2944a",
+    "audit.md": "97f83d6518f3ce0a7545dd655492512e5010422b571884e746ea3c5a48156e7c"
+   }
+  },
+  {
+   "story_id": "E051",
+   "title": "和温言的七点晨读",
+   "themes": [
+    "学习成长",
+    "学习搭子启停",
+    "排班波动",
+    "渐暧昧",
+    "共同经历回扣"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave1/E051",
+   "turns": 12,
+   "files": {
+    "episode.json": "2218ebc5d9dea0718857191a2ac5efb87d270bc6db62b73e18a76a939f5a9b28",
+    "reference.json": "dbeb74ecf95a050a4fec87ec8ad12d43df927cc2058c3345c4d6ba3094209338",
+    "timeline.json": "fdc10b2590e1c96779800c79782932ca9d0287c399268e31fdbd7e560de87dd9",
+    "audit.md": "effa50af59e380be1f5a162d5f93d87fffd25848dc76c750f2ec97f6828df55b"
+   }
+  },
+  {
+   "story_id": "E052",
+   "title": "那颗35 1.4的下家",
+   "themes": [
+    "数码消费",
+    "二手镜头转手",
+    "信息不确定",
+    "纠纷了结",
+    "经验复盘"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave1/E052",
+   "turns": 12,
+   "files": {
+    "episode.json": "d5051dc3bd07326b102df2e85a31a7587160ae1fdf544afbb129182afbbadbb8",
+    "reference.json": "3c06b8081fc776ee0705dcacb8248fd81f1d47d7451f3dcf96b3b3b43ddad2cb",
+    "timeline.json": "0c08d2750ae3ef4de39eaec0a439948c41d8d247c9358acd6115adc7c2cc9759",
+    "audit.md": "eb2700bc8d53469f729815e515f7ee9e577dba7e49e9fe9ceb3d10c0024a645f"
+   }
+  },
+  {
+   "story_id": "E053",
+   "title": "左耳的杂音",
+   "themes": [
+    "数码消费",
+    "退换货期限博弈",
+    "账号边界",
+    "质量通道",
+    "关系修复"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave1/E053",
+   "turns": 12,
+   "files": {
+    "episode.json": "adf6f579c16d8fec761eaabf9cd2e582c8c8566228d3c1f9ae085fff31f7ddfc",
+    "reference.json": "cf9c38f75782313890a983667b4ad072e2aca2ba97abbff4513609fa22a64732",
+    "timeline.json": "7fb6eb7d69b0544f1bb976723f14364fa2f892bf11af0d9496ec4dad31356cc3",
+    "audit.md": "60b9ec5a76decedcadfb3d53b0ba0107f0ff4eb0866f01f6305826f7b331ef65"
+   }
+  },
+  {
+   "story_id": "E054",
+   "title": "取号，改期，再取号",
+   "themes": [
+    "数码消费",
+    "预约维修改期",
+    "爽约规则",
+    "行程冲突",
+    "自然收尾"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave1/E054",
+   "turns": 12,
+   "files": {
+    "episode.json": "75764e6707b25a4e4ec17f1c9042e42e080807c7b6fddf1573736f3e598ce2fd",
+    "reference.json": "2d9be05b20ee0d387be1e17735e012cbdd4e92709230f4a08bd0f9789603b630",
+    "timeline.json": "4f9927803e9d225dc2d6278ce1c5dcbac0493769c25b578b2271f274fbdcee59",
+    "audit.md": "bc8ee29ebdac28ee1c487bc1775fb9c4f52cdedda240c70358d53409bae76fad"
+   }
+  },
+  {
+   "story_id": "E055",
+   "title": "免疫本上多出来的二十一天",
+   "themes": [
+    "宠物",
+    "疫苗时间线",
+    "更正类",
+    "医嘱复述",
+    "渐暧昧"
+   ],
+   "domain": "宠物",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave1/E055",
+   "turns": 12,
+   "files": {
+    "episode.json": "871c1a0f0b9678aab920236c0569559afb396215fa64bdc6d85bf74359ef7c13",
+    "reference.json": "ea0826fe85609c76e2876bb96400a690312fa98e1bb4377b23cc4d0caca0f05c",
+    "timeline.json": "26eddbc9674b0885a16f70b152b852836f3fea440512e20931b98a6a821225ab",
+    "audit.md": "f6b8fd5ccd5bb187b6d03ba5912c3fbc81b2422ac514dc2e60491b4d2a0868a8"
+   }
+  },
+  {
+   "story_id": "E056",
+   "title": "豆包的四天排班表",
+   "themes": [
+    "宠物",
+    "寄养分工",
+    "第三方变卦",
+    "清单协作",
+    "自然收尾"
+   ],
+   "domain": "宠物",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave1/E056",
+   "turns": 12,
+   "files": {
+    "episode.json": "2b12d3df2cca708a84236103bb57e825aff454ca3923da8685aa590645d7348b",
+    "reference.json": "bee06a672f636455afc3c358f039f538fbe1fb3fdcc4e8e8a18e7987784d698e",
+    "timeline.json": "d34374191ccae333140bfaebfa789a9020b21ab66e0143997a4763c231632fc1",
+    "audit.md": "83368f2be3fd1ff1d1be42a582b4143c34267a1f0fc862c1c5681d2546cff3ce"
+   }
+  },
+  {
+   "story_id": "E057",
+   "title": "寻猫启事贴了又撕",
+   "themes": [
+    "宠物",
+    "走失虚惊",
+    "目标启停",
+    "邻里互助",
+    "自然收尾"
+   ],
+   "domain": "宠物",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave1/E057",
+   "turns": 12,
+   "files": {
+    "episode.json": "391e3e6ce9a3ae8c6facf93b14b6b2eed090ccb1abb07e951eafdcc630900463",
+    "reference.json": "b14678e6853830b46d8c3774b00d38b6d41ebe163e3585155711bedce2ee38ad",
+    "timeline.json": "935b1a62414f2b340ab2f83838b3e6f0d809488ccd8216ae132d4ad0eea1749b",
+    "audit.md": "3cc913ca8eaa40b4f51922fff025cfaf70cf20661518da6f432c2453f3f65ec9"
+   }
+  },
+  {
+   "story_id": "E058",
+   "title": "一份礼金的来回账",
+   "themes": [
+    "家庭事务",
+    "婚宴随礼行情",
+    "费用口径冲突",
+    "还礼旧账",
+    "人情账平账"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave1/E058",
+   "turns": 12,
+   "files": {
+    "episode.json": "10bbe1c5eb501961fb64bc9c7cdac46dee317541134c2455ba93081feaa5d3d7",
+    "reference.json": "8f28e0742ac0086deb1cc2a1509ddc288eab54172ec5a03528e04b1720ff940b",
+    "timeline.json": "04d78da5aed9b098771f743c2abfad3c1163f4667fa85fa5c72e3aa6ea3a0de2",
+    "audit.md": "339e0e3a00fffe545da8161a8864c274b89d26e1fa3fbaf9923c56b0c92198bf"
+   }
+  },
+  {
+   "story_id": "E059",
+   "title": "爸说我自己能去",
+   "themes": [
+    "家庭事务",
+    "老人体检",
+    "陪同边界",
+    "报告透明化",
+    "代际共识"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave1/E059",
+   "turns": 12,
+   "files": {
+    "episode.json": "ae4b258972194f56eee8002b0234d25a437227bc1d041fd602de2414340b5d6a",
+    "reference.json": "fa9d0d7fb0b982bef3f5e29b5913582b2075a87e3dc873c423faa2c6bb48052c",
+    "timeline.json": "a4d9f4376f2531ed57669c71cf4eeebbfb9241ff9441742f73f7ecf554489ed0",
+    "audit.md": "ffb10ef2517b4068c2b6e7d0ca34e479ebad64e5a542cd703d121ab8cf1c3ecd"
+   }
+  },
+  {
+   "story_id": "E060",
+   "title": "搬家的三次改期",
+   "themes": [
+    "家庭事务",
+    "搬家死线",
+    "货车连环改期",
+    "平台调度",
+    "素人善意"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave1/E060",
+   "turns": 12,
+   "files": {
+    "episode.json": "3c73cbaeca57b94bd6f552a27ec57b75b0ca9e7913925fb1440a285da8d3c604",
+    "reference.json": "ca34c99d134ea513f5c4326278208002dd8c443d9579d8e829161c022527457d",
+    "timeline.json": "00dbbd22831e8e1ff6a3cdc87768c2e44e1c714d19e3cc59da16a3ccab2643b5",
+    "audit.md": "23601ce22c0bb7f01ddc2f68673c7040553dceebb430f8f04dd76865b23aa044"
+   }
+  }
+ ]
+}

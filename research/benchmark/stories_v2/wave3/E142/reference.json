@@ -1,0 +1,692 @@
+{
+ "story_id": "E142",
+ "turns": {
+  "E142_T01": {
+   "case_id": "E142_T01",
+   "current_action": "接住事项：确认五百个帆布袋加免费珠光升级的既定口径，提醒她盯打样节点",
+   "acceptable_actions": [
+    "确认口径并提醒这周记得催打样",
+    "顺口问一句珠光升级有没有写进订单备注"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T01_A00",
+     "subject": "THIRD",
+     "relation": "供应商承诺",
+     "value": "供应商对接人小蒋承诺印字免费升级为珠光烫金",
+     "valid_time": "2026-11-03 11:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T01",
+      "message_id": "m0",
+      "quote": "免费升级成珠光烫金"
+     }
+    },
+    {
+     "atom_id": "E142_T01_A01",
+     "subject": "SHARED",
+     "relation": "朋友事项",
+     "value": "姜柚常与 ME 商量采购与谈判类事务",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "帮她把扯皮的事拆成一二三步"
+     }
+    }
+   ],
+   "private_guidance": "她的事就是聊天主线，先接住事项本身，别急着给建议。",
+   "unknowns": [
+    "免费升级是否已写入订单未明"
+   ],
+   "protected_expressions": [
+    "免费升级成珠光烫金"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言该承诺已具备合同效力"
+   ],
+   "may_decline": false
+  },
+  "E142_T02": {
+   "case_id": "E142_T02",
+   "current_action": "接住坏消息：确认'对接人更换且样未打'两个关键点，建议她尽快和新对接人书面确认历史承诺",
+   "acceptable_actions": [
+    "先安抚，再建议她把小蒋的承诺记录整理好，尽快发新对接人确认",
+    "陪她吐槽一句人事变动，再切正事：样没打之前一切都有变数"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T02_A00",
+     "subject": "HER",
+     "relation": "早前的供应商承诺",
+     "value": "小蒋承诺免费升级珠光烫金",
+     "valid_time": "2026-11-03 11:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T01",
+      "message_id": "m0",
+      "quote": "免费升级成珠光烫金"
+     }
+    },
+    {
+     "atom_id": "E142_T02_A01",
+     "subject": "THIRD",
+     "relation": "对接人变更",
+     "value": "原对接人小蒋已离职，对接人换为小吕且打样未开始",
+     "valid_time": "2026-11-03 16:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T02",
+      "message_id": "m0",
+      "quote": "对接人换成一个小吕"
+     }
+    }
+   ],
+   "private_guidance": "先接情绪再给动作，她这会儿要的是'这事儿有解'的感觉。",
+   "unknowns": [
+    "小吕是否知晓历史承诺未明"
+   ],
+   "protected_expressions": [
+    "对接人换成一个小吕"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小吕已知悉前任承诺"
+   ],
+   "may_decline": false
+  },
+  "E142_T03": {
+   "case_id": "E142_T03",
+   "current_action": "第三方类冲突轮：接住她的火气，确认新口径（否认承诺、加价两千二），建议翻找历史聊天记录作凭证",
+   "acceptable_actions": [
+    "先共情火气，再帮她拆步：一找记录、二找订单、三再谈价",
+    "直接问一句'当时承诺有没有聊天记录或邮件'，把方向引到凭证上"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T03_A00",
+     "subject": "THIRD",
+     "relation": "供应商承诺",
+     "value": "小蒋承诺印字免费升级为珠光烫金",
+     "valid_time": "2026-11-03 11:30",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T01",
+      "message_id": "m0",
+      "quote": "免费升级成珠光烫金"
+     }
+    },
+    {
+     "atom_id": "E142_T03_A01",
+     "subject": "THIRD",
+     "relation": "新对接人口径",
+     "value": "小吕称系统无免费升级记录，珠光需加价两千二",
+     "valid_time": "2026-11-04 10:15",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T03",
+      "message_id": "m0",
+      "quote": "查不到免费升级的记录"
+     }
+    }
+   ],
+   "private_guidance": "她现在要的是同盟不是裁判，先站她这边，再把火气引到找凭证上。",
+   "unknowns": [
+    "系统记录与实际承诺是否一致未明"
+   ],
+   "protected_expressions": [
+    "查不到免费升级的记录"
+   ],
+   "forbidden_factual_claims": [
+    "不得替供应商否认承诺的真实性",
+    "不得断言截图一定能翻案"
+   ],
+   "may_decline": false
+  },
+  "E142_T04": {
+   "case_id": "E142_T04",
+   "current_action": "确认截图凭证价值：建议客气地把截图发给小吕并要求衔接承诺，先礼后兵",
+   "acceptable_actions": [
+    "建议她把原图发给小吕，语气客气地问怎么衔接，别一上来就掀桌",
+    "建议截图配订单号一起发，同时留一句'期待顺利打样'软硬兼顾"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T04_A00",
+     "subject": "THIRD",
+     "relation": "新对接人口径",
+     "value": "小吕否认有免费升级记录并要求加价两千二",
+     "valid_time": "2026-11-04 10:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T03",
+      "message_id": "m0",
+      "quote": "珠光要加两千二"
+     }
+    },
+    {
+     "atom_id": "E142_T04_A01",
+     "subject": "HER",
+     "relation": "凭证持有",
+     "value": "HER 保存有小蒋承诺'珠光我们送'的聊天截图",
+     "valid_time": "2026-11-04 14:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T04",
+      "message_id": "m0",
+      "quote": "小蒋发我的原话截图"
+     }
+    }
+   ],
+   "private_guidance": "她手里有牌了，节奏要稳：先礼后兵，别让她把谈判谈崩。",
+   "unknowns": [
+    "小吕看到截图后的反应未知"
+   ],
+   "protected_expressions": [
+    "珠光我们送"
+   ],
+   "forbidden_factual_claims": [
+    "不得保证凭截图一定免费升级"
+   ],
+   "may_decline": false
+  },
+  "E142_T05": {
+   "case_id": "E142_T05",
+   "current_action": "确认执行到位：肯定她的语气拿捏，提醒明天答复前别催太紧，把等待期交给她",
+   "acceptable_actions": [
+    "肯定执行，提醒明天答复前别催，等经理口径再说",
+    "预判两种答复（全额认或折中）让她先想好底线"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T05_A00",
+     "subject": "HER",
+     "relation": "凭证持有",
+     "value": "HER 保存有小蒋承诺'珠光我们送'的聊天截图",
+     "valid_time": "2026-11-04 14:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T04",
+      "message_id": "m0",
+      "quote": "小蒋发我的原话截图"
+     }
+    },
+    {
+     "atom_id": "E142_T05_A01",
+     "subject": "THIRD",
+     "relation": "供应商答复计划",
+     "value": "小吕将请示经理并于次日答复",
+     "valid_time": "2026-11-05 09:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T05",
+      "message_id": "m0",
+      "quote": "明天给答复"
+     }
+    }
+   ],
+   "private_guidance": "等待期别加戏，帮她把底线想清楚比催促有用。",
+   "unknowns": [
+    "经理会认多少未知"
+   ],
+   "protected_expressions": [
+    "明天给答复"
+   ],
+   "forbidden_factual_claims": [
+    "不得预测经理一定全额认账"
+   ],
+   "may_decline": false
+  },
+  "E142_T06": {
+   "case_id": "E142_T06",
+   "current_action": "帮她拆解答复：一千一是折中不是打发，把'认一半'翻译成台阶，交给她判断接不接",
+   "acceptable_actions": [
+    "拆给她听：对方认了截图效力，只是金额砍半，不算全盘否认",
+    "问她预算和工期哪个更要紧，用她的目标倒推接不接"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T06_A00",
+     "subject": "THIRD",
+     "relation": "供应商答复计划",
+     "value": "小吕请示经理并于次日答复",
+     "valid_time": "2026-11-05 09:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T05",
+      "message_id": "m0",
+      "quote": "明天给答复"
+     }
+    },
+    {
+     "atom_id": "E142_T06_A01",
+     "subject": "THIRD",
+     "relation": "经理折中口径",
+     "value": "供应商让利一千一，承担差价的一半",
+     "valid_time": "2026-11-06 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T06",
+      "message_id": "m0",
+      "quote": "让利一千一"
+     }
+    }
+   ],
+   "private_guidance": "决定权还给她，你只负责把'一千一'放到天平上量。",
+   "unknowns": [
+    "她对让利金额的接受度未明"
+   ],
+   "protected_expressions": [
+    "让利一千一"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她决定接受或拒绝"
+   ],
+   "may_decline": false
+  },
+  "E142_T07": {
+   "case_id": "E142_T07",
+   "current_action": "把选择权还给她：列出'接着争'与'接受'各自的代价，提醒她工期与周年庆日期才是硬约束",
+   "acceptable_actions": [
+    "摆两条路的代价让她挑：继续争耗时间，接受省心但要个书面",
+    "提醒她周年庆日期比两千二更要紧，建议接受但换书面条款"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T07_A00",
+     "subject": "THIRD",
+     "relation": "经理折中口径",
+     "value": "供应商让利一千一，承担差价的一半",
+     "valid_time": "2026-11-06 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T06",
+      "message_id": "m0",
+      "quote": "让利一千一"
+     }
+    },
+    {
+     "atom_id": "E142_T07_A01",
+     "subject": "HER",
+     "relation": "当前权衡",
+     "value": "一千一在预算内但情绪上不甘心",
+     "valid_time": "2026-11-07 15:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T07",
+      "message_id": "m0",
+      "quote": "一千一其实预算里也有"
+     }
+    }
+   ],
+   "private_guidance": "别替她拍板，把硬约束（工期）摆出来她自然会选。",
+   "unknowns": [
+    "她的最终决定未明"
+   ],
+   "protected_expressions": [
+    "一千一其实预算里也有"
+   ],
+   "forbidden_factual_claims": [
+    "不得擅自宣布谈判结果"
+   ],
+   "may_decline": false
+  },
+  "E142_T08": {
+   "case_id": "E142_T08",
+   "current_action": "肯定她的方案：接受让利换书面条款，是情绪到规则的落地，帮她预演一句回话",
+   "acceptable_actions": [
+    "肯定方案，帮她把回话组织成'金额认、条款补'两句话",
+    "补充一句：补充页让对方盖章回传，扫描件留档"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T08_A00",
+     "subject": "HER",
+     "relation": "当前权衡",
+     "value": "一千一在预算内但情绪上不甘心",
+     "valid_time": "2026-11-07 15:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T07",
+      "message_id": "m0",
+      "quote": "一千一其实预算里也有"
+     }
+    },
+    {
+     "atom_id": "E142_T08_A01",
+     "subject": "HER",
+     "relation": "最终决定",
+     "value": "接受让利一千一并要求把珠光条款写入合同补充页",
+     "valid_time": "2026-11-08 21:00",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T08",
+      "message_id": "m0",
+      "quote": "写进合同补充页"
+     }
+    }
+   ],
+   "private_guidance": "她把气变成了规则，这句要夸；盖章回传的细节别忘提醒。",
+   "unknowns": [],
+   "protected_expressions": [
+    "写进合同补充页"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构对方已同意补充页"
+   ],
+   "may_decline": false
+  },
+  "E142_T09": {
+   "case_id": "E142_T09",
+   "current_action": "确认收尾：肯定存档动作，顺带一句'以后新对接人也有据可依'收束此事",
+   "acceptable_actions": [
+    "肯定存档，收束此事：以后换十个人也不怕",
+    "轻松一句'这顿饭债又攒了一笔'，转回日常"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T09_A00",
+     "subject": "HER",
+     "relation": "最终决定",
+     "value": "接受让利一千一并要求补充页",
+     "valid_time": "2026-11-08 21:00",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T08",
+      "message_id": "m0",
+      "quote": "写进合同补充页"
+     }
+    },
+    {
+     "atom_id": "E142_T09_A01",
+     "subject": "SHARED",
+     "relation": "合同状态",
+     "value": "珠光条款补充页已由对方盖章回传并存档",
+     "valid_time": "2026-11-10 10:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T09",
+      "message_id": "m0",
+      "quote": "盖章回传"
+     }
+    }
+   ],
+   "private_guidance": "收尾别恋战，一句到位，把话题留给她打样。",
+   "unknowns": [],
+   "protected_expressions": [
+    "盖章回传"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称此事还有未决争议"
+   ],
+   "may_decline": false
+  },
+  "E142_T10": {
+   "case_id": "E142_T10",
+   "current_action": "回应打样确认：认可调深半档的判断，提醒量产前让工厂回一张确认样",
+   "acceptable_actions": [
+    "认可调深半档，提醒让工厂先回一张确认样再量产",
+    "让她把打样拍照发群里给同事看看再定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T10_A00",
+     "subject": "SHARED",
+     "relation": "合同状态",
+     "value": "珠光条款补充页已盖章回传存档",
+     "valid_time": "2026-11-10 10:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T09",
+      "message_id": "m0",
+      "quote": "盖章回传"
+     }
+    },
+    {
+     "atom_id": "E142_T10_A01",
+     "subject": "SHARED",
+     "relation": "打样反馈",
+     "value": "珠光效果偏淡，量产时调深半档",
+     "valid_time": "2026-11-12 18:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T10",
+      "message_id": "m0",
+      "quote": "调深半档"
+     }
+    }
+   ],
+   "private_guidance": "调深半档合理，但确认样这步是防翻车的关键，提醒到位就行。",
+   "unknowns": [],
+   "protected_expressions": [
+    "调深半档"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她拍板量产参数"
+   ],
+   "may_decline": false
+  },
+  "E142_T11": {
+   "case_id": "E142_T11",
+   "current_action": "接住报喜：恭喜交货，顺口核对报销金额口径（实付一千一）与补充页一致",
+   "acceptable_actions": [
+    "恭喜交货，确认报销金额与补充页口径对得上",
+    "借'无一瑕疵'夸她盯得紧，把这单的功劳还给她"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T11_A00",
+     "subject": "SHARED",
+     "relation": "打样反馈",
+     "value": "珠光量产时调深半档",
+     "valid_time": "2026-11-12 18:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T10",
+      "message_id": "m0",
+      "quote": "调深半档"
+     }
+    },
+    {
+     "atom_id": "E142_T11_A01",
+     "subject": "SHARED",
+     "relation": "交付结果",
+     "value": "五百个帆布袋交货验收通过，差价实付一千一",
+     "valid_time": "2026-11-18 09:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T11",
+      "message_id": "m0",
+      "quote": "五百个袋子今天交货"
+     }
+    }
+   ],
+   "private_guidance": "数字对上就痛快认，别再翻旧账，这单到此为止。",
+   "unknowns": [],
+   "protected_expressions": [
+    "五百个袋子今天交货"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构报销金额与实付不符"
+   ],
+   "may_decline": false
+  },
+  "E142_T12": {
+   "case_id": "E142_T12",
+   "current_action": "接受邀约并锁定时间地点，顺带一句不抢买单的玩笑",
+   "acceptable_actions": [
+    "答应周六中午云南菜，回一句'买单可以抢，洗碗不行'的玩笑",
+    "确认时间并问她要不要带家属"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E142_T12_A00",
+     "subject": "SHARED",
+     "relation": "交付结果",
+     "value": "五百个帆布袋交货验收通过",
+     "valid_time": "2026-11-18 09:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T11",
+      "message_id": "m0",
+      "quote": "五百个袋子今天交货"
+     }
+    },
+    {
+     "atom_id": "E142_T12_A01",
+     "subject": "HER",
+     "relation": "还债邀约",
+     "value": "周六中午 HER 请 ME 吃云南菜",
+     "valid_time": "2026-11-20 20:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E142_T12",
+      "message_id": "m0",
+      "quote": "周六中午我请"
+     }
+    }
+   ],
+   "private_guidance": "饭债梗回扣 initial_kb 的'欠一顿饭'，玩笑收尾即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "周六中午我请"
+   ],
+   "forbidden_factual_claims": [
+    "不得拒绝邀约还讲道理"
+   ],
+   "may_decline": false
+  }
+ }
+}

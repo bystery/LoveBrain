@@ -1,0 +1,826 @@
+{
+ "story_id": "E117",
+ "turns": {
+  "E117_T01": {
+   "case_id": "E117_T01",
+   "current_action": "确认周六顺路捎 HER 回临州参加表姐婚礼，并接收'一人一小包、油费八十'的前提",
+   "acceptable_actions": [
+    "答应捎带并按老规矩收八十",
+    "答应捎带并玩笑式确认不占地方",
+    "答应并提醒出发前再对一次时间"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T01_A01",
+     "subject": "SHARED",
+     "relation": "拼车计划",
+     "value": "HER 周六搭乘 ME 车辆回临州参加表姐婚礼",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T01",
+      "quote": "周六你回临州那次还空位吧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E117_T01_A02",
+     "subject": "HER",
+     "relation": "同乘人数",
+     "value": "出发表述为就她一人且只带一个小包不占地方",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T01",
+      "quote": "我就一个人，一个小包",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E117_T01_A03",
+     "subject": "SHARED",
+     "relation": "油费口径",
+     "value": "油费按两人老规矩八十元由 HER 承担",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T01",
+      "quote": "油费照老规矩八十",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "熟人语气，爽快接话即可，不必过度客套。",
+   "unknowns": [
+    "表妹小满此刻尚未出现",
+    "后备箱具体余量未知"
+   ],
+   "protected_expressions": [
+    "就一个人，一个小包"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造 ME 已答应免费捎带"
+   ],
+   "may_decline": false
+  },
+  "E117_T02": {
+   "case_id": "E117_T02",
+   "current_action": "确认八点半小区门口集合与两盒鱼干的托带安排",
+   "acceptable_actions": [
+    "确认时间并答应放后备箱",
+    "确认并顺便问鱼干要不要防压",
+    "确认并说明自己会提前几分钟到"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T02_A01",
+     "subject": "SHARED",
+     "relation": "拼车计划",
+     "value": "周六搭乘 ME 车辆回临州参加表姐婚礼的既定安排",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T01",
+      "quote": "周六你回临州那次还空位吧",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E117_T02_A02",
+     "subject": "SHARED",
+     "relation": "集合时间",
+     "value": "周六早上八点半小区门口集合",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T02",
+      "quote": "周六早上八点半小区门口",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E117_T02_A03",
+     "subject": "SHARED",
+     "relation": "托带物品",
+     "value": "HER 父亲托带两盒鱼干放入后备箱",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T02",
+      "quote": "两盒鱼干放你后备箱",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "简短确认即可，体现记得住事。",
+   "unknowns": [
+    "后备箱剩余空间未知"
+   ],
+   "protected_expressions": [
+    "两盒鱼干放你后备箱"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已另行约定其他费用"
+   ],
+   "may_decline": false
+  },
+  "E117_T03": {
+   "case_id": "E117_T03",
+   "current_action": "就两罐玻璃米酒是否放得下给出判断，接受或婉拒均可",
+   "acceptable_actions": [
+    "答应带上并说会腾位置",
+    "婉拒并建议改天专送",
+    "答应带一罐并说明空间考虑"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T03_A01",
+     "subject": "SHARED",
+     "relation": "集合时间",
+     "value": "周六早上八点半小区门口集合的既定安排",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T02",
+      "quote": "周六早上八点半小区门口",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E117_T03_A02",
+     "subject": "SHARED",
+     "relation": "托带物品增补",
+     "value": "母亲转托两罐玻璃瓶装米酒带给外婆，以后备箱不挤为条件",
+     "valid_time": "2026-11-07",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T03",
+      "quote": "让我给外婆捎两罐米酒",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "无论答应与否都先回应空间这个实际约束。",
+   "unknowns": [
+    "后备箱实际余量未知",
+    "米酒最终是否成行未定"
+   ],
+   "protected_expressions": [
+    "挤就算了"
+   ],
+   "forbidden_factual_claims": [
+    "不得假装已确认后备箱余量"
+   ],
+   "may_decline": true
+  },
+  "E117_T04": {
+   "case_id": "E117_T04",
+   "current_action": "接受更正并就五十五的新分摊口径表态，可同意可还价",
+   "acceptable_actions": [
+    "同意五十五并确认后座安排",
+    "同意但坚持自己那份照旧算",
+    "询问小满行李量再定"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T04_A01",
+     "subject": "HER",
+     "relation": "同乘人数",
+     "value": "此前表述的就她一人一小包经本人更正作废",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T01",
+      "quote": "我就一个人，一个小包",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E117_T04_A02",
+     "subject": "HER",
+     "relation": "新增同乘人",
+     "value": "表妹小满同去婚礼并将搭乘后座",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T04",
+      "quote": "她想搭你车，坐后座",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E117_T04_A03",
+     "subject": "SHARED",
+     "relation": "油费重算口径",
+     "value": "小满提议不含司机三人分摊，HER 与小满各五十五",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T04",
+      "quote": "我跟她一人五十五",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：明确认可更正信息本身，别装作没听见旧说法。",
+   "unknowns": [
+    "小满是否带大件未知"
+   ],
+   "protected_expressions": [
+    "更正一下"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续按一人一口径回应",
+    "不得虚构小满已确认的细节"
+   ],
+   "may_decline": false
+  },
+  "E117_T05": {
+   "case_id": "E117_T05",
+   "current_action": "回应靠右后座与挪纸箱的请求，并认可喜糖改寄快递的处置",
+   "acceptable_actions": [
+    "答应挪纸箱并认可寄快递",
+    "答应挪箱并问喜糖几时寄",
+    "提出把纸箱挪家再出发的替代方案"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T05_A01",
+     "subject": "HER",
+     "relation": "新增同乘人",
+     "value": "表妹小满已确认同乘后座",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T04",
+      "quote": "她想搭你车，坐后座",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E117_T05_A02",
+     "subject": "HER",
+     "relation": "座位要求",
+     "value": "小满晕车希望坐右侧后座，需挪动后备箱纸箱",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T05",
+      "quote": "想要靠右后座",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E117_T05_A03",
+     "subject": "HER",
+     "relation": "喜糖安排",
+     "value": "小满原想带一箱喜糖回公司发，经劝说改为寄快递",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T05",
+      "quote": "我劝她寄快递了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快接住细节，顺手认可她替朋友做的取舍。",
+   "unknowns": [
+    "喜糖快递单号未知"
+   ],
+   "protected_expressions": [
+    "我劝她寄快递了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已替小满订好快递"
+   ],
+   "may_decline": false
+  },
+  "E117_T06": {
+   "case_id": "E117_T06",
+   "current_action": "确认出发时间由八点半更正为八点整",
+   "acceptable_actions": [
+    "确认八点并说会定闹钟",
+    "确认并提议提前五分钟缓冲",
+    "确认并顺势问迎宾要不要帮忙"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T06_A01",
+     "subject": "SHARED",
+     "relation": "集合时间",
+     "value": "此前约定的周六早上八点半小区门口集合被更正替换",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T02",
+      "quote": "周六早上八点半小区门口",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E117_T06_A02",
+     "subject": "SHARED",
+     "relation": "出发时间更正",
+     "value": "因婚礼迎宾提前，出发时间改为八点整",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T06",
+      "quote": "时间从八点半改到八点整",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "时间变更要明确复述新值。",
+   "unknowns": [],
+   "protected_expressions": [
+    "时间从八点半改到八点整"
+   ],
+   "forbidden_factual_claims": [
+    "不得沿用八点半作为最终时间"
+   ],
+   "may_decline": false
+  },
+  "E117_T07": {
+   "case_id": "E117_T07",
+   "current_action": "接受小满取消的更正，确认油费回八十与纸箱不必挪",
+   "acceptable_actions": [
+    "确认回滚并安慰她别觉得折腾",
+    "确认并玩笑说喜糖白寄了没有",
+    "确认并问要不要明天再帮着问别的人"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T07_A01",
+     "subject": "HER",
+     "relation": "新增同乘人",
+     "value": "表妹小满因门店临时开会取消同乘",
+     "valid_time": "2026-11-07",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T04",
+      "quote": "她想搭你车，坐后座",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E117_T07_A02",
+     "subject": "SHARED",
+     "relation": "油费恢复",
+     "value": "小满取消后油费恢复两人老规矩八十，五十五方案作废",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T07",
+      "quote": "那油费还按咱俩原来的规矩，我八十",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E117_T07_A03",
+     "subject": "HER",
+     "relation": "空间请求撤销",
+     "value": "挪纸箱的请求随小满取消而撤销",
+     "valid_time": "2026-11-07",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T05",
+      "quote": "你把后面那个纸箱挪一下呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突收口轮：三处更正一次对齐，别漏油费。",
+   "unknowns": [
+    "小满后续是否改乘高铁未知"
+   ],
+   "protected_expressions": [
+    "五十五那页翻过去"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续按三人分摊回应",
+    "不得催问小满改签细节"
+   ],
+   "may_decline": false
+  },
+  "E117_T08": {
+   "case_id": "E117_T08",
+   "current_action": "接过物品并确认米酒一罐、鱼干白袋与豆浆的位置",
+   "acceptable_actions": [
+    "清点确认并道谢豆浆",
+    "确认并顺手把白袋固定好",
+    "确认并提一句路上慢点喝豆浆"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T08_A01",
+     "subject": "SHARED",
+     "relation": "托带物品增补",
+     "value": "母亲转托的米酒此后备箱事项",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T03",
+      "quote": "让我给外婆捎两罐米酒",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E117_T08_A02",
+     "subject": "HER",
+     "relation": "米酒数量更正",
+     "value": "两罐只带一罐，另一罐太沉留给母亲下次",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T08",
+      "quote": "米酒装了一罐，另一罐太沉",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E117_T08_A03",
+     "subject": "HER",
+     "relation": "当日物品",
+     "value": "鱼干装白色袋子，并给 ME 带了豆浆放杯架",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T08",
+      "quote": "豆浆给你带了一杯",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出发节奏快，回复宜短而稳。",
+   "unknowns": [],
+   "protected_expressions": [
+    "豆浆给你带了一杯"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称米酒仍是两罐"
+   ],
+   "may_decline": false
+  },
+  "E117_T09": {
+   "case_id": "E117_T09",
+   "current_action": "行驶中简短确认改道滨江路，让 HER 专心坐车",
+   "acceptable_actions": [
+    "简短确认并让她看导航播报",
+    "确认并说预计多花多少分钟",
+    "只回一个稳字加专心开车"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T09_A01",
+     "subject": "HER",
+     "relation": "新增同乘人",
+     "value": "小满已取消，当日同乘仅 HER 一人",
+     "valid_time": "2026-11-07",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T04",
+      "quote": "她想搭你车，坐后座",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E117_T09_A02",
+     "subject": "SHARED",
+     "relation": "路线调整",
+     "value": "高架拥堵，经 ME 建议改绕滨江路",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T09",
+      "quote": "你说绕滨江路",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "驾驶场景，回复必须短。",
+   "unknowns": [
+    "实际延误分钟数未知"
+   ],
+   "protected_expressions": [
+    "你专心开"
+   ],
+   "forbidden_factual_claims": [
+    "不得在驾驶场景长篇回复",
+    "不得虚构新路況细节"
+   ],
+   "may_decline": false
+  },
+  "E117_T10": {
+   "case_id": "E117_T10",
+   "current_action": "为赶上婚礼松口气，并确认喜糖已寄、单号后补",
+   "acceptable_actions": [
+    "祝贺赶上并催单号玩笑",
+    "祝贺并让她去忙正事",
+    "祝贺并提醒回程时间再对一次"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T10_A01",
+     "subject": "HER",
+     "relation": "喜糖安排",
+     "value": "喜糖改为寄快递的既定处置",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T05",
+      "quote": "我劝她寄快递了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E117_T10_A02",
+     "subject": "SHARED",
+     "relation": "喜糖执行",
+     "value": "喜糖已按约定寄出，快递单号后补",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T10",
+      "quote": "单号回头发你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快收束，别拖长。",
+   "unknowns": [
+    "快递单号未知"
+   ],
+   "protected_expressions": [
+    "赶上了赶上了"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造单号"
+   ],
+   "may_decline": false
+  },
+  "E117_T11": {
+   "case_id": "E117_T11",
+   "current_action": "确认回程提前到四点半并从酒店门口出发",
+   "acceptable_actions": [
+    "确认四点半并说会提前到",
+    "确认并问酒店门口具体哪个门",
+    "确认并说路上给她带水"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T11_A01",
+     "subject": "SHARED",
+     "relation": "集合时间",
+     "value": "当日出发时间相关安排已被多次更正，最新以本轮为准",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T06",
+      "quote": "时间从八点半改到八点整",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E117_T11_A02",
+     "subject": "SHARED",
+     "relation": "回程时间",
+     "value": "婚礼散席后回程提前到十六点半从酒店门口走",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T11",
+      "quote": "回程时间提前到四点半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "明确复述四点半，别含糊。",
+   "unknowns": [],
+   "protected_expressions": [
+    "回程时间提前到四点半"
+   ],
+   "forbidden_factual_claims": [
+    "不得按五点作为回程时间"
+   ],
+   "may_decline": false
+  },
+  "E117_T12": {
+   "case_id": "E117_T12",
+   "current_action": "接下感谢与咖啡记账的玩笑，对温泉市集邀约可接可不接",
+   "acceptable_actions": [
+    "接玩笑并说咖啡记我账上",
+    "接钩子并问市集是哪天",
+    "收下感谢并留一句改天看安排"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E117_T12_A01",
+     "subject": "HER",
+     "relation": "当日物品",
+     "value": "HER 当日带豆浆回赠的安排",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T08",
+      "quote": "豆浆给你带了一杯",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E117_T12_A02",
+     "subject": "SHARED",
+     "relation": "行程闭环",
+     "value": "往返临州行程完成，HER 致谢并另记咖啡账",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T12",
+      "quote": "咖啡我另记着账",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E117_T12_A03",
+     "subject": "HER",
+     "relation": "后续邀约",
+     "value": "提出温泉小镇市集若同行则仍留副驾",
+     "valid_time": "2026-11-07之后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E117_T12",
+      "quote": "下回温泉小镇那个市集",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，可轻调情但别过火。",
+   "unknowns": [
+    "市集具体日期未知"
+   ],
+   "protected_expressions": [
+    "副驾还给你留着"
+   ],
+   "forbidden_factual_claims": [
+    "不得替 HER 确定市集日期"
+   ],
+   "may_decline": true
+  }
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E015",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E015_T01",
+   "clock": "2026-11-08 20:07"
+  },
+  {
+   "case_id": "E015_T02",
+   "clock": "2026-11-08 20:16"
+  },
+  {
+   "case_id": "E015_T03",
+   "clock": "2026-11-08 20:26"
+  },
+  {
+   "case_id": "E015_T04",
+   "clock": "2026-11-08 20:36"
+  },
+  {
+   "case_id": "E015_T05",
+   "clock": "2026-11-08 20:44"
+  },
+  {
+   "case_id": "E015_T06",
+   "clock": "2026-11-08 20:54"
+  },
+  {
+   "case_id": "E015_T07",
+   "clock": "2026-11-08 21:04"
+  },
+  {
+   "case_id": "E015_T08",
+   "clock": "2026-11-08 21:14"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E015_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-08 20:05",
+   "quote": "今天被家属骂了半小时 明明按流程做的"
+  },
+  {
+   "case_id": "E015_T02",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-08 20:14",
+   "quote": "我现在特别想辞职 但又知道是气话"
+  },
+  {
+   "case_id": "E015_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-08 20:24",
+   "quote": "想吃火锅 但我一个人又不想去"
+  },
+  {
+   "case_id": "E015_T04",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-08 20:34",
+   "quote": "算了 说说你吧 你今天怎么样"
+  },
+  {
+   "case_id": "E015_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-08 20:42",
+   "quote": "你上次说你班那个小孩老不交作业 后来呢"
+  },
+  {
+   "case_id": "E015_T06",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-08 20:52",
+   "quote": "我其实挺羡慕你们有寒暑假的 虽然我知道你也不轻松"
+  },
+  {
+   "case_id": "E015_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-08 21:02",
+   "quote": "我好多了 至少没刚才那么想辞职"
+  },
+  {
+   "case_id": "E015_T08",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-08 21:12",
+   "quote": "我去煮个面 今天就这样吧 你也早点休息"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "家属投诉",
+   "event_time": "2026-11-08 白天",
+   "status": "occurred",
+   "source_turn": "E015_T01"
+  },
+  {
+   "event_id": "EV2",
+   "label": "她想吃火锅",
+   "event_time": "2026-11-08 晚上",
+   "status": "desired",
+   "source_turn": "E015_T03"
+  },
+  {
+   "event_id": "EV3",
+   "label": "她煮面结束聊天",
+   "event_time": "2026-11-08 21:15",
+   "status": "planned",
+   "source_turn": "E015_T08"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "普通朋友，听她吐槽"
+  },
+  {
+   "turn": "T04",
+   "stage": "她转回来关心我"
+  },
+  {
+   "turn": "T08",
+   "stage": "普通朋友，自然收尾"
+  }
+ ],
+ "revisions": [],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

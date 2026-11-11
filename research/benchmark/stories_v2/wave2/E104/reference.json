@@ -1,0 +1,527 @@
+{
+ "story_id": "E104",
+ "turns": {
+  "E104_T01": {
+   "case_id": "E104_T01",
+   "current_action": "接住她的血压：先把死线翻译成账（三笔共3017、窗口11天），再给排序原则——票据干净的先走快速通道，有瑕疵的立刻启动补救，别让死线替她决定先后。",
+   "acceptable_actions": [
+    "建议先盘点三笔的票据状态，分'能直接交'和'要补救'两堆",
+    "提醒14号是处理完成日，重录和红冲都要时间，按最慢环节倒排",
+    "让她把财务通知原文截图留档，口径以它为准"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A01",
+     "subject": "PUBLIC",
+     "relation": "system_switch_deadline",
+     "value": "公司报销系统11月14日切换，旧单逾期作废需新系统重录",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T01", "message_id": "m0", "quote": "旧系统里的单子14号前处理不完，切完就作废"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A02",
+     "subject": "SHARED",
+     "relation": "advance_total",
+     "value": "她名下压着团建1860、伴手礼940、快递217三笔垫付共3017元",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T01", "message_id": "m0", "quote": "团建烧烤1860、客户伴手礼940、快递耗材217，一共3017"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她的急是真的，但回复要稳，先把'窗口还有11天'这个事实立住再谈动作。",
+   "unknowns": ["新旧系统具体差异未知", "三笔垫付的票据状态未知"],
+   "protected_expressions": ["我血压都上来了"],
+   "forbidden_factual_claims": ["不得虚构报销制度条款", "不得断言3017最终能否全数报销"]
+  },
+  "E104_T02": {
+   "case_id": "E104_T02",
+   "current_action": "接住票据盘点的心凉：给补救优先级——无发票的先催开（时间最长），抬头错的立刻联系供应商问重开流程，快递那笔直接交别等。",
+   "acceptable_actions": [
+    "建议先问烧烤店补开能否在14号前到，不行立刻找替代口径",
+    "提醒个人抬头发票大概率要红冲重开，先问清周期",
+    "建议快递那笔今天就交，先落袋一笔稳定心态"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A03",
+     "subject": "SHARED",
+     "relation": "invoice_gaps",
+     "value": "伴手礼发票抬头开成个人、团建仅有收据无发票",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T02", "message_id": "m0", "quote": "发票抬头开成了个人，团建那笔烧烤店只给了收据"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A04",
+     "subject": "SHARED",
+     "relation": "only_courier_valid",
+     "value": "三笔中仅快递217持有正规发票",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T02", "message_id": "m0", "quote": "就快递那笔有正规发票"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'心凉'要接一句，然后立刻转成'哪笔能救'的排序，别陪她一起凉。",
+   "unknowns": ["烧烤店补开能否赶上死线未知", "供应商重开周期未知"],
+   "protected_expressions": ["可怜的217"],
+   "forbidden_factual_claims": ["不得断言个人抬头必然不能报（以财务口径为准）", "不得虚构红冲流程细节"]
+  },
+  "E104_T03": {
+   "case_id": "E104_T03",
+   "current_action": "接住财务口径：重录需双审批不是刁难是流程。帮她把口径转成行动意义——这正是'14号前交合规票据'的性价比所在，同时留档这条口径。",
+   "acceptable_actions": [
+    "把双审批翻译成成本：逾期重录慢且要两人签字，能赶就别拖",
+    "建议把小周的口径回复截图存档，后面沟通以此为准",
+    "提醒'不像好话'的感受放一边，先按最快通道走"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A05",
+     "subject": "PUBLIC",
+     "relation": "reapproval_rule",
+     "value": "财务口径：切换后重录需部门负责人加财务双审批",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T03", "message_id": "m0", "quote": "切完重录，重录要部门负责人加财务双审批"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她对'财务'两个字有敌意，ME 是财务出身，正好用行内话把规矩讲成中性流程。",
+   "unknowns": ["双审批的实际时长未知"],
+   "protected_expressions": ["双审批这两个字听着就不像好话"],
+   "forbidden_factual_claims": ["不得断言财务故意设卡", "不得虚构审批时效数字"]
+  },
+  "E104_T04": {
+   "case_id": "E104_T04",
+   "current_action": "接住被拒与归责的火气：先站她'垫付不是原罪'的情绪，再把她手里的垫付指示记录标为关键资产——但提醒出示方式决定它是护身符还是导火索。",
+   "acceptable_actions": [
+    "肯定她翻出垫付指示记录的直觉，证据比顶嘴有用",
+    "提醒延期说明被拒不等于钱要不回，先别上升成对错",
+    "问她打算什么时候、以什么方式拿记录去谈"
+   ],
+   "applicable_dimensions": ["emotion_relation", "attribution", "boundary", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A06",
+     "subject": "THIRD",
+     "relation": "supervisor_refusal",
+     "value": "主管拒签延期说明并将积压归责于她",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T04", "message_id": "m0", "quote": "你自己压了两个月，别让部门背锅"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A07",
+     "subject": "THIRD",
+     "relation": "advance_instruction",
+     "value": "九月主管微信指示她垫付团建款并承诺预算下来就报",
+     "valid_time": "2026-09/2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T04", "message_id": "m0", "quote": "这钱你先垫，月度预算下来就报"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A08",
+     "subject": "HER",
+     "relation": "blame_contested",
+     "value": "她认为垫付源于主管指示，责任不应全归她",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E104_T04", "message_id": "m0", "quote": "现在锅全成我的了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她要人撑腰，撑腰可以，但落点必须落到'记录比火气值钱'，不拱火。",
+   "unknowns": ["主管是否知情过死线通知未知"],
+   "protected_expressions": ["现在锅全成我的了"],
+   "forbidden_factual_claims": ["不得断言主管故意甩锅", "不得断言出示记录必然引发冲突"]
+  },
+  "E104_T05": {
+   "case_id": "E104_T05",
+   "current_action": "面对'护身符还是撕破脸'的征询：给使用说明——记录该用，但包装决定效果：不追责、只对账、给台阶（'怕票据过期我担不起'），让记录替她说话而非替她开炮。",
+   "acceptable_actions": [
+    "明确记录值得用，建议以'自保说明'而非'追责'的姿态出示",
+    "建议把'不是我压着不报，是当时的垫付安排'讲成陈述句",
+    "提醒谈之前想好自己要什么（延期担保），带诉求去谈"
+   ],
+   "applicable_dimensions": ["interaction", "boundary", "attribution", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A09",
+     "subject": "HER",
+     "relation": "evidence_screenshot",
+     "value": "她已截图保存主管垫付指示的微信记录",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T05", "message_id": "m0", "quote": "把主管让我垫钱的微信记录截了图"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A10",
+     "subject": "HER",
+     "relation": "usage_consultation",
+     "value": "她征询出示记录是护身符还是撕破脸",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T05", "message_id": "m0", "quote": "这算不算护身符"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：给'怎么用'的说明书，不给'该不该'的道德判——她其实已经决定用了。",
+   "unknowns": ["主管看到记录的反应未知"],
+   "protected_expressions": ["以后团建我还得跟他打交道"],
+   "forbidden_factual_claims": ["不得虚构出示后的结果", "不得断言记录在职场争议中的效力"]
+  },
+  "E104_T06": {
+   "case_id": "E104_T06",
+   "current_action": "接住不撕破脸的胜利：肯定她'证据在手+不自证清白+带诉求'的三件套打法，把主管的担保落成两条行动线（合规13号前交、缺口笔月底担保）并提醒各自盯梢。",
+   "acceptable_actions": [
+    "肯定她那句'不是为了追责'的包装是全场关键",
+    "建议担保延期找财务确认书面痕迹，别只口头",
+    "提醒合规票据13号截止是硬时限，倒排两天余量"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A11",
+     "subject": "THIRD",
+     "relation": "guarantee_extension",
+     "value": "主管担保团建缺发票那笔延期至月底",
+     "valid_time": "2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T06", "message_id": "m0", "quote": "团建缺发票的这笔我去跟财务担保，给你延到月底"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A12",
+     "subject": "SHARED",
+     "relation": "instruction_evidence_worked",
+     "value": "垫付指示记录成为重新谈判的关键依据",
+     "valid_time": "2026-11-09/2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T04", "message_id": "m0", "quote": "这钱你先垫，月度预算下来就报"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E104_A13",
+     "subject": "HER",
+     "relation": "non_confrontational_approach",
+     "value": "她以不追责只对账的方式出示证据完成沟通",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T06", "message_id": "m0", "quote": "不是为了追责，是怕票据过期我担不起"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：胜利归她，ME 不领功；提醒只给'书面痕迹'这一条，别泼冷水。",
+   "unknowns": ["担保是否已获财务认可未知"],
+   "protected_expressions": ["证据在手，话就好说"],
+   "forbidden_factual_claims": ["不得断言担保必然兑现", "不得虚构财务对担保的态度"]
+  },
+  "E104_T07": {
+   "case_id": "E104_T07",
+   "current_action": "接住一过一退：快递217过关是好消息；伴手礼940因个人抬头退回需红冲重开。把'红冲重开10个工作日'倒排进切换后的时间线，确认它不会作废只会排队。",
+   "acceptable_actions": [
+    "先确认快递217过关，让她稳住一块",
+    "指出重开10个工作日跨过切换日，按财务口径走重录通道即可不作废",
+    "建议立刻让供应商启动红冲，把等待期前置"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A14",
+     "subject": "SHARED",
+     "relation": "courier_submitted",
+     "value": "快递217于13号按时提交通过",
+     "valid_time": "2026-11-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T07", "message_id": "m0", "quote": "快递217过了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A15",
+     "subject": "SHARED",
+     "relation": "gift_returned",
+     "value": "伴手礼940因个人抬头被财务退回，需供应商红冲重开",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E104_T07", "message_id": "m0", "quote": "发票抬头是个人不能报，得供应商红冲重开"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A16",
+     "subject": "PUBLIC",
+     "relation": "reapproval_constraint",
+     "value": "双审批口径使逾期重录成本高企，倒逼她在死线前清票",
+     "valid_time": "2026-11-07/2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T03", "message_id": "m0", "quote": "切完重录，重录要部门负责人加财务双审批"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'气死我了'接一句就转排期，她是被流程气不是被人气，这话点破能降压。",
+   "unknowns": ["红冲重开实际耗时未知"],
+   "protected_expressions": ["正好卡在系统切换后面"],
+   "forbidden_factual_claims": ["不得断言940必然能在切换后报销", "不得虚构红冲的税务细节"]
+  },
+  "E104_T08": {
+   "case_id": "E104_T08",
+   "current_action": "接住新系统首航：217到账给她垫底；科目盲选'市场推广费'是新雷——不吓她，但建议她立刻翻预算科目对照或问财务，赶在审核前自查一次。",
+   "acceptable_actions": [
+    "肯定217到账，第一滴血比什么都提气",
+    "提醒科目选错会被打回重录，趁早自查或问财务正确科目",
+    "建议把伴手礼的实际用途写成一句话备注，方便审核对口径"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A17",
+     "subject": "SHARED",
+     "relation": "category_guess",
+     "value": "她在新系统重录时盲选预算科目'市场推广费'",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T08", "message_id": "m0", "quote": "硬着头皮选了个'市场推广费'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A18",
+     "subject": "SHARED",
+     "relation": "courier_paid",
+     "value": "快递217到账，成为首笔回款",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T08", "message_id": "m0", "quote": "快递那笔217今天到账了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'看都没看懂'这句别嘲讽，新手系统盲选是常态，给自查动作就好。",
+   "unknowns": ["伴手礼的正确科目未知", "新系统审核时长未知"],
+   "protected_expressions": ["第一滴血"],
+   "forbidden_factual_claims": ["不得虚构科目体系的官方定义", "不得断言盲选科目必然被打回"]
+  },
+  "E104_T09": {
+   "case_id": "E104_T09",
+   "current_action": "接住双口径打回：科目改'客户维护费'是她的新知识，个人抬头红冲是老问题回归。把两件事拆开：科目她现在就能改，票要等供应商，别让挫败感把两件事搅成一锅。",
+   "acceptable_actions": [
+    "把'客户维护费'记为正确科目，改后重交",
+    "提醒附沟通记录的做法很好，流程感会让财务更快处理",
+    "安抚'捉迷藏'的挫败：这轮打回是口径问题不是她的问题"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A19",
+     "subject": "SHARED",
+     "relation": "gift_rejected_again",
+     "value": "伴手礼因科目不对与个人抬头被财务再次退回",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E104_T09", "message_id": "m0", "quote": "科目不对，应该是'客户维护费'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A20",
+     "subject": "SHARED",
+     "relation": "invoice_gap_persistent",
+     "value": "个人抬头问题自盘点起始终是伴手礼报销的核心障碍",
+     "valid_time": "2026-11-05/2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T02", "message_id": "m0", "quote": "发票抬头开成了个人"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E104_A21",
+     "subject": "HER",
+     "relation": "frustration",
+     "value": "她对940反复受阻感到挫败，自嘲在捉迷藏",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T09", "message_id": "m0", "quote": "这940在跟我捉迷藏"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：挫败值一句共情，然后给'她能改的那部分'，让她手里始终有主动权。",
+   "unknowns": ["红冲重开的最终票面内容未知"],
+   "protected_expressions": ["这940在跟我捉迷藏"],
+   "forbidden_factual_claims": ["不得断言财务处理有恶意", "不得虚构科目归属的会计准则依据"]
+  },
+  "E104_T10": {
+   "case_id": "E104_T10",
+   "current_action": "面对'内容写办公用品的票敢不敢收'：直接劝住——票面内容与实际用途不符的票不能收，这不是效率问题是票据真实性问题；给替代路径：按实际内容重开，慢但干净。",
+   "acceptable_actions": [
+    "明确建议不收内容失真的票，讲清这是票据真实性红线",
+    "建议让供应商按实际用途重开，多等工作日也值",
+    "提醒若财务发现票实不符，责任落在收票人身上"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "goal", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A22",
+     "subject": "THIRD",
+     "relation": "mismatch_offer",
+     "value": "供应商提出重开票面内容只能写办公用品",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T10", "message_id": "m0", "quote": "内容只能给你写办公用品，不然我们过不了他们自己审核"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A23",
+     "subject": "HER",
+     "relation": "integrity_consultation",
+     "value": "她征询能否收内容与实际用途不符的发票",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T10", "message_id": "m0", "quote": "这票我敢收吗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A24",
+     "subject": "SHARED",
+     "relation": "category_risk_stack",
+     "value": "科目口径与票面内容两重风险叠加在伴手礼报销上",
+     "valid_time": "2026-11-15/2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T08", "message_id": "m0", "quote": "市场推广费"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：拒绝要快而稳，把'敢不敢'换算成'出了事谁担'，她自己会算明白。",
+   "unknowns": ["供应商按实重开的最终周期未知"],
+   "protected_expressions": ["财务那边再打回来一次我人都要麻了"],
+   "forbidden_factual_claims": ["不得虚构税务稽查后果的细节", "不得断言供应商开票要求违法"]
+  },
+  "E104_T11": {
+   "case_id": "E104_T11",
+   "current_action": "接住双喜：她拒了失真票改走正道（加5个工作日也认），团建1860担保兑现到账。把'慢但干净'和'担保兑现'都点到，让她的守规矩拿到正反馈。",
+   "acceptable_actions": [
+    "肯定她拒失真票的选择，慢路线换来的是不用提心吊胆",
+    "把1860到账与主管担保挂钩，确认担保闭环",
+    "提醒940重开期间保持与供应商的进度跟进"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A25",
+     "subject": "HER",
+     "relation": "integrity_choice",
+     "value": "她拒绝失真票，要求供应商按实际内容重开",
+     "valid_time": "2026-11-24/2026-11-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T11", "message_id": "m0", "quote": "我让供应商按实际内容重开"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A26",
+     "subject": "SHARED",
+     "relation": "teambuilding_paid",
+     "value": "主管担保的团建1860月底前批下到账",
+     "valid_time": "2026-11-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T11", "message_id": "m0", "quote": "团建1860月底前批下来到账了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A27",
+     "subject": "THIRD",
+     "relation": "mismatch_offer_rejected",
+     "value": "票面内容写办公用品的失真开票方案被否决",
+     "valid_time": "2026-11-24/2026-11-27",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E104_T10", "message_id": "m0", "quote": "内容只能给你写办公用品"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'手里有粮心里不慌'要接得爽，守规矩的正反馈这一轮必须给足。",
+   "unknowns": ["940重开票到达时间未知"],
+   "protected_expressions": ["手里有粮心里不慌"],
+   "forbidden_factual_claims": ["不得断言正道重开必然一次通过", "不得虚构供应商内部审核细节"]
+  },
+  "E104_T12": {
+   "case_id": "E104_T12",
+   "current_action": "接住全额闭环与规则外传：3017一分没少、从九月拖到十二月的自嘲接住；'先保票再垫钱、垫付超500留痕'的便签规则肯定为这条线最值钱的沉淀，吃饭之约按安排接。",
+   "acceptable_actions": [
+    "先恭喜940到账、3017闭环，把'拖了三个月'算成教训成本",
+    "肯定垫付留痕便签的含金量，建议实习生版再加一条'票据当天要'",
+    "吃饭之约答应或按日程改期均可，'报销军师'的梗接住"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "goal", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E104_A28",
+     "subject": "SHARED",
+     "relation": "all_reimbursed",
+     "value": "伴手礼940到账，三笔垫付3017元全额收回",
+     "valid_time": "2026-12-04",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T12", "message_id": "m0", "quote": "3017一分没少"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A29",
+     "subject": "HER",
+     "relation": "rule_internalized",
+     "value": "她把垫付超500必须留痕写成便签并传给实习生",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T12", "message_id": "m0", "quote": "垫付超500必须留痕"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E104_A30",
+     "subject": "SHARED",
+     "relation": "last_leg_resolved",
+     "value": "仅剩伴手礼940未决的状态终结，账目全部闭环",
+     "valid_time": "2026-11-27/2026-12-04",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E104_T11", "message_id": "m0", "quote": "就剩940在路上慢慢爬"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：闭环要庆祝，'军师费'的梗顺手接住；她把规则外传这一步，比3000块更值得肯定。",
+   "unknowns": [],
+   "protected_expressions": ["就当'报销'你这军师"],
+   "forbidden_factual_claims": ["不得虚构新报销流程的更多细节", "不得引入新的职场话题"]
+  }
+ }
+}

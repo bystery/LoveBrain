@@ -1,0 +1,438 @@
+{
+ "story_id": "E054",
+ "turns": {
+  "E054_T01": {
+   "case_id": "E054_T01",
+   "current_action": "接住突发故障的慌乱，确认花屏现象细节并记录设备重要性",
+   "acceptable_actions": [
+    "先安抚再确认花屏出现的时间与频率",
+    "共情吃饭家伙出事的紧张，建议保存工作文件"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A01",
+     "subject": "HER",
+     "relation": "reports_defect",
+     "value": "小柚的笔记本屏幕右上角花屏闪烁，改稿中被吓到，电脑是她的生产工具",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T01", "message_id": "m0", "quote": "屏幕右上角开始花屏，一闪一闪的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接惊吓情绪，再谈设备，不急着给维修建议",
+   "unknowns": ["电脑品牌型号与保修状态未知", "花屏是否持续未知"],
+   "protected_expressions": ["一闪一闪的"],
+   "forbidden_factual_claims": ["不得断言故障原因", "不得虚构保修范围"]
+  },
+  "E054_T02": {
+   "case_id": "E054_T02",
+   "current_action": "接下记录任务，复述预约要点与随身物品清单",
+   "acceptable_actions": [
+    "复述周四14:00、带电源适配器和购买凭证并确认收到工单号",
+    "确认提醒任务并顺带提醒备份设计文件"
+   ],
+   "applicable_dimensions": ["memory_use", "time_state", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A02",
+     "subject": "SHARED",
+     "relation": "appointment_made",
+     "value": "周四（10月29日）下午两点品牌官方售后检测预约成立，需带电源适配器与购买凭证",
+     "valid_time": "2026-10-28/2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T02", "message_id": "m0", "quote": "周四下午两点官方售后"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E054_A03",
+     "subject": "HER",
+     "relation": "asks_reminder",
+     "value": "HER 请 ME 提醒她提前一小时出门，网点不好停车",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T02", "message_id": "m1", "quote": "提醒我提前一小时出门"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：像贴身日历一样复述要点，条目清楚即可",
+   "unknowns": ["工单号具体内容未给出"],
+   "protected_expressions": ["电源适配器和购买凭证"],
+   "forbidden_factual_claims": ["不得虚构工单号数字", "不得承诺网点当日能修完"]
+  },
+  "E054_T03": {
+   "case_id": "E054_T03",
+   "current_action": "在车站场景下帮她抢时间，指出须在14:00前两小时完成取消并安抚",
+   "acceptable_actions": [
+    "立刻算出两小时取消线并催她联系客服",
+    "先稳情绪再给取消改期的具体动作顺序"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A04",
+     "subject": "SHARED",
+     "relation": "appointment_cancelled",
+     "value": "原周四14:00售后预约因临时出差无法赴约，进入取消改期流程",
+     "valid_time": "2026-10-29",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E054_T03", "message_id": "m0", "quote": "周四下午两点的预约去不成了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E054_A05",
+     "subject": "SHARED",
+     "relation": "appointment_context",
+     "value": "周四下午两点官方售后检测是原定安排，本次取消即针对该预约",
+     "valid_time": "2026-10-28/2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T02", "message_id": "m0", "quote": "周四下午两点官方售后"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：时间紧，回复要短促明确，先给动作再给安抚",
+   "unknowns": ["客服是否同意改期未知", "出差归期未知"],
+   "protected_expressions": ["我人已经在车站了"],
+   "forbidden_factual_claims": ["不得虚构取消时限规则", "不得替客服承诺改期成功"]
+  },
+  "E054_T04": {
+   "case_id": "E054_T04",
+   "current_action": "确认改期与新预约时间，复述爽约规则帮她把规则吃透",
+   "acceptable_actions": [
+    "确认新时间下周三10:30并复述两小时线与两次拉黑规则",
+    "肯定她赶在时限内取消，建议设改期后的提醒"
+   ],
+   "applicable_dimensions": ["time_state", "factuality", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A06",
+     "subject": "THIRD",
+     "relation": "policy_stated",
+     "value": "客服称提前两小时取消不计爽约，同一单号爽约两次将限制预约一个月",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T04", "message_id": "m0", "quote": "爽约两次要拉黑一个月"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E054_A07",
+     "subject": "SHARED",
+     "relation": "appointment_rebooked",
+     "value": "售后检测改期到下周三（11月4日）上午十点半",
+     "valid_time": "2026-10-29/2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T04", "message_id": "m0", "quote": "改到下周三上午十点半"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E054_A08",
+     "subject": "SHARED",
+     "relation": "original_cancelled",
+     "value": "原周四预约已取消的结论在改期通话后成立",
+     "valid_time": "2026-10-29",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E054_T03", "message_id": "m0", "quote": "预约去不成了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把规则念成清单，让她悬着的手放下来",
+   "unknowns": ["改期是否需要再次确认短信未知"],
+   "protected_expressions": ["吓得我手都在抖"],
+   "forbidden_factual_claims": ["不得编造官方爽约条款原文", "不得保证不会再有变动"]
+  },
+  "E054_T05": {
+   "case_id": "E054_T05",
+   "current_action": "出差间隙的守约确认，接下周三再提醒的任务并共情不踏实感",
+   "acceptable_actions": [
+    "确认周三会提醒并给一个当天时间表",
+    "接情绪再确认提醒，顺带问备用机是否够用"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A09",
+     "subject": "HER",
+     "relation": "ongoing_worry",
+     "value": "HER 在出差中持续挂心花屏，明确要求周三再提醒一次",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T05", "message_id": "m0", "quote": "周三你可千万再提醒我一遍"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E054_A10",
+     "subject": "SHARED",
+     "relation": "rebook_confirmed",
+     "value": "11月4日10:30改期预约有效，是 HER 挂心的锚点",
+     "valid_time": "2026-10-29/2026-11-04",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T04", "message_id": "m0", "quote": "改到下周三上午十点半"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：晚上十点的消息，回复放轻，别把日程感砸得太重",
+   "unknowns": ["驻场强度与归期未知"],
+   "protected_expressions": ["一天不解决我心里一天不踏实"],
+   "forbidden_factual_claims": ["不得虚构驻场安排细节"]
+  },
+  "E054_T06": {
+   "case_id": "E054_T06",
+   "current_action": "赴约前确认，核对随身物品与预约时间点",
+   "acceptable_actions": [
+    "复述明天10:30与包内两件物品，确认万无一失",
+    "确认后再给一个出门时间建议"
+   ],
+   "applicable_dimensions": ["memory_use", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A11",
+     "subject": "HER",
+     "relation": "prep_done",
+     "value": "HER 已把电源适配器和发票塞进包里，确认赴约准备完成",
+     "valid_time": "2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T06", "message_id": "m0", "quote": "电源适配器和发票塞进包里"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E054_A12",
+     "subject": "SHARED",
+     "relation": "rebook_active",
+     "value": "11月4日上午10:30售后预约为当前有效预约",
+     "valid_time": "2026-10-29/2026-11-04",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T04", "message_id": "m0", "quote": "改到下周三上午十点半"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：干净利落地确认，不添新任务",
+   "unknowns": ["明天上午是否有临时安排未知"],
+   "protected_expressions": ["这回万无一失"],
+   "forbidden_factual_claims": ["不得虚构检测时长", "不得预测检测结果"]
+  },
+  "E054_T07": {
+   "case_id": "E054_T07",
+   "current_action": "二次冲突应对：立刻对照两小时规则，给出再改期的具体动作",
+   "acceptable_actions": [
+    "算出两小时线08:30已过、爽约风险真实存在，催她立刻打客服争取豁免并给出改期话术要点",
+    "先回答爽约疑虑，再给改期话术要点"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A13",
+     "subject": "HER",
+     "relation": "schedule_clash",
+     "value": "11月4日上午九点临时评审会与10:30售后预约相撞，HER 判断赶不上",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T07", "message_id": "m0", "quote": "十点半肯定赶不上售后了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E054_A14",
+     "subject": "THIRD",
+     "relation": "policy_applied",
+     "value": "提前两小时不计爽约规则是判定本次是否爽约的依据；10:30 预约的两小时线为 08:30，她 09:21 才求助，时限已过、能否豁免待客服裁定",
+     "valid_time": "2026-10-29/2026-11-04",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E054_T04", "message_id": "m0", "quote": "提前两小时取消才不计爽约"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：这是抢时间的一轮，先给可执行动作，共情放一句就够",
+   "unknowns": ["客服能否在时限内受理未知"],
+   "protected_expressions": ["再改一次会不会算我爽约"],
+   "forbidden_factual_claims": ["不得担保本次改期必然成功", "不得虚构评审会内容", "不得断言她仍在两小时时限内（两小时线08:30已过）"]
+  },
+  "E054_T08": {
+   "case_id": "E054_T08",
+   "current_action": "确认二次改期结果，把新时间与爽约解除写进记忆",
+   "acceptable_actions": [
+    "确认周五18:30为新预约并表扬她抢在时限前",
+    "确认后提醒携带物品不变，下班直接过去"
+   ],
+   "applicable_dimensions": ["time_state", "factuality", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A15",
+     "subject": "SHARED",
+     "relation": "appointment_rebooked2",
+     "value": "预约改至本周五（11月6日）18:30，客服确认不计爽约",
+     "valid_time": "2026-11-04/2026-11-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T08", "message_id": "m0", "quote": "改到这周五晚上六点半"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E054_A16",
+     "subject": "HER",
+     "relation": "worry_resolved",
+     "value": "HER 担心的再改期计爽约已被客服否定，怕拉黑的压力解除",
+     "valid_time": "2026-11-04",
+     "status": "confirmed",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E054_T07", "message_id": "m0", "quote": "再改一次会不会算我爽约"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：让她放心地把这页翻过去，新时间要复述一遍",
+   "unknowns": ["周五下班路况未知"],
+   "protected_expressions": ["悬着的心终于放下了"],
+   "forbidden_factual_claims": ["不得虚构客服姓名与工号"]
+  },
+  "E054_T09": {
+   "case_id": "E054_T09",
+   "current_action": "接住检测结果，复述排线老化、保修内免费换与订货周期三件事",
+   "acceptable_actions": [
+    "复述结论与订货三到五天，确认取机方式",
+    "顺批次通病话题共情，建议留好检测单"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A17",
+     "subject": "THIRD",
+     "relation": "diagnosis",
+     "value": "检测结论为屏幕排线老化，保修期内免费更换，需订货三到五天",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T09", "message_id": "m0", "quote": "屏幕排线老化，保修期内免费换"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：结果不算坏，帮她把等件期安排明白",
+   "unknowns": ["配件到货具体日期未知", "取机是否需本人到场未知"],
+   "protected_expressions": ["排线批次确实有通病"],
+   "forbidden_factual_claims": ["不得断言通病范围与官方口径", "不得虚构维修报价"]
+  },
+  "E054_T10": {
+   "case_id": "E054_T10",
+   "current_action": "确认配件到货与取机时间，认可当场验货的验收规矩",
+   "acceptable_actions": [
+    "确认周四中午取机并复述验货要点",
+    "肯定验收不过不签字，提醒带取件凭证"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A18",
+     "subject": "SHARED",
+     "relation": "pickup_planned",
+     "value": "配件到货，约定周四（11月12日）中午取机并当场验货",
+     "valid_time": "2026-11-10/2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T10", "message_id": "m0", "quote": "约了周四中午取机"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E054_A19",
+     "subject": "SHARED",
+     "relation": "wait_period_fulfilled",
+     "value": "三到五天订货周期兑现，进入取机环节",
+     "valid_time": "2026-11-06/2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T09", "message_id": "m0", "quote": "要订货三到五天"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她的验收规矩值得被肯定一句，别啰嗦",
+   "unknowns": ["周四中午网点客流未知"],
+   "protected_expressions": ["验收不过不签字"],
+   "forbidden_factual_claims": ["不得虚构验货流程要求"]
+  },
+  "E054_T11": {
+   "case_id": "E054_T11",
+   "current_action": "共享取机圆满的结果，复述维修闭环的关键点",
+   "acceptable_actions": [
+    "庆祝半个月折腾收尾，复述屏幕已无闪烁",
+    "顺着完整的设计师玩笑收情绪，提醒旧检测单留存"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A20",
+     "subject": "HER",
+     "relation": "repair_done",
+     "value": "取机完成，屏幕闪烁消失且免费清灰，维修流程闭环",
+     "valid_time": "2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T11", "message_id": "m0", "quote": "屏幕干干净净一点闪烁都没有"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E054_A21",
+     "subject": "HER",
+     "relation": "tool_restored",
+     "value": "吃饭家伙修好，HER 的工作与状态恢复",
+     "valid_time": "2026-10-27/2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T01", "message_id": "m0", "quote": "吃饭的家伙"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：这是松了一大口气的一轮，情绪给足",
+   "unknowns": ["清灰之外是否还有额外项目未知"],
+   "protected_expressions": ["完整的设计师"],
+   "forbidden_factual_claims": ["不得虚构维修费用明细"]
+  },
+  "E054_T12": {
+   "case_id": "E054_T12",
+   "current_action": "收尾复盘，接受提前一天设闹钟加 ME 双保险的提议",
+   "acceptable_actions": [
+    "爽快接下第二道保险的角色并复述机制",
+    "顺着复盘补一条改期要抢两小时线的经验"
+   ],
+   "applicable_dimensions": ["initiative", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E054_A22",
+     "subject": "HER",
+     "relation": "lesson_learned",
+     "value": "HER 复盘两次改期源于自己行程打架，承诺重要预约提前一天设闹钟",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T12", "message_id": "m0", "quote": "重要预约我都提前一天设闹钟"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E054_A23",
+     "subject": "SHARED",
+     "relation": "reminder_role_upgraded",
+     "value": "ME 的提醒角色升级为预约第二道保险，承接 T02 的提醒委托",
+     "valid_time": "2026-10-28/2026-11-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E054_T02", "message_id": "m1", "quote": "提醒我提前一小时出门"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾干净，把功劳分她一半，不居高临下",
+   "unknowns": [],
+   "protected_expressions": ["第二道保险"],
+   "forbidden_factual_claims": ["不得承诺代她预约操作", "不得引入新的设备话题"]
+  }
+ }
+}

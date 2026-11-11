@@ -1,0 +1,2433 @@
+{
+ "story_id": "LRE141",
+ "turns": {
+  "LRE141_T01": {
+   "case_id": "LRE141_T01",
+   "current_action": "回应周五交付的可行性：先接住情绪，复述'周五、v2'两个关键点，再给出赶工安排并留一句以最终确认为准",
+   "acceptable_actions": [
+    "复述'周五交 v2'并向她确认口径来源，再答复今天到周五的进度安排",
+    "先给保守答复：今天出细节稿、周五前可交，同时提醒她最好和拉哥再核一遍"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T01_A00",
+     "subject": "HER",
+     "relation": "转达的交付要求",
+     "value": "恒信包装改版 v2 需周五下班前交付",
+     "valid_time": "2026-11-03 10:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T01",
+      "message_id": "m0",
+      "quote": "周五下班前要交"
+     }
+    },
+    {
+     "atom_id": "LRE141_T01_A01",
+     "subject": "SHARED",
+     "relation": "协作事项",
+     "value": "ME 为恒信包装改版提供设计支持",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "帮市场部出改版稿"
+     }
+    }
+   ],
+   "private_guidance": "口径来自她的转达，先应下再留'以最终确认为准'，别把二手信息当定论。",
+   "unknowns": [
+    "截止日是否真的提前尚未经 PM 确认",
+    "v2 是否就是最终交付版本未明"
+   ],
+   "protected_expressions": [
+    "周五下班前要交"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言客户已官方确认周五交付"
+   ],
+   "may_decline": false
+  },
+  "LRE141_T02": {
+   "case_id": "LRE141_T02",
+   "current_action": "接住她的叫停：先按兵不动，交代当前进度可暂停的节点，等她的确认结果",
+   "acceptable_actions": [
+    "回'好，我先不动，等你信儿'，顺带说明目前做到哪一步、暂停无损耗",
+    "顺着她的怀疑补一句：若工期没变就不用压缩流程，省得白赶一趟"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T02_A00",
+     "subject": "HER",
+     "relation": "早前转达的周五交付",
+     "value": "周五下班前交付 v2 的说法被动摇",
+     "valid_time": "2026-11-03 10:05",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T01",
+      "message_id": "m0",
+      "quote": "周五下班前要交"
+     }
+    },
+    {
+     "atom_id": "LRE141_T02_A01",
+     "subject": "HER",
+     "relation": "对交付口径的新怀疑",
+     "value": "工期可能仍按原计划执行",
+     "valid_time": "2026-11-03 14:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T02",
+      "message_id": "m0",
+      "quote": "工期还是原来的"
+     }
+    }
+   ],
+   "private_guidance": "她说别急就先别动，回复短一点，把进度交代清楚即可。",
+   "unknowns": [
+    "拉哥的最终口径还没回来"
+   ],
+   "protected_expressions": [
+    "工期还是原来的"
+   ],
+   "forbidden_factual_claims": [
+    "不得假设周五交付已成定局"
+   ],
+   "may_decline": false
+  },
+  "LRE141_T03": {
+   "case_id": "LRE141_T03",
+   "current_action": "更正类冲突轮：确认周五交付作废、真实截止日为下周三，把台历同步改掉，并用一句玩笑接住她的道歉",
+   "acceptable_actions": [
+    "大方回应'听岔了很正常'，复述新口径：还是下周三交、没有周五节点",
+    "用玩笑接住道歉，再把台历上的周五划掉写上下周三，作为行动交代"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T03_A00",
+     "subject": "HER",
+     "relation": "早前转达的周五交付",
+     "value": "周五下班前交付 v2 的说法已被更正作废",
+     "valid_time": "2026-11-03 10:05",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T01",
+      "message_id": "m0",
+      "quote": "周五下班前要交"
+     }
+    },
+    {
+     "atom_id": "LRE141_T03_A01",
+     "subject": "HER",
+     "relation": "更正后的真实交付日",
+     "value": "包装改版方案交付日为下周三（11 月 11 日）",
+     "valid_time": "2026-11-04 09:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T03",
+      "message_id": "m0",
+      "quote": "还是下周三交"
+     }
+    },
+    {
+     "atom_id": "LRE141_T03_A02",
+     "subject": "HER",
+     "relation": "对截止日提前的否认",
+     "value": "截止日并未提前，周五档期与本项目无关",
+     "valid_time": "2026-11-04 09:40",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T03",
+      "message_id": "m0",
+      "quote": "截止日根本没提前"
+     }
+    }
+   ],
+   "private_guidance": "别让她尴尬，一句玩笑比'没关系'更接得住；关键信息当天记入台历。",
+   "unknowns": [
+    "下周三按 11 月 11 日理解，交稿当天再口头确认一次"
+   ],
+   "protected_expressions": [
+    "是我听岔了",
+    "还是下周三交"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续以周五为交付节点",
+    "不得声称客户曾官方宣布提前"
+   ],
+   "may_decline": false
+  },
+  "LRE141_T04": {
+   "case_id": "LRE141_T04",
+   "current_action": "接下刀版图草稿任务：确认 v2 冻结、v3 优先，并给出今天内的时间承诺",
+   "acceptable_actions": [
+    "答应今天下午出草稿，先发结构不精修",
+    "先问她客户有没有 v3 的参考源文件，再承诺今天内出"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T04_A00",
+     "subject": "HER",
+     "relation": "更正后的真实交付日",
+     "value": "包装改版方案交付日为下周三（11 月 11 日）",
+     "valid_time": "2026-11-04 09:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T03",
+      "message_id": "m0",
+      "quote": "还是下周三交"
+     }
+    },
+    {
+     "atom_id": "LRE141_T04_A01",
+     "subject": "HER",
+     "relation": "版本切换要求",
+     "value": "客户要看 v3 刀版图，v2 暂停发送",
+     "valid_time": "2026-11-04 11:15",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T04",
+      "message_id": "m0",
+      "quote": "v2 先不用发了"
+     }
+    }
+   ],
+   "private_guidance": "版本切换要在台历上同步划掉 v2，防止手滑还按旧版本赶。",
+   "unknowns": [
+    "v3 与 v2 的差异范围未说明"
+   ],
+   "protected_expressions": [
+    "v3 的刀版图",
+    "v2 先不用发了"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续制作或发送 v2 作为交付物"
+   ],
+   "may_decline": false
+  },
+  "LRE141_T05": {
+   "case_id": "LRE141_T05",
+   "current_action": "承接盒型改抽屉式的改稿需求：确认外盒不动，评估工作量后答复",
+   "acceptable_actions": [
+    "确认可以做，说明抽屉式主要改内盒结构，周三前能出",
+    "先要一张客户参考图或竞品样例再动手，避免盲改"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T05_A00",
+     "subject": "HER",
+     "relation": "当前交付物",
+     "value": "客户要看 v3 刀版图",
+     "valid_time": "2026-11-04 11:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T04",
+      "message_id": "m0",
+      "quote": "v3 的刀版图"
+     }
+    },
+    {
+     "atom_id": "LRE141_T05_A01",
+     "subject": "HER",
+     "relation": "盒型方向变更",
+     "value": "内盒盒型改为抽屉式且外盒不变",
+     "valid_time": "2026-11-05 10:00",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T05",
+      "message_id": "m0",
+      "quote": "盒型想改成抽屉式的"
+     }
+    }
+   ],
+   "private_guidance": "改结构比改画面费工，先问她有没有参考样，把预期工作量说在前面。",
+   "unknowns": [
+    "抽屉式有无参考样尚未提供"
+   ],
+   "protected_expressions": [
+    "盒型想改成抽屉式的",
+    "外盒不变"
+   ],
+   "forbidden_factual_claims": [
+    "不得擅自保留原盒型继续出图"
+   ],
+   "may_decline": false
+  },
+  "LRE141_T06": {
+   "case_id": "LRE141_T06",
+   "current_action": "确认内审-定稿时间安排：周三上午内审、下午定稿，向她表达一句领情",
+   "acceptable_actions": [
+    "复述安排：周三上午内审、下午定稿，并表示按这个走没问题",
+    "顺带问一句内审都有谁参加，好提前准备应答点"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T06_A00",
+     "subject": "HER",
+     "relation": "盒型方向变更",
+     "value": "内盒盒型改为抽屉式",
+     "valid_time": "2026-11-05 10:00",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T05",
+      "message_id": "m0",
+      "quote": "改成抽屉式"
+     }
+    },
+    {
+     "atom_id": "LRE141_T06_A01",
+     "subject": "SHARED",
+     "relation": "内审安排",
+     "value": "下周三上午内审、当天下午定稿",
+     "valid_time": "2026-11-05 15:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T06",
+      "message_id": "m0",
+      "quote": "周三下午再定稿"
+     }
+    }
+   ],
+   "private_guidance": "她主动挡客户是善意，收下并记住，回头找机会还。",
+   "unknowns": [
+    "内审意见是否可能推翻抽屉式方向"
+   ],
+   "protected_expressions": [
+    "周三上午有一轮内审",
+    "周三下午再定稿"
+   ],
+   "forbidden_factual_claims": [
+    "不得把定稿时间排到内审之前"
+   ],
+   "may_decline": false
+  },
+  "LRE141_T07": {
+   "case_id": "LRE141_T07",
+   "current_action": "确认文案冻结约束：说明工作流会先锁定文字层再调版式，保证一字不动",
+   "acceptable_actions": [
+    "答应并说明会用锁定图层的方式保证文案不动",
+    "回一句'文字躺平、版式加班'的玩笑，再确认约束已记下"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T07_A00",
+     "subject": "SHARED",
+     "relation": "内审安排",
+     "value": "下周三上午内审、当天下午定稿",
+     "valid_time": "2026-11-05 15:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T06",
+      "message_id": "m0",
+      "quote": "周三下午再定稿"
+     }
+    },
+    {
+     "atom_id": "LRE141_T07_A01",
+     "subject": "HER",
+     "relation": "文案冻结约束",
+     "value": "客户要求文案一字不改、版式可自由调整",
+     "valid_time": "2026-11-06 09:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T07",
+      "message_id": "m0",
+      "quote": "文案一个字不能动"
+     }
+    }
+   ],
+   "private_guidance": "硬约束要落到工具操作上（锁定文字层），光口头答应容易翻车。",
+   "unknowns": [
+    "文案里是否含必须保留原字号的层级未明"
+   ],
+   "protected_expressions": [
+    "文案一个字不能动",
+    "版式随便调"
+   ],
+   "forbidden_factual_claims": [
+    "不得改动任何文案文字"
+   ],
+   "may_decline": false
+  },
+  "LRE141_T08": {
+   "case_id": "LRE141_T08",
+   "current_action": "接受内审改期带来的当晚初稿加急：明确今晚几点前能给，并交代初稿的完成度边界",
+   "acceptable_actions": [
+    "答应今晚八点前发初稿，说明结构完整、画面未精修",
+    "先回时间点，再问她初稿要不要带两版盒盖方向供内审选"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T08_A00",
+     "subject": "HER",
+     "relation": "文案冻结约束",
+     "value": "客户要求文案一字不改",
+     "valid_time": "2026-11-06 09:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T07",
+      "message_id": "m0",
+      "quote": "文案一个字不能动"
+     }
+    },
+    {
+     "atom_id": "LRE141_T08_A01",
+     "subject": "HER",
+     "relation": "内审时间变更",
+     "value": "内审从周三上午挪至周一（11 月 9 日）上午十点",
+     "valid_time": "2026-11-06 16:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T08",
+      "message_id": "m0",
+      "quote": "内审挪到周一上午十点"
+     }
+    }
+   ],
+   "private_guidance": "加急可以接，但把'初稿非精修'说在前面，免得内审时挑画面细节。",
+   "unknowns": [
+    "周一上午内审能否准时开"
+   ],
+   "protected_expressions": [
+    "内审挪到周一上午十点",
+    "今晚把抽屉式那版初稿发我"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺今晚交付精修稿"
+   ],
+   "may_decline": false
+  },
+  "LRE141_T09": {
+   "case_id": "LRE141_T09",
+   "current_action": "接下开合方向的小修改：确认其余部分冻结，问清样机方向以便一次改对",
+   "acceptable_actions": [
+    "答应改，并请她发一张样机照片确认开合方向",
+    "按'左开改右开'的理解先改出来，发图给她核对方向"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T09_A00",
+     "subject": "HER",
+     "relation": "内审时间变更",
+     "value": "内审于周一上午十点举行",
+     "valid_time": "2026-11-06 16:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T08",
+      "message_id": "m0",
+      "quote": "内审挪到周一上午十点"
+     }
+    },
+    {
+     "atom_id": "LRE141_T09_A01",
+     "subject": "SHARED",
+     "relation": "内审结果",
+     "value": "内审通过，唯一修改点为盒盖开合方向与样机相反",
+     "valid_time": "2026-11-09 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T09",
+      "message_id": "m0",
+      "quote": "盒盖的开合方向跟客户样机反了"
+     }
+    }
+   ],
+   "private_guidance": "方向类修改最容易改反，先要样机图再动手，一次改对。",
+   "unknowns": [
+    "样机开合方向未提供图示"
+   ],
+   "protected_expressions": [
+    "盒盖的开合方向跟客户样机反了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称内审未通过或有大改"
+   ],
+   "may_decline": false
+  },
+  "LRE141_T10": {
+   "case_id": "LRE141_T10",
+   "current_action": "接受请餐邀约并给出明确选择，顺带交代终版已无遗留问题",
+   "acceptable_actions": [
+    "选楼下麻辣香锅，约明天十二点食堂门口碰头",
+    "改约周五下班后的奶茶加小食，把选择权交回她"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T10_A00",
+     "subject": "SHARED",
+     "relation": "内审结果",
+     "value": "内审通过，唯一修改点为盒盖开合方向",
+     "valid_time": "2026-11-09 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T09",
+      "message_id": "m0",
+      "quote": "盒盖的开合方向跟客户样机反了"
+     }
+    },
+    {
+     "atom_id": "LRE141_T10_A01",
+     "subject": "HER",
+     "relation": "请餐承诺",
+     "value": "HER 承诺请 ME 一顿加急餐",
+     "valid_time": "2026-11-09 15:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T10",
+      "message_id": "m0",
+      "quote": "加急餐我请"
+     }
+    }
+   ],
+   "private_guidance": "她的请客是心意不是客套，痛快答应并自己挑地方，别假客气。",
+   "unknowns": [],
+   "protected_expressions": [
+    "加急餐我请"
+   ],
+   "forbidden_factual_claims": [
+    "不得把请餐当成需要推辞的负担"
+   ],
+   "may_decline": false
+  },
+  "LRE141_T11": {
+   "case_id": "LRE141_T11",
+   "current_action": "对签约报喜表达开心：对年会物料预定给出口头承接，留'看量级排期'的口子",
+   "acceptable_actions": [
+    "开心回应，答应年会物料可以先留着档期，具体量级下月再对",
+    "借群内表扬回一句互相成就的玩笑，再接预定"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T11_A00",
+     "subject": "HER",
+     "relation": "请餐承诺",
+     "value": "HER 承诺请 ME 一顿加急餐",
+     "valid_time": "2026-11-09 15:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T10",
+      "message_id": "m0",
+      "quote": "加急餐我请"
+     }
+    },
+    {
+     "atom_id": "LRE141_T11_A01",
+     "subject": "SHARED",
+     "relation": "项目结果",
+     "value": "客户签约且设计组在群里被点名表扬",
+     "valid_time": "2026-11-10 12:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T11",
+      "message_id": "m0",
+      "quote": "点名夸了设计组"
+     }
+    }
+   ],
+   "private_guidance": "预定档期别把话说死，留'看量级排期'的口子。",
+   "unknowns": [
+    "年会物料的规模与档期未明"
+   ],
+   "protected_expressions": [
+    "年会物料还找你"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已确认的年会档期"
+   ],
+   "may_decline": false
+  },
+  "LRE141_T12": {
+   "case_id": "LRE141_T12",
+   "current_action": "轻量收尾：确认 brief 下午看、下周一给方向，回一句周末祝福即可；此轮可不展开",
+   "acceptable_actions": [
+    "简短回应'收到，周一给你方向，周末愉快'",
+    "回一个轻松短句，加一句周末安排的反问"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T12_A00",
+     "subject": "SHARED",
+     "relation": "项目结果",
+     "value": "客户签约且下次年会物料预定找 ME",
+     "valid_time": "2026-11-10 12:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T11",
+      "message_id": "m0",
+      "quote": "年会物料还找你"
+     }
+    },
+    {
+     "atom_id": "LRE141_T12_A01",
+     "subject": "HER",
+     "relation": "后续安排",
+     "value": "brief 下午发邮箱，方向稿截止下周一",
+     "valid_time": "2026-11-11 09:50",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T12",
+      "message_id": "m0",
+      "quote": "下周一给个方向"
+     }
+    }
+   ],
+   "private_guidance": "收尾轮不必长篇，短句即可；may_decline 为真，简单祝福亦合格。",
+   "unknowns": [],
+   "protected_expressions": [
+    "下周一给个方向"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构 brief 已含的具体内容"
+   ],
+   "may_decline": true
+  },
+  "LRE141_T13": {
+   "case_id": "LRE141_T13",
+   "current_action": "接住 brief 落地：确认年会日期、两块物料与下周一方向稿节点，回一句轻松承接",
+   "acceptable_actions": [
+    "复述三件要点：12 月 18 号晚、主视觉加签到背景板、下周一交方向稿",
+    "答应看 brief，顺口问她主视觉有没有要压住的主口号"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：节点照旧记台历，别把'省心'当真省事。",
+   "unknowns": [
+    "主视觉的具体口号与元素未明"
+   ],
+   "protected_expressions": [
+    "年会定在 12 月 18 号周五晚上",
+    "方向稿下周一给我就行"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构 brief 里的具体内容细节"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T13_A00",
+     "subject": "SHARED",
+     "relation": "年会安排",
+     "value": "恒信年会定于 12 月 18 号周五晚，物料为主视觉加签到背景板",
+     "valid_time": "2026-11-11 14:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T13",
+      "message_id": "m0",
+      "quote": "年会定在 12 月 18 号周五晚上"
+     }
+    },
+    {
+     "atom_id": "LRE141_T13_A01",
+     "subject": "SHARED",
+     "relation": "年会方向稿节点",
+     "value": "年会物料方向稿下周一提交",
+     "valid_time": "2026-11-11 14:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T13",
+      "message_id": "m0",
+      "quote": "方向稿下周一给我就行"
+     }
+    },
+    {
+     "atom_id": "LRE141_T13_A02",
+     "subject": "SHARED",
+     "relation": "项目结果",
+     "value": "客户签约且下次年会物料预定找 ME",
+     "valid_time": "2026-11-10 12:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T11",
+      "message_id": "m0",
+      "quote": "年会物料还找你"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T14": {
+   "case_id": "LRE141_T14",
+   "current_action": "确认两版风格要求：红金与深蓝各一，先出小图不带版式细节",
+   "acceptable_actions": [
+    "答应出红金与深蓝两版小图，明天先给她看草图",
+    "确认要求外补一句：两版先都按竖版构图，横版后面再调"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state"
+   ],
+   "private_guidance": "只影响口吻：要求简单，答复干脆，别反问一堆。",
+   "unknowns": [
+    "两版的具体文案口号是否沿用包装稿未明"
+   ],
+   "protected_expressions": [
+    "一版喜庆红金",
+    "一版高级深蓝"
+   ],
+   "forbidden_factual_claims": [
+    "不得擅自合并成一版交付"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T14_A00",
+     "subject": "SHARED",
+     "relation": "方向稿风格要求",
+     "value": "方向稿需出喜庆红金与高级深蓝两版风格小图",
+     "valid_time": "2026-11-12 10:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T14",
+      "message_id": "m0",
+      "quote": "一版喜庆红金"
+     }
+    },
+    {
+     "atom_id": "LRE141_T14_A01",
+     "subject": "SHARED",
+     "relation": "年会安排",
+     "value": "恒信年会定于 12 月 18 号周五晚",
+     "valid_time": "2026-11-11 14:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T13",
+      "message_id": "m0",
+      "quote": "年会定在 12 月 18 号周五晚上"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T15": {
+   "case_id": "LRE141_T15",
+   "current_action": "更正类冲突轮：确认年会从 12 月 18 号提前到 12 月 11 号周五，方向稿节点不变，重新排台历并交代细化期的压缩应对",
+   "acceptable_actions": [
+    "复述新日期：12 月 11 号周五，台历上把 18 号划掉改 11 号，细化期后移一天补",
+    "接住变化，问细化能不能拆成主视觉先定、背景板跟进，把一周缺口补回来"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：改期是常态，先改台历再答话，别表现出被压垮。",
+   "unknowns": [
+    "提前后场地与物料送货时间是否都顺延未明"
+   ],
+   "protected_expressions": [
+    "提前到 12 月 11 号周五"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续以 12 月 18 号为年会日期",
+    "不得声称方向稿节点同步提前"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T15_A00",
+     "subject": "SHARED",
+     "relation": "年会安排",
+     "value": "年会原定 12 月 18 号周五晚",
+     "valid_time": "2026-11-11 14:05",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T13",
+      "message_id": "m0",
+      "quote": "年会定在 12 月 18 号周五晚上"
+     }
+    },
+    {
+     "atom_id": "LRE141_T15_A01",
+     "subject": "SHARED",
+     "relation": "年会安排",
+     "value": "年会提前至 12 月 11 号周五，场地那周便宜",
+     "valid_time": "2026-11-13 11:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T15",
+      "message_id": "m0",
+      "quote": "提前到 12 月 11 号周五"
+     }
+    },
+    {
+     "atom_id": "LRE141_T15_A02",
+     "subject": "SHARED",
+     "relation": "年会方向稿节点",
+     "value": "方向稿节点不变仍为下周一，细化期被压缩一周",
+     "valid_time": "2026-11-13 11:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T15",
+      "message_id": "m0",
+      "quote": "deadline 不变还是下周一"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T16": {
+   "case_id": "LRE141_T16",
+   "current_action": "出窗探针+旧事复活陷阱：正确行为是不沿用被更正的周五口径——如实召回交付日实为 11 月 11 日周三（更正后口径），周五档期属另一家供应商，并交代深蓝版被选中",
+   "acceptable_actions": [
+    "纠正口径：恒信单最终按 11 月 11 日周三交付且当天上午归档，周五是另一家供应商的档期，台历可作证",
+    "先报深蓝版选中的好消息，再用台历记录把周五误传捋清，别让旧口径扩散"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "private_guidance": "只影响口吻：旧口径别带火气，用台历事实平推；深蓝选中先说喜。",
+   "unknowns": [
+    "复盘群里是谁问的周五口径未明"
+   ],
+   "protected_expressions": [
+    "更爱深蓝那版",
+    "是不是拖到周五才交的"
+   ],
+   "forbidden_factual_claims": [
+    "不得沿用周五交付口径作为恒信单事实",
+    "不得声称周五档期与恒信项目相关"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T16_A00",
+     "subject": "HER",
+     "relation": "早前转达的周五交付",
+     "value": "周五下班前交付 v2 的说法已于 11 月 4 日被更正作废",
+     "valid_time": "2026-11-03 10:05",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T01",
+      "message_id": "m0",
+      "quote": "周五下班前要交"
+     }
+    },
+    {
+     "atom_id": "LRE141_T16_A01",
+     "subject": "HER",
+     "relation": "更正后的真实交付日",
+     "value": "包装改版方案交付日为下周三（11 月 11 日）",
+     "valid_time": "2026-11-04 09:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T03",
+      "message_id": "m0",
+      "quote": "还是下周三交"
+     }
+    },
+    {
+     "atom_id": "LRE141_T16_A02",
+     "subject": "SHARED",
+     "relation": "方向稿结果",
+     "value": "红金与深蓝两版方向稿中深蓝版被拉哥和客户选中",
+     "valid_time": "2026-11-16 09:50",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T16",
+      "message_id": "m0",
+      "quote": "更爱深蓝那版"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T17": {
+   "case_id": "LRE141_T17",
+   "current_action": "接下三件套细化清单：主视觉、签到背景板加顺手桌卡，等她尺寸清单后排细化排期",
+   "acceptable_actions": [
+    "确认三件套顺序：主视觉先出，背景板跟上，桌卡顺带",
+    "答应细化，顺口问桌卡数量和尺寸好一起估工时"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：小活儿别嫌碎，一起归进台历。",
+   "unknowns": [
+    "桌卡数量与成品尺寸未明"
+   ],
+   "protected_expressions": [
+    "主视觉、签到背景板、还有桌卡"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构桌卡尺寸规格"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T17_A00",
+     "subject": "SHARED",
+     "relation": "细化清单",
+     "value": "年会物料细化为三件：主视觉、签到背景板、桌卡",
+     "valid_time": "2026-11-17 15:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T17",
+      "message_id": "m0",
+      "quote": "主视觉、签到背景板、还有桌卡"
+     }
+    },
+    {
+     "atom_id": "LRE141_T17_A01",
+     "subject": "SHARED",
+     "relation": "方向稿结果",
+     "value": "深蓝版方向稿被客户选中",
+     "valid_time": "2026-11-16 09:50",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T16",
+      "message_id": "m0",
+      "quote": "更爱深蓝那版"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T18": {
+   "case_id": "LRE141_T18",
+   "current_action": "边界冲突轮：如实交代自身排期，优先级交拉哥排，不越过 PM 私下应下双单；同时接住她'恒信不让'的表态",
+   "acceptable_actions": [
+    "交代实情：双线同日交付风险高，建议拉哥按项目优先级排，自己先保恒信交付质量",
+    "问她恒信那边还剩多少活，把两家工作量摆出来让拉哥好拍板"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "time_state"
+   ],
+   "private_guidance": "只影响口吻：不抢话也不揽活，把事实摆平，决定权还给拉哥。",
+   "unknowns": [
+    "启润单的预算与档期细节未明"
+   ],
+   "protected_expressions": [
+    "同时跟两家的主视觉",
+    "恒信这单我不让"
+   ],
+   "forbidden_factual_claims": [
+    "不得私下替拉哥决定启润单去留",
+    "不得承诺双线同日保质交付"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T18_A00",
+     "subject": "THIRD",
+     "relation": "插单撞期",
+     "value": "启润年会与恒信同为 12 月 11 号，有人提议 ME 同时跟两家主视觉",
+     "valid_time": "2026-11-18 17:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T18",
+      "message_id": "m0",
+      "quote": "同时跟两家的主视觉"
+     }
+    },
+    {
+     "atom_id": "LRE141_T18_A01",
+     "subject": "SHARED",
+     "relation": "年会安排",
+     "value": "年会已提前至 12 月 11 号周五",
+     "valid_time": "2026-11-13 11:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T15",
+      "message_id": "m0",
+      "quote": "提前到 12 月 11 号周五"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T19": {
+   "case_id": "LRE141_T19",
+   "current_action": "确认排期结果：恒信优先、启润由小郑跟进自己只出参考稿，向她表达一句帮忙协调的领情",
+   "acceptable_actions": [
+    "复述结果：恒信优先、启润小郑跟、自己只出参考稿，安心",
+    "领情一句她去跟客户说，顺带把参考稿的轻量时间也记上台历"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：领情要具体，别客套一整段。",
+   "unknowns": [
+    "参考稿的提交时间未明"
+   ],
+   "protected_expressions": [
+    "恒信优先",
+    "换你们组新来的小郑跟"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小郑的资历或分工细节"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T19_A00",
+     "subject": "SHARED",
+     "relation": "排期决定",
+     "value": "拉哥拍板恒信优先，启润年会由小郑跟进，ME 仅出参考稿",
+     "valid_time": "2026-11-19 10:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T19",
+      "message_id": "m0",
+      "quote": "恒信优先"
+     }
+    },
+    {
+     "atom_id": "LRE141_T19_A01",
+     "subject": "THIRD",
+     "relation": "插单撞期",
+     "value": "启润年会与恒信同日、提议 ME 双线并行",
+     "valid_time": "2026-11-18 17:10",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T18",
+      "message_id": "m0",
+      "quote": "同时跟两家的主视觉"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T20": {
+   "case_id": "LRE141_T20",
+   "current_action": "接受周日香锅邀约并落定时间地点，顺带把桌卡尺寸带进饭桌聊",
+   "acceptable_actions": [
+    "答应明天中午香锅，约食堂门口碰头，桌卡尺寸到时当面定",
+    "答应赴约，改提傍晚去避开排队，尺寸照样聊"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：轻松赴约，工作话题点到为止。",
+   "unknowns": [
+    "香锅店周日是否需要排队等位未明"
+   ],
+   "protected_expressions": [
+    "明天中午我再去吃一次"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构上次香锅的具体菜单细节"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T20_A00",
+     "subject": "SHARED",
+     "relation": "既往请餐",
+     "value": "包装项目结束后小满请过一顿麻辣香锅",
+     "valid_time": "2026-11-09 15:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T10",
+      "message_id": "m0",
+      "quote": "麻辣香锅"
+     }
+    },
+    {
+     "atom_id": "LRE141_T20_A01",
+     "subject": "SHARED",
+     "relation": "周末邀约",
+     "value": "11 月 22 日周日中午两人再约香锅并当面敲定桌卡尺寸",
+     "valid_time": "2026-11-21 11:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T20",
+      "message_id": "m0",
+      "quote": "明天中午我再去吃一次"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T21": {
+   "case_id": "LRE141_T21",
+   "current_action": "旧事复活陷阱：正确行为是不把冻结的 v2 再当有效版本外发——先不答应，建议问清归档用途，说明 v2 已冻结、终版以 v3 为准，避免归档错版",
+   "acceptable_actions": [
+    "建议先别发：v2 早已冻结，归档只应归终版；让她问清档案室要的是版本号还是画面",
+    "提醒风险：发旧版易被误用，若确需留档应由她走正式说明并附终版对照"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use",
+    "interaction"
+   ],
+   "private_guidance": "只影响口吻：不指责客户，只讲版本纪律，别让她夹在中间为难。",
+   "unknowns": [
+    "档案室归档规则与真实用途未明"
+   ],
+   "protected_expressions": [
+    "把最早那版 v2 也发一份"
+   ],
+   "forbidden_factual_claims": [
+    "不得直接发送 v2 作为归档版本",
+    "不得声称 v2 与终版内容一致"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T21_A00",
+     "subject": "HER",
+     "relation": "版本切换要求",
+     "value": "客户要看 v3 刀版图、v2 暂停发送的冻结约束仍有效",
+     "valid_time": "2026-11-04 11:15",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T04",
+      "message_id": "m0",
+      "quote": "v2 先不用发了"
+     }
+    },
+    {
+     "atom_id": "LRE141_T21_A01",
+     "subject": "THIRD",
+     "relation": "归档请求",
+     "value": "客户档案室询问能否归档最早版本的 v2",
+     "valid_time": "2026-11-24 14:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T21",
+      "message_id": "m0",
+      "quote": "把最早那版 v2 也发一份"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T22": {
+   "case_id": "LRE141_T22",
+   "current_action": "确认 v2 请求撤回、终版纪律守住，接下主视觉细稿并给出周五前的时间承诺",
+   "acceptable_actions": [
+    "确认虚惊一场，答应细稿周五前给，今天先出大结构",
+    "复述归档结论一句'只认终版号'，再报细稿排期"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal"
+   ],
+   "private_guidance": "只影响口吻：一句话收掉旧口径，重心放细稿排期。",
+   "unknowns": [
+    "大屏播放的实际比例与分辨率未明"
+   ],
+   "protected_expressions": [
+    "归档系统只认终版号",
+    "客户周五要看大屏效果"
+   ],
+   "forbidden_factual_claims": [
+    "不得再提向客户发送 v2 的安排"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T22_A00",
+     "subject": "THIRD",
+     "relation": "归档请求",
+     "value": "客户档案室索要 v2 归档的请求已撤回，系统只认终版号",
+     "valid_time": "2026-11-24 14:30",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T21",
+      "message_id": "m0",
+      "quote": "把最早那版 v2 也发一份"
+     }
+    },
+    {
+     "atom_id": "LRE141_T22_A01",
+     "subject": "SHARED",
+     "relation": "版本状态",
+     "value": "v2 保持冻结、归档以 v3 终版为准",
+     "valid_time": "2026-11-04 11:15",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T04",
+      "message_id": "m0",
+      "quote": "v2 先不用发了"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T23": {
+   "case_id": "LRE141_T23",
+   "current_action": "接住细稿反馈：满意加一处背景板加宽到八米，确认画面拉大、文案不动，按放大重排",
+   "acceptable_actions": [
+    "答应按八米重排，说明画面放大后字体与元素同步等比，文案原样",
+    "先问八米是净宽还是含立柱，避免喷绘做错尺寸"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：加宽是好消息不是返工，答复爽快点。",
+   "unknowns": [
+    "背景板八米是净宽还是含支架未明"
+   ],
+   "protected_expressions": [
+    "从六米加到八米",
+    "文案不动"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构细稿被推翻重做"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T23_A00",
+     "subject": "SHARED",
+     "relation": "背景板尺寸变更",
+     "value": "签到背景板宽度从六米加到八米，画面拉大、文案不动",
+     "valid_time": "2026-11-27 16:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T23",
+      "message_id": "m0",
+      "quote": "从六米加到八米"
+     }
+    },
+    {
+     "atom_id": "LRE141_T23_A01",
+     "subject": "SHARED",
+     "relation": "细稿反馈",
+     "value": "主视觉细稿获客户认可，大屏效果满意",
+     "valid_time": "2026-11-27 16:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T23",
+      "message_id": "m0",
+      "quote": "大屏效果很满意"
+     }
+    },
+    {
+     "atom_id": "LRE141_T23_A02",
+     "subject": "SHARED",
+     "relation": "细稿节点",
+     "value": "主视觉细稿已于客户约定周五前交付并过看大屏效果",
+     "valid_time": "2026-11-25 09:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T22",
+      "message_id": "m0",
+      "quote": "客户周五要看大屏效果"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T24": {
+   "case_id": "LRE141_T24",
+   "current_action": "费用类冲突轮：从画面效果角度给出权衡——八米现场冲击值钱，倾向保尺寸换哑光布、用灯光补反光，把两个选项的亏点说清供行政定夺",
+   "acceptable_actions": [
+    "建议保八米换哑光布：年会现场灯光可压反光，缩回六米丢的是门面",
+    "摆事实：反光差在暗场视频时明显，若预算实在紧则缩尺寸更稳"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "initiative"
+   ],
+   "private_guidance": "只影响口吻：给专业权衡不替行政拍板，钱的事点到为止。",
+   "unknowns": [
+    "哑光布的具体差价金额未明"
+   ],
+   "protected_expressions": [
+    "比原来预算贵四成多",
+    "换哑光布便宜些"
+   ],
+   "forbidden_factual_claims": [
+    "不得替行政拍板花钱决定",
+    "不得虚构精确报价数字"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T24_A00",
+     "subject": "THIRD",
+     "relation": "预算冲突",
+     "value": "八米背景板喷绘报价超预算四成多，行政给出缩尺寸或换材质二选一",
+     "valid_time": "2026-12-01 10:50",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T24",
+      "message_id": "m0",
+      "quote": "比原来预算贵四成多"
+     }
+    },
+    {
+     "atom_id": "LRE141_T24_A01",
+     "subject": "SHARED",
+     "relation": "背景板尺寸变更",
+     "value": "签到背景板宽度已定为八米",
+     "valid_time": "2026-11-27 16:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T23",
+      "message_id": "m0",
+      "quote": "从六米加到八米"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T25": {
+   "case_id": "LRE141_T25",
+   "current_action": "确认方案落定：八米保留、换哑光布、灯光补反光，配合后续出灯光位说明",
+   "acceptable_actions": [
+    "确认方案，答应给印厂附一份灯光位建议图",
+    "轻松收下'你说得对'，提醒报价流程里写清哑光布型号"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：被采纳别邀功，把落地细节补齐。",
+   "unknowns": [
+    "灯光由场地方还是行政团队负责未明"
+   ],
+   "protected_expressions": [
+    "背景板保持八米",
+    "反光问题用灯光补"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构报价审批结果"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T25_A00",
+     "subject": "SHARED",
+     "relation": "背景板方案",
+     "value": "背景板保持八米，改用哑光布并用现场灯光补反光",
+     "valid_time": "2026-12-02 15:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T25",
+      "message_id": "m0",
+      "quote": "背景板保持八米"
+     }
+    },
+    {
+     "atom_id": "LRE141_T25_A01",
+     "subject": "THIRD",
+     "relation": "预算冲突",
+     "value": "缩回六米或换哑光布的二选一权衡",
+     "valid_time": "2026-12-01 10:50",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T24",
+      "message_id": "m0",
+      "quote": "比原来预算贵四成多"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T26": {
+   "case_id": "LRE141_T26",
+   "current_action": "出窗探针：正确行为是召回返工事件本身——内审提出盒盖开合方向与客户样机相反、按样机图改对一次过，但具体左右开向无存档记录，如实说不编造",
+   "acceptable_actions": [
+    "如实召回：内审提的是开合方向与样机相反，照样机图改的，左右开向没留记录",
+    "建议 checklist 写'开合方向以样机照片为准'，比写死左右更防错"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "private_guidance": "只影响口吻：记不得就直说，用'以样机为准'的规则补位，别现编方向。",
+   "unknowns": [
+    "样机开合的具体左右方向无存档记录"
+   ],
+   "protected_expressions": [
+    "盒盖方向那次返工"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造具体的左开或右开结论",
+    "不得声称返工是因内审未过"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T26_A00",
+     "subject": "SHARED",
+     "relation": "内审结果",
+     "value": "内审通过，唯一修改点为盒盖开合方向与客户样机相反",
+     "valid_time": "2026-11-09 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T09",
+      "message_id": "m0",
+      "quote": "盒盖的开合方向跟客户样机反了"
+     }
+    },
+    {
+     "atom_id": "LRE141_T26_A01",
+     "subject": "SHARED",
+     "relation": "复盘安排",
+     "value": "拉哥安排下周复盘会讲恒信单经验教训",
+     "valid_time": "2026-12-03 11:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T26",
+      "message_id": "m0",
+      "quote": "下周复盘会"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T27": {
+   "case_id": "LRE141_T27",
+   "current_action": "确认物料进厂节点：四天出货、10 号送货、11 号晚开场，时间链自洽，交代收货验收安排",
+   "acceptable_actions": [
+    "复述时间链：今天发厂、四天出货、10 号到场、11 号开场，没问题",
+    "提醒 10 号收货时当场验烫金和尺寸，别等开场才发现问题"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：节点顺就好，验收提醒一句到位。",
+   "unknowns": [
+    "送货具体时段未明"
+   ],
+   "protected_expressions": [
+    "10 号送货到场地",
+    "年会 11 号晚上正好"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构印厂报价或合同细节"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T27_A00",
+     "subject": "SHARED",
+     "relation": "生产节点",
+     "value": "主视觉、背景板、桌卡已发印厂，四天出货、12 月 10 号送货到场",
+     "valid_time": "2026-12-04 17:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T27",
+      "message_id": "m0",
+      "quote": "10 号送货到场地"
+     }
+    },
+    {
+     "atom_id": "LRE141_T27_A01",
+     "subject": "SHARED",
+     "relation": "年会安排",
+     "value": "年会已提前至 12 月 11 号周五",
+     "valid_time": "2026-11-13 11:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T15",
+      "message_id": "m0",
+      "quote": "提前到 12 月 11 号周五"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T28": {
+   "case_id": "LRE141_T28",
+   "current_action": "轻松闲聊轮：接住她的小得意，顺口回答组里年会安排，不展开工作",
+   "acceptable_actions": [
+    "接一句'你该骄傲'，顺带说自己组是老三样：抽奖吃饭拼节目",
+    "顺着大屏话题开个玩笑，说开场第一眼就是她的审美"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：闲聊就闲聊，别往物料上绕。",
+   "unknowns": [
+    "设计组年会的具体安排未明"
+   ],
+   "protected_expressions": [
+    "看自己设计的大屏"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构设计组年会节目内容"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T28_A00",
+     "subject": "SHARED",
+     "relation": "生产节点",
+     "value": "年会物料已进厂生产、10 号送货",
+     "valid_time": "2026-12-04 17:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T27",
+      "message_id": "m0",
+      "quote": "桌卡也一起"
+     }
+    },
+    {
+     "atom_id": "LRE141_T28_A01",
+     "subject": "HER",
+     "relation": "周末心情",
+     "value": "小满期待在年会现场看到自己对接的设计大屏",
+     "valid_time": "2026-12-05 20:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T28",
+      "message_id": "m0",
+      "quote": "看自己设计的大屏"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T29": {
+   "case_id": "LRE141_T29",
+   "current_action": "生产事故冲突轮：确认烫金歪斜与免费重印口径，要求重打样照片复核后再进量产，肯定她盯厂的必要",
+   "acceptable_actions": [
+    "确认重印口径：先让厂里发重打样照片，位置正了再放行",
+    "提醒留证据：歪样拍照存档，免得验收时扯皮"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state"
+   ],
+   "private_guidance": "只影响口吻：事故按流程走，不上升情绪，验样照片是关键。",
+   "unknowns": [
+    "重印是否影响颜色一致性未明"
+   ],
+   "protected_expressions": [
+    "烫金位置印歪了",
+    "重印不加钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称歪斜不影响交付",
+    "不得虚构印厂赔偿条款"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T29_A00",
+     "subject": "THIRD",
+     "relation": "生产事故",
+     "value": "桌卡烫金装版歪斜致 logo 压字，印厂免费重印",
+     "valid_time": "2026-12-08 09:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T29",
+      "message_id": "m0",
+      "quote": "烫金位置印歪了"
+     }
+    },
+    {
+     "atom_id": "LRE141_T29_A01",
+     "subject": "SHARED",
+     "relation": "生产节点",
+     "value": "物料四天出货、12 月 10 号送货到场",
+     "valid_time": "2026-12-04 17:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T27",
+      "message_id": "m0",
+      "quote": "10 号送货到场地"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T30": {
+   "case_id": "LRE141_T30",
+   "current_action": "确认重印合格与留样存档动作，肯定她亲自盯送货，把验收要点再压一遍",
+   "acceptable_actions": [
+    "肯定留样这手稳，提醒验收时对样核对烫金与尺寸",
+    "确认重印合格，交代收货按样品逐项过一遍"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "private_guidance": "只影响口吻：收尾鼓励一句，别再叠新要求。",
+   "unknowns": [
+    "留样是否随货同行未明"
+   ],
+   "protected_expressions": [
+    "位置正了",
+    "送两张样给我留档"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称重印仍有位置问题"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T30_A00",
+     "subject": "THIRD",
+     "relation": "生产事故",
+     "value": "桌卡烫金歪斜已重印合格",
+     "valid_time": "2026-12-08 09:55",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T29",
+      "message_id": "m0",
+      "quote": "烫金位置印歪了"
+     }
+    },
+    {
+     "atom_id": "LRE141_T30_A01",
+     "subject": "SHARED",
+     "relation": "留样存档",
+     "value": "重打样照片确认合格，另留两张样品存档备验收",
+     "valid_time": "2026-12-09 15:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T30",
+      "message_id": "m0",
+      "quote": "送两张样给我留档"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T31": {
+   "case_id": "LRE141_T31",
+   "current_action": "接住验收报喜：逐项呼应八米背景板与烫金桌卡，恭喜她盯得紧，预热明天开场",
+   "acceptable_actions": [
+    "恭喜验收通过，点一句'照片存档是明年的证据库'",
+    "呼应细节：八米没缩水加烫金没歪，说明盯厂盯对了"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation"
+   ],
+   "private_guidance": "只影响口吻：报喜就同喜，别泼冷水也别加活。",
+   "unknowns": [],
+   "protected_expressions": [
+    "背景板八米没缩水",
+    "桌卡烫金一个没歪"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构验收发现的新问题"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T31_A00",
+     "subject": "SHARED",
+     "relation": "验收结果",
+     "value": "年会物料全部到场验收通过，全套照片存档",
+     "valid_time": "2026-12-10 18:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T31",
+      "message_id": "m0",
+      "quote": "物料全部到场验收完毕"
+     }
+    },
+    {
+     "atom_id": "LRE141_T31_A01",
+     "subject": "SHARED",
+     "relation": "背景板方案",
+     "value": "背景板保持八米未缩水",
+     "valid_time": "2026-12-02 15:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T25",
+      "message_id": "m0",
+      "quote": "背景板保持八米"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T32": {
+   "case_id": "LRE141_T32",
+   "current_action": "年会当天应援：确认物料就位节奏，回一句稳住军心的轻松话，不添新任务",
+   "acceptable_actions": [
+    "回一句'第一眼稳了'，提醒现场有备用文件以防万一",
+    "祝开场顺利，让她忙完拍张大屏照发来看看"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "private_guidance": "只影响口吻：应援简短有力，别在开场日谈复盘。",
+   "unknowns": [
+    "现场播放文件是否需要 ME 备份未明"
+   ],
+   "protected_expressions": [
+    "年会今晚开场"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构开场现场突发状况"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T32_A00",
+     "subject": "SHARED",
+     "relation": "验收结果",
+     "value": "年会物料全部到场验收通过",
+     "valid_time": "2026-12-10 18:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T31",
+      "message_id": "m0",
+      "quote": "物料全部到场验收完毕"
+     }
+    },
+    {
+     "atom_id": "LRE141_T32_A01",
+     "subject": "SHARED",
+     "relation": "年会安排",
+     "value": "恒信年会 12 月 11 号周五晚开场",
+     "valid_time": "2026-11-13 11:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T15",
+      "message_id": "m0",
+      "quote": "提前到 12 月 11 号周五"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T33": {
+   "case_id": "LRE141_T33",
+   "current_action": "接住圆满报喜：同喜致辞与大屏反馈，对'点名要你'给一句不把话说死的承接",
+   "acceptable_actions": [
+    "同喜一句，回'点名的事看明年量级，档期可以先留'",
+    "让她替自己谢拉哥，顺带问有没有现场照片存档"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：受宠不飘，留'看量级'的口子，同前次预定口径一致。",
+   "unknowns": [
+    "明年恒信单的量级与档期未明"
+   ],
+   "protected_expressions": [
+    "下回恒信的单还点名要你"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已确认的明年档期"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T33_A00",
+     "subject": "SHARED",
+     "relation": "年会结果",
+     "value": "恒信年会圆满落幕，老总在大屏前致辞十分钟",
+     "valid_time": "2026-12-12 11:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T33",
+      "message_id": "m0",
+      "quote": "圆满落幕"
+     }
+    },
+    {
+     "atom_id": "LRE141_T33_A01",
+     "subject": "SHARED",
+     "relation": "项目结果",
+     "value": "客户签约且设计组在群里被点名表扬",
+     "valid_time": "2026-11-10 12:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T11",
+      "message_id": "m0",
+      "quote": "点名夸了设计组"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T34": {
+   "case_id": "LRE141_T34",
+   "current_action": "出窗探针：正确行为是确认史实——交付日为更正后的 11 月 11 日周三，稿子当天上午九点归档，不存在下午拖交，肯定她拿台历捋清的做法",
+   "acceptable_actions": [
+    "确认史实：11 月 11 日周三交付、上午九点归档，下午拖交说法不成立",
+    "建议把台历记录截图进复盘纪要，省得下次再记岔"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state"
+   ],
+   "private_guidance": "只影响口吻：事实陈述干净利落，不追究谁记岔。",
+   "unknowns": [
+    "记岔人的身份未明"
+   ],
+   "protected_expressions": [
+    "稿子当天上午九点就归档了"
+   ],
+   "forbidden_factual_claims": [
+    "不得附和'下午才交'的说法",
+    "不得把交付日说成周五"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T34_A00",
+     "subject": "HER",
+     "relation": "归档史实",
+     "value": "恒信包装改版终稿于交付日 11 月 11 日上午九点归档",
+     "valid_time": "2026-11-11 09:50",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T12",
+      "message_id": "m0",
+      "quote": "稿子九点就归档啦"
+     }
+    },
+    {
+     "atom_id": "LRE141_T34_A01",
+     "subject": "SHARED",
+     "relation": "复盘安排",
+     "value": "拉哥安排的恒信单复盘会已开完",
+     "valid_time": "2026-12-03 11:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T26",
+      "message_id": "m0",
+      "quote": "下周复盘会"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T35": {
+   "case_id": "LRE141_T35",
+   "current_action": "接住续约好消息：为季度框架开心，对'都走你的手'留量级确认的口子，顺带回扣开局的口径乌龙已被时间翻篇",
+   "acceptable_actions": [
+    "开心承接：四个季度先按一轮工作量预估，具体量级开年再对",
+    "借'乌龙那页揭过去'开个玩笑，说台历记录功不可没"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：好消息接住就够，别急着承诺全年排期。",
+   "unknowns": [
+    "每季改版的具体工作量与档期未明"
+   ],
+   "protected_expressions": [
+    "签成季度框架了",
+    "转达口径乌龙那页揭过去了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构季度框架的金额细节",
+    "不得承诺全年无冲突排期"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T35_A00",
+     "subject": "SHARED",
+     "relation": "合作升级",
+     "value": "恒信明年包装更新签成季度框架，四个季度各一轮改版",
+     "valid_time": "2026-12-16 14:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T35",
+      "message_id": "m0",
+      "quote": "签成季度框架了"
+     }
+    },
+    {
+     "atom_id": "LRE141_T35_A01",
+     "subject": "HER",
+     "relation": "更正史实",
+     "value": "开局转达的截止日口径曾出现乌龙并已更正",
+     "valid_time": "2026-11-04 09:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T03",
+      "message_id": "m0",
+      "quote": "是我听岔了"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T36": {
+   "case_id": "LRE141_T36",
+   "current_action": "接受庆功邀约并主动给时间，回扣加急餐旧承诺的余温，别假客气",
+   "acceptable_actions": [
+    "痛快应下，提下周三中午避开周末高峰",
+    "应下并玩笑一句'从香锅升级到火锅，跟着你混有饭吃'"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：她请客是心意，答应加挑时间即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "加急餐那顿的余温还在"
+   ],
+   "forbidden_factual_claims": [
+    "不得推辞或要求 AA"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T36_A00",
+     "subject": "HER",
+     "relation": "请餐承诺",
+     "value": "HER 曾承诺请加急餐并已兑现为麻辣香锅",
+     "valid_time": "2026-11-09 15:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T10",
+      "message_id": "m0",
+      "quote": "加急餐我请"
+     }
+    },
+    {
+     "atom_id": "LRE141_T36_A01",
+     "subject": "SHARED",
+     "relation": "庆功邀约",
+     "value": "HER 请 ME 庆功火锅，时间本周或下周由 ME 挑",
+     "valid_time": "2026-12-18 16:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T36",
+      "message_id": "m0",
+      "quote": "庆功餐我请"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T37": {
+   "case_id": "LRE141_T37",
+   "current_action": "确认定档：下周三中午十二点、新开火锅店，对她帮腔一句轻松回应",
+   "acceptable_actions": [
+    "确认时间地点，玩笑说好话不如说'参考稿也交得快'",
+    "确认定档，顺口谢她惦记启润那单的口碑"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "emotion_relation"
+   ],
+   "private_guidance": "只影响口吻：定档要干脆，帮腔的事一笑而过。",
+   "unknowns": [
+    "启润参考稿的最终评价未明"
+   ],
+   "protected_expressions": [
+    "下周三中午十二点"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构拉哥对启润参考稿的评价"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T37_A00",
+     "subject": "SHARED",
+     "relation": "庆功邀约",
+     "value": "庆功火锅定于下周三中午十二点、公司后面新开的火锅店",
+     "valid_time": "2026-12-19 12:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T37",
+      "message_id": "m0",
+      "quote": "下周三中午十二点"
+     }
+    },
+    {
+     "atom_id": "LRE141_T37_A01",
+     "subject": "SHARED",
+     "relation": "排期决定",
+     "value": "启润年会由小郑跟进、ME 仅出参考稿",
+     "valid_time": "2026-11-19 10:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T19",
+      "message_id": "m0",
+      "quote": "换你们组新来的小郑跟"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T38": {
+   "case_id": "LRE141_T38",
+   "current_action": "出窗探针：确认年后排期不插队恒信的原则与 T19 拍板一致，接住台历翻新页的玩笑，明确 2027 恒信季度改版进新页",
+   "acceptable_actions": [
+    "确认原则：恒信季度改版优先占格，启润年后按排期补进去",
+    "接台历玩笑，说 2027 第一格已经留给一月的改版 brief"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "private_guidance": "只影响口吻：排期原则一句带过，玩笑接住即可。",
+   "unknowns": [
+    "年后启润单的具体档期未明"
+   ],
+   "protected_expressions": [
+    "不用插队恒信"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构 2027 年完整排期"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T38_A00",
+     "subject": "SHARED",
+     "relation": "排期决定",
+     "value": "拉哥拍板恒信优先的原则延续到年后排期",
+     "valid_time": "2026-11-19 10:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T19",
+      "message_id": "m0",
+      "quote": "恒信优先"
+     }
+    },
+    {
+     "atom_id": "LRE141_T38_A01",
+     "subject": "SHARED",
+     "relation": "合作升级",
+     "value": "恒信明年包装更新签成季度框架",
+     "valid_time": "2026-12-16 14:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T35",
+      "message_id": "m0",
+      "quote": "签成季度框架了"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T39": {
+   "case_id": "LRE141_T39",
+   "current_action": "年末总结轮：呼应她数出的三单一饭账，补一句台历视角的总结，接'明年搭伙'",
+   "acceptable_actions": [
+    "顺着数：救火、年会、续约三单都上了台历，格格有据",
+    "接搭伙约定，说明年格子提前画好框等她来填"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：总结走心不走量，别翻具体错误旧账。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一单救火、一单年会、一单续约"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构今年额外的合作单据"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T39_A00",
+     "subject": "SHARED",
+     "relation": "年度配合",
+     "value": "今年两人配合经历包装救火、年会物料、季度续约三单",
+     "valid_time": "2026-12-23 15:50",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T39",
+      "message_id": "m0",
+      "quote": "一单救火、一单年会、一单续约"
+     }
+    },
+    {
+     "atom_id": "LRE141_T39_A01",
+     "subject": "SHARED",
+     "relation": "既往请餐",
+     "value": "香锅与火锅两次请餐均为小满兑现心意",
+     "valid_time": "2026-11-09 15:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T10",
+      "message_id": "m0",
+      "quote": "加急餐我请"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE141_T40": {
+   "case_id": "LRE141_T40",
+   "current_action": "轻量收尾：互道平安夜祝福，确认一月初 brief 节后再说，此轮可不展开",
+   "acceptable_actions": [
+    "短句回祝福：'收到，一月初见 brief，苹果管够'",
+    "回一个轻松短句加一句假期安排的反问"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "private_guidance": "只影响口吻：收尾短句即可；may_decline 为真，简单祝福亦合格。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一月初发你"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构一月 brief 的内容"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE141_T40_A00",
+     "subject": "SHARED",
+     "relation": "合作升级",
+     "value": "恒信明年包装更新签成季度框架，首轮 brief 一月初发",
+     "valid_time": "2026-12-16 14:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T35",
+      "message_id": "m0",
+      "quote": "签成季度框架了"
+     }
+    },
+    {
+     "atom_id": "LRE141_T40_A01",
+     "subject": "SHARED",
+     "relation": "年度配合",
+     "value": "今年两人完成救火、年会、续约三单配合",
+     "valid_time": "2026-12-23 15:50",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE141_T39",
+      "message_id": "m0",
+      "quote": "一单救火、一单年会、一单续约"
+     }
+    }
+   ],
+   "may_decline": true
+  }
+ }
+}

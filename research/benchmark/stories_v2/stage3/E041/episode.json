@@ -1,0 +1,150 @@
+{
+ "episode_id": "E041",
+ "persona": {
+  "me": "32岁，同公司隔壁组的测试主管，和她吃过一年午饭；经历过两轮裁员。",
+  "her": "30岁，运营专员，组里刚有人被裁，自己也在边缘名单的传闻里。"
+ },
+ "initial_kb": {
+  "me": "上一家公司裁过两轮，知道流程也知道那种感觉；能帮她看简历和人脉。",
+  "her": "业务能力中上，组里人缘好；最怕的是突然和不确定。",
+  "warmth": "公司食堂饭友一年，什么都聊，但裁员的事她第一次开口。",
+  "stage": "熟饭友，第一次聊到职业危机。",
+  "lessons": "别说肯定没事；别打听细节；支持要具体。"
+ },
+ "turns": [
+  {
+   "case_id": "E041_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "跟你说个事 我们组昨天裁了一个",
+      "ts": "2026-11-05 09:03"
+     }
+    ],
+    "clock": "2026-11-05 09:05",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E041_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "听到了 你先说 我听着",
+      "ts": "2026-11-05 09:06"
+     }
+    ],
+    "clock": "2026-11-05 09:08",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E041_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "名单上好像有我 谁也说不准",
+      "ts": "2026-11-05 09:10"
+     }
+    ],
+    "clock": "2026-11-05 09:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E041_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "名单这事我不猜 我能做的是两件：简历我帮你过一版，测开岗我认识俩组长",
+      "ts": "2026-11-05 09:15"
+     }
+    ],
+    "clock": "2026-11-05 09:18",
+    "may_decline": false,
+    "note": "别给空头安慰；把自己真做得到的两件事说清楚就行"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E041_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "简历真得看看 我两年没动了",
+      "ts": "2026-11-05 09:22"
+     }
+    ],
+    "clock": "2026-11-05 09:24",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E041_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今晚先不聊了 我缓缓",
+      "ts": "2026-11-05 09:28"
+     }
+    ],
+    "clock": "2026-11-05 09:30",
+    "may_decline": true
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E041_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天谢谢你想说啥呢 又不知道咋开口",
+      "ts": "2026-11-05 21:36"
+     }
+    ],
+    "clock": "2026-11-05 21:38",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E041_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "不用组织语言 需要就说 简历随时发我",
+      "ts": "2026-11-05 21:39"
+     },
+     {
+      "role": "HER",
+      "text": "嗯 明天午饭照旧 帮我占座",
+      "ts": "2026-11-05 21:41"
+     }
+    ],
+    "clock": "2026-11-05 21:42",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

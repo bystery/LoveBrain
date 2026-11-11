@@ -1,0 +1,417 @@
+{
+ "story_id": "E183",
+ "turns": {
+  "E183_T01": {
+   "case_id": "E183_T01",
+   "current_action": "肯定就医决定：两个月反复就该查诱因，叮嘱抽血前后按医生交代，报告出来一起看",
+   "acceptable_actions": [
+    "肯定她终于去查是对的，提醒报告出来先别自己吓自己",
+    "确认过四天出报告的时间线，建议期间继续按原医嘱用药",
+    "接住她的松动情绪，说自己可以帮她先把报告指标看懂"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A01",
+     "subject": "HER",
+     "relation": "检测执行",
+     "value": "HER因荨麻疹反复两个月完成过敏原抽血检测",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T01", "message_id": "m0", "quote": "过敏原抽血"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E183_A02",
+     "subject": "ME",
+     "relation": "解读边界",
+     "value": "ME在第三方检验实验室工作但坚持诊断归医生",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "天天看报告"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "用检验背景帮看报告但不越界下诊断，边界第一句就立住",
+   "unknowns": ["具体检测套餐项目未知"],
+   "protected_expressions": ["过敏原抽血", "过四天出报告"],
+   "forbidden_factual_claims": ["不得提前断言过敏原是什么", "不得替代医生下诊断结论"]
+  },
+  "E183_T02": {
+   "case_id": "E183_T02",
+   "current_action": "用大白话讲清临界值：0.62对0.35以下只是超出参考线不高，阴性不代表永不过敏，结论等医生",
+   "acceptable_actions": [
+    "解释临界值含义：略超参考线，程度需要医生结合症状判",
+    "肯定她拍照存档的习惯，提醒报告原文留着复查对比",
+    "讲清阴性与临界的区别，明确说不替医生下结论"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A03",
+     "subject": "SHARED",
+     "relation": "报告结果",
+     "value": "屋尘螨0.62对参考0.35以下卡临界牛肉和虾阴性",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T02", "message_id": "m0", "quote": "屋尘螨0.62"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把指标讲成大白话是自己的强项，但诊断归医生这句话要说到",
+   "unknowns": ["该检测方法学的单位与灵敏度未知"],
+   "protected_expressions": ["屋尘螨0.62", "都是阴性", "卡在临界"],
+   "forbidden_factual_claims": ["不得断言屋尘螨0.62即确诊过敏", "不得断言阴性即永不过敏"]
+  },
+  "E183_T03": {
+   "case_id": "E183_T03",
+   "current_action": "接住说法打架：指出两说都别全信——妈妈的说法过猛、同事的加查建议也不是医生说的，裁判交给复诊医生",
+   "acceptable_actions": [
+    "分析两种说法各自的来源可靠性，建议都先记下不复述成结论",
+    "明确说临界既不等于确诊也不能当没事，答案让周五的医生给",
+    "肯定她没直接扔地毯的克制，建议把两说整理成问题清单带去"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A04",
+     "subject": "SHARED",
+     "relation": "口径矛盾",
+     "value": "家人称临界即过敏与同事称需加查IgE两种说法矛盾",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T03", "message_id": "m0", "quote": "得再查个什么IgE"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E183_A05",
+     "subject": "SHARED",
+     "relation": "解读基准",
+     "value": "矛盾解读的对象是屋尘螨0.62临界报告",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T02", "message_id": "m0", "quote": "屋尘螨0.62"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "不当场站队任何一方，把信源分级讲清，落点交给医生",
+   "unknowns": ["同事所查的具体检测内容不明"],
+   "protected_expressions": ["说法打架", "临界就是过敏", "得再查个什么IgE"],
+   "forbidden_factual_claims": ["不得当场判定哪种说法正确", "不得建议立即加做任何自费检查"]
+  },
+  "E183_T04": {
+   "case_id": "E183_T04",
+   "current_action": "肯定她的无损动作：卷地毯、烫床单是零成本的环境控制，先做不亏，同时提醒别为不确定的结论花大钱",
+   "acceptable_actions": [
+    "肯定先做无损环境处理的思路，提醒高温烫洗后彻底晒干",
+    "确认这些动作不亏，重申大额检查等医生发话",
+    "接住她的节奏，建议顺手把发作时刻继续记上"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A06",
+     "subject": "HER",
+     "relation": "环境行动",
+     "value": "HER卷起地毯塞阳台并用开水烫洗床单被罩",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T04", "message_id": "m0", "quote": "地毯卷了塞阳台"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "肯定她不等不闹的成熟做法，边肯定边守住不乱花钱的线",
+   "unknowns": [],
+   "protected_expressions": ["地毯卷了塞阳台", "开水烫了一遍"],
+   "forbidden_factual_claims": ["不得断言地毯就是诱因", "不得虚构高温处理的有效率数据"]
+  },
+  "E183_T05": {
+   "case_id": "E183_T05",
+   "current_action": "支持带记录复诊：发作时间记录很有用，建议连用药时间一起记，周五上午十点的号别迟到",
+   "acceptable_actions": [
+    "肯定带发作记录的想法，建议补上每次用药时间和剂量",
+    "确认带记录有用，提醒同时带上正在吃的药盒",
+    "肯定她的表格习惯，建议把两说的疑问也列进去当面问"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A07",
+     "subject": "SHARED",
+     "relation": "复诊预约",
+     "value": "复诊约在周五上午十点原开单医生",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T05", "message_id": "m0", "quote": "周五上午十点的复诊号"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "肯定她把资料攒全的本事，补的建议要具体到用药和药盒",
+   "unknowns": [],
+   "protected_expressions": ["周五上午十点的复诊号", "记在备忘录里"],
+   "forbidden_factual_claims": ["不得虚构复诊流程细节"]
+  },
+  "E183_T06": {
+   "case_id": "E183_T06",
+   "current_action": "接住发作记录更新：七次都在晚间是有价值的规律线索，提醒记下当晚吃了什么碰了什么，周五正好给医生看",
+   "acceptable_actions": [
+    "肯定记录价值，指出晚间集中这个规律值得给医生看",
+    "提醒发作时连带记录当晚饮食和接触物",
+    "接住发作的小沮丧，肯定记录在册就不慌"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A08",
+     "subject": "HER",
+     "relation": "发作记录",
+     "value": "昨晚十一点半小腿发作累计第七次均在晚间",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T06", "message_id": "m0", "quote": "一共七次"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不诊断不猜诱因，把规律的价值点出来交给医生用",
+   "unknowns": ["发作与饮食接触的关联未知"],
+   "protected_expressions": ["十一点半", "一共七次"],
+   "forbidden_factual_claims": ["不得断言晚间发作的成因", "不得虚构发作次数以外的统计"]
+  },
+  "E183_T07": {
+   "case_id": "E183_T07",
+   "current_action": "接住医生收口：确认轻度致敏+环境控制一个月的路径合理，明确同事的加查全套IgE被医生否了这事到此为止",
+   "acceptable_actions": [
+    "肯定医生口径与环境控制路径，确认不必再加查",
+    "呼应自己此前不站队的处理，指出两说都以医生为准收口",
+    "帮她把医嘱拆成清单：环境控制、一个月复查、不加查"
+   ],
+   "applicable_dimensions": ["attribution", "goal", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A09",
+     "subject": "SHARED",
+     "relation": "医生解读",
+     "value": "医生判定屋尘螨0.62仅轻度致敏非唯一原因先环境控制一个月后复查",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T07", "message_id": "m0", "quote": "只是轻度致敏"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E183_A10",
+     "subject": "SHARED",
+     "relation": "加查IgE否决",
+     "value": "全套IgE检查被医生判定不必做同事说法被否",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E183_T07", "message_id": "m0", "quote": "不用专门花钱做全套IgE"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E183_A11",
+     "subject": "SHARED",
+     "relation": "矛盾说法来源",
+     "value": "此前两种矛盾说法中同事的加查说法被医生否定",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T03", "message_id": "m0", "quote": "得再查个什么IgE"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "不邀功不说风凉话，把医嘱落到可执行清单，让收口干净",
+   "unknowns": ["环境控制的具体项目以医嘱为准"],
+   "protected_expressions": ["只是轻度致敏", "不用专门花钱做全套IgE"],
+   "forbidden_factual_claims": ["不得宣称屋尘螨已排除", "不得虚构复查指标项目"]
+  },
+  "E183_T08": {
+   "case_id": "E183_T08",
+   "current_action": "接住忌口松绑：阴性结论与医生口径一致，停酒和辛辣是通用刺激物管理，比全戒好执行",
+   "acceptable_actions": [
+    "呼应阴性结果与医生口径一致，肯定忌口清单改得快",
+    "提醒酒和辛辣是通用刺激因素，先停观察正好对照",
+    "轻快接住好消息，建议把改后的清单也存档给复查对比"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A12",
+     "subject": "SHARED",
+     "relation": "忌口更正",
+     "value": "忌口不需全戒虾牛肉可吃仅先停酒和辛辣",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E183_T08", "message_id": "m0", "quote": "忌口不用全戒"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E183_A13",
+     "subject": "SHARED",
+     "relation": "阴性对照",
+     "value": "牛肉虾阴性结论与医生忌口口径一致",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T02", "message_id": "m0", "quote": "都是阴性"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "让她轻装上阵，松绑讲得干脆，不给忌口加戏",
+   "unknowns": [],
+   "protected_expressions": ["忌口不用全戒", "先停酒和辛辣"],
+   "forbidden_factual_claims": ["不得宣称虾牛肉绝对安全", "不得虚构额外忌口项目"]
+  },
+  "E183_T09": {
+   "case_id": "E183_T09",
+   "current_action": "评她的采购决策：三百出头的除螨仪够用，每周吸床垫沙发频率合理，提醒吸完集尘盒及时清",
+   "acceptable_actions": [
+    "认可三百出头的预算和每周一次的频率，补一条清理集尘盒",
+    "肯定环境控制在落地，提醒吸床垫时把床品同步换洗",
+    "确认采购合理，建议保留发票以便效果不好时退换"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A14",
+     "subject": "HER",
+     "relation": "除螨采购",
+     "value": "HER购入三百出头除螨仪计划每周吸一次床垫沙发",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T09", "message_id": "m0", "quote": "三百出头的除螨仪"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把医生的环境控制建议落成使用细节，肯定她自己想出的省工序安排",
+   "unknowns": ["除螨仪具体型号未知"],
+   "protected_expressions": ["三百出头的除螨仪", "每周吸一次"],
+   "forbidden_factual_claims": ["不得断言除螨仪必然降低指标", "不得虚构具体品牌推荐"]
+  },
+  "E183_T10": {
+   "case_id": "E183_T10",
+   "current_action": "肯定初步成效：一周一次比之前七次的密度明显降，表格留给复查正好构成前后对照",
+   "acceptable_actions": [
+    "肯定频率下降的趋势，提醒先别提前下结论等复查",
+    "肯定表格对照价值，建议把除螨仪启用日期也标进去",
+    "接住她的轻快，提醒保持当前节奏别加新变量"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A15",
+     "subject": "HER",
+     "relation": "症状改善",
+     "value": "一周仅发作一次少于此前并整理记录为表格",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T10", "message_id": "m0", "quote": "就起来过一次"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E183_A16",
+     "subject": "HER",
+     "relation": "记录闭环",
+     "value": "发作记录表格将在复查时交给医生作前后对照",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T06", "message_id": "m0", "quote": "一共七次"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "高兴但不抢医生的判语，改善先当趋势不当结论",
+   "unknowns": ["改善归因于环境控制还是季节因素未知"],
+   "protected_expressions": ["就起来过一次", "整理成表格"],
+   "forbidden_factual_claims": ["不得断言已痊愈", "不得虚构指标数值"]
+  },
+  "E183_T11": {
+   "case_id": "E183_T11",
+   "current_action": "确认复查准备：下周四上午十点同一位医生好对比，纸质报告和表格一起带，问诊顺序建议先说改善再说疑问",
+   "acceptable_actions": [
+    "肯定材料备齐，建议按时间线给医生讲改善过程",
+    "确认同一位医生便于对比，提醒带表格和用药记录",
+    "确认复查安排，建议把想问的问题先写三条"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A17",
+     "subject": "SHARED",
+     "relation": "复查安排",
+     "value": "复查定下周四上午十点同一位医生并备纸质报告",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T11", "message_id": "m0", "quote": "下周四上午十点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E183_A18",
+     "subject": "SHARED",
+     "relation": "报告基准",
+     "value": "上次屋尘螨0.62临界报告作为本次复查对比基线",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T02", "message_id": "m0", "quote": "屋尘螨0.62"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把复查准备理顺即可，不新增检查建议，尊重一个月之约",
+   "unknowns": ["复查具体查什么以医生安排为准"],
+   "protected_expressions": ["下周四上午十点", "打了一份纸质版"],
+   "forbidden_factual_claims": ["不得虚构复查项目与费用"]
+  },
+  "E183_T12": {
+   "case_id": "E183_T12",
+   "current_action": "收尾回扣：恭喜指标下降与环境控制见效，回扣她当时没乱花钱做全套的决定，地毯铺回正好收闭环",
+   "acceptable_actions": [
+    "恭喜复查结果，回扣没做全套IgE省下的钱和功夫",
+    "肯定她一个月环境控制的执行力，接住感谢并说医生定方案才是关键",
+    "轻松收尾，回扣地毯铺回和随诊安排，留下次约饭的钩子"
+   ],
+   "applicable_dimensions": ["memory_use", "emotion_relation", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E183_A19",
+     "subject": "SHARED",
+     "relation": "复查结果",
+     "value": "复查指标下降环境控制有效下下月随诊一次",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T12", "message_id": "m0", "quote": "地毯可以铺回去了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E183_A20",
+     "subject": "HER",
+     "relation": "决策回扣",
+     "value": "此前未盲目加查全套IgE的立场被复查结果印证",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E183_T07", "message_id": "m0", "quote": "不用专门花钱做全套IgE"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把功劳分给医生和她的执行力，自己只领解读的功，收尾有回味",
+   "unknowns": ["随诊具体时间未定"],
+   "protected_expressions": ["地毯可以铺回去了", "下下月再随诊一次"],
+   "forbidden_factual_claims": ["不得断言已根治", "不得虚构指标具体数值"]
+  }
+ }
+}

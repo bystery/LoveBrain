@@ -1,0 +1,438 @@
+{
+ "story_id": "E056",
+ "turns": {
+  "E056_T01": {
+   "case_id": "E056_T01",
+   "current_action": "同喜同忧，确认行程四天与猫无人安置两个事实，顺势进入找方案状态",
+   "acceptable_actions": [
+    "先贺喜再接忧，确认12-15日四天寄养需求",
+    "顺着祖宗挑食的吐槽共情，问现有备选"
+   ],
+   "applicable_dimensions": ["goal", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A01",
+     "subject": "HER",
+     "relation": "trip_planned",
+     "value": "HER 11月12日至15日赴外地参加大学室友婚礼，需离家四天",
+     "valid_time": "2026-11-12/2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T01", "message_id": "m0", "quote": "婚礼定在11月12到15号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E056_A02",
+     "subject": "HER",
+     "relation": "cat_care_gap",
+     "value": "猫豆包无人安置，HER 担心它离了人不好好吃饭",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T01", "message_id": "m0", "quote": "豆包怎么办啊"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先贺喜再谈猫，别让喜事被焦虑盖掉",
+   "unknowns": ["婚礼地点与交通方式未知", "请假是否获批未知"],
+   "protected_expressions": ["我家祖宗离了人饭都不好好吃"],
+   "forbidden_factual_claims": ["不得虚构婚礼细节", "不得断言寄养方式优劣"]
+  },
+  "E056_T02": {
+   "case_id": "E056_T02",
+   "current_action": "为小鹿的爽快答应高兴，同时提示口头承诺要落实到日程",
+   "acceptable_actions": [
+    "同贺找到人，建议把四天日程与钥匙交接写清楚",
+    "肯定小鹿靠谱，提醒确认上门频次与猫粮口径"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A03",
+     "subject": "THIRD",
+     "relation": "full_coverage_promise",
+     "value": "小鹿承诺四天全包，天天上门铲屎喂饭",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T02", "message_id": "m0", "quote": "四天都包了，天天上门铲屎喂饭"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不泼冷水，把口头承诺引向白纸黑字",
+   "unknowns": ["小鹿是否养过猫未知", "上门具体时段未知"],
+   "protected_expressions": ["差点当场给她磕一个"],
+   "forbidden_factual_claims": ["不得虚构小鹿背景", "不得断言承诺必然兑现"]
+  },
+  "E056_T03": {
+   "case_id": "E056_T03",
+   "current_action": "接住备胎盘算，确认宠物店方案的短板（周日不接返）并认同排序",
+   "acceptable_actions": [
+    "复述宠物店报价与接返限制，认可备胎定位",
+    "建议保留宠物店作应急预案，不退款占位"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A04",
+     "subject": "THIRD",
+     "relation": "pet_hotel_option",
+     "value": "宠物店四天三百二含独间，但周日不接返、需周一接，成为备选",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T03", "message_id": "m0", "quote": "四天三百二含独间"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：陪她盘算，别急着替她拍板选谁",
+   "unknowns": ["宠物店是否需要预订金未知"],
+   "protected_expressions": ["先当备胎吧"],
+   "forbidden_factual_claims": ["不得虚构宠物店服务条款", "不得断言价格高低合理性"]
+  },
+  "E056_T04": {
+   "case_id": "E056_T04",
+   "current_action": "第三方张力轮：把母亲坚持与父亲过敏拆成两个约束，指出可折中而非二选一",
+   "acceptable_actions": [
+    "接住夹心感，把过敏事实列为方案硬约束",
+    "建议向母亲说明过敏顾虑，再谈折中角色"
+   ],
+   "applicable_dimensions": ["attribution", "emotion_relation", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A05",
+     "subject": "THIRD",
+     "relation": "parent_conflict",
+     "value": "HER 母亲坚持接猫到她家住，但 HER 父亲猫毛过敏严重，第三方诉求冲突",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T04", "message_id": "m0", "quote": "我爸猫毛过敏"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E056_A06",
+     "subject": "THIRD",
+     "relation": "promise_baseline",
+     "value": "小鹿的四天全包承诺仍是方案基石，但尚未落实到具体日程",
+     "valid_time": "2026-11-01/2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T02", "message_id": "m0", "quote": "她一口答应"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不当裁判，把家人的好意和现实约束都承认",
+   "unknowns": ["母亲能否接受不上门方案未知", "父亲过敏程度细节未知"],
+   "protected_expressions": ["打个喷嚏能掀翻屋顶"],
+   "forbidden_factual_claims": ["不得虚构父母对话内容", "不得断言寄养不靠谱"]
+  },
+  "E056_T05": {
+   "case_id": "E056_T05",
+   "current_action": "接下清单任务，复述分工初案三段式并确认明日发小鹿",
+   "acceptable_actions": [
+    "复述小鹿12-13、母亲14、15日返程的三段分工",
+    "确认清单任务并主动问需包含哪些交接项"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A07",
+     "subject": "SHARED",
+     "relation": "plan_draft",
+     "value": "分工初案：小鹿12-13日上门喂，母亲14日入住一晚顺看新房，15日中午 HER 航班返程接手",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T05", "message_id": "m0", "quote": "小鹿12号13号上门喂"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E056_A08",
+     "subject": "HER",
+     "relation": "delegates_checklist",
+     "value": "HER 请 ME 记录交接事项清单，明日发给小鹿",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T05", "message_id": "m0", "quote": "你帮我把交接事项记个清单"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她拍板我记录，复述清晰即尽职",
+   "unknowns": ["新房地址是否告知母亲未知", "清单形式未知"],
+   "protected_expressions": ["你帮我把交接事项记个清单"],
+   "forbidden_factual_claims": ["不得虚构航班号", "不得替小鹿确认接单"]
+  },
+  "E056_T06": {
+   "case_id": "E056_T06",
+   "current_action": "第三方变卦轮：接住计划变动，把13日空档标成待补位缺口",
+   "acceptable_actions": [
+    "先确认13日全天无人的缺口，再列可补位人选",
+    "安抚后建议立刻与小鹿和母亲核对各自时间窗"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A09",
+     "subject": "THIRD",
+     "relation": "promise_broken",
+     "value": "小鹿13日因家事来不了，只保证12号一整天，13日出现寄养空档",
+     "valid_time": "2026-11-08",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E056_T06", "message_id": "m0", "quote": "只能保证12号一整天"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E056_A10",
+     "subject": "SHARED",
+     "relation": "gap_emerged",
+     "value": "分工初案中13日全天空档是当前必须解决的缺口",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T06", "message_id": "m0", "quote": "13号全空了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：别先怪小鹿，把注意力引到补位方案上",
+   "unknowns": ["小鹿家事性质未知", "空档是否可半日补齐未知"],
+   "protected_expressions": ["我头皮发麻"],
+   "forbidden_factual_claims": ["不得虚构小鹿家事", "不得断言自动喂食器等方案（尚未提出）"]
+  },
+  "E056_T07": {
+   "case_id": "E056_T07",
+   "current_action": "确认母亲时间窗，明确13日上午是唯一剩余缺口",
+   "acceptable_actions": [
+    "复述母亲13日下午至15日早的到岗窗口",
+    "把13日上午单独圈出来，讨论半天量级的补位"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A11",
+     "subject": "THIRD",
+     "relation": "mom_window",
+     "value": "母亲13号下午到、住至15号早上，13号上午因广场舞汇演无法到岗",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T07", "message_id": "m0", "quote": "13号下午过来住到15号早上"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E056_A12",
+     "subject": "THIRD",
+     "relation": "coverage_lost",
+     "value": "13日白天小鹿与母亲都够不着，空档收窄为13日上午",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E056_T07", "message_id": "m0", "quote": "13号白天小鹿和我妈都够不着"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把缺口量化成半天，问题显得可解",
+   "unknowns": ["汇演结束时间未知", "母亲是否愿带猫粮回自己家未知"],
+   "protected_expressions": ["还得想辙"],
+   "forbidden_factual_claims": ["不得虚构广场舞汇演细节", "不得替母亲承诺早起"]
+  },
+  "E056_T08": {
+   "case_id": "E056_T08",
+   "current_action": "定稿确认轮：复述最终排班，逐段核对缝隙是否全堵上",
+   "acceptable_actions": [
+    "逐段复述12/13上午/13下午起/15日四段排班并确认闭环",
+    "提醒把定稿同步给小鹿和母亲，附喂食量口径"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A13",
+     "subject": "SHARED",
+     "relation": "plan_final",
+     "value": "定稿：12日小鹿早晚两趟，13日上午自动喂食器补位，13日下午起母亲看护至15日早，15日中午 HER 返程接手",
+     "valid_time": "2026-11-09/2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T08", "message_id": "m0", "quote": "13号上午自动喂食器顶一顿"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E056_A14",
+     "subject": "SHARED",
+     "relation": "gap_resolved",
+     "value": "T06 出现的13日空档经喂食器与母亲时间窗补位后消除",
+     "valid_time": "2026-11-08/2026-11-09",
+     "status": "confirmed",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E056_T06", "message_id": "m0", "quote": "13号全空了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她拍板我核对，闭环感要出来",
+   "unknowns": ["自动喂食器是否已到货未知", "小鹿与母亲是否已确认定稿未知"],
+   "protected_expressions": ["缝隙全堵上了"],
+   "forbidden_factual_claims": ["不得虚构喂食器型号与功能", "不得断言排班必然无变"]
+  },
+  "E056_T09": {
+   "case_id": "E056_T09",
+   "current_action": "出发前夜清单核对：逐项过口径，指出缺漏项并确认明早时间",
+   "acceptable_actions": [
+    "逐项核对并补上免疫本复印件/备用猫砂等遗漏",
+    "确认喂食量与日常记录一致后叮嘱早点休息"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A15",
+     "subject": "SHARED",
+     "relation": "checklist_reviewed",
+     "value": "交接清单含猫粮早晚一顿、罐头一天半个、猫砂两天一铲、免疫本位置与抗过敏药",
+     "valid_time": "2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T09", "message_id": "m0", "quote": "猫粮早晚一顿、罐头一天半个"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E056_A16",
+     "subject": "SHARED",
+     "relation": "ration_consistent",
+     "value": "清单喂食量与 ME 记录的日常口径（早晚各一顿、罐头一天半个）一致",
+     "valid_time": "长期",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "罐头一天半个"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E056_A17",
+     "subject": "SHARED",
+     "relation": "return_slot",
+     "value": "15号中午 HER 落地接盘的收尾节点与定稿排班一致",
+     "valid_time": "2026-11-09/2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T08", "message_id": "m0", "quote": "15号中午我落地接盘"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：核对要逐项，像交接班，最后一句落到人身上",
+   "unknowns": ["是否需要留备用钥匙给母亲未知"],
+   "protected_expressions": ["还有啥漏的"],
+   "forbidden_factual_claims": ["不得虚构清单之外的新物品需求", "不得虚构高铁车次"]
+  },
+  "E056_T10": {
+   "case_id": "E056_T10",
+   "current_action": "首日交接报平安：确认豆包状态平稳，肯定排班第一段执行到位",
+   "acceptable_actions": [
+    "接平安并复述今日小鹿早晚两趟在岗",
+    "顺着没炸毛的细节，建议录婚礼视频别忘了猫粮口径"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A18",
+     "subject": "THIRD",
+     "relation": "handover_done",
+     "value": "12日晨交接完成，豆包状态平稳未应激",
+     "valid_time": "2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T10", "message_id": "m0", "quote": "豆包冲她打了招呼"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E056_A19",
+     "subject": "THIRD",
+     "relation": "day1_executed",
+     "value": "12日小鹿早晚两趟上门按定稿排班执行",
+     "valid_time": "2026-11-09/2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T08", "message_id": "m0", "quote": "12号小鹿上门早晚各一趟"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：报平安轮，轻快即可，不追问婚礼细节",
+   "unknowns": ["豆包当日进食量未知"],
+   "protected_expressions": ["没炸毛"],
+   "forbidden_factual_claims": ["不得虚构高铁行程", "不得断言后续四天必然顺利"]
+  },
+  "E056_T11": {
+   "case_id": "E056_T11",
+   "current_action": "第三方格局报平安：陪看父母与猫的战报，确认14日段执行正常",
+   "acceptable_actions": [
+    "笑接收官战报，点出戴口罩看球的细节好笑",
+    "确认母亲到岗段执行与猫的状态，顺势问15日收尾"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A20",
+     "subject": "THIRD",
+     "relation": "mom_shift_stable",
+     "value": "14日母亲与豆包同住融洽，父亲因过敏保持距离，状况在预期内",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T11", "message_id": "m0", "quote": "我妈和豆包已和平共处"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E056_A21",
+     "subject": "THIRD",
+     "relation": "allergy_constraint_respected",
+     "value": "父亲猫毛过敏的约束通过戴口罩、躲卧室得到执行",
+     "valid_time": "2026-11-05/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T04", "message_id": "m0", "quote": "我爸猫毛过敏"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：娱乐轮，接住战报的喜感，别忘了确认时段执行",
+   "unknowns": ["13日喂食器段执行情况未汇报"],
+   "protected_expressions": ["近年离猫最近的一次"],
+   "forbidden_factual_claims": ["不得虚构父母照片内容", "不得断言过敏已痊愈"]
+  },
+  "E056_T12": {
+   "case_id": "E056_T12",
+   "current_action": "收尾闭环：确认返程接手完成，肯定双份喜糖的还情分寸，接下清单模板化",
+   "acceptable_actions": [
+    "庆祝圆满收工，确认模板化清单需求",
+    "复述本次排班经验为下次短差模板，轻收"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E056_A22",
+     "subject": "HER",
+     "relation": "closure",
+     "value": "15日返程到家，豆包迎接正常，方案闭环并沉淀为下次短差模板",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E056_T12", "message_id": "m0", "quote": "下次短差就抄这套模板"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E056_A23",
+     "subject": "SHARED",
+     "relation": "worry_resolved",
+     "value": "T01 对四天寄养的担忧随完整落地而解除",
+     "valid_time": "2026-10-31/2026-11-15",
+     "status": "confirmed",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E056_T01", "message_id": "m0", "quote": "四天呢"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要把她的安排控特质夸到点上，不居功",
+   "unknowns": [],
+   "protected_expressions": ["设成固定栏目"],
+   "forbidden_factual_claims": ["不得虚构喜糖数量", "不得引入新任务或新话题"]
+  }
+ }
+}

@@ -1,0 +1,461 @@
+{
+ "story_id": "E132",
+ "turns": {
+  "E132_T01": {
+   "case_id": "E132_T01",
+   "current_action": "安抚抽血紧张,给一个具体的小建议并接住体检安排",
+   "acceptable_actions": [
+    "说入职抽血就一管,教她转目光深呼吸,别盯着针",
+    "先接住紧张,提醒她提前一晚清淡饮食",
+    "问体检机构远近,主动提可以陪她踩个点"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A01",
+     "subject": "HER",
+     "relation": "fear_trait",
+     "value": "宿棠怕抽血但会硬上",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "怕抽血但会硬上"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E132_A02",
+     "subject": "HER",
+     "relation": "exam_plan",
+     "value": "入职体检约在下周三上午,公司口径十点前到即可,项目含抽血与胸片",
+     "valid_time": "2026-11-11(下周三)上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T01", "message_id": "m0", "quote": "入职体检约在下周三上午"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她怕抽血,先安抚再给方法,别开头就讲检查意义",
+   "unknowns": ["体检机构名称与位置未提"],
+   "protected_expressions": ["抽血那关我有点虚"],
+   "forbidden_factual_claims": ["不得虚构她的血常规结果"]
+  },
+  "E132_T02": {
+   "case_id": "E132_T02",
+   "current_action": "回答空腹与时间的疑问,建议直接向机构或人事确认截止时间",
+   "acceptable_actions": [
+    "说明空腹8到12小时的一般口径,提醒她向机构确认采血截止点",
+    "指出攻略口径不一定适用指定机构,让她问人事最准",
+    "顺带安慰:十点前抽血一般没问题,但别赌,先确认"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A02",
+     "subject": "HER",
+     "relation": "exam_plan",
+     "value": "入职体检约在下周三上午,公司口径十点前到即可,项目含抽血与胸片",
+     "valid_time": "2026-11-11 上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T01", "message_id": "m0", "quote": "入职体检约在下周三上午"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "医学口径要给一般规则加'以机构要求为准',别拍脑袋打包票",
+   "unknowns": ["机构实际采血截止时间未知"],
+   "protected_expressions": ["还是说九点前就得抽"],
+   "forbidden_factual_claims": ["不得断言该机构十点仍可采血"]
+  },
+  "E132_T03": {
+   "case_id": "E132_T03",
+   "current_action": "接住人事更正的关键信息,肯定她改约最早场的决定",
+   "acceptable_actions": [
+    "夸她多问了一嘴,差点踩坑变成提前避坑,最早场最稳",
+    "说'报到时间'和'采血截止'是两回事,她抓对了",
+    "安慰她后怕正常,改约七点半场正好空腹也轻松"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A03",
+     "subject": "HER",
+     "relation": "arrival_assumption",
+     "value": "她原按'十点前到就行'的口径安排体检,该口径后被人事更正",
+     "valid_time": "2026-11-05 至 2026-11-06",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E132_T01", "message_id": "m0", "quote": "公司说十点前到就行"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E132_A04",
+     "subject": "HER",
+     "relation": "deadline_correction",
+     "value": "人事更正:十点前是报到时间,采血截止为九点半",
+     "valid_time": "2026-11-06 更正",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T03", "message_id": "m0", "quote": "采血截止九点半"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E132_A05",
+     "subject": "HER",
+     "relation": "reschedule_decision",
+     "value": "她决定改约最早场,七点半开检即到",
+     "valid_time": "2026-11-11(下周三)07:30 场次",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T03", "message_id": "m0", "quote": "改约到最早场,七点半开检我就到"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是她的第一次纠错,重点表扬'多问一句'的习惯",
+   "unknowns": ["改约是否需额外费用未提"],
+   "protected_expressions": ["采血截止九点半"],
+   "forbidden_factual_claims": ["不得虚构人事的原话细节"]
+  },
+  "E132_T04": {
+   "case_id": "E132_T04",
+   "current_action": "给加项建议:入职常规无此项,不为交差加查,拿不准就按医嘱",
+   "acceptable_actions": [
+    "说明入职体检目的是常规合规,血红蛋白电泳非常规必查,可不做",
+    "提醒前台推荐有提成嫌疑,拿不准让医生按指征判断",
+    "反问自己有无相关症状或家族史,没有就不加"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A05",
+     "subject": "HER",
+     "relation": "reschedule_decision",
+     "value": "她决定改约最早场,七点半开检即到",
+     "valid_time": "2026-11-11 07:30 场次",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T03", "message_id": "m0", "quote": "改约到最早场,七点半开检我就到"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E132_A06",
+     "subject": "PUBLIC",
+     "relation": "addon_offer",
+     "value": "前台推荐加项'血红蛋白电泳',报价158元,称新员工最好查",
+     "valid_time": "2026-11-07 推荐",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T04", "message_id": "m0", "quote": "158一份,说新员工最好查"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医学判断要留余地说'无指征不必加',别替她做医疗决定",
+   "unknowns": ["她是否有相关家族史未知"],
+   "protected_expressions": ["158一份,说新员工最好查"],
+   "forbidden_factual_claims": ["不得虚构该项目的临床诊断价值"]
+  },
+  "E132_T05": {
+   "case_id": "E132_T05",
+   "current_action": "接住她不加项的决定,肯定省下的钱花在健身卡上更实在",
+   "acceptable_actions": [
+    "夸她决策利落,基础项目做扎实就是入职体检的本分",
+    "接健身卡的梗,说这钱花在刀刃上",
+    "提醒她体检前一晚就按不加项准备,早点休息"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A06",
+     "subject": "PUBLIC",
+     "relation": "addon_offer",
+     "value": "前台推荐加项'血红蛋白电泳',报价158元,称新员工最好查",
+     "valid_time": "2026-11-07 提出后放弃",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E132_T04", "message_id": "m0", "quote": "158一份,说新员工最好查"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E132_A07",
+     "subject": "HER",
+     "relation": "addon_decision",
+     "value": "她决定不加血红蛋白电泳,只做基础项目,省下158元办健身卡",
+     "valid_time": "2026-11-08 决定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T05", "message_id": "m0", "quote": "我先不加,把基础项目做扎实"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她被说服后自己找了台阶,顺势肯定就好",
+   "unknowns": ["健身卡办理时间未定"],
+   "protected_expressions": ["钱省下来办健身卡"],
+   "forbidden_factual_claims": ["不得虚构加项价格变动"]
+  },
+  "E132_T06": {
+   "case_id": "E132_T06",
+   "current_action": "接住机构记错的更正,夸她发现得早,提醒把预约信息同步改",
+   "acceptable_actions": [
+    "笑她导航存错,提醒预约单上的机构名也要核对一遍",
+    "说城东分院和本部距离可能不近,重新存导航是对的",
+    "夸她自己逮住自己,这种错体检当天发现才叫离谱"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A08",
+     "subject": "HER",
+     "relation": "location_correction",
+     "value": "她记错体检机构:公司指定为城东分院,她此前一直按本部路线准备,导航已重存",
+     "valid_time": "2026-11-10 更正",
+     "status": "corrected",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T06", "message_id": "m0", "quote": "公司指定的是城东分院,我一直看的是本部路线"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E132_A05",
+     "subject": "HER",
+     "relation": "reschedule_decision",
+     "value": "她决定改约最早场,七点半开检即到",
+     "valid_time": "2026-11-11 07:30 场次",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T03", "message_id": "m0", "quote": "改约到最早场,七点半开检我就到"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她自嘲时别跟着踩,轻轻夸她纠错快",
+   "unknowns": ["分院与本部距离未量化"],
+   "protected_expressions": ["公司指定的是城东分院"],
+   "forbidden_factual_claims": ["不得虚构两院区的实际距离"]
+  },
+  "E132_T07": {
+   "case_id": "E132_T07",
+   "current_action": "接住踩点成果,夸动线小地图,确认出门时间余量",
+   "acceptable_actions": [
+    "夸她连楼层动线都画了,这份地图比导航靠谱",
+    "确认七点二十出门对七点半开检留足余量",
+    "接小地图的梗,说要一份复印件当观礼指南"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A08",
+     "subject": "HER",
+     "relation": "location_correction",
+     "value": "她记错体检机构:公司指定为城东分院,她此前一直按本部路线准备,导航已重存",
+     "valid_time": "2026-11-10 更正",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T06", "message_id": "m0", "quote": "公司指定的是城东分院,我一直看的是本部路线"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E132_A09",
+     "subject": "HER",
+     "relation": "recon_result",
+     "value": "她已踩点城东分院:地铁直达,七点二十出门来得及,胸片室三楼,抽血二楼,并画了动线小地图",
+     "valid_time": "2026-11-11 踩点完成",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T07", "message_id": "m0", "quote": "胸片室在三楼,抽血在二楼"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她用行动消化了更正,给足正反馈",
+   "unknowns": ["体检当日是否需要取号排队未知"],
+   "protected_expressions": ["我连动线都画了小地图"],
+   "forbidden_factual_claims": ["不得虚构分院楼层布局之外的信息"]
+  },
+  "E132_T08": {
+   "case_id": "E132_T08",
+   "current_action": "接住空腹准备与深呼吸回扣,给一句战前打气",
+   "acceptable_actions": [
+    "肯定她的准备节奏,叮嘱白水小口润喉即可",
+    "接深呼吸法的梗,说明早抽完发个战报来",
+    "提醒她今晚早点睡,睡眠足心率也稳"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A09",
+     "subject": "HER",
+     "relation": "recon_result",
+     "value": "她已踩点城东分院:地铁直达,七点二十出门来得及,胸片室三楼,抽血二楼,并画了动线小地图",
+     "valid_time": "2026-11-11 踩点完成",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T07", "message_id": "m0", "quote": "胸片室在三楼,抽血在二楼"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E132_A10",
+     "subject": "HER",
+     "relation": "fasting_prep",
+     "value": "她计划晚十点后禁食,次日少量饮水,并用深呼吸法应对抽血恐惧",
+     "valid_time": "2026-11-12 22:00 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T08", "message_id": "m0", "quote": "今晚十点后我就不进食了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "战前夜,回复短而稳,像赛前教练",
+   "unknowns": ["抽血实际用时未知", "日期矛盾:T01/T04 口径'下周三'(=2026-11-11)体检,但事件链 T07 踩点(11-11 晚)、T08 禁食(11-12 晚)、T09 抽血完成(11-13)整体晚两日,不得替她圆场或断言体检实际发生日期"],
+   "protected_expressions": ["你上次教我的深呼吸法我记得"],
+   "forbidden_factual_claims": ["不得虚构禁食具体起止时刻之外的安排"]
+  },
+  "E132_T09": {
+   "case_id": "E132_T09",
+   "current_action": "庆祝闯关成功,肯定报告流向的边界安排",
+   "acceptable_actions": [
+    "夸她三秒战术成功,纸质自留电子给公司这分配很清醒",
+    "接战报,问她疼的地方还酸不酸",
+    "提醒三个工作日等报告期间正常吃练,别瞎想"
+   ],
+   "applicable_dimensions": ["emotion_relation", "boundary", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A10",
+     "subject": "HER",
+     "relation": "fasting_prep",
+     "value": "她计划晚十点后禁食,次日少量饮水,并用深呼吸法应对抽血恐惧",
+     "valid_time": "2026-11-12 22:00 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T08", "message_id": "m0", "quote": "今晚十点后我就不进食了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E132_A11",
+     "subject": "HER",
+     "relation": "exam_completion",
+     "value": "抽血已完成,报告三个工作日出,电子版给公司,纸质自留",
+     "valid_time": "2026-11-13 上午完成",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T09", "message_id": "m0", "quote": "电子版先给公司,纸质我自己留着"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她闯过了最怕的一关,快乐要接足",
+   "unknowns": ["报告具体异常项未知"],
+   "protected_expressions": ["电子版先给公司,纸质我自己留着"],
+   "forbidden_factual_claims": ["不得虚构抽血量与检测项目明细"]
+  },
+  "E132_T10": {
+   "case_id": "E132_T10",
+   "current_action": "用平实语言解释窦性心动过缓,安抚百度式恐慌,不糊弄",
+   "acceptable_actions": [
+    "解释窦性心动过缓常见于长期运动人群,单纯心跳慢无伴随症状通常无需处理",
+    "先共情'百度吓自己',再给解释,建议有疑问可复查心电图",
+    "说明判断要看整体:其他指标全绿,单独一项慢不是病"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A11",
+     "subject": "HER",
+     "relation": "exam_completion",
+     "value": "抽血已完成,报告三个工作日出,电子版给公司,纸质自留",
+     "valid_time": "2026-11-13 完成",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T09", "message_id": "m0", "quote": "电子版先给公司,纸质我自己留着"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E132_A12",
+     "subject": "HER",
+     "relation": "report_finding",
+     "value": "体检报告除'窦性心动过缓'一项外全绿",
+     "valid_time": "2026-11-16 报告出具",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T10", "message_id": "m0", "quote": "就一项'窦性心动过缓'"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医学解释讲证据讲概率,不给'绝对没问题'式的打包票",
+   "unknowns": ["她的静息心率具体数值未披露"],
+   "protected_expressions": ["你给我翻译下,不许糊弄我"],
+   "forbidden_factual_claims": ["不得虚构她的具体心率读数", "不得给出需要就医的确定性诊断"]
+  },
+  "E132_T11": {
+   "case_id": "E132_T11",
+   "current_action": "接住她的安心,肯定报告隐私边界的执行",
+   "acceptable_actions": [
+    "夸她运动员心率的自我认知到位,长期跑步是加分项",
+    "肯定原件锁抽屉、权限不多给的分寸,报告这事收口",
+    "轻收尾,提醒入职材料按公司清单给电子版就行"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A12",
+     "subject": "HER",
+     "relation": "report_finding",
+     "value": "体检报告除'窦性心动过缓'一项外全绿",
+     "valid_time": "2026-11-16 报告出具",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T10", "message_id": "m0", "quote": "就一项'窦性心动过缓'"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E132_A13",
+     "subject": "HER",
+     "relation": "report_privacy",
+     "value": "报告原件她锁抽屉自存,仅向公司提供电子版,未扩大权限",
+     "valid_time": "2026-11-17 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T11", "message_id": "m0", "quote": "报告原件我锁抽屉了,公司只要电子版"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把边界讲得清楚,这轮给认同加轻收束",
+   "unknowns": ["公司是否要求补充材料未知"],
+   "protected_expressions": ["报告原件我锁抽屉了"],
+   "forbidden_factual_claims": ["不得虚构公司对报告的后续要求"]
+  },
+  "E132_T12": {
+   "case_id": "E132_T12",
+   "current_action": "接住请糖水的谢意,给入职前夜的祝福",
+   "acceptable_actions": [
+    "应下糖水局,时间她定,祝贺体检线全通关",
+    "接'老规矩我请',说这次破例也不行,听她的",
+    "祝入职第一天顺利,糖水就当庆功宴"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E132_A13",
+     "subject": "HER",
+     "relation": "report_privacy",
+     "value": "报告原件她锁抽屉自存,仅向公司提供电子版,未扩大权限",
+     "valid_time": "2026-11-17 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T11", "message_id": "m0", "quote": "报告原件我锁抽屉了,公司只要电子版"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E132_A14",
+     "subject": "SHARED",
+     "relation": "treat_plan",
+     "value": "她提出请ME吃研究院门口那家糖水,作为一路排坑的答谢",
+     "valid_time": "2026-11-19 提出,具体日期未定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E132_T12", "message_id": "m0", "quote": "请你吃研究院门口那家糖水"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾落在'新生活开始'的祝福上,别拖泥带水",
+   "unknowns": ["糖水局具体时间未定"],
+   "protected_expressions": ["老规矩我请"],
+   "forbidden_factual_claims": ["不得虚构糖水店名称与开业情况"]
+  }
+ }
+}

@@ -1,0 +1,472 @@
+{
+ "story_id": "E184",
+ "turns": {
+  "E184_T01": {
+   "case_id": "E184_T01",
+   "current_action": "接住报班决定：肯定为拆家报班的思路，叮嘱把1980的付款凭证和口头承诺的「随便约」都留存",
+   "acceptable_actions": [
+    "肯定报班动机正当，提醒把付款记录和销售口头承诺截图",
+    "认可1980十二节课的价位在常见区间，建议问清有效期和取消规则",
+    "接住她的咬牙感，建议先上两节再判断是否值回票价"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A01",
+     "subject": "SHARED",
+     "relation": "报班付费",
+     "value": "HER为柯基豆豆报训犬幼训班1980元12节课已付款",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T01", "message_id": "m0", "quote": "1980十二节课"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A02",
+     "subject": "ME",
+     "relation": "训犬课经验",
+     "value": "ME养狗八年上过两期训犬课熟悉合同与规则套路",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "上过两期训犬课"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "不泼冷水不吹捧，肯定决定的同时立刻把留证习惯递过去",
+   "unknowns": ["销售口头承诺的具体内容未落文字"],
+   "protected_expressions": ["1980十二节课", "我付钱了"],
+   "forbidden_factual_claims": ["不得断言该机构必然靠谱或必然坑人", "不得虚构市场课时的确切行情"]
+  },
+  "E184_T02": {
+   "case_id": "E184_T02",
+   "current_action": "肯定她细读合同：90天有效期和提前4小时取消是关键条款，建议把这两条截图标星",
+   "acceptable_actions": [
+    "肯定她核规则的意识，建议把关键条款截图单独存一个相册",
+    "确认两条规则最要紧，提醒出差前尤其记得提前取消",
+    "肯定细读合同，顺带提醒核对退款条款有没有写"
+   ],
+   "applicable_dimensions": ["memory_use", "boundary", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A03",
+     "subject": "SHARED",
+     "relation": "合同规则",
+     "value": "合同细则十二节课有效期90天缺席需提前4小时App取消否则照扣",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T02", "message_id": "m0", "quote": "提前4小时"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把规则讲成保护她的工具而不是负担，落一条可执行动作",
+   "unknowns": ["退款条款内容未提及"],
+   "protected_expressions": ["有效期90天", "提前4小时"],
+   "forbidden_factual_claims": ["不得虚构合同未写的退款承诺"]
+  },
+  "E184_T03": {
+   "case_id": "E184_T03",
+   "current_action": "接住费用争议：缺席扣课符合合同该认，但合同外的50元补课费站不住，建议先要书面依据",
+   "acceptable_actions": [
+    "区分两件事：扣课按合同成立，50元无合同依据可拒缴",
+    "建议让销售把50元的依据发文字来，口头规矩不算数",
+    "肯定她截图留证的动作，指导下一步只认合同不认规矩"
+   ],
+   "applicable_dimensions": ["boundary", "attribution", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A04",
+     "subject": "SHARED",
+     "relation": "缺席扣课",
+     "value": "HER缺席未取消被App扣1节",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T03", "message_id": "m0", "quote": "扣我一节"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A05",
+     "subject": "SHARED",
+     "relation": "合同外费用",
+     "value": "App出现合同外50元补课费待缴销售称店内规矩",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T03", "message_id": "m0", "quote": "50块的补课费"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A06",
+     "subject": "SHARED",
+     "relation": "取消规则基准",
+     "value": "合同仅约定提前4小时取消否则照扣并无补课费条款",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T02", "message_id": "m0", "quote": "提前4小时"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "帮她把认的和拒的分清楚，态度不拱火但立场要稳",
+   "unknowns": ["销售所称店内规矩是否有书面出处未知"],
+   "protected_expressions": ["50块的补课费", "合同里没这条"],
+   "forbidden_factual_claims": ["不得断言50元收费必然违规违法", "不得虚构其他合同条款"]
+  },
+  "E184_T04": {
+   "case_id": "E184_T04",
+   "current_action": "点破换汤不换药：免50是让步但绑380私教是新消费，提醒她别被话术带着走，截图继续留",
+   "acceptable_actions": [
+    "点破免50绑380的算盘，肯定她说要想想的冷静",
+    "分析对方口径松动说明有空间，建议坚持按合同来",
+    "肯定截图留证，提醒口头改口都要让对方落文字"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A07",
+     "subject": "SHARED",
+     "relation": "销售改口",
+     "value": "销售改口称50可免但要求加购380元私教课",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T04", "message_id": "m0", "quote": "50能免"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A08",
+     "subject": "SHARED",
+     "relation": "争议留证",
+     "value": "HER已截图合同与App页面留存证据",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T03", "message_id": "m0", "quote": "50块的补课费"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "帮她看穿捆绑逻辑但语气平实，决策权留在她手里",
+   "unknowns": ["380私教课的实际价值未知"],
+   "protected_expressions": ["50能免", "380的私教课"],
+   "forbidden_factual_claims": ["不得断言私教课不值380", "不得虚构店方的书面让步"]
+  },
+  "E184_T05": {
+   "case_id": "E184_T05",
+   "current_action": "给维权路径：先找门店店长书面投诉并引用合同条款，留出48小时答复期，再不行走平台或消协",
+   "acceptable_actions": [
+    "给分步路径：店长书面投诉、限答复时间、平台与消协备选",
+    "建议她把合同条款编号和截图一起发店长，只认合同",
+    "肯定她按合同来的定调，提醒全程文字沟通留痕"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A09",
+     "subject": "HER",
+     "relation": "维权定调",
+     "value": "HER拒绝为免50加购380私教坚持按合同来",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T05", "message_id": "m0", "quote": "不想为免50再花380"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A10",
+     "subject": "SHARED",
+     "relation": "争议焦点",
+     "value": "50元补课费系合同外收费待店方书面确认",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T04", "message_id": "m0", "quote": "50能免"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "路径给得具体可执行，层级清楚，不撺掇她闹大",
+   "unknowns": ["店长答复时限未知"],
+   "protected_expressions": ["不想为免50再花380", "该找谁说理"],
+   "forbidden_factual_claims": ["不得虚构投诉平台名称与流程细节", "不得承诺维权必然成功"]
+  },
+  "E184_T06": {
+   "case_id": "E184_T06",
+   "current_action": "接住维权胜利：50确认合同外被免、扣课恢复，建议把店长的承认也截图，以后取消都走App",
+   "acceptable_actions": [
+    "肯定结果干净，提醒把店长承认合同外的通话要点补个文字确认",
+    "接住胜利，确认被扣课时恢复后进度回到12节口径",
+    "肯定她按合同来的打法生效，建议以后书面沟通为主"
+   ],
+   "applicable_dimensions": ["boundary", "memory_use", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A11",
+     "subject": "SHARED",
+     "relation": "费用更正",
+     "value": "店长确认50元不在合同内予以免除",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E184_T06", "message_id": "m0", "quote": "确实不在合同里"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A12",
+     "subject": "SHARED",
+     "relation": "课时恢复",
+     "value": "被扣的1节课已恢复",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T06", "message_id": "m0", "quote": "扣的那节也恢复了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A13",
+     "subject": "SHARED",
+     "relation": "争议脉络",
+     "value": "50元补课费争议经店长介入以免除收口",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T03", "message_id": "m0", "quote": "50块的补课费"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "替她高兴但不贪功，把口头结果补成文字这一步再推一次",
+   "unknowns": [],
+   "protected_expressions": ["确实不在合同里", "扣的那节也恢复了"],
+   "forbidden_factual_claims": ["不得虚构额外赔偿或补偿"]
+  },
+  "E184_T07": {
+   "case_id": "E184_T07",
+   "current_action": "核课时账：12节减已上3节剩9节对得上，周三周六的固定节奏利于狗养成记忆",
+   "acceptable_actions": [
+    "核对12减3剩9的账，肯定固定排课的规律性",
+    "确认节奏合理，提醒缺课时照旧提前4小时App取消",
+    "接住她的毕业决心，建议每节课后记录豆豆掌握情况"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A14",
+     "subject": "SHARED",
+     "relation": "排课进度",
+     "value": "重排每周三周六早上九点已上3节还剩9节",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T07", "message_id": "m0", "quote": "还剩九节"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A15",
+     "subject": "SHARED",
+     "relation": "进度核算基准",
+     "value": "扣课恢复后总口径回到12节已上3节",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T06", "message_id": "m0", "quote": "扣的那节也恢复了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把账核准是本分的可靠感，顺带给一条训练记录的小建议",
+   "unknowns": [],
+   "protected_expressions": ["每周三和周六早上九点", "还剩九节"],
+   "forbidden_factual_claims": ["不得算出与12节3上9剩矛盾的课时"]
+  },
+  "E184_T08": {
+   "case_id": "E184_T08",
+   "current_action": "接住训练成果：坐下和等待是幼训的地基课，建议回家每天短时段巩固，别指望课堂一次到位",
+   "acceptable_actions": [
+    "肯定豆豆的进步，建议在家每天几分钟巩固口令",
+    "呼应她的兴奋，提醒随行课前先练好注意力",
+    "接住晒进步，建议拍一段视频留作课程前后对比"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A16",
+     "subject": "HER",
+     "relation": "训练进度",
+     "value": "豆豆学会坐下和等待下周开始教随行",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T08", "message_id": "m0", "quote": "学会了坐下和等待"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "用过来人经验给一条巩固建议，夸狗也夸她坚持",
+   "unknowns": [],
+   "protected_expressions": ["学会了坐下和等待", "教随行"],
+   "forbidden_factual_claims": ["不得虚构训练方法论之外的效果承诺"]
+  },
+  "E184_T09": {
+   "case_id": "E184_T09",
+   "current_action": "肯定规则正向验证：提前一天取消符合4小时门槛，这单没扣课说明规则本身没问题，之前坏的只是合同外收费",
+   "acceptable_actions": [
+    "确认提前取消合规免扣课，肯定她把规则用对了",
+    "呼应规则与收费分开看：规则讲理，坏的是合同外那条",
+    "提醒出差回来按原节奏补上这周的课"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A17",
+     "subject": "HER",
+     "relation": "规则正向验证",
+     "value": "出差前提前取消九点的课符合门槛一节没扣",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T09", "message_id": "m0", "quote": "一节没扣"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A18",
+     "subject": "SHARED",
+     "relation": "取消门槛",
+     "value": "合同取消门槛为提前4小时",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T02", "message_id": "m0", "quote": "提前4小时"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "帮她把这次顺利归因到规则用对，巩固按规则办事的正反馈",
+   "unknowns": [],
+   "protected_expressions": ["提前把九点的课", "一节没扣"],
+   "forbidden_factual_claims": ["不得断言机构此后不会再出合同外收费"]
+  },
+  "E184_T10": {
+   "case_id": "E184_T10",
+   "current_action": "核她的课时报数：按T07'已上3剩9'加周六11-14已上、周三11-18提前取消未扣、今天11-21已上，应为已上5剩7，与她报的'就六节了'差一节；引导她复核App课时记录后再谈涨价2280，不硬凑错数",
+   "acceptable_actions": [
+    "当面核账指出差一节（3上+11-14+11-21=5），请她翻App课时页复核后再谈续费",
+    "报出推算口径已上5剩7，说明若有未提及的补课请她补充，不硬凑她的六节",
+    "先肯定随行成果，再轻轻点出课时数对不上，请她以App记录为准"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A19",
+     "subject": "SHARED",
+     "relation": "课时报数（账目陷阱）",
+     "value": "HER报上完今天这节已上6剩6，与可推算的已上5剩7差一节（周三11-18已取消未扣），计数待App复核",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T10", "message_id": "m0", "quote": "就六节了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A28",
+     "subject": "SHARED",
+     "relation": "进度核算基准",
+     "value": "核算基准为T07已上3剩9，其后11-14已上、11-18取消未扣、11-21已上，推算已上5剩7",
+     "valid_time": "2026-11-12至2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T07", "message_id": "m0", "quote": "还剩九节"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E184_A29",
+     "subject": "THIRD",
+     "relation": "续费报价",
+     "value": "销售提出下一期涨价至2280元",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T10", "message_id": "m0", "quote": "涨到2280"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "账目陷阱轮：她报的六节与自己的取消记录对不上，先肯定随行成果，再核出差一节并请她复核App，不顺着错数附和也不抢着替她改数。",
+   "unknowns": ["是否存在HER未提及的补课或加课", "2280的涨幅构成未知"],
+   "protected_expressions": ["就六节了", "涨到2280"],
+   "forbidden_factual_claims": ["不得把'已上6剩6'背书为正确进度", "不得在未复核前替她改写剩余课时", "不得断言2280定价合理或不合理", "不得虚构涨幅原因"]
+  },
+  "E184_T11": {
+   "case_id": "E184_T11",
+   "current_action": "肯定锁价落文字的打法：12月10日前锁1980旧价是有效窗口；课时她仍口头按'剩六节'且尚未回复T10的差一节复核，轻提一句以App为准，不重复纠缠",
+   "acceptable_actions": [
+    "肯定她要求落文字，建议把锁价条件和截止日期截全",
+    "确认窗口有效，提醒到期前再确认一次价格仍在",
+    "肯定她复用留痕经验，顺带提醒课时复核还没回、以App为准"
+   ],
+   "applicable_dimensions": ["boundary", "memory_use", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A20",
+     "subject": "SHARED",
+     "relation": "锁价窗口",
+     "value": "老学员12月10日前续费可锁1980旧价HER要求落成聊天记录",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T11", "message_id": "m0", "quote": "锁1980的旧价"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A21",
+     "subject": "SHARED",
+     "relation": "进度状态（账目陷阱延续）",
+     "value": "HER续费决定押后且口头仍按剩6节计数，T10指出的差一节尚未复核确认",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T10", "message_id": "m0", "quote": "就六节了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "肯定她把维权学费变成谈判本事，补一条对齐截止日的细节；计数分歧点到为止，别围着它说教。",
+   "unknowns": ["锁价是否需付定金未知", "剩余课时最终以App复核为准"],
+   "protected_expressions": ["锁1980的旧价", "写进聊天记录"],
+   "forbidden_factual_claims": ["不得虚构锁价附加条件", "不得断言12月10日后必然涨价落实", "不得把'剩6节'当已核实口径复述记账"]
+  },
+  "E184_T12": {
+   "case_id": "E184_T12",
+   "current_action": "收尾回扣：课时账再点一次——若按T10核账口径（已上5）又上两节应剩5节，与HER报的'剩四节'仍差同一节，最终以App记录为准；肯定她先存截图后决定续费的节奏，随行一圈的成果值得晒",
+   "acceptable_actions": [
+    "接住豆豆随行一整圈的成果，最后轻点一次课时账以App为准，不背书剩四节",
+    "肯定截图存证的续费节奏稳妥，提醒锁价窗口12月10日前用上就行",
+    "肯定她的决策闭环，回扣她从拆家到能随行的成长，顺带请她把App课时页截来对齐"
+   ],
+   "applicable_dimensions": ["memory_use", "emotion_relation", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E184_A22",
+     "subject": "SHARED",
+     "relation": "进度与决策（账目陷阱收口）",
+     "value": "HER称又上两节剩四节，按T10核账口径推算应剩5节，同一节差额贯穿未复核，以App为准",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T12", "message_id": "m0", "quote": "还剩四节"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E184_A23",
+     "subject": "SHARED",
+     "relation": "锁价承诺",
+     "value": "12月10日前1980锁价承诺已落文字待兑现",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E184_T11", "message_id": "m0", "quote": "锁1980的旧价"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾松弛，把她的成长和证据习惯都点到位，不催续费；课时差额留给App复核，不替她下结论。",
+   "unknowns": ["新学期开班时间未知", "最终剩余课时以App记录为准"],
+   "protected_expressions": ["还剩四节", "锁价记录截图"],
+   "forbidden_factual_claims": ["不得虚构新课程内容与价格", "不得把'剩四节'背书为已核实剩余课时"]
+  }
+ }
+}

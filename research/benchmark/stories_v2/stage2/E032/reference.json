@@ -1,0 +1,381 @@
+{
+ "story_id": "E032",
+ "turns": {
+  "E032_T01": {
+   "current_action": "确认明早老位置开车——守时是拼车搭子的第一美德",
+   "acceptable_actions": [
+    "确认开车+提醒她带耳塞",
+    "确认+说七点二十五到",
+    "确认+问她带早饭没"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E032_A01",
+     "subject": "双方",
+     "relation": "惯例",
+     "value": "每周五七点半高速口老位置拼车",
+     "valid_time": "2026-12-18 07:30",
+     "status": "seed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E032_T01",
+      "message_id": "m0",
+      "quote": "明天早上七点半高速口 老位置"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "三个月的固定默契；确认要干脆。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我占后排睡觉 你开车?"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T01"
+  },
+  "E032_T02": {
+   "current_action": "她补觉一周的夸张——接住不较真",
+   "acceptable_actions": [
+    "接梗+说后排随便睡",
+    "接梗+给她备毯子",
+    "接梗+说驾驶稳不吵"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她累是真累；接梗之外用行动补（毯子/平稳驾驶）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我补的是一周"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T02"
+  },
+  "E032_T03": {
+   "current_action": "她留了橘子给我——领情+回礼启动，别客套化",
+   "acceptable_actions": [
+    "领情+提出回带柿饼",
+    "领情+说橘子甜",
+    "领情+说下次带家乡货"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E032_A02",
+     "subject": "她",
+     "relation": "馈赠",
+     "value": "橘子留在我座位上",
+     "valid_time": "2026-12-18 19:40",
+     "status": "occurred",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E032_T03",
+      "message_id": "m0",
+      "quote": "都给你放座位上了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "零食分人是她的语言；用家乡货回礼才算接住。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别想我带的橘子了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T03"
+  },
+  "E032_T04": {
+   "current_action": "'柿饼是冬天唯一的光'——接住夸张+确认回礼",
+   "acceptable_actions": [
+    "确认回礼+接梗",
+    "确认+问她要几包",
+    "确认+说比橘子贵重"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "回礼约定成立；下次拼车必须兑现。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你家柿饼是这个冬天唯一的光"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T04"
+  },
+  "E032_T05": {
+   "current_action": "她下周缺席（值大夜）——接受+叮嘱，别抱怨空跑",
+   "acceptable_actions": [
+    "接受+让她值班好好休息",
+    "接受+问要带宵夜吗",
+    "接受+说下周照旧"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E032_A03",
+     "subject": "她",
+     "relation": "缺席",
+     "value": "下周五值大夜，拼不了车",
+     "valid_time": "2026-12-25",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E032_T05",
+      "message_id": "m0",
+      "quote": "下周五我值大夜 拼不了车"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "三班倒的职业现实；空跑一周是应有的体谅。",
+   "unknowns": [],
+   "protected_expressions": [
+    "下周五我值大夜 拼不了车"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T05"
+  },
+  "E032_T06": {
+   "current_action": "值班泡面的米其林心得——接梗并心疼一句",
+   "acceptable_actions": [
+    "接梗+心疼一句",
+    "接梗+说给她带宵夜",
+    "接梗+问她值到几点"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她把辛苦说成段子；笑完要接住辛苦。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我把泡面吃出了米其林心得"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T06"
+  },
+  "E032_T07": {
+   "current_action": "她要柿饼两包给奶奶过生日——给家人带=把我纳入她的生活，加倍给",
+   "acceptable_actions": [
+    "答应+加倍给",
+    "答应+祝奶奶生日",
+    "答应+说再添点别的"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E032_A04",
+     "subject": "她奶奶",
+     "relation": "事件",
+     "value": "周末生日，她要带柿饼两包",
+     "valid_time": "2026-12-23 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E032_T07",
+      "message_id": "m0",
+      "quote": "周末我奶奶生日"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给奶奶带的柿饼——这是家人级通道，郑重对待。",
+   "unknowns": [
+    "奶奶多大年纪"
+   ],
+   "protected_expressions": [
+    "给我奶奶也尝尝"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T07"
+  },
+  "E032_T08": {
+   "current_action": "'把我当物流节点'——接物流梗，祝寿不缺席",
+   "acceptable_actions": [
+    "接梗+补祝寿",
+    "接梗+说物流准时达",
+    "接梗+说奶奶面前邀功"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她嘴上嫌弃行动诚实；配合演完。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你这是把我当物流节点"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T08"
+  },
+  "E032_T09": {
+   "current_action": "恢复拼车+老位置回扣（T01）——确认+柿饼就位",
+   "acceptable_actions": [
+    "确认+说柿饼已放",
+    "确认+说后排已铺毯",
+    "确认+准时达"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "缺席后恢复的第一趟要更有准备。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你柿饼放老位置"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T09"
+  },
+  "E032_T10": {
+   "current_action": "'连橘子皮都舍不得扔'——接住她的调侃，这句话其实是夸",
+   "acceptable_actions": [
+    "接夸+自嘲",
+    "接夸+说泡水实用",
+    "接夸+反问她尝没尝"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "勤俭持家是生活向的好话；笑着认。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你怎么连橘子皮都舍不得扔"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T10"
+  },
+  "E032_T11": {
+   "current_action": "重大消息：三月调回市里，拼车终止——先接住信息，不慌不追问待遇",
+   "acceptable_actions": [
+    "接住消息+问调回是好事吧",
+    "接住+说拼车结束但人没结束",
+    "接住+问几月定下来"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "boundary",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E032_A05",
+     "subject": "她",
+     "relation": "变更",
+     "value": "三月可能调回市里医院，不再拼车",
+     "valid_time": "2026-12-26 19:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E032_T11",
+      "message_id": "m0",
+      "quote": "我可能三月调回市里医院 不用拼车了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "拼车接口要断——她先告诉我=想保住后面的关系。",
+   "unknowns": [
+    "调动是否确定"
+   ],
+   "protected_expressions": [
+    "我可能三月调回市里医院"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T11"
+  },
+  "E032_T12": {
+   "current_action": "'私人运输接不接'——她主动提出关系延续，爽快接+给落地形式",
+   "acceptable_actions": [
+    "接+说专车随时发",
+    "接+约市里见面送柿饼",
+    "接+说物流改专线"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "initiative",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她把台阶铺成了'傻瓜'——接住并且别再装傻。",
+   "unknowns": [
+    "调动正式通知时间"
+   ],
+   "protected_expressions": [
+    "所以问你啊 傻瓜 私人运输接不接"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E032_T12"
+  }
+ }
+}

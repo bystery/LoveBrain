@@ -1,0 +1,50 @@
+{
+ "episode_id": "S104",
+ "persona": {"name": "叶子", "age": "26", "city": "南京", "relationship": "小区跑友，晚上常在江边步道遇到，点头之交升温中"},
+ "initial_kb": {"me": "我配速5分半，跑量稳定；她在备考CPA，晚上跑步是解压，配速6分开外"},
+ "turns": [
+  {"case_id": "S104_T01", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "今晚又遇到你了 你天天跑啊 不会累吗", "ts": "2026-11-05 21:15"},
+     {"role": "ME", "text": "一周四趟吧，习惯了不跑反而难受", "ts": "2026-11-05 21:18"},
+     {"role": "HER", "text": "我一週兩次都嫌多 但不跑我CPA题做得想撕书", "ts": "2026-11-05 21:19"}],
+    "clock": "2026-11-05 21:20", "note": "", "may_decline": false}, "gold": {}},
+  {"case_id": "S104_T02", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "说真的 晚上一个人沿江跑 有点黑 那段没路灯的我都是冲刺过去", "ts": "2026-11-05 21:30"},
+     {"role": "HER", "text": "你们跑团有人夜跑那条线吗", "ts": "2026-11-05 21:31"}],
+    "clock": "2026-11-05 21:32", "note": "我们跑团周三周五有江边夜跑。她这问题是安全需求，不是想刷配速。", "may_decline": false}, "gold": {}},
+  {"case_id": "S104_T03", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "那我周三试试 你们团速会不会把我甩出江里哈哈哈", "ts": "2026-11-06 10:00"},
+     {"role": "HER", "text": "而且我怕跟不上会不好意思 拖后腿那种", "ts": "2026-11-06 10:01"}],
+    "clock": "2026-11-06 10:02", "note": "", "may_decline": false,
+    "intent": {"enabled": true, "text": "打消她的配速顾虑，给真实的信息（团里也有慢组），不哄不吹。", "status": "ACTIVE"}}, "gold": {}},
+  {"case_id": "S104_T04", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "昨晚跟你们跑了一趟 慢组姐姐人好好 一直陪我说CPA的事", "ts": "2026-11-13 22:00"},
+     {"role": "HER", "text": "但是回来我膝盖有点不舒服 之前没有过", "ts": "2026-11-13 22:01"}],
+    "clock": "2026-11-13 22:02", "note": "我不是医生，但跑步膝盖问题常见原因我能说几个；她可能只是紧张搜索了半天。", "may_decline": false}, "gold": {}},
+  {"case_id": "S104_T05", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "你说得对 我昨晚慌得两点没睡 今天已经不疼了 可能就是鞋 哈哈尴尬", "ts": "2026-11-14 12:30"},
+     {"role": "HER", "text": "对了你们下周是不是有个十公里的活动 我在群里看到海报", "ts": "2026-11-14 12:32"}],
+    "clock": "2026-11-14 12:33", "note": "", "may_decline": false}, "gold": {}},
+  {"case_id": "S104_T06", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "我查了下报名费要一百 而且我最多跑过五公里", "ts": "2026-11-14 19:00"},
+     {"role": "HER", "text": "你说我要不要报 纠结一晚上了 万一关门时间内跑不完多丢人", "ts": "2026-11-14 19:01"}],
+    "clock": "2026-11-14 19:02", "note": "她五公里底子在，关门时间一般很宽。但这是她的决定，我提供信息不替她决定。", "may_decline": false,
+    "intent": {"enabled": true, "text": "给她判断依据（关门时间/她的实际水平），选择权留给她，不怂恿也不劝退。", "status": "ACTIVE"}}, "gold": {}},
+  {"case_id": "S104_T07", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "报了！跑不完就当江边散步 反正我尽力了就不丢人对吧", "ts": "2026-11-14 20:30"},
+     {"role": "HER", "text": "那天你会在终点吗 我可能需要有人骂我两句才跑得动哈哈哈", "ts": "2026-11-14 20:31"}],
+    "clock": "2026-11-14 20:32", "note": "我报名了十公里竞速组，比她先出发，理论上完赛能赶上给她加油。", "may_decline": false}, "gold": {}},
+  {"case_id": "S104_T08", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "1小时02分！没关门！腿已废人是飘的哈哈哈", "ts": "2026-11-23 10:20"},
+     {"role": "HER", "text": "刚才终点那个举着水等我的是你吧 我眯得看不清 现在缓过来了想请你喝奶茶 晚上江边老地方", "ts": "2026-11-23 10:22"}],
+    "clock": "2026-11-23 10:23", "note": "终点举水的确实是我。晚上我有空。", "may_decline": false}, "gold": {}}
+ ]
+}

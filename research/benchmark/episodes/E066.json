@@ -1,0 +1,431 @@
+{
+ "episode_id": "E066",
+ "persona": {
+  "me": "31岁，程序员，川西自驾跑过两趟，冰雪路面经验有限但不莽。",
+  "her": "28岁，健身教练，驾龄四年主要是市区；不服输，讨厌被当新手。"
+ },
+ "initial_kb": {
+  "me": "开的是SUV全时四驱；攻略文档存在我备忘录。",
+  "her": "她的车是两驱轿车，今年刚过保；她连补胎工具都没备过。",
+  "warmth": "徒步群里认识的，一起走过两日线；她说来就来的性格。",
+  "style": "她反感说教式提醒，喜欢'给选项不给答案'。",
+  "stage": "驴友转熟，第一次长途同行。",
+  "lessons": "装备和路线的事她听事实不听语气；安全红线直接说，别的给选项。"
+ },
+ "turns": [
+  {
+   "case_id": "E066_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "定了 12 月 20 号出发走 318 我第一次开山路 你觉得我行吗",
+      "ts": "2026-12-05 20:58"
+     }
+    ],
+    "clock": "2026-12-05 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "冬天垭口常查防滑链 没链可能劝返 这条你先记上",
+      "ts": "2026-12-05 21:16"
+     },
+     {
+      "role": "HER",
+      "text": "防滑链 是那种金属的？我还没买",
+      "ts": "2026-12-05 21:18"
+     }
+    ],
+    "clock": "2026-12-05 21:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我那台是两驱轿车 会不会拖你后腿 你那台不是全时四驱吗",
+      "ts": "2026-12-05 21:33"
+     }
+    ],
+    "clock": "2026-12-05 21:35",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "有 我把我的攻略整理好发你 按路线/加油/住宿/检查点四块 今天给你",
+      "ts": "2026-12-06 19:54"
+     },
+     {
+      "role": "HER",
+      "text": "太好了 网上那份我看着乱",
+      "ts": "2026-12-06 19:58"
+     }
+    ],
+    "clock": "2026-12-06 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "文档看了 加油那段写得细 垭口那天联系不上怎么办",
+      "ts": "2026-12-07 20:56"
+     }
+    ],
+    "clock": "2026-12-07 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "别自己吓自己 高反多数人轻微 红景天提前一周吃 车上备两瓶氧 真不适就下撤 用药遵医嘱",
+      "ts": "2026-12-08 20:52"
+     },
+     {
+      "role": "HER",
+      "text": "我看有人写进医院 才问的 你这么说我踏实点",
+      "ts": "2026-12-08 20:56"
+     }
+    ],
+    "clock": "2026-12-08 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "改期了 预报 19 到 21 号暴雪封路 我把票退了 改到 12 月 27 号 跟你时间正好",
+      "ts": "2026-12-14 19:56"
+     }
+    ],
+    "clock": "2026-12-14 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "防滑链我买了 按销量第一买的 应该没问题吧",
+      "ts": "2026-12-15 20:58"
+     }
+    ],
+    "clock": "2026-12-15 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "胎侧 205/55 R16 我拍照发你了 链子是 215 的套装 差一号 有事吗",
+      "ts": "2026-12-16 20:56"
+     }
+    ],
+    "clock": "2026-12-16 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "卖家说能换 但要等三天 我 27 号才出发 来得及",
+      "ts": "2026-12-17 20:56"
+     }
+    ],
+    "clock": "2026-12-17 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "链子到了 试装了一次 手忙脚乱二十分钟 跟你说 换成了 205/55 R16 那款 刚好卡我车",
+      "ts": "2026-12-18 20:28"
+     }
+    ],
+    "clock": "2026-12-18 20:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "路线我改了 主线改走 317 318 这周结冰风险高 317 路况稳些 宿点也顺",
+      "ts": "2026-12-19 20:56"
+     },
+     {
+      "role": "HER",
+      "text": "听你的 317 我没走过 你文档里更新没",
+      "ts": "2026-12-19 20:58"
+     }
+    ],
+    "clock": "2026-12-19 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T13",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "见站就加 半箱是红线 县城间油站能隔 200 公里 别赌下一个站",
+      "ts": "2026-12-19 21:14"
+     },
+     {
+      "role": "HER",
+      "text": "行 我看317站点少 正想问你",
+      "ts": "2026-12-19 21:18"
+     }
+    ],
+    "clock": "2026-12-19 21:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T14",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "26 号晚你楼下集合 分装装备 行李我怎么带 拖箱还是背包",
+      "ts": "2026-12-24 19:56"
+     }
+    ],
+    "clock": "2026-12-24 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T15",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "装备分好了 链子氧气红景天都在后备箱左侧 明早六点半出发 你车加满了吗",
+      "ts": "2026-12-26 20:26"
+     },
+     {
+      "role": "HER",
+      "text": "加满了 半箱就加我记着 早点睡 明早见",
+      "ts": "2026-12-26 20:28"
+     }
+    ],
+    "clock": "2026-12-26 20:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T16",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "顺利出发 路上没冰 你把音乐接上",
+      "ts": "2026-12-27 07:56"
+     }
+    ],
+    "clock": "2026-12-27 08:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T17",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天过了个垭口 有点滑但我稳住了 冰雪路开下来手感稳了 跟你想的一样吗",
+      "ts": "2026-12-27 19:56"
+     }
+    ],
+    "clock": "2026-12-27 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T18",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天县城加油见了就加 果然隔得远 你那文档救了",
+      "ts": "2026-12-29 19:56"
+     }
+    ],
+    "clock": "2026-12-29 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T19",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "跨年夜在县城 烟花比城里亮 你说明年这时候我们在哪",
+      "ts": "2026-12-31 19:56"
+     }
+    ],
+    "clock": "2026-12-31 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T20",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "返程了 317 原路回 明天应该能到家 你把我那链子借我 我放你那也是放",
+      "ts": "2027-01-01 17:56"
+     }
+    ],
+    "clock": "2027-01-01 18:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T21",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "安全到家 无剐蹭 第一次长途给自己打 85 分",
+      "ts": "2027-01-02 19:56"
+     }
+    ],
+    "clock": "2027-01-02 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T22",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我把攻略存成我自己的模板 加了三条我踩过的坑 下次我带你跑",
+      "ts": "2027-01-03 19:56"
+     }
+    ],
+    "clock": "2027-01-03 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T23",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "休整一天 腿还是酸的 文档里防困那三条我用上了 两小时一停真有用",
+      "ts": "2027-01-04 19:58"
+     }
+    ],
+    "clock": "2027-01-04 20:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E066_T24",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "链子挂闲鱼转了 有人问尺寸怎么选 我把你那句'看胎侧数字'发给他了",
+      "ts": "2027-01-06 19:58"
+     }
+    ],
+    "clock": "2027-01-06 21:00",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

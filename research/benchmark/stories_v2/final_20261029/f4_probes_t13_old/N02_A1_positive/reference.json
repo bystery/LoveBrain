@@ -1,0 +1,31 @@
+{
+ "story_id": "N02",
+ "turns": {
+  "N02_A1_positive": {
+   "case_id": "N02_A1_positive",
+   "current_action": "她分享年糕的好消息、情绪积极。应接住并轻回，可问一句照片细节。",
+   "acceptable_actions": [
+    "接住开心，问一句年糕近况",
+    "调侃一句，表达替她高兴"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "积极分享：接情绪、给轻钩子。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": {
+    "text": "她分享年糕的好消息、情绪积极。应接住并轻回，可问一句照片细节。",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

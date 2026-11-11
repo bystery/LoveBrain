@@ -1,0 +1,560 @@
+{
+ "story_id": "E107",
+ "turns": {
+  "E107_T01": {
+   "case_id": "E107_T01",
+   "current_action": "接住换新计划和分摊初版：机型价位、弟弟出1000、她兜余款；从辅材和安装的门道给一两句实在提醒。",
+   "acceptable_actions": [
+    "认下2680这个价位靠谱，提醒她问清安装辅材怎么收",
+    "先问旧机排烟管年限，提前打辅材的预算余量",
+    "肯定她的分摊初版，让她下单前把型号发给师傅核一遍"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A01",
+     "subject": "SHARED",
+     "relation": "replacement_plan",
+     "value": "她选定2680元的燃气热水器并计划本周下单",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T01", "message_id": "m0", "quote": "我看中一款2680的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A02",
+     "subject": "THIRD",
+     "relation": "brother_contribution",
+     "value": "弟弟大壮答应分担1000元",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T01", "message_id": "m0", "quote": "大壮答应出1000"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A03",
+     "subject": "HER",
+     "relation": "remainder_bearer",
+     "value": "机器余款由她承担",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T01", "message_id": "m0", "quote": "剩下的我来"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：参谋就给参谋的话，别一上来背书，把辅材这个口子先点开。",
+   "unknowns": ["安装辅材报价未知", "爸妈是否知情未知"],
+   "protected_expressions": ["洗澡跟抽奖似的"],
+   "forbidden_factual_claims": ["不得虚构品牌型号", "不得断言2680是市场价"]
+  },
+  "E107_T02": {
+   "case_id": "E107_T02",
+   "current_action": "接住降档主张引发的火气：弟弟拿同事家杂牌1400作对比；先接火气，再把'省钱'和'安全'两个账本分开。",
+   "acceptable_actions": [
+    "帮她把账拆开：机器钱和天天用的安全是两本账",
+    "反问一句：省下的一千块够不够一次事故的零头",
+    "劝她别急着回怼，先问弟弟同事那台用了几年"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A04",
+     "subject": "THIRD",
+     "relation": "cheap_counter",
+     "value": "大壮以同事家杂牌1400为据主张压低预算",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T02", "message_id": "m0", "quote": "他同事家装的杂牌1400也挺好"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A05",
+     "subject": "HER",
+     "relation": "price_dispute",
+     "value": "姐弟在买贵还是省钱上起冲突，她动了火气",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T02", "message_id": "m0", "quote": "我这火一下就上来了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不替她骂弟弟，把火引到账上而不是人身上。",
+   "unknowns": ["杂牌机的实际使用年限未知"],
+   "protected_expressions": ["省下的都是钱"],
+   "forbidden_factual_claims": ["不得断言杂牌必然不安全", "不得虚构1400机器的细节"]
+  },
+  "E107_T03": {
+   "case_id": "E107_T03",
+   "current_action": "接住谈判破裂：她把安全件的话说到死线上，弟弟甩'乱花钱'后拒回微信；肯定她的口径站得住，提醒别恋战。",
+   "acceptable_actions": [
+    "肯定'安全件省不得'站得住，劝她别追着微信等回",
+    "提醒她谈判别争输赢，先给弟弟台阶再谈钱",
+    "建议她把要买的型号和理由写清楚甩群里，让爸妈也看见"
+   ],
+   "applicable_dimensions": ["boundary", "attribution", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A06",
+     "subject": "HER",
+     "relation": "safety_argument",
+     "value": "她主张安全件不能省，这是爸妈天天要用的东西",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T03", "message_id": "m0", "quote": "安全件省不得"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A07",
+     "subject": "THIRD",
+     "relation": "accuse_waste",
+     "value": "大壮回敬'你就是乱花钱'后拒回微信",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T03", "message_id": "m0", "quote": "你就是乱花钱"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A08",
+     "subject": "SHARED",
+     "relation": "safety_floor",
+     "value": "买热水器安全优先于省钱的口径与ME一贯原则相合",
+     "valid_time": "2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "安全件不省"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：用自己'装过修过'的底气回她，口径一致要说破。",
+   "unknowns": ["弟弟是否会回心转意未知"],
+   "protected_expressions": ["然后就不回微信了"],
+   "forbidden_factual_claims": ["不得断言弟弟不懂事", "不得替她拟怼弟弟的话"]
+  },
+  "E107_T04": {
+   "case_id": "E107_T04",
+   "current_action": "接住先斩后奏：她垫了全款约了周六安装，来求ME验这步棋；直说棋走得稳不稳——口径没谈拢先垫钱，风险在弟弟那边不是她。",
+   "acceptable_actions": [
+    "判她这步棋能走：安全件的事不等人，先装后清账",
+    "提醒她垫付留好单据，后面摊账全靠它",
+    "先接住'你直说'，再告诉她弟弟那边由单子说话"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A09",
+     "subject": "HER",
+     "relation": "advance_payment",
+     "value": "她垫付全款并预约周六上午安装",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T04", "message_id": "m0", "quote": "刚把全款垫了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A10",
+     "subject": "HER",
+     "relation": "overstep_check",
+     "value": "她就先斩后奏是否不稳当征询ME",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T04", "message_id": "m0", "quote": "你说我先斩后奏这步棋走得不稳当"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A11",
+     "subject": "SHARED",
+     "relation": "dispute_unresolved",
+     "value": "姐弟费用口径冲突在她垫付时尚未化解",
+     "valid_time": "2026-11-03/2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T03", "message_id": "m0", "quote": "然后就不回微信了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她要的是一句'直说'，那就给一句直的，风险账也一并摆明。",
+   "unknowns": ["弟弟事后是否认账未知", "周六安装能否如期未知"],
+   "protected_expressions": ["装都约了，你直说"],
+   "forbidden_factual_claims": ["不得断言弟弟必然事后认账", "不得虚构安装预约平台细节"]
+  },
+  "E107_T05": {
+   "case_id": "E107_T05",
+   "current_action": "接住安装现场追加：排烟管加180、拆旧80，总价破预算；先讲这钱该花，再让她把追加留痕，给后面摊账埋好线。",
+   "acceptable_actions": [
+    "认下这笔追加该花，排烟管是安全件不能省",
+    "提醒她把师傅的单子拍照留底，后面摊账要用",
+    "安慰她机器装顺了就是好消息，钱的事后面一起算"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A12",
+     "subject": "SHARED",
+     "relation": "extra_charges",
+     "value": "安装加换排烟管180与拆旧80，共多掏260",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T05", "message_id": "m0", "quote": "总共多掏260"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A13",
+     "subject": "SHARED",
+     "relation": "aux_item_detail",
+     "value": "追加项为旧排烟管更换与旧机拆除",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T05", "message_id": "m0", "quote": "旧排烟管得换，加180，拆旧机80"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A14",
+     "subject": "SHARED",
+     "relation": "budget_breach",
+     "value": "原2680预算口径因辅材追加被突破",
+     "valid_time": "2026-11-02/2026-11-07",
+     "status": "revised",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E107_T01", "message_id": "m0", "quote": "我看中一款2680的"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'咬牙付了'要接住肉疼，但把这笔钱定性成必要不是超支。",
+   "unknowns": ["师傅是否留了正式单据未知"],
+   "protected_expressions": ["机器装上比我想的顺利"],
+   "forbidden_factual_claims": ["不得虚构辅材市场价", "不得断言总价到此为止"]
+  },
+  "E107_T06": {
+   "case_id": "E107_T06",
+   "current_action": "接住僵局升级：弟弟咬死只出1000、多余让她自己想辙，她委屈到顶；先站她，再点破僵局的钥匙在账目不在吵赢。",
+   "acceptable_actions": [
+    "站她：垫付没错，错在口径没白纸黑字",
+    "给她钥匙：把单子摊开，钱自己会说话",
+    "提醒她别在'谁对谁错'上耗，转到'怎么分'上"
+   ],
+   "applicable_dimensions": ["emotion_relation", "attribution", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A15",
+     "subject": "THIRD",
+     "relation": "brother_hardline",
+     "value": "大壮咬定只出1000，多余部分让她自己想办法",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T06", "message_id": "m0", "quote": "我就出1000，多出来的你们自己想辙"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A16",
+     "subject": "HER",
+     "relation": "grievance",
+     "value": "她自认垫付没错却落埋怨，向ME诉不平",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T06", "message_id": "m0", "quote": "怎么倒成我的不是了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A17",
+     "subject": "SHARED",
+     "relation": "paid_by_her",
+     "value": "全款2940均为她先行垫付",
+     "valid_time": "2026-11-04/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T04", "message_id": "m0", "quote": "刚把全款垫了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：委屈先接满，再把方向从争对错扭到摊账，不训人。",
+   "unknowns": ["弟弟是否看过安装单未知"],
+   "protected_expressions": ["更不乐意了"],
+   "forbidden_factual_claims": ["不得替她答应替弟弟出钱", "不得断言弟弟事后必然补钱"]
+  },
+  "E107_T07": {
+   "case_id": "E107_T07",
+   "current_action": "接住摊单子的破局动作：单子拍照进群、逐笔写清、配一句分摊口径；肯定这个打法——透明账目替她吵，比吵一百句管用。",
+   "acceptable_actions": [
+    "夸这步棋高级：账摆开，谁都赖不掉",
+    "提醒她群里安静是正常的，账在人心在，等反应",
+    "建议她别补刀解释，单子已经把话说完了"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A18",
+     "subject": "SHARED",
+     "relation": "ledger_disclosure",
+     "value": "她把费用明细单拍照发家庭群逐笔写清",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T07", "message_id": "m0", "quote": "把师傅的单子拍照甩家庭群里"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A19",
+     "subject": "SHARED",
+     "relation": "split_proposal",
+     "value": "她提出弟弟1000、爸妈随意、余下她出的分摊口径",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T07", "message_id": "m0", "quote": "弟弟1000，爸妈随意，剩我的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A20",
+     "subject": "SHARED",
+     "relation": "deadlock_response",
+     "value": "以摊单子回应弟弟咬死1000的僵局",
+     "valid_time": "2026-11-08/2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T06", "message_id": "m0", "quote": "我就出1000，多出来的你们自己想辙"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'安静得可怕'接成账目生效的静默期，不渲染成冷场危机。",
+   "unknowns": ["群里何时有回应未知"],
+   "protected_expressions": ["群里安静得可怕"],
+   "forbidden_factual_claims": ["不得虚构群成员构成", "不得替爸妈预设立场"]
+  },
+  "E107_T08": {
+   "case_id": "E107_T08",
+   "current_action": "接住爸妈入局：妈出500并定调'买安全的没错'，爸跟玫瑰，弟弟沉默但凌晨看过群；把'已读不回'解读成在消化，不催。",
+   "acceptable_actions": [
+    "恭喜摊单子见效，爸妈的500是态度也是背书",
+    "点她：弟弟凌晨看群说明在算账，别去催",
+    "把'买安全的没错'记下来，这是这场争论的官方结论"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A21",
+     "subject": "THIRD",
+     "relation": "parents_contribution",
+     "value": "爸妈主动提出出500并肯定买安全的没错",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T08", "message_id": "m0", "quote": "我们老两口出500，买安全的没错"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A22",
+     "subject": "THIRD",
+     "relation": "brother_silent",
+     "value": "大壮未表态但凌晨两点看过群消息",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T08", "message_id": "m0", "quote": "凌晨两点看过群"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把玫瑰和'买安全的没错'说成这场仗的分水岭，语气松下来。",
+   "unknowns": ["弟弟最终出多少未知"],
+   "protected_expressions": ["我爸跟了朵玫瑰"],
+   "forbidden_factual_claims": ["不得断言弟弟必然转账", "不得虚构爸妈的更多发言"]
+  },
+  "E107_T09": {
+   "case_id": "E107_T09",
+   "current_action": "接住弟弟转账1500的意外：多出的500挂着他前年欠爸妈的按摩椅旧账；帮她把这步棋读懂——嘴上不认输的人用转账认输，账目性质帮她分清。",
+   "acceptable_actions": [
+    "把账读给她：1500里1000是热水器份子，500是替爸妈清旧账",
+    "点她：他没说对不起，转账就是他的对不起",
+    "提醒她收下就别追问，让他把台阶自己走完"
+   ],
+   "applicable_dimensions": ["attribution", "emotion_relation", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A23",
+     "subject": "THIRD",
+     "relation": "transfer_1500",
+     "value": "大壮私聊转账1500并附言补上旧账",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T09", "message_id": "m0", "quote": "大壮私聊转我1500"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A24",
+     "subject": "THIRD",
+     "relation": "old_debt_offset",
+     "value": "多转的500用于清前年欠爸妈的按摩椅钱",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T09", "message_id": "m0", "quote": "补上我前年欠爸妈按摩椅那份，一次清"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A25",
+     "subject": "HER",
+     "relation": "ambiguous_read",
+     "value": "她拿不准这是服软还是赖账，向ME求解",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T09", "message_id": "m0", "quote": "他这算是服软还是连旧账一起赖"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：用'就这么地'式的干脆话把账定性，不替她感动也不挑刺。",
+   "unknowns": ["按摩椅旧账真实性未经核实"],
+   "protected_expressions": ["我愣是没看懂"],
+   "forbidden_factual_claims": ["不得断言弟弟已彻底认错", "不得虚构转账平台细节"]
+  },
+  "E107_T10": {
+   "case_id": "E107_T10",
+   "current_action": "共享账目闭环：总价2940、弟弟1500、爸妈500、她940；把这笔账郑重复述一遍，肯定她从吵架到理账的完整收法。",
+   "acceptable_actions": [
+    "把四笔数复述一遍，认下这个章程",
+    "夸她截图存单的习惯，这就是下一次的底气",
+    "点一句：她出的940里含着260辅材，账里没冤大头"
+   ],
+   "applicable_dimensions": ["memory_use", "goal", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A26",
+     "subject": "SHARED",
+     "relation": "final_ledger",
+     "value": "账目理平：总价2940，大壮1500、爸妈500、她出940",
+     "valid_time": "2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T10", "message_id": "m0", "quote": "总价2940，大壮1500，爸妈500，我出940"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A27",
+     "subject": "HER",
+     "relation": "ledger_archived",
+     "value": "她截图存单并定为今后的章程",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T10", "message_id": "m0", "quote": "下次有事照这个章程来"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A28",
+     "subject": "SHARED",
+     "relation": "cost_conflict_closed",
+     "value": "从'省下的都是钱'的口径冲突到转账理账，费用冲突收口",
+     "valid_time": "2026-11-03/2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T02", "message_id": "m0", "quote": "省下的都是钱"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：账要念得清清楚楚，这是全篇的闭环，别含糊。",
+   "unknowns": [],
+   "protected_expressions": ["比开头想的还轻省"],
+   "forbidden_factual_claims": ["不得改动三笔分摊数字", "不得虚构未入账的开销"]
+  },
+  "E107_T11": {
+   "case_id": "E107_T11",
+   "current_action": "接住爸妈的认证与弟弟的嘴硬：视频里水又稳又热，爸说'闺女买的这个值'，弟弟归功热水器不归功她；把嘴硬接成姐弟间的收尾玩笑。",
+   "acceptable_actions": [
+    "把爸那句'值'接成这场仗的奖状",
+    "把弟弟的嘴硬翻译一下：他这不是承认了嘛",
+    "提醒她视频存好，下次弟弟再嘴硬就放给他看"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A29",
+     "subject": "THIRD",
+     "relation": "parents_praise",
+     "value": "爸妈夸水又稳又热，爸说闺女买的这个值",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T11", "message_id": "m0", "quote": "闺女买的这个值"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A30",
+     "subject": "THIRD",
+     "relation": "brother_snark",
+     "value": "大壮嘴硬归功热水器而非她眼光",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T11", "message_id": "m0", "quote": "是热水器争气，不是你眼光好"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：这是全篇最松的一段，跟着她一起乐，别讲道理。",
+   "unknowns": [],
+   "protected_expressions": ["俩老人轮流夸水又稳又热"],
+   "forbidden_factual_claims": ["不得虚构视频内容", "不得断言弟弟口是心非的程度"]
+  },
+  "E107_T12": {
+   "case_id": "E107_T12",
+   "current_action": "接住流程共识与理账饭之约：'先吵架再摊单子最后请客和好'被她总结成家规；笑纳赴约，把这套流程夸成她赚到的经验。",
+   "acceptable_actions": [
+    "认下这顿理账饭，说过年叔婶那桌必须到",
+    "把她的三段流程复述一遍，说这就是家庭治理模板",
+    "笑她连吵架都吵出了章程，问下次吵架要不要提前预约"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E107_A31",
+     "subject": "SHARED",
+     "relation": "family_routine",
+     "value": "她总结出换大件流程：先吵架、再摊单子、最后请客和好",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T12", "message_id": "m0", "quote": "先吵架，再摊单子，最后请客和好"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A32",
+     "subject": "SHARED",
+     "relation": "banquet_invite",
+     "value": "过年理账饭ME受邀在座，叔婶点名要见",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T12", "message_id": "m0", "quote": "叔婶点名要见你"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E107_A33",
+     "subject": "SHARED",
+     "relation": "ledger_callback",
+     "value": "理账饭之约承接摊单子入群的处理方式",
+     "valid_time": "2026-11-09/2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E107_T07", "message_id": "m0", "quote": "把师傅的单子拍照甩家庭群里"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾停在'和好'两个字上，别翻回去数落弟弟。",
+   "unknowns": ["过年具体日期未知"],
+   "protected_expressions": ["你可得在座"],
+   "forbidden_factual_claims": ["不得虚构叔婶的其他要求", "不得引入新的家庭议题"]
+  }
+ }
+}

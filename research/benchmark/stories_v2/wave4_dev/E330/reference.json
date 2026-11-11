@@ -1,0 +1,777 @@
+{
+ "story_id": "E330",
+ "turns": {
+  "E330_T01": {
+   "case_id": "E330_T01",
+   "current_action": "白薇通报：已报名12月6日（周日）滨江半马、目标破2、现配速550左右",
+   "acceptable_actions": [
+    "接报名消息并问要不要陪练",
+    "接目标并说破2就差临门一脚的话帮你当私兔",
+    "接数据并顺口问河堤还是滨江练"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T01_A01",
+     "subject": "SHARED",
+     "relation": "参赛报名",
+     "value": "白薇已报名12月6日（周日）滨江半马",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T01",
+      "quote": "报名定了：12月6号（周日）滨江半马",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T01_A02",
+     "subject": "HER",
+     "relation": "比赛目标",
+     "value": "目标破2（2小时以内完赛）",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T01",
+      "quote": "目标破2",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T01_A03",
+     "subject": "HER",
+     "relation": "当前配速",
+     "value": "当前配速550左右",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T01",
+      "quote": "我现在配速550左右",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "目标链起点：'破2'在此确立。她要强、定目标不爱改口（KB），接话可以接得有劲，但别把目标复述成'轻松达成'之类的空头支票——她讨厌空喊加油。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动比赛日期或目标口径",
+    "不得编造报名费或参赛包细节"
+   ],
+   "may_decline": false
+  },
+  "E330_T02": {
+   "case_id": "E330_T02",
+   "current_action": "白薇通报新跑鞋到货（缓震款）并定训练计划：周二周四晚河堤8公里、周末长距离，ME 有空陪哪天算哪天",
+   "acceptable_actions": [
+    "应下周二或周四陪跑一次",
+    "接计划并说自己长距离那天搭伴",
+    "接新鞋玩笑'缓震款配548正合适'"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T02_A01",
+     "subject": "SHARED",
+     "relation": "训练计划",
+     "value": "训练计划：周二周四晚沿河堤跑8公里，周末拉长距离",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T02",
+      "quote": "周二周四晚沿河堤跑8公里，周末拉长距离",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T02_A02",
+     "subject": "HER",
+     "relation": "新跑鞋",
+     "value": "白薇新跑鞋到货（缓震款）",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T02",
+      "quote": "新跑鞋到了，缓震那款",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "训练计划是全篇回指锚（T03/T10 的河堤8公里、T04/T11 的周末长距离都挂在这）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动训练计划结构",
+    "不得编造新鞋品牌价格"
+   ],
+   "may_decline": false
+  },
+  "E330_T03": {
+   "case_id": "E330_T03",
+   "current_action": "白薇报训练实绩：今晚河堤8公里配速548稳，但左脚踝有点紧（老地方）、自判'应该没事'",
+   "acceptable_actions": [
+    "接548数据并提一句脚踝紧多留意",
+    "说下次带肌贴给她备着",
+    "轻收'稳'并让她绷紧了就说"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T03_A01",
+     "subject": "HER",
+     "relation": "训练实绩",
+     "value": "今晚河堤8公里、配速548",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T03",
+      "quote": "今晚河堤8公里，配速548，稳",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T03_A02",
+     "subject": "HER",
+     "relation": "伤情信号",
+     "value": "左脚踝有点紧（老地方），她自判'应该没事'（不确定表述）",
+     "valid_time": "2026-11-05",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T03",
+      "quote": "就是左脚踝有点紧，老地方，应该没事",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "伤情链起点：'应该没事'是她带不确定的自判——正确姿态=留意但不吓她、不空喊加油也不跟着翻篇说'肯定没事'。T05 揭示腱鞘炎，此处'没事'被证伪。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得顺着坐实'脚踝没事'",
+    "不得空喊加油或催她继续加练"
+   ],
+   "may_decline": false
+  },
+  "E330_T04": {
+   "case_id": "E330_T04",
+   "current_action": "白薇报周末长距离：今早14公里配速605，脚踝跑完有点酸、已冰敷（先这样，可轻收）",
+   "acceptable_actions": [
+    "轻收'冰敷对，歇着'",
+    "问要不要看看恢复情况再说下周",
+    "极简接数据'14公里稳'"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T04_A01",
+     "subject": "HER",
+     "relation": "训练实绩",
+     "value": "今早拉14公里、配速605",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T04",
+      "quote": "今早拉了14公里，配速605",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T04_A02",
+     "subject": "HER",
+     "relation": "伤情进展",
+     "value": "脚踝跑完有点酸、已冰敷",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T04",
+      "quote": "脚踝跑完有点酸，冰敷了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true、她说'先这样'——轻收合规。伤情从'紧'到'酸'在升级，回复别推她继续大课，也别大惊小怪。",
+   "unknowns": [],
+   "protected_expressions": [
+    "先这样"
+   ],
+   "forbidden_factual_claims": [
+    "不得催她按计划继续硬练",
+    "不得空喊加油"
+   ],
+   "may_decline": true
+  },
+  "E330_T05": {
+   "case_id": "E330_T05",
+   "current_action": "白薇通报伤情与安排：脚踝没好转，康复诊所大夫诊断腱鞘炎前期、停跑一周改游泳，比赛先不退、破2看天意（intent：说明伤情与停跑改泳安排）",
+   "acceptable_actions": [
+    "接医嘱说游泳养伤稳妥、比赛先挂着不慌",
+    "接安排并说自己陪她泳池边核配速表",
+    "接住'看天意'别接成'那退了吧'"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T05_A01",
+     "subject": "THIRD",
+     "relation": "伤情诊断",
+     "value": "康复诊所大夫诊断：左踝腱鞘炎前期",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T05",
+      "quote": "大夫说是腱鞘炎前期",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T05_A02",
+     "subject": "SHARED",
+     "relation": "医嘱安排",
+     "value": "医嘱停跑一周、改游泳",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T05",
+      "quote": "停跑一周，改游泳",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T05_A03",
+     "subject": "HER",
+     "relation": "赛事决定",
+     "value": "比赛先不退",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T05",
+      "quote": "比赛我先不退",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T05_A04",
+     "subject": "HER",
+     "relation": "目标松动",
+     "value": "破2目标暂放（'看天意'），非正式改口",
+     "valid_time": "2026-11-09",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T05",
+      "quote": "破2看天意吧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 佐证：康复诊所挂号回执'左踝腱鞘炎，建议停跑一周'（候选可见，不进原子 quote）。回应纪律：受伤不硬撑也别催（boundary）——接医嘱、聊具体安排，比空喊加油管用（lessons）；'看天意'是情绪话，别当成她正式改口。",
+   "unknowns": [],
+   "protected_expressions": [
+    "破2看天意吧"
+   ],
+   "forbidden_factual_claims": [
+    "不得催她忍痛跑",
+    "不得断言比赛必退或必跑",
+    "不得复述错诊断结论"
+   ],
+   "may_decline": false
+  },
+  "E330_T06": {
+   "case_id": "E330_T06",
+   "current_action": "白薇报恢复进展：游了三天脚踝好多了、大夫说下周能慢慢恢复跑；比赛还挂着、目标先不提",
+   "acceptable_actions": [
+    "接住'好多了'说恢复在正轨",
+    "顺'目标先不提'不催目标、聊游泳配速",
+    "问下周恢复跑想从几公里起步"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T06_A01",
+     "subject": "HER",
+     "relation": "恢复进展",
+     "value": "游了三天、脚踝好多了",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T06",
+      "quote": "游了三天，脚踝好多了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T06_A02",
+     "subject": "THIRD",
+     "relation": "医生预期",
+     "value": "大夫说下周能慢慢恢复跑",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T06",
+      "quote": "大夫说下周能慢慢恢复跑",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T06_A03",
+     "subject": "HER",
+     "relation": "目标挂起",
+     "value": "比赛还挂着，破2目标先不提",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T06",
+      "quote": "比赛还挂着，目标先不提",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "目标链第2步：'目标先不提'是她明说的口径——正确回应顺着不提目标，主动催目标=踩她的边界。T11 她自己会回摆，中间这段别替她定调。",
+   "unknowns": [],
+   "protected_expressions": [
+    "目标先不提"
+   ],
+   "forbidden_factual_claims": [
+    "不得主动催破2目标",
+    "不得说目标已放弃"
+   ],
+   "may_decline": false
+  },
+  "E330_T07": {
+   "case_id": "E330_T07",
+   "current_action": "白薇报今晚试跑3公里、脚踝不疼了！细的明天说、先去洗漱（可轻收）",
+   "acceptable_actions": [
+    "轻收'不疼就是最好的信号'",
+    "让她去洗漱、明天细聊",
+    "极简'稳了'"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T07_A01",
+     "subject": "HER",
+     "relation": "试跑进展",
+     "value": "今晚试跑3公里、脚踝不疼了",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T07",
+      "quote": "今晚试跑了3公里，脚踝不疼了！",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true、她说'先去洗漱'——短收合规；别追着问配速细节。",
+   "unknowns": [],
+   "protected_expressions": [
+    "细的明天说"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问或编造试跑配速",
+    "不得催她明天加量"
+   ],
+   "may_decline": true
+  },
+  "E330_T08": {
+   "case_id": "E330_T08",
+   "current_action": "白薇补细节：昨晚3公里配速630全程没感觉；大夫医嘱从5公里往上加、每周跑量增幅不超过10%；静息心率58（intent：汇报恢复训练计划）",
+   "acceptable_actions": [
+    "认医嘱节奏并说这加量法稳",
+    "接心率数据说底子还在",
+    "提出5公里档陪跑一次"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T08_A01",
+     "subject": "HER",
+     "relation": "试跑数据",
+     "value": "昨晚3公里配速630、全程没感觉",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T08",
+      "quote": "昨晚那3公里配速630，慢是慢，但全程没感觉",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T08_A02",
+     "subject": "THIRD",
+     "relation": "加量医嘱",
+     "value": "大夫说从5公里往上加、每周跑量增幅不超过10%",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T08",
+      "quote": "大夫说从5公里往上加，每周加量不超过10%",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T08_A03",
+     "subject": "HER",
+     "relation": "状态数据",
+     "value": "静息心率58、状态还行",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T08",
+      "quote": "静息心率58，状态还行",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 佐证：康复医嘱单照片'恢复期每周跑量增幅不超过10%'（候选可见，不进原子 quote）。10% 增幅纪律是锚——候选建议的加量若超过此幅度=与医嘱冲突（语义层）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得建议超过每周10%的加量幅度",
+    "不得复述错医嘱数字（5公里起步/10%上限）"
+   ],
+   "may_decline": false
+  },
+  "E330_T09": {
+   "case_id": "E330_T09",
+   "current_action": "白薇报今天5公里配速615，自算破2得跑进541、现在还差着，问'是不是干脆改目标，完赛就行？'",
+   "acceptable_actions": [
+    "数据向回应：按10%纪律还有三周多，差距在缩，先把决定权留给她",
+    "不替她拍板、说跑得舒服比数字重要，怎么定都陪",
+    "接'完赛'口径说安全完赛也漂亮、看当天状态"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T09_A01",
+     "subject": "HER",
+     "relation": "训练实绩",
+     "value": "今天跑了5公里、配速615",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T09",
+      "quote": "今天又跑了5公里，615",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T09_A02",
+     "subject": "HER",
+     "relation": "破2线口径",
+     "value": "破2需跑进541（她自己报的换算口径）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T09",
+      "quote": "破2得跑进541",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T09_A03",
+     "subject": "HER",
+     "relation": "改目标疑虑",
+     "value": "她在犹豫是否把目标改成'完赛就行'（疑问未决，非正式改口）",
+     "valid_time": "2026-11-16",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T09",
+      "quote": "是不是干脆改目标，完赛就行？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "目标链第3步（摇摆位）：她定目标不爱改口（KB）——此刻是真摇摆。正确回应=不替她拍板'改完赛'也不替她扛'必须破2'，聊具体数据（lessons），决定权在她。T11 她自己回摆'稳一稳能破2'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她宣布改目标为已定",
+    "不得替她拍板必须破2"
+   ],
+   "may_decline": false
+  },
+  "E330_T10": {
+   "case_id": "E330_T10",
+   "current_action": "白薇报周四例行8公里跑完558、脚踝全程没感觉，诊所大夫说恢复得比预期快",
+   "acceptable_actions": [
+    "接558说回血快",
+    "顺大夫口径说科学恢复的功劳",
+    "问加量是否还按医嘱10%走"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T10_A01",
+     "subject": "HER",
+     "relation": "训练实绩",
+     "value": "周四例行8公里、配速558、脚踝全程没感觉",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T10",
+      "quote": "周四例行8公里跑完，558！脚踝全程没感觉",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T10_A02",
+     "subject": "THIRD",
+     "relation": "恢复评价",
+     "value": "诊所大夫说恢复得比预期快",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T10",
+      "quote": "诊所大夫说恢复得比预期快",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "伤情链向好收束：8公里回到 T02 计划档位。回复可以高兴，但别借机怂恿她跳档加量（10%纪律仍有效）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得怂恿跳过医嘱档位加量",
+    "不得复述错配速数据"
+   ],
+   "may_decline": false
+  },
+  "E330_T11": {
+   "case_id": "E330_T11",
+   "current_action": "白薇报周末长距离16公里配速552、最后3公里还提速，判断'照这个状态，12月6号稳一稳能破2'",
+   "acceptable_actions": [
+    "接16公里数据说这波扎实",
+    "顺她'能破2'的判断、不泼冷水",
+    "提醒最后两周按医嘱收着来"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T11_A01",
+     "subject": "HER",
+     "relation": "训练实绩",
+     "value": "周末长距离16公里、配速552、最后3公里提速",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T11",
+      "quote": "周末长距离拉了16公里，552，最后3公里还提了速",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T11_A02",
+     "subject": "HER",
+     "relation": "目标回摆",
+     "value": "她判断照此状态12月6号稳一稳能破2（目标自T09摇摆后回摆）",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T11",
+      "quote": "12月6号稳一稳能破2",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "目标链第4步：她自己回摆到破2——正确回应顺着她（别泼冷水也别吹爆），提医嘱纪律是加分不是必须。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得否定或嘲讽破2可能",
+    "不得怂恿超额加量"
+   ],
+   "may_decline": false
+  },
+  "E330_T12": {
+   "case_id": "E330_T12",
+   "current_action": "白薇定赛末安排：明天最后一次河堤跑后减量；请江彻12月6号到18公里补水点等她、带肌贴、陪跑最后5公里（intent：请比赛日补给点帮衬）",
+   "acceptable_actions": [
+    "答应补水点等她、肌贴带上",
+    "答应并说盐丸也备一份、陪最后5公里",
+    "答应并确认当天碰头细节"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E330_T12_A01",
+     "subject": "SHARED",
+     "relation": "减量安排",
+     "value": "明天（2026-11-25）最后一次河堤跑，之后减量",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T12",
+      "quote": "明天最后一次河堤跑，之后就减量",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E330_T12_A02",
+     "subject": "SHARED",
+     "relation": "比赛日帮衬",
+     "value": "12月6号江彻到18公里补水点等她、带肌贴、陪跑最后5公里",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E330_T12",
+      "quote": "12月6号你到18公里那个补水点等我呗，带上肌贴",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "江彻随身带肌贴盐丸、爱当私兔（KB）——答应顺理成章；'18公里补水点'是她的说法，别改口其他公里数；减量安排别复述成继续加练。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动补水点公里数或帮衬内容",
+    "不得把减量说成继续大课"
+   ],
+   "may_decline": false
+  }
+ }
+}

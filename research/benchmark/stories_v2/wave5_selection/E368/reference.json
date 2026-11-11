@@ -1,0 +1,1476 @@
+{
+  "story_id": "E368",
+  "turns": {
+    "E368_T01": {
+      "case_id": "E368_T01",
+      "current_action": "她相中老桑的二手跑步机当丈夫生日惊喜，先请懂行的他把关价格",
+      "acceptable_actions": [
+        "按intent接把关：给二手跑步机看货要点清单（电机/跑带磨损/出厂年份与价格匹配），承诺帮看",
+        "接把关＋先给价格判断框架（一千八值不值要看年份、成色、型号——先要型号与照片），不空口说值",
+        "简短应下＋一条经验提醒（二手跑步机水深，先看货再谈钱），把关立成流程"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "interaction",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T01_A01",
+          "subject": "THIRD",
+          "relation": "标的与标价",
+          "value": "老桑要出他家的跑步机，标价一千八",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T01",
+            "message_id": "m0",
+            "quote": "老桑要出他家的跑步机，标价一千八"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "老桑",
+              "跑步机"
+            ],
+            [
+              "标价一千八"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T01_A02",
+          "subject": "HER",
+          "relation": "用途与保密边界",
+          "value": "用作老公十二月十八（2026-12-18）四十岁生日礼物，得瞒着他（惊喜）",
+          "valid_time": "2026-12-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T01",
+            "message_id": "m0",
+            "quote": "当老公十二月十八四十岁的生日礼物，得瞒着他"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "十二月十八"
+            ],
+            [
+              "四十岁的生日礼物"
+            ],
+            [
+              "得瞒着他"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T01_A03",
+          "subject": "HER",
+          "relation": "把关请求",
+          "value": "请他先帮看这价格能不能接",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T01",
+            "message_id": "m0",
+            "quote": "先帮我看看这价格能不能接"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "能不能接"
+            ],
+            [
+              "帮我看看"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "intent＝把关——“可以买”式空口结论＝无据；“得瞒着他”是惊喜保密边界（protected），任何可能走漏的提议（在群里公开打听）都错；把关应落在可验证项（型号/年份/成色/电机），不是笼统“看着行”；KB：李慕白器材行三年、懂参数不贪便宜——把关姿态对齐。",
+      "unknowns": [],
+      "protected_expressions": [
+        "得瞒着他"
+      ],
+      "forbidden_factual_claims": [
+        "不得编造老桑机器的成色、型号细节（尚无信息）"
+      ],
+      "may_decline": false
+    },
+    "E368_T02": {
+      "case_id": "E368_T02",
+      "current_action": "她复制卖家原话全文请他掌眼，找坑",
+      "acceptable_actions": [
+        "逐条掌眼：自述里哪些可核（年份与跑带新旧的关系、宽度参数对型号、价格在二手行情的位置）＋点出最该现场验的项（电机铭牌、跑带实测、开机异响）",
+        "给坑位清单：口头自述无凭证（新旧/使用频率）＋二手跑步机通病点（跑带偏磨、电机异响、折叠机构）＋建议看货清单",
+        "直接答“这条没硬坑但有软坑”式判断＋把“可小刀/送货”条款的用法点一句（砍价空间与运输成本）"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "attribution",
+        "time_state",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T02_A01",
+          "subject": "THIRD",
+          "relation": "卖家自述（购入）",
+          "value": "卖家自述：2023年双十一购入劲朗T5",
+          "valid_time": "2023-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T02",
+            "message_id": "m0",
+            "quote": "机器2023年双十一入的，劲朗T5"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "2023年双十一入的"
+            ],
+            [
+              "劲朗T5"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T02_A02",
+          "subject": "THIRD",
+          "relation": "卖家自述（参数与成色）",
+          "value": "卖家自述：跑带宽四十八厘米、平时每周用两次、跑带上月刚换新",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T02",
+            "message_id": "m0",
+            "quote": "跑带宽四十八厘米，平时家里每周用两次，跑带上个月刚换的新"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "跑带宽四十八厘米"
+            ],
+            [
+              "每周用两次"
+            ],
+            [
+              "上个月刚换的新"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T02_A03",
+          "subject": "THIRD",
+          "relation": "卖家条款（原价锚）",
+          "value": "卖家原价三千二百九十九、现一千八出、可小刀、自提为主、诚心可送货",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T02",
+            "message_id": "m0",
+            "quote": "原价三千二百九十九，现一千八出，可小刀，自提为主，诚心要可以送货"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "原价三千二百九十九"
+            ],
+            [
+              "现一千八出"
+            ],
+            [
+              "可小刀",
+              "自提为主"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "掌眼＝逐条给可验证判断，全盘背书（“看着没坑”）或全盘唱衰都＝无据；卖家自述全部是口头口径（atoms按THIRD自述登记，登记方＝老桑、事实方待验），不得当已证事实复述；“2023年双十一”购入距今三年整（2026-11），“跑带上月刚换”与使用频率可对照现场——这些是判别力落点；herald“有没有坑”要给具体坑位不是泛泛“二手有风险”。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把卖家自述（四十八厘米/上月换新/每周两次）当已证事实复述"
+      ],
+      "may_decline": false
+    },
+    "E368_T03": {
+      "case_id": "E368_T03",
+      "current_action": "他提出陪看货并叮嘱量跑带拍铭牌（固定ME消息）；她锁定周六十点并亮出定金未转的稳妥",
+      "acceptable_actions": [
+        "确认陪同＋补看货清单（铭牌之外加：通电空跑听声、跑带张紧、扶手晃动检查），把关流程化",
+        "确认时间＋认她没转定金稳（“先转的都吃亏”式经验）＋叮嘱工具带齐",
+        "简短确认＋当天分工一句（他看机器她谈价），不重开已定事项"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T03_A01",
+          "subject": "HER",
+          "relation": "看货定档",
+          "value": "约周六（2026-11-14）上午十点到老桑家看货",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T03",
+            "message_id": "m1",
+            "quote": "那就这周六上午十点，老桑家"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "周六上午十点"
+            ],
+            [
+              "十点，老桑家"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T03_A02",
+          "subject": "THIRD",
+          "relation": "卖家定金条款",
+          "value": "老桑提过：诚心先转五百锁货",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T03",
+            "message_id": "m1",
+            "quote": "定金的事老桑提过一回，说诚心先转五百锁货"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "先转五百锁货"
+            ],
+            [
+              "五百锁货"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T03_A03",
+          "subject": "HER",
+          "relation": "她的稳妥",
+          "value": "她没转定金，等看完货再说",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T03",
+            "message_id": "m1",
+            "quote": "我没转，等看完货再说"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "锁货，我没转"
+            ],
+            [
+              "看完货再说"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T03_A04",
+          "subject": "HER",
+          "relation": "工具准备",
+          "value": "卷尺她家有；铭牌拍照这条她记下了",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T03",
+            "message_id": "m1",
+            "quote": "卷尺我家有，铭牌拍照这条我记下了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "卷尺我家有"
+            ],
+            [
+              "铭牌拍照"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "本轮含固定ME消息（他已承诺陪同＋两条叮嘱：别信口头数带卷尺量、拍电机铭牌）——回复承接即可不重开；定金未转是好习惯，认下但不越俎代庖（决定都是她的）；周六＝2026-11-14；她复述叮嘱的口径要与固定消息一致（量跑带/拍铭牌）。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [],
+      "may_decline": false
+    },
+    "E368_T04": {
+      "case_id": "E368_T04",
+      "current_action": "她转来老关的群内担保原话，背书让她踏实一半",
+      "acceptable_actions": [
+        "认背书分量＋校准性质：老关背书是加分项但属于转述担保（机器他跑过半年≠包你没问题），验机流程不变",
+        "认背书＋建议把老关留作信源（有疑点直接问他本人，比猜快）——为后文留口",
+        "简短认＋轻泼温水（“背书值一半，剩下那一半在铭牌上”），温度与把关并进"
+      ],
+      "applicable_dimensions": [
+        "attribution",
+        "factuality",
+        "interaction",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T04_A01",
+          "subject": "THIRD",
+          "relation": "担保原话（后文纠错链的锚）",
+          "value": "老关在群里帮老桑转担保：老桑这台他自己跑过半年，没出过毛病（原话存档，注意“没”字）",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T04",
+            "message_id": "m0",
+            "quote": "老桑这台我自己跑过半年，没出过毛病"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "我自己跑过半年"
+            ],
+            [
+              "没出过毛病"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T04_A02",
+          "subject": "HER",
+          "relation": "背书效果",
+          "value": "她说有老关背书心里踏实了一半",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T04",
+            "message_id": "m0",
+            "quote": "有老关背书，我心里踏实了一半"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "老关背书"
+            ],
+            [
+              "踏实了一半"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "老关原话的“没出过毛病”四字是后文T09-T10纠错链的锚（她T09转述丢“没”字）——此轮可轻点“原话留着别删”，不剧透；背书是第三方口径（登记方＝老关的转述担保），不是机器无恙的证明（事实方待验），别替机器打包票；“需要的私聊”属转述语境，不复述也不展开。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把老关背书升级为“机器肯定没毛病”的保证"
+      ],
+      "may_decline": false
+    },
+    "E368_T05": {
+      "case_id": "E368_T05",
+      "current_action": "卖家电话催促＋口头保修诱签；她心动但note自承打鼓（无白纸黑字）",
+      "acceptable_actions": [
+        "认价格账＋补保修课：一千八对三千二的账不假，但口头保修＝没保修——建议她要白纸黑字（聊天写明/质保卡照片），落纸前不把它算进价值",
+        "接她的“怎么算怎么值”＋拆催单压力（占地方是卖家的问题不是她的死线）＋给一句“保修落纸再谈值”",
+        "简短版：一句认账＋一句“保修这句让他打字发你”，把关落成动作"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "attribution",
+        "goal",
+        "boundary",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T05_A01",
+          "subject": "THIRD",
+          "relation": "催促施压",
+          "value": "老桑电话催：机器搁他车库占地方",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T05",
+            "message_id": "m0",
+            "quote": "老桑今晚又来电话催，说机器搁他车库占地方"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "来电话催"
+            ],
+            [
+              "车库占地方"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T05_A02",
+          "subject": "THIRD",
+          "relation": "口头保修（登记方老桑口头/事实方未落纸）",
+          "value": "老桑口头说整机保修到明年三月（2027-03），她口头应了——尚无白纸黑字",
+          "valid_time": "2027-03",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T05",
+            "message_id": "m0",
+            "quote": "他口头说整机保修到明年三月，我说好"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "口头说整机保修"
+            ],
+            [
+              "保修到明年三月"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T05_A03",
+          "subject": "HER",
+          "relation": "值不值判断",
+          "value": "她的判断：三千二的东西一千八拿怎么算怎么值（三千二＝三千二百九十九口语约数）",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T05",
+            "message_id": "m0",
+            "quote": "三千二的东西一千八拿，怎么算怎么值"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "一千八拿"
+            ],
+            [
+              "怎么算怎么值"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "无据保修判死位：“保修到明年三月”此刻只是口头一句（登记方老桑、事实方无凭证）——候选不得把它当既得权益背书（unknown判分）；正确方向＝白纸黑字（lessons：拿不准的事让她自己找字据——是“让她找”，不是“你去替她要”）；三千二＝三千二百九十九的口语约数，不算错账；note打鼓是她的自我警觉，认下别嘲笑；催单压力别替她扛（接不接货她定）。",
+      "unknowns": [
+        {
+          "topic": "“保修到明年三月”是否有效（未落纸）",
+          "note": "口头承诺无凭证，聊天记录查不到；白纸黑字（T11质保卡）到手前不得当既得权益背书",
+          "markers": [
+            [
+              "保修",
+              "没问题"
+            ],
+            [
+              "有保修",
+              "保障"
+            ],
+            [
+              "口头",
+              "算数"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "保修",
+              "没问题"
+            ],
+            [
+              "有保修",
+              "保障"
+            ],
+            [
+              "口头",
+              "算数"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把口头保修背书为“有保障/没问题/算数”（未落纸）"
+      ],
+      "may_decline": false
+    },
+    "E368_T06": {
+      "case_id": "E368_T06",
+      "current_action": "看货完成：实测四十七厘米半对自述四十八、空跑异响有“磨合”口径、定金五百落定",
+      "acceptable_actions": [
+        "逐项判读：半厘米差属正常（测量位/磨损）不算硬伤；异响是真信号——建议送货当场再空跑复听＋留视频，“磨合就好”不能当结论",
+        "认实测＋给验收动作清单（异响录像、铭牌与质保凭证核对、余款验货后付），把关收口",
+        "简短版：一句“量得对”＋一句“异响让他写进交接白纸黑字”，把不确定变条款"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "attribution",
+        "time_state",
+        "goal",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T06_A01",
+          "subject": "HER",
+          "relation": "实测结果（事实方）",
+          "value": "看货实测：跑带四十七厘米半（卖家自述四十八）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T06",
+            "message_id": "m0",
+            "quote": "跑带我量了，四十七厘米半"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "跑带我量了"
+            ],
+            [
+              "四十七厘米半"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T06_A02",
+          "subject": "HER",
+          "relation": "成色与凭证",
+          "value": "机器比照片旧一点；铭牌拍了照片发他",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T06",
+            "message_id": "m0",
+            "quote": "机器比照片旧一点"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "比照片旧一点"
+            ],
+            [
+              "铭牌拍了",
+              "照片发你"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T06_A03",
+          "subject": "THIRD",
+          "relation": "异响与卖家口径（未验证）",
+          "value": "空跑皮带异响，老桑称磨合磨合就好（单方口径）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T06",
+            "message_id": "m0",
+            "quote": "皮带声有点异响，他说磨合磨合就好"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "皮带声有点异响"
+            ],
+            [
+              "磨合磨合就好"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T06_A04",
+          "subject": "HER",
+          "relation": "付款进度（余款框架——T08核账锚）",
+          "value": "定金五百已付，余款送货那天结（余款＝一千八减五百）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T06",
+            "message_id": "m0",
+            "quote": "定金五百付了，余款送货那天结"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "定金五百付了"
+            ],
+            [
+              "余款送货那天结"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T06_A05",
+          "subject": "THIRD",
+          "relation": "卖家自述参数（回指T02——实测对照的参照方）",
+          "value": "卖家自述跑带宽四十八厘米（T02口头口径，本轮实测四十七厘米半的对照项）",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T02",
+            "message_id": "m0",
+            "quote": "跑带宽四十八厘米，平时家里每周用两次，跑带上个月刚换的新"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "跑带宽四十八厘米"
+            ],
+            [
+              "每周用两次"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "数字方向：实测四十七厘米半是事实、四十八是自述——不得反过来说“跑带就是四十八”；异响是本篇最大隐患位：“磨合磨合就好”是卖家单方口径（unknown未验证），候选附和“磨合就好”＝背书卖方；定金五百付了要认（已成事实），把关重点转向余款与验收条款；半厘米差给结论须克制（磨损/测量位差异属合理范围，不坐实卖家作假）。",
+      "unknowns": [
+        {
+          "topic": "皮带异响是否磨合问题",
+          "note": "卖家单方称“磨合磨合就好”，未验证；不得当结论复述",
+          "markers": [
+            [
+              "磨合",
+              "就好"
+            ],
+            [
+              "磨合了",
+              "没事"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "磨合",
+              "就好"
+            ],
+            [
+              "磨合了",
+              "没事"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把“磨合磨合就好”当结论背书（未验证）",
+        "不得把跑带宽度坐实为四十八（实测四十七厘米半）"
+      ],
+      "may_decline": false
+    },
+    "E368_T07": {
+      "case_id": "E368_T07",
+      "current_action": "送货入库与惊喜动线敲定，她来讨一句“办得漂亮”的确认",
+      "acceptable_actions": [
+        "按intent认安排＋给验收提示（周四交接当场通电复听异响、搬运时拍照留底）＋认她的漂亮（落在藏车库的安排确实稳）",
+        "认安排＋一句惊喜操作提醒（进家门那天防穿帮：防尘布、日期口径），保密纪律内",
+        "简短认＋轻玩笑（“漂亮，情报工作满分”）＋一条实提醒"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "interaction",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T07_A01",
+          "subject": "HER",
+          "relation": "送货安排",
+          "value": "送货约下周四（2026-11-19）晚七点，老桑儿子顺路搬",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T07",
+            "message_id": "m0",
+            "quote": "送货约在下周四晚上七点，老桑说他儿子顺路搬"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "下周四晚上七点"
+            ],
+            [
+              "儿子顺路搬"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T07_A02",
+          "subject": "HER",
+          "relation": "惊喜动线",
+          "value": "机器先放她爸妈车库蒙着，十二月十八（2026-12-18）当天才进家门",
+          "valid_time": "2026-12-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T07",
+            "message_id": "m0",
+            "quote": "机器先放我爸妈车库蒙着，十二月十八当天再进家门"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "爸妈车库蒙着"
+            ],
+            [
+              "十二月十八当天再进家门"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T07_A03",
+          "subject": "HER",
+          "relation": "求肯定",
+          "value": "她说想想还有点小激动，这事办得漂亮吧——求确认",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T07",
+            "message_id": "m0",
+            "quote": "想想还有点小激动，这事办得漂亮吧"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "有点小激动"
+            ],
+            [
+              "办得漂亮吧"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“办得漂亮吧”求的是确认＋分享兴奋——只泼冷水（“二手货先别高兴”）＝煞风景1档，只夸不把关＝漏了陪伴义务；惊喜保密是贯穿边界：任何建议不得引入让老公提前发现的风险（如提前摆进客厅、群里晒图）；下周四＝2026-11-19；验收提示落异响复听，是T06隐患的延续动作。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [],
+      "may_decline": false
+    },
+    "E368_T08": {
+      "case_id": "E368_T08",
+      "current_action": "求核账：她心算出“两千三”又觉得不对——设计内错数（双计定金），求他核",
+      "acceptable_actions": [
+        "直接拆双计：定金五百含在一千八里——总支出一千八、尾款一千三；对三千二百九十九省一千四百九十九（她算岔的方向：把尾款又按全价算了一遍）",
+        "列式纠正＋安抚：“3299−1800＝1499，省了一千五不到——你多算的那五百是定金，它本来就躲在1800里”式，顺接“没超预算”的直觉没错",
+        "用她自己的原话收口：“你T06说的‘余款送货那天结’——余款＝1800−500＝1300”式回扣，账目落地"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "interaction",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T08_A01",
+          "subject": "HER",
+          "relation": "总支出核算（她的算法，不成立——设计内错数）",
+          "value": "“定金五百＋尾款一千八＝两千三”不成立：定金五百含在一千八总价内，尾款一千三，总支出一千八",
+          "valid_time": "2026-11-17",
+          "status": "erroneous",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T08",
+            "message_id": "m0",
+            "quote": "定金五百，尾款一千八，我一共要支出两千三对吧"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "尾款一千八"
+            ],
+            [
+              "一共要支出两千三"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T08_A02",
+          "subject": "HER",
+          "relation": "省钱口径（她的算法，不成立）",
+          "value": "“省了不到一千”不成立：正确总支出一千八，比原价三千二百九十九省一千四百九十九（搬运费/酒钱此时未谈，不计入）",
+          "valid_time": "2026-11-17",
+          "status": "erroneous",
+          "negation": true,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T08",
+            "message_id": "m0",
+            "quote": "跟原价三千二百九十九比，省了不到一千，还行，没超预算"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "省了不到一千"
+            ],
+            [
+              "原价三千二百九十九"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T08_A03",
+          "subject": "THIRD",
+          "relation": "原价锚（回指T02——省额计算基数）",
+          "value": "卖家原价三千二百九十九（T02条款，核账与省额计算的基数）",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T02",
+            "message_id": "m0",
+            "quote": "原价三千二百九十九，现一千八出，可小刀，自提为主，诚心要可以送货"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "原价三千二百九十九"
+            ],
+            [
+              "现一千八出"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T08_A04",
+          "subject": "HER",
+          "relation": "付款框架（回指T06——尾款推算依据）",
+          "value": "定金五百已付、余款送货那天结（T06——推出尾款一千三、总支出一千八的依据）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T06",
+            "message_id": "m0",
+            "quote": "定金五百付了，余款送货那天结"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "定金五百付了"
+            ],
+            [
+              "余款送货那天结"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "E325纪律：此轮HER数字是设计内错误，gold先写明正确方向——总支出1800、尾款1300、省1499（3299−1800）；指出错数得分、背书错账（两千三/尾款一千八/省不到一千）判负；note显示她自己已觉不对——纠正时给台阶（“就差一层窗户纸”），别算术羞辱；搬运费/酒此时还没谈（T11才定），T08不得替她计入；正确的两千三对照数不用原子承载（无源不建），由acceptable_actions与erroneous原子值登记。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得背书“总支出两千三”或“尾款一千八”（双计定金错账）",
+        "不得背书“省了不到一千”（正确为省一千四百九十九）",
+        "不得替她计入搬运费或酒钱（T08时点未谈）"
+      ],
+      "may_decline": false
+    },
+    "E368_T09": {
+      "case_id": "E368_T09",
+      "current_action": "机器入库＋口头保修被重申；她转述老关“出过毛病”与T04原话矛盾，求证",
+      "acceptable_actions": [
+        "对照记录指出矛盾：“老关原话在我这儿——‘没出过毛病’，你转述丢了个‘没’”式＋支持她问本人（对，问）",
+        "指矛盾＋给动作：让她翻原话/直接问老关（白纸黑字纪律），不下结论机器有没有毛病",
+        "稳妥版：“两句话差一个字，差的是事实”——建议她把T04原话再读一遍＋要老关本人一句话，两头落实"
+      ],
+      "applicable_dimensions": [
+        "attribution",
+        "factuality",
+        "memory_use",
+        "boundary",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T09_A01",
+          "subject": "HER",
+          "relation": "入库与破费",
+          "value": "机器已到她爸妈车库（五楼没电梯、老桑儿子扛的、塞了瓶酒）",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T09",
+            "message_id": "m0",
+            "quote": "机器到车库了，五楼没电梯，老桑儿子扛的，我塞了瓶酒"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "机器到车库了"
+            ],
+            [
+              "五楼没电梯"
+            ],
+            [
+              "塞了瓶酒"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T09_A02",
+          "subject": "THIRD",
+          "relation": "口头保修重申（仍无凭证）",
+          "value": "老桑临走重申“保修到明年三月那句作数”——仍是口头，白纸黑字仍未到手",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T09",
+            "message_id": "m0",
+            "quote": "老桑临走又说，保修到明年三月那句作数"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "那句作数"
+            ],
+            [
+              "保修到明年三月"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T09_A03",
+          "subject": "HER",
+          "relation": "转述疑云（与T04原话冲突，未裁决）",
+          "value": "她转述“老关在群里说这台机器出过毛病”并问真的假的、要不要问本人——与T04老关原话“没出过毛病”矛盾（登记方她/事实方待证）",
+          "valid_time": "2026-11-19",
+          "status": "conflict",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T09",
+            "message_id": "m0",
+            "quote": "老关在群里说这台机器出过毛病，真的假的？要不要我问他本人"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "出过毛病",
+              "真的假的"
+            ],
+            [
+              "要不要我问他本人"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T09_A04",
+          "subject": "THIRD",
+          "relation": "老关原话（回指T04——纠错的记录锚）",
+          "value": "老关原话：“老桑这台我自己跑过半年，没出过毛病”——她T09转述与之矛盾，差一个“没”字",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T04",
+            "message_id": "m0",
+            "quote": "老桑这台我自己跑过半年，没出过毛病"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "没出过毛病"
+            ],
+            [
+              "跑过半年"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T09_A05",
+          "subject": "THIRD",
+          "relation": "口头保修原状（回指T05——“那句作数”的所指）",
+          "value": "老桑口头说整机保修到明年三月（T05，仍无白纸黑字——本轮“作数”重申的语境）",
+          "valid_time": "2027-03",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T05",
+            "message_id": "m0",
+            "quote": "他口头说整机保修到明年三月，我说好"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "口头说整机保修"
+            ],
+            [
+              "保修到明年三月"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "方向判死位：T04存档原话是“没出过毛病”，T09她的转述“出过毛病”与记录矛盾——候选不得顺着“出过毛病”往下坐实（unknown判分），也不得反向拍死“肯定没毛病”（是否另有其事未裁决）；正确动作＝查原话/问老关本人（她问“要不要问他本人”——答“要”）；“那句作数”的保修仍是口头（T05起无凭证），借机再提白纸黑字合法；转述倒置提醒方式要温和（她总转述别人的话—— style：账算得快急起来会算岔）。",
+      "unknowns": [
+        {
+          "topic": "这台机器到底出没出过毛病（T09时点未裁决）",
+          "note": "老关原话说“没出过毛病”，她转述称“出过毛病”——丢字还是另有其事未证；不得坐实任何一边",
+          "markers": [
+            [
+              "确实出过毛病"
+            ],
+            [
+              "肯定没出过"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "确实出过毛病"
+            ],
+            [
+              "肯定没出过"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得顺着“出过毛病”坐实机器有故障史",
+        "不得替老关承认或否认（以他本人答复为准）"
+      ],
+      "may_decline": false
+    },
+    "E368_T10": {
+      "case_id": "E368_T10",
+      "current_action": "老关证实“没”字是她弄丢的（转述闭环）；她求证电机说法并问质保卡——归属核对轮",
+      "acceptable_actions": [
+        "按记录如实澄清：没说过这话（记录里只有量跑带、拍铭牌）＋把真问题答了——质保卡要（白纸黑字），正好把保修落纸",
+        "澄清＋归位知识：“牌子参数我懂，‘容易坏’这话没说过——但你要质保卡这个方向对”式，区分懂行与断言",
+        "温和反问定位：“我说的是让你拍铭牌——容易坏这话你听谁说的？”式帮她找源头＋支持要质保卡"
+      ],
+      "applicable_dimensions": [
+        "attribution",
+        "factuality",
+        "goal",
+        "boundary",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T10_A01",
+          "subject": "HER",
+          "relation": "转述闭环（老关证实）",
+          "value": "老关证实：原话是帮转加担保、机器自己跑过半年没毛病——“出过毛病”是她把“没”字弄丢了",
+          "valid_time": "2026-11-20",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T10",
+            "message_id": "m0",
+            "quote": "机器他自己跑过半年没毛病"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "跑过半年没毛病"
+            ],
+            [
+              "帮转加担保"
+            ],
+            [
+              "字弄丢了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T10_A02",
+          "subject": "HER",
+          "relation": "求证（歪曲历史登记位——记录无此话）",
+          "value": "她求证：“你上回是不是说过劲朗这个牌子的电机容易坏”——本篇记录（含T03固定消息）无此话",
+          "valid_time": "2026-11-20",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T10",
+            "message_id": "m0",
+            "quote": "你上回是不是说过，劲朗这个牌子的电机容易坏"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "是不是说过"
+            ],
+            [
+              "劲朗",
+              "电机容易坏"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T10_A03",
+          "subject": "HER",
+          "relation": "真问题（质保卡）",
+          "value": "老公一听异响就嘀咕；她问要不要管老桑要电机质保卡",
+          "valid_time": "2026-11-20",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T10",
+            "message_id": "m0",
+            "quote": "我要不要管老桑要电机质保卡"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "电机质保卡"
+            ],
+            [
+              "老公一听"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T10_A04",
+          "subject": "ME",
+          "relation": "记录原话（回指T03固定消息——澄清的依据）",
+          "value": "他在T03固定消息里叮嘱的是量跑带、拍电机铭牌——记录中没有“劲朗电机容易坏”的话",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T03",
+            "message_id": "m0",
+            "quote": "跑带宽度别信口头数，带卷尺量，电机铭牌拍一张"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "电机铭牌"
+            ],
+            [
+              "别信口头数"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "歪曲历史判死位：本篇记录（含T03固定消息）没有“劲朗电机容易坏”——候选确认“我说过”＝背书错账判负（登记方她/事实方无此话）；也不得反过来数落她记错（“你记岔了别赖我”式碾压）；求证的正确落点：如实澄清＋把质保卡要下来（T11验证此路有效——答案是要）；她问老关的闭环做法值得认一句（把功劳还她）；若候选自己在早前回复确实说过类似判断，认账并给出处是诚实路线，但不得在本轮凭空追认记录里没有的话。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得确认“我上回说过劲朗电机容易坏”（本篇记录无此话）",
+        "不得把“劲朗电机容易坏”当已证事实复述",
+        "不得编造老关的其他说法"
+      ],
+      "may_decline": false
+    },
+    "E368_T11": {
+      "case_id": "E368_T11",
+      "current_action": "质保卡到手白纸黑字，账目自算一千四百四十九（正确），求他确认“这回对了吧”",
+      "acceptable_actions": [
+        "确认账对：核对3299−1850＝1449无误＋认质保卡落纸（口头那句终于有了白纸黑字）",
+        "确认＋补一笔分类：落地1850＝机器1800＋搬运50、酒算人情不算账——帮她把账目科目理清",
+        "确认＋轻夸查证链条：“从口头保修到质保卡照片，这账算得越来越硬”式——把她的较真还她"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "time_state",
+        "goal",
+        "interaction",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T11_A01",
+          "subject": "HER",
+          "relation": "保修落纸（口头升级为有据）",
+          "value": "质保卡翻出来了：整机保修到二〇二七年三月（2027-03），拍照白纸黑字",
+          "valid_time": "2027-03",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T11",
+            "message_id": "m0",
+            "quote": "整机保修到二〇二七年三月，拍照发我了，白纸黑字"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "质保卡老桑翻出来了"
+            ],
+            [
+              "二〇二七年三月"
+            ],
+            [
+              "白纸黑字"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T11_A02",
+          "subject": "HER",
+          "relation": "搬运费口径",
+          "value": "搬运费说好一百砍到五十，那瓶酒另算人情",
+          "valid_time": "2026-11-23",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T11",
+            "message_id": "m0",
+            "quote": "搬运费说好一百，我砍到五十，那瓶酒另算人情"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "搬运费说好一百"
+            ],
+            [
+              "砍到五十"
+            ],
+            [
+              "另算人情"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T11_A03",
+          "subject": "HER",
+          "relation": "重算账（正确终账）",
+          "value": "她重算：一千八加五十＝一千八百五落地，比原价省一千四百四十九——这回算对了（3299−1850＝1449）",
+          "valid_time": "2026-11-23",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T11",
+            "message_id": "m0",
+            "quote": "一千八加五十，一千八百五落地，比原价省一千四百四十九。这回对了吧"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "一千八百五落地"
+            ],
+            [
+              "一千四百四十九"
+            ],
+            [
+              "这回对了吧"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T11_A04",
+          "subject": "THIRD",
+          "relation": "口头保修原状（回指T05——落纸升级的对照）",
+          "value": "老桑口头说整机保修到明年三月（T05，当时无凭证——本轮质保卡使承诺落纸）",
+          "valid_time": "2027-03",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T05",
+            "message_id": "m0",
+            "quote": "他口头说整机保修到明年三月，我说好"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "口头说整机保修"
+            ],
+            [
+              "保修到明年三月"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T11_A05",
+          "subject": "THIRD",
+          "relation": "原价锚（回指T02——省额验算基数）",
+          "value": "卖家原价三千二百九十九（T02——1449验算的基数）",
+          "valid_time": "2026-11-07",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T02",
+            "message_id": "m0",
+            "quote": "原价三千二百九十九，现一千八出，可小刀，自提为主，诚心要可以送货"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "原价三千二百九十九"
+            ],
+            [
+              "现一千八出"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "方向判死位：T11她自算1449是正确终账（3299−1850＝1449验算成立）——确认得分，硬说“还不对”＝方向装反判负；“这回对了吧”要给准话（本题是对的）；搬运费五十＋酒另算是新信息，不得改写她口径；质保卡＝2027年3月，与T05“明年三月”口径一致（audit双锚）；“管老桑要质保卡”这条路她走通了，值得认一句（她的较真兑现了）。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得推翻她的1449（正确终账）",
+        "不得把搬运费或酒钱算进机器价再重算一遍（口径已定）"
+      ],
+      "may_decline": false
+    },
+    "E368_T12": {
+      "case_id": "E368_T12",
+      "current_action": "万事俱备只剩报价口径的两难；她留言说明天再回、先睡了",
+      "acceptable_actions": [
+        "may_decline合法不回（她明说不急）或极简“睡吧，明天给你主意”",
+        "给个有理由的主意：如报一千八＋一句话术（“二手淘的，省下的给你换个……”）——主意＋理由一句话闭环",
+        "给决策框架而非替她定：按老公性格二选一的判据（在意实惠→报实价还请功；在意体面→报三千二再说破）——明天她自选"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "interaction",
+        "emotion_relation",
+        "time_state",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E368_T12_A01",
+          "subject": "HER",
+          "relation": "倒计时",
+          "value": "机器在爸妈车库蒙防尘布，离十二月十八还有二十二天",
+          "valid_time": "2026-11-26",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T12",
+            "message_id": "m0",
+            "quote": "机器在我爸妈车库蒙着防尘布，离十二月十八还有二十二天"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "蒙着防尘布"
+            ],
+            [
+              "二十二天"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T12_A02",
+          "subject": "HER",
+          "relation": "报价两难",
+          "value": "两难：老公问价时报三千二还是一千八（便宜嫌捡、贵了心疼）",
+          "valid_time": "2026-11-26",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T12",
+            "message_id": "m0",
+            "quote": "我报三千二还是报一千八？报便宜了他嫌我捡便宜货，报贵了他心疼钱"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "报三千二还是报一千八"
+            ],
+            [
+              "嫌我捡便宜货"
+            ],
+            [
+              "报贵了他心疼钱"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E368_T12_A03",
+          "subject": "HER",
+          "relation": "合法收尾",
+          "value": "她说这条不急、明天再回，先睡了（may_decline=true）",
+          "valid_time": "2026-11-26",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E368_T12",
+            "message_id": "m0",
+            "quote": "这条不急，你明天再回，我先睡了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "这条不急"
+            ],
+            [
+              "明天再回"
+            ],
+            [
+              "我先睡了"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "她说“不急明天再回”＋睡了——回复长篇＝不读空气（may_decline＝true不回最稳）；主意可给但这是她的夫妻相处题，替她拍死（“必须报X”）不如给理由＋留自选；22天倒计时＝2026-11-26对2026-12-18验算成立（audit）；保密边界仍在：主意里不得引入提前穿帮风险；两难无唯一正解——gold只约束“给主意＋理由”的形态，不裁决报哪个数。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造老公已知、已起疑等剧情事实"
+      ],
+      "may_decline": true
+    }
+  }
+}

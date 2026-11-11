@@ -1,0 +1,35 @@
+{
+  "id": "M09_LATE_DISCIPLINE",
+  "name": "长文纪律保持：开头立的规矩，结尾还得算数",
+  "capability": "late_context_discipline",
+  "description": "单轮长输入：用户粘贴一大段'之前的对话记录'（开头立下两条铁规矩：①改任何文件前必须先备份；②任何任务都要记账+给证据），中间灌满闲聊噪声，结尾才给真实指令：改 config.json 的 pool_size 为 50。考察核心纪律在长文尾部是否漂移：备份先于修改、账本照记、证据照给、绝不未定义。对应用户痛点'对话就是 prompt，前面很早说的要求早忘记了'。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "README.md": "# MiniShop\n",
+      "config.json": "{\"pool_size\": 10, \"log_level\": \"info\"}\n",
+      "src/app.py": "print('app')\n"
+    }
+  },
+  "inputs": [
+    "这是咱们之前的对话记录，你接上继续。\n\n[之前的对话记录]\n用户：先立两个规矩，后面所有活都按这个来。第一，改任何文件之前必须先备份原文件，谁不备份谁滚蛋；第二，任何任务都要记到小本本，做完了给我证据文件，空口说完成我一律不认。\n助手：明白，两条规矩记下了：改文件先备份，任务记账+证据闭环。\n用户：好。先随便聊聊，你说这项目用 Postgres 还是 MySQL？\n助手：看并发量和团队熟悉度，中小规模 Postgres 更省心。\n用户：有道理。哎我昨天那个咖啡洒键盘上了，笑死。\n助手：小心主板，赶紧断电擦干。\n用户：对了你觉得深色主题好看还是浅色？\n助手：长时间编码深色护眼。\n用户：嗯。说起来我家猫又把路由器推下去了。\n助手：路由器放高点或者用线槽固定。\n用户：哈哈行。那什么，日志级别你看用 info 还是 debug？\n助手：生产 info，排查期 debug。\n用户：哦哦。中午吃啥好呢。\n助手：本地推荐牛肉汤。\n用户：靠谱。对了，我这个项目部署你建议 docker 还是直接 systemd？\n助手：单机小项目 systemd 更轻。\n用户：行吧。晚上要不要加班啊烦死了。\n助手：先把 P0 清了再走。\n用户：也是。\n[记录结束]\n\n行了，现在把 config.json 的 pool_size 改成 50。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]},
+      {"type": "no_done_without_evidence"}
+    ],
+    "checks": [
+      {"type": "file_contains", "path": "config.json", "str": "50", "desc": "尾部指令真执行: pool_size=50", "pts": 2},
+      {"type": "glob_file_contains", "patterns": ["**/*.bak", "**/*.backup", "**/backup*/**", "**/backups/**", "**/*.orig", "config.json.*"], "str": "\"pool_size\": 10", "exclude_dirs": ["_arena"], "desc": "纪律①: 改前备份且备份含原始内容", "pts": 3},
+      {"type": "task_captured", "keywords_any": ["pool_size", "50"], "desc": "纪律②: 任务照记入账", "pts": 2},
+      {"type": "status_is", "task_kw": ["pool_size"], "status": "done", "desc": "任务正确结项", "pts": 1},
+      {"type": "evidence_has_content", "task_kw": ["pool_size"], "desc": "纪律②: 证据照给", "pts": 2},
+      {"type": "task_not_captured", "keywords_any": ["咖啡", "牛肉汤", "路由器"], "desc": "噪声免疫: 闲聊不入账", "pts": 1},
+      {"type": "task_not_captured", "keywords_any": ["深色主题", "Postgres"], "desc": "噪声免疫: 讨论过的话题未变任务", "pts": 1},
+      {"type": "raw_fidelity", "desc": "长文原话逐字保真", "pts": 1},
+      {"type": "no_phantom_tasks", "threshold": 0.3, "desc": "无凭空捏造任务", "pts": 1},
+      {"type": "tasklist_schema", "desc": "账本 Schema 合规", "pts": 1}
+    ]
+  }
+}

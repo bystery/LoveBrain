@@ -1,0 +1,25 @@
+{
+ "content_version": "dev_pilot_v0.2_20261022",
+ "registered_as": "DEV_EXPOSED（公开开发集；独立选择集/B/扩题不在此列）",
+ "source_zip_sha256": "63c89dfafc4d8afac1fbcc526c7d2d2ef103ec0268caa681b9fc7658ea2997e1",
+ "hash_verified_against": "refs/question_pilot_review_v02_20261022/INDEPENDENT_CHECKS.json（独立签收记录，9/9 一致）",
+ "files": {
+  "00_DELIVERY.md": "425c797b7e6b4488d946e5628af6691c70685d3ba63c82b5102bd5cd1d76e672",
+  "01_STORY_BIBLE.md": "0bc8cb962210d7683e8fae813b16801a867750374580833646d3e2c45a0ba793",
+  "02_DIALOGUES.md": "ab750537636a0cf9d6f52f83e6c442a8dfdfc19fef087f073bb346574aa00d30",
+  "03_GRADING_CARDS.json": "8e128a993ca567a5b8e51e46b94e2c396246c0d5d294ba1673b8049f7013a8da",
+  "04_COVERAGE_AND_AUDIT.md": "259988153e6f3cf31dd0da5d037b54e6bdb5299a1b013d7fff58de3ba515cce5",
+  "05_STYLE_CHECK_6.md": "dcd0d66833a45b3f04567583c6480ef4da5fc9899a2378929de66b6dec288c29",
+  "E001.json": "4fd499643a36b70830672000d048d88c5eb27e639eba9b6f9cd11296a6001c88",
+  "E002.json": "6d84ef6819feb845efbad682442db0647ffb3fcbfa0e589ca2b5ecf6b62d70a1",
+  "E003.json": "8619ba132acd60d1255d7e5213ea9ea6293b9851862b82b2508405b764811ff6"
+ },
+ "episodes": 3,
+ "requests": 24,
+ "cards_checked": true,
+ "import_verdict": "IMPORT_OK",
+ "import_record": "logs/pilot_v02_import_fixed.json（修复版检查器含 schema 边界+卡绑定）",
+ "import_is_evidence_not_install": "IMPORT_OK 是已执行的检查证据；生产安装以本清单+文件散列为准",
+ "review_flow": "评审材料按候选/运行/case/输出槽位绑定（tools/review_loop.py + benchmark/dev_pilot_v02 评审卡）；卡不进考生输入",
+ "generated": "2026-10-22 16:40"
+}

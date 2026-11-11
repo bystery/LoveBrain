@@ -1,0 +1,102 @@
+{
+ "kind": "story_v2_wave3_stage1_shard",
+ "stage": "wave3",
+ "date": "2026-11-02",
+ "built_by": "W13-02-CF2",
+ "count": 4,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E153",
+   "title": "半片还是半片",
+   "themes": [
+    "医疗健康",
+    "家人自行调药",
+    "否定翻转",
+    "理疗仪劝阻边界",
+    "代际健康沟通"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E153",
+   "turns": 12,
+   "source_story": "E084",
+   "perturbation": "negation",
+   "files": {
+    "episode.json": "08348161aaea7bae70d8436ef024003ade6993fc552f9f147467afe02375b678",
+    "reference.json": "db0e9d81444b0822e7222820fa628c53b3e376bccf531395a0f7b50f5555a45c",
+    "timeline.json": "bebdbe96ee68c1892417b72fa325dedd791086ca920737912a70ba55df837fcc",
+    "audit.md": "9b9126a3ea9bf9a4cb620dbd108d67daae26a0326b2fc49496ef8628e5d0a7fb"
+   }
+  },
+  {
+   "story_id": "E154",
+   "title": "拼单黄死保底转正",
+   "themes": [
+    "出行拼车",
+    "搬家拼车",
+    "状态翻转",
+    "保底单转正",
+    "邻里搭手"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E154",
+   "turns": 12,
+   "source_story": "E094",
+   "perturbation": "status",
+   "files": {
+    "episode.json": "f308bc9755f325f5ce7ca166b6b39ed415d3240bd6a8e27f262bcb192c0dd9d4",
+    "reference.json": "707883868a84931c749e18ee6e40d2074d4a3cb55e142fc78253ce894a223e03",
+    "timeline.json": "8512328a12a779527803438b97168856d2945572cabb8f254a70f37c04e733bb",
+    "audit.md": "9f273f56be30e1e187a6492bd81e03a09cb1d9e5fc91de5713548ea37e19a685"
+   }
+  },
+  {
+   "story_id": "E155",
+   "title": "补齐尾款的那单床垫",
+   "themes": [
+    "家庭事务",
+    "二手转让",
+    "状态翻转",
+    "定金兑现",
+    "全款买家落空"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E155",
+   "turns": 12,
+   "source_story": "E090",
+   "perturbation": "status",
+   "files": {
+    "episode.json": "b3235cc28afc89308d8cd7252c59ca1c602c0a96863bc302dde5cc0aa278e9a8",
+    "reference.json": "f7d305eb6bf6488a10358c59939da898175936ac96d24e812fbc4f0b29408427",
+    "timeline.json": "1ec792a01f7e797aaa800cde131d5f5839daa2e678f12dc7f6389b80170faa78",
+    "audit.md": "368ef8e5f1d3d2c4e386367a7f216c24409a5beb0b7f5c3bfea44292f97d8cc5"
+   }
+  },
+  {
+   "story_id": "E156",
+   "title": "换科的刷题搭子",
+   "themes": [
+    "学习成长",
+    "刷题搭子",
+    "目标翻转",
+    "科目更换",
+    "断更条款"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E156",
+   "turns": 12,
+   "source_story": "E087",
+   "perturbation": "goal",
+   "files": {
+    "episode.json": "c9df88dd07902336800649a8261ef9e728d3ce1c7bdb995a556bb900b978bea1",
+    "reference.json": "cb08754660151086b0884752f7aaf335a063ba6a5a95b2d7273447f671d31159",
+    "timeline.json": "c7ec88159c6876da80b4b8db57acadb177b1f26d7dd70fdf7a526b920ebe33ba",
+    "audit.md": "5384181859d07536c395f5ce4ec768aadb960c7690997745697ad911715a19a0"
+   }
+  }
+ ]
+}

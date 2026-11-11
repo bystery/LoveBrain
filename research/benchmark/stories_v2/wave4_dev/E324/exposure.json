@@ -1,0 +1,53 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A5 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_c_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:35:20",
+      "window_last_attempt": "2026-11-08 15:31:21",
+      "attempts": 25,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_c/{DIRECT,CURRENT}/E324/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T06 用户意图/口吻/改写/多候选",
+    "子类：改写与按口吻重写"
+  ],
+  "title": "8%与三年：两段改稿和一个讲座",
+  "may_decline_turns": [
+    "E324_T05"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "租务沟通",
+  "primary_topic": "T06",
+  "lineage_group_id": "LG-E324",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E324/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A5",
+  "hashes": {
+    "episode.json": "f599cb81aed64a15d76d0998b0c8a6bbf3bf158d70eab91bc2c090e466436c4d",
+    "reference.json": "c397016610772da2e52c076817605f73221d2c449e5e2c3ee5435f085cbdeffe",
+    "timeline.json": "db33cf3ef870e77a9841bc68dc3a4bf165869761480cb71bb027da81c6160f4d",
+    "audit.md": "7f94986cf119309a660c86953e04691f80e43774458f3d775d5d97642438d2d0",
+    "composite": "7605d1c4e8c9fbde8d7cc93de9a5bd9e81ab27b09266c98b7d3b4c13b9adbedb"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

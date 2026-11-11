@@ -1,0 +1,311 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E040",
+ "title": "表姐看房的三方账",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E040_T01": {
+   "case_id": "E040_T01",
+   "current_action": "如实复述已知的安排",
+   "acceptable_actions": [
+    "说约了周六上午十点",
+    "说看两套",
+    "复述并问要不要加看一套"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她可能记岔了安排，用事实回答，不说大概。",
+   "unknowns": [
+    "老陈那边两套房的时间分配"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编造没约定的细节"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E040_T02": {
+   "case_id": "E040_T02",
+   "current_action": "给出确切信息并标注来源",
+   "acceptable_actions": [
+    "说明是老陈说的",
+    "把不确定的部分标出来",
+    "提出可以再确认一遍"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F01",
+     "subject": "我们",
+     "relation": "安排",
+     "value": "原定周六上午十点看房",
+     "valid_time": "2026-11-03 19:06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T02",
+      "message_id": "m0",
+      "quote": "周六十点 先看滨河那套"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "谁说的就说谁说的，别把中介的话当自己的判断。",
+   "unknowns": [
+    "第二套什么时候能看"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要把老陈的话说成自己核实过的"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E040_T03": {
+   "case_id": "E040_T03",
+   "current_action": "把传闻标为传闻，给出核实路径",
+   "acceptable_actions": [
+    "说这是同事说法待核实",
+    "提议看房时问住户",
+    "说去查物业投诉记录"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F02",
+     "subject": "她",
+     "relation": "传闻",
+     "value": "同事说那个小区物业差（未证实）",
+     "valid_time": "2026-11-03 19:10",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T03",
+      "message_id": "m0",
+      "quote": "我同事说那小区物业可差了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "传闻不入结论；她怕物业正好戳到痛点，语气要稳。",
+   "unknowns": [
+    "物业实际口碑",
+    "电梯问题的真实性"
+   ],
+   "protected_expressions": [
+    "物业可差了"
+   ],
+   "forbidden_factual_claims": [
+    "不要把传闻说成事实",
+    "不要说物业肯定没问题"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E040_T04": {
+   "case_id": "E040_T04",
+   "current_action": "给出具体核实动作，显得可靠",
+   "acceptable_actions": [
+    "列核实清单",
+    "说当面问住户",
+    "说查公开记录"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "可执行的动作比安抚有用。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E040_T05": {
+   "case_id": "E040_T05",
+   "current_action": "接受改期，明确改动涉及的人和主体",
+   "acceptable_actions": [
+    "答应去跟老陈改时间",
+    "确认周日下午两点",
+    "问要不要让老陈重新排两套"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "表姐夫也想看，改周日下午两点",
+     "valid_time": "2026-11-04 09:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T05",
+      "message_id": "m0",
+      "quote": "把老陈改到周日吧 下午两点 你姐夫也去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改的是她提出的，你只负责落实。",
+   "unknowns": [
+    "老陈周日下午是否有空"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要替她姐夫表态",
+    "不要把改期的责任算到老陈头上"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E040_T06": {
+   "case_id": "E040_T06",
+   "current_action": "复述改期结果，人数说清",
+   "acceptable_actions": [
+    "复述时间+人数",
+    "确认后说会带纸笔",
+    "让她把需求清单发我"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "表姐夫也想看，改周日下午两点",
+     "valid_time": "2026-11-04 09:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T05",
+      "message_id": "m0",
+      "quote": "把老陈改到周日吧 下午两点 你姐夫也去"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "四个人=你+表姐+姐夫+中介，别说错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要把人数说错",
+    "不要丢掉改期信息"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E040_T07": {
+   "case_id": "E040_T07",
+   "current_action": "给出一般规则并强调现场核对，不冒充政策专家",
+   "acceptable_actions": [
+    "说现场以合同为准",
+    "说核对照不动产登记信息",
+    "让她把具体房源发我查"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F04",
+     "subject": "她",
+     "relation": "询问",
+     "value": "押金和首付比例怎么谈",
+     "valid_time": "2026-11-04 09:28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T07",
+      "message_id": "m0",
+      "quote": "押金到底付几 首付他会不会乱报"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "政策细节不要拍胸脯；给方法不给结论。",
+   "unknowns": [
+    "该房源的具体报价与押金要求"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编造当前首付比例政策",
+    "不要替中介担保报价"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E040_T08": {
+   "case_id": "E040_T08",
+   "current_action": "自然收尾，行动项清晰",
+   "acceptable_actions": [
+    "确认收链接待办",
+    "简短收尾",
+    "复述周日安排"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S040_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "表姐夫也想看，改周日下午两点",
+     "valid_time": "2026-11-04 09:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E040_T05",
+      "message_id": "m0",
+      "quote": "把老陈改到周日吧 下午两点 你姐夫也去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已收尾；待办记好即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

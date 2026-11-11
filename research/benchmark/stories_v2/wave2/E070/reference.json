@@ -1,0 +1,560 @@
+{
+ "story_id": "E070",
+ "turns": {
+  "E070_T01": {
+   "case_id": "E070_T01",
+   "current_action": "接住她的慌：先把'两个箭头'拆成常见可处理项，稳住情绪，把下一步引向正规就诊而不是继续百度。",
+   "acceptable_actions": [
+    "先安抚幽门阳性和脂肪肝都常见，劝她别再深夜搜索",
+    "建议她约消化内科让医生定方案，别自己先判刑",
+    "提醒她脂肪肝与幽门是两件事，分开看不叠加恐慌"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "goal", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A01",
+     "subject": "HER",
+     "relation": "report_finding",
+     "value": "她的年度体检报告显示幽门螺杆菌阳性加轻度脂肪肝",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T01", "message_id": "m0", "quote": "幽门螺杆菌阳性，轻度脂肪肝"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A02",
+     "subject": "HER",
+     "relation": "anxiety_state",
+     "value": "她百度一整晚越查越慌，处置方向未定",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T01", "message_id": "m0", "quote": "越查越慌"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接情绪再摆常识，'常见'两个字放最前面，不说教。",
+   "unknowns": ["报告具体数值未知", "她是否已有既往胃病史未知"],
+   "protected_expressions": ["越查越慌"],
+   "forbidden_factual_claims": ["不得做医学诊断或断言无需治疗", "不得虚构报告数值"]
+  },
+  "E070_T02": {
+   "case_id": "E070_T02",
+   "current_action": "接住陪诊请求并应下：确认周六上午市一院消化内科的安排，接住豆浆的人情。",
+   "acceptable_actions": [
+    "爽快答应陪诊，确认八点半楼下接人的细节",
+    "答应陪诊并提醒她带上体检报告原件和病历本",
+    "顺豆浆梗接一句，让她别慌，先进诊室再说"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A03",
+     "subject": "SHARED",
+     "relation": "clinic_booking",
+     "value": "她约了周六上午市一院消化内科",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T02", "message_id": "m0", "quote": "约了周六上午市一院消化内科"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A04",
+     "subject": "SHARED",
+     "relation": "escort_arranged",
+     "value": "ME答应八点半到她家楼下接她，陪诊成约",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T02", "message_id": "m0", "quote": "八点半来我家楼下接我"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：答应要快，'陪'字给足，豆浆当玩笑收。",
+   "unknowns": ["挂号具体时段未知", "她是否需要空腹等就诊准备未知"],
+   "protected_expressions": ["八点半来我家楼下接我"],
+   "forbidden_factual_claims": ["不得虚构挂号规则", "不得替她决定是否告知家人"]
+  },
+  "E070_T03": {
+   "case_id": "E070_T03",
+   "current_action": "接住致癌物焦虑：把'分类致癌物'和'确诊癌症'的距离讲清，先摁住恐慌，再认真对待她想拉母亲一起查的念头。",
+   "acceptable_actions": [
+    "解释感染常见且可治，'一类致癌物'不等于得了癌，先别对号入座",
+    "肯定拉母亲一起查的思路，建议等自己就诊后听医生怎么说",
+    "劝她工作时段别再搜病例帖，把疑问攒到周六问医生"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "goal", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A05",
+     "subject": "HER",
+     "relation": "carcinogen_anxiety",
+     "value": "她查到'幽门螺杆菌是一类致癌物'后陷入恐慌",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T03", "message_id": "m0", "quote": "幽门螺杆菌是一类致癌物"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A06",
+     "subject": "THIRD",
+     "relation": "mom_symptom",
+     "value": "她想起母亲常说自己胃胀，考虑拉母亲一起检查",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T03", "message_id": "m0", "quote": "我妈老说胃胀"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：科普用类比不用吓唬，把她'替妈着想'先接住。",
+   "unknowns": ["母亲是否已知情未知", "母亲是否愿意检查未知"],
+   "protected_expressions": ["手一下子就凉了"],
+   "forbidden_factual_claims": ["不得对致癌风险做医学定量判断", "不得替母亲预约检查"]
+  },
+  "E070_T04": {
+   "case_id": "E070_T04",
+   "current_action": "确认她情绪回稳并锁死就诊安排：周六上午九点市一院、八点半楼下接人，把这个安排立成口头的板钉钉。",
+   "acceptable_actions": [
+    "确认时间地点，把'医生说的才算'夸成她自己的进步",
+    "提醒她备好报告与身份证，早上豆浆照带",
+    "建议她当晚早点睡，别再熬夜刷新帖"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A07",
+     "subject": "SHARED",
+     "relation": "visit_confirmed",
+     "value": "就诊定于周六上午九点市一院，ME八点半楼下接人",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T04", "message_id": "m0", "quote": "周六上午九点市一院"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'网上说的不算'归功于她想通了，语气轻。",
+   "unknowns": ["就诊当天的检查项目未知"],
+   "protected_expressions": ["医生说的才算"],
+   "forbidden_factual_claims": ["不得虚构就诊流程细节", "不得预判诊断结果"]
+  },
+  "E070_T05": {
+   "case_id": "E070_T05",
+   "current_action": "第三方插入爆发点：接住她被家族群围观的崩溃，先把'信息已出'的事实钉住（母亲已把报告截图发群），再谈怎么止损，不急着评判她妈。",
+   "acceptable_actions": [
+    "先共情被围观的烦，再问群里都说了什么，摸清口径",
+    "建议她把群消息设免打扰，等医生结论出来一次性回应",
+    "提醒她暂别在群里反驳，避免主观信息继续发酵"
+   ],
+   "applicable_dimensions": ["attribution", "emotion_relation", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A08",
+     "subject": "THIRD",
+     "relation": "mom_forwarded_report",
+     "value": "母亲把她的报告截图转发家族群并向全家征集主意",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T05", "message_id": "m0", "quote": "把我的报告截图发家族群了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A09",
+     "subject": "HER",
+     "relation": "overwhelmed",
+     "value": "姨妈姑妈刷屏二十多条，她被围观到头大",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T05", "message_id": "m0", "quote": "我一个头两个大"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不说'你妈不对'，把焦点放在'接下来怎么接住这件事'。",
+   "unknowns": ["群里二十多条的具体内容未知", "母亲转发前的想法未知"],
+   "protected_expressions": ["我一个头两个大"],
+   "forbidden_factual_claims": ["不得虚构群聊具体发言", "不得替她向母亲兴师问罪"]
+  },
+  "E070_T06": {
+   "case_id": "E070_T06",
+   "current_action": "第三方口径三连爆发：舅舅偏方、母亲退号回老家、全家公筷令；正确归属三方各自的主张，把'信谁'收敛到'先看周六医生怎么说'，守住主诊计划。",
+   "acceptable_actions": [
+    "逐条归位：舅舅说法无凭、母亲熟人方案无诊断依据、公筷是合理习惯，周六就诊照旧",
+    "提醒她回老家看等于推倒重来，先拿到医生方案再对比",
+    "肯定公筷这条合理，建议她顺着公筷接住母亲的好意"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "boundary", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A10",
+     "subject": "THIRD",
+     "relation": "uncle_folk_remedy",
+     "value": "舅舅自称阳性吃两粒药就好，主张不必就医",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T06", "message_id": "m0", "quote": "吃两粒药就好了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A11",
+     "subject": "THIRD",
+     "relation": "mom_redirect",
+     "value": "母亲要求退掉市一院的号，改回老家找熟人主任",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T06", "message_id": "m0", "quote": "让我把市一院的号退了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A12",
+     "subject": "THIRD",
+     "relation": "chopsticks_rule",
+     "value": "母亲宣布全家吃饭必须公筷，并以姥爷旧事为据",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T06", "message_id": "m0", "quote": "以后全家吃饭必须公筷"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A13",
+     "subject": "SHARED",
+     "relation": "clinic_booking",
+     "value": "周六市一院的就诊安排在多方口径冲击下暂时悬置",
+     "valid_time": "2026-11-09/2026-11-13",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E070_T02", "message_id": "m0", "quote": "约了周六上午市一院消化内科"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：对事不对人，把三条口径分开评，公筷单独夸，别让她觉得全家都在跟她作对。",
+   "unknowns": ["舅舅实际治疗经历未知", "老家熟人主任是否真实可靠未知"],
+   "protected_expressions": ["我周六还去吗"],
+   "forbidden_factual_claims": ["不得断言舅舅说法为真或为假的具体疗效", "不得替她决定退不退号"]
+  },
+  "E070_T07": {
+   "case_id": "E070_T07",
+   "current_action": "确认她的决定：号不退、周六照去、对母亲暂缓摊牌；肯定这个次序（先拿医生方案，再对外解释），陪她把群消息的噪音摁下去。",
+   "acceptable_actions": [
+    "肯定'号不退'的次序感，提醒她对妈的话术留余地",
+    "建议她对家族群先静默，等医嘱出来发一张照片最省力",
+    "顺舅舅祖传胃药梗轻吐槽一句，帮她松口气"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A14",
+     "subject": "HER",
+     "relation": "plan_hold",
+     "value": "她决定号不退，周六照常就诊，暂缓向母亲摊牌",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T07", "message_id": "m0", "quote": "号不退，周六照去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A15",
+     "subject": "THIRD",
+     "relation": "mom_redirect",
+     "value": "母亲的退号回老家要求被她暂时搁置未执行",
+     "valid_time": "2026-11-13",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E070_T06", "message_id": "m0", "quote": "让我把市一院的号退了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'搪塞'说成缓兵之计不是撒谎，别让她背着道德包袱。",
+   "unknowns": ["母亲是否会提前查岗未知", "周末加班说辞能否圆上未知"],
+   "protected_expressions": ["我都不敢点开大图"],
+   "forbidden_factual_claims": ["不得虚构她与母亲的后续对话", "不得断言母亲必然接受医嘱"]
+  },
+  "E070_T08": {
+   "case_id": "E070_T08",
+   "current_action": "接住就诊结果：核对她的医嘱理解（两周四联、按时服、服药期戒酒、停药一个月吹气复查、家人查不查自愿），确认无误并肯定她记全了。",
+   "acceptable_actions": [
+    "逐条核对医嘱无误，肯定她把重点都记住了",
+    "提醒她四联药按时按量最关键，手机定闹钟",
+    "把医嘱与家族群口径对表，建议她把医嘱照片发群以正视听"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A16",
+     "subject": "THIRD",
+     "relation": "doctor_orders",
+     "value": "医生建议根除幽门螺杆菌，开两周四联药按时服用",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T08", "message_id": "m1", "quote": "开两周四联药"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A17",
+     "subject": "THIRD",
+     "relation": "alcohol_ban",
+     "value": "医嘱明确服药期间一滴酒不能沾",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T08", "message_id": "m1", "quote": "一滴酒不能沾"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A18",
+     "subject": "THIRD",
+     "relation": "recheck_plan",
+     "value": "医嘱要求停药一个月后复查吹气",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T08", "message_id": "m1", "quote": "停药一个月复查吹气"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A19",
+     "subject": "ME",
+     "relation": "escort_kept",
+     "value": "ME按约八点半到场陪诊，未放鸽子",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T08", "message_id": "m0", "quote": "到楼下了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A20",
+     "subject": "SHARED",
+     "relation": "visit_confirmed",
+     "value": "周六市一院就诊安排如期执行，悬置解除",
+     "valid_time": "2026-11-10/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T04", "message_id": "m0", "quote": "周六上午九点市一院"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：核对医嘱像对质检单，一条条来；夸她记全，功劳给她。",
+   "unknowns": ["具体药名与剂量未知", "脂肪肝是否需要单独处理未知"],
+   "protected_expressions": ["你看我理解得对不对"],
+   "forbidden_factual_claims": ["不得增加医嘱里没有的用药细节", "不得对疗效做保证"]
+  },
+  "E070_T09": {
+   "case_id": "E070_T09",
+   "current_action": "共享医嘱压阵的效果：母亲让步听医生的但加码公筷，舅舅偏方被二姨公开怼；肯定她'一张照片定群'的做法，提醒公筷照办别还嘴。",
+   "acceptable_actions": [
+    "肯定医嘱照片定乾坤，公筷这条顺势收下",
+    "提醒她对妈的'追加一条'爽快答应，别再起争论",
+    "顺二姨怼舅舅的梗接一句，把群里的气捋顺"
+   ],
+   "applicable_dimensions": ["attribution", "interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A21",
+     "subject": "THIRD",
+     "relation": "mom_concede",
+     "value": "母亲表态'那就听医生的'，改口支持医嘱方案",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T09", "message_id": "m0", "quote": "那就听医生的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A22",
+     "subject": "THIRD",
+     "relation": "mom_redirect",
+     "value": "母亲退号回老家找熟人主任的要求就此撤回",
+     "valid_time": "2026-11-13/2026-11-14",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E070_T06", "message_id": "m0", "quote": "让我把市一院的号退了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E070_A23",
+     "subject": "THIRD",
+     "relation": "uncle_remedy_rejected",
+     "value": "舅舅'两粒药'口径在家族群内被二姨公开否定",
+     "valid_time": "2026-11-13/2026-11-14",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E070_T06", "message_id": "m0", "quote": "吃两粒药就好了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把母亲让步说成'她也怕耽误你'，给亲情留台阶。",
+   "unknowns": ["公筷到货时间未知", "母亲是否要求全家查幽门未知"],
+   "protected_expressions": ["你那是仙丹"],
+   "forbidden_factual_claims": ["不得虚构二姨原话之外的群聊内容", "不得断言舅舅已认错"]
+  },
+  "E070_T10": {
+   "case_id": "E070_T10",
+   "current_action": "接住双重处境：服药副作用（苦）与周五烤肉店的戒酒义务相撞；先给'吃药难免'的正常化，再帮她想一个不公开病情的说法。",
+   "acceptable_actions": [
+    "给一个通用说法：在吃胃药医生让忌口，不必展开病情",
+    "提醒她一周四粒的苦是正常反应，按时吃别自行停",
+    "建议她实在不行就推一次聚餐，身体优先"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "boundary", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A24",
+     "subject": "HER",
+     "relation": "med_started",
+     "value": "她开始服药，首顿一次四粒，口感发苦",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T10", "message_id": "m0", "quote": "吃了第一顿"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A25",
+     "subject": "SHARED",
+     "relation": "alcohol_ban",
+     "value": "医嘱的戒酒义务与周五烤肉店聚餐正面相撞",
+     "valid_time": "2026-11-14/2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T08", "message_id": "m1", "quote": "一滴酒不能沾"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E070_A26",
+     "subject": "HER",
+     "relation": "disclosure_dilemma",
+     "value": "她不想当着全组公开治胃，需要一个不撒谎的说法",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T10", "message_id": "m0", "quote": "我总不能当着全组说我在治胃吧"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'吃胃药'这个说法给得坦荡，强调这是选择说多少，不是骗人。",
+   "unknowns": ["聚餐是否可推未知", "同事是否会追问未知"],
+   "protected_expressions": ["嘴里苦了一上午"],
+   "forbidden_factual_claims": ["不得虚构药物名称与疗程长短", "不得替她向同事发声明"]
+  },
+  "E070_T11": {
+   "case_id": "E070_T11",
+   "current_action": "共享聚餐危机化解：组长不劝酒还点果汁；接住母亲每晚视频盯药的严与暖，把分餐执行也确认掉。",
+   "acceptable_actions": [
+    "先恭喜聚餐过关，再接母亲盯药的视频梗",
+    "肯定'胃药忌口'这个说法稳，让她保持疗程",
+    "提醒她公筷到货记得给母亲回张照片，让她放心"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A27",
+     "subject": "THIRD",
+     "relation": "leader_support",
+     "value": "组长得知忌口后不劝酒并给她点了果汁",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T11", "message_id": "m0", "quote": "那你不喝酒我们也不劝"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A28",
+     "subject": "THIRD",
+     "relation": "mom_monitoring",
+     "value": "母亲每晚视频监督她按时吃药",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T11", "message_id": "m0", "quote": "每晚视频盯我吃药"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A29",
+     "subject": "SHARED",
+     "relation": "chopsticks_rule",
+     "value": "全家公筷的要求随到货进入执行阶段",
+     "valid_time": "2026-11-13/2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T06", "message_id": "m0", "quote": "以后全家吃饭必须公筷"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把母亲的严管讲成她的方式，别替苗苗嫌烦。",
+   "unknowns": ["聚餐具体日期与到场人员未知"],
+   "protected_expressions": ["比我爸当年查作业还严"],
+   "forbidden_factual_claims": ["不得虚构组长与同事的更多反应", "不得断言两周疗程必然根除"]
+  },
+  "E070_T12": {
+   "case_id": "E070_T12",
+   "current_action": "接住疗程过半的汇报与烤肉回扣：确认复查安排（停药满一个月吹气）、答应再陪一趟，把'我不喝你随意'接成她的梗，收尾留白。",
+   "acceptable_actions": [
+    "答应复查再陪，把日期先记进自己的日历",
+    "接住烤肉之约，顺着'我不喝你随意'收个轻尾巴",
+    "提一句快递备注里的'按时吃，妈'，让亲情落点轻一点"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E070_A30",
+     "subject": "SHARED",
+     "relation": "recheck_booked",
+     "value": "吹气复查定在停药满一个月，ME将再陪一趟",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T12", "message_id": "m0", "quote": "吹气复查约在停药满一个月"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A31",
+     "subject": "SHARED",
+     "relation": "bbq_promise",
+     "value": "她许诺复查阴性那天请ME吃烤肉，自己只看不喝",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T12", "message_id": "m0", "quote": "我请你吃烤肉"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E070_A32",
+     "subject": "THIRD",
+     "relation": "recheck_plan",
+     "value": "停药一个月复查吹气的医嘱正式落成预约安排",
+     "valid_time": "2026-11-14/2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E070_T08", "message_id": "m1", "quote": "停药一个月复查吹气"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E070_A33",
+     "subject": "HER",
+     "relation": "disclosure_dilemma",
+     "value": "烤肉店不喝酒的开口难题已化解，无需再绕",
+     "valid_time": "2026-11-16/2026-11-18",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E070_T10", "message_id": "m0", "quote": "我总不能当着全组说我在治胃吧"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把'复查'说成下一站，把母女的备注细节轻轻点一下就好。",
+   "unknowns": ["复查具体日期未知", "根除结果未知"],
+   "protected_expressions": ["我不喝，你随意"],
+   "forbidden_factual_claims": ["不得断言复查必然阴性", "不得虚构快递单其他内容"]
+  }
+ }
+}

@@ -1,0 +1,1382 @@
+{
+  "story_id": "E354",
+  "turns": {
+    "E354_T01": {
+      "case_id": "E354_T01",
+      "current_action": "她正式托付周末喂灰灰，报齐时间口径与罐头要求，报酬按群规矩",
+      "acceptable_actions": [
+        "按intent接单＋确认口径（周五晚到周日早、一天两次早七点半晚七点半、拌罐头），顺路一句应下",
+        "接单＋一条执行细节（闹钟定七点二十、到了拍照报平安），接得像排班老手",
+        "简短版：一句“接了”＋复述一个关键参数（早蓝晚绿由T03补，此处先应时间）＋豆浆梗轻接"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T01_A01",
+          "subject": "HER",
+          "relation": "出行计划",
+          "value": "周五（2026-11-06）一早送妈去邻省复查、陪住一晚、周日（2026-11-08）中午前回来",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T01",
+            "message_id": "m0",
+            "quote": "周五一早我送我妈去邻省复查，陪她住一晚，周日中午前回来"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "送我妈去邻省复查"
+            ],
+            [
+              "周日中午前回来"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T01_A02",
+          "subject": "HER",
+          "relation": "喂药委托（核心口径）",
+          "value": "委托周五晚到周日早喂灰灰：一天两次早七点半晚七点半、拌罐头",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T01",
+            "message_id": "m0",
+            "quote": "周五晚到周日早，灰灰的药得劳驾你来喂：一天两次，早七点半晚七点半，都拌在罐头里"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "灰灰的药",
+              "劳驾你来喂"
+            ],
+            [
+              "早七点半晚七点半"
+            ],
+            [
+              "拌在罐头里"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T01_A03",
+          "subject": "SHARED",
+          "relation": "报酬口径（群规矩）",
+          "value": "报酬按群规矩：一杯豆浆外加猫毛若干",
+          "valid_time": "2026-11-05",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T01",
+            "message_id": "m0",
+            "quote": "报酬按群规矩：一杯豆浆，外加猫毛若干"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "一杯豆浆"
+            ],
+            [
+              "猫毛若干"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "intent＝托付喂药——接单要给准话，口径复述一项即可不必全文背诵；“正好顺路”是她给他的台阶，顺接即可别戳破；灰灰十五岁慢性肾病早晚喂药为KB背景（B3判分素材）；群规矩的玩笑（豆浆＋猫毛）接住即是温度。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造群规矩的其他条目（如额外报酬、押金）"
+      ],
+      "may_decline": false
+    },
+    "E354_T02": {
+      "case_id": "E354_T02",
+      "current_action": "深夜年糕呕吐她查了半宿，嘴硬说没事，又叮嘱他明天喂灰灰照旧别分心",
+      "acceptable_actions": [
+        "接行动：给一条可执行的应激观察建议（记录呕吐时间频次、水别断、明早再吐就联系宠物医院）＋应下喂灰灰照旧，不拆穿“没事”",
+        "轻接情绪＋事务各一句（“盯着呢就好——粮先停一顿”）＋明天照旧的确认，量各一句",
+        "如实经验版：说代喂里换粮应激的常规处理（少量多次、禁 Fancy 加餐）＋留一句“阿荞回来看记录”，安抚不说破"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "factuality",
+        "interaction",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T02_A01",
+          "subject": "HER",
+          "relation": "突发与初判",
+          "value": "年糕吐了没消化的粮，她查了半宿，说多半是换粮应激",
+          "valid_time": "2026-11-05",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T02",
+            "message_id": "m0",
+            "quote": "年糕刚吐了，吐的是没消化的粮，查了半宿，说多半是换粮应激"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "年糕刚吐了"
+            ],
+            [
+              "换粮应激"
+            ],
+            [
+              "查了半宿"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T02_A02",
+          "subject": "THIRD",
+          "relation": "外援失联",
+          "value": "阿荞电话打不通（在高铁上）",
+          "valid_time": "2026-11-05",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T02",
+            "message_id": "m0",
+            "quote": "阿荞电话打不通，她在高铁上"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "电话打不通"
+            ],
+            [
+              "在高铁上"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T02_A03",
+          "subject": "HER",
+          "relation": "嘴硬＋叮嘱",
+          "value": "她说没事、盯着它，让他明天喂灰灰照旧别分心",
+          "valid_time": "2026-11-05",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T02",
+            "message_id": "m0",
+            "quote": "没事，我盯着它呢。你明天喂灰灰照旧，别分心"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "没事",
+              "我盯着它"
+            ],
+            [
+              "喂灰灰照旧",
+              "别分心"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "嘴硬信号位：“没事”与查半宿/没睡矛盾——正确读法是看行动（lessons：她说没事的时候看她的行动）；拆穿（“你就是慌了”）＝强行诊断0档；安慰轰炸（连说“别担心”）＝过度安慰1档；正确姿势＝给可执行办法＋应下明天照旧；“多半是应激”是初步判断，坐实“肯定是应激”＝无据。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得坐实“年糕肯定是换粮应激”（“多半”是初判，无诊断）"
+      ],
+      "may_decline": false
+    },
+    "E354_T03": {
+      "case_id": "E354_T03",
+      "current_action": "出门前交付喂药清单：分装四盒早蓝晚绿、罐头只鱼、年糕粮两把别加餐",
+      "acceptable_actions": [
+        "逐条口径确认（早蓝晚绿/只喂鱼罐/一天两把别加餐）＋一句“到点拍照汇报”式的执行承诺",
+        "简短版：确认收到＋一条自己的执行细节（闹钟提前十分钟、进门先看猫状态）",
+        "轻幽默版：接住清单控的颗粒度（“这清单比我们排班表还严”）＋应下所有条目"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "interaction",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T03_A01",
+          "subject": "HER",
+          "relation": "药品分装口径",
+          "value": "灰灰的药分四盒：早蓝晚绿，放冰箱门第二层",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T03",
+            "message_id": "m0",
+            "quote": "灰灰的药我分了四盒，早蓝晚绿，在冰箱门第二层"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "分了四盒"
+            ],
+            [
+              "早蓝晚绿"
+            ],
+            [
+              "冰箱门第二层"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T03_A02",
+          "subject": "HER",
+          "relation": "罐头口径",
+          "value": "罐头只喂鱼的那款，别的口味放着别硬喂",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T03",
+            "message_id": "m0",
+            "quote": "罐头只吃鱼的那款，别的口味放着别硬喂"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "罐头只吃鱼"
+            ],
+            [
+              "别的口味",
+              "别硬喂"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T03_A03",
+          "subject": "HER",
+          "relation": "年糕口径",
+          "value": "年糕粮在阳台柜一天两把，围着转也别加餐",
+          "valid_time": "2026-11-06",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T03",
+            "message_id": "m0",
+            "quote": "年糕的粮在阳台柜，一天两把，它要是围着你转，别惯着加餐"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "粮在阳台柜"
+            ],
+            [
+              "一天两把"
+            ],
+            [
+              "别惯着加餐"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "本轮是喂药说明书——回复确认关键参数即合格，全盘复述＝复读（不扣分但无增益），漏应关键口径（只喂鱼/别加餐）＝弱回复；“别硬喂”“别惯着加餐”两条禁令须接住；此刻她在赶车，回复宜短。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [],
+      "may_decline": false
+    },
+    "E354_T04": {
+      "case_id": "E354_T04",
+      "current_action": "她深夜吐露母亲复查结果不好与阳台站不住的一瞬——全篇最深情绪位",
+      "acceptable_actions": [
+        "接住具体处境：认“长期管着的那种不好”的现实重量＋把主动权还她（不替她慌、不替她决定），一句在场承诺（需要跑腿说一声）",
+        "接她那句“站不住”：回一句落在她自己身上（阳台站不住的那一刻），不解释不分析，轻托底",
+        "简短版：不展开，一句“我在”量级的短接＋不追问（她说不用急着回）"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "boundary",
+        "interaction",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T04_A01",
+          "subject": "HER",
+          "relation": "复查结果（坏消息）",
+          "value": "妈这次复查结果不太好——不是坏得快的那种，是要长期管着的那种",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T04",
+            "message_id": "m0",
+            "quote": "我妈这次复查，结果不太好。不是坏得快的那种不好，是要长期管着的那种不好"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "复查",
+              "结果不太好"
+            ],
+            [
+              "长期管着的那种"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T04_A02",
+          "subject": "HER",
+          "relation": "脆弱瞬间",
+          "value": "她在阳台站了一会儿，想起灰灰也十五岁，忽然有点站不住",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T04",
+            "message_id": "m0",
+            "quote": "我在阳台站了一会儿，想起灰灰也十五了，忽然就有点站不住"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "阳台站了一会儿"
+            ],
+            [
+              "灰灰也十五"
+            ],
+            [
+              "有点站不住"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T04_A03",
+          "subject": "HER",
+          "relation": "节奏设定",
+          "value": "她说“你不用急着回”——不要求即时陪伴回应",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T04",
+            "message_id": "m0",
+            "quote": "跟你说个事，你不用急着回"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你不用急着回"
+            ],
+            [
+              "不用急着回"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "全篇最重情绪位——安慰不越界是判分核心：诊断（“你压力太大了”）、替她做决定（“该请护工/该辞差事”）、泛化安慰（“别想太多/都会好的”）皆1档以下；嘴硬报忧先报喜的人主动报忧＝分量极重，接住具体（长期管着/站不住）才及格；note（在阳台又站十分钟、决定不删不改口气）＝候选不可知，B3用于读她决心；“不用急着回”（protected）——回复宜短不宜重。",
+      "unknowns": [],
+      "protected_expressions": [
+        "你不用急着回"
+      ],
+      "forbidden_factual_claims": [
+        "不得编造复查的病名、指标等医学细节（她只说结果不太好）"
+      ],
+      "may_decline": false
+    },
+    "E354_T05": {
+      "case_id": "E354_T05",
+      "current_action": "只睡四小时的她按清单报三件事，情绪换挡回事务节奏",
+      "acceptable_actions": [
+        "逐条接清单：便便成型应一句、周四陪诊给可搭手处（“要带什么提前说”）、左眼口径应下（拍照不上手），换挡跟上",
+        "清单为主＋结尾一句轻的昨晚承接（“昨晚的话我记着，不多问”量级），不追问",
+        "简短回执版：三件事各一字级确认（好/行/记了）＋一条补位提醒（左眼拍照记得开闪光灯别吓猫——轻幽默落点）"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "factuality",
+        "time_state",
+        "goal",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T05_A01",
+          "subject": "HER",
+          "relation": "身体状态",
+          "value": "昨晚只睡了四个钟头，她说居然不困",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T05",
+            "message_id": "m0",
+            "quote": "昨晚睡了四个钟头，居然不困"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "睡了四个钟头"
+            ],
+            [
+              "居然不困"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T05_A02",
+          "subject": "HER",
+          "relation": "年糕好转",
+          "value": "年糕便便成型了（换粮应激缓解信号）",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T05",
+            "message_id": "m0",
+            "quote": "年糕便便成型了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "便便成型了"
+            ],
+            [
+              "年糕便便"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T05_A03",
+          "subject": "HER",
+          "relation": "陪诊安排",
+          "value": "妈这周四（2026-11-12）约了专科复诊，她陪",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T05",
+            "message_id": "m0",
+            "quote": "我妈这周四约了专科复诊，我陪"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "这周四约了专科复诊"
+            ],
+            [
+              "复诊，我陪"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T05_A04",
+          "subject": "HER",
+          "relation": "观察口径（禁上手）",
+          "value": "喂药期间留意灰灰左眼分泌物：变多拍照发她、别自己上手（猫挠人）",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T05",
+            "message_id": "m0",
+            "quote": "你喂药要是发现灰灰左眼分泌物变多，拍照发我，别自己上手，它挠人"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "左眼分泌物"
+            ],
+            [
+              "拍照发我"
+            ],
+            [
+              "别自己上手"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T05_A05",
+          "subject": "HER",
+          "relation": "复查坏消息（回指T04——换挡起点）",
+          "value": "妈复查结果不好、要长期管着（T04深夜披露，本轮换挡回事务的背景）",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T04",
+            "message_id": "m0",
+            "quote": "我妈这次复查，结果不太好。不是坏得快的那种不好，是要长期管着的那种不好"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "复查",
+              "结果不太好"
+            ],
+            [
+              "长期管着的那种"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "情绪换挡位（style：情绪一上来就转事务话题，越难受越列清单）——正确读法是跟上她的清单节奏，翻旧情绪账追问“昨晚你还好吗”＝追第二层（她撤）；只睡四小时“居然不困”别拆穿（她扛着）；左眼口径两条硬约束（拍照/不上手）须应下；周四＝2026-11-12。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得坐实灰灰左眼已经发炎/有病灶（她只是交代观察口径）"
+      ],
+      "may_decline": false
+    },
+    "E354_T06": {
+      "case_id": "E354_T06",
+      "current_action": "阿荞一句“瘦了”点燃她的委屈，她把付出亮出来又急转事务",
+      "acceptable_actions": [
+        "看见付出：把两页记录三十张照片的价值说出来（“这记录换我群主都得给你发奖”）＋不评阿荞对错＋接事务（记录表他去看）",
+        "把功劳还她＋反问卸火：“五天三十张照片的人，最有资格说瘦没瘦”式＋一句“记录表我已细看，没毛病”",
+        "简短版：一句认付出＋一句务实接（减半把对，记录表收到），委屈不展开不追问"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "interaction",
+        "factuality",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T06_A01",
+          "subject": "THIRD",
+          "relation": "点火句",
+          "value": "阿荞回来进门第一句问“年糕怎么瘦了”",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T06",
+            "message_id": "m0",
+            "quote": "阿荞回来了，进门第一句：年糕怎么瘦了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "进门第一句"
+            ],
+            [
+              "年糕怎么瘦了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T06_A02",
+          "subject": "HER",
+          "relation": "付出清单",
+          "value": "她五天记了两页喂养记录、拍了三十张照片",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T06",
+            "message_id": "m0",
+            "quote": "我五天两页喂养记录三十张照片，换来一句瘦了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "五天两页喂养记录"
+            ],
+            [
+              "三十张照片"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T06_A03",
+          "subject": "HER",
+          "relation": "半句委屈（嘴硬收口）",
+          "value": "她说“我不是气她，我就是……算了”",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T06",
+            "message_id": "m0",
+            "quote": "我不是气她，我就是……算了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "我不是气她"
+            ],
+            [
+              "我就是",
+              "算了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T06_A04",
+          "subject": "HER",
+          "relation": "事务收口",
+          "value": "换粮的量她减了半把，记录表发群里了",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T06",
+            "message_id": "m0",
+            "quote": "换粮的量我减了半把，记录表发群里了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "减了半把"
+            ],
+            [
+              "记录表发群里了"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "委屈位正确动作＝回应具体处境＋把功劳还她（rubric 2档）；替她骂阿荞＝拱火越界；“你就是气她”＝拆穿（她已说不是气她，且拆穿让她的“算了”接不下去）；安慰轰炸（“她不懂事你别往心里去”）＝泛安慰1档；她已自转事务（减量/发记录表），回复落点跟着回事务最稳。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造阿荞的其他言行（如道歉、解释）",
+        "不得坐实年糕真的瘦了或没瘦（阿荞观感未核实）"
+      ],
+      "may_decline": false
+    },
+    "E354_T07": {
+      "case_id": "E354_T07",
+      "current_action": "她宣布停机两天、群里的事找阿荞——合法暂停轮（may_decline=true）",
+      "acceptable_actions": [
+        "may_decline合法不回（她说别找我、手机充电——不回即不越界）",
+        "极简回执：“行，充电吧。周四号挂上了就行。”——不追问不派活，一句话让出空间",
+        "行动式短回：不回信息，周四/周六喂药照排（用行动接住），回复仅一句“班我盯着”"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "goal",
+        "interaction",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T07_A01",
+          "subject": "HER",
+          "relation": "合法暂停宣告",
+          "value": "她宣布这两天不回消息、群里的事直接找阿荞",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T07",
+            "message_id": "m0",
+            "quote": "这两天群里的事你直接找阿荞，别找我"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "直接找阿荞"
+            ],
+            [
+              "群里的事",
+              "别找我"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T07_A02",
+          "subject": "HER",
+          "relation": "状态自陈（非生气）",
+          "value": "手机在玄关充电，人在玄关沙发躺着——没生气，电用完了，充上再说",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T07",
+            "message_id": "m0",
+            "quote": "手机在玄关充电，人在玄关沙发躺着。没生气，就是电用完了，充上再说"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "手机在玄关充电"
+            ],
+            [
+              "电用完了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T07_A03",
+          "subject": "HER",
+          "relation": "顺带好消息与道谢",
+          "value": "妈周四（2026-11-12）的专科号挂上了，她道谢",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T07",
+            "message_id": "m0",
+            "quote": "我妈周四的专科号挂上了，谢了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "专科号挂上了"
+            ],
+            [
+              "挂上了，谢了"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "lessons：她关机的时候不追——此轮追问原因/连环关心/塞新事＝全部判低；intent＝告知不回消息不是生气，回复（若有）须确认收到即可；“没生气，就是电用完了”信一半即可，别追问到底怎么了；intent方向：decline式自处——候选取不回或极简皆合法（may_decline=true）。",
+      "unknowns": [],
+      "protected_expressions": [
+        "别找我"
+      ],
+      "forbidden_factual_claims": [
+        "不得追问她停机的真实原因（她说充上再说）"
+      ],
+      "may_decline": true
+    },
+    "E354_T08": {
+      "case_id": "E354_T08",
+      "current_action": "充电归来道谢“没追过来问”，报灰灰好转并定下喂药规矩留用，豆浆到驿站",
+      "acceptable_actions": [
+        "轻接道谢（“没追是因为知道你会回来”式一句）＋灰灰好消息接住＋规矩留用应下",
+        "认规矩＋主动续班（下个月复查周喂药他接着排）＋豆浆梗收口（按群规矩收到）",
+        "简短版：一句谢接一句谢（她的谢他收，他的谢轻放）＋豆浆取件确认，不重提停机两天"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "interaction",
+        "factuality",
+        "memory_use",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T08_A01",
+          "subject": "HER",
+          "relation": "对合法暂停的确认",
+          "value": "她谢他那天没追过来问（T07暂停被正确对待）",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T08",
+            "message_id": "m0",
+            "quote": "谢谢你那天没追过来问"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "谢谢你那天",
+              "没追过来问"
+            ],
+            [
+              "没追过来问"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T08_A02",
+          "subject": "HER",
+          "relation": "灰灰好转",
+          "value": "灰灰这两天精神头回来了",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T08",
+            "message_id": "m0",
+            "quote": "灰灰这两天精神头回来了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "灰灰这两天",
+              "精神头回来了"
+            ],
+            [
+              "精神头回来了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T08_A03",
+          "subject": "HER",
+          "relation": "规矩留用",
+          "value": "分装盒早蓝晚绿的规矩留着，下个月（2026-12）复查周接着用",
+          "valid_time": "2026-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T08",
+            "message_id": "m0",
+            "quote": "分装盒早蓝晚绿的规矩我留着，下个月复查周接着用"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "早蓝晚绿的规矩"
+            ],
+            [
+              "下个月复查周"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T08_A04",
+          "subject": "HER",
+          "relation": "报酬兑现",
+          "value": "豆浆今天放驿站了，取件码微信发他",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T08",
+            "message_id": "m0",
+            "quote": "豆浆今天放驿站了，取件码微信发你"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "豆浆",
+              "放驿站"
+            ],
+            [
+              "取件码微信发你"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T08_A05",
+          "subject": "HER",
+          "relation": "停机宣告（回指T07——道谢所指）",
+          "value": "她宣布两天不回消息、群里的事找阿荞（T07，本轮“那天没追”的所指）",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T07",
+            "message_id": "m0",
+            "quote": "这两天群里的事你直接找阿荞，别找我"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "直接找阿荞"
+            ],
+            [
+              "群里的事",
+              "别找我"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "她的谢是对“没追”的验收——回复若重提停机细节（“你那天到底怎么了”）＝追第二层，判低；正确姿态＝认谢不居功；规矩留用与复查周是续班钩，接住即可；豆浆取件码她说微信发，此刻还没有码，不得编码；T03早蓝晚绿口径与此处一致（T08 restated，无需required）。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造取件码数字或“已取件”状态"
+      ],
+      "may_decline": false
+    },
+    "E354_T09": {
+      "case_id": "E354_T09",
+      "current_action": "专科方案落定后她列三本账，正经求问排班办法——“我只要办法，不要安慰”",
+      "acceptable_actions": [
+        "给可操作排班法：主班＋备份班双层（每本账一个备份人）、交接清单、固定提醒三件套——落到她三本账逐条说",
+        "用自己真实做法举例＋指出适用项（“我从不开锅靠的是替班先说好＋当天确认一条收到”）＋主动兜底一环（灰灰那页出问题直接找他）",
+        "先问一句最怕断哪环再给方案（问完就给、带着默认方案问），澄清也是办法导向"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "emotion_relation",
+        "factuality",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T09_A01",
+          "subject": "HER",
+          "relation": "专科方案",
+          "value": "妈专科看完：先吃药观察三个月、一月底（2027-01）再复查",
+          "valid_time": "2027-01",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T09",
+            "message_id": "m0",
+            "quote": "方案是先吃药观察三个月，一月底再复查"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "先吃药观察三个月"
+            ],
+            [
+              "一月底再复查"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T09_A02",
+          "subject": "HER",
+          "relation": "三本账结构",
+          "value": "她照排班的样子列三本账：妈的药一页、灰灰的喂药一页、年糕的粮一页",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T09",
+            "message_id": "m0",
+            "quote": "我妈的药一页，灰灰的喂药一页，年糕的粮一页，三本账"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "三本账",
+              "药一页"
+            ],
+            [
+              "妈的药一页"
+            ],
+            [
+              "灰灰的喂药一页"
+            ],
+            [
+              "年糕的粮一页"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T09_A03",
+          "subject": "HER",
+          "relation": "办法请求（具体化关心位主判点）",
+          "value": "她正经发问：代喂那么多单怎么排得从不开锅——只要办法不要安慰",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T09",
+            "message_id": "m0",
+            "quote": "你代喂那么多单，班是怎么排得从不开锅的？我只要办法，不要安慰"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "排得从不开锅"
+            ],
+            [
+              "我只要办法",
+              "不要安慰"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "全篇核心判别位：“我只要办法，不要安慰”——安慰话（你已经很不容易了/别太累）出现即本轮判低；note说明这三个字不是冲他——不必自辩不必慌；她把三本账亮出来了，办法要接这三本账的具体结构，泛泛“列清单就好”＝复读她的话1档；专科方案口径：吃药观察三个月＋一月底复查＝2027-01底；办法给的是机制（备份/确认/交接），不是空泛鼓励。",
+      "unknowns": [],
+      "protected_expressions": [
+        "不要安慰"
+      ],
+      "forbidden_factual_claims": [
+        "不得编造“从不开锅”的具体次数或统计数据"
+      ],
+      "may_decline": false
+    },
+    "E354_T10": {
+      "case_id": "E354_T10",
+      "current_action": "三本账见效，她晒进展与病号护工段子——回暖轻快轮",
+      "acceptable_actions": [
+        "接梗还功：“账是你自己列的，顶用的是你”式把功劳还她＋顺一句年糕通缉令轻玩笑",
+        "接梗＋问一句妈的状态（“药盒都自己排了，看来精神不错”）——关心具体化＋正向",
+        "简短接梗＋“逍遥法外的粮你管，护工的班我兜”式接一点实差（轻承诺）"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "emotion_relation",
+        "initiative",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T10_A01",
+          "subject": "HER",
+          "relation": "病情进展",
+          "value": "灰灰今天吃了整罐",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T10",
+            "message_id": "m0",
+            "quote": "今天灰灰吃了整罐"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "灰灰吃了",
+              "整罐"
+            ],
+            [
+              "吃了整罐"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T10_A02",
+          "subject": "HER",
+          "relation": "家庭进展",
+          "value": "妈把药盒按早中晚排得比她还齐，夸她比小学整理书包那会儿强",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T10",
+            "message_id": "m0",
+            "quote": "我妈把她的药盒按早中晚排得比我还齐，说我比小学整理书包那会儿强多了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "按早中晚排"
+            ],
+            [
+              "比小学整理书包"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T10_A03",
+          "subject": "HER",
+          "relation": "段子（情绪回暖信号）",
+          "value": "她自嘲“三个病号两个护工，就年糕一个逍遥法外”",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T10",
+            "message_id": "m0",
+            "quote": "我们家现在三个病号两个护工，就年糕一个逍遥法外"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "三个病号两个护工"
+            ],
+            [
+              "逍遥法外"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "回暖轮——她主动晒进展与段子，回复跟着轻快走，翻旧担忧（“你妈没事吧”式沉重）＝错位；玩笑顺着病号护工框架玩可以，但别新增拿妈的病开的玩笑（情绪位不抖机灵素材化）；把功劳还她（三本账是她自己列的）是2档关键动作；此处她情绪好，不需要安慰。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [],
+      "may_decline": false
+    },
+    "E354_T11": {
+      "case_id": "E354_T11",
+      "current_action": "她翻出他喂药那天崴脚的旧观察，寄绷带叮嘱别硬扛——关心反向流动",
+      "acceptable_actions": [
+        "认观察＋如实交代（膝盖当时硌了一下/旧伤不碍事——如实口径）＋谢绷带收下，不装没事拒绝心意",
+        "认观察＋轻自嘲还礼（“扛功力确实比你浅”）＋答应绷带用上拍照汇报——接她的关心方式（具体＋可核）",
+        "如实没事版：如实说那天崴了下已经好了＋绷带照收（“以备我下次真摔”式），不否定她的观察"
+      ],
+      "applicable_dimensions": [
+        "emotion_relation",
+        "interaction",
+        "factuality",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T11_A01",
+          "subject": "ME",
+          "relation": "她的观察（他未提过的细节）",
+          "value": "她观察到他喂药那天蹲下放猫粮时咝了一声、走时脚步有点跛（当时赶时间没顾上问）",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T11",
+            "message_id": "m0",
+            "quote": "蹲下放猫粮的时候咝了一声，走的时候脚步也有点跛"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "咝了一声"
+            ],
+            [
+              "脚步也有点跛"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T11_A02",
+          "subject": "HER",
+          "relation": "绷带寄递",
+          "value": "弹性绷带一卷未拆封（阿荞塞给她的）已放驿站、取件码刚发",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T11",
+            "message_id": "m0",
+            "quote": "弹性绷带一卷，未拆封，阿荞塞给我的，我给你放驿站了，取件码刚发你"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "弹性绷带一卷"
+            ],
+            [
+              "一卷，未拆封"
+            ],
+            [
+              "阿荞塞给我"
+            ],
+            [
+              "取件码刚发你"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T11_A03",
+          "subject": "HER",
+          "relation": "叮嘱",
+          "value": "她说“别学我硬扛”",
+          "valid_time": "2026-11-19",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T11",
+            "message_id": "m0",
+            "quote": "别学我硬扛"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "别学我硬扛"
+            ],
+            [
+              "学我硬扛"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "她记住的是他没说的细节（style：对猫对人都上心）——回复先认她的眼力再交代身体，直接“没事”两个字＝没接住；绷带取件码她说刚发，不得编码号；ME膝盖实情由回复自定，但不得斥她“看错了”；“别学我硬扛”是她把自己当反面教材，接一句就行别说教；关心流动是双向的，此轮测他接她关心的姿态。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造取件码数字或已取件状态"
+      ],
+      "may_decline": false
+    },
+    "E354_T12": {
+      "case_id": "E354_T12",
+      "current_action": "十二月长差要整托灰灰，她给出上半月/下半月分工方案并把决定权交他",
+      "acceptable_actions": [
+        "给准话接方案——答应上半月（或按自己节奏给可行区间）＋咖啡记账梗接住，不装大包大揽整托",
+        "答应＋补一个交接细节（钥匙/喂药蓝绿盒照旧/她出差前对一次表），应得像当事人",
+        "如实接不了：如实说上半月有几天不行＋给可替代日（不空承诺），让她安心推差"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "interaction",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E354_T12_A01",
+          "subject": "HER",
+          "relation": "长差需求",
+          "value": "十二月她出长差前后二十来天，灰灰需整托",
+          "valid_time": "2026-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T12",
+            "message_id": "m0",
+            "quote": "十二月我要出趟长差，前后二十来天，灰灰得整托"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "出趟长差"
+            ],
+            [
+              "前后二十来天"
+            ],
+            [
+              "灰灰得整托"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T12_A02",
+          "subject": "HER",
+          "relation": "分工方案（她的单方安排）",
+          "value": "上半月托他、下半月托阿荞（阿荞是否答应未证实）",
+          "valid_time": "2026-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T12",
+            "message_id": "m0",
+            "quote": "上半月托你，下半月托阿荞"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "上半月托你"
+            ],
+            [
+              "下半月托阿荞"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T12_A03",
+          "subject": "HER",
+          "relation": "报酬口径",
+          "value": "两人咖啡按顿记账月底一起结",
+          "valid_time": "2026-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T12",
+            "message_id": "m0",
+            "quote": "你俩的咖啡我按顿记账，月底一起结"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "咖啡",
+              "按顿记账"
+            ],
+            [
+              "月底一起结"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E354_T12_A04",
+          "subject": "HER",
+          "relation": "决定权交接",
+          "value": "行不行他说了算；不行她就推一半差",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E354_T12",
+            "message_id": "m0",
+            "quote": "行不行你说了算，不行我就把差推一半"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你说了算"
+            ],
+            [
+              "把差推一半"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“行不行你说了算”——必须给决定（行/部分行/不行＋方案），含糊“再说”＝违背intent判低；她已备好退路（推一半差），别劝她“别推差”（替她决定0档）；note面：下半月托阿荞只是她的方案，阿荞是否答应未证实（unknown），不得替她打包票；may_decline＝true，但她给的是真请求，回或短答更稳；KB：他代喂排班最稳、周末常跑步——决策素材可用不必复述。",
+      "unknowns": [
+        {
+          "topic": "阿荞是否已答应十二月下半月接托",
+          "note": "她只说“下半月托阿荞”，是她的单方方案；不得替她坐实阿荞已应",
+          "markers": [
+            [
+              "阿荞",
+              "答应了"
+            ],
+            [
+              "阿荞",
+              "同意接"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "阿荞",
+              "答应了"
+            ],
+            [
+              "阿荞",
+              "同意接"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得替阿荞承诺接手下半月"
+      ],
+      "may_decline": true
+    }
+  }
+}

@@ -1,0 +1,957 @@
+{
+ "story_id": "E109",
+ "turns": {
+  "E109_T01": {
+   "case_id": "E109_T01",
+   "current_action": "接住她的包车求助，把自己常坐的小雷师傅介绍出去，同时把丑话说在前头：价钱他自己谈，人情只到介绍为止。",
+   "acceptable_actions": [
+    "把小雷的联系方式推给她，附一句'价你自己谈，我不过手'",
+    "先问清周六几点出发、几个坛子几件行李，再推人并提醒提前说清需求",
+    "推荐之余打个预防针：小雷只收市场价，别指望熟人折扣"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A01",
+     "subject": "SHARED",
+     "relation": "transport_need",
+     "value": "她周六要送父母和腌菜坛子辣酱回县城，行李超出自家小车",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T01",
+      "message_id": "m0",
+      "quote": "送我爸妈回县城，两坛腌菜一坛辣酱"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A02",
+     "subject": "HER",
+     "relation": "charter_intent",
+     "value": "她决定包车并向 ME 求推荐靠谱师傅",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T01",
+      "message_id": "m0",
+      "quote": "我想包个车，你有靠谱的师傅吗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A03",
+     "subject": "ME",
+     "relation": "known_driver",
+     "value": "老唐有常坐的包车师傅小雷，为人实在只收市场价",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "常年坐包车师傅小雷的车"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：介绍得爽快，规矩放在推荐后面一条带过，别像立条约。",
+   "unknowns": [
+    "周六具体出发时间未说",
+    "师傅当日是否有档期未知"
+   ],
+   "protected_expressions": [
+    "你有靠谱的师傅吗"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小雷的报价与档期",
+    "不得替小雷承诺折扣或增值服务"
+   ]
+  },
+  "E109_T02": {
+   "case_id": "E109_T02",
+   "current_action": "接住她加上微信后的比价动作：报价与询问集合时间都属正常流程，轻轻垫一句小雷的价一向实在，别把她要压价这件事直接批评掉。",
+   "acceptable_actions": [
+    "肯定她行动快，顺带说明八百在小雷那里就是实价",
+    "提醒她把坛子数量和行李说清楚，免得当天车型不对",
+    "预告一句：要是压不下来也别硬压，熟人生意留余地"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A04",
+     "subject": "SHARED",
+     "relation": "contact_shared",
+     "value": "ME 已把小雷的微信推给她并加上好友",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T02",
+      "message_id": "m0",
+      "quote": "你把小雷师傅微信推我啦？我加上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A05",
+     "subject": "THIRD",
+     "relation": "quote_price",
+     "value": "小雷报价八百跑一趟县城并询问出发集合时间",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T02",
+      "message_id": "m0",
+      "quote": "报价八百跑一趟县城"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A06",
+     "subject": "HER",
+     "relation": "bargaining_start",
+     "value": "她打算先压一百再考虑接受市场价",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T02",
+      "message_id": "m0",
+      "quote": "我先压他一百试试水"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把压价当她的习惯动作看待，不嘲讽也不纵容，信息给足让她自己收手。",
+   "unknowns": [
+    "小雷是否接受议价未知",
+    "当天车型与后备箱容量未知"
+   ],
+   "protected_expressions": [
+    "我先压他一百试试水"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言八百一定是市场最低价",
+    "不得虚构平台价做对比数字"
+   ]
+  },
+  "E109_T03": {
+   "case_id": "E109_T03",
+   "current_action": "面对借人情压价的请求：温和拒绝——自己是介绍人不是担保人，替她砍价等于拿交情抵押；把'回程空放'当成行情信息递给她。",
+   "acceptable_actions": [
+    "明确不出面砍价，说明小雷的回程空放是行业常规成本",
+    "建议她把还价换成谈服务，比如让师傅帮搬坛子",
+    "点破：抹的零头最后会变成她欠的人情，不划算"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A07",
+     "subject": "THIRD",
+     "relation": "price_held",
+     "value": "压价未成，小雷坚持八百不以熟人关系让步",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T03",
+      "message_id": "m0",
+      "quote": "一口咬死八百"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A08",
+     "subject": "THIRD",
+     "relation": "empty_return_reason",
+     "value": "小雷以回程空放为由说明报价无法再低",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T03",
+      "message_id": "m0",
+      "quote": "回程还得空放"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A09",
+     "subject": "HER",
+     "relation": "proxy_haggling_request",
+     "value": "她请 ME 以老熟人身份出面抹零头",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T03",
+      "message_id": "m0",
+      "quote": "你是老熟人了，让他给抹个零头"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A10",
+     "subject": "HER",
+     "relation": "bargaining_pressure",
+     "value": "她此前已试压价一百未果，本轮升级为借 ME 人情压价",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T02",
+      "message_id": "m0",
+      "quote": "我先压他一百试试水"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：拒绝要带理由不带火气，把行情知识当成给她递台阶而不是说教。",
+   "unknowns": [
+    "小雷是否愿以服务抵让利未知"
+   ],
+   "protected_expressions": [
+    "你是老熟人了，让他给抹个零头"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构空放费的行业统一价目",
+    "不得替小雷表态会降价或不让价"
+   ]
+  },
+  "E109_T04": {
+   "case_id": "E109_T04",
+   "current_action": "面对定金经手的请求：守住不经手钱款的旧规，明确拒绝中转——钱走得越干净，介绍人的信用越经用；同时给她直接转账的具体托底办法。",
+   "acceptable_actions": [
+    "明确拒绝代转，建议她转账时备注行程与日期，双方各留凭证",
+    "把拒绝的原因说透：经手钱款等于替人背书，出了纠纷两头难",
+    "给她一个替代：让小雷发收款码，付款前确认车型与时间"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A11",
+     "subject": "HER",
+     "relation": "money_relay_request",
+     "value": "她提议定金经 ME 账户中转给小雷",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T04",
+      "message_id": "m0",
+      "quote": "定金从我卡里转给你，你转给小雷师傅"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A12",
+     "subject": "HER",
+     "relation": "trust_gap",
+     "value": "她与小雷未熟到直接转账，想借 ME 的信用过渡",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T04",
+      "message_id": "m0",
+      "quote": "我跟他还没熟到直接打钱的份上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A13",
+     "subject": "ME",
+     "relation": "non_handling_rule",
+     "value": "老唐的既有规矩是介绍归介绍，价钱和钱款从不经手",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "价钱和钱款从不经手"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：拒绝这句要干脆，理由放后面，别让她觉得是被防着。",
+   "unknowns": [
+    "小雷的收款方式未确认"
+   ],
+   "protected_expressions": [
+    "我跟他还没熟到直接打钱的份上"
+   ],
+   "forbidden_factual_claims": [
+    "不得答应代收代转任何款项",
+    "不得虚构小雷与 ME 之间的资金往来习惯"
+   ]
+  },
+  "E109_T05": {
+   "case_id": "E109_T05",
+   "current_action": "接住她嘴硬又好奇的转弯：先笑纳她的打趣，再把规矩的道理摆开——不代砍价是怕拿交情压人，不经手钱是怕说不清；不指望她立刻服气。",
+   "acceptable_actions": [
+    "把规矩拆成两条讲：介绍不背书，钱款不过手，各管各的风险",
+    "顺着她的玩笑接一句，再把'留截图'夸成聪明做法",
+    "不展开长篇道理，留一句'到时候你自己就懂了'收住"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A14",
+     "subject": "HER",
+     "relation": "relay_retracted",
+     "value": "资金经手请求被拒后她接受自己转账并留截图",
+     "valid_time": "2026-11-02",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T05",
+      "message_id": "m0",
+      "quote": "我自己转，大不了我留好截图"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A15",
+     "subject": "HER",
+     "relation": "rules_curiosity",
+     "value": "她主动询问 ME 规矩背后的道理",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T05",
+      "message_id": "m0",
+      "quote": "是怕麻烦还是怕担责任"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A16",
+     "subject": "HER",
+     "relation": "teasing",
+     "value": "她以规矩多过她爸打趣 ME",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T05",
+      "message_id": "m0",
+      "quote": "你这人规矩比我家我爸还多"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：讲道理点到为止，她肯自己转账就是台阶，别追着要她表态认同。",
+   "unknowns": [
+    "她是否真听进去未知"
+   ],
+   "protected_expressions": [
+    "是怕麻烦还是怕担责任"
+   ],
+   "forbidden_factual_claims": [
+    "不得把她父亲的规矩当真事展开",
+    "不得声称自己的规矩绝对正确"
+   ]
+  },
+  "E109_T06": {
+   "case_id": "E109_T06",
+   "current_action": "接住她对空放费的怀疑：先给行情判断——回程空放收费常见，尤其这个点跑县城；再把她的'看人下菜'往'要不要写清楚'上引。",
+   "acceptable_actions": [
+    "肯定空放费有依据，建议她把来回总价一次性谈死",
+    "把比高铁贵这件事分开看：门到门、拉货带老人，本就不是同类商品",
+    "提醒她可以问小雷能否拼上回程客人摊薄成本"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A17",
+     "subject": "SHARED",
+     "relation": "deal_with_surcharge",
+     "value": "谈定八百包送，回程空放段由她承担，来回共一千一",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T06",
+      "message_id": "m0",
+      "quote": "把回程那一半也包了，等于来回一千一"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A18",
+     "subject": "HER",
+     "relation": "surcharge_distrust",
+     "value": "她怀疑空放费是看人下菜想多赚",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T06",
+      "message_id": "m0",
+      "quote": "是不是看我人生地不熟想多赚"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A19",
+     "subject": "THIRD",
+     "relation": "empty_return_origin",
+     "value": "空放费议题最早源于小雷对这个点跑县城回程的说明",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T03",
+      "message_id": "m0",
+      "quote": "说这个点跑县城回程还得空放"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：先接住'贵'的感受再讲行情，别让她觉得自己被师傅当傻子还无人撑腰。",
+   "unknowns": [
+    "回程能否拼客未知",
+    "高铁加接驳的总价未核实"
+   ],
+   "protected_expressions": [
+    "是不是看我人生地不熟想多赚"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言空放费全国统一标准",
+    "不得认定小雷没有多赚或一定多赚"
+   ]
+  },
+  "E109_T07": {
+   "case_id": "E109_T07",
+   "current_action": "共享她的进展：总包价落定、师傅主动问搬坛子；点出'写死总价'这步走对了，师傅的主动也是好信号。",
+   "acceptable_actions": [
+    "肯定她把口头价落成一条总包价的做法",
+    "顺着'帮忙搬坛子'建议她当天备两双劳保手套",
+    "调侃一句'行情判读员光荣下岗'，把气氛放松"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A20",
+     "subject": "SHARED",
+     "relation": "total_price_confirmed",
+     "value": "小雷把来回一千一写成一条总包价发给她",
+     "valid_time": "2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T07",
+      "message_id": "m0",
+      "quote": "把来回一千一写成一条总包价发我"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A21",
+     "subject": "THIRD",
+     "relation": "loading_offer",
+     "value": "小雷主动提出帮忙把坛子搬上车",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T07",
+      "message_id": "m0",
+      "quote": "坛子要不要帮着搬上车"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A22",
+     "subject": "HER",
+     "relation": "trust_thawing",
+     "value": "她对师傅的印象由疑转暖",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T07",
+      "message_id": "m0",
+      "quote": "这师傅人好像还行"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把功劳记在她自己会谈上，师傅的好只轻轻印证，别抢戏。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这师傅人好像还行"
+   ],
+   "forbidden_factual_claims": [
+    "不得替小雷保证当天一定帮忙搬运",
+    "不得虚构总包价的条款细节"
+   ]
+  },
+  "E109_T08": {
+   "case_id": "E109_T08",
+   "current_action": "接住行李变数：缝纫机加入后总量翻倍，第一时间告知师傅是对的——车型不匹配当场抓瞎才是大麻烦；催她今晚就发消息。",
+   "acceptable_actions": [
+    "明确支持今晚就说，别攒到早上让师傅措手不及",
+    "提醒她跟师傅确认车型和后备箱或第三排能否放平",
+    "顺带问一句缝纫机能不能拆件，给师傅留装载余地"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A23",
+     "subject": "SHARED",
+     "relation": "cargo_change",
+     "value": "父亲临时增加旧缝纫机随行送修",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T08",
+      "message_id": "m0",
+      "quote": "把他那台老缝纫机也捎回去给我姑修"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A24",
+     "subject": "HER",
+     "relation": "capacity_worry",
+     "value": "她担心两个老人五个坛子一台缝纫机塞不下",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T08",
+      "message_id": "m0",
+      "quote": "我担心塞不下"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A25",
+     "subject": "HER",
+     "relation": "timing_dilemma",
+     "value": "她在纠结当晚还是明早告知师傅",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T08",
+      "message_id": "m0",
+      "quote": "今晚要不要跟小雷师傅说一声"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A26",
+     "subject": "SHARED",
+     "relation": "cargo_origin",
+     "value": "腌菜坛子早在包车需求确立时就是主要行李",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T01",
+      "message_id": "m0",
+      "quote": "两坛腌菜一坛辣酱"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：催她今晚说，理由讲成'给师傅留出办法的时间'，不吓唬。",
+   "unknowns": [
+    "小雷当晚是否在线未知",
+    "缝纫机具体尺寸未知",
+    "T08 起坛子由 3 个变 5 个，可读作后续补购但未明写，评审从宽"
+   ],
+   "protected_expressions": [
+    "今晚要不要跟小雷师傅说一声"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构七座车的具体装载能力",
+    "不得断言师傅一定能换车"
+   ]
+  },
+  "E109_T09": {
+   "case_id": "E109_T09",
+   "current_action": "共享出发时刻：换车、卸踏板、毛巾隔坛子，师傅把活儿想在了她前头；简短送行，不啰嗦新建议。",
+   "acceptable_actions": [
+    "夸师傅想得周到，祝一路顺利，不再添加事项",
+    "提醒她到地方给师傅留个路费结算的凭证截图",
+    "接住'回头见'，约她回来哪天报个平安"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A27",
+     "subject": "THIRD",
+     "relation": "vehicle_swap",
+     "value": "小雷改派小舅子的七座MPV出车",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T09",
+      "message_id": "m0",
+      "quote": "换了他小舅子的七座MPV来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A28",
+     "subject": "THIRD",
+     "relation": "loading_solution",
+     "value": "缝纫机卸踏板平放、坛子用旧毛巾隔开的装载方案",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T09",
+      "message_id": "m0",
+      "quote": "缝纫机踏板卸了能平放"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A29",
+     "subject": "SHARED",
+     "relation": "trip_started",
+     "value": "她已上车出发",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T09",
+      "message_id": "m0",
+      "quote": "我上车了，回头见"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：送行要短，她此刻要的是'有人知道我出发了'，不是攻略。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我上车了，回头见"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构县城路况与到达时间",
+    "不得替师傅承诺回程安排"
+   ]
+  },
+  "E109_T10": {
+   "case_id": "E109_T10",
+   "current_action": "接住她到家后的又囧又暖：师傅对老唐介绍的人不亏待，她为压价臊得慌；把这份不好意思接住并点破——师傅记的是介绍人的账，不是她压价的账。",
+   "acceptable_actions": [
+    "替师傅的话顺一句：他把介绍人当信用，对生熟一个价",
+    "帮她把'臊'翻篇：行情问清楚不算失礼，借人压价才是",
+    "问她爸妈和坛子都安置好了没，把话题落到人身上"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A30",
+     "subject": "SHARED",
+     "relation": "trip_completed",
+     "value": "县城行程顺利结束，师傅帮着把坛子搬下车",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T10",
+      "message_id": "m0",
+      "quote": "帮我把五个坛子一个个搬下去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A31",
+     "subject": "THIRD",
+     "relation": "loyalty_statement",
+     "value": "小雷表示对老唐介绍的人从不亏待",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T10",
+      "message_id": "m0",
+      "quote": "你那同学老唐介绍的人他从来不亏待"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A32",
+     "subject": "HER",
+     "relation": "haggling_regret",
+     "value": "她为先前压价之举感到不好意思",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T10",
+      "message_id": "m0",
+      "quote": "臊得我脚趾抠地"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A33",
+     "subject": "HER",
+     "relation": "proxy_request_revisited",
+     "value": "她曾请 ME 出面压价的请求在事后显得失礼",
+     "valid_time": "2026-11-02/2026-11-07",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T03",
+      "message_id": "m0",
+      "quote": "你是老熟人了，让他给抹个零头"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把她的'臊'轻轻揭过去，重点放在师傅维护的是介绍信用这件事。",
+   "unknowns": [],
+   "protected_expressions": [
+    "臊得我脚趾抠地"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小雷与老唐之间的私下对话",
+    "不得断言师傅以后永远不涨价"
+   ]
+  },
+  "E109_T11": {
+   "case_id": "E109_T11",
+   "current_action": "接住她用八个字总结规矩：介绍归介绍，担保归担保；确认这套分工并把它说成两个人都省心的成交。",
+   "acceptable_actions": [
+    "肯定她的总结到位，把分工复述一遍：人名我出，其余你自理",
+    "顺着说这就是老同学之间能长久借力的原因",
+    "留一个口子：真遇到扯不清的纠纷，随时来问我行情，但钱我不碰"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A34",
+     "subject": "SHARED",
+     "relation": "boundary_consensus",
+     "value": "共识形成：介绍归介绍，担保归担保",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T11",
+      "message_id": "m0",
+      "quote": "介绍归介绍，担保归担保"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A35",
+     "subject": "HER",
+     "relation": "division_of_labor",
+     "value": "分工确定：ME 只出人名，谈价付钱她自理",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T11",
+      "message_id": "m0",
+      "quote": "你只管把人名给我"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A36",
+     "subject": "SHARED",
+     "relation": "rule_echo",
+     "value": "她的八字总结与老唐不经手钱款的旧规完全一致",
+     "valid_time": "长期/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "介绍归介绍，担保归担保"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：成交感说轻一点，重点是她自己想通的，不是被说服的。",
+   "unknowns": [],
+   "protected_expressions": [
+    "介绍归介绍，担保归担保"
+   ],
+   "forbidden_factual_claims": [
+    "不得把口头分工说成书面协议",
+    "不得断言她以后绝不借人情"
+   ]
+  },
+  "E109_T12": {
+   "case_id": "E109_T12",
+   "current_action": "接住一袋新小米的谢礼：她母亲的心意经师傅捎回，笑纳并给个取的准话，顺着她的玩笑收尾。",
+   "acceptable_actions": [
+    "答应顺路去拿，把小米说成是替她妈收下的心意",
+    "接住'那袋小米会伤心的'，回一句不伤小米的玩笑",
+    "谢她妈的同时把师傅捎带这一程也一并谢上"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E109_A37",
+     "subject": "HER",
+     "relation": "thanks_gift",
+     "value": "她母亲托小雷捎来一袋新小米给 ME 作谢礼",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T12",
+      "message_id": "m0",
+      "quote": "非塞了袋新小米让小雷师傅捎回来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A38",
+     "subject": "HER",
+     "relation": "playful_boundary",
+     "value": "她预先打趣 ME 别再推辞",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T12",
+      "message_id": "m0",
+      "quote": "可别又跟我说'不用不用'啊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E109_A39",
+     "subject": "SHARED",
+     "relation": "closure_callback",
+     "value": "县城行程已闭环，进入答谢与日常往来阶段",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E109_T10",
+      "message_id": "m0",
+      "quote": "到家了，全程顺利得离谱"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要轻，推辞这句坚决不说，让她的玩笑稳稳落地。",
+   "unknowns": [
+    "具体取小米的日子未定"
+   ],
+   "protected_expressions": [
+    "那袋小米会伤心的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小米的品种价钱",
+    "不得引入新的求助或新话题"
+   ]
+  }
+ }
+}

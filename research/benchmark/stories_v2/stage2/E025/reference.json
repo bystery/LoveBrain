@@ -1,0 +1,416 @@
+{
+ "story_id": "E025",
+ "turns": {
+  "E025_T01": {
+   "current_action": "应召上号+接住她的火气，别讲道理",
+   "acceptable_actions": [
+    "答应上号+一句消气话",
+    "答应+顺口问她被谁坑了",
+    "答应+自荐为正常打野"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E025_A01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "被队友气到，想双排",
+     "valid_time": "2026-11-24 22:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E025_T01",
+      "message_id": "m0",
+      "quote": "被队友气死了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要的是搭子不是教练；先应局，火气让她自己消化。",
+   "unknowns": [
+    "坑她的队友是什么来头"
+   ],
+   "protected_expressions": [
+    "被队友气死了"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造那局的细节"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E025_T01"
+  },
+  "E025_T02": {
+   "current_action": "她反手翻出我昨晚大招空了的旧账——大方认，别狡辩",
+   "acceptable_actions": [
+    "自嘲认账",
+    "认账+嘴硬一句找补",
+    "认账+说今晚给你打回来"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E025_A02",
+     "subject": "我",
+     "relation": "黑历史",
+     "value": "昨晚龙团大招空了",
+     "valid_time": "2026-11-24 22:13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E025_T02",
+      "message_id": "m1",
+      "quote": "你昨晚那个龙团大招空了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "记仇是她的相处语法；认得越快她越来劲。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你昨晚那个龙团大招空了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E025_T02"
+  },
+  "E025_T03": {
+   "current_action": "她的玩笑条件（拿不到射手你就玩辅助）——接住局内分工梗",
+   "acceptable_actions": [
+    "答应+加一个交换条件",
+    "答应+自嘲辅助水平",
+    "答应+问她想玩什么"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "搭子之间的让位是默契；爽快答应比讨价还价可爱。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你就玩辅助"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E025_T03"
+  },
+  "E025_T04": {
+   "current_action": "她甩出自己ID梗（不要抢我线）——接住这个自曝，回扣她的段位气氛",
+   "acceptable_actions": [
+    "接ID梗+认输",
+    "接梗+反将一句",
+    "接梗+说今晚就抢"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E025_A03",
+     "subject": "她",
+     "relation": "身份",
+     "value": "游戏ID叫'不要抢我线'",
+     "valid_time": "2026-11-24 22:28",
+     "status": "seed",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "不要抢我线"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "ID梗是她自己递的；接住比新造一个梗稳。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我ID都叫不要抢我线了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E025_T04"
+  },
+  "E025_T05": {
+   "current_action": "输了被点炸点（最后一波闪现）——先认这波，再等她自嘲",
+   "acceptable_actions": [
+    "认这波+不找补",
+    "认+轻轻反点她一个",
+    "认+说明晚翻盘"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "输了的互怼要轮流认错；全揽或全推都会破坏平衡。",
+   "unknowns": [],
+   "protected_expressions": [
+    "最后一波你别闪现上去啊"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E025_T05"
+  },
+  "E025_T06": {
+   "current_action": "认账+轻点她一个——'半斤八两'是她的和解信号，接住",
+   "acceptable_actions": [
+    "接住和解+一句收",
+    "接住+自嘲总结今晚",
+    "接住+约下一把"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她说'收回昨晚的话'就是今晚的和解点；接住即赢。",
+   "unknowns": [],
+   "protected_expressions": [
+    "咱俩半斤八两"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E025_T06"
+  },
+  "E025_T07": {
+   "current_action": "她困了要下线+留下明天之约——确认+不拖",
+   "acceptable_actions": [
+    "确认之约+让她睡",
+    "确认+总结今晚战绩",
+    "确认+轻一句收"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E025_A04",
+     "subject": "她",
+     "relation": "提议",
+     "value": "明天同一时间再打，要把段位打回来",
+     "valid_time": "2026-11-24 23:56",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E025_T07",
+      "message_id": "m0",
+      "quote": "明天同一时间 必须把段位打回来"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "困了就是困了；确认约定比多聊一句重要。",
+   "unknowns": [],
+   "protected_expressions": [
+    "明天同一时间 必须把段位打回来"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E025_T07"
+  },
+  "E025_T08": {
+   "current_action": "幼稚赌约被她'成交'——约定落成，收住",
+   "acceptable_actions": [
+    "确认成交+收",
+    "确认+补一句明晚见",
+    "确认+互道晚安"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E025_A05",
+     "subject": "双方",
+     "relation": "约定",
+     "value": "明晚十点双排（谁不上谁小狗）",
+     "valid_time": "2026-11-25 22:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E025_T08",
+      "message_id": "m1",
+      "quote": "幼稚 但成交"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "赌约是搭子之间的仪式；记住它。",
+   "unknowns": [],
+   "protected_expressions": [
+    "幼稚 但成交"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E025_T08"
+  },
+  "E025_T09": {
+   "current_action": "她今晚来不了（改稿第八版）——爽快接受+关心一句，不问细节",
+   "acceptable_actions": [
+    "接受+让她忙正事",
+    "接受+关心别熬太晚",
+    "接受+说周末补"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E025_A06",
+     "subject": "她",
+     "relation": "变更",
+     "value": "今晚缺席：改稿单第八版",
+     "valid_time": "2026-11-25 22:30",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E025_T09",
+      "message_id": "m0",
+      "quote": "今晚我可能上不了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "昨晚的赌约被现实撞掉——她的正事永远优先，这是搭子边界。",
+   "unknowns": [
+    "甲方还要改几版"
+   ],
+   "protected_expressions": [
+    "单子改到第八版了"
+   ],
+   "forbidden_factual_claims": [
+    "不要把缺席说成鸽（她提前说了）"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E025_T09"
+  },
+  "E025_T10": {
+   "current_action": "她自嘲'设计狗的命'——接住职业自嘲，收住今晚",
+   "acceptable_actions": [
+    "接自嘲+轻收",
+    "接+表示理解",
+    "接+说改完稿好好睡"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她的自嘲不是求安慰；一句到位就收。",
+   "unknowns": [],
+   "protected_expressions": [
+    "设计狗的命 你懂什么"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E025_T10"
+  },
+  "E025_T11": {
+   "current_action": "她跨日深夜回来看账（你没等我吧）——如实报战绩，不表功不撒谎",
+   "acceptable_actions": [
+    "如实报战绩+问她稿子",
+    "如实报+一句'等你'式收",
+    "如实报+自嘲段位没回来"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E025_A07",
+     "subject": "她",
+     "relation": "回扣",
+     "value": "深夜下工回来确认昨晚赌约执行情况",
+     "valid_time": "2026-11-26 23:50",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E025_T11",
+      "message_id": "m0",
+      "quote": "昨晚你没等我吧"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她心里记着赌约——这份在意是搭子以上的信号，接稳别抖机灵。",
+   "unknowns": [],
+   "protected_expressions": [
+    "昨晚你没等我吧"
+   ],
+   "forbidden_factual_claims": [
+    "不要谎报战绩"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E025_T11"
+  },
+  "E025_T12": {
+   "current_action": "她报单子终稿+约周末补两把+拜拜——确认+自然收尾",
+   "acceptable_actions": [
+    "确认周末之约+收",
+    "确认+恭喜第八版定稿",
+    "确认+互道拜拜"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "跨日冷场后的收尾要轻；周末的约已经补上赌约。",
+   "unknowns": [],
+   "protected_expressions": [
+    "周末补你两把 拜拜"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E025_T12"
+  }
+ }
+}

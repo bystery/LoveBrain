@@ -1,0 +1,604 @@
+{
+ "story_id": "E074",
+ "turns": {
+  "E074_T01": {
+   "case_id": "E074_T01",
+   "current_action": "接住操办人的求助：从后厨视角给试菜清单（口味、摆盘、分量、出菜节奏），肯定她接下这份苦差。",
+   "acceptable_actions": [
+    "列试菜四看：味、量、火候、上菜节奏，一条条给",
+    "提醒她试菜当天把每道菜拍照记档，回头好对单",
+    "先问一句桌数和预算区间，再给菜单侧重点"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A01",
+     "subject": "SHARED",
+     "relation": "banquet_basics",
+     "value": "表妹的订婚宴定于11月28日在临江楼举办",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T01", "message_id": "m0", "quote": "11月28号订婚宴"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A02",
+     "subject": "SHARED",
+     "relation": "tasting_plan",
+     "value": "她定于周四去酒店试菜，菜单初步八冷八热",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T01", "message_id": "m0", "quote": "这周四去酒店试菜"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A03",
+     "subject": "HER",
+     "relation": "organizer_role",
+     "value": "她是表妹订婚宴的全程操办人",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T01", "message_id": "m0", "quote": "全程我操办"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：给干货但要留'到时候看现场'的余地，不把话说死。",
+   "unknowns": ["桌数与预算区间未提", "两家人对菜单的偏好未知"],
+   "protected_expressions": ["全程我操办", "试菜都得看啥"],
+   "forbidden_factual_claims": ["不得虚构临江楼的菜品与价格", "不得预判试菜结果"]
+  },
+  "E074_T02": {
+   "case_id": "E074_T02",
+   "current_action": "接住试菜结果：整体过关、鳜鱼土腥是唯一尾巴；肯定她当场抓问题的眼光，鳜鱼改法留给下一轮再谈。",
+   "acceptable_actions": [
+    "肯定八冷八热过关，鳜鱼问法先问改做法还是换鱼",
+    "提醒她回话前问清鳜鱼换不换差价多少",
+    "夸她试菜记得细，土腥味这种细节都抓住了"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A04",
+     "subject": "SHARED",
+     "relation": "tasting_result",
+     "value": "试菜整体过关，八冷八热都过得去",
+     "valid_time": "2026-11-19",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T02", "message_id": "m0", "quote": "八冷八热都过得去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A05",
+     "subject": "SHARED",
+     "relation": "fish_issue",
+     "value": "清蒸鳜鱼土腥味重，她打算让酒店改做法或换鱼",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T02", "message_id": "m0", "quote": "清蒸鳜鱼土腥味重"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A06",
+     "subject": "SHARED",
+     "relation": "menu_draft",
+     "value": "菜单先按试过的一版定，周五给销售回话",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T02", "message_id": "m0", "quote": "菜单先按试过的这版定"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先肯定结果再点尾巴，'改做法还是换鱼'抛回给她想，不急着替她定。",
+   "unknowns": ["酒店对改做法是否加价未知"],
+   "protected_expressions": ["周五给销售回话"],
+   "forbidden_factual_claims": ["不得虚构鳜鱼的具体做法差异", "不得预判菜单会被人改动"]
+  },
+  "E074_T03": {
+   "case_id": "E074_T03",
+   "current_action": "接住第三方强势插入：先共情她一周活白干的火气，再帮她把两件事拆开——换鱼是菜品权问题，加桌是人数与钱的问题，且两件的发起人都是亲家母，主体别记混。",
+   "acceptable_actions": [
+    "先接火气，再指出换鱼和加桌是两件事得分开谈",
+    "明确点出两项变动的发起人都是亲家母，义务归属要记清",
+    "提醒她周五回话前先拿到表妹和婆婆的口径"
+   ],
+   "applicable_dimensions": ["attribution", "goal", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A07",
+     "subject": "THIRD",
+     "relation": "mother_in_law_insert",
+     "value": "表妹未来婆婆进入筹备群发话，直接改变菜单与桌数",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T03", "message_id": "m0", "quote": "未来婆婆下午直接进了筹备群发话"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A08",
+     "subject": "THIRD",
+     "relation": "dish_demand",
+     "value": "婆婆要求鳜鱼必须换东星斑",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T03", "message_id": "m0", "quote": "鳜鱼必须换东星斑"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A09",
+     "subject": "THIRD",
+     "relation": "table_increase",
+     "value": "婆婆娘家加人，桌数从12桌加到14桌",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T03", "message_id": "m0", "quote": "得加两桌，12桌变14桌"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A10",
+     "subject": "SHARED",
+     "relation": "menu_draft",
+     "value": "菜单按试过一版定的原计划被婆婆插入推翻",
+     "valid_time": "2026-11-19/2026-11-19",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E074_T02", "message_id": "m0", "quote": "菜单先按试过的这版定"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：火气先接着，拆事时把'婆婆'两个字点在明处，主体归属不含糊。",
+   "unknowns": ["婆婆加价与加桌的承受度未知", "表妹本人的态度未知"],
+   "protected_expressions": ["她一句话，我这一周的活全得重来"],
+   "forbidden_factual_claims": ["不得替婆婆补台词或分析动机", "不得断言加价必然由哪边承担"]
+  },
+  "E074_T04": {
+   "case_id": "E074_T04",
+   "current_action": "应她的求接法：把'人不落埋怨'翻译成'事与钱分开'——换鱼范围让表妹去问婆婆，加桌钱先问清谁出，她只当传声筒不当决策人。",
+   "acceptable_actions": [
+    "建议她把两个问题原样抛回给婆婆，让她拿主意",
+    "提醒先问清加桌差价哪边出，再跟酒店谈",
+    "劝她别自己垫钱也别自己扛决定，落埋怨都从这来"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A11",
+     "subject": "SHARED",
+     "relation": "price_impact",
+     "value": "东星斑每桌加180元且加桌费用超出表妹预算",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T04", "message_id": "m0", "quote": "东星斑每桌要加180"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A12",
+     "subject": "THIRD",
+     "relation": "bride_pressure",
+     "value": "表妹不敢驳婆婆的话，压力传导到操办人身上",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T04", "message_id": "m0", "quote": "亲家母的话表妹不敢驳"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A13",
+     "subject": "HER",
+     "relation": "dilemma_consult",
+     "value": "她两头为难，请老唐给出不落埋怨的接法",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T04", "message_id": "m0", "quote": "这种事咋接才不落埋怨"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A14",
+     "subject": "THIRD",
+     "relation": "dish_demand",
+     "value": "换东星斑的诉求出自亲家母，不是表妹也不是酒店",
+     "valid_time": "2026-11-19/2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T03", "message_id": "m0", "quote": "鳜鱼必须换东星斑"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：主意给得干脆，把'你不是决策人'说成保护她，而不是推卸。",
+   "unknowns": ["婆婆对差价的态度未知"],
+   "protected_expressions": ["我也不能装没看见"],
+   "forbidden_factual_claims": ["不得替表妹或婆婆做决定", "不得虚构酒店加价的理由"]
+  },
+  "E074_T05": {
+   "case_id": "E074_T05",
+   "current_action": "确认她采纳传话策略：换鱼范围与出资归属都踢回决策方，肯定她'不垫钱'的边界守得住。",
+   "acceptable_actions": [
+    "肯定她把问题抛回去的做法，等婆婆口径再动",
+    "提醒她让表妹问的时候留聊天记录当凭据",
+    "顺带问一句酒店那边的回话期限还来不来得及"
+   ],
+   "applicable_dimensions": ["boundary", "attribution", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A15",
+     "subject": "HER",
+     "relation": "relay_strategy",
+     "value": "她把换鱼范围与出资归属踢回给表妹去问婆婆",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T05", "message_id": "m0", "quote": "让表妹自己去问她婆婆"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A16",
+     "subject": "SHARED",
+     "relation": "money_rule",
+     "value": "加桌的钱必须说清由哪边出，她坚决不垫",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T05", "message_id": "m0", "quote": "别让我垫"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A17",
+     "subject": "THIRD",
+     "relation": "table_increase",
+     "value": "婆婆娘家加桌带来的14桌待确认与出资方待定",
+     "valid_time": "2026-11-19/2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T03", "message_id": "m0", "quote": "得加两桌，12桌变14桌"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'踢皮球'说成'把决定权还给决策人'，让她传话传得理直气壮。",
+   "unknowns": ["婆婆答复时间未知"],
+   "protected_expressions": ["别让我垫"],
+   "forbidden_factual_claims": ["不得预判婆婆会全盘接受", "不得虚构表妹传话的细节"]
+  },
+  "E074_T06": {
+   "case_id": "E074_T06",
+   "current_action": "接住婆婆的答复：范围缩到主桌、差价归婆婆方、鳜鱼改清蒸；把这一轮定义为主体归属理顺后的胜利。",
+   "acceptable_actions": [
+    "肯定婆婆的让步，主桌换鱼是既有面子又控预算的解",
+    "提醒她把'差价婆婆方补'落成文字发给表妹",
+    "顺带确认清蒸改法是否还需加钱"
+   ],
+   "applicable_dimensions": ["attribution", "goal", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A18",
+     "subject": "THIRD",
+     "relation": "scope_narrowed",
+     "value": "婆婆松口只主桌换东星斑，其余桌保持鳜鱼",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T06", "message_id": "m0", "quote": "主桌换东星斑就行"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A19",
+     "subject": "THIRD",
+     "relation": "cost_attribution",
+     "value": "加两桌差价由婆婆一方自行承担",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T06", "message_id": "m0", "quote": "差价她那边自己补"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A20",
+     "subject": "SHARED",
+     "relation": "fish_cooking",
+     "value": "其余桌鳜鱼保留并改清蒸做法",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T06", "message_id": "m0", "quote": "改清蒸"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把结果说成她拆事拆对了，功劳记在流程上而不是运气上。",
+   "unknowns": ["清蒸改法是否额外收费未知"],
+   "protected_expressions": ["我悬着的心放下一半"],
+   "forbidden_factual_claims": ["不得断言婆婆不会再变", "不得虚构差价具体金额"]
+  },
+  "E074_T07": {
+   "case_id": "E074_T07",
+   "current_action": "接住酒店的验货要求：东星斑要再尝一小份，肯定酒店谨慎也对，顺口给点验货看点。",
+   "acceptable_actions": [
+    "肯定酒店没试过的货先验是对双方都稳的做法",
+    "给她验货看点：看肉质弹性、闻腥味、试摆盘",
+    "提醒验完让酒店把'验货通过'写进对接记录"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A21",
+     "subject": "SHARED",
+     "relation": "hotel_confirmed",
+     "value": "酒店口头同意主桌换鱼与清蒸的安排",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T07", "message_id": "m0", "quote": "销售说可以"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A22",
+     "subject": "THIRD",
+     "relation": "fish_tasting",
+     "value": "酒店要求周五再验一小份东星斑",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T07", "message_id": "m0", "quote": "让我周五再去尝一小份验个货"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'跑腿的命'接成'跑腿的就是总指挥'，给她一句体面。",
+   "unknowns": [],
+   "protected_expressions": ["行吧，跑腿的命"],
+   "forbidden_factual_claims": ["不得虚构东星斑市价", "不得预判验货结果"]
+  },
+  "E074_T08": {
+   "case_id": "E074_T08",
+   "current_action": "共享验货过关，把销售的锁定期限点在明处：周四上午前必须定桌数，这是下一轮唯一要紧事。",
+   "acceptable_actions": [
+    "先贺验货过关，再把周四期限复述一遍钉牢",
+    "提醒她提前一晚把人数最后清一遍再睡",
+    "问一句厅有没有备选，防止锁不上"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A23",
+     "subject": "SHARED",
+     "relation": "star_fish_pass",
+     "value": "东星斑验货过关，清蒸后肉质比鳜鱼弹",
+     "valid_time": "2026-11-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T08", "message_id": "m0", "quote": "东星斑肉质比鳜鱼弹"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A24",
+     "subject": "THIRD",
+     "relation": "lock_deadline",
+     "value": "酒店要求最终桌数最迟周四上午锁定",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T08", "message_id": "m0", "quote": "最终桌数最迟周四上午锁定"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：好消息接得干脆，期限说得重一点，替她把节奏提起来。",
+   "unknowns": ["娘家人数是否还会有变数未知"],
+   "protected_expressions": ["过了这村厅就可能被别人订走"],
+   "forbidden_factual_claims": ["不得虚构酒店厅期安排", "不得预判人数不再变动"]
+  },
+  "E074_T09": {
+   "case_id": "E074_T09",
+   "current_action": "接住桌数二次变动：娘家退两人、14桌变13桌、婆婆确认补差同减；确认这回数字与出资两清，可以安心锁定。",
+   "acceptable_actions": [
+    "确认13桌与婆婆补差同减两清，让她放心锁",
+    "提醒锁定时把'补差随桌数'一并写进单子",
+    "夸她赶在期限前一晚清完人数，节奏踩得准"
+   ],
+   "applicable_dimensions": ["attribution", "time_state", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A25",
+     "subject": "SHARED",
+     "relation": "table_final",
+     "value": "娘家两人退出，桌数从14桌收敛到13桌",
+     "valid_time": "2026-11-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T09", "message_id": "m0", "quote": "14桌变13桌"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A26",
+     "subject": "THIRD",
+     "relation": "diff_adjust",
+     "value": "婆婆确认补差价随桌数减少同步下调",
+     "valid_time": "2026-11-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T09", "message_id": "m0", "quote": "补差价跟着减"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A27",
+     "subject": "THIRD",
+     "relation": "lock_deadline",
+     "value": "周四上午的锁定时限仍悬在桌数之上",
+     "valid_time": "2026-11-25/2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T08", "message_id": "m0", "quote": "最终桌数最迟周四上午锁定"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'总算定了'接住她的疲惫，把期限与桌数两件事并成一件说轻省。",
+   "unknowns": [],
+   "protected_expressions": ["桌数这回总算定了"],
+   "forbidden_factual_claims": ["不得预判锁定过程无波折", "不得虚构退出的两位与婆婆的关系细节"]
+  },
+  "E074_T10": {
+   "case_id": "E074_T10",
+   "current_action": "接住锁定完成与拦错双喜：13桌落定、她在确认单上抓到鳜鱼做法未改的不一致并当场纠正——书面与口头对上才算数。",
+   "acceptable_actions": [
+    "重点夸她核单拦错，这一眼值一场宴",
+    "提醒她把改后的确认单重新拍照替换旧档",
+    "建议清蒸做法让后厨当天再口头确认一遍"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A28",
+     "subject": "SHARED",
+     "relation": "tables_locked",
+     "value": "13桌最终锁定并补齐定金",
+     "valid_time": "2026-11-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T10", "message_id": "m0", "quote": "锁完了，13桌"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A29",
+     "subject": "HER",
+     "relation": "doc_check",
+     "value": "她核对确认单发现鳜鱼做法未改，当场让销售改清蒸",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T10", "message_id": "m0", "quote": "赶紧让销售改成清蒸"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A30",
+     "subject": "SHARED",
+     "relation": "confirmation_archived",
+     "value": "锁定的确认单拍照存档以备后查",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T10", "message_id": "m0", "quote": "确认单拍照存档"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A31",
+     "subject": "THIRD",
+     "relation": "lock_deadline",
+     "value": "桌数锁定赶在酒店周四上午时限之内完成",
+     "valid_time": "2026-11-25/2026-11-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T08", "message_id": "m0", "quote": "最终桌数最迟周四上午锁定"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'拦错'讲成整个操办里最漂亮的一手，后怕一句带过。",
+   "unknowns": [],
+   "protected_expressions": ["白纸黑字得对上"],
+   "forbidden_factual_claims": ["不得虚构确认单其他错误", "不得断言后厨绝无执行偏差"]
+  },
+  "E074_T11": {
+   "case_id": "E074_T11",
+   "current_action": "接住宴前一天的第三次变动：开席提前半小时；肯定她'走三方书面变更'的长进——用制度兜住长辈的口头变数。",
+   "acceptable_actions": [
+    "肯定三方签字的变更单，谁改谁签字最干净",
+    "提醒变更单一式三份各方留底，手机也拍一份",
+    "顺带问她流程上还有没有别的口头约定没落纸"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A32",
+     "subject": "THIRD",
+     "relation": "time_change",
+     "value": "婆婆要求开席时间提前半小时到11点",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T11", "message_id": "m0", "quote": "11:30改11:00"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A33",
+     "subject": "HER",
+     "relation": "written_change",
+     "value": "她要求酒店走三方书面变更单并各自签字",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T11", "message_id": "m0", "quote": "让酒店走书面变更单"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A34",
+     "subject": "THIRD",
+     "relation": "mother_in_law_insert",
+     "value": "亲家母多次单方面变动让她改用书面流程兜底",
+     "valid_time": "2026-11-19/2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T03", "message_id": "m0", "quote": "未来婆婆下午直接进了筹备群发话"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'学精了'说成被逼出来的本事，长辈两个字不带情绪。",
+   "unknowns": ["变更单能否当天走完三方签字未知"],
+   "protected_expressions": ["省得事后扯皮"],
+   "forbidden_factual_claims": ["不得虚构婆婆提时间的理由更多细节", "不得断言书面流程必然顺利"]
+  },
+  "E074_T12": {
+   "case_id": "E074_T12",
+   "current_action": "共享宴席圆满收束：主桌东星斑被抢光、婆婆当面夸菜单；把这份成功记在她的流程功上，笑纳她的请客。",
+   "acceptable_actions": [
+    "先贺顺利，再点一句'没跟她婆婆犟是对的'",
+    "把成功归到她的核对与书面流程上，夸得具体",
+    "接住请客，回一句到时候点最贵的那道鱼"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E074_A35",
+     "subject": "SHARED",
+     "relation": "banquet_success",
+     "value": "订婚宴顺利办完，主桌东星斑被抢光",
+     "valid_time": "2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T12", "message_id": "m0", "quote": "主桌的东星斑被抢得精光"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A36",
+     "subject": "THIRD",
+     "relation": "praise",
+     "value": "婆婆敬酒时当面夸菜单配得好",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T12", "message_id": "m0", "quote": "婆婆敬酒的时候还夸菜单配得好"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E074_A37",
+     "subject": "THIRD",
+     "relation": "scope_narrowed",
+     "value": "主桌东星斑方案在宴席当日实际兑现",
+     "valid_time": "2026-11-21/2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E074_T06", "message_id": "m0", "quote": "主桌换东星斑就行"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，功劳给她和流程各一半，请客爽快应下不推辞。",
+   "unknowns": [],
+   "protected_expressions": ["就冲你帮我把钱的事捋明白"],
+   "forbidden_factual_claims": ["不得虚构宴席上的更多对话", "不得引入新的家庭议题"]
+  }
+ }
+}

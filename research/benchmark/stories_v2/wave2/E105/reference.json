@@ -1,0 +1,582 @@
+{
+ "story_id": "E105",
+ "turns": {
+  "E105_T01": {
+   "case_id": "E105_T01",
+   "current_action": "接住她的组局热情，确认日期与集合安排，给出准话或说明自己九点前起床的难处再表态。",
+   "acceptable_actions": [
+    "直接应下11月15日早八点的局，顺口问一句包车在哪儿集合",
+    "应约的同时交代自己周末起床难，让她放心自己不会咕",
+    "确认包车费用怎么收，再答应参加"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A01",
+     "subject": "SHARED",
+     "relation": "hike_plan_initial",
+     "value": "她发起11月15日北山经典环线徒步局，早八点山脚集合",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T01", "message_id": "m0", "quote": "下下周日11月15号北山经典环线"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A02",
+     "subject": "SHARED",
+     "relation": "bus_cost_initial",
+     "value": "包车费用初定每人摊四十",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T01", "message_id": "m0", "quote": "一人摊四十"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A03",
+     "subject": "SHARED",
+     "relation": "assembly_arrangement",
+     "value": "集合定为早上八点山脚",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T01", "message_id": "m0", "quote": "早上八点山脚集合"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：回短句也行，但日期和集合点要复述一遍，别让她空等准话。",
+   "unknowns": ["ME当天是否已有别的安排未提"],
+   "protected_expressions": ["你来不来"],
+   "forbidden_factual_claims": ["不得虚构北山路线细节", "不得替她改集合时间"]
+  },
+  "E105_T02": {
+   "case_id": "E105_T02",
+   "current_action": "接住阵容成形的好消息和留登山杖的心意，道谢并玩笑接住装备梗。",
+   "acceptable_actions": [
+    "谢她的登山杖，玩笑说自己一定好借力",
+    "接住三人成行的消息，问还缺什么装备",
+    "调侃她组局效率高，把装备的事记下"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A04",
+     "subject": "SHARED",
+     "relation": "roster_confirmed",
+     "value": "三名同事确认加入徒步局",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T02", "message_id": "m0", "quote": "群里三个同事都应了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A05",
+     "subject": "SHARED",
+     "relation": "gear_gift",
+     "value": "她购入两根登山杖，新的一根留给ME",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T02", "message_id": "m0", "quote": "新的那根给你留着"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她爱把细节安排好，回话里给这份心思一个响亮的回应。",
+   "unknowns": ["登山杖何时交接未定"],
+   "protected_expressions": ["上山好借力"],
+   "forbidden_factual_claims": ["不得虚构登山杖品牌价格", "不得替同事发表态度"]
+  },
+  "E105_T03": {
+   "case_id": "E105_T03",
+   "current_action": "接住首次取消预警：她值白班改不了班，局面临取消；先稳住她情绪，点明这是撞上工作不是她的问题。",
+   "acceptable_actions": [
+    "安抚她别急着说黄，先问公司能否换班",
+    "替她把锅摘了：上班不是咕局，别自责",
+    "问她是否要征求同事意见再定改期"
+   ],
+   "applicable_dimensions": ["time_state", "emotion_relation", "attribution", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A06",
+     "subject": "THIRD",
+     "relation": "work_conflict",
+     "value": "公司15号全员盘点，她值白班且无法调班",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T03", "message_id": "m0", "quote": "公司15号那天全员盘点，我值白班"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A07",
+     "subject": "SHARED",
+     "relation": "hike_plan_suspended",
+     "value": "北山徒步局因她盘点值班而悬置，面临取消",
+     "valid_time": "2026-11-02/2026-11-05",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E105_T01", "message_id": "m0", "quote": "下下周日11月15号北山经典环线"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'黄了'说成暂时搁置，给她留抢救的空间，不催她做决定。",
+   "unknowns": ["公司是否可调班未知", "同事对新日期的态度未知"],
+   "protected_expressions": ["这个局可能要黄"],
+   "forbidden_factual_claims": ["不得断言局必然取消", "不得虚构她的班次细节"]
+  },
+  "E105_T04": {
+   "case_id": "E105_T04",
+   "current_action": "接住改期投票结果，确认自己21号周六是否可行后给出准话；把她的抢救效率肯定一句。",
+   "acceptable_actions": [
+    "确认21号有空，答应改期后的局",
+    "先夸她投票抢救的动作快，再给准话",
+    "答应21号，顺口问老地方是不是还是山脚"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A08",
+     "subject": "SHARED",
+     "relation": "reschedule_vote",
+     "value": "改期投票多数指向11月21日周六",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T04", "message_id": "m0", "quote": "改到11月21号周六"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A09",
+     "subject": "THIRD",
+     "relation": "colleague_home_ok",
+     "value": "回老家同事确认21号前有空可参加",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T04", "message_id": "m0", "quote": "她21号前都在"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A10",
+     "subject": "SHARED",
+     "relation": "confirm_request",
+     "value": "她向ME确认21号周六早八点能否参加",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T04", "message_id": "m0", "quote": "你看你21号周六行不行"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她要的是准话，给准话比安慰有用，别绕。",
+   "unknowns": ["投票具体票数未提"],
+   "protected_expressions": ["早上八点还是老地方"],
+   "forbidden_factual_claims": ["不得虚构其他同事的投票理由", "不得替她拍板日期"]
+  },
+  "E105_T05": {
+   "case_id": "E105_T05",
+   "current_action": "确认改期落定：取消预警解除，局重启为21号；接住她重排攻略的劲头，认可这套重启动作。",
+   "acceptable_actions": [
+    "把'定了'复述一遍，让她放心去排攻略",
+    "肯定她从取消到改期只用一晚，效率真高",
+    "叮嘱攻略排好发他一份，别一个人扛全部"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A11",
+     "subject": "SHARED",
+     "relation": "reschedule_confirmed",
+     "value": "徒步局改期落定为11月21日周六",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T05", "message_id": "m0", "quote": "那就定21号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A12",
+     "subject": "SHARED",
+     "relation": "cancellation_lifted",
+     "value": "11月5日的取消预警解除，局重启",
+     "valid_time": "2026-11-05/2026-11-06",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E105_T03", "message_id": "m0", "quote": "这个局可能要黄"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E105_A13",
+     "subject": "HER",
+     "relation": "rework_promise",
+     "value": "她承诺当晚重排攻略并重新拼包车群",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T05", "message_id": "m0", "quote": "把攻略重新排一遍"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把这次改期说成她把局救活了，功劳记她头上。",
+   "unknowns": ["包车能否如期拼成未知"],
+   "protected_expressions": ["等我消息"],
+   "forbidden_factual_claims": ["不得虚构攻略内容", "不得断言此后不再有变动"]
+  },
+  "E105_T06": {
+   "case_id": "E105_T06",
+   "current_action": "接住人数与费用的小更新：表弟加入、包车重算更便宜；轻松收下，顺口确认新人数。",
+   "acceptable_actions": [
+    "接住'还便宜了'，玩笑说人越多越热闹",
+    "确认表弟是否有登山经验，提醒带够水",
+    "把新费用三十二记下，不再纠结旧数"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A14",
+     "subject": "THIRD",
+     "relation": "plus_one",
+     "value": "回老家同事将带表弟加入，人数再加一",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T06", "message_id": "m0", "quote": "人数再加一"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A15",
+     "subject": "SHARED",
+     "relation": "bus_recount",
+     "value": "包车重算后每人摊三十二，比原价便宜",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T06", "message_id": "m0", "quote": "一人摊三十二"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：这是顺风的一段，回轻快点，别把小更新聊成大事。",
+   "unknowns": ["表弟体力与装备情况未知"],
+   "protected_expressions": ["还便宜了"],
+   "forbidden_factual_claims": ["不得虚构表弟的情况", "不得断言包车必然成行"]
+  },
+  "E105_T07": {
+   "case_id": "E105_T07",
+   "current_action": "接住乌龙反转：原日因盘点取消而空出，可局已定21号；陪她消化哭笑不得的情绪，把'傻'字接成这局改得值。",
+   "acceptable_actions": [
+    "先笑她这乌龙，再说改到21号不算傻",
+    "把选择摆出来：维持21号或再加一场，让她自己挑",
+    "安慰她折腾不是白折腾，21号阵容更齐"
+   ],
+   "applicable_dimensions": ["time_state", "emotion_relation", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A16",
+     "subject": "THIRD",
+     "relation": "inventory_cancelled",
+     "value": "主管宣布15号盘点取消，她周日空出",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T07", "message_id": "m0", "quote": "15号的盘点取消了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A17",
+     "subject": "SHARED",
+     "relation": "reschedule_locked",
+     "value": "改期决议已锁定21号，原日复活不自动生效",
+     "valid_time": "2026-11-05/2026-11-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T04", "message_id": "m0", "quote": "改到11月21号周六"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E105_A18",
+     "subject": "HER",
+     "relation": "self_doubt",
+     "value": "她自嘲折腾并向ME讨说法",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T07", "message_id": "m0", "quote": "你说我是不是傻"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接住'是不是傻'的自嘲，再帮她把两个日子的账摆开，不替她选。",
+   "unknowns": ["她是否想加开周日场未知"],
+   "protected_expressions": ["我周日空出来了"],
+   "forbidden_factual_claims": ["不得替她决定改回15号", "不得虚构主管取消的原因"]
+  },
+  "E105_T08": {
+   "case_id": "E105_T08",
+   "current_action": "接住她的拍板：维持21号、不为空出的周日加场、次日独自踩点；肯定她把体面留给所有人。",
+   "acceptable_actions": [
+    "夸她这个决定稳，折腾人确实比黄了难看",
+    "答应接她的踩点情报，提醒踩点注意安全",
+    "把维持21号复述一遍，确认这就是最终答案"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A19",
+     "subject": "SHARED",
+     "relation": "keep_decision",
+     "value": "她拍板维持21号，不为周日临时加场",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T08", "message_id": "m0", "quote": "局维持21号不动"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A20",
+     "subject": "SHARED",
+     "relation": "dilemma_resolved",
+     "value": "双日纠结以维持21号收束",
+     "valid_time": "2026-11-13/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T07", "message_id": "m0", "quote": "可是局已经改到21号了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E105_A21",
+     "subject": "HER",
+     "relation": "scout_plan",
+     "value": "她计划次日周日独自踩点并记准集合坐标",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T08", "message_id": "m0", "quote": "明天周日我自己先去踩个点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A22",
+     "subject": "SHARED",
+     "relation": "extra_session_rejected",
+     "value": "她明确拒绝为空出的周日另开一场",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E105_T08", "message_id": "m0", "quote": "局维持21号不动"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'不折腾人'夸成分寸感，别把她一个人的兜底说成理所当然。",
+   "unknowns": ["踩点当日的路况未知"],
+   "protected_expressions": ["比黄了还难看"],
+   "forbidden_factual_claims": ["不得鼓动她改主意", "不得虚构同事对维持决定的反应"]
+  },
+  "E105_T09": {
+   "case_id": "E105_T09",
+   "current_action": "接住踩点实证：栈道封路堵死经典环线，她当机立断改推西线；肯定踩点的价值，确认改线信息同步给队友。",
+   "acceptable_actions": [
+    "肯定她踩点踩得值，封路提前一天知道",
+    "确认西线多两公里的强度大家扛得住",
+    "提醒她把封路消息和西线方案同步到群里"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A23",
+     "subject": "PUBLIC",
+     "relation": "trail_closure",
+     "value": "北山上段修栈道封至月底，经典环线暂不可走",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T09", "message_id": "m0", "quote": "在修栈道，封到月底"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A24",
+     "subject": "SHARED",
+     "relation": "old_route_suspended",
+     "value": "经典环线因封路走不通，方案搁置",
+     "valid_time": "2026-11-02/2026-11-15",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E105_T01", "message_id": "m0", "quote": "北山经典环线"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E105_A25",
+     "subject": "SHARED",
+     "relation": "route_revised",
+     "value": "路线改推西线，比原环线多两公里",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T09", "message_id": "m0", "quote": "西线能走，多两公里"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接坏消息再接好消息，把她的当机立断点出来，不替路线拍板。",
+   "unknowns": ["西线具体路况未知", "表弟对加量是否接受未知"],
+   "protected_expressions": ["风景不差"],
+   "forbidden_factual_claims": ["不得虚构封路公告细节", "不得断言西线必然畅通"]
+  },
+  "E105_T10": {
+   "case_id": "E105_T10",
+   "current_action": "接住人数回退：两人退出使包车口径作废，她改公交并把费用降到十几块；接住'一下少俩'的失落，认可她的变通。",
+   "acceptable_actions": [
+    "先叹口气接住少俩的失落，再夸公交方案干脆",
+    "确认公交集合点在哪，别让变通添新乱",
+    "把三十二的包车账翻篇，认下十几块的新账"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A26",
+     "subject": "THIRD",
+     "relation": "dropout",
+     "value": "回老家同事因临时加班退出，表弟不再随行",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T10", "message_id": "m0", "quote": "临时要加班来不了了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A27",
+     "subject": "SHARED",
+     "relation": "transport_switched",
+     "value": "包车因人数不足改为公交，每人摊十几块",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T10", "message_id": "m0", "quote": "改公交，一人摊十几块就够"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A28",
+     "subject": "SHARED",
+     "relation": "bus_basis_invalid",
+     "value": "五人包车摊三十二的口径作废",
+     "valid_time": "2026-11-10/2026-11-17",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E105_T06", "message_id": "m0", "quote": "一人摊三十二"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她这回处理得利落，重点是让她知道有人接住她的每次变阵。",
+   "unknowns": ["公交班次时刻未知", "退出同事之后是否补场未知"],
+   "protected_expressions": ["一下少俩"],
+   "forbidden_factual_claims": ["不得挽留退出者", "不得虚构加班原因"]
+  },
+  "E105_T11": {
+   "case_id": "E105_T11",
+   "current_action": "接住最终报备与她的道谢：方案定案、改局五回、ME零怨言；把'好人'接成愿意陪她折腾的实在话。",
+   "acceptable_actions": [
+    "把周六早八点西线公交集合复述一遍当军令状",
+    "接住'改了五回'，说这五回回回有交代",
+    "回敬她才是把局救回来的那个人"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A29",
+     "subject": "SHARED",
+     "relation": "route_final",
+     "value": "最终方案确认：周六早八点西线公交集合四人成行",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T11", "message_id": "m0", "quote": "周六早八点，西线，公交集合"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A30",
+     "subject": "SHARED",
+     "relation": "route_confirmed_carry",
+     "value": "西线方案经踩点验证后正式定案",
+     "valid_time": "2026-11-15/2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T09", "message_id": "m0", "quote": "西线能走，多两公里"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E105_A31",
+     "subject": "HER",
+     "relation": "gratitude",
+     "value": "她细数改局五回并谢ME无怨言",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T11", "message_id": "m0", "quote": "改了五回"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：道谢要接得实，别敷衍一句'没事'，把五回的折腾说成她的靠谱。",
+   "unknowns": [],
+   "protected_expressions": ["阿澈你是好人"],
+   "forbidden_factual_claims": ["不得虚构成行人数", "不得断言周六天气"]
+  },
+  "E105_T12": {
+   "case_id": "E105_T12",
+   "current_action": "接住下山报喜：西线走完体验好，补环线之约成立，登山杖没收梗收尾；笑纳欠账，把这次承诺接稳。",
+   "acceptable_actions": [
+    "认下'欠一次'，约定栈道修好就去补环线",
+    "接住没收登山杖的玩笑，讨价还价一句",
+    "夸这局改了五回值得，西线没白等"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E105_A32",
+     "subject": "SHARED",
+     "relation": "hike_completed",
+     "value": "21号西线徒步顺利完成后好评",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T12", "message_id": "m0", "quote": "西线绝了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A33",
+     "subject": "SHARED",
+     "relation": "makeup_promise",
+     "value": "约定栈道修好后补走经典环线",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T12", "message_id": "m0", "quote": "把经典环线补上"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E105_A34",
+     "subject": "SHARED",
+     "relation": "classic_callback",
+     "value": "补环线之约源于15日踩点发现封路改线",
+     "valid_time": "2026-11-15/2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T09", "message_id": "m0", "quote": "在修栈道，封到月底"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E105_A35",
+     "subject": "SHARED",
+     "relation": "punctuality_rule",
+     "value": "下次局仍八点集合，迟到没收登山杖",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E105_T12", "message_id": "m0", "quote": "你敢迟到就把你的登山杖没收"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要轻快，把改了五回的局收成'值了'，别翻旧账复盘。",
+   "unknowns": ["栈道修复时间未知"],
+   "protected_expressions": ["算你欠我一次"],
+   "forbidden_factual_claims": ["不得虚构下山后安排", "不得把补环线说成确定日期"]
+  }
+ }
+}

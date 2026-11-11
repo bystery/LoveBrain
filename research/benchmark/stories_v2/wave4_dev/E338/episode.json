@@ -1,0 +1,612 @@
+{
+ "episode_id": "E338",
+ "persona": {
+  "her": {
+   "name": "薛迟",
+   "traits": [
+    "职场体力怪爱复盘",
+    "记账带段子",
+    "老家事上心"
+   ],
+   "boundaries": [
+    "帮忙必须记账，有借有还",
+    "方案可以改，饭点不能动"
+   ]
+  },
+  "me": {
+   "name": "韩澈",
+   "traits": [
+    "有车能扛",
+    "话少梗多",
+    "球技一般好胜"
+   ]
+  },
+  "relationship_stage": "前同事，跳槽后仍每周约球，熟到没大没小"
+ },
+ "initial_kb": {
+  "me": "韩澈跳槽后离薛迟公司两站地，有台 SUV 后备箱能装，球技一般但好胜，输了记仇一星期。",
+  "her": "薛迟是品牌方市场专员，常年承办会管物料；老家在临江，姥姥的七十大寿是全家头等大事。",
+  "warmth": "前同事处成球友，每周四晚雷打不动，互损互请，账目清楚。",
+  "style": "薛迟爱用复盘腔讲段子，报数精确；韩澈回话短，损人不带脏字。",
+  "lessons": "时间地点变更以最新通知为准，旧口径作废；帮忙的账她记得比谁都清。"
+ },
+ "turns": [
+  {
+   "case_id": "E338_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-23 20:15",
+      "text": "韩澈，通知：12 月 12 号周六，城西会展中心，智家优品冬季生活展，我们公司参展，展位 B27，连开两天。"
+     },
+     {
+      "role": "HER",
+      "ts": "2026-11-23 20:16",
+      "text": "你是编外后勤：周五晚上先帮我搬物料，两箱画册一个易拉宝，公司仓库到你车，再到展馆。就这么定了。"
+     }
+    ],
+    "clock": "2026-11-23 20:22",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-24 12:30",
+      "text": "周四晚八点老时间，球馆 3 号场地，球我带，你带那筒新球，别舍不得。输的人请脉动。"
+     }
+    ],
+    "clock": "2026-11-24 12:37",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-25 21:10",
+      "text": "我爸来电话，今年腊肠灌好了，12 月初给我寄：两斤辣的，两斤不辣的。他总怕我饿死，上回寄五斤，我冰箱还躺着半斤。"
+     }
+    ],
+    "clock": "2026-11-25 21:17",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-26 19:50",
+      "text": "快八点了，我出门了，3 号场地见，迟到罚一局。"
+     }
+    ],
+    "clock": "2026-11-26 19:57",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-26 22:05",
+      "text": "今天 21:19 险胜。咱俩最近五次交手，我 3 胜 2 负，账我记着呢。下周四继续，3 号场地我照旧抢。"
+     }
+    ],
+    "clock": "2026-11-26 22:12",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-27 12:20",
+      "text": "易拉宝到货了，设计稿发你，帮我看看那行小字歪没歪。另外记住：主打款是 C 系列收纳，你跟人别介绍成 B 系，那是去年的款。"
+     }
+    ],
+    "clock": "2026-11-27 12:27",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-28 10:40",
+      "text": "12 月 6 号我姥姥七十大寿，亲戚全回。我 5 号周六晚上高铁回去，7 号周一晚上回来，票买好了：G1377，18:06，城站出发。寿宴节目单归我挑，压力给到我。"
+     }
+    ],
+    "clock": "2026-11-28 10:48",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-29 15:30",
+      "text": "楼下那只狸花又蹲我门口，我给它拍了张证件照，眼神跟你上次输球之后一模一样。发你了，像不像你说了算。"
+     }
+    ],
+    "clock": "2026-11-29 15:37",
+    "may_decline": true
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-30 09:30",
+      "text": "主办方刚通知：展位图调整，我们从 B27 挪到 C14，手册得重印。你之前记的 B27 划掉，记 C14，别把客人领去隔壁展位。"
+     }
+    ],
+    "clock": "2026-11-30 09:38",
+    "may_decline": false,
+    "note": "主办方展位调整通知，HER 转述。"
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-30 21:20",
+      "text": "姥姥寿宴请了戏班子，节目单归我挑。我挑了《打金枝》，我妈说太吵，要听温和的，改《女驸马》。七十大寿，老太太说了算。"
+     }
+    ],
+    "clock": "2026-11-30 21:27",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 12:10",
+      "text": "周四照旧，球我带。展会手册印出来了，C14 那页我圈好了，最终版发你。你欠的脉动周四记得，蓝色那瓶。"
+     }
+    ],
+    "clock": "2026-12-01 12:17",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-02 20:40",
+      "text": "我爸说腊肠这周寄，顺丰，到了放驿站，你帮我拎一下呗，两斤不辣的归你，辣的我自己承受。他快递备注都会写“不辣的给小韩”。"
+     }
+    ],
+    "clock": "2026-12-02 20:48",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T13",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-03 09:20",
+      "text": "球馆发通知：地胶整体更换，12 月闭馆改造，这周起停业，订金按预约顺序退。我抢了半年的周四黄金位，说没就没。周四不用去了，订金退下来我告诉你。"
+     }
+    ],
+    "clock": "2026-12-03 09:28",
+    "may_decline": false,
+    "note": "球馆停业通知，HER 转述。"
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T14",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-03 20:30",
+      "text": "以前这个点我在球场，今天在家拼拼图，一千片的猫咪拼图，拼了俩小时，拼出一只猫耳朵。拼图比打球费脖子。"
+     }
+    ],
+    "clock": "2026-12-03 20:37",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T15",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-04 12:30",
+      "text": "刚开完会，展会提前！开展从 12 号周六提到 11 号周五，连开两天，领导说要抢在竞品前面占档期。"
+     },
+     {
+      "role": "HER",
+      "ts": "2026-12-04 12:31",
+      "text": "物料搬运跟着提前：10 号周四晚上七点装车，我公司楼下。你周四晚上有空吗？答应有求必应的时候到了。"
+     }
+    ],
+    "clock": "2026-12-04 12:38",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "回应展会提前，确认周四晚物料搬运时间"
+    }
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T16",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-04 21:00",
+      "text": "那说定了：10 号周四晚七点我公司楼下装车。展位 C14，11 号早上九点开展，你得来站台，工牌我给你留着，管饭。"
+     }
+    ],
+    "clock": "2026-12-04 21:07",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T17",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-05 16:45",
+      "text": "改签了！我妈非让我 5 号下午就到，帮忙布置寿宴，改成 G1373，17:25，还是城站。本想拖到晚上再走，逃不掉，七大姑八大姨的力量你不懂。"
+     }
+    ],
+    "clock": "2026-12-05 16:52",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "告知高铁改签并调整周末安排"
+    }
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T18",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-06 12:30",
+      "text": "寿宴开席！姥姥收了节目单，《女驸马》她说温和，给面子。红包我包了八个，我弟负责拍照，拍的全是菜，一张没拍到姥姥，家族摄影担当担了个寂寞。"
+     }
+    ],
+    "clock": "2026-12-06 12:38",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T19",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-07 21:40",
+      "text": "回来了，腿坐麻了。寿桃糕点在站上分完了，剩给我的俩，行吧，它们值得。明天恢复上班，展开会。"
+     }
+    ],
+    "clock": "2026-12-07 21:47",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T20",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-08 12:15",
+      "text": "画册装箱了，两箱，易拉宝明天到公司。10 号周四晚七点，我公司楼下，别迟到，易拉宝怕挤。"
+     }
+    ],
+    "clock": "2026-12-08 12:22",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T21",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-09 20:50",
+      "text": "拼图拼出边框了，楼下狸花在窗外围观一晚上，猫界监工，验收态度比我领导还端正。"
+     }
+    ],
+    "clock": "2026-12-09 20:57",
+    "may_decline": true
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T22",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-10 19:10",
+      "text": "我下来了，物料在门卫室，两箱画册一个易拉宝，后备箱塞得下，压一压。11 号的门票我打印好了，放你副驾储物格。"
+     }
+    ],
+    "clock": "2026-12-10 19:17",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T23",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-10 21:30",
+      "text": "装完了！易拉宝立在 C14 正中间，我一个人调了半小时，终于不歪了。明天九点开展，你真来啊，工牌在储物格。"
+     }
+    ],
+    "clock": "2026-12-10 21:38",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T24",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-11 09:40",
+      "text": "开展！人从众！C14 我们展台排队领小样，你到了来找我，给你带咖啡，九点半前——好吧，过了也候。"
+     }
+    ],
+    "clock": "2026-12-11 09:48",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T25",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-11 21:50",
+      "text": "第一天结束，嗓子冒烟，小样发出三百个。明天最后一天，周末人更多，你再来帮我顶半小时？咖啡管够，脉动也行。"
+     }
+    ],
+    "clock": "2026-12-11 21:57",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "邀约次日展台帮忙半小时"
+    }
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T26",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-12 20:40",
+      "text": "收摊！两天下来小样八百个，名片一沓，C14 光荣完成任务，荣誉退休。今晚我瘫了，点了粥，加了个蛋，庆祝。"
+     }
+    ],
+    "clock": "2026-12-12 20:48",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T27",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-13 12:20",
+      "text": "驿站短信：腊肠到了！我爸快递单备注写着“不辣的给小韩”。辣的那批他说腌咸了，这批没寄，就寄了不辣的两斤。周一我拎公司去，你的跑不了。"
+     }
+    ],
+    "clock": "2026-12-13 12:27",
+    "may_decline": false,
+    "note": "驿站短信与寄件备注，HER 转述。"
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T28",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-13 20:10",
+      "text": "我路过球馆，里头铲地胶呢，粉尘飞扬。老板说 1 月中旬重开，问我还订不订周四的场。我说等重开再说，别急着掏钱。"
+     }
+    ],
+    "clock": "2026-12-13 20:18",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T29",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-14 09:40",
+      "text": "复盘会：C14 位置好，客流量是上回的 1.5 倍，领导当众夸我。夸完派了新活，下季度校园渠道方案。夸人一时爽，派活火葬场。"
+     }
+    ],
+    "clock": "2026-12-14 09:47",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T30",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-14 21:10",
+      "text": "腊肠到货，我蒸了两根配白粥，我爸手艺没退步。剩下的四根明早到你工位，不辣的，放心吃。"
+     }
+    ],
+    "clock": "2026-12-14 21:18",
+    "may_decline": false
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T31",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-15 20:30",
+      "text": "球馆 1 月重开的话，周四之夜接着办，老位咱抢回来。还有，寿宴照片洗出来了，我挑了张你打球的发你，像极了营业，又像极了下班。"
+     }
+    ],
+    "clock": "2026-12-15 20:37",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "回应球馆重开后的周四场意向"
+    }
+   },
+   "feedback": {}
+  },
+  {
+   "case_id": "E338_T32",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-16 21:00",
+      "text": "校园方案初稿憋出来了，收工！腊肠吃到第几根了？你欠的脉动跑不了，哪天见面补上，蓝色那瓶，利息是你得承认我爸腊肠第一。这周就到这儿，攒着劲儿，等球馆重开。"
+     }
+    ],
+    "clock": "2026-12-16 21:08",
+    "may_decline": true
+   },
+   "feedback": {}
+  }
+ ]
+}

@@ -1,0 +1,1005 @@
+{
+ "story_id": "E162",
+ "turns": {
+  "E162_T01": {
+   "case_id": "E162_T01",
+   "current_action": "接住她的自夸与忐忑：先认下当天归还办得敞亮，再把裂纹赔偿的问题拆开——先看损坏程度再谈赔法，别急着接钱",
+   "acceptable_actions": [
+    "先肯定当天还、说话算话这件事，再让她描述裂纹位置，给一个先看照片或当面看再定赔不赔的顺序",
+    "认下归还这事的靠谱，然后轻描淡写化解：一个盖子不值当赔，先确认不影响使用再说",
+    "接自夸回一句调侃，再问清楚裂纹是不是只影响外观，按结果分档给说法"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T01_A01",
+     "subject": "HER",
+     "relation": "报告测距仪电池仓盖疑似裂纹",
+     "value": "测距仪电池仓盖边缘似有一道裂纹，她主动询问是否需要赔偿",
+     "valid_time": "2026-11-28",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T01",
+      "message_id": "m0",
+      "quote": "那电池仓的盖子我昨天开箱又瞅了一眼，边上好像有道裂纹"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T01_A02",
+     "subject": "SHARED",
+     "relation": "跨篇引用：测距仪此前借还闭环",
+     "value": "她此前借用激光测距仪并按约定当天一点半归还到ME门把手上，本句为她的逐字回述",
+     "valid_time": "2026-11-11 13:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T01",
+      "message_id": "m0",
+      "quote": "我说用完马上还，结果还真就当天一点半给你挂门把手上了"
+     },
+     "cross_origin": {
+      "story_id": "E161",
+      "case_id": "E161_T11",
+      "note": "A篇T11当天归还事件"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T01_A03",
+     "subject": "ME",
+     "relation": "工具外借不收费的原则",
+     "value": "ME的电动工具熟人借用从不收费，是回应赔偿问题的背景",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "熟人借用从不收费"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：把赔偿话题接得轻，重点是她主动报告的诚实值得肯定",
+   "unknowns": [
+    "裂纹是否影响功能",
+    "是否确为新损还是原有磨损"
+   ],
+   "protected_expressions": [
+    "这事我办得敞亮吧"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言裂纹确为HER造成",
+    "不得虚构ME已检查过仪器"
+   ],
+   "may_decline": false
+  },
+  "E162_T02": {
+   "case_id": "E162_T02",
+   "current_action": "回应她的坚持：接受盖子钱她出的折中，但把分量说轻（学费的说法调侃回去），并确认由ME来换盖，别让她背上人情债",
+   "acceptable_actions": [
+    "接受盖子钱她出、ME来换的方案，调侃一句学费交得不亏，把这事按小事收口",
+    "顺着丑话在前头接一句，确认方案并说盖子本来就松，换上正好顺便紧一紧",
+    "同意她出钱但坚持这次算共担，让她别打脸自责，定下换盖的安排即可"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T02_A01",
+     "subject": "HER",
+     "relation": "坚持赔偿的折中方案",
+     "value": "她坚持盖子钱自己出、由ME来换，当作粗心的学费",
+     "valid_time": "2026-11-28中午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T02",
+      "message_id": "m0",
+      "quote": "盖子钱我出，你来换，就当我给自己的粗心交学费"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T02_A02",
+     "subject": "HER",
+     "relation": "跨篇引用：借用时的爱惜承诺",
+     "value": "她借测距仪时曾拍胸脯承诺爱惜使用，如今盖子裂了自觉打脸，本句为她的逐字回述",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T02",
+      "message_id": "m0",
+      "quote": "我借的时候可是拍胸脯说要爱惜来着"
+     },
+     "cross_origin": {
+      "story_id": "E161",
+      "case_id": "E161_T06",
+      "note": "A篇T06借出与爱惜承诺"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T02_A03",
+     "subject": "HER",
+     "relation": "裂纹赔偿悬置的延续",
+     "value": "电池仓盖裂纹是否赔偿尚待ME表态，是她坚持出钱的背景",
+     "valid_time": "2026-11-28",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T01",
+      "message_id": "m0",
+      "quote": "你说要不要我赔一个盖"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：方案接下，把她的自责卸掉，钱的事说小",
+   "unknowns": [
+    "换盖是否需要另购配件"
+   ],
+   "protected_expressions": [
+    "占便宜不行"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称盖子完全无损",
+    "不得替她决定必须赔多少钱"
+   ],
+   "may_decline": false
+  },
+  "E162_T03": {
+   "case_id": "E162_T03",
+   "current_action": "接报喜与疑点：先恭喜瓷砖进场、二百六没多要，再对单据上冰箱后那路写着补位给出明确判断——她此前已撤回该补点，应当场要求按图更正",
+   "acceptable_actions": [
+    "恭喜进度到瓷砖，肯定二百六没超，提醒她拿原图纸对单据，要求工头把补位一栏划掉再签",
+    "先报喜回应，再明确这是她已撤回的需求，别口头说说，要书面更正避免结算扯皮",
+    "接住咯噔一下的直觉，肯定她看得细，建议直接拍照发工头白纸黑字确认"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T03_A01",
+     "subject": "SHARED",
+     "relation": "岛台暗装插座的完成情况",
+     "value": "岛台插座已按暗装补上，只花了二百六没有多收",
+     "valid_time": "2026-11-29前一周",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T03",
+      "message_id": "m0",
+      "quote": "岛台那个插座周工头也给我按暗装补上了，就花了二百六没多要"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T03_A02",
+     "subject": "SHARED",
+     "relation": "跨篇引用：冰箱后补点早已撤回",
+     "value": "下单单据上冰箱后那路写着补位，与她此前已撤回该补点的决定冲突，本句为她的逐字回述",
+     "valid_time": "决定于2026-11-07",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T03",
+      "message_id": "m0",
+      "quote": "冰箱后头那一路居然写着补位俩字，我不是撤回了嘛"
+     },
+     "cross_origin": {
+      "story_id": "E161",
+      "case_id": "E161_T08",
+      "note": "A篇T08撤回冰箱后补点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T03_A04",
+     "subject": "SHARED",
+     "relation": "跨篇前情：冰箱后有插座、只补岛台的定案",
+     "value": "冰箱后其实一直有插座，最终只补岛台暗装一个二百六，单据写补位与此前事实相悖",
+     "valid_time": "2026-11-07至11-08定案",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "冰箱后其实有插座只补了岛台暗装一个二百六"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E162_E162_T03_A03",
+     "subject": "SHARED",
+     "relation": "跨篇引用：定案口径为只补岛台",
+     "value": "此前定案只补岛台一个暗装二百六，单据写补位与该口径不符",
+     "valid_time": "2026-11-08定案",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T03",
+      "message_id": "m0",
+      "quote": "就花了二百六没多要"
+     },
+     "cross_origin": {
+      "story_id": "E161",
+      "case_id": "E161_T09",
+      "note": "A篇T09定案只补岛台"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：报喜接住，疑点给硬办法——书面更正，不含糊",
+   "unknowns": [
+    "单据补位一栏是否影响结算"
+   ],
+   "protected_expressions": [
+    "别到时候多算我钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言单据笔误已由工头承认",
+    "不得把二百六说成报价有变"
+   ],
+   "may_decline": false
+  },
+  "E162_T04": {
+   "case_id": "E162_T04",
+   "current_action": "收她更正的结果：肯定电话更正加拍照留痕的做法，确认勾缝从定金走与当初一致，提醒单据照片存好到结算",
+   "acceptable_actions": [
+    "夸她这回留了心眼，确认单据划掉加勾缝从定金走的口径，提醒照片存到尾款结算再删",
+    "肯定书面更正的做法，顺带说一句跟当初说的一样就是好结局，让她把单据归档",
+    "接住她的小得意，复述两条更正结果确认无误，补一句结算时拿照片说话"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T04_A01",
+     "subject": "THIRD",
+     "relation": "商家对单据笔误的更正",
+     "value": "商家赵经理确认以图纸为准，单据补位一栏系笔误已划掉，并答应更正单拍照留证",
+     "valid_time": "2026-11-29下午",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T04",
+      "message_id": "m0",
+      "quote": "说是图纸为准，单子上那栏是笔误，已经划掉了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T04_A02",
+     "subject": "THIRD",
+     "relation": "跨篇引用：定金抵勾缝口径沿用",
+     "value": "勾缝手工费仍从定金里走，与当初说法一致，本句为她的逐字回述",
+     "valid_time": "2026-11-07定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T04",
+      "message_id": "m0",
+      "quote": "勾缝那笔手工费也从定金里走，跟当初说的一样"
+     },
+     "cross_origin": {
+      "story_id": "E161",
+      "case_id": "E161_T08",
+      "note": "A篇T08定金抵勾缝安排"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：把功劳归于她留心眼，收尾一句存证建议",
+   "unknowns": [
+    "尾款结算是否还会有出入"
+   ],
+   "protected_expressions": [
+    "跟当初说的一样"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已见过更正单照片内容",
+    "不得宣称结算金额已最终确认"
+   ],
+   "may_decline": false
+  },
+  "E162_T05": {
+   "case_id": "E162_T05",
+   "current_action": "接白送提议：谢谢心意但把赠品和赔偿拆开——裂纹那事已在处理，不接受用东西抵赔偿；烤箱本身可以谈，按正常转让来",
+   "acceptable_actions": [
+    "谢绝白送当赔偿的捆绑，明确盖子的事按盖子处理，烤箱想要就按正经二手价谈",
+    "先谢她惦记，再立边界：赠品归赠品、赔偿归赔偿，混在一起你回头又该不舒服了",
+    "接住墙砖和烤箱的清单，单独回应烤箱：白送不收，要收就按价来，别拿它抵账"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T05_A01",
+     "subject": "HER",
+     "relation": "白送烤箱并捆绑赔偿的提议",
+     "value": "她提出把父母车库翻出的小烤箱白送给ME，并当作电池仓盖的赔偿",
+     "valid_time": "2026-11-30上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T05",
+      "message_id": "m0",
+      "quote": "烤箱要不给你？白送，就当赔你那个电池仓盖的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T05_A02",
+     "subject": "SHARED",
+     "relation": "裂纹赔偿悬置的延续",
+     "value": "电池仓盖裂纹的赔偿此前商定为盖子钱她出，是她此时想用烤箱抵账的前情",
+     "valid_time": "2026-11-28中午定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T02",
+      "message_id": "m0",
+      "quote": "盖子钱我出，你来换"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E162_E162_T05_A03",
+     "subject": "HER",
+     "relation": "车库翻出的待处置物品",
+     "value": "父母腾车库翻出一台九成新小烤箱和半箱没用完的墙砖待处理",
+     "valid_time": "2026-11-30前后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T05",
+      "message_id": "m0",
+      "quote": "翻出来一台九成新的小烤箱，还有半箱没用完的墙砖"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：边界要立但语气温和，别让她觉得被拒绝的是心意",
+   "unknowns": [
+    "烤箱具体成色与型号"
+   ],
+   "protected_expressions": [
+    "白送，就当赔你那个电池仓盖的"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已答应收下烤箱",
+    "不得虚构墙砖数量或品牌"
+   ],
+   "may_decline": false
+  },
+  "E162_T06": {
+   "case_id": "E162_T06",
+   "current_action": "接她的坦白：认可赠品赔偿分开算的原则被她接住，再对加热管坏一根给务实意见——按瑕疵件一百块合理，不必再降，能用就好",
+   "acceptable_actions": [
+    "肯定她把俩事分开想通了，对一百块买瑕疵备用件表态可以，提醒收货当面试两根管",
+    "接坦白：坏一根就按坏的算，一百块不用再降，让她别再让价，说好当面验货",
+    "先回翻篇二字表示同意，再给验货小贴士：烤十分钟看两管是否都红"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T06_A01",
+     "subject": "HER",
+     "relation": "烤箱瑕疵的坦白更正",
+     "value": "烤箱加热管有一根是坏的，此前卖家称业余使用够用，她主动坦白并问是否应降价",
+     "valid_time": "2026-11-30晚",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T06",
+      "message_id": "m0",
+      "quote": "那烤箱加热管有一根是坏的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T06_A02",
+     "subject": "HER",
+     "relation": "改按朋友价出售的更新提议",
+     "value": "她把白送改为按朋友价一百元出售，并宣布盖子赔偿之事翻篇",
+     "valid_time": "2026-11-30晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T06",
+      "message_id": "m0",
+      "quote": "烤箱我按朋友价卖你，一百块，盖子的事这就翻篇"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T06_A03",
+     "subject": "HER",
+     "relation": "被推翻的白送捆绑提议",
+     "value": "白送烤箱当赔偿的提议已被她自己收回，改为分开算账",
+     "valid_time": "2026-11-30上午提出晚撤销",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T05",
+      "message_id": "m0",
+      "quote": "白送，就当赔你那个电池仓盖的"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：把她的坦白夸到位，价格按坏管一口价定死不再拉扯",
+   "unknowns": [
+    "另一根加热管寿命"
+   ],
+   "protected_expressions": [
+    "赠品是赠品，赔偿是赔偿"
+   ],
+   "forbidden_factual_claims": [
+    "不得否认加热管损坏事实",
+    "不得把烤箱说成全新完好"
+   ],
+   "may_decline": false
+  },
+  "E162_T07": {
+   "case_id": "E162_T07",
+   "current_action": "确认送货安排：周六下午收烤箱和墙砖可行就应下，墙砖留不留看现场再定，别让她白跑一趟",
+   "acceptable_actions": [
+    "确认周六下午在家可收，让烤箱钱到时现金转账都行，墙砖看她拉不拉得动再定",
+    "应下周六下午，提醒烤箱带插电试一眼，墙砖用不上就直说别勉强她拉来拉去",
+    "接住按坏算的爽快，定下周六下午的时间点，并问清墙砖大概尺寸好判断用不用得上"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T07_A01",
+     "subject": "SHARED",
+     "relation": "周六下午送货的约定",
+     "value": "她约周六下午把烤箱和墙砖送来ME处，墙砖用不上就拉去二手群",
+     "valid_time": "原定2026-12-05下午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T07",
+      "message_id": "m0",
+      "quote": "周六下午我给你送过去？顺路把那半箱墙砖也拉上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T07_A02",
+     "subject": "SHARED",
+     "relation": "烤箱按一百元成交的意向",
+     "value": "按加热管坏一根的瑕疵件计，烤箱一百元她能接受，双方意向已对齐",
+     "valid_time": "2026-12-01上午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T07",
+      "message_id": "m0",
+      "quote": "那就按坏的算，一百块我完全能接受"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：把周六安排敲实到时间段，墙砖的去留不勉强",
+   "unknowns": [
+    "周六具体几点到"
+   ],
+   "protected_expressions": [
+    "当备用货收的"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称墙砖已确定留下",
+    "不得更改一百元的既定价格"
+   ],
+   "may_decline": false
+  },
+  "E162_T08": {
+   "case_id": "E162_T08",
+   "current_action": "接改期：公司支援走不开是正当理由，爽快改到周日晚上七点，接住酸豆角赔礼的玩笑，别让她过意不去",
+   "acceptable_actions": [
+    "爽快同意改周日晚上七点，接酸豆角的梗回一句，让她别把加班当负担",
+    "确认周日七点没问题，调侃赔礼就不必了但酸豆角收下，提醒周日提前说一声几点到",
+    "先接改期，再宽她的心：周末晚上正好有空，带不带东西人来就行"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T08_A01",
+     "subject": "SHARED",
+     "relation": "送货安排的取消改期",
+     "value": "周六下午因公司临时支援门店取消，送货改到周日晚上七点",
+     "valid_time": "2026-12-01晚定，改至2026-12-06晚",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T08",
+      "message_id": "m0",
+      "quote": "周六下午公司临时抓我去支援门店，走不开。能不能改到周日晚上七点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T08_A02",
+     "subject": "SHARED",
+     "relation": "被更正的周六送货原约",
+     "value": "原约周六下午送货已取消，是本次改期的直接前情",
+     "valid_time": "原定2026-12-05下午",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T07",
+      "message_id": "m0",
+      "quote": "周六下午我给你送过去"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E162_E162_T08_A03",
+     "subject": "HER",
+     "relation": "改期的补偿表示",
+     "value": "她提出请妈妈掌勺并带一罐新腌的酸豆角作赔礼",
+     "valid_time": "2026-12-01晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T08",
+      "message_id": "m0",
+      "quote": "给你带一罐她新腌的酸豆角，算是耽误你周末的赔礼"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：改期答得干脆，把她的歉意轻轻推回去",
+   "unknowns": [
+    "周日她到访的具体时长"
+   ],
+   "protected_expressions": [
+    "能不能改到周日晚上七点"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称周六安排仍然有效",
+    "不得虚构ME周末另有安排"
+   ],
+   "may_decline": false
+  },
+  "E162_T09": {
+   "case_id": "E162_T09",
+   "current_action": "确认清单并接完工预约：把周日七点、烤箱一百、墙砖随缘逐项应下，完工开火和测距仪再出山的预约爽快接住",
+   "acceptable_actions": [
+    "按她的清单逐项确认，完工开火当场应下，调侃测距仪再出山得收出场费玩笑",
+    "复述定案四件套确认无误，接住来家开火的邀请并主动问要不要帮盯吊柜水平",
+    "确认周日晚的安排，接住预告：测距仪随时待命，吊柜装歪了找它算账"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T09_A01",
+     "subject": "SHARED",
+     "relation": "周日晚交付的最终清单",
+     "value": "周日晚上七点交付：烤箱一百元、墙砖随缘、酸豆角管够",
+     "valid_time": "2026-12-06 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T09",
+      "message_id": "m0",
+      "quote": "周日晚上七点，烤箱一百块，墙砖随缘，酸豆角管够"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T09_A02",
+     "subject": "SHARED",
+     "relation": "跨篇引用：完工请客之约的延续",
+     "value": "她重申橱柜装好后要请ME来家开火，本句为对A篇完工请客约定的逐字回述与升级",
+     "valid_time": "橱柜装好后，日期未定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T09",
+      "message_id": "m0",
+      "quote": "等橱柜装好那天，我可真要请你来家里开火"
+     },
+     "cross_origin": {
+      "story_id": "E161",
+      "case_id": "E161_T12",
+      "note": "A篇T12完工请客约定"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T09_A04",
+     "subject": "SHARED",
+     "relation": "跨篇前情：测距仪借还闭环",
+     "value": "她此前借过ME的激光测距仪并按约定当天归还，再出山是有借还信用前情的续借",
+     "valid_time": "2026-11-05至11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "她借过沈聿的激光测距仪并按约定当天归还"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E162_E162_T09_A03",
+     "subject": "SHARED",
+     "relation": "跨篇引用：测距仪或再出山",
+     "value": "她预告到时候测距仪可能要再借一次，帮看吊柜装没装正",
+     "valid_time": "橱柜安装期",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T09",
+      "message_id": "m0",
+      "quote": "你那个测距仪说不定还得再出山，帮我看吊柜装没装正"
+     },
+     "cross_origin": {
+      "story_id": "E161",
+      "case_id": "E161_T06",
+      "note": "A篇T06测距仪借用源头"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：清单确认要利落，完工预约接得热络自然",
+   "unknowns": [
+    "橱柜安装的具体档期"
+   ],
+   "protected_expressions": [
+    "我可真要请你来家里开火"
+   ],
+   "forbidden_factual_claims": [
+    "不得更改周日晚七点与一百元的定案",
+    "不得承诺具体安装验收结果"
+   ],
+   "may_decline": false
+  },
+  "E162_T10": {
+   "case_id": "E162_T10",
+   "current_action": "接表妹求助：接住她认插座的自嘲，给一个先灯后帘的判断思路（换灯动电与工期，帘子纯软装随时可换），让她按视频再定",
+   "acceptable_actions": [
+    "接住自嘲回一句，给出先换灯的建议逻辑：动电的活优先排，帘子随时能换，等视频确认层高",
+    "肯定她拍视频的做法，按先动电后动软装的顺序给倾向，并让她把预算一起说",
+    "顺自嘲轻轻打趣，再给判断框架：危险和麻烦的先做，好看的慢慢挑"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T10_A01",
+     "subject": "THIRD",
+     "relation": "表妹出租屋改造的新需求",
+     "value": "表妹下个月来住，出租屋想先换灯再换帘子，她拍了房间视频征求ME意见",
+     "valid_time": "下个月",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T10",
+      "message_id": "m0",
+      "quote": "她那个出租屋想先换灯再换帘子，我照着房间拍了段视频"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T10_A02",
+     "subject": "THIRD",
+     "relation": "跨篇引用：表妹钩子的既有伏笔",
+     "value": "表妹来住与出租屋小改的钩子在A篇收尾时已埋下，此处为兑现，本句含她的逐字自嘲回述",
+     "valid_time": "2026-11-11提出，12月兑现",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T10",
+      "message_id": "m0",
+      "quote": "别又像我从符号里认插座似的闹笑话"
+     },
+     "cross_origin": {
+      "story_id": "E161",
+      "case_id": "E161_T12",
+      "note": "A篇T12表妹出租屋钩子与T08符号乌龙"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：给判断框架而非唯一答案，钩子接住并留问句",
+   "unknowns": [
+    "视频内容与出租屋实际条件"
+   ],
+   "protected_expressions": [
+    "别又像我从符号里认插座似的闹笑话"
+   ],
+   "forbidden_factual_claims": [
+    "不得未看视频就断言房间条件",
+    "不得替表妹确定最终改造顺序"
+   ],
+   "may_decline": false
+  },
+  "E162_T11": {
+   "case_id": "E162_T11",
+   "current_action": "轻量回应即可：确认会抽空看视频，接下玻璃罐的安排；此轮允许短回复或合并到下轮",
+   "acceptable_actions": [
+    "简短回复视频收到、周末前给主意，玻璃罐带两个没问题",
+    "接一句酸豆角管够的调侃，确认周日晚带罐子，视频的事应下",
+    "极简回应：好，罐子两个，视频今晚看"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T11_A01",
+     "subject": "SHARED",
+     "relation": "周日晚交付安排的补充",
+     "value": "周日晚来时ME需带两个空玻璃罐装酸豆角，视频回复期限为周末前",
+     "valid_time": "2026-12-06 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T11",
+      "message_id": "m0",
+      "quote": "周日晚上你来的时候带两个空玻璃罐走"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T11_A02",
+     "subject": "SHARED",
+     "relation": "周日晚七点之约的延续",
+     "value": "玻璃罐补充依附于周日晚七点的既定之约",
+     "valid_time": "2026-12-01晚定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T08",
+      "message_id": "m0",
+      "quote": "能不能改到周日晚上七点"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：此轮可短，不堆话，把两件小事应下即可",
+   "unknowns": [],
+   "protected_expressions": [
+    "周末前都来得及"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称已看完视频并给出结论"
+   ],
+   "may_decline": true
+  },
+  "E162_T12": {
+   "case_id": "E162_T12",
+   "current_action": "收尾致谢：把她的总账接住并简短回扣全链（图纸乌龙、借还闭环、烤箱成交），确认周日晚见，不展开新话题",
+   "acceptable_actions": [
+    "顺着总账回一句：一笔笔都清了，周日晚见，顺带把她的谢谢轻轻推回去",
+    "复述四件套清单确认无误，调侃从符号乌龙到烤箱成交都是她自己的功劳占大头",
+    "简短收尾：账清人靠谱，周日晚见，视频意见周末前给"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E162_E162_T12_A01",
+     "subject": "SHARED",
+     "relation": "B篇总对账清单",
+     "value": "周日晚七点、烤箱一百元、玻璃罐两个、灯帘意见待给，四项为收尾清单",
+     "valid_time": "2026-12-03晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T12",
+      "message_id": "m0",
+      "quote": "周日晚七点、烤箱一百、玻璃罐两个、灯和帘子等你看完视频给主意"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T12_A02",
+     "subject": "SHARED",
+     "relation": "跨篇引用：对A篇全链的致谢复盘",
+     "value": "她把A篇图纸看错俩插座、测距仪借又还与B篇烤箱一百元串成一条线致谢，本句为逐字回述",
+     "valid_time": "2026-11-02至12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T12",
+      "message_id": "m0",
+      "quote": "从头一回图上看错俩插座，到测距仪借了又还，再到烤箱一百块"
+     },
+     "cross_origin": {
+      "story_id": "E161",
+      "case_id": "E161_T01",
+      "note": "A篇起点T01图纸乌龙，串联T06/T11借还"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E162_E162_T12_A03",
+     "subject": "SHARED",
+     "relation": "周日晚见面的既定之约",
+     "value": "周日晚七点的交付与便饭之约是本篇终点事件",
+     "valid_time": "2026-12-06 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E162_T12",
+      "message_id": "m0",
+      "quote": "谢谢啦，周日晚见"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标只影响口吻：致谢接住但不煽情，收尾干净，留周日晚见的确定感",
+   "unknowns": [
+    "视频意见的具体内容"
+   ],
+   "protected_expressions": [
+    "笔笔都是你陪我捋清的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构新的未发生事件",
+    "不得把功劳全揽到自己身上否认她的自查"
+   ],
+   "may_decline": true
+  }
+ },
+ "cross_story_refs": [
+  {
+   "atom_id": "E162_T01_A02",
+   "origin_story": "E161",
+   "origin_case": "E161_T11",
+   "mechanism": "HER逐字回述A篇当天归还测距仪事件"
+  },
+  {
+   "atom_id": "E162_T02_A02",
+   "origin_story": "E161",
+   "origin_case": "E161_T06",
+   "mechanism": "HER回述A篇借出时的爱惜承诺"
+  },
+  {
+   "atom_id": "E162_T03_A02",
+   "origin_story": "E161",
+   "origin_case": "E161_T08",
+   "mechanism": "单据补位与A篇撤回决定冲突引发更正"
+  },
+  {
+   "atom_id": "E162_T03_A03",
+   "origin_story": "E161",
+   "origin_case": "E161_T09",
+   "mechanism": "二百六定案口径跨篇延续"
+  },
+  {
+   "atom_id": "E162_T04_A02",
+   "origin_story": "E161",
+   "origin_case": "E161_T08",
+   "mechanism": "定金抵勾缝口径跨篇兑现"
+  },
+  {
+   "atom_id": "E162_T09_A02",
+   "origin_story": "E161",
+   "origin_case": "E161_T12",
+   "mechanism": "完工请客之约跨篇升级为来家开火"
+  },
+  {
+   "atom_id": "E162_T09_A03",
+   "origin_story": "E161",
+   "origin_case": "E161_T06",
+   "mechanism": "测距仪可能再次借用"
+  },
+  {
+   "atom_id": "E162_T10_A02",
+   "origin_story": "E161",
+   "origin_case": "E161_T12",
+   "mechanism": "表妹出租屋钩子兑现并回扣T08符号乌龙"
+  },
+  {
+   "atom_id": "E162_T12_A02",
+   "origin_story": "E161",
+   "origin_case": "E161_T01",
+   "mechanism": "收尾致谢串起A篇起点与借还闭环"
+  }
+ ],
+ "pair_note": "B篇（E162）。跨篇引用原子共9处，source均指向本篇内HER逐字复述消息以保证quote机械可验，cross_origin字段指向A篇轮id。B篇只引用A篇已发生事件，不含A篇未来剧情，也不泄露自身后续之外的内容。"
+}

@@ -1,0 +1,207 @@
+{
+ "kind": "grading_cards_stories_v2",
+ "stage": "anchors_20261028",
+ "built_at": "2026-10-28T13:08:23",
+ "source": "同故事 reference.json 逐字派生（本工具不新写判据）",
+ "schema": [
+  "case_id",
+  "current_action",
+  "acceptable_actions",
+  "applicable_dimensions",
+  "required_memory_atoms",
+  "private_guidance",
+  "unknowns",
+  "protected_expressions",
+  "forbidden_factual_claims",
+  "may_decline",
+  "intent"
+ ],
+ "schema_note": "Stage1 十键 + intent（Stage1 卡丢失 intent，goal 维评审看不到当前有效目标；此处原样搬运 reference 的 intent，不新造判据）",
+ "use": "评估侧专用：不进入候选可见输入；不声称独立封存",
+ "stories": {
+  "AK01": {
+   "positions": 1,
+   "episode_sha256": "ec51f51ffaa3555912020f228cd3193f19e83895b9b3accd8eea0ffe0a409ca1",
+   "reference_sha256": "9c64030c428e7306fd9b7a06dc69d1643d62ef02d42d01b9a2a52fa38e38a7e6",
+   "exposure_sha256": "ec4cd2131fe55706ff39c0db2d31bd234e594e4db41281bf701ee66a7e5326af",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK02": {
+   "positions": 1,
+   "episode_sha256": "2ab292ffa3cde8f912f687a13c323fc9c6eac41ed9a6d78e301078941ff2205c",
+   "reference_sha256": "4013891a0cc3de0c33e8980cf324d4403e7a8fd04a88eabd12ed1c6b7f7cc51b",
+   "exposure_sha256": "444506508305ab65735dca6ae460e8194696aff669e71815a652acfb667a8b32",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK03": {
+   "positions": 1,
+   "episode_sha256": "6f059b6bcc90863043934f57ee8eead3fd11d859c8aa76419cb75928cb689514",
+   "reference_sha256": "afc179674e2ef3da0b39f0062fdf0ba0d4d5f2dfdd49a2829911eb1335645c3b",
+   "exposure_sha256": "676f0aaa22b04a80c95bf763ab1f1baadefe3c791878327b5a3e6c82b4252e25",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK04": {
+   "positions": 1,
+   "episode_sha256": "486611719aa3789b252c6ab1e3c2693ff9fca2fb7b911fd08529b89ddfe56931",
+   "reference_sha256": "0f3c3a92f415780d1cc3cb2ba82ef8503670d0c3593ad0c017ddb4ab920ac44f",
+   "exposure_sha256": "9b81d8d5204af462d43b8fe09fd66cd23ef015f5d3961d2e5d783a701338a366",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK05": {
+   "positions": 1,
+   "episode_sha256": "a990c28715aeca6d626a4c40daa16d55dbbbb37d6c4fd0cb83360c128c080f41",
+   "reference_sha256": "fc57669c3995d9133edba866a2f3025a65929673e6f0d2e2c99dba4848343a93",
+   "exposure_sha256": "7cfb276999c75fbd83421382e0b42d71eb8551978f7fe8bc9ae23efd084ea24f",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK06": {
+   "positions": 1,
+   "episode_sha256": "da13bd014781d27df38deb7b927022b1e68c25ce34284893f60335e4d7396294",
+   "reference_sha256": "279672998ad2fe92be0bada582862fb8277cbb91a7f49fcb561d8ba078476a95",
+   "exposure_sha256": "11353d1e8a3d6bec5de9da117393204c2541c8d95a47a9b2f59376665b8fa94e",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": [
+    "AK06_T01"
+   ]
+  },
+  "AK07": {
+   "positions": 1,
+   "episode_sha256": "7930ae4ee0cabc2e0a7356c3af01e6bde2af7684ac795db328925df1e69cb006",
+   "reference_sha256": "839cdd692abf45cdf9ff1e29a724ce68659b9920e52d3a9af7dbb287d7738305",
+   "exposure_sha256": "59e617f971ab01504ccafea259c8d32faf240c7571772efda67158261cf1b545",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK08": {
+   "positions": 1,
+   "episode_sha256": "41dd56c3d7c7cee14fad6ca7d3acaa4861d88d76a4a7473b2cd0d47cb0dddf66",
+   "reference_sha256": "8feadf4e7f41b8ac3b7b624006a7d03e33e737e4c826048d496adf7a2530a9e4",
+   "exposure_sha256": "a57dc63c0885922b9cfd79d6c76b588058277f2c117ec03f4f76144326b4798c",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK09": {
+   "positions": 1,
+   "episode_sha256": "278f286fcf7019beca7c36c1ad473821db8b9108146ea6923a841428e49bd6ba",
+   "reference_sha256": "aee311e9e28fab275abbddf5d9b74d6c379c30c33a629ec87c150f55ba4f532a",
+   "exposure_sha256": "2f03adbcc657e6dcd8ae724166b9c47c7f6dc4f44bfbe868f1e16ce1a085aeb1",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": [
+    "AK09_T01"
+   ]
+  },
+  "AK10": {
+   "positions": 1,
+   "episode_sha256": "253b2054a3b7476cfb1b1f769bac908e8f225c241f6594d82afdab418bea3d3e",
+   "reference_sha256": "05b0a01b624196655c9296b669340dbb25b61aa08e59d96497cde0c443e388d7",
+   "exposure_sha256": "e0f818d91bc660e73714b2cbb811cc4d13789da571f24cdb4cdaf91a5a250542",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK11": {
+   "positions": 1,
+   "episode_sha256": "a5171f3522b1163fdb783aa5696db379ff60b5469a07ddce8e89cf86543d3e9c",
+   "reference_sha256": "c7b564798e120020945ba2e032b65584266683e28c901b3587a380e6c2bd6fc9",
+   "exposure_sha256": "f28e880a75e55425298e04ecf9eb363b4f181d070aa3d58bf24be215d8083c0a",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": []
+  },
+  "AK12": {
+   "positions": 1,
+   "episode_sha256": "3c1cf7852c9c9ff734348a283f13ea519256d58a28e7236252baba3457526d6e",
+   "reference_sha256": "1539e7a4a7f591aad314f242ed20a2982dcc12c25052dc7c731b2df025007486",
+   "exposure_sha256": "b2228ccd2f08f16b6402b0f7ee51914fc5289d20229071bbe40091377b359408",
+   "declared_hashes_match": {
+    "episode.json": true,
+    "reference.json": true
+   },
+   "dev_exposed": true,
+   "independent_review": false,
+   "author": "ZCode main worker-AI (synthetic)",
+   "may_decline_turns": [
+    "AK12_T01"
+   ]
+  }
+ },
+ "counts": {
+  "stories": 12,
+  "cards": 12
+ },
+ "checks": {
+  "errors": [],
+  "passed": true
+ },
+ "cards_sha256": "231e038654256554e31869f5179ddba3ac0afde56e50509b35e0c02caa760e41",
+ "cards_file": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json"
+}

@@ -1,0 +1,83 @@
+{
+ "stage": "wave3",
+ "kind": "story_v2_stage1_manifest",
+ "count": 4,
+ "turn_per_story": 12,
+ "batch": "W3-T4-20261102",
+ "generator": "T4-3",
+ "conflict_policy": "four_distinct_types",
+ "stories": [
+  {
+   "story_id": "E189",
+   "title": "内转答辩十二月见",
+   "themes": [
+    "工作职场",
+    "内转答辩备考",
+    "大促抽调暂停",
+    "两案对比决策",
+    "批次开放重启"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "目标启停类",
+   "files": {
+    "episode.json": "354433c19386850eba785ef53420411bbf0f109602726bf092735208f57cd449",
+    "reference.json": "1e51325d28b9e761e34929361ef7588457402f1f3e19df14acfbd6e970a0ccc2",
+    "timeline.json": "0bec8f654bd6b8bab2710301295ba0618ac5f0859a7f176f7a3257c919df4411"
+   }
+  },
+  {
+   "story_id": "E190",
+   "title": "熄灯前填错的科目",
+   "themes": [
+    "学习成长",
+    "教资面试报名",
+    "科目误选更正",
+    "单次修改约束",
+    "试讲超时修剪"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "更正类",
+   "files": {
+    "episode.json": "da6b71cbc68983a61f2bd12deb5e972caf7b7b4af6a0a9d6fa9ccfdfa3516368",
+    "reference.json": "b1855c4d1d48313fc50f7baf0d5ff7a6f360ff26e6bdaca780d4e766a103992c",
+    "timeline.json": "6b7d62ff6476f4c495c332d6d6304a0810516748f05ee5e958db34bb5de343f1"
+   }
+  },
+  {
+   "story_id": "E191",
+   "title": "人均四十五到六十",
+   "themes": [
+    "兴趣社交",
+    "桌游吧拼局",
+    "放鸽人均重算",
+    "垫付当周对账",
+    "新人补位复原"
+   ],
+   "domain": "兴趣社交",
+   "conflict_type": "费用类",
+   "files": {
+    "episode.json": "8374277583cf8c36d0af452d1ca22dca5cd99dd5972fef97d1892a03ce3251e1",
+    "reference.json": "1b29d741a97bcba73d18b04db8dcd6905788228b9bfbd393b14f9823f6c3571c",
+    "timeline.json": "18d7c30130f873006ba543eab6ec7838223b5329d5603dfd8b1ef58177f8f182"
+   }
+  },
+  {
+   "story_id": "E192",
+   "title": "笔记本寄修两改期",
+   "themes": [
+    "数码消费",
+    "笔记本官方寄修",
+    "上门检测取消",
+    "二次改期转寄修",
+    "封箱留证备份"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "取消改期类",
+   "files": {
+    "episode.json": "18e08b2ff03a2e21ff2e51d36ae0e388850ff4f43f92e3ef6c3aa0268df92687",
+    "reference.json": "0865223d79e425a47f57452dddac5bff1148d8555b17c8303b976ce9561a17f9",
+    "timeline.json": "9c128e696e1182ade829e9e82f53eb61e7a900ec921d848e1e81f7976603c2cb"
+   }
+  }
+ ]
+}

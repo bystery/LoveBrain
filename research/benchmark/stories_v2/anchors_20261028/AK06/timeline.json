@@ -1,0 +1,34 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "AK06",
+ "turn_clocks": [
+  {
+   "case_id": "AK06_T01",
+   "clock": "2026-12-12 18:12"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "AK06_T01",
+   "message_id": "m0",
+   "speaker": "ME",
+   "quote": "明晚八点半我到 你几点到",
+   "ts": "2026-12-12 18:00"
+  },
+  {
+   "case_id": "AK06_T01",
+   "message_id": "m1",
+   "speaker": "HER",
+   "quote": "班里临时让我顶晚托 我得七点半才走 可能赶不上",
+   "ts": "2026-12-12 18:10"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "AK06_E1",
+   "case_id": "AK06_T01",
+   "summary": "开放麦｜反馈=busy｜意图=周六晚到场看她首台",
+   "source_turn": "AK06_T01"
+  }
+ ]
+}

@@ -1,0 +1,494 @@
+{
+ "story_id": "E181",
+ "turns": {
+  "E181_T01": {
+   "case_id": "E181_T01",
+   "current_action": "回应询价：按二手行情点评1250的价格区间，提醒先确认版本、保修和成色再交定金",
+   "acceptable_actions": [
+    "点评1250接近行情但强调先核实版本与保修，提醒定金走小柯中转要留凭证",
+    "肯定渠道来自同事相对可信，同时列出交机前必须当面确认的几个问题",
+    "表示愿意后续陪她把关，先问她卖家信息和验机安排"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A01",
+     "subject": "HER",
+     "relation": "交易意向",
+     "value": "有意经小柯渠道购国行Switch OLED主机1250元周六下午自提",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T01", "message_id": "m0", "quote": "国行1250"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A02",
+     "subject": "THIRD",
+     "relation": "渠道介绍",
+     "value": "同事小柯向HER介绍二手卖家交易渠道",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T01", "message_id": "m0", "quote": "小柯给我介绍了个卖家"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "对二手渠道保持谨慎但不说教，语气轻松，把确认版本和自提细节放在最前面",
+   "unknowns": ["卖家具体身份与信誉未知", "是否国行仅有转述待当面核实"],
+   "protected_expressions": ["国行1250", "周六下午自提"],
+   "forbidden_factual_claims": ["不得断言该卖家一定可靠或一定有问题", "不得宣称1250一定高于或低于市场价的确切结论"]
+  },
+  "E181_T02": {
+   "case_id": "E181_T02",
+   "current_action": "确认收到定金消息：肯定她付款走小柯中转的做法，提醒保存转账记录并记牢周六下午三点的交机时间",
+   "acceptable_actions": [
+    "肯定中转付款方式稳妥，提醒她把转账和小柯的承诺截图留底",
+    "确认三点交机安排可行，顺势把验机清单的准备工作提上日程",
+    "轻松接住她的行动力，提醒周六前把版本和成色问题再和卖家对一遍"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A03",
+     "subject": "SHARED",
+     "relation": "定金支付",
+     "value": "HER经小柯中转支付100元定金约定周六下午三点店内交机",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T02", "message_id": "m0", "quote": "先转了100定金给小柯"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A04",
+     "subject": "SHARED",
+     "relation": "交机安排",
+     "value": "交机定于周六下午三点在卖家店里面当面进行",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T02", "message_id": "m0", "quote": "周六下午三点在他店里面交机"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "肯定她的谨慎执行，顺带为验机清单做铺垫，不泼冷水",
+   "unknowns": ["定金是否可退未与卖家书面确认"],
+   "protected_expressions": ["100定金", "周六下午三点"],
+   "forbidden_factual_claims": ["不得声称定金已确认可退", "不得虚构其他交机时间地点"]
+  },
+  "E181_T03": {
+   "case_id": "E181_T03",
+   "current_action": "给出可执行的验机清单：划痕、螺丝、屏幕坏点、摇杆漂移、序列号与盒子比对，一条条照做",
+   "acceptable_actions": [
+    "按五项列清单并每项给一句怎么看的实操提示",
+    "给清单后建议拍照留证，特别是序列号和划痕部位",
+    "给清单并主动提出周六可以陪她一起去验"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A05",
+     "subject": "ME",
+     "relation": "验机经验",
+     "value": "ME此前帮朋友验过三台二手机有一套当面验机清单",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "帮朋友验过三台二手机"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "清单要具体可执行，条目化呈现，不带炫技感",
+   "unknowns": ["卖家店内是否有验机条件未知"],
+   "protected_expressions": ["验机都看哪些地方", "一份清单"],
+   "forbidden_factual_claims": ["不得声称该机型必然存在某类故障"]
+  },
+  "E181_T04": {
+   "case_id": "E181_T04",
+   "current_action": "接住疑虑：指出换人交机的风险点，确认钱仍走小柯中转是底线，建议交机现场对照原约定逐条核实",
+   "acceptable_actions": [
+    "分析换人交机的风险并强调钱走小柯中转不直接给表哥",
+    "安抚疑虑的同时给出应对：验机清单照做、当场不合适就不接",
+    "提醒她把换人安排让小柯在群里或聊天里再确认一遍"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A06",
+     "subject": "THIRD",
+     "relation": "交机人变更",
+     "value": "交机人由卖家本人更正为其表哥代交钱款仍经小柯中转",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T04", "message_id": "m0", "quote": "换成他表哥周六来交机"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A07",
+     "subject": "THIRD",
+     "relation": "卖家本人到场",
+     "value": "卖家本人不再到场交机",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E181_T04", "message_id": "m0", "quote": "这单不自己来了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A08",
+     "subject": "SHARED",
+     "relation": "原交机安排",
+     "value": "此前约定周六下午三点在卖家店里当面交机",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T02", "message_id": "m0", "quote": "周六下午三点在他店里面交机"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "认真对待她的不安，不轻描淡写，给出可操作的底线而非空安慰",
+   "unknowns": ["表哥与卖家的真实关系及授权未知"],
+   "protected_expressions": ["换成他表哥周六来交机", "钱还是走小柯转"],
+   "forbidden_factual_claims": ["不得断言表哥一定不可信", "不得声称定金风险已完全消除"]
+  },
+  "E181_T05": {
+   "case_id": "E181_T05",
+   "current_action": "答应陪同：确认周六下午三点鼓楼那家店，说明自己会带验机要点到场，让她提前把清单打印好",
+   "acceptable_actions": [
+    "直接答应并确认时间地点，补一句自己到场后主看序列号和摇杆",
+    "答应陪同并安排分工：她谈价自己看机器",
+    "答应陪同，叮嘱她定金凭证和聊天记录都带过去"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A09",
+     "subject": "SHARED",
+     "relation": "陪同请求",
+     "value": "HER请求ME周六下午三点陪同前往鼓楼店自提交机",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T05", "message_id": "m0", "quote": "三点在鼓楼那家店"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A10",
+     "subject": "THIRD",
+     "relation": "代交背景",
+     "value": "当前交易由卖家表哥代为交机卖家本人不到场",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T04", "message_id": "m0", "quote": "换成他表哥周六来交机"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "答应得干脆不邀功，落在分工和准备上，暧昧期分寸是关心但不越界",
+   "unknowns": ["当天店内环境是否方便验机未知"],
+   "protected_expressions": ["陪我去一趟", "三点在鼓楼那家店"],
+   "forbidden_factual_claims": ["不得虚构其他陪同时间或地点"]
+  },
+  "E181_T06": {
+   "case_id": "E181_T06",
+   "current_action": "处理版本更正冲击：先接住情绪，再摆事实算账——日版1150对国行1250的差价与损失，帮她把退与不退的账摊开",
+   "acceptable_actions": [
+    "先共情货不对板的不爽，再算日版1150与国行1250的差价和定金去留两笔账",
+    "指出定金不退抵货款意味着退出有损失，给出继续但再压价的替代路径",
+    "询问她是否在意日版差别（电源、保修、账号），按在意程度给退或留的建议"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A11",
+     "subject": "SHARED",
+     "relation": "版本更正",
+     "value": "主机版本由国行更正为日版价格由1250更正为1150定金不退但抵货款",
+     "valid_time": "2026-11-10",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T06", "message_id": "m0", "quote": "其实是日版不是国行"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A12",
+     "subject": "SHARED",
+     "relation": "原版本主张",
+     "value": "此前转述的国行1250已不成立",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E181_T01", "message_id": "m0", "quote": "国行1250"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E181_A13",
+     "subject": "SHARED",
+     "relation": "定金处理",
+     "value": "100元定金不退但可抵进货款",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T06", "message_id": "m0", "quote": "定金不退但能抵进货款"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不替她拍板退不退，把账算清楚让她自己选，情绪先接住再讲理",
+   "unknowns": ["国行与日版在HER使用场景下的实际差别未逐项确认"],
+   "protected_expressions": ["其实是日版不是国行", "1150卖我"],
+   "forbidden_factual_claims": ["不得宣称日版没有保修只是吓唬人", "不得虚构国行渠道的市场价"]
+  },
+  "E181_T07": {
+   "case_id": "E181_T07",
+   "current_action": "接受她的决定并讲清日版注意点：两脚充电头、无国行联保、账号区域差异，逐条给应对",
+   "acceptable_actions": [
+    "确认继续交易合理，逐条讲日版坑点并各给一句应对",
+    "重点讲充电器两脚插头问题，建议备转换插或用插排",
+    "讲注意点后叮嘱交机现场把版本和配件当面核对"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A14",
+     "subject": "HER",
+     "relation": "交易决定",
+     "value": "HER决定不退单接受日版继续交易",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T07", "message_id": "m0", "quote": "日版我也能接受"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A15",
+     "subject": "HER",
+     "relation": "风险关注",
+     "value": "HER关注日版充电器是否两脚插头",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T07", "message_id": "m0", "quote": "充电器是不是两脚的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "讲实用避坑不堆术语，两脚插头这点讲透，为T12的验证回扣埋钩",
+   "unknowns": ["HER家中插排类型未知"],
+   "protected_expressions": ["日版我也能接受", "充电器是不是两脚的"],
+   "forbidden_factual_claims": ["不得宣称日版主机完全无售后", "不得虚构国行联保的具体年限"]
+  },
+  "E181_T08": {
+   "case_id": "E181_T08",
+   "current_action": "确认交机时间不变：三点照旧，表哥两点先到不影响，顺带让她把定金凭证带好",
+   "acceptable_actions": [
+    "确认三点不变可行，提醒提前到几分钟更有主动权",
+    "确认安排并复查清单准备情况",
+    "轻快接住，让她周六前把聊天记录和转账凭证再存一遍"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A16",
+     "subject": "SHARED",
+     "relation": "时间确认",
+     "value": "交机维持周六下午三点表哥两点先到店布置",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T08", "message_id": "m0", "quote": "交机还是约三点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A17",
+     "subject": "SHARED",
+     "relation": "原定时间",
+     "value": "此前约定周六下午三点店内交机仍然有效",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T02", "message_id": "m0", "quote": "周六下午三点在他店里面交机"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "简短确认即可，情绪平稳收拢，不再翻旧账",
+   "unknowns": [],
+   "protected_expressions": ["交机还是约三点", "两点才到店"],
+   "forbidden_factual_claims": ["不得虚构交机时间有变"]
+  },
+  "E181_T09": {
+   "case_id": "E181_T09",
+   "current_action": "回应到场：告知马上到，肯定她带清单和手电的准备，约定店门口碰头后按清单顺序来",
+   "acceptable_actions": [
+    "回在路上了，让她先看门头招牌别进错店",
+    "肯定准备工作专业，约定碰头后先验序列号再查屏幕",
+    "简短回应马上到，提醒见到表哥先核对身份再开验"
+   ],
+   "applicable_dimensions": ["time_state", "interaction", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A18",
+     "subject": "HER",
+     "relation": "到场状态",
+     "value": "HER提前到达鼓楼店门口并带打印清单与小手电",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T09", "message_id": "m0", "quote": "清单打出来了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A19",
+     "subject": "ME",
+     "relation": "清单来源",
+     "value": "验机清单源于ME此前所列的当面验机要点",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T03", "message_id": "m0", "quote": "我想要一份清单"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "到场阶段交流要短平快，像并肩办事的搭档，不啰嗦",
+   "unknowns": [],
+   "protected_expressions": ["清单打出来了", "带了个小手电"],
+   "forbidden_factual_claims": ["不得虚构验机已开始的结果"]
+  },
+  "E181_T10": {
+   "case_id": "E181_T10",
+   "current_action": "现场判读验机结果并给出议价判断：浅划痕属可接受范围，序列号对上是大头，支持接受再让50成交",
+   "acceptable_actions": [
+    "判读划痕轻微可接受，支持按1100成交并当面清点配件",
+    "肯定序列号核对通过是关键，建议划痕处拍照留证再付尾款",
+    "同意再让50的方案，提醒开机验系统版本和配件齐全后再转钱"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A20",
+     "subject": "SHARED",
+     "relation": "验机结果",
+     "value": "验机仅屏幕左下角一道浅划痕摇杆不漂移序列号与盒子一致",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T10", "message_id": "m0", "quote": "序列号和盒子对得上"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A21",
+     "subject": "SHARED",
+     "relation": "再让价",
+     "value": "卖家表哥因划痕同意在1150基础上再让50元",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T10", "message_id": "m0", "quote": "再让50"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A22",
+     "subject": "SHARED",
+     "relation": "版本价基准",
+     "value": "当前报价基准为日版1150元",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T06", "message_id": "m0", "quote": "1150卖我"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "现场节奏快，结论明确不含糊，帮她把最后一道关守住",
+   "unknowns": ["划痕是否影响长期使用未评估"],
+   "protected_expressions": ["一道浅划痕", "序列号和盒子对得上", "再让50"],
+   "forbidden_factual_claims": ["不得虚构摇杆存在漂移", "不得宣称1150基础上的让价必须再压更多"]
+  },
+  "E181_T11": {
+   "case_id": "E181_T11",
+   "current_action": "确认成交与账目：1100=定金100抵扣+再转1000，账目对得上，接住她的奶茶之约",
+   "acceptable_actions": [
+    "确认账目两笔加起来正好1100没有差错，爽快应下奶茶",
+    "肯定她全程自己谈下来有进步，奶茶照单全收",
+    "确认付款后提醒拿好盒子配件和聊天记录一并留底"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A23",
+     "subject": "SHARED",
+     "relation": "成交价",
+     "value": "最终以1100元成交定金100元抵扣另转1000元",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T11", "message_id": "m0", "quote": "1100拿下"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A24",
+     "subject": "SHARED",
+     "relation": "定金抵扣",
+     "value": "此前支付的100元定金当场抵扣货款",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T02", "message_id": "m0", "quote": "先转了100定金给小柯"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "账目当场对清体现可靠，奶茶之约接得自然，暧昧期升温但不越界",
+   "unknowns": [],
+   "protected_expressions": ["1100拿下", "定金100抵掉", "请你喝奶茶"],
+   "forbidden_factual_claims": ["不得算出1100以外的成交总额", "不得虚构定金另退现金"]
+  },
+  "E181_T12": {
+   "case_id": "E181_T12",
+   "current_action": "收尾回扣：肯定两脚插头验证与此前预警对上，接住显示器陪砍价的回扣并留下次互动钩子",
+   "acceptable_actions": [
+    "呼应两脚插头预警应验的小得意，接住陪砍价之约并约定下次详聊",
+    "肯定这次她从询价到验机的成长，回扣显示器承诺",
+    "轻松收尾，留一个下周约奶茶或看新机器的钩子"
+   ],
+   "applicable_dimensions": ["memory_use", "emotion_relation", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E181_A25",
+     "subject": "SHARED",
+     "relation": "充电器验证",
+     "value": "日版充电器为两脚插头与此前预警一致插排可直接使用",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T12", "message_id": "m0", "quote": "果然是两脚的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E181_A26",
+     "subject": "HER",
+     "relation": "预警回扣",
+     "value": "此前ME提示关注日版充电器两脚问题已当场验证",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T07", "message_id": "m0", "quote": "充电器是不是两脚的"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E181_A27",
+     "subject": "HER",
+     "relation": "互助回扣",
+     "value": "HER承诺下次ME购显示器时陪同砍价",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E181_T12", "message_id": "m0", "quote": "下次你要买显示器"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾松弛有回味，回扣要具体不空泛，钩子留但不强推",
+   "unknowns": [],
+   "protected_expressions": ["果然是两脚的", "下次你要买显示器"],
+   "forbidden_factual_claims": ["不得虚构主机出现新故障", "不得宣称日版与国行毫无差别"]
+  }
+ }
+}

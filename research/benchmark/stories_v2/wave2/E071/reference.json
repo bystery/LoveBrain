@@ -1,0 +1,527 @@
+{
+ "story_id": "E071",
+ "turns": {
+  "E071_T01": {
+   "case_id": "E071_T01",
+   "current_action": "接住开工的兴奋，答应周六上午到现场，并把预算三万五封顶这条红线先记下。",
+   "acceptable_actions": [
+    "答应周六到场，提醒她把工长的施工单先发来看一眼",
+    "确认到现场时间，建议她提前收好原房线路的老照片",
+    "顺着'纯外行'给她打预防针：增项先别慌，攒着一起看"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A01",
+     "subject": "SHARED",
+     "relation": "reno_scope",
+     "value": "翻新范围只有厨房和卫生间，水电周三进场",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T01", "message_id": "m0", "quote": "只改厨房和卫生间"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A02",
+     "subject": "SHARED",
+     "relation": "budget_cap",
+     "value": "水电工程预算三万五封顶，是她定下的红线",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T01", "message_id": "m0", "quote": "预算三万五封顶"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A03",
+     "subject": "SHARED",
+     "relation": "site_visit_plan",
+     "value": "她请ME周六上午到现场看水电走线",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T01", "message_id": "m0", "quote": "你周六上午来帮我看看现场"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：答应要痛快，'先看单子'的习惯先垫一句，不像立规矩。",
+   "unknowns": ["工长的施工合同细节未知", "老房子房龄与线路原始资料未知"],
+   "protected_expressions": ["连开槽是啥都不知道"],
+   "forbidden_factual_claims": ["不得虚构房价与合同条款", "不得预判一定会有增项"]
+  },
+  "E071_T02": {
+   "case_id": "E071_T02",
+   "current_action": "接住她背名词的用功，肯定她预习，确认周六讲解的安排不作变。",
+   "acceptable_actions": [
+    "肯定她背名词比多数业主强，周六现场对照实物讲更快",
+    "提醒她周六穿平底鞋，工地粉尘大带个口罩",
+    "让她把工长的联系方式的存一份，现场有事随时找"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A04",
+     "subject": "THIRD",
+     "relation": "foreman_brief",
+     "value": "工长承诺周六上午留半场给ME讲解走线",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T02", "message_id": "m0", "quote": "工长还说周六给你留了半上午"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'背名词'夸得具体，别让她觉得白用功。",
+   "unknowns": ["周六现场进度是否会推迟未知"],
+   "protected_expressions": ["你可别放我鸽子"],
+   "forbidden_factual_claims": ["不得虚构工长的口头承诺细节", "不得断言周六必然走到线"]
+  },
+  "E071_T03": {
+   "case_id": "E071_T03",
+   "current_action": "第三方插入落点：接住老周两项增项提议（厨房铜线四千五、渗漏修理两千），先确认这是以现场照片为据的实质信息，不急着站队，让她把照片和单子发来。",
+   "acceptable_actions": [
+    "先要老周拍的现场照片与报价明细，再做判断",
+    "把两项增项分开看：渗漏涉及防水层属于必查项，换线可分回路取舍",
+    "提醒她先别回复老周，等周六现场核过再定"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A05",
+     "subject": "THIRD",
+     "relation": "aluminum_wiring",
+     "value": "开槽后发现墙内线路全是铝线，载流能力不足",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T03", "message_id": "m0", "quote": "里头全是铝线"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A06",
+     "subject": "THIRD",
+     "relation": "kitchen_addon",
+     "value": "师傅老周建议厨房单独走一路铜线，报价增项四千五",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T03", "message_id": "m0", "quote": "增项四千五"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A07",
+     "subject": "THIRD",
+     "relation": "leak_addon",
+     "value": "老周发现卫生间主管道渗漏，修理报价再加两千",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T03", "message_id": "m0", "quote": "修理要再加两千"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先认可老周'拍照片给证据'的做法靠谱，再谈钱，不让她觉得师傅在讹她。",
+   "unknowns": ["铝线老化程度未知", "渗漏具体位置与成因未知"],
+   "protected_expressions": ["我预算在滴血"],
+   "forbidden_factual_claims": ["不得替老周夸大或贬低增项必要性", "不得虚构照片内容"]
+  },
+  "E071_T04": {
+   "case_id": "E071_T04",
+   "current_action": "第二第三方插入：接住父亲'铝线不用换、师傅想加钱'的说法，把它作为信息源如实归位（经验之谈而非现场判断），说明两种说法打架的实质，先稳住她的摇摆。",
+   "acceptable_actions": [
+    "把父亲的话定位为经验之谈，老周的是现场实拍，两类证据不同级",
+    "指出'三十年没事'不等于带得动现在的厨房电器，用她的烤箱洗碗机举例",
+    "建议她不急着跟爸争，把照片给爸看后再听他怎么说"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "emotion_relation", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A08",
+     "subject": "THIRD",
+     "relation": "dad_skepticism",
+     "value": "父亲断言铝线不用换，称师傅提增项是想加钱",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T04", "message_id": "m0", "quote": "别听师傅瞎忽悠"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A09",
+     "subject": "SHARED",
+     "relation": "kitchen_addon",
+     "value": "增项提议在'师傅该换'与'父亲不用换'两种说法间悬置",
+     "valid_time": "2026-11-19",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T03", "message_id": "m0", "quote": "增项四千五"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不给爸扣'不懂装懂'的帽子，把分歧讲成'经验对现场'，让她自己看出层级。",
+   "unknowns": ["父亲是否愿意看现场照片未知"],
+   "protected_expressions": ["我听谁的啊"],
+   "forbidden_factual_claims": ["不得断言父亲必然改口", "不得替她向父亲转达判断"]
+  },
+  "E071_T05": {
+   "case_id": "E071_T05",
+   "current_action": "接住工长的背书（老周按实报）并正面回答她的求证：渗漏必修、厨房回路可换、范围可以缩，给判断也给理由。",
+   "acceptable_actions": [
+    "给出分级判断：渗漏两千必花，厨房铜线四千五值得，客厅卧室可缓",
+    "肯定工长'按实报'的说法，但仍要求增项写进单子",
+    "提醒她把老周的报价单发来，周六现场对着线核价"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "goal", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A10",
+     "subject": "THIRD",
+     "relation": "foreman_endorse",
+     "value": "工长背书老周人品，称增项都按实报，决定权在她",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T05", "message_id": "m0", "quote": "增项都按实报"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A11",
+     "subject": "SHARED",
+     "relation": "leak_addon",
+     "value": "渗漏修理两千的去留在等待判断中悬置",
+     "valid_time": "2026-11-19/2026-11-20",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T03", "message_id": "m0", "quote": "修理要再加两千"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'说句公道话'就真给公道话，两边都点到位，不让她觉得在替师傅拉生意。",
+   "unknowns": ["周六现场能否核价未知"],
+   "protected_expressions": ["说句公道话"],
+   "forbidden_factual_claims": ["不得虚构工长与老周的关系", "不得替她拍板花多少钱"]
+  },
+  "E071_T06": {
+   "case_id": "E071_T06",
+   "current_action": "确认她的拍板：渗漏必修、厨房换铜线、其余不动、六千五封顶、白纸黑字补单；肯定她把父亲的反对消化成了自己的决定，提醒补单别省。",
+   "acceptable_actions": [
+    "肯定决策结构清晰，重点提醒'白纸黑字'必须当天落单",
+    "建议她给爸的话术换成'修渗漏是保瓷砖'，别争铝线",
+    "提醒她把增项总额写进补充单并让工长也签字"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A12",
+     "subject": "SHARED",
+     "relation": "addon_decision",
+     "value": "拍板：修渗漏加厨房换铜线，其余铝线不动，增项六千五以内",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T06", "message_id": "m0", "quote": "增项控制在六千五以内"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A13",
+     "subject": "THIRD",
+     "relation": "dad_skepticism",
+     "value": "父亲'别听师傅瞎忽悠'的反对被她的拍板部分否决",
+     "valid_time": "2026-11-19/2026-11-20",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E071_T04", "message_id": "m0", "quote": "别听师傅瞎忽悠"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E071_A14",
+     "subject": "SHARED",
+     "relation": "paper_rule",
+     "value": "两项增项须白纸黑字补进施工单",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T06", "message_id": "m0", "quote": "白纸黑字补到单子上"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把她的拍板夸成'分得清轻重'，对爸那边给台阶不给火药。",
+   "unknowns": ["老周是否接受分范围施工未知", "补充单何时能落未知"],
+   "protected_expressions": ["大不了挨一顿唠叨"],
+   "forbidden_factual_claims": ["不得虚构她与父亲的谈话结果", "不得断言六千五必然封得住"]
+  },
+  "E071_T07": {
+   "case_id": "E071_T07",
+   "current_action": "现场履约中：接住她发的直播消息，确认自己已到楼下并看过走线图，让讲解按部就班进行。",
+   "acceptable_actions": [
+    "按她的指引上六楼，到现场先对单子再看线",
+    "请老周对着实物把铝线与铜线差别讲给她听",
+    "提醒她把今天讲解的要点记在手机里，验收时用得上"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A15",
+     "subject": "ME",
+     "relation": "on_site",
+     "value": "ME按约周六上午到场，路上先看完了走线图",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T07", "message_id": "m0", "quote": "到楼下了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：到位后话少事多，现场以听老周讲为主，不抢工长风头。",
+   "unknowns": ["现场讲解具体内容未知"],
+   "protected_expressions": ["讲得比我们大学老师还细"],
+   "forbidden_factual_claims": ["不得虚构现场讲解的技术细节", "不得替老周做验收结论"]
+  },
+  "E071_T08": {
+   "case_id": "E071_T08",
+   "current_action": "共享大丰收：换线完工、父亲送水改口认可老周、增项复核到六千三低于预估；把父亲的改口点出来但不邀功。",
+   "acceptable_actions": [
+    "先恭喜完工在预算内，再接父亲改口的暖场",
+    "提醒她六千三也要等结算单落定才算数",
+    "建议她给老周带箱水或水果，谢字落成实物"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A16",
+     "subject": "SHARED",
+     "relation": "rewiring_done",
+     "value": "厨房和卫生间的线全换完，客厅卧室铝线未动",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T08", "message_id": "m0", "quote": "厨房和卫生间的线全换完"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A17",
+     "subject": "THIRD",
+     "relation": "dad_recanted",
+     "value": "父亲与老周聊后改口，认可'这师傅实在，不忽悠'",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T08", "message_id": "m0", "quote": "这师傅实在，不忽悠"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A18",
+     "subject": "THIRD",
+     "relation": "addon_requote",
+     "value": "老周复核增项，口头口径降到六千三",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T08", "message_id": "m0", "quote": "给我算到六千三"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A19",
+     "subject": "SHARED",
+     "relation": "budget_cap",
+     "value": "增项复核六千三，控制在拍板时的六千五红线内",
+     "valid_time": "2026-11-20/2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T06", "message_id": "m0", "quote": "增项控制在六千五以内"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：父亲改口这事点到为止，别当面戳'你之前说师傅忽悠'。",
+   "unknowns": ["六千三是否已落单未知"],
+   "protected_expressions": ["这师傅实在，不忽悠"],
+   "forbidden_factual_claims": ["不得断言口头复核价就是最终价", "不得虚构父亲与老周对话细节"]
+  },
+  "E071_T09": {
+   "case_id": "E071_T09",
+   "current_action": "接住验收插曲：插座偏位责任在工长单子写错而非老周，老周加班返工；帮她把责任归属记清楚，别让好师傅背锅也别漏了该找工长的账。",
+   "acceptable_actions": [
+    "肯定她把责任归属分清了，这份对图记录很关键",
+    "提醒她把单子写错的一页拍照留证，结算时与工长对清",
+    "建议给加班返工的老周带点宵夜，人心要还"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A20",
+     "subject": "THIRD",
+     "relation": "acceptance_pack",
+     "value": "验收时老周提供管线照片与走线图，封槽前过最后一遍",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T09", "message_id": "m0", "quote": "给了张走线图"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A21",
+     "subject": "SHARED",
+     "relation": "fault_attribution",
+     "value": "洗碗机插座偏位系工长单子写错，责任不在老周",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T09", "message_id": "m0", "quote": "是工长单子上写错了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A22",
+     "subject": "THIRD",
+     "relation": "socket_rework",
+     "value": "老周认下返工义务，当晚加班把插座改到位",
+     "valid_time": "2026-11-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T09", "message_id": "m0", "quote": "今晚加班给我改到位"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：归属要清，语气要软，夸老周人品时顺带教她留证据。",
+   "unknowns": ["工长是否认下单子错误未知"],
+   "protected_expressions": ["九点才收工"],
+   "forbidden_factual_claims": ["不得虚构返工费用承担的约定", "不得替工长认错"]
+  },
+  "E071_T10": {
+   "case_id": "E071_T10",
+   "current_action": "接住结算差两百的纠结：把口头六千三与最终六千五的差异摆到明处，给'该不该给'一个有依据的判断路径——看差异是否有据、能否落单。",
+   "acceptable_actions": [
+    "建议她让老周说清是哪段用了什么线，型号落单再付款",
+    "提示两百块与口碑的分量：钱可以给，依据必须白纸黑字",
+    "提醒她工长单子上是否含此项也要核对，别重复计费"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "boundary", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A23",
+     "subject": "THIRD",
+     "relation": "settlement_gap",
+     "value": "最终增项结算六千五，与白天口头六千三差两百",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T10", "message_id": "m0", "quote": "最终增项六千五"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A24",
+     "subject": "THIRD",
+     "relation": "addon_requote",
+     "value": "白天'六千三'的口头复核口径被结算六千五覆盖",
+     "valid_time": "2026-11-21/2026-11-25",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E071_T08", "message_id": "m0", "quote": "给我算到六千三"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不把两百块说成小事也不说成骗局，给它一个'问清楚就给'的出口。",
+   "unknowns": ["更好线材的具体型号未知", "工长单是否包含该段未知"],
+   "protected_expressions": ["这钱到底该不该给"],
+   "forbidden_factual_claims": ["不得断言老周故意加价", "不得断言两百必然不该收"]
+  },
+  "E071_T11": {
+   "case_id": "E071_T11",
+   "current_action": "共享按单结算闭环：型号落单、凭证拍照、红包退回；把父亲要给老周介绍活当成这件事的最高背书点出来。",
+   "acceptable_actions": [
+    "肯定她'给了但落单'的处理，这正是该有的样子",
+    "把红包退回讲成老周的规矩，她的踏实因此成立",
+    "接住爸要介绍活的梗，提醒她转介绍也要按单结算"
+   ],
+   "applicable_dimensions": ["memory_use", "emotion_relation", "attribution", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A25",
+     "subject": "SHARED",
+     "relation": "settled_on_paper",
+     "value": "增项差价以线材型号写入结算单的方式落定",
+     "valid_time": "2026-11-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T11", "message_id": "m0", "quote": "写进结算单"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A26",
+     "subject": "THIRD",
+     "relation": "redpacket_refund",
+     "value": "老周点都不点她发的红包，原路退回",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T11", "message_id": "m0", "quote": "原路退回来了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A27",
+     "subject": "SHARED",
+     "relation": "settlement_gap",
+     "value": "结算六千五的差价经落单凭证后支付完毕，争议关闭",
+     "valid_time": "2026-11-25/2026-11-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T10", "message_id": "m0", "quote": "最终增项六千五"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'按单来'夸成双向的体面，人和规矩都在。",
+   "unknowns": ["父亲介绍的活是否会成行未知"],
+   "protected_expressions": ["你别不好意思"],
+   "forbidden_factual_claims": ["不得虚构红包金额", "不得断言老周会接下一个活"]
+  },
+  "E071_T12": {
+   "case_id": "E071_T12",
+   "current_action": "接住水电闭环与辣子鸡之约：笑纳请饭，同意把老周也请上，顺着'走线图裱起来'的玩笑把这一阶段收掉。",
+   "acceptable_actions": [
+    "答应赴约，并提议把辣子鸡做成验收仪式，走线图签名作留念",
+    "接住玩笑，说走线图裱起来比装饰画实用",
+    "提醒她泥瓦进场前把水电验收单和结算单归档放好"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E071_A28",
+     "subject": "SHARED",
+     "relation": "acceptance_signed",
+     "value": "水电验收单已签署，泥瓦工序下周接棒",
+     "valid_time": "2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T12", "message_id": "m0", "quote": "水电验收单签了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A29",
+     "subject": "SHARED",
+     "relation": "dinner_promise",
+     "value": "她许诺新厨房开火第一顿做辣子鸡，请ME与老周",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T12", "message_id": "m0", "quote": "第一顿我做辣子鸡"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E071_A30",
+     "subject": "SHARED",
+     "relation": "paper_rule",
+     "value": "从增项补单到结算落单，白纸黑字的规矩走完全程",
+     "valid_time": "2026-11-20/2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E071_T06", "message_id": "m0", "quote": "白纸黑字补到单子上"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把'入伙'的玩笑接住，规矩的事一句带过不训话。",
+   "unknowns": ["泥瓦工期与费用未知", "请饭日期未知"],
+   "protected_expressions": ["就当他也入伙了"],
+   "forbidden_factual_claims": ["不得虚构泥瓦报价", "不得替老周答应赴宴"]
+  }
+ }
+}

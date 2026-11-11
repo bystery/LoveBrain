@@ -1,0 +1,38 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "E021",
+ "title": "球馆新球友",
+ "themes": [
+  "破冰",
+  "普通朋友",
+  "具体约定",
+  "自然收尾"
+ ],
+ "author": "ZCode main worker-AI (synthetic)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+ "readers": [
+  "author"
+ ],
+ "independent_review": false,
+ "review_note": "同 worker 自检；不是独立封存集。",
+ "created_at": "2026-10-28",
+ "frozen_at": null,
+ "status": "dev_candidate_stage2",
+ "experiments_used": [],
+ "dev_exposed": true,
+ "validation_claim": false,
+ "turns": 12,
+ "may_decline_turns": [
+  "E021_T12"
+ ],
+ "hashes": {
+  "episode.json": "b4cb29e2c4e0e38b894616b77e999bd0a48c233dc8ea20e70f2c8a07c4b58f8a",
+  "reference.json": "5eb640c584ca80aec13c68dbcaca6cdfab319ca24c5afe9804b1ac7e1328db79",
+  "timeline.json": "2cac9d5efec941cd1cc53007963040ed6505a46920a092e74f11e731f854d2b1",
+  "audit.md": "3047b399ec49c9014f54029a7758b2fd45307575be8afa6acaae4b3f064484a4"
+ },
+ "runner_copy": "benchmark/episodes/E021.json",
+ "notes": "Stage2 首批（W06）；12位自然故事；冻结与未调参验证在后续批次。"
+}

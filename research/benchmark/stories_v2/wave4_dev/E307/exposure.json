@@ -1,0 +1,58 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A2 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_b_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:19:16",
+      "window_last_attempt": "2026-11-08 15:33:03",
+      "attempts": 26,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_b/{DIRECT,CURRENT}/E307/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T02调情/暧昧",
+    "明显好感主动推进",
+    "主动约（植展/疫苗日/炖汤馆）",
+    "深夜长聊",
+    "关心私事（胃药/作息）",
+    "永远保守即缺陷"
+  ],
+  "title": "汽水、植展与胡椒猪肚鸡",
+  "may_decline_turns": [
+    "E307_T09"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "亲密关系",
+  "primary_topic": "T02",
+  "lineage_group_id": "LG-E307",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "annotator": "annotator-B1",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E307/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A2",
+  "hashes": {
+    "episode.json": "839740e8da1083abd04372a081b822075dd49a7de3d70a14b843dd4c6998f456",
+    "reference.json": "0607f5e88e4484664019f43c7106ded4b881d4249bf448455c1b386be37381fd",
+    "timeline.json": "9188d3196c63046fcc8087ffa3af145a283b840a50dcbd540418cb70cc71d680",
+    "audit.md": "5355a10784d1c75fcb72721ad6c8387263411c2dc708f9cd7370409aad0384d6",
+    "composite": "8138ce7929ed9a8df91eee4fd9ddb70439ddaa37143e31c892ccf92bbdf5104d"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

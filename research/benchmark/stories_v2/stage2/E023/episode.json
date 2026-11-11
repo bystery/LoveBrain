@@ -1,0 +1,239 @@
+{
+ "episode_id": "E023",
+ "persona": {
+  "me": "30岁，平面设计师，自由职业，上个月搬进朝阳里小区602；熬夜赶稿，白天补觉。",
+  "her": "29岁，咖啡师，住我对门楼上702；凌晨四点半早班，晚上十点后才是自己的生活；养一只橘猫叫年糕。"
+ },
+ "initial_kb": {
+  "me": "自由职业接品牌设计单；对门楼上702；阳台朝南。",
+  "her": "在街区咖啡馆做咖啡师，凌晨四点半早班；养橘猫年糕；刚搬来三个月，鼻子灵。",
+  "warmth": "楼道认识两周，电梯里聊过几次；她帮我收过一次快递。",
+  "style": "邻里礼貌+短句；麻烦事直说；不过度寒暄。",
+  "stage": "新邻居，普通往来。",
+  "lessons": "邻里帮忙要有来有回但别过度；她夜班作息，别清晨发消息。"
+ },
+ "turns": [
+  {
+   "case_id": "E023_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "602的 你快递是不是又放我门口了 我帮你收啦 下来拿",
+      "ts": "2026-11-17 20:05"
+     }
+    ],
+    "clock": "2026-11-17 20:07",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E023_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "对，是我的，麻烦你了，我现在下来拿",
+      "ts": "2026-11-17 20:15"
+     },
+     {
+      "role": "HER",
+      "text": "不急 我炖着汤呢 你箱子一开我就闻到是耶加雪菲 我鼻子职业病",
+      "ts": "2026-11-17 20:20"
+     }
+    ],
+    "clock": "2026-11-17 20:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E023_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "好了好奇心杀死猫 你到底在哪家买的豆子",
+      "ts": "2026-11-17 22:30"
+     }
+    ],
+    "clock": "2026-11-17 22:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E023_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "徐汇一家烘焙商，公司送的，下次帮你带一包",
+      "ts": "2026-11-17 22:38"
+     },
+     {
+      "role": "HER",
+      "text": "那我可就等着了 半磅就行 别破费",
+      "ts": "2026-11-17 22:43"
+     }
+    ],
+    "clock": "2026-11-17 22:45",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E023_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你们设计师是不是都熬夜 我凌晨上班总能看见你窗户亮着",
+      "ts": "2026-11-19 21:10"
+     }
+    ],
+    "clock": "2026-11-19 21:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E023_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "赶稿没办法 你那个点我基本刚睡",
+      "ts": "2026-11-19 21:18"
+     },
+     {
+      "role": "HER",
+      "text": "哈哈那咱俩正好错开 你睡你的 我闻你的咖啡味",
+      "ts": "2026-11-19 21:23"
+     }
+    ],
+    "clock": "2026-11-19 21:25",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E023_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "年糕跳窗户跑出去了 我还没到家 你帮我看看楼道",
+      "ts": "2026-11-20 21:00"
+     }
+    ],
+    "clock": "2026-11-20 21:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E023_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "我看看楼道和天台 你几点回来",
+      "ts": "2026-11-20 21:05"
+     },
+     {
+      "role": "HER",
+      "text": "我骑车呢 十分钟 你帮我看看602楼道和天台 拜托",
+      "ts": "2026-11-20 21:10"
+     }
+    ],
+    "clock": "2026-11-20 21:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E023_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "找到了 在天台水箱后面 我给你看着 你慢点骑",
+      "ts": "2026-11-20 21:18"
+     },
+     {
+      "role": "HER",
+      "text": "!!!感谢 我到了给你带豆子 真的",
+      "ts": "2026-11-20 21:20"
+     }
+    ],
+    "clock": "2026-11-20 21:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E023_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "年糕已关好 豆子明天给你 一磅 谢谢你今天",
+      "ts": "2026-11-20 22:00"
+     }
+    ],
+    "clock": "2026-11-20 22:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E023_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "不急 年糕没事就好",
+      "ts": "2026-11-20 22:05"
+     },
+     {
+      "role": "HER",
+      "text": "明天给你 说到做到",
+      "ts": "2026-11-20 22:06"
+     }
+    ],
+    "clock": "2026-11-20 22:08",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E023_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "豆子挂你门把手了 我上班去了 谢谢你今天救年糕 拜拜",
+      "ts": "2026-11-20 20:58"
+     }
+    ],
+    "clock": "2026-11-21 21:00",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

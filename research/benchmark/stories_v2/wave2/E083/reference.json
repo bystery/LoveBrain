@@ -1,0 +1,637 @@
+{
+ "story_id": "E083",
+ "turns": {
+  "E083_T01": {
+   "case_id": "E083_T01",
+   "current_action": "先接住'吃饭家伙开不了机'的慌：肯定她当场断电擦干做得对，把'别再开机试'这个止损点先立住，再问下一步打算。",
+   "acceptable_actions": [
+    "肯定她当场关机擦干的处理，叮嘱别反复开机试",
+    "问她有没有买过延保或碎屏险之类的保障",
+    "提醒先把方案文件是否在云端确认一下"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A01",
+     "subject": "SHARED",
+     "relation": "spill_incident",
+     "value": "奶茶打翻键盘致笔记本当场无法开机",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T01", "message_id": "m0", "quote": "把半杯奶茶打翻在笔记本键盘上"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A02",
+     "subject": "HER",
+     "relation": "immediate_shutdown",
+     "value": "她当场关机擦干止损",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T01", "message_id": "m0", "quote": "当场关机擦干"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A03",
+     "subject": "SHARED",
+     "relation": "deadline_pressure",
+     "value": "下周有重要方案交付压力",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T01", "message_id": "m0", "quote": "下周还要交方案"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先稳人再说事，'吃饭家伙'四个字要接住。",
+   "unknowns": ["数据是否受影响未知", "损伤范围未知"],
+   "protected_expressions": ["这台可是我吃饭的家伙"],
+   "forbidden_factual_claims": ["不得预判损坏部件与维修费用", "不得断言数据必然丢失或无恙"]
+  },
+  "E083_T02": {
+   "case_id": "E083_T02",
+   "current_action": "接住送修安排与延保疑云：肯定明早送官方网点的路线，把'进水算不算意外'定性为条款原文问题，建议带齐购买凭证和延保单。",
+   "acceptable_actions": [
+    "肯定送官方网点的选择，提醒带上购买凭证和延保单",
+    "把'进水算不算意外'定性为要看条款原文而不是猜",
+    "建议她送修前拍下机器现状留底"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A04",
+     "subject": "SHARED",
+     "relation": "repair_plan",
+     "value": "她计划次日一早把机器送官方售后网点",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T02", "message_id": "m0", "quote": "明天一早就送去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A05",
+     "subject": "SHARED",
+     "relation": "warranty_clause_doubt",
+     "value": "延保条款'意外损坏'是否涵盖进水未明",
+     "valid_time": "2026-11-03",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T02", "message_id": "m0", "quote": "进水算不算意外啊"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A06",
+     "subject": "HER",
+     "relation": "clause_confusion",
+     "value": "她自述延保条款绕来绕去看不懂",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T02", "message_id": "m0", "quote": "条款绕来绕去看不懂"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：条款的事先别给答案，把'原文怎么说'的规矩立起来。",
+   "unknowns": ["延保条款原文细节未知", "网点检测结论未知"],
+   "protected_expressions": ["条款绕来绕去看不懂"],
+   "forbidden_factual_claims": ["不得替延保条款下'能赔'或'不能赔'的结论", "不得虚构网点收费规则"]
+  },
+  "E083_T03": {
+   "case_id": "E083_T03",
+   "current_action": "接住初检报价：2600是口头预估不是确认账单，检测费300的抵扣规则要记清；建议她先别当场拍板，回来把延保这条先走完。",
+   "acceptable_actions": [
+    "提醒2600只是口头预估，让她要一份书面报价单",
+    "把检测费300'修则抵扣不修也收'的规则复述确认",
+    "建议她先问清延保能不能覆盖，再决定修不修"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A07",
+     "subject": "THIRD",
+     "relation": "initial_quote",
+     "value": "网点工程师初检口头预估换主板2600元",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T03", "message_id": "m0", "quote": "口头预估2600"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A08",
+     "subject": "SHARED",
+     "relation": "inspection_fee_rule",
+     "value": "检测费300修复可抵扣不修仍收",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T03", "message_id": "m0", "quote": "修的话就抵进去，不修也要收"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A09",
+     "subject": "SHARED",
+     "relation": "quote_provisional",
+     "value": "2600元为口头预估并非最终确定账单",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E083_T03", "message_id": "m0", "quote": "让我考虑要不要修"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'预估'和'实收'的区别讲清，这是后面一切费用争议的地基。",
+   "unknowns": ["主板实际损伤未知", "延保结论未知"],
+   "protected_expressions": ["不修也要收"],
+   "forbidden_factual_claims": ["不得确认2600为最终价格", "不得断言主板必须更换"]
+  },
+  "E083_T04": {
+   "case_id": "E083_T04",
+   "current_action": "接住延保客服的两面话：拒赔是口径、教她换个说法申报是暗示造假；明确站在'不走歪路'这边，把实情申报的路铺好。",
+   "acceptable_actions": [
+    "明确支持她拒绝不实申报，实情申报才站得住",
+    "把'液体属于人为'定性为客服口径，等正式回执为准",
+    "提醒别在电话里顺着诱导走，留个心眼"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "attribution", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A10",
+     "subject": "THIRD",
+     "relation": "warranty_denial",
+     "value": "延保客服称液体属人为损坏大概率不赔",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E083_T04", "message_id": "m0", "quote": "液体属于人为"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A11",
+     "subject": "THIRD",
+     "relation": "improper_suggestion",
+     "value": "客服暗示以'机器在包里被饮料瓶漏了'的不实理由申报",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T04", "message_id": "m0", "quote": "机器在包里被饮料瓶漏了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A12",
+     "subject": "HER",
+     "relation": "honesty_stance",
+     "value": "她质疑并倾向拒绝不实申报方式",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E083_T04", "message_id": "m0", "quote": "这算教我撒谎吧"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A13",
+     "subject": "THIRD",
+     "relation": "quote_not_final",
+     "value": "主板2600仅为口头预估尚未成为确认账单",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E083_T03", "message_id": "m0", "quote": "口头预估2600"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把她的'这算教我撒谎吧'接成站队——这钱不挣，理在正规流程里。",
+   "unknowns": ["正式回执结论未知", "客服暗示是否为个人行为未知"],
+   "protected_expressions": ["这算教我撒谎吧"],
+   "forbidden_factual_claims": ["不得断言延保公司整体欺诈", "不得替她向延保做任何陈述"]
+  },
+  "E083_T05": {
+   "case_id": "E083_T05",
+   "current_action": "确认两件事落定：她拒绝不实申报、延保正式回执关闭理赔；同时肯定'只修不换'的深度检测申请是把主动权抢回来的关键一步。",
+   "acceptable_actions": [
+    "肯定她按实际原因走的立场，回执留好",
+    "把'理赔关闭'与'维修继续'分开：延保不赔不等于只能换主板",
+    "提醒深度检测结果是新的报价依据，别提前认数"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "attribution", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A14",
+     "subject": "HER",
+     "relation": "refused_false_report",
+     "value": "她明确拒绝不实申报并声明按实际原因走",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E083_T05", "message_id": "m0", "quote": "我拒绝了那个报法"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A15",
+     "subject": "SHARED",
+     "relation": "claim_closed",
+     "value": "延保理赔以'意外损坏保障不含液体侵入'为由正式关闭",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E083_T05", "message_id": "m0", "quote": "意外损坏保障不含液体侵入"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A16",
+     "subject": "THIRD",
+     "relation": "deep_inspection",
+     "value": "工程师申请深度检测尝试保住主板",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T05", "message_id": "m0", "quote": "给我申请深度检测"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A17",
+     "subject": "THIRD",
+     "relation": "claim_decision_confirmed",
+     "value": "延保拒赔从客服口径转为正式回执",
+     "valid_time": "2026-11-05",
+     "status": "confirmed",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E083_T04", "message_id": "m0", "quote": "液体属于人为"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'认赔但争取'这个姿态要接住——延保输了，维修的仗才刚开始。",
+   "unknowns": ["深度检测结果未知", "主板能否保住未知"],
+   "protected_expressions": ["主板也许能救"],
+   "forbidden_factual_claims": ["不得断言延保决定可以推翻", "不得预判深度检测结果"]
+  },
+  "E083_T06": {
+   "case_id": "E083_T06",
+   "current_action": "接住报价反转的大好消息：680取代2600，预估被深度检测推翻；先共享她的惊喜，再把'等最终账单'的清醒补上。",
+   "acceptable_actions": [
+    "先一起高兴，再提醒以最终结算单为准",
+    "肯定她坚持深度检测省下一大笔",
+    "提醒结算时核对报价单与工单一致"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A18",
+     "subject": "THIRD",
+     "relation": "revised_quote",
+     "value": "深度检测后改为换小板加整机烘干，报价680元",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T06", "message_id": "m0", "quote": "换小板加整机烘干，报价680"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A19",
+     "subject": "THIRD",
+     "relation": "lucky_finding",
+     "value": "工程师称主板幸存属侥幸，糖分未渗入",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T06", "message_id": "m0", "quote": "主板幸存是运气好"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A20",
+     "subject": "SHARED",
+     "relation": "mainboard_quote_replaced",
+     "value": "换主板2600预估被680元小板方案取代",
+     "valid_time": "2026-11-04/2026-11-06",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E083_T03", "message_id": "m0", "quote": "口头预估2600"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：惊喜要一起笑，但'别急着认数'要说在前面，费用故事还没完。",
+   "unknowns": ["最终结算是否有附加项未知"],
+   "protected_expressions": ["跟昨天的2600差了一个数量级"],
+   "forbidden_factual_claims": ["不得确认680为最终实收", "不得虚构小板型号与工时费"]
+  },
+  "E083_T07": {
+   "case_id": "E083_T07",
+   "current_action": "接住交钱时的账单突袭：120元备份费未经她确认；把'服务已产生不能退'定性为网点单方说法，帮她理出交涉的抓手。",
+   "acceptable_actions": [
+    "先让稳住：没确认过的服务可以主张不付费",
+    "建议她要求出示同意备份的记录，没有就不认",
+    "提醒交涉升级找网点负责人，前台说辞不作数"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "goal", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A21",
+     "subject": "SHARED",
+     "relation": "unexpected_charge",
+     "value": "结算单新增未经她确认的数据备份服务费120元",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T07", "message_id": "m0", "quote": "数据备份服务费120"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A22",
+     "subject": "HER",
+     "relation": "never_ordered",
+     "value": "她并未要求过数据备份服务",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E083_T07", "message_id": "m0", "quote": "我没让备份啊"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A23",
+     "subject": "THIRD",
+     "relation": "charge_dispute_open",
+     "value": "前台称服务已产生不能退，争议未决",
+     "valid_time": "2026-11-07",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T07", "message_id": "m0", "quote": "服务已产生不能退"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A24",
+     "subject": "THIRD",
+     "relation": "final_bill_baseline",
+     "value": "680元修理报价成为最终账单的基础",
+     "valid_time": "2026-11-06/2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T06", "message_id": "m0", "quote": "换小板加整机烘干，报价680"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：交涉要硬但不撒气，抓'未经确认'这一个点就够。",
+   "unknowns": ["备份是否真的执行未知", "网点上级态度未知"],
+   "protected_expressions": ["老唐你评评理"],
+   "forbidden_factual_claims": ["不得断言120元必须免除或必须支付", "不得虚构消费维权流程细节"]
+  },
+  "E083_T08": {
+   "case_id": "E083_T08",
+   "current_action": "接住交涉结果：主任认账免两项费用，实收680周五取机；把'没提前告知责任在他们'这句认账的话点出来，这是她较真的回报。",
+   "acceptable_actions": [
+    "肯定她咬住'未经确认'不放的回报",
+    "提醒取机时核对结算单与口头结果一致",
+    "建议她取机前确认数据完整无缺"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A25",
+     "subject": "SHARED",
+     "relation": "fees_waived",
+     "value": "网点免除120元备份费与300元检测费",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E083_T08", "message_id": "m0", "quote": "120全免"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A26",
+     "subject": "THIRD",
+     "relation": "responsibility_admitted",
+     "value": "网点主任承认默认流程未提前告知属其责任",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T08", "message_id": "m0", "quote": "责任在他们"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A27",
+     "subject": "SHARED",
+     "relation": "final_bill",
+     "value": "实收680元周五可取机",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T08", "message_id": "m0", "quote": "实收就680"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A28",
+     "subject": "THIRD",
+     "relation": "charge_dispute_resolved",
+     "value": "备份费争议以免除告终",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "cancelled",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T07", "message_id": "m0", "quote": "服务已产生不能退"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：赢要说得轻，重点是她没撒谎也把理要回来了。",
+   "unknowns": ["周五能否如期取机未知"],
+   "protected_expressions": ["算是补偿"],
+   "forbidden_factual_claims": ["不得断言网点流程会改进", "不得虚构主任身份信息"]
+  },
+  "E083_T09": {
+   "case_id": "E083_T09",
+   "current_action": "共享取机与交付的双落定：机器正常、方案赶出；把工程师那张保养卡当善意的提醒接住，不翻旧账。",
+   "acceptable_actions": [
+    "恭喜双线收工，方案和机器都齐了",
+    "顺着保养卡打趣一句，奶茶离电脑一米线",
+    "问她结算单金额是否与680一致，把账闭环"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A29",
+     "subject": "SHARED",
+     "relation": "laptop_recovered",
+     "value": "笔记本取回开机一切正常且方案完成",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T09", "message_id": "m0", "quote": "机器取回来了，开机一切正常"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A30",
+     "subject": "THIRD",
+     "relation": "care_advice",
+     "value": "工程师赠液体损伤保养卡并提醒液体远离电脑",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T09", "message_id": "m0", "quote": "以后喝东西离电脑远点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A31",
+     "subject": "SHARED",
+     "relation": "bill_settled_as_promised",
+     "value": "680元实收与取机承诺兑现",
+     "valid_time": "2026-11-08/2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T08", "message_id": "m0", "quote": "实收就680"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收得干脆，工程师那句'坏一次主板可不止2600'顺势接成后怕但不吓她。",
+   "unknowns": ["键盘手感情是否受影响未知"],
+   "protected_expressions": ["坏一次主板可不止2600"],
+   "forbidden_factual_claims": ["不得虚构保养卡条款内容", "不得断言机器此后不会再出问题"]
+  },
+  "E083_T10": {
+   "case_id": "E083_T10",
+   "current_action": "接住条款复盘：细则里'液体侵入除外'的小字印证了理赔关闭；肯定她'除外条款读三遍'的新规矩。",
+   "acceptable_actions": [
+    "肯定'先读除外条款'这条新规矩，比延保本身值钱",
+    "顺带讲一句保障类条款的通则：保什么看大字，不保什么看小字",
+    "建议她把这次的回执和细则存个档"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A32",
+     "subject": "SHARED",
+     "relation": "exclusion_clause_found",
+     "value": "延保细则含'液体侵入除外，屏幕意外碎裂除外'小字条款",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T10", "message_id": "m0", "quote": "液体侵入除外，屏幕意外碎裂除外"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A33",
+     "subject": "HER",
+     "relation": "reading_habit",
+     "value": "她形成购买延保先读除外条款的习惯意向",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T10", "message_id": "m0", "quote": "先把除外条款读三遍"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A34",
+     "subject": "SHARED",
+     "relation": "claim_closure_reread",
+     "value": "理赔关闭结论与细则除外条款相互印证",
+     "valid_time": "2026-11-05/2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T05", "message_id": "m0", "quote": "意外损坏保障不含液体侵入"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：复盘要有获得感，别把'当时该早点看'变成自责。",
+   "unknowns": [],
+   "protected_expressions": ["我得先把除外条款读三遍"],
+   "forbidden_factual_claims": ["不得断言所有延保都含同类除外条款", "不得虚构其他保险产品对比"]
+  },
+  "E083_T11": {
+   "case_id": "E083_T11",
+   "current_action": "接住交付获肯定与'离机一米'梗：把进水事故的惊魂变成全组笑话，肯定这杯咖啡喝得值。",
+   "acceptable_actions": [
+    "顺着梗打趣，说这一米是花680买来的安全距离",
+    "肯定方案获认可，事故没耽误正事",
+    "提醒她周末好好歇，咖啡可以换成热茶"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A35",
+     "subject": "SHARED",
+     "relation": "delivery_praise",
+     "value": "方案获组长评价比上一版思路清楚",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T11", "message_id": "m0", "quote": "组长说比上一版思路清楚"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A36",
+     "subject": "SHARED",
+     "relation": "distance_joke",
+     "value": "端着咖啡离笔记本一米远成为组内玩笑",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T11", "message_id": "m0", "quote": "端着咖啡离笔记本一米远"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A37",
+     "subject": "SHARED",
+     "relation": "deadline_met",
+     "value": "进水事故未耽误下周方案交付",
+     "valid_time": "2026-11-03/2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T01", "message_id": "m0", "quote": "下周还要交方案"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：梗要接得快，'战战兢兢又踏实'是这十天最好的注脚。",
+   "unknowns": [],
+   "protected_expressions": ["战战兢兢又踏实"],
+   "forbidden_factual_claims": ["不得虚构组长更多评价", "不得引入新的工作纠纷"]
+  },
+  "E083_T12": {
+   "case_id": "E083_T12",
+   "current_action": "接住谢饭邀约：'饭桌上不许出现电子产品'这个要求本身就是最好的回扣，笑纳并确认安排。",
+   "acceptable_actions": [
+    "答应赴约，说她这个要求是本次事件的最佳总结",
+    "顺着玩笑说自己会带纸质菜单点餐",
+    "肯定她这十天的处理，理要回来了人也没走歪"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E083_A38",
+     "subject": "SHARED",
+     "relation": "dinner_thanks",
+     "value": "她约 ME 周末吃饭致谢捋条款与听吐槽",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T12", "message_id": "m0", "quote": "想请你吃顿饭"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A39",
+     "subject": "SHARED",
+     "relation": "no_devices_rule",
+     "value": "饭局唯一要求是不出现任何电子产品",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T12", "message_id": "m0", "quote": "饭桌上不许出现任何电子产品"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E083_A40",
+     "subject": "SHARED",
+     "relation": "joke_carried",
+     "value": "离机玩笑延续到饭局之约",
+     "valid_time": "2026-11-12/2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E083_T11", "message_id": "m0", "quote": "端着咖啡离笔记本一米远"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要轻快，'地方你挑'接一句就定，别客套来回去。",
+   "unknowns": [],
+   "protected_expressions": ["还听我骂了三天网点"],
+   "forbidden_factual_claims": ["不得虚构餐厅信息", "不得引入新话题拖长收尾"]
+  }
+ }
+}

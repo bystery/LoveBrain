@@ -1,0 +1,308 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E039",
+ "title": "徒步路线与没发出去的话",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E039_T01": {
+   "case_id": "E039_T01",
+   "current_action": "接住兴奋，用经验补充关键信息",
+   "acceptable_actions": [
+    "说这条线好+提醒后半段累",
+    "问她的装备到齐没",
+    "接兴奋+给出实际建议"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S039_F01",
+     "subject": "她",
+     "relation": "提议",
+     "value": "找到一条山线想周六去",
+     "valid_time": "2026-11-05 20:01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E039_T01",
+      "message_id": "m0",
+      "quote": "周六去这条 拦云坳 看云海 我查好了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S039_F02",
+     "subject": "我",
+     "relation": "经验",
+     "value": "走过这条线，后半段比较累",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "这条线我走过一次，后半段比她想得累"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她兴奋值拉满，先接情绪再上信息。",
+   "unknowns": [
+    "她体能对后半段够不够"
+   ],
+   "protected_expressions": [
+    "我查好了"
+   ],
+   "forbidden_factual_claims": [
+    "不要贬低她选的线",
+    "不要编造这条线的难度数据"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E039_T02": {
+   "case_id": "E039_T02",
+   "current_action": "给真实经验，顺带确认她的准备",
+   "acceptable_actions": [
+    "问装备细节",
+    "给补给建议",
+    "问她体能评估"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S039_F02",
+     "subject": "我",
+     "relation": "经验",
+     "value": "走过这条线，后半段比较累",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "这条线我走过一次，后半段比她想得累"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "信息要实，语气别泼冷水。",
+   "unknowns": [
+    "她的鞋是不是新的"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要断言她走不完"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E039_T03": {
+   "case_id": "E039_T03",
+   "current_action": "接梗+把话题留在行前准备上",
+   "acceptable_actions": [
+    "夸她准备充分",
+    "轻接梗+补一条实用提醒",
+    "问还需不需要拼装备"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "note：草稿未发就是没说；回复里不得出现单独约的内容。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要提及未发出的草稿内容",
+    "不要把没说的约说成已约"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E039_T04": {
+   "case_id": "E039_T04",
+   "current_action": "自然接受配置变化，不流露情绪落差",
+   "acceptable_actions": [
+    "爽快答应",
+    "答应+说三人更安全",
+    "答应并主动拼车安排"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S039_F03",
+     "subject": "她",
+     "relation": "提议",
+     "value": "想叫上室友一起",
+     "valid_time": "2026-11-05 20:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E039_T04",
+      "message_id": "m0",
+      "quote": "叫上我室友吧 她也想动动"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她有自己的节奏；接受得大方一点。",
+   "unknowns": [
+    "她室友的体力"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要暗示失望",
+    "不要评价她室友不认识"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E039_T05": {
+   "case_id": "E039_T05",
+   "current_action": "用实际贡献接住新配置",
+   "acceptable_actions": [
+    "确认自己开车或拼车",
+    "把后勤揽下来",
+    "轻幽默收住"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "把价值感放在做事上，不是情绪上。",
+   "unknowns": [
+    "周六早上路况"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E039_T06": {
+   "case_id": "E039_T06",
+   "current_action": "确认集合信息",
+   "acceptable_actions": [
+    "复述确认",
+    "确认+定暗号",
+    "说闹钟定好了"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S039_F04",
+     "subject": "我们",
+     "relation": "安排",
+     "value": "周六早上七点半地铁口集合",
+     "valid_time": "2026-11-05 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E039_T06",
+      "message_id": "m0",
+      "quote": "那就七点半 龙翔桥地铁口C口"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "时间地点要复述准确。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要记错时间地点"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E039_T07": {
+   "case_id": "E039_T07",
+   "current_action": "按 intent 做行前确认",
+   "acceptable_actions": [
+    "列装备清单",
+    "问天气应对",
+    "确认集合时间不变"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S039_F04",
+     "subject": "我们",
+     "relation": "安排",
+     "value": "周六早上七点半地铁口集合",
+     "valid_time": "2026-11-05 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E039_T06",
+      "message_id": "m0",
+      "quote": "那就七点半 龙翔桥地铁口C口"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "intent 是行前确认，不是重新安排。",
+   "unknowns": [
+    "明早实际天气"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要临时改集合时间"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "行前确认：装备和天气，群里三人同步",
+    "status": "ACTIVE"
+   }
+  },
+  "E039_T08": {
+   "case_id": "E039_T08",
+   "current_action": "收尾，不再展开",
+   "acceptable_actions": [
+    "互道早睡",
+    "简短期待明天",
+    "收住不新开话题"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她已收工，别再发长段。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

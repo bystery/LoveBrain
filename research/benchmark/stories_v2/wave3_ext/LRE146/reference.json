@@ -1,0 +1,2345 @@
+{
+ "story_id": "LRE146",
+ "turns": {
+  "LRE146_T01": {
+   "case_id": "LRE146_T01",
+   "current_action": "接住采购事项：确认型号与门店价，建议她同步查线上旗舰店价格再谈",
+   "acceptable_actions": [
+    "确认型号，建议她查一下同型号线上价做个参照",
+    "先问姥姥的使用场景（室内多还是小区多），再谈价"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T01_A00",
+     "subject": "PUBLIC",
+     "relation": "门店报价",
+     "value": "电动轮椅门店报价四千六百八",
+     "valid_time": "2026-11-03 19:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T01",
+      "message_id": "m0",
+      "quote": "报价四千六百八"
+     }
+    },
+    {
+     "atom_id": "LRE146_T01_A01",
+     "subject": "SHARED",
+     "relation": "兄妹协作",
+     "value": "唐棠遇采购大事习惯先找 ME 商量",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "帮表妹家参谋过冰箱和洗衣机"
+     }
+    }
+   ],
+   "private_guidance": "先接事项再给动作，型号和使用场景是比价的前提。",
+   "unknowns": [
+    "使用场景需求未明"
+   ],
+   "protected_expressions": [
+    "报价四千六百八"
+   ],
+   "forbidden_factual_claims": [
+    "不得未经核实就断言门店价虚高"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T02": {
+   "case_id": "LRE146_T02",
+   "current_action": "接住价差：七百差额值得认真对待，先别猜舅舅立场，问她使用需求的答案",
+   "acceptable_actions": [
+    "确认价差七百，问她姥姥使用场景定配置优先级",
+    "猜一句舅舅大概率主张门店，再让她揭晓"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T02_A00",
+     "subject": "PUBLIC",
+     "relation": "门店报价",
+     "value": "电动轮椅门店报价四千六百八",
+     "valid_time": "2026-11-03 19:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T01",
+      "message_id": "m0",
+      "quote": "报价四千六百八"
+     }
+    },
+    {
+     "atom_id": "LRE146_T02_A01",
+     "subject": "PUBLIC",
+     "relation": "线上价格",
+     "value": "同型号网上旗舰店售价三千九百八，价差七百",
+     "valid_time": "2026-11-04 12:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T02",
+      "message_id": "m0",
+      "quote": "网上旗舰店才三千九百八"
+     }
+    }
+   ],
+   "private_guidance": "她抛了悬念，接住但别跑偏：价差是表，需求是里。",
+   "unknowns": [],
+   "protected_expressions": [
+    "网上旗舰店才三千九百八"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言线上渠道一定更划算"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T03": {
+   "case_id": "LRE146_T03",
+   "current_action": "费用类冲突轮：不站队，把分歧拆成可验证的问题（保修条款、发票、安装），建议查证后再谈",
+   "acceptable_actions": [
+    "把'保障'翻译成可验证问题：联保条款、发票、上门安装",
+    "建议她打电话问门店老板网上货是否同保修，用事实说话"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T03_A00",
+     "subject": "PUBLIC",
+     "relation": "线上价格",
+     "value": "同型号线上售价三千九百八，价差七百",
+     "valid_time": "2026-11-04 12:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T02",
+      "message_id": "m0",
+      "quote": "差整整七百"
+     }
+    },
+    {
+     "atom_id": "LRE146_T03_A01",
+     "subject": "THIRD",
+     "relation": "舅舅主张",
+     "value": "舅舅坚持门店购买，理由是电池大件网上无保障",
+     "valid_time": "2026-11-04 21:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T03",
+      "message_id": "m0",
+      "quote": "必须门店买"
+     }
+    },
+    {
+     "atom_id": "LRE146_T03_A02",
+     "subject": "THIRD",
+     "relation": "对线上渠道保障的立场",
+     "value": "舅舅否认线上购买电池有售后保障，主张门店购买",
+     "valid_time": "2026-11-04 21:05",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T03",
+      "message_id": "m0",
+      "quote": "网上坏了没保障"
+     }
+    }
+   ],
+   "private_guidance": "别跟长辈硬碰观点，把观点变成查得到的条款，面子理子都在。",
+   "unknowns": [
+    "保修条款细节未知"
+   ],
+   "protected_expressions": [
+    "必须门店买"
+   ],
+   "forbidden_factual_claims": [
+    "不得说舅舅的观点是错的"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T04": {
+   "case_id": "LRE146_T04",
+   "current_action": "确认证据效力：全国联保两年直击'没保障'的担心，建议她带着这条去回舅舅",
+   "acceptable_actions": [
+    "肯定问证动作，建议把联保条款截图发舅舅",
+    "提醒她电池第二年起的事也说清楚，别留新话头"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T04_A00",
+     "subject": "THIRD",
+     "relation": "舅舅主张",
+     "value": "舅舅坚持门店购买称网上无保障",
+     "valid_time": "2026-11-04 21:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T03",
+      "message_id": "m0",
+      "quote": "坏了没保障"
+     }
+    },
+    {
+     "atom_id": "LRE146_T04_A01",
+     "subject": "THIRD",
+     "relation": "保修事实",
+     "value": "门店老板确认网上购买凭发票全国联保两年、电池第一年包换",
+     "valid_time": "2026-11-05 20:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T04",
+      "message_id": "m0",
+      "quote": "凭发票全国联保两年"
+     }
+    }
+   ],
+   "private_guidance": "证据到手就趁热打铁，但只解决'保障'这一半，安装问题还在后面。",
+   "unknowns": [],
+   "protected_expressions": [
+    "凭发票全国联保两年"
+   ],
+   "forbidden_factual_claims": [
+    "不得夸大联保范围到电池全周期"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T05": {
+   "case_id": "LRE146_T05",
+   "current_action": "接住新问题：安装与调试确实要核实，建议查旗舰店服务页有没有上门安装",
+   "acceptable_actions": [
+    "肯定舅舅问得在理，建议她查旗舰店的上门安装服务",
+    "让她把服务页截图存好，一起发舅舅"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T05_A00",
+     "subject": "THIRD",
+     "relation": "保修事实",
+     "value": "网上购买凭发票全国联保两年、电池第一年包换",
+     "valid_time": "2026-11-05 20:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T04",
+      "message_id": "m0",
+      "quote": "凭发票全国联保两年"
+     }
+    },
+    {
+     "atom_id": "LRE146_T05_A01",
+     "subject": "THIRD",
+     "relation": "新的疑虑",
+     "value": "舅舅追问快递签收、安装调试与老人自用问题",
+     "valid_time": "2026-11-06 21:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T05",
+      "message_id": "m0",
+      "quote": "快递谁签收"
+     }
+    }
+   ],
+   "private_guidance": "长辈的每个问题都当真查，比吵十句管用。",
+   "unknowns": [
+    "旗舰店是否含上门安装未明"
+   ],
+   "protected_expressions": [
+    "快递谁签收"
+   ],
+   "forbidden_factual_claims": [
+    "不得拍胸脯说线上服务与门店完全一样"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T06": {
+   "case_id": "LRE146_T06",
+   "current_action": "确认服务证据：上门安装齐了，建议她趁舅舅态度软化推进下单流程",
+   "acceptable_actions": [
+    "确认证据齐了，建议直接推进下单别拖",
+    "提醒下单时发票抬头开姥姥名字，保修才顺"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T06_A00",
+     "subject": "THIRD",
+     "relation": "新的疑虑",
+     "value": "舅舅曾追问快递签收与安装调试",
+     "valid_time": "2026-11-06 21:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T05",
+      "message_id": "m0",
+      "quote": "安装谁弄"
+     }
+    },
+    {
+     "atom_id": "LRE146_T06_A01",
+     "subject": "PUBLIC",
+     "relation": "线上服务",
+     "value": "旗舰店含送货上门与师傅免费安装调试",
+     "valid_time": "2026-11-07 15:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T06",
+      "message_id": "m0",
+      "quote": "师傅免费安装调试"
+     }
+    }
+   ],
+   "private_guidance": "证据链闭环，节奏从查证切到执行，发票抬头提醒到位。",
+   "unknowns": [],
+   "protected_expressions": [
+    "师傅免费安装调试"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构页面之外的附加服务"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T07": {
+   "case_id": "LRE146_T07",
+   "current_action": "接住反转：肯定舅舅的孝心表达，提醒她尊重出资方式、账目记清",
+   "acceptable_actions": [
+    "肯定反转，提醒走舅舅账户就让他下单，别抢",
+    "建议发票与保修卡拍照存档一份给她"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T07_A00",
+     "subject": "PUBLIC",
+     "relation": "线上服务",
+     "value": "旗舰店含送货上门与免费安装调试",
+     "valid_time": "2026-11-07 15:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T06",
+      "message_id": "m0",
+      "quote": "师傅免费安装调试"
+     }
+    },
+    {
+     "atom_id": "LRE146_T07_A01",
+     "subject": "THIRD",
+     "relation": "出资决定",
+     "value": "舅舅改为同意网购并由其账户出资购买",
+     "valid_time": "2026-11-08 20:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T07",
+      "message_id": "m0",
+      "quote": "钱他出"
+     }
+    }
+   ],
+   "private_guidance": "长辈愿意出钱就成全他的心意，账目干净比争谁出重要。",
+   "unknowns": [],
+   "protected_expressions": [
+    "钱他出"
+   ],
+   "forbidden_factual_claims": [
+    "不得质疑舅舅出资的动机"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T08": {
+   "case_id": "LRE146_T08",
+   "current_action": "确认下单闭环：价格、发票、凭证三清，提醒到货约师傅安装时在家",
+   "acceptable_actions": [
+    "确认三清，提醒约安装时确保家里有人",
+    "顺带问姥姥知不知道，给她个小惊喜还是提前说"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T08_A00",
+     "subject": "THIRD",
+     "relation": "出资决定",
+     "value": "舅舅同意网购并由其出资",
+     "valid_time": "2026-11-08 20:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T07",
+      "message_id": "m0",
+      "quote": "钱他出"
+     }
+    },
+    {
+     "atom_id": "LRE146_T08_A01",
+     "subject": "SHARED",
+     "relation": "下单结果",
+     "value": "以三千九百八下单，发票抬头为姥姥名字且凭证齐全",
+     "valid_time": "2026-11-09 20:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T08",
+      "message_id": "m0",
+      "quote": "发票抬头开的姥姥名字"
+     }
+    }
+   ],
+   "private_guidance": "执行层没问题就别添活，收货安装各提醒一句即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "发票抬头开的姥姥名字"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构额外赠品或优惠"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T09": {
+   "case_id": "LRE146_T09",
+   "current_action": "接住喜悦：为姥姥高兴，顺带确认教学到位、续航充电事项",
+   "acceptable_actions": [
+    "为姥姥高兴，提醒充电频次按说明书来",
+    "让她给姥姥拍段视频发来看"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T09_A00",
+     "subject": "SHARED",
+     "relation": "下单结果",
+     "value": "以三千九百八下单且发票抬头为姥姥",
+     "valid_time": "2026-11-09 20:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T08",
+      "message_id": "m0",
+      "quote": "发票抬头开的姥姥名字"
+     }
+    },
+    {
+     "atom_id": "LRE146_T09_A01",
+     "subject": "SHARED",
+     "relation": "交付结果",
+     "value": "轮椅送达并上门安装，姥姥试用满意",
+     "valid_time": "2026-11-11 18:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T09",
+      "message_id": "m0",
+      "quote": "师傅上门装好"
+     }
+    }
+   ],
+   "private_guidance": "喜悦轮就陪着高兴，售后提醒轻放一句即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "师傅上门装好"
+   ],
+   "forbidden_factual_claims": [
+    "不得泼冷水提风险"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T10": {
+   "case_id": "LRE146_T10",
+   "current_action": "接住人情难题：给出可操作折中——收下但以姥姥名义回礼，让钱变成心意闭环",
+   "acceptable_actions": [
+    "建议收下并给姥姥添点东西，把账变成心意",
+    "分析舅舅要的是参与感不是报销，顺着接"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T10_A00",
+     "subject": "SHARED",
+     "relation": "交付结果",
+     "value": "轮椅送达安装完毕姥姥满意",
+     "valid_time": "2026-11-11 18:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T09",
+      "message_id": "m0",
+      "quote": "师傅上门装好"
+     }
+    },
+    {
+     "atom_id": "LRE146_T10_A01",
+     "subject": "THIRD",
+     "relation": "转账提议",
+     "value": "舅舅提出转三百给唐棠称平摊",
+     "valid_time": "2026-11-12 21:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T10",
+      "message_id": "m0",
+      "quote": "非要转我三百"
+     }
+    }
+   ],
+   "private_guidance": "人情账的解法不是拒绝是转化：收下、回礼、账平、情留。",
+   "unknowns": [],
+   "protected_expressions": [
+    "非要转我三百"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她决定直接拒收"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T11": {
+   "case_id": "LRE146_T11",
+   "current_action": "确认执行：收钱添钙片的转化漂亮，肯定她的人情处理能力",
+   "acceptable_actions": [
+    "肯定转化方案，一句'这账做得漂亮'收束",
+    "问她钙片姥姥爱不爱吃，延续话题"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T11_A00",
+     "subject": "THIRD",
+     "relation": "转账提议",
+     "value": "舅舅提出转三百平摊",
+     "valid_time": "2026-11-12 21:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T10",
+      "message_id": "m0",
+      "quote": "非要转我三百"
+     }
+    },
+    {
+     "atom_id": "LRE146_T11_A01",
+     "subject": "HER",
+     "relation": "人情处理",
+     "value": "收下三百并给姥姥添两盒钙片，账面与心意两平",
+     "valid_time": "2026-11-13 19:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T11",
+      "message_id": "m0",
+      "quote": "添了两盒钙片"
+     }
+    }
+   ],
+   "private_guidance": "她自己做对了，夸到点上就行，别抢功。",
+   "unknowns": [],
+   "protected_expressions": [
+    "添了两盒钙片"
+   ],
+   "forbidden_factual_claims": [
+    "不得再翻舅舅转账的旧账"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T12": {
+   "case_id": "LRE146_T12",
+   "current_action": "接住幸福分享：一句'值'加一句对姥姥的祝福收束；此轮无待办",
+   "acceptable_actions": [
+    "回'值'并夸姥姥精气神，收束全程",
+    "让她代问姥姥好，约下次回去看她"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T12_A00",
+     "subject": "HER",
+     "relation": "人情处理",
+     "value": "收下三百添钙片完成人情闭环",
+     "valid_time": "2026-11-13 19:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T11",
+      "message_id": "m0",
+      "quote": "添了两盒钙片"
+     }
+    },
+    {
+     "atom_id": "LRE146_T12_A01",
+     "subject": "HER",
+     "relation": "使用反馈",
+     "value": "姥姥每日自行溜达到菜市场，状态良好",
+     "valid_time": "2026-11-15 18:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T12",
+      "message_id": "m0",
+      "quote": "天天自己溜达到菜市场"
+     }
+    }
+   ],
+   "private_guidance": "幸福轮就是接住再放大，may_decline 为真，短句亦佳。",
+   "unknowns": [],
+   "protected_expressions": [
+    "天天自己溜达到菜市场"
+   ],
+   "forbidden_factual_claims": [
+    "不得再提差价与账目扫兴"
+   ],
+   "may_decline": true
+  },
+  "LRE146_T13": {
+   "case_id": "LRE146_T13",
+   "current_action": "接住邻居言论：把'网上电池不耐用'当作待核实的话，先安抚姥姥，再给一句可验证的回应思路。",
+   "acceptable_actions": [
+    "安抚姥姥情绪，指出邻居的话没有依据先别往心里去",
+    "建议留意电池实际表现，用事实回应闲话",
+    "顺着话头问她姥姥今天用了多少圈，观察续航"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T13_A00",
+     "subject": "THIRD",
+     "relation": "邻居言论",
+     "value": "邻居王阿姨断言网上购买的电池不耐用",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T13",
+      "message_id": "m0",
+      "quote": "网上买的电池不耐用"
+     }
+    },
+    {
+     "atom_id": "LRE146_T13_A01",
+     "subject": "HER",
+     "relation": "情绪状态",
+     "value": "姥姥因邻居言论情绪低落",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T13",
+      "message_id": "m0",
+      "quote": "姥姥回来有点蔫"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：先把姥姥的蔫接住，闲话不抬到正事高度。",
+   "unknowns": [
+    "电池实际耐用性未明"
+   ],
+   "protected_expressions": [
+    "网上买的电池不耐用"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言邻居说法属实",
+    "不得顺着闲话否定原购渠道"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T14": {
+   "case_id": "LRE146_T14",
+   "current_action": "接住挡风被差价：把选择标准先立起来——接口匹配与保修影响优先于一百一差价，再谈省钱。",
+   "acceptable_actions": [
+    "指出原厂件接口匹配、不影响保修，建议选原厂",
+    "建议她问客服杂牌装了是否影响联保再定",
+    "让她把两种配件参数截图对比后一起决定"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T14_A00",
+     "subject": "PUBLIC",
+     "relation": "配件价格",
+     "value": "旗舰店原厂挡风被配件一百八，第三方杂牌六十八",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T14",
+      "message_id": "m0",
+      "quote": "原厂配件一百八"
+     }
+    },
+    {
+     "atom_id": "LRE146_T14_A01",
+     "subject": "HER",
+     "relation": "使用需求",
+     "value": "姥姥冬季骑轮椅迎风手冷，需挡风被",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T14",
+      "message_id": "m0",
+      "quote": "迎风手冷"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：先给结论再给理由，一次说清。",
+   "unknowns": [
+    "杂牌件是否影响保修未明"
+   ],
+   "protected_expressions": [
+    "差一百一"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构杂牌件的具体参数",
+    "不得替她拍板并承诺保修不受影响"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T15": {
+   "case_id": "LRE146_T15",
+   "current_action": "确认挡风被按保修优先原则下单原厂件，肯定她把一百一差价换成了踏实。",
+   "acceptable_actions": [
+    "肯定保修优先的取舍，提醒保存订单截图",
+    "顺带问发货时间，提醒到货先试接口再装",
+    "把这次决策记成'先查条款再花钱'的小复盘"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T15_A00",
+     "subject": "HER",
+     "relation": "购买决定",
+     "value": "她选择原厂一百八挡风被，顾虑保修匹配",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T15",
+      "message_id": "m0",
+      "quote": "买原厂一百八的"
+     }
+    },
+    {
+     "atom_id": "LRE146_T15_A01",
+     "subject": "HER",
+     "relation": "方案否决",
+     "value": "第三方杂牌挡风被方案被放弃",
+     "valid_time": "2026-11-18/2026-11-19",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T14",
+      "message_id": "m0",
+      "quote": "第三方杂牌六十八"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：夸在'条款意识'上，不夸钱花得对。",
+   "unknowns": [
+    "发货与到货时间未知"
+   ],
+   "protected_expressions": [
+    "买原厂一百八的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构发货日期承诺",
+    "不得改口推荐杂牌件"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T16": {
+   "case_id": "LRE146_T16",
+   "current_action": "接下生日饭新差事：先把日期与人数两件硬信息钉住，再给订店的可比维度。",
+   "acceptable_actions": [
+    "接下参谋任务，建议她按包间费、最低消费、菜价三个口径比店",
+    "确认生日是12月6日周日，提醒提前一周订包间",
+    "问她预算上限，别让舅舅的好意变成负担"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T16_A00",
+     "subject": "THIRD",
+     "relation": "宴席提议",
+     "value": "舅舅提议姥姥生日在饭店办一桌并指名唐棠订",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T16",
+      "message_id": "m0",
+      "quote": "指名让我订"
+     }
+    },
+    {
+     "atom_id": "LRE146_T16_A01",
+     "subject": "SHARED",
+     "relation": "宴席日期",
+     "value": "姥姥生日为阳历十二月六日周日",
+     "valid_time": "2026-11-21/2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T16",
+      "message_id": "m0",
+      "quote": "阳历十二月六号"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：接差事爽快，把'学问'两个字接成她愿意听的比法。",
+   "unknowns": [
+    "预算与人数未明"
+   ],
+   "protected_expressions": [
+    "阳历十二月六号"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构饭店承诺",
+    "不得替她直接定店"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T17": {
+   "case_id": "LRE146_T17",
+   "current_action": "接住三家方案的比较：帮他把'两百八可抵菜金'折算成实际成本，给出倾向但不代拍板。",
+   "acceptable_actions": [
+    "算账：两百八抵菜金约等于白用包间，倾向福满楼",
+    "提醒迎宾楼最低消费八百八的实际门槛",
+    "让她把三家的口头报价留个凭证再定"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T17_A00",
+     "subject": "PUBLIC",
+     "relation": "包间费",
+     "value": "福满楼包间费两百八且可抵菜金",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T17",
+      "message_id": "m0",
+      "quote": "包间费两百八但可以抵菜金"
+     }
+    },
+    {
+     "atom_id": "LRE146_T17_A01",
+     "subject": "PUBLIC",
+     "relation": "最低消费",
+     "value": "迎宾楼包间免费但最低消费八百八",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T17",
+      "message_id": "m0",
+      "quote": "最低消费八百八"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：她抛了'猜哪家'，接住再给算法，不抢答案。",
+   "unknowns": [
+    "小馆子是否可容纳十位未知"
+   ],
+   "protected_expressions": [
+    "包间费两百八但可以抵菜金"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构其他饭店报价",
+    "不得断言福满楼一定更好吃"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T18": {
+   "case_id": "LRE146_T18",
+   "current_action": "确认订定：日期、人数、订金三清，提醒她留好订金凭证，惊喜环节轻声叮嘱。",
+   "acceptable_actions": [
+    "确认福满楼12-06中午十位，提醒订金一百要收据",
+    "提醒提前一天跟饭店再确认一次包间",
+    "接住'惊喜'的念头，叮嘱她保密口径统一"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T18_A00",
+     "subject": "SHARED",
+     "relation": "宴席订单",
+     "value": "生日宴订福满楼12-06周日中午十位、订金一百",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T18",
+      "message_id": "m0",
+      "quote": "订了福满楼"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：订定就记档，惊喜的事只叮嘱一句。",
+   "unknowns": [
+    "菜单与饭店是否临时变动未知"
+   ],
+   "protected_expressions": [
+    "订了福满楼"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构饭店赠送项目",
+    "不得替她决定菜单"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T19": {
+   "case_id": "LRE146_T19",
+   "current_action": "接住故障与惊吓：先安抚姥姥，把'没劲儿'翻译成可核查的电池状态问题，指引走保修而非猜测。",
+   "acceptable_actions": [
+    "先安抚：人没事最重要，续航骤降是可查的问题",
+    "建议她翻出保修卡和发票，核对电池包换条款",
+    "提醒这两天让姥姥先别独自走远路"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T19_A00",
+     "subject": "SHARED",
+     "relation": "续航故障",
+     "value": "轮椅续航骤降，姥姥半路挪回受惊",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T19",
+      "message_id": "m0",
+      "quote": "半路上轮椅没劲儿了"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：惊吓先接住，'再也不敢'别顺着说死，给的是查证的台阶。",
+   "unknowns": [
+    "故障原因未明",
+    "能否走包换未知"
+   ],
+   "protected_expressions": [
+    "半路上轮椅没劲儿了"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言电池一定损坏",
+    "不得虚构维修费用"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T20": {
+   "case_id": "LRE146_T20",
+   "current_action": "旧事复活陷阱：舅舅重提门店渠道与旧报价主张，正确路径是按保修条款走官方售后，不换渠道重买；先接住她的动摇，再把条款摆上桌。",
+   "acceptable_actions": [
+    "提醒她保修卡写着电池第一年包换，先走官方售后",
+    "把'门店换电池'的隐含成本点出来：自费且无必要",
+    "接住她的动摇，说明这次与当初渠道之争是两码事"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "attribution",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T20_A00",
+     "subject": "THIRD",
+     "relation": "旧渠道主张",
+     "value": "舅舅重提门店渠道，主张到四千六那家门店换原装电池",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T20",
+      "message_id": "m0",
+      "quote": "去门店换块原装电池"
+     }
+    },
+    {
+     "atom_id": "LRE146_T20_A01",
+     "subject": "SHARED",
+     "relation": "旧结论失效",
+     "value": "'网上坏了没保障'的旧结论不成立，电池在联保期内应走官方售后",
+     "valid_time": "2026-11-04/2026-11-25",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T03",
+      "message_id": "m0",
+      "quote": "网上坏了没保障"
+     }
+    },
+    {
+     "atom_id": "LRE146_T20_A02",
+     "subject": "HER",
+     "relation": "自我动摇",
+     "value": "她因舅舅旧话再次怀疑当初的购买决定",
+     "valid_time": "2026-11-25",
+     "status": "suspended",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T20",
+      "message_id": "m0",
+      "quote": "当初是不是真买错了"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：不与舅舅争对错，把注意力从'渠道'拉回'条款'。",
+   "unknowns": [
+    "电池故障原因未明",
+    "官方售后响应速度未知"
+   ],
+   "protected_expressions": [
+    "当初是不是真买错了"
+   ],
+   "forbidden_factual_claims": [
+    "不得附和必须去门店换电池",
+    "不得虚构门店电池价格"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T21": {
+   "case_id": "LRE146_T21",
+   "current_action": "确认条款核查：保修卡在期、包换条款白纸黑字，肯定她先查证再行动的顺序。",
+   "acceptable_actions": [
+    "确认包换条款在保修期内，售后登记是对的",
+    "提醒她把保修卡和发票照片存好备用",
+    "让她跟客服要一个上门检测的大致时间"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T21_A00",
+     "subject": "THIRD",
+     "relation": "保修条款",
+     "value": "电池第一年包换的联保条款在保修期内有效",
+     "valid_time": "2026-11-05/2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T04",
+      "message_id": "m0",
+      "quote": "电池第一年包换"
+     }
+    },
+    {
+     "atom_id": "LRE146_T21_A01",
+     "subject": "HER",
+     "relation": "售后登记",
+     "value": "旗舰店客服登记售后并安排师傅上门检测",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T21",
+      "message_id": "m0",
+      "quote": "安排师傅上门检测"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：查证到位就肯定，别再翻舅舅的旧话。",
+   "unknowns": [
+    "上门检测时间未知"
+   ],
+   "protected_expressions": [
+    "安排师傅上门检测"
+   ],
+   "forbidden_factual_claims": [
+    "不得夸大包换范围到整车",
+    "不得虚构客服承诺的时限"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T22": {
+   "case_id": "LRE146_T22",
+   "current_action": "接住第三方反转：门店老板的公道话既解了她的心结也降了舅舅的火气，把'低温衰减属正常'记为工作假设待检测确认。",
+   "acceptable_actions": [
+    "肯定门店老板说话实在，反证当初查证的方向没错",
+    "提醒低温衰减是正常现象的说法要等检测确认",
+    "顺一句舅舅没吭声，别追着补刀"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T22_A00",
+     "subject": "THIRD",
+     "relation": "第三方口径",
+     "value": "门店老板称低温续航衰减属正常，损坏可在联保内更换",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T22",
+      "message_id": "m0",
+      "quote": "低温衰减不一定坏"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：把老板的话当台阶递给舅舅，不渲染对立。",
+   "unknowns": [
+    "真实故障原因仍待检测"
+   ],
+   "protected_expressions": [
+    "低温衰减不一定坏"
+   ],
+   "forbidden_factual_claims": [
+    "不得提前断言检测结论",
+    "不得借老板的话贬低舅舅"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T23": {
+   "case_id": "LRE146_T23",
+   "current_action": "确认闭环：售后上门检测确认电池单体不稳、符合包换条件并免费换新，全程零费用。",
+   "acceptable_actions": [
+    "确认免费换新落地，把这次售后记为网购渠道的正名",
+    "提醒她保留换新记录，保修期重新算账要问清",
+    "肯定刘师傅的服务，建议她给个好评"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T23_A00",
+     "subject": "THIRD",
+     "relation": "换新结果",
+     "value": "售后刘师傅检测确认电池单体不稳，符合包换条件并免费换新",
+     "valid_time": "2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T23",
+      "message_id": "m0",
+      "quote": "当场免费换了块新电池"
+     }
+    },
+    {
+     "atom_id": "LRE146_T23_A01",
+     "subject": "SHARED",
+     "relation": "故障担心解除",
+     "value": "电池故障需自费更换的担心解除",
+     "valid_time": "2026-11-25/2026-11-28",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T19",
+      "message_id": "m0",
+      "quote": "半路上轮椅没劲儿了"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：闭环要收得干净，夸落到'售后靠谱'而非运气。",
+   "unknowns": [
+    "换新后电池保修期起算未知"
+   ],
+   "protected_expressions": [
+    "当场免费换了块新电池"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构换新电池的保修条款",
+    "不得把个例说成所有网购件都如此"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T24": {
+   "case_id": "LRE146_T24",
+   "current_action": "接住满血复活：姥姥出行如常、舅舅改口，此页翻篇，顺带把'事实比话有劲'轻轻点一下。",
+   "acceptable_actions": [
+    "接住舅舅改口，说事实胜过争辩",
+    "确认姥姥状态，叮嘱先按日常半径活动",
+    "把这次从故障到换新的经过浓缩成一句复盘"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T24_A00",
+     "subject": "SHARED",
+     "relation": "恢复使用",
+     "value": "换新电池后轮椅续航恢复，姥姥照常出行",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T24",
+      "message_id": "m0",
+      "quote": "姥姥下午就溜达了个来回"
+     }
+    },
+    {
+     "atom_id": "LRE146_T24_A01",
+     "subject": "THIRD",
+     "relation": "态度反转",
+     "value": "舅舅改口称赞网购售后比门店省心",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T24",
+      "message_id": "m0",
+      "quote": "比你舅我当年在门店买的还省心"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：胜利不庆祝过头，一句'爱听'就收。",
+   "unknowns": [],
+   "protected_expressions": [
+    "比你舅我当年在门店买的还省心"
+   ],
+   "forbidden_factual_claims": [
+    "不得翻舅舅坚持门店的旧账",
+    "不得虚构电池品牌型号"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T25": {
+   "case_id": "LRE146_T25",
+   "current_action": "确认发票抬头的旧惯例迁移：轮椅发票开姥姥名字的先例被她主动回扣，宴席发票沿用。",
+   "acceptable_actions": [
+    "肯定抬头统一开姥姥名字的细心",
+    "提醒她收据和发票都留一份，方便对账",
+    "顺带问宴席菜单定没定，别到跟前手忙"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T25_A00",
+     "subject": "SHARED",
+     "relation": "发票惯例",
+     "value": "轮椅发票抬头开姥姥名字的先例被她回扣沿用",
+     "valid_time": "2026-11-09/2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T08",
+      "message_id": "m0",
+      "quote": "发票抬头开的姥姥名字"
+     }
+    },
+    {
+     "atom_id": "LRE146_T25_A01",
+     "subject": "HER",
+     "relation": "发票安排",
+     "value": "宴席发票抬头同样拟开姥姥名字",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T25",
+      "message_id": "m0",
+      "quote": "抬头也开姥姥"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：细心要夸到点上，别变成布置任务。",
+   "unknowns": [
+    "饭店开票具体要求未知"
+   ],
+   "protected_expressions": [
+    "发票抬头开的姥姥名字"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构饭店开票规则",
+    "不得断言抬头影响保修"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T26": {
+   "case_id": "LRE146_T26",
+   "current_action": "接住转账变体：这次她主动改成当面结账，与上次收三百再回礼的转化不同，肯定她按情境变通。",
+   "acceptable_actions": [
+    "肯定当面结账的清爽，人情账不只有一种解法",
+    "接住'比上回收三百还拧'的玩笑",
+    "提醒她宴席当天把点菜权给舅舅，他要的是主导感"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T26_A00",
+     "subject": "THIRD",
+     "relation": "转账提议",
+     "value": "舅舅提出先转八百垫付生日饭费用",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T26",
+      "message_id": "m0",
+      "quote": "先转我八百"
+     }
+    },
+    {
+     "atom_id": "LRE146_T26_A01",
+     "subject": "HER",
+     "relation": "处理方式",
+     "value": "她婉拒预转，改为舅舅当场扫码结账",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T26",
+      "message_id": "m0",
+      "quote": "他自己扫码结账"
+     }
+    },
+    {
+     "atom_id": "LRE146_T26_A02",
+     "subject": "THIRD",
+     "relation": "旧转账往事",
+     "value": "上次轮椅三百的收款往事被她回扣",
+     "valid_time": "2026-11-12/2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T10",
+      "message_id": "m0",
+      "quote": "非要转我三百"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：变通要夸，但别说上次的法子不好。",
+   "unknowns": [
+    "舅舅是否接受当面结账未知"
+   ],
+   "protected_expressions": [
+    "比上回收三百那回还拧"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她决定拒收或接受",
+    "不得把两种人情解法分出高下"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T27": {
+   "case_id": "LRE146_T27",
+   "current_action": "出窗探针：四千六百八与三千九百八的旧价差被邻居亲戚再度对上，她发链接回应，肯定她顺手帮人的分寸。",
+   "acceptable_actions": [
+    "肯定她发链接让对方自己比的做派",
+    "提醒她别替亲戚拍板，让对方看条款",
+    "把这次询价当作当初查证成果的回声，轻轻一提"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T27_A00",
+     "subject": "PUBLIC",
+     "relation": "旧价差回声",
+     "value": "王阿姨亲戚在门店看同款报价四千六百八",
+     "valid_time": "2026-11-03/2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T01",
+      "message_id": "m0",
+      "quote": "报价四千六百八"
+     }
+    },
+    {
+     "atom_id": "LRE146_T27_A01",
+     "subject": "HER",
+     "relation": "转介动作",
+     "value": "她把三千九百八的网购链接发给王阿姨转交",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T27",
+      "message_id": "m0",
+      "quote": "三千九百八，一样联保"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：帮人帮到链接为止，买不买由人。",
+   "unknowns": [
+    "亲戚是否下单未知"
+   ],
+   "protected_expressions": [
+    "报价四千六百八"
+   ],
+   "forbidden_factual_claims": [
+    "不得替亲戚承诺同价",
+    "不得贬低门店渠道"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T28": {
+   "case_id": "LRE146_T28",
+   "current_action": "确认转介成功并回扣联保条款：当初查证的'凭发票全国联保两年'这次又派上用场。",
+   "acceptable_actions": [
+    "肯定联保条款两次显灵，查证功夫没白花",
+    "提醒她如果亲戚问售后，把这次换新经历分享出去",
+    "接住她'跟姥姥显摆'的得意，乐一下就收"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T28_A00",
+     "subject": "THIRD",
+     "relation": "转介结果",
+     "value": "王阿姨亲戚已下单同款并认可价格",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T28",
+      "message_id": "m0",
+      "quote": "人家亲戚下单了"
+     }
+    },
+    {
+     "atom_id": "LRE146_T28_A01",
+     "subject": "SHARED",
+     "relation": "联保回扣",
+     "value": "'凭发票全国联保两年'的查证先例被她再次援引",
+     "valid_time": "2026-11-05/2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T04",
+      "message_id": "m0",
+      "quote": "凭发票全国联保两年"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：得意要接住，落点放在查证习惯上。",
+   "unknowns": [],
+   "protected_expressions": [
+    "凭发票全国联保两年"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构亲戚订单细节",
+    "不得断言联保条款永远适用"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T29": {
+   "case_id": "LRE146_T29",
+   "current_action": "接住生日前的最后一查：把低温养护口径转述成舅舅也能记住的三句话，轻装赴宴。",
+   "acceptable_actions": [
+    "肯定她转述得清楚，提醒明天别把养护说成课",
+    "确认明天宴席的集合时间与座位安排",
+    "祝姥姥生日顺心，让她别累着自己"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T29_A00",
+     "subject": "THIRD",
+     "relation": "养护口径",
+     "value": "售后口径：低温续航打折正常，存放防冻、充电别整夜搁外头",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T29",
+      "message_id": "m0",
+      "quote": "低温续航打折正常"
+     }
+    },
+    {
+     "atom_id": "LRE146_T29_A01",
+     "subject": "THIRD",
+     "relation": "包换兜底",
+     "value": "电池第一年包换的条款为冬季疑虑兜底",
+     "valid_time": "2026-11-05/2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T04",
+      "message_id": "m0",
+      "quote": "电池第一年包换"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：查证收口，情绪升到'明天'就行。",
+   "unknowns": [],
+   "protected_expressions": [
+    "低温续航打折正常"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构新的养护条目",
+    "不得断言新电池绝无衰减"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T30": {
+   "case_id": "LRE146_T30",
+   "current_action": "生日宴开场：订金抵菜金的方案兑现，姥姥的惊喜要陪她一起高兴。",
+   "acceptable_actions": [
+    "接住惊喜达成的画面感，为姥姥高兴",
+    "确认两百八抵菜金兑现，账目如预期",
+    "提醒她拍照留念，别光顾着忙"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T30_A00",
+     "subject": "SHARED",
+     "relation": "宴会开场",
+     "value": "生日宴在福满楼开场，两百八订金抵菜金",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T30",
+      "message_id": "m0",
+      "quote": "两百八订金直接抵了菜金"
+     }
+    },
+    {
+     "atom_id": "LRE146_T30_A01",
+     "subject": "HER",
+     "relation": "惊喜反应",
+     "value": "姥姥进门见满桌人愣后大喜",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T30",
+      "message_id": "m0",
+      "quote": "愣了三秒才反应过来"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：现场感优先，账目一句带过。",
+   "unknowns": [],
+   "protected_expressions": [
+    "愣了三秒才反应过来"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构席间对话细节",
+    "不得抢在她前面总结"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T31": {
+   "case_id": "LRE146_T31",
+   "current_action": "出窗探针：姥姥全程自开轮椅赴宴，与'天天自己溜达到菜市场'的日常相互印证，为舅舅的合影念头添把火。",
+   "acceptable_actions": [
+    "为姥姥的状态高兴，把两个月的成效点一句",
+    "接住舅舅合影的提议，说这张照片值得洗出来",
+    "提醒她散场帮姥姥检查电量，别让老人推回来"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T31_A00",
+     "subject": "HER",
+     "relation": "赴宴状态",
+     "value": "姥姥全程自行驾驶轮椅进出宴会",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T31",
+      "message_id": "m0",
+      "quote": "全程自己开着轮椅进出"
+     }
+    },
+    {
+     "atom_id": "LRE146_T31_A01",
+     "subject": "HER",
+     "relation": "日常印证",
+     "value": "姥姥天天自行溜达菜市场的日常被亲友见证",
+     "valid_time": "2026-11-15/2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T12",
+      "message_id": "m0",
+      "quote": "天天自己溜达到菜市场"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：成效让姥姥自己发光，ME 不抢总结。",
+   "unknowns": [],
+   "protected_expressions": [
+    "全程自己开着轮椅进出"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构亲戚评价细节",
+    "不得把好转说成痊愈式承诺"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T32": {
+   "case_id": "LRE146_T32",
+   "current_action": "出窗探针：月底对账——四千六百八与三千九百八的旧价差再次被复盘，落点在姥姥的精气神。",
+   "acceptable_actions": [
+    "接住对账，把七百差价与免费换新并成一笔记",
+    "顺着'钱买不来精气神'收住，不展开新话题",
+    "提醒她把账页存档，以后遇到大件照方抓药"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T32_A00",
+     "subject": "PUBLIC",
+     "relation": "旧价差复盘",
+     "value": "门店报价四千六百八与网购三千九百八的七百价差被复盘",
+     "valid_time": "2026-11-03/2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T01",
+      "message_id": "m0",
+      "quote": "报价四千六百八"
+     }
+    },
+    {
+     "atom_id": "LRE146_T32_A01",
+     "subject": "HER",
+     "relation": "账目汇总",
+     "value": "免费换电池零元与挡风被一百八入账汇总",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T32",
+      "message_id": "m0",
+      "quote": "电池免费包换、挡风被一百八"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：对账是回味不是炫技，情绪落在姥姥身上。",
+   "unknowns": [],
+   "protected_expressions": [
+    "报价四千六百八"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构新的收支项",
+    "不得把个例推广成普遍省钱规律"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T33": {
+   "case_id": "LRE146_T33",
+   "current_action": "旧事复活陷阱：'库存翻新货'流言与旧报价四千六百八被重提鼓动退换，正确行为是对照事实不沿用流言；先接住姥姥的动摇。",
+   "acceptable_actions": [
+    "安抚姥姥：换过的新电池就在车上，翻新说法站不住",
+    "列事实对账：原厂授权、上月刚换新、骑了一个多月",
+    "建议她别急着退，先让传话人说清依据"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "attribution",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T33_A00",
+     "subject": "THIRD",
+     "relation": "流言主张",
+     "value": "传言称网购批次为库存翻新货，鼓动退掉重买门店四千六百八的原装",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T33",
+      "message_id": "m0",
+      "quote": "电池是翻新的"
+     }
+    },
+    {
+     "atom_id": "LRE146_T33_A01",
+     "subject": "HER",
+     "relation": "动摇求证",
+     "value": "姥姥翻出保修卡询问是否退换",
+     "valid_time": "2026-12-09",
+     "status": "suspended",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T33",
+      "message_id": "m0",
+      "quote": "姥姥听完真去翻保修卡了"
+     }
+    },
+    {
+     "atom_id": "LRE146_T33_A02",
+     "subject": "SHARED",
+     "relation": "流言与事实矛盾",
+     "value": "库存翻新流言是'网上坏了没保障'旧论的变体，与上月免费换新事实矛盾，不得沿用",
+     "valid_time": "2026-11-28/2026-12-09",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T03",
+      "message_id": "m0",
+      "quote": "网上坏了没保障"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：流言不辩论到底，用三件事实压住她的心慌。",
+   "unknowns": [
+    "流言来源与动机未知"
+   ],
+   "protected_expressions": [
+    "电池是翻新的"
+   ],
+   "forbidden_factual_claims": [
+    "不得顺着流言附和退换",
+    "不得虚构官方鉴定结论"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T34": {
+   "case_id": "LRE146_T34",
+   "current_action": "接住证伪与拍板：原厂授权、换新记录两条事实落地，姥姥自行否掉退换，此页干净翻篇。",
+   "acceptable_actions": [
+    "肯定姥姥拍板利落，事实面前不折腾",
+    "提醒她若再有人嚼舌根，把换新记录拿出来说话",
+    "把这次流言与上次电池故障并成一句经验：条款在手，闲话不慌"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T34_A00",
+     "subject": "HER",
+     "relation": "事实核查",
+     "value": "她核实旗舰店为原厂授权且电池上月已免费换新",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T34",
+      "message_id": "m0",
+      "quote": "旗舰店是原厂授权"
+     }
+    },
+    {
+     "atom_id": "LRE146_T34_A01",
+     "subject": "SHARED",
+     "relation": "退换否决",
+     "value": "退了重买的提议被姥姥明确否决",
+     "valid_time": "2026-12-09",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T34",
+      "message_id": "m0",
+      "quote": "谁再嚼舌根让她来找我"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：翻篇要干脆，别再把流言复述一遍。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谁再嚼舌根让她来找我"
+   ],
+   "forbidden_factual_claims": [
+    "不得再质疑购买决定",
+    "不得虚构额外维权动作"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T35": {
+   "case_id": "LRE146_T35",
+   "current_action": "确认挡风被告一段落：接口匹配、姥姥满意，一百八的账在心理上也平了。",
+   "acceptable_actions": [
+    "肯定原厂件装得顺，冬天装备齐活",
+    "提醒她拉链滑轨定期清灰，用得久",
+    "问一句姥姥出门频率，顺带关心天冷路滑"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T35_A00",
+     "subject": "HER",
+     "relation": "配件落地",
+     "value": "原厂挡风被到货安装，接口匹配姥姥满意",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T35",
+      "message_id": "m0",
+      "quote": "接口严丝合缝"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：小事收口，一句关心收尾。",
+   "unknowns": [],
+   "protected_expressions": [
+    "接口严丝合缝"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构配件质保条款",
+    "不得追加新购买建议"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T36": {
+   "case_id": "LRE146_T36",
+   "current_action": "接住新提议与规则疑虑：四轮代步车的上牌与禁行未明，先标记未知，不催办不否决。",
+   "acceptable_actions": [
+    "肯定先打听的做法，把上牌禁行列为待查项",
+    "提醒不同城市规则不同，别听邻居转述",
+    "问一句姥姥的实际需求，先想清楚买来干嘛"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T36_A00",
+     "subject": "THIRD",
+     "relation": "代步车提议",
+     "value": "舅舅提议开春购置四轮老年代步车",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T36",
+      "message_id": "m0",
+      "quote": "买辆四轮的老年代步车"
+     }
+    },
+    {
+     "atom_id": "LRE146_T36_A01",
+     "subject": "PUBLIC",
+     "relation": "规则未知",
+     "value": "四轮代步车上牌与上路规则未明",
+     "valid_time": "2026-12-13",
+     "status": "suspended",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T36",
+      "message_id": "m0",
+      "quote": "好像要上牌"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：新提议不急着接，先把未知摆上桌。",
+   "unknowns": [
+    "上牌与禁行规则未明",
+    "姥姥真实意愿未知"
+   ],
+   "protected_expressions": [
+    "好像要上牌"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构具体城市规定",
+    "不得催促或否决购买计划"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T37": {
+   "case_id": "LRE146_T37",
+   "current_action": "确认查证结果：规则不一、轮椅够用，支持她先探姥姥口风的顺序——需求在前，购买在后。",
+   "acceptable_actions": [
+    "支持先问姥姥需求再谈购买",
+    "把'各地规矩不一样'作为不急的理由给她",
+    "提醒她跟舅舅沟通时别把话说死，留转弯余地"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T37_A00",
+     "subject": "PUBLIC",
+     "relation": "规则查证",
+     "value": "四轮代步车多地上牌、部分路段禁行且各地不一",
+     "valid_time": "2026-12-14",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T37",
+      "message_id": "m0",
+      "quote": "不少地方要上牌"
+     }
+    },
+    {
+     "atom_id": "LRE146_T37_A01",
+     "subject": "HER",
+     "relation": "行动顺序",
+     "value": "先探姥姥口风再定，不急于下单",
+     "valid_time": "2026-12-14",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T37",
+      "message_id": "m0",
+      "quote": "先探探姥姥的口风"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：查证给底气，语气别变成拦着长辈孝心。",
+   "unknowns": [
+    "姥姥口风未明"
+   ],
+   "protected_expressions": [
+    "不少地方要上牌"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言本地必然禁行",
+    "不得替姥姥拒绝提议"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T38": {
+   "case_id": "LRE146_T38",
+   "current_action": "接住否决与转向：姥姥亲口否掉代步车，舅舅改留红包，提议自然撤销，不追击不总结。",
+   "acceptable_actions": [
+    "接住翻篇，夸姥姥自己心里有数",
+    "把'钱留红包'接成温情落点",
+    "不添新话头，让这事轻轻合上"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T38_A00",
+     "subject": "SHARED",
+     "relation": "提议撤销",
+     "value": "四轮代步车提议被姥姥否决并撤销",
+     "valid_time": "2026-12-15",
+     "status": "cancelled",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T38",
+      "message_id": "m0",
+      "quote": "轮椅挺好，别瞎花钱"
+     }
+    },
+    {
+     "atom_id": "LRE146_T38_A01",
+     "subject": "THIRD",
+     "relation": "资金转向",
+     "value": "舅舅改为把钱留着过年给姥姥包红包",
+     "valid_time": "2026-12-15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T38",
+      "message_id": "m0",
+      "quote": "留着过年给姥姥包红包"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：否决来自姥姥本人，这一点值得点出来。",
+   "unknowns": [],
+   "protected_expressions": [
+    "轮椅挺好，别瞎花钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得重提代步车计划",
+    "不得虚构红包金额"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T39": {
+   "case_id": "LRE146_T39",
+   "current_action": "确认账单成页：帮他把漏项视角过一遍——零元换新与订金抵扣都属'省下的'，姨姥姥借阅说明这套方法有人认。",
+   "acceptable_actions": [
+    "把账单当成可复制的方法，肯定她整理得清",
+    "提醒零元与抵扣项单独标出，防止以后记混",
+    "接住姨姥姥借阅，说方法可以送、数字各算各"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T39_A00",
+     "subject": "HER",
+     "relation": "账单成页",
+     "value": "两个月费用清单整理成页供核对与借鉴",
+     "valid_time": "2026-12-18",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T39",
+      "message_id": "m0",
+      "quote": "整理成一页"
+     }
+    },
+    {
+     "atom_id": "LRE146_T39_A01",
+     "subject": "THIRD",
+     "relation": "方法外溢",
+     "value": "姨姥姥索要账单作自家采购参考",
+     "valid_time": "2026-12-18",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T39",
+      "message_id": "m0",
+      "quote": "问我抄一份给她家参考"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：对账是收尾动作，别拖成新任务。",
+   "unknowns": [
+    "账单是否有漏项未知"
+   ],
+   "protected_expressions": [
+    "整理成一页"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构账单金额",
+    "不得替姨姥姥做采购决定"
+   ],
+   "may_decline": false
+  },
+  "LRE146_T40": {
+   "case_id": "LRE146_T40",
+   "current_action": "幸福收尾：姥姥成了小区红人并立下过年之约，may_decline 为真，短句接住即可。",
+   "acceptable_actions": [
+    "接住过年之约，回一句'胃一定空着'",
+    "夸姥姥把日子过成了小区风景",
+    "不再抛新话题，让这一页轻轻合上"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE146_T40_A00",
+     "subject": "HER",
+     "relation": "日常延续",
+     "value": "姥姥持续自行出行并帮邻居捎菜成红人",
+     "valid_time": "2026-11-15/2026-12-20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T12",
+      "message_id": "m0",
+      "quote": "天天自己溜达到菜市场"
+     }
+    },
+    {
+     "atom_id": "LRE146_T40_A01",
+     "subject": "SHARED",
+     "relation": "过年之约",
+     "value": "姥姥约定过年 ME 回县城她亲自下厨",
+     "valid_time": "2026-12-20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE146_T40",
+      "message_id": "m0",
+      "quote": "她要亲自下厨"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，留白多，约定收下就好。",
+   "unknowns": [],
+   "protected_expressions": [
+    "成了小区红人"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构过年的具体安排",
+    "不得再翻费用旧账"
+   ],
+   "may_decline": true
+  }
+ }
+}

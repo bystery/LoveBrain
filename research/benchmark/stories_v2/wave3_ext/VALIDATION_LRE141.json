@@ -1,0 +1,28 @@
+{
+ "kind": "story_v2_wave3_ext_validation",
+ "date": "2026-10-27",
+ "turn_per_story": 40,
+ "expected_count": 1,
+ "passed": true,
+ "stories": [
+  {
+   "story_id": "LRE141",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "LRE141",
+    "turns": 40,
+    "atoms": 85,
+    "required_atoms": 39,
+    "may_decline": [
+     "LRE141_T12",
+     "LRE141_T40"
+    ],
+    "intents": []
+   }
+  }
+ ],
+ "errors": [],
+ "unique_cases": 40,
+ "stories_passed": 1
+}

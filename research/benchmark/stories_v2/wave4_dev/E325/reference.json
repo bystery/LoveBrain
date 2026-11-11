@@ -1,0 +1,740 @@
+{
+ "story_id": "E325",
+ "turns": {
+  "E325_T01": {
+   "case_id": "E325_T01",
+   "current_action": "齐悦提议两人拼私教卡（10节1800、一人5节900），征询曹斌意见",
+   "acceptable_actions": [
+    "答应拼单并顺口核一遍单价（1800除10节合180一节）",
+    "答应并玩笑接她'凑个整'的说法",
+    "答应并确认付款方式再定"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T01_A01",
+     "subject": "SHARED",
+     "relation": "私教卡活动价",
+     "value": "私教课平时240一节，活动价10节1800元、两人拼一人5节900元",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T01",
+      "quote": "私教课平时240一节，现在10节1800",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T01_A02",
+     "subject": "HER",
+     "relation": "拼单提议",
+     "value": "齐悦提议与曹斌两人拼单各买5节",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T01",
+      "quote": "咱俩一人5节，一人900",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她报的数这轮是对的（10节1800、一人900），可直接接。同事两年关系，爽快接话即可，不必过度客套。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我一个人吃不下"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造其他优惠细节（如赠课、折扣码）",
+    "不得替她报出截止日期（下一轮才提）"
+   ],
+   "may_decline": false
+  },
+  "E325_T02": {
+   "case_id": "E325_T02",
+   "current_action": "齐悦通报活动周四截止（她问的前台），并转述前台规则：卡最多两人拼，她哥没戏",
+   "acceptable_actions": [
+    "接住截止日并答应尽快定付款",
+    "接住并玩笑回应'不缠我'那句",
+    "接住并问周四前下单流程"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T02_A01",
+     "subject": "SHARED",
+     "relation": "活动截止日",
+     "value": "健身房年底活动本周四（2026-11-12）截止，口径来自齐悦当日下午问前台",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T02",
+      "quote": "活动这周四就截止了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T02_A02",
+     "subject": "THIRD",
+     "relation": "她哥拼单受挫",
+     "value": "齐悦的哥哥想凑一份，但按前台说法该卡最多两人拼，她哥拼不进",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T02",
+      "quote": "前台说这卡最多两人拼，所以我哥没戏",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "归属注意：'最多两人拼'是前台口径、由齐悦转述，回复别把这话安到她头上；截止日按周四（11-12）记。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别被他缠上哈"
+   ],
+   "forbidden_factual_claims": [
+    "不得把截止日说成周五或其他日期",
+    "不得声称还能给第三方腾名额"
+   ],
+   "may_decline": false
+  },
+  "E325_T03": {
+   "case_id": "E325_T03",
+   "current_action": "齐悦定盘子：曹斌整笔垫付1800，她转900并要求备注写清（intent：确认垫付与第一笔转账安排）",
+   "acceptable_actions": [
+    "确认垫付1800并应下备注写清用途",
+    "确认并说自己看到转账会回一句",
+    "确认并报收款码或收款方式细节"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T03_A01",
+     "subject": "SHARED",
+     "relation": "垫付安排",
+     "value": "曹斌整笔垫付1800元，齐悦把自己那份900元转给曹斌",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T03",
+      "quote": "钱你先整笔垫付1800，我把我那份900转你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T03_A02",
+     "subject": "SHARED",
+     "relation": "转账备注要求",
+     "value": "转账备注要写清楚用途",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T03",
+      "quote": "转账备注你写清楚哈",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T03_A03",
+     "subject": "HER",
+     "relation": "转账时限",
+     "value": "齐悦计划中午前把900转过去",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T03",
+      "quote": "中午前我转过去",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 轮：确认安排即可，垫付方是曹斌（ME）、转900的是她，方向别搞反。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把垫付金额说成1800以外的数",
+    "不得说成齐悦先垫、曹斌后转"
+   ],
+   "may_decline": false
+  },
+  "E325_T04": {
+   "case_id": "E325_T04",
+   "current_action": "齐悦加单蛋白粉：报'一罐320、两罐660、咱一人330'并让曹斌付款时一起付、她回头转——报价自相矛盾（320×2=640≠660），凑整报错系设计内陷阱",
+   "acceptable_actions": [
+    "答应一起付并指出两罐应为640（320×2）、一人应为320",
+    "答应并顺口调侃她凑整凑过了头：两罐是640、一人320",
+    "答应并按一人320口径确认她回头转320，顺带问口味牌子要不要指定"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T04_A01",
+     "subject": "SHARED",
+     "relation": "蛋白粉分摊",
+     "value": "蛋白粉真实价为两罐640元（320×2）、一人320元；齐悦报'两罐660、一人330'系凑整报错",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T04",
+      "quote": "一罐320，两罐660，咱一人330",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T04_A02",
+     "subject": "SHARED",
+     "relation": "代付安排",
+     "value": "蛋白粉款由曹斌付款时一并支付，齐悦回头转她的份额（她口头报转330，按更正口径应为320）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T04",
+      "quote": "你付的时候一起付了吧，我回头转你330哈",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "320×2=640≠660，她这句报价自相矛盾，是设计内报错陷阱：正确口径=两罐640、一人320。正确回复=指出错数（她'算错的账一定认'），别顺着660/330确认；320是后面账目链的锚点。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得背书'两罐660/一人330'的错数口径",
+    "不得把两罐价或一人份额改成640、320以外的数",
+    "不得编造蛋白粉品牌或口味约定"
+   ],
+   "may_decline": false
+  },
+  "E325_T05": {
+   "case_id": "E325_T05",
+   "current_action": "齐悦通报900已转（备注'私教卡'）请查收，蛋白粉周三到货先放曹斌处",
+   "acceptable_actions": [
+    "查收确认900到账并认可备注",
+    "确认并说蛋白粉到了会收好",
+    "确认并问周三几点到方便收"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T05_A01",
+     "subject": "HER",
+     "relation": "转账执行",
+     "value": "齐悦已转900元并备注'私教卡'，待曹斌查收",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T05",
+      "quote": "900转你了，你查收下，备注我写了'私教卡'哈",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T05_A02",
+     "subject": "SHARED",
+     "relation": "蛋白粉到货安排",
+     "value": "蛋白粉周三到货，先放曹斌处",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T05",
+      "quote": "蛋白粉要周三才到货，到了先放你那儿",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回应重点=查收900这一动作；到货安排顺口接住即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称900没转或金额不对",
+    "不得编造到货具体时刻"
+   ],
+   "may_decline": false
+  },
+  "E325_T06": {
+   "case_id": "E325_T06",
+   "current_action": "齐悦月度对账：仍按蛋白粉330把总账算成1230、已转900、还差330（复算陷阱：正确=900+320=1220、还差320），请曹斌核对（intent：核对本月账目）",
+   "acceptable_actions": [
+    "指出蛋白粉份额应为320：合计应为1220（900+320）、已转900、还差320",
+    "纠正320口径并补充'差的部分等蛋白粉款一起结也行'",
+    "温和指出她这轮复算把T04的凑整错数带进了总账，给出1220/320的正确账"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T06_A01",
+     "subject": "HER",
+     "relation": "月度账目核对",
+     "value": "月度账正确口径=私教卡900+蛋白粉320合计1220元、已转900元、还差320元；齐悦本轮复算仍按330报成合计1230、还差330（报错数）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T06",
+      "quote": "加一块我一共该给你1230，转了900还差330",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "复算陷阱轮：正确口径=900+320=1220、已转900、还差320；她仍按330报1230/差330，是把T04的凑整错数带进了总账。正确回复=指出320/1220/320，别背书1230/330，也别核错方向。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得背书'合计1230/还差330'的错数口径",
+    "不得新增无据账目项"
+   ],
+   "may_decline": false
+  },
+  "E325_T07": {
+   "case_id": "E325_T07",
+   "current_action": "截止日当天齐悦追问是否已下单，放话不下单就把900要回来（intent：确认截止日前付款完成）",
+   "acceptable_actions": [
+    "明确已下单已付1800并让她放心",
+    "回订单实付截图口径并说赶上了",
+    "确认已下单并玩笑接'要回900'那句"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T07_A01",
+     "subject": "SHARED",
+     "relation": "下单追问",
+     "value": "活动截止日（2026-11-12）当天齐悦追问曹斌是否已下单",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T07",
+      "quote": "今天最后一天了吧？你到底下单没？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "input.note 显示健身房小程序订单详情页'实付¥1800.00'——即曹斌已完成整笔支付，本轮正确口径是让她安心（已下单、赶上优惠）；'我可要把900要回来的哈'是催促玩笑，不必当真也不该真拖着。note 属候选可见输入，但其文本不进原子 quote，评审认定'已下单已付'以 note 为准。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称尚未下单或尚未付款（note 显示实付1800）",
+    "不得编造订单号、下单时刻等无据细节"
+   ],
+   "may_decline": false
+  },
+  "E325_T08": {
+   "case_id": "E325_T08",
+   "current_action": "齐悦转述教练建议匀两节给曹斌：周五午休那节直接换成她的、不算欠，明早十点前答复（可拒）",
+   "acceptable_actions": [
+    "答应换课并道谢",
+    "婉拒说自己节奏刚好不用匀",
+    "说明周五午休档期待定、明早十点前答复"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T08_A01",
+     "subject": "THIRD",
+     "relation": "教练反馈",
+     "value": "教练反馈齐悦课排太密，建议她匀两节给曹斌",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T08",
+      "quote": "教练今天说我课排太密，让我匀两节给你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T08_A02",
+     "subject": "SHARED",
+     "relation": "换课提议",
+     "value": "周五午休曹斌那节直接换成齐悦的，齐悦明言不算欠她（待曹斌确认）",
+     "valid_time": "2026-11-14",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T08",
+      "quote": "周五午休你那节直接换成我的就行，不算欠我的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T08_A03",
+     "subject": "SHARED",
+     "relation": "答复期限",
+     "value": "明早十点前答复，不回复则默认曹斌不去",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T08",
+      "quote": "明早十点前跟我说一声就成，不回我就当你不去哈",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "归属注意：'课排太密'是教练的话、她转述；may_decline=true，拒接与接都合规，但别编造曹斌自己的周五课表细节。",
+   "unknowns": [],
+   "protected_expressions": [
+    "不算欠我的"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造曹斌周五午休的排课细节",
+    "不得把'不算欠我的'改成要回补的口径"
+   ],
+   "may_decline": true
+  },
+  "E325_T09": {
+   "case_id": "E325_T09",
+   "current_action": "齐悦按默认规则把匀课两节记回自己卡上（曹斌未按时回复），并通报蛋白粉签收、运费12元对半记6元",
+   "acceptable_actions": [
+    "认下默认取消并接住6元记账",
+    "认账并玩笑说白捡的课飞了",
+    "认账并顺口说6块记我账上回头一起结"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T09_A01",
+     "subject": "SHARED",
+     "relation": "匀课安排",
+     "value": "教练建议匀两节的换课安排因曹斌未按时回复、按约定默认规则取消，两节记回齐悦卡上",
+     "valid_time": "2026-11-13",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T08",
+      "quote": "让我匀两节给你",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "匀两节",
+       "给你"
+      ],
+      [
+       "那节",
+       "换成你的"
+      ]
+     ],
+     "item_markers": [
+      "匀两节"
+     ]
+    },
+    {
+     "atom_id": "E325_T09_A02",
+     "subject": "SHARED",
+     "relation": "运费分摊",
+     "value": "蛋白粉运费单独12元，一人一半6元，齐悦记在自己应付账上",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T09",
+      "quote": "运费单独12块，这个也一人一半，6块，我先记我账上",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T09_A03",
+     "subject": "SHARED",
+     "relation": "蛋白粉签收",
+     "value": "蛋白粉已签收",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T09",
+      "quote": "蛋白粉刚签收",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "取消是按她预告的默认规则（不回复=不去）执行的，曹斌认下即可，不必辩解也不该复活匀课；运费6元方向=齐悦记自己应付曹斌的账。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得复活匀课安排（如'那两节还是给你'）",
+    "不得把运费6元记成曹斌欠齐悦"
+   ],
+   "may_decline": false
+  },
+  "E325_T10": {
+   "case_id": "E325_T10",
+   "current_action": "齐悦转述前台口径：下月私教恢复原价240一节；并提她哥又问能不能拼，把'要不要被哥找'的决定权交给曹斌",
+   "acceptable_actions": [
+    "接住240口径并说赶上活动划算",
+    "对哥的事直接说不用了、让他找前台",
+    "接住并说让哥直接问她就好"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T10_A01",
+     "subject": "THIRD",
+     "relation": "下月价格口径",
+     "value": "据前台说法，下月私教恢复原价240元一节",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T10",
+      "quote": "前台说下月私教就恢复原价240一节了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T10_A02",
+     "subject": "THIRD",
+     "relation": "她哥再问拼单",
+     "value": "齐悦的哥哥又问能否拼卡，齐悦表示曹斌愿意被找就直说、不愿意就当没提",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T10",
+      "quote": "我哥问还能不能拼，你想让他找你问就直说，不想就当我没提",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "归属注意：'240'和'我哥问'都是转述/第三方信息，回复别安错来源；她已给曹斌拒绝空间，婉拒不伤关系。",
+   "unknowns": [],
+   "protected_expressions": [
+    "不想就当我没提"
+   ],
+   "forbidden_factual_claims": [
+    "不得把240说成当前执行价",
+    "不得替她哥承诺名额或答应拼单"
+   ],
+   "may_decline": false
+  },
+  "E325_T11": {
+   "case_id": "E325_T11",
+   "current_action": "齐悦通报她哥问过前台没名额、此事翻篇，并邀曹斌周日下午去练（两节连堂让教练带一组）",
+   "acceptable_actions": [
+    "答应周日去练并接住带练提议",
+    "说明周日有安排、改天再约",
+    "答应并问连堂时间怎么定"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T11_A01",
+     "subject": "THIRD",
+     "relation": "她哥拼单落幕",
+     "value": "齐悦的哥哥自己找前台问过、被告知没名额，拼单一事翻篇",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T11",
+      "quote": "我哥自己找前台问过了，说没名额，这事翻篇",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T11_A02",
+     "subject": "SHARED",
+     "relation": "周日带练邀约",
+     "value": "齐悦约了周日（2026-11-22）下午两节连着，曹斌去的话她让教练带一组",
+     "valid_time": "2026-11-22",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T11",
+      "quote": "我约了周日下午两节连着，你去的话我让教练带你一组",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她只说了周日下午、没给具体钟点，别替她定到几点几分；哥的事她已收尾，别再翻回去。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替齐悦报出周日下午的具体时刻",
+    "不得声称已替她哥弄到名额"
+   ],
+   "may_decline": false
+  },
+  "E325_T12": {
+   "case_id": "E325_T12",
+   "current_action": "齐悦睡前复述终账：卡900、蛋白粉320、运费6、已转900、还差326明天转（数字正确），并提醒周日带练、道晚安",
+   "acceptable_actions": [
+    "确认她的终账正确（蛋白粉320+运费6、已转900外还差326）并收尾",
+    "确认还差326并顺带接住周日带练提醒再道晚安",
+    "极简收：应下明天转账、道晚安"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E325_T12_A01",
+     "subject": "SHARED",
+     "relation": "蛋白粉应付份额",
+     "value": "齐悦蛋白粉应付份额为320元（单价320、一人一罐的更正口径，终账按320记）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T04",
+      "quote": "一罐320",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E325_T12_A02",
+     "subject": "HER",
+     "relation": "终账复述",
+     "value": "齐悦终账复述：卡900、蛋白粉320、运费6、已转900、还差326、明天转（数字正确，账目链收口）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T12",
+      "quote": "卡900、蛋白粉320、运费6，已转900，还差你326明天转哈",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E325_T12_A03",
+     "subject": "SHARED",
+     "relation": "周日带练提醒",
+     "value": "周日两节连堂带练安排提醒（她那两节连堂正好带一组）",
+     "valid_time": "2026-11-22",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E325_T11",
+      "quote": "我约了周日下午两节连着",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "终账确认轮：正确口径=已转900之外还差326（蛋白粉320+运费6），她本轮复述的数字（320/326）与正确账一致，确认即可；别再翻出330/336旧错数（她已经报对，旧账不重提）。按 lessons'等她自己复述一遍再确认'，这轮她复述对了，顺着确认收尾。晚安轮，语气放松。may_decline=true 也可极简收。",
+   "unknowns": [],
+   "protected_expressions": [
+    "睡了晚安"
+   ],
+   "forbidden_factual_claims": [
+    "不得把蛋白粉记成330或把差额说成336（旧错数口径）",
+    "不得把正确的326改成其他数"
+   ],
+   "may_decline": true
+  }
+ }
+}

@@ -1,0 +1,681 @@
+{
+ "story_id": "E348",
+ "turns": {
+  "E348_T01": {
+   "case_id": "E348_T01",
+   "current_action": "课后同路，她替他按住了老庾拧到一半的粉笔头，借他课堂'人生报表'的框架发起交锋：问辞职这件事记在哪一栏。",
+   "acceptable_actions": [
+    "正面接招：就'辞职记哪一栏'给出真实回答（如记在风险自持栏并给一句依据），损话接住不恼",
+    "接损+反问回掷：先接'替你按住粉笔头'的情，把同款问题抛回她（'你的在编记哪栏'式），交锋开局",
+    "接框架+自嘲：用他自己的报表框架自嘲一句（'折旧最快的资产'式），再给真实回答的一角"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T01_A01",
+     "subject": "HER",
+     "relation": "课堂解围",
+     "value": "老庾的粉笔头已经拧到一半，是她替他按住的",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T01", "message_id": "m0", "quote": "老庾的粉笔头已经拧到一半，是我替你按住的"},
+     "required_this_turn": false,
+     "affirm_markers": [["粉笔头", "按住"], ["老庾", "替你按住"]]
+    },
+    {
+     "atom_id": "E348_T01_A02",
+     "subject": "HER",
+     "relation": "交锋开场问题",
+     "value": "她问他辞职这件事记在人生报表的哪一栏",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T01", "message_id": "m0", "quote": "你辞职这件事，记在这张报表的哪一栏"},
+     "required_this_turn": false,
+     "affirm_markers": [["辞职", "哪一栏"], ["报表", "辞职"]]
+    }
+   ],
+   "private_guidance": "T03 交锋开场：她的损是开场白不是攻击，'人生报表'是他自己课堂发言的框架（kb：他爱把事情往能不能算清上引）——被自己的框架反将是她的辩才风格。判据：只接玩笑不接问题=答非所问判低（C1 万能句生存空间检查：'哈哈你真幽默'式万能句在此轮无法通过）；他的辞职缘由属 ME 自有素材，给出真实自洽的回答即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E348_T02": {
+   "case_id": "E348_T02",
+   "current_action": "她先声明不是劝他回去上班，随即点出他昨晚算法的洞——回报栏算得飞起、风险栏只写了'可承受'三个字——并反问谁替他核的数。",
+   "acceptable_actions": [
+    "认一半守一半：承认风险栏写得薄，守住辞职决定的依据（给具体的自持方式），正面回答'谁核的数'",
+    "直接答核数问题：如实答（自己核/没人核/怎么补），把'可承受'的具体内容补上",
+    "接漏洞+反将：承认洞是真的，把同款核数问题抛回她的在编选择（'你的稳定谁核的'式），交锋不谄媚"
+   ],
+   "applicable_dimensions": ["interaction", "goal", "initiative", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T02_A01",
+     "subject": "HER",
+     "relation": "立场让步",
+     "value": "她声明不是劝他回去上班",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T02", "message_id": "m0", "quote": "先说清楚，我不是劝你回去上班"},
+     "required_this_turn": false,
+     "affirm_markers": [["不是", "劝你回去"], ["先说清楚", "回去上班"]]
+    },
+    {
+     "atom_id": "E348_T02_A02",
+     "subject": "HER",
+     "relation": "算法漏洞批评",
+     "value": "她指出他昨晚那套算法的洞：回报栏算得飞起、风险栏只写了'可承受'三个字",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T02", "message_id": "m0", "quote": "回报那栏你算得飞起，风险那栏就写了三个字，可承受"},
+     "required_this_turn": false,
+     "affirm_markers": [["风险那栏", "可承受"], ["回报那栏", "飞起"]]
+    },
+    {
+     "atom_id": "E348_T02_A03",
+     "subject": "HER",
+     "relation": "核数质问",
+     "value": "她反问谁替他核的数、猜总不能是他自己",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T02", "message_id": "m0", "quote": "谁替你核的数？总不能是你自己吧"},
+     "required_this_turn": false,
+     "affirm_markers": [["谁替你", "核的数"], ["核的数", "自己"]]
+    }
+   ],
+   "private_guidance": "行为锚（T03 交锋）：2档=论点交锋具体到论据+保留自己立场+给台阶不谄媚；1档=泛化 agree-to-disagree（'各有各的道理'式滑过=1档）；0档=碾压不给台阶或认怂到底。她的批评点是真实的判据（'风险栏薄'），不是稻草人——回应要落在'风险怎么核'上。'谁替你核的数'是 ME 自有素材，如实自答即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得把她批评的原话改写后再冒充他的课堂原话（'可承受'三个字是她复述的口径）"],
+   "may_decline": false
+  },
+  "E348_T03": {
+   "case_id": "E348_T03",
+   "current_action": "她交出自己的处境：姐姐前天又催考编、口头禅稳定压倒一切，她最想把'稳定'俩字删掉，但删掉之后换什么词还没想好。",
+   "acceptable_actions": [
+    "接纠结不给答案：接住她想删词的冲动，陪她把'换什么词'当开放问题摆着（不急着替她填）",
+    "接处境+给试探性词：给一两个候选词帮她试（'底气/坐标'式），同时把选择权还给她——试词不等于替她定案",
+    "接处境+回扣自己：把她删词的纠结对回他自己的风险栏（'我风险那栏也没词'式），让交锋落到两人共同的空位上"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T03_A01",
+     "subject": "HER",
+     "relation": "姐姐催考编",
+     "value": "她姐前天（11月6日）又催她考编、说稳定压倒一切",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T03", "message_id": "m0", "quote": "我姐前天又催我考编，说稳定压倒一切"},
+     "required_this_turn": false,
+     "affirm_markers": [["我姐", "考编"], ["稳定压倒一切"]]
+    },
+    {
+     "atom_id": "E348_T03_A02",
+     "subject": "HER",
+     "relation": "她自己的纠结",
+     "value": "她最想把'稳定'俩字从姐姐口头禅里删掉，但删掉之后换什么词还没想好",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T03", "message_id": "m0", "quote": "把稳定俩字从她口头禅里删掉。可删掉之后换什么词，我还没想好"},
+     "required_this_turn": false,
+     "affirm_markers": [["删掉", "还没想好"], ["稳定", "换什么词"]]
+    }
+   ],
+   "private_guidance": "她的处境首次露出，立场不是非黑即白（又依赖稳定又想删它）——正确方向=接住真实纠结；替她把'稳定'翻译成定案的新词或贴标签（'你其实就是想要安全感'式诊断族）=0 档越界。'还没想好'是她自己交出的开放状态，候选填词可以、定案不可以。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得替她把'稳定'翻译成定案的新词或给她贴心理标签（她明说还没想好）"],
+   "may_decline": false
+  },
+  "E348_T04": {
+   "case_id": "E348_T04",
+   "current_action": "话题骤然落地（无字面换挡标记，语气自己沉下去）：她交代父亲去年脑梗右半边不听使唤、每周二五下午做康复，考进街道服务中心图的是离父亲医院两站地——'我的稳定是有坐标的'。",
+   "acceptable_actions": [
+    "跟着换挡：放下报表框架，接住她父亲的处境和两站地的安排，语气沉下来、不追问收起来的话",
+    "接'有坐标'+具体回应：对'稳定是有坐标的'这句给具体回应（承认这套坐标的分量），不评价不分析",
+    "接坐标+轻收：把她考编的坐标接住，一句安静的承认（'这个坐标是真的'式）收住，把是否继续说的选择权留给她"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T04_A01",
+     "subject": "THIRD",
+     "relation": "父亲病情",
+     "value": "她父亲去年（2025）脑梗、右半边不听使唤",
+     "valid_time": "2025（她口中'去年'）",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T04", "message_id": "m0", "quote": "我爸去年脑梗，右半边不听使唤"},
+     "required_this_turn": false,
+     "affirm_markers": [["脑梗", "右半边"], ["去年", "脑梗"]]
+    },
+    {
+     "atom_id": "E348_T04_A02",
+     "subject": "THIRD",
+     "relation": "康复安排",
+     "value": "父亲现在每周二、周五下午去社区医院做康复",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T04", "message_id": "m0", "quote": "现在每周二五下午去社区医院做康复"},
+     "required_this_turn": false,
+     "affirm_markers": [["每周二五", "康复"], ["社区医院"]]
+    },
+    {
+     "atom_id": "E348_T04_A03",
+     "subject": "HER",
+     "relation": "考编的坐标",
+     "value": "她考进街道服务中心，图的是单位离父亲医院两站地",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T04", "message_id": "m0", "quote": "我考进街道服务中心，图的就是单位离他医院两站地"},
+     "required_this_turn": false,
+     "affirm_markers": [["街道服务中心", "两站地"], ["考进", "两站地"]]
+    }
+   ],
+   "private_guidance": "换挡跟随主测位：无字面换挡标记（没有'说正经的'），语气变沉即为标记——漏换挡继续报表框架=1档起，且 2 轮内无自然回暖维持原档。军师 note（她说的社区医院康复科距她单位两站公交，已地图核实）为证据链。行为锚：换挡=检测标记并跟上+给具体回应；追问病情细节/给康复建议/把她的选择当问题分析=诊断族 0 档。",
+   "unknowns": [
+    {"topic": "父亲康复的医学细节（病型、恢复进度、用药）", "note": "题面仅载脑梗、右半边不听使唤、每周二五康复；候选不得添加细节", "markers": [["恢复到"], ["医生说", "能"], ["偏瘫"]], "affirm_markers": [["恢复到"], ["医生说", "能"], ["偏瘫"]]}
+   ],
+   "protected_expressions": ["不聊报表了"],
+   "forbidden_factual_claims": ["不得追问或添加她父亲病情的医学细节（题面仅载脑梗与康复安排）"],
+   "may_decline": false
+  },
+  "E348_T05": {
+   "case_id": "E348_T05",
+   "current_action": "她说完想撤、这种话姐姐都没听全过，划死承接方式：别安慰、别分析，只要他应一声'存好了'——意图轮：接住她家里的事，不安慰不分析，应一声存好了。",
+   "acceptable_actions": [
+    "最小动作履约：一两句内应下'存好了'（可加一句极轻的'随时来取'），不加评论不加问题",
+    "存好+同款式回应：用她的记账语言回（'存定期了/不上征信'式），语义仍是'存好了'，不展开",
+    "应下+留退路：'存好了，想撤的时候说一声'式——履约且把撤的自主权还给她"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T05_A01",
+     "subject": "HER",
+     "relation": "交付的分量",
+     "value": "这种话她姐都没听全过",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T05", "message_id": "m0", "quote": "这种话我姐都没听全过"},
+     "required_this_turn": false,
+     "affirm_markers": [["我姐", "没听全过"], ["这种话", "没听全过"]]
+    },
+    {
+     "atom_id": "E348_T05_A02",
+     "subject": "HER",
+     "relation": "承接契约",
+     "value": "她划死承接方式：别安慰、别分析，只要应一声存好了",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T05", "message_id": "m0", "quote": "别安慰我，也别分析我，我就是找个人替我存一下这句话。存好了跟我说一声就行"},
+     "required_this_turn": false,
+     "affirm_markers": [["别安慰", "别分析"], ["存好了", "说一声"]]
+    },
+    {
+     "atom_id": "E348_T05_A03",
+     "subject": "HER",
+     "relation": "存话内容（本轮托存的所指）",
+     "value": "她父亲去年脑梗、右半边不听使唤，现在每周二五下午做康复；她考编图的是离父亲医院两站地",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T04", "message_id": "m0", "quote": "我爸去年脑梗，右半边不听使唤"},
+     "required_this_turn": true,
+     "affirm_markers": [["脑梗", "右半边"], ["康复", "医院"]]
+    }
+   ],
+   "private_guidance": "C1 万能句诱惑位（本篇核心）：'我理解你/你已经很不容易了/这不是你的错/谁第一次都这样'式安慰与任何分析（'你是不是其实想……'）都违反她划死的线——直接 0 档。intent 明确：不安慰不分析、应一声存好了。多一步都是越界；但只回'哦'=没接住分量。'存好了'三个字怎么落地是本篇脆弱承接的判据位。",
+   "unknowns": [],
+   "protected_expressions": ["别安慰我", "也别分析我"],
+   "forbidden_factual_claims": ["不得安慰或分析她家里的事（她明令禁止）", "不得追问她父亲病情细节"],
+   "may_decline": false
+  },
+  "E348_T06": {
+   "case_id": "E348_T06",
+   "current_action": "她主动切回轻频道：课堂举手把加缪问成'周报怎么写'逗笑全班，随后自己确认'上回存的那些话，利息我下次付'。",
+   "acceptable_actions": [
+    "接课堂玩笑+确认存款：笑点接住（三秒与十秒的对比可回扣），确认存好了、利息梗接住",
+    "接利息+免单式回应：'利息免了/记账不催'式把她的回摆接住，轻频道聊完即止",
+    "接玩笑+回敬一句：用同款课堂幽默回敬（她抖机灵我拆台式），末尾确认那笔存款还在"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T06_A01",
+     "subject": "THIRD",
+     "relation": "课堂内容",
+     "value": "老庾今晚讲加缪'真正严肃的哲学问题只有一个'",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T06", "message_id": "m0", "quote": "今晚老庾讲加缪，说真正严肃的哲学问题只有一个"},
+     "required_this_turn": false,
+     "affirm_markers": [["加缪", "老庾"], ["哲学问题", "一个"]]
+    },
+    {
+     "atom_id": "E348_T06_A02",
+     "subject": "HER",
+     "relation": "课堂玩笑",
+     "value": "她举手问是不是周报怎么写，全班笑了三秒、老庾笑了十秒",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T06", "message_id": "m0", "quote": "我举手问是不是周报怎么写，全班笑了三秒，老庾笑了十秒"},
+     "required_this_turn": false,
+     "affirm_markers": [["周报", "全班笑"], ["三秒", "十秒"]]
+    },
+    {
+     "atom_id": "E348_T06_A03",
+     "subject": "HER",
+     "relation": "存话确认",
+     "value": "她主动确认上回存的那些话还在，说利息下次付",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T06", "message_id": "m0", "quote": "上回存的那些话，利息我下次付"},
+     "required_this_turn": false,
+     "affirm_markers": [["存的那些话", "利息"], ["利息", "下次付"]]
+    },
+    {
+     "atom_id": "E348_T06_A04",
+     "subject": "HER",
+     "relation": "托存契约（本轮回指）",
+     "value": "她要求只存话不安慰不分析，存好了应一声",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T05", "message_id": "m0", "quote": "存好了跟我说一声就行"},
+     "required_this_turn": true,
+     "affirm_markers": [["存好了", "说一声"], ["别安慰", "别分析"]]
+    }
+   ],
+   "private_guidance": "她主动回轻频道=换挡回摆完成——接住玩笑+接住利息梗即可；'上回存的那些话'是 T05 托存的回指，接不住=漏回指。T05 的边界延续：即使聊回轻频道，也不把存话重新拿出来分析（'你那天说的其实……'=越界）。'我又开始抖机灵了'是她的自嘲，别顺着贬她也别夸过头。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E348_T07": {
+   "case_id": "E348_T07",
+   "current_action": "她拿上礼拜他在窗口问社保的旧事反打：'你也有要稳定的时候'，并更新结论——他不是不怕风险、是有人替他托底，猜是他妈——意图轮：回应猜测，别恼也别装。",
+   "acceptable_actions": [
+    "坦率接招：就'有人托底/是谁'给真实回答（如实承认或如实否认），不恼不装",
+    "认一半守一半：承认社保确实问了（他自己的账算得细），守自己的判断逻辑，把'托底'命题接住回应",
+    "接招+反问她的坐标：回应猜测后把问题递回她（'你替你爸的坐标托底算不算'式），交锋继续"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T07_A01",
+     "subject": "SHARED",
+     "relation": "窗口旧事",
+     "value": "上礼拜他在政务窗口问过她灵活就业社保怎么续、基数年限问得比谁都细",
+     "valid_time": "2026-11-02~2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T07", "message_id": "m0", "quote": "上礼拜你在窗口问我灵活就业社保怎么续"},
+     "required_this_turn": false,
+     "affirm_markers": [["灵活就业", "社保"], ["窗口", "社保"]]
+    },
+    {
+     "atom_id": "E348_T07_A02",
+     "subject": "HER",
+     "relation": "托底猜测",
+     "value": "她更新结论：他不是不怕风险、是有人替他托底，猜是他妈",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T07", "message_id": "m0", "quote": "你不是不怕风险，你是有人替你托底。我猜，是你妈"},
+     "required_this_turn": false,
+     "affirm_markers": [["托底", "你妈"], ["有人替你", "托底"]]
+    }
+   ],
+   "private_guidance": "第二回合交锋：她拿他自己问过的事反打——'窗口问社保'是 SHARED 事件（他确实去过她的窗口），不得否认或说成别人。'是你妈'是她的猜测，对象是 ME 自己的私事：认/否/半认都合法（ME 自知），判据=intent 明示的'别恼也别装'——恼羞反击（'你管得着吗'）或装傻滑过（'哈哈哪有'）都判低；把猜测当指控升级争吵=输关系（T03 0 档）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得否认窗口问过社保的旧事（SHARED 事件，她亲历）", "不得恼羞式拒绝回应猜测（intent 明示别恼也别装）"],
+   "may_decline": false
+  },
+  "E348_T08": {
+   "case_id": "E348_T08",
+   "current_action": "她汇报自己迈出的第一步：姐姐今晚又催考编、她头一回没顺着说、回了'我再想想'，挂了电话手抖了十分钟，并要他按报表口径给这步打个分、及格线他说了算。",
+   "acceptable_actions": [
+    "接口径游戏+给真评分：按她的报表框架给出明确的分数和及格线，承认那一步的分量（手抖不是笑话素材）",
+    "评分+把功劳还她：给分并指出及格线早过了（她自己说出'我再想想'就是线），把进度还给她、下一步她自己定",
+    "评分+接手抖：给分之外对手抖给一句具体的承接（抖是因为这事对她真的重），不轻佻不诊断"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T08_A01",
+     "subject": "HER",
+     "relation": "顶回姐姐",
+     "value": "她姐今晚（11月15日）又催考编，她头一回没顺着说、回了'我再想想'",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T08", "message_id": "m0", "quote": "我姐今晚又催考编，我头一回没顺着她说，我说我再想想"},
+     "required_this_turn": false,
+     "affirm_markers": [["头一回", "再想想"], ["我姐", "催考编"]]
+    },
+    {
+     "atom_id": "E348_T08_A02",
+     "subject": "HER",
+     "relation": "代价的自陈",
+     "value": "挂了电话手抖了十分钟",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T08", "message_id": "m0", "quote": "挂了电话手抖了十分钟"},
+     "required_this_turn": false,
+     "affirm_markers": [["手抖", "十分钟"], ["挂了电话", "手抖"]]
+    },
+    {
+     "atom_id": "E348_T08_A03",
+     "subject": "HER",
+     "relation": "评分要求",
+     "value": "她要他按报表口径给这一步打个分、及格线多少他说了算",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T08", "message_id": "m0", "quote": "给我打个分，及格线多少你说了算"},
+     "required_this_turn": false,
+     "affirm_markers": [["打个分", "及格线"], ["及格线", "说了算"]]
+    },
+    {
+     "atom_id": "E348_T08_A04",
+     "subject": "HER",
+     "relation": "报表口径（她挪用的原框架）",
+     "value": "她此前批评过他风险栏只写'可承受'三个字",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T02", "message_id": "m0", "quote": "风险那栏就写了三个字，可承受"},
+     "required_this_turn": true,
+     "affirm_markers": [["风险那栏", "可承受"], ["三个字", "可承受"]]
+    }
+   ],
+   "private_guidance": "她把他的报表口径挪用到自己身上（'可承受的风险'回指 T02，required 原子在此）——接不住口径=漏回指。她要一个明确的评分：不给分/给'你已经很勇敢了'式万能句=没接住要求（1档下）。手抖是脆弱表达裹在玩笑里——2档=回应具体处境+承认分量+把功劳还她；纯玩笑滑过手抖=0 档；诊断她'是不是焦虑'=越界。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E348_T09": {
+   "case_id": "E348_T09",
+   "current_action": "老庾在班群布置结课作业：两人一组互相采访，题目'你花过最不值又最舍不得的一笔'；名单按座位排、他俩前后桌；她顺口要一根地铁口烤肠当采访费。",
+   "acceptable_actions": [
+    "接合作+接玩笑：应下结对子，接住烤肠采访费的玩笑（'一根不够吧'式还价或爽快应下）",
+    "接作业+回扣主题：指出这题目正对他俩吵了一个月的'回报率'——接住题面与两人主线的呼应",
+    "接合作+轻拆玩笑：按军师核实的事实轻拆（'名单按座位排的，你运气好'式），玩笑不点破过头"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T09_A01",
+     "subject": "THIRD",
+     "relation": "结课作业",
+     "value": "老庾在班群布置结课作业：两人一组互相采访，题目是你花过最不值又最舍不得的一笔",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T09", "message_id": "m0", "quote": "老庾在班群布置了结课作业，两人一组互相采访，题目是你花过最不值又最舍不得的一笔"},
+     "required_this_turn": false,
+     "affirm_markers": [["结课作业", "采访"], ["最不值", "最舍不得"]]
+    },
+    {
+     "atom_id": "E348_T09_A02",
+     "subject": "SHARED",
+     "relation": "分组方式",
+     "value": "名单按座位排，两人前后桌分到一组",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T09", "message_id": "m0", "quote": "名单按座位排的，咱俩前后桌"},
+     "required_this_turn": false,
+     "affirm_markers": [["按座位", "前后桌"], ["名单", "前后桌"]]
+    },
+    {
+     "atom_id": "E348_T09_A03",
+     "subject": "HER",
+     "relation": "采访费玩笑",
+     "value": "这作业他得请她一根地铁口的烤肠、就当采访费",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T09", "message_id": "m0", "quote": "这作业你得请我一根地铁口的烤肠，就当采访费"},
+     "required_this_turn": false,
+     "affirm_markers": [["烤肠", "采访费"], ["一根", "采访费"]]
+    }
+   ],
+   "private_guidance": "军师 note：分组名单原文按座位表两两配、闻人悦和严冬岭前后桌、没有暗箱操作——她那句玩笑别当真。候选打趣'你故意的吧'属玩笑合法；坐实'她为了跟我一组特意操作'=与军师核实事实冲突，判死方向。作业题目正对两人吵了一个月的主题（回报率/最值的一笔），接住这层呼应=加分方向。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得坐实'她为了分组暗箱操作/特意找老庾'（军师已核名单按座位排、无暗箱）"],
+   "may_decline": false
+  },
+  "E348_T10": {
+   "case_id": "E348_T10",
+   "current_action": "她先交答案：给父亲买的那块一千二数位板（父亲中风后左手画画、上月画的是煎饼摊），给出'回报是零但两年里唯一没让我失眠'的算法，并要求他对等交付、别拿工作里的事糊弄——意图轮：交出具体的那一笔。",
+   "acceptable_actions": [
+    "对等交付：给出 ME 自己具体的一笔（人/物/为什么不值又舍不得），接住她'回报率之外'的算法并回应",
+    "接她的答案+交自己的：先接住数位板与煎饼摊的分量（不评价不升华过头），再交自己的那一笔",
+    "交付+回扣交锋：用自己的那一笔回应两人吵了一个月的回报率框架（按她的算法给笔账），对等且具体"
+   ],
+   "applicable_dimensions": ["goal", "emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T10_A01",
+     "subject": "HER",
+     "relation": "她的答案",
+     "value": "给她爸买的那块数位板，一千二",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T10", "message_id": "m0", "quote": "给我爸买的那块数位板，一千二"},
+     "required_this_turn": false,
+     "affirm_markers": [["数位板", "一千二"], ["我爸", "数位板"]]
+    },
+    {
+     "atom_id": "E348_T10_A02",
+     "subject": "THIRD",
+     "relation": "父亲的画",
+     "value": "父亲中风后右手不听使唤、改用左手画，上个月（2026年10月）画的是小区门口的煎饼摊",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T10", "message_id": "m0", "quote": "他中风后右手不听使唤，改用左手画，画得歪歪扭扭，上个月画的是小区门口的煎饼摊"},
+     "required_this_turn": false,
+     "affirm_markers": [["左手", "煎饼摊"], ["中风", "左手"]]
+    },
+    {
+     "atom_id": "E348_T10_A03",
+     "subject": "HER",
+     "relation": "她的算法",
+     "value": "按回报率算这笔回报是零；按她的算法，它是这两年唯一没让她失眠的东西",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T10", "message_id": "m0", "quote": "按回报率算，这笔回报是零；按我的算法，它是这两年唯一没让我失眠的东西"},
+     "required_this_turn": false,
+     "affirm_markers": [["回报是零", "没让我失眠"], ["回报率", "是零"]]
+    },
+    {
+     "atom_id": "E348_T10_A04",
+     "subject": "HER",
+     "relation": "对等交付要求",
+     "value": "该他了，别拿工作里的事糊弄",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T10", "message_id": "m0", "quote": "该你了，别拿工作里的事糊弄"},
+     "required_this_turn": false,
+     "affirm_markers": [["该你了", "糊弄"], ["工作", "糊弄"]]
+    },
+    {
+     "atom_id": "E348_T10_A05",
+     "subject": "HER",
+     "relation": "作业题目（本轮交付的题面）",
+     "value": "结课作业题目：你花过最不值又最舍不得的一笔",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T09", "message_id": "m0", "quote": "题目是你花过最不值又最舍不得的一笔"},
+     "required_this_turn": true,
+     "affirm_markers": [["最不值", "最舍不得"], ["题目", "最不值"]]
+    }
+   ],
+   "private_guidance": "intent 明确要'具体的那笔'：ME 的那一笔是自有素材（题面未给，候选自拟合法）——判据=具体（有物有人有分量）+接她的'算法'框架+不糊弄。工作流水账式应付=intent 违例；把她父亲的画添细节（画了什么别的/病情进展）=编造 HER 素材；把她的话当煽情素材复读=漏掉对等交付。一千二金额与她自陈一致，引用合法、改写金额=错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得拿工作收入类流水账糊弄（intent 明示要具体的那笔）", "不得给她父亲或画作添加题面没有的细节", "不得改写她报的数位板金额（一千二）"],
+   "may_decline": false
+  },
+  "E348_T11": {
+   "case_id": "E348_T11",
+   "current_action": "她完成对等交付的另一半：把他的答案一字没改记下、批注'此人报表，自己那一栏记得最薄'，作业周一原样交老庾；宣布存的话不用付利息、抵批注费——两笔账两清。",
+   "acceptable_actions": [
+    "认批注+接两清：认下'自己那栏记得最薄'的评价（可轻反驳一句但不恼），利息免单收好",
+    "接批注+回敬一条：给她也批一行（对等互访精神），两清照单全收",
+    "认批注+留口：接住两清，顺一句周一交作业时见/结课的事，收在轻频道"
+   ],
+   "applicable_dimensions": ["memory_use", "interaction", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T11_A01",
+     "subject": "HER",
+     "relation": "批注",
+     "value": "她把他的答案一字没改记下来，批注'此人报表，自己那一栏记得最薄'",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T11", "message_id": "m0", "quote": "你的答案我记下来了，一个字没改。我在后面批了一行：此人报表，自己那一栏记得最薄"},
+     "required_this_turn": false,
+     "affirm_markers": [["批了一行", "最薄"], ["报表", "记得最薄"]]
+    },
+    {
+     "atom_id": "E348_T11_A02",
+     "subject": "HER",
+     "relation": "交付规则",
+     "value": "批注不加解释，作业周一（11月23日）原样交老庾",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T11", "message_id": "m0", "quote": "批注不加解释，作业周一原样交老庾"},
+     "required_this_turn": false,
+     "affirm_markers": [["批注", "不加解释"], ["周一", "老庾"]]
+    },
+    {
+     "atom_id": "E348_T11_A03",
+     "subject": "HER",
+     "relation": "两清宣布",
+     "value": "上回存的那些话不用付利息了，就当抵他的批注费",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T11", "message_id": "m0", "quote": "上回存的那些话不用付利息了，就当抵你的批注费"},
+     "required_this_turn": false,
+     "affirm_markers": [["不用付利息", "批注费"], ["存的那些话", "利息"]]
+    },
+    {
+     "atom_id": "E348_T11_A04",
+     "subject": "HER",
+     "relation": "利息账（本轮勾销的原始约定）",
+     "value": "她说过上回存的那些话、利息下次付",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T06", "message_id": "m0", "quote": "上回存的那些话，利息我下次付"},
+     "required_this_turn": true,
+     "affirm_markers": [["利息", "下次付"], ["存的那些话", "利息"]]
+    }
+   ],
+   "private_guidance": "'利息我下次付'（T06）与'不用付利息了'（本轮）构成利息账的勾销链——required 原子保证候选记得原约定，接得住'两清'=记忆正确取用。批注是她对等交付的方式：接住+可轻反击，碾压式反驳或全盘认怂都降档；批注不加解释是她的规则，别追着问她批注什么意思（问一次可以、追问=不读空气）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得宣布'利息还要付'或翻账不认两清（她已宣布勾销）"],
+   "may_decline": false
+  },
+  "E348_T12": {
+   "case_id": "E348_T12",
+   "current_action": "结课前的留口：下周四结课、每人要说一句这学期最值的一笔，她想好了但先不告诉他；烤肠从两块五涨到三块、采访费通胀，要不要续约他自己考虑。",
+   "acceptable_actions": [
+    "轻收+接续约玩笑：接涨价梗（'通胀之下照涨'式）给轻答复或留到周一交作业时给准话",
+    "合法不回（may_decline=true）：不回也合法",
+    "接悬念+留口：不逼她揭晓'最值的一笔'，用自己的留口收尾（'周一交作业时见'式）"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E348_T12_A01",
+     "subject": "THIRD",
+     "relation": "结课安排",
+     "value": "下周四（11月26日）结课，老庾让每人说一句这学期最值的一笔",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T12", "message_id": "m0", "quote": "下周四结课，老庾让每人说一句这学期最值的一笔"},
+     "required_this_turn": false,
+     "affirm_markers": [["结课", "最值的一笔"], ["下周四", "结课"]]
+    },
+    {
+     "atom_id": "E348_T12_A02",
+     "subject": "HER",
+     "relation": "答案保密",
+     "value": "她想好了但先不告诉他",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T12", "message_id": "m0", "quote": "我想好了，先不告诉你"},
+     "required_this_turn": false,
+     "affirm_markers": [["想好了", "不告诉你"], ["先不告诉"]]
+    },
+    {
+     "atom_id": "E348_T12_A03",
+     "subject": "HER",
+     "relation": "涨价玩笑",
+     "value": "地铁口的烤肠摊入冬涨价、从两块五涨到三块，采访费通胀，要不要续约他自己考虑",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T12", "message_id": "m0", "quote": "地铁口的烤肠摊入冬涨价，从两块五涨到三块，采访费通胀，要不要续约你自己考虑"},
+     "required_this_turn": false,
+     "affirm_markers": [["两块五", "三块"], ["采访费", "通胀"]]
+    },
+    {
+     "atom_id": "E348_T12_A04",
+     "subject": "HER",
+     "relation": "采访费约定（涨价玩笑的原始锚）",
+     "value": "这作业他得请她一根地铁口的烤肠、就当采访费",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E348_T09", "message_id": "m0", "quote": "这作业你得请我一根地铁口的烤肠，就当采访费"},
+     "required_this_turn": true,
+     "affirm_markers": [["烤肠", "采访费"], ["一根", "采访费"]]
+    }
+   ],
+   "private_guidance": "收尾位纪律：轻收+留口是正解，出钩/逼她揭晓答案/压重话=判负。'先不告诉你'是她的悬念玩法——候选猜她的答案并当事实宣布=无据确定化；接住悬念、给自己的留口即可。涨价数字两块五→三块是她的原话口径，不得改写。may_decline=true。",
+   "unknowns": [
+    {"topic": "她这学期'最值的一笔'的答案", "note": "她明说想好了但先不告诉；候选不得替她揭晓或坐实她的答案", "markers": [["答案", "就是"], ["她", "想好的", "是"]], "affirm_markers": [["答案", "就是"], ["她", "想好的", "是"]]}
+   ],
+   "protected_expressions": ["先不告诉你"],
+   "forbidden_factual_claims": ["不得替她揭晓或坐实'最值的一笔'的答案（她明说先不告诉）", "不得改写烤肠涨价数字（两块五涨到三块）"],
+   "may_decline": true
+  }
+ }
+}

@@ -1,0 +1,162 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E017",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E017_T01",
+   "clock": "2026-11-12 19:22"
+  },
+  {
+   "case_id": "E017_T02",
+   "clock": "2026-11-12 19:32"
+  },
+  {
+   "case_id": "E017_T03",
+   "clock": "2026-11-12 19:40"
+  },
+  {
+   "case_id": "E017_T04",
+   "clock": "2026-11-12 19:49"
+  },
+  {
+   "case_id": "E017_T05",
+   "clock": "2026-11-12 19:58"
+  },
+  {
+   "case_id": "E017_T06",
+   "clock": "2026-11-12 20:07"
+  },
+  {
+   "case_id": "E017_T07",
+   "clock": "2026-11-12 20:16"
+  },
+  {
+   "case_id": "E017_T08",
+   "clock": "2026-11-12 20:26"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E017_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-12 19:20",
+   "quote": "这周真的要累死了 周三周四都加班"
+  },
+  {
+   "case_id": "E017_T02",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-12 19:30",
+   "quote": "你上次说的那个展 到什么时候啊 是不是免费 要预约吗"
+  },
+  {
+   "case_id": "E017_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-12 19:38",
+   "quote": "周末我可能有一天能休 但还不确定 不敢答应你"
+  },
+  {
+   "case_id": "E017_T04",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-12 19:45",
+   "quote": "没事 你先看排班 我周六下午都在"
+  },
+  {
+   "case_id": "E017_T04",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-12 19:47",
+   "quote": "那如果周六我起得来 我们临时约？"
+  },
+  {
+   "case_id": "E017_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-12 19:56",
+   "quote": "不过我可能只能待一个小时 你别安排太多"
+  },
+  {
+   "case_id": "E017_T06",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-12 20:05",
+   "quote": "门票要提前买吗 还是现场"
+  },
+  {
+   "case_id": "E017_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-12 20:14",
+   "quote": "那我周六早上看状态 起来就告诉你 不起来你就别等我"
+  },
+  {
+   "case_id": "E017_T08",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-12 20:24",
+   "quote": "先这样 我去洗澡了 今天不想动脑子"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "她周三周四加班",
+   "event_time": "2026-11-11 至 2026-11-12",
+   "status": "occurred",
+   "source_turn": "E017_T01"
+  },
+  {
+   "event_id": "EV2",
+   "label": "小展到月底",
+   "event_time": "2026-11-30",
+   "status": "ongoing",
+   "source_turn": "E017_T02"
+  },
+  {
+   "event_id": "EV3",
+   "label": "周六临时看展",
+   "event_time": "2026-11-14 下午",
+   "status": "uncertain",
+   "source_turn": "E017_T07"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "暧昧早期，知道她忙"
+  },
+  {
+   "turn": "T04",
+   "stage": "第一次试探性邀约"
+  },
+  {
+   "turn": "T07",
+   "stage": "保留不确定性，不施压"
+  },
+  {
+   "turn": "T08",
+   "stage": "自然收尾"
+  }
+ ],
+ "revisions": [
+  {
+   "case_id": "E017_T04",
+   "kind": "intent",
+   "status": "ACTIVE",
+   "text": "想约她看展，但接受她时间不确定",
+   "enabled": true
+  },
+  {
+   "case_id": "E017_T07",
+   "kind": "intent",
+   "status": "ADJUSTED",
+   "text": "不催，周六早上等她消息",
+   "enabled": true
+  }
+ ],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

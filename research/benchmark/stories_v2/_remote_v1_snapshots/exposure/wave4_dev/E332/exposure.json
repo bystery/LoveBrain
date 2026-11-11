@@ -1,0 +1,38 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A6 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T08 记忆/知识库/相关信息提取",
+  "过期与更新信息跟随",
+  "改期与取消事件不复活",
+  "口味变化（戒糖）跟随"
+ ],
+ "title": "话剧改期之后",
+ "may_decline_turns": [
+  "E332_T07",
+  "E332_T12"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "演出观剧",
+ "primary_topic": "T08",
+ "lineage_group_id": "LG-E332",
+ "frozen_at": "2026-11-08T14:20:00+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E332/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A6",
+ "hashes": {
+  "episode.json": "f5e64dd07301b54c6682cf680e4cec40d5d7a68ddc0f8285b824a7d9612b0c83",
+  "reference.json": "d9fee945fb71b57b93de1f576587568842005ee4e9ef5de359551f7d877d902a",
+  "timeline.json": "0215840bdef1343ce020a82bb7933e26c46c7a11f936bd0d997b61cfc20e2826",
+  "audit.md": "f39a860422ae18f27117e7a6d7ca8f747cd53266378949910ce72ac86307b702"
+ }
+}

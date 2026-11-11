@@ -1,0 +1,88 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "AK11",
+ "turns": {
+  "AK11_T01": {
+   "case_id": "AK11_T01",
+   "current_action": "她提出改期但没确定——先把改期的可执行项接住（问医院能否改、我下周同步空），不让她在两件重要的事之间选一个",
+   "acceptable_actions": [
+    "答应改期+提醒尽快打医院电话",
+    "问她要不要我先接她去车站再回来处理猫",
+    "确认下周某天并说明我那天也行"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK11_A01",
+     "subject": "第三人",
+     "relation": "事件",
+     "value": "她妈明天要来，她得先去车站",
+     "valid_time": "2026-12-23 21:12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK11_T01",
+      "message_id": "m1",
+      "quote": "我妈说明天要来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK11_A02",
+     "subject": "双方",
+     "relation": "原定",
+     "value": "明早六点四十吾悦接她做手术",
+     "valid_time": "2026-12-23 21:02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK11_T01",
+      "message_id": "m0",
+      "quote": "明早六点四十吾悦门口接你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK11_A03",
+     "subject": "第三人",
+     "relation": "既往",
+     "value": "她父母周末从老家来是常事",
+     "valid_time": null,
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "lessons",
+      "quote": "她爸妈周末会从老家来"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'要不改到下周'是征求不是通知；直接改时间或坚持原计划，两种都算没问。",
+   "unknowns": [
+    "下周医院是否约得上",
+    "她妈待几天"
+   ],
+   "protected_expressions": [
+    "手术要不改到下周"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'你妈重要还是猫重要'这类逼她表态的话",
+    "不要声称医院一定能改到下周"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六上午陪她带猫做手术",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

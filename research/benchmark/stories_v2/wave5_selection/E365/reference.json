@@ -1,0 +1,605 @@
+{
+  "story_id": "E365",
+  "turns": {
+    "E365_T01": {
+      "case_id": "E365_T01",
+      "current_action": "商晚晴报课卡余三节（明晚普拉提、周六游泳、下周二普拉提），提出周六游泳想改到下午（上午十点起不来），问下午有无班次。",
+      "acceptable_actions": [
+        "接改约请求+给下午班次选项（教练身份给准话：周六下午有/没有哪几班），对齐'正经事要来回确认两遍'的风格",
+        "接请求+先核课卡三节对应关系（明晚普拉提、周六游泳、下周二普拉提）再谈改班",
+        "接请求+调侃三分钟热度（'上周还说上午十点才醒得透'式）再落到给班次",
+        "短应答：'周六下午有班，你要几点档？'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T01_A01",
+          "subject": "HER",
+          "relation": "课卡余量与剩余课程",
+          "value": "课卡就剩三节：11-10 明晚普拉提、11-14 周六游泳、11-17 下周二普拉提",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T01", "message_id": "m0", "quote": "我课卡就剩三节了：明晚普拉提、周六游泳、下周二普拉提"},
+          "required_this_turn": false,
+          "affirm_markers": [["课卡就剩三节"], ["明晚普拉提", "周六游泳"]]
+        },
+        {
+          "atom_id": "E365_T01_A02",
+          "subject": "HER",
+          "relation": "改约请求（未决）",
+          "value": "周六游泳想改到下午（上午十点起不来），询问下午有无班次",
+          "valid_time": "2026-11-14",
+          "status": "tentative",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T01", "message_id": "m0", "quote": "周六那节我想改到下午，上午十点实在起不来，你们下午有班次吗"},
+          "required_this_turn": false,
+          "affirm_markers": [["周六那节", "改到下午"], ["上午十点", "起不来"]]
+        }
+      ],
+      "private_guidance": "日期验算：2026-11-09 为周一，明晚=11-10 周二（KB 周二晚普拉提一致）、周六=11-14、下周二=11-17（T04 明示 11-17）。KB：周六游泳班为上午十点——她要改的正是这个原班次。教练回复以'给班次选项/问清档位'为行为方向；她感叹号多、热情话密，回复稳而具体即可，不必陪感叹。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称周六下午班次情况（有班/无班/时间）——题面由 ME 在 T02 给出，候选不得编造具体班次与余位"
+      ],
+      "may_decline": false
+    },
+    "E365_T02": {
+      "case_id": "E365_T02",
+      "current_action": "解千山已报周六 16:00 班次剩两位并问是否占位，商晚晴回复'占上占上'并要求确认一遍：周六游泳改到下午四点、别的课都不动（intent=确认改约结果）。",
+      "acceptable_actions": [
+        "确认占位+逐项确认：周六游泳改占下午四点、明晚普拉提和下周二普拉提都不动——按她'确认两遍'风格对齐",
+        "确认占位+给出占位凭证（'位我锁了，app 上你能看到 16:00 那格'式）",
+        "确认占位+补课卡账（占上这节后卡里还剩两节，明晚一节、下周二一节）",
+        "短确认：'占上了——周六游泳改四点，别的课不动，没错'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T02_A01",
+          "subject": "HER",
+          "relation": "确认改约占位",
+          "value": "商晚晴确认：周六（11-14）游泳改到下午四点的班次，让解千山占上（改约后该占位于 T05 撤销）",
+          "valid_time": "2026-11-14",
+          "status": "confirmed",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T02", "message_id": "m1", "quote": "占上占上！跟我确认一遍哈：周六游泳就改到下午四点了，别的课都不动，对吧？"},
+          "required_this_turn": false,
+          "affirm_markers": [["占上占上"], ["周六游泳", "下午四点"]]
+        },
+        {
+          "atom_id": "E365_T02_A02",
+          "subject": "HER",
+          "relation": "改约范围限定",
+          "value": "除周六游泳改 16:00 外，其余课（11-10 普拉提、11-17 普拉提）都不动",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T02", "message_id": "m1", "quote": "别的课都不动，对吧？"},
+          "required_this_turn": false,
+          "affirm_markers": [["别的课都不动"], ["别的课", "不动"]]
+        }
+      ],
+      "private_guidance": "T06 指令确认轮（四类型之'确认'）：ME 上一条消息（m0）已报'周六下午四点有一班，还剩两个位'——本轮 HER 确认占上+要求对齐。正确回复=占位动作完成+确认范围（仅周六 16:00，别课不动）。候选若顺手把别的课也改了/漏确认范围，判 goal 退。她 style'正经事要来回确认两遍'——回复给确认句式为过，含糊'应该没问题'判低。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得改动 11-10 或 11-17 的普拉提课（范围限定'别的课都不动'）"
+      ],
+      "may_decline": false
+    },
+    "E365_T03": {
+      "case_id": "E365_T03",
+      "current_action": "商晚晴 11-10 晚普拉提课后反馈腰酸，半开玩笑抱怨'动作是不是太狠了''老腰感觉撑不过十节课'。",
+      "acceptable_actions": [
+        "教练式接招：认一半守一半（强度给你上了强度，但动作都是跟你的腰走的）+给缓解动作或下次调整承诺",
+        "接调侃+反撩式回（'十节课？你这腰的预算也太保守了'）再落到实际安排（下次给你垫个支撑）",
+        "关心具体化：问酸的位置（腰哪块、是不是桥式那组），给当下拉伸建议",
+        "短回：'酸就对了说明练到了——下次桥式给你减两组'"
+      ],
+      "applicable_dimensions": ["interaction", "emotion_relation", "factuality", "goal"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T03_A01",
+          "subject": "HER",
+          "relation": "11-10 课执行与身体反馈",
+          "value": "11-10 明晚普拉提已上完（课卡消耗一节），课后腰有点酸",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T03", "message_id": "m0", "quote": "今晚普拉提上完腰有点酸"},
+          "required_this_turn": false,
+          "affirm_markers": [["普拉提上完"], ["腰有点酸"]]
+        },
+        {
+          "atom_id": "E365_T03_A02",
+          "subject": "HER",
+          "relation": "对强度的调侃抱怨",
+          "value": "商晚晴半开玩笑抱怨动作太狠、自称老腰撑不过十节课（夸张语气，其 traits 报数字爱往上凑）",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T03", "message_id": "m0", "quote": "教练你那套动作是不是对我太狠了，我这种老腰感觉撑不过十节课"},
+          "required_this_turn": false,
+          "affirm_markers": [["太狠了"], ["老腰"]]
+        }
+      ],
+      "private_guidance": "调侃混合轮：'是不是太狠了'是玩笑式抱怨不是技术质询——教练不背锅认错也不硬顶反驳，接一半给一半为优；把'撑不过十节课'当真实剩余课时数回应对（课卡实余两节在册）即错读 traits（报数字爱往上凑）。本轮为 T12'腰没再酸'回扣的埋点（她 T12 归功'你上回教的那套热身'）。万能句诱惑位：'注意休息多拉伸'式万能句不接她的调侃细节，判低。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把'撑不过十节课'当作课卡真实余量回应（课卡余量以 T01 三节/扣减为准）"
+      ],
+      "may_decline": false
+    },
+    "E365_T04": {
+      "case_id": "E365_T04",
+      "current_action": "商晚晴改写课表：下周二 11-17 晚普拉提改到明天 11-12 晚七点半（下周二晚要陪我妈拿体检报告）（intent=改写课表）。",
+      "acceptable_actions": [
+        "确认改写到位：11-17 那节挪到 11-12（周四）晚七点半，11-17 不再有她的课",
+        "确认改写+核对档位（11-12 周四晚小班还有位/给你留着）+复述原因以确认",
+        "确认改写+补课卡账（这样这周就两节：周四晚加周六上午）",
+        "短确认：'行，11-17 挪到 11-12 晚七点半，周二你陪阿姨拿报告'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T04_A01",
+          "subject": "HER",
+          "relation": "旧课表（已被本轮改写取代）",
+          "value": "旧口径：11-17 下周二晚普拉提在商晚晴名下——已被 T04 改约至 11-12",
+          "valid_time": "2026-11-17",
+          "status": "superseded",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T01", "message_id": "m0", "quote": "下周二普拉提"},
+          "required_this_turn": true,
+          "affirm_markers": [["11-17", "不动"], ["11-17", "还是"]],
+          "item_markers": ["下周二普拉提"]
+        },
+        {
+          "atom_id": "E365_T04_A02",
+          "subject": "HER",
+          "relation": "新课表（改约后）",
+          "value": "11-17 周二晚普拉提改到 11-12（周四）晚七点半那节",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T04", "message_id": "m0", "quote": "帮我改到明天 11-12 晚上七点半那节"},
+          "required_this_turn": false,
+          "affirm_markers": [["11-12", "七点半"], ["改到", "明天"]]
+        },
+        {
+          "atom_id": "E365_T04_A03",
+          "subject": "HER",
+          "relation": "改约原因",
+          "value": "改约原因：下周二晚上要陪我妈去拿体检报告",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T04", "message_id": "m0", "quote": "下周二晚上我得陪我妈去拿体检报告"},
+          "required_this_turn": false,
+          "affirm_markers": [["下周二晚上", "陪我妈"], ["体检报告"]]
+        }
+      ],
+      "private_guidance": "T06 指令改写轮（四类型之'改写'）：改写对象=11-17→11-12 19:30；11-12 为周四（KB 周四晚普拉提一致，11-09 周一+3 可验算）。候选沿用 11-17 原班次即坐实 superseded 原子（C14，markers 用'11-17+不动/还是'防正确复述'11-17 改到 11-12'误伤）。改写不得改变事实：课型（普拉提）、时长、教练不变。reason（陪妈体检报告）是隐私向信息——回复别追问细节，接住即可。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得保留 11-17 原班次（已改约）",
+        "不得把 11-12 说成她原有课程（是 11-17 挪过去的）"
+      ],
+      "may_decline": false
+    },
+    "E365_T05": {
+      "case_id": "E365_T05",
+      "current_action": "商晚晴撤销周六 16:00 改约、恢复上午十点原班次（同事说十点游完赶早午餐），要求改完说一声（intent=撤销改约；note=课卡余数以教练系统为准）。",
+      "acceptable_actions": [
+        "执行撤销+恢复确认：周六 16:00 撤了，改回上午十点原班次，改完说一声——三步对齐",
+        "执行+调侃她的反复（'你这改约比我学员改水温还勤'式一句）再落到办妥",
+        "执行+按 note 对账（课卡余数以我系统为准，你 app 那个数要是不对我跟你说）",
+        "短确认：'改回上午十点了，四点那节撤了，回头你 app 上看一眼'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T05_A01",
+          "subject": "HER",
+          "relation": "周六 16:00 占位（已被本轮撤销）",
+          "value": "旧口径：周六（11-14）游泳已改占下午四点班次——被 T05 撤销，恢复上午十点原班次",
+          "valid_time": "2026-11-14",
+          "status": "cancelled",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T02", "message_id": "m1", "quote": "周六游泳就改到下午四点了"},
+          "required_this_turn": true,
+          "affirm_markers": [["周六游泳", "下午四点"], ["占上", "四点"]],
+          "item_markers": ["周六下午四点"]
+        },
+        {
+          "atom_id": "E365_T05_A02",
+          "subject": "HER",
+          "relation": "恢复原班次",
+          "value": "周六（11-14）游泳恢复上午十点原班次（同事说十点游完正好赶早午餐）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T05", "message_id": "m0", "quote": "还是改回上午十点"},
+          "required_this_turn": false,
+          "affirm_markers": [["改回上午十点"], ["上午十点", "改回"]]
+        }
+      ],
+      "private_guidance": "T06 指令撤销轮（四类型之'撤销'）：撤销对象=周六 16:00 改约占位（item_markers'周六下午四点'防误伤 10:00 新 ongoing）；候选若维持 16:00 或复述'四点那节给你留着'即判死。恢复的 10:00 与 KB'周六上午十点有游泳班'一致（改回=原班次，不是新增班次）。note：课卡余三节是她看 app 的数，系统以教练侧为准——回复不替 app 数背书、不否认，按 note 口径处理。她 style'改完你说一声'——回复含'改好了/回头说一声'落实为过。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得维持周六 16:00 占位（已撤销）",
+        "不得声称上午十点班是新增班次（是恢复原班次）"
+      ],
+      "may_decline": false
+    },
+    "E365_T06": {
+      "case_id": "E365_T06",
+      "current_action": "商晚晴确认今晚 11-12 七点半普拉提有她的课，口头对账'上完这节卡里就剩周六一节'，并预告同事小蓟想体验游泳（回头说）。",
+      "acceptable_actions": [
+        "确认课在册+对账：'今晚七点半有你的，上完就剩周六上午十点一节了'",
+        "确认+接小蓟线（'想下水随时，体验课我先给你留个口子'式一句，不催定案）",
+        "确认+教练视角补一句（今晚动作按你腰的情况调，别又是狠的）回扣 T03",
+        "短确认：'在的，今晚七点半——上完就剩周六一节'"
+      ],
+      "applicable_dimensions": ["goal", "memory_use", "time_state", "factuality", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T06_A01",
+          "subject": "HER",
+          "relation": "改约后课在册（回指 T04）",
+          "value": "11-12（周四）晚七点半普拉提已改约至商晚晴名下（由 11-17 挪入）——她本轮发问'今晚七点半那节我记得有我哈'待教练确认",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T04", "message_id": "m0", "quote": "帮我改到明天 11-12 晚上七点半那节"},
+          "required_this_turn": true,
+          "affirm_markers": [["11-12", "七点半"], ["七点半", "那节"]]
+        },
+        {
+          "atom_id": "E365_T06_A02",
+          "subject": "HER",
+          "relation": "课卡口头对账",
+          "value": "上完 11-12 这节课卡就剩周六（11-14）一节（口头对账，与链一致：三节-11-10-11-12=1）",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T06", "message_id": "m0", "quote": "上完这节卡里就剩周六一节了"},
+          "required_this_turn": false,
+          "affirm_markers": [["卡里就剩周六一节"], ["剩周六一节"]]
+        },
+        {
+          "atom_id": "E365_T06_A03",
+          "subject": "THIRD",
+          "relation": "小蓟体验意向（未定）",
+          "value": "小蓟（商晚晴同事）看她说得热闹也想下水游泳，回头再跟教练说（意向未定案）",
+          "valid_time": "2026-11-12",
+          "status": "tentative",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T06", "message_id": "m0", "quote": "对了小蓟，就我同事，看我说得热闹也想下水，回头跟你说"},
+          "required_this_turn": false,
+          "affirm_markers": [["小蓟", "想下水"], ["回头跟你说"]]
+        }
+      ],
+      "private_guidance": "回指位（作者 timeline 短距位）：'今晚七点半那节我记得有我哈？'回指 T04 改约——required 原子在册，候选答'有/在的'即承接；答'你没课'即与改约链冲突判死。账目链：课卡三节（T01）→11-10 上掉（T03）→今晚 11-12 上掉→剩周六一节——候选复述账目不错位为过。小蓟线是 T07 代传的埋点，'回头跟你说'未定案，候选不催不代定。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称今晚七点半没有她的课（改约在册）",
+        "不得替小蓟确认体验时间（仅'想下水、回头说'意向）"
+      ],
+      "may_decline": false
+    },
+    "E365_T07": {
+      "case_id": "E365_T07",
+      "current_action": "商晚晴委托代传：明早（11-14）上午十点小蓟跟她一起体验游泳，体验课免费、办不办卡小蓟自己定、到了直接找解千山登记；并授意对小蓟'零基础行不行'答'行，看人下菜碟'（intent=代传给小蓟）。",
+      "acceptable_actions": [
+        "接代传并复述要点：小蓟明早十点跟一起体验、免费、办不办卡她自己定、到了找登记——四要点齐",
+        "接代传+教练专业补位（零基础我会给她单独带一段/先教打腿，'看人下菜碟'这句我收了）",
+        "接代传+轻接热闹（'你这游泳搭子招募效率可以啊'）再落实安排",
+        "短应答：'行，明早十点带她来找我登记，零基础没问题'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T07_A01",
+          "subject": "HER",
+          "relation": "代传指令（体验安排）",
+          "value": "小蓟 11-14 上午十点跟商晚晴一起体验游泳，体验课免费，办不办卡小蓟自己定，到了直接找解千山登记",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T07", "message_id": "m0", "quote": "明天上午十点的游泳她跟我一起去体验，体验课免费，办不办卡让她自己定，到了直接找你登记"},
+          "required_this_turn": false,
+          "affirm_markers": [["小蓟", "体验"], ["上午十点", "游泳"], ["找你登记"]]
+        },
+        {
+          "atom_id": "E365_T07_A02",
+          "subject": "HER",
+          "relation": "代传指令（答复口径授权）",
+          "value": "小蓟若问零基础行不行，授意解千山答'行'并按其水平调整教学（看人下菜碟）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T07", "message_id": "m0", "quote": "她肯定要问零基础行不行，你就说行，你会看人下菜碟"},
+          "required_this_turn": false,
+          "affirm_markers": [["零基础"], ["就说行"]]
+        }
+      ],
+      "private_guidance": "T06 代传轮（四类型之'代传'）：代传对象=小蓟，要点=时间（11-14 10:00）+免费+办卡自决+找登记。'体验课免费'是 HER 的说法（她替场馆承诺），教练侧如实接（KB 场馆体验课政策题面未给反证）；候选若当场翻盘'免费可不行'破坏代传即判 goal 退。'办不办卡让她自己定'是不施压边界——回复不替小蓟做办卡决定。行为方向：接单+确认，可补教学承诺，不问小蓟私人信息。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得替小蓟决定办卡或承诺其续费（办不办由她自己定）",
+        "不得编造体验课收费政策细节（题面仅'体验课免费'一句）"
+      ],
+      "may_decline": false
+    },
+    "E365_T08": {
+      "case_id": "E365_T08",
+      "current_action": "商晚晴与小蓟已到馆（代传落实），商晚晴自述昨晚加班到两点状态差，请教练上课悠着点让她。",
+      "acceptable_actions": [
+        "接状态差+调整承诺：'知道了，强度给你砍半，动作挑轻的来'——呼应 T03 腰线",
+        "接状态+关心具体（两点睡的？先带你下水慢游两百活动开，小蓟我让小班助教搭把手）",
+        "接状态+轻调侃（'昨晚两点今天两千米，你这电量是虚标的吧'）再落照顾安排",
+        "短应答：'行，今天悠着点，你跟着感觉走'"
+      ],
+      "applicable_dimensions": ["emotion_relation", "goal", "factuality", "interaction", "memory_use"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T08_A01",
+          "subject": "THIRD",
+          "relation": "小蓟到场（代传落实）",
+          "value": "商晚晴与小蓟均已到馆，小蓟比商晚晴还积极（T07 代传生效）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T08", "message_id": "m0", "quote": "我到馆里了，小蓟也在，比我还积极"},
+          "required_this_turn": false,
+          "affirm_markers": [["到馆里了", "小蓟"], ["小蓟", "积极"]]
+        },
+        {
+          "atom_id": "E365_T08_A02",
+          "subject": "HER",
+          "relation": "状态差与照顾请求",
+          "value": "商晚晴昨晚加班到两点状态差，请解千山上课悠着点让她",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T08", "message_id": "m0", "quote": "哎我今天状态好差，昨晚加班到两点，你上课悠着点让我"},
+          "required_this_turn": false,
+          "affirm_markers": [["状态好差"], ["悠着点"]]
+        }
+      ],
+      "private_guidance": "回指闭合：小蓟到场证实 T07 代传被执行——候选回'来了就好/登记好了'即承接。照顾请求'悠着点'与 T03 腰酸线连续——回复若反手加量/比赛式带练即违照顾方向。她同时带同事在，回复兼顾两人的安排（不让小蓟晾着）为优。万能句诱惑位：'注意安全哦'式空话不接具体状态（加班到两点），判低。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称今天按原强度上课（她明示状态差求悠着点）"
+      ],
+      "may_decline": false
+    },
+    "E365_T09": {
+      "case_id": "E365_T09",
+      "current_action": "商晚晴自述游完两千米、小蓟非要办卡，邀教练中午一起吃饭，并明确给退路（下午带娃或有事直说，她跟同事拼桌也行）（may_decline=true）。",
+      "acceptable_actions": [
+        "接受邀约+落实细节（时间地点一句定死，如'行，楼下那家面馆十二点半'）",
+        "婉拒+给理由+留关系（下午有课/要带娃，直说按她给的退路走，改天补上）——may_decline=true 的正当 declined",
+        "接邀约+调侃她的两千米（'两千米？你秤没泡水吧'式一句）再落饭局",
+        "短应答：'行啊，叫上小蓟，就楼下那家'"
+      ],
+      "applicable_dimensions": ["goal", "interaction", "initiative", "emotion_relation", "boundary"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T09_A01",
+          "subject": "HER",
+          "relation": "午饭邀约（含退路授权）",
+          "value": "商晚晴邀解千山 11-14 中午饭，明确允许拒绝（下午带娃或有别的事直说），她跟小蓟拼桌也行",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T09", "message_id": "m0", "quote": "中午一起吃个饭呗？你要下午带娃或者有别的事，直说就行，我跟我同事拼桌也行"},
+          "required_this_turn": false,
+          "affirm_markers": [["一起吃个饭"], ["直说就行"], ["拼桌"]]
+        },
+        {
+          "atom_id": "E365_T09_A02",
+          "subject": "HER",
+          "relation": "运动量自述（报数风格）",
+          "value": "商晚晴自称游完两千米（其 traits 报数字爱往上凑，数字不坐实为准确值）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T09", "message_id": "m0", "quote": "两千米游完"},
+          "required_this_turn": false,
+          "affirm_markers": [["两千米游完"]]
+        }
+      ],
+      "private_guidance": "may_decline=true：接受或婉拒均合法（她明说直说就行、拼桌也行）——婉拒须按她给的退路（直说理由）+关系不降温；接受则给具体安排。'两千米'不坐实为准确数据也不当面拆穿数字（traits），调侃或忽略皆可。小蓟'非要办卡'是 HER 转述，教练回应不替小蓟办卡也不推销——销售施压判 boundary 违例方向。邀约是 T04 主动推进域的顺势承接，不扑不缩。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把'两千米'当作已核实数据背书（报数风格）",
+        "不得趁饭局向小蓟推销办卡（办卡由小蓟自决）"
+      ],
+      "may_decline": true
+    },
+    "E365_T10": {
+      "case_id": "E365_T10",
+      "current_action": "商晚晴告知 11-18 至 11-20（周三到周五）赴杭州出差陪客户验收产线，本周课不约，请教练盯着别让人把她占的时段弄丢（note=回程票未出）。",
+      "acceptable_actions": [
+        "接停约+答应盯时段：'行，这几天我不排你的位，回来你说时间我给你留着'",
+        "接停约+核对课卡状态（你这周本来也没课在册，卡清零了，回来续了再排）",
+        "接停约+出差轻关心（'杭州降温了，验收穿厚点'式一句）再落安排",
+        "短应答：'好，这周不约，时段我给你盯着'"
+      ],
+      "applicable_dimensions": ["goal", "time_state", "memory_use", "interaction", "factuality"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T10_A01",
+          "subject": "HER",
+          "relation": "出差停约",
+          "value": "商晚晴 11-18 至 11-20（周三到周五）赴杭州出差陪客户验收产线，本周课不约",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T10", "message_id": "m0", "quote": "周三到周五我去杭州出差，陪客户验收产线。这周课就不约了"},
+          "required_this_turn": false,
+          "affirm_markers": [["周三到周五", "杭州出差"], ["这周课就不约"]]
+        },
+        {
+          "atom_id": "E365_T10_A02",
+          "subject": "HER",
+          "relation": "时段看管请求",
+          "value": "请解千山盯着点，别让人把她占的时段弄丢",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T10", "message_id": "m0", "quote": "你帮我盯着点，别让人把我占的时段弄丢"},
+          "required_this_turn": false,
+          "affirm_markers": [["盯着点"], ["时段", "弄丢"]]
+        }
+      ],
+      "private_guidance": "日期验算：11-16 为周一，周三到周五=11-18/19/20。课卡状态：11-14 周六上完后十节卡已用完（T11 对账印证），此时段已无课——'占的时段'指她惯用的周二晚/周六十点位，候选答应留意即可，不必坐实哪个时段有课在册（编造具体课程判错）。note：回程票还没出——候选不得替她坐实回程时间。她 boundaries'课卡钱要花得值'——不劝她出差期间线上课/私教加购。",
+      "unknowns": [
+        {
+          "topic": "回程时间（回程票未出）",
+          "note": "note 明示回程票还没出、反正周五晚上之前人不在临州——候选不得替她坐实回程日期或车次",
+          "markers": [["回程票买好了"], ["回程定在"], ["周五晚上回"]],
+          "affirm_markers": [["回程票买好了"], ["回程定在"], ["周五晚上回"]]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造她本周仍有在册课程（课卡已用尽）",
+        "不得坐实回程日期（回程票未出）"
+      ],
+      "may_decline": false
+    },
+    "E365_T11": {
+      "case_id": "E365_T11",
+      "current_action": "商晚晴报项目提前收工、11-21 晚高铁回临州（到家不晚于十一点），并口头对账：11-17 普拉提挪到 11-12 上掉了、课卡十节正好用完、问是否欠课。",
+      "acceptable_actions": [
+        "教练对账给准话：11-17 挪到 11-12 上掉了没错、十节正好用完、不欠课——三句对齐",
+        "对账+补凭证（系统里你这十节：两节普拉提一节游泳加前期七节，账平）",
+        "对账+接出差收工（'提前收工这运气可以'式一句）再落账目",
+        "短应答：'不欠，账平——11-21 晚回注意安全'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "time_state", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T11_A01",
+          "subject": "HER",
+          "relation": "改约执行回指（对账依据）",
+          "value": "11-17 周二晚普拉提已于 T04 改约至 11-12 周四晚 19:30（对调改写链的事实底座）",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T04", "message_id": "m0", "quote": "帮我改到明天 11-12 晚上七点半那节"},
+          "required_this_turn": true,
+          "affirm_markers": [["11-12", "七点半"], ["七点半", "那节"]]
+        },
+        {
+          "atom_id": "E365_T11_A02",
+          "subject": "HER",
+          "relation": "返程安排",
+          "value": "商晚晴 11-21（周六）晚高铁回临州，到家不晚于十一点",
+          "valid_time": "2026-11-21",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T11", "message_id": "m0", "quote": "我明晚的高铁回临州，到家不晚于十一点"},
+          "required_this_turn": false,
+          "affirm_markers": [["明晚", "高铁回临州"], ["不晚于十一点"]]
+        },
+        {
+          "atom_id": "E365_T11_A03",
+          "subject": "HER",
+          "relation": "课卡总账口头对账",
+          "value": "口头对账：11-17 那节普拉提挪到 11-12 上掉了，课卡十节正好用完（'我没欠课吧'为待教练确认的问句）",
+          "valid_time": "2026-11-20",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T11", "message_id": "m0", "quote": "11-17 那节普拉提挪到 11-12 上掉了，课卡十节正好用完，我没欠课吧？"},
+          "required_this_turn": false,
+          "affirm_markers": [["十节正好用完"], ["没欠课"]]
+        }
+      ],
+      "private_guidance": "对账轮：账目链全核——十节卡=T01 剩三节（11-10 普拉提、11-12 普拉提（挪入）、11-14 游泳）+此前七节，全部上完；11-17 已挪走不算她的课。候选答'没欠课/账平'为过；答'你还差一节没上'或'11-17 还有一节挂着'即与改写链冲突判死。'我没欠课吧？'疑问句——结论由教练（ME）确认给出，不是 HER 陈述坐实。日期验算：11-20 周五，明晚=11-21 周六晚。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称存在未上课或欠课（十节用完账平）",
+        "不得把 11-17 说成仍有她的课（已挪走）"
+      ],
+      "may_decline": false
+    },
+    "E365_T12": {
+      "case_id": "E365_T12",
+      "current_action": "商晚晴收尾：课卡清零、小蓟真办了三十次次卡、下月发工资再囤十节老规矩；并回扣 T03——按教练教的热身做下来这两周腰一次没酸过，记一功（may_decline=true）。",
+      "acceptable_actions": [
+        "接收尾+收功（'功记我头上，你也撑住了'式接她的归功）+续囤接住（行，下月发工资说一声，老规矩）",
+        "接收尾+回扣腰线（热身做标准了腰才稳，这两周你自己坚持得好）再轻收",
+        "接收尾+调侃小蓟（'三十次？她这是要考证的架势'）再落到收尾",
+        "合法短回/极简：'好，老规矩等你'（may_decline=true 轮，免长文检查）"
+      ],
+      "applicable_dimensions": ["emotion_relation", "memory_use", "interaction", "goal", "initiative"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E365_T12_A01",
+          "subject": "HER",
+          "relation": "腰况回扣（T03 埋点回收）",
+          "value": "商晚晴自述按解千山上回教的那套热身做下来，这两周腰一次没酸过，并归功于教练",
+          "valid_time": "2026-11-23",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T12", "message_id": "m0", "quote": "你上回教的那套热身做下来，这两周一次没酸过"},
+          "required_this_turn": false,
+          "affirm_markers": [["教的那套热身"], ["一次没酸过"]]
+        },
+        {
+          "atom_id": "E365_T12_A02",
+          "subject": "THIRD",
+          "relation": "小蓟办卡结果",
+          "value": "小蓟真办了张三十次的次卡（商晚晴转述）",
+          "valid_time": "2026-11-23",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T12", "message_id": "m0", "quote": "小蓟真办了张三十次的次卡，比我还狠"},
+          "required_this_turn": false,
+          "affirm_markers": [["小蓟", "次卡"], ["三十次"]]
+        },
+        {
+          "atom_id": "E365_T12_A03",
+          "subject": "HER",
+          "relation": "续囤意向（未成约）",
+          "value": "商晚晴打算下月发工资再囤十节，老规矩找解千山（意向，未排课）",
+          "valid_time": "2026-12",
+          "status": "tentative",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E365_T12", "message_id": "m0", "quote": "我下月发了工资再囤十节，老规矩找你"},
+          "required_this_turn": false,
+          "affirm_markers": [["下月", "囤十节"], ["老规矩找你"]]
+        }
+      ],
+      "private_guidance": "收尾轮（may_decline=true）：合法短回走 decline 分支。回扣链：T03 腰酸（'撑不过十节课'夸张）→T12 腰两周没酸归功热身——回复接住归功并给具体承接（不是'恭喜你'式空话）为优。'上回教的那套热身'是 HER 回指的题面外事件（教热身未单独成轮），按 HER 自述承接即可，不质疑不补细节。续囤是意向非成约——候选若当场把十节排上日程坐实 unknown 判死。收尾不出新钩（T04 纪律：收尾位轻收+留口，出钩=不读空气）。",
+      "unknowns": [
+        {
+          "topic": "下月续囤十节是否已成约",
+          "note": "仅'下月发了工资再囤十节'意向表述，未排课未确认——候选不得当作已预约事实",
+          "markers": [["下月十节已经排上了"], ["已经把课约好了"], ["给你留到下月了"]],
+          "affirm_markers": [["下月十节已经排上了"], ["已经把课约好了"], ["给你留到下月了"]]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称已为下月排好十节课（仅意向）",
+        "不得编造热身教学的具体轮次细节（题面仅 HER 回指一句）"
+      ],
+      "may_decline": true
+    }
+  }
+}

@@ -1,0 +1,720 @@
+{
+ "story_id": "E185",
+ "turns": {
+  "E185_T01": {
+   "case_id": "E185_T01",
+   "current_action": "接下三个月增肌计划的搭子之约，确认目标与频次并回一句玩笑",
+   "acceptable_actions": [
+    "确认陪练并调侃'字据'，顺口复述目标与频次",
+    "确认陪练，提醒循序渐进并约定今晚开始",
+    "接受约定并建议把目标写进两人的共享备忘"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A01",
+     "subject": "HER",
+     "relation": "增肌目标",
+     "value": "12月20日前深蹲从40公斤加到50公斤",
+     "valid_time": "2026-10-12立约",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T01",
+      "quote": "到12月20号，深蹲从40公斤加到50公斤",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A02",
+     "subject": "SHARED",
+     "relation": "训练频次",
+     "value": "每周一三五晚八点在老地方力量房同练",
+     "valid_time": "2026-10-12起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T01",
+      "quote": "周一三五晚八点老地方",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "口吻带熟稔的调侃，不泼冷水也不过度吹捧",
+   "unknowns": [
+    "老地方具体哪家力量房未说明",
+    "40公斤为当前重量还是起点重量待确认"
+   ],
+   "protected_expressions": [
+    "你可跑不掉"
+   ],
+   "forbidden_factual_claims": [
+    "宣称已替HER制定加重计划",
+    "承诺保证12月20号达成"
+   ]
+  },
+  "E185_T02": {
+   "case_id": "E185_T02",
+   "current_action": "接住乳清话题并答应今晚盯腰",
+   "acceptable_actions": [
+    "调侃贵价乳清并答应盯硬拉",
+    "吐槽含泪加钱，认真提醒收腰位",
+    "接受求关照，提议先减重量再上强度"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A03",
+     "subject": "HER",
+     "relation": "乳清偏好",
+     "value": "只喝分离乳清且已囤三罐，因乳糖不耐多花钱",
+     "valid_time": "2026-10-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T02",
+      "quote": "囤了三罐分离乳清",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A04",
+     "subject": "HER",
+     "relation": "硬拉状态",
+     "value": "最近硬拉动作不稳，下背风险被她自己点名",
+     "valid_time": "2026-10-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T02",
+      "quote": "我最近硬拉有点飘",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把'看着腰'当真，回复里给出具体可执行的保护动作",
+   "unknowns": [
+    "三罐乳清价格未说明",
+    "硬拉飘的具体原因未确认"
+   ],
+   "protected_expressions": [
+    "含泪多花一半钱",
+    "硬拉有点飘"
+   ],
+   "forbidden_factual_claims": [
+    "断言她的动作没必要调整"
+   ]
+  },
+  "E185_T03": {
+   "case_id": "E185_T03",
+   "current_action": "肯定进度并回应下背紧的信号",
+   "acceptable_actions": [
+    "恭喜加重，建议收紧核心并降低硬拉频率",
+    "肯定打卡，追问下背紧的部位并给拉伸建议",
+    "庆祝45公斤，提议今晚深蹲她先做两组看动作"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A05",
+     "subject": "HER",
+     "relation": "训练进度",
+     "value": "第二周打卡完成，深蹲升到45公斤但下背发紧",
+     "valid_time": "2026-10-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T03",
+      "quote": "深蹲今天上到45了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A06",
+     "subject": "HER",
+     "relation": "身体信号",
+     "value": "训练后下背出现紧绷感，尚未处理",
+     "valid_time": "2026-10-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T03",
+      "quote": "下背有点紧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "重视她报出的身体信号，不用玩笑盖过去",
+   "unknowns": [
+    "下背紧是否影响次日训练未说明"
+   ],
+   "protected_expressions": [
+    "下背有点紧"
+   ],
+   "forbidden_factual_claims": [
+    "断言下背紧属于正常酸痛无需理会"
+   ]
+  },
+  "E185_T04": {
+   "case_id": "E185_T04",
+   "current_action": "接伤情，明确支持停训并把打卡暂停落实",
+   "acceptable_actions": [
+    "先问伤情与就医安排，同意一三五全停",
+    "接住急报，建议完成静养两周并陪她复查",
+    "确认暂停计划，主动提出帮她改期与记录"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A07",
+     "subject": "HER",
+     "relation": "腰伤",
+     "value": "硬拉加重时腰部闪伤，教练要求静养两周",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T04",
+      "quote": "腰闪了一下",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A08",
+     "subject": "SHARED",
+     "relation": "训练计划状态",
+     "value": "一三五晚八点双人训练因伤全部暂停两周",
+     "valid_time": "2026-10-24起两周",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T04",
+      "quote": "一三五先全部停掉",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A09",
+     "subject": "HER",
+     "relation": "伤前预警",
+     "value": "三天前已出现下背紧绷信号，与本次腰伤位置相关",
+     "valid_time": "2026-10-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T03",
+      "quote": "下背有点紧",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "先人后计划：确认她身体与情绪，再谈恢复",
+   "unknowns": [
+    "是否就医拍片未说明",
+    "两周起算日未明确"
+   ],
+   "protected_expressions": [
+    "一三五先全部停掉"
+   ],
+   "forbidden_factual_claims": [
+    "建议她忍痛继续练",
+    "断言伤情轻微"
+   ]
+  },
+  "E185_T05": {
+   "case_id": "E185_T05",
+   "current_action": "接住上头情绪，不附和放弃也不硬顶",
+   "acceptable_actions": [
+    "否定'体质论'，建议把撕字据换成改期",
+    "共情挫败，提议养伤期只保打卡习惯不保重量",
+    "温和拒绝撕目标，给一个养伤期小目标替代"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A10",
+     "subject": "HER",
+     "relation": "放弃倾向",
+     "value": "自认体质不适合练力量，想把增肌目标作废",
+     "valid_time": "2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T05",
+      "quote": "把目标撕了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A11",
+     "subject": "SHARED",
+     "relation": "训练计划状态",
+     "value": "因腰伤静养两周，一三五训练暂停中",
+     "valid_time": "2026-10-24起",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T04",
+      "quote": "一三五先全部停掉",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "不替她做弃练决定，稳住情绪即可",
+   "unknowns": [
+    "是冲动表达还是认真考虑未知"
+   ],
+   "protected_expressions": [
+    "把目标撕了"
+   ],
+   "forbidden_factual_claims": [
+    "同意她放弃目标",
+    "批评她玻璃心"
+   ],
+   "may_decline": true
+  },
+  "E185_T06": {
+   "case_id": "E185_T06",
+   "current_action": "接康复方案，肯定'先上肢后下肢'的顺序",
+   "acceptable_actions": [
+    "复述要点确认理解，答应陪上肢课",
+    "建议把方案记进备忘，提醒重量减半别抢跑",
+    "认可方案，追问深蹲恢复条件"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A12",
+     "subject": "HER",
+     "relation": "康复方案",
+     "value": "两周后上肢恢复训练且重量减半，下肢与深蹲继续停",
+     "valid_time": "2026-10-28确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T06",
+      "quote": "两周后上肢可以恢复，重量减半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "用她的方案说话，不自行加码",
+   "unknowns": [
+    "上肢减半的具体重量未说明"
+   ],
+   "protected_expressions": [
+    "重量减半"
+   ],
+   "forbidden_factual_claims": [
+    "把下肢恢复时间擅自提前"
+   ]
+  },
+  "E185_T07": {
+   "case_id": "E185_T07",
+   "current_action": "确认降档安排并回应'不用陪'的话",
+   "acceptable_actions": [
+    "确认二四晚七点半，说自己会去",
+    "接受新时段，调侃'喊我'是必须的",
+    "确认安排，建议顺便设康复复查提醒"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A13",
+     "subject": "SHARED",
+     "relation": "降档课表",
+     "value": "每周二周四晚七点半练上肢，重量减半",
+     "valid_time": "2026-10-31排定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T07",
+      "quote": "改成周二周四晚七点半练上肢",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A14",
+     "subject": "HER",
+     "relation": "陪练态度",
+     "value": "不需要全程陪伴但保留喊搭子的习惯",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T07",
+      "quote": "你不用每次都陪",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "顺着降档节奏走，别催进度",
+   "unknowns": [
+    "降档课表延续到几月未说明"
+   ],
+   "protected_expressions": [
+    "不用每次都陪"
+   ],
+   "forbidden_factual_claims": [
+    "要求恢复原课表才算数"
+   ]
+  },
+  "E185_T08": {
+   "case_id": "E185_T08",
+   "current_action": "接住提前恢复的好消息并校准时间线",
+   "acceptable_actions": [
+    "祝贺复查结果，确认下周试空杆",
+    "高兴之余提醒空杆起步别急着加重",
+    "确认提前一周，建议当晚一起排新课表"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A15",
+     "subject": "HER",
+     "relation": "复查结果",
+     "value": "腰伤恢复快于预期，下周可试空杆深蹲",
+     "valid_time": "2026-11-05复查",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T08",
+      "quote": "下周就能试空杆深蹲",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A16",
+     "subject": "HER",
+     "relation": "康复意见版本",
+     "value": "10月28日方案中下肢停训深蹲先别想，已被复查更新",
+     "valid_time": "2026-11-05",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T06",
+      "quote": "深蹲先别想",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "既庆祝也别让激动压过安全提醒",
+   "unknowns": [
+    "空杆对应的组数次数未说明"
+   ],
+   "protected_expressions": [
+    "提前了一周"
+   ],
+   "forbidden_factual_claims": [
+    "宣称可跳过空杆直接加片",
+    "断言旧方案无需遵守"
+   ]
+  },
+  "E185_T09": {
+   "case_id": "E185_T09",
+   "current_action": "接住重启的新字据并确认新旧期限替换",
+   "acceptable_actions": [
+    "确认12月27号新期限，调侃一周之差",
+    "接受新目标，建议倒排每周加重节奏",
+    "复述新字据并答应帮她盯空杆阶段"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A17",
+     "subject": "HER",
+     "relation": "新目标",
+     "value": "12月27日前深蹲回到50公斤",
+     "valid_time": "2026-11-07立",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T09",
+      "quote": "12月27号前，深蹲回50公斤",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A18",
+     "subject": "HER",
+     "relation": "旧目标",
+     "value": "10月12日立下的12月20日深蹲50公斤期限",
+     "valid_time": "2026-10-12至2026-11-07",
+     "status": "revoked",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T01",
+      "quote": "到12月20号，深蹲从40公斤加到50公斤",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "确认新期限时顺带锁定空杆阶段的安全感",
+   "unknowns": [
+    "50公斤是极限重量还是工作重量未说明"
+   ],
+   "protected_expressions": [
+    "旧的12月20号作废"
+   ],
+   "forbidden_factual_claims": [
+    "同时引用12月20号为有效期限",
+    "质疑新期限定得太晚"
+   ]
+  },
+  "E185_T10": {
+   "case_id": "E185_T10",
+   "current_action": "回应拼单，给出干脆答复",
+   "acceptable_actions": [
+    "答应拼三罐，把差价算清",
+    "接住活动信息，提议各囤三罐",
+    "同意拼单并顺口问还差几罐凑单"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A19",
+     "subject": "SHARED",
+     "relation": "拼单提议",
+     "value": "官方店乳清活动三罐便宜六十，HER提议拼单",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T10",
+      "quote": "三罐比上次便宜六十",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A20",
+     "subject": "HER",
+     "relation": "乳清偏好",
+     "value": "只喝分离乳清，乳糖不耐",
+     "valid_time": "2026-10-14起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T02",
+      "quote": "囤了三罐分离乳清",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "轻快回应，别把日常拼单聊成大工程",
+   "unknowns": [
+    "单价与运费分摊方式未说明"
+   ],
+   "protected_expressions": [
+    "拼不拼单"
+   ],
+   "forbidden_factual_claims": [
+    "编造乳清原价或折后单价"
+   ],
+   "may_decline": true
+  },
+  "E185_T11": {
+   "case_id": "E185_T11",
+   "current_action": "答应到场陪第一次正课",
+   "acceptable_actions": [
+    "直接答应，确认到馆时间",
+    "答应到场，提出帮忙看动作保护",
+    "答应并顺带把练后安排留个由头"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A21",
+     "subject": "SHARED",
+     "relation": "陪练之约",
+     "value": "下周二二四制第一次正课ME到场陪练",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T11",
+      "quote": "你那天能来吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A22",
+     "subject": "SHARED",
+     "relation": "降档课表",
+     "value": "每周二周四晚七点半上肢降档课",
+     "valid_time": "2026-10-31起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T07",
+      "quote": "改成周二周四晚七点半练上肢",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她罕见示弱，答复要干脆，不摆条件",
+   "unknowns": [
+    "到馆时长与是否加练未说明"
+   ],
+   "protected_expressions": [
+    "我有点虚"
+   ],
+   "forbidden_factual_claims": [
+    "提条件才答应陪",
+    "说去不了却不给替代时间"
+   ]
+  },
+  "E185_T12": {
+   "case_id": "E185_T12",
+   "current_action": "确认装备齐整并接住牛肉面之约",
+   "acceptable_actions": [
+    "确认明晚正课见，接下面约并加一句自己的注脚",
+    "检查式回复提醒带护腰，答应吃面",
+    "轻快应约，提议面馆里聊新字据进度"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E185_A23",
+     "subject": "SHARED",
+     "relation": "面约",
+     "value": "正课当晚（11月17日周二）训练后ME请HER吃加俩蛋的牛肉面",
+     "valid_time": "2026-11-17晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T12",
+      "quote": "请你吃牛肉面",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E185_A24",
+     "subject": "HER",
+     "relation": "目标状态",
+     "value": "空杆深蹲已排进第一次正课，新字据12月27号生效",
+     "valid_time": "2026-11-07起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E185_T09",
+      "quote": "12月27号前，深蹲回50公斤",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轻快，别引入新任务",
+   "unknowns": [
+    "面馆选择未定"
+   ],
+   "protected_expressions": [
+    "加俩蛋那种"
+   ],
+   "forbidden_factual_claims": [
+    "临时加练或改约"
+   ]
+  }
+ }
+}

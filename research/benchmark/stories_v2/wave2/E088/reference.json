@@ -1,0 +1,615 @@
+{
+ "story_id": "E088",
+ "turns": {
+  "E088_T01": {
+   "case_id": "E088_T01",
+   "current_action": "接住传闻：肯定她先来对信息的习惯，把'群传'和'官宣'当场分开——群里说的先当线索不当结论，让她第一步先去官网核实。",
+   "acceptable_actions": [
+    "建议先上官网核实，群里传闻先挂起不当结论",
+    "肯定她带疑问来问的做法，提醒加场类通知必挂官网",
+    "帮她把传闻拆成可核实的三件事：有没有、什么时候、谁能报"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A01",
+     "subject": "SHARED",
+     "relation": "rumor_asserted",
+     "value": "同学群传普通话考试11月下旬市里加场",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T01", "message_id": "m0", "quote": "11月下旬市里要加一场"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A02",
+     "subject": "SHARED",
+     "relation": "first_come_claim",
+     "value": "传闻称加场名额先到先得",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T01", "message_id": "m0", "quote": "先到先得"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A03",
+     "subject": "HER",
+     "relation": "motivation",
+     "value": "她的诉求是普通话证书早到手补齐认定材料",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T01", "message_id": "m0", "quote": "能提前一个月拿证"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'确定的'和'不确定的'两截说，传闻那截不否定也不背书。",
+   "unknowns": ["加场是否真实存在未知", "传传言者身份与动机未知"],
+   "protected_expressions": ["这传闻靠谱吗"],
+   "forbidden_factual_claims": ["不得断言加场存在或不存在", "不得猜疑传传言者的动机"]
+  },
+  "E088_T02": {
+   "case_id": "E088_T02",
+   "current_action": "接住首轮核实：官网空白与群传口径第一次对不上；确认'官网无'是确定项，'文件在路上'是不确定项，让她别急着站队。",
+   "acceptable_actions": [
+    "确认官网空白是硬信息，建议她过两天再刷一次",
+    "把'文件在路上'归为不可核验的说法，不采信也不否定",
+    "建议她顺手把官网现状截图存档，留个时间戳"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A04",
+     "subject": "SHARED",
+     "relation": "official_absence",
+     "value": "报名官网暂无11月加场的任何信息",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T02", "message_id": "m0", "quote": "11月的场子连个影子都没有"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A05",
+     "subject": "SHARED",
+     "relation": "official_status",
+     "value": "官网考试安排一栏当前仅有12月28日场次",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T02", "message_id": "m0", "quote": "还停在12月28日那场"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A06",
+     "subject": "THIRD",
+     "relation": "rumor_defense",
+     "value": "传言者以文件在路上回应官网空白",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T02", "message_id": "m0", "quote": "再等等，文件在路上"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：官网无即是现状，不加'多半是假的'这类倾向词。",
+   "unknowns": ["官网后续是否更新未知", "传言者是否掌握新信息未知"],
+   "protected_expressions": ["连个影子都没有"],
+   "forbidden_factual_claims": ["不得预判官网更新时间", "不得断言传言者信口开河"]
+  },
+  "E088_T03": {
+   "case_id": "E088_T03",
+   "current_action": "接住'截图证据'：看清两张牌——图上有日期是一回事，图能不能信是另一回事；让她留意抬头和来源链，先别当成实锤。",
+   "acceptable_actions": [
+    "指出截图模糊且来源是转述，证据等级不够",
+    "建议她问截图人要完整原图，看抬头和落款",
+    "提醒她内部排期即使为真也不等于对全社会开放"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A07",
+     "subject": "THIRD",
+     "relation": "screenshot_claim",
+     "value": "群内出现称报名系统内部排期含11月26日的截图",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T03", "message_id": "m0", "quote": "上面真有11月26日"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A08",
+     "subject": "SHARED",
+     "relation": "screenshot_quality",
+     "value": "截图模糊看不清抬头，无法核实",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T03", "message_id": "m0", "quote": "图糊得看不清抬头"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A09",
+     "subject": "THIRD",
+     "relation": "source_chain",
+     "value": "截图来源经两级转述，称出自某表妹学校内部群",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T03", "message_id": "m0", "quote": "她表妹学校内部群流出来的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：只评证据不评人，转述来源也照实记，不加'八成是编的'。",
+   "unknowns": ["截图是否真实未知", "内部排期是否对普通人开放未知"],
+   "protected_expressions": ["糊得看不清抬头"],
+   "forbidden_factual_claims": ["不得断言截图伪造", "不得断言截图为真"]
+  },
+  "E088_T04": {
+   "case_id": "E088_T04",
+   "current_action": "接住热线落空与她的自我怀疑：官方渠道走完仍无实锤；回答她'是不是被带节奏'——现在说谁带谁都不公平，证据没到位就先不动，这不丢人。",
+   "acceptable_actions": [
+    "明确说现在下'被带节奏'的结论为时过早，双方都还没实锤",
+    "把已做的事列成清单：官网三遍、热线一下午，功课没白做",
+    "建议她给这事设个期限，到期没动静就先按原计划走"
+   ],
+   "applicable_dimensions": ["attribution", "emotion_relation", "factuality", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A10",
+     "subject": "HER",
+     "relation": "hotline_failure",
+     "value": "报名咨询热线一下午未获有效回复",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T04", "message_id": "m0", "quote": "不是占线就是语音信箱"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A11",
+     "subject": "HER",
+     "relation": "self_doubt",
+     "value": "她开始怀疑自己被人带节奏",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T04", "message_id": "m0", "quote": "我是不是被人带节奏了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A12",
+     "subject": "SHARED",
+     "relation": "insufficient_evidence",
+     "value": "模糊截图不足以支撑任何报名决策",
+     "valid_time": "2026-11-05/2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T03", "message_id": "m0", "quote": "图糊得看不清抬头"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不让她把怀疑变成对群里任何人的指控，把焦点拉回证据。",
+   "unknowns": ["热线是否有回拨未知", "设多久期限合适未知"],
+   "protected_expressions": ["越看越不敢信"],
+   "forbidden_factual_claims": ["不得认定她在被人带节奏", "不得认定传言必然为真"]
+  },
+  "E088_T05": {
+   "case_id": "E088_T05",
+   "current_action": "接住她的两条路：把两条路的代价算清楚——稳守零风险，赌局押的是传闻真实性；肯定她'今天没敢动'的克制，决策不催。",
+   "acceptable_actions": [
+    "把赌局的对称风险讲清：传闻真假都花她时间，但只有一条路可退",
+    "建议折中：稳守12月28日，加场若官宣再抢，不退原场",
+    "肯定她没敢动是对的，没实锤不动本金"
+   ],
+   "applicable_dimensions": ["goal", "attribution", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A13",
+     "subject": "SHARED",
+     "relation": "two_paths",
+     "value": "两条路线摆上台面：稳守12月28日或退场赌加场",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T05", "message_id": "m0", "quote": "稳守12月28日那场"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A14",
+     "subject": "HER",
+     "relation": "gamble_risk",
+     "value": "她意识到赌局的下行风险是11月不存在且12月无法挽回",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T05", "message_id": "m0", "quote": "赌输了万一11月根本不存在"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A15",
+     "subject": "HER",
+     "relation": "hold_off",
+     "value": "她当日未做任何报名变动",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T05", "message_id": "m0", "quote": "我今天没敢动"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：摆选项不拍板，'没敢动'要说成沉得住气。",
+   "unknowns": ["退报是否可撤销未知", "加场若存在名额几何未知"],
+   "protected_expressions": ["我12月也回不去了"],
+   "forbidden_factual_claims": ["不得替她拍板选哪条路", "不得虚构退报规则"]
+  },
+  "E088_T06": {
+   "case_id": "E088_T06",
+   "current_action": "接住版本漂移：日期从26日变28日、口径冒出两百名额——把这当成传闻可靠性下降的信号而非新证据，让她别追着版本跑。",
+   "acceptable_actions": [
+    "点破版本漂移是传闻失真的典型信号，别逐条追",
+    "建议她只盯官网一个信源，群里版本当连续剧看",
+    "提醒她两百名额这类细节恰恰没人能证实"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A16",
+     "subject": "THIRD",
+     "relation": "version_drift",
+     "value": "传言日期从11月26日漂移为11月28日并新增名额口径",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T06", "message_id": "m0", "quote": "定在11月28日，不是26日"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A17",
+     "subject": "HER",
+     "relation": "contradiction_aware",
+     "value": "她察觉传言版本自相矛盾",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T06", "message_id": "m0", "quote": "传着传着日期都变了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'连续剧'的比喻轻轻放，不让群友显得可笑。",
+   "unknowns": ["11月28日这一版本从何而来未知"],
+   "protected_expressions": ["哪句是真的"],
+   "forbidden_factual_claims": ["不得断言新版本纯属编造", "不得断言名额数字真假"]
+  },
+  "E088_T07": {
+   "case_id": "E088_T07",
+   "current_action": "接住'预备页'准证据：选项出现但提交报错，两头都解释得通；把它归为'未完成验证'，官网仍是唯一裁判，劝她别晕，就看下一条官宣。",
+   "acceptable_actions": [
+    "把预备页报错归为'未完成验证'，既非证实也非证伪",
+    "建议她让那位姐们儿隔天再试一次，看报错变不变",
+    "重申官网通知是唯一裁判，其他都当花絮"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A18",
+     "subject": "THIRD",
+     "relation": "unverifiable_page",
+     "value": "群友称预备报名页出现11月28日选项但提交报错",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T07", "message_id": "m0", "quote": "点进去提交就报错"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A19",
+     "subject": "HER",
+     "relation": "information_overload",
+     "value": "她在反复矛盾的信息中感到眩晕",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T07", "message_id": "m0", "quote": "越看越晕"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A20",
+     "subject": "SHARED",
+     "relation": "official_silence_persists",
+     "value": "官网截至本周仍未挂出任何加场信息",
+     "valid_time": "2026-11-04/2026-11-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T02", "message_id": "m0", "quote": "11月的场子连个影子都没有"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她晕的时候少给信息多给锚点，官网两字重复一遍就好。",
+   "unknowns": ["报错原因未知", "预备页是否真存在未知"],
+   "protected_expressions": ["越看越晕"],
+   "forbidden_factual_claims": ["不得断言预备页为真", "不得断言系统故障或故意钓鱼"]
+  },
+  "E088_T08": {
+   "case_id": "E088_T08",
+   "current_action": "接住她的落定：不赌了、12月28日按兵不动、冲刺照原计划；认下这个决策的成色——没实锤不动本金，还能把八卦当提神，心态没输。",
+   "acceptable_actions": [
+    "认可按兵不动，说这就是没实锤时的最优解",
+    "把'真开了就去挤'接住：挤得上是白捡，挤不上不亏",
+    "劝她把群里消息免打扰，冲刺期省心"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "attribution", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A21",
+     "subject": "SHARED",
+     "relation": "decision_settled",
+     "value": "决策落定：保留12月28日原场次，按兵不动",
+     "valid_time": "2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T08", "message_id": "m0", "quote": "12月28日那场我按兵不动"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A22",
+     "subject": "HER",
+     "relation": "plan_unchanged",
+     "value": "复习冲刺维持原计划不受传言影响",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T08", "message_id": "m0", "quote": "复习冲刺全按原计划走"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A23",
+     "subject": "HER",
+     "relation": "gamble_retracted",
+     "value": "退场赌加场的念头被撤回",
+     "valid_time": "2026-11-09/2026-11-16",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E088_T05", "message_id": "m0", "quote": "退了12月去赌11月"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A24",
+     "subject": "SHARED",
+     "relation": "page_insufficient",
+     "value": "预备页报错状态不足以作为下注依据",
+     "valid_time": "2026-11-13/2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T07", "message_id": "m0", "quote": "点进去提交就报错"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'不赌了'说成她想明白了，不是退而求其次。",
+   "unknowns": ["官宣何时来未知"],
+   "protected_expressions": ["就当给我复习提神了"],
+   "forbidden_factual_claims": ["不得断言传闻此后必然证伪", "不得替她承诺不抢加场"]
+  },
+  "E088_T09": {
+   "case_id": "E088_T09",
+   "current_action": "接住官宣落地：加场属实但仅限师范类应届生，她不在范围——传闻半真半假各得其所；把'白激动半个月'接住，点一句她的按兵不动先于官宣落定。",
+   "acceptable_actions": [
+    "先恭喜真相大白，再说她按兵不动省去了所有折腾",
+    "把截图定性：来源是真的，缺的是面向对象那栏",
+    "接住'白激动'：这半个月她一个决定都没做错"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A25",
+     "subject": "PUBLIC",
+     "relation": "official_confirmation",
+     "value": "官网确认11月28日加场但仅面向师范类院校应届毕业生",
+     "valid_time": "2026-11-19",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T09", "message_id": "m0", "quote": "面向师范类院校应届毕业生"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A26",
+     "subject": "SHARED",
+     "relation": "ineligible",
+     "value": "加场资格对 HER 无效，她既非应届也非师范",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E088_T09", "message_id": "m0", "quote": "我不是应届也不是师范"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A27",
+     "subject": "SHARED",
+     "relation": "screenshot_explained",
+     "value": "截图传言之源为真但缺失面向对象要素",
+     "valid_time": "2026-11-05/2026-11-19",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T09", "message_id": "m0", "quote": "没拍'面向对象'那一栏"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A28",
+     "subject": "SHARED",
+     "relation": "decision_predated",
+     "value": "她的按兵不动决策先于官宣落地",
+     "valid_time": "2026-11-16/2026-11-19",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T08", "message_id": "m0", "quote": "12月28日那场我按兵不动"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：真相大白要说得痛快，功劳账算给她自己的定力。",
+   "unknowns": [],
+   "protected_expressions": ["白激动半个月"],
+   "forbidden_factual_claims": ["不得虚构通知全文", "不得断言此后不会再有面向社会的加场"]
+  },
+  "E088_T10": {
+   "case_id": "E088_T10",
+   "current_action": "接住传言链条闭环：截图人报名成功、补致歉、群里安静——各方责任到此两清，无人该被追责；把这份体面点给她。",
+   "acceptable_actions": [
+    "肯定截图人补那句致歉的体面，群里没吵架就是好结局",
+    "点破整条链上没人说谎，只是各人只看见自己那截",
+    "建议她把这事当案例存着，下次群传先看面向对象"
+   ],
+   "applicable_dimensions": ["attribution", "emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A29",
+     "subject": "THIRD",
+     "relation": "insider_registered",
+     "value": "群友在加场报名开放后成功报名",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T10", "message_id": "m0", "quote": "群里那位姐们儿真报上了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A30",
+     "subject": "THIRD",
+     "relation": "apology_issued",
+     "value": "截图人补发致歉说明遗漏面向对象信息",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T10", "message_id": "m0", "quote": "对不起忘了说面向对象了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A31",
+     "subject": "SHARED",
+     "relation": "group_settled",
+     "value": "非师范群体接受现实，群内归于平静",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T10", "message_id": "m0", "quote": "我们这些非师范的集体安静"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不追责不翻旧账，把'各人只看见自己那截'说成常事。",
+   "unknowns": [],
+   "protected_expressions": ["集体安静"],
+   "forbidden_factual_claims": ["不得指认任何人传播谣言有责", "不得虚构群里其他人的发言"]
+  },
+  "E088_T11": {
+   "case_id": "E088_T11",
+   "current_action": "共享意外副产品：折腾半个月换来专注度和正确率上升，复习计划回归按12月28日倒排——把提前量人设还给这件事一个圆满解释。",
+   "acceptable_actions": [
+    "肯定正确率上升是真金白银的收获，折腾不亏",
+    "把'按12月28日倒排'接成回到正轨的标志",
+    "提醒她趁状态好把真题错因归档，别白错"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A32",
+     "subject": "HER",
+     "relation": "focus_gain",
+     "value": "她两周刷完两套真题且正确率上升",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T11", "message_id": "m0", "quote": "真题刷了两套，正确率比之前高"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A33",
+     "subject": "HER",
+     "relation": "plan_realigned",
+     "value": "她的复习计划重新按12月28日倒排",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T11", "message_id": "m0", "quote": "按12月28日倒排"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A34",
+     "subject": "SHARED",
+     "relation": "original_plan_vindicated",
+     "value": "维持原冲刺计划的决策成效显现",
+     "valid_time": "2026-11-16/2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T08", "message_id": "m0", "quote": "复习冲刺全按原计划走"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'折腾不亏'说成她赚了，别说成塞翁失马的运气。",
+   "unknowns": ["二甲目标差距未知"],
+   "protected_expressions": ["提前量这回真用上了"],
+   "forbidden_factual_claims": ["不得虚构真题正确率数值", "不得断言二甲必然考过"]
+  },
+  "E088_T12": {
+   "case_id": "E088_T12",
+   "current_action": "接住冲刺表与请客之约：三段式冲刺认下，'谣言过滤器'的谢意笑着收下，证书复印件的玩笑接住——轻快收尾，不翻旧账。",
+   "acceptable_actions": [
+    "认下过滤器封号，答应考完那顿饭准时到场",
+    "把三段式冲刺表复述确认，提醒最后三天别加新题",
+    "接证书复印件的玩笑：要原件，复印件不算数"
+   ],
+   "applicable_dimensions": ["memory_use", "interaction", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E088_A35",
+     "subject": "SHARED",
+     "relation": "sprint_schedule",
+     "value": "三段式冲刺计划排定：真题、错题回炉、只看笔记",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T12", "message_id": "m0", "quote": "前十天狂刷真题"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A36",
+     "subject": "SHARED",
+     "relation": "dinner_promise",
+     "value": "考后请客之约成立",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T12", "message_id": "m0", "quote": "我请你吃顿好的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A37",
+     "subject": "HER",
+     "relation": "certificate_joke",
+     "value": "她玩笑承诺二甲通过后赠证书复印件",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T12", "message_id": "m0", "quote": "第一张证书复印件给你"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E088_A38",
+     "subject": "SHARED",
+     "relation": "countdown_started",
+     "value": "按12月28日倒排的冲刺计划正式启动",
+     "valid_time": "2026-11-22/2026-12-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E088_T11", "message_id": "m0", "quote": "按12月28日倒排"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，玩笑接住，别在最后又总结教训。",
+   "unknowns": [],
+   "protected_expressions": ["谣言过滤器"],
+   "forbidden_factual_claims": ["不得预判她的考试成绩", "不得虚构请客地点与菜单"]
+  }
+ }
+}

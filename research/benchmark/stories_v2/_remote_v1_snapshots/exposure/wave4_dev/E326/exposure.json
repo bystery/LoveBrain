@@ -1,0 +1,38 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A6 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T07 事实/人物归属/不确定性",
+  "日期与星期互核",
+  "地点变更跟踪",
+  "人物归属陷阱（我姐说/你说）"
+ ],
+ "title": "合唱团的钥匙与两场活动",
+ "may_decline_turns": [
+  "E326_T08",
+  "E326_T11"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "社区活动",
+ "primary_topic": "T07",
+ "lineage_group_id": "LG-E326",
+ "frozen_at": "2026-11-08T12:20:00+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E326/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A6",
+ "hashes": {
+  "episode.json": "c9732c1d7716dea2d9ed273e66b306aabfad884b5335aa7329bc588b4af73c8a",
+  "reference.json": "fcde6600467757e57d61b52e15492bcd614cc423c92028da11c7fa745f8aaa6c",
+  "timeline.json": "ce6c3460e65ca293d0f9f47ada86ab4de103eabbff988ffbacc30258fe66f20f",
+  "audit.md": "51aa02236ac5d81fc532f22d27a04d2c21d7cc9945d6b61fe0c5fcff3565a9b8"
+ }
+}

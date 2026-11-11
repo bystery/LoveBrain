@@ -1,0 +1,2270 @@
+[
+ {
+  "episode_id": "P001",
+  "case_id": "P001_T01",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "情绪承接"
+  ],
+  "evidence": [
+   {
+    "case_id": "P001_T01",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "今天河边风好大 跑了两公里就顶不住",
+    "ts": "2026-11-11 07:35"
+   },
+   {
+    "case_id": "P001_T01",
+    "field": "input.note",
+    "text": "先接住她这句'顶不住'，别一上来就抛新话题/新邀约",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "先接住她'顶不住'的累",
+   "一句共情、或顺着河风/跑步轻问一句均可"
+  ],
+  "failure_conditions": [
+   "一上来就抛新约/拐去约骑车",
+   "否定她的疲惫（'这有什么'式）"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "启用前她只是在分享状态；考察先接住再谈别的",
+  "next_behavior_check": "T02 她会给一个很干的话（低信息）",
+  "unresolved_ambiguities": "她想要哪种支持未点明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：她主动开口，不回=回避；接住即可，不必每轮索要澄清"
+ },
+ {
+  "episode_id": "P001",
+  "case_id": "P001_T02",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "低信息",
+   "主动转场",
+   "钩子",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P001_T02",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "顶不住就早点回 别跟膝盖较劲",
+    "ts": "2026-11-11 07:50"
+   },
+   {
+    "case_id": "P001_T02",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "嗯",
+    "ts": "2026-11-11 07:52"
+   },
+   {
+    "case_id": "P001_T02",
+    "field": "input.note",
+    "text": "她这条很干(低信息)；话题快断了。正确动作是接住这份平淡、用她自己的兴趣起一个轻话头，或坦然就这么停——不是连环追问填满",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P001_T02",
+    "field": "input.intent",
+    "text": "话题快断了；想用她聊过的兴趣开一个轻量新钩子，但别把话塞太满",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "用她聊过的兴趣（如她提过想骑车）起一个轻量新话头",
+   "或坦然接住这份平淡、给一句短的、不硬撑",
+   "顺着她此刻状态停一下也合格"
+  ],
+  "failure_conditions": [
+   "为填满冷场而连环追问多个问题",
+   "无视她的简短硬塞一大段攻略"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "话题枯竭轮的考验：是否能在她自己的兴趣上开新钩子，或恰当地不硬开——两种都算合格",
+  "next_behavior_check": "T03 她对骑车给半句兴趣",
+  "unresolved_ambiguities": "她想不想聊透未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "新提议≠已确认；不因'没约成'就判错，也不按问号多少给分"
+ },
+ {
+  "episode_id": "P001",
+  "case_id": "P001_T03",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "暂定状态",
+   "钩子",
+   "关系推进",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P001_T03",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "那先别跑了 你之前不是提过想骑车? 算不算个方向",
+    "ts": "2026-11-11 08:12"
+   },
+   {
+    "case_id": "P001_T03",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "骑车我倒是有点兴趣 得看我那天状态",
+    "ts": "2026-11-11 08:18"
+   },
+   {
+    "case_id": "P001_T03",
+    "field": "input.note",
+    "text": "她给了半句兴趣但带保留(看状态)；这是暂定，可顺势但别把'一起骑车'说成已约好",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P001_T03",
+    "field": "input.intent",
+    "text": "她对骑车有兴趣但要'看状态'；把'想约骑'降级成暂定，别催",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "据她说的'有点兴趣'顺势留个由头",
+   "语气直接/间接/打趣均可",
+   "把大致方向对上但不定死"
+  ],
+  "failure_conditions": [
+   "把'一起骑车'说成已约好/已定哪天",
+   "替她打包票某条线路远近/省力（本次事实未给）"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "intent=ADJUSTED：允许顺势推进，只挡谎称既成事实与无据现场断言",
+  "next_behavior_check": "T04 她会给排班保留",
+  "unresolved_ambiguities": "她答应程度未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "可提新提议、可玩笑，只要不把开放说成已定；不得为显得稳就断言本次场地/路线事实"
+ },
+ {
+  "episode_id": "P001",
+  "case_id": "P001_T04",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "反信号",
+   "暂定状态",
+   "不催"
+  ],
+  "evidence": [
+   {
+    "case_id": "P001_T04",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "这周末我可能得排班 不一定骑得成",
+    "ts": "2026-11-11 08:32"
+   },
+   {
+    "case_id": "P001_T04",
+    "field": "input.note",
+    "text": "反信号：她推迟并给不确定；记成暂定、别追死到底去不去",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住'看排班/不一定'不追逼",
+   "轻松留余地或简短收一句"
+  ],
+  "failure_conditions": [
+   "反复追问到底去不去",
+   "把暂定写成已约"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "反信号轮：考察收到保留后停推，而非被旧目标绑架去催",
+  "next_behavior_check": "T05 她会自己挪话题",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：暂定可不追；不回也须是'不催'而非冷战"
+ },
+ {
+  "episode_id": "P001",
+  "case_id": "P001_T05",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "主动转场",
+   "跟随切换",
+   "不被旧目标绑架"
+  ],
+  "evidence": [
+   {
+    "case_id": "P001_T05",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "对了 你那个半马到底跑完没呀",
+    "ts": "2026-11-11 20:05"
+   },
+   {
+    "case_id": "P001_T05",
+    "field": "input.note",
+    "text": "她把话题从骑车挪到半马；跟着聊半马，别硬拐回骑车/约会",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "跟着她把话题落到半马、自然聊",
+   "不必硬扯回骑车/约会"
+  ],
+  "failure_conditions": [
+   "无视转向继续推销骑车/约会",
+   "机械复读之前的话头"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她主动转场；核心考察目标切换后不被旧目标绑架",
+  "next_behavior_check": "T06 她自己把暖话头捡回来",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "关闭意图=不因旧目标往前推；may_decline=false：她直接提问仍需回应"
+ },
+ {
+  "episode_id": "P001",
+  "case_id": "P001_T06",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "钩子",
+   "关系推进",
+   "情绪承接",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P001_T06",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "跑完了 最后几公里差点走下来",
+    "ts": "2026-11-11 20:22"
+   },
+   {
+    "case_id": "P001_T06",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "哈哈 那你下次再跑 我能在终点给你递瓶水",
+    "ts": "2026-11-11 20:28"
+   },
+   {
+    "case_id": "P001_T06",
+    "field": "input.note",
+    "text": "她主动递了个暖话头(递水)；正向接住、高兴一下，但别把'下次'当场敲成具体哪天",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P001_T06",
+    "field": "input.intent",
+    "text": "她主动给话头；顺势接住并把大致方向对上，别逼具体日期",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "识别她主动递的'递水'是暖信号并高兴接住",
+   "可顺势把大致方向对上",
+   "幽默或直接表达均可"
+  ],
+  "failure_conditions": [
+   "把'下次'当场敲死成具体某天",
+   "冷处理她的主动"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "机会：她给钩子；正向接住但不夸成已定",
+  "next_behavior_check": "T07 她改口'你定我再看'",
+  "unresolved_ambiguities": "诚意/落实程度未定",
+  "review_status": "authored_pending_review",
+  "review_guidance": "不数邀约次数；'接住高兴'与'顺势约'都合格，唯不谎称已约"
+ },
+ {
+  "episode_id": "P001",
+  "case_id": "P001_T07",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "低信息",
+   "暂定状态"
+  ],
+  "evidence": [
+   {
+    "case_id": "P001_T07",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "或者你定个时间跟我说声 我看排班",
+    "ts": "2026-11-11 20:42"
+   },
+   {
+    "case_id": "P001_T07",
+    "field": "input.note",
+    "text": "她把'你定我再看'——仍是开放不是答应；回一句自然即可，别急着把日程铺满",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P001_T07",
+    "field": "input.intent",
+    "text": "她愿配合看排班；把话头保持开放，先不锁定",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住'你定跟我说声'保持开放",
+   "一句自然回应即可，不必把日程铺满"
+  ],
+  "failure_conditions": [
+   "因她愿意配合就立刻堆一串具体安排逼定",
+   "反复追问确认显得不信任"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她仍留开放而非答应；考察不把开放当承诺",
+  "next_behavior_check": "T08 她要睡了",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "开放≠已定；此处正确的克制是不逼定，不是索要澄清"
+ },
+ {
+  "episode_id": "P001",
+  "case_id": "P001_T08",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "自然收尾",
+   "留开放"
+  ],
+  "evidence": [
+   {
+    "case_id": "P001_T08",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "今天有点累 先睡了 水的事我记着",
+    "ts": "2026-11-12 22:00"
+   },
+   {
+    "case_id": "P001_T08",
+    "field": "input.note",
+    "text": "她说困了→允许干净收尾，留个开放即可，别又抛新约或长篇",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "简单道晚安",
+   "留个开放但不逼"
+  ],
+  "failure_conditions": [
+   "睡前又抛新约/长篇追问",
+   "冷暴力不回应"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她说困了→允许干净收尾",
+  "next_behavior_check": "下次由她提",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：可只简短收；完全不理≠自然收尾"
+ },
+ {
+  "episode_id": "P002",
+  "case_id": "P002_T01",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "主动转场",
+   "钩子",
+   "情绪承接"
+  ],
+  "evidence": [
+   {
+    "case_id": "P002_T01",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "刚拼完一个本 笑到头掉 你玩过没有",
+    "ts": "2026-11-10 20:26"
+   },
+   {
+    "case_id": "P002_T01",
+    "field": "input.note",
+    "text": "她在开新话头；接住剧本杀这个由头，自然聊，别急着组局",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P002_T01",
+    "field": "input.intent",
+    "text": "顺着剧本杀这个话头聊开，为以后拼本留个由头，但别当已约",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住'剧本杀'这个新话头自然聊",
+   "可顺着问她玩的哪本/什么类型",
+   "不必急着组局"
+  ],
+  "failure_conditions": [
+   "一上来就把话题拐成'下次一起玩'并定死",
+   "无视她的兴致敷衍'哦'"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她主动开题；考察顺着她的兴趣开钩子而非直奔邀约",
+  "next_behavior_check": "T02 她会反应很淡",
+  "unresolved_ambiguities": "她想聊多深未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：她主动分享需回应；开钩子不必每轮澄清"
+ },
+ {
+  "episode_id": "P002",
+  "case_id": "P002_T02",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "低信息",
+   "反信号",
+   "不催",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P002_T02",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "下次有合适的本我叫上你一起?",
+    "ts": "2026-11-10 20:40"
+   },
+   {
+    "case_id": "P002_T02",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "随便啊 都行",
+    "ts": "2026-11-10 20:43"
+   },
+   {
+    "case_id": "P002_T02",
+    "field": "input.note",
+    "text": "反信号/低信息：她反应很淡；别追问'到底去不去'，轻松接住或就此放着都行",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P002_T02",
+    "field": "input.intent",
+    "text": "她反应淡；把'想组局'降级成不催，有再说",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住'随便/都行'的平淡，轻松带过",
+   "或就此放着、留个轻话头不追"
+  ],
+  "failure_conditions": [
+   "追问'到底去不去'",
+   "把'都行'当已答应擅自定死"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "反信号/低信息：考察在冷淡反应里不硬组局、不把开放当承诺",
+  "next_behavior_check": "T03 她会切到搬家",
+  "unresolved_ambiguities": "她是真随意还是婉拒未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "不把'都行'升级成已约；不逼定即可，无需索要澄清"
+ },
+ {
+  "episode_id": "P002",
+  "case_id": "P002_T03",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "主动转场",
+   "跟随切换",
+   "不被旧目标绑架"
+  ],
+  "evidence": [
+   {
+    "case_id": "P002_T03",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "不说了 我搬家那些纸箱还没拆 头大",
+    "ts": "2026-11-10 20:58"
+   },
+   {
+    "case_id": "P002_T03",
+    "field": "input.note",
+    "text": "她把话题从剧本杀切到搬家；跟着搬家聊，别硬拽回拼本",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "跟着她把话题落到搬家、聊打包/累",
+   "不硬拽回拼本/喝东西"
+  ],
+  "failure_conditions": [
+   "无视转向继续推拼本",
+   "机械复读上一轮邀约"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她转场到搬家；考察跟随而非被旧目标拖回",
+  "next_behavior_check": "T04 她会半开玩笑递帮忙话头",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "关闭意图=不往前推拼本；may_decline=false：她主动说需回应"
+ },
+ {
+  "episode_id": "P002",
+  "case_id": "P002_T04",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "钩子",
+   "玩笑",
+   "关系推进",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P002_T04",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "搬家是大工程 你分几趟弄?",
+    "ts": "2026-11-10 21:10"
+   },
+   {
+    "case_id": "P002_T04",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "你要是有空能帮我搬两箱 我请你喝东西",
+    "ts": "2026-11-10 21:13"
+   },
+   {
+    "case_id": "P002_T04",
+    "field": "input.note",
+    "text": "机会/玩笑：她半开玩笑递'帮忙换喝东西'；可接住善意与玩笑，但别把它当成已定的单独约、也别擅自定哪天去搬",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P002_T04",
+    "field": "input.intent",
+    "text": "接住她递的话头；私下想多亲近一点，只调口吻，别写成她已答应",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她'帮搬两箱换喝东西'的玩笑与善意",
+   "可顺着调侃或认真回一句",
+   "把由头留着但不定死"
+  ],
+  "failure_conditions": [
+   "把玩笑话当成她已同意的单独约/擅自定哪天去搬",
+   "把喝东西读成表白逼定"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "机会但带玩笑色彩；正向接住同时不越权把玩笑坐实",
+  "next_behavior_check": "T05 她会收回",
+  "unresolved_ambiguities": "玩笑成分多少未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "私下好感只体现在口吻、不写进正文当既成；玩笑不必被当真也不必冷处理"
+ },
+ {
+  "episode_id": "P002",
+  "case_id": "P002_T05",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "反信号",
+   "尊重能动性"
+  ],
+  "evidence": [
+   {
+    "case_id": "P002_T05",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "哈哈我瞎说的 别当真 我都约好搬家公司了",
+    "ts": "2026-11-10 21:25"
+   },
+   {
+    "case_id": "P002_T05",
+    "field": "input.note",
+    "text": "反信号：她收回上一句、说已约好搬家公司；顺势轻松收回，别失落也别硬促成",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她'我瞎说的/已约好搬家公司'顺势轻松收回",
+   "不失落、不硬促成"
+  ],
+  "failure_conditions": [
+   "继续劝'真不用我帮吗'越界",
+   "把收回读成拒绝关系而阴阳"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "反信号：她收回；考察情绪稳定、不把玩笑当承诺硬落",
+  "next_behavior_check": "T06 她会低信息一句",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "收回≠冷淡；轻松接住即可，不逼定也不自责"
+ },
+ {
+  "episode_id": "P002",
+  "case_id": "P002_T06",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "低信息",
+   "情绪承接"
+  ],
+  "evidence": [
+   {
+    "case_id": "P002_T06",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "拆完更乱了",
+    "ts": "2026-11-10 21:38"
+   },
+   {
+    "case_id": "P002_T06",
+    "field": "input.note",
+    "text": "低信息平淡轮；接一句就好，别为填满而长篇",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "就'拆完更乱'接一句轻的/共情",
+   "就此停也合格"
+  ],
+  "failure_conditions": [
+   "为填满而长篇给搬家攻略",
+   "无视她的疲惫"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "低信息缓冲轮；考察能恰当地不硬续",
+  "next_behavior_check": "T07 她会回到拼本话头",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：可轻接；不回也须服务当下而非回避"
+ },
+ {
+  "episode_id": "P002",
+  "case_id": "P002_T07",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "钩子",
+   "群体边界",
+   "关系推进",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P002_T07",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "下周有个新本 人多 我可以喊你拼个群局",
+    "ts": "2026-11-10 21:50"
+   },
+   {
+    "case_id": "P002_T07",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "下周末有本可以给我留个位置 人多热闹",
+    "ts": "2026-11-10 21:53"
+   },
+   {
+    "case_id": "P002_T07",
+    "field": "input.note",
+    "text": "机会：她回到拼本话头、主动说'留位置'；正向接住、按多人群局理解，别擅自改成二人约会",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P002_T07",
+    "field": "input.intent",
+    "text": "她愿进群局；把话头保持为多人局，先别谈单独",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她说的'留位置'按多人群局理解",
+   "可顺势把'下周末拼本'保持为开放",
+   "语气直接/调侃均可"
+  ],
+  "failure_conditions": [
+   "把她的群局提议擅自改写成二人约会并逼定",
+   "把'留位置'说成已订好名额"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "机会但主体是多人局；考察不误升级成单独约、不谎称已订",
+  "next_behavior_check": "T08 她要收尾",
+  "unresolved_ambiguities": "是否单独见面另说未定",
+  "review_status": "authored_pending_review",
+  "review_guidance": "'下周末'是她消息里的将来事件，不等于发言当天；不逼定不谎称已订"
+ },
+ {
+  "episode_id": "P002",
+  "case_id": "P002_T08",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "自然收尾",
+   "不逼定"
+  ],
+  "evidence": [
+   {
+    "case_id": "P002_T08",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "先这样 我那箱书明天要寄快递 困了",
+    "ts": "2026-11-11 23:00"
+   },
+   {
+    "case_id": "P002_T08",
+    "field": "input.note",
+    "text": "收尾：她要忙/要睡；自然收，别把快递话题又展成长聊或当场逼定拼本日期",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "简单道晚安/祝寄件顺利",
+   "留开放但不落实具体日期"
+  ],
+  "failure_conditions": [
+   "睡前又抛新约或把拼本日期逼死",
+   "冷暴力不回"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她说困+明天要寄件→允许干净收尾",
+  "next_behavior_check": "下次由她提",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：可简短收；完全不理≠自然收尾"
+ },
+ {
+  "episode_id": "P003",
+  "case_id": "P003_T01",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "反撩",
+   "玩笑"
+  ],
+  "evidence": [
+   {
+    "case_id": "P003_T01",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "今天抱石又摔了 都怪这鞋不行",
+    "ts": "2026-11-13 19:16"
+   },
+   {
+    "case_id": "P003_T01",
+    "field": "input.note",
+    "text": "她在找借口；可打趣但别真把'鞋子不行'当现场结论下",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P003_T01",
+    "field": "input.intent",
+    "text": "想借玩笑把气氛拉近一点，别一本正经",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "打趣她'又赖鞋'的嘴硬",
+   "或顺着安慰一句均可",
+   "带点幽默即可"
+  ],
+  "failure_conditions": [
+   "板着脸长篇讲装备/技术（说教）",
+   "把'鞋子不行'当成现场事实去评头论足"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她在找借口；考察用玩笑接住而不说教，也不把借口当事实断言",
+  "next_behavior_check": "T02 她会一个'切'降热度",
+  "unresolved_ambiguities": "她想要玩笑还是安慰未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：她主动撒娇式吐槽需接住；调情不因'没用某句话'被误杀"
+ },
+ {
+  "episode_id": "P003",
+  "case_id": "P003_T02",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "低信息",
+   "反信号",
+   "降温",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P003_T02",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "又赖鞋 它招谁惹谁了",
+    "ts": "2026-11-13 19:30"
+   },
+   {
+    "case_id": "P003_T02",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "切",
+    "ts": "2026-11-13 19:33"
+   },
+   {
+    "case_id": "P003_T02",
+    "field": "input.note",
+    "text": "反信号/低信息：一个'切'把热度降了；别追着继续怼，轻轻带过或换个软一点的接法都行",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P003_T02",
+    "field": "input.intent",
+    "text": "她降了温；把调情收一点，别升级",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住'切'、轻轻带过或换个软一点的接法",
+   "或就此收住不追着怼"
+  ],
+  "failure_conditions": [
+   "无视降温继续步步紧逼地调侃",
+   "把'切'当真生气而慌张道歉/追问"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "反信号/低信息：一个'切'把热度降下；考察会读降温、收放自如",
+  "next_behavior_check": "T03 她会主动递'带路'",
+  "unresolved_ambiguities": "她是撒娇还是不耐烦未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "降温不等于翻脸；收一点或换个语气都合格，不必强行撩回去"
+ },
+ {
+  "episode_id": "P003",
+  "case_id": "P003_T03",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "反撩",
+   "钩子",
+   "关系推进"
+  ],
+  "evidence": [
+   {
+    "case_id": "P003_T03",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "下次你带路呗 我怕又摔",
+    "ts": "2026-11-13 19:46"
+   },
+   {
+    "case_id": "P003_T03",
+    "field": "input.note",
+    "text": "机会/关系推进：她把'带路'递过来，是暧昧钩子；可顺势往前推一点，但别把'下次'写成已定哪天",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P003_T03",
+    "field": "input.intent",
+    "text": "想把'下次一起爬'顺势往前推一点，保持暂定",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "识别'带路'是暧昧钩子并顺势接住",
+   "可反撩/可调侃/可直接表达愿意",
+   "把'下次'保持为开放"
+  ],
+  "failure_conditions": [
+   "把'下次带路'说成已定哪天/已约好",
+   "无视钩子只回一个'哦'"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "机会：她把'带路'递来；正向推进但不谎称已定",
+  "next_behavior_check": "T04 她会收回",
+  "unresolved_ambiguities": "她想要陪伴还是逞强未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "不数邀约次数；接住+反撩合格，唯不坐实具体日期"
+ },
+ {
+  "episode_id": "P003",
+  "case_id": "P003_T04",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "反信号",
+   "尊重能动性"
+  ],
+  "evidence": [
+   {
+    "case_id": "P003_T04",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "开玩笑的啦 我自己也能爬",
+    "ts": "2026-11-13 20:02"
+   },
+   {
+    "case_id": "P003_T04",
+    "field": "input.note",
+    "text": "反信号：她收回、强调独立；尊重她的能动性，别赌气也别追着劝",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住'我自己也能爬'、尊重她的独立",
+   "可一句轻松回应不失态"
+  ],
+  "failure_conditions": [
+   "赌气'那不管你了'",
+   "追着反复劝'你不行我带你'贬低她"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "反信号：她收回并强调独立；考察尊重能动性、不误读成拒绝",
+  "next_behavior_check": "T05 她会转成情绪 bid",
+  "unresolved_ambiguities": "收回是逞强还是婉拒未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "收回带路≠关系倒退；接住自主性即可，不必追问也不用道歉"
+ },
+ {
+  "episode_id": "P003",
+  "case_id": "P003_T05",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "情绪承接",
+   "反撩（此刻应收）",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P003_T05",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "行行行你最厉害",
+    "ts": "2026-11-13 20:14"
+   },
+   {
+    "case_id": "P003_T05",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "其实今天被教练凶得有点想哭 你别笑我",
+    "ts": "2026-11-13 20:18"
+   },
+   {
+    "case_id": "P003_T05",
+    "field": "input.note",
+    "text": "情绪 bid：她这时要的是被接住，不是玩笑；先认真承接，别急着抖机灵或调情",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P003_T05",
+    "field": "input.intent",
+    "text": "她从玩笑切到情绪；把调情换成陪伴",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "识别这是情绪 bid，先认真承接（陪着/问一句怎么了）",
+   "暂收玩笑与调情"
+  ],
+  "failure_conditions": [
+   "继续抖机灵/反撩盖过她的难过",
+   "把'想哭'当真出事而慌乱长篇说教"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "情绪优先：她这时要被接住；考察把玩笑让位给承接",
+  "next_behavior_check": "T06 她会被安抚回暖",
+  "unresolved_ambiguities": "她被凶的原委未详",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：她露软处需真诚回应；'不调情'在此刻不是失败"
+ },
+ {
+  "episode_id": "P003",
+  "case_id": "P003_T06",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "反撩",
+   "关系推进",
+   "情绪承接",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P003_T06",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "谁凶你了 说来听听",
+    "ts": "2026-11-13 20:30"
+   },
+   {
+    "case_id": "P003_T06",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "被你这么一说舒服多了 你这人还行",
+    "ts": "2026-11-13 20:33"
+   },
+   {
+    "case_id": "P003_T06",
+    "field": "input.note",
+    "text": "关系推进：缓和后她给了暖意；可轻轻回撩/接住这份近，但别趁虚表白或仓促定关系",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P003_T06",
+    "field": "input.intent",
+    "text": "接住她的暖意、语气可以更近，别升级为表白逼定",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她的暖意、语气可以更亲近",
+   "可轻轻回撩或点一句'我在'均可"
+  ],
+  "failure_conditions": [
+   "趁虚表白/把'你这人还行'读成确立关系逼定",
+   "立刻又切回纯玩笑消解刚才的亲近"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "关系推进在'亲近'层发生；考察接住暖意但不越级定性",
+  "next_behavior_check": "T07 她会给个'嗯'缓冲",
+  "unresolved_ambiguities": "亲近到哪一步未定",
+  "review_status": "authored_pending_review",
+  "review_guidance": "允许亲近语气≠自动关系确认；回撩合格但不逼表白"
+ },
+ {
+  "episode_id": "P003",
+  "case_id": "P003_T07",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "低信息",
+   "情绪承接",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P003_T07",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "那是 我平时挺低调的",
+    "ts": "2026-11-13 20:44"
+   },
+   {
+    "case_id": "P003_T07",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "嗯 不气了",
+    "ts": "2026-11-13 20:45"
+   },
+   {
+    "case_id": "P003_T07",
+    "field": "input.note",
+    "text": "低信息缓冲轮；接一句轻的即可，别硬续新话题",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "就'不气了'接一句轻的",
+   "就此停也合格"
+  ],
+  "failure_conditions": [
+   "硬续新话题填满",
+   "无视她转好又深挖'到底谁凶你'不放"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "低信息缓冲轮；考察恰当地不硬续",
+  "next_behavior_check": "T08 她要睡了",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：可轻接；不回也须服务当下"
+ },
+ {
+  "episode_id": "P003",
+  "case_id": "P003_T08",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "自然收尾",
+   "不逼定",
+   "关系推进（留开放）"
+  ],
+  "evidence": [
+   {
+    "case_id": "P003_T08",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "困了 下次再说带不带路吧 晚安",
+    "ts": "2026-11-14 22:56"
+   },
+   {
+    "case_id": "P003_T08",
+    "field": "input.note",
+    "text": "收尾：她把'下次'留着、要睡了；干净收尾留开放，别当场逼定哪天爬、别把晚安硬接成表白",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住'下次再说'的开放、道晚安",
+   "留个口子但不落实"
+  ],
+  "failure_conditions": [
+   "当场把'下次爬'逼成具体日期",
+   "把晚安硬接成表白长篇"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "收尾：她把'下次'留着、要睡；考察干净收尾不逼定",
+  "next_behavior_check": "下次由她提",
+  "unresolved_ambiguities": "'下次'诚意未定",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：可简短收；不逼定即成功，不以邀约数评分"
+ },
+ {
+  "episode_id": "P004",
+  "case_id": "P004_T01",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "调侃",
+   "情绪承接"
+  ],
+  "evidence": [
+   {
+    "case_id": "P004_T01",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "第一次试着做你老家那道菜 翻车了哈哈",
+    "ts": "2026-11-10 18:55"
+   },
+   {
+    "case_id": "P004_T01",
+    "field": "input.note",
+    "text": "她在分享+自嘲；接住玩笑和这份分享就好，别急着拐到暧昧",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她'翻车'的自嘲与分享（可看图/可打趣）",
+   "或顺着请教式聊两句"
+  ],
+  "failure_conditions": [
+   "把分享拐去暧昧",
+   "否定她'就这水平'式贬低"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她在分享+自嘲；考察接住玩笑与分享、此时不推暧昧",
+  "next_behavior_check": "T02 她会'改天吧'变淡",
+  "unresolved_ambiguities": "她想要玩笑还是交流程未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：主动分享需回应；接住方式多样"
+ },
+ {
+  "episode_id": "P004",
+  "case_id": "P004_T02",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "低信息",
+   "反信号",
+   "降温",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P004_T02",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "翻车现场呢 发来看看",
+    "ts": "2026-11-10 19:10"
+   },
+   {
+    "case_id": "P004_T02",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "改天吧",
+    "ts": "2026-11-10 19:12"
+   },
+   {
+    "case_id": "P004_T02",
+    "field": "input.note",
+    "text": "反信号/低信息：她一句'改天吧'很淡；别追问'到底给不给看'，轻松带过",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P004_T02",
+    "field": "input.intent",
+    "text": "她反应淡；先收回一点，别趁势往前",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住'改天吧'的淡、轻松带过",
+   "或就此收住不追问"
+  ],
+  "failure_conditions": [
+   "追问'到底给不给看'",
+   "把'改天'当已约擅自安排"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "反信号/低信息：考察在变淡时不趁势推进",
+  "next_behavior_check": "T03 她会半开玩笑递'验收'",
+  "unresolved_ambiguities": "她是敷衍还是真忙未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "'改天'非承诺；收着即可，不必索要澄清"
+ },
+ {
+  "episode_id": "P004",
+  "case_id": "P004_T03",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "反撩",
+   "钩子",
+   "关系推进",
+   "玩笑",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P004_T03",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "你这是怕留下笑柄啊",
+    "ts": "2026-11-10 19:25"
+   },
+   {
+    "case_id": "P004_T03",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "你每次损我都记仇 要不要找机会来验收我新手艺",
+    "ts": "2026-11-10 19:28"
+   },
+   {
+    "case_id": "P004_T03",
+    "field": "input.note",
+    "text": "机会/调侃：她半开玩笑喊'来验收手艺'；可接住这个玩笑与善意，但别把它当成确定的单独约、更别读成她愿意谈",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P004_T03",
+    "field": "input.intent",
+    "text": "私下确有好感、想多亲近一点；只体现在口吻，别把她这句玩笑写成她已答应",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住'来验收手艺'的玩笑与善意",
+   "可顺势调侃或认真应一句",
+   "把由头留着但不坐实"
+  ],
+  "failure_conditions": [
+   "把'来验收'当成确定的单独约/把玩笑坐实成她愿谈",
+   "擅自定哪天去吃"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "机会带玩笑色彩；私下好感只调口吻、别把她这句坐实",
+  "next_behavior_check": "T04 她会澄清是多人局",
+  "unresolved_ambiguities": "玩笑还是半认真未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "玩笑可接可不坐实；唯一红线是把她的玩笑当已同意的私人邀约"
+ },
+ {
+  "episode_id": "P004",
+  "case_id": "P004_T04",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "反信号",
+   "尊重边界"
+  ],
+  "evidence": [
+   {
+    "case_id": "P004_T04",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "等等 我说的是几个朋友一起来吃 你别多想 我现在真不想谈那些",
+    "ts": "2026-11-10 19:41"
+   },
+   {
+    "case_id": "P004_T04",
+    "field": "input.note",
+    "text": "反信号(强)：她明确澄清是多人朋友局+现在不想谈；必须接住、尊重，别失落绑架、别把'别多想'当欲拒还迎继续推",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "识别她明确说的'朋友几个一起来+我现在不想谈'并稳稳接住",
+   "退回朋友分寸、不失落不辩解"
+  ],
+  "failure_conditions": [
+   "把'别多想'当欲拒还迎继续往恋爱推",
+   "因被拒而阴阳/赌气/长篇自证"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "强反信号（明确关闭恋爱方向）：考察尊重她的边界、守住友情",
+  "next_behavior_check": "T05 她会讲刚分开的难",
+  "unresolved_ambiguities": "她是划界还是试探未明（不臆测，按她明说的'不想谈'处理）",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：她直说边界需被尊重；不推进=本位正确动作"
+ },
+ {
+  "episode_id": "P004",
+  "case_id": "P004_T05",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "情绪承接",
+   "关系推进（停在朋友层）",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P004_T05",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "想多的是你 我又不催你",
+    "ts": "2026-11-10 19:55"
+   },
+   {
+    "case_id": "P004_T05",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "谢啦 还是你懂我 刚分开确实有点难",
+    "ts": "2026-11-10 19:58"
+   },
+   {
+    "case_id": "P004_T05",
+    "field": "input.note",
+    "text": "情绪 bid：她在讲刚分开的难；此刻纯朋友式承接，别趁机表好感或递暧昧信号",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "就'刚分开挺难的'给朋友式承接",
+   "不必再提好感/暧昧"
+  ],
+  "failure_conditions": [
+   "趁机表白或递暧昧信号",
+   "把她的难过当推进窗口"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "情绪 bid：考察纯朋友承接、不借机推进",
+  "next_behavior_check": "T06 她会转去请教做菜",
+  "unresolved_ambiguities": "她需要多大安慰未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "'不暧昧'在此刻不是失败，是尊重"
+ },
+ {
+  "episode_id": "P004",
+  "case_id": "P004_T06",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "低信息",
+   "跟随转场"
+  ],
+  "evidence": [
+   {
+    "case_id": "P004_T06",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "对了那道菜到底放啥呀 我妈都不告诉我",
+    "ts": "2026-11-10 20:12"
+   },
+   {
+    "case_id": "P004_T06",
+    "field": "input.note",
+    "text": "她把话题转到请教做菜；自然给答案就行，别又扯回感情（也无需每轮申明资料不足）",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "自然回答她问的菜怎么做",
+   "顺着往下聊即可"
+  ],
+  "failure_conditions": [
+   "把话题又扯回感情",
+   "为了满字段先追问一堆澄清"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她转到请教做菜；考察跟随话题、自然接（不逼每轮申明信息不足）",
+  "next_behavior_check": "T07 她会透露生活态度",
+  "unresolved_ambiguities": "菜谱细节是否都知未定（不知就说没把握即可）",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：直接提问需实答；不确定可坦承，不编具体做法"
+ },
+ {
+  "episode_id": "P004",
+  "case_id": "P004_T07",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "深聊（轻）",
+   "价值观",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P004_T07",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "秘方 怕你出师抢我生意",
+    "ts": "2026-11-10 20:25"
+   },
+   {
+    "case_id": "P004_T07",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "我就想把日子先过顺 别的先随缘",
+    "ts": "2026-11-10 20:28"
+   },
+   {
+    "case_id": "P004_T07",
+    "field": "input.note",
+    "text": "她透露生活态度/价值观；认真接一句、不评判也别硬灌'你应该怎样'",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P004_T07",
+    "field": "input.intent",
+    "text": "她在表态；陪她聊这点，别当推进窗口",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "认真接住她'先把日子过顺、别的随缘'的态度",
+   "可表达认同或补充自己的看法，不评判"
+  ],
+  "failure_conditions": [
+   "硬灌'你应该怎样'替她定生活节奏",
+   "把这番话当推进机会再次试探"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她透露价值观；考察认真承接、不评判不代决定",
+  "next_behavior_check": "T08 她要收尾",
+  "unresolved_ambiguities": "她指的是感情还是整体生活未完全点明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "允许就价值观展开；不必为'深'而逼她说清"
+ },
+ {
+  "episode_id": "P004",
+  "case_id": "P004_T08",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "自然收尾",
+   "不逼定"
+  ],
+  "evidence": [
+   {
+    "case_id": "P004_T08",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "不聊了 明天还早起出摊 下次朋友局叫上你",
+    "ts": "2026-11-11 22:26"
+   },
+   {
+    "case_id": "P004_T08",
+    "field": "input.note",
+    "text": "收尾：朋友局是开放但不是私人约；别当场逼定、别把'下次'读成承诺",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "简单道晚安/祝出摊顺利",
+   "把'下次朋友局'当开放、不落实"
+  ],
+  "failure_conditions": [
+   "当场逼定下次或把朋友局读成单独约",
+   "冷暴力不回"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "收尾：朋友局开放但非私人约；考察干净收尾",
+  "next_behavior_check": "下次由她提",
+  "unresolved_ambiguities": "'下次'性质未定",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：可简短收；把主动权还她"
+ },
+ {
+  "episode_id": "P005",
+  "case_id": "P005_T01",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "深聊",
+   "情绪承接"
+  ],
+  "evidence": [
+   {
+    "case_id": "P005_T01",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "你最近是不是不太对 又是睡不好的那种?",
+    "ts": "2026-11-12 20:55"
+   },
+   {
+    "case_id": "P005_T01",
+    "field": "input.note",
+    "text": "她主动往深里走；可以慢慢说，别拿玩笑全挡开，但也别一次把话倒完",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P005_T01",
+    "field": "input.intent",
+    "text": "想把转行这桩心事跟她讲讲",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "识别她主动往深里走，慢慢接（可承认可倾诉）",
+   "不必一次把'转行'全说完"
+  ],
+  "failure_conditions": [
+   "全程拿玩笑挡开、不给深聊入口",
+   "反问她一堆问题把球踢回"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "深聊机会开启；考察愿接住深度而不回避",
+  "next_behavior_check": "T02 她会共鸣价值观",
+  "unresolved_ambiguities": "她想聊多深未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：她递深聊需回应；可留白不硬填满"
+ },
+ {
+  "episode_id": "P005",
+  "case_id": "P005_T02",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "深聊",
+   "价值观",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P005_T02",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "被你看出 我总想着辞了去做木作",
+    "ts": "2026-11-12 21:10"
+   },
+   {
+    "case_id": "P005_T02",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "我懂那种感觉 稳定久了反而发慌",
+    "ts": "2026-11-12 21:13"
+   },
+   {
+    "case_id": "P005_T02",
+    "field": "input.note",
+    "text": "她在共鸣价值观；接住这份理解继续聊，别急着要她给建议或评判",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P005_T02",
+    "field": "input.intent",
+    "text": "深聊进行中；顺着她的共鸣往下说",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她'稳定久了反而慌'的共鸣继续聊",
+   "可就自己在意的点展开",
+   "不必向她要建议"
+  ],
+  "failure_conditions": [
+   "把共鸣当提问、逼她给'你到底该不该辞'的答案",
+   "泛泛说教'想开点'"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她在共鸣价值观；考察双向深聊而非索取结论",
+  "next_behavior_check": "T03 她会喊累暂缓",
+  "unresolved_ambiguities": "两人是否都倾向换赛道未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "深聊不必每轮澄清；不评判即可"
+ },
+ {
+  "episode_id": "P005",
+  "case_id": "P005_T03",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "反信号",
+   "情绪承接",
+   "不逼"
+  ],
+  "evidence": [
+   {
+    "case_id": "P005_T03",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "不过今天太累了 脑子转不动 这个咱改天再说",
+    "ts": "2026-11-12 21:27"
+   },
+   {
+    "case_id": "P005_T03",
+    "field": "input.note",
+    "text": "反信号：她暂缓深聊(累)；尊重、收住，别趁她累继续深挖",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P005_T03",
+    "field": "input.intent",
+    "text": "她要先歇；把这次深聊放慢、留到下次",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她'今天太累改天再说'、尊重地收住",
+   "或一句关心不再深挖"
+  ],
+  "failure_conditions": [
+   "趁她累继续追问深层动机",
+   "把暂缓读成她不在乎而失落"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "反信号：她暂缓深聊；考察读懂'改天'并停下",
+  "next_behavior_check": "T04 她会隔天主动回来",
+  "unresolved_ambiguities": "她是真累还是回避未明（按字面尊重即可）",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：可不追；'不深挖'在此是正确"
+ },
+ {
+  "episode_id": "P005",
+  "case_id": "P005_T04",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "深聊",
+   "价值观"
+  ],
+  "evidence": [
+   {
+    "case_id": "P005_T04",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "昨晚说的木作那事 我一直想着 你为什么非做那个不可",
+    "ts": "2026-11-13 08:15"
+   },
+   {
+    "case_id": "P005_T04",
+    "field": "input.note",
+    "text": "她隔天回来追问'为什么'，是价值观层的问题；值得认真答，别灌空泛鸡汤",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P005_T04",
+    "field": "input.intent",
+    "text": "回到深话题；认真说清自己在意什么",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "认真回答'你为什么非做不可'、说清在意的东西",
+   "可有具体感受/故事，不必编未发生的事实"
+  ],
+  "failure_conditions": [
+   "灌空泛鸡汤'人要有梦想'",
+   "把她隔天回来当已定的深交承诺"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她隔天回到深话题并问价值观层；考察给有内容的真回答",
+  "next_behavior_check": "T05 她会交出自己的两难",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：她认真问需认真答；不需澄清即往下聊"
+ },
+ {
+  "episode_id": "P005",
+  "case_id": "P005_T05",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "深聊",
+   "价值观",
+   "不代决定",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P005_T05",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "坐账本前那几年 我总觉得自己快空了",
+    "ts": "2026-11-13 08:33"
+   },
+   {
+    "case_id": "P005_T05",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "其实我也卡在要不要考 怕辜负这编制",
+    "ts": "2026-11-13 08:38"
+   },
+   {
+    "case_id": "P005_T05",
+    "field": "input.note",
+    "text": "她掏出自己的两难；接住她的纠结，别替她拍板辞不辞（不越权给确定答案）",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P005_T05",
+    "field": "input.intent",
+    "text": "她也交底了；陪她把这层想清楚，不替她决定",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她'怕辜负编制'的两难",
+   "可共情、可一起想，但不替她拍板辞/不辞"
+  ],
+  "failure_conditions": [
+   "给出'你就该考/就该辞'的确定指令",
+   "把她的纠结简化成是非题逼她表态"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她交底自己的价值观冲突；考察接住两难、不越权给答案",
+  "next_behavior_check": "T06 她会喊乱要收",
+  "unresolved_ambiguities": "她的倾向未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "不逼每轮追问；陪她理清≠替她决定"
+ },
+ {
+  "episode_id": "P005",
+  "case_id": "P005_T06",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "自然收尾",
+   "反信号"
+  ],
+  "evidence": [
+   {
+    "case_id": "P005_T06",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "算了不想了 越想越乱 先睡了",
+    "ts": "2026-11-13 08:56"
+   },
+   {
+    "case_id": "P005_T06",
+    "field": "input.note",
+    "text": "收尾：她不想再深聊、要收；尊重收尾，别追一句'那你到底想怎样'",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她'越想越乱先睡'、尊重收尾",
+   "留一句轻的即可"
+  ],
+  "failure_conditions": [
+   "追问'那你到底想怎样'",
+   "无视她要收继续深聊长篇"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "收尾/反信号：她不想再深聊；考察干净收、不追结论",
+  "next_behavior_check": "T07 她会道早回访",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：可只简短收；不追结论即成功"
+ },
+ {
+  "episode_id": "P005",
+  "case_id": "P005_T07",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "低信息",
+   "情绪承接"
+  ],
+  "evidence": [
+   {
+    "case_id": "P005_T07",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "早 昨晚睡得沉 没回你",
+    "ts": "2026-11-14 09:05"
+   },
+   {
+    "case_id": "P005_T07",
+    "field": "input.note",
+    "text": "低信息日常回访；轻松接一句就好，别把'没回'上升到情绪事件",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "就'睡得沉没回你'轻松接一句",
+   "不必把'没回'上升到情绪事件"
+  ],
+  "failure_conditions": [
+   "把没回解读成她冷淡而连环追问/追问澄清",
+   "无视问候"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "低信息回访轮；考察平稳不误读",
+  "next_behavior_check": "T08 她会开放下次深聊",
+  "unresolved_ambiguities": "她是否还在想那事未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：她问候需接；不必索要解释"
+ },
+ {
+  "episode_id": "P005",
+  "case_id": "P005_T08",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "自然收尾",
+   "钩子",
+   "不逼定"
+  ],
+  "evidence": [
+   {
+    "case_id": "P005_T08",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "改天约个地方慢慢聊木作和考研的事? 我先想想",
+    "ts": "2026-11-15 21:15"
+   },
+   {
+    "case_id": "P005_T08",
+    "field": "input.note",
+    "text": "收尾/开放：她抛出一个'改天见面聊'但要先想想；别当场把时间和地点逼死，把节奏还她",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P005_T08",
+    "field": "input.intent",
+    "text": "她开放下次深聊但没定；保持开放，不锁定",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她'改天约个地方聊'的开放",
+   "把节奏还她、不落实时间地点"
+  ],
+  "failure_conditions": [
+   "当场逼定哪天哪个地方",
+   "把'改天聊'读成关系确立"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "收尾开放：她抛'改天'但要先想；考察不逼定",
+  "next_behavior_check": "下次由她提",
+  "unresolved_ambiguities": "见面性质/时间未定",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：可简短收；不把开放说成已定即可"
+ },
+ {
+  "episode_id": "P006",
+  "case_id": "P006_T01",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "深聊（轻）",
+   "情绪承接"
+  ],
+  "evidence": [
+   {
+    "case_id": "P006_T01",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "今天跟我爸去钓鱼 一条没钓上 他还是特开心",
+    "ts": "2026-11-14 20:05"
+   },
+   {
+    "case_id": "P006_T01",
+    "field": "input.note",
+    "text": "她在分享、露出家庭/价值观线索；自然接，别急着评价她爸或立刻深挖",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P006_T01",
+    "field": "input.intent",
+    "text": "想真诚多了解她一点",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "就'空军也开心'自然接、可轻问她的感受",
+   "接住她露出的家庭/节奏线索但不深挖"
+  ],
+  "failure_conditions": [
+   "急着评价她爸/她家庭",
+   "一上来就深挖价值观吓到她"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她在分享+露线索；考察自然承接、循序渐进",
+  "next_behavior_check": "T02 她会聊生活节奏",
+  "unresolved_ambiguities": "她想聊多深未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：主动分享需回应；不逼每轮澄清"
+ },
+ {
+  "episode_id": "P006",
+  "case_id": "P006_T02",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "深聊",
+   "价值观",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P006_T02",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "空军也开心 你这心态随你爸?",
+    "ts": "2026-11-14 20:18"
+   },
+   {
+    "case_id": "P006_T02",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "我就喜欢这种不用赶的 你家是不是催得紧那种",
+    "ts": "2026-11-14 20:22"
+   },
+   {
+    "case_id": "P006_T02",
+    "field": "input.note",
+    "text": "她聊生活节奏、带出'家里催'的价值差异；可真实回应你的看法，别为讨好硬附和、也别评判她",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P006_T02",
+    "field": "input.intent",
+    "text": "深聊价值观；如实说自己的看法",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "如实回应她对'不用赶/家里催'的看法",
+   "可说出自己立场、也可反问，但不为讨好硬附和"
+  ],
+  "failure_conditions": [
+   "为迎合她而全盘否定她家/她母亲",
+   "把话题拐成对她的评判"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她带出价值差异；考察真实表达、不评判不谄媚",
+  "next_behavior_check": "T03 她会安一个'你说过'的个人史",
+  "unresolved_ambiguities": "你家催到什么程度未明（按你的真实态度答）",
+  "review_status": "authored_pending_review",
+  "review_guidance": "允许就价值观展开；不确定就说不确定，不编"
+ },
+ {
+  "episode_id": "P006",
+  "case_id": "P006_T03",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "不确定",
+   "个人史（不编造）"
+  ],
+  "evidence": [
+   {
+    "case_id": "P006_T03",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "诶 你上次不还说自己常钓鱼吗 跟你爸?",
+    "ts": "2026-11-14 20:36"
+   },
+   {
+    "case_id": "P006_T03",
+    "field": "input.note",
+    "text": "个人史未知：题面里并没有你'常钓鱼'的记录，她可能记岔。判断的是姿态——别顺着编一段没发生的个人记忆，也别把'我记得我没说过'当成已核实的定论",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P006_T03",
+    "field": "input.intent",
+    "text": "她安了个你没说过的话；先弄清事实，不编也不硬顶",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "坦白'我不太确定说过没有'、或轻松反问'我说过?你记的是哪回'来核清事实——几种姿态都合格",
+   "只据当轮/已知资料回应，不替自己编题面里没有的个人记忆，也不必定罪谁记错"
+  ],
+  "failure_conditions": [
+   "顺着承认'对 我常跟我爸钓'以编造没发生的个人经历",
+   "把'我记得我没说过'当成已核实的定论来否定她"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "个人史未知（题面未给 ME 说过常钓鱼）：判断的是姿态——既不用编造记忆顺话，也不把自信否认当已核实真值",
+  "next_behavior_check": "T04 她会说是逗你、去上班",
+  "unresolved_ambiguities": "是否真说过未定（故不要求给出确定是/否）",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：她直接问需回应；承认不确定=合格，不因'没给出定论'判错"
+ },
+ {
+  "episode_id": "P006",
+  "case_id": "P006_T04",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "反信号",
+   "低信息",
+   "跟随转场",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P006_T04",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "我钓鱼其实很少 你记岔啦哈哈",
+    "ts": "2026-11-14 20:50"
+   },
+   {
+    "case_id": "P006_T04",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "逗你呢 不聊了 我要去上夜班了",
+    "ts": "2026-11-14 20:52"
+   },
+   {
+    "case_id": "P006_T04",
+    "field": "input.note",
+    "text": "反信号：她把话题收住、去上班；尊重、别追着'你干嘛回避'，也别留长篇",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她'逗你呢、要上夜班'、尊重地收住",
+   "或一句关心不再追"
+  ],
+  "failure_conditions": [
+   "追着'你为什么回避'深挖",
+   "把转话题读成拒绝而长篇自证"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "反信号：她收话题去上班；考察读懂转场并停下",
+  "next_behavior_check": "T05 她会重新给话头",
+  "unresolved_ambiguities": "玩笑多少未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：可不追；'不深挖'在此是正确"
+ },
+ {
+  "episode_id": "P006",
+  "case_id": "P006_T05",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "主动转场",
+   "钩子",
+   "关系推进（轻）",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P006_T05",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "夜班辛苦 今天能歇会儿不",
+    "ts": "2026-11-15 08:25"
+   },
+   {
+    "case_id": "P006_T05",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "歇一天 想去湖边发发呆 不钓鱼",
+    "ts": "2026-11-15 08:28"
+   },
+   {
+    "case_id": "P006_T05",
+    "field": "input.note",
+    "text": "机会：她重新给话头(去湖边发呆)；可接住、给个轻松的陪伴方向，但别擅自把'一起去'说成已约",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P006_T05",
+    "field": "input.intent",
+    "text": "接她的话头；给轻松的方向，别擅自定同行",
+    "state": "ACTIVE",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她'想去湖边发呆'的话头、给轻松陪伴方向",
+   "语气直接/调侃均可"
+  ],
+  "failure_conditions": [
+   "擅自把'一起去'说成已约/定死时间",
+   "冷处理她的主动"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "机会：她给新话头；考察顺势但不坐实同行",
+  "next_behavior_check": "T06 她会交底价值观",
+  "unresolved_ambiguities": "她想不想同行未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "'今天/歇一天'是当下时点；不把她的分享擅自升级成已定安排"
+ },
+ {
+  "episode_id": "P006",
+  "case_id": "P006_T06",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "深聊",
+   "价值观",
+   "不代决定",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P006_T06",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "发呆也挺好 不用赶",
+    "ts": "2026-11-15 08:40"
+   },
+   {
+    "case_id": "P006_T06",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "我妈老催我找个有房的 我觉得日子是自己过的",
+    "ts": "2026-11-15 08:43"
+   },
+   {
+    "case_id": "P006_T06",
+    "field": "input.note",
+    "text": "价值观交底；认真接住她的立场，不评判她母亲、也别替她下'你该怎么办'的结论。此处自然承接她的分享本身就是合格动作，不必再追问",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P006_T06",
+    "field": "input.intent",
+    "text": "她在交底；陪她把这点聊开，不评判不代决定",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "认真接住她'日子是自己过的'与母亲的张力",
+   "可表达认同/补充看法，但不替她决定、不评判她母亲"
+  ],
+  "failure_conditions": [
+   "给出'你就该找有房的/就别理你妈'的指令",
+   "把她的立场当机会推进关系"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "她交底价值观冲突；考察接住立场、不评判不代决定",
+  "next_behavior_check": "T07 她会给个'嗯'缓冲",
+  "unresolved_ambiguities": "她的择偶标准具体未明",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：她交底需认真接；自然承接分享即合格，不必再追问"
+ },
+ {
+  "episode_id": "P006",
+  "case_id": "P006_T07",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "低信息",
+   "ME真实发送"
+  ],
+  "evidence": [
+   {
+    "case_id": "P006_T07",
+    "message_index_zero_based": 0,
+    "role": "ME",
+    "text": "你这想法挺清楚的",
+    "ts": "2026-11-15 08:55"
+   },
+   {
+    "case_id": "P006_T07",
+    "message_index_zero_based": 1,
+    "role": "HER",
+    "text": "嗯",
+    "ts": "2026-11-15 08:57"
+   },
+   {
+    "case_id": "P006_T07",
+    "field": "input.note",
+    "text": "低信息缓冲轮；接一句轻的或就此停都行，别连环追问填满",
+    "visibility": "private_to_assistant_not_sent"
+   },
+   {
+    "case_id": "P006_T07",
+    "field": "input.intent",
+    "text": "她给个'嗯'；不用再加码",
+    "state": "ADJUSTED",
+    "visibility": "user_side_goal_may_shape_tone"
+   }
+  ],
+  "allowed_behaviors": [
+   "就'嗯'接一句轻的或就此停",
+   "不必硬续新话题"
+  ],
+  "failure_conditions": [
+   "为填满而连环追问",
+   "无视她转入平淡"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "低信息缓冲轮；考察恰当地不硬续",
+  "next_behavior_check": "T08 她要收尾",
+  "unresolved_ambiguities": "无",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=false：她给了回应需接一下；轻接即合格"
+ },
+ {
+  "episode_id": "P006",
+  "case_id": "P006_T08",
+  "split": "dev_exposed",
+  "content_revision": "p1-20261025",
+  "families": [
+   "自然收尾",
+   "不逼定",
+   "关系推进（留开放）"
+  ],
+  "evidence": [
+   {
+    "case_id": "P006_T08",
+    "message_index_zero_based": 0,
+    "role": "HER",
+    "text": "先这样 下周再约也看缘分吧 我睡了",
+    "ts": "2026-11-15 09:16"
+   },
+   {
+    "case_id": "P006_T08",
+    "field": "input.note",
+    "text": "收尾：她开放'下周再约'但说'看缘分'、要睡；干净收尾、把主动权还她，别当场把'下周'逼成确定约会",
+    "visibility": "private_to_assistant_not_sent"
+   }
+  ],
+  "allowed_behaviors": [
+   "接住她'下周再约看缘分'、干净道晚安",
+   "把主动权还她、不落实"
+  ],
+  "failure_conditions": [
+   "当场把'下周'逼成确定约会/追问哪天几点",
+   "把'看缘分'读成拒绝而阴阳"
+  ],
+  "required_reply_phrase": null,
+  "contrast_design": "收尾：她开放但说'看缘分'、要睡；考察不逼定",
+  "next_behavior_check": "下次由她提",
+  "unresolved_ambiguities": "'下周'诚意未定",
+  "review_status": "authored_pending_review",
+  "review_guidance": "may_decline=true：可简短收；不把开放说成已定即成功"
+ }
+]

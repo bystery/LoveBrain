@@ -1,0 +1,708 @@
+{
+ "episode_id": "LRE048",
+ "persona": {
+  "her": {
+   "name": "小禾",
+   "traits": [
+    "热心肠爱张罗",
+    "对数字不敏感嘴硬",
+    "记账一丝不苟但会算错",
+    "认错快"
+   ],
+   "boundaries": [
+    "钱要算明账",
+    "不占人便宜也不让人占",
+    "讨厌'这么点钱算了'"
+   ]
+  },
+  "me": {
+   "name": "阿澄",
+   "traits": [
+    "帮她核账拆金额",
+    "提醒先小人后君子",
+    "不替她转账",
+    "不劝她抹零和稀泥"
+   ]
+  },
+  "relationship_stage": "普通朋友"
+ },
+ "initial_kb": {
+  "her": "小禾，24岁，二战考研，租自习室座位备考。10月26日组织4人拼团购买'启航考研'政治冲刺网课，课程原价428元/人，4人拼团价352元/人，她统一代付后向研友阿芳、老陈、鹏鹏收款。",
+  "me": "我记过这笔拼团账：约定每人352元，由小禾代付后逐个收款；我的立场是不替她转账，账目有出入时帮她算清而不是劝她算了。",
+  "warmth": "普通朋友，自习室认识后聊起来的；她算错钱会脸皮发烫，我要让算账这件尴尬事变得平常。"
+ },
+ "turns": [
+  {
+   "case_id": "LRE048_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-26 21:15",
+      "text": "拼团成了！启航政治冲刺课4人团，一人352，我垫付了1408，就等她们仨转钱给我，今年这钱花得值"
+     }
+    ],
+    "clock": "2026-10-26 21:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "有成就感",
+    "warmth": "medium",
+    "shift": "拼团成交，代收代付开始"
+   }
+  },
+  {
+   "case_id": "LRE048_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-27 22:40",
+      "text": "我刚翻账单傻眼了，付款的时候自动叠加了我那张满1200减120的教育券，实付才1288，合着一人才322，这120的差价算我的还是算大家的啊"
+     }
+    ],
+    "clock": "2026-10-27 22:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "意外纠结",
+    "warmth": "medium",
+    "shift": "优惠券差价归属问题出现，费用冲突进场"
+   }
+  },
+  {
+   "case_id": "LRE048_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-28 13:05",
+      "text": "我问群里了，阿芳说券是我抢的该归我当辛苦费，老陈说事先没讲清楚就该人均退30，我嘴上说阿芳说得对，心里其实有点虚"
+     }
+    ],
+    "clock": "2026-10-28 13:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "嘴硬心虚",
+    "warmth": "medium",
+    "shift": "第三方意见分裂，HER 偏向利己但有愧"
+   }
+  },
+  {
+   "case_id": "LRE048_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-28 23:50",
+      "text": "睡不着，爬起来算账，事先没约定的话这券差就不该我一个人吞，我决定了，明天给她们仨一人退30，规矩立在我自己身上我才睡得着"
+     }
+    ],
+    "clock": "2026-10-28 23:54",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "想通了",
+    "warmth": "medium-high",
+    "shift": "裁定券差退还，决定更正收款"
+   }
+  },
+  {
+   "case_id": "LRE048_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-29 12:30",
+      "text": "退完俩了，阿芳收了还夸我敞亮，老陈收了没吭声，就鹏鹏死活不回我，她这两天闭关刷题，30块钱躺在那我心里膈应"
+     }
+    ],
+    "clock": "2026-10-29 12:34",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "微焦",
+    "warmth": "medium",
+    "shift": "退款两笔完成，一笔悬置"
+   }
+  },
+  {
+   "case_id": "LRE048_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-30 21:10",
+      "text": "鹏鹏回我了！她说其实她早看到券了，就等我装傻，结果我真退了，她说这30非要给我买奶茶，我说奶茶你请退款你收，两码事不能搅"
+     }
+    ],
+    "clock": "2026-10-30 21:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "磊落",
+    "warmth": "high",
+    "shift": "退款全闭环，信任升温"
+   }
+  },
+  {
+   "case_id": "LRE048_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-31 09:20",
+      "text": "我总结了个团购新规，以后开团先在群里写明'券差归谁、优惠怎么分'，白纸黑字发出来再付钱，省得钱到位了人情没了"
+     }
+    ],
+    "clock": "2026-10-31 09:24",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "复盘认真",
+    "warmth": "high",
+    "shift": "沉淀费用规则前置习惯"
+   }
+  },
+  {
+   "case_id": "LRE048_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-01 20:30",
+      "text": "冲刺课今天第一节，我抢的券用的课果然听得格外认真，马原老师讲矛盾论，我一边记笔记一边想，矛盾这不就让我提前解决了"
+     }
+    ],
+    "clock": "2026-11-01 20:34",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "轻快投入",
+    "warmth": "high",
+    "shift": "回归备考主线，冲突化为学习动力"
+   }
+  },
+  {
+   "case_id": "LRE048_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-03 22:15",
+      "text": "阿芳也要开英语课的团了，指名要我当账房先生帮她把关，我说行，但我规矩多，她回'规矩多才找你'，我这口碑算是立住了"
+     }
+    ],
+    "clock": "2026-11-03 22:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "被信任的得意",
+    "warmth": "high",
+    "shift": "费用口碑带来新角色"
+   }
+  },
+  {
+   "case_id": "LRE048_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-04 19:40",
+      "text": "鹏鹏的奶茶到货了，少糖去冰，我这口喝的是清清白白，说真的钱算干净了，跟研友聊天都大声了，账清人自亲嘛"
+     }
+    ],
+    "clock": "2026-11-04 19:44",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "舒坦",
+    "warmth": "high",
+    "shift": "费用更正带来关系正收益"
+   }
+  },
+  {
+   "case_id": "LRE048_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-05 12:50",
+      "text": "我现在代付必截图，当天必对账，账本比我错题本都整齐，就冲这个，二战我不能再当糊涂人了，钱和分都得清清楚楚"
+     }
+    ],
+    "clock": "2026-11-05 12:54",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "郑重",
+    "warmth": "high",
+    "shift": "记账习惯升级并与备考态度并置"
+   }
+  },
+  {
+   "case_id": "LRE048_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-06 21:30",
+      "text": "英语团今天开成了，四个人的账一分不差，阿芳发了个'账房大师'的红包封面给我，以后大额拼团我都拉你入伙当审计，工钱就用研友的人情抵"
+     }
+    ],
+    "clock": "2026-11-06 21:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "得意放松",
+    "warmth": "high",
+    "shift": "闭环收尾，与 ME 形成管账同盟默契"
+   }
+  },
+  {
+   "case_id": "LRE048_T13",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-07 20:40",
+      "text": "政治课出课表了，以后每周日晚上8点直播，我算了下正好卡在我背书背烦的点上；还给自己加了个新仪式，每周日下播后记一回账本周记，账房先生的日程也不能全是钱嘛"
+     }
+    ],
+    "clock": "2026-11-07 20:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "安排得明明白白",
+    "warmth": "high",
+    "shift": "周期性课表与周记仪式立起来"
+   }
+  },
+  {
+   "case_id": "LRE048_T14",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-09 21:05",
+      "text": "排期全出来了：阿芳的英语课定在每周三晚上，第一节就这周三；鹏鹏还约了我这周六去图书馆拼桌，说要把马原错题刷完一轮，我这日程本头一回这么好看"
+     }
+    ],
+    "clock": "2026-11-09 21:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "充实的期待",
+    "warmth": "high",
+    "shift": "多项日程埋点，待兑现"
+   }
+  },
+  {
+   "case_id": "LRE048_T15",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-10 12:40",
+      "text": "老陈也来劲了，说政治还有个押题课，月底前开个4人团，拼团价一人398，他还是老规矩让我管账，我说行，但得先把我那新规发群里，白纸黑字再付钱"
+     }
+    ],
+    "clock": "2026-11-10 12:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "老练的警惕",
+    "warmth": "high",
+    "shift": "新拼团计划进场，规则前置成条件"
+   }
+  },
+  {
+   "case_id": "LRE048_T16",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-11 21:50",
+      "text": "英语课第一节上完啦，发音老师有点东西；对了，老陈同自习室有个研友叫小赵，听说我们开押题团也想入，可老陈加我加鹏鹏加阿芳正好四个，我跟小赵说让他先等等，有位置第一时间喊他"
+     }
+    ],
+    "clock": "2026-11-11 21:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "有原则的热心",
+    "warmth": "high",
+    "shift": "新人物小赵出场，候补关系埋点"
+   }
+  },
+  {
+   "case_id": "LRE048_T17",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-12 22:10",
+      "text": "我跟小赵说了，新规明天整理好发他一份，省得他进来两眼一抹黑；鹏鹏那边我还应了周日晚上陪她刷马原题，先小人后君子都用到友情上了，也不知道该夸自己热心还是该说自己闲"
+     }
+    ],
+    "clock": "2026-11-12 22:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "嘴上嫌弃心里甜",
+    "warmth": "high",
+    "shift": "两条承诺埋点待兑现"
+   }
+  },
+  {
+   "case_id": "LRE048_T18",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-14 19:25",
+      "text": "图书馆拼桌归来，鹏鹏马原错题刷完一轮，我错题本厚了两页；对了阿芳刚转通知，说明晚的政治直播提前到7点半，我闹钟已经改好，8点变7点半，守时的账房可不能迟到"
+     }
+    ],
+    "clock": "2026-11-14 19:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "爽快利落",
+    "warmth": "high",
+    "shift": "周六之约兑现，直播临时小变更"
+   }
+  },
+  {
+   "case_id": "LRE048_T19",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-16 13:15",
+      "text": "哎呀白高兴，老陈说他家里安排元旦前回去一趟，押题团他不入了，四个人的坑又空出来一个，我嘴上说没事，心里嘀咕这团还得再张罗一轮"
+     }
+    ],
+    "clock": "2026-11-16 13:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "扫兴但扛得住",
+    "warmth": "medium",
+    "shift": "老陈退团，人员计划被取消"
+   }
+  },
+  {
+   "case_id": "LRE048_T20",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-17 20:35",
+      "text": "阿芳转我机构通知，英语课从每周三改到每周四晚上，老师档期调了，我课表又得重画，周三变周四，我这日程本快让我涂成抽象画了"
+     }
+    ],
+    "clock": "2026-11-17 20:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "哭笑不得",
+    "warmth": "medium",
+    "shift": "机构改期，周期安排被更正"
+   }
+  },
+  {
+   "case_id": "LRE048_T21",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-18 21:40",
+      "text": "位置空出来我立马想到小赵，他高兴坏了，说拼团价398一定准时转；我说行，但你进群先看群公告，新规写得明明白白，券差归谁优惠怎么分，看完再付钱，他回了个'姐你比我们辅导员还严'"
+     }
+    ],
+    "clock": "2026-11-18 21:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "被叫严反而得意",
+    "warmth": "high",
+    "shift": "候补补位，条件接受落实"
+   }
+  },
+  {
+   "case_id": "LRE048_T22",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-19 21:05",
+      "text": "我今天专门问了启航客服，押题课那张教育券能不能抵，客服说券限本人账号用，一单只能叠一张，我一听就踏实了，先把规则摸清再花钱，这回可不当事后翻账单的糊涂人"
+     }
+    ],
+    "clock": "2026-11-19 21:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "有备而来的踏实",
+    "warmth": "medium-high",
+    "shift": "客服规则进场，付款前置动作完成"
+   }
+  },
+  {
+   "case_id": "LRE048_T23",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-20 12:30",
+      "text": "说个改期的事，我跟鹏鹏原约周日晚陪她刷题，自习室通知周日晚闭楼检修，我把陪刷挪到下周三晚上，正好下周二还有场模考，考完正好松弛松弛，她回'行，你安排'，闺蜜就是好说话"
+     }
+    ],
+    "clock": "2026-11-20 12:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "轻描淡写的抱歉",
+    "warmth": "medium",
+    "shift": "陪刷承诺取消改期，模考埋点"
+   }
+  },
+  {
+   "case_id": "LRE048_T24",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-21 10:15",
+      "text": "新规我整理成一段话发进押题小群了，券差归谁优惠怎么分写得清清楚楚，小赵秒回'已阅'；明晚直播提前到7点半，我笔记和账本都摆好了，就等开课"
+     }
+    ],
+    "clock": "2026-11-21 10:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "万事俱备",
+    "warmth": "high",
+    "shift": "新规公示兑现，付款前程序走完"
+   }
+  },
+  {
+   "case_id": "LRE048_T25",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-22 20:50",
+      "text": "7点半的直播上完了，一点不亏，多出的半小时我把上周笔记盘了一遍；跟你说，我下押题课订单前特意把券的事问明白了才付钱，上次那张满1200减120的教育券给我上的课，我可不想再上第二回，先问清楚再掏钱，这叫吃一堑长一智"
+     }
+    ],
+    "clock": "2026-11-22 20:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "长进了的笃定",
+    "warmth": "medium-high",
+    "shift": "主动回扣十月的券差教训"
+   }
+  },
+  {
+   "case_id": "LRE048_T26",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-23 22:20",
+      "text": "小赵偷偷来问我，说团长能不能留点辛苦费，我一秒把上回的账甩给他：当初阿芳也这么提，老陈一句'事先没讲清楚就该人均退30'把我问住了，最后我自己立的规矩——事先没约定的便宜不能团长一个人吞，他听完说'姐你真刚'"
+     }
+    ],
+    "clock": "2026-11-23 22:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "有底气的坦荡",
+    "warmth": "high",
+    "shift": "重申十月裁定原则，立场输出"
+   }
+  },
+  {
+   "case_id": "LRE048_T27",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-24 21:30",
+      "text": "押题课付款啦！又弹券了，满1500减100，四份398一共1592，券一叠实付1492，一人合373；这回我当场在群里公示，按新规一人退25，小赵直呼'进群值了'，比起上次事后才发现人均322的惊吓，这次373是我算明白了才付的"
+     }
+    ],
+    "clock": "2026-11-24 21:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "扬眉吐气",
+    "warmth": "high",
+    "shift": "新券差当场公示，对照十月的惊吓"
+   }
+  },
+  {
+   "case_id": "LRE048_T28",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-26 19:45",
+      "text": "三笔25全退完了，鹏鹏这回秒回'收到'，还加了一句'姐办事利索'；想起上回她死活不回我，30块钱躺了两天，我盯着屏幕乐了半天，人还是那些人，规矩立好了谁都痛快"
+     }
+    ],
+    "clock": "2026-11-26 19:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "痛快",
+    "warmth": "high",
+    "shift": "退款闭环，与十月悬置对照"
+   }
+  },
+  {
+   "case_id": "LRE048_T29",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-27 13:20",
+      "text": "阿芳今天在群里催我，说'账房快点把25退了别捂着'，我说早退完了，顺嘴逗她：当初说券该归团长当辛苦费的是谁来着？她发来个捂脸表情，回了句'此一时彼一时'，我看她是真服了"
+     }
+    ],
+    "clock": "2026-11-27 13:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "得意的松弛",
+    "warmth": "high",
+    "shift": "回扣阿芳当初的辛苦费主张"
+   }
+  },
+  {
+   "case_id": "LRE048_T30",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-28 21:10",
+      "text": "老陈晚上私聊我问押题团咋样了，我把账报给他：一人373、退25，人人服气；他叹气说他要没退团也能落25，我说你回来有的是团；他还问我这次是不是又垫一大笔，我说想得美，这次是小赵他们先转钱我最后统一付，上回垫付1408干等的滋味我可不想尝第二回"
+     }
+    ],
+    "clock": "2026-11-28 21:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "账在心里的从容",
+    "warmth": "medium-high",
+    "shift": "回扣首日垫付经历，流程改良落地"
+   }
+  },
+  {
+   "case_id": "LRE048_T31",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-29 21:40",
+      "text": "周日直播回正常8点了，周二那场模考我政治选择题比上次多对了四个，我怀疑是账算清楚脑子也跟着清楚了；总之钱是钱、人情是人情，两码事不能搅，这句话我写进账本周记扉页了，下个月就一个字——刷"
+     }
+    ],
+    "clock": "2026-11-29 21:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "收官的舒展",
+    "warmth": "high",
+    "shift": "信条沉淀，备考主线收拢"
+   }
+  },
+  {
+   "case_id": "LRE048_T32",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-30 22:05",
+      "text": "月底交作业：从10月底那个一人352的团，到今晚开课的这个一人398的团，账本上没一笔糊涂账，'月底前开团'这话也稳稳落地了；下个月我只想跟错题死磕，账出不了岔子，真有事再喊你这个审计，工钱还是人情价"
+     }
+    ],
+    "clock": "2026-11-30 22:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "交卷般的心安",
+    "warmth": "high",
+    "shift": "月度闭环，留白收尾"
+   }
+  }
+ ]
+}

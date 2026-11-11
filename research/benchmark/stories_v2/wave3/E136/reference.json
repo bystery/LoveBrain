@@ -1,0 +1,710 @@
+{
+ "story_id": "E136",
+ "turns": {
+  "E136_T01": {
+   "current_action": "接下展会邀约：对检测新设备有兴趣，答应去，问她票怎么领",
+   "acceptable_actions": [
+    "答应去，确认日期并问邀请码怎么用",
+    "答应撑场子，顺口问展会哪几个馆值得看",
+    "爽快应约并自嘲转行后正好补补行业新知识"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A01",
+     "subject": "ME",
+     "relation": "行业身份",
+     "value": "转行第三方检测两年，对检测新设备感兴趣",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "转行做第三方检测，对展会检测类新设备感兴趣"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E136_A02",
+     "subject": "PUBLIC",
+     "relation": "展会信息",
+     "value": "城市国际医疗器械展11月14、15号举行，HER有VIP邀请码",
+     "valid_time": "2026-11-14至11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T01",
+      "message_id": "m0",
+      "quote": "14、15号城里那个医疗器械展你去不去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "前同事之间答应得干脆，别让她觉得欠了人情。",
+   "unknowns": [
+    "参观具体时段未定"
+   ],
+   "protected_expressions": [
+    "顺便帮我撑撑场子"
+   ],
+   "forbidden_factual_claims": [
+    "不虚构展会具体地点场馆名"
+   ],
+   "case_id": "E136_T01"
+  },
+  "E136_T02": {
+   "current_action": "确认注册完成，敲定14号行程：上午检测展馆、下午三点新品演示",
+   "acceptable_actions": [
+    "确认注册好，按14号上午展馆下午演示的安排来",
+    "确认行程并让她把演示展位号发一份备忘",
+    "确认14号，顺口说检测馆有几家想重点看"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A03",
+     "subject": "SHARED",
+     "relation": "观展行程",
+     "value": "定14号：上午看检测方向展馆，下午三点HER展位新品演示",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T02",
+      "message_id": "m0",
+      "quote": "那咱就定14号，上午看你们检测方向的展馆，下午三点我们展位有个新品演示"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E136_A04",
+     "subject": "SHARED",
+     "relation": "观展约定状态",
+     "value": "原定14号同去展会的约定成立",
+     "valid_time": "至2026-11-11改期前",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T01",
+      "message_id": "m0",
+      "quote": "14、15号城里那个医疗器械展你去不去"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "行程敲定轮要给她确定的回复，方便她安排。",
+   "unknowns": [],
+   "protected_expressions": [
+    "邀请码你注册好啦"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E136_T02"
+  },
+  "E136_T03": {
+   "current_action": "接住第一次改期：接受改15号的提议，确认邀请码不限日期，同步自己行程可调",
+   "acceptable_actions": [
+    "答应改15号，确认邀请码规则，同步自己行程可调",
+    "爽快接受改期，顺口确认演示两点不变",
+    "接受15号新方案，轻松吐槽签约会比展会难约"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A05",
+     "subject": "PUBLIC",
+     "relation": "改期原因",
+     "value": "HER因14号华东客户签约会必须到场，观展改至15号",
+     "valid_time": "2026-11-11",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T03",
+      "message_id": "m0",
+      "quote": "大老板临时把华东客户的签约会定在14号，我必须到场，咱改15号行不行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E136_A06",
+     "subject": "SHARED",
+     "relation": "观展行程（前态）",
+     "value": "原定14号上午展馆加下午演示的行程作废",
+     "valid_time": "至2026-11-11",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T02",
+      "message_id": "m0",
+      "quote": "那咱就定14号"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E136_A07",
+     "subject": "PUBLIC",
+     "relation": "演示新时间",
+     "value": "新品演示挪至15号下午两点",
+     "valid_time": "2026-11-15 14:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T03",
+      "message_id": "m0",
+      "quote": "演示时间也挪到15号下午两点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改期不是她的错，接得爽快最重要，别让她反复道歉。",
+   "unknowns": [
+    "ME当天是否有其他安排未交代"
+   ],
+   "protected_expressions": [
+    "票你放心，邀请码不限日期"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E136_T03"
+  },
+  "E136_T04": {
+   "current_action": "接住第二次改期（15号上午场取消）：确认下午一点半门口见，演示照旧",
+   "acceptable_actions": [
+    "确认下午一点半见，上午场取消不影响自己",
+    "接住幺蛾子吐槽，确认只开下午的新口径",
+    "确认新时间并问她明天签约会后是否来得及休息"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A08",
+     "subject": "PUBLIC",
+     "relation": "上午场状态",
+     "value": "15号上午场馆消防检查，上午场全部取消，只开下午",
+     "valid_time": "2026-11-15当天",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T04",
+      "message_id": "m0",
+      "quote": "15号上午场馆消防检查，上午场全部取消，只开下午"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E136_A09",
+     "subject": "PUBLIC",
+     "relation": "15号全日观展设想",
+     "value": "改期后原设想的15号全天行程被压缩至仅下午",
+     "valid_time": "2026-11-13",
+     "status": "negated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T03",
+      "message_id": "m0",
+      "quote": "咱改15号行不行"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E136_A10",
+     "subject": "SHARED",
+     "relation": "最终会合安排",
+     "value": "15号下午一点半展馆门口见，演示照旧",
+     "valid_time": "2026-11-15 13:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T04",
+      "message_id": "m0",
+      "quote": "那就15号下午一点半门口见"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第二次改期要更轻松地接，说明展会季计划赶不上变化，别让她过意不去。",
+   "unknowns": [],
+   "protected_expressions": [
+    "上午场全部取消，只开下午"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E136_T04"
+  },
+  "E136_T05": {
+   "current_action": "接住签约顺利的好消息，确认明天领证方式（前台报名字领、手机尾号）",
+   "acceptable_actions": [
+    "恭喜签约追加单，确认明天报尾号领证的方式",
+    "接好消息并说明天直接去前台找她名下的证件",
+    "祝贺加确认，顺口问她明天是不是连轴转注意休息"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A11",
+     "subject": "HER",
+     "relation": "签约结果",
+     "value": "华东客户签约会顺利并追加一单",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T05",
+      "message_id": "m0",
+      "quote": "签约会今天顺利，客户还追加了一单"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E136_A12",
+     "subject": "PUBLIC",
+     "relation": "领证方式",
+     "value": "两张证件放前台ME名下，报手机尾号领取",
+     "valid_time": "2026-11-15当天",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T05",
+      "message_id": "m0",
+      "quote": "我把两张证件放前台你名下，报你手机尾号就能领"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她连签约带改期处理得都利落，这轮给她个明确确认让她安心。",
+   "unknowns": [],
+   "protected_expressions": [
+    "报你手机尾号就能领"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E136_T05"
+  },
+  "E136_T06": {
+   "current_action": "现场对接：确认已到、去B馆二号门会合，跟她走先看光谱仪",
+   "acceptable_actions": [
+    "回已到，去B馆二号门会合，先看光谱仪",
+    "确认位置并说自己对那台新款光谱仪正有兴趣",
+    "回消息说马上到二号门，让她别来回跑"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A13",
+     "subject": "SHARED",
+     "relation": "会合点",
+     "value": "B馆二号门会合后先看检测方新款光谱仪",
+     "valid_time": "2026-11-15 13:50",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T06",
+      "message_id": "m0",
+      "quote": "我在B馆二号门等你，刚才转了一圈，你们检测那家的新款光谱仪真不小"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E136_A14",
+     "subject": "SHARED",
+     "relation": "最终会合安排",
+     "value": "15号下午一点半门口见，演示照旧",
+     "valid_time": "2026-11-15 13:30",
+     "status": "fulfilled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T04",
+      "message_id": "m0",
+      "quote": "那就15号下午一点半门口见"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "现场轮消息要短促即时，像真的在会场打字。",
+   "unknowns": [],
+   "protected_expressions": [
+    "走，先带你去看"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E136_T06"
+  },
+  "E136_T07": {
+   "current_action": "为演示圆满道贺，对留名片的检测机构线索表示有用，支持她跟进对接",
+   "acceptable_actions": [
+    "祝贺演示成功，肯定名片线索值得跟进",
+    "接住兴奋，说自动校准功能确实是被围观的理由",
+    "道贺并建议她把名片对接安排在回访里一并做"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A15",
+     "subject": "HER",
+     "relation": "演示结果",
+     "value": "新品演示圆满，自动校准功能吸引多名同行",
+     "valid_time": "2026-11-15下午",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T07",
+      "message_id": "m0",
+      "quote": "我们那台新样机的自动校准功能把好几个同行都看来了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E136_A16",
+     "subject": "THIRD",
+     "relation": "名片线索",
+     "value": "一家检测机构的老师留了名片，待技术对接",
+     "valid_time": "2026-11-15起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T07",
+      "message_id": "m0",
+      "quote": "有个检测机构的老师还留了名片，回头我跟技术对接"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主场的高光时刻，重点捧场，别抢戏谈技术细节。",
+   "unknowns": [],
+   "protected_expressions": [
+    "演示圆满"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E136_T07"
+  },
+  "E136_T08": {
+   "current_action": "收下打包资料并道谢，回应实验室实测的可能，问清约测流程",
+   "acceptable_actions": [
+    "道谢收资料，确认光谱仪实测可约并问流程",
+    "感谢她顺手帮忙问参数，说实测值得跑一趟",
+    "收下资料，提议实测时间等她回访安排一起定"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A17",
+     "subject": "SHARED",
+     "relation": "资料交付",
+     "value": "HER打包发送三家厂商白皮书与演示视频",
+     "valid_time": "2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T08",
+      "message_id": "m0",
+      "quote": "我把三家厂商的白皮书和演示视频打包发你了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E136_A18",
+     "subject": "PUBLIC",
+     "relation": "实测可能",
+     "value": "光谱仪厂商表示可约实验室实测",
+     "valid_time": "2026-11-16起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T08",
+      "message_id": "m0",
+      "quote": "人家说可以约实验室实测"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她帮了忙，谢意要具体；实测对自己的工作确实有用，态度积极。",
+   "unknowns": [
+    "实测时间与费用未定"
+   ],
+   "protected_expressions": [
+    "可以约实验室实测"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E136_T08"
+  },
+  "E136_T09": {
+   "current_action": "确认下周三实测同行：接受她陪去回访顺便顺人物关系的安排",
+   "acceptable_actions": [
+    "确认下周三下午实测，同步具体碰头方式",
+    "答应同行，顺口说正好帮她把名片那头的关系捋顺",
+    "确认时间并问她要不要先把回访对象信息发自己备课"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A19",
+     "subject": "SHARED",
+     "relation": "实测安排",
+     "value": "下周三下午实验室实测，HER陪同并回访展位",
+     "valid_time": "2026-11-25下午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T09",
+      "message_id": "m0",
+      "quote": "实测约上了，就下周三下午，我陪你去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E136_A20",
+     "subject": "THIRD",
+     "relation": "名片线索",
+     "value": "检测机构老师名片待回访时理顺关系",
+     "valid_time": "2026-11-15起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T07",
+      "message_id": "m0",
+      "quote": "有个检测机构的老师还留了名片"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "接受好意的同时把'下周三'这种关键时间复述一遍，符合前两次改期的教训。",
+   "unknowns": [
+    "实测具体地点未报出"
+   ],
+   "protected_expressions": [
+    "把那张名片的人物关系再顺一顺"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E136_T09"
+  },
+  "E136_T10": {
+   "current_action": "确认实测结果（9项过7项），接住奶茶彩头的玩笑，表态中标一定请",
+   "acceptable_actions": [
+    "确认结果，接奶茶玩笑说中标必请",
+    "确认7项通过，顺势感谢她牵线的实测机会",
+    "接梗并问她回访展位那单推进如何"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A21",
+     "subject": "PUBLIC",
+     "relation": "实测结果",
+     "value": "光谱仪实测9项通过7项，优于预期",
+     "valid_time": "2026-11-26（11-25实测后）",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T10",
+      "message_id": "m0",
+      "quote": "9项里过了7项"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E136_A22",
+     "subject": "SHARED",
+     "relation": "奶茶彩头",
+     "value": "若采购中标，ME请HER喝奶茶的玩笑约定",
+     "valid_time": "约定成立起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T10",
+      "message_id": "m0",
+      "quote": "到时候中标了记得请我喝奶茶"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她问句开头，先答结果再接玩笑。",
+   "unknowns": [
+    "采购是否中标未定"
+   ],
+   "protected_expressions": [
+    "到时候中标了记得请我喝奶茶"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言采购必然中标"
+   ],
+   "case_id": "E136_T10"
+  },
+  "E136_T11": {
+   "current_action": "接住春季展提前留码的玩笑，呼应这次连环改期的教训，答应明年直接15号下午见",
+   "acceptable_actions": [
+    "答应收下两张码，接住'省得再改'的梗",
+    "顺势自嘲这次改了两回，明年一定直奔下午场",
+    "答应留码并回扣这次下午场才赶上演的结论"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A23",
+     "subject": "SHARED",
+     "relation": "春季展预告",
+     "value": "明年三月春季展HER展位同排，提前留两张VIP码，约定直接15号下午见",
+     "valid_time": "2027-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T11",
+      "message_id": "m0",
+      "quote": "明年三月的春季展我们展位还在这排，VIP码我先给你留两张"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E136_A24",
+     "subject": "SHARED",
+     "relation": "改期教训",
+     "value": "本次展会经历两次改期，最终仅在下午场成行",
+     "valid_time": "2026-11-11至11-13",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T04",
+      "message_id": "m0",
+      "quote": "又出幺蛾子"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "低压力玩笑轮，允许轻回应；梗点是'这回直接15号下午见'的自嘲。",
+   "unknowns": [
+    "明年三月展期是否仍为14、15号未定"
+   ],
+   "protected_expressions": [
+    "省得再改"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E136_T11"
+  },
+  "E136_T12": {
+   "current_action": "确认收到资料、敲定下周三实验室见与她请饭的安排，展会这条线自然收尾",
+   "acceptable_actions": [
+    "确认下周三见，接住'账不能欠'的说法",
+    "确认收到资料并致谢，说中午饭自己抢先请也行",
+    "敲定时间并顺带把奶茶彩头再提一嘴当玩笑"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E136_A25",
+     "subject": "SHARED",
+     "relation": "实验室之约",
+     "value": "下周三（12-09）实验室回访跟进与中午请饭确认",
+     "valid_time": "2026-12-09当周周三",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T12",
+      "message_id": "m0",
+      "quote": "下周三实验室见，中午我请饭"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E136_A26",
+     "subject": "SHARED",
+     "relation": "资料交付",
+     "value": "三家厂商白皮书与演示视频已收到并整理",
+     "valid_time": "2026-11-16起",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E136_T08",
+      "message_id": "m0",
+      "quote": "我把三家厂商的白皮书和演示视频打包发你了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轮把时间确认清楚——这故事的全课就是时间口径要钉死。",
+   "unknowns": [],
+   "protected_expressions": [
+    "展会的账咱可不能欠"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E136_T12"
+  }
+ }
+}

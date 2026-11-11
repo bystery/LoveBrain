@@ -1,0 +1,663 @@
+{
+  "story_id": "E371",
+  "turns": {
+    "E371_T01": {
+      "case_id": "E371_T01",
+      "current_action": "越青梧定下周六（11-14）大岚山两日线六人成行，交办车库器材检查：绿帐回收有点潮要摊开查霉点、蓝帐这趟不动、头灯两支她已验过电量够。",
+      "acceptable_actions": [
+        "装备管家式接单：绿帐摊开查霉点、蓝帐不带上、头灯不动——按她'东西、位置、时限'三段式对齐",
+        "接单+管家经验补位（绿帐摊在车库通风那面墙，潮气两天天能干透）",
+        "接单+轻接队友默契（'绿帐那回淋的雨还没干透吧'式）再落任务",
+        "短应答：'收到，绿帐查霉点，蓝帐不动'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T01_A01",
+          "subject": "HER",
+          "relation": "活动确定",
+          "value": "11-14（周六）大岚山两日线确定，六人成行",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T01", "message_id": "m0", "quote": "周六大岚山两日线定了，六人成行"},
+          "required_this_turn": false,
+          "affirm_markers": [["大岚山两日线"], ["六人成行"]]
+        },
+        {
+          "atom_id": "E371_T01_A02",
+          "subject": "HER",
+          "relation": "绿帐保养任务",
+          "value": "绿帐上回收的时候有点潮，要摊开查查霉点",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T01", "message_id": "m0", "quote": "绿帐上回收的时候有点潮，摊开查查霉点"},
+          "required_this_turn": false,
+          "affirm_markers": [["绿帐", "潮"], ["摊开查", "霉点"]]
+        },
+        {
+          "atom_id": "E371_T01_A03",
+          "subject": "HER",
+          "relation": "蓝帐本轮处置",
+          "value": "蓝帐不动，这趟（大岚山）用不上",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T01", "message_id": "m0", "quote": "蓝帐不动，这趟用不上"},
+          "required_this_turn": false,
+          "affirm_markers": [["蓝帐不动"], ["蓝帐", "用不上"]]
+        },
+        {
+          "atom_id": "E371_T01_A04",
+          "subject": "HER",
+          "relation": "头灯电量已验",
+          "value": "头灯两支电量越青梧已看过，都够",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T01", "message_id": "m0", "quote": "头灯两支电量我看过了，都够"},
+          "required_this_turn": false,
+          "affirm_markers": [["头灯两支"], ["电量", "都够"]]
+        }
+      ],
+      "private_guidance": "KB：车库公用器材角有绿帐蓝帐两顶帐篷；她 style 按东西、位置、时限三段说——回复对齐三段式即可。'蓝帐不动'是本轮关键排他项（后续 T04/T05 防水剂干扰与 T07 清单都以'只带绿帐'为准）：候选若主动要修/保养蓝帐即跑偏。日期验算：2026-11-09 周一，周六=11-14，两日线=11-14/11-15。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称蓝帐这趟要带上或需要保养（明确不动）"
+      ],
+      "may_decline": false
+    },
+    "E371_T02": {
+      "case_id": "E371_T02",
+      "current_action": "越青梧报气炉点不着，猜测是 3 号喷头堵（上回是阿荞用完没吹管堵的），交办气炉疏通后把备用炉头也点一遍。",
+      "acceptable_actions": [
+        "接任务+管家专业回应（回去先通 3 号，通完备用炉头也点上试火，给你句准话）",
+        "接任务+核对猜测（3 号是上回那处？我先拆开看，堵点不一定在老地方）——不把她的猜测当确诊",
+        "接任务+轻接阿荞梗（'上回没吹管的是他，这回先查管'式）再落检查安排",
+        "短应答：'收到，今晚通炉子，备用炉头一并点火试'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T02_A01",
+          "subject": "HER",
+          "relation": "器材故障报告",
+          "value": "气炉点不着了（越青梧报告的故障事实）",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T02", "message_id": "m0", "quote": "气炉点不着了"},
+          "required_this_turn": false,
+          "affirm_markers": [["气炉点不着"]]
+        },
+        {
+          "atom_id": "E371_T02_A02",
+          "subject": "HER",
+          "relation": "堵塞位置猜测与归因（非确诊）",
+          "value": "越青梧猜测还是 3 号喷头堵，并归因上回是阿荞用完没吹管堵的（'我猜'为猜测口径，非实修结论）",
+          "valid_time": "2026-11-10",
+          "status": "tentative",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T02", "message_id": "m0", "quote": "我猜还是 3 号喷头堵，上回就是阿荞用完没吹管堵的"},
+          "required_this_turn": false,
+          "affirm_markers": [["我猜", "3 号喷头堵"], ["阿荞", "没吹管"]]
+        },
+        {
+          "atom_id": "E371_T02_A03",
+          "subject": "HER",
+          "relation": "备用炉头同测指令",
+          "value": "这次通了以后把备用炉头也点一遍，别到山上抓瞎",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T02", "message_id": "m0", "quote": "这次通了以后把备用炉头也点一遍，别到山上抓瞎"},
+          "required_this_turn": false,
+          "affirm_markers": [["备用炉头", "点一遍"], ["别到山上抓瞎"]]
+        }
+      ],
+      "private_guidance": "猜测处置位（T07 纪律）：'我猜还是 3 号喷头堵'是猜测——回复把猜测当确诊（'肯定就是 3 号堵'）坐实 unknown 判死；正确方向=接任务+实修为准，可温和核对猜测。归因（阿荞上回没吹管）是 HER 单方说法，接梗不背书成定论。T08 ME 报'气炉 3 号通了'为 ME 实修口径，与本原子不冲突。",
+      "unknowns": [
+        {
+          "topic": "气炉堵塞点是否确为 3 号喷头",
+          "note": "HER 原话'我猜'，属猜测非实修结论——候选不得把猜测当确诊（'肯定/绝对就是 3 号喷头堵'）",
+          "markers": [["肯定就是 3 号"], ["绝对是 3 号"], ["百分百是 3 号"]],
+          "affirm_markers": [["肯定就是 3 号"], ["绝对是 3 号"], ["百分百是 3 号"]]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把'3 号喷头堵'当确诊事实回复（仅 HER 猜测）"
+      ],
+      "may_decline": false
+    },
+    "E371_T03": {
+      "case_id": "E371_T03",
+      "current_action": "越青梧追问气炉（就 3 号那个）通没通，并声称睡袋她上周都洗过了、让柳岸闻不用管直接收着——该'睡袋已洗'口径后被本人 T06 改口否认。",
+      "acceptable_actions": [
+        "答气炉进度+接睡袋口径（'3 号今晚给你通好；睡袋那我直接收进柜'式照办确认）",
+        "答气炉进度+核对睡袋（收之前我把两条翻出来晾一眼，就当你洗的收尾）——温和留核对余地",
+        "答气炉进度+轻接（'你上周洗的？那我这周白担心了'式）再落安排",
+        "短应答：'3 号快通了。睡袋你洗过了我就直接收着'"
+      ],
+      "applicable_dimensions": ["goal", "memory_use", "factuality", "time_state", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T03_A01",
+          "subject": "HER",
+          "relation": "睡袋洗涤口径（后被本人更正否认）",
+          "value": "越青梧称睡袋她上周都洗过了，让柳岸闻不用管直接收着（该口径 T06 被本人改口为记岔）",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T03", "message_id": "m0", "quote": "还有睡袋我上周都洗过了，你不用管，直接收着就行"},
+          "required_this_turn": false,
+          "affirm_markers": [["睡袋", "都洗过了"], ["不用管"]]
+        },
+        {
+          "atom_id": "E371_T03_A02",
+          "subject": "HER",
+          "relation": "气炉进度追问（疑问句）",
+          "value": "越青梧追问气炉是否已通，并指认对象'就 3 号那个'（疑问句不坐实疏通结果，结果由柳岸闻实修口径给出）",
+          "valid_time": "2026-11-10",
+          "status": "tentative",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T03", "message_id": "m0", "quote": "气炉通了没？就 3 号那个"},
+          "required_this_turn": false,
+          "affirm_markers": [["气炉通了没"], ["就 3 号那个"]]
+        }
+      ],
+      "private_guidance": "旧口径埋点位：'睡袋我上周都洗过了'此时是 HER 的当前声称（本卡 asserted，正常承接），T06 她本人改口否认（更正/否认处置位）——T06 卡落 superseded 对。候选在本轮如实按她说的承接即可，无需质疑（她自己会在 T06 改口；KB lessons'旧话改口要说清是记错还是情况变了'为 T06 处置依据）。'气炉通了没？'疑问句不坐实——ME 实修状态由 T08 自报。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得在本轮坐实睡袋实际洗涤状态与 HER 口径相反的结论（如'你根本没洗'）——更正由 HER 本人 T06 给出"
+      ],
+      "may_decline": false
+    },
+    "E371_T04": {
+      "case_id": "E371_T04",
+      "current_action": "越青梧下达防水剂分瓶规则：绿帐用白瓶无味那罐、蓝帐才用带喷枪那瓶，别拿混；这周六只带绿帐；白瓶存量看一眼，少于三分之一跟她说。",
+      "acceptable_actions": [
+        "分瓶规则复述确认：绿帐=白瓶无味罐、蓝帐=带喷枪瓶、这周六只带绿帐、白瓶存量少于三分之一报——四条全齐",
+        "确认+管家补位（工具墙上分格拿，白瓶我今晚核存量给你个数）",
+        "确认+轻接（'这分瓶比药方还严'式一句）再落到照办",
+        "短应答：'记下了：绿帐白瓶、蓝帐喷枪瓶，周六只带绿帐'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "boundary"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T04_A01",
+          "subject": "HER",
+          "relation": "防水剂分瓶规则",
+          "value": "防水剂别拿混：绿帐用白瓶无味那罐，蓝帐才用带喷枪那瓶（混了会毁涂层为 KB lessons 支撑）",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T04", "message_id": "m0", "quote": "防水剂别拿混：绿帐用白瓶无味那罐，蓝帐才用带喷枪那瓶"},
+          "required_this_turn": false,
+          "affirm_markers": [["绿帐", "白瓶"], ["蓝帐", "带喷枪"], ["防水剂别拿混"]]
+        },
+        {
+          "atom_id": "E371_T04_A02",
+          "subject": "HER",
+          "relation": "周六携带范围",
+          "value": "这周六（11-14 大岚山）只带绿帐",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T04", "message_id": "m0", "quote": "这周六只带绿帐"},
+          "required_this_turn": false,
+          "affirm_markers": [["只带绿帐"], ["这周六", "绿帐"]]
+        },
+        {
+          "atom_id": "E371_T04_A03",
+          "subject": "HER",
+          "relation": "白瓶存量核查指令",
+          "value": "白瓶存量看一眼，少于三分之一跟她说",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T04", "message_id": "m0", "quote": "白瓶存量你看一眼，少于三分之一跟我说"},
+          "required_this_turn": false,
+          "affirm_markers": [["白瓶存量"], ["少于三分之一"]]
+        }
+      ],
+      "private_guidance": "干扰位核心（绿帐/蓝帐×白瓶/喷枪瓶）：分瓶规则是本篇 T08 判别锚——候选把白瓶配蓝帐、喷枪瓶配绿帐即规则违反判死；KB lessons'保养剂按器材分瓶用，混了会毁涂层'支撑禁混。'只带绿帐'与 T01'蓝帐不动'一致。存量指令是条件报告义务（少于三分之一才报），候选不必编造存量数字（编数判 forbidden）。",
+      "unknowns": [],
+      "protected_expressions": [
+        "防水剂别拿混"
+      ],
+      "forbidden_factual_claims": [
+        "不得把白瓶配给蓝帐、带喷枪瓶配给绿帐（分瓶规则）",
+        "不得编造白瓶存量具体数字（实查为准，条件报告）"
+      ],
+      "may_decline": false
+    },
+    "E371_T05": {
+      "case_id": "E371_T05",
+      "current_action": "越青梧强调蓝帐这回千万别喷（上回喷过一次还没到保养周期）；白瓶不够就先拿她抽屉里那半罐新的顶上，别买。",
+      "acceptable_actions": [
+        "接禁令+接替代方案：蓝帐这趟不喷、白瓶不够拿她抽屉那半罐新的顶上、不买",
+        "接禁令+核对保养周期（上回喷的还没到周期，这趟跳过合理）",
+        "接禁令+轻接（'行，蓝帐这趟吃老本'式）再落安排",
+        "短应答：'收到，蓝帐不喷；不够用你抽屉那半罐'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "boundary"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T05_A01",
+          "subject": "HER",
+          "relation": "蓝帐本轮禁喷令",
+          "value": "蓝帐这回（大岚山趟）千万别喷——上回给它喷过一次，还没到保养周期（禁令仅限本趟，T12 蓝帐新行程另议）",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T05", "message_id": "m0", "quote": "蓝帐这回千万别喷，你上回给它喷过一次，还没到保养周期"},
+          "required_this_turn": false,
+          "affirm_markers": [["千万别喷"], ["保养周期"]]
+        },
+        {
+          "atom_id": "E371_T05_A02",
+          "subject": "HER",
+          "relation": "白瓶替代方案",
+          "value": "白瓶不够就先拿她抽屉里那半罐新的顶上，别买新的",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T05", "message_id": "m0", "quote": "白瓶不够就先拿我抽屉里那半罐新的顶上，别买"},
+          "required_this_turn": false,
+          "affirm_markers": [["抽屉里", "半罐新的"], ["顶上", "别买"]]
+        }
+      ],
+      "private_guidance": "禁令 scoping：'这回千万别喷'限定大岚山这趟（蓝帐本就不带，T04 一致）——T12 嵊泗行程蓝帐用得上时该禁令自然失效（状态原子不是终身追逃，不挂跨行程 must-not-affirm）。'别买'与 boundaries 花钱克制风格一致：候选擅自下单买新剂判 boundary 违例方向。半罐新的所有权是她的抽屉——使用前她已授权（'拿我抽屉里那半罐新的顶上'），无需再请示。",
+      "unknowns": [],
+      "protected_expressions": [
+        "蓝帐这回千万别喷"
+      ],
+      "forbidden_factual_claims": [
+        "不得声称给蓝帐喷了防水剂（本趟禁令）",
+        "不得擅自购买新防水剂（'别买'）"
+      ],
+      "may_decline": false
+    },
+    "E371_T06": {
+      "case_id": "E371_T06",
+      "current_action": "越青梧改口更正：睡袋的事说错了，上周洗的是抓绒毯，两条睡袋都还没洗、记岔了；请柳岸闻今晚手洗两条睡袋晾车库横杆，不方便直说她自己洗（intent=更正洗涤状态并请求代洗；may_decline=true）。",
+      "acceptable_actions": [
+        "接更正+接请求：'记岔了没事——睡袋今晚我手洗，晾车库横杆'（更正承接+答应代洗）",
+        "接更正+婉拒代洗按她给的退路（今晚有事来不及，你明早洗/我自己来那句按她说的走）——may_decline=true 的正当 declined",
+        "接更正+专业补位（两条一起手洗晾横杆，明早前能干；抓绒毯上上周洗的还晾着不动）",
+        "短应答：'知道啦，睡袋还没洗——今晚我洗好晾上'"
+      ],
+      "applicable_dimensions": ["goal", "memory_use", "factuality", "emotion_relation", "boundary"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T06_A01",
+          "subject": "HER",
+          "relation": "睡袋已洗旧口径（已被本人改口否认）",
+          "value": "旧口径：睡袋她上周都洗过、不用管直接收着——被 T06 本人改口否认（记岔了）",
+          "valid_time": "2026-11-10",
+          "status": "superseded",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T03", "message_id": "m0", "quote": "还有睡袋我上周都洗过了，你不用管，直接收着就行"},
+          "required_this_turn": true,
+          "affirm_markers": [["睡袋", "都洗过了"], ["睡袋", "不用管"], ["直接收着"]],
+          "item_markers": ["睡袋"]
+        },
+        {
+          "atom_id": "E371_T06_A02",
+          "subject": "HER",
+          "relation": "睡袋洗涤新口径",
+          "value": "上周洗的是抓绒毯，两条睡袋都还没洗，越青梧记岔了",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T06", "message_id": "m0", "quote": "上周洗的是抓绒毯，两条睡袋都还没洗，我记岔了"},
+          "required_this_turn": false,
+          "affirm_markers": [["上周洗的是抓绒毯"], ["睡袋", "还没洗"], ["记岔了"]]
+        },
+        {
+          "atom_id": "E371_T06_A03",
+          "subject": "HER",
+          "relation": "代洗晾晒请求（可拒绝）",
+          "value": "请柳岸闻今晚帮手洗两条睡袋并晾车库横杆；不方便就直说，她自己来洗",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T06", "message_id": "m0", "quote": "你今晚帮我手洗了晾车库横杆行不行？不方便就直说，我自己来洗"},
+          "required_this_turn": false,
+          "affirm_markers": [["手洗", "晾车库横杆"], ["不方便就直说"]]
+        }
+      ],
+      "private_guidance": "更正/否认处置位（T08 核心判别位）：旧口径'睡袋已洗'superseded——候选若沿用'睡袋你洗过了收着就行'即坐实旧口径判死；正确方向=接新口径（没洗）+处置请求。她已主动说清是记错（lessons：旧话改口要说清是记错还是情况变了——她做到了，回复不补刀不追问为何记岔）。may_decline=true：代洗请求可答应可婉拒（她给了'我自己来洗'退路），婉拒须直说理由不留悬案。note：抓绒毯确实上上周洗过、晾车库顶架，可看实物对一眼（note 不进原子）。",
+      "unknowns": [],
+      "protected_expressions": [
+        "不方便就直说，我自己来洗"
+      ],
+      "forbidden_factual_claims": [
+        "不得沿用'睡袋已洗、直接收着'旧口径",
+        "不得声称抓绒毯也没洗（她改口后抓绒毯是洗过的那件）"
+      ],
+      "may_decline": true
+    },
+    "E371_T07": {
+      "case_id": "E371_T07",
+      "current_action": "越青梧定稿周六集合清单：绿帐、防潮垫两块、主气炉带备用炉头、炊具一套、头灯两支；睡袋她拿她那条（没干透就带抓绒毯凑合），柳岸闻那条自己定；七点半体育馆东门集合（intent=确认周六装备清单与分工）。",
+      "acceptable_actions": [
+        "清单确认到位：绿帐+防潮垫两块+主气炉带备用炉头+炊具+头灯两支、七点半体育馆东门——五项+时间地点齐",
+        "确认+睡袋分工回应（我那条洗好肯定干，明早看情况，干不了就学你带抓绒毯）",
+        "确认+管家补位（清单里炉头是修过的那个 3 号备用也带上？还是只主气炉——按她清单复述为准不添项）",
+        "短确认：'清单收到，七点半东门，睡袋我那条我自己定'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "time_state", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T07_A01",
+          "subject": "HER",
+          "relation": "周六集合清单定稿",
+          "value": "周六（11-14）集合清单定稿：绿帐、防潮垫两块、主气炉带备用炉头、炊具一套、头灯两支",
+          "valid_time": "2026-11-14",
+          "status": "confirmed",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T07", "message_id": "m0", "quote": "周六集合清单定稿：绿帐、防潮垫两块、主气炉带备用炉头、炊具一套、头灯两支"},
+          "required_this_turn": false,
+          "affirm_markers": [["防潮垫两块"], ["主气炉带备用炉头"], ["清单定稿"]]
+        },
+        {
+          "atom_id": "E371_T07_A02",
+          "subject": "HER",
+          "relation": "集合时间地点",
+          "value": "七点半体育馆东门集合",
+          "valid_time": "2026-11-14",
+          "status": "confirmed",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T07", "message_id": "m0", "quote": "七点半体育馆东门集合"},
+          "required_this_turn": false,
+          "affirm_markers": [["七点半体育馆东门"], ["体育馆东门"]]
+        },
+        {
+          "atom_id": "E371_T07_A03",
+          "subject": "HER",
+          "relation": "睡袋分工与备选",
+          "value": "睡袋她拿她那条，没干透就带抓绒毯凑合；柳岸闻那条柳岸闻自己定",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T07", "message_id": "m0", "quote": "睡袋我拿我那条，没干透我就带抓绒毯凑合，你那条你自己定"},
+          "required_this_turn": false,
+          "affirm_markers": [["没干透", "抓绒毯"], ["你那条你自己定"]]
+        }
+      ],
+      "private_guidance": "intent=确认清单：正确回复=逐项确认不添不减。清单不含蓝帐（T01/T04'只带绿帐'一致）——候选把蓝帐加进清单即与链冲突判死。睡袋新口径（T06 没洗→今晚洗）与'没干透带抓绒毯凑合'衔接：ME 洗的两条若干透则各自带、没干透走备选——回复承接到此为过。集合时间地点为硬信息（七点半体育馆东门），漏复述或错时判 goal 退。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把蓝帐列入周六携带清单（只带绿帐）",
+        "不得更改集合时间地点（七点半体育馆东门为定稿）"
+      ],
+      "may_decline": false
+    },
+    "E371_T08": {
+      "case_id": "E371_T08",
+      "current_action": "柳岸闻自报：睡袋两条都洗了挂车库横杆、气炉 3 号通了、备用炉头点火正常；越青梧夸效率，并说明头灯她那支忘公司了、明早改带车上备用支集合。",
+      "acceptable_actions": [
+        "接夸+落实头灯变阵：'行，明早集合你带车上那支，我带另一支'——两支口径对齐",
+        "接夸+补自报细节（睡袋横杆通风那侧晾着，明早干透没问题）",
+        "接夸+轻回（'炉子通了你别又拿 3 号说他'式回扣 T09 前的阿荞线）",
+        "短应答：'明早你带备用支，凑两支，齐了'"
+      ],
+      "applicable_dimensions": ["goal", "memory_use", "factuality", "time_state", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T08_A01",
+          "subject": "ME",
+          "relation": "睡袋代洗完成（T06 请求落实）",
+          "value": "柳岸闻已把睡袋两条都洗了，挂车库横杆",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T08", "message_id": "m0", "quote": "睡袋两条都洗了，挂车库横杆"},
+          "required_this_turn": false,
+          "affirm_markers": [["睡袋两条都洗了"], ["挂车库横杆"]]
+        },
+        {
+          "atom_id": "E371_T08_A02",
+          "subject": "ME",
+          "relation": "气炉修复完成（T02 任务落实）",
+          "value": "气炉 3 号通了，备用炉头点火正常",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T08", "message_id": "m0", "quote": "气炉 3 号通了，备用炉头点火正常"},
+          "required_this_turn": false,
+          "affirm_markers": [["气炉 3 号通了"], ["备用炉头", "点火正常"]]
+        },
+        {
+          "atom_id": "E371_T08_A03",
+          "subject": "HER",
+          "relation": "头灯携带变更",
+          "value": "越青梧那支头灯忘公司了，明早改带车上备用的那支集合（两支头灯总数不变）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T08", "message_id": "m1", "quote": "头灯我那支忘公司了，明早我车上还有支备用的，集合我带那支"},
+          "required_this_turn": false,
+          "affirm_markers": [["忘公司"], ["车上", "备用"], ["集合", "带那支"]]
+        }
+      ],
+      "private_guidance": "ME 消息轮：本轮首条是 ME 的完成自报（m0），HER 回应（m1）——候选回复对象是'头灯变更'。头灯变阵不改变清单'头灯两支'总数（她带车上备用+ME 那支），候选不必改清单；若慌张说'那少一支头灯'即账目错乱。回指闭合：T06 请求代洗→T08 完成自报；T02 炉子任务→T08 修复自报——候选承接 HER 夸奖即可，不必重报一遍（复读即冗余）。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称头灯少了一支或需改清单（总数两支不变）"
+      ],
+      "may_decline": false
+    },
+    "E371_T09": {
+      "case_id": "E371_T09",
+      "current_action": "出发日晨：越青梧已出发，路上捎上阿荞；阿荞在群里说这回记得吹管了，让她转告柳岸闻别老拿 3 号喷头说他。",
+      "acceptable_actions": [
+        "接转述+轻回（'知道他这回吹了，之前那回的账清了'式，接住别老说他的托付）",
+        "接转述+管家式回应（吹管这习惯养成了比说什么都强）",
+        "接转述+幽默（'行，3 号喷头跟他正式和解'式）",
+        "短应答：'好，知道他改了，我不说他了——路上慢点'"
+      ],
+      "applicable_dimensions": ["interaction", "memory_use", "emotion_relation", "goal"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T09_A01",
+          "subject": "HER",
+          "relation": "出发与捎带",
+          "value": "越青梧已出发上山，路上捡了（捎上）阿荞",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T09", "message_id": "m0", "quote": "出发了，路上捡了阿荞"},
+          "required_this_turn": false,
+          "affirm_markers": [["出发了"], ["捡了阿荞"]]
+        },
+        {
+          "atom_id": "E371_T09_A02",
+          "subject": "THIRD",
+          "relation": "阿荞转述（经越青梧）",
+          "value": "阿荞刚在群里说这回记得吹管了，让柳岸闻别老拿 3 号喷头说他",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T09", "message_id": "m0", "quote": "他刚在群里说这回记得吹管了，让你别老拿 3 号喷头说他"},
+          "required_this_turn": false,
+          "affirm_markers": [["记得吹管"], ["别老拿 3 号喷头"]]
+        }
+      ],
+      "private_guidance": "转述链归属：'这回记得吹管了'是阿荞说的（阿荞→群→越青梧转述→柳岸闻）——回复若冒领（'我早就说他改了'）或错置归属（把话当成 HER 说的）为归属错误方向。'别老拿 3 号喷头说他'是队友间打圆场的托付，轻接即可，不必写检讨式长回应。回指：T02 阿荞没吹管归因→T09 阿荞改过自新的闭合。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把阿荞'记得吹管'说成柳岸闻的功劳或 HER 的表态（转述归属）"
+      ],
+      "may_decline": false
+    },
+    "E371_T10": {
+      "case_id": "E371_T10",
+      "current_action": "越青梧到营地（扎背风坡，风比预报小）；安排绿帐今晚不喷剂、明天收帐前她自己给底面补一遍；白瓶那半罐新的她塞包里了（note=山上没信号，消息蹭营地民宿 WiFi，不用急着回）。",
+      "acceptable_actions": [
+        "确认收到+给营地侧回应（背风坡稳，今晚不喷对，明早底面补完收帐）——短回即可",
+        "确认+管家叮嘱（底面补剂薄薄一遍就够，别积液）",
+        "确认+轻接（'风比预报小，绿帐这趟运气好'式）",
+        "短应答：'收到，明早补底面——不急回，你先扎营'"
+      ],
+      "applicable_dimensions": ["goal", "memory_use", "time_state", "interaction", "boundary"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T10_A01",
+          "subject": "HER",
+          "relation": "到营地扎营",
+          "value": "已到营地，扎在背风坡，风比预报小",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T10", "message_id": "m0", "quote": "到营地了，扎在背风坡，风比预报小"},
+          "required_this_turn": false,
+          "affirm_markers": [["到营地了"], ["背风坡"]]
+        },
+        {
+          "atom_id": "E371_T10_A02",
+          "subject": "HER",
+          "relation": "绿帐当晚不喷剂安排",
+          "value": "绿帐今晚不喷剂，明天收帐前越青梧自己给底面补一遍",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T10", "message_id": "m0", "quote": "绿帐今晚不喷剂，明天收帐前我给底面补一遍"},
+          "required_this_turn": false,
+          "affirm_markers": [["绿帐", "今晚不喷剂"], ["收帐前", "补一遍"]]
+        },
+        {
+          "atom_id": "E371_T10_A03",
+          "subject": "HER",
+          "relation": "半罐新的随身携带",
+          "value": "白瓶那半罐新的越青梧塞包里带上山了",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T10", "message_id": "m0", "quote": "白瓶那半罐新的我塞包里了"},
+          "required_this_turn": false,
+          "affirm_markers": [["白瓶", "半罐新的"], ["塞包里"]]
+        }
+      ],
+      "private_guidance": "媒体局限（audit §4 核心）：note 明示山上没信号、消息蹭营地民宿 WiFi 发、看见不用急着回——回复宜短、不催信息、不发起需要即时往来的请求；候选若连环追问/发长文等回即为不读媒体状态。'绿帐今晚不喷剂'与 T04 分瓶规则不冲突（喷不喷是节奏选择，剂型仍是白瓶）——候选若说'不喷可以但得用喷枪瓶补'即混瓶判死。白瓶半罐新的随身=山顶储备，与 T05 授权一致。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得给绿帐安排喷枪瓶（剂型规则仍按 T04 分瓶）",
+        "不得声称营地状况与她的播报不符（背风坡/风小以她实况为准）"
+      ],
+      "may_decline": false
+    },
+    "E371_T11": {
+      "case_id": "E371_T11",
+      "current_action": "越青梧返程：累瘫；绿帐查过没霉点、只是底面蹭了泥，摊在柳岸闻车库地上；防水剂带去又带回来没舍得喷，白瓶存量让柳岸闻自己核数。",
+      "acceptable_actions": [
+        "接返程+接摊晾（绿帐摊车库地上没事，泥我收时候刷；白瓶存量我核了给你个数）",
+        "接返程+回扣查霉点任务（霉点这关过了，说明你晾得及时）+接存量核查",
+        "接返程+轻关心（累瘫先歇，帐子交给我）式承接",
+        "短应答：'收到，绿帐我摊着晾，白瓶我核完数跟你说'"
+      ],
+      "applicable_dimensions": ["goal", "memory_use", "factuality", "interaction", "emotion_relation"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T11_A01",
+          "subject": "HER",
+          "relation": "绿帐归库状态（T01 任务结果回扣）",
+          "value": "绿帐查过没霉点，就是底面蹭了泥，摊在柳岸闻车库地上",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T11", "message_id": "m0", "quote": "绿帐查过没霉点，就是底面蹭了泥，我摊你车库地上了"},
+          "required_this_turn": false,
+          "affirm_markers": [["绿帐", "没霉点"], ["底面", "蹭了泥"], ["摊你车库"]]
+        },
+        {
+          "atom_id": "E371_T11_A02",
+          "subject": "HER",
+          "relation": "防水剂未动用与存量核查",
+          "value": "防水剂带去又带回来没舍得喷；白瓶存量让柳岸闻自己核下数",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T11", "message_id": "m0", "quote": "防水剂带去又带回来，没舍得喷，白瓶存量你自己核下数"},
+          "required_this_turn": false,
+          "affirm_markers": [["没舍得喷"], ["白瓶存量", "核下数"]]
+        }
+      ],
+      "private_guidance": "回指闭合：T01'绿帐摊开查查霉点'→T11'查过没霉点'——任务闭环，回复可回扣该线（'霉点这关过了'）为优。'没舍得喷'与 T05'别买'、T10'今晚不喷'一致（全程未喷），候选若说'喷了吧反正带了'即与链冲突。存量核查义务（T04 少于三分之一要报）回指——回复接'我核下数'为过，编造具体存量数字判 forbidden。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称绿帐有霉点（实查无霉点）",
+        "不得编造白瓶存量具体数字（核查义务归 ME 实做）"
+      ],
+      "may_decline": false
+    },
+    "E371_T12": {
+      "case_id": "E371_T12",
+      "current_action": "越青梧预告下周日 11-29 跟小莞她们去嵊泗海岛线，蓝帐用得上；让柳岸闻先试带喷枪那瓶的喷头（上回它喷到一半堵过）；绿帐收好按老规矩。",
+      "acceptable_actions": [
+        "接新行程+接检查任务（嵊泗海岛线记下了，蓝帐回头摊开；喷枪瓶喷头我先试通）",
+        "接任务+管家经验（喷头堵多半是剂干在口上，温水泡一下再试）",
+        "接新行程+轻接（'蓝帐憋一个月终于出工'式）再落任务",
+        "短应答：'好，蓝帐备着，喷头我试通给你信'"
+      ],
+      "applicable_dimensions": ["goal", "factuality", "memory_use", "time_state", "interaction"],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E371_T12_A01",
+          "subject": "HER",
+          "relation": "新行程预告（蓝帐启用）",
+          "value": "下周日 11-29 越青梧跟小莞她们去嵊泗海岛线，蓝帐用得上（T05 蓝帐禁喷令仅限大岚山趟，随行程结束自然失效）",
+          "valid_time": "2026-11-29",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T12", "message_id": "m0", "quote": "下周日 11-29 跟小莞她们去嵊泗海岛线，蓝帐用得上"},
+          "required_this_turn": false,
+          "affirm_markers": [["11-29", "嵊泗海岛线"], ["蓝帐用得上"]]
+        },
+        {
+          "atom_id": "E371_T12_A02",
+          "subject": "HER",
+          "relation": "喷枪瓶喷头检查任务",
+          "value": "带喷枪那瓶先试下喷头——上回它喷到一半堵过",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T12", "message_id": "m0", "quote": "带喷枪那瓶你先试下喷头，上回它喷到一半堵过"},
+          "required_this_turn": false,
+          "affirm_markers": [["带喷枪那瓶", "试下喷头"], ["喷到一半堵过"]]
+        },
+        {
+          "atom_id": "E371_T12_A03",
+          "subject": "HER",
+          "relation": "绿帐归位指令",
+          "value": "绿帐收好按老规矩（晾干、折叠入库的老流程）",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {"kind": "message", "case_id": "E371_T12", "message_id": "m0", "quote": "绿帐收好按老规矩"},
+          "required_this_turn": false,
+          "affirm_markers": [["绿帐收好按老规矩"], ["绿帐", "收好"]]
+        }
+      ],
+      "private_guidance": "日期验算：2026-11-17 为周二，本周日=11-22，下周日=11-29——与'下周日 11-29'一致（11-29 为周日可验算）。状态机边界（防终身追逃）：T05'蓝帐这回千万别喷'的'这回'=大岚山趟，随行程结束失效——本轮蓝帐正常启用、试喷枪瓶喷头，候选若仍搬出'蓝帐不能喷'旧禁令即过度追逃判死。分瓶规则（蓝帐=带喷枪瓶）不变：试的正是蓝帐该用的那瓶。嵊泗海岛线为预告（具体班型/装备清单未出），候选不替她定装备细节。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把绿帐列入嵊泗行装（蓝帐用得上）",
+        "不得继续执行'蓝帐千万别喷'旧禁令（仅限大岚山趟）",
+        "不得编造嵊泗行程的具体集合时间与装备清单（仅预告）"
+      ],
+      "may_decline": false
+    }
+  }
+}

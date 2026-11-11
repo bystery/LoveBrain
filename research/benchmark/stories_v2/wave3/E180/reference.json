@@ -1,0 +1,768 @@
+{
+ "story_id": "E180",
+ "turns": {
+  "E180_T01": {
+   "case_id": "E180_T01",
+   "current_action": "接住突发：安抚她，并立刻翻查自己的订金收据与转账凭证，约时间一起去店里对账。",
+   "acceptable_actions": [
+    "先安抚再报出凭证在手的细节，提出当晚一起去对账",
+    "让她把店里来电的要点复述一遍，再带着凭证出门",
+    "宽慰一句后直接报出转账日期和备注，给店方核对锚点"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A01",
+     "subject": "THIRD",
+     "relation": "记录缺失",
+     "value": "新经理称系统查不到订金记录要求带凭证核对",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T01",
+      "quote": "查不到咱们的订金记录",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A02",
+     "subject": "ME",
+     "relation": "垫付订金",
+     "value": "十月二十六日 ME 交过五百订金且收据写 ME 名字可抵餐费",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E179_T05",
+      "quote": "收据写我的名字，订金可以抵餐费",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "此时稳比快重要，凭证细节是定海神针。",
+   "unknowns": [
+    "店方登记错误的成因未知"
+   ],
+   "protected_expressions": [
+    "查不到咱们的订金记录"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称订金已被店方私吞",
+    "不得报出转账记录之外的金额"
+   ]
+  },
+  "E180_T02": {
+   "case_id": "E180_T02",
+   "current_action": "报出凭证细节（五百、十月二十六号、备注松鹤厅订金）并约定七点半碰头同去。",
+   "acceptable_actions": [
+    "按凭证细节汇报并敲定碰头时间地点",
+    "汇报之余提醒她带上收据原件拍照件",
+    "汇报并预判对账要点：金额、日期、留厅字样"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A03",
+     "subject": "ME",
+     "relation": "凭证在手",
+     "value": "收据照片与转账记录都在且五百那笔备注松鹤厅订金",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T02",
+      "quote": "备注写的松鹤厅订金",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A04",
+     "subject": "SHARED",
+     "relation": "碰头安排",
+     "value": "约当晚七点半在 HER 家楼下碰头一起去对账",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T02",
+      "quote": "我七点半到你家楼下",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "细节报得越具体她越安心。",
+   "unknowns": [
+    "新经理是否认账未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构还有第二笔订金"
+   ]
+  },
+  "E180_T03": {
+   "case_id": "E180_T03",
+   "current_action": "接住她被家里追问菜单的窘迫，主动表示菜单细节自己有数，稍后一起转述。",
+   "acceptable_actions": [
+    "先接窘迫再表示菜单细节自己记得，让她别急",
+    "让她把单子照片发来再一并回复她妈",
+    "宽慰一句，先专心对订金的账，菜单稍后补"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A05",
+     "subject": "HER",
+     "relation": "记忆缺口",
+     "value": "只记得撤了两个贵菜但说不出具体哪两道",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T03",
+      "quote": "我就记得撤了两个贵的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A06",
+     "subject": "SHARED",
+     "relation": "菜单调整",
+     "value": "此前已撤佛跳墙和基围虾换成软烂家常菜",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E179_T11",
+      "quote": "能不能把佛跳墙和基围虾这两道撤了",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她记不全很正常，补位别邀功。",
+   "unknowns": [
+    "她妈最终是否满意转述未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得现场编造菜单里没有的菜"
+   ]
+  },
+  "E180_T04": {
+   "case_id": "E180_T04",
+   "current_action": "把菜单改动复述清楚：撤佛跳墙和基围虾、换砂锅豆腐和清炒时蔬、清蒸鲈鱼保留。",
+   "acceptable_actions": [
+    "按此前定的菜单准确复述并教她怎么跟她妈说",
+    "复述之余补上口味原因，让转述更有说服力",
+    "复述并提议今晚对账时顺便跟店里核一遍单子"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A07",
+     "subject": "SHARED",
+     "relation": "菜单改动",
+     "value": "撤佛跳墙和基围虾换成砂锅豆腐和清炒时蔬",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T04",
+      "quote": "撤的是佛跳墙和基围虾，换成砂锅豆腐和清炒时蔬",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A08",
+     "subject": "SHARED",
+     "relation": "口味约束",
+     "value": "外婆不吃辣且清蒸鲈鱼必须保留",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E179_T06",
+      "quote": "外婆不吃辣，清蒸鲈鱼必须有",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "复述要与十月定单完全一致，不能添油加醋。",
+   "unknowns": [
+    "店家最终单子是否与口头一致待对"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把保留的鲈鱼说成新加的"
+   ]
+  },
+  "E180_T05": {
+   "case_id": "E180_T05",
+   "current_action": "接住对账结果：登记口径已更正为订金五百全额抵餐费，陪她一起松口气并收好更正后的单据。",
+   "acceptable_actions": [
+    "确认更正结果并提议把更正后的单据拍照留档",
+    "顺她说一句折腾，再把下一件事（菜单核对）接上",
+    "复盘一句幸好凭证齐全，语气别居功"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A09",
+     "subject": "THIRD",
+     "relation": "口径更正",
+     "value": "登记由定金三百尾款二百更正为订金五百全额抵餐费",
+     "valid_time": "2026-11-06",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T05",
+      "quote": "已经被他当场改成订金五百全额抵餐费",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A10",
+     "subject": "ME",
+     "relation": "垫付订金",
+     "value": "原始凭证为十月二十六日五百订金收据写 ME 名字",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E179_T05",
+      "quote": "收据写我的名字，订金可以抵餐费",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E180_A26",
+     "subject": "ME",
+     "relation": "凭证细节",
+     "value": "五百那笔转账备注为松鹤厅订金",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T02",
+      "quote": "备注写的松鹤厅订金",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "账捋直了就翻篇，别反复数落店方。",
+   "unknowns": [
+    "留厅登记是否同样有误此轮尚不知"
+   ],
+   "protected_expressions": [
+    "订金五百全额抵餐费"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称拿到了赔偿或免单"
+   ]
+  },
+  "E180_T06": {
+   "case_id": "E180_T06",
+   "current_action": "接住新爆点：书面确认过的松鹤厅被改期婚宴重复占用，先接她的火气，再表态去讨说法。",
+   "acceptable_actions": [
+    "先共情她的火气，再明确拿着书面确认去讨说法",
+    "逐句复述书面确认内容，指出店方自相矛盾",
+    "压住火气先问她店方原话，再定维权步骤"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A11",
+     "subject": "THIRD",
+     "relation": "重复占用",
+     "value": "松鹤厅七号晚上被一场改期的婚宴重复预订",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T06",
+      "quote": "被一场改期的婚宴重复订了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A12",
+     "subject": "SHARED",
+     "relation": "书面留厅被推翻",
+     "value": "此前书面确认松鹤厅十一月七号晚上不动，现被店方自己推翻",
+     "valid_time": "2026-11-07",
+     "status": "negated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E179_T09",
+      "quote": "微信里书面确认了松鹤厅十一月七号晚上不动",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的火气有理，站她这边但不煽风点火。",
+   "unknowns": [
+    "店方给什么补偿方案未知"
+   ],
+   "protected_expressions": [
+    "重复订了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替店方开脱说书面确认无效"
+   ]
+  },
+  "E180_T07": {
+   "case_id": "E180_T07",
+   "current_action": "接下维权委托：带着微信书面记录去讨说法，把'登记在先、白纸黑字'作为唯一依据。",
+   "acceptable_actions": [
+    "应下委托并复述维权依据是那条书面确认",
+    "应下之余把话术先打草稿：认凭证不吵架",
+    "让她把姥姥那边的情绪稳住，店方这边自己来"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A13",
+     "subject": "HER",
+     "relation": "维权委托",
+     "value": "要求 ME 拿微信记录向店方讨说法",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T07",
+      "quote": "拿着那条微信记录去讨个说法",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A14",
+     "subject": "ME",
+     "relation": "凭证加注",
+     "value": "收据背面写有确认留厅字样，是书面凭证一部分",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E179_T09",
+      "quote": "把这句也写在收据背面了，白纸黑字",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E180_A27",
+     "subject": "THIRD",
+     "relation": "重复占用",
+     "value": "松鹤厅七号晚上被改期婚宴重复预订",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T06",
+      "quote": "被一场改期的婚宴重复订了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "维权靠凭证不靠嗓门，稳准狠。",
+   "unknowns": [
+    "店长是否认账未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称要去闹场或投诉到停业"
+   ]
+  },
+  "E180_T08": {
+   "case_id": "E180_T08",
+   "current_action": "汇报维权结果：店长认账，给出换迎宾厅或改周日的两个方案，等她拍板。",
+   "acceptable_actions": [
+    "把两个方案原样转述并把决定权交回给她",
+    "转述之余给出自己的倾向和理由但不催",
+    "转述并提醒无论选哪个都要写进新单子"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A15",
+     "subject": "THIRD",
+     "relation": "补偿方案",
+     "value": "店长给出换一楼迎宾厅或周日回松鹤厅并送寿茶两个方案",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T08",
+      "quote": "一是换一楼迎宾厅，规格不变还免茶位",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A16",
+     "subject": "ME",
+     "relation": "维权依据",
+     "value": "书面确认截图已出示且店方认账按凭证办事",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T08",
+      "quote": "我把十月二十七号的书面确认截图甩给店长了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "方案如实转述，别替她选。",
+   "unknowns": [
+    "家庭意见未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得宣称某个方案已被店家保证"
+   ]
+  },
+  "E180_T09": {
+   "case_id": "E180_T09",
+   "current_action": "接住她的决定：改周日，并呼应'农历正日子更对'的说法，把改期定成因祸得福。",
+   "acceptable_actions": [
+    "确认周日方案并顺势夸农历正日子更圆满",
+    "确认之余提醒通知二舅一家新时间",
+    "确认并说会去把改期手续和补偿落实"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A17",
+     "subject": "SHARED",
+     "relation": "改期决定",
+     "value": "寿宴改到十一月八号周日晚二舅一家也能到齐",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T09",
+      "quote": "周日晚上人反而到得齐，二舅一家周六要值班，就定周日",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A18",
+     "subject": "THIRD",
+     "relation": "日子讲究",
+     "value": "姥姥说周日才是农历正日子更对日子",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T09",
+      "quote": "正好周日才是农历的正日子",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把她有点无奈的改期说成更好的安排。",
+   "unknowns": [
+    "改期手续办理细节待 ME 落实"
+   ],
+   "protected_expressions": [
+    "就定周日"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称改期手续已办完（此轮尚未）"
+   ]
+  },
+  "E180_T10": {
+   "case_id": "E180_T10",
+   "current_action": "汇报改期手续完成：松鹤厅改到十一月八号周日晚六点半、订金顺延、寿茶入单，并加了两条违约保障。",
+   "acceptable_actions": [
+    "按实际结果汇报并展示新单子要点",
+    "汇报之余把双倍订金条款念给她听",
+    "汇报并确认周四前把最终人数报给店里"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A19",
+     "subject": "SHARED",
+     "relation": "改期落地",
+     "value": "松鹤厅改到十一月八号周日晚六点半订金顺延寿茶入单",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T10",
+      "quote": "松鹤厅改到十一月八号周日晚六点半，订金跟着顺延",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A20",
+     "subject": "ME",
+     "relation": "违约条款",
+     "value": "新单子加注如再变动按双倍订金赔",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T10",
+      "quote": "如再变动，按双倍订金赔",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A28",
+     "subject": "SHARED",
+     "relation": "改期决定",
+     "value": "寿宴定在周日晚上二舅一家也能到齐",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T09",
+      "quote": "就定周日",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把保障条款讲清，让她彻底踏实。",
+   "unknowns": [
+    "最终人数未定"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得报成原定的十一月七号"
+   ]
+  },
+  "E180_T11": {
+   "case_id": "E180_T11",
+   "current_action": "接住算账与还钱：确认估价口径，并让她别客气，把结算方式说清楚（结账时转五百）。",
+   "acceptable_actions": [
+    "确认估价并给出结账时当面转五百的结算方式",
+    "先夸她算账仔细，再提出余款当天结多退少补",
+    "确认之余提议对账单拍照发她妈一份求安心"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A21",
+     "subject": "HER",
+     "relation": "还款提议",
+     "value": "她主动提出把垫的五百订金届时归还",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T11",
+      "quote": "你垫的那五百订金，到时候怎么还你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A22",
+     "subject": "THIRD",
+     "relation": "预估总价",
+     "value": "菜单估价沿用十月定单时预估的一千六百八十八",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E179_T12",
+      "quote": "预估一千六百八十八",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她要的是清楚不是客气，账目直说。",
+   "unknowns": [
+    "最终总价以当日账单为准"
+   ],
+   "protected_expressions": [
+    "怎么还你"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称这五百不用还",
+    "不得报出一千六百八十八以外的估价口径"
+   ]
+  },
+  "E180_T12": {
+   "case_id": "E180_T12",
+   "current_action": "收尾敲定：结算走店里多退少补、结账时转五百，并约定明早十点接姥姥的分工。",
+   "acceptable_actions": [
+    "把结算与次日分工各说一句，轻松收尾",
+    "确认分工之余补上带寿桃盒子和点心的提醒",
+    "收尾时给她一句明天的寿宴一定顺顺当当的定心话"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E180_A23",
+     "subject": "SHARED",
+     "relation": "结算方式",
+     "value": "结账时 HER 把垫付的五百转回 ME 多退少补走店里",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T12",
+      "quote": "你结账时把我垫的五百转我就行，多退少补都走店里",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A24",
+     "subject": "SHARED",
+     "relation": "次日分工",
+     "value": "约定十一月八号上午十点 ME 接姥姥 HER 备寿桃",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T12",
+      "quote": "明天十点你负责接驾",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E180_A25",
+     "subject": "HER",
+     "relation": "还款承诺",
+     "value": "她此前主动问垫付五百怎么还并接受当面结清",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E180_T11",
+      "quote": "你垫的那五百订金，到时候怎么还你",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "结尾轻快一点，给明天一个好彩头。",
+   "unknowns": [
+    "寿宴当天是否顺利不在本篇范围"
+   ],
+   "protected_expressions": [
+    "你负责接驾"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构寿宴已经办完",
+    "不得声称已收到那五百转账"
+   ]
+  }
+ }
+}

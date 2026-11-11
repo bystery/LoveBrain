@@ -1,0 +1,473 @@
+{
+ "story_id": "E174",
+ "turns": {
+  "E174_T01": {
+   "case_id": "E174_T01",
+   "current_action": "对亮点换货给出先取证再谈口径的第一步",
+   "acceptable_actions": [
+    "建议先拍白底与深底对比视频留证",
+    "建议查订单的换新条款窗口",
+    "建议先别撕膜别贴膜保原状"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T01_A01",
+     "subject": "SHARED",
+     "relation": "屏幕亮点发现",
+     "value": "小舟在屏幕右下角发现一个亮点，白底下明显，用机约两周",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T01", "quote": "屏幕右下角有个亮点", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T01_A02",
+     "subject": "SHARED",
+     "relation": "换新订单背景",
+     "value": "该平板为十月中国补换新锁单所得的既定背景",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T01", "quote": "这才用两周", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她开口就带凭证意识，顺着给下一步。",
+   "unknowns": ["亮点实际数量未知", "换货窗口剩余天数未知"],
+   "protected_expressions": ["屏幕右下角有个亮点"],
+   "forbidden_factual_claims": ["不得断言必然能换"],
+   "may_decline": false
+  },
+  "E174_T02": {
+   "case_id": "E174_T02",
+   "current_action": "接住亮点数量由一处更正为两处",
+   "acceptable_actions": [
+    "确认两处更正并提醒视频拍清位置",
+    "确认并建议同时拍序列号页",
+    "确认并说两处比一处好主张"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T02_A01",
+     "subject": "SHARED",
+     "relation": "亮点数量更正",
+     "value": "复检后亮点由一处更正为两处，分列右下与左上",
+     "valid_time": "2026-11-04",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E174_T02", "quote": "一共两个", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T02_A02",
+     "subject": "SHARED",
+     "relation": "屏幕亮点发现",
+     "value": "首次发现右下角亮点的既定事实",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T01", "quote": "屏幕右下角有个亮点", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "冲突轮：数量更新要接准，证据意识夸一句。",
+   "unknowns": [],
+   "protected_expressions": ["一共两个"],
+   "forbidden_factual_claims": ["不得继续按一处回应"],
+   "may_decline": false
+  },
+  "E174_T03": {
+   "case_id": "E174_T03",
+   "current_action": "对正常范围与换新条款的顶牛给边界分析",
+   "acceptable_actions": [
+    "指出两套口径管辖不同并建议走条款",
+    "建议以书面条款为界质询门店",
+    "建议赶在15天内锁定申请通道"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T03_A01",
+     "subject": "PUBLIC",
+     "relation": "门店口径",
+     "value": "门店称三个以内亮点属正常范围不算性能故障",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T03", "quote": "三个以内亮点属正常范围", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T03_A02",
+     "subject": "PUBLIC",
+     "relation": "换新条款",
+     "value": "订单页写15天内性能故障可换新，11月7日满15天",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T03", "quote": "15天内性能故障可换新", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "边界之争先分清谁管哪段，别让她正面怼门店。",
+   "unknowns": ["平台最终认定口径未知"],
+   "protected_expressions": ["15天内性能故障可换新"],
+   "forbidden_factual_claims": ["不得断言亮点必属性能故障"],
+   "may_decline": false
+  },
+  "E174_T04": {
+   "case_id": "E174_T04",
+   "current_action": "认可走官方寄检并强调全程留证",
+   "acceptable_actions": [
+    "认可寄检并提醒上传两处亮点视频",
+    "认可并提醒申请单号截图",
+    "认可并提醒寄检前备份资料"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T04_A01",
+     "subject": "SHARED",
+     "relation": "寄检决定",
+     "value": "HER 决定申请官方寄检并全单截图留证",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T04", "quote": "我决定直接申请官方寄检", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T04_A02",
+     "subject": "PUBLIC",
+     "relation": "口径分歧",
+     "value": "门店正常范围口径与线上检测口径不一致的既存分歧",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T04", "quote": "线上客服和门店口径不一样", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她自选的路是对的，补齐证据清单。",
+   "unknowns": ["寄检结论未知"],
+   "protected_expressions": ["我决定直接申请官方寄检"],
+   "forbidden_factual_claims": ["不得担保寄检必判可换"],
+   "may_decline": false
+  },
+  "E174_T05": {
+   "case_id": "E174_T05",
+   "current_action": "接住回收款450承诺与400到账的缺口并给申诉路径",
+   "acceptable_actions": [
+    "建议按回收确认短信申诉差额",
+    "建议先问客服扣款明细再申诉",
+    "建议找到含配件字样的书面凭证"
+   ],
+   "applicable_dimensions": ["factuality", "boundary", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T05_A01",
+     "subject": "SHARED",
+     "relation": "回收款缺口",
+     "value": "旧平板回收承诺450仅到账400，扣除理由为缺原装充电头",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T05", "quote": "今天只到账400", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T05_A02",
+     "subject": "SHARED",
+     "relation": "换新订单背景",
+     "value": "换新批次旧机回收的既定背景",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T05", "quote": "当初旧平板回收说好450", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "旧账翻得对，路径指到凭证上。",
+   "unknowns": ["充电头是否随箱交付未知"],
+   "protected_expressions": ["今天只到账400"],
+   "forbidden_factual_claims": ["不得断言扣款必属错扣"],
+   "may_decline": false
+  },
+  "E174_T06": {
+   "case_id": "E174_T06",
+   "current_action": "确认短信凭证在手并支持立即申诉",
+   "acceptable_actions": [
+    "支持申诉并提醒保留快递单号",
+    "支持并提醒申诉文案写承诺与实付两数",
+    "支持并说短信截图就是本钱"
+   ],
+   "applicable_dimensions": ["memory_use", "goal", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T06_A01",
+     "subject": "SHARED",
+     "relation": "回收确认凭证",
+     "value": "10月21日回收确认短信写明整机含配件450",
+     "valid_time": "2026-10-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T06", "quote": "整机含配件450", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T06_A02",
+     "subject": "SHARED",
+     "relation": "回收款缺口",
+     "value": "450承诺与400到账之间的50元缺口既存",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T05", "quote": "今天只到账400", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "凭证在手，语气可以笃定。",
+   "unknowns": ["申诉处理时限未知"],
+   "protected_expressions": ["整机含配件450"],
+   "forbidden_factual_claims": ["不得虚构凭证内容"],
+   "may_decline": false
+  },
+  "E174_T07": {
+   "case_id": "E174_T07",
+   "current_action": "接住申诉成功与寄检临近出结果",
+   "acceptable_actions": [
+    "接住50元补回并说凭证没白留",
+    "接住并提醒寄检结果出来先看判定理由",
+    "接住并打趣客服道歉不算赔偿"
+   ],
+   "applicable_dimensions": ["factuality", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T07_A01",
+     "subject": "SHARED",
+     "relation": "申诉成功",
+     "value": "50元差额补回到账，回收款回到450",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T07", "quote": "50块补回到账", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T07_A02",
+     "subject": "SHARED",
+     "relation": "寄检进行中",
+     "value": "官方寄检结果预计次日出具",
+     "valid_time": "2026-11-08",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T07", "quote": "说明天出结果", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "小闭环要庆祝，大闭环别催。",
+   "unknowns": ["寄检判定未知"],
+   "protected_expressions": ["50块补回到账"],
+   "forbidden_factual_claims": ["不得预判寄检结果"],
+   "may_decline": false
+  },
+  "E174_T08": {
+   "case_id": "E174_T08",
+   "current_action": "确认平台裁决支持换新并卡在窗口最后一天",
+   "acceptable_actions": [
+    "确认裁决并提醒约取件别拖到明天",
+    "确认并说15天最后一天卡得漂亮",
+    "确认并提醒旧机资料先迁出"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T08_A01",
+     "subject": "SHARED",
+     "relation": "换货裁决",
+     "value": "平台小二判定页面展示与实物可感知差异，支持换新机",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T08", "quote": "支持换新机", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T08_A02",
+     "subject": "SHARED",
+     "relation": "窗口时点",
+     "value": "裁决落在15天换新窗口最后一天，旧机次日上午取件",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T08", "quote": "15天窗口最后一天", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "裁决落定把节奏收紧，提醒别错过取件。",
+   "unknowns": ["新机发货时点未知"],
+   "protected_expressions": ["支持换新机"],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E174_T09": {
+   "case_id": "E174_T09",
+   "current_action": "应下周日来迁移并认可她的验收升级",
+   "acceptable_actions": [
+    "应下迁移并让她备好账号密码",
+    "应下并说录像这招早该有",
+    "应下并提醒验屏要开白底全屏"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T09_A01",
+     "subject": "SHARED",
+     "relation": "迁移请求",
+     "value": "HER 请 ME 周日来迁移学习软件家人共享与22点锁屏",
+     "valid_time": "2026-11-08",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T09", "quote": "你明天有空来帮我迁移吗", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T09_A02",
+     "subject": "SHARED",
+     "relation": "换货裁决",
+     "value": "平台已裁决支持换新机",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T08", "quote": "支持换新机", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "答应要痛快，验收升级顺势推一把。",
+   "unknowns": ["新机送达具体时点未知"],
+   "protected_expressions": ["你明天有空来帮我迁移吗"],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  },
+  "E174_T10": {
+   "case_id": "E174_T10",
+   "current_action": "接住取旧等新的进度与新验收装备",
+   "acceptable_actions": [
+    "接住并提醒录像从拆封开始拍",
+    "接住并说验屏灯这个钱花得值",
+    "接住并提醒新机到手先别激活迁移"
+   ],
+   "applicable_dimensions": ["memory_use", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T10_A01",
+     "subject": "SHARED",
+     "relation": "换货执行",
+     "value": "旧机已取走，新机派送中，收货当场开箱录像验屏",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T10", "quote": "旧机取走了，新机派送中", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T10_A02",
+     "subject": "HER",
+     "relation": "验收装备",
+     "value": "HER 购入手电式验屏灯备用，价十八块九",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T10", "quote": "验屏灯我买了个小的手电式的", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快接进度，别指点太多。",
+   "unknowns": [],
+   "protected_expressions": ["旧机取走了，新机派送中"],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E174_T11": {
+   "case_id": "E174_T11",
+   "current_action": "确认新机全屏无亮点与迁移完成",
+   "acceptable_actions": [
+    "确认无亮点并夸录像验收立功",
+    "确认并打趣小舟没发现换台",
+    "确认并提醒保留换货全程记录"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T11_A01",
+     "subject": "SHARED",
+     "relation": "新机验收",
+     "value": "新机全屏无亮点，换货落地",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T11", "quote": "新机全屏无亮点", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T11_A02",
+     "subject": "SHARED",
+     "relation": "管控重建",
+     "value": "触控笔重新配对，22点锁屏重新设置",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T11", "quote": "22点锁屏又设回去了", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "尘埃落定，语气轻下来。",
+   "unknowns": [],
+   "protected_expressions": ["新机全屏无亮点"],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E174_T12": {
+   "case_id": "E174_T12",
+   "current_action": "接下火锅之约与经验三件套复盘",
+   "acceptable_actions": [
+    "接下火锅并接住双十二功课",
+    "接下并说三件套够她开课了",
+    "接下并提醒扫地机比价找我"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E174_T12_A01",
+     "subject": "SHARED",
+     "relation": "火锅之约",
+     "value": "HER 今晚请火锅谢罪加谢师",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T12", "quote": "今晚火锅我请", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E174_T12_A02",
+     "subject": "HER",
+     "relation": "双十二预告",
+     "value": "HER 重申双十二换扫地机器人要 ME 盯功课",
+     "valid_time": "2026-12-12前后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E174_T12", "quote": "双十二扫地机器人那事", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，复盘一句带过，钩子接住。",
+   "unknowns": ["扫地机型号预算未知"],
+   "protected_expressions": ["今晚火锅我请"],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  }
+ }
+}

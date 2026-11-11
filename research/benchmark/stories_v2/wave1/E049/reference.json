@@ -1,0 +1,924 @@
+{
+ "story_id": "E049",
+ "turns": {
+  "E049_T01": {
+   "case_id": "E049_T01",
+   "current_action": "接住她的兴奋并同步记录报名事实：总价2980、已交定金500、销售承诺当日交定金减两百，再温和地把冲动与合同分开谈。",
+   "acceptable_actions": [
+    "先恭喜再确认：让她把缴费凭证和聊天截图发来核对",
+    "追问2980包含的课次和服务，拆开看值不值",
+    "提醒她退款窗口从付款时间起算，把付款时刻记下来"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A01",
+     "subject": "HER",
+     "relation": "报名缴费",
+     "value": "10月26日报在职备考班，总价2980",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T01",
+      "message_id": "m0",
+      "quote": "我报那个在职备考班了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A02",
+     "subject": "HER",
+     "relation": "定金支付",
+     "value": "当日已交定金500元，销售称交定金能减两百",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T01",
+      "message_id": "m0",
+      "quote": "脑子一热就交了500定金"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A03",
+     "subject": "HER",
+     "relation": "消费习惯",
+     "value": "她习惯把报价和聊天记录截图发我核对后再做决定",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "习惯把报价和聊天记录截图发我核对"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让她慢半拍把凭证留好，口吻上先捧场再冷静，不泼冷水。",
+   "unknowns": [
+    "2980包含的具体课次与有效期未确认",
+    "定金500是否计入总价、尾款怎么交未确认"
+   ],
+   "protected_expressions": [
+    "脑子一热就交了500定金"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言该机构的退费规则",
+    "不得替她决定报或不报"
+   ]
+  },
+  "E049_T02": {
+   "case_id": "E049_T02",
+   "current_action": "把销售口头承诺按时间线记下（48小时全额退+内部通道+要求保密），并提示口头承诺需留证。",
+   "acceptable_actions": [
+    "让她把那张截图保存好并记下销售工号或称呼",
+    "口头承诺不落地的风险提示，建议书面确认",
+    "陪她演一遍：如果48小时内要退，第一步问谁"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A04",
+     "subject": "PUBLIC",
+     "relation": "退费口径",
+     "value": "销售称48小时内不想学能全额退，并称这是内部通道",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T02",
+      "message_id": "m0",
+      "quote": "48小时内不想学能全额退"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A05",
+     "subject": "THIRD",
+     "relation": "保密要求",
+     "value": "销售要求她不要声张，称此为内部通道",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T02",
+      "message_id": "m0",
+      "quote": "让我别声张"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A06",
+     "subject": "HER",
+     "relation": "消费特质",
+     "value": "她对大额支出预算敏感，习惯找人核对口径",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "预算敏感"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把这句口头承诺变成可追溯的记录，语气保持半开玩笑不吓她。",
+   "unknowns": [
+    "48小时起算点是付款时间还是下单时间未明",
+    "全额退是否含定金未明"
+   ],
+   "protected_expressions": [
+    "听着就跟谍战片似的"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言该口头承诺必然有效",
+    "不得替销售背书内部通道真实性"
+   ]
+  },
+  "E049_T03": {
+   "case_id": "E049_T03",
+   "current_action": "接住深夜焦虑，把她已说出的退费窗口与到期时刻复述确认，给出今晚就能做的动作：明早一上班先找销售书面确认。",
+   "acceptable_actions": [
+    "复述时间线：10月26日上午付款，48小时窗口约后天上午到期",
+    "建议她现在就把退意愿写成一条消息存草稿，明早直接发",
+    "肯定她的判断：赶不上直播课本身就是合理理由"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A07",
+     "subject": "HER",
+     "relation": "课程安排",
+     "value": "备考班每周三次晚间直播课",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T03",
+      "message_id": "m0",
+      "quote": "一周三次晚上直播课"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A08",
+     "subject": "HER",
+     "relation": "出勤障碍",
+     "value": "她经常加班，晚间直播课赶不上",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T03",
+      "message_id": "m0",
+      "quote": "我加班根本赶不上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A09",
+     "subject": "PUBLIC",
+     "relation": "退费口径",
+     "value": "销售曾称48小时内不想学能全额退",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T02",
+      "message_id": "m0",
+      "quote": "48小时内不想学能全额退"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把焦虑转成一个明确的下一步动作，别在深夜陪她放大情绪。",
+   "unknowns": [
+    "销售次日是否会承认该口径未知",
+    "退定金与退全款流程是否相同未知"
+   ],
+   "protected_expressions": [
+    "我连问都没处问"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构销售已同意退款",
+    "不得给出确定的法律结论"
+   ]
+  },
+  "E049_T04": {
+   "case_id": "E049_T04",
+   "current_action": "确认口径冲突事实并安抚：原48小时全额退口径已被销售当场改口否定，新口径为正价课退费扣20%手续费；先共情，再让她把今早的聊天记录截图存证。",
+   "acceptable_actions": [
+    "复述前后两版口径并指出自相矛盾点",
+    "提醒她截图今早对话，锁定改口证据",
+    "建议把两版口径并列发给销售要求书面解释"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "emotion_relation",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A10",
+     "subject": "PUBLIC",
+     "relation": "退费口径变更",
+     "value": "销售改称48小时全额退仅适用体验课，正价课退费要扣20%手续费",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T04",
+      "message_id": "m0",
+      "quote": "48小时全额退是体验课的规则"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A11",
+     "subject": "PUBLIC",
+     "relation": "先前口径",
+     "value": "48小时内全额退适用于本次正价报名（该说法已被销售改口否定，不再成立）",
+     "valid_time": "2026-10-26 至 2026-10-27",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T02",
+      "message_id": "m0",
+      "quote": "48小时内不想学能全额退"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E049_A12",
+     "subject": "THIRD",
+     "relation": "单据性质主张",
+     "value": "销售咬定她本次交的是正价课报名",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T04",
+      "message_id": "m0",
+      "quote": "咬定我交的是正价"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "私下目标是把愤怒导向存证动作，先站她这边骂一句再给方案。",
+   "unknowns": [
+    "销售改口是否有书面依据未知",
+    "20%手续费是否写进合同未知"
+   ],
+   "protected_expressions": [
+    "合着内部通道是我自己脑补的是吧"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言她被欺诈的法律定性",
+    "不得虚构合同条款内容"
+   ]
+  },
+  "E049_T05": {
+   "case_id": "E049_T05",
+   "current_action": "确认证据链：付款时间10月26日上午9点50分、内部通道口径出现于约两小时后，支持她以付款时刻起算48小时的主张并肯定截长图的做法。",
+   "acceptable_actions": [
+    "按付款时间推算窗口到期时刻并让她书面留痕",
+    "建议把长图按时间顺序命名归档，方便后续投诉用",
+    "帮她拟一条给销售的质询文字：以付款时间起算要求书面确认"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A13",
+     "subject": "HER",
+     "relation": "付款时间",
+     "value": "定金500元于10月26日上午9点50分支付",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T05",
+      "message_id": "m0",
+      "quote": "10月26号上午9点50分付的500定金"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A14",
+     "subject": "HER",
+     "relation": "证据整理",
+     "value": "她已把与销售两边的聊天记录截长图留存",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T05",
+      "message_id": "m1",
+      "quote": "把两边的聊天记录都截了长图"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A15",
+     "subject": "HER",
+     "relation": "报名缴费",
+     "value": "10月26日报在职备考班，总价2980并已交定金500",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T01",
+      "message_id": "m0",
+      "quote": "我报那个在职备考班了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是帮她把主张钉在付款时间这个客观锚点上，语气像核对清单。",
+   "unknowns": [
+    "机构是否认可付款时间为起算点未知",
+    "定金与全款退的主张差异未知"
+   ],
+   "protected_expressions": [
+    "距我付款都快两个小时了"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言机构必然接受该起算口径"
+   ]
+  },
+  "E049_T06": {
+   "case_id": "E049_T06",
+   "current_action": "确认她的合同理解正确：第6条限制的是开课后退款，她尚未开课不在其列；记下工单号8807作为已投诉凭据。",
+   "acceptable_actions": [
+    "肯定她的条文解读并建议截图合同第6条",
+    "把工单号8807记为流程节点，提醒后续沟通都引用它",
+    "建议她向客服要书面答复而非口头口径"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A16",
+     "subject": "HER",
+     "relation": "投诉进展",
+     "value": "已向机构总部客服登记工单，单号8807",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T06",
+      "message_id": "m0",
+      "quote": "号是8807"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A17",
+     "subject": "PUBLIC",
+     "relation": "合同条款",
+     "value": "合同第6条规定开课后不支持退款",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T06",
+      "message_id": "m1",
+      "quote": "开课后不支持退款"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A18",
+     "subject": "PUBLIC",
+     "relation": "退费口径变更",
+     "value": "销售改口称正价课退费要扣20%手续费",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T04",
+      "message_id": "m0",
+      "quote": "正价课要扣20%手续费"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让她确认自己读条文没读错，给她撑腰而不是替她谈。",
+   "unknowns": [
+    "合同里除第6条外是否另有未开课退费条款未知",
+    "客服口径与销售口径哪个算数未知"
+   ],
+   "protected_expressions": [
+    "可我课还没开啊"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构合同其他条款",
+    "不得断言工单必然有效力"
+   ]
+  },
+  "E049_T07": {
+   "case_id": "E049_T07",
+   "current_action": "接住陪同请求：明确给答复，答应明天下午三点到场帮她盯合同细节，并提前对一遍要带的证据清单；给她留台阶但不推脱。",
+   "acceptable_actions": [
+    "答应陪同并约好碰面时间地点",
+    "提前列出要带的材料：付款记录、两版口径截图、合同第6条照片",
+    "提出分工：她主谈，我只在条款被带偏时补一句"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A19",
+     "subject": "SHARED",
+     "relation": "现场沟通安排",
+     "value": "10月29日下午三点她与校区负责人当面沟通，ME答应陪同",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T07",
+      "message_id": "m0",
+      "quote": "明天下午三点当面聊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A20",
+     "subject": "HER",
+     "relation": "陪同请求",
+     "value": "她请ME陪同并负责盯合同细节",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T07",
+      "message_id": "m0",
+      "quote": "帮我盯着合同细节"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A21",
+     "subject": "HER",
+     "relation": "证据留存",
+     "value": "付款记录与两边聊天记录长图已留存备用",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T05",
+      "message_id": "m1",
+      "quote": "把两边的聊天记录都截了长图"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把答应落到具体分工，顺便给她壮胆但不抢她的主场。",
+   "unknowns": [
+    "校区负责人的决策权限未知",
+    "ME当天下午是否确有空闲由ME自定"
+   ],
+   "protected_expressions": [
+    "想有个明白人坐旁边"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构负责人已同意的条件"
+   ]
+  },
+  "E049_T08": {
+   "case_id": "E049_T08",
+   "current_action": "接住谈崩的怒气：确认负责人新说法（特价渠道单、不适用任何退费优惠）与她官网原价主张的矛盾，把话题引回证据与升级渠道。",
+   "acceptable_actions": [
+    "指出特价渠道单说法与官网下单记录的矛盾点",
+    "建议当场要负责人出示系统单据截图",
+    "提示可向平台客服与监管部门升级并保留现场记录"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A22",
+     "subject": "THIRD",
+     "relation": "拒退主张",
+     "value": "校区负责人称其单为特价渠道单，不适用任何退费优惠",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T08",
+      "message_id": "m0",
+      "quote": "特价渠道单"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A23",
+     "subject": "HER",
+     "relation": "反驳主张",
+     "value": "她坚称自己是官网原价报名",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T08",
+      "message_id": "m1",
+      "quote": "我明明是官网原价报的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A24",
+     "subject": "PUBLIC",
+     "relation": "合同条款",
+     "value": "合同第6条仅限制开课后退款，与她未开课的情形不符",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T06",
+      "message_id": "m1",
+      "quote": "开课后不支持退款"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把火气接到证据线上，先骂一句负责人再给升级路径。",
+   "unknowns": [
+    "系统单据到底怎么标注未知",
+    "负责人权限能否推翻销售口径未知"
+   ],
+   "protected_expressions": [
+    "谈崩了家人们"
+   ],
+   "forbidden_factual_claims": [
+    "不得替机构编造新的退费条件",
+    "不得断言投诉必然成功"
+   ]
+  },
+  "E049_T09": {
+   "case_id": "E049_T09",
+   "current_action": "肯定她的行动闭环：12315投诉已提交、证据已上传、三个工作日回复期开始计时；把下一步定为等回复并记录投诉编号。",
+   "acceptable_actions": [
+    "肯定她把情绪转成了流程动作",
+    "提醒保存投诉回执编号并设三个工作日的提醒",
+    "建议期间机构再来电都要求书面或留录音"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "goal",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A25",
+     "subject": "HER",
+     "relation": "投诉动作",
+     "value": "已在12315平台提交投诉并上传付款记录与两版口径截图",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T09",
+      "message_id": "m0",
+      "quote": "在12315平台把投诉提交了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A26",
+     "subject": "PUBLIC",
+     "relation": "流程时限",
+     "value": "平台称三个工作日内机构须回复",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T09",
+      "message_id": "m0",
+      "quote": "三个工作日内机构得回复"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A27",
+     "subject": "THIRD",
+     "relation": "拒退主张",
+     "value": "此前负责人以特价渠道单为由拒绝任何退费优惠",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T08",
+      "message_id": "m0",
+      "quote": "不适用任何退费优惠"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是肯定她的自组织能力，把等待期变成低负担的记录期。",
+   "unknowns": [
+    "机构回复内容未知",
+    "投诉编号她尚未告知"
+   ],
+   "protected_expressions": [
+    "突然觉得踏实了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构监管处理结果"
+   ]
+  },
+  "E049_T10": {
+   "case_id": "E049_T10",
+   "current_action": "陪她拆承诺书风险：全款退是让步但附加不再报课承诺，先别急着签，要求把承诺书发来逐条看，尤其注意有无放弃投诉的条款。",
+   "acceptable_actions": [
+    "让她把承诺书原文发来一起看条款",
+    "提示附加承诺可能限制后续维权权利",
+    "建议回电要求以书面形式列明退款金额与到账时间"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A28",
+     "subject": "THIRD",
+     "relation": "让步方案",
+     "value": "机构提出按未开课特殊申请全额退款",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T10",
+      "message_id": "m0",
+      "quote": "给我全款退"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A29",
+     "subject": "THIRD",
+     "relation": "附带条件",
+     "value": "附加条件为签承诺书承诺以后不再报该机构任何课",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T10",
+      "message_id": "m0",
+      "quote": "不再报他们家任何课"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A30",
+     "subject": "THIRD",
+     "relation": "拒退主张",
+     "value": "昨日负责人仍以特价渠道单为由拒绝退费优惠",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T08",
+      "message_id": "m0",
+      "quote": "不适用任何退费优惠"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让她警惕天上掉的让步，凡签字先逐字读，语气保持冷静不替她拍板。",
+   "unknowns": [
+    "承诺书全文条款未知",
+    "全款退是否含已付定金之外款项未知"
+   ],
+   "protected_expressions": [
+    "总感觉这承诺书哪里怪怪的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构承诺书内容",
+    "不得替她决定签或不签"
+   ]
+  },
+  "E049_T11": {
+   "case_id": "E049_T11",
+   "current_action": "支持她的拒签决定：确认承诺书含放弃向监管部门继续投诉的条款与在途的12315投诉直接冲突，肯定她按正常流程原路全退的要求。",
+   "acceptable_actions": [
+    "指出放弃投诉条款与在途投诉冲突，支持拒签",
+    "让她把拒签与原路退款要求以文字发给机构留痕",
+    "重申退款金额应为2980且不扣手续费"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A31",
+     "subject": "PUBLIC",
+     "relation": "承诺书条款",
+     "value": "承诺书含放弃向监管部门继续投诉的条款",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T11",
+      "message_id": "m0",
+      "quote": "放弃向监管部门继续投诉"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A32",
+     "subject": "HER",
+     "relation": "决定",
+     "value": "她拒签承诺书并要求机构按正常流程原路全额退款2980",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T11",
+      "message_id": "m1",
+      "quote": "让他们按正常流程原路退"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A33",
+     "subject": "HER",
+     "relation": "投诉在途",
+     "value": "她在12315平台的投诉仍在流程中",
+     "valid_time": "2026-10-29 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T09",
+      "message_id": "m0",
+      "quote": "在12315平台把投诉提交了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让她确认自己判断正确，把决定变成可留痕的文字通知。",
+   "unknowns": [
+    "机构是否接受拒签后的正常流程退款未知",
+    "到账时间未知"
+   ],
+   "protected_expressions": [
+    "我12315的案子还在流程里呢"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言机构必然接受",
+    "不得虚构到账时间"
+   ]
+  },
+  "E049_T12": {
+   "case_id": "E049_T12",
+   "current_action": "庆祝收尾：确认2980全额原路到账、零手续费，回扣四天拉锯的关键节点，接下奶茶并轻快收住。",
+   "acceptable_actions": [
+    "恭喜到账并复述全程四天的关键节点",
+    "接下奶茶邀约，顺手夸她自己把流程走完了",
+    "留一句以后大额报班先发截图来核对的玩笑"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E049_A34",
+     "subject": "HER",
+     "relation": "退款结果",
+     "value": "2980元已原路全额退回到账，未扣手续费",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T12",
+      "message_id": "m0",
+      "quote": "2980，原路退回，一分没扣"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A35",
+     "subject": "SHARED",
+     "relation": "庆祝计划",
+     "value": "当晚她请ME喝十二块的奶茶作为庆祝",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T12",
+      "message_id": "m1",
+      "quote": "晚上请你喝奶茶"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E049_A36",
+     "subject": "HER",
+     "relation": "付款时间",
+     "value": "定金500元于10月26日上午9点50分支付，退款对应同一笔报名",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E049_T05",
+      "message_id": "m0",
+      "quote": "10月26号上午9点50分付的500定金"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把功劳归她，轻收尾不抢戏，玩笑里带一句以后核对的习惯。",
+   "unknowns": [
+    "奶茶具体时间地点未定",
+    "全篇可见付款证据仅10-26定金500，尾款2480是否已付剧情内未交代；'2980原路全额退回'按机构协商结果理解，不得据此虚构尾款支付过程"
+   ],
+   "protected_expressions": [
+    "庆贺我钱包失而复得"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构退款到账渠道细节"
+   ]
+  }
+ }
+}

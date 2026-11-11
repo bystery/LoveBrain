@@ -1,0 +1,1248 @@
+{
+ "stories": [
+  {
+   "id": "S061",
+   "public_id": "E061",
+   "title": "甲状腺随访三个月",
+   "themes": [
+    "健康随访",
+    "跨周改期",
+    "医嘱更正",
+    "偏方边界",
+    "陪伴"
+   ],
+   "motive": "女友查出甲状腺结节 3 类，随访链横跨五周；真实张力是她怕坏消息又要强，我要在'查证过但不专业'的位置上陪她把事办对。",
+   "continuity": "复查日期 5/20→5/6 更正在 T08；随访间隔 半年→3个月 更正在 T15；抽血加项 T13 披露；8/6 新复查日贯穿 T15-T23。",
+   "corrections": "T08 旧日期 5 月 20 不得复活；T15 起随访间隔一律 3 个月；T13 起本项目=超声+甲功抽血；T17 起不忌碘。",
+   "persona": {
+    "me": "29岁，程序员，跟爸妈不同城；对医疗信息会查证但明确自己不是医生。",
+    "her": "28岁，出版社编辑，上月体检查出甲状腺结节3类；容易往坏处想，喜欢把安排写进日历。"
+   },
+   "initial_kb": {
+    "me": "陪她拿过体检报告；查过甲状腺随访的科普，口径是'指南说'不是'医生说'。",
+    "her": "结节3类，首诊医生说先观察；她把复查单夹在工牌后面防丢。",
+    "warmth": "恋爱半年，稳定期；她不舒服时嘴硬说没事。",
+    "style": "短句；聊健康就事论事，不爱被过度安慰。",
+    "stage": "情侣，见过双方父母。",
+    "lessons": "她说'没事'时要看她具体做了什么安排；医嘱类信息以她复述的医生原话为准。"
+   },
+   "facts": [
+    {
+     "id": "S061_F01",
+     "subject": "她",
+     "relation": "病情",
+     "value": "体检查出甲状腺结节3类",
+     "valid_time": "2026-05-03 20:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T01",
+      "quote": "3类结节是不是很快会变癌"
+     }
+    },
+    {
+     "id": "S061_F02",
+     "subject": "医生",
+     "relation": "建议",
+     "value": "初诊建议半年后复查超声",
+     "valid_time": "2026-05-03 20:25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T02",
+      "quote": "半年后复查超声"
+     }
+    },
+    {
+     "id": "S061_F03",
+     "subject": "她",
+     "relation": "安排",
+     "value": "复查约在5月20日上午",
+     "valid_time": "2026-05-03 20:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T03",
+      "quote": "我约到了 5 月 20 号上午"
+     }
+    },
+    {
+     "id": "S061_F04",
+     "subject": "医院",
+     "relation": "要求",
+     "value": "抽血要空腹",
+     "valid_time": "2026-05-03 20:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T03",
+      "quote": "单子上写要空腹"
+     }
+    },
+    {
+     "id": "S061_F05",
+     "subject": "我",
+     "relation": "查证",
+     "value": "查到的口径：3类结节常规随访6-12个月，以面诊为准",
+     "valid_time": "2026-05-03 21:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T05",
+      "quote": "我查到的是 3 类常规就是观察 6 到 12 个月"
+     }
+    },
+    {
+     "id": "S061_F06",
+     "subject": "她妈",
+     "relation": "主张",
+     "value": "让她喝三个月芋头水散结",
+     "valid_time": "2026-05-03 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T06",
+      "quote": "喝三个月芋头水散结"
+     }
+    },
+    {
+     "id": "S061_F07",
+     "subject": "她",
+     "relation": "未定",
+     "value": "复查那周可能要出差，未敲定",
+     "valid_time": "2026-05-04 09:15",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T07",
+      "quote": "我可能要出差"
+     }
+    },
+    {
+     "id": "S061_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "复查改到5月6日上午（加号成功）",
+     "valid_time": "2026-05-05 10:02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T08",
+      "quote": "问我 5 月 6 号上午能不能来 我说能"
+     }
+    },
+    {
+     "id": "S061_F09",
+     "subject": "她",
+     "relation": "更正",
+     "value": "5月6日当天超声和抽血都安排在早上",
+     "valid_time": "2026-05-05 10:02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T08",
+      "quote": "超声和抽血都在早上"
+     }
+    },
+    {
+     "id": "S061_F10",
+     "subject": "她",
+     "relation": "冲突",
+     "value": "5月6日上午有选题会且由她主讲",
+     "valid_time": "2026-05-05 10:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T09",
+      "quote": "5 月 6 号上午我有选题会 组长点我主讲"
+     }
+    },
+    {
+     "id": "S061_F11",
+     "subject": "她",
+     "relation": "决定",
+     "value": "请小唐代开选题会，自己去复查",
+     "valid_time": "2026-05-05 11:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T11",
+      "quote": "我请小唐代开 会照讲稿念 我去复查"
+     }
+    },
+    {
+     "id": "S061_F12",
+     "subject": "她",
+     "relation": "加项",
+     "value": "复查实际加了甲功抽血（不只超声）",
+     "valid_time": "2026-05-06 12:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T13",
+      "quote": "医生还让抽血 说查个甲功"
+     }
+    },
+    {
+     "id": "S061_F13",
+     "subject": "她",
+     "relation": "结果",
+     "value": "结节没长大，分级仍是3类",
+     "valid_time": "2026-05-07 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T14",
+      "quote": "结节没长 还是 3 类"
+     }
+    },
+    {
+     "id": "S061_F14",
+     "subject": "医生",
+     "relation": "更正",
+     "value": "随访间隔改为3个月，下次8月6日，还要抽血",
+     "valid_time": "2026-05-07 19:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T15",
+      "quote": "三个月后复查 也就是 8 月 6 号 还要再抽血"
+     }
+    },
+    {
+     "id": "S061_F15",
+     "subject": "医生",
+     "relation": "口径",
+     "value": "不用特意忌碘，正常吃",
+     "valid_time": "2026-05-10 15:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T17",
+      "quote": "医生说不用特意忌碘 正常吃就行"
+     }
+    },
+    {
+     "id": "S061_F16",
+     "subject": "她",
+     "relation": "偏方收束",
+     "value": "芋头水已停",
+     "valid_time": "2026-05-10 15:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T17",
+      "quote": "芋头水我停了"
+     }
+    },
+    {
+     "id": "S061_F17",
+     "subject": "她",
+     "relation": "安排",
+     "value": "6月12日我生日，订了周五七点云南菜",
+     "valid_time": "2026-05-20 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T18",
+      "quote": "我订了周五那家云南菜 七点"
+     }
+    },
+    {
+     "id": "S061_F18",
+     "subject": "她",
+     "relation": "状态更新",
+     "value": "工牌后面的复查单已换成8月新单",
+     "valid_time": "2026-05-25 09:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T19",
+      "quote": "复查单换成 8 月的新单了"
+     }
+    },
+    {
+     "id": "S061_F19",
+     "subject": "她",
+     "relation": "存档",
+     "value": "本次报告电子版已传家庭云盘",
+     "valid_time": "2026-05-25 21:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "S061_T21",
+      "quote": "报告电子版传到家庭云盘了"
+     }
+    }
+   ],
+   "events": [
+    {
+     "event_id": "EV1",
+     "label": "5月20日复查（后改期）",
+     "event_time": "2026-05-20 09:00",
+     "status": "cancelled",
+     "source_turn": "S061_T03"
+    },
+    {
+     "event_id": "EV2",
+     "label": "5月6日复查（加号提前）",
+     "event_time": "2026-05-06 07:30",
+     "status": "done",
+     "source_turn": "S061_T08"
+    },
+    {
+     "event_id": "EV3",
+     "label": "8月6日复查（3个月随访）",
+     "event_time": "2026-08-06 09:00",
+     "status": "planned",
+     "source_turn": "S061_T15"
+    },
+    {
+     "event_id": "EV4",
+     "label": "6月12日生日晚餐",
+     "event_time": "2026-06-12 19:00",
+     "status": "planned",
+     "source_turn": "S061_T18"
+    }
+   ],
+   "relationship": [
+    {
+     "turn": "T01",
+     "stage": "拿到坏消息后的焦虑期"
+    },
+    {
+     "turn": "T08",
+     "stage": "一起改期的配合期"
+    },
+    {
+     "turn": "T14",
+     "stage": "结果出来后的放松"
+    },
+    {
+     "turn": "T20",
+     "stage": "回到日常、带新复查日的稳定期"
+    }
+   ],
+   "turns": [
+    {
+     "clock": "2026-05-03 20:10",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "体检报告出来那几天我一直没敢细看 今天鼓起勇气搜了一下 3类结节是不是很快会变癌",
+       "2026-05-03 20:08"
+      ]
+     ],
+     "current_action": "先接住恐惧再给事实：3类恶性概率低、常规是随访观察；不承诺'一定没事'，不吓唬",
+     "acceptable_actions": [
+      "先安抚再说3类是低风险观察类",
+      "给'医生没让你马上处理说明不急'的解读",
+      "问她原话+提出陪她复诊"
+     ],
+     "dims": [
+      "goal",
+      "factuality",
+      "emotion_relation",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [],
+     "private_guidance": "她怕的不是结节是'癌'字；把'随访观察'讲成常规流程而不是安慰。",
+     "unknowns": [
+      "她到底看了哪些帖子"
+     ],
+     "protected": [
+      "鼓起勇气搜"
+     ],
+     "forbidden": [
+      "不要说肯定是良性的",
+      "不要提癌变概率数字吓她",
+      "不要说别瞎想"
+     ]
+    },
+    {
+     "clock": "2026-05-03 20:25",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "门诊医生就说'半年后复查超声'别的没多说 我总觉得他在敷衍",
+       "2026-05-03 20:23"
+      ]
+     ],
+     "current_action": "解释半年随访是3类常规做法（有出处感），建议先把号约上；不说医生肯定没敷衍",
+     "acceptable_actions": [
+      "半年随访是常规+先约上",
+      "解读'没多说'是常规话术+约号",
+      "提出陪她去面诊问清楚"
+     ],
+     "dims": [
+      "goal",
+      "factuality",
+      "interaction",
+      "initiative"
+     ],
+     "atoms": [
+      "S061_F02"
+     ],
+     "required": [],
+     "private_guidance": "她的'敷衍'感来自信息差；给流程知识比给安慰有用。",
+     "unknowns": [
+      "医生当时语气"
+     ],
+     "protected": [
+      "我总觉得他在敷衍"
+     ],
+     "forbidden": [
+      "不要说医生就是敷衍",
+      "不要替医生打包票"
+     ]
+    },
+    {
+     "clock": "2026-05-03 20:40",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "行 那我把号约了 我约到了 5 月 20 号上午 你那天有空陪我去吗 单子上写要空腹",
+       "2026-05-03 20:38"
+      ]
+     ],
+     "current_action": "确认陪她去+接住空腹要求；不复述错日期",
+     "acceptable_actions": [
+      "确认5月20日上午陪+提醒空腹别喝水吃饭",
+      "确认陪+问她要不要请假",
+      "确认陪+说空腹能忍"
+     ],
+     "dims": [
+      "goal",
+      "time_state",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [
+      "S061_F03",
+      "S061_F04"
+     ],
+     "required": [],
+     "private_guidance": "这是本剧第一个日期锚点，必须复述正确。",
+     "unknowns": [
+      "当天她几点下班"
+     ],
+     "protected": [
+      "单子上写要空腹"
+     ],
+     "forbidden": [
+      "不要把日期说成别的天",
+      "不要说空腹无所谓"
+     ]
+    },
+    {
+     "clock": "2026-05-03 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "对了 我把复查单夹工牌后面了 免得丢",
+       "2026-05-03 20:58"
+      ]
+     ],
+     "current_action": "认可她的收纳方式，顺带说一句自己也记了日程",
+     "acceptable_actions": [
+      "夸这个办法稳+说自己也记了",
+      "调侃工牌厚度+认可",
+      "提醒云盘也存一份"
+     ],
+     "dims": [
+      "interaction",
+      "emotion_relation",
+      "memory_use"
+     ],
+     "atoms": [],
+     "required": [],
+     "private_guidance": "轻松轮，不要升级成健康话题说教。",
+     "unknowns": [],
+     "protected": [
+      "夹工牌后面"
+     ],
+     "forbidden": [
+      "不要嘲笑她紧张",
+      "不要又绕回结节话题"
+     ]
+    },
+    {
+     "clock": "2026-05-03 21:05",
+     "may_decline": false,
+     "messages": [
+      [
+       "ME",
+       "我查了下资料 我查到的是 3 类常规就是观察 6 到 12 个月 我不是医生 以面诊为准",
+       "2026-05-03 21:02"
+      ],
+      [
+       "HER",
+       "你说 3 类到底要不要紧 你查的那些可靠吗",
+       "2026-05-03 21:04"
+      ]
+     ],
+     "current_action": "如实说明信息等级：查证口径仅作背景，结论以医生面诊为准；不装专业",
+     "acceptable_actions": [
+      "重申非专业+建议复诊列问题清单",
+      "把查证来源交底+说医生说的才作数",
+      "承认查证有限+陪她当面问医生"
+     ],
+     "dims": [
+      "factuality",
+      "boundary",
+      "interaction",
+      "memory_use"
+     ],
+     "atoms": [
+      "S061_F05"
+     ],
+     "required": [],
+     "private_guidance": "诚实标注信息来源等级是本剧知识使用的核心锚点。",
+     "unknowns": [
+      "具体指南版本"
+     ],
+     "protected": [
+      "你查的那些可靠吗"
+     ],
+     "forbidden": [
+      "不要说成医生说的",
+      "不要说绝对不要紧",
+      "不要贬她搜到的帖子"
+     ]
+    },
+    {
+     "clock": "2026-05-03 21:20",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我妈非要我喝三个月芋头水散结 我烦死了 又来这套",
+       "2026-05-03 21:18"
+      ]
+     ],
+     "current_action": "不硬怼长辈：喝不喝不影响正规复查；把决定权还她；不承诺偏方有效或无效",
+     "acceptable_actions": [
+      "喝不喝随她+复查照做+不评价她妈",
+      "给'当孝心收着但别停复查'的策略",
+      "调侃芋头水难喝+站她这边"
+     ],
+     "dims": [
+      "boundary",
+      "emotion_relation",
+      "interaction"
+     ],
+     "atoms": [
+      "S061_F06"
+     ],
+     "required": [],
+     "private_guidance": "不贬低她妈，不替医学背书偏方。",
+     "unknowns": [
+      "她妈为什么信这个"
+     ],
+     "protected": [
+      "又来这套"
+     ],
+     "forbidden": [
+      "不要骂她妈迷信",
+      "不要说芋头水肯定有用/没用"
+     ]
+    },
+    {
+     "clock": "2026-05-04 09:15",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "复查那周我可能要出差 你先别买那天的票",
+       "2026-05-04 09:13"
+      ]
+     ],
+     "current_action": "把出差记为未定：不否认不改期，票先不动，等她确定",
+     "acceptable_actions": [
+      "收到+票先不动+等她确定",
+      "问出差大概哪几天+先不动",
+      "提醒5/6是复查日+问出差是否冲突"
+     ],
+     "dims": [
+      "time_state",
+      "factuality",
+      "boundary"
+     ],
+     "atoms": [
+      "S061_F07"
+     ],
+     "required": [],
+     "private_guidance": "tentative 陷阱轮：出差没定，不得当确定复述，也不得擅自改复查日期。",
+     "unknowns": [
+      "出差是否成行",
+      "具体哪天"
+     ],
+     "protected": [
+      "可能要出差"
+     ],
+     "forbidden": [
+      "不要说'你出差那周复查改期吧'",
+      "不要把出差当确定安排"
+     ]
+    },
+    {
+     "clock": "2026-05-05 10:02",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "医生助理来电话 说有加号 问我 5 月 6 号上午能不能来 我说能 单子改了 超声和抽血都在早上",
+       "2026-05-05 10:00"
+      ]
+     ],
+     "current_action": "明确接住新日期5月6日+旧日期作废；确认'超声+抽血都在早上'；不提5月20",
+     "acceptable_actions": [
+      "复述5/6新安排+说调休陪你",
+      "确认新日期+问要不要我送",
+      "复述安排+提醒今晚早睡"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "goal",
+      "factuality"
+     ],
+     "atoms": [
+      "S061_F08",
+      "S061_F09"
+     ],
+     "required": [],
+     "private_guidance": "本剧第一次硬更正：此后5月20作废；谁提旧日期谁错。",
+     "unknowns": [
+      "助理为何有加号"
+     ],
+     "protected": [
+      "单子改了"
+     ],
+     "forbidden": [
+      "不要再说5月20",
+      "不要问她为什么不早说"
+     ]
+    },
+    {
+     "clock": "2026-05-05 10:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "可是 5 月 6 号上午我有选题会 组长点我主讲 撞死了",
+       "2026-05-05 10:28"
+      ]
+     ],
+     "current_action": "帮她理选项（问组长调时间/请假/请人代）而不替她决定；不抱怨她公司",
+     "acceptable_actions": [
+      "列三个选项让她选",
+      "建议先问组长能否调会",
+      "提出陪她一起去请假"
+     ],
+     "dims": [
+      "goal",
+      "boundary",
+      "interaction"
+     ],
+     "atoms": [
+      "S061_F10"
+     ],
+     "required": [
+      "S061_F08"
+     ],
+     "private_guidance": "她的会她做主；我只提供路径。",
+     "unknowns": [
+      "选题会能不能换人"
+     ],
+     "protected": [
+      "组长点我主讲"
+     ],
+     "forbidden": [
+      "不要替她决定请假",
+      "不要骂她公司压榨"
+     ]
+    },
+    {
+     "clock": "2026-05-05 10:50",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我问了组长 他说选题会不能改时间 我火大了",
+       "2026-05-05 10:48"
+      ]
+     ],
+     "current_action": "接情绪；把上一轮的选项收敛到剩下两条；不骂公司",
+     "acceptable_actions": [
+      "先接火气+再给剩下两条路",
+      "站她这边+问同事代开可能性",
+      "接情绪+提醒身体优先也是正当理由"
+     ],
+     "dims": [
+      "emotion_relation",
+      "goal",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S061_F10"
+     ],
+     "private_guidance": "情绪轮短平快，别马上讲道理。",
+     "unknowns": [],
+     "protected": [
+      "不能改时间"
+     ],
+     "forbidden": [
+      "不要说组长也有道理",
+      "不要催她快点决定"
+     ]
+    },
+    {
+     "clock": "2026-05-05 11:40",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "算了 我请小唐代开 会照讲稿念 我去复查 别拦我",
+       "2026-05-05 11:38"
+      ]
+     ],
+     "current_action": "肯定她的决定；补一个稳妥项（讲稿备份/请假条）；不居功",
+     "acceptable_actions": [
+      "支持+让她把讲稿发我一份备着",
+      "夸决断+提醒跟小唐交接清楚",
+      "支持+问她要不要调休半天"
+     ],
+     "dims": [
+      "goal",
+      "emotion_relation",
+      "interaction"
+     ],
+     "atoms": [
+      "S061_F11"
+     ],
+     "required": [
+      "S061_F10"
+     ],
+     "private_guidance": "她自己拍板的，我别抢决策权。",
+     "unknowns": [
+      "小唐是否靠谱"
+     ],
+     "protected": [
+      "别拦我"
+     ],
+     "forbidden": [
+      "不要说'早该这样'",
+      "不要又列一遍风险"
+     ]
+    },
+    {
+     "clock": "2026-05-05 21:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "明早 7 点半到医院 挂号机取号 我有点慌",
+       "2026-05-05 21:28"
+      ]
+     ],
+     "current_action": "给具体流程降焦虑：提前到、带身份证和单子、我几点到哪；不空洞安慰",
+     "acceptable_actions": [
+      "报我自己到达时间+列两件要带的",
+      "拆解取号步骤+说门口见",
+      "让她把单子拍照发我核对"
+     ],
+     "dims": [
+      "goal",
+      "time_state",
+      "emotion_relation",
+      "memory_use"
+     ],
+     "atoms": [],
+     "required": [
+      "S061_F08",
+      "S061_F09"
+     ],
+     "private_guidance": "流程具体到'几点哪门口'才有安抚力。",
+     "unknowns": [
+      "挂号机排队长度"
+     ],
+     "protected": [
+      "我有点慌"
+     ],
+     "forbidden": [
+      "不要说别慌没事的",
+      "不要编医院内部流程"
+     ]
+    },
+    {
+     "clock": "2026-05-06 12:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "做完了 超声做的脖子这边 医生还让抽血 说查个甲功 这是加的项吗",
+       "2026-05-06 12:28"
+      ]
+     ],
+     "current_action": "如实说我不确定是否加项，单子上写的就是医嘱，帮她看单子；不装懂",
+     "acceptable_actions": [
+      "承认不确定+让她拍单子我看",
+      "说以单子为准+问缴费单列了什么",
+      "直接问诊室护士台最稳"
+     ],
+     "dims": [
+      "factuality",
+      "boundary",
+      "memory_use"
+     ],
+     "atoms": [
+      "S061_F12"
+     ],
+     "required": [
+      "S061_F09"
+     ],
+     "private_guidance": "信息来源诚实轮：我不懂就说不懂。",
+     "unknowns": [
+      "甲功是否在原套餐内"
+     ],
+     "protected": [
+      "这是加的项吗"
+     ],
+     "forbidden": [
+      "不要装作知道原套餐",
+      "不要说加项是乱收费"
+     ]
+    },
+    {
+     "clock": "2026-05-07 19:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "报告出来了 结节没长 还是 3 类 医生说挺好",
+       "2026-05-07 18:58"
+      ]
+     ],
+     "current_action": "共同松口气+具体肯定她的处理（自己请假提前复查）；不开'我早说过'的头",
+     "acceptable_actions": [
+      "说结果好+夸她这几天处理得利落",
+      "松口气+提议今晚吃顿好的",
+      "肯定她+问她身体还有没有别的不舒服"
+     ],
+     "dims": [
+      "emotion_relation",
+      "memory_use",
+      "interaction"
+     ],
+     "atoms": [
+      "S061_F13"
+     ],
+     "required": [],
+     "private_guidance": "庆祝要具体到她的行为，不泛泛说恭喜。",
+     "unknowns": [],
+     "protected": [
+      "医生说挺好"
+     ],
+     "forbidden": [
+      "不要说我早就说没事",
+      "不要又叮嘱一堆注意项"
+     ]
+    },
+    {
+     "clock": "2026-05-07 19:15",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "医生说下次不用半年 三个月后复查 也就是 8 月 6 号 还要再抽血",
+       "2026-05-07 19:13"
+      ]
+     ],
+     "current_action": "复述确认新间隔3个月+8月6日；明确旧'半年'口径作废；提醒记日历",
+     "acceptable_actions": [
+      "复述8/6+说记日历+我陪",
+      "确认间隔变3个月+问她8/6星期几",
+      "复述+提醒8/6前一周看排班"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "goal"
+     ],
+     "atoms": [
+      "S061_F14"
+     ],
+     "required": [],
+     "private_guidance": "本剧第二次硬更正：半年→3个月；此后不得再说半年。",
+     "unknowns": [
+      "8月6日当天是否空腹以新单为准"
+     ],
+     "protected": [
+      "还要再抽血"
+     ],
+     "forbidden": [
+      "不要沿用半年口径",
+      "不要问为什么变短了（医生定的）"
+     ]
+    },
+    {
+     "clock": "2026-05-07 19:40",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "那我 5 月 20 号那个号白约了 亏 30 块挂号费 心疼",
+       "2026-05-07 19:38"
+      ]
+     ],
+     "current_action": "轻接损失+指出加号让她更早拿到结果，钱没白花到'结果提前'上；不装钱无所谓",
+     "acceptable_actions": [
+      "认这笔小亏+点出结果提前的价值",
+      "说30块买了个早安心+别再提",
+      "调侃30块换'医生说挺好'值"
+     ],
+     "dims": [
+      "emotion_relation",
+      "interaction",
+      "time_state"
+     ],
+     "atoms": [],
+     "required": [
+      "S061_F08"
+     ],
+     "private_guidance": "她心疼的是钱不是结果；别教育她别心疼。",
+     "unknowns": [],
+     "protected": [
+      "亏 30 块挂号费"
+     ],
+     "forbidden": [
+      "不要说30块算什么",
+      "不要提退费操作（改期号不能退）"
+     ]
+    },
+    {
+     "clock": "2026-05-10 15:20",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "对了 芋头水我停了 医生说不用特意忌碘 正常吃就行",
+       "2026-05-10 15:18"
+      ]
+     ],
+     "current_action": "认同以医生口径为准；不翻旧账不嘲笑她妈；一句带过",
+     "acceptable_actions": [
+      "说听医生的准+正常吃饭好",
+      "认可+不评价她妈",
+      "说这段结束得干净+不提芋头"
+     ],
+     "dims": [
+      "memory_use",
+      "boundary",
+      "interaction"
+     ],
+     "atoms": [
+      "S061_F15",
+      "S061_F16"
+     ],
+     "required": [
+      "S061_F06"
+     ],
+     "private_guidance": "偏方线收束：此后不忌碘；她妈线不重启。",
+     "unknowns": [],
+     "protected": [
+      "正常吃就行"
+     ],
+     "forbidden": [
+      "不要说'我早说偏方没用'",
+      "不要评价她妈"
+     ]
+    },
+    {
+     "clock": "2026-05-20 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "话题换一个 6 月 12 号你生日 我订了周五那家云南菜 七点",
+       "2026-05-20 20:58"
+      ]
+     ],
+     "current_action": "确认生日安排+感谢；自然切题，不绕回结节",
+     "acceptable_actions": [
+      "确认6/12七点+说想吃",
+      "感谢+确认地点+问她想吃什么",
+      "答应+说礼物我自己挑"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "emotion_relation"
+     ],
+     "atoms": [
+      "S061_F17"
+     ],
+     "required": [],
+     "private_guidance": "支线干扰轮：健康话题已收，别强行拉回。",
+     "unknowns": [],
+     "protected": [
+      "周五那家云南菜"
+     ],
+     "forbidden": [
+      "不要又提复查",
+      "不要说订贵了"
+     ]
+    },
+    {
+     "clock": "2026-05-25 09:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我把工牌后面那张复查单换成 8 月的新单了 旧单归档",
+       "2026-05-25 09:28"
+      ]
+     ],
+     "current_action": "记住这个更新：她的'单子'现在指8月新单；不再提旧单旧日期",
+     "acceptable_actions": [
+      "认可+说8月我也记着",
+      "夸流程清爽+确认8/6",
+      "说旧单归档好+不问在哪"
+     ],
+     "dims": [
+      "memory_use",
+      "time_state",
+      "interaction"
+     ],
+     "atoms": [
+      "S061_F18"
+     ],
+     "required": [
+      "S061_F14"
+     ],
+     "private_guidance": "出窗探针前置：她主动更新状态，我要接住'新单=8月'。",
+     "unknowns": [],
+     "protected": [
+      "旧单归档"
+     ],
+     "forbidden": [
+      "不要问5月单子去哪了（已归档）",
+      "不要说错新日期"
+     ]
+    },
+    {
+     "clock": "2026-05-25 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "你说 8 月那次还要空腹吗 上次抽血饿得我头晕",
+       "2026-05-25 20:58"
+      ]
+     ],
+     "current_action": "基于已确立事实回答：抽血要空腹（单子要求），8月是否同样空腹以新单为准；给防头晕小招",
+     "acceptable_actions": [
+      "抽血要空腹+让医生确认+带糖",
+      "答不确定+拍照新单看要求+建议备糖",
+      "说上次单子写了空腹+8月单子出来我帮看"
+     ],
+     "dims": [
+      "memory_use",
+      "factuality",
+      "interaction",
+      "initiative"
+     ],
+     "atoms": [],
+     "required": [
+      "S061_F04",
+      "S061_F14"
+     ],
+     "private_guidance": "出窗探针1：空腹要求出自T03；不得凭空说8月一定空腹，也不得说不用。",
+     "unknowns": [
+      "8月单子的具体要求"
+     ],
+     "protected": [
+      "饿得我头晕"
+     ],
+     "forbidden": [
+      "不要断言8月一定空腹",
+      "不要说空腹没什么大不了"
+     ]
+    },
+    {
+     "clock": "2026-05-25 21:10",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我把这次报告电子版传到家庭云盘了 你也要一份吗",
+       "2026-05-25 21:08"
+      ]
+     ],
+     "current_action": "要一份+说存哪；顺手确认云盘只家人可见（隐私边界）",
+     "acceptable_actions": [
+      "要+存我手机+确认只有家人可见",
+      "要+问她云盘共享范围",
+      "要+说放我加密相册"
+     ],
+     "dims": [
+      "boundary",
+      "goal",
+      "memory_use"
+     ],
+     "atoms": [
+      "S061_F19"
+     ],
+     "required": [],
+     "private_guidance": "医疗报告是敏感信息，权限确认是边界锚点。",
+     "unknowns": [
+      "云盘当前共享设置"
+     ],
+     "protected": [
+      "家庭云盘"
+     ],
+     "forbidden": [
+      "不要转发给别人",
+      "不要说传不传无所谓"
+     ]
+    },
+    {
+     "clock": "2026-06-02 20:30",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "我妈又提芋头水 说我停太早 我跟她说医生说了不用忌碘 她说医生不懂 我没辙了",
+       "2026-06-02 20:28"
+      ]
+     ],
+     "current_action": "站她这边+用'医生原话'当挡箭牌的策略；不贬低她妈；不重启偏方辩论",
+     "acceptable_actions": [
+      "支招让她妈直接问医生",
+      "说医生原话就是最硬理由+别再自证",
+      "接她的累+说下次复诊让她妈陪去听医生说"
+     ],
+     "dims": [
+      "memory_use",
+      "boundary",
+      "emotion_relation"
+     ],
+     "atoms": [],
+     "required": [
+      "S061_F15"
+     ],
+     "private_guidance": "出窗探针2：不忌碘口径出自T17；策略是引医生而非跟我争。",
+     "unknowns": [
+      "她妈会不会去看诊"
+     ],
+     "protected": [
+      "她说医生不懂"
+     ],
+     "forbidden": [
+      "不要骂她妈固执",
+      "不要说芋头水其实也行"
+     ]
+    },
+    {
+     "clock": "2026-06-05 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "8 月 6 号的号我提前挂上了 还是那位医生 心里踏实",
+       "2026-06-05 20:58"
+      ]
+     ],
+     "current_action": "确认日期一致+呼应'还是那位医生'的踏实感；提醒当天早上空腹相关以新单为准",
+     "acceptable_actions": [
+      "确认8/6+说那天我调休陪",
+      "呼应踏实+提醒到时看新单要求",
+      "确认+问她要不要先列想问医生的问题"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "emotion_relation"
+     ],
+     "atoms": [],
+     "required": [
+      "S061_F14"
+     ],
+     "private_guidance": "出窗探针3：8/6+3个月间隔必须说对；'还是那位医生'是她的情绪锚点。",
+     "unknowns": [
+      "当天我的排班"
+     ],
+     "protected": [
+      "心里踏实"
+     ],
+     "forbidden": [
+      "不要说成别的日期",
+      "不要把'那位医生'说成别人"
+     ]
+    },
+    {
+     "clock": "2026-06-11 21:00",
+     "may_decline": false,
+     "messages": [
+      [
+       "HER",
+       "明天你生日 老地方七点 我下班直接过去",
+       "2026-06-11 20:58"
+      ]
+     ],
+     "current_action": "确认生日晚餐细节+自然收尾；不翻健康话题；不催她早睡说教",
+     "acceptable_actions": [
+      "确认七点+说想吃那家的菌子锅",
+      "答应+说给她带小礼物",
+      "确认+说到了发定位"
+     ],
+     "dims": [
+      "time_state",
+      "memory_use",
+      "emotion_relation",
+      "interaction"
+     ],
+     "atoms": [],
+     "required": [
+      "S061_F17"
+     ],
+     "private_guidance": "出窗探针4：生日晚餐=6/12周五七点云南菜；收尾轮轻快。",
+     "unknowns": [],
+     "protected": [
+      "老地方"
+     ],
+     "forbidden": [
+      "不要又提复查",
+      "不要把生日过成健康叮嘱会"
+     ]
+    }
+   ]
+  }
+ ]
+}

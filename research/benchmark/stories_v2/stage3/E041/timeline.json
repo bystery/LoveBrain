@@ -1,0 +1,136 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E041",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E041_T01",
+   "clock": "2026-11-05 09:05"
+  },
+  {
+   "case_id": "E041_T02",
+   "clock": "2026-11-05 09:08"
+  },
+  {
+   "case_id": "E041_T03",
+   "clock": "2026-11-05 09:12"
+  },
+  {
+   "case_id": "E041_T04",
+   "clock": "2026-11-05 09:18"
+  },
+  {
+   "case_id": "E041_T05",
+   "clock": "2026-11-05 09:24"
+  },
+  {
+   "case_id": "E041_T06",
+   "clock": "2026-11-05 09:30"
+  },
+  {
+   "case_id": "E041_T07",
+   "clock": "2026-11-05 21:38"
+  },
+  {
+   "case_id": "E041_T08",
+   "clock": "2026-11-05 21:42"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E041_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 09:03",
+   "quote": "跟你说个事 我们组昨天裁了一个"
+  },
+  {
+   "case_id": "E041_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 09:06",
+   "quote": "听到了 你先说 我听着"
+  },
+  {
+   "case_id": "E041_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 09:10",
+   "quote": "名单上好像有我 谁也说不准"
+  },
+  {
+   "case_id": "E041_T04",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 09:15",
+   "quote": "名单这事我不猜 我能做的是两件：简历我帮你过一版，测开岗我认识俩组长"
+  },
+  {
+   "case_id": "E041_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 09:22",
+   "quote": "简历真得看看 我两年没动了"
+  },
+  {
+   "case_id": "E041_T06",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 09:28",
+   "quote": "今晚先不聊了 我缓缓"
+  },
+  {
+   "case_id": "E041_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 21:36",
+   "quote": "今天谢谢你想说啥呢 又不知道咋开口"
+  },
+  {
+   "case_id": "E041_T08",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 21:39",
+   "quote": "不用组织语言 需要就说 简历随时发我"
+  },
+  {
+   "case_id": "E041_T08",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-05 21:41",
+   "quote": "嗯 明天午饭照旧 帮我占座"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "组里裁员发生",
+   "event_time": "2026-11-04 18:00",
+   "status": "occurred",
+   "source_turn": "E041_T01"
+  },
+  {
+   "event_id": "EV2",
+   "label": "明天午饭照旧",
+   "event_time": "2026-11-06 12:00",
+   "status": "planned",
+   "source_turn": "E041_T08"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "饭友第一次开口谈危机"
+  },
+  {
+   "turn": "T06",
+   "stage": "她主动暂停"
+  },
+  {
+   "turn": "T08",
+   "stage": "关系更近一层"
+  }
+ ],
+ "revisions": [],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

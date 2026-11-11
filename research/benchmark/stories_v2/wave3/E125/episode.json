@@ -1,0 +1,154 @@
+{
+ "episode_id": "E125",
+ "persona": {
+  "her": {
+   "name": "沈书宁",
+   "traits": ["出版社编辑助理", "读书会组织者", "做事爱开清单", "怕麻烦人"],
+   "boundaries": ["垫付的钱过夜就要对账", "最怕临时加人打乱预算"]
+  },
+  "me": {
+   "name": "陈拓",
+   "traits": ["慢热", "接得住梗", "会算账"]
+  },
+  "relationship_stage": "渐暧昧(读书会认识三个月,微信常聊)"
+ },
+ "initial_kb": {
+  "her": "沈书宁,城南读书会组织者之一,负责订场地和记账,做事爱开清单,最怕临时加人打乱预算。",
+  "me": "陈拓,读书会成员三个月,帮她排过两次签到表,会算账,慢热。",
+  "warmth": "互有好感但未挑明,聊天以会务开头居多,偶尔约咖啡。"
+ },
+ "turns": [
+  {
+   "case_id": "E125_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-03 09:10", "text": "陈拓,读书会年终聚餐我想放周五晚上,城南那边那家蒸菜馆,我大概先按12个人报,你帮我参谋下套餐?"}],
+    "clock": "2026-11-03 09:15",
+    "may_decline": false
+   },
+   "feedback": {"tone": "熟络的会务开场带点私聊的轻快", "change": "首轮抛出聚餐计划并点名求参谋,互动窗口打开"}
+  },
+  {
+   "case_id": "E125_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-03 12:40", "text": "蒸菜馆我打电话问过啦,88一位的自助档,包间要满10人才能订,我说12个人没问题。"}],
+    "clock": "2026-11-03 12:45",
+    "may_decline": false
+   },
+   "feedback": {"tone": "办事利落,主动同步进展", "change": "从求参谋转为同步已核实信息,反馈更具体"}
+  },
+  {
+   "case_id": "E125_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-04 20:15", "text": "群里报了名的一共9个,加上我和你才11个,先按11人跟店里说,你那份别客气,算活动经费。"}],
+    "clock": "2026-11-04 20:20",
+    "may_decline": false
+   },
+   "feedback": {"tone": "略带照顾意味的坚定", "change": "主动把ME餐费算进经费,关系 warmth 上探一格"}
+  },
+  {
+   "case_id": "E125_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-05 22:03", "text": "有人提议吃完去唱K,我说要另算自愿,别把人均搞超,回头我来收尾款。"}],
+    "clock": "2026-11-05 22:08",
+    "may_decline": true
+   },
+   "feedback": {"tone": "同步决定,顺口吐槽", "change": "信息同步为主,留了闲聊空间,可不接长"}
+  },
+  {
+   "case_id": "E125_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-06 18:30", "text": "店老板刚发消息说涨价了?88那档可能变动,我先打电话核实,别急着跟群友报数。"}],
+    "clock": "2026-11-06 18:35",
+    "may_decline": false
+   },
+   "feedback": {"tone": "有点慌但克制", "change": "不确定性首次出现,她要ME先稳住口径,求确认感"}
+  },
+  {
+   "case_id": "E125_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-07 10:20", "text": "问清楚了,不是涨价,是我记岔了——88是工作日午市,周五晚市是128一位,包间低消1280,12人变11人得重新凑,我重算下预算,你帮我核一遍数。"}],
+    "clock": "2026-11-07 10:25",
+    "may_decline": false
+   },
+   "feedback": {"tone": "自嘲加干脆的更正", "change": "核心更正轮:主动认错并给出新口径,请ME复核,信任加深"}
+  },
+  {
+   "case_id": "E125_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-07 21:05", "text": "按128算11个人是1408,加两瓶大饮料凑低消正好,我先跟老板锁周五包间,定金300我从经费垫,回头AA收。"}],
+    "clock": "2026-11-07 21:10",
+    "may_decline": false
+   },
+   "feedback": {"tone": "算完账的踏实", "change": "从更正回到执行,账目口径清晰,行动推进"}
+  },
+  {
+   "case_id": "E125_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-09 09:40", "text": "定金转过去了,老板说周五包间留好了,菜单我按他发的截图选了蒸腊味拼盘和豆豉蒸鱼,你看有没有忌口要换。"}],
+    "clock": "2026-11-09 09:45",
+    "may_decline": false
+   },
+   "feedback": {"tone": "安排到位后的松快", "change": "落实完成,转而关心ME口味,邀请式提问"}
+  },
+  {
+   "case_id": "E125_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-10 19:22", "text": "小雨说她男朋友也想来,凑12个正好坐得开,但1280低消不变,人均还能再摊薄,我说行,你别嫌闹。"}],
+    "clock": "2026-11-10 19:27",
+    "may_decline": false
+   },
+   "feedback": {"tone": "带一点点试探的分享", "change": "人数回弹到12,顺带确认ME不介意热闹,关系细节关照"}
+  },
+  {
+   "case_id": "E125_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-11 12:10", "text": "周五蒸鱼那个改成了清蒸鲈鱼,老板说鳜鱼进价贵了不给换差的,我认了,清单我更新好了。"}],
+    "clock": "2026-11-11 12:15",
+    "may_decline": true
+   },
+   "feedback": {"tone": "认栽式的小吐槽", "change": "菜单小更正,只做同步,可轻接"}
+  },
+  {
+   "case_id": "E125_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-13 09:30", "text": "明晚六点半城南蒸菜馆,包间报我名字,我提前一刻钟到摆桌签,你带下签到表和零钱袋。"}],
+    "clock": "2026-11-13 09:35",
+    "may_decline": false
+   },
+   "feedback": {"tone": "清单式交代,分工明确", "change": "临门分工,把ME正式编进流程,信任落地"}
+  },
+  {
+   "case_id": "E125_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-14 23:05", "text": "今天的聚餐真的好顺,鱼一上来就被抢光,AA收款我明早发你,下次读书会周年展我还想拉你一起布展。"}],
+    "clock": "2026-11-14 23:10",
+    "may_decline": false
+   },
+   "feedback": {"tone": "深夜的满足和惦记", "change": "复盘加下钩子,从会务延伸到下次邀约,关系推进"}
+  }
+ ]
+}

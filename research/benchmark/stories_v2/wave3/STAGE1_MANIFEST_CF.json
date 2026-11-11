@@ -1,0 +1,187 @@
+{
+ "kind": "wave3_cf_manifest",
+ "stage": "wave3",
+ "date": "2026-11-02",
+ "built_by": "CF1/CF2 shards merged by main session (counterfactual twins, W13-02)",
+ "count": 8,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E149",
+   "title": "原来车是这周日",
+   "themes": [
+    "出行拼车",
+    "顺风车日期倒错",
+    "订单实证更正",
+    "换班连锁",
+    "火锅补约"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E149",
+   "turns": 12,
+   "source_story": "E077",
+   "perturbation": "time",
+   "files": {
+    "episode.json": "0d6112a860f222f443ee9ea03c6cf1170df8cccc138b8372639d872123243d29",
+    "reference.json": "b62bace741c0162cee8df10445dd6073fed7543c50e88ccfe409318b46ca774c",
+    "timeline.json": "414f8dacf679c2315d3e7b4c864a239a6862d3f4cd76deeb282fc98027763789"
+   }
+  },
+  {
+   "story_id": "E150",
+   "title": "改了五回的北山局",
+   "themes": [
+    "运动健身",
+    "徒步爬山",
+    "连环改期",
+    "踩点变通",
+    "装备玩笑收尾"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "改期类",
+   "dir": "benchmark/stories_v2/wave3/E150",
+   "turns": 12,
+   "source_story": "E105",
+   "perturbation": "time",
+   "files": {
+    "episode.json": "1476f51694087d352fdcca2592483f6558c9eb1c66564f4f05e6f796b379d17e",
+    "reference.json": "3e3a94b8ec253153fc3c6d3806f75cd34403554252de8161df43272ceb40c079",
+    "timeline.json": "eab2be556e353abbb6d62a7ea48166ba1bde6df66ca96ccb4e04cdd1cf31b723"
+   }
+  },
+  {
+   "story_id": "E151",
+   "title": "发小非要跟",
+   "themes": [
+    "运动健身",
+    "骑行团",
+    "第三方插入",
+    "装备借用",
+    "无退路预警",
+    "复盘新规"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E151",
+   "turns": 12,
+   "source_story": "E086",
+   "perturbation": "subject",
+   "files": {
+    "episode.json": "5130d2b9568ec3e2c7f8e8a85c14ba5a6813af4a90b1f92206297ba4b583f80b",
+    "reference.json": "21e9e65dee84623cf7fefd422037175dd806a71c19ec2d2b3627261332fadfa1",
+    "timeline.json": "cdc7d4a54a81e3b86f288bf2d255b242b6c28d54080cec23f67a52b25a4a6219"
+   }
+  },
+  {
+   "story_id": "E152",
+   "title": "周末不外借",
+   "themes": [
+    "家居装修",
+    "租房改造",
+    "帮忙边界",
+    "闺蜜推单",
+    "人情记账"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E152",
+   "turns": 12,
+   "source_story": "E072",
+   "perturbation": "negation",
+   "files": {
+    "episode.json": "938335a1107bf8f3493d8fb96a5969d2333f7954b13761b0d2507fac3af40ff9",
+    "reference.json": "0cc4ee198ac308da170f9a23daa0ed2de597db00f621bf9cd80e6d84003a786b",
+    "timeline.json": "292b31d11a3a93fd39664f7ead162d8a7c9ee6842cdbd6f7b99f5392943bb125"
+   }
+  },
+  {
+   "story_id": "E153",
+   "title": "半片还是半片",
+   "themes": [
+    "医疗健康",
+    "家人自行调药",
+    "否定翻转",
+    "理疗仪劝阻边界",
+    "代际健康沟通"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E153",
+   "turns": 12,
+   "source_story": "E084",
+   "perturbation": "negation",
+   "files": {
+    "episode.json": "08348161aaea7bae70d8436ef024003ade6993fc552f9f147467afe02375b678",
+    "reference.json": "db0e9d81444b0822e7222820fa628c53b3e376bccf531395a0f7b50f5555a45c",
+    "timeline.json": "bebdbe96ee68c1892417b72fa325dedd791086ca920737912a70ba55df837fcc"
+   }
+  },
+  {
+   "story_id": "E154",
+   "title": "拼单黄死保底转正",
+   "themes": [
+    "出行拼车",
+    "搬家拼车",
+    "状态翻转",
+    "保底单转正",
+    "邻里搭手"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E154",
+   "turns": 12,
+   "source_story": "E094",
+   "perturbation": "status",
+   "files": {
+    "episode.json": "f308bc9755f325f5ce7ca166b6b39ed415d3240bd6a8e27f262bcb192c0dd9d4",
+    "reference.json": "707883868a84931c749e18ee6e40d2074d4a3cb55e142fc78253ce894a223e03",
+    "timeline.json": "8512328a12a779527803438b97168856d2945572cabb8f254a70f37c04e733bb"
+   }
+  },
+  {
+   "story_id": "E155",
+   "title": "补齐尾款的那单床垫",
+   "themes": [
+    "家庭事务",
+    "二手转让",
+    "状态翻转",
+    "定金兑现",
+    "全款买家落空"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E155",
+   "turns": 12,
+   "source_story": "E090",
+   "perturbation": "status",
+   "files": {
+    "episode.json": "b3235cc28afc89308d8cd7252c59ca1c602c0a96863bc302dde5cc0aa278e9a8",
+    "reference.json": "f7d305eb6bf6488a10358c59939da898175936ac96d24e812fbc4f0b29408427",
+    "timeline.json": "1ec792a01f7e797aaa800cde131d5f5839daa2e678f12dc7f6389b80170faa78"
+   }
+  },
+  {
+   "story_id": "E156",
+   "title": "换科的刷题搭子",
+   "themes": [
+    "学习成长",
+    "刷题搭子",
+    "目标翻转",
+    "科目更换",
+    "断更条款"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E156",
+   "turns": 12,
+   "source_story": "E087",
+   "perturbation": "goal",
+   "files": {
+    "episode.json": "c9df88dd07902336800649a8261ef9e728d3ce1c7bdb995a556bb900b978bea1",
+    "reference.json": "cb08754660151086b0884752f7aaf335a063ba6a5a95b2d7273447f671d31159",
+    "timeline.json": "c7ec88159c6876da80b4b8db57acadb177b1f26d7dd70fdf7a526b920ebe33ba"
+   }
+  }
+ ]
+}

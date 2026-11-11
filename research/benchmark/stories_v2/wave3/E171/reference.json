@@ -1,0 +1,473 @@
+{
+ "story_id": "E171",
+ "turns": {
+  "E171_T01": {
+   "case_id": "E171_T01",
+   "current_action": "接住手术被院方改期的沮丧并给下一步动作",
+   "acceptable_actions": [
+    "安慰并建议看短信里给的改期入口",
+    "安慰并提醒别急着重约先看档期",
+    "安慰并说周六球局照旧先散散心"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T01_A01",
+     "subject": "SHARED",
+     "relation": "拔牙手术改期",
+     "value": "原定周日上午拔智齿因主刀外院支援被院方要求改期",
+     "valid_time": "2026-11-03",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E171_T01", "quote": "主刀去外院支援，让我改期", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T01_A02",
+     "subject": "HER",
+     "relation": "怕疼背景",
+     "value": "HER 躲了两年才下决心拔牙",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T01", "quote": "这都躲两年了才下决心", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先接情绪再给动作，别一上来就讲流程。",
+   "unknowns": ["院方改期入口与可选档期未知"],
+   "protected_expressions": ["主刀去外院支援，让我改期"],
+   "forbidden_factual_claims": ["不得虚构医院改期规则"],
+   "may_decline": false
+  },
+  "E171_T02": {
+   "case_id": "E171_T02",
+   "current_action": "确认更正后的新手术时间11月12日下午两点",
+   "acceptable_actions": [
+    "复述下周四下午两点并说记住了",
+    "确认并提醒提前一天再对一次号",
+    "确认并问要不要顺便调整当周球局"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T02_A01",
+     "subject": "SHARED",
+     "relation": "手术新时间",
+     "value": "手术改至11月12日下周四下午两点，号已改好",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T02", "quote": "11月12日下周四下午两点", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T02_A02",
+     "subject": "HER",
+     "relation": "日期倒错更正",
+     "value": "HER 此前看岔成这周四，本人更正为下周四",
+     "valid_time": "2026-11-03",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E171_T02", "quote": "是我自己看岔成这周四", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：新时间复述清楚，别笑她看岔。",
+   "unknowns": [],
+   "protected_expressions": ["是我自己看岔成这周四"],
+   "forbidden_factual_claims": ["不得沿用这周四作为手术时间"],
+   "may_decline": false
+  },
+  "E171_T03": {
+   "case_id": "E171_T03",
+   "current_action": "就化验过期与11月10日晚陪抽血表态",
+   "acceptable_actions": [
+    "答应陪抽血并约好碰头地点",
+    "答应并提醒带身份证和病历本",
+    "答应并说抽完顺路吃口饭"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T03_A01",
+     "subject": "SHARED",
+     "relation": "术前化验有效期",
+     "value": "9月28日的血常规超30天有效期，术前需重做",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T03", "quote": "术前化验有效期30天", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T03_A02",
+     "subject": "SHARED",
+     "relation": "陪抽血请求",
+     "value": "HER 约11月10日周二晚重抽血并请 ME 陪伴半小时",
+     "valid_time": "2026-11-10",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T03", "quote": "你能陪我吗", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "半小时的忙，答应得干脆点。",
+   "unknowns": ["抽血具体时间点未知"],
+   "protected_expressions": ["术前化验有效期30天"],
+   "forbidden_factual_claims": ["不得断言化验结果好坏"],
+   "may_decline": false
+  },
+  "E171_T04": {
+   "case_id": "E171_T04",
+   "current_action": "鼓励如实登记血压史但不越界替医生判断",
+   "acceptable_actions": [
+    "建议如实登记并让医生来权衡",
+    "建议带上日常血压记录辅助登记",
+    "提醒隐瞒病史风险更大但决定她做"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T04_A01",
+     "subject": "HER",
+     "relation": "血压偏高",
+     "value": "HER 自述血压有点偏高而挂号登记写无",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T04", "quote": "我血压有点偏高", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T04_A02",
+     "subject": "SHARED",
+     "relation": "陪抽血请求",
+     "value": "HER 已约上11月10日晚重抽血并请 ME 陪伴",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T03", "quote": "11月10日周二晚上我要重抽血", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "球友不是医生，边界是把登记真实这件事说透。",
+   "unknowns": ["血压对麻醉的实际影响未知"],
+   "protected_expressions": ["我血压有点偏高"],
+   "forbidden_factual_claims": ["不得以医生口吻评估风险", "不得鼓励隐瞒病史"],
+   "may_decline": false
+  },
+  "E171_T05": {
+   "case_id": "E171_T05",
+   "current_action": "接住麻药换型与时长更新的医嘱复述",
+   "acceptable_actions": [
+    "确认记下并夸她如实登记做对了",
+    "确认并提醒四十分钟要提前吃饭",
+    "确认并说当天我来接送更稳"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T05_A01",
+     "subject": "SHARED",
+     "relation": "麻药方案更正",
+     "value": "麻药由含肾上腺素换成不含，起效慢手术或拖到四十分钟",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T05", "quote": "换成不含的", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T05_A02",
+     "subject": "HER",
+     "relation": "血压偏高",
+     "value": "血压偏高的自述为如实登记与麻药换型的既定前提",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T04", "quote": "我血压有点偏高", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "医嘱只接住不发挥，顺带肯定她认账的勇气。",
+   "unknowns": ["手术实际时长未知"],
+   "protected_expressions": ["换成不含的"],
+   "forbidden_factual_claims": ["不得对麻药方案发表医疗判断"],
+   "may_decline": false
+  },
+  "E171_T06": {
+   "case_id": "E171_T06",
+   "current_action": "接住当天被劝返的二次改期与情绪低点",
+   "acceptable_actions": [
+    "安慰并说医生稳妥是对的",
+    "安慰并提醒趁热改约别拖热情",
+    "安慰并陪她吐槽这颗牙"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T06_A01",
+     "subject": "SHARED",
+     "relation": "手术二次改期",
+     "value": "11月12日手术当天因生理期临近被医生劝返改期",
+     "valid_time": "2026-11-12",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E171_T06", "quote": "生理期临近，麻药和出血风险都要避开", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T06_A02",
+     "subject": "SHARED",
+     "relation": "麻药方案更正",
+     "value": "不含肾上腺素的麻药方案此前的既定口径",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T05", "quote": "换成不含的", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "情绪低点先接住，改期的事点到为止。",
+   "unknowns": ["新档期未知"],
+   "protected_expressions": ["这颗牙到底跟我什么仇"],
+   "forbidden_factual_claims": ["不得替医生解释生理期禁忌细节"],
+   "may_decline": false
+  },
+  "E171_T07": {
+   "case_id": "E171_T07",
+   "current_action": "就11月25日上午陪检表态，可答应可说明不便",
+   "acceptable_actions": [
+    "答应周三早陪跑一趟",
+    "答应并说顺路先去吃早饭",
+    "说明当天不便并帮她约代查方式"
+   ],
+   "applicable_dimensions": ["boundary", "time_state", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T07_A01",
+     "subject": "SHARED",
+     "relation": "手术三定时间",
+     "value": "重新约11月25日周三上午九点半，已经医生确认可行",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T07", "quote": "11月25日周三上午九点半", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T07_A02",
+     "subject": "SHARED",
+     "relation": "手术二次改期",
+     "value": "11月12日的手术已被劝返取消",
+     "valid_time": "2026-11-12",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E171_T06", "quote": "生理期临近，麻药和出血风险都要避开", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她给了退路，回应也坦率，能陪就陪。",
+   "unknowns": ["ME 周三早上安排未知"],
+   "protected_expressions": ["11月25日周三上午九点半"],
+   "forbidden_factual_claims": ["不得假装已确认25日不会再变"],
+   "may_decline": true
+  },
+  "E171_T08": {
+   "case_id": "E171_T08",
+   "current_action": "接住手术完成的好消息并核对医嘱复述",
+   "acceptable_actions": [
+    "确认医嘱复述无误并夸她勇敢",
+    "确认并提醒今天只吃温凉软食",
+    "确认并问她脸色要不要送她回家"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T08_A01",
+     "subject": "SHARED",
+     "relation": "手术完成",
+     "value": "11月25日拔牙完成，麻药起效慢咬棉球出来",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T08", "quote": "拔完了", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T08_A02",
+     "subject": "SHARED",
+     "relation": "术后医嘱",
+     "value": "24小时内不刷牙不漱口不舔创口不用吸管",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T08", "quote": "24小时内不刷牙不漱口", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她话都说不利索，回复要短而暖。",
+   "unknowns": ["创口实际状况未知"],
+   "protected_expressions": ["24小时内不刷牙不漱口"],
+   "forbidden_factual_claims": ["不得增删医生医嘱内容"],
+   "may_decline": false
+  },
+  "E171_T09": {
+   "case_id": "E171_T09",
+   "current_action": "接住备忘录清单并确认球局降档安排",
+   "acceptable_actions": [
+    "确认冰敷热敷节奏并说球局陪坐",
+    "确认复诊28号周六并提醒带病历",
+    "确认并说观众席给你留位置"
+   ],
+   "applicable_dimensions": ["memory_use", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T09_A01",
+     "subject": "SHARED",
+     "relation": "护理复诊安排",
+     "value": "前48小时冰敷后改热敷，28号周六复诊",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T09", "quote": "前48小时冰敷，之后改热敷", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T09_A02",
+     "subject": "HER",
+     "relation": "球局降档",
+     "value": "本周六球局 HER 只当观众不挥拍",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T09", "quote": "我先当观众，只看不挥拍", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "清单对清单，逐项接，别添医嘱。",
+   "unknowns": [],
+   "protected_expressions": ["我先当观众，只看不挥拍"],
+   "forbidden_factual_claims": ["不得追加清单外的护理指令"],
+   "may_decline": false
+  },
+  "E171_T10": {
+   "case_id": "E171_T10",
+   "current_action": "对术后肿胀给出先联系值班医生的稳妥建议",
+   "acceptable_actions": [
+    "建议今晚就打医院值班电话问",
+    "建议对照医嘱先冰敷并观察半小时",
+    "建议把肿处拍照发给复诊医生"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "interaction", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T10_A01",
+     "subject": "HER",
+     "relation": "术后肿胀",
+     "value": "术后第一晚右侧脸明显肿胀令 HER 心慌",
+     "valid_time": "2026-11-26",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T10", "quote": "右边脸肿得像含了糖", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T10_A02",
+     "subject": "SHARED",
+     "relation": "复诊安排",
+     "value": "28号周六复诊的既定日程",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T09", "quote": "28号周六复诊看愈合", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "球友不给医学结论，路径只给最稳的一条。",
+   "unknowns": ["肿胀是否属正常范围未知"],
+   "protected_expressions": ["右边脸肿得像含了糖"],
+   "forbidden_factual_claims": ["不得断言肿胀正常与否"],
+   "may_decline": false
+  },
+  "E171_T11": {
+   "case_id": "E171_T11",
+   "current_action": "确认值班医生口径与复诊维持28号",
+   "acceptable_actions": [
+    "确认并夸她夜里打电话做得对",
+    "确认并提醒继续冰敷按时吃药",
+    "确认并说明早看消肿了多少"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T11_A01",
+     "subject": "SHARED",
+     "relation": "肿胀判断",
+     "value": "值班医生称术后第二三天肿到最高峰属正常范围，观察即可",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T11", "quote": "肿到最高峰是正常范围", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T11_A02",
+     "subject": "SHARED",
+     "relation": "复诊安排",
+     "value": "复诊不提前，维持28号",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T11", "quote": "复诊不用提前，还是28号", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "专业口径落定，语气松下来。",
+   "unknowns": [],
+   "protected_expressions": ["复诊不用提前，还是28号"],
+   "forbidden_factual_claims": ["不得自行补充医学解释"],
+   "may_decline": false
+  },
+  "E171_T12": {
+   "case_id": "E171_T12",
+   "current_action": "接下致谢与球局请水，收尾留温度",
+   "acceptable_actions": [
+    "接受请水并说拍档应该的",
+    "接受并说下周球局重新开张",
+    "接受并叮嘱愈合期别急着猛打"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E171_T12_A01",
+     "subject": "SHARED",
+     "relation": "复诊结论",
+     "value": "28号复诊确认愈合比预期好",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T12", "quote": "愈合得比预期好", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E171_T12_A02",
+     "subject": "SHARED",
+     "relation": "球局回礼",
+     "value": "当天球局 HER 请全场喝水谢陪伴",
+     "valid_time": "2026-11-28之后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E171_T12", "quote": "今天球局我请全场喝水", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，轻巧收住，留一句球局见。",
+   "unknowns": ["下周球局她能否上场未知"],
+   "protected_expressions": ["愈合得比预期好"],
+   "forbidden_factual_claims": ["不得催她提前恢复对抗"],
+   "may_decline": true
+  }
+ }
+}

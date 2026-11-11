@@ -1,0 +1,57 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A7 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_c_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 12:08:48",
+      "window_last_attempt": "2026-11-08 15:20:02",
+      "attempts": 49,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_c/{DIRECT,CURRENT}/E337/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T09",
+    "长程24轮",
+    "三线并行：搬家/水彩课筹备/宠物与兴趣班",
+    "更正链：日期/时间/数量/地点",
+    "取消-不复活"
+  ],
+  "title": "搬家周记与豆包的减重事业",
+  "may_decline_turns": [
+    "E337_T11",
+    "E337_T24"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "搬家生活",
+  "primary_topic": "T09",
+  "lineage_group_id": "LG-E337",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E337/runner_episode.json",
+  "kind": "long_24t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A7",
+  "hashes": {
+    "episode.json": "74a053bc5763b14a13d837822bba14878a19e4a6600e9e9c5e8f089b4b9d1db3",
+    "reference.json": "5617ed8dc28e1bc2445ccd49ee7cdcb86f6d110a9695e8cc23b4f9eff7f6f128",
+    "timeline.json": "4d1ed3cd1f9497bd4319c8f90d3f449cff65de85d225e31e62b5115929bda99d",
+    "audit.md": "81f10d83e7712b13519fd8b92bfce7992073e805439cfcd7a0e13f6f6e638cc2",
+    "composite": "71508ee7398dc1d2bb97e52ee3690aebfb0a6e04397a4567227f91c448dd4b3a"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

@@ -1,0 +1,597 @@
+{
+ "story_id": "N01",
+ "turns": {
+  "N01_T01": {
+   "case_id": "N01_T01",
+   "current_action": "她主动说周日空出来、又不想白躺，这一轮最该做的是接住这个窗口，给一个具体但不累的周日安排，而不是只回'那挺好'。",
+   "acceptable_actions": [
+    "提一个周日下午的陶艺体验课，问她感不感兴趣",
+    "先问她周日想动还是想静，再给两个具体选项"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T01_a1",
+     "subject": "her",
+     "relation": "sunday_free",
+     "value": "这周日空出来",
+     "valid_time": "2026-03-08",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T01",
+      "message_id": "m0",
+      "quote": "周日倒是空出来了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在给台阶，也在试探我会不会安排；空泛安慰和直接替她排满都不合适。",
+   "unknowns": [
+    "她周日想动还是想静",
+    "她喜不喜欢陶艺"
+   ],
+   "protected_expressions": [
+    "但我不想又在家躺一天"
+   ],
+   "forbidden_factual_claims": [
+    "不能说她周日一定没事",
+    "不能把陶艺课说成已经约好"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "找一个周日不累的活动",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "N01_T02": {
+   "case_id": "N01_T02",
+   "current_action": "她有兴趣但马上抛出'手残'和接孩子两个顾虑；这一轮应先确认孩子的事是否占住周日，再决定要不要约，不要假装没听见。",
+   "acceptable_actions": [
+    "先问接孩子是几点、要不要占一整天，再决定陶艺还能不能排",
+    "说手残也没关系，选个有老师带的入门课；同时问清孩子的事"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T02_a1",
+     "subject": "her",
+     "relation": "niece_possible",
+     "value": "周日可能要接姐姐的孩子",
+     "valid_time": "2026-03-08",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T02",
+      "message_id": "m2",
+      "quote": "周日可能要去接我姐的孩子"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把不确定先说出来了；此时直接订课是越权，完全退回去又显得没主意。先确认约束再给方案。",
+   "unknowns": [
+    "接孩子具体几点",
+    "孩子会不会待一整天"
+   ],
+   "protected_expressions": [
+    "而且周日可能要去接我姐的孩子"
+   ],
+   "forbidden_factual_claims": [
+    "不能把接孩子说成已经确定",
+    "不能把陶艺课说成已经订好"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "先确认周日是否要接孩子，再定活动",
+    "status": "ADJUSTED",
+    "enabled": true
+   }
+  },
+  "N01_T03": {
+   "case_id": "N01_T03",
+   "current_action": "她确认孩子不用她管，并主动问我想好没有；这一轮应把周日下午的具体安排拍下来，给时间、地点和低负担选项。",
+   "acceptable_actions": [
+    "提周日下午两点的陶艺体验，问她要不要先吃个饭再过去",
+    "给两个具体时段让她挑，并说明是入门课不考手艺"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T03_a1",
+     "subject": "her",
+     "relation": "niece_cancelled",
+     "value": "姐姐说孩子她带，周日不用她",
+     "valid_time": "2026-03-08",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T03",
+      "message_id": "m0",
+      "quote": "我姐说孩子她带 周日不用我"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "窗口已经打开；不要只说'都行'，也不要一次塞太多安排，给她一个可答的具体方案。",
+   "unknowns": [
+    "她周日下午几点方便",
+    "她想不想先吃饭"
+   ],
+   "protected_expressions": [
+    "你那边有想好吗"
+   ],
+   "forbidden_factual_claims": [
+    "不能把陶艺课说成已经预约成功",
+    "不能替她决定吃饭安排"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把周日下午的陶艺体验定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "N01_T04": {
+   "case_id": "N01_T04",
+   "current_action": "她主动发了喜欢的杯子并问难不难；这一轮应接住这个具体兴趣点，给诚实的难度说明和低压力方案，不要空夸'你肯定行'。",
+   "acceptable_actions": [
+    "说拉坯要练，但体验课会先教基础，先做简单的杯子",
+    "承认拉坯有难度，提议先做手捏杯或问老师能不能只体验半小时"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T04_a1",
+     "subject": "her",
+     "relation": "cup_interest",
+     "value": "喜欢小红书上的杯子，问拉坯难不难",
+     "valid_time": "2026-03-03",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T04",
+      "message_id": "m2",
+      "quote": "这种拉坯是不是很难"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她是在分享喜欢的东西，不是要一份课程介绍；先接住杯子，再诚实说难度。",
+   "unknowns": [
+    "她更想拉坯还是手捏",
+    "她介不介意弄脏手"
+   ],
+   "protected_expressions": [
+    "这种拉坯是不是很难"
+   ],
+   "forbidden_factual_claims": [
+    "不能保证她一定能做出同款杯子",
+    "不能说拉坯很简单"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把周日下午的陶艺体验定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "N01_T05": {
+   "case_id": "N01_T05",
+   "current_action": "她在说累和空，不是问陶艺进度；这一轮目标应让位，先接住她的疲惫，不推进周日安排、不讲道理。",
+   "acceptable_actions": [
+    "先接住'空'的感觉，问她今晚能不能早点歇",
+    "说听着就累，周日的事等她缓过来再定，不追问"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T05_a1",
+     "subject": "her",
+     "relation": "work_drained",
+     "value": "药房忙到飞起，最近整个人是空的",
+     "valid_time": "2026-03-04",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T05",
+      "message_id": "m1",
+      "quote": "感觉最近整个人是空的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把累说出来了；此时提陶艺、讲道理或硬逗都算没接住。让她感到被听见即可。",
+   "unknowns": [
+    "她只是今晚累还是最近都这样"
+   ],
+   "protected_expressions": [
+    "感觉最近整个人是空的"
+   ],
+   "forbidden_factual_claims": [
+    "不能替她诊断原因",
+    "不能保证周日一定让她放松"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "",
+    "status": "ACTIVE",
+    "enabled": false
+   }
+  },
+  "N01_T06": {
+   "case_id": "N01_T06",
+   "current_action": "她明确说周日想在家躺着、又用'再说吧'收尾；这一轮应接受取消，不追问、不替她改计划，也不要把'再说吧'当成答应。",
+   "acceptable_actions": [
+    "说行，这周先歇，等她缓过来再提",
+    "接受取消，留一句不要求回复的关心"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T06_a1",
+     "subject": "her",
+     "relation": "sunday_cancelled",
+     "value": "周日想在家躺着，再说吧",
+     "valid_time": "2026-03-08",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T06",
+      "message_id": "m0",
+      "quote": "周日要不还是算了 我想在家躺着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "取消就是取消；她累的时候最怕被追问'那到底哪天'。安静接住比强行挽留更加分。",
+   "unknowns": [
+    "她什么时候会再想出门"
+   ],
+   "protected_expressions": [
+    "周日要不还是算了 我想在家躺着"
+   ],
+   "forbidden_factual_claims": [
+    "不能把'再说吧'说成她已经答应下次",
+    "不能替她安排别的周末"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "尊重她休息，改天再约",
+    "status": "ADJUSTED",
+    "enabled": true
+   }
+  },
+  "N01_T07": {
+   "case_id": "N01_T07",
+   "current_action": "她睡够后重新开口，但明确说别太累；这一轮应给一个低负担、可随时撤的短安排，不要因为上次取消就冷淡。",
+   "acceptable_actions": [
+    "提周日下午去陶艺店只做一小时，做完就散",
+    "提议先去附近公园走一圈，累就随时回家"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T07_a1",
+     "subject": "her",
+     "relation": "low_energy_reopen",
+     "value": "睡够了想出去走走但别太累",
+     "valid_time": "2026-03-08",
+     "status": "reopened",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T07",
+      "message_id": "m0",
+      "quote": "我今天睡够了 其实还是想出去走走"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她重新给机会，但条件写得很清楚：别太累。方案要短、可撤、不排满。",
+   "unknowns": [
+    "她想要动手还是只想散步",
+    "她能待多久"
+   ],
+   "protected_expressions": [
+    "我今天睡够了 其实还是想出去走走"
+   ],
+   "forbidden_factual_claims": [
+    "不能把上次取消说成她放鸽子",
+    "不能保证她一定玩得动"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "安排一个低负担的周日外出",
+    "status": "ADJUSTED",
+    "enabled": true
+   }
+  },
+  "N01_T08": {
+   "case_id": "N01_T08",
+   "current_action": "她注意到我回消息变短，反过来关心我；这一轮应诚实回答自己的状态，接住她的关心，不转移话题也不硬撑。",
+   "acceptable_actions": [
+    "承认最近项目收尾有点累，但没到撑不住",
+    "说确实回得短，不是对她冷淡，问她会不会介意"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T08_a1",
+     "subject": "me",
+     "relation": "recent_busy",
+     "value": "最近回消息变短",
+     "valid_time": "2026-03-06",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T08",
+      "message_id": "m2",
+      "quote": "看你回消息都变短了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在关心，不是在查岗；回答要具体一点，别用'没事'把她挡回去。",
+   "unknowns": [
+    "她是担心还是有点介意"
+   ],
+   "protected_expressions": [
+    "看你回消息都变短了"
+   ],
+   "forbidden_factual_claims": [
+    "不能编造具体加班项目",
+    "不能把她的关心说成指责"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "",
+    "status": "ACTIVE",
+    "enabled": false
+   }
+  },
+  "N01_T09": {
+   "case_id": "N01_T09",
+   "current_action": "孩子的事又回来了，但这次只占半天；这一轮应重新算时间，给一个能带孩子或改到三点后的方案，不要抱怨变来变去。",
+   "acceptable_actions": [
+    "说那改到三点后，孩子接走再出来，陶艺可以晚点",
+    "问六岁孩子能不能一起进陶艺店，不能就换公园"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T09_a1",
+     "subject": "her",
+     "relation": "niece_half_day",
+     "value": "周日带孩子半天，下午三点前接走",
+     "valid_time": "2026-03-08",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T09",
+      "message_id": "m1",
+      "quote": "半天 下午三点前来接"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "变化不是她的错；先重排时间，再问孩子能不能参与，不要让她在愧疚里做选择。",
+   "unknowns": [
+    "孩子能不能进陶艺店",
+    "她三点后还有没有精力"
+   ],
+   "protected_expressions": [
+    "半天 下午三点前来接"
+   ],
+   "forbidden_factual_claims": [
+    "不能把三点说成已经确定接走",
+    "不能替她决定孩子去哪"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "带娃也能进行的低负担活动",
+    "status": "ADJUSTED",
+    "enabled": true
+   }
+  },
+  "N01_T10": {
+   "case_id": "N01_T10",
+   "current_action": "她问能不能带六岁孩子一起；这一轮应明确接住，不让孩子成为负担，也不擅自替她保证店里一定接待，给可执行的确认步骤。",
+   "acceptable_actions": [
+    "说可以，先问店里能不能带六岁孩子，能就一起，不能就换公园",
+    "说带就带，先按孩子能待一小时来安排，别把行程排满"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T10_a1",
+     "subject": "her",
+     "relation": "child_join",
+     "value": "想带六岁孩子一起",
+     "valid_time": "2026-03-08",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T10",
+      "message_id": "m1",
+      "quote": "带他一起去行吗 他六岁"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在试探我会不会嫌麻烦；先接住孩子，再诚实说需要问店里，不要替店方打包票。",
+   "unknowns": [
+    "陶艺店接不接待六岁孩子",
+    "孩子坐不坐得住"
+   ],
+   "protected_expressions": [
+    "带他一起去行吗 他六岁"
+   ],
+   "forbidden_factual_claims": [
+    "不能保证陶艺店一定接待孩子",
+    "不能把带孩子说成很轻松"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "带娃也能进行的低负担活动",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "N01_T11": {
+   "case_id": "N01_T11",
+   "current_action": "她确认时间又半开玩笑地担心我放鸽子；这一轮应明确接下约定，用具体安排让她放心，接住调侃但不发长誓。",
+   "acceptable_actions": [
+    "说两点到，今天不排加班，到了先陪孩子挑个简单的",
+    "接住玩笑，说放鸽子就请两杯咖啡，同时确认两点见"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T11_a1",
+     "subject": "both",
+     "relation": "sunday_meet",
+     "value": "周日两点见",
+     "valid_time": "2026-03-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T11",
+      "message_id": "m0",
+      "quote": "那周日两点见"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在用玩笑说在意；保证要具体，不要空泛发誓，也不要反过来怪她不信。",
+   "unknowns": [
+    "她是不是还在担心我临时加班"
+   ],
+   "protected_expressions": [
+    "你别又加班放我鸽子"
+   ],
+   "forbidden_factual_claims": [
+    "不能保证绝对不加班",
+    "不能把她的担心说成无理取闹"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周日下午按约定见面",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "N01_T12": {
+   "case_id": "N01_T12",
+   "current_action": "她主动说今天开心、杯子烤好了；这一轮应收下这份正面反馈，简短回应成果，不急着推下一次，也不把'下次'说成已经约好。",
+   "acceptable_actions": [
+    "说开心就好，杯子慢慢烤，下次带来给我看",
+    "认可她做的杯子，接一句今天带孩子也没乱，别的等她想再说"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N01_T12_a1",
+     "subject": "her",
+     "relation": "positive_outcome",
+     "value": "今天开心，杯子烤好了下次给我看",
+     "valid_time": "2026-03-09",
+     "status": "completed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "N01_T12",
+      "message_id": "m1",
+      "quote": "杯子我烤好了 下次给你看"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在收尾，给的是正向反馈；接住即可，不要立刻把'下次'变成新的邀约压力。",
+   "unknowns": [
+    "她说的下次是什么时候"
+   ],
+   "protected_expressions": [
+    "杯子我烤好了 下次给你看"
+   ],
+   "forbidden_factual_claims": [
+    "不能把'下次'说成已经约好",
+    "不能替她决定下次做什么"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "周日下午按约定见面",
+    "status": "COMPLETED",
+    "enabled": true
+   }
+  }
+ }
+}

@@ -1,0 +1,63 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A7 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_c_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 12:07:08",
+      "window_last_attempt": "2026-11-08 17:48:46",
+      "attempts": 28,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_c/{DIRECT,CURRENT}/E336/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T10",
+    "T10-G2",
+    "counterfactual",
+    "反事实孪生：人物主体变化",
+    "干扰位：无关记忆诱惑",
+    "回指：短距+长距"
+  ],
+  "title": "青屿山双人帐·表弟的帐篷（反事实篇）",
+  "may_decline_turns": [
+    "E336_T09",
+    "E336_T12"
+  ],
+  "created_at": "2026-11-08",
+  "twin_group": "T10-G2",
+  "twin_role": "counterfactual",
+  "variable_changed": "双人帐出借人归属（T03 事实位）：E335（原始篇）为 HER 表哥阿哲（山屿户外店长）；E336（反事实篇）同位换成 HER 表弟阿珂（山屿户外兼职大学生），交接/归还/欠账等人身绑定细节随人物自然演化，其余事项线一致。",
+  "domain": "户外露营",
+  "primary_topic": "T10",
+  "lineage_group_id": "LG-T10-G2",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "annotator": "annotator-B5",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E336/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A7",
+  "hashes": {
+    "episode.json": "7ea24cfdf5f9d263411b4f76f74c37343784becc01f4188ed2a73f0a88751b5b",
+    "reference.json": "65d43b180d9fc06b65020d27891b394cd8f37d453e5eb998f8debab9000bbd99",
+    "timeline.json": "537f5eed455494141782f1314591976ab647eb1f9b3529b21ff6dd15e0e70146",
+    "audit.md": "0a98789518a168660d311bc828e5e5935f57e1b2382f9405c03d2c19f8ff5f75",
+    "composite": "d14ef3ea7030f71af42f82a90019f33f1c287eccc95f4e432869e961c83c42d8"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "split_reclass": "2026-11-09 P3-0.1：v2 分区表列 SELECTION，但本篇已于 2026-11-08 参加真实 pilot（开发曝光）→ 改判 DEV；v2 表保留为历史版本",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

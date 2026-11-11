@@ -1,0 +1,144 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E042",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E042_T01",
+   "clock": "2026-11-05 20:05"
+  },
+  {
+   "case_id": "E042_T02",
+   "clock": "2026-11-05 20:08"
+  },
+  {
+   "case_id": "E042_T03",
+   "clock": "2026-11-06 08:10"
+  },
+  {
+   "case_id": "E042_T04",
+   "clock": "2026-11-06 08:14"
+  },
+  {
+   "case_id": "E042_T05",
+   "clock": "2026-11-06 08:18"
+  },
+  {
+   "case_id": "E042_T06",
+   "clock": "2026-11-06 08:20"
+  },
+  {
+   "case_id": "E042_T07",
+   "clock": "2026-11-06 08:25"
+  },
+  {
+   "case_id": "E042_T08",
+   "clock": "2026-11-06 08:28"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E042_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-05 20:03",
+   "quote": "周六早上七点半 遛一圈？馒头老想见你家长狗哈哈"
+  },
+  {
+   "case_id": "E042_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-05 20:06",
+   "quote": "行 七点半 老地方喷泉那"
+  },
+  {
+   "case_id": "E042_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-06 08:08",
+   "quote": "馒头疫苗有点反应 周六先取消 我在家看着它"
+  },
+  {
+   "case_id": "E042_T04",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-06 08:12",
+   "quote": "狗要紧 需要啥买的喊我 我家楼下就是宠物店"
+  },
+  {
+   "case_id": "E042_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-06 08:16",
+   "quote": "谢谢咩 应该就是低烧 今晚观察下"
+  },
+  {
+   "case_id": "E042_T06",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-06 08:19",
+   "quote": "那下周六一样七点半 馒头好了咱们再约"
+  },
+  {
+   "case_id": "E042_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-06 08:23",
+   "quote": "下周六一样七点半 馒头应该好利索了 遛完带它吃早餐吧 南门那家你带路"
+  },
+  {
+   "case_id": "E042_T08",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-06 08:26",
+   "quote": "带路可以 那家豆浆绝 下周六见 馒头好好养"
+  },
+  {
+   "case_id": "E042_T08",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-06 08:27",
+   "quote": "好嘞 它对我摇尾巴了 应该没事了"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "本周六遛狗（已取消）",
+   "event_time": "2026-11-07 07:30",
+   "status": "cancelled",
+   "source_turn": "E042_T03"
+  },
+  {
+   "event_id": "EV2",
+   "label": "下周六遛狗+早餐",
+   "event_time": "2026-11-14 07:30",
+   "status": "planned",
+   "source_turn": "E042_T06"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "新加微信的狗友"
+  },
+  {
+   "turn": "T04",
+   "stage": "她取消后的体谅期"
+  },
+  {
+   "turn": "T08",
+   "stage": "改约+早餐的推进"
+  }
+ ],
+ "revisions": [
+  {
+   "case_id": "E042_T06",
+   "kind": "intent",
+   "status": "ACTIVE",
+   "text": "改约：把遛狗定到下周六早上七点半",
+   "enabled": true
+  }
+ ],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

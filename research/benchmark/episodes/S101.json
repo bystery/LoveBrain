@@ -1,0 +1,52 @@
+{
+ "episode_id": "S101",
+ "persona": {"name": "阿蓝", "age": "29", "city": "杭州", "relationship": "同城网友，摄影群认识三个月，线下没见过"},
+ "initial_kb": {"me": "我有台闲置的胶片机，一直想找人一起扫街；她主要用手机拍，说过想试试胶片"},
+ "turns": [
+  {"case_id": "S101_T01", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "群里的展你去了吗 就西湖边那个胶片展", "ts": "2026-11-14 15:02"},
+     {"role": "ME", "text": "去了，人比想象多，不过二楼暗房区挺值得看", "ts": "2026-11-14 15:10"},
+     {"role": "HER", "text": "暗房我一直想看 你拍的那些照片是现场冲的吗", "ts": "2026-11-14 15:12"}],
+    "clock": "2026-11-14 15:13", "note": "", "may_decline": false,
+    "intent": {"enabled": true, "text": "自然聊胶片，不急着约，先让话题自己长。", "status": "ACTIVE"}}, "gold": {}},
+  {"case_id": "S101_T02", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "我手机拍三年了 一直有人说我构图稳 但总觉得差点意思", "ts": "2026-11-14 15:20"},
+     {"role": "HER", "text": "你说我要不要入个便宜胶片机玩玩", "ts": "2026-11-14 15:21"}],
+    "clock": "2026-11-14 15:22", "note": "我那台闲置胶片机就是入门款，本来想提借她玩，又怕显得刻意。", "may_decline": false}, "gold": {}},
+  {"case_id": "S101_T03", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "真的吗 那我不客气了哈哈 我先做做功课别把你机器弄坏", "ts": "2026-11-14 15:35"},
+     {"role": "HER", "text": "不过我周末要陪我妈复查 下周应该有空", "ts": "2026-11-14 15:36"}],
+    "clock": "2026-11-14 15:37", "note": "", "may_decline": false,
+    "intent": {"enabled": true, "text": "她说下周有空=暂定，不催具体日子，等她主动定。", "status": "ACTIVE"}}, "gold": {}},
+  {"case_id": "S101_T04", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "我妈复查完没事 就是常规拿药 悬着的心放下了", "ts": "2026-11-16 09:40"},
+     {"role": "HER", "text": "对了你上次说想拍城隍牌楼那片老巷子？我姑婆家就在那边 我熟", "ts": "2026-11-16 09:42"}],
+    "clock": "2026-11-16 09:43", "note": "", "may_decline": false}, "gold": {}},
+  {"case_id": "S101_T05", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "这周六可以吗 上午光线好 下午我约了闺蜜看婚纱 哈哈别笑", "ts": "2026-11-16 10:00"},
+     {"role": "ME", "text": "周六上午没问题，光线黄金段八点多，会不会太早", "ts": "2026-11-16 10:05"},
+     {"role": "HER", "text": "八点半吧 我起不来更早的 哈哈哈", "ts": "2026-11-16 10:06"}],
+    "clock": "2026-11-16 10:07", "note": "", "may_decline": false}, "gold": {}},
+  {"case_id": "S101_T06", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "天气预报周六有雨 你看要不改天？还是你觉得雨天巷子也好拍", "ts": "2026-11-19 20:15"}],
+    "clock": "2026-11-19 20:16", "note": "我其实觉得雨天巷子有味道，但她的胶片第一卷翻车了体验会差。", "may_decline": false,
+    "intent": {"enabled": true, "text": "她给了两个方向都接得住，把选择权和理由都给她，不替她拍板。", "status": "ACTIVE"}}, "gold": {}},
+  {"case_id": "S101_T07", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "那就雨天拍！我把伞备两个 你机器防水吗", "ts": "2026-11-19 20:40"},
+     {"role": "ME", "text": "机身还行，镜头我来想办法罩一下", "ts": "2026-11-19 20:45"},
+     {"role": "HER", "text": "好 那说好了 周六八点半 巷口牌坊下面等", "ts": "2026-11-19 20:46"}],
+    "clock": "2026-11-19 20:47", "note": "", "may_decline": false}, "gold": {}},
+  {"case_id": "S101_T08", "turn_type": "reply",
+   "input": {"messages": [
+     {"role": "HER", "text": "我到啦 你那个大黑伞也太夸张了哈哈哈", "ts": "2026-11-22 08:33"},
+     {"role": "HER", "text": "先去我说的那家葱包桧吃东西还是先拍 我都行", "ts": "2026-11-22 08:35"}],
+    "clock": "2026-11-22 08:36", "note": "我早饭没吃。她第一次摸胶片机，希望她第一卷体验好一点。", "may_decline": false}, "gold": {}}
+ ]
+}

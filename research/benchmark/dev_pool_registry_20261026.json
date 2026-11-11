@@ -1,0 +1,31 @@
+{
+ "doc": "B1_DEVELOPMENT_POOL_REGISTRY_V1",
+ "date": "2026-10-26",
+ "source": "benchmark/episodes/E001-E012 台词级通读（2026-10-26 本 worker 亲读，非标签计数）",
+ "pool": {
+  "E001": {"themes": ["日常物品闲聊", "疲惫收尾", "轻松接话"], "boundary": "T08 她要求'随便说点轻松的'——轻松不等于敷衍", "intent_slots": 0, "note_density": "低"},
+  "E002": {"themes": ["组局邀约", "时间变更", "见面复盘", "晚安收尾"], "boundary": "T03→T04 入口看错自纠=事实自纠轮；T06 复盘调侃不邀功", "intent_slots": 5, "note_density": "中"},
+  "E003": {"themes": ["加班吐槽", "深夜情绪", "陪伴不劝", "饮食偏好"], "boundary": "T07 '你没劝我振作还挺好'——禁止说教的真实回正", "intent_slots": 4, "note_density": "中"},
+  "E004": {"themes": ["剧集共聊", "兴趣试探", "她主动邀约", "不催承诺"], "boundary": "T06 邀约是 HER 发起，harness 不能抢答安排；T07 她自己去也不算失败", "intent_slots": 0, "note_density": "高"},
+  "E005": {"themes": ["健身调侃", "反撩信号", "暂定管理", "临时改期"], "boundary": "T04 '累不累啊'=反撩/降温双读测试位；T06 改期须不粘人", "intent_slots": 2, "note_density": "高"},
+  "E006": {"themes": ["工作崩溃", "明确边界(别分析别教)", "转场钩子", "纠结咨询"], "boundary": "T02 边界违反=最重错；T04 她自己转场，harness 跟随不抢", "intent_slots": 1, "note_density": "高"},
+  "E007": {"themes": ["兴趣邀约", "看状态暂定", "确认成交", "小决策咨询"], "boundary": "T04 '容我定一下'期间不得催；T06 她确认后只留想法不代买", "intent_slots": 3, "note_density": "高"},
+  "E008": {"themes": ["第三人复杂归属", "记忆记岔与纠正", "改期", "临时取消"], "boundary": "T03→T04 记岔纠正轮=事实归属关键位；T08 她主动释放且给替代", "intent_slots": 0, "note_density": "高"},
+  "E009": {"themes": ["帮忙承诺", "多轮改期", "人情记账", "顺延请求"], "boundary": "T03→T04 改期又确认；T08 转介她妹=边界感位", "intent_slots": 0, "note_density": "高"},
+  "E010": {"themes": ["共同爱好", "怕高补充事实", "方案被改", "装备清单"], "boundary": "T03 补充怕高后栈道类建议=事实疏忽；T05 她带同事被拒后收", "intent_slots": 1, "note_density": "高"},
+  "E011": {"themes": ["重情绪陪伴(姥姥病)", "别劝就听", "旧愿望重拾", "谢意回请"], "boundary": "T01 边界违反=最重错；T02 长期记忆（提过姥姥）必须用对", "intent_slots": 0, "note_density": "高"},
+  "E012": {"themes": ["压力反馈降温", "别过度安排", "自主空间", "收尾"], "boundary": "T05 '压力好大'后继续推进=最重错；T07 她要自主不要全代劳", "intent_slots": 3, "note_density": "高"}
+ },
+ "three_input_conditions": {
+  "c1_chat_only": "真实聊天+公开资料，不给目标不给战术note（剥离 intent 与 note，事实性补充保留）",
+  "c2_general_goal": "同聊天+用户一般目标一句话（如'想慢慢拉近'/'想约成这次饭'），不给每步指导",
+  "c3_full_tactical": "聊天+详细战术备注=现行形态（题面原样）",
+  "discipline": "三条件分别派发分别统计，不混算；同一故事跨条件状态不共享"
+ },
+ "counterfactual_intent_pairs": {
+  "plan": "≥4 对同输入反事实：目标A/目标B/关闭，固定其他信息；E005(拉近vs约饭vs无)、E007(促成livehouse vs 只是陪着 vs 无)、E012(推进见面 vs 减压回撤 vs 无)、E002(组局 vs 二人 vs 无)",
+  "verification": "既看请求差异（目标块注入）也看真实输出动作差异；ADJUSTED 一律改 ACTIVE+变更事件，关闭用产品支持终态"
+ },
+ "c4_screening_pick": "4 条开发故事选 E006/E008/E012/E007（边界+事实归属+推进反馈+暂定确认，覆盖价值账最痛的 #5/#8/#10/#11）",
+ "gaps_for_B2": ["调情/反撩密度仍偏低（仅 E005/E012）——B2 新题补 2 条", "长故事全缺（E 系全 8 轮）——B2 补 4 条 24 位"]
+}

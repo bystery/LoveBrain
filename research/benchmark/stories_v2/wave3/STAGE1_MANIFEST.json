@@ -1,0 +1,1784 @@
+{
+ "kind": "story_v2_wave3_stage1_shard",
+ "stage": "wave3",
+ "date": "2026-11-02",
+ "built_by": "W3 T1-T4 shards merged by main session (T4: G1-G8)",
+ "count": 88,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E117",
+   "title": "多出来的同乘人",
+   "themes": [
+    "出行拼车",
+    "返乡顺风车",
+    "同乘人数更正",
+    "油费重算",
+    "后备箱取舍"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E117",
+   "turns": 12,
+   "files": {
+    "episode.json": "584a030b8001e62f02f33d19c39a198edf79ac1a8fbeb3e92cf56c1c89ce6a2f",
+    "reference.json": "e518d0b1e5b0a330a38ae745aae07dde5b1129fcfd37f536e6cdfb57c2f58ebd",
+    "timeline.json": "7c3f8bc69babbb6b1d9105c3ce04e665fe17d5a9ec2c4292378fcbf2b085feaa"
+   }
+  },
+  {
+   "story_id": "E118",
+   "title": "司机不免单",
+   "themes": [
+    "出行拼车",
+    "四人自驾出游",
+    "司机免单之争",
+    "均摊口径回摆",
+    "停车费现金"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E118",
+   "turns": 12,
+   "files": {
+    "episode.json": "c5dddcd1d2cca6b2f8f3a9b106e8fa228e29a8861867636ee0eb648e70e93dc5",
+    "reference.json": "d5b21712bea504ce2608b54b051ffa23a1a67e8acdf0c4fcb4f73ce56fd164a9",
+    "timeline.json": "ab23602c8ac239290c72cd5ba03f321e6add693507f6eced32da30c37b16ec81"
+   }
+  },
+  {
+   "story_id": "E119",
+   "title": "表姨的咖啡局",
+   "themes": [
+    "家庭事务",
+    "亲戚代约相亲",
+    "第三方擅自改期",
+    "当面摊牌",
+    "生日礼物参谋"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E119",
+   "turns": 12,
+   "files": {
+    "episode.json": "56590529d167544001d53f53d385210f987909734895c156ec39756a8851434d",
+    "reference.json": "144c9b5d8ee0feecfdf238f7df2b97ba2f7808962b493996c55eeee0bcbf2a90",
+    "timeline.json": "2f966741b8a6e106be0806e965d992647963f59a8c68b1840ab25213b2fc2643"
+   }
+  },
+  {
+   "story_id": "E120",
+   "title": "交房短信没来",
+   "themes": [
+    "家庭事务",
+    "父母同城养老",
+    "交房日期不确定",
+    "借用暂缓",
+    "短信确认"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E120",
+   "turns": 12,
+   "files": {
+    "episode.json": "64b627f33827432716b0d551c1c83ad66b86a6f8a0dd7d99b465726d117771d2",
+    "reference.json": "0d8b963bebebc99ab1a5a86e36ecdbe1f08ae0fdb9719a42a10c34d9eff6b0fd",
+    "timeline.json": "a3c4d7fcb4f737d6bfac1fede2df304c9180b08d97b71d16fd95c03588c6ef14"
+   }
+  },
+  {
+   "story_id": "E121",
+   "title": "周六的号取消了",
+   "themes": [
+    "医疗健康",
+    "流感疫苗接种",
+    "封网演练取消",
+    "自费改约",
+    "早茶陪伴"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E121",
+   "turns": 12,
+   "files": {
+    "episode.json": "31592f31eea85545a26ea94b1f4bd99b1a5a4d88d9fb74ba5de0e39f919a48a9",
+    "reference.json": "b301512912faef772bc21daf8d6e3efbbf1fc2085aeca198da4266ceb000473d",
+    "timeline.json": "fbb2a8620e0e54c420d1a4277eaf742b2a3abe5585f54bdf1b25cb5a7419127a"
+   }
+  },
+  {
+   "story_id": "E122",
+   "title": "十一点半的灯",
+   "themes": [
+    "医疗健康",
+    "肝功复查目标",
+    "双人打卡",
+    "上线期暂停",
+    "降档恢复"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave3/E122",
+   "turns": 12,
+   "files": {
+    "episode.json": "3ccbb795aa993f3937e30b220c66e8dee1455b5ed793c8b2ad47f7309290a396",
+    "reference.json": "a14dd0e98ff237809a5ab84a816eaa5cf6069a0ff018e91c81b7269736c29d28",
+    "timeline.json": "98acd98774b1f204d5b0821635d4ba6e193efa614cf0ee45d8035e6578a94321"
+   }
+  },
+  {
+   "story_id": "E123",
+   "title": "先问再喂",
+   "themes": [
+    "宠物",
+    "公司宠物友好日",
+    "投喂禁令",
+    "边界冲突化解",
+    "规则卡片化"
+   ],
+   "domain": "宠物",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E123",
+   "turns": 12,
+   "files": {
+    "episode.json": "1f3360d6aee3fa30b61d74039ad531bbd82a35071672e6e8d3b4321b55477031",
+    "reference.json": "c12fb6f3238fd0f3b6507f6c93cd83102315ee3578389d1fdc07d98ca1cf81c5",
+    "timeline.json": "9c925dccdb8cc6094c69353d81ff65f6198d6cf375f3577f3f37be2c776f2193"
+   }
+  },
+  {
+   "story_id": "E124",
+   "title": "术前那两个喷嚏",
+   "themes": [
+    "宠物",
+    "母猫绝育",
+    "术前预检取消",
+    "复查后再约",
+    "术后戴圈护理"
+   ],
+   "domain": "宠物",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E124",
+   "turns": 12,
+   "files": {
+    "episode.json": "98367789cd0d590ad779844facb952408594c9e4d574e3f34676cad6c35de5bd",
+    "reference.json": "9a4bcea80ec2cea3a0cfaf3b39931c5845f28bf90da19f99b7f1be15e6e716d9",
+    "timeline.json": "f2b68fd05db8f824d630773da27b8d21c39d07f23dfdb1628c6ceec9d788ee93"
+   }
+  },
+  {
+   "story_id": "E125",
+   "title": "读书会年终聚餐的价目更正",
+   "themes": [
+    "餐饮聚会",
+    "读书会聚餐",
+    "套餐价更正",
+    "人数回弹",
+    "包间低消"
+   ],
+   "domain": "餐饮聚会",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E125",
+   "turns": 12,
+   "files": {
+    "episode.json": "20045f18e56f862d4249e1034e866568efb3b91dd30f4b497132685b916a8dd3",
+    "reference.json": "526b9ea44da97b457b02e54cdeb7f852e2a71573fdb32c520c66bceda83988e4",
+    "timeline.json": "74a8662ff5db023dbd56ae74e6c4a9cae583637bf46f7cd55bb37b627511e7c9"
+   }
+  },
+  {
+   "story_id": "E126",
+   "title": "湘菜小馆的两次改期",
+   "themes": [
+    "餐饮聚会",
+    "新店首探",
+    "工作餐改期",
+    "出差连锁改期",
+    "云点菜补偿"
+   ],
+   "domain": "餐饮聚会",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E126",
+   "turns": 12,
+   "files": {
+    "episode.json": "6216c1a6dd20d7e22b56450dd62d193154594fec825148a064649bcfce122fc2",
+    "reference.json": "e6afd5acc5d5641b0b2f620605ebede8770b1fbdda82040da5d7a0a056428f2e",
+    "timeline.json": "73361f5412e59bb9da4ac6612c5c2ab279cef9088869291b0a7583bef3a3739e"
+   }
+  },
+  {
+   "story_id": "E127",
+   "title": "键帽不外借",
+   "themes": [
+    "数码消费",
+    "机械键盘键帽",
+    "工位借用边界",
+    "拼团代购",
+    "不垫钱原则"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E127",
+   "turns": 12,
+   "files": {
+    "episode.json": "719d9943b0a7c27297586dea6f3a3e71cfe4e78b4d6a7d2060e0592c556d7e75",
+    "reference.json": "0468735d0fb8947c13fd3e215f29b9ab8bde9ff27cec8a7cfcb1a7facc135cdb",
+    "timeline.json": "720061b95e06fce129fd135962cf2f08a58329dd799fb76294ff0e3ad7ff5a06"
+   }
+  },
+  {
+   "story_id": "E128",
+   "title": "充电仓补购差价表",
+   "themes": [
+    "数码消费",
+    "耳机充电仓补购",
+    "官方价格更正",
+    "换新差价",
+    "回收磨损费止损"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E128",
+   "turns": 12,
+   "files": {
+    "episode.json": "a45ec76f571a09629e70afa9a998a972c811aa282965c9299fc903c1a8d1541d",
+    "reference.json": "6b9950de3b79b5fcc75542c99ca72c26a5d74ce1b7feca526ddf839688429ef6",
+    "timeline.json": "e37da88f6d01a4038ec4c0c846aca285e40ed48a8a580344ca3aa700ac1cb688"
+   }
+  },
+  {
+   "story_id": "E129",
+   "title": "物业卡住的封窗报备",
+   "themes": [
+    "家居装修",
+    "阳台封窗",
+    "物业统一厂家",
+    "个案审批",
+    "施工押金闭环"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E129",
+   "turns": 12,
+   "files": {
+    "episode.json": "2bae4b53e09dccd0192b75ad0d7270896e31a92ebf48d23f31bd70a066466ec6",
+    "reference.json": "d6b11c916e3a13c925118e4c53f585cc1c4770282c09409a551ccf01ff5bad2c",
+    "timeline.json": "1c458bb635467c83d548b4f8e97a02c2219440c0bcbf87543ac0630482c44050"
+   }
+  },
+  {
+   "story_id": "E130",
+   "title": "书房工程的暂停键",
+   "themes": [
+    "家居装修",
+    "次卧改书房",
+    "预算暂停",
+    "方案降本",
+    "监工重启"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave3/E130",
+   "turns": 12,
+   "files": {
+    "episode.json": "ce704d288440480b6f023fc8e5d47a1128499e38632ab82d0059256c182d9ebf",
+    "reference.json": "fa6cd79c776d9558d4a4db1b4fa5f08993c3cfd7abc04d30f39f3dc598a6a1d0",
+    "timeline.json": "d1cee409bf2160baea28c1e9f90ec2c7b882fb05f2980f8330a2c52ee1ed3524"
+   }
+  },
+  {
+   "story_id": "E131",
+   "title": "明火规则的两次打架",
+   "themes": [
+    "兴趣社交",
+    "新手露营拼营",
+    "明火规则不确定",
+    "预约口径核实",
+    "装备租赁"
+   ],
+   "domain": "兴趣社交",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E131",
+   "turns": 12,
+   "files": {
+    "episode.json": "b6ea87852beabea2e5807e9231d290c16a35b44cc5ffde067357c5710a761b7c",
+    "reference.json": "9f54d9198148c58dd561f0f3667ac26db0a38815525a822cc643779306891c29",
+    "timeline.json": "71e1f65eba915eb902ad8e2ea4c4e2f68e50594ac114bee96aa58502af6c55b3"
+   }
+  },
+  {
+   "story_id": "E132",
+   "title": "采血截止的十点误会",
+   "themes": [
+    "医疗健康",
+    "入职体检",
+    "采血截止更正",
+    "机构记错",
+    "报告隐私边界"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E132",
+   "turns": 12,
+   "files": {
+    "episode.json": "f2e9af5b6d2d58984af87828c7bb6972a0d125cf8cb3caca17b70a6249101621",
+    "reference.json": "505a05632b7a3e1de0e9f5ad5b6e1a53c9d16b1307dbb2453dcae31c25016a5f",
+    "timeline.json": "24ac70e039081737ddd6058cac48aa2735fc3e8adf1857e52f8818c6d5737e23"
+   }
+  },
+  {
+   "story_id": "E133",
+   "title": "考级表上多了一级",
+   "themes": [
+    "钢琴考级报名",
+    "级别报错更正",
+    "补差价流程",
+    "考前陪练"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "更正类",
+   "dir": "E133",
+   "turns": 12,
+   "files": {
+    "episode.json": "ee5698f2c3ed699aec650400378288e114a1dd6fe57707760bcd30c20e745ab9",
+    "reference.json": "6db5e2ea837846463424b235f8a66145d670d1d76cb8ad616bcb2ffd6abf7b13",
+    "timeline.json": "1f1e86355b3dbdb546593c67d6ed0d3414d25e4e302cd621708ce7e4a3a07a97"
+   },
+   "hashes": {
+    "episode": "ee5698f2c3ed699aec650400378288e114a1dd6fe57707760bcd30c20e745ab9",
+    "reference": "6db5e2ea837846463424b235f8a66145d670d1d76cb8ad616bcb2ffd6abf7b13",
+    "timeline": "1f1e86355b3dbdb546593c67d6ed0d3414d25e4e302cd621708ce7e4a3a07a97"
+   }
+  },
+  {
+   "story_id": "E134",
+   "title": "查重报告的两份账",
+   "themes": [
+    "毕业论文查重",
+    "检测费用口径",
+    "客服退款沟通",
+    "降重策略"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "费用类",
+   "dir": "E134",
+   "turns": 12,
+   "files": {
+    "episode.json": "906df59ab50356861cfe3990422646279bb813decdde0076c2773131b6832df2",
+    "reference.json": "ae78f6bee71640794e4192d7993121b5b4a0ad690ec5c247c5259dc47fbe016f",
+    "timeline.json": "26f0efbb8b3223306a6953f8b996bc35a43f56086ce79936da2d8cdc051c558d"
+   },
+   "hashes": {
+    "episode": "906df59ab50356861cfe3990422646279bb813decdde0076c2773131b6832df2",
+    "reference": "ae78f6bee71640794e4192d7993121b5b4a0ad690ec5c247c5259dc47fbe016f",
+    "timeline": "26f0efbb8b3223306a6953f8b996bc35a43f56086ce79936da2d8cdc051c558d"
+   }
+  },
+  {
+   "story_id": "E135",
+   "title": "N1冲刺按下暂停键",
+   "themes": [
+    "日语能力考冲刺",
+    "打卡目标启停",
+    "计划降档",
+    "重启窗口"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "目标启停类",
+   "dir": "E135",
+   "turns": 12,
+   "files": {
+    "episode.json": "6671ad383b5cad18c0f8cd5c77ff31659a3386ddb5064322800809e02b6761f3",
+    "reference.json": "5fe1ccc9f0cda7e805578d3c0a80e009ff419775c5e9d0e1adbd08d74e9a0f04",
+    "timeline.json": "1a69d448bae475193c4d50f2e54e80a059ec79a66d7b100f676c3cbaf3982384"
+   },
+   "hashes": {
+    "episode": "6671ad383b5cad18c0f8cd5c77ff31659a3386ddb5064322800809e02b6761f3",
+    "reference": "5fe1ccc9f0cda7e805578d3c0a80e009ff419775c5e9d0e1adbd08d74e9a0f04",
+    "timeline": "1a69d448bae475193c4d50f2e54e80a059ec79a66d7b100f676c3cbaf3982384"
+   }
+  },
+  {
+   "story_id": "E136",
+   "title": "展会行程改了三回",
+   "themes": [
+    "行业展会同行",
+    "差旅改签连锁",
+    "日程三改",
+    "资料共享"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "取消改期类",
+   "dir": "E136",
+   "turns": 12,
+   "files": {
+    "episode.json": "c338b556fb1a6745d72f00fed04f55f39c6cc64cce994af2839415f0c6f907e5",
+    "reference.json": "4a76b63955355f7fa69a23099fbc55095875b71494060506f27a2c388760bdaf",
+    "timeline.json": "aba65838637ff2e61eba7153e9cb0611eb7a433a18cc6869c280489881c46188"
+   },
+   "hashes": {
+    "episode": "c338b556fb1a6745d72f00fed04f55f39c6cc64cce994af2839415f0c6f907e5",
+    "reference": "4a76b63955355f7fa69a23099fbc55095875b71494060506f27a2c388760bdaf",
+    "timeline": "aba65838637ff2e61eba7153e9cb0611eb7a433a18cc6869c280489881c46188"
+   }
+  },
+  {
+   "story_id": "E137",
+   "title": "猎头说岗位冻结了",
+   "themes": [
+    "猎头传话口径",
+    "岗位冻结传闻",
+    "双线求职",
+    "offer决策"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "第三方类",
+   "dir": "E137",
+   "turns": 12,
+   "files": {
+    "episode.json": "e40463e839ad6d73879471d7bea48fc14a69f35e5cb8a92d4978ac99d213db51",
+    "reference.json": "eb9946360782eb6a8a5b4f437e8b8f920a4fac776854d4fbe643ba73c823062b",
+    "timeline.json": "c09cdc93a3bdc38a679bd306ebccaaf9c99c97c9dae614752e49d23c32d63ad0"
+   },
+   "hashes": {
+    "episode": "e40463e839ad6d73879471d7bea48fc14a69f35e5cb8a92d4978ac99d213db51",
+    "reference": "eb9946360782eb6a8a5b4f437e8b8f920a4fac776854d4fbe643ba73c823062b",
+    "timeline": "c09cdc93a3bdc38a679bd306ebccaaf9c99c97c9dae614752e49d23c32d63ad0"
+   }
+  },
+  {
+   "story_id": "E138",
+   "title": "我们的场地不外让",
+   "themes": [
+    "羽毛球固定球局",
+    "场地让位边界",
+    "群规共识",
+    "双打搭档"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "边界类",
+   "dir": "E138",
+   "turns": 12,
+   "files": {
+    "episode.json": "4786e5365611a5d83f1b23bc538e5708e391b2b199aa3f1788d2325f738f3580",
+    "reference.json": "242282430b1b9826ccd4e0c83bd927e0ff5f494cd4162375de81ab6577e72028",
+    "timeline.json": "0be351d9658fdfa5fb5104de728cd2a7288d6a490c4d3ba7a91ab5662ccea90a"
+   },
+   "hashes": {
+    "episode": "4786e5365611a5d83f1b23bc538e5708e391b2b199aa3f1788d2325f738f3580",
+    "reference": "242282430b1b9826ccd4e0c83bd927e0ff5f494cd4162375de81ab6577e72028",
+    "timeline": "0be351d9658fdfa5fb5104de728cd2a7288d6a490c4d3ba7a91ab5662ccea90a"
+   }
+  },
+  {
+   "story_id": "E139",
+   "title": "中签短信还没来",
+   "themes": [
+    "半马抽签悬置",
+    "名额传闻核实",
+    "训练窗口调整",
+    "赛日陪跑"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "信息不确定类",
+   "dir": "E139",
+   "turns": 12,
+   "files": {
+    "episode.json": "b640ae7b016abc86da597e5a28d62b4f71f96095e84166bf81886ebd5ccf7eaf",
+    "reference.json": "03b17fd82c2507a622333296613de579e5556e862d5ed34d6cc021cf85cf425b",
+    "timeline.json": "26892d0b54cabee53028d5beb8942a30dbb901a450d166f2cfc8400166ff6be7"
+   },
+   "hashes": {
+    "episode": "b640ae7b016abc86da597e5a28d62b4f71f96095e84166bf81886ebd5ccf7eaf",
+    "reference": "03b17fd82c2507a622333296613de579e5556e862d5ed34d6cc021cf85cf425b",
+    "timeline": "26892d0b54cabee53028d5beb8942a30dbb901a450d166f2cfc8400166ff6be7"
+   }
+  },
+  {
+   "story_id": "E140",
+   "title": "密室局改到下周六",
+   "themes": [
+    "密室拼局",
+    "场次取消改期",
+    "补员重组",
+    "固定队成型"
+   ],
+   "domain": "兴趣社交",
+   "conflict_type": "取消改期类",
+   "dir": "E140",
+   "turns": 12,
+   "files": {
+    "episode.json": "c7cdc9300475b8db2fc1bba41f29e4e35b804e8f6849436b38a6c01edcfdd632",
+    "reference.json": "8a76e5888e9f9eac0e7706a2fc0c8c3b55ba9345b11167c4c5f810608b6dcafe",
+    "timeline.json": "73fa531622b380ee348c19dcd31fde1aa53c443f96c7ec7b1fdde3b9545c619f"
+   },
+   "hashes": {
+    "episode": "c7cdc9300475b8db2fc1bba41f29e4e35b804e8f6849436b38a6c01edcfdd632",
+    "reference": "8a76e5888e9f9eac0e7706a2fc0c8c3b55ba9345b11167c4c5f810608b6dcafe",
+    "timeline": "73fa531622b380ee348c19dcd31fde1aa53c443f96c7ec7b1fdde3b9545c619f"
+   }
+  },
+  {
+   "story_id": "E141",
+   "title": "方案截止日两副口径",
+   "themes": [
+    "工作职场",
+    "跨组传话口径",
+    "交付截止日更正",
+    "版本冻结切换",
+    "内审时间前移"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E141",
+   "turns": 12,
+   "files": {
+    "episode.json": "1726bcdda0bc264a41b0f718daac1c3f1ee52f33b6ef9e736076ac30e78f7b37",
+    "reference.json": "a00dad5b3a15b8f42c79685ff542662ca074c5950444ee08e815658e14677254",
+    "timeline.json": "7b01a27d293237dc2ff5a360050b17529c0fe53faaa27e92664f5b77978e4861"
+   }
+  },
+  {
+   "story_id": "E142",
+   "title": "供应商换了对接人",
+   "themes": [
+    "工作职场",
+    "供应商对接人更换",
+    "书面承诺截图",
+    "让利谈判",
+    "合同补充页"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E142",
+   "turns": 12,
+   "files": {
+    "episode.json": "7b82629beadc6a689f7161cf0f082571984559ad313e659d178c5f94e8465d8e",
+    "reference.json": "c1b82134a5faaccc1b40a55bca144fa13e673df08c57d784c92ce136b0b631a5",
+    "timeline.json": "45ba533b2efd09e5233ae2ebea368d214d5357f3ea153e008853e5272e71a80b"
+   }
+  },
+  {
+   "story_id": "E143",
+   "title": "法考打卡先降档",
+   "themes": [
+    "学习成长",
+    "法考备考",
+    "打卡计划降档",
+    "错题集中补强",
+    "恢复日重启"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave3/E143",
+   "turns": 12,
+   "files": {
+    "episode.json": "3c99e0227ae57066027292c3ca856b86627296d832f799e4990dfc7bf245b807",
+    "reference.json": "0bf369c03dbd968505ea48f5fbad9ab47ba426e3fea7cab6d57f8a1d92ee34e7",
+    "timeline.json": "5050ef64a9cb3761d33f9a5d174f6d6f9e49bfc138b9d75d9205dadd1ae1c289"
+   }
+  },
+  {
+   "story_id": "E144",
+   "title": "夜跑团挪到清晨",
+   "themes": [
+    "运动健身",
+    "公司夜跑团",
+    "步道检修取消",
+    "晨跑双轨并行",
+    "团聚餐收尾"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E144",
+   "turns": 12,
+   "files": {
+    "episode.json": "19b35d49939eb1a0897c9b46f401573f3dd0254bbef1e6a41f742d8d631e5651",
+    "reference.json": "49a9743fcc113212d2ed3ba3cd680b8d8294c25f14906a4312055dd4ea1764b8",
+    "timeline.json": "3cadefd6e12b2b76d367f0cce4d683598fa567241235aa1c8d859b7d4bc14dd5"
+   }
+  },
+  {
+   "story_id": "E145",
+   "title": "司机到底几点到",
+   "themes": [
+    "出行拼车",
+    "高铁站拼车",
+    "上车口径不一",
+    "保守出发预案",
+    "回程复购拼车"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E145",
+   "turns": 12,
+   "files": {
+    "episode.json": "4af321d03fa0cb5a7cfda69769d4a805dea465bc5ceb3b724df55b0ed2f60abf",
+    "reference.json": "c979ec82bc31de6bc9a7c8f361605c507beedbc6a803a5c7f72e0faf5fb5e6f0",
+    "timeline.json": "f5870559ed6c1bf74b741eb4d849478d2e071a1deab550ff80c9a32db051d1ba"
+   }
+  },
+  {
+   "story_id": "E146",
+   "title": "姥姥轮椅的差价",
+   "themes": [
+    "家庭事务",
+    "电动轮椅采购",
+    "线上线下差价",
+    "长辈出资平账",
+    "上门安装核实"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E146",
+   "turns": 12,
+   "files": {
+    "episode.json": "15a2527d028c75ba52d52a29bada805c37cde6052f2d256cdf886313eb974f8f",
+    "reference.json": "9a09c0015e8077561b60f56e37dcedef0e2619ab46f1e8b1e30adda271d9385f",
+    "timeline.json": "41530b4fcc491e991dd976974160f2cb6b5493892306cc74de566f2e4294f7f8"
+   }
+  },
+  {
+   "story_id": "E147",
+   "title": "别再当传话筒",
+   "themes": [
+    "医疗健康",
+    "代问诊转述边界",
+    "家族群施压",
+    "线上问诊分流",
+    "赔罪火锅"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E147",
+   "turns": 12,
+   "files": {
+    "episode.json": "6ff2cb486f72379532ba732e5a8cc37924759d63af4e793d453df6a2caff3b90",
+    "reference.json": "efcefc8aa2789a0c019806cd8bd781124b451ee9f04ec39544b8489af9e21ce6",
+    "timeline.json": "05a92c45949fedb2347c67d6cbb0db7a050e5c65a8975a74aaba00cee8b7ef2f"
+   }
+  },
+  {
+   "story_id": "E148",
+   "title": "换粮日历改了",
+   "themes": [
+    "宠物",
+    "猫咪换粮过渡",
+    "医嘱更正喂养方案",
+    "便便观察记录",
+    "流浪猫捐粮"
+   ],
+   "domain": "宠物",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E148",
+   "turns": 12,
+   "files": {
+    "episode.json": "880ea12f9ca2c7b3146d1af8c4e2dcc52bb1ce9d476cbd60febb372a50bdc294",
+    "reference.json": "70c7bb702efdd06a5ee72ec54329dfb49287a08b35c695434bf68ee36ca726d2",
+    "timeline.json": "ba7d3203e5e5d8cc943f5e13f0ac2cbe5c6413fb7e7e4f9c2d2187acfb3f4efa"
+   }
+  },
+  {
+   "story_id": "E157",
+   "title": "旧手机的补贴悬案",
+   "themes": [
+    "数码消费",
+    "旧手机以旧换新",
+    "补贴资格不确定",
+    "门店口径不一",
+    "数据迁移备份"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E157",
+   "turns": 12,
+   "files": {
+    "episode.json": "a9fd69c26e432b8cd5ed10d504ac6c720354530b79bd3b64f216d683c7e9f75d",
+    "reference.json": "4e46bafefabc18a648d79c9cbcf6051aaf8fb31d75dc3395ffa900cd2a6ea05f",
+    "timeline.json": "fefa027b52091d6b4dbc925f2589ab8b12b203f44f7bf77f636336e3d0b1a06f"
+   }
+  },
+  {
+   "story_id": "E158",
+   "title": "点位图上的两个插座",
+   "themes": [
+    "家居装修",
+    "厨房水电改造",
+    "点位图版本更正",
+    "岛台插座存废",
+    "书面补充单"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E158",
+   "turns": 12,
+   "files": {
+    "episode.json": "6ea2e4df163c9da9fa904e3078556db06e0c6de783ccb9cbf208789398bca391",
+    "reference.json": "c24ecb73d6b7f07ba6f7800a188200eb27e55da0d71b2b7eff118d7b1b63edb1",
+    "timeline.json": "f595c5aaafcb7a0b62e7af09ea5be5e561db59f218a3afbdb37a4c9a36995c1f"
+   }
+  },
+  {
+   "story_id": "E159",
+   "title": "钥匙三不原则",
+   "themes": [
+    "宠物",
+    "出差上门喂猫",
+    "代喂人临时更换",
+    "钥匙交接边界",
+    "三步流程书面化"
+   ],
+   "domain": "宠物",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E159",
+   "turns": 12,
+   "files": {
+    "episode.json": "65b85f4d8d117046ffec562226e2604efb6833e3c25a8eddb85d6c7df6d52a06",
+    "reference.json": "a141bb433128f597d89ef095e6a6db09cfc8bb534dfb4684864d90a81c740415",
+    "timeline.json": "b54d5c92008f5c642f546765106085602257802241c83690491a8bb400d70b35"
+   }
+  },
+  {
+   "story_id": "E160",
+   "title": "人均一百三的算法",
+   "themes": [
+    "餐饮聚会",
+    "部门火锅团建",
+    "酒水摊派口径",
+    "收银串单更正",
+    "垫付回收"
+   ],
+   "domain": "餐饮聚会",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E160",
+   "turns": 12,
+   "files": {
+    "episode.json": "b3ed87e034725a80f4d9a7beb83686889e9952cedeb8c3c2639c9dd17079b64e",
+    "reference.json": "19e4dc419875eaa2942b58eee033903173cc6bfce3ded8f89f09965678b085be",
+    "timeline.json": "1bce33be93afa36f20005ac6089761e6e8c2a72eddc6539cd6d0330d64faecb3"
+   }
+  },
+  {
+   "story_id": "E161",
+   "title": "厨房水电图上丢的俩插座",
+   "themes": [
+    "家居装修",
+    "厨房水电改造",
+    "补点报价更正",
+    "复尺改期",
+    "工具借用归还"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "报价更正与改期兑现",
+   "dir": "benchmark/stories_v2/wave3/E161",
+   "turns": 12,
+   "files": {
+    "episode.json": "fa2d7836050c75896039c28b080abec965d314b6658a3f2fc6665a11537c88bb",
+    "reference.json": "f569264f19e0c9157f13b1335464413cbbb2e8f339286e0459582054ae2c2263",
+    "timeline.json": "664ffad0203209f02e65c5d7f3819814fb32bdca8f8319338c9195a4dc3c60fa"
+   }
+  },
+  {
+   "story_id": "E162",
+   "title": "还回来的测距仪和一百块的烤箱",
+   "themes": [
+    "家庭事务",
+    "工具归还免赔",
+    "旧烤箱转让",
+    "送货改期",
+    "完工作客之约"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "免赔边界与转让信息更正",
+   "dir": "benchmark/stories_v2/wave3/E162",
+   "turns": 12,
+   "files": {
+    "episode.json": "1c87326dfd8c6e583084ebe93ac86efc045b573164739b395f89575ee90ecc6f",
+    "reference.json": "e68bc0ef587020c9de719e68f693fd5fe302c7b639df101778c13ee61edc483c",
+    "timeline.json": "06934a5acb714b674dcc766a46ea0112a3b5a879f98d41abcfaca089e42a15af"
+   }
+  },
+  {
+   "story_id": "E163",
+   "title": "两家诊所的两套说法",
+   "themes": [
+    "医疗健康",
+    "牙齿深龋诊断分歧",
+    "牙片复核定方案",
+    "保修口径核书",
+    "陪诊与复查提醒"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E163",
+   "turns": 12,
+   "files": {
+    "episode.json": "9db6312b4f1720e4551b9994f384e92460d5c334e74f4005f30115af3656cb86",
+    "reference.json": "8f3e45935fb91f1846711b82c3f8c326e5a62c14b90ff5c102489688a009b2fe",
+    "timeline.json": "2530c4f290d0bbdc201b2258f47f6631fbd48dc245abac9803b1b321d660a207"
+   }
+  },
+  {
+   "story_id": "E164",
+   "title": "次卡年卡的换算账",
+   "themes": [
+    "运动健身",
+    "泳池次卡续费",
+    "价格构成更正",
+    "赠品折现核实",
+    "冻结合卡解冻抉择"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E164",
+   "turns": 12,
+   "files": {
+    "episode.json": "8c0790aa4c47dec1eec9aeb4db6538ae7e2dc5b0f935b0a8e009effa0e66ae04",
+    "reference.json": "b5678ae703e20a3c186d8ad358780f7fca83675ceae244cb4ac9ecf8b780faf4",
+    "timeline.json": "c1aacc85472b8d12c3b3c0f9ab9a712956a707e2bcf4a3564c40432caf294e20"
+   }
+  },
+  {
+   "story_id": "E165",
+   "title": "返程被妈妈安排了",
+   "themes": [
+    "出行拼车",
+    "周末回乡顺风车",
+    "长辈第三方代订返程",
+    "儿童增高垫安全",
+    "单程油费重算"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E165",
+   "turns": 12,
+   "files": {
+    "episode.json": "1ef9a98cc42f2c1166c948052b325533371e0e6a65ef64e941dbcff155cc2c16",
+    "reference.json": "a79f0af9f120c0e86461f9e16d79095c97e9654d590155d7bfd12295c4937666",
+    "timeline.json": "5423b81583d7c263f66d36d28e02c9187204166a40ee6b920212452b79248ada"
+   }
+  },
+  {
+   "story_id": "E166",
+   "title": "共读会的冬歇与重启",
+   "themes": [
+    "兴趣社交",
+    "共读会十二月降档",
+    "线上短评半期方案",
+    "语音复盘延期",
+    "一月恢复线下"
+   ],
+   "domain": "兴趣社交",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave3/E166",
+   "turns": 12,
+   "files": {
+    "episode.json": "e2d06190eab1d6acfe3094bf295b8417f24c28c515a130f652274feefa367cb5",
+    "reference.json": "0e242cf1b34e5fa70871427bcc6a6615787e9d5c13e2a72c96780e49cc642344",
+    "timeline.json": "4d0ce17d1b0610b4e64625c9d99826a32c1ffbc28d52bc2f14a68efb629412a6"
+   }
+  },
+  {
+   "story_id": "E167",
+   "title": "音乐节的临时换车",
+   "themes": [
+    "出行拼车",
+    "跨城音乐节拼车",
+    "司机临时换人",
+    "车费垫付",
+    "同乘车友续约"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "第三方类",
+   "kind": "cross_story_pair",
+   "pair": "E167+E168",
+   "role": "A",
+   "files": {
+    "episode.json": "5420b3fb916c6f7663b9da7984132e4815accb2cf0ce93532d608685149635bf",
+    "reference.json": "dfde28a5968e94dcd13d3db6d965c1dc9e702f54754127263177ffdc8d57c1ba",
+    "timeline.json": "f06ec7732a8218275e6c49c368f04577f0c75fdce8349359a6a362e39957a70e"
+   }
+  },
+  {
+   "story_id": "E168",
+   "title": "岩馆的垫付款",
+   "themes": [
+    "运动健身",
+    "室内攀岩体验",
+    "教练课费用分摊",
+    "垫付车费归还",
+    "装备押金口径"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "费用类",
+   "kind": "cross_story_pair",
+   "pair": "E167+E168",
+   "role": "B",
+   "files": {
+    "episode.json": "8cdee7a78e32a5fe9fd89d7584f9b769b21d10495fec21e1020748490dce1538",
+    "reference.json": "a89383f23f7e2f0147278b0e9c0093eae355ac5d59fc52bf6dbe3f8ba0eaaa04",
+    "timeline.json": "a1da85d8afb60b0acd8b45f224a966d52f6b840d7816978f2004034f8b12fc8c"
+   }
+  },
+  {
+   "story_id": "E169",
+   "title": "白色小白的桨叶谁担责",
+   "themes": [
+    "数码消费",
+    "无人机保修",
+    "人为损坏认定",
+    "官方寄修检测",
+    "保内保外差价"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "信息不确定",
+   "dir": "benchmark/stories_v2/wave3/E169",
+   "turns": 12,
+   "files": {
+    "episode.json": "cf9e12f3f97b2af07d91a6c3f177dffd6d41e216ccbec0d3c21f9fc8051a3dc5",
+    "reference.json": "82bd5b051f23cea72dc63b1f95f6283e21db5ff1096c76192dc8c34be08f6d7b",
+    "timeline.json": "091070201f64c0d6d0197f211d64f788786f3e7d1d167fa4b117c3710ed399ff"
+   }
+  },
+  {
+   "story_id": "E170",
+   "title": "烟机位差两公分",
+   "themes": [
+    "家居装修",
+    "定制橱柜安装",
+    "尺寸误差返工",
+    "二次上门费用归属",
+    "工期连锁"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E170",
+   "turns": 12,
+   "files": {
+    "episode.json": "bd450826c399d964ee70506cee1e4b9c998f4af7be1839215312a4ebdd86576f",
+    "reference.json": "47c55020bfd54967f9bd03051ffeaba2e54b2bf90d773a05bd6da92bab590669",
+    "timeline.json": "c825a2f8bbd753b037afa981e3afd7b56b0b60efc920348702e2c145a0c30261"
+   }
+  },
+  {
+   "story_id": "E171",
+   "title": "智齿改了三回期",
+   "themes": [
+    "医疗健康",
+    "拔智齿",
+    "术前化验有效期",
+    "麻醉史更正",
+    "术后复诊改期"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E171",
+   "turns": 12,
+   "files": {
+    "episode.json": "fdda03e29705d954b4be9635b75c4d474c57f077ec54f172647a6554ebf9e1c9",
+    "reference.json": "a8a2872d56d7e9c27471142389c27fd3e3f69feed009375eb4a29611843f4918",
+    "timeline.json": "ec8131f625dff2c892d919e945d9cfbeaa2b6f7d163a306f8d5333338cc8e365"
+   }
+  },
+  {
+   "story_id": "E172",
+   "title": "芝麻的托运三改",
+   "themes": [
+    "宠物",
+    "猫咪航空托运",
+    "免疫证时效",
+    "航班改签",
+    "航空箱尺寸"
+   ],
+   "domain": "宠物",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E172",
+   "turns": 12,
+   "files": {
+    "episode.json": "5c0c8ef3f106e113501fe86747fcd49c28343dbb4bfc441453c4b65782a01b16",
+    "reference.json": "5bab70da2e454ef8454f534672e06b4b6508b422734a30d523be754723cf7da9",
+    "timeline.json": "b74b15956b997c40596d08225a5fab551da6703086c2a97ebc61d8d12918cdb1"
+   }
+  },
+  {
+   "story_id": "E173",
+   "title": "2549 的锁单三小时",
+   "themes": [
+    "数码消费",
+    "平板以旧换新",
+    "补贴资格核实",
+    "订单型号更正",
+    "限时锁单"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "启停类",
+   "dir": "benchmark/stories_v2/wave3/E173",
+   "turns": 12,
+   "files": {
+    "episode.json": "c031c0c1e17f4e32061ecbfdbfc87e0ca10309de77b55e9516b5dda3e7a157b2",
+    "reference.json": "c45d49dc7cdc866d80e0ba498aca4b426a10fd372934a8c269523e966e20b353",
+    "timeline.json": "fdfe5c7b3d068713d965e8fc9abc0cfc1730d7e7e63848816850743fe3bda242"
+   },
+   "cross_story_pair": "E173+E174",
+   "pair_role": "A"
+  },
+  {
+   "story_id": "E174",
+   "title": "两个亮点与五十块",
+   "themes": [
+    "数码消费",
+    "到手换货",
+    "屏幕亮点验收",
+    "价保窗口",
+    "旧机残值跟进"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E174",
+   "turns": 12,
+   "files": {
+    "episode.json": "00ab3a6e8730a337c3844015cd548ec50a6273cdc72922b1e6f06e4706adb215",
+    "reference.json": "49febc205ca20427c7c31f1b875c0df4d76a0a5fec5f89331cb4711a5b0fc361",
+    "timeline.json": "5e4bff06d690e0ade40e4fbf4ae5bb770aeefe8c607be596fdb432370c5f616b"
+   },
+   "cross_story_pair": "E173+E174",
+   "pair_role": "B"
+  },
+  {
+   "story_id": "E175",
+   "title": "多收的六百八十八",
+   "domain": "餐饮聚会",
+   "conflict_type": "费用类",
+   "themes": [
+    "餐饮聚会",
+    "部门庆功宴",
+    "酒水误记更正",
+    "AA分摊口径",
+    "账目公示"
+   ],
+   "files": {
+    "episode.json": "330bb7e0602781eef838fe4fa632da41181f254b0ed96ca2dbb7e7e7e20ea9c2",
+    "reference.json": "daff8a6da2e9de7a68a3d3545e03eb3b13b6b228f0916a953b18e635ae89da4c",
+    "timeline.json": "8d30366b932d75f39b46cb347a5ceb56b33c9d5da4e5cf42551e6a9f8ff8e282"
+   }
+  },
+  {
+   "story_id": "E176",
+   "title": "乔迁宴两次改期",
+   "domain": "家庭事务",
+   "conflict_type": "取消改期类",
+   "themes": [
+    "家庭事务",
+    "姑姑乔迁宴",
+    "宴期两改",
+    "蛋糕订单止损",
+    "视频看新家折中"
+   ],
+   "files": {
+    "episode.json": "78f129f848843c3669b0037b4c274d6c58c93bfc8fcb8baa23d7281d8f07e040",
+    "reference.json": "2ba004d4dd1e082109f41d55afd2c25666b7190c478d9b4bd39695697ebc0416",
+    "timeline.json": "804312c06bf60029591ef562dc210018cfcc783f24909b257a8aac7dd0857a92"
+   }
+  },
+  {
+   "story_id": "E177",
+   "title": "通勤周拼停摆两周",
+   "domain": "出行拼车",
+   "conflict_type": "目标启停类",
+   "themes": [
+    "出行拼车",
+    "跨城通勤周拼",
+    "装修用车暂停",
+    "一三五降档重启",
+    "迟到补摊群规"
+   ],
+   "files": {
+    "episode.json": "286014ed8d4eef3772e1818ccb4551f0ce3e8ba7832f68e29c066db43726f6ff",
+    "reference.json": "4ae154e91f44a71f2c970f9513500268c232a1b045fab14724fbb63e18ff41aa",
+    "timeline.json": "3c3e99c3c17d3800e68d73131a46e6d135ec4b81c30af2e205a3733be7ded269"
+   }
+  },
+  {
+   "story_id": "E178",
+   "title": "体验课不办卡",
+   "domain": "运动健身",
+   "conflict_type": "边界类",
+   "themes": [
+    "运动健身",
+    "游泳体验课",
+    "年卡私教推销边界",
+    "先试后买",
+    "晨泳搭子"
+   ],
+   "files": {
+    "episode.json": "65765fabdbfb9b15f1a841898a2e2a39de0764ebb353104df7bb04cee32b939d",
+    "reference.json": "2411c44dfc3daf0b05978ac97c8908e7ae8e865386f8189c05179c77413de7b0",
+    "timeline.json": "a4c717b178097ba34dfea76f2ddb7ec61744541d319fabd75191f3719876740a"
+   }
+  },
+  {
+   "story_id": "E179",
+   "title": "垫出去的订金",
+   "themes": [
+    "餐饮聚会",
+    "姥姥寿宴包间",
+    "垫付订金",
+    "婚宴换厅风险",
+    "菜单减贵菜"
+   ],
+   "domain": "餐饮聚会",
+   "conflict_type": "费用类",
+   "files": {
+    "episode.json": "ffaf8ba2e1b49ad2b9a7a46f78386c9d67cbd9a91f6cac03019603c34048886a",
+    "reference.json": "de136acdad86f45334a0032f7d2d92104d5d0dcd37475466e26d63c4cd32a2bb",
+    "timeline.json": "1c352808644507942955274db88748cdc4c5912272357283467ab5e15995fc8c"
+   }
+  },
+  {
+   "story_id": "E180",
+   "title": "寿宴前一天的账",
+   "themes": [
+    "餐饮聚会",
+    "寿宴前对账",
+    "订金登记口径更正",
+    "包间重复占用改期",
+    "垫款当面结算"
+   ],
+   "domain": "餐饮聚会",
+   "conflict_type": "更正类",
+   "files": {
+    "episode.json": "fa65aabe0749c90d632c2385b5f09951caf5d46b45dec5c77116f38791b2b46e",
+    "reference.json": "672cb4257838f683fe26416dd1b266065bda77fa41d075e7f15ec5f9e804113f",
+    "timeline.json": "727dd301726b4686f014671639b3284bb0f744c75d9daa5ff3721edd72001d0f"
+   }
+  },
+  {
+   "story_id": "E181",
+   "title": "换了个表哥来交机",
+   "themes": [
+    "数码消费",
+    "游戏主机代购",
+    "第三方卖家换人",
+    "版本型号更正",
+    "当面验机"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E181",
+   "turns": 12,
+   "files": {
+    "episode.json": "e7caef45f7abc07c3cbdece1803d7dd400f1e3adfa7e4668f88d49875ec1a690",
+    "reference.json": "87d59eeaeeae307d4e23c1ce460dfd4aed3dbc9b416498a97113c48a33ef45e8",
+    "timeline.json": "a8f09db95fcd32020b9fe1f979c356ca8c77ea6086c72e8b21cb8d2bc3248865"
+   }
+  },
+  {
+   "story_id": "E182",
+   "title": "瓦工三次没进门",
+   "themes": [
+    "家居装修",
+    "卫生间瓷砖铺贴",
+    "瓦工档期改期",
+    "闭水试验返工",
+    "邻里赔偿留证"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E182",
+   "turns": 12,
+   "files": {
+    "episode.json": "06ec97ed38baf68b1bf9c4d868126e4e50708577786c3680e47b4d8bf7bf60b3",
+    "reference.json": "762dae5059773992dd4bf696dad7243143ce0818f03c787fa82517d87e388665",
+    "timeline.json": "c5709a4df42ce3492b620f595aa2004bd18c63fbea6142e5964cc0a9489f68b6"
+   }
+  },
+  {
+   "story_id": "E183",
+   "title": "0.62 的临界值",
+   "themes": [
+    "医疗健康",
+    "过敏原检测",
+    "报告解读口径矛盾",
+    "医生复诊收口",
+    "环境控制一个月"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E183",
+   "turns": 12,
+   "files": {
+    "episode.json": "c7ab9b13a13c1a428e081a5ad3b70e2778a7ac9a71647daa80822a20154dd8e5",
+    "reference.json": "564ea898973c08d7b7acec6aca61fa877374829fbecc7b5b50c26612d421b6a2",
+    "timeline.json": "3a914ccff21308d43b7846ee4fe8b9af74f15ab01e19dbd88a47e6773faba416"
+   }
+  },
+  {
+   "story_id": "E184",
+   "title": "多出来的五十块补课费",
+   "themes": [
+    "宠物",
+    "柯基训犬课",
+    "合同外补课费争议",
+    "扣课恢复更正",
+    "老学员锁价续费"
+   ],
+   "domain": "宠物",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E184",
+   "turns": 12,
+   "files": {
+    "episode.json": "ff86f69836ef59cbd7732ad990af5e068f39df5e41cc8701f762cab884d0ed80",
+    "reference.json": "e5f326cd364722a57064318c5a22fa5ed01161406ef9d3f88f8d7ed63dea7161",
+    "timeline.json": "02b7071fa8c6b92d587e42e6f8bafc920636ba90dd3b582856558af32e175f93"
+   }
+  },
+  {
+   "story_id": "E185",
+   "title": "腰伤按下暂停键",
+   "domain": "运动健身",
+   "conflict_type": "目标启停类",
+   "themes": [
+    "三个月增肌计划",
+    "双人训练打卡",
+    "腰伤停训",
+    "康复降档",
+    "十一月重启"
+   ],
+   "turn_per_story": 12,
+   "batch": "W3-T4-20261102",
+   "generator": "W3-T4-2",
+   "files": {
+    "episode.json": "60d4d5a0bdb957cc2139efb2194b8a58322c4c615559e7c81a8a50682c55d85b",
+    "reference.json": "7588153cbcfaf734d384b228e80bd5c937d2ac58366936bc11cb9934f1d8c407",
+    "timeline.json": "0152fa207068628f7583e60cdf1d2eb4430362ed428ceef6ca6d538d7a5a4e68"
+   }
+  },
+  {
+   "story_id": "E186",
+   "title": "代订的局多了两个人",
+   "domain": "餐饮聚会",
+   "conflict_type": "第三方类",
+   "themes": [
+    "大学室友十年聚",
+    "共同朋友代订",
+    "第三方擅自加人",
+    "大堂包间之争",
+    "AA预收口径"
+   ],
+   "turn_per_story": 12,
+   "batch": "W3-T4-20261102",
+   "generator": "W3-T4-2",
+   "files": {
+    "episode.json": "bb40f83d10233cb8669d15f75b94b97735460df6a24f8e41e4b05d4034ba7734",
+    "reference.json": "102075cab827156c24770928b50d415868505f40b23848f4c7d0a6765fb12e3e",
+    "timeline.json": "34d76ba448af225038a3703ace0de2cc4c40c8ec4489c8a3d22d0fa97900d3ab"
+   }
+  },
+  {
+   "story_id": "E187",
+   "title": "后备箱与第三单",
+   "domain": "出行拼车",
+   "conflict_type": "边界类",
+   "themes": [
+    "周五跨城顺风车",
+    "三单拼车边界",
+    "行李箱权属",
+    "拒绝顺路捎货",
+    "平台规则退款"
+   ],
+   "turn_per_story": 12,
+   "batch": "W3-T4-20261102",
+   "generator": "W3-T4-2",
+   "files": {
+    "episode.json": "c48864efccb7d59bb2c5f6303a357c067a1d8ac7e4234f5a1d688967ec9b08ba",
+    "reference.json": "da5bd85244bfb66f6efe7ba7573eb63eb9e93aad7b446739e55bd2be6b013d2a",
+    "timeline.json": "296e708c73280622572d9e98cbec87ff573b8b1d21bd147e471cbdf178b3df18"
+   }
+  },
+  {
+   "story_id": "E188",
+   "title": "六天改成四天",
+   "domain": "家庭事务",
+   "conflict_type": "更正类",
+   "themes": [
+    "元旦回家计划",
+    "停留天数更正",
+    "高铁票改签",
+    "家宴提前",
+    "四天清单收口"
+   ],
+   "turn_per_story": 12,
+   "batch": "W3-T4-20261102",
+   "generator": "W3-T4-2",
+   "files": {
+    "episode.json": "00a20d4b8f549460feb1b62e3167423703157e559ff0cde66347d7fefb7130e8",
+    "reference.json": "51c59db4ffb54a8cb46c1b489199aad4b6232936e3b4ad93a86512838f4ab321",
+    "timeline.json": "ccbb5da097b07a82d5c96bd88ed0f136bf3fe7e68f640f9a753e87fab523fb1e"
+   }
+  },
+  {
+   "story_id": "E189",
+   "title": "内转答辩十二月见",
+   "themes": [
+    "工作职场",
+    "内转答辩备考",
+    "大促抽调暂停",
+    "两案对比决策",
+    "批次开放重启"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "目标启停类",
+   "files": {
+    "episode.json": "354433c19386850eba785ef53420411bbf0f109602726bf092735208f57cd449",
+    "reference.json": "1e51325d28b9e761e34929361ef7588457402f1f3e19df14acfbd6e970a0ccc2",
+    "timeline.json": "0bec8f654bd6b8bab2710301295ba0618ac5f0859a7f176f7a3257c919df4411"
+   }
+  },
+  {
+   "story_id": "E190",
+   "title": "熄灯前填错的科目",
+   "themes": [
+    "学习成长",
+    "教资面试报名",
+    "科目误选更正",
+    "单次修改约束",
+    "试讲超时修剪"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "更正类",
+   "files": {
+    "episode.json": "da6b71cbc68983a61f2bd12deb5e972caf7b7b4af6a0a9d6fa9ccfdfa3516368",
+    "reference.json": "b1855c4d1d48313fc50f7baf0d5ff7a6f360ff26e6bdaca780d4e766a103992c",
+    "timeline.json": "6b7d62ff6476f4c495c332d6d6304a0810516748f05ee5e958db34bb5de343f1"
+   }
+  },
+  {
+   "story_id": "E191",
+   "title": "人均四十五到六十",
+   "themes": [
+    "兴趣社交",
+    "桌游吧拼局",
+    "放鸽人均重算",
+    "垫付当周对账",
+    "新人补位复原"
+   ],
+   "domain": "兴趣社交",
+   "conflict_type": "费用类",
+   "files": {
+    "episode.json": "8374277583cf8c36d0af452d1ca22dca5cd99dd5972fef97d1892a03ce3251e1",
+    "reference.json": "1b29d741a97bcba73d18b04db8dcd6905788228b9bfbd393b14f9823f6c3571c",
+    "timeline.json": "18d7c30130f873006ba543eab6ec7838223b5329d5603dfd8b1ef58177f8f182"
+   }
+  },
+  {
+   "story_id": "E192",
+   "title": "笔记本寄修两改期",
+   "themes": [
+    "数码消费",
+    "笔记本官方寄修",
+    "上门检测取消",
+    "二次改期转寄修",
+    "封箱留证备份"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "取消改期类",
+   "files": {
+    "episode.json": "18e08b2ff03a2e21ff2e51d36ae0e388850ff4f43f92e3ef6c3aa0268df92687",
+    "reference.json": "0865223d79e425a47f57452dddac5bff1148d8555b17c8303b976ce9561a17f9",
+    "timeline.json": "9c128e696e1182ade829e9e82f53eb61e7a900ec921d848e1e81f7976603c2cb"
+   }
+  },
+  {
+   "story_id": "E193",
+   "title": "两桶燕麦色的色差",
+   "themes": [
+    "家居装修",
+    "旧房墙面翻新",
+    "乳胶漆批次色差",
+    "小样上墙验证",
+    "同批次补漆"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E193",
+   "turns": 12,
+   "files": {
+    "episode.json": "a8d937b67a71da365c26f05e1e6d0127982ec897ee2f84b1f6c314f984564f5e",
+    "reference.json": "2e8da7a7663efd90efb82060736bb2e1b33b26efc74ef256c3eb2c53218a0912",
+    "timeline.json": "993082a3b0560b0a8393ead7c9a4ecc10e433a9e0375cab6cb827435ce5e94b8"
+   }
+  },
+  {
+   "story_id": "E194",
+   "title": "疗程卡上的四百四",
+   "themes": [
+    "医疗健康",
+    "颈椎理疗疗程",
+    "医保自付口径拆分",
+    "多收退费更正",
+    "缴费流水留档"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E194",
+   "turns": 12,
+   "files": {
+    "episode.json": "de312c5fc72c43783e95588addfce6707b3fb20dc536f1bfe2e5340d41a9ab0b",
+    "reference.json": "a046b6359cf3440368e5111f5b26d817fec9ee562087f9936f41b184d2a731cb",
+    "timeline.json": "4c53a4b7ad230b32d9ac484ccfa93b7663ed872f20e4f1f8297f758e4d8317ed"
+   }
+  },
+  {
+   "story_id": "E195",
+   "title": "车库里的冬季猫点",
+   "themes": [
+    "宠物",
+    "流浪猫冬季投喂",
+    "投喂点备案迁移",
+    "寒潮轮值排班",
+    "开春重启条款"
+   ],
+   "domain": "宠物",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave3/E195",
+   "turns": 12,
+   "files": {
+    "episode.json": "23ba0d70bb2133673e4a8da232e7c55e1478f57d724c851c594574a85b9d778c",
+    "reference.json": "53f770f02adf3799d9fe94fe0f6cf593b24a39608318c1b81b64782d9af417d1",
+    "timeline.json": "09712dd065d580599c66b575aa8aae062a80dd74d1403b967db14a1a17e5541a"
+   }
+  },
+  {
+   "story_id": "E196",
+   "title": "少算的五公里",
+   "themes": [
+    "运动健身",
+    "室内骑行挑战赛",
+    "里程同步故障",
+    "成绩更正申诉",
+    "加练冲榜"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E196",
+   "turns": 12,
+   "files": {
+    "episode.json": "d2283a5c68a5d0cd67a35f57f4f1804774bb26245038ed45bd043f1dd41ad961",
+    "reference.json": "2ca084f7940a7ecf788a0b8b90b53c96260820769736946ef1ddc7fb832a13a3",
+    "timeline.json": "99f9f16d71013224adede396f75bea322427c35d091c49c25503f56c32fbc7b6"
+   }
+  },
+  {
+   "story_id": "E197",
+   "title": "包间服务费的两种说法",
+   "domain": "餐饮聚会",
+   "conflict_type": "信息不确定类",
+   "themes": [
+    "餐饮聚会",
+    "导师荣休答谢宴",
+    "包间服务费口径不确定",
+    "低消压线核算",
+    "大厅改址止损"
+   ],
+   "dir": "benchmark/stories_v2/wave3/E197",
+   "turns": 12,
+   "files": {
+    "episode.json": "b19ed24404e31d1dc6453c4760f70f7f66bcb8c222914190f510c5208d183655",
+    "reference.json": "43f005311be15bd9209fa0ea93ec000da712f9747310d94afe01eecf2d9e5a61",
+    "timeline.json": "e11aeefe511d0d52c607c336558562e824198f56b4b09815931af746ec2b9331"
+   }
+  },
+  {
+   "story_id": "E198",
+   "title": "折叠车不上车",
+   "domain": "出行拼车",
+   "conflict_type": "边界类",
+   "themes": [
+    "出行拼车",
+    "古镇自驾拼车",
+    "后备箱载物边界",
+    "折叠电动车拒载",
+    "车规讲在前头"
+   ],
+   "dir": "benchmark/stories_v2/wave3/E198",
+   "turns": 12,
+   "files": {
+    "episode.json": "08c683506e3c2f861324467e352ef5a7f419b51064135ef1b1b635073457a361",
+    "reference.json": "5b91fa837ade612887450c57443d926c321da9979322904c717729343fe3da20",
+    "timeline.json": "56dfaec4363a7f508402ed21336a5f050e9e64dceb6f9e42e11b75b7c5cc3df4"
+   }
+  },
+  {
+   "story_id": "E199",
+   "title": "换房计划按下暂停键",
+   "domain": "家庭事务",
+   "conflict_type": "目标启停类",
+   "themes": [
+    "家庭事务",
+    "父母换房计划",
+    "健康事件触发暂停",
+    "先卖后买降档重启",
+    "白纸黑字留痕"
+   ],
+   "dir": "benchmark/stories_v2/wave3/E199",
+   "turns": 12,
+   "files": {
+    "episode.json": "426fa799f1cf2c4633361dd904210c904a751327121b91eecd4a2d2515361cf4",
+    "reference.json": "37a6468e6fb98b8fa7269b9b2d007664d45425f04a080b236871262967b4603d",
+    "timeline.json": "4a175b9ad3dfc5e0474e2c28892326c3e58e7278a113da3694483419f443c38b"
+   }
+  },
+  {
+   "story_id": "E200",
+   "title": "改签费的一百二十四块",
+   "domain": "工作职场",
+   "conflict_type": "费用类",
+   "themes": [
+    "工作职场",
+    "外地驻场差旅",
+    "发票抬头重开",
+    "改签费归属之争",
+    "特殊审批闭环"
+   ],
+   "dir": "benchmark/stories_v2/wave3/E200",
+   "turns": 12,
+   "files": {
+    "episode.json": "b183c5daec0f4c78553853b93efa0ee2f753c2d9b845ae3e6f595da8816d44c0",
+    "reference.json": "6e9f3dbccf3bd45ff61827a12eee6ef2dbf4ecd4f1cf01aaa255a3ad6835fd2e",
+    "timeline.json": "6ca048de8cf798ccfe86f31591560d0bdf3f7e9975478d128b8f79cdfb8e1182"
+   }
+  },
+  {
+   "story_id": "E201",
+   "title": "赠课从八次变四次",
+   "themes": [
+    "学习成长",
+    "成人吉他班",
+    "赠课口径缩水",
+    "差价补偿核算",
+    "练琴搭子"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E201",
+   "turns": 12,
+   "files": {
+    "episode.json": "148c448bdf5929c4df023919402d95ff1275e73efded483c9551e470a2cf6e68",
+    "reference.json": "18fe7450445d450d7fd48a23980568a061ed74d6bb885602c1a7f22f4c9b292b",
+    "timeline.json": "b6a7de19d78dd6cf484132244e294a0b0923d03409f63b32bd6507470a1837a7"
+   }
+  },
+  {
+   "story_id": "E202",
+   "title": "砍单之后的装机局",
+   "themes": [
+    "数码消费",
+    "台式机装机",
+    "缺货砍单取消",
+    "跨日改期重约",
+    "预算超支核算"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E202",
+   "turns": 12,
+   "files": {
+    "episode.json": "4946b9abc9900e08a96da2f198a94cc4ffe09642d5d79e5abfb0327182a197f2",
+    "reference.json": "46d553e5944b264a0d193b5a6d87fdc97577596477532ca3668c661a6883d236",
+    "timeline.json": "8d59a979ce1cf29667989a4471431a9a8614f95d86de9a5753eedabc7d99d078"
+   }
+  },
+  {
+   "story_id": "E203",
+   "title": "安装当天换了师傅",
+   "themes": [
+    "家居装修",
+    "定制衣柜安装",
+    "安装师傅临时换人",
+    "分包增项把关",
+    "验收留证付尾款"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E203",
+   "turns": 12,
+   "files": {
+    "episode.json": "03760863f67692c63523ba859232dabaf973429bcb8c8ea25f6172f4a4428e3c",
+    "reference.json": "9d5b610a17f86e9e39aa73808d2a5cb0812b474ae72867ee4788e6d99810360f",
+    "timeline.json": "f0dfc987d045e2340ee455d78c87f2d7bd40093dff7b83cc30d5344d709e83e1"
+   }
+  },
+  {
+   "story_id": "E204",
+   "title": "体检单上的一个箭头",
+   "themes": [
+    "医疗健康",
+    "年度体检",
+    "尿酸偏高复查",
+    "复查窗口不确定",
+    "忌口打卡计划"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "信息不确定",
+   "dir": "benchmark/stories_v2/wave3/E204",
+   "turns": 12,
+   "files": {
+    "episode.json": "dfd12e193ba73cac1e6d02aa0ce551bc0b736c1aa946e1149df31863a25a3174",
+    "reference.json": "270c7e960ea736b7d4db00c348524a77a24c5b3dc91f10b3593307c44189a70d",
+    "timeline.json": "56b86194168bb593eaaa9c507b17f2b498fdead77c3470172f8fff5df72e4848"
+   }
+  },
+  {
+   "story_id": "E205",
+   "title": "牵绳这条线",
+   "themes": [
+    "宠物",
+    "遛狗牵绳之争",
+    "小区新规",
+    "边界表达",
+    "错峰和解"
+   ],
+   "domain": "宠物",
+   "conflict_type": "边界类",
+   "turn_per_story": 12,
+   "files": {
+    "episode.json": "939591a29ec2e4d78a8807c1d31eb91e9592dfec1956ea8e79af46a3a8edbb77",
+    "reference.json": "afe483b5de5223eeabf672e55f63f5bef7bfe26be1717c6f7b65cac5d4099246",
+    "timeline.json": "008537801882830fa84ac5305c35272d81a11454ef498ba191640de3d6df4e9b"
+   }
+  },
+  {
+   "story_id": "E206",
+   "title": "双人卡的一千九百九",
+   "themes": [
+    "运动健身",
+    "双人年卡拼办",
+    "私教升级差价",
+    "分摊边界",
+    "退课费用闭环"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "费用类",
+   "turn_per_story": 12,
+   "files": {
+    "episode.json": "68b55c67f3e19e7b9ed864806ee633ab6089d227b542b46e4ef90bfabb8a7f3f",
+    "reference.json": "ffa8f561afcf27e0ce113617466a9f2d36d14ea97bc848ac1b520b13a086d84a",
+    "timeline.json": "74ba1e005ce110172985103302c173b9f62a7edaa845af8f0b22bd8d46d07dc2"
+   }
+  },
+  {
+   "story_id": "E207",
+   "title": "野餐垫上的暴雨预警",
+   "themes": [
+    "餐饮聚会",
+    "闺蜜生日野餐",
+    "暴雨取消改期",
+    "物资处置",
+    "零损失总账闭环"
+   ],
+   "domain": "餐饮聚会",
+   "conflict_type": "取消改期类",
+   "turn_per_story": 12,
+   "files": {
+    "episode.json": "562a3db49f34b2fd2f7e39b944438b9d2d496647aa6ff2c574759f2a76459387",
+    "reference.json": "7b12ff5580bdeee776dad8c0c7905c949fa44d242e234368e28abe018558d850",
+    "timeline.json": "e1389b9ad52686c8b8185e15dc6977bdea745cb53f4c9b6ee9100d889f988cc6"
+   }
+  },
+  {
+   "story_id": "E208",
+   "title": "五点四十还是六点整",
+   "themes": [
+    "出行拼车",
+    "早班机送机",
+    "发车口径不确定",
+    "电话核实优先",
+    "兜底预案迁移"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "信息不确定类",
+   "turn_per_story": 12,
+   "files": {
+    "episode.json": "0668caa2a9c0081f40ebeaaaa477ea397533fb22613f4e0b13e8b52432654c71",
+    "reference.json": "edbcf16c9a9d8f1a697d498d3bfc7cdd55088600122eab11849124a09c2bd8c7",
+    "timeline.json": "3dcf908f7a9a5f785a8e4879a6ae75d25e50050fd14d955b8b964d7b52bae4aa"
+   }
+  },
+  {
+   "story_id": "E209",
+   "title": "控糖晚餐第三周",
+   "themes": [
+    "家庭事务",
+    "控糖晚餐打卡",
+    "目标启停",
+    "降档变通",
+    "姐弟协作"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "目标启停类",
+   "turn_per_story": 12,
+   "files": {
+    "episode.json": "18039b419942239fd179886759215e550c1b09f21b50e8bd3f05dcfbdf3ac4d0",
+    "reference.json": "67bf777b3811b1fcaf3740bef6115d39ac87526c97e86d5772b748d4ae898e92",
+    "timeline.json": "28ad49160ccfb985ba703533a1e544f3a584f5367239259b2c235606fa15b40b"
+   }
+  },
+  {
+   "story_id": "E210",
+   "title": "周六桌游局的两条规矩",
+   "themes": [
+    "兴趣社交",
+    "桌游固定局",
+    "核心局开放局",
+    "带人边界",
+    "群公告规矩"
+   ],
+   "domain": "兴趣社交",
+   "conflict_type": "边界类",
+   "turn_per_story": 12,
+   "files": {
+    "episode.json": "55887ffc18e29d0bde5ef22e99f03608999167e30fc743346f3e6c10f4100c8e",
+    "reference.json": "ad3cef069323a23ff7c3718e25277a0d74cc22fcb8d239d297e96497c07a2e8c",
+    "timeline.json": "e70b02b435bb1f4bf8a329b6625c6351fdc2be59cfe93328a60a7fbc48d06042"
+   }
+  },
+  {
+   "story_id": "E211",
+   "title": "续费账单的人头账",
+   "themes": [
+    "工作职场",
+    "设计软件订阅续费",
+    "座位费用分摊",
+    "垫付回收",
+    "有效期口径"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "费用类",
+   "turn_per_story": 12,
+   "files": {
+    "episode.json": "36ac78716f559e196c44018e0d93a41fe138ff88964705c2b88a9e3a8f03a445",
+    "reference.json": "e909cd884afe70e9cee777fee3977a4bd79a931d1fb2dc6c0d5156a35e7bf186",
+    "timeline.json": "f4b1da8988e5be839a3012bf9291f73ac1424231a70e0339961eaaca89e1fc28"
+   }
+  },
+  {
+   "story_id": "E212",
+   "title": "换督学的那两周",
+   "themes": [
+    "学习成长",
+    "考研自习督学",
+    "第三方外包接管",
+    "书面维权",
+    "座位与服务对齐"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "第三方类",
+   "turn_per_story": 12,
+   "files": {
+    "episode.json": "7ce5db60d911b885e57308f5f0787eb4377f1f72bb80271716739e4305daafc7",
+    "reference.json": "ec2432355b36953440c4154eea63c281c96cca701b93ec5ee3cb3da0c2a59d26",
+    "timeline.json": "2b86ccc1516b2ca4d7fcc0af1a78d5d76486767032d48e88a67e5eca81c752c7"
+   }
+  }
+ ]
+}

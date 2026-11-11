@@ -1,0 +1,39 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "E024",
+ "title": "婚礼同桌",
+ "themes": [
+  "一面之缘",
+  "普通朋友",
+  "接梗",
+  "盲盒钩子",
+  "约见落成"
+ ],
+ "author": "ZCode main worker-AI (synthetic)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+ "readers": [
+  "author"
+ ],
+ "independent_review": false,
+ "review_note": "同 worker 自检；不是独立封存集。",
+ "created_at": "2026-10-28",
+ "frozen_at": null,
+ "status": "dev_candidate_stage2",
+ "experiments_used": [],
+ "dev_exposed": true,
+ "validation_claim": false,
+ "turns": 12,
+ "may_decline_turns": [
+  "E024_T12"
+ ],
+ "hashes": {
+  "episode.json": "85106ce060d5887ea3b4137d2abd15a4b0c6b7c7bc0d1b9d216707d319e844e3",
+  "reference.json": "d36fbfc009d3cbf8070bc156610b7f3e1bec46f1ef5f1f46033d09c25843daa3",
+  "timeline.json": "3be2bb4ba2127aee877f8c975110ecb5b47ea7424d286e01e227043aefe10418",
+  "audit.md": "5293d5176d0249f2cc0936cab759fe4edc580259718531c03d241311e1ef7c9f"
+ },
+ "runner_copy": "benchmark/episodes/E024.json",
+ "notes": "Stage2 首批（W06）；12位自然故事；冻结与未调参验证在后续批次。"
+}

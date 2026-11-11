@@ -1,0 +1,149 @@
+{
+ "episode_id": "E040",
+ "persona": {
+  "me": "33岁，采购经理，帮表姐盯买房的事；对中介话术有免疫力。",
+  "her": "35岁，表姐，二胎妈妈，看房只能蹭周末；决策快但怕踩坑。"
+ },
+ "initial_kb": {
+  "me": "老陈是表姐找的中介，我只负责陪看和把关。",
+  "her": "预算有限，首套自住，最怕物业烂。",
+  "warmth": "表姐弟，从小一起长大，她大事都爱拉我参谋。",
+  "stage": "亲戚参谋关系，信任度高。",
+  "lessons": "传闻不当结论；中介的话要交叉核；替她把关不替她拍板。"
+ },
+ "turns": [
+  {
+   "case_id": "E040_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周六老陈约的几点 来两套还是一套",
+      "ts": "2026-11-03 19:02"
+     }
+    ],
+    "clock": "2026-11-03 19:03",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E040_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "周六十点 先看滨河那套 老陈说另一套要另约",
+      "ts": "2026-11-03 19:04"
+     }
+    ],
+    "clock": "2026-11-03 19:06",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E040_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我同事说那小区物业可差了 电梯老坏",
+      "ts": "2026-11-03 19:09"
+     }
+    ],
+    "clock": "2026-11-03 19:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E040_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "先记成待核实 周六我当面问老陈再看两栋楼的公告栏",
+      "ts": "2026-11-03 19:12"
+     }
+    ],
+    "clock": "2026-11-03 19:14",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E040_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "把老陈改到周日吧 下午两点 你姐夫也去 他周六才出差回来",
+      "ts": "2026-11-04 09:18"
+     }
+    ],
+    "clock": "2026-11-04 09:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E040_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 我跟老陈说 改周日下午两点 四个人一起看",
+      "ts": "2026-11-04 09:22"
+     }
+    ],
+    "clock": "2026-11-04 09:24",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E040_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了 押金到底付几 首付他会不会乱报",
+      "ts": "2026-11-04 09:26"
+     }
+    ],
+    "clock": "2026-11-04 09:28",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E040_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "周日我带纸质合同模板对照 押金条让老陈写清退款条件 你先把房源链接发我",
+      "ts": "2026-11-04 09:30"
+     },
+     {
+      "role": "HER",
+      "text": "行 发你了 周日见",
+      "ts": "2026-11-04 09:31"
+     }
+    ],
+    "clock": "2026-11-04 09:32",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

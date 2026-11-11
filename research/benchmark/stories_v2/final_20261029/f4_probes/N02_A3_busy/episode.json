@@ -1,0 +1,377 @@
+{
+ "episode_id": "N02",
+ "persona": {
+  "me": "31岁，后端工程师，喜欢猫但没养过，遇到不确定的事习惯先问清楚。",
+  "her": "29岁，小学老师，周末在流浪猫救助站做志愿者，对关系谨慎，不喜欢被推着走。"
+ },
+ "initial_kb": {
+  "me": "我在软件公司写后端，时间相对自由，周末偶尔要值班。",
+  "her": "她是小学老师，周末去救助站帮忙；喜欢猫，但对养猫和亲密关系都很谨慎。",
+  "warmth": "认识半年，一起吃过几次饭，聊得投机但还没明确关系。",
+  "style": "她说话直接，常用玩笑挡认真；我回得稳，偶尔接梗。",
+  "stage": "暧昧未定，彼此有好感但都没挑明。",
+  "lessons": "她怕被催，越推越退；她主动开口时才是推进的窗口。"
+ },
+ "turns": [
+  {
+   "case_id": "N02_T01",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-10 20:12",
+    "may_decline": false,
+    "intent": {
+     "text": "周六帮她把猫送到领养日",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周六能帮我送只猫去领养日吗",
+      "ts": "2026-04-10 20:06"
+     },
+     {
+      "role": "HER",
+      "text": "我一个人搞不定 猫笼太重",
+      "ts": "2026-04-10 20:10"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_T02",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-10 20:26",
+    "may_decline": false,
+    "intent": {
+     "text": "周六帮她把猫送到领养日",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 几点 在哪",
+      "ts": "2026-04-10 20:16"
+     },
+     {
+      "role": "HER",
+      "text": "十点 救助站门口",
+      "ts": "2026-04-10 20:18"
+     },
+     {
+      "role": "HER",
+      "text": "猫有猫癣 得单独放 你别嫌麻烦",
+      "ts": "2026-04-10 20:24"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_T03",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-10 21:05",
+    "may_decline": false,
+    "intent": {
+     "text": "确认周六上午能否按十点出发",
+     "status": "ADJUSTED",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了 我周六上午可能要去学校开家长会",
+      "ts": "2026-04-10 20:58"
+     },
+     {
+      "role": "HER",
+      "text": "开到十一点 不知道来不来得及",
+      "ts": "2026-04-10 21:02"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_T04",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-10 21:20",
+    "may_decline": false,
+    "intent": {
+     "text": "确认周六上午能否按十点出发",
+     "status": "ADJUSTED",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那我十点先到 你开完会直接来",
+      "ts": "2026-04-10 21:08"
+     },
+     {
+      "role": "HER",
+      "text": "它叫年糕 你看",
+      "ts": "2026-04-10 21:12"
+     },
+     {
+      "role": "HER",
+      "text": "是不是长得不太像能领养出去的",
+      "ts": "2026-04-10 21:16"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_T05",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-11 22:10",
+    "may_decline": false,
+    "intent": {
+     "text": "",
+     "status": "ACTIVE",
+     "enabled": false
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天有只猫被退回来了",
+      "ts": "2026-04-11 22:02"
+     },
+     {
+      "role": "HER",
+      "text": "领养人说它抓沙发 养了三天就送回来",
+      "ts": "2026-04-11 22:06"
+     },
+     {
+      "role": "HER",
+      "text": "我有点不知道该不该继续送养",
+      "ts": "2026-04-11 22:08"
+     }
+    ],
+    "note": "她今天在救助站遇到一只被退回的猫，情绪低。"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_T06",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-12 09:40",
+    "may_decline": true,
+    "intent": {
+     "text": "尊重她这周不想动，改天再帮",
+     "status": "ADJUSTED",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周六可能去不了 你自己安排吧",
+      "ts": "2026-04-12 09:32"
+     },
+     {
+      "role": "HER",
+      "text": "我这周有点丧 想自己待着",
+      "ts": "2026-04-12 09:36"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_T07",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-13 19:20",
+    "may_decline": false,
+    "intent": {
+     "text": "重新安排周六送猫，尽量不让她累",
+     "status": "ADJUSTED",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "其实还是想你去",
+      "ts": "2026-04-13 19:12"
+     },
+     {
+      "role": "HER",
+      "text": "我一个人真搞不定 年糕又重",
+      "ts": "2026-04-13 19:16"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_T08",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-13 21:05",
+    "may_decline": false,
+    "intent": {
+     "text": "",
+     "status": "ACTIVE",
+     "enabled": false
+    },
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 周六我全程帮你拎",
+      "ts": "2026-04-13 19:22"
+     },
+     {
+      "role": "HER",
+      "text": "你为什么愿意帮我",
+      "ts": "2026-04-13 20:58"
+     },
+     {
+      "role": "HER",
+      "text": "我是说 你不觉得救助站很麻烦吗",
+      "ts": "2026-04-13 21:02"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_T09",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-14 12:35",
+    "may_decline": false,
+    "intent": {
+     "text": "周六送猫并配合救助站的家访流程",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "救助站说要家访",
+      "ts": "2026-04-14 12:26"
+     },
+     {
+      "role": "HER",
+      "text": "你要不要一起 我一个人去有点慌",
+      "ts": "2026-04-14 12:31"
+     }
+    ],
+    "note": "救助站要求领养前做一次家访，她是联系人。"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_T10",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-18 19:50",
+    "may_decline": false,
+    "intent": {
+     "text": "周六送猫并配合救助站的家访流程",
+     "status": "COMPLETED",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天多亏你 年糕安顿好了",
+      "ts": "2026-04-18 19:42"
+     },
+     {
+      "role": "HER",
+      "text": "晚上请你吃饭吧 就当谢你",
+      "ts": "2026-04-18 19:46"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_T11",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-18 20:05",
+    "may_decline": false,
+    "intent": {
+     "text": "周六送猫并配合救助站的家访流程",
+     "status": "COMPLETED",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 你挑地方 我七点到",
+      "ts": "2026-04-18 19:52"
+     },
+     {
+      "role": "HER",
+      "text": "别多想 就是感谢",
+      "ts": "2026-04-18 20:00"
+     },
+     {
+      "role": "HER",
+      "text": "不过你要真想多想 我也拦不住",
+      "ts": "2026-04-18 20:03"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_T12",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-19 10:20",
+    "may_decline": true,
+    "intent": {
+     "text": "周六送猫并配合救助站的家访流程",
+     "status": "COMPLETED",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "昨天那顿饭吃得挺舒服",
+      "ts": "2026-04-19 10:12"
+     },
+     {
+      "role": "HER",
+      "text": "年糕的新主人发照片来了 我先不聊了 去改作业",
+      "ts": "2026-04-19 10:17"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "N02_A3_busy",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-04-20 20:04",
+    "may_decline": true,
+    "intent": {
+     "text": "她明确忙碌、回得慢。应轻接、不催；短回或安静收住都可以。",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "这周改作业多 回得慢",
+      "ts": "2026-04-20 20:04"
+     }
+    ]
+   },
+   "gold": {}
+  }
+ ]
+}

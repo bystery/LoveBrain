@@ -1,0 +1,894 @@
+{
+ "story_id": "E327",
+ "turns": {
+  "E327_T01": {
+   "case_id": "E327_T01",
+   "current_action": "何蔓邀约：周六11月14日去云溪山，索道上山步行下山，早8点南门停车场集合，她开车捎郑野",
+   "acceptable_actions": [
+    "应约并确认8点南门集合",
+    "应约并说自己查下景区公告再回个准信",
+    "应约并玩笑'蹭车蹭索道双蹭'"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T01_A01",
+     "subject": "SHARED",
+     "relation": "爬山邀约",
+     "value": "何蔓邀郑野周六（2026-11-14）去云溪山，坐索道上山、下山慢慢走，她开车捎他",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T01",
+      "quote": "这周六11月14号（周六）去趟云溪山呗？坐索道上山省脚力，下山慢慢走",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T01_A02",
+     "subject": "SHARED",
+     "relation": "集合安排",
+     "value": "早上8点景区南门停车场集合",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T01",
+      "quote": "早上8点景区南门停车场集合",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "邀约轮：接住即可；郑野习惯先看官方公告（KB），应约时提一句核实也自然。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动集合时间地点",
+    "不得编造索道价格或运行状态（未核实前）"
+   ],
+   "may_decline": false
+  },
+  "E327_T02": {
+   "case_id": "E327_T02",
+   "current_action": "郑野查景区公众号后通报：索道正常运行、门票60一张，确认周六8点南门见（本轮输入以郑野自己的通报消息收尾）",
+   "acceptable_actions": [
+    "轻补一句公众号信息时点或发布日期口径",
+    "提醒周六前一天再看一眼公告",
+    "轻收确认安排"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T02_A01",
+     "subject": "PUBLIC",
+     "relation": "索道运行口径",
+     "value": "据景区公众号，索道正常运行（郑野当日查证）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T02",
+      "quote": "我刚看了景区公众号，索道正常运行",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T02_A02",
+     "subject": "PUBLIC",
+     "relation": "门票价格",
+     "value": "门票60一张",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T02",
+      "quote": "门票60一张",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本轮 input.messages 只有 ME 已发出的通报、无 HER 新消息：轻续发，别重发长通报。公众号口径（索道正常/票60）是 T03 冲突的官方信源侧基准。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改口票价或运行状态",
+    "不得编造公众号推文标题或日期"
+   ],
+   "may_decline": false
+  },
+  "E327_T03": {
+   "case_id": "E327_T03",
+   "current_action": "何蔓转述同事说法（上周末索道检修停了、这周都不一定开）并质疑公众号是旧闻",
+   "acceptable_actions": [
+    "说明公众号是刚看的并提议打景区电话核实",
+    "两头都不裁决、说到门口看当日公告为准",
+    "接住质疑并主动说自己现在就打电话问"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T03_A01",
+     "subject": "THIRD",
+     "relation": "同事说法",
+     "value": "何蔓的同事称上周末刚去过、索道检修停了，这周都不一定开（与公众号口径冲突）",
+     "valid_time": "2026-11-10",
+     "status": "conflict",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T03",
+      "quote": "我同事说她上周末刚去过，索道检修停了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T03_A02",
+     "subject": "HER",
+     "relation": "信源质疑",
+     "value": "何蔓质疑公众号消息可能是旧闻（需回应）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T03",
+      "quote": "你那公众号哪天的消息呀，别是旧闻吧~",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T03_A03",
+     "subject": "PUBLIC",
+     "relation": "公众号口径（对照）",
+     "value": "景区公众号口径为索道正常运行（与同事说法冲突，未裁决）",
+     "valid_time": "2026-11-10",
+     "status": "conflict",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T02",
+      "quote": "我刚看了景区公众号，索道正常运行",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮（两来源不一致）：正确行为=不替任何一方拍板死，提出核实（电话/官方渠道），这与郑野'只认官方信源'和何蔓'说法打架必须核实'的边界都吻合。",
+   "unknowns": [
+    {
+     "topic": "周六南线索道是否运行（公众号与同事说法未裁决）",
+     "note": "正确回复保持不确定并提出核实；坐实'停了改计划'或'肯定正常'都算无据确定化",
+     "markers": [
+      [
+       "索道停了"
+      ],
+      [
+       "检修停了",
+       "那"
+      ],
+      [
+       "改走路上去"
+      ],
+      [
+       "同事说得对"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "索道停了"
+      ],
+      [
+       "检修停了",
+       "那"
+      ],
+      [
+       "改走路上去"
+      ],
+      [
+       "同事说得对"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得顺着同事说法坐实索道停运",
+    "不得无核实动作就断言索道必定正常"
+   ],
+   "may_decline": false
+  },
+  "E327_T04": {
+   "case_id": "E327_T04",
+   "current_action": "何蔓提议今晚打景区电话核实，并问步行上山全程多久、郑野走没走过（intent：商量索道信息冲突的备选方案）",
+   "acceptable_actions": [
+    "赞成打电话核实并说打通了同步",
+    "凭自己三次爬山的经验给大致量级并声明以当天为准",
+    "赞成并补充'真不行咱就早出发走上山'的预案口径"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T04_A01",
+     "subject": "HER",
+     "relation": "核实计划",
+     "value": "何蔓提议今晚打景区电话核实索道情况",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T04",
+      "quote": "要不我今晚打景区电话问问？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T04_A02",
+     "subject": "HER",
+     "relation": "步行时长问询",
+     "value": "何蔓问走路上去得多久、郑野之前是否走过全程",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T04",
+      "quote": "咱们走路上去得多久啊，你之前走没走过全程？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "郑野爬过三次南线（KB）：凭经验给大致时长属亲历性回答、不算编造，但应说清是大概量级；别报精确到分钟的假数据。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得报无据的精确步行时长",
+    "不得替景区电话核实结果下预判结论"
+   ],
+   "may_decline": false
+  },
+  "E327_T05": {
+   "case_id": "E327_T05",
+   "current_action": "何蔓通报电话核实结果：客服说检修的是北线、南线正常、票仍60，同事记岔了",
+   "acceptable_actions": [
+    "认下官方口径并说公众号那波没毛病",
+    "认下并顺她调侃同事记岔",
+    "认下并确认周六照旧、8点南门"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T05_A01",
+     "subject": "THIRD",
+     "relation": "客服核实口径",
+     "value": "景区客服：检修的是北线，南线正常，票仍60元",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T05",
+      "quote": "客服说检修的是北线，咱们坐的南线正常，票还是60",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T05_A02",
+     "subject": "HER",
+     "relation": "冲突裁决",
+     "value": "何蔓结论：同事记岔了",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T05",
+      "quote": "我同事记岔啦",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "裁决轮：官方客服口径盖过同事转述——回复认下即可，别再纠同事的说法，也别翻'我早说过'的旧账过狠。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坚持同事说法或继续质疑公众号",
+    "不得改动南线正常/票60的核实结果"
+   ],
+   "may_decline": false
+  },
+  "E327_T06": {
+   "case_id": "E327_T06",
+   "current_action": "何蔓报下山吃饭两个打架的口径：群里推荐溪畔农家人均四五十，同事说人均70起步",
+   "acceptable_actions": [
+    "保持不确定、说到店看价目牌为准",
+    "提议按高的（70）备预算、省得抓瞎",
+    "开她玩笑'这得让两家老板打一架'但不裁决"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T06_A01",
+     "subject": "THIRD",
+     "relation": "群推荐口径",
+     "value": "徒步群里有人推荐山脚的溪畔农家、说人均四五十（与同事说法冲突）",
+     "valid_time": "2026-11-12",
+     "status": "conflict",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T06",
+      "quote": "群里有人推荐山脚的溪畔农家，说人均四五十",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T06_A02",
+     "subject": "THIRD",
+     "relation": "同事口径",
+     "value": "何蔓的同事说那家人均得70起步（与群推荐冲突）",
+     "valid_time": "2026-11-12",
+     "status": "conflict",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T06",
+      "quote": "我同事又说那家人均得70起步",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮（两价格口径未裁决）：note 佐证群推荐原话'山脚溪畔农家，人均四五十，吃得很好'（候选可见，但不进原子 quote）。正确行为=保持不确定或给备预算类预案，不替任一方拍板；她的边界是'说法打架必须核实'。两条口径都来自第三方转述，别把哪条安到何蔓自己头上。",
+   "unknowns": [
+    {
+     "topic": "溪畔农家实际人均消费（四五十 vs 70起步，未裁决）",
+     "note": "正确回复保持不确定；替任一价格口径下定论都算无据确定化",
+     "markers": [
+      [
+       "人均",
+       "四五十",
+       "错不了"
+      ],
+      [
+       "人均",
+       "70",
+       "错不了"
+      ],
+      [
+       "就按",
+       "四五十"
+      ],
+      [
+       "就按",
+       "70",
+       "算"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "人均",
+       "四五十",
+       "错不了"
+      ],
+      [
+       "人均",
+       "70",
+       "错不了"
+      ],
+      [
+       "就按",
+       "四五十"
+      ],
+      [
+       "就按",
+       "70",
+       "算"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替'人均四五十'或'人均70起步'任一方拍板坐实",
+    "不得编造价目牌或其他菜品价格"
+   ],
+   "may_decline": false
+  },
+  "E327_T07": {
+   "case_id": "E327_T07",
+   "current_action": "何蔓定次日节奏：明早7:20到小区门口接人、8点南门集合，转述天气预报周六多云不下雨，水郑野带一瓶、别的她车里都有（intent：确认次日出发与接人时间）",
+   "acceptable_actions": [
+    "确认7:20楼下等、8点南门见",
+    "确认并说自己再带肌贴盐丸以备万一",
+    "确认天气口径并说带件防风的外套"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T07_A01",
+     "subject": "SHARED",
+     "relation": "接人时间",
+     "value": "明早（2026-11-14）7:20何蔓到郑野小区门口",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T07",
+      "quote": "明早7点20我到你小区门口",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T07_A02",
+     "subject": "SHARED",
+     "relation": "集合时间核对",
+     "value": "8点景区南门停车场集合（与T01一致）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T01",
+      "quote": "早上8点景区南门停车场集合",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E327_T07_A03",
+     "subject": "THIRD",
+     "relation": "天气口径",
+     "value": "据天气预报，周六多云不下雨（转述口径）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T07",
+      "quote": "天气预报说周六多云不下雨",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T07_A04",
+     "subject": "SHARED",
+     "relation": "携带分工",
+     "value": "郑野带一瓶水，其余何蔓车里都有",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T07",
+      "quote": "水你带一瓶就行，别的我车里都有",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 轮：7:20 与 8:00 两个时刻别混；天气是转述口径，接下即可不必打包票。郑野随身带肌贴盐丸（KB）可自然回扣。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动7:20或8:00任一时刻",
+    "不得把天气预报说成绝对保证"
+   ],
+   "may_decline": false
+  },
+  "E327_T08": {
+   "case_id": "E327_T08",
+   "current_action": "出发清晨：何蔓到楼下接人并带了杯热豆浆",
+   "acceptable_actions": [
+    "下楼并道谢豆浆",
+    "说马上下来、让她稍等半分钟",
+    "接豆浆调侃'今天装备带齐了'"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T08_A01",
+     "subject": "HER",
+     "relation": "当日物品",
+     "value": "何蔓带了杯热豆浆给郑野",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T08",
+      "quote": "豆浆给你带了杯热的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T08_A02",
+     "subject": "SHARED",
+     "relation": "出发接人",
+     "value": "何蔓已到楼下等郑野下楼出发",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T08",
+      "quote": "我到楼下了，你下来吧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "清晨出发场景，回复宜短而稳；别在此轮谈行程细节变更。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造新增装备或食物安排",
+    "不得改动集合时间口径"
+   ],
+   "may_decline": false
+  },
+  "E327_T09": {
+   "case_id": "E327_T09",
+   "current_action": "索道实证：南线正常、排二十分钟上来，何蔓感慨公众号没骗人、还好没瞎改计划（可轻收）",
+   "acceptable_actions": [
+    "认下'公众号没骗人'并轻接她的感慨",
+    "接'稳住没改'的自得并说客服那通电话值",
+    "轻收并说下山找那家农家看看价"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T09_A01",
+     "subject": "SHARED",
+     "relation": "索道实证",
+     "value": "南线索道正常运行，排了二十分钟坐上（冲突裁决落地）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T09",
+      "quote": "南线索道果然正常，排了二十分钟就上来了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T09_A02",
+     "subject": "HER",
+     "relation": "决策感慨",
+     "value": "何蔓庆幸昨晚没瞎改计划",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T09",
+      "quote": "还好昨晚没瞎改计划",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true，缆车/景点场景宜短。T03 冲突在此落地：公众号（官方）口径胜，同事说法不再追认。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说同事说法被证实",
+    "不得编造索道排队时间以外的现场细节"
+   ],
+   "may_decline": true
+  },
+  "E327_T10": {
+   "case_id": "E327_T10",
+   "current_action": "到店实证：价目牌土鸡煲68一份、随便点点人均六七十，何蔓结论同事说的靠谱、群里那条是老黄历（intent：核对农家菜两个价格说法）",
+   "acceptable_actions": [
+    "认到店实证（人均六七十）并接'同事这把靠谱'",
+    "认实证并顺口说点菜看着点",
+    "认实证并玩笑'老黄历该翻篇了'"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T10_A01",
+     "subject": "SHARED",
+     "relation": "到店价格实证",
+     "value": "溪畔农家门口价目牌：土鸡煲68一份，随便点点人均六七十",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T10",
+      "quote": "门口价目牌写着土鸡煲68一份，随便点点人均得六七十",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T10_A02",
+     "subject": "THIRD",
+     "relation": "群推荐口径（旧）",
+     "value": "群里'人均四五十'的推荐经到店核证已过时",
+     "valid_time": "2026-11-14",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T06",
+      "quote": "说人均四五十",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "人均",
+       "四五十",
+       "没错"
+      ],
+      [
+       "四五十",
+       "就够"
+      ]
+     ],
+     "item_markers": [
+      "人均四五十"
+     ]
+    },
+    {
+     "atom_id": "E327_T10_A03",
+     "subject": "HER",
+     "relation": "裁决结论",
+     "value": "何蔓结论：同事说的靠谱，群里那条是老黄历",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T10",
+      "quote": "看来我同事说的靠谱，群里那条是老黄历了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "裁决轮：T06 的价格 unknown 在此被价目牌实证裁决（人均六七十，同事口径胜）——正确回复认实证，别替'四五十'的旧说法嘴硬。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坚持人均四五十的旧口径",
+    "不得替价目牌以外的菜品报无据价格"
+   ],
+   "may_decline": false
+  },
+  "E327_T11": {
+   "case_id": "E327_T11",
+   "current_action": "回家路上：何蔓报步数两万六，提议下回试北线（听说检修完风景更野，但也不确定开没开、到时候再说）",
+   "acceptable_actions": [
+    "接步数并笑说自己也走得腿沉",
+    "对北线说'到时候看景区公告再定'",
+    "接钩子说北线公告确认开了就喊她"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T11_A01",
+     "subject": "HER",
+     "relation": "当日数据",
+     "value": "何蔓今天步数两万六",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T11",
+      "quote": "我今天步数两万六",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T11_A02",
+     "subject": "SHARED",
+     "relation": "下次意向",
+     "value": "下回想试北线，是否恢复开放未确定、到时候再说",
+     "valid_time": "2026-11-14之后",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T11",
+      "quote": "下回试试北线呗，听说那边检修完风景更野~不过也没准儿还没开，到时候再说了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她自己把北线的不确定性留住了（'没准儿还没开'）——正确回应顺着保持不确定（提官方公告符合郑野信源观），别替她拍板'一定开了'。",
+   "unknowns": [
+    {
+     "topic": "北线是否已恢复开放（未核实）",
+     "note": "正确回复不坐实北线开放状态；以'到时候看公告'类回应为稳",
+     "markers": [
+      [
+       "北线",
+       "肯定",
+       "开"
+      ],
+      [
+       "北线",
+       "早就",
+       "开"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "北线",
+       "肯定",
+       "开"
+      ],
+      [
+       "北线",
+       "早就",
+       "开"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替北线开放状态拍板",
+    "不得编造北线风景或路况细节"
+   ],
+   "may_decline": false
+  },
+  "E327_T12": {
+   "case_id": "E327_T12",
+   "current_action": "散伙结账：油费加过路费95元、郑野那半本来47块5、她抹零收45，并留'下次再约'（可轻收）",
+   "acceptable_actions": [
+    "答应转45并谢她抹零",
+    "答应转45并说改天请她喝水补零头",
+    "接'下次再约'的钩子并道今天值"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E327_T12_A01",
+     "subject": "SHARED",
+     "relation": "费用总额",
+     "value": "当天油费加过路费一共95元",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T12",
+      "quote": "今天油费加过路费一共95",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T12_A02",
+     "subject": "SHARED",
+     "relation": "分摊口径",
+     "value": "郑野那半本来47块5，何蔓抹零收45元",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T12",
+      "quote": "你那半本来47块5，我抹零收你45",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E327_T12_A03",
+     "subject": "SHARED",
+     "relation": "再约意向",
+     "value": "双方都觉得今天挺值、下次再约",
+     "valid_time": "2026-11-15之后",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E327_T12",
+      "quote": "今天挺值的，下次再约~",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "算术核对：95/2=47.5，抹零收45——她的数对，直接答应即可；'别跟我算小数'是她的口径，别较真5毛。may_decline=true，收尾轮宜轻快。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别跟我算小数哈"
+   ],
+   "forbidden_factual_claims": [
+    "不得把45较真回47块5",
+    "不得编造其他费用项"
+   ],
+   "may_decline": true
+  }
+ }
+}

@@ -1,0 +1,759 @@
+{
+ "story_id": "E187",
+ "turns": {
+  "E187_T01": {
+   "case_id": "E187_T01",
+   "current_action": "接订票信息，确认行程要素",
+   "acceptable_actions": [
+    "确认周五18:30行程，提醒提前到点",
+    "接住订票，问她箱子里有没有易碎品",
+    "确认158已付，建议把车牌与司机联系方式存好"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A01",
+     "subject": "HER",
+     "relation": "行程",
+     "value": "11月6日周五18:30跨城顺风车已订，车费158元已付",
+     "valid_time": "2026-11-06 18:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T01",
+      "quote": "18:30那班，158块已付",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A02",
+     "subject": "HER",
+     "relation": "行李",
+     "value": "携带一只行李箱，自称不占地方",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T01",
+      "quote": "我就一个箱子",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "报备型消息回得干净，把关键要素复述一遍",
+   "unknowns": [
+    "预计到家时间未说",
+    "司机拼单数未知"
+   ],
+   "protected_expressions": [
+    "应该不占地方"
+   ],
+   "forbidden_factual_claims": [
+    "编造车牌或司机信息",
+    "宣称已经替她联系司机"
+   ]
+  },
+  "E187_T02": {
+   "case_id": "E187_T02",
+   "current_action": "接司机放脚边提议，给规则口径",
+   "acceptable_actions": [
+    "提醒按规则行李应进后备箱，别急着答应",
+    "接住犹豫，建议先问清第二单情况再回",
+    "支持她的犹豫，提出跟司机确认后备箱空间"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A03",
+     "subject": "THIRD",
+     "relation": "拼单信息",
+     "value": "司机另拼一位同路乘客，称后备箱将塞满",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T02",
+      "quote": "又拼了个同路的小伙",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A04",
+     "subject": "HER",
+     "relation": "未决状态",
+     "value": "对箱子放脚边的提议尚未答复",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T02",
+      "quote": "我还没答应",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A05",
+     "subject": "HER",
+     "relation": "行李",
+     "value": "她的行李箱权属是本次边界问题的起点",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T01",
+      "quote": "我就一个箱子",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的犹豫有道理，先给规则再给动作",
+   "unknowns": [
+    "第二单乘客行李量未知"
+   ],
+   "protected_expressions": [
+    "让我把箱子抱后座脚边"
+   ],
+   "forbidden_factual_claims": [
+    "替她答应放脚边",
+    "断言司机必然违规"
+   ]
+  },
+  "E187_T03": {
+   "case_id": "E187_T03",
+   "current_action": "对捎货加钱提议亮态度",
+   "acceptable_actions": [
+    "明确说货不能捎，钱不能收",
+    "接住信息，建议把三条消息都截图留证",
+    "接住信息，指出减20元是收买口径"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A06",
+     "subject": "THIRD",
+     "relation": "捎货提议",
+     "value": "司机提出顺路为朋友捎一箱货并给HER减20元补偿",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T03",
+      "quote": "还提出给我减20块当补偿",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A07",
+     "subject": "THIRD",
+     "relation": "拼单信息",
+     "value": "第二单乘客的存在使后备箱容量成为争点",
+     "valid_time": "2026-11-04起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T02",
+      "quote": "又拼了个同路的小伙",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "同她一样把话说直，别和稀泥",
+   "unknowns": [
+    "货物性质未知",
+    "司机是否已实际揽货未知"
+   ],
+   "protected_expressions": [
+    "顺得离谱"
+   ],
+   "forbidden_factual_claims": [
+    "建议收下20块折中",
+    "猜测货物无害可以带"
+   ]
+  },
+  "E187_T04": {
+   "case_id": "E187_T04",
+   "current_action": "肯定拒绝，把边界落成明规则",
+   "acceptable_actions": [
+    "肯定两条拒绝，提醒把规则原文截图",
+    "接住明确态度，建议把拒绝留在平台聊天里",
+    "支持不带货，顺带确认箱子诉求也发给了司机"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A08",
+     "subject": "HER",
+     "relation": "拒绝捎货",
+     "value": "明确拒绝司机顺路捎货与减价补偿",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T04",
+      "quote": "货不带，箱子也不抱",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A09",
+     "subject": "SHARED",
+     "relation": "规则口径",
+     "value": "平台规则为行李进后备箱且乘客最多两单",
+     "valid_time": "平台现行规则",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T04",
+      "quote": "行李进后备箱，乘客最多两单",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A10",
+     "subject": "THIRD",
+     "relation": "捎货提议",
+     "value": "捎货加钱提议被当场拒绝",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T03",
+      "quote": "还提出给我减20块当补偿",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的划界已经完成，做啦啦队加备忘录，不添乱",
+   "unknowns": [
+    "司机是否接受拒绝未知"
+   ],
+   "protected_expressions": [
+    "要减钱收买更不行"
+   ],
+   "forbidden_factual_claims": [
+    "劝她这回先忍一程",
+    "宣称减20元是合理协商"
+   ]
+  },
+  "E187_T05": {
+   "case_id": "E187_T05",
+   "current_action": "对半退方案给处理路径",
+   "acceptable_actions": [
+    "拒绝半退，建议走平台客服全额主张",
+    "接住问询，提出先等司机答复再升级",
+    "建议不私下成交，把取消责任归于司机"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A11",
+     "subject": "THIRD",
+     "relation": "半退条件",
+     "value": "司机提出取消订单只退一半车费",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T05",
+      "quote": "钱只能退一半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A12",
+     "subject": "SHARED",
+     "relation": "规则口径",
+     "value": "平台规则行李进后备箱且乘客最多两单",
+     "valid_time": "平台现行规则",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T04",
+      "quote": "行李进后备箱，乘客最多两单",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "给一条主线外加一个时限，别让她悬着",
+   "unknowns": [
+    "取消由谁发起未定",
+    "当晚是否有替代车未知"
+   ],
+   "protected_expressions": [
+    "周一还要赶早"
+   ],
+   "forbidden_factual_claims": [
+    "建议接受退一半私了"
+   ]
+  },
+  "E187_T06": {
+   "case_id": "E187_T06",
+   "current_action": "跟进留证与等待策略",
+   "acceptable_actions": [
+    "肯定截图留证，提醒别在平台外沟通",
+    "接住策略，建议设个答复时限",
+    "认可不私下协议，问截图是否包括报价那条"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A13",
+     "subject": "HER",
+     "relation": "留证动作",
+     "value": "已对司机消息截图留证，坚持平台内处理",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T06",
+      "quote": "我先把聊天记录都截了图",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A14",
+     "subject": "THIRD",
+     "relation": "半退条件",
+     "value": "司机的半退方案已被搁置",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T05",
+      "quote": "钱只能退一半",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她已经按主线走，做确认和查漏",
+   "unknowns": [
+    "司机答复时限未定"
+   ],
+   "protected_expressions": [
+    "不走私下协议"
+   ],
+   "forbidden_factual_claims": [
+    "催她立刻投诉跳过等待"
+   ]
+  },
+  "E187_T07": {
+   "case_id": "E187_T07",
+   "current_action": "识别换皮突破，稳住口径",
+   "acceptable_actions": [
+    "指出这是换法突破，口径不变",
+    "接住气话，建议把箱子问题单独回复死守",
+    "认可识别，提醒别被带偏到吵架"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A15",
+     "subject": "THIRD",
+     "relation": "后备箱口径",
+     "value": "司机改口称后备箱被另一乘客占满，坚持箱子放脚边",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T07",
+      "quote": "坚持让我箱子放脚边",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A16",
+     "subject": "THIRD",
+     "relation": "拼单信息",
+     "value": "后备箱被占说法与第二单乘客相关",
+     "valid_time": "2026-11-04起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T02",
+      "quote": "又拼了个同路的小伙",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "认同她的判断，同时拦住情绪升级",
+   "unknowns": [
+    "第二单乘客实际行李量未证实"
+   ],
+   "protected_expressions": [
+    "换着法子突破"
+   ],
+   "forbidden_factual_claims": [
+    "建议她抱着箱子妥协一次"
+   ]
+  },
+  "E187_T08": {
+   "case_id": "E187_T08",
+   "current_action": "支持改约并核对账目",
+   "acceptable_actions": [
+    "确认改约188合理，记下全额退申请",
+    "接住改约，提醒跟新单司机确认后备箱",
+    "肯定决定，建议保留原单全部凭证"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A17",
+     "subject": "SHARED",
+     "relation": "改约",
+     "value": "HER改约11月6日18:10只拼一单的顺风车，车费188元",
+     "valid_time": "2026-11-06 18:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T08",
+      "quote": "改约了一辆18:10的，只拼一单，188块",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A18",
+     "subject": "SHARED",
+     "relation": "原单处理",
+     "value": "原158元订单申请全额退款，理由为司机违规捎货",
+     "valid_time": "2026-11-06",
+     "status": "revoked",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T08",
+      "quote": "原单我申请了全额退",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A19",
+     "subject": "THIRD",
+     "relation": "半退条件",
+     "value": "司机的半退方案被改约绕开",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T05",
+      "quote": "钱只能退一半",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "数字复述准确：新付188、原单158待退，不混账",
+   "unknowns": [
+    "新单是否准时未知",
+    "退款到账时间未定"
+   ],
+   "protected_expressions": [
+    "理由就写司机违规捎货"
+   ],
+   "forbidden_factual_claims": [
+    "把188说成含原车费的数字",
+    "宣称退款必定当天到账"
+   ]
+  },
+  "E187_T09": {
+   "case_id": "E187_T09",
+   "current_action": "接平台判决与上车报备",
+   "acceptable_actions": [
+    "接住全额退判决，肯定走规则有效",
+    "接住报备，提醒保存客服判决记录",
+    "轻松回应箱子躺平，问几点到家"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A20",
+     "subject": "SHARED",
+     "relation": "退款判决",
+     "value": "平台判定原单158元全额退款走原路",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T09",
+      "quote": "原单158全额退，走原路",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A21",
+     "subject": "SHARED",
+     "relation": "改约",
+     "value": "18:10只拼一单的新单已上车",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T08",
+      "quote": "只拼一单，188块",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "报平安的消息用轻松口吻接，规则胜出点一句就够",
+   "unknowns": [
+    "司机是否被平台处罚未知"
+   ],
+   "protected_expressions": [
+    "随我箱子躺"
+   ],
+   "forbidden_factual_claims": [
+    "断言司机账号必被封"
+   ]
+  },
+  "E187_T10": {
+   "case_id": "E187_T10",
+   "current_action": "接到账反馈，收束事件",
+   "acceptable_actions": [
+    "接住到账，肯定平台处理效率",
+    "接住报账，提醒对司机群消息不必回复",
+    "接住到账，问她下次还用同一入口订吗"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A22",
+     "subject": "SHARED",
+     "relation": "退款到账",
+     "value": "158元退款已于周一前到账",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T10",
+      "quote": "158已经到账了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A23",
+     "subject": "SHARED",
+     "relation": "退款判决",
+     "value": "全额退判决兑现",
+     "valid_time": "2026-11-06至2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T09",
+      "quote": "原单158全额退",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收束事件，不教她继续纠缠司机",
+   "unknowns": [
+    "司机后续是否被平台处理未知"
+   ],
+   "protected_expressions": [
+    "留什么留"
+   ],
+   "forbidden_factual_claims": [
+    "怂恿她在群里骂司机"
+   ]
+  },
+  "E187_T11": {
+   "case_id": "E187_T11",
+   "current_action": "接每周五行程闭环",
+   "acceptable_actions": [
+    "接住新订，调侃箱子这回主权完整",
+    "接住报平安，问她这周司机怎么样",
+    "确认行程顺利，提醒老规矩留着"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A24",
+     "subject": "HER",
+     "relation": "新行程",
+     "value": "11月13日周五再次订只拼一单的顺风车并平安到家",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T11",
+      "quote": "还是只拼一单那种",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A25",
+     "subject": "SHARED",
+     "relation": "规则口径",
+     "value": "行李进后备箱乘客最多两单的边界口径在后续行程沿用",
+     "valid_time": "2026-11-06起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T04",
+      "quote": "行李进后备箱，乘客最多两单",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "把上次的边界当成她自己的胜利回扣",
+   "unknowns": [
+    "本周车费未提及"
+   ],
+   "protected_expressions": [
+    "箱子这回连后备箱都没借给任何人"
+   ],
+   "forbidden_factual_claims": [
+    "建议她下回试试多拼一单省钱"
+   ]
+  },
+  "E187_T12": {
+   "case_id": "E187_T12",
+   "current_action": "回应返程同行邀约",
+   "acceptable_actions": [
+    "答应下周日同行，接下鱼干当路费",
+    "接住邀约，先确认时间再答应",
+    "答应一起拼，提议路上复盘客服判例"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E187_A26",
+     "subject": "SHARED",
+     "relation": "返程同行",
+     "value": "HER邀ME下周日同拼返程车，以鱼干作谢",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T12",
+      "quote": "拼我这一单呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E187_A27",
+     "subject": "HER",
+     "relation": "行程习惯",
+     "value": "只拼一单的选择已成为她订车习惯",
+     "valid_time": "2026-11-13起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E187_T11",
+      "quote": "还是只拼一单那种",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "邀约接得自然，顺手把关系递半步",
+   "unknowns": [
+    "返程具体时刻未定"
+   ],
+   "protected_expressions": [
+    "两瓶我妈晒的鱼干当路费"
+   ],
+   "forbidden_factual_claims": [
+    "答应却反手推荐三单便宜车"
+   ]
+  }
+ }
+}

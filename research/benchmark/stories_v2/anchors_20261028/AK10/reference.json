@@ -1,0 +1,89 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "AK10",
+ "turns": {
+  "AK10_T01": {
+   "case_id": "AK10_T01",
+   "current_action": "链条已成形（笼先放画室→我接→九点手术）——把周六早上谁几点拿笼、停车点讲清楚",
+   "acceptable_actions": [
+    "确认+约定拿笼时间",
+    "确认+说提前十分钟到",
+    "确认+问她要不要留她备用钥匙"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK10_A01",
+     "subject": "她",
+     "relation": "既定",
+     "value": "手术周六九点已确认",
+     "valid_time": "2026-12-21 20:22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK10_T01",
+      "message_id": "m0",
+      "quote": "周六九点手术确认了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK10_A02",
+     "subject": "她",
+     "relation": "限制",
+     "value": "抱猫笼无法挤地铁",
+     "valid_time": "2026-12-21 20:22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK10_T01",
+      "message_id": "m0",
+      "quote": "我抱猫笼挤地铁真的不行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK10_A03",
+     "subject": "双方",
+     "relation": "安排",
+     "value": "猫笼先放我画室",
+     "valid_time": "2026-12-21 20:38",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK10_T01",
+      "message_id": "m2",
+      "quote": "我就把猫笼先放你画室"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给了具体的分工；漏掉'笼什么时候过去'就是承诺执行不完整。",
+   "unknowns": [
+    "术后要不要直接回家还是去她租处",
+    "医院停车点"
+   ],
+   "protected_expressions": [
+    "我就把猫笼先放你画室"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'猫没事放心吧'这类替医生做的保证",
+    "不要把接人时间说成已经确定（六点四十是我提议）"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六送她带猫去医院并接她回家",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

@@ -1,0 +1,134 @@
+{
+ "kind": "story_v2_wave3_stage1_shard",
+ "stage": "wave3",
+ "date": "2026-11-02",
+ "built_by": "W3-T2-C isolated generation shard",
+ "count": 6,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E169",
+   "title": "白色小白的桨叶谁担责",
+   "themes": [
+    "数码消费",
+    "无人机保修",
+    "人为损坏认定",
+    "官方寄修检测",
+    "保内保外差价"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "信息不确定",
+   "dir": "benchmark/stories_v2/wave3/E169",
+   "turns": 12,
+   "files": {
+    "episode.json": "cf9e12f3f97b2af07d91a6c3f177dffd6d41e216ccbec0d3c21f9fc8051a3dc5",
+    "reference.json": "82bd5b051f23cea72dc63b1f95f6283e21db5ff1096c76192dc8c34be08f6d7b",
+    "timeline.json": "091070201f64c0d6d0197f211d64f788786f3e7d1d167fa4b117c3710ed399ff"
+   }
+  },
+  {
+   "story_id": "E170",
+   "title": "烟机位差两公分",
+   "themes": [
+    "家居装修",
+    "定制橱柜安装",
+    "尺寸误差返工",
+    "二次上门费用归属",
+    "工期连锁"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E170",
+   "turns": 12,
+   "files": {
+    "episode.json": "bd450826c399d964ee70506cee1e4b9c998f4af7be1839215312a4ebdd86576f",
+    "reference.json": "47c55020bfd54967f9bd03051ffeaba2e54b2bf90d773a05bd6da92bab590669",
+    "timeline.json": "c825a2f8bbd753b037afa981e3afd7b56b0b60efc920348702e2c145a0c30261"
+   }
+  },
+  {
+   "story_id": "E171",
+   "title": "智齿改了三回期",
+   "themes": [
+    "医疗健康",
+    "拔智齿",
+    "术前化验有效期",
+    "麻醉史更正",
+    "术后复诊改期"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E171",
+   "turns": 12,
+   "files": {
+    "episode.json": "fdda03e29705d954b4be9635b75c4d474c57f077ec54f172647a6554ebf9e1c9",
+    "reference.json": "a8a2872d56d7e9c27471142389c27fd3e3f69feed009375eb4a29611843f4918",
+    "timeline.json": "ec8131f625dff2c892d919e945d9cfbeaa2b6f7d163a306f8d5333338cc8e365"
+   }
+  },
+  {
+   "story_id": "E172",
+   "title": "芝麻的托运三改",
+   "themes": [
+    "宠物",
+    "猫咪航空托运",
+    "免疫证时效",
+    "航班改签",
+    "航空箱尺寸"
+   ],
+   "domain": "宠物",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E172",
+   "turns": 12,
+   "files": {
+    "episode.json": "5c0c8ef3f106e113501fe86747fcd49c28343dbb4bfc441453c4b65782a01b16",
+    "reference.json": "5bab70da2e454ef8454f534672e06b4b6508b422734a30d523be754723cf7da9",
+    "timeline.json": "b74b15956b997c40596d08225a5fab551da6703086c2a97ebc61d8d12918cdb1"
+   }
+  },
+  {
+   "story_id": "E173",
+   "title": "2549 的锁单三小时",
+   "themes": [
+    "数码消费",
+    "平板以旧换新",
+    "补贴资格核实",
+    "订单型号更正",
+    "限时锁单"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "启停类",
+   "dir": "benchmark/stories_v2/wave3/E173",
+   "turns": 12,
+   "files": {
+    "episode.json": "c031c0c1e17f4e32061ecbfdbfc87e0ca10309de77b55e9516b5dda3e7a157b2",
+    "reference.json": "c45d49dc7cdc866d80e0ba498aca4b426a10fd372934a8c269523e966e20b353",
+    "timeline.json": "fdfe5c7b3d068713d965e8fc9abc0cfc1730d7e7e63848816850743fe3bda242"
+   },
+   "cross_story_pair": "E173+E174",
+   "pair_role": "A"
+  },
+  {
+   "story_id": "E174",
+   "title": "两个亮点与五十块",
+   "themes": [
+    "数码消费",
+    "到手换货",
+    "屏幕亮点验收",
+    "价保窗口",
+    "旧机残值跟进"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E174",
+   "turns": 12,
+   "files": {
+    "episode.json": "00ab3a6e8730a337c3844015cd548ec50a6273cdc72922b1e6f06e4706adb215",
+    "reference.json": "49febc205ca20427c7c31f1b875c0df4d76a0a5fec5f89331cb4711a5b0fc361",
+    "timeline.json": "5e4bff06d690e0ade40e4fbf4ae5bb770aeefe8c607be596fdb432370c5f616b"
+   },
+   "cross_story_pair": "E173+E174",
+   "pair_role": "B"
+  }
+ ]
+}

@@ -1,0 +1,2394 @@
+{
+ "story_id": "LRE048",
+ "turns": {
+  "LRE048_T01": {
+   "case_id": "LRE048_T01",
+   "current_action": "祝贺开团，复述拼团价与垫付金额并开始代收代付的记账",
+   "acceptable_actions": [
+    "肯定砍价成果并复述每人352的口径",
+    "提醒把收款清单列出来逐人勾对"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A01",
+     "subject": "SHARED",
+     "relation": "groupbuy_terms",
+     "value": "课程原价每人428元，4人拼团价每人352元",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "原价428元/人，4人拼团价352元/人"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE048_A02",
+     "subject": "SHARED",
+     "relation": "groupbuy_open",
+     "value": "HER 组织4人拼团购买启航考研政治冲刺课，约定每人352元",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T01",
+      "message_id": "m0",
+      "quote": "启航政治冲刺课4人团，一人352"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A03",
+     "subject": "HER",
+     "relation": "advanced_paid",
+     "value": "HER 已垫付1408元待收款",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T01",
+      "message_id": "m0",
+      "quote": "我垫付了1408"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：陪她有成就感，顺手把账搭好架子",
+   "unknowns": [
+    "研友付款进度未知"
+   ],
+   "protected_expressions": [
+    "今年这钱花得值"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构课程内容与师资",
+    "不得代她催款转账"
+   ]
+  },
+  "LRE048_T02": {
+   "case_id": "LRE048_T02",
+   "current_action": "把约定价352与实付322并排算清，指出券差120归属是笔明账",
+   "acceptable_actions": [
+    "逐项算给她看：1408、减120、人均322",
+    "先问她当初约定时是否提过券，再谈归属"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A04",
+     "subject": "HER",
+     "relation": "coupon_discovered",
+     "value": "HER 付款时自动叠加满1200减120教育券，实付1288元",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T02",
+      "message_id": "m0",
+      "quote": "自动叠加了我那张满1200减120的教育券，实付才1288"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A05",
+     "subject": "SHARED",
+     "relation": "actual_per_person",
+     "value": "用券后人均实付322元，较约定价少30元",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T02",
+      "message_id": "m0",
+      "quote": "合着一人才322"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A06",
+     "subject": "SHARED",
+     "relation": "ownership_open",
+     "value": "券差120元归属未约定，成为待解费用问题",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T02",
+      "message_id": "m0",
+      "quote": "这120的差价算我的还是算大家的啊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A07",
+     "subject": "SHARED",
+     "relation": "agreed_price",
+     "value": "拼团约定收款口径仍为每人352元",
+     "valid_time": "2026-10-26/2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T01",
+      "message_id": "m0",
+      "quote": "一人352"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：算账要快而清，别让她觉得自己办砸了事",
+   "unknowns": [
+    "券是否仅限 HER 账号使用未知"
+   ],
+   "protected_expressions": [
+    "这120的差价算我的还是算大家的啊"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她定归属",
+    "不得虚构平台券规则"
+   ]
+  },
+  "LRE048_T03": {
+   "case_id": "LRE048_T03",
+   "current_action": "把两种意见的是非摆开，肯定她心里虚的直觉",
+   "acceptable_actions": [
+    "指出'事先没约定'是关键事实，辛苦费说法缺依据",
+    "建议把两派意见原话复述一遍再判断"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A08",
+     "subject": "THIRD",
+     "relation": "opinion_keep",
+     "value": "阿芳主张券差归团长作辛苦费",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T03",
+      "message_id": "m0",
+      "quote": "阿芳说券是我抢的该归我当辛苦费"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A09",
+     "subject": "THIRD",
+     "relation": "opinion_refund",
+     "value": "老陈主张事先未约定应人均退30元",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T03",
+      "message_id": "m0",
+      "quote": "老陈说事先没讲清楚就该人均退30"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A10",
+     "subject": "HER",
+     "relation": "uneasy_lean",
+     "value": "HER 口头支持阿芳但内心不安",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T03",
+      "message_id": "m0",
+      "quote": "我嘴上说阿芳说得对，心里其实有点虚"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A11",
+     "subject": "SHARED",
+     "relation": "ownership_still_open",
+     "value": "券差归属仍未裁定，两种方案并存",
+     "valid_time": "2026-10-27/2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T02",
+      "message_id": "m0",
+      "quote": "这120的差价算我的还是算大家的啊"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：虚字要接住并放大，那是她的良知在说话",
+   "unknowns": [
+    "其他研友是否知情未知"
+   ],
+   "protected_expressions": [
+    "心里其实有点虚"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布归团长",
+    "不得贬低阿芳的说法"
+   ]
+  },
+  "LRE048_T04": {
+   "case_id": "LRE048_T04",
+   "current_action": "肯定她把事先没约定立成裁定标准，确认退款方案与金额",
+   "acceptable_actions": [
+    "复述人均退30的算法并肯定其自洽",
+    "提醒退款时附一句说明避免误会"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A12",
+     "subject": "HER",
+     "relation": "refund_decision",
+     "value": "HER 决定按人均退30元向三位研友退款",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T04",
+      "message_id": "m0",
+      "quote": "明天给她们仨一人退30"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A13",
+     "subject": "HER",
+     "relation": "fairness_principle",
+     "value": "HER 原则：事先未约定的收益不独吞",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T04",
+      "message_id": "m0",
+      "quote": "事先没约定的话这券差就不该我一个人吞"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A14",
+     "subject": "SHARED",
+     "relation": "keep_for_self_rejected",
+     "value": "'券差归团长'的利己归属被 HER 否定",
+     "valid_time": "2026-10-28/2026-10-29",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T02",
+      "message_id": "m0",
+      "quote": "这120的差价算我的还是算大家的啊"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她想通的瞬间要郑重接住，不轻描淡写",
+   "unknowns": [
+    "退款备注如何写未知"
+   ],
+   "protected_expressions": [
+    "规矩立在我自己身上我才睡得着"
+   ],
+   "forbidden_factual_claims": [
+    "不得劝她留作辛苦费",
+    "不得虚构退款渠道"
+   ]
+  },
+  "LRE048_T05": {
+   "case_id": "LRE048_T05",
+   "current_action": "确认两笔退款到账，把鹏鹏未回视为待办而非否决",
+   "acceptable_actions": [
+    "复述已退两人与待办一人并肯定进度",
+    "建议给鹏鹏留言说明原委再等回复"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A15",
+     "subject": "HER",
+     "relation": "refund_partial",
+     "value": "HER 已退还阿芳与老陈各30元",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T05",
+      "message_id": "m0",
+      "quote": "退完俩了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A16",
+     "subject": "THIRD",
+     "relation": "praise_received",
+     "value": "阿芳称赞 HER 敞亮",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T05",
+      "message_id": "m0",
+      "quote": "阿芳收了还夸我敞亮"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A17",
+     "subject": "HER",
+     "relation": "refund_pending",
+     "value": "鹏鹏的30元退款因未回复而悬置",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T05",
+      "message_id": "m0",
+      "quote": "鹏鹏死活不回我"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A18",
+     "subject": "HER",
+     "relation": "refund_plan_standing",
+     "value": "人均退30的更正方案仍在执行中，尚未全部完成",
+     "valid_time": "2026-10-28/2026-10-29",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T04",
+      "message_id": "m0",
+      "quote": "明天给她们仨一人退30"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：膈应接住，把悬置定义成待办，别上升成人品焦虑",
+   "unknowns": [
+    "鹏鹏何时结束闭关未知"
+   ],
+   "protected_expressions": [
+    "30块钱躺在那我心里膈应"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她转账给鹏鹏",
+    "不得断言鹏鹏不满"
+   ]
+  },
+  "LRE048_T06": {
+   "case_id": "LRE048_T06",
+   "current_action": "确认退款全闭环，肯定她拒绝以奶茶抵退款的磊落",
+   "acceptable_actions": [
+    "复述'奶茶你请退款你收'的分明并点赞",
+    "提醒把三笔退款记录汇总存档"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A19",
+     "subject": "THIRD",
+     "relation": "knew_coupon",
+     "value": "鹏鹏早已发现用券差价，原以为 HER 会装傻",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T06",
+      "message_id": "m0",
+      "quote": "她说其实她早看到券了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A20",
+     "subject": "SHARED",
+     "relation": "refund_closed",
+     "value": "鹏鹏收下30元退款，三人退款全部完成，费用更正闭环",
+     "valid_time": "2026-10-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T06",
+      "message_id": "m0",
+      "quote": "退款你收"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A21",
+     "subject": "HER",
+     "relation": "refund_not_gift",
+     "value": "HER 拒绝以奶茶抵退款，坚持退款与人情分开",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T06",
+      "message_id": "m0",
+      "quote": "奶茶你请退款你收，两码事不能搅"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A22",
+     "subject": "HER",
+     "relation": "decision_executed",
+     "value": "人均退30的更正方案全部执行完毕",
+     "valid_time": "2026-10-28/2026-10-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T04",
+      "message_id": "m0",
+      "quote": "明天给她们仨一人退30"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：这是全篇高光，把两码事接成她的招牌",
+   "unknowns": [],
+   "protected_expressions": [
+    "两码事不能搅"
+   ],
+   "forbidden_factual_claims": [
+    "不得劝她收下奶茶抵账",
+    "不得虚构退款手续费"
+   ]
+  },
+  "LRE048_T07": {
+   "case_id": "LRE048_T07",
+   "current_action": "把新规提炼成先小人后君子的流程，肯定其可复制性",
+   "acceptable_actions": [
+    "复述新规并肯定'白纸黑字再付钱'的顺序",
+    "建议把新规存成群公告模板"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A23",
+     "subject": "HER",
+     "relation": "new_rule",
+     "value": "HER 立拼团新规：先公示券差与优惠分配再付款",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T07",
+      "message_id": "m0",
+      "quote": "以后开团先在群里写明'券差归谁、优惠怎么分'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A24",
+     "subject": "HER",
+     "relation": "rule_origin",
+     "value": "新规源于此次券差争议的事后补救",
+     "valid_time": "2026-10-27/2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T07",
+      "message_id": "m0",
+      "quote": "省得钱到位了人情没了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A25",
+     "subject": "THIRD",
+     "relation": "opinions_resolved",
+     "value": "阿芳'归团长'与老陈'均分'两种意见最终以人均退还落定",
+     "valid_time": "2026-10-28/2026-10-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T03",
+      "message_id": "m0",
+      "quote": "老陈说事先没讲清楚就该人均退30"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把新规夸成制度，不提她当初嘴硬",
+   "unknowns": [],
+   "protected_expressions": [
+    "钱到位了人情没了"
+   ],
+   "forbidden_factual_claims": [
+    "不得把新规说成针对阿芳",
+    "不得虚构群公告已发布"
+   ]
+  },
+  "LRE048_T08": {
+   "case_id": "LRE048_T08",
+   "current_action": "接住开课的轻快与矛盾论的双关，肯定冲突沉淀为学习状态",
+   "acceptable_actions": [
+    "接矛盾论的双关并祝备考顺利",
+    "提醒把听课节奏排进每日计划"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A26",
+     "subject": "HER",
+     "relation": "course_started",
+     "value": "启航政治冲刺课11月1日开课，HER 已上第一节",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T08",
+      "message_id": "m0",
+      "quote": "冲刺课今天第一节"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A27",
+     "subject": "HER",
+     "relation": "double_meaning",
+     "value": "HER 玩笑称矛盾论与券差风波呼应",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T08",
+      "message_id": "m0",
+      "quote": "矛盾这不就让我提前解决了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A28",
+     "subject": "SHARED",
+     "relation": "coupon_matter_closed",
+     "value": "满1200减120教育券引发的差价风波已了结",
+     "valid_time": "2026-10-27/2026-10-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T02",
+      "message_id": "m0",
+      "quote": "满1200减120的教育券"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：双关接住就收，把主线拉回备考",
+   "unknowns": [
+    "课程总课时未知"
+   ],
+   "protected_expressions": [
+    "矛盾这不就让我提前解决了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构课程知识点错误",
+    "不得把玩笑上升成哲学讨论"
+   ]
+  },
+  "LRE048_T09": {
+   "case_id": "LRE048_T09",
+   "current_action": "肯定她凭账目口碑获得管账新角色，确认规矩多的边界声明",
+   "acceptable_actions": [
+    "复述'规矩多才找你'的因果并肯定",
+    "提醒英语团开团前先发新规"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A29",
+     "subject": "THIRD",
+     "relation": "accountant_invitation",
+     "value": "阿芳邀请 HER 为英语课拼团管账把关",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T09",
+      "message_id": "m0",
+      "quote": "阿芳也要开英语课的团了，指名要我当账房先生"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A30",
+     "subject": "HER",
+     "relation": "accepted_with_rules",
+     "value": "HER 接受并声明自己规矩多",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T09",
+      "message_id": "m0",
+      "quote": "我说行，但我规矩多"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A31",
+     "subject": "HER",
+     "relation": "rule_credibility",
+     "value": "'先公示后付款'新规成为 HER 管账口碑的基础",
+     "valid_time": "2026-10-31/2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T07",
+      "message_id": "m0",
+      "quote": "以后开团先在群里写明'券差归谁、优惠怎么分'"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：口碑是她自己挣的，我只指出因果",
+   "unknowns": [
+    "英语团人数与金额未知"
+   ],
+   "protected_expressions": [
+    "我这口碑算是立住了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她许诺零误差",
+    "不得虚构阿芳的课"
+   ]
+  },
+  "LRE048_T10": {
+   "case_id": "LRE048_T10",
+   "current_action": "共享奶茶的清白与关系变近的感悟，把账清人自亲接成金句",
+   "acceptable_actions": [
+    "接'清清白白'的梗并肯定她的感悟",
+    "把账清人自亲复述成她的新信条"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A32",
+     "subject": "THIRD",
+     "relation": "milk_tea_delivered",
+     "value": "鹏鹏兑现请奶茶承诺",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T10",
+      "message_id": "m0",
+      "quote": "鹏鹏的奶茶到货了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A33",
+     "subject": "HER",
+     "relation": "closeness_insight",
+     "value": "HER 感悟账目清爽让研友关系更亲近",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T10",
+      "message_id": "m0",
+      "quote": "钱算干净了，跟研友聊天都大声了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A34",
+     "subject": "THIRD",
+     "relation": "trust_repaired",
+     "value": "鹏鹏从疑心装傻到主动请奶茶，信任修复完成",
+     "valid_time": "2026-10-30/2026-11-04",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T06",
+      "message_id": "m0",
+      "quote": "就等我装傻，结果我真退了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：感悟接住并轻轻复述，不展开成大道理",
+   "unknowns": [],
+   "protected_expressions": [
+    "账清人自亲"
+   ],
+   "forbidden_factual_claims": [
+    "不得把奶茶记成退款的一部分",
+    "不得虚构其他研友反应"
+   ]
+  },
+  "LRE048_T11": {
+   "case_id": "LRE048_T11",
+   "current_action": "肯定代付必截图当天必对账的新习惯，并把账目态度与备考态度并置",
+   "acceptable_actions": [
+    "复述新习惯并肯定其与二战决心的一致",
+    "提醒对账时间固定成日常锚点"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A35",
+     "subject": "HER",
+     "relation": "new_habit",
+     "value": "HER 养成代付截图与当天对账的习惯",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T11",
+      "message_id": "m0",
+      "quote": "我现在代付必截图，当天必对账"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A36",
+     "subject": "HER",
+     "relation": "exam_attitude",
+     "value": "HER 将账目清晰与二战备考态度并提",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T11",
+      "message_id": "m0",
+      "quote": "二战我不能再当糊涂人了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把习惯夸成体系，语气郑重一点",
+   "unknowns": [],
+   "protected_expressions": [
+    "钱和分都得清清楚楚"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构账本工具",
+    "不得替她制定学习计划"
+   ]
+  },
+  "LRE048_T12": {
+   "case_id": "LRE048_T12",
+   "current_action": "共享开团成功的账目闭环，把拉 ME 当审计的默契接成收尾",
+   "acceptable_actions": [
+    "复述一分不差的成果并接下审计角色",
+    "把人情抵工钱的玩笑接稳并收尾"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A37",
+     "subject": "SHARED",
+     "relation": "english_groupbuy_done",
+     "value": "英语课拼团成功开团，四人账目无误",
+     "valid_time": "2026-11-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T12",
+      "message_id": "m0",
+      "quote": "英语团今天开成了，四个人的账一分不差"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A38",
+     "subject": "HER",
+     "relation": "audit_plan",
+     "value": "HER 约定以后大额拼团请 ME 复核账目",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T12",
+      "message_id": "m0",
+      "quote": "以后大额拼团我都拉你入伙当审计"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A39",
+     "subject": "HER",
+     "relation": "habit_applied",
+     "value": "代付截图与当天对账习惯已应用于英语团开团",
+     "valid_time": "2026-11-05/2026-11-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T11",
+      "message_id": "m0",
+      "quote": "我现在代付必截图，当天必对账"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：审计的玩笑接住，收尾落在账清的主题上",
+   "unknowns": [],
+   "protected_expressions": [
+    "账房大师"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构红包封面金额",
+    "不得把审计玩笑写成正式职责"
+   ]
+  },
+  "LRE048_T13": {
+   "case_id": "LRE048_T13",
+   "current_action": "接住新课表的固定节奏与账本周记仪式，把周日直播接成时间锚点",
+   "acceptable_actions": [
+    "复述每周日晚8点的固定安排并肯定其可持续",
+    "把账本周记仪式接成她的新习惯并轻轻点赞"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A40",
+     "subject": "HER",
+     "relation": "weekly_livestream",
+     "value": "政治冲刺课固定每周日晚8点直播",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T13",
+      "message_id": "m0",
+      "quote": "每周日晚上8点直播"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A41",
+     "subject": "HER",
+     "relation": "weekly_journal",
+     "value": "HER 立下每周日下播后写账本周记的固定仪式",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T13",
+      "message_id": "m0",
+      "quote": "每周日下播后记一回账本周记"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A42",
+     "subject": "HER",
+     "relation": "course_started",
+     "value": "11月1日开课的冲刺课延续到每周日晚直播的节奏",
+     "valid_time": "2026-11-01/2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T08",
+      "message_id": "m0",
+      "quote": "冲刺课今天第一节"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把课表和周记接成她的时间秩序，不提教她怎么排",
+   "unknowns": [
+    "课程总周数未知"
+   ],
+   "protected_expressions": [
+    "账房先生的日程也不能全是钱嘛"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构课程主讲人",
+    "不得替她安排背书计划"
+   ]
+  },
+  "LRE048_T14": {
+   "case_id": "LRE048_T14",
+   "current_action": "接住英语课排期与周六图书馆之约两项日程，复述确认待兑现事项",
+   "acceptable_actions": [
+    "复述周三英语课与周六拼桌两件事并确认",
+    "提醒把两件事与周日直播错峰排开"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A43",
+     "subject": "THIRD",
+     "relation": "english_schedule",
+     "value": "阿芳的英语课固定每周三晚上上课",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T14",
+      "message_id": "m0",
+      "quote": "阿芳的英语课定在每周三晚上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A44",
+     "subject": "SHARED",
+     "relation": "library_plan",
+     "value": "HER 与鹏鹏约好本周六去图书馆拼桌刷马原错题",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T14",
+      "message_id": "m0",
+      "quote": "鹏鹏还约了我这周六去图书馆拼桌"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A45",
+     "subject": "SHARED",
+     "relation": "english_groupbuy_done",
+     "value": "11月6日开成的英语团随即排出正式课表",
+     "valid_time": "2026-11-06/2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T12",
+      "message_id": "m0",
+      "quote": "英语团今天开成了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：陪她把日程盘顺，别催她别加戏",
+   "unknowns": [
+    "英语课具体时长未知"
+   ],
+   "protected_expressions": [
+    "我这日程本头一回这么好看"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构英语课内容",
+    "不得替她答应或推掉任何一约"
+   ]
+  },
+  "LRE048_T15": {
+   "case_id": "LRE048_T15",
+   "current_action": "确认押题团计划与398新价，把先公示新规再付款接成她自设的条件",
+   "acceptable_actions": [
+    "复述月底前4人团与一人398的口径并确认条件",
+    "提醒把团成员名单先定下来再公示新规"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A46",
+     "subject": "SHARED",
+     "relation": "mock_course_plan",
+     "value": "老陈提议月底前开押题课4人团，拼团价每人398元",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T15",
+      "message_id": "m0",
+      "quote": "押题课，月底前开个4人团，拼团价一人398"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A47",
+     "subject": "HER",
+     "relation": "condition_accept",
+     "value": "HER 接受管账但以先公示新规再付款为条件",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T15",
+      "message_id": "m0",
+      "quote": "但得先把我那新规发群里，白纸黑字再付钱"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A48",
+     "subject": "HER",
+     "relation": "audit_plan",
+     "value": "大额拼团请 ME 复核的约定适用于这个1592元的押题团",
+     "valid_time": "2026-11-06/2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T12",
+      "message_id": "m0",
+      "quote": "以后大额拼团我都拉你入伙当审计"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：条件是她自己立的，我只负责确认不放水",
+   "unknowns": [
+    "押题团其余成员名单未定"
+   ],
+   "protected_expressions": [
+    "白纸黑字再付钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构押题课原价",
+    "不得替她先收钱"
+   ]
+  },
+  "LRE048_T16": {
+   "case_id": "LRE048_T16",
+   "current_action": "报英语第一节进展，把小赵候补入团的事按满员事实处理",
+   "acceptable_actions": [
+    "复述4人已满与小赵候补的状态",
+    "建议把候补顺序说清楚避免以后扯皮"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A49",
+     "subject": "THIRD",
+     "relation": "zhao_waitlist",
+     "value": "老陈同自习室的研友小赵想加入押题团，暂无空位",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T16",
+      "message_id": "m0",
+      "quote": "有个研友叫小赵，听说我们开押题团也想入"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A50",
+     "subject": "HER",
+     "relation": "waitlist_reply",
+     "value": "HER 答复小赵先等候、有空位第一时间通知",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T16",
+      "message_id": "m0",
+      "quote": "让他先等等，有位置第一时间喊他"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A51",
+     "subject": "THIRD",
+     "relation": "english_first_done",
+     "value": "英语课第一节已上完",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T16",
+      "message_id": "m0",
+      "quote": "英语课第一节上完啦"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：候补处理得体面，接她守规矩的那股认真",
+   "unknowns": [
+    "小赵何时能入团未知"
+   ],
+   "protected_expressions": [
+    "有位置第一时间喊他"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小赵背景",
+    "不得替她承诺空位"
+   ]
+  },
+  "LRE048_T17": {
+   "case_id": "LRE048_T17",
+   "current_action": "确认发新规与周日陪刷两条承诺，把她的热心接稳不泼冷水",
+   "acceptable_actions": [
+    "复述两条承诺并肯定她把规矩用在友情上",
+    "提醒周日陪刷别撞上周日晚直播"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A52",
+     "subject": "HER",
+     "relation": "promise_rule",
+     "value": "HER 承诺次日把团购新规整理好发给小赵",
+     "valid_time": "2026-11-12/2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T17",
+      "message_id": "m0",
+      "quote": "新规明天整理好发他一份"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A53",
+     "subject": "HER",
+     "relation": "promise_study",
+     "value": "HER 答应周日晚上陪鹏鹏刷马原题",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T17",
+      "message_id": "m0",
+      "quote": "还应了周日晚上陪她刷马原题"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她嘴上嫌自己闲，我接她热心的那面就好",
+   "unknowns": [
+    "陪刷具体时段与直播是否冲突待定"
+   ],
+   "protected_expressions": [
+    "先小人后君子都用到友情上了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她答应第三件事",
+    "不得虚构鹏鹏的请求"
+   ]
+  },
+  "LRE048_T18": {
+   "case_id": "LRE048_T18",
+   "current_action": "确认周六拼桌兑现与周日直播临时提前的小变更",
+   "acceptable_actions": [
+    "复述错题战果并确认明晚7点半的变更",
+    "调侃她闹钟改得比账本还快"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A54",
+     "subject": "SHARED",
+     "relation": "library_done",
+     "value": "周六图书馆拼桌兑现，两人各刷完一轮题",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T18",
+      "message_id": "m0",
+      "quote": "图书馆拼桌归来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A55",
+     "subject": "SHARED",
+     "relation": "livestream_shift",
+     "value": "本周日政治直播临时提前到7点半",
+     "valid_time": "2026-11-14/2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T18",
+      "message_id": "m0",
+      "quote": "说明晚的政治直播提前到7点半"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A56",
+     "subject": "HER",
+     "relation": "weekly_livestream",
+     "value": "每周日晚8点直播的常规安排未被推翻，本周属临时提前",
+     "valid_time": "2026-11-07/2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T13",
+      "message_id": "m0",
+      "quote": "每周日晚上8点直播"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：小变更轻接，别把临时提前说成大改",
+   "unknowns": [],
+   "protected_expressions": [
+    "守时的账房可不能迟到"
+   ],
+   "forbidden_factual_claims": [
+    "不得把临时提前说成长期改课",
+    "不得虚构直播内容"
+   ]
+  },
+  "LRE048_T19": {
+   "case_id": "LRE048_T19",
+   "current_action": "接住老陈退团的取消事实，把4人坑空出当作待办而非挫败",
+   "acceptable_actions": [
+    "复述老陈退出与空位现状",
+    "提醒候补的小赵正好补位"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A57",
+     "subject": "THIRD",
+     "relation": "chen_quit",
+     "value": "老陈因家中安排元旦前回乡而退出押题团",
+     "valid_time": "2026-11-16",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T19",
+      "message_id": "m0",
+      "quote": "押题团他不入了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A58",
+     "subject": "SHARED",
+     "relation": "mock_course_plan",
+     "value": "月底前开押题4人团的计划因老陈退出出现空位",
+     "valid_time": "2026-11-10/2026-11-16",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T15",
+      "message_id": "m0",
+      "quote": "月底前开个4人团"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：扫兴接住即翻页，把空位指向候补的小赵",
+   "unknowns": [
+    "老陈归期未知"
+   ],
+   "protected_expressions": [
+    "这团还得再张罗一轮"
+   ],
+   "forbidden_factual_claims": [
+    "不得替老陈编退团理由之外的细节",
+    "不得劝她强行留人"
+   ]
+  },
+  "LRE048_T20": {
+   "case_id": "LRE048_T20",
+   "current_action": "接住机构把英语课从周三改到周四的更正，重画课表",
+   "acceptable_actions": [
+    "复述周三改周四的更正并确认无冲突",
+    "提醒检查周四是否与别的安排撞车"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A59",
+     "subject": "THIRD",
+     "relation": "english_rescheduled",
+     "value": "机构通知英语课从每周三改到每周四晚",
+     "valid_time": "2026-11-17",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T20",
+      "message_id": "m0",
+      "quote": "英语课从每周三改到每周四晚上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A60",
+     "subject": "THIRD",
+     "relation": "english_schedule",
+     "value": "原定每周三晚的英语课时间安排被机构调整取代",
+     "valid_time": "2026-11-09/2026-11-17",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T14",
+      "message_id": "m0",
+      "quote": "阿芳的英语课定在每周三晚上"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：涂画课表的自嘲接住就好，别替机构找补",
+   "unknowns": [
+    "改期是否长期有效未知"
+   ],
+   "protected_expressions": [
+    "涂成抽象画"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构改期原因细节",
+    "不得断言以后不再改"
+   ]
+  },
+  "LRE048_T21": {
+   "case_id": "LRE048_T21",
+   "current_action": "确认小赵补位与先读新规再付款的条件执行",
+   "acceptable_actions": [
+    "复述小赵入团与新规前置的流程",
+    "接住'比辅导员还严'的玩笑并肯定其边界"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A61",
+     "subject": "THIRD",
+     "relation": "zhao_joined",
+     "value": "小赵顶替空位加入押题团并承诺准时转398元",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T21",
+      "message_id": "m0",
+      "quote": "他高兴坏了，说拼团价398一定准时转"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A62",
+     "subject": "HER",
+     "relation": "condition_enforced",
+     "value": "HER 要求小赵进群先看新规公告再付款",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T21",
+      "message_id": "m0",
+      "quote": "进群先看群公告，新规写得明明白白"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A63",
+     "subject": "THIRD",
+     "relation": "zhao_waitlist",
+     "value": "此前候补的小赵获得补位",
+     "valid_time": "2026-11-11/2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T16",
+      "message_id": "m0",
+      "quote": "有个研友叫小赵，听说我们开押题团也想入"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A64",
+     "subject": "SHARED",
+     "relation": "roster_refilled",
+     "value": "老陈退团留下的空位由小赵填补，押题团回到4人",
+     "valid_time": "2026-11-16/2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T19",
+      "message_id": "m0",
+      "quote": "押题团他不入了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：严字当玩笑收，规矩落地才是正题",
+   "unknowns": [],
+   "protected_expressions": [
+    "姐你比我们辅导员还严"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小赵的付款时间",
+    "不得把玩笑写成正式评价"
+   ]
+  },
+  "LRE048_T22": {
+   "case_id": "LRE048_T22",
+   "current_action": "接住客服的券规则答复，肯定付款前先摸清规则的动作",
+   "acceptable_actions": [
+    "复述券限本人、一单一张的规则口径",
+    "把'不当事后翻账单的糊涂人'接成她的成长"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A65",
+     "subject": "THIRD",
+     "relation": "service_reply",
+     "value": "启航客服答复教育券限本人账号使用、一单只能叠一张",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T22",
+      "message_id": "m0",
+      "quote": "客服说券限本人账号用，一单只能叠一张"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A66",
+     "subject": "HER",
+     "relation": "rule_first",
+     "value": "HER 在押题课付款前主动向客服核实券规则",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T22",
+      "message_id": "m0",
+      "quote": "我今天专门问了启航客服"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A67",
+     "subject": "SHARED",
+     "relation": "coupon_history",
+     "value": "10月27日那张满1200减120的教育券成为本次提前问规则的参照",
+     "valid_time": "2026-10-27/2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T02",
+      "message_id": "m0",
+      "quote": "满1200减120的教育券"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：客服答复原样接住，不替平台补充规则",
+   "unknowns": [
+    "押题课实际用哪张券、能省多少未知"
+   ],
+   "protected_expressions": [
+    "先把规则摸清再花钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构券的适用范围",
+    "不得替客服承诺折扣"
+   ]
+  },
+  "LRE048_T23": {
+   "case_id": "LRE048_T23",
+   "current_action": "宣布周日陪刷因闭楼检修取消并改到下周三，顺带确认下周二模考",
+   "acceptable_actions": [
+    "复述取消与改期的新时间并确认",
+    "提醒把模考排进日程别与直播撞车"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A68",
+     "subject": "SHARED",
+     "relation": "study_session_cancelled",
+     "value": "周日晚陪鹏鹏刷题取消，改到下周三晚上",
+     "valid_time": "2026-11-20",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T23",
+      "message_id": "m0",
+      "quote": "我把陪刷挪到下周三晚上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A69",
+     "subject": "HER",
+     "relation": "promise_study",
+     "value": "原定周日晚陪刷的承诺被改期取代",
+     "valid_time": "2026-11-12/2026-11-20",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T17",
+      "message_id": "m0",
+      "quote": "还应了周日晚上陪她刷马原题"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE048_A70",
+     "subject": "SHARED",
+     "relation": "mock_exam_arranged",
+     "value": "自习室周日晚闭楼检修，HER 下周二有一场模考",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T23",
+      "message_id": "m0",
+      "quote": "自习室通知周日晚闭楼检修"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：改期理由原样接住，别替她补愧疚戏",
+   "unknowns": [
+    "模考科目与范围未知"
+   ],
+   "protected_expressions": [
+    "闺蜜就是好说话"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构检修原因",
+    "不得替鹏鹏表态不满"
+   ]
+  },
+  "LRE048_T24": {
+   "case_id": "LRE048_T24",
+   "current_action": "确认新规已发进押题小群与明日直播提前就绪",
+   "acceptable_actions": [
+    "复述公示完成与付款前程序走齐",
+    "提醒付款当天按截图对账的老流程走"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A71",
+     "subject": "HER",
+     "relation": "rule_published",
+     "value": "押题小群已公示券差与优惠分配新规",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T24",
+      "message_id": "m0",
+      "quote": "新规我整理成一段话发进押题小群了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A72",
+     "subject": "HER",
+     "relation": "promise_rule",
+     "value": "给小赵发新规的承诺已兑现",
+     "valid_time": "2026-11-12/2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T17",
+      "message_id": "m0",
+      "quote": "新规明天整理好发他一份"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A73",
+     "subject": "SHARED",
+     "relation": "livestream_shift",
+     "value": "周日直播提前到7点半当日将执行",
+     "valid_time": "2026-11-14/2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T18",
+      "message_id": "m0",
+      "quote": "说明晚的政治直播提前到7点半"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：程序齐备的踏实感接住，别催付款",
+   "unknowns": [],
+   "protected_expressions": [
+    "就等开课"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构群成员已全部付款",
+    "不得替她操作群公告"
+   ]
+  },
+  "LRE048_T25": {
+   "case_id": "LRE048_T25",
+   "current_action": "接住她付款前先问清券规则的动作，点明这是十月券差教训的长进",
+   "acceptable_actions": [
+    "复述'先问清楚再掏钱'并肯定其成长",
+    "对照10月27日事后才发现券差的旧事"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A74",
+     "subject": "HER",
+     "relation": "prepay_check",
+     "value": "HER 下押题课订单前先问明券规则才付款",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T25",
+      "message_id": "m0",
+      "quote": "下押题课订单前特意把券的事问明白了才付钱"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A75",
+     "subject": "SHARED",
+     "relation": "coupon_history",
+     "value": "10月27日满1200减120教育券的差价风波是本次提前核实的直接动因",
+     "valid_time": "2026-10-27/2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T02",
+      "message_id": "m0",
+      "quote": "满1200减120的教育券"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE048_A76",
+     "subject": "THIRD",
+     "relation": "service_reply",
+     "value": "客服券限本人、一单一张的答复已被付款前的动作采纳",
+     "valid_time": "2026-11-19/2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T22",
+      "message_id": "m0",
+      "quote": "客服说券限本人账号用，一单只能叠一张"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：成长要点破但不居功，让她自己领走",
+   "unknowns": [],
+   "protected_expressions": [
+    "先问清楚再掏钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构本次用券金额",
+    "不得把教训说成 ME 的功劳"
+   ]
+  },
+  "LRE048_T26": {
+   "case_id": "LRE048_T26",
+   "current_action": "把十月'事先没约定不独吞'的裁定原则作为答复甩给小赵",
+   "acceptable_actions": [
+    "复述原则出处：老陈的人均退30与她的最终裁定",
+    "肯定她对辛苦费问题零犹豫的立场"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A77",
+     "subject": "THIRD",
+     "relation": "zhao_ask",
+     "value": "小赵私下询问团长能否留点辛苦费",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T26",
+      "message_id": "m0",
+      "quote": "小赵偷偷来问我，说团长能不能留点辛苦费"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A78",
+     "subject": "THIRD",
+     "relation": "opinion_refund",
+     "value": "老陈当初'事先没讲清楚就该人均退30'的主张被 HER 引为答复依据",
+     "valid_time": "2026-10-28/2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T03",
+      "message_id": "m0",
+      "quote": "老陈说事先没讲清楚就该人均退30"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A79",
+     "subject": "HER",
+     "relation": "fairness_principle",
+     "value": "HER 以'事先没约定的收益不独吞'原则回应小赵的辛苦费之问",
+     "valid_time": "2026-10-28/2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T04",
+      "message_id": "m0",
+      "quote": "事先没约定的话这券差就不该我一个人吞"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：原则接得干脆，不重新开庭辩论",
+   "unknowns": [
+    "小赵是否完全信服未知"
+   ],
+   "protected_expressions": [
+    "姐你真刚"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构小赵的原话",
+    "不得贬低问辛苦费的人"
+   ]
+  },
+  "LRE048_T27": {
+   "case_id": "LRE048_T27",
+   "current_action": "把1592减100实付1492人均373的账并排算清，确认当场公示退25",
+   "acceptable_actions": [
+    "逐项核对：四份398共1592、减100、人均373、退25",
+    "对照10月人均322的旧账肯定她这次全程透明"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A80",
+     "subject": "SHARED",
+     "relation": "mock_paid",
+     "value": "押题课以 HER 统一支付完成付款",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T27",
+      "message_id": "m0",
+      "quote": "押题课付款啦"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A81",
+     "subject": "SHARED",
+     "relation": "payment_math",
+     "value": "四份398共1592元，叠满1500减100券后实付1492元，人均373元",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T27",
+      "message_id": "m0",
+      "quote": "四份398一共1592"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A82",
+     "subject": "HER",
+     "relation": "refund_plan",
+     "value": "HER 按新规当场公示人均退25元",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T27",
+      "message_id": "m0",
+      "quote": "当场在群里公示，按新规一人退25"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A83",
+     "subject": "SHARED",
+     "relation": "actual_per_person",
+     "value": "10月用券后人均322的旧账被引作这次373的对照",
+     "valid_time": "2026-10-27/2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T02",
+      "message_id": "m0",
+      "quote": "合着一人才322"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：数字先核再夸，她算对账的得意要接满",
+   "unknowns": [
+    "三人是否即刻接受退款未知"
+   ],
+   "protected_expressions": [
+    "这次373是我算明白了才付的"
+   ],
+   "forbidden_factual_claims": [
+    "不得复算出新的人均数",
+    "不得虚构券的来源"
+   ]
+  },
+  "LRE048_T28": {
+   "case_id": "LRE048_T28",
+   "current_action": "确认三笔25元退款全部完成，接住她与十月悬置的对照感慨",
+   "acceptable_actions": [
+    "复述三笔退款闭环并肯定速度",
+    "接住'规矩立好了谁都痛快'的感悟"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A84",
+     "subject": "SHARED",
+     "relation": "mock_refund_closed",
+     "value": "押题团三笔人均25元退款全部完成",
+     "valid_time": "2026-11-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T28",
+      "message_id": "m0",
+      "quote": "三笔25全退完了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A85",
+     "subject": "HER",
+     "relation": "refund_pending_history",
+     "value": "10月底鹏鹏死活不回、30元悬置两天成为本次秒回的对照",
+     "valid_time": "2026-10-29/2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T05",
+      "message_id": "m0",
+      "quote": "鹏鹏死活不回我"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE048_A86",
+     "subject": "SHARED",
+     "relation": "habit_effect",
+     "value": "规则前置让收退款这一次顺畅无阻",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T28",
+      "message_id": "m0",
+      "quote": "规矩立好了谁都痛快"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：痛快接满，对照点到即止不翻旧账",
+   "unknowns": [],
+   "protected_expressions": [
+    "姐办事利索"
+   ],
+   "forbidden_factual_claims": [
+    "不得把秒回归因于讨好",
+    "不得虚构退款渠道细节"
+   ]
+  },
+  "LRE048_T29": {
+   "case_id": "LRE048_T29",
+   "current_action": "接住阿芳催退款的调侃与'此一时彼一时'的认账",
+   "acceptable_actions": [
+    "复述阿芳从辛苦费派到催公示的转变",
+    "把'真服了'接成口碑又添一笔"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A87",
+     "subject": "THIRD",
+     "relation": "fang_urge",
+     "value": "阿芳在群里催 HER 尽快退还25元",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T29",
+      "message_id": "m0",
+      "quote": "账房快点把25退了别捂着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A88",
+     "subject": "THIRD",
+     "relation": "opinion_keep",
+     "value": "阿芳当初'该归我当辛苦费'的主张成为被回扣调侃的旧账",
+     "valid_time": "2026-10-28/2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T03",
+      "message_id": "m0",
+      "quote": "该归我当辛苦费"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE048_A89",
+     "subject": "THIRD",
+     "relation": "fang_conceded",
+     "value": "阿芳以'此一时彼一时'默认规则优先于旧主张",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T29",
+      "message_id": "m0",
+      "quote": "回了句'此一时彼一时'"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：调侃接得轻，别把阿芳写成立场反复的小人",
+   "unknowns": [],
+   "protected_expressions": [
+    "我看她是真服了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构阿芳道歉",
+    "不得断言阿芳完全改观"
+   ]
+  },
+  "LRE048_T30": {
+   "case_id": "LRE048_T30",
+   "current_action": "向老陈报押题团账目，接住不再垫付的流程改良",
+   "acceptable_actions": [
+    "复述一人373退25人人服气的口径",
+    "肯定先收款后统一付的改良并接住垫付1408的旧事"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A90",
+     "subject": "THIRD",
+     "relation": "chen_checkin",
+     "value": "老陈私聊询问押题团近况",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T30",
+      "message_id": "m0",
+      "quote": "老陈晚上私聊我问押题团咋样了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A91",
+     "subject": "HER",
+     "relation": "advanced_paid_history",
+     "value": "10月26日垫付1408元的经历促使本次改为先收款后统一支付",
+     "valid_time": "2026-10-26/2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T01",
+      "message_id": "m0",
+      "quote": "我垫付了1408"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE048_A92",
+     "subject": "THIRD",
+     "relation": "chen_quit_aftermath",
+     "value": "已退团的老陈得知团运转顺利并感慨错过退25",
+     "valid_time": "2026-11-16/2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T19",
+      "message_id": "m0",
+      "quote": "押题团他不入了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A93",
+     "subject": "HER",
+     "relation": "advance_lesson",
+     "value": "HER 本次不垫付，改由团员先转钱、她最后统一支付",
+     "valid_time": "2026-11-24/2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T30",
+      "message_id": "m0",
+      "quote": "这次是小赵他们先转钱我最后统一付"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：报账干脆，旧垫付之苦接成流程改良的证据",
+   "unknowns": [
+    "老陈归期未知"
+   ],
+   "protected_expressions": [
+    "上回垫付1408干等的滋味我可不想尝第二回"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构老陈想回团的承诺",
+    "不得替她许下次的团"
+   ]
+  },
+  "LRE048_T31": {
+   "case_id": "LRE048_T31",
+   "current_action": "接住模考进步与信条沉淀，把备考主线轻轻收拢",
+   "acceptable_actions": [
+    "接'账算清楚脑子也清楚'的玩笑",
+    "把'两码事不能搅'复述成她的扉页信条"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A94",
+     "subject": "HER",
+     "relation": "exam_progress",
+     "value": "周二模考政治选择题比上次多对四题",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T31",
+      "message_id": "m0",
+      "quote": "政治选择题比上次多对了四个"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A95",
+     "subject": "HER",
+     "relation": "principle_kept",
+     "value": "'两码事不能搅'被 HER 写进账本周记扉页成为信条",
+     "valid_time": "2026-10-30/2026-11-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T06",
+      "message_id": "m0",
+      "quote": "两码事不能搅"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE048_A96",
+     "subject": "SHARED",
+     "relation": "livestream_regular",
+     "value": "周日直播恢复每周日晚8点的常规时间",
+     "valid_time": "2026-11-07/2026-11-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T13",
+      "message_id": "m0",
+      "quote": "每周日晚上8点直播"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：玩笑接住就收，收尾落在备考上不拖",
+   "unknowns": [],
+   "protected_expressions": [
+    "我怀疑是账算清楚脑子也跟着清楚了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构模考名次",
+    "不得替她定下月计划细节"
+   ]
+  },
+  "LRE048_T32": {
+   "case_id": "LRE048_T32",
+   "current_action": "月底复盘全月账目，把审计之约与人情价玩笑接成留白收尾",
+   "acceptable_actions": [
+    "复述从352到398两单团的全月闭环",
+    "把'月底前开团'兑现与下月专注备考接稳收尾"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE048_A97",
+     "subject": "SHARED",
+     "relation": "month_close",
+     "value": "押题团月底前开课，全月账本无糊涂账",
+     "valid_time": "2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T32",
+      "message_id": "m0",
+      "quote": "账本上没一笔糊涂账"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE048_A98",
+     "subject": "SHARED",
+     "relation": "groupbuy_history",
+     "value": "从10月26日一人352的拼团到11月一人398的押题团，HER 月底复盘全月账目",
+     "valid_time": "2026-10-26/2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T01",
+      "message_id": "m0",
+      "quote": "一人352"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE048_A99",
+     "subject": "SHARED",
+     "relation": "mock_course_plan",
+     "value": "'月底前开押题4人团'的承诺兑现",
+     "valid_time": "2026-11-10/2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE048_T15",
+      "message_id": "m0",
+      "quote": "月底前开个4人团"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：留白收尾，审计玩笑轻轻接，不追加新话题",
+   "unknowns": [],
+   "protected_expressions": [
+    "工钱还是人情价"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构下月团计划",
+    "不得把审计玩笑写成正式委托"
+   ]
+  }
+ }
+}

@@ -1,0 +1,56 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A4 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_b_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:55:16",
+      "window_last_attempt": "2026-11-08 17:20:31",
+      "attempts": 26,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_b/{DIRECT,CURRENT}/E316/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "见好就收的收尾分寸",
+    "早间目击的远距回指",
+    "对方忙碌期不机械升级",
+    "收尾位不出新钩"
+  ],
+  "title": "两万一千步",
+  "may_decline_turns": [
+    "E316_T06",
+    "E316_T12"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "自然观察",
+  "primary_topic": "T04",
+  "lineage_group_id": "LG-E316",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E316/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A4",
+  "hashes": {
+    "episode.json": "2da8715552b264a8286cddf0f84ea5e48174dad406eb56de338c1cd2e2615ff4",
+    "reference.json": "b9c38faaf181190758c90076ad5b3d781ffd59290a8f596dc6ee15ddd4127f13",
+    "timeline.json": "198e6075ad1f617339489733f7ce06cef5ed754ccd3226cf572f89b78445005f",
+    "audit.md": "b36713b09ccb50db98becfab09cf50bbd37e3c583caefe3cf2b6f9efffa36ffd",
+    "composite": "8fd31b022fbc0d317283f7c7397fd0151ebefe51cf8d9d4e5e427b924819eebd"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

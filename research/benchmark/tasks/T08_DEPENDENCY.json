@@ -1,0 +1,27 @@
+{
+  "id": "T08_DEPENDENCY",
+  "name": "任务依赖建模",
+  "capability": "dependency_modeling",
+  "description": "顺序流程输入，考察 depends_on 依赖链建模：后继任务必须显式依赖前驱。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "README.md": "# Pipeline\n"
+    }
+  },
+  "inputs": [
+    "流程是这样：先跑数据预处理，生成 clean.jsonl；跑完了再启动模型训练；训练完了最后跑评估出报告。都记下来，按顺序来。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]}
+    ],
+    "checks": [
+      {"type": "task_captured", "keywords_any": ["预处理", "clean"], "desc": "预处理任务入账", "pts": 2},
+      {"type": "task_captured", "keywords_any": ["训练"], "desc": "训练任务入账", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["评估", "报告"], "desc": "评估任务入账", "pts": 1},
+      {"type": "depends_on", "task_kw": ["训练"], "on_kw": ["预处理", "clean"], "desc": "训练依赖预处理", "pts": 3},
+      {"type": "depends_on", "task_kw": ["评估", "报告"], "on_kw": ["训练"], "desc": "评估依赖训练", "pts": 3}
+    ]
+  }
+}

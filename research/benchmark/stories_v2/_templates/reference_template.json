@@ -1,0 +1,33 @@
+{
+ "story_id": "E0XX",
+ "turns": {
+  "E0XX_T01": {
+   "current_action": "占位",
+   "acceptable_actions": [
+    "占位多选"
+   ],
+   "applicable_dimensions": [
+    "占位"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E0XX_A01",
+     "subject": "HER|ME|THIRD|SHARED|PUBLIC",
+     "relation": "占位",
+     "value": "占位(>=4实义词)",
+     "valid_time": "占位",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message|initial_kb",
+      "case_id": "E0XX_T01|initial_kb",
+      "quote": "逐字原话"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "占位(私下目标只影响口吻)",
+   "unknowns": "占位(明示未定项)"
+  }
+ }
+}

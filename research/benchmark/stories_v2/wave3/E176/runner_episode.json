@@ -1,0 +1,275 @@
+{
+ "episode_id": "E176",
+ "persona": {
+  "her": {
+   "name": "许知遥",
+   "traits": [
+    "家里小辈里的办事人，长辈活动多由她张罗",
+    "订了东西就不爱来回折腾",
+    "心软，惦记长辈身体"
+   ],
+   "boundaries": [
+    "改期可以，无限改不行",
+    "不想让爸妈白跑一趟"
+   ]
+  },
+  "me": {
+   "name": "临川",
+   "traits": [
+    "HER 的发小，做事有分寸",
+    "擅长把乱局拆成一步一步"
+   ]
+  },
+  "relationship_stage": "长期熟人（发小）"
+ },
+ "initial_kb": {
+  "me": "临川，HER 的发小，认识十几年，逢年过节常互相帮着参谋家里的事。",
+  "her": "许知遥，家里小辈里的办事人，姑姑家的乔迁宴由她张罗陪同安排。",
+  "warmth": "两人每月至少见一面，常互相吐槽家里长辈的安排。",
+  "style": "HER 打字偏口语，称呼长辈用'我姑''我妈'。",
+  "stage": "长期熟人，彼此家里的事都门儿清。",
+  "lessons": "去年外婆寿宴日期记岔过一回，此后 HER 订东西先截图存证。"
+ },
+ "turns": [
+  {
+   "case_id": "E176_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-05 19:35",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-05 19:30",
+      "text": "临川，我姑 14 号乔迁宴，新家在城东，我带爸妈一起去，你参谋参谋买啥。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "新事件开场，求礼物参谋",
+    "变化": "从日常寒暄切入家庭任务"
+   }
+  },
+  {
+   "case_id": "E176_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-06 21:00",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-06 20:55",
+      "text": "定了，一套茶具加两盒茶叶，乔迁送这个稳。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "礼物拍板",
+    "变化": "从征求意见到果断定案"
+   }
+  },
+  {
+   "case_id": "E176_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-08 10:05",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-08 10:00",
+      "text": "我妈让订蛋糕，我在小区门口那家订了，14 号下午取，截图存了。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "蛋糕订单落地并留证",
+    "变化": "任务清单又划掉一项"
+   }
+  },
+  {
+   "case_id": "E176_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-09 20:20",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-09 20:15",
+      "text": "改期了！我姑公司 14 号搞周年活动，乔迁宴挪到 21 号。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "第一次改期，语气无奈",
+    "变化": "计划被打乱，进入改期连锁"
+   }
+  },
+  {
+   "case_id": "E176_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-10 08:45",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-10 08:40",
+      "text": "蛋糕跟店里说好了改到 21 号下午取，还是同一个时间点。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "蛋糕同步改期",
+    "变化": "改期连锁第一环处理完毕"
+   }
+  },
+  {
+   "case_id": "E176_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-11 21:05",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-11 21:00",
+      "text": "当天我表哥开车带爸妈去，我坐地铁过去汇合，省得两辆车都没地停。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "出行分工敲定",
+    "变化": "从订物转向排人"
+   }
+  },
+  {
+   "case_id": "E176_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-17 19:10",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-17 19:05",
+      "text": "又改了……我姑婆婆 16 号摔了一跤，21 号也办不了，宴挪到 12 月 5 号。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "第二次改期，情绪低落",
+    "变化": "改期连锁再起，且与长辈伤情挂钩"
+   }
+  },
+  {
+   "case_id": "E176_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-17 21:35",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-17 21:30",
+      "text": "我不想再跟着改了，21 号那单蛋糕直接取消退款，等日子定死了我重新订。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "决定止住改期连锁",
+    "变化": "从被动跟改转为主动止损"
+   }
+  },
+  {
+   "case_id": "E176_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-18 09:25",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-18 09:20",
+      "text": "跟爸妈说好了，12 月 5 号上午十点出发，表哥照旧开车。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "出行计划对齐新档期",
+    "变化": "新日期下的安排重新落位"
+   }
+  },
+  {
+   "case_id": "E176_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-19 21:50",
+    "may_decline": true,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-19 21:45",
+      "text": "我姑婆婆还躺着呢，宴又远，我想着要不先跟新家视频看看，也算有个交代。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "惦记长辈并找折中",
+    "变化": "从安排事务转入人情温度"
+   }
+  },
+  {
+   "case_id": "E176_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-21 20:35",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-21 20:30",
+      "text": "视频看完啦，新家采光真好，我姑说 12 月 5 号定死不再动了。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "折中方案暖心收效",
+    "变化": "悬着的心落定，日期最终锁死"
+   }
+  },
+  {
+   "case_id": "E176_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "clock": "2026-11-22 11:05",
+    "may_decline": false,
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-22 11:00",
+      "text": "你 12 月 1 号提醒我订蛋糕哈，茶具 5 号直接带去，这回一步到位。"
+     }
+    ]
+   },
+   "feedback": {
+    "her_signal": "设提醒并回扣礼物",
+    "变化": "收尾落成清单式托付"
+   }
+  }
+ ]
+}

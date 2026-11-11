@@ -1,0 +1,35 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A5 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T06 用户意图/口吻/改写/多候选",
+  "子类：明确要求调情"
+ ],
+ "title": "歌单第三首：暧昧期的递话与收尾",
+ "may_decline_turns": [
+  "E321_T06"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "亲密关系",
+ "primary_topic": "T06",
+ "lineage_group_id": "LG-E321",
+ "frozen_at": "2026-11-08T05:30:00+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E321/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A5",
+ "hashes": {
+  "episode.json": "1759497c11b3ef93eff889eac88109fc9d0f525f408e7bdba0485280d723468a",
+  "reference.json": "5de3405c209577de0900a5909b3adc3030d25adce8429c7ccee94e2a983b993c",
+  "timeline.json": "8c466148d925cb26c4094d70023d41e5afdbd1ec14546ee758198236282623fc",
+  "audit.md": "d17f93ee76d08854ee16931c7608e9fe74a3e8c57272937f2cf48626cd5d42d9"
+ }
+}

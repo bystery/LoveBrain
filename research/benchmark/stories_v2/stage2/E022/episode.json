@@ -1,0 +1,244 @@
+{
+ "episode_id": "E022",
+ "persona": {
+  "me": "28岁，医疗器械销售，常年出差；大学辩论队出身，嘴快但知道收。",
+  "her": "27岁，初中语文老师，带初二两个班当班主任；说话直接，烦客套，和她妈同住。"
+ },
+ "initial_kb": {
+  "me": "跑华东区医院渠道，一个月出差两周；妹妹今年初三，数学偏科。",
+  "her": "带初二两个班语文，班主任第三年；对补课班持保留态度，信基础功。",
+  "warmth": "大学同社团认识，毕业四年，平时一两个月聊一次，关系稳但不黏。",
+  "style": "直来直去；先说事；不绕弯子；她说'没事'就是真没事。",
+  "stage": "老同学，普通朋友。",
+  "lessons": "别拿老师身份开职业玩笑；帮忙要给具体选项；她吐槽时附和别带节奏。"
+ },
+ "turns": [
+  {
+   "case_id": "E022_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你妹初三吧 数学多少分 我看看能不能给你点建议",
+      "ts": "2026-11-17 21:05"
+     }
+    ],
+    "clock": "2026-11-17 21:07",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E022_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "110上下 满分120 压轴题老丢分",
+      "ts": "2026-11-17 21:12"
+     },
+     {
+      "role": "HER",
+      "text": "压轴是二次函数综合吧 下次月考前我把题型发你",
+      "ts": "2026-11-17 21:20"
+     }
+    ],
+    "clock": "2026-11-17 21:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E022_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "题型整理好了 晚点发你 就六页 别让她全做 先做错的那半",
+      "ts": "2026-11-21 18:40"
+     }
+    ],
+    "clock": "2026-11-21 18:42",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E022_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "收到 谢谢啊 改天请你吃饭",
+      "ts": "2026-11-21 18:47"
+     },
+     {
+      "role": "HER",
+      "text": "吃啥饭 你把我当外人 我就顺手",
+      "ts": "2026-11-21 18:55"
+     }
+    ],
+    "clock": "2026-11-21 18:57",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E022_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了 月考改到29号了 原来通知24号 学校调了",
+      "ts": "2026-11-25 12:30"
+     }
+    ],
+    "clock": "2026-11-25 12:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E022_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 我让我妹29号前把错题过完",
+      "ts": "2026-11-25 12:38"
+     },
+     {
+      "role": "HER",
+      "text": "错题本让她自己整理 你别代劳 她这个岁数得自己疼自己",
+      "ts": "2026-11-25 12:45"
+     }
+    ],
+    "clock": "2026-11-25 12:47",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E022_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "考完了吧 她咋说",
+      "ts": "2026-12-01 21:30"
+     }
+    ],
+    "clock": "2026-12-01 21:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E022_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "昨天出分心态还行 压轴第一问拿下了",
+      "ts": "2026-12-01 21:38"
+     },
+     {
+      "role": "HER",
+      "text": "行 题型没白发 我表哥当年数学也是这么补起来的",
+      "ts": "2026-12-01 21:45"
+     }
+    ],
+    "clock": "2026-12-01 21:47",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E022_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "卷子发了拍我看看 我给你圈圈窟窿",
+      "ts": "2026-12-02 12:20"
+     }
+    ],
+    "clock": "2026-12-02 12:22",
+    "may_decline": false,
+    "intent": {
+     "text": "落实卷子复盘：把卷子发她圈窟窿，帮妹妹补压轴",
+     "status": "ACTIVE",
+     "enabled": true
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E022_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "发了 你看第二问",
+      "ts": "2026-12-02 12:28"
+     },
+     {
+      "role": "HER",
+      "text": "函数没建对 后面白算 让她把这三道重做 别贪多",
+      "ts": "2026-12-02 12:35"
+     }
+    ],
+    "clock": "2026-12-02 12:37",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E022_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周末我值班 你妹要是有问题随时发我 我看到就回",
+      "ts": "2026-12-05 21:10"
+     }
+    ],
+    "clock": "2026-12-05 21:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E022_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "好 替我谢谢你表哥介绍的那本练习册哈哈",
+      "ts": "2026-12-05 21:18"
+     },
+     {
+      "role": "HER",
+      "text": "他那是塞给你的 你嫌扔了可惜 嗯先这样 我还有俩作文没批 拜拜",
+      "ts": "2026-12-05 21:25"
+     }
+    ],
+    "clock": "2026-12-05 21:27",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

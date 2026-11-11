@@ -1,0 +1,40 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "E025",
+ "title": "开黑搭子",
+ "themes": [
+  "投缘",
+  "游戏搭子",
+  "互怼",
+  "缺席与补约",
+  "自然收尾"
+ ],
+ "author": "ZCode main worker-AI (synthetic)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+ "readers": [
+  "author"
+ ],
+ "independent_review": false,
+ "review_note": "同 worker 自检；不是独立封存集。",
+ "created_at": "2026-10-28",
+ "frozen_at": null,
+ "status": "dev_candidate_stage2",
+ "experiments_used": [],
+ "dev_exposed": true,
+ "validation_claim": false,
+ "turns": 12,
+ "may_decline_turns": [
+  "E025_T10",
+  "E025_T12"
+ ],
+ "hashes": {
+  "episode.json": "3a54d85525212b915f250e24c0f194566b738081df7d6ccdcc12eafb3d912579",
+  "reference.json": "4963c31db5613f12342e93e20cb25d541be1a091dc7d72b63839e92eaea70b67",
+  "timeline.json": "760ce39207ac95f698f3dbed2df73d84a15afbd205901894df35c892556c30fe",
+  "audit.md": "2e8ed17c4a7a5268095c807800e3c88ff920da67dbc2b79057600acbd19e50bf"
+ },
+ "runner_copy": "benchmark/episodes/E025.json",
+ "notes": "Stage2 首批（W06）；12位自然故事；冻结与未调参验证在后续批次。"
+}

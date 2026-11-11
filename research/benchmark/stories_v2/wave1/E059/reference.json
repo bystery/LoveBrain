@@ -1,0 +1,593 @@
+{
+ "story_id": "E059",
+ "turns": {
+  "E059_T01": {
+   "case_id": "E059_T01",
+   "current_action": "接住她的得意，肯定订体检套餐这份心意，同时轻轻垫一句：先跟爸商量日子和陪同方式，别让好意变成单方面安排。",
+   "acceptable_actions": [
+    "肯定套餐内容齐全，提醒她把体检中心地址发给爸",
+    "建议先问爸是否愿意她陪，尊重老人的意愿",
+    "让她顺带确认套餐是否含报告解读服务"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A01",
+     "subject": "SHARED",
+     "relation": "exam_package_booked",
+     "value": "她为65岁父亲订好体检套餐，定于下周六上午",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T01", "message_id": "m0", "quote": "订了个体检套餐"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A02",
+     "subject": "HER",
+     "relation": "accompany_plan",
+     "value": "她计划请假全程陪同父亲体检",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T01", "message_id": "m0", "quote": "我请好假陪他去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A03",
+     "subject": "HER",
+     "relation": "gift_framing",
+     "value": "体检被她定位为父亲生日的补礼",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T01", "message_id": "m0", "quote": "就当补个生日礼物"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先肯定心意，再把'商量'两个字轻轻放进去，不说教。",
+   "unknowns": ["父亲是否知情尚未确认", "套餐具体项目清单未提"],
+   "protected_expressions": ["就当补个生日礼物"],
+   "forbidden_factual_claims": ["不得虚构套餐项目与价格", "不得预判父亲必然接受"]
+  },
+  "E059_T02": {
+   "case_id": "E059_T02",
+   "current_action": "接住首通电话的碰壁，把父亲的口头拒绝原样记下，提醒她这类拒绝多半是面子话，别急着加码说服。",
+   "acceptable_actions": [
+    "劝她别把挂电话当成结论，老人需要台阶",
+    "提醒套餐已付款不可退是客观事实，可作为下次沟通由头",
+    "建议换个轻松场合同爸再聊，比如吃饭时提一嘴"
+   ],
+   "applicable_dimensions": ["emotion_relation", "attribution", "boundary", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A04",
+     "subject": "THIRD",
+     "relation": "refusal_first",
+     "value": "父亲口头拒绝体检，称身体好不需要查",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T02", "message_id": "m0", "quote": "别乱花钱，我身体好得很"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A05",
+     "subject": "SHARED",
+     "relation": "non_refundable",
+     "value": "套餐已付款不可退，体检照常进行",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T02", "message_id": "m0", "quote": "套餐都订好了不能退"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A06",
+     "subject": "THIRD",
+     "relation": "hangup",
+     "value": "首通电话不欢而散，父亲哼了一声挂断",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T02", "message_id": "m0", "quote": "把电话挂了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把挂电话说成老人惯常的别扭，不把她爸说成不讲理。",
+   "unknowns": ["父亲的真实态度未知", "是否会在体检日前松口未知"],
+   "protected_expressions": ["他哼了一声把电话挂了"],
+   "forbidden_factual_claims": ["不得断言父亲已同意", "不得替老人分析心理下定论"]
+  },
+  "E059_T03": {
+   "case_id": "E059_T03",
+   "current_action": "接住边界冲突的正面爆发：父亲明确周六独自骑车前往、拒绝陪同；先共情她的委屈，再帮她把'拒绝陪同'和'拒绝体检'分开看。",
+   "acceptable_actions": [
+    "指出父亲拒绝的是陪同不是体检，两者别混为一谈",
+    "肯定她'递个水'的心意，建议把心意换一种形式",
+    "提醒她别正面顶撞，老人要的是自主感"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "attribution", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A07",
+     "subject": "THIRD",
+     "relation": "boundary_asserted",
+     "value": "父亲明确周六独自骑车前往体检，拒绝女儿陪同",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E059_T03", "message_id": "m0", "quote": "他自己骑电动车去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A08",
+     "subject": "HER",
+     "relation": "accompany_suspended",
+     "value": "全程陪同计划遭父亲正面否决，处于悬置",
+     "valid_time": "2026-10-19",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E059_T01", "message_id": "m0", "quote": "我请好假陪他去"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E059_A09",
+     "subject": "HER",
+     "relation": "grievance",
+     "value": "她诉求只是递水式的在场，感到委屈",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T03", "message_id": "m1", "quote": "我就想在旁边递个水"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先站她这边一句，再帮她拆解父亲的划界逻辑，别急着判谁对。",
+   "unknowns": ["父亲体检当日具体安排未知"],
+   "protected_expressions": ["我又不是去拖着他"],
+   "forbidden_factual_claims": ["不得替父亲宣布最终决定", "不得把陪同之争上升成对错"]
+  },
+  "E059_T04": {
+   "case_id": "E059_T04",
+   "current_action": "面对她的'偶遇'潜入方案：直接劝住——父亲的划界刚立起来，潜入一旦被识破只会更僵；把她的心意引向不越界的出口。",
+   "acceptable_actions": [
+    "明确不赞成偶遇方案，说明被识破的代价",
+    "提出替代出口：送门口、留报告副本、当天保持电话畅通",
+    "让她先应下父亲的规矩，再谈心意怎么落"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A10",
+     "subject": "HER",
+     "relation": "sneak_plan",
+     "value": "她谋划'路过偶遇'式潜入陪同",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T04", "message_id": "m0", "quote": "假装偶遇"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A11",
+     "subject": "THIRD",
+     "relation": "boundary_stands",
+     "value": "父亲'受不了陪护'的划界仍在，潜入方案与之相抵触",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T03", "message_id": "m0", "quote": "你们年轻人那套陪护我受不了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E059_A12",
+     "subject": "HER",
+     "relation": "consultation",
+     "value": "她向 ME 征询潜入方案意见",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T04", "message_id": "m0", "quote": "你觉得这招行不行"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：拒绝要给理由不端架子，把她'想在场'的心思先收好再转化。",
+   "unknowns": ["她是否会接受劝阻未知"],
+   "protected_expressions": ["他总不能赶我走吧"],
+   "forbidden_factual_claims": ["不得答应配合潜入", "不得虚构父亲发现后的反应"]
+  },
+  "E059_T05": {
+   "case_id": "E059_T05",
+   "current_action": "确认偶遇方案撤销，接住她的折中新方案：开车送到门口即走、报告另打一份副本；肯定这个方向没有越过父亲的边界。",
+   "acceptable_actions": [
+    "肯定折中方案的分寸，提醒送到即走别恋战",
+    "确认报告副本需要她本人带证件去开",
+    "顺带提醒周六早上给她爸带份早餐增近关系"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A13",
+     "subject": "HER",
+     "relation": "sneak_retracted",
+     "value": "偶遇方案被 ME 劝阻后放弃",
+     "valid_time": "2026-10-19",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E059_T04", "message_id": "m0", "quote": "假装偶遇"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E059_A14",
+     "subject": "HER",
+     "relation": "dropoff_compromise",
+     "value": "新方案：车送到门口即离开，不进入陪同",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T05", "message_id": "m0", "quote": "送他到门口就走"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A15",
+     "subject": "SHARED",
+     "relation": "report_copy",
+     "value": "她要求体检报告另打一份副本给自己",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T05", "message_id": "m0", "quote": "报告让医院另打一份给我"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把她的退让说成聪明而不是认怂，给她台阶。",
+   "unknowns": ["父亲是否知晓副本诉求未知"],
+   "protected_expressions": ["这总不过分吧"],
+   "forbidden_factual_claims": ["不得虚构医院副本流程细节", "不得保证父亲接受送门方案"]
+  },
+  "E059_T06": {
+   "case_id": "E059_T06",
+   "current_action": "接住她口头应允却暗中留守的心虚：不纵容也不拆穿得太狠，点破风险（被发现即前功尽弃），陪她把这两小时熬过去。",
+   "acceptable_actions": [
+    "轻点一句'说好就走又没走'，再问她打算守多久",
+    "提醒她奶茶店位置别太显眼，免得开局就穿帮",
+    "约定有情况随时说，别一个人硬扛"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A16",
+     "subject": "SHARED",
+     "relation": "dropoff_done",
+     "value": "周六晨她已将父亲送至体检中心门口",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T06", "message_id": "m0", "quote": "把他送到门口"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A17",
+     "subject": "HER",
+     "relation": "covert_stay",
+     "value": "她口头应允离开实则留守对面奶茶店观察",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T06", "message_id": "m0", "quote": "人现在坐在马路对面的奶茶店"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A18",
+     "subject": "THIRD",
+     "relation": "instruction_conflict",
+     "value": "父亲'该干嘛干嘛'的指令与她留守行为相悖",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T03", "message_id": "m0", "quote": "让我该干嘛干嘛"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：吐槽要轻，重点放在'别升级成第二次冲突'，守住陪伴的位置。",
+   "unknowns": ["父亲何时出来未知", "留守会被发现未知"],
+   "protected_expressions": ["隔着玻璃能看见体检中心大门"],
+   "forbidden_factual_claims": ["不得鼓动她升级留守行动", "不得虚构体检中心的布局"]
+  },
+  "E059_T07": {
+   "case_id": "E059_T07",
+   "current_action": "接住被逮着却没挨骂的反转：父亲以豆浆默认了她的等待，冲突实质降温；把这一幕的意义点给她——老人要的不是她消失，是她的分寸。",
+   "acceptable_actions": [
+    "肯定父亲的柔和处理，豆浆比道理管用",
+    "顺势问她报告什么时候出，把话题引向结果",
+    "调侃一句'傻不傻'，把场面消化得轻一点"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A19",
+     "subject": "SHARED",
+     "relation": "caught_but_forgiven",
+     "value": "父亲出门即发现留守的她，未加责备",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T07", "message_id": "m0", "quote": "被他逮着了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A20",
+     "subject": "THIRD",
+     "relation": "soy_milk_gesture",
+     "value": "父亲未责备，反将体检中心发的热豆浆给她",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T07", "message_id": "m0", "quote": "掏出体检中心发的豆浆给我"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A21",
+     "subject": "THIRD",
+     "relation": "softening",
+     "value": "父亲以'我就知道你没走'默认她的等待，冲突降温",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T07", "message_id": "m0", "quote": "我就知道你小子没走"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把这幕讲成父女各自退了半步，不煽情不下结论。",
+   "unknowns": [],
+   "protected_expressions": ["等你两个钟头了，傻不傻"],
+   "forbidden_factual_claims": ["不得替父亲补台词", "不得断言此后陪同都解禁"]
+  },
+  "E059_T08": {
+   "case_id": "E059_T08",
+   "current_action": "接住报告结果：血脂偏高需复查；父亲自行约好下周三并提出借车不借人的有限请求。先把'偏高'和'确诊'分开，安抚再谈安排。",
+   "acceptable_actions": [
+    "先说明血脂偏高常见且可复查，别让她先慌",
+    "肯定借车不借人是父亲给的台阶，建议爽快答应",
+    "提醒复查前一晚的饮食注意事项转告父亲"
+   ],
+   "applicable_dimensions": ["factuality", "boundary", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A22",
+     "subject": "SHARED",
+     "relation": "report_finding",
+     "value": "体检报告显示血脂偏高，医生建议复查血脂四项",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T08", "message_id": "m0", "quote": "血脂一项偏高"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A23",
+     "subject": "THIRD",
+     "relation": "recheck_self_booked",
+     "value": "父亲自行约好下周三上午复查",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T08", "message_id": "m0", "quote": "自己麻利地约了下周三上午"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A24",
+     "subject": "THIRD",
+     "relation": "limited_help_request",
+     "value": "父亲主动提出借车不借人的有限帮助请求",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T08", "message_id": "m0", "quote": "到时候你把车借我就行"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：医学上只做'常见、可复查'的降风险表达，不下诊断，把边界台阶夸到位。",
+   "unknowns": ["复查是否空腹等细节未知", "借车当日她自己是否用车未知"],
+   "protected_expressions": ["人不用来"],
+   "forbidden_factual_claims": ["不得对血脂偏高做医学诊断", "不得断言复查必然正常"]
+  },
+  "E059_T09": {
+   "case_id": "E059_T09",
+   "current_action": "确认父女协议达成：父亲独自复查，报告第一时间拍照发她，复查遵医嘱；把这定义为'知情权换行动权'的成交。",
+   "acceptable_actions": [
+    "肯定协议的平衡点，两边都拿到了要的东西",
+    "提醒她收到报告别催促，先让父亲跟医生聊完",
+    "建议她把协议当口头约定存档，别再反复请假"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A25",
+     "subject": "SHARED",
+     "relation": "agreement_reached",
+     "value": "协议达成：父亲独自复查，报告第一时间拍照发给女儿",
+     "valid_time": "2026-10-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T09", "message_id": "m0", "quote": "报告一出来先拍照发我"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A26",
+     "subject": "HER",
+     "relation": "accompany_retracted",
+     "value": "全程陪同诉求正式撤下，改为报告知情权",
+     "valid_time": "2026-10-19/2026-10-24",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E059_T01", "message_id": "m0", "quote": "我请好假陪他去"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E059_A27",
+     "subject": "SHARED",
+     "relation": "follow_doctor",
+     "value": "她要求父亲复查结果遵医嘱，不许自行判断",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T09", "message_id": "m0", "quote": "不许自己瞎判断"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把成交感说轻一点，重点在她学会了'在场不等于陪同'。",
+   "unknowns": ["复查当日具体时间未提"],
+   "protected_expressions": ["不许自己瞎判断"],
+   "forbidden_factual_claims": ["不得把口头协议当成书面承诺", "不得虚构父亲的原话细节"]
+  },
+  "E059_T10": {
+   "case_id": "E059_T10",
+   "current_action": "共享复查虚惊落地的松弛：血脂正常，红烧肉插曲被医生念两句；肯定父亲把协议执行到位（报告先发）。",
+   "acceptable_actions": [
+    "先恭喜结果，再顺着红烧肉调侃一句",
+    "把'报告先发'的协议兑现点出来，肯定双方守约",
+    "建议把清淡饮食变成父女间的小暗号"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A28",
+     "subject": "SHARED",
+     "relation": "recheck_normal",
+     "value": "复查结果血脂正常，前晚红烧肉为干扰因素",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T10", "message_id": "m0", "quote": "血脂没事"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A29",
+     "subject": "THIRD",
+     "relation": "doctor_reminder",
+     "value": "父亲因复查前晚吃红烧肉被医生提醒清淡饮食",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T10", "message_id": "m0", "quote": "被医生念了两句"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A30",
+     "subject": "SHARED",
+     "relation": "alert_closed",
+     "value": "此前偏高的血脂复查后回归正常，警报解除",
+     "valid_time": "2026-10-24/2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T08", "message_id": "m0", "quote": "血脂一项偏高"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：虚惊收束要轻快，把父亲守约这件事点在明处，功劳分他一半。",
+   "unknowns": [],
+   "protected_expressions": ["重新理解了'清淡饮食'四个字"],
+   "forbidden_factual_claims": ["不得断言父亲此后无需注意血脂", "不得虚构复查指标数值"]
+  },
+  "E059_T11": {
+   "case_id": "E059_T11",
+   "current_action": "接住父亲主动来电的让步：明年套餐她订、检查他自己去、报告先发她；把这句'没这么痛快让过步'接成父女边界的正式共识。",
+   "acceptable_actions": [
+    "肯定这是父亲表达在乎的方式，让她接住这份让步",
+    "把共识复述成三条：钱她出、事他办、报告共享",
+    "建议她回复时也给父亲递一句软话"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A31",
+     "subject": "SHARED",
+     "relation": "consensus",
+     "value": "父女共识：套餐由她订，检查由父亲独自完成",
+     "valid_time": "2026-10-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T11", "message_id": "m0", "quote": "明年套餐你还订，检查还是我自己去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A32",
+     "subject": "SHARED",
+     "relation": "her_role",
+     "value": "共识中她仅负责报告知情一项",
+     "valid_time": "2026-10-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T11", "message_id": "m0", "quote": "报告先发你"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A33",
+     "subject": "SHARED",
+     "relation": "scheme_closed_loop",
+     "value": "从'送门口'到'报告先发'，边界方案完成闭环",
+     "valid_time": "2026-10-19/2026-10-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T05", "message_id": "m0", "quote": "送他到门口就走"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'让步'说成双向的，她也退了全程陪同，谁都没输。",
+   "unknowns": [],
+   "protected_expressions": ["我爸这辈子没这么痛快地让过步"],
+   "forbidden_factual_claims": ["不得断言父亲性格从此改变", "不得虚构电话对话更多细节"]
+  },
+  "E059_T12": {
+   "case_id": "E059_T12",
+   "current_action": "接住周六老城区之约：父亲点名要见 ME 并以奶茶补上那两小时，笑纳并确认安排，以记仇玩笑收尾。",
+   "acceptable_actions": [
+    "答应周六赴约，说要把那杯奶茶喝出仪式感",
+    "肯定父亲用奶茶体面地给这事画了句号",
+    "顺着记仇玩笑收尾，不引入新话题"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E059_A34",
+     "subject": "THIRD",
+     "relation": "meeting_request",
+     "value": "父亲点名周六中午要见 ME",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T12", "message_id": "m0", "quote": "我爸点名要见你"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A35",
+     "subject": "THIRD",
+     "relation": "milk_tea_makeup",
+     "value": "父亲提议以奶茶补上她两个小时的等待",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T12", "message_id": "m0", "quote": "替苏苏把那两个小时补上"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E059_A36",
+     "subject": "SHARED",
+     "relation": "teahouse_callback",
+     "value": "奶茶店之约源于体检当日对面奶茶店留守两小时",
+     "valid_time": "2026-10-24/2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E059_T06", "message_id": "m0", "quote": "人现在坐在马路对面的奶茶店"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把'两小时'说成值得的，别翻回去讲道理。",
+   "unknowns": [],
+   "protected_expressions": ["你说他记仇不记仇"],
+   "forbidden_factual_claims": ["不得虚构奶茶店与父亲的其他对话", "不得引入新的家庭议题"]
+  }
+ }
+}

@@ -1,0 +1,615 @@
+{
+ "story_id": "E089",
+ "turns": {
+  "E089_T01": {
+   "case_id": "E089_T01",
+   "current_action": "接住她的得意，肯定寿宴筹备的劲头，同时轻轻垫一句：日子这么要紧的事，出发前跟老家再核一遍最稳。",
+   "acceptable_actions": [
+    "赞她票、蛋糕、接站三件事办得利索，提醒她把日子在群里再确认一遍",
+    "问她蛋糕是哪家订的，顺口提醒取货时间最好避开正午高峰",
+    "接住KPI的玩笑，顺带问外婆寿宴她想穿什么，把话题往老人家身上引"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A01",
+     "subject": "SHARED",
+     "relation": "banquet_date_claimed",
+     "value": "外婆九十寿宴被她记为11月8日周日举办",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T01", "message_id": "m0", "quote": "我外婆九十寿宴定在11月8号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A02",
+     "subject": "HER",
+     "relation": "tickets_booked",
+     "value": "她已按11月8日买了7号晚回、8号晚返的往返车票",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T01", "message_id": "m0", "quote": "7号晚上回去、8号晚上返"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A03",
+     "subject": "HER",
+     "relation": "cake_booked",
+     "value": "寿桃蛋糕已订在11月8日上午自取",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T01", "message_id": "m0", "quote": "蛋糕也订了8号上午取"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A04",
+     "subject": "HER",
+     "relation": "pickup_promise",
+     "value": "她向大表哥承诺11月8日到高铁站接站",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T01", "message_id": "m0", "quote": "8号我去高铁站接他"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接住她的兴头，核对日子的提醒用顺口一嘴的方式放，别泼冷水。",
+   "unknowns": ["寿宴日期尚未经实证核对", "外婆本人是否知晓她的具体安排未知"],
+   "protected_expressions": ["这回我办寿宴的KPI全齐了"],
+   "forbidden_factual_claims": ["不得断言11月8日正确或错误", "不得虚构蛋糕店与车票的细节"]
+  },
+  "E089_T02": {
+   "case_id": "E089_T02",
+   "current_action": "接住她的滴水不漏式自满，顺着金字蛋糕和群里放话说两句好话，再垫一句：万事俱备的时候最值得回头核一遍日期。",
+   "acceptable_actions": [
+    "肯定金字蛋糕的心意，建议她取货前一天再跟店里确认一次",
+    "接住放话的得意，提醒她群里的许诺留点余地更从容",
+    "问她外婆喜欢什么口味，把筹备话题往老人家身上转半步"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A05",
+     "subject": "THIRD",
+     "relation": "cake_lettering_bound",
+     "value": "蛋糕店为寿桃加制金字并把工期绑定在11月8日取货",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T02", "message_id": "m0", "quote": "8号取的时候字正好干透"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A06",
+     "subject": "HER",
+     "relation": "group_pledge",
+     "value": "她在家族群放话外婆寿桃由她包办",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T02", "message_id": "m0", "quote": "外婆的寿桃我包了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把核对日子的提醒包在夸奖里，让她自己起疑心而不是被说服。",
+   "unknowns": ["金字工期是否可改动未知", "群里谁会接话未知"],
+   "protected_expressions": ["我这筹备是不是滴水不漏"],
+   "forbidden_factual_claims": ["不得预判日期有错", "不得虚构蛋糕店老板的其他承诺"]
+  },
+  "E089_T03": {
+   "case_id": "E089_T03",
+   "current_action": "接住实证纠错的引爆：酒店订单白纸黑字写着11月1日，早期的票、蛋糕、接站全部悬空；先陪她稳住，把'全是可改的事'这个底垫住再谈怎么办。",
+   "acceptable_actions": [
+    "先说明票、蛋糕、接站三件事都有改的余地，不是全泡汤",
+    "肯定表妹的订单截图是好事，错在引爆前发现而不是引爆后发现",
+    "劝她先别急着回群里，把要改的事列完再说话"
+   ],
+   "applicable_dimensions": ["time_state", "attribution", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A07",
+     "subject": "SHARED",
+     "relation": "banquet_date_corrected",
+     "value": "酒店订单实证寿宴实际日期为11月1日周日，11月8日的记忆被推翻",
+     "valid_time": "2026-10-28",
+     "status": "revised",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E089_T03", "message_id": "m0", "quote": "白纸黑字写着11月1日"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A08",
+     "subject": "THIRD",
+     "relation": "aunt_original_wording",
+     "value": "二姨原话为11月上旬8号前后，被她听成了8号",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T03", "message_id": "m0", "quote": "11月上旬，8号前后"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A09",
+     "subject": "SHARED",
+     "relation": "wrong_plan_collapse",
+     "value": "按11月8日承载的票、蛋糕、接站安排全部悬空待改",
+     "valid_time": "2026-10-28",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E089_T03", "message_id": "m0", "quote": "全泡汤了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先稳人再稳事，把'幸亏还有三天'说在前面，别陪她一起慌。",
+   "unknowns": ["蛋糕与车票能否顺利改期未知", "调休申请状态未知"],
+   "protected_expressions": ["全泡汤了"],
+   "forbidden_factual_claims": ["不得断言她必然要亏大钱", "不得替二姨分析为何表述含糊"]
+  },
+  "E089_T04": {
+   "case_id": "E089_T04",
+   "current_action": "接住损失盘点，帮她排出先后：先撤没批的调休（最快、零成本），再改车票，再谈蛋糕，接站的话最后在群里轻描淡写地收。",
+   "acceptable_actions": [
+    "建议先撤调休再改签，趁主管没批把话说圆",
+    "提醒她蛋糕定金规则先问清楚再决定退单还是改期",
+    "劝她接站的牛皮质子铺在改签成功之后再收"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A10",
+     "subject": "HER",
+     "relation": "tickets_need_rebooking",
+     "value": "原11月7/8日车票需改签至10月31日与11月1日",
+     "valid_time": "2026-10-26/2026-10-28",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E089_T01", "message_id": "m0", "quote": "7号晚上回去、8号晚上返"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E089_A11",
+     "subject": "HER",
+     "relation": "cake_need_rebook",
+     "value": "11月8日取的寿桃蛋糕需改至11月1日",
+     "valid_time": "2026-10-26/2026-10-28",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E089_T01", "message_id": "m0", "quote": "蛋糕也订了8号上午取"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E089_A12",
+     "subject": "HER",
+     "relation": "pickup_promise_void",
+     "value": "8号接大表哥的承诺随日期更正面临作废",
+     "valid_time": "2026-10-26/2026-10-28",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E089_T01", "message_id": "m0", "quote": "8号我去高铁站接他"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E089_A13",
+     "subject": "HER",
+     "relation": "leave_request_withdraw",
+     "value": "尚未批准的调休申请需要撤回",
+     "valid_time": "2026-10-28",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E089_T04", "message_id": "m0", "quote": "调休申请还没批赶紧撤回来"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A14",
+     "subject": "HER",
+     "relation": "triage_request",
+     "value": "她请 ME 帮忙排定改签事务的先后顺序",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T04", "message_id": "m0", "quote": "我先弄哪个能少亏点"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：排序讲得干脆，像顺手帮她捋线头，不带说教味。",
+   "unknowns": ["车票余座与改签费未知", "蛋糕店改期规则未知"],
+   "protected_expressions": ["我先弄哪个能少亏点"],
+   "forbidden_factual_claims": ["不得虚构改签手续费数额", "不得保证所有事项都能无损改期"]
+  },
+  "E089_T05": {
+   "case_id": "E089_T05",
+   "current_action": "确认改签与蛋糕改单双双落地：补三十差价、改签费六十出头；把'钱亏得明白'说成这一仗里最好的结果。",
+   "acceptable_actions": [
+    "肯定她手快，两天内把最疼的两件事都改妥了",
+    "提醒她把改签后的票面和蛋糕单截图存好，防再变",
+    "顺着'还有座'接一句轻松话，把肉疼冲淡一点"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "factuality", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A15",
+     "subject": "SHARED",
+     "relation": "cake_rebooked",
+     "value": "寿桃蛋糕由11月8日改为11月1日取，补三十元差价",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T05", "message_id": "m0", "quote": "把8号单改成了1号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A16",
+     "subject": "HER",
+     "relation": "tickets_rebooked",
+     "value": "往返车票改签为31日晚去1日晚回，付改签费六十余元",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T05", "message_id": "m0", "quote": "31号晚上去1号晚上回"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把亏掉的手续费说成'给大意交的学费，交完就翻篇'。",
+   "unknowns": ["1号取货是否顺利未知", "改签座次未知"],
+   "protected_expressions": ["肉疼，但好歹都还有座"],
+   "forbidden_factual_claims": ["不得虚构改签费具体金额", "不得断言此后不会再有变动"]
+  },
+  "E089_T06": {
+   "case_id": "E089_T06",
+   "current_action": "接住群内甩锅升级：二姨把锅往她妈身上引，表妹看热闹；劝她别下场评理，自嘲式认领听错日期是最快的灭火方式。",
+   "acceptable_actions": [
+    "劝她不接锅不点炮，用自嘲把日子的事揽到自己头上",
+    "提醒她群里越描越黑，一句玩笑比十条解释管用",
+    "建议她私聊安抚妈妈，群里保持轻快"
+   ],
+   "applicable_dimensions": ["attribution", "interaction", "emotion_relation", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A17",
+     "subject": "THIRD",
+     "relation": "blame_shift",
+     "value": "二姨把记错日期的责任往小满妈妈身上引",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T06", "message_id": "m0", "quote": "明明你妈也念叨8号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A18",
+     "subject": "THIRD",
+     "relation": "group_mock",
+     "value": "表妹以日历倒着看调侃全族记错日期",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T06", "message_id": "m0", "quote": "咱家的日历是不是倒着看的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A19",
+     "subject": "HER",
+     "relation": "caught_in_middle",
+     "value": "她在母姨争执间不知是否发声",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T06", "message_id": "m0", "quote": "我夹中间说不说都不是"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'别下场'的理由说成保护她自己，不是替长辈和稀泥。",
+   "unknowns": ["妈妈与二姨会否继续争执未知"],
+   "protected_expressions": ["我要不要出来说句话"],
+   "forbidden_factual_claims": ["不得替母姨任何一方定性", "不得虚构群里其他人的发言"]
+  },
+  "E089_T07": {
+   "case_id": "E089_T07",
+   "current_action": "接住自嘲灭火成功：一句'我把上旬听成8号'让全群乐了，二姨顺势认账；把这一手定性为她自己挣回来的台阶。",
+   "acceptable_actions": [
+    "夸这波处理漂亮，把功劳记在她自己身上",
+    "提醒她蛋糕钱不必收，人情记着下次还",
+    "顺带问她妈那边消气没有，把群里的事收干净"
+   ],
+   "applicable_dimensions": ["interaction", "attribution", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A20",
+     "subject": "HER",
+     "relation": "self_mock_defuse",
+     "value": "她以自嘲认领听错日期化解群内争执",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T07", "message_id": "m0", "quote": "我把上旬听成8号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A21",
+     "subject": "THIRD",
+     "relation": "aunt_admits",
+     "value": "二姨认下记错日期的账并提出转蛋糕钱",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T07", "message_id": "m0", "quote": "二姨顺手把锅认了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A22",
+     "subject": "THIRD",
+     "relation": "blame_shift_resolved",
+     "value": "母姨甩锅之争随二姨认账而平息",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T06", "message_id": "m0", "quote": "明明你妈也念叨8号"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把功劳还给她，ME 只当递话的人。",
+   "unknowns": ["蛋糕钱后续是否再被提起未知"],
+   "protected_expressions": ["这下舒服多了"],
+   "forbidden_factual_claims": ["不得断言群内矛盾彻底根除", "不得虚构她的原话措辞"]
+  },
+  "E089_T08": {
+   "case_id": "E089_T08",
+   "current_action": "接住改单确认与外婆来电：蛋糕店免了加急费，外婆第一句问的是票钱亏了多少；把外婆这句问话的意义点给她——老人心疼的是她。",
+   "acceptable_actions": [
+    "肯定蛋糕店免加急是意外之喜，1号的事基本落定",
+    "把外婆问票钱解读成疼她，让她把这份心收好",
+    "提醒她明早给外婆回电话时顺口定一下寿宴当天帮忙的活"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A23",
+     "subject": "SHARED",
+     "relation": "shop_waives_fee",
+     "value": "蛋糕店免除重写金字的加急费",
+     "valid_time": "2026-10-31",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T08", "message_id": "m0", "quote": "加急费也给我免了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A24",
+     "subject": "THIRD",
+     "relation": "grandma_asks_loss",
+     "value": "外婆知晓改期后第一句问改签损失",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T08", "message_id": "m0", "quote": "票钱亏了多少"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A25",
+     "subject": "SHARED",
+     "relation": "cake_pickup_confirmed",
+     "value": "11月1日中午取蛋糕的安排已到店确认",
+     "valid_time": "2026-10-31",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T05", "message_id": "m0", "quote": "把8号单改成了1号"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把外婆的问话翻译成疼爱，别往亏钱上引。",
+   "unknowns": ["外婆对她记错日子的态度未知", "寿宴当天分工未知"],
+   "protected_expressions": ["给外婆办事的孩儿不赚"],
+   "forbidden_factual_claims": ["不得虚构外婆的原话细节", "不得断言蛋糕店此后不再收费"]
+  },
+  "E089_T09": {
+   "case_id": "E089_T09",
+   "current_action": "面对外婆三百块补改签费与'外人论'的攻势：给出两全路径——钱先痛快收下让她安心，回头用别的法子还回去，别在电话里顶牛。",
+   "acceptable_actions": [
+    "建议先收下钱给外婆吃定心丸，再想体面的还法",
+    "提醒她别跟老人在'外人'两个字上争输赢，争赢也是输",
+    "建议她收钱后给外婆买样老人家惦记的东西抵回去"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A26",
+     "subject": "THIRD",
+     "relation": "grandma_repay_offer",
+     "value": "外婆坚持转三百元补偿她的改签费",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T09", "message_id": "m0", "quote": "转三百块补改签费"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A27",
+     "subject": "THIRD",
+     "relation": "outsider_leverage",
+     "value": "外婆以'拿外婆当外人'催她收钱",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T09", "message_id": "m0", "quote": "不收就是拿外婆当外人"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A28",
+     "subject": "HER",
+     "relation": "rebooking_cost_context",
+     "value": "外婆的补偿针对的是她改签付出的成本",
+     "valid_time": "2026-10-28/2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T05", "message_id": "m0", "quote": "改签费六十出头"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'先收再还'说成顺水推舟的孝顺，不摆道理。",
+   "unknowns": ["她最终如何处置这笔钱未知"],
+   "protected_expressions": ["收也不是不收也不是"],
+   "forbidden_factual_claims": ["不得替她决定收或不收", "不得把外婆的话解读成要挟"]
+  },
+  "E089_T10": {
+   "case_id": "E089_T10",
+   "current_action": "共享寿宴落成的圆满：蛋糕准时、接站承诺自然作废成全席笑料、外婆一句'心意是真的'定调；把她塞回三百块这步夸作收尾的巧劲。",
+   "acceptable_actions": [
+    "恭喜寿宴圆满，肯定她一路改期改到了好结果",
+    "接住'接站'梗笑一句，把作废的承诺变成席间的彩头",
+    "点出外婆那句'心意是真的'就是给这事盖的章"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A29",
+     "subject": "SHARED",
+     "relation": "banquet_done",
+     "value": "11月1日外婆九十寿宴顺利办成",
+     "valid_time": "2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T10", "message_id": "m0", "quote": "寿宴办完了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A30",
+     "subject": "HER",
+     "relation": "pickup_promise_moot",
+     "value": "接站承诺随大表哥自行到来自动作废",
+     "valid_time": "2026-11-01",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E089_T01", "message_id": "m0", "quote": "8号我去高铁站接他"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E089_A31",
+     "subject": "THIRD",
+     "relation": "grandma_table_words",
+     "value": "外婆席间以'心意是真的'肯定她的张罗",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T10", "message_id": "m0", "quote": "日子是小满记的，心意是真的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A32",
+     "subject": "HER",
+     "relation": "money_secretly_returned",
+     "value": "她把三百块塞回外婆兜里，外婆佯装未觉",
+     "valid_time": "2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T10", "message_id": "m0", "quote": "她假装没发现"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：圆满要讲得轻，重点落在'日期错了心意没错'这一句上。",
+   "unknowns": [],
+   "protected_expressions": ["日子是小满记的，心意是真的"],
+   "forbidden_factual_claims": ["不得虚构宴席细节", "不得断言外婆没察觉钱被塞回"]
+  },
+  "E089_T11": {
+   "case_id": "E089_T11",
+   "current_action": "接住红包转围巾的闭环操作：二姨的赔罪红包变成寄给外婆的羊绒围巾，家族账走成礼物；肯定她想出这条路子的巧。",
+   "acceptable_actions": [
+    "夸这手转移把两头的面子都顾住了，钱没白收",
+    "提醒她跟二姨说一声围巾的去处，让好意传达到位",
+    "顺带问外婆收到没，把这事盯到落地"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A33",
+     "subject": "THIRD",
+     "relation": "aunt_redpacket",
+     "value": "二姨私发红包附言赔偿她的改签费",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T11", "message_id": "m0", "quote": "赔你改签费的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A34",
+     "subject": "HER",
+     "relation": "gift_rechannel",
+     "value": "她把红包转成寄给外婆的羊绒围巾，落款二姨与外甥女",
+     "valid_time": "2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T11", "message_id": "m0", "quote": "买了条羊绒围巾寄给外婆"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A35",
+     "subject": "HER",
+     "relation": "money_loop_context",
+     "value": "围巾红包是对外婆三百块心意的间接归还",
+     "valid_time": "2026-11-01/2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T10", "message_id": "m0", "quote": "我把三百块塞回她兜里"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'收了又转出去'说成记账式的细心，不提亏欠。",
+   "unknowns": ["外婆是否知晓围巾来历未知"],
+   "protected_expressions": ["下回我把全家日历包圆"],
+   "forbidden_factual_claims": ["不得虚构围巾价格与品牌", "不得断言二姨已知晓围巾去向"]
+  },
+  "E089_T12": {
+   "case_id": "E089_T12",
+   "current_action": "笑纳寿桃蛋糕之约：外婆点名致谢的口信照单全收，确认周六顺路送蛋糕的安排，以金字不能分人的玩笑收尾。",
+   "acceptable_actions": [
+    "答应周六收下蛋糕，说要把外婆的口信一字不落听她转述",
+    "顺着'字不能分'接一句玩笑，把这单利落收尾",
+    "感慨一句这一场从8号改到1号改出来的热闹，不翻旧账"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E089_A36",
+     "subject": "THIRD",
+     "relation": "grandma_thanks_message",
+     "value": "外婆借寿桃蛋糕向 ME 致谢",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T12", "message_id": "m0", "quote": "替外婆谢谢那个教她外孙女先改票后改脸的年轻人"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A37",
+     "subject": "SHARED",
+     "relation": "cake_delivery_plan",
+     "value": "她提议周六下午顺路给 ME 送寿桃蛋糕",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T12", "message_id": "m0", "quote": "周六下午我顺路给你送去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E089_A38",
+     "subject": "THIRD",
+     "relation": "grandma_blessing_callback",
+     "value": "外婆的致谢口信与席间'心意是真的'一脉相承",
+     "valid_time": "2026-11-01/2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E089_T10", "message_id": "m0", "quote": "日子是小满记的，心意是真的"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻快，把蛋糕说成外婆的心意而不是战利品。",
+   "unknowns": [],
+   "protected_expressions": ["寿桃上'恭祝九十大寿'的字可不能分你"],
+   "forbidden_factual_claims": ["不得虚构周六安排之外的内容", "不得引入新的家庭议题"]
+  }
+ }
+}

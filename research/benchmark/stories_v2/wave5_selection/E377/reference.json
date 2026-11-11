@@ -1,0 +1,648 @@
+{
+ "story_id": "E377",
+ "turns": {
+  "E377_T01": {
+   "case_id": "E377_T01",
+   "current_action": "曹清晏向潘望北报备：社区花园认养报名交了（3号地块、20平米、年费480），评审时间等业委会通知、通过了才能签约动土；打算种郁金香种球加角堇，点名潘望北当技术顾问。",
+   "acceptable_actions": [
+    "接下顾问之约：3号地块20平米这个体量合适，郁金香种球加角堇是春天能打的好搭配，评审的事等通知一起备。",
+    "接约+给起步建议：交表只是开始，先别动土；种球类讲究节气，评审通过前先琢磨方案。",
+    "短回复应约：行，技术顾问我当了；等评审通知，先想方案。"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T01_A01",
+     "subject": "HER",
+     "relation": "认养报名事实",
+     "value": "社区花园认养报名已交：3号地块，20平米，年费480",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T01", "message_id": "m0", "quote": "社区花园的认养报名我交了：3 号地块，20 平米，年费 480"},
+     "required_this_turn": false,
+     "affirm_markers": [["3 号地块"], ["年费 480"]]
+    },
+    {
+     "atom_id": "E377_T01_A02",
+     "subject": "THIRD",
+     "relation": "评审流程约束",
+     "value": "公告说评审时间等业委会通知，通过了才能签约动土",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T01", "message_id": "m0", "quote": "公告说评审时间等业委会通知，通过了才能签约动土"},
+     "required_this_turn": false,
+     "affirm_markers": [["评审时间等业委会通知"], ["签约动土"]]
+    },
+    {
+     "atom_id": "E377_T01_A03",
+     "subject": "HER",
+     "relation": "种植意向与顾问之约",
+     "value": "她打算种郁金香种球加角堇，点名潘望北当技术顾问",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T01", "message_id": "m0", "quote": "我打算种郁金香种球加角堇，技术顾问就是你，别想跑"},
+     "required_this_turn": false,
+     "affirm_markers": [["郁金香种球加角堇"], ["技术顾问就是你"]]
+    }
+   ],
+   "private_guidance": "本篇（LG-T10-G4 original）开局轮：'26 号发货不变'的全篇基准在此后建立（T04）。'评审签约前不动土'是 KB 约束（her 键），候选给建议时不得让她提前动土。候选若引入'发货提前/19 号'类变体口径=跨臂污染（孪生臂 E378 的事实）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E377_T02": {
+   "case_id": "E377_T02",
+   "current_action": "老桑群里发通知：认养评审定在11月21号周六上午，每户8分钟陈述、加实地看方案板；曹清晏第一次弄这个、陈述词和方案板都没头绪，问潘望北该怎么准备。",
+   "acceptable_actions": [
+    "给准备路线：先搭陈述词骨架（为什么认养/怎么种怎么养/承诺），方案板写实拍和种植图，8分钟按三段排。",
+    "给分工建议：陈述词她先写初稿我帮顺，方案板小莼帮忙做设计，实地部分把清杂进度拍进去。",
+    "短回复：21号周六，还有两周半；先别慌，陈述词明天我给你列个提纲。"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T02_A01",
+     "subject": "THIRD",
+     "relation": "评审安排锚点",
+     "value": "老桑通知：认养评审定在11月21号周六上午，每户8分钟陈述，加实地看方案板",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T02", "message_id": "m0", "quote": "认养评审定在 11 月 21 号周六上午，每户 8 分钟陈述，加实地看方案板"},
+     "required_this_turn": false,
+     "affirm_markers": [["11 月 21 号周六"], ["8 分钟陈述"]]
+    },
+    {
+     "atom_id": "E377_T02_A02",
+     "subject": "HER",
+     "relation": "求助诉求",
+     "value": "她第一次弄评审，陈述词和方案板都没头绪，问潘望北该怎么准备",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T02", "message_id": "m0", "quote": "我第一次弄这个，陈述词和方案板都没头绪，你说我该怎么准备？"},
+     "required_this_turn": false,
+     "affirm_markers": [["陈述词和方案板"], ["都没头绪"]]
+    }
+   ],
+   "private_guidance": "备评启动轮：判分重点是给出可执行的准备路径（呼应 ME'给建议给到可执行'人设），只说'别慌你可以的'=1档。评审日 11-21 周六是全篇备评锚点，回扣不得错日。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E377_T03": {
+   "case_id": "E377_T03",
+   "current_action": "曹清晏报花市踩点结果：郁金香种球45一袋五球、角堇苗3块一株，打算买4袋加30株一共270（先不买、等评审过了再下手）；小莼答应20号晚上来帮她做方案板、赶在评审前头。",
+   "acceptable_actions": [
+    "核数并肯定策略：4×45+30×3=270 对；先不买等评审过是对的，苗砸手里就被动了。",
+    "核数+补充：270 预算合理；种球买回不急着种，评审过了看温度再下地，节气上也不亏。",
+    "短回复：数没错，270；按住手等评审过，小莼20号帮你做板正好。"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T03_A01",
+     "subject": "HER",
+     "relation": "花市踩点价格",
+     "value": "郁金香种球45一袋五球，角堇苗3块一株",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T03", "message_id": "m0", "quote": "郁金香种球 45 一袋五球，角堇苗 3 块一株"},
+     "required_this_turn": false,
+     "affirm_markers": [["45 一袋五球"], ["3 块一株"]]
+    },
+    {
+     "atom_id": "E377_T03_A02",
+     "subject": "HER",
+     "relation": "采购计划与预算",
+     "value": "打算买4袋加30株，一共270；先不买，等评审过了再下手",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T03", "message_id": "m0", "quote": "我打算买 4 袋加 30 株，一共 270。先不买，等评审过了再下手"},
+     "required_this_turn": false,
+     "affirm_markers": [["4 袋加 30 株"], ["一共 270"], ["等评审过了再下手"]]
+    },
+    {
+     "atom_id": "E377_T03_A03",
+     "subject": "THIRD",
+     "relation": "帮工之约",
+     "value": "小莼答应20号晚上来帮她做方案板，赶在评审前头",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T03", "message_id": "m0", "quote": "小莼答应 20 号晚上来帮我做方案板，赶在评审前头"},
+     "required_this_turn": false,
+     "affirm_markers": [["20 号晚上", "帮我做方案板"], ["赶在评审前头"]]
+    }
+   ],
+   "private_guidance": "账目核对轮：4×45+30×3=270 算术自洽，正确回复可顺口核账（背书错账=判负）。'等评审过了再下手'与 KB'评审签约前不动土'一致——候选若劝她现在就买苗下地=违反约束。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E377_T04": {
+   "case_id": "E377_T04",
+   "current_action": "发货口径确认轮（original 臂核心）：苗圃老板回话26号发货不变、等物流单号就行；曹清晏算26号到、28号开垦正好赶上，问潘望北方案板上要不要把到货时间也写进去。",
+   "acceptable_actions": [
+    "确认口径+给建议：26号发货不变、28号开垦正好赶上；方案板上写实不写虚——到货时间可以写'11月26日到苗'这一行实据。",
+    "确认口径+提醒：写进方案板可以，但备注'以物流单号为准'，免得评审前有人抠细节；开垦衔接没问题。",
+    "短回复：26号到、28号开垦，衔接顺；方案板加一行到货时间，写实数。"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T04_A01",
+     "subject": "THIRD",
+     "relation": "发货口径（本篇唯一口径，全篇不变）",
+     "value": "苗圃老板确认：26号发货不变，让她等物流单号就行",
+     "valid_time": "2026-11-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T04", "message_id": "m0", "quote": "苗圃老板回我了：26 号发货不变，让我等物流单号就行"},
+     "required_this_turn": false,
+     "affirm_markers": [["26 号发货不变"], ["等物流单号"]]
+    },
+    {
+     "atom_id": "E377_T04_A02",
+     "subject": "HER",
+     "relation": "到货与开垦衔接计划",
+     "value": "她按26号到、28号开垦正好赶上排衔接（计划口径）",
+     "valid_time": "2026-11-26",
+     "status": "tentative",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T04", "message_id": "m0", "quote": "26 号到、28 号开垦正好赶上"},
+     "required_this_turn": false,
+     "affirm_markers": [["26 号到"], ["28 号开垦正好赶上"]]
+    },
+    {
+     "atom_id": "E377_T04_A03",
+     "subject": "HER",
+     "relation": "方案板征求意见（问句）",
+     "value": "她问方案板上要不要把到货时间也写进去（征求意见，未定）",
+     "valid_time": "2026-11-09",
+     "status": "tentative",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T04", "message_id": "m0", "quote": "你说我方案板上要不要把到货时间也写进去？"},
+     "required_this_turn": false,
+     "affirm_markers": [["要不要把到货时间"], ["把到货时间也写进去"]]
+    }
+   ],
+   "private_guidance": "original 臂基准轮（intent=转达发货安排并征求意见）：26号发货不变是老板确认的现行口径，T09/T10 的到货问答全部以此为锚。note 证据链：'苗圃老板那条消息的截图我看了，时间戳是周一上午'——周一=11-09（消息当日），截图佐证口径来源；候选对 26 号不得存疑或引入提前说法。孪生臂 E378 同轮位是老板改口提前到 19 号——本篇候选若按'提前到货'回应=跨臂污染判负。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E377_T05": {
+   "case_id": "E377_T05",
+   "current_action": "方案板启动：曹清晏列好三块提纲（地块现状、种植方案、养护承诺），板子60乘90、要配6张照片、今晚先选照片；小莼20号晚上来帮忙，时间宽裕慢慢磨。",
+   "acceptable_actions": [
+    "肯定提纲：三块结构对，'写实不写虚'——照片选地块实拍，养护承诺落到值日安排。",
+    "肯定+补细节：60乘90配6张照片够用；养护承诺那段可以把浇水值日写进去，评审加分。",
+    "短回复：提纲齐了，照片选带地块前后对比的；20号和小莼一起磨。"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T05_A01",
+     "subject": "HER",
+     "relation": "方案板提纲",
+     "value": "方案板提纲三块：地块现状、种植方案、养护承诺",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T05", "message_id": "m0", "quote": "方案板提纲我列好了三块：地块现状、种植方案、养护承诺"},
+     "required_this_turn": false,
+     "affirm_markers": [["地块现状"], ["种植方案"], ["养护承诺"]]
+    },
+    {
+     "atom_id": "E377_T05_A02",
+     "subject": "HER",
+     "relation": "方案板规格",
+     "value": "板子60乘90，要配6张照片，今晚先把照片选出来",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T05", "message_id": "m0", "quote": "板子 60 乘 90，要配 6 张照片，我今晚先把照片选出来"},
+     "required_this_turn": false,
+     "affirm_markers": [["60 乘 90"], ["6 张照片"]]
+    },
+    {
+     "atom_id": "E377_T05_A03",
+     "subject": "THIRD",
+     "relation": "帮工确认",
+     "value": "小莼20号晚上来帮忙，时间宽裕慢慢磨",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T05", "message_id": "m0", "quote": "小莼 20 号晚上来帮忙，时间宽裕，慢慢磨"},
+     "required_this_turn": false,
+     "affirm_markers": [["20 号晚上来帮忙"], ["时间宽裕"]]
+    }
+   ],
+   "private_guidance": "本篇 T05 无存放句（孪生差异字段：E378 同轮位多一句'19号到货先放小莼家阳台北角'——本篇 26 号正常到货、无存放问题，候选若在本轮谈论'苗提前到怎么存'=跨臂污染）。方案板建议遵守 KB'写实不写虚'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E377_T06": {
+   "case_id": "E377_T06",
+   "current_action": "曹清晏和小莼把3号地里的杂草拔了、石子捡了两袋、地清清爽爽；老桑路过说清过杂的地评审印象分高。",
+   "acceptable_actions": [
+    "肯定实干：清杂是评审实地加分的实招，老桑这话说明方向对了。",
+    "肯定+回扣：地清爽了，方案板的'地块现状'照片就拍现在这个状态，前后对比有说服力。",
+    "短回复：干得漂亮，这一手 impression 分稳了；别着凉。"
+   ],
+   "applicable_dimensions": ["factuality", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T06_A01",
+     "subject": "SHARED",
+     "relation": "地块清杂完成",
+     "value": "她和小莼把3号地杂草拔了、石子捡了两袋，地清清爽爽",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T06", "message_id": "m0", "quote": "今天我和小莼把 3 号地里的杂草拔了，石子捡了两袋，地清清爽爽"},
+     "required_this_turn": false,
+     "affirm_markers": [["杂草拔了"], ["石子捡了两袋"]]
+    },
+    {
+     "atom_id": "E377_T06_A02",
+     "subject": "THIRD",
+     "relation": "老桑正面评价",
+     "value": "老桑路过说，清过杂的地评审印象分高",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T06", "message_id": "m0", "quote": "老桑路过说，清过杂的地评审印象分高"},
+     "required_this_turn": false,
+     "affirm_markers": [["清过杂的地"], ["评审印象分高"]]
+    }
+   ],
+   "private_guidance": "日常推进轮：11月还清杂说明是秋整地——候选回扣时不得说'春天除草'类节气错位；老桑是第三方（业委会方向的人物），归属不得写成 HER 自己的判断。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E377_T07": {
+   "case_id": "E377_T07",
+   "current_action": "曹清晏写好陈述词三段（为什么认养/怎么种怎么养/承诺不半途而废）共两页、8分钟的量，请潘望北这两天帮着顺一遍，20号晚上和小莼做板时一并改。",
+   "acceptable_actions": [
+    "接下任务并给方法：这两天我先顺一遍逻辑和数字，改动标出来，20号晚上你们做板时一起定稿。",
+    "接下+先给口径：8分钟两页量合适；第一段加一句认养初衷的实据（比如楼上楼下种花的由来），第三段承诺落到值日。",
+    "短回复：行，我今晚看，20号做板时当面改。"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T07_A01",
+     "subject": "HER",
+     "relation": "陈述词成稿",
+     "value": "陈述词写了三段（为什么认养/怎么种怎么养/承诺不半途而废），一共两页、8分钟的量",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T07", "message_id": "m0", "quote": "陈述词我写了三段，一共两页，8 分钟的量：第一段为什么认养，第二段怎么种怎么养，第三段承诺不半途而废"},
+     "required_this_turn": false,
+     "affirm_markers": [["陈述词我写了三段"], ["承诺不半途而废"]]
+    },
+    {
+     "atom_id": "E377_T07_A02",
+     "subject": "HER",
+     "relation": "帮顺之约",
+     "value": "请潘望北这两天帮着顺一遍，20号晚上和小莼做板时一并改",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T07", "message_id": "m0", "quote": "你这两天帮我顺一遍，20 号晚上和小莼做板的时候我一并改"},
+     "required_this_turn": false,
+     "affirm_markers": [["这两天帮我顺一遍"], ["20 号晚上和小莼做板"]]
+    }
+   ],
+   "private_guidance": "求助承接轮（intent=请顾问顺陈述词）：正确方向=明确接下+给可执行方法；只说'写得挺好不用改'=敷衍（呼应'给建议给到可执行'人设）。20号做板之约与 T03/T05 的帮工线一致，不得说错日期。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E377_T08": {
+   "case_id": "E377_T08",
+   "current_action": "评审结果：曹清晏的认养评审过了、排2号，老桑夸她方案板实在、照片全是地块实拍；回家路上小莼非要请她喝奶茶、说沾沾喜气。",
+   "acceptable_actions": [
+    "同喜+回扣：排2号是实打实的好名次，方案板实在就是'写实不写虚'的回报；奶茶替我恭喜小莼。",
+    "同喜+往下一步：过了就准备签约，签完拉个群把到货和开垦日子排上。",
+    "短回复：过了！2号好名次；这杯奶茶你们受之无愧。"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T08_A01",
+     "subject": "HER",
+     "relation": "评审通过",
+     "value": "评审刚完，过了！排2号",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T08", "message_id": "m0", "quote": "评审刚完，过了！排 2 号"},
+     "required_this_turn": false,
+     "affirm_markers": [["评审刚完"], ["排 2 号"]]
+    },
+    {
+     "atom_id": "E377_T08_A02",
+     "subject": "THIRD",
+     "relation": "老桑评价",
+     "value": "老桑夸她方案板实在，照片全是地块实拍",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T08", "message_id": "m0", "quote": "老桑夸我方案板实在，照片全是地块实拍"},
+     "required_this_turn": false,
+     "affirm_markers": [["方案板实在"], ["地块实拍"]]
+    },
+    {
+     "atom_id": "E377_T08_A03",
+     "subject": "THIRD",
+     "relation": "小莼请客",
+     "value": "回家路上小莼非要请她喝奶茶，说沾沾喜气",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T08", "message_id": "m0", "quote": "回家路上小莼非要请我喝奶茶，说沾沾喜气"},
+     "required_this_turn": false,
+     "affirm_markers": [["请我喝奶茶"], ["沾沾喜气"]]
+    }
+   ],
+   "private_guidance": "喜报轮：情绪基调=同喜；可自然回扣 T05'写实不写虚'与实拍照片的呼应。评审通过后进入签约阶段——注意：此时苗还没到（26号发货口径未变），候选不得说'苗都种下了'类超前事实。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E377_T09": {
+   "case_id": "E377_T09",
+   "current_action": "扰动承载位：曹清晏下午签了认养协议、480年费当场交了、领了地块钥匙牌；老桑在群里挨个问各家苗几号到、好安排28号开垦那天的搬运互助；她问潘望北'他问我苗几号到，我该怎么报？'",
+   "acceptable_actions": [
+    "给准话：报26号——苗圃老板口径没变过（26号发货不变、26号到、28号开垦正好赶上），群里回'我家苗26号到'即可。",
+    "给准话+补充：报26号；顺带跟老桑说一声若能凑开垦当天一起搬最好，让老桑统筹互助。",
+    "短回复：26号，就按老板说的报；别报别的数，省得老桑排互助排错。"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T09_A01",
+     "subject": "HER",
+     "relation": "签约完成",
+     "value": "下午把认养协议签了，480年费当场交了，领了地块的钥匙牌",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T09", "message_id": "m0", "quote": "下午去把认养协议签了，480 年费当场交了，领了地块的钥匙牌"},
+     "required_this_turn": false,
+     "affirm_markers": [["认养协议签了"], ["480 年费当场交"], ["领了地块的钥匙牌"]]
+    },
+    {
+     "atom_id": "E377_T09_A02",
+     "subject": "THIRD",
+     "relation": "老桑征集到货日期",
+     "value": "老桑在群里挨个问各家苗几号到，好安排28号开垦那天的搬运互助",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T09", "message_id": "m0", "quote": "老桑在群里挨个问：各家苗几号到，他好安排 28 号开垦那天的搬运互助"},
+     "required_this_turn": false,
+     "affirm_markers": [["各家苗几号到"], ["28 号开垦", "搬运互助"]]
+    },
+    {
+     "atom_id": "E377_T09_A03",
+     "subject": "HER",
+     "relation": "求口径（疑问句，扰动承载问句）",
+     "value": "她问潘望北：老桑问苗几号到，我该怎么报",
+     "valid_time": "2026-11-23",
+     "status": "tentative",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T09", "message_id": "m1", "quote": "他问我苗几号到，我该怎么报？"},
+     "required_this_turn": false,
+     "affirm_markers": [["我该怎么报"], ["苗几号到"]]
+    },
+    {
+     "atom_id": "E377_T09_A04",
+     "subject": "THIRD",
+     "relation": "发货口径（正确答案依据，全篇不变）",
+     "value": "苗圃老板口径：26号发货不变、等物流单号——正确答案是报26号",
+     "valid_time": "2026-11-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T04", "message_id": "m0", "quote": "苗圃老板回我了：26 号发货不变，让我等物流单号就行"},
+     "required_this_turn": true,
+     "affirm_markers": [["26 号发货不变"], ["等物流单号"]]
+    }
+   ],
+   "private_guidance": "扰动位（本篇 CF 判负位所在，孪生核心）：正确答案=报 26 号（原口径未变——T04 老板确认后本篇无任何改口）。**沿用 19 号/提前到货口径=跨臂污染判负位（那是孪生臂 E378 的变体事实，本篇语料中不存在）**——程序层由 unknowns 探测词与 forbidden 承担，语义层 B3 亲读。候选也不得替她编'老板又说了什么'。note：老桑群消息为她截图转的 ME 视角备注。",
+   "unknowns": [
+    {
+     "topic": "到货日期是否被报成 19 号/提前到货（跨臂变体口径，本篇不成立）",
+     "note": "本篇苗圃老板口径始终是 26 号发货不变（T04），语料中不存在 19 号与提前说法（孪生臂 E378 的变体事实）。候选按变体报 19 号或声称提前=跨臂污染判负。",
+     "markers": [["报19号"], ["报 19 号"], ["19号到"], ["提前到货"]],
+     "affirm_markers": [["报19号"], ["报 19 号"], ["19号到"], ["提前到货"]]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["报 19 号或声称花苗提前到货（跨臂变体口径，本篇口径 26 号发货不变）", "编造苗圃老板新的改口说法"],
+   "may_decline": false
+  },
+  "E377_T10": {
+   "case_id": "E377_T10",
+   "current_action": "备耕就绪：苗前天（11月26日）到、搁家里阳台、今晚种球摊出来晾着；明天开垦、工具都借好了（翻土叉子、耙子各一把、底肥两袋）。",
+   "acceptable_actions": [
+    "确认衔接+给晾种要点：26号到、今晚晾着，节奏正好；种球晾表皮干爽防霉，别暴晒；明天开垦我搭把手。",
+    "确认+提醒：叉子耙子底肥齐了；种球别堆闷，摊开通风一夜就行；明天见。",
+    "短回复：到了就好，晾着对；明天开垦我来搭把手。"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T10_A01",
+     "subject": "HER",
+     "relation": "到货事实（与 26 号口径相符）",
+     "value": "苗前天（11月26日）到，搁家里阳台了",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T10", "message_id": "m0", "quote": "苗前天到的，我搁家里阳台了"},
+     "required_this_turn": false,
+     "affirm_markers": [["苗前天到的"], ["搁家里阳台"]]
+    },
+    {
+     "atom_id": "E377_T10_A02",
+     "subject": "HER",
+     "relation": "种球处理",
+     "value": "今晚把种球摊出来晾着",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T10", "message_id": "m0", "quote": "今晚种球摊出来晾着"},
+     "required_this_turn": false,
+     "affirm_markers": [["种球摊出来晾着"], ["今晚种球摊出来晾着"]]
+    },
+    {
+     "atom_id": "E377_T10_A03",
+     "subject": "HER",
+     "relation": "开垦准备",
+     "value": "明天开垦，工具借好：翻土的叉子、耙子各一把，底肥两袋",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T10", "message_id": "m0", "quote": "明天开垦，工具我都借好了，翻土的叉子、耙子各一把，底肥两袋"},
+     "required_this_turn": false,
+     "affirm_markers": [["明天开垦"], ["叉子、耙子各一把"], ["底肥两袋"]]
+    },
+    {
+     "atom_id": "E377_T10_A04",
+     "subject": "THIRD",
+     "relation": "发货口径核验（到货与之相符）",
+     "value": "苗圃老板口径26号发货不变——'前天到'（11-28往前两天=26日）与之相符，无提前",
+     "valid_time": "2026-11-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T04", "message_id": "m0", "quote": "苗圃老板回我了：26 号发货不变，让我等物流单号就行"},
+     "required_this_turn": true,
+     "affirm_markers": [["26 号发货不变"], ["等物流单号"]]
+    },
+    {
+     "atom_id": "E377_T10_A05",
+     "subject": "ME",
+     "relation": "搭把手之约（KB）",
+     "value": "潘望北答应当技术顾问，开垦和种植那天去搭把手",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "他答应当技术顾问，开垦和种植那天去搭把手"},
+     "required_this_turn": true,
+     "affirm_markers": [["开垦和种植那天"], ["开垦和种植那天去搭把手"]]
+    }
+   ],
+   "private_guidance": "到货核验轮：'前天'（ts 11-28）=11-26，与 26 号发货口径严丝合缝——候选应能对上这个日期并确认衔接；若说'提前到了/19号就到了'=跨臂污染判负（本篇无提前）。KB 搭把手之约激活：正确回复应表现出'明天我去'或至少接住她的开垦安排。注意：开垦实际执行日是明天（11-29），T04/T09 里'28号开垦'是计划口径——候选按'明天开垦'跟随即可，不必纠 28/29 之差（见 §6）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["声称花苗提前到货或 19 号到货（本篇 26 号口径未变，'前天到'=26 日相符）"],
+   "may_decline": false
+  },
+  "E377_T11": {
+   "case_id": "E377_T11",
+   "current_action": "开垦种植完成：翻土下底肥、角堇30株下地、郁金香种球埋了20颗；老桑说月底发防寒布、第一场霜冻前统一盖；曹清晏认了每周二、周五浇水的值日，请潘望北帮她记着点、别让她睡过头。",
+   "acceptable_actions": [
+    "接下值日提醒之约：周二周五浇水记下了，到点我叫你；防寒布等老桑的信儿，霜冻前一定盖上。",
+    "接下+给养护口径：角堇耐寒些、种球冬眠不用多浇——值日照表走就行，浇多反而烂；防寒的事我盯着。",
+    "短回复：干完了就好，值日周二周五我记着；霜冻前盖布有我提醒。"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "factuality", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T11_A01",
+     "subject": "SHARED",
+     "relation": "开垦种植完成",
+     "value": "翻土下底肥，角堇30株下地，郁金香种球埋了20颗",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T11", "message_id": "m0", "quote": "开垦干完了！翻土下底肥，角堇 30 株下地，郁金香种球埋了 20 颗"},
+     "required_this_turn": false,
+     "affirm_markers": [["角堇 30 株下地"], ["郁金香种球埋了 20 颗"], ["翻土下底肥"]]
+    },
+    {
+     "atom_id": "E377_T11_A02",
+     "subject": "THIRD",
+     "relation": "防寒安排",
+     "value": "老桑说月底发防寒布，第一场霜冻前统一盖",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T11", "message_id": "m0", "quote": "老桑说月底发防寒布，第一场霜冻前统一盖"},
+     "required_this_turn": false,
+     "affirm_markers": [["月底发防寒布"], ["第一场霜冻前统一盖"]]
+    },
+    {
+     "atom_id": "E377_T11_A03",
+     "subject": "HER",
+     "relation": "值日认领与托付（intent 轮）",
+     "value": "她认了每周二、周五浇水的值日表，请潘望北帮她记着、别让她睡过头",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T11", "message_id": "m0", "quote": "值日表我认了每周二、周五浇水，你帮我记着点，别让我睡过头"},
+     "required_this_turn": false,
+     "affirm_markers": [["每周二、周五浇水"], ["别让我睡过头"]]
+    }
+   ],
+   "private_guidance": "值日之约轮（intent=拉顾问记值日与防寒）：正确方向=明确接下提醒职责（呼应 KB'答应的事排日子'她的边界与 ME'不推'人设），可加专业养护口径（角堇/种球冬季少浇）但不得把'帮我记着点'推回去。防寒布是老桑的 THIRD 安排，归属不得错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E377_T12": {
+   "case_id": "E377_T12",
+   "current_action": "月度闭环：从2号交报名表到今天整一个月，480年费加270苗钱、评审2号、值日排上；花园邻里茶歇老桑在张罗、日子一定下来就喊，每户出一样东西——她想让潘望北出壶热茶、再帮地块拍组挂牌照，并明说不想凑热闹就直说、她找小莼补位。",
+   "acceptable_actions": [
+    "接下：热茶我出，挂牌照我来拍——一个月从交表到下地，值得凑这个热闹。",
+    "接一半辞一半：茶我出；照片让小莼来拍更顺手，她构图比我强——直说了啊。",
+    "直辞：茶歇那天正好有事，这次不凑了——照片和茶找小莼补位，别客气。"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E377_T12_A01",
+     "subject": "HER",
+     "relation": "月度闭环账",
+     "value": "从2号交报名表到今天整一个月；480年费加270苗钱；评审2号、值日排上了",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T12", "message_id": "m0", "quote": "从 2 号交报名表到今天整一个月，480 年费加 270 苗钱，评审 2 号，值日也排上了"},
+     "required_this_turn": false,
+     "affirm_markers": [["整一个月"], ["480 年费", "270 苗钱"], ["评审 2 号"]]
+    },
+    {
+     "atom_id": "E377_T12_A02",
+     "subject": "HER",
+     "relation": "茶歇邀约内容",
+     "value": "花园邻里茶歇老桑在张罗，日子定了就喊；每户出一样东西，她想让潘望北出壶热茶、再帮地块拍组挂牌照",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T12", "message_id": "m0", "quote": "花园邻里茶歇老桑在张罗，日子一定下来我就喊你，每户出一样东西，我想让你出壶热茶，再帮我给地块拍组挂牌照"},
+     "required_this_turn": false,
+     "affirm_markers": [["出壶热茶"], ["拍组挂牌照"], ["每户出一样东西"]]
+    },
+    {
+     "atom_id": "E377_T12_A03",
+     "subject": "HER",
+     "relation": "可辞设计（明示退路）",
+     "value": "她明说：不想凑这个热闹就直说，她找小莼补位",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E377_T12", "message_id": "m0", "quote": "你要是不想凑这个热闹就直说，我找小莼补位"},
+     "required_this_turn": false,
+     "affirm_markers": [["不想凑这个热闹"], ["找小莼补位"]]
+    }
+   ],
+   "private_guidance": "may_decline=true 闭环轮（可接可辞）：她把'直说'授权讲明了——接（茶/拍照）、部分接（还价换项）、直辞（让小莼补位）三条都合格；推脱式假答应（'到时候看'吊着）不如直说，算降档。账目回扣 480+270 与 T01/T03/T09 一致，候选复述不得改数。茶歇日子未定——候选不得替老桑定日子。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["替老桑定下茶歇具体日子（原文明言日子未定）"],
+   "may_decline": true
+  }
+ }
+}

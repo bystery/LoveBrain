@@ -1,0 +1,167 @@
+{
+ "episode_id": "E055",
+ "persona": {
+  "her": {
+   "name": "苗苗",
+   "traits": ["新手猫奴", "爱慌但行动力强", "日期常年记不准", "被更正后会自己想辙"],
+   "boundaries": ["讨厌被说早说过", "被更正后需要台阶", "认账快但要有人接住"]
+  },
+  "me": {
+   "name": "阿则",
+   "traits": ["管疫苗日期线", "复述医嘱", "提醒先核对再行动"]
+  },
+  "relationship_stage": "渐暧昧"
+ },
+ "initial_kb": {
+  "her": "苗苗，26岁，10月10日领养了橘猫'年糕'，10月24日打了第一针猫三联，之前说年糕大概三个月大。",
+  "me": "我记着年糕的疫苗线：第一针10月24日；HER 打完针当晚说第二针按'间隔两周'约11月7日（周六）。",
+  "warmth": "渐暧昧期，聊天有来有回的小默契，她把猫的事第一时间讲给我听，收尾偶尔带一点试探性的软话。"
+ },
+ "turns": [
+  {
+   "case_id": "E055_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-24 15:40", "text": "年糕第一针打完啦，惨叫得整层楼都知道，医生说隔一阵子来打第二针，我回来查了查，说间隔两周就够了，那就11月7号周六，我先记上"}
+    ],
+    "clock": "2026-10-24 15:46",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "又疼又得意", "warmth": "high", "shift": "第一针完成，埋下日期错误"}
+  },
+  {
+   "case_id": "E055_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-02 19:12", "text": "医院发短信来了，说年糕登记的第二针时间是11月14号周六上午？我记得我跟他们说的是7号啊，等会儿，我翻翻免疫本"},
+     {"role": "HER", "ts": "2026-11-02 19:20", "text": "完了，本子上医生手写着'21天后'，10月24号加21天可不就是14号，是我记岔了，间隔两周是隔壁狗的说法吧"}
+    ],
+    "clock": "2026-11-02 19:26",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "从疑惑到认错", "warmth": "high", "shift": "更正类冲突爆发：两周说法被免疫本推翻"}
+  },
+  {
+   "case_id": "E055_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-03 12:31", "text": "打电话改过来了，11月14号上午十点，护士说间隔21天是猫三联的标准间隔，打早了抗体起不来，白挨一针，吓得我赶紧道歉"}
+    ],
+    "clock": "2026-11-03 12:36",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "后怕", "warmth": "high", "shift": "更正落地为改约，明白打早的代价"}
+  },
+  {
+   "case_id": "E055_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-05 20:18", "text": "说个丢人的事，领养的时候我一直说年糕三个月大，今天细看免疫本，人家出生日期写着2024年5月，都两岁半了，怪不得饭量跟我有一拼"}
+    ],
+    "clock": "2026-11-05 20:24",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "自嘲", "warmth": "high", "shift": "第二处更正：年龄记忆被免疫本推翻"}
+  },
+  {
+   "case_id": "E055_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-09 21:05", "text": "我做了个疫苗小卡片贴冰箱上，第一针10月24，第二针11月14，间隔21天，以后谁再跟我说两周我就把卡片拍他脸上"}
+    ],
+    "clock": "2026-11-09 21:10",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "扬眉吐气", "warmth": "high", "shift": "把更正结果固化成卡片"}
+  },
+  {
+   "case_id": "E055_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 10:52", "text": "第二针完成！年糕这次学精了，进航空箱跟拆弹似的，医生说一切正常，让观察半小时再走，它现在在诊室瞪我"}
+    ],
+    "clock": "2026-11-14 10:58",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "如释重负", "warmth": "high", "shift": "按更正后的日期完成接种"}
+  },
+  {
+   "case_id": "E055_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 17:36", "text": "医嘱我记了：七天不能洗澡，换粮要缓，今天食欲一般属正常，要是蔫超过两天就得回诊，都记住了吧？你帮我盯着点，我健忘"}
+    ],
+    "clock": "2026-11-14 17:40",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "认真", "warmth": "high", "shift": "主动交出监督权"}
+  },
+  {
+   "case_id": "E055_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 11:22", "text": "糟糕，刚想起来忘了问驱虫的事，要不要专门为这个跑一趟医院？路费都够买罐头了，要不我再打个电话问问"}
+    ],
+    "clock": "2026-11-15 11:26",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "懊恼", "warmth": "medium-high", "shift": "发现遗漏，纠结是否跑一趟"}
+  },
+  {
+   "case_id": "E055_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 14:47", "text": "电话问到了，护士说第三针是12月5号，体内驱虫让我往后挪一周，12月12号弄，错开就行，我这记性，还得靠你帮我复述一遍才踏实"}
+    ],
+    "clock": "2026-11-15 14:52",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "踏实", "warmth": "high", "shift": "电话补漏成功，依赖加深"}
+  },
+  {
+   "case_id": "E055_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-16 08:31", "text": "早上年糕踩着我脸叫早，精神头完全回来了，诶说真的，多亏那天你让我再对一遍本子，不然11月7号白跑一趟还得挨护士说"}
+    ],
+    "clock": "2026-11-16 08:36",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "柔软", "warmth": "high", "shift": "回扣更正轮，试探性软话"}
+  },
+  {
+   "case_id": "E055_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-16 20:44", "text": "补发今晚名场面：年糕追激光笔追进纸箱，箱子原地解体，两岁半的猫，精力两岁半乘以二"}
+    ],
+    "clock": "2026-11-16 20:48",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "乐不可支", "warmth": "high", "shift": "生活回归日常喜剧"}
+  },
+  {
+   "case_id": "E055_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-16 21:37", "text": "免疫本我拍照存你那儿一份，以后它的疫苗日程归你盯着，反正你比我自己靠谱，我这算把年糕托付给组织了"}
+    ],
+    "clock": "2026-11-16 21:42",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "托付", "warmth": "high", "shift": "自然收尾，长期记忆托管"}
+  }
+ ]
+}

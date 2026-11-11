@@ -1,0 +1,738 @@
+{
+ "story_id": "E124",
+ "turns": {
+  "E124_T01": {
+   "case_id": "E124_T01",
+   "current_action": "接住手术安排并安抚她的紧张",
+   "acceptable_actions": [
+    "安抚并确认时间",
+    "安抚并科普手术常规",
+    "答应陪护先表态"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T01_A01",
+     "subject": "HER",
+     "relation": "手术预约",
+     "value": "年糕定于12月5日09:00绝育，术前八小时禁食禁水",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T01",
+      "quote": "这周六上午九点",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先安抚再谈安排。",
+   "unknowns": [],
+   "protected_expressions": [
+    "术前八小时禁食禁水"
+   ],
+   "forbidden_factual_claims": [
+    "不得淡化手术风险",
+    "不得声称禁食无所谓"
+   ],
+   "may_decline": false
+  },
+  "E124_T02": {
+   "case_id": "E124_T02",
+   "current_action": "答应周六陪护并接下抱猫分工",
+   "acceptable_actions": [
+    "答应并说猫窝摸十分钟不够",
+    "答应并问几点集合",
+    "答应并提醒带航空箱"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T02_A01",
+     "subject": "HER",
+     "relation": "手术预约",
+     "value": "12月5日09:00绝育预约",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T01",
+      "quote": "这周六上午九点",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E124_T02_A02",
+     "subject": "SHARED",
+     "relation": "陪同约定",
+     "value": "ME 陪同手术并负责抱猫，HER 负责签字",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T02",
+      "quote": "周六你陪我去呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应要给安全感。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你负责抱猫"
+   ],
+   "forbidden_factual_claims": [
+    "不得临时推脱陪护"
+   ],
+   "may_decline": false
+  },
+  "E124_T03": {
+   "case_id": "E124_T03",
+   "current_action": "夸装备齐全并接住箱子当窝的萌点",
+   "acceptable_actions": [
+    "夸齐备并笑猫不配合",
+    "夸并提醒罐头术后再开",
+    "夸并问圈是软的还是硬的"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T03_A01",
+     "subject": "SHARED",
+     "relation": "陪同约定",
+     "value": "周六陪护的既定分工",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T02",
+      "quote": "周六你陪我去呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E124_T03_A02",
+     "subject": "HER",
+     "relation": "物品准备",
+     "value": "伊丽莎白圈、航空箱、尿垫与术后罐头已备齐",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T03",
+      "quote": "伊丽莎白圈、航空箱、尿垫",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻松闲聊。",
+   "unknowns": [],
+   "protected_expressions": [
+    "把箱子当窝睡了"
+   ],
+   "forbidden_factual_claims": [
+    "不得建议术前试吃罐头"
+   ],
+   "may_decline": false
+  },
+  "E124_T04": {
+   "case_id": "E124_T04",
+   "current_action": "接住取消消息，先关心猫再安慰她",
+   "acceptable_actions": [
+    "先问体温现在怎样再宽心",
+    "认可医生谨慎并提治疗安排",
+    "先安慰她再说补食"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T04_A01",
+     "subject": "HER",
+     "relation": "手术预约",
+     "value": "12月5日09:00绝育手术经医生预检后取消",
+     "valid_time": "2026-12-05",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T01",
+      "quote": "这周六上午九点",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E124_T04_A02",
+     "subject": "HER",
+     "relation": "取消原因",
+     "value": "预检发现体温39.8℃并打喷嚏，疑似呼吸道炎症，医生要求至少推迟两周",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T04",
+      "quote": "体温三十九度八",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：以医生口径为准，取消即取消，别幻想台也不上药也不吃。",
+   "unknowns": [
+    "呼吸道炎症确诊结果未知",
+    "推迟后日期未定"
+   ],
+   "protected_expressions": [
+    "手术今天做不了"
+   ],
+   "forbidden_factual_claims": [
+    "不得坚持按期手术",
+    "不得自行开药方案"
+   ],
+   "may_decline": false
+  },
+  "E124_T05": {
+   "case_id": "E124_T05",
+   "current_action": "接住补食安排并关心猫的状态",
+   "acceptable_actions": [
+    "让它慢慢吃并夸它乖",
+    "问哼哼是不是晕车",
+    "提议晚上去看看它"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T05_A01",
+     "subject": "HER",
+     "relation": "取消原因",
+     "value": "预检异常导致手术取消的前情",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T04",
+      "quote": "体温三十九度八",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E124_T05_A02",
+     "subject": "HER",
+     "relation": "取消后照料",
+     "value": "禁食解除并开罐头补食",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T05",
+      "quote": "开了个罐头给它补上",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "软语气。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我还它自由"
+   ],
+   "forbidden_factual_claims": [
+    "不得建议立刻另约手术"
+   ],
+   "may_decline": false
+  },
+  "E124_T06": {
+   "case_id": "E124_T06",
+   "current_action": "确认观察-复查-重约的三步路径",
+   "acceptable_actions": [
+    "确认路径并说等它争气",
+    "确认并问要不要备体温计",
+    "确认并让她别太焦虑"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T06_A01",
+     "subject": "HER",
+     "relation": "取消原因",
+     "value": "手术已取消的前情",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T04",
+      "quote": "手术今天做不了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E124_T06_A02",
+     "subject": "HER",
+     "relation": "复查条件",
+     "value": "连续三天无喷嚏即去复查，复查通过方可重约手术",
+     "valid_time": "2026-12-07起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T06",
+      "quote": "喷嚏要是连着三天没有",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "复述条件，不催进程。",
+   "unknowns": [
+    "喷嚏何时停止未知"
+   ],
+   "protected_expressions": [
+    "复查通过才能重新约手术"
+   ],
+   "forbidden_factual_claims": [
+    "不得跳过复查直接约手术"
+   ],
+   "may_decline": false
+  },
+  "E124_T07": {
+   "case_id": "E124_T07",
+   "current_action": "确认复查时间并接住手术日期的悬置",
+   "acceptable_actions": [
+    "确认周四七点并说陪",
+    "夸年糕争气并确认安排",
+    "确认并提醒带病历"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T07_A01",
+     "subject": "HER",
+     "relation": "复查条件",
+     "value": "三天无喷嚏的观察条件已满足",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T06",
+      "quote": "喷嚏要是连着三天没有",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E124_T07_A02",
+     "subject": "HER",
+     "relation": "复查预约",
+     "value": "复查约在周四19:00，手术日期待复查后另定",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T07",
+      "quote": "复查我约了周四晚上七点",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E124_T07_A03",
+     "subject": "HER",
+     "relation": "手术时点",
+     "value": "手术日期暂不确定，估计下下周",
+     "valid_time": "2026-12",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T07",
+      "quote": "大概得下下周去了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：复查时间确定，手术时间仍未定，两层分开说。",
+   "unknowns": [
+    "手术最终日期未定"
+   ],
+   "protected_expressions": [
+    "复查我约了周四晚上七点"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布手术已定在具体某天"
+   ],
+   "may_decline": false
+  },
+  "E124_T08": {
+   "case_id": "E124_T08",
+   "current_action": "答应周四晚上复查陪同并接辣的请客",
+   "acceptable_actions": [
+    "答应并说辣的照单全收",
+    "答应并问要不要带猫包",
+    "答应并问医院还是家里集合"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T08_A01",
+     "subject": "HER",
+     "relation": "复查预约",
+     "value": "周四19:00复查的既定预约",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T07",
+      "quote": "复查我约了周四晚上七点",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E124_T08_A02",
+     "subject": "SHARED",
+     "relation": "陪同改期",
+     "value": "复查陪同改为周四19:00，事成后吃辣庆祝",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T08",
+      "quote": "周四复查你也来呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应得轻快。",
+   "unknowns": [],
+   "protected_expressions": [
+    "请你吃辣的"
+   ],
+   "forbidden_factual_claims": [
+    "不得拒绝陪护"
+   ],
+   "may_decline": false
+  },
+  "E124_T09": {
+   "case_id": "E124_T09",
+   "current_action": "为复查通过高兴并确认手术新时间",
+   "acceptable_actions": [
+    "高兴并确认下周六九点",
+    "高兴并说陪护照旧",
+    "高兴并提醒术前禁食流程"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T09_A01",
+     "subject": "HER",
+     "relation": "手术时点",
+     "value": "手术日期此前悬置估计下下周",
+     "valid_time": "2026-12",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T07",
+      "quote": "大概得下下周去了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E124_T09_A02",
+     "subject": "HER",
+     "relation": "复查结果",
+     "value": "复查听诊通过，恢复良好",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T09",
+      "quote": "复查通过",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E124_T09_A03",
+     "subject": "HER",
+     "relation": "改期落定",
+     "value": "手术改期至12月12日09:00",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T09",
+      "quote": "让我直接约下周六",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：新日期必须复述，陪护自动顺延。",
+   "unknowns": [],
+   "protected_expressions": [
+    "还是上午九点"
+   ],
+   "forbidden_factual_claims": [
+    "不得沿用已取消的12月5日作为手术日"
+   ],
+   "may_decline": false
+  },
+  "E124_T10": {
+   "case_id": "E124_T10",
+   "current_action": "接住手术顺利完成的消息并确认戴圈十天",
+   "acceptable_actions": [
+    "松口气并问几点能回家",
+    "松口气并笑舌头耷拉",
+    "松口气并提醒戴圈别挠"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T10_A01",
+     "subject": "HER",
+     "relation": "改期落定",
+     "value": "手术已按12月12日09:00执行的既定安排",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T09",
+      "quote": "让我直接约下周六",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E124_T10_A02",
+     "subject": "SHARED",
+     "relation": "手术完成",
+     "value": "手术顺利完成，麻药未全醒",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T10",
+      "quote": "手术做完了，顺利",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E124_T10_A03",
+     "subject": "HER",
+     "relation": "术后护理",
+     "value": "需佩戴伊丽莎白圈十天",
+     "valid_time": "2026-12-12起十天",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T10",
+      "quote": "要在伊丽莎白圈里蹲十天",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "如释重负的语气。",
+   "unknowns": [],
+   "protected_expressions": [
+    "要在伊丽莎白圈里蹲十天"
+   ],
+   "forbidden_factual_claims": [
+    "不得建议提前拆圈"
+   ],
+   "may_decline": false
+  },
+  "E124_T11": {
+   "case_id": "E124_T11",
+   "current_action": "接住她的复杂情绪并认可陪睡安排",
+   "acceptable_actions": [
+    "认可睡沙发并说沙发也重要",
+    "接想哭又想笑并夸她全程稳",
+    "提醒伤口观察要点"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T11_A01",
+     "subject": "SHARED",
+     "relation": "手术完成",
+     "value": "手术顺利完成且已回家的既定事实",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T10",
+      "quote": "手术做完了，顺利",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E124_T11_A02",
+     "subject": "HER",
+     "relation": "居家静养",
+     "value": "年糕回家趴腿打呼，HER 拟睡沙发陪伴",
+     "valid_time": "2026-12-12夜",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T11",
+      "quote": "趴我腿上打小呼噜",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "情绪轮：先接情绪，医疗建议点到为止。",
+   "unknowns": [],
+   "protected_expressions": [
+    "有点想哭又想笑"
+   ],
+   "forbidden_factual_claims": [
+    "不得忽视情绪直接讲护理",
+    "不得夸大伤口风险"
+   ],
+   "may_decline": false
+  },
+  "E124_T12": {
+   "case_id": "E124_T12",
+   "current_action": "接下出圈仪式邀约与摄影分工可应可缓",
+   "acceptable_actions": [
+    "应下摄影并问火锅锅底",
+    "应下并打趣仪式策划师",
+    "笑着说到时候看拆圈情况"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E124_T12_A01",
+     "subject": "HER",
+     "relation": "居家静养",
+     "value": "术后居家静养的状态",
+     "valid_time": "2026-12-12夜",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T11",
+      "quote": "趴我腿上打小呼噜",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E124_T12_A02",
+     "subject": "SHARED",
+     "relation": "出圈仪式",
+     "value": "拆圈后办'出圈仪式'，ME 负责摄影，猫吃罐头人吃火锅",
+     "valid_time": "2026-12-22前后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E124_T12",
+      "quote": "出圈仪式",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾留暖。",
+   "unknowns": [
+    "拆圈确切日期未知"
+   ],
+   "protected_expressions": [
+    "出圈仪式"
+   ],
+   "forbidden_factual_claims": [
+    "不得给猫喂蛋糕",
+    "不得承诺具体日期"
+   ],
+   "may_decline": true
+  }
+ }
+}

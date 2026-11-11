@@ -1,0 +1,34 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "AK09",
+ "turn_clocks": [
+  {
+   "case_id": "AK09_T01",
+   "clock": "2026-12-19 23:58"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "AK09_T01",
+   "message_id": "m0",
+   "speaker": "ME",
+   "quote": "还有两小时题 你要现在弄完还是留着明早",
+   "ts": "2026-12-19 22:40"
+  },
+  {
+   "case_id": "AK09_T01",
+   "message_id": "m1",
+   "speaker": "HER",
+   "quote": "我刚背到十二点 明天六点半起 先睡了 你别等",
+   "ts": "2026-12-19 23:56"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "AK09_E1",
+   "case_id": "AK09_T01",
+   "summary": "备考｜反馈=busy｜意图=周六下午图书馆两小时攻实务",
+   "source_turn": "AK09_T01"
+  }
+ ]
+}

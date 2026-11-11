@@ -1,0 +1,608 @@
+{
+ "story_id": "E199",
+ "turns": {
+  "E199_T01": {
+   "case_id": "E199_T01",
+   "current_action": "祝贺换房目标落地到具体房源，建议意向金交前把关键条款白纸黑字写清",
+   "acceptable_actions": [
+    "确认八十九平一百八十六万的信息，提醒意向金协议要写清退还条件",
+    "祝贺她妈相中房子，提议周末陪同去交意向金顺便量厨房",
+    "接住启动消息，建议把挂牌价和预算上限先对齐再交钱"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A01",
+     "subject": "SHARED",
+     "relation": "换房目标",
+     "value": "温诺父母相中城东桂溪苑三楼带电梯八十九平挂牌一百八十六万的房子",
+     "valid_time": "2026-10-31 宣布",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T01",
+      "message_id": "m0",
+      "quote": "我妈相中城东桂溪苑的三楼带电梯，八十九平挂牌一百八十六万"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E199_A02",
+     "subject": "HER",
+     "relation": "留痕习惯",
+     "value": "三年前差点为亲戚担保惹麻烦后，温诺家大事都要求白纸黑字留痕",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "initial_kb",
+      "key": "lessons",
+      "quote": "此后她家大事都要求白纸黑字留痕"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "分享她的兴奋，同时把留痕习惯轻巧地带出来，不说教",
+   "unknowns": [
+    "旧房卖出端情况未知（T03 揭晓）"
+   ],
+   "protected_expressions": [
+    "桂溪苑",
+    "一百八十六万"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称意向金已交（尚未发生）",
+    "不得虚构厨房已谈妥改造"
+   ]
+  },
+  "E199_T02": {
+   "case_id": "E199_T02",
+   "current_action": "把厨房偏小的顾虑记入清单，建议实测尺寸再判断改造成本",
+   "acceptable_actions": [
+    "认领记录，提出下次带上卷尺量厨房净尺寸",
+    "接住她爸的顾虑，建议改造报价先问清再谈意向金",
+    "肯定采光，提醒小厨房改造要算上烟道和水位限制"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A03",
+     "subject": "THIRD",
+     "relation": "看房顾虑",
+     "value": "温诺父亲嫌桂溪苑厨房小，中介称可以改造",
+     "valid_time": "2026-11-01 看房",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T02",
+      "message_id": "m0",
+      "quote": "我爸嫌厨房小，中介说能改"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "呼应他懂装修的设定，给一条具体可执行的建议而非泛泛安慰",
+   "unknowns": [
+    "改造可行性与费用未知"
+   ],
+   "protected_expressions": [
+    "厨房小",
+    "能改"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言厨房改造一定可行",
+    "不得虚构已量过尺寸"
+   ]
+  },
+  "E199_T03": {
+   "case_id": "E199_T03",
+   "current_action": "对旧房出价一百七十八万给出比价意见：差八万换少折腾是否划算由她家拍板",
+   "acceptable_actions": [
+    "算差价八万占挂牌约百分之四，属常见议价区间",
+    "提示先别急着心动，等买家批贷函落地再谈心态",
+    "认可少折腾的价值，建议和中介确认买家资质再说"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A04",
+     "subject": "SHARED",
+     "relation": "旧房出价",
+     "value": "旧房子有买家出价一百七十八万元，比挂牌价少八万元",
+     "valid_time": "2026-11-03 转述",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T03",
+      "message_id": "m0",
+      "quote": "旧房子有买家了，出价一百七十八万，比挂牌少八万"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "账要报准，判断权留给温家，不替她妈做决定",
+   "unknowns": [
+    "买家贷款能否批下未知（T04 挂起）"
+   ],
+   "protected_expressions": [
+    "一百七十八万"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称旧房已成交",
+    "不得虚构买家另加了价"
+   ]
+  },
+  "E199_T04": {
+   "case_id": "E199_T04",
+   "current_action": "接住批贷函的等待期，建议此期间不追加任何资金动作",
+   "acceptable_actions": [
+    "认同先别声张，建议等待期不交任何新房定金",
+    "提醒批贷函到手前一切口头承诺不作数，符合她家留痕原则",
+    "安抚等待期正常，顺带问她要不要先做新房的预算表"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A05",
+     "subject": "SHARED",
+     "relation": "批贷等待",
+     "value": "买家贷款材料已提交，批贷函预计一至两周内出，温家暂不声张",
+     "valid_time": "2026-11-06 转述",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T04",
+      "message_id": "m0",
+      "quote": "批贷函快则一周慢则半月，让我家先别声张"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把等待期定义成冻结期，给一条明确的边界建议",
+   "unknowns": [
+    "批贷确切时间未知"
+   ],
+   "protected_expressions": [
+    "批贷函",
+    "别声张"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构批贷函已到手（T10 才发生）",
+    "不得催促她家立即交新房钱"
+   ]
+  },
+  "E199_T05": {
+   "case_id": "E199_T05",
+   "current_action": "立即确认暂停决定：一切事务让位健康，同步把挂起的事务列个封存清单",
+   "acceptable_actions": [
+    "第一句先接人：检查要紧，房子的事放一百个心",
+    "确认暂停，提出把意向金、看房、旧房谈判全挂起等她口令",
+    "接住急停，主动说本周看房安排取消，随叫随到陪挂号"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "time_state",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A06",
+     "subject": "SHARED",
+     "relation": "换房计划",
+     "value": "换房计划全面启动推进中",
+     "valid_time": "2026-10-31 启动",
+     "status": "paused",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T01",
+      "message_id": "m0",
+      "quote": "这周末去交意向金"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E199_A07",
+     "subject": "THIRD",
+     "relation": "健康事件",
+     "value": "温诺母亲体检乳腺查出结节，医生要求进一步检查",
+     "valid_time": "2026-11-09 发生",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T05",
+      "message_id": "m0",
+      "quote": "我妈今天体检，乳腺查出个结节，医生让做进一步检查"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是冲突落实轮：换房计划由推进转为暂停（status 变化），回复顺序先人后事",
+   "unknowns": [
+    "结节性质未知（T08 揭晓）"
+   ],
+   "protected_expressions": [
+    "暂停吧",
+    "先放下"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续推进房子话题",
+    "不得对结节性质下结论"
+   ]
+  },
+  "E199_T06": {
+   "case_id": "E199_T06",
+   "current_action": "夜间情绪承接：不评估病情、不宽泛安慰，只表达陪伴和随叫随到",
+   "acceptable_actions": [
+    "接住她的没底，说不猜结果，周四我陪你们去",
+    "轻轻打断灾难想象，把话题落在今晚早点睡",
+    "回一句我不瞎想，你妈也不瞎想，咱们把周四的事排好"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A08",
+     "subject": "SHARED",
+     "relation": "就诊安排",
+     "value": "已挂周四专家号，温诺陪同母亲就诊",
+     "valid_time": "2026-11-09 夜间安排",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T06",
+      "message_id": "m0",
+      "quote": "我陪她挂了周四的专家号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不提房子一个字，情绪在线但克制，不替医生预判",
+   "unknowns": [
+    "专家号具体时段未知"
+   ],
+   "protected_expressions": [
+    "周四的专家号",
+    "别顺着我瞎想"
+   ],
+   "forbidden_factual_claims": [
+    "不得对结节性质作乐观或悲观断言",
+    "不得虚构已查到名医"
+   ]
+  },
+  "E199_T07": {
+   "case_id": "E199_T07",
+   "current_action": "接住她的谢意，确认陪伴式支持的方式：不灌鸡汤，做具体的事",
+   "acceptable_actions": [
+    "回一句陪你过图不算什么，想聊房还是想聊别的都行",
+    "接住感谢，说明天继续，把户型图的问题列个单子",
+    "轻描淡写带过，提醒她这几天照顾好自己作息"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A09",
+     "subject": "HER",
+     "relation": "支持确认",
+     "value": "温诺明确表示 ME 陪她过户型图让她好受多了",
+     "valid_time": "2026-11-11 表达",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T07",
+      "message_id": "m0",
+      "quote": "就陪我把桂溪苑的户型图又过了一遍，我好受多了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "受谢不居功，把姿态放在长期在场",
+   "unknowns": [
+    "复查具体结果未知（T08 揭晓）"
+   ],
+   "protected_expressions": [
+    "户型图",
+    "好受多了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称暂停已解除",
+    "不得虚构她妈病情消息"
+   ]
+  },
+  "E199_T08": {
+   "case_id": "E199_T08",
+   "current_action": "接住良性倾向的好消息，克制庆祝，提醒随访别忘",
+   "acceptable_actions": [
+    "先松一口气，再提醒三个月随访记进日历",
+    "接住虚惊一场，提议把这段日子的事写进家庭备忘",
+    "笑接糖炒栗子，说这单我请，庆祝健康"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A10",
+     "subject": "THIRD",
+     "relation": "复查结果",
+     "value": "温诺母亲复查为良性倾向，仅需三个月随访",
+     "valid_time": "2026-11-13 获知",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T08",
+      "message_id": "m0",
+      "quote": "复查结果出来了，良性倾向，三个月随访就行"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "好消息接住但不过度放大，随访事项替她钉住",
+   "unknowns": [
+    "随访具体日期未知"
+   ],
+   "protected_expressions": [
+    "良性倾向",
+    "三个月随访"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称完全排除风险",
+    "不得虚构不需要随访"
+   ]
+  },
+  "E199_T09": {
+   "case_id": "E199_T09",
+   "current_action": "确认降档重启方案：先卖旧房再挑新房，节奏放缓并认可其稳健",
+   "acceptable_actions": [
+    "认可先卖后买，现金流压力小，符合不掏空积蓄的底线",
+    "复述新顺序，提出把桂溪苑那套降级为备选继续观察",
+    "支持不赶了，建议顺手把上一版的意向金预案作废归档"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A11",
+     "subject": "SHARED",
+     "relation": "换房计划",
+     "value": "换房计划调整为先卖旧房再慢慢挑选新房，不再赶进度",
+     "valid_time": "2026-11-14 调整",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T09",
+      "message_id": "m0",
+      "quote": "先卖旧房不过户新房，我妈说全款压力太大，卖掉旧房再慢慢挑"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E199_A12",
+     "subject": "HER",
+     "relation": "换房计划回扣",
+     "value": "换房计划曾在母亲体检后全面暂停",
+     "valid_time": "2026-11-09 暂停",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T05",
+      "message_id": "m0",
+      "quote": "房子的事全先放下"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是冲突落实轮：计划由暂停转为降档重启（status 再变化），突出节奏变化而非简单复活",
+   "unknowns": [
+    "旧房网签时间未知（T10 揭晓）"
+   ],
+   "protected_expressions": [
+    "先卖旧房",
+    "不赶了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称原买定方案继续执行",
+    "不得虚构桂溪苑已重新交定金"
+   ]
+  },
+  "E199_T10": {
+   "case_id": "E199_T10",
+   "current_action": "确认批贷函落地与月底网签的节点，建议把关键日期写进家庭备忘",
+   "acceptable_actions": [
+    "复述月底网签与钱到手再谈新房的顺序，提议记入备忘",
+    "认可中介点头，提醒网签当天带齐证件按她家留痕习惯逐页核对",
+    "接住节点，提出网签后帮旧房子列个交接清单"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A13",
+     "subject": "SHARED",
+     "relation": "交易节点",
+     "value": "买家批贷函已下发，旧房定于月底网签，房款到手后再谈新房",
+     "valid_time": "2026-11-14 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T10",
+      "message_id": "m0",
+      "quote": "买家那边批贷函下来了，旧房月底网签，钱到手再谈新房"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "节点性消息要把日期钉死，呼应白纸黑字的家风",
+   "unknowns": [
+    "网签确切日期未知（月底前）"
+   ],
+   "protected_expressions": [
+    "批贷函下来了",
+    "月底网签"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称网签已完成",
+    "不得虚构新房已再次锁定"
+   ]
+  },
+  "E199_T11": {
+   "case_id": "E199_T11",
+   "current_action": "接住她爸想通与致谢，确认全家共识已收拢到健康优先、慢节奏换房",
+   "acceptable_actions": [
+    "回应谢意，夸叔叔想得开，全家步调一致最难得",
+    "轻接陪跑，说这趟最大收获是叔叔那句健康要紧",
+    "顺势收束：旧房月底网签后随时唤，接着当参谋"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A14",
+     "subject": "THIRD",
+     "relation": "家庭共识",
+     "value": "温诺父亲表示厨房小可以接受，健康要紧，并托 HER 向 ME 致谢",
+     "valid_time": "2026-11-15 转述",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T11",
+      "message_id": "m0",
+      "quote": "我爸也想通了，说厨房小点就小点，健康要紧"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "受长辈致谢要得体，不居功，把镜头还给她妈的身体",
+   "unknowns": [
+    "是否正式登门拜访未知（留白）"
+   ],
+   "protected_expressions": [
+    "健康要紧",
+    "全程陪跑"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已单独见过她爸",
+    "不得改变已定交易顺序"
+   ]
+  },
+  "E199_T12": {
+   "case_id": "E199_T12",
+   "current_action": "接下量尺寸的邀约，确认时间并把栗子之约升级为固定默契",
+   "acceptable_actions": [
+    "答应下周陪去量厨房，栗子这单换我请，庆祝重启",
+    "接住邀约，说卷尺和记录本我带上，糖多的栗子管够",
+    "确认时间，顺势把每次看房后吃栗子定成保留节目"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E199_A15",
+     "subject": "HER",
+     "relation": "邀约",
+     "value": "温诺邀 ME 下周同去桂溪苑拍厨房照片量尺寸，之后请吃糖炒栗子",
+     "valid_time": "2026-11-15 邀约",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E199_T12",
+      "message_id": "m0",
+      "quote": "下周陪我去桂溪苑拍张厨房照片量个尺寸给我爸看呗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E199_A16",
+     "subject": "SHARED",
+     "relation": "栗子默契回扣",
+     "value": "两人看完房常绕去买糖炒栗子已成默契",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "initial_kb",
+      "key": "warmth",
+      "quote": "看完常绕去她家楼下买糖炒栗子"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾落在两人节奏上，暖味自然不越过她家的事",
+   "unknowns": [
+    "下周具体哪天未知（留待约定）"
+   ],
+   "protected_expressions": [
+    "量个尺寸",
+    "糖多的那种"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构厨房改造已开工",
+    "不得声称新房已重新选定"
+   ]
+  }
+ }
+}

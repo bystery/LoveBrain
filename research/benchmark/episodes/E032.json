@@ -1,0 +1,239 @@
+{
+ "episode_id": "E032",
+ "persona": {
+  "me": "29岁，医疗设备销售，家在邻市，每周五拼车回双休。",
+  "her": "27岁，护士，同拼车群；回老家看爸妈，每周五晚班后走周日晚班前回。"
+ },
+ "initial_kb": {
+  "me": "拼车群里出车的那位，自己的车；驾驶稳，话不多但接梗。",
+  "her": "邻市医院护士，三班倒；每周五拼我的车回老家；爱带零食分人。",
+  "warmth": "拼车群里固定搭档三个月，车里聊天从堵车聊到人生，没越过线。",
+  "style": "车程闲聊+短句；她困了就停；不过问她感情史。",
+  "stage": "拼车固定搭档，熟但未深交。",
+  "lessons": "她三班倒，休息优先；车上少放音乐多聊天。"
+ },
+ "turns": [
+  {
+   "case_id": "E032_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "明天早上七点半高速口 老位置 我占后排睡觉 你开车?",
+      "ts": "2026-12-17 21:30"
+     }
+    ],
+    "clock": "2026-12-17 21:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E032_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "开。你上次说要补的觉能补两小时",
+      "ts": "2026-12-17 21:34"
+     },
+     {
+      "role": "HER",
+      "text": "两小时不够 我补的是一周",
+      "ts": "2026-12-17 21:38"
+     }
+    ],
+    "clock": "2026-12-17 21:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E032_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "到家了 周末值班 别想我带的橘子了 都给你放座位上了",
+      "ts": "2026-12-18 19:40"
+     }
+    ],
+    "clock": "2026-12-18 19:42",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E032_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "橘子收到 甜的 回程给你带家里的柿饼",
+      "ts": "2026-12-18 19:44"
+     },
+     {
+      "role": "HER",
+      "text": "成交 你家柿饼是这个冬天唯一的光",
+      "ts": "2026-12-18 19:48"
+     }
+    ],
+    "clock": "2026-12-18 19:50",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E032_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下周五我值大夜 拼不了车 你一个人开慢点",
+      "ts": "2026-12-20 21:30"
+     }
+    ],
+    "clock": "2026-12-20 21:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E032_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 少赚一趟油钱 你值班吃食堂?",
+      "ts": "2026-12-20 21:34"
+     },
+     {
+      "role": "HER",
+      "text": "值班哪有食堂 泡面 我把泡面吃出了米其林心得",
+      "ts": "2026-12-20 21:38"
+     }
+    ],
+    "clock": "2026-12-20 21:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E032_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周末我奶奶生日 回来待两天 你柿饼留两包 给我奶奶也尝尝",
+      "ts": "2026-12-23 20:30"
+     }
+    ],
+    "clock": "2026-12-23 20:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E032_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "装好了 四包 柿饼管够 祝奶奶生日快乐",
+      "ts": "2026-12-23 20:34"
+     },
+     {
+      "role": "HER",
+      "text": "四包! 你这是把我当物流节点",
+      "ts": "2026-12-23 20:38"
+     }
+    ],
+    "clock": "2026-12-23 20:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E032_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "明天恢复拼车 我占后排睡觉 你柿饼放老位置",
+      "ts": "2026-12-25 21:20"
+     }
+    ],
+    "clock": "2026-12-25 21:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E032_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "放好了 橘子皮也给你留着泡水",
+      "ts": "2026-12-25 21:24"
+     },
+     {
+      "role": "HER",
+      "text": "你怎么连橘子皮都舍不得扔 勤俭持家啊",
+      "ts": "2026-12-25 21:28"
+     }
+    ],
+    "clock": "2026-12-25 21:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E032_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "到家了 跟你说个事 我可能三月调回市里医院 不用拼车了",
+      "ts": "2026-12-26 19:30"
+     }
+    ],
+    "clock": "2026-12-26 19:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E032_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那橘子和柿饼的物流怎么办",
+      "ts": "2026-12-26 19:34"
+     },
+     {
+      "role": "HER",
+      "text": "所以问你啊 傻瓜 私人运输接不接",
+      "ts": "2026-12-26 19:38"
+     }
+    ],
+    "clock": "2026-12-26 19:40",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

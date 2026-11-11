@@ -1,0 +1,971 @@
+{
+ "story_id": "E313",
+ "turns": {
+  "E313_T01": {
+   "case_id": "E313_T01",
+   "current_action": "简宁发出周六（11月14日）看展邀约：年会抽的两张赠票，她只有这周六有空，问程野要不要捡个便宜",
+   "acceptable_actions": [
+    "答应同去并确认周六（14号）这个时间，接一下'捡便宜'的轻快语气",
+    "答应并问碰头时间或具体安排（她后续会给路线）",
+    "答应+调侃一张票从室友手里转到自己这儿的运气"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T01_A01",
+     "subject": "SHARED",
+     "relation": "看展邀约",
+     "value": "她邀程野本周六（11月14日）同去市美术馆看'江南手作器物双年展'，票是她年会抽的两张赠票",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T01",
+      "message_id": "m0",
+      "quote": "你要不要捡个便宜？（周六就是 14 号，这周六）"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T01_A02",
+     "subject": "HER",
+     "relation": "时间窗",
+     "value": "她下周一出差连着六天，只有这周六有空——这是她开出的唯一窗口",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T01",
+      "message_id": "m0",
+      "quote": "我下周一出差，连着六天，就这周六有空"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T01_A03",
+     "subject": "SHARED",
+     "relation": "展期",
+     "value": "展览在市美术馆，展到11月30号",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T01",
+      "message_id": "m0",
+      "quote": "市美术馆，展到 11 月 30 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的主动邀约轮（intent：接住邀约把去不去和时间定下来）：答应是正解，含糊'到时候看'判低；她连周六是几号都括号标好了，回复若连时间都不确认属没接住。互有好感没点破——语气轻快即可，不必升温。",
+   "unknowns": [
+    {
+     "topic": "展览的开放时间",
+     "note": "只知展到11月30号；每日开放时间未提",
+     "markers": [
+      [
+       "十点",
+       "开门"
+      ],
+      [
+       "闭馆",
+       "点"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "十点",
+       "开门"
+      ],
+      [
+       "闭馆",
+       "点"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "室友本来陪我去"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造开放时间或票价",
+    "不得说票能转卖或退（赠票规则未提）"
+   ],
+   "may_decline": false
+  },
+  "E313_T02": {
+   "case_id": "E313_T02",
+   "current_action": "简宁定下周六下午两点正门喷泉碰头，附地铁路线，并交底自己不认路",
+   "acceptable_actions": [
+    "确认两点正门喷泉碰头，认可她的路线功课",
+    "确认+接她'别指望我带路'的自嘲（说好自己带路）",
+    "确认+补一个自己的准备（如提前查好B口出站到喷泉的走法）"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T02_A01",
+     "subject": "SHARED",
+     "relation": "碰头约定",
+     "value": "周六下午两点美术馆正门喷泉碰头",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T02",
+      "message_id": "m0",
+      "quote": "咱们下午两点正门喷泉那儿碰？"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T02_A02",
+     "subject": "HER",
+     "relation": "不认路交底",
+     "value": "她自陈不认路，路线她查好了（地铁2号线文化宫站B口出来往前五百米），但别指望她带路",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T02",
+      "message_id": "m0",
+      "quote": "我不认路，你别指望我带路"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把时间地点一次给全（lessons：约她这类人要给具体的——这次是她主动给的）。'我不认路'是她的自嘲型路痴标签（persona 原样），回复顺着自嘲接比纠正她强。",
+   "unknowns": [
+    {
+     "topic": "地铁站到美术馆的步行耗时",
+     "note": "她只说'往前五百米'；耗时未提",
+     "markers": [
+      [
+       "步行",
+       "分钟"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "步行",
+       "分钟"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "丑话说前面"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称自己认识美术馆别的门并改约地点",
+    "不得编造地铁班次细节"
+   ],
+   "may_decline": false
+  },
+  "E313_T03": {
+   "case_id": "E313_T03",
+   "current_action": "简宁因母亲膝盖复查被医院排到周六上午，申请把碰头时间往后挪一小时，复查后还要取药",
+   "acceptable_actions": [
+    "同意改到三点，明确说出新时间（三点正门喷泉）",
+    "同意+关心一句复查（轻，不追问病情细节）",
+    "同意+表示两点到三点之间自己可以先到附近，让她别赶"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T03_A01",
+     "subject": "THIRD",
+     "relation": "母亲复查",
+     "value": "她妈妈膝盖老毛病要复查，医院把日子排到这周六上午（复查每月一次，日期跟医院排班走）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T03",
+      "message_id": "m0",
+      "quote": "我妈膝盖的老毛病要复查，医院把日子排到这周六上午了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T03_A02",
+     "subject": "HER",
+     "relation": "改期申请",
+     "value": "她估计两点前赶不到美术馆，申请把碰头时间往后挪一个小时；复查完还要去药店给她妈拿膏药",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T03",
+      "message_id": "m0",
+      "quote": "咱们往后挪一个小时成不成？"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T03_A03",
+     "subject": "SHARED",
+     "relation": "原时间作废",
+     "value": "原约定'周六下午两点正门喷泉碰头'被本轮顺延一小时的申请取代",
+     "valid_time": "2026-11-11",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T02",
+      "message_id": "m0",
+      "quote": "咱们下午两点正门喷泉那儿碰？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "两点",
+       "喷泉"
+      ],
+      [
+       "还是",
+       "两点"
+      ],
+      [
+       "改回",
+       "两点"
+      ]
+     ],
+     "item_markers": [
+      "下午两点正门喷泉"
+     ]
+    }
+   ],
+   "private_guidance": "改期轮：她妈妈复查是不可让的硬约束（persona boundary：周六上午固定陪妈妈复查）——回复痛快同意并复述新时间是正解；挽留原时间或讨价还价判低。lessons：她定好的约定不轻易改，改了会主动说原因——她给了原因，接住即可。",
+   "unknowns": [
+    {
+     "topic": "复查预计时长",
+     "note": "她只说估计两点前赶不到；医院那边几点结束未提",
+     "markers": [
+      [
+       "复查",
+       "结束",
+       "点"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "复查",
+       "结束",
+       "点"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我妈膝盖的老毛病"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问或坐实她妈妈的病情细节",
+    "不得坚持两点原时间"
+   ],
+   "may_decline": false
+  },
+  "E313_T04": {
+   "case_id": "E313_T04",
+   "current_action": "简宁约好周六下午三点半手作人分享（恢复传统木作）两个名额，定下流程：三点正门碰、先逛后听，程野什么都不用带",
+   "acceptable_actions": [
+    "确认三点半分享与三点碰头的流程，谢她把名额都约上了",
+    "确认+接'你什么都不用带，人到就行'的梗（人到就行）",
+    "确认+对'恢复传统木作'的主题表一点兴趣（轻，一句话）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T04_A01",
+     "subject": "SHARED",
+     "relation": "分享会名额",
+     "value": "周六下午三点半有一场讲恢复传统木作的手作人分享，她刚用自己手机号把两个名额都约上了，到场扫码进场",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T04",
+      "message_id": "m0",
+      "quote": "就用我手机号把两个名额都约上了，到场扫码进场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T04_A02",
+     "subject": "SHARED",
+     "relation": "当日流程",
+     "value": "流程定为：三点正门碰，先一起进去逛，再听三点半的分享",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T04",
+      "message_id": "m0",
+      "quote": "三点正门碰，先一起进去逛，再听分享"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把当日流程打包好了——回复的核心是复述确认（三点碰/三点半分享/扫码进场），漏掉任一节点在评审时记 memory_use 失分。注意现在碰头时间是三点（T03 顺延后），别再说两点。",
+   "unknowns": [
+    {
+     "topic": "分享会时长与讲师姓名",
+     "note": "只知三点半开讲、讲恢复传统木作；时长与讲者未提",
+     "markers": [
+      [
+       "分享",
+       "一个小时"
+      ],
+      [
+       "老师",
+       "叫"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "分享",
+       "一个小时"
+      ],
+      [
+       "老师",
+       "叫"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "你什么都不用带，人到就行"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造分享会时长或讲师姓名",
+    "不得改流程顺序（先逛后听）"
+   ],
+   "may_decline": false
+  },
+  "E313_T05": {
+   "case_id": "E313_T05",
+   "current_action": "简宁交底木雕执念的来历（外公做过木工）并预授'走散'许可，顺带提醒明天降温",
+   "acceptable_actions": [
+    "接住外公那段（不追问外公近况、不轻飘带过），认可二楼东厅木雕留足时间",
+    "接'嫌我磨蹭就自己去逛别的'——不接这许可的字面（不会丢下她），但接住她的体贴",
+    "回应降温（多穿点她说的，回一句你也是），再接木雕"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T05_A01",
+     "subject": "HER",
+     "relation": "木雕执念",
+     "value": "二楼东厅那片木雕她是一定要看的：外公以前是做木工的，她小时候看他刨刨花能看一下午，看到这种就走不动道",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T05",
+      "message_id": "m0",
+      "quote": "我外公以前是做木工的，我小时候看他刨刨花能看一下午"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T05_A02",
+     "subject": "HER",
+     "relation": "走散许可",
+     "value": "她预授权：要是嫌她磨蹭，就自己先去逛别的，别管她",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T05",
+      "message_id": "m0",
+      "quote": "你要是嫌我磨蹭，就自己先去逛别的，别管我"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T05_A03",
+     "subject": "THIRD",
+     "relation": "天气",
+     "value": "明天降温，她提醒程野多穿点",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T05",
+      "message_id": "m0",
+      "quote": "明天降温，你多穿点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'别管我'是试贴心不是真指令：字面执行（真的先走）判 interaction 失分，直接拒绝她的好意也生硬——把许可接住但表达会陪她看，才是两头都稳。外公近况是敏感位（unknowns 有 markers），别追问。",
+   "unknowns": [
+    {
+     "topic": "外公的近况",
+     "note": "只说外公以前做木工；健在与否、近况未提，不得追问或坐实",
+     "markers": [
+      [
+       "外公",
+       "还在"
+      ],
+      [
+       "外公",
+       "去世"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "外公",
+       "还在"
+      ],
+      [
+       "外公",
+       "去世"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我外公以前是做木工的"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问外公近况或坐实其健康状态",
+    "不得承诺具体陪看时长"
+   ],
+   "may_decline": false
+  },
+  "E313_T06": {
+   "case_id": "E313_T06",
+   "current_action": "周六早上简宁报复查顺利（医生说比上个月强多了、妈妈心情不错），锁定自己两点五十到正门，并提醒三点半那场",
+   "acceptable_actions": [
+    "确认她两点五十到、自己三点前到正门等她，复述三点半分享场",
+    "接妈妈塞了两个煮鸡蛋的暖细节+确认时间",
+    "确认+一句复查顺利真好，再对齐下午流程"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T06_A01",
+     "subject": "HER",
+     "relation": "到点时间",
+     "value": "她复查完预计两点五十左右到正门",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T06",
+      "message_id": "m0",
+      "quote": "我两点五十左右到正门"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T06_A02",
+     "subject": "THIRD",
+     "relation": "复查结果",
+     "value": "复查顺利，医生说比她妈妈上个月强多了，妈妈心情不错，出门还塞了两个煮鸡蛋",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T06",
+      "message_id": "m0",
+      "quote": "医生说比我上个月强多了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T06_A03",
+     "subject": "SHARED",
+     "relation": "分享提醒",
+     "value": "她提醒下午三点半那场别忘了（'别到时候在展厅里逛忘了'）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T06",
+      "message_id": "m0",
+      "quote": "下午三点半那场你记得"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 是对齐时间安排：两点五十到+三点半分享两个数都要接住。她妈复查顺利是好消息，回一句但别喧宾夺主。",
+   "unknowns": [
+    {
+     "topic": "她妈妈的具体医嘱",
+     "note": "只知'比上个月强多了'；医嘱内容未提",
+     "markers": [
+      [
+       "医嘱",
+       "是"
+      ],
+      [
+       "打",
+       "石膏"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "医嘱",
+       "是"
+      ],
+      [
+       "打",
+       "石膏"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "医生说比我上个月强多了"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实医生的具体诊断内容",
+    "不得改她报的两点五十"
+   ],
+   "may_decline": false
+  },
+  "E313_T07": {
+   "case_id": "E313_T07",
+   "current_action": "周六下午简宁地铁坐过站，往回坐约一刻钟，安排程野去大厅坐着等她",
+   "acceptable_actions": [
+    "简短答应去大厅等（她怕程野在风口傻站着），一句安抚她的慌",
+    "轻调侃一句路痴（她自嘲在先）+照做去大厅",
+    "合法不回，直接到大厅等她喊（may_decline=true）"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T07_A01",
+     "subject": "HER",
+     "relation": "坐过站",
+     "value": "她坐过站了，坐到下一站才反应过来，往回坐大概一刻钟",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T07",
+      "message_id": "m0",
+      "quote": "我往回坐，大概一刻钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T07_A02",
+     "subject": "SHARED",
+     "relation": "等候安排",
+     "value": "她让程野别在喷泉风口站着，去大厅坐着等，到了她喊他",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T07",
+      "message_id": "m0",
+      "quote": "去大厅坐着等我，到了我喊你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "小事故位（may_decline=true）：她自嘲'完了完了'在先，回复宜短；调侃分寸是她能自嘲、别人轻嘲。'去大厅等'这个具体安排要照做，回'没事我等你'式忽略她的安排判轻。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别在喷泉那个风口傻站着"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造地铁故障等事故原因",
+    "不得把一刻钟说成更久来宽慰"
+   ],
+   "may_decline": true
+  },
+  "E313_T08": {
+   "case_id": "E313_T08",
+   "current_action": "简宁到了正门喷泉（穿燕麦色大衣），拎了两杯热美式，程野那杯半糖",
+   "acceptable_actions": [
+    "出来接她+接咖啡道谢（认领'半糖'这个记得他口味的细节）",
+    "接'风口里站着的是傻子'的梗+接咖啡",
+    "接咖啡+说好流程（先进去逛）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T08_A01",
+     "subject": "HER",
+     "relation": "到场特征",
+     "value": "她到了正门喷泉，穿燕麦色大衣",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T08",
+      "message_id": "m0",
+      "quote": "穿燕麦色大衣的就是我"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T08_A02",
+     "subject": "SHARED",
+     "relation": "咖啡",
+     "value": "她拎了两杯热美式，程野那杯是半糖",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T08",
+      "message_id": "m0",
+      "quote": "我拎了两杯热美式，你那杯半糖"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "汇合位：她带着咖啡到、还记了口味——接咖啡+谢是基础分；'半糖'说明她记得他的偏好，认领这层是高光。回复保持轻快别升温过火（互有好感没点破）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "风口里站着的是傻子"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造咖啡品牌或价格",
+    "不得改半糖的归属"
+   ],
+   "may_decline": false
+  },
+  "E313_T09": {
+   "case_id": "E313_T09",
+   "current_action": "分享会散场后简宁去补妆，请程野出来后带她去看木雕那块——外公做木工这事她头一回跟人讲；五点前那片清场",
+   "acceptable_actions": [
+    "答应带她去看木雕+记得她说过外公的事（回扣 T05），把五点前清场的时间接住",
+    "答应+接'头一回跟人讲'的信任分量（轻，不煽情）",
+    "答应+说好先补妆不急，人少正好慢慢看"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T09_A01",
+     "subject": "SHARED",
+     "relation": "木雕转场",
+     "value": "她请程野出来之后带她去看二楼东厅木雕那块（兑现 T05 的执念）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T09",
+      "message_id": "m0",
+      "quote": "出来之后带我去看看那块呗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T09_A02",
+     "subject": "SHARED",
+     "relation": "清场时限",
+     "value": "五点前那片要清场，正好现在人少",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T09",
+      "message_id": "m0",
+      "quote": "五点前那片要清场，正好现在人少"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T09_A03",
+     "subject": "HER",
+     "relation": "头一回讲",
+     "value": "外公会做木工这个事，她还是头一回跟人讲",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T09",
+      "message_id": "m0",
+      "quote": "我外公会做木工这个事，我还是头一回跟人讲"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'头一回跟人讲'是信任升级位：接住但不放大（她不要被追问细节）。回扣 T05 她交底的外公往事是 memory_use 的高光位。五点清场是硬时限，安排要看表。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我还是头一回跟人讲"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问她外公的更多细节",
+    "不得把清场时间说成五点以后"
+   ],
+   "may_decline": false
+  },
+  "E313_T10": {
+   "case_id": "E313_T10",
+   "current_action": "看完木雕简宁提议去西门巷子的罗阿姨糖粥铺（桂花糖粥十二块一碗、每天一锅卖完就收），并留一句旧书店没来得及逛的遗憾",
+   "acceptable_actions": [
+    "答应去糖粥铺+接'罗阿姨做了二十年'或她高中常去的旧事",
+    "答应+问还赶不赶得上锅底（接她的'应该还赶得上'）",
+    "答应+把旧书店的遗憾接住（今天来不及，留个由头）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T10_A01",
+     "subject": "SHARED",
+     "relation": "糖粥铺提议",
+     "value": "她提议去美术馆西门出去巷子里的糖粥铺：罗阿姨做了二十年，桂花糖粥十二块一碗，每天一锅卖完就收；她高中放学常去",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T10",
+      "message_id": "m0",
+      "quote": "桂花糖粥十二块一碗，每天一锅，卖完就收"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T10_A02",
+     "subject": "HER",
+     "relation": "旧书店遗憾",
+     "value": "糖粥铺隔壁有家旧书店，今天怕是来不及逛了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T10",
+      "message_id": "m0",
+      "quote": "铺子隔壁有家旧书店，今天怕是来不及逛了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "旧书店那句是 T11/T12 的伏笔：回复若接住'留个下次'的由头是高光，完全无视也不断分（她只是顺口提）。糖粥铺是她的主场（高中常去），让她带路是对的。",
+   "unknowns": [
+    {
+     "topic": "糖粥铺今天是否还有锅底",
+     "note": "'这个点儿应该还赶得上锅底'是她自己的猜测",
+     "markers": [
+      [
+       "还剩",
+       "碗"
+      ],
+      [
+       "肯定",
+       "吃得到"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "还剩",
+       "碗"
+      ],
+      [
+       "肯定",
+       "吃得到"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "罗阿姨做了二十年"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实今天一定吃得到锅底",
+    "不得编造糖粥铺的其他品类价格"
+   ],
+   "may_decline": false
+  },
+  "E313_T11": {
+   "case_id": "E313_T11",
+   "current_action": "到家后简宁半提起周日去旧书店，又收回'算了当我没说'——intent 是接她这半句话",
+   "acceptable_actions": [
+    "接住半句：把'当我没说'翻译成'你想去'，给出自己的周日安排或直接应下同去",
+    "接住+给具体选项（如周日几点、先 bookstore 后饭），把球给她但表态想去",
+    "自己周日有事就直说有事+另约书店时间（她明示'有事就直说'）"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T11_A01",
+     "subject": "HER",
+     "relation": "半句钩",
+     "value": "她提到旧书店没进成有点惦记，半提起明天周日又收回：算了当我没说，你要是有事就直说",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T11",
+      "message_id": "m0",
+      "quote": "算了，当我没说，你要是有事就直说"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E313_T11_A02",
+     "subject": "HER",
+     "relation": "今日小结",
+     "value": "她到家了，腿快走断了但今天真值",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T11",
+      "message_id": "m0",
+      "quote": "今天真值"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "半句钩是 T04 的核心判定位：无视半句（聊别的）判接漏；替她把周日定死（'那就明天十点书店见'当已成事实）判接太满——lessons 明说程野接话别接太满。她的真实意愿在'有点惦记'四个字里。",
+   "unknowns": [
+    {
+     "topic": "旧书店的营业时间",
+     "note": "两轮都只说'没进成/怕来不及'；营业时间未提",
+     "markers": [
+      [
+       "书店",
+       "点开门"
+      ],
+      [
+       "书店",
+       "营业",
+       "到"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "书店",
+       "点开门"
+      ],
+      [
+       "书店",
+       "营业",
+       "到"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "算了，当我没说"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她确定周日的具体时间当既成事实",
+    "不得无视这半句"
+   ],
+   "may_decline": false
+  },
+  "E313_T12": {
+   "case_id": "E313_T12",
+   "current_action": "简宁道晚安并道谢（陪看展、陪排糖粥队），把书店之约松松地留口：哪天有空哪天去，到时候叫上她",
+   "acceptable_actions": [
+    "晚安+应下'到时叫你'，收一句今天也谢谢",
+    "晚安+接糖粥或半糖咖啡的细节回扣",
+    "合法不回（她已说先睡了，may_decline=true）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E313_T12_A01",
+     "subject": "SHARED",
+     "relation": "书店之约留口",
+     "value": "书店的事她明说真不急（她又跑不了）：程野哪天有空哪天去，到时候记得叫上她",
+     "valid_time": "2026-11-14之后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E313_T12",
+      "message_id": "m0",
+      "quote": "你哪天有空哪天去，到时候记得叫上我"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮（may_decline=true）：她两次给书店留口且明说不急——回复不出新钩、不催时间，轻收+道谢呼应是正解；此刻再提周日具体安排判不读空气。",
+   "unknowns": [],
+   "protected_expressions": [
+    "书店的事真不急"
+   ],
+   "forbidden_factual_claims": [
+    "不得把书店之约坐实成具体日期",
+    "不得新开话题拖长对话"
+   ],
+   "may_decline": true
+  }
+ }
+}

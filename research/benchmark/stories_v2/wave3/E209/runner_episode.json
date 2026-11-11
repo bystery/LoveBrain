@@ -1,0 +1,183 @@
+{
+ "episode_id": "E209",
+ "persona": {
+  "her": {
+   "name": "林晓雨",
+   "traits": ["直爽", "爱操心", "行动派", "嘴硬心软"],
+   "boundaries": ["不替家人做人生决定", "讨厌被说教", "家里的事不往外传"]
+  },
+  "me": {
+   "name": "小航",
+   "traits": ["会算账", "稳", "爱用玩笑缓气氛"]
+  },
+  "relationship_stage": "长期熟人(亲姐弟)"
+ },
+ "initial_kb": {
+  "her": "姐林晓雨在省城做项目主管,爸妈在老家。爸爸55岁,上个月体检查出空腹血糖偏高,医生要求控制晚饭主食。妈妈掌勺,爸爸不太服管。",
+  "me": "弟弟小航在外地上班,每周日和爸妈视频,自己也在减脂记饮食,平时是家里出主意的那一个。",
+  "warmth": "姐弟关系近,有事直说,偶尔互怼但不记仇。",
+  "style": "口语、直接、爱用玩笑收尾。",
+  "stage": "长期熟人(亲姐弟)",
+  "lessons": "劝长辈要给台阶,别硬顶;计划要有降档位,散伙不如降档。"
+ },
+ "turns": [
+  {
+   "case_id": "E209_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-03 20:10", "text": "弟!爸体检出了,空腹血糖6.8,医生说先把晚饭的主食管住。我打算在家庭群立个控糖晚餐打卡,晚饭主食减半,饭后陪妈散步半小时,你来当监督员,敢不敢应?"}
+    ],
+    "clock": "2026-11-03 20:10",
+    "may_decline": false,
+    "intent": {"enabled": true, "status": "explicit", "text": "拉弟弟一起发起家庭控糖晚餐打卡计划"}
+   },
+   "feedback": {"her_tone": "发起热,带将一军", "relation_move": "把弟弟拉进家庭计划"}
+  },
+  {
+   "case_id": "E209_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-04 21:03", "text": "群建好了,叫控糖三人组,第一天执行!妈蒸了糙米饭,爸嘟囔说跟喂鸟似的,还是吃了大半碗。我就知道你得发个偷懒表情。"}
+    ],
+    "clock": "2026-11-04 21:03",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "执行顺利,带撒娇互怼", "relation_move": "分享进展求回应"}
+  },
+  {
+   "case_id": "E209_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-06 19:40", "text": "出事了,爸周六有战友聚会,摆明了要喝酒吃席,妈拦不住。你说我是不让去啊,还是随他去?"}
+    ],
+    "clock": "2026-11-06 19:40",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "犯难,把决定权抛过来", "relation_move": "征求具体对策"}
+  },
+  {
+   "case_id": "E209_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-10 20:22", "text": "汇报!第一周7天全勤打卡,妈把爸的饭后步数都截图存着呢。周六那顿他也真按你说的,先垫了肚子,席上光夹菜,战友都夸他养生。"}
+    ],
+    "clock": "2026-11-10 20:22",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "成就感高峰,主动汇报", "relation_move": "把功劳分给弟弟"}
+  },
+  {
+   "case_id": "E209_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-13 21:15", "text": "唉,我下周去苏州出差,一走两周。刚才群里就没人发打卡,爸在饭桌上说你姐都懒得管,这玩意儿散了吧。要不,这周先别打卡了,等我回来再说。"}
+    ],
+    "clock": "2026-11-13 21:15",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "热度骤降,带自嘲", "relation_move": "宣布暂停,试探弟弟反应"}
+  },
+  {
+   "case_id": "E209_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 12:30", "text": "越想越没劲,本来就是我们一厢情愿,爸又不爱吃糙米,散就散吧。"}
+    ],
+    "clock": "2026-11-14 12:30",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "低落,想放弃", "relation_move": "等弟弟接住情绪"}
+  },
+  {
+   "case_id": "E209_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 21:48", "text": "降档这个说法妈觉得行,就保两条:晚饭有杂粮,饭后走二十分钟,不打卡不拍照。爸还没吭声。"}
+    ],
+    "clock": "2026-11-15 21:48",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "回暖一半,还悬着", "relation_move": "同步进展,等一个收口"}
+  },
+  {
+   "case_id": "E209_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-16 20:05", "text": "视频说完了!你猜怎么着,爸自己问那杂粮饭谁来焖,妈立马接话我来焖,你负责遛弯。行,降档版通过了。"}
+    ],
+    "clock": "2026-11-16 20:05",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "松口气,兴奋", "relation_move": "报喜,确认弟弟的点子管用"}
+  },
+  {
+   "case_id": "E209_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-18 22:10", "text": "我把新规矩写群里了:底线两条,谁在家谁执行,不打卡。苏州这边酒店离饭馆近,我也能走着去吃饭,凑个热闹。"}
+    ],
+    "clock": "2026-11-18 22:10",
+    "may_decline": false
+   },
+   "feedback": {"her_tone": "踏实,顺带报告自己", "relation_move": "继续同步,给弟弟留参与感"}
+  },
+  {
+   "case_id": "E209_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-24 19:33", "text": "我明天回!妈刚打电话,说你爸这两周晚饭真没碰白米饭,还自己买了燕麦片。你说气人不气人,散伙散出个自觉。"}
+    ],
+    "clock": "2026-11-24 19:33",
+    "may_decline": true
+   },
+   "feedback": {"her_tone": "惊喜带笑骂", "relation_move": "分享反转好消息"}
+  },
+  {
+   "case_id": "E209_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-25 20:40", "text": "群名改回控糖三人组了,爸还问我步数截图是哪个软件弄的,他也想晒。对了,医生说让三个月后复查,12月中带他去?"}
+    ],
+    "clock": "2026-11-25 20:40",
+    "may_decline": false,
+    "intent": {"enabled": true, "status": "explicit", "text": "约弟弟商量12月中陪爸复查"}
+   },
+   "feedback": {"her_tone": "目标重启,顺势推进", "relation_move": "发出新请求"}
+  },
+  {
+   "case_id": "E209_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-26 21:18", "text": "约好了,12月15号上午复查,妈陪着去。这回目标不叫打卡了,叫让爸自己想控。行,不聊了,我倒时差去了。"}
+    ],
+    "clock": "2026-11-26 21:18",
+    "may_decline": true
+   },
+   "feedback": {"her_tone": "收尾,松弛", "relation_move": "自然结束对话"}
+  }
+ ]
+}

@@ -1,0 +1,948 @@
+{
+  "manifest_id": "REMOTE_V1_SNAPSHOT_MANIFEST",
+  "generated": "2026-11-12",
+  "source_repo": "bystery/arena",
+  "source_refs": "remote-committed(main=387c55ac / research-p1-sync-20261111=7f0d189e, 两 ref blob 等价)",
+  "restore_method": "git -C asset-audit/arena-remote-mirror/arena cat-file blob <remote_blob_sha1>（e6.1/e6.2；blob 先经 --batch-all-objects 本地在库核实，零 fetch）",
+  "authoritative": "local-worktree",
+  "authoritative_note": "正式结果以 ../GOLD_SIDECAR/（v2 重建）与 episode 五件套本地版为准；本清单所列 93 件为远端已提交历史快照轨",
+  "integrity_basis": "字节数口径（用户纪律 2026-11-12，零 sha256）：93 件核验 = git cat-file -s 输出字节数 == cat-file blob 输出字节数 == 落盘字节数 == reconcile-status.csv remote_size，逐件一致",
+  "counts": {
+    "total": 93,
+    "gold_v1": 13,
+    "exposure_backfill_wave4_dev": 38,
+    "exposure_frozen": 42
+  },
+  "entries": [
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_INDEX.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_INDEX.json",
+      "remote_blob_sha1": "8f03be34f655126e5aa17b651f6143b3c7cb46c7",
+      "remote_size": 9817,
+      "disk_size": 9817,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_QC_SAMPLE.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_QC_SAMPLE.json",
+      "remote_blob_sha1": "fba689aa939706dbd9d741e59e36a90be0ac4e79",
+      "remote_size": 5450,
+      "disk_size": 5450,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_stage1.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_stage1.json",
+      "remote_blob_sha1": "d6a2cddef83ef0339f2ed8ae65d381e5650bfd3d",
+      "remote_size": 160097,
+      "disk_size": 160097,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_stage2.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_stage2.json",
+      "remote_blob_sha1": "90d3040d7a31f610e311d7bf46bb3eeefc545f7b",
+      "remote_size": 405182,
+      "disk_size": 405182,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_stage3.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_stage3.json",
+      "remote_blob_sha1": "9dbc3361aa70eb267bd257a136479e4b1f229783",
+      "remote_size": 139858,
+      "disk_size": 139858,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_stage4.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_stage4.json",
+      "remote_blob_sha1": "9f28bef261d0c4b7a332d1cc00c6de5c56dd0779",
+      "remote_size": 426418,
+      "disk_size": 426418,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_stageD.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_stageD.json",
+      "remote_blob_sha1": "a3345ab09a7321a3bbc3a341b7a7f7ae67bd63ad",
+      "remote_size": 87344,
+      "disk_size": 87344,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave1.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_wave1.json",
+      "remote_blob_sha1": "085c8d0489bf2eb5ac862034d627ff4fa83dad0b",
+      "remote_size": 659453,
+      "disk_size": 659453,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave1_ext.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_wave1_ext.json",
+      "remote_blob_sha1": "bf561bdd98eee31f73a012224565ba026d2c20ad",
+      "remote_size": 249266,
+      "disk_size": 249266,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave2.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_wave2.json",
+      "remote_blob_sha1": "ce6e05db6a5bf7eeaa12375f68261daa7747868e",
+      "remote_size": 2079157,
+      "disk_size": 2079157,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave3.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_wave3.json",
+      "remote_blob_sha1": "c137509a3d432f4447419b20ef8c30f091c36137",
+      "remote_size": 3615591,
+      "disk_size": 3615591,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave3_ext.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_wave3_ext.json",
+      "remote_blob_sha1": "13c4ff1d69a745bc37b69ae8bc32d60f4283b369",
+      "remote_size": 1811769,
+      "disk_size": 1811769,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json",
+      "snapshot_path": "research/stories_v2/GOLD_SIDECAR_v1_remote_snapshot/GOLD_wave4_dev.json",
+      "remote_blob_sha1": "38df42329bbe33dd1b8110f24079261f376b5ddc",
+      "remote_size": 1930630,
+      "disk_size": 1930630,
+      "diff_class": "SUBSTANTIVE_GOLD_V2",
+      "authoritative": "local-worktree",
+      "note": "GOLD 双轨快照轨（远端已提交 2026-11-08 波次定格）；权威轨=../GOLD_SIDECAR/（v2 重建 14 文件，2026-11-10）；blob 句柄对照见 gold-dual-track-plan 附录 A；本目录不作评分消费输入"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage2/E021/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage2/E021/exposure.json",
+      "remote_blob_sha1": "261b5baf908c976264655428fbcbe5744000e8b2",
+      "remote_size": 1204,
+      "disk_size": 1204,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage2/E024/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage2/E024/exposure.json",
+      "remote_blob_sha1": "823e79717ab9f334f8fe96b9230a51feb28a6cb8",
+      "remote_size": 1219,
+      "disk_size": 1219,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage2/E026/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage2/E026/exposure.json",
+      "remote_blob_sha1": "30e78f2654cf9d1eb2165fc2e5c45814e7074db5",
+      "remote_size": 1222,
+      "disk_size": 1222,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage2/E027/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage2/E027/exposure.json",
+      "remote_blob_sha1": "66e151099850d6d3338c75bb84a23a0043aa08f1",
+      "remote_size": 1443,
+      "disk_size": 1443,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage2/E031/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage2/E031/exposure.json",
+      "remote_blob_sha1": "3ffb81c00787c34edfa9a50cb849ebce23e8675a",
+      "remote_size": 1234,
+      "disk_size": 1234,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage2/E032/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage2/E032/exposure.json",
+      "remote_blob_sha1": "f89d50a76824c981d50e5c00439d62d1fe040606",
+      "remote_size": 1213,
+      "disk_size": 1213,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage2/E033/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage2/E033/exposure.json",
+      "remote_blob_sha1": "eaf95b3df17acd0837b0ab7b028fa7a1399d1b4e",
+      "remote_size": 1240,
+      "disk_size": 1240,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage2/E034/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage2/E034/exposure.json",
+      "remote_blob_sha1": "fd3e3b92649f624d577a1d19c0069b077168c94b",
+      "remote_size": 1246,
+      "disk_size": 1246,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage3/E037/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage3/E037/exposure.json",
+      "remote_blob_sha1": "23076e23c1acfce2aeef9be87831f9a0acd35b6c",
+      "remote_size": 1039,
+      "disk_size": 1039,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage3/E039/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage3/E039/exposure.json",
+      "remote_blob_sha1": "3f2c998b712ed290947f005cb1a90f05a38dd989",
+      "remote_size": 1054,
+      "disk_size": 1054,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage3/E041/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage3/E041/exposure.json",
+      "remote_blob_sha1": "348b5f2f40239f3f65b74f571795cb8e1a192981",
+      "remote_size": 1045,
+      "disk_size": 1045,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage4/E061/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage4/E061/exposure.json",
+      "remote_blob_sha1": "811d63ff3da78ba838c83c6901d9ea2f8d0bdc34",
+      "remote_size": 1040,
+      "disk_size": 1040,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage4/E063/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage4/E063/exposure.json",
+      "remote_blob_sha1": "d55acde57d0301d790682cf1093fc4b069cb762f",
+      "remote_size": 1043,
+      "disk_size": 1043,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage4/E064/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage4/E064/exposure.json",
+      "remote_blob_sha1": "f9e9154671a6f3dd6385681586ff521c111939e5",
+      "remote_size": 1049,
+      "disk_size": 1049,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage4/E066/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage4/E066/exposure.json",
+      "remote_blob_sha1": "8538a78760c38d97cec92bd4e9401c6e3242fe0f",
+      "remote_size": 1043,
+      "disk_size": 1043,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage4/E067/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage4/E067/exposure.json",
+      "remote_blob_sha1": "2d6ec6d5c2c8617c5df19e698f97b36c4753ea97",
+      "remote_size": 1046,
+      "disk_size": 1046,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/stage4/E068/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/stage4/E068/exposure.json",
+      "remote_blob_sha1": "d00014af8fbf87a1db8b09f340dd9051bc3f48ce",
+      "remote_size": 1046,
+      "disk_size": 1046,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E117/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E117/exposure.json",
+      "remote_blob_sha1": "0f74b493b2a25866dcbbf03acc14f2aaec1e2cb0",
+      "remote_size": 650,
+      "disk_size": 650,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E122/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E122/exposure.json",
+      "remote_blob_sha1": "d458ed5359d63ccb2207127b86e1e037c8b3a9b6",
+      "remote_size": 656,
+      "disk_size": 656,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E131/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E131/exposure.json",
+      "remote_blob_sha1": "435974a7f1a649e76576be250c097313ede524fc",
+      "remote_size": 657,
+      "disk_size": 657,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E140/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E140/exposure.json",
+      "remote_blob_sha1": "00e2c44b1c7bb095ffe3006e6d87f9ca211ccb86",
+      "remote_size": 632,
+      "disk_size": 632,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E157/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E157/exposure.json",
+      "remote_blob_sha1": "0128863b27bf5b277df1763619416625e3094f07",
+      "remote_size": 659,
+      "disk_size": 659,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E164/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E164/exposure.json",
+      "remote_blob_sha1": "cc39230752dd06f0d0b3d11fb8dd6ffa496d45e8",
+      "remote_size": 651,
+      "disk_size": 651,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E166/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E166/exposure.json",
+      "remote_blob_sha1": "a161a8c093b709de2d25d172b041a33799fcc084",
+      "remote_size": 657,
+      "disk_size": 657,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E170/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E170/exposure.json",
+      "remote_blob_sha1": "c6c34d25158995638628144a062da15a8e975b7e",
+      "remote_size": 650,
+      "disk_size": 650,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E183/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E183/exposure.json",
+      "remote_blob_sha1": "aa2c113e1eab8b61560299d1e0722003e44daec5",
+      "remote_size": 659,
+      "disk_size": 659,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E189/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E189/exposure.json",
+      "remote_blob_sha1": "65bd65f803b3bcf3461a9b7adfa4d2ab5c449c73",
+      "remote_size": 629,
+      "disk_size": 629,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E190/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E190/exposure.json",
+      "remote_blob_sha1": "e97800b144ebf7298f125d92dc705d0079a45feb",
+      "remote_size": 623,
+      "disk_size": 623,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E191/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E191/exposure.json",
+      "remote_blob_sha1": "2c418be4a1c33fe93c0a980701c26c3b67e3da10",
+      "remote_size": 623,
+      "disk_size": 623,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E195/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E195/exposure.json",
+      "remote_blob_sha1": "3b703009caf66971ed380eb3f88e62014614b672",
+      "remote_size": 623,
+      "disk_size": 623,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E199/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E199/exposure.json",
+      "remote_blob_sha1": "b7a5167638cf4a464165133ea815afe8f6028f5b",
+      "remote_size": 605,
+      "disk_size": 605,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E207/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E207/exposure.json",
+      "remote_blob_sha1": "8d10bfd78e5aeb2280ed738726de65c748b83bca",
+      "remote_size": 588,
+      "disk_size": 588,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E208/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E208/exposure.json",
+      "remote_blob_sha1": "830c58df43d52a7a5ab6b03fe07b7819236ac659",
+      "remote_size": 591,
+      "disk_size": 591,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3/E212/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3/E212/exposure.json",
+      "remote_blob_sha1": "ab97e0a944fc87154a5799f19e033a303fcc9cd6",
+      "remote_size": 544,
+      "disk_size": 544,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3_ext/LRE121/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3_ext/LRE121/exposure.json",
+      "remote_blob_sha1": "25aae9876834ac1bb1be44dba9e703a68e015e59",
+      "remote_size": 894,
+      "disk_size": 894,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3_ext/LRE125/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3_ext/LRE125/exposure.json",
+      "remote_blob_sha1": "1911e00b881c52f32bc1d6c48260b15fafc4d744",
+      "remote_size": 894,
+      "disk_size": 894,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3_ext/LRE127/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3_ext/LRE127/exposure.json",
+      "remote_blob_sha1": "e385ff8557b4b3e6fde30e0651572592d7eedb9c",
+      "remote_size": 920,
+      "disk_size": 920,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3_ext/LRE138/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3_ext/LRE138/exposure.json",
+      "remote_blob_sha1": "4e54f43e26c162c1cc5380dce028968844d8804b",
+      "remote_size": 948,
+      "disk_size": 948,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3_ext/LRE141/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3_ext/LRE141/exposure.json",
+      "remote_blob_sha1": "31c133d18ec01f1c7b51d36db14a5489be7ff642",
+      "remote_size": 861,
+      "disk_size": 861,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3_ext/LRE145/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3_ext/LRE145/exposure.json",
+      "remote_blob_sha1": "35f3b264b0716133d432029b9cd28c593f234c8d",
+      "remote_size": 857,
+      "disk_size": 857,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3_ext/LRE146/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3_ext/LRE146/exposure.json",
+      "remote_blob_sha1": "30763f4c840c0a8a374ee1792c897c5478334e64",
+      "remote_size": 865,
+      "disk_size": 865,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave3_ext/LRE147/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave3_ext/LRE147/exposure.json",
+      "remote_blob_sha1": "541c3126d77916b3b2a9d558881bda7c26c9f124",
+      "remote_size": 622,
+      "disk_size": 622,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_FROZEN",
+      "authoritative": "local-worktree",
+      "note": "frozen_at/登记字段更新前的历史台账（方案 §2.2）；权威=episode 五件套本地版 exposure.json；与 STORY_CUSTODY_LEDGER 补登说明（决策二）互为证据链"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E301/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E301/exposure.json",
+      "remote_blob_sha1": "04ac7a84c964bc5d5b371017488fbf85b44beb7c",
+      "remote_size": 1164,
+      "disk_size": 1164,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E302/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E302/exposure.json",
+      "remote_blob_sha1": "c5e8bfe621706323787f79162380bb80d7ebcece",
+      "remote_size": 1176,
+      "disk_size": 1176,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E303/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E303/exposure.json",
+      "remote_blob_sha1": "74da6af930c030a0c4f69bb1267f1f8f0de578fc",
+      "remote_size": 1173,
+      "disk_size": 1173,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E304/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E304/exposure.json",
+      "remote_blob_sha1": "5efe5d61341fdb76aef81e9d81a0d7e3204fdb22",
+      "remote_size": 1167,
+      "disk_size": 1167,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E305/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E305/exposure.json",
+      "remote_blob_sha1": "8342e661e543a642301f41e3c5566c10fcf43995",
+      "remote_size": 1166,
+      "disk_size": 1166,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E306/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E306/exposure.json",
+      "remote_blob_sha1": "5a49d4f6eb361d12976ca16a581a5bcdd38e4391",
+      "remote_size": 1171,
+      "disk_size": 1171,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E307/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E307/exposure.json",
+      "remote_blob_sha1": "257478233b430b73ab5fdb635fd12f6173bdcf30",
+      "remote_size": 1213,
+      "disk_size": 1213,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E308/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E308/exposure.json",
+      "remote_blob_sha1": "de9766fd4d3cbfaefc3f8a751273bfdfebfbbca2",
+      "remote_size": 1190,
+      "disk_size": 1190,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E309/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E309/exposure.json",
+      "remote_blob_sha1": "a5ff7788596e665edc1d053b0a6c03311327524e",
+      "remote_size": 1136,
+      "disk_size": 1136,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E310/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E310/exposure.json",
+      "remote_blob_sha1": "f52c055c30df5efd7b6d0010e5ed5a4e0fe162a0",
+      "remote_size": 1116,
+      "disk_size": 1116,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E311/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E311/exposure.json",
+      "remote_blob_sha1": "4ccd6942c83603c43d42b899583e51c111ece035",
+      "remote_size": 1125,
+      "disk_size": 1125,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E312/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E312/exposure.json",
+      "remote_blob_sha1": "9c0547e905e9abc24a1c97f3076176f3bb3a3f11",
+      "remote_size": 1116,
+      "disk_size": 1116,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E313/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E313/exposure.json",
+      "remote_blob_sha1": "a7c9a8784042723789a5ffd869d4316e747276e8",
+      "remote_size": 1115,
+      "disk_size": 1115,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E314/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E314/exposure.json",
+      "remote_blob_sha1": "5c740a653189908ec0e4a7d380230a6416847634",
+      "remote_size": 1136,
+      "disk_size": 1136,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E315/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E315/exposure.json",
+      "remote_blob_sha1": "c1f1228063a2781399a0158c7290b7f6c099dd94",
+      "remote_size": 1112,
+      "disk_size": 1112,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E316/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E316/exposure.json",
+      "remote_blob_sha1": "d44d1de05424979a446a8f80c2b715ddb3466a0c",
+      "remote_size": 1127,
+      "disk_size": 1127,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E317/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E317/exposure.json",
+      "remote_blob_sha1": "40c8c4db354b845c7509f8f371582052bda6bc41",
+      "remote_size": 1089,
+      "disk_size": 1089,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E318/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E318/exposure.json",
+      "remote_blob_sha1": "ceecf1d2d9d47e33ed76faba37b18dc5f6eb88bf",
+      "remote_size": 1101,
+      "disk_size": 1101,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E319/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E319/exposure.json",
+      "remote_blob_sha1": "25c4ec98b426917177d88a51bb4d0fd3499619f8",
+      "remote_size": 1085,
+      "disk_size": 1085,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E320/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E320/exposure.json",
+      "remote_blob_sha1": "e46df57bdbe2f089ac6da0a0d22df719c12e6a24",
+      "remote_size": 1095,
+      "disk_size": 1095,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E321/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E321/exposure.json",
+      "remote_blob_sha1": "c51762da5727dd9cd42d4dc36bae7b6ae7643d26",
+      "remote_size": 1093,
+      "disk_size": 1093,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E322/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E322/exposure.json",
+      "remote_blob_sha1": "841b2ae25dcd8626f4f5a7ce3c889130158c740f",
+      "remote_size": 1099,
+      "disk_size": 1099,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E323/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E323/exposure.json",
+      "remote_blob_sha1": "27f47b5a7b8d5d1c6580ca0de2ce1e69643321b3",
+      "remote_size": 1099,
+      "disk_size": 1099,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E324/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E324/exposure.json",
+      "remote_blob_sha1": "0f069785e58364786a3bdff5d5a9b1c7f88e2f6e",
+      "remote_size": 1095,
+      "disk_size": 1095,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E325/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E325/exposure.json",
+      "remote_blob_sha1": "73c3dadec08eaf800a9b8a01dc00c007bdc27ffd",
+      "remote_size": 1151,
+      "disk_size": 1151,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E326/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E326/exposure.json",
+      "remote_blob_sha1": "e765f0f40cd112505b4eaa0ded72e6008df07bbc",
+      "remote_size": 1155,
+      "disk_size": 1155,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E327/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E327/exposure.json",
+      "remote_blob_sha1": "2a1631d0bbf3451d420a5884d313f5d64e141efd",
+      "remote_size": 1142,
+      "disk_size": 1142,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E328/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E328/exposure.json",
+      "remote_blob_sha1": "98d54ed275c473a6dd16891fab5c1de3742b23c4",
+      "remote_size": 1171,
+      "disk_size": 1171,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E329/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E329/exposure.json",
+      "remote_blob_sha1": "91701d32f200530d77f489dd42dc2d0f5b3d517b",
+      "remote_size": 1151,
+      "disk_size": 1151,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E330/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E330/exposure.json",
+      "remote_blob_sha1": "ae24f0a03b4bfeb4f4d62376c87557b880b93ef4",
+      "remote_size": 1161,
+      "disk_size": 1161,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E331/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E331/exposure.json",
+      "remote_blob_sha1": "587ce358f37827141aedd1662bc525e238dd0db4",
+      "remote_size": 1184,
+      "disk_size": 1184,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E332/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E332/exposure.json",
+      "remote_blob_sha1": "56cf6a5a46340cc969b4fa87bb524f9eba06c1d5",
+      "remote_size": 1151,
+      "disk_size": 1151,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E333/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E333/exposure.json",
+      "remote_blob_sha1": "8a95217e0c28e05bff439cff0b15ac52ebc8ff95",
+      "remote_size": 1556,
+      "disk_size": 1556,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E334/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E334/exposure.json",
+      "remote_blob_sha1": "8709fbae7c7e7b0f599ea6508dc7127e05d425ff",
+      "remote_size": 1577,
+      "disk_size": 1577,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E335/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E335/exposure.json",
+      "remote_blob_sha1": "f4e342fc80b1db9974b06dd04fb6c876fc96f6ec",
+      "remote_size": 1570,
+      "disk_size": 1570,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E336/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E336/exposure.json",
+      "remote_blob_sha1": "b55e3f6bdf1594842db41604c0c84f875d43f4ba",
+      "remote_size": 1585,
+      "disk_size": 1585,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E337/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E337/exposure.json",
+      "remote_blob_sha1": "5e192b4f948f56d3eec2907c9a36cbe4c7839780",
+      "remote_size": 1170,
+      "disk_size": 1170,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    },
+    {
+      "source_remote_path": "harness-lovebrain/benchmark/stories_v2/wave4_dev/E338/exposure.json",
+      "snapshot_path": "research/stories_v2/_remote_v1_snapshots/exposure/wave4_dev/E338/exposure.json",
+      "remote_blob_sha1": "c21a17f16f4703c8fc2fe71a1283075dc47b860c",
+      "remote_size": 1216,
+      "disk_size": 1216,
+      "diff_class": "SUBSTANTIVE_EXPOSURE_BACKFILL",
+      "authoritative": "local-worktree",
+      "note": "wave4_dev phase3 对账回填前的历史台账（experiments_used/dev_exposed/status/reconciled_at 未回填态，见方案 §2.2）；权威=episode 五件套本地版 exposure.json"
+    }
+  ]
+}

@@ -1,0 +1,473 @@
+{
+ "story_id": "E169",
+ "turns": {
+  "E169_T01": {
+   "case_id": "E169_T01",
+   "current_action": "回应桨叶损伤与保修归因的疑虑，建议先固定证据再寄修",
+   "acceptable_actions": [
+    "建议先拍视频留证再联系官方",
+    "建议导出飞行日志查有无撞击报警",
+    "建议先问官方客服寄修口径再决定"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T01_A01",
+     "subject": "SHARED",
+     "relation": "无人机桨叶损伤",
+     "value": "HER 的无人机自动返航后发现 2 号桨叶裂了道口子",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T01", "quote": "2号桨叶裂了道口子", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T01_A02",
+     "subject": "HER",
+     "relation": "保修归因不确定",
+     "value": "HER 担心寄修时损伤被判定为人为损坏",
+     "valid_time": "2026-11-03",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T01", "quote": "怕寄修被判定为人为损坏", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "技术型老同学口吻，先给可执行的第一步，别急着下归因结论。",
+   "unknowns": ["损伤成因未知", "桨叶批次是否有通病未知"],
+   "protected_expressions": ["2号桨叶裂了道口子"],
+   "forbidden_factual_claims": ["不得断言损伤必为人为或必为质量问题"],
+   "may_decline": false
+  },
+  "E169_T02": {
+   "case_id": "E169_T02",
+   "current_action": "确认留证安排并接住她无撞击的自述",
+   "acceptable_actions": [
+    "确认今晚拍视频并提醒连遥控一起拍",
+    "确认并提醒顺便导飞行日志",
+    "确认并叮嘱送修前别再飞"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T02_A01",
+     "subject": "SHARED",
+     "relation": "留证计划",
+     "value": "HER 承诺当晚拍机身裂口遥控的留证视频并回传",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T02", "quote": "拍视频留证我今晚就去拍", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T02_A02",
+     "subject": "HER",
+     "relation": "无撞击自述",
+     "value": "HER 自述飞行全程未撞东西且返航为自动",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T02", "quote": "返航也是自动的", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接住她的执行承诺即可，顺手补一个证据盲点。",
+   "unknowns": ["飞行日志能否导出未知"],
+   "protected_expressions": ["拍视频留证我今晚就去拍"],
+   "forbidden_factual_claims": ["不得把她的自述当成已证实事实"],
+   "may_decline": false
+  },
+  "E169_T03": {
+   "case_id": "E169_T03",
+   "current_action": "对群传闻给出核实建议，不背书不否定",
+   "acceptable_actions": [
+    "建议以官方客服答复为准不轻信群消息",
+    "建议查序列号批次并同时问客服",
+    "建议把传闻留作寄修时的补充申诉材料"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "interaction", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T03_A01",
+     "subject": "PUBLIC",
+     "relation": "桨叶通病传闻",
+     "value": "群内流传该批桨叶有裂纹通病且官方改过模具，真伪未证实",
+     "valid_time": "2026-11-04",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T03", "quote": "这批桨叶有裂纹通病", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T03_A02",
+     "subject": "HER",
+     "relation": "留证计划",
+     "value": "当晚拍留证视频的既定安排",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T02", "quote": "拍视频留证我今晚就去拍", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "传闻只当线索不当依据，明确说群里的话要过官方渠道。",
+   "unknowns": ["序列号批次查询结果未知"],
+   "protected_expressions": ["这批桨叶有裂纹通病"],
+   "forbidden_factual_claims": ["不得替官方确认存在通病", "不得断言传闻为假"],
+   "may_decline": false
+  },
+  "E169_T04": {
+   "case_id": "E169_T04",
+   "current_action": "接受寄修范围的更正并同步费用与运费口径",
+   "acceptable_actions": [
+    "确认整机加遥控寄检并复述四百八口径",
+    "确认并提醒保留客服沟通记录",
+    "确认并顺带问清判定人为后的申诉通道"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T04_A01",
+     "subject": "SHARED",
+     "relation": "寄修范围更正",
+     "value": "只寄桨叶的旧想法经官方口径更正为整机和遥控都寄检测",
+     "valid_time": "2026-11-04",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E169_T04", "quote": "不是只寄桨叶，是整机和遥控都要寄去检测", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T04_A02",
+     "subject": "SHARED",
+     "relation": "寄修费用口径",
+     "value": "判人为则维修费四百八，保内来回运费全包",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T04", "quote": "维修费一口价四百八", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：明确认可更正本身，把新口径复述一遍。",
+   "unknowns": ["检测周期未知"],
+   "protected_expressions": ["整机和遥控都要寄去检测"],
+   "forbidden_factual_claims": ["不得继续按只寄桨叶回应", "不得虚构保外维修价"],
+   "may_decline": false
+  },
+  "E169_T05": {
+   "case_id": "E169_T05",
+   "current_action": "就周末借用老无人机表态，可借可提出折中",
+   "acceptable_actions": [
+    "答应周六周日借出并约归还时间",
+    "答应借但说明电池只有两块",
+    "婉拒并提议帮她约租赁渠道"
+   ],
+   "applicable_dimensions": ["boundary", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T05_A01",
+     "subject": "SHARED",
+     "relation": "借用请求",
+     "value": "HER 想借 ME 的老无人机撑周六周日的周年活动拍摄",
+     "valid_time": "2026-11-07",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T05", "quote": "这周末借我撑两天", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T05_A02",
+     "subject": "SHARED",
+     "relation": "寄修范围更正",
+     "value": "整机加遥控寄检的新口径已确立",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T04", "quote": "整机和遥控都要寄去检测", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "可借可不借，回应时先接机器寄走的现实约束。",
+   "unknowns": ["周年活动具体拍摄需求未知"],
+   "protected_expressions": ["这周末借我撑两天"],
+   "forbidden_factual_claims": ["不得假装已答应借用"],
+   "may_decline": true
+  },
+  "E169_T06": {
+   "case_id": "E169_T06",
+   "current_action": "确认借用成立并接住飞行日志的证据线索",
+   "acceptable_actions": [
+    "确认日志导出后一起看撞击报警",
+    "确认并提醒日志文件别剪裁",
+    "确认并说借机连备用电池一起给"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T06_A01",
+     "subject": "SHARED",
+     "relation": "日志证据线",
+     "value": "飞行日志含避障与撞击报警记录，HER 将导出留证",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T06", "quote": "有没有触发避障和撞击报警都有记录", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T06_A02",
+     "subject": "SHARED",
+     "relation": "借用请求",
+     "value": "借用老无人机的请求已被 HER 视为成立",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T06", "quote": "借机的事太好了", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快确认，别把日志这事说得太重吓着她。",
+   "unknowns": ["日志里是否真有报警记录未知"],
+   "protected_expressions": ["有没有触发避障和撞击报警都有记录"],
+   "forbidden_factual_claims": ["不得预判日志结论"],
+   "may_decline": false
+  },
+  "E169_T07": {
+   "case_id": "E169_T07",
+   "current_action": "确认取件时间由周四下午更正为周五上午十点",
+   "acceptable_actions": [
+    "确认周五十点并说自己会记着",
+    "确认并提醒她出差前把箱子交接好",
+    "确认并问需不需要代为等待取件"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T07_A01",
+     "subject": "SHARED",
+     "relation": "取件时间更正",
+     "value": "原约周四下午的顺丰取件因出差改为周五上午十点",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T07", "quote": "改成周五上午十点", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T07_A02",
+     "subject": "SHARED",
+     "relation": "取件旧时间",
+     "value": "此前取件约定为周四下午，已被更正作废",
+     "valid_time": "2026-11-05",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E169_T07", "quote": "本来约周四下午", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "时间变更要复述新值，别含糊。",
+   "unknowns": [],
+   "protected_expressions": ["改成周五上午十点"],
+   "forbidden_factual_claims": ["不得沿用周四下午作为取件时间"],
+   "may_decline": false
+  },
+  "E169_T08": {
+   "case_id": "E169_T08",
+   "current_action": "就判人为后的修与不修给出参谋意见",
+   "acceptable_actions": [
+    "给出预算上限并说明残值对比逻辑",
+    "建议先修并说明桨臂成套的意义",
+    "建议看检测报告再定不预支焦虑"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T08_A01",
+     "subject": "SHARED",
+     "relation": "维修费决策",
+     "value": "HER 就判人为后四百八维修费是否值得修征求意见",
+     "valid_time": "2026-11-05",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T08", "quote": "四百八的维修费，修还是不修", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T08_A02",
+     "subject": "PUBLIC",
+     "relation": "二手残值参照",
+     "value": "同款二手市场价约一千九",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T08", "quote": "同款二手才一千九", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "参谋给依据和区间，别替她拍板。",
+   "unknowns": ["最终归因结论未知"],
+   "protected_expressions": ["同款二手才一千九"],
+   "forbidden_factual_claims": ["不得替 HER 决定修或不修"],
+   "may_decline": false
+  },
+  "E169_T09": {
+   "case_id": "E169_T09",
+   "current_action": "接住她先按修的上限走的预案与租机安排",
+   "acceptable_actions": [
+    "认可预案并提醒租机前试飞一遍",
+    "认可并提醒租机的保险条款看一眼",
+    "认可并说周日还机时顺便聚一下"
+   ],
+   "applicable_dimensions": ["memory_use", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T09_A01",
+     "subject": "HER",
+     "relation": "维修预案",
+     "value": "HER 自定先按修的上限走，真判人为再权衡",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T09", "quote": "先按修的上限走", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T09_A02",
+     "subject": "HER",
+     "relation": "租机安排",
+     "value": "活动当天租同品牌机一天两百，周六用周日还",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T09", "quote": "租了台同品牌的一天两百", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已自定方向，补一个实用提醒就好。",
+   "unknowns": ["租机具体门店未知"],
+   "protected_expressions": ["先按修的上限走"],
+   "forbidden_factual_claims": ["不得声称已替她确认租机"],
+   "may_decline": false
+  },
+  "E169_T10": {
+   "case_id": "E169_T10",
+   "current_action": "按她发来的装箱照片核对寄修物品清单",
+   "acceptable_actions": [
+    "核对后确认齐全",
+    "指出缺备用桨盒并建议一并寄",
+    "核对后提醒发票复印件留原件"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T10_A01",
+     "subject": "SHARED",
+     "relation": "寄修装箱清单",
+     "value": "装箱为机身遥控三块电池充电器与发票复印件",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T10", "quote": "机身、遥控、三块电池、充电器、发票复印件", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T10_A02",
+     "subject": "SHARED",
+     "relation": "取件时间更正",
+     "value": "取件已按更正后的周五上午十点执行",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T07", "quote": "改成周五上午十点", "message_id": "m0"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "清点要快而准，她在师傅面前等着。",
+   "unknowns": [],
+   "protected_expressions": ["机身、遥控、三块电池、充电器、发票复印件"],
+   "forbidden_factual_claims": ["不得声称照片里存在实际没有的物品"],
+   "may_decline": false
+  },
+  "E169_T11": {
+   "case_id": "E169_T11",
+   "current_action": "确认受理短信与保内运费零扣费落定",
+   "acceptable_actions": [
+    "确认受理并提醒保存受理单编号",
+    "确认并顺势说七个工作日太正常",
+    "确认并问检测进度要不要自己追问"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T11_A01",
+     "subject": "SHARED",
+     "relation": "检测受理",
+     "value": "官方已收件，五个到七个工作日出结果，受理单尾号 3966",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T11", "quote": "五个到七个工作日出结果", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T11_A02",
+     "subject": "SHARED",
+     "relation": "运费口径落地",
+     "value": "保内运费实际为零，未扣钱，四百八口径中运费部分兑现",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T11", "quote": "保内运费那栏是零", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "简短确认，进入等待期不用渲染。",
+   "unknowns": ["最终检测结论未知"],
+   "protected_expressions": ["保内运费那栏是零"],
+   "forbidden_factual_claims": ["不得提前宣布归因结果"],
+   "may_decline": false
+  },
+  "E169_T12": {
+   "case_id": "E169_T12",
+   "current_action": "接下结果与致谢，对还机与首飞邀约可接可缓",
+   "acceptable_actions": [
+    "接受还机安排并约首飞时间",
+    "接咖啡玩笑并说首飞必到",
+    "收下好消息并提醒新桨臂磨合期别猛飞"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E169_T12_A01",
+     "subject": "SHARED",
+     "relation": "检测结论",
+     "value": "官方判定损伤非人为，免费更换整套桨臂",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T12", "quote": "判定非人为，免费换了整套桨臂", "message_id": "m0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E169_T12_A02",
+     "subject": "SHARED",
+     "relation": "还机与首飞邀约",
+     "value": "HER 提出周六还老机并邀 ME 首飞掌镜，咖啡记账",
+     "valid_time": "2026-11-17之后",
+     "status": "uncertain",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E169_T12", "quote": "这周六还你", "message_id": "m0"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，为她的结果高兴，钩子可接可缓。",
+   "unknowns": ["还机具体时间未定", "首飞地点未定"],
+   "protected_expressions": ["判定非人为，免费换了整套桨臂"],
+   "forbidden_factual_claims": ["不得替 HER 定死首飞日期"],
+   "may_decline": true
+  }
+ }
+}

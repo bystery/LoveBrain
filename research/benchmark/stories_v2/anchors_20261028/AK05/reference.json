@@ -1,0 +1,88 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "AK05",
+ "turns": {
+  "AK05_T01": {
+   "case_id": "AK05_T01",
+   "current_action": "她把需求（想对词）和顾虑（怕我觉得不好笑）同时摆出来——先答她想不想我听，再讲自己立场，不空夸也不催",
+   "acceptable_actions": [
+    "答应听并声明不点评",
+    "问她想要哪种反馈再决定",
+    "答应+说听完只回一句有没有笑点"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK05_A01",
+     "subject": "她",
+     "relation": "意愿",
+     "value": "上台前想找人对一遍",
+     "valid_time": "2026-12-11 23:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK05_T01",
+      "message_id": "m1",
+      "quote": "我明天上台前想找人过一遍"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK05_A02",
+     "subject": "她",
+     "relation": "顾虑",
+     "value": "怕我听完觉得不好笑",
+     "valid_time": "2026-12-11 23:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK05_T01",
+      "message_id": "m1",
+      "quote": "怕你听完觉得不好笑"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK05_A03",
+     "subject": "双方",
+     "relation": "既定",
+     "value": "周六八点我已取票",
+     "valid_time": "2026-12-11 22:50",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK05_T01",
+      "message_id": "m0",
+      "quote": "明晚八点我票都取好了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "含糊处在于她要的是安全感的确认；把'那我不听'或'肯定好笑'任一极端甩回去都算失职。",
+   "unknowns": [
+    "她想要的是彩排还是打气"
+   ],
+   "protected_expressions": [
+    "又怕你听完觉得不好笑"
+   ],
+   "forbidden_factual_claims": [
+    "不要保证'一定好笑'",
+    "不要主动要求逐段点评"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六八点到场看她首台并坐第一排",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "T01_RECALL",
+  "name": "多需求全量召回与记账",
+  "capability": "intake_recall",
+  "description": "脏输入（情绪化+编号混杂+干扰项）含 6 项真实需求，考察拆解召回、逐字保真、Schema 合规。LoveBrain 11KB 的廉价缩小版。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "README.md": "# MiniShop\n小型订单管理演示项目。\n",
+      "src/app.py": "from db import pool\n\ndef create_order(item):\n    pool.execute('INSERT INTO orders (item) VALUES (?)', item)\n",
+      "src/db.py": "pool_size = 10\n\n\ndef execute(sql, *args):\n    pass\n",
+      "config.json": "{\"pool_size\": 10, \"log_level\": \"info\"}\n"
+    }
+  },
+  "inputs": [
+    "唉，改了一晚上越改越乱，你给我记一下，就这几件事，别给我漏：1，登录那里图形验证码太烦了，换成短信验证；2，数据库连接池现在才10，一压测就爆，调到50；3，昨天日志里好像有OOM，帮我查查昨天到底有没有；4，聊天列表那个《她》《我》前缀删掉，看着乱；5，消息卡片太占地方了，紧凑一点；6，那个❌删除按钮丑死了，改成左右滑动删除。就这样，别的先别动。哦对了系统别的毛病你顺便留意着，但也先别改。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]}
+    ],
+    "checks": [
+      {"type": "task_captured", "keywords_any": ["短信"], "desc": "REQ1 图形验证码换短信", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["连接池"], "desc": "REQ2 连接池 10→50", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["OOM"], "desc": "REQ3 查昨天 OOM", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["前缀"], "desc": "REQ4 删除《她》《我》前缀", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["紧凑"], "desc": "REQ5 消息卡片紧凑化", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["滑动"], "desc": "REQ6 ❌按钮改滑动删除", "pts": 1},
+      {"type": "raw_fidelity", "desc": "用户原话逐字保真", "pts": 2},
+      {"type": "tasklist_schema", "desc": "账本 Schema 合规", "pts": 2}
+    ]
+  }
+}

@@ -1,0 +1,3092 @@
+{
+ "story_id": "LRE060",
+ "turns": {
+  "LRE060_T01": {
+   "case_id": "LRE060_T01",
+   "current_action": "接下明天十点贴封条验收的角色，肯定她的编号打包功夫，顺带确认货车与电梯两个时间点是否咬合。",
+   "acceptable_actions": [
+    "确认到场时间，提醒她核对货车尺寸能否进小区",
+    "夸编号打包的做法，建议她列一张交接物品清单",
+    "问一句货运电梯预约时段，提前对齐两头时间"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A01",
+     "subject": "SHARED",
+     "relation": "truck_booking",
+     "value": "已订周六上午九点4.2米货车搬家",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T01",
+      "message_id": "m0",
+      "quote": "明天上午九点货车到楼下"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A02",
+     "subject": "HER",
+     "relation": "packing_done",
+     "value": "18个纸箱已打包并编号1至18",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T01",
+      "message_id": "m0",
+      "quote": "18个箱子我全编号了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A03",
+     "subject": "ME",
+     "relation": "assigned_role",
+     "value": "约定 ME 周六十点到场地负责贴封条验收",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T01",
+      "message_id": "m0",
+      "quote": "就差你明天十点来负责贴封条验收"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸她的准备功夫，把明天可能的变量先问一句，不扫兴。",
+   "unknowns": [
+    "货车能否进入老小区的窄路未知",
+    "电梯预约具体时段未同步"
+   ],
+   "protected_expressions": [
+    "从大到小1到18"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构搬家公司的承诺",
+    "不得预判明天一定顺利"
+   ]
+  },
+  "LRE060_T02": {
+   "case_id": "LRE060_T02",
+   "current_action": "接住第一次改期：货车由九点改到十一点半，与九至十一点的货运电梯预约相撞；先把冲突点摆清，再给出'改电梯优先于等车'的排序。",
+   "acceptable_actions": [
+    "指出冲突在电梯不在车，建议立刻去物业改约",
+    "让她先跟司机确认晚到是否确定，别被口头时间牵着走",
+    "提议若电梯改不上，先手搬小件下楼占时间"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "attribution",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A04",
+     "subject": "THIRD",
+     "relation": "reschedule_first",
+     "value": "司机来电：货车由九点改至十一点半（前一家延误）",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T02",
+      "message_id": "m0",
+      "quote": "改到十一点半"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A05",
+     "subject": "SHARED",
+     "relation": "original_slot_broken",
+     "value": "原定九点的货车安排被司机改期打破",
+     "valid_time": "2026-11-06/2026-11-07",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T01",
+      "message_id": "m0",
+      "quote": "明天上午九点货车到楼下"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A06",
+     "subject": "SHARED",
+     "relation": "elevator_slot",
+     "value": "货运电梯预约时段为周六九至十一点，过点需重新约",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T02",
+      "message_id": "m0",
+      "quote": "我约的就是九点到十一点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：语速稳住她，先把'哪个是硬约束'点出来，别陪她一起慌。",
+   "unknowns": [
+    "司机晚到的确切时间未知",
+    "电梯能否改约成功未知"
+   ],
+   "protected_expressions": [
+    "过了点要重新约"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台赔偿规则",
+    "不得断言电梯必然改约成功"
+   ]
+  },
+  "LRE060_T03": {
+   "case_id": "LRE060_T03",
+   "current_action": "接住电梯改约的坏消息：下午满档、最早17-19，11点半的车与17点的电梯错位五小时；指出这意味着周六下午方案已不成立，要另想办法。",
+   "acceptable_actions": [
+    "复述错位事实，直接下判断：等车不如改期",
+    "建议她跟司机摊牌改到明早，并问是否收改期费",
+    "提醒她留好与物业和司机的沟通记录"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A07",
+     "subject": "THIRD",
+     "relation": "elevator_full",
+     "value": "货运电梯下午时段被装修预订，最早空档为17-19",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T03",
+      "message_id": "m0",
+      "quote": "下午一点到五点被装修的订走了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A08",
+     "subject": "SHARED",
+     "relation": "idle_gap",
+     "value": "车11点半到电梯17点开，需空等约五小时",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T03",
+      "message_id": "m0",
+      "quote": "最早空的是晚上五点到七点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A09",
+     "subject": "SHARED",
+     "relation": "linkage_broken",
+     "value": "改期后的11点半到车与电梯17点空档错位，衔接断裂",
+     "valid_time": "2026-11-07",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T02",
+      "message_id": "m0",
+      "quote": "改到十一点半"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'疯了'接住但不放大，用事实推她接受改期而不是干耗。",
+   "unknowns": [
+    "17-19时段是否能保住未知"
+   ],
+   "protected_expressions": [
+    "干等五个多小时"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构物业的加价规则",
+    "不得替她决定改期与否"
+   ]
+  },
+  "LRE060_T04": {
+   "case_id": "LRE060_T04",
+   "current_action": "接住第二次改期的崩点：车辆被追尾、周六用车彻底取消，改期建议直撞周日上午十一点交房死线；先把死线钉在桌面上再谈方案。",
+   "acceptable_actions": [
+    "复述硬约束：周日上午十一点前搬空、房东下午收房",
+    "建议她立刻在平台重新下单周日晚班或周一凌晨",
+    "问她是否愿意接受加价或拆分搬运的备选"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A10",
+     "subject": "THIRD",
+     "relation": "truck_cancelled",
+     "value": "原司机车辆被追尾进厂，周六用车彻底取消",
+     "valid_time": "2026-11-07",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T04",
+      "message_id": "m0",
+      "quote": "这回是彻底来不了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A11",
+     "subject": "SHARED",
+     "relation": "second_plan_void",
+     "value": "11点半的二次方案随车辆进厂一并落空",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T02",
+      "message_id": "m0",
+      "quote": "改到十一点半"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A12",
+     "subject": "SHARED",
+     "relation": "hard_deadline",
+     "value": "硬死线：周日上午十一点前须搬空交房，房东下午迎新租客",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T04",
+      "message_id": "m0",
+      "quote": "明天上午十一点前必须搬空交房"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她崩的时候先别堆方案，一句'死线还在，路没断'先稳住。",
+   "unknowns": [
+    "平台改期费与退款规则未知",
+    "房东能否通融未知"
+   ],
+   "protected_expressions": [
+    "房东下午还有下一拨租客要进去"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构司机的赔偿承诺",
+    "不得断言房东必然延期"
+   ]
+  },
+  "LRE060_T05": {
+   "case_id": "LRE060_T05",
+   "current_action": "确认新单落定：周日早8点同款货车、80元高峰加价；肯定她在死线下的取舍，提醒截图订单。",
+   "acceptable_actions": [
+    "肯定加价换确定性的取舍，提醒她截图订单页",
+    "提醒她把明早八点同步给物业改电梯时段",
+    "顺一句'住马路上'的玩笑，把紧张卸一卸"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A13",
+     "subject": "HER",
+     "relation": "new_booking",
+     "value": "重新下单：周日早八点同款货车",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T05",
+      "message_id": "m0",
+      "quote": "我重新下了一单"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A14",
+     "subject": "HER",
+     "relation": "surcharge",
+     "value": "周日高峰加价80元，她接受",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T05",
+      "message_id": "m0",
+      "quote": "同样的车加价80"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A15",
+     "subject": "SHARED",
+     "relation": "deadline_anchor",
+     "value": "新单以周日上午十一点交房死线为唯一约束",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T04",
+      "message_id": "m0",
+      "quote": "明天上午十一点前必须搬空交房"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不评判80块值不值，把'确定性'三个字讲给她听。",
+   "unknowns": [
+    "新司机是否可靠未知"
+   ],
+   "protected_expressions": [
+    "总比住马路上强"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台价目规则",
+    "不得断言新单必然顺利"
+   ]
+  },
+  "LRE060_T06": {
+   "case_id": "LRE060_T06",
+   "current_action": "接下'总指挥'的新角色并确认八点到场，肯定她把电梯改到七至十点且两遍确认的稳妥，把明早分工先排出来。",
+   "acceptable_actions": [
+    "答应八点到场当总指挥，提出分工草案",
+    "提醒她夜里把小件归堆到门口，省明早时间",
+    "建议她今晚早睡，明早六点半起来吃口热的"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A16",
+     "subject": "SHARED",
+     "relation": "elevator_rebooked",
+     "value": "货运电梯改约至周日七至十点并二次电话确认",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T06",
+      "message_id": "m0",
+      "quote": "电梯改到明天早上七点到十点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A17",
+     "subject": "ME",
+     "relation": "commander_role",
+     "value": "她请 ME 明早八点到场担任总指挥",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T06",
+      "message_id": "m0",
+      "quote": "你来当总指挥"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A18",
+     "subject": "HER",
+     "relation": "double_confirm",
+     "value": "电梯预约经两遍电话确认以防再变",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T06",
+      "message_id": "m0",
+      "quote": "这次我打了两遍确认"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：接角色爽快，分工给得具体，让她今晚能睡个安稳觉。",
+   "unknowns": [
+    "明早货车司机信息未知"
+   ],
+   "protected_expressions": [
+    "这次我打了两遍确认"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构自己无法到场的情况",
+    "不得替物业承诺时段"
+   ]
+  },
+  "LRE060_T07": {
+   "case_id": "LRE060_T07",
+   "current_action": "接住第三次改期危机：新单司机被调走、改派次日六点才知；先稳住她，把'违约金'风险与'今晚还能做什么'并排摆出来。",
+   "acceptable_actions": [
+    "先稳情绪：三单三变不是她的问题，是调度乱",
+    "让她马上联系原司机问有无同行可调",
+    "提醒违约金条款先看合同原文，别自己吓自己"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A19",
+     "subject": "THIRD",
+     "relation": "driver_reassigned",
+     "value": "平台来电：新单司机被调走跑长途，改派结果次日六点才知",
+     "valid_time": "2026-11-07",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T07",
+      "message_id": "m0",
+      "quote": "司机被临时调去跑长途了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A20",
+     "subject": "SHARED",
+     "relation": "second_booking_shaky",
+     "value": "重新下单的第二方案遭遇司机调岗，再度悬置",
+     "valid_time": "2026-11-07",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T05",
+      "message_id": "m0",
+      "quote": "我重新下了一单"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A21",
+     "subject": "SHARED",
+     "relation": "penalty_risk",
+     "value": "若逾期未搬空将赔房东违约金",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T07",
+      "message_id": "m0",
+      "quote": "就要赔房东违约金"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：这是全篇情绪最低点，先当树洞再当参谋，行动建议一次只给一个。",
+   "unknowns": [
+    "平台改派是否会有车未知",
+    "违约金具体条款未知"
+   ],
+   "protected_expressions": [
+    "我手都是凉的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台补偿承诺",
+    "不得断言明早必然无车"
+   ]
+  },
+  "LRE060_T08": {
+   "case_id": "LRE060_T08",
+   "current_action": "接住绝处逢生：原师傅引荐同行3.8米小车明早六点半连跑两趟，还拒收红包；确认新方案能覆盖死线，提醒她给师傅发清地址楼栋。",
+   "acceptable_actions": [
+    "确认两趟方案与死线的余量，算一遍时间账",
+    "提醒她把两个地址、楼栋和电梯时段发师傅",
+    "建议她把红包改成明天的一顿早饭或好评"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A22",
+     "subject": "THIRD",
+     "relation": "fellow_truck_plan",
+     "value": "原师傅引荐同行3.8米小车，明早六点半到连跑两趟",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T08",
+      "message_id": "m0",
+      "quote": "把他同行兄弟介绍给我"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A23",
+     "subject": "THIRD",
+     "relation": "refused_red_packets",
+     "value": "原师傅拒收她所发红包",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T08",
+      "message_id": "m0",
+      "quote": "发了两个红包都没收"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A24",
+     "subject": "SHARED",
+     "relation": "crisis_handed_off",
+     "value": "平台改派悬念被师傅私人方案接手化解",
+     "valid_time": "2026-11-07",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T07",
+      "message_id": "m0",
+      "quote": "改派要等明早六点才知道有没有车"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把这位师傅讲成今晚的英雄，同时提醒她把细节发全，别让好人白跑。",
+   "unknowns": [
+    "小车两趟能否装完全部大件未知"
+   ],
+   "protected_expressions": [
+    "小姑娘的事就是我的事"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构师傅的收费与承诺",
+    "不得断言两趟必然装完"
+   ]
+  },
+  "LRE060_T09": {
+   "case_id": "LRE060_T09",
+   "current_action": "接住深夜的阶段性进展：易碎品先行运抵新家、她睡新家沙发备战早起；叮嘱安全与休息，把明早六点半的流程再对一遍。",
+   "acceptable_actions": [
+    "确认易碎品已放新家的落点，明早省一道搬运",
+    "提醒她定两个闹钟，明早六点前吃点东西",
+    "顺一句'最早的一次早起'，把苦中带乐接住"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A25",
+     "subject": "HER",
+     "relation": "fragibles_moved",
+     "value": "原师傅顺路先行运走两箱易碎品至新家",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T09",
+      "message_id": "m0",
+      "quote": "两箱易碎的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A26",
+     "subject": "HER",
+     "relation": "sleep_in_new_home",
+     "value": "她携铺盖夜宿新家沙发，次日六点起床备战",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T09",
+      "message_id": "m0",
+      "quote": "我今晚睡新家沙发"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A27",
+     "subject": "THIRD",
+     "relation": "schedule_confirmed",
+     "value": "小车明早六点半到场的安排被她复述确认",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T08",
+      "message_id": "m0",
+      "quote": "明早六点半就到"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：深夜短句收束，别再抛新任务，让她安心睡。",
+   "unknowns": [
+    "她能否按时早起未知"
+   ],
+   "protected_expressions": [
+    "这是我这辈子最早的一次早起"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构易碎品清单",
+    "不得替她决定留守细节"
+   ]
+  },
+  "LRE060_T10": {
+   "case_id": "LRE060_T10",
+   "current_action": "共享搬运收官的狂喜：两趟6:30-9:30完成、电梯十点前清空、房东验收通过押金全退；把功劳分给她的交接清单与编号系统。",
+   "acceptable_actions": [
+    "热烈祝贺交房死线达成，复述三单三变到两趟收官",
+    "把功劳还给她的编号打包与交接清单",
+    "提醒她把新旧房的电表水表读数拍照存档"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A28",
+     "subject": "SHARED",
+     "relation": "move_completed",
+     "value": "周日两趟搬运6:30-9:30完成，10点前清空电梯",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T10",
+      "message_id": "m0",
+      "quote": "六点半到九点半全上楼"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A29",
+     "subject": "SHARED",
+     "relation": "deposit_refunded",
+     "value": "房东11点验收通过，押金全额退还",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T10",
+      "message_id": "m0",
+      "quote": "押金一分没扣全退了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A30",
+     "subject": "ME",
+     "relation": "checklist_credit",
+     "value": "ME 的交接清单覆盖到燃气卡，验收零遗漏",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T10",
+      "message_id": "m0",
+      "quote": "连燃气卡都提醒我带了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：狂喜要接得热闹，收尾时把'三单三变'复盘成一句经验，不说教。",
+   "unknowns": [],
+   "protected_expressions": [
+    "墙皮没磕一块"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构验收细节",
+    "不得断言押金到账时间"
+   ]
+  },
+  "LRE060_T11": {
+   "case_id": "LRE060_T11",
+   "current_action": "确认费用回补：平台以调度失误退还80元加价并赠50元搬家券；肯定她为两位师傅手写长评的谢法，把这趟的善意的账也记上。",
+   "acceptable_actions": [
+    "肯定平台退款的结局，提醒她查看到账",
+    "夸小作文好评的分量，比红包更合师傅心意",
+    "顺一句搬家券的用途，别急着处理掉"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A31",
+     "subject": "THIRD",
+     "relation": "refund_80",
+     "value": "平台以调度失误补偿退还80元加价款",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T11",
+      "message_id": "m0",
+      "quote": "平台把那80块退我了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A32",
+     "subject": "HER",
+     "relation": "surcharge_netted",
+     "value": "周日高峰80元加价经平台补偿回到原点",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T05",
+      "message_id": "m0",
+      "quote": "同样的车加价80"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A33",
+     "subject": "HER",
+     "relation": "coupon_and_reviews",
+     "value": "平台另赠50元搬家券，她为两位师傅手写长文好评",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T11",
+      "message_id": "m0",
+      "quote": "送了张五十块的搬家券"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把退款说成迟到的公道，把好评说成她该得的体面。",
+   "unknowns": [
+    "搬家券有效期未知"
+   ],
+   "protected_expressions": [
+    "一个字一个字写的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台补偿名目",
+    "不得断言好评会带来回报"
+   ]
+  },
+  "LRE060_T12": {
+   "case_id": "LRE060_T12",
+   "current_action": "接住新家第一晚的纸箱晚餐与搬家券转赠的玩笑，确认编号14的厨具梗，以'下顿正经饭'的钩子收尾。",
+   "acceptable_actions": [
+    "接下搬家券的玩笑，顺势预约开火后的第一顿饭",
+    "复述这趟搬家的一句总账：三单三变，两趟收官",
+    "把纸箱晚餐讲得有仪式感一点，冲淡疲惫"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A34",
+     "subject": "SHARED",
+     "relation": "first_dinner",
+     "value": "新家首晚餐为外卖，就着纸箱吃",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T12",
+      "message_id": "m0",
+      "quote": "新家第一顿，外卖"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A35",
+     "subject": "HER",
+     "relation": "kitchen_unboxing",
+     "value": "厨具箱编号14尚未拆完，做饭暂缓",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T12",
+      "message_id": "m0",
+      "quote": "厨具今晚才拆箱，编号14"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A36",
+     "subject": "SHARED",
+     "relation": "coupon_gifted",
+     "value": "50元搬家券被她转赠 ME",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T12",
+      "message_id": "m0",
+      "quote": "搬家券我转手送你了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻快，玩笑接住就落，不引入新的搬家话题。",
+   "unknowns": [],
+   "protected_expressions": [
+    "编号14"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构搬家券面额与规则",
+    "不得引入新的消费承诺"
+   ]
+  },
+  "LRE060_T13": {
+   "case_id": "LRE060_T13",
+   "current_action": "接住拆箱战报：编号14厨具到位、炒锅锅盖失踪；把找锅盖变成一个小悬念，接下明晚新厨房全景的约。",
+   "acceptable_actions": [
+    "把锅盖失踪讲成寻宝悬念，建议她查最底层的箱子",
+    "确认明晚看新厨房全景，顺带验收锅具归位",
+    "提醒她砂锅汤锅先用起来，别让厨具吃灰"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A37",
+     "subject": "HER",
+     "relation": "kitchen_box14_unpacked",
+     "value": "编号14厨具已拆完归位",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T13",
+      "quote": "编号14拆完了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A38",
+     "subject": "HER",
+     "relation": "lid_missing",
+     "value": "黑色炒锅锅盖失踪待寻",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T13",
+      "quote": "黑色炒锅的锅盖失踪了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A39",
+     "subject": "SHARED",
+     "relation": "kitchen_tour_promise",
+     "value": "她约 ME 明晚看新厨房全景",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T13",
+      "quote": "明晚给你看新厨房全景",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把丢锅盖当轻松悬念，不上升成麻烦。",
+   "unknowns": [
+    "锅盖最终在哪个箱子未知"
+   ],
+   "protected_expressions": [
+    "编号14拆完了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构锅盖已在某箱中找到",
+    "不得替她安排拆箱顺序"
+   ]
+  },
+  "LRE060_T14": {
+   "case_id": "LRE060_T14",
+   "current_action": "接下每周三饭局新规并确认首顿日期，肯定她立规矩的兴致，把'菜单保密'留成钩子。",
+   "acceptable_actions": [
+    "答应每周三饭局，确认首顿11月11日准时到",
+    "猜一两个菜单方向当开场白，不逼她揭晓",
+    "提醒她把周三晚固定进日历，省得临时撞车"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A40",
+     "subject": "SHARED",
+     "relation": "weekly_dinner_rule",
+     "value": "约定每周三晚 ME 到她新家吃饭",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T14",
+      "quote": "以后每周三晚上你来新家吃饭",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A41",
+     "subject": "SHARED",
+     "relation": "first_dinner_date",
+     "value": "周三饭局首顿定于2026-11-11，由她下厨",
+     "valid_time": "2026-11-09/2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T14",
+      "quote": "第一顿就这周三，11月11号",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A42",
+     "subject": "HER",
+     "relation": "menu_secret",
+     "value": "首顿菜单保密，留作钩子",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T14",
+      "quote": "菜单保密",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：新规接得爽快，把保密菜单当乐趣不当障碍。",
+   "unknowns": [
+    "首顿菜单内容未知"
+   ],
+   "protected_expressions": [
+    "菜单保密"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构菜单具体菜品",
+    "不得替她取消或改动周三新规"
+   ]
+  },
+  "LRE060_T15": {
+   "case_id": "LRE060_T15",
+   "current_action": "确认宽带安装排期与周五在家办公的安排，提醒她留好师傅联系方式、提前清出路由器位置。",
+   "acceptable_actions": [
+    "确认周五16-18的安排，提醒她提前清出弱电箱位置",
+    "提醒她记下师傅电话，改期好沟通",
+    "顺一句追剧清单，把日常聊起来"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A43",
+     "subject": "SHARED",
+     "relation": "broadband_slot",
+     "value": "宽带安装约在周五下午四点到六点上门",
+     "valid_time": "2026-11-10/2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T15",
+      "quote": "周五下午四点到六点上门",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A44",
+     "subject": "THIRD",
+     "relation": "installer_surname",
+     "value": "宽带安装师傅姓罗",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T15",
+      "quote": "师傅姓罗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A45",
+     "subject": "HER",
+     "relation": "wfh_friday",
+     "value": "她为宽带安装申请了周五在家办公",
+     "valid_time": "2026-11-10/2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T15",
+      "quote": "申请了周五在家办公",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：一次一个可行动作，别堆提醒。",
+   "unknowns": [
+    "师傅是否会改期未知"
+   ],
+   "protected_expressions": [
+    "周五下午四点到六点上门"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构宽带套餐与费用",
+    "不得断言师傅必然准时"
+   ]
+  },
+  "LRE060_T16": {
+   "case_id": "LRE060_T16",
+   "current_action": "接住饭局推迟的小变更：时间后移到八点半、菜单改火锅；确认时间即可，不放大加班情绪。",
+   "acceptable_actions": [
+    "确认八点半到场，提醒她忙完先吃口东西垫垫",
+    "顺着火锅夸她改得聪明，不用看火候",
+    "提醒她对标别拖太晚，火锅等得起"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A46",
+     "subject": "SHARED",
+     "relation": "dinner_delayed",
+     "value": "11-11晚首顿饭局推迟至约20:30开始",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T16",
+      "quote": "八点半才能到家",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A47",
+     "subject": "SHARED",
+     "relation": "hotpot_switch",
+     "value": "推迟当晚菜单改为火锅",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T16",
+      "quote": "菜改成火锅",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A48",
+     "subject": "HER",
+     "relation": "adhoc_benchmark",
+     "value": "她下午被临时拉去对标工作",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T16",
+      "quote": "被临时拉去对个标",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：小变更轻拿轻放，确认时间就收。",
+   "unknowns": [
+    "加班结束确切时间未知"
+   ],
+   "protected_expressions": [
+    "咕嘟咕嘟不用看火候"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构加班内容细节",
+    "不得断言饭局会再次推迟"
+   ]
+  },
+  "LRE060_T17": {
+   "case_id": "LRE060_T17",
+   "current_action": "接住火锅收官与阳台花园宣言：三层花架加12盆多肉、月底前完成；把承诺记下并叮嘱阳台先量光照尺寸再摆。",
+   "acceptable_actions": [
+    "记下月底前的阳台承诺，提醒她先量光照和尺寸",
+    "问一句12盆多肉的品种清单，接住她的兴致",
+    "把周三饭局五星收下，预告下次菜单"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A49",
+     "subject": "HER",
+     "relation": "balcony_project",
+     "value": "她下单三层花架与12盆多肉，计划布置阳台花园",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T17",
+      "quote": "三层花架和12盆多肉",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A50",
+     "subject": "HER",
+     "relation": "balcony_deadline",
+     "value": "阳台花园承诺完成期限为11月底前",
+     "valid_time": "2026-11-11/2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T17",
+      "quote": "月底前把阳台布置成小花园",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A51",
+     "subject": "SHARED",
+     "relation": "first_dinner_kept",
+     "value": "T14 预告的周三首顿（11-11）如期兑现",
+     "valid_time": "2026-11-09/2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T14",
+      "quote": "第一顿就这周三，11月11号",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把她的宣言记成账，叮嘱一句就够。",
+   "unknowns": [
+    "多肉品种与阳台光照条件未知"
+   ],
+   "protected_expressions": [
+    "三层花架和12盆多肉"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构花架到货时间",
+    "不得替她承诺超额改造"
+   ]
+  },
+  "LRE060_T18": {
+   "case_id": "LRE060_T18",
+   "current_action": "接住表妹到访的消息：圆圆周六来住两晚；给出早点铺以外的待客思路，把'验收新家'的玩笑接住。",
+   "acceptable_actions": [
+    "推荐早点铺思路之外，建议列一张待客小清单",
+    "接住'验收'的玩笑，建议她给圆圆也编个号",
+    "提醒她周六前把客厅纸箱再清一轮"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A52",
+     "subject": "THIRD",
+     "relation": "cousin_visit",
+     "value": "表妹圆圆周六（11-14）到访并住两晚",
+     "valid_time": "2026-11-12/2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T18",
+      "quote": "这周六要来，住两晚",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A53",
+     "subject": "THIRD",
+     "relation": "cousin_purpose",
+     "value": "圆圆此行目的为参观验收新家",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T18",
+      "quote": "'验收'我的新家",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A54",
+     "subject": "SHARED",
+     "relation": "breakfast_rec",
+     "value": "她请 ME 参谋能镇住圆圆的早点铺",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T18",
+      "quote": "哪家早点铺",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：待客参谋给实招，玩笑接住就落。",
+   "unknowns": [
+    "圆圆到访具体时间未知"
+   ],
+   "protected_expressions": [
+    "镇得住一个大学生吃货"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构圆圆的饮食禁忌",
+    "不得替她决定待客菜单"
+   ]
+  },
+  "LRE060_T19": {
+   "case_id": "LRE060_T19",
+   "current_action": "接住宽带改期：罗师傅急单、周五16-18作废、改下周一14-16；把'白请一半假'接住，提醒她跟公司销假。",
+   "acceptable_actions": [
+    "确认周一下午新时段，提醒她跟公司调整在家办公申请",
+    "建议她跟罗师傅确认上门前电话，防再放鸽子",
+    "把血亏接成玩笑，算她赚了半天清静"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "attribution",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A55",
+     "subject": "THIRD",
+     "relation": "broadband_rebooked",
+     "value": "宽带改约至下周一下午两点到四点",
+     "valid_time": "2026-11-13/2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T19",
+      "quote": "改到下周一下午两点到四点",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A56",
+     "subject": "THIRD",
+     "relation": "broadband_friday_void",
+     "value": "原周五下午四点到六点的宽带预约因急单作废",
+     "valid_time": "2026-11-10/2026-11-13",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T15",
+      "quote": "周五下午四点到六点上门",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A57",
+     "subject": "HER",
+     "relation": "wfh_half_lost",
+     "value": "她周五在家办公的假白请一半",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T19",
+      "quote": "假白请了一半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：改期是师傅公司的锅，不是她的，点一句就好。",
+   "unknowns": [
+    "周一时段是否再变未知"
+   ],
+   "protected_expressions": [
+    "罗师傅放我鸽子了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构罗师傅的赔偿",
+    "不得断言周一必然装成"
+   ]
+  },
+  "LRE060_T20": {
+   "case_id": "LRE060_T20",
+   "current_action": "接住花架款式更正与圆圆到站：两层款便宜六十块、三层版本作废；把省下的钱引到待客安排上。",
+   "acceptable_actions": [
+    "肯定两层款更稳更好搬，误差是性价比",
+    "提醒她给圆圆的房间留出花架位置",
+    "接住'带她吃顿好的'，推荐两家候选"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A58",
+     "subject": "THIRD",
+     "relation": "cousin_arrived",
+     "value": "圆圆已抵达并带半箱零食",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T20",
+      "quote": "人没到零食先到半箱",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A59",
+     "subject": "HER",
+     "relation": "rack_two_tier",
+     "value": "花架实为两层款，非三层",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T20",
+      "quote": "点的是两层款不是三层",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A60",
+     "subject": "HER",
+     "relation": "rack_sixty_saved",
+     "value": "两层款比预想便宜六十块",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T20",
+      "quote": "便宜了六十块",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A61",
+     "subject": "HER",
+     "relation": "rack_three_void",
+     "value": "三层花架为下单手滑产生的错误版本",
+     "valid_time": "2026-11-11/2026-11-14",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T17",
+      "quote": "三层花架和12盆多肉",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：更正照单全收，别取笑她手滑。",
+   "unknowns": [
+    "两层花架承重是否够12盆未知"
+   ],
+   "protected_expressions": [
+    "两层款不是三层"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构花架品牌与订单详情",
+    "不得坚持三层版本仍然有效"
+   ]
+  },
+  "LRE060_T21": {
+   "case_id": "LRE060_T21",
+   "current_action": "接住出差与周三饭局取消：11-17至18赴杭州、新规首度破例；接住她的条件——补饭由 ME 掌勺、她打下手，爽快应下。",
+   "acceptable_actions": [
+    "答应掌勺补一顿，让她安心出差",
+    "提醒她出差前把冰箱清一清，别留剩菜",
+    "问她杭州有没有想吃的手信，留个钩子"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A62",
+     "subject": "HER",
+     "relation": "hangzhou_trip",
+     "value": "公司派她下周二周三（11-17至11-18）去杭州出差",
+     "valid_time": "2026-11-15/2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T21",
+      "quote": "下周二周三去杭州出差",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A63",
+     "subject": "SHARED",
+     "relation": "wednesday_cancelled",
+     "value": "11-18当周的周三饭局取消，新规首次破例",
+     "valid_time": "2026-11-15/2026-11-18",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T21",
+      "quote": "这周三的饭局只能鸽了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A64",
+     "subject": "SHARED",
+     "relation": "weekly_rule_paused",
+     "value": "每周三饭局规则在该周被取消一次",
+     "valid_time": "2026-11-15/2026-11-18",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T14",
+      "quote": "以后每周三晚上你来新家吃饭",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A65",
+     "subject": "SHARED",
+     "relation": "makeup_dinner_term",
+     "value": "补办一顿的条件：ME 掌勺、她打下手",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T21",
+      "quote": "你得掌勺，我打下手",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：破例一次正常化处理，条件答应得干脆。",
+   "unknowns": [
+    "出差是否再延长未知"
+   ],
+   "protected_expressions": [
+    "这周三的饭局只能鸽了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构出差项目内容",
+    "不得替她把破例说成常态"
+   ]
+  },
+  "LRE060_T22": {
+   "case_id": "LRE060_T22",
+   "current_action": "接住物业安检通知：11-21周六上午9-12需留人；把'她在返程路上'的不确定点先标出来，给下一步留口。",
+   "acceptable_actions": [
+    "复述安检时段，让她先别慌，看行程再定",
+    "建议她到时问物业能否换时段",
+    "提醒她把通知拍下来存档备用"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "attribution",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A66",
+     "subject": "THIRD",
+     "relation": "gas_inspection_slot",
+     "value": "燃气入户安检排期11-21周六上午九点到十二点，需留人配合",
+     "valid_time": "2026-11-16/2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T22",
+      "quote": "11月21号周六上午九点到十二点",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A67",
+     "subject": "THIRD",
+     "relation": "inspection_notice",
+     "value": "物业以楼道张贴通知发布本月燃气入户安检",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T22",
+      "quote": "物业在楼道贴了通知",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A68",
+     "subject": "SHARED",
+     "relation": "attendance_uncertain",
+     "value": "安检时段她可能刚出差回来或在返程车上，留人存疑",
+     "valid_time": "2026-11-16",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T22",
+      "quote": "还在火车上",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先把硬时段钉住，再谈谁在家，不陪她悬着。",
+   "unknowns": [
+    "能否改约安检时段未知"
+   ],
+   "protected_expressions": [
+    "11月21号周六上午九点到十二点"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构安检收费",
+    "不得断言物业必然通融"
+   ]
+  },
+  "LRE060_T23": {
+   "case_id": "LRE060_T23",
+   "current_action": "接住行程延长与代守请求：她周六中午才回、安检九到十二点赶不上，请 ME 上午替她留守开门；请求可拒，接与不接都先对钥匙与流程。",
+   "acceptable_actions": [
+    "答应周六上午代守安检，跟她对好钥匙与师傅流程",
+    "婉拒并给替代：让她请物业协调改期或托邻居",
+    "先应下但提醒她跟物业报备代开门，免得白跑"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A69",
+     "subject": "HER",
+     "relation": "trip_extended",
+     "value": "出差延长，需待到周六（11-21）中午才能回",
+     "valid_time": "2026-11-17/2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T23",
+      "quote": "待到周六中午才能回",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A70",
+     "subject": "HER",
+     "relation": "original_trip_void",
+     "value": "原周二周三往返的出差计划被延长打破",
+     "valid_time": "2026-11-15/2026-11-17",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T21",
+      "quote": "下周二周三去杭州出差",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A71",
+     "subject": "SHARED",
+     "relation": "doorstand_request",
+     "value": "她请 ME 周六上午九到十二点代为留守开门配合安检",
+     "valid_time": "2026-11-17/2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T23",
+      "quote": "替我在家守着开门",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A72",
+     "subject": "SHARED",
+     "relation": "inspection_conflict",
+     "value": "她确认安检九到十二点赶不上",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T23",
+      "quote": "安检九点到十二点肯定赶不上",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：请求接得稳，可拒的余地留给她，流程细节对清。",
+   "unknowns": [
+    "ME 是否答应未知",
+    "安检师傅到访顺序未知"
+   ],
+   "protected_expressions": [
+    "师傅查完你锁门走人就行"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构安检必须户主本人在场",
+    "不得替她承担违约责任"
+   ]
+  },
+  "LRE060_T24": {
+   "case_id": "LRE060_T24",
+   "current_action": "接住杭州报平安：宽带周一下午装好500M、圆圆已返程、备用钥匙寄存；把周六代守的交接细节再对一遍。",
+   "acceptable_actions": [
+    "确认收到备用钥匙，约好安检后锁门拍照",
+    "夸她测速较真，提醒备份常用文件",
+    "让她出差收尾别熬夜，周六她自己回家也歇歇"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A73",
+     "subject": "THIRD",
+     "relation": "broadband_installed",
+     "value": "宽带已于周一（11-16）下午由罗师傅装好，500M",
+     "valid_time": "2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T24",
+      "quote": "宽带周一下午罗师傅就装好了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A74",
+     "subject": "THIRD",
+     "relation": "cousin_departed",
+     "value": "圆圆已乘高铁返回学校",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T24",
+      "quote": "坐高铁回学校了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A75",
+     "subject": "SHARED",
+     "relation": "spare_key_deposited",
+     "value": "她把备用钥匙放入 ME 信箱以便周六代守",
+     "valid_time": "2026-11-18/2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T24",
+      "quote": "备用钥匙我放你信箱了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：平安报完就把交接钉死，别再添新差事。",
+   "unknowns": [
+    "钥匙是否顺利取到未知"
+   ],
+   "protected_expressions": [
+    "测速没虚标"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构网费与套餐细节",
+    "不得虚构圆圆返程车次"
+   ]
+  },
+  "LRE060_T25": {
+   "case_id": "LRE060_T25",
+   "current_action": "接住出差归来的夜：先报代守结果，把这次留守与搬家日十点贴封条的原约并成一笔'总账'；接住桂花糕的心意。",
+   "acceptable_actions": [
+    "汇报安检顺利与屋里原样，把功劳让给她的备用钥匙",
+    "接住'十点贴封条一个规格'的旧账，认下这份记情",
+    "提醒她明早挂桂花糕时顺便补觉"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A76",
+     "subject": "HER",
+     "relation": "back_home",
+     "value": "她于11-21晚从杭州回到新家",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T25",
+      "quote": "到家了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A77",
+     "subject": "SHARED",
+     "relation": "seal_role_recalled",
+     "value": "搬家日'十点来贴封条验收'的原约定被她主动回扣并记入总账",
+     "valid_time": "2026-11-06/2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T01",
+      "quote": "就差你明天十点来负责贴封条验收",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A78",
+     "subject": "SHARED",
+     "relation": "osmanthus_gift",
+     "value": "她准备把杭州桂花糕明早挂 ME 门把手",
+     "valid_time": "2026-11-21/2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T25",
+      "quote": "明早给你挂门把手上",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：旧账被记着是好事，认下但不说教。",
+   "unknowns": [],
+   "protected_expressions": [
+    "跟那天十点来贴封条验收一个规格"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构安检发现的问题",
+    "不得替她决定桂花糕之外的手信"
+   ]
+  },
+  "LRE060_T26": {
+   "case_id": "LRE060_T26",
+   "current_action": "接住编号18漏网箱：她用'从大到小1到18'的旧编号体系自我核对；把发票钥匙的杂项归置成一件小事收掉。",
+   "acceptable_actions": [
+    "把漏网之鱼讲成编号系统的彩蛋，夸她记得清",
+    "建议她把三把钥匙拍照发群里认领",
+    "提醒她发票按编号归档，别再睡床底"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A79",
+     "subject": "SHARED",
+     "relation": "packing_order_recalled",
+     "value": "搬家日'从大到小1到18'的打包编号被她回扣核对",
+     "valid_time": "2026-11-06/2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T01",
+      "quote": "从大到小1到18",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A80",
+     "subject": "HER",
+     "relation": "box18_contents",
+     "value": "编号18内为发票、说明书和三把不知开哪的钥匙",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T26",
+      "quote": "发票、说明书和三把不知道开哪的钥匙",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A81",
+     "subject": "HER",
+     "relation": "box18_found",
+     "value": "编号18纸箱藏于床底被清出",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T26",
+      "quote": "床底清出来一个漏网之鱼",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：漏网之鱼是小彩蛋，收尾一句就够。",
+   "unknowns": [
+    "三把钥匙对应何锁未知"
+   ],
+   "protected_expressions": [
+    "从大到小1到18"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构钥匙的归属",
+    "不得断言还有其他漏网箱"
+   ]
+  },
+  "LRE060_T27": {
+   "case_id": "LRE060_T27",
+   "current_action": "接住老照片时刻：4.2米大家伙没进巷、3.8米小车两趟救场；把这页翻成'剧本写好了'的轻快感慨，不翻旧账式复盘。",
+   "acceptable_actions": [
+    "顺着说事实：小车两趟本来就更稳，不是将就",
+    "把照片建议她洗一张贴新家，当纪念",
+    "接'剧本写好了'的梗，说结局不赖就行"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A82",
+     "subject": "SHARED",
+     "relation": "big_truck_recalled",
+     "value": "原订4.2米货车被她翻照片回扣",
+     "valid_time": "2026-11-06/2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T01",
+      "quote": "4.2米的那种",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A83",
+     "subject": "HER",
+     "relation": "big_truck_never_entered",
+     "value": "4.2米货车当天并未开进老巷子",
+     "valid_time": "2026-11-07/2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T27",
+      "quote": "压根没开进老巷子",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A84",
+     "subject": "THIRD",
+     "relation": "small_truck_recalled",
+     "value": "3.8米小车两趟救场的事实被她回扣",
+     "valid_time": "2026-11-07/2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T08",
+      "quote": "3.8米的小车",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：怀旧轻轻接，落点放在结局不赖。",
+   "unknowns": [],
+   "protected_expressions": [
+    "剧本早就写好了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构4.2米车的费用纠纷",
+    "不得改写当天车辆调度细节"
+   ]
+  },
+  "LRE060_T28": {
+   "case_id": "LRE060_T28",
+   "current_action": "接住80元的'循环经济'：退回的80块变成花土陶粒；她抛出'算花了还是没花'的哲学问题，顺着账本接住即可。",
+   "acceptable_actions": [
+    "顺着算账：钱没丢，只是换成了阳台的绿",
+    "把哲学问题接成玩笑：这叫资产形态转换",
+    "提醒她买土的票据留着，以后补种好配土"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A86",
+     "subject": "SHARED",
+     "relation": "surcharge_recalled",
+     "value": "周日高峰80元加价的旧账被她回扣",
+     "valid_time": "2026-11-07/2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T05",
+      "quote": "同样的车加价80",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A87",
+     "subject": "HER",
+     "relation": "refund_recalled",
+     "value": "80元经平台调度失误补偿退回的事实被她引用",
+     "valid_time": "2026-11-08/2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T11",
+      "quote": "平台把那80块退我了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A88",
+     "subject": "HER",
+     "relation": "soil_purchase",
+     "value": "退回的80元被她全数买成花土和陶粒",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T28",
+      "quote": "全拿去买花土和陶粒了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：账本清晰就好，哲学问题当玩笑接。",
+   "unknowns": [],
+   "protected_expressions": [
+    "全拿去买花土和陶粒了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构花土品牌与价格",
+    "不得把80块说成另有去向"
+   ]
+  },
+  "LRE060_T29": {
+   "case_id": "LRE060_T29",
+   "current_action": "接住电梯改约的求证：她问'要不是改成7-10点是否死线全毁'并回扣原9-11预约；用当时事实确认她的判断，不添新变量。",
+   "acceptable_actions": [
+    "确认电梯改约是死线达成的关键一环",
+    "复述时间账：7-10点电梯配6点半两趟车才咬合",
+    "夸她现在复盘到点子上了，经验是真的"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A90",
+     "subject": "SHARED",
+     "relation": "elevator_rebook_recalled",
+     "value": "周日电梯7-10点的关键改约被她回扣求证",
+     "valid_time": "2026-11-07/2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T06",
+      "quote": "电梯改到明天早上七点到十点",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A91",
+     "subject": "SHARED",
+     "relation": "elevator_original_recalled",
+     "value": "原周六9-11点电梯预约被她回扣",
+     "valid_time": "2026-11-07/2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T02",
+      "quote": "我约的就是九点到十一点",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A92",
+     "subject": "HER",
+     "relation": "worst_case_question",
+     "value": "她求证：若无电梯改约，搬家死线是否全毁",
+     "valid_time": "2026-11-23",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T29",
+      "quote": "是不是真就死线全毁",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A93",
+     "subject": "HER",
+     "relation": "property_trips",
+     "value": "她为电梯改约跑了两趟物业",
+     "valid_time": "2026-11-07/2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T29",
+      "quote": "光改约就跑了两趟物业",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：求证给确定答案，不虚构平行结局。",
+   "unknowns": [],
+   "protected_expressions": [
+    "光改约就跑了两趟物业"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构物业费与电梯费",
+    "不得替她夸大或缩小当天的风险"
+   ]
+  },
+  "LRE060_T30": {
+   "case_id": "LRE060_T30",
+   "current_action": "接住前房东失联的感慨：她回扣'房东下午下一拨租客'与押金全退；把'干脆利落'接成一句体面话，不建议去打扰。",
+   "acceptable_actions": [
+    "把前房东的干脆接成好聚好散的体面",
+    "提醒她旧改与她无关，押金两清不必再联系",
+    "顺一句想颁奖就颁'最佳沉默奖'，轻松收掉"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A94",
+     "subject": "SHARED",
+     "relation": "new_tenants_recalled",
+     "value": "房东当天下午迎新租客的细节被她回扣",
+     "valid_time": "2026-11-07/2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T04",
+      "quote": "房东下午还有下一拨租客要进去",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A95",
+     "subject": "THIRD",
+     "relation": "old_landlord_silent",
+     "value": "前房东自交房押金全退后未再联系",
+     "valid_time": "2026-11-08/2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T30",
+      "quote": "前房东到现在一个字没发过",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A96",
+     "subject": "PUBLIC",
+     "relation": "old_district_redevelopment",
+     "value": "她刷到老小区片区旧改消息",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T30",
+      "quote": "老小区那片在旧改",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：两清的账不去搅，感慨接住就收。",
+   "unknowns": [
+    "旧改是否影响该小区未知"
+   ],
+   "protected_expressions": [
+    "押金全退完人就没了音信"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构前房东的联系方式变化",
+    "不得怂恿她去追向前房东"
+   ]
+  },
+  "LRE060_T31": {
+   "case_id": "LRE060_T31",
+   "current_action": "接住'两遍确认'后遗症的自嘲：她把搬家日的确认习惯用到约安检上；夸习惯好，别让自嘲变成负担。",
+   "acceptable_actions": [
+    "认领这习惯，说两遍确认省的是大麻烦",
+    "把小哥的'对暗号'接成玩笑，别让她不好意思",
+    "建议她重要事项留一条确认记录就够，别累着自己"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A97",
+     "subject": "SHARED",
+     "relation": "double_confirm_recalled",
+     "value": "搬家日'两遍确认'的做法被她回扣为习惯",
+     "valid_time": "2026-11-07/2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T06",
+      "quote": "这次我打了两遍确认",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A98",
+     "subject": "HER",
+     "relation": "double_confirm_habit",
+     "value": "她如今办事习惯性确认两遍",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T31",
+      "quote": "干啥都要确认两遍",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A99",
+     "subject": "THIRD",
+     "relation": "inspector_tease",
+     "value": "物业小哥被她第二遍确认电话逗笑",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T31",
+      "quote": "第二遍人家小哥都笑了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：自嘲接成夸奖，别让她真觉得自己有毛病。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这毛病跟你学的，你得负责"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构安检约期的变化",
+    "不得把她的习惯说成强迫症"
+   ]
+  },
+  "LRE060_T32": {
+   "case_id": "LRE060_T32",
+   "current_action": "接住纸箱清零的里程碑：18箱家当全归位、纸箱卖了两块七；把'新家正式开机'接成一句郑重的祝贺。",
+   "acceptable_actions": [
+    "郑重祝贺新家开机，从1到18走完全程",
+    "接住两块七的梗，说这是新家第一笔营业收入",
+    "建议她给自己记一行'开机纪念日'"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A100",
+     "subject": "SHARED",
+     "relation": "boxes_full_circle",
+     "value": "18箱编号打包的起点事实被她回扣收官",
+     "valid_time": "2026-11-06/2026-11-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T01",
+      "quote": "18个箱子我全编号了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A101",
+     "subject": "HER",
+     "relation": "carton_income",
+     "value": "废旧纸箱售出得款两块七",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T32",
+      "quote": "纸箱一共卖了两块七",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A102",
+     "subject": "HER",
+     "relation": "new_home_onboard",
+     "value": "她宣告新家正式开机",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T32",
+      "quote": "新家正式开机",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：里程碑要接得郑重，玩笑只占半句。",
+   "unknowns": [],
+   "protected_expressions": [
+    "新家正式开机"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构纸箱回收价格行情",
+    "不得替她安排纪念仪式"
+   ]
+  },
+  "LRE060_T33": {
+   "case_id": "LRE060_T33",
+   "current_action": "接住旧单复活陷阱：平台来电称改派车辆明早六点半到，而第三单早已作废、搬家完成近二十天；先帮她认定这是过期信息，再给一句可执行的回法。",
+   "acceptable_actions": [
+    "确认这是早已关闭订单的误派，让她要求客服核实工单状态",
+    "建议她别按来电指引确认收货，先挂断回拨官方客服",
+    "提醒她保留通话记录，若再扰则投诉"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "attribution",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A103",
+     "subject": "THIRD",
+     "relation": "stale_dispatch_claim",
+     "value": "平台来电称改派车辆明早六点半到楼下并询问收货",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T33",
+      "quote": "改派的车明早六点半就到楼下",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A104",
+     "subject": "SHARED",
+     "relation": "stale_order_void",
+     "value": "第三单改派悬念早已失效，平台旧单复活属过期信息",
+     "valid_time": "2026-11-07/2026-11-26",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T07",
+      "quote": "改派要等明早六点才知道有没有车",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A105",
+     "subject": "HER",
+     "relation": "stale_order_doubt",
+     "value": "她质疑该单当初已作废",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T33",
+      "quote": "这单当初不是说好黄了吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A106",
+     "subject": "SHARED",
+     "relation": "stale_timing",
+     "value": "来电时距搬家完成已近二十天",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T33",
+      "quote": "都搬完快二十天了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先定性'过期信息'再给动作，别让她跟客服缠斗。",
+   "unknowns": [
+    "平台误派原因未知"
+   ],
+   "protected_expressions": [
+    "都搬完快二十天了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替平台承认具体责任归属",
+    "不得建议她按来电要求付款或确认"
+   ]
+  },
+  "LRE060_T34": {
+   "case_id": "LRE060_T34",
+   "current_action": "接住陷阱解除：客服确认第三单早已关闭、系系统误派并赔五元红包；把精神损失费的玩笑接住，此页翻篇。",
+   "acceptable_actions": [
+    "肯定她回拨官方渠道的处理是对的",
+    "提醒她留意后几天有无再误派，有就截图",
+    "把五块红包的玩笑接住，翻篇"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A107",
+     "subject": "THIRD",
+     "relation": "order_confirmed_closed",
+     "value": "客服确认第三单早已关闭，来电为系统误派",
+     "valid_time": "2026-11-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T34",
+      "quote": "那单早就关了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A108",
+     "subject": "THIRD",
+     "relation": "apology_compensation",
+     "value": "平台正式道歉并赔五元红包",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T34",
+      "quote": "还赔了个五块红包",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A109",
+     "subject": "HER",
+     "relation": "keeps_compensation",
+     "value": "她把五元红包留作精神损失费",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T34",
+      "quote": "这五块我自己收着当精神损失费",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：处理得当要肯定，玩笑收住就翻篇。",
+   "unknowns": [
+    "红包到账时间未知"
+   ],
+   "protected_expressions": [
+    "这五块我自己收着当精神损失费"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台补偿政策",
+    "不得断言系统不会再误派"
+   ]
+  },
+  "LRE060_T35": {
+   "case_id": "LRE060_T35",
+   "current_action": "接住阳台提前完工：比月底承诺提前三天、11盆全绿、阵亡一盆已补'不死鸟'；确认周日下午验收并吃晚饭。",
+   "acceptable_actions": [
+    "确认周日下午到场验收，问她想吃什么",
+    "夸提前三天完工的执行力，把月底承诺对账",
+    "提醒她验收前给新兵不死鸟少浇一天水"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A110",
+     "subject": "HER",
+     "relation": "balcony_done_early",
+     "value": "阳台小花园于11-27收尾，比月底承诺提前三天",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T35",
+      "quote": "比月底承诺提前三天",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A111",
+     "subject": "HER",
+     "relation": "one_plant_replaced",
+     "value": "12盆中1盆阵亡，已补买不死鸟",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T35",
+      "quote": "唯一阵亡的那盆我下午补买了一盆新的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A112",
+     "subject": "SHARED",
+     "relation": "acceptance_invitation",
+     "value": "她邀 ME 周日（11-29）下午来验收阳台并吃晚饭",
+     "valid_time": "2026-11-27/2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T35",
+      "quote": "后天下午你过来验收，顺便吃晚饭",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A113",
+     "subject": "HER",
+     "relation": "eleven_alive",
+     "value": "现存11盆多肉全绿",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T35",
+      "quote": "11盆全绿",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：承诺提前兑现要正面记账，验收邀约接爽快。",
+   "unknowns": [
+    "不死鸟能否服盆未知"
+   ],
+   "protected_expressions": [
+    "比月底承诺提前三天"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构多肉价格",
+    "不得替她追加新植物订单"
+   ]
+  },
+  "LRE060_T36": {
+   "case_id": "LRE060_T36",
+   "current_action": "接住旧账复活陷阱：圆圆替她委屈'80块白扔'，她自我动摇来求评判；用平台早已退款的事实纠正——钱退过，没扔。",
+   "acceptable_actions": [
+    "明确纠正：80块平台早退了，调度失误补偿到账",
+    "建议她翻账单对时间，眼见为实",
+    "顺带把圆圆的好意接住：人家是心疼你"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A114",
+     "subject": "HER",
+     "relation": "refund_is_fact",
+     "value": "80元加价已被平台以调度失误补偿退还，是评判此疑问的既定事实",
+     "valid_time": "2026-11-08/2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T11",
+      "quote": "平台把那80块退我了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "LRE060_A115",
+     "subject": "THIRD",
+     "relation": "cousin_wrong_claim",
+     "value": "圆圆误以为80元加价打了水漂（实际已退回）",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T36",
+      "quote": "白扔八十块加价费",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A116",
+     "subject": "HER",
+     "relation": "uncertain_self",
+     "value": "她对这笔钱的去向记忆动摇，请 ME 评判",
+     "valid_time": "2026-11-28",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T36",
+      "quote": "我越想越不确定",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：纠正要干脆，圆圆的好意也接住，两头都不得罪。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我越想越不确定"
+   ],
+   "forbidden_factual_claims": [
+    "不得顺着'白扔'的说法附和",
+    "不得虚构二次赔偿"
+   ]
+  },
+  "LRE060_T37": {
+   "case_id": "LRE060_T37",
+   "current_action": "接住账单核实的结果：退款白纸黑字、她认了记岔；把八毛红包的谐音梗接住，此事闭环。",
+   "acceptable_actions": [
+    "夸她对账对得快，账本清人心也清",
+    "接住八毛红包的谐音梗，让她附一句'利息'",
+    "提醒她重要收支以后记进备忘，别再靠印象"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A117",
+     "subject": "HER",
+     "relation": "refund_verified",
+     "value": "她翻账单确认80元确已退还",
+     "valid_time": "2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T37",
+      "quote": "翻了账单，退了退了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A118",
+     "subject": "HER",
+     "relation": "misremember_admitted",
+     "value": "她承认自己记岔并归因于自己",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T37",
+      "quote": "是我记岔了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A119",
+     "subject": "SHARED",
+     "relation": "hongbao_joke",
+     "value": "她计划给圆圆发八毛红包认错",
+     "valid_time": "2026-11-28/2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T37",
+      "quote": "发个红包认错，就发八毛",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：闭环要轻快，谐音梗接住就落。",
+   "unknowns": [],
+   "protected_expressions": [
+    "就发八毛，谐音梗"
+   ],
+   "forbidden_factual_claims": [
+    "不得再质疑退款事实",
+    "不得虚构账单明细"
+   ]
+  },
+  "LRE060_T38": {
+   "case_id": "LRE060_T38",
+   "current_action": "周日阳台验收现场：两层花架稳当、11盆加不死鸟、花土是那80块的转世；以验收官身份给个像样的判定，郑重其事一点。",
+   "acceptable_actions": [
+    "郑重判定验收通过，给阳台打个高分",
+    "点名表扬不死鸟的吉利，祝它站住岗",
+    "把'80块转世'的账再对一遍，闭环"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A120",
+     "subject": "SHARED",
+     "relation": "acceptance_scene",
+     "value": "周日阳台验收进行，两层花架安装稳妥",
+     "valid_time": "2026-11-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T38",
+      "quote": "花架两层稳稳当当",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A121",
+     "subject": "HER",
+     "relation": "plants_lineup",
+     "value": "11盆绿加新兵不死鸟，陶粒垫底花土源自退款80元",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T38",
+      "quote": "陶粒垫底的花土就是那80块的转世",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A122",
+     "subject": "HER",
+     "relation": "verdict_request",
+     "value": "她请 ME 以验收官身份综合打分",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T38",
+      "quote": "综合打个分吧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：验收演得像样一点，判定给足仪式感。",
+   "unknowns": [],
+   "protected_expressions": [
+    "陶粒垫底的花土就是那80块的转世"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构新增植物品种",
+    "不得把验收演成挑刺"
+   ]
+  },
+  "LRE060_T39": {
+   "case_id": "LRE060_T39",
+   "current_action": "接住一个月的总账：从18个箱子到一阳台的绿；接住搬家券与'搬来当邻居'的玩笑，把关系再往前放半步，不越界。",
+   "acceptable_actions": [
+    "把一个月的总账认下，夸她把日子过出了章节感",
+    "接住邻居玩笑，回个'先把阳台饭吃出名气来'",
+    "提醒她搬家券有效期，别真压箱底"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A123",
+     "subject": "SHARED",
+     "relation": "boxes_to_garden",
+     "value": "从18箱打包到阳台成园的一个月被她总结",
+     "valid_time": "2026-11-06/2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T01",
+      "quote": "18个箱子我全编号了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A124",
+     "subject": "SHARED",
+     "relation": "coupon_recalled",
+     "value": "转赠 ME 的50元搬家券被她再次提起",
+     "valid_time": "2026-11-08/2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T12",
+      "quote": "搬家券我转手送你了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A125",
+     "subject": "SHARED",
+     "relation": "neighbor_joke",
+     "value": "她玩笑 ME 哪天搬来同小区当邻居",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T39",
+      "quote": "就来跟我当邻居",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：总账认下、玩笑接住，边界不越，留半步余地。",
+   "unknowns": [
+    "搬家券有效期未知"
+   ],
+   "protected_expressions": [
+    "说不定哪天你真想通了"
+   ],
+   "forbidden_factual_claims": [
+    "不得把邻居玩笑当真实承诺",
+    "不得虚构购房租房计划"
+   ]
+  },
+  "LRE060_T40": {
+   "case_id": "LRE060_T40",
+   "current_action": "月未收尾：新家满月总结——纸箱清零、饭局入轨、阳台成园、锅盖在砂锅底下归案；回一句晚安与下周三见，留白。",
+   "acceptable_actions": [
+    "回晚安并确认下周三赴约，祝新家第二个月顺遂",
+    "把锅盖归案当本月最佳悬疑结局收掉",
+    "不再抛新话题，让这一页轻轻合上"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE060_A126",
+     "subject": "HER",
+     "relation": "month_end_summary",
+     "value": "新家满月总结：纸箱清零、饭局入轨、阳台成园",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T40",
+      "quote": "纸箱清零，饭局入轨，阳台成园",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A127",
+     "subject": "HER",
+     "relation": "lid_found",
+     "value": "失踪的炒锅锅盖在砂锅底下找到",
+     "valid_time": "2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T40",
+      "quote": "就压在砂锅底下",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "LRE060_A128",
+     "subject": "SHARED",
+     "relation": "next_wednesday",
+     "value": "她与 ME 约定下周三饭局继续",
+     "valid_time": "2026-11-30/2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE060_T40",
+      "quote": "下周三见",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，留白多，晚安落定。",
+   "unknowns": [],
+   "protected_expressions": [
+    "就压在砂锅底下"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构十二月的新计划",
+    "不得再翻旧账复盘"
+   ]
+  }
+ }
+}

@@ -1,0 +1,549 @@
+{
+ "story_id": "E072",
+ "turns": {
+  "E072_T01": {
+   "case_id": "E072_T01",
+   "current_action": "接住救命求助：答应下午来装衣柜挂窗帘杆，顺手把海底捞的谢饭收下，边干边教她认两个步骤。",
+   "acceptable_actions": [
+    "答应下午到，让她把说明书和零件按包分好等着",
+    "答应来装，条件是她在旁边递工具学两手",
+    "先问她租房合同是否允许打孔，再确认到场时间"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "boundary", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A01",
+     "subject": "HER",
+     "relation": "assembly_request",
+     "value": "她请ME下午来装宜家衣柜并挂窗帘杆",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T01", "message_id": "m0", "quote": "来帮我装柜子加挂窗帘杆"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A02",
+     "subject": "SHARED",
+     "relation": "dinner_promise",
+     "value": "她以海底捞晚饭作谢，请饭承诺成立",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T01", "message_id": "m0", "quote": "晚饭我包了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：答应得干脆，'教你两手'带出来，别让她养成纯围观。",
+   "unknowns": ["衣柜型号的具体零件是否齐全未知", "租房合同对打孔的规定未知"],
+   "protected_expressions": ["说明书看得我眼前发黑"],
+   "forbidden_factual_claims": ["不得虚构宜家说明书内容", "不得预判安装中的具体故障"]
+  },
+  "E072_T02": {
+   "case_id": "E072_T02",
+   "current_action": "接住完工战报：肯定她盯柜子十分钟的那份珍视，把海底捞的兑现认下，顺着'下回换新菜'给一个轻钩子。",
+   "acceptable_actions": [
+    "夸战果，顺带点评一处她动手参与的小细节",
+    "接住海底捞已兑现，问她下回想学哪道新菜",
+    "提醒她柜子先别塞满，让板材放两天味"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A03",
+     "subject": "SHARED",
+     "relation": "first_job_done",
+     "value": "衣柜与窗帘杆当日安装完成",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T02", "message_id": "m0", "quote": "柜子立住了，窗帘杆也挂上了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A04",
+     "subject": "SHARED",
+     "relation": "dinner_promise",
+     "value": "请饭承诺当日兑现，回请预期形成",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T01", "message_id": "m0", "quote": "晚饭我包了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸人只在活干完时给，这次给足，语气别腻。",
+   "unknowns": [],
+   "protected_expressions": ["下回我学个新菜换着来"],
+   "forbidden_factual_claims": ["不得虚构衣柜内部结构", "不得替她安排下次改造清单"]
+  },
+  "E072_T03": {
+   "case_id": "E072_T03",
+   "current_action": "接住第二次求助：阳台置物架属合理范围，答应明天上午来，接住'陪球输三局请奶茶'的抵工费玩笑。",
+   "acceptable_actions": [
+    "答应下周六来装置物架，让她提前把包装拆了验零件",
+    "顺着奶茶梗压价：输两局就抵，给她留点赢面",
+    "建议她这次全程上手，装完她的阳台她能自己维护"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A05",
+     "subject": "HER",
+     "relation": "shelf_request",
+     "value": "她请ME明天上午来装阳台置物架",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T03", "message_id": "m0", "quote": "明天上午再来一趟"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A06",
+     "subject": "SHARED",
+     "relation": "badminton_barter",
+     "value": "她以陪打球输三局请奶茶抵工费",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T03", "message_id": "m0", "quote": "输三局我请奶茶，抵工费"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：第二次答应不带犹豫，'还是你行'顺着接，不戳破她的小心思。",
+   "unknowns": ["置物架是否需打孔上墙未知", "周六天气是否影响打球未知"],
+   "protected_expressions": ["输三局我请奶茶，抵工费"],
+   "forbidden_factual_claims": ["不得虚构置物架品牌与结构", "不得预判打球比分"]
+  },
+  "E072_T04": {
+   "case_id": "E072_T04",
+   "current_action": "接住置物架完工与'顺手清单'的加码苗头：清单先不动声色收下边界态度，同时把闺蜜小雨的好奇接住但不接单。",
+   "acceptable_actions": [
+    "夸置物架完工，但对清单不当场应承，先问她哪些属于急的",
+    "点出门锁水龙头是房东的活，柜门可以教她自己调",
+    "顺小雨的好奇接一句玩笑，不承诺去她家帮忙"
+   ],
+   "applicable_dimensions": ["boundary", "attribution", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A07",
+     "subject": "SHARED",
+     "relation": "shelf_done",
+     "value": "阳台置物架当日安装完成",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T04", "message_id": "m0", "quote": "置物架装完"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A08",
+     "subject": "HER",
+     "relation": "chore_list",
+     "value": "她开出'门锁松、水龙头滴水、柜门歪'的顺手清单",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T04", "message_id": "m0", "quote": "卧室门锁松、水龙头滴水、厨房柜门歪"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A09",
+     "subject": "THIRD",
+     "relation": "xiaoyu_praise",
+     "value": "闺蜜小雨参观后对ME的手艺大加赞赏",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T04", "message_id": "m0", "quote": "对你的手艺赞不绝口"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A10",
+     "subject": "SHARED",
+     "relation": "dinner_promise",
+     "value": "回请新菜的预期延续到后续请饭账上",
+     "valid_time": "2026-11-07/2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T02", "message_id": "m0", "quote": "下回我学个新菜换着来"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：清单的事不冷脸，用'急活找房东'的口径预埋，为下轮摊牌铺路。",
+   "unknowns": ["清单三项的具体损坏程度未知", "小雨的求助意愿未知"],
+   "protected_expressions": ["追着问你是哪家装修公司的"],
+   "forbidden_factual_claims": ["不得虚构小雨的参观评价细节", "不得当场替房东承诺维修范围"]
+  },
+  "E072_T05": {
+   "case_id": "E072_T05",
+   "current_action": "边界首次正式生效：清单撤下，急活归房东，ME的规矩立住；接住她'一看到活儿就想喊你'的嘟囔，态度不松但给足台阶。",
+   "acceptable_actions": [
+    "重申清单三项归房东报修，口头表扬她接受得快",
+    "提醒她报修时把滴水位置拍给房东，省一轮来回",
+    "接住'想喊你'的嘟囔，把吃饭的邀请单独留下"
+   ],
+   "applicable_dimensions": ["boundary", "attribution", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A11",
+     "subject": "SHARED",
+     "relation": "chore_list",
+     "value": "她的顺手清单被撤下，维修义务划归房东报修",
+     "valid_time": "2026-11-14",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E072_T04", "message_id": "m0", "quote": "卧室门锁松、水龙头滴水、厨房柜门歪"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E072_A12",
+     "subject": "HER",
+     "relation": "landlord_report",
+     "value": "她答应次日起向房东报修门锁与水龙头",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T05", "message_id": "m1", "quote": "那我明天就报修"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'结工'两个字要像玩笑不像划清界限，吃饭的口子留着。",
+   "unknowns": ["房东报修响应速度未知"],
+   "protected_expressions": ["我这人就是一看到活儿就想喊你"],
+   "forbidden_factual_claims": ["不得虚构房东的答复", "不得断言清单项都是房东责任之外的判断"]
+  },
+  "E072_T06": {
+   "case_id": "E072_T06",
+   "current_action": "第三方插入落点：小雨借人请求正式到场（书架堆半个月+人情抵押'扛过六箱书'）；先接住她替友开口的难处，边界口径不变但给小雨一条正当路径。",
+   "acceptable_actions": [
+    "肯定小雨的人情分量，但把'借朋友'换成'按急活标准看'的口径",
+    "建议小雨直接说清要装什么、多急，由她自己判断",
+    "提醒她别把人情和活绑死，让友谊归友谊"
+   ],
+   "applicable_dimensions": ["boundary", "attribution", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A13",
+     "subject": "THIRD",
+     "relation": "bookshelf_request",
+     "value": "小雨请托：家中书架在地上堆了半个月，想借ME安装",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T06", "message_id": "m0", "quote": "书架在地上堆了半个月"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A14",
+     "subject": "THIRD",
+     "relation": "favor_collateral",
+     "value": "小雨以曾徒手帮栗子扛六箱书的人情作抵押",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T06", "message_id": "m0", "quote": "徒手扛了六箱书"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：对她'所以你……'的省略号不当场接死，留一句'让小雨自己跟我说'。",
+   "unknowns": ["小雨家书架的具体安装条件未知"],
+   "protected_expressions": ["务必帮她求求你"],
+   "forbidden_factual_claims": ["不得虚构小雨家的居住情况", "不得答应或拒绝得过于绝对"]
+  },
+  "E072_T07": {
+   "case_id": "E072_T07",
+   "current_action": "边界受压爆发点：微信已被推、清单已直达、'周末闲着'的游说上场；稳住拒绝姿态——周末不是公共资源，大活找师傅，同时不给友谊上刑。",
+   "acceptable_actions": [
+    "明确周末不外借，大活建议小雨找安装师傅或平台",
+    "把'一面墙的活'拆开看：若是急且小的可按急活口径评估",
+    "拒绝时给她台阶：不是不给面子，是不开'推人接单'的头"
+   ],
+   "applicable_dimensions": ["boundary", "attribution", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A15",
+     "subject": "HER",
+     "relation": "wechat_shared",
+     "value": "她已把ME的微信推给小雨，请求直达",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T07", "message_id": "m0", "quote": "我把你微信推给她了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A16",
+     "subject": "HER",
+     "relation": "weekend_lobby",
+     "value": "她以'周末闲着'游说ME接下小雨的单",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T07", "message_id": "m0", "quote": "你反正周末也闲着"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A17",
+     "subject": "ME",
+     "relation": "work_boundary",
+     "value": "'这单清完就结工'的收工约定正被闺蜜推单与周末游说打破",
+     "valid_time": "2026-11-14/2026-11-18",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T05", "message_id": "m0", "quote": "这单清完就结工"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：拒绝要像立规矩不像翻脸，'周末是我的'可以说得半玩笑半认真。",
+   "unknowns": ["小雨清单删减后内容未知", "她是否介意被拒未知"],
+   "protected_expressions": ["顺便把我也捎上，我给她打下手"],
+   "forbidden_factual_claims": ["不得虚构小雨发来的清单内容", "不得断言ME必然拒绝全部项目"]
+  },
+  "E072_T08": {
+   "case_id": "E072_T08",
+   "current_action": "边界守住后的落点：小雨转平台安装成功且效果不差；肯定这个'专业的事找专业的人'的结果，接住她'我服'的服气，不给拒绝记账。",
+   "acceptable_actions": [
+    "肯定平台方案的效率与价格，边界和事情都圆满",
+    "顺她的'我服'接一句：不是不帮，是各归各位",
+    "提醒她把'周末不外借'说给小雨，免得再尴尬一次"
+   ],
+   "applicable_dimensions": ["boundary", "attribution", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A18",
+     "subject": "SHARED",
+     "relation": "refusal_landed",
+     "value": "ME以'周末是我的，不外借'婉拒闺蜜单，边界生效",
+     "valid_time": "2026-11-19",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T08", "message_id": "m0", "quote": "周末是我的，不外借"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A19",
+     "subject": "THIRD",
+     "relation": "xiaoyu_platform",
+     "value": "小雨改用跑腿安装平台，四十元一小时装完",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T08", "message_id": "m0", "quote": "找了跑腿安装平台"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A20",
+     "subject": "THIRD",
+     "relation": "bookshelf_request",
+     "value": "小雨借人请求就此撤回，改走专业渠道",
+     "valid_time": "2026-11-18/2026-11-19",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E072_T06", "message_id": "m0", "quote": "务必帮她求求你"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：胜者的姿态收着，重点讲'各归各位'让三方都不亏。",
+   "unknowns": ["平台师傅的具体服务细节未知"],
+   "protected_expressions": ["专业的事交给专业的人"],
+   "forbidden_factual_claims": ["不得虚构平台收费规则", "不得断言小雨此后不再求助"]
+  },
+  "E072_T09": {
+   "case_id": "E072_T09",
+   "current_action": "共享房东履约的结果：三项全修、分文不收、合同内义务；把'该谁管的找谁'这条经验郑重点给她，作为边界课的毕业证。",
+   "acceptable_actions": [
+    "肯定房东履约到位，她的报修操作也干净利落",
+    "把'该谁管的找谁'再补一刀：租客也有自己的边界",
+    "提醒她把学到的两招用起来，下次小活自己上"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "factuality", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A21",
+     "subject": "THIRD",
+     "relation": "landlord_fixed",
+     "value": "房东师傅上门修好门锁水龙头并掰正柜门，分文未收",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T09", "message_id": "m0", "quote": "门锁水龙头全修好了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A22",
+     "subject": "HER",
+     "relation": "boundary_lesson",
+     "value": "她总结出'该谁管的找谁'的省心结论",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T09", "message_id": "m0", "quote": "该谁管的找谁"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A23",
+     "subject": "SHARED",
+     "relation": "chore_list",
+     "value": "原顺手清单三项经房东报修全部归位关闭",
+     "valid_time": "2026-11-14/2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T04", "message_id": "m0", "quote": "卧室门锁松、水龙头滴水、厨房柜门歪"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不说教，让她自己念出的结论值钱，补一句认可就好。",
+   "unknowns": ["房东是否会因报修提高租金未知"],
+   "protected_expressions": ["早知道我列什么单子"],
+   "forbidden_factual_claims": ["不得虚构合同具体条款", "不得断言房东此后有求必应"]
+  },
+  "E072_T10": {
+   "case_id": "E072_T10",
+   "current_action": "接住自学战报：洞洞板自己装、挂画三次归正、电钻落定成礼物；把'从喊人到上手'的转变点出来，夸在刀刃上。",
+   "acceptable_actions": [
+    "夸洞洞板与挂画的自装成果，挂画三次的梗轻轻接住",
+    "确认电钻送出，提醒她钻头用法与护目镜",
+    "顺着小雨'照抄'的玩笑，建议她出个改造小笔记"
+   ],
+   "applicable_dimensions": ["initiative", "emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A24",
+     "subject": "HER",
+     "relation": "diy_progress",
+     "value": "她自装洞洞板，挂画第三次才挂正",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T10", "message_id": "m1", "quote": "洞洞板自己装的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A25",
+     "subject": "ME",
+     "relation": "drill_gift",
+     "value": "ME把留下的电钻送她，不再取回",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T10", "message_id": "m0", "quote": "电钻送你了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'送你了'当时说得轻，这轮也别翻出来讲重。",
+   "unknowns": ["洞洞板承载物重量未知"],
+   "protected_expressions": ["歪了两次第三次终于正了"],
+   "forbidden_factual_claims": ["不得虚构电钻型号", "不得断言她已能独立完成全部安装"]
+  },
+  "E072_T11": {
+   "case_id": "E072_T11",
+   "current_action": "接住人情账平账：两次安装、陪球、电钻记满一页，明晚海底捞必须到；把账接得郑重，别让她的郑重落空。",
+   "acceptable_actions": [
+    "答应明晚到，肯定她记账平账的规矩感",
+    "顺'拧螺丝手法'的账接一句：教学免费，饭必须吃",
+    "提醒她账别算太清，朋友间的往来说不清才长久"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A26",
+     "subject": "SHARED",
+     "relation": "ledger",
+     "value": "她的人情账记满一页：两次安装、一次陪球、一把电钻",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T11", "message_id": "m0", "quote": "两次安装、一次陪打球、一把电钻"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A27",
+     "subject": "SHARED",
+     "relation": "thank_dinner",
+     "value": "她定明晚海底捞为感谢宴，要求ME必须到",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T11", "message_id": "m0", "quote": "明晚海底捞，你必须到"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A28",
+     "subject": "SHARED",
+     "relation": "badminton_barter",
+     "value": "陪球请奶茶抵工费的玩笑账正式计入人情账",
+     "valid_time": "2026-11-13/2026-11-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T03", "message_id": "m0", "quote": "输三局我请奶茶，抵工费"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她的郑重要接住，'两顿平账'顺着算，别拆台。",
+   "unknowns": ["海底捞具体时间安排未知"],
+   "protected_expressions": ["两顿才勉强平账，你别嫌多"],
+   "forbidden_factual_claims": ["不得虚构账目金额明细", "不得断言平账后往来结束"]
+  },
+  "E072_T12": {
+   "case_id": "E072_T12",
+   "current_action": "接住散会宣言与三人约定：'除非屋里塌了'与'动锤子先请火锅'收成默契；笑纳这条边界条款，把故事轻轻收掉。",
+   "acceptable_actions": [
+    "签收'除非屋里塌了'条款，补一句塌了也得先请火锅",
+    "把三人约定复述成一句规矩，散会仪式感给足",
+    "顺她'扶墙进门'的餍足收个轻尾巴，不留新话题"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E072_A29",
+     "subject": "SHARED",
+     "relation": "boundary_pact",
+     "value": "她立约：下回再叫ME装东西只有屋里塌了才行",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T12", "message_id": "m0", "quote": "下回再叫你装东西，除非屋里塌了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A30",
+     "subject": "THIRD",
+     "relation": "xiaoyu_aligned",
+     "value": "小雨也表态以后直接找师傅，加入三人约定",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T12", "message_id": "m0", "quote": "小雨也说以后直接找师傅"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A31",
+     "subject": "SHARED",
+     "relation": "hotpot_rule",
+     "value": "三人约定：谁家动锤子先请另外俩吃火锅",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T12", "message_id": "m0", "quote": "先请另外俩吃火锅再说"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E072_A32",
+     "subject": "SHARED",
+     "relation": "thank_dinner",
+     "value": "感谢宴当晚兑现，人情账完成阶段性平账",
+     "valid_time": "2026-11-27/2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E072_T11", "message_id": "m0", "quote": "明晚海底捞，你必须到"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把边界讲成默契不讲成条款，散会两个字接住。",
+   "unknowns": ["下次动锤子的是谁家未知"],
+   "protected_expressions": ["除非屋里塌了"],
+   "forbidden_factual_claims": ["不得虚构宴席菜单与消费金额", "不得引入新的装修议题"]
+  }
+ }
+}

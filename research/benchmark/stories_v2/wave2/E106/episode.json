@@ -1,0 +1,289 @@
+{
+ "episode_id": "E106",
+ "persona": {
+  "her": {
+   "name": "阿岚",
+   "traits": [
+    "备考中级经济师的上班族",
+    "笔记做得极细，对自己的整理有主权感",
+    "不好意思拒绝人，急了会先找学长评理"
+   ],
+   "boundaries": [
+    "笔记可以分享，但替人做题讲课不行",
+    "不愿在办公室落一个'摆架子'的名声"
+   ]
+  },
+  "me": {
+   "name": "老晏",
+   "traits": [
+    "她的大学学长，考过同一个证",
+    "习惯先问'你自己先做了没'",
+    "点人不骂人，反问句多"
+   ],
+   "boundaries": [
+    "不代做决定，只帮她把账算明白"
+   ]
+  },
+  "relationship_stage": "学长学妹（毕业后仍偶尔聚，她管他叫晏哥）"
+ },
+ "initial_kb": {
+  "her": "阿岚在准备中级经济师考试，还有两个多月，错题笔记是她最花心血的东西，整理到第三章了。",
+  "me": "老晏是她的大学学长，考过同一个证，家里书柜还留着当年的讲义；他的习惯是先问'你自己先做了没'。",
+  "warmth": "学长学妹，毕业后还偶尔聚，她管他叫晏哥。",
+  "style": "她遇到烦心事会先说事实再说情绪，他惯用反问句点她。"
+ },
+ "turns": [
+  {
+   "case_id": "E106_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-01 20:15",
+      "text": "晏哥，第三章的错题笔记我整理完了，光易混知识点那张表我就改了四遍，发你看看，给我提提意见"
+     }
+    ],
+    "clock": "2026-11-01 20:18",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "得意",
+    "warmth": "high",
+    "shift": "备考成果汇报，主动求反馈"
+   }
+  },
+  {
+   "case_id": "E106_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-02 12:30",
+      "text": "部门新来的小蕊不知道从哪听说我在备考，中午跑来问我能不能把笔记发她一份，我还没答应，你说这东西发出去合适吗"
+     }
+    ],
+    "clock": "2026-11-02 12:33",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "犹豫",
+    "warmth": "medium",
+    "shift": "第三方初次插入：分享请求悬而未决"
+   }
+  },
+  {
+   "case_id": "E106_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-03 09:40",
+      "text": "还是发了。她回我一句'岚姐你救大命了'，就再没下文了，笔记发出去跟石沉大海似的，我心里有点不得劲"
+     }
+    ],
+    "clock": "2026-11-03 09:42",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "失落",
+    "warmth": "medium",
+    "shift": "分享落地却无回响，心意落空"
+   }
+  },
+  {
+   "case_id": "E106_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-05 21:50",
+      "text": "这两天她天天在工位上逮着我问题，一问就是半小时起步，我晚上回家复习的整块时间全被切成渣了，我自己的进度都慢了"
+     }
+    ],
+    "clock": "2026-11-05 21:52",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "烦躁",
+    "warmth": "medium",
+    "shift": "第三方实质卷入：讲题开始挤占她的复习时间"
+   }
+  },
+  {
+   "case_id": "E106_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-07 15:20",
+      "text": "今天她更过分，把她做都没做的模拟卷拍照甩给我，说'岚姐你帮我看看哪儿错了'。我说晏哥你评评理，这到底算帮忙还是算我给她打工"
+     }
+    ],
+    "clock": "2026-11-07 15:22",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state": "憋气",
+    "warmth": "medium",
+    "shift": "义务被改写：代查卷请求越过她的底线，向ME讨说法"
+   }
+  },
+  {
+   "case_id": "E106_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-09 08:50",
+      "text": "听你的，我把规矩立了：每周三午休讲一小时，题必须她自己先做，讲完就散。她当时答应得挺痛快"
+     }
+    ],
+    "clock": "2026-11-09 08:52",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "笃定",
+    "warmth": "medium",
+    "shift": "边界首次成文：讲题收敛为每周限定时段"
+   }
+  },
+  {
+   "case_id": "E106_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-11 13:40",
+      "text": "今天午休讲题，她卷子压根没做，空着来听，还把隔壁工位的小郑也拉来了，说什么'一起学'。一小时讲完她俩还意犹未尽拽着我，我下午的活都堆着"
+     }
+    ],
+    "clock": "2026-11-11 13:42",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "窝火",
+    "warmth": "medium",
+    "shift": "规矩被绕开：义务进一步外溢到第三人"
+   }
+  },
+  {
+   "case_id": "E106_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-12 22:10",
+      "text": "我今晚心一横把那个'一起学'的群退了，跟小蕊直说：笔记是我给自己整理的，不是给你们编的教程。发完手都在抖，你说我是不是太狠了"
+     }
+    ],
+    "clock": "2026-11-12 22:12",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "后怕又解气",
+    "warmth": "medium",
+    "shift": "硬边界落地：退群+当面声明，但她开始自我怀疑"
+   }
+  },
+  {
+   "case_id": "E106_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-14 19:30",
+      "text": "小蕊这两天见了我招呼都不打，办公室气氛怪得要命。我有点慌，万一她跟主管说我摆架子呢，我这考评还在她主管手里"
+     }
+    ],
+    "clock": "2026-11-14 19:32",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "忐忑",
+    "warmth": "medium",
+    "shift": "冲突余波：冷处理带来的职场顾虑"
+   }
+  },
+  {
+   "case_id": "E106_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-16 18:20",
+      "text": "反转了！小蕊自己报了个网课，下班还主动来找我，说'岚姐对不起，之前是我想抄近道'。我心里的石头落了地，顺势把周三那一小时也停了"
+     }
+    ],
+    "clock": "2026-11-16 18:22",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "如释重负",
+    "warmth": "high",
+    "shift": "第三方退出代劳模式，义务彻底归位"
+   }
+  },
+  {
+   "case_id": "E106_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-21 10:05",
+      "text": "刚做完第四套模拟卷，比上回涨了十一分！晏哥，把时间拿回来自己啃，果然比给人当免费讲师强，这笔账我算明白了"
+     }
+    ],
+    "clock": "2026-11-21 10:07",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "提气",
+    "warmth": "high",
+    "shift": "时间拿回来的收益兑现，她自认想通"
+   }
+  },
+  {
+   "case_id": "E106_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-29 21:00",
+      "text": "考前最后一个周日，我把笔记翻到扉页，想在上面印一句话提醒自己，你帮我想想印什么好——要求就一个：别像鸡血，像晏哥会说的话"
+     }
+    ],
+    "clock": "2026-11-29 21:03",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state": "平静郑重",
+    "warmth": "high",
+    "shift": "以扉页题词之约自然收尾，笔记回到她自己手里"
+   }
+  }
+ ]
+}

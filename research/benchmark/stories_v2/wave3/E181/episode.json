@@ -1,0 +1,180 @@
+{
+ "episode_id": "E181",
+ "persona": {
+  "her": {
+   "name": "苏漫",
+   "traits": ["数码小白但爱货比三家", "谨慎多疑但不失爽快", "嘴硬心软"],
+   "boundaries": ["不私下跟陌生卖家直接大额转账", "大额交易一定要有人陪"]
+  },
+  "me": {
+   "name": "陆知远",
+   "traits": ["玩主机十年的数码老玩家", "帮朋友验过好几台二手机", "说话直接给结论"]
+  },
+  "relationship_stage": "渐暧昧(半年同事转好友，互有好感未点破)"
+ },
+ "initial_kb": {
+  "her": "苏漫最近想入手一台Switch OLED，预算一千三以内，同事小柯介绍了一个二手卖家渠道，她有点心动又拿不准。",
+  "me": "陆知远玩主机十年，帮朋友验过三台二手机，坚持当面验机：划痕、螺丝、序列号、屏幕、摇杆一条条过。",
+  "warmth": "半年同事转好友，周末偶尔约饭，苏漫会主动分享日常，两人聊数码能聊很久。",
+  "style": "陆知远直接给清单和结论，苏漫喜欢听他讲数码避坑，讨厌被说教。",
+  "lessons": "二手交易当面验机，钱走可信中转，口头承诺都要落到文字。"
+ },
+ "turns": [
+  {
+   "case_id": "E181_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-04 20:10", "text": "小柯给我介绍了个卖家，说有台Switch OLED，国行1250，周六下午自提，还能包贴膜。你说这个价靠谱吗？我要不要接？"}
+    ],
+    "clock": "2026-11-04 20:12",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "起意询价", "change_note": "由观望转为倾向接单，征求意见"}
+  },
+  {
+   "case_id": "E181_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-05 12:30", "text": "我琢磨了一晚上决定接了，先转了100定金给小柯，让他转给卖家，约的周六下午三点在他店里面交机。"}
+    ],
+    "clock": "2026-11-05 12:33",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "已下定金", "change_note": "从倾向转为实际行动，定金已付"}
+  },
+  {
+   "case_id": "E181_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-06 21:00", "text": "对了，你上次帮人验机都看哪些地方来着？我想要一份清单，到时候照着一条条来，别到时候手忙脚乱。"}
+    ],
+    "clock": "2026-11-06 21:03",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "主动求清单", "change_note": "由被动听建议转为主动索要工具化准备"}
+  },
+  {
+   "case_id": "E181_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-07 19:40", "text": "出事了，小柯说那个卖家临时要去外地帮忙，这单不自己来了，换成他表哥周六来交机，钱还是走小柯转。我有点不放心。"}
+    ],
+    "clock": "2026-11-07 19:43",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "疑虑上升", "change_note": "安心备货的心态被打断，出现对第三方代交的不信任"}
+  },
+  {
+   "case_id": "E181_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 10:15", "text": "周六你还是陪我去一趟吧，三点在鼓楼那家店，我一个人跟陌生表哥谈价有点虚。"}
+    ],
+    "clock": "2026-11-08 10:18",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "求陪同", "change_note": "由口头不放心转为明确提出请求，给她台阶也给自己壮胆"}
+  },
+  {
+   "case_id": "E181_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-10 21:30", "text": "刚问清楚了，那台其实是日版不是国行！我说怎么那么痛快。表哥说日版便宜一百，1150卖我，定金不退但能抵进货款。我纠结要不要退单。"}
+    ],
+    "clock": "2026-11-10 21:33",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "被更正冲击", "change_note": "从期待交机转为发现版本货不对板，纠结进退"}
+  },
+  {
+   "case_id": "E181_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-11 22:00", "text": "我想了想不退了，日版我也能接受，就是日版有什么坑？充电器是不是两脚的？你给我讲讲。"}
+    ],
+    "clock": "2026-11-11 22:03",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "重新定向", "change_note": "纠结收敛为接受日版，转向求风险清单"}
+  },
+  {
+   "case_id": "E181_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-13 12:20", "text": "表哥发消息说周六他两点才到店收拾，交机还是约三点，地点不变，到时候见。"}
+    ],
+    "clock": "2026-11-13 12:23",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "节奏平稳", "change_note": "风波暂歇，进入交机前确认状态"}
+  },
+  {
+   "case_id": "E181_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 14:30", "text": "我到店门口了，你到了没？我把清单打出来了，还带了个小手电。"}
+    ],
+    "clock": "2026-11-14 14:32",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "现场就位", "change_note": "线上焦虑转为线下行动，准备充分"}
+  },
+  {
+   "case_id": "E181_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 15:05", "text": "验完了！就屏幕左下角一道浅划痕，摇杆不漂移，序列号和盒子对得上。表哥说划痕那台本来说好1150，看在划痕份上再让50。"}
+    ],
+    "clock": "2026-11-14 15:08",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "验机报捷", "change_note": "紧张转为兴奋，进入现场议价环节"}
+  },
+  {
+   "case_id": "E181_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 15:20", "text": "成了！1100拿下，定金100抵掉，我再转他1000。等我回去请你喝奶茶！"}
+    ],
+    "clock": "2026-11-14 15:22",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "成交喜悦", "change_note": "议价成功，交易闭环并向ME致谢"}
+  },
+  {
+   "case_id": "E181_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 21:30", "text": "到家开机了，日版充电器果然是两脚的，插排刚好插得上，虚惊一场。今天多亏你陪跑，下次你要买显示器换我陪你去砍价。"}
+    ],
+    "clock": "2026-11-14 21:33",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "落地安心的收尾", "change_note": "由成交喜悦转为睡前回味，主动给出互助回扣和新钩子"}
+  }
+ ]
+}

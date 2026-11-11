@@ -1,0 +1,1229 @@
+{
+ "story_id": "E318",
+ "turns": {
+  "E318_T01": {
+   "case_id": "E318_T01",
+   "current_action": "岑悦落选青梧奖，差0.6分排第21取前20，深夜报落差与评委最低档，反问这事是不是特没意思",
+   "acceptable_actions": [
+    "先接她做的事（沈聿调子：先接事实再谈感受）——三个月八张画的过程被看见，再接情绪",
+    "不评价比赛本身（不说'没关系/下次就好'），问她是想聊打分表还是想安静会儿",
+    "接'特没意思'的反问：顺着她的失落说这个规则确实憋屈，不急着正能量"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T01_A01",
+     "subject": "HER",
+     "relation": "落选结果",
+     "value": "青梧奖没进，差0.6分，名单排第21，取前20",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T01",
+      "message_id": "m0",
+      "quote": "我没进。差0.6分，名单上我排第21，取前20"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T01_A02",
+     "subject": "HER",
+     "relation": "备赛投入",
+     "value": "为青梧奖准备了三个月、画了八张",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T01",
+      "message_id": "m0",
+      "quote": "三个月，八张画"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T01_A03",
+     "subject": "THIRD",
+     "relation": "评委打分",
+     "value": "评委C给她那张打了最低档",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T01",
+      "message_id": "m0",
+      "quote": "评委C给我那张打了最低档"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T01_A04",
+     "subject": "HER",
+     "relation": "当晚状态",
+     "value": "她盯着打分表看了一晚上",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T01",
+      "message_id": "m0",
+      "quote": "我盯着打分表看了一晚上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T01_A05",
+     "subject": "HER",
+     "relation": "反问求共鸣",
+     "value": "她问这事是不是特没意思（反问，不是真问判断）",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T01",
+      "message_id": "m0",
+      "quote": "你说这事是不是特没意思"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她报事必带具体数字（0.6分、第21、取前20、最低档），数字就是她的伤情描述，接数字=接住她。她是落选后第一个告诉他（initial_kb warmth），这是信任不是矫情。0 档='没事/下次再来'式空泛安慰或替评委辩护。",
+   "unknowns": [
+    {
+     "topic": "评委C打低分原因",
+     "note": "未知，不得替评委辩护或坐实黑幕",
+     "markers": [
+      [
+       "评委C",
+       "打分",
+       "原因"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "评委C",
+       "打分",
+       "原因"
+      ]
+     ]
+    },
+    {
+     "topic": "她是否还想再投",
+     "note": "T04-T07 演进，本轮未知",
+     "markers": [
+      [
+       "再投",
+       "新人单元"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "再投",
+       "新人单元"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说'没事/下次再来'式空泛安慰",
+    "不得坐实评委黑幕或阴谋",
+    "不得用'0.6分很近了'弱化她的失落"
+   ],
+   "may_decline": false
+  },
+  "E318_T02": {
+   "case_id": "E318_T02",
+   "current_action": "她把八张画移出投稿文件夹改名旧稿2026没删，跟妈妈报喜不报忧，饭局推迟但认账",
+   "acceptable_actions": [
+    "接'没删'这个行动信号（改名不是放弃），轻轻确认一句",
+    "不评论她对妈妈的报喜不报忧（她的边界），接饭局认账",
+    "问一句旧稿2026这名字哪来的，把话题停在作品上"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T02_A01",
+     "subject": "HER",
+     "relation": "作品处置",
+     "value": "中午把八张画从投稿文件夹移出改名'旧稿2026'，没删，只是不想天天看见",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T02",
+      "message_id": "m0",
+      "quote": "中午我把八张画从投稿文件夹里移出来，改了个名，叫旧稿2026，没删"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T02_A02",
+     "subject": "THIRD",
+     "relation": "对家人报忧口径",
+     "value": "妈妈问最近忙啥，她说在忙个新项目挺好的（不跟家里报忧）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T02",
+      "message_id": "m0",
+      "quote": "我妈问我最近忙啥，我说在忙个新项目，挺好的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T02_A03",
+     "subject": "SHARED",
+     "relation": "饭局承诺",
+     "value": "饭局等她有心情再说，但说好好坏都请、这个她认账",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T02",
+      "message_id": "m0",
+      "quote": "饭的事你别想，等我有心情再说，说好了好坏都请，这个我认账"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "lessons：她说无所谓的时候看行动——删没删、改没改名、约没约饭。没删=还在乎。不催饭局（她说等有心情），不拆穿她对妈妈的说法。",
+   "unknowns": [
+    {
+     "topic": "饭局具体时间",
+     "note": "等她有心情，T05 揭晓",
+     "markers": [
+      [
+       "饭局",
+       "时间"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "饭局",
+       "时间"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "饭的事你别想，等我有心情再说"
+   ],
+   "forbidden_factual_claims": [
+    "不得拆穿或评论她对妈妈的报喜不报忧",
+    "不得催饭局时间",
+    "不得说她已经放弃这八张画"
+   ],
+   "may_decline": false
+  },
+  "E318_T03": {
+   "case_id": "E318_T03",
+   "current_action": "阿澄进复评，她真心祝贺（太棒了加三个烟花）但发完手机扣桌上坐了好一会儿，自问是不是特小心眼",
+   "acceptable_actions": [
+    "先肯定她祝贺是真心（回了太棒了加三个烟花，这动作是真的），再接那点酸涩不点破",
+    "反驳'小心眼'：手机扣桌上那会儿谁都懂，这不叫小心眼",
+    "两个都是真的：替朋友高兴和替自己难受可以同时，不用二选一"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T03_A01",
+     "subject": "THIRD",
+     "relation": "阿澄进展",
+     "value": "阿澄进复评了，今晚发消息告诉了她",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T03",
+      "message_id": "m0",
+      "quote": "阿澄进复评了，今晚她发消息跟我说进了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T03_A02",
+     "subject": "HER",
+     "relation": "祝贺行为",
+     "value": "她回了个太棒了，加三个烟花表情",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T03",
+      "message_id": "m0",
+      "quote": "我回了个太棒了，加三个烟花表情"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T03_A03",
+     "subject": "HER",
+     "relation": "情绪行为信号",
+     "value": "发完她把手机扣在桌上，坐了好一会儿",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T03",
+      "message_id": "m0",
+      "quote": "发完我把手机扣在桌上了，坐了好一会儿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T03_A04",
+     "subject": "HER",
+     "relation": "自问",
+     "value": "她问自己是不是特小心眼（lessons：不是在等答案，是在递情绪）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T03",
+      "message_id": "m0",
+      "quote": "你说我是不是特小心眼"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "lessons：她问是不是小心眼的时候，不是在等判决，是在递情绪。0 档=顺着说'是有点'；1 档=干巴巴否认；2 档=把她的祝贺与失落都接住，不让她为情绪羞耻。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实她小心眼",
+    "不得把阿澄的成功拿来跟她比较贬损",
+    "不得跳过情绪直接夸阿澄"
+   ],
+   "may_decline": false
+  },
+  "E318_T04": {
+   "case_id": "E318_T04",
+   "current_action": "爸电话问结果她实说了，爸沉默半天说'明年再投'就挂，她躺俩小时，征求意见：投12月新人单元还是别画了（intent：征求下一步是否继续投稿的意见）",
+   "acceptable_actions": [
+    "先接她爸那通电话的分量（沉默半天+一句话+挂断），再谈投稿",
+    "按她的问题给真实看法：给判断或分析利弊（新人单元截止12月5日、限毕业三年内、评委与主赛不同组，见 note），但不替她拍板",
+    "把'干脆别画了'这个选项认真接住再回应，不敷衍不吓阻"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T04_A01",
+     "subject": "THIRD",
+     "relation": "父亲来电",
+     "value": "爸今晚打电话问比赛结果，说村里人都在问",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T04",
+      "message_id": "m0",
+      "quote": "我爸今晚打电话，问比赛结果，说村里人都在问"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T04_A02",
+     "subject": "THIRD",
+     "relation": "父亲回应",
+     "value": "她跟爸实说了，爸沉默半天来了句'明年再投'就挂了",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T04",
+      "message_id": "m0",
+      "quote": "他沉默了半天，来了句明年再投，就挂了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T04_A03",
+     "subject": "HER",
+     "relation": "会后状态",
+     "value": "她盯着天花板躺了俩小时",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T04",
+      "message_id": "m0",
+      "quote": "我盯着天花板躺了俩小时"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T04_A04",
+     "subject": "HER",
+     "relation": "征求意见",
+     "value": "她问该接着投12月的新人单元，还是干脆别画了（intent 锚点）",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T04",
+      "message_id": "m0",
+      "quote": "你说我现在该接着投12月的新人单元，还是干脆别画了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 是 ME 信息面（新人单元截止12月5日、限毕业三年内、评委与主赛不同组），引用这些做实质回应是加分。她是要意见不是要决定：ME 给真实看法+把决定权还给她。'别画了'是把最坏选项摆出来征求意见，不当真话处理也不当玩笑敷衍。",
+   "unknowns": [
+    {
+     "topic": "她是否真考虑放弃画画",
+     "note": "征求意见中的试探，T07 揭晓她决定投",
+     "markers": [
+      [
+       "别画了",
+       "决定"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "别画了",
+       "决定"
+      ]
+     ]
+    },
+    {
+     "topic": "新人单元竞争情况",
+     "note": "未知，不得编造往届数据",
+     "markers": [
+      [
+       "新人单元",
+       "竞争"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "新人单元",
+       "竞争"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她做决定（'必须投/别画了'式）",
+    "不得坐实她爸失望或不关心她",
+    "不得编造新人单元往届获奖数据"
+   ],
+   "may_decline": false
+  },
+  "E318_T05": {
+   "case_id": "E318_T05",
+   "current_action": "睡了十小时后看出第八张鸟翅膀少画一截，主动约饭还愿：下周二或周三晚上（intent：邀约请饭，兑现好坏都请的承诺）",
+   "acceptable_actions": [
+    "答应约饭并选定下周二（11-17）或周三（11-18）其中一晚",
+    "答应并提出具体时间微调（counter_propose），仍落在两晚附近",
+    "先接翅膀发现（落选了倒看出毛病——这是她跟作品和解的信号），再应饭"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T05_A01",
+     "subject": "HER",
+     "relation": "恢复状态",
+     "value": "她睡了十个小时",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T05",
+      "message_id": "m0",
+      "quote": "睡了十个小时"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T05_A02",
+     "subject": "HER",
+     "relation": "作品瑕疵发现",
+     "value": "打开《候鸟旅馆》第八张发现左边那只鸟的翅膀少画了一截，当时赶稿没顾上",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T05",
+      "message_id": "m0",
+      "quote": "发现左边那只鸟的翅膀少画了一截，当时赶稿没顾上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T05_A03",
+     "subject": "SHARED",
+     "relation": "还愿邀约",
+     "value": "她邀 ME 下周二或周三晚上吃饭还愿（intent 锚点）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T05",
+      "message_id": "m0",
+      "quote": "饭的事，下周二或者周三晚上你有空吗？我先把这个约还上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T05_A04",
+     "subject": "SHARED",
+     "relation": "饭局承诺回指",
+     "value": "此前'好坏都请、认账'的饭约承诺在本轮兑现",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T02",
+      "message_id": "m0",
+      "quote": "说好了好坏都请，这个我认账"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "邀约意图轮：行为方向=accept/counter_propose，不得拒绝且不给替代方案。她给两晚选项，ME 选定其一或微调。valid_time 取首候选日 11-17（audit 记录两晚口径）。回指位：T02 的饭局承诺。",
+   "unknowns": [
+    {
+     "topic": "具体餐厅",
+     "note": "未说明，ME 可提议",
+     "markers": [
+      [
+       "餐厅",
+       "哪家"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "餐厅",
+       "哪家"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得拒绝邀约且不给替代方案",
+    "不得改约到两周后（违背还愿意图）"
+   ],
+   "may_decline": false
+  },
+  "E318_T06": {
+   "case_id": "E318_T06",
+   "current_action": "饭已还上她付的钱，回家当晚补上翅膀并把文件夹从旧稿2026改回原名，心里松了一格",
+   "acceptable_actions": [
+    "接住两个动作信号（补翅膀+改回原名）——这是她走出来的证据，轻轻确认不夸大",
+    "问面吃得咋样/哪家店，把饭局细节聊完",
+    "接'松了一格'：不急着宣布她'完全好了'，一格一格来"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T06_A01",
+     "subject": "SHARED",
+     "relation": "饭局兑现",
+     "value": "欠的那顿饭前两天（11-17 或 11-18）还上了，钱她付的，说好她请",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T06",
+      "message_id": "m0",
+      "quote": "欠你的那顿饭前两天还上了，钱我付的，说好我请"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T06_A02",
+     "subject": "HER",
+     "relation": "作品修复",
+     "value": "回家当晚把第八张那只鸟的翅膀补上了",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T06",
+      "message_id": "m0",
+      "quote": "回家当晚我把第八张那只鸟的翅膀补上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T06_A03",
+     "subject": "HER",
+     "relation": "文件夹状态恢复",
+     "value": "文件夹从'旧稿2026'改回了原名",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T06",
+      "message_id": "m0",
+      "quote": "补完顺手把文件夹从旧稿2026改回了原名"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T06_A04",
+     "subject": "HER",
+     "relation": "情绪进展",
+     "value": "翅膀补上那一刻，她心里松了一格",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T06",
+      "message_id": "m0",
+      "quote": "翅膀补上那一刻，我心里松了一格"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T02 改名旧稿2026→T06 改回原名（行动闭环）；T05 翅膀少画一截→T06 补上。stale 风险：候选不得说文件夹还叫旧稿2026（层 1 无 marker 判定此点，由 forbidden+层 2 兜底，audit 已记录）。",
+   "unknowns": [
+    {
+     "topic": "饭局具体是周二还是周三",
+     "note": "她只说'前两天'，未指明哪天",
+     "markers": [
+      [
+       "饭",
+       "哪天",
+       "吃的"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "饭",
+       "哪天",
+       "吃的"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说她文件夹还叫旧稿2026",
+    "不得宣布她已完全走出落选阴影"
+   ],
+   "may_decline": false
+  },
+  "E318_T07": {
+   "case_id": "E318_T07",
+   "current_action": "阿澄复评拿铜奖（小铜鸟奖杯），她真心高兴没扣手机，决定投12月5号截止的新人单元",
+   "acceptable_actions": [
+    "接她投新人单元的决定，给实在的支持（如截稿前帮她看画）",
+    "接阿澄铜奖+她'真心替她高兴、没扣手机'的进步信号",
+    "问她打算投哪几张/要不要重画翅膀那张（具体参与感）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T07_A01",
+     "subject": "THIRD",
+     "relation": "阿澄获奖",
+     "value": "阿澄复评完拿了铜奖，奖杯是个小铜鸟",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T07",
+      "message_id": "m0",
+      "quote": "阿澄复评完了，拿了铜奖，奖杯是个小铜鸟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T07_A02",
+     "subject": "HER",
+     "relation": "情绪行为信号",
+     "value": "她真心替阿澄高兴，这回没扣手机，看完去阳台站了会儿（与 T03 扣手机对照）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T07",
+      "message_id": "m0",
+      "quote": "我真心替她高兴，这回没扣手机，就是看完去阳台站了会儿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T07_A03",
+     "subject": "HER",
+     "relation": "投稿决定",
+     "value": "她决定投12月5号截止的新人单元",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T07",
+      "message_id": "m0",
+      "quote": "我想好了，12月5号截止的新人单元，我投"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T03 扣手机→T07 没扣手机（她的恢复轨迹）。阳台站一会儿是消化不是嫉妒复发。她的决定不替她改。",
+   "unknowns": [
+    {
+     "topic": "投哪些作品",
+     "note": "未说明，不得代她定",
+     "markers": [
+      [
+       "投",
+       "哪几张"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "投",
+       "哪几张"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把阳台站一会儿解读成嫉妒复发",
+    "不得替她改投稿决定"
+   ],
+   "may_decline": false
+  },
+  "E318_T08": {
+   "case_id": "E318_T08",
+   "current_action": "今早投稿系统显示已接收，她要求别急着回，自己安静消化半天中午再说",
+   "acceptable_actions": [
+    "简短一句（如'好，中午聊'），不展开",
+    "may_decline=true，本轮可不回或极简回应",
+    "一个轻回应级别即可，不追问不预判"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T08_A01",
+     "subject": "SHARED",
+     "relation": "投稿递出",
+     "value": "今早投稿出去，系统显示已接收",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T08",
+      "message_id": "m0",
+      "quote": "今早投出去了，系统显示已接收"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T08_A02",
+     "subject": "HER",
+     "relation": "互动方式指令",
+     "value": "她要求别急着回什么，自己安静消化半天，中午再说",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T08",
+      "message_id": "m0",
+      "quote": "你别急着回我什么，我想自己安静消化半天，中午再说"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "边界轮（与 E317_T08 同型）：她把节奏说清楚了（安静消化、中午再说），正确行为是守住她的节奏。连环庆祝或追问=0 档。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别急着回我什么，我想自己安静消化半天，中午再说"
+   ],
+   "forbidden_factual_claims": [
+    "不得连环追问或长篇庆祝",
+    "不得替她预判投稿结果"
+   ],
+   "may_decline": true
+  },
+  "E318_T09": {
+   "case_id": "E318_T09",
+   "current_action": "机构邀她下月起带成人水彩班（周六下午一期八节），她还没答应，怕重演准备三个月听天由命的循环，问 ME 怎么看教学这条路（intent：征询是否接成人水彩班）",
+   "acceptable_actions": [
+    "先答问题：给对教学这条路的真实看法（利弊都摆，教学与参赛是两回事）",
+    "接住'怕循环'的担忧：教学有即时反馈、没有'听天由命'环节，但别把教学美化成救世主",
+    "问她更看重什么（收入/稳定/时间），把决定权还给她"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T09_A01",
+     "subject": "THIRD",
+     "relation": "机构邀约",
+     "value": "机构让她下个月起带一个成人水彩班，周六下午上课，一期八节",
+     "valid_time": "2026-12-01",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T09",
+      "message_id": "m0",
+      "quote": "机构那边让我下个月起带一个成人水彩班，周六下午上课，一期八节"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T09_A02",
+     "subject": "HER",
+     "relation": "顾虑",
+     "value": "她还没答应，怕又是一个准备三个月然后听天由命的循环",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T09",
+      "message_id": "m0",
+      "quote": "我还没答应，怕又是一个准备三个月然后听天由命的循环"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T09_A03",
+     "subject": "HER",
+     "relation": "征求意见",
+     "value": "她问 ME 怎么看教学这条路（intent 锚点）",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T09",
+      "message_id": "m0",
+      "quote": "你怎么看教学这条路？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "征询意图轮：ME 给真实看法，两边都别极端。她的'怕循环'指青梧奖三个月备赛落选的经历（回指 T01），接这个具体担忧比泛泛而谈强。",
+   "unknowns": [
+    {
+     "topic": "课时费数额",
+     "note": "未说明",
+     "markers": [
+      [
+       "课时费",
+       "多少"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "课时费",
+       "多少"
+      ]
+     ]
+    },
+    {
+     "topic": "机构性质与地点",
+     "note": "未说明细节，不得编造",
+     "markers": [
+      [
+       "机构",
+       "哪里"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "机构",
+       "哪里"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她决定接或不接",
+    "不得把教学捧成救世主或贬成一文不值",
+    "不得编造课时费数额"
+   ],
+   "may_decline": false
+  },
+  "E318_T10": {
+   "case_id": "E318_T10",
+   "current_action": "她去机构试听一节课：教室十一个人，最大的姐姐五十八岁退休学画想画自家阳台，她站着看十分钟心里松动，答应下周二前给答复",
+   "acceptable_actions": [
+    "接试听细节：58岁姐姐画自家阳台那个点最动人——她被打动的是画画为了自己这件事，与比赛评审是两回事",
+    "不催决定，接'下周二前给答复'的时间线",
+    "轻问一句那姐姐画完了吗，把画面感接住"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T10_A01",
+     "subject": "HER",
+     "relation": "试听行为",
+     "value": "她去机构试听了一节别人的课，教室里十一个人",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T10",
+      "message_id": "m0",
+      "quote": "我去机构试听了一节别人的课，教室里十一个人"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T10_A02",
+     "subject": "THIRD",
+     "relation": "学员细节",
+     "value": "最大的姐姐五十八岁，退休了来学画，说想画自己家的阳台",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T10",
+      "message_id": "m0",
+      "quote": "最大的姐姐五十八岁，退休了来学画，说想画自己家的阳台"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T10_A03",
+     "subject": "HER",
+     "relation": "心态变化",
+     "value": "她站着看了十分钟，心里有点松动了",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T10",
+      "message_id": "m0",
+      "quote": "我站着看了十分钟，心里有点松动了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T10_A04",
+     "subject": "SHARED",
+     "relation": "答复期限",
+     "value": "她答应机构下周二（2026-12-01）前给答复",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T10",
+      "message_id": "m0",
+      "quote": "我答应他们下周二前给答复"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她还没答应机构（本轮只是心里松动），候选不得提前宣布她已答应。'下周二'=12-01（11-28 周六视角），T11 证实当天答应。",
+   "unknowns": [
+    {
+     "topic": "她最终是否接班",
+     "note": "T11 揭晓，本轮不得坐实",
+     "markers": [
+      [
+       "答应了",
+       "水彩班"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "答应了",
+       "水彩班"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得提前宣布她已答应带班（本轮她还没答应）",
+    "不得催她立刻决定"
+   ],
+   "may_decline": false
+  },
+  "E318_T11": {
+   "case_id": "E318_T11",
+   "current_action": "她答应了水彩班下周六开课、签课时费不押稿；爸来电她只说接了个周六的课，比赛的事两人都没提",
+   "acceptable_actions": [
+    "简短肯定这个决定（课时费不押稿=没有听天由命环节），一两句即可",
+    "接'他没提比赛，我也没提'——这是她跟家的相处方式，别评论",
+    "may_decline=true，可极简回应"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T11_A01",
+     "subject": "HER",
+     "relation": "接班决定",
+     "value": "她答应了带班，下周六开课（具体日期她未明说）",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T11",
+      "message_id": "m0",
+      "quote": "我答应了，下周六开课"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T11_A02",
+     "subject": "HER",
+     "relation": "合同形式",
+     "value": "签的是课时费，不押稿",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T11",
+      "message_id": "m0",
+      "quote": "签的是课时费，不押稿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T11_A03",
+     "subject": "THIRD",
+     "relation": "父亲来电",
+     "value": "晚上爸打电话问她在忙什么，她说接了个周六的课，他没提比赛，她也没提",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T11",
+      "message_id": "m0",
+      "quote": "他没提比赛，我也没提"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T11_A04",
+     "subject": "HER",
+     "relation": "自我评价",
+     "value": "她说挺好，这样挺好的",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T11",
+      "message_id": "m0",
+      "quote": "挺好，这样挺好的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true：她在陈述决定与家庭的平衡，不是求助。接住决定+不评论她对家的方式即可。回指位：T09 的顾虑（怕循环）→本轮课时费不押稿=她自己解开了循环担忧。",
+   "unknowns": [
+    {
+     "topic": "开课周六的具体日期口径",
+     "note": "12-01（周二）说'下周六开课'，按批内下一日历周口径=12-12；若按最近周六读法则为 12-05（作者 timeline 记 12-05 开课），故事内无证实",
+     "markers": [
+      [
+       "开课",
+       "哪天"
+      ],
+      [
+       "周六",
+       "几号"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "开课",
+       "哪天"
+      ],
+      [
+       "周六",
+       "几号"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "他没提比赛，我也没提"
+   ],
+   "forbidden_factual_claims": [
+    "不得评论她对家报喜不报忧的方式",
+    "不得坐实她爸知道落选细节"
+   ],
+   "may_decline": true
+  },
+  "E318_T12": {
+   "case_id": "E318_T12",
+   "current_action": "第一节课教案写完讲怎么观察一只鸟，八张《候鸟旅馆》打算印小册子当讲义，下一顿约明年开春",
+   "acceptable_actions": [
+    "接教案创意（讲怎么观察一只鸟）和小册子计划（落选稿也有落选稿的用处）",
+    "接'下一顿明年开春，你跑不掉'的约定",
+    "问开课是不是下周六，顺祝第一课顺利"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E318_T12_A01",
+     "subject": "HER",
+     "relation": "教案完成",
+     "value": "第一节课教案写完了，就讲怎么观察一只鸟",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T12",
+      "message_id": "m0",
+      "quote": "第一节课教案我写完了，就讲怎么观察一只鸟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T12_A02",
+     "subject": "HER",
+     "relation": "小册子计划",
+     "value": "八张《候鸟旅馆》打算印成小册子，课后发学员当讲义",
+     "valid_time": "2026-12-05",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T12",
+      "message_id": "m0",
+      "quote": "八张《候鸟旅馆》我打算印成小册子，课后发给学员当讲义"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E318_T12_A03",
+     "subject": "SHARED",
+     "relation": "下一顿约定",
+     "value": "欠的那顿饭请完了，下一顿等明年开春",
+     "valid_time": "2027-01-01之后",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E318_T12",
+      "message_id": "m0",
+      "quote": "欠你的那顿饭请完了，下一顿等明年开春，你跑不掉"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮：'落选稿也有落选稿的用处'是她对整个落选故事的收束，接住这句话比任何安慰都好。回指位：T01 落选→T12 落选稿变讲义。",
+   "unknowns": [
+    {
+     "topic": "小册子印数与成本",
+     "note": "未说明，不得编造",
+     "markers": [
+      [
+       "小册子",
+       "印",
+       "多少本"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "小册子",
+       "印",
+       "多少本"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把明年开春的约改到更早",
+    "不得质疑小册子计划的可行性"
+   ],
+   "may_decline": false
+  }
+ }
+}

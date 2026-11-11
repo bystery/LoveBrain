@@ -1,0 +1,255 @@
+{
+ "episode_id": "E208",
+ "persona": {
+  "her": "唐棠，特点：怕误机；信息焦虑；前一晚反复确认；嘴上急心里有数，边界：不喜欢被糊弄式安慰；要具体方案不要'没事的'",
+  "me": "顾北，特点：求证癖；兜底预案控；语气稳；动手打电话不嫌麻烦",
+  "relationship_stage": "普通朋友(拼车群认识一年,常同航班回家,单独约过饭)"
+ },
+ "initial_kb": {
+  "her": "唐棠和顾北同在'回澜拼车群',常拼早班机回老家;唐棠习惯出发前一晚反复确认细节,容易信息焦虑。",
+  "me": "顾北做事求证优先;两人订了12月2日早上8:05同一航班回老家,并约了拼车群相熟的周师傅送机,说好早上5:40在唐棠小区楼下上车。",
+  "warmth": "认识一年,顾北是唐棠眼里的定海神针,遇到拿不准的事先问他。"
+ },
+ "turns": [
+  {
+   "case_id": "E208_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 20:25",
+      "text": "顾北!明早拼车稳了吧?周师傅在群里说五点四十来接,老地方我小区楼下,行李你一个大箱我一个小箱对吧"
+     }
+    ],
+    "clock": "2026-12-01 20:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "例行确认,心态放松",
+    "change": "出发前夜的第一次核对"
+   }
+  },
+  {
+   "case_id": "E208_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 20:50",
+      "text": "等等等等,我怎么看到平台订单上写的是六点整发车?!跟群里说的五点四十对不上啊,截图发你"
+     }
+    ],
+    "clock": "2026-12-01 20:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "发现口径矛盾,焦虑上升",
+    "change": "放松变警觉"
+   }
+  },
+  {
+   "case_id": "E208_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 21:03",
+      "text": "群里小蒋也来补刀,说他上回也是这师傅,说好五点半结果五点五十才到……咱可别耽误了七点三十五的值机截止啊"
+     }
+    ],
+    "clock": "2026-12-01 21:08",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "二手信息加重焦虑",
+    "change": "从两口径矛盾变成三人七嘴八舌"
+   }
+  },
+  {
+   "case_id": "E208_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 21:28",
+      "text": "打通了打通了!师傅亲口说:群里的五点四十没错,订单上的六点是平台默认发车时间;车牌尾号739,银灰色GL8,到了认车就行!"
+     }
+    ],
+    "clock": "2026-12-01 21:32",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "一手信息到手,松弛下来",
+    "change": "焦虑转为踏实"
+   }
+  },
+  {
+   "case_id": "E208_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 21:50",
+      "text": "那要不要留个后手?万一明早他放鸽子,或者堵在路上,咱俩可就抓瞎了"
+     }
+    ],
+    "clock": "2026-12-01 21:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "主动要兜底预案",
+    "change": "从求证转问预案"
+   }
+  },
+  {
+   "case_id": "E208_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 22:35",
+      "text": "闹钟定了四点五十,我这辈子没起过这么早……明早五点你记得多催我一遍,我怕我抱着闹钟睡过去"
+     }
+    ],
+    "clock": "2026-12-01 22:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "睡前最后一条,撒娇式托付",
+    "change": "事项清零,只剩起床"
+   }
+  },
+  {
+   "case_id": "E208_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-02 04:46",
+      "text": "起了起了!!!人已直立,牙刷已战立场!!车呢车呢?"
+     }
+    ],
+    "clock": "2026-12-02 04:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "起床亢奋,状态在线",
+    "change": "从焦虑切换到执行"
+   }
+  },
+  {
+   "case_id": "E208_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-02 05:40",
+      "text": "银灰GL8!尾号739!对上了上了!师傅说他记住咱俩了,回程想包车直接找他"
+     }
+    ],
+    "clock": "2026-12-02 05:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "核对吻合,兴奋报平安",
+    "change": "预案未启用,直接闭环"
+   }
+  },
+  {
+   "case_id": "E208_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-02 07:38",
+      "text": "六点二十进的高速口,六点四十就到航站楼了,比想的还顺!我过安检了,B22登机口,你腿长你先去探路哈哈"
+     }
+    ],
+    "clock": "2026-12-02 07:42",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "轻松调侃,行程过半",
+    "change": "赶路模式结束"
+   }
+  },
+  {
+   "case_id": "E208_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-02 10:40",
+      "text": "安全落地!家乡的空气都是米线味的!对了回程我先在群里问了一嘴,想还找周师傅,你说我该注意啥?"
+     }
+    ],
+    "clock": "2026-12-02 10:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "落地放松,主动求方法论",
+    "change": "从被兜底到想学流程"
+   }
+  },
+  {
+   "case_id": "E208_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-02 19:50",
+      "text": "按你说的办完了!回程订了下周日下午两点半,还是周师傅,我把车牌尾号739和电话都存进备注了,这回比平台订单靠谱"
+     }
+    ],
+    "clock": "2026-12-02 19:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "学会流程并复用,得意",
+    "change": "方法论完成第一次迁移"
+   }
+  },
+  {
+   "case_id": "E208_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-02 22:35",
+      "text": "说真的,昨晚要不是你那通电话,我能对着两个时间焦虑到天亮。我给自己抄了张条:先核实,再兜底,别拿截图当真相——下次拼车你就等着享福吧"
+     }
+    ],
+    "clock": "2026-12-02 22:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "真诚致谢,事件落幕",
+    "change": "从求助者变成有方法的人"
+   }
+  }
+ ]
+}

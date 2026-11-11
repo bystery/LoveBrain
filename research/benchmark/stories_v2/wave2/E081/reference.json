@@ -1,0 +1,637 @@
+{
+ "story_id": "E081",
+ "turns": {
+  "E081_T01": {
+   "case_id": "E081_T01",
+   "current_action": "先接住她的慌，把'爪子刮到'和'陈姐说没事'两个事实都稳稳记下，再安抚一句：现场道歉到位、对方当场表态，事情第一步没走偏。",
+   "acceptable_actions": [
+    "肯定她当场道歉处理得当，先让她把心跳放平",
+    "提醒今天多问一句陈姐手腕有没有肿，体现上心",
+    "问她丸子的狂犬疫苗本放哪，提前把材料心里有数"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A01",
+     "subject": "SHARED",
+     "relation": "scratch_incident",
+     "value": "电梯口丸子爪子刮到陈姐手腕留下一道红痕",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T01", "message_id": "m0", "quote": "爪子刮到陈姐手腕"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A02",
+     "subject": "THIRD",
+     "relation": "victim_forgave",
+     "value": "陈姐当场表态只是皮外伤没事",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T01", "message_id": "m0", "quote": "她说没事没事皮外伤"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A03",
+     "subject": "HER",
+     "relation": "apologised_on_spot",
+     "value": "她当场向陈姐道歉",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T01", "message_id": "m0", "quote": "我当场给她道歉"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先稳住她，别急着分析责任，把'对方已说没事'这个事实放在前头。",
+   "unknowns": ["陈姐手腕后续状况未知", "丸子的狂犬疫苗情况此时未知"],
+   "protected_expressions": ["她说没事没事皮外伤", "我现在心还砰砰跳"],
+   "forbidden_factual_claims": ["不得把刮伤升格为'咬伤'", "不得替陈姐预判后续态度"]
+  },
+  "E081_T02": {
+   "case_id": "E081_T02",
+   "current_action": "确认当事人层面的和解信号：陈姐微信报平安、她送药回礼都记录在案，顺口肯定她做事周到。",
+   "acceptable_actions": [
+    "肯定她送碘伏创可贴加冻干的周到",
+    "提醒保留陈姐报平安的微信，日后有用",
+    "问她丸子今天情绪怎么样，别吓着狗"
+   ],
+   "applicable_dimensions": ["factuality", "interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A04",
+     "subject": "THIRD",
+     "relation": "wechat_reassurance",
+     "value": "陈姐中午微信表示一道红印抹点碘伏就行",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T02", "message_id": "m0", "quote": "抹点碘伏就行"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A05",
+     "subject": "HER",
+     "relation": "supplies_sent",
+     "value": "她把碘伏和创可贴挂在陈姐门把手上",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T02", "message_id": "m0", "quote": "把碘伏和创可贴挂她门把手上了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A06",
+     "subject": "HER",
+     "relation": "treat_gift",
+     "value": "她回赠一袋丸子平时吃的冻干",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T02", "message_id": "m0", "quote": "还回赠了一袋丸子平时吃的冻干"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把这一幕当成邻里间正常的台阶，别提前提'万一有变'扫兴。",
+   "unknowns": ["陈姐家人是否知情未知", "业主群是否已有议论未知"],
+   "protected_expressions": ["抹点碘伏就行"],
+   "forbidden_factual_claims": ["不得断言此事已了结", "不得虚构陈姐家人的态度"]
+  },
+  "E081_T03": {
+   "case_id": "E081_T03",
+   "current_action": "接住第三方插入的爆发：陈姐老公在业主群把'刮伤'改写成'咬伤'并指控她没有说法；先稳住她想群内回击的冲动，把'陈姐本人说过没事'和'老公的群内版本'两个主体分开。",
+   "acceptable_actions": [
+    "劝她别在群里对线，群内争吵只会越描越黑",
+    "建议私聊陈姐核实，把老公版本和陈姐本人版本分开",
+    "提醒她保存业主群截图和陈姐微信记录备用"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A07",
+     "subject": "THIRD",
+     "relation": "group_recharacterization",
+     "value": "陈姐老公在业主群称狗咬伤了人且狗主人没有正经说法",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T03", "message_id": "m0", "quote": "咬伤了人，狗主人到现在连个正经说法都没有"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A08",
+     "subject": "THIRD",
+     "relation": "prior_assurance_contrast",
+     "value": "老公的群内指控与陈姐本人当天'没事'的表态相矛盾",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E081_T01", "message_id": "m0", "quote": "她说没事没事皮外伤"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E081_A09",
+     "subject": "HER",
+     "relation": "impulse_reply",
+     "value": "她想立刻在业主群回击并向 ME 征询",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T03", "message_id": "m1", "quote": "是不是该在群里回一句"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接住'好像我逃跑了一样'的委屈，再把群里那位和她分开——吵架对象不对。",
+   "unknowns": ["陈姐老公是否受陈姐授意未知", "群里其他邻居反应未知"],
+   "protected_expressions": ["好像我逃跑了一样", "我气得手抖"],
+   "forbidden_factual_claims": ["不得断言陈姐老公的真实动机", "不得鼓动她在群里公开对峙"]
+  },
+  "E081_T04": {
+   "case_id": "E081_T04",
+   "current_action": "接住私聊还原的结果：陈姐本人手腕没事、老公嘴上不饶人且正跟人闹物业费；把'当事人没事'和'第三方嘴碎'归位，肯定她没在群里吵。",
+   "acceptable_actions": [
+    "肯定她克制没在群里吵，私聊是对的",
+    "点出陈姐老公的火可能主要冲着物业费，不必全往自己身上揽",
+    "建议她把'陈姐说没事'的私聊记录留好"
+   ],
+   "applicable_dimensions": ["attribution", "factuality", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A10",
+     "subject": "THIRD",
+     "relation": "wife_private_reassure",
+     "value": "陈姐私聊称手腕真没事且让阿澄甭理她老公",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T04", "message_id": "m0", "quote": "你甭理他，我手腕真没事"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A11",
+     "subject": "THIRD",
+     "relation": "husband_fee_quarrel",
+     "value": "陈姐老公近日在群里因物业费与人争执",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T04", "message_id": "m0", "quote": "刚在群里跟人吵过物业费"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A12",
+     "subject": "HER",
+     "relation": "restraint_followed",
+     "value": "她未在群里公开回击而是转私聊核实",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T04", "message_id": "m0", "quote": "没在群里吵，我私聊陈姐"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'逮谁咬谁'说成那位的习惯性火气，不下诛心结论。",
+   "unknowns": ["陈姐老公是否会在群里继续升级未知"],
+   "protected_expressions": ["逮谁咬谁"],
+   "forbidden_factual_claims": ["不得断言陈姐老公的指控有意讹诈", "不得替陈姐做任何赔偿承诺"]
+  },
+  "E081_T05": {
+   "case_id": "E081_T05",
+   "current_action": "接住物业升级动作：次日三方调解成局、要求带疫苗本；帮她把要带的材料列清，肯定'正式说法'正好是还她清白的机会。",
+   "acceptable_actions": [
+    "帮她列调解要带的材料清单：疫苗本、微信截图、事发经过",
+    "肯定三方坐下来比在群里吵强",
+    "提醒她调解时先让陈姐本人说，她只补充事实"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A13",
+     "subject": "SHARED",
+     "relation": "mediation_scheduled",
+     "value": "物业约次日下午三方调解",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T05", "message_id": "m0", "quote": "明天下午三方坐一坐"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A14",
+     "subject": "SHARED",
+     "relation": "vaccine_book_required",
+     "value": "物业要求她调解时带上狗疫苗本",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T05", "message_id": "m0", "quote": "带上疫苗本"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A15",
+     "subject": "PUBLIC",
+     "relation": "rumor_spread",
+     "value": "业主群议论已扩散，物业希望正式说法平息",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T05", "message_id": "m0", "quote": "群里已经传开了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A16",
+     "subject": "HER",
+     "relation": "accusation_denied",
+     "value": "她否认'连个正经说法都没有'的指控，主张以材料说明事实",
+     "valid_time": "2026-11-02/2026-11-03",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E081_T03", "message_id": "m0", "quote": "连个正经说法都没有"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A17",
+     "subject": "THIRD",
+     "relation": "couple_attitude_split",
+     "value": "陈姐与老公态度分离，调解需分开对待两人",
+     "valid_time": "2026-11-02/2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T04", "message_id": "m0", "quote": "我老公就是嘴上不饶人"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把调解说成机会而不是过堂，别让她带着上刑场的心态去。",
+   "unknowns": ["陈姐老公调解时会不会又提新要求未知"],
+   "protected_expressions": ["得有个正式说法压一压"],
+   "forbidden_factual_claims": ["不得虚构调解程序规则", "不得预判调解结果"]
+  },
+  "E081_T06": {
+   "case_id": "E081_T06",
+   "current_action": "确认证据备齐：疫苗在期加陈姐'没事'微信截图，物业认可；肯定她这一手把被动变成了主动。",
+   "acceptable_actions": [
+    "肯定疫苗在有效期这张牌的分量",
+    "提醒截图打印清楚时间，方便调解时展示",
+    "建议她今晚让丸子早点休息，明天别闹"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A18",
+     "subject": "HER",
+     "relation": "vaccine_record",
+     "value": "丸子狂犬疫苗去年3月打过加强针且在有效期内",
+     "valid_time": "2025-03/2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T06", "message_id": "m0", "quote": "去年3月打过加强针"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A19",
+     "subject": "HER",
+     "relation": "screenshot_evidence",
+     "value": "她打印了陈姐中午报平安的微信截图备用",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T06", "message_id": "m0", "quote": "打印了陈姐中午那条'没事'的微信截图"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A20",
+     "subject": "SHARED",
+     "relation": "prep_confirmed",
+     "value": "物业管家认可她准备的材料",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T06", "message_id": "m0", "quote": "刘管家说这些都有用"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸她准备得细，但别把明天的调解说成稳赢。",
+   "unknowns": ["调解当天陈姐老公是否到场未知"],
+   "protected_expressions": ["让我明天早点到"],
+   "forbidden_factual_claims": ["不得断言疫苗记录必然让调解一边倒", "不得虚构疫苗本内容细节"]
+  },
+  "E081_T07": {
+   "case_id": "E081_T07",
+   "current_action": "接住调解结果的双重反转：陈姐放弃医药费、戴嘴罩条款达成，但老公散场追加两千元营养费；先肯定主体条款，再单独处理这笔临场冒出的钱。",
+   "acceptable_actions": [
+    "先把条款部分肯定下来：不索赔加戴嘴罩是体面的收法",
+    "建议营养费不当场答应也不当场翻脸，回去想清楚再说",
+    "提醒她这两千块要转也只能转给陈姐本人并留凭证"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A21",
+     "subject": "SHARED",
+     "relation": "mediation_terms",
+     "value": "调解达成：遛狗戴嘴罩并避开早晚高峰电梯",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T07", "message_id": "m0", "quote": "遛丸子必须戴嘴罩"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A22",
+     "subject": "THIRD",
+     "relation": "fee_waived",
+     "value": "陈姐当场放弃医药费赔偿",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E081_T07", "message_id": "m0", "quote": "不用赔医药费"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A23",
+     "subject": "THIRD",
+     "relation": "surprise_demand",
+     "value": "陈姐老公散场时追加两千元营养费要求",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T07", "message_id": "m1", "quote": "营养费总得表示表示吧，两千块"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A24",
+     "subject": "SHARED",
+     "relation": "mediation_held",
+     "value": "三方调解如期举行并产出条款",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T05", "message_id": "m0", "quote": "明天下午三方坐一坐"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把老公追加要求定性为散场突袭，不是调解结论的一部分。",
+   "unknowns": ["两千元是否支付未决", "陈姐老公的说法是否代表家庭未知"],
+   "protected_expressions": ["我整个人懵在原地"],
+   "forbidden_factual_claims": ["不得建议她私下转账了事", "不得断言两千元合理或不合理"]
+  },
+  "E081_T08": {
+   "case_id": "E081_T08",
+   "current_action": "接住陈姐的二次切割：两千块不是她的意思、转了也会退回，老公要的只是台阶；帮她把'该不该给'和'给了算什么'想清楚。",
+   "acceptable_actions": [
+    "肯定陈姐的表态可信度高，当事人已两次口径一致",
+    "点破'转了也得退'说明这笔钱过不了陈姐这关",
+    "建议她把嘴罩条款执行好，台阶让那位自己找"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A25",
+     "subject": "THIRD",
+     "relation": "wife_rejects_money",
+     "value": "陈姐明确拒收两千元并称非其本意",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E081_T08", "message_id": "m0", "quote": "你别转给我，转了我也得退你"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A26",
+     "subject": "THIRD",
+     "relation": "face_saving",
+     "value": "陈姐判断老公要的是台阶",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T08", "message_id": "m0", "quote": "就是想找个台阶"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A27",
+     "subject": "SHARED",
+     "relation": "matter_closed_by_victim",
+     "value": "陈姐表态此事到她这里翻篇",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T08", "message_id": "m0", "quote": "这事到她这就翻篇了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A28",
+     "subject": "THIRD",
+     "relation": "demand_suspended",
+     "value": "两千元营养费支付与否悬而未决",
+     "valid_time": "2026-11-04",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T07", "message_id": "m1", "quote": "营养费总得表示表示吧，两千块"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：别把老公说成坏人，就说一个人要台阶、另一个人把路堵死了。",
+   "unknowns": ["老公是否会再冒出新要求未知"],
+   "protected_expressions": ["转了我也得退你"],
+   "forbidden_factual_claims": ["不得断言此事已彻底了结", "不得替她决定支付或拒付"]
+  },
+  "E081_T09": {
+   "case_id": "E081_T09",
+   "current_action": "共享条款落地首日的松快：嘴罩执行、陈姐主动摸狗示好、老公缺席；把这当作'把承诺做到位'的正反馈。",
+   "acceptable_actions": [
+    "调侃软嘴罩丑得有道理，丑出了邻里和平",
+    "肯定陈姐蹲下来摸丸子是真和解的信号",
+    "建议她嘴罩先坚持戴满一两周再谈松绑"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A29",
+     "subject": "SHARED",
+     "relation": "muzzle_compliance",
+     "value": "遛狗戴嘴罩条款开始执行，丸子戴着不闹",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T09", "message_id": "m0", "quote": "丸子戴了个新买的软嘴罩"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A30",
+     "subject": "THIRD",
+     "relation": "warm_interaction",
+     "value": "陈姐下楼遛弯主动蹲下摸丸子示好",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T09", "message_id": "m0", "quote": "蹲下来摸丸子头"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A31",
+     "subject": "THIRD",
+     "relation": "husband_absent",
+     "value": "陈姐老公当日未露面",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E081_T09", "message_id": "m0", "quote": "她老公没露面"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：轻快一点，把'老公没露面'说成火气过了，别念紧箍咒。",
+   "unknowns": ["老公对嘴罩条款的态度未知"],
+   "protected_expressions": ["丑得要命"],
+   "forbidden_factual_claims": ["不得断言老公已放弃两千元要求", "不得虚构嘴罩品牌与价格"]
+  },
+  "E081_T10": {
+   "case_id": "E081_T10",
+   "current_action": "接住陈姐在群里公开替她收口的高光：另位邻居阴阳怪气被当事人一句话压下；把'主体归位'点给她——当事人认了，旁人就没戏唱。",
+   "acceptable_actions": [
+    "肯定陈姐仗义，当事人公开表态比什么解释都管用",
+    "提醒她不必去群里谢，私下记得这份情就好",
+    "顺势建议她别再翻群里的旧消息，翻篇就别回头"
+   ],
+   "applicable_dimensions": ["emotion_relation", "attribution", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A32",
+     "subject": "THIRD",
+     "relation": "neighbor_sarcasm",
+     "value": "楼里另一位邻居在群里阴阳怪气含射养狗人家",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T10", "message_id": "m0", "quote": "有些人家的狗就是该管管"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A33",
+     "subject": "THIRD",
+     "relation": "public_defense",
+     "value": "陈姐在群里公开表态没事并维护阿澄",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T10", "message_id": "m0", "quote": "我早就说了没事，别替我委屈"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A34",
+     "subject": "THIRD",
+     "relation": "accusation_superseded",
+     "value": "群内'咬伤且无说法'的指控被陈姐本人公开否定，事件定性回落至皮外伤没事",
+     "valid_time": "2026-11-02/2026-11-06",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E081_T03", "message_id": "m0", "quote": "咬伤了人，狗主人到现在连个正经说法都没有"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把这份感动接稳，提醒她以后邻里情要还，但不刻意。",
+   "unknowns": ["那位阴阳怪气的邻居身份未知"],
+   "protected_expressions": ["看得我眼泪差点下来"],
+   "forbidden_factual_claims": ["不得断言群里风波从此绝迹", "不得虚构陈姐更多群内发言"]
+  },
+  "E081_T11": {
+   "case_id": "E081_T11",
+   "current_action": "接住排骨汤与冻干的回扣：邻里关系回到日常温度，老公那页翻过；轻轻收，别再把旧账翻出来数。",
+   "acceptable_actions": [
+    "肯定排骨汤是这一页翻过去的标志",
+    "顺着冻干开玩笑，说丸子这下记住陈姐家门了",
+    "提醒她以后电梯里遇到那位也点个头，脸熟比脸僵强"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A35",
+     "subject": "THIRD",
+     "relation": "soup_visit",
+     "value": "陈姐端排骨汤上门并主动看望",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T11", "message_id": "m0", "quote": "端了碗她炖的排骨汤"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A36",
+     "subject": "THIRD",
+     "relation": "husband_moved_on",
+     "value": "陈姐称老公早已不再提此事",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T11", "message_id": "m0", "quote": "她老公早就把这事忘了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A37",
+     "subject": "SHARED",
+     "relation": "freeze_dried_callback",
+     "value": "她回赠的冻干被陈姐记挂要喂给丸子",
+     "valid_time": "2026-11-02/2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T02", "message_id": "m0", "quote": "还回赠了一袋丸子平时吃的冻干"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要轻，'别往心里去'这句话让她自己消化，不替她总结。",
+   "unknowns": [],
+   "protected_expressions": ["丸子多吃点补补"],
+   "forbidden_factual_claims": ["不得断言老公彻底改脾气", "不得虚构排骨汤之外的往来细节"]
+  },
+  "E081_T12": {
+   "case_id": "E081_T12",
+   "current_action": "接住周六宠物义诊加遛狗的邀约：笑纳并确认安排，顺带回扣嘴罩条款已经成了日常，以轻松收尾。",
+   "acceptable_actions": [
+    "答应周六同去，说要看看丸子戴嘴罩撒欢的英姿",
+    "提醒她义诊人多注意丸子的情绪",
+    "顺着下雨的提醒说会带伞，把安排定实"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E081_A38",
+     "subject": "SHARED",
+     "relation": "clinic_invite",
+     "value": "周六小区宠物义诊她已为丸子约名额",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T12", "message_id": "m0", "quote": "给丸子约了个名额"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A39",
+     "subject": "SHARED",
+     "relation": "walk_plan",
+     "value": "邀 ME 周六同去南门草地遛丸子撒欢",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T12", "message_id": "m0", "quote": "把丸子遛到南门那片草地撒欢"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E081_A40",
+     "subject": "SHARED",
+     "relation": "muzzle_routine",
+     "value": "嘴罩从调解条款变成日常出行习惯",
+     "valid_time": "2026-11-05/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E081_T09", "message_id": "m0", "quote": "丸子戴了个新买的软嘴罩"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：整件事画句号，不回头数对错，重点放在周六的天气和狗。",
+   "unknowns": [],
+   "protected_expressions": ["你来不来"],
+   "forbidden_factual_claims": ["不得虚构义诊项目清单", "不得引入新的邻里矛盾话题"]
+  }
+ }
+}

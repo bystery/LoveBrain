@@ -1,0 +1,29 @@
+{
+ "kind": "counterfactual_twin",
+ "story_id": "E149",
+ "title": "原来车是这周日",
+ "themes": [
+  "出行拼车",
+  "顺风车日期倒错",
+  "订单实证更正",
+  "换班连锁",
+  "火锅补约"
+ ],
+ "source_story": "E077",
+ "perturbation": "time",
+ "author": "ZCode CF1 isolation worker-AI",
+ "author_type": "AI",
+ "real_user_material": false,
+ "readers": [
+  "author"
+ ],
+ "frozen_at": null,
+ "experiments_used": [],
+ "dev_exposed": false,
+ "hashes": {
+  "episode.json": "0d6112a860f222f443ee9ea03c6cf1170df8cccc138b8372639d872123243d29",
+  "reference.json": "b62bace741c0162cee8df10445dd6073fed7543c50e88ccfe409318b46ca774c",
+  "timeline.json": "414f8dacf679c2315d3e7b4c864a239a6862d3f4cd76deeb282fc98027763789"
+ },
+ "runner_copy": "benchmark/stories_v2/wave3/E149/episode.json"
+}

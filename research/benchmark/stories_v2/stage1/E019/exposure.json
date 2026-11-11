@@ -1,0 +1,36 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "E019",
+ "title": "电影品味分歧",
+ "themes": [
+  "分歧",
+  "诚实表达",
+  "不否定感受",
+  "轮流选片"
+ ],
+ "author": "QoderWork worker-AI (synthetic)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+ "readers": [
+  "author"
+ ],
+ "independent_review": false,
+ "review_note": "同 worker 自检；不是独立封存集。",
+ "created_at": "2026-10-27",
+ "frozen_at": null,
+ "status": "dev_candidate_stage1",
+ "experiments_used": [],
+ "dev_exposed": true,
+ "validation_claim": false,
+ "turns": 8,
+ "may_decline_turns": [],
+ "hashes": {
+  "episode.json": "64a8379c9a01896400235edd0199b95f31900473350b0db92b19fc8c546e311d",
+  "reference.json": "b0d1dc73a3bc82a42522d63dcebc9baf7e096329a7f2d207cf4f40a34ae891ed",
+  "timeline.json": "dd56d2807ab52edc33058928bca43a672cf20bfa381e32392acf95cde345701e",
+  "audit.md": "c7efeab6f4b0540f6cfad30ef34955073ed739612f324358717acf64888bee8a"
+ },
+ "runner_copy": "benchmark/episodes/E019.json",
+ "notes": "首批 8 条之一；12 位扩展/冻结验证在后续批次，不用本批冒充泛化。"
+}

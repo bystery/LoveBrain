@@ -1,0 +1,1051 @@
+{
+ "story_id": "E307",
+ "turns": {
+  "E307_T01": {
+   "case_id": "E307_T01",
+   "current_action": "HER 夜诊收工后通报：接了只被扔在垃圾桶旁的奶猫、洗了四遍才露出底色，已申请带回诊所寄养，前台小夏说她'又要当妈了'，猫现在在她外套兜里睡觉",
+   "acceptable_actions": [
+    "先接猫（问名字/状态）再接她（夜诊辛苦）——lessons：她讲猫先接猫",
+    "接'当妈'玩笑（当妈第一晚、娃睡外套兜式）",
+    "问猫下一步安排（寄养多久/找领养吗）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T01_A01",
+     "subject": "HER",
+     "relation": "捡猫",
+     "value": "HER 夜诊接了只被扔在垃圾桶旁的奶猫并申请带回诊所养",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T01",
+      "message_id": "m0",
+      "quote": "今天接了只被人扔在垃圾桶旁边的奶猫"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T01_A02",
+     "subject": "THIRD",
+     "relation": "同事调侃",
+     "value": "前台小夏说 HER '又要当妈了'",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T01",
+      "message_id": "m0",
+      "quote": "又要当妈了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T01_A03",
+     "subject": "HER",
+     "relation": "猫的状态",
+     "value": "奶猫现在在 HER 外套兜里睡觉",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T01",
+      "message_id": "m0",
+      "quote": "它现在在我外套兜里睡觉"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先接猫再接话是 lessons 明示纪律；她报喜式分享，别泼冷水'流浪猫细菌多'式扫兴，也别立刻催领养流程。",
+   "unknowns": [
+    {
+     "topic": "奶猫的品种年龄等细节",
+     "note": "她没说，候选不得编造猫的细节",
+     "markers": [
+      [
+       "是只英短"
+      ],
+      [
+       "两个月大"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "是只英短"
+      ],
+      [
+       "两个月大"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造奶猫细节",
+    "不得劝她别捡（否定她的决定）"
+   ],
+   "may_decline": false
+  },
+  "E307_T02": {
+   "case_id": "E307_T02",
+   "current_action": "HER 给奶猫取名汽水（洗完那声嚎像汽水开瓶），并直接宣布下周六白鹭洲植展已买两张票、九点半进场，命令式'你别安排事，就这样'",
+   "acceptable_actions": [
+    "爽快应约并接汽水名（名字取得比病历快式玩笑）",
+    "应约并确认细节（九点半哪个门口碰头）",
+    "应约并玩笑服从（收到、取消一切安排式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T02_A01",
+     "subject": "HER",
+     "relation": "猫名",
+     "value": "奶猫取名汽水（洗完那声嚎像汽水开瓶）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T02",
+      "message_id": "m0",
+      "quote": "因为它洗完那声嚎像汽水开瓶"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T02_A02",
+     "subject": "SHARED",
+     "relation": "植展之约",
+     "value": "下周六白鹭洲植展，HER 已买两张票、九点半进场",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T02",
+      "message_id": "m0",
+      "quote": "下周六白鹭洲有植展，我买了两张票，九点半进场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T02_A03",
+     "subject": "HER",
+     "relation": "命令式安排",
+     "value": "HER 命令式要求 ME 别安排事",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T02",
+      "message_id": "m0",
+      "quote": "你别安排事，就这样"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "行动派直接约（lessons：她约了就应，别扭捏）——'真的假的/为什么是我'式求证=扭捏（0档）；票已买好=别问要不要去，接就是全部动作；日期是下周六（11-28）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别安排事，就这样"
+   ],
+   "forbidden_factual_claims": [
+    "不得问'真的假的'或推脱改期",
+    "不得重谈'为什么买两张票'"
+   ],
+   "may_decline": false
+  },
+  "E307_T03": {
+   "case_id": "E307_T03",
+   "current_action": "HER 记得 ME 上回说胃药吃完了，帮 ME 买了诊所旁药店买三送一的那款放前台、植展那天来拿，叮嘱饭前半小时吃、别拿冰美式送——并翻出 ME 上次冰美式送药的旧账",
+   "acceptable_actions": [
+    "谢并认旧账（冰美式事件我认、这次遵医嘱式）",
+    "谢并问药钱要转她",
+    "接'医嘱'玩笑（遵医嘱的高危病人式）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T03_A01",
+     "subject": "HER",
+     "relation": "胃药心意",
+     "value": "HER 帮 ME 买了胃药放在诊所前台、植展那天来拿",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T03",
+      "message_id": "m0",
+      "quote": "帮你带了一盒，放前台了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T03_A02",
+     "subject": "HER",
+     "relation": "服药叮嘱",
+     "value": "HER 叮嘱饭前半小时吃、别拿冰美式送",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T03",
+      "message_id": "m0",
+      "quote": "饭前半小时吃，别拿冰美式送"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T03_A03",
+     "subject": "ME",
+     "relation": "旧账",
+     "value": "ME 上次拿冰美式送药被 HER 记着",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T03",
+      "message_id": "m0",
+      "quote": "你上次就是那么干的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把 ME 的胃病记到了细节里（跨轮记忆+上心信号）：先谢再认旧账；价钱她没提，候选问价自然、替她报价或坐实大额转账都算编造。",
+   "unknowns": [
+    {
+     "topic": "这盒胃药的价钱",
+     "note": "她没提钱，候选可以问，不得替她坐实价格",
+     "markers": [
+      [
+       "一盒三十"
+      ],
+      [
+       "我转你五十"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "一盒三十"
+      ],
+      [
+       "我转你五十"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造药价或疗效说法"
+   ],
+   "may_decline": false
+  },
+  "E307_T04": {
+   "case_id": "E307_T04",
+   "current_action": "HER 通报汽水半夜跑酷打翻睫毛膏、自己顶着熊猫眼写病历，并问 ME 早班四点半起、晚上九点到四点半这七小时是不是'全城的人都羡慕'，自曝下夜班总睡不着、数猫都被猫嫌弃",
+   "acceptable_actions": [
+    "答作息并关心她失眠（数猫不行就数进站列车式给她个替换梗）",
+    "接'睡得像段轨道'比喻（轨道不失眠、人失眠式自嘲）",
+    "先接熊猫眼（病历本先给你自己开一张式玩笑）再答作息"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T04_A01",
+     "subject": "HER",
+     "relation": "熬夜症状",
+     "value": "HER 顶着熊猫眼写病历（汽水半夜打翻睫毛膏）",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T04",
+      "message_id": "m0",
+      "quote": "我现在顶着熊猫眼写病历"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T04_A02",
+     "subject": "HER",
+     "relation": "失眠状况",
+     "value": "HER 下夜班总睡不着、只能数猫",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T04",
+      "message_id": "m0",
+      "quote": "我下夜班总睡不着，数猫"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T04_A03",
+     "subject": "ME",
+     "relation": "作息提问",
+     "value": "HER 问 ME 早班四点半起的作息",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T04",
+      "message_id": "m0",
+      "quote": "你们早班四点半起"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "作息对谈轮（她在拿作息搭桥）：答真实作息+把关心落她身上；她真失眠别只接'数猫'字面梗，给一句可落地的闲聊式建议刚好。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得只聊自己不接她的失眠",
+    "不得编造 ME 作息之外的时间表"
+   ],
+   "may_decline": false
+  },
+  "E307_T05": {
+   "case_id": "E307_T05",
+   "current_action": "HER 转述妈妈查岗：听说她'每周末都有安排'问是不是恋爱了，她答'没有的事'、带胃药的是'朋友'，被妈妈'朋友的药是饭前吃的吗'将了一军，自嘲'你比说明书还细'；汽水叫了一声，她当它替自己作证",
+   "acceptable_actions": [
+    "接住'朋友'口径不焊死（这位朋友服务很周到式自嘲认领药代身份）",
+    "反掷回她（汽水的证词采信了吗式把球还她）",
+    "轻推半步（朋友的药饭前吃、那朋友的饭呢式可撤回玩笑）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T05_A01",
+     "subject": "HER",
+     "relation": "否认恋爱",
+     "value": "HER 对妈妈说'没有的事'（不是恋爱）",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T05",
+      "message_id": "m0",
+      "quote": "我说没有的事"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T05_A02",
+     "subject": "HER",
+     "relation": "朋友口径",
+     "value": "HER 对妈妈的口径是：带胃药的是'朋友'",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T05",
+      "message_id": "m0",
+      "quote": "我说朋友"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T05_A03",
+     "subject": "THIRD",
+     "relation": "妈妈追问",
+     "value": "HER 妈妈追问'朋友的药是饭前吃的吗'",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T05",
+      "message_id": "m0",
+      "quote": "朋友的药是饭前吃的吗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T05_A04",
+     "subject": "HER",
+     "relation": "自嘲",
+     "value": "HER 自嘲妈妈比说明书还细",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T05",
+      "message_id": "m0",
+      "quote": "你比说明书还细"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T05_A05",
+     "subject": "HER",
+     "relation": "汽水作证",
+     "value": "HER 把汽水的叫声当它替自己作证",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T05",
+      "message_id": "m1",
+      "quote": "我当它替我作证"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'朋友'轮：她自己都不太信这两个字——帮她把'朋友'钉死（'对，纯朋友'）=缩钩0档；当真逼问'你妈还说什么了'=接歪；点破'你喜欢我吧'=越线；接住口径+轻轻往回递（可撤回）是2档。",
+   "unknowns": [
+    {
+     "topic": "'朋友'口径的真实性",
+     "note": "她自己都不太信；候选顺着玩笑接可以，帮腔坐实'就是朋友'或点破'你喜欢我'都算接歪",
+     "markers": [
+      [
+       "就是朋友"
+      ],
+      [
+       "只是朋友"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "就是朋友"
+      ],
+      [
+       "只是朋友"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得帮腔坐实'我们只是朋友'",
+    "不得当真追问妈妈的话或点破她的心意"
+   ],
+   "may_decline": false
+  },
+  "E307_T06": {
+   "case_id": "E307_T06",
+   "current_action": "HER 植展日晨间报备：出门了、地铁转公交四十分钟到，分工为 ME 拎袋和拍照、她负责迷路，并提醒胃药记得装包里、饭前那顿先吃",
+   "acceptable_actions": [
+    "确认分工并复述胃药叮嘱（药在包里、饭前那顿马上吃式）",
+    "接'负责迷路'梗（那你负责被找到式）",
+    "确认并让她出门慢慢来（四十分钟够式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T06_A01",
+     "subject": "SHARED",
+     "relation": "植展分工",
+     "value": "植展日分工：ME 拎袋和拍照、HER 负责迷路（玩笑）",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T06",
+      "message_id": "m0",
+      "quote": "今天你负责拎袋和拍照，我负责迷路"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T06_A02",
+     "subject": "SHARED",
+     "relation": "胃药提醒",
+     "value": "HER 提醒胃药装包里、饭前那顿先吃",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T06",
+      "message_id": "m0",
+      "quote": "胃药记得装包里，饭前那顿先吃"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T06_A03",
+     "subject": "HER",
+     "relation": "通勤时长",
+     "value": "HER 路上要四十分钟",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T06",
+      "message_id": "m0",
+      "quote": "给我四十分钟"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出发日事务轮：分工+药都接住比幽默优先；'迷路'是她自封的玩笑位，别当真规划路线纠正她。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改分工或漏接胃药叮嘱",
+    "不得编造展馆内部信息"
+   ],
+   "may_decline": false
+  },
+  "E307_T07": {
+   "case_id": "E307_T07",
+   "current_action": "HER 通报植展拍了127张、ME 挑的'汽水同款绿'要洗出来裱上；室友看到龟背竹问在哪捡的'这么会买绿植的男朋友'，她答'捡的，还打了折'",
+   "acceptable_actions": [
+    "接男朋友玩笑不点破（打折的、不退不换式顺嘴认）",
+    "反掷（那你室友信了吗式把球还她）",
+    "接裱照片梗（汽水同款绿裱客厅、猫见了认亲式岔开）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T07_A01",
+     "subject": "HER",
+     "relation": "照片数量",
+     "value": "HER 植展拍了127张",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T07",
+      "message_id": "m0",
+      "quote": "拍了127张"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T07_A02",
+     "subject": "HER",
+     "relation": "照片处置",
+     "value": "HER 要把 ME 挑的'汽水同款绿'洗出来裱上",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T07",
+      "message_id": "m0",
+      "quote": "我要洗出来裱上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T07_A03",
+     "subject": "THIRD",
+     "relation": "室友调侃",
+     "value": "室友看到龟背竹问在哪捡的'这么会买绿植的男朋友'",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T07",
+      "message_id": "m0",
+      "quote": "这么会买绿植的男朋友"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T07_A04",
+     "subject": "HER",
+     "relation": "她的接法",
+     "value": "HER 答'捡的，还打了折'（没否认男朋友说法）",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T07",
+      "message_id": "m0",
+      "quote": "我说捡的，还打了折"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "室友叫'男朋友'她没纠正还顺嘴'捡的'=她的接法已经亮了——ME 替她纠正'我不是'（把玩笑打死）=踩空台阶；顺着'打折'往下接是1-2档安全区；别当真追问室友是谁。",
+   "unknowns": [
+    {
+     "topic": "室友是否信了'捡的'说法",
+     "note": "她没说室友反应，候选不得替室友坐实信或不信",
+     "markers": [
+      [
+       "她信了吗"
+      ],
+      [
+       "室友真信了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "她信了吗"
+      ],
+      [
+       "室友真信了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得否认或纠正'男朋友'玩笑（踩空她的接法）",
+    "不得当真追问室友细节"
+   ],
+   "may_decline": false
+  },
+  "E307_T08": {
+   "case_id": "E307_T08",
+   "current_action": "HER 睡不着晒汽水第一次上床的照片（占地比她大），并约 ME 这周六来诊所给流浪猫打疫苗帮忙搬笼子：休班就来、中午她管饭、汽水口粮她出",
+   "acceptable_actions": [
+    "爽快应约并主动半步（笼子我搬、饭钱我出式——她管饭我抢着付是往前带）",
+    "应约并确认时间（几点到、穿旧衣服吗）",
+    "应约并接晒猫梗（它占地比你大、工位也比你大式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T08_A01",
+     "subject": "SHARED",
+     "relation": "疫苗日之约",
+     "value": "这周六诊所给流浪猫打疫苗、HER 约休班的 ME 来搬笼子",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T08",
+      "message_id": "m0",
+      "quote": "这周六诊所给流浪猫打疫苗，缺个搬笼子的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T08_A02",
+     "subject": "HER",
+     "relation": "管饭承诺",
+     "value": "HER 承诺中午管饭、汽水口粮她出",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T08",
+      "message_id": "m0",
+      "quote": "中午我管饭，汽水的口粮我出"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "再约轮（第二次主动约+管饭）：接住是底线，往前带半步=自己主动担一点（抢着出饭钱/提早点到帮忙布置），别扑（'那我以后每周都来'式升级）；她失眠发消息别只回'早点睡'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得推脱或要求改期",
+    "不得升级成固定每周承诺"
+   ],
+   "may_decline": false
+  },
+  "E307_T09": {
+   "case_id": "E307_T09",
+   "current_action": "HER 通报二十三只猫打完疫苗、汽水全程监工冲每只哈气；中午那顿 ME 真管了饭，她记账下回换她请；并叮嘱 ME 搬笼子的卫衣别扔、猫毛洗洗还在",
+   "acceptable_actions": [
+    "接账并接换请（那下回我点贵的式玩笑接她的请客预告）",
+    "接卫衣梗（卫衣留着、汽水的毛算纪念币式）",
+    "合法不回（通报轮、趣事性质）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T09_A01",
+     "subject": "SHARED",
+     "relation": "疫苗日完成",
+     "value": "二十三只猫打完疫苗、汽水全程监工",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T09",
+      "message_id": "m0",
+      "quote": "二十三只猫打完"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T09_A02",
+     "subject": "SHARED",
+     "relation": "账目翻转",
+     "value": "中午那顿 ME 真管了饭，HER 记账下回换她请",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T09",
+      "message_id": "m0",
+      "quote": "那记你账上，下回换我"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T09_A03",
+     "subject": "HER",
+     "relation": "卫衣叮嘱",
+     "value": "HER 叮嘱 ME 那件搬笼子的卫衣别扔",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T09",
+      "message_id": "m0",
+      "quote": "那件卫衣别扔"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收工通报轮+may_decline：账目翻转（ME 管了饭）她主动记下回——接住'换我请'别推辞；卫衣别扔是留纪念的软信号，接住别当真讨论洗衣技术。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得推掉她的下回请客",
+    "不得坐实卫衣已扔或已洗的细节"
+   ],
+   "may_decline": true
+  },
+  "E307_T10": {
+   "case_id": "E307_T10",
+   "current_action": "HER 通报这周连上七天、被柯基咬了（没破皮、疫苗也打了）让 ME 别紧张，顶撞妈妈'猫比人省心'妈妈气笑了；最后明说：现在给 ME 发消息是因为'只有你那边，不用我说我没事'",
+   "acceptable_actions": [
+    "接最后一句把门留好（这边不用报'没事'、累了就说累式）",
+    "接住并轻问柯基手（咬哪儿了、给我看看式关心具体处）",
+    "接住并把自己这边也交底（我这边下夜班也偶尔睡不着式对等）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T10_A01",
+     "subject": "HER",
+     "relation": "工作强度",
+     "value": "HER 这周连上七天班",
+     "valid_time": "2026-12-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T10",
+      "message_id": "m0",
+      "quote": "这周连上七天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T10_A02",
+     "subject": "HER",
+     "relation": "柯基咬伤",
+     "value": "HER 被柯基咬了但没破皮、疫苗也打了",
+     "valid_time": "2026-12-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T10",
+      "message_id": "m0",
+      "quote": "没破皮，疫苗也打了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T10_A03",
+     "subject": "HER",
+     "relation": "家庭对话",
+     "value": "HER 顶妈妈'猫比人省心'、妈妈气笑了",
+     "valid_time": "2026-12-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T10",
+      "message_id": "m0",
+      "quote": "猫比人省心"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T10_A04",
+     "subject": "HER",
+     "relation": "特殊位置声明",
+     "value": "HER 明说给 ME 发消息是因为只有 ME 那边、不用她说'我没事'",
+     "valid_time": "2026-12-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T10",
+      "message_id": "m0",
+      "quote": "是因为只有你那边"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "重信号轮（'只有你那边不用装没事'=明示特殊位置）：接住这句是本轮核心，跳过去只聊柯基=回避（0档）；点破'你在跟我表白吗'=越线；'把门留好'（lessons：她回头看的时候把门留好）就是正确档。",
+   "unknowns": [
+    {
+     "topic": "柯基咬伤是否需要复诊",
+     "note": "她说没破皮疫苗也打了，候选不得加码坐实伤情严重",
+     "markers": [
+      [
+       "还得复诊"
+      ],
+      [
+       "要打破伤风"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "还得复诊"
+      ],
+      [
+       "要打破伤风"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得跳过最后一句只聊柯基",
+    "不得点破这句话的告白性质",
+    "不得加码柯基伤情"
+   ],
+   "may_decline": false
+  },
+  "E307_T11": {
+   "case_id": "E307_T11",
+   "current_action": "HER 熬完七天班，约休班的 ME 明天去白鹭洲炖汤馆喝胡椒猪肚鸡、这回换她请且说到做到，封 ME 为'从诊所光荣退休的笼子搬运工'、理直气壮来吃",
+   "acceptable_actions": [
+    "痛快应约并有温度（这回让你扫码、我负责趁热喝式认她请）",
+    "应约并往前半步（我到诊所门口等你下班式主动）",
+    "接退休搬运工梗（退休待遇是猪肚鸡、可以式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T11_A01",
+     "subject": "SHARED",
+     "relation": "炖汤之约",
+     "value": "HER 约明天去白鹭洲炖汤馆喝胡椒猪肚鸡、这回换她请",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T11",
+      "message_id": "m0",
+      "quote": "白鹭洲那家炖汤馆，我要喝胡椒猪肚鸡，这回换我请"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T11_A02",
+     "subject": "HER",
+     "relation": "退休称号",
+     "value": "HER 封 ME 为'从诊所光荣退休的笼子搬运工'",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T11",
+      "message_id": "m0",
+      "quote": "从诊所光荣退休的笼子搬运工"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "约到'换我请'=她把关系往前推了一格——接住+温度是本轮核心；原地踏步（只回'好啊'无温度）与扑（突然深情/送东西）都不是正确档；'明天你休班吧'是确认句，直接答死即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得只回单字'好'（原地踏步）",
+    "不得抢着付账否定她的'换我请'"
+   ],
+   "may_decline": false
+  },
+  "E307_T12": {
+   "case_id": "E307_T12",
+   "current_action": "HER 通报猪肚鸡喝到（胡椒放多灌了两壶水）、说好她请但结账被 ME 扫码扫赢了只好记账；自语植展拎袋、疫苗搬笼——'算了，账不清就不清了'；并预约月底诊所圣诞市集自己摊位的'苦力兼吉祥物'档期",
+   "acceptable_actions": [
+    "接'账不清就不清'（那我的记账本光荣退休式认下新定调）",
+    "认市集档期并接吉祥物（吉祥物自带饭盒上岗式）",
+    "接住并轻回一句（账不清可以、账本留着当缘分凭证式可撤回温度）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E307_T12_A01",
+     "subject": "SHARED",
+     "relation": "账目情况",
+     "value": "说好 HER 请但结账被 ME 扫码扫赢、这笔也记账上",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T12",
+      "message_id": "m0",
+      "quote": "结账还是被你扫码扫赢了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T12_A02",
+     "subject": "HER",
+     "relation": "关系定调",
+     "value": "HER 说'算了，账不清就不清了'",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T12",
+      "message_id": "m0",
+      "quote": "算了，账不清就不清了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T12_A03",
+     "subject": "SHARED",
+     "relation": "市集档期",
+     "value": "月底诊所圣诞市集、HER 给 ME 留摊位档期",
+     "valid_time": "2026-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T12",
+      "message_id": "m0",
+      "quote": "月底诊所圣诞市集"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E307_T12_A04",
+     "subject": "HER",
+     "relation": "角色任命",
+     "value": "HER 给 ME 的市集角色是'苦力兼吉祥物'",
+     "valid_time": "2026-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E307_T12",
+      "message_id": "m0",
+      "quote": "苦力兼吉祥物"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "定调轮：'账不清就不清了'是她把长期绑定说出口的方式——接住认下=正确；坚持把账算清（AA到底）=踩空她的台阶；市集档期接住即可，别立刻排班表。",
+   "unknowns": [
+    {
+     "topic": "圣诞市集的具体日期",
+     "note": "她只说月底，候选不得坐实具体日期",
+     "markers": [
+      [
+       "市集12月24"
+      ],
+      [
+       "平安夜那天"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "市集12月24"
+      ],
+      [
+       "平安夜那天"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坚持把账算清（踩空她的定调）",
+    "不得坐实市集具体日期"
+   ],
+   "may_decline": false
+  }
+ }
+}

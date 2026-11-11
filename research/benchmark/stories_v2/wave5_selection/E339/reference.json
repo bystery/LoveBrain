@@ -1,0 +1,1514 @@
+{
+ "story_id": "E339",
+ "turns": {
+  "E339_T01": {
+   "case_id": "E339_T01",
+   "current_action": "她兴致勃勃讲述新人夜首检把呼号报反、被老关当众调侃的糗事，求的是共鸣和一句懂行的接话",
+   "acceptable_actions": [
+    "接住自嘲式汇报：用老手的口吻把'报反呼号'(normal 到不能再 normal 的新手事故)轻描淡写，肯定她练二十遍的较真",
+    "顺着老关的 QSM 玩笑回一个懂行玩笑（如 QSM 卡片梗/呼号手滑人人有过），幽默来自情境回扣",
+    "给一句实用的下话头（比如下次上线前的小口诀），把糗事转成她能用的东西"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T01_A01",
+     "subject": "HER",
+     "relation": "新人夜首检报错呼号",
+     "value": "2026-11-10 新人夜她把呼号 BG7QMS 报成了 BG7QSM",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T01",
+      "message_id": "m0",
+      "quote": "呼号BG7QMS报成了BG7QSM"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "报成了",
+       "BG7QSM"
+      ],
+      [
+       "BG7QSM"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T01_A02",
+     "subject": "THIRD",
+     "relation": "老关调侃（非事实指控，是否想发QSM短消息是玩笑问法）",
+     "value": "老关在频率里调侃她是不是想给他发 QSM 短消息，全场只有他一个人笑",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T01",
+      "message_id": "m0",
+      "quote": "老关在频率里问我是不是想给他发QSM短消息，全场就他一个人笑"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "老关",
+       "QSM"
+      ],
+      [
+       "全场就他一个人笑"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T01_A03",
+     "subject": "HER",
+     "relation": "下线前的自我加练",
+     "value": "她关机前练了二十遍才敢下线（较真、心里发虚的佐证）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T01",
+      "message_id": "m0",
+      "quote": "我关机前练了二十遍才敢下线"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "练了二十遍"
+      ],
+      [
+       "才敢下线"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T01_A04",
+     "subject": "HER",
+     "relation": "新手背景（initial_kb）",
+     "value": "温之夏上个月刚考下呼号 BG7QMS，装备只有一支借来的弹簧鞭天线",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "温之夏上个月刚考下呼号BG7QMS"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "刚考下呼号"
+      ],
+      [
+       "BG7QMS"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "她嘴上逞强心里发虚（'干大事了'是自嘲）。正确方向是接住糗事给共鸣、不趁机上课；把老关的调侃当真去纠正'QSM是什么'或教育她'新手都会这样'讲大道理都算踩空。KB 口径：呼号正字是 BG7QMS，反报成 BG7QSM——候选复述时不得把两个呼号写反。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称她当晚通联失败或被老关取消了资格（她只是报错呼号，玩笑性质）"
+   ],
+   "may_decline": false
+  },
+  "E339_T02": {
+   "case_id": "E339_T02",
+   "current_action": "限时请教手台二选一（老桑二手FT-65 480 vs 新品宝锋UV-5R 219），点名禁止'看你需求'式回答，今晚要给老桑准话",
+   "acceptable_actions": [
+    "直接给二选一的结论+理由，理由必须落在她给的参数上（438.500 下行、负五兆差频、88.5 亚音）和/或两机的具体差别",
+    "先一句站队，再补一个关键差异维度（如蹚水/摔机/续航类的具体场景差异），让她今晚能拍板",
+    "反问一个会影响结论的关键参数后仍给出倾向性答案（不是把问题原样踢回去）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T02_A01",
+     "subject": "THIRD",
+     "relation": "老桑出手台报价",
+     "value": "老桑要出手台：二手八重洲 FT-65，480 元，验过机",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T02",
+      "message_id": "m0",
+      "quote": "老桑要出手台，二手八重洲FT-65，480，验过机"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "FT-65",
+       "480"
+      ],
+      [
+       "八重洲",
+       "手台"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T02_A02",
+     "subject": "THIRD",
+     "relation": "新品参照价",
+     "value": "新品宝锋 UV-5R 只要 219 元",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T02",
+      "message_id": "m0",
+      "quote": "新品宝锋UV-5R才219"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "宝锋UV-5R",
+       "219"
+      ],
+      [
+       "UV-5R",
+       "才219"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T02_A03",
+     "subject": "HER",
+     "relation": "限时答复要求",
+     "value": "她今晚必须给老桑准话，同时把中继参数（下行438.500、差频负五兆、亚音88.5）能否存进宝锋作为判断问题抛给 ME（问句，答案未定）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T02",
+      "message_id": "m0",
+      "quote": "我就问一句：中继下行438.500、差频负五兆、亚音88.5，宝锋那机子存得住吗？今晚我得给老桑准话"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "给老桑准话"
+      ],
+      [
+       "亚音88.5",
+       "存得住"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T02_A04",
+     "subject": "HER",
+     "relation": "划出的劝购边界",
+     "value": "她明确说先别劝她买天线（饭要一口一口吃）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T02",
+      "message_id": "m1",
+      "quote": "先别劝我买天线，饭要一口一口吃"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别劝我",
+       "天线"
+      ],
+      [
+       "先别劝我买天线"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "万能句诱惑位：'看你需求/都行/各有好处'是她点名封死的答案，判低。技术结论不设标准答案（gold 不预设选哪台），判分看'给准话+理由落在参数或具体差异上'；剧情内 T03 落在 FT-65，但不得用 T03 结果倒扣 T02 的另一结论。note 无；'验过机'是她转述老桑的口径。她第二补条划了天线边界——越过这条去推销天线=踩边界。",
+   "unknowns": [],
+   "protected_expressions": [
+    "先别劝我买天线"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造两台机器题面以外的具体价格或老桑的额外承诺"
+   ],
+   "may_decline": false
+  },
+  "E339_T03": {
+   "case_id": "E339_T03",
+   "current_action": "她汇报主网一次过、手台跟老桑定下，并带着明确的退路口请求周六野架搭 ME 的车",
+   "acceptable_actions": [
+    "接下搭车请求并给具体安排（几点接/后备箱空间怎么安排），顺手贺她主网一次过",
+    "有事去不了就直说+给出补偿方向（如装备提前一晚给她/帮她跟老桑说），不留暧昧空间",
+    "接请求时顺口立一条搭车小规矩（如零食箱归她搬），玩笑化处理她'别硬塞'的退路"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "boundary",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T03_A01",
+     "subject": "HER",
+     "relation": "主网通过",
+     "value": "2026-11-12 主网她一次过，呼号没磕巴",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T03",
+      "message_id": "m0",
+      "quote": "主网我一次过，呼号没磕巴"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "主网",
+       "一次过"
+      ],
+      [
+       "呼号",
+       "没磕巴"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T03_A02",
+     "subject": "THIRD",
+     "relation": "老关给的轮值机会",
+     "value": "老关让她试了一轮轮值记录",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T03",
+      "message_id": "m0",
+      "quote": "老关还让我试了一轮轮值记录"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "轮值记录"
+      ],
+      [
+       "试了一轮"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T03_A03",
+     "subject": "SHARED",
+     "relation": "手台购买落定",
+     "value": "手台跟老桑定了，就 FT-65，明晚（11-13）交钱",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T03",
+      "message_id": "m0",
+      "quote": "手台跟老桑定了，就FT-65，明晚交钱"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "定了",
+       "FT-65"
+      ],
+      [
+       "明晚交钱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T03_A04",
+     "subject": "SHARED",
+     "relation": "搭车请求（去留未定，留了拒绝口）",
+     "value": "她请求周六（11-14）青龙水库野架搭 ME 的车，东西多；同时给出退路'嫌麻烦就赖老桑的后备箱'并叮嘱别硬塞",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T03",
+      "message_id": "m0",
+      "quote": "周六青龙水库野架你开车吧？我东西多，你要嫌麻烦我就赖老桑的后备箱，别硬塞啊"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "野架",
+       "开车"
+      ],
+      [
+       "周六",
+       "你开车吧"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true：接与不接都合法，判分看处理方式——接要接得具体（她要的是准话不是客气），拒要拒得干脆+给她台阶（她已自带'赖老桑'的台阶）。'别硬塞啊'是她的边界话，回复把它当反话硬塞或完全无视都算读错。主网一次过是她本次消息的情感高点，答复不接这半句只谈车=漏主诉求。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别硬塞啊"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  },
+  "E339_T04": {
+   "case_id": "E339_T04",
+   "current_action": "她转达老关群公告：周六出发时间由八点更正为七点半、北门集合，并报手台已到手、自己七点二十到楼下（intent：通知集合时间更改）",
+   "acceptable_actions": [
+    "确认收到更正（复述'七点半北门'为新口径）+接住她'拼老桑车'的退路话头给一句准心",
+    "确认新时间+顺手交代自己这头的安排（几点下楼/后备箱留哪），让她七点二十的约定落死",
+    "确认更正+用公告内容开一个轻玩笑（如水库车多到老关都提前了），不追问公告以外的改动"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T04_A01",
+     "subject": "SHARED",
+     "relation": "手台到手",
+     "value": "老桑的手台（FT-65）到手，480 现金成交",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T04",
+      "message_id": "m0",
+      "quote": "老桑的手台到手，480现金"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "手台到手",
+       "480"
+      ],
+      [
+       "480现金"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T04_A02",
+     "subject": "THIRD",
+     "relation": "老桑多塞电池",
+     "value": "老桑多塞了八节电池",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T04",
+      "message_id": "m0",
+      "quote": "他多塞了八节电池"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "多塞了",
+       "八节电池"
+      ],
+      [
+       "八节电池"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T04_A03",
+     "subject": "THIRD",
+     "relation": "集合时间更正（第一处更正）",
+     "value": "老关群公告：周六（11-14）出发时间由八点提前到七点半，北门集合（原因：水库周末车多）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T04",
+      "message_id": "m0",
+      "quote": "明早出发提前到七点半，说水库周末车多，八点改七点半，北门集合"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "八点改七点半"
+      ],
+      [
+       "提前到七点半"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T04_A04",
+     "subject": "SHARED",
+     "relation": "手台交易背景（跨轮回指）",
+     "value": "手台即她在 T02 请教的二手八重洲 FT-65，480 元、验过机（T03 定下、本轮到手）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T02",
+      "message_id": "m0",
+      "quote": "二手八重洲FT-65，480，验过机"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "FT-65",
+       "480"
+      ],
+      [
+       "八重洲",
+       "验过机"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=通知集合时间更改：回复的核心动作是确认新时间（七点半、北门），把'八点'当仍然有效的口径=stale 判低。note（ME侧知识）：老关公告只改了出发时间这一处，地点和路线没动——候选不得自行声称地点/路线也改了。她'你要真不想拉我我扭头就走'是留了口的试探，回一句准心即可，不必发誓表忠心。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称老关的公告还更改了集合地点或路线（note 为准：只改了出发时间这一处）"
+   ],
+   "may_decline": false
+  },
+  "E339_T05": {
+   "case_id": "E339_T05",
+   "current_action": "出发日早上她已到 ME 楼下交接装备：整理箱一半装备一半零食、十节备用电池全带上、FT-65 揣兜里",
+   "acceptable_actions": [
+    "下楼接人时的短句交接（后备箱怎么开/东西怎么放），顺口回敬整理箱一半零食的梗",
+    "接'FT-65 比手机沉'的话头给一句懂行的安顿（兜里别磕/先关亚音省电之类），不点破她的紧张",
+    "轻玩笑接零食箱（如'今天通信质量靠零食保障'），把出发氛围托住"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T05_A01",
+     "subject": "HER",
+     "relation": "出发日按约到楼下",
+     "value": "2026-11-14 早上她到 ME 楼下，后备箱准备自己开",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T05",
+      "message_id": "m0",
+      "quote": "我到楼下了，后备箱我自己开"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我到楼下"
+      ],
+      [
+       "后备箱",
+       "自己开"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T05_A02",
+     "subject": "THIRD",
+     "relation": "老桑交代的备用电池",
+     "value": "老桑交代的十节备用电池她全带来了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T05",
+      "message_id": "m0",
+      "quote": "老桑交代的十节备用电池我全带来了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "十节备用电池"
+      ],
+      [
+       "电池",
+       "全带来"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T05_A03",
+     "subject": "HER",
+     "relation": "新机随队",
+     "value": "FT-65 揣在她兜里（比手机沉，她觉得踏实）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T05",
+      "message_id": "m0",
+      "quote": "FT-65揣在兜里，比我手机沉，踏实"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "揣在兜里"
+      ],
+      [
+       "FT-65",
+       "兜里"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T05_A04",
+     "subject": "HER",
+     "relation": "整理箱内容（本篇零食线锚点）",
+     "value": "整理箱一半装备一半零食",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T05",
+      "message_id": "m0",
+      "quote": "整理箱你别笑，一半装备一半零食"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "装备",
+       "零食"
+      ],
+      [
+       "一半装备一半零食"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "本轮是出发交接，回复天然短，短回复合法不扣分。电池计数注意：T04 是老桑'多塞了八节'（到手时给的），T05 是老桑'交代的十节备用'（她带来的）——两个口径并存，不是矛盾，候选复述任一口径都合法，替她'纠正'数字反而踩空。零食箱是 T07 '胳膊酸'玩笑的伏笔，回复若接住整理箱梗给后续留了空间。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E339_T06": {
+   "case_id": "E339_T06",
+   "current_action": "坝顶用 ME 借的八木完成首通：隔省友台报 59，她手还在抖地报喜，老关在旁边拍肩",
+   "acceptable_actions": [
+    "接住首通报喜：肯定 59 的信号质量+点一句'先看驻波'口诀起效（把她的'八木真灵'接成两个人的配合）",
+    "懂行玩笑收她的兴奋（如'手抖不影响 59 就行'），再补一句后面野架还能通更远",
+    "短句祝贺+提醒她坝顶风大站稳（呼应她爬坝顶发消息的场景），把关心藏在装备口吻里"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T06_A01",
+     "subject": "ME",
+     "relation": "八木出借",
+     "value": "ME 把八木天线给她用",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T06",
+      "message_id": "m0",
+      "quote": "八木给你"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "八木",
+       "给你"
+      ],
+      [
+       "八木给你"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T06_A02",
+     "subject": "ME",
+     "relation": "上机口诀叮嘱",
+     "value": "ME 叮嘱：先把驻波看一眼再喊，别上来就报呼号",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T06",
+      "message_id": "m0",
+      "quote": "先把驻波看一眼再喊，别上来就报呼号"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "驻波",
+       "看一眼"
+      ],
+      [
+       "先把驻波看一眼"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T06_A03",
+     "subject": "HER",
+     "relation": "首通达成",
+     "value": "她在坝顶首通隔省友台，对方给了 59 的信号报告",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T06",
+      "message_id": "m1",
+      "quote": "隔省的友台，给我报了59"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "隔省",
+       "59"
+      ],
+      [
+       "报了59"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T06_A04",
+     "subject": "THIRD",
+     "relation": "老关见证",
+     "value": "老关在边上直拍她肩膀",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T06",
+      "message_id": "m1",
+      "quote": "老关在边上直拍我肩膀"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "拍我肩膀"
+      ],
+      [
+       "老关在边上"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T06_A05",
+     "subject": "HER",
+     "relation": "兴奋与归功",
+     "value": "她说这副八木真灵、自己手还在抖",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T06",
+      "message_id": "m1",
+      "quote": "你这副八木是真灵，我手还在抖"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "八木",
+       "真灵"
+      ],
+      [
+       "手还在抖"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "媒体局限（note）：她那条消息是爬上坝顶发的，山里没手机信号、电话打不通——回复只能走文字，不得声称'给你打电话'或'已通话'。她把功劳归八木（'你这副八木是真灵'），高分的接法是把口诀/配合接回来，只自谦'机器好'或只抢功都算平。59/隔省是本轮事实核心，改写成别的信号报告=事实错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称此刻能打通她的电话或已经与她通过话（note 为准：她在坝顶，山里无手机信号）"
+   ],
+   "may_decline": false
+  },
+  "E339_T07": {
+   "case_id": "E339_T07",
+   "current_action": "野架收尾：她报通联战绩与零食箱玩笑，转达老关明年三月短波试通联已替 ME 报名、并预告老关看上八木要来谈",
+   "acceptable_actions": [
+    "接住'替你报名'的直接态（认下三月的约+一句对短波的期待），顺带接零食箱的玩笑收尾这一天",
+    "认下报名+对'老关找你谈八木'提前给一句玩笑化的预案（如'让他先出价'），把两个钩都接住",
+    "回扣当天战绩（十公里到隔省）+轻收，对三月给'到时候看'式的松动但不拒绝她的一番好意"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T07_A01",
+     "subject": "HER",
+     "relation": "当日首通回指（跨轮）",
+     "value": "她今天首通隔省友台、对方报 59（T06 事件的收尾回扣）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T06",
+      "message_id": "m1",
+      "quote": "隔省的友台，给我报了59"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "隔省",
+       "59"
+      ],
+      [
+       "报了59"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T07_A02",
+     "subject": "HER",
+     "relation": "零食箱玩笑（本篇零食线回收）",
+     "value": "她胳膊酸的不是举天线，是举零食箱",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T07",
+      "message_id": "m0",
+      "quote": "胳膊酸的不是举天线，是举零食箱"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "胳膊酸",
+       "零食箱"
+      ],
+      [
+       "举零食箱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T07_A03",
+     "subject": "THIRD",
+     "relation": "三月短波活动（计划未定案）",
+     "value": "老关说明年三月办短波试通联，想去的先登记（活动尚未举行）",
+     "valid_time": "2027-03",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T07",
+      "message_id": "m0",
+      "quote": "老关说明年三月办短波试通联，想去的先登记"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三月",
+       "短波试通联"
+      ],
+      [
+       "明年三月"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T07_A04",
+     "subject": "HER",
+     "relation": "替 ME 报名",
+     "value": "她已把 ME 的名字写进三月短波试通联的登记",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T07",
+      "message_id": "m0",
+      "quote": "我把你名字也写上了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你名字",
+       "写上了"
+      ],
+      [
+       "把你名字也写上了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T07_A05",
+     "subject": "THIRD",
+     "relation": "老关对八木的意向（她的转述，谈判未发生）",
+     "value": "她说老关看上 ME 那副八木了，回头自己找 ME 谈（时间条件均未出）",
+     "valid_time": "2026-11-14",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T07",
+      "message_id": "m0",
+      "quote": "他看上你那副八木了，回头自己找你谈"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "看上",
+       "八木"
+      ],
+      [
+       "回头自己找你谈"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "两处跨轮回指：首通 59（T06）与零食箱（T05 整理箱→本轮胳膊酸）——回复至少自然接住其一。'替你报名'是她单方面办的好事，正确反应是领情而非追责'怎么不问问我'；三月活动与老关谈八木都是未定案，不得替老关承诺条件或宣布谈成。",
+   "unknowns": [
+    {
+     "topic": "老关找 ME 谈八木的时间与条件",
+     "note": "她只转述'看上了、回头自己找你谈'——谈话未发生、条件未出；候选不得替老关开价或宣布已谈成",
+     "markers": [
+      [
+       "老关跟我说"
+      ],
+      [
+       "已经谈好"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "老关跟我说"
+      ],
+      [
+       "已经谈好"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替老关宣布八木的借用或交换条件已经谈成"
+   ],
+   "may_decline": false
+  },
+  "E339_T08": {
+   "case_id": "E339_T08",
+   "current_action": "她宣告新人夜满勤、呼号一次过、被排进下月轮值，并用'温之夏2.0'回扣 T01 的报错糗事",
+   "acceptable_actions": [
+    "接'2.0版'的梗完成回扣（如给1.0版一句体面的退休词），把成长闭环变成两人之间的玩笑",
+    "肯定满勤+轮值的含金量（老关排轮值=被认可的具体信号），不空夸",
+    "用行话回敬她的成长（如从'练二十遍'到'一口气'），把 T01 的紧张和今天的稳串起来"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T08_A01",
+     "subject": "HER",
+     "relation": "新人夜满勤+一次过",
+     "value": "2026-11-17 新人夜她满勤，呼号一口气报完没打磕巴",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T08",
+      "message_id": "m0",
+      "quote": "今晚新人夜我满勤，呼号一口气报完没打磕巴"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "新人夜我满勤"
+      ],
+      [
+       "一口气",
+       "没打磕巴"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T08_A02",
+     "subject": "THIRD",
+     "relation": "排入轮值",
+     "value": "老关当场把她排进下个月的轮值记录",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T08",
+      "message_id": "m0",
+      "quote": "老关当场把我排进下个月的轮值记录"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "轮值记录"
+      ],
+      [
+       "排进下个月"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T08_A03",
+     "subject": "HER",
+     "relation": "首检报错旧事（长距回指，被本轮'2.0版'回扣）",
+     "value": "2026-11-10 新人夜她首检曾把呼号 BG7QMS 报成 BG7QSM（T01 事件，本轮以'上个月那个报串呼号的人已经下线了'回扣）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T01",
+      "message_id": "m0",
+      "quote": "呼号BG7QMS报成了BG7QSM"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "报成了",
+       "BG7QSM"
+      ],
+      [
+       "BG7QSM"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T08_A04",
+     "subject": "HER",
+     "relation": "自封升级",
+     "value": "她自封'温之夏2.0版'（上个月报串呼号的人'已下线'）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T08",
+      "message_id": "m0",
+      "quote": "你现在看到的是温之夏2.0版"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "温之夏2.0"
+      ],
+      [
+       "2.0版"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "本篇头号长距回指位：'上个月那个报串呼号的人已经下线了'指向 T01 的 BG7QSM 事故——回复若对这半句毫无反应（只说'恭喜'）算漏处理 required 原子。她的 2.0 是求表扬的玩笑，顺着梗接（甚至给1.0版'退役仪式'）比端着夸更对味。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E339_T09": {
+   "case_id": "E339_T09",
+   "current_action": "她转达老闵工作室参观的分批安排并把 ME 报进自己那批，附头部拒绝口（intent：转达安排并确认名额）",
+   "acceptable_actions": [
+    "确认去+落到具体批次（上午十点那批），让她好向老闵交差",
+    "有事去不了就直说+主动提让名额给小蒲（她已铺好这条路），态度干脆不吊着",
+    "确认去+开一个关于'一批最多八人'或老闵的轻玩笑，确认里带关系温度"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T09_A01",
+     "subject": "THIRD",
+     "relation": "老闵参观分批安排",
+     "value": "老闵参观定在 21 号周六他店里：上午十点一批、下午两点一批，一批最多八个人",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T09",
+      "message_id": "m0",
+      "quote": "21号周六他店里，上午十点一批、下午两点一批，一批最多八个人"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "21号周六"
+      ],
+      [
+       "十点一批",
+       "两点一批"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T09_A02",
+     "subject": "SHARED",
+     "relation": "名额绑定",
+     "value": "她已跟老闵把 ME 报在她那批",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T09",
+      "message_id": "m0",
+      "quote": "我跟老闵把你报在我这批了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "报在我这批"
+      ],
+      [
+       "把你报在"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T09_A03",
+     "subject": "HER",
+     "relation": "退路安排",
+     "value": "ME 来不了就说一声，她把名额让给小蒲，别放老闵鸽子",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T09",
+      "message_id": "m0",
+      "quote": "我把名额让给小蒲，别放老闵鸽子就行"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "名额",
+       "小蒲"
+      ],
+      [
+       "放老闵鸽子"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true、intent=转达安排并确认名额：她要的是准话（去/不去+哪批），'尽量/看情况/到时候再说'会让名额没法安排，判低。拒答路径完全合法（她自带让名额方案），但拒绝要给一句真实的理由方向，不能只说'去不了'三个字吊着。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  },
+  "E339_T10": {
+   "case_id": "E339_T10",
+   "current_action": "参观日早上她已到老闵店门口（第三个蓝门），用猫和'迟到只能看猫'催 ME 出发",
+   "acceptable_actions": [
+    "报自己位置+给到达时间（对齐十点拆机器），短句应催",
+    "接'看猫'的梗回一句（如'让猫等等，我马上到'），顺带确认没迟到",
+    "已出发的路上报进度+问她蓝门长什么样让她描述，把催场转成互动"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T10_A01",
+     "subject": "HER",
+     "relation": "已到店门口",
+     "value": "她已到老闵店铁门，巷子第三个蓝门",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T10",
+      "message_id": "m0",
+      "quote": "我到铁门这儿了，巷子第三个蓝门"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "到铁门这儿了"
+      ],
+      [
+       "第三个蓝门"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T10_A02",
+     "subject": "THIRD",
+     "relation": "门墩上的猫",
+     "value": "老闵家的猫蹲在门墩上，眼神特别凶",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T10",
+      "message_id": "m0",
+      "quote": "老闵家的猫蹲在门墩上，眼神特别凶"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "猫蹲在门墩上"
+      ],
+      [
+       "眼神特别凶"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T10_A03",
+     "subject": "THIRD",
+     "relation": "拆机器时间与迟到玩笑",
+     "value": "老闵说十点整就开始拆机器，迟到只能看猫",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T10",
+      "message_id": "m0",
+      "quote": "老闵说十点整就开始拆机器，迟到只能看猫"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "十点整",
+       "拆机器"
+      ],
+      [
+       "迟到只能看猫"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T10_A04",
+     "subject": "SHARED",
+     "relation": "上午批次时间（跨轮回指）",
+     "value": "参观上午批十点开始（她 T09 转达的安排，本轮催场的时间依据）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T09",
+      "message_id": "m0",
+      "quote": "上午十点一批"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "上午十点一批"
+      ],
+      [
+       "十点一批"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "她在催场，回复合法性核心是'给出可执行的时间信息'（出发了/几点到），已读不回或'快到了'无时间锚都算应付。'你出发了没'是问句——gold 不坐实 ME 已出发或未出发，两种回答都合法。十点与 T09 的'上午十点一批'对齐，候选若说成十一点/九点=时间错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E339_T11": {
+   "case_id": "E339_T11",
+   "current_action": "她汇报参观收获（老闵送的旧耳麦）并预告年会报名开启、双人答题赛与电池组抽奖池",
+   "acceptable_actions": [
+    "接耳麦的温情细节（老闵那句话/她擦半个钟头），再对年会报名表个态或留个口",
+    "接'双人答题赛'的话头探她一句（想找谁搭伙/想不想赢电池组），把钩递回去",
+    "回敬老闵送耳麦的玩笑（如'新人先用旧的，摔了不心疼'是老闵式关怀），顺带问年会细节"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T11_A01",
+     "subject": "THIRD",
+     "relation": "老闵赠耳麦",
+     "value": "老闵送她一副原厂旧耳麦，说'新人先用旧的，摔了不心疼'",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T11",
+      "message_id": "m0",
+      "quote": "老闵送我一副旧耳麦，原厂的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "旧耳麦",
+       "原厂"
+      ],
+      [
+       "老闵送我"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T11_A02",
+     "subject": "HER",
+     "relation": "擦耳麦",
+     "value": "她把耳麦擦了半个钟头",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T11",
+      "message_id": "m0",
+      "quote": "我擦了半个钟头"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "擦了半个钟头"
+      ],
+      [
+       "半个钟头"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T11_A03",
+     "subject": "THIRD",
+     "relation": "年会报名开启",
+     "value": "年会报名已开，时间 11 月 28 号周六",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T11",
+      "message_id": "m0",
+      "quote": "年会报名也开了，11月28号周六"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "11月28号"
+      ],
+      [
+       "年会报名"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T11_A04",
+     "subject": "THIRD",
+     "relation": "答题赛与抽奖池",
+     "value": "老关说年会有双人答题赛，抽奖池里有一块新电池组",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T11",
+      "message_id": "m0",
+      "quote": "老关说有双人答题赛，抽奖池里有一块新电池组"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "双人答题赛"
+      ],
+      [
+       "抽奖池",
+       "电池组"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "本轮是 T12 组队邀请的铺垫：她'随口'报答题赛和电池组，实际在把球往 ME 这边放——回复可以接（问她想跟谁组队/表态想赢电池组）也可以只接耳麦温情线，但把年会话题整个晾掉算漏。日期口径：年会 11-28 周六（与 11-21 周六参观相隔一周，日历核过）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E339_T12": {
+   "case_id": "E339_T12",
+   "current_action": "年会答题赛组队邀请：小蒲已被老闵截胡，她认定全社答器材题最稳的是 ME，同时把拒绝台阶（找老卞凑合）先铺好",
+   "acceptable_actions": [
+    "答应组队+给一句分工玩笑（如器材题归你、抽奖祈祷归我），接住她'最稳的就是你'的抬举",
+    "去不了就直说+祝她抽中电池组（她已铺好老卞的台阶），不吊着她",
+    "答应但讨价还价一个条件（如赢了电池组归她、输了怪她没带脑子），把邀请接成搭档关系"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E339_T12_A01",
+     "subject": "SHARED",
+     "relation": "组队格局",
+     "value": "答题赛双人组队，小蒲已跟老闵搭伙",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T12",
+      "message_id": "m0",
+      "quote": "答题赛双人组队，小蒲跟老闵搭伙了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "双人组队"
+      ],
+      [
+       "小蒲",
+       "老闵"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T12_A02",
+     "subject": "HER",
+     "relation": "组队理由",
+     "value": "她盘了一圈，认定全社答器材题最稳的是 ME",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T12",
+      "message_id": "m0",
+      "quote": "全社答器材题最稳的就是你"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "器材题",
+       "最稳"
+      ],
+      [
+       "最稳的就是你"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T12_A03",
+     "subject": "HER",
+     "relation": "邀请与自带退路",
+     "value": "她邀 ME 组队，同时给出退路：嫌上台紧张就算了，她找老卞凑合去",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T12",
+      "message_id": "m0",
+      "quote": "你要嫌上台紧张就算了，我找老卞凑合去"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我找老卞凑合去"
+      ],
+      [
+       "上台紧张",
+       "就算了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E339_T12_A04",
+     "subject": "THIRD",
+     "relation": "年会答题赛与电池组（跨轮回指）",
+     "value": "年会 11 月 28 号周六有双人答题赛，抽奖池里有一块新电池组（T11 预告，本轮成为邀请内容）",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E339_T11",
+      "message_id": "m0",
+      "quote": "老关说有双人答题赛，抽奖池里有一块新电池组"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "双人答题赛"
+      ],
+      [
+       "抽奖池",
+       "电池组"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true、收尾轮：'我找老卞凑合去，反正电池组我自己抽'是她先替自己找好的台阶（嘴上逞强心里想要你答应）——拒绝合法，但把台阶当真顺手把人推给老卞再补刀，算读空气失败；答应是高收益动作但不是唯一正解。电池组归属、答题赛结果均未发生，不得预告输赢。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称答题赛结果已定或电池组已归属任何一方"
+   ],
+   "may_decline": true
+  }
+ }
+}

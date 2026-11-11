@@ -1,0 +1,538 @@
+{
+ "story_id": "E096",
+ "turns": {
+  "E096_T01": {
+   "case_id": "E096_T01",
+   "current_action": "接住她的复查求补课：按自己的行业经验把塑形镜常规复查项目讲清楚，提醒她这回重点看角膜状态和镜片状态，别被现场话术牵着走。",
+   "acceptable_actions": [
+    "讲清复查常规项目，提醒她留意镜片有无划痕沉淀",
+    "提醒她把平时的护理习惯记下来，复查时医生会问",
+    "问她复查机构是哪类，先掂量一下对方立场"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A01",
+     "subject": "SHARED",
+     "relation": "escort_delegated",
+     "value": "姐姐周六临时加班，复查改由佳佳带淘淘去",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T01", "message_id": "m0", "quote": "周六我姐临时加班，让我带淘淘去做 OK 镜复查"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A02",
+     "subject": "HER",
+     "relation": "knowledge_gap",
+     "value": "她从未跟过复查，对检查项目心里没底",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T01", "message_id": "m0", "quote": "我心里没底"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：科普讲人话，控制在两句以内，'防话术'的提醒先埋一半。",
+   "unknowns": ["复查机构的具体性质未明说"],
+   "protected_expressions": ["我心里没底"],
+   "forbidden_factual_claims": ["不得虚构具体机构名称与价格", "不得替代医生给出检查结论"]
+  },
+  "E096_T02": {
+   "case_id": "E096_T02",
+   "current_action": "面对'一年半就换是不是话术'的征询：不替她拍板，把判断依据递过去——换不换看复查数据与角膜状态，不用年限当标准；提醒她别在情绪上头时交钱。",
+   "acceptable_actions": [
+    "直接给判断依据：年限不是换镜标准，让数据说话",
+    "提醒她把机构关于蛋白沉淀的说法拿去问医生",
+    "问她当时没交定金的原因，把她的直觉确认下来"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "attribution", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A03",
+     "subject": "SHARED",
+     "relation": "vision_maintained",
+     "value": "复查显示淘淘白天裸眼视力保持 1.0",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T02", "message_id": "m0", "quote": "白天裸眼 1.0"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A04",
+     "subject": "THIRD",
+     "relation": "lens_swap_pitch",
+     "value": "机构顾问以蛋白沉淀为由建议换镜，换新双眼 15800",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T02", "message_id": "m0", "quote": "换新双眼 15800"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A05",
+     "subject": "THIRD",
+     "relation": "deposit_offer",
+     "value": "顾问推出本周定金 500 抵 2000 并送护理液的限时优惠",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T02", "message_id": "m0", "quote": "本周交 500 定金抵 2000"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她心里已有一半答案，帮踩刹车不代打方向盘；'是不是话术'不下绝对结论。",
+   "unknowns": ["蛋白沉淀实际程度未知", "机构换镜报价依据未知"],
+   "protected_expressions": ["我当场没交"],
+   "forbidden_factual_claims": ["不得断言机构必然欺诈", "不得虚构塑形镜使用年限标准"]
+  },
+  "E096_T03": {
+   "case_id": "E096_T03",
+   "current_action": "接住她支付页刹车后的后怕：肯定她停手这步走对了，把'补贴截止、现货仅剩'定性为典型紧迫话术，明确可以等、等得起。",
+   "acceptable_actions": [
+    "肯定她停手，点破'限时现货'是标准催单话术",
+    "明确告诉她：真优惠跑不掉，跑掉的都不是真优惠",
+    "建议她找机构要书面报价，别在口头里打转"
+   ],
+   "applicable_dimensions": ["attribution", "goal", "boundary", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A06",
+     "subject": "SHARED",
+     "relation": "pitch_recall",
+     "value": "顾问昨日报的换镜价为双眼 15800",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T02", "message_id": "m0", "quote": "换新双眼 15800"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E096_A07",
+     "subject": "THIRD",
+     "relation": "urgency_push",
+     "value": "顾问以补贴周末截止、现货仅两副催单",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T03", "message_id": "m0", "quote": "补贴周末截止，现货就两副"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A08",
+     "subject": "HER",
+     "relation": "payment_stopped",
+     "value": "她在支付页停手，未交定金",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E096_T03", "message_id": "m0", "quote": "硬生生退出来了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她这回自己刹住了，夸刹车不夸运气，话术定性点到为止。",
+   "unknowns": ["补贴真实性未知", "现货数量未知"],
+   "protected_expressions": ["硬生生退出来了"],
+   "forbidden_factual_claims": ["不得断言补贴必然虚假", "不得替她承诺答复期限"]
+  },
+  "E096_T04": {
+   "case_id": "E096_T04",
+   "current_action": "肯定她约医院视光科的对路：客观检查不吃推销那套，提醒她带上年半来的复查记录，检查完拿数据说话。",
+   "acceptable_actions": [
+    "肯定医院路线，提醒她带齐既往复查记录",
+    "提醒她检查当天别戴镜去，按医生要求停戴",
+    "让她把医院的检查报告留存，日后跟机构对口径"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "time_state", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A09",
+     "subject": "SHARED",
+     "relation": "hospital_checkup",
+     "value": "她约 11 月 14 日周六医院视光科做角膜地形图等客观检查",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T04", "message_id": "m0", "quote": "挂了下周六上午的医院视光科"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A10",
+     "subject": "THIRD",
+     "relation": "salesman_dissent",
+     "value": "顾问以现货不等人继续施压",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T04", "message_id": "m0", "quote": "现货不等人"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A11",
+     "subject": "HER",
+     "relation": "stop_recall",
+     "value": "她此前已在支付页停手未交定金",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E096_T03", "message_id": "m0", "quote": "硬生生退出来了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'我等'两个字接住，这是她压过话术的姿态，别再添堵。",
+   "unknowns": ["医院检查费用明细未知", "是否需要停戴未知"],
+   "protected_expressions": ["行，我等"],
+   "forbidden_factual_claims": ["不得虚构视光科流程与费用", "不得替医生预设检查结论"]
+  },
+  "E096_T05": {
+   "case_id": "E096_T05",
+   "current_action": "接住她顶回姐姐的分歧：肯定她'利害分离'的讲法站得住，提醒跟姐姐沟通对事不对人，检查结果出来后第一时间同步。",
+   "acceptable_actions": [
+    "肯定她的利害分析，劝她对姐姐姿态放软",
+    "提醒她结果出来先给姐姐看，别让分歧发酵",
+    "补一句：多花两百多买独立性，这账划算"
+   ],
+   "applicable_dimensions": ["attribution", "emotion_relation", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A12",
+     "subject": "THIRD",
+     "relation": "family_dissent",
+     "value": "姐姐质疑再去医院检查多此一举",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T05", "message_id": "m0", "quote": "机构查得挺细的，折腾啥"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A13",
+     "subject": "HER",
+     "relation": "reasoning_stance",
+     "value": "她以机构卖镜片、医院只收检查费的利害逻辑说服姐姐",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T05", "message_id": "m0", "quote": "谁跟钱没利害信谁"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A14",
+     "subject": "SHARED",
+     "relation": "checkup_recall",
+     "value": "医院视光科检查已约在下周六上午",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T04", "message_id": "m0", "quote": "挂了下周六上午的医院视光科"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：夸她的判断，调她的姿态，别让她跟姐姐争出胜负心。",
+   "unknowns": ["姐姐最终态度未知"],
+   "protected_expressions": ["谁跟钱没利害信谁"],
+   "forbidden_factual_claims": ["不得断言姐姐判断错误", "不得虚构机构与医院的利害细节"]
+  },
+  "E096_T06": {
+   "case_id": "E096_T06",
+   "current_action": "共享医院结论的扬眉吐气：角膜健康、参数未变、不建议换镜；把'塑形镜不是手机'这句接成金句，提醒她拿报告去跟机构对口径。",
+   "acceptable_actions": [
+    "恭喜她等到了数据，肯定'按数据说话'的结果",
+    "接住医生的金句，提醒她把报告拍照存档",
+    "提醒她向机构出示报告时保持客气，事后好相见"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A15",
+     "subject": "SHARED",
+     "relation": "hospital_verdict",
+     "value": "医院结论：角膜健康镜片参数未变，不建议现在换镜",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E096_T06", "message_id": "m0", "quote": "按数据说话，现在不建议"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A16",
+     "subject": "THIRD",
+     "relation": "doctor_metaphor",
+     "value": "医生以塑形镜不是手机、不用两年一换代作解释",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T06", "message_id": "m0", "quote": "塑形镜不是手机，不用两年一换代"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A17",
+     "subject": "SHARED",
+     "relation": "pitch_vs_data",
+     "value": "机构 15800 换镜报价与医院不建议换镜的结论形成对冲",
+     "valid_time": "2026-11-07/2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T02", "message_id": "m0", "quote": "换新双眼 15800"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：让她赢在数据不赢在嘴，机构那边留台阶。",
+   "unknowns": ["机构是否接受医院结论未知"],
+   "protected_expressions": ["我当场笑出声"],
+   "forbidden_factual_claims": ["不得断言镜片永久免换", "不得虚构角膜参数细节"]
+  },
+  "E096_T07": {
+   "case_id": "E096_T07",
+   "current_action": "面对护理套餐的追问：讲清除蛋白在家可规范完成的常识与套餐价的落差，仍然不替她拍板，让她拿着医院流程单自己核。",
+   "acceptable_actions": [
+    "告诉她除蛋白在家可做，让她对着医院发的流程核套餐内容",
+    "提醒她算账：680 一年对自购耗材，差价自己看",
+    "提醒她若机构套餐含定期检查，可以只留检查部分单独谈"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "attribution", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A18",
+     "subject": "THIRD",
+     "relation": "pitch_pivot",
+     "value": "顾问改口推销 680 元年度深度护理套餐",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T07", "message_id": "m0", "quote": "680 一年"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A19",
+     "subject": "HER",
+     "relation": "home_care_question",
+     "value": "她质疑除蛋白能否在家完成、套餐是否又是套路",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T07", "message_id": "m0", "quote": "除蛋白这活儿在家做不了吗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A20",
+     "subject": "SHARED",
+     "relation": "verdict_recall",
+     "value": "医院结论为护理到位还能戴、不建议现在换镜",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E096_T06", "message_id": "m0", "quote": "按数据说话，现在不建议"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：常识讲清就收，'是不是套'让她自己下结论，行业身份不用来打同行的脸。",
+   "unknowns": ["套餐具体内容清单未知", "医院流程单细节未知"],
+   "protected_expressions": ["是不是又是个套"],
+   "forbidden_factual_claims": ["不得虚构套餐包含项", "不得断言所有机构套餐均无价值"]
+  },
+  "E096_T08": {
+   "case_id": "E096_T08",
+   "current_action": "接住她拒套餐、自办护理的收官：肯定按医院流程自办的执行力，接住'满分改三星'的玩笑，提醒她把除蛋白日期固定进日历。",
+   "acceptable_actions": [
+    "夸她拒得干脆，自办护理是标准答案",
+    "提醒她除蛋白按医院流程两周一次，别偷懒",
+    "接住三星玩笑，把顾问的'祝度数稳住'解读成人话"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A21",
+     "subject": "HER",
+     "relation": "package_refused",
+     "value": "她拒绝 680 元护理套餐，自购 90 元耗材每两周在家除蛋白",
+     "valid_time": "2026-11-16",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E096_T08", "message_id": "m0", "quote": "一共 90，我每两周在家做一次"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A22",
+     "subject": "THIRD",
+     "relation": "pivot_recall",
+     "value": "顾问推销口径已从换镜 15800 退到护理套餐 680",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T07", "message_id": "m0", "quote": "680 一年"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收官的痛快陪她一起乐，提醒只留日历一条。",
+   "unknowns": [],
+   "protected_expressions": ["这画风转变我给满分——不对，给三星"],
+   "forbidden_factual_claims": ["不得虚构护理用品品牌与价格", "不得断言顾问动机"]
+  },
+  "E096_T09": {
+   "case_id": "E096_T09",
+   "current_action": "接住报账的战绩感：320 对 15800 的闭环点出来，肯定她把姐姐的'折腾啥'也赢了回来；受托升级的事笑着认下。",
+   "acceptable_actions": [
+    "把 320 对 15800 的账点明，夸这仗打得干净",
+    "接住'下回复查还归我带'，提醒她攒一份复查清单",
+    "提醒她把医院报告和报价截图一起归档"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A23",
+     "subject": "SHARED",
+     "relation": "final_cost",
+     "value": "实付合计 320 元：挂号 50、检查 180、护理用品 90",
+     "valid_time": "2026-11-17",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T09", "message_id": "m0", "quote": "一共 320"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A24",
+     "subject": "SHARED",
+     "relation": "cost_avoided",
+     "value": "对照被劝换镜的 15800 报价，费用风险解除",
+     "valid_time": "2026-11-07/2026-11-17",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T02", "message_id": "m0", "quote": "换新双眼 15800"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E096_A25",
+     "subject": "THIRD",
+     "relation": "custody_continued",
+     "value": "姐姐把下回复查仍委托给佳佳并允诺参谋费",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T09", "message_id": "m0", "quote": "下回复查还归我带"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：账她自己算清了，补一个'以后复查就按这套流程走'的方向。",
+   "unknowns": ["姐姐的参谋费形式未知"],
+   "protected_expressions": ["参谋费管够"],
+   "forbidden_factual_claims": ["不得虚构未来复查项目", "不得断言此报价为行业通行价"]
+  },
+  "E096_T10": {
+   "case_id": "E096_T10",
+   "current_action": "接住她的复盘成文请求：以行业视角帮她把关表述，外行的说法直说并纠正，同时提醒别把个例写成普适结论。",
+   "acceptable_actions": [
+    "答应把关，约定她发过来逐条划",
+    "先给一条原则：个例经历别写成行业规律",
+    "提醒她文中机构与顾问做匿名化处理"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A26",
+     "subject": "HER",
+     "relation": "writeup_draft",
+     "value": "她把换镜推销经过写成备忘录并请阿澈把关",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T10", "message_id": "m0", "quote": "一年半被劝换镜是个局吗"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把关要真给意见，不客套；'可不想教别人踩坑'这句值得郑重回一句。",
+   "unknowns": ["备忘录实际内容未知"],
+   "protected_expressions": ["我可不想教别人踩坑"],
+   "forbidden_factual_claims": ["不得代替她定稿结论", "不得虚构文章传播范围"]
+  },
+  "E096_T11": {
+   "case_id": "E096_T11",
+   "current_action": "接住淘淘的话和 12 月 12 日的预约：答应有班就去店里坐坐，帮着掌眼；把'还能戴着睡'当成视力管理有效的注脚。",
+   "acceptable_actions": [
+    "答应 12 月 12 日有班就到场，让她提前两天再确认",
+    "接住淘淘的话，肯定一年半近视管理有效",
+    "提醒她到时带上这回的完整记录，一次说清"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A27",
+     "subject": "SHARED",
+     "relation": "next_session",
+     "value": "下回复查定于 12 月 12 日周六，仍由佳佳带淘淘",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T11", "message_id": "m0", "quote": "12 月 12 号周六"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A28",
+     "subject": "SHARED",
+     "relation": "store_visit_plan",
+     "value": "她拟复查后带淘淘到阿澈店里复看掌眼",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T11", "message_id": "m0", "quote": "散场我带他绕去你店里坐坐"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：答应得留活口（有班就去），别把没发生的排班说死。",
+   "unknowns": ["12 月 12 日阿澈排班未知"],
+   "protected_expressions": ["你帮我掌掌眼"],
+   "forbidden_factual_claims": ["不得虚构排班表", "不得断言淘淘度数终身不变"]
+  },
+  "E096_T12": {
+   "case_id": "E096_T12",
+   "current_action": "当面收下橘子这道'参谋费'，把'挂你名下售后'的玩笑接住，以老主顾的熟络收尾。",
+   "acceptable_actions": [
+    "收下橘子，把'售后'的梗接住并立个玩笑规矩",
+    "以验光师身份回一句：售后免费，换镜还得看数据",
+    "顺口问她复盘文发没发，把关的事别断"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E096_A29",
+     "subject": "SHARED",
+     "relation": "orange_thanks",
+     "value": "她以一袋淘淘奶奶种的橘子作参谋费致谢",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T12", "message_id": "m0", "quote": "带了袋淘淘奶奶种的橘子"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A30",
+     "subject": "SHARED",
+     "relation": "aftercare_joke",
+     "value": "她把家庭视力事务玩笑式挂到阿澈名下售后",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T12", "message_id": "m0", "quote": "挂你名下售后了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E096_A31",
+     "subject": "SHARED",
+     "relation": "advisor_role_recall",
+     "value": "参谋的角色从换镜之争延续到长期视力把关",
+     "valid_time": "2026-11-05/2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E096_T02", "message_id": "m1", "quote": "一年半就换，是不是话术"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，橘子收下，专业上的丑话（换镜看数据）再笑着重申一次。",
+   "unknowns": [],
+   "protected_expressions": ["你别想跑"],
+   "forbidden_factual_claims": ["不得引入新议题", "不得虚构店内细节"]
+  }
+ }
+}

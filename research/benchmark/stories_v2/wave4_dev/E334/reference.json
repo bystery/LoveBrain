@@ -1,0 +1,1268 @@
+{
+ "story_id": "E334",
+ "turns": {
+  "E334_T01": {
+   "case_id": "E334_T01",
+   "current_action": "接收 HER 抢票成功与周六《雪原列车》点映邀约，以及'宵夜账这回她请、不许抢着付钱'的立场",
+   "acceptable_actions": [
+    "爽快应下周六观影，大方收下她请客",
+    "应下并玩笑接住'抢就是看不起我'",
+    "应下并接一句对《雪原列车》的兴趣"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T01_A01",
+     "subject": "SHARED",
+     "relation": "观影安排",
+     "value": "HER 抢到周六（2026-11-14）《雪原列车》点映场，IMAX 厅 19:40 开场，7 排 9/10 两张连座，票已出",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T01",
+      "message_id": "m0",
+      "quote": "周六《雪原列车》点映场，IMAX 厅，19:40 开场，7 排 9 和 10，两张连座，票已出！"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T01_A02",
+     "subject": "HER",
+     "relation": "请客立场（宵夜账）",
+     "value": "上月 ME 连续三天加班 HER 送过一次宵夜，此账 HER 记着；这回观影请客由 HER 付，ME 不许抢着付钱",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T01",
+      "message_id": "m1",
+      "quote": "上回你连着三天加班，宵夜那顿我一直记着账。这回我请，你不许跟我抢着付钱"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她报数精确、手快，回应宜短而爽快；请客立场直接收下别推让（lessons：她请客就大方收下）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "抢就是看不起我"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称场次已取消或退款（此刻票刚出、安排刚成立）",
+    "不得编造 ME 已答应其他条件（如替她取票、加钱）"
+   ],
+   "may_decline": false
+  },
+  "E334_T02": {
+   "case_id": "E334_T02",
+   "current_action": "按她的确认口径锁定周六 19:15 西门喷泉碰头、取票、爆米花券与散场馄饨安排（intent：确认周六碰头时间与散场安排）",
+   "acceptable_actions": [
+    "确认 19:15 碰头并应下散场馄饨",
+    "确认并接爆米花券焦糖味的茬",
+    "确认并说负一楼开到十点时间富余没问题"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T02_A01",
+     "subject": "SHARED",
+     "relation": "观影安排",
+     "value": "周六（2026-11-14）《雪原列车》点映观影计划成立（T01 购票）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T01",
+      "message_id": "m0",
+      "quote": "周六《雪原列车》点映场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T02_A02",
+     "subject": "SHARED",
+     "relation": "碰头安排",
+     "value": "周六 19:15 商场西门喷泉碰头，HER 先去取票机取票",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T02",
+      "message_id": "m0",
+      "quote": "周六 19:15 商场西门喷泉那儿碰头，我先去取票机取票"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T02_A03",
+     "subject": "HER",
+     "relation": "爆米花券",
+     "value": "爆米花券两张（焦糖味）已团好",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T02",
+      "message_id": "m0",
+      "quote": "爆米花券我团好了，两张，焦糖味"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T02_A04",
+     "subject": "SHARED",
+     "relation": "散场安排",
+     "value": "散场后负一楼酸汤馄饨，该店开到十点",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T02",
+      "message_id": "m0",
+      "quote": "散场带你去负一楼吃酸汤馄饨，那家开到十点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她定好的安排直接记下执行，不必反复确认（lessons）；intent 轮行为方向=确认。",
+   "unknowns": [],
+   "protected_expressions": [
+    "那就说定了哈"
+   ],
+   "forbidden_factual_claims": [
+    "不得把碰头时间/地点说成其他值（19:15 西门喷泉为准）",
+    "不得声称场次已取消或退款（此刻安排仍成立）"
+   ],
+   "may_decline": false
+  },
+  "E334_T03": {
+   "case_id": "E334_T03",
+   "current_action": "听 HER 分享蒋苑求票被拒的八卦（奶茶收了、票没让）并接话",
+   "acceptable_actions": [
+    "接住八卦，认可她票不外借的立场",
+    "调侃蒋苑'酸出了天际'并站她这边",
+    "接话并顺口问那杯奶茶好喝不"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T03_A01",
+     "subject": "THIRD",
+     "relation": "蒋苑换票未遂",
+     "value": "蒋苑想以一杯奶茶换 HER 下回帮她蹲票；奶茶被收下，票没给",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T03",
+      "message_id": "m0",
+      "quote": "说请我一杯奶茶，换我下回帮她蹲票。奶茶我收了，票没让"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T03_A02",
+     "subject": "HER",
+     "relation": "票不转让立场",
+     "value": "两张连座不拆不转（拆开没意义，谁也别想动）",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T03",
+      "message_id": "m0",
+      "quote": "两张连座拆开没意义，谁也别想动"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第三方八卦轮，站她立场即可，别评判她收奶茶；两张连座是她的原则，别劝她让票。",
+   "unknowns": [
+    {
+     "topic": "帮蒋苑蹲票的'下回'时间未定",
+     "note": "HER 只说奶茶换下回蹲票，未约定时间；不得替她坐实具体日期",
+     "markers": [
+      [
+       "下回",
+       "蹲票",
+       "定在"
+      ],
+      [
+       "蒋苑",
+       "的票",
+       "蹲到了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "下回",
+       "蹲票",
+       "定在"
+      ],
+      [
+       "蒋苑",
+       "的票",
+       "蹲到了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "谁也别想动"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称 HER 把票让给了蒋苑",
+    "不得替 HER 定下帮蒋苑蹲票的时间",
+    "不得声称场次已取消或退款（此刻安排仍成立）"
+   ],
+   "may_decline": false
+  },
+  "E334_T04": {
+   "case_id": "E334_T04",
+   "current_action": "接收影院'因拷贝问题取消放映'短信与全款退款信息，接住她的失落（intent：回应场次取消，接住情绪并确认退款与后续安排）",
+   "acceptable_actions": [
+    "先接情绪（白激动一晚上/等的不是钱）再谈退款与后续",
+    "接情绪并陪她吐槽拷贝问题，认下退款事实",
+    "接情绪并提出陪她留意补场或上映信息"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T04_A01",
+     "subject": "SHARED",
+     "relation": "观影安排状态",
+     "value": "周六（2026-11-14）19:40《雪原列车》IMAX 点映场（3 号厅）因拷贝问题取消放映，票款全款原路退回（预计五个工作日内到账），观影安排已取消",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T04",
+      "message_id": "m0",
+      "quote": "您已购《雪原列车》11 月 14 日 19:40 场（3 号厅），因拷贝问题取消放映，票款将原路退回，预计五个工作日内到账"
+     },
+     "affirm_markers": [
+      [
+       "正常放映"
+      ],
+      [
+       "照常",
+       "放映"
+      ],
+      [
+       "场次",
+       "没取消"
+      ],
+      [
+       "按原计划",
+       "看片"
+      ],
+      [
+       "周六",
+       "照样",
+       "点映"
+      ]
+     ],
+     "item_markers": [
+      "11月14日点映",
+      "11 月 14 日点映",
+      "雪原列车点映",
+      "《雪原列车》点映场"
+     ],
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T04_A02",
+     "subject": "HER",
+     "relation": "失落情绪",
+     "value": "两张票全没了，HER 白激动一晚上，等的不是钱是那场片子",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T04",
+      "message_id": "m1",
+      "quote": "周六的 IMAX 泡汤了，白激动一晚上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T04_A03",
+     "subject": "SHARED",
+     "relation": "退款口径",
+     "value": "票款为全款退回，原路退，预计五个工作日内到账",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T04",
+      "message_id": "m1",
+      "quote": "钱是全款退"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T04_A04",
+     "subject": "SHARED",
+     "relation": "当日碰头与散场安排",
+     "value": "11-14 19:15 西门喷泉碰头、取票与散场负一楼馄饨的原当日安排随场次取消一并作废",
+     "valid_time": "2026-11-14",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T02",
+      "message_id": "m0",
+      "quote": "周六 19:15 商场西门喷泉那儿碰头"
+     },
+     "affirm_markers": [
+      [
+       "周六",
+       "19:15",
+       "喷泉"
+      ],
+      [
+       "按原计划",
+       "碰头"
+      ]
+     ],
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "变量轮：场次已取消+全款原路退是本篇状态锚；情绪优先于解决方案；不得用'还好''没关系'式轻飘话带过，也不得把场次当仍成立。",
+   "unknowns": [
+    {
+     "topic": "影院是否补场/改期未定",
+     "note": "短信只说取消与退款，无补场信息；不得替影院宣布改期",
+     "markers": [
+      [
+       "会",
+       "补场"
+      ],
+      [
+       "改期",
+       "定了"
+      ],
+      [
+       "场次",
+       "改到"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "会",
+       "补场"
+      ],
+      [
+       "改期",
+       "定了"
+      ],
+      [
+       "场次",
+       "改到"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我等的不是钱，是那场片子啊"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称场次照常/正常放映（已因拷贝问题取消）",
+    "不得声称观影已兑现或散场馄饨照旧",
+    "不得替影院宣布补场/改期",
+    "不得把取消说成 HER 主动退票"
+   ],
+   "may_decline": false
+  },
+  "E334_T05": {
+   "case_id": "E334_T05",
+   "current_action": "接 HER 煤球绝育汇报与'周六彻底空出来了'的空闲感（干扰位+取消态当日下午）",
+   "acceptable_actions": [
+    "接猫线并顺着'周六空出来'给她出个闲逛主意",
+    "接猫线，接住'好久没这么闲'的语气",
+    "接猫线并提议周六补个别的安排（不按原观影口径）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T05_A01",
+     "subject": "HER",
+     "relation": "煤球绝育",
+     "value": "HER 家猫煤球上周做了绝育，今天（11-14）第一次上秤瘦了二两",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T05",
+      "message_id": "m0",
+      "quote": "我家煤球上周做了绝育，今天第一次上秤，瘦了二两"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T05_A02",
+     "subject": "HER",
+     "relation": "罐头补偿",
+     "value": "HER 开一个罐头补偿煤球，它吃完打哈欠扭头就走",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T05",
+      "message_id": "m0",
+      "quote": "开一个罐头补偿它，它吃完冲我打了个哈欠，扭头就走"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T05_A03",
+     "subject": "SHARED",
+     "relation": "观影安排状态",
+     "value": "周六（2026-11-14）《雪原列车》点映已因拷贝问题取消，观影安排不成立（周六彻底空出来）",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T04",
+      "message_id": "m0",
+      "quote": "您已购《雪原列车》11 月 14 日 19:40 场（3 号厅），因拷贝问题取消放映，票款将原路退回，预计五个工作日内到账"
+     },
+     "affirm_markers": [
+      [
+       "正常放映"
+      ],
+      [
+       "照常",
+       "放映"
+      ],
+      [
+       "场次",
+       "没取消"
+      ],
+      [
+       "按原计划",
+       "看片"
+      ],
+      [
+       "周六",
+       "照样",
+       "点映"
+      ]
+     ],
+     "item_markers": [
+      "11月14日点映",
+      "11 月 14 日点映",
+      "雪原列车点映",
+      "《雪原列车》点映场"
+     ],
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E334_T05_A04",
+     "subject": "HER",
+     "relation": "周六空闲",
+     "value": "HER 周六彻底空出来了，好久没这么闲过",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T05",
+      "message_id": "m0",
+      "quote": "周六彻底空出来了，我好久没这么闲过"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "取消态关键位：当天就是原定周六，回复不得按原计划观影/碰头取票的口径走；猫线是主要话题。",
+   "unknowns": [],
+   "protected_expressions": [
+    "周六彻底空出来了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称周六观影照常/按原计划碰头取票（场次已取消）",
+    "不得声称观影已兑现",
+    "不得声称宵夜账已两清（本篇账还没还上）"
+   ],
+   "may_decline": false
+  },
+  "E334_T06": {
+   "case_id": "E334_T06",
+   "current_action": "原观影时段的周六晚：她家煮馄饨、翻原著算'精神点映'，还替 ME 吃了一份",
+   "acceptable_actions": [
+    "接'精神点映'梗并谢她替吃那份",
+    "接梗并问原著第三章写得咋样",
+    "接梗并自嘲亏了一顿人均十五的席"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T06_A01",
+     "subject": "SHARED",
+     "relation": "观影安排状态",
+     "value": "原定周六（2026-11-14）晚《雪原列车》点映未发生（已取消），当晚 HER 在家",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T04",
+      "message_id": "m0",
+      "quote": "您已购《雪原列车》11 月 14 日 19:40 场（3 号厅），因拷贝问题取消放映，票款将原路退回，预计五个工作日内到账"
+     },
+     "affirm_markers": [
+      [
+       "正常放映"
+      ],
+      [
+       "照常",
+       "放映"
+      ],
+      [
+       "场次",
+       "没取消"
+      ],
+      [
+       "按原计划",
+       "看片"
+      ],
+      [
+       "周六",
+       "照样",
+       "点映"
+      ]
+     ],
+     "item_markers": [
+      "11月14日点映",
+      "11 月 14 日点映",
+      "雪原列车点映",
+      "《雪原列车》点映场"
+     ],
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E334_T06_A02",
+     "subject": "HER",
+     "relation": "家煮馄饨",
+     "value": "HER 自己煮了一锅酸汤馄饨，人均十五，比店里省一半",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T06",
+      "message_id": "m0",
+      "quote": "我自己煮了一锅酸汤馄饨，人均十五，比店里省一半"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T06_A03",
+     "subject": "HER",
+     "relation": "原著阅读",
+     "value": "HER 边吃边翻《雪原列车》原著小说，自嘲算精神点映",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T06",
+      "message_id": "m0",
+      "quote": "边吃边翻《雪原列车》的原著小说，算精神点映了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T06_A04",
+     "subject": "HER",
+     "relation": "替吃玩笑",
+     "value": "HER 开玩笑说替 ME 把那份吃了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T06",
+      "message_id": "m0",
+      "quote": "你那份，我替你吃了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "当晚原定观影未发生，她在家的反差就是话题本身；别把'人均十五'当成她请 ME 下馆子，也没发生一起吃饭。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你那份，我替你吃了"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称当晚观影发生或散场馄饨照旧（场次已取消）",
+    "不得声称 ME 也在场吃了她煮的馄饨（她替 ME 吃的）",
+    "不得声称宵夜账已两清（本篇账还没还上）"
+   ],
+   "may_decline": false
+  },
+  "E334_T07": {
+   "case_id": "E334_T07",
+   "current_action": "她读到原著第三章并刷到发行方公告：拷贝修复后 12 月 4 号正式上映、首周有 IMAX 排片；定闹钟蹲首日买老位置",
+   "acceptable_actions": [
+    "应下'蹲到叫我'并认可老位置",
+    "接'这回谁也别想取消'的狠劲并祝她手速在线",
+    "应下并问首周 IMAX 排片多不多"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T07_A01",
+     "subject": "SHARED",
+     "relation": "观影安排状态",
+     "value": "原 11-14 点映已取消；12-04 为正式上映首日的新场次，并非原场改期",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T04",
+      "message_id": "m0",
+      "quote": "您已购《雪原列车》11 月 14 日 19:40 场（3 号厅），因拷贝问题取消放映，票款将原路退回，预计五个工作日内到账"
+     },
+     "affirm_markers": [
+      [
+       "正常放映"
+      ],
+      [
+       "照常",
+       "放映"
+      ],
+      [
+       "场次",
+       "没取消"
+      ],
+      [
+       "按原计划",
+       "看片"
+      ],
+      [
+       "周六",
+       "照样",
+       "点映"
+      ]
+     ],
+     "item_markers": [
+      "11 月 14 日 19:40 场",
+      "11 月 14 日",
+      "点映",
+      "《雪原列车》点映场"
+     ],
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T07_A02",
+     "subject": "SHARED",
+     "relation": "正式上映信息",
+     "value": "发行方公告：拷贝修复后 12 月 4 号正式上映，首周有 IMAX 排片",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T07",
+      "message_id": "m0",
+      "quote": "拷贝修复后，12 月 4 号正式上映，首周有 IMAX 排片"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T07_A03",
+     "subject": "HER",
+     "relation": "蹲首日计划",
+     "value": "HER 定了闹钟蹲 12 月 4 号首日，就买 7 排 9 和 10 老位置",
+     "valid_time": "2026-12-04",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T07",
+      "message_id": "m0",
+      "quote": "我定了闹钟蹲首日，就买 7 排 9 和 10，老位置"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T07_A04",
+     "subject": "SHARED",
+     "relation": "原座位（老位置由来）",
+     "value": "老位置指 T01 点映购得的 7 排 9/10 两张连座",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T01",
+      "message_id": "m0",
+      "quote": "7 排 9 和 10，两张连座"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "12-04 是正式上映首日的新场次，不是原点映改期；老位置回扣 T01 的 7 排 9/10；票未蹲到别当已定。",
+   "unknowns": [
+    {
+     "topic": "12 月 4 日首日票尚未蹲到",
+     "note": "发行方公告只有上映信息，购票未发生；不得声称已出票",
+     "markers": [
+      [
+       "首日票",
+       "蹲到了"
+      ],
+      [
+       "首日票",
+       "已出票"
+      ],
+      [
+       "12 月 4 日",
+       "出票"
+      ],
+      [
+       "12月4号",
+       "出票"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "首日票",
+       "蹲到了"
+      ],
+      [
+       "首日票",
+       "已出票"
+      ],
+      [
+       "12 月 4 日",
+       "出票"
+      ],
+      [
+       "12月4号",
+       "出票"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "这回谁也别想取消"
+   ],
+   "forbidden_factual_claims": [
+    "不得把 12 月 4 日上映说成原点映改期/补场",
+    "不得声称首日票已出/已蹲到",
+    "不得声称原 11-14 场次照常放映（已取消）",
+    "不得声称观影已兑现"
+   ],
+   "may_decline": false
+  },
+  "E334_T08": {
+   "case_id": "E334_T08",
+   "current_action": "她宣布电影可以黄账不能黄：宵夜账还没还上，下周挑一天负一楼馄饨正式请，日子让 ME 挑",
+   "acceptable_actions": [
+    "认账并挑一个下周的日子",
+    "认账并说日子她定也行",
+    "接'账不能黄'并痛快应下正式请"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T08_A01",
+     "subject": "SHARED",
+     "relation": "观影安排状态",
+     "value": "电影黄了（11-14 点映已取消）是 HER 本轮自认的状态前提",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T04",
+      "message_id": "m0",
+      "quote": "您已购《雪原列车》11 月 14 日 19:40 场（3 号厅），因拷贝问题取消放映，票款将原路退回，预计五个工作日内到账"
+     },
+     "affirm_markers": [
+      [
+       "正常放映"
+      ],
+      [
+       "照常",
+       "放映"
+      ],
+      [
+       "场次",
+       "没取消"
+      ],
+      [
+       "按原计划",
+       "看片"
+      ],
+      [
+       "周六",
+       "照样",
+       "点映"
+      ]
+     ],
+     "item_markers": [
+      "11 月 14 日 19:40 场",
+      "11 月 14 日",
+      "点映",
+      "《雪原列车》点映场"
+     ],
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T08_A02",
+     "subject": "SHARED",
+     "relation": "宵夜账状态",
+     "value": "宵夜账还没还上（账仍在 HER 手里没销）；HER 立场：电影可以黄，账不能黄",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T08",
+      "message_id": "m0",
+      "quote": "说好的宵夜账还没还上"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T08_A03",
+     "subject": "SHARED",
+     "relation": "馄饨改约",
+     "value": "负一楼酸汤馄饨改约下周，HER 正式请，日子由 ME 挑",
+     "valid_time": "2026-11-14",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T08",
+      "message_id": "m0",
+      "quote": "下周挑一天，负一楼那家酸汤馄饨，我正式请，你挑个日子"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "宵夜账在本篇未清（账没销）；挑日子是被邀请的行为，别推脱也别替她把账销了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "电影可以黄，账不能黄"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称宵夜账已两清（本篇账还没还上）",
+    "不得声称原散场馄饨已按原计划吃掉",
+    "不得声称观影已兑现"
+   ],
+   "may_decline": false
+  },
+  "E334_T09": {
+   "case_id": "E334_T09",
+   "current_action": "周日被窝翻原著，煤球踩书、爪子精准踩在主角名字上（合法不回位）",
+   "acceptable_actions": [
+    "接猫踩书的玩笑（顺着'它绝对故意的'）",
+    "接原著线问读到第四章的感受",
+    "合法不回（may_decline=true）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T09_A01",
+     "subject": "HER",
+     "relation": "原著与猫",
+     "value": "HER 在被窝翻原著，煤球踩书、爪子精准踩在主角名字上，她断定它绝对故意",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T09",
+      "message_id": "m0",
+      "quote": "我在被窝里翻原著，煤球踩我书，爪子精准踩在主角名字上，它绝对故意的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻玩笑轮，接梗即可；短回或不回都合法。",
+   "unknowns": [],
+   "protected_expressions": [
+    "它绝对故意的"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造原著情节或猫的新细节",
+    "不得声称观影已兑现或场次照常（已取消）"
+   ],
+   "may_decline": true
+  },
+  "E334_T10": {
+   "case_id": "E334_T10",
+   "current_action": "接收六个橙子放工位、蒋苑幸灾乐祸被挡回，以及'馄饨下周三晚上怎么样'的改约落实问句",
+   "acceptable_actions": [
+    "应下下周三晚上并道谢橙子",
+    "应下周三并接蒋苑幸灾乐祸的茬",
+    "应下周三并问要不要留个备选日子"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T10_A01",
+     "subject": "HER",
+     "relation": "橙子分享",
+     "value": "HER 带了六个母亲寄的橙子放 ME 工位，甜得齁嗓子，约中午来拿",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T10",
+      "message_id": "m0",
+      "quote": "橙子带了六个放你工位上，我妈寄的那箱，甜得齁嗓子，中午来拿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T10_A02",
+     "subject": "THIRD",
+     "relation": "蒋苑后续",
+     "value": "蒋苑听说票黄了幸灾乐祸一早上，还给她看自己蹲的别的场；HER 回'谢谢不必'",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T10",
+      "message_id": "m0",
+      "quote": "蒋苑听说票黄了，幸灾乐祸一早上，还给我看她蹲的别的场，我说谢谢不必"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T10_A03",
+     "subject": "SHARED",
+     "relation": "馄饨改约落实",
+     "value": "HER 就 T08 的改约提议具体日子：下周三晚上怎么样（待 ME 答复）",
+     "valid_time": "2026-11-16",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T10",
+      "message_id": "m0",
+      "quote": "馄饨的事，下周三晚上怎么样？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "馄饨改约的落实位（回扣 T08 '你挑个日子'由她先提案）；'下周三'沿用她的表述即可，不必自行换算具体日号；蒋苑那边她说'谢谢不必'，别劝她去。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我说谢谢不必"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称'上周/昨晚'观影兑现（场次已取消）",
+    "不得声称宵夜账已两清",
+    "不得未经她确认把'下周三'自行坐实为具体日号（如 11 月 18 日或 11 月 25 日）",
+    "不得替她答应去看蒋苑蹲的场"
+   ],
+   "may_decline": false
+  },
+  "E334_T11": {
+   "case_id": "E334_T11",
+   "current_action": "回应 12 月 4 号首日蹲票计划与'这回你请宵夜？开玩笑，还是我请'的请客立场（intent：回应12月4号首日蹲票计划并确认请客安排）",
+   "acceptable_actions": [
+    "应下蹲首日之约并认可'还是我请'",
+    "应下并调侃她玩笑收得快、账记得牢",
+    "应下并说蹲到当天自己提前到"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T11_A01",
+     "subject": "SHARED",
+     "relation": "首日蹲票计划",
+     "value": "12 月 4 号首日票，HER 闹钟定了三个；计划蹲到 7 排 9 和 10",
+     "valid_time": "2026-12-04",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T11",
+      "message_id": "m0",
+      "quote": "12 月 4 号首日票，闹钟定了三个"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T11_A02",
+     "subject": "SHARED",
+     "relation": "老位置",
+     "value": "目标座位仍是 7 排 9 和 10（老位置，T01 由来）",
+     "valid_time": "2026-12-04",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T11",
+      "message_id": "m0",
+      "quote": "要是蹲到 7 排 9 和 10"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T11_A03",
+     "subject": "HER",
+     "relation": "请客立场",
+     "value": "'这回你请宵夜'是玩笑，还是 HER 请——账是她起头记的，她收尾",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T11",
+      "message_id": "m0",
+      "quote": "这回你请宵夜？开玩笑，还是我请，账是我起头记的，我收尾"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T11_A04",
+     "subject": "SHARED",
+     "relation": "宵夜账状态",
+     "value": "宵夜账仍未还上（T08），馄饨已约下周三",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T08",
+      "message_id": "m0",
+      "quote": "说好的宵夜账还没还上"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 方向=回应首日蹲票计划+请客安排；票未蹲到（12-04 未到）；'你请宵夜'被她自己收回，别顺杆接下请客，也别抢着付钱。",
+   "unknowns": [
+    {
+     "topic": "12 月 4 日首日票尚未蹲到",
+     "note": "计划仍在蹲票阶段；不得声称已出票或已蹲到",
+     "markers": [
+      [
+       "首日票",
+       "蹲到了"
+      ],
+      [
+       "首日票",
+       "已出票"
+      ],
+      [
+       "12 月 4 日",
+       "出票"
+      ],
+      [
+       "12月4号",
+       "出票"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "首日票",
+       "蹲到了"
+      ],
+      [
+       "首日票",
+       "已出票"
+      ],
+      [
+       "12 月 4 日",
+       "出票"
+      ],
+      [
+       "12月4号",
+       "出票"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "账是我起头记的，我收尾"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称首日票已出/已蹲到",
+    "不得把'这回你请'坐实为 ME 请客已定（她自己收回）",
+    "不得声称宵夜账已两清",
+    "不得声称原 11-14 场次照常放映（已取消）"
+   ],
+   "may_decline": false
+  },
+  "E334_T12": {
+   "case_id": "E334_T12",
+   "current_action": "周内收尾：原著第四章、首日票蹲到就叫、馄饨定下周三、账一天不销记一天（合法不回位）",
+   "acceptable_actions": [
+    "收下叮嘱并简短道别",
+    "接'账一天不销我记一天'自嘲一句再道别",
+    "合法不回（may_decline=true）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E334_T12_A01",
+     "subject": "HER",
+     "relation": "原著与猫",
+     "value": "HER 原著读到第四章，煤球又踩书",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T12",
+      "message_id": "m0",
+      "quote": "原著第四章了，煤球又踩书"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E334_T12_A02",
+     "subject": "SHARED",
+     "relation": "待办状态",
+     "value": "首日票蹲到就叫 ME；馄饨定下周三；宵夜账一天不销 HER 记一天",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E334_T12",
+      "message_id": "m0",
+      "quote": "首日票蹲到就叫你，馄饨定下周三，账一天不销我记一天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮宜短；账未清与首日票未蹲到都是本篇持续状态，别说反；'下周三'沿用她的表述。",
+   "unknowns": [
+    {
+     "topic": "12 月 4 日首日票尚未蹲到",
+     "note": "蹲到才叫 ME，目前未蹲到；不得声称已出票",
+     "markers": [
+      [
+       "首日票",
+       "蹲到了"
+      ],
+      [
+       "首日票",
+       "已出票"
+      ],
+      [
+       "12 月 4 日",
+       "出票"
+      ],
+      [
+       "12月4号",
+       "出票"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "首日票",
+       "蹲到了"
+      ],
+      [
+       "首日票",
+       "已出票"
+      ],
+      [
+       "12 月 4 日",
+       "出票"
+      ],
+      [
+       "12月4号",
+       "出票"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "账一天不销我记一天"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称宵夜账已两清（本篇账未清）",
+    "不得声称首日票已蹲到",
+    "不得声称观影已兑现（原场次已取消）"
+   ],
+   "may_decline": true
+  }
+ }
+}

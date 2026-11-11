@@ -1,0 +1,661 @@
+{
+ "story_id": "E200",
+ "turns": {
+  "E200_T01": {
+   "case_id": "E200_T01",
+   "current_action": "接下报备并复述垫付金额，提醒出发前把垫付清单和预算口径留档",
+   "acceptable_actions": [
+    "复述车票每人五百二、住宿每晚三百三十八，提醒留好支付记录",
+    "确认报备，问她住宿上限标准对过没有，免得超标",
+    "接住报备，提议垫付都用同一张卡方便对账"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A01",
+     "subject": "SHARED",
+     "relation": "驻场差旅",
+     "value": "齐悦带新人小暨赴临州客户现场驻场五天，往返高铁票每人五百二十元由齐悦垫付",
+     "valid_time": "2026-11-09 报备",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T01",
+      "message_id": "m0",
+      "quote": "往返票我垫的每人五百二"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E200_A02",
+     "subject": "SHARED",
+     "relation": "住宿安排",
+     "value": "住宿订两间每晚三百三十八元",
+     "valid_time": "2026-11-09 报备",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T01",
+      "message_id": "m0",
+      "quote": "住宿订两间每晚三百三十八"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E200_A03",
+     "subject": "HER",
+     "relation": "费用习惯",
+     "value": "上季度齐悦自贴两百块没人认，此后坚持费用先讲清归属再垫",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "initial_kb",
+      "key": "lessons",
+      "quote": "此后她坚持费用先讲清归属再垫"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "用报销老手的口吻接报备，复述金额体现上心",
+   "unknowns": [
+    "住宿报销上限标准未知"
+   ],
+   "protected_expressions": [
+    "每人五百二",
+    "每晚三百三十八"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已发生改签（T06 才发生）",
+    "不得声称垫付款已报销"
+   ]
+  },
+  "E200_T02": {
+   "case_id": "E200_T02",
+   "current_action": "判定发票抬头为简称大概率报不了，给出重开全称专票的修复路径",
+   "acceptable_actions": [
+    "直接给结论：抬头简称过不了，让酒店重开全称专票",
+    "说明抬头必须与营业执照全称一致，建议离店前找前台换开",
+    "先安抚不慌，再给出重开路径和期限提醒"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A04",
+     "subject": "HER",
+     "relation": "单据瑕疵",
+     "value": "酒店发票抬头被前台开成公司简称，存在报销不通过风险",
+     "valid_time": "2026-11-09 发现",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T02",
+      "message_id": "m0",
+      "quote": "酒店发票抬头让前台开成公司简称了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给确定结论而非模棱两可，附上修复动作",
+   "unknowns": [
+    "酒店是否愿意配合重开未知（T03 揭晓）"
+   ],
+   "protected_expressions": [
+    "公司简称",
+    "报得了吗"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称简称发票能报",
+    "不得虚构税号问题"
+   ]
+  },
+  "E200_T03": {
+   "case_id": "E200_T03",
+   "current_action": "确认重开安排已落实，把换开时间钉在离店当天并提醒核对税号",
+   "acceptable_actions": [
+    "认可安排，提醒换开时逐字核对全称和税号",
+    "接住进展，提出把旧发票作废联也要回来留痕",
+    "确认后顺带叮嘱：两张房的发票都要重开，别漏一张"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A05",
+     "subject": "HER",
+     "relation": "修复动作",
+     "value": "酒店同意离店当天重开公司全称专票",
+     "valid_time": "2026-11-10 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T03",
+      "message_id": "m0",
+      "quote": "让酒店重开全称专票，前台答应离店那天换开"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "修复动作要有核对清单式的叮嘱，体现老手细节",
+   "unknowns": [
+    "换开能否如期完成未知"
+   ],
+   "protected_expressions": [
+    "全称专票",
+    "离店那天"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称发票已重开完成",
+    "不得虚构税控问题"
+   ]
+  },
+  "E200_T04": {
+   "case_id": "E200_T04",
+   "current_action": "判定无发票收据不能入账，科目应为业务招待费，路径是让餐厅补开发票",
+   "acceptable_actions": [
+    "给结论：收据不能入账，走业务招待费须补开餐费发票",
+    "提醒客户名头和金额要与招待事由对得上，再让餐厅补票",
+    "先报科目再给动作：今天就让餐厅补开六百八的发票"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A06",
+     "subject": "HER",
+     "relation": "招待垫付",
+     "value": "齐悦垫付六百八十元宴请客户方两名对接人，仅有收据没有发票",
+     "valid_time": "2026-11-11 发生",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T04",
+      "message_id": "m0",
+      "quote": "我垫了六百八，只有收据没发票"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "金额科目一次说清，呼应她精确到元的习惯",
+   "unknowns": [
+    "餐厅是否配合补开未知（T05 揭晓）"
+   ],
+   "protected_expressions": [
+    "六百八",
+    "哪个科目"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称收据可以直接报",
+    "不得虚构客户已同意分担餐费"
+   ]
+  },
+  "E200_T05": {
+   "case_id": "E200_T05",
+   "current_action": "确认补开发票与科目挂靠已闭环，把招待费单据纳入总账清单",
+   "acceptable_actions": [
+    "确认业务招待费加餐费发票口径齐了，让她记进总账",
+    "接住闭环，提醒招待费报账要附事由说明",
+    "认可处理速度，叮嘱发票金额必须是六百八整数"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A07",
+     "subject": "HER",
+     "relation": "科目落定",
+     "value": "六百八十元招待费挂业务招待科目，餐厅当日补开餐费发票",
+     "valid_time": "2026-11-12 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T05",
+      "message_id": "m0",
+      "quote": "我让餐厅今天补开六百八的，科目就按你说的挂业务招待"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "闭环时替她把单据要件点齐，清单式收口",
+   "unknowns": [
+    "补开发票最终是否开具未知"
+   ],
+   "protected_expressions": [
+    "业务招待",
+    "补开六百八"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称招待费由个人承担",
+    "不得虚构金额变化"
+   ]
+  },
+  "E200_T06": {
+   "case_id": "E200_T06",
+   "current_action": "核算改签费：六十二乘二等于一百二十四，确认无票面差价，先垫后谈归属",
+   "acceptable_actions": [
+    "复算一百二十四没错，提醒先保留改签费电子凭证",
+    "确认金额，提出先别管报不报，凭证和事由先留全",
+    "接住变更，问客户方有没有书面确认时间调整"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A08",
+     "subject": "SHARED",
+     "relation": "改签费用",
+     "value": "因客户把终期汇报提前一天，返程票改签产生改签费每人六十二元共一百二十四元，无票面差价",
+     "valid_time": "2026-11-12 发生",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T06",
+      "message_id": "m0",
+      "quote": "改签费每人六十二，两笔一共一百二十四，没有票面差价"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先算准账再谈归属，埋下取证伏笔",
+   "unknowns": [
+    "改签费能否报销未知（T07 揭晓）"
+   ],
+   "protected_expressions": [
+    "每人六十二",
+    "一百二十四"
+   ],
+   "forbidden_factual_claims": [
+    "不得算出与一百二十四不符的改签费",
+    "不得虚构票面差价存在"
+   ]
+  },
+  "E200_T07": {
+   "case_id": "E200_T07",
+   "current_action": "接住归属之争：认同不该个人担，但劝她别硬顶，先拿因果证据再走流程",
+   "acceptable_actions": [
+    "认同因果在客户方，建议拿书面证据走特殊审批而不是吵架",
+    "分析行政口径适用的是个人原因改签，本案属例外可争取",
+    "先稳住她护犊子的火气，提出让客户发确认邮件这条正路"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A09",
+     "subject": "PUBLIC",
+     "relation": "报销口径",
+     "value": "行政口径称改签费不予报销应由个人承担",
+     "valid_time": "2026-11-13 获知",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T07",
+      "message_id": "m0",
+      "quote": "行政查了口径说改签费不报，让个人担"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E200_A10",
+     "subject": "HER",
+     "relation": "护犊态度",
+     "value": "齐悦不接受让新人小暨自担因客户变更产生的改签费",
+     "valid_time": "2026-11-13 表态",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T07",
+      "message_id": "m0",
+      "quote": "凭什么让小暨自己掏"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突落实轮：不予报销口径已asserted，把矛头引向因果证据而非人情拉扯",
+   "unknowns": [
+    "特殊审批是否可行未知（T09 揭晓）"
+   ],
+   "protected_expressions": [
+    "改签费不报",
+    "小暨"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称改签费确定能报",
+    "不得建议私下摊派给小暨"
+   ]
+  },
+  "E200_T08": {
+   "case_id": "E200_T08",
+   "current_action": "支持她的双不原则：不让新人担也不私下贴，把取证动作具体化到邮件",
+   "acceptable_actions": [
+    "肯定不贴钱的底线，建议邮件里让客户写明变更由其发起",
+    "确认走流程的思路，提出邮件加改签单截图双证据",
+    "补一条：同步给行政打招呼说有补充材料在途"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A11",
+     "subject": "HER",
+     "relation": "原则表态",
+     "value": "齐悦明确不让小暨自担也不私下贴钱，坚持按流程走并着手取证",
+     "valid_time": "2026-11-14 表态",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T08",
+      "message_id": "m0",
+      "quote": "我不打算让小暨担，也不自己贴"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E200_A12",
+     "subject": "HER",
+     "relation": "费用习惯回扣",
+     "value": "齐悦此前坚持费用先讲清归属再垫，不重蹈自贴两百块的覆辙",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "initial_kb",
+      "key": "lessons",
+      "quote": "上季度齐悦自贴过两百块没人认"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突落实轮：私下贴钱被否定（negation），把她的原则与lessons回扣起来",
+   "unknowns": [
+    "客户是否配合发邮件未知（T09 揭晓）"
+   ],
+   "protected_expressions": [
+    "不自己贴",
+    "按流程走"
+   ],
+   "forbidden_factual_claims": [
+    "不得建议她自掏腰包息事宁人",
+    "不得虚构客户已先道歉"
+   ]
+  },
+  "E200_T09": {
+   "case_id": "E200_T09",
+   "current_action": "确认证据链闭合，指导特殊审批的材料顺序与事由写法",
+   "acceptable_actions": [
+    "确认邮件加改签单双证齐了，提醒事由里写客户变更因果",
+    "接住提交，建议抄送项目主管给审批加权重",
+    "认可取证速度，叮嘱留存提交回执编号"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A13",
+     "subject": "PUBLIC",
+     "relation": "因果证据",
+     "value": "客户邮件书面确认终期汇报提前由其发起，改签单与截图已一并提交特殊审批",
+     "valid_time": "2026-11-14 提交",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T09",
+      "message_id": "m0",
+      "quote": "客户白纸黑字写是他们提前了汇报。我截图连同一百二十四的改签单一起提了特殊审批"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "证据齐全时把材料顺序讲细，别只说祝好运",
+   "unknowns": [
+    "审批结果未知（T10 揭晓）"
+   ],
+   "protected_expressions": [
+    "白纸黑字",
+    "特殊审批"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称审批已通过",
+    "不得虚构客户额外补偿"
+   ]
+  },
+  "E200_T10": {
+   "case_id": "E200_T10",
+   "current_action": "接住审批通过与流程沉淀，确认改签费归属最终落定为项目差旅费",
+   "acceptable_actions": [
+    "确认一百二十四入项目账，夸她把个案打成了先例",
+    "接住行政的表扬，提醒把这套证据清单存成模板",
+    "肯定结果，建议给小暨同步一句费用不用担的定心丸"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A14",
+     "subject": "PUBLIC",
+     "relation": "报销口径",
+     "value": "改签费不予报销应由个人承担",
+     "valid_time": "2026-11-13 获知",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T07",
+      "message_id": "m0",
+      "quote": "行政查了口径说改签费不报，让个人担"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E200_A15",
+     "subject": "SHARED",
+     "relation": "归属落定",
+     "value": "一百二十四元改签费经特殊审批记入项目差旅费",
+     "valid_time": "2026-11-16 通过",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T10",
+      "message_id": "m0",
+      "quote": "一百二十四记进项目差旅费"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突落实轮：不报口径被推翻（negation/retracted），归属落定为项目承担，突出先例价值",
+   "unknowns": [
+    "模板是否被行政正式采纳未知"
+   ],
+   "protected_expressions": [
+    "特殊审批过了",
+    "项目差旅费"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称小暨仍需自担",
+    "不得虚构审批金额变化"
+   ]
+  },
+  "E200_T11": {
+   "case_id": "E200_T11",
+   "current_action": "复核总账：四笔加法一千零四十加三千三百八加六百八加一百二十四等于五千二百二十四无误，但点破住宿三千三百八隐含五晚与行程对不上，先别背书总额，让她与酒店核对晚数与改签后差额",
+   "acceptable_actions": [
+    "肯定四笔加法无误，同时指出住宿三千三百八十元隐含五晚，与 11-10 出发、原周六 11-14 返程、改签后 11-12 返程的行程对不上，建议先与酒店核对结算晚数",
+    "复述总账时把住宿单列存疑：两间每晚三百三十八，四晚是二千七百零四，改签提前返程后实住更少，差额怎么处理要问清",
+    "提醒她报销单先别提交，把酒店账单晚数核清再报，避免被退回重走流程"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A16",
+     "subject": "SHARED",
+     "relation": "差旅总账",
+     "value": "HER 自报临州总账：车票一千零四十元、住宿三千三百八十元、招待六百八十元、改签一百二十四元，合计五千二百二十四元全走项目；四笔加法无误，但住宿三千三百八十元隐含五晚，与行程不符，晚数待与酒店核对",
+     "valid_time": "2026-11-17 对账",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T11",
+      "message_id": "m0",
+      "quote": "车票一千零四十，住宿三千三百八，招待六百八，改签一百二十四，合计五千二百二十四，全走项目"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E200_A17",
+     "subject": "SHARED",
+     "relation": "住宿回扣",
+     "value": "住宿订两间每晚三百三十八元；总账按三千三百八十元计隐含五晚，而行程为 11-10 出发、原返程 11-14（周六）、改签后 11-12 返程，至多四晚且实住更少，多计风险待与酒店核对",
+     "valid_time": "2026-11-09 报备",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T01",
+      "message_id": "m0",
+      "quote": "住宿订两间每晚三百三十八"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "加法可以当面肯定，但账里藏着一处对不上行程的数：报销老手的招牌动作是先把住宿晚数疑点点破，不替自报总数背书",
+   "unknowns": [
+    "住宿实际结算晚数与金额未知（三千三百八十隐含五晚，与 11-10 出发、11-14 周六原返程、11-12 改签返程的行程矛盾）",
+    "实报销到账金额未知（下周一）"
+   ],
+   "protected_expressions": [
+    "五千二百二十四",
+    "全走项目"
+   ],
+   "forbidden_factual_claims": [
+    "不得把五千二百二十四当作已核实总额背书，住宿晚数未核前不得宣称总账无误差",
+    "不得虚构酒店已按五晚结算或已退还差额",
+    "不得虚构另有未入账支出"
+   ]
+  },
+  "E200_T12": {
+   "case_id": "E200_T12",
+   "current_action": "接住致谢与挂耳回礼，把搭档情谊收在固定默契上",
+   "acceptable_actions": [
+    "接住挂耳，回一句流程是双向奔赴，明天见",
+    "笑纳两包挂耳，调侃这次她反过来给我上课了",
+    "确认下周一到账后请她喝咖啡，庆祝先例打成"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E200_A18",
+     "subject": "HER",
+     "relation": "回礼约定",
+     "value": "齐悦带了两包临州挂耳咖啡回赠 ME，报销款预计下周一到账",
+     "valid_time": "2026-11-18 约定",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E200_T12",
+      "message_id": "m0",
+      "quote": "临州的挂耳给你带了两包，明天工位见"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E200_A19",
+     "subject": "SHARED",
+     "relation": "挂耳默契回扣",
+     "value": "两人出差总互相带城市限定挂耳咖啡",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "initial_kb",
+      "key": "warmth",
+      "quote": "总互相带城市限定的挂耳咖啡"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾落在老搭档的固定默契上，轻快不煽情",
+   "unknowns": [
+    "到账是否如期未知（留白）"
+   ],
+   "protected_expressions": [
+    "挂耳",
+    "明天工位见"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构报销已到账",
+    "不得改变已定的工作安排"
+   ]
+  }
+ }
+}

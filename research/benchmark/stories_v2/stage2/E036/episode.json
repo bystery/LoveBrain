@@ -1,0 +1,229 @@
+{
+ "episode_id": "E036",
+ "persona": {
+  "me": "29岁，产品运营，合租主卧，三月合同到期；做事列清单。",
+  "her": "26岁，审计助理，合租次卧；算账精确到分，嘴快。"
+ },
+ "initial_kb": {
+  "me": "公司搬到城东，通勤变长，考虑搬家；网线是我名下。",
+  "her": "在这个房子住两年了；打算续住；和房东中介打过多次交道。",
+  "warmth": "合租一年半，室友关系稳定，水电AA分摊。",
+  "style": "分摊算清楚；情绪不掺账；玩笑归玩笑。",
+  "stage": "长期室友。",
+  "lessons": "她的账要复核再转；中介的事留文字。"
+ },
+ "turns": [
+  {
+   "case_id": "E036_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "水电账单出来了 我算好了你那份128 转我就行",
+      "ts": "2026-12-01 19:00"
+     }
+    ],
+    "clock": "2026-12-01 19:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E036_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "转了 你查收",
+      "ts": "2026-12-01 19:04"
+     },
+     {
+      "role": "HER",
+      "text": "收到 这个月你空调开得多 128里80是电费",
+      "ts": "2026-12-01 19:08"
+     }
+    ],
+    "clock": "2026-12-01 19:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E036_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "等等 我算错了 热水器是我俩一起用 我多算你30 你那份98 重转28",
+      "ts": "2026-12-08 20:30"
+     }
+    ],
+    "clock": "2026-12-08 20:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E036_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "退28收到了 你这账房先生当得比中介细",
+      "ts": "2026-12-08 20:34"
+     },
+     {
+      "role": "HER",
+      "text": "中介那个老李 三个月没回消息 退押金的事悬着",
+      "ts": "2026-12-08 20:38"
+     }
+    ],
+    "clock": "2026-12-08 20:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E036_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "老李回了 说押金要等下个租客进来才退 我俩的合同三月到期",
+      "ts": "2026-12-22 21:00"
+     }
+    ],
+    "clock": "2026-12-22 21:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E036_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那正好 我三月也到期不续了 要搬公司附近",
+      "ts": "2026-12-22 21:04"
+     }
+    ],
+    "clock": "2026-12-22 21:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E036_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "啊? 你走了我一个人摊不起了 我再找室友还是跟老李说降租",
+      "ts": "2026-12-22 21:14"
+     }
+    ],
+    "clock": "2026-12-22 21:16",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E036_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "我在群里帮你问了两个 感兴趣 明后天来看房",
+      "ts": "2026-12-22 21:18"
+     }
+    ],
+    "clock": "2026-12-22 21:24",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E036_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "第一个来看的定了! 月底搬入 你退租交接他也接了",
+      "ts": "2026-12-28 18:00"
+     }
+    ],
+    "clock": "2026-12-28 18:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E036_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "交接清单我列好了 水电读数 网线账户 家具清单三页",
+      "ts": "2026-12-28 18:04"
+     },
+     {
+      "role": "HER",
+      "text": "三页? 你是要当房管吗 哈哈",
+      "ts": "2026-12-28 18:08"
+     }
+    ],
+    "clock": "2026-12-28 18:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E036_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "老李来验房了 押金说十天内退 你那份他直接转你",
+      "ts": "2027-01-05 17:00"
+     }
+    ],
+    "clock": "2027-01-05 17:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E036_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "好 半年室友 合租愉快",
+      "ts": "2027-01-05 17:04"
+     },
+     {
+      "role": "HER",
+      "text": "合作愉快 以后你那栋楼的物业费单子还想让我算吗 哈哈 拜拜",
+      "ts": "2027-01-05 17:08"
+     }
+    ],
+    "clock": "2027-01-05 17:10",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

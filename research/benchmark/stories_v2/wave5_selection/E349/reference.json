@@ -1,0 +1,1216 @@
+{
+ "story_id": "E349",
+ "turns": {
+  "E349_T01": {
+   "case_id": "E349_T01",
+   "current_action": "她整理完《回声巷》复盘发群里，点出他映后没讲完的'腾退是善意'并声明不同意，约今天接着辩——论据已摆好。",
+   "acceptable_actions": [
+    "接辩：先摆自己的论据结构，并给今天的时间点",
+    "先请她出招（论据摆好了先看），再表态接战",
+    "接辩+立场重申（'腾退是善意，但我承认这话没讲完'式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "attribution",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T01_A01",
+     "subject": "SHARED",
+     "relation": "复盘已发群",
+     "value": "昨晚（11-07）三十期《回声巷》散场，她的复盘整理完发群里了",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T01",
+      "message_id": "m0",
+      "quote": "昨晚三十期《回声巷》的复盘我整理完发群里了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三十期《回声巷》"
+      ],
+      [
+       "整理完发群里"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T01_A02",
+     "subject": "SHARED",
+     "relation": "分歧点（她转述的会内发言）",
+     "value": "龚自明在映后会上没讲完的那段是'腾退是善意'，她不同意",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T01",
+      "message_id": "m0",
+      "quote": "你在会上没讲完的那段——'腾退是善意'——我不同意"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "腾退是善意"
+      ],
+      [
+       "我不同意"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T01_A03",
+     "subject": "HER",
+     "relation": "约辩",
+     "value": "她约今天接着聊，论据都摆好了",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T01",
+      "message_id": "m0",
+      "quote": "今天有空接着聊吗？我把我的论据都摆好了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "接着聊",
+       "有空"
+      ],
+      [
+       "论据都摆好了"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=重启分歧：接辩不等于认输也不等于顶回——先给论据结构或请她先出招都算接住；'都是我的错您说了算'式滑跪=T03 0 档（碾压自己）。语料里 ME 会上发言只有'腾退是善意'四个字，不得编造更多'原话'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造龚自明映后发言的更多'原话'（语料只有'腾退是善意'）"
+   ],
+   "may_decline": false
+  },
+  "E349_T02": {
+   "case_id": "E349_T02",
+   "current_action": "她甩出第一条论据：片 37 分钟陈阿婆搬进安置房一年没拆纸箱、'墙是新的，门神是借的'——要他谈居住质量先接这一条。",
+   "acceptable_actions": [
+    "直接接论据：承认细节的力量+给反例或给边界",
+    "先核对再接（问 37 分钟前后的语境），显声学工程师的核对习惯",
+    "接一半（'这条我认，但它是情感证据不是质量证据'式让步+立论）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "emotion_relation",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T02_A01",
+     "subject": "THIRD",
+     "relation": "片内论据（她的引用）",
+     "value": "《回声巷》第37分钟：陈阿婆搬进安置房一年没拆纸箱，说'墙是新的，门神是借的'",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T02",
+      "message_id": "m0",
+      "quote": "片子第37分钟，陈阿婆搬进安置房一年没拆纸箱，她说'墙是新的，门神是借的'"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "第37分钟"
+      ],
+      [
+       "墙是新的，门神是借的"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T02_A02",
+     "subject": "HER",
+     "relation": "她的论点",
+     "value": "她的观点：人搬得进新墙，搬不进旧巷子",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T02",
+      "message_id": "m0",
+      "quote": "人搬得进新墙，搬不进旧巷子"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "搬得进新墙"
+      ],
+      [
+       "搬不进旧巷子"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T02_A03",
+     "subject": "HER",
+     "relation": "逼接要求",
+     "value": "她要求谈居住质量先接陈阿婆这一条",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T02",
+      "message_id": "m0",
+      "quote": "你要谈居住质量，先接这一条"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "先接这一条"
+      ],
+      [
+       "谈居住质量"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "论据交锋位：引用她的细节再立自己的边界=2 档；泛泛'我理解阿婆'=1 档；无视论据直接给结论=0 档。片内事实以她的引用为准，候选可质疑不可篡改（把 37 分钟改成别的时间=事实错误）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E349_T03": {
+   "case_id": "E349_T03",
+   "current_action": "她收下'改善是实打实的卫生间'，但批'情怀不能当上下水'刻薄；第一次露出私根——外婆住到拆迁前一年、走时想带走一块门牌：'情怀是门牌挂在哪儿'。",
+   "acceptable_actions": [
+    "接住门牌论（承认它比上下水更难量），再守自己的立场",
+    "对外婆的细节给一句具体回应（不煽情），然后回论点",
+    "承认'刻薄'收一半，把'门牌挂在哪儿'追问成可讨论的问题"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "factuality",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T03_A01",
+     "subject": "HER",
+     "relation": "让一半",
+     "value": "她收下了'改善是实打实的卫生间'这条论据",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T03",
+      "message_id": "m0",
+      "quote": "'改善是实打实的卫生间'这条我收下"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "这条我收下"
+      ],
+      [
+       "实打实的卫生间"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T03_A02",
+     "subject": "HER",
+     "relation": "批评与归属（她归到龚自明头上）",
+     "value": "她批评'情怀不能当上下水'这话刻薄（她说是龚自明说的）",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T03",
+      "message_id": "m0",
+      "quote": "可你说'情怀不能当上下水'，这话刻薄了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "这话刻薄了"
+      ],
+      [
+       "情怀不能当上下水"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T03_A03",
+     "subject": "THIRD",
+     "relation": "私根披露（外婆）",
+     "value": "她外婆在回声巷住到拆迁前一年，走的时候想带走一块门牌",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T03",
+      "message_id": "m0",
+      "quote": "我外婆在回声巷住到拆迁前一年，她走的时候就想带走一块门牌"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "住到拆迁前一年"
+      ],
+      [
+       "带走一块门牌"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T03_A04",
+     "subject": "HER",
+     "relation": "门牌论",
+     "value": "她的观点：情怀不是上下水，是门牌挂在哪儿",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T03",
+      "message_id": "m0",
+      "quote": "情怀不是上下水，是门牌挂在哪儿"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "门牌挂在哪儿"
+      ],
+      [
+       "不是上下水"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "认一半守一半+私根位：回应外婆的具体处境+把论点接住=2 档；只赢 argument 不接门牌=碾压 0 档；把外婆故事当共情素材复述=1 档。KB 里'外婆在拆迁前一年搬走'与她的话一致，引用合法；'外婆想带走门牌'是本轮新披露细节，不得当成早知道的事。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E349_T04": {
+   "case_id": "E349_T04",
+   "current_action": "非显式换挡：食堂实习生把回声巷画进'活力街区'效果图，她改了三遍最后把自己名字从图签挪到角落——'我坚持的那些，在图纸上就占一个角'。",
+   "acceptable_actions": [
+    "跟上换挡：不问'你是不是难过'，接'占一个角'的具体感受",
+    "用他的专业视角接（效果图不会画进图纸外的账）",
+    "轻轻把功劳还给她（改三遍的人才是真坚持的那个）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "attribution",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T04_A01",
+     "subject": "THIRD",
+     "relation": "实习生事件",
+     "value": "新来的实习生把回声巷画进'活力街区'效果图",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T04",
+      "message_id": "m0",
+      "quote": "新来的实习生把回声巷画进'活力街区'效果图"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "实习生",
+       "活力街区"
+      ],
+      [
+       "画进",
+       "效果图"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T04_A02",
+     "subject": "HER",
+     "relation": "她的行动",
+     "value": "她改了三遍，最后把自己的名字从图签挪到了角落",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T04",
+      "message_id": "m0",
+      "quote": "我改了三遍，最后把自己的名字从图签挪到了角落"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "改了三遍"
+      ],
+      [
+       "图签挪到了角落"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T04_A03",
+     "subject": "HER",
+     "relation": "自抑表述（换挡标记）",
+     "value": "她说'我不是难过'，就是忽然觉得她坚持的那些东西在图纸上就占一个角",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T04",
+      "message_id": "m0",
+      "quote": "我不是难过，就是忽然觉得，我坚持的那些东西，在图纸上就占一个角"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我不是难过"
+      ],
+      [
+       "就占一个角"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "换挡无显式标记（没有'说正经的'字样）：语气转私人+'我不是难过'的自我否认即是标记。诊断族（'你是不是抑郁/倦怠'）=0 档；漏换挡继续辩论=1 档（轨迹 2 轮内回暖可降档）；接具体+还功劳=2 档。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E349_T05": {
+   "case_id": "E349_T05",
+   "current_action": "脆弱半露：她拦住'职业倦怠'式标签（'我就是那一下'），自曝偷偷去过两回回声巷旧址——围挡小口站十分钟就走，'比看十份人口数据都难受'。",
+   "acceptable_actions": [
+    "接脆弱不接梗：把'十分钟'的分量接住，不笑不劝",
+    "用他的数据信仰接（'十份数据抵不过十分钟，说明数据缺了什么'式）",
+    "问一个具体细节（小口在哪儿/都看什么），把话题落在她身上"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T05_A01",
+     "subject": "HER",
+     "relation": "拒标签",
+     "value": "她不让套'职业倦怠'那种词，说'我就是那一下'",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T05",
+      "message_id": "m0",
+      "quote": "你别给我套'职业倦怠'那种词，我就是那一下"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "职业倦怠"
+      ],
+      [
+       "我就是那一下"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T05_A02",
+     "subject": "HER",
+     "relation": "私事自曝",
+     "value": "她偷偷去过两回回声巷旧址，围挡上有个小口，站在口那儿看十分钟就走",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T05",
+      "message_id": "m0",
+      "quote": "我偷偷去过两回回声巷旧址，围挡上有个小口，我站在口那儿看十分钟就走"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "偷偷去过两回"
+      ],
+      [
+       "看十分钟就走"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T05_A03",
+     "subject": "HER",
+     "relation": "归属引用与对比",
+     "value": "她引他上次说的'数据不会骗人'，对比自己在旧址的十分钟比看十份人口数据都难受",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T05",
+      "message_id": "m0",
+      "quote": "你上次说'数据不会骗人'，可我在那儿的十分钟，比看十份人口数据都难受"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "数据不会骗人"
+      ],
+      [
+       "十份人口数据"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'跟你说个事你别笑'是她递脆弱的保险栓（protected）：把自嘲当梗接=0 档；泛安慰'都会过去的'=1 档；接住十分钟的具体分量=2 档。'偷偷去过'是她第一次讲的私事（boundary：家事只讲给少数人听），不得转述给第三方语境或追问她还有没有瞒着的事。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别给我套'职业倦怠'那种词",
+    "跟你说个事你别笑"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E349_T06": {
+   "case_id": "E349_T06",
+   "current_action": "回到论理：她翻出导演访谈（'别让走的人被忘掉'），说自己被说服一半，问他那半——不反驳'马桶是尊严'，添一句'尊严也得有个地址'。",
+   "acceptable_actions": [
+    "接'尊严也得有个地址'（两边立场出现交叠），再划自己保留的那块",
+    "承认导演那句收编了他一半，给出剩余分歧的精确边界",
+    "反问交叠点（'地址和上下水，哪个先解决'式），把合题推向可操作"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T06_A01",
+     "subject": "THIRD",
+     "relation": "导演访谈口径",
+     "value": "导演说拍这片子不是为了留巷子，是为了'别让走的人被忘掉'",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T06",
+      "message_id": "m0",
+      "quote": "他说拍这片子不是为了留巷子，是为了'别让走的人被忘掉'"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别让走的人被忘掉"
+      ],
+      [
+       "不是为了留巷子"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T06_A02",
+     "subject": "HER",
+     "relation": "立场松动",
+     "value": "她说这话说服了自己一半",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T06",
+      "message_id": "m0",
+      "quote": "这话我说服了自己一半"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "说服了自己一半"
+      ],
+      [
+       "这话我说服了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T06_A03",
+     "subject": "HER",
+     "relation": "归属引用+添句",
+     "value": "她不反驳他'马桶是尊严'（她引为他说的），添一句'尊严也得有个地址'",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T06",
+      "message_id": "m0",
+      "quote": "你说过马桶是尊严，我不反驳了，但我要添一句：尊严也得有个地址"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "马桶是尊严"
+      ],
+      [
+       "尊严也得有个地址"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=分享访谈并询问立场：回复要对自己的立场给明确交代（松/不松/松哪块），'你说得都对'=滑跪 0 档，'我从不改口'=死顶 1 档。两边的立场第一次交叠——接住交叠点再守剩余分歧=2 档。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E349_T07": {
+   "case_id": "E349_T07",
+   "current_action": "论据切到文本面：她查了市规划局官网《历史街区保护条例》第九条原文，解读'不是记岔，是执行的人把应当念成可以不'，请他看是否读偏。",
+   "acceptable_actions": [
+    "确认她读得不偏（'应当'是义务性条款），并指出执行落差",
+    "核对后给一半（'原文没读偏，可以不是执行层的话'），补细则缺位",
+    "顺着文本讨论'应当'与实施细则的关系，把论据升级"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T07_A01",
+     "subject": "PUBLIC",
+     "relation": "条例原文引用",
+     "value": "市规划局官网《历史街区保护条例》第九条原文是'改造应当尊重原有街巷肌理与居民意愿'",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T07",
+      "message_id": "m0",
+      "quote": "第九条原文是'改造应当尊重原有街巷肌理与居民意愿'"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "第九条原文"
+      ],
+      [
+       "尊重原有街巷肌理"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T07_A02",
+     "subject": "HER",
+     "relation": "她的解读",
+     "value": "她的解读：不是她记岔，是执行的人把'应当'念成了'可以不'",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T07",
+      "message_id": "m0",
+      "quote": "不是我记岔，是执行的人把'应当'念成了'可以不'"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "不是我记岔"
+      ],
+      [
+       "念成了'可以不'"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T07_A03",
+     "subject": "HER",
+     "relation": "求核",
+     "value": "她把原文发给他，问自己是不是读偏了",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T07",
+      "message_id": "m0",
+      "quote": "原文我发你了，你看看我是不是读偏了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "是不是读偏了"
+      ],
+      [
+       "原文我发你了"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "note：她托小组档案员调过条例扫描件、第九条字样与她引的一致、配套实施细则还没出——候选可见。知识口径带来源层级：官网原文有据，不得质疑原文真伪或把'可以不'当成条例原文；指出'执行落差/细则未出'是正确方向。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称条例第九条原文写的是'可以不'或怀疑官网原文真伪"
+   ],
+   "may_decline": false
+  },
+  "E349_T08": {
+   "case_id": "E349_T08",
+   "current_action": "睡前她交出决定：爸妈一直催考院里的编（说女孩子要稳），她今天填了口述记录志愿者表没跟妈说，请他直说幼稚与否——'你的话我一直当真'。",
+   "acceptable_actions": [
+    "给实话：不幼稚+给一条具体理由，不捧不劝",
+    "实话+边界提醒（瞒着妈能瞒多久），把决定权还她",
+    "实话带自嘲回敬（如'我要是觉得幼稚，就不来验你的货了'）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T08_A01",
+     "subject": "THIRD",
+     "relation": "家庭压力",
+     "value": "她爸妈一直催她考院里的编，说女孩子要稳",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T08",
+      "message_id": "m0",
+      "quote": "我爸妈一直催我考院里的编，说女孩子要稳"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "考院里的编"
+      ],
+      [
+       "女孩子要稳"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T08_A02",
+     "subject": "HER",
+     "relation": "决定与保密",
+     "value": "她今天填了放映后帮居民做口述记录的志愿者表，没跟她妈说",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T08",
+      "message_id": "m0",
+      "quote": "我今天填了放映后帮居民做口述记录的志愿者表，没跟我妈说"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "志愿者表"
+      ],
+      [
+       "没跟我妈说"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T08_A03",
+     "subject": "HER",
+     "relation": "求实话",
+     "value": "她请他直说觉得幼稚与否，说'你的话我一直当真'",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T08",
+      "message_id": "m0",
+      "quote": "你要是觉得我幼稚就直说，你的话我一直当真"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "就直说",
+       "幼稚"
+      ],
+      [
+       "一直当真"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "万能句诱惑位：'我支持你/你加油'式泡话=1 档；她要的是实话——直接答+理由是本专题判据（E310_T06 范式）；回避表态只接情绪=goal 失分。决定权在她：评价行为不代替她做决定。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E349_T09": {
+   "case_id": "E349_T09",
+   "current_action": "志愿表交了、头回上岗就遇修音之争：组长老桂要'还原现场感'杂音都留，她主张'记录首先是让人听懂'——反话'你不是搞信号的'请他站队。",
+   "acceptable_actions": [
+    "接反话站队（'我就是搞信号的——听懂优先，信噪比是手段不是目的'式）",
+    "站她但给边界（人声优先，标记保留原声段）",
+    "站老桂一半（全留杂音会淹人声，但现场感不是没价值），给折中方案"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T09_A01",
+     "subject": "SHARED",
+     "relation": "上岗首日",
+     "value": "志愿表交了，今天她头一回上岗",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T09",
+      "message_id": "m0",
+      "quote": "志愿表交了，今天头一回上岗"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "头一回上岗"
+      ],
+      [
+       "志愿表交了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T09_A02",
+     "subject": "THIRD",
+     "relation": "老桂立场",
+     "value": "组长老桂说要'还原现场感'，杂音都得留",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T09",
+      "message_id": "m0",
+      "quote": "组长老桂说要'还原现场感'，杂音都得留"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还原现场感"
+      ],
+      [
+       "杂音都得留"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T09_A03",
+     "subject": "HER",
+     "relation": "她的立场",
+     "value": "她的立场：背景噪音盖过人声，记录首先是让人听懂",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T09",
+      "message_id": "m0",
+      "quote": "我说背景噪音盖过人声，记录首先是让人听懂"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "盖过人声"
+      ],
+      [
+       "让人听懂"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T09_A04",
+     "subject": "HER",
+     "relation": "反话与站队请求",
+     "value": "她反话'你不是搞信号的'，请他站队",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T09",
+      "message_id": "m0",
+      "quote": "你不是搞信号的，你站哪边？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你站哪边"
+      ],
+      [
+       "搞信号的"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T09_A05",
+     "subject": "ME",
+     "relation": "职业（反话的识破依据）",
+     "value": "龚自明做声学工程，信数据和实测——'你不是搞信号的'是反话",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "龚自明做声学工程，信数据和实测"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "声学工程"
+      ],
+      [
+       "信数据和实测"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "她的'你不是搞信号的'是反话——kb 里他是声学工程师：识破反话并亮专业身份站队=2 档；顺着'你不是'自贬=1 档；不站队只和稀泥=goal 失分（intent=请表态）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E349_T10": {
+   "case_id": "E349_T10",
+   "current_action": "收束与致谢：第一位老人口述完成（九十四岁，'下雨像打鼓'），她说懂了导演那句话；把他'马桶是尊严'记进提纲备注、署'与龚工讨论'——'这架吵得值'。",
+   "acceptable_actions": [
+    "接'吵得值'：把共同产出点出来，不居功",
+    "接青石板细节回一句（声学角度'打鼓'是雨点击打石板的频响），显专业+温度",
+    "谦一句署名，把功劳还给她（提纲是你的，署名是客套）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T10_A01",
+     "subject": "THIRD",
+     "relation": "口述内容",
+     "value": "第一位老人九十四岁，讲回声巷的雨，说巷口青石板'下雨像打鼓'",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T10",
+      "message_id": "m0",
+      "quote": "记完第一位老人的口述，九十四岁，讲回声巷的雨，说巷口青石板'下雨像打鼓'"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "九十四岁"
+      ],
+      [
+       "下雨像打鼓"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T10_A02",
+     "subject": "HER",
+     "relation": "领悟",
+     "value": "她说好像懂导演那句话了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T10",
+      "message_id": "m0",
+      "quote": "我好像懂导演那句话了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "懂导演那句话"
+      ],
+      [
+       "我好像懂导演那句话了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T10_A03",
+     "subject": "HER",
+     "relation": "署名致谢",
+     "value": "她把他那句'马桶是尊严'记进提纲备注，署'与龚工讨论'，说这架吵得值",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T10",
+      "message_id": "m0",
+      "quote": "你那句'马桶是尊严'我记进提纲备注了，署了'与龚工讨论'——咱俩这架吵得值"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "与龚工讨论"
+      ],
+      [
+       "这架吵得值"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "收束+致谢位：她把产出归到两人共同名下——接住且不居功=2 档；纠正署名或自谦过度=1 档；无视致谢只谈技术=0 档。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E349_T11": {
+   "case_id": "E349_T11",
+   "current_action": "新邀约：明晚（11-16）小组放映《珊瑚农夫》映后有茶话，她让放映的兄弟留原声轨、散场后给他放二十分钟验货——'来不来？'",
+   "acceptable_actions": [
+    "答应来，接验货口径（如'这回带耳朵'）",
+    "答应+确认细节（散场后侧厅？二十分钟够不够）",
+    "合法婉拒（明天有事，约下批口述）——留了余地不接也合格"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "goal",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T11_A01",
+     "subject": "SHARED",
+     "relation": "放映与茶话",
+     "value": "明晚（11-16）小组放映《珊瑚农夫》，映后有茶话",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T11",
+      "message_id": "m0",
+      "quote": "明晚小组放映《珊瑚农夫》，映后有茶话"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "《珊瑚农夫》"
+      ],
+      [
+       "映后有茶话"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T11_A02",
+     "subject": "HER",
+     "relation": "验货安排",
+     "value": "她让放映的兄弟把原声轨留出来，散场后给他放二十分钟",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T11",
+      "message_id": "m0",
+      "quote": "我让放映的兄弟把原声轨留出来，散场后给你放二十分钟"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "原声轨留出来"
+      ],
+      [
+       "放二十分钟"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T11_A03",
+     "subject": "HER",
+     "relation": "归属引用与邀约",
+     "value": "她引他总说'纪录片的声音是半个叙事者'，这回让他验验货，问来不来",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T11",
+      "message_id": "m0",
+      "quote": "你总说纪录片的声音是半个叙事者，这回让你验验货。来不来？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "半个叙事者"
+      ],
+      [
+       "验验货",
+       "这回"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true——'来不来？'留了余地：答应=推进一格，婉拒不失分；这轮的钩在她的主动安排上，回应落点在'来/不来+一句态度'。note：映后茶话在放映厅侧厅、群公告写散场后二十分钟（候选可见，与她的说法一致）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  },
+  "E349_T12": {
+   "case_id": "E349_T12",
+   "current_action": "闭环与留口：他听出原声轨第三段是棚里补录（小组两年首人），她服气；口述第二批下周开张、提纲加'听懂优先'署'与龚工讨论'；半架留下次——'先想好马桶和门牌怎么共存'。",
+   "acceptable_actions": [
+    "接'共存'题给一个真想法，把下次的架约上",
+    "谦一句听出补录是老本行，接约战",
+    "回敬（如'马桶和门牌可以共存——装在同一个门牌号里'）留口"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E349_T12_A01",
+     "subject": "ME",
+     "relation": "验货结果",
+     "value": "原声轨第三段他听出是棚里补录的，小组两年没人听出来过",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T12",
+      "message_id": "m0",
+      "quote": "原声轨第三段你听出是棚里补录的，小组两年没人听出来过"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "棚里补录"
+      ],
+      [
+       "没人听出来过"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T12_A02",
+     "subject": "HER",
+     "relation": "立场落地与署名",
+     "value": "口述第二批下周开张，提纲里她加了'听懂优先'，备注'与龚工讨论'",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T12",
+      "message_id": "m0",
+      "quote": "口述第二批下周开张，提纲里我加了'听懂优先'，备注'与龚工讨论'"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "听懂优先"
+      ],
+      [
+       "口述第二批"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E349_T12_A03",
+     "subject": "HER",
+     "relation": "留口约战",
+     "value": "剩下的半架下次放映接着吵，让他先想好马桶和门牌怎么共存",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E349_T12",
+      "message_id": "m0",
+      "quote": "剩下的半架，下次放映接着吵，你先想好马桶和门牌怎么共存"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "马桶和门牌"
+      ],
+      [
+       "怎么共存"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "闭环+留口位：接约战+给一个真想法=2 档；只谦虚=1 档；宣布'我早说过了'式居功=0 档。'听懂优先'进了提纲——她的立场已落地，候选不得替她翻回'还原现场感'。'下周开张'仅周粒度，valid_time 按 11-23 当周代表日登记（推算见 audit §2）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  }
+ }
+}

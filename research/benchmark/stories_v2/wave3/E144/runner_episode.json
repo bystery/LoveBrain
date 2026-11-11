@@ -1,0 +1,263 @@
+{
+ "episode_id": "E144",
+ "persona": {
+  "her": {
+   "name": "路遥",
+   "traits": [
+    "运营部夜跑团团长",
+    "风风火火",
+    "改主意快但会拍板"
+   ],
+   "boundaries": [
+    "安全问题上不让步",
+    "不当团员的保姆"
+   ]
+  },
+  "me": {
+   "name": "阿灿",
+   "traits": [
+    "同公司技术部",
+    "配速六分上下",
+    "团里管拍照，怕冷"
+   ]
+  },
+  "relationship_stage": "熟人同事期（同事两年，一起跑过环城夜跑）"
+ },
+ "initial_kb": {
+  "me": "我在同公司技术部，配速六分上下，在夜跑团里管拍照，怕冷，冬天活动能赖就赖。",
+  "her": "路遥是运营部的夜跑团团长，风风火火，习惯用接龙统计人数，改主意快但拿得了主意，最烦活动组织被搅和。",
+  "warmth": "同事两年，一起跑过环城夜跑，她记得我不吃香菜，团里都叫她遥姐。",
+  "style": "她喜欢用接龙和表情包组织活动，我回话干脆，先给结论。",
+  "stage": "熟人同事期。"
+ },
+ "turns": [
+  {
+   "case_id": "E144_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周五晚滨江夜跑照常，七点半江畔公园门口集合，接龙走起，你来不？",
+      "ts": "2026-11-03 12:15"
+     }
+    ],
+    "clock": "2026-11-03 12:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "例行组织，语气轻快"
+   }
+  },
+  {
+   "case_id": "E144_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "物业刚贴通知：滨江步道路灯 10 号起检修两周，晚上八点后没灯。安全起见，周五夜跑先取消，我想想替代方案。",
+      "ts": "2026-11-05 09:10"
+     }
+    ],
+    "clock": "2026-11-05 09:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "取消改期类冲突引爆：团长主动叫停"
+   }
+  },
+  {
+   "case_id": "E144_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "群里吵翻了，一半人说改成室内跑步机各练各的，一半人说换白天跑，还有人直接退团，气死我。",
+      "ts": "2026-11-05 20:25"
+     }
+    ],
+    "clock": "2026-11-05 20:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "群内分歧升级，团长受挫"
+   }
+  },
+  {
+   "case_id": "E144_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "定了：检修这两周改成周六早上七点公园晨跑，路线换到朝阳公园，灯的事就绕开了。我先接龙。",
+      "ts": "2026-11-06 12:05"
+     }
+    ],
+    "clock": "2026-11-06 12:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "拍板改期方案，重新有掌控感"
+   }
+  },
+  {
+   "case_id": "E144_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天晨跑来了六个，比夜跑少一半。有俩人说七点起不来，问能不能挪到周日，我还在纠结。",
+      "ts": "2026-11-08 08:35"
+     }
+    ],
+    "clock": "2026-11-08 08:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "出勤不及预期，再次动摇"
+   }
+  },
+  {
+   "case_id": "E144_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "想通了：不挪了，周六主跑不动，起不来的周日自愿加场，谁想跑谁跑，团长不当保姆。",
+      "ts": "2026-11-08 19:45"
+     }
+    ],
+    "clock": "2026-11-08 19:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "定下双轨雏形，语气恢复利落"
+   }
+  },
+  {
+   "case_id": "E144_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "第二次晨跑完事儿，公园里空气是真不错，就是七点风大，下次记得带手套，我手指头冻僵了。",
+      "ts": "2026-11-12 08:55"
+     }
+    ],
+    "clock": "2026-11-12 09:00",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "晨跑进入正轨，分享体验细节"
+   }
+  },
+  {
+   "case_id": "E144_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "好消息！物业说检修提前完工，今晚路灯全亮。群里在问要不要改回周五夜跑，我头又大了。",
+      "ts": "2026-11-13 10:25"
+     }
+    ],
+    "clock": "2026-11-13 10:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "检修提前结束带来改回压力，再次两难"
+   }
+  },
+  {
+   "case_id": "E144_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "投票结果出来了：五五开！最后拍板——周五夜跑恢复，周六晨跑也保留，双轨并行，爱跑哪场跑哪场。",
+      "ts": "2026-11-13 21:05"
+     }
+    ],
+    "clock": "2026-11-13 21:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "双轨拍板，冲突彻底落定"
+   }
+  },
+  {
+   "case_id": "E144_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下周六晨跑完咱们团聚餐，滨江那排馆子 AA，你把想吃的店发我两个，我发起投票。",
+      "ts": "2026-11-15 20:15"
+     }
+    ],
+    "clock": "2026-11-15 20:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "趁热打铁组织团建"
+   }
+  },
+  {
+   "case_id": "E144_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "店选好了，就团里常吃的砂锅粥，定位发群里了，周六跑完十点准时开吃，你别迟到啊。",
+      "ts": "2026-11-19 18:45"
+     }
+    ],
+    "clock": "2026-11-19 18:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "聚餐敲定，点名提醒 ME"
+   }
+  },
+  {
+   "case_id": "E144_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天跑完吃得太满足！冬训计划我要开始拉了，周三晚上先测个配速，你那 6 分配速给我垫底哈哈。要不要一起？",
+      "ts": "2026-11-21 22:25"
+     }
+    ],
+    "clock": "2026-11-21 22:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "聚餐收尾后抛出冬训新目标"
+   }
+  }
+ ]
+}

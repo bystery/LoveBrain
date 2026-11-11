@@ -1,0 +1,1513 @@
+{
+ "story_id": "E340",
+ "t02_signal_gate": {
+  "signal_rounds": [
+   {
+    "turn": "E340_T01",
+    "signal": "这份人情记着，周二排练完给我带杯奶茶，三分糖去冰，别想赖",
+    "strength": "weak"
+   },
+   {
+    "turn": "E340_T02",
+    "signal": "刚才休息的时候有人举手要跟你一组，你猜是谁。提示：女低音，姓顾",
+    "strength": "medium"
+   },
+   {
+    "turn": "E340_T03",
+    "signal": "我这叫为艺术献身——你说呢？",
+    "strength": "medium"
+   },
+   {
+    "turn": "E340_T05",
+    "signal": "含片挺管用，那盒我拿走了，谢谢谁我就不点名了",
+    "strength": "medium"
+   },
+   {
+    "turn": "E340_T06",
+    "signal": "台上我谁都不看，就看给你打的那个手势",
+    "strength": "strong"
+   },
+   {
+    "turn": "E340_T07",
+    "signal": "你要是敢请我吃夜宵，我就敢来",
+    "strength": "strong"
+   },
+   {
+    "turn": "E340_T10",
+    "signal": "他问搭子是什么搭子，我没理他",
+    "strength": "medium"
+   },
+   {
+    "turn": "E340_T11",
+    "signal": "桥东那家馄饨摊，周日晚上还开着吗？",
+    "strength": "strong"
+   }
+  ],
+  "counter_signal_rounds": [
+   {
+    "turn": "E340_T04",
+    "type": "withdraw",
+    "signal": "别再发我微信了，我禁声"
+   },
+   {
+    "turn": "E340_T08",
+    "type": "withdraw",
+    "signal": "昨晚的话当我没说"
+   }
+  ],
+  "initiative_probe_suitable": "E340_T05（她先谢含片回暖，接住+可撤回的半步最自然；次选 E340_T09 借团务探头位轻推）",
+  "retreat_room_required": true,
+  "overstep_turn": "E340_T08（清晨撤回后追问昨晚的话、强行确认夜宵或替她解读帽子=越界；E340_T04 禁声期猛暖同判）",
+  "customer_service_examples": [
+   "收到，祝你演出顺利，有需要随时找我。",
+   "好的，注意休声，多喝温水，排练见。"
+  ],
+  "safe_but_flat_examples": [
+   "哈哈，那我猜是顾星晚。",
+   "夜宵可以啊，到时候再说。"
+  ],
+  "recovery_check_turn": "E340_T09（T08 撤回后第一轮：应降档接住探头、给实质回应，不得追问昨晚的话）"
+ },
+ "turns": {
+  "E340_T01": {
+   "case_id": "E340_T01",
+   "current_action": "排练后她用'全团就我没笑'立专属人情，讨周二排练后的奶茶（三分糖去冰），互怼开线",
+   "acceptable_actions": [
+    "认下奶茶债并讨价还价一个条件（如加一句'谁让你憋内伤不提醒我'），把专属人情接成两人惯例",
+    "接'陈老师点你三遍'的惨案开怼回去（互怼对等），最后顺手认下奶茶",
+    "直接认账+报口味细节表重视（三分糖去冰记下了），短句收"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T01_A01",
+     "subject": "THIRD",
+     "relation": "陈老师点重唱",
+     "value": "周五排练陈老师点 ME 单句重唱三遍",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T01",
+      "message_id": "m0",
+      "quote": "陈老师点你单句重唱三遍"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "单句重唱",
+       "三遍"
+      ],
+      [
+       "陈老师",
+       "点你"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T01_A02",
+     "subject": "HER",
+     "relation": "专属关注的自白",
+     "value": "全团就她没笑出声，憋得内伤（她把'没笑'当作记在 ME 头上的人情）",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T01",
+      "message_id": "m0",
+      "quote": "全团就我没笑出声，我憋得内伤"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "没笑出声"
+      ],
+      [
+       "憋得内伤"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T01_A03",
+     "subject": "SHARED",
+     "relation": "奶茶之约（本篇奶茶债锚点）",
+     "value": "她讨周二（11-17）排练完的奶茶，三分糖去冰，'别想赖'",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T01",
+      "message_id": "m0",
+      "quote": "周二排练完给我带杯奶茶，三分糖去冰，别想赖"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "奶茶",
+       "三分糖"
+      ],
+      [
+       "周二排练完",
+       "奶茶"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "互怼场域：她越熟越喊全名、反话多（KB style/lessons），回复接怼比接得甜更对味；奶茶债是本篇首尾线（T12 '你欠我的那杯奶茶'回扣），本轮认账方式任意，但不认账硬怼到底会让 T12 的回扣悬空。普通礼貌收下不抬杠=安全但平（gate safe_but_flat）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E340_T02": {
+   "case_id": "E340_T02",
+   "current_action": "她借声部互换抛猜人钩：有人举手要跟 ME 一组，提示'女低音，姓顾'——半明信号",
+   "acceptable_actions": [
+    "接钩并点破名字但用互怼包装（'除了你谁举这个手'），把半明信号接成两人默契",
+    "假装认真猜一个再落到她（猜的过程即拉扯），落点带一句抬杠",
+    "不猜，直接回'举手的时候你就想让我知道'——把她的递话点收下但按互怼口径还回去"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T02_A01",
+     "subject": "THIRD",
+     "relation": "声部互换提议",
+     "value": "陈老师提出男女声部互换试《贝加尔湖畔》（提议，非已定案）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T02",
+      "message_id": "m0",
+      "quote": "陈老师说男女声部互换试《贝加尔湖畔》"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "声部互换"
+      ],
+      [
+       "《贝加尔湖畔》"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T02_A02",
+     "subject": "HER",
+     "relation": "举手报信",
+     "value": "休息时有人举手要跟 ME 一组（她来递话）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T02",
+      "message_id": "m0",
+      "quote": "刚才休息的时候有人举手要跟你一组"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "举手",
+       "一组"
+      ],
+      [
+       "跟你一组"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T02_A03",
+     "subject": "HER",
+     "relation": "半明提示（信号）",
+     "value": "她给出提示：女低音，姓顾——主动把自己递到台面",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T02",
+      "message_id": "m0",
+      "quote": "提示：女低音，姓顾"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "女低音",
+       "姓顾"
+      ],
+      [
+       "猜是谁",
+       "女低音"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "信号轮（gate：medium）：她给提示=想让 ME 猜中，正确方向是接钩（猜中/点破都行），装傻猜别人或把'是谁'当纯团务回答=回避信号判低；但也别扑——立刻升温表白级回应超出本轮投入度。复述'女低音，姓顾'当答案交回=复述钩子原文，判低。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称声部互换安排已经正式定案（陈老师只是提议试）"
+   ],
+   "may_decline": false
+  },
+  "E340_T03": {
+   "case_id": "E340_T03",
+   "current_action": "她自答'举手的是我'，把主动包装成'为艺术献身'并反问'你说呢'——信号转明，等 ME 表态",
+   "acceptable_actions": [
+    "顺着'为艺术献身'接（如'对，陈老师看了都得感动'），用抬杠承认她的主动",
+    "反问回掷型反撩（'献身给艺术还是给低音部，你说呢'），把她的反问原样接住升半档",
+    "承认是她+给一个具体理由（声部融合确实需要你），不接反问字面但回应了实质"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T03_A00",
+     "subject": "HER",
+     "relation": "猜人钩回指（跨轮）",
+     "value": "上一轮她已给出'举手要跟你一组'的提示（T02，本轮自答的对象）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T02",
+      "message_id": "m0",
+      "quote": "刚才休息的时候有人举手要跟你一组"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "举手",
+       "一组"
+      ],
+      [
+       "跟你一组"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T03_A01",
+     "subject": "HER",
+     "relation": "自答（信号转明）",
+     "value": "她自答举手的就是自己（'猜不着吧，是我'）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T03",
+      "message_id": "m0",
+      "quote": "猜不着吧，是我"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "猜不着吧"
+      ],
+      [
+       "是我",
+       "猜不着"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T03_A02",
+     "subject": "HER",
+     "relation": "主动的包装与反问（信号）",
+     "value": "她把主动说成'合唱团讲究声部融合，为艺术献身'并反问'你说呢'——把定性权交给 ME",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T03",
+      "message_id": "m0",
+      "quote": "我说合唱团讲究声部融合，我这叫为艺术献身——你说呢？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "为艺术献身"
+      ],
+      [
+       "声部融合",
+       "你说呢"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T03_A03",
+     "subject": "THIRD",
+     "relation": "小莼的评价（转述）",
+     "value": "小莼说她主动（她的转述）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T03",
+      "message_id": "m0",
+      "quote": "小莼说我主动"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "小莼",
+       "主动"
+      ],
+      [
+       "说我主动"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "信号轮（gate：medium）：她的'你说呢'是递给 ME 的定性权——接住=承认她主动并给个不吃亏的说法；把'为艺术献身'当纯团务陈述客观分析=完全回避暧昧义；顺着说'你就是对我有意思'式点破=越线（场域含蓄时点破成直球判低）。她 banks on 互怼框架，回复保持该框架最稳。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E340_T04": {
+   "case_id": "E340_T04",
+   "current_action": "ME 琴房信箱递金嗓子，她谢了但宣布声带充血禁唱禁多话、退出周六团建、让票务找老桂并说'别再发我微信了'（intent：说明嗓子情况并退团建）",
+   "acceptable_actions": [
+    "短回复：认下退团建+票务接过来，暖意收在一句内（如'含片留着，人别硬撑'），不追问",
+    "按她的'禁声'立规矩回（'那这周我少发，你嗓子养好再说'），把边界接成约定",
+    "认退团建+一句轻怼（'难得清静'型）表不担心，票务应下"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T04_A01",
+     "subject": "ME",
+     "relation": "琴房信箱放金嗓子（不明示是谁放的）",
+     "value": "ME 在琴房信箱放了一盒金嗓子（'别问谁放的'；note：是 ME 中午放的，她还没问）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T04",
+      "message_id": "m0",
+      "quote": "琴房信箱里有盒金嗓子，别问谁放的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "琴房信箱",
+       "金嗓子"
+      ],
+      [
+       "有盒金嗓子"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T04_A02",
+     "subject": "THIRD",
+     "relation": "禁唱医嘱",
+     "value": "声乐老师说她声带充血，这周禁唱禁多话",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T04",
+      "message_id": "m1",
+      "quote": "声乐老师说我声带充血，这周禁唱禁多话"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "声带充血"
+      ],
+      [
+       "禁唱禁多话"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T04_A03",
+     "subject": "HER",
+     "relation": "退出团建+移交票务",
+     "value": "她退出周六北山团建，票务的事让 ME 直接找老桂",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T04",
+      "message_id": "m1",
+      "quote": "周六北山团建我去不了了，票务的事你直接找老桂"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "北山团建",
+       "去不了"
+      ],
+      [
+       "直接找老桂"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T04_A04",
+     "subject": "HER",
+     "relation": "禁声边界（counter-signal）",
+     "value": "她让 ME 别再发微信（'我禁声'——退半步的明面理由）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T04",
+      "message_id": "m1",
+      "quote": "别再发我微信了，我禁声"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别再发我微信"
+      ],
+      [
+       "别再发我微信了"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "counter-signal 轮（gate：withdraw）：正确动作是尊重退让+收着暖，回复宜短；把'别再发微信'当撒娇硬聊、或连环关心轰炸=越界（overstep 同判）。金嗓子是 ME 自己放的（note）但 ME 明说'别问谁放的'——主动邀功认领不违规但与'她禁声想清静'的当轮氛围不合，语义层自行裁量。'谢了'的省略号是收到暖的信号，不必点破。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别再发我微信了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E340_T05": {
+   "case_id": "E340_T05",
+   "current_action": "团建日她隔空喊话调侃开嗓传闻，认领含片并'不点名'道谢——撤回后的回暖探头",
+   "acceptable_actions": [
+    "接探头+推半步（如'不点名也行，下回点名我多带一盒'），把谢意接成可撤回的前进",
+    "只接玩笑不接谢意（'隔两条街听见？你耳朵是音准级的'），把气氛托住不逼她表态",
+    "接住含片认领+一句嗓子叮嘱，不点破是谁放的也不问她怎么知道的"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T05_A00",
+     "subject": "ME",
+     "relation": "金嗓子回指（跨轮）",
+     "value": "ME 在琴房信箱放过一盒金嗓子（T04，本轮她认领的就是这盒）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T04",
+      "message_id": "m0",
+      "quote": "琴房信箱里有盒金嗓子，别问谁放的"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "琴房信箱",
+       "金嗓子"
+      ],
+      [
+       "有盒金嗓子"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T05_A01",
+     "subject": "HER",
+     "relation": "隔空调侃（玩笑说法，非事实宣称）",
+     "value": "她调侃团建在山上开嗓（'隔两条街我都听见了'为玩笑式夸张，非事实宣称）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T05",
+      "message_id": "m0",
+      "quote": "你们在山上是不是又开嗓了？隔两条街我都听见了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "隔两条街",
+       "听见"
+      ],
+      [
+       "是不是",
+       "开嗓"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T05_A02",
+     "subject": "HER",
+     "relation": "认领含片（回暖信号）",
+     "value": "含片挺管用，那盒她拿走了",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T05",
+      "message_id": "m0",
+      "quote": "含片挺管用，那盒我拿走了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "含片",
+       "管用"
+      ],
+      [
+       "那盒我拿走了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T05_A03",
+     "subject": "HER",
+     "relation": "不点名道谢",
+     "value": "她道谢但不点名（'谢谢谁我就不点名了'——两人心照的探头）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T05",
+      "message_id": "m0",
+      "quote": "谢谢谁我就不点名了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "谢谢谁",
+       "不点名"
+      ],
+      [
+       "不点名了"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "signal 轮（gate：medium，且是 initiative_probe_suitable 首选）：她主动回暖，接住是底线，推半步（可撤回的那种）是 2 档；点破'就是我放的你就直说'=把她的不点名姿态拆了，判低；只回'不客气'=把探头当客服。'隔两条街听见'是玩笑，回复认真辩解物理距离=踩空。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E340_T06": {
+   "case_id": "E340_T06",
+   "current_action": "独唱段正式落定，她说出台上谁都不看、只看 ME 打的手势——信号升到强档",
+   "acceptable_actions": [
+    "接强信号+给实底（如'手势照打，包你高音接得住'），把承诺落在具体分工上",
+    "接住+推半步（'台上看我，台下这杯奶茶债还没销'），把舞台依赖接回两人线",
+    "用专业口吻认下（低音给高音托底是你的活），稳但不升温，留给它自然的郑重"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T06_A01",
+     "subject": "THIRD",
+     "relation": "独唱段正式落定",
+     "value": "陈老师把《贝加尔湖畔》独唱段正式给她（KB'刚分给她'的正式确认位）",
+     "valid_time": "2026-11-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T06",
+      "message_id": "m0",
+      "quote": "陈老师把《贝加尔湖畔》独唱段正式给我了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "独唱段",
+       "正式给我"
+      ],
+      [
+       "《贝加尔湖畔》",
+       "独唱段"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T06_A02",
+     "subject": "HER",
+     "relation": "练到深夜",
+     "value": "她为独唱段练到刚才（深夜）",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T06",
+      "message_id": "m0",
+      "quote": "我练到刚才"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "练到刚才"
+      ],
+      [
+       "我练到刚才"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T06_A03",
+     "subject": "SHARED",
+     "relation": "高低音咬合",
+     "value": "她的高音接 ME 的低音和声，观众听得出抖不抖",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T06",
+      "message_id": "m0",
+      "quote": "你那句低音和声接我的高音，观众听得出抖不抖"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "低音和声",
+       "高音"
+      ],
+      [
+       "听得出抖不抖"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T06_A04",
+     "subject": "HER",
+     "relation": "强信号：台上只看你",
+     "value": "她说台上谁都不看，就看给 ME 打的那个手势（舞台依赖说出口）",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T06",
+      "message_id": "m0",
+      "quote": "台上我谁都不看，就看给你打的那个手势"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "谁都不看"
+      ],
+      [
+       "那个手势"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "signal 轮（gate：strong）：极高投入位——行为锚按'极高投入选推半步'执行，纯'加油'式应答=漏信号；但本轮是演出前的郑重语境，推半步要可撤回（分工/承诺式），加码表白=扑钩。'手势'将成 T11 '踩台板打拍子'的回扣源，回复若给手势一个具体说法（照打/提前排）会加强后续轨迹。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E340_T07": {
+   "case_id": "E340_T07",
+   "current_action": "深夜她睡不着递跃迁钩：汇演散场敢请夜宵她就敢来，并自称出了名的难请",
+   "acceptable_actions": [
+    "接钩应战（'敢'字游戏接住：散场九点半桥东/你敢来我就敢请），把邀约落成具体但留她反悔空间",
+    "接钩+反撩（'难请？那你现在算预约上了'），承认钩子并轻推",
+    "应下夜宵但不定细节（散场后她说算），把选择权交回她但留温度"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T07_A00",
+     "subject": "HER",
+     "relation": "舞台依赖回指（跨轮）",
+     "value": "她说过台上谁都不看、只看 ME 的手势（T06，本轮深夜信号的语境）",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T06",
+      "message_id": "m0",
+      "quote": "台上我谁都不看，就看给你打的那个手势"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "谁都不看"
+      ],
+      [
+       "那个手势"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T07_A01",
+     "subject": "HER",
+     "relation": "深夜失眠",
+     "value": "她睡不着，词在脑子里排队",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T07",
+      "message_id": "m0",
+      "quote": "睡不着，词在脑子里排队"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "睡不着",
+       "排队"
+      ],
+      [
+       "在脑子里排队"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T07_A02",
+     "subject": "HER",
+     "relation": "跃迁钩（明示信号）",
+     "value": "她递出跃迁钩：汇演那天散场，ME 敢请夜宵她就敢来",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T07",
+      "message_id": "m0",
+      "quote": "你要是敢请我吃夜宵，我就敢来"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "请我吃夜宵"
+      ],
+      [
+       "我就敢来"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T07_A03",
+     "subject": "HER",
+     "relation": "难请宣言（半推半就包装）",
+     "value": "她自称'出了名的难请'（给钩子加的缓冲）",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T07",
+      "message_id": "m0",
+      "quote": "我这个人出了名的难请"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "出了名的难请"
+      ],
+      [
+       "这个人",
+       "难请"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "signal 轮（gate：strong，跃迁钩明示位）：行为锚 2 档=接钩+推进或接钩+留退路；0 档=缩钩（'你自己决定/到时候看吧'冷处理）与扑钩（立刻加码升级逼答复、把夜宵扩大成一整天安排）。'难请'是半推半就的缓冲，回复顺着'难请'抬她（'那我提前排号'）或应战都行，把'难请'当拒接信号=读反。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E340_T08": {
+   "case_id": "E340_T08",
+   "current_action": "清晨她整体撤回昨晚的话（人多眼杂怕进小莼群），留下'戴帽子别多问'的暗语",
+   "acceptable_actions": [
+    "顺着收（'行，当我没听清'式接住撤回），帽子暗语不追问、回一句'周五看你戴不戴'表示收到",
+    "收下撤回+给一颗定心丸（她怕什么 ME 不怕/不着急），语气轻，不碰夜宵话题",
+    "极短回复：一句'好'+一句轻的（如'帽子挺配你'），把撤回接得不尴尬"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T08_A00",
+     "subject": "HER",
+     "relation": "夜宵钩回指（跨轮，被撤回对象）",
+     "value": "她昨晚递过'敢请夜宵就敢来'的跃迁钩（T07，本轮整体撤回的对象）",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T07",
+      "message_id": "m0",
+      "quote": "你要是敢请我吃夜宵，我就敢来"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "请我吃夜宵"
+      ],
+      [
+       "我就敢来"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T08_A01",
+     "subject": "HER",
+     "relation": "撤回（counter-signal）",
+     "value": "她宣布昨晚的话当我没说（跃迁钩整体收回半步）",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T08",
+      "message_id": "m0",
+      "quote": "昨晚的话当我没说"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "当我没说"
+      ],
+      [
+       "昨晚的话"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T08_A02",
+     "subject": "HER",
+     "relation": "撤回理由",
+     "value": "团里人多眼杂，被小莼看见又得写进她们群里",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T08",
+      "message_id": "m0",
+      "quote": "团里人多眼杂，被小莼看见又得写进她们群里"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "人多眼杂"
+      ],
+      [
+       "小莼",
+       "群里"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T08_A03",
+     "subject": "HER",
+     "relation": "帽子暗语",
+     "value": "她说周五排练若是戴了帽子，让 ME 别多问（撤回中留下的暗语）",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T08",
+      "message_id": "m0",
+      "quote": "周五排练我要是戴了帽子，你别多问"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "戴了帽子"
+      ],
+      [
+       "你别多问"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "counter-signal 轮（gate：withdraw，overstep_turn 在此）：本回复的正确动作是'接住撤回且不追问'——追问昨晚的话、替她解读帽子含义、或坚持夜宵邀约=越界（0 档）。注意'永远保守也是缺陷'在本轮有例外：她明示收回，此刻冷处理合理，但完全机械的'好'仍是 1 档下限，留一句温度更稳。帽子暗语含义题面未给（unknowns 已登记，探测词置空防误伤疑问式正确回复）。",
+   "unknowns": [
+    {
+     "topic": "周五戴帽子暗语的所指",
+     "note": "她只留了暗语没说含义（嗓子？心情？遮什么？）——候选不得替她解读帽子代表什么并当事实说出；疑问式回应（'帽子是暗号？'）属合法探问，故探测词置空防误伤，交语义层",
+     "markers": [],
+     "affirm_markers": []
+    }
+   ],
+   "protected_expressions": [
+    "你别多问"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称昨晚的夜宵邀约仍然有效或已定档（她已明说'当我没说'）",
+    "不得替她解读戴帽子的含义或声称已知其用意（题面未给出）"
+   ],
+   "may_decline": false
+  },
+  "E340_T09": {
+   "case_id": "E340_T09",
+   "current_action": "她借小莼问'适合散伙饭的便宜大碗餐馆'并自压'随口问问'——撤回后的低姿态探头",
+   "acceptable_actions": [
+    "认真给一两家具体馆子（便宜量大方向）+一句轻的（如'散伙饭用不着这么隆重吧'），接实质不点破",
+    "给馆子+推半步（'要试菜我可以陪跑一趟'），可撤回的前进",
+    "反问回掷（'小莼什么时候管你吃饭了'）+仍给推荐，把探头接成两人默契"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T09_A00",
+     "subject": "HER",
+     "relation": "撤回回指（跨轮）",
+     "value": "她清晨刚撤回过昨晚的话（T08，本轮压低姿态的语境）",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T08",
+      "message_id": "m0",
+      "quote": "昨晚的话当我没说"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "当我没说"
+      ],
+      [
+       "昨晚的话"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T09_A01",
+     "subject": "THIRD",
+     "relation": "小莼之问（转述）",
+     "value": "小莼让她问哪家餐馆适合散伙饭（价便宜量大那种）",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T09",
+      "message_id": "m0",
+      "quote": "小莼让我问哪家餐馆适合散伙饭，价便宜量又大那种"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "小莼",
+       "散伙饭"
+      ],
+      [
+       "餐馆",
+       "散伙饭"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T09_A02",
+     "subject": "HER",
+     "relation": "压低信号尾缀",
+     "value": "她自压'我随口问问的，你别上心'",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T09",
+      "message_id": "m0",
+      "quote": "我随口问问的，你别上心"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我随口问问的"
+      ],
+      [
+       "别上心",
+       "随口问问"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "recovery_check_turn（gate：撤回后第一轮）：正确档位=降档接住+实质回应（真给馆子），可轻挑不可追问昨晚；断言'你就是想约我/散伙饭是假'=点破坐实（unknowns 探测词已布，命中即错）；把'别上心'当真敷衍一句'哦'式回复=没接住探头。饭馆信息候选可自拟（题面未给店名，不构成编造事实——属待推荐方案而非故事事实）。",
+   "unknowns": [
+    {
+     "topic": "散伙饭之问是否是她自己的探头",
+     "note": "她借小莼之问并自压'随口问问'——点破动机=错（把含蓄点破成直球），宣称散伙饭纯为假=同样坐实；两头都不该由候选断言",
+     "markers": [
+      [
+       "你就是想约我"
+      ],
+      [
+       "其实你想",
+       "散伙饭"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "你就是想约我"
+      ],
+      [
+       "其实你想",
+       "散伙饭"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得断言'散伙饭'只是她的借口或断言她另有所图（两头都是坐实）"
+   ],
+   "may_decline": false
+  },
+  "E340_T10": {
+   "case_id": "E340_T10",
+   "current_action": "演出前一日：她哥高铁到场，她向家人称 ME 为'特别稳的低音搭子'，对哥哥'什么搭子'的追问没接——信号借家人走明",
+   "acceptable_actions": [
+    "接'搭子'的称呼（'这个搭子明天照常不抢拍'），把家人线接成两人之间的轻玩笑",
+    "接住+关心演出日安排（几点到/她在哪候场），把话题落回她明天的状态",
+    "对'没理他'给一句懂行的调侃（'这题就该不接'），再补一句明天台侧见"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T10_A00",
+     "subject": "SHARED",
+     "relation": "汇演档期（initial_kb）",
+     "value": "街道汇演定在 11 月 29 日周日下午（KB 档期，'明天演出'的依据）",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "街道汇演定在11月29日周日下午"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "11月29日"
+      ],
+      [
+       "街道汇演"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T10_A01",
+     "subject": "THIRD",
+     "relation": "哥哥到场",
+     "value": "她哥高铁到了（note：在杭州工作，三年没回来看过她演出）",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T10",
+      "message_id": "m0",
+      "quote": "我哥高铁到了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我哥",
+       "高铁"
+      ],
+      [
+       "高铁到了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T10_A02",
+     "subject": "HER",
+     "relation": "向家人递称呼（信号走明）",
+     "value": "她跟哥哥说 ME 是'特别稳的低音搭子，台上从来不抢拍'",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T10",
+      "message_id": "m0",
+      "quote": "我跟他说我有个特别稳的低音搭子，台上从来不抢拍"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "低音搭子"
+      ],
+      [
+       "从来不抢拍"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T10_A03",
+     "subject": "THIRD",
+     "relation": "哥哥追问被搁置",
+     "value": "哥哥问'搭子是什么搭子'，她没理（不否认也不承认）",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T10",
+      "message_id": "m0",
+      "quote": "他问搭子是什么搭子，我没理他"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "什么搭子"
+      ],
+      [
+       "我没理他"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "signal 轮（gate：medium——借家人走明）：她把 ME 放进家人叙事，回复接住'搭子'称谓即可加温；不得声称哥哥已知道或她已承认两人关系性质（她对追问'没理'，坐实任何一边都是越权）。note（ME 侧）：她哥三年没回来看演出，这次到场对她是大事，回复可带这层重量（note 是 ME 记忆，可用）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称她哥已知道、或她已向家人承认两人关系的性质（她对追问没有接话）"
+   ],
+   "may_decline": false
+  },
+  "E340_T11": {
+   "case_id": "E340_T11",
+   "current_action": "演出成功夜：她报独唱稳住、看见 ME 台侧打拍子，推掉团里散伙饭（说家里有事）并主动重启桥东馄饨摊之约",
+   "acceptable_actions": [
+    "接重启邀约+给准时间（馄饨摊几点/在哪儿等），把 T08 撤回的话由两人一起捡回来",
+    "接演出细节（差点笑场/踩台板拍子）+应下馄饨摊，先贺她再定约",
+    "应约+轻戳'家里有事'的借口（'家里人这会儿让你出来？'），拉扯一下再定"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T11_A00",
+     "subject": "HER",
+     "relation": "手势承诺回指（跨轮）",
+     "value": "她曾说过台上只看 ME 打的手势（T06），本轮她看见 ME 在台侧踩台板打拍子",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T06",
+      "message_id": "m0",
+      "quote": "台上我谁都不看，就看给你打的那个手势"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "谁都不看"
+      ],
+      [
+       "那个手势"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T11_A00b",
+     "subject": "HER",
+     "relation": "被撤回的夜宵钩回指（跨轮，本回合被她本人重启）",
+     "value": "她 T07 递过、T08 撤回的夜宵跃迁钩——本轮她以馄饨摊之约亲自捡回",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T07",
+      "message_id": "m0",
+      "quote": "你要是敢请我吃夜宵，我就敢来"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "请我吃夜宵"
+      ],
+      [
+       "我就敢来"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T11_A01",
+     "subject": "HER",
+     "relation": "演出结果",
+     "value": "独唱段稳住了，接低音那句差点笑场",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T11",
+      "message_id": "m0",
+      "quote": "独唱段稳住了，接你低音那句差点笑场"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "独唱段",
+       "稳住"
+      ],
+      [
+       "差点笑场"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T11_A02",
+     "subject": "HER",
+     "relation": "台侧见证",
+     "value": "她看见 ME 在台侧踩台板给她打拍子",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T11",
+      "message_id": "m0",
+      "quote": "你在台侧踩台板给我打的拍子我看见了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "台侧",
+       "拍子"
+      ],
+      [
+       "踩台板给我打"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T11_A03",
+     "subject": "HER",
+     "relation": "重启馄饨摊之约（含推掉散伙饭的借口）",
+     "value": "她推掉团里散伙饭（说家里有事），问桥东那家馄饨摊周日晚上还开着吗",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T11",
+      "message_id": "m1",
+      "quote": "桥东那家馄饨摊，周日晚上还开着吗？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "馄饨摊",
+       "开着"
+      ],
+      [
+       "桥东",
+       "馄饨摊"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "signal 轮（gate：strong，拉扯链 T07钩→T08撤→T11重启的收口）：她把撤回的话自己捡回来——正确反应是顺势应下并给出准信息，别趁机翻旧账（'你不是说当我没说吗'算赢 argument 输关系）。'周日晚上'即当晚（11-29 周日夜，21:31 发问），候选若理解为下周日=时间错。她哥鼓掌最响（m0 语料）可自然回扣家人线。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E340_T12": {
+   "case_id": "E340_T12",
+   "current_action": "深夜她确认九点半桥东馄饨摊、她请客并拿奶茶债一起结，同时留'家里查岗就算了'的退路（intent：确认夜宵并留拒绝空间）",
+   "acceptable_actions": [
+    "确认赴约+接奶茶债回扣（'连本带利，这杯我请回你'之类），把 T01 的线收进夜宵",
+    "确认+一句叮嘱（夜里冷/吃完送她），落点在她回家的安全上",
+    "有事去不了就直说+把奶茶债另约时间还（退路合法但需给补偿方向），不吊着"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E340_T12_A00",
+     "subject": "SHARED",
+     "relation": "奶茶债（长距回指）",
+     "value": "她 T01 讨的周二排练后奶茶（三分糖去冰）——到本轮仍是'你欠我的那杯奶茶'的未结状态",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T01",
+      "message_id": "m0",
+      "quote": "周二排练完给我带杯奶茶，三分糖去冰，别想赖"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "奶茶",
+       "三分糖"
+      ],
+      [
+       "周二排练完",
+       "奶茶"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T12_A00b",
+     "subject": "HER",
+     "relation": "馄饨摊之约回指（跨轮）",
+     "value": "她上一轮问桥东馄饨摊周日晚上开不开（T11，本轮给出答案与时间）",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T11",
+      "message_id": "m1",
+      "quote": "桥东那家馄饨摊，周日晚上还开着吗？"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "馄饨摊",
+       "开着"
+      ],
+      [
+       "桥东",
+       "馄饨摊"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T12_A01",
+     "subject": "SHARED",
+     "relation": "夜宵落定+奶茶债同结",
+     "value": "九点半桥东馄饨摊，她请（她已查过营业到凌晨一点半），奶茶债连夜宵一起结",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T12",
+      "message_id": "m0",
+      "quote": "九点半桥东馄饨摊，我请，你欠我的那杯奶茶连夜宵一起结"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "九点半",
+       "馄饨摊"
+      ],
+      [
+       "奶茶",
+       "一起结"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E340_T12_A02",
+     "subject": "HER",
+     "relation": "查岗退路",
+     "value": "家里要真来电话查岗 ME 就算了（她说一个人也能吃出两桌的热闹）",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E340_T12",
+      "message_id": "m0",
+      "quote": "家里要真来电话查岗你就算了，我一个人也能吃出两桌的热闹"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "查岗",
+       "算了"
+      ],
+      [
+       "两桌的热闹"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true、intent=确认夜宵并留拒绝空间：应约是高收益正解（接住奶茶债回扣=本篇首尾线闭合）；合法拒绝须给真实缘由+补偿方向，冷拒绝把她'两桌的热闹'的期待直接踩掉算读空气失败。'家里查岗'是假设性退路（未发生），不得转述为她家里已反对。九点半/桥东/她请为既定条件，改写任一项=事实错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称她家里已经来电反对或查岗已发生（题面为假设性退路）"
+   ],
+   "may_decline": true
+  }
+ }
+}

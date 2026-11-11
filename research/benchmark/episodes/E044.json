@@ -1,0 +1,149 @@
+{
+ "episode_id": "E044",
+ "persona": {
+  "me": "30岁，程序员，住了两年的老住户；话不多但靠谱。",
+  "her": "28岁，刚搬来的插画师，行李还没拆完，社恐但需求真实。"
+ },
+ "initial_kb": {
+  "me": "养一只银渐层；知道小区周边三家超市和一家宠物医院的水平；对门上个月空置。",
+  "her": "养一只橘猫，社恐，需要帮助时才开口。",
+  "warmth": "对门邻居，昨天搬来时帮她按过电梯。",
+  "stage": "刚认识的对门邻居。",
+  "lessons": "她开口三句必有一个真需求；别把邻居处成销售。"
+ },
+ "turns": [
+  {
+   "case_id": "E044_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你好 对门的 我的快递能帮你收下吗",
+      "ts": "2026-11-05 19:03"
+     }
+    ],
+    "clock": "2026-11-05 19:05",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E044_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "没问题 放我家门口对门那 姓陈 你叫我老陈就行",
+      "ts": "2026-11-05 19:06"
+     }
+    ],
+    "clock": "2026-11-05 19:08",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E044_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "谢谢 对了 这附近哪家超市靠谱",
+      "ts": "2026-11-05 19:14"
+     }
+    ],
+    "clock": "2026-11-05 19:15",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E044_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "南门惠民超市最稳 果蔬肉都行 就是周末人多",
+      "ts": "2026-11-05 19:16"
+     }
+    ],
+    "clock": "2026-11-05 19:18",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E044_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "去了 果蔬不太行 有点蔫",
+      "ts": "2026-11-05 19:20"
+     }
+    ],
+    "clock": "2026-11-05 19:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E044_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那去东门那家 或者直接菜市场 新鲜 早七点后去别赶早",
+      "ts": "2026-11-05 19:24"
+     }
+    ],
+    "clock": "2026-11-05 19:26",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E044_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "谢谢 另外下周我出差三天 猫能麻烦你隔门喂一下吗",
+      "ts": "2026-11-05 19:30"
+     }
+    ],
+    "clock": "2026-11-05 19:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E044_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "可以 你哪三天 走前把猫粮放门口 我一天喂一次水换两回 我家那只也巴不得有伴",
+      "ts": "2026-11-05 19:34"
+     },
+     {
+      "role": "HER",
+      "text": "太好了 下周一到周三 谢谢老陈",
+      "ts": "2026-11-05 19:35"
+     }
+    ],
+    "clock": "2026-11-05 19:36",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

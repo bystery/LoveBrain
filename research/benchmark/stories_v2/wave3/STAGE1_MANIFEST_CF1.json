@@ -1,0 +1,103 @@
+{
+ "kind": "story_v2_wave3_stage1_shard",
+ "stage": "wave3",
+ "date": "2026-11-02",
+ "built_by": "W13-02-CF1",
+ "count": 4,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E149",
+   "title": "原来车是这周日",
+   "themes": [
+    "出行拼车",
+    "顺风车日期倒错",
+    "订单实证更正",
+    "换班连锁",
+    "火锅补约"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E149",
+   "turns": 12,
+   "source_story": "E077",
+   "perturbation": "time",
+   "files": {
+    "episode.json": "0d6112a860f222f443ee9ea03c6cf1170df8cccc138b8372639d872123243d29",
+    "reference.json": "b62bace741c0162cee8df10445dd6073fed7543c50e88ccfe409318b46ca774c",
+    "timeline.json": "414f8dacf679c2315d3e7b4c864a239a6862d3f4cd76deeb282fc98027763789",
+    "audit.md": "f546d3421e927e4d5dea5ded0be4a0d1994e053b9491eb1198aee24877318987"
+   }
+  },
+  {
+   "story_id": "E150",
+   "title": "改了五回的北山局",
+   "themes": [
+    "运动健身",
+    "徒步爬山",
+    "连环改期",
+    "踩点变通",
+    "装备玩笑收尾"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "改期类",
+   "dir": "benchmark/stories_v2/wave3/E150",
+   "turns": 12,
+   "source_story": "E105",
+   "perturbation": "time",
+   "files": {
+    "episode.json": "1476f51694087d352fdcca2592483f6558c9eb1c66564f4f05e6f796b379d17e",
+    "reference.json": "3e3a94b8ec253153fc3c6d3806f75cd34403554252de8161df43272ceb40c079",
+    "timeline.json": "eab2be556e353abbb6d62a7ea48166ba1bde6df66ca96ccb4e04cdd1cf31b723",
+    "audit.md": "7044db15f225ff11e7ab6785b44be4fb759a351b6df83bc4ab9c5177d21863e7"
+   }
+  },
+  {
+   "story_id": "E151",
+   "title": "发小非要跟",
+   "themes": [
+    "运动健身",
+    "骑行团",
+    "第三方插入",
+    "装备借用",
+    "无退路预警",
+    "复盘新规"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E151",
+   "turns": 12,
+   "source_story": "E086",
+   "perturbation": "subject",
+   "files": {
+    "episode.json": "5130d2b9568ec3e2c7f8e8a85c14ba5a6813af4a90b1f92206297ba4b583f80b",
+    "reference.json": "21e9e65dee84623cf7fefd422037175dd806a71c19ec2d2b3627261332fadfa1",
+    "timeline.json": "cdc7d4a54a81e3b86f288bf2d255b242b6c28d54080cec23f67a52b25a4a6219",
+    "audit.md": "04e2cb3fae8ca4fb730f0ae12f65691fa9c8faf0ad1f31396341f2966ec5d9b5"
+   }
+  },
+  {
+   "story_id": "E152",
+   "title": "周末不外借",
+   "themes": [
+    "家居装修",
+    "租房改造",
+    "帮忙边界",
+    "闺蜜推单",
+    "人情记账"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E152",
+   "turns": 12,
+   "source_story": "E072",
+   "perturbation": "negation",
+   "files": {
+    "episode.json": "938335a1107bf8f3493d8fb96a5969d2333f7954b13761b0d2507fac3af40ff9",
+    "reference.json": "0cc4ee198ac308da170f9a23daa0ed2de597db00f621bf9cd80e6d84003a786b",
+    "timeline.json": "292b31d11a3a93fd39664f7ead162d8a7c9ee6842cdbd6f7b99f5392943bb125",
+    "audit.md": "89393ab4d896e07085978e379e4bf9ad1f6f676483ccc5c2a12ba963e84ff753"
+   }
+  }
+ ]
+}

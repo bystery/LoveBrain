@@ -1,0 +1,276 @@
+{
+ "episode_id": "E045",
+ "persona": {
+  "her": {
+   "name": "阿汀",
+   "traits": [
+    "讲义气",
+    "嗓门大心肠软",
+    "认排班表如命",
+    "慌起来爱连发长消息"
+   ],
+   "boundaries": [
+    "不爱欠人情",
+    "被放鸽子会记仇但给台阶就下",
+    "不喜欢别人替她拍板"
+   ]
+  },
+  "me": {
+   "name": "阿岸",
+   "traits": [
+    "记排班记得清",
+    "说话稳",
+    "帮她理话术但不替她做决定",
+    "不替她顶班传话"
+   ]
+  },
+  "relationship_stage": "普通朋友"
+ },
+ "initial_kb": {
+  "her": "阿汀，25岁，'山径咖啡'望江店值班主管。10月20日与同事大周约定对调班次：10月28日她替大周上早班，11月1日大周替她上晚班，为的是参加大学室友苗苗11月1日的婚礼并担任伴娘。",
+  "me": "我记过她的换班约定与婚礼日期：对调涉及10月28日早班与11月1日晚班；我的立场是不替她向店长传话，不替她顶班。",
+  "warmth": "普通朋友偏熟，她聊工作像开吐槽大会，我稳稳接住，不端着也不油腻。"
+ },
+ "turns": [
+  {
+   "case_id": "E045_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-25 20:41",
+      "text": "跟你说个开心事！苗苗11月1号办婚礼，我当伴娘！我跟大周把班换好了，28号我替他顶早班，1号他替我顶晚班，一整晚都能交给苗苗折腾"
+     }
+    ],
+    "clock": "2026-10-25 20:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "兴奋",
+    "warmth": "high",
+    "shift": "开场分享换班安排与伴娘计划，无冲突"
+   }
+  },
+  {
+   "case_id": "E045_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-26 12:10",
+      "text": "对了婚宴定在滨江那边的悦庭酒店，下午三点伴娘就得到场帮苗苗理头纱和红包，所以1号那个晚班是铁定不能上的，还好跟大周换好了"
+     }
+    ],
+    "clock": "2026-10-26 12:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "开心中带认真",
+    "warmth": "high",
+    "shift": "补充婚礼硬性时间，换班动机坐实"
+   }
+  },
+  {
+   "case_id": "E045_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-28 21:30",
+      "text": "28号早班我顶着呢，六点就到店磨豆子了，大周还说1号稳了让我放心挑耳环，我现在就等着婚礼那天了"
+     }
+    ],
+    "clock": "2026-10-28 21:34",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "踏实",
+    "warmth": "high",
+    "shift": "对调前半段兑现，安心等待后半段"
+   }
+  },
+  {
+   "case_id": "E045_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-30 09:02",
+      "text": "完了完了，大周昨天下午突然发微信，说店长把他抓去1号晚上盘点库存，他顶不了我的班了，就甩我一句'找人换一下'，我人都是懵的"
+     }
+    ],
+    "clock": "2026-10-30 09:06",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "懵住发慌",
+    "warmth": "medium",
+    "shift": "取消冲突进场：晚班对调被单方面取消"
+   }
+  },
+  {
+   "case_id": "E045_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-30 12:40",
+      "text": "小满说她能顶1号，但要我3号早班还她，可我3号早上预约了年度体检，一改就得排到下个月，我这算盘打得头都大了"
+     }
+    ],
+    "clock": "2026-10-30 12:44",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "焦虑权衡",
+    "warmth": "medium",
+    "shift": "出现连锁改期：还班与体检撞车"
+   }
+  },
+  {
+   "case_id": "E045_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-30 19:20",
+      "text": "我刚给体检中心打了电话，11月10号有号，改期不收钱，我打算3号还小满的班，就是怕她反悔，你说我微信里该怎么跟她把这事说死"
+     }
+    ],
+    "clock": "2026-10-30 19:24",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "回稳拿主意",
+    "warmth": "medium-high",
+    "shift": "体检让路，换班闭环方向确定"
+   }
+  },
+  {
+   "case_id": "E045_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-10-31 10:15",
+      "text": "成了！小满回我'成交，谁反悔谁请奶茶'，1号她顶晚班，3号我顶她早班，白纸黑字聊天记录为证，我又能安心当伴娘了"
+     }
+    ],
+    "clock": "2026-10-31 10:19",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "释然",
+    "warmth": "high",
+    "shift": "换班重新成立，取消冲突解除"
+   }
+  },
+  {
+   "case_id": "E045_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-01 16:40",
+      "text": "到了到了，堵在滨江桥上差点迟到，头纱差点被我理成拖把，不过苗苗的妆真的绝，我今晚忙完跟你汇报八卦"
+     }
+    ],
+    "clock": "2026-11-01 16:44",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "忙碌兴奋",
+    "warmth": "high",
+    "shift": "婚礼当天兑现，安排闭环进行中"
+   }
+  },
+  {
+   "case_id": "E045_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-02 11:30",
+      "text": "八卦汇报：苗苗抛捧花砸中我了，按规矩我可能下一个结婚，但我现在满脑子都是3号早班，我上辈子欠排班表的"
+     }
+    ],
+    "clock": "2026-11-02 11:34",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "雀跃",
+    "warmth": "high",
+    "shift": "八卦收尾，回扣排班身份"
+   }
+  },
+  {
+   "case_id": "E045_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-03 19:50",
+      "text": "3号早班还完了，小满没反悔奶茶照喝，大周也请了我一杯燕麦拿铁赔罪，这下人情账两清，我睡了个解放觉刚醒"
+     }
+    ],
+    "clock": "2026-11-03 19:54",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "轻松",
+    "warmth": "high",
+    "shift": "还班兑现，人情账清零"
+   }
+  },
+  {
+   "case_id": "E045_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-05 21:10",
+      "text": "我想明白了，以后换班必须截图留证+口头双确认，大周那次就是只发了一句微信才这么悬，你帮我记的那条换班时间线，回头发我抄进备忘录"
+     }
+    ],
+    "clock": "2026-11-05 21:14",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "复盘认真",
+    "warmth": "high",
+    "shift": "沉淀换班流程经验"
+   }
+  },
+  {
+   "case_id": "E045_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-06 20:30",
+      "text": "店长今天还夸我换班处理得有章法，哼，也不看看是谁的军师厉害，下次店里再有人放鸽子，我先来你这儿挂个号"
+     }
+    ],
+    "clock": "2026-11-06 20:34",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "得意放松",
+    "warmth": "high",
+    "shift": "自然收尾，形成遇事先商量的默契"
+   }
+  }
+ ]
+}

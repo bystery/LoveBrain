@@ -1,0 +1,239 @@
+{
+ "episode_id": "E030",
+ "persona": {
+  "me": "27岁，律师，非虚构重度读者；书友会里话不多但说到点上。",
+  "her": "28岁，图书编辑，读书会组织者之一；较真但有趣，输了会认。"
+ },
+ "initial_kb": {
+  "me": "做商事诉讼；每月一本非虚构；书友会来了半年。",
+  "her": "做社科类编辑；主持读书会；自己店里样书不外借——除了这次。",
+  "warmth": "读书会认识四个月，会上偶有交锋，会后没私聊过。",
+  "style": "论点式聊天；引原文不引感觉；打赌要兑现。",
+  "stage": "读书会书友，智识上互相看得上。",
+  "lessons": "她的论点错了要给台阶；打赌必须认账。"
+ },
+ "turns": [
+  {
+   "case_id": "E030_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天你说的那本《上海记》我下单了 你别推荐坑书",
+      "ts": "2026-12-03 21:30"
+     }
+    ],
+    "clock": "2026-12-03 21:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E030_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "坑了算我的 赔你一杯咖啡",
+      "ts": "2026-12-03 21:34"
+     },
+     {
+      "role": "HER",
+      "text": "咖啡就算了 你赔我下一本好书",
+      "ts": "2026-12-03 21:38"
+     }
+    ],
+    "clock": "2026-12-03 21:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E030_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "《上海记》看到一半 有个论点我不服 卡在54页",
+      "ts": "2026-12-06 20:40"
+     }
+    ],
+    "clock": "2026-12-06 20:42",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E030_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "54页那段是作者的暗线 你看到70页会回头道歉",
+      "ts": "2026-12-06 20:44"
+     },
+     {
+      "role": "HER",
+      "text": "好大的口气 我今晚就看完它",
+      "ts": "2026-12-06 20:48"
+     }
+    ],
+    "clock": "2026-12-06 20:50",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E030_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "道歉 来不及了 70页的转折确实妙 但54页的论据还是弱",
+      "ts": "2026-12-07 22:10"
+     }
+    ],
+    "clock": "2026-12-07 22:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E030_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "各退半步 这周书友会你当主讲",
+      "ts": "2026-12-07 22:14"
+     },
+     {
+      "role": "HER",
+      "text": "主讲可以 但你要负责被我问",
+      "ts": "2026-12-07 22:18"
+     }
+    ],
+    "clock": "2026-12-07 22:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E030_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "昨晚被问惨了 谢谢你递的台阶",
+      "ts": "2026-12-10 22:30"
+     }
+    ],
+    "clock": "2026-12-10 22:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E030_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "台阶是我自己想下的 你的问题才是真问题",
+      "ts": "2026-12-10 22:34"
+     },
+     {
+      "role": "HER",
+      "text": "会说话 下期你主讲 我记录",
+      "ts": "2026-12-10 22:38"
+     }
+    ],
+    "clock": "2026-12-10 22:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E030_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我那本《上海记》批注版借你 你看完我们换",
+      "ts": "2026-12-13 15:20"
+     }
+    ],
+    "clock": "2026-12-13 15:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E030_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "两周内还 挟书以令诸侯啊",
+      "ts": "2026-12-13 15:24"
+     },
+     {
+      "role": "HER",
+      "text": "对 读完不还你就欠我一次见面",
+      "ts": "2026-12-13 15:28"
+     }
+    ],
+    "clock": "2026-12-13 15:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E030_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "两周到了 我的书呢",
+      "ts": "2026-12-27 14:00"
+     }
+    ],
+    "clock": "2026-12-27 14:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E030_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "看完了 批注比正文还长 周末书友会后交换?",
+      "ts": "2026-12-27 14:04"
+     },
+     {
+      "role": "HER",
+      "text": "成交 批注你也敢给我看 哈哈 周末见",
+      "ts": "2026-12-27 14:08"
+     }
+    ],
+    "clock": "2026-12-27 14:10",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

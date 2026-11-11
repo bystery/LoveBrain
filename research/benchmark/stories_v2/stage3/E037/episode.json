@@ -1,0 +1,162 @@
+{
+ "episode_id": "E037",
+ "persona": {
+  "me": "31岁，后端程序员，久坐腰背僵，上个月报了私教课；本周项目上线，很忙。",
+  "her": "26岁，私教，排课排得满，说话干脆不绕弯；对新学员会多问一句身体基础。"
+ },
+ "initial_kb": {
+  "me": "项目这周上线，加班到九点是常态；腰是老毛病，医生说核心太弱。",
+  "her": "带课五年，学员以上班族为主；习惯先问身体情况再排强度。",
+  "warmth": "上周体验课刚上完，加了微信约正式课；还没定时间。",
+  "style": "短句；她说排课的事就聊排课，不顺势推销别的课包。",
+  "stage": "新学员与教练，还没建立固定信任。",
+  "lessons": "她改时间是对事不对人；别把专业提醒当成推销。"
+ },
+ "turns": [
+  {
+   "case_id": "E037_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "体验课感觉怎么样 腰今天反应大吗",
+      "ts": "2026-11-02 12:08"
+     }
+    ],
+    "clock": "2026-11-02 12:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E037_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "还行 腰没大反应主要就是僵 这周项目上线 天天得到九点",
+      "ts": "2026-11-02 12:12"
+     }
+    ],
+    "clock": "2026-11-02 12:18",
+    "may_decline": false,
+    "note": "本周只能晚上九点以后，别让她按白天排课白高兴"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E037_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "行 那不硬排 周三晚九点我有空档 就给你留着",
+      "ts": "2026-11-02 12:19"
+     }
+    ],
+    "clock": "2026-11-02 12:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E037_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "教练 周三晚九点的课没问题吧 我刚下班",
+      "ts": "2026-11-04 09:55"
+     }
+    ],
+    "clock": "2026-11-04 09:58",
+    "may_decline": false,
+    "note": "今晚九点刚开完上线复盘会，人还活着，先跟教练确认下",
+    "intent": {
+     "enabled": true,
+     "text": "确认周三晚九点的首节课，问要不要提前做点什么准备",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E037_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "本来是 周三家里有点事 课给你挪到周五晚九点行吗",
+      "ts": "2026-11-04 10:00"
+     }
+    ],
+    "clock": "2026-11-04 10:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E037_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "周五行 那就周五晚九点 谢谢你提前说",
+      "ts": "2026-11-04 10:03"
+     }
+    ],
+    "clock": "2026-11-04 10:05",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "text": "目标改到周五：把首节课正式定在周五晚九点",
+     "status": "ADJUSTED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E037_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "明天课带套换洗的 课前我提前十分钟给你做热身 你腰的事我记住 重点练核心",
+      "ts": "2026-11-05 21:30"
+     }
+    ],
+    "clock": "2026-11-05 21:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E037_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 明天见 带换洗的 听你安排",
+      "ts": "2026-11-05 21:36"
+     },
+     {
+      "role": "HER",
+      "text": "好 周五晚九点别迟到 腰我们慢慢来",
+      "ts": "2026-11-05 21:38"
+     }
+    ],
+    "clock": "2026-11-05 21:40",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

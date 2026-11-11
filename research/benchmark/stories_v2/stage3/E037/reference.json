@@ -1,0 +1,373 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E037",
+ "title": "私教课的排课拉锯",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E037_T01": {
+   "case_id": "E037_T01",
+   "current_action": "如实反馈身体反应，不夸大不轻描淡写",
+   "acceptable_actions": [
+    "说有点酸但能接受",
+    "说腰没大反应主要是僵",
+    "反馈后顺势问她正式课怎么排"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F06",
+     "subject": "我们",
+     "relation": "关系",
+     "value": "上周体验课刚上完，加了微信约正式课",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "上周体验课刚上完，加了微信约正式课"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在做课后回访，别把腰的问题说得太吓人也别逞强。",
+   "unknowns": [
+    "她回访是例行还是对成单在意"
+   ],
+   "protected_expressions": [
+    "体验课感觉怎么样"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造医生新的诊断"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E037_T02": {
+   "case_id": "E037_T02",
+   "current_action": "如实说明本周时间约束，让她按真实情况排课",
+   "acceptable_actions": [
+    "问她晚上有没有空档",
+    "让她看情况排，别勉强",
+    "说明可能要下周才能开始"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F01",
+     "subject": "我",
+     "relation": "状态",
+     "value": "本周项目上线，加班到九点是常态",
+     "valid_time": "2026-11-02 12:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T02",
+      "message_id": "m0",
+      "quote": "这周项目上线 天天得到九点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给约束但别替她做排课决定。",
+   "unknowns": [
+    "她晚上九点后有没有场地"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要假装本周有时间"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E037_T03": {
+   "case_id": "E037_T03",
+   "current_action": "确认这个安排并道谢，不追加要求",
+   "acceptable_actions": [
+    "说就这么定",
+    "问需要自带什么",
+    "简单确认+谢谢"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F02",
+     "subject": "她",
+     "relation": "安排",
+     "value": "周三晚九点给我约了一节课",
+     "valid_time": "2026-11-02 12:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T03",
+      "message_id": "m0",
+      "quote": "周三晚九点我有空档 就给你留着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动给了晚上的空档，这是善意，接住就好。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要反问她是不是快被排满了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E037_T04": {
+   "case_id": "E037_T04",
+   "current_action": "按 intent 确认课程并问准备事项",
+   "acceptable_actions": [
+    "确认时间并问着装/准备",
+    "确认后问要不要提前热身",
+    "说明自己状态请她安排强度"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F02",
+     "subject": "她",
+     "relation": "安排",
+     "value": "周三晚九点给我约了一节课",
+     "valid_time": "2026-11-02 12:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T03",
+      "message_id": "m0",
+      "quote": "周三晚九点我有空档 就给你留着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 是确认+问准备，不是取消。",
+   "unknowns": [
+    "她此刻是否方便回复"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "确认周三晚九点的首节课，问要不要提前做点什么准备",
+    "status": "ACTIVE"
+   }
+  },
+  "E037_T05": {
+   "case_id": "E037_T05",
+   "current_action": "接受改期，明确新时间，不追问她家里的事",
+   "acceptable_actions": [
+    "说周五没问题",
+    "确认周五晚九点并谢她提前说",
+    "轻松回应让她别过意不去"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "周三有事，课改到周五晚九点",
+     "valid_time": "2026-11-04 10:02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T05",
+      "message_id": "m0",
+      "quote": "周三家里有点事 课给你挪到周五晚九点行吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改期是对事；她提前来问已经是尊重你的时间。",
+   "unknowns": [
+    "她家里什么事"
+   ],
+   "protected_expressions": [
+    "周三家里有点事"
+   ],
+   "forbidden_factual_claims": [
+    "不要追问她家里具体什么事",
+    "不要表现出被放鸽子"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E037_T06": {
+   "case_id": "E037_T06",
+   "current_action": "按 ADJUSTED 目标敲定新时间",
+   "acceptable_actions": [
+    "确认周五晚九点",
+    "顺便问周五前要不要注意什么",
+    "简短敲定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "周三有事，课改到周五晚九点",
+     "valid_time": "2026-11-04 10:02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T05",
+      "message_id": "m0",
+      "quote": "周三家里有点事 课给你挪到周五晚九点行吗"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "旧周三时间此后不应再被当成有效安排。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要再提周三上课",
+    "不要假装改期没发生"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "目标改到周五：把首节课正式定在周五晚九点",
+    "status": "ADJUSTED"
+   }
+  },
+  "E037_T07": {
+   "case_id": "E037_T07",
+   "current_action": "接住她的专业安排，如实补充腰的状况",
+   "acceptable_actions": [
+    "说明腰现在什么感觉",
+    "说听她安排",
+    "补充医生的原话供她参考"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F04",
+     "subject": "我",
+     "relation": "病史",
+     "value": "腰是老毛病，医生说核心太弱",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "腰是老毛病，医生说核心太弱"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S037_F05",
+     "subject": "她",
+     "relation": "提醒",
+     "value": "让我带换洗衣物，课前十分钟做热身",
+     "valid_time": "2026-11-05 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T07",
+      "message_id": "m0",
+      "quote": "带套换洗的 课前我提前十分钟给你做热身"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把腰伤记在心里了，这是专业也是善意；如实交流但别变成问诊。",
+   "unknowns": [
+    "她打算第一节课上多大强度"
+   ],
+   "protected_expressions": [
+    "重点练核心"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造最近又看过医生",
+    "不要要求她保证不疼"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E037_T08": {
+   "case_id": "E037_T08",
+   "current_action": "自然收尾，确认明日安排",
+   "acceptable_actions": [
+    "简短道别",
+    "回一个轻松表情级回应",
+    "确认时间后收"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S037_F05",
+     "subject": "她",
+     "relation": "提醒",
+     "value": "让我带换洗衣物，课前十分钟做热身",
+     "valid_time": "2026-11-05 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E037_T07",
+      "message_id": "m0",
+      "quote": "带套换洗的 课前我提前十分钟给你做热身"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "对方已收尾，不硬开新话题。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要在收尾轮再排新的安排"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

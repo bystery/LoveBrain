@@ -1,0 +1,36 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "E015",
+ "title": "普通朋友的低落",
+ "themes": [
+  "普通朋友",
+  "工作挫败",
+  "先听后劝",
+  "无恋爱目标"
+ ],
+ "author": "QoderWork worker-AI (synthetic)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+ "readers": [
+  "author"
+ ],
+ "independent_review": false,
+ "review_note": "同 worker 自检；不是独立封存集。",
+ "created_at": "2026-10-27",
+ "frozen_at": null,
+ "status": "dev_candidate_stage1",
+ "experiments_used": [],
+ "dev_exposed": true,
+ "validation_claim": false,
+ "turns": 8,
+ "may_decline_turns": [],
+ "hashes": {
+  "episode.json": "0407886b44cfeceaf33ad03aac7fb27a04fb1218548a44a0ea60a66953a8980e",
+  "reference.json": "b8c904d79dcab83faeff92acfd040b866fa252e799ec11c391fb2574c7d764d0",
+  "timeline.json": "d3f67704460698c2e311477730956cc432590414a7c004301e13a08dfd7c3e25",
+  "audit.md": "d2197d8de6b9cf6eaa069ed086a6a5562e8a2cb4a9f06d061aacbe18e422e3e7"
+ },
+ "runner_copy": "benchmark/episodes/E015.json",
+ "notes": "首批 8 条之一；12 位扩展/冻结验证在后续批次，不用本批冒充泛化。"
+}

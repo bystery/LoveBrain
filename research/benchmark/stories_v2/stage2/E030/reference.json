@@ -1,0 +1,416 @@
+{
+ "story_id": "E030",
+ "turns": {
+  "E030_T01": {
+   "current_action": "接住'别推荐坑书'——用打赌接住她的信任",
+   "acceptable_actions": [
+    "接打赌+给赔注",
+    "接+问她想看哪类",
+    "接+自荐下一本"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E030_A01",
+     "subject": "她",
+     "relation": "行动",
+     "value": "下单了我推荐的《上海记》",
+     "valid_time": "2026-12-03 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E030_T01",
+      "message_id": "m0",
+      "quote": "那本《上海记》我下单了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她读完会来对账——推荐必须能兑现。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别推荐坑书"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E030_T01"
+  },
+  "E030_T02": {
+   "current_action": "她把咖啡赔注改成'下一本好书'——接住，这是她的货币",
+   "acceptable_actions": [
+    "接受新赔注",
+    "接受+自嘲咖啡不受欢迎",
+    "接受+已经开始想书单"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她要的是智识同好不是物质；记住这笔账。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你赔我下一本好书"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E030_T02"
+  },
+  "E030_T03": {
+   "current_action": "她认真读到54页且不服——进入论点交锋，立场要真",
+   "acceptable_actions": [
+    "给出暗线解读+预告70页",
+    "先问她不服的点",
+    "承认该段难读+给路径"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E030_A02",
+     "subject": "她",
+     "relation": "进度",
+     "value": "读到54页，不服某论点",
+     "valid_time": "2026-12-06 20:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E030_T03",
+      "message_id": "m0",
+      "quote": "卡在54页"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "书是她的领域（编辑）也是我的领域；交锋要平等。",
+   "unknowns": [
+    "她不服的具体论证"
+   ],
+   "protected_expressions": [
+    "有个论点我不服 卡在54页"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造书的具体内容以外的情节"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E030_T03"
+  },
+  "E030_T04": {
+   "current_action": "打赌成立（70页会让她道歉）——赌注已押，等她回来对账",
+   "acceptable_actions": [
+    "确认赌约",
+    "确认+说明暗线逻辑",
+    "确认+接受她当晚读完的挑战"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "智识调情的核心是敢押敢认；别和稀泥。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我今晚就看完它"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E030_T04"
+  },
+  "E030_T05": {
+   "current_action": "她认输一半（转折妙）坚持一半（论据弱）——承认她的坚持，不许全胜",
+   "acceptable_actions": [
+    "承认她论据点有理",
+    "各退半步+提议主讲",
+    "接受半败+给台阶"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E030_A03",
+     "subject": "她",
+     "relation": "让步",
+     "value": "承认70页转折妙，坚持54页论据弱",
+     "valid_time": "2026-12-07 22:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E030_T05",
+      "message_id": "m0",
+      "quote": "70页的转折确实妙"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "打赌要认账，但把'半对'还给她——赢书不赢人。",
+   "unknowns": [],
+   "protected_expressions": [
+    "70页的转折确实妙"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E030_T05"
+  },
+  "E030_T06": {
+   "current_action": "推动她当主讲+她要我问答——约定落成（会上角色互换）",
+   "acceptable_actions": [
+    "确认主讲分工",
+    "确认+提前给她问题清单",
+    "确认+自嘲怕问"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E030_A04",
+     "subject": "她",
+     "relation": "约定",
+     "value": "这周书友会她主讲、我被问",
+     "valid_time": "2026-12-07 22:18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E030_T06",
+      "message_id": "m1",
+      "quote": "主讲可以 但你要负责被我问"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把线上交锋升级成会下分工——关系的正当接口。",
+   "unknowns": [],
+   "protected_expressions": [
+    "但你要负责被我问"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E030_T06"
+  },
+  "E030_T07": {
+   "current_action": "她感谢递台阶——谦逊接住+归功她的准备",
+   "acceptable_actions": [
+    "归功于她+轻收",
+    "自嘲递台阶技术",
+    "问她下次想讲什么"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "公开场合的维护要私下确认效果；她来了，说明对了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谢谢你递的台阶"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E030_T07"
+  },
+  "E030_T08": {
+   "current_action": "她定下期我主讲——接受新分工，交换完成",
+   "acceptable_actions": [
+    "接受+说要准备",
+    "接受+反要她列问题",
+    "接受+自嘲评审更严"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "角色互换=她把组织权分我一半。",
+   "unknowns": [],
+   "protected_expressions": [
+    "下期你主讲 我记录"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E030_T08"
+  },
+  "E030_T09": {
+   "current_action": "她破例借出批注版——这份信任要接得郑重",
+   "acceptable_actions": [
+    "接受借书+承诺归还时间",
+    "接受+问批注能不能看",
+    "接受+说换书公平"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E030_A05",
+     "subject": "她",
+     "relation": "借出",
+     "value": "把批注版《上海记》借我，约定交换",
+     "valid_time": "2026-12-13 15:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E030_T09",
+      "message_id": "m0",
+      "quote": "批注版借你 你看完我们换"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "样书不外借的人为你破了例；两周之期是承诺不是玩笑。",
+   "unknowns": [
+    "她批注里写了什么"
+   ],
+   "protected_expressions": [
+    "批注版借你 你看完我们换"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E030_T09"
+  },
+  "E030_T10": {
+   "current_action": "'不还就欠我一次见面'——她把见面明说了，接住这个钩子",
+   "acceptable_actions": [
+    "接钩+认真定还期",
+    "接钩+说赖账也值",
+    "接钩+说绝不赖账"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E030_A06",
+     "subject": "她",
+     "relation": "钩子",
+     "value": "不还书=欠一次见面",
+     "valid_time": "2026-12-13 15:28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E030_T10",
+      "message_id": "m1",
+      "quote": "读完不还你就欠我一次见面"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已经把台阶铺到见面了；稳稳接住，别嬉皮滑过去。",
+   "unknowns": [],
+   "protected_expressions": [
+    "读完不还你就欠我一次见面"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E030_T10"
+  },
+  "E030_T11": {
+   "current_action": "两周之期她来收账——守约交书+兑现批注的胆量",
+   "acceptable_actions": [
+    "如约交书+给批注",
+    "如约+问她批注最狠一条",
+    "如约+自嘲批注暴露人品"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E030_A07",
+     "subject": "双方",
+     "relation": "期限",
+     "value": "两周还书之期已到",
+     "valid_time": "2026-12-27 14:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E030_T09",
+      "message_id": "m0",
+      "quote": "你看完我们换"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她来收账是信任的对账单；守约就是最好的回答。",
+   "unknowns": [],
+   "protected_expressions": [
+    "两周到了 我的书呢"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E030_T11"
+  },
+  "E030_T12": {
+   "current_action": "'批注你也敢给我看'——交换落成（周末见），收尾",
+   "acceptable_actions": [
+    "确认交换+收",
+    "确认+说批注是诚意",
+    "确认+周末见"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "从书到批注到见面，这条线是她和我一起铺的。",
+   "unknowns": [],
+   "protected_expressions": [
+    "成交 批注你也敢给我看 哈哈 周末见"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E030_T12"
+  }
+ }
+}

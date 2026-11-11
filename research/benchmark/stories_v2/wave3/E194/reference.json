@@ -1,0 +1,743 @@
+{
+ "story_id": "E194",
+ "turns": {
+  "E194_T01": {
+   "case_id": "E194_T01",
+   "current_action": "先肯定她没当场刷卡是对的，再给三问清单化解她的打鼓。",
+   "acceptable_actions": [
+    "肯定先问口径的做法并给出三件待问事项",
+    "先接住'得罪人'的担心再给三问清单",
+    "让她把打包价的原话复述一遍再定问法"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A01",
+     "subject": "THIRD",
+     "relation": "打包报价",
+     "value": "前台报颈椎理疗一疗程十次打包价六百并催当场刷卡",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T01",
+      "quote": "一个疗程十次打包六百",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她最怕被人说小气，先把'没交钱'定性为对。",
+   "unknowns": [
+    "单次价与医保口径此时尚未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称打包价六百是坑人价格"
+   ]
+  },
+  "E194_T02": {
+   "case_id": "E194_T02",
+   "current_action": "给出三问清单：单次价、评估费、医保按次报销口径，并承诺帮她对账。",
+   "acceptable_actions": [
+    "列三问清单并承诺复核她的回报",
+    "列清单之外补一句让她带上医保卡",
+    "只列前两问，报销口径留到现场问"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A02",
+     "subject": "SHARED",
+     "relation": "核对三问",
+     "value": "交费前须问清单次价、评估收费与医保按次报销口径",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T02",
+      "quote": "单次价多少、首次评估收不收费、医保按不按次报销",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A03",
+     "subject": "THIRD",
+     "relation": "打包报价",
+     "value": "疗程十次打包六百的报价待明细核对",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T01",
+      "quote": "一个疗程十次打包六百",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "问题一次列全，省得她来回跑。",
+   "unknowns": [
+    "中心是否支持医保按次结算未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得预设评估费一定不报销"
+   ]
+  },
+  "E194_T03": {
+   "case_id": "E194_T03",
+   "current_action": "接住现场问回的明细与她的算法：确认拆分口径，指出打包六百是纯自费口径、医保路径实付四百四。",
+   "acceptable_actions": [
+    "复述拆分口径并肯定她四百四的算法",
+    "先把两套口径差的一百六解释成'含不含报销'",
+    "肯定算法之余让她当场把口径让前台复述确认"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A04",
+     "subject": "THIRD",
+     "relation": "明细口径",
+     "value": "单次六十、首次评估八十",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T03",
+      "quote": "单次六十、首次评估八十",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A05",
+     "subject": "THIRD",
+     "relation": "报销口径",
+     "value": "医保按次报二十四、自付三十六，评估不报销",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T03",
+      "quote": "医保按次报二十四、自付三十六，评估不报销",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A06",
+     "subject": "HER",
+     "relation": "自算实付",
+     "value": "十次自付三百六十加评估八十共四百四十",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T03",
+      "quote": "十次自付三百六，加评估八十，一共四百四",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她算得对就直说对，别重算一遍显本事。",
+   "unknowns": [
+    "医保实际结算是否与口径一致待首次验证"
+   ],
+   "protected_expressions": [
+    "一共四百四"
+   ],
+   "forbidden_factual_claims": [
+    "不得报出与四百四不同的医保路径总价"
+   ]
+  },
+  "E194_T04": {
+   "case_id": "E194_T04",
+   "current_action": "接住她的拍板：走医保按次结、按三十六一次收，接住她'高人提过醒'的玩笑。",
+   "acceptable_actions": [
+    "确认结算方式并顺着玩笑回一句",
+    "确认之余提醒首次结算后核对小票金额",
+    "把功劳还给她自己算得细"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A07",
+     "subject": "SHARED",
+     "relation": "结算方式确定",
+     "value": "定为走医保按次结、每次自付三十六",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T04",
+      "quote": "要走医保按次结",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A08",
+     "subject": "THIRD",
+     "relation": "报销口径",
+     "value": "医保按次报二十四自付三十六的口径是本次拍板依据",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T03",
+      "quote": "医保按次报二十四、自付三十六，评估不报销",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "玩笑接得住，正事再钉一针。",
+   "unknowns": [
+    "首次小票金额是否恰为三十六未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称评估费走了医保"
+   ]
+  },
+  "E194_T05": {
+   "case_id": "E194_T05",
+   "current_action": "复核账目：三百六十加八十分毫不差，并叮嘱每次取小票、十次流水对得上。",
+   "acceptable_actions": [
+    "报复核结果并给出取小票的流水习惯",
+    "报复核结果之余提议把口径存进备忘录",
+    "只确认账目，流水习惯等首次结算后再提"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A09",
+     "subject": "ME",
+     "relation": "账目复核",
+     "value": "ME 复核三百六十加八十共四百四十分毫不差",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T05",
+      "quote": "三百六十加八十，一分不差",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A10",
+     "subject": "HER",
+     "relation": "自算实付",
+     "value": "她当天算出的四百四被复核确认",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T03",
+      "quote": "一共四百四",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E194_A11",
+     "subject": "SHARED",
+     "relation": "留痕要求",
+     "value": "每次交完取小票，十次流水对得上",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T05",
+      "quote": "每次交完让前台把小票给你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "复核要给结论还要给理由，别只说'没错'。",
+   "unknowns": [
+    "后续是否会出现记账差错未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称已拿到第一张小票"
+   ]
+  },
+  "E194_T06": {
+   "case_id": "E194_T06",
+   "current_action": "接住进度与连约提议：先肯定见效，再接住'连约三场'的问题给她留思考空间。",
+   "acceptable_actions": [
+    "先接见效的好消息，连约问题留到下一轮给建议",
+    "肯定之余问一句身体反应，再谈频次",
+    "让她别急着定，把前五次的感受先说说"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A12",
+     "subject": "HER",
+     "relation": "疗程进度",
+     "value": "已做五次且脖子松快，想赶在年前做完",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T06",
+      "quote": "做到第五次了，脖子松快不少",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A13",
+     "subject": "HER",
+     "relation": "连约提议",
+     "value": "提议一次约三场且前台应允",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T06",
+      "quote": "一次约三场",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "好消息先接住，节奏问题别急着否。",
+   "unknowns": [
+    "连约是否已实际登记未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称五次已痊愈无需做完疗程"
+   ]
+  },
+  "E194_T07": {
+   "case_id": "E194_T07",
+   "current_action": "给出频次建议：理疗隔天一次更稳，且一次一结便于医保记录与小票一一对应。",
+   "acceptable_actions": [
+    "从身体恢复和账目清晰两个理由劝缓连约",
+    "劝缓之余补一句'年前做完没问题'定心",
+    "提议她跟理疗师确认官方建议频次"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A14",
+     "subject": "ME",
+     "relation": "频次建议",
+     "value": "理疗隔天一次更稳且一次一结便于流水对应",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T07",
+      "quote": "理疗隔天一次更稳",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A15",
+     "subject": "HER",
+     "relation": "连约提议",
+     "value": "她此前提出一次约三场待调整",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T06",
+      "quote": "一次约三场",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "两个理由都站得住，让她自己选稳的那条。",
+   "unknowns": [
+    "理疗师官方建议频次未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把隔天一次说成医嘱强制"
+   ]
+  },
+  "E194_T08": {
+   "case_id": "E194_T08",
+   "current_action": "接住多收差错：先肯定她没当场吵、拍照留证做得对，再准备退差方案。",
+   "acceptable_actions": [
+    "肯定留证行为并安抚，让她把小票照片发来核对",
+    "先算清六十减三十六等于二十四的差额再谈退法",
+    "肯定之余提醒她顺带核对前六次是否有同类差错"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "boundary",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A16",
+     "subject": "THIRD",
+     "relation": "多收差错",
+     "value": "第七次被系统记成纯自费收六十多收二十四",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T08",
+      "quote": "第七次那笔被系统记成纯自费，收了我六十，多收了二十四",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A17",
+     "subject": "SHARED",
+     "relation": "留痕要求",
+     "value": "每次取小票的留痕习惯在本次差错中派上用场",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T05",
+      "quote": "把小票给你",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的克制值得夸，别教她翻脸。",
+   "unknowns": [
+    "差错是系统还是人为造成未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称前台故意多收"
+   ]
+  },
+  "E194_T09": {
+   "case_id": "E194_T09",
+   "current_action": "给出退差方案：拿第七次小票与医保结算记录退差额二十四，就事论事不翻旧账。",
+   "acceptable_actions": [
+    "给退差步骤并强调'账要对上'的定位",
+    "给步骤之余提议错峰去退避免前台忙乱",
+    "让她先发小票照片给自己过目再上门"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A18",
+     "subject": "SHARED",
+     "relation": "退差方案",
+     "value": "持第七次小票与医保结算记录退差额二十四",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T09",
+      "quote": "退差额二十四",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A19",
+     "subject": "THIRD",
+     "relation": "多收差错",
+     "value": "第七次多收二十四待退回",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T08",
+      "quote": "多收了二十四",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "钱小理大，方案要一步到位。",
+   "unknowns": [
+    "前台是否痛快认账未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得主张额外赔偿或投诉施压"
+   ]
+  },
+  "E194_T10": {
+   "case_id": "E194_T10",
+   "current_action": "接住差错闭环：前台道歉、二十四原路退回，肯定她流水截图留档的新习惯。",
+   "acceptable_actions": [
+    "确认闭环并夸她把留痕做成了习惯",
+    "确认之余提议把退回记录也截进流水档案",
+    "顺着'下不为例'补一句以后第七次这种节点多看一眼"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A20",
+     "subject": "SHARED",
+     "relation": "退款完成",
+     "value": "前台因排班切换录错道歉，多收二十四当场原路退回",
+     "valid_time": "2026-11-24",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T10",
+      "quote": "二十四当场原路退回",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A21",
+     "subject": "HER",
+     "relation": "流水归档",
+     "value": "十次缴费流水全部截图留档",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T10",
+      "quote": "十次的缴费流水都截了图",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A22",
+     "subject": "SHARED",
+     "relation": "退差方案",
+     "value": "退差额二十四的方案已执行完毕",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T09",
+      "quote": "退差额二十四",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "闭环了就翻篇，别反复数落前台。",
+   "unknowns": [
+    "退回到账时间未知"
+   ],
+   "protected_expressions": [
+    "原路退回"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称前台赔付了额外补偿"
+   ]
+  },
+  "E194_T11": {
+   "case_id": "E194_T11",
+   "current_action": "接住疗程收官：总账四百四与首日算法一致、医生说恢复不错不续疗程，陪她把账与康复双双闭环。",
+   "acceptable_actions": [
+    "确认总账闭环并肯定'不续不需要的疗程'的边界",
+    "先接康复好消息再对总账",
+    "提议把这份流水档案留着当下次就医的模板"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A23",
+     "subject": "SHARED",
+     "relation": "总账核销",
+     "value": "九次医保各三十六加第七次退差与评估八十实付四百四十",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T11",
+      "quote": "实付四百四，跟我第一天算的一分不差",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A24",
+     "subject": "THIRD",
+     "relation": "康复结论",
+     "value": "医生说恢复得不错不用续第二疗程",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T11",
+      "quote": "恢复得不错，不用续第二疗程",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A25",
+     "subject": "ME",
+     "relation": "账目复核",
+     "value": "此前复核的四百四口径与收官总账一致",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T05",
+      "quote": "三百六十加八十，一分不差",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她没续卡是对的，把这条边界说破。",
+   "unknowns": [
+    "颈椎后续保养方式未定"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称第二疗程更划算劝她续卡"
+   ]
+  },
+  "E194_T12": {
+   "case_id": "E194_T12",
+   "current_action": "接住周末风筝局邀约：顺着医嘱活动脖子应约，给个轻快的确定答复。",
+   "acceptable_actions": [
+    "应约并说好时间地点她来定",
+    "应约之余打趣新线轮等着开光",
+    "应约并提醒周日风大小再定时段"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E194_A26",
+     "subject": "HER",
+     "relation": "风筝邀约",
+     "value": "周末风筝局邀 ME 同去以活动脖子",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T12",
+      "quote": "这周末的风筝局你跑不掉了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E194_A27",
+     "subject": "THIRD",
+     "relation": "康复结论",
+     "value": "医嘱恢复良好是本次邀约的背景",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E194_T11",
+      "quote": "不用续第二疗程",
+      "message_id": "m1"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她难得主动，答应得干脆点。",
+   "unknowns": [
+    "周末具体时段与风力待定"
+   ],
+   "protected_expressions": [
+    "风筝局"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已订好的具体时间"
+   ]
+  }
+ }
+}

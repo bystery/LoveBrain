@@ -1,0 +1,90 @@
+{
+ "kind": "story_v2_stage1_manifest",
+ "stage": "wave3",
+ "session": "T4-G5-generation",
+ "date": "2026-11-02",
+ "count": 4,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E197",
+   "title": "包间服务费的两种说法",
+   "domain": "餐饮聚会",
+   "conflict_type": "信息不确定类",
+   "themes": [
+    "餐饮聚会",
+    "导师荣休答谢宴",
+    "包间服务费口径不确定",
+    "低消压线核算",
+    "大厅改址止损"
+   ],
+   "dir": "benchmark/stories_v2/wave3/E197",
+   "turns": 12,
+   "files": {
+    "episode.json": "b19ed24404e31d1dc6453c4760f70f7f66bcb8c222914190f510c5208d183655",
+    "reference.json": "43f005311be15bd9209fa0ea93ec000da712f9747310d94afe01eecf2d9e5a61",
+    "timeline.json": "e11aeefe511d0d52c607c336558562e824198f56b4b09815931af746ec2b9331"
+   }
+  },
+  {
+   "story_id": "E198",
+   "title": "折叠车不上车",
+   "domain": "出行拼车",
+   "conflict_type": "边界类",
+   "themes": [
+    "出行拼车",
+    "古镇自驾拼车",
+    "后备箱载物边界",
+    "折叠电动车拒载",
+    "车规讲在前头"
+   ],
+   "dir": "benchmark/stories_v2/wave3/E198",
+   "turns": 12,
+   "files": {
+    "episode.json": "08c683506e3c2f861324467e352ef5a7f419b51064135ef1b1b635073457a361",
+    "reference.json": "5b91fa837ade612887450c57443d926c321da9979322904c717729343fe3da20",
+    "timeline.json": "56dfaec4363a7f508402ed21336a5f050e9e64dceb6f9e42e11b75b7c5cc3df4"
+   }
+  },
+  {
+   "story_id": "E199",
+   "title": "换房计划按下暂停键",
+   "domain": "家庭事务",
+   "conflict_type": "目标启停类",
+   "themes": [
+    "家庭事务",
+    "父母换房计划",
+    "健康事件触发暂停",
+    "先卖后买降档重启",
+    "白纸黑字留痕"
+   ],
+   "dir": "benchmark/stories_v2/wave3/E199",
+   "turns": 12,
+   "files": {
+    "episode.json": "426fa799f1cf2c4633361dd904210c904a751327121b91eecd4a2d2515361cf4",
+    "reference.json": "37a6468e6fb98b8fa7269b9b2d007664d45425f04a080b236871262967b4603d",
+    "timeline.json": "4a175b9ad3dfc5e0474e2c28892326c3e58e7278a113da3694483419f443c38b"
+   }
+  },
+  {
+   "story_id": "E200",
+   "title": "改签费的一百二十四块",
+   "domain": "工作职场",
+   "conflict_type": "费用类",
+   "themes": [
+    "工作职场",
+    "外地驻场差旅",
+    "发票抬头重开",
+    "改签费归属之争",
+    "特殊审批闭环"
+   ],
+   "dir": "benchmark/stories_v2/wave3/E200",
+   "turns": 12,
+   "files": {
+    "episode.json": "b183c5daec0f4c78553853b93efa0ee2f753c2d9b845ae3e6f595da8816d44c0",
+    "reference.json": "08e0a8f85993472201da20680c420fcd73082da3a48d72c0cea56b51318cffee",
+    "timeline.json": "6ca048de8cf798ccfe86f31591560d0bdf3f7e9975478d128b8f79cdfb8e1182"
+   }
+  }
+ ]
+}

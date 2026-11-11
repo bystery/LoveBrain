@@ -1,0 +1,239 @@
+{
+ "episode_id": "E029",
+ "persona": {
+  "me": "28岁，程序员，夜跑两年，配速稳但没冲劲；嘴上接梗快。",
+  "her": "26岁，银行柜员，白天笑僵了晚上来跑步放空；配速比我快，好胜。"
+ },
+ "initial_kb": {
+  "me": "住公园附近，每周夜跑三四次；程序员，近期项目忙。",
+  "her": "银行柜员，年底对账季压力大；配速530；休假计划在谈。",
+  "warmth": "公园夜跑认识一个月，同跑过五六次，偶有微信闲聊，暧昧未挑明。",
+  "style": "轻调侃；她好胜，激将有效；不查户口。",
+  "stage": "夜跑搭子，渐熟未明。",
+  "lessons": "她抛暧昧钩子时接住但别扑；家庭事优先于跑局。"
+ },
+ "turns": [
+  {
+   "case_id": "E029_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今晚去吗 我七点半到公园南门",
+      "ts": "2026-12-07 20:35"
+     }
+    ],
+    "clock": "2026-12-07 20:37",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E029_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "去 今晚配速放慢点 昨天腿还酸",
+      "ts": "2026-12-07 20:40"
+     },
+     {
+      "role": "HER",
+      "text": "行 那你跟不上我可不管",
+      "ts": "2026-12-07 20:44"
+     }
+    ],
+    "clock": "2026-12-07 20:46",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E029_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下周我休假五天 你要不要把这周的量补给我",
+      "ts": "2026-12-07 21:40"
+     }
+    ],
+    "clock": "2026-12-07 21:42",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E029_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "量的单位是公里 我接不住五天份",
+      "ts": "2026-12-07 21:44"
+     },
+     {
+      "role": "HER",
+      "text": "那你欠着 利息按配速算",
+      "ts": "2026-12-07 21:48"
+     }
+    ],
+    "clock": "2026-12-07 21:50",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E029_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "说正经的 我休假想去海边 你有推荐吗",
+      "ts": "2026-12-07 21:56"
+     }
+    ],
+    "clock": "2026-12-07 21:58",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E029_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "青岛。人少，海风冷但干净。想搭伙的话先说好，我跑得比你慢",
+      "ts": "2026-12-07 21:59"
+     },
+     {
+      "role": "HER",
+      "text": "谁要跟你去 哈哈 我意思是 要是有个搭子就好了",
+      "ts": "2026-12-07 22:01"
+     }
+    ],
+    "clock": "2026-12-07 22:03",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E029_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "说真的 你九月有假吗 我查了下青岛机票",
+      "ts": "2026-12-08 20:30"
+     }
+    ],
+    "clock": "2026-12-08 20:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E029_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "九月有年假。先说好费用AA，我不占姑娘便宜",
+      "ts": "2026-12-08 20:34"
+     },
+     {
+      "role": "HER",
+      "text": "谁要你请 那先记着",
+      "ts": "2026-12-08 20:38"
+     }
+    ],
+    "clock": "2026-12-08 20:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E029_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周末夜跑暂停 我妈来了 要陪她逛街",
+      "ts": "2026-12-12 10:20"
+     }
+    ],
+    "clock": "2026-12-12 10:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E029_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 陪好阿姨 回来把配速补上",
+      "ts": "2026-12-12 10:24"
+     },
+     {
+      "role": "HER",
+      "text": "哈哈你惦记的是配速吗",
+      "ts": "2026-12-12 10:28"
+     }
+    ],
+    "clock": "2026-12-12 10:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E029_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下周一恢复 周六我要赖床 你别来抓我",
+      "ts": "2026-12-14 20:30"
+     }
+    ],
+    "clock": "2026-12-14 20:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E029_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "遵命。周一南门老地方，给你带热水",
+      "ts": "2026-12-14 20:34"
+     },
+     {
+      "role": "HER",
+      "text": "有热水 你就是好人 哈哈 拜拜",
+      "ts": "2026-12-14 20:38"
+     }
+    ],
+    "clock": "2026-12-14 20:40",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

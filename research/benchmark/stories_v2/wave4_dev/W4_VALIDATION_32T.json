@@ -1,0 +1,29 @@
+{
+ "kind": "story_v2_wave4_dev_validation",
+ "date": "2026-10-27",
+ "turn_per_story": 32,
+ "expected_count": 1,
+ "passed": true,
+ "stories": [
+  {
+   "story_id": "E338",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "E338",
+    "turns": 32,
+    "atoms": 96,
+    "required_atoms": 18,
+    "may_decline": [
+     "E338_T08",
+     "E338_T21",
+     "E338_T32"
+    ],
+    "intents": []
+   }
+  }
+ ],
+ "errors": [],
+ "unique_cases": 32,
+ "stories_passed": 1
+}

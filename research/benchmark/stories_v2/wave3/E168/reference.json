@@ -1,0 +1,226 @@
+{
+ "story_id": "E168",
+ "turns": {
+  "E168_T01": {
+   "case_id": "E168_T01",
+   "current_action": "回应攀岩局邀约，确认或婉拒周日上午十点城西岩馆体验课",
+   "acceptable_actions": [
+    "答应参加，让HER把群和集合信息发来",
+    "答应参加并调侃自己第一次上墙别笑话",
+    "合法婉拒或犹豫（may_decline=true），但接住约局的心意另约时间"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A01", "subject": "THIRD", "relation": "组织", "value": "苗苗订了城西岩馆体验课四人一团", "valid_time": "2026-11-30 19:02", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T01", "message_id": "m0", "quote": "苗苗订了城西岩馆的体验课，周日上午十点"}, "required_this_turn": false},
+    {"atom_id": "E168_A02", "subject": "SHARED", "relation": "跨篇引用", "value": "攀岩局承接上回音乐节同批人（苗苗提议）", "valid_time": "2026-11-08 22:35", "status": "asserted", "negation": false, "cross_story": true, "cross_case_ref": "E167_T11", "source": {"kind": "message", "case_id": "E168_T01", "message_id": "m0", "quote": "上回音乐节那波人凑齐了"}, "required_this_turn": false},
+    {"atom_id": "E168_A03", "subject": "THIRD", "relation": "跨篇引用", "value": "A篇苗苗提议下月组室内攀岩局，本篇兑现", "valid_time": "2026-11-08 22:35", "status": "asserted", "negation": false, "cross_story": true, "cross_case_ref": "E167_T11", "source": {"kind": "initial_kb", "key": "lessons", "quote": "苗苗提议下月组室内攀岩局"}, "required_this_turn": false}
+   ],
+   "private_guidance": "本回合是跨篇邀约的兑现点：接局要顺，不必重复A篇音乐节细节",
+   "unknowns": ["ME是否答应未定（may_decline=true）"],
+   "protected_expressions": ["就差你点头"],
+   "forbidden_factual_claims": ["不得声称已付体验课费用", "不得编造ME有攀岩经验"]
+  },
+  "E168_T02": {
+   "case_id": "E168_T02",
+   "current_action": "帮HER算128散客与108团购两个价哪个划算",
+   "acceptable_actions": [
+    "算差价：四人团团购108省80，建议走团购",
+    "提醒团购要锁位和可能的改期限制再定",
+    "顺着她补一句先问清装备是否都含再下单"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A04", "subject": "THIRD", "relation": "报价", "value": "散客体验课一人128元含装备", "valid_time": "2026-12-01 12:30", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T02", "message_id": "m0", "quote": "体验课一人128含装备"}, "required_this_turn": false},
+    {"atom_id": "E168_A05", "subject": "THIRD", "relation": "报价", "value": "团购价108元但需凑满四人锁位", "valid_time": "2026-12-01 12:30", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T02", "message_id": "m0", "quote": "团购108但要凑满四人锁位"}, "required_this_turn": false}
+   ],
+   "private_guidance": "本回合当个靠谱算账的：结论给清楚，不装作比店家还懂",
+   "unknowns": ["团购锁位后改期规则未定（T06才揭晓）"],
+   "protected_expressions": ["价儿整晕我了"],
+   "forbidden_factual_claims": ["不得断言团购价必然无附加费用"]
+  },
+  "E168_T03": {
+   "case_id": "E168_T03",
+   "current_action": "答应垫付HER团购锁位的108元，并接住老纪跑路的玩笑",
+   "acceptable_actions": [
+    "秒答应垫付，顺着玩笑说自己是留记录的人不跑路",
+    "答应垫付，让她锁位后把订单截图发来对账",
+    "答应垫付并调侃堵公司这招挺狠"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A06", "subject": "SHARED", "relation": "垫付债务", "value": "ME为HER垫付团购锁位108元，HER说回头发还", "valid_time": "2026-12-01 21:15", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T03", "message_id": "m0", "quote": "你先帮我垫一下一百零八，回头发你"}, "required_this_turn": false},
+    {"atom_id": "E168_A07", "subject": "SHARED", "relation": "跨篇引用", "value": "玩笑引用A篇老纪跑路事件表明ME靠谱", "valid_time": "2026-11-06 19:32", "status": "asserted", "negation": false, "cross_story": true, "cross_case_ref": "E167_T02", "source": {"kind": "message", "case_id": "E168_T03", "message_id": "m0", "quote": "你可别学老纪跑路啊"}, "required_this_turn": false},
+    {"atom_id": "E168_A08", "subject": "THIRD", "relation": "跨篇引用", "value": "A篇老纪临时换司机致全车退群，成为本篇玩笑依据", "valid_time": "2026-11-06 19:32", "status": "asserted", "negation": false, "cross_story": true, "cross_case_ref": "E167_T02", "source": {"kind": "initial_kb", "key": "lessons", "quote": "老纪临时换司机"}, "required_this_turn": false}
+   ],
+   "private_guidance": "本回合垫付复现A篇模式：爽快垫、玩笑接住、可留书面记录",
+   "unknowns": ["HER何时归还108未定（T12结清）"],
+   "protected_expressions": ["回头发你"],
+   "forbidden_factual_claims": ["不得声称ME已向岩馆付款成功（仅承诺垫付）"]
+  },
+  "E168_T04": {
+   "case_id": "E168_T04",
+   "current_action": "接住HER兑现酸汤牛肉承诺的早安消息并确认赴约",
+   "acceptable_actions": [
+    "确认赴约，顺嘴问酸汤牛肉哪家",
+    "接住还情，回一句攀岩完正好饿",
+    "确认并调侃她终于肯还账了"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A09", "subject": "SHARED", "relation": "跨篇引用", "value": "HER兑现A篇欠下的酸汤牛肉，定在攀岩当天岩馆旁边", "valid_time": "2026-11-09 09:20", "status": "asserted", "negation": false, "cross_story": true, "cross_case_ref": "E167_T12", "source": {"kind": "message", "case_id": "E168_T04", "message_id": "m0", "quote": "上回欠你的酸汤牛肉我记着呢"}, "required_this_turn": false},
+    {"atom_id": "E168_A10", "subject": "HER", "relation": "跨篇引用", "value": "A篇HER答应请ME一顿酸汤牛肉，本篇开始兑现", "valid_time": "2026-11-09 09:20", "status": "asserted", "negation": false, "cross_story": true, "cross_case_ref": "E167_T12", "source": {"kind": "initial_kb", "key": "lessons", "quote": "HER答应请ME一顿酸汤牛肉"}, "required_this_turn": false}
+   ],
+   "private_guidance": "本回合确认兑现即可，不把A篇账目再翻一遍",
+   "unknowns": ["牛肉具体哪家店以HER同事推荐为准，店名未定"],
+   "protected_expressions": ["酸汤够味"],
+   "forbidden_factual_claims": ["不得声称牛肉已吃过（T11才定在明天中午）"]
+  },
+  "E168_T05": {
+   "case_id": "E168_T05",
+   "current_action": "答应路过岩馆前台帮问改期费用，接住苗苗加班的突发",
+   "acceptable_actions": [
+    "答应去问，并提醒先别自己扛费用的事",
+    "答应问询，顺带给个先打电话问客服的更快路子",
+    "答应问询并安抚：改不改期都以大家时间为先"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "initiative", "interaction"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A11", "subject": "THIRD", "relation": "突发", "value": "苗苗公司周日临时排班加班，局可能挪到周六", "valid_time": "2026-12-04 18:20", "status": "uncertain", "negation": false, "source": {"kind": "message", "case_id": "E168_T05", "message_id": "m0", "quote": "苗苗公司周日临时排她加班"}, "required_this_turn": false},
+    {"atom_id": "E168_A12", "subject": "SHARED", "relation": "待核实", "value": "锁位改期是否收费尚不确定", "valid_time": "2026-12-04 18:20", "status": "uncertain", "negation": false, "source": {"kind": "message", "case_id": "E168_T05", "message_id": "m0", "quote": "锁位改期要收啥费用啊"}, "required_this_turn": false}
+   ],
+   "private_guidance": "本回合跑腿要痛快，问询结果是下回合素材，不预设答案",
+   "unknowns": ["改期费用规则未定", "局最终挪不挪未定"],
+   "protected_expressions": ["我下班晚赶不上"],
+   "forbidden_factual_claims": ["不得声称已知改期手续费金额（T06才问出）"]
+  },
+  "E168_T06": {
+   "case_id": "E168_T06",
+   "current_action": "消化改期手续费规则，回应HER对二十元责任归属的不平",
+   "acceptable_actions": [
+    "认同责任不该三人担，建议先跟苗苗商量再决定",
+    "给出务实建议：二十元小事，先保住改期优先权",
+    "顺着她说理，但提醒别跟店家 hard 碰，找苗苗对齐"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A13", "subject": "SHARED", "relation": "费用规则", "value": "团购锁定日期改期收每人二十元手续费", "valid_time": "2026-12-04 19:05", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T06", "message_id": "m0", "quote": "改期要收每人二十手续费"}, "required_this_turn": false},
+    {"atom_id": "E168_A14", "subject": "HER", "relation": "立场", "value": "HER认为二十元不该由三人承担", "valid_time": "2026-12-04 19:05", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T06", "message_id": "m0", "quote": "苗苗加班又不是咱仨的原因"}, "required_this_turn": false}
+   ],
+   "private_guidance": "本回合是费用责任划分的争议点：站在道理一边，但不激化",
+   "unknowns": ["苗苗是否自己认下手续费未定（T07揭晓）"],
+   "protected_expressions": ["凭啥算我们的"],
+   "forbidden_factual_claims": ["不得声称已有人支付手续费"]
+  },
+  "E168_T07": {
+   "case_id": "E168_T07",
+   "current_action": "回应苗苗自认手续费的消息，就三人是否悄悄AA给出看法",
+   "acceptable_actions": [
+    "赞成AA她那份，但建议私下转别声张",
+    "建议先别AA，看调班结果再定",
+    "接住她心软的点，说苗苗够意思，方案你来定"
+   ],
+   "applicable_dimensions": ["goal", "emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A15", "subject": "THIRD", "relation": "表态", "value": "苗苗主动认下二十元手续费", "valid_time": "2026-12-05 10:30", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T07", "message_id": "m0", "quote": "苗苗自己把这二十认下来了"}, "required_this_turn": false},
+    {"atom_id": "E168_A16", "subject": "SHARED", "relation": "跨轮引用", "value": "争议标的即前述每人二十元改期手续费", "valid_time": "2026-12-04 19:05", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T06", "message_id": "m0", "quote": "改期要收每人二十手续费"}, "required_this_turn": true}
+   ],
+   "private_guidance": "本回合接心软：方案给轻，不把AA上纲成原则问题",
+   "unknowns": ["局是否仍需改期未定（T08揭晓）"],
+   "protected_expressions": ["不是滋味"],
+   "forbidden_factual_claims": ["不得声称AA已执行"]
+  },
+  "E168_T08": {
+   "case_id": "E168_T08",
+   "current_action": "确认调班成功不改期，并答应核对垫付108的支付记录",
+   "acceptable_actions": [
+    "答应核对并报出确切金额108与支付时间",
+    "确认垫付记录无误，顺带恭喜不用改期",
+    "答应核对，提醒她回头把108一起转"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A17", "subject": "THIRD", "relation": "状态翻转", "value": "苗苗调班成功，周日照常不改期，手续费省下", "valid_time": "2026-12-05 15:12", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T08", "message_id": "m0", "quote": "周日能来，不用改期"}, "required_this_turn": false},
+    {"atom_id": "E168_A18", "subject": "SHARED", "relation": "跨轮引用", "value": "核对对象为ME周二垫付的团购108元", "valid_time": "2026-12-01 21:15", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T03", "message_id": "m0", "quote": "你先帮我垫一下一百零八"}, "required_this_turn": true}
+   ],
+   "private_guidance": "本回合闭环改期线：手续费线解除，垫付账目对齐金额",
+   "unknowns": ["HER何时归还108未定"],
+   "protected_expressions": ["别多算了就行"],
+   "forbidden_factual_claims": ["不得声称手续费已支付后又退还"]
+  },
+  "E168_T09": {
+   "case_id": "E168_T09",
+   "current_action": "出发日报位置并代购电解质水，同时归还A篇遗留的40元定金垫款",
+   "acceptable_actions": [
+    "确认收到40元转账，报自己位置与带水安排",
+    "查收并调侃她终于清账，再报集合细节",
+    "确认到账，顺带一句这钱攒了快一个月利息请电解质水抵了"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A19", "subject": "SHARED", "relation": "跨篇引用", "value": "HER归还A篇ME垫付的40元拼车定金，转账已发", "valid_time": "2026-11-06 22:05", "status": "asserted", "negation": false, "cross_story": true, "cross_case_ref": "E167_T05", "source": {"kind": "initial_kb", "key": "lessons", "quote": "ME帮HER垫了40元定金"}, "required_this_turn": true},
+    {"atom_id": "E168_A20", "subject": "SHARED", "relation": "跨篇引用", "value": "A篇垫付原话「你先帮我垫一下四十，回头发你」在本篇由HER履约归还", "valid_time": "2026-11-06 22:05", "status": "asserted", "negation": false, "cross_story": true, "cross_case_ref": "E167_T05", "source": {"kind": "message", "case_id": "E168_T09", "message_id": "m0", "quote": "上回那40块车费垫款我刚转你了"}, "required_this_turn": false},
+    {"atom_id": "E168_A21", "subject": "SHARED", "relation": "代购请求", "value": "ME顺路带一瓶电解质水，地铁3号口会合", "valid_time": "2026-12-06 09:05", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T09", "message_id": "m0", "quote": "顺路帮我带瓶电解质水"}, "required_this_turn": false}
+   ],
+   "private_guidance": "本回合是跨篇履约点：40元到账要确认，别再念叨她拖欠",
+   "unknowns": ["电解质水品牌未定"],
+   "protected_expressions": ["别再说我拖欠哈"],
+   "forbidden_factual_claims": ["不得声称108也在这笔里一并转了（108在T12结清）"]
+  },
+  "E168_T10": {
+   "case_id": "E168_T10",
+   "current_action": "回应攀岩体验复盘，就3960正式课是否值得给出参谋",
+   "acceptable_actions": [
+    "先夸她重心稳，再建议贵课先降级试次卡",
+    "给理性账：一期太重，先算单次价再决定",
+    "接住求夸，顺带说自己可以陪练但课费她自定"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A22", "subject": "SHARED", "relation": "体验反馈", "value": "攀岩体验课累但爽，教练夸HER重心稳", "valid_time": "2026-12-06 17:40", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T10", "message_id": "m0", "quote": "教练还夸我重心稳"}, "required_this_turn": false},
+    {"atom_id": "E168_A23", "subject": "SHARED", "relation": "决策点", "value": "正式课一期十二节3960元，HER犹豫是否值得", "valid_time": "2026-12-06 17:40", "status": "uncertain", "negation": false, "source": {"kind": "message", "case_id": "E168_T10", "message_id": "m0", "quote": "一期十二节要3960"}, "required_this_turn": false}
+   ],
+   "private_guidance": "本回合参谋不替她拍板：先夸再算账，决定权留给她",
+   "unknowns": ["是否报正式课未定（T11她自行决定）"],
+   "protected_expressions": ["贵得肉疼"],
+   "forbidden_factual_claims": ["不得声称已替她报课或垫付3960"]
+  },
+  "E168_T11": {
+   "case_id": "E168_T11",
+   "current_action": "确认她的十次卡折中方案，并应下明天中午的酸汤牛肉之约",
+   "acceptable_actions": [
+    "肯定折中方案划算，确认明天中午赴约",
+    "接住放鸽子的玩笑，反将一军说自己从不迟到",
+    "确认赴约，顺带问要不要顺路帮她带什么"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "initiative", "emotion_relation"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A24", "subject": "SHARED", "relation": "决策", "value": "HER决定买十次卡2380与苗苗拼私教分摊", "valid_time": "2026-12-06 22:05", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T11", "message_id": "m0", "quote": "先买十次卡2380跟苗苗拼私教分摊"}, "required_this_turn": false},
+    {"atom_id": "E168_A25", "subject": "SHARED", "relation": "跨轮引用", "value": "酸汤牛肉兑现日确定为明天中午", "valid_time": "2026-12-02 08:40", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T04", "message_id": "m0", "quote": "攀岩完那顿我请"}, "required_this_turn": true}
+   ],
+   "private_guidance": "本回合肯定她的降级决策（贵则降级是她边界），赴约要给准信",
+   "unknowns": ["十次卡购买时间未定"],
+   "protected_expressions": ["你敢放鸽子试试"],
+   "forbidden_factual_claims": ["不得声称十次卡已购"]
+  },
+  "E168_T12": {
+   "case_id": "E168_T12",
+   "current_action": "完成对账收尾：108与40均结清、牛肉兑现，接下教系绳结的新钩子",
+   "acceptable_actions": [
+    "认账对齐，爽快应下教系绳结",
+    "对账并调侃她这次清账速度比上次快多了",
+    "应下绳结教学，顺带约定下回攀岩带上十次卡的搭子局"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {"atom_id": "E168_A26", "subject": "SHARED", "relation": "跨轮引用", "value": "ME垫付的108元由HER周一上午转账结清", "valid_time": "2026-12-01 21:15", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T03", "message_id": "m0", "quote": "你先帮我垫一下一百零八"}, "required_this_turn": true},
+    {"atom_id": "E168_A27", "subject": "SHARED", "relation": "跨轮引用", "value": "A篇遗留40元垫款已于昨日转账结清", "valid_time": "2026-12-06 09:05", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T09", "message_id": "m0", "quote": "上回那40块车费垫款我刚转你了"}, "required_this_turn": true},
+    {"atom_id": "E168_A28", "subject": "SHARED", "relation": "跨轮引用", "value": "酸汤牛肉已于当日中午由HER请客兑现", "valid_time": "2026-12-06 22:05", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T11", "message_id": "m0", "quote": "酸汤牛肉明天中午兑现"}, "required_this_turn": true},
+    {"atom_id": "E168_A29", "subject": "SHARED", "relation": "新钩子", "value": "下回攀岩ME教HER系绳结", "valid_time": "2026-12-07 13:10", "status": "asserted", "negation": false, "source": {"kind": "message", "case_id": "E168_T12", "message_id": "m0", "quote": "下回攀岩你教我系绳结"}, "required_this_turn": false}
+   ],
+   "private_guidance": "本回合全账清零收尾：数字要对齐（108今早、40昨天），钩子接住不画大饼",
+   "unknowns": ["系绳结教学的下回时间未定", "十次卡是否已购未定"],
+   "protected_expressions": ["别藏私"],
+   "forbidden_factual_claims": ["不得声称还有未结账目", "不得声称A篇拼车局后来又成行了"]
+  }
+ }
+}

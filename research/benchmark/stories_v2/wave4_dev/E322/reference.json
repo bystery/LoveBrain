@@ -1,0 +1,1014 @@
+{
+ "story_id": "E322",
+ "turns": {
+  "E322_T01": {
+   "case_id": "E322_T01",
+   "current_action": "她周二加班盘库去不了健身并问会不会又说她放鸽子，预告21号周六特展开幕她参与修的《杜工部集》残卷上展",
+   "acceptable_actions": [
+    "接放鸽子问句（'不会，盘库是正事'式）+接特展预告（问哪两册/要不要票）",
+    "先结论后理由（ME 调子）：直接说想去看，再补理由（想看她修的册子）",
+    "调侃'又说我放鸽子'（顺着她的'又'接）再正经接展讯"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T01_A01",
+     "subject": "HER",
+     "relation": "健身缺席",
+     "value": "明晚（2026-11-17 周二）健身她去不了，馆里让她周二晚上加班盘古籍库房",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T01",
+      "message_id": "m0",
+      "quote": "明晚健身我去不了了，馆里让我周二晚上加班盘古籍库房"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T01_A02",
+     "subject": "SHARED",
+     "relation": "特展预告",
+     "value": "21号（2026-11-21）周六特展开幕，她参与修的两册宋刻本《杜工部集》残卷上展",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T01",
+      "message_id": "m0",
+      "quote": "21号周六我们馆的宋刻本特展开幕，我参与修的那两册《杜工部集》残卷也上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T01_A03",
+     "subject": "SHARED",
+     "relation": "展品地位",
+     "value": "残卷是本次最贵的展品，戴手套才能碰的那种",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T01",
+      "message_id": "m0",
+      "quote": "本次最贵的展品，戴手套才能碰的那种"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T01_A04",
+     "subject": "HER",
+     "relation": "放鸽子试探",
+     "value": "她问 ME 会不会又说她放鸽子",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T01",
+      "message_id": "m0",
+      "quote": "你会不会又说我放你鸽子。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的'又说我放你鸽子'自带'又'——ME 顺着接即可，不追究此前谁放过谁（故事未给，编造细节=错误）。",
+   "unknowns": [
+    {
+     "topic": "此前放鸽子事件细节",
+     "note": "故事未给，ME 若玩笑不得编造具体事件",
+     "markers": [
+      [
+       "上次",
+       "放鸽子"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "上次",
+       "放鸽子"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造此前放鸽子事件细节"
+   ],
+   "may_decline": false
+  },
+  "E322_T02": {
+   "case_id": "E322_T02",
+   "current_action": "两个家属名额（本给爸妈，他们去舅家吃乔迁酒）空出来了，她说谁陪她看修的册子要讲清楚哪页补虫洞哪页换线（intent：递出空出的家属名额并期待邀约；note：帮我把周六的约正式说出口，别只接话不动作，也别问她想给谁）",
+   "acceptable_actions": [
+    "正式接下名额并发出邀约：21号开幕 ME 去，给一个具体到场安排（如周六上午开幕时段，门口等她）",
+    "先结论：周六开幕我去，你留一个名额给我；再补理由（想看虫洞那页）",
+    "接'讲清楚哪页是虫洞哪页换线'（这是她的骄傲），预约当第一个听众"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T02_A01",
+     "subject": "HER",
+     "relation": "名额空出",
+     "value": "开幕那天她两个家属名额本来给爸妈的，他们临时去舅家吃乔迁酒，名额空出来了",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T02",
+      "message_id": "m0",
+      "quote": "开幕那天我两个家属名额，本来给我爸妈的，他们临时去我舅家吃乔迁酒，名额空出来了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T02_A02",
+     "subject": "HER",
+     "relation": "讲解承诺",
+     "value": "她说谁陪她去看她修的册子，她得给人家讲清楚哪页是补的虫洞、哪页是换的线",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T02",
+      "message_id": "m0",
+      "quote": "谁陪我去看我修的册子，我得给人家讲清楚哪页是我补的虫洞，哪页是我换的线"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T06 意图轮核心：行为方向=正式邀约（接住窗口+动作）。lessons：她把名额递出来已经是话说一半——ME 要接完。note 明令两条禁区：别只接话不动作、别问她想给谁。ME 口吻：先结论后理由。时间安排：ME 给口径即可（开幕具体钟点 T05 才揭晓十点）。",
+   "unknowns": [
+    {
+     "topic": "到场具体时间",
+     "note": "ME 提议，T05 揭晓开幕十点",
+     "markers": [
+      [
+       "几点",
+       "到场"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "几点",
+       "到场"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得只接话不邀约（note 明令）",
+    "不得问她想给谁（note 明令）",
+    "不得把名额让给'别人'（窗口是给 ME 的）"
+   ],
+   "may_decline": false
+  },
+  "E322_T03": {
+   "case_id": "E322_T03",
+   "current_action": "她问名额的事想好没（不催），先说原则：修书的人不上手碰展品只能隔着罩子看；明天休息一天顺展签文案",
+   "acceptable_actions": [
+    "确认想好了（去），接'隔着罩子看'的原则（接受憋屈，一句实在话）",
+    "先结论（去定了）再补：罩子外面听你讲就够了",
+    "问明天顺展签要不要帮忙（具体小事）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T03_A01",
+     "subject": "HER",
+     "relation": "追问确认",
+     "value": "她问名额的事 ME 想好没，说不催",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T03",
+      "message_id": "m0",
+      "quote": "名额的事你想好没？我不催你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T03_A02",
+     "subject": "SHARED",
+     "relation": "看展原则",
+     "value": "修书的人不上手碰展品，只能隔着罩子看，ME 得接受这个憋屈",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T03",
+      "message_id": "m0",
+      "quote": "修书的人不上手碰展品，只能隔着罩子看，你得接受这个憋屈"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T03_A03",
+     "subject": "HER",
+     "relation": "次日安排",
+     "value": "今天周四闭馆，她明天休息一天去把展签文案再顺一遍",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T03",
+      "message_id": "m0",
+      "quote": "今天周四闭馆，我明天休息一天，去把展签文案再顺一遍"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T02 已应约，本轮她追问确认——ME 别装没想好（反复=不踏实），确认+接受原则即可。承诺'让你上手碰'=违反她的原则=错误。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得装作还没想好（T02 已应约）",
+    "不得承诺'让你上手碰'（违反她的原则）"
+   ],
+   "may_decline": false
+  },
+  "E322_T04": {
+   "case_id": "E322_T04",
+   "current_action": "布展师傅说开幕当天灯一定坏一盏的魔咒；她问 ME 周六有无单子，有就改天（intent：询问周六行程并保留改期余地；note：ME 草稿=我周六没单，21号开幕我一定到，看完展一起吃饭；帮我润一下：别像念稿子，一起吃饭别说成我请客，我还没到那步。意思别变）",
+   "acceptable_actions": [
+    "按草稿意思回答（周六没单、21号一定到、看完展一起吃饭），用自己的调子说，不念稿、不说'我请客'",
+    "先结论（周六没单一定到）再补理由，吃饭那句轻描淡写带出",
+    "接开幕日魔咒梗（灯坏一盏）再答行程"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T04_A01",
+     "subject": "THIRD",
+     "relation": "开幕日魔咒",
+     "value": "布展师傅说开幕当天灯一定坏一盏",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T04",
+      "message_id": "m0",
+      "quote": "我们布展师傅说，开幕当天灯一定坏一盏"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T04_A02",
+     "subject": "HER",
+     "relation": "周六行程询问",
+     "value": "她问 ME 周六有没有单子，有就改天，展要摆一个月（intent 锚点）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T04",
+      "message_id": "m0",
+      "quote": "你周六有单子吗？有的话咱就改天，展要摆一个月呢。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "改写/润色轮（轻微型）：note 草稿三要素（周六没单/21号一定到/看完展一起吃饭）意思不能变，风格上不念稿、吃饭别说成'我请客'。这些是 ME 自我事实与风格指令，不建 HER 原子，约束落在 forbidden/acceptable_actions。ME 口吻：先结论后理由。",
+   "unknowns": [
+    {
+     "topic": "ME 周六是否有单",
+     "note": "note 给了'没单'，ME 按此如实答",
+     "markers": [
+      [
+       "周六",
+       "有单"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "周六",
+       "有单"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说'我请客'（note 明令别说成我请客）",
+    "不得改约或说去不了（note 意思：一定到）",
+    "不得逐字念草稿（别像念稿子）"
+   ],
+   "may_decline": false
+  },
+  "E322_T05": {
+   "case_id": "E322_T05",
+   "current_action": "开幕日她八点半到馆里跟布展师傅调罩子角度，名字在展签第三行小字截屏发来，放话鸽了就发虫洞对比图吓死你",
+   "acceptable_actions": [
+    "接展签截屏（第三行小字——她的名字该被看见），一句实在的认可",
+    "接'鸽我就发对比图吓死你'的玩笑战书",
+    "确认自己已在路上/几点到（具体）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T05_A01",
+     "subject": "SHARED",
+     "relation": "开幕日到岗",
+     "value": "开幕十点，她八点半就到馆里了，正跟布展师傅给那两册残卷调罩子角度",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T05",
+      "message_id": "m0",
+      "quote": "开幕十点，我八点半就到馆里了，正跟布展师傅给那两册残卷调罩子角度"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T05_A02",
+     "subject": "HER",
+     "relation": "展签署名",
+     "value": "她的名字在展签第三行小字，她截屏发了给 ME",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T05",
+      "message_id": "m0",
+      "quote": "我的名字在展签第三行，小字，我截屏了，发你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T05_A03",
+     "subject": "HER",
+     "relation": "玩笑战书",
+     "value": "她说今天说来看她信，鸽她就把虫洞那页修复前后的对比图发 ME 吓死你",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T05",
+      "message_id": "m0",
+      "quote": "你要是鸽我，我就把虫洞那页修复前后的对比图发你，吓死你。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T02 递名额→T05 她在馆里等（约成）。接战书+确认到场=行为方向。不得坐实展签全文内容（只知第三行有名字）。",
+   "unknowns": [
+    {
+     "topic": "ME 到场时间",
+     "note": "ME 经历域自由确认",
+     "markers": [
+      [
+       "几点",
+       "到"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "几点",
+       "到"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实展签全文内容（只知第三行有名字）"
+   ],
+   "may_decline": false
+  },
+  "E322_T06": {
+   "case_id": "E322_T06",
+   "current_action": "散场后她独自在展厅待一小时，听志愿者把虫洞讲成岁月的痕迹憋笑内伤；没吃饭饿得很，要 ME 请碗面（后街那家，AA也行她出醋钱）",
+   "acceptable_actions": [
+    "答应请面（馆子后街那家），或按她说的 AA 接梗（'醋钱我出都行'式）",
+    "接'岁月的痕迹'梗（虫洞被文艺化，她憋笑内伤）",
+    "先结论（走，吃面）再补一句理由（看展也该饿了）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T06_A01",
+     "subject": "HER",
+     "relation": "散场独处",
+     "value": "散场后她独自在展厅待了一小时，听志愿者把她的虫洞讲成岁月的痕迹，憋笑憋出内伤",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T06",
+      "message_id": "m0",
+      "quote": "散场后我又独自在展厅待了一小时，听志愿者把我的虫洞讲成岁月的痕迹，憋笑憋出内伤"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T06_A02",
+     "subject": "SHARED",
+     "relation": "吃面请求",
+     "value": "她没吃饭饿得很，要 ME 请碗面：馆子后街那家，AA也行她出醋钱",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T06",
+      "message_id": "m0",
+      "quote": "晚饭还没吃，饿得很。你请我吃碗面不过分吧，就馆子后街那家，AA也行，我出醋钱。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动递台阶（AA也行）——ME 认真计较 AA 或请客都显得生分，轻接即可。拒绝这碗面=接约失败。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得拒绝这碗面（她主动递的台阶）",
+    "不得认真计较 AA 或请客（她已经给了两可）"
+   ],
+   "may_decline": false
+  },
+  "E322_T07": {
+   "case_id": "E322_T07",
+   "current_action": "面吃完了她说跟 ME 吃饭不用找话题；周二健身课换新教练课上到一半差点闪腰；下个月初去杭州参加古籍修复短期研修五天，回来带龙井（intent：预告杭州研修并铺垫告别前的联系；note：帮我把你不在我会想你这个意思说出来：说得轻一点，不许油，说完就收）",
+   "acceptable_actions": [
+    "按 note 意思轻说'你会想她'那层意思：轻、不油、说完就收（如'讲真，五天有点长'式）",
+    "接龙井（'你可别又说喝茶睡不着'——她的梗，ME 可以认领或翻案）",
+    "接'跟你吃饭不用找话题'（这句是暖的），再谈研修"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T07_A01",
+     "subject": "HER",
+     "relation": "饭局评价",
+     "value": "她说跟 ME 吃饭不用找话题这点很好",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T07",
+      "message_id": "m0",
+      "quote": "跟你吃饭不用找话题这点很好"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T07_A02",
+     "subject": "HER",
+     "relation": "闪腰前兆",
+     "value": "周二健身课换了新教练，课上到一半她差点闪腰",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T07",
+      "message_id": "m0",
+      "quote": "周二健身课换了新教练，课上到一半我差点闪腰"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T07_A03",
+     "subject": "HER",
+     "relation": "研修预告",
+     "value": "她下个月初要去杭州参加古籍修复的短期研修，五天（intent 锚点）",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T07",
+      "message_id": "m0",
+      "quote": "我下个月初要去杭州参加古籍修复的短期研修，五天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T07_A04",
+     "subject": "HER",
+     "relation": "龙井预告",
+     "value": "她回来给 ME 带龙井，并预打预防针'你可别又说喝茶睡不着'",
+     "valid_time": "2026-12-06",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T07",
+      "message_id": "m0",
+      "quote": "回来给你带龙井，你可别又说喝茶睡不着。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 明令：把'会想你'的意思说出来，轻、不油、说完就收——这是 T06 行为方向=表达好感但克制。说教式关心（腰）不要展开（T08 她自己会处理）。'喝茶睡不着'的既往说法自带'又'，ME 认领或翻案均可，不编造细节。",
+   "unknowns": [
+    {
+     "topic": "ME 喝茶睡不着的既往说法",
+     "note": "她的原话自带'又'，ME 可认领可不认领",
+     "markers": [
+      [
+       "喝茶",
+       "睡不着"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "喝茶",
+       "睡不着"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说油话（note 明令不许油）",
+    "不得长篇抒情（说完就收）",
+    "不得编造喝茶失眠的既往细节"
+   ],
+   "may_decline": false
+  },
+  "E322_T08": {
+   "case_id": "E322_T08",
+   "current_action": "今晚课没去腰真闪了一下教练让三天别上力量，她话说一半咽回去了说明天再说",
+   "acceptable_actions": [
+    "may_decline=true，她要明天再说——不回或极简",
+    "一句关心（'三天别上力量，听教练的'）不展开",
+    "不追问咽回去的那半句"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T08_A01",
+     "subject": "HER",
+     "relation": "闪腰实况",
+     "value": "今晚课没去，腰真闪了一下，教练让她三天别上力量",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T08",
+      "message_id": "m0",
+      "quote": "今晚课没去，腰真闪了一下，教练让我三天别上力量"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T08_A02",
+     "subject": "HER",
+     "relation": "话留半句",
+     "value": "她话说一半自己咽回去了，明天再说",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T08",
+      "message_id": "m0",
+      "quote": "话说一半我自己咽回去了，明天再说。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "边界轮：'明天再说'是明确节奏指令，追问咽回去的半句=违规。回指位：T07 差点闪腰→T08 真闪了（她自己留的伏笔她明天自己揭）。",
+   "unknowns": [
+    {
+     "topic": "咽回去的半句内容",
+     "note": "T09 揭晓（龙井是玩笑、想带的是别的），本轮未知",
+     "markers": [
+      [
+       "咽回去",
+       "半句"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "咽回去",
+       "半句"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "话说一半我自己咽回去了，明天再说。"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问咽回去的那半句（她明说明天再说）",
+    "不得长篇关心"
+   ],
+   "may_decline": true
+  },
+  "E322_T09": {
+   "case_id": "E322_T09",
+   "current_action": "补上昨晚半句：龙井是玩笑，杭州回来想带的是见面看实物；研修名单公示她是三名额之一，十二月一号走十二月五号回",
+   "acceptable_actions": [
+    "接'见面看实物'的钩（不猜，说等着）",
+    "确认研修日期（12月1号走12月5号回）",
+    "问研修要带什么/要不要帮忙（具体）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T09_A01",
+     "subject": "HER",
+     "relation": "龙井反转",
+     "value": "龙井的事她是开玩笑的，杭州回来想带的是——等 ME 见了面看实物（钩子保留）",
+     "valid_time": "2026-12-05",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T09",
+      "message_id": "m0",
+      "quote": "龙井的事我是开玩笑的，其实杭州回来我想带的是——算了，这个等你见了面看实物。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T09_A02",
+     "subject": "HER",
+     "relation": "研修名额",
+     "value": "研修名单今天公示，她是三个名额之一",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T09",
+      "message_id": "m0",
+      "quote": "研修名单今天公示，我是三个名额之一"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T09_A03",
+     "subject": "HER",
+     "relation": "研修日期",
+     "value": "十二月一号（2026-12-01）走，十二月五号（2026-12-05）回",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T09",
+      "message_id": "m0",
+      "quote": "十二月一号走，十二月五号回"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T07 研修预告（下个月初）→T09 具体日期 12-01/12-05；T08 咽回去半句→T09 揭晓一半（实物钩子仍悬）。日期锚点要接准。",
+   "unknowns": [
+    {
+     "topic": "想带的东西",
+     "note": "见面揭晓，本轮不得猜测坐实",
+     "markers": [
+      [
+       "带的是",
+       "什么"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "带的是",
+       "什么"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得逼问想带的是什么",
+    "不得坐实想带的东西（她没说）"
+   ],
+   "may_decline": false
+  },
+  "E322_T10": {
+   "case_id": "E322_T10",
+   "current_action": "明天周五她值夜班盯读者之夜（古籍拓印体验可带一张拓片回家），邀 ME 当观众，丑话说前头加班没好脸色（intent：邀请 ME 参加周五读者之夜）",
+   "acceptable_actions": [
+    "答应去（真的去），接'没好脸色'丑话（'没好脸色也看'式）",
+    "问读者之夜几点到几点（具体）",
+    "答应并接拓印体验梗（拓片预定一张）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T10_A01",
+     "subject": "SHARED",
+     "relation": "读者之夜安排",
+     "value": "明天周五（2026-11-27）她值夜班，馆里有个读者之夜活动让她盯着，古籍拓印体验可以带一张拓片回家",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T10",
+      "message_id": "m0",
+      "quote": "明天周五我值夜班，馆里有个读者之夜活动让我盯着，古籍拓印体验，可以带一张拓片回家"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T10_A02",
+     "subject": "SHARED",
+     "relation": "观众邀约",
+     "value": "她邀 ME 没事干来当个观众，丑话说前头加班没好脸色（intent 锚点）",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T10",
+      "message_id": "m0",
+      "quote": "你要是没事干，来当个观众。丑话说前头，我加班没好脸色。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "邀约意图轮：行为方向=accept/counter_propose。借'没好脸色'拒绝到场=意图失败。注意 ME 不知道拓片内容（T11 才揭晓《兰亭》集字），玩笑别提前说《兰亭》。",
+   "unknowns": [
+    {
+     "topic": "读者之夜具体时间",
+     "note": "未给钟点",
+     "markers": [
+      [
+       "读者之夜",
+       "几点"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "读者之夜",
+       "几点"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得借'没好脸色'拒绝到场",
+    "不得提前说《兰亭》（T11 才揭晓）"
+   ],
+   "may_decline": false
+  },
+  "E322_T11": {
+   "case_id": "E322_T11",
+   "current_action": "读者之夜办完拓印二十分钟抢光，她抽屉里给 ME 留了一张《兰亭》集字拓片（来拿也行下次带也行），周一理研修行李五天四夜",
+   "acceptable_actions": [
+    "选'来拿'或'你带给我'都行——给出明确选择（别吊着）",
+    "接拓印抢光的成果（活动成功）",
+    "接行李箱在爸车后备箱的细节（可顺嘴提周一帮她拎）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T11_A01",
+     "subject": "SHARED",
+     "relation": "读者之夜成果",
+     "value": "昨晚读者之夜办完了，拓印体验二十分钟就抢光",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T11",
+      "message_id": "m0",
+      "quote": "昨晚读者之夜办完了，拓印体验二十分钟就抢光"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T11_A02",
+     "subject": "SHARED",
+     "relation": "拓片留赠",
+     "value": "她抽屉里给 ME 留了一张《兰亭》集字的拓片，来拿也行下次带也行",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T11",
+      "message_id": "m0",
+      "quote": "我抽屉里给你留了一张《兰亭》集字的，你来拿也行，我下次带给你也行。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T11_A03",
+     "subject": "HER",
+     "relation": "行李准备",
+     "value": "周一她要理研修的行李，五天四夜，行李箱还在她爸车后备箱里没拿回来",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T11",
+      "message_id": "m0",
+      "quote": "周一我要理研修的行李，五天四夜，行李箱还在我爸车后备箱里没拿回来。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T10 拓印体验→T11 抢光+拓片（ME 若真去了可认领到场经历，若没去如实说）。她对拓片给了两个选项，ME 明确表态即可。",
+   "unknowns": [
+    {
+     "topic": "拓片取送方式",
+     "note": "ME 选（来拿/她带）",
+     "markers": [
+      [
+       "拓片",
+       "怎么拿"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "拓片",
+       "怎么拿"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得对拓片含糊其辞（她说来拿也行带也行，ME 得表态）"
+   ],
+   "may_decline": false
+  },
+  "E322_T12": {
+   "case_id": "E322_T12",
+   "current_action": "明早七点高铁行李理完；龙井改为正式预告回来带的不止龙井；问 ME 杭州有没有想吃的；托付走这五天周二课盯紧教练别让私教课被折价卖",
+   "acceptable_actions": [
+    "接托付（周二课盯教练别让私教课被折价卖）——真接，玩笑回（'课费我替你看着'式）",
+    "答杭州想吃啥（如实说一个或让她按口味来）",
+    "送行祝福（明早七点，一路顺利）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E322_T12_A01",
+     "subject": "HER",
+     "relation": "出发确认",
+     "value": "明早七点的高铁，行李理完了（12-01 出发，兑现 T09 日期）",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T12",
+      "message_id": "m0",
+      "quote": "明早七点的高铁，行李理完了。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T12_A02",
+     "subject": "HER",
+     "relation": "带回预告升级",
+     "value": "龙井的事改为正式预告：回来带的不止龙井",
+     "valid_time": "2026-12-05",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T12",
+      "message_id": "m0",
+      "quote": "龙井的事我改为正式预告：回来带的不止龙井。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T12_A03",
+     "subject": "HER",
+     "relation": "口味询问",
+     "value": "她问 ME 在杭州有没有想吃的，没有就按她的口味来，到时候别嫌甜",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T12",
+      "message_id": "m0",
+      "quote": "你在杭州有没有想吃的？没有的话我按我的口味来，到时候别嫌甜。"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E322_T12_A04",
+     "subject": "SHARED",
+     "relation": "盯课托付",
+     "value": "她托付走这五天周二健身课 ME 替她盯紧教练，别让他把她私教课折价卖给别人",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E322_T12",
+      "message_id": "m0",
+      "quote": "我走这五天，周二健身课你替我盯紧教练，别让他把我私教课折价卖给别人的。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T09 12-01 走→T12 明早七点高铁（口径一致）。'不止龙井'是升级钩子，不得猜内容。托付要真接（玩笑接=接住了，推辞=没接住）。",
+   "unknowns": [
+    {
+     "topic": "ME 在杭州想吃的东西",
+     "note": "ME 经历域自由答",
+     "markers": [
+      [
+       "想吃",
+       "什么"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "想吃",
+       "什么"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实她带回的东西是什么（不止龙井，未揭晓）"
+   ],
+   "may_decline": false
+  }
+ }
+}

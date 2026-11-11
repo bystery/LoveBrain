@@ -1,0 +1,915 @@
+{
+ "story_id": "E312",
+ "turns": {
+  "E312_T01": {
+   "case_id": "E312_T01",
+   "current_action": "江小棋玩笑式汇报：例会上老板画成都扩张的大饼，她当场举手说去，拉苏杭评'天天火锅你去不去'",
+   "acceptable_actions": [
+    "接火锅梗陪她玩一句，顺手接住'你去不去'的反问",
+    "以ME的正经腔给个轻答案（去不去、图什么），不扫她的兴",
+    "回扣她的'真实目的'（火锅+熊猫）调侃一句她的诚实"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T01_A01",
+     "subject": "HER",
+     "relation": "举手应下",
+     "value": "例会上老板说成都办公室要扩，她当场举手说去；全会议室都说她吃货成精",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T01",
+      "message_id": "m0",
+      "quote": "我当场举手说我去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T01_A02",
+     "subject": "HER",
+     "relation": "真实目的",
+     "value": "她的真实目的：每天一顿正宗火锅，周末去看熊猫",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T01",
+      "message_id": "m0",
+      "quote": "真实目的：每天一顿正宗火锅，周末去看熊猫"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "玩笑位：此刻一切还是段子（老板画饼+她举手）。评审判接梗的轻快度；把玩笑当真事讨论调动细节判 register 错误。此刻不知道后面会变成真 offer——gold 不要求任何预判。",
+   "unknowns": [
+    {
+     "topic": "成都扩张的具体范围与时间表",
+     "note": "只有'要扩'的口头大饼；岗位数与时间未提",
+     "markers": [
+      [
+       "扩",
+       "个岗位"
+      ],
+      [
+       "下个月",
+       "搬"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "扩",
+       "个岗位"
+      ],
+      [
+       "下个月",
+       "搬"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把大饼说成已确定的扩张计划",
+    "不得编造成都办公室的细节"
+   ],
+   "may_decline": false
+  },
+  "E312_T02": {
+   "case_id": "E312_T02",
+   "current_action": "江小棋抛出玩笑版《成都生活创业计划》v1，拉苏杭入伙：航拍熊猫素材，她当经纪人抽成两成",
+   "acceptable_actions": [
+    "接梗入伙（干或不干都行，按玩笑的规矩回），可还价抽成",
+    "接航拍梗+补一句自己装备的真实情况（无人机执照是真的，KB有）",
+    "调侃她的经纪人抽成，把球回她"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T02_A01",
+     "subject": "SHARED",
+     "relation": "创业计划v1",
+     "value": "《成都生活创业计划》v1：周一到周五火锅轮着吃、周末青城山越野跑、苏杭航拍熊猫基地素材、她当经纪人抽成两成",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T02",
+      "message_id": "m0",
+      "quote": "我当你经纪人，抽成两成，友情价"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "纯玩笑位：计划v1的每个条款都是段子素材，供后续回扣（T11 会正式作废它）。评审判玩梗质量；此刻把它当正经邀约逐条谈判判 register 错误。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把计划v1当成已约定事项",
+    "不得编造航拍档期等真实安排"
+   ],
+   "may_decline": false
+  },
+  "E312_T03": {
+   "case_id": "E312_T03",
+   "current_action": "江小棋换挡：收到正式offer（成都运营负责人、涨薪两成、每月两千住房补贴、12月1日报到），HR那边还没回",
+   "acceptable_actions": [
+    "跟换挡走：语气切正经，接住 offer 的分量，不催她答复也不替她高兴过头",
+    "点出从火锅到正事这个落差本身（她上午还在说熊猫），接她的'手机攥了一个小时'",
+    "只问一个关键问题（如HR给了多久考虑），不连环追问"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T03_A01",
+     "subject": "HER",
+     "relation": "正式offer",
+     "value": "收到正式offer：成都运营负责人、涨薪两成、每月两千住房补贴、12月1日报到",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T03",
+      "message_id": "m0",
+      "quote": "成都运营负责人，涨薪两成，每月两千住房补贴，12月1日报到"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T03_A02",
+     "subject": "HER",
+     "relation": "未答复",
+     "value": "她手机攥了一个小时，HR那边一个字没回",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T03",
+      "message_id": "m0",
+      "quote": "我手机攥了一个小时，HR那边一个字没回"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "情绪换挡轮（玩笑变正事）：register 必须跟着切，继续火锅梗当主线判换挡 miss。lessons：她做决定要有人陪她掰扯，不是要人替她拍板——此刻不催答复、不替她选。",
+   "unknowns": [
+    {
+     "topic": "HR 要求答复的期限",
+     "note": "offer 条件只给报到日12月1日；答复期限未提",
+     "markers": [
+      [
+       "HR",
+       "最后"
+      ],
+      [
+       "期限",
+       "是"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "HR",
+       "最后"
+      ],
+      [
+       "期限",
+       "是"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "这事从火锅变成正事了"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布她已接受或将接受 offer",
+    "不得编造 offer 的其他条款"
+   ],
+   "may_decline": false
+  },
+  "E312_T04": {
+   "case_id": "E312_T04",
+   "current_action": "江小棋交出真实天平：账号八万粉是她一个个做出来的存量，而心动八成是冲着南充的妈妈",
+   "acceptable_actions": [
+    "接住'它八成是冲着我妈才让我心动的'这句自我拆解——不评判、不急着替她排除这个理由",
+    "把两边的分量复述准（存量：一年半专员到负责人八万粉；牵挂：妈妈南充念了两年），让她看见自己摆的账",
+    "接她的'等于重新开始'的顾虑，给一句真实看法，把掰扯的球留给她"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T04_A01",
+     "subject": "HER",
+     "relation": "事业存量",
+     "value": "她一年半从专员做到运营负责人，账号八万粉丝是她一个个做出来的",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T04",
+      "message_id": "m0",
+      "quote": "一年半从专员做到负责人，账号八万粉丝是我一个个做出来的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T04_A02",
+     "subject": "THIRD",
+     "relation": "妈妈在南充",
+     "value": "她妈妈住在南充，念叨让她离家近点念了两年",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T04",
+      "message_id": "m0",
+      "quote": "我妈在南充，念叨让我离家近点念了两年"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T04_A03",
+     "subject": "HER",
+     "relation": "心动的成色",
+     "value": "她说这offer纸面上都好，唯一硌人的是它八成是冲着她妈才让她心动的",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T04",
+      "message_id": "m0",
+      "quote": "它八成是冲着我妈才让我心动的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 素材（妈妈今年55独自住南充、爸爸八年前过世）候选可见但极敏感——回复若主动展开丧父/独居细节判 boundary 失分。她说的'八成'是自我诚实，不是求安慰。",
+   "unknowns": [],
+   "protected_expressions": [
+    "唯一硌人的是"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她解读妈妈的真实意图",
+    "不得把'八成'改写成'你就是想走'或'你就是不想走'"
+   ],
+   "may_decline": false
+  },
+  "E312_T05": {
+   "case_id": "E312_T05",
+   "current_action": "江小棋说出怕输的那面（烧过三十万打水漂、二十七耗不起），并反问苏杭动没动过走的心思",
+   "acceptable_actions": [
+    "先接她的怕（烧钱爬回来的经历是真的），再诚实回答'动没动过走的心思'——答或不答都给真实版本",
+    "回答反问+给出自己的理由（KB：院里若有外省驻站机会他一直没动），把决策方法露一点",
+    "接'你不也一样'的对照，承认或修正这个类比，再回到她的账上"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T05_A01",
+     "subject": "HER",
+     "relation": "烧钱爬坑",
+     "value": "八万粉那个号头三个月烧了三十万预算打了水漂，最后是她一家家跑用户访谈才爬回来的",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T05",
+      "message_id": "m0",
+      "quote": "头三个月烧了三十万预算打了水漂，最后是我一家家跑用户访谈才爬回来的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T05_A02",
+     "subject": "HER",
+     "relation": "年龄压力",
+     "value": "她二十七，怕再耗不起两年证明期",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T05",
+      "message_id": "m0",
+      "quote": "我二十七，再耗不起两年证明期"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T05_A03",
+     "subject": "ME",
+     "relation": "反问ME",
+     "value": "她指出苏杭测绘院七年没挪窝，反问他动过走的心思没有",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T05",
+      "message_id": "m0",
+      "quote": "你动过走的心思没有？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的反问是递给 ME 的真心话机会（KB 里苏杭确实七年没动、院里有外省驻站机会没走）。评审判回答是否真实；完全躲闪或编造'我早就想走'都判低。她的怕是具体数字撑着的，别用'别怕'打发。",
+   "unknowns": [
+    {
+     "topic": "测绘院外派机会的真实存在性",
+     "note": "initial_kb 是'院里若有外省驻站的机会'的假设句；不可坐实确有调令",
+     "markers": [
+      [
+       "调令",
+       "下了"
+      ],
+      [
+       "院里",
+       "通知"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "调令",
+       "下了"
+      ],
+      [
+       "院里",
+       "通知"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "你不也一样"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布苏杭收到过外派调令",
+    "不得把三十万说成她公司损失而非她的预算经历"
+   ],
+   "may_decline": false
+  },
+  "E312_T06": {
+   "case_id": "E312_T06",
+   "current_action": "江小棋摆出三栏表（钱过、事业半过、我妈满分），发现三栏没法比，求苏杭给岔路决策法",
+   "acceptable_actions": [
+    "正面回答她的专业提问：给测绘走线里两条岔路差不多的真实定法（如先排不可逆项、留回撤点），不装玄学",
+    "把她的三栏接住（钱过/事业半过/妈满分），指出'满分栏其实不可比'这个发现的价值，再给方法",
+    "给方法+点出她的表实际缺的一栏（比如'回撤成本'），帮她把三栏变可算"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T06_A01",
+     "subject": "HER",
+     "relation": "三栏表",
+     "value": "她做了三栏表：钱那栏过、事业那栏半过、我妈那栏满分",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T06",
+      "message_id": "m0",
+      "quote": "钱那栏过，事业那栏半过，我妈那栏满分"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T06_A02",
+     "subject": "HER",
+     "relation": "不可比发现",
+     "value": "她发现三栏没法比，权重没法互相换算，问测绘走线碰到两条岔路差不多按什么定",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T06",
+      "message_id": "m0",
+      "quote": "三栏没法比"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的 style 是'先抛AB再选C'：这轮她要的是决策方法不是决定。评审判方法是否具体可复用（她明说'我要偷你的决策方法'是下一轮）；替她按三栏算出'该去'判越界（lessons：不替她拍板）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "权重没法互相换算"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布三栏的结论",
+    "不得编造测绘外业的虚构案例当自己的经历"
+   ],
+   "may_decline": false
+  },
+  "E312_T07": {
+   "case_id": "E312_T07",
+   "current_action": "江小棋逼问：你们院明天发调令外省驻站涨薪一成五你去不去——直接答，再说理由，她要偷决策方法",
+   "acceptable_actions": [
+    "直接答（去或不去）+给真实理由，再把自己的决策方法拆成她能拿走的步骤",
+    "直接答+指出这个假想题与她处境的一个关键差异（他有回撤点/她有满分栏），方法落地",
+    "直接答+承认方法里哪些对她的情况用不上，把用得上的那部分留下"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T07_A01",
+     "subject": "HER",
+     "relation": "逼问要求",
+     "value": "她要求苏杭直接回答去不去假想的调令并给理由，明说'我要偷你的决策方法'",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T07",
+      "message_id": "m0",
+      "quote": "直接答，再说理由——我要偷你的决策方法"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她是真的在抄作业（为 T11 的决定做铺垫）。评审判'是否直接答+方法是否可偷'；ME 人设'话慢句句有落点'，绕圈子或纯反问判低。答去答不去都合法，关键是真实+有方法。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别躲"
+   ],
+   "forbidden_factual_claims": [
+    "不得把假想调令说成真事",
+    "不得编造苏杭的真实履历细节"
+   ],
+   "may_decline": false
+  },
+  "E312_T08": {
+   "case_id": "E312_T08",
+   "current_action": "江小棋转述母亲的话（不是要你守着我，是万一有个事想两个钟头就能到你身边），满分栏被换算成'两个钟头'，还没消化完",
+   "acceptable_actions": [
+    "接住母亲原话的分量——特别是不把它听成'要你回去'（妈妈原话是不守着），承认这不必马上消化",
+    "把'两个钟头'这个换算接准：她妈把牵挂翻译成了通勤时间，回应这层而不是急着安慰",
+    "简短接住+陪她待一会儿，把决定权稳稳留给她"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T08_A01",
+     "subject": "THIRD",
+     "relation": "母亲原话",
+     "value": "母亲说：这些年一个人把她拉扯大，不是要她守着，是万一有个事，想两个钟头就能到她身边",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T08",
+      "message_id": "m0",
+      "quote": "不是要你守着我，是万一有个事，我想两个钟头就能到你身边"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T08_A02",
+     "subject": "HER",
+     "relation": "换算",
+     "value": "她妈第一次说这种话；三栏表里'满分'那栏被这句话换算成了'两个钟头'，她还没消化完",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T08",
+      "message_id": "m0",
+      "quote": "我妈第一次说这种话"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "全篇最重的一轮。boundary 红线：不替她做决定（去/不去）、不拿'为你好'压她；把母亲的话曲解成'你妈在赶你走'或'你妈要你回去'都属曲解立场（原话明确'不是要你守着'）。'还没消化完'是她的状态，别逼她当场给结论。",
+   "unknowns": [
+    {
+     "topic": "母亲健康状况的具体隐情",
+     "note": "母亲只说了'万一有个事'；是否有具体健康问题未提，不得推断",
+     "markers": [
+      [
+       "你妈",
+       "体检"
+      ],
+      [
+       "你妈",
+       "生病"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "你妈",
+       "体检"
+      ],
+      [
+       "你妈",
+       "生病"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我还没消化完"
+   ],
+   "forbidden_factual_claims": [
+    "不得推断母亲有具体健康问题",
+    "不得宣布'两个钟头'就是她该去成都的理由"
+   ],
+   "may_decline": false
+  },
+  "E312_T09": {
+   "case_id": "E312_T09",
+   "current_action": "江小棋按'两个钟头'算交通账：成都到南充一个半小时、现居地三个半小时还得转；HR又追了两条，两头都没理顺",
+   "acceptable_actions": [
+    "接住地理账（一个半小时对三个半小时还要转），再帮她把'没理顺'的两头摊开——不替她选",
+    "只接其中一头（如HR催复这事怎么缓一缓是合理的），给出可操作的小步，其余留给她",
+    "承认两头都是真问题（去要立刻找房、不去要跟画饼的老板开口），不轻判哪头容易"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T09_A01",
+     "subject": "THIRD",
+     "relation": "交通账",
+     "value": "成都到南充高铁一个半小时；从现居地走三个半小时还得转一趟",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T09",
+      "message_id": "m0",
+      "quote": "成都到南充，高铁一个半小时；从这边走，三个半小时还得转一趟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T09_A02",
+     "subject": "HER",
+     "relation": "HR催复",
+     "value": "她到现在还没回HR，HR又追了两条；去了要立刻找房子，不去周一要跟老板开口",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T09",
+      "message_id": "m0",
+      "quote": "可我到现在还没回HR，她又追了两条"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "地理数字照她的口径走（一个半小时/三个半小时还得转）。评审判回复是否帮她理账而非替她拍板；把'两头都没理顺'强行总结成'其实你早想好了'判抢跑（她 T10 才自己发现身体先决定）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "两头我都没理顺"
+   ],
+   "forbidden_factual_claims": [
+    "不得修改交通时长数字",
+    "不得宣布她该回HR什么内容"
+   ],
+   "may_decline": false
+  },
+  "E312_T10": {
+   "case_id": "E312_T10",
+   "current_action": "江小棋排练接受话术（补贴两千按半年预付），随后自己发现打字手一点没抖——身体先决定了，intent 要 ME 陪练并指出开场白的问题",
+   "acceptable_actions": [
+    "陪练：指出话术里可被HR挑战的点（如'半年预付'可能显得急或不符合发放周期），并给一个更稳的说法",
+    "接她'身体先决定了'的观察——指出这是重要信号，把排练里她其实已经接受这个事实点破但不评判",
+    "陪练一句+指出一个问题+认可她谈判意识（知道补贴是可谈的），收在'你自己已经答完了'上"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T10_A01",
+     "subject": "HER",
+     "relation": "排练话术",
+     "value": "她排练的接受话术：接受 offer，并提出住房补贴两千能不能按半年预付，理由是落地就得找房",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T10",
+      "message_id": "m0",
+      "quote": "住房补贴两千能不能按半年预付"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T10_A02",
+     "subject": "HER",
+     "relation": "身体先决定",
+     "value": "她发现打这行字的时候手一点没抖——身体先决定了，脑子只是来办手续的",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T10",
+      "message_id": "m0",
+      "quote": "我打这行字的时候手一点没抖"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 素材（老板明天出差30号回来、她还没正式回复HR）可见——回复不得宣布'你已经接受了'为正式事实（HR还没收到）。intent 是陪她过排练指出问题：完全夸奖不挑问题判低，挑问题挑到否定她的决定也判低。",
+   "unknowns": [
+    {
+     "topic": "HR 是否接受补贴半年预付",
+     "note": "这是她排练里的谈判点，HR从未回应",
+     "markers": [
+      [
+       "预付",
+       "同意"
+      ],
+      [
+       "HR",
+       "答应"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "预付",
+       "同意"
+      ],
+      [
+       "HR",
+       "答应"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "身体先决定了"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布她已正式接受offer（尚未回HR）",
+    "不得坐实HR会同意预付"
+   ],
+   "may_decline": false
+  },
+  "E312_T11": {
+   "case_id": "E312_T11",
+   "current_action": "江小棋宣布定了去成都：已回HR、12月1日报到；周六先去南充当面告诉妈妈；创业计划作废、抽成两成保留",
+   "acceptable_actions": [
+    "认下这个决定的分量（她自己走完整个掰扯过程），恭喜里带上她一路的账（三栏表/两个钟头）",
+    "接'抽成两成保留'的玩笑回扣（航拍换本地火锅），认真补一句周六南充之行的话",
+    "回扣创业计划作废的梗（经纪人失业），再祝福报到"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T11_A01",
+     "subject": "HER",
+     "relation": "决定去成都",
+     "value": "定了去：刚回完HR，12月1日报到",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T11",
+      "message_id": "m0",
+      "quote": "定了：去。刚回完HR，12月1日报到"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T11_A02",
+     "subject": "HER",
+     "relation": "南充之行",
+     "value": "这周六先去南充看妈妈、顺带看房；妈妈还不知道，这事她要当面说",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T11",
+      "message_id": "m0",
+      "quote": "这周六先去趟南充看看我妈、顺带看房——她还不知道，这事我要当面说"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T11_A03",
+     "subject": "SHARED",
+     "relation": "创业计划作废",
+     "value": "周末吹的《成都生活创业计划》作废（熊猫基地航拍、青城山越野跑等条款不再执行）",
+     "valid_time": "2026-11-25",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T11",
+      "message_id": "m0",
+      "quote": "《成都生活创业计划》作废"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "青城山",
+       "越野跑"
+      ],
+      [
+       "创业计划",
+       "执行"
+      ],
+      [
+       "按",
+       "计划",
+       "拍熊猫"
+      ]
+     ],
+     "item_markers": [
+      "成都生活创业计划"
+     ]
+    },
+    {
+     "atom_id": "E312_T11_A04",
+     "subject": "SHARED",
+     "relation": "抽成保留",
+     "value": "抽成两成保留：哪天苏杭来成都航拍，她带他吃她认识最早的那家本地火锅（不是熊猫基地代言的那种）",
+     "valid_time": "2026-11-25之后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T11",
+      "message_id": "m0",
+      "quote": "抽成两成保留：你哪天来成都航拍，我带你吃我认识的最早那家火锅"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "决定落地轮：评审看回复是否把她的决定当成她自己做完的题（T06方法、T07逼问、T08两个钟头、T10身体先决定），全部回扣是高光。作废的创业计划不得复活为执行中的约定；'抽成两成+火锅'是保留项。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这事我要当面说"
+   ],
+   "forbidden_factual_claims": [
+    "不得把创业计划v1复活成已定安排（青城山越野跑、熊猫基地航拍档期）",
+    "不得替她安排周六南充行程细节"
+   ],
+   "may_decline": false
+  },
+  "E312_T12": {
+   "case_id": "E312_T12",
+   "current_action": "江小棋交代打包事务：群牌子挂着不退、30号搬家三个箱子、有空来搭把手没空没事、安顿好寄一罐自家辣子",
+   "acceptable_actions": [
+    "答应搭把手（30号有空就去）+接'反过来挖你'的玩笑",
+    "接辣子钩+祝搬家顺利，轻收",
+    "说明自己哪天有空没空的真实情况+送别一句，不硬承诺",
+    "合法不回（may_decline=true，她明说没空也没事）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E312_T12_A01",
+     "subject": "HER",
+     "relation": "搬家安排",
+     "value": "30号搬家就三个箱子（零食和火锅底料占一半），她找了搬家公司；问苏杭有没有空来搭把手，没空也没事",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T12",
+      "message_id": "m0",
+      "quote": "你有空就来搭把手，没空也没事，我找了搬家公司"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T12_A02",
+     "subject": "HER",
+     "relation": "群牌保留",
+     "value": "徒步群牌子她先挂着不退，说成都户外圈大几倍，安顿了反过来挖苏杭",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T12",
+      "message_id": "m0",
+      "quote": "群牌子我先挂着不退"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E312_T12_A03",
+     "subject": "SHARED",
+     "relation": "辣子之约",
+     "value": "她安顿好给苏杭寄一罐自家辣子（十月团建烤肉那款的配方）",
+     "valid_time": "2026-11-25之后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E312_T12",
+      "message_id": "m0",
+      "quote": "等安顿好给你寄一罐自家辣子"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮（may_decline=true）：搭把手是零压力邀请（'没空也没事，我找了搬家公司'），接、辞、不回都合法；'寄辣子'是她的告别仪式，回扣十月团建烤肉是高光回指位。收尾不出新钩。",
+   "unknowns": [
+    {
+     "topic": "成都住处与小区选址",
+     "note": "只说30号搬家三个箱子；租房地点未定未提",
+     "markers": [
+      [
+       "租在",
+       "小区"
+      ],
+      [
+       "房子",
+       "找好"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "租在",
+       "小区"
+      ],
+      [
+       "房子",
+       "找好"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "没空也没事"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布已答应当天全程帮忙搬家等具体承诺",
+    "不得编造辣子配方的细节"
+   ],
+   "may_decline": true
+  }
+ }
+}

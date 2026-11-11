@@ -1,0 +1,43 @@
+{
+ "kind": "story_v2_wave3_validation",
+ "date": "2026-10-27",
+ "turn_per_story": 12,
+ "expected_count": 2,
+ "passed": true,
+ "stories": [
+  {
+   "story_id": "E161",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "E161",
+    "turns": 12,
+    "atoms": 36,
+    "required_atoms": 11,
+    "may_decline": [
+     "E161_T12"
+    ],
+    "intents": []
+   }
+  },
+  {
+   "story_id": "E162",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "E162",
+    "turns": 12,
+    "atoms": 34,
+    "required_atoms": 8,
+    "may_decline": [
+     "E162_T11",
+     "E162_T12"
+    ],
+    "intents": []
+   }
+  }
+ ],
+ "errors": [],
+ "unique_cases": 24,
+ "stories_passed": 2
+}

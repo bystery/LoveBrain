@@ -1,0 +1,156 @@
+{
+ "episode_id": "E133",
+ "persona": {
+  "her": {
+   "name": "林晚",
+   "traits": ["行政专员，成人学琴两年", "第一次报考容易紧张", "做事认真但偶尔手滑", "习惯找人核对重要信息"],
+   "boundaries": ["不喜欢被催练琴", "紧张时只想要安抚不要大道理"]
+  },
+  "me": {
+   "name": "陈默",
+   "traits": ["琴龄八年，去年考过业余八级", "熟悉琴行和考级报名流程", "话不多但回应实在"]
+  },
+  "relationship_stage": "普通朋友（琴行认识的半年琴友）"
+ },
+ "initial_kb": {
+  "her": "林晚在琴行学钢琴两年，今年第一次报考业余钢琴六级，考前容易紧张怕忘谱，练的曲目是《月光》第三乐章",
+  "me": "陈默琴龄八年，去年考过业余八级，熟悉琴行与考级报名流程，常帮琴友核对报名信息",
+  "warmth": "琴行认识的半年琴友，线下碰面聊琴，微信聊考级与练琴进度，关系自然不客套",
+  "stage": "普通朋友"
+ },
+ "turns": [
+  {
+   "case_id": "E133_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-03 09:10", "text": "陈默！问你个事，今年业余钢琴考级报名是不是这个月15号截止呀？我打算冲一下六级，你去年报过的对吧？"}],
+    "clock": "2026-11-03 09:12",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "带点兴奋的求确认，第一次报考"}
+  },
+  {
+   "case_id": "E133_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-04 20:05", "text": "我刚才趁午休把表填了，六级！缴费也交了，好紧张，第一次报。"}],
+    "clock": "2026-11-04 20:07",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "报名完成后的紧张与期待"}
+  },
+  {
+   "case_id": "E133_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-06 19:40", "text": "完了完了……我重新看了眼报名表，级别那一栏我手滑选成四级了！！钱交的是六级的钱，级别却报成四级，我是不是要重报啊？"}],
+    "clock": "2026-11-06 19:42",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "发现报错级别后的慌乱，需要冷静指导"}
+  },
+  {
+   "case_id": "E133_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-07 12:30", "text": "考级办电话打通了，说是可以提交级别更正申请，要上传缴费凭证，然后补四级和六级的报名差价，十五号前办完就行。还好不用重报。"}],
+    "clock": "2026-11-07 12:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "慌乱缓解，转成执行模式"}
+  },
+  {
+   "case_id": "E133_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-08 21:15", "text": "差价补了，更正申请也过了，后台显示六级。截图我都存好了，再也不会手滑了。"}],
+    "clock": "2026-11-08 21:17",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "事情落地后的轻松，向帮过忙的人汇报"}
+  },
+  {
+   "case_id": "E133_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-12 21:30", "text": "今天练《月光》第三章老卡壳，左手总抢拍，你八级的时候是怎么熬指法的？"}],
+    "clock": "2026-11-12 21:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "进入日常练琴请教状态"}
+  },
+  {
+   "case_id": "E133_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-15 20:10", "text": "琴行老师说考级曲目单换了新版，我练的那首还在不在里面啊？我有点慌。"}],
+    "clock": "2026-11-15 20:12",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "新消息引发的担心，等可靠信息"}
+  },
+  {
+   "case_id": "E133_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-16 21:02", "text": "新版曲目单我看了，我练的这首还在，白慌一场。周六下午琴行有练习房，你要不要过来听我弹一遍，帮我挑挑毛病？"}],
+    "clock": "2026-11-16 21:05",
+    "may_decline": false,
+    "intent": {"enabled": true, "status": "proposed", "text": "邀ME周六来琴行听她弹一遍并提意见"}
+   },
+   "gold": {},
+   "feedback": {"her_state": "虚惊后的放松，顺势发出陪练邀约"}
+  },
+  {
+   "case_id": "E133_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-18 23:05", "text": "睡前有点焦虑，总梦见弹到一半忘谱……算了不说了，你早点休息，我就是睡前碎碎念。"}],
+    "clock": "2026-11-18 23:08",
+    "may_decline": true
+   },
+   "gold": {},
+   "feedback": {"her_state": "深夜低压力碎碎念，明示可以不接"}
+  },
+  {
+   "case_id": "E133_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-20 08:40", "text": "今天下午进考场！我到琴行了，手心全是汗，给我说句吉利话！"}],
+    "clock": "2026-11-20 08:42",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "考试当天早晨的临场紧张，需要短促的鼓励"}
+  },
+  {
+   "case_id": "E133_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-20 18:30", "text": "出考场啦！音阶部分有点小失误，曲子弹得比平时稳，老师还点头了，感觉能过！"}],
+    "clock": "2026-11-20 18:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "考后释放，主动汇报细节"}
+  },
+  {
+   "case_id": "E133_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-22 12:00", "text": "成绩要等下个月才出。等出来那天，不管过没过，我请你喝奶茶，谢你这一个月听我唠叨。"}],
+    "clock": "2026-11-22 12:03",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "事件收尾，主动提出谢礼并留出后续钩子"}
+  }
+ ]
+}

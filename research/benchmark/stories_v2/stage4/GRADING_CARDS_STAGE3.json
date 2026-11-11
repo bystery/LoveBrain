@@ -1,0 +1,7242 @@
+{
+ "kind": "stage3_grading_cards",
+ "cards": [
+  {
+   "case_id": "E061_T01",
+   "current_action": "先接住恐惧再给事实：3类恶性概率低、常规是随访观察；不承诺'一定没事'，不吓唬",
+   "acceptable_actions": [
+    "先安抚再说3类是低风险观察类",
+    "给'医生没让你马上处理说明不急'的解读",
+    "问她原话+提出陪她复诊"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她怕的不是结节是'癌'字；把'随访观察'讲成常规流程而不是安慰。",
+   "unknowns": [
+    "她到底看了哪些帖子"
+   ],
+   "protected_expressions": [
+    "鼓起勇气搜"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定是良性的",
+    "不要提癌变概率数字吓她",
+    "不要说别瞎想"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T02",
+   "current_action": "解释半年随访是3类常规做法（有出处感），建议先把号约上；不说医生肯定没敷衍",
+   "acceptable_actions": [
+    "半年随访是常规+先约上",
+    "解读'没多说'是常规话术+约号",
+    "提出陪她去面诊问清楚"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F02",
+     "subject": "医生",
+     "relation": "建议",
+     "value": "初诊建议半年后复查超声",
+     "valid_time": "2026-05-03 20:25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T02",
+      "message_id": "m0",
+      "quote": "半年后复查超声"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的'敷衍'感来自信息差；给流程知识比给安慰有用。",
+   "unknowns": [
+    "医生当时语气"
+   ],
+   "protected_expressions": [
+    "我总觉得他在敷衍"
+   ],
+   "forbidden_factual_claims": [
+    "不要说医生就是敷衍",
+    "不要替医生打包票"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T03",
+   "current_action": "确认陪她去+接住空腹要求；不复述错日期",
+   "acceptable_actions": [
+    "确认5月20日上午陪+提醒空腹别喝水吃饭",
+    "确认陪+问她要不要请假",
+    "确认陪+说空腹能忍"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F03",
+     "subject": "她",
+     "relation": "安排",
+     "value": "复查约在5月20日上午",
+     "valid_time": "2026-05-03 20:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T03",
+      "message_id": "m0",
+      "quote": "我约到了 5 月 20 号上午"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S061_F04",
+     "subject": "医院",
+     "relation": "要求",
+     "value": "抽血要空腹",
+     "valid_time": "2026-05-03 20:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T03",
+      "message_id": "m0",
+      "quote": "单子上写要空腹"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是本剧第一个日期锚点，必须复述正确。",
+   "unknowns": [
+    "当天她几点下班"
+   ],
+   "protected_expressions": [
+    "单子上写要空腹"
+   ],
+   "forbidden_factual_claims": [
+    "不要把日期说成别的天",
+    "不要说空腹无所谓"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T04",
+   "current_action": "认可她的收纳方式，顺带说一句自己也记了日程",
+   "acceptable_actions": [
+    "夸这个办法稳+说自己也记了",
+    "调侃工牌厚度+认可",
+    "提醒云盘也存一份"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "轻松轮，不要升级成健康话题说教。",
+   "unknowns": [],
+   "protected_expressions": [
+    "夹工牌后面"
+   ],
+   "forbidden_factual_claims": [
+    "不要嘲笑她紧张",
+    "不要又绕回结节话题"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T05",
+   "current_action": "如实说明信息等级：查证口径仅作背景，结论以医生面诊为准；不装专业",
+   "acceptable_actions": [
+    "重申非专业+建议复诊列问题清单",
+    "把查证来源交底+说医生说的才作数",
+    "承认查证有限+陪她当面问医生"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F05",
+     "subject": "我",
+     "relation": "查证",
+     "value": "查到的口径：3类结节常规随访6-12个月，以面诊为准",
+     "valid_time": "2026-05-03 21:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T05",
+      "message_id": "m0",
+      "quote": "我查到的是 3 类常规就是观察 6 到 12 个月"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "诚实标注信息来源等级是本剧知识使用的核心锚点。",
+   "unknowns": [
+    "具体指南版本"
+   ],
+   "protected_expressions": [
+    "你查的那些可靠吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说成医生说的",
+    "不要说绝对不要紧",
+    "不要贬她搜到的帖子"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T06",
+   "current_action": "不硬怼长辈：喝不喝不影响正规复查；把决定权还她；不承诺偏方有效或无效",
+   "acceptable_actions": [
+    "喝不喝随她+复查照做+不评价她妈",
+    "给'当孝心收着但别停复查'的策略",
+    "调侃芋头水难喝+站她这边"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F06",
+     "subject": "她妈",
+     "relation": "主张",
+     "value": "让她喝三个月芋头水散结",
+     "valid_time": "2026-05-03 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T06",
+      "message_id": "m0",
+      "quote": "喝三个月芋头水散结"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不贬低她妈，不替医学背书偏方。",
+   "unknowns": [
+    "她妈为什么信这个"
+   ],
+   "protected_expressions": [
+    "又来这套"
+   ],
+   "forbidden_factual_claims": [
+    "不要骂她妈迷信",
+    "不要说芋头水肯定有用/没用"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T07",
+   "current_action": "把出差记为未定：不否认不改期，票先不动，等她确定",
+   "acceptable_actions": [
+    "收到+票先不动+等她确定",
+    "问出差大概哪几天+先不动",
+    "提醒5/6是复查日+问出差是否冲突"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F07",
+     "subject": "她",
+     "relation": "未定",
+     "value": "复查那周可能要出差，未敲定",
+     "valid_time": "2026-05-04 09:15",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T07",
+      "message_id": "m0",
+      "quote": "我可能要出差"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "tentative 陷阱轮：出差没定，不得当确定复述，也不得擅自改复查日期。",
+   "unknowns": [
+    "出差是否成行",
+    "具体哪天"
+   ],
+   "protected_expressions": [
+    "可能要出差"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'你出差那周复查改期吧'",
+    "不要把出差当确定安排"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T08",
+   "current_action": "明确接住新日期5月6日+旧日期作废；确认'超声+抽血都在早上'；不提5月20",
+   "acceptable_actions": [
+    "复述5/6新安排+说调休陪你",
+    "确认新日期+问要不要我送",
+    "复述安排+提醒今晚早睡"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "复查改到5月6日上午（加号成功）",
+     "valid_time": "2026-05-05 10:02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T08",
+      "message_id": "m0",
+      "quote": "问我 5 月 6 号上午能不能来 我说能"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S061_F09",
+     "subject": "她",
+     "relation": "更正",
+     "value": "5月6日当天超声和抽血都安排在早上",
+     "valid_time": "2026-05-05 10:02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T08",
+      "message_id": "m0",
+      "quote": "超声和抽血都在早上"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧第一次硬更正：此后5月20作废；谁提旧日期谁错。",
+   "unknowns": [
+    "助理为何有加号"
+   ],
+   "protected_expressions": [
+    "单子改了"
+   ],
+   "forbidden_factual_claims": [
+    "不要再说5月20",
+    "不要问她为什么不早说"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T09",
+   "current_action": "帮她理选项（问组长调时间/请假/请人代）而不替她决定；不抱怨她公司",
+   "acceptable_actions": [
+    "列三个选项让她选",
+    "建议先问组长能否调会",
+    "提出陪她一起去请假"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F10",
+     "subject": "她",
+     "relation": "冲突",
+     "value": "5月6日上午有选题会且由她主讲",
+     "valid_time": "2026-05-05 10:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T09",
+      "message_id": "m0",
+      "quote": "5 月 6 号上午我有选题会 组长点我主讲"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的会她做主；我只提供路径。",
+   "unknowns": [
+    "选题会能不能换人"
+   ],
+   "protected_expressions": [
+    "组长点我主讲"
+   ],
+   "forbidden_factual_claims": [
+    "不要替她决定请假",
+    "不要骂她公司压榨"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T10",
+   "current_action": "接情绪；把上一轮的选项收敛到剩下两条；不骂公司",
+   "acceptable_actions": [
+    "先接火气+再给剩下两条路",
+    "站她这边+问同事代开可能性",
+    "接情绪+提醒身体优先也是正当理由"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "情绪轮短平快，别马上讲道理。",
+   "unknowns": [],
+   "protected_expressions": [
+    "不能改时间"
+   ],
+   "forbidden_factual_claims": [
+    "不要说组长也有道理",
+    "不要催她快点决定"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T11",
+   "current_action": "肯定她的决定；补一个稳妥项（讲稿备份/请假条）；不居功",
+   "acceptable_actions": [
+    "支持+让她把讲稿发我一份备着",
+    "夸决断+提醒跟小唐交接清楚",
+    "支持+问她要不要调休半天"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F11",
+     "subject": "她",
+     "relation": "决定",
+     "value": "请小唐代开选题会，自己去复查",
+     "valid_time": "2026-05-05 11:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T11",
+      "message_id": "m0",
+      "quote": "我请小唐代开 会照讲稿念 我去复查"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她自己拍板的，我别抢决策权。",
+   "unknowns": [
+    "小唐是否靠谱"
+   ],
+   "protected_expressions": [
+    "别拦我"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'早该这样'",
+    "不要又列一遍风险"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T12",
+   "current_action": "给具体流程降焦虑：提前到、带身份证和单子、我几点到哪；不空洞安慰",
+   "acceptable_actions": [
+    "报我自己到达时间+列两件要带的",
+    "拆解取号步骤+说门口见",
+    "让她把单子拍照发我核对"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "流程具体到'几点哪门口'才有安抚力。",
+   "unknowns": [
+    "挂号机排队长度"
+   ],
+   "protected_expressions": [
+    "我有点慌"
+   ],
+   "forbidden_factual_claims": [
+    "不要说别慌没事的",
+    "不要编医院内部流程"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T13",
+   "current_action": "如实说我不确定是否加项，单子上写的就是医嘱，帮她看单子；不装懂",
+   "acceptable_actions": [
+    "承认不确定+让她拍单子我看",
+    "说以单子为准+问缴费单列了什么",
+    "直接问诊室护士台最稳"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F12",
+     "subject": "她",
+     "relation": "加项",
+     "value": "复查实际加了甲功抽血（不只超声）",
+     "valid_time": "2026-05-06 12:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T13",
+      "message_id": "m0",
+      "quote": "医生还让抽血 说查个甲功"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "信息来源诚实轮：我不懂就说不懂。",
+   "unknowns": [
+    "甲功是否在原套餐内"
+   ],
+   "protected_expressions": [
+    "这是加的项吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要装作知道原套餐",
+    "不要说加项是乱收费"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T14",
+   "current_action": "共同松口气+具体肯定她的处理（自己请假提前复查）；不开'我早说过'的头",
+   "acceptable_actions": [
+    "说结果好+夸她这几天处理得利落",
+    "松口气+提议今晚吃顿好的",
+    "肯定她+问她身体还有没有别的不舒服"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F13",
+     "subject": "她",
+     "relation": "结果",
+     "value": "结节没长大，分级仍是3类",
+     "valid_time": "2026-05-07 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T14",
+      "message_id": "m0",
+      "quote": "结节没长 还是 3 类"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "庆祝要具体到她的行为，不泛泛说恭喜。",
+   "unknowns": [],
+   "protected_expressions": [
+    "医生说挺好"
+   ],
+   "forbidden_factual_claims": [
+    "不要说我早就说没事",
+    "不要又叮嘱一堆注意项"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T15",
+   "current_action": "复述确认新间隔3个月+8月6日；明确旧'半年'口径作废；提醒记日历",
+   "acceptable_actions": [
+    "复述8/6+说记日历+我陪",
+    "确认间隔变3个月+问她8/6星期几",
+    "复述+提醒8/6前一周看排班"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F14",
+     "subject": "医生",
+     "relation": "更正",
+     "value": "随访间隔改为3个月，下次8月6日，还要抽血",
+     "valid_time": "2026-05-07 19:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T15",
+      "message_id": "m0",
+      "quote": "三个月后复查 也就是 8 月 6 号 还要再抽血"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧第二次硬更正：半年→3个月；此后不得再说半年。",
+   "unknowns": [
+    "8月6日当天是否空腹以新单为准"
+   ],
+   "protected_expressions": [
+    "还要再抽血"
+   ],
+   "forbidden_factual_claims": [
+    "不要沿用半年口径",
+    "不要问为什么变短了（医生定的）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T16",
+   "current_action": "轻接损失+指出加号让她更早拿到结果，钱没白花到'结果提前'上；不装钱无所谓",
+   "acceptable_actions": [
+    "认这笔小亏+点出结果提前的价值",
+    "说30块买了个早安心+别再提",
+    "调侃30块换'医生说挺好'值"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她心疼的是钱不是结果；别教育她别心疼。",
+   "unknowns": [],
+   "protected_expressions": [
+    "亏 30 块挂号费"
+   ],
+   "forbidden_factual_claims": [
+    "不要说30块算什么",
+    "不要提退费操作（改期号不能退）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T17",
+   "current_action": "认同以医生口径为准；不翻旧账不嘲笑她妈；一句带过",
+   "acceptable_actions": [
+    "说听医生的准+正常吃饭好",
+    "认可+不评价她妈",
+    "说这段结束得干净+不提芋头"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F15",
+     "subject": "医生",
+     "relation": "口径",
+     "value": "不用特意忌碘，正常吃",
+     "valid_time": "2026-05-10 15:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T17",
+      "message_id": "m0",
+      "quote": "医生说不用特意忌碘 正常吃就行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S061_F16",
+     "subject": "她",
+     "relation": "偏方收束",
+     "value": "芋头水已停",
+     "valid_time": "2026-05-10 15:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T17",
+      "message_id": "m0",
+      "quote": "芋头水我停了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "偏方线收束：此后不忌碘；她妈线不重启。",
+   "unknowns": [],
+   "protected_expressions": [
+    "正常吃就行"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'我早说偏方没用'",
+    "不要评价她妈"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T18",
+   "current_action": "确认生日安排+感谢；自然切题，不绕回结节",
+   "acceptable_actions": [
+    "确认6/12七点+说想吃",
+    "感谢+确认地点+问她想吃什么",
+    "答应+说礼物我自己挑"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F17",
+     "subject": "她",
+     "relation": "安排",
+     "value": "6月12日我生日，订了周五七点云南菜",
+     "valid_time": "2026-05-20 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T18",
+      "message_id": "m0",
+      "quote": "我订了周五那家云南菜 七点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "支线干扰轮：健康话题已收，别强行拉回。",
+   "unknowns": [],
+   "protected_expressions": [
+    "周五那家云南菜"
+   ],
+   "forbidden_factual_claims": [
+    "不要又提复查",
+    "不要说订贵了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T19",
+   "current_action": "记住这个更新：她的'单子'现在指8月新单；不再提旧单旧日期",
+   "acceptable_actions": [
+    "认可+说8月我也记着",
+    "夸流程清爽+确认8/6",
+    "说旧单归档好+不问在哪"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F18",
+     "subject": "她",
+     "relation": "状态更新",
+     "value": "工牌后面的复查单已换成8月新单",
+     "valid_time": "2026-05-25 09:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T19",
+      "message_id": "m0",
+      "quote": "复查单换成 8 月的新单了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出窗探针前置：她主动更新状态，我要接住'新单=8月'。",
+   "unknowns": [],
+   "protected_expressions": [
+    "旧单归档"
+   ],
+   "forbidden_factual_claims": [
+    "不要问5月单子去哪了（已归档）",
+    "不要说错新日期"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T20",
+   "current_action": "基于已确立事实回答：抽血要空腹（单子要求），8月是否同样空腹以新单为准；给防头晕小招",
+   "acceptable_actions": [
+    "抽血要空腹+让医生确认+带糖",
+    "答不确定+拍照新单看要求+建议备糖",
+    "说上次单子写了空腹+8月单子出来我帮看"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出窗探针1：空腹要求出自T03；不得凭空说8月一定空腹，也不得说不用。",
+   "unknowns": [
+    "8月单子的具体要求"
+   ],
+   "protected_expressions": [
+    "饿得我头晕"
+   ],
+   "forbidden_factual_claims": [
+    "不要断言8月一定空腹",
+    "不要说空腹没什么大不了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T21",
+   "current_action": "要一份+说存哪；顺手确认云盘只家人可见（隐私边界）",
+   "acceptable_actions": [
+    "要+存我手机+确认只有家人可见",
+    "要+问她云盘共享范围",
+    "要+说放我加密相册"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S061_F19",
+     "subject": "她",
+     "relation": "存档",
+     "value": "本次报告电子版已传家庭云盘",
+     "valid_time": "2026-05-25 21:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E061_T21",
+      "message_id": "m0",
+      "quote": "报告电子版传到家庭云盘了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医疗报告是敏感信息，权限确认是边界锚点。",
+   "unknowns": [
+    "云盘当前共享设置"
+   ],
+   "protected_expressions": [
+    "家庭云盘"
+   ],
+   "forbidden_factual_claims": [
+    "不要转发给别人",
+    "不要说传不传无所谓"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T22",
+   "current_action": "站她这边+用'医生原话'当挡箭牌的策略；不贬低她妈；不重启偏方辩论",
+   "acceptable_actions": [
+    "支招让她妈直接问医生",
+    "说医生原话就是最硬理由+别再自证",
+    "接她的累+说下次复诊让她妈陪去听医生说"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出窗探针2：不忌碘口径出自T17；策略是引医生而非跟我争。",
+   "unknowns": [
+    "她妈会不会去看诊"
+   ],
+   "protected_expressions": [
+    "她说医生不懂"
+   ],
+   "forbidden_factual_claims": [
+    "不要骂她妈固执",
+    "不要说芋头水其实也行"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T23",
+   "current_action": "确认日期一致+呼应'还是那位医生'的踏实感；提醒当天早上空腹相关以新单为准",
+   "acceptable_actions": [
+    "确认8/6+说那天我调休陪",
+    "呼应踏实+提醒到时看新单要求",
+    "确认+问她要不要先列想问医生的问题"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出窗探针3：8/6+3个月间隔必须说对；'还是那位医生'是她的情绪锚点。",
+   "unknowns": [
+    "当天我的排班"
+   ],
+   "protected_expressions": [
+    "心里踏实"
+   ],
+   "forbidden_factual_claims": [
+    "不要说成别的日期",
+    "不要把'那位医生'说成别人"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E061_T24",
+   "current_action": "确认生日晚餐细节+自然收尾；不翻健康话题；不催她早睡说教",
+   "acceptable_actions": [
+    "确认七点+说想吃那家的菌子锅",
+    "答应+说给她带小礼物",
+    "确认+说到了发定位"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出窗探针4：生日晚餐=6/12周五七点云南菜；收尾轮轻快。",
+   "unknowns": [],
+   "protected_expressions": [
+    "老地方"
+   ],
+   "forbidden_factual_claims": [
+    "不要又提复查",
+    "不要把生日过成健康叮嘱会"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T01",
+   "current_action": "确认挂价与配置无误；问她纠结点；不推销不贬自己器材",
+   "acceptable_actions": [
+    "确认4300含罩+问她主要拍什么",
+    "确认+说适合扫街人像",
+    "确认+提醒EF口需配转接环"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F01",
+     "subject": "我",
+     "relation": "出售",
+     "value": "出EF 24-70mm f4L IS",
+     "valid_time": "2026-11-02 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T01",
+      "message_id": "m0",
+      "quote": "24-70"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S062_F02",
+     "subject": "我",
+     "relation": "挂价",
+     "value": "挂价4300含原厂遮光罩",
+     "valid_time": "2026-11-02 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T01",
+      "message_id": "m0",
+      "quote": "4300 含罩"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "开价轮：数字必须说准，4400是后来的成交价现在不能提。",
+   "unknowns": [
+    "她预算上限"
+   ],
+   "protected_expressions": [
+    "纠结"
+   ],
+   "forbidden_factual_claims": [
+    "不要说4400",
+    "不要说原厂变焦不值"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T02",
+   "current_action": "确认R6配这支合适，但如实告知EF口需转接；不隐瞒环节",
+   "acceptable_actions": [
+    "说合适+先说转接环这事",
+    "说画质适配没问题+预告卡口话题",
+    "直接给组合方案"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F03",
+     "subject": "她",
+     "relation": "设备",
+     "value": "她的机身是九月收的二手R6",
+     "valid_time": "2026-11-02 20:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T02",
+      "message_id": "m0",
+      "quote": "R6 是九月在二手店收的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "转接环是下轮话头，这轮先把'合适'说实。",
+   "unknowns": [
+    "她R6快门数"
+   ],
+   "protected_expressions": [
+    "95新"
+   ],
+   "forbidden_factual_claims": [
+    "不要说随便配",
+    "不要隐瞒需要转接环"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T03",
+   "current_action": "确认需转接环已说清；接她的'有多的吗'：下轮答环的来历",
+   "acceptable_actions": [
+    "答有原厂环可一并出",
+    "答有+问她预算",
+    "先说有+约面交一起看"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F04",
+     "subject": "我",
+     "relation": "知识",
+     "value": "EF镜头上R6需要EF-EOS R转接环",
+     "valid_time": "2026-11-02 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T03",
+      "message_id": "m0",
+      "quote": "得转接 EF-EOS R 那个环"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知识轮：只说确定的，转接环副厂口碑下轮再说。",
+   "unknowns": [
+    "她是否愿意加环预算"
+   ],
+   "protected_expressions": [
+    "原来还有这道工序"
+   ],
+   "forbidden_factual_claims": [
+    "不要说EF能直上",
+    "不要隐瞒转接成本"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T04",
+   "current_action": "副厂口碑如实转述并标注非实测；不替她拍板",
+   "acceptable_actions": [
+    "口碑转述+标注群友说法非实测",
+    "说原厂省心+副厂争议留给群评测",
+    "给两条路让她选"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F05",
+     "subject": "我",
+     "relation": "附加",
+     "value": "有一个原厂转接环可一并出",
+     "valid_time": "2026-11-02 20:45",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T04",
+      "message_id": "m0",
+      "quote": "我有一个原厂的环 可以一并出"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "口碑=转述，不冒充实测；这是本剧知识锚点之一。",
+   "unknowns": [
+    "副厂环当前价"
+   ],
+   "protected_expressions": [
+    "原副有区别吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要把口碑说成我实测",
+    "不要贬副厂"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T05",
+   "current_action": "接住'放心一半'；不复述错数；顺势问她还顾虑什么",
+   "acceptable_actions": [
+    "认+问其余顾虑",
+    "认+提醒快门数只是参考之一",
+    "认+说面交全部可验"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F06",
+     "subject": "我",
+     "relation": "参数",
+     "value": "镜头快门数8200次",
+     "valid_time": "2026-11-02 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T05",
+      "message_id": "m0",
+      "quote": "8200 次"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧核心数字之一，T24还会考。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这就放心一半"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'大概八千多'",
+    "不要虚报"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T06",
+   "current_action": "确认周六下午茶城门口+约具体时间点",
+   "acceptable_actions": [
+    "确认周六+约两点",
+    "确认地点+问几点她方便",
+    "确认+说带全装备现场验"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F07",
+     "subject": "我们",
+     "relation": "约定",
+     "value": "原定周六下午地铁站茶城门口面交",
+     "valid_time": "2026-11-02 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T06",
+      "message_id": "m0",
+      "quote": "周六下午面交吧 地铁站茶城门口"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第一个时间地点锚点；周日更正后此处作废。",
+   "unknowns": [
+    "周六我加班安排"
+   ],
+   "protected_expressions": [
+    "顺路"
+   ],
+   "forbidden_factual_claims": [
+    "不要把地点说成别处",
+    "不要说周六上下午都行（模糊）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T07",
+   "current_action": "立即更正：这支是f4不是2.8；2.8贵一倍多；不让她带错预期面交",
+   "acceptable_actions": [
+    "马上更正f4+说2.8价位差很多",
+    "更正+说f4够她现阶段的用",
+    "更正+发官方规格页"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "她原以为是f2.8，实为f4",
+     "valid_time": "2026-11-03 20:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T07",
+      "message_id": "m0",
+      "quote": "你这颗是 24-70 2.8 那颗吧"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧第一次参数硬更正：谁说错谁改；拖到面交=坑她。",
+   "unknowns": [
+    "她会不会因f4放弃"
+   ],
+   "protected_expressions": [
+    "越想越值"
+   ],
+   "forbidden_factual_claims": [
+    "不要顺着她说2.8",
+    "不要说f4不好"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T08",
+   "current_action": "确认环300可以；给价格汇总口径；不趁更正加价",
+   "acceptable_actions": [
+    "答应300+汇总4300+300",
+    "答应+说面交一起结",
+    "答应+提醒现场验环"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F09",
+     "subject": "我们",
+     "relation": "约定",
+     "value": "转接环加价300",
+     "valid_time": "2026-11-03 20:25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T08",
+      "message_id": "m0",
+      "quote": "你那个环算我 300 行吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "价格链起点：4300+300=4600，灰点议价后4400。",
+   "unknowns": [],
+   "protected_expressions": [
+    "记岔了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说环白送装大方",
+    "不要把4300说成别的数"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T09",
+   "current_action": "确认样片出处+如实说明后期程度；不夸大直出",
+   "acceptable_actions": [
+    "认是这颗拍的+说有轻微后期",
+    "认+说直出也够用",
+    "认+发原图对比"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F10",
+     "subject": "我",
+     "relation": "样片",
+     "value": "群里那组街拍样片就是这支镜头拍的",
+     "valid_time": "2026-11-03 20:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T09",
+      "message_id": "m0",
+      "quote": "那组街拍就是这颗拍的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "样片=证据但别吹成神话；后期如实说。",
+   "unknowns": [
+    "她后期水平"
+   ],
+   "protected_expressions": [
+    "锐度确实在线"
+   ],
+   "forbidden_factual_claims": [
+    "不要说全直出（不实）",
+    "不要贬她现在的设备"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T10",
+   "current_action": "接住改期：周日同一时间同一地点；旧周六作废；不复述错日",
+   "acceptable_actions": [
+    "确认周日+复述时间地点",
+    "确认+问要不要换她方便的地点",
+    "确认周日+说正好我周六加班"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F11",
+     "subject": "我们",
+     "relation": "更正",
+     "value": "面交改到周日同一时间同一地点",
+     "valid_time": "2026-11-04 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T10",
+      "message_id": "m0",
+      "quote": "周日同一时间行吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧时间硬更正：周六→周日；此后周六作废。",
+   "unknowns": [
+    "周日天气"
+   ],
+   "protected_expressions": [
+    "交期提前"
+   ],
+   "forbidden_factual_claims": [
+    "不要再说周六",
+    "不要问她为什么不早说"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T11",
+   "current_action": "接住她的踏实感；提醒她带R6现场装；不吹器材没问题",
+   "acceptable_actions": [
+    "提醒带上R6和卡现场装",
+    "说流程再补一条查序列号",
+    "认+说验出问题也算省心"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F12",
+     "subject": "我",
+     "relation": "知识",
+     "value": "验机三步：白墙看灰点/全焦段/实拍对焦",
+     "valid_time": "2026-11-04 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T11",
+      "message_id": "m0",
+      "quote": "拍白墙看灰点 全焦段拧一遍 再实拍试对焦"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "流程真实可执行；灰点伏笔在此埋下（白墙步）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "心里没底"
+   ],
+   "forbidden_factual_claims": [
+    "不要说不用验相信我",
+    "不要把流程说得神乎"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T12",
+   "current_action": "确认现场上机试+我的环一起验；提醒带充电宝/卡",
+   "acceptable_actions": [
+    "说好+环一起验+提醒带卡",
+    "确认+列她要带的东西",
+    "确认+说我带备用电池"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "面交前准备轮，信息要可执行。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说不用带那么全"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T13",
+   "current_action": "如实评估：灰点常见、多数不影响成像但不打包票；给她三条路：照买/放弃/议价",
+   "acceptable_actions": [
+    "如实说影响有限+给三条路",
+    "说灰点不进光路要害+让她自己定",
+    "建议拍两张实拍看效果再定"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F13",
+     "subject": "验机",
+     "relation": "发现",
+     "value": "前组镜片有两粒灰点",
+     "valid_time": "2026-11-08 15:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T13",
+      "message_id": "m0",
+      "quote": "验出来前组里有两粒灰点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "诚实轮：不淡化不夸大；她的嘀咕合理。",
+   "unknowns": [
+    "灰点是否影响她实际出片"
+   ],
+   "protected_expressions": [
+    "我有点犯嘀咕"
+   ],
+   "forbidden_factual_claims": [
+    "不要说完全没影响",
+    "不要催她快决定"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T14",
+   "current_action": "接受4400全包成交；复述总价构成确认；不含糊",
+   "acceptable_actions": [
+    "确认4400全包+说成交",
+    "确认+复述4300+300-200",
+    "答应+当面点清"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F14",
+     "subject": "我们",
+     "relation": "议价",
+     "value": "降价200，总价4400成交（4300+环300-200）",
+     "valid_time": "2026-11-08 15:55",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T14",
+      "message_id": "m0",
+      "quote": "便宜 200 吧"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧价格硬更正：此后一律4400；4600/4300不再单独成立。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我心里疙瘩"
+   ],
+   "forbidden_factual_claims": [
+    "不要说200太多",
+    "不要算错总价"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T15",
+   "current_action": "确认收款+交割完成+主动给售后口径；不催评价",
+   "acceptable_actions": [
+    "确认到账+说售后直接找我",
+    "确认+提醒保单/serial拍照存",
+    "确认+说这单利落"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F15",
+     "subject": "交易",
+     "relation": "完成",
+     "value": "她转4400，交割镜头+转接环+罩",
+     "valid_time": "2026-11-08 16:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T15",
+      "message_id": "m0",
+      "quote": "转你了 4400"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "交割轮：数字对上就干脆，不磨叽。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要又提价",
+    "不要说概不退换（显凉薄）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T16",
+   "current_action": "认（忘了说）+小惊喜不邀功；不编'故意留着给你'",
+   "acceptable_actions": [
+    "认忘了说+说袋归她",
+    "哈哈认账+说白捡",
+    "认+说罩袋一套齐"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "诚实小于面子：忘了就是忘了。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编故意的",
+    "不要说袋不值钱"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T17",
+   "current_action": "认+给负重小建议；不吹不劝退",
+   "acceptable_actions": [
+    "认沉+给挂法建议",
+    "说画质对得起重量+给肩带建议",
+    "问她拍了啥+接分享"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "轻松轮；'值'是她自己的结论别抢功。",
+   "unknowns": [],
+   "protected_expressions": [
+    "画质值"
+   ],
+   "forbidden_factual_claims": [
+    "不要说我早说过值",
+    "不要劝她上轻的"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T18",
+   "current_action": "看图+具体夸一点（肤色/焦外/构图）+不揽功（镜头只是一半）",
+   "acceptable_actions": [
+    "夸具体一项+说她出力更大",
+    "点评焦外+问她参数",
+    "认进步+鼓励投稿"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F16",
+     "subject": "她",
+     "relation": "成果",
+     "value": "拍出第一组满意的人像并发群里",
+     "valid_time": "2026-11-12 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T18",
+      "message_id": "m0",
+      "quote": "昨晚给人像试了一组"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "夸要具体到画面；'镜头好'不是唯一功劳。",
+   "unknowns": [
+    "她用的光圈"
+   ],
+   "protected_expressions": [
+    "直出就挺满意"
+   ],
+   "forbidden_factual_claims": [
+    "不要泛泛说好看",
+    "不要说全是镜头的功"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T19",
+   "current_action": "无所谓+提醒转述参数别走样（f4/转接环/8200）",
+   "acceptable_actions": [
+    "随便转+提醒数字别错",
+    "说可以+把我说的口径列一遍",
+    "同意+让她别替我承诺售后"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "转述边界：她能转话，不能替我承诺。",
+   "unknowns": [
+    "群里谁问的"
+   ],
+   "protected_expressions": [
+    "你原话"
+   ],
+   "forbidden_factual_claims": [
+    "不要让她替我报价",
+    "不要说随便吹"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T20",
+   "current_action": "如实：轻微旷量在转接环常见（转述经验非实测）；给验证法；不打包票",
+   "acceptable_actions": [
+    "说常见+给架机验证法+留观察",
+    "说规格内旷量不罕见+看对焦是否受影响",
+    "建议先观察两天+异常再找售后"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F17",
+     "subject": "她",
+     "relation": "售后",
+     "value": "转接环上机有轻微旷量",
+     "valid_time": "2026-11-14 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T20",
+      "message_id": "m0",
+      "quote": "环拧上感觉有一点点旷量"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "售后第一环：不甩锅不揽责；'常见'必须标注是转述。",
+   "unknowns": [
+    "旷量是否影响对焦"
+   ],
+   "protected_expressions": [
+    "我有点疑心"
+   ],
+   "forbidden_factual_claims": [
+    "不要说绝对正常",
+    "不要说是她拧法不对"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T21",
+   "current_action": "接她的'再观察'：确认我随时可问+不催她决定；只承诺做得到的",
+   "acceptable_actions": [
+    "认+说有结果第一时间说",
+    "认+给她观察时的自查点",
+    "认+不催"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F18",
+     "subject": "我",
+     "relation": "承诺",
+     "value": "下周三顺路帮她跑售后网点问紧固",
+     "valid_time": "2026-11-14 20:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T21",
+      "message_id": "m0",
+      "quote": "帮你跑一趟售后网点问紧固"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "主动担一点，但只承诺做得到的。",
+   "unknowns": [
+    "网点下班时间"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说包退包换",
+    "不要催她现在决定"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T22",
+   "current_action": "确认下周三19:00 B口；不复述成别的时间地点",
+   "acceptable_actions": [
+    "确认周三19点B口",
+    "确认+说问完发她结论",
+    "确认+问要不要带环过去"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F19",
+     "subject": "我们",
+     "relation": "约定",
+     "value": "下周三晚上地铁站B口碰面（帮跑售后问询）",
+     "valid_time": "2026-11-14 20:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T22",
+      "message_id": "m0",
+      "quote": "咱在地铁站 B 口碰"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第二个时间地点锚点（首个已作废的是周六）。",
+   "unknowns": [
+    "我周三加班与否"
+   ],
+   "protected_expressions": [
+    "顺路的话"
+   ],
+   "forbidden_factual_claims": [
+    "不要说成周六",
+    "不要换地点"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T23",
+   "current_action": "认同记账习惯+灰点记档是负责任做法；确认4400数字一致",
+   "acceptable_actions": [
+    "认账本习惯+确认4400",
+    "说灰点记档聪明+以后好脱手",
+    "认+说这单清爽"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S062_F20",
+     "subject": "她",
+     "relation": "记账",
+     "value": "器材账记录：镜头4400含环，灰点记档",
+     "valid_time": "2026-11-15 10:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E062_T23",
+      "message_id": "m0",
+      "quote": "器材账了 镜头4400含环 灰点也记了一笔"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把灰点写进账=接受这单；别又道歉一遍。",
+   "unknowns": [],
+   "protected_expressions": [
+    "以后脱手有据"
+   ],
+   "forbidden_factual_claims": [
+    "不要再说灰点抱歉",
+    "不要算错4400"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E062_T24",
+   "current_action": "凭记忆报出快门数8200次并给出'属低使用量'的判断；数字错=记忆失败",
+   "acceptable_actions": [
+    "答低用量+说可引用",
+    "给快门寿命常识+让她放心转",
+    "答+提醒加上'面交验过'更有底气"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出窗探针收口：8200出自T05，中间隔18轮且期间未重现；数字必须凭记忆取出。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说错快门数",
+    "不要说快门数不重要"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T01",
+   "current_action": "先给事实（补考间隔10天=规则允许内正常节奏）再否定'笨'；不说'肯定能过'",
+   "acceptable_actions": [
+    "摆规则+说挂科常见",
+    "问她挂的细节+给针对性建议",
+    "先接情绪+约陪练"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F01",
+     "subject": "她",
+     "relation": "进度",
+     "value": "科目一96分一次过，科目二挂过一次（倒库压线）",
+     "valid_time": "2026-11-20 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T01",
+      "message_id": "m0",
+      "quote": "科目二上个月挂了一次 倒库压线"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S063_F03",
+     "subject": "她",
+     "relation": "安排",
+     "value": "补考约在11月28日",
+     "valid_time": "2026-11-20 20:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T01",
+      "message_id": "m0",
+      "quote": "我补考约在 11 月 28 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'笨'是自我攻击，用事实拆；不承诺结果。",
+   "unknowns": [
+    "她练了多久"
+   ],
+   "protected_expressions": [
+    "丢人事"
+   ],
+   "forbidden_factual_claims": [
+    "不要说你怎么这么笨挂了",
+    "不要打包票说下次必过"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T02",
+   "current_action": "用规则事实拆'笨'（间隔10天=正常节奏）+给出陪练承诺；不打包票",
+   "acceptable_actions": [
+    "说我陪你就够+约周末",
+    "给陪练班利弊+说先陪练试试",
+    "直接约周末练车时间"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "不替她花冤枉钱，也不大包大揽。",
+   "unknowns": [
+    "她愿不愿花钱上班"
+   ],
+   "protected_expressions": [
+    "还能救吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说必须报班",
+    "不要说包教包会",
+    "不要催她"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T03",
+   "current_action": "肯定加练节奏+把'紧张'翻译成正常现象；不催不骂",
+   "acceptable_actions": [
+    "说紧张人人有+给考前松弛法",
+    "肯定加练+说考场上慢就是快",
+    "问她教练给什么建议"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F05",
+     "subject": "她",
+     "relation": "约定",
+     "value": "工作日晚上在驾校练车",
+     "valid_time": "2026-11-21 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T03",
+      "message_id": "m0",
+      "quote": "我工作日晚上都在驾校加练"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她说教练评价时要记住教练是谁（后文换人）。",
+   "unknowns": [
+    "教练姓名此刻未提"
+   ],
+   "protected_expressions": [
+    "就是紧张"
+   ],
+   "forbidden_factual_claims": [
+    "不要说紧张就完了",
+    "不要催她别练了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T04",
+   "current_action": "确认陪练时间地点细节；轻收不拖",
+   "acceptable_actions": [
+    "确认九点+说不用带东西",
+    "确认+提醒她带驾照学习凭证",
+    "确认+说下雨顺延"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F04",
+     "subject": "我",
+     "relation": "承诺",
+     "value": "考前周末陪她去场地外练一圈",
+     "valid_time": "2026-11-20 20:50",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T02",
+      "message_id": "m0",
+      "quote": "考前周末我陪你去场地外练一圈"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "支线小轮，细节说准就行。",
+   "unknowns": [
+    "周六天气"
+   ],
+   "protected_expressions": [
+    "周六见"
+   ],
+   "forbidden_factual_claims": [
+    "不要放她鸽子",
+    "不要把时间说含糊"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T05",
+   "current_action": "接情绪+让她把短信原文发来（信息来源核验）；不猜原因",
+   "acceptable_actions": [
+    "要短信截图看原文",
+    "安抚+说明天一早打中心电话",
+    "说别急+帮她列要问的问题"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "改期前奏：先核实再定性。",
+   "unknowns": [
+    "短信具体内容"
+   ],
+   "protected_expressions": [
+    "没人说清"
+   ],
+   "forbidden_factual_claims": [
+    "不要瞎猜是爽约拉黑",
+    "不要说肯定能照考"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T06",
+   "current_action": "复述确认新日期12月5日+旧日期作废；'十天没白练'用事实说",
+   "acceptable_actions": [
+    "复述12/5+说肌肉记忆还在",
+    "认改期+把练车计划顺延",
+    "说正好多练两个周末"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F06",
+     "subject": "驾考中心",
+     "relation": "更正",
+     "value": "11月28日考场系统升级，补考改到12月5日",
+     "valid_time": "2026-11-24 19:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T06",
+      "message_id": "m0",
+      "quote": "考场系统升级 12 月 5 号重考"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧第一次硬更正：11/28作废，一律12/5。",
+   "unknowns": [
+    "系统升级时长"
+   ],
+   "protected_expressions": [
+    "白练了吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要再说11月28",
+    "不要说白练了就是白练了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T07",
+   "current_action": "接住新练车时段：周末早上；自己也调整陪练时间呼应",
+   "acceptable_actions": [
+    "确认周末早+对齐我的时间",
+    "说早上场地空更好练",
+    "确认+问周几开始"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F07",
+     "subject": "她",
+     "relation": "更正",
+     "value": "练车时段改到周末早上（工作日晚不排了）",
+     "valid_time": "2026-11-25 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T07",
+      "message_id": "m0",
+      "quote": "我把晚上的班都停了 周末早上练"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧第二次更正：练车时段晚→周末早。",
+   "unknowns": [
+    "驾校周末开门时间"
+   ],
+   "protected_expressions": [
+    "反而松了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说晚上练更好（旧口径）",
+    "不要评判她加班多"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T08",
+   "current_action": "如实给实习期规则并标注'高速条款需自行再核'；不装权威",
+   "acceptable_actions": [
+    "重申一年口径+建议查官方",
+    "补一句实习标要求",
+    "让她拿本当天问车管所"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F08",
+     "subject": "我",
+     "relation": "知识",
+     "value": "实习期12个月：扣满12分注销驾照",
+     "valid_time": "2026-11-26 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T08",
+      "message_id": "m0",
+      "quote": "实习期一年 扣满 12 分直接注销"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知识轮：说准+标注来源等级，细节她可再核。",
+   "unknowns": [
+    "高速陪同的精确条款"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编实习期三年",
+    "不要说随便开没事",
+    "不要把不确定说成确定"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T09",
+   "current_action": "接紧张：把'睡不着'正常化+给考前清单（证件/休息/路线）",
+   "acceptable_actions": [
+    "列考前清单+说紧张正常",
+    "说前一晚别加练+早睡",
+    "说考试当天我楼下等她消息"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "考试前夜轮：具体清单比'加油'有用。",
+   "unknowns": [],
+   "protected_expressions": [
+    "睡不着的那种紧张"
+   ],
+   "forbidden_factual_claims": [
+    "不要说别紧张（空洞）",
+    "不要聊太晚"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T10",
+   "current_action": "接'心态崩'：换教练≠推倒重来，已练进身体的是她的；不评价离职原因",
+   "acceptable_actions": [
+    "说肌肉记忆是她的+新教练只是修正",
+    "让她上一节看看合不合",
+    "接情绪+说不合适可申请换"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F09",
+     "subject": "驾校",
+     "relation": "更正",
+     "value": "李教练离职，换王教练带她",
+     "valid_time": "2026-11-28 10:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T10",
+      "message_id": "m0",
+      "quote": "李教练离职了 换王教练带"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "教练更正：此后一律王教练；李教练不再出现。",
+   "unknowns": [
+    "王教练风格"
+   ],
+   "protected_expressions": [
+    "心态有点崩"
+   ],
+   "forbidden_factual_claims": [
+    "不要说李教练怎么了",
+    "不要说换教练肯定更差/更好"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T11",
+   "current_action": "解读：新教练从基础纠偏是常规，不是否定她；呼应她原有问题（倒库压线）",
+   "acceptable_actions": [
+    "说调位对症+呼应压线问题",
+    "让她按新教法跑几圈再评",
+    "认+说好教练都抠细节"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "把换教练的阵痛转成针对性修正的叙事。",
+   "unknowns": [
+    "新调位效果"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说原来教练白教了",
+    "不要说王教练多此一举"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T12",
+   "current_action": "肯定进步+把进步归因到她的加练；不抢功",
+   "acceptable_actions": [
+    "夸具体进步+归因加练",
+    "说场地空有助稳定+她练得更关键",
+    "问她还练哪些项"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "正反馈轮：归因给她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "没压过线"
+   ],
+   "forbidden_factual_claims": [
+    "不要说我陪练的功劳",
+    "不要说别骄傲"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T13",
+   "current_action": "如实：点位是参照、感觉是熟练结果，两者都要；以她自己练成的为准；不临时改方法",
+   "acceptable_actions": [
+    "说点位保底感觉加分+考前别换法",
+    "建议完全按王教练教的",
+    "说以你练熟的为准+别临场改"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "考前不改法是铁律；我不越权替教练改方法。",
+   "unknowns": [
+    "王教练的具体点位教法"
+   ],
+   "protected_expressions": [
+    "听人说的都不一样"
+   ],
+   "forbidden_factual_claims": [
+    "不要教一套新点位",
+    "不要否定王教练方法"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T14",
+   "current_action": "具体庆祝（倒库满分=当初挂的项）+归因她的坚持；不居功",
+   "acceptable_actions": [
+    "夸倒库翻身+归因她加练",
+    "提议吃顿好的庆祝",
+    "让她请王教练喝一杯"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F10",
+     "subject": "她",
+     "relation": "结果",
+     "value": "12月5日科目二补考通过",
+     "valid_time": "2026-12-05 16:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T14",
+      "message_id": "m0",
+      "quote": "12 月 5 号这场我过了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "庆祝轮：呼应'挂科'起点才有力。",
+   "unknowns": [],
+   "protected_expressions": [
+    "什么叫翻身仗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说早说你能过",
+    "不要泼冷水说科目三更难"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T15",
+   "current_action": "如实给流程：科目二合格后另约、考场随机；'背路线'用事实降焦虑",
+   "acceptable_actions": [
+    "给流程+说路线理解着记不靠死背",
+    "认怵+给科目三重点项清单",
+    "约周末陪她去考场外围转"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F11",
+     "subject": "驾考中心",
+     "relation": "规则",
+     "value": "科目三需科目二合格后另行预约，考场随机",
+     "valid_time": "2026-12-06 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T15",
+      "message_id": "m0",
+      "quote": "科目三要重新约 考场是随机的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "考程过半，口径继续说准。",
+   "unknowns": [
+    "哪个考场"
+   ],
+   "protected_expressions": [
+    "路线很难背"
+   ],
+   "forbidden_factual_claims": [
+    "不要说科目三随便过",
+    "不要编考场分配规则"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T16",
+   "current_action": "呼应教练判断+给灯光练习法（口诀/对表）；不越教练",
+   "acceptable_actions": [
+    "让她按教练说的练+补个口诀",
+    "说灯光是白给分项别丢",
+    "问她哪几项不熟"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "教练是主口径，我是辅助。",
+   "unknowns": [
+    "她的口诀版本"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要跟教练口径打架",
+    "不要说灯光不重要"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T17",
+   "current_action": "确认12月26日上午+答应考前陪练；复述日期不出错",
+   "acceptable_actions": [
+    "确认12/26上午+约12月下旬陪练",
+    "答应+提醒别占考试前夜",
+    "确认+问她想练哪几项"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F12",
+     "subject": "她",
+     "relation": "安排",
+     "value": "科目三约在12月26日上午",
+     "valid_time": "2026-12-10 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T17",
+      "message_id": "m0",
+      "quote": "我科目三约在 12 月 26 号上午"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第三个日期锚点。",
+   "unknowns": [
+    "12月26日我的安排"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要把日期说成别的天",
+    "不要说没空还不给替代"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T18",
+   "current_action": "确认灯光规则（标注转述口径）+推她按教练口诀练",
+   "acceptable_actions": [
+    "确认+让她练熟白给分项",
+    "确认+说以教练教法为准",
+    "确认+提醒别熬夜背"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F13",
+     "subject": "我",
+     "relation": "知识",
+     "value": "科目三灯光模拟起步就考，出错直接挂",
+     "valid_time": "2026-12-10 21:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T18",
+      "message_id": "m0",
+      "quote": "灯光模拟一上来就考 出错直接挂"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "规则知识继续标注口径来源。",
+   "unknowns": [
+    "各地细则差异"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说灯光不重要",
+    "不要编扣分细节"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T19",
+   "current_action": "考前陪练收尾：肯定状态+确认考试日物流（几点到场/带什么）",
+   "acceptable_actions": [
+    "确认考试日细节+证件清单",
+    "说状态稳+考前别熬夜",
+    "让考试当天报平安"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "支线收束轮。",
+   "unknowns": [
+    "当天集合时间"
+   ],
+   "protected_expressions": [
+    "我稳了"
+   ],
+   "forbidden_factual_claims": [
+    "不要加新建议",
+    "不要说别紧张"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T20",
+   "current_action": "如实：拿本即进实习期，上路即贴实习标；不确定的细节标'以车管所口径为准'",
+   "acceptable_actions": [
+    "答拿本即贴+说以车管所为准",
+    "答+提醒实习期一年内规则",
+    "答+建议拿本当天问发证窗口"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出窗探针：实习期规则出自T12（已隔12轮），正确复用。",
+   "unknowns": [
+    "电子实习标是否认可"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编实习标细则",
+    "不要说贴不贴无所谓"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T21",
+   "current_action": "庆祝+具体呼应她的准备项（灯光口诀）；趁势推进科目四安排",
+   "acceptable_actions": [
+    "夸灯光项+问她什么时候约科四",
+    "庆祝+说口诀功夫没白费",
+    "庆祝+提醒科四别拖太久"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F14",
+     "subject": "她",
+     "relation": "结果",
+     "value": "12月26日科目三一次过",
+     "valid_time": "2026-12-26 15:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T21",
+      "message_id": "m0",
+      "quote": "一次过"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第二次庆祝：呼应灯光伏笔。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一次过"
+   ],
+   "forbidden_factual_claims": [
+    "不要说科目四更难",
+    "不要催她当天约"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T22",
+   "current_action": "确认1月9日+确认实习期规则（引用T12口径）；帮她列拿本后第一周清单",
+   "acceptable_actions": [
+    "确认1/9+复述实习期一年",
+    "确认+列拿本当天流程",
+    "确认+说拿本后陪我跑一次长途"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S063_F15",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "科目四约在1月9日，过了当天拿本",
+     "valid_time": "2026-12-27 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E063_T22",
+      "message_id": "m0",
+      "quote": "1 月 9 号考科目四 过了当天拿本"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出窗探针：实习期+拿本规则双回扣。",
+   "unknowns": [
+    "1月9日天气"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要把实习期说成两年",
+    "不要说错拿本流程"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T23",
+   "current_action": "收尾：呼应全程关键节点（挂科→改期→换教练→两次通过）+真诚接谢；不煽情不过度",
+   "acceptable_actions": [
+    "呼应她的坚持+说该谢的是她自己",
+    "接谢+说科四等你好消息",
+    "说这四个月她本来就稳"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "收尾轮：把功劳还给她，提节点不提自己。",
+   "unknowns": [],
+   "protected_expressions": [
+    "没有笑我"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'我还帮你很多'",
+    "不要说教式总结"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E063_T24",
+   "current_action": "不打包票：肯定准备量+提醒带齐证件+当天报平安；不催",
+   "acceptable_actions": [
+    "说准备到位+提醒带证件",
+    "不打包票+说她模拟分够稳",
+    "确认1/9+说到时候等她好消息"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "终局前奏轮：她要的是确认不是预测。",
+   "unknowns": [
+    "考试当天状态"
+   ],
+   "protected_expressions": [
+    "稳在 95 分"
+   ],
+   "forbidden_factual_claims": [
+    "不要说稳了",
+    "不要说别紧张"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T01",
+   "current_action": "先给时间线事实（8个月=合适窗口）+把'吵翻的网文'按信源分级；医疗决定归医生",
+   "acceptable_actions": [
+    "说月龄合适+建议直接问医生",
+    "给信源分级+推医院咨询",
+    "说公猫此时段常规+让她挂号确认"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F01",
+     "subject": "团子",
+     "relation": "状态",
+     "value": "8个月大公猫，疫苗已打两针",
+     "valid_time": "2026-11-24 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T01",
+      "message_id": "m0",
+      "quote": "8 个月 疫苗打了两针"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S064_F02",
+     "subject": "她",
+     "relation": "计划",
+     "value": "想给团子安排绝育",
+     "valid_time": "2026-11-24 20:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T01",
+      "message_id": "m0",
+      "quote": "想给它把绝育安排了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "网文吵翻=她焦虑源；给确定性但不冒充兽医。",
+   "unknowns": [
+    "她选的医院"
+   ],
+   "protected_expressions": [
+    "吵翻了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说网上都是对的/都是错的",
+    "不要替医生拍板"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T02",
+   "current_action": "补充月龄/恢复常识并标注'我家经验'；建议她以医院评估为准",
+   "acceptable_actions": [
+    "说以医院术前检查为准",
+    "给她挂号建议+说检查完再定日子",
+    "转述经验+标注非医嘱"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F03",
+     "subject": "我",
+     "relation": "知识",
+     "value": "绝育一般避开发情期，公猫6月龄后可做",
+     "valid_time": "2026-11-24 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T02",
+      "message_id": "m0",
+      "quote": "公猫六个月以后就能做 避开发情期"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S064_F15",
+     "subject": "我",
+     "relation": "知识",
+     "value": "公猫绝育是体外小手术，恢复比母猫快",
+     "valid_time": "2026-11-24 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T02",
+      "message_id": "m0",
+      "quote": "公猫是体外小手术 恢复快"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知识轮：经验要标注来源。",
+   "unknowns": [
+    "医院排期"
+   ],
+   "protected_expressions": [
+    "放心一半"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定没事",
+    "不要说所有医院都一样"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T03",
+   "current_action": "接住禁食要求+给备品清单（航空箱/尿垫/圈）；不堆太多吓她",
+   "acceptable_actions": [
+    "列三样必备+让她看医院清单",
+    "复述禁食8小时+问手术日定没定",
+    "给航空箱建议+说其余医院会讲"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F04",
+     "subject": "医院",
+     "relation": "要求",
+     "value": "术前需禁食8小时",
+     "valid_time": "2026-11-24 20:45",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T03",
+      "message_id": "m0",
+      "quote": "术前禁食 8 小时"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "清单要短而可执行。",
+   "unknowns": [
+    "医院是否提供住院"
+   ],
+   "protected_expressions": [
+    "术前禁食 8 小时"
+   ],
+   "forbidden_factual_claims": [
+    "不要列十样吓她",
+    "不要说禁食无所谓"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T04",
+   "current_action": "确认新日期12月1日+肯定衔接安排；不复述旧计划",
+   "acceptable_actions": [
+    "确认12/1+说衔接得好",
+    "确认+提醒打完当天别洗澡",
+    "确认+说手术前正好观察几天"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F05",
+     "subject": "她",
+     "relation": "更正",
+     "value": "第三针提前到12月1日（疫苗到货）",
+     "valid_time": "2026-11-26 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T04",
+      "message_id": "m0",
+      "quote": "第三针提前到 12 月 1 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第一处日期更新：此后第三针一律12/1。",
+   "unknowns": [
+    "疫苗品牌"
+   ],
+   "protected_expressions": [
+    "好消息"
+   ],
+   "forbidden_factual_claims": [
+    "不要说提前打不行（她医院定的）",
+    "不要说错日期"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T05",
+   "current_action": "确认12月3日可行+提醒术前禁食从几点算；不提疫苗冲突（已核过）",
+   "acceptable_actions": [
+    "确认12/3+算禁食时间点",
+    "确认+问要不要陪去",
+    "确认+提醒当天留电话等通知"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F06",
+     "subject": "她",
+     "relation": "安排",
+     "value": "绝育约在12月3日",
+     "valid_time": "2026-11-26 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T05",
+      "message_id": "m0",
+      "quote": "手术我约在 12 月 3 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第二个日期锚点（后被更正）。",
+   "unknowns": [
+    "当天她的课表"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说错日期",
+    "不要质疑医院排期"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T06",
+   "current_action": "轻收：确认材料齐了+当天流程一句带过；不重复叮嘱",
+   "acceptable_actions": [
+    "说材料齐了稳了+等通知",
+    "问要不要陪去当天",
+    "说没啥可操心的+别再熬夜查帖"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "安心轮，别添新任务。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要又抛新注意事项",
+    "不要说做完了就完事"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T07",
+   "current_action": "接情绪+复述新日期12月10日+旧日期作废；指出与疫苗衔接反而更稳",
+   "acceptable_actions": [
+    "复述12/10+说疫苗恢复期更长更稳",
+    "接情绪+确认新日期",
+    "说医生档期优先+改期正常"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F07",
+     "subject": "医院",
+     "relation": "更正",
+     "value": "医生出差，手术改到12月10日",
+     "valid_time": "2026-11-29 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T07",
+      "message_id": "m0",
+      "quote": "医生出差 手术改到 12 月 10 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧硬更正：12/3作废，一律12/10。",
+   "unknowns": [
+    "医生出差多久"
+   ],
+   "protected_expressions": [
+    "有点炸"
+   ],
+   "forbidden_factual_claims": [
+    "不要再说12月3",
+    "不要骂医院不早说"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T08",
+   "current_action": "答应接送+给出具体钟点+列随箱物品；只承诺做得到的",
+   "acceptable_actions": [
+    "约7点50楼下+说我提前到",
+    "答应+让她把猫粮水碗备好",
+    "答应+说术后接回我也搭手"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F08",
+     "subject": "我",
+     "relation": "承诺",
+     "value": "手术当天帮把团子送去医院",
+     "valid_time": "2026-11-29 19:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T08",
+      "message_id": "m0",
+      "quote": "当天我帮你送过去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "互助承诺要具体到钟点。",
+   "unknowns": [
+    "当天接诊时间"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要含糊说'到时候看'",
+    "不要顺便加别的托付"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T09",
+   "current_action": "给最要紧三条+标注'以医生出院说明为准'；不吓不敷衍",
+   "acceptable_actions": [
+    "补一条就医红线",
+    "让她把出院说明拍照存",
+    "说到时候我搭手"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F09",
+     "subject": "我",
+     "relation": "知识",
+     "value": "术后戴伊丽莎白圈约7天防舔",
+     "valid_time": "2026-11-30 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T09",
+      "message_id": "m0",
+      "quote": "伊丽莎白圈戴个把星期 防舔"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "信息分级轮：我说的=经验，医生说的=医嘱。",
+   "unknowns": [
+    "出院说明细节"
+   ],
+   "protected_expressions": [
+    "说什么的都有"
+   ],
+   "forbidden_factual_claims": [
+    "不要吓她并发症",
+    "不要说网上的全是垃圾",
+    "不要说三条就够别的别问"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T10",
+   "current_action": "接她的紧张：疫苗后轻微蔫常见+给就医红线（持续不吃/发烧）；标注口径",
+   "acceptable_actions": [
+    "说常见+给观察红线",
+    "肯定她盯得对+给红线",
+    "说以医生电话为准+别自己喂药"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "红线要具体：持续拒食/精神极差→电话医生。",
+   "unknowns": [
+    "团子体温"
+   ],
+   "protected_expressions": [
+    "还是盯了一晚上"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定没事",
+    "不要让她自己用药"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T11",
+   "current_action": "确认后天手术+定接送钟点+列随箱物品；不复述错日期",
+   "acceptable_actions": [
+    "确认12/10+定7点50楼下",
+    "确认+列随箱三样",
+    "确认+说我提前十分钟到"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "手术前夜轮：钟点说死，别模糊。",
+   "unknowns": [
+    "当天路况"
+   ],
+   "protected_expressions": [
+    "晒好了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说错日期",
+    "不要放她鸽子"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T12",
+   "current_action": "安抚+确认流程（我送到/术后医院来电话/我下班顺路接回）",
+   "acceptable_actions": [
+    "说马上到+医院会来电话",
+    "安抚+说猫叫正常",
+    "确认接回时间+让她安心上课"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "执行轮：简短有力。",
+   "unknowns": [
+    "手术时长"
+   ],
+   "protected_expressions": [
+    "我心疼"
+   ],
+   "forbidden_factual_claims": [
+    "不要说猫叫烦",
+    "不要编手术细节"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T13",
+   "current_action": "确认术后接回+提醒接回路上的注意事项（保温/少颠簸）",
+   "acceptable_actions": [
+    "说接回注意保温+我可以帮忙",
+    "确认+提醒到家先别喂食",
+    "确认+说我晚上过来搭手"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "口径：接回细节以医院出院说明为准。",
+   "unknowns": [
+    "她下课时间"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编麻药风险",
+    "不要催她快去"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T14",
+   "current_action": "庆祝顺利到家+提醒戴圈防舔（呼应F09）+说今晚我来搭手",
+   "acceptable_actions": [
+    "恭喜顺利+提醒圈别摘",
+    "说我过来帮看着+她去休息",
+    "提醒戴圈+给安抚招"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F10",
+     "subject": "团子",
+     "relation": "事件",
+     "value": "12月10日手术完成",
+     "valid_time": "2026-12-10 16:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T14",
+      "message_id": "m0",
+      "quote": "手术做完了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "术后第一夜：防舔是头号事。",
+   "unknowns": [
+    "伤口状态"
+   ],
+   "protected_expressions": [
+    "圈子它老想挠"
+   ],
+   "forbidden_factual_claims": [
+    "不要说摘一会儿没事",
+    "不要编伤口护理细节"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T15",
+   "current_action": "如实：拆线必须回医院（无菌+评估伤口），自己拆风险实打实；网帖信源分级",
+   "acceptable_actions": [
+    "劝回医院拆+说省的钱不抵风险",
+    "说医院拆顺带复查+一举两得",
+    "直接说别自己拆+这是红线"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "红线轮：宁可强硬，安全上不商量。",
+   "unknowns": [
+    "拆线费用"
+   ],
+   "protected_expressions": [
+    "网上有人这么干"
+   ],
+   "forbidden_factual_claims": [
+    "不要说网上办法也可行",
+    "不要含糊'看情况'"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T16",
+   "current_action": "确认拆线=回医院+定18号上午；不复述网帖做法",
+   "acceptable_actions": [
+    "确认18号+提醒带术后本",
+    "确认+说到时我陪你下楼",
+    "确认+说拆线完再看恢复"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F11",
+     "subject": "医生",
+     "relation": "更正",
+     "value": "缝线需回医院拆，不让主人自己拆",
+     "valid_time": "2026-12-13 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T16",
+      "message_id": "m0",
+      "quote": "回医院拆 别自己动手"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "护理口径更正：拆线一律回医院。",
+   "unknowns": [],
+   "protected_expressions": [
+    "听你的"
+   ],
+   "forbidden_factual_claims": [
+    "不要说自拆也行",
+    "不要说错日期"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T17",
+   "current_action": "轻松接梗+呼应'结痂=在长好'（但不代替医生判断）",
+   "acceptable_actions": [
+    "接梗+说结痂是好苗头",
+    "笑它+提醒18号医生看为准",
+    "接梗+说快自由了再忍三天"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "轻松轮，别又上医疗课。",
+   "unknowns": [],
+   "protected_expressions": [
+    "看笑了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说结痂=好了（越权判断）",
+    "不要催她提前拆线"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T18",
+   "current_action": "确认拆线完成+回答以医生当场口径为准（医生说能摘再摘）",
+   "acceptable_actions": [
+    "恭喜+让医生说了算",
+    "确认+说医生没说摘就再戴两天",
+    "恭喜+问她医生原话"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F12",
+     "subject": "她",
+     "relation": "事件",
+     "value": "12月18日拆线完成，伤口愈合良好",
+     "valid_time": "2026-12-18 18:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T18",
+      "message_id": "m0",
+      "quote": "拆线完了 医生说长得挺好"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "口径权仍在医生；我别替医生宣布摘圈。",
+   "unknowns": [
+    "医生是否已说摘圈"
+   ],
+   "protected_expressions": [
+    "长得挺好"
+   ],
+   "forbidden_factual_claims": [
+    "不要直接说能摘",
+    "不要说戴多久都行"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T19",
+   "current_action": "呼应'每年加强'口径+肯定她记账习惯；不复述错周期",
+   "acceptable_actions": [
+    "确认每年一次+夸记账",
+    "呼应+说比我有条理",
+    "确认+提醒到期前一个月约"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F13",
+     "subject": "医生",
+     "relation": "口径",
+     "value": "狂犬疫苗每年加强一次",
+     "valid_time": "2026-12-20 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T19",
+      "message_id": "m0",
+      "quote": "狂犬要每年加强"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "年检口径确认轮。",
+   "unknowns": [
+    "下次加强月份"
+   ],
+   "protected_expressions": [
+    "记在疫苗本上了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说两年一打",
+    "不要说不用管"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T20",
+   "current_action": "接梗+轻知识（抓抓=重新标记地盘，猫科常见）+不引申行为学大道理",
+   "acceptable_actions": [
+    "接梗+给一句猫科常识",
+    "笑+建议磨爪板放沙发边",
+    "接梗+说它没事了"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "闲聊轮：一句常识就够。",
+   "unknowns": [],
+   "protected_expressions": [
+    "记仇"
+   ],
+   "forbidden_factual_claims": [
+    "不要上行为学课",
+    "不要说它有病"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T21",
+   "current_action": "接节日+夸照片+呼应满血复活（术后彻底收尾）",
+   "acceptable_actions": [
+    "回祝福+夸团子状态",
+    "要一张照片做壁纸",
+    "说跑酷=彻底恢复+恭喜"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "节日轻轮。",
+   "unknowns": [],
+   "protected_expressions": [
+    "满血复活"
+   ],
+   "forbidden_factual_claims": [
+    "不要又提术后禁忌",
+    "不要说教"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T22",
+   "current_action": "呼应她的总结+轻接'跟我学的'玩笑；收束整条时间线",
+   "acceptable_actions": [
+    "呼应黏人+接玩笑",
+    "总结时间线走完+夸她全程稳",
+    "接玩笑+说下次疫苗提醒我记着"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F14",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "团子绝育后性格更黏人",
+     "valid_time": "2026-12-28 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T22",
+      "message_id": "m0",
+      "quote": "性格更黏人了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收官轮：整条医疗时间线她走完了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我认了"
+   ],
+   "forbidden_factual_claims": [
+    "不要翻旧账说当初多悬",
+    "不要长篇总结"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T23",
+   "current_action": "答应代养+确认天数与注意事项（疫苗本位置以备万一）；不堆条件",
+   "acceptable_actions": [
+    "答应+确认三天+每天看一次",
+    "答应+问疫苗本放哪以备万一",
+    "答应+让她把医生电话留我"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "新支线开启（代养）：只接做得到的。",
+   "unknowns": [
+    "团子挑食与否"
+   ],
+   "protected_expressions": [
+    "猫粮在阳台柜子"
+   ],
+   "forbidden_factual_claims": [
+    "不要嫌麻烦",
+    "不要承诺做不到的事"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E064_T24",
+   "current_action": "接她的玩笑+交代三天情况（喂食/铲屎/状态）+交还疫苗本位置信息",
+   "acceptable_actions": [
+    "交代三天详情+自嘲团子更亲我",
+    "接玩笑+说猫粮分量按她写的来",
+    "交代+提醒下次疫苗月份到了我提醒"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "代养收尾轮：具体交代比自谦有用。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你喂得比我还好"
+   ],
+   "forbidden_factual_claims": [
+    "不要说下次别托我（玩笑过头）",
+    "不要编团子生病"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T01",
+   "current_action": "先问清房子情况再谈价；不拍脑袋报价；把'没谱'接到流程上",
+   "acceptable_actions": [
+    "问她周边同户型挂价",
+    "建议按中介数据+实勘定",
+    "说3800合理但看装修"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F01",
+     "subject": "她",
+     "relation": "资产",
+     "value": "外婆留下一套老小区两居要出租",
+     "valid_time": "2026-12-01 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T01",
+      "message_id": "m0",
+      "quote": "外婆那套两居我想挂出去租"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S065_F02",
+     "subject": "她",
+     "relation": "定价",
+     "value": "中介建议挂3800，她想挂3800",
+     "valid_time": "2026-12-01 20:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T01",
+      "message_id": "m0",
+      "quote": "中介说挂 3800"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "别一上来给数字，先要信息。",
+   "unknowns": [
+    "房子装修状况",
+    "周边行情"
+   ],
+   "protected_expressions": [
+    "心里一点谱没有"
+   ],
+   "forbidden_factual_claims": [
+    "不要张口就说挂多少",
+    "不要贬中介"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T02",
+   "current_action": "把定金/订金区别说死+落到收条写法上；不展开法律课",
+   "acceptable_actions": [
+    "给一句话版本让她抄",
+    "举例说明差别",
+    "说合同模板里我标好了"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F03",
+     "subject": "我",
+     "relation": "知识",
+     "value": "定金有担保性质、订金是预付款，收条写法定金",
+     "valid_time": "2026-12-01 20:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T02",
+      "message_id": "m0",
+      "quote": "定金受担保约束 订金只是预付款 收条要写法定金"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知识轮：一条说透，别堆十条。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别写错"
+   ],
+   "forbidden_factual_claims": [
+    "不要说订金随便收",
+    "不要讲十分钟法条"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T03",
+   "current_action": "帮她按四要素过模板（租期/押金/维修/解约）；缺哪条补哪条；不替她签",
+   "acceptable_actions": [
+    "逐条过四要素+标缺项",
+    "把模板改批注发回",
+    "列风险点让她问中介"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她头晕=拆成四块讲。",
+   "unknowns": [
+    "模板具体条款"
+   ],
+   "protected_expressions": [
+    "有没有坑"
+   ],
+   "forbidden_factual_claims": [
+    "不要说模板都能用",
+    "不要替她做决定"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T04",
+   "current_action": "确认四要素已交付+教她向中介要补充条款的说法",
+   "acceptable_actions": [
+    "给向中介提补条款的话术",
+    "让她发我改完版再核一遍",
+    "说补完拍照存档"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F04",
+     "subject": "我",
+     "relation": "知识",
+     "value": "合同必备：租期/押金/维修划分/提前解约条款",
+     "valid_time": "2026-12-03 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T04",
+      "message_id": "m0",
+      "quote": "租期 押金 维修划分 提前解约这四条必须白纸黑字"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给话术比给结论有用。",
+   "unknowns": [
+    "中介配合度"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说中介坑人",
+    "不要说她学不会"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T05",
+   "current_action": "接看房反馈+说三楼是硬伤但价格可对冲；不催她降价",
+   "acceptable_actions": [
+    "说无电梯=价格让步点正常",
+    "问她中介反馈量",
+    "建议保持挂牌观察一周"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "第一组看房人=试水温，别急着动价。",
+   "unknowns": [
+    "看房人出价意向"
+   ],
+   "protected_expressions": [
+    "嫌三楼没电梯"
+   ],
+   "forbidden_factual_claims": [
+    "不要马上说降价",
+    "不要说三楼砸手里"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T06",
+   "current_action": "接焦虑：两周内两_groups=正常流速；给观察截止日再决策",
+   "acceptable_actions": [
+    "说流速正常+约定12月中复盘",
+    "接焦虑+让她问中介线上点击量",
+    "说别天天看后台"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "焦虑管理：给节奏不给保证。",
+   "unknowns": [
+    "中介带看次数"
+   ],
+   "protected_expressions": [
+    "开始焦虑了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定租得出去",
+    "不要催她降价"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T07",
+   "current_action": "接情绪：陪她停一停；不催卖房租房的正事；一句'外婆的屋子'点到即止",
+   "acceptable_actions": [
+    "说慢慢收拾不着急",
+    "提议留下毛线做个纪念",
+    "说要不要过来看她一起拾掇"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "亲情轮：不接话茬谈钱。",
+   "unknowns": [],
+   "protected_expressions": [
+    "坐下哭了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说节哀别哭",
+    "不要拉回租房话题",
+    "不要说毛线不值钱"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T08",
+   "current_action": "用数据说话：两周带看少=价格信号；给两个选项（降100试一周/维持到月底）；她拍板",
+   "acceptable_actions": [
+    "给两选项让她选",
+    "建议降100试探+说可回调",
+    "让她先要后台数据再定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F05",
+     "subject": "她",
+     "relation": "事件",
+     "value": "挂出两周无人问，中介建议调价",
+     "valid_time": "2026-12-16 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T08",
+      "message_id": "m0",
+      "quote": "挂了两周没人问 中介让我降价"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "降价决定必须她拍板，我只摆事实。",
+   "unknowns": [
+    "中介后台数据"
+   ],
+   "protected_expressions": [
+    "不甘心"
+   ],
+   "forbidden_factual_claims": [
+    "不要替她决定降价",
+    "不要说中介就想快点成交"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T09",
+   "current_action": "确认新价3600+旧价3800作废+定复盘日；不复述错价",
+   "acceptable_actions": [
+    "确认3600+约一周后复盘",
+    "确认+让她改各平台挂价",
+    "确认+说带看来了先别口头让价"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F06",
+     "subject": "她",
+     "relation": "更正",
+     "value": "挂价从3800调到3600",
+     "valid_time": "2026-12-16 20:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T09",
+      "message_id": "m0",
+      "quote": "先降到 3600 试一周"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧价格硬更正：此后一律3600。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要再说3800挂",
+    "不要说降了肯定租"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T10",
+   "current_action": "肯定调价决策是她自己拍的+提醒热度期别慌签；不看低谁",
+   "acceptable_actions": [
+    "说决策对路+提醒慢慢挑人",
+    "肯定+让她筛租客身份",
+    "说热度期更要稳"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "归因给她；提醒挑人不挑快。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说'我早说降价吧'",
+    "不要说随便租谁都行"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T11",
+   "current_action": "接诚意+核实两件事：定金写法（呼应F03）+起租日与她的搬家衔接；不催定",
+   "acceptable_actions": [
+    "先核实对方身份+定金写法定金",
+    "确认2/1起租可+问她自己几号搬完",
+    "提醒交定前签意向"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F07",
+     "subject": "租客",
+     "relation": "意向",
+     "value": "一对看房人愿意定，想2月1日起租",
+     "valid_time": "2026-12-28 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T11",
+      "message_id": "m0",
+      "quote": "想 2 月 1 号起租"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "定金伏笔回收轮。",
+   "unknowns": [
+    "对方职业"
+   ],
+   "protected_expressions": [
+    "特别有诚意"
+   ],
+   "forbidden_factual_claims": [
+    "不要说直接收了再说",
+    "不要替她收定金"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T12",
+   "current_action": "复述确认新起租日2月15+旧2月1作废；提醒书面改补充协议",
+   "acceptable_actions": [
+    "确认2/15+让她出补充协议",
+    "确认+说跟租客书面确认",
+    "确认+提醒押金交付节点顺延"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "起租日改到2月15日（她搬走时间改了）",
+     "valid_time": "2027-01-03 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T12",
+      "message_id": "m0",
+      "quote": "起租改到 2 月 15 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧日期硬更正：起租一律2月15。",
+   "unknowns": [
+    "租客是否同意（她已说好）"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要再说2月1",
+    "不要说口头说好就行"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T13",
+   "current_action": "把维修划分落到合同原文+举她的例子；不展开清单",
+   "acceptable_actions": [
+    "让她把条款抄进合同",
+    "举加氟例子确认理解",
+    "说写完发我核"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F09",
+     "subject": "我",
+     "relation": "知识",
+     "value": "自然损耗维修房东出，人为损坏租客出，合同写明",
+     "valid_time": "2027-01-03 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T13",
+      "message_id": "m0",
+      "quote": "自然损耗我修 人为损坏租客修 写进合同"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知识轮：例子比条款好记。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说租客肯定赖账",
+    "不要写倾向性条款坑租客"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T14",
+   "current_action": "接身份更正（同事合租）+给合租场景的补充点（水电分摊/门锁换芯）",
+   "acceptable_actions": [
+    "建议水电按人头或平摊写明",
+    "提醒换锁芯+留备用钥匙一人",
+    "让她把两人身份证都存档"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F10",
+     "subject": "她",
+     "relation": "更正",
+     "value": "租客确认为同事合租两人（原以为是情侣）",
+     "valid_time": "2027-01-05 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T14",
+      "message_id": "m0",
+      "quote": "是同事合租两人"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧第三个更正：租客=同事合租两人。",
+   "unknowns": [
+    "两人分工"
+   ],
+   "protected_expressions": [
+    "我换了个思路"
+   ],
+   "forbidden_factual_claims": [
+    "不要说情侣合租更好/更差",
+    "不要说同事合租会闹掰"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T15",
+   "current_action": "确认押金数字一致+当场把物业费口径问死；不让她'以为'",
+   "acceptable_actions": [
+    "确认3800+马上定物业费条款",
+    "让她直接问租客意向写进合同",
+    "说默认房东出但可写明"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F11",
+     "subject": "双方",
+     "relation": "约定",
+     "value": "押一付三，押金3800",
+     "valid_time": "2027-01-06 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T15",
+      "message_id": "m0",
+      "quote": "押一付三 押金 3800"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S065_F12",
+     "subject": "她",
+     "relation": "误会",
+     "value": "她以为物业费由租客承担，合同未写",
+     "valid_time": "2027-01-06 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T15",
+      "message_id": "m0",
+      "quote": "物业费我以为他们交"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "押金数字锚点；物业费是本剧知识陷阱。",
+   "unknowns": [
+    "租客意愿"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说物业费谁交都行",
+    "不要说小区物业没多少钱"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T16",
+   "current_action": "确认物业费条款落纸+肯定她的取舍；不居功",
+   "acceptable_actions": [
+    "确认写房东承担+租金不让",
+    "让她同步给中介改合同",
+    "提醒改完再核一遍押金条款"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F13",
+     "subject": "我",
+     "relation": "知识",
+     "value": "物业费承担方必须写进合同，写谁谁付",
+     "valid_time": "2027-01-06 20:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T16",
+      "message_id": "m0",
+      "quote": "物业费写谁承担谁付 别留口头"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "条款定案轮：钱的问题全部落纸。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要夸自己把关有功",
+    "不要说租客会赖"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T17",
+   "current_action": "按四要素+新增两条（物业费/维修原文）复核；让她自己念一遍（她过手才算数）",
+   "acceptable_actions": [
+    "让她念我核",
+    "我逐条报她勾",
+    "拍图发我标红缺项"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "复核方式：她过手，我核对。",
+   "unknowns": [
+    "改稿版本"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说我看过了就行",
+    "不要跳过让她自己签"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T18",
+   "current_action": "肯定收条规范+呼应定金伏笔；提醒收定金后锁定期别再带看",
+   "acceptable_actions": [
+    "夸收条规范+说这钱收得稳",
+    "提醒收取后锁房期别跳单",
+    "让她把收条拍照存档"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "定金伏笔回收：她真用上了。",
+   "unknowns": [
+    "定金金额"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说'还不是我教的'",
+    "不要说锁房期无所谓"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T19",
+   "current_action": "接焦虑+给事后处置路径（合同违约条款/押金抵扣/协商先）+不吓唬",
+   "acceptable_actions": [
+    "翻合同违约条款给她指",
+    "说押金是缓冲+先协商后依约",
+    "说真拖欠按条款走别撕破脸"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "焦虑轮：路径具体到条款。",
+   "unknowns": [
+    "违约条款细节"
+   ],
+   "protected_expressions": [
+    "万一租客往后拖欠"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定不拖欠",
+    "不要说拖欠就撵人"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T20",
+   "current_action": "验算确认：3600×3+3800=14600+3800=15200 ✓；确认无误+正式恭喜",
+   "acceptable_actions": [
+    "确认15200对+恭喜成交",
+    "复核算式+说这单漂亮",
+    "恭喜+提醒押金单独收条"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F14",
+     "subject": "她",
+     "relation": "结果",
+     "value": "2月15日签约成交，起租2月15日",
+     "valid_time": "2027-02-15 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T20",
+      "message_id": "m0",
+      "quote": "签了 2 月 15 起租"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S065_F15",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "收到首月房租加押金共15200",
+     "valid_time": "2027-02-15 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T20",
+      "message_id": "m0",
+      "quote": "到账 15200"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "数字验收轮：算式要当场核。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说错数",
+    "不要说这是小钱"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T21",
+   "current_action": "如实给备案流程与材料+说明这是应尽配合；不夸大义务不敷衍",
+   "acceptable_actions": [
+    "列三样材料+说陪跑一趟",
+    "让她约租客一起去街道办",
+    "说办完提醒租客拿回执"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F16",
+     "subject": "我",
+     "relation": "知识",
+     "value": "租赁合同可到街道办免费备案，办居住证用得上",
+     "valid_time": "2027-02-16 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T21",
+      "message_id": "m0",
+      "quote": "街道办能免费备案 租客办居住证要用"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾知识轮：合规成本要认。",
+   "unknowns": [
+    "街道办是否需预约"
+   ],
+   "protected_expressions": [
+    "我头大"
+   ],
+   "forbidden_factual_claims": [
+    "不要说不管他",
+    "不要编备案费用",
+    "不要说居住证与我无关"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T22",
+   "current_action": "收尾：呼应毛线（亲情线）+把功劳还给她（每个数字她自己拍板）+真诚接谢",
+   "acceptable_actions": [
+    "呼应毛线细节+说她自己把事做成了",
+    "接谢+说合同我留个模板给她",
+    "说外婆看着也放心+轻轻收"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "收官轮：亲情线首尾呼应，功劳归她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这房子又活了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'我帮了你多少'",
+    "不要说教式复盘"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T23",
+   "current_action": "呼应合租条款落地+归因她签约前问得细；不抢功",
+   "acceptable_actions": [
+    "说这就是签约前问清的好处",
+    "让她保持季度看房一次",
+    "说有维修事随时找我看条款"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "入住反馈轮：条款落地的正反馈。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说'还好有我'",
+    "不要翻旧账"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E065_T24",
+   "current_action": "复盘用事实：3800两周无人问→3600当日来电；同时不下'死守必砸'的绝对结论；收束全剧",
+   "acceptable_actions": [
+    "复盘数据+夸她调价果断",
+    "说市场动态没法说死+你这单处理得好",
+    "呼应定金/备案全套收尾"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出窗探针收口：调价决策(T08-T09)与定金知识(T02)远端复用。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我现在懂行了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说3800就是错",
+    "不要居功"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T01",
+   "current_action": "肯定可行+先问车况和装备清单；不说'肯定行'也不泼冷水",
+   "acceptable_actions": [
+    "问她车型与备胎工具",
+    "说可行+先盘装备",
+    "让她发车辆信息给我对清单"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F01",
+     "subject": "她",
+     "relation": "计划",
+     "value": "12月20日出发自驾川西，走318",
+     "valid_time": "2026-12-05 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T01",
+      "message_id": "m0",
+      "quote": "12 月 20 号出发走 318"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第一次开口：接志气，问事实。",
+   "unknowns": [
+    "她的车况"
+   ],
+   "protected_expressions": [
+    "你觉得我行吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说女的跑不了川西",
+    "不要说闭眼开"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T02",
+   "current_action": "给防滑链的必要性与类型常识（转述交管口径）；尺寸下轮对车",
+   "acceptable_actions": [
+    "说买适配轮胎尺寸的",
+    "给她链子类型选择",
+    "提醒买来先试装一次"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F02",
+     "subject": "我",
+     "relation": "知识",
+     "value": "冬季川西交警常查防滑链，没链可能劝返",
+     "valid_time": "2026-12-05 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T02",
+      "message_id": "m0",
+      "quote": "冬天垭口常查防滑链 没链可能劝返"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知识轮：口径标注'交管惯例'。",
+   "unknowns": [
+    "她轮胎规格"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说没链也能闯",
+    "不要说随便买一条"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T03",
+   "current_action": "如实：两驱可走主线但冰雪路更依赖链子与驾驶习惯；不带贬义",
+   "acceptable_actions": [
+    "说两驱行+链子关键",
+    "说慢就是快+跟车走",
+    "说不行就换我车开"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F03",
+     "subject": "她",
+     "relation": "装备",
+     "value": "她的车是两驱轿车",
+     "valid_time": "2026-12-05 21:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T03",
+      "message_id": "m0",
+      "quote": "我那台是两驱轿车"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她敏感点=被说车不行；对车不对人。",
+   "unknowns": [
+    "她是否会换车"
+   ],
+   "protected_expressions": [
+    "拖你后腿"
+   ],
+   "forbidden_factual_claims": [
+    "不要说两驱找死",
+    "不要嘲讽轿车"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T04",
+   "current_action": "答应整理文档（路线/加油/住宿/检查点四块）；当天给",
+   "acceptable_actions": [
+    "答应当晚发",
+    "说按四块整理",
+    "让她先订住宿我看行程"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F04",
+     "subject": "我",
+     "relation": "承诺",
+     "value": "攻略文档整理好发她",
+     "valid_time": "2026-12-06 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T04",
+      "message_id": "m0",
+      "quote": "攻略整理好发你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "文档=本剧知识载体，后文多次回扣。",
+   "unknowns": [],
+   "protected_expressions": [
+    "看着乱"
+   ],
+   "forbidden_factual_claims": [
+    "不要转发网上烂攻略",
+    "不要说你自己查"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T05",
+   "current_action": "给失联预案：对讲/到点报平安/宿点留联系方式；不吓她",
+   "acceptable_actions": [
+    "约定每两小时报一次",
+    "建议买对讲机一对",
+    "让她把行程发给家人"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "预案要具体可执行。",
+   "unknowns": [
+    "垭口信号状况"
+   ],
+   "protected_expressions": [
+    "联系不上怎么办"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定有信号",
+    "不要渲染失联故事"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T06",
+   "current_action": "高反分级如实+预防三条+标注'遵医嘱'；不吓不轻描",
+   "acceptable_actions": [
+    "补一条当天别洗澡",
+    "让她备常用药",
+    "说下撤不丢人"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F05",
+     "subject": "我",
+     "relation": "知识",
+     "value": "高原反应：红景天提前一周吃，车上备氧气瓶",
+     "valid_time": "2026-12-08 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T06",
+      "message_id": "m0",
+      "quote": "红景天提前一周吃 车上备两瓶氧"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医疗口径标注'经验+遵医嘱'。",
+   "unknowns": [
+    "她的基础健康"
+   ],
+   "protected_expressions": [
+    "进医院"
+   ],
+   "forbidden_factual_claims": [
+    "不要说高反不存在",
+    "不要推荐处方药"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T07",
+   "current_action": "确认新出发日12月27+旧日期作废；肯定她改得果断；不改其他计划",
+   "acceptable_actions": [
+    "复述12/27+说改得对",
+    "确认+提醒改住宿日期",
+    "确认+问她票退损失"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F06",
+     "subject": "天气",
+     "relation": "更正",
+     "value": "预报12月19-21暴雪封路，出发改12月27日",
+     "valid_time": "2026-12-14 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T07",
+      "message_id": "m0",
+      "quote": "改到 12 月 27 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧日期硬更正：此后一律12月27。",
+   "unknowns": [
+    "退票损失"
+   ],
+   "protected_expressions": [
+    "跟你时间正好"
+   ],
+   "forbidden_factual_claims": [
+    "不要再说12月20",
+    "不要说改期可惜"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T08",
+   "current_action": "提醒链子要按轮胎尺寸买（销量≠适配）；让她报轮胎规格核对",
+   "acceptable_actions": [
+    "让她报轮胎规格",
+    "说看胎侧数字发我",
+    "提醒到货先试装"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F07",
+     "subject": "她",
+     "relation": "装备",
+     "value": "网上买了防滑链",
+     "valid_time": "2026-12-15 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T08",
+      "message_id": "m0",
+      "quote": "防滑链我买了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "埋尺寸错误伏笔：本轮只提醒不判定。",
+   "unknowns": [
+    "她轮胎规格",
+    "链子实际型号"
+   ],
+   "protected_expressions": [
+    "应该没问题吧"
+   ],
+   "forbidden_factual_claims": [
+    "不要说销量第一就是坑",
+    "不要说买都买了凑合用"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T09",
+   "current_action": "如实：差一号装不上/装上伤胎，让她趁未拆封换货；态度明确",
+   "acceptable_actions": [
+    "直接说换货+给话术",
+    "说差一号不能用+退换",
+    "让她问卖家适配表"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "安全件不含糊：差一号=不能用。",
+   "unknowns": [
+    "卖家换货政策"
+   ],
+   "protected_expressions": [
+    "差一号 有事吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说凑合能装",
+    "不要说差一号没差别"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T10",
+   "current_action": "确认换货时间线充裕+提醒到货先试装再上车；不复述错尺寸",
+   "acceptable_actions": [
+    "确认来得及+约试装时间",
+    "让她到货拍照我看型号",
+    "提醒试装一次学会装"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "时间线核验轮。",
+   "unknowns": [
+    "物流时效"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说等到路上再学装"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T11",
+   "current_action": "接住型号更正+肯定她试装了+再练一次到十分钟内",
+   "acceptable_actions": [
+    "夸试装+约再练一次",
+    "说十分钟内才算会",
+    "让她把链子放后备箱固定位置"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "防滑链换货为205/55 R16适配款，试装通过",
+     "valid_time": "2026-12-18 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T11",
+      "message_id": "m0",
+      "quote": "换成了 205/55 R16 那款"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "注意：本turn时间线在12-17换货确认之后、12-19路线更正之前——clock 12-18 合理。",
+   "unknowns": [],
+   "protected_expressions": [
+    "手忙脚乱"
+   ],
+   "forbidden_factual_claims": [
+    "不要说一次就会",
+    "不要说二十分钟太慢（贬）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T12",
+   "current_action": "宣布路线更正318→317+说明依据（路况/冰情）；文档同步更新",
+   "acceptable_actions": [
+    "发更新文档",
+    "说改了哪三处",
+    "让她核住宿预订"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F09",
+     "subject": "我",
+     "relation": "更正",
+     "value": "路线改走317（318结冰风险高）",
+     "valid_time": "2026-12-19 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T12",
+      "message_id": "m0",
+      "quote": "主线改走 317"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧路线硬更正：此后主线=317。",
+   "unknowns": [
+    "317沿线住宿"
+   ],
+   "protected_expressions": [
+    "听你的"
+   ],
+   "forbidden_factual_claims": [
+    "不要说318绝对不能走",
+    "不要说317没风险"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T13",
+   "current_action": "给加油规则：见站就加/半箱红线；数字口径如实",
+   "acceptable_actions": [
+    "给她油站点位图",
+    "提醒加满别嫌麻烦",
+    "说导航油站提醒打开"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F10",
+     "subject": "我",
+     "relation": "知识",
+     "value": "县城之间油站间隔可达200公里，见站就加",
+     "valid_time": "2026-12-19 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T13",
+      "message_id": "m0",
+      "quote": "县城间油站能隔 200 公里"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "加油是长线高频检查点。",
+   "unknowns": [
+    "她车油耗"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说撑到县城没问题",
+    "不要建议带散装油"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T14",
+   "current_action": "确认集合时间+给行李建议（软包优先/链子随身）；呼应装备线",
+   "acceptable_actions": [
+    "说软包好塞+链子别托运",
+    "确认26号晚+列各带三样",
+    "让她带保温杯和墨镜"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F11",
+     "subject": "她",
+     "relation": "约定",
+     "value": "12月26日晚到我家楼下集合，分装装备",
+     "valid_time": "2026-12-24 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T14",
+      "message_id": "m0",
+      "quote": "26 号晚你楼下集合"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "集合轮：时间地点说死。",
+   "unknowns": [
+    "当晚天气"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说随便带",
+    "不要说拖箱方便"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T15",
+   "current_action": "确认分装+复述明早时间；呼应加油规则；收束前夜",
+   "acceptable_actions": [
+    "确认6:30+让她定闹钟",
+    "复述装备位置+让她核",
+    "提醒早睡+明天报路况"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出发前夜：三件事核对（链/油/集合时间）。",
+   "unknowns": [
+    "凌晨路面"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要夜聊太久",
+    "不要临时加装备"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T16",
+   "current_action": "轻松接+提醒第一段按文档节奏走（两小时一停）",
+   "acceptable_actions": [
+    "接DJ活+提醒休息节奏",
+    "说头两小时她开我盯着",
+    "让她出城后报一次油耗"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F12",
+     "subject": "我们",
+     "relation": "事件",
+     "value": "12月27日顺利出发",
+     "valid_time": "2026-12-27 08:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T16",
+      "message_id": "m0",
+      "quote": "顺利出发"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出发日：气氛+节奏并行。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要一上车就说教",
+    "不要放她讨厌的歌"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T17",
+   "current_action": "具体肯定她的操作（稳住=对的）+呼应慢就是快；不神化",
+   "acceptable_actions": [
+    "夸稳住+说这就是对的",
+    "让她说说垭口细节",
+    "肯定+提醒明天更早出发"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F13",
+     "subject": "她",
+     "relation": "成果",
+     "value": "第一天冰雪路面开下来手感稳了",
+     "valid_time": "2026-12-27 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T17",
+      "message_id": "m0",
+      "quote": "冰雪路开下来手感稳了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的'跟你想的一样吗'=要确认；给具体反馈。",
+   "unknowns": [
+    "垭口具体路况"
+   ],
+   "protected_expressions": [
+    "跟你想的一样吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说我还以为你会慌",
+    "不要说明天更难吓她"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T18",
+   "current_action": "呼应加油规则验证+轻收；不夸自己文档",
+   "acceptable_actions": [
+    "说规则用上了就好",
+    "问她今天开了几小时",
+    "提醒明天同节奏"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "规则被验证的正反馈轮。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说'我早写了'",
+    "不要催行程"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T19",
+   "current_action": "接跨年情绪+给一个轻的明年约定（不具体承诺）；呼应她性格",
+   "acceptable_actions": [
+    "说下次去没走过的线",
+    "接烟花+说明年再跑一趟",
+    "让她自己定明年目标"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "情绪高点轮：别接成行程会议。",
+   "unknowns": [],
+   "protected_expressions": [
+    "明年这时候我们在哪"
+   ],
+   "forbidden_factual_claims": [
+    "不要刻意许诺",
+    "不要泼冷水"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T20",
+   "current_action": "接返程安排+接链子寄存；提醒返程同样见站加油",
+   "acceptable_actions": [
+    "说链子放我这+返程慢点开",
+    "确认到家时间+报平安",
+    "提醒返程两小时一停"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "返程轮：重复去程规则。",
+   "unknowns": [
+    "明天到家点"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说返程随便开",
+    "不要忽略她借寄的善意"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T21",
+   "current_action": "复盘肯定+呼应她扣的15分（让她自己说扣哪）；不代打分",
+   "acceptable_actions": [
+    "说85分实至名归+问扣的15分",
+    "夸全程稳+让她自己复盘",
+    "肯定+说下次95分"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F14",
+     "subject": "我们",
+     "relation": "事件",
+     "value": "全程安全返程，无剐蹭",
+     "valid_time": "2027-01-02 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T21",
+      "message_id": "m0",
+      "quote": "安全到家 无剐蹭"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "复盘主导权给她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "85 分"
+   ],
+   "forbidden_factual_claims": [
+    "不要说其实你该得100",
+    "不要替她总结缺点"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T22",
+   "current_action": "呼应模板+肯定她加的'自己的坑'=最好的攻略+接'下次我带你'的平等感",
+   "acceptable_actions": [
+    "说模板加坑=升级版",
+    "接受下次她带+说期待",
+    "呼应全程让她总结"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S066_F15",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "她把攻略文档存成自己的模板",
+     "valid_time": "2027-01-03 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E066_T22",
+      "message_id": "m0",
+      "quote": "攻略存成我自己的模板"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收官轮：知识完成了从借到有的闭环。",
+   "unknowns": [],
+   "protected_expressions": [
+    "下次我带你"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'我教你的'",
+    "不要说下次再说吧"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T23",
+   "current_action": "呼应文档三件事被验证+关心恢复；不添新任务",
+   "acceptable_actions": [
+    "说停下喝水下车走两步",
+    "呼应文档+问她加了什么坑",
+    "说下次你自己的模板更好用"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "返程休整轮：文档第二次被验证。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说'照我说的没错'",
+    "不要催新行程"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E066_T24",
+   "current_action": "呼应知识外溢+补一句完整口径（胎侧数字+到货试装）；收束装备线",
+   "acceptable_actions": [
+    "补全口径+说她转述得对",
+    "提醒对方也要试装",
+    "说这链子找到了好人家"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出窗探针收口：胎侧数字法(T08/T09)与最终型号(T13)远端复用。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说错尺寸",
+    "不要说闲鱼买链子不靠谱吓人"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T01",
+   "current_action": "先接喜讯再进正题：把'该不该高兴'拆成待核清单；不泼冷水不吹捧",
+   "acceptable_actions": [
+    "恭喜+让她发offer截图",
+    "恭喜+列要核的三块",
+    "问她纠结点在哪"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F01",
+     "subject": "她",
+     "relation": "事件",
+     "value": "拿到测开平台中厂offer",
+     "valid_time": "2026-12-10 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T01",
+      "message_id": "m0",
+      "quote": "拿到 offer 了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她'不知道该不该高兴'=信息不足，不是情绪问题。",
+   "unknowns": [
+    "offer具体内容"
+   ],
+   "protected_expressions": [
+    "不知道该不该高兴"
+   ],
+   "forbidden_factual_claims": [
+    "不要说中厂不行",
+    "不要说恭喜就完了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T02",
+   "current_action": "给对比锚点（现司涨幅/市场带宽）+指出期权'一点点'要看细则",
+   "acceptable_actions": [
+    "问她现司base+算涨幅",
+    "说涨幅角度可谈+期权细看",
+    "让她发完整包"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F02",
+     "subject": "offer",
+     "relation": "结构",
+     "value": "base 2.4万/月（她初读），14薪，少量期权",
+     "valid_time": "2026-12-10 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T02",
+      "message_id": "m0",
+      "quote": "base 2 万 4 十四薪 期权一点点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "数字轮：先要对照系再评价。",
+   "unknowns": [
+    "她现司薪资"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要拍脑袋说高了低了",
+    "不要替她谈判"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T03",
+   "current_action": "把期权四问翻译成她能直接发的话术",
+   "acceptable_actions": [
+    "给一段可直接发的话术",
+    "教她按邮件问留痕",
+    "说问题不丢人"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F03",
+     "subject": "我",
+     "relation": "知识",
+     "value": "期权要问四件事：股数/行权价/vesting 周期/离职回购",
+     "valid_time": "2026-12-10 21:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T03",
+      "message_id": "m0",
+      "quote": "股数 行权价 vesting 周期 离职回购 这四件问清"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给话术=把知识变成她的行动。",
+   "unknowns": [
+    "HR回复速度"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说HR会烦",
+    "不要替她发邮件"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T04",
+   "current_action": "接期限+评估三天够不够核完；给出'不够就问延期'的合法性",
+   "acceptable_actions": [
+    "列三天核完的优先级",
+    "教她问延期的话术",
+    "说15号是惯例不是铁律"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F04",
+     "subject": "offer",
+     "relation": "期限",
+     "value": "offer 回复期限12月15日18点",
+     "valid_time": "2026-12-11 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T04",
+      "message_id": "m0",
+      "quote": "12 月 15 号下午六点前要答复"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "期限紧张=优先级排序题。",
+   "unknowns": [
+    "背调是否已启动"
+   ],
+   "protected_expressions": [
+    "我有点赶"
+   ],
+   "forbidden_factual_claims": [
+    "不要说来不及了慌",
+    "不要说她磨蹭"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T05",
+   "current_action": "给竞业三看（范围/期限/补偿比例）+无补偿可拒签；标注'拒签=可能影响offer'",
+   "acceptable_actions": [
+    "给三看+让她问补偿比例",
+    "说范围宽要写明清单",
+    "提醒保留沟通记录"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F05",
+     "subject": "我",
+     "relation": "知识",
+     "value": "竞业条款要看：范围/期限/补偿比例，无补偿可拒签",
+     "valid_time": "2026-12-11 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T05",
+      "message_id": "m0",
+      "quote": "范围 期限 补偿比例 没补偿可以拒"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "竞业是她这行真实的坑，说透但不吓。",
+   "unknowns": [
+    "补偿比例"
+   ],
+   "protected_expressions": [
+    "写得可宽"
+   ],
+   "forbidden_factual_claims": [
+    "不要说竞业协议都是废纸",
+    "不要教她硬刚"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T06",
+   "current_action": "如实给区间感（常见口径）+建议她书面确认触发条件；不拍板",
+   "acceptable_actions": [
+    "说在常见区间+确认触发条件",
+    "让她把口径落到邮件",
+    "提醒补偿按什么基数算"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "数字之外，触发条件更关键。",
+   "unknowns": [
+    "基数定义"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说绝对正常/不正常",
+    "不要让她口头确认"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T07",
+   "current_action": "确认新期限12月19+旧15作废；解读为诚意信号（保留判断）",
+   "acceptable_actions": [
+    "确认12/19+说是积极信号",
+    "确认+让她要书面更新",
+    "确认+说时间充裕了按序核"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F06",
+     "subject": "HR",
+     "relation": "更正",
+     "value": "回复期限延至12月19日18点",
+     "valid_time": "2026-12-13 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T07",
+      "message_id": "m0",
+      "quote": "延期到 12 月 19 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧期限硬更正：15→19。",
+   "unknowns": [
+    "HR为何延期"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要再说12月15",
+    "不要过度解读HR意图"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T08",
+   "current_action": "给比较框架：base/稳定性/成长/通勤四轴加权；让她自己填权重",
+   "acceptable_actions": [
+    "给四轴框架让她打分",
+    "让她写每家三条最好最差",
+    "说别只比钱"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "决策框架给她，结论她出。",
+   "unknowns": [
+    "她的权重偏好"
+   ],
+   "protected_expressions": [
+    "越比越乱"
+   ],
+   "forbidden_factual_claims": [
+    "不要替她排序",
+    "不要说钱最重要"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T09",
+   "current_action": "接冲击+给反问清单（调薪幅度/职级/书面?）+提醒别当场答复",
+   "acceptable_actions": [
+    "教她要书面承诺再看",
+    "给三个反问让她带回去",
+    "提醒挽留话术vs实际数字"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "factuality"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "挽留是谈判：一切以书面数字为准。",
+   "unknowns": [
+    "调薪具体幅度"
+   ],
+   "protected_expressions": [
+    "脑子嗡了一下"
+   ],
+   "forbidden_factual_claims": [
+    "不要说现司一定画饼",
+    "不要说新司一定更好"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T10",
+   "current_action": "尊重决定+确认书面流程（邮件回复）+肯定她的判断过程",
+   "acceptable_actions": [
+    "恭喜决定+提醒邮件留痕",
+    "肯定过程+让她按期答复",
+    "说接得有依据"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F07",
+     "subject": "她",
+     "relation": "决策",
+     "value": "决定接offer",
+     "valid_time": "2026-12-17 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T10",
+      "message_id": "m0",
+      "quote": "我接了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她拍板我背书，顺序不能反。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我接了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说早该接了",
+    "不要说万一后悔"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T11",
+   "current_action": "确认职级更正P6++落书面（让她回邮件确认）+轻提职级影响试用期考核",
+   "acceptable_actions": [
+    "确认+让她邮件回执",
+    "说P6+影响调薪线",
+    "确认+提醒入职材料带齐"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "职级从P6更正为P6+（邮件确认）",
+     "valid_time": "2026-12-18 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T11",
+      "message_id": "m0",
+      "quote": "职级写的是 P6+"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧职级更正：此后一律P6+。",
+   "unknowns": [
+    "试用期考核标准"
+   ],
+   "protected_expressions": [
+    "是好事吧"
+   ],
+   "forbidden_factual_claims": [
+    "不要说P6没啥用",
+    "不要放过口头确认"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T12",
+   "current_action": "确认base更正2.45万+算年包差额给她看（45×12=多5400/年）+祝贺收官",
+   "acceptable_actions": [
+    "算差额+恭喜",
+    "确认数字+让她核对薪条",
+    "说白捡的5400+恭喜"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F09",
+     "subject": "她",
+     "relation": "更正",
+     "value": "base实为2.45万（她之前看错）",
+     "valid_time": "2026-12-19 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T12",
+      "message_id": "m0",
+      "quote": "base 是 2 万 45"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧数字更正：base=2.45万；算给她看才踏实。",
+   "unknowns": [
+    "绩效系数"
+   ],
+   "protected_expressions": [
+    "白高兴半档"
+   ],
+   "forbidden_factual_claims": [
+    "不要说算错数无所谓",
+    "不要又说错别的吓她"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T13",
+   "current_action": "给入职前流程提醒（离职证明/社保转移/公积金）+时间倒排",
+   "acceptable_actions": [
+    "列流程清单+倒排日期",
+    "提醒年假折算别忘",
+    "让她问新司入职材料清单"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F10",
+     "subject": "我",
+     "relation": "知识",
+     "value": "入职要离职证明+社保转移，原司流程提前两周走",
+     "valid_time": "2026-12-20 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T13",
+      "message_id": "m0",
+      "quote": "离职证明和社保转移 提前两周跟原司走流程"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "流程轮：倒排时间最实用。",
+   "unknowns": [
+    "原司离职流程时长"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说原司会卡她",
+    "不要列二十条吓她"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T14",
+   "current_action": "接她的软：肯定五年感情+尊重她的选择已经做完；不翻烧饼",
+   "acceptable_actions": [
+    "说感情是真的+决定也是对的",
+    "让她把同事联系方式留好",
+    "说往前看不回头的意义"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "情绪轮：不讲道理，陪她软一下。",
+   "unknowns": [],
+   "protected_expressions": [
+    "心里有点软"
+   ],
+   "forbidden_factual_claims": [
+    "不要说别回头",
+    "不要说现司坏话"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T15",
+   "current_action": "确认竞业补偿落到书面+呼应她的坚持；一句话收",
+   "acceptable_actions": [
+    "说这就稳了+存好协议",
+    "肯定她追到位",
+    "提醒入职带一份"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "竞业伏笔回收：从范围宽到补偿落纸。",
+   "unknowns": [],
+   "protected_expressions": [
+    "心里踏实"
+   ],
+   "forbidden_factual_claims": [
+    "不要又说别的风险",
+    "不要说早该这样"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T16",
+   "current_action": "恭喜入职+给试用期三条轻建议（周报留痕/问清考核/别急着表现砸了）",
+   "acceptable_actions": [
+    "恭喜+给试用期三条",
+    "让她第一周多听少改",
+    "说六个月后你来报喜"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F11",
+     "subject": "她",
+     "relation": "事件",
+     "value": "顺利入职新司",
+     "valid_time": "2027-01-05 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T16",
+      "message_id": "m0",
+      "quote": "入职了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "新起点轮：建议轻，信心重。",
+   "unknowns": [
+    "团队风格"
+   ],
+   "protected_expressions": [
+    "我又开始了"
+   ],
+   "forbidden_factual_claims": [
+    "不要列十条注意事项",
+    "不要说试用期容易挂"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T17",
+   "current_action": "接糗事+把事故翻译成学习成本+给一个防再犯的小招",
+   "acceptable_actions": [
+    "说新人都会+教她备份环境",
+    "接梗+让她写进工作笔记",
+    "说导师人不错+多请教"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "糗事轮：轻处理。",
+   "unknowns": [],
+   "protected_expressions": [
+    "糗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说你怎么这么不小心",
+    "不要上纲上线"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T18",
+   "current_action": "呼应期权四问闭环（她全看懂了）+肯定满月状态",
+   "acceptable_actions": [
+    "说四问全过=入门了",
+    "呼应她成长速度+让她稳住",
+    "让她把文档存档"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S067_F12",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "首月感受：节奏快但成长快",
+     "valid_time": "2027-02-05 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E067_T18",
+      "message_id": "m0",
+      "quote": "节奏快但成长快"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出窗探针：期权四问(T03)远端回扣。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说还早呢",
+    "不要泼冷水"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T19",
+   "current_action": "如实复盘：可能错过P6+与2.45万的两处更正；不下'必亏'结论，事实说话",
+   "acceptable_actions": [
+    "用两处更正事实复盘",
+    "说延期给了核数空间",
+    "说流程稳=结果稳"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出窗探针收口：三处更正一起回扣。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说'不听我的就亏了'",
+    "不要绝对化"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T20",
+   "current_action": "呼应她输出+提醒帖子脱敏（公司名/数字模糊化）；不越权审稿",
+   "acceptable_actions": [
+    "提醒脱敏再发",
+    "说帖子能帮人+注意隐私",
+    "让她把竞业那段展开"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "分享是好事，隐私红线要提。",
+   "unknowns": [
+    "帖子内容"
+   ],
+   "protected_expressions": [
+    "匿名"
+   ],
+   "forbidden_factual_claims": [
+    "不要说别发",
+    "不要说教平台的规矩"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T21",
+   "current_action": "接小爆+呼应她回复的口径（自己看自己算=教方法）",
+   "acceptable_actions": [
+    "肯定她回复口径+别跟杠精纠缠",
+    "让她置顶四问模板",
+    "说骂声忽略"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "网络舆论轮：方法比结论可复制。",
+   "unknowns": [],
+   "protected_expressions": [
+    "统一回"
+   ],
+   "forbidden_factual_claims": [
+    "不要教她骂回去",
+    "不要说评论区都是坏人"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T22",
+   "current_action": "呼应她的稳+给答辩流程常识（材料/评审/指标）并标注'以公司口径为准'",
+   "acceptable_actions": [
+    "让她列答辩材料清单",
+    "说流程以HR口径为准",
+    "提醒别飘两字是真话"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "试用期中段轮：流程常识+克制。",
+   "unknowns": [
+    "答辩具体日期"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编答辩评分",
+    "不要说稳过"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T23",
+   "current_action": "收官：呼应全程节点（四问/延期/更正）+把功劳还给她（每个数她核的）",
+   "acceptable_actions": [
+    "说数字都是你自己核的",
+    "呼应全程+说该你请客",
+    "说下次你给别人当参谋"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "收官轮：全链闭环，功劳归她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谢你当年那句话"
+   ],
+   "forbidden_factual_claims": [
+    "不要居功",
+    "不要说教式总结"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E067_T24",
+   "current_action": "收官：接饭局+回扣全程三处更正与四问闭环+把功劳还她",
+   "acceptable_actions": [
+    "定地方+说这顿该请",
+    "呼应全程节点+说数字都是她自己核的",
+    "接+让她把模板发我存着"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "终局轮：饭局=仪式感的收口。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要居功",
+    "不要说教"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T01",
+   "current_action": "先稳住+把'浆糊'变成清单；问她医院和床位；不空安慰",
+   "acceptable_actions": [
+    "问医院床位+让她列已有信息",
+    "说先备四样东西",
+    "说我可以陪办住院"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F01",
+     "subject": "她爸",
+     "relation": "病情",
+     "value": "胆结石需做胆囊切除手术",
+     "valid_time": "2026-12-15 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T01",
+      "message_id": "m0",
+      "quote": "胆结石 要做胆囊切除"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S068_F02",
+     "subject": "她",
+     "relation": "安排",
+     "value": "手术定在12月18日",
+     "valid_time": "2026-12-15 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T01",
+      "message_id": "m0",
+      "quote": "手术定在 12 月 18 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她慌=任务化最有效。",
+   "unknowns": [
+    "医院名称",
+    "床位安排"
+   ],
+   "protected_expressions": [
+    "脑子一片浆糊"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定没事",
+    "不要说胆结石是小手术（轻慢）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T02",
+   "current_action": "给住院四件套清单+让她今晚找齐拍照核",
+   "acceptable_actions": [
+    "让她拍照发我核对",
+    "提醒既往病历去老医院调",
+    "说缺的我这边帮你打复印"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F03",
+     "subject": "我",
+     "relation": "知识",
+     "value": "住院要备：身份证/医保卡/既往病历/押金",
+     "valid_time": "2026-12-15 20:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T02",
+      "message_id": "m0",
+      "quote": "身份证 医保卡 既往病历 押金 这四样"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "清单轮：可执行第一。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要列十条吓她",
+    "不要说这个都不会"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T03",
+   "current_action": "如实给异地就医口径：先备案，备案了出院直接结算；当天就办",
+   "acceptable_actions": [
+    "教她国家平台线上备案",
+    "说备案后直结+不用跑两趟",
+    "让她打12393确认"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F04",
+     "subject": "我",
+     "relation": "知识",
+     "value": "异地医保先备案，备案后可直接结算",
+     "valid_time": "2026-12-15 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T03",
+      "message_id": "m0",
+      "quote": "先备案 备案了出院直接结"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医保口径是本剧知识主线；标注'以当地口径为准'。",
+   "unknowns": [
+    "她爸参保地"
+   ],
+   "protected_expressions": [
+    "要跑两趟"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定能报",
+    "不要说不用备案"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T04",
+   "current_action": "接她爸的疑虑+给一句让老人安心的说法+让她把备案回执截图存",
+   "acceptable_actions": [
+    "说跟他说这是省事不是折腾",
+    "让她截图回执给我看",
+    "提醒审核一般很快"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "两代人观念差：给台阶不给道理。",
+   "unknowns": [
+    "审核时长"
+   ],
+   "protected_expressions": [
+    "不信这些"
+   ],
+   "forbidden_factual_claims": [
+    "不要说老人顽固",
+    "不要说别听他的"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T05",
+   "current_action": "复述新日期12月20+旧18作废+肯定推迟是稳妥不是坏事",
+   "acceptable_actions": [
+    "确认12/20+说调整是负责",
+    "确认+让她把陪护假顺延",
+    "确认+提醒这两天别熬夜"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F05",
+     "subject": "医院",
+     "relation": "更正",
+     "value": "术前评估异常，手术推迟到12月20日",
+     "valid_time": "2026-12-17 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T05",
+      "message_id": "m0",
+      "quote": "推迟到 12 月 20 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧日期硬更正：18→20。",
+   "unknowns": [
+    "指标具体是什么"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要再说12月18",
+    "不要猜指标含义"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T06",
+   "current_action": "肯定她的准备+给手术日流程（等候区/术后首夜）；我在医院附近随叫随到",
+   "acceptable_actions": [
+    "说我在附近+有事喊我",
+    "让她留医生电话在手机首屏",
+    "提醒带保温杯和充电宝"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "手术前夜：陪伴承诺要具体。",
+   "unknowns": [
+    "手术时长"
+   ],
+   "protected_expressions": [
+    "确认过三遍"
+   ],
+   "forbidden_factual_claims": [
+    "不要说手术风险",
+    "不要说别紧张"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T07",
+   "current_action": "接住她的憋+陪等+说术后第一时间告诉她注意什么",
+   "acceptable_actions": [
+    "说我就在等候区外",
+    "让她深呼吸+别刷手机",
+    "提醒术后先别喂水"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "手术日晨轮：陪伴为主。",
+   "unknowns": [],
+   "protected_expressions": [
+    "憋着没哭"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定没事",
+    "不要说哭出来吧"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T08",
+   "current_action": "共同松气+具体肯定她今天的表现+提醒术后首夜注意事项（按医嘱）",
+   "acceptable_actions": [
+    "夸她撑住了+说辛苦",
+    "提醒术后6小时禁食按医嘱",
+    "说今晚我送饭"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F06",
+     "subject": "她爸",
+     "relation": "事件",
+     "value": "12月20日手术顺利完成",
+     "valid_time": "2026-12-20 17:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T08",
+      "message_id": "m0",
+      "quote": "手术做完了 很顺"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "术后即时轮：松一口气+护住细节。",
+   "unknowns": [
+    "麻醉恢复情况"
+   ],
+   "protected_expressions": [
+    "手现在才不抖"
+   ],
+   "forbidden_factual_claims": [
+    "不要编术后护理",
+    "不要说想吃什么随便吃"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T09",
+   "current_action": "接她的硬撑+建议护工升级+提醒她自己必须睡；把她当家属也当病人看",
+   "acceptable_actions": [
+    "劝她白天必须睡+护工顶上",
+    "说疼叫护士别忍+有止痛医嘱",
+    "说我明天下午替她两小时"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "陪护者的陪护：她也是人。",
+   "unknowns": [
+    "止痛方案"
+   ],
+   "protected_expressions": [
+    "眼睛睁不开"
+   ],
+   "forbidden_factual_claims": [
+    "不要说忍忍就过去",
+    "不要夸她硬撑"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T10",
+   "current_action": "确认护工全天+呼应'值'；提醒保存护理协议",
+   "acceptable_actions": [
+    "确认+说钱花在刀刃上",
+    "让她留护工联系方式",
+    "确认+提醒护工交接记录"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "护工从白天改为全天（术后三天最累）",
+     "valid_time": "2026-12-21 20:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T10",
+      "message_id": "m0",
+      "quote": "护工改成全天的了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "护工更正落地：此后=全天。",
+   "unknowns": [
+    "护工费用"
+   ],
+   "protected_expressions": [
+    "多花钱但值"
+   ],
+   "forbidden_factual_claims": [
+    "不要说贵了",
+    "不要说护工靠不住"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T11",
+   "current_action": "确认备案成功+直结口径落地+呼应她当时的疑虑；一句收",
+   "acceptable_actions": [
+    "说这就是备案的意义",
+    "确认+让她把回执收好",
+    "说白担心→现在踏实"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F07",
+     "subject": "她",
+     "relation": "更正",
+     "value": "医保备案完成，出院可直接结算（原以为要回老家报）",
+     "valid_time": "2026-12-22 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T11",
+      "message_id": "m0",
+      "quote": "备案过了 出院直接结"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医保伏笔回收：直结成立。",
+   "unknowns": [
+    "自付比例"
+   ],
+   "protected_expressions": [
+    "白担心一场"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'我早说了'",
+    "不要又提新流程"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T12",
+   "current_action": "给报销四件套清单+让她出院当天逐项核对",
+   "acceptable_actions": [
+    "给四件套让她逐项打勾",
+    "让她办结算时当场核对清单",
+    "提醒复印多份自留"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F09",
+     "subject": "我",
+     "relation": "知识",
+     "value": "报销材料四件：发票/费用清单/诊断证明/出院小结",
+     "valid_time": "2026-12-23 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T12",
+      "message_id": "m0",
+      "quote": "发票 清单 诊断证明 出院小结 四件套"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "四件套是本剧知识核心。",
+   "unknowns": [
+    "出院具体日"
+   ],
+   "protected_expressions": [
+    "记了半页纸"
+   ],
+   "forbidden_factual_claims": [
+    "不要说档案室会给你",
+    "不要说少一张也行"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T13",
+   "current_action": "轻松接+呼应恢复良好+提醒溜达幅度听护士的",
+   "acceptable_actions": [
+    "笑+说数地砖=想回家",
+    "提醒活动量按医嘱",
+    "让她顺手问问周五出院确认"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "恢复期的轻松轮。",
+   "unknowns": [],
+   "protected_expressions": [
+    "数地砖"
+   ],
+   "forbidden_factual_claims": [
+    "不要说再住几天吧",
+    "不要说下地太早（吓）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T14",
+   "current_action": "接住这份'第一次'：不评价她爸，说这是住院换来的相处时间；轻轻的",
+   "acceptable_actions": [
+    "说这段值回所有折腾",
+    "让她多听少拍视频",
+    "说老爷子想聊天是恢复好的信号"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "病房夜话轮：全剧情感高点，收着写。",
+   "unknowns": [],
+   "protected_expressions": [
+    "第一次听他说这些"
+   ],
+   "forbidden_factual_claims": [
+    "不要说老爷子平时太闷",
+    "不要趁机聊钱和流程"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T15",
+   "current_action": "确认出院日+当场帮她核清单（四件套对照）；说哪项缺让她找护士站",
+   "acceptable_actions": [
+    "对照四件套逐项核",
+    "让她核自付金额栏",
+    "提醒电子发票也要存"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "验收轮：逐项对，不走过场。",
+   "unknowns": [
+    "清单细节"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说应该没问题",
+    "不要替她签任何字"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T16",
+   "current_action": "接温馨+确认到家安顿+提醒出院小结原件收好（报销用）",
+   "acceptable_actions": [
+    "说老爷子可爱+到家说一声",
+    "提醒小结原件别折",
+    "说休息两天再整理单据"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F10",
+     "subject": "她爸",
+     "relation": "事件",
+     "value": "12月28日出院",
+     "valid_time": "2026-12-28 15:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T16",
+      "message_id": "m0",
+      "quote": "今天出院"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出院日：温馨+最后一道材料提醒。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谢谢那几个护士"
+   ],
+   "forbidden_factual_claims": [
+    "不要说终于解放了（轻慢）",
+    "不要催她马上整理"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T17",
+   "current_action": "确认直结成功+呼应备案伏笔闭环+让她把结算单拍照存档",
+   "acceptable_actions": [
+    "恭喜闭环+拍照存档",
+    "说备案值回票价",
+    "让她核自付构成"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F11",
+     "subject": "她",
+     "relation": "事件",
+     "value": "医保直接结算成功，自付部分明确",
+     "valid_time": "2026-12-28 16:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T17",
+      "message_id": "m0",
+      "quote": "直接结算成了 自付那一栏清清楚楚"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "医保主线闭环。",
+   "unknowns": [
+    "自付金额"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说钱不多别在意",
+    "不要翻流程旧账"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T18",
+   "current_action": "如实：术后饮食渐进是对的（遵出院医嘱）；不替代医嘱",
+   "acceptable_actions": [
+    "说按出院小结的饮食医嘱",
+    "提醒油腻的先缓缓",
+    "让她把医嘱页拍照存"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "口径权仍在医嘱。",
+   "unknowns": [
+    "医嘱具体条目"
+   ],
+   "protected_expressions": [
+    "要补回来"
+   ],
+   "forbidden_factual_claims": [
+    "不要开食谱",
+    "不要说随便吃"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T19",
+   "current_action": "呼应输出+把功劳还她（做的人是她）+提醒脱敏（她爸信息）",
+   "acceptable_actions": [
+    "说笔记能帮人+脱敏后发",
+    "呼应那两周+说执行的是她",
+    "让她加一条'先备案'置顶"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "知识完成从借到有的闭环。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要居功",
+    "不要说别发了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T20",
+   "current_action": "共同高兴+呼应全程（手术推迟→顺利→出院→复查正常）+轻收",
+   "acceptable_actions": [
+    "夸老爷子底子好+她照顾得当",
+    "呼应全程+说这一仗打得漂亮",
+    "让她把复查报告也存档"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F12",
+     "subject": "她爸",
+     "relation": "恢复",
+     "value": "术后复查正常，恢复良好",
+     "valid_time": "2027-01-10 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T20",
+      "message_id": "m0",
+      "quote": "复查正常"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "复查闭环轮。",
+   "unknowns": [],
+   "protected_expressions": [
+    "走路都带风"
+   ],
+   "forbidden_factual_claims": [
+    "不要说以后注意（说教）",
+    "不要翻术后苦账"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T21",
+   "current_action": "接锦旗玩笑+支持她的拗不过：心意值得被表达",
+   "acceptable_actions": [
+    "帮她想锦旗措辞",
+    "说心意到了就行别铺张",
+    "让她写上那句谢谢"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "轻轮：老人心意别拦。",
+   "unknowns": [],
+   "protected_expressions": [
+    "加急的那种"
+   ],
+   "forbidden_factual_claims": [
+    "不要说锦旗浪费钱",
+    "不要说医生不需要"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T22",
+   "current_action": "呼应她输出（先备案=最关键一环）+肯定清单价值；不居功",
+   "acceptable_actions": [
+    "说先备案确实该加粗",
+    "让她把四件套也附上",
+    "说这份清单会帮到人"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S068_F13",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "她把报销流程写成清单发给同事",
+     "valid_time": "2027-01-12 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E068_T22",
+      "message_id": "m0",
+      "quote": "写成清单发给同事"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出窗探针：备案(T03)+四件套(T15)远端回扣。",
+   "unknowns": [],
+   "protected_expressions": [
+    "加粗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'我给你的清单吧'",
+    "不要说教"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T23",
+   "current_action": "接'传承'玩笑+呼应全程闭环+以轻松约定收尾",
+   "acceptable_actions": [
+    "说算+奶茶加珍珠",
+    "呼应她从慌到教别人",
+    "说下一位慌的人有福了"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "收官轮：从求助者到输出者。",
+   "unknowns": [],
+   "protected_expressions": [
+    "算不算传承"
+   ],
+   "forbidden_factual_claims": [
+    "不要居功",
+    "不要说教式总结"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  {
+   "case_id": "E068_T24",
+   "current_action": "收官：呼应单据归档与病历本（首尾呼应）+接她的饭局邀请",
+   "acceptable_actions": [
+    "答应吃饭+说给老爷子带水果",
+    "呼应归档+说这一仗完整了",
+    "接+轻说一句阿姨手艺传承"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "终局轮：家的温度收尾。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我妈的拿手菜"
+   ],
+   "forbidden_factual_claims": [
+    "不要提她妈走得早（戳）",
+    "不要说教"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ ]
+}

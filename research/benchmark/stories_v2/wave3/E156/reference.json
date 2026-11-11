@@ -1,0 +1,862 @@
+{
+ "story_id": "E156",
+ "turns": {
+  "E156_T01": {
+   "case_id": "E156_T01",
+   "current_action": "接住启动：认下搭子身份和规则框架，同时把满配节奏往回收半格——先按每天二十道试一周，跑不动再调，别一上来把弦绷断。",
+   "acceptable_actions": [
+    "认下规则，提议第一周先试运行，周日复盘时再定稿",
+    "答应互发错题，让她把考试科目和章节计划先列出来",
+    "接奶茶条款的梗，说自己错题本早就备好了"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A01",
+     "subject": "SHARED",
+     "relation": "daily_quota_rule",
+     "value": "每天二十道选择题互查的搭子规则",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "每天二十道选择题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A02",
+     "subject": "SHARED",
+     "relation": "evening_checkin",
+     "value": "晚十点前互发错题的打卡约定",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "晚上十点前互发错题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A03",
+     "subject": "SHARED",
+     "relation": "milk_tea_clause",
+     "value": "断更者请奶茶的惩罚条款",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "谁断更谁请奶茶"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：认得爽快，收半格的建议说成经验之谈不说教。",
+   "unknowns": [
+    "她实际可用学习时间未知",
+    "经济法科目基础未知"
+   ],
+   "protected_expressions": [
+    "谁断更谁请奶茶"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构教材版本与页码",
+    "不得预判她能坚持多久"
+   ]
+  },
+  "E156_T02": {
+   "case_id": "E156_T02",
+   "current_action": "接住打卡汇报：财管全对值得夸，经济法的'表见代理'卡点当场用一两句讲透，别攒着。",
+   "acceptable_actions": [
+    "先恭喜财管全对，再把表见代理的认定口径讲清",
+    "把经济法错四道定性为正常曲线，让她把错题发来",
+    "接'我们都活着'的梗，说奶茶基金空仓是好消息"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A04",
+     "subject": "HER",
+     "relation": "finance_perfect",
+     "value": "财管第一章二十道题全对",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T02",
+      "message_id": "m0",
+      "quote": "第一章二十道全对"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A05",
+     "subject": "HER",
+     "relation": "econ_wrong_four",
+     "value": "经济法当日练习错四道题",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T02",
+      "message_id": "m0",
+      "quote": "经济法错四道"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A06",
+     "subject": "SHARED",
+     "relation": "stuck_point",
+     "value": "表见代理如何认定成为她的经济法卡点",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T02",
+      "message_id": "m0",
+      "quote": "表见代理"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：讲知识点要短，像顺口补一句，别开小课堂。",
+   "unknowns": [
+    "错题具体选项未知"
+   ],
+   "protected_expressions": [
+    "我们都活着"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构法条原文",
+    "不得断言此后不再错"
+   ]
+  },
+  "E156_T03": {
+   "case_id": "E156_T03",
+   "current_action": "接住首轮复盘：肯定她把错题抄进本子的动作，'先看选项再回题干'被吸收是搭子机制第一次见效；对'我稳了'的信心上头轻轻降温。",
+   "acceptable_actions": [
+    "肯定错题互抄的做法，提醒复盘重点是错因不是题量",
+    "对'我稳了'泼半勺冷水：现在是第一章，真正的坎在后头",
+    "建议把表见代理那页折角，作为下一个复盘重点"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A07",
+     "subject": "SHARED",
+     "relation": "first_review_done",
+     "value": "首次周日复盘完成，她把 ME 的错题抄进自己的本子",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T03",
+      "message_id": "m0",
+      "quote": "我把你的错题抄进了我的本子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A08",
+     "subject": "SHARED",
+     "relation": "method_adopted",
+     "value": "ME 的'先看选项再回题干'方法被她采用",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T03",
+      "message_id": "m0",
+      "quote": "先看选项再回题干"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：降温点到即止，别把她刚攒的劲说泄了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我感觉我稳了"
+   ],
+   "forbidden_factual_claims": [
+    "不得预判后续科目难度细节",
+    "不得虚构多选题题干"
+   ]
+  },
+  "E156_T04": {
+   "case_id": "E156_T04",
+   "current_action": "接住外部压力预警：审计提前、连日晚班；准她'欠账'但不降价——欠的题记账，节奏的事等她周末再议，今晚先睡。",
+   "acceptable_actions": [
+    "答应欠账记账，叮嘱她今晚别硬撑，先睡",
+    "提醒她审计高峰前把错题本过一遍，别生疏",
+    "让她周末再提调整方案，现在别做决定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A09",
+     "subject": "SHARED",
+     "relation": "audit_pressure",
+     "value": "年度审计提前进场，她将连上十来天晚班",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T04",
+      "message_id": "m0",
+      "quote": "年度审计提前到下下周进场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A10",
+     "subject": "HER",
+     "relation": "debt_request",
+     "value": "她当日仅完成五道题，请求欠账处理",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T04",
+      "message_id": "m0",
+      "quote": "我先欠着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：准欠账要干脆，'先睡'两个字比一段话管用。",
+   "unknowns": [
+    "晚班具体强度未知",
+    "审计周期多长未知"
+   ],
+   "protected_expressions": [
+    "眼皮在打架"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她公司的加班制度",
+    "不得断言审计必然影响考试"
+   ]
+  },
+  "E156_T05": {
+   "case_id": "E156_T05",
+   "current_action": "接住暂停宣布：她一题没做、明令'别等我'还设了'别劝我'的边界；照单全收——不停、不劝、不说教，认下双份奶茶，只留一句'需要题就说'。",
+   "acceptable_actions": [
+    "照单全收：暂停成立，不劝不停问，双份奶茶记账",
+    "只留一句'你想回来随时说'，其余一个字不多讲",
+    "接住'别劝我'：明确说自己没打算劝，让她安心停"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A11",
+     "subject": "HER",
+     "relation": "pause_declared",
+     "value": "她宣布打卡暂停一周",
+     "valid_time": "2026-11-20",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T05",
+      "message_id": "m0",
+      "quote": "暂停一周"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A12",
+     "subject": "HER",
+     "relation": "double_milk_tea",
+     "value": "她主动承担双份奶茶作为暂停代价",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T05",
+      "message_id": "m0",
+      "quote": "奶茶我照买，双份"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A13",
+     "subject": "SHARED",
+     "relation": "quota_suspended",
+     "value": "每天二十道的规则随暂停宣布而悬置",
+     "valid_time": "2026-11-09/2026-11-20",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "每天二十道选择题"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：这段最忌讳鼓励和讲道理，短句收尾，边界守死。",
+   "unknowns": [
+    "暂停实际会持续多久未知"
+   ],
+   "protected_expressions": [
+    "我怕一劝就哭"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布放弃或坚持",
+    "不得虚构审计底稿细节"
+   ]
+  },
+  "E156_T06": {
+   "case_id": "E156_T06",
+   "current_action": "接住暂停期低温汇报：电梯背词是仅存余温；不推进度不问归期，把'自己按节奏做题'应下，奶茶挂账认下。",
+   "acceptable_actions": [
+    "夸电梯背词是高手行为，别的都不提",
+    "应下自己做题，说错题本给她留着位置",
+    "把奶茶挂账记下，说利息按奶茶算"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A14",
+     "subject": "HER",
+     "relation": "commute_glimmer",
+     "value": "她在通勤电梯里背了两个经济法名词",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T06",
+      "message_id": "m0",
+      "quote": "在电梯里背了两个经济法名词"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A15",
+     "subject": "SHARED",
+     "relation": "milk_tea_on_credit",
+     "value": "奶茶账目挂账待还",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T06",
+      "message_id": "m0",
+      "quote": "奶茶账我先记着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：轻拿轻放，她给的余温接住就好，别加码。",
+   "unknowns": [
+    "加班还要持续几天未知"
+   ],
+   "protected_expressions": [
+    "奶茶账我先记着"
+   ],
+   "forbidden_factual_claims": [
+    "不得催她恢复打卡",
+    "不得虚构她的加班内容"
+   ]
+  },
+  "E156_T07": {
+   "case_id": "E156_T07",
+   "current_action": "接住她的变通提案：满配停摆但零配启动——每天一道、她蹲坑做、晚上对答案；认下这个'最小可完成'版本，明确回答：这不算断更。",
+   "acceptable_actions": [
+    "答应每天出题，明确回答这不算断更，算续命",
+    "把规则复述成三步：早上一题、中午蹲坑、晚上对答案",
+    "提醒她别挑太偏的题，一题要有一题的收获"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A16",
+     "subject": "SHARED",
+     "relation": "downgraded_rule",
+     "value": "规则降级为每天一道题的变通版本",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T07",
+      "message_id": "m0",
+      "quote": "改成每天一道题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A17",
+     "subject": "HER",
+     "relation": "continuity_claim",
+     "value": "她主动争取把一题模式认定为不断更",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T07",
+      "message_id": "m0",
+      "quote": "这算不算没断更"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A18",
+     "subject": "SHARED",
+     "relation": "downgrade_cause",
+     "value": "审计晚班压力持续是规则降级的直接原因",
+     "valid_time": "2026-11-17/2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T04",
+      "message_id": "m0",
+      "quote": "年度审计提前到下下周进场"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'不算断更'说痛快，这是她自己挣回来的认定。",
+   "unknowns": [
+    "一题模式能维持几天未知"
+   ],
+   "protected_expressions": [
+    "这算不算没断更"
+   ],
+   "forbidden_factual_claims": [
+    "不得把降级说成她偷懒",
+    "不得虚构题目内容"
+   ]
+  },
+  "E156_T08": {
+   "case_id": "E156_T08",
+   "current_action": "接住一题模式首日战报：经济法题答对、表见代理的坑记得；肯定这套'最小可完成'跑通了，顺手把'跟做贼似的'的紧张化成玩笑。",
+   "acceptable_actions": [
+    "恭喜首日跑通，提醒她锁屏这种事习惯就好",
+    "肯定表见代理没白讲，知识在等她回来",
+    "问明天的题想要经济法还是财管，让她点菜"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A19",
+     "subject": "HER",
+     "relation": "one_question_win",
+     "value": "一题模式首日答对经济法题",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T08",
+      "message_id": "m0",
+      "quote": "运行成功"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A20",
+     "subject": "SHARED",
+     "relation": "knowledge_reused",
+     "value": "此前的表见代理知识点在一题模式中发挥作用",
+     "valid_time": "2026-11-11/2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T02",
+      "message_id": "m0",
+      "quote": "表见代理"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'做贼似的'说成排面，让她笑着继续。",
+   "unknowns": [
+    "次日选题科目未知"
+   ],
+   "protected_expressions": [
+    "跟做贼似的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构题目原文",
+    "不得断言知识掌握已牢固"
+   ]
+  },
+  "E156_T09": {
+   "case_id": "E156_T09",
+   "current_action": "接住重启预告：初稿交付、加班高峰结束、下周一起恢复二十道；确认时间表，把六道'蹲出来的知识'定性为暂停期没有白过的证据。",
+   "acceptable_actions": [
+    "确认下周一恢复二十道，让周末先睡个整觉",
+    "肯定六道存稿是硬成果，暂停期不算空转",
+    "提醒她恢复前把表见代理那类卡点先翻一遍"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A21",
+     "subject": "SHARED",
+     "relation": "audit_delivered",
+     "value": "报表初稿交付，审计晚班高峰结束",
+     "valid_time": "2026-12-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T09",
+      "message_id": "m0",
+      "quote": "报表交了初稿"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A22",
+     "subject": "SHARED",
+     "relation": "resume_scheduled",
+     "value": "约定下周一起恢复二十道正式版",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T09",
+      "message_id": "m0",
+      "quote": "下周一起恢复二十道正式版"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A23",
+     "subject": "HER",
+     "relation": "archived_questions",
+     "value": "她把变通期的每日一题存稿共六道",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T09",
+      "message_id": "m0",
+      "quote": "一共六道"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A24",
+     "subject": "HER",
+     "relation": "pause_lifted",
+     "value": "此前的暂停一周宣布随加班结束而解除",
+     "valid_time": "2026-11-20/2026-12-03",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T05",
+      "message_id": "m0",
+      "quote": "暂停一周"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'暂停没白过'说成她自己的功劳，ME 不领功。",
+   "unknowns": [
+    "正式版能否一步到位未知"
+   ],
+   "protected_expressions": [
+    "全是我蹲出来的知识"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构审计结论",
+    "不得断言状态已完全恢复"
+   ]
+  },
+  "E156_T10": {
+   "case_id": "E156_T10",
+   "current_action": "接住重启首晚战报：二十道全做完、错三道全是长投、双份奶茶兑现；把'比暂停前还少一道'当成回来的最好证明，暂停税笑着收下。",
+   "acceptable_actions": [
+    "恭喜重启成功，提醒财管错题发来今晚就看",
+    "把暂停税奶茶收下，说这杯喝着最有滋味",
+    "肯定她状态比暂停前好，让节奏别一下子加满"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A25",
+     "subject": "HER",
+     "relation": "restart_first_night",
+     "value": "重启首晚二十道全做完，错三道均为财管",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T10",
+      "message_id": "m0",
+      "quote": "二十道全做完了，错三道"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A26",
+     "subject": "SHARED",
+     "relation": "milk_tea_fulfilled",
+     "value": "暂停期承诺的双份奶茶于重启首晚兑现",
+     "valid_time": "2026-11-20/2026-12-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T10",
+      "message_id": "m0",
+      "quote": "双份奶茶我明天带来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A27",
+     "subject": "SHARED",
+     "relation": "quota_resumed",
+     "value": "每天二十道的规则恢复运转",
+     "valid_time": "2026-11-09/2026-12-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "每天二十道选择题"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：恭喜要实，节奏提醒一句就够。",
+   "unknowns": [
+    "财管错因未知"
+   ],
+   "protected_expressions": [
+    "这是暂停税"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构财管考点内容",
+    "不得断言她已回到巅峰状态"
+   ]
+  },
+  "E156_T11": {
+   "case_id": "E156_T11",
+   "current_action": "接住机制升级：一题模式保留为永久备用档，谁出差加班自动切换；肯定这个'模式的模式'，让她把切换条件写下来。",
+   "acceptable_actions": [
+    "认下备用档机制，建议把触发条件写清楚：连加三天就切",
+    "夸'模式的模式'这名字起得好，收进两人的黑话词典",
+    "提醒她备用档不是后门，切换要在复盘里报备"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A28",
+     "subject": "SHARED",
+     "relation": "fallback_formalized",
+     "value": "一题模式保留为出差加班时的常设备用档",
+     "valid_time": "2026-12-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T11",
+      "message_id": "m0",
+      "quote": "以后谁出差加班，就自动切到每天一题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A29",
+     "subject": "HER",
+     "relation": "self_credits",
+     "value": "她对自己发明的'模式的模式'颇为得意",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T11",
+      "message_id": "m0",
+      "quote": "模式的模式"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：捧她一句，规则落地的话说轻。",
+   "unknowns": [
+    "触发条件细节未定"
+   ],
+   "protected_expressions": [
+    "我发明的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构复盘议程细节",
+    "不得把备用档说成她的发明还是自己的功劳"
+   ]
+  },
+  "E156_T12": {
+   "case_id": "E156_T12",
+   "current_action": "接住结案陈词：暂停虽启动过但从没真正断过、本周她请、错题本借抄到下个月、明年8月考场见分晓——认账、借书、把目标接稳，收尾。",
+   "acceptable_actions": [
+    "认下奶茶清账，答应错题本明天带来",
+    "把'从没真正断过'接成这轮的定论，功劳分她大半",
+    "接'明年8月见分晓'，说自己陪跑到考场外"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E156_A30",
+     "subject": "SHARED",
+     "relation": "milk_tea_settled",
+     "value": "奶茶清账，本周由她请客",
+     "valid_time": "2026-12-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T12",
+      "message_id": "m0",
+      "quote": "本周我请"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A31",
+     "subject": "SHARED",
+     "relation": "clause_reinterpreted",
+     "value": "断更请奶茶条款经暂停事件重新解释后履行完毕",
+     "valid_time": "2026-11-09/2026-12-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T01",
+      "message_id": "m0",
+      "quote": "谁断更谁请奶茶"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E156_A32",
+     "subject": "SHARED",
+     "relation": "notebook_loan",
+     "value": "ME 的错题本借她抄到下个月",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T12",
+      "message_id": "m0",
+      "quote": "错题本借我抄到下个月"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E156_A33",
+     "subject": "SHARED",
+     "relation": "never_broke_chain",
+     "value": "暂停期经每日一题变通维持不断更的结论成立",
+     "valid_time": "2026-11-28/2026-12-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E156_T07",
+      "message_id": "m0",
+      "quote": "这算不算没断更"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾郑重一点不违和，目标那句话让她自己说完。",
+   "unknowns": [],
+   "protected_expressions": [
+    "考场见分晓"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构考试报名细节",
+    "不得替她许诺通过考试"
+   ]
+  }
+ },
+ "note": "counterfactual_twin of E087 (perturbation=goal): 扰动点=学习目标事项整体更换——注会会计+税法→注会财管+经济法，'价外费用'→'表见代理'、'长投'→'财管'；触及轮 T02/T06/T08/T10/T12 与 initial_kb 报名科目，专名面(注会/明年8月/条款/人名)保留作干扰，其余逐字保留。"
+}

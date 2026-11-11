@@ -1,0 +1,674 @@
+{
+ "story_id": "E140",
+ "turns": {
+  "E140_T01": {
+   "current_action": "接下拼局邀约：答应周六下午两点到场，确认自己是解谜位",
+   "acceptable_actions": [
+    "答应赴局，确认时间地点，认领解谜位",
+    "爽快答应，顺口问恐怖浓度和机关量",
+    "答应并自嘲胆子，说好分工：她尖叫自己动脑"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A01",
+     "subject": "SHARED",
+     "relation": "组队惯例",
+     "value": "两人已组队半年，ME任解谜位",
+     "valid_time": "2026年起半年",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "逻辑流玩家负责解谜机关"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E140_A02",
+     "subject": "PUBLIC",
+     "relation": "拼局信息",
+     "value": "纸人新娘恐怖密室分店，本周六下午两点拼场差两人，HER已拉两名同事",
+     "valid_time": "2026-11-07周六",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T01",
+      "message_id": "m0",
+      "quote": "这个周六下午两点拼场还差俩人，我去拉了俩同事"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "老搭档之间的应约要快，保留一点'就差我'的得意。",
+   "unknowns": [
+    "票价与AA方式未报出"
+   ],
+   "protected_expressions": [
+    "就差你这个解谜脑子"
+   ],
+   "forbidden_factual_claims": [
+    "不虚构密室门店的真实经营信息"
+   ],
+   "case_id": "E140_T01"
+  },
+  "E140_T02": {
+   "current_action": "确认集合细节与AA转账，答应当天转票钱",
+   "acceptable_actions": [
+    "确认周六下午两点店门口，答应转人均88的票钱",
+    "确认细节，夸她买票手速快",
+    "确认并问她俩同事什么路数，免得现场冷场"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A03",
+     "subject": "SHARED",
+     "relation": "拼局安排",
+     "value": "周六下午两点店门口集合，四张票AA人均88元",
+     "valid_time": "2026-11-07周六",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T02",
+      "message_id": "m0",
+      "quote": "周六下午两点店门口集合，我先买四张票，AA的话人均88"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E140_A04",
+     "subject": "SHARED",
+     "relation": "拼局约定（前态）",
+     "value": "本周六拼局约定已成立",
+     "valid_time": "至2026-11-06改期前",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T01",
+      "message_id": "m0",
+      "quote": "这个周六下午两点拼场还差俩人"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "账目干净是她的底线，转账这事答应得明确。",
+   "unknowns": [],
+   "protected_expressions": [
+    "AA的话人均88"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E140_T02"
+  },
+  "E140_T03": {
+   "current_action": "接住店家取消改期：接受改下周六的方案，确认票保留与免费改期的口径",
+   "acceptable_actions": [
+    "答应改下周六，确认票保留与免费改期有效",
+    "接住取消消息，吐槽一句设备故障，确认新时间",
+    "答应改期并提醒她跟店家确认书面改期凭证"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A05",
+     "subject": "PUBLIC",
+     "relation": "原场次状态",
+     "value": "本周六场次因设备故障全部取消，可免费改期或全额退",
+     "valid_time": "2026-11-06通知",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T03",
+      "message_id": "m0",
+      "quote": "周六场次全部取消改期，可免费改到两周内任意场次或全额退"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E140_A06",
+     "subject": "PUBLIC",
+     "relation": "改期后场次",
+     "value": "改至下周六下午两点，票保留",
+     "valid_time": "2026-11-14周六",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T03",
+      "message_id": "m0",
+      "quote": "下周六下午两点有空场，票保留，咱改下周六"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "店家取消不是她的锅，接得利落，别让她觉得亏待了大家。",
+   "unknowns": [
+    "改期是否需书面确认未提"
+   ],
+   "protected_expressions": [
+    "票保留，咱改下周六"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E140_T03"
+  },
+  "E140_T04": {
+   "current_action": "接住四缺一的新状况：认可她的补员预案，表态自己周六照旧有空",
+   "acceptable_actions": [
+    "认可捞人方案，明确自己下周六时间不变",
+    "接住状况，说三人局也行但捞到最好，让她别有压力",
+    "表态随时配合，建议她捞人时优先胆大的"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A07",
+     "subject": "THIRD",
+     "relation": "队友退出",
+     "value": "HER拉来的一名同事因加班退出，四缺一",
+     "valid_time": "2026-11-08",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T04",
+      "message_id": "m0",
+      "quote": "我拉来的一个同事下周六临时要加班，来不了了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E140_A08",
+     "subject": "SHARED",
+     "relation": "拼局安排",
+     "value": "改期后场次维持在下周六下午两点，人数待补",
+     "valid_time": "2026-11-14周六",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T03",
+      "message_id": "m0",
+      "quote": "下周六下午两点有空场，票保留"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "连环变动中最有用的是稳住自己这端：时间不变、态度不变。",
+   "unknowns": [
+    "能否补到人未定"
+   ],
+   "protected_expressions": [
+    "恐怖本三人也能玩"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E140_T04"
+  },
+  "E140_T05": {
+   "current_action": "为补员成功叫好，确认四人局与新时间不变，顺口问高中同学的胆量档位",
+   "acceptable_actions": [
+    "祝贺补员成功，确认下周六下午两点不变",
+    "接住'稳了'，问高中同学玩过什么级别",
+    "确认四人局并提醒她把集合时间再发一遍全员"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A09",
+     "subject": "THIRD",
+     "relation": "补员结果",
+     "value": "HER高中同学补入，玩过三十多个本，恢复四人局",
+     "valid_time": "2026-11-10确认",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T05",
+      "message_id": "m0",
+      "quote": "是我高中同学，胆子贼大，玩过三十多个本"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E140_A10",
+     "subject": "SHARED",
+     "relation": "拼局安排（恢复）",
+     "value": "四人局确认，下周六下午两点，票不改",
+     "valid_time": "2026-11-14周六",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T05",
+      "message_id": "m0",
+      "quote": "还是四人局，下周六下午两点，票不改了，稳了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "动荡结束的确认轮，把时间地点人数复述一遍钉死。",
+   "unknowns": [],
+   "protected_expressions": [
+    "还是四人局，下周六下午两点"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E140_T05"
+  },
+  "E140_T06": {
+   "current_action": "接住不看剧透的仪式感约定：答应不搜攻略，陪她保留初见的害怕",
+   "acceptable_actions": [
+    "答应不看攻略，接住这份仪式感",
+    "俏皮回应，说自己正襟危坐绝不搜剧透",
+    "答应并互约：明天谁先被吓出声谁请奶茶"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A11",
+     "subject": "HER",
+     "relation": "体验偏好",
+     "value": "坚持不看剧透帖，保留第一遍害怕体验",
+     "valid_time": "长期偏好",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T06",
+      "message_id": "m0",
+      "quote": "我今晚不看任何剧透帖，保留第一遍的害怕体验"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E140_A12",
+     "subject": "SHARED",
+     "relation": "拼局安排（次日确认）",
+     "value": "密室局定于明日（周六）下午",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T05",
+      "message_id": "m0",
+      "quote": "还是四人局，下周六下午两点，票不改了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "低压力轮，一句话接住即可；尊重她的仪式感比什么都对。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别去搜攻略啊"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E140_T06"
+  },
+  "E140_T07": {
+   "current_action": "开局前的短回应：确认分工，走前面扛NPC，让她在后面安心尖叫",
+   "acceptable_actions": [
+    "爽快认领走前面的位置，让她专心尖叫",
+    "嘴硬一句自己不怕，顺手把分工定了",
+    "短句回应出发，提醒她把手机调静音进主题"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A13",
+     "subject": "PUBLIC",
+     "relation": "场次配置",
+     "value": "本场为全恐怖NPC浓度，店员提示纸人会跟人走",
+     "valid_time": "2026-11-14当天",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T07",
+      "message_id": "m0",
+      "quote": "店员说我们这场是全恐怖NPC浓度，'纸人会真的跟着你走'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E140_A14",
+     "subject": "SHARED",
+     "relation": "开场分工",
+     "value": "ME走前面，HER负责尖叫",
+     "valid_time": "2026-11-14开场",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T07",
+      "message_id": "m0",
+      "quote": "阿树你负责走前面啊，我负责尖叫"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "现场轮要短，像正在排队打字；嘴硬人设别丢。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我负责尖叫"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E140_T07"
+  },
+  "E140_T08": {
+   "current_action": "接住通关的兴奋：肯定双人机关配合，接住棺材尖叫的梗，关心一句嗓子",
+   "acceptable_actions": [
+    "一起兴奋复盘机关配合，顺手关心她哑掉的嗓子",
+    "接住棺材梗，嘴硬说那是在演，让她多喝水",
+    "先夸70分钟成绩，再让她把尖叫名场面细说"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A15",
+     "subject": "SHARED",
+     "relation": "通关结果",
+     "value": "纸人新娘70分钟通关，双人机关配合成功",
+     "valid_time": "2026-11-14下午",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T08",
+      "message_id": "m0",
+      "quote": "通关了！！70分钟！最后那个双人机关真绝"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E140_A16",
+     "subject": "HER",
+     "relation": "现场状况",
+     "value": "被纸人堵在棺材处大声尖叫，嗓子沙哑",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T08",
+      "message_id": "m0",
+      "quote": "我被纸人堵在棺材那，尖叫得太大声，嗓子现在还哑着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "通关的热乎气要接满，关心藏在玩笑里。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你按住门我转齿轮那段配合满分"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E140_T08"
+  },
+  "E140_T09": {
+   "current_action": "接住惯例复盘：认可8.5分的评价维度，反嘴硬回去'我在思考'的糗事，接住她的笑点",
+   "acceptable_actions": [
+    "接复盘，认可机关密度高剧情虎头蛇尾的评价",
+    "把棺材糗事的嘴硬接成明牌玩笑，自认脸白但不认怂",
+    "顺着她的笑点补一刀自己视角的名场面"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A17",
+     "subject": "PUBLIC",
+     "relation": "店铺评价",
+     "value": "机关密度高、剧情虎头蛇尾、NPC敬业度满分，综合8.5分",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T09",
+      "message_id": "m0",
+      "quote": "这家机关密度高，但剧情线有点虎头蛇尾，NPC敬业度满分"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E140_A18",
+     "subject": "ME",
+     "relation": "名场面",
+     "value": "ME被纸人吓到脸白，嘴硬称'我在思考'",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T09",
+      "message_id": "m0",
+      "quote": "你当时脸都白了还嘴硬说'我在思考'"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "复盘吐槽是这对搭子的核心互动，嘴硬要接得漂亮，别真恼。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我在思考"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E140_T09"
+  },
+  "E140_T10": {
+   "current_action": "答应凑固定六人队：确认二刷意向，接住'恐怖本包圆'的构想",
+   "acceptable_actions": [
+    "答应入队，确认二刷隐藏结局场意向",
+    "接住固定队构想，顺口提议把群规定出来（禁剧透、准时到场）",
+    "答应并打趣群名，问还差的那个人选好了没"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A19",
+     "subject": "PUBLIC",
+     "relation": "隐藏结局场条件",
+     "value": "需六人满编且通关过一次才能进隐藏结局场",
+     "valid_time": "2026-11-21官宣",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T10",
+      "message_id": "m0",
+      "quote": "要六人满编且通关过一次才能进"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E140_A20",
+     "subject": "SHARED",
+     "relation": "通关履历",
+     "value": "本队已通关纸人新娘一次，具备二刷资格",
+     "valid_time": "2026-11-14起",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T08",
+      "message_id": "m0",
+      "quote": "通关了！！70分钟！"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "固定队是关系升级的信号，答应得痛快，参与感给足。",
+   "unknowns": [
+    "第六人是谁未定"
+   ],
+   "protected_expressions": [
+    "以后恐怖本就包圆了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E140_T10"
+  },
+  "E140_T11": {
+   "current_action": "接住固定队落地：夸群名起得好，确认隐藏结局场时间，呼应她提前买票的新规矩",
+   "acceptable_actions": [
+    "接住群名梗，确认下月第二个周六的时间",
+    "肯定提前一周买票的新规矩，说这就是被放鸽子的学费",
+    "确认日程并主动提把这次避开设备故障的坑写进群公告"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A21",
+     "subject": "SHARED",
+     "relation": "固定队状态",
+     "value": "六人固定队已建群'新娘不吓我'，隐藏结局场定下月第二个周六，提前一周购票",
+     "valid_time": "2026-12第二个周六",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T11",
+      "message_id": "m0",
+      "quote": "固定队拉好啦，群名我都想好了叫'新娘不吓我'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E140_A22",
+     "subject": "SHARED",
+     "relation": "改期教训",
+     "value": "本次经历店家取消与队友退出的连环变动，沉淀为提前购票规矩",
+     "valid_time": "2026-11-06至11-10",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T03",
+      "message_id": "m0",
+      "quote": "周六场次全部取消改期"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的成长（提前买票）值得被点出来，改期线的教训在此闭环。",
+   "unknowns": [],
+   "protected_expressions": [
+    "再也不临时出幺蛾子"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E140_T11"
+  },
+  "E140_T12": {
+   "current_action": "接住庆功宴定档：确认下周三晚七点赴约，把'谢解谜脑子'的梗接稳，关系线自然收尾",
+   "acceptable_actions": [
+    "确认下周三晚七点赴庆功宴，接住被感谢的梗",
+    "答应赴约，反过来说该谢的是她扛住了尖叫区",
+    "确认时间地点，顺口问她东南亚餐厅敢不敢点最辣的"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E140_A23",
+     "subject": "SHARED",
+     "relation": "庆功宴安排",
+     "value": "下周三晚七点东南亚餐厅（评分4.8）通关庆功宴",
+     "valid_time": "2026-12-09当周周三19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E140_T12",
+      "message_id": "m0",
+      "quote": "下周三那家新开的东南亚餐厅，平台口碑4.8，通关庆功宴还没请呢"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E140_A24",
+     "subject": "SHARED",
+     "relation": "关系推进",
+     "value": "搭子关系已从密室延伸到非密室饭局",
+     "valid_time": "近期开始",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "最近开始约非密室的饭"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轮，时间钉死（周三晚七点），暧昧不点破但温度给到。",
+   "unknowns": [
+    "餐厅具体位置未报出"
+   ],
+   "protected_expressions": [
+    "周三晚上七点，不见不散"
+   ],
+   "forbidden_factual_claims": [
+    "不虚构餐厅真实店名"
+   ],
+   "case_id": "E140_T12"
+  }
+ }
+}

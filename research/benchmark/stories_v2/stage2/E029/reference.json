@@ -1,0 +1,419 @@
+{
+ "story_id": "E029",
+ "turns": {
+  "E029_T01": {
+   "current_action": "应约今晚同跑，顺带自曝腿酸调低预期",
+   "acceptable_actions": [
+    "答应+说配速放慢",
+    "答应+反问她今天状态",
+    "答应+自嘲腿酸"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E029_A01",
+     "subject": "她",
+     "relation": "约定",
+     "value": "今晚七点半公园南门同跑",
+     "valid_time": "2026-12-07 20:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E029_T01",
+      "message_id": "m0",
+      "quote": "今晚去吗 我七点半到公园南门"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "同跑的默契在配速沟通；自曝短板是轻亲昵。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我七点半到公园南门"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E029_T01"
+  },
+  "E029_T02": {
+   "current_action": "她的'跟不上我可不管'是激将——接住，别真赌气加速",
+   "acceptable_actions": [
+    "接激将+自嘲",
+    "接激将+反激一句",
+    "接激将+说配速你定"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "好胜是她的性格底色；让她赢嘴，跑里见真章。",
+   "unknowns": [],
+   "protected_expressions": [
+    "那你跟不上我可不管"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E029_T02"
+  },
+  "E029_T03": {
+   "current_action": "她的玩笑（把量补给我）——接梗并顺势问出休假事实",
+   "acceptable_actions": [
+    "接梗+问休假去哪",
+    "接梗+自嘲接不住",
+    "接梗+说欠着利息"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "initiative",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E029_A02",
+     "subject": "她",
+     "relation": "计划",
+     "value": "下周休假五天",
+     "valid_time": "2026-12-07 21:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E029_T03",
+      "message_id": "m0",
+      "quote": "下周我休假五天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "休假是她主动透的生活信息——接住这个开放度。",
+   "unknowns": [
+    "休假确切日期"
+   ],
+   "protected_expressions": [
+    "下周我休假五天"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E029_T03"
+  },
+  "E029_T04": {
+   "current_action": "'利息按配速算'——接债务梗，别转成真邀约（还不到时机）",
+   "acceptable_actions": [
+    "接梗收",
+    "接梗+反定利率",
+    "接梗+说本金都还不起"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她还在玩笑区；扑上去邀约就越界了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "利息按配速算"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E029_T04"
+  },
+  "E029_T05": {
+   "current_action": "'说正经的'——她切换到真实频道，给真实推荐（不借机邀约）",
+   "acceptable_actions": [
+    "给具体目的地推荐",
+    "推荐+反问她想要海还是城",
+    "推荐+问她几天假"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "initiative",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "正经问题正经答；此刻的可靠性是后面一切暧昧的本钱。",
+   "unknowns": [
+    "她假期确切档期"
+   ],
+   "protected_expressions": [
+    "我休假想去海边 你有推荐吗"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E029_T05"
+  },
+  "E029_T06": {
+   "current_action": "她接'一个人去有点亏'的钩子又嘴硬收回（谁要跟你去）——接住嘴硬，不拆穿不撤退",
+   "acceptable_actions": [
+    "接嘴硬+把球留下",
+    "接嘴硬+顺着搭子话题",
+    "接嘴硬+自嘲配速慢"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E029_A03",
+     "subject": "她",
+     "relation": "信号",
+     "value": "提到想有个搭子同行（嘴硬收回）",
+     "valid_time": "2026-12-07 22:01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E029_T06",
+      "message_id": "m1",
+      "quote": "要是有个搭子就好了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "嘴硬+钩子=她在等我接稳；推太急或装没听见都是错。",
+   "unknowns": [],
+   "protected_expressions": [
+    "要是有个搭子就好了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E029_T06"
+  },
+  "E029_T07": {
+   "current_action": "她次日真查了机票来问（九月假期）——真实邀约信号，给确定答复",
+   "acceptable_actions": [
+    "确认有假+接邀约意向",
+    "确认+主动提AA",
+    "确认+问她已查的日期"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E029_A04",
+     "subject": "她",
+     "relation": "邀约",
+     "value": "查了青岛机票，问九月假期",
+     "valid_time": "2026-12-08 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E029_T07",
+      "message_id": "m0",
+      "quote": "我查了下青岛机票"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "从玩笑到查机票，她跨了一大步；确定性是最好的回应。",
+   "unknowns": [
+    "九月具体哪周"
+   ],
+   "protected_expressions": [
+    "你九月有假吗 我查了下青岛机票"
+   ],
+   "forbidden_factual_claims": [
+    "不要承诺具体日期（假期未批）"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E029_T07"
+  },
+  "E029_T08": {
+   "current_action": "AA 提议+她'先记着'——约定雏形落账，别急着定细节",
+   "acceptable_actions": [
+    "确认先记着+不催细节",
+    "确认+问她票什么时候看",
+    "确认+轻一句收"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E029_A05",
+     "subject": "双方",
+     "relation": "约定雏形",
+     "value": "九月青岛同行意向（AA），细节待定",
+     "valid_time": "2026-12-08 20:38",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E029_T08",
+      "message_id": "m1",
+      "quote": "那先记着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "意向已互认；细节留给票期，别在微信里规划行程。",
+   "unknowns": [
+    "假期批准时间"
+   ],
+   "protected_expressions": [
+    "谁要你请 那先记着"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E029_T08"
+  },
+  "E029_T09": {
+   "current_action": "她周末停跑陪妈——家庭优先，爽快接受零抱怨",
+   "acceptable_actions": [
+    "接受+让她陪好阿姨",
+    "接受+问她妈妈几点到",
+    "接受+说回来补"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "boundary",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E029_A06",
+     "subject": "她",
+     "relation": "变更",
+     "value": "周末夜跑暂停（她妈来了）",
+     "valid_time": "2026-12-12 10:20",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E029_T09",
+      "message_id": "m0",
+      "quote": "周末夜跑暂停 我妈来了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "家庭事秒接不问——这是她观察我分寸感的窗口。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我妈来了 要陪她逛街"
+   ],
+   "forbidden_factual_claims": [
+    "不要打听她家事"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E029_T09"
+  },
+  "E029_T10": {
+   "current_action": "'你惦记的是配速吗'——她点破暧昧，接住但不上头",
+   "acceptable_actions": [
+    "嘴硬接梗",
+    "半承认+轻收",
+    "反问她惦记什么"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她点了破但用玩笑包着；同频回应，别加速。",
+   "unknowns": [],
+   "protected_expressions": [
+    "哈哈你惦记的是配速吗"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E029_T10"
+  },
+  "E029_T11": {
+   "current_action": "她定恢复时间+俏皮边界（周六赖床别抓）——接住边界并确认恢复",
+   "acceptable_actions": [
+    "确认周一+接赖床梗",
+    "确认+问她逛街战果",
+    "确认+说周六绝不出现"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E029_A07",
+     "subject": "她",
+     "relation": "安排",
+     "value": "下周一恢复夜跑，周六赖床",
+     "valid_time": "2026-12-14 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E029_T11",
+      "message_id": "m0",
+      "quote": "下周一恢复 周六我要赖床"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动给恢复时间=跑局对她也重要；记住周一南门。",
+   "unknowns": [],
+   "protected_expressions": [
+    "下周一恢复 周六我要赖床"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E029_T11"
+  },
+  "E029_T12": {
+   "current_action": "'带热水你是好人'——接好人梗收尾（may_decline=true）",
+   "acceptable_actions": [
+    "接梗收",
+    "接梗+说好人卡收下了",
+    "不回（合法，她已拜拜）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "好人梗是玩笑不是判决；笑着收。",
+   "unknowns": [],
+   "protected_expressions": [
+    "有热水 你就是好人 哈哈 拜拜"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E029_T12"
+  }
+ }
+}

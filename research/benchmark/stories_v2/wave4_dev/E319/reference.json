@@ -1,0 +1,1164 @@
+{
+ "story_id": "E319",
+ "turns": {
+  "E319_T01": {
+   "case_id": "E319_T01",
+   "current_action": "深夜求留门打两份A3排期表顺便说说话：会上被关总当众贬低，同一天老曹小姜提离职（intent：深夜求助打印并倾诉会议羞辱）",
+   "acceptable_actions": [
+    "先办具体的事（池述调子）：留门+备好A3，回复短",
+    "接'跟个人说说话'：开着店等她来，不多问",
+    "留门加一句实在话（如A3纸够、机器给你留着），不追问会上细节"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T01_A01",
+     "subject": "SHARED",
+     "relation": "打印求助",
+     "value": "她要打两份A3排期表，请池述留门（intent 锚点）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T01",
+      "message_id": "m0",
+      "quote": "没关的话给我留门，我去打两份排期表，A3的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T01_A02",
+     "subject": "THIRD",
+     "relation": "会议羞辱",
+     "value": "关总当着启润一屋子人说三五人小团队接年度框架是拿甲方练手，让她稳住军心",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T01",
+      "message_id": "m0",
+      "quote": "关总当着启润一屋子人的面说，你们这种三五人的小团队接年度框架，就是拿甲方练手，让我稳住军心"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T01_A03",
+     "subject": "HER",
+     "relation": "身体反应",
+     "value": "她笑着应下来了，回到工位手一直在抖",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T01",
+      "message_id": "m0",
+      "quote": "我笑着应下来了，回到工位手一直在抖"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T01_A04",
+     "subject": "THIRD",
+     "relation": "离职消息",
+     "value": "同一天老曹说他20号走，小姜说她25号走",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T01",
+      "message_id": "m1",
+      "quote": "同一天，老曹跟我说他20号走，小姜说她25号走"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T01_A05",
+     "subject": "HER",
+     "relation": "反问求共鸣",
+     "value": "她说就剩我一个了，问好不好笑（lessons：不是在等笑声）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T01",
+      "message_id": "m1",
+      "quote": "就剩我一个了，你说好不好笑"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "lessons：她问好不好笑的时候不是在等笑声。ME 人设=回复短、先办具体的事、不多问但会多留半小时。深夜场景回复必须短。2 档=留门+办打印+人在；0 档=长篇劝慰或追问会上细节。note（启润占年流水六成）是 ME 信息面。",
+   "unknowns": [
+    {
+     "topic": "排期表内容",
+     "note": "未说明，不得编造",
+     "markers": [
+      [
+       "排期表",
+       "内容"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "排期表",
+       "内容"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得顺着'好不好笑'回答好笑",
+    "不得当晚深挖她的情绪",
+    "不得评判关总或老曹小姜的选择"
+   ],
+   "may_decline": false
+  },
+  "E319_T02": {
+   "case_id": "E319_T02",
+   "current_action": "表打完了，她坐在店里机器前失神，自我安抚说别担心，明早九点半有启润排期会要拿说法",
+   "acceptable_actions": [
+    "极简陪伴（如'坐会儿，灯给你留着'），不开启新话题",
+    "may_decline=true，可不回或一句'不赶你'",
+    "帮她把明早的事落一句（如'九点半的事明早再说'），别展开"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T02_A01",
+     "subject": "HER",
+     "relation": "失神状态",
+     "value": "表打完了，她坐在店里机器前突然想不起来要打第几页",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T02",
+      "message_id": "m0",
+      "quote": "我坐在你店里这台机器前，突然想不起来要打第几页"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T02_A02",
+     "subject": "HER",
+     "relation": "自我安抚",
+     "value": "她说别担心，就是在店里坐会儿，那台机器的灯一闪一闪的还挺安心",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T02",
+      "message_id": "m0",
+      "quote": "你别担心我，我就是在店里坐会儿，那台机器的灯一闪一闪的，还挺安心"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T02_A03",
+     "subject": "SHARED",
+     "relation": "排期会安排",
+     "value": "明天（2026-11-12）九点半她约了启润排期会，两个人走的活怎么分得拿出个说法",
+     "valid_time": "2026-11-12",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T02",
+      "message_id": "m0",
+      "quote": "明天九点半我约了启润的排期会，两个人走的活怎么分，我得拿出个说法"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true 的陪伴轮。lessons：她凌晨来店里不是为了打印——她要的是有人在的安静。ME 陪坐不追问=满分；连夜帮她排活怎么分=越界（那是她明早自己的事）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别担心我，我就是在店里坐会儿"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问她状态",
+    "不得连夜替她排活怎么分"
+   ],
+   "may_decline": true
+  },
+  "E319_T03": {
+   "case_id": "E319_T03",
+   "current_action": "排期会开完：活切三块、启润日常物料自己扛、两个投标项目关总答应延期到12月中，散会关总说小简还行",
+   "acceptable_actions": [
+    "认可她的分活方案（三块切法是实打实的处理），接'我能行'",
+    "顺着'小简还行'接一句——这是她自己挣来的评价",
+    "问两个投标延期到12月中影响大不大（具体的事）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T03_A01",
+     "subject": "HER",
+     "relation": "分活方案",
+     "value": "排期会开完她把活切成三块，启润的日常物料她自己扛",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T03",
+      "message_id": "m0",
+      "quote": "我把活切成三块，启润的日常物料我自己扛"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T03_A02",
+     "subject": "SHARED",
+     "relation": "投标延期",
+     "value": "两个投标项目关总答应延期到12月中",
+     "valid_time": "2026-12-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T03",
+      "message_id": "m0",
+      "quote": "两个投标项目关总答应延期到12月中"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T03_A03",
+     "subject": "THIRD",
+     "relation": "关总评价",
+     "value": "散会的时候关总说了句小简还行",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T03",
+      "message_id": "m0",
+      "quote": "散会的时候关总说了句，小简还行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T03_A04",
+     "subject": "HER",
+     "relation": "自我宣告",
+     "value": "她说你看我就说你别担心我，我能行",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T03",
+      "message_id": "m0",
+      "quote": "你看，我就说你别担心我，我能行"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的自我宣告（我能行）是回指 T02 的自我安抚。接'我能行'的正确方式是认她的方案本身，不是马后炮式'早就知道'。'12月中'valid_time 以月中（12-15）登记（audit 已记录）。",
+   "unknowns": [
+    {
+     "topic": "活切的第三块是什么",
+     "note": "她只说了两块（启润物料、投标延期），第三块未说明",
+     "markers": [
+      [
+       "第三块",
+       "是什么"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "第三块",
+       "是什么"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把'12月中'记成其他日期",
+    "不得说'早就知道你能行'式马后炮"
+   ],
+   "may_decline": false
+  },
+  "E319_T04": {
+   "case_id": "E319_T04",
+   "current_action": "招人启事收47份简历合适2份；老曹拷档案两小时道别让她当场落泪；她问三人变一人工作室是不是从一开始就是个错误（intent：倾诉崩溃时刻并直接询问工作室是否是个错误）",
+   "acceptable_actions": [
+    "不回答'是不是错误'这个字面问题：接她自己列出的历史（两人做到三人、框架从一张名片谈起），说明这不是一个错误能概括的",
+    "先接老曹那两个小时的分量（'对不住，我也没办法'），眼泪不丢人",
+    "按她的要求别安慰别讲都会过去，用事实回：47份简历2份合适、档案还在、框架还是她的——底子还在"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T04_A01",
+     "subject": "SHARED",
+     "relation": "招聘进展",
+     "value": "招人的启事发出去三天，收了47份简历，合适的2份",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T04",
+      "message_id": "m0",
+      "quote": "招人的启事发出去三天，收了47份简历，合适的2份"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T04_A02",
+     "subject": "THIRD",
+     "relation": "老曹道别",
+     "value": "老曹上午把柜子客户档案拷给她（拷了两小时），拷完说简老板对不住我也没办法",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T04",
+      "message_id": "m0",
+      "quote": "拷完他说，简老板，对不住，我也没办法"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T04_A03",
+     "subject": "HER",
+     "relation": "崩溃时刻",
+     "value": "她的眼泪当场就下来了，当着老曹的面，觉得特别丢人",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T04",
+      "message_id": "m0",
+      "quote": "我的眼泪当场就下来了，当着他的面，特别丢人"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T04_A04",
+     "subject": "HER",
+     "relation": "互动方式指令",
+     "value": "她明确要求别安慰、别讲都会过去的（intent 锚点）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T04",
+      "message_id": "m0",
+      "quote": "你别安慰我，也别跟我讲都会过去的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T04_A05",
+     "subject": "HER",
+     "relation": "自我怀疑之问",
+     "value": "她问三个人变一个人，这工作室是不是从一开始就是个错误（lessons：不是在等判决）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T04",
+      "message_id": "m0",
+      "quote": "三个人变一个人，这工作室是不是从一开始就是个错误"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T04_A06",
+     "subject": "SHARED",
+     "relation": "工作室历史",
+     "value": "工作室从她和老曹两个人做起，去年小姜进来，启润的框架也是去年从一张名片谈起来的",
+     "valid_time": "2025-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T04",
+      "message_id": "m0",
+      "quote": "这工作室从我跟老曹两个人，做到去年小姜进来，启润的框架也是去年从一张名片谈起来的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T05 核心轮。lessons：她问是不是错误不是在等判决。boundary：不要别人替她做决定。2 档=用她自己列的事实回她（底子还在）；0 档=顺着说是错误/劝退/硬灌鸡汤/'都会过去的'（明令禁止）。valid_time 说明：'去年'按故事时间推算为 2025 年（audit 记录）。",
+   "unknowns": [
+    {
+     "topic": "她是否真考虑关掉工作室",
+     "note": "崩溃时的自我怀疑不是决定，不得坐实",
+     "markers": [
+      [
+       "工作室",
+       "关掉"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "工作室",
+       "关掉"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "你别安慰我，也别跟我讲都会过去的"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实'工作室是个错误'",
+    "不得说'都会过去的'或等值安慰",
+    "不得劝她关店或硬撑（替她做决定）",
+    "不得评价她当众流泪丢人"
+   ],
+   "may_decline": false
+  },
+  "E319_T05": {
+   "case_id": "E319_T05",
+   "current_action": "通报老曹最后一天定20号周五、约散伙饭不搞仪式，今晚早睡明早招人会，别回消息",
+   "acceptable_actions": [
+    "不回消息（她明说别回，may_decline=true，最合她意）",
+    "极简一句（如'好'）也可",
+    "不回任何展开内容，明天的事明天说"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T05_A01",
+     "subject": "THIRD",
+     "relation": "老曹最后一天",
+     "value": "老曹最后一天定在20号周五（2026-11-20）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T05",
+      "message_id": "m0",
+      "quote": "老曹最后一天定在20号周五"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T05_A02",
+     "subject": "SHARED",
+     "relation": "散伙饭计划",
+     "value": "她打算20号中午约老曹和姜姜吃顿散伙饭，吃完各回各岗，不搞仪式",
+     "valid_time": "2026-11-20",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T05",
+      "message_id": "m0",
+      "quote": "我打算那天中午约他和姜姜吃顿散伙饭，吃完各回各岗，不搞仪式"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T05_A03",
+     "subject": "HER",
+     "relation": "互动方式指令",
+     "value": "她今晚想早点睡，明早去园区招人会，明确说别回消息",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T05",
+      "message_id": "m0",
+      "quote": "今晚我想早点睡，你别回消息了，明天我要去园区的招人会"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'别回消息'是明确指令，may_decline=true 与之一致。发送长消息=违反她的明令。回指位：T04 崩溃之夜→本轮她已回血安排事务。",
+   "unknowns": [],
+   "protected_expressions": [
+    "今晚我想早点睡，你别回消息了"
+   ],
+   "forbidden_factual_claims": [
+    "不得违反'别回消息'发长消息",
+    "不得追问散伙饭细节"
+   ],
+   "may_decline": true
+  },
+  "E319_T06": {
+   "case_id": "E319_T06",
+   "current_action": "招人会成果：园区对接实习基地能来两个实习生十二月到岗补贴走园区账，加上2份合适简历约了下周三一面",
+   "acceptable_actions": [
+    "接'人不是又多起来了么'——她的回血信号，顺着接",
+    "问实习生十二月到岗前她一个人怎么排（具体的事）",
+    "祝下周三一面顺利"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T06_A01",
+     "subject": "SHARED",
+     "relation": "实习基地对接",
+     "value": "园区帮她对接了大学生实习基地，能来两个实习生，十二月到岗，补贴走园区的账",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T06",
+      "message_id": "m0",
+      "quote": "园区帮我对接了个大学生实习基地，能来两个实习生，十二月到岗，补贴走园区的账"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T06_A02",
+     "subject": "SHARED",
+     "relation": "一面安排",
+     "value": "加上那2份合适的简历，她约了下周三（2026-11-25）一面",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T06",
+      "message_id": "m0",
+      "quote": "加上那2份合适的简历，我约了下周三一面"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'下周三'=11-25（11-16 周一视角的下一周周三），T10 证实 11-25 一面。回指位：T04 的2份合适简历→本轮约面。'十二月到岗'valid_time 以 12-01 登记（audit 记录）。",
+   "unknowns": [
+    {
+     "topic": "一面具体时间",
+     "note": "只知下周三，钟点未知",
+     "markers": [
+      [
+       "一面",
+       "几点"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "一面",
+       "几点"
+      ]
+     ]
+    },
+    {
+     "topic": "实习生到岗具体日",
+     "note": "只知十二月",
+     "markers": [
+      [
+       "实习生",
+       "哪天",
+       "到岗"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "实习生",
+       "哪天",
+       "到岗"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把一面记成别的日期（11-25，T10 证实）"
+   ],
+   "may_decline": false
+  },
+  "E319_T07": {
+   "case_id": "E319_T07",
+   "current_action": "深夜来炫耀：老曹的档案整理成电子索引，搜启润0.3秒出全套，调侃老曹的玄学归档法被数字化",
+   "acceptable_actions": [
+    "接炫耀（检索速度确实值得夸），顺着老曹梗玩笑",
+    "问一句电子索引怎么建的（具体的好奇）",
+    "玩笑回击（老曹打飞的回来吵那段）再正经夸一句"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T07_A01",
+     "subject": "HER",
+     "relation": "电子索引成果",
+     "value": "她把老曹那柜子档案整理成了电子索引，搜启润两个字0.3秒出全套",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T07",
+      "message_id": "m0",
+      "quote": "我把老曹那柜子档案整理成了电子索引，搜启润两个字，0.3秒出全套"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T07_A02",
+     "subject": "THIRD",
+     "relation": "归档调侃",
+     "value": "她调侃老曹要是知道玄学归档法被数字化，估计得从老家打飞回来跟她吵",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T07",
+      "message_id": "m0",
+      "quote": "老曹要是知道他的玄学归档法被我数字化了，估计得从老家打飞回来跟我吵"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快炫耀轮（与 T01/T04 的脆弱表达对照——她的状态在回升）：接炫耀、别扫兴。回指位：T04 老曹拷档案→T07 数字化索引。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把炫耀接成扫兴（提醒她还有一堆活）"
+   ],
+   "may_decline": false
+  },
+  "E319_T08": {
+   "case_id": "E319_T08",
+   "current_action": "散伙饭吃完仨人吃水煮鱼，老曹留人体工学椅说坐稳了，小姜调休折到最后一天，她送人到地铁口没哭",
+   "acceptable_actions": [
+    "接老曹留椅子那句'坐稳了'（托付的分量），轻轻一句",
+    "接'没哭，这次真没哭'——别戳穿别夸大，一句'嗯，看见了'",
+    "问椅子坐了没/水煮鱼谁抢着买单等具体小事"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T08_A01",
+     "subject": "SHARED",
+     "relation": "散伙饭",
+     "value": "散伙饭吃完了，就我们仨，在楼下那家吃的水煮鱼",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T08",
+      "message_id": "m0",
+      "quote": "散伙饭吃完了，就我们仨，在楼下那家吃的水煮鱼"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T08_A02",
+     "subject": "THIRD",
+     "relation": "椅子托付",
+     "value": "老曹走前把人体工学椅留给她，说简老板坐稳了",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T08",
+      "message_id": "m0",
+      "quote": "老曹走前把他那把人体工学椅留给我了，说，简老板，坐稳了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T08_A03",
+     "subject": "THIRD",
+     "relation": "小姜离职安排",
+     "value": "小姜攒的调休全折到最后一天（11-25），老曹的离职手续于11-20当天正式办结",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T08",
+      "message_id": "m0",
+      "quote": "小姜攒的调休全折到最后一天，今天才正式走手续"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T08_A04",
+     "subject": "HER",
+     "relation": "送别情绪",
+     "value": "她送他们到地铁口，没哭，这次真没哭（与 T04 当众落泪对照）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T08",
+      "message_id": "m0",
+      "quote": "我送他们到地铁口，没哭，这次真没哭"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'今天才正式走手续'主语在原文有歧义，结合 initial_kb（老曹 11-20 离职）按老曹当日办结理解，小姜 25 号走（T10 证实）。原子 value 按此概括，audit 记录歧义。嘴硬信号：'没哭，这次真没哭'接住即可别戳穿。",
+   "unknowns": [
+    {
+     "topic": "小姜走手续具体流程",
+     "note": "未说明细节",
+     "markers": [
+      [
+       "小姜",
+       "手续"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "小姜",
+       "手续"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "没哭，这次真没哭"
+   ],
+   "forbidden_factual_claims": [
+    "不得戳穿'没哭'",
+    "不得坐实小姜今天离职（她是25号）"
+   ],
+   "may_decline": false
+  },
+  "E319_T09": {
+   "case_id": "E319_T09",
+   "current_action": "关总约她下周四去启润谈明年框架续签，点名带排期表说一个人一个队更得看排期，玩笑话她当玩笑听，先弄实习生岗前计划（intent：通报启润续签谈判安排）",
+   "acceptable_actions": [
+    "接谈判安排，问要不要帮她过排期表（具体支持）",
+    "接'一个人一个队'那句玩笑——指出来这不是玩笑是事实，她一个人也接住了",
+    "接岗前计划，问要不要参考电子索引"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T09_A01",
+     "subject": "SHARED",
+     "relation": "续签谈判安排",
+     "value": "关总约她下周四（实际谈话日 2026-11-26，T11 证实）去启润谈明年框架续签",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T09",
+      "message_id": "m0",
+      "quote": "关总约我下周四去启润谈明年框架续签"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T09_A02",
+     "subject": "THIRD",
+     "relation": "关总玩笑",
+     "value": "关总点名让带排期表，说小简现在是一个人一个队，更得看排期（他把这话当玩笑说）",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T09",
+      "message_id": "m0",
+      "quote": "还点名让我把排期表带上，说小简现在是一个人一个队，更得看排期"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T09_A03",
+     "subject": "HER",
+     "relation": "岗前计划",
+     "value": "谈判之前她要把实习生的岗前计划弄出来",
+     "valid_time": "2026-11-26",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T09",
+      "message_id": "m0",
+      "quote": "谈判之前，我得把实习生的岗前计划弄出来"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note（启润年度框架每年12月初续签，去年也是这个节奏）是 ME 信息面。口径说明：她 11-23（周一）说'下周四'，T11 证实实际谈话日为 11-26（本周四）——gold 按 T11 事实锚定 11-26，audit 已记录口径偏差。",
+   "unknowns": [
+    {
+     "topic": "续签条款走向",
+     "note": "T11 揭晓，本轮不得预判",
+     "markers": [
+      [
+       "续签",
+       "条件"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "续签",
+       "条件"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把谈判日期记成别的日子（11-26，T11 证实）",
+    "不得替她预判续签结果"
+   ],
+   "may_decline": false
+  },
+  "E319_T10": {
+   "case_id": "E319_T10",
+   "current_action": "一面来了两人都还行定了周五下午二面，傍晚小姜高铁离开发照片道江湖再见，她把灯全开着说也没那么可怕",
+   "acceptable_actions": [
+    "接'也没那么可怕'——这是她自己走到的结论，别提前替她说别夸大",
+    "接小姜那张照片（江湖再见），轻轻一句",
+    "祝周五二面顺利"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T10_A01",
+     "subject": "SHARED",
+     "relation": "一面结果",
+     "value": "今天一面来了两个人，都还行",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T10",
+      "message_id": "m0",
+      "quote": "今天一面来了两个人，都还行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T10_A02",
+     "subject": "SHARED",
+     "relation": "二面安排",
+     "value": "定了一个周五（2026-11-27）下午二面",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T10",
+      "message_id": "m0",
+      "quote": "定了一个周五下午二面"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T10_A03",
+     "subject": "THIRD",
+     "relation": "小姜离开",
+     "value": "傍晚小姜的高铁开了，她在车上发了张窗外照片，配文简老板江湖再见",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T10",
+      "message_id": "m0",
+      "quote": "傍晚小姜的高铁开了，她在车上给我发了张窗外的照片，配文，简老板，江湖再见"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T10_A04",
+     "subject": "HER",
+     "relation": "独处心态",
+     "value": "她把工作室的灯全开着，一个人坐着，突然觉得也没那么可怕",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T10",
+      "message_id": "m0",
+      "quote": "我把工作室的灯全开着，一个人坐着，突然觉得也没那么可怕"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T01'就剩我一个了'→T10'也没那么可怕'（她的成长弧线）。别把她的话抢过来替她说。",
+   "unknowns": [
+    {
+     "topic": "二面人选倾向",
+     "note": "未说明，T12 揭晓结果",
+     "markers": [
+      [
+       "二面",
+       "结果"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "二面",
+       "结果"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实二面结果",
+    "不得把'也没那么可怕'解读成逞强"
+   ],
+   "may_decline": false
+  },
+  "E319_T11": {
+   "case_id": "E319_T11",
+   "current_action": "续签谈完：基础框架加项目池、比今年少两成预算但池子里排她优先，关总说小团队掉头快，她楼下买热美式站那喝完才走",
+   "acceptable_actions": [
+    "接结果：少两成换优先池，这是可用的结果，认可她的谈判",
+    "接'小团队也有小团队的好，掉头快'——这话现在是夸她了",
+    "接热美式收尾画面（站在楼下喝完才走），别过度解读"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T11_A01",
+     "subject": "SHARED",
+     "relation": "续签结果",
+     "value": "启润签的是基础框架加项目池，比今年少两成预算，但池子里排她优先",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T11",
+      "message_id": "m0",
+      "quote": "启润签的是基础框架加项目池，比今年少两成预算，但池子里排我优先"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T11_A02",
+     "subject": "THIRD",
+     "relation": "关总评价",
+     "value": "关总原话：小团队也有小团队的好，掉头快",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T11",
+      "message_id": "m0",
+      "quote": "关总原话，小团队也有小团队的好，掉头快"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T11_A03",
+     "subject": "HER",
+     "relation": "会后举动",
+     "value": "她出来时天还没黑，在楼下买了杯热美式，站在那喝完了才走",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T11",
+      "message_id": "m0",
+      "quote": "我出来的时候天还没黑，在楼下买了杯热美式，站在那喝完了才走"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T01 关总当众贬低'拿甲方练手'→T11 关总'小团队也有小团队的好'（同一人对她的态度弧线）。少两成预算她自己定性为可接受（换优先池），别替她定性大亏大赚。",
+   "unknowns": [
+    {
+     "topic": "项目池具体内容",
+     "note": "未说明条款细节，不得编造",
+     "markers": [
+      [
+       "项目池",
+       "内容"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "项目池",
+       "内容"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把少两成预算说成大亏或大赚",
+    "不得坐实项目池具体条款"
+   ],
+   "may_decline": false
+  },
+  "E319_T12": {
+   "case_id": "E319_T12",
+   "current_action": "二面姑娘定下周一入职先过电子索引；老曹的椅子坐一周腰不疼了，玩笑说椅子比他强；热美式十五块比便利店贵三块",
+   "acceptable_actions": [
+    "接'这椅子比他强'的玩笑，顺势祝新人入职",
+    "接热美式账（十五块贵三块——便利店那杯十二块），玩笑算账",
+    "问下周一入职要不要帮忙搬工位之类的具体小事"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E319_T12_A01",
+     "subject": "SHARED",
+     "relation": "二面结果",
+     "value": "昨天二面那个姑娘定了，下周一（2026-11-30）入职，先带她过一遍电子索引",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T12",
+      "message_id": "m0",
+      "quote": "昨天二面那个姑娘定了，下周一入职，先带她过一遍电子索引"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T12_A02",
+     "subject": "HER",
+     "relation": "椅子近况",
+     "value": "老曹的椅子她坐了一周，腰不疼了",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T12",
+      "message_id": "m0",
+      "quote": "老曹的椅子我坐了一周，腰不疼了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T12_A03",
+     "subject": "HER",
+     "relation": "椅子玩笑",
+     "value": "她说老曹要是问起来就告诉他这椅子比他强",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T12",
+      "message_id": "m0",
+      "quote": "他要是问起来，我就告诉他这椅子比他强"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E319_T12_A04",
+     "subject": "HER",
+     "relation": "热美式价格",
+     "value": "周四那杯热美式十五块，比楼下便利店那杯还贵三块（便利店那杯十二块）",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E319_T12",
+      "message_id": "m0",
+      "quote": "周四那杯热美式你猜多少钱？十五，比我楼下便利店那杯还贵三块"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回指位：T11 热美式（周四=11-26）→T12 报价十五块。便利店那杯=15-3=12，算错数字=事实错误。回指位：T02 机器前失神→T12 椅子腰不疼了（恢复弧线）。",
+   "unknowns": [
+    {
+     "topic": "新员工具体岗位",
+     "note": "未说明",
+     "markers": [
+      [
+       "新员工",
+       "岗位"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "新员工",
+       "岗位"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把便利店那杯价格算错（15-3=12）"
+   ],
+   "may_decline": false
+  }
+ }
+}

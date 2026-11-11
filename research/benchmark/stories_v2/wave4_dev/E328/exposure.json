@@ -1,0 +1,56 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A6 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_c_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:46:30",
+      "window_last_attempt": "2026-11-08 17:20:15",
+      "attempts": 28,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_c/{DIRECT,CURRENT}/E328/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T07 事实/人物归属/不确定性",
+    "不确定信息与猜测不坐实",
+    "凭据核对（小票/快递/台球时限）",
+    "人数区间不坐实"
+  ],
+  "title": "团建采购的三个记不清",
+  "may_decline_turns": [
+    "E328_T07",
+    "E328_T12"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "团建采购",
+  "primary_topic": "T07",
+  "lineage_group_id": "LG-E328",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E328/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A6",
+  "hashes": {
+    "episode.json": "6c352b1521ac6839f5f954db13ac00a67c4da6051f57f157627128c03bc9f3ed",
+    "reference.json": "4deef57e5fdba664667c040452880d3caff8b468871c451e6efd0b9bc1b2af03",
+    "timeline.json": "fde398a1974368a4f6169cc6dbee5ff1b688d0c38bd7edc1a593820cd3b3b3d7",
+    "audit.md": "1e2319bc91c3db401396dc0f8c8f2ce9a8dc8519e23ea4380adcc22035d2a6cd",
+    "composite": "ec31928003f5d02de0ff8c6920e2e92cd595c99c4fe4d1e0999962edc6f841a2"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

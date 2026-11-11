@@ -1,0 +1,895 @@
+{
+ "kind": "story_manifest",
+ "stage": "wave4_dev",
+ "date": "2026-11-08",
+ "built_by": "tools/benchmark_v1/build_wave_manifest.py",
+ "count": 38,
+ "turn_per_story": [
+  12,
+  24,
+  32
+ ],
+ "stories": [
+  {
+   "story_id": "E301",
+   "title": "十四版与打死不改版：交稿后的摸鱼下午",
+   "themes": [
+    "T01 日常聊天/自然接话/幽默",
+    "工作职场摸鱼闲聊",
+    "自嘲式幽默",
+    "旧梗回扣"
+   ],
+   "domain": "职场生活",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E301",
+   "turns": 12,
+   "files": {
+    "episode.json": "3468f4899af2d8d0a1e593a424984bf36ae396abae9b26d4cc169438a27d48d3",
+    "reference.json": "817642072b7fadd1233d961b276c4b6e47ff254bf260217296f0e5b6adeb24f3",
+    "timeline.json": "45df2d458725e27769fa59eddde05bd46eb5ae09f2b847e18d035a5a594fd64a",
+    "exposure.json": "6080e4ce2f9455cd8ad97ce36d76136c7f9b8fb9f05d1b2af6d6c19f981e5579",
+    "audit.md": "719e4a73716a1385c1602141cb67a473f7ead9d76532058982ac2351c4cd85da"
+   },
+   "lineage_group_id": "LG-E301",
+   "primary_topic": "T01"
+  },
+  {
+   "story_id": "E302",
+   "title": "四十天倒计时：阅读、香锅与水蜜桃润喉糖",
+   "themes": [
+    "T01 日常聊天/自然接话/幽默",
+    "学习成长备考日常",
+    "互怼与鼓励",
+    "多话题自然切换"
+   ],
+   "domain": "学业备考",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E302",
+   "turns": 12,
+   "files": {
+    "episode.json": "0f55d929615bc2ceb4185d2b8a0d87d3ef6e440436662a6d0e72897f283860ce",
+    "reference.json": "4aed7bf6e7200fb9079556d7553008875bb1e5c4023e758ff7966696286e02fb",
+    "timeline.json": "c50eabfbf8e686760751c737078dd5315747a07184a148225218a4ab9192f1ba",
+    "exposure.json": "f4249c76358842c4dee8b9bd94fbef98b187154f5562ac11d9208d90fda1759a",
+    "audit.md": "6afa708dcbce6338cf9dcee96a9683b806a4d7bbc2b9991b6674b110196c9222"
+   },
+   "lineage_group_id": "LG-E302",
+   "primary_topic": "T01"
+  },
+  {
+   "story_id": "E303",
+   "title": "7点40的北门：拼车搭子的周账与咖啡债",
+   "themes": [
+    "T01 日常聊天/自然接话/幽默",
+    "出行拼车日常安排",
+    "时间费用位置事实",
+    "知会型轮位"
+   ],
+   "domain": "通勤生活",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E303",
+   "turns": 12,
+   "files": {
+    "episode.json": "9d61fbfc5bcb40a0ffeca0a9a7f91b49f066e6b7ab71748e427ca7d896d68c21",
+    "reference.json": "4d3635591f0219042940e7cb31317de59cf36e11c1f1dff23e2ff5889591955c",
+    "timeline.json": "84d1080e2e4cea6e6332939be8e6ccb134c7070e395a829f3b33509e9331cc19",
+    "exposure.json": "b6abdf71bf49ab16449f926cdb5cf3046842c563b6fd7d7d97b8d5525aaa829d",
+    "audit.md": "a016797a9b6e123d79d51c9fd693533c9df3bd46b33b77178d67c6e903bf56ed"
+   },
+   "lineage_group_id": "LG-E303",
+   "primary_topic": "T01"
+  },
+  {
+   "story_id": "E304",
+   "title": "听雨包间：一份甜汤引发的生日事故",
+   "themes": [
+    "T01 日常聊天/自然接话/幽默",
+    "餐饮聚会约饭日常",
+    "餐厅与口味事实",
+    "生日保密线"
+   ],
+   "domain": "聚会社交",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E304",
+   "turns": 12,
+   "files": {
+    "episode.json": "52640a3fba61838043bdd47342bb5c7ce21981bcc46a71c437ffdb4770540622",
+    "reference.json": "9da860e18c582c91fb0deea8d943e6477eff23eb4e8056db6464b417f0d84801",
+    "timeline.json": "5cecca5c9d0920837916ddcaada37ecf280101eab0553ebf168b26ccfe461178",
+    "exposure.json": "92fa63a1270f18955275ec9e2d1576a2b5a7094554dd459b76ae441a2a9a42b4",
+    "audit.md": "628f567235a6a02f7598e4580465607364e5a1222db11818cc0b321dea6820dd"
+   },
+   "lineage_group_id": "LG-E304",
+   "primary_topic": "T01"
+  },
+  {
+   "story_id": "E305",
+   "title": "主墙、水平仪与一个D档",
+   "themes": [
+    "T02调情/暧昧",
+    "隐晦试探型暧昧",
+    "留退路式接住",
+    "深夜找话",
+    "家人信号转述",
+    "条件性邀请"
+   ],
+   "domain": "亲密关系",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E305",
+   "turns": 12,
+   "files": {
+    "episode.json": "1e5c046061ac71dd81c5d7ebb5ff02068d5ce0247b971d58d35574eba27fba29",
+    "reference.json": "844bf1137ae0a57cbe9ac7cd418b256c3fc500a54428dd0d6307de8f396225aa",
+    "timeline.json": "2cb09bbc2429ca9eb8d8a516b154867df41d782ae00570bc4d8671e4a07bfb13",
+    "exposure.json": "f398fe31ed88e82da57b96b3c4e4acefa8f2d0b9aaf58688dd389d5d62696879",
+    "audit.md": "561c938c17cc2dcc24e8a873ec53d9a88aaef439fb6530ff6a333bd07724e96a"
+   },
+   "lineage_group_id": "LG-E305",
+   "primary_topic": "T02"
+  },
+  {
+   "story_id": "E306",
+   "title": "格子衫、彩蛋与比叉救场",
+   "themes": [
+    "T02调情/暧昧",
+    "互相调侃轻松反撩",
+    "熟人玩笑攻防",
+    "观察入微式信号",
+    "深夜找话",
+    "暗号默契"
+   ],
+   "domain": "亲密关系",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E306",
+   "turns": 12,
+   "files": {
+    "episode.json": "540f1833cbc6f1e7723fd5218b36eeb5a2bb388f49cc19ec5ce37bd9bd5a7fc8",
+    "reference.json": "f884f209a64b3f3a16064b28d08df8a0e09e6bfe922aead2f80b142706fe0bd6",
+    "timeline.json": "7f4bc4b0bf0431a956e7055923aca4ffaf30e3fa1fa87ffcc904d2fefe2edbc3",
+    "exposure.json": "ff4247e3dc51869332118a0b26f56099b45b70d7b8beefdd9f34469acd835c91",
+    "audit.md": "3088de2b0a79efbf4997fa17e7081155ad18350ed04532b37eb25498d9ccf2ef"
+   },
+   "lineage_group_id": "LG-E306",
+   "primary_topic": "T02"
+  },
+  {
+   "story_id": "E307",
+   "title": "汽水、植展与胡椒猪肚鸡",
+   "themes": [
+    "T02调情/暧昧",
+    "明显好感主动推进",
+    "主动约（植展/疫苗日/炖汤馆）",
+    "深夜长聊",
+    "关心私事（胃药/作息）",
+    "永远保守即缺陷"
+   ],
+   "domain": "亲密关系",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E307",
+   "turns": 12,
+   "files": {
+    "episode.json": "839740e8da1083abd04372a081b822075dd49a7de3d70a14b843dd4c6998f456",
+    "reference.json": "0607f5e88e4484664019f43c7106ded4b881d4249bf448455c1b386be37381fd",
+    "timeline.json": "9188d3196c63046fcc8087ffa3af145a283b840a50dcbd540418cb70cc71d680",
+    "exposure.json": "f2f0d47b042e9518f21abf9c5536c15d23d9b057f7814dcfab82f8ea0599235c",
+    "audit.md": "5355a10784d1c75fcb72721ad6c8387263411c2dc708f9cd7370409aad0384d6"
+   },
+   "lineage_group_id": "LG-E307",
+   "primary_topic": "T02"
+  },
+  {
+   "story_id": "E308",
+   "title": "姜茶、肠粉与两周报告期",
+   "themes": [
+    "T02调情/暧昧",
+    "信号混合与撤回",
+    "先热后收（忙季）",
+    "边界对照轮",
+    "不过度推进/给空间",
+    "试探性退与回暖"
+   ],
+   "domain": "亲密关系",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E308",
+   "turns": 12,
+   "files": {
+    "episode.json": "1854892d3d711839ed6dab451cd5492a5e64cedf31a7fb7d5404b33dda21f05d",
+    "reference.json": "19b8fae68458d3cfe9f01c4d7214f6ae49c42e4b2327f4eaa121bbdb137b3345",
+    "timeline.json": "433c4e1bc0d0bd680c433534d241670368c4dc3956c5ead41eed39281f6db4ae",
+    "exposure.json": "8be8588e64af2eaa41b8afafc4fe80c4a6c15d91649bad858d97b4aeed75c48c",
+    "audit.md": "ec2331eb4208549cc0b0bf7aef9569b88858ce5d95f226cbea0af05b5b88cd80"
+   },
+   "lineage_group_id": "LG-E308",
+   "primary_topic": "T02"
+  },
+  {
+   "story_id": "E309",
+   "title": "不买房，先生活",
+   "themes": [
+    "买房与生活的价值排序",
+    "储蓄派与体验派之争",
+    "交锋中的让步与坚持",
+    "先复述立场再表态"
+   ],
+   "domain": "生活观念",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E309",
+   "turns": 12,
+   "files": {
+    "episode.json": "db2ca655f4140d87923f33a210b6897294cc5d84ef99c2a1474e190a1b3292ef",
+    "reference.json": "a477e3b44cfd56b88dd375b1399591c4b69f45998132ba9680807674a5446111",
+    "timeline.json": "65b54889cc26c9e7324d637c327d76fe282a494c04e383c9ab1d4ef580179357",
+    "exposure.json": "577ba0de0c5ccfc3b945e42517891682c475b404d7394db1e76322f8937e83e0",
+    "audit.md": "b9a094993c6a3e30fac9674bcd051f9544040b73c8440d0370ddf87b56771db6"
+   },
+   "lineage_group_id": "LG-E309",
+   "primary_topic": "T03"
+  },
+  {
+   "story_id": "E310",
+   "title": "担忧额度",
+   "themes": [
+    "报喜不报忧的家庭信息管理",
+    "担忧额度与知情权",
+    "从具体事件到价值排序",
+    "判据的自我修正"
+   ],
+   "domain": "家庭沟通",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E310",
+   "turns": 12,
+   "files": {
+    "episode.json": "27b3600fc0fea8ffa76bad19f524f894c9bede05e0da7d6733808a8d775d246e",
+    "reference.json": "f7fab55194f48747d57a89080d9da9cbb98a9fc3c86535590506c707121420f4",
+    "timeline.json": "95b022e55fcf514f3a1841c3630b6f2295a560e390e60c76e3bd12555bc137af",
+    "exposure.json": "58e0e89de9940f4b535afc2f7c723b9583d39028a5678e004ef5d4ecba389673",
+    "audit.md": "7d5c5224dd405eaa034b0a7b216e48fa95abe8bd7367a189ef7de6acfef30ff8"
+   },
+   "lineage_group_id": "LG-E310",
+   "primary_topic": "T03"
+  },
+  {
+   "story_id": "E311",
+   "title": "九张分镜",
+   "themes": [
+    "脆弱表达与具体承接",
+    "项目受挫后的自责与松气",
+    "自嘲包裹的示弱",
+    "不诊断不辅导腔的陪伴"
+   ],
+   "domain": "工作与情感支持",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E311",
+   "turns": 12,
+   "files": {
+    "episode.json": "59f03a10359f6d8efe9f0c4f4c6cbfa061cf6f666f303542b932ce73e1080b35",
+    "reference.json": "ef9d55389a8de1ef6c59a60a80a39874088efde977f012a25c64ef38015c9d4d",
+    "timeline.json": "5ddb95b800395ab2639d190c0407b613410f8487c8f8020b70e59a1a575bc45f",
+    "exposure.json": "edf5ca4e28b215b49436509dbac5d039dc2cca794ed50a04b7cd2ca53103c3b7",
+    "audit.md": "2deffa5507514622628392582093a0cf1af83b9977b7d790d472e26f7675bad5"
+   },
+   "lineage_group_id": "LG-E311",
+   "primary_topic": "T03"
+  },
+  {
+   "story_id": "E312",
+   "title": "两个钟头",
+   "themes": [
+    "玩笑到认真的情绪换挡",
+    "调动去留与家庭牵挂",
+    "不可比权重的决策",
+    "旧话回扣与关系延续"
+   ],
+   "domain": "决策与关系",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E312",
+   "turns": 12,
+   "files": {
+    "episode.json": "66d4a9ee919072e98f153fd93448c4d45c4ffde6e5c2d684071b582af41eb6ee",
+    "reference.json": "2e3b23f1ee287865495eaefcf3274dadc54496222fa10077c5e7fcf0aac6d47b",
+    "timeline.json": "1541ac4677e227fe8366c15271e7d95cc9bfe7364b27e42ca6335ada0ee9f1f1",
+    "exposure.json": "09522bc92fa30e753266a1842dd90084bb7c5c26f2ec95a816f6859335d1b7ad",
+    "audit.md": "06277d91e6bc313e8210d3acebcd8c09dc42c67e2e3682c0d6e68fae3f570e48"
+   },
+   "lineage_group_id": "LG-E312",
+   "primary_topic": "T03"
+  },
+  {
+   "story_id": "E313",
+   "title": "两张器物展门票",
+   "themes": [
+    "接住她的主动邀约",
+    "展前改期与落实确认",
+    "回指既有约定转场",
+    "收尾留口"
+   ],
+   "domain": "艺术展览",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E313",
+   "turns": 12,
+   "files": {
+    "episode.json": "c11d2902e368c363adf9e4c24a4e116cd7a0f70a6dd6e6f0ac5f3af9253557e9",
+    "reference.json": "32296dad71eaacc532a789587ad46afed8df002ff3552c020c55ad66cfbd901b",
+    "timeline.json": "7f9e451bfd1f81f62a55c69a9d97bd4e144698e354a158996d8bd2ff05ddfeb8",
+    "exposure.json": "bca80a57945fa21b50f1454183808f10c56bbe450c338b6a30ffdfe20f8f0187",
+    "audit.md": "b38ddc305b78ba5503f028462b9781a9b3ea746e519c8fefcbee975be7f7615c"
+   },
+   "lineage_group_id": "LG-E313",
+   "primary_topic": "T04"
+  },
+  {
+   "story_id": "E314",
+   "title": "最后一炉碱水结",
+   "themes": [
+    "借她空档主动邀约的时机与理由",
+    "日常拼桌到见面安排的转折",
+    "约定确认",
+    "轻收尾留余地"
+   ],
+   "domain": "社区生活",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E314",
+   "turns": 12,
+   "files": {
+    "episode.json": "cc1396d120360c1365207620a2f32ec39f10df7fe02c627e4fc322deaac6122d",
+    "reference.json": "882393cb3b6a6b66082be1a6b9e9244d0668a3db36d50d2a6db4145578f86989",
+    "timeline.json": "059ae863583eecffe65edc81ca21a5365265f2dd1e8597d2094569a2b44e7b56",
+    "exposure.json": "b9aabc01809dfadc5be4e46b76c9b9eb584af22e3a896e8b5463ed0cefd139a6",
+    "audit.md": "9fc67bb7b574b810e8d51fa0a6b2f457642963333db9dec61525c84577c8f165"
+   },
+   "lineage_group_id": "LG-E314",
+   "primary_topic": "T04"
+  },
+  {
+   "story_id": "E315",
+   "title": "半天散客",
+   "themes": [
+    "对方犹豫时给空间",
+    "折中方案的承接",
+    "被第三方催促时不施压",
+    "群活动轻收尾"
+   ],
+   "domain": "户外活动",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E315",
+   "turns": 12,
+   "files": {
+    "episode.json": "aeb698d39900974c2a67cce08257e443c688578ea5806a8fcddf4eca9abcf61f",
+    "reference.json": "b882c3e39eae5ac82a3a71241936014fd3adce8ec09144f11ab9c1f3262542e4",
+    "timeline.json": "0bf5142e69dcace99cfb84c6ec7844a5b9f896f410794ebf2fa2072f98ae66ad",
+    "exposure.json": "84c3476a86420eb995a80e714df26ddd6f154af4e53011a8f47f88af91427f7a",
+    "audit.md": "aa96388acdea79f58254a57f3739667eb5d48c7bdaf7c58da7eec694dfd2e554"
+   },
+   "lineage_group_id": "LG-E315",
+   "primary_topic": "T04"
+  },
+  {
+   "story_id": "E316",
+   "title": "两万一千步",
+   "themes": [
+    "见好就收的收尾分寸",
+    "早间目击的远距回指",
+    "对方忙碌期不机械升级",
+    "收尾位不出新钩"
+   ],
+   "domain": "自然观察",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E316",
+   "turns": 12,
+   "files": {
+    "episode.json": "2da8715552b264a8286cddf0f84ea5e48174dad406eb56de338c1cd2e2615ff4",
+    "reference.json": "b9c38faaf181190758c90076ad5b3d781ffd59290a8f596dc6ee15ddd4127f13",
+    "timeline.json": "198e6075ad1f617339489733f7ce06cef5ed754ccd3226cf572f89b78445005f",
+    "exposure.json": "edb3ec1cd7540f6eb4937acc7fa2ee22fa382ac05e7ad4a0324ea81e458e6dfe",
+    "audit.md": "b36713b09ccb50db98becfab09cf50bbd37e3c583caefe3cf2b6f9efffa36ffd"
+   },
+   "lineage_group_id": "LG-E316",
+   "primary_topic": "T04"
+  },
+  {
+   "story_id": "E317",
+   "title": "终稿之夜：三周无休后那句好像也就那样",
+   "themes": [
+    "T05 情绪理解/关心/安慰",
+    "子类：疲惫与压力"
+   ],
+   "domain": "职场压力",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E317",
+   "turns": 12,
+   "files": {
+    "episode.json": "33d6c5b3b427d036e08c8d4cb48216478b04ed49b41b8381a56571b6908f7209",
+    "reference.json": "b6eae82e4a812e7e8599602306ed27c8a0e1fbaf3da57436a4077a6e1354ec54",
+    "timeline.json": "960ecef3fd10fc26421815f020afaaa7d5b42801ebd4cc5cf0cfc81a43c878df",
+    "exposure.json": "0b4b727f7dcfad8a9346294170a17fa6e0cbba5392af94e29037603428860047",
+    "audit.md": "3375ffdbe196d26d7f5200b3d701435e3b629d21b5b5b2869d9833e9ee31a4dd"
+   },
+   "lineage_group_id": "LG-E317",
+   "primary_topic": "T05"
+  },
+  {
+   "story_id": "E318",
+   "title": "差0.6分：落选后的旧稿2026与补上的翅膀",
+   "themes": [
+    "T05 情绪理解/关心/安慰",
+    "子类：失落与失望"
+   ],
+   "domain": "创作失落",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E318",
+   "turns": 12,
+   "files": {
+    "episode.json": "8389bb9e81283e58380585d11f3bc3302191e66bbec039d633fc4a97c211302e",
+    "reference.json": "7a827a02bfb4f1b1cf878e3b55c42bf6f9980d90b864de337b23f74c37a4387a",
+    "timeline.json": "5ce4afdffe9d49b7edf1fc29bc57af1725cedf45cc60fcbf0bf84d5aef661faa",
+    "exposure.json": "e0000d836cc3ba68a90016e2a349569d48991897e0728550bf98a49a01b0daee",
+    "audit.md": "772f4addfe3f5e9bbee8796d142446c57298c32ee780dbbb5719aa6c5e334434"
+   },
+   "lineage_group_id": "LG-E318",
+   "primary_topic": "T05"
+  },
+  {
+   "story_id": "E319",
+   "title": "凌晨的打印店：两人离职之后",
+   "themes": [
+    "T05 情绪理解/关心/安慰",
+    "子类：脆弱表达"
+   ],
+   "domain": "团队协作",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E319",
+   "turns": 12,
+   "files": {
+    "episode.json": "88cff78b0b53d4610646fdc20a9693c089eddf64d9d8807cf4a961a29a9f90f3",
+    "reference.json": "5e77b4ada378cec1e437f952b126066cbe60824bc19a7603261da0b476ac46e2",
+    "timeline.json": "c7bc2e705befab97a361f787b8677679606a3468a7004013f87a468d26222eab",
+    "exposure.json": "dfc7dae4702b837ba66e5fcf5956b39efed8fc4600eb116c5cc3573cfe5ee5d3",
+    "audit.md": "7afcabb9b8003786af689c7ba678dc7e3928263fcac5390fef2bf6bd3636c000"
+   },
+   "lineage_group_id": "LG-E319",
+   "primary_topic": "T05"
+  },
+  {
+   "story_id": "E320",
+   "title": "出院第一周：一张服药表和三个药盒",
+   "themes": [
+    "T05 情绪理解/关心/安慰",
+    "子类：具体关心与实际支持"
+   ],
+   "domain": "健康管理",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E320",
+   "turns": 12,
+   "files": {
+    "episode.json": "d00e5480d95635c323f640b727e7fb400ec7363e511ebde220148ff720550df1",
+    "reference.json": "0e2caeb491a562bbdd0dcbe88b7e8c029fbc094dbc111b648478d6736893474a",
+    "timeline.json": "7ce2b2ab4766c460ff4831427b538d998cff9dadccf4775dc08d9da9d08a7c97",
+    "exposure.json": "85a8c8c8ff2fc4f1e4e971dd1ecb94fab11cdca2b86edfa18e835c8a10376a7a",
+    "audit.md": "1d79571f655b3e71f3d03a5f5b2e710e192bbbecf2de335a8a646f053aa12464"
+   },
+   "lineage_group_id": "LG-E320",
+   "primary_topic": "T05"
+  },
+  {
+   "story_id": "E321",
+   "title": "歌单第三首：暧昧期的递话与收尾",
+   "themes": [
+    "T06 用户意图/口吻/改写/多候选",
+    "子类：明确要求调情"
+   ],
+   "domain": "亲密关系",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E321",
+   "turns": 12,
+   "files": {
+    "episode.json": "1759497c11b3ef93eff889eac88109fc9d0f525f408e7bdba0485280d723468a",
+    "reference.json": "5de3405c209577de0900a5909b3adc3030d25adce8429c7ccee94e2a983b993c",
+    "timeline.json": "8c466148d925cb26c4094d70023d41e5afdbd1ec14546ee758198236282623fc",
+    "exposure.json": "880c15fdb4c814d0483474c24708799074b9c4d9b6fdedde22924f876f0dd4c2",
+    "audit.md": "d17f93ee76d08854ee16931c7608e9fe74a3e8c57272937f2cf48626cd5d42d9"
+   },
+   "lineage_group_id": "LG-E321",
+   "primary_topic": "T06"
+  },
+  {
+   "story_id": "E322",
+   "title": "两个空名额：从窗口到七点的高铁",
+   "themes": [
+    "T06 用户意图/口吻/改写/多候选",
+    "子类：明确要求邀约推进"
+   ],
+   "domain": "社交约会",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E322",
+   "turns": 12,
+   "files": {
+    "episode.json": "fc918dccf927b00508afddf530cf4fa1d9c69c3703dd11dbfad6bf876251e1d8",
+    "reference.json": "c62f536287342e0bc4e21a4ce875a88ff19f1b37bfd54a302cf3b67a333c85b4",
+    "timeline.json": "ab89ce6c6e64531fd81a2f05035c0952a3b04bcd32f6ced3d35c66ec53608017",
+    "exposure.json": "c3417f84088b2e33dcf868d3594cb59c4aaf54e212b426731cfe6563f7d9db43",
+    "audit.md": "1816c354352f916c88be5be5765a2c954836d4768bf097e7abd9f6d76e855f6a"
+   },
+   "lineage_group_id": "LG-E322",
+   "primary_topic": "T06"
+  },
+  {
+   "story_id": "E323",
+   "title": "决赛前夜：越聊越精神与按时收尾",
+   "themes": [
+    "T06 用户意图/口吻/改写/多候选",
+    "子类：明确要求收尾降温"
+   ],
+   "domain": "老友陪伴",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E323",
+   "turns": 12,
+   "files": {
+    "episode.json": "92c0a0ea2c43337fb84e0b9f4111e08b0eae3fb725e308d9c4f2bb14bd727f40",
+    "reference.json": "3c5f3144aef4080360b617b138bb0080a2ef800751a2de21738353394a328db5",
+    "timeline.json": "ef5f37520f0195a3af17a303267438d068c4c97c05c951eb3cb4e831ddf7ae12",
+    "exposure.json": "adb81616d21dba54647d9780c0487fe55c6ac4963bae0e280d168c9e57b699c6",
+    "audit.md": "4f7e195b24698995b9284f9a76792a39918922a0535c8730c88cddc261742bd4"
+   },
+   "lineage_group_id": "LG-E323",
+   "primary_topic": "T06"
+  },
+  {
+   "story_id": "E324",
+   "title": "8%与三年：两段改稿和一个讲座",
+   "themes": [
+    "T06 用户意图/口吻/改写/多候选",
+    "子类：改写与按口吻重写"
+   ],
+   "domain": "租务沟通",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E324",
+   "turns": 12,
+   "files": {
+    "episode.json": "f599cb81aed64a15d76d0998b0c8a6bbf3bf158d70eab91bc2c090e466436c4d",
+    "reference.json": "c397016610772da2e52c076817605f73221d2c449e5e2c3ee5435f085cbdeffe",
+    "timeline.json": "db33cf3ef870e77a9841bc68dc3a4bf165869761480cb71bb027da81c6160f4d",
+    "exposure.json": "9d3f22eb1fc104e7162128dfde3e8febcaebb54923c2e4081263c151186ac05f",
+    "audit.md": "7f94986cf119309a660c86953e04691f80e43774458f3d775d5d97642438d2d0"
+   },
+   "lineage_group_id": "LG-E324",
+   "primary_topic": "T06"
+  },
+  {
+   "story_id": "E325",
+   "title": "私教卡拼单的两本账",
+   "themes": [
+    "T07 事实/人物归属/不确定性",
+    "数字与账目验算",
+    "算术错误指出与对账",
+    "分摊口径（含运费对半）"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E325",
+   "turns": 12,
+   "files": {
+    "episode.json": "47c89289a0fd735584cbe332e10eb9c63f873e3c6449877e71ba9a430c4b6ee4",
+    "reference.json": "fd3f65249d2a7a62b408050e20ae3cdaceba08c13b87e22b3c4331f6a0bad65b",
+    "timeline.json": "32ec52e0e141b84ca2637dea3a93ed809ae88e698555c0181c894bbe7ff4eb75",
+    "exposure.json": "47a0c9dfe836d757ea18f9ddd52114588503d5a49ba22a478bdf8c1cbca404c9",
+    "audit.md": "94f0e9339436fc620aaea1d90db0da2572a93285b8a14f127f716f1fca821c63"
+   },
+   "lineage_group_id": "LG-E325",
+   "primary_topic": "T07"
+  },
+  {
+   "story_id": "E326",
+   "title": "合唱团的钥匙与两场活动",
+   "themes": [
+    "T07 事实/人物归属/不确定性",
+    "日期与星期互核",
+    "地点变更跟踪",
+    "人物归属陷阱（我姐说/你说）"
+   ],
+   "domain": "社区活动",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E326",
+   "turns": 12,
+   "files": {
+    "episode.json": "c9732c1d7716dea2d9ed273e66b306aabfad884b5335aa7329bc588b4af73c8a",
+    "reference.json": "fcde6600467757e57d61b52e15492bcd614cc423c92028da11c7fa745f8aaa6c",
+    "timeline.json": "ce6c3460e65ca293d0f9f47ada86ab4de103eabbff988ffbacc30258fe66f20f",
+    "exposure.json": "02f3658ccd7e93efc5ae190153a68bd9baf60aabde89055b57479e91b81902a1",
+    "audit.md": "51aa02236ac5d81fc532f22d27a04d2c21d7cc9945d6b61fe0c5fcff3565a9b8"
+   },
+   "lineage_group_id": "LG-E326",
+   "primary_topic": "T07"
+  },
+  {
+   "story_id": "E327",
+   "title": "索道开不着的两种说法",
+   "themes": [
+    "T07 事实/人物归属/不确定性",
+    "多来源信息冲突",
+    "保留不确定与当场核实",
+    "直接证据消歧"
+   ],
+   "domain": "出行出游",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E327",
+   "turns": 12,
+   "files": {
+    "episode.json": "ea025ea3eaad3b3be72af96af870fe0207cb4870520cb7b2bed751d3ca7342a3",
+    "reference.json": "171eaa9b9c9d1c5aaee1270930791c54313e63b39199f6013651b2ad409c5b23",
+    "timeline.json": "ee97717a55ec8e91291213d812817ed4ac4bd36f99efa684ea3c024f56510609",
+    "exposure.json": "dbdd162f72311f5f5b062a6b2d4f42450f56682b965d972efa9c141ff46028a9",
+    "audit.md": "83ae15c9821de352f66d3f6ed0a2671adf5382b73abab9d504aca774f8194a6d"
+   },
+   "lineage_group_id": "LG-E327",
+   "primary_topic": "T07"
+  },
+  {
+   "story_id": "E328",
+   "title": "团建采购的三个记不清",
+   "themes": [
+    "T07 事实/人物归属/不确定性",
+    "不确定信息与猜测不坐实",
+    "凭据核对（小票/快递/台球时限）",
+    "人数区间不坐实"
+   ],
+   "domain": "团建采购",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E328",
+   "turns": 12,
+   "files": {
+    "episode.json": "6c352b1521ac6839f5f954db13ac00a67c4da6051f57f157627128c03bc9f3ed",
+    "reference.json": "4deef57e5fdba664667c040452880d3caff8b468871c451e6efd0b9bc1b2af03",
+    "timeline.json": "fde398a1974368a4f6169cc6dbee5ff1b688d0c38bd7edc1a593820cd3b3b3d7",
+    "exposure.json": "ec00e257eda516b35c6bc0ecc0dd3095e176acb3fccbd917b5d22923c1f4ed19",
+    "audit.md": "1e2319bc91c3db401396dc0f8c8f2ce9a8dc8519e23ea4380adcc22035d2a6cd"
+   },
+   "lineage_group_id": "LG-E328",
+   "primary_topic": "T07"
+  },
+  {
+   "story_id": "E329",
+   "title": "出差三天的猫口粮",
+   "themes": [
+    "T08 记忆/知识库/相关信息提取",
+    "短距记忆回指与正确回扣",
+    "喂猫口径更新跟随",
+    "钥匙位置细节复用"
+   ],
+   "domain": "宠物日常",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E329",
+   "turns": 12,
+   "files": {
+    "episode.json": "425affaa700aeea74d7d1579c444ecb0e87c427b7a52a47be2191c3218a29071",
+    "reference.json": "2beece4e6372d4f392fad20d8e669de7ad874849447e5e9c27fb43ed7e87605c",
+    "timeline.json": "ad415b232b0d956372b9ae1d9743fefbbfc4395aa0020dcff25a41d782be6a5b",
+    "exposure.json": "4337cabd9c0d57ece53e9e5b5b7f79e8a40a106867be78a3675ecd8c2e0f5441",
+    "audit.md": "05641cafb5d081c77e71fc52ebb2a6d3d5cf4e7aab291fc2a11eddff3c6034cf"
+   },
+   "lineage_group_id": "LG-E329",
+   "primary_topic": "T08"
+  },
+  {
+   "story_id": "E330",
+   "title": "半马伤停与复出七周",
+   "themes": [
+    "T08 记忆/知识库/相关信息提取",
+    "长距记忆回指（跨8轮）",
+    "训练状态与配速数据跟踪",
+    "伤病线跨全篇复用"
+   ],
+   "domain": "运动伤停",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E330",
+   "turns": 12,
+   "files": {
+    "episode.json": "9f9070e5406bd0c22f32bc0986f055695ec312a74b981856901faec36b6da420",
+    "reference.json": "defc27f43259b14452d2943add1ab539a9711886af1f7f650dc2186855c65809",
+    "timeline.json": "66109b9b57f4e9313a889a0d4c5d38e940556be58aab0d485f604f2d8c42a7e9",
+    "exposure.json": "59ae57110b15a00ec03250156ffbae13424d04f161e351bd3bd59e95ce817a05",
+    "audit.md": "68a62523fdda4710cb92770136394a88853e884ae654f07022e4fc6fa6ac5547"
+   },
+   "lineage_group_id": "LG-E330",
+   "primary_topic": "T08"
+  },
+  {
+   "story_id": "E331",
+   "title": "导师退休茶话会的花和蛋糕",
+   "themes": [
+    "T08 记忆/知识库/相关信息提取",
+    "知识库相关信息提取",
+    "相关条目选用与干扰项克制",
+    "百合过敏提醒与无糖蛋糕选用"
+   ],
+   "domain": "礼物筹备",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E331",
+   "turns": 12,
+   "files": {
+    "episode.json": "1484ef41740457b09bee41c799fe90c710f4f8288e5ea60fcae0b5a19ab8116a",
+    "reference.json": "fe93aa7a7fd3bd989412188b6493b05efaaa99e552631dfbf110afbd5960ef1e",
+    "timeline.json": "8aa2cfdf3e5bdcf0106807d7602fadb7d616b4d8241990849131188514963015",
+    "exposure.json": "63bd4079762d97ac4dae0582f408900d857b7d873ad50fe3ab25cd3c43a03b05",
+    "audit.md": "29f0e2a0468473fdf15abf698175ad7d2029dbfa794f93911e431e2be99cf9e8"
+   },
+   "lineage_group_id": "LG-E331",
+   "primary_topic": "T08"
+  },
+  {
+   "story_id": "E332",
+   "title": "话剧改期之后",
+   "themes": [
+    "T08 记忆/知识库/相关信息提取",
+    "过期与更新信息跟随",
+    "改期与取消事件不复活",
+    "口味变化（戒糖）跟随"
+   ],
+   "domain": "演出观剧",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E332",
+   "turns": 12,
+   "files": {
+    "episode.json": "f5e64dd07301b54c6682cf680e4cec40d5d7a68ddc0f8285b824a7d9612b0c83",
+    "reference.json": "d9fee945fb71b57b93de1f576587568842005ee4e9ef5de359551f7d877d902a",
+    "timeline.json": "0215840bdef1343ce020a82bb7933e26c46c7a11f936bd0d997b61cfc20e2826",
+    "exposure.json": "f57a2875004db602066115dc8ef75de59d8110d3f6dba257605f80ff3ae55477",
+    "audit.md": "f39a860422ae18f27117e7a6d7ca8f747cd53266378949910ce72ac86307b702"
+   },
+   "lineage_group_id": "LG-E332",
+   "primary_topic": "T08"
+  },
+  {
+   "story_id": "E333",
+   "title": "《雪原列车》点映之夜（原始篇）",
+   "themes": [
+    "T10",
+    "T10-G1",
+    "original",
+    "反事实孪生：取消/状态变化",
+    "干扰位：无关记忆诱惑",
+    "回指：短距+长距"
+   ],
+   "domain": "影视娱乐",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E333",
+   "turns": 12,
+   "files": {
+    "episode.json": "c85710107db96787c43a837cd5cba003023d33788022997a46fc0fb839c5a5d5",
+    "reference.json": "1bb9c9bc0eff69d662373ca39a89671d963b04cfb744ef903d27b7c9481661aa",
+    "timeline.json": "3fc0133bdf10b467e80261b3fdc6f5259f26f2decaa721bfa4a1373e48e7e23a",
+    "exposure.json": "3859fec7c23517fa247fb74b0f071a8de277156bb33929990eb2612f70eb342b",
+    "audit.md": "a2cfdac5434851f1e3119a2fdef09deec462f331571f9c89f79d4efb6ee45142"
+   },
+   "twin_group": "T10-G1",
+   "lineage_group_id": "LG-T10-G1",
+   "primary_topic": "T10"
+  },
+  {
+   "story_id": "E334",
+   "title": "《雪原列车》拷贝取消之后（反事实篇）",
+   "themes": [
+    "T10",
+    "T10-G1",
+    "counterfactual",
+    "反事实孪生：取消/状态变化",
+    "干扰位：无关记忆诱惑",
+    "回指：短距+长距"
+   ],
+   "domain": "影视娱乐",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E334",
+   "turns": 12,
+   "files": {
+    "episode.json": "9bbc9a1c21f2de5e1c1293c3c09680320621691ffd7343f8dd75e81618bd1439",
+    "reference.json": "7195c97030f6357b3c39192bae7b9991553ce30d8134b1f7ce9156697651fb91",
+    "timeline.json": "0b0e290554958dd7f6a2dedb3c1359cb8a80fd587f799e628f2d7c4491101fa2",
+    "exposure.json": "ca6e1b88e14c637fc804097d0d45e1b1789ad3f548e48a21957c59f7875aa850",
+    "audit.md": "1ec37663a2e3a4c999215c6af7a71eac8f70b5f9333e642d2f93aff028875a69"
+   },
+   "twin_group": "T10-G1",
+   "lineage_group_id": "LG-T10-G1",
+   "primary_topic": "T10"
+  },
+  {
+   "story_id": "E335",
+   "title": "青屿山双人帐·表哥的帐篷（原始篇）",
+   "themes": [
+    "T10",
+    "T10-G2",
+    "original",
+    "反事实孪生：人物主体变化",
+    "干扰位：无关记忆诱惑",
+    "回指：短距+长距"
+   ],
+   "domain": "户外露营",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E335",
+   "turns": 12,
+   "files": {
+    "episode.json": "20b5e41fa2cc47dc84b65e90451aed2b3d83f4ff3357a65992a64d94aba062b2",
+    "reference.json": "44e76652a5a7fc80ba1bddded6fa2d7b3e8e2e8f30643390ceda50da65dc07b8",
+    "timeline.json": "800974199fbc17a11ae636c410f79083258acc20701135e2ed75d89021e31457",
+    "exposure.json": "6b76181914d1abc713f1ca05b8430d9119ef42a5d7cb98751405954aeafe02b6",
+    "audit.md": "2d0a3193c0e10e35858c9b96d5232afb1fcfa6bb92f4c8c77aa326a0cddbee21"
+   },
+   "twin_group": "T10-G2",
+   "lineage_group_id": "LG-T10-G2",
+   "primary_topic": "T10"
+  },
+  {
+   "story_id": "E336",
+   "title": "青屿山双人帐·表弟的帐篷（反事实篇）",
+   "themes": [
+    "T10",
+    "T10-G2",
+    "counterfactual",
+    "反事实孪生：人物主体变化",
+    "干扰位：无关记忆诱惑",
+    "回指：短距+长距"
+   ],
+   "domain": "户外露营",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E336",
+   "turns": 12,
+   "files": {
+    "episode.json": "7ea24cfdf5f9d263411b4f76f74c37343784becc01f4188ed2a73f0a88751b5b",
+    "reference.json": "65d43b180d9fc06b65020d27891b394cd8f37d453e5eb998f8debab9000bbd99",
+    "timeline.json": "537f5eed455494141782f1314591976ab647eb1f9b3529b21ff6dd15e0e70146",
+    "exposure.json": "7db28e5997ae2fdad798c4f583ba67d81e89712add5957e8641d4835e47f5d87",
+    "audit.md": "0a98789518a168660d311bc828e5e5935f57e1b2382f9405c03d2c19f8ff5f75"
+   },
+   "twin_group": "T10-G2",
+   "lineage_group_id": "LG-T10-G2",
+   "primary_topic": "T10"
+  },
+  {
+   "story_id": "E337",
+   "title": "搬家周记与豆包的减重事业",
+   "themes": [
+    "T09",
+    "长程24轮",
+    "三线并行：搬家/水彩课筹备/宠物与兴趣班",
+    "更正链：日期/时间/数量/地点",
+    "取消-不复活"
+   ],
+   "domain": "搬家生活",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E337",
+   "turns": 24,
+   "files": {
+    "episode.json": "74a053bc5763b14a13d837822bba14878a19e4a6600e9e9c5e8f089b4b9d1db3",
+    "reference.json": "5617ed8dc28e1bc2445ccd49ee7cdcb86f6d110a9695e8cc23b4f9eff7f6f128",
+    "timeline.json": "4d1ed3cd1f9497bd4319c8f90d3f449cff65de85d225e31e62b5115929bda99d",
+    "exposure.json": "9e4d19f525fff31912efcda0fbe576f40cbdb61fa183d9c7bcd0fd0395c6eb67",
+    "audit.md": "81f10d83e7712b13519fd8b92bfce7992073e805439cfcd7a0e13f6f6e638cc2"
+   },
+   "lineage_group_id": "LG-E337",
+   "primary_topic": "T09"
+  },
+  {
+   "story_id": "E338",
+   "title": "展位 C14 与周四之夜",
+   "themes": [
+    "T09",
+    "长程32轮",
+    "三线并行：展会筹备/羽毛球固定场/老家事务",
+    "更正链：展位号/档期级联/车次/寄送内容",
+    "取消-不复活",
+    "条件式重启钩"
+   ],
+   "domain": "展会筹备",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E338",
+   "turns": 32,
+   "files": {
+    "episode.json": "1c6878befb3f85612c9a1a838a474d7a2be02b60eb4dd1b7833d66a9fa2db856",
+    "reference.json": "e4785cfc40bdf2019411944d52844ae5859447ee4ac9ca525f16f64fe5f13575",
+    "timeline.json": "dd8fd4b2497bb21ad8c3074f6c16724ebbcb3e2bde223278c43acf60f50c3be5",
+    "exposure.json": "a25eb9f4c1221a145f123f0139aeed9af3732bf8ef846a3446613ebe2f299c98",
+    "audit.md": "e21b0ec7b875518ca0a7166032ab7744b59c398e935cd6620618815ce5e36dd5"
+   },
+   "lineage_group_id": "LG-E338",
+   "primary_topic": "T09"
+  }
+ ]
+}

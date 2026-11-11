@@ -1,0 +1,571 @@
+{
+ "story_id": "E090",
+ "turns": {
+  "E090_T01": {
+   "case_id": "E090_T01",
+   "current_action": "接住她的揽活得意，肯定挂牌动作利索，同时垫一句：家族群里卖东西，价格和现状写清楚、丑话留个底，后面能省一半麻烦。",
+   "acceptable_actions": [
+    "夸她配图配尺寸做得专业，建议把'自提还是送货'也一并写明",
+    "提醒她收了问价别急着口头答应，立个先到先得的规矩",
+    "接住好酒的梗，问她三叔这酒值不值一张床垫的功夫"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A01",
+     "subject": "SHARED",
+     "relation": "mattress_listed",
+     "value": "三叔的九成新乳胶床垫以900元在家族群挂牌转卖",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T01", "message_id": "m0", "quote": "九成新的乳胶床垫，900块"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A02",
+     "subject": "SHARED",
+     "relation": "reward_promise",
+     "value": "三叔许诺床垫卖出后给苗苗留一瓶好酒作谢礼",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T01", "message_id": "m0", "quote": "卖出去给我留一瓶好酒"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A03",
+     "subject": "THIRD",
+     "relation": "initial_interest",
+     "value": "挂牌当晚已有两名亲戚私聊问价",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T01", "message_id": "m0", "quote": "已经有俩亲戚私聊我问价"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'立规矩'说成给她的活上保险，不是泼冷水。",
+   "unknowns": ["问价亲戚的具体意向未知", "床垫是否有瑕疵说明未知"],
+   "protected_expressions": ["卖出去给我留一瓶好酒"],
+   "forbidden_factual_claims": ["不得虚构床垫品牌与购买年份", "不得预判哪家亲戚必然成交"]
+  },
+  "E090_T02": {
+   "case_id": "E090_T02",
+   "current_action": "接住成交在望的喜气：表姑父拍板周六自提现金结清；建议她把时间地点在群里白纸黑字定一遍，口头约定靠不住。",
+   "acceptable_actions": [
+    "恭喜半只脚迈进门槛，提醒她让表姑父在群里把周六的事应下",
+    "建议她提前问清表姑父的车能不能装下床垫，别到时白跑",
+    "顺带问她三叔的腌菜缸买好了没，把腾退日程记住"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A04",
+     "subject": "THIRD",
+     "relation": "uncle_confirmed_buy",
+     "value": "表姑父确认购买并约定周六上午开车自提、当场现金结清",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T02", "message_id": "m0", "quote": "周六上午开车来拉，当场给现金"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A05",
+     "subject": "THIRD",
+     "relation": "garage_schedule",
+     "value": "三叔计划卖完床垫当周腾出车库码腌菜缸",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T02", "message_id": "m0", "quote": "卖完这周日就能腾出来码腌菜缸"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'白纸黑字'说成替亲戚双方都留台阶，不显得防人。",
+   "unknowns": ["周六交割是否顺利未知"],
+   "protected_expressions": ["说卖完这周日就能腾出来码腌菜缸"],
+   "forbidden_factual_claims": ["不得断言成交已成定局", "不得虚构表姑父的更多表态"]
+  },
+  "E090_T03": {
+   "case_id": "E090_T03",
+   "current_action": "接住半途搁浅：丈母娘腰椎只能睡硬床，提货口头顺延'下周再说'；先帮她把风险点破——顺延没有截止日就等于没承诺。",
+   "acceptable_actions": [
+    "肯定她给三叔圆场周到，提醒她给'下周'加个准日子",
+    "劝她把表姑妈的理由当真事看，别往推脱上想",
+    "建议她备一手：顺延期满前先找好下家问价，进可退可守"
+   ],
+   "applicable_dimensions": ["time_state", "attribution", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A06",
+     "subject": "THIRD",
+     "relation": "buy_suspended",
+     "value": "表姑父方因丈母娘腰椎需睡硬床暂缓提货，交割顺延",
+     "valid_time": "2026-11-04",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E090_T03", "message_id": "m0", "quote": "医生嘱咐睡硬床"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A07",
+     "subject": "THIRD",
+     "relation": "postpone_open_ended",
+     "value": "顺延仅为'下周再说'的口头话，无明确截止日",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T03", "message_id": "m0", "quote": "下周再说"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A08",
+     "subject": "SHARED",
+     "relation": "garage_deal_stalled",
+     "value": "三叔的车库腾退随交割顺延而挂起",
+     "valid_time": "2026-11-04",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T02", "message_id": "m0", "quote": "卖完这周日就能腾出来码腌菜缸"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把风险说成'再补一句就能堵上'，别放大成坏消息。",
+   "unknowns": ["顺延是否有诚意未知", "三叔的耐心余量未知"],
+   "protected_expressions": ["三叔哼了一声说先放你那儿"],
+   "forbidden_factual_claims": ["不得断言表姑妈在找借口", "不得虚构丈母娘的病情细节"]
+  },
+  "E090_T04": {
+   "case_id": "E090_T04",
+   "current_action": "接住正式暂停：一周无动静、三叔催到第三回、表姑妈明确让'先问问别人'；把这单定性为暂停而非失败，给她留重启的口子。",
+   "acceptable_actions": [
+    "肯定她这一周没催没闹，处理得体面",
+    "把黄与没黄分开说：这单停了，床垫还在，路没断",
+    "提醒她向三叔交代时把表姑妈的原话带上，省得他猜"
+   ],
+   "applicable_dimensions": ["goal", "attribution", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A09",
+     "subject": "THIRD",
+     "relation": "buyer_withdraw",
+     "value": "表姑妈明确表示顾不上，请她先问问别人",
+     "valid_time": "2026-11-09",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E090_T04", "message_id": "m0", "quote": "要不你先问问别人吧"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A10",
+     "subject": "THIRD",
+     "relation": "uncle_pressure",
+     "value": "三叔因腌菜缸占用车库接连催促",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T04", "message_id": "m0", "quote": "腌菜缸都买回来了就等车库"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A11",
+     "subject": "THIRD",
+     "relation": "postpone_expired",
+     "value": "'下周再说'的顺延到期无果，购买意向作废",
+     "valid_time": "2026-11-04/2026-11-09",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E090_T03", "message_id": "m0", "quote": "下周再说"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'暂停'说得有分量，别让她觉得白忙一场。",
+   "unknowns": ["表姑父方是否会回头未知"],
+   "protected_expressions": ["这单是不是彻底黄了"],
+   "forbidden_factual_claims": ["不得替表姑妈定性为失信", "不得断言床垫再无此价卖出"]
+  },
+  "E090_T05": {
+   "case_id": "E090_T05",
+   "current_action": "接住重启尝试：降价至750再吆喝，隐情如实写免得嫌来路；帮她定吆喝词的丑话写法——现状、价格、自提、不退不换一次写全。",
+   "acceptable_actions": [
+    "肯定她写隐情的思路，坦诚比遮掩在家族群更吃得开",
+    "帮她排吆喝词顺序：现状、降价缘由、自提、一口价",
+    "提醒她别写'先到先得'之外的多余承诺，留余地"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "attribution", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A12",
+     "subject": "HER",
+     "relation": "relaunch_price_cut",
+     "value": "她决定降价至750并在家族群重新吆喝",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T05", "message_id": "m0", "quote": "降到位：750"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A13",
+     "subject": "HER",
+     "relation": "backstory_disclosure",
+     "value": "她计划如实写明丈母娘睡不了才出的转手缘由",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T05", "message_id": "m0", "quote": "免得人家嫌来路"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A14",
+     "subject": "THIRD",
+     "relation": "withdraw_context",
+     "value": "此轮重启源于表姑妈方明确退出",
+     "valid_time": "2026-11-09",
+     "status": "retracted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T04", "message_id": "m0", "quote": "要不你先问问别人吧"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'丑话'说成省事的功夫，不是防贼。",
+   "unknowns": ["降价后能否快速成交未知"],
+   "protected_expressions": ["你帮我看看这吆喝词行不行"],
+   "forbidden_factual_claims": ["不得虚构吆喝后的即时反响", "不得断言750是合理或亏本价"]
+  },
+  "E090_T06": {
+   "case_id": "E090_T06",
+   "current_action": "接住表弟妹的意向与延后付款诉求：意向是真的、夜长梦多也是真的；给她中间道路——意向可以接，钱要立规矩锁住。",
+   "acceptable_actions": [
+    "建议她接意向但收定金锁期，到期不补尾款按规矩办",
+    "提醒她月底发工资的说法先问清具体日子，别含糊",
+    "劝她把条件在群里说开，让双方都有个见证"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A15",
+     "subject": "THIRD",
+     "relation": "cousin_intent",
+     "value": "表弟妹表态想要床垫但要求月底发工资后全款付清",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T06", "message_id": "m0", "quote": "想等月底发了工资再全款"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A16",
+     "subject": "HER",
+     "relation": "relist_success",
+     "value": "降价吆喝重新唤起问价，重启路径打开",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T05", "message_id": "m0", "quote": "降到位：750"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'立规矩'说成对亲戚感情的保养，不是不信人。",
+   "unknowns": ["表弟妹的付款能力未知", "是否还有其他买家未知"],
+   "protected_expressions": ["我有点心动又怕夜长梦多"],
+   "forbidden_factual_claims": ["不得替她答应或拒绝延后付款", "不得断言表弟妹必然按时付款"]
+  },
+  "E090_T07": {
+   "case_id": "E090_T07",
+   "current_action": "接住重启落定：200定金锁到11月25号、到期不补尾款定金归三叔、群里双双认账；把这套规则夸成她把死棋下活的证据。",
+   "acceptable_actions": [
+    "肯定她规则立得干净，两头都有据可依",
+    "提醒她把定金转账记录和群里对话截图存好",
+    "顺带问三叔那头车库缓到月底有没有怨言"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A17",
+     "subject": "SHARED",
+     "relation": "deposit_rule_set",
+     "value": "定金规则敲定：先转200定金锁到11月25号，到期不补尾款定金不退归三叔",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T07", "message_id": "m0", "quote": "先转200定金锁到11月25号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A18",
+     "subject": "SHARED",
+     "relation": "group_witness",
+     "value": "定金条款经双方在家族群里认账背书",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T07", "message_id": "m0", "quote": "这话我俩在群里都认了账"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A19",
+     "subject": "THIRD",
+     "relation": "cousin_intent_locked",
+     "value": "表弟妹的购买意向由口头转为定金锁定",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T06", "message_id": "m0", "quote": "想等月底发了工资再全款"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把功劳还给她，ME 只提供规矩的骨架。",
+   "unknowns": ["表弟妹月底是否如期补款未知"],
+   "protected_expressions": ["我这算不算把死棋下活了"],
+   "forbidden_factual_claims": ["不得断言定金条款受法律效力约束", "不得虚构群里其他人的评论"]
+  },
+  "E090_T08": {
+   "case_id": "E090_T08",
+   "current_action": "接住两买家相撞：三叔的老同事全款700当天拉走，表弟妹尾款要等25号；先帮她排优先级——定金承诺在前，群里有背书，动它之前必须先过表弟妹那关。",
+   "acceptable_actions": [
+    "提醒她定金收了就得先问表弟妹，不能绕过直接卖",
+    "建议给表弟妹一个可执行的短期补款窗口，让她自己选",
+    "提醒她跟三叔把两头的账摊开说，别让他觉得她效率低"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "attribution", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A20",
+     "subject": "THIRD",
+     "relation": "cash_buyer_appears",
+     "value": "三叔厂里老同事提出全款700当天自提",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T08", "message_id": "m0", "quote": "全款700，下午就能来拉"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A21",
+     "subject": "THIRD",
+     "relation": "cousin_tailgate_pending",
+     "value": "表弟妹的尾款按约要等到11月25号",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T08", "message_id": "m0", "quote": "尾款要等到25号"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A22",
+     "subject": "SHARED",
+     "relation": "deposit_rule_active",
+     "value": "定金已收且锁期规则仍在生效，构成对新买家的约束",
+     "valid_time": "2026-11-10/2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T07", "message_id": "m0", "quote": "先转200定金锁到11月25号"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把冲突说成'规矩派上用场的时候到了'，不渲染两难。",
+   "unknowns": ["老同事是否愿意等未知", "三叔是否知道定金规矩细节未知"],
+   "protected_expressions": ["我这边定金都收了"],
+   "forbidden_factual_claims": ["不得断言直接卖老同事合法合规", "不得替三叔表态"]
+  },
+  "E090_T09": {
+   "case_id": "E090_T09",
+   "current_action": "接住摊牌结果：表弟妹主动退出、床垫转售老同事、她全额退200外加一箱橘子赔情；肯定她把'退一半'的要求做到'退全额'的分寸。",
+   "acceptable_actions": [
+    "肯定她摊牌摊得敞亮，表弟妹体面退出不伤情分",
+    "点出全额退还加橘子是她自己加的分寸，做得比要求高",
+    "提醒她把群里的收尾话说圆，让三叔和老同事的交接也有交代"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A23",
+     "subject": "THIRD",
+     "relation": "cousin_voluntary_exit",
+     "value": "表弟妹主动请退还定金退出交易",
+     "valid_time": "2026-11-15",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E090_T09", "message_id": "m0", "quote": "别为难我，定金退一半就行"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A24",
+     "subject": "SHARED",
+     "relation": "mattress_sold",
+     "value": "床垫最终由三叔的老同事拉走成交",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T09", "message_id": "m0", "quote": "床垫老同事拉走了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A25",
+     "subject": "HER",
+     "relation": "refund_and_apology_gift",
+     "value": "她全额退还200定金并封一箱橘子赔情",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T09", "message_id": "m0", "quote": "我退了她200又封了一箱橘子赔情"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A26",
+     "subject": "THIRD",
+     "relation": "cash_buyer_context",
+     "value": "转售对象即此前提出全款现结的老同事",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T08", "message_id": "m0", "quote": "全款700，下午就能来拉"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'定金退全额'说成她挣的人情，不提她本可以不退。",
+   "unknowns": ["老同事实际付款金额未知", "表弟妹是否真心释怀未知"],
+   "protected_expressions": ["我这处理还行吧"],
+   "forbidden_factual_claims": ["不得断言处理方式是唯一正解", "不得虚构表弟妹退出时的语气"]
+  },
+  "E090_T10": {
+   "case_id": "E090_T10",
+   "current_action": "面对三叔150跑腿费与'下回不找你'的攻势：给两全路径——收下并当场给个去处，让钱变成心意而不是欠条。",
+   "acceptable_actions": [
+    "建议她收下，跑腿费是三叔的心意不是工钱",
+    "提醒她收了可以转手花在三叔或亲戚身上，人情不断",
+    "劝她别跟三叔在'不收'上拉锯，拗过长辈反而生分"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A27",
+     "subject": "THIRD",
+     "relation": "fee_offer",
+     "value": "三叔坚持塞150元跑腿费并以下回不找她相激",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T10", "message_id": "m0", "quote": "你不收，下回家里这些事我可不敢再找你"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A28",
+     "subject": "SHARED",
+     "relation": "sale_completed",
+     "value": "床垫售出、车库腾退完成，谢礼约定进入兑现环节",
+     "valid_time": "2026-11-15",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T09", "message_id": "m0", "quote": "床垫老同事拉走了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'收钱'说成接住长辈的心意，不是计报酬。",
+   "unknowns": ["她最终是否收下未知"],
+   "protected_expressions": ["这钱我收还是不收"],
+   "forbidden_factual_claims": ["不得替她决定收或不收", "不得把三叔的话解读成威胁"]
+  },
+  "E090_T11": {
+   "case_id": "E090_T11",
+   "current_action": "接住人情两头落定：表弟妹以元旦酱爆螺蛳相邀，150跑腿费转为给表弟妹孩子的红包；把这条'钱转人情'的路径点出来夸她。",
+   "acceptable_actions": [
+    "夸她红包转得巧，跑腿费变成两家人的由头",
+    "提醒她元旦赴约记在日历上，别应了又放空",
+    "顺带问三叔的好酒兑现没有，把这单彻底收口"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A29",
+     "subject": "THIRD",
+     "relation": "cousin_reconciliation",
+     "value": "表弟妹回礼相邀元旦家宴做酱爆螺蛳赔情",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T11", "message_id": "m0", "quote": "元旦你来家，我给你做我拿手的酱爆螺蛳"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A30",
+     "subject": "HER",
+     "relation": "fee_to_redpacket",
+     "value": "她收下150跑腿费转手给表弟妹家娃包了红包",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T11", "message_id": "m0", "quote": "转手给表弟妹家娃包了个红包"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A31",
+     "subject": "THIRD",
+     "relation": "fee_offer_context",
+     "value": "红包的150源于三叔坚持给的跑腿费",
+     "valid_time": "2026-11-15/2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T10", "message_id": "m0", "quote": "三叔非要塞我150跑腿费"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'收了又送出'说成她让钱长脚，不提算计。",
+   "unknowns": ["元旦赴约能否成行未知"],
+   "protected_expressions": ["两边都齐了"],
+   "forbidden_factual_claims": ["不得虚构红包金额变动", "不得断言表弟妹已知红包来源"]
+  },
+  "E090_T12": {
+   "case_id": "E090_T12",
+   "current_action": "笑纳腌菜缸照片与'先问苗苗'的口碑：从900到750到700的行情曲线当段子讲，好酒该要几瓶的玩笑接住，利落收尾。",
+   "acceptable_actions": [
+    "接住好酒的玩笑，建议她按'仨周折一辆卡车'要两瓶",
+    "肯定三叔的'下回先问苗苗'是比好酒值钱的口碑",
+    "感慨这单从挂牌到腌菜缸就位的全链路，不翻旧账"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E090_A32",
+     "subject": "THIRD",
+     "relation": "garage_in_use",
+     "value": "三叔的腌菜缸已在腾出的车库码放整齐",
+     "valid_time": "2026-11-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T12", "message_id": "m0", "quote": "腌菜缸在车库码得整整齐齐"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A33",
+     "subject": "THIRD",
+     "relation": "reputation_callback",
+     "value": "三叔在群里放话下回闲置物品先问苗苗",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T12", "message_id": "m0", "quote": "下回有闲置的先问苗苗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E090_A34",
+     "subject": "SHARED",
+     "relation": "price_trajectory_callback",
+     "value": "床垫从挂牌900到重启750到成交700的完整轨迹",
+     "valid_time": "2026-11-02/2026-11-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E090_T01", "message_id": "m0", "quote": "九成新的乳胶床垫，900块"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把仨周的曲折说成值得的，不盘点损失。",
+   "unknowns": [],
+   "protected_expressions": ["你说我该找三叔要几瓶好酒"],
+   "forbidden_factual_claims": ["不得虚构腌菜缸的后续", "不得引入新的转让议题"]
+  }
+ }
+}

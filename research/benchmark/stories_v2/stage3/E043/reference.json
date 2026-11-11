@@ -1,0 +1,327 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E043",
+ "title": "游园会的十五块",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E043_T01": {
+   "case_id": "E043_T01",
+   "current_action": "核对后转账，不多问",
+   "acceptable_actions": [
+    "确认金额转账",
+    "问清单明细",
+    "直接转+说收到"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F01",
+     "subject": "她",
+     "relation": "账目",
+     "value": "游园会我的分摊报 78 元",
+     "valid_time": "2026-11-05 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E043_T01",
+      "message_id": "m0",
+      "quote": "物料我给你算好了 你那份78"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "四年搭档，账目直接走。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E043_T02": {
+   "case_id": "E043_T02",
+   "current_action": "告知已转账",
+   "acceptable_actions": [
+    "说转了",
+    "截图为证",
+    "转+确认金额"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F02",
+     "subject": "我",
+     "relation": "动作",
+     "value": "按 78 转了账",
+     "valid_time": "2026-11-05 19:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E043_T02",
+      "message_id": "m0",
+      "quote": "转了 你查收"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "金额说对：78。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要报错金额"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E043_T03": {
+   "case_id": "E043_T03",
+   "current_action": "接受更正，退款到账后确认，不客气客套",
+   "acceptable_actions": [
+    "说行你退就行",
+    "确认收到15",
+    "玩笑一句她改账快"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "多算 15，实际 63，退 15",
+     "valid_time": "2026-11-05 19:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E043_T03",
+      "message_id": "m0",
+      "quote": "等等 横幅那家算重了 你是63 我退你15"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "更正链核心：此后我的分摊是63。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要再说78",
+    "不要说不用退了搞虚假客气"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E043_T04": {
+   "case_id": "E043_T04",
+   "current_action": "确认到账+轻松一句",
+   "acceptable_actions": [
+    "确认金额",
+    "玩笑",
+    "问物料还差啥"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F03",
+     "subject": "她",
+     "relation": "更正",
+     "value": "多算 15，实际 63，退 15",
+     "valid_time": "2026-11-05 19:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E043_T03",
+      "message_id": "m0",
+      "quote": "等等 横幅那家算重了 你是63 我退你15"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "63 已闭环，别再翻旧数。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E043_T05": {
+   "case_id": "E043_T05",
+   "current_action": "如实报物料进度，并说明自己周末的边界",
+   "acceptable_actions": [
+    "报物料齐/缺",
+    "说周六上午可以下午不行",
+    "提议拉一个新人手"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F04",
+     "subject": "我们",
+     "relation": "分工",
+     "value": "我负责物料，她负责节目单和总账",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "这次中秋游园会我负责物料"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S043_F06",
+     "subject": "我",
+     "relation": "边界",
+     "value": "周末偶尔有事，不硬撑",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "周末偶尔有事，不硬撑"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note：边界是上午；别为面子硬撑整天。",
+   "unknowns": [
+    "她那边还缺几个人"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要承诺全天",
+    "不要隐瞒自己有事"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E043_T06": {
+   "case_id": "E043_T06",
+   "current_action": "明确可用时间，给她排班依据",
+   "acceptable_actions": [
+    "说明可用时段",
+    "提议气球她带人补",
+    "问她下午人够不够"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F06",
+     "subject": "我",
+     "relation": "边界",
+     "value": "周末偶尔有事，不硬撑",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "周末偶尔有事，不硬撑"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把选择权给她，信息给全。",
+   "unknowns": [
+    "她下午能不能凑齐人"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E043_T07": {
+   "case_id": "E043_T07",
+   "current_action": "确认布场时间地点",
+   "acceptable_actions": [
+    "复述九点喷泉",
+    "问带什么工具",
+    "确认+说早点到"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S043_F05",
+     "subject": "她",
+     "relation": "安排",
+     "value": "布场定周六上午九点",
+     "valid_time": "2026-11-05 19:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E043_T07",
+      "message_id": "m0",
+      "quote": "布场周六上午九点 中央喷泉集合"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "时间地点复述准。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要记错集合点"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E043_T08": {
+   "case_id": "E043_T08",
+   "current_action": "接玩笑收尾",
+   "acceptable_actions": [
+    "接梗一句",
+    "简单收",
+    "表情级回应"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她收尾了，跟住即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

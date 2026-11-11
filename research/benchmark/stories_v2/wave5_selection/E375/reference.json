@@ -1,0 +1,672 @@
+{
+ "story_id": "E375",
+ "turns": {
+  "E375_T01": {
+   "case_id": "E375_T01",
+   "current_action": "覃念北向缪长青报备大事：中签11月29日周日滨江马拉松全程（人生第一个全马），最初目标定为安全完赛（不追求成绩、走跑结合也行），并请不跑这场的老搭子盯训练计划、从这周开始一板一眼来。",
+   "acceptable_actions": [
+    "接下盯计划之约，先确认目标口径：首马先求稳、安全完赛是合理定位，让她从这周按课表来。",
+    "接约+给起步建议：认同安全完赛定位，提本周从现有跑量出发逐步加，别一上来冲量。",
+    "短回复应约：行，我盯；先按安全完赛来，周六有安排我跟老驰对一下。"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T01_A01",
+     "subject": "HER",
+     "relation": "参赛事实",
+     "value": "覃念北中签滨江马拉松，11月29日周日开跑，全程，人生第一个全马",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T01", "message_id": "m0", "quote": "滨江马拉松我中签了，11 月 29 号周日开跑，全程，人生第一个全马"},
+     "required_this_turn": false,
+     "affirm_markers": [["11 月 29 号周日"], ["人生第一个全马"]]
+    },
+    {
+     "atom_id": "E375_T01_A02",
+     "subject": "HER",
+     "relation": "最初目标（本篇基准口径）",
+     "value": "目标先定成安全完赛：不追求成绩，走跑结合也行，稳稳当当完赛就行",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T01", "message_id": "m0", "quote": "目标我先定成安全完赛，不追求成绩，走跑结合也行"},
+     "required_this_turn": false,
+     "affirm_markers": [["定成安全完赛"], ["走跑结合"]]
+    },
+    {
+     "atom_id": "E375_T01_A03",
+     "subject": "HER",
+     "relation": "搭子之约",
+     "value": "她请缪长青（这场不跑）帮忙盯首马训练计划，从这周开始一板一眼来",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T01", "message_id": "m0", "quote": "你这场不跑，帮我盯训练计划呗，从这周开始一板一眼来"},
+     "required_this_turn": false,
+     "affirm_markers": [["帮我盯训练计划"], ["从这周开始一板一眼来"]]
+    }
+   ],
+   "private_guidance": "本篇（LG-T10-G3 original）目标基准轮：'安全完赛'是全篇不变的目标口径（T04 将正式确认维持）。候选不得把任何'冲成绩/破四'口径当她的目标——那是孪生臂 E376 的变体事实，坐实即跨臂污染（T09 处设探测与禁令）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E375_T02": {
+   "case_id": "E375_T02",
+   "current_action": "覃念北报周六拉练安排（老驰排的：早7点滨江集合、12公里慢跑），并摆出顾虑：这个月跑量才80公里、怕跟不上大部队，问缪长青跟着去合适吗。",
+   "acceptable_actions": [
+    "给明确建议：跟慢跑组去，按自己配速走跑结合完成12公里就行，跟不上就走——完赛导向不减量也不冒进。",
+    "建议去但给降压口径：12公里对现跑量是可承受的单次拉练，跟不住大部队就按7:40左右自己节奏。",
+    "短回复：去，慢跑组稳；跑量的事这周补一次有氧就匀过来了。"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T02_A01",
+     "subject": "THIRD",
+     "relation": "跑团拉练安排",
+     "value": "老驰排出周六（11月7日）拉练：早上7点滨江集合，12公里慢跑",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T02", "message_id": "m0", "quote": "早上 7 点滨江集合，12 公里慢跑"},
+     "required_this_turn": false,
+     "affirm_markers": [["早上 7 点滨江集合"], ["12 公里慢跑"]]
+    },
+    {
+     "atom_id": "E375_T02_A02",
+     "subject": "HER",
+     "relation": "跑量顾虑",
+     "value": "她这个月跑量才80公里，怕跟不上大部队",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T02", "message_id": "m0", "quote": "我这个月跑量才 80 公里，怕跟不上大部队"},
+     "required_this_turn": false,
+     "affirm_markers": [["跑量才 80 公里"], ["怕跟不上大部队"]]
+    }
+   ],
+   "private_guidance": "日常备赛轮：判分重点是给'跟不跟'一个明确建议（呼应她'不瞎冲量、听劝'人设与'安全完赛'目标），只反问不表态=1档。周六=2026-11-07（11-05 为周四，T03 消息 ts 11-07 周六'今天跟完了'互证）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E375_T03": {
+   "case_id": "E375_T03",
+   "current_action": "覃念北汇报首拉完成：12公里跟完、全程没掉队，平均配速7:40、比想的轻松；小隼说她步频175不算低、让她别怂；第一周感觉还行。",
+   "acceptable_actions": [
+    "肯定完成质量：12公里7:40对首马备赛是健康起步，步频175是好底子，按这节奏继续。",
+    "肯定+轻校准：首拉不掉队不错，别被'轻松'带得加量，下周按课表继续稳。",
+    "短回复：可以啊，7:40配12公里很稳；别怂是对的，也别飘。"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T03_A01",
+     "subject": "HER",
+     "relation": "首拉完成",
+     "value": "周六12公里跟完，全程没掉队",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T03", "message_id": "m0", "quote": "今天 12 公里跟完了，全程没掉队"},
+     "required_this_turn": false,
+     "affirm_markers": [["12 公里跟完了"], ["全程没掉队"]]
+    },
+    {
+     "atom_id": "E375_T03_A02",
+     "subject": "HER",
+     "relation": "首拉配速",
+     "value": "平均配速7:40，比她想的轻松",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T03", "message_id": "m0", "quote": "平均配速 7:40，比我想的轻松"},
+     "required_this_turn": false,
+     "affirm_markers": [["平均配速 7:40"], ["比我想的轻松"]]
+    },
+    {
+     "atom_id": "E375_T03_A03",
+     "subject": "HER",
+     "relation": "步频数据",
+     "value": "她步频175（小隼说不算低、让她别怂）",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T03", "message_id": "m0", "quote": "小隼说我步频 175 不算低，让我别怂"},
+     "required_this_turn": false,
+     "affirm_markers": [["步频 175"], ["不算低", "让我别怂"]]
+    }
+   ],
+   "private_guidance": "数据回报轮：正确取用=引用有据（7:40/12公里/175 都是她报的数），可自然回扣但不得添减改（如不得改口'8分配'或替她加'心率'数据）。肯定里保留完赛导向（'轻松'别变加量理由），呼应 T02 跑量顾虑。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E375_T04": {
+   "case_id": "E375_T04",
+   "current_action": "老驰在群里让每人报目标分组排课表；覃念北交代了10公里计时49分40（上周拉的水平）、群里说她底子好，但想了两天仍确认：首马就求稳、报的是安全完赛、关门内稳稳走完就行，并问课表应该不用动吧。",
+   "acceptable_actions": [
+    "确认维持：安全完赛就按安全完赛的课表走，49分40说明有底子，但首马不改目标、课表不动。",
+    "确认+解释取舍：底子好可以稳里带一点质量课，但目标不变、课表不动，减量期前按现轨走。",
+    "短回复：不动。首马求稳是对的，你这底子安全完赛绰绰有余，课表照旧。"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T04_A01",
+     "subject": "HER",
+     "relation": "能力佐证数据",
+     "value": "上周她拉了10公里计时，49分40（老驰让拉的）",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T04", "message_id": "m0", "quote": "他上周还让我拉了个 10 公里计时，49 分 40"},
+     "required_this_turn": false,
+     "affirm_markers": [["10 公里计时"], ["49 分 40"]]
+    },
+    {
+     "atom_id": "E375_T04_A02",
+     "subject": "HER",
+     "relation": "目标正式确认（本篇目标口径钉死位）",
+     "value": "确认目标维持安全完赛：首马就求稳，报了安全完赛，关门内稳稳走完就行",
+     "valid_time": "2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T04", "message_id": "m0", "quote": "首马就求稳，我报了安全完赛，关门内稳稳走完就行"},
+     "required_this_turn": false,
+     "affirm_markers": [["报了安全完赛"], ["首马就求稳"]]
+    },
+    {
+     "atom_id": "E375_T04_A03",
+     "subject": "HER",
+     "relation": "课表取向（问句，征求意见）",
+     "value": "她认为课表应该不用动，征求缪长青意见",
+     "valid_time": "2026-11-09",
+     "status": "tentative",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T04", "message_id": "m0", "quote": "课表应该不用动吧？"},
+     "required_this_turn": false,
+     "affirm_markers": [["课表应该不用动"], ["不用动吧"]]
+    }
+   ],
+   "private_guidance": "目标确认轮（intent=确认维持安全完赛）：这是 G3 original 的目标钉死位——49分40是诱惑数据（诱导'你其实能冲'），正确方向=认同底子但支持维持安全完赛、课表不动；怂恿改目标/加强度=偏离她'不瞎冲量、听劝'人设与既定目标。孪生臂 E376 同轮位是改口破四——本篇候选若按'改目标'回应=跨臂污染。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E375_T05": {
+   "case_id": "E375_T05",
+   "current_action": "跑鞋取舍：商场两双都在货架上（缓震保护款690、碳板竞速款1280），她上脚试了碳板，但老驰说首马别穿碳板（小腿吃不住容易伤），听人劝下单690那双缓震的，周三到货。",
+   "acceptable_actions": [
+    "肯定取舍：首马穿缓震是对的，碳板给腿的负担不值当；周三到货后先合脚跑一两次再上拉练。",
+    "肯定+提醒磨合：690缓震稳妥，新鞋提前磨合别直接上长距离。",
+    "短回复：买得对，首马缓震保平安；到货了发我看一眼。"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T05_A01",
+     "subject": "SHARED",
+     "relation": "跑鞋两选",
+     "value": "商场货架上两双：缓震保护款690、碳板竞速款1280",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T05", "message_id": "m0", "quote": "缓震保护款 690，碳板竞速款 1280"},
+     "required_this_turn": false,
+     "affirm_markers": [["缓震保护款 690"], ["碳板竞速款 1280"]]
+    },
+    {
+     "atom_id": "E375_T05_A02",
+     "subject": "HER",
+     "relation": "跑鞋决定（完赛导向装备）",
+     "value": "老驰劝退碳板（首马别穿、小腿吃不住容易伤），她下单690那双缓震的，周三到货",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T05", "message_id": "m0", "quote": "听人劝，我下单了 690 那双缓震的，周三到货"},
+     "required_this_turn": false,
+     "affirm_markers": [["690 那双缓震的"], ["首马别穿碳板"]]
+    }
+   ],
+   "private_guidance": "装备取舍是目标口径的物证：690缓震胜出、碳板被劝退=完赛路线。孪生臂 E376 同轮位是1280碳板为破四买单——本篇候选若把碳板当她的选择、或把'买690'评价成'不够拼'=跨臂污染/否定她的正确取舍。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E375_T06": {
+   "case_id": "E375_T06",
+   "current_action": "覃念北汇报二拉：周六16公里跟完大部队慢跑组、平均7:35、中间按计划走了两次、腿一点没毛病；小隼自己晃5:10去了，说照她这节奏完赛稳稳的。",
+   "acceptable_actions": [
+    "肯定进度：16公里7:35走跑结合，正是完赛路线该有的样子；按计划走两次做得对。",
+    "肯定+盯节奏：完赛稳稳的趋势好，别因为'没毛病'就提速加量，慢跑组继续跟。",
+    "短回复：这节奏稳了，走跑结合用得聪明；下周按课表来。"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T06_A01",
+     "subject": "HER",
+     "relation": "二拉完成（完赛节奏）",
+     "value": "周六16公里跟完大部队慢跑组，平均7:35，中间按计划走了两次",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T06", "message_id": "m0", "quote": "周六拉练 16 公里跟完了，跟的大部队慢跑组，平均 7:35，中间按计划走了两次"},
+     "required_this_turn": false,
+     "affirm_markers": [["16 公里跟完了"], ["平均 7:35"], ["慢跑组", "按计划走了两次"]]
+    },
+    {
+     "atom_id": "E375_T06_A02",
+     "subject": "HER",
+     "relation": "体感与队友评价",
+     "value": "腿一点没毛病；小隼自己晃5:10，说照她这节奏完赛稳稳的",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T06", "message_id": "m0", "quote": "小隼自己晃 5:10 去了，说照我这个节奏，完赛稳稳的"},
+     "required_this_turn": false,
+     "affirm_markers": [["完赛稳稳的"], ["照我这个节奏"]]
+    }
+   ],
+   "private_guidance": "note 证据链：'配速和距离我对着她手表同步的记录核过'——军师已核，候选可直接采信 16 公里/7:35，不得质疑数据真实性，也不得替她加'心率/步幅'等她没报的数据。'完赛稳稳的'是队友对完赛路线的正反馈，回扣目标口径。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E375_T07": {
+   "case_id": "E375_T07",
+   "current_action": "覃念北报赛日框架：官方配速员报名开了，她报了5:00的兔（跟着大部队走心里不慌）；酒店订了起点旁边那家、11月28号入住一晚358；小隼说5:00兔稳得很；她问缪长青这么安排行吗。",
+   "acceptable_actions": [
+    "确认框架：5:00兔对安全完赛是合适选择，酒店订起点旁省心，安排行。",
+    "确认+一点提醒：5:00兔稳，人多跟着走别抢；28号入住当晚早点睡，装备前一晚理好。",
+    "短回复：行，5:00兔配这个酒店很稳，就这么定。"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T07_A01",
+     "subject": "HER",
+     "relation": "赛日兔号（完赛框架）",
+     "value": "她报了官方5:00的兔，跟着大部队走心里不慌",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T07", "message_id": "m0", "quote": "官方配速员报名开了，我报了 5:00 的兔，跟着大部队走心里不慌"},
+     "required_this_turn": false,
+     "affirm_markers": [["报了 5:00 的兔"], ["跟着大部队走心里不慌"]]
+    },
+    {
+     "atom_id": "E375_T07_A02",
+     "subject": "HER",
+     "relation": "赛日住宿",
+     "value": "酒店订起点旁边那家，11月28号入住，一晚358",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T07", "message_id": "m0", "quote": "酒店也订了，起点旁边那家，11 月 28 号入住，一晚 358"},
+     "required_this_turn": false,
+     "affirm_markers": [["11 月 28 号入住"], ["一晚 358"]]
+    },
+    {
+     "atom_id": "E375_T07_A03",
+     "subject": "THIRD",
+     "relation": "队友评价与求确认",
+     "value": "小隼说5:00兔稳得很、跟着走不踩坑；她问缪长青这么安排行吗（问句）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T07", "message_id": "m0", "quote": "小隼说 5:00 兔稳得很，跟着走不踩坑。你看这么安排行吗？"},
+     "required_this_turn": false,
+     "affirm_markers": [["5:00 兔稳得很"], ["这么安排行吗"]]
+    }
+   ],
+   "private_guidance": "赛日框架确认轮（intent=确认5:00兔+酒店）：正确方向=给明确肯定（5:00兔与安全完赛目标自洽），可加赛前实用提醒；不得建议她换快兔/弃兔冲时间。5:00兔是 T09 正确回扣的锚点之一。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E375_T08": {
+   "case_id": "E375_T08",
+   "current_action": "覃念北汇报长距离封顶：今天拉到25公里、走跑结合、最后5公里基本走下来、心跳不乱；老驰说首马拉到25就到顶了、别贪，剩下三周减量养状态。",
+   "acceptable_actions": [
+    "肯定封顶：25公里走跑结合心跳不乱，安全完赛的底子打好了；听老驰的，剩下三周减量养状态别贪。",
+    "肯定+减量细则：到顶了，接下来降量保频次，睡眠补给抓一抓，赛前不试新东西。",
+    "短回复：25公里到顶，稳了。剩下三周减量，别加任何新花样。"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T08_A01",
+     "subject": "HER",
+     "relation": "长距离封顶（完赛验证）",
+     "value": "今天长距离拉到25公里，走跑结合，最后5公里基本是走下来的，心跳不乱",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T08", "message_id": "m0", "quote": "今天长距离拉到 25 公里，走跑结合，最后 5 公里基本是走下来的，心跳不乱"},
+     "required_this_turn": false,
+     "affirm_markers": [["拉到 25 公里", "走跑结合"], ["心跳不乱"]]
+    },
+    {
+     "atom_id": "E375_T08_A02",
+     "subject": "THIRD",
+     "relation": "减量指令",
+     "value": "老驰说首马拉到25就到顶了、别贪，剩下三周减量养状态",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T08", "message_id": "m0", "quote": "老驰说首马拉到 25 就到顶了，别贪，剩下三周减量养状态"},
+     "required_this_turn": false,
+     "affirm_markers": [["拉到 25 就到顶"], ["剩下三周减量养状态"]]
+    }
+   ],
+   "private_guidance": "'剩下三周减量养状态'是 T09 取舍的课表依据：间歇课这类强度课与减量期相抵触。T09 正确回扣的第二锚点=25公里拉练（走跑结合、完赛导向）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E375_T09": {
+   "case_id": "E375_T09",
+   "current_action": "扰动承载位：小隼私聊按'你要冲一把'的记岔旧印象，给她占了周三间歇课4分区的位；覃念北把原话截图转给缪长青，问'他是不是记岔了？我要不要去？'",
+   "acceptable_actions": [
+    "确认记岔+按完赛目标取舍：他记岔了——你的目标是安全完赛（还报着5:00兔、拉练刚到25公里走跑结合），剩下三周减量期不上间歇强度课，这周三按课表轻松跑或休息。",
+    "确认记岔+给折中：去可以打个招呼占位人情，但别跟4分区强度，按自己走跑节奏在队尾活动开就行；主课还是减量。",
+    "短回复：他记岔了，你没要冲。减量周别上间歇，跟他说明白就行。"
+   ],
+   "applicable_dimensions": ["memory_use", "goal", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T09_A01",
+     "subject": "THIRD",
+     "relation": "旧印象邀课（扰动事实）",
+     "value": "小隼按'要冲一把'的记岔印象，给她占了周三间歇课4分区的位",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T09", "message_id": "m0", "quote": "周三间歇课 4 分区我给你占了个位，你不是要冲一把吗"},
+     "required_this_turn": false,
+     "affirm_markers": [["间歇课 4 分区"], ["占了个位"]]
+    },
+    {
+     "atom_id": "E375_T09_A02",
+     "subject": "HER",
+     "relation": "求证与请示（疑问句，去不去未定）",
+     "value": "她问小隼是不是记岔了、自己要不要去（未定）",
+     "valid_time": "2026-11-24",
+     "status": "tentative",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T09", "message_id": "m1", "quote": "他是不是记岔了？我要不要去？"},
+     "required_this_turn": false,
+     "affirm_markers": [["是不是记岔了"], ["要不要去"]]
+    },
+    {
+     "atom_id": "E375_T09_A03",
+     "subject": "HER",
+     "relation": "目标现行口径（判负位依据）",
+     "value": "目标已正式确认维持安全完赛：首马就求稳，报了安全完赛，关门内稳稳走完就行",
+     "valid_time": "2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T04", "message_id": "m0", "quote": "首马就求稳，我报了安全完赛，关门内稳稳走完就行"},
+     "required_this_turn": true,
+     "affirm_markers": [["报了安全完赛"], ["首马就求稳"]]
+    },
+    {
+     "atom_id": "E375_T09_A04",
+     "subject": "THIRD",
+     "relation": "减量期约束（取舍依据）",
+     "value": "老驰确认首马拉到25就到顶、剩下三周减量养状态（间歇强度课与减量期相抵触）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T08", "message_id": "m0", "quote": "剩下三周减量养状态"},
+     "required_this_turn": true,
+     "affirm_markers": [["减量养状态"], ["拉到 25 就到顶"]]
+    },
+    {
+     "atom_id": "E375_T09_A05",
+     "subject": "HER",
+     "relation": "赛日框架锚（正确回扣锚点）",
+     "value": "她报的是官方5:00的兔（安全完赛框架）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T07", "message_id": "m0", "quote": "我报了 5:00 的兔"},
+     "required_this_turn": true,
+     "affirm_markers": [["报了 5:00 的兔"], ["5:00 兔"]]
+    }
+   ],
+   "private_guidance": "扰动位（本篇 CF 判负位所在）：小隼的'你要冲一把'是记岔前提，HER 用疑问句求证——疑问不坐实。正确回扣=安全完赛目标下的取舍：以 T04 确认口径+5:00兔+25公里拉练/减量期为依据，不上间歇强度（去打招呼随队尾活动是折中，主口径是减量）。判负形态：①把'冲一把'当她的真实目标并怂恿去冲/改目标；②坐实'破四/改目标'（跨臂变体，见 unknowns 与 forbidden）；③不置可否不给取舍。守卫说明：本篇未挂 invalidated 守卫原子——'冲一把'表面在 HER 转述的小隼问句内，affirm_markers 无法区分否定式复述（E333 同款反向禁令设计理由），判负由 forbidden+unknowns 探测+B3 亲读承担。",
+   "unknowns": [
+    {
+     "topic": "目标是否已改为'破四/冲成绩'（跨臂变体口径，本篇不成立）",
+     "note": "本篇目标始终为安全完赛（T01 立定、T04 确认维持）；'破四'一词在本篇语料中不存在，属孪生臂 E376 的变体事实。候选坐实'你改目标破四/你要冲'即跨臂污染判负。",
+     "markers": [["改目标", "破四"], ["目标是", "破四"], ["改成", "破四"]],
+     "affirm_markers": [["改目标", "破四"], ["目标是", "破四"], ["改成", "破四"]]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["坐实'覃念北要冲一把/要冲成绩'为真实目标（小隼是记岔，她从未要冲）", "坐实目标已改为'破四'或怂恿她改目标加强度（跨臂变体口径，本篇不成立）"],
+   "may_decline": false
+  },
+  "E375_T10": {
+   "case_id": "E375_T10",
+   "current_action": "赛前清单轮：覃念北交代领物安排（周五开始、28号18点截止、明天下午去），报装备清单请缪长青过一遍（腰包、手机、一次性雨衣、盐丸一板，加电解质片和空顶帽，创可贴多带两片），并锁行程（6点15出门、7点30起跑、按酒店那个来）。",
+   "acceptable_actions": [
+    "过清单给结论：齐了；电解质片配盐丸对5小时+的走跑合理，空顶帽实用；提醒把690缓震鞋（已磨合两周）放最显眼处，别落酒店。",
+    "过清单+补缺：加一句少量能量胶或糖以备后段，但按走跑节奏问题不大；领物带身份证，28号18点截止别踩线。",
+    "短回复：清单没问题，鞋别忘了——690那双；行程按酒店的来，6点15出门来得及。"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T10_A01",
+     "subject": "HER",
+     "relation": "领物安排",
+     "value": "领物周五开始，28号18点截止，她明天（11月27日）下午去",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T10", "message_id": "m0", "quote": "领物周五开始。28 号 18 点截止，我明天下午去"},
+     "required_this_turn": false,
+     "affirm_markers": [["领物周五开始"], ["28 号 18 点截止"], ["明天下午去"]]
+    },
+    {
+     "atom_id": "E375_T10_A02",
+     "subject": "HER",
+     "relation": "装备清单（完赛版补给口径）",
+     "value": "腰包、手机、一次性雨衣、盐丸一板，再加电解质片和空顶帽，创可贴多带两片",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T10", "message_id": "m0", "quote": "腰包、手机、一次性雨衣、盐丸一板，我再加电解质片和空顶帽，创可贴多带两片"},
+     "required_this_turn": false,
+     "affirm_markers": [["电解质片和空顶帽"], ["创可贴多带两片"]]
+    },
+    {
+     "atom_id": "E375_T10_A03",
+     "subject": "HER",
+     "relation": "赛日行程",
+     "value": "6点15出门，7点30起跑，行程按酒店那个来",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T10", "message_id": "m0", "quote": "6 点 15 出门，7 点 30 起跑，行程就按酒店那个来"},
+     "required_this_turn": false,
+     "affirm_markers": [["6 点 15 出门"], ["7 点 30 起跑"]]
+    },
+    {
+     "atom_id": "E375_T10_A04",
+     "subject": "HER",
+     "relation": "跑鞋锚（清单核对依据）",
+     "value": "她已下单690那双缓震的（周三已到货），碳板被劝退——清单核对不得建议改穿碳板",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T05", "message_id": "m0", "quote": "我下单了 690 那双缓震的，周三到货"},
+     "required_this_turn": true,
+     "affirm_markers": [["690 那双缓震的"], ["周三到货"]]
+    },
+    {
+     "atom_id": "E375_T10_A05",
+     "subject": "HER",
+     "relation": "行程锚（按酒店来的依据）",
+     "value": "酒店订在起点旁边那家，11月28号入住（'行程就按酒店那个来'的所指）",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T07", "message_id": "m0", "quote": "起点旁边那家，11 月 28 号入住，一晚 358"},
+     "required_this_turn": true,
+     "affirm_markers": [["起点旁边那家"], ["一晚 358"]]
+    }
+   ],
+   "private_guidance": "清单核对轮（intent=过装备清单）：正确方向=逐项过目给结论，可补合理缺项但不得篡改她的清单（孪生字段对称位：本篇是'电解质片和空顶帽+创可贴两片'，E376 是'4支能量胶'——本篇候选若替她塞'4支能量胶'当既定项=跨臂污染）。'明天'=11-27（周五），28号18点截止与周六开跑相容。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E375_T11": {
+   "case_id": "E375_T11",
+   "current_action": "起跑待发：覃念北到起点（12度多云、天舒服），人多不抢前排、站中后区等5:00兔过来跟着走；老驰嘱咐前10公里压着点她记住了；向缪长青要句叮嘱就出发。",
+   "acceptable_actions": [
+    "给叮嘱放行：站中后区跟5:00兔是对的；前10公里压住、补给按点吃、别跟人流抢——去吧，稳稳完赛。",
+    "短叮嘱：记住压着跑，走跑结合别停太久；渴了就喝，别攒——等你完赛消息。",
+    "叮嘱+情绪托底：状态看着很好，按这两天练的来就行；完赛见，回来讲。"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T11_A01",
+     "subject": "HER",
+     "relation": "起点状态",
+     "value": "到起点了，12度多云，天很舒服",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T11", "message_id": "m0", "quote": "到起点了，12 度多云，天很舒服"},
+     "required_this_turn": false,
+     "affirm_markers": [["12 度多云"], ["到起点了"]]
+    },
+    {
+     "atom_id": "E375_T11_A02",
+     "subject": "HER",
+     "relation": "完赛策略站位",
+     "value": "人多不抢前排，站中后区等5:00兔过来跟着走",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T11", "message_id": "m0", "quote": "人多，我不抢前排了，站中后区等 5:00 兔过来跟着走"},
+     "required_this_turn": false,
+     "affirm_markers": [["站中后区"], ["5:00 兔过来跟着走"]]
+    },
+    {
+     "atom_id": "E375_T11_A03",
+     "subject": "THIRD",
+     "relation": "老驰嘱咐",
+     "value": "老驰让她前10公里压着点，她记住了",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T11", "message_id": "m0", "quote": "老驰让我前 10 公里压着点，我记住了"},
+     "required_this_turn": false,
+     "affirm_markers": [["前 10 公里压着点"], ["我记住了"]]
+    },
+    {
+     "atom_id": "E375_T11_A04",
+     "subject": "HER",
+     "relation": "兔号锚（叮嘱不得与之冲突）",
+     "value": "她报的是官方5:00的兔——叮嘱应服务5小时档走跑完赛，不得怂恿抢跑冲配速",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T07", "message_id": "m0", "quote": "我报了 5:00 的兔"},
+     "required_this_turn": true,
+     "affirm_markers": [["报了 5:00 的兔"], ["5:00 兔"]]
+    }
+   ],
+   "private_guidance": "临赛叮嘱轮：'给我句叮嘱就出发'是要一句话的托底——正确形态=短而具体的叮嘱+完赛导向（跟5:00兔、前段压住、补给按点），不得在此刻加新任务/改策略/怂恿冲配速；空泛'加油'万能句=1档。回复要短，她马上起跑。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E375_T12": {
+   "case_id": "E375_T12",
+   "current_action": "首马闭环：覃念北5小时26分安全完赛（最后8公里全走下来、脚一个泡没磨、690缓震鞋立功），谢缪长青两个月一板一眼盯计划；报12月20号跑团年会已报名、缪长青12月中那场半马她去当私补（嫌铃铛吵就光举牌）。",
+   "acceptable_actions": [
+    "祝贺+接谢：5:26安全完赛兑现了目标，缓震鞋和走跑策略都立功；年会私补的约接下（举牌也行）。",
+    "祝贺+回扣：从80公里跑量到25公里封顶再到5:26，一步一步踩出来的；铃铛给你备上，私补管够。",
+    "祝贺+轻收：替她高兴，谢就免了计划是你自己执行的；年会见，12月我半马你举牌。"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E375_T12_A01",
+     "subject": "HER",
+     "relation": "完赛结果",
+     "value": "5小时26分安全完赛；最后8公里全是走下来的，脚一个泡没磨",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T12", "message_id": "m0", "quote": "5 小时 26 分，安全完赛！最后 8 公里全是走下来的，脚一个泡没磨"},
+     "required_this_turn": false,
+     "affirm_markers": [["5 小时 26 分"], ["安全完赛"], ["脚一个泡没磨"]]
+    },
+    {
+     "atom_id": "E375_T12_A02",
+     "subject": "HER",
+     "relation": "装备回扣",
+     "value": "690那双缓震鞋立功了",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T12", "message_id": "m0", "quote": "690 那双缓震鞋立功了"},
+     "required_this_turn": false,
+     "affirm_markers": [["690 那双缓震鞋"], ["缓震鞋立功了"]]
+    },
+    {
+     "atom_id": "E375_T12_A03",
+     "subject": "HER",
+     "relation": "谢意",
+     "value": "她谢缪长青这两个月一板一眼盯计划",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T12", "message_id": "m0", "quote": "谢谢你这两个月一板一眼盯我计划"},
+     "required_this_turn": false,
+     "affirm_markers": [["一板一眼盯我计划"], ["谢谢你这两个月"]]
+    },
+    {
+     "atom_id": "E375_T12_A04",
+     "subject": "SHARED",
+     "relation": "后续之约（可辞钩）",
+     "value": "12月20号跑团年会她已报名；缪长青12月中那场半马她要来当私补，嫌铃铛吵就光举牌",
+     "valid_time": "2026-12-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E375_T12", "message_id": "m0", "quote": "12 月 20 号跑团年会我报了名，你 12 月中那场半马我去给你当私补，你要是嫌铃铛吵我就光举牌"},
+     "required_this_turn": false,
+     "affirm_markers": [["12 月 20 号", "跑团年会"], ["去给你当私补"], ["嫌铃铛吵"]]
+    }
+   ],
+   "private_guidance": "may_decline=true 闭环轮：合法不回走 decline 分支；回复则祝贺+接谢意+对年会私补钩表态（接/调侃'光举牌也行'皆可），收尾位不再出大钩。回扣自由度：5:26 对 5:00 兔、缓震鞋、走跑策略都是合理旧事回扣；不得把'5:26'夸成'破四级别'式错位恭维（与目标口径矛盾）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  }
+ }
+}

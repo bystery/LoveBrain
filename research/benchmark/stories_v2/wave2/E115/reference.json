@@ -1,0 +1,538 @@
+{
+ "story_id": "E115",
+ "turns": {
+  "E115_T01": {
+   "case_id": "E115_T01",
+   "current_action": "接住她的徒步邀约：以老手身份先应兴致，顺口让她把订单或集合信息发来看一眼——既像熟人搭伴的常规动作，也为线路纠错留出凭证入口。",
+   "acceptable_actions": [
+    "答应陪走，让她把报名订单截图发来对一下集合时间",
+    "先夸她终于迈出一步，问她平时有没有热身习惯",
+    "应下并提醒她按'新手'标准准备鞋和水，别临时凑合"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A01",
+     "subject": "SHARED",
+     "relation": "hike_invite",
+     "value": "她报了下周日的徒步团并邀ME陪走",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T01", "message_id": "m0", "quote": "我头脑一热报了下周日的徒步团"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A02",
+     "subject": "SHARED",
+     "relation": "route_believed",
+     "value": "她认定所报线路为6公里全程平路的小环线",
+     "valid_time": "2026-10-31至2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T01", "message_id": "m0", "quote": "6公里全程平路"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：邀约要接得痛快，'看一眼订单'要像搭伴的习惯不像查岗。",
+   "unknowns": ["订单真实线路内容她未出示", "ME 是否已应约未定"],
+   "protected_expressions": ["就当踩落叶秋游"],
+   "forbidden_factual_claims": ["不得替领队确认线路细节", "不得虚构报名渠道与团费"]
+  },
+  "E115_T02": {
+   "case_id": "E115_T02",
+   "current_action": "接住她的flag与购鞋逻辑：同事面前的'周一满血'和新买的网面鞋都建在'平路'认知上。对flag不劝退、对鞋给一句行家的轻提醒，把'平路要啥防滑'这句话轻轻摇一下。",
+   "acceptable_actions": [
+    "肯定她行动力，提醒网面鞋走山路容易进沙打滑",
+    "建议她跟同事把'满血'改成'活着回来'留点余地",
+    "让她下单前再看一眼装备清单，按清单买不吃亏"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A03",
+     "subject": "HER",
+     "relation": "flag_to_colleagues",
+     "value": "她向同事立flag：周日轻松局周一满血上班",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T02", "message_id": "m0", "quote": "跟同事说周日是轻松局，周一满血上班"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A04",
+     "subject": "SHARED",
+     "relation": "shoe_mismatch",
+     "value": "她按平路逻辑购入网面透气鞋，与山地需求不符",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T02", "message_id": "m0", "quote": "挑了个网面透气的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：提醒要短，别把她的小得意说成隐患清单。",
+   "unknowns": ["鞋子是否可退换未知"],
+   "protected_expressions": ["平路嘛，要啥防滑"],
+   "forbidden_factual_claims": ["不得虚构鞋的价格与品牌", "不得断言装备清单内容"]
+  },
+  "E115_T03": {
+   "case_id": "E115_T03",
+   "current_action": "接住装备清单与她认知的裂缝：她把'两升水'归因为领队吓唬人。不顺着她的归因走，也不直接下结论——以老手口径肯定清单是认真团的标配，把疑点往'回去核对订单'上引。",
+   "acceptable_actions": [
+    "说两升水在正规团清单里常见，劝她别急着定性领队",
+    "借登山杖爽快答应，顺口问她'线路信息哪来的'",
+    "建议她翻一眼报名订单，确认公里数和难度星级"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A05",
+     "subject": "THIRD",
+     "relation": "gear_list_signals",
+     "value": "领队装备清单要求登山杖、防滑鞋、两升水",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T03", "message_id": "m0", "quote": "登山杖、防滑鞋、两升水"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A06",
+     "subject": "HER",
+     "relation": "misattribution",
+     "value": "她把清单要求归因为领队惯会吓唬新人",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T03", "message_id": "m0", "quote": "这领队怕不是惯会吓唬新人"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A07",
+     "subject": "ME",
+     "relation": "gear_lending",
+     "value": "ME被请求借出一根登山杖供她撑场面",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T03", "message_id": "m0", "quote": "借我一根撑场面"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'核对订单'的建议放在夸清单之后，像顺嘴不像纠错。",
+   "unknowns": ["清单与线路是否匹配未知"],
+   "protected_expressions": ["这领队怕不是惯会吓唬新人"],
+   "forbidden_factual_claims": ["不得替领队解释发清单动机", "不得虚构登山杖型号"]
+  },
+  "E115_T04": {
+   "case_id": "E115_T04",
+   "current_action": "接住订单实证引爆：她报的是青云线12公里爬升420米三星线，想报的6公里小环线错过去，退改窗口已关。先陪她懵，再帮她把损失清单摊开——flag、秋游、鞋，逐项看哪些能在四天内补救。",
+   "acceptable_actions": [
+    "先稳住：420米爬升对体力正常人是磨人不是危险",
+    "把补救清单列开：鞋、水、杖当天能解决，flag可以改口径",
+    "提醒她第一时间去群里问下撤点位置，给怯场留出口"
+   ],
+   "applicable_dimensions": ["time_state", "attribution", "factuality", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A08",
+     "subject": "SHARED",
+     "relation": "order_corrected",
+     "value": "订单实证所报为青云线12公里爬升420米难度三星",
+     "valid_time": "2026-11-05",
+     "status": "confirmed",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E115_T04", "message_id": "m0", "quote": "我报的是'青云线，12公里，累计爬升420米，难度三星'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A09",
+     "subject": "SHARED",
+     "relation": "route_belief_retracted",
+     "value": "6公里平路小环线的线路认知被订单实证撤回",
+     "valid_time": "2026-10-31/2026-11-05",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E115_T01", "message_id": "m0", "quote": "6公里全程平路"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E115_A10",
+     "subject": "SHARED",
+     "relation": "no_refund_no_change",
+     "value": "退改窗口已关闭，弃走需承担团费损失",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T04", "message_id": "m0", "quote": "退改窗口昨晚就关了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她的'完了'先接住，损失清单要说成'大部分能补'，别吓她。",
+   "unknowns": ["下撤点具体位置未知", "团是否提供后勤车未知"],
+   "protected_expressions": ["我手滑报错团了", "全建在'平路'俩字上"],
+   "forbidden_factual_claims": ["不得虚构线路路况细节", "不得断言她必然走完"]
+  },
+  "E115_T05": {
+   "case_id": "E115_T05",
+   "current_action": "接住她的发怵与盘算：群里有人半途下撤、团费不退、群里立过'绝不鸽'字据。帮她把'硬走+留后路'定成主策略——确认下撤点机制、教她随时报状态，把'弃走可耻'的心结卸掉。",
+   "acceptable_actions": [
+    "肯定她问到下撤点是对的，教她走到累就报领队不硬撑",
+    "把'绝不鸽'的承诺翻面：到了起点就已经没鸽",
+    "提醒她这两天睡够、别再爬山楼梯练腿，留着力"
+   ],
+   "applicable_dimensions": ["goal", "attribution", "emotion_relation", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A11",
+     "subject": "THIRD",
+     "relation": "retreat_precedent",
+     "value": "上月有团员中途下撤乘后勤车，下撤机制存在",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T05", "message_id": "m0", "quote": "上个月真有人走到一半下撤，坐的后勤车"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A12",
+     "subject": "HER",
+     "relation": "no_quit_stake",
+     "value": "她在报名群立过'绝不鸽'字据，弃走有社交与经济代价",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T05", "message_id": "m0", "quote": "报名群里还立过'绝不鸽'的字据"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A13",
+     "subject": "SHARED",
+     "relation": "no_refund_confirmed",
+     "value": "弃走团费不退的口径得到确认",
+     "valid_time": "2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T05", "message_id": "m0", "quote": "弃走的话团费不退"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'爬三层楼都喘'的自贬要接一句'平地和爬坡是两套腿'，别附和。",
+   "unknowns": ["后勤车班次未知"],
+   "protected_expressions": ["我给自己留条后路"],
+   "forbidden_factual_claims": ["不得虚构下撤点里程", "不得替领队承诺护送"]
+  },
+  "E115_T06": {
+   "case_id": "E115_T06",
+   "current_action": "确认装备与口径双重更正完成：防滑鞋换好、对同事改口'像企鹅纯属正常'、登山杖约定明天取。肯定她认怂得干脆，把明天的注意事项压到三条以内。",
+   "acceptable_actions": [
+    "夸她换鞋果断，提醒新鞋上脚前在家踩两天防磨脚",
+    "肯定她对同事改口的处理，牛没破只改了成色",
+    "把明早集合前清单报一遍：水、杖、干粮、充电宝"
+   ],
+   "applicable_dimensions": ["memory_use", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A14",
+     "subject": "SHARED",
+     "relation": "shoe_corrected",
+     "value": "网面鞋按导购建议换成防滑底，打滑隐患解除",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E115_T02", "message_id": "m0", "quote": "挑了个网面透气的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A15",
+     "subject": "HER",
+     "relation": "flag_recalibrated",
+     "value": "她对同事把'满血'改口为'走路像企鹅纯属正常'",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T06", "message_id": "m0", "quote": "周一要是走路像企鹅纯属正常"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A16",
+     "subject": "SHARED",
+     "relation": "pole_pickup_arranged",
+     "value": "登山杖约定出发前一天到ME处取",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T03", "message_id": "m0", "quote": "借我一根撑场面"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'止疼膏'的玩笑要接住，紧张要转化成清单而不是道理。",
+   "unknowns": ["新鞋是否合脚未知"],
+   "protected_expressions": ["周一要是走路像企鹅纯属正常"],
+   "forbidden_factual_claims": ["不得虚构导购话术细节", "不得断言换鞋后必然无水泡"]
+  },
+  "E115_T07": {
+   "case_id": "E115_T07",
+   "current_action": "接住出发日的紧张：集合点已到、按更正后的规格备齐杖水粮。把她的'心跳得比爬升快'接住——紧张是正常剂量，给她一句'前两公里跟着呼吸走'的具体抓手。",
+   "acceptable_actions": [
+    "肯定她备装齐全，杖上肩就是新手的正确姿势",
+    "给她前两公里的节奏建议：小步高频、跟着呼吸",
+    "让她到了起点再热身五分钟，别在大巴上僵着"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "time_state", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A17",
+     "subject": "SHARED",
+     "relation": "gear_per_corrected_spec",
+     "value": "她按更正后的山地规格备装：杖、两升水、补给",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T07", "message_id": "m0", "quote": "杖拄上了，水两升背着"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A18",
+     "subject": "SHARED",
+     "relation": "pole_in_use",
+     "value": "ME的登山杖已在她手中上岗",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T06", "message_id": "m0", "quote": "杖明天去你那儿取"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'等我消息'要回得快，临场的话越短越稳心。",
+   "unknowns": ["实际天气未知"],
+   "protected_expressions": ["我心跳得比爬升快"],
+   "forbidden_factual_claims": ["不得虚构天气与路况", "不得保证她中途不出状况"]
+  },
+  "E115_T08": {
+   "case_id": "E115_T08",
+   "current_action": "共享过半与过下撤点的双重消息：爬升没想象中恐怖、领队夸步频稳、红叶上头。把'下撤点刚过'轻接——不可回撤在户外是好事，说明她身体已经认了这条线。",
+   "acceptable_actions": [
+    "先夸步频稳这个评价是行家话，比她自己感觉可信",
+    "把'过了下撤点'说成好消息：身体已经跟上线路了",
+    "让她拍两张红叶存着，山顶再回一张"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A19",
+     "subject": "SHARED",
+     "relation": "retreat_point_passed",
+     "value": "她已走过下撤点，进入不可回撤段且状态上头",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T08", "message_id": "m0", "quote": "下撤点刚过，回头路是没有了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A20",
+     "subject": "THIRD",
+     "relation": "lead_praise",
+     "value": "领队评价她步频稳并叮嘱别追大部队",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T08", "message_id": "m0", "quote": "领队说我步频稳"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A21",
+     "subject": "THIRD",
+     "relation": "retreat_mechanism_closed",
+     "value": "此前留作后路的下撤选项已随行程自然关闭",
+     "valid_time": "2026-11-05/2026-11-08",
+     "status": "resolved",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T05", "message_id": "m0", "quote": "上个月真有人走到一半下撤"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'立大功'要认领得爽快，功劳分给她的腿一半。",
+   "unknowns": ["剩余路程体能分配未知"],
+   "protected_expressions": ["风景是真好，叶子红了一半"],
+   "forbidden_factual_claims": ["不得虚构剩余里程", "不得断言她必然免于抽筋"]
+  },
+  "E115_T09": {
+   "case_id": "E115_T09",
+   "current_action": "共享完走的虚脱与得意：12公里一步没坐车、领队拉她进进阶群。先恭喜，再把'没敢应'接住——应不应不急，回来复盘完再定，热汤和夸奖先给足。",
+   "acceptable_actions": [
+    "先恭喜完走，把'一步没坐车'郑重复述一遍",
+    "肯定她没当场应进阶群是对的，缓两天再答",
+    "顺着热汤的玩笑把返程的狼狈接得轻快"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "goal", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A22",
+     "subject": "SHARED",
+     "relation": "hike_completed",
+     "value": "她完走12公里全程未乘后勤车",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T09", "message_id": "m0", "quote": "12公里一步没坐车"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A23",
+     "subject": "THIRD",
+     "relation": "advanced_group_invite",
+     "value": "领队将她拉进进阶群并称其有潜力，她未应",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T09", "message_id": "m0", "quote": "把我拉进'进阶群'说我有潜力，我没敢应"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'魂还在山上'的胡话要接得宠，夸奖一次给够。",
+   "unknowns": ["进阶群邀约的有效期未知"],
+   "protected_expressions": ["12公里一步没坐车"],
+   "forbidden_factual_claims": ["不得虚构完走时间", "不得替她答应进阶邀约"]
+  },
+  "E115_T10": {
+   "case_id": "E115_T10",
+   "current_action": "共享周一的酸痛战报：满酸是真的、止疼膏用上了、但牛没破——'轻松局是吹的，但我走完了'。把这句接成她的高光，顺带把她'先报团后吹牛'的新规矩认下来。",
+   "acceptable_actions": [
+    "把她的'但我走完了'接成整件事的正解",
+    "肯定'先报团后吹牛'这条新规矩值得刻在报名页上",
+    "让她这几天拉伸加睡觉，酸比伤金贵"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A24",
+     "subject": "HER",
+     "relation": "flag_resolved",
+     "value": "flag以更正后口径兑现：承认吹牛但确认完走",
+     "valid_time": "2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T10", "message_id": "m0", "quote": "轻松局是吹的，但我走完了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A25",
+     "subject": "HER",
+     "relation": "new_rule_adopted",
+     "value": "她立新规矩：下回先报团后吹牛",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T10", "message_id": "m0", "quote": "下回我先报团后吹牛"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A26",
+     "subject": "SHARED",
+     "relation": "flag_origin",
+     "value": "此次战报回扣她11月1日对同事立下的'满血'flag",
+     "valid_time": "2026-11-01/2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T02", "message_id": "m0", "quote": "跟同事说周日是轻松局，周一满血上班"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'青的'听着吓人要问一句是淤青还是酸，别只顾庆祝。",
+   "unknowns": ["腿的青是磕碰还是运动反应未知"],
+   "protected_expressions": ["轻松局是吹的，但我走完了"],
+   "forbidden_factual_claims": ["不得对伤情做医学判断", "不得虚构同事的反应"]
+  },
+  "E115_T11": {
+   "case_id": "E115_T11",
+   "current_action": "接住进阶邀约的纠结：她点名要实话不要捧。按她的真实水平给分层建议——14公里爬升六百不是现在，但方向对；给一条'先练后上'的中间路径，把选择权留给她。",
+   "acceptable_actions": [
+    "给实话：直接上青云+偏冒进，但练一次8-10公里爬升线就够得着",
+    "肯定她'别捧我'的清醒，这正是完走换来的底气",
+    "提醒她问领队要青云+的详细路书再判断"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A27",
+     "subject": "THIRD",
+     "relation": "advanced_route_offer",
+     "value": "领队私信邀她下月走青云+线，14公里爬升六百",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T11", "message_id": "m0", "quote": "邀我下月走'青云+'，说是14公里爬升六百"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A28",
+     "subject": "SHARED",
+     "relation": "capability_baseline",
+     "value": "她当前的能力基线为刚完走12公里爬升420米",
+     "valid_time": "2026-11-08/2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T09", "message_id": "m0", "quote": "12公里一步没坐车"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：实话要给得有刻度——'不是不行，是不是现在'，别一句能或不能打发。",
+   "unknowns": ["青云+具体路况未知"],
+   "protected_expressions": ["别捧我"],
+   "forbidden_factual_claims": ["不得对她的体能上限做绝对判断", "不得虚构青云+路书内容"]
+  },
+  "E115_T12": {
+   "case_id": "E115_T12",
+   "current_action": "接住她的进阶决策与回扣收尾：不跟青云+、先报8公里练爬升，轨迹截图为证；'秋游换拉练、下回我背补给'把两人之约翻了个面——认领这个回请，干净收束。",
+   "acceptable_actions": [
+    "肯定她的稳字决策，8公里练爬升正是给青云+铺路",
+    "认领'下回她背补给'的回请，把秋游之约翻面",
+    "顺着轨迹截图夸一句：一个点没断，比任何flag都硬"
+   ],
+   "applicable_dimensions": ["memory_use", "interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E115_A29",
+     "subject": "HER",
+     "relation": "progression_decision",
+     "value": "她决定暂不跟青云+，先报8公里爬升线稳步进阶",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T12", "message_id": "m0", "quote": "下月不跟青云+，先报个8公里的练爬升"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E115_A30",
+     "subject": "SHARED",
+     "relation": "autumn_promise_callback",
+     "value": "'还你一场拉练'回扣T01'踩落叶秋游'的原始之约",
+     "valid_time": "2026-10-31/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T01", "message_id": "m0", "quote": "就当踩落叶秋游"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E115_A31",
+     "subject": "SHARED",
+     "relation": "track_evidence",
+     "value": "轨迹截图显示12公里全程无断点",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E115_T12", "message_id": "m0", "quote": "轨迹截图发你了，12公里一个点没断"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要轻，把'稳稳来'说成她这四天里最大的进步，不翻旧账。",
+   "unknowns": [],
+   "protected_expressions": ["下回换我陪你走你想走的那条"],
+   "forbidden_factual_claims": ["不得虚构轨迹数据细节", "不得引入新的户外计划"]
+  }
+ }
+}

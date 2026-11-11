@@ -1,0 +1,630 @@
+{
+  "episode_id": "LRE145",
+  "persona": {
+    "her": "苗苗，特点：外地读研；每月回一次家；做事谨慎爱列预案，有时纠结过头，边界：赶车的事不赌运气；不喜欢被说想太多",
+    "me": "阿灿，特点：本城工作；常坐高铁；出行习惯留双保险",
+    "relationship_stage": "老同学好友期（研究生同门两年，她回城常约饭）"
+  },
+  "initial_kb": {
+    "me": "我在本城工作，坐高铁常跑，对南站进站动线熟，出行习惯留双保险，重要行程必看检票截止时间。",
+    "her": "苗苗在外地读研，每月回一次家，做事谨慎爱列预案，有时候纠结过头，问出口就是想要个准数。",
+    "warmth": "研究生同门两年，她回城常约我吃饭，我帮她抢过票，她给我带过特产。",
+    "style": "她消息爱用问号结尾，我回答先给结论再给理由，一句话能说清的不用两句。",
+    "stage": "老同学好友期。"
+  },
+  "turns": [
+    {
+      "case_id": "LRE145_T01",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "周六回学校的拼车约好了！司机在群里说早上七点到小区门口接，三个人一起，九点四十的高铁来得及吧？",
+            "ts": "2026-11-04 20:05"
+          }
+        ],
+        "clock": "2026-11-04 20:10",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "报喜式开局，附一个求确认的问题"
+      }
+    },
+    {
+      "case_id": "LRE145_T02",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "奇怪，我刚看订单，App 上写的上车时间是七点半，跟司机说的七点对不上，差半小时呢，信哪个？",
+            "ts": "2026-11-05 08:25"
+          }
+        ],
+        "clock": "2026-11-05 08:30",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "信息不确定类冲突引爆：两个口径摆上桌"
+      }
+    },
+    {
+      "case_id": "LRE145_T03",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "我微信问司机，他回'看周六路况，尽量七点二十前到'，第三个版本了……我更糊涂了。",
+            "ts": "2026-11-05 13:40"
+          }
+        ],
+        "clock": "2026-11-05 13:45",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "第三个口径出现，不确定感加剧"
+      }
+    },
+    {
+      "case_id": "LRE145_T04",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "高铁九点四十，停止检票九点二十五。你帮我算算，最晚几点必须从小区出发？留多少余量合适？",
+            "ts": "2026-11-05 21:55"
+          }
+        ],
+        "clock": "2026-11-05 22:00",
+        "may_decline": false,
+        "intent": {
+          "enabled": true,
+          "status": "ask_help",
+          "text": "求最晚出发时间计算"
+        }
+      },
+      "feedback": {
+        "her_state_shift": "转入求计算，态度务实"
+      }
+    },
+    {
+      "case_id": "LRE145_T05",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "按你说的算了：正常四十分钟车程，我按七点整在门口等，七点一刻车还没来就直接打车，双保险走起。",
+            "ts": "2026-11-06 09:15"
+          }
+        ],
+        "clock": "2026-11-06 09:20",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "采纳双保险预案，心态转稳"
+      }
+    },
+    {
+      "case_id": "LRE145_T06",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "打车软件我也装好了，绑了支付，同行的小柯也授权了，明天谁先上车谁往群里丢定位。",
+            "ts": "2026-11-06 21:05"
+          }
+        ],
+        "clock": "2026-11-06 21:10",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "预案工具化完成，进入待命状态"
+      }
+    },
+    {
+      "case_id": "LRE145_T07",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "司机刚主动来电话，说明早七点整准点到，还发了车牌。我心里踏实一半了。",
+            "ts": "2026-11-07 21:25"
+          }
+        ],
+        "clock": "2026-11-07 21:30",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "司机主动确认，不确定感下降一半"
+      }
+    },
+    {
+      "case_id": "LRE145_T08",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "七点零二司机到了！三个人齐了，出发！高速上还挺顺。",
+            "ts": "2026-11-08 07:02"
+          }
+        ],
+        "clock": "2026-11-08 07:05",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "预案兑现，兴奋短报"
+      }
+    },
+    {
+      "case_id": "LRE145_T09",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "七点五十就到南站了，取票进站一路顺，离检票还有一小时，我买了杯咖啡慢慢等。",
+            "ts": "2026-11-08 08:00"
+          }
+        ],
+        "clock": "2026-11-08 08:05",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "到站落定，节奏彻底松弛"
+      }
+    },
+    {
+      "case_id": "LRE145_T10",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "车开了，闲着没事。对了，月底返校的回程要不要一起拼？还是这条路，人齐就便宜。",
+            "ts": "2026-11-08 10:25"
+          }
+        ],
+        "clock": "2026-11-08 10:30",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "抛出回程拼车邀约"
+      }
+    },
+    {
+      "case_id": "LRE145_T11",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "回程单我约好了，还是那个司机，评价四点九，下午三点上车，到时候群里见。",
+            "ts": "2026-11-09 19:35"
+          }
+        ],
+        "clock": "2026-11-09 19:40",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "回程敲定，复购同一司机"
+      }
+    },
+    {
+      "case_id": "LRE145_T12",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "回程顺利到家！司机师傅微信推给你了，以后出门常用他，报我名字能不能打折不知道，反正人靠谱。",
+            "ts": "2026-11-30 18:15"
+          }
+        ],
+        "clock": "2026-11-30 18:20",
+        "may_decline": true
+      },
+      "feedback": {
+        "her_state_shift": "行程全闭环，顺手推荐司机"
+      }
+    },
+    {
+      "case_id": "LRE145_T13",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "汇报个正事：导师让我返校后就把开题面谈定了，我原打算一月三号周日返校，当天下午直接去谈。就是车还没着落。",
+            "ts": "2026-12-02 20:10"
+          }
+        ],
+        "clock": "2026-12-02 20:15",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "开题面谈提上日程，返校拼车未定"
+      }
+    },
+    {
+      "case_id": "LRE145_T14",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "小柯把我拉进一个元旦返校拼车群，李师傅开价一百二一位，比上个月回程贵了四十。群里已经接龙五个了，我要不要也接一个？",
+            "ts": "2026-12-03 12:35"
+          }
+        ],
+        "clock": "2026-12-03 12:40",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "拼车群开价一百二，比上次贵四十"
+      }
+    },
+    {
+      "case_id": "LRE145_T15",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "群里另一个张师傅跟着报价九十，说'走省道也快'，还特意@我。一个一百二走高速，一个九十走省道，差三十，又开始了，我头都大了。",
+            "ts": "2026-12-03 21:30"
+          }
+        ],
+        "clock": "2026-12-03 21:35",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "双司机双口径再现，差三十"
+      }
+    },
+    {
+      "case_id": "LRE145_T16",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "你上次说先给结论再给理由，我就等着：高速一百二和省道九十，到底怎么选？一月三号我赶下午两点半的高铁，检票截止两点一十。",
+            "ts": "2026-12-04 19:45"
+          }
+        ],
+        "clock": "2026-12-04 19:50",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "求结论：时间与差价的权衡"
+      }
+    },
+    {
+      "case_id": "LRE145_T17",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "我去翻了两位师傅的历史评价：张师傅有两条差评，都提'绕路'；李师傅四点九，可是没跑过元旦前高峰。你说我该信评价还是信运气？",
+            "ts": "2026-12-05 18:20"
+          }
+        ],
+        "clock": "2026-12-05 18:25",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "评价翻完：差评与高峰盲区并存"
+      }
+    },
+    {
+      "case_id": "LRE145_T18",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "听你的，不赌运气。我接了李师傅的一百二，一月三号早上七点半小区门口上车，赶下午两点半的高铁。多花三十买个准点，值。",
+            "ts": "2026-12-06 20:05"
+          }
+        ],
+        "clock": "2026-12-06 20:10",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "定李师傅一百二，1月3日七点半"
+      }
+    },
+    {
+      "case_id": "LRE145_T19",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "李师傅把单子确认了，说'元旦前高速可能堵，我提前一天查路况'，还把车牌又发了一遍。有他这句话，我这半个月的悬心放下了一半。",
+            "ts": "2026-12-18 21:30"
+          }
+        ],
+        "clock": "2026-12-18 21:35",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "李师傅确认行程与车牌"
+      }
+    },
+    {
+      "case_id": "LRE145_T20",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "变数来了。李师傅晚上发消息：一月三号要给人跑婚车，问我能不能改一月二号，不能改就退全款。群里张师傅立马刷屏：'我一号二号都空，走省道两个小时就到，元旦绝不堵！'——两个小时就到？他评价里绕路那事儿我可没忘。",
+            "ts": "2026-12-24 20:15"
+          }
+        ],
+        "clock": "2026-12-24 20:20",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "李师傅改期撞上张师傅揽客，旧口径复活"
+      }
+    },
+    {
+      "case_id": "LRE145_T21",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "我列了三条预案：一、改一月二号，假期少半天但行程稳；二、换张师傅省九十，可准点没底；三、先坐大巴到南站再转车，折腾但兜底。小柯想帮我，可她回家方向反的，帮不上。你选哪条？",
+            "ts": "2026-12-25 19:40"
+          }
+        ],
+        "clock": "2026-12-25 19:45",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "三预案并列，求裁决"
+      }
+    },
+    {
+      "case_id": "LRE145_T22",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "定了：改一月二号早七点半，跟李师傅重新确认了。开题面谈我先给导师发了消息，想挪到一月四号上午，等她回复。两头都留了余量，这回踏实多了。",
+            "ts": "2026-12-26 20:30"
+          }
+        ],
+        "clock": "2026-12-26 20:35",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "返校改1月2日，面谈改约待回复"
+      }
+    },
+    {
+      "case_id": "LRE145_T23",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "李师傅把一月二号的新单确认了，车牌、电话又发了一遍，末了补一句'小姑娘的行程我记着呢'。上个月那回七点零二准时到，这回我也按七点二十出门等。",
+            "ts": "2026-12-28 19:15"
+          }
+        ],
+        "clock": "2026-12-28 19:20",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "新单确认，准点信誉延续"
+      }
+    },
+    {
+      "case_id": "LRE145_T24",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "小柯约好跟我一块儿走——她导师那边元旦后也有事，订了跟我同一班高铁，正好拼一月二号这辆。我们说好七点二十在小区门口碰头，谁先到谁占座。",
+            "ts": "2026-12-30 20:45"
+          }
+        ],
+        "clock": "2026-12-30 20:50",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "小柯同行敲定，碰头时间一致"
+      }
+    },
+    {
+      "case_id": "LRE145_T25",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "元旦在家，翻出上个月的账算了算：上次回程因为人齐，人均八十；这回我一个人走，独苗价一百二。多出来的四十就当买'不用等人'，这么一想舒服多了。",
+            "ts": "2026-12-31 18:30"
+          }
+        ],
+        "clock": "2026-12-31 18:35",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "独苗价与拼单价对比，心态放平"
+      }
+    },
+    {
+      "case_id": "LRE145_T26",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "元旦饭桌上我爸问我，高铁检票到底提前多久停？我说得溜：一般是开车前十五分钟停止检票，我次次都按截止时间倒推出门点，双保险。我爸说'你这脑子随你妈'。",
+            "ts": "2027-01-01 12:40"
+          }
+        ],
+        "clock": "2027-01-01 12:45",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "检票截止口径脱口而出，家人点验"
+      }
+    },
+    {
+      "case_id": "LRE145_T27",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "七点二十五李师傅就到了，比约的还早五分钟！我和小柯上车了，出发！定位我丢群里了，跟上次一个规矩。",
+            "ts": "2027-01-02 07:26"
+          }
+        ],
+        "clock": "2027-01-02 07:30",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "准点出发，定位规矩照旧"
+      }
+    },
+    {
+      "case_id": "LRE145_T28",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "高速上李师傅说，省道那边今天果然堵了，张师傅的车就卡在半道上。小柯小声说'幸亏没省那三十'。对了，她转了条群消息说南站进站口改到东广场、要多留半小时——我看着怎么像上个月的旧通知？",
+            "ts": "2027-01-02 07:55"
+          }
+        ],
+        "clock": "2027-01-02 08:00",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "省道拥堵印证选择，东广场旧通知存疑"
+      }
+    },
+    {
+      "case_id": "LRE145_T29",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "到南站了，进站口一切如常，压根没有什么东广场改道，果然是过期消息！取票进站一路顺，离检票还有俩小时，我和小柯一人一杯咖啡，比上次我独自等车热闹多了。",
+            "ts": "2027-01-02 09:05"
+          }
+        ],
+        "clock": "2027-01-02 09:10",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "旧通知证伪，余量从容"
+      }
+    },
+    {
+      "case_id": "LRE145_T30",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "候车闲着，导师回消息了：面谈挪到一月四号上午十点，她回了俩字'可以'。小柯说我这个'凡确认必留痕'的习惯越来越像你。我说那可不，双保险教的。",
+            "ts": "2027-01-02 11:35"
+          }
+        ],
+        "clock": "2027-01-02 11:40",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "面谈改约获导师确认，习惯归因"
+      }
+    },
+    {
+      "case_id": "LRE145_T31",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "开题面谈顺利结束！导师就提了一条：文献综述再补两篇外文的，月底前给她。出来的时候天都黑了，心里倒是亮堂的。三月清明再回家，车我还找李师傅。",
+            "ts": "2027-01-04 17:20"
+          }
+        ],
+        "clock": "2027-01-04 17:25",
+        "may_decline": false
+      },
+      "feedback": {
+        "her_state_shift": "面谈收尾，复购意向落定"
+      }
+    },
+    {
+      "case_id": "LRE145_T32",
+      "turn_type": "reply",
+      "gold": {},
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "今晚把李师傅的微信推给同门师妹了，她三月底返校。我跟她说：'就是那个评价四点九的师傅。'师妹问四点九是不是刷出来的，我说人家上个月七点零二准时到，你坐一回就知道了。晚安！",
+            "ts": "2027-01-05 21:05"
+          }
+        ],
+        "clock": "2027-01-05 21:10",
+        "may_decline": true
+      },
+      "feedback": {
+        "her_state_shift": "师傅口碑转介，四点九坐出来的底气"
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+ "batch_id": "P02-STAGE1-CAPTURE-E013-E020",
+ "arm_map": {
+  "parent": "reference_product_v1",
+  "candidate": "v6_integrated"
+ },
+ "episode_order": [
+  {"episode": "E013", "arm_order": "parent_first"},
+  {"episode": "E014", "arm_order": "candidate_first"},
+  {"episode": "E015", "arm_order": "parent_first"},
+  {"episode": "E016", "arm_order": "candidate_first"},
+  {"episode": "E017", "arm_order": "parent_first"},
+  {"episode": "E018", "arm_order": "candidate_first"},
+  {"episode": "E019", "arm_order": "parent_first"},
+  {"episode": "E020", "arm_order": "candidate_first"}
+ ],
+ "cards_path": "benchmark/stories_v2/stage1/GRADING_CARDS_STAGE1.json",
+ "recall_capable": false
+}

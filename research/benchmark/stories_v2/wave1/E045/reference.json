@@ -1,0 +1,860 @@
+{
+ "story_id": "E045",
+ "turns": {
+  "E045_T01": {
+   "case_id": "E045_T01",
+   "current_action": "轻快接住喜讯，复述对调班次的时间结构并记下婚礼日期",
+   "acceptable_actions": [
+    "为伴娘计划道喜并确认28日与1日两个班次的对调关系",
+    "调侃一整晚交给新娘折腾并提醒把耳环提前挑好"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A01",
+     "subject": "HER",
+     "relation": "plans_shift_swap",
+     "value": "阿汀与同事大周约定对调班次：10月28日她替大周上早班，11月1日大周替她上晚班",
+     "valid_time": "2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T01",
+      "message_id": "m0",
+      "quote": "28号我替他顶早班，1号他替我顶晚班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A02",
+     "subject": "HER",
+     "relation": "bridesmaid_plan",
+     "value": "HER 将以伴娘身份参加大学室友苗苗11月1日的婚礼",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T01",
+      "message_id": "m0",
+      "quote": "苗苗11月1号办婚礼，我当伴娘"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先把喜事的劲头接住，时间结构顺手记牢，不预判风险",
+   "unknowns": [
+    "婚礼具体仪式流程未知",
+    "大周替班是否已向店长报备未知"
+   ],
+   "protected_expressions": [
+    "一整晚都能交给苗苗折腾"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构婚礼场地与酒店",
+    "不得断言换班必然顺利"
+   ]
+  },
+  "E045_T02": {
+   "case_id": "E045_T02",
+   "current_action": "确认婚宴场地与伴娘到场时间，把1日晚班标记为不能出勤的硬约束",
+   "acceptable_actions": [
+    "复述下午三点到场的时间点并强调换班的必要性",
+    "顺着红包头纱的话题活跃气氛，同时记牢硬约束"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A03",
+     "subject": "HER",
+     "relation": "wedding_logistics",
+     "value": "婚宴在滨江悦庭酒店举行，伴娘需下午三点到场帮忙",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T02",
+      "message_id": "m0",
+      "quote": "婚宴定在滨江那边的悦庭酒店，下午三点伴娘就得到场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A04",
+     "subject": "HER",
+     "relation": "hard_constraint",
+     "value": "11月1日晚班无法出勤是参加婚礼的硬性前提",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T02",
+      "message_id": "m0",
+      "quote": "1号那个晚班是铁定不能上的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把硬约束复述清楚即可，不提前替她担心",
+   "unknowns": [
+    "头纱红包等具体分工未知",
+    "当天交通安排未知"
+   ],
+   "protected_expressions": [
+    "铁定不能上的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构婚宴宾客名单",
+    "不得更改伴娘到场时间"
+   ]
+  },
+  "E045_T03": {
+   "case_id": "E045_T03",
+   "current_action": "肯定她兑现前半段对调，记下大周的口头确认",
+   "acceptable_actions": [
+    "夸她起早贪黑敬业并复述1号安排已稳",
+    "接耳环话题轻松收尾并记下大周确认"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A05",
+     "subject": "HER",
+     "relation": "swap_first_half_done",
+     "value": "HER 已于10月28日替大周上早班，对调前半段兑现",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T03",
+      "message_id": "m0",
+      "quote": "28号早班我顶着呢"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A06",
+     "subject": "THIRD",
+     "relation": "colleague_confirmation",
+     "value": "大周确认11月1日替班稳妥，让 HER 放心",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T03",
+      "message_id": "m0",
+      "quote": "大周还说1号稳了让我放心挑耳环"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：赞要具体到起早这件事，不空夸",
+   "unknowns": [
+    "耳环是否已挑好未知"
+   ],
+   "protected_expressions": [
+    "让我放心挑耳环"
+   ],
+   "forbidden_factual_claims": [
+    "不得替大周做任何新承诺",
+    "不得虚构当天门店数据"
+   ]
+  },
+  "E045_T04": {
+   "case_id": "E045_T04",
+   "current_action": "接住懵住的情绪，复述取消事实与转嫁式留言，先稳住再列选项",
+   "acceptable_actions": [
+    "先共情再复述取消原因与缺口班次，列出找人顶班的方向",
+    "肯定她的慌张正常，提醒先与大周确认盘点能否调开"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A07",
+     "subject": "THIRD",
+     "relation": "swap_cancelled",
+     "value": "大周因1日晚被店长安排盘点库存，取消替班约定",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T04",
+      "message_id": "m0",
+      "quote": "店长把他抓去1号晚上盘点库存，他顶不了我的班了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A08",
+     "subject": "SHARED",
+     "relation": "shift_swap_plan",
+     "value": "原定11月1日大周替 HER 顶晚班的对调安排已被取消",
+     "valid_time": "2026-10-25/2026-10-30",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T01",
+      "message_id": "m0",
+      "quote": "1号他替我顶晚班"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E045_A09",
+     "subject": "ME",
+     "relation": "refuses_to",
+     "value": "ME 不替 HER 向店长传话，也不替 HER 顶班",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "不替她向店长传话，不替她顶班"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E045_A10",
+     "subject": "HER",
+     "relation": "blame_shifted",
+     "value": "大周仅留言让 HER 自行找人换班，未给出补救",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T04",
+      "message_id": "m0",
+      "quote": "找人换一下"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接情绪再理事实，不急着替她骂大周，也不揽下顶班",
+   "unknowns": [
+    "盘点是否可由他人代做未知",
+    "大周是否已向店长说明未知"
+   ],
+   "protected_expressions": [
+    "我人都是懵的"
+   ],
+   "forbidden_factual_claims": [
+    "不得答应替她顶班或传话",
+    "不得断言店长必然通融"
+   ]
+  },
+  "E045_T05": {
+   "case_id": "E045_T05",
+   "current_action": "帮她把换班与体检的冲突拆成两条时间线，指出取舍点而不替她决定",
+   "acceptable_actions": [
+    "把小满条件与体检档期并排列出，请她自己排优先级",
+    "提出先问体检中心改期费用再定方案的中间步骤"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A11",
+     "subject": "THIRD",
+     "relation": "replacement_offer",
+     "value": "小满愿顶11月1日晚班，条件是 HER 11月3日还早班",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T05",
+      "message_id": "m0",
+      "quote": "小满说她能顶1号，但要我3号早班还她"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A12",
+     "subject": "HER",
+     "relation": "checkup_conflict",
+     "value": "HER 11月3日早上已有年度体检预约，与还班时间冲突",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T05",
+      "message_id": "m0",
+      "quote": "我3号早上预约了年度体检"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A13",
+     "subject": "SHARED",
+     "relation": "wedding_still_on",
+     "value": "婚礼与伴娘下午三点到场的安排不变，1日晚班缺口仍在",
+     "valid_time": "2026-10-26/2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T02",
+      "message_id": "m0",
+      "quote": "下午三点伴娘就得到场"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E045_A14",
+     "subject": "SHARED",
+     "relation": "swap_still_void",
+     "value": "大周替班仍未恢复，1日晚班缺口未消",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T04",
+      "message_id": "m0",
+      "quote": "他顶不了我的班了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把账算清楚给她看，决定权留给她",
+   "unknowns": [
+    "体检改期是否收费未知",
+    "小满条件是否还有附加项未知"
+   ],
+   "protected_expressions": [
+    "我这算盘打得头都大了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她拍板改体检还是改换班",
+    "不得虚构体检中心政策"
+   ]
+  },
+  "E045_T06": {
+   "case_id": "E045_T06",
+   "current_action": "肯定她主动改期体检的决定，帮她把给小满的确认话搭骨架而不代写",
+   "acceptable_actions": [
+    "夸改期干脆，提示微信里写清两个日期与还班条件",
+    "提醒把谁反悔怎么办一句写进确认话里"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A15",
+     "subject": "HER",
+     "relation": "checkup_rescheduled",
+     "value": "HER 已将年度体检改期至11月10日且不收费",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T06",
+      "message_id": "m0",
+      "quote": "11月10号有号，改期不收钱"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A16",
+     "subject": "HER",
+     "relation": "checkup_original_superseded",
+     "value": "原定11月3日的年度体检安排已让位给还班",
+     "valid_time": "2026-10-30/2026-11-10",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T05",
+      "message_id": "m0",
+      "quote": "我3号早上预约了年度体检"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E045_A17",
+     "subject": "HER",
+     "relation": "asks_wording_help",
+     "value": "HER 请 ME 帮忙把换班确认的话说定",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T06",
+      "message_id": "m0",
+      "quote": "你说我微信里该怎么跟她把这事说死"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：话术给骨架不代写全文，让她自己的口气发出去",
+   "unknowns": [
+    "小满是否还要求其他补偿未知"
+   ],
+   "protected_expressions": [
+    "改期不收钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她直接联系小满",
+    "不得承诺小满必然答应"
+   ]
+  },
+  "E045_T07": {
+   "case_id": "E045_T07",
+   "current_action": "共享换班落定的轻松，复述两个日期与奶茶赌约作为凭证",
+   "acceptable_actions": [
+    "祝贺换班落定并复述1日与3日的双向安排",
+    "调侃奶茶赌约并提醒截图保存聊天记录"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A18",
+     "subject": "THIRD",
+     "relation": "replacement_confirmed",
+     "value": "小满确认换班：1日顶晚班、3日 HER 还早班，约定反悔者请奶茶",
+     "valid_time": "2026-10-31",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T07",
+      "message_id": "m0",
+      "quote": "成交，谁反悔谁请奶茶"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A19",
+     "subject": "SHARED",
+     "relation": "new_swap_established",
+     "value": "新对调成立：11月1日小满顶班、11月3日 HER 还早班",
+     "valid_time": "2026-10-31/2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T07",
+      "message_id": "m0",
+      "quote": "1号她顶晚班，3号我顶她早班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A20",
+     "subject": "SHARED",
+     "relation": "original_swap_superseded",
+     "value": "大周替班的原对调已被小满方案取代",
+     "valid_time": "2026-10-25/2026-10-31",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T01",
+      "message_id": "m0",
+      "quote": "1号他替我顶晚班"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：松一口气的节奏留给她，我负责把日期复述扎实",
+   "unknowns": [
+    "小满1号出勤是否还需店长批准未知"
+   ],
+   "protected_expressions": [
+    "谁反悔谁请奶茶"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言店长已批准新排班",
+    "不得虚构赌约金额"
+   ]
+  },
+  "E045_T08": {
+   "case_id": "E045_T08",
+   "current_action": "接住婚礼当天的忙碌报备，轻松接梗并预祝汇报八卦",
+   "acceptable_actions": [
+    "祝婚礼顺利并接头纱拖把的梗",
+    "提醒她手机静音享受婚礼并等八卦"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A21",
+     "subject": "HER",
+     "relation": "wedding_day_arrived",
+     "value": "11月1日 HER 赴滨江参加婚礼，因堵车险些迟到",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T08",
+      "message_id": "m0",
+      "quote": "堵在滨江桥上差点迟到"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A22",
+     "subject": "SHARED",
+     "relation": "swap_enabled_attendance",
+     "value": "因小满顶班，HER 于1日晚无需出勤并出席婚礼",
+     "valid_time": "2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T07",
+      "message_id": "m0",
+      "quote": "1号她顶晚班"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她正忙，回复短而暖，不问长问题",
+   "unknowns": [
+    "仪式具体环节未知"
+   ],
+   "protected_expressions": [
+    "头纱差点被我理成拖把"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构婚礼细节",
+    "不得催她做正事"
+   ]
+  },
+  "E045_T09": {
+   "case_id": "E045_T09",
+   "current_action": "接住八卦与捧花梗，顺带确认3日还班在她雷达上",
+   "acceptable_actions": [
+    "接捧花梗调侃并肯定她没忘3日还班",
+    "恭喜下一个结婚的说法并提醒早睡"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A23",
+     "subject": "HER",
+     "relation": "bouquet_hit",
+     "value": "婚礼抛捧花环节捧花砸中 HER",
+     "valid_time": "2026-11-01/2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T09",
+      "message_id": "m0",
+      "quote": "苗苗抛捧花砸中我了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A24",
+     "subject": "HER",
+     "relation": "next_duty_aware",
+     "value": "HER 提醒自己11月3日要还早班",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T09",
+      "message_id": "m0",
+      "quote": "满脑子都是3号早班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A25",
+     "subject": "SHARED",
+     "relation": "duty_pending",
+     "value": "与小满约定的3日还班尚待履行",
+     "valid_time": "2026-10-31/2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T07",
+      "message_id": "m0",
+      "quote": "3号我顶她早班"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：八卦接得住，正事提一句就收，不说教",
+   "unknowns": [],
+   "protected_expressions": [
+    "我上辈子欠排班表的"
+   ],
+   "forbidden_factual_claims": [
+    "不得把玩笑当婚恋进展追问",
+    "不得虚构婚礼宾客八卦"
+   ]
+  },
+  "E045_T10": {
+   "case_id": "E045_T10",
+   "current_action": "确认还班完成与人情账两清，肯定大周的赔罪姿态",
+   "acceptable_actions": [
+    "祝贺全部兑现并复述两清的账",
+    "接燕麦拿铁的梗并肯定她全程没撕破脸"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A26",
+     "subject": "HER",
+     "relation": "duty_fulfilled",
+     "value": "HER 已于11月3日替小满上早班，履行还班约定",
+     "valid_time": "2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T10",
+      "message_id": "m0",
+      "quote": "3号早班还完了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A27",
+     "subject": "THIRD",
+     "relation": "apology_coffee",
+     "value": "大周以一杯燕麦拿铁向 HER 赔罪",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T10",
+      "message_id": "m0",
+      "quote": "大周也请了我一杯燕麦拿铁赔罪"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A28",
+     "subject": "SHARED",
+     "relation": "swap_loop_closed",
+     "value": "与小满的双向换班全部履行完毕",
+     "valid_time": "2026-10-31/2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T07",
+      "message_id": "m0",
+      "quote": "成交，谁反悔谁请奶茶"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把没撕破脸点出来，这是她最在意的体面",
+   "unknowns": [],
+   "protected_expressions": [
+    "人情账两清"
+   ],
+   "forbidden_factual_claims": [
+    "不得重提懵住当天的狼狈做说教",
+    "不得虚构拿铁价格"
+   ]
+  },
+  "E045_T11": {
+   "case_id": "E045_T11",
+   "current_action": "陪她复盘换班流程漏洞，肯定留证加双确认的新规矩，答应给时间线",
+   "acceptable_actions": [
+    "肯定新规矩并复述大周一案中的留证缺口",
+    "把换班时间线整理成清单口吻念给她抄"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A29",
+     "subject": "HER",
+     "relation": "new_habit",
+     "value": "HER 立下换班新规矩：截图留证并口头双确认",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T11",
+      "message_id": "m0",
+      "quote": "以后换班必须截图留证+口头双确认"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A30",
+     "subject": "HER",
+     "relation": "root_cause_view",
+     "value": "HER 认为仅一句微信确认是此次取消悬案的诱因",
+     "valid_time": "2026-10-30/2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T11",
+      "message_id": "m0",
+      "quote": "就是只发了一句微信才这么悬"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A31",
+     "subject": "THIRD",
+     "relation": "old_cancellation",
+     "value": "10月30日大周取消1日替班曾致计划悬空，已被新安排取代",
+     "valid_time": "2026-10-30/2026-11-03",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T04",
+      "message_id": "m0",
+      "quote": "他顶不了我的班了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：复盘归复盘，别把她当时的慌再说一遍",
+   "unknowns": [
+    "备忘录是否已抄录未知"
+   ],
+   "protected_expressions": [
+    "截图留证+口头双确认"
+   ],
+   "forbidden_factual_claims": [
+    "不得夸大微信确认的效力",
+    "不得虚构店长态度"
+   ]
+  },
+  "E045_T12": {
+   "case_id": "E045_T12",
+   "current_action": "笑纳军师功劳，把遇事先商量的默契接成收尾",
+   "acceptable_actions": [
+    "得意接下军师头衔并把挂号说成长期服务",
+    "肯定她处理有章法是自己的功劳，默契收尾"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E045_A32",
+     "subject": "THIRD",
+     "relation": "manager_praise",
+     "value": "店长称赞 HER 换班处理有章法",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T12",
+      "message_id": "m0",
+      "quote": "店长今天还夸我换班处理得有章法"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A33",
+     "subject": "HER",
+     "relation": "future_consult",
+     "value": "HER 约定以后排班出状况先来找 ME 商量",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T12",
+      "message_id": "m0",
+      "quote": "下次店里再有人放鸽子，我先来你这儿挂个号"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E045_A34",
+     "subject": "HER",
+     "relation": "habit_confirmed",
+     "value": "截图留证与口头双确认的新规矩延续为长期流程",
+     "valid_time": "2026-11-05/2026-11-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E045_T11",
+      "message_id": "m0",
+      "quote": "以后换班必须截图留证+口头双确认"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻巧，把功劳分她一半，留一个互损钩子",
+   "unknowns": [
+    "T11 请求'回头发我'的换班时间线在 T12 未着落，属刻意留白，不算违约"
+   ],
+   "protected_expressions": [
+    "我先来你这儿挂个号"
+   ],
+   "forbidden_factual_claims": [
+    "不得把玩笑当正式承诺",
+    "不得引入新排班话题"
+   ]
+  }
+ }
+}

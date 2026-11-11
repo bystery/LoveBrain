@@ -1,0 +1,31 @@
+{
+ "story_id": "N01",
+ "turns": {
+  "N01_A1_positive": {
+   "case_id": "N01_A1_positive",
+   "current_action": "她给出积极信号，想低负担地出去走走。应接住情绪并给具体轻提议，不把提议说成已定。",
+   "acceptable_actions": [
+    "接住开心，提一个近处轻活动并给选择",
+    "调侃一句再问她想走路还是坐坐"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "积极信号：可以推进一小步，但保留她的选择。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": {
+    "text": "她给出积极信号，想低负担地出去走走。应接住情绪并给具体轻提议，不把提议说成已定。",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

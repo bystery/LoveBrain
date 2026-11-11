@@ -1,0 +1,725 @@
+{
+ "story_id": "E159",
+ "turns": {
+  "E159_T01": {
+   "case_id": "E159_T01",
+   "current_action": "接住代喂落空的突发并帮她理出替代路径",
+   "acceptable_actions": [
+    "先问清五天里每天需要上门几次",
+    "提议自己可以搭手但要她先想安全条款",
+    "先安抚再让她列平台与熟人两条备选"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T01_A01",
+     "subject": "HER",
+     "relation": "出差安排",
+     "value": "12 月 8 到 12 号出差五天需人上门喂雪宝",
+     "valid_time": "2026-12-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "12 月 8 到 12 号要出差五天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T01_A02",
+     "subject": "THIRD",
+     "relation": "原定代喂",
+     "value": "表妹档期撞车原定每日代喂落空",
+     "valid_time": "2026-12-01",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T01",
+      "message_id": "m0",
+      "quote": "日期全撞上了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先接抓瞎的慌，再把问题拆成几次上门和谁来上门两问。",
+   "unknowns": [
+    "每天需上门的具体次数",
+    "雪宝是否有特殊用药"
+   ],
+   "protected_expressions": [
+    "日期全撞上了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构表妹出差的目的地"
+   ],
+   "may_decline": false
+  },
+  "E159_T02": {
+   "case_id": "E159_T02",
+   "current_action": "正视钥匙顾虑并肯定她不轻易交钥匙",
+   "acceptable_actions": [
+    "肯定她的谨慎并建议看平台保险条款",
+    "提议先见师傅本人再谈钥匙",
+    "打趣她睡不着的样子像守门的雪宝"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T02_A01",
+     "subject": "HER",
+     "relation": "候选方案",
+     "value": "平台上门喂猫报价五十元一次但钥匙交陌生人有顾虑",
+     "valid_time": "2026-12-02",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T02",
+      "message_id": "m0",
+      "quote": "陌生人拿我家钥匙进屋"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T02_A02",
+     "subject": "THIRD",
+     "relation": "原定代喂",
+     "value": "表妹档期撞车原定每日代喂落空",
+     "valid_time": "2026-12-01",
+     "status": "invalidated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T01",
+      "message_id": "m0",
+      "quote": "日期全撞上了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的边界先于效率，别催她拍板。",
+   "unknowns": [
+    "平台是否含财产险"
+   ],
+   "protected_expressions": [
+    "五十一次"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台名称与保险细则"
+   ],
+   "may_decline": false
+  },
+  "E159_T03": {
+   "case_id": "E159_T03",
+   "current_action": "评估录像服务并顺着她的思路加一道保险",
+   "acceptable_actions": [
+    "建议录像之外加一道现场见证",
+    "提醒确认录像是否回传可留存",
+    "夸她样品视频都看动作是个细节控"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T03_A01",
+     "subject": "HER",
+     "relation": "服务核查",
+     "value": "候选师傅支持全程录像动作轻缓",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T03",
+      "message_id": "m0",
+      "quote": "全程录像服务"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T03_A02",
+     "subject": "HER",
+     "relation": "报价",
+     "value": "上门喂猫报价五十元一次",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T02",
+      "message_id": "m0",
+      "quote": "五十一次"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "录像她已查好，这轮顺势引出在场见证的方案。",
+   "unknowns": [
+    "录像保存期限"
+   ],
+   "protected_expressions": [
+    "再加一道保险"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构师傅主页评价内容"
+   ],
+   "may_decline": false
+  },
+  "E159_T04": {
+   "case_id": "E159_T04",
+   "current_action": "接下开门在场的请求并确认可行",
+   "acceptable_actions": [
+    "答应代开门并问清每天上门时间段",
+    "应下早饭谢礼并笑说管一顿猫粮钱就行",
+    "确认自己那几天没有出差冲突"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T04_A01",
+     "subject": "SHARED",
+     "relation": "安全方案",
+     "value": "钥匙交 ME 保管并由 ME 开门在场监督",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T04",
+      "message_id": "m0",
+      "quote": "你来开门、在场盯着"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T04_A02",
+     "subject": "HER",
+     "relation": "安全诉求",
+     "value": "HER 希望在录像之外再加一道保险",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T03",
+      "message_id": "m0",
+      "quote": "再加一道保险"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "答应之前自己先过一遍时间，别接下做不到的事。",
+   "unknowns": [
+    "师傅每天上门的精确时段"
+   ],
+   "protected_expressions": [
+    "你来开门、在场盯着"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构早饭的内容"
+   ],
+   "may_decline": false
+  },
+  "E159_T05": {
+   "case_id": "E159_T05",
+   "current_action": "逐条认领钥匙三不边界并承诺执行",
+   "acceptable_actions": [
+    "复述三不原则表示照办",
+    "提议加一条归还时当面点验",
+    "打趣她丑话说前头但说得让人踏实"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T05_A01",
+     "subject": "HER",
+     "relation": "钥匙边界",
+     "value": "钥匙三不原则为不复制不带出门不转交",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T05",
+      "message_id": "m0",
+      "quote": "不复制、不带出门、不转交"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T05_A02",
+     "subject": "SHARED",
+     "relation": "归还条款",
+     "value": "钥匙当日借用当日归还",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T04",
+      "message_id": "m0",
+      "quote": "钥匙当天还你"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "边界条款逐条认领，不含糊不带情绪。",
+   "unknowns": [
+    "钥匙存放抽屉是否上锁"
+   ],
+   "protected_expressions": [
+    "不复制、不带出门、不转交"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构钥匙数量与备用钥匙存在"
+   ],
+   "may_decline": false
+  },
+  "E159_T06": {
+   "case_id": "E159_T06",
+   "current_action": "接住师傅更换并确认流程可原样复用",
+   "acceptable_actions": [
+    "确认录像加见证不因换人失效",
+    "建议让新师傅补一次提前视频",
+    "安抚她平台换人是常态不必慌"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T06_A01",
+     "subject": "THIRD",
+     "relation": "第三方变更",
+     "value": "原定师傅档期满被平台更换",
+     "valid_time": "2026-12-07",
+     "status": "revised",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T06",
+      "message_id": "m0",
+      "quote": "9 号档期满要换人"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T06_A02",
+     "subject": "HER",
+     "relation": "安全条款",
+     "value": "在场监督与非约定时段不开门条款已确立",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T05",
+      "message_id": "m0",
+      "quote": "谁敲门都不开"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "冲突落实轮：第三方被更换，先确认流程复用再安她的心。",
+   "unknowns": [
+    "新师傅的从业年限"
+   ],
+   "protected_expressions": [
+    "9 号档期满要换人"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台更换的补偿方案"
+   ],
+   "may_decline": false
+  },
+  "E159_T07": {
+   "case_id": "E159_T07",
+   "current_action": "认可新师傅核查结果并强调流程不因换人打折",
+   "acceptable_actions": [
+    "确认新师傅资料无硬伤",
+    "提醒打卡照片按天发一份给自己",
+    "夸她一寸都不让的劲头"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T07_A01",
+     "subject": "THIRD",
+     "relation": "换人结论",
+     "value": "新师傅含录像与打卡照片且已提前视频",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T07",
+      "message_id": "m0",
+      "quote": "提前视频过"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T07_A02",
+     "subject": "THIRD",
+     "relation": "第三方变更",
+     "value": "原定师傅档期满被平台更换",
+     "valid_time": "2026-12-07",
+     "status": "revised",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T06",
+      "message_id": "m0",
+      "quote": "9 号档期满要换人"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "换人不换流程，这轮把口头确认落成书面。",
+   "unknowns": [
+    "新师傅上门路线与准时率"
+   ],
+   "protected_expressions": [
+    "一寸都不让"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构新师傅姓名"
+   ],
+   "may_decline": false
+  },
+  "E159_T08": {
+   "case_id": "E159_T08",
+   "current_action": "批注三行流程并补一条归还点验",
+   "acceptable_actions": [
+    "补第四行归还时当面点验",
+    "确认三行无漏并回复照此执行",
+    "顺带问钥匙何时交接"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T08_A01",
+     "subject": "SHARED",
+     "relation": "流程书面化",
+     "value": "三行流程为取钥匙开门在场当天还",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T08",
+      "message_id": "m0",
+      "quote": "取钥匙、开门在场、当天还"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T08_A02",
+     "subject": "HER",
+     "relation": "钥匙边界",
+     "value": "三不原则纳入执行前确认",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T05",
+      "message_id": "m0",
+      "quote": "不复制、不带出门、不转交"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她是备忘型人格，批注也分条写。",
+   "unknowns": [
+    "钥匙交接的具体时间"
+   ],
+   "protected_expressions": [
+    "取钥匙、开门在场、当天还"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构批注工具与格式"
+   ],
+   "may_decline": false
+  },
+  "E159_T09": {
+   "case_id": "E159_T09",
+   "current_action": "汇报首日在场执行情况并接住谢礼",
+   "acceptable_actions": [
+    "确认在场全程并夸师傅动作利索",
+    "接下明早早饭并打趣别带太贵",
+    "提醒打卡照片存档方便她对账"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T09_A01",
+     "subject": "ME",
+     "relation": "首日执行",
+     "value": "首日师傅准时到达且 ME 全程在场",
+     "valid_time": "2026-12-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T09",
+      "message_id": "m0",
+      "quote": "你开门也全程在"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T09_A02",
+     "subject": "SHARED",
+     "relation": "流程执行",
+     "value": "三步流程首日按条落地",
+     "valid_time": "2026-12-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T08",
+      "message_id": "m0",
+      "quote": "取钥匙、开门在场、当天还"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "首日顺利就轻快汇报，不添戏。",
+   "unknowns": [
+    "首日录像是否已回传"
+   ],
+   "protected_expressions": [
+    "毛都蓬成球了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构雪宝照片内容"
+   ],
+   "may_decline": false
+  },
+  "E159_T10": {
+   "case_id": "E159_T10",
+   "current_action": "应下加查请求并给出次日照看重点",
+   "acceptable_actions": [
+    "答应明天开门时重点看水碗和猫的精神",
+    "建议师傅放一碗温水并记下饮水量",
+    "先安抚应激说法再答应加查"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T10_A01",
+     "subject": "THIRD",
+     "relation": "异常观察",
+     "value": "雪宝躲床底且水碗未动需次日加查",
+     "valid_time": "2026-12-11",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T10",
+      "message_id": "m0",
+      "quote": "水碗没动"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T10_A02",
+     "subject": "ME",
+     "relation": "执行状态",
+     "value": "前几日流程运转正常师傅准时",
+     "valid_time": "2026-12-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T09",
+      "message_id": "m0",
+      "quote": "师傅十点准时到"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她隔着三百公里慌，先把可执行的观察项接过来。",
+   "unknowns": [
+    "雪宝平日饮水量基线"
+   ],
+   "protected_expressions": [
+    "水碗没动"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构雪宝的病史"
+   ],
+   "may_decline": false
+  },
+  "E159_T11": {
+   "case_id": "E159_T11",
+   "current_action": "当面归还钥匙并复盘全程执行",
+   "acceptable_actions": [
+    "钥匙点验归还并确认全程无违规",
+    "接下谢饭并让她挑地方",
+    "复盘应激说法宽她的心"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T11_A01",
+     "subject": "SHARED",
+     "relation": "闭环",
+     "value": "出差归来雪宝无恙钥匙当面归还",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T11",
+      "message_id": "m0",
+      "quote": "钥匙还你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T11_A02",
+     "subject": "THIRD",
+     "relation": "异常处理",
+     "value": "水碗异常确认为换环境应激属正常范围",
+     "valid_time": "2026-12-13",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T10",
+      "message_id": "m0",
+      "quote": "水碗没动"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "闭环时刻，钥匙归还要点验，情绪要落地。",
+   "unknowns": [
+    "谢饭的最终地点"
+   ],
+   "protected_expressions": [
+    "五天分毫未动"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构兽医朋友的执业信息"
+   ],
+   "may_decline": false
+  },
+  "E159_T12": {
+   "case_id": "E159_T12",
+   "current_action": "应约周六汤锅谢饭并回赠互惠承诺",
+   "acceptable_actions": [
+    "爽快应约并回一句下次你出差也有我",
+    "应约同时提议把三步流程抄送新模板",
+    "打趣钥匙模板比外卖红包还实用"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E159_T12_A01",
+     "subject": "SHARED",
+     "relation": "邀约",
+     "value": "周六楼下汤锅谢饭邀约待确认",
+     "valid_time": "2026-12-19",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T12",
+      "message_id": "m0",
+      "quote": "谢饭定周六吧"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E159_T12_A02",
+     "subject": "HER",
+     "relation": "经验固化",
+     "value": "钥匙三不原则模板化留存",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E159_T05",
+      "message_id": "m0",
+      "quote": "不复制、不带出门、不转交"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "互惠回礼要真诚，别把承诺说成客套。",
+   "unknowns": [
+    "周六具体到店时间"
+   ],
+   "protected_expressions": [
+    "你下次出差，也有我"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构汤锅店名与地址"
+   ],
+   "may_decline": true
+  }
+ }
+}

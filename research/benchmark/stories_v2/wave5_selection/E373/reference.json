@@ -1,0 +1,753 @@
+{
+ "story_id": "E373",
+ "turns": {
+  "E373_T01": {
+   "case_id": "E373_T01",
+   "current_action": "贺栖迟开启10月对账，立起老三本框架（日常采买/水电物业/人情往来），报出水电物业两笔（电费217、燃气175合计392）与车位管理费329，并要马青原报自己垫的账。",
+   "acceptable_actions": [
+    "按三本账框架接住对账开局，把392（电费217+燃气175）与车位329两笔分别确认入册，应下回头把自己垫的报来一笔一笔对。",
+    "先顺口核对这两个数（217+175=392 对得上），确认水电与车位两个数字归属清楚，再让她继续往下发。",
+    "用列清单口吻接住：水电392、车位329记下了，你先理着，我这边垫付的翻到票据就报。",
+    "短回复确认收到三本账框架与两个数字，垫付明细晚点报，不添不减不改数。"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T01_A01",
+     "subject": "SHARED",
+     "relation": "10月对账框架",
+     "value": "10月对账仍按老三本：日常采买、水电物业、人情往来",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T01", "message_id": "m0", "quote": "还是老三本：日常采买、水电物业、人情往来"},
+     "required_this_turn": false,
+     "affirm_markers": [["还是老三本"], ["日常采买", "水电物业"]]
+    },
+    {
+     "atom_id": "E373_T01_A02",
+     "subject": "SHARED",
+     "relation": "水电物业线10月两笔",
+     "value": "10月电费217、燃气175，水电合计392",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T01", "message_id": "m0", "quote": "10 月电费 217、燃气 175，合计 392"},
+     "required_this_turn": false,
+     "affirm_markers": [["电费 217", "燃气 175"], ["合计 392"]]
+    },
+    {
+     "atom_id": "E373_T01_A03",
+     "subject": "SHARED",
+     "relation": "车位管理费10月一笔",
+     "value": "车位管理费单据在，金额329",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T01", "message_id": "m0", "quote": "车位管理费的单据也在，329"},
+     "required_this_turn": false,
+     "affirm_markers": [["车位管理费的单据"], ["单据也在", "329"]]
+    },
+    {
+     "atom_id": "E373_T01_A04",
+     "subject": "SHARED",
+     "relation": "对账起点背景",
+     "value": "马青原10月15号走了以后，家里10月的账一直没对",
+     "valid_time": "2026-10-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T01", "message_id": "m0", "quote": "你 10 月 15 号走了以后，家里 10 月的账一直没对"},
+     "required_this_turn": false,
+     "affirm_markers": [["10 月 15 号"], ["账一直没对"]]
+    }
+   ],
+   "private_guidance": "本轮是立框架轮：判分重点是听清两个数的归属（392=水电燃气、329=车位）与接话自然。392=217+175 自洽，可顺口核对，无需质疑。她开口就要'一笔一笔对'，只回'好的收到'不接数字不报垫付意愿=客服腔。数字不得添改。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E373_T02": {
+   "case_id": "E373_T02",
+   "current_action": "贺栖迟报日常线总数：10月超市加菜场27笔合计3286；双11预售定金150是10月31号付的，按11月账处理，已从10月日常里剔出。",
+   "acceptable_actions": [
+    "接住日常3286的报数，确认'定金150算11月、已从日常剔出'的归属口径清楚，让她继续报人情线。",
+    "按归属月份复述口径：定金付在10月31号但算11月的，日常27笔3286——口径没毛病，应下。",
+    "短回复：日常3286记下了，定金剔出10月挂11月，口径清楚。"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T02_A01",
+     "subject": "SHARED",
+     "relation": "日常线10月总数（她自报，T07更正前口径）",
+     "value": "10月超市加菜场共27笔，日常合计3286",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T02", "message_id": "m0", "quote": "10 月超市加菜场一共 27 笔，合计 3286"},
+     "required_this_turn": false,
+     "affirm_markers": [["合计 3286"], ["超市加菜场", "27 笔"]]
+    },
+    {
+     "atom_id": "E373_T02_A02",
+     "subject": "SHARED",
+     "relation": "双11预售定金支付事实",
+     "value": "双11预售定金150是10月31号付的",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T02", "message_id": "m0", "quote": "双 11 预售我 10 月 31 号付了定金 150"},
+     "required_this_turn": false,
+     "affirm_markers": [["定金 150"], ["10 月 31 号付"]]
+    },
+    {
+     "atom_id": "E373_T02_A03",
+     "subject": "SHARED",
+     "relation": "定金归属口径",
+     "value": "定金150按11月账处理，已从10月日常里剔出",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T02", "message_id": "m0", "quote": "这个算 11 月的，我已经从日常里剔出去了"},
+     "required_this_turn": false,
+     "affirm_markers": [["算 11 月的"], ["从日常里剔出去"]]
+    }
+   ],
+   "private_guidance": "3286 在 T07 会被她自己更正为 3200——本轮它是'她报的数'，正确回复不背书也不质疑都行，但不得替她改数。本轮新增规则是'预售定金剔出10月、算11月'的归属口径，正确回复应确认口径清楚；漏接口径=记不清。这是 T07 更正链的旧值源头。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E373_T03": {
+   "case_id": "E373_T03",
+   "current_action": "贺栖迟报人情线三笔（10月8号表姐乔迁随800；10月20号给马青原爸买血压计垫388；10月26号给马青原妈买水果垫268，合计1456），并把马青原走前微信说过的车保养512记在他垫付名下、小票拍照存档。",
+   "acceptable_actions": [
+    "确认人情三笔与1456合计无误，认领车保养512在自己垫付名下，接住'小票拍照存档'这句（一笔一据）。",
+    "核对三笔日期（10月8号/20号/26号）与归属（份子/垫付分列），应下512记账，顺口问小票要不要同步一份。",
+    "接住'给你爸买血压计、给你妈买水果'的人情线细目，确认512由她记垫付没意见，人情与垫付两条线分清。"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T03_A01",
+     "subject": "SHARED",
+     "relation": "人情线：表姐乔迁随礼",
+     "value": "10月8号表姐乔迁随了800",
+     "valid_time": "2026-10-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T03", "message_id": "m0", "quote": "10 月 8 号表姐乔迁我随了 800"},
+     "required_this_turn": false,
+     "affirm_markers": [["表姐乔迁"], ["随了 800"]]
+    },
+    {
+     "atom_id": "E373_T03_A02",
+     "subject": "SHARED",
+     "relation": "人情线：给ME爸买血压计垫付",
+     "value": "10月20号给你爸买血压计垫了388",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T03", "message_id": "m0", "quote": "10 月 20 号给你爸买血压计垫了 388"},
+     "required_this_turn": false,
+     "affirm_markers": [["给你爸买血压计"], ["垫了 388"]]
+    },
+    {
+     "atom_id": "E373_T03_A03",
+     "subject": "SHARED",
+     "relation": "人情线：给ME妈买水果垫付",
+     "value": "10月26号给你妈买水果垫了268",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T03", "message_id": "m0", "quote": "10 月 26 号给你妈买水果垫了 268"},
+     "required_this_turn": false,
+     "affirm_markers": [["给你妈买水果"], ["垫了 268"]]
+    },
+    {
+     "atom_id": "E373_T03_A04",
+     "subject": "SHARED",
+     "relation": "人情线合计",
+     "value": "人情线三笔合计1456（800+388+268，算术自洽）",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T03", "message_id": "m0", "quote": "三笔合计 1456"},
+     "required_this_turn": false,
+     "affirm_markers": [["三笔合计 1456"], ["人情线", "1456"]]
+    },
+    {
+     "atom_id": "E373_T03_A05",
+     "subject": "SHARED",
+     "relation": "垫付线：车保养记账",
+     "value": "车保养512记在马青原垫付名下，小票拍照存档",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T03", "message_id": "m1", "quote": "我记在你垫付名下，小票拍照存档了"},
+     "required_this_turn": false,
+     "affirm_markers": [["车保养，512"], ["你垫付名下"]]
+    }
+   ],
+   "private_guidance": "800+388+268=1456 自洽，无需纠数。512 的原始出处是 ME 走前微信（正文未展示），她这句是转述登记——正确回复认领即可，不应反问'我说过吗'式抬杠；对512有异议应走'我对下小票'而非否认。注意线别：人情线是1456三笔，512是垫付线，T09归类时不得混线。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E373_T04": {
+   "case_id": "E373_T04",
+   "current_action": "贺栖迟自查时差点把392记到车位头上，向马青原核对相近金额的归属：392是水电燃气、329才是车位管理费，并说这两个数长得太像怕后面抄错。",
+   "acceptable_actions": [
+    "给准话：对，392是水电燃气（电费217+燃气175），329才是车位管理费，让她放心记。",
+    "确认归属没错，顺带给个防抄错的小办法（比如两张单据分开夹、备注写全科目名）。",
+    "短回复直接钉牢：392水电、329车位，没记错；再补一句'你这么自查很稳'。"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T04_A01",
+     "subject": "HER",
+     "relation": "相近金额自查经过",
+     "value": "她有一张392的小票差点记到车位头上（自查发现，未入账错数）",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T04", "message_id": "m0", "quote": "有一张 392 的小票我差点记到车位头上"},
+     "required_this_turn": false,
+     "affirm_markers": [["392 的小票"], ["差点记到车位头上"]]
+    },
+    {
+     "atom_id": "E373_T04_A02",
+     "subject": "SHARED",
+     "relation": "相近金额归属钉牢（干扰位核心）",
+     "value": "392是水电燃气，329才是车位管理费",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T04", "message_id": "m0", "quote": "392 是水电燃气，329 才是车位管理费"},
+     "required_this_turn": false,
+     "affirm_markers": [["392 是水电燃气"], ["329 才是车位管理费"]]
+    },
+    {
+     "atom_id": "E373_T04_A03",
+     "subject": "HER",
+     "relation": "防抄错诉求",
+     "value": "392与329数字相近，她怕后面抄错，请马青原帮她记牢归属",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T04", "message_id": "m0", "quote": "这两个数长得太像，我怕后面抄错"},
+     "required_this_turn": false,
+     "affirm_markers": [["长得太像"], ["怕后面抄错"]]
+    }
+   ],
+   "private_guidance": "干扰位核对轮（intent=核对归属）：正确方向=给准话确认'392水电、329车位'，与T01她自报口径一致。注意'差点记到车位头上'是自查未遂、392并未真的入错账——不得把'她记错过'当已发生事实转述。只回'对，没错'不给准话=万能句生存空间。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E373_T05": {
+   "case_id": "E373_T05",
+   "current_action": "贺栖迟挂11月新账：宽带年费昨天（11月5日）续了720；双11预售尾款438是11月1号凌晨付的，定金150加尾款438一共588，请马青原看看这么算对不对。",
+   "acceptable_actions": [
+    "给准话：算得对，150+438=588，两笔都归11月，跟定金剔出10月的口径对得上。",
+    "确认588算法与11月归属，顺带确认宽带720也记11月，让她继续。",
+    "短回复：588没错，定金尾款分开留痕很清楚，宽带720收到。"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T05_A01",
+     "subject": "SHARED",
+     "relation": "11月新账：宽带年费",
+     "value": "宽带年费720，11月5日（昨天）续费，属11月",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T05", "message_id": "m0", "quote": "宽带年费昨天续了 720"},
+     "required_this_turn": false,
+     "affirm_markers": [["宽带年费"], ["续了 720"]]
+    },
+    {
+     "atom_id": "E373_T05_A02",
+     "subject": "SHARED",
+     "relation": "11月新账：预售尾款",
+     "value": "双11预售尾款438是11月1号凌晨付的",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T05", "message_id": "m0", "quote": "尾款 438 是 11 月 1 号凌晨付的"},
+     "required_this_turn": false,
+     "affirm_markers": [["尾款 438"], ["11 月 1 号凌晨付"]]
+    },
+    {
+     "atom_id": "E373_T05_A03",
+     "subject": "SHARED",
+     "relation": "预售两笔合计",
+     "value": "定金150加尾款438一共588（她请马青原核的加法，正确）",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T05", "message_id": "m0", "quote": "150 加 438 一共 588"},
+     "required_this_turn": false,
+     "affirm_markers": [["150 加 438"], ["一共 588"]]
+    }
+   ],
+   "private_guidance": "note 证据链：'尾款 438 那个数，我是照支付记录截图念的'——438 出自她的支付截图，马青原无法独立核验金额本身，但加法 150+438=588 自洽可核。正确回复=确认算法与11月归属；编造'我查了下你实际付的是XXX'式独立核验=无据。'昨天'=11月5日（消息时间2026-11-06 08:50）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E373_T06": {
+   "case_id": "E373_T06",
+   "current_action": "表姐坚持回礼一箱大闸蟹（定了11月9号发货），贺栖迟把这份子800在账上标'已回礼两清'、后面不再挂账，跟马青原说一声。",
+   "acceptable_actions": [
+    "接住两清口径：她管账她定规矩，回礼实物已定、账上标两清不再挂账，行；顺口问句蟹什么时候到。",
+    "确认两清记法，提醒一句到货后留个拍照/到货时间的据，符合一笔一据的习惯。",
+    "顺着她的规矩应下'两清就两清'，带一句对蟹的期待（回来正好赶上吃）。"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T06_A01",
+     "subject": "THIRD",
+     "relation": "表姐回礼安排",
+     "value": "表姐非要回一箱大闸蟹，定了11月9号发货",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T06", "message_id": "m0", "quote": "非要回一箱大闸蟹，拦不住，她定了 11 月 9 号发货"},
+     "required_this_turn": false,
+     "affirm_markers": [["一箱大闸蟹"], ["11 月 9 号发货"]]
+    },
+    {
+     "atom_id": "E373_T06_A02",
+     "subject": "SHARED",
+     "relation": "人情线账面口径（本轮立下）",
+     "value": "份子800在账上标'已回礼两清'，后面不再挂账",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T06", "message_id": "m0", "quote": "那这份子 800 我在账上标'已回礼两清'了啊，后面就不挂着了"},
+     "required_this_turn": false,
+     "affirm_markers": [["已回礼两清"], ["800 我在账上标"]]
+    }
+   ],
+   "private_guidance": "两清是账房（贺栖迟）对自己账本的处置：'回礼实物已定'是事实，'标两清不挂账'是她的记账口径。正确回复尊重她的账房裁量，不替她发明'这样对冲不合规矩'式纠正。此口径是 T10 口径浮动位的'最新口径'锚点。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E373_T07": {
+   "case_id": "E373_T07",
+   "current_action": "贺栖迟主动改口更正：之前报的日常合计3286有误（一笔86重复记了两次），实际日常应为3200、3286作废；另备注水电那张392的单子里含9月结转过来的33，11月补缴时再冲抵。",
+   "acceptable_actions": [
+    "确认更正入账：日常按3200走、3286作废；水电备注'含9月结转33、11月补缴冲抵'记下了。",
+    "接住改口：夸一句铺开小票复核细致，复述新口径3200并把结转33的冲抵备注应下。",
+    "短回复给准话：收到，日常3200、3286作废；水电33结转我记着，11月补缴时冲抵。"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T07_A01",
+     "subject": "SHARED",
+     "relation": "更正链旧口径（已作废）",
+     "value": "旧口径：10月日常合计3286，已被本轮改口作废",
+     "valid_time": "2026-10",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T02", "message_id": "m0", "quote": "10 月超市加菜场一共 27 笔，合计 3286"},
+     "required_this_turn": true,
+     "affirm_markers": [["合计 3286"], ["3286 作废"]],
+     "item_markers": ["日常合计 3286"]
+    },
+    {
+     "atom_id": "E373_T07_A02",
+     "subject": "SHARED",
+     "relation": "更正链新口径（现行）",
+     "value": "10月日常合计更正为3200（一笔86重复记了两次所致）",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T07", "message_id": "m0", "quote": "有一笔 86 重复记了两次，实际日常应该是 3200"},
+     "required_this_turn": false,
+     "affirm_markers": [["实际日常应该是 3200"], ["86 重复记了两次"]]
+    },
+    {
+     "atom_id": "E373_T07_A03",
+     "subject": "SHARED",
+     "relation": "水电线备注留痕",
+     "value": "水电392的单子里含9月结转过来的33，11月补缴的时候再冲抵（备注项，不是新账）",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T07", "message_id": "m0", "quote": "里面含了 9 月结转过来的 33，11 月补缴的时候再冲抵"},
+     "required_this_turn": false,
+     "affirm_markers": [["9 月结转过来的 33"], ["11 月补缴的时候再冲抵"]]
+    }
+   ],
+   "private_guidance": "更正链位（intent=更正日常合计）：正确方向=接受更正、此后用3200，3286作废；复述'3286有误/作废'是正确跟随更正，不是坐实旧值——affirm_markers 已选'合计 3286'（带空格形态）降低无空格更正话术的误伤，残余回声误伤面登记于 audit §6，评分侧应配合更正语境/否定窗豁免。结转33是备注不是新增一笔，别把它当11月新账。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["沿用 3286 作为当前有效的 10 月日常合计（旧口径已作废，现行口径 3200）"],
+   "may_decline": false
+  },
+  "E373_T08": {
+   "case_id": "E373_T08",
+   "current_action": "贺栖迟登记马青原昨天微信说的出差住宿垫付966（发票抬头开的是家里）：走马青原单位报销，先记进家庭垫付台账单列，不跟三本账混。",
+   "acceptable_actions": [
+    "认领966垫付事实，确认单列台账口径对：报销线不混三本账，发票抬头家里这些细节她记清楚了。",
+    "确认这笔走自己单位报销、家庭台账单列，报销批下来再跟她对冲。",
+    "短回复：966收到，单列记着，报销下来告诉你。"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T08_A01",
+     "subject": "SHARED",
+     "relation": "垫付台账：出差住宿",
+     "value": "马青原出差住宿垫付966，发票抬头开的是家里（马青原昨日微信所说，她登记）",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T08", "message_id": "m0", "quote": "你昨天微信说的出差住宿垫付我看到了，966，发票抬头开的是家里"},
+     "required_this_turn": false,
+     "affirm_markers": [["出差住宿垫付", "966"], ["发票抬头开的是家里"]]
+    },
+    {
+     "atom_id": "E373_T08_A02",
+     "subject": "SHARED",
+     "relation": "垫付台账分线口径",
+     "value": "966走马青原单位报销，先记进家庭垫付台账单列，不跟三本账混",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T08", "message_id": "m0", "quote": "这笔走你单位报销，我先记进家庭垫付台账单列，不跟三本账混"},
+     "required_this_turn": false,
+     "affirm_markers": [["家庭垫付台账单列"], ["走你单位报销"]]
+    }
+   ],
+   "private_guidance": "'你昨天微信说的'指向马青原上一条回复（正文未展示）——候选以 HER 本轮陈述为准认领即可；否认'我没说过'=与剧情对抗。966 是垫付台账线（走单位报销），不进三本账，T09 归类时应单列而非按月塞进某本账。不得编造966的明细拆分。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E373_T09": {
+   "case_id": "E373_T09",
+   "current_action": "贺栖迟发起总核对，报出七笔：日常3200、水电392、车位329、宽带720、人情1456、垫付车保养512、住宿垫付966，重点是月份归类——哪些算10月、哪些算11月，请马青原一笔一笔归给她。",
+   "acceptable_actions": [
+    "逐笔归类：10月=日常3200（更正后）、水电392（含9月结转33备注）、车位329、人情1456、车保养512（走前垫付）；11月=宽带720；住宿966=垫付台账单列不走三本账。",
+    "逐笔给归属并说明依据（用更正后3200、11月5号续的宽带归11月、966单列），再提醒11月还有预售尾款588没在这张单子里。",
+    "短版清单式回复：10月五笔（3200/392/329/1456/512垫付）+11月宽带720+966单列，请她按这个核。"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T09_A01",
+     "subject": "SHARED",
+     "relation": "日常线现行口径（更正后）",
+     "value": "10月日常合计以更正后的3200为准（3286已作废）",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T07", "message_id": "m0", "quote": "实际日常应该是 3200"},
+     "required_this_turn": true,
+     "affirm_markers": [["实际日常应该是 3200"], ["86 重复记了两次"]]
+    },
+    {
+     "atom_id": "E373_T09_A02",
+     "subject": "SHARED",
+     "relation": "人情线合计",
+     "value": "人情线三笔（800/388/268，均为10月8/20/26号）合计1456",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T03", "message_id": "m0", "quote": "三笔合计 1456"},
+     "required_this_turn": true,
+     "affirm_markers": [["三笔合计 1456"], ["人情线", "1456"]]
+    },
+    {
+     "atom_id": "E373_T09_A03",
+     "subject": "SHARED",
+     "relation": "垫付线：车保养归属",
+     "value": "车保养512记在马青原垫付名下（走前=10月中旬前，属10月垫付）",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T03", "message_id": "m1", "quote": "我记在你垫付名下，小票拍照存档了"},
+     "required_this_turn": true,
+     "affirm_markers": [["车保养，512"], ["你垫付名下"]]
+    },
+    {
+     "atom_id": "E373_T09_A04",
+     "subject": "SHARED",
+     "relation": "11月新账：宽带",
+     "value": "宽带年费720于11月5日续费，归11月",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T05", "message_id": "m0", "quote": "宽带年费昨天续了 720"},
+     "required_this_turn": true,
+     "affirm_markers": [["宽带年费"], ["续了 720"]]
+    },
+    {
+     "atom_id": "E373_T09_A05",
+     "subject": "SHARED",
+     "relation": "垫付台账分线",
+     "value": "住宿垫付966记家庭垫付台账单列，不跟三本账混（11月）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T08", "message_id": "m0", "quote": "我先记进家庭垫付台账单列，不跟三本账混"},
+     "required_this_turn": true,
+     "affirm_markers": [["家庭垫付台账单列"], ["不跟三本账混"]]
+    }
+   ],
+   "private_guidance": "聚合轮：正确归类=日常3200（用T07更正后口径，用3286=判负）、水电392与车位329（不得互换，392里含9月结转33备注）、人情1456（10月）、车保养512（走前=10月、垫付线）、宽带720（11月）、住宿966（垫付台账单列、11月）。她这张单子没列尾款588，正确回复可指出11月还有尾款588待入册，不指也可接受。注意她口述的单子本身与现行口径一致，无需纠她的数。",
+   "unknowns": [
+    {
+     "topic": "日常合计是否被沿用旧口径3286（更正链旧值）",
+     "note": "现行口径是T07更正后的3200；候选若按3286归类10月日常=沿用作废旧值判负。探测词含无空格形态（候选手打通常不带空格）。",
+     "markers": [["按3286算"], ["日常合计3286"], ["合计3286"]],
+     "affirm_markers": [["按3286算"], ["日常合计3286"], ["合计3286"]]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["把日常合计按旧口径 3286 归类", "把车位管理费 329 与水电 392 互换归属", "把住宿垫付 966 混入三本账按月份归类"],
+   "may_decline": false
+  },
+  "E373_T10": {
+   "case_id": "E373_T10",
+   "current_action": "表姐那箱大闸蟹今早到货（物流压了几天，八只全活），表姐说这箱抵那份子800；贺栖迟在'已回礼两清'这么标没错与'按市价折个三四百记'之间拿不准，问马青原。",
+   "acceptable_actions": [
+    "支持按最新账面口径走：两清是你11月7号就标好的、蟹也实际到货，两清有据；要留据就把到货时间记上一笔，不必折价。",
+    "把裁量权还给她并给依据：账本你管、规矩是对平封存；折个三四百只是随口一估、没凭据，别当数记，两清这么标没错。",
+    "短回复：标没错，两清平账；八只全活，22号回来正好吃——不坐实任何折价数。"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T10_A01",
+     "subject": "SHARED",
+     "relation": "人情线现行账面口径（最新口径）",
+     "value": "份子800已在账上标'已回礼两清'、不再挂账（T06口径，现行有效）",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T06", "message_id": "m0", "quote": "那这份子 800 我在账上标'已回礼两清'了啊，后面就不挂着了"},
+     "required_this_turn": true,
+     "affirm_markers": [["已回礼两清"], ["800 我在账上标"]]
+    },
+    {
+     "atom_id": "E373_T10_A02",
+     "subject": "SHARED",
+     "relation": "家中记账规矩（KB）",
+     "value": "家里的规矩是月账对平后再封存，封了不改",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "家里的规矩是月账对平后再封存，封了不改"},
+     "required_this_turn": true,
+     "affirm_markers": [["对平后再封存"], ["封了不改"]]
+    },
+    {
+     "atom_id": "E373_T10_A03",
+     "subject": "SHARED",
+     "relation": "回礼到货事实",
+     "value": "表姐那箱蟹今早（11月14日）才到，物流压了几天，八只全活",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T10", "message_id": "m0", "quote": "表姐那箱蟹今早才到，物流压了几天，八只全活"},
+     "required_this_turn": false,
+     "affirm_markers": [["八只全活"], ["今早才到"]]
+    },
+    {
+     "atom_id": "E373_T10_A04",
+     "subject": "THIRD",
+     "relation": "表姐的抵账说法",
+     "value": "表姐说这箱就抵那份子800",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T10", "message_id": "m0", "quote": "她说这箱就抵那份子 800"},
+     "required_this_turn": false,
+     "affirm_markers": [["抵那份子 800"], ["她说这箱"]]
+    },
+    {
+     "atom_id": "E373_T10_A05",
+     "subject": "HER",
+     "relation": "记账口径待定（疑问句备选，未拍板）",
+     "value": "她在'两清这么标'与'按市价折个三四百记'之间拿不准——折价只是疑问句里的备选，未定",
+     "valid_time": "2026-11-14",
+     "status": "tentative",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T10", "message_id": "m0", "quote": "还是你觉得该按市价折个三四百记？我有点拿不准"},
+     "required_this_turn": false,
+     "affirm_markers": [["按市价折个三四百"], ["有点拿不准"]]
+    }
+   ],
+   "private_guidance": "口径浮动陷阱位：正确处置=以最新口径/账本为准——两清是T06立下的现行账面口径，回礼实物已实际到货（两清有据），家里的规矩是对平后封存、封了不改。她问'标没错吧'是求证不是改账申请：支持两清+建议留痕（到货时间拍照记账）即可；'折三四百'是疑问句里的未定备选，候选坐实具体折价数或宣布改账=坐实unknown/无据确定化。她才是账房，马青原给依据不代拍板。",
+   "unknowns": [
+    {
+     "topic": "800份子是否改按市价折价记账（她未拍板的备选）",
+     "note": "现行账面口径是T06的'已回礼两清'；'折个三四百'只是她拿不准时随口的疑问句备选，未定案。候选替她拍板折价或坐实具体折价数=坐实未定点。",
+     "markers": [["折个三四百"], ["按市价折个三四百"]],
+     "affirm_markers": [["折个三四百"], ["按市价折个三四百"]]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["坐实'按市价折三四百记账'为已定处置", "宣布推翻'已回礼两清'的现行账面口径另立新数", "编造这箱大闸蟹的具体市价金额"],
+   "may_decline": false
+  },
+  "E373_T11": {
+   "case_id": "E373_T11",
+   "current_action": "贺栖迟提交10月封账清单请马青原终核：10月=日常3200、水电392、车位329、人情1456（其中800已两清）、垫付车保养512；11月目前=宽带720、尾款588、住宿966台账单列。",
+   "acceptable_actions": [
+    "逐项终核确认：10月五个数+11月三笔与更正后口径一致、没漏没重，可以封。",
+    "确认清单无误并补两句备注提醒（水电392里9月结转33要在11月补缴时冲抵；尾款588=定金150+尾款438），然后同意封账。",
+    "短回复：都对上了，封吧——点一句'人情1456里800两清'确认她口径没漂。"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "time_state", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T11_A01",
+     "subject": "SHARED",
+     "relation": "日常线现行口径（更正后）",
+     "value": "10月日常合计以更正后的3200为准（3286已作废）",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T07", "message_id": "m0", "quote": "实际日常应该是 3200"},
+     "required_this_turn": true,
+     "affirm_markers": [["实际日常应该是 3200"], ["86 重复记了两次"]]
+    },
+    {
+     "atom_id": "E373_T11_A02",
+     "subject": "SHARED",
+     "relation": "人情线合计",
+     "value": "人情线三笔合计1456（均为10月）",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T03", "message_id": "m0", "quote": "三笔合计 1456"},
+     "required_this_turn": true,
+     "affirm_markers": [["三笔合计 1456"], ["人情线", "1456"]]
+    },
+    {
+     "atom_id": "E373_T11_A03",
+     "subject": "SHARED",
+     "relation": "人情线两清口径",
+     "value": "份子800已标'已回礼两清'（清单中'其中800已两清'与之相符）",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T06", "message_id": "m0", "quote": "那这份子 800 我在账上标'已回礼两清'了啊，后面就不挂着了"},
+     "required_this_turn": true,
+     "affirm_markers": [["已回礼两清"], ["800 我在账上标"]]
+    },
+    {
+     "atom_id": "E373_T11_A04",
+     "subject": "SHARED",
+     "relation": "11月预售合计",
+     "value": "定金150加尾款438一共588，归11月（清单'尾款588'与之相符）",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T05", "message_id": "m0", "quote": "150 加 438 一共 588"},
+     "required_this_turn": true,
+     "affirm_markers": [["150 加 438"], ["一共 588"]]
+    },
+    {
+     "atom_id": "E373_T11_A05",
+     "subject": "SHARED",
+     "relation": "垫付台账分线",
+     "value": "住宿垫付966记台账单列（清单'住宿966台账单列'与之相符）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T08", "message_id": "m0", "quote": "我先记进家庭垫付台账单列，不跟三本账混"},
+     "required_this_turn": true,
+     "affirm_markers": [["家庭垫付台账单列"], ["不跟三本账混"]]
+    }
+   ],
+   "private_guidance": "终核轮（intent=请终核封账清单）：她这份清单与更正后口径逐项一致（3200/392/329/1456含800两清/512垫付；11月720/588/966单列），正确回复=逐项核对确认、可以封；加分项=提醒水电392里9月结转33的11月冲抵备注带进11月。把3286当当前值、互换392/329、把11月款项归进10月=判负。392/329归属口径见T04原子（392水电燃气、329车位）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["把日常合计核成 3286（旧口径已作废）", "把水电 392 与车位 329 互换归属", "把 11 月的宽带 720 或尾款 588 归进 10 月封账清单"],
+   "may_decline": false
+  },
+  "E373_T12": {
+   "case_id": "E373_T12",
+   "current_action": "贺栖迟宣布封账闭环，并留新约定与轻钩：这月22号马青原回来她去接站、回来正好吃蟹（剩六只冻着）、到家把12月预算表过一遍（她做了新模板，想加哪列提前想好，别到时候又抢电脑）。",
+   "acceptable_actions": [
+    "接下封账与接站安排（22号到、你来接站），接'吃蟹'与预算表钩子，回一句想加的列或让她留一列。",
+    "轻松收尾：确认22号行程，调侃'电脑让给你/加列我想好了'，预算表到家一起过。",
+    "合法简短收尾（如'好，22号见，蟹给我留着'）不展开新话题，也算合格。"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "time_state", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E373_T12_A01",
+     "subject": "SHARED",
+     "relation": "接站约定",
+     "value": "这月22号马青原回来，贺栖迟去接站",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T12", "message_id": "m0", "quote": "这月 22 号你回来，我去接站"},
+     "required_this_turn": false,
+     "affirm_markers": [["22 号你回来"], ["我去接站"]]
+    },
+    {
+     "atom_id": "E373_T12_A02",
+     "subject": "SHARED",
+     "relation": "吃蟹安排",
+     "value": "回来正好吃蟹，剩六只她冻着",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T12", "message_id": "m0", "quote": "回来正好吃蟹，剩六只我冻着"},
+     "required_this_turn": false,
+     "affirm_markers": [["剩六只我冻着"], ["回来正好吃蟹"]]
+    },
+    {
+     "atom_id": "E373_T12_A03",
+     "subject": "SHARED",
+     "relation": "预算表之约",
+     "value": "到家把12月的预算表过一遍，她做了个新模板",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T12", "message_id": "m0", "quote": "到家咱把 12 月的预算表过一遍，我做了个新模板"},
+     "required_this_turn": false,
+     "affirm_markers": [["12 月的预算表"], ["做了个新模板"]]
+    },
+    {
+     "atom_id": "E373_T12_A04",
+     "subject": "SHARED",
+     "relation": "封账完成与玩笑钩",
+     "value": "10月账封账完成；她玩笑式叮嘱想加哪列提前想好、别到时候又抢电脑",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E373_T12", "message_id": "m0", "quote": "别到时候又跟我抢电脑"},
+     "required_this_turn": false,
+     "affirm_markers": [["封账", "抢电脑"], ["想加哪列提前想好"]]
+    }
+   ],
+   "private_guidance": "may_decline=true 收尾轮：合法不回走 decline 分支单独计分；若回复，重点是接住接站/吃蟹/预算表的轻钩、收尾位不出新钩（出钩=不读空气判负）。'剩六只'与T10'八只全活'之间的差额她没解释——候选不得替她编'你吃了两只'式补账。'封账'宣告后10月线不再动，不要再翻旧账。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  }
+ }
+}

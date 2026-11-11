@@ -1,0 +1,289 @@
+{
+ "episode_id": "E150",
+ "persona": {
+  "her": {
+   "name": "小满",
+   "traits": [
+    "行政岗，组局热心肠",
+    "改主意快但认账也快",
+    "怕麻烦别人，自己先兜底"
+   ],
+   "boundaries": [
+    "说好的局尽量不黄，黄也要黄得体面",
+    "不愿让朋友为她的加班买单"
+   ]
+  },
+  "me": {
+   "name": "阿澈",
+   "traits": [
+    "前同事，现不同部门",
+    "周末起床困难，但答应的局从不咕",
+    "回话短，玩笑干"
+   ],
+   "boundaries": [
+    "九点前的集合本能拒绝，但熟人例外"
+   ]
+  },
+  "relationship_stage": "普通朋友（前同事，散伙后仍常聚的老熟人）"
+ },
+ "initial_kb": {
+  "her": "小满在公司做行政，每月组织一次户外局，这次盯上了北山经典环线；她有个'局不能黄'的执念，改局必给所有人交代。",
+  "me": "阿澈周末爱睡懒觉，九点前的集合基本回绝；但他答应的局从不咕，装备里常年有根备用登山杖。",
+  "warmth": "前同事，散伙后也常聚，她组局第一个想到的就是叫他。",
+  "style": "她发消息爱带感叹号，他回得短，一个'行'字能顶三句。"
+ },
+ "turns": [
+  {
+   "case_id": "E150_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-02 12:10",
+      "text": "阿澈！下下周日11月15号北山经典环线，早上八点山脚集合，我连包车都问好了，一人摊四十，你来不来"
+     }
+    ],
+    "clock": "2026-11-02 12:15",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state": "兴奋组局",
+    "warmth": "high",
+    "shift": "新局发起：日期、集合、费用一次报齐，等ME表态"
+   }
+  },
+  {
+   "case_id": "E150_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-02 21:32",
+      "text": "群里三个同事都应了，我顺手买了两根登山杖，新的那根给你留着，旧的那根我自己用，上山好借力"
+     }
+    ],
+    "clock": "2026-11-02 21:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "安排得明明白白",
+    "warmth": "high",
+    "shift": "阵容成形，登山杖成为她的心思道具"
+   }
+  },
+  {
+   "case_id": "E150_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-05 18:40",
+      "text": "完了完了，公司15号那天全员盘点，我值白班，改不了班，这个局可能要黄"
+     }
+    ],
+    "clock": "2026-11-05 18:43",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "慌张",
+    "warmth": "medium",
+    "shift": "首次取消预警：工作冲突压住原日期"
+   }
+  },
+  {
+   "case_id": "E150_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-05 21:10",
+      "text": "我在群里发起了改期投票，多数说改到11月22号周日，回老家那个同事说她22号前都在，另一个说都行，你看你22号周日行不行？早上八点还是老地方"
+     }
+    ],
+    "clock": "2026-11-05 21:12",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "抢救中",
+    "warmth": "medium",
+    "shift": "取消转改期：投票落地22号，向ME确认新档期"
+   }
+  },
+  {
+   "case_id": "E150_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-06 09:20",
+      "text": "好嘞，那就定22号！我今晚把攻略重新排一遍，包车群也重新拼，等我消息"
+     }
+    ],
+    "clock": "2026-11-06 09:22",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "落定",
+    "warmth": "high",
+    "shift": "改期正式生效，她重启全套准备工作"
+   }
+  },
+  {
+   "case_id": "E150_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-10 12:05",
+      "text": "对了，回老家那个同事要带她表弟一起，人数再加一，包车重新算，一人摊三十二，还便宜了"
+     }
+    ],
+    "clock": "2026-11-10 12:08",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "小得意",
+    "warmth": "medium",
+    "shift": "人数与费用顺手上浮，改期后的账目被刷新"
+   }
+  },
+  {
+   "case_id": "E150_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-13 19:45",
+      "text": "天大的乌龙，主管刚说15号的盘点取消了！！我周日空出来了……可是局已经改到22号了，你说我是不是傻"
+     }
+    ],
+    "clock": "2026-11-13 19:48",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "哭笑不得",
+    "warmth": "medium",
+    "shift": "原日复活与新档期对撞，双日纠结出现"
+   }
+  },
+  {
+   "case_id": "E150_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-14 10:30",
+      "text": "我想通了，局维持22号不动，来回来去折腾人比黄了还难看。明天周日我自己先去踩个点，把集合点坐标记准"
+     }
+    ],
+    "clock": "2026-11-14 10:32",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "想通了",
+    "warmth": "medium",
+    "shift": "拍板维持22号，空出的周日转为踩点用途"
+   }
+  },
+  {
+   "case_id": "E150_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-15 17:20",
+      "text": "踩点回来了，坏消息：北山上段在修栈道，封到月底，经典环线走不通。好消息：西线能走，多两公里，风景不差。我改推西线，攻略重排"
+     }
+    ],
+    "clock": "2026-11-15 17:23",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "又惊又稳",
+    "warmth": "medium",
+    "shift": "踩点实证封路，路线被迫变通为西线"
+   }
+  },
+  {
+   "case_id": "E150_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-17 12:15",
+      "text": "回老家那个同事临时要加班来不了了，表弟也不带来了，一下少俩。包车不划算了，我干脆改公交，一人摊十几块就够"
+     }
+    ],
+    "clock": "2026-11-17 12:18",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "认了",
+    "warmth": "medium",
+    "shift": "人数回退引爆包车口径，交通方式再变通"
+   }
+  },
+  {
+   "case_id": "E150_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-20 20:50",
+      "text": "万事俱备：周日早八点，西线，公交集合，三人加你四个。这局从1号到现在改了五回，你一句怨言没有，阿澈你是好人"
+     }
+    ],
+    "clock": "2026-11-20 20:52",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "感慨",
+    "warmth": "high",
+    "shift": "最终方案报备，她数着改局次数道谢"
+   }
+  },
+  {
+   "case_id": "E150_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-22 18:05",
+      "text": "下山啦！西线绝了，等栈道修好我们把经典环线补上，算你欠我一次。下次组局还八点集合，你敢迟到就把你的登山杖没收"
+     }
+    ],
+    "clock": "2026-11-22 18:08",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state": "尽兴",
+    "warmth": "high",
+    "shift": "以补环线之约和登山杖玩笑自然收尾"
+   }
+  }
+ ]
+}

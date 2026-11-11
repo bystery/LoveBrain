@@ -1,0 +1,420 @@
+{
+ "story_id": "E027",
+ "turns": {
+  "E027_T01": {
+   "current_action": "接住'解说词像传销'的吐槽——用具体展厅细节回她，不空附和",
+   "acceptable_actions": [
+    "用具体展厅细节接吐槽",
+    "接吐槽+问她策展视角怎么看",
+    "接吐槽+自报当前位置"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E027_A01",
+     "subject": "她",
+     "relation": "判断",
+     "value": "赛博山水展解说词写得很差",
+     "valid_time": "2026-11-21 14:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E027_T01",
+      "message_id": "m0",
+      "quote": "解说词写得像传销"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "偶遇同展是投缘的物理证明；吐槽接得具体才算同行。",
+   "unknowns": [
+    "她看到第几个厅"
+   ],
+   "protected_expressions": [
+    "解说词写得像传销"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E027_T01"
+  },
+  "E027_T02": {
+   "current_action": "她的'你是哪一半'是陷阱梗——自嘲式认领，别装清高",
+   "acceptable_actions": [
+    "自嘲认领其中一半",
+    "反问她猜哪半",
+    "自嘲+拍照动机合理化"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "学姐的梗带钩；老实上钩最稳。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你是哪一半 说实话"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E027_T02"
+  },
+  "E027_T03": {
+   "current_action": "接她互动屏摆姿势十分钟的自嘲——查证事实再回（我知道它是会员制）",
+   "acceptable_actions": [
+    "告知会员制事实",
+    "先笑她再补事实",
+    "事实+提议下楼坐"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E027_A02",
+     "subject": "互动屏",
+     "relation": "事实",
+     "value": "只对会员开放扫码（非损坏）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "上次陪她逛展时试过，出口那台互动屏只对会员开放扫码。"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的怀疑是错的但我有正确答案——用事实救场比笑话高级。",
+   "unknowns": [
+    "互动屏会员规则细节"
+   ],
+   "protected_expressions": [
+    "我怀疑是坏的"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造互动屏其他功能"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E027_T03",
+   "revision_note": "2026-10-28 封板前修题：A02 原引 initial_kb『看展自备讲解器』字面在库但语义不支持『会员制』事实；改为把该事实写入 initial_kb.me 并逐字引用。旧文件 .bak-20261028_122113 保留。"
+  },
+  "E027_T04": {
+   "current_action": "她的'钓鱼吗'是吐槽高潮——收住，不新建梗",
+   "acceptable_actions": [
+    "顺着收一句",
+    "补一个事实细节收",
+    "接梗+提议下楼"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "吐槽的节奏她带着；到顶就收。",
+   "unknowns": [],
+   "protected_expressions": [
+    "那它竖在大厅干嘛 钓鱼吗"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E027_T04"
+  },
+  "E027_T05": {
+   "current_action": "她请咖啡（工伤梗）——答应并接住梗，推进自然",
+   "acceptable_actions": [
+    "答应+接工伤梗",
+    "答应+说下次我请展",
+    "答应+问她几点走"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她主动把偶遇延成咖啡；接住即推进。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你被钓鱼了算工伤"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E027_T05"
+  },
+  "E027_T06": {
+   "current_action": "'再聊工伤加钱'——接住并收，咖啡馆话题线下进行",
+   "acceptable_actions": [
+    "接梗收",
+    "接梗+转移去馆里",
+    "接梗+问她下一场看什么"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "梗稳住就够；别把微信聊天拖长过见面。",
+   "unknowns": [],
+   "protected_expressions": [
+    "再聊工伤加钱"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E027_T06"
+  },
+  "E027_T07": {
+   "current_action": "她提供冷门展信息（瑞士海报展）——接住邀约并给确定性意向",
+   "acceptable_actions": [
+    "答应+问档期",
+    "答应+说一定去",
+    "答应+反问她内部票"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E027_A03",
+     "subject": "她",
+     "relation": "邀约",
+     "value": "下月瑞士海报展（冷门人少）",
+     "valid_time": "2026-11-25 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E027_T07",
+      "message_id": "m0",
+      "quote": "瑞士海报展 人少"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她用职业资源挑的展；这个邀约的分量接住。",
+   "unknowns": [
+    "具体展期"
+   ],
+   "protected_expressions": [
+    "瑞士海报展 人少"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E027_T07"
+  },
+  "E027_T08": {
+   "current_action": "她的'提前三天跟我说'是给实验室留余地的成熟邀约——记住这个规则",
+   "acceptable_actions": [
+    "确认规则+说会守约",
+    "确认+自嘲导师随缘",
+    "确认+问她买票"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E027_A04",
+     "subject": "她",
+     "relation": "规则",
+     "value": "提前三天确认海报展同行",
+     "valid_time": "2026-11-25 21:38",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E027_T08",
+      "message_id": "m1",
+      "quote": "提前三天跟我说"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她定的规则要被记住并在 T09 兑现——这是记忆考核点。",
+   "unknowns": [],
+   "protected_expressions": [
+    "提前三天跟我说"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E027_T08"
+  },
+  "E027_T09": {
+   "current_action": "她守约在提前三天来问——按约答复具体日期（intent ACTIVE 落实）",
+   "acceptable_actions": [
+    "确认周六+给时间地点",
+    "确认+问要不要一起吃午饭",
+    "确认+让她定时间"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E027_A05",
+     "subject": "她",
+     "relation": "守约",
+     "value": "按提前三天规则来确认周六",
+     "valid_time": "2026-12-02 21:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E027_T09",
+      "message_id": "m0",
+      "quote": "提前三天到了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她记得自己定的规则，我也要记得——双向的可靠才是搭子。",
+   "unknowns": [],
+   "protected_expressions": [
+    "提前三天到了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": {
+    "text": "落实周六海报展同行",
+    "status": "ACTIVE",
+    "enabled": true
+   },
+   "case_id": "E027_T09"
+  },
+  "E027_T10": {
+   "current_action": "约定落成（周六两点展馆门口，她买票）——确认细节+收",
+   "acceptable_actions": [
+    "确认+提醒带证件互相",
+    "确认+说到了买咖啡",
+    "确认+轻收"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E027_A06",
+     "subject": "双方",
+     "relation": "约定",
+     "value": "周六14:00展馆门口，她购票",
+     "valid_time": "2026-12-05 14:00",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E027_T10",
+      "message_id": "m1",
+      "quote": "我买好票 你带身份证"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她买票=她安排；我只管守时和带证。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我买好票 你带身份证"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E027_T10"
+  },
+  "E027_T11": {
+   "current_action": "她前一天提醒+早鸟票便宜十块——接住这个小得意",
+   "acceptable_actions": [
+    "接梗+确认时间",
+    "接梗+说十块请你咖啡",
+    "接梗+夸她会买"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E027_A07",
+     "subject": "她",
+     "relation": "履约",
+     "value": "早鸟票已买（便宜十块）",
+     "valid_time": "2026-12-04 21:20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E027_T11",
+      "message_id": "m0",
+      "quote": "我买到早鸟票了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的'便宜你十块'是邀功也是亲昵；给足反应。",
+   "unknowns": [],
+   "protected_expressions": [
+    "便宜你十块"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E027_T11"
+  },
+  "E027_T12": {
+   "current_action": "'迟到额度'接梗+收尾（may_decline=true）",
+   "acceptable_actions": [
+    "接梗收",
+    "接梗+说明天见",
+    "不回（合法，她已拜拜）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary",
+    "time_state"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "收尾轻；明天的展自己不会跑。",
+   "unknowns": [],
+   "protected_expressions": [
+    "用不完也给我存着 哈哈 拜拜"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E027_T12"
+  }
+ }
+}

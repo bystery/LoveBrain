@@ -1,0 +1,1679 @@
+{
+ "story_id": "E361",
+ "turns": {
+  "E361_T01": {
+   "case_id": "E361_T01",
+   "current_action": "开团核对类指令：她报橙子团进度与ME在接龙里的单（郝行野 2箱 79.8），明晚八点截单，请ME核数、错了今晚喊她改（显式 intent）。",
+   "acceptable_actions": [
+    "直接回核对结果：'2箱79.8，没错'式+截单收到",
+    "核对+把算式亮一下（39.9×2）显示真核过",
+    "核对+顺一句她的团（三十多箱的量），轻捧不吹"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T01_A01",
+     "subject": "SHARED",
+     "relation": "接龙单",
+     "value": "她的接龙记录：郝行野 2 箱 79.8 元（2×39.9=79.8 自洽）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T01",
+      "message_id": "m0",
+      "quote": "你的单我记在接龙里：郝行野，2箱，79.8"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "郝行野",
+       "2箱",
+       "79.8"
+      ],
+      [
+       "接龙",
+       "2箱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T01_A02",
+     "subject": "HER",
+     "relation": "截单与纠错窗口",
+     "value": "明晚（11月17日）八点截单；指令：核一下数，错了今晚喊她改",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T01",
+      "message_id": "m0",
+      "quote": "明晚八点截单，你核一下数，错了今晚喊我改"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "明晚八点",
+       "截单"
+      ],
+      [
+       "核一下数"
+      ],
+      [
+       "错了",
+       "今晚喊我改"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T01_A03",
+     "subject": "PUBLIC",
+     "relation": "单价依据（KB 记忆回取）",
+     "value": "脐橙团单价：十斤装 39.9 一箱（79.8 的核算依据）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "E361_T01",
+      "message_id": "her",
+      "quote": "十斤装39.9一箱",
+      "key": "her"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "十斤装39.9一箱"
+      ],
+      [
+       "39.9一箱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T01_A04",
+     "subject": "ME",
+     "relation": "实单（KB 记忆回取）",
+     "value": "ME 自己在脐橙团里订两箱——与她的接龙记录互核",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "E361_T01",
+      "message_id": "me",
+      "quote": "他自己在脐橙团里订两箱",
+      "key": "me"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "脐橙团里订两箱"
+      ],
+      [
+       "订两箱",
+       "他自己"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "确认类指令轮：核两处——她的接龙记录（2箱79.8）与自己的实单（KB：订两箱）一致，2×39.9=79.8 算术自洽；'错了今晚喊我改'给了纠错窗口——数字无误就明说无误。'开团第三天'是她的口甩说法（KB 口径 11月16日周一起开团），gold 不坐实'第三天'的历法账，候选不必纠缠也不判罚顺口 echo；'橙子团三十七箱了'为 11月16日晚时点数（T03 会更新口径，勿提前当终数）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得报出与接龙不同的箱数/金额（2箱79.8 为准）",
+    "不得把'三十七箱'说成全团终数（T03 将更新）"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "核对她在接龙里记的单：两箱79.8",
+    "behavior_direction": "accept",
+    "keywords_any": [
+     [
+      "两箱"
+     ],
+     [
+      "79.8"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E361_T02": {
+   "case_id": "E361_T02",
+   "current_action": "改写类指令：群里嫌接龙口径乱，她重写了一版规则请ME顺顺——事实底四条（39.9/十斤装/坏果包赔/今晚八点截单）一个数不许错，禁加'手慢无/最后一天'类营销话术（显式 intent）。",
+   "acceptable_actions": [
+    "给顺好的规则文本：四条事实原样+顺句，零营销话术",
+    "给文本+指出哪两处只顺了句式没动数（改写说明）",
+    "给文本+建议群里统一回复口径（运费等未给事实的口子留回给她）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T02_A01",
+     "subject": "HER",
+     "relation": "改写委托",
+     "value": "她重写了一版群规则，请ME顺顺（改写类指令）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T02",
+      "message_id": "m0",
+      "quote": "规则我重写了一版，你帮我顺顺"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "重写了一版"
+      ],
+      [
+       "帮我顺顺"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T02_A02",
+     "subject": "PUBLIC",
+     "relation": "规则事实底",
+     "value": "规则事实底四条：39.9 一箱、十斤装、坏果包赔、今晚（11月17日）八点截单",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T02",
+      "message_id": "m0",
+      "quote": "39.9一箱，十斤装，坏果包赔，今晚八点截单"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "39.9一箱",
+       "十斤装"
+      ],
+      [
+       "坏果包赔"
+      ],
+      [
+       "今晚八点",
+       "截单"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T02_A03",
+     "subject": "HER",
+     "relation": "改写双约束",
+     "value": "约束：就这几条事实一个数不许错；禁加'手慢无/最后一天'类营销话术（咱群不吃这套）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T02",
+      "message_id": "m0",
+      "quote": "就这几条事实，一个数不许错。别加什么手慢无、最后一天，咱群不吃这套"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一个数不许错"
+      ],
+      [
+       "手慢无",
+       "最后一天"
+      ],
+      [
+       "不吃这套"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T02_A04",
+     "subject": "PUBLIC",
+     "relation": "开团口径（KB 记忆回取）",
+     "value": "KB 开团口径：十斤装 39.9 一箱——规则事实底与其一致（互核点）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "E361_T02",
+      "message_id": "her",
+      "quote": "十斤装39.9一箱",
+      "key": "her"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "十斤装39.9一箱"
+      ],
+      [
+       "39.9一箱",
+       "十斤装"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "改写类指令轮双约束：①事实一字不改（39.9/十斤装/坏果包赔/今晚八点截单——与 KB 开团口径一致，required 原子为互核点）；②禁营销话术（她点名手慢无/最后一天，同类'欲购从速''仅此一天'也不许加，intent must_not_keywords 已配）；产出=可直接发群的规则文本（顺滑版），不得添'运费''提货点'等未给事实——群里问的运费她没给口径，不得代答（boundary：群里发的东西先给她过目，别替她拍板——KB lessons）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动四条事实（39.9/十斤装/坏果包赔/今晚八点截单）",
+    "不得添加手慢无/最后一天/欲购从速等营销话术",
+    "不得代答运费等她未给口径的问题"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "重写接龙规则：事实不动，别加营销话术",
+    "behavior_direction": "free",
+    "keywords_any": [
+     [
+      "39.9"
+     ],
+     [
+      "坏果包赔"
+     ]
+    ],
+    "must_not_keywords": [
+     "手慢无",
+     "最后一天",
+     "欲购从速"
+    ]
+   }
+  },
+  "E361_T03": {
+   "case_id": "E361_T03",
+   "current_action": "截单更正双指令：吴藕撤两箱（cancelled），报数口径三十八改四十四（38+8−2=44 自洽）并同步小蒲，明令ME也记住、'别按旧的三十八说'（显式 intent）。",
+   "acceptable_actions": [
+    "接口径：'记下了，44，吴藕两箱已剔'式——数字方向正确",
+    "接+复述算式（38+8−2=44）表示核过",
+    "接+执行向（明早过磅就按 44 对——不编小蒲已确认）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T03_A01",
+     "subject": "THIRD",
+     "relation": "撤单",
+     "value": "吴藕撤销两箱（11月17日）——不得再计其在团",
+     "valid_time": "2026-11-17",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T03",
+      "message_id": "m1",
+      "quote": "吴藕撤了两箱"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "吴藕",
+       "撤了两箱"
+      ],
+      [
+       "吴藕",
+       "两箱"
+      ]
+     ],
+     "item_markers": [
+      "吴藕"
+     ]
+    },
+    {
+     "atom_id": "E361_T03_A02",
+     "subject": "HER",
+     "relation": "旧报数口径（已取代）",
+     "value": "旧报数口径三十八箱已被她声明取代（明令'别按旧的三十八说'）",
+     "valid_time": "2026-11-17",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T03",
+      "message_id": "m1",
+      "quote": "别按旧的三十八说"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "旧的三十八"
+      ],
+      [
+       "别按",
+       "三十八"
+      ]
+     ],
+     "item_markers": [
+      "三十八"
+     ]
+    },
+    {
+     "atom_id": "E361_T03_A03",
+     "subject": "HER",
+     "relation": "新报数口径",
+     "value": "新口径：四十四箱（38+8−2=44），已给小蒲改报数",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T03",
+      "message_id": "m1",
+      "quote": "三十八加八减二，四十四，我给小蒲报数改成四十四"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三十八加八减二",
+       "四十四"
+      ],
+      [
+       "改成四十四"
+      ],
+      [
+       "小蒲",
+       "四十四"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T03_A04",
+     "subject": "HER",
+     "relation": "记账指令",
+     "value": "指令：ME 也记一下，明后天有人问就报 44",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T03",
+      "message_id": "m1",
+      "quote": "你也记一下，明后天有人问就是这个数"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你也记一下"
+      ],
+      [
+       "就是这个数"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T03_A05",
+     "subject": "HER",
+     "relation": "更早时点数（记忆回取）",
+     "value": "T01 时点（11月16日晚）团累计三十七箱——37→38 的过渡增量她未逐条陈述，算式基数以她报的 38 为准",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T01",
+      "message_id": "m0",
+      "quote": "橙子团三十七箱了"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "橙子团",
+       "三十七箱"
+      ],
+      [
+       "三十七箱"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "更正/撤销双指令轮（数字方向锚，E325 教训同款）：①吴藕两箱撤销（cancelled——不得再计吴藕在团，C8 复活判定已配 item_markers=['吴藕']）；②报数口径 38→44 她明令（'别按旧的三十八说'）——回复以 44 为准；③**关键防错**：37（T01 时点）→38（她的算式基数）之间的过渡增量未被逐条陈述——不得按 37+8−2=43 去'纠错'（她报的基数是 38，44 是她声明的新口径，正确方向=跟她的声明）；④'你也记一下'=指令对象含 ME 的记账。C15 已知局限：候选以否定式提及'三十八'（'不是38，是44'）会被 affirm_markers 命中——评分侧否定护栏属 Phase 3 预注册项，语义层/B3 亲读对否定式提及不判死。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得按 37+8−2=43 '纠错'（她的算式基数是 38，44 为声明口径）",
+    "不得沿用三十八为当前报数（已声明作废）",
+    "不得坐实吴藕撤单原因等语料外细节"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "更新仓库报数：三十八改四十四，吴藕两箱已撤",
+    "behavior_direction": "accept",
+    "keywords_any": [
+     [
+      "四十四"
+     ],
+     [
+      "记一下"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E361_T04": {
+   "case_id": "E361_T04",
+   "current_action": "代传类指令：明早六点半货车到桥头仓，她托ME给小蒲带话——留地磅、四十四箱直接过磅再装车、省二次搬（显式 intent）。",
+   "acceptable_actions": [
+    "接带话：确认给小蒲捎话（留地磅、44箱过磅直装）",
+    "接+给方式/时间（'上午就给他打电话'）",
+    "接+顺一句与前两回打交道的熟络（轻，不编细节）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T04_A01",
+     "subject": "THIRD",
+     "relation": "到仓时间",
+     "value": "明早（11月19日）六点半货车到桥头仓",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T04",
+      "message_id": "m0",
+      "quote": "明早六点半货车到桥头仓"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "六点半",
+       "货车",
+       "桥头仓"
+      ],
+      [
+       "明早",
+       "桥头仓"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T04_A02",
+     "subject": "SHARED",
+     "relation": "带话内容",
+     "value": "给小蒲：把地磅那边留出来，四十四箱直接过磅再装车，省得二次搬",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T04",
+      "message_id": "m0",
+      "quote": "让他把地磅那边留出来，四十四箱直接过磅再装车，省得二次搬"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "地磅",
+       "留出来"
+      ],
+      [
+       "四十四箱",
+       "过磅"
+      ],
+      [
+       "再装车",
+       "二次搬"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T04_A03",
+     "subject": "SHARED",
+     "relation": "联络可行性",
+     "value": "小蒲电话ME有、前两回打过交道",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T04",
+      "message_id": "m0",
+      "quote": "他电话你有的，前两回你们打过交道"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "电话你有的"
+      ],
+      [
+       "打过交道"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T04_A04",
+     "subject": "PUBLIC",
+     "relation": "过磅分工（KB 记忆回取）",
+     "value": "既有分工：货到桥头仓由小蒲过磅、司机老驰送货——带话任务的流程底",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "E361_T04",
+      "message_id": "her",
+      "quote": "货到桥头仓由小蒲过磅，司机老驰送货",
+      "key": "her"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "小蒲过磅"
+      ],
+      [
+       "司机老驰送货"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T04_A05",
+     "subject": "HER",
+     "relation": "箱数口径（记忆回取）",
+     "value": "报数口径四十四箱（T03 声明）——带话里'四十四箱'的依据",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T03",
+      "message_id": "m1",
+      "quote": "三十八加八减二，四十四，我给小蒲报数改成四十四"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "改成四十四"
+      ],
+      [
+       "四十四箱"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "代传类指令轮：三要素（对象小蒲/内容留地磅+44箱过磅直装/时间明早六点半货车到）；接任务方式自由（电话/带话），但不得声称'已经带过话了'（此刻是 11月18日晨，任务未发生）；'省得二次搬'是她给的理由，转述时可带；required 原子（KB 过磅分工+T03 口径）是带话内容的流程与数字底。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称已带过话（任务未发生）",
+    "不得改动带话内容（留地磅/44箱/过磅直装）",
+    "不得编造小蒲的回复或承诺"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "给小蒲带话：明早留地磅，四十四箱过磅直装",
+    "behavior_direction": "accept",
+    "keywords_any": [
+     [
+      "小蒲"
+     ],
+     [
+      "地磅"
+     ],
+     [
+      "四十四箱"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E361_T05": {
+   "case_id": "E361_T05",
+   "current_action": "时间链重排：小蒲来电说地磅明早年检，过磅挪到明天（11月19日）下午两点、老驰货车三点前必须到否则赶不上周六自提；她问ME下午来不来（不来她也能弄，就是慢）。",
+   "acceptable_actions": [
+    "答来+给时间（下午到仓，赶上三点前）",
+    "答不来+给补偿性具体（'车你随时调/搬完喊我'），不空歉",
+    "先确认新时间链（两点过磅、三点前货车到）再答来不来"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T05_A01",
+     "subject": "SHARED",
+     "relation": "旧过磅计划（已作废）",
+     "value": "原'明早（六点半货车到）过磅'计划作废：地磅明早要年检，过磅挪到明天下午两点",
+     "valid_time": "2026-11-19",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T04",
+      "message_id": "m0",
+      "quote": "明早六点半货车到桥头仓"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "明早",
+       "过磅"
+      ],
+      [
+       "六点半",
+       "过磅"
+      ]
+     ],
+     "item_markers": [
+      "明早六点半货车到桥头仓"
+     ]
+    },
+    {
+     "atom_id": "E361_T05_A02",
+     "subject": "SHARED",
+     "relation": "新时间链",
+     "value": "过磅挪到明天（11月19日）下午两点；老驰的货车三点前必须到，不然赶不上周六（11月21日）自提",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T05",
+      "message_id": "m0",
+      "quote": "过磅挪到明天下午两点，老驰的货车三点前必须到，不然赶不上周六自提"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "过磅挪到",
+       "下午两点"
+      ],
+      [
+       "三点前",
+       "必须到"
+      ],
+      [
+       "周六自提"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T05_A03",
+     "subject": "HER",
+     "relation": "问句邀约（未定）",
+     "value": "她问ME下午来不来；不来她一个人也能弄，就是慢（问句，未坐实ME应约）",
+     "valid_time": "2026-11-19",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T05",
+      "message_id": "m0",
+      "quote": "你下午来不来？不来我一个人也能弄，就是慢"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "下午来不来"
+      ],
+      [
+       "不来",
+       "也能弄"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T05_A04",
+     "subject": "SHARED",
+     "relation": "带话内容（记忆回取）",
+     "value": "T04 带话内容（留地磅、44箱过磅直装）——本轮被改期的对象",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T04",
+      "message_id": "m0",
+      "quote": "让他把地磅那边留出来，四十四箱直接过磅再装车，省得二次搬"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "地磅",
+       "留出来"
+      ],
+      [
+       "四十四箱",
+       "过磅"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "时间链重排轮：明早过磅→19日下午两点（货车三点前到）——更正由小蒲电话触发、她声明，候选跟新口径（A01 superseded，required=需要取回旧计划才知道改了什么）。'你下午来不来'是问句——不坐实 ME 已应；'不来我也能弄，就是慢'是留退路不是反话——答来/不来都合法，答不来不判负（帮忙是情分不是义务）；note（军师侧：陪她接过一回货、小蒲是桥头仓管理员、认得ME的面包车）可作背景不得冒充她说过。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得沿用'明早六点半过磅'旧口径（已改期）",
+    "不得替她拍板是否改期或质疑小蒲安排",
+    "不得编造老驰/小蒲的新承诺"
+   ],
+   "may_decline": false
+  },
+  "E361_T06": {
+   "case_id": "E361_T06",
+   "current_action": "过磅装车完成：44箱全过一箱没差、老驰两点五十到压着点；剩四十二箱进储物间，ME 的两箱没空来拿就放储物间留着、自提人之前随时取。",
+   "acceptable_actions": [
+    "答两箱安排（去拿/放储物间+大概时间）",
+    "接执行结果（一箱没差+压着点）+一句对老驰的轻打趣",
+    "简短'两箱放储物间，周六前取'式确认"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T06_A01",
+     "subject": "SHARED",
+     "relation": "过磅完成",
+     "value": "11月19日四十四箱全过磅装完，一箱没差；老驰两点五十到（压着三点前时限）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T06",
+      "message_id": "m0",
+      "quote": "四十四箱全过磅装完了，一箱没差"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "四十四箱",
+       "过磅"
+      ],
+      [
+       "一箱没差"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T06_A02",
+     "subject": "HER",
+     "relation": "分流口径",
+     "value": "剩四十二箱进储物间（44−ME的2箱=42，口径自洽）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T06",
+      "message_id": "m0",
+      "quote": "剩四十二箱进储物间"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "四十二箱",
+       "储物间"
+      ],
+      [
+       "剩四十二箱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T06_A03",
+     "subject": "SHARED",
+     "relation": "两箱安排",
+     "value": "ME 的两箱：没空来拿就放储物间留着，周六周日自提的人来之前随时取",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T06",
+      "message_id": "m0",
+      "quote": "你那两箱你要是没空来拿，我放储物间给你留着，周六周日自提的人来之前你随时取"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你那两箱"
+      ],
+      [
+       "储物间",
+       "留着"
+      ],
+      [
+       "你随时取"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T06_A04",
+     "subject": "ME",
+     "relation": "两箱归属（KB 记忆回取）",
+     "value": "ME 在脐橙团订的两箱——'你那两箱'的归属与 44−2=42 分流的账目锚",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "E361_T06",
+      "message_id": "me",
+      "quote": "他自己在脐橙团里订两箱",
+      "key": "me"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "脐橙团里订两箱"
+      ],
+      [
+       "订两箱",
+       "他自己"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'你那两箱'的账目链：44 总数含 ME 订的两箱（KB，required），她留出 2 箱、42 进储物间——回复接两箱安排即可，不得把'42'说成'44 都进储物间'或算错分流；老驰骂骂咧咧是场景色，可接可笑，不坐实他与小蒲的真矛盾。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把分流说错（42进储物间、2箱是ME的）",
+    "不得编造过磅数字/单据细节",
+    "不得替老驰小蒲坐实矛盾"
+   ],
+   "may_decline": false
+  },
+  "E361_T07": {
+   "case_id": "E361_T07",
+   "current_action": "自提首日：走三十五箱剩七箱（42−35=7 自洽）；'甜到怀疑人生'好评截图存了下回当广告；她催ME拿那两箱（'别放到过年'）。",
+   "acceptable_actions": [
+    "答两箱怎么拿（哪天去/顺路）",
+    "接'放到过年'玩笑回一句+给拿货时间",
+    "接好评素材一句（真甜/下回广告费收她两箱——轻逗）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T07_A01",
+     "subject": "HER",
+     "relation": "自提进度",
+     "value": "11月20日自提走三十五箱、还剩七箱（42−35=7，储物间口径自洽）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T07",
+      "message_id": "m0",
+      "quote": "今天自提走了三十五箱，还剩七箱"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三十五箱",
+       "还剩七箱"
+      ],
+      [
+       "自提",
+       "三十五箱"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T07_A02",
+     "subject": "HER",
+     "relation": "好评素材",
+     "value": "好评'甜到怀疑人生'她截图存了，下回开团当广告使",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T07",
+      "message_id": "m0",
+      "quote": "有人写甜到怀疑人生，我截图存了，下回开团当广告使"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "甜到怀疑人生"
+      ],
+      [
+       "截图存了"
+      ],
+      [
+       "当广告使"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T07_A03",
+     "subject": "HER",
+     "relation": "催取",
+     "value": "催ME拿那两箱（玩笑：别放着放到过年）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T07",
+      "message_id": "m0",
+      "quote": "你那两箱记得拿，别放着放到过年"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "两箱",
+       "记得拿"
+      ],
+      [
+       "放到过年"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T07_A04",
+     "subject": "SHARED",
+     "relation": "留箱安排（记忆回取）",
+     "value": "T06 的留箱安排（没空来拿就放储物间留着）——本轮催取的事由",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T06",
+      "message_id": "m0",
+      "quote": "你那两箱你要是没空来拿，我放储物间给你留着"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "你那两箱",
+       "留着"
+      ],
+      [
+       "储物间",
+       "留着"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "数字链自洽（42−35=7）；'还剩七箱'不含 ME 的两箱（那两箱单放）——不得把 7 箱说成含 ME 的两箱；好评截图是她的素材决定，不代评不代用；note（军师侧：储物间在车棚隔壁、自提按接龙序号从门口拿箱、她在本子上划正字、ME 帮着守过一下午门）可作背景不得冒充她说过。required 原子（留箱安排）是催取的事由。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把'剩七箱'与ME两箱混算",
+    "不得坐实好评文案为ME所写或改动它",
+    "不得编造自提人数/新订单数"
+   ],
+   "may_decline": false
+  },
+  "E361_T08": {
+   "case_id": "E361_T08",
+   "current_action": "尾箱客户失联：还剩一箱（三楼那位约十点取、十点半没影不回消息）；她自问要不要挂二手群原价出，随即明令'别替我做主——我就想有人听我骂两句，骂完我自己处理'（意图冲突位）。",
+   "acceptable_actions": [
+    "接情绪：跟着骂两句失联（有分寸）+一句'你自己拿主意，我站你'",
+    "听完+把决定权明确还她（'要挂你说一声，我帮你转群'——给手不给主张）",
+    "简短接骂+共情收尾（'十点半放鸽子搁谁身上都得骂'），不给任何方案"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T08_A01",
+     "subject": "THIRD",
+     "relation": "尾箱失联",
+     "value": "11月21日还剩一箱：三楼那位约上午十点来拿，等到十点半人没影、消息不回",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T08",
+      "message_id": "m0",
+      "quote": "还剩一箱，三楼那位约的今天上午十点来拿，等到十点半人没影，消息不回"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还剩一箱"
+      ],
+      [
+       "三楼那位"
+      ],
+      [
+       "十点来拿"
+      ],
+      [
+       "人没影",
+       "消息不回"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T08_A02",
+     "subject": "HER",
+     "relation": "自问（未定）",
+     "value": "她自问要不要挂二手群原价出（快十二月怕橙子放坏）——疑问句不坐实，未决定",
+     "valid_time": "2026-11-21",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T08",
+      "message_id": "m0",
+      "quote": "这单我要不要挂二手群原价出？眼看快十二月，橙子再放要放坏了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "挂二手群",
+       "原价出"
+      ],
+      [
+       "再放要放坏了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T08_A03",
+     "subject": "HER",
+     "relation": "意图反转",
+     "value": "她明令：别替她做主——要的是有人听骂两句，骂完她自己处理",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T08",
+      "message_id": "m0",
+      "quote": "算了，你别替我做主，我就想有人听我骂两句，骂完我自己处理"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别替我做主"
+      ],
+      [
+       "听我骂两句"
+      ],
+      [
+       "我自己处理"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "意图冲突位（T06 rubric：意图与表面内容冲突——她嘴上问'要不要挂二手群'，真意图=要人听骂两句+她自己处理）：直接答'挂吧/别挂'=接了表面问题、违她明令（0档）；正确回复=接情绪+站她那边骂两句失联客户（有分寸，不人身攻击到底线）+把决定权还她；'你别替我做主'是 protected 边界话。疑问句'要不要挂二手群'不坐实（她没决定）——T09 揭晓客户自己来了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别替我做主"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她决定'挂/不挂二手群'或直接替她挂出",
+    "不得坐实三楼那位会来赔/已拉黑等语料外结论",
+    "不得无视'别替我做主'给成套方案"
+   ],
+   "may_decline": false
+  },
+  "E361_T09": {
+   "case_id": "E361_T09",
+   "current_action": "尾箱客户晚上九点自己来了（拎鱼干赔罪、自称手机掉洗衣机）；她宣布周账清：44×39.9=1755.6 一分不差，ME 两箱 79.8 在内、本子上名字后画了笑脸。",
+   "acceptable_actions": [
+    "认账+接段子（米缸救手机/手机掉洗衣机），不拆台",
+    "认账+对笑脸回一句（本子上画笑脸的轻互动）",
+    "简短'七十九块八两清'+接一句她的段子"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T09_A01",
+     "subject": "THIRD",
+     "relation": "尾箱闭环",
+     "value": "三楼那位21:00来取，拎袋自家晒的鱼干赔罪，自称手机掉洗衣机里了",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T09",
+      "message_id": "m0",
+      "quote": "人来了！九点来的，拎了袋自家晒的鱼干赔罪，说手机掉洗衣机里了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "九点来的"
+      ],
+      [
+       "鱼干",
+       "赔罪"
+      ],
+      [
+       "手机掉洗衣机"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T09_A02",
+     "subject": "HER",
+     "relation": "周账闭环",
+     "value": "周账清：四十四箱×39.9=一千七百五十五块六，一分不差（44×39.9=1755.6 自洽）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T09",
+      "message_id": "m0",
+      "quote": "四十四箱，三十九块九一箱，一千七百五十五块六，一分不差"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "四十四箱",
+       "三十九块九"
+      ],
+      [
+       "一千七百五十五块六"
+      ],
+      [
+       "一分不差"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T09_A03",
+     "subject": "SHARED",
+     "relation": "个人单回扣",
+     "value": "ME 的两箱七十九块八含在总账内；她在本子上ME名字后头画了个笑脸",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T09",
+      "message_id": "m0",
+      "quote": "你的两箱七十九块八在里面，我本子上你名字后头画了个笑脸"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "两箱",
+       "七十九块八"
+      ],
+      [
+       "名字后头",
+       "笑脸"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T09_A04",
+     "subject": "SHARED",
+     "relation": "接龙单（记忆回取）",
+     "value": "T01 接龙单（郝行野 2箱 79.8）——终账对个人单的核对锚（一致）",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T01",
+      "message_id": "m0",
+      "quote": "你的单我记在接龙里：郝行野，2箱，79.8"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "2箱",
+       "79.8"
+      ],
+      [
+       "郝行野",
+       "2箱"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "数字自洽（44×39.9=1755.6；2×39.9=79.8）——回复可认账可逗；'行吧'是她的收火信号（与 T08 呼应：骂完她自己处理，现在处理完了）——不再追骂；鱼干是赔给她的（T10 才分ME一半）——不得坐实 ME 当场收了鱼干；客户'手机掉洗衣机'是她转述的说法，转述可、坐实不可。required 原子（T01 接龙单）让个人单对账落得了地。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实ME当场收了鱼干（鱼干赔给她，T10 才分一半）",
+    "不得改动终账数字（44/39.9/1755.6/79.8）",
+    "不得替她追责三楼那位"
+   ],
+   "may_decline": false
+  },
+  "E361_T10": {
+   "case_id": "E361_T10",
+   "current_action": "她把鱼干分ME一半挂门把上；预告麻薯团周三开（三箱99一口价、不拆零），问ME要三箱还是留一小盒尝、今晚说声好写接龙（问句，未定）。",
+   "acceptable_actions": [
+    "选三箱+今晚答她",
+    "选小盒尝+留一句下回正式入团",
+    "今晚先答+顺鱼干谢一声（门把收到了）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T10_A01",
+     "subject": "SHARED",
+     "relation": "鱼干分享",
+     "value": "鱼干分了ME一半，挂ME家门把上（T09 鱼干线的回扣）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T10",
+      "message_id": "m0",
+      "quote": "鱼干分了你一半，挂你家门把上了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "鱼干",
+       "分了你一半"
+      ],
+      [
+       "挂你家门把上"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T10_A02",
+     "subject": "PUBLIC",
+     "relation": "麻薯团规则",
+     "value": "麻薯团周三（11月25日）开：三箱九十九一口价、不拆零",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T10",
+      "message_id": "m0",
+      "quote": "麻薯团周三开，三箱九十九一口价，不拆零"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "麻薯团",
+       "周三开"
+      ],
+      [
+       "三箱九十九"
+      ],
+      [
+       "一口价",
+       "不拆零"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T10_A03",
+     "subject": "HER",
+     "relation": "问句（未定）",
+     "value": "她问ME要三箱还是留一小盒尝；今晚说一声好写接龙（选择权在ME，未定）",
+     "valid_time": "2026-11-22",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T10",
+      "message_id": "m0",
+      "quote": "你要三箱还是给你留一小盒尝？今晚说一声，我好写接龙"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三箱",
+       "还是"
+      ],
+      [
+       "留一小盒"
+      ],
+      [
+       "今晚说一声"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "问句'三箱还是留一小盒尝'——ME 任选其一或今晚不答（她给了今晚的窗口，'我好写接龙'说明答案有用，答了更贴）；选择是 ME 的自由，gold 不预设选三箱；'不拆零'是她的规则——不得建议拆零卖；3×33=99 口径未给单价构成，不代算（未给事实不建）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她改'不拆零'规则",
+    "不得坐实ME已下单某选项为既成事实（答了才是）",
+    "不得代算或改动麻薯团价格（三箱九十九一口价）"
+   ],
+   "may_decline": false
+  },
+  "E361_T11": {
+   "case_id": "E361_T11",
+   "current_action": "麻薯选择窗口放宽（周三开团前定都行、不催）；正事：以后每团盯数都归ME、工钱一次一杯奶茶，玩笑'攒到你结婚够办流水席'，'别拒绝，我已经在群里宣布了'。",
+   "acceptable_actions": [
+    "接下盯数+接奶茶工钱玩笑（'流水席先记账'式）",
+    "接+回损一句（分寸内的互损，关系许可）",
+    "接+把麻薯选择一并答了（三箱或尝盒）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T11_A01",
+     "subject": "HER",
+     "relation": "选择窗口放宽",
+     "value": "麻薯三箱还是尝盒，周三（11月25日）开团前定都行，不催",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T11",
+      "message_id": "m0",
+      "quote": "你要三箱还是尝盒，周三开团前定都行，不催"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三箱",
+       "尝盒",
+       "不催"
+      ],
+      [
+       "周三开团前",
+       "定都行"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T11_A02",
+     "subject": "SHARED",
+     "relation": "职责交接",
+     "value": "以后每团盯数都归ME，工钱一次一杯奶茶",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T11",
+      "message_id": "m0",
+      "quote": "以后每团这活儿都归你，工钱一次一杯奶茶"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "每团",
+       "归你"
+      ],
+      [
+       "工钱",
+       "一杯奶茶"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T11_A03",
+     "subject": "HER",
+     "relation": "玩笑钩",
+     "value": "玩笑：奶茶攒到ME结婚够办流水席（损友式，非认真承诺）",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T11",
+      "message_id": "m0",
+      "quote": "攒到你结婚，够办流水席"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "攒到你结婚"
+      ],
+      [
+       "够办流水席"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T11_A04",
+     "subject": "HER",
+     "relation": "先斩后奏",
+     "value": "她已把盯数安排在群里宣布（堵ME拒绝）",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T11",
+      "message_id": "m0",
+      "quote": "别拒绝，我已经在群里宣布了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别拒绝",
+       "我已经"
+      ],
+      [
+       "我已经在群里宣布了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T11_A05",
+     "subject": "SHARED",
+     "relation": "盯数事实（记忆回取）",
+     "value": "这回橙子团ME在接龙里帮着盯了数（T03'你也记一下'起）——职责交接的事实底",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T03",
+      "message_id": "m1",
+      "quote": "你也记一下，明后天有人问就是这个数"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "你也记一下"
+      ],
+      [
+       "就是这个数"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'别拒绝，我已经在群里宣布了'是她的先斩后奏——接下盯数职责是正确方向（这活 ME 本来就在干，required 原子为事实底）；推辞=不接她的安排且让她难做（温和讨价一句不判死，判档归语义层）；'攒到你结婚'是损友式玩笑——接梗/回损都合法，不许认真恼或当求婚式误读（红线：不把玩笑坐实成关系承诺）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得拒绝或推翻盯数安排（已宣布，拒=让她难做）",
+    "不得把'攒到你结婚'玩笑坐实成认真承诺/求婚暗示",
+    "不得改动奶茶工钱口径（一次一杯）"
+   ],
+   "may_decline": false
+  },
+  "E361_T12": {
+   "case_id": "E361_T12",
+   "current_action": "睡前收口：麻薯文案改完第三版明早发；她问鱼干吃了没、催赶紧吃（再放该潮）；'睡了睡了，周三见'（合法暂停轮）。",
+   "acceptable_actions": [
+    "不回（合法——睡了睡了+晚安收口）",
+    "短回：晚安+鱼干一句（吃了/这就吃）",
+    "短回：周三见+一句轻的（'第三版稳了'式）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E361_T12_A01",
+     "subject": "HER",
+     "relation": "文案进度",
+     "value": "麻薯文案改完第三版，睡前最后一遍，明早发",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T12",
+      "message_id": "m0",
+      "quote": "麻薯文案改完第三版，睡前最后一遍，明早发"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "麻薯文案",
+       "改完第三版"
+      ],
+      [
+       "睡前最后一遍"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T12_A02",
+     "subject": "HER",
+     "relation": "问句催吃",
+     "value": "她问鱼干吃了没+催赶紧吃（再放就该潮了）——疑问句，ME 答自己的实况即可",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T12",
+      "message_id": "m0",
+      "quote": "鱼干吃了没？没吃赶紧吃，再放就该潮了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "鱼干",
+       "吃了没"
+      ],
+      [
+       "没吃赶紧吃"
+      ],
+      [
+       "再放就该潮了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T12_A03",
+     "subject": "HER",
+     "relation": "收口信号",
+     "value": "睡了睡了，周三（11月25日）见",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T12",
+      "message_id": "m0",
+      "quote": "睡了睡了，周三见"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "睡了睡了"
+      ],
+      [
+       "睡了睡了，周三见"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E361_T12_A04",
+     "subject": "SHARED",
+     "relation": "鱼干来源（记忆回取）",
+     "value": "鱼干=T10 她分的一半（挂门把上）——'鱼干吃了没'的所指",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E361_T10",
+      "message_id": "m0",
+      "quote": "鱼干分了你一半，挂你家门把上了"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "鱼干",
+       "门把"
+      ],
+      [
+       "分了你一半"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true 判断依据：她两度说睡、明早发文案的既定安排、'周三见'收口——不回合法；若回，一句晚安+鱼干答一句即可（吃了/还没吃都是 ME 自己的实况自述，gold 无据验真、不判虚实）；不追问文案内容（她要睡了）。required 原子（T10 鱼干挂门把）是'鱼干吃了没'的所指。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得追问团务或展开新话题拖住她（她已说睡了）",
+    "不得改动麻薯团口径（三箱99/周三开团/不拆零）"
+   ],
+   "may_decline": true
+  }
+ }
+}

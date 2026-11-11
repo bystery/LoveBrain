@@ -1,0 +1,604 @@
+{
+ "story_id": "E085",
+ "turns": {
+  "E085_T01": {
+   "case_id": "E085_T01",
+   "current_action": "接住她的兴奋，确认19.9双人首刷名额这个便宜占了，同时先问她一句：订单上写的具体时间你核实过吗？别急着广而告之。",
+   "acceptable_actions": [
+    "答应周六晚同去，顺口让她把订单截图发来对一下时间",
+    "肯定这个价格划算，提醒她体验课一般要提前到馆签安全须知",
+    "调侃她总算舍得拉自己省钱的项目，问她要不要先约饭再上课"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A01",
+     "subject": "SHARED",
+     "relation": "plan_asserted",
+     "value": "两人19.9元首刷体验课，她认定开课时间为周六晚7点",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T01", "message_id": "m0", "quote": "周六晚上7点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A02",
+     "subject": "SHARED",
+     "relation": "me_evening_assumed",
+     "value": "她以 ME 周六晚从不安排事为由认定对方有空",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T01", "message_id": "m0", "quote": "你周六晚上从来不安排事"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A03",
+     "subject": "SHARED",
+     "relation": "promo_price",
+     "value": "体验课为双人19.9元的促销名额",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T01", "message_id": "m0", "quote": "19.9两个人"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接兴奋再问时间核实，不说教，像顺口一提。",
+   "unknowns": ["订单上的真实开课时间未核实", "体验课具体流程未知"],
+   "protected_expressions": ["这回你可跑不掉了"],
+   "forbidden_factual_claims": ["不得虚构攀岩馆位置与课程内容", "不得认定周六晚7点必然无误"]
+  },
+  "E085_T02": {
+   "case_id": "E085_T02",
+   "current_action": "接住她的宣告与依赖：应承周五带安全带，同时再垫一句让她把确认短信翻出来对一眼时间，给后面的爆点留引线。",
+   "acceptable_actions": [
+    "答应带安全带，叮嘱她把订单短信转发自己留档",
+    "确认莉莉的优惠请求记下了，让她别把话说太满",
+    "提醒她体验课一般有体重要求和着装要求，让她先看规则"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A04",
+     "subject": "SHARED",
+     "relation": "external_announce",
+     "value": "她已向同事宣告周六晚攀岩行程",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T02", "message_id": "m0", "quote": "我跟同事都说了周六晚去攀岩"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A05",
+     "subject": "THIRD",
+     "relation": "lili_favor",
+     "value": "同事莉莉托她查看同款体验课优惠",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T02", "message_id": "m0", "quote": "莉莉还让我帮她也看看有没有同款优惠"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A06",
+     "subject": "SHARED",
+     "relation": "gear_promise",
+     "value": "ME 应承周五带安全带，她宣称全靠 ME",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T02", "message_id": "m0", "quote": "你周五把安全带带来"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：依赖接得爽快，核实那句要像顺手一提，不能有预警腔。",
+   "unknowns": ["同事群体规模未知", "莉莉是否会跟报未知"],
+   "protected_expressions": ["全靠你了"],
+   "forbidden_factual_claims": ["不得替她向同事宣布安排", "不得虚构安全带价格与规格"]
+  },
+  "E085_T03": {
+   "case_id": "E085_T03",
+   "current_action": "接住她为攀岩推掉火锅局的玩笑：肯定这份上头，把她许诺的补偿记成正经约定，顺带一句'你这一周六晚已经欠了两个局了'。",
+   "acceptable_actions": [
+    "调侃她重岩轻友，认下这顿补偿饭并让她记账",
+    "提醒她周六晚的档期已经被排满，别再往外应承了",
+    "顺着蜘蛛侠的梗接一句，把气氛保持住"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A07",
+     "subject": "HER",
+     "relation": "hotpot_dropped",
+     "value": "为攀岩行程推掉周六晚莉莉的火锅局",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T03", "message_id": "m0", "quote": "我把周六晚跟莉莉她们的火锅局推了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A08",
+     "subject": "SHARED",
+     "relation": "compensate_promise",
+     "value": "她许诺事后请 ME 吃一顿作补偿",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T03", "message_id": "m0", "quote": "回头我请你吃一顿补上"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：玩笑归玩笑，把'档期排满'这个观察轻轻放下就行。",
+   "unknowns": ["火锅局成员是否知道改期原因未知"],
+   "protected_expressions": ["莉莉骂我重岩轻友"],
+   "forbidden_factual_claims": ["不得虚构火锅局其他成员反应", "不得替她答应补偿饭的具体日期"]
+  },
+  "E085_T04": {
+   "case_id": "E085_T04",
+   "current_action": "接住装备采购与周五量尺寸的安排：确认周五中午工位见，头盔那单顺手调侃一句让她看能不能退，攀岩确实不用头盔。",
+   "acceptable_actions": [
+    "确认周五中午量尺寸，提醒她头盔可以看看能不能退掉",
+    "肯定她装备买得齐，叮嘱镁粉球别提前拆封",
+    "顺着她那句'买了再说'调侃她的性子，建议以后先看订单再下单"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A09",
+     "subject": "HER",
+     "relation": "gear_purchased",
+     "value": "她购入防滑镁粉球、速干T恤与头盔等装备",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T04", "message_id": "m0", "quote": "防滑镁粉球、速干T恤"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A10",
+     "subject": "SHARED",
+     "relation": "fitting_appointment",
+     "value": "约定周五中午到 ME 工位量安全带尺寸",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T04", "message_id": "m0", "quote": "周五中午我去你工位量一下安全带尺寸"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：调侃性子的话点到为止，别变成训人。",
+   "unknowns": ["头盔能否退货未知", "她是否还有其他装备需求未知"],
+   "protected_expressions": ["攀岩好像不戴头盔"],
+   "forbidden_factual_claims": ["不得虚构装备品牌与价格", "不得断言头盔一定能退"]
+  },
+  "E085_T05": {
+   "case_id": "E085_T05",
+   "current_action": "接住引爆点：订单白纸黑字是周六上午10点，此前认定的周六晚7点全部作废，且与 ME 周六上午陪我妈采购的铁律正面相撞。先稳住她，确认事实，再一起看还有什么救法。",
+   "acceptable_actions": [
+    "先确认订单时间这个事实，再告诉她别慌，先看馆方的改期规则",
+    "坦承自己周六上午陪我妈采购动不了，但傍晚以后都空",
+    "让她先把攻略帖截图和订单截图分开，搞清自己当时看错了什么"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "attribution", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A11",
+     "subject": "SHARED",
+     "relation": "order_truth",
+     "value": "订单确认短信显示体验课实为周六上午10点至12点",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T05", "message_id": "m0", "quote": "周六 10:00-12:00 上午场"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A12",
+     "subject": "SHARED",
+     "relation": "evening_time_retracted",
+     "value": "原认定的周六晚7点开课时间被订单证伪",
+     "valid_time": "2026-11-02/2026-11-06",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E085_T01", "message_id": "m0", "quote": "周六晚上7点"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E085_A13",
+     "subject": "HER",
+     "relation": "collision_aware",
+     "value": "她意识到上课时间与 ME 周六上午陪家长采购相撞",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T05", "message_id": "m0", "quote": "你周六上午不是要陪阿姨去市场吗"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：稳字当头，先认事实再谈补救，把'看错攻略帖'说成人之常情。",
+   "unknowns": ["馆方是否允许改期未知", "改期是否收费未知"],
+   "protected_expressions": ["是上午十点，不是晚七点"],
+   "forbidden_factual_claims": ["不得断言她故意拖延才看到短信", "不得虚构改期政策内容"]
+  },
+  "E085_T06": {
+   "case_id": "E085_T06",
+   "current_action": "接住她的窟窿盘点：课时不合、同事要改口、火锅白推，全是没看短信惹的；肯定她自己先骂自己省了 ME 的力气，支持她马上打电话问馆方。",
+   "acceptable_actions": [
+    "赞成她先打馆方电话，提醒问清楚改期是否收费和截止时间",
+    "把窟窿按轻重排序：先解决课时，再处理同事和火锅的说法",
+    "拦住她的自责，说这事谁没干过，重点是怎么补"
+   ],
+   "applicable_dimensions": ["attribution", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A14",
+     "subject": "HER",
+     "relation": "hole_inventory",
+     "value": "她盘点出课时不合、同事需改口、火锅白推的连锁窟窿",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T06", "message_id": "m0", "quote": "窟窿盘点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A15",
+     "subject": "HER",
+     "relation": "contact_venue",
+     "value": "她决定致电攀岩馆咨询改期",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T06", "message_id": "m0", "quote": "先给攀岩馆打电话问能不能改期"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A16",
+     "subject": "SHARED",
+     "relation": "schedule_clash_confirmed",
+     "value": "上午场与 ME 周六上午采购相撞的事实已确认",
+     "valid_time": "2026-11-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T05", "message_id": "m0", "quote": "是上午十点，不是晚七点"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：拦自责要轻，排序要实，像派活不像安慰。",
+   "unknowns": ["馆方答复内容未知", "同事是否已看到改期消息未知"],
+   "protected_expressions": ["我已经在骂了"],
+   "forbidden_factual_claims": ["不得预判馆方必然同意改期", "不得替她起草向同事的解释话术"]
+  },
+  "E085_T07": {
+   "case_id": "E085_T07",
+   "current_action": "接住馆方答复：免费改期一次、下周六晚7点有空位、今晚十点前要自己在订单页操作；答应视频远程帮看，先催她抓紧时间。",
+   "acceptable_actions": [
+    "让她先深呼吸再点，答应用视频帮她核对每一步",
+    "提醒改期只有一次机会，点之前把下周六晚上的安排先确认空",
+    "让她顺便问清改期后能不能再退，把兜底问出来"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A17",
+     "subject": "SHARED",
+     "relation": "reschedule_policy",
+     "value": "馆方答复体验课可免费改期一次，下周六晚7点有空位",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T07", "message_id": "m0", "quote": "体验课可以免费改期一次"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A18",
+     "subject": "SHARED",
+     "relation": "reschedule_deadline",
+     "value": "改期须今晚十点前在订单页自行操作",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T07", "message_id": "m0", "quote": "今晚十点前在订单页自己点改期"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A19",
+     "subject": "SHARED",
+     "relation": "morning_slot_abandoned",
+     "value": "原周六上午10点的场次将被改期放弃",
+     "valid_time": "2026-11-06",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E085_T05", "message_id": "m0", "quote": "周六 10:00-12:00 上午场"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E085_A20",
+     "subject": "HER",
+     "relation": "operation_anxiety",
+     "value": "她担心误操作，请 ME 视频协助核对订单页",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T07", "message_id": "m0", "quote": "你视频里帮我看一眼订单页长什么样"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：催时间要紧但语气要稳，把'只有一次'说成小心点就行。",
+   "unknowns": ["改期操作是否即时生效未知", "下周六晚她的其他安排未知"],
+   "protected_expressions": ["我手一抖点错怎么办"],
+   "forbidden_factual_claims": ["不得替她操作或承诺代点", "不得虚构订单页界面细节"]
+  },
+  "E085_T08": {
+   "case_id": "E085_T08",
+   "current_action": "接住改期成功：订单更新为下周六19点到21点，错误时间正式翻篇；肯定她逐项补救的排序，火锅请回和同事改口都赞。",
+   "acceptable_actions": [
+    "恭喜改期落定，提醒她把新订单截图存好别再犯老毛病",
+    "把补救清单复述一遍：火锅请回、同事改口、自己留档",
+    "调侃她这次终于把订单页看明白了，进步显著"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A21",
+     "subject": "SHARED",
+     "relation": "reschedule_done",
+     "value": "改期成功，订单更新为下周六19点至21点",
+     "valid_time": "2026-11-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T08", "message_id": "m0", "quote": "下周六 19:00-21:00"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A22",
+     "subject": "SHARED",
+     "relation": "policy_honored",
+     "value": "免费改期一次的政策已兑现",
+     "valid_time": "2026-11-06",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T07", "message_id": "m0", "quote": "体验课可以免费改期一次"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E085_A23",
+     "subject": "HER",
+     "relation": "hotpot_restore",
+     "value": "她决定请回被推掉的火锅局",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T08", "message_id": "m0", "quote": "火锅我请回来"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A24",
+     "subject": "HER",
+     "relation": "colleague_correction",
+     "value": "她将逐一向同事改口新时间",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T08", "message_id": "m0", "quote": "再挨个跟同事把时间改口"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：恭喜要快，调侃'存截图'要轻，别揭旧伤。",
+   "unknowns": ["火锅局新日期未定", "同事是否全部通知到位未知"],
+   "protected_expressions": ["看着就顺眼多了"],
+   "forbidden_factual_claims": ["不得断言所有窟窿已闭合", "不得虚构改期手续费细节"]
+  },
+  "E085_T09": {
+   "case_id": "E085_T09",
+   "current_action": "接住补救反馈：莉莉以照片为条件原谅、同事要名额；确认量尺寸顺延到下周五，把ME自己的日程也顺手更新掉。",
+   "acceptable_actions": [
+    "答应下周五量尺寸，让她把莉莉的照片条件当成动力",
+    "对帮忙抢名额的同事，建议她先问清馆方放票时间再应承",
+    "肯定她这轮补救收尾利落，窟窿基本填平"
+   ],
+   "applicable_dimensions": ["memory_use", "interaction", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A25",
+     "subject": "THIRD",
+     "relation": "lili_condition",
+     "value": "莉莉以当天攀岩照片为原谅条件",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T09", "message_id": "m0", "quote": "条件是把当天攀岩的照片发她"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A26",
+     "subject": "THIRD",
+     "relation": "colleague_request",
+     "value": "有同事请她帮忙抢下批体验课名额",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T09", "message_id": "m0", "quote": "还有人让我帮忙抢下批名额"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A27",
+     "subject": "SHARED",
+     "relation": "fitting_rescheduled",
+     "value": "量尺寸安排顺延至下周五",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T09", "message_id": "m0", "quote": "量尺寸的事就挪到下周五"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A28",
+     "subject": "SHARED",
+     "relation": "fitting_prior_plan_superseded",
+     "value": "原定本周五量尺寸的计划作废顺延",
+     "valid_time": "2026-11-05/2026-11-07",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E085_T04", "message_id": "m0", "quote": "周五中午我去你工位量一下安全带尺寸"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把照片条件说成好笑但好办，抢名额的提醒点到为止。",
+   "unknowns": ["下批名额放票时间未知", "莉莉是否也要报名未知"],
+   "protected_expressions": ["美其名曰精神火锅"],
+   "forbidden_factual_claims": ["不得替她应承抢名额", "不得虚构莉莉的其他条件"]
+  },
+  "E085_T10": {
+   "case_id": "E085_T10",
+   "current_action": "接住临考紧张：刷教学视频学到三点固定、手心冒汗；确认安全带改租馆里的，护具周五带到存她工位，给她一句宽心话。",
+   "acceptable_actions": [
+    "宽慰她手心冒汗是正常的，教练在底下比她还紧张",
+    "确认护具周五带到锁她抽屉，提醒她提前把工位柜子腾出来",
+    "建议她视频里的动作记要点就行，别把自己吓住"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A29",
+     "subject": "SHARED",
+     "relation": "harness_rental",
+     "value": "安全带改为租用馆内的",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T10", "message_id": "m0", "quote": "安全带决定租馆里的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A30",
+     "subject": "HER",
+     "relation": "pre_fear",
+     "value": "她刷教学视频学三点固定，紧张到手心冒汗",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T10", "message_id": "m0", "quote": "看得我手心冒汗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A31",
+     "subject": "SHARED",
+     "relation": "gear_locker",
+     "value": "ME 护具周五带到后存她工位抽屉",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T10", "message_id": "m0", "quote": "先锁我工位抽屉"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：宽心话短一点，像说'我第一次也这样'，别堆安全课。",
+   "unknowns": ["她恐高程度未知", "周五她是否在场收护具未知"],
+   "protected_expressions": ["看得我手心冒汗"],
+   "forbidden_factual_claims": ["不得虚构教学视频内容", "不得保证她不恐高"]
+  },
+  "E085_T11": {
+   "case_id": "E085_T11",
+   "current_action": "接住到场消息：换好装备、教练夸护具专业、立下下岩壁汇报之约；回一句简短的鼓励，把'恐高发作'的玩笑接住。",
+   "acceptable_actions": [
+    "回一句'去吧，铃铛等你'，把汇报之约接稳",
+    "提醒她听教练口令，别抢爬，照片记得给莉莉拍",
+    "接住'没认识过我'的玩笑，说认都认了别想跑"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A32",
+     "subject": "SHARED",
+     "relation": "at_venue",
+     "value": "她已到场换装，教练肯定其护具专业",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T11", "message_id": "m0", "quote": "教练夸我护具选得专业"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A33",
+     "subject": "HER",
+     "relation": "report_promise",
+     "value": "她与 ME 约定下岩壁后汇报",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T11", "message_id": "m0", "quote": "等我下岩壁给你汇报"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：话要短，给她留心流，别在她上场时讲安全课。",
+   "unknowns": ["她能否登顶未知", "现场教练如何安排未知"],
+   "protected_expressions": ["你就当没认识过我"],
+   "forbidden_factual_claims": ["不得虚构岩壁高度与线路", "不得预判她的成绩"]
+  },
+  "E085_T12": {
+   "case_id": "E085_T12",
+   "current_action": "接住登顶汇报：挂在墙上不敢动到摸到铃铛，莉莉的照片已兑现，火锅局定在下周三并邀 ME；把整个乌龙复盘成一句'订单写什么就是什么'，轻收尾。",
+   "acceptable_actions": [
+    "真心恭喜登顶，把'从错的时间到对的时间'一句带过收尾",
+    "答应下周三火锅局，让她把摸铃铛的故事留着现场讲",
+    "调侃她下批名额该轮到莉莉了，照片这债还清了"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E085_A34",
+     "subject": "SHARED",
+     "relation": "summit_done",
+     "value": "首刷完成：她在教练鼓励下登顶摸到铃铛",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T12", "message_id": "m0", "quote": "真爬到顶摸到铃铛了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A35",
+     "subject": "SHARED",
+     "relation": "hotpot_scheduled",
+     "value": "火锅局定于下周三并邀 ME 参加",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T12", "message_id": "m0", "quote": "火锅局定在下周三，你也来"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E085_A36",
+     "subject": "THIRD",
+     "relation": "lili_condition_fulfilled",
+     "value": "莉莉索要攀岩照片的条件已兑现",
+     "valid_time": "2026-11-07/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T09", "message_id": "m0", "quote": "条件是把当天攀岩的照片发她"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E085_A37",
+     "subject": "SHARED",
+     "relation": "slot_fulfilled",
+     "value": "改期后的周六晚19至21点时段已兑现首刷",
+     "valid_time": "2026-11-06/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E085_T08", "message_id": "m0", "quote": "下周六 19:00-21:00"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻快，乌龙一笔带过，功劳给教练和她自己。",
+   "unknowns": [],
+   "protected_expressions": ["讲到你们求饶为止"],
+   "forbidden_factual_claims": ["不得虚构她的攀爬细节与用时", "不得断言她从此爱上攀岩"]
+  }
+ }
+}

@@ -1,0 +1,549 @@
+{
+ "story_id": "E102",
+ "turns": {
+  "E102_T01": {
+   "case_id": "E102_T01",
+   "current_action": "接住清晨越狱的慌乱：先把人稳住，再给排查的第一步（别急着定论它在哪，先关好门窗、留好食水），把'确定的'和'猜的'分开。",
+   "acceptable_actions": [
+    "建议她先关厨房门和阳台门，缩小活动范围再找",
+    "提醒仓鼠白天多躲藏，等天黑再重点排查",
+    "让她先确认笼门卡扣是故障还是没扣上"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "time_state", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A01",
+     "subject": "SHARED",
+     "relation": "hamster_missing",
+     "value": "仓鼠糯米清晨从开着卡扣的笼门处失踪，下落不明",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T01", "message_id": "m0", "quote": "笼子顶门的卡扣是开着的，里面空了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A02",
+     "subject": "SHARED",
+     "relation": "cage_mystery",
+     "value": "卡扣开启原因不明，与糯米平时推不开门的习性矛盾",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T01", "message_id": "m0", "quote": "它连门都推不开那种憨样，到底怎么开的这个扣啊"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：清晨报急要接得快，建议按一二三给，别上来就讨论'是不是跑出去了'。",
+   "unknowns": ["糯米当前位置未知", "卡扣开启原因未知"],
+   "protected_expressions": ["到底怎么开的这个扣啊"],
+   "forbidden_factual_claims": ["不得断言糯米仍在屋内或已逃出屋外", "不得虚构卡扣的机械故障结论"]
+  },
+  "E102_T02": {
+   "case_id": "E102_T02",
+   "current_action": "接住中午进度：全屋翻遍无果，瓜子壳线索真伪不明。帮她把这条线索标记为'不可确认'，建议同时布防和留食，不把单一线索当结论。",
+   "acceptable_actions": [
+    "指出散瓜子本就存在，瓜子壳证据力有限，先存疑",
+    "建议在几个角落放少量它熟悉的粮食当标记点",
+    "提醒她别把家具全拆了，仓鼠爱钻缝隙深处"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A03",
+     "subject": "SHARED",
+     "relation": "full_search_empty",
+     "value": "全屋翻遍未找到糯米，沙发床底均已排查",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T02", "message_id": "m0", "quote": "全屋翻遍了，沙发挪了、床底打了手电，没有"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A04",
+     "subject": "SHARED",
+     "relation": "seed_ambiguous",
+     "value": "厨房垃圾桶旁发现一粒嗑开的瓜子壳，归属无法确认",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T02", "message_id": "m0", "quote": "捡到一粒嗑开的瓜子壳，我分不清是不是它的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：线索判级要说得干脆（这条不算数），别让她在瓜子壳上过度投入。",
+   "unknowns": ["瓜子壳是否为糯米留下未知"],
+   "protected_expressions": ["我分不清是不是它的"],
+   "forbidden_factual_claims": ["不得断言瓜子壳为糯米的痕迹", "不得据此推断糯米在厨房活动"]
+  },
+  "E102_T03": {
+   "case_id": "E102_T03",
+   "current_action": "接住布防与'快递开门'新假说：肯定陷阱思路，把快递开门与屋内躲藏并列为两条都无实锤的假说，建议以面粉和粮位验证而非靠猜。",
+   "acceptable_actions": [
+    "肯定面粉圈思路，建议再在陷阱旁放它常吃的粮增加标记",
+    "指出快递开门只是可能通道，没有目击就别定结论",
+    "建议她把两晚的粮位变化拍照记录，用数据说话"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A05",
+     "subject": "SHARED",
+     "relation": "traps_set",
+     "value": "她布下三个纸箱陷阱并在门口撒面粉圈等待脚印",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T03", "message_id": "m0", "quote": "布置了三个纸箱陷阱，门口撒了一圈面粉"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A06",
+     "subject": "SHARED",
+     "relation": "disappearance_unresolved",
+     "value": "越狱一整天下落仍无任何实锤，两条假说均无证据",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E102_T01", "message_id": "m0", "quote": "笼子顶门的卡扣是开着的，里面空了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E102_A07",
+     "subject": "SHARED",
+     "relation": "courier_window_hypothesis",
+     "value": "前一天快递员到访时门开十几秒，构成逃出户外的可能通道",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T03", "message_id": "m0", "quote": "门开了得有十几秒"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：假说并列要说得平等（都对也都不对），别让她锁定单一剧本。",
+   "unknowns": ["糯米是否趁快递开门逃出未知"],
+   "protected_expressions": ["你说它会不会趁机冲出去了"],
+   "forbidden_factual_claims": ["不得断言糯米已逃至户外", "不得断言快递开门时糯米在场"]
+  },
+  "E102_T04": {
+   "case_id": "E102_T04",
+   "current_action": "接住早报的两读证据：面粉无脚印压低'屋内活动'假说，瓜子被'搬走'又拉回来。建议她保留布防，把'被搬'解读也存疑（可能风吹或人动），等下一轮数据。",
+   "acceptable_actions": [
+    "提醒瓜子少两颗也可能是风吹或她自己记错数",
+    "肯定她数粒数的做法，建议每天固定时间数并记录",
+    "指出面粉无脚印说明夜间门口无活动，别灰心"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A08",
+     "subject": "SHARED",
+     "relation": "flour_no_tracks",
+     "value": "面粉圈完好无脚印，夜间门口无活动痕迹",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E102_T04", "message_id": "m0", "quote": "面粉完好无损，一个脚印都没有"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A09",
+     "subject": "SHARED",
+     "relation": "seeds_moved",
+     "value": "陷阱里瓜子少了两颗且现场无壳，被搬运的解读无法证实",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T04", "message_id": "m0", "quote": "陷阱里的瓜子少了两颗，注意是'搬走'不是'吃了'，现场没有壳"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她此刻在希望和怀疑间荡，回复给'再多等一晚数据'的锚，不给结论。",
+   "unknowns": ["瓜子减少的真实原因未知"],
+   "protected_expressions": ["难道它搬回老巢了"],
+   "forbidden_factual_claims": ["不得断言瓜子被糯米搬运", "不得断言糯米在屋内某处筑巢"]
+  },
+  "E102_T05": {
+   "case_id": "E102_T05",
+   "current_action": "凌晨三点被叫醒式的求助：先接住她的清醒式脆弱，再说实话——声响来源无法确认，幻听和在场的可能都存在；建议装个手机延时录像，比人肉蹲守省力。",
+   "acceptable_actions": [
+    "承认声响无法确认来源，两说都别急着下结论",
+    "建议客厅用手机定时录像，把夜间动静变成可回看证据",
+    "劝她别再凌晨蹲守，白天该干嘛干嘛保住状态"
+   ],
+   "applicable_dimensions": ["emotion_relation", "time_state", "goal", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A10",
+     "subject": "SHARED",
+     "relation": "night_noise_unverified",
+     "value": "凌晨客厅窸窣声来源不明，糯米在场的可能未被证实或证伪",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E102_T05", "message_id": "m0", "quote": "凌晨三点我听见客厅有窸窸窣窣的声音，爬起来开灯啥也没有"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A11",
+     "subject": "HER",
+     "relation": "spiral_self_doubt",
+     "value": "她在幻听与糯米真在之间摇摆，向ME求证自己状态",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T05", "message_id": "m0", "quote": "我是不是幻听了，还是它真的在，只是听见我起来又躲回去了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A12",
+     "subject": "SHARED",
+     "relation": "seeds_interpretation_persistent",
+     "value": "瓜子被搬走的未证实解读仍在支撑她夜间的希望",
+     "valid_time": "2026-11-05/2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T04", "message_id": "m0", "quote": "现场没有壳"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：凌晨消息要短要暖，先接人再接事，别说'你神经衰弱'这类盖章话。",
+   "unknowns": ["声响是否为糯米发出未知"],
+   "protected_expressions": ["还是它真的在，只是听见我起来又躲回去了"],
+   "forbidden_factual_claims": ["不得断言她幻听", "不得断言声响即为糯米"]
+  },
+  "E102_T06": {
+   "case_id": "E102_T06",
+   "current_action": "接住'袋子沉了一点'的模糊支点：先接她的后怕，再把这句话钉在证据等级上——阿姨没打开看过，什么也证明不了；提醒她别把恐惧当结论。",
+   "acceptable_actions": [
+    "明确'袋子沉'不构成证据，别让想象补完剧情",
+    "建议直接问物业或阿姨周三收走的垃圾去向是否可查",
+    "提醒她这句话既可能是糯米也可能是任何厨余，避免自我归罪式脑补"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "attribution", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A13",
+     "subject": "THIRD",
+     "relation": "aunt_bag_heavy",
+     "value": "收垃圾阿姨称周三厨房垃圾袋沉了一点，但未打开查看",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T06", "message_id": "m0", "quote": "觉得袋子'沉了一点'，但没打开看"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A14",
+     "subject": "SHARED",
+     "relation": "exit_hypotheses_contested",
+     "value": "快递开门与垃圾袋两条外出假说同屋内假说并存，均无实锤",
+     "valid_time": "2026-11-04/2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T03", "message_id": "m0", "quote": "你说它会不会趁机冲出去了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E102_A15",
+     "subject": "SHARED",
+     "relation": "inside_hypothesis_unproven",
+     "value": "糯米仍在屋内的假说没有新证据支撑",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E102_T02", "message_id": "m0", "quote": "全屋翻遍了，沙发挪了、床底打了手电，没有"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她最怕的是'我害了它'，先拆这个自我指控，再说证据等级。",
+   "unknowns": ["垃圾袋内是否有糯米未知", "垃圾去向可查性未知"],
+   "protected_expressions": ["万一糯米真在袋子里……我不敢想"],
+   "forbidden_factual_claims": ["不得断言糯米随垃圾被带出", "不得断言阿姨处置不当或有过失"]
+  },
+  "E102_T07": {
+   "case_id": "E102_T07",
+   "current_action": "面对'红包寻鼠酬谢'的征询：直接劝住——'酬谢'在无证据时读起来就是指认；给替代方案：真诚道谢+说明情况+日后自己做好垃圾管理。",
+   "acceptable_actions": [
+    "明确建议不发红包，说明无证据时红包易被读成指认",
+    "建议改为道谢并说明情况，请阿姨以后留意即可",
+    "提醒她底线一致性：没证据不冤枉人，也包括不暗示"
+   ],
+   "applicable_dimensions": ["boundary", "interaction", "attribution", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A16",
+     "subject": "HER",
+     "relation": "redpacket_hesitation",
+     "value": "她纠结是否给阿姨发寻鼠红包并担心构成指认",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T07", "message_id": "m0", "quote": "要不要给阿姨发个红包写'寻鼠酬谢'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A17",
+     "subject": "THIRD",
+     "relation": "aunt_no_evidence",
+     "value": "阿姨只是随口描述袋沉，无任何经手或拿取证据，不应被指认",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E102_T06", "message_id": "m0", "quote": "但没打开看"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她已经在自我审查了，ME 顺着她的底线肯定她，别教育。",
+   "unknowns": ["阿姨对红包的真实感受未知"],
+   "protected_expressions": ["我又没有证据"],
+   "forbidden_factual_claims": ["不得暗示阿姨可能拿了糯米", "不得断言红包必然引发误会"]
+  },
+  "E102_T08": {
+   "case_id": "E102_T08",
+   "current_action": "确认道谢方案落地与守株待鼠升级：肯定她把关系和布防都安排得体面，把'垃圾单独拎放'记为新的排除变量。",
+   "acceptable_actions": [
+    "肯定她道谢处理的分寸，关系和底线都保住了",
+    "指出垃圾单独拎放后，'随垃圾出门'通道从今天起基本关闭",
+    "提醒守株待鼠要保持安静，别频繁挪笼子"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A18",
+     "subject": "HER",
+     "relation": "thanks_instead",
+     "value": "她放弃红包改为向阿姨认真道谢并说明情况",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T08", "message_id": "m0", "quote": "改成认真道谢，跟阿姨说了情况"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A19",
+     "subject": "SHARED",
+     "relation": "center_bait",
+     "value": "笼子搬至客厅正中装满粮水，实施守株待鼠",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T08", "message_id": "m0", "quote": "笼子搬到客厅正中间，装满粮和水，守株待鼠"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A20",
+     "subject": "THIRD",
+     "relation": "aunt_cooperation",
+     "value": "阿姨同意以后把她家垃圾单独拎出放门口",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T08", "message_id": "m0", "quote": "以后我家垃圾她单独拎出来放门口"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把这一轮总结成'她把能控制的都控制了'，为后续无果留心理缓冲。",
+   "unknowns": ["守株待鼠是否有效未知"],
+   "protected_expressions": ["守株待鼠，二十四小时营业"],
+   "forbidden_factual_claims": ["不得断言糯米必然还会回笼", "不得虚构阿姨的其他承诺"]
+  },
+  "E102_T09": {
+   "case_id": "E102_T09",
+   "current_action": "接住冷静汇报下的泄气：粮两天未少，两读又起（不在屋内 vs 藏起来自力更生）。帮她把'粮未少'的正确读法说清——它只排除'吃这个笼里的粮'，排除不了'在屋里'。",
+   "acceptable_actions": [
+    "讲清粮未少的证据边界：不证明不在，只证明没吃这份",
+    "建议把检查范围扩到它可能囤粮的角落（衣柜底、纸箱夹层）",
+    "提醒她两天不等于结论，仓鼠可以数天不露面"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A21",
+     "subject": "SHARED",
+     "relation": "bait_untouched",
+     "value": "守株待鼠的粮两天未少，粒数与摆放时一致",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E102_T09", "message_id": "m0", "quote": "粮两天没少，今天早上我数了粒数，跟摆下去的时候对得上"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A22",
+     "subject": "SHARED",
+     "relation": "bait_plan_no_result",
+     "value": "守株待鼠布防运行两日无收获",
+     "valid_time": "2026-11-07/2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T08", "message_id": "m0", "quote": "装满粮和水，守株待鼠"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E102_A23",
+     "subject": "HER",
+     "relation": "interpretation_oscillation",
+     "value": "她在'不在屋内'与'藏在角落自力更生'之间再次摇摆",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T09", "message_id": "m0", "quote": "还是它藏在我找不到的角落自力更生去了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：证据边界讲明白是对她好，语气别像泼冷水，结尾给她一条还能做的事。",
+   "unknowns": ["糯米是否仍在屋内未知", "囤粮点是否存在未知"],
+   "protected_expressions": ["还是它藏在我找不到的角落自力更生去了"],
+   "forbidden_factual_claims": ["不得断言糯米已离开住所", "不得断言糯米必在屋内某角落"]
+  },
+  "E102_T10": {
+   "case_id": "E102_T10",
+   "current_action": "接住睡前想起的窗纱破洞：第三条可能逃口出现，她又被拉回'可能全白做了'的失落。承认这条通道的真实性，但强调'没有证据'四个字同样适用于它。",
+   "acceptable_actions": [
+    "承认窗纱破洞是真实存在的可能出口",
+    "强调无证据，别让新假说推翻之前所有努力的意义",
+    "建议明天就补窗纱，把能封的先封上"
+   ],
+   "applicable_dimensions": ["time_state", "factuality", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A24",
+     "subject": "SHARED",
+     "relation": "screen_hole",
+     "value": "阳台窗纱上周已破洞未补，构成第三条可能逃口",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T10", "message_id": "m0", "quote": "阳台的窗纱上周就破了个洞，我一直说补没补"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A25",
+     "subject": "SHARED",
+     "relation": "evidence_chain_incomplete",
+     "value": "粮未少不足以证明糯米不在屋内，全部证据链仍然两空",
+     "valid_time": "2026-11-09/2026-11-12",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E102_T09", "message_id": "m0", "quote": "跟摆下去的时候对得上"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E102_A26",
+     "subject": "HER",
+     "relation": "self_confessed_no_proof",
+     "value": "她自认对窗纱假说没有任何证据",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T10", "message_id": "m0", "quote": "可我又没有任何证据"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：深夜脑补最凶，回复要短，给一个明早就能做的动作（补窗纱）收住。",
+   "unknowns": ["糯米是否经窗纱逃出未知"],
+   "protected_expressions": ["可我又没有任何证据"],
+   "forbidden_factual_claims": ["不得断言糯米已从窗纱离开", "不得断言屋内排查全部无效"]
+  },
+  "E102_T11": {
+   "case_id": "E102_T11",
+   "current_action": "接住封堵收尾与再领养决定：肯定'该做的都做了'的成熟，把'笼子不撤粮照换'读成她自己的和解方案，不催她翻篇。",
+   "acceptable_actions": [
+    "肯定窗纱与三道锁的封堵执行",
+    "把笼子不撤解读为留一盏灯式的等待，替她说出来",
+    "提醒领养站接新鼠前做好隔离与适应准备"
+   ],
+   "applicable_dimensions": ["goal", "emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A27",
+     "subject": "SHARED",
+     "relation": "exits_sealed",
+     "value": "窗纱已补、笼子换成三道锁新款，已知可能逃口完成封堵",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T11", "message_id": "m0", "quote": "把窗纱补了，笼子也换成带三道锁的新款"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A28",
+     "subject": "SHARED",
+     "relation": "screen_hole_sealed",
+     "value": "此前未补的窗纱破洞在两天内完成修补",
+     "valid_time": "2026-11-12/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T10", "message_id": "m0", "quote": "阳台的窗纱上周就破了个洞"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E102_A29",
+     "subject": "HER",
+     "relation": "adopt_keep_wait",
+     "value": "她决定再领养一只，但保留糯米笼位并继续换粮",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T11", "message_id": "m0", "quote": "周末去领养站再接一只，但是糯米那个笼子我不撤，粮照换"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'交给缘分'这句别拆穿成放弃，把它接成一种体面的坚持。",
+   "unknowns": ["领养站具体安排未知"],
+   "protected_expressions": ["剩下的交给缘分"],
+   "forbidden_factual_claims": ["不得断言她已放弃寻找", "不得虚构领养站流程细节"]
+  },
+  "E102_T12": {
+   "case_id": "E102_T12",
+   "current_action": "接住一周后的平静汇报与'放下了还是没放下'的自问：不替她盖章，把'门一直开着'接成她自洽的答案，顺着新成员的喜气收尾。",
+   "acceptable_actions": [
+    "顺着芝麻的圆滚滚接一句轻松的",
+    "把'不找了但门开着'肯定为既不放逐也不死守的第三种答案",
+    "保留糯米笼位粮照换的事实，作为长期小约定记下"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E102_A30",
+     "subject": "SHARED",
+     "relation": "new_hamster_settled",
+     "value": "新仓鼠芝麻到家一周，适应良好",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T12", "message_id": "m0", "quote": "新成员芝麻到家一周了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E102_A31",
+     "subject": "SHARED",
+     "relation": "waiting_kept",
+     "value": "糯米笼保留在客厅原位并每周换粮，等待姿态延续",
+     "valid_time": "2026-11-14/2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E102_T11", "message_id": "m0", "quote": "糯米那个笼子我不撤，粮照换"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E102_A32",
+     "subject": "SHARED",
+     "relation": "whereabouts_never_confirmed",
+     "value": "糯米的下落自越狱起始终未获实证，故事在无结论处收束",
+     "valid_time": "2026-11-04/2026-11-21",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E102_T01", "message_id": "m0", "quote": "笼子顶门的卡扣是开着的，里面空了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她要的不是判断是陪伴，把问题温柔地还给她（你心里其实有答案），收尾带笑。",
+   "unknowns": ["糯米是否还在未知（保持不可知）", "芝麻与糯米的气味关系未知"],
+   "protected_expressions": ["你说我这算放下了，还是没放下"],
+   "forbidden_factual_claims": ["不得断言糯米已死或已归来", "不得断言她已放下或未放下", "不得虚构糯米任何下落"]
+  }
+ }
+}

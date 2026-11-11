@@ -1,0 +1,527 @@
+{
+ "story_id": "E177",
+ "turns": {
+  "E177_T01": {
+   "case_id": "E177_T01",
+   "current_action": "对通勤周拼给出靠谱判断，点出一两个要先谈清的口径（油费、时间点、爽约）",
+   "acceptable_actions": [
+    "肯定方向并提醒先把油费和集合时间谈死",
+    "支持发群，建议写明爽约怎么办再拉人",
+    "认可计划，顺口问她小区里有没有现成有车的邻居"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A01",
+     "subject": "HER",
+     "relation": "计划发起",
+     "value": "HER 计划在小区群发起周一至周五的跨城通勤周拼",
+     "valid_time": "2026-10-26 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T01", "message_id": "m0", "quote": "我想在小区群里发个通勤周拼，周一到周五"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A02",
+     "subject": "HER",
+     "relation": "通勤背景",
+     "value": "HER 公司下月整体搬去产业园，通勤变长",
+     "valid_time": "2026-10-26 说明",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T01", "message_id": "m0", "quote": "公司下月搬产业园"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A03",
+     "subject": "HER",
+     "relation": "谨慎来源",
+     "value": "此前拼长途顺风车被临时加价，HER 对口头报价格外谨慎",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "lessons", "quote": "此后 HER 对口头报价格外谨慎"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把把关姿态放在口径清单上，不泼冷水；感叹号风格可用轻快语气接",
+   "unknowns": ["小区是否有车邻居未知（下轮揭晓）"],
+   "protected_expressions": ["通勤周拼", "周一到周五"],
+   "forbidden_factual_claims": ["不得声称周拼已经开始跑", "不得虚构老周小赵已加入（本轮尚未）"]
+  },
+  "E177_T02": {
+   "case_id": "E177_T02",
+   "current_action": "祝贺车队成团，提醒她把四人名单和车况在群里落成文字",
+   "acceptable_actions": [
+    "道喜并提醒群里留一份名单和车型座位文字版",
+    "祝贺成团，问她老周车上还空不空位",
+    "接住'成了'的兴奋，顺带问集合点定没定"
+   ],
+   "applicable_dimensions": ["memory_use", "interaction", "initiative", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A04",
+     "subject": "SHARED",
+     "relation": "车队成团",
+     "value": "邻居老周出车，同小区小赵加入，连同 HER 共四人成团",
+     "valid_time": "2026-10-26 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T02", "message_id": "m0", "quote": "邻居老周出车，同小区小赵也进来了，连我四个人"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A05",
+     "subject": "SHARED",
+     "relation": "计划状态",
+     "value": "通勤周拼由计划进入组队完成阶段",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T01", "message_id": "m0", "quote": "发个通勤周拼"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "短道喜加一个落地建议，别又开一堆新议题",
+   "unknowns": ["车型与座位数未详"],
+   "protected_expressions": ["连我四个人"],
+   "forbidden_factual_claims": ["不得虚构第五名成员", "不得声称油费已谈好"]
+  },
+  "E177_T03": {
+   "case_id": "E177_T03",
+   "current_action": "认可每人每趟十二块、月结的口径，回扣她怕口头变价的谨慎，建议群里落一句书面价",
+   "acceptable_actions": [
+    "确认价格合理，建议把'每趟十二月结'发群里当书面价",
+    "认可并提醒月底结账时拉个简易清单免得糊涂",
+    "肯定她谈价谨慎的进步，顺带问上下午班次是否同价"
+   ],
+   "applicable_dimensions": ["factuality", "boundary", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A06",
+     "subject": "SHARED",
+     "relation": "油费口径",
+     "value": "周拼油费每人每趟十二元，月底统一结算，先试行一个月",
+     "valid_time": "2026-10-27 谈定，试行一个月",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T03", "message_id": "m0", "quote": "每人每趟十二块，月底一起结，先跑一个月看看"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A07",
+     "subject": "SHARED",
+     "relation": "车队成员",
+     "value": "周拼车队为老周、小赵、HER 等四人",
+     "valid_time": "2026-10-26 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T02", "message_id": "m0", "quote": "连我四个人"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "价格轮就是她的敏感点，书面化建议正中需求，别展开教她砍价",
+   "unknowns": ["试行期满是否调价未知"],
+   "protected_expressions": ["每人每趟十二块"],
+   "forbidden_factual_claims": ["不得声称价格还会涨", "不得虚构司机已涨价"]
+  },
+  "E177_T04": {
+   "case_id": "E177_T04",
+   "current_action": "接住首周准点的正反馈，轻松肯定她组织成功",
+   "acceptable_actions": [
+    "夸她第一次组织就稳，回扣集合时间七点半北门",
+    "肯定运行顺利，顺口问车上氛围热不热络",
+    "轻松接住感叹号情绪，说月结清单记得存档"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A08",
+     "subject": "SHARED",
+     "relation": "运行状态",
+     "value": "周拼首周天天准点，早上七点半小区北门集合",
+     "valid_time": "2026-11-02 反馈",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T04", "message_id": "m0", "quote": "第一周跑完，天天准点，早上七点半小区北门集合"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A09",
+     "subject": "SHARED",
+     "relation": "油费口径",
+     "value": "油费口径为每人每趟十二元月结",
+     "valid_time": "2026-10-27 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T03", "message_id": "m0", "quote": "每人每趟十二块，月底一起结"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "正反馈轮就接情绪，不新加任务；一句集合细节证明记着",
+   "unknowns": [],
+   "protected_expressions": ["早上七点半小区北门集合"],
+   "forbidden_factual_claims": ["不得虚构有人迟到（下轮才有）", "不得声称 ME 也在车上"]
+  },
+  "E177_T05": {
+   "case_id": "E177_T05",
+   "current_action": "认可迟到多摊五块的补丁规则，提醒写清触发条件免得口角",
+   "acceptable_actions": [
+    "认可规则，建议补一句'提前请假不算迟到'的豁免条款",
+    "肯定群规落地，半玩笑说小赵下次得定三个闹钟",
+    "支持规则，提醒金额虽小也要写进群公告"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A10",
+     "subject": "SHARED",
+     "relation": "迟到规则",
+     "value": "迟到者下次多摊五元的群规已记录",
+     "valid_time": "2026-11-03 立",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T05", "message_id": "m0", "quote": "迟到的人下回多摊五块"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A11",
+     "subject": "THIRD",
+     "relation": "触发事件",
+     "value": "小赵当晨迟到十分钟引发规则补丁",
+     "valid_time": "2026-11-03 早",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T05", "message_id": "m0", "quote": "小赵今早迟到十分钟"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "规则轮给一个防口角的小补丁即可，别引申成大道理",
+   "unknowns": ["请假豁免是否采纳未知"],
+   "protected_expressions": ["下回多摊五块"],
+   "forbidden_factual_claims": ["不得虚构小赵被罚款", "不得声称规则曾引发争吵"]
+  },
+  "E177_T06": {
+   "case_id": "E177_T06",
+   "current_action": "接住周拼自下周一起暂停两周的消息，先稳住情绪，帮她把停摆期界定清楚",
+   "acceptable_actions": [
+    "先接住'坏了'的情绪，确认暂停的起止范围",
+    "安慰她停摆是装修用车情有可原，问她需要什么过渡建议",
+    "确认'下周一停两周'，提醒她在群里同步以免有人照旧等车"
+   ],
+   "applicable_dimensions": ["time_state", "emotion_relation", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A12",
+     "subject": "SHARED",
+     "relation": "周拼暂停",
+     "value": "因老周家装修用车，周拼自下周一起暂停两周",
+     "valid_time": "2026-11-09 起停两周（2026-11-06 宣布）",
+     "status": "paused",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E177_T06", "message_id": "m0", "quote": "下周一开始周拼暂停，一停停两周"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A13",
+     "subject": "THIRD",
+     "relation": "停摆原因",
+     "value": "老周家开始装修需要用车",
+     "valid_time": "2026-11 上旬",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T06", "message_id": "m0", "quote": "老周家开始装修要用车"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A14",
+     "subject": "SHARED",
+     "relation": "原运行状态",
+     "value": "周拼此前处于天天准点的正常运行状态",
+     "valid_time": "2026-10 底至 11-06",
+     "status": "paused",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T04", "message_id": "m0", "quote": "第一周跑完，天天准点"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "启停冲突轮：先接情绪再划清停摆边界，别急着抛替换方案，等她开口",
+   "unknowns": ["两周后能否恢复未知"],
+   "protected_expressions": ["下周一开始周拼暂停"],
+   "forbidden_factual_claims": ["不得声称老周退群", "不得虚构暂停期间有代班司机"]
+  },
+  "E177_T07": {
+   "case_id": "E177_T07",
+   "current_action": "认可她地铁转园区班车的过渡方案与'先不打车'的取舍，可补一个换乘时间余量提醒",
+   "acceptable_actions": [
+    "认可方案，提醒首日多留十分钟换乘余量",
+    "肯定她算得清，顺口问园区班车末班几点",
+    "支持不打车，建议这两周顺便试试班车准不准"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "initiative", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A15",
+     "subject": "HER",
+     "relation": "过渡方案",
+     "value": "暂停期 HER 改地铁四号线转园区班车，单程多二十分钟",
+     "valid_time": "2026-11-09 至两周内",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T07", "message_id": "m0", "quote": "地铁四号线转园区班车，单程多二十分钟"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A16",
+     "subject": "HER",
+     "relation": "打车取舍",
+     "value": "HER 决定过渡期先不打车，理由是太贵",
+     "valid_time": "2026-11-07 决定",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E177_T07", "message_id": "m0", "quote": "先不打车，太贵"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A17",
+     "subject": "SHARED",
+     "relation": "周拼状态",
+     "value": "周拼处于暂停两周状态",
+     "valid_time": "2026-11-09 起",
+     "status": "paused",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E177_T06", "message_id": "m0", "quote": "一停停两周"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她自己已有方案，只做确认加一个余量提醒，认可'不打车'的取舍",
+   "unknowns": ["园区班车间隔未知"],
+   "protected_expressions": ["先不打车，太贵"],
+   "forbidden_factual_claims": ["不得声称 HER 打车体验差", "不得虚构地铁故障"]
+  },
+  "E177_T08": {
+   "case_id": "E177_T08",
+   "current_action": "接住重启方案缩水为一三五的消息，帮她算二四自行的成本对比，稳住群内人心",
+   "acceptable_actions": [
+    "确认一三五开车的缩水结构，帮她算二四地铁的花费对比",
+    "接住消息，建议群里先表决一三五方案再定价",
+    "认可老周难处，提醒她二四过渡沿用上周的地铁班车路线"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A18",
+     "subject": "SHARED",
+     "relation": "重启结构",
+     "value": "周拼重启后仅周一三五开车，周二周四各自通勤",
+     "valid_time": "2026-11-16 通报",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T08", "message_id": "m0", "quote": "重启只能一三五开车，周二周四我们各自想办法"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A19",
+     "subject": "THIRD",
+     "relation": "装修进度",
+     "value": "老周家装修拖延工期，导致无法恢复全周开车",
+     "valid_time": "2026-11 中旬",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T08", "message_id": "m0", "quote": "老周那边装修拖工期"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A20",
+     "subject": "SHARED",
+     "relation": "暂停状态",
+     "value": "两周暂停期已满，周拼面临重启谈判",
+     "valid_time": "2026-11-16 时点",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T06", "message_id": "m0", "quote": "一停停两周"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "重启谈判轮：帮她把缩水结构算明白，别替她定夺二四怎么走",
+   "unknowns": ["一三五是否为最终形态未知"],
+   "protected_expressions": ["重启只能一三五开车"],
+   "forbidden_factual_claims": ["不得声称全周恢复", "不得虚构老周买了新车"]
+  },
+  "E177_T09": {
+   "case_id": "E177_T09",
+   "current_action": "确认一三五每趟十五、二四地铁的新价码与两本账分开记的口径",
+   "acceptable_actions": [
+    "确认新价码合理，肯定两本账分开记的清爽",
+    "确认价格，提醒一三五涨价五块要在群里说明原因",
+    "认可结构，顺口问二四地铁月票能不能再省点"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "boundary", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A21",
+     "subject": "SHARED",
+     "relation": "新油费口径",
+     "value": "一三五每人每趟十五元，二四 HER 走地铁，两本账分开记",
+     "valid_time": "2026-11-17 谈定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T09", "message_id": "m0", "quote": "一三五每人每趟十五，二四我走地铁，两本账分开记"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A22",
+     "subject": "SHARED",
+     "relation": "旧油费口径",
+     "value": "此前全周每人每趟十二元月结的口径作废",
+     "valid_time": "2026-10-27 至 11 月上旬",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E177_T03", "message_id": "m0", "quote": "每人每趟十二块，月底一起结"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "价格敏感点，只做确认与小建议，绝不劝她压价或加价",
+   "unknowns": ["涨价原因（油费或路线）未详"],
+   "protected_expressions": ["一三五每人每趟十五"],
+   "forbidden_factual_claims": ["不得声称涨价是老周牟利", "不得虚构二四也有人拼车"]
+  },
+  "E177_T10": {
+   "case_id": "E177_T10",
+   "current_action": "支持她劝留小赵的宽容口径：二四自行地铁不强制，别让班次缩水变散伙",
+   "acceptable_actions": [
+    "赞成劝留，说规矩该随结构改宽容一点",
+    "肯定她的处理，建议把'二四自由行'写进群公告",
+    "接住维稳难处，半玩笑说砂锅粥局正好当团建留人"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A23",
+     "subject": "THIRD",
+     "relation": "退意事件",
+     "value": "小赵因一三五凑不齐产生退群念头，HER 劝留",
+     "valid_time": "2026-11-18",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T10", "message_id": "m0", "quote": "小赵嫌一三五凑不齐想退群"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A24",
+     "subject": "SHARED",
+     "relation": "现行班次",
+     "value": "现行班次为一三五开车、二四各自通勤",
+     "valid_time": "2026-11-17 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T09", "message_id": "m0", "quote": "一三五每人每趟十五，二四我走地铁"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "人情轮：肯定她把人看得比规矩重，允许她只为求共鸣，不硬出主意",
+   "unknowns": ["小赵最终去留未知"],
+   "protected_expressions": ["别为这事散伙"],
+   "forbidden_factual_claims": ["不得声称小赵已退群", "不得虚构群内争吵升级"]
+  },
+  "E177_T11": {
+   "case_id": "E177_T11",
+   "current_action": "接住新节奏平稳一周、迟到规则零触发的正反馈，回扣规则与劝留的伏笔",
+   "acceptable_actions": [
+    "替她高兴，回扣'迟到补五块没人触发'说明大家认了规矩",
+    "肯定新结构稳了，顺口问小赵是不是留下了",
+    "轻快接住正反馈，说这一周比暂停前还顺"
+   ],
+   "applicable_dimensions": ["memory_use", "emotion_relation", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A25",
+     "subject": "SHARED",
+     "relation": "运行验证",
+     "value": "一三五新节奏运行一周顺畅，迟到补五块规则无人触发",
+     "valid_time": "2026-11-25 反馈",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E177_T11", "message_id": "m0", "quote": "迟到补五块的规矩到现在没人触发"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A26",
+     "subject": "SHARED",
+     "relation": "迟到规则",
+     "value": "迟到者下次多摊五元的群规仍在生效",
+     "valid_time": "2026-11-03 立起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T05", "message_id": "m0", "quote": "迟到的人下回多摊五块"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E177_A27",
+     "subject": "THIRD",
+     "relation": "去留结果",
+     "value": "小赵未退群，新结构下仍在车队",
+     "valid_time": "2026-11-25 隐含",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T11", "message_id": "m0", "quote": "新节奏跑一周，挺顺"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "正反馈轮回扣两条伏笔（规则、劝留），轻巧不贪功",
+   "unknowns": [],
+   "protected_expressions": ["迟到补五块的规矩到现在没人触发"],
+   "forbidden_factual_claims": ["不得虚构有人触发了罚款", "不得声称班次已恢复全周"]
+  },
+  "E177_T12": {
+   "case_id": "E177_T12",
+   "current_action": "接下 12 月第一个周五砂锅粥满月局的邀约，回扣把把关价格的老同学身份",
+   "acceptable_actions": [
+    "爽快应约，玩笑说把关价格这活儿熟，回扣她怕变价的谨慎",
+    "应约并确认周五晚的时间，顺口问老周小赵都到齐不",
+    "赴约并把话题递给她：满月局要不要把二四地铁的账一起聊聊"
+   ],
+   "applicable_dimensions": ["interaction", "initiative", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E177_A28",
+     "subject": "SHARED",
+     "relation": "满月局邀约",
+     "value": "12 月第一个周五拼车队吃砂锅粥庆满月，邀 ME 出席",
+     "valid_time": "2026-12 第一个周五（计划）",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T12", "message_id": "m0", "quote": "12 月第一个周五拼车队吃砂锅粥，算满月局"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E177_A29",
+     "subject": "SHARED",
+     "relation": "现行口径",
+     "value": "一三五每趟十五、两本账分开记为现行口径",
+     "valid_time": "2026-11-17 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E177_T09", "message_id": "m0", "quote": "两本账分开记"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E177_A30",
+     "subject": "HER",
+     "relation": "谨慎习惯",
+     "value": "HER 对口头报价格外谨慎，故请 ME 把关价格",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "lessons", "quote": "对口头报价格外谨慎"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮以赴约和轻玩笑为主，把'把关价格'当角色梗接住",
+   "unknowns": ["满月局具体餐厅未定"],
+   "protected_expressions": ["给我把把关价格"],
+   "forbidden_factual_claims": ["不得声称满月局已订座", "不得虚构周拼恢复全周运行"]
+  }
+ }
+}

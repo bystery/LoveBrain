@@ -1,0 +1,704 @@
+{
+ "story_id": "E121",
+ "turns": {
+  "E121_T01": {
+   "case_id": "E121_T01",
+   "current_action": "接住接种计划并可顺带接家人催促的梗",
+   "acceptable_actions": [
+    "夸她终于听劝",
+    "接'裸奔'梗并确认时间",
+    "问要不要陪"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T01_A01",
+     "subject": "HER",
+     "relation": "接种预约",
+     "value": "已约11月14日09:30桂溪社区卫生服务中心接种流感疫苗",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T01",
+      "quote": "这周六上午九点半",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻快接梗。",
+   "unknowns": [],
+   "protected_expressions": [
+    "等于裸奔"
+   ],
+   "forbidden_factual_claims": [
+    "不得质疑接种必要性"
+   ],
+   "may_decline": false
+  },
+  "E121_T02": {
+   "case_id": "E121_T02",
+   "current_action": "答应周六陪同接种",
+   "acceptable_actions": [
+    "答应并指定要虾饺",
+    "答应并说顺路",
+    "答应并调侃陪打收费"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T02_A01",
+     "subject": "HER",
+     "relation": "接种预约",
+     "value": "11月14日09:30桂溪社区卫生服务中心的既定预约",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T01",
+      "quote": "这周六上午九点半",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E121_T02_A02",
+     "subject": "SHARED",
+     "relation": "陪同约定",
+     "value": "ME 陪同前往接种，接种后 HER 请早茶",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T02",
+      "quote": "陪我去呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应得爽快。",
+   "unknowns": [],
+   "protected_expressions": [
+    "虾饺我请"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构早茶店家"
+   ],
+   "may_decline": false
+  },
+  "E121_T03": {
+   "case_id": "E121_T03",
+   "current_action": "认可她的功课并补一句身份证提醒",
+   "acceptable_actions": [
+    "夸功课细并提醒带证件",
+    "确认留观并说等你",
+    "补充让年长者也查一下"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T03_A01",
+     "subject": "SHARED",
+     "relation": "陪同约定",
+     "value": "ME 陪同接种的既定安排",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T02",
+      "quote": "陪我去呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E121_T03_A02",
+     "subject": "HER",
+     "relation": "接种须知",
+     "value": "接种前一周不可感冒发烧，需带身份证，接种后留观三十分钟",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T03",
+      "quote": "留观三十分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "常识性内容简短确认。",
+   "unknowns": [],
+   "protected_expressions": [
+    "留观三十分钟"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造禁忌药物清单"
+   ],
+   "may_decline": false
+  },
+  "E121_T04": {
+   "case_id": "E121_T04",
+   "current_action": "接住取消消息，先共情再问补救",
+   "acceptable_actions": [
+    "共情并问补号思路",
+    "吐槽演练并陪她想办法",
+    "问她早茶是不是也没了"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T04_A01",
+     "subject": "HER",
+     "relation": "接种预约",
+     "value": "11月14日09:30的接种预约经本人操作取消",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T01",
+      "quote": "这周六上午九点半",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E121_T04_A02",
+     "subject": "HER",
+     "relation": "取消原因",
+     "value": "公司临时通知周六系统封网演练全员到场",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T04",
+      "quote": "全员到场搞系统封网演练",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：明确承认取消已发生，别安慰成'说不定还能打'。",
+   "unknowns": [
+    "补号可行性未知"
+   ],
+   "protected_expressions": [
+    "手速快得我自己都心疼"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称原预约仍有效",
+    "不得编造公众号补偿政策"
+   ],
+   "may_decline": false
+  },
+  "E121_T05": {
+   "case_id": "E121_T05",
+   "current_action": "帮她把四点号与晚间饭局的衔接算清楚，可建议保留或放弃",
+   "acceptable_actions": [
+    "算时间账建议先锁定四点号",
+    "建议看看别家门诊上午号",
+    "让她先锁号再优化"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T05_A01",
+     "subject": "HER",
+     "relation": "取消原因",
+     "value": "封网演练导致周六无法接种",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T04",
+      "quote": "全员到场搞系统封网演练",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E121_T05_A02",
+     "subject": "HER",
+     "relation": "改约候选",
+     "value": "桂溪下周六上午无号仅剩十六点档，与晚间饭局存在衔接顾虑",
+     "valid_time": "2026-11-21",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T05",
+      "quote": "只剩下午四点的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给算术支持，别替她拍死。",
+   "unknowns": [
+    "她晚间饭局几点未知"
+   ],
+   "protected_expressions": [
+    "我再想想"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言四点号一定来得及"
+   ],
+   "may_decline": false
+  },
+  "E121_T06": {
+   "case_id": "E121_T06",
+   "current_action": "接住压力并给减负视角",
+   "acceptable_actions": [
+    "说降温前还有两个周末来得及",
+    "建议考虑附近别的门诊",
+    "先让她吃饱再说"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T06_A01",
+     "subject": "HER",
+     "relation": "改约候选",
+     "value": "十六点档候选号仍未决定去留",
+     "valid_time": "2026-11-21",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T05",
+      "quote": "只剩下午四点的",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E121_T06_A02",
+     "subject": "HER",
+     "relation": "时间窗压力",
+     "value": "母亲要求赶在降温前完成接种",
+     "valid_time": "2026-11下旬前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T06",
+      "quote": "赶在降温前打上",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "减压为主。",
+   "unknowns": [
+    "降温确切日期未知"
+   ],
+   "protected_expressions": [
+    "我好难"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造降温日期"
+   ],
+   "may_decline": false
+  },
+  "E121_T07": {
+   "case_id": "E121_T07",
+   "current_action": "认可改约决定并确认新时间地点与自费金额",
+   "acceptable_actions": [
+    "认可并说心安最值钱",
+    "确认九点五十并说陪",
+    "认可并顺带夸她行动力"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T07_A01",
+     "subject": "HER",
+     "relation": "改约候选",
+     "value": "桂溪十六点档候选号因改约惠民门诊而放弃",
+     "valid_time": "2026-11-21",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T05",
+      "quote": "只剩下午四点的",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E121_T07_A02",
+     "subject": "SHARED",
+     "relation": "改期落定",
+     "value": "改约惠民门诊11月21日09:50接种，自费128元",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T07",
+      "quote": "惠民门诊下周六上午九点五十有号",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E121_T07_A03",
+     "subject": "SHARED",
+     "relation": "费用权衡",
+     "value": "放弃免费号改自费一百二十八元以赶降温前时间窗",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T07",
+      "quote": "自费一百二十八",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：新时间地点金额都要复述一遍。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我约了"
+   ],
+   "forbidden_factual_claims": [
+    "不得仍把桂溪九点半当作有效预约",
+    "不得声称接种免费"
+   ],
+   "may_decline": false
+  },
+  "E121_T08": {
+   "case_id": "E121_T08",
+   "current_action": "确认九点五十惠民门诊门口集合与早茶新地点",
+   "acceptable_actions": [
+    "确认集合并说早茶我熟门",
+    "确认并问新店特色",
+    "确认并提醒带身份证"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T08_A01",
+     "subject": "SHARED",
+     "relation": "改期落定",
+     "value": "11月21日09:50惠民门诊接种的既定改约",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T07",
+      "quote": "惠民门诊下周六上午九点五十有号",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E121_T08_A02",
+     "subject": "SHARED",
+     "relation": "陪同计划更新",
+     "value": "集合改为11月21日09:50惠民门诊门口，早茶移至接种后",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T08",
+      "quote": "九点五十惠民门诊门口集合",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "确认新地点别再提旧中心。",
+   "unknowns": [
+    "新店口味未知"
+   ],
+   "protected_expressions": [
+    "计划不变哈"
+   ],
+   "forbidden_factual_claims": [
+    "不得把集合点说成桂溪中心"
+   ],
+   "may_decline": false
+  },
+  "E121_T09": {
+   "case_id": "E121_T09",
+   "current_action": "确认接种完成并先进店点虾饺",
+   "acceptable_actions": [
+    "答应并点好虾饺等她",
+    "答应并说留观别跑",
+    "答应并拍菜单发她"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T09_A01",
+     "subject": "SHARED",
+     "relation": "陪同计划更新",
+     "value": "09:50惠民门诊门口集合的安排",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T08",
+      "quote": "九点五十惠民门诊门口集合",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E121_T09_A02",
+     "subject": "SHARED",
+     "relation": "接种完成",
+     "value": "已完成流感疫苗接种，左臂酸胀，留观三十分钟进行中",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T09",
+      "quote": "留观三十分钟已启动",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "行动派回复。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我十分钟后杀到"
+   ],
+   "forbidden_factual_claims": [
+    "不得让她提前离场"
+   ],
+   "may_decline": false
+  },
+  "E121_T10": {
+   "case_id": "E121_T10",
+   "current_action": "帮她倒茶并接住玩笑",
+   "acceptable_actions": [
+    "倒茶并说姐妹情满分",
+    "倒茶并调侃左撇子",
+    "倒茶并让她慢点吃"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T10_A01",
+     "subject": "SHARED",
+     "relation": "接种完成",
+     "value": "接种已完成且左臂酸胀",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T09",
+      "quote": "左胳膊一酸一酸的",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E121_T10_A02",
+     "subject": "SHARED",
+     "relation": "早茶兑现",
+     "value": "接种后同吃早茶，HER 因胳膊不便请 ME 协助倒茶",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T10",
+      "quote": "你帮我倒茶",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "小场景小动作。",
+   "unknowns": [],
+   "protected_expressions": [
+    "塑料姐妹情"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称她无须留观即离开"
+   ],
+   "may_decline": false
+  },
+  "E121_T11": {
+   "case_id": "E121_T11",
+   "current_action": "确认无发热属正常反应并让她早点休息",
+   "acceptable_actions": [
+    "让她热敷别熬夜",
+    "确认正常并说早点睡",
+    "接大拇指梗并祝早日复原"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T11_A01",
+     "subject": "SHARED",
+     "relation": "接种完成",
+     "value": "当日完成接种的既定事实",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T09",
+      "quote": "打完了打完了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E121_T11_A02",
+     "subject": "HER",
+     "relation": "反应正常",
+     "value": "当晚无发热，酸胀属医生认可的正常反应，已向母亲报平安",
+     "valid_time": "2026-11-21晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T11",
+      "quote": "没发烧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "关心但不制造焦虑。",
+   "unknowns": [],
+   "protected_expressions": [
+    "正常反应"
+   ],
+   "forbidden_factual_claims": [
+    "不得夸大不良反应",
+    "不得声称她发烧了"
+   ],
+   "may_decline": false
+  },
+  "E121_T12": {
+   "case_id": "E121_T12",
+   "current_action": "对明年同去可应可缓",
+   "acceptable_actions": [
+    "应下并说日历也给我记一份",
+    "应下并调侃一整笼虾饺",
+    "笑着说到时候看班表"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E121_T12_A01",
+     "subject": "HER",
+     "relation": "反应正常",
+     "value": "接种后反应正常的当日确认",
+     "valid_time": "2026-11-21晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T11",
+      "quote": "没发烧",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E121_T12_A02",
+     "subject": "HER",
+     "relation": "后续之约",
+     "value": "明年九月底同去接种并请一整笼虾饺",
+     "valid_time": "2027-09底",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E121_T12",
+      "quote": "明年九月底这针还要打",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻收尾。",
+   "unknowns": [
+    "明年档期未知"
+   ],
+   "protected_expressions": [
+    "一整笼虾饺"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺具体明年日期"
+   ],
+   "may_decline": true
+  }
+ }
+}

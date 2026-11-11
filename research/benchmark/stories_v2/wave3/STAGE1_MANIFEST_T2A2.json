@@ -1,0 +1,50 @@
+{
+ "kind": "story_v2_wave3_stage1_shard",
+ "stage": "wave3",
+ "date": "2026-10-31",
+ "built_by": "T2-A2 (isolated cross-story generation session, retry)",
+ "count": 2,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E161",
+   "title": "厨房水电图上丢的俩插座",
+   "themes": [
+    "家居装修",
+    "厨房水电改造",
+    "补点报价更正",
+    "复尺改期",
+    "工具借用归还"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "报价更正与改期兑现",
+   "dir": "benchmark/stories_v2/wave3/E161",
+   "turns": 12,
+   "files": {
+    "episode.json": "fa2d7836050c75896039c28b080abec965d314b6658a3f2fc6665a11537c88bb",
+    "reference.json": "f569264f19e0c9157f13b1335464413cbbb2e8f339286e0459582054ae2c2263",
+    "timeline.json": "664ffad0203209f02e65c5d7f3819814fb32bdca8f8319338c9195a4dc3c60fa"
+   }
+  },
+  {
+   "story_id": "E162",
+   "title": "还回来的测距仪和一百块的烤箱",
+   "themes": [
+    "家庭事务",
+    "工具归还免赔",
+    "旧烤箱转让",
+    "送货改期",
+    "完工作客之约"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "免赔边界与转让信息更正",
+   "dir": "benchmark/stories_v2/wave3/E162",
+   "turns": 12,
+   "files": {
+    "episode.json": "1c87326dfd8c6e583084ebe93ac86efc045b573164739b395f89575ee90ecc6f",
+    "reference.json": "e68bc0ef587020c9de719e68f693fd5fe302c7b639df101778c13ee61edc483c",
+    "timeline.json": "06934a5acb714b674dcc766a46ea0112a3b5a879f98d41abcfaca089e42a15af"
+   }
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A1 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T01 日常聊天/自然接话/幽默",
+  "学习成长备考日常",
+  "互怼与鼓励",
+  "多话题自然切换"
+ ],
+ "title": "四十天倒计时：阅读、香锅与水蜜桃润喉糖",
+ "may_decline_turns": [
+  "E302_T03"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "学业备考",
+ "primary_topic": "T01",
+ "lineage_group_id": "LG-E302",
+ "frozen_at": "2026-11-08T02:25:00+08:00",
+ "annotator": "annotator-B1",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E302/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A1",
+ "hashes": {
+  "episode.json": "0f55d929615bc2ceb4185d2b8a0d87d3ef6e440436662a6d0e72897f283860ce",
+  "reference.json": "4aed7bf6e7200fb9079556d7553008875bb1e5c4023e758ff7966696286e02fb",
+  "timeline.json": "c50eabfbf8e686760751c737078dd5315747a07184a148225218a4ab9192f1ba",
+  "audit.md": "6afa708dcbce6338cf9dcee96a9683b806a4d7bbc2b9991b6674b110196c9222"
+ }
+}

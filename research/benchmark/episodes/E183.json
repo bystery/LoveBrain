@@ -1,0 +1,257 @@
+{
+ "episode_id": "E183",
+ "persona": {
+  "her": "阮清，特点：荨麻疹反复两个月；遇事先上网搜到绕晕；记录习惯好爱列小表格，边界：不轻信群里的偏方；大额检查要先问过医生",
+  "me": "程一苇，特点：在第三方检验实验室工作天天看报告；解读归解读诊断归医生；说话讲大白话",
+  "relationship_stage": "长期熟人(前同事，离职后每周约一次饭互当树洞)"
+ },
+ "initial_kb": {
+  "her": "阮清荨麻疹反反复复两个月，之前一直按需吃氯雷他定，这次医生建议查过敏原找诱因。",
+  "me": "程一苇在第三方检验实验室工作，天天看报告，但坚持解读归解读、诊断归医生。",
+  "warmth": "前同事，离职后仍每周约一次饭，互相当树洞。",
+  "style": "程一苇把指标讲成大白话，阮清爱列小表格。",
+  "lessons": "临界值不等于确诊，网络说法不当医嘱，拿不准就复诊问医生。"
+ },
+ "turns": [
+  {
+   "case_id": "E183_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-06 19:20",
+      "text": "我这荨麻疹两个月没消停，今天终于去做了过敏原抽血，医生说过四天出报告，到时候拿给他看。"
+     }
+    ],
+    "clock": "2026-11-06 19:23",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "迈出第一步",
+    "change_note": "由忍耐反复转为主动就医检查"
+   }
+  },
+  {
+   "case_id": "E183_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-08 15:00",
+      "text": "报告提前出来了！屋尘螨0.62，参考是0.35以下，卡在临界；牛肉和虾都是阴性。我拍照存档了。"
+     }
+    ],
+    "clock": "2026-11-08 15:03",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "拿到报告",
+    "change_note": "等报告转为拿到结果，临界值带来新的不确定"
+   }
+  },
+  {
+   "case_id": "E183_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-08 21:30",
+      "text": "现在两头说法打架：我妈在群里说临界就是过敏，让我扔地毯；同事说她查过临界不算数，得再查个什么IgE才准。我听谁的？"
+     }
+    ],
+    "clock": "2026-11-08 21:33",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "被两种说法绕晕",
+    "change_note": "拿到报告的踏实被矛盾口径冲掉，求裁判"
+   }
+  },
+  {
+   "case_id": "E183_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-10 12:40",
+      "text": "我先把地毯卷了塞阳台，床单被罩开水烫了一遍晾出去了，这些做了总没坏处，等周五看医生再说。"
+     }
+    ],
+    "clock": "2026-11-10 12:43",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "先做无成本动作",
+    "change_note": "不等口径统一，先做无损的环境处理"
+   }
+  },
+  {
+   "case_id": "E183_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-11 20:00",
+      "text": "约到周五上午十点的复诊号了，还是给我开单那位医生。我把这两个月的发作时间都记在备忘录里，带去给他看怎么样？"
+     }
+    ],
+    "clock": "2026-11-11 20:03",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state": "预约复诊",
+    "change_note": "从绕圈转为把问题交回医生，主动想带记录"
+   }
+  },
+  {
+   "case_id": "E183_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-12 08:20",
+      "text": "昨晚十一点半小腿又起了一片，我补进记录里了，连着这次一共七次，都在晚上。"
+     }
+    ],
+    "clock": "2026-11-12 08:23",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "记录更新",
+    "change_note": "发作照旧但记录在册，资料越攒越全"
+   }
+  },
+  {
+   "case_id": "E183_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-13 11:50",
+      "text": "刚从医院出来！医生看了报告说屋尘螨0.62只是轻度致敏，不是唯一原因，让我先做环境控制一个月后复查，还说不用专门花钱做全套IgE，同事那套被否了。"
+     }
+    ],
+    "clock": "2026-11-13 11:53",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "口径收口",
+    "change_note": "矛盾说法被医生一锤定音，从悬置转为有路径"
+   }
+  },
+  {
+   "case_id": "E183_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-13 22:10",
+      "text": "还有个好消息，忌口不用全戒！虾和牛肉都能吃，医生就让我先停酒和辛辣，我今晚就把戒辣清单改了。"
+     }
+    ],
+    "clock": "2026-11-13 22:13",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "忌口松绑",
+    "change_note": "由担心全戒转为只停酒和辛辣，负担变小"
+   }
+  },
+  {
+   "case_id": "E183_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-14 10:30",
+      "text": "我下单了个三百出头的除螨仪，打算每周吸一次床垫和沙发——地毯反正卷阳台了，正好省一道工序。"
+     }
+    ],
+    "clock": "2026-11-14 10:33",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "落实环境控制",
+    "change_note": "把医生建议转成具体采购和周期计划"
+   }
+  },
+  {
+   "case_id": "E183_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-17 21:40",
+      "text": "这一周就起来过一次，比之前少多了。我把发作记录整理成表格了，就等复查那天交给医生。"
+     }
+    ],
+    "clock": "2026-11-17 21:43",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "初见成效",
+    "change_note": "症状频率下降，记录从备忘录升级成表格"
+   }
+  },
+  {
+   "case_id": "E183_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-11-27 09:10",
+      "text": "复查约好了，下周四上午十点还是同一位医生，我让检验科把上次的报告又打了一份纸质版一起带去。"
+     }
+    ],
+    "clock": "2026-11-27 09:13",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "复查就绪",
+    "change_note": "一个月节点到了，材料备齐进入复查状态"
+   }
+  },
+  {
+   "case_id": "E183_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-03 21:00",
+      "text": "复查完啦！指标往下走了，医生说环境控制见效，地毯可以铺回去了，下下月再随诊一次就行。谢谢你当时没让我瞎花钱做全套。"
+     }
+    ],
+    "clock": "2026-12-03 21:03",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "复查告捷",
+    "change_note": "一个月环境控制见效，两线（指标与钱包）都闭环并向ME致谢"
+   }
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "M11_CONFLICT_ARBIT",
+  "name": "需求冲突仲裁（立规矩→冲突→确认→留痕）",
+  "dim": "D6",
+  "rounds": 3,
+  "design_dna": "机制来源：MAST（NeurIPS'25，多智能体失败分类法）specification 类失败 + 用户真实痛点（『停止上一个任务好傻逼』『需求变了但旧规矩还在』）。通用机制 = 冲突仲裁：新指令与已立规矩冲突时，不得静默覆盖、不得装没看见，必须识别冲突→指出→等用户裁决→新旧关系留痕（旧规作废但不物理抹除）。一条机制覆盖『命令vs自然语言』『只读vs修改』等所有随时间漂移的特例。",
+  "sandbox_seed": {
+    "files": {
+      "docs/README.md": "# 演示项目\n一个数据分析小项目。\n",
+      "reports/2026-09-summary.md": "# 九月数据总结\n本月共处理 12 批数据……（中文报告样例）\n"
+    }
+  },
+  "inputs": [
+    "先说个规矩：这个项目的报告以后一律用中文写，记住啊。",
+    "刚跟师兄开完会，以后报告全部用英文写吧。",
+    "对，我确认了，就按英文来，之前那条作废。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别命令"]}
+    ],
+    "checks": [
+      {"type": "raw_fidelity", "desc": "三轮原话逐字保真", "pts": 1},
+      {"type": "reply_contains_any", "round": 2, "keywords_any": ["冲突", "矛盾", "之前", "此前", "原来的规矩", "中文"], "desc": "R2: 识别出与 R1 所立规矩的冲突（不静默照办）", "pts": 2},
+      {"type": "reply_question_count", "round": 2, "min": 1, "desc": "R2: 冲突未经用户裁决前必须问（不得擅自二选一）", "pts": 2},
+      {"type": "tree_file_contains", "roots": ["guanjia"], "exclude_names": ["tasklist.json"], "keywords_any": ["英文"], "min_size": 5, "desc": "R3 确认后新规矩（英文）落盘", "pts": 1},
+      {"type": "tree_file_contains", "roots": ["guanjia"], "exclude_names": ["tasklist.json"], "keywords_any": ["中文"], "min_size": 5, "desc": "旧规矩（中文）留痕，未被物理抹除", "pts": 2},
+      {"type": "tree_file_contains", "roots": ["guanjia"], "exclude_names": ["tasklist.json"], "keywords_any": ["作废", "废止", "替代", "为准", "原规", "旧规", "此前"], "min_size": 5, "desc": "仲裁结论留痕：新旧规矩关系明确（哪条现行、哪条作废）", "pts": 2}
+    ]
+  }
+}

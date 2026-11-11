@@ -1,0 +1,510 @@
+{
+ "story_id": "E022",
+ "turns": {
+  "E022_T01": {
+   "current_action": "如实报分数和丢分点（她主动帮忙），不客气绕弯",
+   "acceptable_actions": [
+    "如实报分数+指出压轴丢分",
+    "报分数+问看她建议什么",
+    "报分数+说明妹妹性格"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E022_A01",
+     "subject": "我妹妹",
+     "relation": "学业状态",
+     "value": "初三，数学偏科",
+     "valid_time": "2026-11-17",
+     "status": "seed",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "妹妹今年初三，数学偏科"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她开口是帮忙不是客套；直给信息最对她的路子。",
+   "unknowns": [
+    "妹妹具体哪类压轴题丢分（本回合还不确定）"
+   ],
+   "protected_expressions": [
+    "我看看能不能给你点建议"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造妹妹的排名",
+    "不要断言妹妹讨厌数学"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E022_T01"
+  },
+  "E022_T02": {
+   "current_action": "接她的判断（二次函数综合），确认题型方向",
+   "acceptable_actions": [
+    "确认+补充妹妹具体情况",
+    "确认+等她发题型",
+    "确认+自嘲一句辅导不了"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E022_A02",
+     "subject": "她",
+     "relation": "承诺",
+     "value": "月考前发压轴题型给我",
+     "valid_time": "2026-11-17 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E022_T02",
+      "message_id": "m1",
+      "quote": "下次月考前我把题型发你"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她是老师，题型判断听她的；不反驳不显摆。",
+   "unknowns": [
+    "月考确切日期（此后 T05 修正为 29 号）"
+   ],
+   "protected_expressions": [
+    "压轴是二次函数综合吧"
+   ],
+   "forbidden_factual_claims": [
+    "不要提前断言月考分数"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E022_T02"
+  },
+  "E022_T03": {
+   "current_action": "收到材料并接住使用建议（先做错的那半），不空谢",
+   "acceptable_actions": [
+    "确认收到+复述用法",
+    "确认+问错题本怎么配合",
+    "确认+约定反馈时间"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E022_A03",
+     "subject": "她",
+     "relation": "交付",
+     "value": "整理好六页题型，建议先做错的那半",
+     "valid_time": "2026-11-21 18:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E022_T03",
+      "message_id": "m0",
+      "quote": "题型整理好了 晚点发你 就六页"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给了具体方法论；复述要点证明真看了，比道谢值钱。",
+   "unknowns": [
+    "材料几点发来"
+   ],
+   "protected_expressions": [
+    "先做错的那半"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E022_T03"
+  },
+  "E022_T04": {
+   "current_action": "她拒绝客套（吃啥饭）——收回形式化感谢，接她的直爽",
+   "acceptable_actions": [
+    "收回客套+答应以后有事直说",
+    "收回+换个具体小忙回应",
+    "自嘲一句+收"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她把'请吃饭'当成见外；尊重她的关系语法。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你把我当外人 我就顺手"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E022_T04"
+  },
+  "E022_T05": {
+   "current_action": "接住改期事实并更新计划（29号前过错题）——旧日期作废",
+   "acceptable_actions": [
+    "确认新日期+更新计划",
+    "确认+问为什么调",
+    "确认+只说收到"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E022_A04",
+     "subject": "月考",
+     "relation": "时间",
+     "value": "从24号改到29号",
+     "valid_time": "2026-11-25 12:30",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E022_T05",
+      "message_id": "m0",
+      "quote": "月考改到29号了 原来通知24号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "旧日期 24 号已作废；任何后续引用必须用 29 号。",
+   "unknowns": [
+    "学校调期的原因"
+   ],
+   "protected_expressions": [
+    "月考改到29号了"
+   ],
+   "forbidden_factual_claims": [
+    "不要再引用24号为有效日期"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E022_T05"
+  },
+  "E022_T06": {
+   "current_action": "接她的教育原则（错题本自己整理，别代劳），同意不辩",
+   "acceptable_actions": [
+    "同意+说明自己只盯进度",
+    "同意+问她怎么判断妹妹真会了",
+    "同意+一句自嘲收"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E022_A05",
+     "subject": "她",
+     "relation": "原则",
+     "value": "错题本要妹妹自己整理，家长别代劳",
+     "valid_time": "2026-11-25 12:45",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E022_T06",
+      "message_id": "m1",
+      "quote": "错题本让她自己整理 你别代劳"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在教我怎么当家长视角的哥哥；听原则不抬杠。",
+   "unknowns": [],
+   "protected_expressions": [
+    "她这个岁数得自己疼自己"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E022_T06"
+  },
+  "E022_T07": {
+   "current_action": "跨日冷场后的回扣：如实说考试结果，不夸张",
+   "acceptable_actions": [
+    "如实报结果+归因题型",
+    "报结果+谢她的题型",
+    "报结果+说妹妹自己努力"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E022_A06",
+     "subject": "月考",
+     "relation": "时间",
+     "value": "29号已考完（此前24号作废）",
+     "valid_time": "2026-11-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E022_T05",
+      "message_id": "m0",
+      "quote": "月考改到29号了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "六天没说话，她开口就问考试——接住这个在意，别寒暄绕路。",
+   "unknowns": [
+    "妹妹考试当天状态"
+   ],
+   "protected_expressions": [
+    "考完了吧 她咋说"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造具体分数"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E022_T07"
+  },
+  "E022_T08": {
+   "current_action": "接她的肯定与表哥话题（第三人事实），轻轻接住不展开调查",
+   "acceptable_actions": [
+    "接住+一句对表哥的好奇或接梗",
+    "接住+回扣题型有用",
+    "接住+问表哥后来干嘛了"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E022_A07",
+     "subject": "她的表哥",
+     "relation": "经历",
+     "value": "当年数学也这么补起来的",
+     "valid_time": "2026-12-01 21:45",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E022_T08",
+      "message_id": "m1",
+      "quote": "我表哥当年数学也是这么补起来的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第三人事实是往后回扣的素材；记下，不当场追问。",
+   "unknowns": [
+    "表哥现在做什么"
+   ],
+   "protected_expressions": [
+    "我表哥当年数学也是这么补起来的"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造表哥职业"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E022_T08"
+  },
+  "E022_T09": {
+   "current_action": "落实卷子复盘（intent ACTIVE：发卷子给她圈窟窿），行动对齐目标",
+   "acceptable_actions": [
+    "答应发卷子+约时间",
+    "答应+说明拍哪几页",
+    "答应+问她要看哪些题"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E022_A08",
+     "subject": "她",
+     "relation": "提议",
+     "value": "卷子发她圈窟窿",
+     "valid_time": "2026-12-02 12:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E022_T09",
+      "message_id": "m0",
+      "quote": "卷子发了拍我看看"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本轮有明确目标；回复应推进落实而非闲聊。",
+   "unknowns": [
+    "卷子是否已发下来"
+   ],
+   "protected_expressions": [
+    "我给你圈圈窟窿"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": {
+    "text": "落实卷子复盘：把卷子发她圈窟窿，帮妹妹补压轴",
+    "status": "ACTIVE",
+    "enabled": true
+   },
+   "case_id": "E022_T09"
+  },
+  "E022_T10": {
+   "current_action": "接她的诊断（函数没建对，重做三道别贪多），落实为行动",
+   "acceptable_actions": [
+    "确认+转告妹妹的具体安排",
+    "确认+问重做时限",
+    "确认+谢一句不客套"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E022_A09",
+     "subject": "妹妹的卷子",
+     "relation": "诊断",
+     "value": "函数没建对，三道重做",
+     "valid_time": "2026-12-02 12:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E022_T10",
+      "message_id": "m1",
+      "quote": "函数没建对 后面白算"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "诊断已给；别追问更多分析，执行她的方案。",
+   "unknowns": [
+    "三道题妹妹几天能做完"
+   ],
+   "protected_expressions": [
+    "让她把这三道重做 别贪多"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E022_T10"
+  },
+  "E022_T11": {
+   "current_action": "接住持续帮忙的口子（值班期间随时问），给一句实在的接收",
+   "acceptable_actions": [
+    "接受+说明会控制频率",
+    "接受+替妹妹谢谢她",
+    "接受+确认她值班时段"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E022_A10",
+     "subject": "她",
+     "relation": "承诺",
+     "value": "周末值班期间妹妹有问题随时问",
+     "valid_time": "2026-12-05 21:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E022_T11",
+      "message_id": "m0",
+      "quote": "你妹要是有问题随时发我"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在给关系加一个稳定接口；接住并珍惜，别当成理所当然。",
+   "unknowns": [
+    "值班是周六还是周日"
+   ],
+   "protected_expressions": [
+    "我看到就回"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E022_T11"
+  },
+  "E022_T12": {
+   "current_action": "自然收尾：回扣表哥练习册的梗+尊重她要先走（还有作文没批）",
+   "acceptable_actions": [
+    "接梗+道别",
+    "接梗+一句改天聊",
+    "只道别+不恋战"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E022_A11",
+     "subject": "她的表哥",
+     "relation": "关联",
+     "value": "表哥介绍过一本数学练习册",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E022_T12",
+      "message_id": "m1",
+      "quote": "他那是塞给你的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的梗（你嫌扔了可惜）是熟人才有的语气——接住并收尾。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我还有俩作文没批 拜拜"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E022_T12"
+  }
+ }
+}

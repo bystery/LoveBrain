@@ -1,0 +1,62 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A7 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_c_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 12:02:39",
+      "window_last_attempt": "2026-11-08 16:41:18",
+      "attempts": 25,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_c/{DIRECT,CURRENT}/E334/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T10",
+    "T10-G1",
+    "counterfactual",
+    "反事实孪生：取消/状态变化",
+    "干扰位：无关记忆诱惑",
+    "回指：短距+长距"
+  ],
+  "title": "《雪原列车》拷贝取消之后（反事实篇）",
+  "may_decline_turns": [
+    "E334_T09",
+    "E334_T12"
+  ],
+  "created_at": "2026-11-08",
+  "twin_group": "T10-G1",
+  "twin_role": "counterfactual",
+  "variable_changed": "周六（11-14）《雪原列车》IMAX 点映观影安排：E333（原始篇）该场次在 T04 轮位确认正常放映并保持成立至观影完成；E334（反事实篇）同一轮位该场次因拷贝问题被取消并全额退票（原路退，五个工作日到账）。",
+  "domain": "影视娱乐",
+  "primary_topic": "T10",
+  "lineage_group_id": "LG-T10-G1",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "annotator": "annotator-B5",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E334/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A7",
+  "hashes": {
+    "episode.json": "9bbc9a1c21f2de5e1c1293c3c09680320621691ffd7343f8dd75e81618bd1439",
+    "reference.json": "7195c97030f6357b3c39192bae7b9991553ce30d8134b1f7ce9156697651fb91",
+    "timeline.json": "0b0e290554958dd7f6a2dedb3c1359cb8a80fd587f799e628f2d7c4491101fa2",
+    "audit.md": "1ec37663a2e3a4c999215c6af7a71eac8f70b5f9333e642d2f93aff028875a69",
+    "composite": "dbcd2d64be80208cb59c88ed0e9663ad7b82224228a62a0845c06b7d55104c44"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

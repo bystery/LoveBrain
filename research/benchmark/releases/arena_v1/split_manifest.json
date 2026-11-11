@@ -1,0 +1,111 @@
+{
+ "date": "2026-10-21",
+ "release": "arena_v1",
+ "rule": "内容不进入候选运行包；同一故事改写/同一素材变体不得跨划分；冻结后不得根据结果调本批候选再声称独立比较",
+ "families": [
+  {
+   "family": "dev_stories",
+   "role": "dev",
+   "origin": "Pilot/Phase0/Phase05/L3B-mini/NCA/NCB 开发迭代",
+   "created_or_frozen": "2026-10-21（本轮登记；历史创建见 origin）",
+   "tuning_exposure": "exposed_full（参加校准/重排/检索调参/表达迭代）",
+   "visible_to": "worker+reviewer+user",
+   "files": {
+    "benchmark/episodes/NCA_CORR_INTENT_v1.json": "018826ba3f7025edd8139cb7b02267d38e096589ecf5f6c9dbe4e43778470e57",
+    "benchmark/episodes/NCB_ENTITY_DENSE_v1.json": "8fbb29b5fec8f6ab61a0e89d8fe9e121024d482aeb4cda9f125f7b5c6afb62f7",
+    "benchmark/episodes/PILOT_L1_v1.json": "4186eda6d661f960d868fad3189c1fec2270bdf2cf308d80352b68c7d0061ddb",
+    "benchmark/episodes/PILOT_L2_v1.json": "11d5fc0fa1185b4e2f3cfd893f6810a6e0b6b38578a9b141aac3a66595bc2bd9",
+    "benchmark/episodes/PHASE05_INTENT_BASE.json": "e77e9a2a0387e50997c6868689139772df9af2e10af0171ba7f510353ff068ce",
+    "benchmark/episodes/PHASE05_INTENT_flirt.json": "b2f4115bad84edf122d07fb8bf0325578e933acbf02ef99a9c410ba80465d96d",
+    "benchmark/episodes/PHASE05_INTENT_friend.json": "15b8388e6f23b8f6f5b009f9d7ad1d180d73a9fb44b044ad92affd654b4818b6",
+    "benchmark/episodes/PHASE05_INTENT_none.json": "66db8bf5dd0cc1d9653298c7769918cc3e3b9375fe1112834c0f74c1c0124375",
+    "benchmark/episodes/PHASE05_INTENT_restraint.json": "350560a2b0376207ce4955f9ef17b0c31a7eedd80e692a610fc267cde0f3448a",
+    "benchmark/episodes/PHASE05_MEM.json": "1a32775c277d00ca03a9cd7da2d3c49694ef65063df5b362fc0073273a4a9e95",
+    "benchmark/episodes/PHASE0_GEN_220.json": "f83b183bac5e8f0a9d40e5e750a181089236b74dcdd55920bb3b5fafaed2b889",
+    "benchmark/episodes/L3B_MINI_CTRL.json": "01870f0b0045be0c21d9150a964f7fa1a4c32ad36b92fe424df363bb5a44b753",
+    "benchmark/episodes/L3B_MINI_FULL.json": "e05a7f7daacd7a94caad3b23c814c57fb1fe64c8fee360c281764a499fa93e2a",
+    "benchmark/episodes/SMOKE_EP_001.json": "e91a1654a4fa4bed564a4e800590aca6c74b548a7f78e2767e05c157166e73ed",
+    "benchmark/episodes/A_ch01_sample_v01.json": "0c7403ba8d3b52f8dbc7fd16006cd7cdf37a267eac46c61bebc88f3863ed9e6b",
+    "benchmark/episodes/dev/DEV_MEETING_FACTS_v1.json": "cbe5cb6eda859b1f5a6bb0696eefcf57ee82480cf20a4f80a5a19eb6b42819f4",
+    "benchmark/episodes/dev/DEV_NEW_STATION_v1.json": "743eeb75a8456b1d4e813f5c80e35fd0c5900ba9dfd9d2fa59d258c42940181d",
+    "benchmark/episodes/dev/DEV_ROOMMATE_ADVICE_v1.json": "d498b46baedc750ae9b8faa42f60c74b244c090dc33295df23f2d72e8f1730d7",
+    "benchmark/episodes/dev/DEV_TWO_BOXES_v1.json": "6b68bafdf53a171d843d4c257eb470353c4d330d306ac144ba3dcad5e0852c3f",
+    "benchmark/cases/SMOKE_NOTE_TRAP_001.json": "acf6d9ef528b7f215c02528b33d64143dfd9ddd78459bbb2d7c886e9c1600a57",
+    "benchmark/cases/SMOKE_NOTE_TRAP_002.json": "1623b191ab6d92bba773a0867e5b5f3fee2a8b4dd93a3ebff76209c84640cb55",
+    "benchmark/rubric.md": "d20baa08eddf0847ee792c2e0d68872b8eb424a26127fa12ab2a6bdfd28dbabe"
+   },
+   "unshipped_files": [],
+   "notes": "可持续开发诊断；不得用于宣称独立比较"
+  },
+  {
+   "family": "anchors_split",
+   "role": "dev(val6=regression_holdout_not_independent)",
+   "origin": "2026-10-17 独立评审降级裁定（SPLIT_v1.json 原文）",
+   "created_or_frozen": "2026-10-21（本轮登记；历史创建见 origin）",
+   "tuning_exposure": "exposed_full（原20题全部参加校准/重排/分诊，标签与成绩已暴露）",
+   "visible_to": "worker+reviewer+user",
+   "files": {
+    "benchmark/anchors/SPLIT_v1.json": "64c3eb52866af04cb0f696220b7dff74064f0c0c87ce9c5b2364779b60492d46",
+    "benchmark/anchors/ANCHORS_20.md": "e33d62d17d978fa119728d81cc367566f40954303815dd6394b6a6dc07c1bf2a",
+    "benchmark/anchors/ANCHORS_20_v2.md": "b8043ba84e98c267af8e60795fe5605e72786df1dfc57f31333c6ab6cecfa869",
+    "benchmark/anchors/anchors_key.json": "a20cff9bd0e05b9648eb43cac6b4bebe05f8e17bbf114bef5ab1236b6f22bf04",
+    "benchmark/anchors/anchors_key_v2.json": "9f81c1e4ccb1f2ca355af465e77525c61a96f4f9ce553e54dd1a3f9ad8650294"
+   },
+   "unshipped_files": [],
+   "notes": "val6 只能称历史题库留出回归子集；正式验收集须另行制作+真人独立标注+全程隔离"
+  },
+  {
+   "family": "real66_evidence",
+   "role": "dev_diagnostic",
+   "origin": "2026-10-21 66 次真实实跑（已授权批次）",
+   "created_or_frozen": "2026-10-21（本轮登记；历史创建见 origin）",
+   "tuning_exposure": "exposed_full（已用于初审/复核/回放）",
+   "visible_to": "worker+reviewer+user",
+   "files": {
+    "logs/real66_v1_all_recommended.json": "2f6297ba96159c28d7f2d6bbda9c9b907e4f8c78b7177396e3cae6af89fdfed4",
+    "logs/real66_v1_all_alternatives.json": "9ce996e59ab2129ff0fc394141cb5b2c4f9ba3e6019c57125913348962494d2e",
+    "logs/real66_v1_expr_audit.json": "10644fb7b4f7e7f704d2387ca41515308be844182060e135bea08ab1c7517c57",
+    "logs/replay149_gate_v17_20261021.json": "9f56d48883593735cc75db58d25f1a6ae396078431eb8ac8ffca67999aa1d410"
+   },
+   "unshipped_files": [
+    "logs/real66_v1_all_recommended.json",
+    "logs/real66_v1_all_alternatives.json",
+    "logs/real66_v1_expr_audit.json",
+    "logs/replay149_gate_v17_20261021.json"
+   ],
+   "notes": "只读历史证据；不覆盖、不加工（§2.1）"
+  },
+  {
+   "family": "selection_set",
+   "role": "selection",
+   "origin": "未建立（无独立出题/保管身份）",
+   "created_or_frozen": "2026-10-21（本轮登记；历史创建见 origin）",
+   "tuning_exposure": "EXPOSED / NOT_READY",
+   "visible_to": "worker（当前无独立保管方——worker 看过的题不得打'未见验证'标签）",
+   "files": {},
+   "unshipped_files": [],
+   "notes": "缺口：①无独立出题/保管身份 ②无隔离冻结手续。最小执行方案（需用户确认，不自动替代原选择40口径）：≥2 条不同故事 × 每条 8–12 请求位，由非调参身份制作并封存"
+  },
+  {
+   "family": "b_line_sealed",
+   "role": "final_sealed",
+   "origin": "未在本仓库创建（原 B线80 口径未落盘）",
+   "created_or_frozen": "2026-10-21（本轮登记；历史创建见 origin）",
+   "tuning_exposure": "NOT_CREATED",
+   "visible_to": "无（封存接口用合成密封夹具验证：refs/arena_v1/seal_fixture/）",
+   "files": {},
+   "unshipped_files": [],
+   "notes": "本仓库不存在真实B线内容，故无'读取'风险；启封接口由合成夹具验证"
+  }
+ ],
+ "seal_fixture": {
+  "dir": "refs/arena_v1/seal_fixture",
+  "lock": "refs/arena_v1/seal_fixture/SEAL_LOCK.sha256",
+  "payload_sha256": "c7bbdb33a24593f0bba7ce73d2a3fc4db75edf8a203122d54067e9e16b519166",
+  "verify_command": "python tools/verify_seal_fixture.py"
+ },
+ "gates": {
+  "G06a": "candidate-PASS（待 verify_arena_v1 实测）",
+  "G06b": "NOT_READY（缺独立出题/保管身份，缺口见 selection_set.notes）"
+ }
+}

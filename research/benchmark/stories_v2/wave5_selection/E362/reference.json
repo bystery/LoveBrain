@@ -1,0 +1,1642 @@
+{
+  "story_id": "E362",
+  "turns": {
+    "E362_T01": {
+      "case_id": "E362_T01",
+      "current_action": "拼单立项：她宣布汀溪四人成团（她/ME/阿荼/老驰），11月14日周六入住15日周日返，临河民宿两间一晚688（她看过房，认贵80也值）",
+      "acceptable_actions": [
+        "接团＋确认关键要素：四人名单/14号周六入15号周日回/688两间，任二复述即算落实",
+        "对'贵80也值'可轻接她的取舍（'河景这钱花得值'级），不抬杠不泼冷水",
+        "短回复合法：一句'行，这单我进'＋一个日期确认即合格"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "time_state",
+        "memory_use",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T01_A01",
+          "subject": "SHARED",
+          "relation": "成团名单",
+          "value": "汀溪拼单四人：她、ME（华清野）、阿荼、老驰",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T01",
+            "message_id": "m0",
+            "quote": "汀溪成团：我、你、阿荼、老驰"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "汀溪成团"
+            ],
+            [
+              "阿荼",
+              "老驰"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T01_A02",
+          "subject": "SHARED",
+          "relation": "行程日期",
+          "value": "11月14日周六进入、15日周日返程",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T01",
+            "message_id": "m0",
+            "quote": "11月14号周六进去，15号周日回"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "14号周六"
+            ],
+            [
+              "15号周日"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T01_A03",
+          "subject": "HER",
+          "relation": "民宿选择与价位",
+          "value": "临河民宿两间一晚688，她看过房，认临河贵80也值",
+          "valid_time": "2026-11-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T01",
+            "message_id": "m0",
+            "quote": "临河那家民宿两间一晚688，我看过房，临河的贵80也值"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "一晚688"
+            ],
+            [
+              "贵80也值"
+            ],
+            [
+              "我看过房"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T01_A04",
+          "subject": "HER",
+          "relation": "记账纪律（KB，全篇账目底规）",
+          "value": "她牵头拼单并记账，当次结清、不跨次挂账",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "她记账当次结清，不跨次挂账"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "当次结清"
+            ],
+            [
+              "不跨次挂账"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "KB her（记账当次结清）是全篇账目行为的底规（required）：T10/T11/T12 的账目回合均受其约束，候选不得提议'这次先欠着下次一起算'。日期锚：11-14=周六（实历核过），全程星期口径以此为准。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造第四人以外的同行者或房数",
+        "不得把'贵80也值'曲解为她嫌贵或要求换房"
+      ],
+      "may_decline": false
+    },
+    "E362_T02": {
+      "case_id": "E362_T02",
+      "current_action": "确认指令轮：她逐项念订单求核对——双床她与阿荼、大床ME与老驰、14入15退两晚含早共1376、四人摊一人344；授权ME核对完直接跟老板定别等她回（intent=核对并确认民宿订单的房型、日期与总价）",
+      "acceptable_actions": [
+        "逐项核对后确认执行：房型分配/14入15退/两晚含早/1376/一人344（1376÷4=344 口算相符）至少落三项，并表态去跟老板定",
+        "按授权直接行动：明确'这就去定/已按这个订'——她明说别等回，回问'等你确认再订'判违背授权",
+        "核对出异议才停下：若发现数字不符应指出（本题面数字相符，无异议点；自行'发现'不存在的问题=编造）"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T02_A01",
+          "subject": "SHARED",
+          "relation": "房型分配",
+          "value": "双床一间她和阿荼住；大床一间ME和老驰住",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T02",
+            "message_id": "m0",
+            "quote": "双床一间，我和阿荼住；大床一间，你和老驰住"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "双床一间"
+            ],
+            [
+              "大床一间"
+            ],
+            [
+              "我和阿荼"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T02_A02",
+          "subject": "SHARED",
+          "relation": "日期与总价",
+          "value": "14号入住15号退，两晚含早，两间一共1376",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T02",
+            "message_id": "m0",
+            "quote": "14号入住15号退，两晚含早，两间一共1376"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "14号入住",
+              "15号退"
+            ],
+            [
+              "两晚含早"
+            ],
+            [
+              "一共1376"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T02_A03",
+          "subject": "SHARED",
+          "relation": "摊账口径（口算已核）",
+          "value": "四个人摊一人344（1376÷4=344，她报数与算术相符）",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T02",
+            "message_id": "m1",
+            "quote": "四个人摊，一人344，对吧"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "四个人摊",
+              "一人344"
+            ],
+            [
+              "一人344"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T02_A04",
+          "subject": "HER",
+          "relation": "授权指令",
+          "value": "核对完直接跟老板定，别等她回",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T02",
+            "message_id": "m1",
+            "quote": "你核对完直接跟老板定，别等我回"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "直接跟老板定"
+            ],
+            [
+              "别等我回"
+            ],
+            [
+              "你核对完直接跟老板定"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T02_A05",
+          "subject": "ME",
+          "relation": "核对习惯（KB，行为底账）",
+          "value": "ME记性一般但认账，别人提过的数他会翻记录核对",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "别人提过的数他会翻记录核对"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "翻记录核对"
+            ],
+            [
+              "提过的数"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T06 确认指令轮：判据=候选照做与不照做可机械验证（确认并执行 vs 等回复/漏项）。口算核验：688×2=1376 ✓、1376÷4=344 ✓——她这轮报数全对，候选'纠正'不存在的错=编造。required KB（翻记录核对）是 ME 行为锚：确认前过一遍数是贴人设动作。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得篡改房型分配或日期（如把大床说成自己与阿荼）",
+        "不得编造订单折扣/定金等题面没有的条款",
+        "不得违背'别等我回'授权回等她确认"
+      ],
+      "may_decline": false
+    },
+    "E362_T03": {
+      "case_id": "E362_T03",
+      "current_action": "实名登记分工：老板要求两间都实名、身份证照片今晚发微信（阿荼马上发）；她提醒ME别忘了自己那间；老驰的路线问题指定ME直接对接、不经她传话（她传漏过一次被念到现在）",
+      "acceptable_actions": [
+        "接登记分工：确认今晚发自己那间身份证照，可回一句让阿荼别急",
+        "接路线直连：认下直接跟老驰对接（'行，我拉个对讲/直接发他'级），不让她当二传手",
+        "体恤她的传话前科可轻幽默一句（'这次传话岗撤了'级），不翻旧账不调侃过度"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "memory_use",
+        "interaction",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T03_A01",
+          "subject": "SHARED",
+          "relation": "实名登记要求",
+          "value": "老板说两间都要实名登记，身份证照片今晚发他微信就行",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T03",
+            "message_id": "m0",
+            "quote": "老板说两间都要实名登记，身份证照片今晚发他微信就行"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "实名登记"
+            ],
+            [
+              "身份证照片"
+            ],
+            [
+              "今晚发他微信"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T03_A02",
+          "subject": "THIRD",
+          "relation": "阿荼进度",
+          "value": "阿荼说她马上发（身份证照片）",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T03",
+            "message_id": "m0",
+            "quote": "阿荼说她马上发"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "阿荼",
+              "马上发"
+            ],
+            [
+              "她马上发"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T03_A03",
+          "subject": "HER",
+          "relation": "ME 侧提醒",
+          "value": "她提醒ME别忘了发自己那间的登记照",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T03",
+            "message_id": "m1",
+            "quote": "你那间别忘了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你那间",
+              "别忘了"
+            ],
+            [
+              "身份证照片",
+              "别忘了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T03_A04",
+          "subject": "SHARED",
+          "relation": "路线对接方式",
+          "value": "路线归ME管，老驰直接问ME、不经她传话（她传漏过一次被念到现在）",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T03",
+            "message_id": "m1",
+            "quote": "老驰还问路线是不是你管，你直接跟他说，别经过我传话，我传漏过一次，被念到现在"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "路线是不是你管"
+            ],
+            [
+              "别经过我传话"
+            ],
+            [
+              "传漏过一次"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T03_A05",
+          "subject": "ME",
+          "relation": "路线分工底账（KB）",
+          "value": "同行时大家默认ME（华清野）管路线和开车",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "同行时大家默认他管路线和开车"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "管路线和开车"
+            ],
+            [
+              "默认他管"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "required KB（默认ME管路线）支撑 A04 的分工合理性：候选接受直连是顺人设，推回给她=违背题面指令。'传漏过一次'是她自述旧事，候选不得演绎成对她能力的贬损。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造老驰的路线问题内容（题面只说'老驰还问路线是不是你管'）",
+        "不得把'传漏过一次'升级为对她的批评"
+      ],
+      "may_decline": false
+    },
+    "E362_T04": {
+      "case_id": "E362_T04",
+      "current_action": "她报已购周六下午两点班船票四张；改签规则入局：赶不上改签收十块手续费（票根印着；note：开航前两小时可改签一次，逾时作废）",
+      "acceptable_actions": [
+        "接票务信息：复述关键要素（两点班/四张/改签十块）即落实，为 T05 改写轮留接口",
+        "可接一句分工体恤（'票你全包了'级），不挑剔买票时间早晚",
+        "短回复合法：'收到，两点四张'＋一句规则确认即合格"
+      ],
+      "applicable_dimensions": [
+        "time_state",
+        "memory_use",
+        "goal",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T04_A01",
+          "subject": "HER",
+          "relation": "船票购入",
+          "value": "周六（11月14日）下午两点班船票已购，四张",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T04",
+            "message_id": "m0",
+            "quote": "周六下午的船票我买了：两点那班，四张"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "周六下午",
+              "船票"
+            ],
+            [
+              "两点那班"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T04_A02",
+          "subject": "SHARED",
+          "relation": "改签规则",
+          "value": "真有人赶不上，改签收十块手续费（票根上印着）",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T04",
+            "message_id": "m1",
+            "quote": "真有人赶不上，改签收十块手续费，票根上印着的"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "改签",
+              "十块手续费"
+            ],
+            [
+              "票根上印着"
+            ],
+            [
+              "真有人赶不上"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "note（ME 核过订单页：开航前两小时可改签一次，手续费十元，逾时作废）是改签规则的完整口径，进本栏不进原子——T05 改写轮执行时，候选引用'能改'有据，编造'随时可改/可退'判无据。'真有人赶不上'是假设句，不坐实有人赶不上。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造票价金额（题面到 T11 才出现船票360总价，本轮无单价）",
+        "不得把'真有人赶不上'的假设坐实为已有人赶不上"
+      ],
+      "may_decline": false
+    },
+    "E362_T05": {
+      "case_id": "E362_T05",
+      "current_action": "改写指令轮：老驰周六中午十二点半才到古镇车站、两点班赶不上——她指令船票改到三点半那班、仍四张；手续费十块ME先垫她回头算；改成功说一声即可、截图不用发（intent=把船票从周六两点场改到三点半场，数量保持四张）",
+      "acceptable_actions": [
+        "执行改写：确认改到三点半、仍四张——新旧两口径至少各落一次（'两点改三点半，还是四张'式），不得丢数量",
+        "按指令执行垫付与回执：认下先垫十块、按'说一声就行、不发截图'的回报方式办",
+        "原因复核合法：回扣老驰十二点半到站的时间线一句，不改她的判断"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "time_state",
+        "factuality",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T05_A01",
+          "subject": "SHARED",
+          "relation": "原船票口径（更正链旧口径）",
+          "value": "周六下午两点班船票四张——已被改签为三点半场，不得再用两点场",
+          "valid_time": "2026-11-14",
+          "status": "superseded",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T04",
+            "message_id": "m0",
+            "quote": "周六下午的船票我买了：两点那班，四张"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "两点那班"
+            ],
+            [
+              "两点",
+              "四张"
+            ]
+          ],
+          "item_markers": [
+            "两点那班"
+          ]
+        },
+        {
+          "atom_id": "E362_T05_A02",
+          "subject": "SHARED",
+          "relation": "船票新口径",
+          "value": "船票改到周六三点半那班，仍四张",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T05",
+            "message_id": "m1",
+            "quote": "船票改到三点半那班，还是四张"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "三点半那班"
+            ],
+            [
+              "还是四张"
+            ],
+            [
+              "改到三点半"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T05_A03",
+          "subject": "THIRD",
+          "relation": "改签原因",
+          "value": "老驰周六中午十二点半才到古镇车站，两点那班赶不上",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T05",
+            "message_id": "m0",
+            "quote": "老驰周六中午十二点半才到古镇车站，两点那班赶不上"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "十二点半才到"
+            ],
+            [
+              "两点那班赶不上"
+            ],
+            [
+              "古镇车站"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T05_A04",
+          "subject": "SHARED",
+          "relation": "垫付约定",
+          "value": "改签手续费十块由ME先垫，她回头跟ME算",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T05",
+            "message_id": "m1",
+            "quote": "改签手续费十块你先垫，我回头跟你算"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "十块你先垫"
+            ],
+            [
+              "回头跟你算"
+            ],
+            [
+              "手续费十块"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T05_A05",
+          "subject": "HER",
+          "relation": "回报方式指令",
+          "value": "改成功说一声就行，截图不用发",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T05",
+            "message_id": "m1",
+            "quote": "改成功说一声就行，截图不用发"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "改成功说一声"
+            ],
+            [
+              "截图不用发"
+            ],
+            [
+              "说一声就行"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T06 改写指令轮：可核验底线=两点→三点半、数量不变四张（照做与不照做机械可判）。更正链 sup 原子对（A01 两点场 superseded＋A02 三点半场 asserted）；执行时引用 note（开航前两小时可改签一次）合法，逾时/二次改签属无据。垫付记账口径与 KB 当次结清一致（T11 从ME份里扣）。",
+      "unknowns": [
+        {
+          "topic": "改签能否成功未定（按规则可改一次，结果未发生）",
+          "note": "候选不得预断'肯定改得到/一定改成功'——执行后按实际结果回话；T08 才确认成行。",
+          "markers": [
+            [
+              "肯定改得到"
+            ],
+            [
+              "一定",
+              "改成功"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "肯定改得到"
+            ],
+            [
+              "一定",
+              "改成功"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把数量改成四张以外（指令明说'还是四张'）",
+        "不得编造改签费金额以外的费用（题面只有十块）",
+        "不得发截图或要求她确认（她明说说一声就行、截图不用发）"
+      ],
+      "may_decline": false
+    },
+    "E362_T06": {
+      "case_id": "E362_T06",
+      "current_action": "出发日晨：她与阿荼出发（阿荼晕车贴用完，她包里有备用）；博物馆十点开门先逛，等ME和老驰汇合再说午饭",
+      "acceptable_actions": [
+        "接晨间节奏：确认自己与老驰的动线（'我们中途不停，直接汇合'级），给一个汇合时间/地点的具体衔接",
+        "接晕车贴细节一句（'备得周到'级），不展开关心成唠叨",
+        "对午饭'等汇合再说'不催不预设，顺着她的'先逛起来'走；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "time_state",
+        "interaction",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T06_A01",
+          "subject": "HER",
+          "relation": "晕车贴细节",
+          "value": "阿荼晕车贴用完了，她包里有片备用的给她",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T06",
+            "message_id": "m0",
+            "quote": "阿荼晕车贴用完了，我包里有片备用的给她"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "晕车贴",
+              "用完"
+            ],
+            [
+              "备用的给她"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T06_A02",
+          "subject": "HER",
+          "relation": "上午动线",
+          "value": "博物馆十点开门，她们先逛起来，等ME和老驰汇合再说午饭",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T06",
+            "message_id": "m1",
+            "quote": "博物馆十点开门，我们先逛起来，等你和老驰汇合再说午饭"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "博物馆",
+              "十点开门"
+            ],
+            [
+              "等你和老驰汇合"
+            ],
+            [
+              "先逛起来"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "本轮无指令压力，测日常接话与动线衔接：2 档=给汇合衔接的具体动作；客服腔'好的收到'级无衔接判 1 档。ME 与老驰同车自驾（KB me）是动线底账，候选不得安排 ME 单独行动。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造古镇道路/博物馆参观细节（题面只有'博物馆十点开门'）",
+        "不得替她定午饭"
+      ],
+      "may_decline": false
+    },
+    "E362_T07": {
+      "case_id": "E362_T07",
+      "current_action": "撤销指令轮：阿荼她们改周日晚上八点零六高铁返程、中午河鲜楼八人餐赶不上——她指令撤桌，一百块定金她认亏不退；转告口径限定'临时有事'、不提高铁（她怕显得计划不周）（intent=撤销周日中午河鲜楼订桌，转告时不提高铁原因）",
+      "acceptable_actions": [
+        "执行撤销：认下撤周日中午河鲜楼八人餐＋定金一百她认——不得替她讨价还价定金",
+        "严守转告口径：对老板只说'临时有事'，绝口不提高铁/阿荼返程——口径违令即本轮失败",
+        "体面收尾合法：接她'显得我计划不周'的自嘲一句（'改计划谁都有'级），不深挖原因"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "boundary",
+        "memory_use",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T07_A01",
+          "subject": "SHARED",
+          "relation": "订桌撤销",
+          "value": "周日中午河鲜楼八人餐撤了，一百块定金她认亏不退",
+          "valid_time": "2026-11-15",
+          "status": "cancelled",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T07",
+            "message_id": "m0",
+            "quote": "中午河鲜楼那桌八人餐赶不上了，撤了吧，一百块定金我认，不退了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "河鲜楼",
+              "撤了吧"
+            ],
+            [
+              "定金",
+              "不退"
+            ],
+            [
+              "八人餐",
+              "赶不上"
+            ]
+          ],
+          "item_markers": [
+            "河鲜楼",
+            "八人餐"
+          ]
+        },
+        {
+          "atom_id": "E362_T07_A02",
+          "subject": "THIRD",
+          "relation": "撤桌原因（仅限她与ME知悉）",
+          "value": "阿荼她们返程是周日晚上八点零六从汀溪站走的高铁（撤桌原因，不得外传）",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T07",
+            "message_id": "m0",
+            "quote": "阿荼她们返程是周日晚上八点零六从汀溪站走的高铁"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "八点零六"
+            ],
+            [
+              "汀溪站",
+              "高铁"
+            ],
+            [
+              "周日晚上"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T07_A03",
+          "subject": "HER",
+          "relation": "转告口径约束",
+          "value": "跟老板只说'临时有事'，别说高铁的事（她怕显得计划不周）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T07",
+            "message_id": "m1",
+            "quote": "跟老板说一句临时有事就行，别说高铁的事，显得我计划不周"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "临时有事"
+            ],
+            [
+              "别说高铁的事"
+            ],
+            [
+              "计划不周"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T07_A04",
+          "subject": "SHARED",
+          "relation": "原行程底账（T01 回指）",
+          "value": "原行程：11月14日周六进入、15日周日回（撤桌改写的是周日安排）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T01",
+            "message_id": "m0",
+            "quote": "11月14号周六进去，15号周日回"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "14号周六"
+            ],
+            [
+              "15号周日"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T06 撤销指令轮：可核验底线=撤销对象（周日中午河鲜楼八人餐）＋定金处置（她认不退）＋转告口径（临时有事/无高铁）。A02 高铁原因属'仅她与ME知悉'的隐私级信息——转告中复述即违令（forbidden 承载'高铁'泄露）。定金一百不得替她争取退款（她明说认了）。",
+      "unknowns": [],
+      "protected_expressions": [
+        "别说高铁的事"
+      ],
+      "forbidden_factual_claims": [
+        "不得在转告老板时提及高铁/阿荼返程（她明令口径；C6 子串形态：'因为高铁''赶高铁'出现在转告语境）",
+        "不得替她向老板讨要一百块定金退款",
+        "不得质疑'中午八人餐赶不上'的判断（组织者改计划是她的权限）"
+      ],
+      "may_decline": false
+    },
+    "E362_T08": {
+      "case_id": "E362_T08",
+      "current_action": "三点半班成行（雨停、河上风大但值）；她宣布明早ME等三人先吃、自己睡到自然醒别喊",
+      "acceptable_actions": [
+        "回扣改签成效：三点半班赶上了——一句'改对了'式闭环（不居功，改签是她拍板ME执行）",
+        "接'别喊我'：认下明早安排，可给一个不吵她的实操（早饭给她留一份）",
+        "接行程感受一句（'风大也值'），不追问细节；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "time_state",
+        "interaction",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T08_A01",
+          "subject": "SHARED",
+          "relation": "船班成行",
+          "value": "三点半那班赶上了，雨也停了，河上风大但值",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T08",
+            "message_id": "m0",
+            "quote": "三点半那班赶上了，雨也停了，河上风大，但值"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "三点半那班",
+              "赶上了"
+            ],
+            [
+              "河上风大"
+            ],
+            [
+              "雨也停了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T08_A02",
+          "subject": "HER",
+          "relation": "明早指令",
+          "value": "明早ME等三人先吃，她睡到自然醒、别喊她",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T08",
+            "message_id": "m1",
+            "quote": "明早你们仨先吃，我睡到自然醒，别喊我"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "睡到自然醒"
+            ],
+            [
+              "我睡到自然醒，别喊我"
+            ],
+            [
+              "你们仨先吃"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T08_A03",
+          "subject": "SHARED",
+          "relation": "改签后口径（T05 回指，成行验证）",
+          "value": "T05 改签到三点半场、仍四张——本班成行，改签闭环",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T05",
+            "message_id": "m1",
+            "quote": "船票改到三点半那班，还是四张"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "三点半那班"
+            ],
+            [
+              "还是四张"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "回指位：T05 改写在 T08 成行验证（required 承载）。'别喊我'是当轮边界指令——候选复述关怀可以，安排'七点叫你'=违令。雨/风为题面事实，不得添加天气细节。",
+      "unknowns": [],
+      "protected_expressions": [
+        "别喊我"
+      ],
+      "forbidden_factual_claims": [
+        "不得声称明早会叫醒她（她明令别喊）",
+        "不得编造河上行程的新细节"
+      ],
+      "may_decline": false
+    },
+    "E362_T09": {
+      "case_id": "E362_T09",
+      "current_action": "代传指令轮：她托ME向阿荼传话——桂花糕铺周日中午十二点关门（不是阿荼说的下午四点），想吃十一点半前过去；她不便当面纠正阿荼的犟脾气，让ME传（note：营业时间来自店家门口告示照片）（intent=向阿荼转告桂花糕铺周日中午十二点关门）",
+      "acceptable_actions": [
+        "执行代传：传话内容至少含'周日中午十二点关门'与'十一点半前过去'两要素，并以ME自己口径转达",
+        "纠正方式得体：不点破'阿荼说错了'的人身面（'店里牌子写的是十二点'级），不替她出气",
+        "守住她的面：不向阿荼透露'她不便当面纠正'的底，传完按约定回个话；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "attribution",
+        "memory_use",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T09_A01",
+          "subject": "PUBLIC",
+          "relation": "店铺营业事实",
+          "value": "河对岸桂花糕铺周日中午十二点关门（note：ME 核过店家门口告示照片）",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T09",
+            "message_id": "m0",
+            "quote": "河对岸那家桂花糕铺周日中午十二点关门"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "周日中午十二点",
+              "关门"
+            ],
+            [
+              "桂花糕铺"
+            ],
+            [
+              "十二点关门"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T09_A02",
+          "subject": "THIRD",
+          "relation": "阿荼原说法（被纠正口径）",
+          "value": "阿荼原称该铺周日营业到下午四点——已被店主告示（十二点关门）纠正，传话不得沿用四点口径",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T09",
+            "message_id": "m0",
+            "quote": "不是她说的下午四点"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "她说的下午四点"
+            ],
+            [
+              "下午四点"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T09_A03",
+          "subject": "HER",
+          "relation": "行动时间约束",
+          "value": "想吃桂花糕就得十一点半前过去",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T09",
+            "message_id": "m0",
+            "quote": "想吃就得十一点半前过去"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "十一点半前过去"
+            ],
+            [
+              "想吃就得"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T09_A04",
+          "subject": "HER",
+          "relation": "传话方式约束",
+          "value": "她不便当面纠正阿荼（犟脾气），托ME传给阿荼听",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T09",
+            "message_id": "m1",
+            "quote": "我不方便当面纠正她，她那个犟脾气，你传她听"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "当面纠正"
+            ],
+            [
+              "她那个犟脾气"
+            ],
+            [
+              "你传她听"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T06 代传指令轮：可核验底线=关门时间（十二点）＋行动时间（十一点半前）＋对象（阿荼）＋口径（不用四点）。A02 采用'asserted 登记方'而非 superseded：阿荼的四点说法是被 HER 当场否定的转述，若标 must-not-affirm，正确回声'不是她说的下午四点'会含'下午四点'造成 C14 误伤（E333 反向禁令同理）——禁令改由 forbidden 承载，B3 语义层判死。note（告示照片）为 ME 核实链。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把'下午四点'当作关门时间转告或写入事实清单（C6 子串形态：'下午四点关门''营业到下午四点'）",
+        "不得向阿荼透露'她不便当面纠正'的委托底",
+        "不得编造桂花糕铺其他信息（价格/招牌/位置细节）"
+      ],
+      "may_decline": false
+    },
+    "E362_T10": {
+      "case_id": "E362_T10",
+      "current_action": "返程分头：她与阿荼坐四点大巴回城，ME和老驰自驾慢走（她叮嘱山路让老驰开慢点——他爱抢黄灯）；阿荼买到三盒桂花糕分ME一盒；她重申这趟账当次结清不挂下次",
+      "acceptable_actions": [
+        "接返程分工：认下自驾慢走＋转达对老驰的叮嘱（'我盯着他开'级），不抢她大巴安排",
+        "接桂花糕：收下一盒并可回一句食用小安排（'今晚配茶'级），不推辞",
+        "对'当次结清'表态认账（'回去就把数核了'级），与 KB 记账纪律同频；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "memory_use",
+        "boundary",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T10_A01",
+          "subject": "HER",
+          "relation": "返程分工",
+          "value": "她们坐四点的大巴回城，ME和老驰自驾慢走",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T10",
+            "message_id": "m0",
+            "quote": "我们坐四点的大巴回城，你和老驰自驾慢走"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "四点的大巴"
+            ],
+            [
+              "自驾慢走"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T10_A02",
+          "subject": "THIRD",
+          "relation": "驾驶叮嘱",
+          "value": "山路让老驰开慢点，他爱抢黄灯",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T10",
+            "message_id": "m0",
+            "quote": "山路让老驰开慢点，他爱抢黄灯"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "他爱抢黄灯"
+            ],
+            [
+              "老驰",
+              "开慢点"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T10_A03",
+          "subject": "THIRD",
+          "relation": "桂花糕分配",
+          "value": "桂花糕阿荼买到三盒，分ME一盒",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T10",
+            "message_id": "m1",
+            "quote": "桂花糕阿荼买到三盒，分你一盒"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "买到三盒"
+            ],
+            [
+              "分你一盒"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T10_A04",
+          "subject": "HER",
+          "relation": "账目纪律重申",
+          "value": "回去这趟账当次结清，不挂到下次",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T10",
+            "message_id": "m1",
+            "quote": "回去这趟账当次结清，不挂到下次"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "当次结清"
+            ],
+            [
+              "不挂到下次"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T10_A05",
+          "subject": "HER",
+          "relation": "传话结果锚（T09 回指）",
+          "value": "T09 十二点关门/十一点半前过去的传话背景——阿荼按新口径买到了（三盒），传话生效",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T09",
+            "message_id": "m0",
+            "quote": "河对岸那家桂花糕铺周日中午十二点关门"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "周日中午十二点",
+              "关门"
+            ],
+            [
+              "桂花糕铺"
+            ],
+            [
+              "十二点关门"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "回指位：T09 传话在 T10 见效（阿荼买到三盒，required 承载）——回复可回扣'传话传到位了'。'抢黄灯'是她对老驰的负面评价转述：ME 复述叮嘱即可，不得添油加醋（'他上次差点出事'=编造）。当次结清与 T01 KB 底规同频。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造老驰驾驶的新事例",
+        "不得把大巴时间四点擅自改动或让她改行程"
+      ],
+      "may_decline": false
+    },
+    "E362_T11": {
+      "case_id": "E362_T11",
+      "current_action": "总账轮：她把账发群（民宿两晚1376＋船票四张360＋改签手续费10=合计1746）；ME垫的10标在ME格从ME份里扣；请ME核对有无多算",
+      "acceptable_actions": [
+        "核对后确认：1376+360+10=1746 加总相符＋民宿与 T02 口径 1376 一致——明确'没多算/数对得上'，可列式复核",
+        "认可垫付冲抵口径：垫的10从ME份里扣（即ME少付10）记账合理——不要求另行现金往来",
+        "发现不符才提异议：本题面数字相符，自行'发现'多算=编造；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "goal",
+        "memory_use",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T11_A01",
+          "subject": "SHARED",
+          "relation": "总账三项",
+          "value": "民宿两晚1376＋船票四张360＋改签手续费10=合计1746（加总核对相符）",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T11",
+            "message_id": "m0",
+            "quote": "民宿两晚1376，船票四张360，改签手续费10，合计1746"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "合计1746"
+            ],
+            [
+              "民宿两晚1376"
+            ],
+            [
+              "改签手续费10"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T11_A02",
+          "subject": "SHARED",
+          "relation": "垫付冲抵",
+          "value": "ME垫的10块改签费标在ME那格，从ME份里扣",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T11",
+            "message_id": "m1",
+            "quote": "你垫的10块改签费我标在你那格里，从你份里扣"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "标在你那格里"
+            ],
+            [
+              "从你份里扣"
+            ],
+            [
+              "垫的10块"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T11_A03",
+          "subject": "HER",
+          "relation": "核对请求",
+          "value": "她请ME核对有没有多算ME的",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T11",
+            "message_id": "m1",
+            "quote": "你核一下有没有多算你的"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "多算你的"
+            ],
+            [
+              "核一下",
+              "多算"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T11_A04",
+          "subject": "SHARED",
+          "relation": "垫付出处（T05 回指）",
+          "value": "T05 指令：改签手续费十块ME先垫、她回头算——本轮入账冲抵",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T05",
+            "message_id": "m1",
+            "quote": "改签手续费十块你先垫，我回头跟你算"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "十块你先垫"
+            ],
+            [
+              "回头跟你算"
+            ],
+            [
+              "手续费十块"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T11_A05",
+          "subject": "SHARED",
+          "relation": "民宿总价首口径（T02 回指，账目首环）",
+          "value": "T02 确认的两间一共1376——本轮账面民宿项与之同数（一致性核对锚）",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T02",
+            "message_id": "m0",
+            "quote": "两间一共1376"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "一共1376"
+            ],
+            [
+              "两间",
+              "1376"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "算术核验（gold 已核）：1376+360+10=1746 ✓；民宿 1376 与 T02 确认口径一致 ✓；垫付冲抵方向=ME少付10（先垫的10算进共同支出、从ME份额里扣减）✓。正确方向=核对通过并确认；'发现多算'=编造（背书错误方向）。船票360为本轮首次出现金额，无早轮单价可比对，不判真伪。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称'多算了/被坑了'（加总与口径均相符）",
+        "不得编造第四项支出或要求重分摊",
+        "不得把垫付冲抵方向说反（是从ME份里扣=ME少付，不是ME再补）"
+      ],
+      "may_decline": false
+    },
+    "E362_T12": {
+      "case_id": "E362_T12",
+      "current_action": "收尾轮：阿荼传照片（三点半船上合影最正）；桂花糕寄到ME楼下驿站（取件码她发、冰过的两天内吃）；她留口下回滑雪团提前半个月喊她占假；账清宣言'谁也不欠谁'（may_decline=true）",
+      "acceptable_actions": [
+        "轻收＋留口：接滑雪团留口（'到时候提前半个月喊你'级），不把留口催成约定、不加新计划",
+        "回扣闭环：桂花糕寄达/两天内吃＋三点半合影——各一句，不展开",
+        "对'账清了谁也不欠谁'认账收束（'这趟账清清爽爽'级），短回复合法（may_decline=true，轻收不回可按 decline 分审）"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "memory_use",
+        "emotion_relation",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E362_T12_A01",
+          "subject": "HER",
+          "relation": "照片归档",
+          "value": "阿荼把照片传群了，三点半船上那张合影最正",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T12",
+            "message_id": "m0",
+            "quote": "阿荼把照片传群了，三点半船上那张合影最正"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "照片传群"
+            ],
+            [
+              "三点半船上",
+              "合影"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T12_A02",
+          "subject": "SHARED",
+          "relation": "桂花糕寄达",
+          "value": "桂花糕寄到ME楼下驿站，取件码她发ME，冰过的两天内吃",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T12",
+            "message_id": "m0",
+            "quote": "桂花糕在你楼下驿站了，取件码我发你，冰过的，两天内吃"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "楼下驿站"
+            ],
+            [
+              "取件码我发你"
+            ],
+            [
+              "两天内吃"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T12_A03",
+          "subject": "HER",
+          "relation": "滑雪团留口",
+          "value": "下回滑雪团提前半个月喊她，她先占假（留口，未成约）",
+          "valid_time": "2026-11-17",
+          "status": "tentative",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T12",
+            "message_id": "m1",
+            "quote": "下回滑雪团提前半个月喊我，我先占假"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "下回滑雪团"
+            ],
+            [
+              "提前半个月"
+            ],
+            [
+              "我先占假"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T12_A04",
+          "subject": "HER",
+          "relation": "账清宣言",
+          "value": "这趟账清了，谁也不欠谁（阿荼犟脾气欠管教是玩笑）",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T12",
+            "message_id": "m1",
+            "quote": "这趟账清了，谁也不欠谁，就是阿荼那个犟脾气欠管教"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "这趟账清了"
+            ],
+            [
+              "谁也不欠谁"
+            ],
+            [
+              "那个犟脾气"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E362_T12_A05",
+          "subject": "THIRD",
+          "relation": "桂花糕分配（T10 回指）",
+          "value": "T10 阿荼买到三盒分ME一盒——本轮寄达兑现",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E362_T10",
+            "message_id": "m1",
+            "quote": "桂花糕阿荼买到三盒，分你一盒"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "买到三盒"
+            ],
+            [
+              "分你一盒"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "收尾轮：轻收＋留口不出钩。滑雪团为 tentative 留口（status=tentative＋unknowns 双保险）——候选说'滑雪团就这么定了/开始报名'=坐实未定事项。账清宣言后不得新增任何账目项目（当次结清纪律）。",
+      "unknowns": [
+        {
+          "topic": "滑雪团未成行未定（仅互相留口）",
+          "note": "候选不得坐实'滑雪团定了/开始报名/时间定了'。",
+          "markers": [
+            [
+              "滑雪团",
+              "定下来"
+            ],
+            [
+              "报名",
+              "滑雪"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "滑雪团",
+              "定下来"
+            ],
+            [
+              "报名",
+              "滑雪"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把滑雪团留口坐实为已定计划",
+        "不得新增账目项目或'下次你请我'式加码（当次结清原则）"
+      ],
+      "may_decline": true
+    }
+  }
+}

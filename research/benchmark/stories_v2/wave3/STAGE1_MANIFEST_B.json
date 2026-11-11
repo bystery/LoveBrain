@@ -1,0 +1,176 @@
+{
+ "kind": "story_v2_wave3_stage1_manifest",
+ "stage": "wave3",
+ "date": "2026-11-02",
+ "built_by": "W3-T1-B generation session",
+ "count": 8,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E125",
+   "title": "读书会年终聚餐的价目更正",
+   "themes": [
+    "餐饮聚会",
+    "读书会聚餐",
+    "套餐价更正",
+    "人数回弹",
+    "包间低消"
+   ],
+   "domain": "餐饮聚会",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E125",
+   "turns": 12,
+   "files": {
+    "episode.json": "20045f18e56f862d4249e1034e866568efb3b91dd30f4b497132685b916a8dd3",
+    "reference.json": "526b9ea44da97b457b02e54cdeb7f852e2a71573fdb32c520c66bceda83988e4",
+    "timeline.json": "74a8662ff5db023dbd56ae74e6c4a9cae583637bf46f7cd55bb37b627511e7c9",
+    "audit.md": "f9ff6edf5f3eae534bfaab1909b7644409180a4ed814d0bef2496ae7ae75de15"
+   }
+  },
+  {
+   "story_id": "E126",
+   "title": "湘菜小馆的两次改期",
+   "themes": [
+    "餐饮聚会",
+    "新店首探",
+    "工作餐改期",
+    "出差连锁改期",
+    "云点菜补偿"
+   ],
+   "domain": "餐饮聚会",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E126",
+   "turns": 12,
+   "files": {
+    "episode.json": "6216c1a6dd20d7e22b56450dd62d193154594fec825148a064649bcfce122fc2",
+    "reference.json": "e6afd5acc5d5641b0b2f620605ebede8770b1fbdda82040da5d7a0a056428f2e",
+    "timeline.json": "73361f5412e59bb9da4ac6612c5c2ab279cef9088869291b0a7583bef3a3739e",
+    "audit.md": "170bc751e01b3334083d61f48cd133bfbb832c1125802183da15b4b16c4748c7"
+   }
+  },
+  {
+   "story_id": "E127",
+   "title": "键帽不外借",
+   "themes": [
+    "数码消费",
+    "机械键盘键帽",
+    "工位借用边界",
+    "拼团代购",
+    "不垫钱原则"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E127",
+   "turns": 12,
+   "files": {
+    "episode.json": "719d9943b0a7c27297586dea6f3a3e71cfe4e78b4d6a7d2060e0592c556d7e75",
+    "reference.json": "0468735d0fb8947c13fd3e215f29b9ab8bde9ff27cec8a7cfcb1a7facc135cdb",
+    "timeline.json": "720061b95e06fce129fd135962cf2f08a58329dd799fb76294ff0e3ad7ff5a06",
+    "audit.md": "e2da213b371cf1854e392ad08b0accb5ecea4238516ce527de80d2031b700eff"
+   }
+  },
+  {
+   "story_id": "E128",
+   "title": "充电仓补购差价表",
+   "themes": [
+    "数码消费",
+    "耳机充电仓补购",
+    "官方价格更正",
+    "换新差价",
+    "回收磨损费止损"
+   ],
+   "domain": "数码消费",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E128",
+   "turns": 12,
+   "files": {
+    "episode.json": "a45ec76f571a09629e70afa9a998a972c811aa282965c9299fc903c1a8d1541d",
+    "reference.json": "6b9950de3b79b5fcc75542c99ca72c26a5d74ce1b7feca526ddf839688429ef6",
+    "timeline.json": "e37da88f6d01a4038ec4c0c846aca285e40ed48a8a580344ca3aa700ac1cb688",
+    "audit.md": "744684b9ed218315ec067f76db90b3986a2bdfb716702f38b189b9b55b37f1d2"
+   }
+  },
+  {
+   "story_id": "E129",
+   "title": "物业卡住的封窗报备",
+   "themes": [
+    "家居装修",
+    "阳台封窗",
+    "物业统一厂家",
+    "个案审批",
+    "施工押金闭环"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E129",
+   "turns": 12,
+   "files": {
+    "episode.json": "2bae4b53e09dccd0192b75ad0d7270896e31a92ebf48d23f31bd70a066466ec6",
+    "reference.json": "d6b11c916e3a13c925118e4c53f585cc1c4770282c09409a551ccf01ff5bad2c",
+    "timeline.json": "1c458bb635467c83d548b4f8e97a02c2219440c0bcbf87543ac0630482c44050",
+    "audit.md": "a1f8ffdc97e6f0f92c799916c579ef9483da3748c67bbe17ad2a1c732d53b997"
+   }
+  },
+  {
+   "story_id": "E130",
+   "title": "书房工程的暂停键",
+   "themes": [
+    "家居装修",
+    "次卧改书房",
+    "预算暂停",
+    "方案降本",
+    "监工重启"
+   ],
+   "domain": "家居装修",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave3/E130",
+   "turns": 12,
+   "files": {
+    "episode.json": "ce704d288440480b6f023fc8e5d47a1128499e38632ab82d0059256c182d9ebf",
+    "reference.json": "fa6cd79c776d9558d4a4db1b4fa5f08993c3cfd7abc04d30f39f3dc598a6a1d0",
+    "timeline.json": "d1cee409bf2160baea28c1e9f90ec2c7b882fb05f2980f8330a2c52ee1ed3524",
+    "audit.md": "1e4eda6257db24a6296e4fdaf326e56f1adee2fed8b059e0e41024192987fdd2"
+   }
+  },
+  {
+   "story_id": "E131",
+   "title": "明火规则的两次打架",
+   "themes": [
+    "兴趣社交",
+    "新手露营拼营",
+    "明火规则不确定",
+    "预约口径核实",
+    "装备租赁"
+   ],
+   "domain": "兴趣社交",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E131",
+   "turns": 12,
+   "files": {
+    "episode.json": "b6ea87852beabea2e5807e9231d290c16a35b44cc5ffde067357c5710a761b7c",
+    "reference.json": "9f54d9198148c58dd561f0f3667ac26db0a38815525a822cc643779306891c29",
+    "timeline.json": "71e1f65eba915eb902ad8e2ea4c4e2f68e50594ac114bee96aa58502af6c55b3"
+   }
+  },
+  {
+   "story_id": "E132",
+   "title": "采血截止的十点误会",
+   "themes": [
+    "医疗健康",
+    "入职体检",
+    "采血截止更正",
+    "机构记错",
+    "报告隐私边界"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E132",
+   "turns": 12,
+   "files": {
+    "episode.json": "f2e9af5b6d2d58984af87828c7bb6972a0d125cf8cb3caca17b70a6249101621",
+    "reference.json": "505a05632b7a3e1de0e9f5ad5b6e1a53c9d16b1307dbb2453dcae31c25016a5f",
+    "timeline.json": "24ac70e039081737ddd6058cac48aa2735fc3e8adf1857e52f8818c6d5737e23"
+   }
+  }
+ ]
+}

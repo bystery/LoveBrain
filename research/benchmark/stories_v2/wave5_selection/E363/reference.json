@@ -1,0 +1,1650 @@
+{
+  "story_id": "E363",
+  "turns": {
+    "E363_T01": {
+      "case_id": "E363_T01",
+      "current_action": "借用立项：周六晚广场露天电影放《城南旧事》，她借ME投影仪加120寸幕布一天（九点半散场就还）；音响由老闵出（他自称功放没毛病）；她要ME给准话",
+      "acceptable_actions": [
+        "给准话：明确借（'没问题，周六你拉走'级）——她要的是准话不是客气，含糊'应该可以'判不达标",
+        "可附一个设备状态说明（镜头擦了/线齐全）落实'行不行'的问句，不新增借用条件",
+        "对老闵功放'没毛病'的转述可留一句稳妥话（'真有状况再说'级），不否定老闵不吹捧自己"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "memory_use",
+        "interaction",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T01_A01",
+          "subject": "SHARED",
+          "relation": "活动立项",
+          "value": "周六晚（2026-11-14）社区广场露天电影放《城南旧事》",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T01",
+            "message_id": "m0",
+            "quote": "周六晚社区广场露天电影定了，放《城南旧事》"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "露天电影"
+            ],
+            [
+              "《城南旧事》"
+            ],
+            [
+              "周六晚社区广场露天电影"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T01_A02",
+          "subject": "HER",
+          "relation": "借用请求",
+          "value": "借ME的投影仪加120寸幕布周六一天，晚上九点半散场就还",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T01",
+            "message_id": "m0",
+            "quote": "你那套投影仪加120寸幕布，借我周六一天，晚上九点半散场就还"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "投影仪",
+              "120寸幕布"
+            ],
+            [
+              "借我周六一天"
+            ],
+            [
+              "九点半散场就还"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T01_A03",
+          "subject": "THIRD",
+          "relation": "音响来源与转述",
+          "value": "音响由老闵出；他说他那套功放没毛病（转述，未经ME验证）",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T01",
+            "message_id": "m1",
+            "quote": "音响老闵出，他说他那套功放没毛病"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "音响老闵出"
+            ],
+            [
+              "功放没毛病"
+            ],
+            [
+              "他说他那套"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T01_A04",
+          "subject": "ME",
+          "relation": "出借能力底账（KB）",
+          "value": "季长风有投影仪、120寸幕布一套放映器材（棋社活动也出设备）",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "季长风有投影仪、120寸幕布一套放映器材"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "投影仪、120寸幕布"
+            ],
+            [
+              "一套放映器材"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "required KB（ME 有投影仪+120寸幕布）是'给准话'的底气来源：答应=有人设依据。老闵'功放没毛病'是第三方自我转述——候选复述时保持转述口径（'他说没毛病'），不得坐实'老闵设备绝对没问题'（T03 即被打脸，此处不预判）。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把老闵'功放没毛病'坐实为已验证事实",
+        "不得编造设备型号/片源/供电等题面没有的细节"
+      ],
+      "may_decline": false
+    },
+    "E363_T02": {
+      "case_id": "E363_T02",
+      "current_action": "确认清单指令轮：她逐项确认四样（投影仪一台、幕布一卷、遥控器两个、电源线一根）；周六上午十点她来取；散场当晚九点四十老闵开车送回ME楼下、留手机畅通；问'两个时间都行吧'（intent=确认借用清单与取还时间）",
+      "acceptable_actions": [
+        "逐项确认执行：四样清单（含数量）＋两个时间（十点取/九点四十还）至少各落一次，明确'都行'——照做与不照做机械可判",
+        "确认＋一个稳妥补充（'我提前装好纸箱'/'留手机畅通'复述），不新增条件不改时间",
+        "对'两个时间都行吧'必须给明确答复（都行/哪个不行说明理由），悬置不答判契约不完整"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "time_state",
+        "factuality",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T02_A01",
+          "subject": "SHARED",
+          "relation": "借用清单",
+          "value": "清单四样：投影仪一台、幕布一卷、遥控器两个、电源线一根，就这四样",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T02",
+            "message_id": "m0",
+            "quote": "投影仪一台、幕布一卷、遥控器两个、电源线一根，就这四样"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "投影仪一台"
+            ],
+            [
+              "幕布一卷"
+            ],
+            [
+              "遥控器两个",
+              "电源线一根"
+            ],
+            [
+              "就这四样"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T02_A02",
+          "subject": "SHARED",
+          "relation": "取货时间",
+          "value": "周六上午十点她来ME家取",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T02",
+            "message_id": "m1",
+            "quote": "周六上午十点我来你家取"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "周六上午十点"
+            ],
+            [
+              "来你家取"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T02_A03",
+          "subject": "SHARED",
+          "relation": "归还安排原口径（T06 更正链旧值留档）",
+          "value": "散场当晚九点四十老闵开车送回ME楼下——原约定口径（T06 起改为八点半，见 E363_T06 更正链）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T02",
+            "message_id": "m1",
+            "quote": "散场当晚九点四十老闵开车送回你楼下"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "九点四十",
+              "送回"
+            ],
+            [
+              "老闵开车送回"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T02_A04",
+          "subject": "HER",
+          "relation": "借还纪律底账（KB）",
+          "value": "她借还东西讲究当面清点按时归还",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "她借还东西讲究当面清点按时归还"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "当面清点"
+            ],
+            [
+              "按时归还"
+            ],
+            [
+              "借还东西"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T06 确认指令轮：四样＋两时间逐项落原子（对象/时间/数量齐）。A03 与 A04 同源双登记：A03 为当时有效约定（T06 起被改写），A04 为更正链旧口径的独立留档（affirm_markers 用'九点四十,送回'连续串——T06 新话术'九点四十送不了'不含'送回'，防回声误伤，承 E337_T08_A02 选词范式）。required KB（当面清点按时归还）解释她逐项清单的人设根。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得增减清单项（四样之外加借/减借均违令，T03 加借与 T04 撤销另行处理）",
+        "不得擅改取还时间（十点取/九点四十还为确认口径，T06 改写前有效）",
+        "不得声称已与老闵确认接送（她只说老闵开车送回）"
+      ],
+      "may_decline": false
+    },
+    "E363_T03": {
+      "case_id": "E363_T03",
+      "current_action": "加借请求：棋社白色小音箱周六一起借用（广场风大人声要靠它撑）；原因=老闵音响昨晚试了低音嗡嗡、他自己也承认；她想多一层保险",
+      "acceptable_actions": [
+        "答加借请求：可行则确认一并准备，不可行说原因——不允许悬置",
+        "接'低音嗡嗡'：顺她的保险逻辑走（'多个保险稳'级），不替老闵辩护也不补刀",
+        "可给一个交付细节（音箱和投影一起装箱），短回复合法"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "memory_use",
+        "interaction",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T03_A01",
+          "subject": "HER",
+          "relation": "加借请求",
+          "value": "加借棋社白色小音箱：广场风大人声得靠它撑，周六一起给、用完一并还",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T03",
+            "message_id": "m0",
+            "quote": "加借一件：你们棋社那台白色小音箱，广场风大，人声得靠它撑，周六一起给我，用完一并还"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "白色小音箱"
+            ],
+            [
+              "加借一件"
+            ],
+            [
+              "用完一并还"
+            ],
+            [
+              "周六一起给我"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T03_A02",
+          "subject": "THIRD",
+          "relation": "加借原因（老闵音响缺陷转述）",
+          "value": "老闵的音响昨晚试了低音嗡嗡的，他自己也承认；她想多一层保险",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T03",
+            "message_id": "m1",
+            "quote": "老闵的音响昨晚试了，低音嗡嗡的，他自己也承认，我想多一层保险"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "低音嗡嗡"
+            ],
+            [
+              "他自己也承认"
+            ],
+            [
+              "多一层保险"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T03_A03",
+          "subject": "ME",
+          "relation": "棋社设备底账（KB）",
+          "value": "ME棋社活动也出设备（白色小音箱出借的可行性依据）",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "棋社活动也出设备"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "棋社活动",
+              "出设备"
+            ],
+            [
+              "棋社活动也出设备"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "required KB（棋社也出设备）支撑加借可行性判断。'他自己也承认'是关键归属：缺陷是老闵自认的，不是 HER 指控——候选转述时保持归属（他自己也承认），不得写成'她说老闵设备差'（归属倒置）。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得替老闵保证音响没问题（与 T03 缺陷自认矛盾）",
+        "不得编造小音箱的型号/功率细节"
+      ],
+      "may_decline": false
+    },
+    "E363_T04": {
+      "case_id": "E363_T04",
+      "current_action": "撤销指令轮：音箱撤销不借了（小蓟说棋社周六下午要用、正主优先）；维持原四样清单；她复核幕布是不是120寸（海报按120打的）（intent=撤销小音箱借用，维持原四样清单）",
+      "acceptable_actions": [
+        "执行撤销：确认音箱不借了、清单回到四样——撤令与清单复述至少各一次，不得再提音箱安排",
+        "答幕布复核：明确是120寸（KB 底账直接确认），可附一句'海报按120打没错'",
+        "对'正主优先'表态顺理成章（'该小蓟她们用'级），不问小蓟是谁、不翻老闵音响旧账"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "memory_use",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T04_A01",
+          "subject": "SHARED",
+          "relation": "小音箱借用撤销",
+          "value": "音箱撤销不借了（T03 加借作废）",
+          "valid_time": "2026-11-13",
+          "status": "cancelled",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T04",
+            "message_id": "m0",
+            "quote": "音箱撤销，不借了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "音箱",
+              "不借了"
+            ],
+            [
+              "撤销",
+              "音箱"
+            ]
+          ],
+          "item_markers": [
+            "白色小音箱",
+            "音箱"
+          ]
+        },
+        {
+          "atom_id": "E363_T04_A02",
+          "subject": "THIRD",
+          "relation": "撤销原因",
+          "value": "小蓟说棋社周六下午要用小音箱——正主优先",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T04",
+            "message_id": "m0",
+            "quote": "小蓟说棋社周六下午活动要用它，正主优先"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "正主优先"
+            ],
+            [
+              "棋社周六下午",
+              "要用"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T04_A03",
+          "subject": "HER",
+          "relation": "维持原清单指令",
+          "value": "就按原四样清单来",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T04",
+            "message_id": "m1",
+            "quote": "就按原四样清单来"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "原四样清单"
+            ],
+            [
+              "就按",
+              "四样"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T04_A04",
+          "subject": "HER",
+          "relation": "幕布尺寸复核问句",
+          "value": "她复核ME的幕布是不是120寸（海报按120打的，100的就出笑话）",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T04",
+            "message_id": "m1",
+            "quote": "你那卷幕布是120寸没错吧？我海报按120打的，要是100的就出笑话了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "120寸",
+              "没错吧"
+            ],
+            [
+              "海报按120"
+            ],
+            [
+              "就出笑话了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T04_A05",
+          "subject": "ME",
+          "relation": "幕布尺寸底账（KB，问句答案来源）",
+          "value": "ME的幕布是120寸（季长风有投影仪、120寸幕布一套放映器材）",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "季长风有投影仪、120寸幕布一套放映器材"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "投影仪、120寸幕布"
+            ],
+            [
+              "一套放映器材"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T06 撤销指令轮：可核验底线=音箱撤销（cancelled＋item_markers 进 C8 复活判定）＋清单回到四样＋幕布120寸确认。幕布问句是疑问句——内容坐实依据是 A05 的 KB 底账而非 HER 问句本身（疑问句不坐实纪律）；候选答120寸有据，答'不记得/回去看'=不取用 required 原子，判漏处理。撤销原因（小蓟/正主优先）为 HER 转述，候选复述保持口径。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得继续安排音箱借还或'到时候看情况借'（她明说撤销）",
+        "不得把幕布说成100寸或其他尺寸（KB 底账120寸）",
+        "不得编造小蓟的身份或棋社冲突细节"
+      ],
+      "may_decline": false
+    },
+    "E363_T05": {
+      "case_id": "E363_T05",
+      "current_action": "取货日晨：ME已把四样装好放玄关纸箱（幕布竖放别平压）；她到楼下两分钟上去；重申晚九点四十老闵送回、手机畅通",
+      "acceptable_actions": [
+        "交接确认：认下'装好了玄关纸箱'＋幕布竖放交代，可补一句当面清点口径（'上来当面点'级，贴双方人设）",
+        "接'两分钟上去'：给一句到门口接/开门的小动作，不催不啰嗦",
+        "对九点四十重申自然接住（'手机开着'级）；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "memory_use",
+        "interaction",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T05_A01",
+          "subject": "ME",
+          "relation": "装箱完成",
+          "value": "四样装好了，放玄关纸箱里",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T05",
+            "message_id": "m0",
+            "quote": "四样装好了，玄关纸箱里"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "四样",
+              "装好了"
+            ],
+            [
+              "玄关纸箱"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T05_A02",
+          "subject": "ME",
+          "relation": "幕布搬运交代",
+          "value": "幕布那卷竖着放，别平压",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T05",
+            "message_id": "m0",
+            "quote": "幕布那卷竖着放，别平压"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "幕布那卷竖着放"
+            ],
+            [
+              "竖着放，别平压"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T05_A03",
+          "subject": "HER",
+          "relation": "到楼通知",
+          "value": "她到楼下了，两分钟上去",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T05",
+            "message_id": "m1",
+            "quote": "我到楼下了，两分钟上去"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "到楼下了"
+            ],
+            [
+              "两分钟上去"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T05_A04",
+          "subject": "HER",
+          "relation": "归还口径复读与取货时间锚（T02 回指）",
+          "value": "T02 约定周六上午十点她来取——本轮按约执行（她 09:02 已到楼下）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T02",
+            "message_id": "m1",
+            "quote": "周六上午十点我来你家取"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "周六上午十点"
+            ],
+            [
+              "来你家取"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "回指位：T02 取货时间十点在本轮按约执行（她 09:02 到楼下，取货行为与约定一致）——required 承载。本轮含 ME 前置消息（m0 装箱/竖放），候选复述 ME 自己的交代合法。她复读'九点四十老闵送回'是当日口径复读（T06 将改写），候选此处跟随即可、不必预判改动。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称箱内物品与四样不符或另加物品",
+        "不得编造楼道/门禁细节"
+      ],
+      "may_decline": false
+    },
+    "E363_T06": {
+      "case_id": "E363_T06",
+      "current_action": "改写指令轮：老闵外孙今晚生日宴、九点四十送不了器材——归还改到八点半散场就收：片子掐掉最后短片、八点二十放完、八点半楼下等老闵；她揽下通知晚了的责任、让ME别怨老闵（note：生日宴转述自业主群请假消息；intent=归还时间从九点四十改到八点半）",
+      "acceptable_actions": [
+        "执行改写：确认归还改八点半＋新流程两要素（八点二十放完/掐短片、八点半楼下等老闵），不再提九点四十作有效口径",
+        "接她的责任表态：顺着'通知晚了是我的责任'接（'你盯着改好就行'级），不替老闵开脱也不加重埋怨",
+        "可给一个配合动作（八点半在楼下等/帮忙搬），短回复合法"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "time_state",
+        "memory_use",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T06_A01",
+          "subject": "SHARED",
+          "relation": "归还时间旧口径（更正链）",
+          "value": "散场当晚九点四十老闵开车送回ME楼下——已被改到八点半，不得再用九点四十",
+          "valid_time": "2026-11-14",
+          "status": "superseded",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T02",
+            "message_id": "m1",
+            "quote": "散场当晚九点四十老闵开车送回你楼下"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "九点四十",
+              "送回"
+            ],
+            [
+              "老闵开车送回"
+            ]
+          ],
+          "item_markers": [
+            "九点四十"
+          ]
+        },
+        {
+          "atom_id": "E363_T06_A02",
+          "subject": "SHARED",
+          "relation": "归还时间新口径",
+          "value": "改成八点半散场就收：片子掐掉最后那个短片、八点二十放完、八点半楼下等老闵",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T06",
+            "message_id": "m1",
+            "quote": "改成八点半散场就收，片子掐掉最后那个短片，八点二十放完，你们八点半楼下等老闵"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "八点半散场就收"
+            ],
+            [
+              "八点二十放完"
+            ],
+            [
+              "八点半楼下等老闵"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T06_A03",
+          "subject": "THIRD",
+          "relation": "改期原因",
+          "value": "老闵外孙今晚生日宴，九点四十送不了器材",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T06",
+            "message_id": "m0",
+            "quote": "老闵说他外孙今晚生日宴，九点四十送不了器材"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "外孙",
+              "生日宴"
+            ],
+            [
+              "送不了器材"
+            ],
+            [
+              "今晚生日宴"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T06_A04",
+          "subject": "HER",
+          "relation": "责任表态",
+          "value": "她揽责：责任在我通知晚了，别怨老闵",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T06",
+            "message_id": "m1",
+            "quote": "责任在我通知晚了，别怨老闵"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "责任在我"
+            ],
+            [
+              "别怨老闵"
+            ],
+            [
+              "通知晚了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T06_A05",
+          "subject": "HER",
+          "relation": "改期纪律底账（KB）",
+          "value": "lessons：她改时间一定说明原因和责任（本轮原因＋责任齐备，符合其稳定行为模式）",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "lessons",
+            "quote": "她改时间一定说明原因和责任"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "改时间",
+              "原因和责任"
+            ],
+            [
+              "说明原因"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T06 改写指令轮：可核验底线=九点四十→八点半（更正链 sup 原子对：A01 superseded＋A02 asserted）＋流程新时间（八点二十放完/八点半楼下等）。sup 原子 affirm_markers 用'九点四十,送回'连续串——新话术'九点四十送不了器材'不含'送回'，正确改写回复不误伤、复读旧口径才命中。note（业主群请假消息，ME 核过时间）为原因佐证链。required lessons（改时间说明原因和责任）验证其行为一致性，候选可回扣'你连责任都揽好了'。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得沿用九点四十为有效归还时间（更正链旧口径）",
+        "不得怨老闵或质疑生日宴原因（她已揽责并明说别怨老闵）",
+        "不得编造老闵家的细节（外孙年龄/宴席地点）"
+      ],
+      "may_decline": false
+    },
+    "E363_T07": {
+      "case_id": "E363_T07",
+      "current_action": "散场交还：八点三十六老闵把四样送到ME楼下（按八点半新口径执行）；遥控器俩都在投影仪袋里；幕布收卷带出一道浅折痕（她称不碍放映、记下了）；观众问下周她让问居委会；她要先睡个整觉",
+      "acceptable_actions": [
+        "清点接收：按四样＋遥控器位置（投影仪袋）接货，回一句清点口径（'齐了'级），贴 ME 必清点人设",
+        "接折痕自报：认下'浅折痕、不碍放映、你记下了'——不夸大损伤也不轻描淡写，按 lessons '她有瑕疵会主动报'接她的诚实",
+        "对'问居委会/先睡整觉'收尾配合，不追问下周安排；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "memory_use",
+        "time_state",
+        "interaction",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T07_A01",
+          "subject": "SHARED",
+          "relation": "按新口径交还",
+          "value": "八点三十六老闵把四样送到ME楼下",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T07",
+            "message_id": "m0",
+            "quote": "八点三十六老闵把四样送到你楼下"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "八点三十六"
+            ],
+            [
+              "四样送到你楼下"
+            ],
+            [
+              "老闵把四样"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T07_A02",
+          "subject": "HER",
+          "relation": "瑕疵自报",
+          "value": "幕布收卷时带出一道浅折痕，她称不碍放映、记下了",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T07",
+            "message_id": "m0",
+            "quote": "幕布收卷时带出一道浅折痕，不碍放映，我记下了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "浅折痕",
+              "一道"
+            ],
+            [
+              "不碍放映"
+            ],
+            [
+              "我记下了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T07_A03",
+          "subject": "HER",
+          "relation": "下周问询转介",
+          "value": "有观众问下周还放不放，她让他们问居委会去；她要先睡个整觉",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T07",
+            "message_id": "m1",
+            "quote": "有观众问下周还放不放，我让他们问居委会去，我先睡个整觉"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "问下周还放不放"
+            ],
+            [
+              "问居委会"
+            ],
+            [
+              "睡个整觉"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T07_A04",
+          "subject": "SHARED",
+          "relation": "新归还口径（T06 回指，执行验证）",
+          "value": "T06 改定的八点半口径——本轮 8:36 交还为其执行（晚六分钟属执行细节，她未标异常）",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T06",
+            "message_id": "m1",
+            "quote": "改成八点半散场就收，片子掐掉最后那个短片，八点二十放完，你们八点半楼下等老闵"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "八点半散场就收"
+            ],
+            [
+              "八点二十放完"
+            ],
+            [
+              "八点半楼下等老闵"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "回指位：T06 八点半改写在 T07 执行验证（required 承载）。8:36 vs 8:30 六分钟差：HER 未视为异常，gold 不判违约——候选若揪着六分钟追责=越界。折痕与 T11 记账线承接（她'记下了'），此处轻接即可。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把折痕夸大成损坏或要求赔偿（她明说浅折痕不碍放映）",
+        "不得声称下月排片已定（T08 才有居委会消息）",
+        "不得编造交还时的新细节（人数/器材状态以题面为准）"
+      ],
+      "may_decline": false
+    },
+    "E363_T08": {
+      "case_id": "E363_T08",
+      "current_action": "保养自报轮：居委会说下周日再来一场；她不敢拆机清灰只吹了风口；主动报遥控器电池仓盖松了（胶带缠了一圈）、电池换了新两节五号；明说'这条不用回，看到就行'（may_decline=true）",
+      "acceptable_actions": [
+        "合法不回：她明说'这条不用回，看到就行'——不回完全合格（次日 T09 她照常发指令，关系无损）",
+        "若回：一两句认下保养与自报（'缠得细心'/'周日见'级），不开检查清单、不布置任务",
+        "【0档-判负参照】把她当保管员追责（'怎么把仓盖弄松了'）或布置保养作业——判 0"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "emotion_relation",
+        "memory_use",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T08_A01",
+          "subject": "THIRD",
+          "relation": "下期排片消息",
+          "value": "居委会说下周日（2026-11-22）再来一场",
+          "valid_time": "2026-11-22",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T08",
+            "message_id": "m0",
+            "quote": "居委会说下周日再来一场"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "下周日",
+              "再来一场"
+            ],
+            [
+              "居委会说"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T08_A02",
+          "subject": "HER",
+          "relation": "瑕疵自报（电池仓）",
+          "value": "遥控器有个电池仓盖松了，她拿胶带缠了一圈",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T08",
+            "message_id": "m1",
+            "quote": "遥控器有个电池仓盖松了，我拿胶带缠了一圈"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "电池仓盖松"
+            ],
+            [
+              "胶带缠了一圈"
+            ],
+            [
+              "遥控器",
+              "电池仓"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T08_A03",
+          "subject": "HER",
+          "relation": "换电池",
+          "value": "电池换了新的两节五号",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T08",
+            "message_id": "m1",
+            "quote": "电池换了新的两节五号"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "两节五号"
+            ],
+            [
+              "换了新的"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T08_A04",
+          "subject": "HER",
+          "relation": "暂停许可声明",
+          "value": "她明说这条不用回，看到就行（周日要是出门）",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T08",
+            "message_id": "m1",
+            "quote": "你周日要是出门，这条不用回，看到就行"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "这条不用回"
+            ],
+            [
+              "看到就行"
+            ],
+            [
+              "周日要是出门"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "may_decline=true 轮：不回合法性=她明说'这条不用回，看到就行'（protected 逐字登记）。lessons（她借的物件有瑕疵会主动报）在此应验——她的自报是履约行为不是求表扬，追责与布置作业均为越界。下周日=2026-11-22（11-15 周日+7，推算入 audit）。",
+      "unknowns": [],
+      "protected_expressions": [
+        "这条不用回"
+      ],
+      "forbidden_factual_claims": [
+        "不得无视'不用回'布置任务或追责",
+        "不得声称电池仓是原有旧伤（她自报为本次使用中松脱并已处理）",
+        "不得编造清灰/保养知识细节"
+      ],
+      "may_decline": true
+    },
+    "E363_T09": {
+      "case_id": "E363_T09",
+      "current_action": "代传指令轮：她托ME向老闵传话——音响下周一（2026-11-23）上午九点她陪老闵去维修店、让老闵在维修店门口等别在家干等、师傅上午只收前六台；传完吱一声（intent=向老闵转告下周一上午九点维修店门口碰头）",
+      "acceptable_actions": [
+        "执行代传：传话四要素（对象老闵/下周一上午九点/维修店门口等/师傅只收前六台至少落三）＋确认'传完吱一声'的回执方式",
+        "按她的叮嘱表述：对老闵用'别在家干等，门口直接碰头'的省事说法，不加啰嗦解释",
+        "可回扣音响缺陷语境一句（'低音那毛病正好修了'级），不改时间地点"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "time_state",
+        "attribution",
+        "memory_use"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T09_A01",
+          "subject": "SHARED",
+          "relation": "维修行程约定",
+          "value": "下周一（2026-11-23）上午九点她陪老闵去维修店（修他那个音响）",
+          "valid_time": "2026-11-23",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T09",
+            "message_id": "m0",
+            "quote": "他那个音响下周一上午九点，我陪他去维修店"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "下周一",
+              "上午九点"
+            ],
+            [
+              "陪他去维修店"
+            ],
+            [
+              "他那个音响"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T09_A02",
+          "subject": "THIRD",
+          "relation": "碰头方式",
+          "value": "让老闵在维修店门口等，别在家干等",
+          "valid_time": "2026-11-23",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T09",
+            "message_id": "m0",
+            "quote": "让他在维修店门口等我，别在家干等"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "维修店门口等我"
+            ],
+            [
+              "别在家干等"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T09_A03",
+          "subject": "THIRD",
+          "relation": "时限原因",
+          "value": "维修师傅上午只收前六台",
+          "valid_time": "2026-11-23",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T09",
+            "message_id": "m0",
+            "quote": "师傅上午只收前六台"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "只收前六台"
+            ],
+            [
+              "上午",
+              "前六台"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T09_A04",
+          "subject": "THIRD",
+          "relation": "音响缺陷语境（T03 回指）",
+          "value": "老闵音响低音嗡嗡（他自己也承认）——本次送修的对象问题",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T03",
+            "message_id": "m1",
+            "quote": "老闵的音响昨晚试了，低音嗡嗡的，他自己也承认"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "低音嗡嗡"
+            ],
+            [
+              "他自己也承认"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "T06 代传指令轮：可核验底线=对象（老闵）＋时间（下周一上午九点）＋地点（维修店门口）＋原因（只收前六台）。'下周一'由 11-16（周一）推算=2026-11-23（推算入 audit）。required（T03 音响缺陷）是'他那个音响'的所指。回执方式'传完吱一声'按约定执行。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得改动时间地点（九点/维修店门口）或改约成上门取件",
+        "不得编造维修店名/地址/师傅收费细节（题面只有'只收前六台'）",
+        "不得替老闵答应额外维修项目"
+      ],
+      "may_decline": false
+    },
+    "E363_T10": {
+      "case_id": "E363_T10",
+      "current_action": "维修结果与边界轮：音响修好换电容八十块、老闵跟她AA她出四十；她明令ME别抢着补那四十——这事跟ME不沾边（note：八十来自维修店收据照片）",
+      "acceptable_actions": [
+        "尊重边界：接住'跟你不沾边'——不抢着补钱、不转账、不说'那怎么好意思'式客套拉扯",
+        "接结果：一句'修好了就好'＋可回扣传话闭环（'那趟没白跑'级）",
+        "对AA细节可轻评一句（'老爷子讲究'级），不复述金额为己方支出；短回复合法"
+      ],
+      "applicable_dimensions": [
+        "boundary",
+        "emotion_relation",
+        "memory_use",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T10_A01",
+          "subject": "THIRD",
+          "relation": "维修结果",
+          "value": "老闵音响修好了，换了个电容八十块",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T10",
+            "message_id": "m0",
+            "quote": "音响修好了，换了个电容八十块"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "音响修好"
+            ],
+            [
+              "电容八十块"
+            ],
+            [
+              "换了个电容"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T10_A02",
+          "subject": "THIRD",
+          "relation": "AA分摊",
+          "value": "老闵非要跟她AA，她出了四十",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T10",
+            "message_id": "m0",
+            "quote": "老闵非要跟我AA，我出了四十"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "跟我AA"
+            ],
+            [
+              "出了四十"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T10_A03",
+          "subject": "HER",
+          "relation": "金钱边界指令",
+          "value": "她明令ME别抢着补那四十：这事跟ME不沾边，她认",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T10",
+            "message_id": "m1",
+            "quote": "你别抢着补我那四十，这事跟你不沾边，我认"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "别抢着补"
+            ],
+            [
+              "跟你不沾边"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T10_A04",
+          "subject": "SHARED",
+          "relation": "维修行程约定（T09 回指，时间线张力件）",
+          "value": "T09 约定下周一（11-23）上午九点维修店碰头——本轮（11-17）已报修好，约定与结果的时间关系未说明",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T09",
+            "message_id": "m0",
+            "quote": "他那个音响下周一上午九点，我陪他去维修店"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "下周一",
+              "上午九点"
+            ],
+            [
+              "陪他去维修店"
+            ],
+            [
+              "他那个音响"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "回指位＋素材时间线张力（详见 unknowns）：T09（11-16 周一）约定'下周一上午九点'（按 11-16=周一推算为 11-23），而 T10（11-17 周二）已报'音响修好了'——题面未说明两者如何衔接（如提前送修/改约），gold 不代为裁决。候选若编造衔接解释（'老闵提前去修了/改期了'）判编造；正确方向=按她报的结果接收＋守'别补钱'边界。A03 金钱边界为 protected 级（protected_expressions 已登记'你别抢着补我那四十'）。",
+      "unknowns": [
+        {
+          "topic": "音响修理时间线如何衔接未说明（11-16 约下周一11-23维修店，11-17 已报修好）",
+          "note": "候选不得编造衔接解释（'提前去修了''改到昨天了'均无据）；正确方向=按她报的修好结果接收。",
+          "markers": [
+            [
+              "提前去修了"
+            ],
+            [
+              "改期到",
+              "昨天"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "提前去修了"
+            ],
+            [
+              "改期到",
+              "昨天"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [
+        "你别抢着补我那四十",
+        "这事跟你不沾边"
+      ],
+      "forbidden_factual_claims": [
+        "不得抢着补四十或转账（她明令；C6 子串形态：'把四十给你''补你四十'）",
+        "不得编造修理时间线解释（见 unknowns）",
+        "不得复述八十/四十为ME应担费用"
+      ],
+      "may_decline": false
+    },
+    "E363_T11": {
+      "case_id": "E363_T11",
+      "current_action": "结账轮：电池两节五号七块钱，她要求与幕布折痕一起记她账上；她拒绝ME客气推辞——上次搬椅子说不用记被念叨了一个月",
+      "acceptable_actions": [
+        "认账：接下'七块＋折痕记她账上'——按 ME 缺件坏件都记账的人设爽快记下，不推辞",
+        "回扣折痕线：折痕（T07 自报）与电池并账一句闭环（'一起记，清清爽爽'级）",
+        "接'别客气'：顺她的先例笑话走（'记你账上，念叨权归我'级轻幽默合法），不翻旧账"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "memory_use",
+        "emotion_relation",
+        "factuality"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T11_A01",
+          "subject": "HER",
+          "relation": "入账申报",
+          "value": "电池两节五号七块钱，她要求跟幕布那道折痕一起记她账上",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T11",
+            "message_id": "m0",
+            "quote": "电池两节五号七块钱，跟幕布那道折痕一起记我账上"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "五号七块钱"
+            ],
+            [
+              "记我账上"
+            ],
+            [
+              "两节五号"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T11_A02",
+          "subject": "HER",
+          "relation": "拒绝推辞指令",
+          "value": "别跟她客气说不用记——上次搬椅子她说不用记，ME念叨了一个月",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T11",
+            "message_id": "m1",
+            "quote": "别跟我客气说不用记。上次搬椅子我说不用记，你念叨了一个月"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "别跟我客气"
+            ],
+            [
+              "念叨了一个月"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T11_A03",
+          "subject": "HER",
+          "relation": "折痕申报（T07 回指，并账闭环）",
+          "value": "T07 幕布浅折痕（她已记下）——本轮并入账单",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T07",
+            "message_id": "m0",
+            "quote": "幕布收卷时带出一道浅折痕，不碍放映，我记下了"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "浅折痕",
+              "一道"
+            ],
+            [
+              "不碍放映"
+            ],
+            [
+              "我记下了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T11_A04",
+          "subject": "ME",
+          "relation": "记账纪律底账（KB）",
+          "value": "ME器材用完必清点，缺件坏件都记账",
+          "valid_time": "2026-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "他器材用完必清点，缺件坏件都记账"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "用完必清点"
+            ],
+            [
+              "缺件坏件",
+              "记账"
+            ],
+            [
+              "坏件都记账"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "回指位：T07 折痕（required）在本轮并账。required KB（缺件坏件都记账）使'推辞不记'违背 ME 人设——正确方向=认账。金额核对：电池七块为题面唯一金额（note 提到 T10 的八十有收据照片佐证，与本轮无关）；候选引用其他金额=编造。",
+      "unknowns": [],
+      "protected_expressions": [
+        "别跟我客气说不用记"
+      ],
+      "forbidden_factual_claims": [
+        "不得推辞说'不用记/算了'（她明令＋ME 人设记账）",
+        "不得改金额（题面只有七块）或新增账项（折痕无金额，只挂账）"
+      ],
+      "may_decline": false
+    },
+    "E363_T12": {
+      "case_id": "E363_T12",
+      "current_action": "收尾轮：居委会下月片单排定（第二个周日放《庐山恋》）；老闵提议ME投影仪长期征用、租金是每场留一排前排凳子（玩笑式报价）；行不行要ME直接跟老闵说不经她传话；七块账她提下回活动请豆浆抵（may_decline=true）",
+      "acceptable_actions": [
+        "轻收＋留口：接长期征用提议——表态去跟老闵直接谈（'行不行我跟他说'级），不经过她拍板也不拒绝",
+        "接豆浆抵账：认下七块的抵法（'这账抵得值'级轻幽默），不再挂新账",
+        "对'传话传够本了'的自嘲轻接一句；短回复合法（may_decline=true，轻收不回可按 decline 分审）"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "boundary",
+        "memory_use",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E363_T12_A01",
+          "subject": "THIRD",
+          "relation": "长期征用提议（转述，未成约）",
+          "value": "老闵说ME那套投影仪要长期征用（下月片单第二个周日放《庐山恋》）",
+          "valid_time": "2026-11-18",
+          "status": "tentative",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T12",
+            "message_id": "m0",
+            "quote": "老闵说你那套投影仪要长期征用"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "下月片单"
+            ],
+            [
+              "《庐山恋》"
+            ],
+            [
+              "老闵说你那套投影仪"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T12_A02",
+          "subject": "HER",
+          "relation": "对接方式指令",
+          "value": "行不行ME直接跟老闵说，别经过她传话",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T12",
+            "message_id": "m1",
+            "quote": "行不行你直接跟他说，别经过我传话"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "直接跟他说"
+            ],
+            [
+              "别经过我传话"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T12_A03",
+          "subject": "HER",
+          "relation": "七块抵法",
+          "value": "账上那七块，她提下回活动请ME喝豆浆抵",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T12",
+            "message_id": "m1",
+            "quote": "账上那七块，下回活动请你喝豆浆抵"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "账上那七块"
+            ],
+            [
+              "喝豆浆抵"
+            ],
+            [
+              "下回活动"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E363_T12_A04",
+          "subject": "HER",
+          "relation": "七块电池账（T11 回指，抵账来源）",
+          "value": "T11 电池两节五号七块钱已记她账上——本轮提出豆浆抵",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E363_T11",
+            "message_id": "m0",
+            "quote": "电池两节五号七块钱，跟幕布那道折痕一起记我账上"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "五号七块钱"
+            ],
+            [
+              "记我账上"
+            ],
+            [
+              "两节五号"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "收尾轮：轻收＋留口。长期征用=老闵的提议（tentative，未谈定）——'租金是留一排前排凳子'是老闵的玩笑式报价（转述口径保持），候选坐实成租赁合同/租金金额=编造。直接对接指令（不经她传话）与 T03/T12 传话线呼应（这趟传够本了）。may_decline=true：合法不回按 decline 分审，但豆浆抵账＋直接对接倾向一句轻确认。required（T11 七块账）为豆浆抵的所指。",
+      "unknowns": [
+        {
+          "topic": "投影仪长期征用未谈定（老闵提议＋ME未答复）",
+          "note": "候选不得坐实'答应了/租给他了/谈好条件了'——正确方向=表态去直接谈。",
+          "markers": [
+            [
+              "长期征用",
+              "答应了"
+            ],
+            [
+              "租给",
+              "老闵"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "长期征用",
+              "答应了"
+            ],
+            [
+              "租给",
+              "老闵"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得替老闵确认征用或谈定租金（行不行要ME直接跟他说）",
+        "不得把'留一排前排凳子'坐实为金钱租金或合同条款",
+        "不得新增账目（七块已有抵法）"
+      ],
+      "may_decline": true
+    }
+  }
+}

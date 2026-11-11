@@ -1,0 +1,494 @@
+{
+ "story_id": "E094",
+ "turns": {
+  "E094_T01": {
+   "case_id": "E094_T01",
+   "current_action": "接住拼单成团的得意，答应用推车和旧纸箱的借用，顺口提醒一句：380 对半是建立在两人同一天搬成的前提上。",
+   "acceptable_actions": [
+    "爽快答应借推车和纸箱，约好周六来取的时间",
+    "答应借用，顺带提醒她拼单要落成书面：时间、分摊、谁的件多谁先装",
+    "借物之外补一句经验：打包先封不急的，死线前一天留半天空"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A01",
+     "subject": "SHARED",
+     "relation": "carpool_initiated",
+     "value": "她与楼上小冉拼一辆小面包车，费用对半各 190 元",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T01", "message_id": "m0", "quote": "拼一辆小面包车，车主报的 380 一车，一人 190"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A02",
+     "subject": "SHARED",
+     "relation": "tool_borrow",
+     "value": "她向阿灿预借折叠推车与旧纸箱，周六取",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T01", "message_id": "m1", "quote": "折叠推车周六借我用两天"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：借物答应得痛快，提醒收在经验里说，不泼她兴头。",
+   "unknowns": ["小冉一方的稳定性未经验证"],
+   "protected_expressions": ["比单独包车划算一半"],
+   "forbidden_factual_claims": ["不得虚构小冉的搬家动机", "不得断言拼单必然成行"]
+  },
+  "E094_T02": {
+   "case_id": "E094_T02",
+   "current_action": "肯定细节对得齐整，把 8:30 装车与借物兑现日记牢，顺口问一句新家那边要不要提前报备物业。",
+   "acceptable_actions": [
+    "确认周六取推车纸箱的时间，提醒她留好车主联系方式",
+    "肯定她打包计划排得细，建议大件提前拆螺丝装袋",
+    "提醒她跟新小区物业打好招呼，货车进出和电梯都要提前问"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A03",
+     "subject": "SHARED",
+     "relation": "schedule_locked",
+     "value": "定于 22 号早上 8:30 车到北门，两家各占半车一趟拉完",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T02", "message_id": "m0", "quote": "22 号早上 8:30 车到北门"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸具体不夸空，'一趟拉完'这种好话别让她全信，留一句变数。",
+   "unknowns": ["新家物业是否需要报备未知"],
+   "protected_expressions": ["师傅说一趟拉完"],
+   "forbidden_factual_claims": ["不得虚构物业规定", "不得替她拍板打包顺序"]
+  },
+  "E094_T03": {
+   "case_id": "E094_T03",
+   "current_action": "接住拼单暂停：先认下她懊恼有理，再把小冉续租定性为正当变故而非背约，把问题从'怪谁'转到'接下来怎么办'。",
+   "acceptable_actions": [
+    "肯定小冉续租不搬是正经选择，劝她别记仇",
+    "把账摆开：包整车 380 对她一个人搬的实际需求，看有没有缩量的空间",
+    "提醒她死线还早，先稳住别急着独自扛价"
+   ],
+   "applicable_dimensions": ["attribution", "emotion_relation", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A04",
+     "subject": "SHARED",
+     "relation": "carpool_recall",
+     "value": "此前成团的拼单是她与小冉各出 190 的对半方案",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T01", "message_id": "m0", "quote": "拼一辆小面包车，车主报的 380 一车，一人 190"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E094_A05",
+     "subject": "SHARED",
+     "relation": "carpool_suspended",
+     "value": "小冉因房东续租退出搬家，拼单中断",
+     "valid_time": "2026-11-17",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E094_T03", "message_id": "m0", "quote": "她当场答应不搬了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A06",
+     "subject": "HER",
+     "relation": "full_price_dilemma",
+     "value": "独自包整车 380 元令她心疼，开始找替代",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T03", "message_id": "m0", "quote": "我一个人包整车 380"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先把'黄了一半'的火气接住，再把它翻译成'暂停不是终局'。",
+   "unknowns": ["小冉闺蜜等潜在替补是否存在未知"],
+   "protected_expressions": ["续住半年房租不涨"],
+   "forbidden_factual_claims": ["不得断言小冉反悔有错", "不得虚构房东细节"]
+  },
+  "E094_T04": {
+   "case_id": "E094_T04",
+   "current_action": "回应她的自运加单包方案：给个痛快话——小件自运可行，大件必须留车，并提醒 22 号是死线，方案要留余量。",
+   "acceptable_actions": [
+    "直接给结论：电动车六趟运小件可以，床垫冰箱必须包车，别硬扛",
+    "提醒她算上时间和体力：搬前一周还上班，六趟会拖垮执行",
+    "建议大件小件分开下单，先锁大件的车再慢慢运小件"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "attribution"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A07",
+     "subject": "HER",
+     "relation": "diy_plan",
+     "value": "她考虑电动车分批自运小件、大件单独包车的变通方案",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T04", "message_id": "m0", "quote": "床垫和冰箱这些大件没车根本弄不动"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A08",
+     "subject": "SHARED",
+     "relation": "solo_quote",
+     "value": "平台小面包单独包车报价 260 元",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T04", "message_id": "m0", "quote": "单独包要 260"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A09",
+     "subject": "SHARED",
+     "relation": "suspension_recall",
+     "value": "拼单已因小冉退出而中断",
+     "valid_time": "2026-11-17",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E094_T03", "message_id": "m0", "quote": "她当场答应不搬了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她要痛快话就给痛快话，理由跟在结论后一句带过。",
+   "unknowns": ["她电动车载重与电量未知"],
+   "protected_expressions": ["你给我个痛快话"],
+   "forbidden_factual_claims": ["不得虚构平台价格规则", "不得替她执行自运计划"]
+  },
+  "E094_T05": {
+   "case_id": "E094_T05",
+   "current_action": "接住'等消息'的不踏实：肯定她的警觉，点出陌生拼单的不确定性，把'死线'递到明面上，建议她同步准备保底方案。",
+   "acceptable_actions": [
+    "认可她的直觉：陌生单没拍板前都当没有，先想保底",
+    "把死线摆明：21 号晚是最后决定点，倒推现在该锁什么",
+    "建议她双轨走：保底单先占上，拼单成了再退"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "attribution", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A10",
+     "subject": "SHARED",
+     "relation": "stranger_pool",
+     "value": "车主提出与隔壁栋另一单陌生住户拼车，对方尚未拍板",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T05", "message_id": "m0", "quote": "可以两单拼，可那家人还没拍板"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A11",
+     "subject": "HER",
+     "relation": "deadline_msg",
+     "value": "她自定 21 号晚为最终决定线",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T05", "message_id": "m0", "quote": "21 号晚上再定不下来我就抓瞎了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A12",
+     "subject": "HER",
+     "relation": "deadline_fact",
+     "value": "她的搬迁死线为 11 月 22 号周日搬完，周一要上班",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "定死 11 月 22 号周日搬完"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'等消息'的虚要戳破，但别嘲笑车主，把主动权递回她手里。",
+   "unknowns": ["陌生单最终是否成行未知"],
+   "protected_expressions": ["等消息这三个字我最怕"],
+   "forbidden_factual_claims": ["不得断言陌生单必然黄", "不得虚构车主动机"]
+  },
+  "E094_T06": {
+   "case_id": "E094_T06",
+   "current_action": "肯定她锁保底单的双轨打法，确认周六取推车纸箱照旧，顺口叮嘱她记准退订窗口时间。",
+   "acceptable_actions": [
+    "肯定双轨思路，提醒她把退订截止时间设个闹钟",
+    "确认周六取物照旧，问她打包还缺什么耗材",
+    "提醒她保底单时间也要跟 8:30 装车对齐，别锁错时段"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A13",
+     "subject": "SHARED",
+     "relation": "fallback_locked",
+     "value": "她锁定 22 号 8:30 平台小面包保底单，付定金 30 元",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T06", "message_id": "m0", "quote": "先把平台上 22 号 8:30 的小面包单锁了，定金 30"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她这步走得稳，夸到位就行，退订窗口的叮嘱放轻。",
+   "unknowns": ["保底单司机与车型未知"],
+   "protected_expressions": ["最坏也有车"],
+   "forbidden_factual_claims": ["不得虚构平台退订规则细节", "不得断言拼单必然谈成"]
+  },
+  "E094_T07": {
+   "case_id": "E094_T07",
+   "current_action": "先接住拼单复活的大好消息，再帮她把退订定金的账算清：提前 24 小时的窗口已过，扣 30 与省 40 放在一起比，让她自己拍板。",
+   "acceptable_actions": [
+    "先恭喜拼单复活，再一起把定金账算清：扣 30 换省 40，值得退",
+    "提醒她确认保底单取消路径，把扣款规则截图留证",
+    "顺带提醒琪琪这边也要落一遍时间与分摊，别再吃口头拼单的亏"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A14",
+     "subject": "SHARED",
+     "relation": "carpool_revived",
+     "value": "琪琪加入使拼单复活，仍为一人 190，师傅另单同日谈成",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T07", "message_id": "m0", "quote": "拼单复活了，还是 190 一人"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A15",
+     "subject": "SHARED",
+     "relation": "refund_window",
+     "value": "保底单不足 24 小时取消将被扣定金 30 元",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T07", "message_id": "m1", "quote": "现在退要扣 30"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A16",
+     "subject": "SHARED",
+     "relation": "fallback_exists",
+     "value": "22 号 8:30 平台小面包保底单已锁定并付定金",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T06", "message_id": "m0", "quote": "先把平台上 22 号 8:30 的小面包单锁了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：账算给她看，决定让她下；好消息别让她忘了收尾动作。",
+   "unknowns": ["定金实际扣除路径未知"],
+   "protected_expressions": ["现在退要扣 30"],
+   "forbidden_factual_claims": ["不得替她操作退订", "不得断言扣款金额与规则之外的费用"]
+  },
+  "E094_T08": {
+   "case_id": "E094_T08",
+   "current_action": "确认她止损退订、账算明白了；把琪琪主动担加价这一节点出来——拼单重启后的分摊边界是健康的。",
+   "acceptable_actions": [
+    "肯定沉没成本的算法，止损果断",
+    "把琪琪担 40 加价这事夸到位，提醒她记下这份人情",
+    "建议明晚和她再对一遍时间线：几点装车、谁先谁后"
+   ],
+   "applicable_dimensions": ["factuality", "boundary", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A17",
+     "subject": "SHARED",
+     "relation": "fallback_cancelled",
+     "value": "她认扣 30 元定金退掉保底单，止损回到拼单一人 190",
+     "valid_time": "2026-11-21",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E094_T08", "message_id": "m0", "quote": "咬牙退了，拼单一人 190"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A18",
+     "subject": "SHARED",
+     "relation": "refund_recall",
+     "value": "保底单退订撞上 24 小时窗口，扣 30 已知",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T07", "message_id": "m1", "quote": "现在退要扣 30"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E094_A19",
+     "subject": "THIRD",
+     "relation": "cost_sharing",
+     "value": "琪琪主动承担 40 元大件加价，不让苗苗摊",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T08", "message_id": "m0", "quote": "琪琪爽快认了，说不能让我摊"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：夸她的果断，不翻旧账说'早该想到窗口'，琪琪的人情点到为止。",
+   "unknowns": ["加价最终落点未知"],
+   "protected_expressions": ["这姑娘处得"],
+   "forbidden_factual_claims": ["不得断言加价合理与否", "不得虚构琪琪的搬家细节"]
+  },
+  "E094_T09": {
+   "case_id": "E094_T09",
+   "current_action": "接住执行日货梯停运的突发：她住 6 楼、只能人搬，按自己的实际情况答应或婉拒 8 点半帮忙抬床垫；若答应，带好手套捆扎带，给准话。",
+   "acceptable_actions": [
+    "答应 8 点半到，确认楼层与床垫尺寸，带捆扎带手套",
+    "答应但调整到场时间，让她先跟师傅确认装车顺序",
+    "确实不便就直说，并立刻给她替代：物业报备或找师傅加人手"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "boundary", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A20",
+     "subject": "SHARED",
+     "relation": "elevator_breakdown",
+     "value": "货梯当日保养且客梯禁运，六楼需人力搬运",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E094_T09", "message_id": "m0", "quote": "货梯今天保养，客梯又贴着不让运货"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A21",
+     "subject": "SHARED",
+     "relation": "tool_recall",
+     "value": "所借折叠推车因楼梯搬运派不上用场",
+     "valid_time": "2026-11-12/2026-11-22",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E094_T01", "message_id": "m1", "quote": "折叠推车周六借我用两天"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E094_A22",
+     "subject": "SHARED",
+     "relation": "lifting_request",
+     "value": "她请阿灿 8 点半来帮忙抬一趟床垫并管早饭",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T09", "message_id": "m0", "quote": "8 点半来帮我抬一下床垫"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：突发之下她最需要准话，能到就给时间，不能到就马上给替代，别含糊。",
+   "unknowns": ["师傅是否愿意加人未知", "搬完的实际时间未知"],
+   "protected_expressions": ["就一趟"],
+   "forbidden_factual_claims": ["不得虚构物业通知内容", "不得承诺搬运不伤墙面"]
+  },
+  "E094_T10": {
+   "case_id": "E094_T10",
+   "current_action": "共享搬完的痛快：爬六楼三趟的硬仗打完了，师傅没加价、琪琪请面、钥匙交接顺，把这一天的顺逐项点给她。",
+   "acceptable_actions": [
+    "夸这仗打得漂亮，师傅没加价是车主厚道",
+    "接住琪琪请面的人情，提醒她记着回礼",
+    "问她今晚床铺收拾到几点，别让她累过头"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A23",
+     "subject": "SHARED",
+     "relation": "move_completed",
+     "value": "四人爬六楼三趟完成搬运，师傅未加价，新家钥匙交接顺利",
+     "valid_time": "2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T10", "message_id": "m0", "quote": "师傅最后没加一分钱"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：一起痛快，把琪琪、师傅、她自己各记一功。",
+   "unknowns": [],
+   "protected_expressions": ["四个人爬了六楼三趟"],
+   "forbidden_factual_claims": ["不得虚构搬运过程细节", "不得替师傅表功"]
+  },
+  "E094_T11": {
+   "case_id": "E094_T11",
+   "current_action": "接住总账复盘：226 对最初 190 多 36 但结交了琪琪，这个账算得健康；确认这周还推车的时间。",
+   "acceptable_actions": [
+    "认可她的账：多花 36 买个新朋友和顺当，值",
+    "约好还推车的时间，提醒捆扎带一起拿回来",
+    "建议她把这次的保底单打法记下来，下次搬家直接用"
+   ],
+   "applicable_dimensions": ["memory_use", "emotion_relation", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A24",
+     "subject": "SHARED",
+     "relation": "final_ledger",
+     "value": "总花费 226 元：车费 190、水 6、定金损失 30",
+     "valid_time": "2026-11-23",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T11", "message_id": "m0", "quote": "一共 226"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A25",
+     "subject": "SHARED",
+     "relation": "tool_return",
+     "value": "推车与捆扎带已清洁待还",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T11", "message_id": "m0", "quote": "推车我擦干净了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：账她算得清，别再纠正数字，把'值'字接住就行。",
+   "unknowns": [],
+   "protected_expressions": ["但多认识一个琪琪，值"],
+   "forbidden_factual_claims": ["不得替她重算账目", "不得虚构后续费用"]
+  },
+  "E094_T12": {
+   "case_id": "E094_T12",
+   "current_action": "笑纳开火宴与'推车抵押金一顿饭'的安排，确认周六赴约和上门路线，以还物加吃饭收尾。",
+   "acceptable_actions": [
+    "答应周六赴宴收下捎来的推车，确认单元门牌",
+    "把'押金是一顿饭'的梗接住，气氛收轻",
+    "提醒她开火宴别太累，凑三个人的量就够"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E094_A26",
+     "subject": "SHARED",
+     "relation": "housewarming",
+     "value": "周六中午新家开火宴，她捎还推车，以一顿饭作抵押",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T12", "message_id": "m0", "quote": "我把推车捎去顺便付抵押金——一顿饭"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E094_A27",
+     "subject": "SHARED",
+     "relation": "full_chain_recall",
+     "value": "开火宴回扣拼单从暂停到复活到落成的全链",
+     "valid_time": "2026-11-17/2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E094_T03", "message_id": "m0", "quote": "我的拼车黄了一半"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把这条'黄了又活'的拼单说成圆满，别提如果当初。",
+   "unknowns": [],
+   "protected_expressions": ["别走错"],
+   "forbidden_factual_claims": ["不得引入新议题", "不得虚构开火宴菜品"]
+  }
+ }
+}

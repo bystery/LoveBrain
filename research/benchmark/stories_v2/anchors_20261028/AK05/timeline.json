@@ -1,0 +1,34 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "AK05",
+ "turn_clocks": [
+  {
+   "case_id": "AK05_T01",
+   "clock": "2026-12-11 23:02"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "AK05_T01",
+   "message_id": "m0",
+   "speaker": "ME",
+   "quote": "明晚八点我票都取好了",
+   "ts": "2026-12-11 22:50"
+  },
+  {
+   "case_id": "AK05_T01",
+   "message_id": "m1",
+   "speaker": "HER",
+   "quote": "我明天上台前想找人过一遍 但又怕你听完觉得不好笑",
+   "ts": "2026-12-11 23:00"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "AK05_E1",
+   "case_id": "AK05_T01",
+   "summary": "开放麦｜反馈=hesitant｜意图=周六八点到场看她首台并坐第一排",
+   "source_turn": "AK05_T01"
+  }
+ ]
+}

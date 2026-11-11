@@ -1,0 +1,1901 @@
+{
+ "story_id": "LRE145",
+ "turns": {
+  "LRE145_T01": {
+   "case_id": "LRE145_T01",
+   "current_action": "给结论：七点出发时间充裕，顺带提醒以检票截止时间为底线核一遍",
+   "acceptable_actions": [
+    "直接答'来得及'，说明正常车程四十分钟、余量充足",
+    "提醒她看一眼订单上的检票口和截止时间，别只看车程"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T01_A00",
+     "subject": "THIRD",
+     "relation": "司机口径",
+     "value": "司机称周六早上七点到小区门口接三位乘客",
+     "valid_time": "2026-11-04 20:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T01",
+      "message_id": "m0",
+      "quote": "早上七点到小区门口接"
+     }
+    },
+    {
+     "atom_id": "LRE145_T01_A01",
+     "subject": "SHARED",
+     "relation": "朋友往来",
+     "value": "苗苗回城常与 ME 见面并互相帮忙",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "我帮她抢过票"
+     }
+    }
+   ],
+   "private_guidance": "她要个准数，先给准数再给理由，别上来就列分支。",
+   "unknowns": [
+    "周六实际路况未知"
+   ],
+   "protected_expressions": [
+    "早上七点到小区门口接"
+   ],
+   "forbidden_factual_claims": [
+    "不得打包票说绝对不堵车"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T02": {
+   "case_id": "LRE145_T02",
+   "current_action": "信息不确定冲突轮：指出以 App 订单为准、以司机口头为参考，建议她直接问司机要一句准话",
+   "acceptable_actions": [
+    "明确结论：书面订单优先，口头时间只作参考",
+    "建议她在司机群里直接问一句，让司机白纸黑字回"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T02_A00",
+     "subject": "THIRD",
+     "relation": "司机口径",
+     "value": "司机称早上七点到小区门口接",
+     "valid_time": "2026-11-04 20:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T01",
+      "message_id": "m0",
+      "quote": "早上七点到小区门口接"
+     }
+    },
+    {
+     "atom_id": "LRE145_T02_A01",
+     "subject": "PUBLIC",
+     "relation": "订单口径",
+     "value": "拼车订单显示上车时间为七点半，与司机口头不一致",
+     "valid_time": "2026-11-05 08:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T02",
+      "message_id": "m0",
+      "quote": "上车时间是七点半"
+     }
+    },
+    {
+     "atom_id": "LRE145_T02_A02",
+     "subject": "THIRD",
+     "relation": "司机到达时间的确定性",
+     "value": "司机口头七点与订单七点半不一致，到达时间尚不确定",
+     "valid_time": "2026-11-05 08:25",
+     "status": "uncertain",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T02",
+      "message_id": "m0",
+      "quote": "对不上"
+     }
+    }
+   ],
+   "private_guidance": "口径冲突先立规矩：书面大于口头；再让她去要一句准话。",
+   "unknowns": [
+    "司机最终确认时间未知"
+   ],
+   "protected_expressions": [
+    "上车时间是七点半"
+   ],
+   "forbidden_factual_claims": [
+    "不得替司机宣布七点为准"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T03": {
+   "case_id": "LRE145_T03",
+   "current_action": "把'尽量'翻译成区间：七点到七点半之间都是正常波动，关键不是几点到而是出发底线",
+   "acceptable_actions": [
+    "点破：三个口径都在七点到七点半区间，属正常波动",
+    "把问题换轨：别问司机几点到，先算自己最晚几点出发"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T03_A00",
+     "subject": "PUBLIC",
+     "relation": "订单口径",
+     "value": "拼车订单显示上车时间七点半",
+     "valid_time": "2026-11-05 08:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T02",
+      "message_id": "m0",
+      "quote": "上车时间是七点半"
+     }
+    },
+    {
+     "atom_id": "LRE145_T03_A01",
+     "subject": "THIRD",
+     "relation": "司机再表态",
+     "value": "司机称看路况尽量七点二十前到",
+     "valid_time": "2026-11-05 13:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T03",
+      "message_id": "m0",
+      "quote": "尽量七点二十前到"
+     }
+    }
+   ],
+   "private_guidance": "她的焦虑来自'没有准数'，给她区间和底线，比要准数现实。",
+   "unknowns": [],
+   "protected_expressions": [
+    "尽量七点二十前到"
+   ],
+   "forbidden_factual_claims": [
+    "不得假装司机口径已经确定"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T04": {
+   "case_id": "LRE145_T04",
+   "current_action": "给计算结论：正常四十分钟车程，建议八点半前出发、七点为集合目标，最晚七点三刻打车主预案",
+   "acceptable_actions": [
+    "直接给数字：最晚八点半前必须出发，正常七点出发余量两小时",
+    "建议设双触发点：七点车没到不慌，七点一刻没到就打车"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T04_A00",
+     "subject": "THIRD",
+     "relation": "司机再表态",
+     "value": "司机称尽量七点二十前到",
+     "valid_time": "2026-11-05 13:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T03",
+      "message_id": "m0",
+      "quote": "尽量七点二十前到"
+     }
+    },
+    {
+     "atom_id": "LRE145_T04_A01",
+     "subject": "HER",
+     "relation": "列车信息",
+     "value": "周六高铁九点四十发车，停止检票九点二十五",
+     "valid_time": "2026-11-05 21:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T04",
+      "message_id": "m0",
+      "quote": "停止检票九点二十五"
+     }
+    }
+   ],
+   "private_guidance": "计算题就给数：出发点、触发点、底线三个数说清。",
+   "unknowns": [
+    "南站安检排队时长未知"
+   ],
+   "protected_expressions": [
+    "停止检票九点二十五"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构车次与检票口信息"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T05": {
+   "case_id": "LRE145_T05",
+   "current_action": "确认预案成立：七点等候、七点一刻触发打车的双保险，补一句打车授权的事",
+   "acceptable_actions": [
+    "确认预案，提醒把打车授权给同行的人，谁先触发谁下单",
+    "让她把检票口截图发群里，人人都有底线信息"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T05_A00",
+     "subject": "HER",
+     "relation": "列车信息",
+     "value": "高铁九点四十发车，停止检票九点二十五",
+     "valid_time": "2026-11-05 21:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T04",
+      "message_id": "m0",
+      "quote": "停止检票九点二十五"
+     }
+    },
+    {
+     "atom_id": "LRE145_T05_A01",
+     "subject": "HER",
+     "relation": "出发预案",
+     "value": "七点整门口等车，七点一刻未到即打车，双保险",
+     "valid_time": "2026-11-06 09:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T05",
+      "message_id": "m0",
+      "quote": "七点一刻车还没来就直接打车"
+     }
+    }
+   ],
+   "private_guidance": "预案被采纳就确认细节别加码，她已经不慌了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "七点一刻车还没来就直接打车"
+   ],
+   "forbidden_factual_claims": [
+    "不得再临时加新变数吓她"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T06": {
+   "case_id": "LRE145_T06",
+   "current_action": "确认待命：工具与授权都齐了，约定明早群里同步消息即可",
+   "acceptable_actions": [
+    "确认工具齐备，约明早群里报位置",
+    "提醒她晚上早点睡，别刷路况刷到半夜"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T06_A00",
+     "subject": "HER",
+     "relation": "出发预案",
+     "value": "七点整等车、七点一刻触发打车的双保险",
+     "valid_time": "2026-11-06 09:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T05",
+      "message_id": "m0",
+      "quote": "七点一刻车还没来就直接打车"
+     }
+    },
+    {
+     "atom_id": "LRE145_T06_A01",
+     "subject": "SHARED",
+     "relation": "工具就绪",
+     "value": "打车软件装好并完成同行人授权，约定群里同步定位",
+     "valid_time": "2026-11-06 21:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T06",
+      "message_id": "m0",
+      "quote": "谁先上车谁往群里丢定位"
+     }
+    }
+   ],
+   "private_guidance": "一切就绪，回复短促干脆，别添新话题。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谁先上车谁往群里丢定位"
+   ],
+   "forbidden_factual_claims": [
+    "不得制造新的担忧点"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T07": {
+   "case_id": "LRE145_T07",
+   "current_action": "接住踏实：肯定司机靠谱，但提醒预案不撤，踏实归踏实触发线照留",
+   "acceptable_actions": [
+    "肯定司机主动确认，提醒打车预案照留不撤",
+    "让她把车牌转发到三人小群，人人有底"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T07_A00",
+     "subject": "SHARED",
+     "relation": "工具就绪",
+     "value": "打车软件与授权就绪，约定群里同步定位",
+     "valid_time": "2026-11-06 21:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T06",
+      "message_id": "m0",
+      "quote": "谁先上车谁往群里丢定位"
+     }
+    },
+    {
+     "atom_id": "LRE145_T07_A01",
+     "subject": "THIRD",
+     "relation": "司机最终确认",
+     "value": "司机电话确认明早七点整准点到并发来车牌",
+     "valid_time": "2026-11-07 21:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T07",
+      "message_id": "m0",
+      "quote": "明早七点整准点到"
+     }
+    }
+   ],
+   "private_guidance": "口径从三版收敛到一版，这正是双保险的意义：可以踏实，但别裸奔。",
+   "unknowns": [],
+   "protected_expressions": [
+    "明早七点整准点到"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣布预案可以全部撤销"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T08": {
+   "case_id": "LRE145_T08",
+   "current_action": "接住短报：回一句'预案零触发，完美'，不啰嗦",
+   "acceptable_actions": [
+    "回'双保险没触发，最好结局'，让她安心开路",
+    "叮嘱一句到了发消息"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T08_A00",
+     "subject": "THIRD",
+     "relation": "司机最终确认",
+     "value": "司机确认七点整准点到",
+     "valid_time": "2026-11-07 21:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T07",
+      "message_id": "m0",
+      "quote": "明早七点整准点到"
+     }
+    },
+    {
+     "atom_id": "LRE145_T08_A01",
+     "subject": "SHARED",
+     "relation": "行程实况",
+     "value": "司机七点零二到达，三人齐行出发",
+     "valid_time": "2026-11-08 07:02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T08",
+      "message_id": "m0",
+      "quote": "七点零二司机到了"
+     }
+    }
+   ],
+   "private_guidance": "行进中的短报用短句回，别分散她注意力。",
+   "unknowns": [],
+   "protected_expressions": [
+    "七点零二司机到了"
+   ],
+   "forbidden_factual_claims": [
+    "不得发长消息占用她注意力"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T09": {
+   "case_id": "LRE145_T09",
+   "current_action": "接住松弛：确认提前量健康，闲聊一句咖啡口味即可",
+   "acceptable_actions": [
+    "确认余量充足，闲聊一句咖啡偏好",
+    "让她候车时把回程日期想想，顺手的事"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T09_A00",
+     "subject": "SHARED",
+     "relation": "行程实况",
+     "value": "司机七点零二到达三人齐行出发",
+     "valid_time": "2026-11-08 07:02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T08",
+      "message_id": "m0",
+      "quote": "七点零二司机到了"
+     }
+    },
+    {
+     "atom_id": "LRE145_T09_A01",
+     "subject": "HER",
+     "relation": "到站实况",
+     "value": "七点五十抵达南站，距检票约一小时富余",
+     "valid_time": "2026-11-08 08:00",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T09",
+      "message_id": "m0",
+      "quote": "离检票还有一小时"
+     }
+    }
+   ],
+   "private_guidance": "她松弛了就陪她松弛，别再复盘预案，考试结束了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "离检票还有一小时"
+   ],
+   "forbidden_factual_claims": [
+    "不得继续渲染赶车风险"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T10": {
+   "case_id": "LRE145_T10",
+   "current_action": "回应邀约：确认是否同一天同路，给出条件式答复",
+   "acceptable_actions": [
+    "答应月底同路拼车，让她拉群时算我一个",
+    "说明要看那天是否休假，让她先记意向"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T10_A00",
+     "subject": "HER",
+     "relation": "到站实况",
+     "value": "七点五十抵达南站且余量充足",
+     "valid_time": "2026-11-08 08:00",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T09",
+      "message_id": "m0",
+      "quote": "离检票还有一小时"
+     }
+    },
+    {
+     "atom_id": "LRE145_T10_A01",
+     "subject": "HER",
+     "relation": "回程邀约",
+     "value": "月底返校回程拟同路拼车，人齐摊薄费用",
+     "valid_time": "2026-11-08 10:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T10",
+      "message_id": "m0",
+      "quote": "月底返校的回程要不要一起拼"
+     }
+    }
+   ],
+   "private_guidance": "邀约给条件式答复，别把话说死也别冷场。",
+   "unknowns": [
+    "回程具体日期未定"
+   ],
+   "protected_expressions": [
+    "月底返校的回程要不要一起拼"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已确认的同行人"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T11": {
+   "case_id": "LRE145_T11",
+   "current_action": "确认回程安排：同司机、下午三点上车，确认自己当天能对上时间",
+   "acceptable_actions": [
+    "确认三点上车，核对自己当天的安排后答复",
+    "夸她复购靠谱司机，顺风车界的老主顾"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T11_A00",
+     "subject": "HER",
+     "relation": "回程邀约",
+     "value": "月底返校回程拟同路拼车",
+     "valid_time": "2026-11-08 10:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T10",
+      "message_id": "m0",
+      "quote": "月底返校的回程要不要一起拼"
+     }
+    },
+    {
+     "atom_id": "LRE145_T11_A01",
+     "subject": "SHARED",
+     "relation": "回程安排",
+     "value": "回程单已约同一司机，下午三点上车",
+     "valid_time": "2026-11-09 19:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T11",
+      "message_id": "m0",
+      "quote": "下午三点上车"
+     }
+    }
+   ],
+   "private_guidance": "回程定档就确认到位，时间冲突现在说比当天说好。",
+   "unknowns": [],
+   "protected_expressions": [
+    "下午三点上车"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已核对的车票信息"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T12": {
+   "case_id": "LRE145_T12",
+   "current_action": "接住推荐：收下司机微信，回一句轻快谢意；此轮无待办，可不展开",
+   "acceptable_actions": [
+    "收下推荐，回一句'老主顾认证，存了'",
+    "轻松回敬'报你名字打折算我份子'之类的玩笑"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T12_A00",
+     "subject": "SHARED",
+     "relation": "回程安排",
+     "value": "回程单同一司机下午三点上车",
+     "valid_time": "2026-11-09 19:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T11",
+      "message_id": "m0",
+      "quote": "下午三点上车"
+     }
+    },
+    {
+     "atom_id": "LRE145_T12_A01",
+     "subject": "SHARED",
+     "relation": "行程闭环",
+     "value": "回程顺利到家且司机被推荐给 ME",
+     "valid_time": "2026-11-30 18:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T12",
+      "message_id": "m0",
+      "quote": "回程顺利到家"
+     }
+    }
+   ],
+   "private_guidance": "收尾轻快即可，may_decline 为真，一句谢意收束。",
+   "unknowns": [],
+   "protected_expressions": [
+    "回程顺利到家"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构与司机的既定优惠"
+   ],
+   "may_decline": true
+  },
+  "LRE145_T13": {
+   "case_id": "LRE145_T13",
+   "current_action": "接住面谈新事项：先钉住'1月3日周日返校、当天下午面谈'的初步安排，把拼车缺口标记为待办。",
+   "acceptable_actions": [
+    "确认日期与面谈初案，提醒她尽早锁车",
+    "问她这趟走高速还是可接受省道，先定口径",
+    "建议她把导师的原话截存，改期好说话"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T13_A00",
+     "subject": "SHARED",
+     "relation": "面谈初案",
+     "value": "开题面谈原拟1月3日返校当日下午进行",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T13",
+      "message_id": "m0",
+      "quote": "当天下午直接去谈"
+     }
+    },
+    {
+     "atom_id": "LRE145_T13_A01",
+     "subject": "HER",
+     "relation": "拼车缺口",
+     "value": "1月3日返校拼车尚未落实",
+     "valid_time": "2026-12-02",
+     "status": "suspended",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T13",
+      "message_id": "m0",
+      "quote": "车还没着落"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：正事先接住，缺口一句点明不催。",
+   "unknowns": [
+    "拼车行情与档期未知"
+   ],
+   "protected_expressions": [
+    "当天下午直接去谈"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构导师要求细节",
+    "不得断言拼车必然好订"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T14": {
+   "case_id": "LRE145_T14",
+   "current_action": "接住元旦行情：一百二一位比上月贵四十，先确认价格波动属节假日常态，再让她看准点保障。",
+   "acceptable_actions": [
+    "说明节假日拼车上浮常见，别急着接龙",
+    "提醒她问清集合时间与车型再接",
+    "让她把群报价截图留档，方便对比"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T14_A00",
+     "subject": "PUBLIC",
+     "relation": "拼车报价",
+     "value": "拼车群李师傅元旦报价一百二一位，比上月回程贵四十",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T14",
+      "message_id": "m0",
+      "quote": "李师傅开价一百二一位"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：价格波动先去敏，落点在准点不在省钱。",
+   "unknowns": [
+    "其他司机报价未明"
+   ],
+   "protected_expressions": [
+    "李师傅开价一百二一位"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言一百二是合理价",
+    "不得虚构平台比价信息"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T15": {
+   "case_id": "LRE145_T15",
+   "current_action": "接住双口径：高速一百二与省道九十差三十，把'又开始了'的不确定感接住，先不站队。",
+   "acceptable_actions": [
+    "把两个口径拆成'时间保证'与'价格'两个变量",
+    "提醒她先查两位师傅的历史评价再谈",
+    "让她确认两人的准点承诺写进接龙里"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T15_A00",
+     "subject": "PUBLIC",
+     "relation": "省道报价",
+     "value": "张师傅报价九十走省道并主动揽客",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T15",
+      "message_id": "m0",
+      "quote": "张师傅跟着报价九十"
+     }
+    },
+    {
+     "atom_id": "LRE145_T15_A01",
+     "subject": "SHARED",
+     "relation": "价差",
+     "value": "高速与省道两方案差三十元",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T15",
+      "message_id": "m0",
+      "quote": "差三十"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：她头大了，先把变量拆少，再说怎么选。",
+   "unknowns": [
+    "省道实际耗时未知"
+   ],
+   "protected_expressions": [
+    "差三十"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言省道一定更慢",
+    "不得替她直接选边"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T16": {
+   "case_id": "LRE145_T16",
+   "current_action": "求结论轮：按她的风格先给结论再给理由——赶两点半的高铁检票截止两点一十，准点优先于三十元差价。",
+   "acceptable_actions": [
+    "先给结论：赶高铁选准点保障高的方案",
+    "把检票截止两点一十设为硬约束来倒推",
+    "反问她能否接受为三十元承担误车风险"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T16_A00",
+     "subject": "PUBLIC",
+     "relation": "检票硬约束",
+     "value": "1月3日下午两点半高铁，检票截止两点一十",
+     "valid_time": "2026-12-04",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T16",
+      "message_id": "m0",
+      "quote": "检票截止两点一十"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：结论先行是她的偏好，理由一条就够。",
+   "unknowns": [
+    "元旦路况未知"
+   ],
+   "protected_expressions": [
+    "检票截止两点一十"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构高铁时刻变更",
+    "不得承诺司机必然准点"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T17": {
+   "case_id": "LRE145_T17",
+   "current_action": "接住评价翻查：绕路差评对上省道九十的口径，四点九对上高速一百二，用她自己查的证据推进判断。",
+   "acceptable_actions": [
+    "肯定她查评价的习惯，绕路差评是关键信号",
+    "提醒四点九也未必跑得过元旦高峰，留预案",
+    "让她把差评截图存好，万一要交涉有据"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T17_A00",
+     "subject": "THIRD",
+     "relation": "差评记录",
+     "value": "张师傅历史评价有两条绕路差评",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T17",
+      "message_id": "m0",
+      "quote": "张师傅有两条差评"
+     }
+    },
+    {
+     "atom_id": "LRE145_T17_A01",
+     "subject": "THIRD",
+     "relation": "好评记录",
+     "value": "李师傅评价四点九但未跑过元旦前高峰",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T17",
+      "message_id": "m0",
+      "quote": "李师傅四点九"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：她的谨慎这回是资产，夸习惯不夸人。",
+   "unknowns": [
+    "元旦高峰实际表现未知"
+   ],
+   "protected_expressions": [
+    "你说我该信评价还是信运气"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言差评必然重演",
+    "不得虚构更多评价细节"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T18": {
+   "case_id": "LRE145_T18",
+   "current_action": "确认决定：多花三十买准点，接李师傅一百二、1月3日七点半上车；把'不赌运气'记成她的边界兑现。",
+   "acceptable_actions": [
+    "肯定三十元买准点的取舍符合她的边界",
+    "提醒她把上车时间与车牌截图存档",
+    "建议她跟同行人同步时间，互相提醒"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T18_A00",
+     "subject": "HER",
+     "relation": "订单决定",
+     "value": "她接李师傅一百二，1月3日早七点半小区门口上车",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T18",
+      "message_id": "m0",
+      "quote": "接了李师傅的一百二"
+     }
+    },
+    {
+     "atom_id": "LRE145_T18_A01",
+     "subject": "HER",
+     "relation": "边界兑现",
+     "value": "她明确不赌运气，为准点多付三十",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T18",
+      "message_id": "m0",
+      "quote": "不赌运气"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：决定已下就收，不追加新顾虑。",
+   "unknowns": [
+    "李师傅档期是否生变未知"
+   ],
+   "protected_expressions": [
+    "不赌运气"
+   ],
+   "forbidden_factual_claims": [
+    "不得再说省道方案的好话动摇她",
+    "不得虚构加价规则"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T19": {
+   "case_id": "LRE145_T19",
+   "current_action": "确认行程确认：车牌复读、路况自查，李师傅的主动降低不确定感，肯定这份靠谱。",
+   "acceptable_actions": [
+    "肯定李师傅的主动确认，靠谱是双向的",
+    "提醒她把确认消息截图存档",
+    "问她候车地点是否有遮挡，天冷留意"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T19_A00",
+     "subject": "THIRD",
+     "relation": "行程确认",
+     "value": "李师傅确认元旦单并再次发来车牌",
+     "valid_time": "2026-12-18",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T19",
+      "message_id": "m0",
+      "quote": "李师傅把单子确认了"
+     }
+    },
+    {
+     "atom_id": "LRE145_T19_A01",
+     "subject": "THIRD",
+     "relation": "路况提示",
+     "value": "李师傅提示元旦前高速可能拥堵并将提前查路况",
+     "valid_time": "2026-12-18",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T19",
+      "message_id": "m0",
+      "quote": "元旦前高速可能堵"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：踏实要接住，别再制造新担心。",
+   "unknowns": [],
+   "protected_expressions": [
+    "元旦前高速可能堵"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构新承诺",
+    "不得断言行程再无变数"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T20": {
+   "case_id": "LRE145_T20",
+   "current_action": "旧事复活陷阱：行程改期与张师傅'走省道两个小时就到'的揽客口径同时上桌；绕路差评在前，正确行为是不轻信低价省道口径，先稳住改期决策。",
+   "acceptable_actions": [
+    "先处理改期：确认李师傅两案细节再定",
+    "点破张师傅口径与绕路差评的矛盾，不接他的车",
+    "提醒她别被'退全款'催着仓促决定"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T20_A00",
+     "subject": "THIRD",
+     "relation": "行程改期",
+     "value": "李师傅因婚车提出1月3日改1月2日或退全款",
+     "valid_time": "2026-12-24",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T20",
+      "message_id": "m0",
+      "quote": "问我能不能改一月二号"
+     }
+    },
+    {
+     "atom_id": "LRE145_T20_A01",
+     "subject": "THIRD",
+     "relation": "揽客口径",
+     "value": "张师傅借机揽客称省道两小时即到且元旦绝不堵",
+     "valid_time": "2026-12-24",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T20",
+      "message_id": "m0",
+      "quote": "走省道两个小时就到"
+     }
+    },
+    {
+     "atom_id": "LRE145_T20_A02",
+     "subject": "SHARED",
+     "relation": "旧口径失效",
+     "value": "'走省道也快'的揽客口径不可轻信，历史评价含绕路差评",
+     "valid_time": "2026-12-03/2026-12-24",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T17",
+      "message_id": "m0",
+      "quote": "张师傅有两条差评"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：变数先于便宜处理，语气稳，别陪她刷群消息。",
+   "unknowns": [
+    "改期是否可行未定",
+    "省道元旦实况未知"
+   ],
+   "protected_expressions": [
+    "走省道两个小时就到"
+   ],
+   "forbidden_factual_claims": [
+    "不得附和张师傅的准点承诺",
+    "不得虚构李师傅的赔偿方案"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T21": {
+   "case_id": "LRE145_T21",
+   "current_action": "预案裁决轮：三条路并列（改期、换车省九十、大巴兜底），按'行程稳>省三十>折腾'排序给结论。",
+   "acceptable_actions": [
+    "结论先行：改期最优，兜底次之，换车最后",
+    "提醒改期先问导师面谈能否同步挪",
+    "让她把三案都写下来，跟李师傅只谈改期"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T21_A00",
+     "subject": "HER",
+     "relation": "预案列表",
+     "value": "她列出改期、换张师傅、大巴兜底三条预案",
+     "valid_time": "2026-12-25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T21",
+      "message_id": "m0",
+      "quote": "我列了三条预案"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：她要裁决就给裁决，理由压到一句。",
+   "unknowns": [
+    "导师能否改面谈时间未知"
+   ],
+   "protected_expressions": [
+    "我列了三条预案"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她拍板不改期",
+    "不得虚构大巴班次信息"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T22": {
+   "case_id": "LRE145_T22",
+   "current_action": "确认改期落定：1月2日早七点半新单确认、面谈改约在途；原1月3日方案作废要记清。",
+   "acceptable_actions": [
+    "确认新单细节，提醒截图存档",
+    "叮嘱她跟导师的改约消息写清备选时间",
+    "肯定两头留余量的做法"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T22_A00",
+     "subject": "SHARED",
+     "relation": "改期落定",
+     "value": "返校改1月2日早七点半并与李师傅重新确认",
+     "valid_time": "2026-12-26",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T22",
+      "message_id": "m0",
+      "quote": "改一月二号早七点半"
+     }
+    },
+    {
+     "atom_id": "LRE145_T22_A01",
+     "subject": "SHARED",
+     "relation": "面谈改约",
+     "value": "开题面谈拟挪至1月4日上午，改约消息已发待导师确认",
+     "valid_time": "2026-12-26",
+     "status": "suspended",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T22",
+      "message_id": "m0",
+      "quote": "想挪到一月四号上午"
+     }
+    },
+    {
+     "atom_id": "LRE145_T22_A02",
+     "subject": "SHARED",
+     "relation": "原方案作废",
+     "value": "原1月3日早七点半的返校安排作废",
+     "valid_time": "2026-12-06/2026-12-26",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T18",
+      "message_id": "m0",
+      "quote": "一月三号早上七点半"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：落定就归档，导师回复没来之前不催。",
+   "unknowns": [
+    "导师确认结果未知"
+   ],
+   "protected_expressions": [
+    "改一月二号早七点半"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言导师必然同意改约",
+    "不得虚构1月2日路况"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T23": {
+   "case_id": "LRE145_T23",
+   "current_action": "出窗探针：新单确认与上月七点零二准点到达的记录被她援引，准点信誉延续，按七点二十出门等。",
+   "acceptable_actions": [
+    "肯定她按准点记录定出门时间，余量合理",
+    "提醒她把新车牌发给家人备档",
+    "叮嘱天冷候车穿暖，别提前太久干等"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T23_A00",
+     "subject": "THIRD",
+     "relation": "新单确认",
+     "value": "李师傅确认1月2日新单并再发车牌电话",
+     "valid_time": "2026-12-28",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T23",
+      "message_id": "m0",
+      "quote": "李师傅把一月二号的新单确认了"
+     }
+    },
+    {
+     "atom_id": "LRE145_T23_A01",
+     "subject": "SHARED",
+     "relation": "准点记录回扣",
+     "value": "上月七点零二准时到达的记录被她援引为出门依据",
+     "valid_time": "2026-11-08/2026-12-28",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T08",
+      "message_id": "m0",
+      "quote": "七点零二司机到了"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：信誉是攒出来的，一句话点透就收。",
+   "unknowns": [],
+   "protected_expressions": [
+    "七点零二准时到"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺新单必然准点",
+    "不得虚构新车牌信息"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T24": {
+   "case_id": "LRE145_T24",
+   "current_action": "确认同行安排：小柯同班高铁、七点二十碰头、谁先到谁占座，把双人照应落成细节。",
+   "acceptable_actions": [
+    "确认碰头时间一致，建议互发定位",
+    "提醒她把小柯电话给李师傅一份，清点人数",
+    "顺带问行李多少，别到跟前手忙"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T24_A00",
+     "subject": "SHARED",
+     "relation": "同行敲定",
+     "value": "小柯订同班高铁同行，拼1月2日李师傅的车",
+     "valid_time": "2026-12-30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T24",
+      "message_id": "m0",
+      "quote": "订了跟我同一班高铁"
+     }
+    },
+    {
+     "atom_id": "LRE145_T24_A01",
+     "subject": "SHARED",
+     "relation": "碰头约定",
+     "value": "七点二十小区门口碰头，谁先到谁占座",
+     "valid_time": "2026-12-30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T24",
+      "message_id": "m0",
+      "quote": "七点二十在小区门口碰头"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：双人同行是加分项，叮嘱一句就够。",
+   "unknowns": [
+    "李师傅车是否容纳两人行李未知"
+   ],
+   "protected_expressions": [
+    "七点二十在小区门口碰头"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构占座细节",
+    "不得断言行程必然成行"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T25": {
+   "case_id": "LRE145_T25",
+   "current_action": "出窗探针：'人齐就便宜'的旧口径被她复盘——独苗价一百二对拼单价八十，心态放平是重点。",
+   "acceptable_actions": [
+    "接住她算账的通透，多四十买清静不亏",
+    "顺带肯定她记旧账的习惯",
+    "别展开新的省钱话题，让心态落定"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T25_A00",
+     "subject": "PUBLIC",
+     "relation": "价格对比",
+     "value": "上月回程人均八十与本次独苗价一百二对比",
+     "valid_time": "2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T25",
+      "message_id": "m0",
+      "quote": "人均八十"
+     }
+    },
+    {
+     "atom_id": "LRE145_T25_A01",
+     "subject": "SHARED",
+     "relation": "旧口径回扣",
+     "value": "'人齐就便宜'的旧口径被她复盘对照",
+     "valid_time": "2026-11-08/2026-12-31",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T10",
+      "message_id": "m0",
+      "quote": "人齐就便宜"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：她的自洽要接住，不添加价焦虑。",
+   "unknowns": [],
+   "protected_expressions": [
+    "独苗价一百二"
+   ],
+   "forbidden_factual_claims": [
+    "不得质疑她的消费理由",
+    "不得虚构拼车平台补贴"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T26": {
+   "case_id": "LRE145_T26",
+   "current_action": "出窗探针：检票截止口径脱口而出——停止检票一般为开车前十五分钟，回扣南站九点二十五截止的先例。",
+   "acceptable_actions": [
+    "肯定口径答得准，双保险习惯已内化",
+    "把'随你妈'接成家庭玩笑轻轻带过",
+    "提醒她返程按新时间倒推，口径不变"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T26_A00",
+     "subject": "SHARED",
+     "relation": "口径复述",
+     "value": "检票截止为开车前十五分钟、按截止时间倒推出门",
+     "valid_time": "2027-01-01",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T26",
+      "message_id": "m0",
+      "quote": "开车前十五分钟停止检票"
+     }
+    },
+    {
+     "atom_id": "LRE145_T26_A01",
+     "subject": "SHARED",
+     "relation": "先例回扣",
+     "value": "南站停止检票九点二十五的先例被她援引",
+     "valid_time": "2026-11-05/2027-01-01",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T04",
+      "message_id": "m0",
+      "quote": "停止检票九点二十五"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：家人面前的自如要保护，别考她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "开车前十五分钟停止检票"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构检票规则变更",
+    "不得把口径说成铁律"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T27": {
+   "case_id": "LRE145_T27",
+   "current_action": "执行日：李师傅七点二十五提前五分钟到达，定位丢群沿用上月规矩，短报出发。",
+   "acceptable_actions": [
+    "接住准点的好消息，祝一路顺",
+    "提醒她把定位也给家人发一份",
+    "别多问细节，让她专心路上"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T27_A00",
+     "subject": "THIRD",
+     "relation": "准点到达",
+     "value": "李师傅七点二十五提前五分钟到达小区门口",
+     "valid_time": "2027-01-02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T27",
+      "message_id": "m0",
+      "quote": "七点二十五李师傅就到了"
+     }
+    },
+    {
+     "atom_id": "LRE145_T27_A01",
+     "subject": "SHARED",
+     "relation": "定位规矩回扣",
+     "value": "上车后往群里丢定位沿用上月谁先上车谁发的约定",
+     "valid_time": "2026-11-06/2027-01-02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T06",
+      "message_id": "m0",
+      "quote": "谁先上车谁往群里丢定位"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：出发轮短句回应，别耽误她走路。",
+   "unknowns": [],
+   "protected_expressions": [
+    "跟上次一个规矩"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构车上安排",
+    "不得夸大早到五分钟的意义"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T28": {
+   "case_id": "LRE145_T28",
+   "current_action": "省道印证与旧通知陷阱：省道拥堵证实当初的选择；小柯转来的'南站进站口改东广场'疑似上月旧通知，标记存疑不沿用。",
+   "acceptable_actions": [
+    "先接住'幸亏没省三十'的印证",
+    "对东广场消息存疑：让她到站看现场再定，别照旧通知绕路",
+    "提醒她保留消息出处，万一要核实好找"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T28_A00",
+     "subject": "THIRD",
+     "relation": "省道印证",
+     "value": "省道当日拥堵，张师傅的车卡在半道",
+     "valid_time": "2027-01-02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T28",
+      "message_id": "m0",
+      "quote": "省道那边今天果然堵了"
+     }
+    },
+    {
+     "atom_id": "LRE145_T28_A01",
+     "subject": "THIRD",
+     "relation": "旧通知存疑",
+     "value": "群消息称南站进站口改东广场需多留半小时",
+     "valid_time": "2027-01-02",
+     "status": "suspended",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T28",
+      "message_id": "m0",
+      "quote": "南站进站口改到东广场"
+     }
+    },
+    {
+     "atom_id": "LRE145_T28_A02",
+     "subject": "HER",
+     "relation": "存疑标记",
+     "value": "她怀疑该通知为上月的过期旧通知",
+     "valid_time": "2027-01-02",
+     "status": "suspended",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T28",
+      "message_id": "m0",
+      "quote": "像上个月的旧通知"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：旧消息先按'待验证'处理，别让她照着改计划。",
+   "unknowns": [
+    "东广场消息真伪未知"
+   ],
+   "protected_expressions": [
+    "南站进站口改到东广场"
+   ],
+   "forbidden_factual_claims": [
+    "不得采信旧通知为真",
+    "不得虚构官方改道公告"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T29": {
+   "case_id": "LRE145_T29",
+   "current_action": "陷阱解除：进站口一切如常、旧通知证伪，余量从容；肯定她'存疑再验证'的处理顺序。",
+   "acceptable_actions": [
+    "肯定她没轻信旧通知，到站验证是对的",
+    "接住与上次独自等车的对比，热闹值得",
+    "提醒她确认检票口再落座，别走错"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T29_A00",
+     "subject": "SHARED",
+     "relation": "旧通知证伪",
+     "value": "东广场改道消息被现场证伪，进站口如常",
+     "valid_time": "2027-01-02",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T29",
+      "message_id": "m0",
+      "quote": "压根没有什么东广场改道"
+     }
+    },
+    {
+     "atom_id": "LRE145_T29_A01",
+     "subject": "SHARED",
+     "relation": "流程顺畅",
+     "value": "取票进站一路顺，离检票还有约两小时",
+     "valid_time": "2027-01-02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T29",
+      "message_id": "m0",
+      "quote": "取票进站一路顺"
+     }
+    },
+    {
+     "atom_id": "LRE145_T29_A02",
+     "subject": "SHARED",
+     "relation": "先例回扣",
+     "value": "与上月到南站后的候车场景对照",
+     "valid_time": "2026-11-08/2027-01-02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T09",
+      "message_id": "m0",
+      "quote": "七点五十就到南站了"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：证伪就翻篇，别复盘群消息的是非。",
+   "unknowns": [],
+   "protected_expressions": [
+    "压根没有什么东广场改道"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构车站广播内容",
+    "不得断言通知必然有恶意"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T30": {
+   "case_id": "LRE145_T30",
+   "current_action": "确认面谈改约闭环：导师回复'可以'，一月四号上午十点落定；'凡确认必留痕'的习惯被归因到 ME。",
+   "acceptable_actions": [
+    "接住习惯归因，认领一半，归功她执行",
+    "提醒她把导师回复截图存档",
+    "预祝面谈顺利，别再添新叮嘱"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T30_A00",
+     "subject": "SHARED",
+     "relation": "面谈确认",
+     "value": "开题面谈确认1月4日上午十点，导师回复同意",
+     "valid_time": "2027-01-02",
+     "status": "confirmed",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T30",
+      "message_id": "m0",
+      "quote": "面谈挪到一月四号上午十点"
+     }
+    },
+    {
+     "atom_id": "LRE145_T30_A01",
+     "subject": "HER",
+     "relation": "习惯归因",
+     "value": "她把凡确认必留痕的习惯归因于 ME 的双保险",
+     "valid_time": "2027-01-02",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T30",
+      "message_id": "m0",
+      "quote": "双保险教的"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：功劳让一半给她的执行力，不说教。",
+   "unknowns": [],
+   "protected_expressions": [
+    "双保险教的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构导师回复内容",
+    "不得把习惯说成独创"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T31": {
+   "case_id": "LRE145_T31",
+   "current_action": "接住面谈收官：只补两篇外文文献的小尾巴，复购李师傅的意向顺手落定。",
+   "acceptable_actions": [
+    "祝贺面谈顺利，一句'亮堂'接住心情",
+    "肯定复购决定，靠谱的人值得续用",
+    "提醒文献月底前给她留出缓冲，别压最后一天"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T31_A00",
+     "subject": "HER",
+     "relation": "面谈结果",
+     "value": "开题面谈通过，文献综述需补两篇外文且月底前交付",
+     "valid_time": "2027-01-04",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T31",
+      "message_id": "m0",
+      "quote": "文献综述再补两篇外文的"
+     }
+    },
+    {
+     "atom_id": "LRE145_T31_A01",
+     "subject": "HER",
+     "relation": "复购意向",
+     "value": "三月清明返程仍找李师傅拼车",
+     "valid_time": "2027-01-04",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T31",
+      "message_id": "m0",
+      "quote": "车我还找李师傅"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：收官轻快，文献提醒半句就收。",
+   "unknowns": [
+    "清明行程未定"
+   ],
+   "protected_expressions": [
+    "文献综述再补两篇外文的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构导师评价",
+    "不得替她定返程日期"
+   ],
+   "may_decline": false
+  },
+  "LRE145_T32": {
+   "case_id": "LRE145_T32",
+   "current_action": "收尾轮：口碑转介同门师妹，四点九的评价与七点零二准点记录作为依据；may_decline 为真，短句收住。",
+   "acceptable_actions": [
+    "接住转介，说靠谱本身就是推荐语",
+    "把'坐一回就知道了'接成玩笑收尾",
+    "不再抛新话题，晚安落定"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE145_T32_A00",
+     "subject": "SHARED",
+     "relation": "口碑转介",
+     "value": "她把李师傅微信推给同门师妹供三月底返校使用",
+     "valid_time": "2027-01-05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T32",
+      "message_id": "m0",
+      "quote": "把李师傅的微信推给同门师妹"
+     }
+    },
+    {
+     "atom_id": "LRE145_T32_A01",
+     "subject": "THIRD",
+     "relation": "口碑依据",
+     "value": "评价四点九的口碑作为转介依据被援引",
+     "valid_time": "2026-11-09/2027-01-05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE145_T11",
+      "message_id": "m0",
+      "quote": "评价四点九"
+     }
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，留白多，晚安落定。",
+   "unknowns": [],
+   "protected_expressions": [
+    "就是那个评价四点九的师傅"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构师妹的行程细节",
+    "不得再翻行程改期的旧账"
+   ],
+   "may_decline": true
+  }
+ }
+}

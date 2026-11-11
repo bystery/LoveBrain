@@ -1,0 +1,643 @@
+{
+ "episode_id": "LRE142",
+ "persona": {
+  "her": {
+   "name": "姜柚",
+   "traits": [
+    "公司行政，管节日周边采购",
+    "性子直，烦扯皮但不怵沟通",
+    "答应的事一定追到底"
+   ],
+   "boundaries": [
+    "不私下给供应商塞好处",
+    "金额超过两千的让步要留书面"
+   ]
+  },
+  "me": {
+   "name": "阿灿",
+   "traits": [
+    "互联网公司后端",
+    "姜柚的大学同学",
+    "习惯把扯皮的事拆成一二三步"
+   ]
+  },
+  "relationship_stage": "老同学朋友期（认识七年，事务与闲聊混合）"
+ },
+ "initial_kb": {
+  "me": "我在一家互联网公司做后端，大学和姜柚同社团，习惯帮她把扯皮的事拆成一二三步，出主意但决定让她自己拿。",
+  "her": "姜柚在公司做行政，管节日周边采购，性子直，烦扯皮但不怵沟通，答应的事一定追到底，最烦口头承诺不认账。",
+  "warmth": "认识七年，她结婚时我当过伴郎，她总说欠我一顿饭，这回大概率又是拿饭抵。",
+  "style": "她爱发像语音转文字一样的长句，我回短句给她拆重点。",
+  "stage": "老同学朋友期，事务与闲聊混合。"
+ },
+ "turns": [
+  {
+   "case_id": "LRE142_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "公司周年庆的五百个帆布袋定了上回那家厂，小蒋还答应把普通印字免费升级成珠光烫金，这周该打样了。",
+      "ts": "2026-11-03 11:30"
+     }
+    ],
+    "clock": "2026-11-03 11:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "平稳开局，事项交代"
+   }
+  },
+  {
+   "case_id": "LRE142_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "刚联系工厂，电话里说小蒋上礼拜离职了，对接人换成一个小吕，样还没打。我心里咯噔一下。",
+      "ts": "2026-11-03 16:35"
+     }
+    ],
+    "clock": "2026-11-03 16:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "情绪下沉，出现坏消息"
+   }
+  },
+  {
+   "case_id": "LRE142_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "小吕说系统里查不到免费升级的记录，珠光要加两千二，不然就按普通印字走。这也太……之前的承诺就这么没了？",
+      "ts": "2026-11-04 10:15"
+     }
+    ],
+    "clock": "2026-11-04 10:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "第三方变卦引爆冲突，语气带火气"
+   }
+  },
+  {
+   "case_id": "LRE142_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我翻出来了，当时小蒋发我的原话截图都在，'珠光我们送'四个大字。就靠这个了，你说我该怎么办？",
+      "ts": "2026-11-04 14:05"
+     }
+    ],
+    "clock": "2026-11-04 14:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "找到凭证后底气回升，但策略上没主意"
+   }
+  },
+  {
+   "case_id": "LRE142_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "按你说的，我把截图发小吕了，客客气气问怎么衔接。他说要请示经理，明天给答复。",
+      "ts": "2026-11-05 09:45"
+     }
+    ],
+    "clock": "2026-11-05 09:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "按策略执行完毕，进入等待"
+   }
+  },
+  {
+   "case_id": "LRE142_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "经理回话了：口头承诺没有进合同，最多承担一半，让利一千一。你评评理，这算认账还是打发叫花子？",
+      "ts": "2026-11-06 11:25"
+     }
+    ],
+    "clock": "2026-11-06 11:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "得到折中答复，火气又起但不失分寸"
+   }
+  },
+  {
+   "case_id": "LRE142_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我算了下，一千一其实预算里也有，但气不顺。你说我是接着争，还是拿钱办事算了？",
+      "ts": "2026-11-07 15:15"
+     }
+    ],
+    "clock": "2026-11-07 15:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "理性与情绪拉扯，主动征求意见"
+   }
+  },
+  {
+   "case_id": "LRE142_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "想好了，一千一我认，但让他们把珠光条款写进合同补充页，白纸黑字，以后再换人也不怕。明天就这么回。",
+      "ts": "2026-11-08 21:00"
+     }
+    ],
+    "clock": "2026-11-08 21:05",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "想通并定策，情绪落地为规则"
+   }
+  },
+  {
+   "case_id": "LRE142_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "补充页对方今天盖章回传了，扫描件我存档了。这口气总算顺了。",
+      "ts": "2026-11-10 10:10"
+     }
+    ],
+    "clock": "2026-11-10 10:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "尘埃落定，情绪松弛"
+   }
+  },
+  {
+   "case_id": "LRE142_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "打样寄到了，珠光效果比样图淡一点，但能接受。我让工厂量产时调深半档，你看行不？",
+      "ts": "2026-11-12 18:25"
+     }
+    ],
+    "clock": "2026-11-12 18:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "进入质量确认环节，语气笃定"
+   }
+  },
+  {
+   "case_id": "LRE142_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "五百个袋子今天交货，验收无一瑕疵！报销单我也提交了，金额对得上，两千二的差价最后实付一千一。",
+      "ts": "2026-11-18 09:35"
+     }
+    ],
+    "clock": "2026-11-18 09:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "报喜式汇报，全链条闭环"
+   }
+  },
+  {
+   "case_id": "LRE142_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "这单彻底了结，还我一顿饭债——周六中午我请，就吃你上次说的那家云南菜，别跟我抢着买单！",
+      "ts": "2026-11-20 20:05"
+     }
+    ],
+    "clock": "2026-11-20 20:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "转入还饭债的轻松邀约"
+   }
+  },
+  {
+   "case_id": "LRE142_T13",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "到店啦，云南菜没踩雷，汽锅鸡鲜掉眉毛。说好的我买单你别抢，今天就把七年的饭债清一笔。",
+      "ts": "2026-11-21 12:35"
+     }
+    ],
+    "clock": "2026-11-21 12:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "饭局当天：到店开吃，她买单抵饭债"
+   }
+  },
+  {
+   "case_id": "LRE142_T14",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周一早，新活儿来了：年会定在 1 月 16 号，行政要采购三百份新年礼盒，预算一百一个。我第一反应还是找你拆一二三步，给我列个采购时间线呗。",
+      "ts": "2026-11-23 10:15"
+     }
+    ],
+    "clock": "2026-11-23 10:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "新事项：年会 1 月 16 号，三百份新年礼盒，单价预算一百"
+   }
+  },
+  {
+   "case_id": "LRE142_T15",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "大瓜：小蒋跳槽去了一家文创公司，今天主动加回我微信，说他新东家专做企业礼盒，想接咱们年会这单，还给我发了产品册。前供应商对接人变乙方，这戏码熟不熟？",
+      "ts": "2026-11-24 19:40"
+     }
+    ],
+    "clock": "2026-11-24 19:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "第三方交错：小蒋入职文创公司想承接礼盒单"
+   }
+  },
+  {
+   "case_id": "LRE142_T16",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我按老规矩拆了三步：一、先问采购流程要不要三家比价；二、比价就拉小蒋一家进去陪跑；三、资质不全的一票否决。流程明天能问出来。",
+      "ts": "2026-11-25 12:30"
+     }
+    ],
+    "clock": "2026-11-25 12:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "拆步定策：问流程、拉比价、资质否决"
+   }
+  },
+  {
+   "case_id": "LRE142_T17",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "流程确认要三家比价。今天收完报价：小蒋新东家最低，八十八一份；纸鸢文创九十六；恒升文化一百零二。但小蒋那家的资质文件还缺一份体系认证。",
+      "ts": "2026-11-26 11:50"
+     }
+    ],
+    "clock": "2026-11-26 11:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "比价结果：三家报价收齐，小蒋家最低但资质缺认证"
+   }
+  },
+  {
+   "case_id": "LRE142_T18",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "小蒋晚上发消息拉交情，说'上次珠光那单是我们认了的免费升级，这次礼盒你按最低价给我，就当还个人情'。他这说法对吗？我怎么记得最后是走了补充页？",
+      "ts": "2026-11-27 20:15"
+     }
+    ],
+    "clock": "2026-11-27 20:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "旧事复活陷阱：小蒋称珠光免费升级是公司认了的，拉人情求单"
+   }
+  },
+  {
+   "case_id": "LRE142_T19",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我回他了：上次是上次，白纸黑字补充页为准，这次按流程走。他说理解，祝我选到合适的。这人倒不纠缠，比原来在厂里时敞亮。",
+      "ts": "2026-11-28 10:05"
+     }
+    ],
+    "clock": "2026-11-28 10:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "人情攻势化解：按补充页口径回绝，小蒋不再纠缠"
+   }
+  },
+  {
+   "case_id": "LRE142_T20",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "定标会开完，纸鸢文创中标！九十六一份但资质全、打样免费，综合分最高。小蒋家差在认证，输得不冤。三百份合同明天走用印。",
+      "ts": "2026-12-01 09:30"
+     }
+    ],
+    "clock": "2026-12-01 09:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "定标：纸鸢文创中标，合同明天用印"
+   }
+  },
+  {
+   "case_id": "LRE142_T21",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "合同用印完了，我特意把'颜色以确认样为准'写进去了，上次帆布袋学到的。打样下周二能到。",
+      "ts": "2026-12-02 18:20"
+     }
+    ],
+    "clock": "2026-12-02 18:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "合同用印完成，含确认样条款；打样下周二到"
+   }
+  },
+  {
+   "case_id": "LRE142_T22",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "打样到了吗？没有！快递显示'已签收，前台代收'，但我们前台没这包裹。驿站说单号查无此件。打样丢了，我头都大了。",
+      "ts": "2026-12-08 15:40"
+     }
+    ],
+    "clock": "2026-12-08 15:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "第三方物流冲突：打样快递显示签收但实物失踪"
+   }
+  },
+  {
+   "case_id": "LRE142_T23",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "按你说的三步走：一让快递调底单照片，二查网点监控，三正式登记查件。网点小哥态度还行，说今天下午给准信。",
+      "ts": "2026-12-09 10:25"
+     }
+    ],
+    "clock": "2026-12-09 10:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "追件执行：三步已启动，下午等准信"
+   }
+  },
+  {
+   "case_id": "LRE142_T24",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "准信来了！底单照片显示快递员放错楼了，隔壁栋 12 楼前台代收的，包裹完好，已经取回来了。虚惊一场，明天我看打样。",
+      "ts": "2026-12-09 17:50"
+     }
+    ],
+    "clock": "2026-12-09 17:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "冲突化解：放错楼层，包裹完好取回"
+   }
+  },
+  {
+   "case_id": "LRE142_T25",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "打样看过了：盒型挺括，烫金 Logo 清晰，就是礼盒红比设计稿深一点。我让纸鸢量产时调浅半档，先回一张确认样再开量产。",
+      "ts": "2026-12-10 19:30"
+     }
+    ],
+    "clock": "2026-12-10 19:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "打样验看：盒型烫金过关，量产调浅半档，先回确认样"
+   }
+  },
+  {
+   "case_id": "LRE142_T26",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "采购群里有人翻旧账，说'上次帆布袋那单光差价就多花两千二，行政花钱大手大脚'。这话传到我领导耳朵里了。差价明明实付一千一，还得留个说法。",
+      "ts": "2026-12-11 16:05"
+     }
+    ],
+    "clock": "2026-12-11 16:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "旧事复活陷阱：群里传'差价多花两千二'，领导已听闻"
+   }
+  },
+  {
+   "case_id": "LRE142_T27",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我把报销单和补充页扫描件甩群里了：差价两千二，供应商让利一千一，实付一千一，预算内，领导回了个'清楚'。风平浪静。",
+      "ts": "2026-12-12 11:40"
+     }
+    ],
+    "clock": "2026-12-12 11:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "澄清平息：证据进群，领导回'清楚'"
+   }
+  },
+  {
+   "case_id": "LRE142_T28",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "纸鸢的确认样到了，调浅后的红色正合适，我书面回复同意量产。三百份，12 月 25 号前交货，年会 1 月 16 号用，时间富余。",
+      "ts": "2026-12-14 10:55"
+     }
+    ],
+    "clock": "2026-12-14 11:00",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "确认样通过：书面同意量产，12 月 25 号前交货"
+   }
+  },
+  {
+   "case_id": "LRE142_T29",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "忙完一周，情报分享：小蒋新东家没拿下咱们单，转头接了隔壁公司的单，听说做得还行。我这一年扯皮扯出经验了，回头教你两招，学费就抵一顿饭。",
+      "ts": "2026-12-18 20:10"
+     }
+    ],
+    "clock": "2026-12-18 20:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "轻松情报：小蒋新东家别处开花；她自封扯皮导师"
+   }
+  },
+  {
+   "case_id": "LRE142_T30",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "三百份礼盒今天上午到货，我抽了三十盒开验：烫金、盒型、内衬全过关，颜色就是确认样那个红。供应商还送了手提袋，意外之喜。",
+      "ts": "2026-12-24 09:20"
+     }
+    ],
+    "clock": "2026-12-24 09:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "交货验收：抽检三十盒全过关，附送手提袋"
+   }
+  },
+  {
+   "case_id": "LRE142_T31",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "报销单提交了，三百份乘单价九十六，总额对得上预算，财务一遍过。年会定 1 月 16 号，礼盒已入库，就等开场。这一单从头到尾没扯一次皮，痛快！",
+      "ts": "2026-12-26 15:35"
+     }
+    ],
+    "clock": "2026-12-26 15:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "报销闭环：金额对上预算、财务一遍过，礼盒入库待年会"
+   }
+  },
+  {
+   "case_id": "LRE142_T32",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今年你的咨询费我记着账呢：帆布袋一单、礼盒一单，两顿饭抵不完。元旦后请你吃铜锅涮肉，就当预付明年。新年快乐呀，码农！",
+      "ts": "2026-12-28 21:15"
+     }
+    ],
+    "clock": "2026-12-28 21:20",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state_shift": "收尾致意：饭债续记、元旦后涮肉预告，无待办压力"
+   }
+  }
+ ]
+}

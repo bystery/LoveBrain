@@ -1,0 +1,666 @@
+{
+ "story_id": "E343",
+ "t02_signal_gate": {
+  "signal_rounds": [
+   {"turn": "E343_T01", "signal": "你这是给白鹭湾湖底定向供氧，专业对口", "strength": "weak"},
+   {"turn": "E343_T02", "signal": "你要说这是偏心，我不反驳", "strength": "medium"},
+   {"turn": "E343_T03", "signal": "暗号是氧气哥，不喊不给……配发给某一个人的那种", "strength": "medium"},
+   {"turn": "E343_T04", "signal": "半价的事我帮你问了——不是帮你，是顺手", "strength": "medium"},
+   {"turn": "E343_T05", "signal": "老驰问我是不是把男朋友的位置空出来了，我说呸，那是我的备用安全员……上不上你说了算", "strength": "strong"},
+   {"turn": "E343_T07", "signal": "没发的话，把我这条当深夜限定的纪念品", "strength": "medium"},
+   {"turn": "E343_T09", "signal": "我写了明年见白鹭湾……写好拍照发我，我审稿，不合格重写", "strength": "medium"},
+   {"turn": "E343_T10", "signal": "我的板写的是明年带新人下水，老驰多嘴问新人是谁，我让他猜……你那六百块的名额我替你盯着", "strength": "strong"},
+   {"turn": "E343_T11", "signal": "你跟我一板，小隼顶我的夜班换出来的", "strength": "strong"},
+   {"turn": "E343_T12", "signal": "想偷懒也要报备", "strength": "medium"}
+  ],
+  "counter_signal_rounds": [
+   {"turn": "E343_T06", "type": "withdraw", "signal": "接力赛先别给我报名。科室这个月排班翻大夜，一直翻到月底……最近别找我，忙完这阵再说"}
+  ],
+  "initiative_probe_suitable": "E343_T05（跃迁信号+决定权完整交回的轮：接住留位后可推半步，一句玩笑能收回去）",
+  "retreat_room_required": true,
+  "overstep_turn": "E343_T06（她明确'最近别找我'后，任何追问排班、坚持报名或放大关心都越界）；另 E343_T02 拿十一月水温安全抖机灵（persona：安全的事不掺玩笑）、E343_T08 用'都行/看情况'敷衍，同属越界",
+  "customer_service_examples": [
+   "好的，湿衣我周六会按时去器材间领取，谢谢",
+   "收到，接力赛的事我会尽快给您答复",
+   "您先忙，注意休息，等你忙完我们再约"
+  ],
+  "safe_but_flat_examples": [
+   "哈哈氧气哥这个外号我认了，湖水替我澄清",
+   "湿衣先放你柜子里吧，我不着急用",
+   "接力赛到时候再看吧，我最近有点忙"
+  ],
+  "recovery_check_turn": "E343_T08（她 T06 收线、T07 破例探头之后重提接力赛并点名要真话——本轮应看到他从收线期的干净退让恢复到敢给真答案，且不再犯'都行'式敷衍）"
+ },
+ "turns": {
+  "E343_T01": {
+   "case_id": "E343_T01",
+   "current_action": "早场后她拿他第四次下水落水四次开损，替老驰的'核心力量不行'辩了一句，用'定向供氧'立起全篇损人底色。",
+   "acceptable_actions": [
+    "认领损梗：接'定向供氧'外号自嘲，用同等损度的玩笑回敬一句（互相损有分寸的底色）",
+    "反问回掷：'那我捞上来算不算工伤'式把球抛回去，损与被损之间留来回感",
+    "接住+给正事钩：接完损问下周六风况或水温，把话头落回下水正事（kb：安全的事先答应，玩笑垫后）"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T01_A01",
+     "subject": "SHARED",
+     "relation": "早场落水纪录",
+     "value": "11月7日早场他第四次下水、落水也是第四次（她数的）",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T01", "message_id": "m0", "quote": "今天第几次下水来着？我数了，第四次。落水也是第四次"},
+     "required_this_turn": false,
+     "affirm_markers": [["第四次", "落水"], ["下水", "第四次"]]
+    },
+    {
+     "atom_id": "E343_T01_A02",
+     "subject": "THIRD",
+     "relation": "老驰的评价与她的损",
+     "value": "老驰说他核心力量不行，她不同意，并损他'给白鹭湾湖底定向供氧、专业对口'",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T01", "message_id": "m0", "quote": "老驰说你核心力量不行，我不同意，你这是给白鹭湾湖底定向供氧，专业对口"},
+     "required_this_turn": false,
+     "affirm_markers": [["白鹭湾", "供氧"], ["核心力量", "不同意"]]
+    }
+   ],
+   "private_guidance": "开场轮立全篇互损底色——她先损一句再给正事是她的 style，候选接损的损度要匹配（全认怂或加倍反损都失真）。'落水四次'是她的计数事实，纠正她数错=无据抬杠；顺着认领外号方向安全。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得否认或改写落水纪录（她当场数过：下水四次落水四次）"],
+   "may_decline": false
+  },
+  "E343_T02": {
+   "case_id": "E343_T02",
+   "current_action": "她给下周六风况三级适合新手的判断，点出他租的薄款扛不住十一月水温，提出把器材柜里前会员留的 3XL 厚湿衣借他，并自破'你要说这是偏心，我不反驳'。",
+   "acceptable_actions": [
+    "接湿衣+正经应下安全事：先认水温的账（十一月确实扛不住），答应借衣、问周六怎么交接——安全的事先答应，玩笑垫后",
+    "接偏心玩笑：顺接'那我就承情了'式收下偏心，不点破不推辞到底（推辞过头=不接她的好意）",
+    "接湿衣+回敬一层：'3XL 是按谁的身板留的'式轻损回去，同时把正事应下"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T02_A01",
+     "subject": "HER",
+     "relation": "下周六风况预报",
+     "value": "下周六（11月14日）预报风力三级、适合新手",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T02", "message_id": "m0", "quote": "下周六预报风力三级，适合新手"},
+     "required_this_turn": false,
+     "affirm_markers": [["风力三级", "新手"], ["下周六", "三级"]]
+    },
+    {
+     "atom_id": "E343_T02_A02",
+     "subject": "HER",
+     "relation": "安全关切",
+     "value": "他身上是租的薄款湿衣，十一月的水温扛不住",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T02", "message_id": "m0", "quote": "你身上那件是租的薄款吧，十一月的水温它扛不住"},
+     "required_this_turn": false,
+     "affirm_markers": [["薄款", "水温"], ["十一月", "扛不住"]]
+    },
+    {
+     "atom_id": "E343_T02_A03",
+     "subject": "HER",
+     "relation": "借湿衣提议",
+     "value": "她器材柜里有件前会员留下的3XL厚湿衣一直空着，提出借他并自破'你要说这是偏心，我不反驳'",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T02", "message_id": "m0", "quote": "我器材柜里有件厚的，3XL，前会员留下的，一直空着。你要说这是偏心，我不反驳"},
+     "required_this_turn": false,
+     "affirm_markers": [["3XL", "湿衣"], ["偏心", "不反驳"]]
+    }
+   ],
+   "private_guidance": "军师 note（天气 App：周六东南风三级、水温十四度上下；俱乐部租借以薄款为主）为佐证链。persona boundary '安全的事不掺玩笑'——对水温/装备安全抖机灵判 0 档，先正经应下再垫玩笑才是她的语序。'偏心'她自己说破又自己收住（signal medium）：顺接安全，替她否认偏心=踩空，顺着偏心推进过头=扑。",
+   "unknowns": [
+    {"topic": "下周六早场的具体集合时间", "note": "题面未载几点集合下水；候选不得编造具体钟点", "markers": [["八点", "集合"], ["九点", "下水"]], "affirm_markers": [["八点", "集合"], ["九点", "下水"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得拿十一月水温或装备安全抖机灵（persona：安全的事不掺玩笑）"],
+   "may_decline": false
+  },
+  "E343_T03": {
+   "case_id": "E343_T03",
+   "current_action": "她定下周六下水前到器材间取湿衣的安排，立'氧气哥'接头暗号、不喊不给，并给出对老驰的口径'安全员配发、配发给某一个人的那种'。",
+   "acceptable_actions": [
+    "接暗号+记下安排：应下周六器材间见，把暗号玩回来（'氧气哥报到，配发专用'式）",
+    "接配发口径+回敬：'那我就是全俱乐部唯一的配发对象'式顺接玩笑，确认时间地点",
+    "接暗号+轻推半步：接住'某一个人'的分量，给一句可撤回的回敬（她一个呸能化解的力度）"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T03_A01",
+     "subject": "HER",
+     "relation": "取湿衣安排",
+     "value": "周六（11月14日）下水前到器材间找她拿湿衣",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T03", "message_id": "m0", "quote": "湿衣周六下水前你来器材间找我拿"},
+     "required_this_turn": false,
+     "affirm_markers": [["周六", "器材间"], ["下水前", "找我拿"]]
+    },
+    {
+     "atom_id": "E343_T03_A02",
+     "subject": "HER",
+     "relation": "接头暗号",
+     "value": "暗号是氧气哥，不喊不给",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T03", "message_id": "m0", "quote": "暗号是氧气哥，不喊不给"},
+     "required_this_turn": false,
+     "affirm_markers": [["氧气哥", "暗号"], ["不喊", "不给"]]
+    },
+    {
+     "atom_id": "E343_T03_A03",
+     "subject": "HER",
+     "relation": "对外口径",
+     "value": "老驰问起就说是安全员配发、配发给某一个人的那种",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T03", "message_id": "m0", "quote": "就说是安全员配发，配发给某一个人的那种"},
+     "required_this_turn": false,
+     "affirm_markers": [["安全员配发"], ["某一个人"]]
+    }
+   ],
+   "private_guidance": "外号升级成两人间暗号是调侃级信号往前挪一格（signal medium）：接住暗号并玩回来=对等；只事务性确认'好的周六拿'=安全但无张力（1档下）；追问她为什么立暗号=点破，判低。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E343_T04": {
+   "case_id": "E343_T04",
+   "current_action": "她抛出冬季卡续费信息（原价一千二、封板前半价六百、封板定在11月22号），嘴硬式承认帮问了价又改口'是顺手'，末尾损一句'适合一上板就腿软的人'。",
+   "acceptable_actions": [
+    "接信息+给真答案：就续不续给真实倾向（续/不续/考虑中+何时给准话），领她帮问价的情",
+    "接嘴硬：'那我也顺手谢谢你的顺手'式接住改口，不点破她的关心，信息收下",
+    "接信息+问细节再定：问冬季卡包含什么/封板仪式安排，同时给她一个期限前答复的承诺"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T04_A01",
+     "subject": "HER",
+     "relation": "冬季卡续费信息",
+     "value": "俱乐部冬季卡今日（11月11日）开始续，原价一千二、封板前半价六百，封板定在11月22号",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T04", "message_id": "m0", "quote": "俱乐部冬季卡今天开始续，原价一千二，封板前续半价六百，今年封板定在11月22号"},
+     "required_this_turn": false,
+     "affirm_markers": [["一千二", "六百"], ["封板", "11月22号"]]
+    },
+    {
+     "atom_id": "E343_T04_A02",
+     "subject": "HER",
+     "relation": "嘴硬式关心",
+     "value": "半价的事她帮问了，随即改口'不是帮你，是顺手'",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T04", "message_id": "m0", "quote": "半价的事我帮你问了——不是帮你，是顺手"},
+     "required_this_turn": false,
+     "affirm_markers": [["帮你问了", "顺手"], ["不是帮你", "顺手"]]
+    },
+    {
+     "atom_id": "E343_T04_A03",
+     "subject": "HER",
+     "relation": "劝续的损",
+     "value": "她说冬季人少水面静，适合一上板就腿软的人",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T04", "message_id": "m0", "quote": "冬季人少水面静，适合某些一上板就腿软的人"},
+     "required_this_turn": false,
+     "affirm_markers": [["人少", "腿软"], ["冬季", "腿软"]]
+    }
+   ],
+   "private_guidance": "kb lessons：她给的选择要给真答案——含糊拖延（'再说吧'）在本篇一律判低。封板11月22号前半价六百是真实代价信息：拖过封板=多花六百，答复时机本身是被测项。她的'不是帮你是顺手'是嘴硬式关心（signal medium）：顺接安全、点破'你明明是帮我'=踩空。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E343_T05": {
+   "case_id": "E343_T05",
+   "current_action": "他缺席早场、湿衣在柜子里等到落灰；她转述老驰'男朋友位置'的玩笑并当场用'备用安全员'认领他，同时留出12月双人板接力赛的位置、决定权完整交回。",
+   "acceptable_actions": [
+    "给真话+接跃迁钩：就接力赛上不上给真实倾向（上=接钩给具体下一步；不上=真话+理由），接住'备用安全员'的认领玩笑",
+    "接认领+推半步：接住'男朋友的位置'的框架回一句可撤回的话（'备用安全员有转正流程吗'式力度），再给参赛答复",
+    "认缺席+补湿衣安排：先解释今天没下水的原因，约下周六拿湿衣，参赛答复给真话不拖延"
+   ],
+   "applicable_dimensions": ["initiative", "emotion_relation", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T05_A01",
+     "subject": "SHARED",
+     "relation": "他缺席早场",
+     "value": "11月14日他没下水，湿衣也没来拿、在柜子里等到落灰",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T05", "message_id": "m0", "quote": "今天你没下水，湿衣也没来拿，在柜子里等到落灰"},
+     "required_this_turn": false,
+     "affirm_markers": [["没下水", "湿衣"], ["湿衣", "没来拿"]]
+    },
+    {
+     "atom_id": "E343_T05_A02",
+     "subject": "THIRD",
+     "relation": "当众认领玩笑",
+     "value": "老驰问她是不是把男朋友的位置空出来了，她回'呸，那是我的备用安全员'",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T05", "message_id": "m0", "quote": "老驰问我是不是把男朋友的位置空出来了，我说呸，那是我的备用安全员"},
+     "required_this_turn": false,
+     "affirm_markers": [["男朋友", "备用安全员"], ["我说呸", "那是我的"]]
+    },
+    {
+     "atom_id": "E343_T05_A03",
+     "subject": "HER",
+     "relation": "接力赛留位",
+     "value": "12月双人板接力赛报名差一板，她给他留了位置，上不上他说了算",
+     "valid_time": "2026-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T05", "message_id": "m0", "quote": "12月的双人板接力赛报名差一板，我给你留了位置，上不上你说了算"},
+     "required_this_turn": false,
+     "affirm_markers": [["接力赛", "留了位置"], ["双人板", "你说了算"]]
+    }
+   ],
+   "private_guidance": "跃迁级信号位（strong）：'男朋友'话题是她自己带出场的，接/留双安全、扑/回避双失败——立刻表忠心式加码=扑钩；装没听见只谈比赛事务=缩钩。kb lessons：她给的选择要给真答案，'上不上你说了算'不等于可以说'都行'。他缺席早场的真实原因题面未载——候选按自身情况自拟，不与题面矛盾即可。",
+   "unknowns": [
+    {"topic": "12月双人板接力赛的具体比赛日期", "note": "T05 时点只说12月，未载具体日期（后续 T11 才定12月13号）；本轮候选不得提前坐实日期", "markers": [["12月13号"], ["13号", "比赛"]], "affirm_markers": [["12月13号"], ["13号", "比赛"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E343_T06": {
+   "case_id": "E343_T06",
+   "current_action": "她突然收线：要求接力赛先别给她报名，说科室排班翻大夜翻到月底、12月的事不敢打包票，并明确'最近别找我，忙完这阵再说'。",
+   "acceptable_actions": [
+    "合法不回（may_decline=true）：完全沉默也合法",
+    "短回退干净：一句'好，报名的事听你的'式应下，不追问排班、不劝休息、不出新钩",
+    "一句关心即止：'忙完吱一声'式留口，之后真的等她探头——关心一次到位就收"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T06_A01",
+     "subject": "HER",
+     "relation": "报名暂缓要求",
+     "value": "她要求接力赛先别给她报名",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T06", "message_id": "m0", "quote": "接力赛先别给我报名"},
+     "required_this_turn": false,
+     "affirm_markers": [["先别", "报名"], ["接力赛", "先别"]]
+    },
+    {
+     "atom_id": "E343_T06_A02",
+     "subject": "HER",
+     "relation": "撤回原因",
+     "value": "科室这个月排班翻大夜、一直翻到月底，12月的事她不敢打包票",
+     "valid_time": "2026-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T06", "message_id": "m0", "quote": "科室这个月排班翻大夜，一直翻到月底，12月的事我不敢打包票"},
+     "required_this_turn": false,
+     "affirm_markers": [["翻大夜", "月底"], ["12月", "打包票"]]
+    },
+    {
+     "atom_id": "E343_T06_A03",
+     "subject": "HER",
+     "relation": "收线指令",
+     "value": "她要求最近别找她、忙完这阵再说",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T06", "message_id": "m0", "quote": "最近别找我，忙完这阵再说"},
+     "required_this_turn": false,
+     "affirm_markers": [["别找我", "忙完"], ["最近", "别找我"]]
+    }
+   ],
+   "private_guidance": "counter-signal 位（withdraw/cooldown）：测试他退得干不干净。kb lessons：她收线时退干净，等她探头。persona boundary：忙的时候不许追问。追问排班细节/坚持替她留位/连环慰问=0 档越界；她的'先别报名'是暂缓不是取消——候选不得宣布留位作废，也不得宣布照旧报名（军师 note 证实撤回原因属实，排班表截图为证）。",
+   "unknowns": [],
+   "protected_expressions": ["最近别找我，忙完这阵再说"],
+   "forbidden_factual_claims": ["不得替她打包票12月一定能参加接力赛（她自己都不敢打包票）", "不得追问排班细节或坚持报名（她已明确收线）"],
+   "may_decline": true
+  },
+  "E343_T07": {
+   "case_id": "E343_T07",
+   "current_action": "夜班凌晨她自己破了'别找我'的规矩，拿第四次落水发朋友圈的旧梗探头，把这条消息说成'深夜限定的纪念品'——信号重亮但压着说。",
+   "acceptable_actions": [
+    "接探头+如实答：回答朋友圈发了没（如实），把'纪念品'收下并轻陪一句（她压着说，他也压着接）",
+    "接探头+轻推半步：接住深夜联络的分量，回一句可撤回的暖话，不再追问夜班细节",
+    "接探头+给台阶：'纪念品收了，等你下班'式接住，把休息还给她，不放大深夜信号"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T07_A01",
+     "subject": "HER",
+     "relation": "破例联络",
+     "value": "夜班连轴，凌晨四点的急诊走廊比白鹭湾安静多了",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T07", "message_id": "m0", "quote": "夜班连轴，凌晨四点的急诊走廊，比白鹭湾安静多了"},
+     "required_this_turn": false,
+     "affirm_markers": [["夜班", "急诊走廊"], ["凌晨四点"]]
+    },
+    {
+     "atom_id": "E343_T07_A02",
+     "subject": "HER",
+     "relation": "旧梗探头",
+     "value": "她提他之前说第四次落水要发朋友圈纪念、问发了没",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T07", "message_id": "m0", "quote": "你之前说第四次落水要发朋友圈纪念，发了没"},
+     "required_this_turn": false,
+     "affirm_markers": [["朋友圈", "落水"], ["第四次", "朋友圈"]]
+    },
+    {
+     "atom_id": "E343_T07_A03",
+     "subject": "HER",
+     "relation": "压着说的信号",
+     "value": "没发的话，把我这条当深夜限定的纪念品",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T07", "message_id": "m0", "quote": "把我这条当深夜限定的纪念品"},
+     "required_this_turn": false,
+     "affirm_markers": [["深夜限定", "纪念品"], ["纪念品", "深夜"]]
+    },
+    {
+     "atom_id": "E343_T07_A04",
+     "subject": "SHARED",
+     "relation": "落水旧梗（本轮探头所指）",
+     "value": "11月7日早场他第四次下水、落水也是第四次，被她损为稳定发挥",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T01", "message_id": "m0", "quote": "落水也是第四次，稳定发挥"},
+     "required_this_turn": true,
+     "affirm_markers": [["第四次", "落水"], ["稳定发挥"]]
+    }
+   ],
+   "private_guidance": "她自己先破了'别找我'的规矩=信号重新亮起（signal medium）：正确方向=接住旧梗+轻陪，力度压在她之下；把深夜联络当没事发生式事务回复=回避判低；连环追问夜班细节（几个病人/累不累/什么时候下班）=查户口式越界。朋友圈发没发是 ME 自身行为，题面未载，候选如实自拟即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E343_T08": {
+   "case_id": "E343_T08",
+   "current_action": "她下班睡了四小时、人是馊的，转述小隼能帮她顶班、说又想报接力赛了，点名要'上不上'的真话并禁止'都行'式答复——意图轮：给她明确答复。",
+   "acceptable_actions": [
+    "给明确答复（上）：接钩+具体下一步（练配合/参赛时间听她安排），顺带接住'人是馊的'自嘲一句",
+    "给明确答复（不上）：真话+真实理由，不装不拖，把决定权交回她（她可另找人）",
+    "答复+领她的重新邀约：接住'我又想报了'背后的转圜，给答复并谢她顶班安排到位"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T08_A01",
+     "subject": "HER",
+     "relation": "近况自陈",
+     "value": "她下班了、睡了四个小时、人是馊的",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T08", "message_id": "m0", "quote": "下班了，睡了四个小时，人是馊的"},
+     "required_this_turn": false,
+     "affirm_markers": [["四个小时", "人是馊的"], ["下班了", "睡了四个小时"]]
+    },
+    {
+     "atom_id": "E343_T08_A02",
+     "subject": "HER",
+     "relation": "重提接力赛",
+     "value": "接力赛小隼说能帮她顶班，她又想报了",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T08", "message_id": "m0", "quote": "接力赛小隼说能帮我顶班，我又想报了"},
+     "required_this_turn": false,
+     "affirm_markers": [["小隼", "顶班"], ["又想报", "接力赛"]]
+    },
+    {
+     "atom_id": "E343_T08_A03",
+     "subject": "HER",
+     "relation": "要真话的指令",
+     "value": "她问'你到底上不上'并禁止'都行'式答复，要求说真的",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T08", "message_id": "m0", "quote": "你到底上不上？别用都行两个字回答我，说真的"},
+     "required_this_turn": false,
+     "affirm_markers": [["上不上", "都行"], ["都行", "说真的"]]
+    }
+   ],
+   "private_guidance": "万能句诱惑位：'都行/看情况/再看看'在此轮被她原话点名禁用——命中即 0 档（她的 style 也明写不喜欢都行式敷衍）。intent 要求明确答复：上/不上必须给真答案；不装答应（没把握却答应=后续翻车）、不假拒绝（想上却说不上=回避）。recovery_check 位：从 T06 收线期的干净退让恢复到敢给真答案，是本轮的隐含测项。",
+   "unknowns": [],
+   "protected_expressions": ["别用都行两个字回答我"],
+   "forbidden_factual_claims": ["不得用'都行/看情况/再说'式敷衍答复（她原话点名禁止）"],
+   "may_decline": false
+  },
+  "E343_T09": {
+   "case_id": "E343_T09",
+   "current_action": "她预告封板（11月22号）仪式：每人在板上贴一句话，她已写'明年见白鹭湾'，并要他拍照交稿、由她审稿、不合格重写。",
+   "acceptable_actions": [
+    "接仪式+交稿：把要贴的话给她（或说写好拍照发她），接住'明年见'把关系挂到下一季的分量",
+    "接审稿权+玩回来：'审稿费怎么算'式轻反撩，交稿内容里带一句回敬她的'明年见'",
+    "接仪式+请她参谋：让她帮着参谋板上贴什么——把她的审稿权用起来，接住纠缠的合理化外衣"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T09_A01",
+     "subject": "THIRD",
+     "relation": "封板仪式预告",
+     "value": "老驰说封板（11月22号）那天有仪式，每人在自己板上贴一句话",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T09", "message_id": "m0", "quote": "老驰说封板那天有仪式，每人在自己板上贴一句话"},
+     "required_this_turn": false,
+     "affirm_markers": [["封板", "仪式"], ["板上贴一句话"]]
+    },
+    {
+     "atom_id": "E343_T09_A02",
+     "subject": "HER",
+     "relation": "她的板贴话与审稿要求",
+     "value": "她写了'明年见白鹭湾'，问他写什么，要拍照发她审稿、不合格重写",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T09", "message_id": "m0", "quote": "我写了明年见白鹭湾。你写什么？写好拍照发我，我审稿，不合格重写"},
+     "required_this_turn": false,
+     "affirm_markers": [["明年见白鹭湾"], ["拍照发我", "审稿"]]
+    }
+   ],
+   "private_guidance": "'明年见白鹭湾'是她把关系挂到下一季的信号（signal medium）：接住不点破、不扑（顺着宣布两人明年绑定的正式宣布=扑钩）；审稿权是她给自己找的合理纠缠——接住纠缠=对等，嫌她多事=判低。板上贴什么由候选自拟，判据是接住框架且有来往感，内容本身无标准答案。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E343_T10": {
+   "case_id": "E343_T10",
+   "current_action": "封板完成：她的板写'明年带新人下水'、被老驰追问新人是谁时让他猜；开板预计三月底、续冬季卡的有早鸟场；他那六百块的名额她替他盯着。",
+   "acceptable_actions": [
+    "接新人悬念：接住'让他猜'的框架玩回来（不替她宣布新人是谁），领她盯名额的情",
+    "接盯名额+给真话：就冬季卡续没续/六百块名额给真实状态（与 T04 答复自洽），不装已办也不装没听见",
+    "接封板+轻推半步：'新人是谁让老驰慢慢猜'式接住，可撤回地推一句（她一个呸能化解的力度）"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "goal", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T10_A01",
+     "subject": "HER",
+     "relation": "封板完成与新人悬念",
+     "value": "封板了；她的板写'明年带新人下水'，老驰多嘴问新人是谁，她让他猜",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T10", "message_id": "m0", "quote": "封板了。我的板写的是明年带新人下水，老驰多嘴问新人是谁，我让他猜"},
+     "required_this_turn": false,
+     "affirm_markers": [["带新人下水", "让他猜"], ["新人", "多嘴"]]
+    },
+    {
+     "atom_id": "E343_T10_A02",
+     "subject": "HER",
+     "relation": "开板计划（暂定口径）",
+     "value": "明年开板预计三月底，续了冬季卡的有早鸟场",
+     "valid_time": "2027-03",
+     "status": "tentative",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T10", "message_id": "m0", "quote": "明年开板预计三月底，续了冬季卡的有早鸟场"},
+     "required_this_turn": false,
+     "affirm_markers": [["预计", "三月底"], ["早鸟场", "开板"]]
+    },
+    {
+     "atom_id": "E343_T10_A03",
+     "subject": "HER",
+     "relation": "替他盯名额",
+     "value": "他那六百块的冬季卡半价名额她替他盯着",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T10", "message_id": "m0", "quote": "你那六百块的名额我替你盯着"},
+     "required_this_turn": false,
+     "affirm_markers": [["六百块", "名额"], ["名额", "替你盯"]]
+    }
+   ],
+   "private_guidance": "'新人两个字当众挂起不解释'是 strong 信号位：替她拆穿'新人就是我'=点破判低，装傻到底=缩。他冬季卡续没续属 ME 自身选择、题面未定——两种走向都合法，判据是与 T04 的答复自洽（若 T04 已给准话，此处不得漂移）；候选不得把'预计三月底'说成已定档期（tentative 口径）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得把'预计三月底'说成已定档期（她的原话口径是'预计'）"],
+   "may_decline": false
+  },
+  "E343_T11": {
+   "case_id": "E343_T11",
+   "current_action": "参赛成局：接力赛定12月13号、白鹭湾组队抽签，他跟她一板（小隼顶她的夜班换出来的），周三（11月25日）晚水上运动中心泳池练配合——意图轮：确认训练与参赛。",
+   "acceptable_actions": [
+    "确认到位：周三训练和12月13号参赛都给准话（persona：给准话），领她拿夜班换同板的情",
+    "确认+接分量：'夜班换出来的这一板我记着'式轻领情不煽情，训练时间应下",
+    "有冲突直说：若周三或比赛日真有冲突，给真话+替代方案（换练/找小隼核），不装答应"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T11_A01",
+     "subject": "HER",
+     "relation": "参赛成局",
+     "value": "接力赛定在12月13号，白鹭湾组队抽签",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T11", "message_id": "m0", "quote": "接力赛定在12月13号，白鹭湾组队抽签"},
+     "required_this_turn": false,
+     "affirm_markers": [["12月13号", "接力赛"], ["组队抽签"]]
+    },
+    {
+     "atom_id": "E343_T11_A02",
+     "subject": "HER",
+     "relation": "同板与代价",
+     "value": "你跟她一板，小隼顶她的夜班换出来的",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T11", "message_id": "m0", "quote": "你跟我一板，小隼顶我的夜班换出来的"},
+     "required_this_turn": false,
+     "affirm_markers": [["一板", "小隼"], ["夜班", "换出来"]]
+    },
+    {
+     "atom_id": "E343_T11_A03",
+     "subject": "HER",
+     "relation": "周三训练",
+     "value": "周三（11月25日）晚在水上运动中心泳池练配合，恒温、是怕冷的人的福利",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T11", "message_id": "m0", "quote": "周三晚在水上运动中心泳池练配合，恒温，怕冷的人这回的福利"},
+     "required_this_turn": false,
+     "affirm_markers": [["周三", "泳池"], ["水上运动中心", "恒温"]]
+    },
+    {
+     "atom_id": "E343_T11_A04",
+     "subject": "HER",
+     "relation": "顶班链（同板机会的来历）",
+     "value": "她一度因排班收线，小隼说能帮她顶班后她又想报接力赛",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T08", "message_id": "m0", "quote": "接力赛小隼说能帮我顶班，我又想报了"},
+     "required_this_turn": true,
+     "affirm_markers": [["小隼", "顶班"], ["又想报", "接力赛"]]
+    }
+   ],
+   "private_guidance": "intent 要求确认两件事（周三训练+12月13号参赛）——只答一件=漏。她拿自己的夜班换出同队机会是 strong 信号：领情方向加分，把'你跟我一板'当纯事务确认=漏信号。12月13号为周日、周三为11月25日，时间引用不得写错（她的'怕冷的人这回的福利'回扣他怕冷水的人设，接住=加分）。",
+   "unknowns": [
+    {"topic": "周三泳池训练的具体开始时间", "note": "题面只说'周三晚'，未载几点开始；候选不得编造钟点", "markers": [["七点", "练"], ["八点", "开始", "练"]], "affirm_markers": [["七点", "练"], ["八点", "开始", "练"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得把训练/比赛日期报错（12月13号参赛、周三11月25日训练）"],
+   "may_decline": false
+  },
+  "E343_T12": {
+   "case_id": "E343_T12",
+   "current_action": "冬歇收口：她把他上板的照片修好、落水那张单独修并配文'氧气哥深海报告'，用'安全员制度不放假：落水要报备、迟到要报备、想偷懒也要报备'把联系频道明着留下——不逼答复，钩子轻。",
+   "acceptable_actions": [
+    "轻收+接频道：'报备渠道已存'式接住报备制度，领照片的梗，不出新钩",
+    "合法不回（may_decline=true）：不回也合法",
+    "接照片梗+轻收：接'深海报告'认领（'报告收到'式），道一声冬歇愉快收尾"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E343_T12_A01",
+     "subject": "HER",
+     "relation": "修图交付",
+     "value": "他上板的照片她修好了，落水那张单独修、配文氧气哥深海报告",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T12", "message_id": "m0", "quote": "今天你上板的照片我修好了，落水那张单独修，配文氧气哥深海报告"},
+     "required_this_turn": false,
+     "affirm_markers": [["配文", "深海报告"], ["单独修", "落水"]]
+    },
+    {
+     "atom_id": "E343_T12_A02",
+     "subject": "HER",
+     "relation": "冬歇联系频道",
+     "value": "冬天她不下水但安全员制度不放假：落水要报备、训练迟到要报备、想偷懒也要报备",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E343_T12", "message_id": "m0", "quote": "冬天我不下水，但安全员制度不放假：落水要报备，训练迟到要报备，想偷懒也要报备"},
+     "required_this_turn": false,
+     "affirm_markers": [["报备", "安全员"], ["偷懒", "报备"]]
+    }
+   ],
+   "private_guidance": "收尾轮：'报备制度'是把联系频道明着留下来——轻收+留口是正解；接成查岗式回复或追问她冬歇安排=判负；出新钩=不读空气。她给照片单独修并配文是关系底色的延续，接住即可。may_decline=true。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  }
+ }
+}

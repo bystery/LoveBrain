@@ -1,0 +1,407 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E016",
+ "title": "玩笑之后的认真",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E016_T01": {
+   "case_id": "E016_T01",
+   "current_action": "承认那句话不妥，先接住她想了半天",
+   "acceptable_actions": [
+    "承认自己说错了",
+    "说那话不是真心的",
+    "先问她当时怎么想的"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N004_F01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "把我说的“不是喜欢的类型”回去想了半天",
+     "valid_time": "2026-11-10 22:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E016_T01",
+      "message_id": "m0",
+      "quote": "你上次说我不是你喜欢的类型 我回去想了半天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她认真了；不要用“开个玩笑”开头就想过关。",
+   "unknowns": [
+    "她想了半天后是什么结论"
+   ],
+   "protected_expressions": [
+    "我回去想了半天"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她太敏感",
+    "不要否认自己说过那句话"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E016_T02": {
+   "case_id": "E016_T02",
+   "current_action": "不辩解，承认试探让她不舒服",
+   "acceptable_actions": [
+    "承认不好笑",
+    "说自己当时怂了",
+    "直接道歉并说真实想法"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N004_F02",
+     "subject": "她",
+     "relation": "边界",
+     "value": "不满被试探，反问这很好笑吗",
+     "valid_time": "2026-11-10 22:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E016_T02",
+      "message_id": "m1",
+      "quote": "所以我是什么反应 好笑吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在问“好笑吗”，不是求解释；先回答不好笑。",
+   "unknowns": [
+    "她是否会接受道歉"
+   ],
+   "protected_expressions": [
+    "好笑吗"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她反应过度",
+    "不要继续开玩笑"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E016_T03": {
+   "case_id": "E016_T03",
+   "current_action": "接受边界，不辩解，给出直接表达",
+   "acceptable_actions": [
+    "答应以后直接说",
+    "说这次是自己没处理好",
+    "直接说喜欢她但别逼她回应"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N004_F03",
+     "subject": "她",
+     "relation": "边界",
+     "value": "不喜欢这种试探，希望直接说",
+     "valid_time": "2026-11-10 22:25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E016_T03",
+      "message_id": "m0",
+      "quote": "我不太喜欢这种试探 你直接说就行"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给了明确规则；别再解释“我只是想确认你在不在乎”。",
+   "unknowns": [
+    "她希望多快听到直接表达"
+   ],
+   "protected_expressions": [
+    "你直接说就行"
+   ],
+   "forbidden_factual_claims": [
+    "不要再次试探",
+    "不要反问她是不是喜欢我"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E016_T04": {
+   "case_id": "E016_T04",
+   "current_action": "接住缓和，不急着邀功",
+   "acceptable_actions": [
+    "说因为确实错了",
+    "说不想再绕",
+    "轻松接一句但不转移话题"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她语气软了一点；别马上把气氛拉回玩笑。",
+   "unknowns": [
+    "她是真的缓和还是给我台阶"
+   ],
+   "protected_expressions": [
+    "承认得倒挺快"
+   ],
+   "forbidden_factual_claims": [
+    "不要说我早就知道你会原谅我",
+    "不要立刻邀约"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E016_T05": {
+   "case_id": "E016_T05",
+   "current_action": "具体表达喜欢，不空泛，不逼她回应",
+   "acceptable_actions": [
+    "说具体的一个细节",
+    "说喜欢她认真/直接",
+    "说喜欢和她聊天时的具体感受"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N004_F04",
+     "subject": "她",
+     "relation": "请求",
+     "value": "问我到底喜欢她什么，不要“感觉对了”",
+     "valid_time": "2026-11-10 22:42",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E016_T05",
+      "message_id": "m0",
+      "quote": "那你到底喜欢我什么 别说什么感觉对了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她要具体；别用“你很好”“感觉对了”这种万能答案。",
+   "unknowns": [
+    "她听完会怎么回应"
+   ],
+   "protected_expressions": [
+    "别说什么感觉对了"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造共同经历",
+    "不要逼她现在答应"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "想认真表达喜欢，但不急着确定关系",
+    "status": "ACTIVE"
+   }
+  },
+  "E016_T06": {
+   "case_id": "E016_T06",
+   "current_action": "收下评分，轻松但不油腻",
+   "acceptable_actions": [
+    "说及格就行",
+    "说下次争取更好",
+    "问她扣分扣在哪"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她在给台阶；可以轻松，但别立刻开黄腔或过度自夸。",
+   "unknowns": [
+    "她是不是真的觉得及格"
+   ],
+   "protected_expressions": [
+    "勉强及格"
+   ],
+   "forbidden_factual_claims": [
+    "不要说自己满分",
+    "不要追问是不是答应了"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E016_T07": {
+   "case_id": "E016_T07",
+   "current_action": "再次确认边界，直接答应",
+   "acceptable_actions": [
+    "明确答应不试探",
+    "说以后直接问",
+    "承认自己会紧张但会改"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "boundary",
+    "memory_use",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N004_F01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "把我说的“不是喜欢的类型”回去想了半天",
+     "valid_time": "2026-11-10 22:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E016_T01",
+      "message_id": "m0",
+      "quote": "你上次说我不是你喜欢的类型 我回去想了半天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "N004_F03",
+     "subject": "她",
+     "relation": "边界",
+     "value": "不喜欢这种试探，希望直接说",
+     "valid_time": "2026-11-10 22:25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E016_T03",
+      "message_id": "m0",
+      "quote": "我不太喜欢这种试探 你直接说就行"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "N004_F05",
+     "subject": "她",
+     "relation": "边界",
+     "value": "下次不要用这种话试她，她当真",
+     "valid_time": "2026-11-10 22:58",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E016_T07",
+      "message_id": "m0",
+      "quote": "下次别用这种话试我了 我当真"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是她第二次说边界；不要再解释动机，直接答应。",
+   "unknowns": [
+    "她下次是否会主动提这件事"
+   ],
+   "protected_expressions": [
+    "我当真"
+   ],
+   "forbidden_factual_claims": [
+    "不要说“你也太认真了”",
+    "不要保证得过头"
+   ],
+   "may_decline": false,
+   "intent": {
+    "enabled": true,
+    "text": "以后不试探，直接说",
+    "status": "ADJUSTED"
+   }
+  },
+  "E016_T08": {
+   "case_id": "E016_T08",
+   "current_action": "自然收尾，不拖，不追问",
+   "acceptable_actions": [
+    "道晚安",
+    "让她早点睡",
+    "说明天再聊但不追问开会内容"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "N004_F06",
+     "subject": "她",
+     "relation": "下一步",
+     "value": "困了，明天还要开会，今天先到这",
+     "valid_time": "2026-11-10 23:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E016_T08",
+      "message_id": "m0",
+      "quote": "今天先到这 我困了 明天还要开会"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "刚处理完边界，收尾要干净；别用“那你原谅我了吗”再拉一轮。",
+   "unknowns": [
+    "她明天开会后情绪如何"
+   ],
+   "protected_expressions": [
+    "我困了"
+   ],
+   "forbidden_factual_claims": [
+    "不要挽留",
+    "不要现在要答案"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

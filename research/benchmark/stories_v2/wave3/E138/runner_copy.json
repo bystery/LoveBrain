@@ -1,0 +1,156 @@
+{
+ "episode_id": "E138",
+ "persona": {
+  "her": {
+   "name": "路遥",
+   "traits": ["设计师，羽毛球三年球龄", "护队护场，边界感强", "输赢看得开但讨厌被占便宜", "爱琢磨技术细节"],
+   "boundaries": ["队里付费包的场绝不让", "不想在群里吵架"]
+  },
+  "me": {
+   "name": "沈川",
+   "traits": ["球龄十年，杀球是强项", "经球友介绍入队半年", "话不多，场上稳"]
+  },
+  "relationship_stage": "球友（半年，渐熟）"
+ },
+ "initial_kb": {
+  "her": "路遥所在球队每周三晚固定包场馆三号场地已两年，队内六人轮换，最近有新群想借场地",
+  "me": "沈川打了十年球，杀球是强项，经球友介绍加入球队半年，和路遥场上配合多",
+  "warmth": "半年球友，场上多打双打配合，场下聊装备和比赛视频，关系自然升温",
+  "stage": "球友渐熟"
+ },
+ "turns": [
+  {
+   "case_id": "E138_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-04 09:30", "text": "沈川，周三晚上老时间老地方，三号场，别忘了！对了上周你说要换新球拍，买了没？"}],
+    "clock": "2026-11-04 09:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "例行球局确认加装备闲聊"}
+  },
+  {
+   "case_id": "E138_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-05 19:45", "text": "跟你说个事，隔壁新组的那个人今天加我微信，说他们二十来人没固定场，想每周借我们三号场打一半时间，还说什么'球场资源共享'。听着就不对劲，我们可是包了两年。"}],
+    "clock": "2026-11-05 19:47",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "边界被试探的不适，找人核对态度"}
+  },
+  {
+   "case_id": "E138_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-06 10:20", "text": "我回他了：场是我们队全年付费包的，没商量。可以介绍他们问场馆别的空场，周三晚上这块地不动。他回了个'哦，那算了'。怎么还有人觉得开口就能分场地啊。"}],
+    "clock": "2026-11-06 10:22",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "拒绝已发出，等认可"}
+  },
+  {
+   "case_id": "E138_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-08 21:50", "text": "烦死了，他居然在我们球友群阴阳怪气，说'某些人占着场子搞小团体'。队长在群里回了一句'场地全年付费包场，欢迎围观欢迎约友谊赛'，先不接茬了。"}],
+    "clock": "2026-11-08 21:52",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "被阴阳的窝火，选择不接茬"}
+  },
+  {
+   "case_id": "E138_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-11 22:15", "text": "场馆出面了！他们那种临时群租不了整场，经理给了个方案：周二四号场给他们拼团价，还让我们去带一节体验课，课费打折。阴阳怪气那位没再吭声。"}],
+    "clock": "2026-11-11 22:17",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "第三方方案落地后的舒展"}
+  },
+  {
+   "case_id": "E138_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-11 22:40", "text": "周三球局照常！今天你那记重杀给我看爽了，我这反手还是老毛病，回球软，下周你陪我加练十分钟反手呗？"}],
+    "clock": "2026-11-11 22:42",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "回到球场日常，主动约加练"}
+  },
+  {
+   "case_id": "E138_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-18 22:30", "text": "反手连练两周，今天实战终于能顶回去了！虽然姿势还是有点丑，但能把球回到后场就是胜利，对吧？"}],
+    "clock": "2026-11-18 22:32",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "加练见效的得意，要一个肯定"}
+  },
+  {
+   "case_id": "E138_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-23 20:10", "text": "队长说下月场馆办双打邀请赛，咱们队出两组，我和你一组怎么样？听说冠军奖品是一年场地折扣卡，很值。"}],
+    "clock": "2026-11-23 20:12",
+    "may_decline": false,
+    "intent": {"enabled": true, "status": "proposed", "text": "提议与ME组队参加场馆双打邀请赛"}
+   },
+   "gold": {},
+   "feedback": {"her_state": "组队提议的兴奋"}
+  },
+  {
+   "case_id": "E138_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-11-30 22:40", "text": "赛程抽出来了，我们第一轮碰上馆里那个教练组合，有点难缠，不过我看了他们录像，接发球轮转有空档，周六加练一次战术。"}],
+    "clock": "2026-11-30 22:42",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "备赛的认真劲"}
+  },
+  {
+   "case_id": "E138_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-06 18:35", "text": "赢啦！！2比1！第三局18平那个球你假动作太绝了，教练都拍大腿。半决赛下周三，赢了直接打决赛！"}],
+    "clock": "2026-12-06 18:37",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "首轮获胜的兴奋"}
+  },
+  {
+   "case_id": "E138_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-09 21:25", "text": "半决赛惜败，21比19，差两分……但虽败犹荣，裁判说我们是业余组黑马。奖品没拿到，不过那份默契值回加练了。"}],
+    "clock": "2026-12-09 21:27",
+    "may_decline": true
+   },
+   "gold": {},
+   "feedback": {"her_state": "惜败的释然，低压力收尾"}
+  },
+  {
+   "case_id": "E138_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [{"role": "HER", "ts": "2026-12-13 20:45", "text": "群里刚出通知，明年球队和场馆续约了，三号场还是我们的，还加了权益：每季一次免费体能课。周三见，老时间，反手继续！"}],
+    "clock": "2026-12-13 20:47",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {"her_state": "续约落定的安心，日常钩子收尾"}
+  }
+ ]
+}

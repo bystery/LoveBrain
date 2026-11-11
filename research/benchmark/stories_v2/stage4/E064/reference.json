@@ -1,0 +1,914 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E064",
+ "title": "一只猫的医疗时间线",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E064_T01": {
+   "case_id": "E064_T01",
+   "current_action": "先给时间线事实（8个月=合适窗口）+把'吵翻的网文'按信源分级；医疗决定归医生",
+   "acceptable_actions": [
+    "说月龄合适+建议直接问医生",
+    "给信源分级+推医院咨询",
+    "说公猫此时段常规+让她挂号确认"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F01",
+     "subject": "团子",
+     "relation": "状态",
+     "value": "8个月大公猫，疫苗已打两针",
+     "valid_time": "2026-11-24 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T01",
+      "message_id": "m0",
+      "quote": "8 个月 疫苗打了两针"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S064_F02",
+     "subject": "她",
+     "relation": "计划",
+     "value": "想给团子安排绝育",
+     "valid_time": "2026-11-24 20:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T01",
+      "message_id": "m0",
+      "quote": "想给它把绝育安排了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "网文吵翻=她焦虑源；给确定性但不冒充兽医。",
+   "unknowns": [
+    "她选的医院"
+   ],
+   "protected_expressions": [
+    "吵翻了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说网上都是对的/都是错的",
+    "不要替医生拍板"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T02": {
+   "case_id": "E064_T02",
+   "current_action": "补充月龄/恢复常识并标注'我家经验'；建议她以医院评估为准",
+   "acceptable_actions": [
+    "说以医院术前检查为准",
+    "给她挂号建议+说检查完再定日子",
+    "转述经验+标注非医嘱"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F03",
+     "subject": "我",
+     "relation": "知识",
+     "value": "绝育一般避开发情期，公猫6月龄后可做",
+     "valid_time": "2026-11-24 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T02",
+      "message_id": "m0",
+      "quote": "公猫六个月以后就能做 避开发情期"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S064_F15",
+     "subject": "我",
+     "relation": "知识",
+     "value": "公猫绝育是体外小手术，恢复比母猫快",
+     "valid_time": "2026-11-24 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T02",
+      "message_id": "m0",
+      "quote": "公猫是体外小手术 恢复快"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知识轮：经验要标注来源。",
+   "unknowns": [
+    "医院排期"
+   ],
+   "protected_expressions": [
+    "放心一半"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定没事",
+    "不要说所有医院都一样"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T03": {
+   "case_id": "E064_T03",
+   "current_action": "接住禁食要求+给备品清单（航空箱/尿垫/圈）；不堆太多吓她",
+   "acceptable_actions": [
+    "列三样必备+让她看医院清单",
+    "复述禁食8小时+问手术日定没定",
+    "给航空箱建议+说其余医院会讲"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F04",
+     "subject": "医院",
+     "relation": "要求",
+     "value": "术前需禁食8小时",
+     "valid_time": "2026-11-24 20:45",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T03",
+      "message_id": "m0",
+      "quote": "术前禁食 8 小时"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "清单要短而可执行。",
+   "unknowns": [
+    "医院是否提供住院"
+   ],
+   "protected_expressions": [
+    "术前禁食 8 小时"
+   ],
+   "forbidden_factual_claims": [
+    "不要列十样吓她",
+    "不要说禁食无所谓"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T04": {
+   "case_id": "E064_T04",
+   "current_action": "确认新日期12月1日+肯定衔接安排；不复述旧计划",
+   "acceptable_actions": [
+    "确认12/1+说衔接得好",
+    "确认+提醒打完当天别洗澡",
+    "确认+说手术前正好观察几天"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F05",
+     "subject": "她",
+     "relation": "更正",
+     "value": "第三针提前到12月1日（疫苗到货）",
+     "valid_time": "2026-11-26 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T04",
+      "message_id": "m0",
+      "quote": "第三针提前到 12 月 1 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第一处日期更新：此后第三针一律12/1。",
+   "unknowns": [
+    "疫苗品牌"
+   ],
+   "protected_expressions": [
+    "好消息"
+   ],
+   "forbidden_factual_claims": [
+    "不要说提前打不行（她医院定的）",
+    "不要说错日期"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T05": {
+   "case_id": "E064_T05",
+   "current_action": "确认12月3日可行+提醒术前禁食从几点算；不提疫苗冲突（已核过）",
+   "acceptable_actions": [
+    "确认12/3+算禁食时间点",
+    "确认+问要不要陪去",
+    "确认+提醒当天留电话等通知"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F06",
+     "subject": "她",
+     "relation": "安排",
+     "value": "绝育约在12月3日",
+     "valid_time": "2026-11-26 21:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T05",
+      "message_id": "m0",
+      "quote": "手术我约在 12 月 3 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "第二个日期锚点（后被更正）。",
+   "unknowns": [
+    "当天她的课表"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说错日期",
+    "不要质疑医院排期"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T06": {
+   "case_id": "E064_T06",
+   "current_action": "轻收：确认材料齐了+当天流程一句带过；不重复叮嘱",
+   "acceptable_actions": [
+    "说材料齐了稳了+等通知",
+    "问要不要陪去当天",
+    "说没啥可操心的+别再熬夜查帖"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "安心轮，别添新任务。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要又抛新注意事项",
+    "不要说做完了就完事"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T07": {
+   "case_id": "E064_T07",
+   "current_action": "接情绪+复述新日期12月10日+旧日期作废；指出与疫苗衔接反而更稳",
+   "acceptable_actions": [
+    "复述12/10+说疫苗恢复期更长更稳",
+    "接情绪+确认新日期",
+    "说医生档期优先+改期正常"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F07",
+     "subject": "医院",
+     "relation": "更正",
+     "value": "医生出差，手术改到12月10日",
+     "valid_time": "2026-11-29 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T07",
+      "message_id": "m0",
+      "quote": "医生出差 手术改到 12 月 10 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧硬更正：12/3作废，一律12/10。",
+   "unknowns": [
+    "医生出差多久"
+   ],
+   "protected_expressions": [
+    "有点炸"
+   ],
+   "forbidden_factual_claims": [
+    "不要再说12月3",
+    "不要骂医院不早说"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T08": {
+   "case_id": "E064_T08",
+   "current_action": "答应接送+给出具体钟点+列随箱物品；只承诺做得到的",
+   "acceptable_actions": [
+    "约7点50楼下+说我提前到",
+    "答应+让她把猫粮水碗备好",
+    "答应+说术后接回我也搭手"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F08",
+     "subject": "我",
+     "relation": "承诺",
+     "value": "手术当天帮把团子送去医院",
+     "valid_time": "2026-11-29 19:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T08",
+      "message_id": "m0",
+      "quote": "当天我帮你送过去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "互助承诺要具体到钟点。",
+   "unknowns": [
+    "当天接诊时间"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要含糊说'到时候看'",
+    "不要顺便加别的托付"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T09": {
+   "case_id": "E064_T09",
+   "current_action": "给最要紧三条+标注'以医生出院说明为准'；不吓不敷衍",
+   "acceptable_actions": [
+    "补一条就医红线",
+    "让她把出院说明拍照存",
+    "说到时候我搭手"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F09",
+     "subject": "我",
+     "relation": "知识",
+     "value": "术后戴伊丽莎白圈约7天防舔",
+     "valid_time": "2026-11-30 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T09",
+      "message_id": "m0",
+      "quote": "伊丽莎白圈戴个把星期 防舔"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "信息分级轮：我说的=经验，医生说的=医嘱。",
+   "unknowns": [
+    "出院说明细节"
+   ],
+   "protected_expressions": [
+    "说什么的都有"
+   ],
+   "forbidden_factual_claims": [
+    "不要吓她并发症",
+    "不要说网上的全是垃圾",
+    "不要说三条就够别的别问"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T10": {
+   "case_id": "E064_T10",
+   "current_action": "接她的紧张：疫苗后轻微蔫常见+给就医红线（持续不吃/发烧）；标注口径",
+   "acceptable_actions": [
+    "说常见+给观察红线",
+    "肯定她盯得对+给红线",
+    "说以医生电话为准+别自己喂药"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "红线要具体：持续拒食/精神极差→电话医生。",
+   "unknowns": [
+    "团子体温"
+   ],
+   "protected_expressions": [
+    "还是盯了一晚上"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定没事",
+    "不要让她自己用药"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T11": {
+   "case_id": "E064_T11",
+   "current_action": "确认后天手术+定接送钟点+列随箱物品；不复述错日期",
+   "acceptable_actions": [
+    "确认12/10+定7点50楼下",
+    "确认+列随箱三样",
+    "确认+说我提前十分钟到"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "手术前夜轮：钟点说死，别模糊。",
+   "unknowns": [
+    "当天路况"
+   ],
+   "protected_expressions": [
+    "晒好了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说错日期",
+    "不要放她鸽子"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T12": {
+   "case_id": "E064_T12",
+   "current_action": "安抚+确认流程（我送到/术后医院来电话/我下班顺路接回）",
+   "acceptable_actions": [
+    "说马上到+医院会来电话",
+    "安抚+说猫叫正常",
+    "确认接回时间+让她安心上课"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "执行轮：简短有力。",
+   "unknowns": [
+    "手术时长"
+   ],
+   "protected_expressions": [
+    "我心疼"
+   ],
+   "forbidden_factual_claims": [
+    "不要说猫叫烦",
+    "不要编手术细节"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T13": {
+   "case_id": "E064_T13",
+   "current_action": "确认术后接回+提醒接回路上的注意事项（保温/少颠簸）",
+   "acceptable_actions": [
+    "说接回注意保温+我可以帮忙",
+    "确认+提醒到家先别喂食",
+    "确认+说我晚上过来搭手"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "口径：接回细节以医院出院说明为准。",
+   "unknowns": [
+    "她下课时间"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编麻药风险",
+    "不要催她快去"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T14": {
+   "case_id": "E064_T14",
+   "current_action": "庆祝顺利到家+提醒戴圈防舔（呼应F09）+说今晚我来搭手",
+   "acceptable_actions": [
+    "恭喜顺利+提醒圈别摘",
+    "说我过来帮看着+她去休息",
+    "提醒戴圈+给安抚招"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F10",
+     "subject": "团子",
+     "relation": "事件",
+     "value": "12月10日手术完成",
+     "valid_time": "2026-12-10 16:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T14",
+      "message_id": "m0",
+      "quote": "手术做完了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "术后第一夜：防舔是头号事。",
+   "unknowns": [
+    "伤口状态"
+   ],
+   "protected_expressions": [
+    "圈子它老想挠"
+   ],
+   "forbidden_factual_claims": [
+    "不要说摘一会儿没事",
+    "不要编伤口护理细节"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T15": {
+   "case_id": "E064_T15",
+   "current_action": "如实：拆线必须回医院（无菌+评估伤口），自己拆风险实打实；网帖信源分级",
+   "acceptable_actions": [
+    "劝回医院拆+说省的钱不抵风险",
+    "说医院拆顺带复查+一举两得",
+    "直接说别自己拆+这是红线"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "红线轮：宁可强硬，安全上不商量。",
+   "unknowns": [
+    "拆线费用"
+   ],
+   "protected_expressions": [
+    "网上有人这么干"
+   ],
+   "forbidden_factual_claims": [
+    "不要说网上办法也可行",
+    "不要含糊'看情况'"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T16": {
+   "case_id": "E064_T16",
+   "current_action": "确认拆线=回医院+定18号上午；不复述网帖做法",
+   "acceptable_actions": [
+    "确认18号+提醒带术后本",
+    "确认+说到时我陪你下楼",
+    "确认+说拆线完再看恢复"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F11",
+     "subject": "医生",
+     "relation": "更正",
+     "value": "缝线需回医院拆，不让主人自己拆",
+     "valid_time": "2026-12-13 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T16",
+      "message_id": "m0",
+      "quote": "回医院拆 别自己动手"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "护理口径更正：拆线一律回医院。",
+   "unknowns": [],
+   "protected_expressions": [
+    "听你的"
+   ],
+   "forbidden_factual_claims": [
+    "不要说自拆也行",
+    "不要说错日期"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T17": {
+   "case_id": "E064_T17",
+   "current_action": "轻松接梗+呼应'结痂=在长好'（但不代替医生判断）",
+   "acceptable_actions": [
+    "接梗+说结痂是好苗头",
+    "笑它+提醒18号医生看为准",
+    "接梗+说快自由了再忍三天"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "轻松轮，别又上医疗课。",
+   "unknowns": [],
+   "protected_expressions": [
+    "看笑了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说结痂=好了（越权判断）",
+    "不要催她提前拆线"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T18": {
+   "case_id": "E064_T18",
+   "current_action": "确认拆线完成+回答以医生当场口径为准（医生说能摘再摘）",
+   "acceptable_actions": [
+    "恭喜+让医生说了算",
+    "确认+说医生没说摘就再戴两天",
+    "恭喜+问她医生原话"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F12",
+     "subject": "她",
+     "relation": "事件",
+     "value": "12月18日拆线完成，伤口愈合良好",
+     "valid_time": "2026-12-18 18:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T18",
+      "message_id": "m0",
+      "quote": "拆线完了 医生说长得挺好"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "口径权仍在医生；我别替医生宣布摘圈。",
+   "unknowns": [
+    "医生是否已说摘圈"
+   ],
+   "protected_expressions": [
+    "长得挺好"
+   ],
+   "forbidden_factual_claims": [
+    "不要直接说能摘",
+    "不要说戴多久都行"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T19": {
+   "case_id": "E064_T19",
+   "current_action": "呼应'每年加强'口径+肯定她记账习惯；不复述错周期",
+   "acceptable_actions": [
+    "确认每年一次+夸记账",
+    "呼应+说比我有条理",
+    "确认+提醒到期前一个月约"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F13",
+     "subject": "医生",
+     "relation": "口径",
+     "value": "狂犬疫苗每年加强一次",
+     "valid_time": "2026-12-20 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T19",
+      "message_id": "m0",
+      "quote": "狂犬要每年加强"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "年检口径确认轮。",
+   "unknowns": [
+    "下次加强月份"
+   ],
+   "protected_expressions": [
+    "记在疫苗本上了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说两年一打",
+    "不要说不用管"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T20": {
+   "case_id": "E064_T20",
+   "current_action": "接梗+轻知识（抓抓=重新标记地盘，猫科常见）+不引申行为学大道理",
+   "acceptable_actions": [
+    "接梗+给一句猫科常识",
+    "笑+建议磨爪板放沙发边",
+    "接梗+说它没事了"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "闲聊轮：一句常识就够。",
+   "unknowns": [],
+   "protected_expressions": [
+    "记仇"
+   ],
+   "forbidden_factual_claims": [
+    "不要上行为学课",
+    "不要说它有病"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T21": {
+   "case_id": "E064_T21",
+   "current_action": "接节日+夸照片+呼应满血复活（术后彻底收尾）",
+   "acceptable_actions": [
+    "回祝福+夸团子状态",
+    "要一张照片做壁纸",
+    "说跑酷=彻底恢复+恭喜"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "节日轻轮。",
+   "unknowns": [],
+   "protected_expressions": [
+    "满血复活"
+   ],
+   "forbidden_factual_claims": [
+    "不要又提术后禁忌",
+    "不要说教"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T22": {
+   "case_id": "E064_T22",
+   "current_action": "呼应她的总结+轻接'跟我学的'玩笑；收束整条时间线",
+   "acceptable_actions": [
+    "呼应黏人+接玩笑",
+    "总结时间线走完+夸她全程稳",
+    "接玩笑+说下次疫苗提醒我记着"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S064_F14",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "团子绝育后性格更黏人",
+     "valid_time": "2026-12-28 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E064_T22",
+      "message_id": "m0",
+      "quote": "性格更黏人了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收官轮：整条医疗时间线她走完了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我认了"
+   ],
+   "forbidden_factual_claims": [
+    "不要翻旧账说当初多悬",
+    "不要长篇总结"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T23": {
+   "case_id": "E064_T23",
+   "current_action": "答应代养+确认天数与注意事项（疫苗本位置以备万一）；不堆条件",
+   "acceptable_actions": [
+    "答应+确认三天+每天看一次",
+    "答应+问疫苗本放哪以备万一",
+    "答应+让她把医生电话留我"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "新支线开启（代养）：只接做得到的。",
+   "unknowns": [
+    "团子挑食与否"
+   ],
+   "protected_expressions": [
+    "猫粮在阳台柜子"
+   ],
+   "forbidden_factual_claims": [
+    "不要嫌麻烦",
+    "不要承诺做不到的事"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E064_T24": {
+   "case_id": "E064_T24",
+   "current_action": "接她的玩笑+交代三天情况（喂食/铲屎/状态）+交还疫苗本位置信息",
+   "acceptable_actions": [
+    "交代三天详情+自嘲团子更亲我",
+    "接玩笑+说猫粮分量按她写的来",
+    "交代+提醒下次疫苗月份到了我提醒"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "代养收尾轮：具体交代比自谦有用。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你喂得比我还好"
+   ],
+   "forbidden_factual_claims": [
+    "不要说下次别托我（玩笑过头）",
+    "不要编团子生病"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

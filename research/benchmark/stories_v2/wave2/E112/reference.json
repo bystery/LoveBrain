@@ -1,0 +1,907 @@
+{
+ "story_id": "E112",
+ "turns": {
+  "E112_T01": {
+   "case_id": "E112_T01",
+   "current_action": "接住进度同步：基层完工、下周三刷漆、全屋燕麦色，节点清晰；应下完工饭局，顺带提醒把样品色号留给罗工长一份。",
+   "acceptable_actions": [
+    "肯定进度扎实，答应完工饭局并问她漆是不是全包料",
+    "提醒她刷漆前跟罗工长把色号和涂刷遍数落纸",
+    "问她要不要完工前给墙面打一遍灯光自检"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A01",
+     "subject": "SHARED",
+     "relation": "paint_scheduled",
+     "value": "墙面基层完工，罗工长定下周三进场刷漆",
+     "valid_time": "2026-10-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T01",
+      "message_id": "m0",
+      "quote": "罗工长说下周三进场刷漆"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A02",
+     "subject": "SHARED",
+     "relation": "oatmeal_color",
+     "value": "全屋刷漆定为燕麦色乳胶漆",
+     "valid_time": "2026-10-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T01",
+      "message_id": "m0",
+      "quote": "全屋燕麦色"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A03",
+     "subject": "SHARED",
+     "relation": "dinner_invitation",
+     "value": "她邀 ME 完工后来家吃饭兼验收",
+     "valid_time": "2026-10-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T01",
+      "message_id": "m0",
+      "quote": "等完工你来我家吃饭，就当验收"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：同步接住即走，节骨眼上的建议只给一条，别把验收当检查团。",
+   "unknowns": [
+    "漆是否含料未知",
+    "刷漆工期未说"
+   ],
+   "protected_expressions": [
+    "全屋燕麦色"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构罗工长报价",
+    "不得对漆色效果下断言"
+   ]
+  },
+  "E112_T02": {
+   "case_id": "E112_T02",
+   "current_action": "接住邻居推荐带来的动摇：陈姐热心是真心，省两千也是真数——先把第三方推荐当信息收下，提醒她省钱的口子一开，改单和保修两件事会跟着来。",
+   "acceptable_actions": [
+    "肯定陈姐热心，同时点破'换人刷漆'等于在罗工长单子上动刀",
+    "让她先问清甘师傅的报价含不含料，别只看省两千",
+    "建议她别急着应陈姐，给自己一晚想清楚"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "attribution",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A04",
+     "subject": "THIRD",
+     "relation": "neighbor_recommendation",
+     "value": "对门陈姐推荐相识二十年的漆匠甘师傅，称月底有空手艺好",
+     "valid_time": "2026-10-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T02",
+      "message_id": "m0",
+      "quote": "她认识二十年的漆匠甘师傅月底正好有空"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A05",
+     "subject": "THIRD",
+     "relation": "savings_claim",
+     "value": "陈姐称工钱比罗工长那边能省小两千",
+     "valid_time": "2026-10-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T02",
+      "message_id": "m0",
+      "quote": "工钱比罗工长那边能省小两千"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A06",
+     "subject": "HER",
+     "relation": "social_pressure",
+     "value": "她对邻居的热心推荐嘴上应着心里犯难",
+     "valid_time": "2026-10-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T02",
+      "message_id": "m0",
+      "quote": "我嘴上应着，心里咯噔一下"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不当场给陈姐的推荐泼冷水，先把'换人'的两个代价摆出来。",
+   "unknowns": [
+    "甘师傅真实报价未知",
+    "陈姐与甘师傅的具体关系细节未知"
+   ],
+   "protected_expressions": [
+    "工钱比罗工长那边能省小两千"
+   ],
+   "forbidden_factual_claims": [
+    "不得贬低甘师傅的手艺",
+    "不得断言陈姐推荐掺私心"
+   ]
+  },
+  "E112_T03": {
+   "case_id": "E112_T03",
+   "current_action": "面对删项倾向：不接'香不香'，先接'口子怎么开'——删项不是聊天能了的事，要白纸黑字改单，还要问清基层保修是否因此没人认。",
+   "acceptable_actions": [
+    "提醒删项必须白纸黑字，顺便要回书面减价",
+    "让她先问罗工长基层保修怎么算，再谈删不删",
+    "问她省的两千和一次改单的麻烦，哪个更省心"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "attribution",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A07",
+     "subject": "HER",
+     "relation": "delete_item_intent",
+     "value": "她倾向从罗工长单子删掉刷漆项改由甘师傅干",
+     "valid_time": "2026-10-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T03",
+      "message_id": "m0",
+      "quote": "漆那一项我给删了，让甘师傅干"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A08",
+     "subject": "HER",
+     "relation": "opening_difficulty",
+     "value": "她不知道如何向罗工长开口删项",
+     "valid_time": "2026-10-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T03",
+      "message_id": "m0",
+      "quote": "删项这个口子怎么开，我张不开嘴"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A09",
+     "subject": "ME",
+     "relation": "written_change_rule",
+     "value": "ME 的既有经验是删项改单要走书面",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "删项改单要走书面"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她要的是怎么开口，他给的是先立规矩再开口，顺序不能乱。",
+   "unknowns": [
+    "罗工长对删项的态度未知"
+   ],
+   "protected_expressions": [
+    "删项这个口子怎么开，我张不开嘴"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构删项的具体损失数字",
+    "不得替罗工长表态接受或拒绝"
+   ]
+  },
+  "E112_T04": {
+   "case_id": "E112_T04",
+   "current_action": "接住改单实操的第一反应：罗工长一句'你想好了?'不是拦，是提醒——保修归属还没问清就别往下走；陈姐那边电话可以要，但别急着定日子。",
+   "acceptable_actions": [
+    "把'你想好了?'读成提醒，让她把保修归属问死再动",
+    "建议电话可以先要，但刷漆日子别跟陈姐咬死",
+    "给她一句向罗工长问保修的话头：基层和面层分别保几年"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "time_state",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A10",
+     "subject": "THIRD",
+     "relation": "contractor_remark",
+     "value": "罗工长对删项提议回应'你想好了?'未置可否",
+     "valid_time": "2026-10-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T04",
+      "message_id": "m0",
+      "quote": "他就回了一句'你想好了?'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A11",
+     "subject": "SHARED",
+     "relation": "warranty_pending",
+     "value": "基层保修归属尚未问清，成为删项前必须落地的问题",
+     "valid_time": "2026-10-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T04",
+      "message_id": "m0",
+      "quote": "还得问清楚基层保修归谁"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A12",
+     "subject": "THIRD",
+     "relation": "neighbor_waiting",
+     "value": "陈姐等她要甘师傅电话，人情线开始牵扯",
+     "valid_time": "2026-10-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T04",
+      "message_id": "m0",
+      "quote": "陈姐那边还等我把甘师傅电话要过去呢"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把罗工长那句话读平，别解读成威胁，也别让她读成威胁。",
+   "unknowns": [
+    "罗工长是否另有想法未知"
+   ],
+   "protected_expressions": [
+    "听得我心里发毛"
+   ],
+   "forbidden_factual_claims": [
+    "不得替罗工长补充言外之意",
+    "不得断言保修归属一定能谈拢"
+   ]
+  },
+  "E112_T05": {
+   "case_id": "E112_T05",
+   "current_action": "接住甘师傅上门后的转折：'只保我这层漆面'是他把责任边界亲口立了——这句实在话比什么分析都硬，先让她把这句原话留住。",
+   "acceptable_actions": [
+    "点破'只保面层'恰恰说明他清楚基层不是自己的责任盘",
+    "提醒她漆自己买省料钱的同时，质量责任也全在她这边",
+    "让她把甘师傅这句原话记下来，跟罗工长谈时用得上"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A13",
+     "subject": "THIRD",
+     "relation": "gan_scope_statement",
+     "value": "甘师傅上门后声明只保自己刷的漆面层，不保基层",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T05",
+      "message_id": "m0",
+      "quote": "基层不是我刮的，我只保我这层漆面"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A14",
+     "subject": "THIRD",
+     "relation": "material_selfbuy",
+     "value": "甘师傅提出漆由她自己买以省料钱",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T05",
+      "message_id": "m0",
+      "quote": "漆让我自己买，能省点料钱"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A15",
+     "subject": "SHARED",
+     "relation": "basecoat_done",
+     "value": "墙面基层已由罗工长一方完成",
+     "valid_time": "2026-10-12/2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "墙面基层完工"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不把甘师傅说成滑头，他立的是清清楚楚的责任线，这句要先夸再借力。",
+   "unknowns": [
+    "甘师傅对基层质量的看法未知"
+   ],
+   "protected_expressions": [
+    "基层不是我刮的，我只保我这层漆面"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构甘师傅的其他报价细节",
+    "不得断言自己买漆一定更省"
+   ]
+  },
+  "E112_T06": {
+   "case_id": "E112_T06",
+   "current_action": "接住罗工长的正面表态：别人刷漆他不背锅，基层面层两家扯皮说不清——把这句和甘师傅那句并排放，责任断层已经明牌，她被夹住的感觉先接住。",
+   "acceptable_actions": [
+    "把两句话并排读：一家只保面层、一家不保别人刷的面层，中间就是她",
+    "点明这不是谁坏，是责任物理上接不到一起",
+    "提醒她扯皮的成本不在钱包，在以后每一次墙面问题"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A16",
+     "subject": "THIRD",
+     "relation": "contractor_disclaim",
+     "value": "罗工长声明别人刷漆后墙面出问题他不负责",
+     "valid_time": "2026-10-17",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T06",
+      "message_id": "m0",
+      "quote": "基层面层两家扯皮，他可不背这个锅"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A17",
+     "subject": "HER",
+     "relation": "caught_between",
+     "value": "她被两个施工方的责任口径夹在中间",
+     "valid_time": "2026-10-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T06",
+      "message_id": "m0",
+      "quote": "被两拨人夹在中间讲责任"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A18",
+     "subject": "THIRD",
+     "relation": "gan_scope_prior",
+     "value": "甘师傅'只保面层'的声明构成与罗工长表态对接的前提",
+     "valid_time": "2026-10-16/2026-10-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T05",
+      "message_id": "m0",
+      "quote": "我只保我这层漆面"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她喊头大，先把'两家都没错'讲清楚，别让矛盾往人身上引。",
+   "unknowns": [],
+   "protected_expressions": [
+    "他可不背这个锅"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构两家保修条款的具体年限",
+    "不得断言墙面必然出问题"
+   ]
+  },
+  "E112_T07": {
+   "case_id": "E112_T07",
+   "current_action": "接住她算到半夜的账：省两千赌十年、出事重刷钱上加钱——账她自己已经算平了，剩下的是陈姐这个人情怎么放；把'热心'和'这个决定'分开。",
+   "acceptable_actions": [
+    "肯定她把账算透了，人情那头可以另找出口",
+    "点破陈姐帮的是过去的水管急难，不是替甘师傅签责任",
+    "建议她把'不删项'的决定告诉陈姐时带上甘师傅自己的话"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A19",
+     "subject": "HER",
+     "relation": "cost_benefit",
+     "value": "她算清省两千是赌墙面十年无事，出事重刷代价更高",
+     "valid_time": "2026-10-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T07",
+      "message_id": "m0",
+      "quote": "省两千，赌的是十年墙面不出问题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A20",
+     "subject": "THIRD",
+     "relation": "neighbor_goodwill",
+     "value": "陈姐是热心肠，去年她家跑水第一个冲来帮忙",
+     "valid_time": "2025（去年）/2026-10-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T07",
+      "message_id": "m0",
+      "quote": "去年我家跑水她第一个冲上来帮忙的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A21",
+     "subject": "THIRD",
+     "relation": "gan_disclaim_available",
+     "value": "甘师傅'只保面层'的原话可作她回话的台阶",
+     "valid_time": "2026-10-16/2026-10-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T05",
+      "message_id": "m0",
+      "quote": "我只保我这层漆面"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：人情那头轻拿轻放，把'驳面子'换成'借台阶'。",
+   "unknowns": [
+    "陈姐听到后的反应未知",
+    "T07“算了一晚上的账”与当日早间罗工长表态时点错位；T04 电话方向表述含混（T10 已澄清），评审从宽"
+   ],
+   "protected_expressions": [
+    "还得住灰里头"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构重刷的实际费用",
+    "不得替陈姐预设态度"
+   ]
+  },
+  "E112_T08": {
+   "case_id": "E112_T08",
+   "current_action": "面对'给我一句准话'：不越线替她拍板，但立场可以说——如果是自己家，大面工程不删项；说清这是基于账的偏好，决定权仍在她。",
+   "acceptable_actions": [
+    "直接给立场：我家不删，再补一句'账是你的，房也是你的'",
+    "把理由压成一条：省的钱买不回一家认账的保修",
+    "拒绝只列账的指责要接住，承认刚才确实没给态度"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A22",
+     "subject": "HER",
+     "relation": "stance_request",
+     "value": "她绕过账目直接索要 ME 的立场",
+     "valid_time": "2026-10-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T08",
+      "message_id": "m0",
+      "quote": "给我一句准话：要是你家，删不删"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A23",
+     "subject": "HER",
+     "relation": "cost_benefit_prior",
+     "value": "她前夜已算清省钱与保修风险的天平",
+     "valid_time": "2026-10-17/2026-10-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T07",
+      "message_id": "m0",
+      "quote": "省两千，赌的是十年墙面不出问题"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E112_A24",
+     "subject": "ME",
+     "relation": "no_decide_for_others",
+     "value": "ME 的既有分寸是帮人只摆账不替人定",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "他帮人只摆账，不替人定"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：这句准话要给得干脆，别绕回列账，立场给完立刻把决定权还她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "要是你家，删不删"
+   ],
+   "forbidden_factual_claims": [
+    "不得以权威口吻宣布装修正确做法",
+    "不得断言她的房子必然出问题"
+   ]
+  },
+  "E112_T09": {
+   "case_id": "E112_T09",
+   "current_action": "确认决定与话术：不删项已定，对陈姐用甘师傅自己的'只保面层'当台阶——不是不用他，是责任划不到一起；帮她把这段话顺一遍。",
+   "acceptable_actions": [
+    "肯定台阶找得准：用甘师傅的话回陈姐，谁的面子都不伤",
+    "帮她把话修短：先谢热心，再念原话，最后留个'小活儿找他'的口子",
+    "提醒她别把'赌不起'三个字说出口，对邻居讲责任不讲恐惧"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A25",
+     "subject": "HER",
+     "relation": "decision_keep_contractor",
+     "value": "她决定不删项，刷漆仍归罗工长",
+     "valid_time": "2026-10-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T09",
+      "message_id": "m0",
+      "quote": "省的两千买不来一家认账的保修"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A26",
+     "subject": "HER",
+     "relation": "face_saving_tactic",
+     "value": "她拿甘师傅'只保面层'的原话当回绝陈姐的台阶",
+     "valid_time": "2026-10-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T09",
+      "message_id": "m0",
+      "quote": "打甘师傅自己那句'只保面层'当台阶"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A27",
+     "subject": "THIRD",
+     "relation": "gan_disclaim_reuse",
+     "value": "甘师傅的原话被她转化为对陈姐的话术素材",
+     "valid_time": "2026-10-16/2026-10-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T05",
+      "message_id": "m0",
+      "quote": "基层不是我刮的，我只保我这层漆面"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：话术建议给短句，她要的是顺口，不是演讲稿。",
+   "unknowns": [
+    "陈姐的当场反应未知"
+   ],
+   "protected_expressions": [
+    "责任划不到一起"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构甘师傅与陈姐的私下对话",
+    "不得断言话术一定奏效"
+   ]
+  },
+  "E112_T10": {
+   "case_id": "E112_T10",
+   "current_action": "共享人情落地的松快：陈姐没恼还夸甘师傅实在，电话留作小修小补备用——把'第三方退回备选位'这个结局点明，人情线完好。",
+   "acceptable_actions": [
+    "肯定陈姐的通情达理，这局谁都没输",
+    "提醒她把甘师傅电话备注清楚，真有小活儿好找",
+    "顺势问一句漆什么时候进场，把主线接回来"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A28",
+     "subject": "THIRD",
+     "relation": "neighbor_took_it_well",
+     "value": "陈姐听完未恼，反赞甘师傅话实在有分寸",
+     "valid_time": "2026-10-19",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T10",
+      "message_id": "m0",
+      "quote": "陈姐一点没恼"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A29",
+     "subject": "THIRD",
+     "relation": "gan_kept_as_backup",
+     "value": "甘师傅电话存入她手机，定位退为小修小补备选",
+     "valid_time": "2026-10-19",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T10",
+      "message_id": "m0",
+      "quote": "以后有个小修小补的活儿还可以找他"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A30",
+     "subject": "SHARED",
+     "relation": "neighborhood_intact",
+     "value": "邻里人情经回绝后完好无损",
+     "valid_time": "2026-10-13/2026-10-19",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T04",
+      "message_id": "m0",
+      "quote": "陈姐那边还等我把甘师傅电话要过去呢"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'没伤人情'归功于她那句台阶，不抢功。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这人情一点没伤"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构陈姐与甘师傅的后续互动",
+    "不得断言备选日后必然启用"
+   ]
+  },
+  "E112_T11": {
+   "case_id": "E112_T11",
+   "current_action": "共享完工汇报：燕麦色上墙、'基层加面层一起保修两年'白纸黑字进单子——把当初的账落成了条款，答应周六饭局兼验收。",
+   "acceptable_actions": [
+    "肯定保修写进单子，这正是当时没删项换来的",
+    "答应周六赴约，主动问要不要带点水果",
+    "提醒她把单子和色号照片存档"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A31",
+     "subject": "SHARED",
+     "relation": "paint_done",
+     "value": "刷漆完工，全屋燕麦色上墙",
+     "valid_time": "2026-10-23",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T11",
+      "message_id": "m0",
+      "quote": "漆刷完了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A32",
+     "subject": "SHARED",
+     "relation": "warranty_in_writing",
+     "value": "罗工长将基层加面层保修两年白纸黑字写进单子",
+     "valid_time": "2026-10-23",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T11",
+      "message_id": "m0",
+      "quote": "'基层加面层一起保修两年'白纸黑字写进了单子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A33",
+     "subject": "SHARED",
+     "relation": "dinner_confirmed",
+     "value": "周六完工饭局确定，验收加还愿",
+     "valid_time": "2026-10-12/2026-10-23",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T01",
+      "message_id": "m0",
+      "quote": "等完工你来我家吃饭，就当验收"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'白纸黑字'四个字念响一点，这是全篇唯一一句她赢回来的保险。",
+   "unknowns": [],
+   "protected_expressions": [
+    "比样品还温柔"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构保修条款外的承诺",
+    "不得对墙面质量下长期断言"
+   ]
+  },
+  "E112_T12": {
+   "case_id": "E112_T12",
+   "current_action": "接住收尾乐子：陈姐看了燕麦色回去也找罗工长刷漆，'只保面层'成了两家口头禅——笑纳，把'睡得踏实值两千'这句接成全篇的落点。",
+   "acceptable_actions": [
+    "接住'甘师傅知道不'的乐子，玩笑一句分寸感的传染性",
+    "肯定她'睡得踏实'这账算得最值",
+    "以排骨为约收尾，不再引新话题"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E112_A34",
+     "subject": "THIRD",
+     "relation": "neighbor_followed",
+     "value": "陈姐看后决定自家刷漆也用罗工长",
+     "valid_time": "2026-10-23/2026-10-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T12",
+      "message_id": "m0",
+      "quote": "回去就把她家刷漆也安排上了，用的还是罗工长"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A35",
+     "subject": "SHARED",
+     "relation": "catchphrase_spread",
+     "value": "'只保面层'成为两家口头的分寸用语",
+     "valid_time": "2026-10-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T12",
+      "message_id": "m0",
+      "quote": "成了我们两家的口头禅"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E112_A36",
+     "subject": "HER",
+     "relation": "decision_validated",
+     "value": "她以'睡得踏实'为不删项的决定作结",
+     "valid_time": "2026-10-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E112_T12",
+      "message_id": "m0",
+      "quote": "换成睡得踏实，值"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾全交给乐子和排骨，道理一句都别再补。",
+   "unknowns": [],
+   "protected_expressions": [
+    "换成睡得踏实，值"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构陈姐家的装修预算",
+    "不得引入新的装修议题"
+   ]
+  }
+ }
+}

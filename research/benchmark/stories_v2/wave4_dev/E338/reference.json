@@ -1,0 +1,2788 @@
+{
+ "story_id": "E338",
+ "turns": {
+  "E338_T01": {
+   "case_id": "E338_T01",
+   "current_action": "接收展会参展通知与编外后勤任务：12-12 起连开两天、B27 展位、周五晚搬物料",
+   "acceptable_actions": [
+    "接下搬物料任务并确认周五晚有空",
+    "接'编外后勤'玩笑并问物料有多重",
+    "答应并确认仓库到自己车再到展馆的路线"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T01_A01",
+     "subject": "SHARED",
+     "relation": "展会参展",
+     "value": "智家优品冬季生活展 2026-12-12（周六）起城西会展中心连开两天，HER 公司参展（档期后于 T15 提前）",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "12 月 12 号周六，城西会展中心，智家优品冬季生活展，我们公司参展",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T01_A02",
+     "subject": "SHARED",
+     "relation": "展位号初始",
+     "value": "展位 B27（后于 T09 更正为 C14）",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "展位 B27",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T01_A03",
+     "subject": "SHARED",
+     "relation": "物料搬运初始",
+     "value": "2026-12-11（周五）晚 HER 搬物料：两箱画册一个易拉宝，公司仓库到 ME 车再到展馆（后于 T15 级联提前）",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "周五晚上先帮我搬物料，两箱画册一个易拉宝，公司仓库到你车，再到展馆",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接任务干脆点，'就这么定了'是她的风格。",
+   "unknowns": [
+    {
+     "topic": "开展当日具体开始时间",
+     "note": "本轮只说 12-12 起连开两天，未说具体钟点（T16 才出现九点开展）",
+     "markers": [
+      [
+       "九点",
+       "开展"
+      ],
+      [
+       "早上九点"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "九点",
+       "开展"
+      ],
+      [
+       "早上九点"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "就这么定了"
+   ],
+   "forbidden_factual_claims": [
+    "不得把搬物料说成周六或展会当天",
+    "不得编造展台布置细节"
+   ],
+   "may_decline": false
+  },
+  "E338_T02": {
+   "case_id": "E338_T02",
+   "current_action": "确认周四晚八点球馆 3 号场地例行球局与输者请脉动的规矩",
+   "acceptable_actions": [
+    "确认周四八点并答应带新球",
+    "接'输的人请脉动'放话这周不会输",
+    "确认场地并顺口问要不要加练"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T02_A01",
+     "subject": "SHARED",
+     "relation": "周四球局约定",
+     "value": "周四晚八点球馆 3 号场地例行球局，2026-11-26 场为本周约定（12 月场次后于 T13 取消）",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T02",
+      "quote": "周四晚八点老时间，球馆 3 号场地",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T02_A02",
+     "subject": "SHARED",
+     "relation": "带球分工",
+     "value": "HER 带球，ME 带那筒新球",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T02",
+      "quote": "球我带，你带那筒新球，别舍不得",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T02_A03",
+     "subject": "SHARED",
+     "relation": "输者请脉动",
+     "value": "赌注规矩：输的人请脉动",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T02",
+      "quote": "输的人请脉动",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "例行局确认即可，赌注规矩可以放两句狠话。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E338_T03": {
+   "case_id": "E338_T03",
+   "current_action": "老家腊肠预告：12 月初寄两斤辣+两斤不辣（初始口径，后于 T27 更正为只寄不辣）",
+   "acceptable_actions": [
+    "接'怕你饿死'的玩笑预订蹭腊肠",
+    "问辣的给不给留一份",
+    "接冰箱剩半斤的梗劝她先清库存"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T03_A01",
+     "subject": "HER",
+     "relation": "腊肠寄送初始",
+     "value": "HER 父 12 月初寄腊肠：两斤辣的+两斤不辣的（后于 T27 更正为只寄不辣的两斤）",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T03",
+      "quote": "今年腊肠灌好了，12 月初给我寄：两斤辣的，两斤不辣的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T03_A02",
+     "subject": "HER",
+     "relation": "父亲关爱",
+     "value": "HER 父总怕她饿死，上回寄过五斤",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T03",
+      "quote": "他总怕我饿死，上回寄五斤",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "老家话题接温情与玩笑即可，数量口径听她爸的。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E338_T04": {
+   "case_id": "E338_T04",
+   "current_action": "周四球局出发播报：快八点出门、3 号场地见、迟到罚一局",
+   "acceptable_actions": [
+    "确认马上到并接'迟到罚一局'",
+    "回一句自己已在场地",
+    "简短回'见'即可"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T04_A01",
+     "subject": "SHARED",
+     "relation": "当晚球局进行",
+     "value": "2026-11-26 晚球局进行，3 号场地，迟到罚一局",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T04",
+      "quote": "快八点了，我出门了，3 号场地见，迟到罚一局",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "出发播报，短句回应最合拍。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E338_T05": {
+   "case_id": "E338_T05",
+   "current_action": "球局战报：HER 21:19 险胜，近五次 3 胜 2 负，下周四 3 号场地继续",
+   "acceptable_actions": [
+    "认账服输并约下周四再战",
+    "接'账我记着呢'承认这瓶脉动记 ME 账上",
+    "复盘一句发挥并答应下周继续"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T05_A01",
+     "subject": "HER",
+     "relation": "本场结果",
+     "value": "2026-11-26 球局 HER 21:19 险胜（按 T02 规矩 ME 输、欠 HER 脉动）",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T05",
+      "quote": "今天 21:19 险胜",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T05_A02",
+     "subject": "HER",
+     "relation": "交手账",
+     "value": "近五次交手 HER 3 胜 2 负",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T05",
+      "quote": "咱俩最近五次交手，我 3 胜 2 负，账我记着呢",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T05_A03",
+     "subject": "SHARED",
+     "relation": "下周球局",
+     "value": "下周四（2026-12-03）继续，3 号场地（后于 T13 随闭馆取消）",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T05",
+      "quote": "下周四继续，3 号场地我照旧抢",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "输了就认，赌注方向是 ME 欠她脉动——别把方向搞反。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把本场结果说成 ME 胜"
+   ],
+   "may_decline": false
+  },
+  "E338_T06": {
+   "case_id": "E338_T06",
+   "current_action": "易拉宝到货请 ME 帮看设计稿小字，并强调主打款口径是 C 系列收纳",
+   "acceptable_actions": [
+    "答应看设计稿并记下 C 系列口径",
+    "接'别介绍成 B 系'保证不记错",
+    "答应看稿并玩笑说去年的款也有感情"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T06_A01",
+     "subject": "HER",
+     "relation": "物料任务",
+     "value": "易拉宝到货，HER 发设计稿请 ME 看小字歪没歪",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T06",
+      "quote": "易拉宝到货了，设计稿发你，帮我看看那行小字歪没歪",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T06_A02",
+     "subject": "SHARED",
+     "relation": "主打款口径",
+     "value": "展会主打款为 C 系列收纳，不得介绍成 B 系（去年的款）",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T06",
+      "quote": "主打款是 C 系列收纳，你跟人别介绍成 B 系，那是去年的款",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "注意：C 系列是产品线，与展位 C14 是两码事，别混。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把主打款说成 B 系",
+    "不得把产品线 C 系列与展位 C14 混为一谈"
+   ],
+   "may_decline": false
+  },
+  "E338_T07": {
+   "case_id": "E338_T07",
+   "current_action": "回乡安排：12-06 姥姥七十大寿，12-05 晚高铁回临江、12-07 晚返程，节目单归她挑",
+   "acceptable_actions": [
+    "祝寿并接'压力给到我'的玩笑",
+    "确认她 5 号走 7 号回的安排",
+    "让她按姥姥口味挑温和的节目"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T07_A01",
+     "subject": "HER",
+     "relation": "回乡安排",
+     "value": "2026-12-06 姥姥七十大寿、亲戚全回；HER 12-05（周六）晚高铁回、12-07（周一）晚返",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T07",
+      "quote": "12 月 6 号我姥姥七十大寿，亲戚全回。我 5 号周六晚上高铁回去，7 号周一晚上回来",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T07_A02",
+     "subject": "HER",
+     "relation": "车票旧值",
+     "value": "已购票 G1377 次 18:06 城站出发（后于 T17 改签 G1373/17:25）",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T07",
+      "quote": "票买好了：G1377，18:06，城站出发",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T07_A03",
+     "subject": "HER",
+     "relation": "寿宴任务",
+     "value": "寿宴节目单由 HER 挑选",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T07",
+      "quote": "寿宴节目单归我挑，压力给到我",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "老家事她上心，顺着接祝福和玩笑；车次听她最新通知。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把姥姥寿宴日期说成 12 月 5 号（5 号是出发日）"
+   ],
+   "may_decline": false
+  },
+  "E338_T08": {
+   "case_id": "E338_T08",
+   "current_action": "分享楼下狸花'证件照'并玩笑说眼神像 ME 输球，可不回",
+   "acceptable_actions": [
+    "接玩笑认领'输球眼神'",
+    "反问照片拍没拍出弧度",
+    "合法不回或回个表情包式短句"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T08_A01",
+     "subject": "HER",
+     "relation": "分享",
+     "value": "楼下狸花又蹲 HER 门口，拍了张证件照",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T08",
+      "quote": "楼下那只狸花又蹲我门口，我给它拍了张证件照",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T08_A02",
+     "subject": "HER",
+     "relation": "玩笑",
+     "value": "狸花眼神被调侃像 ME 上次输球之后",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T08",
+      "quote": "眼神跟你上次输球之后一模一样",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "轻松玩笑位，接梗或沉默都合法。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  },
+  "E338_T09": {
+   "case_id": "E338_T09",
+   "current_action": "主办方调图：展位 B27 更正为 C14，手册重印",
+   "acceptable_actions": [
+    "确认划掉 B27 记 C14",
+    "确认并接'别领去隔壁'的玩笑",
+    "确认新展位号并说手册页码也更新"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "attribution",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T09_A01",
+     "subject": "SHARED",
+     "relation": "展位旧值",
+     "value": "展位原为 B27（主办方调图后作废）",
+     "valid_time": "2026-12-12",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "展位 B27",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "还是",
+       "B27"
+      ],
+      [
+       "B27",
+       "没错"
+      ],
+      [
+       "B27",
+       "见"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T09_A02",
+     "subject": "SHARED",
+     "relation": "展位新值",
+     "value": "展位更正为 C14",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T09",
+      "quote": "我们从 B27 挪到 C14，手册得重印",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "C14"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T09_A03",
+     "subject": "SHARED",
+     "relation": "更正提醒",
+     "value": "HER 提醒旧号划掉、别把客人领去隔壁",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T09",
+      "quote": "你之前记的 B27 划掉，记 C14，别把客人领去隔壁展位",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "通知来自主办方（她转述），跟新号走；B27 从此只作历史。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得沿用 B27 作为展位号",
+    "不得把 C14 与 C 系列产品混为一谈"
+   ],
+   "may_decline": false
+  },
+  "E338_T10": {
+   "case_id": "E338_T10",
+   "current_action": "寿宴节目定稿：《打金枝》被否，改《女驸马》",
+   "acceptable_actions": [
+    "接'老太太说了算'夸定得对",
+    "玩笑说温和版保险不出错",
+    "问她要不要提前彩排一段"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T10_A01",
+     "subject": "SHARED",
+     "relation": "寿宴节目",
+     "value": "姥姥寿宴节目由《打金枝》改为《女驸马》",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T10",
+      "quote": "我挑了《打金枝》，我妈说太吵，要听温和的，改《女驸马》",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "家事闲聊，接住'老太太说了算'就行。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E338_T11": {
+   "case_id": "E338_T11",
+   "current_action": "周四球局照旧确认+手册 C14 最终版+催 ME 欠的蓝色脉动",
+   "acceptable_actions": [
+    "确认周四照旧并认下脉动账",
+    "接手册最终版说 C14 那页已存",
+    "答应带蓝色脉动并约球局见"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T11_A01",
+     "subject": "SHARED",
+     "relation": "周四球局",
+     "value": "2026-12-03（周四）球局照旧、3 号场地（次日 T13 宣布闭馆取消）",
+     "valid_time": "2026-12-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T05",
+      "quote": "下周四继续，3 号场地我照旧抢",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E338_T11_A02",
+     "subject": "SHARED",
+     "relation": "展位新值",
+     "value": "手册最终版 C14 页已圈好发 ME（T09 新口径）",
+     "valid_time": "2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T09",
+      "quote": "我们从 B27 挪到 C14，手册得重印",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "C14"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T11_A03",
+     "subject": "SHARED",
+     "relation": "展位旧值",
+     "value": "B27 已作废",
+     "valid_time": "2026-12-12",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "展位 B27",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还是",
+       "B27"
+      ],
+      [
+       "B27",
+       "展位"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T11_A04",
+     "subject": "SHARED",
+     "relation": "脉动债",
+     "value": "ME 欠 HER 一瓶蓝色脉动（T05 HER 险胜），她提醒周四记得",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T11",
+      "quote": "你欠的脉动周四记得，蓝色那瓶",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T11_A05",
+     "subject": "HER",
+     "relation": "手册状态",
+     "value": "展会手册印出，最终版已发 ME",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T11",
+      "quote": "展会手册印出来了，C14 那页我圈好了，最终版发你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "脉动方向：ME 欠 HER；周四球局此刻还未取消。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把脉动债说成 HER 欠 ME",
+    "不得把手册展位写回 B27"
+   ],
+   "may_decline": false
+  },
+  "E338_T12": {
+   "case_id": "E338_T12",
+   "current_action": "腊肠寄送安排：这周顺丰到驿站、ME 帮拎、不辣的两斤归 ME",
+   "acceptable_actions": [
+    "答应帮拎并认领不辣的两斤",
+    "接'不辣的给小韩'的备注玩笑",
+    "答应并问大概哪天到好去取"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T12_A01",
+     "subject": "SHARED",
+     "relation": "腊肠寄送安排",
+     "value": "腊肠这周顺丰寄出、放驿站，ME 帮拎（实际到货口径后于 T27 更正）",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T12",
+      "quote": "我爸说腊肠这周寄，顺丰，到了放驿站，你帮我拎一下呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T12_A02",
+     "subject": "SHARED",
+     "relation": "腊肠分配",
+     "value": "两斤不辣的归 ME，辣的 HER 自己承受",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T12",
+      "quote": "两斤不辣的归你，辣的我自己承受",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T12_A03",
+     "subject": "HER",
+     "relation": "快递备注",
+     "value": "HER 父快递备注写'不辣的给小韩'",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T12",
+      "quote": "他快递备注都会写“不辣的给小韩”",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "帮忙应下即可；分配口径以她爸备注为准。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E338_T13": {
+   "case_id": "E338_T13",
+   "current_action": "球馆通知 12 月闭馆改造地胶，这周起停业；周四场取消、订金按序退",
+   "acceptable_actions": [
+    "惋惜黄金位并等她订金消息",
+    "安慰并说暂停正好养腰",
+    "确认本周四不去并接'说没就没'的吐槽"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "attribution",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T13_A01",
+     "subject": "SHARED",
+     "relation": "周四球局",
+     "value": "周四球局随球馆 12 月闭馆停业而取消，不得复活",
+     "valid_time": "2026-12-03",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T02",
+      "quote": "周四晚八点老时间，球馆 3 号场地",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "这周四",
+       "球"
+      ],
+      [
+       "下周四",
+       "球"
+      ],
+      [
+       "周四",
+       "照旧"
+      ],
+      [
+       "球局",
+       "照常"
+      ]
+     ],
+     "item_markers": [
+      "周四晚八点",
+      "球馆 3 号场地",
+      "3 号场地"
+     ]
+    },
+    {
+     "atom_id": "E338_T13_A02",
+     "subject": "THIRD",
+     "relation": "停业事实",
+     "value": "球馆地胶整体更换、12 月闭馆改造、这周起停业（球馆通知，HER 转述）",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T13",
+      "quote": "地胶整体更换，12 月闭馆改造，这周起停业",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T13_A03",
+     "subject": "SHARED",
+     "relation": "订金退还",
+     "value": "订金按预约顺序退，退下来 HER 告知",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T13",
+      "quote": "订金按预约顺序退",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T13_A04",
+     "subject": "HER",
+     "relation": "损失吐槽",
+     "value": "HER 抢了半年的周四黄金位说没就没",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T13",
+      "quote": "我抢了半年的周四黄金位，说没就没",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "通知是球馆发的（她转述）；球局进入取消态，别劝她改去别馆硬续。",
+   "unknowns": [
+    {
+     "topic": "球馆重开时间",
+     "note": "本轮只说 12 月闭馆改造，未给重开时间（T28 才有老板口头 1 月中旬）",
+     "markers": [
+      [
+       "重开"
+      ],
+      [
+       "1 月",
+       "开"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "重开"
+      ],
+      [
+       "1 月",
+       "开"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把本周或 12 月内的周四球局说成照常进行",
+    "不得把脉动债说成已了结或必须周四交割（见面再补）",
+    "不得编造重开日期"
+   ],
+   "may_decline": false
+  },
+  "E338_T14": {
+   "case_id": "E338_T14",
+   "current_action": "取消态当日验证：周四晚在家拼一千片猫咪拼图，拼出一只猫耳朵",
+   "acceptable_actions": [
+    "接'拼出一只耳朵'玩笑夸进度",
+    "说拼图费脖子提醒歇会",
+    "认可没有球局的夜晚也很充实"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T14_A01",
+     "subject": "HER",
+     "relation": "替代活动",
+     "value": "2026-12-03 晚 HER 在家拼一千片猫咪拼图，拼出一只猫耳朵",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T14",
+      "quote": "今天在家拼拼图，一千片的猫咪拼图，拼了俩小时，拼出一只猫耳朵",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T14_A02",
+     "subject": "SHARED",
+     "relation": "周四球局",
+     "value": "周四球局维持取消态：当晚无球局",
+     "valid_time": "2026-12-03",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T02",
+      "quote": "周四晚八点老时间，球馆 3 号场地",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "周四",
+       "球"
+      ],
+      [
+       "球馆",
+       "打球"
+      ],
+      [
+       "照旧",
+       "球"
+      ]
+     ],
+     "item_markers": [
+      "周四晚八点",
+      "球馆 3 号场地"
+     ]
+    }
+   ],
+   "private_guidance": "验证位：别提议去打球或把当晚说成有球局。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得提议当晚去球馆或把当晚说成有球局"
+   ],
+   "may_decline": false
+  },
+  "E338_T15": {
+   "case_id": "E338_T15",
+   "current_action": "展会提前级联更正：开展 12-12（周六）提至 12-11（周五）仍连开两天；物料搬运提前至 12-10（周四）19:00 公司楼下",
+   "acceptable_actions": [
+    "接提前消息并确认周四晚七点装车",
+    "确认两处新时间并接'有求必应'的玩笑",
+    "答应周四到并复述'11 号周五开展'"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T15_A01",
+     "subject": "SHARED",
+     "relation": "开展旧档期",
+     "value": "开展原定 2026-12-12（周六）（T15 提前后作废）",
+     "valid_time": "2026-12-12",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "12 月 12 号周六",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "12 号",
+       "开展",
+       "没错"
+      ],
+      [
+       "还是",
+       "12 号",
+       "开展"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T15_A02",
+     "subject": "SHARED",
+     "relation": "开展新档期",
+     "value": "开展提前至 2026-12-11（周五），仍连开两天",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T15",
+      "quote": "开展从 12 号周六提到 11 号周五，连开两天",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "11 号",
+       "周五"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T15_A03",
+     "subject": "SHARED",
+     "relation": "搬运旧安排",
+     "value": "物料搬运原定 2026-12-11（周五）晚（级联提前后作废）",
+     "valid_time": "2026-12-11",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "周五晚上先帮我搬物料，两箱画册一个易拉宝",
+      "message_id": "m1"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "还是",
+       "周五",
+       "装车"
+      ],
+      [
+       "周五",
+       "搬物料",
+       "没错"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T15_A04",
+     "subject": "SHARED",
+     "relation": "搬运新安排",
+     "value": "物料搬运提前至 2026-12-10（周四）19:00，HER 公司楼下装车",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T15",
+      "quote": "10 号周四晚上七点装车，我公司楼下",
+      "message_id": "m1"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "10 号",
+       "周四"
+      ],
+      [
+       "七点",
+       "装车"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "本轮带显式意图：级联更正要两处一起接（开展日+搬运时间），只改一处算漏。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得按 12 号周六开展回应",
+    "不得按周五晚搬物料回应",
+    "不得只改开展日不改搬运时间"
+   ],
+   "may_decline": false
+  },
+  "E338_T16": {
+   "case_id": "E338_T16",
+   "current_action": "敲定新口径：10 号周四晚七点装车、C14 展位、11 号早九点开展 ME 到场站台",
+   "acceptable_actions": [
+    "确认全部新口径并应下站台",
+    "接工牌玩笑说当一天编外员工",
+    "确认并说'管饭'这句记住了"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T16_A01",
+     "subject": "SHARED",
+     "relation": "搬运新安排",
+     "value": "2026-12-10（周四）19:00 HER 公司楼下装车（T15 新口径敲定）",
+     "valid_time": "2026-12-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T15",
+      "quote": "10 号周四晚上七点装车，我公司楼下",
+      "message_id": "m1"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "10 号",
+       "周四"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T16_A02",
+     "subject": "SHARED",
+     "relation": "展位与开展确认",
+     "value": "展位 C14；2026-12-11 早九点开展；ME 到场站台、工牌 HER 留着、管饭",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T16",
+      "quote": "展位 C14，11 号早上九点开展，你得来站台，工牌我给你留着，管饭",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "C14"
+      ],
+      [
+       "九点",
+       "开展"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T16_A03",
+     "subject": "SHARED",
+     "relation": "展位旧值",
+     "value": "B27 作废",
+     "valid_time": "2026-12-12",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "展位 B27",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还是",
+       "B27"
+      ],
+      [
+       "B27",
+       "展位"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T16_A04",
+     "subject": "SHARED",
+     "relation": "开展旧档期",
+     "value": "12-12（周六）开展旧档期作废",
+     "valid_time": "2026-12-12",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "12 月 12 号周六",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "12 号",
+       "开展",
+       "没错"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "复述确认位：三个新值（10 号周四七点/C14/11 号九点）都别说错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把开展日说回 12 号周六",
+    "不得把装车说成周五晚"
+   ],
+   "may_decline": false
+  },
+  "E338_T17": {
+   "case_id": "E338_T17",
+   "current_action": "高铁改签：G1377/18:06 改为 G1373/17:25，仍城站，12-05 当日提前回",
+   "acceptable_actions": [
+    "确认新班次并接'七大姑八大姨'的玩笑",
+    "确认改签并说提前到正好帮忙布置",
+    "确认 G1373/17:25 并祝布置顺利"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T17_A01",
+     "subject": "HER",
+     "relation": "车票旧值",
+     "value": "原车票 G1377 次 18:06 城站出发（T17 改签后作废）",
+     "valid_time": "2026-12-05",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T07",
+      "quote": "票买好了：G1377，18:06，城站出发",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "还是",
+       "G1377"
+      ],
+      [
+       "G1377",
+       "没错"
+      ],
+      [
+       "坐",
+       "G1377"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T17_A02",
+     "subject": "HER",
+     "relation": "车票新值",
+     "value": "改签为 G1373 次 17:25，仍城站出发，2026-12-05 当日",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T17",
+      "quote": "改成 G1373，17:25，还是城站",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "G1373"
+      ],
+      [
+       "17:25"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T17_A03",
+     "subject": "HER",
+     "relation": "改签原因",
+     "value": "HER 母亲要求 5 号下午就到帮忙布置寿宴",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T17",
+      "quote": "我妈非让我 5 号下午就到，帮忙布置寿宴",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本轮带显式意图：告知改签——接新班次即可，旧班次别再提。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得沿用 G1377 或 18:06 作为出行口径",
+    "不得把改签说成取消回乡"
+   ],
+   "may_decline": false
+  },
+  "E338_T18": {
+   "case_id": "E338_T18",
+   "current_action": "寿宴开席：《女驸马》过审，红包八个，弟弟拍照全拍成菜",
+   "acceptable_actions": [
+    "接'摄影担当担了个寂寞'的玩笑",
+    "问姥姥高不高兴",
+    "接红包八个的梗夸她准备齐全"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T18_A01",
+     "subject": "HER",
+     "relation": "寿宴现场",
+     "value": "2026-12-06 寿宴开席，节目《女驸马》姥姥说温和给面子",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T18",
+      "quote": "寿宴开席！姥姥收了节目单，《女驸马》她说温和，给面子",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T18_A02",
+     "subject": "HER",
+     "relation": "家务分工",
+     "value": "HER 包了八个红包；弟弟负责拍照但全拍成菜",
+     "valid_time": "2026-12-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T18",
+      "quote": "红包我包了八个，我弟负责拍照",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在家事现场，接玩笑为主，别追问细节。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E338_T19": {
+   "case_id": "E338_T19",
+   "current_action": "返程回城：腿坐麻了，寿桃剩俩，明天恢复上班展开会",
+   "acceptable_actions": [
+    "接'它们值得'的玩笑欢迎回城",
+    "提醒明天展开会早点歇",
+    "接寿桃梗并问她累不累"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T19_A01",
+     "subject": "HER",
+     "relation": "返程",
+     "value": "HER 2026-12-07 晚返程回城",
+     "valid_time": "2026-12-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T19",
+      "quote": "回来了，腿坐麻了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T19_A02",
+     "subject": "HER",
+     "relation": "次日安排",
+     "value": "2026-12-08 恢复上班、展开会",
+     "valid_time": "2026-12-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T19",
+      "quote": "明天恢复上班，展开会",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "旅途劳顿位，短句关心即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E338_T20": {
+   "case_id": "E338_T20",
+   "current_action": "物料就绪：画册两箱装好、易拉宝次日到公司，复述 10 号周四晚七点装车",
+   "acceptable_actions": [
+    "确认 10 号周四晚七点公司楼下集合",
+    "接'易拉宝怕挤'玩笑保证给它留位置",
+    "确认并问后备箱要不要腾空间"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T20_A01",
+     "subject": "SHARED",
+     "relation": "搬运新安排",
+     "value": "装车 2026-12-10（周四）19:00 HER 公司楼下（T15/T16 口径回扣）",
+     "valid_time": "2026-12-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T15",
+      "quote": "10 号周四晚上七点装车，我公司楼下",
+      "message_id": "m1"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "10 号",
+       "周四"
+      ],
+      [
+       "七点"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T20_A02",
+     "subject": "HER",
+     "relation": "物料进度",
+     "value": "画册已装两箱，易拉宝 12-09 到公司",
+     "valid_time": "2026-12-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T20",
+      "quote": "画册装箱了，两箱，易拉宝明天到公司",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T20_A03",
+     "subject": "SHARED",
+     "relation": "搬运旧安排",
+     "value": "周五晚搬物料旧安排作废",
+     "valid_time": "2026-12-11",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "周五晚上先帮我搬物料，两箱画册一个易拉宝",
+      "message_id": "m1"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还是",
+       "周五",
+       "装车"
+      ],
+      [
+       "周五",
+       "搬物料",
+       "没错"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "回扣位：装车口径必须是 10 号周四晚七点。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把装车时间说成周五晚（新口径为 10 号周四晚七点）"
+   ],
+   "may_decline": false
+  },
+  "E338_T21": {
+   "case_id": "E338_T21",
+   "current_action": "拼图出边框、狸花窗外围观当监工，可简短回应或不回",
+   "acceptable_actions": [
+    "接'猫界监工'的玩笑",
+    "夸边框进度说比领导验收还严",
+    "合法不回或回个短句"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T21_A01",
+     "subject": "HER",
+     "relation": "日常进展",
+     "value": "拼图拼出边框，楼下狸花窗外围观一晚",
+     "valid_time": "2026-12-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T21",
+      "quote": "拼图拼出边框了，楼下狸花在窗外围观一晚上",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "日常播报，接梗或沉默都合法。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  },
+  "E338_T22": {
+   "case_id": "E338_T22",
+   "current_action": "装车当日执行：物料在门卫室装车，11 号门票放 ME 副驾储物格",
+   "acceptable_actions": [
+    "确认到场装车并收好门票",
+    "接'压一压'说后备箱塞得下",
+    "确认并问易拉宝立哪侧防倒"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T22_A01",
+     "subject": "SHARED",
+     "relation": "装车执行",
+     "value": "2026-12-10 晚装车：两箱画册一个易拉宝从门卫室上车",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T22",
+      "quote": "物料在门卫室，两箱画册一个易拉宝，后备箱塞得下，压一压",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T22_A02",
+     "subject": "SHARED",
+     "relation": "门票交付",
+     "value": "2026-12-11 展会门票已打印，放在 ME 车副驾储物格",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T22",
+      "quote": "11 号的门票我打印好了，放你副驾储物格",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T22_A03",
+     "subject": "SHARED",
+     "relation": "搬运新安排",
+     "value": "装车按 2026-12-10（周四）19:00 新口径执行",
+     "valid_time": "2026-12-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T15",
+      "quote": "10 号周四晚上七点装车，我公司楼下",
+      "message_id": "m1"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "10 号",
+       "周四"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "执行位：现场确认为主，短句最合适。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E338_T23": {
+   "case_id": "E338_T23",
+   "current_action": "布展完成：易拉宝立在 C14 正中间调了半小时，明日九点开展、工牌在储物格",
+   "acceptable_actions": [
+    "夸布展成果并确认明天九点到",
+    "接'终于不歪了'玩笑说它值这半小时",
+    "确认 C14 与九点并说工牌会在"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T23_A01",
+     "subject": "SHARED",
+     "relation": "展位新值",
+     "value": "展位 C14（T09 口径，布展执行回扣）",
+     "valid_time": "2026-12-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T09",
+      "quote": "我们从 B27 挪到 C14，手册得重印",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "C14"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T23_A02",
+     "subject": "SHARED",
+     "relation": "展位旧值",
+     "value": "B27 作废",
+     "valid_time": "2026-12-12",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "展位 B27",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还是",
+       "B27"
+      ],
+      [
+       "B27",
+       "展位"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T23_A03",
+     "subject": "HER",
+     "relation": "布展完成",
+     "value": "易拉宝立于 C14 正中间，HER 独自调了半小时",
+     "valid_time": "2026-12-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T23",
+      "quote": "易拉宝立在 C14 正中间，我一个人调了半小时，终于不歪了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T23_A04",
+     "subject": "SHARED",
+     "relation": "开展确认",
+     "value": "2026-12-11 早九点开展，ME 到场，工牌在副驾储物格",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T23",
+      "quote": "明天九点开展，你真来啊，工牌在储物格",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "长距回指位（跨度 14）：C14 必须说对，开展时间九点别错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把展位说成 B27",
+    "不得把开展时间说成十点或其他钟点"
+   ],
+   "may_decline": false
+  },
+  "E338_T24": {
+   "case_id": "E338_T24",
+   "current_action": "开展首日：C14 排队领小样，HER 约 ME 到场并带咖啡九点半前",
+   "acceptable_actions": [
+    "确认到场并接咖啡邀约",
+    "接'过了也候'的玩笑说马上出发",
+    "确认并夸小样排队的场面"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T24_A01",
+     "subject": "HER",
+     "relation": "开展现场",
+     "value": "2026-12-11 开展首日，C14 展台排队领小样",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T24",
+      "quote": "开展！人从众！C14 我们展台排队领小样",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T24_A02",
+     "subject": "SHARED",
+     "relation": "咖啡邀约",
+     "value": "HER 约 ME 到场并带咖啡，九点半前，过了也候",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T24",
+      "quote": "你到了来找我，给你带咖啡，九点半前——好吧，过了也候",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T24_A03",
+     "subject": "SHARED",
+     "relation": "展位新值",
+     "value": "C14 展位当日执行（T09 口径）",
+     "valid_time": "2026-12-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T09",
+      "quote": "我们从 B27 挪到 C14，手册得重印",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "C14"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "当天执行位，答应到场+接咖啡梗即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 C14 写成 B27"
+   ],
+   "may_decline": false
+  },
+  "E338_T25": {
+   "case_id": "E338_T25",
+   "current_action": "首日收工邀约：明天（12-12）最后一天，请 ME 再来顶半小时，咖啡管够脉动也行",
+   "acceptable_actions": [
+    "答应明天顶半小时",
+    "答应并接'脉动也行'说自带脉动",
+    "答应并问几点到方便错峰"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T25_A01",
+     "subject": "SHARED",
+     "relation": "次日顶班邀约",
+     "value": "HER 邀 ME 2026-12-12（展会最后一天）到 C14 顶半小时",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T25",
+      "quote": "明天最后一天，周末人更多，你再来帮我顶半小时？咖啡管够，脉动也行",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T25_A02",
+     "subject": "HER",
+     "relation": "首日战报",
+     "value": "首日结束嗓子冒烟，小样发出三百个",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T25",
+      "quote": "第一天结束，嗓子冒烟，小样发出三百个",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本轮带显式意图：邀约帮忙——答应或给可行替代；12 号是最后一天不是已结束。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 12 号说成展会已结束（12 号是最后一天）"
+   ],
+   "may_decline": false
+  },
+  "E338_T26": {
+   "case_id": "E338_T26",
+   "current_action": "展会收官：两天小样八百个，C14 光荣退休，HER 点粥加蛋庆祝瘫倒",
+   "acceptable_actions": [
+    "恭喜收官并接'荣誉退休'",
+    "接粥加蛋庆祝说辛苦了",
+    "夸 800 小样的战绩并让她好好瘫着"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T26_A01",
+     "subject": "SHARED",
+     "relation": "展会收官",
+     "value": "2026-12-12 展会收官：两天小样八百个、名片一沓",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T26",
+      "quote": "收摊！两天下来小样八百个，名片一沓",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T26_A02",
+     "subject": "SHARED",
+     "relation": "展位新值",
+     "value": "C14 完成任务荣誉退休（T09 口径回扣）",
+     "valid_time": "2026-12-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T09",
+      "quote": "我们从 B27 挪到 C14，手册得重印",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "C14"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T26_A03",
+     "subject": "SHARED",
+     "relation": "展位旧值",
+     "value": "B27 作废",
+     "valid_time": "2026-12-12",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T01",
+      "quote": "展位 B27",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还是",
+       "B27"
+      ],
+      [
+       "B27",
+       "展位"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T26_A04",
+     "subject": "HER",
+     "relation": "当晚状态",
+     "value": "HER 瘫了点了粥加蛋庆祝",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T26",
+      "quote": "今晚我瘫了，点了粥，加了个蛋，庆祝",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收官回扣位（跨度 17）：C14 别说成 B27；她累瘫了，别硬约事。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把展位说成 B27"
+   ],
+   "may_decline": false
+  },
+  "E338_T27": {
+   "case_id": "E338_T27",
+   "current_action": "腊肠到货更正：辣的腌咸没寄，只寄不辣的两斤；备注'不辣的给小韩'；周一拎公司",
+   "acceptable_actions": [
+    "接更正认领不辣的两斤",
+    "接备注玩笑说叔叔的偏心很准",
+    "确认周一公司交割并谢她爸"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "attribution",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T27_A01",
+     "subject": "HER",
+     "relation": "腊肠旧口径",
+     "value": "原口径'两斤辣+两斤不辣'作废：辣的那批腌咸没寄",
+     "valid_time": "2026-12-01",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T03",
+      "quote": "今年腊肠灌好了，12 月初给我寄：两斤辣的，两斤不辣的",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "两斤",
+       "辣的",
+       "到了"
+      ],
+      [
+       "辣的",
+       "也寄",
+       "了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T27_A02",
+     "subject": "HER",
+     "relation": "腊肠实际口径",
+     "value": "实际只寄不辣的两斤；辣的腌咸这批没寄",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T27",
+      "quote": "辣的那批他说腌咸了，这批没寄，就寄了不辣的两斤",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "不辣",
+       "两斤"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E338_T27_A03",
+     "subject": "HER",
+     "relation": "快递备注",
+     "value": "快递单备注'不辣的给小韩'（回扣 T12）",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T27",
+      "quote": "我爸快递单备注写着“不辣的给小韩”",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T27_A04",
+     "subject": "SHARED",
+     "relation": "交割安排",
+     "value": "HER 周一（2026-12-14）拎公司去给 ME",
+     "valid_time": "2026-12-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T27",
+      "quote": "周一我拎公司去，你的跑不了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T27_A05",
+     "subject": "SHARED",
+     "relation": "到货通知",
+     "value": "驿站短信：腊肠到了",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T27",
+      "quote": "驿站短信：腊肠到了！",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "更正位：辣的没寄是关键差异，别按'两斤辣+两斤不辣'清点。",
+   "unknowns": [
+    {
+     "topic": "腌咸的辣味腊肠是否补寄",
+     "note": "正文只说这批没寄，未提补寄安排，不得代 HER 承诺",
+     "markers": [
+      [
+       "辣的",
+       "补寄"
+      ],
+      [
+       "再寄",
+       "辣"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "辣的",
+       "补寄"
+      ],
+      [
+       "再寄",
+       "辣"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说辣的腊肠已寄到或即将寄到",
+    "不得按'两斤辣+两斤不辣'的旧口径清点",
+    "不得把 ME 的份额说成辣味腊肠"
+   ],
+   "may_decline": false
+  },
+  "E338_T28": {
+   "case_id": "E338_T28",
+   "current_action": "路过闭馆球馆见铲地胶；老板口头提 1 月中旬重开问续订，HER 表态等重开再说、别急着掏钱",
+   "acceptable_actions": [
+    "支持'等重开再说'，不催她续订",
+    "接粉尘飞扬的玩笑说球馆在换牙",
+    "认可她的谨慎并自然转开话题"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "attribution",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T28_A01",
+     "subject": "SHARED",
+     "relation": "周四球局",
+     "value": "球局维持取消态：老板口头重开消息不得让球局复活",
+     "valid_time": "2026-12-03",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T02",
+      "quote": "周四晚八点老时间，球馆 3 号场地",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "周四",
+       "球"
+      ],
+      [
+       "下周四",
+       "球"
+      ],
+      [
+       "周四",
+       "照旧"
+      ],
+      [
+       "照旧",
+       "球"
+      ]
+     ],
+     "item_markers": [
+      "周四晚八点",
+      "球馆 3 号场地",
+      "3 号场地"
+     ]
+    },
+    {
+     "atom_id": "E338_T28_A02",
+     "subject": "THIRD",
+     "relation": "球馆现状",
+     "value": "球馆正在铲地胶、粉尘飞扬（HER 路过目睹）",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T28",
+      "quote": "我路过球馆，里头铲地胶呢，粉尘飞扬",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T28_A03",
+     "subject": "THIRD",
+     "relation": "重开口头消息",
+     "value": "球馆老板口头称 1 月中旬重开，问 HER 还订不订周四的场；单方消息，未成立",
+     "valid_time": "2026-12-13",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T28",
+      "quote": "老板说 1 月中旬重开，问我还订不订周四的场",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T28_A04",
+     "subject": "HER",
+     "relation": "表态",
+     "value": "HER 表态等重开再说，别急着掏钱",
+     "valid_time": "2026-12-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T28",
+      "quote": "我说等重开再说，别急着掏钱",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "诱惑位：'1 月中旬重开'只是老板口头消息，正确做法是认同她'等重开再说'，不坐实、不代订。",
+   "unknowns": [
+    {
+     "topic": "球馆 1 月中旬重开与续订",
+     "note": "老板口头消息，HER 表态等重开再说、未订场；重开与续订均未成立",
+     "markers": [
+      [
+       "现在",
+       "订场"
+      ],
+      [
+       "订好了",
+       "周四"
+      ],
+      [
+       "把场订了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "现在",
+       "订场"
+      ],
+      [
+       "订好了",
+       "周四"
+      ],
+      [
+       "把场订了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我说等重开再说，别急着掏钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得把'1 月中旬重开'坐实为已确定或已重开",
+    "不得替 HER 决定续订周四场",
+    "不得把周四球局说成已恢复"
+   ],
+   "may_decline": false
+  },
+  "E338_T29": {
+   "case_id": "E338_T29",
+   "current_action": "展会复盘：C14 位置好客流 1.5 倍、领导当众夸，随即派了校园渠道新活",
+   "acceptable_actions": [
+    "先夸战绩再接'派活火葬场'的吐槽",
+    "接客流量 1.5 倍说 C14 立功",
+    "问她校园方案要不要帮参谋"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T29_A01",
+     "subject": "HER",
+     "relation": "复盘结果",
+     "value": "复盘：C14 位置好，客流量为上回 1.5 倍，领导当众夸",
+     "valid_time": "2026-12-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T29",
+      "quote": "C14 位置好，客流量是上回的 1.5 倍，领导当众夸我",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T29_A02",
+     "subject": "HER",
+     "relation": "新任务",
+     "value": "领导派新活：下季度校园渠道方案",
+     "valid_time": "2026-12-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T29",
+      "quote": "夸完派了新活，下季度校园渠道方案",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T29_A03",
+     "subject": "SHARED",
+     "relation": "展位新值",
+     "value": "C14 口径延续（回扣）",
+     "valid_time": "2026-12-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T09",
+      "quote": "我们从 B27 挪到 C14，手册得重印",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "C14"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "先接夸奖再接吐槽，顺序别反。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 C14 说成 B27"
+   ],
+   "may_decline": false
+  },
+  "E338_T30": {
+   "case_id": "E338_T30",
+   "current_action": "腊肠兑现：蒸两根配白粥，剩四根明早送 ME 工位（不辣的）",
+   "acceptable_actions": [
+    "接'手艺没退步'并谢投喂",
+    "说明早工位等腊肠",
+    "接白粥配腊肠的搭配夸实惠"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T30_A01",
+     "subject": "HER",
+     "relation": "兑现动作",
+     "value": "HER 蒸了两根腊肠配白粥，评价手艺没退步",
+     "valid_time": "2026-12-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T30",
+      "quote": "腊肠到货，我蒸了两根配白粥，我爸手艺没退步",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T30_A02",
+     "subject": "SHARED",
+     "relation": "工位交付",
+     "value": "剩下的四根（不辣的）明早送 ME 工位",
+     "valid_time": "2026-12-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T30",
+      "quote": "剩下的四根明早到你工位，不辣的，放心吃",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T30_A03",
+     "subject": "HER",
+     "relation": "腊肠实际口径",
+     "value": "到货的只有不辣的两斤（辣的未寄，T27 口径）",
+     "valid_time": "2026-12-13",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T27",
+      "quote": "辣的那批他说腌咸了，这批没寄，就寄了不辣的两斤",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "不辣",
+       "两斤"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "回扣位：送到工位的是不辣的四根，别把口味说反。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把送到工位的腊肠说成辣味"
+   ],
+   "may_decline": false
+  },
+  "E338_T31": {
+   "case_id": "E338_T31",
+   "current_action": "条件式重启钩：球馆 1 月重开的话周四之夜接着办（未成立）；寿宴照片玩笑",
+   "acceptable_actions": [
+    "以条件式回应：等重开再把老位抢回来",
+    "接打球照片玩笑说营业下班无缝切换",
+    "两者都接：条件句对条件句，再评一句照片"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T31_A01",
+     "subject": "SHARED",
+     "relation": "周四球局",
+     "value": "球局取消态未解除：'1 月重开接着办'为条件句，重开未发生、未订场",
+     "valid_time": "2026-12-03",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T02",
+      "quote": "周四晚八点老时间，球馆 3 号场地",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "这周四",
+       "球"
+      ],
+      [
+       "下周四",
+       "球"
+      ],
+      [
+       "周四",
+       "照旧"
+      ],
+      [
+       "球局",
+       "照常"
+      ]
+     ],
+     "item_markers": [
+      "周四球局",
+      "球馆 3 号场地",
+      "3 号场地"
+     ]
+    },
+    {
+     "atom_id": "E338_T31_A02",
+     "subject": "HER",
+     "relation": "条件式意向",
+     "value": "HER 意向：若球馆 1 月重开，周四之夜接着办、抢回老位（以重开为前提，未成立）",
+     "valid_time": "2026-12-15",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T31",
+      "quote": "球馆 1 月重开的话，周四之夜接着办，老位咱抢回来",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T31_A03",
+     "subject": "HER",
+     "relation": "照片玩笑",
+     "value": "寿宴照片洗出，HER 挑了张 ME 打球的发来调侃'像极了营业，又像极了下班'",
+     "valid_time": "2026-12-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T31",
+      "quote": "寿宴照片洗出来了，我挑了张你打球的发你，像极了营业，又像极了下班",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本轮带显式意图：回应重开后周四场意向——用条件句对条件句（'等重开'），别把话说成已定；照片梗接住。",
+   "unknowns": [
+    {
+     "topic": "重开后是否恢复周四场",
+     "note": "以 1 月重开为前提的条件钩：重开未发生、未订场、未成立，不得坐实为已定安排",
+     "markers": [
+      [
+       "说定了"
+      ],
+      [
+       "敲定"
+      ],
+      [
+       "定好了",
+       "周四"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "说定了"
+      ],
+      [
+       "敲定"
+      ],
+      [
+       "定好了",
+       "周四"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把'1 月重开后接着办'回应成已确定的固定安排",
+    "不得替 HER 现在就订场或承诺具体日期"
+   ],
+   "may_decline": false
+  },
+  "E338_T32": {
+   "case_id": "E338_T32",
+   "current_action": "收尾：校园方案初稿收工；催 ME 欠的蓝色脉动（ME 欠 HER，见面补）；攒劲等球馆重开",
+   "acceptable_actions": [
+    "轻收：认下脉动账并等球馆重开",
+    "接'腊肠第一'的利息说下回补脉动",
+    "合法不回或简短道别"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction",
+    "boundary",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E338_T32_A01",
+     "subject": "SHARED",
+     "relation": "脉动债",
+     "value": "ME 欠 HER 一瓶蓝色脉动（T05 HER 21:19 险胜+T11 催账），哪天见面补上",
+     "valid_time": "2026-12-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T11",
+      "quote": "你欠的脉动周四记得，蓝色那瓶",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E338_T32_A02",
+     "subject": "HER",
+     "relation": "本场结果",
+     "value": "债的由来：2026-11-26 球局 HER 21:19 险胜（输者请脉动）",
+     "valid_time": "2026-11-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T05",
+      "quote": "今天 21:19 险胜",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T32_A03",
+     "subject": "SHARED",
+     "relation": "输者请脉动规矩",
+     "value": "球局规矩：输的人请脉动（方向：ME 输→ME 欠 HER）",
+     "valid_time": "2026-11-26",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T02",
+      "quote": "输的人请脉动",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E338_T32_A04",
+     "subject": "HER",
+     "relation": "腊肠回扣",
+     "value": "HER 问腊肠吃到第几根了（T27/T30 后续）",
+     "valid_time": "2026-12-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T32",
+      "quote": "腊肠吃到第几根了？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T32_A05",
+     "subject": "HER",
+     "relation": "收尾信号",
+     "value": "HER 收束本周：'这周就到这儿，攒着劲儿，等球馆重开'",
+     "valid_time": "2026-12-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T32",
+      "quote": "这周就到这儿，攒着劲儿，等球馆重开",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E338_T32_A06",
+     "subject": "SHARED",
+     "relation": "周四球局",
+     "value": "球局仍处取消态：'等球馆重开'为条件式，不得当已恢复",
+     "valid_time": "2026-12-03",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E338_T02",
+      "quote": "周四晚八点老时间，球馆 3 号场地",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "这周四",
+       "球"
+      ],
+      [
+       "下周四",
+       "球"
+      ],
+      [
+       "球局",
+       "照常"
+      ]
+     ],
+     "item_markers": [
+      "周四晚八点",
+      "球馆 3 号场地",
+      "3 号场地"
+     ]
+    }
+   ],
+   "private_guidance": "收尾+债权方向位：脉动是 ME 欠 HER（蓝色那瓶），方向绝不能反；条件式收尾别坐实重开。",
+   "unknowns": [
+    {
+     "topic": "见面补脉动的具体日期",
+     "note": "只说'哪天见面补上'，未定日期",
+     "markers": [
+      [
+       "明天",
+       "脉动"
+      ],
+      [
+       "周六",
+       "脉动"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "明天",
+       "脉动"
+      ],
+      [
+       "周六",
+       "脉动"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "这周就到这儿，攒着劲儿，等球馆重开"
+   ],
+   "forbidden_factual_claims": [
+    "不得把脉动债方向说反（ME 欠 HER 一瓶蓝色脉动）",
+    "不得把球馆重开坐实为已重开或已订场",
+    "不得在收尾位硬开新邀约"
+   ],
+   "may_decline": true
+  }
+ }
+}

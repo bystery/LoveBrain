@@ -1,0 +1,858 @@
+{
+ "story_id": "E306",
+ "turns": {
+  "E306_T01": {
+   "case_id": "E306_T01",
+   "current_action": "HER 例行开损：格子衫今年第几次上岗，年会演示穿成这样老蒋第一反应是找 ME 收网线费",
+   "acceptable_actions": [
+    "接损再还损（格子衫是制服、你方案改到第几稿了式）",
+    "自嘲格子衫钉子户并接网线费梗",
+    "顺老蒋梗（收网线费好歹给开个发票式）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T01_A01",
+     "subject": "HER",
+     "relation": "开损",
+     "value": "HER 损 ME 格子衫今年第几次上岗",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T01",
+      "message_id": "m0",
+      "quote": "你那件格子衫今年第几次上岗了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T01_A02",
+     "subject": "SHARED",
+     "relation": "年会分工",
+     "value": "年会 ME 要上台演示",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T01",
+      "message_id": "m0",
+      "quote": "年会你上台演示"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T01_A03",
+     "subject": "HER",
+     "relation": "网线费梗",
+     "value": "HER 玩笑老蒋会找 ME 收网线费",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T01",
+      "message_id": "m0",
+      "quote": "找你收网线费"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "互损开场轮（lessons：先损为敬，接住再还）：只接不还=闷，还损要打她的领域（策划稿/数数），别攻击外貌身材。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得真生气或上纲上线",
+    "不得还损越界（外貌/私生活）"
+   ],
+   "may_decline": false
+  },
+  "E306_T02": {
+   "case_id": "E306_T02",
+   "current_action": "HER 下'正事'：抽奖H5给露露工号做彩蛋——输进去弹一句'扫地机器人，预定的那个人是你'，要看念叨半个月的她原地飞起来",
+   "acceptable_actions": [
+    "不情不愿答应并顺手加条件（彩蛋可以有、奶茶加一杯式）",
+    "答应并反损她看热闹不嫌事大（我算从犯式）",
+    "答应并技术性吐槽（这算需求还是整活、按整活排期式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T02_A01",
+     "subject": "HER",
+     "relation": "彩蛋要求",
+     "value": "HER 要求抽奖H5给露露的工号做彩蛋",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T02",
+      "message_id": "m0",
+      "quote": "露露的工号输进去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T02_A02",
+     "subject": "SHARED",
+     "relation": "彩蛋文案",
+     "value": "彩蛋文案为'扫地机器人，预定的那个人是你'",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T02",
+      "message_id": "m0",
+      "quote": "预定的那个人是你"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T02_A03",
+     "subject": "THIRD",
+     "relation": "彩蛋起因",
+     "value": "露露念叨扫地机器人半个月",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T02",
+      "message_id": "m0",
+      "quote": "她念叨半个月了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她安排的事嘴上嫌弃手上照办（lessons 明示）——答应是底线，'不情不愿'的口气是两人相处的方式；真拒绝或讨价还价过头都算接错场域。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得真拒绝做彩蛋",
+    "不得向露露剧透彩蛋"
+   ],
+   "may_decline": false
+  },
+  "E306_T03": {
+   "case_id": "E306_T03",
+   "current_action": "HER 转述 ME 团建敬酒金句被露露录成十五秒、成了全公司表情包，她存了高清版要放进年度混剪《研发部之魂》，问 ME 有没有意见、没有就当通过了",
+   "acceptable_actions": [
+    "假意抗议后放行（意见有一条、署名要加格子衫式）",
+    "认领梗并反问混剪里她排第几（把镜头抢回去式互损）",
+    "接'没有就当通过了'（听证会流程挺草率式）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T03_A01",
+     "subject": "ME",
+     "relation": "敬酒金句",
+     "value": "ME 团建敬酒金句'祝大家早日财务自由，我先自由这一杯'被录成十五秒",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T03",
+      "message_id": "m0",
+      "quote": "祝大家早日财务自由，我先自由这一杯"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T03_A02",
+     "subject": "HER",
+     "relation": "混剪计划",
+     "value": "HER 计划把素材放进年度混剪《研发部之魂》",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T03",
+      "message_id": "m0",
+      "quote": "研发部之魂"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "素材流转轮（NOTE：视频为露露所录、江晚转述）：她要的是通行证，玩笑式放行即可；别真追究肖像权扫兴，也别当真问'哪录的'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得当真抗议或要求删除",
+    "不得编造视频里的新内容"
+   ],
+   "may_decline": false
+  },
+  "E306_T04": {
+   "case_id": "E306_T04",
+   "current_action": "HER 盯上 ME 外卖备注'不要香菜，多要两双筷子'，玩笑追问一个人多的一双筷子是防谁、防我吗",
+   "acceptable_actions": [
+    "接住玩笑不给死答案（防香菜党渗透式岔开）",
+    "留退路式接（哪天你拼桌就动用第二双式可撤回）",
+    "反掷（备注是写给店家的、防的是店家式）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T04_A01",
+     "subject": "ME",
+     "relation": "外卖备注",
+     "value": "ME 外卖备注固定为'不要香菜，多要两双筷子'",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T04",
+      "message_id": "m0",
+      "quote": "不要香菜，多要两双筷子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T04_A02",
+     "subject": "HER",
+     "relation": "试探钩",
+     "value": "HER 玩笑追问多的一双筷子防谁、防我吗",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T04",
+      "message_id": "m0",
+      "quote": "多的一双是防谁？防我吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "半开玩笑试探（'防我吗'带钩）：接/反掷/留退路都安全；认真解释筷子用途=把钩子当纯事务（0档），顺着说'就是给你留的'=点破越线（她的边界：玩笑不出办公室、不先点破）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实'就是给你准备的'式点破",
+    "不得把玩笑当卫生问题认真科普"
+   ],
+   "may_decline": false
+  },
+  "E306_T05": {
+   "case_id": "E306_T05",
+   "current_action": "HER 数出年会主持稿里 ME 名字出现七次、自己五次，重数两遍还是七比五，撇清'没有别的意思，就是职业病，爱数数'",
+   "acceptable_actions": [
+    "接住数数梗不自证（七比五、我出场费该涨式）",
+    "反掷（下稿我帮你把五改成七、礼尚往来式可撤回玩笑）",
+    "接她职业病自嘲（做表做出来的肌肉记忆式接住）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T05_A01",
+     "subject": "HER",
+     "relation": "名字计数",
+     "value": "主持稿里 ME 名字出现七次、HER 名字出现五次",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T05",
+      "message_id": "m0",
+      "quote": "你名字出现七次，我名字出现五次"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T05_A02",
+     "subject": "HER",
+     "relation": "撇清",
+     "value": "HER 撇清没有别的意思、只是职业病爱数数",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T05",
+      "message_id": "m0",
+      "quote": "没有别的意思，就是职业病，爱数数"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "深夜数数+撇清=信号藏在职业病里：接住/反掷安全，追问'你数我名字干嘛'或点破'你是在意我'=扑；别帮她把'没有别的意思'坐实，也别戳穿。",
+   "unknowns": [
+    {
+     "topic": "她数名字是否别有用意",
+     "note": "她自己撇清'没有别的意思'；候选顺着数数接可以，点破'你在意我'越线",
+     "markers": [
+      [
+       "你就是想"
+      ],
+      [
+       "你是在意"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "你就是想"
+      ],
+      [
+       "你是在意"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得点破数数背后的用意",
+    "不得把七比五当真问题讨论改稿"
+   ],
+   "may_decline": false
+  },
+  "E306_T06": {
+   "case_id": "E306_T06",
+   "current_action": "HER 转述老蒋例会问会不会安排 ME 俩合唱，她说 ME 五音不全、老蒋信了还认真记了'节目单留白'，并向 ME 讨一句谢谢",
+   "acceptable_actions": [
+    "半抗议式认谢（谢谢、但五音不全的传言传出去我人设崩了式）",
+    "认谢并反担保（下次例会我替你圆式还人情）",
+    "接'圆场'自嘲五音不全（顺她口径认了式）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T06_A01",
+     "subject": "HER",
+     "relation": "圆场",
+     "value": "HER 在老蒋面前说 ME 五音不全、挡掉了合唱",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T06",
+      "message_id": "m0",
+      "quote": "我说你五音不全，他信了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T06_A02",
+     "subject": "HER",
+     "relation": "讨谢",
+     "value": "HER 声明 ME 现在欠她一句谢谢",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T06",
+      "message_id": "m0",
+      "quote": "你现在欠我一句谢谢"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她帮了忙还讨赏——先谢再闹是正确顺序；'五音不全'是她的官方口径（老蒋已信），别当真自证五音全能把场子再掀了。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得当真向老蒋澄清五音",
+    "不得赖账不认谢"
+   ],
+   "may_decline": false
+  },
+  "E306_T07": {
+   "case_id": "E306_T07",
+   "current_action": "年会前一周H5事故已由 ME 远程二十分钟改好（一等奖'带薪年假十天'曾显示成'十小时'），老蒋在群里称'这波程序员给公司省了九天半、成本控制标兵'，HER 天台请奶茶、珍珠多要",
+   "acceptable_actions": [
+    "接奶茶并轻描淡写自嘲（九天半修出来了、标兵头衔收好式）",
+    "接老蒋语录梗（成本控制标兵、工位最寒酸式）",
+    "认下天台局并谢珍珠多要"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T07_A01",
+     "subject": "SHARED",
+     "relation": "H5事故",
+     "value": "抽奖H5一等奖'带薪年假十天'一度显示成'带薪年假十小时'",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T07",
+      "message_id": "m0",
+      "quote": "带薪年假十小时"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T07_A02",
+     "subject": "ME",
+     "relation": "事故修复",
+     "value": "ME 远程二十分钟把 H5 改好了",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T07",
+      "message_id": "m1",
+      "quote": "你远程二十分钟就给改好了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T07_A03",
+     "subject": "THIRD",
+     "relation": "老蒋评价",
+     "value": "老蒋在群里称这波程序员为成本控制标兵",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T07",
+      "message_id": "m1",
+      "quote": "成本控制标兵"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T07_A04",
+     "subject": "HER",
+     "relation": "奶茶邀约",
+     "value": "HER 请 ME 今晚天台奶茶、珍珠多要",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T07",
+      "message_id": "m1",
+      "quote": "今晚奶茶我请"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "危机已解的收尾轮：ME 不邀功不自贬，玩笑接奶茶即可；事故根因她没说，候选别编造技术细节。",
+   "unknowns": [
+    {
+     "topic": "H5显示事故的具体根因",
+     "note": "她只说显示错了，候选不得编造根因（缓存/配置/数据源等具体说法）",
+     "markers": [
+      [
+       "是因为缓存"
+      ],
+      [
+       "数据配错了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "是因为缓存"
+      ],
+      [
+       "数据配错了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造事故根因",
+    "不得邀功式讨赏过头"
+   ],
+   "may_decline": false
+  },
+  "E306_T08": {
+   "case_id": "E306_T08",
+   "current_action": "HER 把妈妈介绍的相亲当段子讲给 ME 听：对方银行上班、周六视频聊了二十分钟、她讲了十分钟年会流程、对方问'婚礼也找你策划吗'，她没拉黑、让对方等年会结束再说（毕竟是她妈的面子）",
+   "acceptable_actions": [
+    "接段子还一损（银行柜台遇上策划总监、话题不在一个楼层式）",
+    "接住并认她处理得当（面子给到了、年会后再说式）",
+    "反掷（他把年会当婚礼、眼光倒是超前式）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T08_A01",
+     "subject": "HER",
+     "relation": "相亲通报",
+     "value": "HER 妈妈介绍了银行上班的相亲对象、周六视频聊了二十分钟",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T08",
+      "message_id": "m0",
+      "quote": "银行上班，周六视频聊了二十分钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T08_A02",
+     "subject": "HER",
+     "relation": "段子素材",
+     "value": "HER 跟对方讲了十分钟年会流程",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T08",
+      "message_id": "m0",
+      "quote": "我跟他讲了十分钟年会流程"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T08_A03",
+     "subject": "HER",
+     "relation": "相亲搁置",
+     "value": "HER 让相亲对象等年会结束再说",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T08",
+      "message_id": "m0",
+      "quote": "我让他等年会结束再说"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动交底式讲段子=观察 ME 反应的信号：接住/反损安全；当真追问对象条件（有房吗多高式）=接歪；坐实'那你别去了'=越界替她决定。",
+   "unknowns": [
+    {
+     "topic": "相亲后续是否会真进行",
+     "note": "她说等年会结束再说，候选不得坐实相亲会成或会黄",
+     "markers": [
+      [
+       "你俩能成"
+      ],
+      [
+       "他条件不错"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "你俩能成"
+      ],
+      [
+       "他条件不错"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我让他等年会结束再说"
+   ],
+   "forbidden_factual_claims": [
+    "不得当真追问相亲对象条件",
+    "不得替她决定相亲去留"
+   ],
+   "may_decline": false
+  },
+  "E306_T09": {
+   "case_id": "E306_T09",
+   "current_action": "HER 通报彩蛋被发现：露露拿自己工号给新同事演示时弹出那句彩蛋、尖叫着举手机绕工位一圈，现在全部门都知道年会抽奖里有工程师的浪漫",
+   "acceptable_actions": [
+    "认施工方并把监制还给 HER（浪漫是总监制的、我只负责施工式）",
+    "顺'浪漫'梗自嘲（工程师的浪漫、交付日期卡年会式）",
+    "合法不回（部门趣闻通报轮）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T09_A01",
+     "subject": "THIRD",
+     "relation": "彩蛋曝光",
+     "value": "露露演示时弹出彩蛋、尖叫着把手机举过头顶绕工位一圈",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T09",
+      "message_id": "m0",
+      "quote": "她尖叫着把手机举过头顶绕工位一圈"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T09_A02",
+     "subject": "SHARED",
+     "relation": "浪漫定性",
+     "value": "全部门都知道年会抽奖里有工程师的浪漫",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T09",
+      "message_id": "m0",
+      "quote": "工程师的浪漫"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "彩蛋兑现轮：'工程师的浪漫'是递到 ME 手边的梗——认领式自嘲安全，慌忙撇清'那是需求不是浪漫'=缩；露露是开心不是告状，别接成事故复盘。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得撇清与彩蛋的关系（缩钩）",
+    "不得把露露的反应接成投诉"
+   ],
+   "may_decline": true
+  },
+  "E306_T10": {
+   "case_id": "E306_T10",
+   "current_action": "HER 深夜失眠自曝主持稿背了八遍、就怕念到 ME 那段卡壳，约定暗号：上台前她眼神僵了 ME 就冲她比个叉，比心不行、她接不住会笑场",
+   "acceptable_actions": [
+    "接暗号给确定感（叉我练好了、你负责照常发挥式）",
+    "给具体兜底（你那段我来撑、卡壳算我工伤式）",
+    "接'比心会笑场'玩笑（那就叉、胳膊给你举到散场式）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T10_A01",
+     "subject": "HER",
+     "relation": "卡壳担忧",
+     "value": "HER 怕年会主持念到 ME 那段卡壳",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T10",
+      "message_id": "m0",
+      "quote": "就怕念到你那段卡壳"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T10_A02",
+     "subject": "SHARED",
+     "relation": "暗号",
+     "value": "暗号约定：她眼神僵了 ME 就冲她比个叉",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T10",
+      "message_id": "m0",
+      "quote": "就冲我比个叉"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T10_A03",
+     "subject": "HER",
+     "relation": "比心否定",
+     "value": "HER 说比心不行、她接不住会笑场",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T10",
+      "message_id": "m0",
+      "quote": "比心不行，我接不住"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "深夜示弱+依赖信号：回一句能让她睡着的确定话=目标；过度安抚'你肯定没问题'（空泛）或点破'你紧张是因为我'=接歪；暗号要接住（T11 会兑现）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得空泛打气（你最强式）",
+    "不得点破她的紧张与自己有关",
+    "不得改暗号（叉）为其他手势"
+   ],
+   "may_decline": false
+  },
+  "E306_T11": {
+   "case_id": "E306_T11",
+   "current_action": "HER 年会散场通报：ME 没穿格子衫、老蒋收网线费没找着人，抽奖顺利、露露抱着扫地机器人拍了合影，她在后台念 ME 名字那段没卡壳——因为台下第一排有个人冲她比了个叉",
+   "acceptable_actions": [
+    "接'叉管用'认领（工伤手现在还酸式自嘲）",
+    "接住她的没卡壳并把功劳还她（八遍没白背、比叉只是外挂式）",
+    "互损包装温情（叉是给格子衫的告别仪式式岔开）"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T11_A01",
+     "subject": "HER",
+     "relation": "主持结果",
+     "value": "HER 在后台念 ME 名字那段没卡壳",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T11",
+      "message_id": "m0",
+      "quote": "我在后台念你名字那段没卡壳"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T11_A02",
+     "subject": "SHARED",
+     "relation": "暗号兑现",
+     "value": "台下第一排有人冲她比了个叉",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T11",
+      "message_id": "m0",
+      "quote": "台下第一排有个人冲我比了个叉"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T11_A03",
+     "subject": "ME",
+     "relation": "着装变化",
+     "value": "ME 年会没穿格子衫",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T11",
+      "message_id": "m0",
+      "quote": "你没穿格子衫"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "暗号兑现轮：她把功劳分了一半给那个叉——接住认领+把主持功力还她是最稳档；别点破'专门为你做的'深情化，也别装傻问'谁比的'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得装傻否认比叉",
+    "不得点破深情（互损场域纪律）"
+   ],
+   "may_decline": false
+  },
+  "E306_T12": {
+   "case_id": "E306_T12",
+   "current_action": "HER 睡醒后提议：昨晚天台奶茶和年会散场的烧烤钱先攒着不急着转，攒到下周三午休、楼下那家酸菜鱼一起算——'你带胃，我带卡'",
+   "acceptable_actions": [
+    "痛快认约并接'你带胃我带卡'（胃已就位式）",
+    "认约并顺手定细节（酸菜鱼我熟、辣度听你的式）",
+    "接攒账梗（账生账、利滚利到你请我式玩笑）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E306_T12_A01",
+     "subject": "SHARED",
+     "relation": "酸菜鱼之约",
+     "value": "账攒到下周三午休、楼下那家酸菜鱼一起算",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T12",
+      "message_id": "m0",
+      "quote": "攒到下周三午休，楼下那家酸菜鱼"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E306_T12_A02",
+     "subject": "HER",
+     "relation": "分工玩笑",
+     "value": "HER 说'你带胃，我带卡'",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E306_T12",
+      "message_id": "m0",
+      "quote": "你带胃，我带卡"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "队外单独约落地轮：这是明确的私下见面邀约，痛快接+轻玩笑=正确档；点破'这是约会吧'=扑，推说周三忙=缩（若 ME 真有安排可改期但别敷衍）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得点破约会性质",
+    "不得敷衍改期或拒绝"
+   ],
+   "may_decline": false
+  }
+ }
+}

@@ -1,0 +1,53 @@
+{
+ "story_id": "K01",
+ "turns": {
+  "K01_P3_rail": {
+   "case_id": "K01_P3_rail",
+   "current_action": "她确认高铁开售日与车次。已确认11月1号开售，想坐D字头、时间别太早；回答应确认1号和D字头。",
+   "acceptable_actions": [
+    "确认1号开售，D字头",
+    "说1号就开了，按D字头挑不太早的"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "attribution",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_P3_a1",
+     "subject": "her",
+     "relation": "ticket_sale",
+     "value": "高铁票11月1号开售，想坐D字头，时间别太早",
+     "valid_time": "2026-11-01",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T07",
+      "message_id": "m0",
+      "quote": "高铁票11月1号开售"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "正确回指1号开售和D字头偏好。",
+   "unknowns": [],
+   "protected_expressions": [
+    "高铁票11月1号开售"
+   ],
+   "forbidden_factual_claims": [
+    "说错开售日期",
+    "把D字头说成G字头"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "她确认高铁开售日与车次。已确认11月1号开售，想坐D字头、时间别太早；回答应确认1号和D字头。",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

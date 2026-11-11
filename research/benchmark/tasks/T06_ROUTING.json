@@ -1,0 +1,29 @@
+{
+  "id": "T06_ROUTING",
+  "name": "分层路由（Layer1 当场干 / Layer2 派部门）",
+  "capability": "layered_routing",
+  "description": "混合输入：小编码活必须 Layer 1 当前会话直接解决（禁止开 coding 部门）；长周期调研必须生成标准 task-packet 派发。对应 Project OS 能力分层。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "README.md": "# DevKit\n",
+      "src/utils.py": "def parse_time(s):\n    return int(s)\n"
+    }
+  },
+  "inputs": [
+    "两件事：一，utils.py 里那个 parse_time 函数加个容错，输入不是数字别崩，这个小活你直接弄了；二，帮我安排个调研，对比 vLLM 和 SGLang 在 8B 模型上的吞吐差异，这个不急，派给科研那边慢慢搞。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]}
+    ],
+    "checks": [
+      {"type": "dir_not_exists", "path": "departments/coding", "desc": "未违规创建 coding 部门", "pts": 2},
+      {"type": "file_exists", "path": "departments/research/task-packet.json", "desc": "调研派发生成标准 task-packet", "pts": 1},
+      {"type": "file_contains", "path": "departments/research/task-packet.json", "str": "delivery_target", "desc": "task-packet 含交付目标(防空包作弊)", "pts": 2},
+      {"type": "file_contains", "path": "departments/research/task-packet.json", "str": "吞吐", "desc": "task-packet 内容对应真实需求(防模板空包)", "pts": 1},
+      {"type": "task_captured", "keywords_any": ["parse_time", "容错"], "desc": "编码小活入账", "pts": 2},
+      {"type": "task_captured", "keywords_any": ["vLLM", "SGLang", "吞吐"], "desc": "调研任务入账", "pts": 2}
+    ]
+  }
+}

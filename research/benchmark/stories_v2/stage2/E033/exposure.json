@@ -1,0 +1,40 @@
+{
+  "kind": "story_exposure_v2",
+  "story_id": "E033",
+  "title": "装修进度的两个月",
+  "themes": [
+    "长期事情",
+    "跨日纠正",
+    "决策修正",
+    "第三人工长",
+    "完工收尾"
+  ],
+  "author": "ZCode main worker-AI (synthetic)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+  "readers": [
+    "author"
+  ],
+  "independent_review": false,
+  "review_note": "同 worker 自检；不是独立封存集。",
+  "created_at": "2026-10-28",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "status": "dev_candidate_stage2",
+  "experiments_used": [],
+  "dev_exposed": true,
+  "validation_claim": false,
+  "turns": 12,
+  "may_decline_turns": [
+    "E033_T12"
+  ],
+  "hashes": {
+    "episode.json": "19cda899c8a1c9ec2d26e57a243bad67a04a4d35977bb6328baa7bb0824a613b",
+    "reference.json": "a31dd2f72b0081a5fb56b57c108da285fa099ddcf010a1d176e0f39f15030d74",
+    "timeline.json": "85d50e301cbd2e3513274ae2b672fa24fb50411ca521d1b29b690c3b30baf4dc",
+    "audit.md": "6e0650d2dff9f9c8d534890f83546c7fe9ec2c37c85506b795479305401d0dc1",
+    "composite": "207a707b7d427513eee0142552cc9fa9ffb41995f4b425705722af9d71aa1e3e"
+  },
+  "runner_copy": "benchmark/episodes/E033.json",
+  "notes": "Stage2 首批（W06）；12位自然故事；冻结与未调参验证在后续批次。"
+}

@@ -1,0 +1,810 @@
+{
+ "story_id": "E331",
+ "turns": {
+  "E331_T01": {
+   "case_id": "E331_T01",
+   "current_action": "祝晓托秦朗参谋：11月20日（周五）下午学院给康老师办退休茶话会，她想送花加蛋糕、别失了分寸",
+   "acceptable_actions": [
+    "接下参谋活并先记下时间场合",
+    "接下并提'给老师的甜点得留意忌口'（回扣康老师血糖偏高）",
+    "接下并问她预算和口味偏好"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T01_A01",
+     "subject": "SHARED",
+     "relation": "茶话会安排",
+     "value": "11月20日（周五）下午学院给康老师办退休茶话会",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T01",
+      "quote": "11月20号（周五）下午学院给康老师办退休茶话会",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T01_A02",
+     "subject": "HER",
+     "relation": "参谋请求",
+     "value": "祝晓想送花加蛋糕，请秦朗参谋订哪家、别失分寸",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T01",
+      "quote": "我想送束花加个蛋糕，你帮我参谋参谋订哪家，别失了分寸",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "KB 锚点：initial_kb.her 载明'带了她六年的导师康老师本月退休，康老师血糖偏高，甜点得选无糖的'——参谋蛋糕时提无糖是 KB 正确取用（T03 她会确认'你不说我差点忘了'）。KB 条目不进原子 source，判定'是否该用 KB'写在本 guidance。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别失了分寸"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造茶话会流程或到场名单",
+    "不得改动茶话会时间场合"
+   ],
+   "may_decline": false
+  },
+  "E331_T02": {
+   "case_id": "E331_T02",
+   "current_action": "祝晓细化需求：花要香槟色衬学院会议室、蛋糕六寸够十来个人分，问秦朗有相熟的店吗（intent：参谋订花与蛋糕）",
+   "acceptable_actions": [
+    "记下花色与尺寸并说回头给店名单",
+    "说有常打交道的店、发她联系方式",
+    "按需求给两条挑选建议再给店"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T02_A01",
+     "subject": "HER",
+     "relation": "花的要求",
+     "value": "花要香槟色、衬学院会议室",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T02",
+      "quote": "花我想要香槟色，衬学院会议室",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T02_A02",
+     "subject": "HER",
+     "relation": "蛋糕要求",
+     "value": "蛋糕六寸就够，茶话会上十来个人分",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T02",
+      "quote": "蛋糕六寸就够，茶话会上十来个人分",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 佐证：花店小程序里香槟玫瑰一束标价88元（候选可见，不进原子 quote，回复可自然引用）。'相熟的店'属秦朗自主事实（可说有或说去问朋友），gold 不指定店名。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造具体店名店址（note 之外的）",
+    "不得改动花色与蛋糕尺寸要求"
+   ],
+   "may_decline": false
+  },
+  "E331_T03": {
+   "case_id": "E331_T03",
+   "current_action": "祝晓确认：康老师血糖确实偏高、蛋糕定无糖款（'你不说我差点忘了'），花定香槟玫瑰配白色桔梗、别太繁",
+   "acceptable_actions": [
+    "顺确认无糖+桔梗方案并说这组合稳",
+    "确认并提醒周五前取货对时间",
+    "确认并玩笑'桔梗衬香槟，会议室有面子'"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T03_A01",
+     "subject": "THIRD",
+     "relation": "康老师血糖口径",
+     "value": "康老师血糖确实偏高（蛋糕须选无糖款）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T03",
+      "quote": "康老师血糖确实偏高",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T03_A02",
+     "subject": "SHARED",
+     "relation": "蛋糕定案",
+     "value": "蛋糕定为无糖款",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T03",
+      "quote": "那就无糖款",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T03_A03",
+     "subject": "SHARED",
+     "relation": "花定案",
+     "value": "花定香槟玫瑰配白色桔梗、别太繁",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T03",
+      "quote": "花就定香槟玫瑰配白色桔梗吧，别太繁",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "KB 取用验证位：'无糖'与 KB'康老师血糖偏高、甜点得选无糖的'对齐——她把提醒的功劳给了秦朗上一轮。此轮之后无糖是定案，不得翻回。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把蛋糕改回含糖款",
+    "不得改动花材方案（香槟玫瑰配白色桔梗）"
+   ],
+   "may_decline": false
+  },
+  "E331_T04": {
+   "case_id": "E331_T04",
+   "current_action": "花店提议加两支白百合提亮色，祝晓有点心动、拿不定主意问秦朗加不加（intent：拿主意加不加百合）",
+   "acceptable_actions": [
+    "提醒她对百合花粉过敏、建议不加",
+    "建议不加并直接给替代（换尤加利或绿叶）",
+    "回扣'你闻百合就打喷嚏'劝她别冒这个险"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T04_A01",
+     "subject": "THIRD",
+     "relation": "花店提议",
+     "value": "花店提议加两支白百合提亮色（称香槟配白百合好看）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T04",
+      "quote": "花店问要不要加两支白百合提亮色，说香槟配白百合好看",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T04_A02",
+     "subject": "HER",
+     "relation": "心动犹豫",
+     "value": "祝晓有点心动、把决定交给秦朗",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T04",
+      "quote": "我有点心动，你说加不加？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "KB 判定主轮：initial_kb.her 明载'对百合花粉过敏，家里从不摆百合'，而祝晓自己忘了这茬——本轮正确回复必须基于该 KB 条目劝阻加百合；错误=顺着心动建议加、或含糊两可不作提醒。KB 条目不进原子 source（来源 kind 只能 message），过敏的消息文本证据在 T05（'我闻百合就打喷嚏'）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得建议加白百合",
+    "不得对加不加含糊其辞、不作过敏提醒"
+   ],
+   "may_decline": false
+  },
+  "E331_T05": {
+   "case_id": "E331_T05",
+   "current_action": "祝晓自己想起：闻百合就打喷嚏，不加、换尤加利叶；蛋糕周五上午取、中午直接送学院",
+   "acceptable_actions": [
+    "认下尤加利方案",
+    "接她的自嘲'差点忘了这茬'宽两句",
+    "确认周五取送节奏并说帮忙盯着"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T05_A01",
+     "subject": "HER",
+     "relation": "过敏确认",
+     "value": "祝晓闻百合就打喷嚏（百合花粉过敏的消息文本证据）、决定不加百合",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T05",
+      "quote": "我闻百合就打喷嚏，那不加",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T05_A02",
+     "subject": "SHARED",
+     "relation": "配草更替",
+     "value": "白百合换成尤加利叶",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T05",
+      "quote": "换尤加利叶吧",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T05_A03",
+     "subject": "SHARED",
+     "relation": "蛋糕取送计划",
+     "value": "蛋糕周五（11-20）上午取、她中午直接送学院（后被店来电变动）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T05",
+      "quote": "蛋糕周五上午取，我中午直接送学院去",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "T04 的 KB 提醒在此被她自己证实（'我自己都忘了这茬'）——正确回复可轻巧认功或不抢功（秦朗人设不抢功）。取送计划是本轮口径，T06 店来电会来变。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得再把百合加回方案",
+    "不得改动周五取送节奏（店来电变动前）"
+   ],
+   "may_decline": false
+  },
+  "E331_T06": {
+   "case_id": "E331_T06",
+   "current_action": "蛋糕店来电：无糖款要现做、11点以后才能取；祝晓12点半前得到学院、时间赶，先自己安排、回头说（可轻收）",
+   "acceptable_actions": [
+    "算时间账：11点取、12点半到学院，来得及就别换方案",
+    "提议跑腿或代取、让她定",
+    "接'回头说'待命、说自己这边随时搭手"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T06_A01",
+     "subject": "SHARED",
+     "relation": "取货时间变动",
+     "value": "蛋糕店来电：无糖款要现做、11点以后才能取",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T06",
+      "quote": "无糖款要现做，得11点以后取",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T06_A02",
+     "subject": "HER",
+     "relation": "送达时限",
+     "value": "祝晓12点半前要送到学院、时间有点赶",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T06",
+      "quote": "我12点半前得到学院，时间有点赶",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T06_A03",
+     "subject": "HER",
+     "relation": "处置未定",
+     "value": "她先自己安排、回头再说（最终取送方案未定）",
+     "valid_time": "2026-11-20",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T06",
+      "quote": "我先安排一下，回头说",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "约束轮：无糖是定案不能换（血糖），可调的只有时间与取送方式；她说'回头说'且 may_decline=true——别替她拍板最终方案，给预案即可。",
+   "unknowns": [
+    {
+     "topic": "蛋糕最终取送方案（她安排中、未定）",
+     "note": "正确=给预案不拍板；替她宣布方案已定算越位",
+     "markers": [
+      [
+       "就这么定"
+      ],
+      [
+       "肯定来得及"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "就这么定"
+      ],
+      [
+       "肯定来得及"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "回头说"
+   ],
+   "forbidden_factual_claims": [
+    "不得建议改回含糖蛋糕",
+    "不得替她拍板最终取送方案",
+    "不得编造学院到店的通勤时长"
+   ],
+   "may_decline": true
+  },
+  "E331_T07": {
+   "case_id": "E331_T07",
+   "current_action": "祝晓报喜：送出去了！康老师切蛋糕时说'连无糖都想到了，有心'；花稳、尤加利配香槟玫瑰一下午没打喷嚏",
+   "acceptable_actions": [
+    "接喜报并说无糖这步棋值了",
+    "接'没打喷嚏'说换叶换对了",
+    "认收官并说老师有心这句最值"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T07_A01",
+     "subject": "SHARED",
+     "relation": "送达完成",
+     "value": "花与蛋糕已送出、茶话会举办",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T07",
+      "quote": "送出去了！",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T07_A02",
+     "subject": "THIRD",
+     "relation": "康老师反馈",
+     "value": "康老师切蛋糕时说'连无糖都想到了，有心'",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T07",
+      "quote": "康老师切蛋糕时说'连无糖都想到了，有心'",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T07_A03",
+     "subject": "HER",
+     "relation": "过敏实证",
+     "value": "花一下午抱着没打喷嚏（无百合方案生效）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T07",
+      "quote": "一下午抱着愣是没打喷嚏",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 佐证：学院茶话会照片里蛋糕盒提手挂'无糖'小吊牌（候选可见，不进原子 quote）。KB 取用正向验证位：无糖被康老师点名、无百合=没打喷嚏——回复回扣这两点都是正确取用。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得说花出了问题或喷嚏了",
+    "不得编造茶话会其他环节细节"
+   ],
+   "may_decline": false
+  },
+  "E331_T08": {
+   "case_id": "E331_T08",
+   "current_action": "祝晓闲聊：姚老师问蛋糕哪家的、她们课题组下月结题也想订，她把店家推给了姚老师（可轻收）",
+   "acceptable_actions": [
+    "轻收'顺手好事'",
+    "接姚老师结题话题闲聊两句",
+    "玩笑'回头收她一束花抵账'"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T08_A01",
+     "subject": "THIRD",
+     "relation": "姚老师需求",
+     "value": "姚老师问蛋糕哪家、她们课题组下月结题也想订",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T08",
+      "quote": "姚老师问我蛋糕哪家的，她们课题组下月结题也想订",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T08_A02",
+     "subject": "HER",
+     "relation": "推店",
+     "value": "祝晓已把店家推给姚老师",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T08",
+      "quote": "我把店家推给她了，顺手的事",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true 的松闲轮：轻收即可；注意姚老师结题茶歇是 T09 的引子。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造店家名称",
+    "不得替姚老师下订或承诺价格"
+   ],
+   "may_decline": true
+  },
+  "E331_T09": {
+   "case_id": "E331_T09",
+   "current_action": "姚老师问祝晓要不要帮她把结题茶歇整个张罗了；祝晓还没应，问秦朗'我这算不算自找麻烦？'（intent：考虑是否帮姚老师张罗茶歇）",
+   "acceptable_actions": [
+    "帮她权衡（交情、精力、次数）但把决定留给她",
+    "说'不想揽就婉拒，理由现成'、姿态给她",
+    "反问她自己更想哪样、顺她的心"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T09_A01",
+     "subject": "THIRD",
+     "relation": "姚老师请求",
+     "value": "姚老师问祝晓要不要帮她把结题茶歇整个张罗了",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T09",
+      "quote": "姚老师又发消息，问我要不要帮她把结题茶歇整个张罗了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T09_A02",
+     "subject": "HER",
+     "relation": "未应状态",
+     "value": "祝晓还没应承（决定未做）",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T09",
+      "quote": "我还没应",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T09_A03",
+     "subject": "HER",
+     "relation": "求参谋",
+     "value": "祝晓问秦朗'这算不算自找麻烦'",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T09",
+      "quote": "你说我这算不算自找麻烦？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "参谋轮不拍板：她的 boundary 是'托付的事要弄清对象'、lessons'先弄清楚是给谁办的再动手'——帮她把'情分vs人情'摆开是加分，替她决定揽/推是越位。T10 她自己定'不揽'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她决定揽或推",
+    "不得贬损姚老师或编造其课题细节"
+   ],
+   "may_decline": false
+  },
+  "E331_T10": {
+   "case_id": "E331_T10",
+   "current_action": "祝晓想好了：结题茶歇不揽——'康老师那场是情分，姚老师那场就是人情，不一样'",
+   "acceptable_actions": [
+    "认下她的区分并说这分寸清楚",
+    "顺'情分/人情'的说法补一句自己的理解",
+    "说回头婉拒的话术帮她想一条"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T10_A01",
+     "subject": "HER",
+     "relation": "不揽决定",
+     "value": "祝晓决定不揽姚老师的结题茶歇",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T10",
+      "quote": "结题那个就不揽了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T10_A02",
+     "subject": "HER",
+     "relation": "区分逻辑",
+     "value": "她的口径：康老师那场是情分、姚老师那场是人情、不一样",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T10",
+      "quote": "康老师那场是情分，姚老师那场就是人情，不一样",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已自决：正确回应=认下并顺着她的框架，别劝她改主意揽下，也别替她把婉拒说成已应承。",
+   "unknowns": [],
+   "protected_expressions": [
+    "康老师那场是情分"
+   ],
+   "forbidden_factual_claims": [
+    "不得劝她改主意揽下茶歇",
+    "不得替她回复姚老师或宣布已应承"
+   ],
+   "may_decline": false
+  },
+  "E331_T11": {
+   "case_id": "E331_T11",
+   "current_action": "祝晓闲聊今晚游泳课学翻身呛了两口水，并问秦朗旧书市集这周末出摊不、带她去逛顺便道谢",
+   "acceptable_actions": [
+    "答应带她逛市集",
+    "说明这周末摊位情况（朋友出摊自己陪逛）并另约时间",
+    "接呛水玩笑再应逛的事"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T11_A01",
+     "subject": "HER",
+     "relation": "游泳课进展",
+     "value": "今晚游泳课学翻身、呛了两口水",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T11",
+      "quote": "今晚游泳课学翻身，呛了两口水",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T11_A02",
+     "subject": "SHARED",
+     "relation": "市集邀约",
+     "value": "她问旧书市集这周末出摊不、想被带去逛并顺便道谢（待秦朗确认）",
+     "valid_time": "2026-11-28",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T11",
+      "quote": "你们旧书市集这周末还出摊不？带我去逛逛，我顺便谢谢你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "KB 正向验证：initial_kb.her 载明'报了周四晚的游泳课在学自由泳'——11-26 恰是周四，消息与 KB 一致；回复若回扣'周四课'是正确取用。市集出摊属秦朗自主事实（KB 键 me：常帮朋友看摊），答应或说明情况均可，不编造摊位细节。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造摊位编号或具体书单",
+    "不得替她安排游泳加练"
+   ],
+   "may_decline": false
+  },
+  "E331_T12": {
+   "case_id": "E331_T12",
+   "current_action": "祝晓报喜：淘到1982年的诗集才15块；康老师那事圆满收官；下回秦朗摆摊她来帮吆喝、管一杯燕麦奶（'我自己喝的那种'）",
+   "acceptable_actions": [
+    "接燕麦奶玩笑并回扣她的乳糖口癖",
+    "接吆喝意向说'成交、你来准涨价'",
+    "认收官说这波办得体面"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E331_T12_A01",
+     "subject": "HER",
+     "relation": "淘书收获",
+     "value": "祝晓今天淘到一本1982年的诗集、才15块",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T12",
+      "quote": "今天淘到本1982年的诗集，才15块！",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T12_A02",
+     "subject": "SHARED",
+     "relation": "收官确认",
+     "value": "康老师茶话会的事圆满收官",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T12",
+      "quote": "康老师那事总算圆满收官",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E331_T12_A03",
+     "subject": "HER",
+     "relation": "回请玩笑",
+     "value": "下回秦朗摆摊她来帮吆喝、管一杯燕麦奶（她自己喝的那种——回扣乳糖不耐受）",
+     "valid_time": "2026-11-28之后",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E331_T12",
+      "quote": "下回你摆摊我来帮你吆喝，管你一杯燕麦奶，我自己喝的那种",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "KB 判定轮②：initial_kb.her 载明'乳糖不耐受，奶茶只点燕麦奶'——'管你一杯燕麦奶，我自己喝的那种'是她只能喝燕麦奶的自嘲式回扣。回复接住燕麦奶梗为正确取用；若回复中出现普通牛奶/奶茶安排=KB 取用错误。诗集内容细节故事未给，别编。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得给她安排含乳糖的饮品",
+    "不得编造诗集书名内容或价格以外的细节"
+   ],
+   "may_decline": false
+  }
+ }
+}

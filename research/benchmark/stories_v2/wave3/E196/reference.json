@@ -1,0 +1,729 @@
+{
+ "story_id": "E196",
+ "turns": {
+  "E196_T01": {
+   "case_id": "E196_T01",
+   "current_action": "接住里程差额的火气：先认可她较真的理，再给'先留证后申诉'的顺序。",
+   "acceptable_actions": [
+    "先肯定较真有理，再劝先对记录别急吵",
+    "复述差额与名次影响，确认问题定义无误",
+    "让她把两张记录截图发来先做核对"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A01",
+     "subject": "SHARED",
+     "relation": "里程差额",
+     "value": "骑行台记录一百五十二公里而榜上只显示一百四十七",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T01",
+      "quote": "骑行台记录明明是一百五十二公里，榜上只有一百四十七",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A02",
+     "subject": "SHARED",
+     "relation": "名次受压",
+     "value": "因五公里差额被压到第九与有奖品的第八档差一位",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T01",
+      "quote": "我被压到第九",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她火气在于'赢得不明不白'，先把理站住。",
+   "unknowns": [
+    "差额成因此时尚未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得断言是组委会故意压名次"
+   ]
+  },
+  "E196_T02": {
+   "case_id": "E196_T02",
+   "current_action": "定下留证动作：存好骑行台每天导出记录，先对出缺失段再谈申诉。",
+   "acceptable_actions": [
+    "给留证加对账两步，并主动提出帮忙对",
+    "只布置留证，对账等她回报节奏",
+    "提议两人各对一半的日期分段核对"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A03",
+     "subject": "SHARED",
+     "relation": "留证建议",
+     "value": "先存好骑行台每天导出记录再核对缺口",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T02",
+      "quote": "把骑行台每天的导出记录都存好",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A04",
+     "subject": "SHARED",
+     "relation": "里程差额",
+     "value": "榜上少显示的五公里差额待核对",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T01",
+      "quote": "榜上只有一百四十七",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "证据先于情绪，顺序就是说服力。",
+   "unknowns": [
+    "导出记录是否完整可查未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称已锁定缺失段"
+   ]
+  },
+  "E196_T03": {
+   "case_id": "E196_T03",
+   "current_action": "接住缺口定位结果：上周三五公里未同步、平台曾弹上传失败，先肯定她对账的功劳。",
+   "acceptable_actions": [
+    "肯定定位功劳并复述缺口细节确认",
+    "肯定之余把'上传失败'定为关键证据",
+    "让她把两样截图存好准备下一步"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A05",
+     "subject": "SHARED",
+     "relation": "缺口定位",
+     "value": "上周三五公里未同步且平台曾弹上传失败",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T03",
+      "quote": "上周三那五公里没同步上去",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A06",
+     "subject": "THIRD",
+     "relation": "失败提示",
+     "value": "平台当时弹出上传失败提示而 HER 未在意",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T03",
+      "quote": "上传失败",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A07",
+     "subject": "THIRD",
+     "relation": "名次分差",
+     "value": "榜上第八名一百五十一公里 HER 仅差一口气",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T03",
+      "quote": "榜上第八名一百五十一",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她对出来的功劳要记在她头上。",
+   "unknowns": [
+    "平台故障波及范围未知"
+   ],
+   "protected_expressions": [
+    "上传失败"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称缺口是 HER 自己漏骑"
+   ]
+  },
+  "E196_T04": {
+   "case_id": "E196_T04",
+   "current_action": "给出申诉材料与窗口：导出记录加上传失败提示截图一起提交，窗口到周日二十四点别拖。",
+   "acceptable_actions": [
+    "列材料清单并点明申诉截止时间",
+    "列清单之外提醒写清诉求是更正里程",
+    "提议她提交前把材料发自己过目一遍"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A08",
+     "subject": "SHARED",
+     "relation": "申诉材料",
+     "value": "导出记录与上传失败提示截图一并提交申诉",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T04",
+      "quote": "导出记录和上传失败提示，一起提交申诉",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A09",
+     "subject": "SHARED",
+     "relation": "缺口定位",
+     "value": "上周三五公里未同步是申诉核心事实",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T03",
+      "quote": "那五公里没同步上去",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "窗口期是硬约束，钉死时间。",
+   "unknowns": [
+    "组委会审核口径未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构申诉窗口之外的时间点"
+   ]
+  },
+  "E196_T05": {
+   "case_id": "E196_T05",
+   "current_action": "接住申诉提交：编号20261120-17、审核三个工作日可能错过中段颁奖，先肯定交得早。",
+   "acceptable_actions": [
+    "肯定交得早留了余量，再接错过颁奖的遗憾",
+    "让她把编号截图归档再说别的",
+    "陪她算三个工作日的最晚出结果日"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A10",
+     "subject": "SHARED",
+     "relation": "申诉提交",
+     "value": "周五提交申诉材料齐全且编号20261120-17",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T05",
+      "quote": "周五我提交申诉了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A11",
+     "subject": "THIRD",
+     "relation": "审核周期",
+     "value": "组委会回复需三个工作日核可能错过周日中段颁奖",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T05",
+      "quote": "要三个工作日核",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "遗憾要接住，编号这个细节必须钉牢。",
+   "unknowns": [
+    "审核结果倾向未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得虚构已出审核结论"
+   ]
+  },
+  "E196_T06": {
+   "case_id": "E196_T06",
+   "current_action": "用规则安抚：最终榜以更正后为准，阶段性颁奖缺席无碍；叮嘱对照编号收结果。",
+   "acceptable_actions": [
+    "引规则原文安抚并给编号对收的动作",
+    "安抚之外提议中段颁奖她去现场见证流程",
+    "只安抚情绪，编号对收等核结再提"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A12",
+     "subject": "ME",
+     "relation": "规则依据",
+     "value": "规则写明最终榜以更正后为准并叮嘱记牢申诉编号",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T06",
+      "quote": "最终榜以更正后为准",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A13",
+     "subject": "SHARED",
+     "relation": "申诉提交",
+     "value": "编号20261120-17的申诉在核中",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T05",
+      "quote": "提交申诉了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "安抚要给规则依据，不画饼。",
+   "unknowns": [
+    "更正说明的发布形式未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得保证审核一定通过"
+   ]
+  },
+  "E196_T07": {
+   "case_id": "E196_T07",
+   "current_action": "接住更正落地：组委会认定平台同步故障，里程更正为一百五十二、升到第七并出更正说明，贺她赢得明白。",
+   "acceptable_actions": [
+    "祝贺并点明'证据链完整'是翻案关键",
+    "贺完提醒她保存更正说明原文",
+    "让她把新榜截图与旧榜对比留档"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "goal",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A14",
+     "subject": "THIRD",
+     "relation": "更正结果",
+     "value": "组委会认定平台同步故障，里程更正为一百五十二、HER 升到第七并发更正说明",
+     "valid_time": "2026-11-24",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T07",
+      "quote": "里程更正为一百五十二，我升到第七",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A15",
+     "subject": "SHARED",
+     "relation": "补发安排",
+     "value": "奖品按新名次月底补发",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T07",
+      "quote": "奖品按新名次要月底才补发",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "归因要落在证据与坚持上，别全归运气。",
+   "unknowns": [
+    "补发是否按时未知"
+   ],
+   "protected_expressions": [
+    "升到第七"
+   ],
+   "forbidden_factual_claims": [
+    "不得把名次报成第八或第九"
+   ]
+  },
+  "E196_T08": {
+   "case_id": "E196_T08",
+   "current_action": "补最后一道保险：月底领奖时把更正说明与申诉编号一并对，防补发漏单。",
+   "acceptable_actions": [
+    "给领奖核对清单并强调对照编号",
+    "清单之外提议月底设个提醒",
+    "让她现在就把说明存两处备份"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A16",
+     "subject": "ME",
+     "relation": "领奖核对提醒",
+     "value": "月底领奖时对更正说明与申诉编号防漏发",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T08",
+      "quote": "把更正说明和申诉编号一并对一遍",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A17",
+     "subject": "THIRD",
+     "relation": "更正结果",
+     "value": "里程更正为一百五十二的结论是补发的依据",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T07",
+      "quote": "里程更正为一百五十二",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "赢了之后最怕漏收，收尾要钉牢。",
+   "unknowns": [
+    "补发渠道未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称奖品已到手"
+   ]
+  },
+  "E196_T09": {
+   "case_id": "E196_T09",
+   "current_action": "接住归档与奖品分档：肯定她'名次必须对'的较真，顺带确认证据链闭环。",
+   "acceptable_actions": [
+    "肯定归档习惯并把较真升维成原则",
+    "接住奖品分档话题，问她水壶颜色偏好",
+    "提议把整条证据链整理成同事可复用的模板"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A18",
+     "subject": "HER",
+     "relation": "归档完成",
+     "value": "申诉编号与更正说明均已归档",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T09",
+      "quote": "我把编号和更正说明都归档了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A19",
+     "subject": "SHARED",
+     "relation": "奖品分档",
+     "value": "第七名奖品运动水壶、第八名毛巾仅差一档",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T09",
+      "quote": "第七名奖品是运动水壶，第八名只是毛巾",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她说'名次必须对'，这条边界值得复述一遍。",
+   "unknowns": [
+    "水壶款式是否可选未知"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得贬低第八名奖品说她计较"
+   ]
+  },
+  "E196_T10": {
+   "case_id": "E196_T10",
+   "current_action": "把劲头导向新目标：最后两周一起加练冲前五，用骑行手套当具体彩头。",
+   "acceptable_actions": [
+    "提出加练目标并给出前五奖品作彩头",
+    "提议之外先问她身体状态能否加量",
+    "把加练包装成两人晨练搭子的固定节目"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A20",
+     "subject": "SHARED",
+     "relation": "加练目标",
+     "value": "最后两周一起加练冲前五、前五奖品为骑行手套",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T10",
+      "quote": "最后两周一起加练，冲前五",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A21",
+     "subject": "HER",
+     "relation": "归档完成",
+     "value": "证据链归档完毕后才有余力谈新目标",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T09",
+      "quote": "都归档了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "目标要具体到数字和奖品，别喊口号。",
+   "unknowns": [
+    "前五门槛此时尚未确认"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得夸口必进前五"
+   ]
+  },
+  "E196_T11": {
+   "case_id": "E196_T11",
+   "current_action": "接住她的算账：门槛一百七十八、差二十六、每天两公里两周补上，确认计划可行并提醒留休息日。",
+   "acceptable_actions": [
+    "复核算术可行并补一句留缓冲日",
+    "确认计划之余提议把两公里拆进晨练",
+    "夸她算得快，提醒加量看腿感"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A22",
+     "subject": "SHARED",
+     "relation": "加练计划",
+     "value": "前五门槛一百七十八、现差二十六、每天多骑两公里两周补上",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T11",
+      "quote": "前五门槛一百七十八，我一百五十二，还差二十六",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A23",
+     "subject": "SHARED",
+     "relation": "加练目标",
+     "value": "冲前五的加练目标转为可执行计划",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T10",
+      "quote": "一起加练，冲前五",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她算术没错就认，补充留缓冲显周全。",
+   "unknowns": [
+    "最终门槛是否调整未知"
+   ],
+   "protected_expressions": [
+    "这买卖划算"
+   ],
+   "forbidden_factual_claims": [
+    "不得报出与二十六不同的缺口数"
+   ]
+  },
+  "E196_T12": {
+   "case_id": "E196_T12",
+   "current_action": "接住首练报捷与晨练之约：应下明早六点半的两公里，把'加量不加伤'接成两人的暗号。",
+   "acceptable_actions": [
+    "应约并把'加量不加伤'接成共同暗号",
+    "应约之余提醒拉伸收尾别省",
+    "答应之余打趣看她明早谁先到"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E196_A24",
+     "subject": "SHARED",
+     "relation": "首练完成",
+     "value": "次日清晨加练首日多骑两公里完成",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T12",
+      "quote": "今早多骑了两公里",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A25",
+     "subject": "HER",
+     "relation": "晨练邀约",
+     "value": "明早六点半邀 ME 继续加练两公里",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T12",
+      "quote": "明早六点半老时间",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E196_A26",
+     "subject": "SHARED",
+     "relation": "加练计划",
+     "value": "每天多骑两公里的加练计划已执行首日",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E196_T11",
+      "quote": "每天多骑两公里",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "清晨六点半的约最难约也最显关系，接得干脆。",
+   "unknowns": [
+    "明早天气与状态待定"
+   ],
+   "protected_expressions": [
+    "加量不加伤"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构首练里程超过两公里"
+   ]
+  }
+ }
+}

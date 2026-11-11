@@ -1,0 +1,582 @@
+{
+ "story_id": "E057",
+ "turns": {
+  "E057_T01": {
+   "case_id": "E057_T01",
+   "current_action": "第一时间接住惊慌，先稳住她的情绪节奏，同步记下猫不见的时间窗口与已翻找范围，把目标定为'先确认猫是否还在家里'。",
+   "acceptable_actions": [
+    "先安抚再列排查清单：让屋内每个藏身点逐一确认",
+    "让她先关好门窗防止真走丢，再问最后见到猫的时刻",
+    "提议把猫粮盆和它常用的小毯子留在门口做引子"
+   ],
+   "applicable_dimensions": ["goal", "factuality", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A01",
+     "subject": "HER",
+     "relation": "reports_missing",
+     "value": "阿棠早晨发现橘猫汤圆不见，衣柜床底已翻遍无果",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T01", "message_id": "m0", "quote": "汤圆不见了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A02",
+     "subject": "HER",
+     "relation": "cause_guess",
+     "value": "她推测走失时段为早晨开窗透气的一小会儿",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T01", "message_id": "m0", "quote": "早上开窗透气就一小会儿"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A03",
+     "subject": "ME",
+     "relation": "neighbor_proximity",
+     "value": "ME 住阿棠隔壁栋，步行五分钟可到场帮忙",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "住隔壁栋，走路五分钟"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：先接慌乱再给动作，语气稳但不拖沓，不预判猫已走远。",
+   "unknowns": ["猫最后出现的具体位置未确认", "屋内隐藏空间是否已全部查过未知"],
+   "protected_expressions": ["怎么叫都不出来"],
+   "forbidden_factual_claims": ["不得断言猫已跑出窗外", "不得虚构邻居目击信息"]
+  },
+  "E057_T02": {
+   "case_id": "E057_T02",
+   "current_action": "接下晚间帮忙贴启事的请求并给出明确答复，同时把她的下午搜索计划补上顺序建议：先近后远、留一张启事给物业。",
+   "acceptable_actions": [
+    "答应晚上到场帮忙张贴，并问清启事打印份数与集合点",
+    "提醒启事上留她两个联系电话，避免错过线索来电",
+    "建议下午搜索先绕单元楼一圈再扩到小区南边"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A04",
+     "subject": "HER",
+     "relation": "flyer_draft_ready",
+     "value": "寻猫启事初稿已写好，尚未打印张贴",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T02", "message_id": "m0", "quote": "启事初稿写好了还没打印"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A05",
+     "subject": "HER",
+     "relation": "requests_help",
+     "value": "她请 ME 晚上帮忙在楼道和单元门口张贴启事",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T02", "message_id": "m0", "quote": "你晚上能帮我贴一下吗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A06",
+     "subject": "HER",
+     "relation": "search_plan",
+     "value": "她计划下午先搜小区南侧区域",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T02", "message_id": "m0", "quote": "我下午先把小区南边转一圈"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：答应得干脆，把帮忙落成具体分工，不夸大找到的概率。",
+   "unknowns": ["启事打印份数未定", "物业是否允许单元门张贴未知"],
+   "protected_expressions": ["我现在手都是抖的"],
+   "forbidden_factual_claims": ["不得虚构物业已批准张贴", "不得替她决定搜索路线细节"]
+  },
+  "E057_T03": {
+   "case_id": "E057_T03",
+   "current_action": "支持她先去东门核实线索的临时转向，同时提醒：不打印可以先存草稿，别让线索落空后两头空。",
+   "acceptable_actions": [
+    "认同先核实线索，提醒带上一件猫熟悉的物品",
+    "建议她把没打印的启事稿存好，视结果再启用",
+    "顺带问一句邻居群消息的具体时间点，便于判断"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A07",
+     "subject": "THIRD",
+     "relation": "neighbor_sighting",
+     "value": "邻居群称上午在东门绿化带见到一只橘猫",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T03", "message_id": "m0", "quote": "在东门绿化带看见一只橘的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A08",
+     "subject": "SHARED",
+     "relation": "flyer_plan_suspended",
+     "value": "打印张贴寻猫启事的计划因东门线索暂停",
+     "valid_time": "2026-11-02",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E057_T02", "message_id": "m0", "quote": "启事初稿写好了还没打印"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：顺着她的转向走，但把'线索未必是真的'这层意思轻轻垫一句。",
+   "unknowns": ["目击橘猫是否为汤圆未知", "目击的具体时间点未知"],
+   "protected_expressions": ["我先去蹲"],
+   "forbidden_factual_claims": ["不得断言目击的就是汤圆", "不得否定她暂停计划的选择"]
+  },
+  "E057_T04": {
+   "case_id": "E057_T04",
+   "current_action": "接住虚惊后的挫败感，确认目击已排除的细节（项圈），肯定她重启计划的决定，并确认晚间贴启事之约不变。",
+   "acceptable_actions": [
+    "安慰后确认晚间之约，让她专心去打印",
+    "提议下次蹲守带上猫粮和零食罐提高确认效率",
+    "把项圈这个区分特征记下，作为以后核实目击的标准"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A09",
+     "subject": "THIRD",
+     "relation": "sighting_retracted",
+     "value": "东门橘猫目击被排除：系三栋散养橘猫，非汤圆",
+     "valid_time": "2026-11-02",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E057_T03", "message_id": "m0", "quote": "在东门绿化带看见一只橘的"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E057_A10",
+     "subject": "THIRD",
+     "relation": "collar_detail",
+     "value": "散养橘猫带项圈而汤圆无项圈，构成区分特征",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T04", "message_id": "m0", "quote": "人家脖子有项圈，汤圆没有项圈"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A11",
+     "subject": "SHARED",
+     "relation": "flyer_plan_resumed",
+     "value": "张贴启事计划重启，她重申 ME 晚间帮忙张贴之约",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T02", "message_id": "m0", "quote": "你晚上能帮我贴一下吗"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不笑她白蹲，把'项圈'这个特征接住变成有用的经验。",
+   "unknowns": ["小区内是否还有其他散养橘猫未知"],
+   "protected_expressions": ["蹲了个寂寞"],
+   "forbidden_factual_claims": ["不得断言汤圆一定还在楼内", "不得虚构老陈家猫的身份信息"]
+  },
+  "E057_T05": {
+   "case_id": "E057_T05",
+   "current_action": "确认当晚20张贴启事的完成度与点位，记下监控调取顺延到明天的时间节点，让她安心收工休息。",
+   "acceptable_actions": [
+    "肯定完成量并提醒她回家热敷眼睛早点休息",
+    "建议明天一早由她出面约张主任调监控",
+    "把今晚的点位清单记下，方便日后撕除"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A12",
+     "subject": "SHARED",
+     "relation": "flyers_posted",
+     "value": "两人碰头后20张寻猫启事已全部张贴，含电梯与单元门点位",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T05", "message_id": "m0", "quote": "20张全贴完了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A13",
+     "subject": "THIRD",
+     "relation": "monitor_deferred",
+     "value": "车库监控需等张主任次日上班才能调取，监控计划顺延",
+     "valid_time": "2026-11-02/2026-11-03",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T05", "message_id": "m0", "quote": "车库监控得等张主任明天上班才能调"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A14",
+     "subject": "SHARED",
+     "relation": "joint_effort",
+     "value": "ME 当晚到场与她碰头并协同完成张贴",
+     "valid_time": "2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T05", "message_id": "m0", "quote": "跟你碰完头了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把今天定义成'该做的都做了'，不催她加码夜间行动。",
+   "unknowns": ["监控中能否拍到有用画面未知"],
+   "protected_expressions": ["我眼睛都酸了"],
+   "forbidden_factual_claims": ["不得承诺监控一定拍到猫", "不得虚构张贴的完整点位清单"]
+  },
+  "E057_T06": {
+   "case_id": "E057_T06",
+   "current_action": "接住深夜的自我怀疑，不急着给新任务：先把'楼道猫叫无法证伪'和'窗户是否真的出得去'两件事说清，陪她把情绪放平。",
+   "acceptable_actions": [
+    "肯定她深夜仍下楼查看的用心，再劝她休息",
+    "提出明天在窗台放用过的猫砂盆测试气味引路",
+    "温和指出'听见猫叫'更说明她不想放弃，而非做错了事"
+   ],
+   "applicable_dimensions": ["emotion_relation", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A15",
+     "subject": "HER",
+     "relation": "night_false_alarm",
+     "value": "深夜楼道疑似猫叫，她下楼查看无果",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T06", "message_id": "m0", "quote": "楼道好像有猫叫"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A16",
+     "subject": "HER",
+     "relation": "self_doubt",
+     "value": "她自我怀疑是否弄丢猫，情绪处于低谷",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T06", "message_id": "m0", "quote": "我是不是把它弄丢了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A17",
+     "subject": "SHARED",
+     "relation": "late_night_trust",
+     "value": "两人熟到深夜求助也不算打扰，ME 可安心接住情绪",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "warmth", "quote": "半夜找我也不会觉得打扰"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：深夜不灌鸡汤也不讲大道理，一句'不是你的错'给足分量即可。",
+   "unknowns": ["楼道猫叫来源未知", "猫是否曾到过楼道未知"],
+   "protected_expressions": ["是我自己吓自己"],
+   "forbidden_factual_claims": ["不得断言猫叫就是汤圆", "不得把她的自责坐实"]
+  },
+  "E057_T07": {
+   "case_id": "E057_T07",
+   "current_action": "接住新线索带来的希望，确认灰爪印与猫粮减少两个细节的意义，支持她的守株待兔方案并应下路过留意楼道。",
+   "acceptable_actions": [
+    "肯定线索价值，建议她拍下爪印照片留档比对",
+    "提醒守家时保持安静，把手机铃声调大",
+    "答应路过留意楼道，并让她备好水和吃的撑住白天"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A18",
+     "subject": "SHARED",
+     "relation": "paw_print_clue",
+     "value": "门口发现灰爪印且猫粮盆粮少一半，判断猫未远离",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T07", "message_id": "m0", "quote": "门口的灰爪印"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A19",
+     "subject": "HER",
+     "relation": "stakeout_plan",
+     "value": "她决定请假在家守株待兔",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T07", "message_id": "m0", "quote": "我今天请假在家守着"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A20",
+     "subject": "SHARED",
+     "relation": "search_continues",
+     "value": "寻猫目标进入第二天：自昨日晨发现猫不见持续至今",
+     "valid_time": "2026-11-02/2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T01", "message_id": "m0", "quote": "汤圆不见了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把新线索说得有分量，让她觉得两天没白熬，但不打包票。",
+   "unknowns": ["爪印是否确为汤圆所留未知", "猫粮减少是否由猫进食造成未知"],
+   "protected_expressions": ["它肯定还在屋里或者楼道里没走远"],
+   "forbidden_factual_claims": ["不得断言爪印必属汤圆", "不得虚构监控已拍到画面"]
+  },
+  "E057_T08": {
+   "case_id": "E057_T08",
+   "current_action": "答应中午保持手机畅通的陪伴请求，顺带确认守候细节：阳台门开着、人避卧室、动静出来了先拍照再靠近。",
+   "acceptable_actions": [
+    "答应陪聊并约好有动静第一时间发消息",
+    "提醒她备好零食罐，猫出来时用吃的稳住它",
+    "肯定她的守候方法符合猫的习性，给她信心"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "goal", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A21",
+     "subject": "HER",
+     "relation": "stakeout_method",
+     "value": "守候方法：阳台门留开、人避卧室刷手机，留出猫活动空间",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T08", "message_id": "m0", "quote": "人躲卧室里刷手机"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A22",
+     "subject": "HER",
+     "relation": "remote_company_request",
+     "value": "她请 ME 中午保持手机畅通作远程陪伴",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T08", "message_id": "m0", "quote": "手机别静音呗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A23",
+     "subject": "SHARED",
+     "relation": "clue_anchor",
+     "value": "守候行动的依据：今晨门口灰爪印与猫粮减少线索",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T07", "message_id": "m0", "quote": "门口的灰爪印"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：陪伴请求爽快接下，聊天内容轻一点，别问'找到没'增加压力。",
+   "unknowns": ["猫会在什么时段出来未知"],
+   "protected_expressions": ["我心里稳一点"],
+   "forbidden_factual_claims": ["不得虚构自己已到场守候", "不得替她预测猫出来的时间"]
+  },
+  "E057_T09": {
+   "case_id": "E057_T09",
+   "current_action": "共享虚惊落地的狂喜，确认猫自床板夹缝钻出、从未离家的关键事实，同时接住她哭笑交织的情绪并肯定两天行动没有白费。",
+   "acceptable_actions": [
+    "热烈祝贺并复述'从未出门'的关键结论",
+    "肯定启事与爪印线索在守候中的作用，功劳归她",
+    "提醒她先给猫擦擦灰、检查有没有受伤"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A24",
+     "subject": "HER",
+     "relation": "cat_emerged",
+     "value": "汤圆午后自行从床板与床垫夹缝钻出，浑身灰但无恙",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T09", "message_id": "m0", "quote": "从床板和床垫的夹缝里自己钻出来的"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A25",
+     "subject": "SHARED",
+     "relation": "missing_retracted",
+     "value": "猫走失结论被推翻：汤圆从未离家，系在家床板夹缝躲藏",
+     "valid_time": "2026-11-02/2026-11-03",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E057_T01", "message_id": "m0", "quote": "汤圆不见了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E057_A26",
+     "subject": "HER",
+     "relation": "flyer_reflection",
+     "value": "她笑称启事白贴但贴了心里踏实",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T09", "message_id": "m1", "quote": "启事白贴了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：庆祝要热闹，把'两天行动'的定义从'找猫'改成'陪她把心放下'。",
+   "unknowns": ["猫是否因受惊需要看医生未知"],
+   "protected_expressions": ["它根本没出门", "我哭了一场又笑了半天"],
+   "forbidden_factual_claims": ["不得断言猫此前从未到过户外", "不得虚构兽医检查结论"]
+  },
+  "E057_T10": {
+   "case_id": "E057_T10",
+   "current_action": "接住她的致谢与归因，把功劳还给她自己的耐心守候，轻描淡写自己那部分，顺势关心她的晚饭。",
+   "acceptable_actions": [
+    "大方收下感谢，把关键判断归功于她发现爪印",
+    "顺着归因聊一句'夹缝当窝'符合猫的习性",
+    "叮嘱她今晚好好吃饭，别再亏待自己"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A27",
+     "subject": "HER",
+     "relation": "cause_attribution",
+     "value": "她归因：开窗受外面鸟惊吓后钻进夹缝当窝",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T10", "message_id": "m0", "quote": "开窗被外面鸟吓着了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A28",
+     "subject": "HER",
+     "relation": "thanks",
+     "value": "她向 ME 道谢：贴启事查爪印陪守两天",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T10", "message_id": "m0", "quote": "这两天麻烦你了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A29",
+     "subject": "HER",
+     "relation": "cat_settled",
+     "value": "汤圆当晚恢复安睡，状态平稳",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T10", "message_id": "m0", "quote": "晚上它睡了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不居功，把'帮忙'说得像顺路，让她的感激落得轻松。",
+   "unknowns": [],
+   "protected_expressions": ["钻进夹缝当窝"],
+   "forbidden_factual_claims": ["不得把归因当成确诊结论", "不得虚构自己晚餐安排"]
+  },
+  "E057_T11": {
+   "case_id": "E057_T11",
+   "current_action": "支持撤启事的收尾安排并记下剩余四张的点位，肯定门磁报警器这个新动作把'漏洞堵上'，帮她把经验变成设施。",
+   "acceptable_actions": [
+    "提醒电梯里那张和单元门三张够不着可以请物业梯控帮忙",
+    "肯定门磁方案，建议到货后先测一次灵敏度",
+    "把'先留草稿后打印'这条经验顺口再肯定一次"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A30",
+     "subject": "HER",
+     "relation": "flyers_removal",
+     "value": "她当日撕下16张启事，电梯内两张暂留",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T11", "message_id": "m0", "quote": "撕了16张"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A31",
+     "subject": "SHARED",
+     "relation": "flyer_goal_closed",
+     "value": "寻猫启事任务终结：转入撤除阶段，共撕下16张",
+     "valid_time": "2026-11-02/2026-11-04",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E057_T05", "message_id": "m0", "quote": "20张全贴完了"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E057_A32",
+     "subject": "HER",
+     "relation": "door_sensor_purchase",
+     "value": "她下单门磁报警器，计划堵住门窗漏洞",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T11", "message_id": "m0", "quote": "门磁报警器"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把撤启事说成'收尾仪式'，把新目标夸得具体，不泼冷水。",
+   "unknowns": ["门磁到货与安装时间未知"],
+   "protected_expressions": ["这次必须把窗户漏洞堵上"],
+   "forbidden_factual_claims": ["不得虚构门磁的品牌与价格", "不得断言装了门磁就万无一失"]
+  },
+  "E057_T12": {
+   "case_id": "E057_T12",
+   "current_action": "确认门磁安装测试成功，笑纳周六家宴邀约，以装死的玩笑收尾，回扣全程陪跑的默契。",
+   "acceptable_actions": [
+    "接下家宴邀约并答应带点水果上门",
+    "复述门磁测试成功这个句点，肯定她两天把事做完",
+    "顺着装死的玩笑收尾，预约下次给汤圆带零食"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E057_A33",
+     "subject": "HER",
+     "relation": "sensor_installed",
+     "value": "门磁已装于阳台窗与客厅门并测试报警成功",
+     "valid_time": "2026-11-04",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T12", "message_id": "m0", "quote": "门磁装好了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A34",
+     "subject": "SHARED",
+     "relation": "dinner_invite",
+     "value": "她邀 ME 周六中午来家吃饭答谢",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T12", "message_id": "m0", "quote": "周六中午来我家吃饭"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E057_A35",
+     "subject": "HER",
+     "relation": "sensor_confirmed",
+     "value": "前日下单的门磁报警器已安装并测试成功",
+     "valid_time": "2026-11-04",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E057_T11", "message_id": "m0", "quote": "门磁报警器"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻快，玩笑接住就落，不引入新的麻烦话题。",
+   "unknowns": [],
+   "protected_expressions": ["它只会躺门口装死"],
+   "forbidden_factual_claims": ["不得把家宴玩笑当成正式约定细节", "不得引入新的宠物或消费话题"]
+  }
+ }
+}

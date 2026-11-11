@@ -1,0 +1,53 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A5 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_c_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:32:33",
+      "window_last_attempt": "2026-11-08 12:31:49",
+      "attempts": 24,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_c/{DIRECT,CURRENT}/E323/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T06 用户意图/口吻/改写/多候选",
+    "子类：明确要求收尾降温"
+  ],
+  "title": "决赛前夜：越聊越精神与按时收尾",
+  "may_decline_turns": [
+    "E323_T05"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "老友陪伴",
+  "primary_topic": "T06",
+  "lineage_group_id": "LG-E323",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E323/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A5",
+  "hashes": {
+    "episode.json": "92c0a0ea2c43337fb84e0b9f4111e08b0eae3fb725e308d9c4f2bb14bd727f40",
+    "reference.json": "3c5f3144aef4080360b617b138bb0080a2ef800751a2de21738353394a328db5",
+    "timeline.json": "ef5f37520f0195a3af17a303267438d068c4c97c05c951eb3cb4e831ddf7ae12",
+    "audit.md": "4f7e195b24698995b9284f9a76792a39918922a0535c8730c88cddc261742bd4",
+    "composite": "8b428a81b7e37ed80a1ab8efada16c85165c79f3a0a4391d898f466e0912e11b"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

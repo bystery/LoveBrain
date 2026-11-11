@@ -1,0 +1,560 @@
+{
+ "story_id": "E114",
+ "turns": {
+  "E114_T01": {
+   "case_id": "E114_T01",
+   "current_action": "接住她的内推取经：以过来人身份把内推人该管到哪一步的边界先立住——递简历、如实转达，流程内的进度不打包票，为后面被要求退出埋好分寸伏笔。",
+   "acceptable_actions": [
+    "提醒她只承诺'递到'不承诺'结果'，进度让她转述而非担保",
+    "建议她先跟组长确认组里是否真在招，再收简历",
+    "让她把周锐的简历和方向先过一遍，别当甩手掌柜"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A01",
+     "subject": "THIRD",
+     "relation": "referral_request",
+     "value": "她的大学同学周锐求她把简历递给自己组长",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T01", "message_id": "m0", "quote": "他求我递给组长"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A02",
+     "subject": "SHARED",
+     "relation": "backend_opening",
+     "value": "她所在小组正好缺后端，内推有真实缺口",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T01", "message_id": "m0", "quote": "组里正好缺后端"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：经验要给得具体，'丑话说在前头'这句由她说出来比你说出来好。",
+   "unknowns": ["组内招聘流程具体环节未知"],
+   "protected_expressions": ["他求我递给组长"],
+   "forbidden_factual_claims": ["不得虚构招聘流程细节", "不得替组长预判招人意愿"]
+  },
+  "E114_T02": {
+   "case_id": "E114_T02",
+   "current_action": "接住她的承诺升级：简历已当面递到、'盯到底'已出口。肯定执行力，同时轻轻把'盯到底'往下修半格——盯的是如实转达，不是结果，别让承诺变成无限责任。",
+   "acceptable_actions": [
+    "肯定她当面递简历靠谱，提醒她周锐的期待要管理",
+    "把'盯到底'翻译成'有进展就转达，没进展不编进展'",
+    "提醒她跟周锐约个固定同步频率，别被三遍追问拖着走"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A03",
+     "subject": "HER",
+     "relation": "full_commitment_made",
+     "value": "她向周锐承诺'盯到底'，保人义务达到峰值",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T02", "message_id": "m0", "quote": "这事我盯到底"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A04",
+     "subject": "SHARED",
+     "relation": "resume_delivered",
+     "value": "简历已当面交给组长，组长约本周面聊",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T02", "message_id": "m0", "quote": "简历我当面给组长了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：修承诺要说成'给承诺划跑道'，不是泼冷水。",
+   "unknowns": ["组长面聊具体安排未知"],
+   "protected_expressions": ["这事我盯到底"],
+   "forbidden_factual_claims": ["不得断言面试必然顺利", "不得虚构组长原话"]
+  },
+  "E114_T03": {
+   "case_id": "E114_T03",
+   "current_action": "接住流程顺利与她的微烦：组长评价正面、走流程等Offer；顺着'专属客服'的玩笑给她支一招——把进度同步从被动接问改成主动定期播报，先把消耗卸掉。",
+   "acceptable_actions": [
+    "肯定组长的正面评价是硬信息，值得等",
+    "建议她跟周锐约定'有节点我说，没节点别催'的节奏",
+    "顺着客服玩笑调侃一句，把她的烦躁接轻"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A05",
+     "subject": "THIRD",
+     "relation": "lead_positive_review",
+     "value": "组长面聊后评价周锐底子正能干活，流程转等Offer",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T03", "message_id": "m0", "quote": "底子正，能干活"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A06",
+     "subject": "HER",
+     "relation": "update_fatigue",
+     "value": "周锐一天追问三遍进度，她感到客服式消耗",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T03", "message_id": "m0", "quote": "我快成他专属客服了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'又不好意思甩脸子'要接住，她的软肋是怕伤感情。",
+   "unknowns": ["Offer流程时长未知"],
+   "protected_expressions": ["我快成他专属客服了"],
+   "forbidden_factual_claims": ["不得承诺Offer必然发放", "不得替组长补评价细节"]
+  },
+  "E114_T04": {
+   "case_id": "E114_T04",
+   "current_action": "接住第三方实质介入：HR以编制冻结中止本组流程、把材料转二组、并要求她退出跟进。帮她把三件事拆开看——结果有路（二组）、义务变了（退出合规）、情绪要落地（周锐的消息）；明确站在'服从流程、如实告知'一侧。",
+   "acceptable_actions": [
+    "指出HR的要求是合规边界不是针对她，退出不等于背叛承诺",
+    "建议她把'材料已转二组、对方会直接联系你'如实转告周锐",
+    "提醒她别抢在HR前面向周锐解释流程细节"
+   ],
+   "applicable_dimensions": ["boundary", "attribution", "time_state", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A07",
+     "subject": "THIRD",
+     "relation": "headcount_frozen",
+     "value": "HR告知组内编制冻结，本组招聘流程原地中止",
+     "valid_time": "2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T04", "message_id": "m0", "quote": "组里编制冻结，周锐的流程原地停掉"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A08",
+     "subject": "THIRD",
+     "relation": "withdrawal_order",
+     "value": "HR要求她退出跟进并不再传话，内推人义务被第三方中止",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T04", "message_id": "m0", "quote": "让我从这事里退出来，别再传话"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A09",
+     "subject": "HER",
+     "relation": "full_commitment_collides",
+     "value": "'盯到底'的承诺与HR的退出要求正面相撞",
+     "valid_time": "2026-11-03/2026-11-09",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E114_T02", "message_id": "m0", "quote": "这事我盯到底"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：先接'出事了'的慌，再拆事；HR的话别复述成官腔，说成人话。",
+   "unknowns": ["二组是否真在招、材料何时转未知"],
+   "protected_expressions": ["让我从这事里退出来，别再传话", "姐，有进展没？"],
+   "forbidden_factual_claims": ["不得替HR补谈话细节", "不得断言二组必然接手"]
+  },
+  "E114_T05": {
+   "case_id": "E114_T05",
+   "current_action": "接住她的两头堵：跟组长的托付、跟周锐的'盯到底'与HR的退出令三面夹击。帮她把'如实告知'定为唯一不亏心的路——黄的原因说清楚，够不着的部分说明白，不揽责任也不甩锅。",
+   "acceptable_actions": [
+    "给出话术骨架：编制原因+材料已转+后续对接人，三句说完",
+    "提醒她不说'我尽力了'式的揽功话，只陈述事实",
+    "分享自己当年被内推时的类似经历，给她的坦白垫底气"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A10",
+     "subject": "HER",
+     "relation": "promise_conflict",
+     "value": "对组长的托付与对周锐的盯到底承诺同HR退出令打架",
+     "valid_time": "2026-11-09",
+     "status": "suspended",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T05", "message_id": "m0", "quote": "我现在两个承诺打架"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A11",
+     "subject": "ME",
+     "relation": "referral_experience",
+     "value": "ME当年被内推进现公司，有同类流程经验",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "当年我进现在这家公司也是被人内推的"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E114_A12",
+     "subject": "HER",
+     "relation": "fear_of_blame",
+     "value": "她怕周锐觉得她办事不力，成为坦白的心理阻力",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T05", "message_id": "m0", "quote": "我怕他觉得我办事不力"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'两头堵'三个字要先接，再谈话术；她的怕要说破但不说穿。",
+   "unknowns": ["周锐得知实情后的反应未知"],
+   "protected_expressions": ["我现在两个承诺打架", "黄的又不是我弄黄的"],
+   "forbidden_factual_claims": ["不得虚构ME当年的具体细节", "不得替她预演周锐的每一种反应"]
+  },
+  "E114_T06": {
+   "case_id": "E114_T06",
+   "current_action": "确认她按建议完成摊牌：事实说清、'我够不着了'交代明白；接住周锐冷淡回应带来的堵——肯定她做的是对的事，把对方的消化期当成正常延迟，不让她自我怀疑。",
+   "acceptable_actions": [
+    "肯定她说清事实不揽功的做法，慢回复是对方在消化",
+    "提醒她这几天别主动补话，让'行，我懂'自己站住",
+    "把她的堵接住：办事的人最容易被过程误伤"
+   ],
+   "applicable_dimensions": ["emotion_relation", "attribution", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A13",
+     "subject": "SHARED",
+     "relation": "truth_told",
+     "value": "她已向周锐如实摊牌：编制没了、材料转二组、自己够不着",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T06", "message_id": "m0", "quote": "我跟周锐摊牌了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A14",
+     "subject": "THIRD",
+     "relation": "referral_cooling",
+     "value": "周锐回应冷淡，关系出现降温信号",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T06", "message_id": "m0", "quote": "他愣了半天回了句'行，我懂'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A15",
+     "subject": "HER",
+     "relation": "commitment_redefined",
+     "value": "'盯到底'承诺在摊牌后正式收束为如实告知一次",
+     "valid_time": "2026-11-03/2026-11-10",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E114_T02", "message_id": "m0", "quote": "这事我盯到底"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'比我发工资还慢'这种自嘲要接得轻，重点落在她没做错。",
+   "unknowns": ["周锐是否二面通过未知"],
+   "protected_expressions": ["我够不着了"],
+   "forbidden_factual_claims": ["不得断言关系必然修复", "不得替周锐解读心理"]
+  },
+  "E114_T07": {
+   "case_id": "E114_T07",
+   "current_action": "接住二组主管加微信划界：'别管了'加笑脸。帮她把这句读平——既是客气也是逐客，但方向与HR一致，回得体即可；'被卸掉的桥'的自嘲要接住并翻个面：桥卸了，人还在。",
+   "acceptable_actions": [
+    "判读'别管了'就是字面意思，回'麻烦您费心'已经得体",
+    "把'卸桥'翻面：退出流程不等于交出情分",
+    "提醒她主管微信保持工作距离，别再往前递话"
+   ],
+   "applicable_dimensions": ["boundary", "attribution", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A16",
+     "subject": "THIRD",
+     "relation": "lead_two_boundary",
+     "value": "二组主管加微信划界：周锐的事以后不用她管",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T07", "message_id": "m0", "quote": "以后他的事你别管了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A17",
+     "subject": "HER",
+     "relation": "withdrawal_feeling",
+     "value": "她感到自己像被卸掉的桥，退出感强化",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T07", "message_id": "m0", "quote": "感觉自己像个被卸掉的桥"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A18",
+     "subject": "THIRD",
+     "relation": "hr_order_stands",
+     "value": "HR'别参与跟进'的要求仍然有效，主管划界与之同向",
+     "valid_time": "2026-11-09/2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T04", "message_id": "m0", "quote": "别再传话"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：笑脸的二义性别分析过头，一句'字面意思，回得没错'就够。",
+   "unknowns": [],
+   "protected_expressions": ["以后他的事你别管了", "感觉自己像个被卸掉的桥"],
+   "forbidden_factual_claims": ["不得替主管解读敌意", "不得虚构二组面试安排"]
+  },
+  "E114_T08": {
+   "case_id": "E114_T08",
+   "current_action": "接住她对组长含糊其辞后的没劲：'在走别的流程'是合规内的话但说得憋屈。帮她把这句话定性——不是撒谎是留白，并提醒她含糊到此为止，后续组长问起可以只说'结果出来我告诉你'。",
+   "acceptable_actions": [
+    "肯定'在走别的流程'没越合规线，别给自己扣撒谎的帽子",
+    "建议她对组长的后续追问统一口径：结果落地我第一时间说",
+    "把'两头都嫌我多嘴'翻面：你只是同时被两边需要过"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A19",
+     "subject": "HER",
+     "relation": "vague_to_lead",
+     "value": "她对组长含糊回应'在走别的流程'",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T08", "message_id": "m0", "quote": "我含糊说'在走别的流程'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A20",
+     "subject": "THIRD",
+     "relation": "lead_follow_up",
+     "value": "组长仍随口关心周锐去向，牵动她的退出边界",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T08", "message_id": "m0", "quote": "那小伙子后来咋样了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A21",
+     "subject": "SHARED",
+     "relation": "second_interview_scheduled",
+     "value": "二组已约周锐下周二面试",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T08", "message_id": "m0", "quote": "二组约周锐下周二面试"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她的'没劲'要用生活话接，别讲职场大道理。",
+   "unknowns": ["周二面试结果未知"],
+   "protected_expressions": ["我含糊说'在走别的流程'", "两头都嫌我多嘴"],
+   "forbidden_factual_claims": ["不得虚构组长追问的场合与语气", "不得断言面试结果"]
+  },
+  "E114_T09": {
+   "case_id": "E114_T09",
+   "current_action": "共享一面通过与误会对齐：她没收红包、只讨一杯奶茶，周锐主动认错。把'没收红包'点成这件事里最值钱的动作——边界立住了，情分才回得来。",
+   "acceptable_actions": [
+    "先恭喜一面通过，再说她收奶茶不收红包分寸漂亮",
+    "肯定周锐主动认错，前两天的冷淡一笔带过就好",
+    "调侃'奶茶债主'，把这页翻得轻快"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A22",
+     "subject": "THIRD",
+     "relation": "first_interview_passed",
+     "value": "周锐二组一面通过，称聊得特别顺",
+     "valid_time": "2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T09", "message_id": "m0", "quote": "周锐二组一面过了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A23",
+     "subject": "HER",
+     "relation": "red_envelope_declined",
+     "value": "她拒收红包，只约定入职后一杯奶茶",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T09", "message_id": "m0", "quote": "他给我发了个大红包，我没收"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A24",
+     "subject": "THIRD",
+     "relation": "misunderstanding_cleared",
+     "value": "周锐为误会她撂挑子主动致歉，关系回温",
+     "valid_time": "2026-11-10/2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T06", "message_id": "m0", "quote": "他愣了半天回了句'行，我懂'"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'堵的都顺了'这句要接得暖，让她知道这口气顺回来值得。",
+   "unknowns": ["终面时间未知"],
+   "protected_expressions": ["误会你撂挑子"],
+   "forbidden_factual_claims": ["不得虚构红包金额", "不得断言终面必然通过"]
+  },
+  "E114_T10": {
+   "case_id": "E114_T10",
+   "current_action": "接住终面通过与群里公开致谢的烫手：二组主管@她致谢、组长在群里。帮她把'烫手'降温——致谢是结果性客套，她没接话头就算合规，回个捧场表情即可，不必向组长私下解释。",
+   "acceptable_actions": [
+    "先恭喜终面通过，再处理烫手：群里点头像捧场即可",
+    "建议她不在群里展开，也别单独找组长解释",
+    "提醒她'多亏牵线'的功劳收一半，真正干活的是周锐"
+   ],
+   "applicable_dimensions": ["boundary", "interaction", "attribution", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A25",
+     "subject": "THIRD",
+     "relation": "final_interview_passed",
+     "value": "周锐终面通过，HR 说月底前入职二组",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T10", "message_id": "m0", "quote": "终面也过了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A26",
+     "subject": "THIRD",
+     "relation": "public_credit",
+     "value": "二组主管在部门群公开@她致谢，组长在场",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T10", "message_id": "m0", "quote": "二组主管@我，说'多亏阿满牵线'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A27",
+     "subject": "HER",
+     "relation": "compliance_anxiety",
+     "value": "HR'别参与'的要求让她对公开致谢感到烫手",
+     "valid_time": "2026-11-09/2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T04", "message_id": "m0", "quote": "别再传话"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：先给她高兴留两秒，再处理忐忑；别让合规焦虑盖过好事。",
+   "unknowns": ["组长当下的真实观感未知"],
+   "protected_expressions": ["这表扬烫手"],
+   "forbidden_factual_claims": ["不得虚构群内其他回复", "不得断言组长多心"]
+  },
+  "E114_T11": {
+   "case_id": "E114_T11",
+   "current_action": "共享组长的咖啡表态：编制的事不怪她、好苗子照旧推——最后一道铃解了。把她自己提炼的'没瞒'接成这条故事的方法论，肯定她全程靠事实过关。",
+   "acceptable_actions": [
+    "肯定组长表态把这事正式画了句号",
+    "把'没瞒'接成她的经验：事实比话术经得起复查",
+    "顺带恭喜她往后内推的信用反而变厚了"
+   ],
+   "applicable_dimensions": ["emotion_relation", "attribution", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A28",
+     "subject": "THIRD",
+     "relation": "lead_clearance",
+     "value": "组长明确表态：未进组是编制问题与她无关，欢迎继续推荐",
+     "valid_time": "2026-11-21",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T11", "message_id": "m0", "quote": "人没进咱组是编制的事，跟你没关系，往后有好苗子照旧推"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A29",
+     "subject": "HER",
+     "relation": "honesty_lesson",
+     "value": "她复盘出全程做对的一件事：没瞒",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T11", "message_id": "m0", "quote": "我就做对了一件事：没瞒"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A30",
+     "subject": "HER",
+     "relation": "stone_dropped",
+     "value": "组长表态后她的忐忑解除",
+     "valid_time": "2026-11-20/2026-11-21",
+     "status": "resolved",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T10", "message_id": "m0", "quote": "组长就在群里，会不会多心啊"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'哐当落地'要有画面感，'没瞒'的总结让她自己说你就点头。",
+   "unknowns": [],
+   "protected_expressions": ["往后有好苗子照旧推", "我就做对了一件事：没瞒"],
+   "forbidden_factual_claims": ["不得虚构咖啡场合细节", "不得断言组长态度从此定型"]
+  },
+  "E114_T12": {
+   "case_id": "E114_T12",
+   "current_action": "接住奶茶债主的收尾：周锐入职、群里'债已还'、主管跟话——笑纳这份轻巧的闭环，顺着她的经验总结把'丑话说在前头'认领回去，干净收束不引入新话题。",
+   "acceptable_actions": [
+    "接'奶茶债主'的梗收尾，祝周锐好好干",
+    "认领'把丑话说在前头'这句，承诺下次继续出馊主意",
+    "把整件事收成一句：人成了、关系没伤、边界学会了"
+   ],
+   "applicable_dimensions": ["interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E114_A31",
+     "subject": "THIRD",
+     "relation": "onboarding_debt_paid",
+     "value": "周锐入职首日拉群还奶茶债，主管跟话勉励",
+     "valid_time": "2026-11-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T12", "message_id": "m0", "quote": "发了杯奶茶照片说'债已还'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A32",
+     "subject": "HER",
+     "relation": "boundary_lesson_adopted",
+     "value": "她把'下次内推先说丑话'定为新的承诺边界",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T12", "message_id": "m0", "quote": "把丑话说在前头"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E114_A33",
+     "subject": "SHARED",
+     "relation": "milk_tea_debt_origin",
+     "value": "'奶茶债'回扣她当初拒收红包只讨一杯奶茶",
+     "valid_time": "2026-11-18/2026-11-24",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E114_T09", "message_id": "m0", "quote": "入职了请我喝杯奶茶就行"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要轻，功劳分给周锐和组长各一半，她只留教训。",
+   "unknowns": [],
+   "protected_expressions": ["把丑话说在前头"],
+   "forbidden_factual_claims": ["不得虚构群名之外更多群内细节", "不得引入新的招聘话题"]
+  }
+ }
+}

@@ -1,0 +1,944 @@
+{
+ "story_id": "E050",
+ "turns": {
+  "E050_T01": {
+   "case_id": "E050_T01",
+   "current_action": "接住考前汇报：确认考试日为11月2日、错题已过完、12月厦门出差行程已定，夸她的节奏并提醒最后几天只做错题回看。",
+   "acceptable_actions": [
+    "按老同学口吻夸她错题清完的执行力",
+    "把11月2日考试与12月出差排期复述一遍求确认",
+    "提醒最后六天不刷新题只回错题"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A01",
+     "subject": "PUBLIC",
+     "relation": "考试安排",
+     "value": "心理咨询基础考试原定11月2日举行",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T01",
+      "message_id": "m0",
+      "quote": "就等11月2号上考场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A02",
+     "subject": "HER",
+     "relation": "备考进度",
+     "value": "心理基础错题已全部过完一遍",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T01",
+      "message_id": "m0",
+      "quote": "把心理基础那本错题全过了一遍"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A03",
+     "subject": "HER",
+     "relation": "出差安排",
+     "value": "12月有厦门出差行程且已排定不想挪动",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T01",
+      "message_id": "m1",
+      "quote": "考完我12月还得去厦门出差"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A04",
+     "subject": "HER",
+     "relation": "备考背景",
+     "value": "她在考心理咨询基础证书，节奏以日历计划为准",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "在考心理咨询基础证书"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是给她的计划感托底，口吻像老同学顺手对表，不灌输新方法。",
+   "unknowns": [
+    "考试具体开考时间未知",
+    "厦门出差具体日期当时未定"
+   ],
+   "protected_expressions": [
+    "就等11月2号上考场"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构考试科目细节",
+    "不得替她改计划"
+   ]
+  },
+  "E050_T02": {
+   "case_id": "E050_T02",
+   "current_action": "接住打卡播报：确认她自定的加练规矩与上午错8道的成绩，给一句稳定的肯定不添乱。",
+   "acceptable_actions": [
+    "肯定她自定规矩并在当天守住",
+    "顺手提醒下午套题后早点休息",
+    "约考完再聊，不打断节奏"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A05",
+     "subject": "HER",
+     "relation": "自定规则",
+     "value": "套题错超过10道就加练一套",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T02",
+      "message_id": "m0",
+      "quote": "错超过10道就加练一套"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A06",
+     "subject": "HER",
+     "relation": "当日成绩",
+     "value": "上午套题错8道，未触发加练",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T02",
+      "message_id": "m1",
+      "quote": "上午那套错8道"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A07",
+     "subject": "PUBLIC",
+     "relation": "时间锚点",
+     "value": "距11月2日考试还有6天，处于最后冲刺期",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T01",
+      "message_id": "m0",
+      "quote": "还有6天考试"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是做安静的后援，不增加她的应答负担。",
+   "unknowns": [
+    "下午套题结果未知"
+   ],
+   "protected_expressions": [
+    "稳住，下午再战"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她的套题分数"
+   ]
+  },
+  "E050_T03": {
+   "case_id": "E050_T03",
+   "current_action": "接住取消冲击：确认11月2日场次因机房故障取消、统一改到12月14日，先接情绪不急着给方案，把改期事实复述清楚。",
+   "acceptable_actions": [
+    "先接情绪：一个月心血被挂起确实难受",
+    "复述改期事实：11月2日取消、12月14日接续",
+    "提醒她短信和官网通知都截图留存"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A08",
+     "subject": "PUBLIC",
+     "relation": "考试取消",
+     "value": "11月2日场次因机房故障取消",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T03",
+      "message_id": "m0",
+      "quote": "11月2号那场取消"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A09",
+     "subject": "PUBLIC",
+     "relation": "新考期",
+     "value": "考试统一改到12月14日",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T03",
+      "message_id": "m0",
+      "quote": "统一改到12月14号"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A10",
+     "subject": "PUBLIC",
+     "relation": "原考试安排",
+     "value": "考试按原计划于11月2日进行（不成立，考试中心已通知取消）",
+     "valid_time": "2026-10-27 至 2026-10-29",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T01",
+      "message_id": "m0",
+      "quote": "就等11月2号上考场"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是先共情再谈后续，此刻不输出计划建议，把节奏留给她。",
+   "unknowns": [
+    "改约是否需要她主动确认当时未知",
+    "退费或转场细则未知"
+   ],
+   "protected_expressions": [
+    "我人麻了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构取消原因之外的细节",
+    "不得断言12月14日一定不变"
+   ]
+  },
+  "E050_T04": {
+   "case_id": "E050_T04",
+   "current_action": "回应自我怀疑：承认删色块时的失落是真的，用她已完成的错题量和模考安排证明学习成果还在，不空安慰。",
+   "acceptable_actions": [
+    "指出知识不会因考期推迟蒸发",
+    "建议把短期目标从考试改成保持手感",
+    "陪她把12月14日写进日历重建锚点"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A11",
+     "subject": "HER",
+     "relation": "日历更新",
+     "value": "已删除日历上11月2日的考试色块",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T04",
+      "message_id": "m0",
+      "quote": "把日历上11月2号的色块删了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A12",
+     "subject": "HER",
+     "relation": "自我怀疑",
+     "value": "担心一个月学习白费、看啥忘啥",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T04",
+      "message_id": "m1",
+      "quote": "现在看啥忘啥"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A13",
+     "subject": "PUBLIC",
+     "relation": "新考期",
+     "value": "考试已改期至12月14日",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T03",
+      "message_id": "m0",
+      "quote": "统一改到12月14号"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把'白学了'的恐惧拆成可验证的进度事实，语气轻但内容实。",
+   "unknowns": [
+    "她的模考安排当时未定"
+   ],
+   "protected_expressions": [
+    "手都在抖"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她当下的复习状态"
+   ]
+  },
+  "E050_T05": {
+   "case_id": "E050_T05",
+   "current_action": "确认改约流程闭环：免费顺延、11月10日前需确认、她已完成确认并截图，肯定她把流程一次办妥。",
+   "acceptable_actions": [
+    "肯定她当天就完成确认的效率",
+    "提醒在11月10日前再核一眼官网状态",
+    "建议把确认截图归档到备考文件夹"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "initiative",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A14",
+     "subject": "PUBLIC",
+     "relation": "改约政策",
+     "value": "12月14日场次不用重新交钱自动顺延，需在11月10日前确认一次",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T05",
+      "message_id": "m0",
+      "quote": "不用重新交钱，自动顺延，但要在11月10号前确认一次"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A15",
+     "subject": "HER",
+     "relation": "确认动作",
+     "value": "她已在官网完成改约确认并留存截图",
+     "valid_time": "2026-10-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T05",
+      "message_id": "m1",
+      "quote": "我已经点了确认"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A16",
+     "subject": "PUBLIC",
+     "relation": "取消原因",
+     "value": "11月2日场次取消的原因为机房故障",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T03",
+      "message_id": "m0",
+      "quote": "机房故障"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让流程事实落袋为安，顺带把她的掌控感接回来。",
+   "unknowns": [
+    "确认后是否还会再发准考证通知未知"
+   ],
+   "protected_expressions": [
+    "截图躺在相册里了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构官网细则之外的条件"
+   ]
+  },
+  "E050_T06": {
+   "case_id": "E050_T06",
+   "current_action": "陪她重建40天计划：确认案例分析专项加通勤音频课的安排，并核对12月18日出差与12月14日考试不冲突。",
+   "acceptable_actions": [
+    "肯定弱项专项的打法并对时间账",
+    "确认12月18日出差与考试错开的结论",
+    "建议音频课设固定时段防漂移"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A17",
+     "subject": "HER",
+     "relation": "新计划",
+     "value": "多出的40天用于案例分析弱项专项重啃",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T06",
+      "message_id": "m0",
+      "quote": "多出来的40天不能白扔"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A18",
+     "subject": "HER",
+     "relation": "新计划",
+     "value": "新计划含每天早上通勤听一节音频课",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T06",
+      "message_id": "m0",
+      "quote": "每天早上通勤听一节音频课"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A19",
+     "subject": "HER",
+     "relation": "出差日期",
+     "value": "厦门出差为12月18日出行",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T06",
+      "message_id": "m1",
+      "quote": "是12月18号的票"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A20",
+     "subject": "HER",
+     "relation": "出差安排",
+     "value": "12月厦门出差行程此前已排定",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T01",
+      "message_id": "m1",
+      "quote": "考完我12月还得去厦门出差"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是帮新计划立骨架，夸她把坏事拆成了资源，不推翻她的安排。",
+   "unknowns": [
+    "音频课具体课程名未知",
+    "出差天数未知"
+   ],
+   "protected_expressions": [
+    "多出来的40天不能白扔"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构出差改签可能"
+   ]
+  },
+  "E050_T07": {
+   "case_id": "E050_T07",
+   "current_action": "接住边界被冒犯的吐槽：确认母亲的看店要求占了原考试日的空，认同她'那天要按新节奏复习'的立场，不急着教她应付。",
+   "acceptable_actions": [
+    "先站她：考期推了不等于那天是空的",
+    "帮她把11月2日的新安排说成硬约束",
+    "提醒她拒绝时给替代方案更容易谈拢"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "attribution",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A21",
+     "subject": "THIRD",
+     "relation": "看店请求",
+     "value": "母亲要求她11月2日回家帮表弟看店",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T07",
+      "message_id": "m0",
+      "quote": "非要我11月2号那天回家帮我表弟看店"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A22",
+     "subject": "THIRD",
+     "relation": "请求理由",
+     "value": "母亲的理由是考期推了她那天没事了",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T07",
+      "message_id": "m0",
+      "quote": "说反正我那天没事了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A23",
+     "subject": "PUBLIC",
+     "relation": "新考期",
+     "value": "考期已改至12月14日，11月2日无正式考试",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T03",
+      "message_id": "m0",
+      "quote": "统一改到12月14号"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是当同盟不当军师，肯定她的不舒服是正当的，招数让她自己挑。",
+   "unknowns": [
+    "表弟看店的具体时段未知",
+    "母亲是否接受替代方案未知"
+   ],
+   "protected_expressions": [
+    "我气笑了"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她承诺任何对母亲的安排"
+   ]
+  },
+  "E050_T08": {
+   "case_id": "E050_T08",
+   "current_action": "确认边界守住：她以自约线上模考为由拒绝看店，母亲作罢；同时记下模考定在11月2日上午十点对齐原考试时间。",
+   "acceptable_actions": [
+    "肯定她用模考当硬约束的做法",
+    "记下模考时间并祝顺利",
+    "提醒模考当天按真实考试流程掐表"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "time_state",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A24",
+     "subject": "HER",
+     "relation": "边界行动",
+     "value": "她以自己约的线上模考为由拒绝看店请求",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T08",
+      "message_id": "m0",
+      "quote": "11月2号我有自己约的线上模考"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A25",
+     "subject": "HER",
+     "relation": "模考安排",
+     "value": "线上模考定在11月2日上午十点，与原考试时间一致",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T08",
+      "message_id": "m1",
+      "quote": "模考我定在当天上午十点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A26",
+     "subject": "THIRD",
+     "relation": "看店请求",
+     "value": "母亲要求11月2日回家看店（已被她拒绝，不执行）",
+     "valid_time": "2026-11-01",
+     "status": "rejected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T07",
+      "message_id": "m0",
+      "quote": "非要我11月2号那天回家帮我表弟看店"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把这次拒绝定性为她的胜利，不评判她母亲的动机。",
+   "unknowns": [
+    "母亲后续是否再提未知",
+    "表弟看店最终谁来顶未知"
+   ],
+   "protected_expressions": [
+    "保持手感"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构母女对话细节"
+   ]
+  },
+  "E050_T09": {
+   "case_id": "E050_T09",
+   "current_action": "接住模考捷报：74分比上周高6分，用数据正面回应她之前'白学了'的自我怀疑，顺手夸她犒劳自己理所应当。",
+   "acceptable_actions": [
+    "用分数回扣她此前的自我怀疑并正面肯定",
+    "夸她把原考试日过成了自己的节奏",
+    "提醒把错题记回清单保持势头"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A27",
+     "subject": "HER",
+     "relation": "模考成绩",
+     "value": "11月2日模考74分，比上周高6分",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T09",
+      "message_id": "m0",
+      "quote": "74分，比上周高了6分"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A28",
+     "subject": "HER",
+     "relation": "自我犒劳",
+     "value": "模考后中午吃了人均三十八的泰式简餐",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T09",
+      "message_id": "m1",
+      "quote": "人均三十八的泰式简餐"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A29",
+     "subject": "HER",
+     "relation": "模考安排",
+     "value": "线上模考按计划在11月2日上午十点进行",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T08",
+      "message_id": "m1",
+      "quote": "模考我定在当天上午十点"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把分数翻译成'你的积累没白费'，夸得具体不空泛。",
+   "unknowns": [
+    "模考各模块得分分布未知"
+   ],
+   "protected_expressions": [
+    "理直气壮"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构分数之外的排名或通过线"
+   ]
+  },
+  "E050_T10": {
+   "case_id": "E050_T10",
+   "current_action": "回应执行卡顿的求助：确认单词打卡已补、通勤音频连续4天没做到，认可她把音频挪到周末集中听的思路，建议按周试运行再定。",
+   "acceptable_actions": [
+    "肯定她发现问题的自我觉察",
+    "支持把音频挪到周末试一周",
+    "提醒工作日留个最小动作防彻底断档"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A30",
+     "subject": "HER",
+     "relation": "打卡中断",
+     "value": "单词打卡断一天后已补上",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T10",
+      "message_id": "m0",
+      "quote": "单词打卡断了一天"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A31",
+     "subject": "HER",
+     "relation": "执行偏差",
+     "value": "每天通勤听音频的计划连续4天未执行，通勤时间被改稿占用",
+     "valid_time": "2026-11-08",
+     "status": "stalled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T10",
+      "message_id": "m1",
+      "quote": "通勤听音频连续第4天没做到"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A32",
+     "subject": "HER",
+     "relation": "新计划",
+     "value": "此前计划含每天早上通勤听一节音频课",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T06",
+      "message_id": "m0",
+      "quote": "每天早上通勤听一节音频课"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把她的自责转成调整方案的素材，建议给选项不定死。",
+   "unknowns": [
+    "下周改稿工作量是否持续未知",
+    "周末两小时能否稳定留出未知"
+   ],
+   "protected_expressions": [
+    "你说我要不要把音频挪到周末集中听"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言周末方案一定更优"
+   ]
+  },
+  "E050_T11": {
+   "case_id": "E050_T11",
+   "current_action": "确认计划修订落地：音频挪到周六上午集中听两小时、工作日保留15分钟错题，肯定她对节奏的让步是成熟做法。",
+   "acceptable_actions": [
+    "肯定计划修订尊重了现实约束",
+    "建议周六集中听后当天出一次小测",
+    "提醒新节奏先跑两周再评估"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A33",
+     "subject": "HER",
+     "relation": "计划修订",
+     "value": "音频课改为周六上午集中听两小时",
+     "valid_time": "2026-11-09",
+     "status": "revised",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T11",
+      "message_id": "m0",
+      "quote": "挪到周六上午集中听两小时"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A34",
+     "subject": "HER",
+     "relation": "计划修订",
+     "value": "工作日保留15分钟错题的最小动作",
+     "valid_time": "2026-11-09",
+     "status": "revised",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T11",
+      "message_id": "m0",
+      "quote": "工作日只保留15分钟错题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A35",
+     "subject": "HER",
+     "relation": "执行偏差",
+     "value": "通勤听音频计划已连续4天未执行，是本次修订的直接原因",
+     "valid_time": "2026-11-08",
+     "status": "stalled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T10",
+      "message_id": "m1",
+      "quote": "通勤听音频连续第4天没做到"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是肯定她'降标不断线'的调整哲学，收着夸不延伸新任务。",
+   "unknowns": [
+    "15分钟错题具体放在哪个时段未知"
+   ],
+   "protected_expressions": [
+    "这个安排舒服多了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她的执行数据"
+   ]
+  },
+  "E050_T12": {
+   "case_id": "E050_T12",
+   "current_action": "接住倒计时汇报并收尾：确认距12月14日考试还有29天、案例分析第一轮正确率80%，接下考后潮汕火锅的邀约回扣老同学关系。",
+   "acceptable_actions": [
+    "肯定第一轮正确率80%的硬进度",
+    "接下火锅邀约并祝29天后顺利",
+    "顺手回扣大学搭子旧梗收尾"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E050_A36",
+     "subject": "HER",
+     "relation": "备考进度",
+     "value": "案例分析第一轮已过完，正确率80%",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T12",
+      "message_id": "m0",
+      "quote": "案例分析过完第一轮，正确率80%"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A37",
+     "subject": "SHARED",
+     "relation": "考后约定",
+     "value": "她考完12月14日的考试后请ME吃那家潮汕火锅",
+     "valid_time": "2026-12-14 后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T12",
+      "message_id": "m1",
+      "quote": "考完请你吃你上次念叨的那家潮汕火锅"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E050_A38",
+     "subject": "PUBLIC",
+     "relation": "新考期",
+     "value": "考试日期为12月14日，距11月15日还有29天",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E050_T03",
+      "message_id": "m0",
+      "quote": "统一改到12月14号"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把29天倒计时接成一句轻托底，火锅爽快应下，不拖泥带水。",
+   "unknowns": [
+    "火锅具体日期未定",
+    "考试当天她需几点到场未知"
+   ],
+   "protected_expressions": [
+    "这次稳了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她最终考试成绩"
+   ]
+  }
+ }
+}

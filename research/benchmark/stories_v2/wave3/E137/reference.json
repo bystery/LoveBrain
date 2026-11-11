@@ -1,0 +1,716 @@
+{
+ "story_id": "E137",
+ "turns": {
+  "E137_T01": {
+   "current_action": "答应续情报：把自己了解到的团队情况按实锤与风闻分档讲，提醒她二面重点",
+   "acceptable_actions": [
+    "分档给情报：哪些是自己问实锤的、哪些是风闻，重点提示总监面风格",
+    "答应续费情报，先问她一面聊到什么程度再补差异信息",
+    "给二面准备方向建议，承诺面试前帮她再核一轮信息"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A01",
+     "subject": "ME",
+     "relation": "信息来源",
+     "value": "认识跨境供应链公司的人，帮阿澄打听过团队口碑",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "认识那家公司的人，帮阿澄打听过团队口碑"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E137_A02",
+     "subject": "HER",
+     "relation": "求职进度",
+     "value": "跨境供应链公司运营岗一面通过，下周二二面为运营总监面",
+     "valid_time": "2026-11-04起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T01",
+      "message_id": "m0",
+      "quote": "一面我过了！下周二二面，是运营总监面"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把实锤和风闻分开说是老蒋的核心人设，情报别夸大。",
+   "unknowns": [
+    "二面具体考察方式未定"
+   ],
+   "protected_expressions": [
+    "再给我续一续呗"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造该公司真实业务数据",
+    "不得断言二面必问什么"
+   ],
+   "case_id": "E137_T01"
+  },
+  "E137_T02": {
+   "current_action": "接住她的准备进展，补充一句总监面的数据细节风格提醒，肯定她的复盘模型",
+   "acceptable_actions": [
+    "肯定准备方向，提醒数据细节要能讲出业务含义",
+    "接住大厂出身的判断，建议她把模型最熟的一条讲透",
+    "轻量补一条情报层面的提醒，不展开说教"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A03",
+     "subject": "THIRD",
+     "relation": "面试官背景",
+     "value": "供应链负责人从大厂出身，二面可能抠数据细节",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T02",
+      "message_id": "m0",
+      "quote": "那位供应链负责人我查了，果然是从大厂出来的，二面估计会抠数据细节"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E137_A04",
+     "subject": "ME",
+     "relation": "情报分享（前情）",
+     "value": "此前已向她提供过该公司内部情况",
+     "valid_time": "2026-11-04前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "帮阿澄打听过团队口碑"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "情报已给到位就不重复，重点转到让她把准备的东西讲熟。",
+   "unknowns": [],
+   "protected_expressions": [
+    "心里有底多了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E137_T02"
+  },
+  "E137_T03": {
+   "current_action": "接住二面良好的自评，肯定复盘框架被当场认可，提醒她等结果期间别把其他线全停",
+   "acceptable_actions": [
+    "祝贺自评良好，提醒等通知期间保持其他机会在谈",
+    "肯定当场被夸是硬信号，顺口问其他家进展",
+    "接住'感觉有戏'，温和提示有戏不等于落袋"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A05",
+     "subject": "HER",
+     "relation": "二面结果",
+     "value": "二面自评良好，总监当场夸复盘框架，猎头称本周内给结果",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T03",
+      "message_id": "m0",
+      "quote": "总监当场夸了我们的复盘框架，说让我等通知"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E137_A06",
+     "subject": "HER",
+     "relation": "求职偏好",
+     "value": "看机会最看重团队稳定性",
+     "valid_time": "求职期持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "最看重团队稳定性"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "乐观轮别泼冷水，但把'别全停其他线'轻轻放一句。",
+   "unknowns": [
+    "结果未出"
+   ],
+   "protected_expressions": [
+    "这周内给结果"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E137_T03"
+  },
+  "E137_T04": {
+   "current_action": "接住编制冻结的坏消息：先稳情绪，指出这是第三方（总部）单方变动不是她面砸了，建议双线并行、不无限等",
+   "acceptable_actions": [
+    "安抚加定性：编制冻结是组织变动，与她的表现无关",
+    "劝她别无限期等待，把简历挂回去并行推进",
+    "先骂一句流程不地道，再给'两条腿走路'的具体建议"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "attribution",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A07",
+     "subject": "PUBLIC",
+     "relation": "岗位编制状态",
+     "value": "该部门编制被总部临时冻结，全组招聘暂停，流程无限期等待",
+     "valid_time": "2026-11-13起，解冻时间未定",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T04",
+      "message_id": "m0",
+      "quote": "那个部门的编制被总部临时冻结了，全组招聘暂停，让流程'无限期等待'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E137_A08",
+     "subject": "PUBLIC",
+     "relation": "结果预期",
+     "value": "猎头本周内给结果的承诺落空",
+     "valid_time": "2026-11-11至11-13",
+     "status": "negated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T03",
+      "message_id": "m0",
+      "quote": "猎头说这周内给结果"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E137_A09",
+     "subject": "THIRD",
+     "relation": "信息来源层级",
+     "value": "编制冻结消息来自猎头转述，属第三方口径而非公司官方确认",
+     "valid_time": "2026-11-13",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T04",
+      "message_id": "m0",
+      "quote": "猎头刚打电话"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "定性最重要：不是她的问题；同时把第三方口径标注为'待核实'。",
+   "unknowns": [
+    "冻结是否属实、持续多久均未核实"
+   ],
+   "protected_expressions": [
+    "半年磨一个机会，说没就没"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言冻结谣言或必然解冻"
+   ],
+   "case_id": "E137_T04"
+  },
+  "E137_T05": {
+   "current_action": "肯定她重新挂简历和约面双线推进，建议本地生活这家走内推的认真谈",
+   "acceptable_actions": [
+    "肯定双线动作，鼓励内推这家认真聊",
+    "接住'不吊一棵树'，提醒她面的时候把稳定性问题反向问对方",
+    "肯定行动力，顺口说需要内推细节随时开口"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A10",
+     "subject": "HER",
+     "relation": "求职双线状态",
+     "value": "简历重新挂出，明天约本地生活公司面谈（朋友内推）",
+     "valid_time": "2026-11-13起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T05",
+      "message_id": "m0",
+      "quote": "我把简历重新挂出去，明天约了另一家做本地生活的聊聊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E137_A11",
+     "subject": "PUBLIC",
+     "relation": "岗位编制状态",
+     "value": "跨境供应链岗位流程处于冻结暂停中",
+     "valid_time": "2026-11-13起",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T04",
+      "message_id": "m0",
+      "quote": "全组招聘暂停"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她已自己走出来了，这轮做啦啦队加一点点实战提醒即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "不能在一棵树上吊着"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E137_T05"
+  },
+  "E137_T06": {
+   "current_action": "帮她权衡新机会：通勤半小时是否值得，取决于成长空间和稳定性的对比，不替她拍板",
+   "acceptable_actions": [
+    "把通勤放进总账一起算：成长、稳定、钱三栏对比",
+    "认可投缘难得，建议一面二面继续聊完再权衡",
+    "轻回应纠结，提醒她base问题可以面试时直接问弹性"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A12",
+     "subject": "HER",
+     "relation": "新机会状态",
+     "value": "本地生活公司一面过，业务投缘，base在江北通勤多半小时",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T06",
+      "message_id": "m0",
+      "quote": "本地生活那家一面过了，业务聊得挺投缘，就是base在江北"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E137_A13",
+     "subject": "HER",
+     "relation": "求职偏好",
+     "value": "看机会最看重团队稳定性",
+     "valid_time": "求职期持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "最看重团队稳定性"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "不给唯一答案，把她自己最看重的稳定性拉进对比框架。",
+   "unknowns": [
+    "本地生活家的面试推进与待遇未定"
+   ],
+   "protected_expressions": [
+    "通勤多了半小时，纠结"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E137_T06"
+  },
+  "E137_T07": {
+   "current_action": "接住岗位复活的大反转：为她高兴的同时提醒口径仍来自猎头，终面前用得上就先去面，书面offer前不押注",
+   "acceptable_actions": [
+    "接住反转，肯定她双线并行才等来了复活，提醒offer前不押注",
+    "为她高兴，顺口确认终面时间并把VP面当新题准备",
+    "接梗'比追剧刺激'，温和提示猎头口径上次刚变过一回"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "attribution",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A14",
+     "subject": "PUBLIC",
+     "relation": "岗位编制状态",
+     "value": "编制解冻，优先补她面过的岗，下周业务VP终面",
+     "valid_time": "2026-11-21起",
+     "status": "resumed",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T07",
+      "message_id": "m0",
+      "quote": "猎头说编制解冻了，优先补我面过的那个岗，让我下周直接终面"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E137_A15",
+     "subject": "PUBLIC",
+     "relation": "岗位编制状态（前态）",
+     "value": "此前编制冻结、全组招聘暂停",
+     "valid_time": "2026-11-13至11-20",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T04",
+      "message_id": "m0",
+      "quote": "那个部门的编制被总部临时冻结了"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E137_A16",
+     "subject": "THIRD",
+     "relation": "信息来源层级",
+     "value": "解冻消息仍为猎头转述，未经公司官方确认",
+     "valid_time": "2026-11-21",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T07",
+      "message_id": "m0",
+      "quote": "猎头说编制解冻了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本故事第二个第三方反转节点：高兴要真高兴，口径提醒要轻，别扫兴。",
+   "unknowns": [
+    "解冻是否落地、终面结果未定"
+   ],
+   "protected_expressions": [
+    "这剧情比追剧还刺激"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言解冻必然兑现"
+   ],
+   "case_id": "E137_T07"
+  },
+  "E137_T08": {
+   "current_action": "评价终面表现：肯定实话实说的策略，说明对比期有第二个offer反而是筹码",
+   "acceptable_actions": [
+    "肯定她的实话策略，说有备选在手是健康姿态",
+    "接住'很诚实'的反馈，建议后续谈判保持同样坦率",
+    "肯定发挥，提醒她把两家的对比维度提前列好"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A17",
+     "subject": "HER",
+     "relation": "终面表现",
+     "value": "终面被问双offer取舍，实言对比薪资与成长，获VP'很诚实'评价",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T08",
+      "message_id": "m0",
+      "quote": "我实话实说会对比薪资和成长，他笑了笑说'很诚实'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E137_A18",
+     "subject": "HER",
+     "relation": "求职双线状态",
+     "value": "本地生活线仍在推进，构成谈判备选",
+     "valid_time": "2026-11-18起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T06",
+      "message_id": "m0",
+      "quote": "本地生活那家一面过了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她的策略值得被肯定，别教她玩话术。",
+   "unknowns": [
+    "终面结果未出"
+   ],
+   "protected_expressions": [
+    "他笑了笑说'很诚实'"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E137_T08"
+  },
+  "E137_T09": {
+   "current_action": "帮她把两个offer拆成可对比项：现金涨幅、福利折现、期权含糊度，指出期权'入职后谈'是关键风险点",
+   "acceptable_actions": [
+    "拆对比框架：现金、福利折现、期权确定性三栏",
+    "重点提示期权含糊是最大变量，建议向猎头索书面意向",
+    "不替她选，把每周答复压力折算成谈判时间窗"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A19",
+     "subject": "PUBLIC",
+     "relation": "跨境offer条款",
+     "value": "月薪涨35%，期权称入职后谈、条款含糊",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T09",
+      "message_id": "m0",
+      "quote": "月薪比现在涨35%，但期权说'入职后谈'，写得含糊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E137_A20",
+     "subject": "PUBLIC",
+     "relation": "本地生活offer条款",
+     "value": "涨20%，包三餐和班车，催本周答复",
+     "valid_time": "2026-11-27起一周内",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T09",
+      "message_id": "m0",
+      "quote": "涨20%但包三餐和班车"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只拆框架不替她选，期权含糊这一点必须点出来。",
+   "unknowns": [
+    "期权归属条件是否存在书面版本未定"
+   ],
+   "protected_expressions": [
+    "期权说'入职后谈'"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E137_T09"
+  },
+  "E137_T10": {
+   "current_action": "深夜决策焦虑的低压力轮：认同总包算平的事实，鼓励她明天问期权要书面，允许简短或不回",
+   "acceptable_actions": [
+    "一句认可加'问期权要书面'的提醒，别展开",
+    "轻声说算平就选喜欢的那家，明天问清楚再睡",
+    "简短共情失眠正常，提醒她猎头明天一定接电话"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A21",
+     "subject": "HER",
+     "relation": "决策状态",
+     "value": "两offer总包折算后相当，决策焦虑失眠",
+     "valid_time": "2026-11-28深夜",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T10",
+      "message_id": "m0",
+      "quote": "总包差价算完其实差不多"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E137_A22",
+     "subject": "PUBLIC",
+     "relation": "期权条款风险",
+     "value": "跨境offer期权条款含糊，待向猎头问清",
+     "valid_time": "2026-11-27起",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T09",
+      "message_id": "m0",
+      "quote": "期权说'入职后谈'，写得含糊"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她说不聊了就收，一句支撑性的话足够，别加新议题。",
+   "unknowns": [],
+   "protected_expressions": [
+    "把期权条款问清楚"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E137_T10"
+  },
+  "E137_T11": {
+   "current_action": "肯定她把期权谈到书面意向的成果，接住她的决定，确认她按自己最看重的行业偏好落锤",
+   "acceptable_actions": [
+    "肯定书面意向的争取成果，祝贺落锤",
+    "接住'行业更喜欢'的理由，说这正是算不平的部分",
+    "祝贺决定，提醒她答复本地生活那边时保持体面"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A23",
+     "subject": "PUBLIC",
+     "relation": "期权条款状态",
+     "value": "期权获书面意向，归属条件写入offer附录，数量入职后定",
+     "valid_time": "2026-11-29起",
+     "status": "resolved",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T11",
+      "message_id": "m0",
+      "quote": "猎头帮我争取到期权书面意向，虽然数量要入职后定，但归属条件写进offer附录了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E137_A24",
+     "subject": "HER",
+     "relation": "offer决定",
+     "value": "选择跨境供应链公司，理由为行业偏好",
+     "valid_time": "2026-11-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T11",
+      "message_id": "m0",
+      "quote": "我定了，去跨境这家，行业我更喜欢"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她把最不确定的条款钉死了，这轮要看到这个动作的价值。",
+   "unknowns": [
+    "期权最终数量未定"
+   ],
+   "protected_expressions": [
+    "归属条件写进offer附录了"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E137_T11"
+  },
+  "E137_T12": {
+   "current_action": "接住提离职顺利的消息和火锅谢礼的约定，顺势把'介绍信'玩笑接稳，这条求职线收尾",
+   "acceptable_actions": [
+    "收下火锅谢礼，接介绍信的梗答应到时看缘分",
+    "祝贺入职落定，回扣这一路冻结复活的跌宕",
+    "答应火锅，顺口叮嘱入职前把体检离职材料理顺"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E137_A25",
+     "subject": "HER",
+     "relation": "入职安排",
+     "value": "提离职顺利，下月中入职跨境供应链公司",
+     "valid_time": "2026-12中",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T12",
+      "message_id": "m0",
+      "quote": "提离职顺利，下月中入职"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E137_A26",
+     "subject": "SHARED",
+     "relation": "火锅谢礼",
+     "value": "以永远的火锅作为求职全程帮助的谢礼约定",
+     "valid_time": "约定成立起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E137_T12",
+      "message_id": "m0",
+      "quote": "谢礼是永远的那顿火锅"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轻快，上下铺交情用玩笑表达，别煽情。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谢礼是永远的那顿火锅"
+   ],
+   "forbidden_factual_claims": [],
+   "case_id": "E137_T12"
+  }
+ }
+}

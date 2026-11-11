@@ -1,0 +1,428 @@
+{
+ "story_id": "E023",
+ "turns": {
+  "E023_T01": {
+   "current_action": "认下快递并马上去拿，轻道谢不客套",
+   "acceptable_actions": [
+    "认下+马上去拿",
+    "认下+说几分钟到",
+    "认下+顺口问她吃没吃饭"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E023_A01",
+     "subject": "她",
+     "relation": "帮忙",
+     "value": "又帮代收了快递",
+     "valid_time": "2026-11-17 20:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E023_T01",
+      "message_id": "m0",
+      "quote": "我帮你收啦"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "邻里互助是常态；认下+行动，别在微信里绕。",
+   "unknowns": [
+    "快递里具体是什么（本轮未知，T02由她闻出）"
+   ],
+   "protected_expressions": [
+    "我帮你收啦"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造快递里是什么"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E023_T01"
+  },
+  "E023_T02": {
+   "current_action": "接住她的'鼻子职业病'梗——她在用专业嗅觉搭话，接住这个投缘点",
+   "acceptable_actions": [
+    "接梗+顺势请教一句",
+    "接梗+问她是不是闻得出产地",
+    "接梗+夸她鼻子神"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她在展示专业且有趣的一面；这是她给的话头。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我鼻子职业病"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E023_T02"
+  },
+  "E023_T03": {
+   "current_action": "如实告知豆子来源（不知道就说不知道，别编品牌故事）",
+   "acceptable_actions": [
+    "如实说来源+主动提出帮她带",
+    "如实说+问她想喝什么风味",
+    "如实说不知道烘焙商名+说下次问清楚"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她追着问=真感兴趣；给出可兑现的具体回应。",
+   "unknowns": [
+    "烘焙商确切店名"
+   ],
+   "protected_expressions": [
+    "你到底在哪家买的豆子"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造具体品牌名"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E023_T03"
+  },
+  "E023_T04": {
+   "current_action": "她主动限定'半磅别破费'——尊重她给的人情尺寸，答应不加重",
+   "acceptable_actions": [
+    "答应半磅+不提钱",
+    "答应+说下次咖啡找她做",
+    "答应+简单收"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E023_A02",
+     "subject": "她",
+     "relation": "接受",
+     "value": "愿意收半磅咖啡豆（别破费）",
+     "valid_time": "2026-11-17 22:43",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E023_T04",
+      "message_id": "m1",
+      "quote": "那我可就等着了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "人情往来她给了刻度；照刻度来，别加码显得刻意。",
+   "unknowns": [
+    "她偏好浅烘还是深烘"
+   ],
+   "protected_expressions": [
+    "半磅就行 别破费"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E023_T04"
+  },
+  "E023_T05": {
+   "current_action": "她注意到我作息（窗户亮着）——如实说赶稿，不抱怨不诉苦",
+   "acceptable_actions": [
+    "如实说+反问她早班辛苦吗",
+    "如实说+自嘲一句",
+    "如实说+说互不打扰挺好"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E023_A03",
+     "subject": "她",
+     "relation": "作息",
+     "value": "凌晨四点半早班（会上楼前看到我窗亮）",
+     "valid_time": "2026-11-19 21:10",
+     "status": "seed",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "凌晨四点半早班"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在说我俩作息交错——这是邻里熟起来的自然素材，不是越界。",
+   "unknowns": [
+    "她几点真正出门"
+   ],
+   "protected_expressions": [
+    "我凌晨上班总能看见你窗户亮着"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造她的上班路线"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E023_T05"
+  },
+  "E023_T06": {
+   "current_action": "接她'错开生活'的玩笑——轻松收，不延伸到私人话题",
+   "acceptable_actions": [
+    "接梗+轻收",
+    "接梗+祝她明早顺利",
+    "接梗+说咖啡味管够"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她的玩笑已到她舒服的边界；稳住，别推。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你睡你的 我闻你的咖啡味"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E023_T06"
+  },
+  "E023_T07": {
+   "current_action": "紧急事件（猫跑了）：立即行动帮忙，不问无关问题",
+   "acceptable_actions": [
+    "马上去看+问她还回来几点",
+    "马上去看+让她别急",
+    "马上去看+问猫特征"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E023_A04",
+     "subject": "年糕",
+     "relation": "事件",
+     "value": "橘猫年糕跳窗跑出去了，她还没到家",
+     "valid_time": "2026-11-20 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E023_T07",
+      "message_id": "m0",
+      "quote": "年糕跳窗户跑出去了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "此刻行动大于语言；她骑车回家的十分钟里我是她的眼睛。",
+   "unknowns": [
+    "猫从哪层跳的"
+   ],
+   "protected_expressions": [
+    "年糕跳窗户跑出去了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E023_T07"
+  },
+  "E023_T08": {
+   "current_action": "分工清楚：我看楼道和天台，她安心骑车，别让她分心",
+   "acceptable_actions": [
+    "分工+让她专心骑车",
+    "分工+报自己位置",
+    "分工+保持通话式简短"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "紧急协作里少说废话；位置和信息给足。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你帮我看看602楼道和天台 拜托"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E023_T08"
+  },
+  "E023_T09": {
+   "current_action": "报平安+让她慢点骑——先人后猫的顺序",
+   "acceptable_actions": [
+    "报位置+让她慢点",
+    "报位置+说猫很乖等着",
+    "报位置+问她还几分钟"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E023_A05",
+     "subject": "年糕",
+     "relation": "结果",
+     "value": "在天台水箱后面找到，我看着",
+     "valid_time": "2026-11-20 21:18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E023_T09",
+      "message_id": "m0",
+      "quote": "找到了 在天台水箱后面"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她一路都在担心；平安消息要第一时间给。",
+   "unknowns": [
+    "猫有没有受伤（看表现没有）"
+   ],
+   "protected_expressions": [
+    "我到了给你带豆子 真的"
+   ],
+   "forbidden_factual_claims": [
+    "不要断言猫没受伤（只看到行为）"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E023_T09"
+  },
+  "E023_T10": {
+   "current_action": "接住她的感谢与履约承诺——把重点放回'猫没事'，礼让豆子",
+   "acceptable_actions": [
+    "强调猫没事+说豆子不急",
+    "接受+说下次帮她小忙就行",
+    "接受+轻轻收"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "boundary",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E023_A06",
+     "subject": "她",
+     "relation": "承诺",
+     "value": "明天给一磅豆子（升级版履约）",
+     "valid_time": "2026-11-20 22:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E023_T10",
+      "message_id": "m0",
+      "quote": "豆子明天给你 一磅"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "人情她主动加码（半磅→一磅）；领情即可，别推回去让她尴尬。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谢谢你今天"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E023_T10"
+  },
+  "E023_T11": {
+   "current_action": "她说'说到做到'——确认明日交付，收住今晚",
+   "acceptable_actions": [
+    "确认+道晚安",
+    "确认+轻一句收",
+    "确认+说明早挂门把就行"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "今晚的剧情完整了；别拖长对话。",
+   "unknowns": [],
+   "protected_expressions": [
+    "明天给你 说到做到"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E023_T11"
+  },
+  "E023_T12": {
+   "current_action": "履约完成+她上班去了：可回可不回的一轮（may_decline=true），回则轻收",
+   "acceptable_actions": [
+    "轻道谢+收",
+    "只回'收到'式短句",
+    "不回（合法）"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E023_A07",
+     "subject": "她",
+     "relation": "履约",
+     "value": "豆子已挂我门把手",
+     "valid_time": "2026-11-20 20:58",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E023_T12",
+      "message_id": "m0",
+      "quote": "豆子挂你门把手了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她赶着上班；这轮任何回复都该短。",
+   "unknowns": [],
+   "protected_expressions": [
+    "豆子挂你门把手了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E023_T12"
+  }
+ }
+}

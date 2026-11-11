@@ -1,0 +1,18 @@
+{
+ "case_id": "FIX_required",
+ "turn_type": "silent",
+ "input": {
+  "clock": "2026-10-24 23:58",
+  "messages": [
+   {
+    "role": "HER",
+    "text": "别回了 我睡了",
+    "ts": "2026-10-24 23:58"
+   }
+  ],
+  "may_decline": true
+ },
+ "gold": {
+  "expect_decline": true
+ }
+}

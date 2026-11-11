@@ -1,0 +1,54 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A5 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_b_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 12:00:41",
+      "window_last_attempt": "2026-11-08 17:21:00",
+      "attempts": 26,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_b/{DIRECT,CURRENT}/E318/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T05 情绪理解/关心/安慰",
+    "子类：失落与失望"
+  ],
+  "title": "差0.6分：落选后的旧稿2026与补上的翅膀",
+  "may_decline_turns": [
+    "E318_T08",
+    "E318_T11"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "创作失落",
+  "primary_topic": "T05",
+  "lineage_group_id": "LG-E318",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E318/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A5",
+  "hashes": {
+    "episode.json": "8389bb9e81283e58380585d11f3bc3302191e66bbec039d633fc4a97c211302e",
+    "reference.json": "7a827a02bfb4f1b1cf878e3b55c42bf6f9980d90b864de337b23f74c37a4387a",
+    "timeline.json": "5ce4afdffe9d49b7edf1fc29bc57af1725cedf45cc60fcbf0bf84d5aef661faa",
+    "audit.md": "772f4addfe3f5e9bbee8796d142446c57298c32ee780dbbb5719aa6c5e334434",
+    "composite": "f2ccd77a38c80ea59ec9f1ca6cdbeb7e5821a6b0703aaec33ec9b86effc3b1c0"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

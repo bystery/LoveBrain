@@ -1,0 +1,844 @@
+{
+ "story_id": "E326",
+ "turns": {
+  "E326_T01": {
+   "case_id": "E326_T01",
+   "current_action": "苏叶通报合唱团两项安排：11月21日（周六）14至17点社区中心201室彩排、11月28日（周六）15点201室汇演，并托周航操心钥匙",
+   "acceptable_actions": [
+    "应下钥匙的事并复述两个时间地点",
+    "应下并说自己先去对一遍排班表",
+    "应下并问钥匙找居委会还是物业"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T01_A01",
+     "subject": "SHARED",
+     "relation": "彩排安排",
+     "value": "合唱团11月21日（周六）下午两点到五点在社区中心201室彩排",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T01",
+      "quote": "合唱团定11月21号（周六）下午两点到五点，在社区中心201室彩排",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E326_T01_A02",
+     "subject": "SHARED",
+     "relation": "汇演安排",
+     "value": "正式汇演11月28日（周六）下午三点，仍在201室",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T01",
+      "quote": "正式汇演是11月28号（周六）下午三点，还是201",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "两个时间地点是全篇锚点，接话时能复述更好，不强求；钥匙是她托办的头一件事。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改写彩排或汇演的时间地点",
+    "不得声称钥匙已确定从物业拿（口径未核实前）"
+   ],
+   "may_decline": false
+  },
+  "E326_T02": {
+   "case_id": "E326_T02",
+   "current_action": "周航核实排班后通报：11月21日（周六）下午值班的是小马，钥匙找小马领，已把苏叶名字报给居委会（本轮输入以周航自己的通报消息收尾）",
+   "acceptable_actions": [
+    "简短补充核实细节（如值班时段怎么对）",
+    "提醒她领钥匙时报名字即可",
+    "轻收一句'搞定了等你信儿'"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T02_A01",
+     "subject": "SHARED",
+     "relation": "钥匙领取安排",
+     "value": "11月21日（周六）下午居委会值班的是小马，钥匙找小马领",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T02",
+      "quote": "排班表上11月21号（周六）下午值班的是小马，钥匙找他领就行",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E326_T02_A02",
+     "subject": "ME",
+     "relation": "名字报备",
+     "value": "周航已把苏叶的名字报给居委会",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T02",
+      "quote": "我把你名字报给居委会了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本轮 input.messages 只有 ME 已发出的通报消息、无 HER 新消息：候选续发宜轻（补充确认或提醒），不宜重发长篇或自问自答。'钥匙找小马领'这一口径是后文归属纠错的基准。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改口说钥匙找物业拿",
+    "不得编造值班表其他时段的细节"
+   ],
+   "may_decline": false
+  },
+  "E326_T03": {
+   "case_id": "E326_T03",
+   "current_action": "苏叶夸效率，并说她姐姐21号也过来、坐后排听彩排不打扰",
+   "acceptable_actions": [
+    "接住并说后排听完全没问题",
+    "接住并玩笑'家属席安排上'",
+    "接住并顺口问要不要给姐姐留座"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T03_A01",
+     "subject": "THIRD",
+     "relation": "姐姐观演安排",
+     "value": "苏叶的姐姐说21号也来看彩排，坐后排听、不打扰",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T03",
+      "quote": "我姐说她21号也过来，坐后排听听",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "归属锚点：'姐姐要来看彩排'这话由苏叶本人此轮说出（她是转述姐姐，但话是她说给周航的）——T07 会考这个归属，此处是原始出处。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把姐姐的安排说成正式登台",
+    "不得替姐姐加戏（如帮忙搬东西）"
+   ],
+   "may_decline": false
+  },
+  "E326_T04": {
+   "case_id": "E326_T04",
+   "current_action": "苏叶误引周航原话（'钥匙找物业冯姐拿'）并转述物业冯姐口径：钥匙从来没放物业那儿",
+   "acceptable_actions": [
+    "温和澄清：我说的是找居委会小马，不是冯姐",
+    "澄清口径并接住冯姐那条信息（钥匙不在物业）",
+    "澄清并主动说自己再跟小马确认一遍"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T04_A01",
+     "subject": "ME",
+     "relation": "钥匙口径原话",
+     "value": "周航此前通报的口径是找居委会值班的小马领钥匙",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T02",
+      "quote": "排班表上11月21号（周六）下午值班的是小马，钥匙找他领就行",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E326_T04_A02",
+     "subject": "HER",
+     "relation": "错误引用",
+     "value": "苏叶把钥匙领取处记成物业冯姐，与其听到的周航原话（小马）冲突",
+     "valid_time": "2026-11-12",
+     "status": "conflict",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T04",
+      "quote": "你上次不是说钥匙是找物业冯姐拿吗？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "钥匙",
+       "冯姐",
+       "拿"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E326_T04_A03",
+     "subject": "THIRD",
+     "relation": "物业口径",
+     "value": "物业冯姐说钥匙从来没放物业那儿",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T04",
+      "quote": "冯姐说钥匙从来没放他们那儿",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "归属陷阱轮：周航在T02说的是找小马（居委会），从没说过冯姐——正确回复=温和澄清'我说的是小马'，同时别把她尴尬放大（她已自嘲尴尬）；冯姐那条信息照单收下即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我还挺尴尬的"
+   ],
+   "forbidden_factual_claims": [
+    "不得认领'说过找冯姐拿'的错误归属",
+    "不得把钥匙领取口径改成找物业冯姐"
+   ],
+   "may_decline": false
+  },
+  "E326_T05": {
+   "case_id": "E326_T05",
+   "current_action": "苏叶再对一遍：21号是周六吧（怕记成周日），并说下午两点集合、自己两点前把横幅带到（intent：确认彩排日期是周六）",
+   "acceptable_actions": [
+    "确认21号是周六并安她的心",
+    "确认并复述两点集合、横幅她带到",
+    "确认并玩笑'周日锁死不会记错'"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T05_A01",
+     "subject": "SHARED",
+     "relation": "彩排日期",
+     "value": "彩排在11月21日（周六），不是周日",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T01",
+      "quote": "合唱团定11月21号（周六）下午两点到五点",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E326_T05_A02",
+     "subject": "HER",
+     "relation": "横幅到场承诺",
+     "value": "下午两点集合，苏叶两点前把横幅带到",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T05",
+      "quote": "下午两点集合，我两点前把横幅带到",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 轮：明确给'周六'这个字眼，别含糊成'反正那天'；她自曝上次搞错过，语气可以宽她的心。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我上次自己就搞错过"
+   ],
+   "forbidden_factual_claims": [
+    "不得把彩排日确认为周日",
+    "不得改动两点集合时间"
+   ],
+   "may_decline": false
+  },
+  "E326_T06": {
+   "case_id": "E326_T06",
+   "current_action": "苏叶通报场地变动：彩排被调到203室（隔壁），汇演不动仍201，嘱别捋混",
+   "acceptable_actions": [
+    "确认'彩排203、汇演201'并说记住了",
+    "确认并玩笑'隔壁就是，走不了弯路'",
+    "确认并说自己会跟小马那边也提一嘴"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T06_A01",
+     "subject": "SHARED",
+     "relation": "彩排地点（旧）",
+     "value": "彩排在201室的既定口径已被居委会调整取代",
+     "valid_time": "2026-11-16",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T01",
+      "quote": "在社区中心201室彩排",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "彩排",
+       "201室"
+      ],
+      [
+       "彩排还在201"
+      ]
+     ],
+     "item_markers": [
+      "201室彩排"
+     ]
+    },
+    {
+     "atom_id": "E326_T06_A02",
+     "subject": "SHARED",
+     "relation": "彩排地点（新）",
+     "value": "彩排调到社区中心203室（隔壁那间）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T06",
+      "quote": "居委会给我们调到203，就是隔壁那间",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E326_T06_A03",
+     "subject": "SHARED",
+     "relation": "汇演地点",
+     "value": "汇演当天地点不动，仍在201室",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T06",
+      "quote": "汇演当天不动，还是201",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "note 佐证：居委会公告栏排期表写着'11月21日彩排：203室（原201室）'，候选可见。本轮必须把'彩排203/汇演201'的区分立住，回复里复述两值最稳。note 文本不进原子 quote。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别给我捋混了啊"
+   ],
+   "forbidden_factual_claims": [
+    "不得沿用201作为彩排地点",
+    "不得把汇演地点也说成203"
+   ],
+   "may_decline": false
+  },
+  "E326_T07": {
+   "case_id": "E326_T07",
+   "current_action": "苏叶更正姐姐出席（21号彩排来不了、改28号汇演），并核对'她要来看彩排这话是你跟我说的吧？'（实为她自己所说）",
+   "acceptable_actions": [
+    "接住姐姐改期并纠正归属：这话是你11号自己说的哈",
+    "纠正归属并宽她'记性飘很正常'再顺接改期",
+    "纠正归属并顺手把姐姐两张门票的事对一遍"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T07_A01",
+     "subject": "THIRD",
+     "relation": "姐姐改期",
+     "value": "苏叶姐姐21号彩排来不了，改去28号汇演那天",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T07",
+      "quote": "我姐刚说她21号彩排来不了了，改去28号汇演那天",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E326_T07_A02",
+     "subject": "THIRD",
+     "relation": "姐姐观演安排（旧）",
+     "value": "姐姐21号坐后排听彩排的原安排被改期取消",
+     "valid_time": "2026-11-17",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T03",
+      "quote": "我姐说她21号也过来，坐后排听听",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "姐姐",
+       "坐后排"
+      ],
+      [
+       "21号",
+       "也过来"
+      ]
+     ],
+     "item_markers": [
+      "姐姐21号来听彩排"
+     ]
+    },
+    {
+     "atom_id": "E326_T07_A03",
+     "subject": "HER",
+     "relation": "归属误认",
+     "value": "苏叶问'她要来看彩排这话是你跟我说的吧'，实为苏叶自己11-11所说，归属冲突待澄清",
+     "valid_time": "2026-11-17",
+     "status": "conflict",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T07",
+      "quote": "她要来看彩排这话是你跟我说的吧？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你跟我说的"
+      ],
+      [
+       "这话",
+       "她要来"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E326_T07_A04",
+     "subject": "HER",
+     "relation": "归属真相",
+     "value": "'姐姐要来看彩排'这话最初由苏叶本人于11-11告知周航",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T03",
+      "quote": "我姐说她21号也过来，坐后排听听",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "双任务轮：①接住姐姐改期（21不来看、28来看汇演）；②归属核对必须纠正——'我姐要来看彩排'是她在11-11自己说的，不是周航说的；正确口径='这话是你自己说的'，绝不能认领。语气宽和，别嘲讽她记性。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我最近记性有点飘"
+   ],
+   "forbidden_factual_claims": [
+    "不得认领'这话是我说的'",
+    "不得说姐姐21号彩排照旧来",
+    "不得把姐姐改期说成28号彩排（应为28号汇演）"
+   ],
+   "may_decline": false
+  },
+  "E326_T08": {
+   "case_id": "E326_T08",
+   "current_action": "苏叶通报横幅落实：一米二乘六米、120块、店家说周四能取，然后说去泡脚（可轻收）",
+   "acceptable_actions": [
+    "轻收一句'定好了就行，去忙吧'",
+    "接横幅细节并说取货要搭手说话",
+    "接住并问横幅要不要提前挂"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T08_A01",
+     "subject": "SHARED",
+     "relation": "横幅规格报价",
+     "value": "横幅一米二乘六米、120元，店家说周四（2026-11-19）能取",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T08",
+      "quote": "横幅问好了，一米二乘六米，120块，店里说周四能取",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "may_decline=true 的松闲轮：她已说去泡脚，回复宜短，别拽回正事硬聊。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我先去泡脚"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造横幅店家名称或地址",
+    "不得替她改横幅尺寸价格"
+   ],
+   "may_decline": true
+  },
+  "E326_T09": {
+   "case_id": "E326_T09",
+   "current_action": "苏叶通报横幅已取放车里，并顺一遍钥匙流程求核对：彩排当天下午两点、活动室203、楼下集合再上去",
+   "acceptable_actions": [
+    "逐项核对确认：两点、203、楼下集合",
+    "确认203并说两点楼下见",
+    "确认并补一句音响话筒她试过了没"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T09_A01",
+     "subject": "SHARED",
+     "relation": "彩排地点核对",
+     "value": "彩排当天活动室为203室（现口径）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T06",
+      "quote": "居委会给我们调到203，就是隔壁那间",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E326_T09_A02",
+     "subject": "SHARED",
+     "relation": "集合时间核对",
+     "value": "彩排当天下午两点集合",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T05",
+      "quote": "下午两点集合",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E326_T09_A03",
+     "subject": "SHARED",
+     "relation": "集合方式",
+     "value": "楼下集合再一起上去（苏叶提出的流程）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T09",
+      "quote": "咱们楼下集合再上去",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "核对位：两点✓、203✓（T06已改），'楼下集合再上去'是她新提的流程，顺接确认即可；回复里把203复述出来，防口径漂回201。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把活动室核对成201",
+    "不得改动两点集合时间"
+   ],
+   "may_decline": false
+  },
+  "E326_T10": {
+   "case_id": "E326_T10",
+   "current_action": "苏叶说明天上午十点居委会开门直接找小马领钥匙，小马不在就打电话给周航，并问他明天上午是否在小区附近（intent：确认领钥匙与当天联系安排）",
+   "acceptable_actions": [
+    "如实说自己上午的安排并给联系口径（在/不在小区附近）",
+    "确认计划并说电话随时打得通",
+    "确认并建议备用联系方式以防都联系不上"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T10_A01",
+     "subject": "SHARED",
+     "relation": "领钥匙计划",
+     "value": "明天（2026-11-21）上午十点居委会开门后苏叶直接找小马领钥匙",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T10",
+      "quote": "明天上午十点居委会开门，我直接找小马领钥匙",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E326_T10_A02",
+     "subject": "SHARED",
+     "relation": "备用联系",
+     "value": "若小马不在，苏叶给周航打电话",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T10",
+      "quote": "要是他不在，我给你打电话",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E326_T10_A03",
+     "subject": "ME",
+     "relation": "在场性询问",
+     "value": "苏叶询问周航明天上午是否在小区附近（需如实回应）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T10",
+      "quote": "你明天上午在小区附近吧？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "intent 轮：核心是给联系方案；周航上午是否在小区附近属 ME 自主事实，如实回答即可，不算编造——但别顺便编造小马一定在班的保证。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得担保小马一定在值班",
+    "不得编造居委会开门时间的其他说法"
+   ],
+   "may_decline": false
+  },
+  "E326_T11": {
+   "case_id": "E326_T11",
+   "current_action": "苏叶报进展：钥匙到手、203开了、音响试了；姐姐居然还是溜过来说只看十分钟就走（推翻此前改期口径）",
+   "acceptable_actions": [
+    "轻松接姐姐'溜过来'的梗并接进展",
+    "接进展并调侃'十分钟真·闪电观众'",
+    "接进展并顺口问音响试得怎么样"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T11_A01",
+     "subject": "SHARED",
+     "relation": "钥匙落实",
+     "value": "钥匙已到手、203室已开、音响已试",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T11",
+      "quote": "钥匙到手，203开了，音响也试了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E326_T11_A02",
+     "subject": "THIRD",
+     "relation": "姐姐现身",
+     "value": "姐姐临时还是来了彩排现场，说只看十分钟就走",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T11",
+      "quote": "我姐居然还是溜过来了，说就看十分钟就走",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E326_T11_A03",
+     "subject": "THIRD",
+     "relation": "姐姐改期口径（旧）",
+     "value": "'姐姐21号不来、改看28号汇演'的口径被其临时到场推翻",
+     "valid_time": "2026-11-21",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T07",
+      "quote": "我姐刚说她21号彩排来不了了，改去28号汇演那天",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "28号",
+       "汇演",
+       "才来"
+      ]
+     ],
+     "item_markers": [
+      "改去28号汇演"
+     ]
+    }
+   ],
+   "private_guidance": "状态再变化轮：T07'改28号汇演'的口径被姐姐本人到场推翻——本轮认'她还是来了'这个新事实，别嘴硬说'她不是不来了吗'。may_decline=true，彩排进行中回复宜短。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坚持'姐姐只看28号汇演'的旧口径",
+    "不得说姐姐没到场"
+   ],
+   "may_decline": true
+  },
+  "E326_T12": {
+   "case_id": "E326_T12",
+   "current_action": "苏叶谢周航跑前跑后，确认下周六28号下午三点汇演仍201并留位，转述妈妈要做辣酱道谢、嘱别推辞",
+   "acceptable_actions": [
+    "收下谢意并确认汇演安排与留位",
+    "接辣酱玩笑说不推辞",
+    "确认汇演并说会提前到帮忙"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E326_T12_A01",
+     "subject": "SHARED",
+     "relation": "汇演安排（最终）",
+     "value": "汇演11月28日（周六）下午三点，仍在201室，苏叶给周航留位",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T12",
+      "quote": "下周六28号下午三点汇演，还是201",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E326_T12_A02",
+     "subject": "THIRD",
+     "relation": "妈妈谢礼",
+     "value": "苏叶妈妈要做一罐辣酱谢周航，苏叶嘱别推辞",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T12",
+      "quote": "我妈说要做一罐辣酱谢谢你，你别推辞啊",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E326_T12_A03",
+     "subject": "SHARED",
+     "relation": "汇演留位",
+     "value": "汇演坐苏叶给周航留的位置",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E326_T12",
+      "quote": "你坐我给你留的位置",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮：汇演口径落定为'28号15点、201室'（彩排203只属彩排日）；辣酱是妈妈做的，归属别安错到苏叶自己身上。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把汇演地点说成203",
+    "不得把辣酱说成苏叶自己做的"
+   ],
+   "may_decline": false
+  }
+ }
+}

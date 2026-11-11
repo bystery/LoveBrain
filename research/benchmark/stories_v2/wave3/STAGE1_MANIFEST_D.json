@@ -1,0 +1,178 @@
+{
+ "kind": "story_v2_wave3_stage1",
+ "stage": "wave3",
+ "date": "2026-11-02",
+ "built_by": "W3-T1-D",
+ "count": 8,
+ "turn_per_story": 12,
+ "stories": [
+  {
+   "story_id": "E141",
+   "title": "方案截止日两副口径",
+   "themes": [
+    "工作职场",
+    "跨组传话口径",
+    "交付截止日更正",
+    "版本冻结切换",
+    "内审时间前移"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E141",
+   "turns": 12,
+   "files": {
+    "episode.json": "1726bcdda0bc264a41b0f718daac1c3f1ee52f33b6ef9e736076ac30e78f7b37",
+    "reference.json": "a00dad5b3a15b8f42c79685ff542662ca074c5950444ee08e815658e14677254",
+    "timeline.json": "7b01a27d293237dc2ff5a360050b17529c0fe53faaa27e92664f5b77978e4861",
+    "audit.md": "54a3a62d6397b07d4cbd1c5d66f651766bcddc64ed395453c8a71dfeb7f72ade"
+   }
+  },
+  {
+   "story_id": "E142",
+   "title": "供应商换了对接人",
+   "themes": [
+    "工作职场",
+    "供应商对接人更换",
+    "书面承诺截图",
+    "让利谈判",
+    "合同补充页"
+   ],
+   "domain": "工作职场",
+   "conflict_type": "第三方类",
+   "dir": "benchmark/stories_v2/wave3/E142",
+   "turns": 12,
+   "files": {
+    "episode.json": "7b82629beadc6a689f7161cf0f082571984559ad313e659d178c5f94e8465d8e",
+    "reference.json": "c1b82134a5faaccc1b40a55bca144fa13e673df08c57d784c92ce136b0b631a5",
+    "timeline.json": "45ba533b2efd09e5233ae2ebea368d214d5357f3ea153e008853e5272e71a80b",
+    "audit.md": "e976fd57646514c37025d40969dd1adbf24856834183500c8718b72e7cc00cfa"
+   }
+  },
+  {
+   "story_id": "E143",
+   "title": "法考打卡先降档",
+   "themes": [
+    "学习成长",
+    "法考备考",
+    "打卡计划降档",
+    "错题集中补强",
+    "恢复日重启"
+   ],
+   "domain": "学习成长",
+   "conflict_type": "目标启停类",
+   "dir": "benchmark/stories_v2/wave3/E143",
+   "turns": 12,
+   "files": {
+    "episode.json": "3c99e0227ae57066027292c3ca856b86627296d832f799e4990dfc7bf245b807",
+    "reference.json": "0bf369c03dbd968505ea48f5fbad9ab47ba426e3fea7cab6d57f8a1d92ee34e7",
+    "timeline.json": "5050ef64a9cb3761d33f9a5d174f6d6f9e49bfc138b9d75d9205dadd1ae1c289",
+    "audit.md": "a02d6c10e1e9fdf4b581dd228f83adb08b02fee83c1bab1367365f64c195ae56"
+   }
+  },
+  {
+   "story_id": "E144",
+   "title": "夜跑团挪到清晨",
+   "themes": [
+    "运动健身",
+    "公司夜跑团",
+    "步道检修取消",
+    "晨跑双轨并行",
+    "团聚餐收尾"
+   ],
+   "domain": "运动健身",
+   "conflict_type": "取消改期类",
+   "dir": "benchmark/stories_v2/wave3/E144",
+   "turns": 12,
+   "files": {
+    "episode.json": "19b35d49939eb1a0897c9b46f401573f3dd0254bbef1e6a41f742d8d631e5651",
+    "reference.json": "49a9743fcc113212d2ed3ba3cd680b8d8294c25f14906a4312055dd4ea1764b8",
+    "timeline.json": "3cadefd6e12b2b76d367f0cce4d683598fa567241235aa1c8d859b7d4bc14dd5",
+    "audit.md": "0e4b82ff0b3f7a1665975b8d1d703ac2b437ecfc3b07b69cbfdf7fa6cec3e048"
+   }
+  },
+  {
+   "story_id": "E145",
+   "title": "司机到底几点到",
+   "themes": [
+    "出行拼车",
+    "高铁站拼车",
+    "上车口径不一",
+    "保守出发预案",
+    "回程复购拼车"
+   ],
+   "domain": "出行拼车",
+   "conflict_type": "信息不确定类",
+   "dir": "benchmark/stories_v2/wave3/E145",
+   "turns": 12,
+   "files": {
+    "episode.json": "4af321d03fa0cb5a7cfda69769d4a805dea465bc5ceb3b724df55b0ed2f60abf",
+    "reference.json": "c979ec82bc31de6bc9a7c8f361605c507beedbc6a803a5c7f72e0faf5fb5e6f0",
+    "timeline.json": "f5870559ed6c1bf74b741eb4d849478d2e071a1deab550ff80c9a32db051d1ba",
+    "audit.md": "bac58f54c78e541630e2002ce2e774b549192d78ef0f59ef5f7756a11cfe6795"
+   }
+  },
+  {
+   "story_id": "E146",
+   "title": "姥姥轮椅的差价",
+   "themes": [
+    "家庭事务",
+    "电动轮椅采购",
+    "线上线下差价",
+    "长辈出资平账",
+    "上门安装核实"
+   ],
+   "domain": "家庭事务",
+   "conflict_type": "费用类",
+   "dir": "benchmark/stories_v2/wave3/E146",
+   "turns": 12,
+   "files": {
+    "episode.json": "15a2527d028c75ba52d52a29bada805c37cde6052f2d256cdf886313eb974f8f",
+    "reference.json": "9a09c0015e8077561b60f56e37dcedef0e2619ab46f1e8b1e30adda271d9385f",
+    "timeline.json": "41530b4fcc491e991dd976974160f2cb6b5493892306cc74de566f2e4294f7f8",
+    "audit.md": "b875474cebbd165759ec79d6ed5d05c5947c6baaecaa8743ff2b9f828ceda688"
+   }
+  },
+  {
+   "story_id": "E147",
+   "title": "别再当传话筒",
+   "themes": [
+    "医疗健康",
+    "代问诊转述边界",
+    "家族群施压",
+    "线上问诊分流",
+    "赔罪火锅"
+   ],
+   "domain": "医疗健康",
+   "conflict_type": "边界类",
+   "dir": "benchmark/stories_v2/wave3/E147",
+   "turns": 12,
+   "files": {
+    "episode.json": "6ff2cb486f72379532ba732e5a8cc37924759d63af4e793d453df6a2caff3b90",
+    "reference.json": "efcefc8aa2789a0c019806cd8bd781124b451ee9f04ec39544b8489af9e21ce6",
+    "timeline.json": "05a92c45949fedb2347c67d6cbb0db7a050e5c65a8975a74aaba00cee8b7ef2f",
+    "audit.md": "73502caf552d8f92bcd36f61e399fee180db582d830b024a38c8bc79bbcbafe5"
+   }
+  },
+  {
+   "story_id": "E148",
+   "title": "换粮日历改了",
+   "themes": [
+    "宠物",
+    "猫咪换粮过渡",
+    "医嘱更正喂养方案",
+    "便便观察记录",
+    "流浪猫捐粮"
+   ],
+   "domain": "宠物",
+   "conflict_type": "更正类",
+   "dir": "benchmark/stories_v2/wave3/E148",
+   "turns": 12,
+   "files": {
+    "episode.json": "880ea12f9ca2c7b3146d1af8c4e2dcc52bb1ce9d476cbd60febb372a50bdc294",
+    "reference.json": "70c7bb702efdd06a5ee72ec54329dfb49287a08b35c695434bf68ee36ca726d2",
+    "timeline.json": "ba7d3203e5e5d8cc943f5e13f0ac2cbe5c6413fb7e7e4f9c2d2187acfb3f4efa",
+    "audit.md": "170534fa75235ea9e0f98d58252af7b44f9b2d3f45aca1710309c505d9fb1501"
+   }
+  }
+ ]
+}

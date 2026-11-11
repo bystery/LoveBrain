@@ -1,0 +1,593 @@
+{
+ "story_id": "E111",
+ "turns": {
+  "E111_T01": {
+   "case_id": "E111_T01",
+   "current_action": "接住她下单的得意：肯定等了大屏很久的心愿落地，顺口提醒一句付尾款前把订单页再核一眼——按他自己的习惯不越俎代庖，只留一句轻的。",
+   "acceptable_actions": [
+    "恭喜她终于下单，提醒付尾款前核对一次配置与地址",
+    "顺着借阅与开箱两笔承诺开个玩笑，再问定金抵了多少",
+    "问她具体哪个尺寸哪代屏，确认是不是她攒了半年的那款"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A01",
+     "subject": "HER",
+     "relation": "preorder_placed",
+     "value": "她宣称订下八寸大屏电纸书并已付预售定金",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T01", "message_id": "m0", "quote": "八寸大屏电纸书，预售定金都交了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A02",
+     "subject": "SHARED",
+     "relation": "lending_promise",
+     "value": "她许诺到货后第一个借小柯看文献",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T01", "message_id": "m0", "quote": "到货第一个借她看文献"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A03",
+     "subject": "HER",
+     "relation": "unboxing_promise",
+     "value": "她在读书群夸口要写开箱长文",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T01", "message_id": "m0", "quote": "等到手要写个开箱长文"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：恭喜在前，核对提醒一句带过，别像布置作业。",
+   "unknowns": ["订单实际配置未核实", "小柯是否知情未知"],
+   "protected_expressions": ["到货第一个借她看文献"],
+   "forbidden_factual_claims": ["不得虚构该型号的参数与价格", "不得断言订单一定无误"]
+  },
+  "E111_T02": {
+   "case_id": "E111_T02",
+   "current_action": "接住付尾款夜的实锤：型号记错已坐实——六寸16G青春版而非八寸，大屏叙事整体落空；先陪她懊恼，再确认事实清单，别急着替她选边。",
+   "acceptable_actions": [
+    "先把事实捋直：订单是六寸，收藏夹里的八寸才是目标，错在付定金那晚",
+    "接住'定金和大屏一起没了'的懊恼，赔一句再劝她看尾款窗口还剩多久",
+    "让她把订单页和收藏页截图对一遍，确认没有第二笔定金"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A04",
+     "subject": "HER",
+     "relation": "order_actually_wrong",
+     "value": "订单实为六寸16G青春版，与她宣称的八寸不符",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E111_T02", "message_id": "m0", "quote": "写的六寸16G青春版"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A05",
+     "subject": "HER",
+     "relation": "mistake_origin",
+     "value": "错误源于付定金当晚误点热销推荐而非收藏的八寸款",
+     "valid_time": "2026-10-20/2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T02", "message_id": "m0", "quote": "付定金那晚点错了旁边那个'热销推荐'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A06",
+     "subject": "HER",
+     "relation": "deposit_loss",
+     "value": "她认为一百定金与大屏一同落空",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T02", "message_id": "m0", "quote": "我那一百定金和我的大屏一起没了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先共情再理事实，'点错热销推荐'这种电商惯性错可以善意调侃，别追问细节加深懊恼。",
+   "unknowns": ["尾款支付截止时间未知", "是否还有其他订单未核对未知"],
+   "protected_expressions": ["我那一百定金和我的大屏一起没了"],
+   "forbidden_factual_claims": ["不得虚构平台定金规则", "不得断言她必然损失定金"]
+  },
+  "E111_T03": {
+   "case_id": "E111_T03",
+   "current_action": "面对两条路的选择请求：不替她拍板，把账摆开——放弃损失定金但留出双十二机会，将就六寸保住定金且她本就以读小说为主；文献场景另想办法。",
+   "acceptable_actions": [
+    "列一二三：按她两个用途拆，小说六寸够，文献另说，再让她自己挑",
+    "问尾款还剩多久，用时间压力帮她把犹豫收口",
+    "提醒她放弃前看一眼双十二八寸的历史价，别为赌降价双输"
+   ],
+   "applicable_dimensions": ["goal", "attribution", "factuality", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A07",
+     "subject": "HER",
+     "relation": "option_giveup",
+     "value": "选项一：不付尾款，定金当学费，八寸等双十二",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T03", "message_id": "m0", "quote": "尾款不付了，定金当学费"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A08",
+     "subject": "HER",
+     "relation": "option_settle",
+     "value": "选项二：照付尾款，六寸将就先看小说",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T03", "message_id": "m0", "quote": "六寸就六寸，我拿它看小说其实也够"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A09",
+     "subject": "HER",
+     "relation": "wrong_order_fact",
+     "value": "型号记错已被订单页实证，是她决策的直接前提",
+     "valid_time": "2026-10-31",
+     "status": "confirmed",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E111_T02", "message_id": "m0", "quote": "写的六寸16G青春版"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：列一二三是他的习惯，但最后一句必须把选择权还给她。",
+   "unknowns": ["双十二八寸价格未知", "尾款窗口剩余时间未知"],
+   "protected_expressions": ["我脑子现在是一锅粥"],
+   "forbidden_factual_claims": ["不得替她决定付或不付", "不得虚构两个选项的成本数字"]
+  },
+  "E111_T04": {
+   "case_id": "E111_T04",
+   "current_action": "确认尾款已付、六寸定档小说机；重点接住两笔对外承诺的挂账：借小柯大屏和开箱长文——建议趁早坦白，别等问起来再补。",
+   "acceptable_actions": [
+    "肯定'六寸先当小说机'是把将就用出条理的选择",
+    "建议她今天就跟小柯坦白，别让承诺过期成尴尬",
+    "给开箱长文出主意：把买错写成选题，糗事变内容"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A10",
+     "subject": "SHARED",
+     "relation": "final_payment_done",
+     "value": "她已支付尾款，六寸青春版定档自用看小说",
+     "valid_time": "2026-11-01",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T04", "message_id": "m0", "quote": "尾款付了，六寸到手先当小说机"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A11",
+     "subject": "SHARED",
+     "relation": "lending_promise_due",
+     "value": "借小柯大屏看文献的承诺因型号更正而无法照原样兑现",
+     "valid_time": "2026-10-20/2026-11-01",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E111_T01", "message_id": "m0", "quote": "到货第一个借她看文献"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E111_A12",
+     "subject": "HER",
+     "relation": "unboxing_pressure",
+     "value": "群里夸口的开箱长文成为她挂账的第二个承诺",
+     "valid_time": "2026-10-20/2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T01", "message_id": "m0", "quote": "等到手要写个开箱长文"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：坦白的建议要给得轻，落在'早说比晚说体面'，别说她撒了谎。",
+   "unknowns": ["小柯的实际需求未知", "群友对延迟开箱的容忍未知"],
+   "protected_expressions": ["我总不能等她问起来再说吧"],
+   "forbidden_factual_claims": ["不得虚构小柯的偏好", "不得替她起草对群友的说辞"]
+  },
+  "E111_T05": {
+   "case_id": "E111_T05",
+   "current_action": "共享坦白成功：小柯反而想先试六寸排版，开箱长文草稿备好、改题《我把大屏买成小的之后》待到货发布；把'提前坦白'这条路径点出来，让她自己确认这步走对了。",
+   "acceptable_actions": [
+    "夸她把糗事写成标题的转化能力，坦白比遮掩划算",
+    "提醒她给小柯试排版时留个心理预期：表格大概率还是裂",
+    "顺势问她到货时间，把下一步话题预热"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "goal", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A13",
+     "subject": "THIRD",
+     "relation": "ke_switched_expectation",
+     "value": "小柯得知实情后改为想先试六寸看文献排版",
+     "valid_time": "2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T05", "message_id": "m0", "quote": "让我到手先给她看文献排版行不行"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A14",
+     "subject": "HER",
+     "relation": "confession_done",
+     "value": "她主动向小柯坦白型号错误并完成承诺改口径",
+     "valid_time": "2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T05", "message_id": "m0", "quote": "我跟小柯坦白了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A15",
+     "subject": "HER",
+     "relation": "unboxing_reworked",
+     "value": "开箱长文改题《我把大屏买成小的之后》，草稿已备好待到货发布",
+     "valid_time": "2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T05", "message_id": "m0", "quote": "标题改成了《我把大屏买成小的之后》"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把功劳记在'她没拖'上，标题的妙处点到为止。",
+   "unknowns": ["小柯试排版结果未知"],
+   "protected_expressions": ["标题改成了《我把大屏买成小的之后》"],
+   "forbidden_factual_claims": ["不得虚构群内阅读量数字", "不得断言小柯一定会买八寸"]
+  },
+  "E111_T06": {
+   "case_id": "E111_T06",
+   "current_action": "接住她的比价动作与旧价记忆：她记得去年双十一当晚八寸比预售便宜两百、没等到降价；先接住心痒，把'价格诱因'和'真实需求'分开——她要的到底是屏还是排版。",
+   "acceptable_actions": [
+    "承认八寸对文献确实更好，但建议先想清楚为排版花两千值不值",
+    "提醒她双十一当晚价格波动正常，不必当晚冲动",
+    "问她文献量有多大，能不能先试着手动处理两篇看看工作量"
+   ],
+   "applicable_dimensions": ["goal", "attribution", "factuality", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A16",
+     "subject": "HER",
+     "relation": "device_review",
+     "value": "实测三天：六寸看小说舒服，文献表格横竖都裂",
+     "valid_time": "2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T06", "message_id": "m0", "quote": "文献表格是重灾区，横着竖着都裂"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A17",
+     "subject": "HER",
+     "relation": "urge_revived",
+     "value": "八寸执念复燃并叠加降价两百的诱因",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T06", "message_id": "m0", "quote": "八寸的火苗又蹿起来了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A18",
+     "subject": "HER",
+     "relation": "literature_usage_origin",
+     "value": "她对大屏的执念根植于常年读扫描版文献的需求",
+     "valid_time": "长期/2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "常年读扫描版文献"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：不否定八寸的价值，只把决策从'去年还便宜两百'挪回'她到底要什么'。",
+   "unknowns": ["双十一当晚实际价格未知", "她的文献总量未知"],
+   "protected_expressions": ["横着竖着都裂"],
+   "forbidden_factual_claims": ["不得虚构两款机型的具体参数", "不得断言手动重排一定可行"]
+  },
+  "E111_T07": {
+   "case_id": "E111_T07",
+   "current_action": "接住她把冲动转成正事的转向：购物车加了没付款，转身要重排文献——肯定这个出口选得聪明，同时提醒工程量，建议先拿两篇试点。",
+   "acceptable_actions": [
+    "肯定'没付款'这道闸拉住了，重排是比换机更对症的路",
+    "建议试点两篇，确认流程跑通再铺开，别第一天定太狠",
+    "提醒她表格拆图后记得在图前留文字索引，别把自己绕晕"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "attribution", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A19",
+     "subject": "HER",
+     "relation": "purchase_resisted",
+     "value": "她购物车加了八寸但忍住未付款",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E111_T07", "message_id": "m0", "quote": "购物车加了但没付款"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A20",
+     "subject": "HER",
+     "relation": "reformat_project",
+     "value": "她启动重排文献工程：只留正文和图、表格拆成图、存云盘",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T07", "message_id": "m0", "quote": "把常读的那批文献自己重排一遍"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A21",
+     "subject": "HER",
+     "relation": "urge_recommitted",
+     "value": "当晚的换机冲动被转移到重排工程上",
+     "valid_time": "2026-11-05",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E111_T06", "message_id": "m0", "quote": "八寸的火苗又蹿起来了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'想不开'接一句反话夸她，工程建议给小不给大。",
+   "unknowns": ["重排实际耗时未知"],
+   "protected_expressions": ["你说我是不是想不开"],
+   "forbidden_factual_claims": ["不得虚构重排工具与流程细节", "不得保证重排后显示完美"]
+  },
+  "E111_T08": {
+   "case_id": "E111_T08",
+   "current_action": "共享重排见效：首批十篇在六寸上清楚得不像话，她的结论是设备没错、PDF有错；把设备定位重置这件事点出来——'通勤文献机'加电脑大屏各司其职。",
+   "acceptable_actions": [
+    "肯定她用工程手段解决了本想用钱解决的问题",
+    "接住'不是设备不行是PDF有错'的领悟，夸这个归因比换机高级",
+    "提醒她重排好的文件做好命名归档，方便小柯以后借"
+   ],
+   "applicable_dimensions": ["goal", "attribution", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A22",
+     "subject": "HER",
+     "relation": "reformat_payoff",
+     "value": "首批十篇重排文献在六寸上显示清晰",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T08", "message_id": "m0", "quote": "六寸上看居然清楚得不像话"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A23",
+     "subject": "HER",
+     "relation": "device_role_reset",
+     "value": "设备定位重置：六寸为通勤文献机，电脑承担大屏工作",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T08", "message_id": "m0", "quote": "这机器现在是我的'通勤文献机'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A24",
+     "subject": "HER",
+     "relation": "test_failure_origin",
+     "value": "此前文献表格全裂的问题被重排方案化解",
+     "valid_time": "2026-11-05/2026-11-08",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E111_T06", "message_id": "m0", "quote": "文献表格是重灾区，横着竖着都裂"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'工程赢了钞票'说成她的战果，他只负责盖章。",
+   "unknowns": [],
+   "protected_expressions": ["不是设备不行，是原始PDF对我赶尽杀绝"],
+   "forbidden_factual_claims": ["不得虚构重排的具体工具链", "不得断言所有文献都能如此处理"]
+  },
+  "E111_T09": {
+   "case_id": "E111_T09",
+   "current_action": "接住小柯来抄作业：她把踩坑整理成四栏对比单，末条写'付定金前把订单页截图给自己看一遍'；把'血泪条款'接成经验沉淀的落点。",
+   "acceptable_actions": [
+    "夸对比单做得比很多测评都实在，尤其最后一条",
+    "建议她在单子里补一栏'到手首验项'，给小柯留个核对动作",
+    "调侃'笑到打鸣'，让她的自嘲稳稳落地"
+   ],
+   "applicable_dimensions": ["memory_use", "interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A25",
+     "subject": "HER",
+     "relation": "sharing_checklist",
+     "value": "她整理出尺寸内存续航价格四栏的选购对比单发给小柯",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T09", "message_id": "m0", "quote": "尺寸、内存、续航、价格四栏"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A26",
+     "subject": "HER",
+     "relation": "lesson_distilled",
+     "value": "对比单末条沉淀为'付定金前把订单页截图给自己看一遍'",
+     "valid_time": "2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T09", "message_id": "m0", "quote": "付定金前把订单页截图给自己看一遍"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A27",
+     "subject": "HER",
+     "relation": "mistake_lesson_link",
+     "value": "该条款直接源自她付定金当晚误点的教训",
+     "valid_time": "2026-10-20/2026-11-10",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T02", "message_id": "m0", "quote": "付定金那晚点错了旁边那个'热销推荐'"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她的自嘲用轻拍接住，经验的价值点在'可复制给别人'。",
+   "unknowns": ["小柯最终选购结果未知"],
+   "protected_expressions": ["说这条是血泪条款"],
+   "forbidden_factual_claims": ["不得虚构对比单里的具体参数值", "不得断言小柯照单必买同款"]
+  },
+  "E111_T10": {
+   "case_id": "E111_T10",
+   "current_action": "共享两周打卡：两本小说加八篇重排文献、通勤不刷短视频，小柯照单入同款组成'错版打卡小组'；把习惯落成这件事点明。",
+   "acceptable_actions": [
+    "肯定打卡成绩，问下一步重排文献还剩多少存粮",
+    "接住'错版打卡小组'的梗，建议给小组定个每周书评规矩",
+    "提醒她地铁阅读别忘了到站，损一句轻松的"
+   ],
+   "applicable_dimensions": ["goal", "memory_use", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A28",
+     "subject": "HER",
+     "relation": "reading_streak",
+     "value": "两周读完两本小说加八篇重排文献，通勤不再刷短视频",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T10", "message_id": "m0", "quote": "两周读完了两本小说加八篇重排文献"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A29",
+     "subject": "SHARED",
+     "relation": "buddy_group_formed",
+     "value": "小柯照对比单入同款，两人组成'错版打卡小组'",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T10", "message_id": "m0", "quote": "管这叫'错版打卡小组'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A30",
+     "subject": "THIRD",
+     "relation": "ke_purchase_followed",
+     "value": "小柯依据她的对比单购入同款青春版",
+     "valid_time": "2026-11-10/2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T09", "message_id": "m0", "quote": "小柯来抄作业了，问我要选购思路"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：数字只轻轻点一下，重点落在'读书习惯长出来了'。",
+   "unknowns": [],
+   "protected_expressions": ["管这叫'错版打卡小组'"],
+   "forbidden_factual_claims": ["不得虚构两人的阅读书目", "不得断言打卡习惯永不中断"]
+  },
+  "E111_T11": {
+   "case_id": "E111_T11",
+   "current_action": "接住意外之喜：平台无门槛券买了原装保护套，错付的一百定金绕了一圈回来；接住'因祸得福'，把这句收进她自己的结论里。",
+   "acceptable_actions": [
+    "接住'因祸得福'，调侃这叫定金的二次进账",
+    "提醒她券要是常发，以后大件可以等预售期再看",
+    "问她保护套到货没有，把日常话题续上"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A31",
+     "subject": "HER",
+     "relation": "coupon_recovery",
+     "value": "她用平台发给预售用户的无门槛券购入原装保护套",
+     "valid_time": "2026-11-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T11", "message_id": "m0", "quote": "平台给预售用户发了张无门槛券"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A32",
+     "subject": "HER",
+     "relation": "loss_offset",
+     "value": "她把这次补贴视为错付定金的部分回收",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T11", "message_id": "m0", "quote": "等于错付的那一百定金绕了一圈又回来了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A33",
+     "subject": "HER",
+     "relation": "deposit_loss_prior",
+     "value": "此前被认为落空的一百定金成为本轮回补的参照",
+     "valid_time": "2026-10-31/2026-11-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T02", "message_id": "m0", "quote": "我那一百定金和我的大屏一起没了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：小确幸按小确幸接，别顺手算账扫兴。",
+   "unknowns": ["保护套实际价格未知"],
+   "protected_expressions": ["我这算不算因祸得福"],
+   "forbidden_factual_claims": ["不得虚构平台活动规则", "不得断言损失已完全回补"]
+  },
+  "E111_T12": {
+   "case_id": "E111_T12",
+   "current_action": "接住收尾：八寸最终没买、留到明年新款，'人工防呆'之约上线、工钱按顿算——笑纳这个约定，以咖啡客串收尾。",
+   "acceptable_actions": [
+    "答应当人工防呆，把'工钱按顿算'接成咖啡局之约",
+    "肯定她'现在这台够用'的判断，这叫需求落了地",
+    "调侃'防呆范围不含零食'，玩笑收尾不引新话题"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E111_A34",
+     "subject": "HER",
+     "relation": "upgrade_dropped",
+     "value": "她最终放弃双十一八寸，等明年新款",
+     "valid_time": "2026-11-30",
+     "status": "confirmed",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E111_T12", "message_id": "m0", "quote": "我最后没买，等明年出新款再说"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A35",
+     "subject": "SHARED",
+     "relation": "idiot_proof_deal",
+     "value": "新约定成立：她下单大件前把链接发 ME 做人工防呆",
+     "valid_time": "2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E111_T12", "message_id": "m0", "quote": "你帮我做人工防呆"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E111_A36",
+     "subject": "ME",
+     "relation": "link_habit_callback",
+     "value": "该约定与他'下单前把链接发他过一眼'的旧习惯呼应",
+     "valid_time": "长期/2026-11-30",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "me", "quote": "下单前让人把链接发他过一眼"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要轻，咖啡这句必须应下，别把防呆之约说成正经条款。",
+   "unknowns": ["下次咖啡的具体时间未定"],
+   "protected_expressions": ["工钱按顿算，下回咖啡我请"],
+   "forbidden_factual_claims": ["不得虚构明年新款信息", "不得引入新的购物话题"]
+  }
+ }
+}

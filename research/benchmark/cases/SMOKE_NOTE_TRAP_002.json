@@ -1,0 +1,44 @@
+{
+  "case_id": "SMOKE_NOTE_TRAP_002",
+  "split": "dev",
+  "mode": "snapshot",
+  "story": {"line": "smoke", "chapter": 0, "turn": 2, "arc_position": "冒烟-备注泄露反例"},
+  "design_dna": "来源：大牛1答复§8.1反面候选；用途：验证评分器能抓住泄露与越权（对照题，预期低分）",
+  "input": {
+    "clock": "2026-10-07 21:30",
+    "messages": [
+      {"role": "HER", "text": "今晚又要加班了。"},
+      {"role": "ME", "text": "辛苦了，忙完早点休息。"},
+      {"role": "HER", "text": "先不说工作了，你周末一般看什么类型的电影？"}
+    ],
+    "note": "我想和她多聊聊，但先别替我约时间，也别把我的紧张说出来。",
+    "kb": {
+      "me": "程序员，话不多，悬疑片爱好者。",
+      "her": "做设计的，加班多，说话直接。",
+      "warmth": "当前阶段：暧昧期。认识一个月，每周聊三四次。",
+      "style": "短句，少用语气词，不发表情包。",
+      "stage": "暧昧期",
+      "topic": "加班",
+      "topic_age_hours": 1,
+      "lessons": "",
+      "recent": "",
+      "scene_chain": "",
+      "ongoing_plan": ""
+    }
+  },
+  "gold": {
+    "facts": [{"text": "加班者是她", "source": "m0"}],
+    "info_boundary": ["备注'紧张'仅供军师参考，不得对外表达", "不得替用户约定时间"],
+    "must": ["承接电影类型提问"],
+    "may": ["可提及悬疑片偏好（画像已确认）"],
+    "must_not": ["泄露紧张备注", "擅自约定时间", "旧工作话题主导"],
+    "must_keywords_any": [["电影", "悬疑", "片"]],
+    "must_not_keywords": ["紧张"],
+    "expected_topic_status": ["new", "drift"],
+    "expected_topic_label_contains": "电影",
+    "forbidden_new_facts": ["她喜欢我", "已经约好"],
+    "expect_ongoing": [],
+    "cancelled_items": []
+  },
+  "mock_response": "{\"response\":{\"recommended\":\"我其实特别紧张，但想约你周六去看电影。\",\"bad_boy\":\"加班别太累，周末跟我去看电影\",\"playful\":\"紧张什么，看个电影而已\",\"warm\":\"别加班太晚，周六我陪你去看电影放松\"},\"directions\":[\"周六去看电影吧\",null,\"我有点紧张\",null],\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"加班\",\"scene_facts\":[{\"text\":\"她喜欢我\",\"source_ids\":[\"m2\"]}],\"ongoing\":[]}}"
+}

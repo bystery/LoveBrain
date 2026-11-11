@@ -1,0 +1,72 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "AK09",
+ "turns": {
+  "AK09_T01": {
+   "case_id": "AK09_T01",
+   "current_action": "她明确收尾（'先睡了 你别等'）——合法不回；若回就一句不要求应答的短收尾，别把两小时安排继续摊给她",
+   "acceptable_actions": [
+    "不回（她已收尾，合法）",
+    "一句'睡吧 明早的题我留着'不再问",
+    "只把材料放好不说时间"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK09_A01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "背到十二点、明早六点半起",
+     "valid_time": "2026-12-19 23:56",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK09_T01",
+      "message_id": "m1",
+      "quote": "明天六点半起"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK09_A02",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "先睡了，别等",
+     "valid_time": "2026-12-19 23:56",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK09_T01",
+      "message_id": "m1",
+      "quote": "你别等"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "此处不回不是冷淡，是尊重她已给出的收尾；但要避免把'不回'写成对所有疲惫场景的默认。",
+   "unknowns": [
+    "她要不要我把题留着"
+   ],
+   "protected_expressions": [
+    "先睡了 你别等"
+   ],
+   "forbidden_factual_claims": [
+    "不要追问'那明天几点开始'",
+    "不要把她早睡说成不自律"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "周六下午图书馆两小时攻实务",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

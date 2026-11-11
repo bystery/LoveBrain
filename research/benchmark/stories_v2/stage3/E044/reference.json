@@ -1,0 +1,318 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E044",
+ "title": "对门的新邻居",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E044_T01": {
+   "case_id": "E044_T01",
+   "current_action": "爽快答应+自我介绍一句",
+   "acceptable_actions": [
+    "说没问题放门口",
+    "答应+自报姓氏",
+    "答应+说敲门就行"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S044_F01",
+     "subject": "她",
+     "relation": "请求",
+     "value": "问快递能不能帮忙代收",
+     "valid_time": "2026-11-05 19:05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E044_T01",
+      "message_id": "m0",
+      "quote": "你好 对门的 我的快递能帮你收下吗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S044_F06",
+     "subject": "我们",
+     "relation": "关系",
+     "value": "昨天帮她按过电梯",
+     "valid_time": "2026-11-04 18:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "昨天搬来时帮她按过电梯"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她社恐，别热情过头。",
+   "unknowns": [
+    "她的姓名"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E044_T02": {
+   "case_id": "E044_T02",
+   "current_action": "给具体操作方式",
+   "acceptable_actions": [
+    "说放哪",
+    "给联系方式",
+    "说有敲门就行"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "信息可执行即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E044_T03": {
+   "case_id": "E044_T03",
+   "current_action": "如实推荐最熟的一家",
+   "acceptable_actions": [
+    "推荐南门那家",
+    "说明各家长短",
+    "推荐+说明价格水平"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "推荐说自己的真实体验，别吹。",
+   "unknowns": [
+    "她主要买什么"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要编造自己没去过的店"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E044_T04": {
+   "case_id": "E044_T04",
+   "current_action": "给出具体推荐和注意事项",
+   "acceptable_actions": [
+    "补一句周末提醒",
+    "给替代选项",
+    "说明步行距离"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "信息给全，判断留给她。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E044_T05": {
+   "case_id": "E044_T05",
+   "current_action": "接受反馈，不辩解推荐",
+   "acceptable_actions": [
+    "说那家果蔬确实看批次",
+    "道歉一句+马上给替代",
+    "问她主要买啥再精准推"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S044_F02",
+     "subject": "她",
+     "relation": "反馈",
+     "value": "去了推荐的超市觉得一般",
+     "valid_time": "2026-11-05 19:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E044_T05",
+      "message_id": "m0",
+      "quote": "去了 果蔬不太行 有点蔫"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "推荐落空是常态；关键是不嘴硬。",
+   "unknowns": [
+    "她在意价格还是新鲜"
+   ],
+   "protected_expressions": [
+    "果蔬不太行"
+   ],
+   "forbidden_factual_claims": [
+    "不要坚称那家很好",
+    "不要说你是怎么买的挑的好（找补）"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E044_T06": {
+   "case_id": "E044_T06",
+   "current_action": "给出替代方案+具体技巧",
+   "acceptable_actions": [
+    "换推荐",
+    "给菜市场时段技巧",
+    "问她要不要明早带一段路"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S044_F03",
+     "subject": "我",
+     "relation": "调整",
+     "value": "改推另一家和菜市场替代方案",
+     "valid_time": "2026-11-05 19:24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E044_T06",
+      "message_id": "m0",
+      "quote": "那去东门那家 或者直接菜市场 新鲜"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "调整要快、具体、不啰嗦。",
+   "unknowns": [
+    "她会不会自己去菜市场"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null
+  },
+  "E044_T07": {
+   "case_id": "E044_T07",
+   "current_action": "考虑清楚再答：说明可行与限制",
+   "acceptable_actions": [
+    "答应并问猫粮/水放哪",
+    "答应但说明自己也可能加班晚归",
+    "答应+约交钥匙方式"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S044_F04",
+     "subject": "她",
+     "relation": "请求",
+     "value": "问出差时猫能不能隔着门喂一次",
+     "valid_time": "2026-11-05 19:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E044_T07",
+      "message_id": "m0",
+      "quote": "下周我出差三天 猫能麻烦你隔门喂一下吗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S044_F05",
+     "subject": "我",
+     "relation": "宠物",
+     "value": "养一只银渐层",
+     "valid_time": "故事开始前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "养一只银渐层"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应是情分；把执行细节说清才是靠谱。",
+   "unknowns": [
+    "她出差的具体三天",
+    "猫粮存放方式"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要不问细节就满口答应",
+    "不要提自家猫过敏之类的托词"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E044_T08": {
+   "case_id": "E044_T08",
+   "current_action": "敲定喂养安排并收尾",
+   "acceptable_actions": [
+    "复述三天日期",
+    "确认猫粮位置",
+    "自然收尾"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S044_F04",
+     "subject": "她",
+     "relation": "请求",
+     "value": "问出差时猫能不能隔着门喂一次",
+     "valid_time": "2026-11-05 19:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E044_T07",
+      "message_id": "m0",
+      "quote": "下周我出差三天 猫能麻烦你隔门喂一下吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "日期复述：下周一到周三。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要记错天数"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

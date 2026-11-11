@@ -1,0 +1,150 @@
+{
+ "episode_id": "E043",
+ "persona": {
+  "me": "34岁，结构工程师，业委会活动主力干将。",
+  "her": "33岁，会计，小区活动组织者，账目精确到分，说话爱带笑。"
+ },
+ "initial_kb": {
+  "me": "认识四年，活动做过三届；这次中秋游园会我负责物料；周末偶尔有事，不硬撑。",
+  "her": "管总账，最烦账目扯皮；人手不够时会硬撑。",
+  "warmth": "同小区活动搭档四年，配合默契，玩笑随便开。",
+  "stage": "长期搭档，互相信得过。",
+  "lessons": "账目她说了算；我的边界是周末，不硬撑。"
+ },
+ "turns": [
+  {
+   "case_id": "E043_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "物料我给你算好了 你那份78 中秋那天用",
+      "ts": "2026-11-05 18:58"
+     }
+    ],
+    "clock": "2026-11-05 19:00",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E043_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "转了 你查收",
+      "ts": "2026-11-05 19:08"
+     }
+    ],
+    "clock": "2026-11-05 19:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E043_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "等等 横幅那家算重了 你是63 我退你15",
+      "ts": "2026-11-05 19:13"
+     }
+    ],
+    "clock": "2026-11-05 19:15",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E043_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "退15收到了 账房先生名不虚传",
+      "ts": "2026-11-05 19:16"
+     }
+    ],
+    "clock": "2026-11-05 19:18",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E043_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "物料你那块还缺啥 我把节目单排了但人手紧",
+      "ts": "2026-11-05 19:23"
+     }
+    ],
+    "clock": "2026-11-05 19:25",
+    "may_decline": false,
+    "note": "周末家里有事半天，别把布场整天揽下来"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E043_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "物料齐了 就差气球 周六上午我都在 下午家里有事",
+      "ts": "2026-11-05 19:28"
+     }
+    ],
+    "clock": "2026-11-05 19:30",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E043_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "行 下午我拉人 布场周六上午九点 中央喷泉集合",
+      "ts": "2026-11-05 19:33"
+     }
+    ],
+    "clock": "2026-11-05 19:35",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E043_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "收到 九点喷泉见 我带剪刀和胶带",
+      "ts": "2026-11-05 19:36"
+     },
+     {
+      "role": "HER",
+      "text": "好嘞 到时候见 账再错我直播吃横幅",
+      "ts": "2026-11-05 19:37"
+     }
+    ],
+    "clock": "2026-11-05 19:38",
+    "may_decline": false
+   },
+   "gold": {}
+  }
+ ]
+}

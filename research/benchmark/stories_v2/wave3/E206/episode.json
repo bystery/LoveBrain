@@ -1,0 +1,178 @@
+{
+ "episode_id": "E206",
+ "persona": {
+  "her": {
+   "name": "高雨桐",
+   "traits": ["行动派", "爱算优惠", "先斩后奏", "认账爽快"],
+   "boundaries": ["讨厌被说小气", "但账算错了愿意认"]
+  },
+  "me": {
+   "name": "林澈",
+   "traits": ["财务工作", "数字敏感", "先问清规则再付钱", "玩笑语气兜住分歧"]
+  },
+  "relationship_stage": "渐暧昧(健身房认识半年的训练搭子)"
+ },
+ "initial_kb": {
+  "her": "高雨桐和林澈同在'力奥健身'锻炼,半年前组了训练搭子,每周约练两三次;两人此前都只有单次门票。",
+  "me": "林澈做财务,所有开销习惯先算清再付;上月刚买了力奥的次卡,共12次,11月已用掉4次,还剩8次。",
+  "warmth": "搭档关系融洽,微信频繁互开玩笑,谁也没点破那层意思。"
+ },
+ "turns": [
+  {
+   "case_id": "E206_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-10 21:10", "text": "林澈!力奥周年庆,双人年卡3980,单人卡要2280一张,俩人拼着办直接省580!拼不拼?"}
+    ],
+    "clock": "2026-11-10 21:15",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "兴奋推销式开场", "change": "首次提出拼年卡"}
+  },
+  {
+   "case_id": "E206_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-10 21:38", "text": "对哦,你不是还有次卡嘛。不过活动就这周,先锁价,年卡12月1号才生效,不冲突的呀"}
+    ],
+    "clock": "2026-11-10 21:42",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "被提醒后反应快,顺势说服", "change": "把'锁价'当新理由"}
+  },
+  {
+   "case_id": "E206_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-11 12:15", "text": "我先刷3980锁上了!你转我1990就齐活,一人一半,截图为证哈"}
+    ],
+    "clock": "2026-11-11 12:20",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "先斩后奏但账算得对", "change": "从商量变成已办"}
+  },
+  {
+   "case_id": "E206_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-13 19:25", "text": "周三晚上的搏击操和周六上午的臀腿局我把咱俩名字都报上了,一人先占一节,周六你加班就换周日,我随时能调"}
+    ],
+    "clock": "2026-11-13 19:30",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "热情排课,给足灵活度", "change": "开始把团课当共同日程"}
+  },
+  {
+   "case_id": "E206_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-16 22:00", "text": "双人卡细则我啃完了:每人每月2次免费带朋友入场,团课各20节。月底清零别浪费啊财务老师"}
+    ],
+    "clock": "2026-11-16 22:05",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "啃细则后有分享欲", "change": "开始引用具体条款"}
+  },
+  {
+   "case_id": "E206_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-19 20:45", "text": "跟你说个事,我今天跟私教聊嗨了,想加6节一对一,团课抵200一节,私教480一节,补差280一节。咱俩一直一人一半嘛,你出840就行~"}
+    ],
+    "clock": "2026-11-19 20:50",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "理直气壮套用'一人一半'", "change": "把平摊习惯外推到个人消费"}
+  },
+  {
+   "case_id": "E206_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-19 21:08", "text": "行吧行吧,是我上头了……那1680我自己补。你又不是小气,是这账本来就不该摊,我懂"}
+    ],
+    "clock": "2026-11-19 21:12",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "被算明白后爽快认账", "change": "撤回平摊提议,自付差价"}
+  },
+  {
+   "case_id": "E206_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-22 18:00", "text": "私教上了两节,说实话跟自己练差别不大,我这480一节花得心口疼,想让销售退剩下4节的差价"}
+    ],
+    "clock": "2026-11-22 18:05",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "后悔中带自嘲", "change": "从加练变成想止损"}
+  },
+  {
+   "case_id": "E206_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-24 21:30", "text": "退到账了!1120原路回来,这波私教试错总共花了560,就当买了个教训,下次再冲动的你拦我"}
+    ],
+    "clock": "2026-11-24 21:35",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "止损成功,认账态度好", "change": "账目闭环并给ME授权"}
+  },
+  {
+   "case_id": "E206_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-26 20:10", "text": "12月1号年卡就生效了,你那12次次卡还剩几次来着?别浪费了"}
+    ],
+    "clock": "2026-11-26 20:15",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "惦记ME的次卡余额", "change": "话题转向次卡收尾"}
+  },
+  {
+   "case_id": "E206_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-28 19:35", "text": "那1月2号晚上七点臀腿局,双人卡首次合练,走一个?正好把你那8次次卡的劲头用光再无缝切年卡"}
+    ],
+    "clock": "2026-11-28 19:40",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "新年第一个约定", "change": "把过渡期计划完整排好"}
+  },
+  {
+   "case_id": "E206_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-30 21:55", "text": "明天生效!对了,这个月'带朋友入场'我用掉一次带我姐了,还剩1次,月底清零,你要用不?"}
+    ],
+    "clock": "2026-11-30 22:00",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "条款执行到位,主动让利", "change": "把剩余权益让给ME"}
+  }
+ ]
+}

@@ -1,0 +1,516 @@
+{
+ "story_id": "E175",
+ "turns": {
+  "E175_T01": {
+   "case_id": "E175_T01",
+   "current_action": "接住庆功宴邀约，就周六晚临江宴的时间地点给出确认，并顺势给一两个点菜方向",
+   "acceptable_actions": [
+    "爽快应约，追问到场人数和口味忌口，再给点菜建议",
+    "先确认自己能到，再以玩笑口吻提醒她别把预算又做超",
+    "应约并主动提出当天早点到帮她盯签到"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A01",
+     "subject": "HER",
+     "relation": "计划举办",
+     "value": "周六晚在临江宴办部门庆功宴，HER 牵头",
+     "valid_time": "2026-11-07 晚（计划）",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T01", "message_id": "m0", "quote": "周六晚上部门庆功宴，定在临江宴，我牵头"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A02",
+     "subject": "SHARED",
+     "relation": "预算口径",
+     "value": "庆功宴人均预算一百五十元，酒水另算",
+     "valid_time": "2026-11-03 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T01", "message_id": "m1", "quote": "人均预算一百五，酒水另算"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A03",
+     "subject": "SHARED",
+     "relation": "关系状态",
+     "value": "两人每周至少一起吃两次午饭，互相带过早餐",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "warmth", "quote": "每周至少一起吃两次午饭"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "语气轻快即可，不抢组织者的主导权；不必复述预算数字以外的推算",
+   "unknowns": ["最终到场人数尚未定", "ME 是否能到由 ME 自己答复"],
+   "protected_expressions": ["临江宴", "人均预算一百五"],
+   "forbidden_factual_claims": ["不得声称庆功宴已经办完", "不得虚构 HER 已收到他人报名"]
+  },
+  "E175_T02": {
+   "case_id": "E175_T02",
+   "current_action": "确认包间八人一千五餐标的落实情况，肯定她的效率，可补一句酒水现场记账的建议",
+   "acceptable_actions": [
+    "夸她办事利索，提醒酒水单让服务员当场写清桌号",
+    "确认数字并说当天帮忙盯小票",
+    "以玩笑问八个人坐不坐得下，顺带确认餐标是否含服务费"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A04",
+     "subject": "SHARED",
+     "relation": "场地与餐标",
+     "value": "临江宴包间已订，八人，餐标一千五百元，酒水现场另点",
+     "valid_time": "2026-11-03 晚落实",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T02", "message_id": "m0", "quote": "包间订好了，八个人，餐标一千五"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A05",
+     "subject": "HER",
+     "relation": "角色",
+     "value": "沈黎负责本次季度庆功宴组织",
+     "valid_time": "2026-11 月上旬",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "her", "quote": "负责这次季度庆功宴组织"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "回应要短而实，别替她重新算账，只做确认与轻提醒",
+   "unknowns": ["酒水具体品类未定"],
+   "protected_expressions": ["包间订好了", "餐标一千五"],
+   "forbidden_factual_claims": ["不得声称酒水已点好", "不得虚构包间费另收"]
+  },
+  "E175_T03": {
+   "case_id": "E175_T03",
+   "current_action": "接住新增的两瓶待客红酒，提醒她单独留凭证好让人力主管报销，避免混入主账",
+   "acceptable_actions": [
+    "建议两瓶红酒单独开小票，报销时干净",
+    "确认记主账安排，同时提醒备注清楚哪笔是待客酒",
+    "半开玩笑说幸好她留小票的习惯还在"
+   ],
+   "applicable_dimensions": ["factuality", "boundary", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A06",
+     "subject": "THIRD",
+     "relation": "委托加购",
+     "value": "人力主管委托加两瓶红酒待客，费用记主账后由其报销",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T03", "message_id": "m0", "quote": "加两瓶红酒待客，记主账上，回头她报销"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A07",
+     "subject": "HER",
+     "relation": "记账习惯",
+     "value": "此前团建账目糊涂后，HER 记账开始留小票",
+     "valid_time": "长期习惯",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "lessons", "quote": "此后 HER 记账留小票"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把她的小票习惯当夸奖素材，建议要具体但不啰嗦",
+   "unknowns": ["红酒预算上限未说明"],
+   "protected_expressions": ["两瓶红酒待客"],
+   "forbidden_factual_claims": ["不得声称红酒已买好", "不得虚构人力主管的具体报销额度"]
+  },
+  "E175_T04": {
+   "case_id": "E175_T04",
+   "current_action": "接住人数从八人降到六人的变动，表示理解加班的两位，顺势问她分摊打算怎么调",
+   "acceptable_actions": [
+    "先安慰她别烦，再主动问缺席两人的份额怎么处理",
+    "确认六人数字，顺带提包间可能要重报人数",
+    "体谅设计组加班，问她需不需要帮忙改订座"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A08",
+     "subject": "SHARED",
+     "relation": "人数变更",
+     "value": "设计组小林和阿灿因加班缺席，宴会参加人数降为六人",
+     "valid_time": "2026-11-05 通报",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T04", "message_id": "m0", "quote": "设计组小林和阿灿临时加班来不了，人数降到六个"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A09",
+     "subject": "SHARED",
+     "relation": "原定人数",
+     "value": "此前包间按八人预订",
+     "valid_time": "2026-11-03 至 2026-11-05",
+     "status": "superseded",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E175_T02", "message_id": "m0", "quote": "包间订好了，八个人"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "对变动的态度放在人身上（加班辛苦），不纠缠数字，问一句她的打算即可",
+   "unknowns": ["两位缺席者是否补场未定"],
+   "protected_expressions": ["人数降到六个"],
+   "forbidden_factual_claims": ["不得声称小林阿灿已答应下次补请", "不得虚构包间费因此变化"]
+  },
+  "E175_T05": {
+   "case_id": "E175_T05",
+   "current_action": "认可她按六人平摊、缺席者份额不摊给大伙、差价自己兜的原则，可轻声提醒量力而行",
+   "acceptable_actions": [
+    "肯定她的分摊原则，顺带说包间差价让她先留好凭证",
+    "认可原则并半玩笑说下次让小林阿灿请奶茶补上",
+    "支持六人平摊，提醒她兜差价前先问餐厅能不能减菜"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A10",
+     "subject": "HER",
+     "relation": "分摊决定",
+     "value": "缺席两人份额不摊给其他人，按六人平摊，包间差价由 HER 兜底",
+     "valid_time": "2026-11-06 决定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T05", "message_id": "m0", "quote": "小林阿灿的份额不让大伙摊，按六个人平，包间差价我来兜"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A11",
+     "subject": "SHARED",
+     "relation": "缺席者摊派",
+     "value": "缺席者不参与本次分摊",
+     "valid_time": "2026-11-06 决定",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E175_T05", "message_id": "m0", "quote": "不让大伙摊"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A12",
+     "subject": "SHARED",
+     "relation": "当前人数",
+     "value": "宴会参加人数为六人",
+     "valid_time": "2026-11-05 起生效",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T04", "message_id": "m0", "quote": "人数降到六个"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "肯定但别捧，一句就够；不许诺替她出钱",
+   "unknowns": ["包间差价具体金额未披露"],
+   "protected_expressions": ["包间差价我来兜"],
+   "forbidden_factual_claims": ["不得声称 ME 会替她垫付差价", "不得虚构餐厅已同意减菜"]
+  },
+  "E175_T06": {
+   "case_id": "E175_T06",
+   "current_action": "深夜接住她发现账单多出六百八十八的疑惑，让她先睡，约定明天陪她理小票",
+   "acceptable_actions": [
+    "安抚她别熬夜，约明天一早一起对单",
+    "让她把电子账单截图先存着，明早再核",
+    "轻松安抚并顺带安慰宴会本身办得不错"
+   ],
+   "applicable_dimensions": ["emotion_relation", "factuality", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A13",
+     "subject": "SHARED",
+     "relation": "结账金额",
+     "value": "庆功宴结账两千六百八十元，比 HER 预期多出六百八十八元",
+     "valid_time": "2026-11-07 晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T06", "message_id": "m0", "quote": "结账两千六百八，比我预期多出六百八十八"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A14",
+     "subject": "SHARED",
+     "relation": "宴会状态",
+     "value": "庆功宴已于周六晚如期办完",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T06", "message_id": "m0", "quote": "散场了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "深夜消息以安抚为主，不展开推理分析，留给白天",
+   "unknowns": ["多出款项的真实原因当晚未知"],
+   "protected_expressions": ["多出六百八十八"],
+   "forbidden_factual_claims": ["不得断言是餐厅记错（当时未核实）", "不得声称已联系经理"]
+  },
+  "E175_T07": {
+   "case_id": "E175_T07",
+   "current_action": "确认小票证据指向隔壁包间洋酒误记，肯定她留小票的习惯，支持她明天找经理并给出一句开场话术",
+   "acceptable_actions": [
+    "肯定实证在手，建议带小票和当日晚宴名单一起去找经理",
+    "支持交涉，给一句'小票在这，麻烦核一下桌号'的开场",
+    "夸小票习惯立功，提醒她交涉时对事不对人"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "initiative", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A15",
+     "subject": "THIRD",
+     "relation": "误记来源",
+     "value": "隔壁包间一瓶六百八十八元的洋酒被误记到 HER 的账单",
+     "valid_time": "2026-11-07 晚发生，11-08 上午核实",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T07", "message_id": "m0", "quote": "隔壁包间一瓶洋酒六百八十八记到我单上了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A16",
+     "subject": "SHARED",
+     "relation": "待核金额",
+     "value": "结账两千六百八十元存疑，多出六百八十八元待更正",
+     "valid_time": "2026-11-07 晚",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T06", "message_id": "m0", "quote": "结账两千六百八"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她已定行动计划，只补一个可操作细节，别替她去找经理",
+   "unknowns": ["经理是否认账未知"],
+   "protected_expressions": ["隔壁包间一瓶洋酒六百八十八"],
+   "forbidden_factual_claims": ["不得声称经理已承认错误", "不得虚构隔壁包间客人身份"]
+  },
+  "E175_T08": {
+   "case_id": "E175_T08",
+   "current_action": "祝贺退款落定并复述新总账与每人三百三十二的平摊结果，把这笔账从待办里划掉",
+   "acceptable_actions": [
+    "道喜并确认 AA 表数字无误，提醒她把退款记录截图存档",
+    "以'小票立功'回扣习惯话题，确认每人三百三十二",
+    "祝贺后轻问果盘是不是当餐就上了"
+   ],
+   "applicable_dimensions": ["factuality", "time_state", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A17",
+     "subject": "THIRD",
+     "relation": "费用更正",
+     "value": "经理核实后退回六百八十八元误记洋酒费，总账更正为一千九百九十二元",
+     "valid_time": "2026-11-09 中午",
+     "status": "resolved",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E175_T08", "message_id": "m0", "quote": "把六百八十八退回来了，总账一千九百九十二"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A18",
+     "subject": "SHARED",
+     "relation": "分摊结果",
+     "value": "六人平摊，每人三百三十二元，AA 表已发群",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T08", "message_id": "m1", "quote": "六个人平摊，每人三百三十二"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A19",
+     "subject": "SHARED",
+     "relation": "待核金额",
+     "value": "多出的六百八十八元此前处于待核状态",
+     "valid_time": "2026-11-07 至 2026-11-09",
+     "status": "resolved",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T06", "message_id": "m0", "quote": "多出六百八十八"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "情绪要替她高兴，复述关键数字体现记着她的账，不添新任务",
+   "unknowns": ["退款到账形式（现金或原路退回）未说明"],
+   "protected_expressions": ["总账一千九百九十二", "每人三百三十二"],
+   "forbidden_factual_claims": ["不得声称 HER 为此请经理吃饭致谢", "不得虚构六百八十八元未退"]
+  },
+  "E175_T09": {
+   "case_id": "E175_T09",
+   "current_action": "接住发票抬头要开公司全称的新要求，提醒她重开时带上原发票和宴席订单",
+   "acceptable_actions": [
+    "提醒重开发票带齐原票和订单截图，一次办成",
+    "确认团建经费口径，顺带问她重开要不要隔天再跑",
+    "轻推一句让她把财务同事的要求原话记下来"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A20",
+     "subject": "SHARED",
+     "relation": "报销口径",
+     "value": "此宴走部门团建经费，发票抬头须重开为公司全称",
+     "valid_time": "2026-11-09 晚提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T09", "message_id": "m0", "quote": "发票抬头得开公司全称，我明天去重开"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A21",
+     "subject": "SHARED",
+     "relation": "更正后总账",
+     "value": "总账更正为一千九百九十二元",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T08", "message_id": "m0", "quote": "总账一千九百九十二"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "办事型回复，给一个省一趟腿的细节即可",
+   "unknowns": ["重开发票是否需要原店当面办理未确认"],
+   "protected_expressions": ["发票抬头得开公司全称"],
+   "forbidden_factual_claims": ["不得声称发票已经重开完成", "不得虚构财务同事拒绝配合"]
+  },
+  "E175_T10": {
+   "case_id": "E175_T10",
+   "current_action": "回应她在群里公开与否的纠结，支持她只讲事实不评价人的公示方式，把选择权还给她",
+   "acceptable_actions": [
+    "支持公示但建议只贴更正后总账，不点名不诉苦",
+    "先接住她'怕显得斤斤计较'的顾虑，再说事实公示不丢人",
+    "给她两个版本：一句版和三句版，让她挑"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "interaction", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A22",
+     "subject": "HER",
+     "relation": "顾虑",
+     "value": "HER 担心在群里说多收六百八十八的事会显得斤斤计较",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T10", "message_id": "m0", "quote": "怕人觉得我斤斤计较"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A23",
+     "subject": "SHARED",
+     "relation": "更正事实",
+     "value": "洋酒误记六百八十八元已退回，账目已更正",
+     "valid_time": "2026-11-09",
+     "status": "resolved",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T08", "message_id": "m0", "quote": "把六百八十八退回来了"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是情绪分寸轮，先共情再给具体写法，最后让她自己定",
+   "unknowns": ["公示发出与否由 HER 决定"],
+   "protected_expressions": ["怕人觉得我斤斤计较"],
+   "forbidden_factual_claims": ["不得声称 HER 已发公示", "不得虚构同事已议论此事"]
+  },
+  "E175_T11": {
+   "case_id": "E175_T11",
+   "current_action": "肯定公示反响与没收份子钱的处理，把'下回聚餐补上'记成一个小钩子",
+   "acceptable_actions": [
+    "夸她处理得体，说份子钱正好当下次聚餐由头",
+    "肯定公示反响，半玩笑提醒把'下回补上'写进备忘",
+    "回应她没收份子钱的做法，说这比收下更有面子"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A24",
+     "subject": "THIRD",
+     "relation": "人情回响",
+     "value": "小林和阿灿要转份子钱，HER 没收，约定下回聚餐补上",
+     "valid_time": "2026-11-10 晚",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E175_T11", "message_id": "m0", "quote": "小林和阿灿要把份子钱转我，我没收"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A25",
+     "subject": "SHARED",
+     "relation": "公示结果",
+     "value": "账目公示已发群，同事反馈清楚明白",
+     "valid_time": "2026-11-10",
+     "status": "resolved",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T11", "message_id": "m0", "quote": "账目公示发了，同事都说清楚明白"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A26",
+     "subject": "HER",
+     "relation": "顾虑解除",
+     "value": "此前担心公示显得斤斤计较的顾虑已打消",
+     "valid_time": "2026-11-10",
+     "status": "resolved",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T10", "message_id": "m0", "quote": "可不说又不痛快"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "轻快收账，把人情钩子自然接住，不再展开账目细节",
+   "unknowns": ["下次聚餐时间未定"],
+   "protected_expressions": ["让他们下回聚餐补上"],
+   "forbidden_factual_claims": ["不得声称份子钱已收下", "不得虚构公示有人挑刺"]
+  },
+  "E175_T12": {
+   "case_id": "E175_T12",
+   "current_action": "接下中午复盘饭的邀约，回扣账目清白与小票立功，顺势聊下次换店想试的口味",
+   "acceptable_actions": [
+    "爽快赴约，回扣'小票立功'，问她换店想吃什么菜系",
+    "应约并开玩笑说这顿她请得值，顺手提一句临江宴留下的小票归档了",
+    "赴约并把话题抛回给她：下次团建预算还按老标准吗"
+   ],
+   "applicable_dimensions": ["interaction", "initiative", "memory_use", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E175_A27",
+     "subject": "HER",
+     "relation": "收尾决定",
+     "value": "下次团建决定换一家店，并邀 ME 中午吃饭复盘请客",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T12", "message_id": "m0", "quote": "下次团建我换家店，中午一起吃饭复盘"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E175_A28",
+     "subject": "SHARED",
+     "relation": "人情钩子",
+     "value": "小林和阿灿约定下回聚餐补上份子钱",
+     "valid_time": "2026-11-10 起",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T11", "message_id": "m0", "quote": "让他们下回聚餐补上"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E175_A29",
+     "subject": "SHARED",
+     "relation": "事件闭环",
+     "value": "庆功宴账目从多收六百八十八到更正公示全部走完",
+     "valid_time": "2026-11-07 至 2026-11-10",
+     "status": "resolved",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E175_T08", "message_id": "m0", "quote": "总账一千九百九十二"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，允许一点玩笑和口味新话题，不复盘账目本身",
+   "unknowns": ["换店目标菜系未定"],
+   "protected_expressions": ["庆祝账目清白"],
+   "forbidden_factual_claims": ["不得声称换店已选定餐厅", "不得虚构 ME 请客"]
+  }
+ }
+}

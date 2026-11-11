@@ -1,0 +1,753 @@
+{
+ "story_id": "E203",
+ "turns": {
+  "E203_T01": {
+   "case_id": "E203_T01",
+   "current_action": "答应周三上午替她去现场盯定制衣柜安装",
+   "acceptable_actions": [
+    "答应到场并问店家对接群有没有拉自己",
+    "答应并提醒她把合同发自己一份",
+    "答应并问周三上午具体几点进场"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T01_A01",
+     "subject": "ME",
+     "relation": "把关承诺",
+     "value": "大成此前已答应替何静盯定制衣柜安装现场",
+     "valid_time": "2026-11-02之前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "答应替何静去新房现场盯定制衣柜安装"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E203_T01_A02",
+     "subject": "SHARED",
+     "relation": "安装安排",
+     "value": "定制衣柜定于十一月四日周三上午由罗师傅带一个小工两人安装",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T01",
+      "quote": "这周三上午装，罗师傅带一个小工",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "堂哥口吻，答应得干脆，顺口要合同。",
+   "unknowns": [
+    "进场具体时间未知"
+   ],
+   "protected_expressions": [
+    "这周三上午装，罗师傅带一个小工"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已与罗师傅本人联系"
+   ],
+   "may_decline": false
+  },
+  "E203_T02": {
+   "case_id": "E203_T02",
+   "current_action": "确认板材已验收、安装费含在合同与尾款两千四验收后付的口径",
+   "acceptable_actions": [
+    "确认口径并叮嘱付款前先走完验收单",
+    "确认并问防潮棉用量够不够三组柜",
+    "确认并说验收时自己会逐项拍照"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T02_A01",
+     "subject": "SHARED",
+     "relation": "安装安排",
+     "value": "周三上午罗师傅两人组安装的既定安排",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T01",
+      "quote": "这周三上午装，罗师傅带一个小工",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E203_T02_A02",
+     "subject": "SHARED",
+     "relation": "尾款口径",
+     "value": "安装费含在合同内验收后付尾款两千四",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T02",
+      "quote": "验收没问题我再付尾款两千四",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "把钱和验收绑在一起说，给她留书面抓手。",
+   "unknowns": [],
+   "protected_expressions": [
+    "验收没问题我再付尾款两千四"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称尾款已付或应立即付"
+   ],
+   "may_decline": false
+  },
+  "E203_T03": {
+   "case_id": "E203_T03",
+   "current_action": "接下三组柜子清单与颗粒板封边的重点检查事项",
+   "acceptable_actions": [
+    "答应重点看封边收口并说会带塞尺",
+    "答应并解释封边好坏怎么摸怎么看",
+    "答应并提醒留一卷美纹纸做记号"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T03_A01",
+     "subject": "SHARED",
+     "relation": "柜体构成",
+     "value": "三组柜子为主卧两组通顶加玄关一组带换鞋凳",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T03",
+      "quote": "主卧两组通顶，玄关一组带换鞋凳",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E203_T03_A02",
+     "subject": "ME",
+     "relation": "安装经验",
+     "value": "大成五年家居安装经验可支撑封边验收",
+     "valid_time": "2026-11-02之前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "做过五年家居安装"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "老手口吻，给一个能落地的检查动作。",
+   "unknowns": [
+    "颗粒板品牌批次未知"
+   ],
+   "protected_expressions": [
+    "主卧两组通顶，玄关一组带换鞋凳"
+   ],
+   "forbidden_factual_claims": [
+    "不得预先断言封边一定合格或不合格"
+   ],
+   "may_decline": false
+  },
+  "E203_T04": {
+   "case_id": "E203_T04",
+   "current_action": "接住改派风波：认定店家改派不必然违约，但要求责任主体书面确认",
+   "acceptable_actions": [
+    "说明改派不算必然违约并要求群里书面确认",
+    "给判断并让她要改派师傅名单",
+    "安抚并建议明早到场再核人员与合同"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T04_A01",
+     "subject": "SHARED",
+     "relation": "安装安排",
+     "value": "原定罗师傅两人组的安装安排作废",
+     "valid_time": "2026-11-03",
+     "status": "cancelled",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T01",
+      "quote": "这周三上午装，罗师傅带一个小工",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E203_T04_A02",
+     "subject": "THIRD",
+     "relation": "第三方改派",
+     "value": "店家改派合作队两名师傅周三上门",
+     "valid_time": "2026-11-04",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T04",
+      "quote": "改派他们合作队的两个师傅上门",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "冲突轮：先给判断稳住她，再把口子引到书面确认。",
+   "unknowns": [
+    "合作队师傅的实际资质未知",
+    "是否构成违约未定"
+   ],
+   "protected_expressions": [
+    "改派他们合作队的两个师傅上门"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言店家已构成违约",
+    "不得声称已见过合作队师傅"
+   ],
+   "may_decline": false
+  },
+  "E203_T05": {
+   "case_id": "E203_T05",
+   "current_action": "确认书面口径'主体不变责任照旧'到位，并交代到场后先核对人员",
+   "acceptable_actions": [
+    "确认书面口径有效并说会对照名单核人",
+    "确认并提醒把群截图存档",
+    "确认并说到场先看板材再动工"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "memory_use",
+    "time_state",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T05_A01",
+     "subject": "THIRD",
+     "relation": "第三方改派",
+     "value": "合作队两名师傅改派上门的安排待现场核对",
+     "valid_time": "2026-11-04",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T04",
+      "quote": "改派他们合作队的两个师傅上门",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E203_T05_A02",
+     "subject": "SHARED",
+     "relation": "书面确认",
+     "value": "店家在群里书面确认合同主体不变安装质量仍由店家负责",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T05",
+      "quote": "合同主体不变，安装质量仍由店家负责",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她这一步走得对，明确肯定并补上核人动作。",
+   "unknowns": [
+    "改派名单与实际到场是否一致未知"
+   ],
+   "protected_expressions": [
+    "合同主体不变，安装质量仍由店家负责"
+   ],
+   "forbidden_factual_claims": [
+    "不得替店家承诺改派必无问题"
+   ],
+   "may_decline": false
+  },
+  "E203_T06": {
+   "case_id": "E203_T06",
+   "current_action": "就人数对不上与四百五十元未签增项给出立场：合同没写的当场不认",
+   "acceptable_actions": [
+    "支持增项先不认并让她装完再议",
+    "支持不认并要求店家群里书面回复增项归属",
+    "支持不认并提醒别当场与师傅起冲突"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T06_A01",
+     "subject": "SHARED",
+     "relation": "书面确认",
+     "value": "店家书面确认主体不变责任照旧的群聊口径",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T05",
+      "quote": "合同主体不变，安装质量仍由店家负责",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E203_T06_A02",
+     "subject": "THIRD",
+     "relation": "到场人数",
+     "value": "现场到三人比说好的两名师傅多一人自称带队",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T06",
+      "quote": "现场来了三个人，说好的两位之外多了个说是带队的",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E203_T06_A03",
+     "subject": "THIRD",
+     "relation": "增项主张",
+     "value": "师傅提出每组一百五共三组四百五的现场封边费",
+     "valid_time": "2026-11-04",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T06",
+      "quote": "每组一百五，三组四百五",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她没答应是对的，明确背书并给台阶式话术。",
+   "unknowns": [
+    "带队人身份未知",
+    "增项最终归属未定"
+   ],
+   "protected_expressions": [
+    "每组一百五，三组四百五"
+   ],
+   "forbidden_factual_claims": [
+    "不得认可增项合法",
+    "不得虚构合同里有封边费条款"
+   ],
+   "may_decline": false
+  },
+  "E203_T07": {
+   "case_id": "E203_T07",
+   "current_action": "确认先装后议的策略执行，并对主卧两组封边给出口头初验",
+   "acceptable_actions": [
+    "确认策略并让她拍封边特写备查",
+    "确认并说摸封边平整就是好信号",
+    "确认并提醒玄关装完一起验收"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T07_A01",
+     "subject": "THIRD",
+     "relation": "增项主张",
+     "value": "四百五十元现场封边费的增项主张暂被搁置",
+     "valid_time": "2026-11-04",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T06",
+      "quote": "每组一百五，三组四百五",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E203_T07_A02",
+     "subject": "SHARED",
+     "relation": "安装进度",
+     "value": "主卧两组已装完且封边平整",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T07",
+      "quote": "主卧两组已经装完",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "中场轮，短句确认进度，别添新任务。",
+   "unknowns": [
+    "玄关组当日能否完工未知"
+   ],
+   "protected_expressions": [
+    "主卧两组已经装完"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称增项已取消",
+    "不得代替实物验收下结论"
+   ],
+   "may_decline": false
+  },
+  "E203_T08": {
+   "case_id": "E203_T08",
+   "current_action": "就玄关柜门缝给出判断，确认铰链调整方案并让她保留视频",
+   "acceptable_actions": [
+    "确认铰链可调并让她留视频到回访完",
+    "确认方案并提醒回访时自己也在场",
+    "确认并说门缝塞纸属可调范围别担心"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T08_A01",
+     "subject": "SHARED",
+     "relation": "安装进度",
+     "value": "三组柜子全部安装完成",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T08",
+      "quote": "全装完了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E203_T08_A02",
+     "subject": "SHARED",
+     "relation": "玄关瑕疵",
+     "value": "玄关柜门缝偏大可塞进一张纸待铰链调整",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T08",
+      "quote": "玄关柜门缝有点大，左边那条能塞进一张纸",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E203_T08_A03",
+     "subject": "THIRD",
+     "relation": "增项主张",
+     "value": "四百五十元现场封边费增项此前被暂搁置",
+     "valid_time": "2026-11-04",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T06",
+      "quote": "每组一百五，三组四百五",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她有点悬心，先定性这是小问题再给流程。",
+   "unknowns": [
+    "回访后能否完全消除缝隙未知"
+   ],
+   "protected_expressions": [
+    "玄关柜门缝有点大，左边那条能塞进一张纸"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言缝隙无需处理",
+    "不得虚构铰链型号"
+   ],
+   "may_decline": false
+  },
+  "E203_T09": {
+   "case_id": "E203_T09",
+   "current_action": "核对回访结果，确认满足验收条件后同意支付尾款两千四",
+   "acceptable_actions": [
+    "确认瑕疵已处理同意今天付尾款",
+    "同意付款并叮嘱付前再签验收单",
+    "同意并提醒付款后让店家开收据"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T09_A01",
+     "subject": "SHARED",
+     "relation": "玄关瑕疵",
+     "value": "玄关柜门缝经回访调整后纸已塞不进去",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T08",
+      "quote": "玄关柜门缝有点大，左边那条能塞进一张纸",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E203_T09_A02",
+     "subject": "SHARED",
+     "relation": "尾款口径",
+     "value": "验收后付尾款两千四的既定口径",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T02",
+      "quote": "验收没问题我再付尾款两千四",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已按规矩走完验收，给个痛快话。",
+   "unknowns": [
+    "增项是否仍有变数未知"
+   ],
+   "protected_expressions": [
+    "尾款两千四现在能付吗"
+   ],
+   "forbidden_factual_claims": [
+    "不得在瑕疵未闭环时催付款"
+   ],
+   "may_decline": false
+  },
+  "E203_T10": {
+   "case_id": "E203_T10",
+   "current_action": "确认验收付款闭环，并肯定增项以书面不收、延保加一年收口",
+   "acceptable_actions": [
+    "确认闭环并夸她全程留了书面证据",
+    "确认并提醒延保条款也截图存好",
+    "确认并说这轮装修可以画句号"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "memory_use",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T10_A01",
+     "subject": "SHARED",
+     "relation": "尾款口径",
+     "value": "尾款两千四已随验收单签署支付",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T09",
+      "quote": "尾款两千四现在能付吗",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E203_T10_A02",
+     "subject": "THIRD",
+     "relation": "增项结果",
+     "value": "四百五十元增项按合同不收且店家延保加一年",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T10",
+      "quote": "店家说按合同不收，给我延保多加一年",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收口轮，肯定她的书面习惯，别翻旧账。",
+   "unknowns": [
+    "延保具体范围未知"
+   ],
+   "protected_expressions": [
+    "店家说按合同不收，给我延保多加一年"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称增项费用已被收取"
+   ],
+   "may_decline": false
+  },
+  "E203_T11": {
+   "case_id": "E203_T11",
+   "current_action": "回应周六下午新家暖房邀约，可爽快接、接并提出带东西或问具体时间",
+   "acceptable_actions": [
+    "答应周六下午到并问要带点什么",
+    "答应并提议顺路帮她带点日用品",
+    "答应并确认下午具体几点"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T11_A01",
+     "subject": "SHARED",
+     "relation": "安装闭环",
+     "value": "定制衣柜安装与验收付款全链路已落定",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T10",
+      "quote": "验收单签了，尾款两千四也付了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E203_T11_A02",
+     "subject": "SHARED",
+     "relation": "暖房邀约",
+     "value": "HER 邀请 ME 周六下午到新家做客煮咖啡",
+     "valid_time": "2026-11-07",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T11",
+      "quote": "这周六下午来我新家呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "钩子轮，接得暖一点，别端着。",
+   "unknowns": [
+    "周六具体时间未定"
+   ],
+   "protected_expressions": [
+    "这周六下午来我新家呗"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构已答应带具体礼物"
+   ],
+   "may_decline": false
+  },
+  "E203_T12": {
+   "case_id": "E203_T12",
+   "current_action": "收下致谢与咖啡豆回礼，把功劳的话轻轻推回去",
+   "acceptable_actions": [
+    "收下回礼并说兄妹之间不用说功劳",
+    "收下咖啡豆并叮嘱豆子别受潮",
+    "收下感谢并顺势问住得习不习惯"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E203_T12_A01",
+     "subject": "SHARED",
+     "relation": "暖房邀约",
+     "value": "周六下午新家做客已经成行",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T11",
+      "quote": "这周六下午来我新家呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E203_T12_A02",
+     "subject": "HER",
+     "relation": "致谢回礼",
+     "value": "HER 致谢两天把关并回赠一包咖啡豆",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E203_T12",
+      "quote": "咖啡豆我多买了一包给你带回去",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮，亲情口吻，一句暖话收住。",
+   "unknowns": [],
+   "protected_expressions": [
+    "咖啡豆我多买了一包给你带回去"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构后续装修项目"
+   ],
+   "may_decline": true
+  }
+ }
+}

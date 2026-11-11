@@ -1,0 +1,761 @@
+{
+ "story_id": "E133",
+ "turns": {
+  "E133_T01": {
+   "current_action": "确认报名截止日期为当月15号，并以过来人身份给第一次报考的她一句打气",
+   "acceptable_actions": [
+    "确认15号截止并提醒她提交后截图留存，顺带一句鼓励",
+    "确认15号截止，简单讲一下自己去年报名的核对经验",
+    "确认15号截止并顺势问她准备的曲目，让她别太紧张"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A01",
+     "subject": "HER",
+     "relation": "报考目标",
+     "value": "今年第一次报考业余钢琴六级",
+     "valid_time": "2026年考季",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "今年第一次报考业余钢琴六级"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E133_A02",
+     "subject": "PUBLIC",
+     "relation": "报名截止时间",
+     "value": "业余钢琴考级报名当月15号截止",
+     "valid_time": "2026-11-15前",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T01",
+      "message_id": "m0",
+      "quote": "这个月15号截止"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A03",
+     "subject": "ME",
+     "relation": "报名经验",
+     "value": "去年考过业余八级，熟悉报名流程",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "去年考过业余八级，熟悉琴行与考级报名流程"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "以琴友身份给确定答复，不显摆经验，结尾带一句轻松打气即可。",
+   "unknowns": [
+    "她具体哪天提交报名未定"
+   ],
+   "protected_expressions": [
+    "我打算冲一下六级"
+   ],
+   "forbidden_factual_claims": [
+    "不编造考级办电话与报名网址细节",
+    "不虚构六级评分标准条款"
+   ],
+   "case_id": "E133_T01"
+  },
+  "E133_T02": {
+   "current_action": "接住报名完成的兴奋与紧张，肯定她动作快，提醒保存缴费凭证",
+   "acceptable_actions": [
+    "祝贺报名完成并提醒把缴费凭证截图存好",
+    "肯定她效率高，附带一句第一次报名紧张很正常",
+    "祝贺并顺口问一句练习进度，让她踏实"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A04",
+     "subject": "HER",
+     "relation": "报名缴费状态",
+     "value": "已填六级报名表并完成缴费",
+     "valid_time": "2026-11-04起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T02",
+      "message_id": "m0",
+      "quote": "趁午休把表填了，六级！缴费也交了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A05",
+     "subject": "HER",
+     "relation": "考前心态",
+     "value": "第一次报考容易紧张怕忘谱",
+     "valid_time": "考季持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "考前容易紧张怕忘谱"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "语气轻快，重点放在安抚与凭证提醒，不展开长篇经验。",
+   "unknowns": [
+    "报名表其他栏目是否填对此时未知"
+   ],
+   "protected_expressions": [
+    "好紧张，第一次报"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言她一定通过",
+    "不编造缴费金额数字"
+   ],
+   "case_id": "E133_T02"
+  },
+  "E133_T03": {
+   "current_action": "先安抚慌乱，再给出处理方向：级别报错通常可走更正申请，不必急于重报，建议直接联系考级办确认",
+   "acceptable_actions": [
+    "安抚后建议立刻致电考级办问更正流程，强调凭证在手问题可解",
+    "先稳住情绪，说明报错级别常见且有更正通道，让她别慌着重报",
+    "帮她梳理手头信息（缴费六级、级别四级），给出打考级办电话的具体准备清单"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A06",
+     "subject": "HER",
+     "relation": "考级报名级别",
+     "value": "报名表级别栏手滑误选为四级",
+     "valid_time": "2026-11-06发现",
+     "status": "corrected",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T03",
+      "message_id": "m0",
+      "quote": "级别那一栏我手滑选成四级了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A07",
+     "subject": "HER",
+     "relation": "六级报名成立",
+     "value": "缴费为六级金额但级别报成四级，六级报名暂未成立",
+     "valid_time": "2026-11-04至更正完成前",
+     "status": "negated",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T02",
+      "message_id": "m0",
+      "quote": "趁午休把表填了，六级！"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E133_A08",
+     "subject": "HER",
+     "relation": "处理诉求",
+     "value": "想知道是否必须重新报名",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T03",
+      "message_id": "m0",
+      "quote": "我是不是要重报啊？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这一轮以稳为主：先接情绪再给路径，不打包票，引导她主动打官方电话。",
+   "unknowns": [
+    "考级办是否受理更正、是否需补差价均未确认"
+   ],
+   "protected_expressions": [
+    "我是不是要重报啊"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构更正申请的具体办理时限",
+    "不得断言一定能更正成功"
+   ],
+   "case_id": "E133_T03"
+  },
+  "E133_T04": {
+   "current_action": "肯定她推进得快，围绕更正申请给她下一步清单：上传凭证、按时补差价、办结后截图确认",
+   "acceptable_actions": [
+    "肯定进展并提醒她办结后让后台显示六级再截图存档",
+    "确认流程要点（凭证、差价、时限）并叮嘱别错过十五号期限",
+    "轻松回应还好不用重报，帮她把待办列成两三条"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A09",
+     "subject": "PUBLIC",
+     "relation": "级别更正流程",
+     "value": "可提交级别更正申请，需上传缴费凭证并补四级与六级报名差价，十五号前办结",
+     "valid_time": "至2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T04",
+      "message_id": "m0",
+      "quote": "可以提交级别更正申请，要上传缴费凭证，然后补四级和六级的报名差价，十五号前办完就行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A10",
+     "subject": "SHARED",
+     "relation": "重报必要性",
+     "value": "无需重报，走更正申请即可",
+     "valid_time": "2026-11-07起",
+     "status": "resolved",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T03",
+      "message_id": "m0",
+      "quote": "我是不是要重报啊"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "像个靠谱同学帮她对一遍待办，句子短，别啰嗦。",
+   "unknowns": [
+    "差价具体金额未报出"
+   ],
+   "protected_expressions": [
+    "还好不用重报"
+   ],
+   "forbidden_factual_claims": [
+    "不得替考级办承诺办结时间",
+    "不编造差价具体数额"
+   ],
+   "case_id": "E133_T04"
+  },
+  "E133_T05": {
+   "current_action": "祝贺更正办结，呼应之前的手滑风波，提醒她截图存档的习惯很好",
+   "acceptable_actions": [
+    "祝贺六级恢复，肯定截图存档的习惯",
+    "轻松复盘手滑风波，说这波处理得很利索",
+    "祝贺并顺势问一句练琴进度，把话题带回应有的日常"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A11",
+     "subject": "HER",
+     "relation": "报名级别更正结果",
+     "value": "差价已补、更正申请通过，后台已显示六级",
+     "valid_time": "2026-11-08起",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T05",
+      "message_id": "m0",
+      "quote": "差价补了，更正申请也过了，后台显示六级"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A12",
+     "subject": "PUBLIC",
+     "relation": "更正流程要求",
+     "value": "更正需上传凭证并补差价，十五号前办结",
+     "valid_time": "至2026-11-15",
+     "status": "fulfilled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T04",
+      "message_id": "m0",
+      "quote": "可以提交级别更正申请"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收束这个风波，语气轻松，给一句夸奖就够。",
+   "unknowns": [],
+   "protected_expressions": [
+    "后台显示六级"
+   ],
+   "forbidden_factual_claims": [
+    "不得提前断言考试成绩"
+   ],
+   "case_id": "E133_T05"
+  },
+  "E133_T06": {
+   "current_action": "以过来人分享对付左手抢拍的指法练习方法，语气平辈、可操作",
+   "acceptable_actions": [
+    "给一个具体练法：左手单独慢练节拍器，再双手合",
+    "分享自己当年克服抢拍的经历加一个练习建议",
+    "建议她把卡壳小节拆出来慢速循环，并安慰这曲子本身就难"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A13",
+     "subject": "HER",
+     "relation": "练琴难点",
+     "value": "《月光》第三章左手总抢拍、频繁卡壳",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T06",
+      "message_id": "m0",
+      "quote": "练《月光》第三章老卡壳，左手总抢拍"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A14",
+     "subject": "ME",
+     "relation": "演奏资历",
+     "value": "考过业余八级，有指法练习经验可分享",
+     "valid_time": "长期有效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "去年考过业余八级"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E133_A15",
+     "subject": "HER",
+     "relation": "备考曲目",
+     "value": "练习曲目为《月光》第三乐章",
+     "valid_time": "考季持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "练的曲目是《月光》第三乐章"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "方法要具体可执行，别端着教学腔，像琴友聊天。",
+   "unknowns": [],
+   "protected_expressions": [
+    "左手总抢拍"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构某名师教学法出处"
+   ],
+   "case_id": "E133_T06"
+  },
+  "E133_T07": {
+   "current_action": "回应曲目单换版的消息：承认自己没看到新版，建议她直接找琴行老师确认自己的曲目是否保留",
+   "acceptable_actions": [
+    "承认没看过新版，建议她找老师核实曲目是否保留",
+    "帮她梳理核实渠道（琴行老师、考级办通知），让她别自己吓自己",
+    "安抚后请她拿到新版曲目单发来一起对一遍"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A16",
+     "subject": "PUBLIC",
+     "relation": "考级曲目单版本",
+     "value": "考级曲目单更换新版，原曲目是否保留未确认",
+     "valid_time": "2026-11-15消息时点",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T07",
+      "message_id": "m0",
+      "quote": "考级曲目单换了新版，我练的那首还在不在里面啊"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A17",
+     "subject": "HER",
+     "relation": "备考曲目",
+     "value": "练习曲目为《月光》第三乐章",
+     "valid_time": "考季持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "练的曲目是《月光》第三乐章"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "诚实说不知道，把不确定标出来，引导她找信息源核实，不装内行。",
+   "unknowns": [
+    "新版曲目单具体内容双方均未看到"
+   ],
+   "protected_expressions": [
+    "我有点慌"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言新版曲目单一定包含或不含该曲目"
+   ],
+   "case_id": "E133_T07"
+  },
+  "E133_T08": {
+   "current_action": "接受她的曲目虚惊解除，答应周六去琴行听她弹一遍并给反馈",
+   "acceptable_actions": [
+    "答应周六去听，确认时间段并说会认真提意见",
+    "答应赴约，顺便带一句上回指法建议的效果验收",
+    "答应去，并让她把想被挑毛病的小节先列出来"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A18",
+     "subject": "PUBLIC",
+     "relation": "曲目单虚惊结果",
+     "value": "她练习的曲目在新版曲目单中保留，虚惊解除",
+     "valid_time": "2026-11-16起",
+     "status": "confirmed",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T08",
+      "message_id": "m0",
+      "quote": "我练的这首还在，白慌一场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A19",
+     "subject": "PUBLIC",
+     "relation": "曲目单换版消息",
+     "value": "琴行老师透露考级曲目单换新版",
+     "valid_time": "2026-11-15",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T07",
+      "message_id": "m0",
+      "quote": "考级曲目单换了新版"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E133_A20",
+     "subject": "SHARED",
+     "relation": "周六陪练约定",
+     "value": "周六下午在琴行练习房听她弹一遍并挑毛病",
+     "valid_time": "2026-11-21下午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T08",
+      "message_id": "m0",
+      "quote": "周六下午琴行有练习房，你要不要过来听我弹一遍"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "答应得干脆，别把陪练说成辅导，保持琴友平等感。",
+   "unknowns": [
+    "周六具体几点未定"
+   ],
+   "protected_expressions": [
+    "白慌一场"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构周六练习房的收费细节"
+   ],
+   "case_id": "E133_T08"
+  },
+  "E133_T09": {
+   "current_action": "深夜低压力回应：一句轻的安抚即可，不追问、不说教，允许简短或不回",
+   "acceptable_actions": [
+    "一句轻安抚加晚安，不展开",
+    "简短共情忘谱焦虑很常见，然后道晚安",
+    "只回一个轻松的表情级安慰，让她安心睡"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A21",
+     "subject": "HER",
+     "relation": "考前焦虑表现",
+     "value": "睡前碎碎念，梦见弹到一半忘谱",
+     "valid_time": "2026-11-18晚",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T09",
+      "message_id": "m0",
+      "quote": "总梦见弹到一半忘谱"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A22",
+     "subject": "HER",
+     "relation": "考前心态基线",
+     "value": "考前容易紧张怕忘谱",
+     "valid_time": "考季持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "考前容易紧张怕忘谱"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她明说碎碎念，最忌讲道理；短、轻、送她睡觉。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我就是睡前碎碎念"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构助眠方法疗效"
+   ],
+   "case_id": "E133_T09"
+  },
+  "E133_T10": {
+   "current_action": "考前的清晨给一句短促有力的吉利话，不拖长、不添新信息",
+   "acceptable_actions": [
+    "一句干脆的吉利话加稳住节奏的提醒",
+    "鼓励她按平时练的来，弹错也不停",
+    "轻松化解手汗：手汗说明你认真，去弹就完事"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A23",
+     "subject": "HER",
+     "relation": "考试日程",
+     "value": "2026-11-20下午进考场参加六级考试",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T10",
+      "message_id": "m0",
+      "quote": "今天下午进考场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A24",
+     "subject": "HER",
+     "relation": "考前焦虑表现",
+     "value": "考前一晚总梦见忘谱、临场手心出汗",
+     "valid_time": "2026-11-18至11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T09",
+      "message_id": "m0",
+      "quote": "睡前有点焦虑"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "早晨临场场景，回复要短，情绪价值大于信息量。",
+   "unknowns": [],
+   "protected_expressions": [
+    "手心全是汗"
+   ],
+   "forbidden_factual_claims": [
+    "不得承诺考试结果"
+   ],
+   "case_id": "E133_T10"
+  },
+  "E133_T11": {
+   "current_action": "接住考后的释放情绪，肯定她稳住曲子的部分，把小失误说轻",
+   "acceptable_actions": [
+    "祝贺考完，肯定曲子稳，说小失误不影响大局",
+    "呼应她考前的焦虑，夸她比想象中扛得住",
+    "轻松接梗老师点头，让她先好好吃一顿犒劳自己"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A25",
+     "subject": "HER",
+     "relation": "临场表现",
+     "value": "音阶小失误，曲子比平时弹得稳，老师点头",
+     "valid_time": "2026-11-20下午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T11",
+      "message_id": "m0",
+      "quote": "音阶部分有点小失误，曲子弹得比平时稳"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A26",
+     "subject": "HER",
+     "relation": "考前心态基线",
+     "value": "考前容易紧张怕忘谱",
+     "valid_time": "考季持续",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "考前容易紧张怕忘谱"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "分享喜悦的时刻，重点接情绪，别急着分析失误成因。",
+   "unknowns": [
+    "成绩结果未知"
+   ],
+   "protected_expressions": [
+    "感觉能过"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言必定通过或不过"
+   ],
+   "case_id": "E133_T11"
+  },
+  "E133_T12": {
+   "current_action": "接受奶茶谢礼的约定，呼应这一个月从报名风波到考试的完整过程，自然收尾留出成绩公布日的钩子",
+   "acceptable_actions": [
+    "答应等成绩那天喝奶茶，顺带回扣她手滑风波一笑而过",
+    "接受谢意并说成绩出来第一时间报喜",
+    "答应请客并开玩笑说这杯奶茶她请得值，毕竟一起闯过四级惊魂"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E133_A27",
+     "subject": "PUBLIC",
+     "relation": "成绩公布安排",
+     "value": "考级成绩下个月公布，出分日约奶茶",
+     "valid_time": "2026-12月",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T12",
+      "message_id": "m0",
+      "quote": "成绩要等下个月才出"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E133_A28",
+     "subject": "HER",
+     "relation": "报考目标（闭环）",
+     "value": "从报名六级到考完，目标已执行完毕待出分",
+     "valid_time": "2026-11-03至11-20",
+     "status": "fulfilled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E133_T01",
+      "message_id": "m0",
+      "quote": "我打算冲一下六级"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾要轻，谢礼接得自然，可拿报错四级的事开个无伤大雅的玩笑。",
+   "unknowns": [
+    "成绩与是否通过未知"
+   ],
+   "protected_expressions": [
+    "不管过没过"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构成绩公布具体日期"
+   ],
+   "case_id": "E133_T12"
+  }
+ }
+}

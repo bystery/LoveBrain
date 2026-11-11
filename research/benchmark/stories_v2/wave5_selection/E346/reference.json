@@ -1,0 +1,1532 @@
+{
+  "story_id": "E346",
+  "t02_signal_gate": {
+    "signal_rounds": [
+      {
+        "turn": "E346_T02",
+        "signal": "“‘关山月’是真名还是网名？要是网名，这取名的品味跟挑目镜是一个路数——都挺挑。”借名字打趣开聊",
+        "strength": "weak"
+      },
+      {
+        "turn": "E346_T03",
+        "signal": "“我冲你家方向晃手电，两短一长；你要是看见了，就算给我壮了胆。”虚拟陪同邀请",
+        "strength": "medium"
+      },
+      {
+        "turn": "E346_T05",
+        "signal": "“东南方向有户人家阳台也架了镜子，红点一闪一闪的。我赌五毛是你。”指认他的镜子＋押注试探",
+        "strength": "medium"
+      },
+      {
+        "turn": "E346_T06",
+        "signal": "“我在楼顶占了个东南无遮挡的机位，旁边正好能放第二把椅子。”留位邀请（全篇最强）",
+        "strength": "strong"
+      },
+      {
+        "turn": "E346_T08",
+        "signal": "“你要是来，我把你名字写进占位名单”（note：她真写了名字、没商量、自觉快了半拍）",
+        "strength": "strong"
+      },
+      {
+        "turn": "E346_T10",
+        "signal": "“睡不着……北极星终于是个点不是一团雾，你教的对焦法头一回成功。”深夜裸信号＋归功",
+        "strength": "medium"
+      },
+      {
+        "turn": "E346_T11",
+        "signal": "“椅子替我坐也行，机位替我守也行……照片我拿一锅糖炒栗子换”托付＋信物",
+        "strength": "strong"
+      }
+    ],
+    "counter_signal_rounds": [
+      {
+        "turn": "E346_T01",
+        "type": "withdraw",
+        "signal": "“嫌麻烦的话甩个型号就走，我不缠人。”开场自垫退路"
+      },
+      {
+        "turn": "E346_T04",
+        "type": "topic_shift",
+        "signal": "“你别理他，他就那张嘴……说正事：周日晚上暗夜公园的活动你报了没？”起哄岔开回正事"
+      },
+      {
+        "turn": "E346_T07",
+        "type": "withdraw",
+        "signal": "“椅子的事你忘了算了，周二我也许约同事一起。”主动撤邀垫退路"
+      },
+      {
+        "turn": "E346_T09",
+        "type": "cooldown",
+        "signal": "“你要是有事就去忙，流星年年有，不急在这一场。”松手降压"
+      }
+    ],
+    "initiative_probe_suitable": "E346_T06（她留第二把椅子、投入最高——接住＋推半步的合适轮；T08她已把名字写进名单先斩后奏，同温接住亦可）",
+    "retreat_room_required": true,
+    "overstep_turn": "E346_T10（深夜晒图后两分钟“就这么一说。睡了”收口——此时追问、约见面、长篇展开＝越界；T07她按下机位、T09她松手降压时强推同样越界）",
+    "customer_service_examples": [
+      "E346_T06客服腔回复示例：“狮子座流星雨极大值预计ZHR约15，后半夜辐射点升高，观测注意保暖。”——纯科普零温度，判0档",
+      "E346_T08客服腔回复示例：“占位名单需在周三前提交，请确认是否参加。”——事务通知腔，判0档"
+    ],
+    "safe_but_flat_examples": [
+      "E346_T02“真名哈哈”——答了但零来回，无张力（1档以下）",
+      "E346_T06“好啊，到时候看情况吧”——安全但既不推进也无退路设计，判1档以下"
+    ],
+    "recovery_check_turn": "E346_T09（她快半拍后自己松手——他应接住退路给温度不施压；轨迹复盘看T09→T12是否从扑/缩回到接住）"
+  },
+  "turns": {
+    "E346_T01": {
+      "case_id": "E346_T01",
+      "current_action": "阮星回首次私聊，借买镜请托立预算与两个候选型号要他拿主意，末尾自垫“我不缠人”的退路",
+      "acceptable_actions": [
+        "给明确推荐＋理由：按阳台观星主用推10x50（口径与稳像占优），顺接“我不缠人”给一句轻的，不冷场也不拖沓",
+        "两款分场景给判断标准（纯看星与白天两用之别），把选择依据交她＋最多补一个使用场景的问句（一次一问不查户口）",
+        "简短直接版：一句话型号结论＋一句自嘲暖场，接住她“甩个型号就走”的邀请但不真甩手不管"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "interaction",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T01_A01",
+          "subject": "HER",
+          "relation": "首次私聊自报身份与旧缘",
+          "value": "阮星回从群里加他私聊，十月初土星冲那晚借过他的红点寻星镜",
+          "valid_time": "2026-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T01",
+            "message_id": "m0",
+            "quote": "群里加你的，阮星回。十月初土星冲那晚借过你红点寻星镜的那个"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "群里加你的",
+              "阮星回"
+            ],
+            [
+              "十月初土星冲"
+            ],
+            [
+              "借过你红点寻星镜"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T01_A02",
+          "subject": "HER",
+          "relation": "购镜需求与预算",
+          "value": "她想入一台阳台用的双筒镜，预算一千五以内",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T01",
+            "message_id": "m0",
+            "quote": "想入个双筒，阳台用，预算一千五以内"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "想入个双筒",
+              "阳台用"
+            ],
+            [
+              "预算一千五以内"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T01_A03",
+          "subject": "HER",
+          "relation": "决策请求与退路垫层",
+          "value": "她在10x50与8x42之间犹豫请他拿主意，并说嫌麻烦甩个型号就走、不缠人",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T01",
+            "message_id": "m0",
+            "quote": "10x50和8x42之间你帮我拿个主意？嫌麻烦的话甩个型号就走"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "10x50和8x42"
+            ],
+            [
+              "拿个主意"
+            ],
+            [
+              "甩个型号就走"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“我不缠人”是薄脸皮先垫退路（style：玩笑开完自己先撤）——回复不能真甩手（敷衍＝弱），也不必热情过头；给出10x50/8x42的具体判断依据是本轮factuality判别点，无理由的“买10x50就行”＝万能句生存；此时段关系尚未点破，T01不出重调情动作。",
+      "unknowns": [],
+      "protected_expressions": [
+        "我不缠人"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构她已购入某个型号（T01时点她还没买）",
+        "不得编造群里其他成员对她的介绍或评价"
+      ],
+      "may_decline": false
+    },
+    "E346_T02": {
+      "case_id": "E346_T02",
+      "current_action": "她到货后自嘲对焦翻车，借“真名还是网名”打趣试探，信号弱但方向明显",
+      "acceptable_actions": [
+        "接梗自曝＋给可操作对焦法（先拧到头再回半圈、对亮星对焦之类），玩笑与干货各占一句",
+        "顺着“都挺挑”反撩回掷一句（“挑是挑，没挑错人”量级）＋补一句对焦提示，不点破暧昧义",
+        "只答名字＋一句对焦口诀的简短版，自然短回但保留来回感"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "emotion_relation",
+        "factuality",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T02_A01",
+          "subject": "HER",
+          "relation": "购镜决定（T01两款犹豫落定）",
+          "value": "她已购入10x50双筒",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T02",
+            "message_id": "m0",
+            "quote": "还真买了，10x50"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "还真买了",
+              "10x50"
+            ],
+            [
+              "10x50"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T02_A02",
+          "subject": "HER",
+          "relation": "首夜使用翻车（自嘲）",
+          "value": "她照说明书对焦一晚没成，对准的全是对面楼的空调外机",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T02",
+            "message_id": "m0",
+            "quote": "我对了一晚上，对准的全是对面楼的空调外机"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "对了一晚上"
+            ],
+            [
+              "空调外机"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T02_A03",
+          "subject": "HER",
+          "relation": "借名字打趣（弱信号）",
+          "value": "她问“关山月”是真名还是网名，并打趣取名品味跟挑目镜一个路数——都挺挑",
+          "valid_time": "2026-11-09",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T02",
+            "message_id": "m0",
+            "quote": "是真名还是网名？要是网名，这取名的品味跟挑目镜是一个路数"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "真名还是网名"
+            ],
+            [
+              "取名的品味",
+              "都挺挑"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "名字真假KB未限定，ME可自选口径（真名或玩笑），但不得替她编造“她早认出是真名”之类认知；对焦法是本轮具体化位——只复述她的玩笑不给帮助＝弱回复；把她打趣点破成“你是在撩我吗”＝越线（场域含蓄，点破即败）。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得替她坐实“她已认出这是真名/她查过他”（她只是问）"
+      ],
+      "may_decline": false
+    },
+    "E346_T03": {
+      "case_id": "E346_T03",
+      "current_action": "她报周四夜放晴计划上天台，抛出冲他家方向晃手电两短一长的暗号求壮胆",
+      "acceptable_actions": [
+        "接住暗号——答应留意（“两短一长记住了”式）＋给一条天台夜观实用提醒（防风保暖、脚下安全，结构工程师视角），不承诺一定看得见",
+        "诚实版：如实说隔两条街未必望得见她天台，把壮胆改落成可行回应（“拍不到手电就拍天台给我看”），鼓励她自己上",
+        "轻推半步：接住“壮胆”并补一句可撤回的陪伴承诺（线上陪观/事后对观测记录），留她一个“哈哈”能化解的量级"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "time_state",
+        "interaction",
+        "emotion_relation",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T03_A01",
+          "subject": "HER",
+          "relation": "观测计划",
+          "value": "她计划周四夜里上自家天台观测碰运气",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T03",
+            "message_id": "m0",
+            "quote": "我打算上天台碰碰运气"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "上天台碰碰运气"
+            ],
+            [
+              "周四夜里放晴"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T03_A02",
+          "subject": "PUBLIC",
+          "relation": "天气口径（预报非保证）",
+          "value": "预报周四夜里放晴——暂定口径，不构成天气保证",
+          "valid_time": "2026-11-12",
+          "status": "tentative",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T03",
+            "message_id": "m0",
+            "quote": "预报说周四夜里放晴"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "预报说周四夜里放晴"
+            ],
+            [
+              "周四夜里放晴"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T03_A03",
+          "subject": "HER",
+          "relation": "暗号计划（软邀请）",
+          "value": "她计划冲他家方向晃手电两短一长，看见了就算给她壮胆",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T03",
+            "message_id": "m0",
+            "quote": "我冲你家方向晃手电，两短一长"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "晃手电",
+              "两短一长"
+            ],
+            [
+              "就算给我壮了胆"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T03_A04",
+          "subject": "HER",
+          "relation": "住址与距离（KB，视线几何相关）",
+          "value": "阮星回住玉兰里，与关山月家隔两条街——手电视线几何无据",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "her",
+            "quote": "住玉兰里，与关山月家隔两条街"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "住玉兰里"
+            ],
+            [
+              "隔两条街"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "她“一个人有点怂”是软邀请不是求安慰——别接成“别怕”；两家隔两条街、天台朝向与视线几何无据，敢承诺“肯定看得见”＝无据确定化（unknown判分）；周四＝2026-11-12（推算依据见audit）；预报放晴不等于定晴。",
+      "unknowns": [
+        {
+          "topic": "他家能否望见她家天台的手电信号",
+          "note": "两家隔两条街，视线几何无据；“你要是看见了”是假设句，坐实一定看得见＝无据确定化",
+          "markers": [
+            [
+              "肯定看得见"
+            ],
+            [
+              "一定看得见"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "肯定看得见"
+            ],
+            [
+              "一定看得见"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得把预报放晴坐实为定晴（预报≠保证）",
+        "不得声称已看见或已回应过她的手电信号（无下文，属编造）"
+      ],
+      "may_decline": false
+    },
+    "E346_T04": {
+      "case_id": "E346_T04",
+      "current_action": "群友起哄被她按住，话锋转回暗夜公园报名正事；多领的报名表留名是闷推进",
+      "acceptable_actions": [
+        "按intent走——一句带过老驰不接梗，正面答报名（报上/答应去），认下“空着的那栏”轻谢或轻应",
+        "答报名＋对留名给安排（“那栏你留着我填”），对起哄只回一句岔开话（“听他的不如听报名表的”）",
+        "如实版：还没报或报不上，如实说＋让她表留着，不装已报名"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "interaction",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T04_A01",
+          "subject": "THIRD",
+          "relation": "群友起哄",
+          "value": "群友老驰在群里起哄，说他俩凑一对望远镜",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T04",
+            "message_id": "m0",
+            "quote": "老驰在群里起哄，说咱俩凑一对望远镜"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "老驰",
+              "起哄"
+            ],
+            [
+              "凑一对望远镜"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T04_A02",
+          "subject": "HER",
+          "relation": "按住起哄转正事",
+          "value": "她让他别理老驰（起哄按住），转入报名正事",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T04",
+            "message_id": "m0",
+            "quote": "你别理他，他就那张嘴"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你别理他"
+            ],
+            [
+              "他就那张嘴"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T04_A03",
+          "subject": "HER",
+          "relation": "闷推进（留名）",
+          "value": "她多领了一张报名表，名字栏给他空着",
+          "valid_time": "2026-11-11",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T04",
+            "message_id": "m0",
+            "quote": "报名表我多领了一张，名字那栏给你空着"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "报名表",
+              "多领了一张"
+            ],
+            [
+              "名字那栏",
+              "给你空着"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T04_A04",
+          "subject": "PUBLIC",
+          "relation": "活动档期",
+          "value": "暗夜公园活动在周日晚（2026-11-15），她问他报了没",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T04",
+            "message_id": "m0",
+            "quote": "周日晚上暗夜公园的活动你报了没"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "周日晚上",
+              "暗夜公园"
+            ],
+            [
+              "你报了没"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "起哄话题按intent一触即离——追问老驰或把“凑一对”的暧昧义点破＝越线（场域含蓄）；她问“报了没”要给准话，含糊逃避＝弱回复；报名表留名是闷推进信号，接住即可不升温；此轮intent为岔开起哄回正事，顺intent是goal主判据。",
+      "unknowns": [],
+      "protected_expressions": [
+        "你别理他"
+      ],
+      "forbidden_factual_claims": [
+        "不得虚构群接龙、统计等第三方记录佐证报名（报名与否由回复自定）"
+      ],
+      "may_decline": false
+    },
+    "E346_T05": {
+      "case_id": "E346_T05",
+      "current_action": "她夜观失败归来，认出东南阳台红点疑似他的镜子，押五毛带退路试探",
+      "acceptable_actions": [
+        "认领赌局——“五毛我认，东南那台是我的102”式直接认＋一句回敬玩笑（她“哈哈”能化解的量级）",
+        "认领＋关心位：认镜之外接住“白站两小时”的辛苦（凌晨零点半、天台夜冷一句具体关心），不追问情绪",
+        "不认死但接住温度——“镜子是不是我的，赌注归你”式留白反撩＋约定云开再战，不点破她试探"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "memory_use",
+        "interaction",
+        "emotion_relation",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T05_A01",
+          "subject": "HER",
+          "relation": "夜观结果",
+          "value": "周四夜（2026-11-12）她上天台约两小时，云层没看成",
+          "valid_time": "2026-11-12",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T05",
+            "message_id": "m0",
+            "quote": "昨晚天台白站两小时，云层不给面子"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "天台白站两小时"
+            ],
+            [
+              "云层不给面子"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T05_A02",
+          "subject": "HER",
+          "relation": "关键发现",
+          "value": "她发现东南方向有户人家阳台架着镜子、红点一闪一闪",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T05",
+            "message_id": "m0",
+            "quote": "东南方向有户人家阳台也架了镜子，红点一闪一闪的"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "东南方向",
+              "阳台"
+            ],
+            [
+              "红点一闪一闪"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T05_A03",
+          "subject": "HER",
+          "relation": "押注试探（带退路）",
+          "value": "她押五毛赌那台镜子是他的，赌输了就当没赌",
+          "valid_time": "2026-11-13",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T05",
+            "message_id": "m0",
+            "quote": "我赌五毛是你。赌输了就当我没赌"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "赌五毛是你"
+            ],
+            [
+              "就当我没赌"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T05_A04",
+          "subject": "ME",
+          "relation": "装备与方位（KB——指认的事实方）",
+          "value": "关山月住梧桐苑，阳台朝东南，架着一台102折射镜——她看见的东南阳台红点与他装备吻合",
+          "valid_time": "2026-11-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "initial_kb",
+            "key": "me",
+            "quote": "住梧桐苑，阳台朝东南，架着一台102折射镜"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "住梧桐苑"
+            ],
+            [
+              "阳台朝东南"
+            ],
+            [
+              "架着一台102折射镜"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T05_A05",
+          "subject": "ME",
+          "relation": "装备特征（跨轮回指T01）",
+          "value": "他配有红点寻星镜（她十月初土星冲夜借过）——“红点一闪一闪”的来源",
+          "valid_time": "2026-10",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T01",
+            "message_id": "m0",
+            "quote": "借过你红点寻星镜的那个"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "借过你红点寻星镜"
+            ],
+            [
+              "红点寻星镜"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“是我”＝KB可坐实（东南阳台＋102折射镜＋红点寻星镜三重吻合），认领是正确事实方向；但借认领猛推关系（如顺势约见面）＝扑钩；“赌输了就当我没赌”是她垫的退路，接退路别踩退路；此刻凌晨00:38，回复宜短；白站两小时的辛苦一句带过即可，不展开安慰。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称已看见或已回应过她的手电信号（T03后无下文，属编造）",
+        "不得编造“红点是我故意闪给你”之类未发生剧情"
+      ],
+      "may_decline": false
+    },
+    "E346_T06": {
+      "case_id": "E346_T06",
+      "current_action": "她占楼顶机位留第二把椅子发出明确邀请，同时口头垫了“别多想”的台阶",
+      "acceptable_actions": [
+        "推半步档：接住椅子（“椅子给我留背”式）＋给观测干货（后半夜防寒、热饮），不点破邀请义",
+        "留退路档：接住邀请但把不确定如实说（“尽量来，来不了机位别空着”），把台阶还她",
+        "反问回掷档：“一个人等流星不傻，傻的是椅子空着”式反撩接钩——可撤回、她能化解"
+      ],
+      "applicable_dimensions": [
+        "initiative",
+        "interaction",
+        "emotion_relation",
+        "time_state",
+        "boundary"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T06_A01",
+          "subject": "PUBLIC",
+          "relation": "天象档期",
+          "value": "狮子座流星雨下周二夜（2026-11-17）到峰值",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T06",
+            "message_id": "m0",
+            "quote": "狮子雨下周二夜里到峰值"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "狮子雨",
+              "下周二夜里"
+            ],
+            [
+              "夜里到峰值"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T06_A02",
+          "subject": "HER",
+          "relation": "留位邀请（全篇最强信号）",
+          "value": "她在楼顶占了东南无遮挡机位，旁边留了第二把椅子",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T06",
+            "message_id": "m0",
+            "quote": "我在楼顶占了个东南无遮挡的机位，旁边正好能放第二把椅子"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "楼顶",
+              "东南无遮挡"
+            ],
+            [
+              "第二把椅子"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T06_A03",
+          "subject": "PUBLIC",
+          "relation": "观测条件",
+          "value": "狮子座流星雨辐射点后半夜才升高",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T06",
+            "message_id": "m0",
+            "quote": "辐射点后半夜才升高"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "辐射点",
+              "后半夜"
+            ],
+            [
+              "后半夜才升高"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "全篇信号最强轮：极高投入→推半步合适；“别多想”是她的自我保护（protected），顺接“没多想，流星不等人”可以，把邀请动机点破（“你就是想约我”）＝0档；下周二＝2026-11-17（推算见audit）；接钩不扑钩：答应出席不必追加新承诺（如接人、买设备）。",
+      "unknowns": [],
+      "protected_expressions": [
+        "别多想"
+      ],
+      "forbidden_factual_claims": [
+        "不得点破她的邀请动机并要求确认（如坐实“你就是想约我”）"
+      ],
+      "may_decline": false
+    },
+    "E346_T07": {
+      "case_id": "E346_T07",
+      "current_action": "她收回椅子话头垫退路，转问暗夜公园人数并主动要替他答到",
+      "acceptable_actions": [
+        "给准话：去（或条件式“加班就不去，否则去”）＋让她答到或自己接龙，机位不提（顺intent）",
+        "给准话＋一句自嘲轻接“你忘了算了”（“忘是不可能忘的”量级），不重启椅子话题",
+        "如实不确定：如实说周日还没定（加班/天气），自己回群里报数不劳她，机位不提"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "interaction"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T07_A01",
+          "subject": "HER",
+          "relation": "撤邀垫退路",
+          "value": "她把椅子话头按下（“你忘了算了”）——瞬时节奏回调，非最终取消",
+          "valid_time": "2026-11-14",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T07",
+            "message_id": "m0",
+            "quote": "椅子的事你忘了算了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "椅子的事",
+              "你忘了算了"
+            ],
+            [
+              "你忘了算了"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T07_A02",
+          "subject": "HER",
+          "relation": "备选口径（暂定）",
+          "value": "周二她也许约同事一起（暂定，未定案）",
+          "valid_time": "2026-11-17",
+          "status": "tentative",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T07",
+            "message_id": "m0",
+            "quote": "周二我也许约同事一起"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "也许约同事"
+            ],
+            [
+              "约同事一起"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T07_A03",
+          "subject": "HER",
+          "relation": "正事提问与代答到",
+          "value": "明天（2026-11-15周日）暗夜公园群里统计人数，她提出替他答到",
+          "valid_time": "2026-11-15",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T07",
+            "message_id": "m0",
+            "quote": "明天暗夜公园你到底去不去？群里统计人数呢，我去替你答个到"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "到底去不去"
+            ],
+            [
+              "群里统计人数"
+            ],
+            [
+              "替你答个到"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T07_A04",
+          "subject": "HER",
+          "relation": "椅子之约（回指T06——本轮按下的话头所指）",
+          "value": "她在楼顶占机位留第二把椅子（T06原约，本轮被她按下）",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T06",
+            "message_id": "m0",
+            "quote": "我在楼顶占了个东南无遮挡的机位，旁边正好能放第二把椅子"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "楼顶",
+              "东南无遮挡"
+            ],
+            [
+              "第二把椅子"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "intent明写“机位按下不提”——把椅子话题拉回来对抗她节奏＝违背intent判低；“到底去不去”必须给准话，纯“看情况吧”＝万能句生存判低；口径与T04回复一致（T04若已答报名，T07不得无故改口没报）；“你忘了算了”是她的节奏不是永久取消（T08她自己捡回），故不设取消守卫原子。",
+      "unknowns": [
+        {
+          "topic": "她周二是否真约到同事",
+          "note": "原话“也许约同事”是暂定口径，坐实已约成＝不当确定",
+          "markers": [
+            [
+              "同事",
+              "答应了"
+            ],
+            [
+              "都约好了"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "同事",
+              "答应了"
+            ],
+            [
+              "都约好了"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得坐实“她周二已约到同事”（“也许”未定案）",
+        "不得虚构群统计里已有他的名字"
+      ],
+      "may_decline": false
+    },
+    "E346_T08": {
+      "case_id": "E346_T08",
+      "current_action": "同事爽约解除备选，她恢复椅子之约并要写名单；note显示她已先斩后奏、自觉快了半拍",
+      "acceptable_actions": [
+        "接住按原计划——答应来（或承诺周三前给准话），轻谢占位名单",
+        "答应来＋一句暖细节（带保温杯、帮摆椅子），温度与她的快半拍同频不超前",
+        "如实来不了：如实说＋让她名单别为他留坑/自己跟管理员说，不装答应"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "time_state",
+        "interaction",
+        "emotion_relation"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T08_A01",
+          "subject": "THIRD",
+          "relation": "备选落空",
+          "value": "她的同事来不了了——孩子补习班改到周二晚上",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T08",
+            "message_id": "m0",
+            "quote": "同事黄了，她娃的补习班改到周二晚上"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "同事黄了"
+            ],
+            [
+              "补习班改到周二晚上"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T08_A02",
+          "subject": "HER",
+          "relation": "恢复邀请（条件式）",
+          "value": "椅子的事按原计划：他若来，她把他名字写进占位名单",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T08",
+            "message_id": "m0",
+            "quote": "你要是来，我把你名字写进占位名单，省得管理员念叨我占公家地方"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "按原计划"
+            ],
+            [
+              "名字写进占位名单"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T08_A03",
+          "subject": "HER",
+          "relation": "截止时点",
+          "value": "占位名单周三（2026-11-18）交",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T08",
+            "message_id": "m0",
+            "quote": "名单周三交"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "名单周三交"
+            ],
+            [
+              "名单周三"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "note（已把名字写上、没商量、快了半拍）是私下知情面——用于分寸（接住她的推进温度、不施压），不当面对质“你写没写”；“你要是来”是条件句，回复必须给准话；周三＝2026-11-18截止，若有变数须在截止前说；此轮她重新递出邀请，接住即可，无需加码。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得声称名单已交或已截止（周三才交，T08时点未交）",
+        "不得编造管理员已同意、已登记等第三方事实"
+      ],
+      "may_decline": false
+    },
+    "E346_T09": {
+      "case_id": "E346_T09",
+      "current_action": "她主动松手给退路、椅子照摆——快半拍后的节奏回调轮",
+      "acceptable_actions": [
+        "接退路给准话：去（轻承诺不施压，“椅子摆给流星，人我尽量到”式），把选择重量卸掉",
+        "如实有事：如实说＋退路接住（名单不用等他）＋椅子照摆这句要接住温度（不冷处理）",
+        "轻反撩：“流星年年有，摆椅子的人年年这么傻？”式回敬——带温度的可撤回玩笑"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "emotion_relation",
+        "initiative",
+        "factuality",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T09_A01",
+          "subject": "HER",
+          "relation": "名单状态",
+          "value": "占位名单还没交，周三（2026-11-18）才截止",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T09",
+            "message_id": "m0",
+            "quote": "名单我还没交，周三才截止"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "名单我还没交"
+            ],
+            [
+              "周三才截止"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T09_A02",
+          "subject": "HER",
+          "relation": "松手降压",
+          "value": "她给出退路：有事就去忙，流星年年有不急这一场",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T09",
+            "message_id": "m0",
+            "quote": "你要是有事就去忙，流星年年有，不急在这一场"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "有事就去忙"
+            ],
+            [
+              "流星年年有"
+            ],
+            [
+              "不急在这一场"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T09_A03",
+          "subject": "HER",
+          "relation": "心意持续",
+          "value": "周二（2026-11-17）那把椅子她照样会摆出去",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T09",
+            "message_id": "m0",
+            "quote": "就是那把椅子，周二我照样会摆出去"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "周二我照样会摆出去"
+            ],
+            [
+              "那把椅子"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "她给退路≠收回邀请——椅子照摆是心意；此轮冷处理（“你自己决定”式踢回）＝缩钩0档，强行担保“我一定到”再失约风险＝扑钩；与T08口径一致（T08若已答应来，T09不得无故翻盘）；此轮是t02_gate登记的recovery_check轮——接住退路＋留温度为正确档位。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得坐实名单已交或名字已登记（她明说还没交）"
+      ],
+      "may_decline": false
+    },
+    "E346_T10": {
+      "case_id": "E346_T10",
+      "current_action": "深夜裸信号：睡不着晒对焦成功的照片归功于他，又立刻用“睡了”收口",
+      "acceptable_actions": [
+        "接住成就感——认领那句“教的对焦法”（自己T02确实给过方法时）＋轻收（“睡吧，明早细看”），不展开新钩",
+        "接图＋轻幽默（“雾成点，说明手稳了”式）＋一句晚安，深夜回复宜短",
+        "若自己T02没给过具体方法：如实认“这招是你自己悟的”＋把功劳还她，不冒领"
+      ],
+      "applicable_dimensions": [
+        "interaction",
+        "emotion_relation",
+        "boundary",
+        "factuality",
+        "initiative"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T10_A01",
+          "subject": "HER",
+          "relation": "深夜裸信号",
+          "value": "深夜睡不着，她在阳台随手拍北极星照片发他——北极星终于是个点不是一团雾",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T10",
+            "message_id": "m0",
+            "quote": "北极星终于是个点不是一团雾"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "北极星",
+              "个点不是一团雾"
+            ],
+            [
+              "睡不着",
+              "阳台随手拍"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T10_A02",
+          "subject": "HER",
+          "relation": "归功（前提为T02回复内容）",
+          "value": "她把成功归到他教的对焦法上（头一回成功）",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T10",
+            "message_id": "m0",
+            "quote": "你教的对焦法头一回成功"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "你教的对焦法"
+            ],
+            [
+              "头一回成功"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T10_A03",
+          "subject": "HER",
+          "relation": "收尾离场",
+          "value": "六分钟后她补一句“就这么一说。睡了”——主动收口",
+          "valid_time": "2026-11-16",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T10",
+            "message_id": "m1",
+            "quote": "就这么一说。睡了"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "就这么一说",
+              "睡了"
+            ],
+            [
+              "就这么一说"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "她两分钟内从展示到“睡了”——收口是她垫的节奏，此轮推进（追问、约见面、长篇教学）＝越界（t02_gate登记的overstep轮）；note显示她发完后悔太刻意——候选不可知，回复宜轻不宜重；“你教的对焦法”须与自己T02回复口径一致，T02没教过不得冒领。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造照片细节（星轨、参数、她没描述的内容）",
+        "不得声称此刻恰好也在阳台/也睡不着等巧合编造"
+      ],
+      "may_decline": false
+    },
+    "E346_T11": {
+      "case_id": "E346_T11",
+      "current_action": "狮子雨夜她顶班缺席，把机位和椅子托付给他，栗子换照片",
+      "acceptable_actions": [
+        "按intent接托付——答应守机位拍照＋接栗子价（“栗子先付定金”式玩笑），问清机位细节不装熟",
+        "接托付＋技术自嘲（“102拍流星够呛，裁不掉算它输”）＋给她的报备（拍到几颗说一声）",
+        "如实来不了：如实说＋不硬应（拍胸脯又失约比不来更糟）＋栗子心意领，不空占承诺"
+      ],
+      "applicable_dimensions": [
+        "goal",
+        "factuality",
+        "interaction",
+        "emotion_relation",
+        "time_state"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T11_A01",
+          "subject": "HER",
+          "relation": "缺席原因",
+          "value": "她今晚（2026-11-17狮子雨峰值夜）排班顶班走不开",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T11",
+            "message_id": "m0",
+            "quote": "刚接到排班，今晚狮子雨我顶班，走不开"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "今晚狮子雨",
+              "我顶班"
+            ],
+            [
+              "顶班，走不开"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T11_A02",
+          "subject": "HER",
+          "relation": "托付（信任升级）",
+          "value": "她托他去守她的机位/坐她的椅子拍照，叮嘱别把狮子座裁掉",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T11",
+            "message_id": "m0",
+            "quote": "你要是去，椅子替我坐也行，机位替我守也行，拍到了别把狮子座裁掉"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "椅子替我坐"
+            ],
+            [
+              "机位替我守"
+            ],
+            [
+              "狮子座裁掉"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T11_A03",
+          "subject": "HER",
+          "relation": "信物之约",
+          "value": "照片报酬是一锅糖炒栗子（补对焦学费的说法）",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T11",
+            "message_id": "m0",
+            "quote": "照片我拿一锅糖炒栗子换，就当补你教对焦的学费"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "糖炒栗子"
+            ],
+            [
+              "补你教对焦的学费"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T11_A04",
+          "subject": "HER",
+          "relation": "机位之约（回指T06——托付所指）",
+          "value": "她在楼顶占机位留第二把椅子（T06原约，本轮托付的对象）",
+          "valid_time": "2026-11-17",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T06",
+            "message_id": "m0",
+            "quote": "我在楼顶占了个东南无遮挡的机位，旁边正好能放第二把椅子"
+          },
+          "required_this_turn": true,
+          "affirm_markers": [
+            [
+              "楼顶",
+              "东南无遮挡"
+            ],
+            [
+              "第二把椅子"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "托付是信任升级——接得干脆＋细节务实＝正确档；机位在她家楼顶，进入方式她没说（unknown位：别编“你家楼顶我熟”）；与自身T08/T09口径一致（T09若说去不了，T11不得突然满口答应）；intent＝托付，含糊“看情况”违背intent。",
+      "unknowns": [
+        {
+          "topic": "她楼顶机位的位置与进入方式",
+          "note": "机位在她家楼顶，她没说明楼栋/门禁/怎么上去；编造“熟悉她楼顶”属无据确定化",
+          "markers": [
+            [
+              "你家楼顶",
+              "我熟"
+            ],
+            [
+              "知道怎么上",
+              "你楼顶"
+            ]
+          ],
+          "affirm_markers": [
+            [
+              "你家楼顶",
+              "我熟"
+            ],
+            [
+              "知道怎么上",
+              "你楼顶"
+            ]
+          ]
+        }
+      ],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造已答应守机位后又改口的既成事实",
+        "不得虚构栗子已付或已收讫"
+      ],
+      "may_decline": false
+    },
+    "E346_T12": {
+      "case_id": "E346_T12",
+      "current_action": "翌晨报一颗流星与栗子到驿站，问昨晚去向并预约明年英仙座；她打卡离场",
+      "acceptable_actions": [
+        "若T11答应去且拍到：报结果＋发图承诺＋收栗子谢一句＋接英仙座预约（“第一行这位置我订下了”式收尾推半步）",
+        "若T11没去成：如实说＋不找补借口＋接英仙座预约（欠的那场换成明年的——顺势且诚实）",
+        "may_decline合法不回，或极简晨安＋一句“照片今晚整理好发你”（她说了不急）"
+      ],
+      "applicable_dimensions": [
+        "factuality",
+        "time_state",
+        "interaction",
+        "emotion_relation",
+        "goal"
+      ],
+      "required_memory_atoms": [
+        {
+          "atom_id": "E346_T12_A01",
+          "subject": "HER",
+          "relation": "夜班收获",
+          "value": "她顶班到十二点半，出门抬头看见一颗亮流星，许愿明年别再排夜班",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T12",
+            "message_id": "m0",
+            "quote": "顶班到十二点半，出门抬头正好一颗，亮得离谱，许的愿是明年别再排夜班"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "顶班到十二点半"
+            ],
+            [
+              "亮得离谱"
+            ],
+            [
+              "许的愿是明年别再排夜班"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T12_A02",
+          "subject": "HER",
+          "relation": "提问与求图（结果取决于其T11承诺）",
+          "value": "她问昨晚去了没、拍到了挑一张发她（不急）",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T12",
+            "message_id": "m0",
+            "quote": "你昨晚去了没？拍到了挑一张发我就行，不急"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "昨晚去了没"
+            ],
+            [
+              "挑一张发我"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T12_A03",
+          "subject": "HER",
+          "relation": "信物兑现",
+          "value": "栗子已放他楼下驿站，取件码微信发他",
+          "valid_time": "2026-11-18",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T12",
+            "message_id": "m0",
+            "quote": "栗子在你楼下驿站了，取件码微信发你"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "栗子在你楼下驿站"
+            ],
+            [
+              "取件码微信发你"
+            ]
+          ]
+        },
+        {
+          "atom_id": "E346_T12_A04",
+          "subject": "HER",
+          "relation": "未来之约",
+          "value": "明年英仙座她提前两个月占机位、名单第一行写他",
+          "valid_time": "2027-08",
+          "status": "asserted",
+          "negation": false,
+          "source": {
+            "kind": "message",
+            "case_id": "E346_T12",
+            "message_id": "m0",
+            "quote": "明年英仙座，机位我提前两个月占，名单第一行写你"
+          },
+          "required_this_turn": false,
+          "affirm_markers": [
+            [
+              "明年英仙座"
+            ],
+            [
+              "提前两个月占"
+            ],
+            [
+              "名单第一行写你"
+            ]
+          ]
+        }
+      ],
+      "private_guidance": "“昨晚去了没”必须与自己T11承诺一致——T11说去就得有交代，T11没去不得编“拍到了”；取件码她说“微信发你”，此刻还没有码，不得编码；英仙座＝2027年8月（推算见audit）；她打卡离场，长回复＝不读空气；may_decline＝true，不回也合法但轻收更稳。",
+      "unknowns": [],
+      "protected_expressions": [],
+      "forbidden_factual_claims": [
+        "不得编造取件码数字或“已取件”状态",
+        "不得虚构流星照片内容（张数、构图）当既成事实"
+      ],
+      "may_decline": true
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A5 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_b_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 12:03:15",
+      "window_last_attempt": "2026-11-08 17:10:07",
+      "attempts": 25,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_b/{DIRECT,CURRENT}/E319/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T05 情绪理解/关心/安慰",
+    "子类：脆弱表达"
+  ],
+  "title": "凌晨的打印店：两人离职之后",
+  "may_decline_turns": [
+    "E319_T02",
+    "E319_T05"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "团队协作",
+  "primary_topic": "T05",
+  "lineage_group_id": "LG-E319",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E319/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A5",
+  "hashes": {
+    "episode.json": "88cff78b0b53d4610646fdc20a9693c089eddf64d9d8807cf4a961a29a9f90f3",
+    "reference.json": "5e77b4ada378cec1e437f952b126066cbe60824bc19a7603261da0b476ac46e2",
+    "timeline.json": "c7bc2e705befab97a361f787b8677679606a3468a7004013f87a468d26222eab",
+    "audit.md": "7afcabb9b8003786af689c7ba678dc7e3928263fcac5390fef2bf6bd3636c000",
+    "composite": "becc29a645f60201ddeddade617ee1b23a627784481b7264838da2bf47c2d4ca"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

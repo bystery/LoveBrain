@@ -1,0 +1,38 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A6 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T08 记忆/知识库/相关信息提取",
+  "短距记忆回指与正确回扣",
+  "喂猫口径更新跟随",
+  "钥匙位置细节复用"
+ ],
+ "title": "出差三天的猫口粮",
+ "may_decline_turns": [
+  "E329_T05",
+  "E329_T07"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "宠物日常",
+ "primary_topic": "T08",
+ "lineage_group_id": "LG-E329",
+ "frozen_at": "2026-11-08T13:20:00+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E329/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A6",
+ "hashes": {
+  "episode.json": "425affaa700aeea74d7d1579c444ecb0e87c427b7a52a47be2191c3218a29071",
+  "reference.json": "2beece4e6372d4f392fad20d8e669de7ad874849447e5e9c27fb43ed7e87605c",
+  "timeline.json": "ad415b232b0d956372b9ae1d9743fefbbfc4395aa0020dcff25a41d782be6a5b",
+  "audit.md": "05641cafb5d081c77e71fc52ebb2a6d3d5cf4e7aab291fc2a11eddff3c6034cf"
+ }
+}

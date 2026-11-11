@@ -1,0 +1,271 @@
+{
+ "episode_id": "E195",
+ "persona": {
+  "her": "陆蔓青，特点：小区流浪猫喂养发起人；心疼猫但守规矩；爱排班做表，边界：不违规占公共区；轮值说到做到；钱粮账目公开",
+  "me": "阿岸，特点：帮着把好事办合规；建议都带书面依据；动手能力强",
+  "relationship_stage": "渐暧昧（同小区邻居，因一起喂猫熟起来）"
+ },
+ "initial_kb": {
+  "me": "阿岸住同小区，常帮陆蔓青做投喂排班表和喂点记录。",
+  "her": "陆蔓青在小区绿化带设流浪猫投喂点半年，固定喂煤球、小白等几只猫。",
+  "warmth": "一起喂猫的半年里，两人从点头之交变成有事就商量。",
+  "lessons": "公共区域的事先备案再动手，迁移要留过渡期。"
+ },
+ "turns": [
+  {
+   "case_id": "E195_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 08:30",
+      "text": "出事了！物业在群里发通知，说绿化带的投喂点冬天一律暂停，怕粮袋结冰招虫鼠。我喂了半年了，说停就停，猫可怎么办？"
+     }
+    ],
+    "clock": "2026-12-01 08:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "舍不得又慌",
+    "trigger": "投喂点被通知冬季暂停"
+   }
+  },
+  {
+   "case_id": "E195_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "ts": "2026-12-01 08:55",
+      "text": "先别硬顶，暂停就先停绿化带这个点，把粮和水收干净，别落下违规的把柄。"
+     },
+     {
+      "role": "ME",
+      "ts": "2026-12-01 08:57",
+      "text": "你去问问物业，有没有允许的过渡点，问清条件再来商量。"
+     }
+    ],
+    "clock": "2026-12-01 09:00",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "被劝住，先收点再找路子",
+    "stance": "守规矩优先"
+   }
+  },
+  {
+   "case_id": "E195_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-01 12:15",
+      "text": "问了！物业说地下车库出入口内侧可以设冬季点，但要登记备案，还得自己铺防滑垫。这条件我能接受，就是不知道怎么弄。"
+     }
+    ],
+    "clock": "2026-12-01 12:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "找到出路但不会办手续",
+    "info_flow": "过渡点条件已问明"
+   }
+  },
+  {
+   "case_id": "E195_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "ts": "2026-12-01 12:45",
+      "text": "备案我来帮你起草，写清点位、早晚各一次、每次份量减半，避免堆积，通过率会高。"
+     }
+    ],
+    "clock": "2026-12-01 12:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "手续有了着落",
+    "division": "备案文书由 ME 起草"
+   }
+  },
+  {
+   "case_id": "E195_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-03 19:20",
+      "text": "备案批下来了！可新问题是：小白胆子最小，死活不肯进车库，在绿化带老位置蹲着不走，我看得心里发酸。"
+     }
+    ],
+    "clock": "2026-12-03 19:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "一半高兴一半心疼",
+    "trigger": "最胆小的猫迁移困难"
+   }
+  },
+  {
+   "case_id": "E195_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "ts": "2026-12-03 19:50",
+      "text": "别急，给小白留个过渡：先在绿化带老位置放少量粮，往车库口方向一天挪一米，两周内挪完，猫认食也认路。"
+     }
+    ],
+    "clock": "2026-12-03 19:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "有了可行办法，安心执行",
+    "stance": "渐进迁移不硬赶"
+   }
+  },
+  {
+   "case_id": "E195_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-09 18:40",
+      "text": "挪到第六天，小白终于肯站在车库口吃了！就是物业又来提醒防滑垫必须铺，我昨晚已经下单了，明天到。"
+     }
+    ],
+    "clock": "2026-12-09 18:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "迁移见效，小得意",
+    "resolution": "小白进入车库口"
+   }
+  },
+  {
+   "case_id": "E195_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "ts": "2026-12-09 19:10",
+      "text": "防滑垫到货就铺上，把下单记录和备案号一起存档，开春撤点时按备案复原绿化带，有始有终。"
+     }
+    ],
+    "clock": "2026-12-09 19:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "记下留档要求",
+    "info_flow": "存档与复原路径由 ME 提出"
+   }
+  },
+  {
+   "case_id": "E195_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-21 07:05",
+      "text": "寒潮这晚我俩轮值第一班，最低零下八度！车库点煤球和小白都来了，一点没冻上。"
+     },
+     {
+      "role": "HER",
+      "ts": "2026-12-21 07:08",
+      "text": "粮是温的，我加了热水袋捂着。"
+     }
+    ],
+    "clock": "2026-12-21 07:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "辛苦但满足",
+    "event": "寒潮夜轮值首班顺利"
+   }
+  },
+  {
+   "case_id": "E195_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-30 20:15",
+      "text": "今晚巡逻的师傅夸咱们备案点收拾得干净，说开春要是恢复绿化带原点，就参考咱这套做法报给物业。我听着比拿了奖还高兴。"
+     }
+    ],
+    "clock": "2026-12-30 20:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "被认可，美滋滋",
+    "resolution": "备案点获得正面反馈"
+   }
+  },
+  {
+   "case_id": "E195_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "ts": "2026-12-30 20:45",
+      "text": "趁热打铁，把'三月一日撤车库点、绿化带复原'写进备案回执的附件里，年后人容易忘，白纸黑字最稳。"
+     }
+    ],
+    "clock": "2026-12-30 20:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "连说周全",
+    "stance": "重启条款落纸面"
+   }
+  },
+  {
+   "case_id": "E195_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "ts": "2026-12-31 10:02",
+      "text": "附件补好了，过冬的账我也算完了：猫粮一袋四十五能撑三周，到开春差不多四袋，一共一百八，咱俩平摊一人九十。"
+     },
+     {
+      "role": "HER",
+      "ts": "2026-12-31 10:05",
+      "text": "今晚来给车库点做个大扫除，顺便一起跨个年？"
+     }
+    ],
+    "clock": "2026-12-31 10:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state": "账清人轻快，主动邀约",
+    "close": "过冬安排与跨年之约一并收束"
+   }
+  }
+ ]
+}

@@ -1,0 +1,40 @@
+{
+  "status": "authored_pending_review",
+  "author": "ZCode bm1-sel author-S6 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": false,
+  "experiments_used": [],
+  "themes": [
+    "意图确认",
+    "意图改写",
+    "意图撤销",
+    "意图代传",
+    "借还器材"
+  ],
+  "title": "四样器材：从借用到归还的指令链",
+  "may_decline_turns": [
+    "E363_T08",
+    "E363_T12"
+  ],
+  "created_at": "2026-11-09",
+  "domain": "借还器材",
+  "primary_topic": "T06",
+  "lineage_group_id": "LG-E363",
+  "kind": "standard_12t",
+  "batch": "W5-SEL-20261109",
+  "session": "AUTHOR-S6",
+  "readers": [
+    "author"
+  ],
+  "runner_copy": "wave5_selection/E363/runner_episode.json",
+  "annotator": "B6",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "hashes": {
+    "episode.json": "1641c6d42140ffe04d590d981e28fa5bec2794e5a8e8363d02d903fd96241d2e",
+    "reference.json": "7c50c10ab90d16aaacee49b5f26ad1e9d8764fd10ac48977caa8ecc30d5a41fb",
+    "timeline.json": "036dde6ace7f0052e830549324a0230f4875f4d99d1445fedb99c9af8b7094db",
+    "audit.md": "96d0afb71fb0fe6f6c5ba2328ea7dcf0d1f38405397b753f306be0014ad7834e",
+    "composite": "731311fd0ed9b579eee6ba2525aa13d3573aa3d13e5fb61a5ee8d9e78750548b"
+  }
+}

@@ -1,0 +1,910 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "E065",
+ "title": "第一次当房东",
+ "visibility": "evaluator_only",
+ "turns": {
+  "E065_T01": {
+   "case_id": "E065_T01",
+   "current_action": "先问清房子情况再谈价；不拍脑袋报价；把'没谱'接到流程上",
+   "acceptable_actions": [
+    "问她周边同户型挂价",
+    "建议按中介数据+实勘定",
+    "说3800合理但看装修"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F01",
+     "subject": "她",
+     "relation": "资产",
+     "value": "外婆留下一套老小区两居要出租",
+     "valid_time": "2026-12-01 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T01",
+      "message_id": "m0",
+      "quote": "外婆那套两居我想挂出去租"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S065_F02",
+     "subject": "她",
+     "relation": "定价",
+     "value": "中介建议挂3800，她想挂3800",
+     "valid_time": "2026-12-01 20:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T01",
+      "message_id": "m0",
+      "quote": "中介说挂 3800"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "别一上来给数字，先要信息。",
+   "unknowns": [
+    "房子装修状况",
+    "周边行情"
+   ],
+   "protected_expressions": [
+    "心里一点谱没有"
+   ],
+   "forbidden_factual_claims": [
+    "不要张口就说挂多少",
+    "不要贬中介"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T02": {
+   "case_id": "E065_T02",
+   "current_action": "把定金/订金区别说死+落到收条写法上；不展开法律课",
+   "acceptable_actions": [
+    "给一句话版本让她抄",
+    "举例说明差别",
+    "说合同模板里我标好了"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F03",
+     "subject": "我",
+     "relation": "知识",
+     "value": "定金有担保性质、订金是预付款，收条写法定金",
+     "valid_time": "2026-12-01 20:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T02",
+      "message_id": "m0",
+      "quote": "定金受担保约束 订金只是预付款 收条要写法定金"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知识轮：一条说透，别堆十条。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别写错"
+   ],
+   "forbidden_factual_claims": [
+    "不要说订金随便收",
+    "不要讲十分钟法条"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T03": {
+   "case_id": "E065_T03",
+   "current_action": "帮她按四要素过模板（租期/押金/维修/解约）；缺哪条补哪条；不替她签",
+   "acceptable_actions": [
+    "逐条过四要素+标缺项",
+    "把模板改批注发回",
+    "列风险点让她问中介"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她头晕=拆成四块讲。",
+   "unknowns": [
+    "模板具体条款"
+   ],
+   "protected_expressions": [
+    "有没有坑"
+   ],
+   "forbidden_factual_claims": [
+    "不要说模板都能用",
+    "不要替她做决定"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T04": {
+   "case_id": "E065_T04",
+   "current_action": "确认四要素已交付+教她向中介要补充条款的说法",
+   "acceptable_actions": [
+    "给向中介提补条款的话术",
+    "让她发我改完版再核一遍",
+    "说补完拍照存档"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F04",
+     "subject": "我",
+     "relation": "知识",
+     "value": "合同必备：租期/押金/维修划分/提前解约条款",
+     "valid_time": "2026-12-03 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T04",
+      "message_id": "m0",
+      "quote": "租期 押金 维修划分 提前解约这四条必须白纸黑字"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给话术比给结论有用。",
+   "unknowns": [
+    "中介配合度"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说中介坑人",
+    "不要说她学不会"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T05": {
+   "case_id": "E065_T05",
+   "current_action": "接看房反馈+说三楼是硬伤但价格可对冲；不催她降价",
+   "acceptable_actions": [
+    "说无电梯=价格让步点正常",
+    "问她中介反馈量",
+    "建议保持挂牌观察一周"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "第一组看房人=试水温，别急着动价。",
+   "unknowns": [
+    "看房人出价意向"
+   ],
+   "protected_expressions": [
+    "嫌三楼没电梯"
+   ],
+   "forbidden_factual_claims": [
+    "不要马上说降价",
+    "不要说三楼砸手里"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T06": {
+   "case_id": "E065_T06",
+   "current_action": "接焦虑：两周内两_groups=正常流速；给观察截止日再决策",
+   "acceptable_actions": [
+    "说流速正常+约定12月中复盘",
+    "接焦虑+让她问中介线上点击量",
+    "说别天天看后台"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "焦虑管理：给节奏不给保证。",
+   "unknowns": [
+    "中介带看次数"
+   ],
+   "protected_expressions": [
+    "开始焦虑了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定租得出去",
+    "不要催她降价"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T07": {
+   "case_id": "E065_T07",
+   "current_action": "接情绪：陪她停一停；不催卖房租房的正事；一句'外婆的屋子'点到即止",
+   "acceptable_actions": [
+    "说慢慢收拾不着急",
+    "提议留下毛线做个纪念",
+    "说要不要过来看她一起拾掇"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "亲情轮：不接话茬谈钱。",
+   "unknowns": [],
+   "protected_expressions": [
+    "坐下哭了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说节哀别哭",
+    "不要拉回租房话题",
+    "不要说毛线不值钱"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T08": {
+   "case_id": "E065_T08",
+   "current_action": "用数据说话：两周带看少=价格信号；给两个选项（降100试一周/维持到月底）；她拍板",
+   "acceptable_actions": [
+    "给两选项让她选",
+    "建议降100试探+说可回调",
+    "让她先要后台数据再定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F05",
+     "subject": "她",
+     "relation": "事件",
+     "value": "挂出两周无人问，中介建议调价",
+     "valid_time": "2026-12-16 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T08",
+      "message_id": "m0",
+      "quote": "挂了两周没人问 中介让我降价"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "降价决定必须她拍板，我只摆事实。",
+   "unknowns": [
+    "中介后台数据"
+   ],
+   "protected_expressions": [
+    "不甘心"
+   ],
+   "forbidden_factual_claims": [
+    "不要替她决定降价",
+    "不要说中介就想快点成交"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T09": {
+   "case_id": "E065_T09",
+   "current_action": "确认新价3600+旧价3800作废+定复盘日；不复述错价",
+   "acceptable_actions": [
+    "确认3600+约一周后复盘",
+    "确认+让她改各平台挂价",
+    "确认+说带看来了先别口头让价"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F06",
+     "subject": "她",
+     "relation": "更正",
+     "value": "挂价从3800调到3600",
+     "valid_time": "2026-12-16 20:15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T09",
+      "message_id": "m0",
+      "quote": "先降到 3600 试一周"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧价格硬更正：此后一律3600。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要再说3800挂",
+    "不要说降了肯定租"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T10": {
+   "case_id": "E065_T10",
+   "current_action": "肯定调价决策是她自己拍的+提醒热度期别慌签；不看低谁",
+   "acceptable_actions": [
+    "说决策对路+提醒慢慢挑人",
+    "肯定+让她筛租客身份",
+    "说热度期更要稳"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "归因给她；提醒挑人不挑快。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说'我早说降价吧'",
+    "不要说随便租谁都行"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T11": {
+   "case_id": "E065_T11",
+   "current_action": "接诚意+核实两件事：定金写法（呼应F03）+起租日与她的搬家衔接；不催定",
+   "acceptable_actions": [
+    "先核实对方身份+定金写法定金",
+    "确认2/1起租可+问她自己几号搬完",
+    "提醒交定前签意向"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F07",
+     "subject": "租客",
+     "relation": "意向",
+     "value": "一对看房人愿意定，想2月1日起租",
+     "valid_time": "2026-12-28 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T11",
+      "message_id": "m0",
+      "quote": "想 2 月 1 号起租"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "定金伏笔回收轮。",
+   "unknowns": [
+    "对方职业"
+   ],
+   "protected_expressions": [
+    "特别有诚意"
+   ],
+   "forbidden_factual_claims": [
+    "不要说直接收了再说",
+    "不要替她收定金"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T12": {
+   "case_id": "E065_T12",
+   "current_action": "复述确认新起租日2月15+旧2月1作废；提醒书面改补充协议",
+   "acceptable_actions": [
+    "确认2/15+让她出补充协议",
+    "确认+说跟租客书面确认",
+    "确认+提醒押金交付节点顺延"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F08",
+     "subject": "她",
+     "relation": "更正",
+     "value": "起租日改到2月15日（她搬走时间改了）",
+     "valid_time": "2027-01-03 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T12",
+      "message_id": "m0",
+      "quote": "起租改到 2 月 15 号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧日期硬更正：起租一律2月15。",
+   "unknowns": [
+    "租客是否同意（她已说好）"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要再说2月1",
+    "不要说口头说好就行"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T13": {
+   "case_id": "E065_T13",
+   "current_action": "把维修划分落到合同原文+举她的例子；不展开清单",
+   "acceptable_actions": [
+    "让她把条款抄进合同",
+    "举加氟例子确认理解",
+    "说写完发我核"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F09",
+     "subject": "我",
+     "relation": "知识",
+     "value": "自然损耗维修房东出，人为损坏租客出，合同写明",
+     "valid_time": "2027-01-03 20:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T13",
+      "message_id": "m0",
+      "quote": "自然损耗我修 人为损坏租客修 写进合同"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "知识轮：例子比条款好记。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说租客肯定赖账",
+    "不要写倾向性条款坑租客"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T14": {
+   "case_id": "E065_T14",
+   "current_action": "接身份更正（同事合租）+给合租场景的补充点（水电分摊/门锁换芯）",
+   "acceptable_actions": [
+    "建议水电按人头或平摊写明",
+    "提醒换锁芯+留备用钥匙一人",
+    "让她把两人身份证都存档"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F10",
+     "subject": "她",
+     "relation": "更正",
+     "value": "租客确认为同事合租两人（原以为是情侣）",
+     "valid_time": "2027-01-05 21:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T14",
+      "message_id": "m0",
+      "quote": "是同事合租两人"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本剧第三个更正：租客=同事合租两人。",
+   "unknowns": [
+    "两人分工"
+   ],
+   "protected_expressions": [
+    "我换了个思路"
+   ],
+   "forbidden_factual_claims": [
+    "不要说情侣合租更好/更差",
+    "不要说同事合租会闹掰"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T15": {
+   "case_id": "E065_T15",
+   "current_action": "确认押金数字一致+当场把物业费口径问死；不让她'以为'",
+   "acceptable_actions": [
+    "确认3800+马上定物业费条款",
+    "让她直接问租客意向写进合同",
+    "说默认房东出但可写明"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F11",
+     "subject": "双方",
+     "relation": "约定",
+     "value": "押一付三，押金3800",
+     "valid_time": "2027-01-06 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T15",
+      "message_id": "m0",
+      "quote": "押一付三 押金 3800"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S065_F12",
+     "subject": "她",
+     "relation": "误会",
+     "value": "她以为物业费由租客承担，合同未写",
+     "valid_time": "2027-01-06 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T15",
+      "message_id": "m0",
+      "quote": "物业费我以为他们交"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "押金数字锚点；物业费是本剧知识陷阱。",
+   "unknowns": [
+    "租客意愿"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说物业费谁交都行",
+    "不要说小区物业没多少钱"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T16": {
+   "case_id": "E065_T16",
+   "current_action": "确认物业费条款落纸+肯定她的取舍；不居功",
+   "acceptable_actions": [
+    "确认写房东承担+租金不让",
+    "让她同步给中介改合同",
+    "提醒改完再核一遍押金条款"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F13",
+     "subject": "我",
+     "relation": "知识",
+     "value": "物业费承担方必须写进合同，写谁谁付",
+     "valid_time": "2027-01-06 20:35",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T16",
+      "message_id": "m0",
+      "quote": "物业费写谁承担谁付 别留口头"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "条款定案轮：钱的问题全部落纸。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要夸自己把关有功",
+    "不要说租客会赖"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T17": {
+   "case_id": "E065_T17",
+   "current_action": "按四要素+新增两条（物业费/维修原文）复核；让她自己念一遍（她过手才算数）",
+   "acceptable_actions": [
+    "让她念我核",
+    "我逐条报她勾",
+    "拍图发我标红缺项"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "复核方式：她过手，我核对。",
+   "unknowns": [
+    "改稿版本"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说我看过了就行",
+    "不要跳过让她自己签"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T18": {
+   "case_id": "E065_T18",
+   "current_action": "肯定收条规范+呼应定金伏笔；提醒收定金后锁定期别再带看",
+   "acceptable_actions": [
+    "夸收条规范+说这钱收得稳",
+    "提醒收取后锁房期别跳单",
+    "让她把收条拍照存档"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "定金伏笔回收：她真用上了。",
+   "unknowns": [
+    "定金金额"
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说'还不是我教的'",
+    "不要说锁房期无所谓"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T19": {
+   "case_id": "E065_T19",
+   "current_action": "接焦虑+给事后处置路径（合同违约条款/押金抵扣/协商先）+不吓唬",
+   "acceptable_actions": [
+    "翻合同违约条款给她指",
+    "说押金是缓冲+先协商后依约",
+    "说真拖欠按条款走别撕破脸"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "焦虑轮：路径具体到条款。",
+   "unknowns": [
+    "违约条款细节"
+   ],
+   "protected_expressions": [
+    "万一租客往后拖欠"
+   ],
+   "forbidden_factual_claims": [
+    "不要说肯定不拖欠",
+    "不要说拖欠就撵人"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T20": {
+   "case_id": "E065_T20",
+   "current_action": "验算确认：3600×3+3800=14600+3800=15200 ✓；确认无误+正式恭喜",
+   "acceptable_actions": [
+    "确认15200对+恭喜成交",
+    "复核算式+说这单漂亮",
+    "恭喜+提醒押金单独收条"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F14",
+     "subject": "她",
+     "relation": "结果",
+     "value": "2月15日签约成交，起租2月15日",
+     "valid_time": "2027-02-15 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T20",
+      "message_id": "m0",
+      "quote": "签了 2 月 15 起租"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "S065_F15",
+     "subject": "她",
+     "relation": "收尾",
+     "value": "收到首月房租加押金共15200",
+     "valid_time": "2027-02-15 19:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T20",
+      "message_id": "m0",
+      "quote": "到账 15200"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "数字验收轮：算式要当场核。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说错数",
+    "不要说这是小钱"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T21": {
+   "case_id": "E065_T21",
+   "current_action": "如实给备案流程与材料+说明这是应尽配合；不夸大义务不敷衍",
+   "acceptable_actions": [
+    "列三样材料+说陪跑一趟",
+    "让她约租客一起去街道办",
+    "说办完提醒租客拿回执"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "S065_F16",
+     "subject": "我",
+     "relation": "知识",
+     "value": "租赁合同可到街道办免费备案，办居住证用得上",
+     "valid_time": "2027-02-16 20:00",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E065_T21",
+      "message_id": "m0",
+      "quote": "街道办能免费备案 租客办居住证要用"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾知识轮：合规成本要认。",
+   "unknowns": [
+    "街道办是否需预约"
+   ],
+   "protected_expressions": [
+    "我头大"
+   ],
+   "forbidden_factual_claims": [
+    "不要说不管他",
+    "不要编备案费用",
+    "不要说居住证与我无关"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T22": {
+   "case_id": "E065_T22",
+   "current_action": "收尾：呼应毛线（亲情线）+把功劳还给她（每个数字她自己拍板）+真诚接谢",
+   "acceptable_actions": [
+    "呼应毛线细节+说她自己把事做成了",
+    "接谢+说合同我留个模板给她",
+    "说外婆看着也放心+轻轻收"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "收官轮：亲情线首尾呼应，功劳归她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "这房子又活了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说'我帮了你多少'",
+    "不要说教式复盘"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T23": {
+   "case_id": "E065_T23",
+   "current_action": "呼应合租条款落地+归因她签约前问得细；不抢功",
+   "acceptable_actions": [
+    "说这就是签约前问清的好处",
+    "让她保持季度看房一次",
+    "说有维修事随时找我看条款"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "入住反馈轮：条款落地的正反馈。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不要说'还好有我'",
+    "不要翻旧账"
+   ],
+   "may_decline": false,
+   "intent": null
+  },
+  "E065_T24": {
+   "case_id": "E065_T24",
+   "current_action": "复盘用事实：3800两周无人问→3600当日来电；同时不下'死守必砸'的绝对结论；收束全剧",
+   "acceptable_actions": [
+    "复盘数据+夸她调价果断",
+    "说市场动态没法说死+你这单处理得好",
+    "呼应定金/备案全套收尾"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "出窗探针收口：调价决策(T08-T09)与定金知识(T02)远端复用。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我现在懂行了"
+   ],
+   "forbidden_factual_claims": [
+    "不要说3800就是错",
+    "不要居功"
+   ],
+   "may_decline": false,
+   "intent": null
+  }
+ }
+}

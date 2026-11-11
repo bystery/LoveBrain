@@ -1,0 +1,518 @@
+{
+ "story_id": "E021",
+ "turns": {
+  "E021_T01": {
+   "current_action": "接住邀约并给具体确认（周二七点半那片场），不查她为什么问",
+   "acceptable_actions": [
+    "直接确认时间地点并答应",
+    "答应并顺口问一句是不是也要来",
+    "先答场地情况再表达欢迎"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E021_A01",
+     "subject": "她",
+     "relation": "询问",
+     "value": "周二晚球馆有没有空位（想一起打）",
+     "valid_time": "2026-11-10 19:10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E021_T01",
+      "message_id": "m0",
+      "quote": "下次球馆周二晚有空位吗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她主动开的第一句，别查户口式反问；给具体信息就是最好的接法。",
+   "unknowns": [
+    "她周二是否真的有空",
+    "她是想固定打还是临时一次"
+   ],
+   "protected_expressions": [
+    "我看你打得挺稳"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造球场收费标准",
+    "不要断言她技术水平"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E021_T01"
+  },
+  "E021_T02": {
+   "current_action": "接她新拍话题，轻接一句；线断了可以顺口问，不连续追问",
+   "acceptable_actions": [
+    "接新拍话题并轻问一句",
+    "接梗并顺带提醒热身防受伤",
+    "只接梗不追问"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E021_A02",
+     "subject": "她",
+     "relation": "事件",
+     "value": "旧拍线断了，周二带新拍试",
+     "valid_time": "2026-11-10 19:26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E021_T02",
+      "message_id": "m1",
+      "quote": "我那把旧拍线断了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她话头在新拍；顺着球具聊最自然，别急着回到约球确认。",
+   "unknowns": [
+    "新拍什么型号",
+    "线断了多久"
+   ],
+   "protected_expressions": [
+    "我那把旧拍线断了"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造她买拍花了多少钱"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E021_T02"
+  },
+  "E021_T03": {
+   "current_action": "答自己加班实情，接住她对忙季的预告，不劝'别太累'套话",
+   "acceptable_actions": [
+    "如实说加班节奏+接住忙季预告",
+    "答加班+问她忙季具体从哪天开始",
+    "简短答+表示球局时间可以迁就"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E021_A03",
+     "subject": "她",
+     "relation": "状态",
+     "value": "下周起年审忙季天天对账到十点",
+     "valid_time": "2026-11-10 19:40",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E021_T03",
+      "message_id": "m0",
+      "quote": "我下周开始天天对账到十点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E021_A04",
+     "subject": "她",
+     "relation": "职业状态",
+     "value": "4月起进年审忙季",
+     "valid_time": "2026-11-10",
+     "status": "seed",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "4月起进年审忙季"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在预告未来一个月没空；听懂这个潜台词比安慰重要。",
+   "unknowns": [
+    "她具体哪个项目",
+    "忙季持续到几月"
+   ],
+   "protected_expressions": [
+    "我下周开始天天对账到十点"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造审计行业的具体收入",
+    "不要断言她老板压榨她"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E021_T03"
+  },
+  "E021_T04": {
+   "current_action": "接住'带新人'的累点，给一句实在话，不打鸡血",
+   "acceptable_actions": [
+    "接住带新人的累+一句实在共鸣",
+    "接住+顺口问新人多难带（一次）",
+    "共鸣+把话题还给她"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E021_A05",
+     "subject": "她",
+     "relation": "工作负担",
+     "value": "组里新人多，还得带",
+     "valid_time": "2026-11-10 20:02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E021_T04",
+      "message_id": "m1",
+      "quote": "我组里今年新人多 我还得带"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她抱怨的方式是陈述事实；共鸣也用事实，不用夸张安慰。",
+   "unknowns": [
+    "新人几个",
+    "带新人有没有带教补贴"
+   ],
+   "protected_expressions": [
+    "我组里今年新人多"
+   ],
+   "forbidden_factual_claims": [
+    "不要断言她业绩/绩效"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E021_T04"
+  },
+  "E021_T05": {
+   "current_action": "她怕放鸽子——给具体兜底方案（先到占场、几点来都行），不追问她忙什么",
+   "acceptable_actions": [
+    "给具体兜底方案",
+    "给兜底+说明自己先到的安排",
+    "给兜底+把决定权完全给她"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E021_A06",
+     "subject": "我",
+     "relation": "安排",
+     "value": "周二固定七点半那片场",
+     "valid_time": "2026-11-10 19:18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E021_T02",
+      "message_id": "m0",
+      "quote": "周二我固定去，七点半那片场"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她要的是确定性不是追问；给时间地点的兜底就是可靠感。",
+   "unknowns": [
+    "她周二能否准时",
+    "球馆周二是否满场"
+   ],
+   "protected_expressions": [
+    "我怕加班放我鸽子"
+   ],
+   "forbidden_factual_claims": [
+    "不要承诺帮她跟球馆请假/调场（做不到）"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E021_T05"
+  },
+  "E021_T06": {
+   "current_action": "约定已双方确认——确认收尾，加一句轻的，不啰嗦不加码",
+   "acceptable_actions": [
+    "确认+轻收",
+    "确认+一句明天见",
+    "确认+留个灵活口（来不了说一声）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E021_A07",
+     "subject": "双方",
+     "relation": "约定",
+     "value": "周二球局：我七点半占场，她尽量七点到",
+     "valid_time": "2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E021_T06",
+      "message_id": "m1",
+      "quote": "成 那说定了 周二我尽量七点到"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "约定落成后别再推销任何东西；稳住就好。",
+   "unknowns": [
+    "她七点能否真到"
+   ],
+   "protected_expressions": [
+    "成 那说定了"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E021_T06"
+  },
+  "E021_T07": {
+   "current_action": "接受改期不抱怨：先打起来，给她留进场口，留水",
+   "acceptable_actions": [
+    "接受并说先打、给她留水",
+    "接受+问她要不要先吃点东西再来",
+    "接受+把场留到九点"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E021_A08",
+     "subject": "她",
+     "relation": "变更",
+     "value": "周二当天加班，九点才能到球馆",
+     "valid_time": "2026-11-11 20:30",
+     "status": "corrected",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E021_T07",
+      "message_id": "m0",
+      "quote": "刚下班 我九点才能到"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "原约定（尽量七点到）被现实改掉；接住变更并保留约定本身，才是可信的灵活。",
+   "unknowns": [
+    "她几点真正下班"
+   ],
+   "protected_expressions": [
+    "刚下班 我九点才能到"
+   ],
+   "forbidden_factual_claims": [
+    "不要说她不守约（她提前说了）"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E021_T07"
+  },
+  "E021_T08": {
+   "current_action": "接住'对懵了'：轻接不查问，让她喘口气",
+   "acceptable_actions": [
+    "接懵+轻梗",
+    "接懵+递水/让她先歇",
+    "接懵+说打完球就好了"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E021_A09",
+     "subject": "她",
+     "relation": "状态",
+     "value": "今天对账对得头懵",
+     "valid_time": "2026-11-11 21:58",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E021_T08",
+      "message_id": "m1",
+      "quote": "今天对账对得我头都是懵的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她刚到球场，先让身体动起来；话多是负担。",
+   "unknowns": [
+    "今天对的是什么账"
+   ],
+   "protected_expressions": [
+    "今天对账对得我头都是懵的"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造她公司今天出了事故"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E021_T08"
+  },
+  "E021_T09": {
+   "current_action": "她在找同行共鸣：如实分享一句后端日常+把话头还给她",
+   "acceptable_actions": [
+    "真实分享+反抛",
+    "真实分享+自嘲",
+    "简短回答+问她今天需求改了几版"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E021_A10",
+     "subject": "我",
+     "relation": "职业",
+     "value": "在物流系统公司写后端",
+     "valid_time": "2026-11-10",
+     "status": "seed",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "写后端"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "共鸣不比惨；她说'你们是不是也'是邀你说话，不是提问考试。",
+   "unknowns": [
+    "她今天被退回几版"
+   ],
+   "protected_expressions": [
+    "你们后端是不是也天天这样改需求"
+   ],
+   "forbidden_factual_claims": [
+    "不要编造公司名字"
+   ],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E021_T09"
+  },
+  "E021_T10": {
+   "current_action": "接'失散同行'的梗，这就是本段的投缘点；接梗不转向新话题",
+   "acceptable_actions": [
+    "接梗并延一句",
+    "接梗+互相吐槽一句",
+    "接梗+举杯喝水式的轻收"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "她主动给了个梗——接住比推进更重要。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你怎么不说我们是失散同行"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E021_T10"
+  },
+  "E021_T11": {
+   "current_action": "她主动提出忙季后固定约周二——答应并给落点，不趁热加码",
+   "acceptable_actions": [
+    "答应+给具体落点（五月起记着）",
+    "答应+说先把这周二的约保持住",
+    "答应+反问她想几点打"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "time_state",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E021_A11",
+     "subject": "她",
+     "relation": "提议",
+     "value": "忙季后固定约周二打球",
+     "valid_time": "2026-11-11 22:24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E021_T11",
+      "message_id": "m0",
+      "quote": "下季度忙完 咱们固定约周二呗"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "关系推进来自她那边；接住即可，别立刻升级成别的邀约。",
+   "unknowns": [
+    "忙季确切结束时间"
+   ],
+   "protected_expressions": [
+    "下季度忙完 咱们固定约周二呗"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false,
+   "intent": null,
+   "case_id": "E021_T11"
+  },
+  "E021_T12": {
+   "current_action": "自然收尾：拜拜+一句轻的；她说明天还得对账，不挽留不开新话题",
+   "acceptable_actions": [
+    "自然道别+轻一句",
+    "道别+叮嘱一句路上安全",
+    "只道别"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary",
+    "time_state"
+   ],
+   "required_memory_atoms": [],
+   "private_guidance": "收尾质量=关系质量；今晚已经够了。",
+   "unknowns": [],
+   "protected_expressions": [
+    "明天还得对账 拜拜"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": true,
+   "intent": null,
+   "case_id": "E021_T12"
+  }
+ }
+}

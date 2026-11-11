@@ -1,0 +1,805 @@
+{
+ "episode_id": "LRE141",
+ "persona": {
+  "her": {
+   "name": "小满",
+   "traits": [
+    "市场部品牌组执行",
+    "转达口径偶尔记岔但发现即更正",
+    "性子急但不甩锅"
+   ],
+   "boundaries": [
+    "不替客户拍板技术细节",
+    "不喜欢越过 PM 拉哥定截止日"
+   ]
+  },
+  "me": {
+   "name": "阿灿",
+   "traits": [
+    "设计组包装视觉",
+    "习惯把关键时间点和版本号记台历",
+    "回话先复述要点"
+   ]
+  },
+  "relationship_stage": "同公司协作熟人（合作一年多，食堂常一起吃饭）"
+ },
+ "initial_kb": {
+  "me": "我在设计组做包装视觉，常帮市场部出改版稿，手上同时跟两三个项目，习惯把关键时间点和版本号记在台历上，改了就划掉重写。",
+  "her": "小满是市场部品牌组的执行，对接客户恒信的包装改版，转达客户口径时偶尔记岔，但发现后会第一时间更正，不装没事。",
+  "warmth": "合作一年多，食堂常一起吃饭，她请过我两次奶茶，氛围轻松互信，开玩笑不隔心。",
+  "style": "她的消息快而碎，经常连发两条；我喜欢先复述要点再动手，重要节点写进台历。",
+  "stage": "同事协作期，工作话题为主，偶尔聊周末。"
+ },
+ "turns": [
+  {
+   "case_id": "LRE141_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "恒信那边把包装改版的截止日提前了，你手上那版 v2 周五下班前要交，来得及吗？",
+      "ts": "2026-11-03 10:05"
+     }
+    ],
+    "clock": "2026-11-03 10:08",
+    "may_decline": false,
+    "intent": {
+     "enabled": true,
+     "status": "direct",
+     "text": "询问周五交付 v2 的可行性"
+    }
+   },
+   "feedback": {
+    "her_state_shift": "开局急促带催办口吻，信息是二手转达、未经核实"
+   }
+  },
+  {
+   "case_id": "LRE141_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "等等，我刚翻群里，好像说工期还是原来的？你先别急着自己赶，我再去问拉哥确认，问完马上告诉你。",
+      "ts": "2026-11-03 14:30"
+     }
+    ],
+    "clock": "2026-11-03 14:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "口气从催办转为自我怀疑，主动叫停 ME 的赶工"
+   }
+  },
+  {
+   "case_id": "LRE141_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "问清楚啦，是我听岔了——截止日根本没提前，还是下周三交，周五那波是另一家供应商的档期，跟咱们无关。",
+      "ts": "2026-11-04 09:40"
+     },
+     {
+      "role": "HER",
+      "text": "抱歉抱歉，让你白紧张一晚上！",
+      "ts": "2026-11-04 09:42"
+     }
+    ],
+    "clock": "2026-11-04 09:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "澄清完成、更正自己昨天的口径，语气轻快带道歉"
+   }
+  },
+  {
+   "case_id": "LRE141_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了还有个事，客户点名要看 v3 的刀版图，v2 先不用发了。你那边刀版图今天能出个草稿吗？不用精修。",
+      "ts": "2026-11-04 11:15"
+     }
+    ],
+    "clock": "2026-11-04 11:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "抛出新的版本任务，节奏重新加快"
+   }
+  },
+  {
+   "case_id": "LRE141_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "刀版图草稿客户收到了，反馈说盒型想改成抽屉式的，外盒不变。你按抽屉式再出一版？周三之前都来得及。",
+      "ts": "2026-11-05 10:00"
+     }
+    ],
+    "clock": "2026-11-05 10:05",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "带来客户反馈，任务升级但语气轻松"
+   }
+  },
+  {
+   "case_id": "LRE141_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "拉哥说下周三上午有一轮内审，内审意见当场给，你周三下午再定稿就行，客户那边我替你挡着。",
+      "ts": "2026-11-05 15:30"
+     }
+    ],
+    "clock": "2026-11-05 15:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "安排明朗化，她主动替 ME 挡客户压力"
+   }
+  },
+  {
+   "case_id": "LRE141_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "客户今早补了条硬要求：文案一个字不能动，版式随便调。你出抽屉式那版的时候盯一下，别手滑改了字。",
+      "ts": "2026-11-06 09:30"
+     }
+    ],
+    "clock": "2026-11-06 09:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "转达新约束，语气半开玩笑但要求是硬的"
+   }
+  },
+  {
+   "case_id": "LRE141_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "计划有变，内审挪到周一上午十点。拉哥说你今晚把抽屉式那版初稿发我一份，周一内审要用，精修可以后补。",
+      "ts": "2026-11-06 16:20"
+     }
+    ],
+    "clock": "2026-11-06 16:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "内审改期带来当晚加急，语气带歉意"
+   }
+  },
+  {
+   "case_id": "LRE141_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周一好！内审过了，就提了一处：盒盖的开合方向跟客户样机反了，你顺手改一下？别的都不用动。",
+      "ts": "2026-11-09 11:25"
+     }
+    ],
+    "clock": "2026-11-09 11:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "报喜加一处小修改请求，整体轻松"
+   }
+  },
+  {
+   "case_id": "LRE141_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "改好的终版我汇总发客户了。这单多亏你，说好的加急餐我请，明天中午食堂还是楼下那家麻辣香锅，你挑。",
+      "ts": "2026-11-09 15:40"
+     }
+    ],
+    "clock": "2026-11-09 15:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "从工作转社交频道，主动兑现请餐"
+   }
+  },
+  {
+   "case_id": "LRE141_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "客户签约啦！拉哥在群里点名夸了设计组，有你名字。下次恒信的年会物料还找你，我先跟你预定档期～",
+      "ts": "2026-11-10 12:05"
+     }
+    ],
+    "clock": "2026-11-10 12:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "报喜并预告未来合作，兴奋"
+   }
+  },
+  {
+   "case_id": "LRE141_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "年会物料 brief 我下午发你邮箱，不急，下周一给个方向就行。今天是交付日，稿子九点就归档啦，顺顺利利！周末愉快呀！",
+      "ts": "2026-11-11 09:50"
+     }
+    ],
+    "clock": "2026-11-11 09:55",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state_shift": "收尾致意，无待办压力"
+   }
+  },
+  {
+   "case_id": "LRE141_T13",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "年会物料 brief 发你邮箱了！先说重点：年会定在 12 月 18 号周五晚上，主视觉加签到背景板两块，方向稿下周一给我就行。别有压力，比包装那单省心。",
+      "ts": "2026-11-11 14:05"
+     }
+    ],
+    "clock": "2026-11-11 14:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "brief 落地：年会 12 月 18 日晚，主视觉加签到背景板，方向稿下周一交"
+   }
+  },
+  {
+   "case_id": "LRE141_T14",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "补一句，两版方向稿风格拉开点，一版喜庆红金，一版高级深蓝，小图发我就行，不用带版式细节。",
+      "ts": "2026-11-12 10:30"
+     }
+    ],
+    "clock": "2026-11-12 10:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "补充方向稿要求：红金与深蓝两版风格，小图即可"
+   }
+  },
+  {
+   "case_id": "LRE141_T15",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "刚开完会，年会时间挪了，从 12 月 18 号提前到 12 月 11 号周五，客户说场地那周才便宜。方向稿 deadline 不变还是下周一，就是后面细化时间被压掉一周。",
+      "ts": "2026-11-13 11:20"
+     }
+    ],
+    "clock": "2026-11-13 11:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "冲突：年会提前一周至 12 月 11 日，细化周期被压缩"
+   }
+  },
+  {
+   "case_id": "LRE141_T16",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "两版方向稿收到啦，拉哥和客户都更爱深蓝那版。对了复盘群里有人问恒信那单是不是拖到周五才交的，我记得当时说周五要交来着？你台历上是哪天？",
+      "ts": "2026-11-16 09:50"
+     }
+    ],
+    "clock": "2026-11-16 09:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "方向稿结果落地；旧口径复活：群里重提周五交付"
+   }
+  },
+  {
+   "case_id": "LRE141_T17",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "深蓝版客户点头了，接下来细化成三件：主视觉、签到背景板、还有桌卡。桌卡小活儿顺手就带了，尺寸我发你。",
+      "ts": "2026-11-17 15:40"
+     }
+    ],
+    "clock": "2026-11-17 15:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "细化清单确定：主视觉、背景板、桌卡三件套"
+   }
+  },
+  {
+   "case_id": "LRE141_T18",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "出个状况，拉哥刚找你组里了？启润那边年会也定在 12 月 11 号同一天，想让你同时跟两家的主视觉。你时间来得及吗？我先说好，恒信这单我不让。",
+      "ts": "2026-11-18 17:10"
+     }
+    ],
+    "clock": "2026-11-18 17:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "冲突：启润年会插单同日撞期，有人提议 ME 双线并行"
+   }
+  },
+  {
+   "case_id": "LRE141_T19",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "排期定了！拉哥拍板恒信优先，启润那单换你们组新来的小郑跟，你只出个参考稿。客户那边我去说，你就管恒信。",
+      "ts": "2026-11-19 10:25"
+     }
+    ],
+    "clock": "2026-11-19 10:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "冲突化解：拉哥拍板恒信优先，启润转小郑"
+   }
+  },
+  {
+   "case_id": "LRE141_T20",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周六轻松点，说个正事：香锅那顿之后一直没正经聊过天，明天中午我再去吃一次，带你？顺便把桌卡尺寸当面敲定。",
+      "ts": "2026-11-21 11:05"
+     }
+    ],
+    "clock": "2026-11-21 11:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "周末轻松邀约：周日香锅加敲定桌卡尺寸"
+   }
+  },
+  {
+   "case_id": "LRE141_T21",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "客户那边有个小要求：他们档案室归档，问能不能把最早那版 v2 也发一份给他们存着。我有点犹豫，你说发不发？",
+      "ts": "2026-11-24 14:30"
+     }
+    ],
+    "clock": "2026-11-24 14:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "旧事复活陷阱：客户档案室索要已冻结的 v2 归档"
+   }
+  },
+  {
+   "case_id": "LRE141_T22",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "问清楚了，他们归档系统只认终版号，v2 不用发，虚惊一场。主视觉今天能出细稿吗？客户周五要看大屏效果。",
+      "ts": "2026-11-25 09:40"
+     }
+    ],
+    "clock": "2026-11-25 09:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "v2 请求撤回：归档系统只认终版号；主视觉细稿本周五前"
+   }
+  },
+  {
+   "case_id": "LRE141_T23",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "细稿客户看了，大屏效果很满意，就提了一处：签到背景板宽度从六米加到八米，画面拉大就行，文案不动。",
+      "ts": "2026-11-27 16:20"
+     }
+    ],
+    "clock": "2026-11-27 16:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "细稿通过；背景板宽度六米改八米，文案不动"
+   }
+  },
+  {
+   "case_id": "LRE141_T24",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "八米背景板喷绘报价出来了，比原来预算贵四成多，行政让我二选一：缩回六米，或者换哑光布便宜些但反光差点。你从画面角度说，哪个亏得少？",
+      "ts": "2026-12-01 10:50"
+     }
+    ],
+    "clock": "2026-12-01 10:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "冲突：八米喷绘报价超预算四成，面临缩尺寸或换材质二选一"
+   }
+  },
+  {
+   "case_id": "LRE141_T25",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "行政定了：背景板保持八米，换哑光布，反光问题用灯光补。你说得对，年会现场本来就该压光。报价单我重新走流程。",
+      "ts": "2026-12-02 15:30"
+     }
+    ],
+    "clock": "2026-12-02 15:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "预算冲突化解：保八米换哑光布，灯光补反光"
+   }
+  },
+  {
+   "case_id": "LRE141_T26",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "拉哥让下周复盘会讲讲恒信单的经验教训，我想提盒盖方向那次返工——你当时改的是朝哪边来着？我想把'方向对样机'写进 checklist，别写反了闹笑话。",
+      "ts": "2026-12-03 11:15"
+     }
+    ],
+    "clock": "2026-12-03 11:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "出窗探针：复盘会要提盒盖开合方向返工，问当时改朝哪边"
+   }
+  },
+  {
+   "case_id": "LRE141_T27",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "主视觉和背景板文件今天都发印厂了，桌卡也一起。厂里说四天能出，10 号送货到场地，年会 11 号晚上正好。",
+      "ts": "2026-12-04 17:45"
+     }
+    ],
+    "clock": "2026-12-04 17:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "物料进厂：四天出货，12 月 10 号送货到场，衔接年会"
+   }
+  },
+  {
+   "case_id": "LRE141_T28",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周末不聊工作，就一句：今年终于能在年会上看自己设计的大屏了，想想还挺爽。你组里年会有节目吗？",
+      "ts": "2026-12-05 20:30"
+     }
+    ],
+    "clock": "2026-12-05 20:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "周末闲聊：期待年会看自己设计的大屏"
+   }
+  },
+  {
+   "case_id": "LRE141_T29",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "印厂打样照片出来了，桌卡的烫金位置印歪了，logo 压到字上。厂里说是装版歪了，重印不加钱，赶得上 10 号送货。我盯着他们重打。",
+      "ts": "2026-12-08 09:55"
+     }
+    ],
+    "clock": "2026-12-08 10:00",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "冲突：桌卡烫金装版歪斜，印厂免费重印"
+   }
+  },
+  {
+   "case_id": "LRE141_T30",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "重打的样我看过照片了，位置正了，金得也亮。我又让他们送两张样给我留档，避免验收时扯皮。10 号送货我亲自盯。",
+      "ts": "2026-12-09 15:10"
+     }
+    ],
+    "clock": "2026-12-09 15:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "重印合格：留样存档，10 号亲自收货"
+   }
+  },
+  {
+   "case_id": "LRE141_T31",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "物料全部到场验收完毕！背景板八米没缩水，桌卡烫金一个没歪，我拍了全套照片存档。明天就等着开场了，紧张又期待！",
+      "ts": "2026-12-10 18:40"
+     }
+    ],
+    "clock": "2026-12-10 18:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "验收通过：物料全部到场，全套照片存档"
+   }
+  },
+  {
+   "case_id": "LRE141_T32",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "年会今晚开场！背景板八点前挂好，主视觉投在两侧大屏。客户老总进场第一眼就是你的设计，稳住，我们品牌组今晚也沾光！",
+      "ts": "2026-12-11 08:55"
+     }
+    ],
+    "clock": "2026-12-11 09:00",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "年会当天：物料就位，今晚开场"
+   }
+  },
+  {
+   "case_id": "LRE141_T33",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "昨晚圆满落幕！老总致辞站在你的大屏前说了十分钟，好多同事拍照发朋友圈。拉哥散场时跟我说：下回恒信的单还点名要你。",
+      "ts": "2026-12-12 11:30"
+     }
+    ],
+    "clock": "2026-12-12 11:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "年会圆满落幕，拉哥放话下回点名要 ME"
+   }
+  },
+  {
+   "case_id": "LRE141_T34",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "复盘会开完了，会上有人记岔说恒信单是拖到交付日当天下午才交的，影响节奏。我拿台历记录帮他捋了：稿子当天上午九点就归档了。你看是这样吧？",
+      "ts": "2026-12-14 10:20"
+     }
+    ],
+    "clock": "2026-12-14 10:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "出窗探针：复盘会上交付节奏被记岔，需召回 11 月 11 日上午九点归档的史实"
+   }
+  },
+  {
+   "case_id": "LRE141_T35",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "好消息！恒信把明年的包装更新签成季度框架了，四个季度各一轮改版，还都走你的手。拉哥点名夸了全链路，说一开始转达口径乌龙那页揭过去了。",
+      "ts": "2026-12-16 14:05"
+     }
+    ],
+    "clock": "2026-12-16 14:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "好消息：恒信签署明年季度包装框架，全部走 ME"
+   }
+  },
+  {
+   "case_id": "LRE141_T36",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "年底清账时间到！恒信季度框架的庆功餐我请，加急餐那顿的余温还在，这次升级成火锅，时间你挑，这周或下周都行。",
+      "ts": "2026-12-18 16:30"
+     }
+    ],
+    "clock": "2026-12-18 16:35",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "轻松邀约：庆功火锅由她请，时间待定"
+   }
+  },
+  {
+   "case_id": "LRE141_T37",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "那就下周三中午十二点，公司后面新开的那家火锅，我订位置。拉哥要是问起启润那单，我帮你说好话！",
+      "ts": "2026-12-19 12:20"
+     }
+    ],
+    "clock": "2026-12-19 12:25",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "庆功餐定档下周三十二点；她主动帮腔启润话题"
+   }
+  },
+  {
+   "case_id": "LRE141_T38",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "启润那单小郑跟得不错，拉哥说年后给你也排一个，不用插队恒信。台历上是不是该翻新页了？2027 的格子我都想替你写上'恒信季度改版'。",
+      "ts": "2026-12-21 09:40"
+     }
+    ],
+    "clock": "2026-12-21 09:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "年后排期预告：启润年后给 ME 排一个，恒信优先不插队"
+   }
+  },
+  {
+   "case_id": "LRE141_T39",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今年跟你的配合算下来：一单救火、一单年会、一单续约，还有一顿香锅一顿火锅。台历划掉那么多格，每格都值。明年继续搭伙呀！",
+      "ts": "2026-12-23 15:50"
+     }
+    ],
+    "clock": "2026-12-23 15:55",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "年末总结：救火、年会、续约加两顿饭，展望明年"
+   }
+  },
+  {
+   "case_id": "LRE141_T40",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "平安夜快乐呀！明年第一轮改版 brief 一月初发你，节后再说正事。今晚早点下班，替我多吃个苹果！",
+      "ts": "2026-12-24 17:20"
+     }
+    ],
+    "clock": "2026-12-24 17:25",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state_shift": "收尾致意：平安夜祝福，一月初发新 brief，无待办压力"
+   }
+  }
+ ]
+}

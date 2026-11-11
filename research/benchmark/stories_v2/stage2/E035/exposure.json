@@ -1,0 +1,39 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "E035",
+ "title": "宠物疗程六周",
+ "themes": [
+  "长期事情",
+  "疗程修正",
+  "跨日随访",
+  "应激预案",
+  "治疗收口"
+ ],
+ "author": "ZCode main worker-AI (synthetic)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；不含真实用户素材；不声称真人经历。",
+ "readers": [
+  "author"
+ ],
+ "independent_review": false,
+ "review_note": "同 worker 自检；不是独立封存集。",
+ "created_at": "2026-10-28",
+ "frozen_at": null,
+ "status": "dev_candidate_stage2",
+ "experiments_used": [],
+ "dev_exposed": true,
+ "validation_claim": false,
+ "turns": 12,
+ "may_decline_turns": [
+  "E035_T12"
+ ],
+ "hashes": {
+  "episode.json": "26f19e3cb043e599de95bdb47cb9a33ad595886d22ec01460ce1a210831a79eb",
+  "reference.json": "9e7559109dc2eab851305847f8f0ebe7c6d96e70de811625940841d629c6328f",
+  "timeline.json": "d9bfa28ec470a3200aecf2414cf650388b5e0d7c92d0d01cdc206c40c3bc9a8f",
+  "audit.md": "093563103796dd1d746080af60a3df888c27ae6ee05f8201638f27699f1976b4"
+ },
+ "runner_copy": "benchmark/episodes/E035.json",
+ "notes": "Stage2 首批（W06）；12位自然故事；冻结与未调参验证在后续批次。"
+}

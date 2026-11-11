@@ -1,0 +1,2564 @@
+{
+ "story_id": "E337",
+ "turns": {
+  "E337_T01": {
+   "case_id": "E337_T01",
+   "current_action": "接收 11 月 21 日（周六）搬家计划与分工，回答周六上午能否帮运猫和电脑",
+   "acceptable_actions": [
+    "答应周六上午到并确认猫和电脑走自己车",
+    "答应并顺口确认大件走货车不用自己管",
+    "答应并问清当天集合方式或联系细节"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T01_A01",
+     "subject": "SHARED",
+     "relation": "搬家计划",
+     "value": "HER 定于 2026-11-21（周六）从老小区搬往荔枝苑",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T01",
+      "quote": "我要搬家了，11 月 21 号，周六",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T01_A02",
+     "subject": "SHARED",
+     "relation": "搬运分工",
+     "value": "猫和电脑走 ME 的车，大件由 HER 另叫货车运送",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T01",
+      "quote": "猫和电脑走你车，大件我另叫货车",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T01_A03",
+     "subject": "HER",
+     "relation": "新居选择",
+     "value": "新房为荔枝苑一套，离公司近两站、带电梯、可养猫",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T01",
+      "quote": "我看中荔枝苑一套，离公司近两站，带电梯，最关键是能养猫",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "熟邻语气爽快接下即可，顺带确认分工；不必过度客套。",
+   "unknowns": [
+    {
+     "topic": "大件货车的预约信息",
+     "note": "本轮只说'另叫货车'，公司与时间均未定（T04 才初定九点）",
+     "markers": [
+      [
+       "货车",
+       "九点"
+      ],
+      [
+       "货车",
+       "八点半"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "货车",
+       "九点"
+      ],
+      [
+       "货车",
+       "八点半"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "最关键是能养猫"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造货车公司、司机或预约时间",
+    "不得把大件也说成由 ME 的车运送"
+   ],
+   "may_decline": false
+  },
+  "E337_T02": {
+   "case_id": "E337_T02",
+   "current_action": "接收豆包体检与减重方案，并被拉进'猫对我哈气'的评理玩笑",
+   "acceptable_actions": [
+    "接评理玩笑并站在 HER 一边，同时认可 60 克方案",
+    "玩笑式解释猫哈气原因并叮嘱按量喂",
+    "调侃豆包'哈气是抗议减肥'并支持方案"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T02_A01",
+     "subject": "HER",
+     "relation": "体重基线",
+     "value": "豆包体检 5.8 公斤，医生判定超重，目标 5.5 公斤",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T02",
+      "quote": "豆包体检报告出来了，5.8 公斤，医生说超了，目标 5.5",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T02_A02",
+     "subject": "SHARED",
+     "relation": "喂食方案",
+     "value": "自 2026-11-17 起猫粮每天 60 克，不得心软加餐（后于 T09 更正为 65 克）",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T02",
+      "quote": "猫粮从今天起每天 60 克，不准心软投喂",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T02_A03",
+     "subject": "HER",
+     "relation": "互动请求",
+     "value": "豆包对 HER 哈气，HER 要 ME 评理",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T02",
+      "quote": "它刚才对我哈气，你评评理",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "先接住玩笑再落到喂食纪律，别劝她放宽。",
+   "unknowns": [
+    {
+     "topic": "医生是否已指定复查时间",
+     "note": "本轮未提复查，T09 才出现'一个月后复查'",
+     "markers": [
+      [
+       "复查",
+       "定了"
+      ],
+      [
+       "下次",
+       "复查"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "复查",
+       "定了"
+      ],
+      [
+       "下次",
+       "复查"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "不准心软投喂"
+   ],
+   "forbidden_factual_claims": [
+    "不得怂恿加餐或零食（与减重方案冲突）",
+    "不得编造豆包病史或年龄"
+   ],
+   "may_decline": false
+  },
+  "E337_T03": {
+   "case_id": "E337_T03",
+   "current_action": "接收 11 月 28 日河畔画室水彩体验课邀约与 98 元垫付人情",
+   "acceptable_actions": [
+    "答应 28 号去并认下这份人情",
+    "答应并玩笑式承诺画一幅能挂书房的",
+    "答应并确认自己颜料画架都不用带"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T03_A01",
+     "subject": "SHARED",
+     "relation": "水彩体验课约定",
+     "value": "2026-11-28（周六）河畔画室水彩体验课，两人同去（后于 T17 取消）",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T03",
+      "quote": "11 月 28 号周六，河畔画室水彩体验课",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T03_A02",
+     "subject": "SHARED",
+     "relation": "课费垫付",
+     "value": "98 元/人由 HER 垫付，ME 欠 HER 一个人情",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T03",
+      "quote": "98 一人，我帮你交了，别跟我客气，你就欠着我",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T03_A03",
+     "subject": "HER",
+     "relation": "课后计划",
+     "value": "画完的画打算挂新家书房",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T03",
+      "quote": "画完正好给新家书房挂画",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "认人情要爽快，这是她的边界习惯（麻烦别人必还人情）。",
+   "unknowns": [
+    {
+     "topic": "体验课集合时间",
+     "note": "本轮未提集合时间，T15 才确定 28 号九点半",
+     "markers": [
+      [
+       "九点半",
+       "见"
+      ],
+      [
+       "九点半",
+       "集合"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "九点半",
+       "见"
+      ],
+      [
+       "九点半",
+       "集合"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "你就欠着我"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称颜料画架需自备（画室全包）",
+    "不得把课程说成免费"
+   ],
+   "may_decline": false
+  },
+  "E337_T04": {
+   "case_id": "E337_T04",
+   "current_action": "确认搬家日货车九点到南门、ME 九点到楼下装猫和电脑的初始流程",
+   "acceptable_actions": [
+    "确认九点到楼下并接下装猫和电脑的任务",
+    "确认并保证自己的车跟紧货车",
+    "确认并问豆包坐车要准备什么"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T04_A01",
+     "subject": "SHARED",
+     "relation": "货车初始安排",
+     "value": "货车约 2026-11-21 早 9:00，司机到老小区南门（后于 T08 更正为 8:30）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T04",
+      "quote": "货车约了周六早上九点，司机到小区南门",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T04_A02",
+     "subject": "SHARED",
+     "relation": "ME 到场初始安排",
+     "value": "ME 9:00 到 HER 楼下，先装豆包和电脑（后于 T08 更正为 8:00）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T04",
+      "quote": "你九点到我楼下，先装豆包和电脑",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T04_A03",
+     "subject": "SHARED",
+     "relation": "车队秩序",
+     "value": "ME 的车跟着货车走，确保猫和电脑都不丢",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T04",
+      "quote": "你的车跟着货车走，别让它俩谁丢了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "对表式确认即可，注意此刻仍是九点口径。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把找货车或开货车的责任说成 ME 的"
+   ],
+   "may_decline": false
+  },
+  "E337_T05": {
+   "case_id": "E337_T05",
+   "current_action": "接收公司尤克里里班信息并向 ME 借调音器",
+   "acceptable_actions": [
+    "答应借调音器并鼓励第一节课",
+    "答应借并玩笑式约定跑调概不负责",
+    "答应借并问要不要顺手带份和弦图"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T05_A01",
+     "subject": "HER",
+     "relation": "兴趣班安排",
+     "value": "HER 报了公司尤克里里班：每周四晚、楼下会议室",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T05",
+      "quote": "公司兴趣班我报上了：尤克里里，每周四晚，就在楼下会议室",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T05_A02",
+     "subject": "HER",
+     "relation": "首课时间",
+     "value": "尤克里里第一节课在 2026-11-19（这周四）",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T05",
+      "quote": "第一节这周四",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T05_A03",
+     "subject": "SHARED",
+     "relation": "调音器借用",
+     "value": "HER 向 ME 借调音器（后由 T07 约搬家日归还、T24 改为 12-03 周四归还）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T05",
+      "quote": "你那调音器借我呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "借东西一口答应即可，加一句鼓励比叮嘱更合拍。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造调音器型号或购买渠道"
+   ],
+   "may_decline": false
+  },
+  "E337_T06": {
+   "case_id": "E337_T06",
+   "current_action": "接收新房东来电引发的更正：搬家改到周日 11 月 22 日，钥匙周五晚八点才拿",
+   "acceptable_actions": [
+    "确认改期并按周日新口径对表",
+    "接'变化赶不上房东'的自嘲并确认周日一切按新安排",
+    "确认改期并说自己的到场时间跟着周日走"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T06_A01",
+     "subject": "SHARED",
+     "relation": "搬家日旧值",
+     "value": "搬家日原定 2026-11-21（周六），经 T06 更正作废",
+     "valid_time": "2026-11-21",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T01",
+      "quote": "我要搬家了，11 月 21 号，周六",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "还是",
+       "21 号"
+      ],
+      [
+       "21 号",
+       "没错"
+      ],
+      [
+       "就",
+       "21 号"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T06_A02",
+     "subject": "SHARED",
+     "relation": "搬家日新值",
+     "value": "搬家改到 2026-11-22（周日）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T06",
+      "quote": "搬家改到周日 11 月 22 号",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "11 月 22 号"
+      ],
+      [
+       "周日",
+       "搬家"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T06_A03",
+     "subject": "SHARED",
+     "relation": "钥匙时间",
+     "value": "新房钥匙 2026-11-20（周五）晚八点才拿得到",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T06",
+      "quote": "钥匙要周五晚上八点才拿得到",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T06_A04",
+     "subject": "HER",
+     "relation": "保洁信息",
+     "value": "新房周六一早保洁才能进场，晾不出味儿",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T06",
+      "quote": "周六一早保洁才能进场，晾不出味儿",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T06_A05",
+     "subject": "SHARED",
+     "relation": "货车改约",
+     "value": "货车已随改期改约（具体时间 T08 落定为 8:30）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T06",
+      "quote": "货车我改约了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T06_A06",
+     "subject": "SHARED",
+     "relation": "水彩课范围",
+     "value": "HER 明确水彩课不受此次改期影响",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T06",
+      "quote": "水彩课不受影响",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "更正来自新房东来电转述（attribution），听最新的就行；别追问房东细节。",
+   "unknowns": [
+    {
+     "topic": "周六（11-21）过渡安排",
+     "note": "钥匙周五晚才拿、周六保洁进场，正文未提 HER 周六住处，不得代答",
+     "markers": [
+      [
+       "住酒店"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "住酒店"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得沿用 11 月 21 号周六作为搬家日",
+    "不得把钥匙时间说成周五早上或周六"
+   ],
+   "may_decline": false
+  },
+  "E337_T07": {
+   "case_id": "E337_T07",
+   "current_action": "接收尤克里里首课战报，并把调音器归还顺到搬家日",
+   "acceptable_actions": [
+    "夸进度并应下搬家那天顺路收调音器",
+    "接手指头疼的玩笑并说调音器不用急着还",
+    "夸《小老虎》并确认搬家当天自己顺路取"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T07_A01",
+     "subject": "HER",
+     "relation": "首课成果",
+     "value": "尤克里里第一节课学了三个和弦，《小老虎》能弹出个调",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T07",
+      "quote": "学了三个和弦，手指头疼",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T07_A02",
+     "subject": "SHARED",
+     "relation": "归还计划",
+     "value": "调音器约定搬家日顺路归还（实际执行改为 12-03 周四，见 T24）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T07",
+      "quote": "搬家那天还你？顺便",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T07_A03",
+     "subject": "SHARED",
+     "relation": "调音器在用",
+     "value": "调音器在 HER 处使用中且好用",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T07",
+      "quote": "调音器好用",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她来报喜，接住成就感就行；归还顺路即可别上纲上线。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把《小老虎》说成《小星星》（那是后来的练习曲）"
+   ],
+   "may_decline": false
+  },
+  "E337_T08": {
+   "case_id": "E337_T08",
+   "current_action": "确认货车提前到八点半、自己八点到楼下，并应下周日搬完的木樨园酸菜鱼答谢饭",
+   "acceptable_actions": [
+    "确认八点到楼下并爽快应下答谢饭",
+    "确认时间并接'搬家饭'玩笑说只带人到",
+    "确认并主动对表货车八点半"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T08_A01",
+     "subject": "SHARED",
+     "relation": "货车时间旧值",
+     "value": "货车原约 9:00 到南门（T08 更正为 8:30）",
+     "valid_time": "2026-11-22",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T04",
+      "quote": "货车约了周六早上九点，司机到小区南门",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "货车",
+       "九点",
+       "没错"
+      ],
+      [
+       "还是",
+       "九点"
+      ],
+      [
+       "九点",
+       "南门",
+       "没错"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T08_A02",
+     "subject": "SHARED",
+     "relation": "ME 到场旧值",
+     "value": "ME 原定 9:00 到楼下（T08 更正为 8:00）",
+     "valid_time": "2026-11-22",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T04",
+      "quote": "你九点到我楼下，先装豆包和电脑",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "九点",
+       "到我楼下"
+      ],
+      [
+       "九点",
+       "装豆包"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T08_A03",
+     "subject": "SHARED",
+     "relation": "货车新时间",
+     "value": "货车提前到 8:30",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T08",
+      "quote": "货车师傅把我的九点提到八点半了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "八点半"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T08_A04",
+     "subject": "SHARED",
+     "relation": "ME 新到场时间",
+     "value": "ME 8:00 到 HER 家楼下",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T08",
+      "quote": "你八点到我家楼下，别按九点来",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "八点",
+       "楼下"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T08_A05",
+     "subject": "SHARED",
+     "relation": "答谢饭约定",
+     "value": "周日搬完后 HER 请 ME 吃木樨园酸菜鱼作搬家答谢饭（地点后于 T14 更改）",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T08",
+      "quote": "周日搬完我请你吃木樨园那家酸菜鱼，搬家饭，我请，你人到就行",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "木樨园",
+       "酸菜鱼"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "本轮带显式意图：确认改时后的到场时间+应下答谢饭，两件都要接。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我请，你人到就行"
+   ],
+   "forbidden_factual_claims": [
+    "不得按九点口径确认到场",
+    "不得把答谢饭推掉或说成 ME 请客"
+   ],
+   "may_decline": false
+  },
+  "E337_T09": {
+   "case_id": "E337_T09",
+   "current_action": "接收复诊更正：猫粮从每天 60 克放宽到 65 克，一个月后复查",
+   "acceptable_actions": [
+    "确认 65 克新口径并接'当场原谅'的玩笑",
+    "认可医嘱并提醒按新量执行",
+    "接玩笑并祝一个月后复查顺利"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T09_A01",
+     "subject": "SHARED",
+     "relation": "喂食旧量",
+     "value": "猫粮原方案每天 60 克（T09 复诊后作废）",
+     "valid_time": "2026-11-17",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T02",
+      "quote": "猫粮从今天起每天 60 克，不准心软投喂",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "还是",
+       "60 克"
+      ],
+      [
+       "60 克",
+       "继续"
+      ],
+      [
+       "60 克",
+       "就行"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T09_A02",
+     "subject": "SHARED",
+     "relation": "喂食新量",
+     "value": "猫粮改为每天 65 克（复诊医嘱，医生认为 60 克减太狠）",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T09",
+      "quote": "改成每天 65 克",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "65 克"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T09_A03",
+     "subject": "HER",
+     "relation": "复查安排",
+     "value": "一个月后复查（具体日期未定，约 2026-12-20）",
+     "valid_time": "2026-11-20",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T09",
+      "quote": "一个月后复查",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她转述医嘱，跟新口径走即可；'加餐'只是玩笑别当真。",
+   "unknowns": [
+    {
+     "topic": "复查的具体日期",
+     "note": "只说一个月后，未定具体哪天",
+     "markers": [
+      [
+       "复查",
+       "就",
+       "12 月 20 号"
+      ],
+      [
+       "复查",
+       "定在",
+       "12 月"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "复查",
+       "就",
+       "12 月 20 号"
+      ],
+      [
+       "复查",
+       "定在",
+       "12 月"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得沿用每天 60 克的旧量",
+    "不得自行再放宽喂食量"
+   ],
+   "may_decline": false
+  },
+  "E337_T10": {
+   "case_id": "E337_T10",
+   "current_action": "搬家前日对表：HER 复述'明天货车八点半、你八点'求核对，并分享打包进度",
+   "acceptable_actions": [
+    "核对无误：确认明天（11-22 周日）货车八点半、自己八点到",
+    "确认记对了并接'书在自己下蛋'的玩笑",
+    "对表正确并叮嘱豆包别被装进纸箱运走"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T10_A01",
+     "subject": "SHARED",
+     "relation": "搬家日新值",
+     "value": "搬家日为 2026-11-22（周日），T10 '明天'即此日",
+     "valid_time": "2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T06",
+      "quote": "搬家改到周日 11 月 22 号",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "11 月 22 号"
+      ],
+      [
+       "周日",
+       "搬家"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T10_A02",
+     "subject": "SHARED",
+     "relation": "货车新时间",
+     "value": "货车 8:30 到（T08 口径）",
+     "valid_time": "2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T08",
+      "quote": "货车师傅把我的九点提到八点半了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "八点半"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T10_A03",
+     "subject": "SHARED",
+     "relation": "ME 新到场时间",
+     "value": "ME 8:00 到楼下（T08 口径）",
+     "valid_time": "2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T08",
+      "quote": "你八点到我家楼下，别按九点来",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "八点",
+       "楼下"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T10_A04",
+     "subject": "SHARED",
+     "relation": "货车时间旧值",
+     "value": "货车 9:00 旧口径已作废",
+     "valid_time": "2026-11-22",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T04",
+      "quote": "货车约了周六早上九点，司机到小区南门",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "货车",
+       "九点"
+      ],
+      [
+       "周六早上九点"
+      ],
+      [
+       "九点",
+       "南门"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T10_A05",
+     "subject": "SHARED",
+     "relation": "搬家日旧值",
+     "value": "11-21（周六）旧日期已作废",
+     "valid_time": "2026-11-21",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T01",
+      "quote": "我要搬家了，11 月 21 号，周六",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还是",
+       "21 号"
+      ],
+      [
+       "21 号",
+       "没错"
+      ],
+      [
+       "就",
+       "21 号"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T10_A06",
+     "subject": "HER",
+     "relation": "打包进度",
+     "value": "纸箱封了一半，书装了四箱",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T10",
+      "quote": "纸箱封了一半，书居然装了四箱",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是 T08 更正后的对表位：周日/八点半/八点三个数字必须按新口径，并明确回答'记对了'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把搬家日说回 11 月 21 号周六",
+    "不得按货车九点或 ME 九点的旧口径核对"
+   ],
+   "may_decline": false
+  },
+  "E337_T11": {
+   "case_id": "E337_T11",
+   "current_action": "搬前夜播报：封箱完毕、豆包宿纸箱、HER 睡沙发，可简短回应或不回",
+   "acceptable_actions": [
+    "简短道晚安并预祝明天顺利",
+    "玩笑叮嘱别压到床边纸箱里的猫",
+    "合法不回（深夜播报无须答复）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T11_A01",
+     "subject": "HER",
+     "relation": "搬前夜状态",
+     "value": "最后一箱封完，豆包不肯出纸箱、宿在挪到床边的纸箱里",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T11",
+      "quote": "最后一个箱子封完，豆包死活不肯出纸箱",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T11_A02",
+     "subject": "HER",
+     "relation": "就寝安排",
+     "value": "HER 晚上睡沙发，明天搬家",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T11",
+      "quote": "我睡沙发，明天战搬家",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "深夜收尾信息，简短或沉默都合法；别展开新话题。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得展开新话题或新增明天流程外的安排"
+   ],
+   "may_decline": true
+  },
+  "E337_T12": {
+   "case_id": "E337_T12",
+   "current_action": "搬家日晨出发：货车已到，豆包坐猫包放副驾并留窗边视角",
+   "acceptable_actions": [
+    "确认放副驾留视角并出发",
+    "接'一路喵'的玩笑说给它全程解说",
+    "确认并说自己的车跟在货车后面"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T12_A01",
+     "subject": "SHARED",
+     "relation": "搬家日新值",
+     "value": "搬家执行日为 2026-11-22（周日新口径）",
+     "valid_time": "2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T06",
+      "quote": "搬家改到周日 11 月 22 号",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "11 月 22 号"
+      ],
+      [
+       "周日",
+       "搬家"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T12_A02",
+     "subject": "SHARED",
+     "relation": "货车新时间",
+     "value": "货车按 8:30 新口径执行",
+     "valid_time": "2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T08",
+      "quote": "货车师傅把我的九点提到八点半了",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "八点半"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T12_A03",
+     "subject": "SHARED",
+     "relation": "货车时间旧值",
+     "value": "货车 9:00 旧口径作废",
+     "valid_time": "2026-11-22",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T04",
+      "quote": "货车约了周六早上九点，司机到小区南门",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "货车",
+       "九点"
+      ],
+      [
+       "周六早上九点"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T12_A04",
+     "subject": "SHARED",
+     "relation": "搬家日旧值",
+     "value": "11-21（周六）旧日期作废",
+     "valid_time": "2026-11-21",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T01",
+      "quote": "我要搬家了，11 月 21 号，周六",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还是",
+       "21 号"
+      ],
+      [
+       "21 号",
+       "没错"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T12_A05",
+     "subject": "SHARED",
+     "relation": "豆包乘车安排",
+     "value": "豆包坐猫包放 ME 副驾，窗边留视角",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T12",
+      "quote": "豆包在猫包里，一路喵，你放副驾，窗边给它留个视角",
+      "message_id": "m1"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T12_A06",
+     "subject": "SHARED",
+     "relation": "出发现场",
+     "value": "货车已到、师傅在搬大件，HER 已下楼",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T12",
+      "quote": "我下来了，货车到了，师傅在搬大件",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "行动确认位：时间口径必须全对，豆包安置照她说的办。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把当天说成周六或按九点旧口径行动"
+   ],
+   "may_decline": false
+  },
+  "E337_T13": {
+   "case_id": "E337_T13",
+   "current_action": "报平安入住荔枝苑 7 栋 1202：桌腿磕角心疼、豆包钻床底",
+   "acceptable_actions": [
+    "先宽慰桌腿磕角再聊豆包适应期",
+    "接'全须全尾'的说法并支持猫粮碗放阳台等它自己出来",
+    "恭喜入住并给豆包留适应时间"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T13_A01",
+     "subject": "SHARED",
+     "relation": "新家地址",
+     "value": "HER 新家为荔枝苑 7 栋 1202",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T13",
+      "quote": "荔枝苑 7 栋 1202",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T13_A02",
+     "subject": "HER",
+     "relation": "物品状态",
+     "value": "电脑桌腿磕了一角，其余全须全尾",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T13",
+      "quote": "电脑桌腿磕了一角，心疼",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T13_A03",
+     "subject": "HER",
+     "relation": "豆包状态",
+     "value": "豆包出包即钻床底，猫粮碗放阳台等它饿了自然出来",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T13",
+      "quote": "豆包一出包就钻床底，猫粮碗我放阳台了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "情绪优先：先接心疼和猫的应激，别急着夸新家多好。",
+   "unknowns": [
+    {
+     "topic": "桌腿的修复安排",
+     "note": "正文只说磕角心疼，未提是否要修、谁来修",
+     "markers": [
+      [
+       "修好了"
+      ],
+      [
+       "已修"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "修好了"
+      ],
+      [
+       "已修"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称豆包已适应新家（刚钻床底）",
+    "不得编造房租或面积信息"
+   ],
+   "may_decline": false
+  },
+  "E337_T14": {
+   "case_id": "E337_T14",
+   "current_action": "答谢饭地点从木樨园改为新家楼下荔香居，并邀 ME 现在就下来",
+   "acceptable_actions": [
+    "答应现在下来，按荔香居新地点赴约",
+    "答应并接'腿不想再坐车'的玩笑",
+    "答应并说五分钟就到"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T14_A01",
+     "subject": "SHARED",
+     "relation": "答谢饭旧地点",
+     "value": "答谢饭原定木樨园酸菜鱼（T14 改为荔香居）",
+     "valid_time": "2026-11-22",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T08",
+      "quote": "周日搬完我请你吃木樨园那家酸菜鱼，搬家饭，我请，你人到就行",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "还是",
+       "木樨园"
+      ],
+      [
+       "木樨园",
+       "见"
+      ],
+      [
+       "定",
+       "木樨园"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T14_A02",
+     "subject": "SHARED",
+     "relation": "答谢饭新地点",
+     "value": "答谢饭改到新家楼下荔香居，酸菜鱼照样有，HER 请客",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T14",
+      "quote": "就去新家楼下荔香居，酸菜鱼照样有，我请，走五分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "荔香居"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T14_A03",
+     "subject": "SHARED",
+     "relation": "当晚赴约",
+     "value": "HER 邀 ME 现在下楼赴饭局",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T14",
+      "quote": "你现在下来？",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本轮带显式意图：接受地点调整并赴约；地点必须用荔香居。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我请，走五分钟"
+   ],
+   "forbidden_factual_claims": [
+    "不得坚持去木樨园或沿用旧地点",
+    "不得把饭局说成 ME 请客"
+   ],
+   "may_decline": false
+  },
+  "E337_T15": {
+   "case_id": "E337_T15",
+   "current_action": "确认水彩课物料到店与 28 号九点半河畔画室集合",
+   "acceptable_actions": [
+    "确认 28 号九点半集合并谢她领材料",
+    "确认并接围裙玩笑说自己负责弄脏围裙",
+    "确认并问要不要提前一起吃个早饭"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T15_A01",
+     "subject": "SHARED",
+     "relation": "集合安排",
+     "value": "水彩体验课 2026-11-28 九点半河畔画室集合（后于 T17 随课取消）",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T15",
+      "quote": "这周六 28 号九点半河畔画室集合",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T15_A02",
+     "subject": "SHARED",
+     "relation": "材料到店",
+     "value": "体验课材料包到店，画架画笔全齐，HER 已帮 ME 领取",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T15",
+      "quote": "体验课材料包到店，画架画笔全齐，我那份帮你领了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T15_A03",
+     "subject": "SHARED",
+     "relation": "围裙安排",
+     "value": "HER 多带一条围裙给 ME",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T15",
+      "quote": "围裙我多带一条",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "对表确认即可；此时课程仍按 28 号进行。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替画室改动集合时间"
+   ],
+   "may_decline": false
+  },
+  "E337_T16": {
+   "case_id": "E337_T16",
+   "current_action": "分享尤克里里居家练习近况与'豆包听众全程睡'的日常玩笑",
+   "acceptable_actions": [
+    "接'避我如避噪音'的自嘲并夸她进步",
+    "玩笑说豆包是最高规格差评听众",
+    "顺着新家回音聊一句再夸《小星星》"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T16_A01",
+     "subject": "HER",
+     "relation": "练习进展",
+     "value": "尤克里里居家练习，《小星星》弹唱版快练成",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T16",
+      "quote": "尤克里里居家练习，《小星星》弹唱版快磨出来了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T16_A02",
+     "subject": "HER",
+     "relation": "日常玩笑",
+     "value": "豆包当观众全程睡，新家回音大",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T16",
+      "quote": "豆包当观众，全程睡——新家回音大",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "纯日常分享，接住自嘲即可，不必给建议。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E337_T17": {
+   "case_id": "E337_T17",
+   "current_action": "画室水管爆裂停课：28 号体验课取消、费用三个工作日原路退、HER 决定不补课",
+   "acceptable_actions": [
+    "接受取消并认可她'直接退钱'的处理",
+    "安慰可惜但支持退钱不补课",
+    "确认 98 到账后她转回即可，周六不跑空"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "boundary",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T17_A01",
+     "subject": "SHARED",
+     "relation": "水彩课事项",
+     "value": "河畔画室 11-28 水彩体验课已取消（停课+退款），不得复活",
+     "valid_time": "2026-11-28",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T03",
+      "quote": "11 月 28 号周六，河畔画室水彩体验课",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "水彩课",
+       "照常"
+      ],
+      [
+       "28 号",
+       "上课"
+      ],
+      [
+       "课",
+       "照上"
+      ]
+     ],
+     "item_markers": [
+      "水彩体验课",
+      "河畔画室",
+      "水彩课"
+     ]
+    },
+    {
+     "atom_id": "E337_T17_A02",
+     "subject": "THIRD",
+     "relation": "停课事实",
+     "value": "河畔画室水管爆裂整层泡水，这两周课全停（画室通知，HER 转述）",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T17",
+      "quote": "河畔画室水管爆了，整层泡水，这两周课全停",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T17_A03",
+     "subject": "SHARED",
+     "relation": "退费安排",
+     "value": "费用三个工作日原路退",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T17",
+      "quote": "费用三个工作日原路退",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T17_A04",
+     "subject": "HER",
+     "relation": "不补课决定",
+     "value": "HER 已明确跟画室说不补课、直接退钱；98 退到 HER 卡后她再转 ME",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T17",
+      "quote": "我跟老板说了不补课，直接退钱，你那 98 退到我卡上我再转你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T17_A05",
+     "subject": "SHARED",
+     "relation": "集合安排",
+     "value": "11-28 九点半河畔画室集合随课程取消而作废",
+     "valid_time": "2026-11-28",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T15",
+      "quote": "这周六 28 号九点半河畔画室集合",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "照常",
+       "集合"
+      ],
+      [
+       "集合",
+       "没错"
+      ]
+     ],
+     "item_markers": [
+      "河畔画室集合",
+      "九点半集合"
+     ]
+    }
+   ],
+   "private_guidance": "停课通知是她转述画室消息（attribution）；尊重她不补课的决定，别劝改主意。",
+   "unknowns": [
+    {
+     "topic": "98 元退费到账日期",
+     "note": "只说三个工作日原路退，未定具体到账日",
+     "markers": [
+      [
+       "98",
+       "已到账"
+      ],
+      [
+       "退费",
+       "已到"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "98",
+       "已到账"
+      ],
+      [
+       "退费",
+       "已到"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我跟老板说了不补课，直接退钱"
+   ],
+   "forbidden_factual_claims": [
+    "不得提议或应允补课（HER 已明确不补课）",
+    "不得把本周六课程说成照常进行",
+    "不得否认停课或退费安排"
+   ],
+   "may_decline": false
+  },
+  "E337_T18": {
+   "case_id": "E337_T18",
+   "current_action": "分享豆包新家巡视出床底、霸窗边，以及'一弹琴它就走'的玩笑",
+   "acceptable_actions": [
+    "恭喜豆包出床底并接'审美专业'的玩笑",
+    "说窗边位置算它的搬家补偿",
+    "接玩笑说自己弹琴水平连猫都劝退"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T18_A01",
+     "subject": "HER",
+     "relation": "豆包动态",
+     "value": "豆包出床底巡视并霸占窗边光线最好的位置",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T18",
+      "quote": "豆包今天终于出床底了，从客厅巡视到阳台",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T18_A02",
+     "subject": "HER",
+     "relation": "自嘲玩笑",
+     "value": "HER 一弹尤克里里豆包就走，自嘲被避如避噪音",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T18",
+      "quote": "就是我一弹尤克里里它就走，审美专业",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "接自嘲别抬杠，夸猫或夸人都行。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E337_T19": {
+   "case_id": "E337_T19",
+   "current_action": "路过停业画室：门贴装修升级，老板口头提 12 月中重开改小班，HER 表态先退钱、来不来的再说",
+   "acceptable_actions": [
+    "支持她先退钱的处理，不替她决定来不来",
+    "接玩笑说装修完再说，重开是老板的事",
+    "认可'来不来的再说'并自然转开话题"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "attribution",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T19_A01",
+     "subject": "SHARED",
+     "relation": "水彩课事项",
+     "value": "水彩体验课维持取消态，不得因老板重开口头消息复活",
+     "valid_time": "2026-11-28",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T03",
+      "quote": "11 月 28 号周六，河畔画室水彩体验课",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "水彩课",
+       "照常"
+      ],
+      [
+       "重开",
+       "上课"
+      ],
+      [
+       "重开",
+       "报名"
+      ]
+     ],
+     "item_markers": [
+      "水彩体验课",
+      "河畔画室",
+      "水彩课"
+     ]
+    },
+    {
+     "atom_id": "E337_T19_A02",
+     "subject": "THIRD",
+     "relation": "画室现状",
+     "value": "画室门贴'装修升级，暂停营业'（HER 目睹转述）",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T19",
+      "quote": "门上贴着“装修升级，暂停营业”",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T19_A03",
+     "subject": "THIRD",
+     "relation": "重开口头消息",
+     "value": "画室老板口头称 12 月中重开、体验课改小班，问 HER 还来不来；单方消息，未成立",
+     "valid_time": "2026-11-27",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T19",
+      "quote": "老板还发消息说 12 月中重开，体验课改小班，问我还来不来",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T19_A04",
+     "subject": "HER",
+     "relation": "表态",
+     "value": "HER 表态先把钱退我，来不来的再说",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T19",
+      "quote": "我说先把钱退我，来不来的再说",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "诱惑位：重开只是老板口头消息，正确做法是认同她的'先退钱、再说'，不坐实重开、不替她报名。",
+   "unknowns": [
+    {
+     "topic": "河畔画室 12 月中重开与改小班",
+     "note": "仅老板单方口头消息，HER 已表态先退钱、来不来的再说；重开未成立",
+     "markers": [
+      [
+       "重开",
+       "报名"
+      ],
+      [
+       "重开",
+       "上课"
+      ],
+      [
+       "重开",
+       "报"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "重开",
+       "报名"
+      ],
+      [
+       "重开",
+       "上课"
+      ],
+      [
+       "重开",
+       "报"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "先把钱退我，来不来的再说"
+   ],
+   "forbidden_factual_claims": [
+    "不得把'12 月中重开'坐实为已确定重开或已恢复上课",
+    "不得替 HER 答应重新报名或改报小班",
+    "不得把改小班说成已确定的安排"
+   ],
+   "may_decline": false
+  },
+  "E337_T20": {
+   "case_id": "E337_T20",
+   "current_action": "原课日当天：自然醒+给豆包开罐头，退费到账并把 98 转给 ME",
+   "acceptable_actions": [
+    "确认收到 98 并祝'一人一猫'快乐假期",
+    "收账确认并接'各吃各的快乐'玩笑",
+    "确认到账并说周六睡懒觉任务完成"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T20_A01",
+     "subject": "SHARED",
+     "relation": "水彩课事项",
+     "value": "水彩课取消态当日验证：原课日（11-28）无课",
+     "valid_time": "2026-11-28",
+     "status": "cancelled",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T03",
+      "quote": "11 月 28 号周六，河畔画室水彩体验课",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "水彩课",
+       "照常"
+      ],
+      [
+       "28 号",
+       "上课"
+      ]
+     ],
+     "item_markers": [
+      "水彩体验课",
+      "河畔画室",
+      "水彩课"
+     ]
+    },
+    {
+     "atom_id": "E337_T20_A02",
+     "subject": "HER",
+     "relation": "原课日状态",
+     "value": "原课日 HER 自然醒并给豆包开了罐头",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T20",
+      "quote": "今天本来是水彩课的日子，我睡了个自然醒",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T20_A03",
+     "subject": "SHARED",
+     "relation": "退费返还",
+     "value": "退费已到账，HER 已把 98 转给 ME",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T20",
+      "quote": "退费到账了，98 转你了，收一下",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾验证位：确认收款即可；罐头是当日特例，别上升成日常喂食建议。",
+   "unknowns": [
+    {
+     "topic": "河畔画室重开计划",
+     "note": "T19 老板口头消息，HER 未答应参加，未成立",
+     "markers": [
+      [
+       "重开",
+       "报名"
+      ],
+      [
+       "重开",
+       "上课"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "重开",
+       "报名"
+      ],
+      [
+       "重开",
+       "上课"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把画室重开说成已恢复上课",
+    "不得把 98 说成未退或仍占用",
+    "不得建议日常给豆包加罐头（65 克医嘱不变）"
+   ],
+   "may_decline": false
+  },
+  "E337_T21": {
+   "case_id": "E337_T21",
+   "current_action": "邀约：表姐许棠 12 月 5 日（周六）来参观新家，ME 有空也来、她下厨",
+   "acceptable_actions": [
+    "答应 12 月 5 日来并捧场她下厨",
+    "答应并接'精神股东'的玩笑说去验收采光",
+    "答应并问要不要带点东西上门"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T21_A01",
+     "subject": "SHARED",
+     "relation": "表姐来访约定",
+     "value": "HER 表姐许棠 2026-12-05（周六）来参观新家",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T21",
+      "quote": "我表姐许棠下周六来参观新家，12 月 5 号",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T21_A02",
+     "subject": "SHARED",
+     "relation": "ME 受邀",
+     "value": "HER 邀 ME 当天也来、她下厨",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T21",
+      "quote": "你有空也来，我下厨",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T21_A03",
+     "subject": "SHARED",
+     "relation": "答谢饭旧地点",
+     "value": "木樨园答谢饭旧地点已作废（现为荔香居/在家下厨语境）",
+     "valid_time": "2026-11-22",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T08",
+      "quote": "周日搬完我请你吃木樨园那家酸菜鱼，搬家饭，我请，你人到就行",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "木樨园",
+       "酸菜鱼"
+      ],
+      [
+       "木樨园",
+       "搬家饭"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T21_A04",
+     "subject": "HER",
+     "relation": "就餐态度",
+     "value": "HER 觉得荔香居吃一回新鲜劲就过了，倾向在家做饭",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T21",
+      "quote": "荔香居吃一回，新鲜劲儿就过了",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T21_A05",
+     "subject": "THIRD",
+     "relation": "表姐身份",
+     "value": "许棠是这次搬家的'精神股东'，从看房就远程指挥，表扬七栋采光",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T21",
+      "quote": "她是我这搬家的“精神股东”，从看房就远程指挥，重点表扬了七栋采光",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "新钩邀约，接住就行；表姐信息是背景，别喧宾夺主。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 12 月 5 号说成其他日期",
+    "不得建议再去木樨园吃答谢饭"
+   ],
+   "may_decline": false
+  },
+  "E337_T22": {
+   "case_id": "E337_T22",
+   "current_action": "豆包月度称重回扣：5.75 公斤（基线 5.8），65 克新量执行良好",
+   "acceptable_actions": [
+    "接住 5.75 的进步并肯定 65 克执行",
+    "接'慢是健康'的说法夸她喂得科学",
+    "玩笑说豆包在为罐头事件赎罪"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T22_A01",
+     "subject": "HER",
+     "relation": "最新体重",
+     "value": "豆包 2026-11-30 称重 5.75 公斤，较基线 5.8 降了一两",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T22",
+      "quote": "豆包月度称重：5.75 公斤，从 5.8 掉了一两",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T22_A02",
+     "subject": "SHARED",
+     "relation": "喂食新量",
+     "value": "每天 65 克执行中，吃得碗底朝天（T09 口径）",
+     "valid_time": "2026-11-20",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T09",
+      "quote": "改成每天 65 克",
+      "message_id": "m0"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "65 克"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T22_A03",
+     "subject": "SHARED",
+     "relation": "喂食旧量",
+     "value": "每天 60 克旧量作废",
+     "valid_time": "2026-11-17",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T02",
+      "quote": "猫粮从今天起每天 60 克，不准心软投喂",
+      "message_id": "m0"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "还是",
+       "60 克"
+      ],
+      [
+       "60 克",
+       "继续"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E337_T22_A04",
+     "subject": "HER",
+     "relation": "体重基线",
+     "value": "基线：体检 5.8 公斤、超重、目标 5.5（T02）",
+     "valid_time": "2026-11-17",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T02",
+      "quote": "豆包体检报告出来了，5.8 公斤，医生说超了，目标 5.5",
+      "message_id": "m0"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "长距回指位（跨度 20）：正确调用 5.8 基线与 65 克新量，不夸大减重速度。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把猫粮量说回 60 克",
+    "不得把 5.75 说成已达标 5.5"
+   ],
+   "may_decline": false
+  },
+  "E337_T23": {
+   "case_id": "E337_T23",
+   "current_action": "邀请 ME 本周四（12 月 3 日）尤克里里班汇报视频现场当观众",
+   "acceptable_actions": [
+    "答应周四去当观众并让她别紧张",
+    "答应并接'豆包不算数'的玩笑说自己带掌声",
+    "答应并说给她录个备用视频"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T23_A01",
+     "subject": "SHARED",
+     "relation": "汇报视频邀约",
+     "value": "2026-12-03（周四）尤克里里班录汇报视频，HER 弹唱《小星星》并邀 ME 当观众",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T23",
+      "quote": "这周四尤克里里班录汇报视频，我弹唱《小星星》",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T23_A02",
+     "subject": "HER",
+     "relation": "邀约表达",
+     "value": "HER 邀 ME 到场，玩笑说豆包不算数",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T23",
+      "quote": "你来当观众呗，豆包不算数，它只会睡，还打呼",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T23_A03",
+     "subject": "HER",
+     "relation": "班级常规",
+     "value": "尤克里里班每周四晚在楼下会议室（T05 口径）",
+     "valid_time": "2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T05",
+      "quote": "公司兴趣班我报上了：尤克里里，每周四晚，就在楼下会议室",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "本轮带显式意图：邀约到场——答应或给可行替代，别把日子说错（12-03 周四）。",
+   "unknowns": [
+    {
+     "topic": "汇报视频的具体钟点",
+     "note": "只知周四晚、楼下会议室，未定具体时间",
+     "markers": [
+      [
+       "八点"
+      ],
+      [
+       "七点半"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "八点"
+      ],
+      [
+       "七点半"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把汇报日说成周五或其他日期",
+    "不得把豆包说成正式观众"
+   ],
+   "may_decline": false
+  },
+  "E337_T24": {
+   "case_id": "E337_T24",
+   "current_action": "收尾：调音器周四归还、周五下厨露一手邀验收，本周话题轻收",
+   "acceptable_actions": [
+    "轻收：应下调音器周四见、周五等着验收",
+    "轻收并留口：周五尝新手菜，这周早点睡",
+    "合法不回或极简晚安"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E337_T24_A01",
+     "subject": "SHARED",
+     "relation": "调音器归还计划",
+     "value": "HER 将 2026-12-03（周四）带调音器归还 ME（替代 T07 搬家日顺路还的旧计划）",
+     "valid_time": "2026-12-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T24",
+      "quote": "调音器周四带去还你",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T24_A02",
+     "subject": "SHARED",
+     "relation": "调音器借用背景",
+     "value": "调音器自 T05 起借给 HER 使用（首课反馈好用）",
+     "valid_time": "2026-11-18",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T05",
+      "quote": "你那调音器借我呗",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T24_A03",
+     "subject": "HER",
+     "relation": "下厨新钩",
+     "value": "HER 新厨房未开过火，计划周五（2026-12-04）下厨让 ME 验收",
+     "valid_time": "2026-12-04",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T24",
+      "quote": "新厨房我还没开过火，周五我来露一手，你验收",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T24_A04",
+     "subject": "SHARED",
+     "relation": "就餐背景",
+     "value": "此前在外就餐（荔香居答谢饭）为新厨房未开火的背景（T14）",
+     "valid_time": "2026-11-22",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T14",
+      "quote": "就去新家楼下荔香居，酸菜鱼照样有，我请，走五分钟",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E337_T24_A05",
+     "subject": "HER",
+     "relation": "收尾信号",
+     "value": "HER 主动收束本周话题并道晚安",
+     "valid_time": "2026-12-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E337_T24",
+      "quote": "这周就到这儿，早点睡",
+      "message_id": "m0"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾位：轻收+留口（周四/周五都算留口），不硬开新话题；允许简短或合法不回。",
+   "unknowns": [
+    {
+     "topic": "周五下厨的具体菜式",
+     "note": "正文未定菜单，不得代定",
+     "markers": [
+      [
+       "周五",
+       "酸菜鱼"
+      ],
+      [
+       "菜单",
+       "定了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "周五",
+       "酸菜鱼"
+      ],
+      [
+       "菜单",
+       "定了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "这周就到这儿，早点睡"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称调音器已在搬家日归还（HER 周四才带来还）",
+    "不得在收尾位硬开新话题或新邀约",
+    "不得把周五下厨坐实成已定菜单"
+   ],
+   "may_decline": true
+  }
+ }
+}

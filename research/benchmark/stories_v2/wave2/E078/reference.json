@@ -1,0 +1,929 @@
+{
+ "story_id": "E078",
+ "turns": {
+  "E078_T01": {
+   "case_id": "E078_T01",
+   "current_action": "接住她的'被点名'诉苦，给一条不易翻车的路：串烧或小品类先定方向，同时把'人数与老周档期'作为选型前提问回来。",
+   "acceptable_actions": [
+    "支持串烧方向，先问她仨人里谁能保证排练出勤",
+    "提一个小品或脱口秀备选，说明各自翻车风险",
+    "先安抚'有文艺细胞'是抬举，把分工设计揽过来出主意"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A01",
+     "subject": "HER",
+     "relation": "assigned_lead",
+     "value": "她被组里点名牵头年会节目",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T01",
+      "message_id": "m0",
+      "quote": "把我推出来牵头年会节目"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A02",
+     "subject": "SHARED",
+     "relation": "trio_available",
+     "value": "组里能上台的只有她、老周、小都三人，老周档期紧张",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T01",
+      "message_id": "m1",
+      "quote": "老周还项目缠身"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A03",
+     "subject": "HER",
+     "relation": "consult_direction",
+     "value": "她向ME征询节目方向，倾向串烧",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T01",
+      "message_id": "m1",
+      "quote": "串烧行不行"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接她的苦水，方向建议给一步就好，别一上来甩方案清单。",
+   "unknowns": [
+    "年会具体规则与时长要求未知",
+    "老周能否参与排练未知"
+   ],
+   "protected_expressions": [
+    "我上次唱歌还是你婚礼上"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她公司组织架构",
+    "不得替她答应牵头条件"
+   ]
+  },
+  "E078_T02": {
+   "case_id": "E078_T02",
+   "current_action": "接住节目成型的好消息：串烧《打工魂》、三人分工、3分半版本；肯定盘子，同时提一句'报统筹前把时长上限问清楚'。",
+   "acceptable_actions": [
+    "夸改词有梗，让她把词发来过一遍",
+    "提醒3分半是她的预估，报统筹前先确认上限",
+    "问她周五排练的时间段是否固定，方便自己有空云监工"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A04",
+     "subject": "SHARED",
+     "relation": "program_defined",
+     "value": "节目定为三首连唱的串烧《打工魂》，歌词由她改编",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T02",
+      "message_id": "m0",
+      "quote": "《打工魂》串烧"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A05",
+     "subject": "SHARED",
+     "relation": "duration_reported",
+     "value": "她计划以3分半版本上报节目统筹",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T02",
+      "message_id": "m1",
+      "quote": "报个3分半的版本"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A06",
+     "subject": "SHARED",
+     "relation": "rehearsal_start",
+     "value": "首次排练定在周五午休",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T02",
+      "message_id": "m1",
+      "quote": "周五午休第一次排"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：肯定放在前面，'问清上限'说成流程常识，不针对她。",
+   "unknowns": [
+    "统筹时长上限未知",
+    "老周出勤意愿未知"
+   ],
+   "protected_expressions": [
+    "周一的闹钟是催命符"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言3分半必然超时",
+    "不得虚构年会场地与流程"
+   ]
+  },
+  "E078_T03": {
+   "case_id": "E078_T03",
+   "current_action": "接住首排实况：老周缺位、rap段落没人顶；帮她把选项摆开（删、齐念、顶替），并肯定她'再等等老周'的分寸。",
+   "acceptable_actions": [
+    "建议先发一小段demo给老周，让他听见自己的段落再决定",
+    "摆出齐念与顶替两条路，问她更怕哪个麻烦",
+    "肯定她没催老周，建议排练照走、段落留白"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A07",
+     "subject": "THIRD",
+     "relation": "zhou_absent",
+     "value": "老周因项目封楼缺席首次排练",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T03",
+      "message_id": "m0",
+      "quote": "老周果然没来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A08",
+     "subject": "SHARED",
+     "relation": "rap_uncovered",
+     "value": "老周的rap段落无人能顶且调子偏高",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T03",
+      "message_id": "m0",
+      "quote": "老周那段rap没人顶"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A09",
+     "subject": "HER",
+     "relation": "hold_decision",
+     "value": "她决定暂不删段，先等老周表态",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T03",
+      "message_id": "m1",
+      "quote": "我说再等等老周"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：选项摆开但不推她选，把'等老周'肯定成顾人情。",
+   "unknowns": [
+    "老周对段落安排的真实想法未知"
+   ],
+   "protected_expressions": [
+    "他知道自己有段落吗我都没敢跟他说太细"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构老周的项目情况",
+    "不得替老周表态"
+   ]
+  },
+  "E078_T04": {
+   "case_id": "E078_T04",
+   "current_action": "接住老周请删与统筹已报：把'删了时长不够、不删人来不了'的两难接住，提醒她统筹表归华姐管，先跟华姐把报过的版本挂个号。",
+   "acceptable_actions": [
+    "建议她把老周的原话原样留着，后续谈判用得上",
+    "提醒先给华姐补一句'版本可能微调'，别等通知砸下来",
+    "顺着两难给个中间态：段落保留、形式待定"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A10",
+     "subject": "THIRD",
+     "relation": "zhou_self_withdraw",
+     "value": "老周主动请她删掉自己的rap段落，称近期下不了楼",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T04",
+      "message_id": "m0",
+      "quote": "我那rap你删了吧"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A11",
+     "subject": "SHARED",
+     "relation": "reported_to_admin",
+     "value": "她已将3分半版本上报节目统筹",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T04",
+      "message_id": "m1",
+      "quote": "统筹表我先报了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A12",
+     "subject": "SHARED",
+     "relation": "slot_third",
+     "value": "节目初报排在年会第三位",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T04",
+      "message_id": "m1",
+      "quote": "排第三位"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：老周的愧疚别渲染成悲情，把'先斩后奏'说成报了也正常，稳住她。",
+   "unknowns": [
+    "华姐对已报版本的态度未知",
+    "老周缺席会持续多久未知"
+   ],
+   "protected_expressions": [
+    "我这阵子下不了楼，别为我留空"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言华姐必然不批3分半",
+    "不得虚构老周身体与项目细节"
+   ]
+  },
+  "E078_T05": {
+   "case_id": "E078_T05",
+   "current_action": "接住第三方插入爆发：华姐的统筹通知（全场歌舞压到3分钟、顺序重排）与王总监'保老周露脸'的意愿同时砸下；帮她把两条要求的主人分开，指出'砍时长'来自华姐的统筹通知，'保老周'是王总监的意思。",
+   "acceptable_actions": [
+    "明确归属：压时长是华姐的全场统筹要求，保老周是王总监的意愿",
+    "点破两条要求并不打架，是两件事被她揉成了一团",
+    "建议她把群公告原文截图留着，按原文而非转述办事"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "boundary",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A13",
+     "subject": "THIRD",
+     "relation": "hua_timecap",
+     "value": "华姐通知全场歌舞类节目一律压到3分钟内",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T05",
+      "message_id": "m0",
+      "quote": "歌舞类一律压到3分钟内"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A14",
+     "subject": "THIRD",
+     "relation": "slot_moved",
+     "value": "节目顺序由第三位重排至第七位",
+     "valid_time": "2026-11-11",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T05",
+      "message_id": "m0",
+      "quote": "我们挪到第七"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A15",
+     "subject": "THIRD",
+     "relation": "wang_wants_zhou",
+     "value": "王总监希望老周上台露脸，与老周请删段落的意愿相抵",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T05",
+      "message_id": "m0",
+      "quote": "王总想看他露脸"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A16",
+     "subject": "THIRD",
+     "relation": "zhou_request_conflict",
+     "value": "老周请删段落的意愿与王总监保他露脸的要求正面冲突",
+     "valid_time": "2026-11-09/2026-11-11",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T04",
+      "message_id": "m0",
+      "quote": "我那rap你删了吧"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：帮她拆信息而不是替她下结论，归属讲清后让她自己谈。",
+   "unknowns": [
+    "王总监是否直接知悉节目细节未知",
+    "3分钟是否可协商未知"
+   ],
+   "protected_expressions": [
+    "我转述都转糊涂了"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言王总监亲自下过压时长指令",
+    "不得虚构华姐与王总监的关系"
+   ]
+  },
+  "E078_T06": {
+   "case_id": "E078_T06",
+   "current_action": "确认她的归属理清成立：压时长归华姐的全场规则、保老周归王总监的意思；肯定这个捋法，把'两头谈'的顺序建议出来（先规则后人情）。",
+   "acceptable_actions": [
+    "肯定她的捋法，建议先跟华姐谈结构再跟老周谈意愿",
+    "提醒跟华姐谈时拿方案不拿情绪，'能不能留活口'比'凭什么砍'管用",
+    "帮她把3分钟内的结构边界先框出来再谈"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "boundary",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A17",
+     "subject": "THIRD",
+     "relation": "attribution_confirmed",
+     "value": "她此前把压时长误归王总监的说法被推翻：压时长归属华姐的全场统筹要求，非针对该节目组",
+     "valid_time": "2026-11-12",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T05",
+      "message_id": "m0",
+      "quote": "歌舞类一律压到3分钟内"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E078_A18",
+     "subject": "THIRD",
+     "relation": "wang_intent_owner",
+     "value": "保老周上台归属王总监的意愿，华姐仅为传话",
+     "valid_time": "2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T05",
+      "message_id": "m0",
+      "quote": "王总想看他露脸"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A19",
+     "subject": "HER",
+     "relation": "negotiation_plan",
+     "value": "她计划分别与华姐谈结构、与老周谈露脸",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T06",
+      "message_id": "m1",
+      "quote": "跟华姐问3分钟能不能给结构留活口"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她捋对了就痛快认，别再翻她转述走样的旧账。",
+   "unknowns": [
+    "华姐是否接受结构变通未知"
+   ],
+   "protected_expressions": [
+    "有总监惦记他露脸呢"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言两头谈判必然成功",
+    "不得替华姐开条件"
+   ]
+  },
+  "E078_T07": {
+   "case_id": "E078_T07",
+   "current_action": "接住变通结构与编曲求援：念白接副歌的衔接给出明确倾向（留两秒气口），顺带把2分50结构的风险点提一句。",
+   "acceptable_actions": [
+    "明确建议留两秒气口，说明硬切在场馆音响下容易吞字",
+    "让她把结构谱发来，自己核一遍各段秒数",
+    "提醒2分50离上限近，留出报幕与走位余量"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A20",
+     "subject": "SHARED",
+     "relation": "structure_rework",
+     "value": "新结构：老周的rap改为两句念白压轴前，小都顶rap主段",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T07",
+      "message_id": "m0",
+      "quote": "老周那段rap改成两句念白压轴前"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A21",
+     "subject": "SHARED",
+     "relation": "duration_new",
+     "value": "节目压缩目标定在2分50秒",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T07",
+      "message_id": "m0",
+      "quote": "卡在2分50"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A40",
+     "subject": "THIRD",
+     "relation": "timecap_binding",
+     "value": "3分钟上限是结构改版的硬约束",
+     "valid_time": "2026-11-11/2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T05",
+      "message_id": "m0",
+      "quote": "歌舞类一律压到3分钟内"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：技术问题给干脆答案，夸她结构改得快。",
+   "unknowns": [
+    "现场音响条件未知",
+    "念白文案内容未知"
+   ],
+   "protected_expressions": [
+    "伴奏是硬切还是留两秒气口"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构场馆设备参数",
+    "不得断言2分50必然过关"
+   ]
+  },
+  "E078_T08": {
+   "case_id": "E078_T08",
+   "current_action": "接住双线落定：老周接受只念白不单独唱，华姐批准2分50第九位；把这两条成交点出来，提醒25号带妆走台前把伴奏定稿。",
+   "acceptable_actions": [
+    "夸她两头都谈成了，人情和规则都没伤",
+    "提醒老周的'只念白'条件要落实到伴奏与台本里",
+    "把25号带妆走台记为下一个死线，问她伴奏谁出"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A23",
+     "subject": "THIRD",
+     "relation": "zhou_condition",
+     "value": "老周同意上台，条件是只念白不单独唱",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T08",
+      "message_id": "m0",
+      "quote": "但我只念白，不单独唱"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A24",
+     "subject": "THIRD",
+     "relation": "zhou_stance_revised",
+     "value": "老周从请删段落改为接受念白上台",
+     "valid_time": "2026-11-09/2026-11-16",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T04",
+      "message_id": "m0",
+      "quote": "我那rap你删了吧"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E078_A25",
+     "subject": "THIRD",
+     "relation": "hua_approved",
+     "value": "华姐批准2分50版本并将节目排至第九位压轴前",
+     "valid_time": "2026-11-16",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T08",
+      "message_id": "m1",
+      "quote": "2分50可以，第九位，压轴前"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把老周'被上台'的心结点成'结果他自己找补回来了'，别煽情。",
+   "unknowns": [
+    "25号走台的音响安排未知",
+    "念白最终文本未知"
+   ],
+   "protected_expressions": [
+    "我是被上台了吧"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构老周写词的过程细节",
+    "不得断言王总监已知晓新结构"
+   ]
+  },
+  "E078_T09": {
+   "case_id": "E078_T09",
+   "current_action": "接住规格明朗与组内转顺：王总全程坐主桌、老周词改第三版；把'规格高'翻译成'25号走台不能掉链子'，顺着老周的班表梗乐一下。",
+   "acceptable_actions": [
+    "顺着班表梗接一句，夸老周改造词比原版好",
+    "把'王总全程在'提醒成走台与演出当天的心态提示",
+    "问她小都顶rap段练得怎么样，别只顾老周"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A27",
+     "subject": "THIRD",
+     "relation": "wang_full_attend",
+     "value": "华姐透露王总监年会全程在场并坐主桌",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T09",
+      "message_id": "m0",
+      "quote": "王总年会全程都在，坐主桌"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A28",
+     "subject": "THIRD",
+     "relation": "zhou_lyric_rewrite",
+     "value": "老周把念白改成自己的班表梗，改到第三版",
+     "valid_time": "2026-11-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T09",
+      "message_id": "m1",
+      "quote": "改成他自己的班表梗"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A38",
+     "subject": "THIRD",
+     "relation": "slot_binding",
+     "value": "华姐批准的第九位与2分50时长进入执行",
+     "valid_time": "2026-11-16/2026-11-19",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T08",
+      "message_id": "m1",
+      "quote": "2分50可以，第九位，压轴前"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：规格的事点到为止，别让老周听见'全程盯着他'的压力。",
+   "unknowns": [
+    "王总监对节目的具体期待未知"
+   ],
+   "protected_expressions": [
+    "你说气人不气人"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构王总监的观演偏好",
+    "不得断言老周必然放得开"
+   ]
+  },
+  "E078_T10": {
+   "case_id": "E078_T10",
+   "current_action": "接住伴奏文件事故：demo版误发、成品在ME手里；立刻答应今晚发成品，并让她收到后回一句确认，别再错版本。",
+   "acceptable_actions": [
+    "马上发成品伴奏并让她秒回'收到'，杜绝二次出错",
+    "顺手教她发文件时改文件名带'终版'加日期",
+    "把饭和奶茶的人情笑着收下，语气放轻"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A29",
+     "subject": "SHARED",
+     "relation": "demo_mishap",
+     "value": "带妆走台时误放demo版伴奏，被音响师发现",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T10",
+      "message_id": "m0",
+      "quote": "伴奏放的是demo版"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A30",
+     "subject": "HER",
+     "relation": "file_rescue",
+     "value": "她恳请ME今晚发来成品伴奏以备明日走台",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T10",
+      "message_id": "m1",
+      "quote": "你今晚把成品伴奏发我行不行"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A37",
+     "subject": "SHARED",
+     "relation": "meal_debt",
+     "value": "她以请饭与老周出奶茶钱作谢，欠下饭约",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T10",
+      "message_id": "m1",
+      "quote": "我请你吃饭"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：救援要快、责备要无，一句'发你了'比什么都强。",
+   "unknowns": [
+    "成品伴奏是否还有其他版本差异未知"
+   ],
+   "protected_expressions": [
+    "成品版还躺在你那"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构音响师的其他判断",
+    "不得断言走台必然顺利"
+   ]
+  },
+  "E078_T11": {
+   "case_id": "E078_T11",
+   "current_action": "共享演出成功：念白笑翻全场、王总监带头鼓掌、华姐比大拇指；把这条成功接住，夸老周的念白与小都的救场。",
+   "acceptable_actions": [
+    "先喊一句'成了'，再逐个点名夸人",
+    "顺着唱劈被当设计的梗乐一下，说这就是舞台魅力",
+    "问她王总监鼓掌时老周什么表情"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A31",
+     "subject": "THIRD",
+     "relation": "wang_applause",
+     "value": "王总监在演出中带头鼓掌",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T11",
+      "message_id": "m0",
+      "quote": "王总监真带头鼓掌了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A32",
+     "subject": "THIRD",
+     "relation": "hua_thumbsup",
+     "value": "华姐在侧幕对节目比大拇指认可",
+     "valid_time": "2026-11-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T11",
+      "message_id": "m0",
+      "quote": "华姐在侧幕条冲我们比了个大拇指"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A39",
+     "subject": "SHARED",
+     "relation": "duration_landed",
+     "value": "最初上报的3分半版本经统筹压缩后以2分50落地完成演出",
+     "valid_time": "2026-11-04/2026-11-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T02",
+      "message_id": "m1",
+      "quote": "报个3分半的版本"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：让她把亢奋倒完，接梗为主，不总结经验。",
+   "unknowns": [],
+   "protected_expressions": [
+    "跟着喊 encore"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构奖项与打分结果",
+    "不得替老周补台词"
+   ]
+  },
+  "E078_T12": {
+   "case_id": "E078_T12",
+   "current_action": "以获奖与饭约收尾：接住'最佳气氛奖'与华姐'明年班子保留'，把饭约定下来，笑着接'联合出品人'的梗，轻快落幕。",
+   "acceptable_actions": [
+    "答应周六老地方吃饭，认领点菜权",
+    "顺着'联合出品人'接一句，条件是橙子分一份",
+    "把'明年班子保留'调侃成'先吃眼前这顿再说'"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E078_A34",
+     "subject": "THIRD",
+     "relation": "award_result",
+     "value": "节目获年会'最佳气氛奖'，奖品为一箱橙子",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T12",
+      "message_id": "m0",
+      "quote": "我们'最佳气氛奖'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A35",
+     "subject": "THIRD",
+     "relation": "hua_team_keep",
+     "value": "华姐在群里称明年保留这个节目班子",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T12",
+      "message_id": "m0",
+      "quote": "明年这个班子保留"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E078_A36",
+     "subject": "SHARED",
+     "relation": "dinner_settled",
+     "value": "周六老地方的谢饭之约成立，ME点菜",
+     "valid_time": "2026-11-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E078_T12",
+      "message_id": "m1",
+      "quote": "周六老地方，你点菜"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，'头皮发麻'接成幸灾乐祸的玩笑，不上价值。",
+   "unknowns": [
+    "明年她是否继续牵头未知",
+    "11-28 当天说的周六老地方指下一周六（12-05），属口语指代含糊，评审时按 time_state 从宽"
+   ],
+   "protected_expressions": [
+    "你就是联合出品人了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构奖金或奖品细节",
+    "不得替她答应明年的牵头"
+   ]
+  }
+ }
+}

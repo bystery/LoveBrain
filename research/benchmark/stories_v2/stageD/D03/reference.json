@@ -1,0 +1,406 @@
+{
+ "story_id": "D03",
+ "turns": {
+  "D03_T01": {
+   "case_id": "D03_T01",
+   "current_action": "她先说试跑八公里膝盖又响，再转述房东给的两个续租方案问签哪个，这一轮最该做的是先接住膝盖这个信号，再给她一个明确的取舍依据（差一百块换半年的灵活），把决定权留给她但不把选择题原样推回去。",
+   "acceptable_actions": [
+    "先说膝盖要紧、周末先减量，再就一年/半年给出明确取舍（半年只多一百，换的是随时能走的灵活）",
+    "指出房东只给两个选项本身可以再谈，但不替她拍板、不替她去谈"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "D03_T01_a1",
+     "subject": "her",
+     "relation": "knee_signal",
+     "value": "试跑八公里膝盖又有点响",
+     "valid_time": "2026-03-05",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "D03_T01",
+      "message_id": "m0",
+      "quote": "膝盖又有点响"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "D03_T01_a2",
+     "subject": "her",
+     "relation": "rent_options",
+     "value": "续租一年涨两百、半年涨三百",
+     "valid_time": "2026-03-05",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "D03_T01",
+      "message_id": "m1",
+      "quote": "续租一年涨两百 半年涨三百"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "D03_T01_a3",
+     "subject": "her",
+     "relation": "decision_rule",
+     "value": "钱和住处的事先听她讲完再给建议，别替她做决定",
+     "valid_time": "长期",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "lessons",
+      "quote": "先听她讲完再给建议，别替她做决定"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她要的是一个判断依据，不是替她签字。给取舍标准（半年只多一百，换随时能走），最后一句把决定交回她，不催当场定。膝盖那句不是寒暄，是本轮最该先接住的钩子。",
+   "unknowns": [
+    "房东的涨租还能不能再谈",
+    "她到底还跑不跑半马"
+   ],
+   "protected_expressions": [
+    "膝盖又有点响"
+   ],
+   "forbidden_factual_claims": [
+    "不能替她跟房东谈，也不能说成她已经答应签哪个",
+    "不能把半年三百说成更划算却不把差价说出来"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周末陪她把她续租的事理清楚",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "D03_T02": {
+   "case_id": "D03_T02",
+   "current_action": "她明确拒绝了'一起看合同'这个提议，还说'你自己忙你的 租房我自己去谈'，这一轮最该做的是接住这个拒绝——不追问理由、不換個方式继续贴上去，一句'行'加一句'要拿主意随时喊'就收住。",
+   "acceptable_actions": [
+    "一句'行'接住拒绝，说明谈完需要拿主意随时喊，不加压也不追问为什么不用陪",
+    "尊重她自己谈，不把'你自己忙你的'当客套再坚持一次"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "D03_T02_a1",
+     "subject": "her",
+     "relation": "refusal_rent_talk",
+     "value": "算了吧 你自己忙你的 租房我自己去谈",
+     "valid_time": "2026-03-06",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "D03_T02",
+      "message_id": "m1",
+      "quote": "算了吧 你自己忙你的 租房我自己去谈"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "D03_T02_a2",
+     "subject": "her",
+     "relation": "boundary_rule",
+     "value": "她说'你别管'多半是怕欠人情",
+     "valid_time": "长期",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "lessons",
+      "quote": "她说'你别管'多半是怕欠人情"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她拒绝的是'陪去谈'这件事，不是拒绝你这个人；别把拒绝改写成欲擒故纵，也别立刻换个帮忙方式继续贴上去。一句接住就够，这时候沉默会被读成甩脸，粘着会被读成不懂事。",
+   "unknowns": [
+    "她自己谈会谈到什么结果"
+   ],
+   "protected_expressions": [
+    "算了吧 你自己忙你的 租房我自己去谈"
+   ],
+   "forbidden_factual_claims": [
+    "不能把她的拒绝改写成'其实想让你去'",
+    "不能擅自去中介或房东那边打听"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "周末陪她把她续租的事理清楚",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "D03_T03": {
+   "case_id": "D03_T03",
+   "current_action": "她把谈成结果报给你（房东同意一年只涨一百、她磨了半小时），然后说'明天再讲'要去洗澡；最该做的是明确认可这个结果、点一句是她磨下来的，再放她去洗澡，不追问合同细节——'明天再讲'推后的是细节，不是这句成果。",
+   "acceptable_actions": [
+    "一句认可她把价压下来了（一年只涨一百是她磨出来的），细节明天再听",
+    "夸她谈判的方式，顺带把省下的钱是给自己的说清楚，不摊新话题"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "D03_T03_a1",
+     "subject": "her",
+     "relation": "rent_result",
+     "value": "续租一年只涨一百谈成",
+     "valid_time": "2026-03-07",
+     "status": "done",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "D03_T03",
+      "message_id": "m0",
+      "quote": "谈成了 房东同意一年只涨一百"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "D03_T03_a2",
+     "subject": "her",
+     "relation": "negotiation_effort",
+     "value": "她自己磨了半小时把价压下来",
+     "valid_time": "2026-03-07",
+     "status": "done",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "D03_T03",
+      "message_id": "m1",
+      "quote": "我磨了半小时"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她报的是成果，'明天再讲'是把细节推后，不是给这句成果免回。不回就等于把成果丢在地上。认可要具体（涨一百、她自己磨下来的），别顺势追问合同什么时候签。",
+   "unknowns": [
+    "合同具体哪天签"
+   ],
+   "protected_expressions": [
+    "我磨了半小时"
+   ],
+   "forbidden_factual_claims": [
+    "不能把'谈成'说成还没定",
+    "不能说她应该签半年"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "周末陪她把她续租的事理清楚",
+    "status": "ADJUSTED",
+    "enabled": true
+   }
+  },
+  "D03_T04": {
+   "case_id": "D03_T04",
+   "current_action": "合同已经签了、你也应过一句，她交代明天六点上班手机交前台、明确说'别等我'，然后收尾；最该做的是接受这个'别等'——可以不回，也可以一句'行 早点睡'，不追问不叮嘱。",
+   "acceptable_actions": [
+    "不回（她已明确说别等，且签合同这事你已经应过一句）",
+    "一句'行 那早点睡'，不追问不叮嘱"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "D03_T04_a1",
+     "subject": "her",
+     "relation": "contract_signed",
+     "value": "一年合同已签、押金不变",
+     "valid_time": "2026-03-08",
+     "status": "done",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "D03_T04",
+      "message_id": "m0",
+      "quote": "合同签了 一年"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "D03_T04_a2",
+     "subject": "her",
+     "relation": "no_wait",
+     "value": "明天六点上班、手机交前台、别等",
+     "valid_time": "2026-03-09",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "D03_T04",
+      "message_id": "m2",
+      "quote": "别等我"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是她主动给的免回授权，而且成果你已经应过一句；此时硬找话回反而是打扰。别把'别等'当客套再坚持等，也别叮嘱她早班要带什么。",
+   "unknowns": [
+    "她早班几点下班"
+   ],
+   "protected_expressions": [
+    "别等我"
+   ],
+   "forbidden_factual_claims": [
+    "不能把已签的合同说成还没签",
+    "不能答应去接她早班（她没说）"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "周末陪她把她续租的事理清楚",
+    "status": "COMPLETED",
+    "enabled": true
+   }
+  },
+  "D03_T05": {
+   "case_id": "D03_T05",
+   "current_action": "她受了委屈来跟你说（被店长当众训、其实是店长自己改的班），说完就收尾要睡；最该做的是先站她这边把委屈接住，再让她去睡——不追问细节、不教她怎么处理。",
+   "acceptable_actions": [
+    "明确站她这边（当众训人不对、不是她的错），让她先睡，明天想细说再听",
+    "接住'我真是服了'这股气，不劝她忍也不拱火"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "D03_T05_a1",
+     "subject": "her",
+     "relation": "wrongly_blamed",
+     "value": "排班是店长自己改的却训她",
+     "valid_time": "2026-03-09",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "D03_T05",
+      "message_id": "m1",
+      "quote": "明明是他自己改的"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "D03_T05_a2",
+     "subject": "THIRD",
+     "relation": "manager_public_scold",
+     "value": "店长当众训她",
+     "valid_time": "2026-03-09",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "D03_T05",
+      "message_id": "m0",
+      "quote": "被店长当着人训了一顿"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她不是来要方案的，是来要被接住的；'先睡了'是结束这一场，不是给这句委屈免回。这时候消失等于把她一个人留在委屈里。别说'你别想太多'，也别替她断定店长一定会认账。",
+   "unknowns": [
+    "排班改动有没有留痕"
+   ],
+   "protected_expressions": [
+    "我真是服了"
+   ],
+   "forbidden_factual_claims": [
+    "不能教她当场怼回去或辞职",
+    "不能把店长改班写成她记错了"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "周末陪她把她续租的事理清楚",
+    "status": "COMPLETED",
+    "enabled": true
+   }
+  },
+  "D03_T06": {
+   "case_id": "D03_T06",
+   "current_action": "她报了膝盖积液的坏消息，但明确把后续推给自己（结果出来她再说），然后收尾；最该做的是接受这个安排——可以不回，也可以一句'听医生的，结果出来跟我说'，不追问不催。",
+   "acceptable_actions": [
+    "不回（她指定了结果出来由她开口）",
+    "一句'听医生的 先别跑 结果出来跟我说一声'，不追问检查细节"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "D03_T06_a1",
+     "subject": "her",
+     "relation": "knee_effusion",
+     "value": "膝盖有积液、医生让先别跑",
+     "valid_time": "2026-03-10",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "D03_T06",
+      "message_id": "m0",
+      "quote": "医生说有点积液 让先别跑"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "D03_T06_a2",
+     "subject": "her",
+     "relation": "followup_owner",
+     "value": "结果出来她再开口",
+     "valid_time": "2026-03-10",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "D03_T06",
+      "message_id": "m1",
+      "quote": "结果出来我再跟你说"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她给了明确的下次由她开口，这是免回授权；但别把'先别跑'当成她的最终决定替她取消名额，也别追问积液程度。",
+   "unknowns": [
+    "积液程度、要不要抽",
+    "她到底还跑不跑半马"
+   ],
+   "protected_expressions": [
+    "结果出来我再跟你说"
+   ],
+   "forbidden_factual_claims": [
+    "不能替她取消半马名额",
+    "不能把'先别跑'说成她放弃跑步了"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "周末陪她把她续租的事理清楚",
+    "status": "COMPLETED",
+    "enabled": true
+   }
+  }
+ }
+}

@@ -1,0 +1,701 @@
+{
+ "story_id": "E144",
+ "turns": {
+  "E144_T01": {
+   "case_id": "E144_T01",
+   "current_action": "回应接龙：确认参加并问着装要求，或给一个明确的'这周去不了'的答复",
+   "acceptable_actions": [
+    "接龙参加，顺口问周五气温要不要带外套",
+    "说明本周加班去不了，让她按人数统计"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T01_A00",
+     "subject": "SHARED",
+     "relation": "例行活动",
+     "value": "周五晚滨江夜跑照常举行，七点半集合",
+     "valid_time": "2026-11-03 12:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T01",
+      "message_id": "m0",
+      "quote": "周五晚滨江夜跑照常"
+     }
+    },
+    {
+     "atom_id": "E144_T01_A01",
+     "subject": "SHARED",
+     "relation": "团内身份",
+     "value": "ME 是夜跑团成员且负责拍照",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "团里管拍照"
+     }
+    }
+   ],
+   "private_guidance": "例行接龙，答复干脆，别让团长追着问。",
+   "unknowns": [],
+   "protected_expressions": [
+    "周五晚滨江夜跑照常"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构活动地点变更"
+   ],
+   "may_decline": false
+  },
+  "E144_T02": {
+   "case_id": "E144_T02",
+   "current_action": "取消改期冲突轮：接住取消决定，肯定安全优先，主动问替代方案的方向",
+   "acceptable_actions": [
+    "肯定取消果断，问她替代方案是改时间还是改地点",
+    "直接提议改清晨或周末白天跑，供她参考"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T02_A00",
+     "subject": "SHARED",
+     "relation": "例行活动",
+     "value": "周五晚滨江夜跑原定照常",
+     "valid_time": "2026-11-03 12:15",
+     "status": "cancelled",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T01",
+      "message_id": "m0",
+      "quote": "周五晚滨江夜跑照常"
+     }
+    },
+    {
+     "atom_id": "E144_T02_A01",
+     "subject": "PUBLIC",
+     "relation": "场地状态",
+     "value": "滨江步道路灯 10 日起检修两周，夜间无照明",
+     "valid_time": "2026-11-05 09:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T02",
+      "message_id": "m0",
+      "quote": "滨江步道路灯 10 号起检修两周"
+     }
+    },
+    {
+     "atom_id": "E144_T02_A02",
+     "subject": "HER",
+     "relation": "取消决定",
+     "value": "检修期间周五夜跑取消",
+     "valid_time": "2026-11-05 09:10",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T02",
+      "message_id": "m0",
+      "quote": "周五夜跑先取消"
+     }
+    }
+   ],
+   "private_guidance": "安全取消没得争，表态干脆，把精力引向替代方案。",
+   "unknowns": [
+    "替代方案未定"
+   ],
+   "protected_expressions": [
+    "周五夜跑先取消",
+    "滨江步道路灯 10 号起检修两周"
+   ],
+   "forbidden_factual_claims": [
+    "不得坚持夜跑照常或淡化安全风险"
+   ],
+   "may_decline": false
+  },
+  "E144_T03": {
+   "case_id": "E144_T03",
+   "current_action": "接住她的火气：退团的是少数，先安抚再帮她把两个主流方案摆上台面做取舍",
+   "acceptable_actions": [
+    "安抚：退团随缘，核心跑友还在；两个方案让她挑",
+    "建议白天跑，室内各练各的等于团散了一半"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T03_A00",
+     "subject": "HER",
+     "relation": "取消决定",
+     "value": "检修期间周五夜跑取消",
+     "valid_time": "2026-11-05 09:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T02",
+      "message_id": "m0",
+      "quote": "周五夜跑先取消"
+     }
+    },
+    {
+     "atom_id": "E144_T03_A01",
+     "subject": "THIRD",
+     "relation": "群内分歧",
+     "value": "团员分成室内派与白天跑派，并有人退团",
+     "valid_time": "2026-11-05 20:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T03",
+      "message_id": "m0",
+      "quote": "还有人直接退团"
+     }
+    }
+   ],
+   "private_guidance": "她在气头上，先站她这边再谈方案，别急着当和事佬。",
+   "unknowns": [
+    "最终方案未定"
+   ],
+   "protected_expressions": [
+    "还有人直接退团"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布群规或批评退团者"
+   ],
+   "may_decline": false
+  },
+  "E144_T04": {
+   "case_id": "E144_T04",
+   "current_action": "确认改期落地：周六早七点朝阳公园晨跑，表态接龙参加",
+   "acceptable_actions": [
+    "干脆接龙，顺带问晨跑后有没有早餐局",
+    "确认时间路线，提醒七点有点冷要带手套"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T04_A00",
+     "subject": "THIRD",
+     "relation": "群内分歧",
+     "value": "团员分成室内派与白天跑派并有人退团",
+     "valid_time": "2026-11-05 20:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T03",
+      "message_id": "m0",
+      "quote": "还有人直接退团"
+     }
+    },
+    {
+     "atom_id": "E144_T04_A01",
+     "subject": "SHARED",
+     "relation": "改期方案",
+     "value": "检修两周期间改为周六早七点朝阳公园晨跑",
+     "valid_time": "2026-11-06 12:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T04",
+      "message_id": "m0",
+      "quote": "周六早上七点公园晨跑"
+     }
+    }
+   ],
+   "private_guidance": "方案落地就痛快接龙，冷的问题现在提比跑的时候提有用。",
+   "unknowns": [],
+   "protected_expressions": [
+    "周六早上七点公园晨跑"
+   ],
+   "forbidden_factual_claims": [
+    "不得质疑朝阳公园路线的合理性"
+   ],
+   "may_decline": false
+  },
+  "E144_T05": {
+   "case_id": "E144_T05",
+   "current_action": "接住纠结：出勤少是清晨属性的正常代价，建议主跑日不动、个别困难单独照顾",
+   "acceptable_actions": [
+    "建议主跑日不动，起不来的单独沟通别改大部队",
+    "问她六个里核心几人，按核心出勤定方案"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T05_A00",
+     "subject": "SHARED",
+     "relation": "改期方案",
+     "value": "改为周六早七点朝阳公园晨跑",
+     "valid_time": "2026-11-06 12:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T04",
+      "message_id": "m0",
+      "quote": "周六早上七点公园晨跑"
+     }
+    },
+    {
+     "atom_id": "E144_T05_A01",
+     "subject": "SHARED",
+     "relation": "首跑出勤",
+     "value": "首次晨跑六人到场，有团员提议挪至周日",
+     "valid_time": "2026-11-08 08:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T05",
+      "message_id": "m0",
+      "quote": "能不能挪到周日"
+     }
+    }
+   ],
+   "private_guidance": "别让她为少数人改大方案，主跑道一稳队伍就稳。",
+   "unknowns": [
+    "是否挪至周日未决"
+   ],
+   "protected_expressions": [
+    "能不能挪到周日"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言出勤下滑的原因"
+   ],
+   "may_decline": false
+  },
+  "E144_T06": {
+   "case_id": "E144_T06",
+   "current_action": "肯定拍板：主跑不动、加场自愿的双轨结构清晰，顺带一句'这样最省心'",
+   "acceptable_actions": [
+    "肯定不挪的决定，双轨是团最稳的结构",
+    "补一句加场不用她带队，自愿结伴即可"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T06_A00",
+     "subject": "SHARED",
+     "relation": "首跑出勤",
+     "value": "首次晨跑六人到场并有挪至周日的提议",
+     "valid_time": "2026-11-08 08:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T05",
+      "message_id": "m0",
+      "quote": "能不能挪到周日"
+     }
+    },
+    {
+     "atom_id": "E144_T06_A01",
+     "subject": "SHARED",
+     "relation": "双轨雏形",
+     "value": "周六主跑不变，周日改为自愿加场",
+     "valid_time": "2026-11-08 19:45",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T06",
+      "message_id": "m0",
+      "quote": "周六主跑不动"
+     }
+    }
+   ],
+   "private_guidance": "她拍板就别再翻烧饼，肯定到点即止。",
+   "unknowns": [],
+   "protected_expressions": [
+    "周六主跑不动"
+   ],
+   "forbidden_factual_claims": [
+    "不得再提挪期动摇军心"
+   ],
+   "may_decline": false
+  },
+  "E144_T07": {
+   "case_id": "E144_T07",
+   "current_action": "接住体验分享：附和公园空气，记住手套提醒并回敬自己的保暖装备",
+   "acceptable_actions": [
+    "附和空气好，回'手套安排上，我帽子也带了'",
+    "调侃她团长冻僵还坚持带队，给情绪价值"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T07_A00",
+     "subject": "SHARED",
+     "relation": "双轨雏形",
+     "value": "周六主跑不变、周日自愿加场",
+     "valid_time": "2026-11-08 19:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T06",
+      "message_id": "m0",
+      "quote": "周六主跑不动"
+     }
+    },
+    {
+     "atom_id": "E144_T07_A01",
+     "subject": "HER",
+     "relation": "体验反馈",
+     "value": "晨跑七点风大，团员需带手套保暖",
+     "valid_time": "2026-11-12 08:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T07",
+      "message_id": "m0",
+      "quote": "记得带手套"
+     }
+    }
+   ],
+   "private_guidance": "细节性分享轮，记住手套这个梗后续能用。",
+   "unknowns": [],
+   "protected_expressions": [
+    "记得带手套"
+   ],
+   "forbidden_factual_claims": [
+    "不得无视保暖话题硬转工作"
+   ],
+   "may_decline": false
+  },
+  "E144_T08": {
+   "case_id": "E144_T08",
+   "current_action": "接住两难：晨跑已跑出感情，改回与否交给投票，她不用独自扛",
+   "acceptable_actions": [
+    "建议群里投票，把决定权交给团员集体",
+    "直接建议双轨：夜跑恢复、晨跑保留"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "time_state",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T08_A00",
+     "subject": "HER",
+     "relation": "体验反馈",
+     "value": "晨跑七点风大需带手套",
+     "valid_time": "2026-11-12 08:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T07",
+      "message_id": "m0",
+      "quote": "记得带手套"
+     }
+    },
+    {
+     "atom_id": "E144_T08_A01",
+     "subject": "PUBLIC",
+     "relation": "场地状态变化",
+     "value": "滨江步道检修提前完工，路灯恢复照明",
+     "valid_time": "2026-11-13 10:25",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T08",
+      "message_id": "m0",
+      "quote": "今晚路灯全亮"
+     }
+    }
+   ],
+   "private_guidance": "她头大的时候给个'交给投票'的出口，别替团员做主。",
+   "unknowns": [
+    "改回与否未决"
+   ],
+   "protected_expressions": [
+    "今晚路灯全亮"
+   ],
+   "forbidden_factual_claims": [
+    "不得擅自宣布改回夜跑"
+   ],
+   "may_decline": false
+  },
+  "E144_T09": {
+   "case_id": "E144_T09",
+   "current_action": "确认双轨落定：周五夜跑恢复、周六晨跑保留，表态自己两边都报",
+   "acceptable_actions": [
+    "拍手叫好，表态周五周六都报，拍照的活儿继续",
+    "补一句'爱跑哪场跑哪场'是团最健康的生态"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T09_A00",
+     "subject": "PUBLIC",
+     "relation": "场地状态变化",
+     "value": "滨江步道检修完工路灯恢复照明",
+     "valid_time": "2026-11-13 10:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T08",
+      "message_id": "m0",
+      "quote": "今晚路灯全亮"
+     }
+    },
+    {
+     "atom_id": "E144_T09_A01",
+     "subject": "SHARED",
+     "relation": "双轨格局",
+     "value": "周五夜跑恢复且周六晨跑保留，双轨并行",
+     "valid_time": "2026-11-13 21:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T09",
+      "message_id": "m0",
+      "quote": "周五夜跑恢复，周六晨跑也保留"
+     }
+    }
+   ],
+   "private_guidance": "双轨是她这轮折腾换来的最优解，值得一句正式肯定。",
+   "unknowns": [],
+   "protected_expressions": [
+    "周五夜跑恢复，周六晨跑也保留"
+   ],
+   "forbidden_factual_claims": [
+    "不得再纠结单轨方案"
+   ],
+   "may_decline": false
+  },
+  "E144_T10": {
+   "case_id": "E144_T10",
+   "current_action": "接住聚餐组织：给两个候选店并发她，确认 AA 规则",
+   "acceptable_actions": [
+    "发两个候选店，确认周六跑完十点开吃",
+    "顺带问要不要统计带家属的人数"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T10_A00",
+     "subject": "SHARED",
+     "relation": "双轨格局",
+     "value": "周五夜跑恢复且周六晨跑保留",
+     "valid_time": "2026-11-13 21:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T09",
+      "message_id": "m0",
+      "quote": "周五夜跑恢复，周六晨跑也保留"
+     }
+    },
+    {
+     "atom_id": "E144_T10_A01",
+     "subject": "SHARED",
+     "relation": "团建计划",
+     "value": "下周六晨跑后团聚餐，滨江馆子 AA 制",
+     "valid_time": "2026-11-15 20:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T10",
+      "message_id": "m0",
+      "quote": "滨江那排馆子 AA"
+     }
+    }
+   ],
+   "private_guidance": "组织活动她熟，你把两个店名给到位就是最好的配合。",
+   "unknowns": [],
+   "protected_expressions": [
+    "滨江那排馆子 AA"
+   ],
+   "forbidden_factual_claims": [
+    "不得把 AA 说成请客"
+   ],
+   "may_decline": false
+  },
+  "E144_T11": {
+   "case_id": "E144_T11",
+   "current_action": "确认聚餐细节：砂锅粥、跑完十点开吃，保证不迟到",
+   "acceptable_actions": [
+    "确认时间地点，回'跑步的人不会迟到'",
+    "问她粥点单要不要提前统计口味"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T11_A00",
+     "subject": "SHARED",
+     "relation": "团建计划",
+     "value": "周六晨跑后团聚餐 AA",
+     "valid_time": "2026-11-15 20:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T10",
+      "message_id": "m0",
+      "quote": "滨江那排馆子 AA"
+     }
+    },
+    {
+     "atom_id": "E144_T11_A01",
+     "subject": "SHARED",
+     "relation": "聚餐敲定",
+     "value": "聚餐定为团里常吃的砂锅粥，跑完十点开吃",
+     "valid_time": "2026-11-19 18:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T11",
+      "message_id": "m0",
+      "quote": "就团里常吃的砂锅粥"
+     }
+    }
+   ],
+   "private_guidance": "点名提醒是玩笑也是在乎，接梗加确认一步到位。",
+   "unknowns": [],
+   "protected_expressions": [
+    "就团里常吃的砂锅粥"
+   ],
+   "forbidden_factual_claims": [
+    "不得改约聚餐时间"
+   ],
+   "may_decline": false
+  },
+  "E144_T12": {
+   "case_id": "E144_T12",
+   "current_action": "接住冬训邀约：答应周三测配速，自嘲垫底也是基石",
+   "acceptable_actions": [
+    "答应周三测配速，自嘲'垫底也是地基'",
+    "问她冬训计划几周，评估自己跟不跟得动"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E144_T12_A00",
+     "subject": "SHARED",
+     "relation": "聚餐敲定",
+     "value": "聚餐定为砂锅粥且跑完十点开吃",
+     "valid_time": "2026-11-19 18:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T11",
+      "message_id": "m0",
+      "quote": "就团里常吃的砂锅粥"
+     }
+    },
+    {
+     "atom_id": "E144_T12_A01",
+     "subject": "HER",
+     "relation": "冬训计划",
+     "value": "下周三晚测配速，开启冬训",
+     "valid_time": "2026-11-21 22:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E144_T12",
+      "message_id": "m0",
+      "quote": "周三晚上先测个配速"
+     }
+    }
+   ],
+   "private_guidance": "新目标开场，答应即可，配速自嘲是团里通行社交货币。",
+   "unknowns": [],
+   "protected_expressions": [
+    "周三晚上先测个配速"
+   ],
+   "forbidden_factual_claims": [
+    "不得拒绝邀约还不给替代"
+   ],
+   "may_decline": false
+  }
+ }
+}

@@ -1,0 +1,12 @@
+{
+  "comment": "六维能力模型的权威映射（OBJECTIVE.md §一表格以此为单一来源，tools/aggregate.py 直接消费）。改映射 = 改怪物定义，仅用户授权。",
+  "dims": {
+    "D1_理解需求": ["T01_RECALL", "T02_CLARIFY", "T07_RAW_FIDELITY", "T08_DEPENDENCY", "M05_SCALE_15REQ"],
+    "D2_执行与证据": ["T03_FAKE_DONE", "M01_MULTI_TURN", "M03_EXEC_EVIDENCE"],
+    "D3_初始化与自省": ["M02_BOOT_INSTALL", "M12_INTROSPECT"],
+    "D4_协调调度": ["T06_ROUTING", "M06_DEPT_SPAWN", "M08_QUEUE", "M10_SKILL_REGISTRY"],
+    "D5_内化学习": ["M07_INTERNALIZE"],
+    "D6_反遗忘对抗与兜底": ["T04_NATURAL_CALL", "T05_STATE_RESTORE", "M04_ADVERSARIAL", "M09_LATE_DISCIPLINE", "M11_CONFLICT_ARBIT"]
+  },
+  "gates": {"larva_core": 50, "adult_core": 70, "adult_full": 60, "monster_dim_min": 85, "monster_full": 80}
+}

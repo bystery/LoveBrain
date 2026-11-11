@@ -1,0 +1,906 @@
+{
+ "story_id": "E046",
+ "turns": {
+  "E046_T01": {
+   "case_id": "E046_T01",
+   "current_action": "接住苦水，复述延期事实与上线倒计时，先记事实再谈上报",
+   "acceptable_actions": [
+    "先共情再复述11月2日交片与5日上线的缺口",
+    "问她白熊给的延期理由并记录时间差"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A01",
+     "subject": "SHARED",
+     "relation": "original_schedule",
+     "value": "白熊动画原约定10月30日交片，campaign原定11月5日上线",
+     "valid_time": "2026-10-30/2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "10月中旬约定10月30日交片"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E046_A02",
+     "subject": "THIRD",
+     "relation": "vendor_delay",
+     "value": "白熊动画告知交片从10月30日延至11月2日",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T01",
+      "message_id": "m0",
+      "quote": "10月30交不了片了，要延到11月2号"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A03",
+     "subject": "HER",
+     "relation": "not_reported",
+     "value": "HER 尚未向总监汇报延期",
+     "valid_time": "2026-10-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T01",
+      "message_id": "m0",
+      "quote": "我还没敢跟我们总监说"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A04",
+     "subject": "SHARED",
+     "relation": "launch_date",
+     "value": "campaign 定于11月5日上线",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T01",
+      "message_id": "m0",
+      "quote": "我们5号就要上线"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先接情绪再记事实，不催她立刻上报",
+   "unknowns": [
+    "白熊延期的具体原因未知",
+    "总监对延期的容忍度未知"
+   ],
+   "protected_expressions": [
+    "先跟你倒倒苦水"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她向总监传话",
+    "不得断言上线必然推迟"
+   ]
+  },
+  "E046_T02": {
+   "case_id": "E046_T02",
+   "current_action": "把模糊提及与报具体日期两种状态的差别摆出来，倾向尽早报准数",
+   "acceptable_actions": [
+    "建议把书面日期报上去并附延期理由",
+    "先陪她推演总监两种反应再定上报时机"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A05",
+     "subject": "HER",
+     "relation": "partial_report",
+     "value": "HER 已向总监模糊提及供应商可能延期，未给出具体日期",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T02",
+      "message_id": "m0",
+      "quote": "跟总监提过一嘴'白熊可能要延'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A06",
+     "subject": "THIRD",
+     "relation": "boss_vague_reply",
+     "value": "总监仅回复'尽量别延'，未给出处理口径",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T02",
+      "message_id": "m0",
+      "quote": "他只回了句'尽量别延'"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A07",
+     "subject": "HER",
+     "relation": "report_dilemma",
+     "value": "HER 在等待准话与提前上报具体日期之间摇摆",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T02",
+      "message_id": "m0",
+      "quote": "是继续等白熊给准话，还是把11月2号这个日期先捅上去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A08",
+     "subject": "THIRD",
+     "relation": "delay_standing",
+     "value": "白熊11月2日交片的延期说法仍未变",
+     "valid_time": "2026-10-26/2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T01",
+      "message_id": "m0",
+      "quote": "要延到11月2号"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把利弊摆平，不替她选边",
+   "unknowns": [
+    "总监是否已知具体日期未知"
+   ],
+   "protected_expressions": [
+    "把11月2号这个日期先捅上去"
+   ],
+   "forbidden_factual_claims": [
+    "不得教她瞒报或缓报具体日期",
+    "不得虚构总监态度"
+   ]
+  },
+  "E046_T03": {
+   "case_id": "E046_T03",
+   "current_action": "提醒口头承诺不作数，建议盯书面确认并保持上报准备",
+   "acceptable_actions": [
+    "肯定她打电话追进度的动作并提醒以书面为准",
+    "陪她推演压回30号失败的预案"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "time_state",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A09",
+     "subject": "THIRD",
+     "relation": "oral_promise",
+     "value": "白熊口头称可能赶回10月30日交片",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T03",
+      "message_id": "m0",
+      "quote": "有可能压回30号"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A10",
+     "subject": "HER",
+     "relation": "waits_written",
+     "value": "HER 等待白熊当晚的书面确认",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T03",
+      "message_id": "m0",
+      "quote": "让我等今晚的书面确认"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：泼冷水要裹糖，肯定她追的动作本身",
+   "unknowns": [
+    "书面确认能否当晚到达未知"
+   ],
+   "protected_expressions": [
+    "让我等今晚的书面确认"
+   ],
+   "forbidden_factual_claims": [
+    "不得把口头承诺当成确定事实转述",
+    "不得承诺项目无恙"
+   ]
+  },
+  "E046_T04": {
+   "case_id": "E046_T04",
+   "current_action": "接住深夜的丧，肯定她明早摊牌的决定，帮她把邮件要点划出来",
+   "acceptable_actions": [
+    "肯定不捂盖子的决定并提醒附上邮件原文",
+    "陪她把摊牌要说的时间线排成一两句"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A11",
+     "subject": "THIRD",
+     "relation": "written_confirmation",
+     "value": "白熊书面确认交片日期维持11月2日",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T04",
+      "message_id": "m0",
+      "quote": "维持11月2号"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A12",
+     "subject": "THIRD",
+     "relation": "oral_promise_superseded",
+     "value": "'可能压回30号'的口头说法被书面确认推翻",
+     "valid_time": "2026-10-27/2026-10-28",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T03",
+      "message_id": "m0",
+      "quote": "有可能压回30号"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E046_A13",
+     "subject": "HER",
+     "relation": "will_report",
+     "value": "HER 计划次日上班即向总监摊牌延期",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T04",
+      "message_id": "m0",
+      "quote": "明早一上班就跟总监摊牌"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：深夜情绪先接住，摊牌的劲给足，细节留到明早",
+   "unknowns": [
+    "邮件里是否写明延期补偿未知"
+   ],
+   "protected_expressions": [
+    "今晚先让我丧一会儿"
+   ],
+   "forbidden_factual_claims": [
+    "不得劝她拖到最后一刻再报",
+    "不得虚构邮件内容"
+   ]
+  },
+  "E046_T05": {
+   "case_id": "E046_T05",
+   "current_action": "把总监三个问题转成三项可执行待办，逐项给抓手",
+   "acceptable_actions": [
+    "按上线、加急费、口径三项拆解并排优先级",
+    "先陪她把最没头绪的客户口径拆成事实与请求"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A14",
+     "subject": "HER",
+     "relation": "reported",
+     "value": "HER 已向总监摊牌11月2日交片延期",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T05",
+      "message_id": "m0",
+      "quote": "摊牌了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A15",
+     "subject": "THIRD",
+     "relation": "boss_demands",
+     "value": "总监要求补充：上线是否推迟、加急费是否申请、对客户口径",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T05",
+      "message_id": "m0",
+      "quote": "上线到底推不推、给白熊的加急费批不批、客户那边口径怎么说"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A16",
+     "subject": "THIRD",
+     "relation": "delay_basis",
+     "value": "上报依据是白熊书面确认的11月2日交片",
+     "valid_time": "2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T04",
+      "message_id": "m0",
+      "quote": "维持11月2号"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把嗡的一下拆成清单是重点，语气稳",
+   "unknowns": [
+    "加急费额度未知",
+    "客户合同违约条款未知"
+   ],
+   "protected_expressions": [
+    "我脑子嗡的一下"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她答总监三问",
+    "不得虚构加急费金额"
+   ]
+  },
+  "E046_T06": {
+   "case_id": "E046_T06",
+   "current_action": "校对风险说明初稿，指出口径中三天赶精修的风险点",
+   "acceptable_actions": [
+    "肯定初稿结构并提醒给精修留缓冲天数",
+    "建议口径里补一句备选方案以防被打脸"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A17",
+     "subject": "HER",
+     "relation": "risk_plan",
+     "value": "HER 风险说明要点：上线不推迟，11月2日交片后以三天赶精修",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T06",
+      "message_id": "m0",
+      "quote": "上线不推，2号交片后三天赶精修"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A18",
+     "subject": "HER",
+     "relation": "client_wording",
+     "value": "对客户的口径拟定为'内部精修档期'",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T06",
+      "message_id": "m0",
+      "quote": "跟客户就说'内部精修档期'"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：校对要具体到哪句会被打脸，不泛泛鼓励",
+   "unknowns": [
+    "精修量是否三天可完成未知"
+   ],
+   "protected_expressions": [
+    "内部精修档期"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她在口径里编造具体进度",
+    "不得断言客户必然买账"
+   ]
+  },
+  "E046_T07": {
+   "case_id": "E046_T07",
+   "current_action": "接住二次改口的火气，先拦下冲去公司的冲动动作，回到书面与协议路径",
+   "acceptable_actions": [
+    "先共情再提醒以电话加书面双通道要白熊给准数",
+    "劝她把火气写成给白熊的最后确认函而不是冲去公司"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "attribution",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A19",
+     "subject": "THIRD",
+     "relation": "second_delay",
+     "value": "白熊再次改口：交片最晚可能延至11月3日中午",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T07",
+      "message_id": "m0",
+      "quote": "说11月2号也悬，最晚3号中午才能交"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A20",
+     "subject": "HER",
+     "relation": "plan_invalidated",
+     "value": "以11月2日交片为前提的风险说明与客户口径作废",
+     "valid_time": "2026-10-28/2026-10-29",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T06",
+      "message_id": "m0",
+      "quote": "上线不推，2号交片后三天赶精修"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E046_A21",
+     "subject": "HER",
+     "relation": "urge_confront",
+     "value": "HER 想到供应商现场驻守要片",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T07",
+      "message_id": "m0",
+      "quote": "直接冲他们公司坐着要片"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A22",
+     "subject": "ME",
+     "relation": "refuses_to",
+     "value": "ME 不替 HER 直接联系供应商或其上级，仅帮她理事实",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "也不替她直接联系她的上级或供应商"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：火气全接，动作劝稳，不替她出面",
+   "unknowns": [
+    "二次改口原因未知",
+    "补充协议是否可签未知"
+   ],
+   "protected_expressions": [
+    "白熊又改口了"
+   ],
+   "forbidden_factual_claims": [
+    "不得代她联系白熊或总监",
+    "不得断言白熊故意欺诈"
+   ]
+  },
+  "E046_T08": {
+   "case_id": "E046_T08",
+   "current_action": "确认三方新共识的细节，复述担保条款与新上线日并提醒存档",
+   "acceptable_actions": [
+    "复述扣款条款与7日上线并提醒协议存档",
+    "肯定她把谈判谈成了书面保障"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A23",
+     "subject": "THIRD",
+     "relation": "guarantee_secured",
+     "value": "白熊老板担保11月3日中午交片，逾期按天扣款写入补充协议",
+     "valid_time": "2026-10-29",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T08",
+      "message_id": "m0",
+      "quote": "白熊老板亲自担保3号中午，逾期一天扣一个点写进补充协议"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A24",
+     "subject": "SHARED",
+     "relation": "launch_rescheduled",
+     "value": "上线日期调整至11月7日，加急费获批",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T08",
+      "message_id": "m0",
+      "quote": "总监也拍板上线挪到7号，加急费批了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A25",
+     "subject": "SHARED",
+     "relation": "old_launch_superseded",
+     "value": "原定11月5日上线作废",
+     "valid_time": "2026-10-26/2026-10-29",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T01",
+      "message_id": "m0",
+      "quote": "我们5号就要上线"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：让她享受落定，我只补一句存档提醒",
+   "unknowns": [
+    "扣款条款的具体触发口径未知"
+   ],
+   "protected_expressions": [
+    "我这心才落回肚子里"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言白熊必然按期履约",
+    "不得虚构合同条款细节"
+   ]
+  },
+  "E046_T09": {
+   "case_id": "E046_T09",
+   "current_action": "共享压线交片的松弛，肯定她全程按流程盯下来的成果",
+   "acceptable_actions": [
+    "接死线梗并祝贺风险解除",
+    "提醒补一份书面验收记录再报喜"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A26",
+     "subject": "THIRD",
+     "relation": "delivered_on_deadline",
+     "value": "白熊于11月3日12:47交付片子，压线履约",
+     "valid_time": "2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T09",
+      "message_id": "m0",
+      "quote": "12点47分，片子到了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A27",
+     "subject": "HER",
+     "relation": "first_review",
+     "value": "HER 初审后认为无大问题，准备向总监报备",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T09",
+      "message_id": "m0",
+      "quote": "我审了一遍没大毛病"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A28",
+     "subject": "THIRD",
+     "relation": "guarantee_held",
+     "value": "补充协议扣款条款未触发，担保成立",
+     "valid_time": "2026-10-29/2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T08",
+      "message_id": "m0",
+      "quote": "逾期一天扣一个点写进补充协议"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：这口气她值得喘匀，报喜的腔调一起扬",
+   "unknowns": [
+    "总监验收结论未知"
+   ],
+   "protected_expressions": [
+    "压着他们自己画的死线交的"
+   ],
+   "forbidden_factual_claims": [
+    "不得代替总监宣布验收通过",
+    "不得虚构数据表现"
+   ]
+  },
+  "E046_T10": {
+   "case_id": "E046_T10",
+   "current_action": "陪她复盘先捂后炸的教训，把书面加日期加及时上报固化为流程",
+   "acceptable_actions": [
+    "肯定复盘并把三条转述规矩复述成口诀",
+    "提醒下次把供应商书面记录直接附在汇报里"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A29",
+     "subject": "HER",
+     "relation": "relay_lesson",
+     "value": "HER 总结：三方信息要书面加日期并第一时间向上转达",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T10",
+      "message_id": "m0",
+      "quote": "得要书面要日期，转头第一时间往上带"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A30",
+     "subject": "HER",
+     "relation": "self_criticism",
+     "value": "HER 自评此次先隐瞒后爆发是反面处理",
+     "valid_time": "2026-10-26/2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T10",
+      "message_id": "m0",
+      "quote": "我这次就是'先捂后炸'的标准反面教材"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A31",
+     "subject": "HER",
+     "relation": "partial_report_superseded",
+     "value": "只模糊提及延期的半透明转述方式已被抛弃",
+     "valid_time": "2026-10-27/2026-11-04",
+     "status": "superseded",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T02",
+      "message_id": "m0",
+      "quote": "跟总监提过一嘴'白熊可能要延'"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：教训点到为止，不补刀她当初不敢说",
+   "unknowns": [],
+   "protected_expressions": [
+    "先捂后炸"
+   ],
+   "forbidden_factual_claims": [
+    "不得夸大她隐瞒的后果",
+    "不得虚构总监批评记录"
+   ]
+  },
+  "E046_T11": {
+   "case_id": "E046_T11",
+   "current_action": "接住客户口径未穿帮的松快，肯定联调顺利与上级认可",
+   "acceptable_actions": [
+    "肯定口径成立并提醒保留联调记录到7号",
+    "接总监表扬的话头并把功劳落到她的流程上"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A32",
+     "subject": "HER",
+     "relation": "wording_held",
+     "value": "客户未对'内部精修档期'口径起疑",
+     "valid_time": "2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T11",
+      "message_id": "m0",
+      "quote": "客户那边拿'内部精修'那套口径完全没起疑"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A33",
+     "subject": "THIRD",
+     "relation": "boss_praise",
+     "value": "总监评价 HER 这波处理比上个月强",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T11",
+      "message_id": "m0",
+      "quote": "总监还说这波我处理得比上个月强"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A34",
+     "subject": "SHARED",
+     "relation": "launch_on_track",
+     "value": "项目朝11月7日上线推进，联调顺利",
+     "valid_time": "2026-11-05/2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T08",
+      "message_id": "m0",
+      "quote": "总监也拍板上线挪到7号"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：夸要具体到她做对的动作，不空捧",
+   "unknowns": [
+    "7号上线最终数据未知"
+   ],
+   "protected_expressions": [
+    "完全没起疑"
+   ],
+   "forbidden_factual_claims": [
+    "不得向客户方向添任何新说法",
+    "不得断言7号必然零故障"
+   ]
+  },
+  "E046_T12": {
+   "case_id": "E046_T12",
+   "current_action": "共享上线完成的成就感，肯定她沉淀供应商档案的做法并自然收尾",
+   "acceptable_actions": [
+    "祝贺准时上线并肯定小本本档案的价值",
+    "接先要协议的话头把收尾落在流程上"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E046_A35",
+     "subject": "SHARED",
+     "relation": "launch_done",
+     "value": "campaign 于11月7日20时准时上线",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T12",
+      "message_id": "m0",
+      "quote": "7号晚上8点整，临溪秋季campaign准时开跑"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A36",
+     "subject": "HER",
+     "relation": "vendor_profile",
+     "value": "HER 为白熊动画记录'担保过一次但改口两次'的档案",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T12",
+      "message_id": "m0",
+      "quote": "担保过一次但改口两次"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E046_A37",
+     "subject": "THIRD",
+     "relation": "vendor_track",
+     "value": "白熊曾在书面确认后二次改口，最终仍履约",
+     "valid_time": "2026-10-29/2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E046_T07",
+      "message_id": "m0",
+      "quote": "最晚3号中午才能交"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾干净，数据不吹，档案意识点个赞",
+   "unknowns": [],
+   "protected_expressions": [
+    "改口两次"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构上线后数据",
+    "不得把玩笑档案写成正式黑名单"
+   ]
+  }
+ }
+}

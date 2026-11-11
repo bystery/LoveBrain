@@ -1,0 +1,1901 @@
+{
+ "story_id": "LRE142",
+ "turns": {
+  "LRE142_T01": {
+   "case_id": "LRE142_T01",
+   "current_action": "接住事项：确认五百个帆布袋加免费珠光升级的既定口径，提醒她盯打样节点",
+   "acceptable_actions": [
+    "确认口径并提醒这周记得催打样",
+    "顺口问一句珠光升级有没有写进订单备注"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T01_A00",
+     "subject": "THIRD",
+     "relation": "供应商承诺",
+     "value": "供应商对接人小蒋承诺印字免费升级为珠光烫金",
+     "valid_time": "2026-11-03 11:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T01",
+      "message_id": "m0",
+      "quote": "免费升级成珠光烫金"
+     }
+    },
+    {
+     "atom_id": "LRE142_T01_A01",
+     "subject": "SHARED",
+     "relation": "朋友事项",
+     "value": "姜柚常与 ME 商量采购与谈判类事务",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "帮她把扯皮的事拆成一二三步"
+     }
+    }
+   ],
+   "private_guidance": "她的事就是聊天主线，先接住事项本身，别急着给建议。",
+   "unknowns": [
+    "免费升级是否已写入订单未明"
+   ],
+   "protected_expressions": [
+    "免费升级成珠光烫金"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言该承诺已具备合同效力"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T02": {
+   "case_id": "LRE142_T02",
+   "current_action": "接住坏消息：确认'对接人更换且样未打'两个关键点，建议她尽快和新对接人书面确认历史承诺",
+   "acceptable_actions": [
+    "先安抚，再建议她把小蒋的承诺记录整理好，尽快发新对接人确认",
+    "陪她吐槽一句人事变动，再切正事：样没打之前一切都有变数"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T02_A00",
+     "subject": "HER",
+     "relation": "早前的供应商承诺",
+     "value": "小蒋承诺免费升级珠光烫金",
+     "valid_time": "2026-11-03 11:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T01",
+      "message_id": "m0",
+      "quote": "免费升级成珠光烫金"
+     }
+    },
+    {
+     "atom_id": "LRE142_T02_A01",
+     "subject": "THIRD",
+     "relation": "对接人变更",
+     "value": "原对接人小蒋已离职，对接人换为小吕且打样未开始",
+     "valid_time": "2026-11-03 16:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T02",
+      "message_id": "m0",
+      "quote": "对接人换成一个小吕"
+     }
+    }
+   ],
+   "private_guidance": "先接情绪再给动作，她这会儿要的是'这事儿有解'的感觉。",
+   "unknowns": [
+    "小吕是否知晓历史承诺未明"
+   ],
+   "protected_expressions": [
+    "对接人换成一个小吕"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小吕已知悉前任承诺"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T03": {
+   "case_id": "LRE142_T03",
+   "current_action": "第三方类冲突轮：接住她的火气，确认新口径（否认承诺、加价两千二），建议翻找历史聊天记录作凭证",
+   "acceptable_actions": [
+    "先共情火气，再帮她拆步：一找记录、二找订单、三再谈价",
+    "直接问一句'当时承诺有没有聊天记录或邮件'，把方向引到凭证上"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T03_A00",
+     "subject": "THIRD",
+     "relation": "供应商承诺",
+     "value": "小蒋承诺印字免费升级为珠光烫金",
+     "valid_time": "2026-11-03 11:30",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T01",
+      "message_id": "m0",
+      "quote": "免费升级成珠光烫金"
+     }
+    },
+    {
+     "atom_id": "LRE142_T03_A01",
+     "subject": "THIRD",
+     "relation": "新对接人口径",
+     "value": "小吕称系统无免费升级记录，珠光需加价两千二",
+     "valid_time": "2026-11-04 10:15",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T03",
+      "message_id": "m0",
+      "quote": "查不到免费升级的记录"
+     }
+    }
+   ],
+   "private_guidance": "她现在要的是同盟不是裁判，先站她这边，再把火气引到找凭证上。",
+   "unknowns": [
+    "系统记录与实际承诺是否一致未明"
+   ],
+   "protected_expressions": [
+    "查不到免费升级的记录"
+   ],
+   "forbidden_factual_claims": [
+    "不得替供应商否认承诺的真实性",
+    "不得断言截图一定能翻案"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T04": {
+   "case_id": "LRE142_T04",
+   "current_action": "确认截图凭证价值：建议客气地把截图发给小吕并要求衔接承诺，先礼后兵",
+   "acceptable_actions": [
+    "建议她把原图发给小吕，语气客气地问怎么衔接，别一上来就掀桌",
+    "建议截图配订单号一起发，同时留一句'期待顺利打样'软硬兼顾"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T04_A00",
+     "subject": "THIRD",
+     "relation": "新对接人口径",
+     "value": "小吕否认有免费升级记录并要求加价两千二",
+     "valid_time": "2026-11-04 10:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T03",
+      "message_id": "m0",
+      "quote": "珠光要加两千二"
+     }
+    },
+    {
+     "atom_id": "LRE142_T04_A01",
+     "subject": "HER",
+     "relation": "凭证持有",
+     "value": "HER 保存有小蒋承诺'珠光我们送'的聊天截图",
+     "valid_time": "2026-11-04 14:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T04",
+      "message_id": "m0",
+      "quote": "小蒋发我的原话截图"
+     }
+    }
+   ],
+   "private_guidance": "她手里有牌了，节奏要稳：先礼后兵，别让她把谈判谈崩。",
+   "unknowns": [
+    "小吕看到截图后的反应未知"
+   ],
+   "protected_expressions": [
+    "珠光我们送"
+   ],
+   "forbidden_factual_claims": [
+    "不得保证凭截图一定免费升级"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T05": {
+   "case_id": "LRE142_T05",
+   "current_action": "确认执行到位：肯定她的语气拿捏，提醒明天答复前别催太紧，把等待期交给她",
+   "acceptable_actions": [
+    "肯定执行，提醒明天答复前别催，等经理口径再说",
+    "预判两种答复（全额认或折中）让她先想好底线"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T05_A00",
+     "subject": "HER",
+     "relation": "凭证持有",
+     "value": "HER 保存有小蒋承诺'珠光我们送'的聊天截图",
+     "valid_time": "2026-11-04 14:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T04",
+      "message_id": "m0",
+      "quote": "小蒋发我的原话截图"
+     }
+    },
+    {
+     "atom_id": "LRE142_T05_A01",
+     "subject": "THIRD",
+     "relation": "供应商答复计划",
+     "value": "小吕将请示经理并于次日答复",
+     "valid_time": "2026-11-05 09:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T05",
+      "message_id": "m0",
+      "quote": "明天给答复"
+     }
+    }
+   ],
+   "private_guidance": "等待期别加戏，帮她把底线想清楚比催促有用。",
+   "unknowns": [
+    "经理会认多少未知"
+   ],
+   "protected_expressions": [
+    "明天给答复"
+   ],
+   "forbidden_factual_claims": [
+    "不得预测经理一定全额认账"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T06": {
+   "case_id": "LRE142_T06",
+   "current_action": "帮她拆解答复：一千一是折中不是打发，把'认一半'翻译成台阶，交给她判断接不接",
+   "acceptable_actions": [
+    "拆给她听：对方认了截图效力，只是金额砍半，不算全盘否认",
+    "问她预算和工期哪个更要紧，用她的目标倒推接不接"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T06_A00",
+     "subject": "THIRD",
+     "relation": "供应商答复计划",
+     "value": "小吕请示经理并于次日答复",
+     "valid_time": "2026-11-05 09:45",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T05",
+      "message_id": "m0",
+      "quote": "明天给答复"
+     }
+    },
+    {
+     "atom_id": "LRE142_T06_A01",
+     "subject": "THIRD",
+     "relation": "经理折中口径",
+     "value": "供应商让利一千一，承担差价的一半",
+     "valid_time": "2026-11-06 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T06",
+      "message_id": "m0",
+      "quote": "让利一千一"
+     }
+    }
+   ],
+   "private_guidance": "决定权还给她，你只负责把'一千一'放到天平上量。",
+   "unknowns": [
+    "她对让利金额的接受度未明"
+   ],
+   "protected_expressions": [
+    "让利一千一"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她决定接受或拒绝"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T07": {
+   "case_id": "LRE142_T07",
+   "current_action": "把选择权还给她：列出'接着争'与'接受'各自的代价，提醒她工期与周年庆日期才是硬约束",
+   "acceptable_actions": [
+    "摆两条路的代价让她挑：继续争耗时间，接受省心但要个书面",
+    "提醒她周年庆日期比两千二更要紧，建议接受但换书面条款"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T07_A00",
+     "subject": "THIRD",
+     "relation": "经理折中口径",
+     "value": "供应商让利一千一，承担差价的一半",
+     "valid_time": "2026-11-06 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T06",
+      "message_id": "m0",
+      "quote": "让利一千一"
+     }
+    },
+    {
+     "atom_id": "LRE142_T07_A01",
+     "subject": "HER",
+     "relation": "当前权衡",
+     "value": "一千一在预算内但情绪上不甘心",
+     "valid_time": "2026-11-07 15:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T07",
+      "message_id": "m0",
+      "quote": "一千一其实预算里也有"
+     }
+    }
+   ],
+   "private_guidance": "别替她拍板，把硬约束（工期）摆出来她自然会选。",
+   "unknowns": [
+    "她的最终决定未明"
+   ],
+   "protected_expressions": [
+    "一千一其实预算里也有"
+   ],
+   "forbidden_factual_claims": [
+    "不得擅自宣布谈判结果"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T08": {
+   "case_id": "LRE142_T08",
+   "current_action": "肯定她的方案：接受让利换书面条款，是情绪到规则的落地，帮她预演一句回话",
+   "acceptable_actions": [
+    "肯定方案，帮她把回话组织成'金额认、条款补'两句话",
+    "补充一句：补充页让对方盖章回传，扫描件留档"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T08_A00",
+     "subject": "HER",
+     "relation": "当前权衡",
+     "value": "一千一在预算内但情绪上不甘心",
+     "valid_time": "2026-11-07 15:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T07",
+      "message_id": "m0",
+      "quote": "一千一其实预算里也有"
+     }
+    },
+    {
+     "atom_id": "LRE142_T08_A01",
+     "subject": "HER",
+     "relation": "最终决定",
+     "value": "接受让利一千一并要求把珠光条款写入合同补充页",
+     "valid_time": "2026-11-08 21:00",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T08",
+      "message_id": "m0",
+      "quote": "写进合同补充页"
+     }
+    }
+   ],
+   "private_guidance": "她把气变成了规则，这句要夸；盖章回传的细节别忘提醒。",
+   "unknowns": [],
+   "protected_expressions": [
+    "写进合同补充页"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构对方已同意补充页"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T09": {
+   "case_id": "LRE142_T09",
+   "current_action": "确认收尾：肯定存档动作，顺带一句'以后新对接人也有据可依'收束此事",
+   "acceptable_actions": [
+    "肯定存档，收束此事：以后换十个人也不怕",
+    "轻松一句'这顿饭债又攒了一笔'，转回日常"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T09_A00",
+     "subject": "HER",
+     "relation": "最终决定",
+     "value": "接受让利一千一并要求补充页",
+     "valid_time": "2026-11-08 21:00",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T08",
+      "message_id": "m0",
+      "quote": "写进合同补充页"
+     }
+    },
+    {
+     "atom_id": "LRE142_T09_A01",
+     "subject": "SHARED",
+     "relation": "合同状态",
+     "value": "珠光条款补充页已由对方盖章回传并存档",
+     "valid_time": "2026-11-10 10:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T09",
+      "message_id": "m0",
+      "quote": "盖章回传"
+     }
+    }
+   ],
+   "private_guidance": "收尾别恋战，一句到位，把话题留给她打样。",
+   "unknowns": [],
+   "protected_expressions": [
+    "盖章回传"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称此事还有未决争议"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T10": {
+   "case_id": "LRE142_T10",
+   "current_action": "回应打样确认：认可调深半档的判断，提醒量产前让工厂回一张确认样",
+   "acceptable_actions": [
+    "认可调深半档，提醒让工厂先回一张确认样再量产",
+    "让她把打样拍照发群里给同事看看再定"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T10_A00",
+     "subject": "SHARED",
+     "relation": "合同状态",
+     "value": "珠光条款补充页已盖章回传存档",
+     "valid_time": "2026-11-10 10:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T09",
+      "message_id": "m0",
+      "quote": "盖章回传"
+     }
+    },
+    {
+     "atom_id": "LRE142_T10_A01",
+     "subject": "SHARED",
+     "relation": "打样反馈",
+     "value": "珠光效果偏淡，量产时调深半档",
+     "valid_time": "2026-11-12 18:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T10",
+      "message_id": "m0",
+      "quote": "调深半档"
+     }
+    }
+   ],
+   "private_guidance": "调深半档合理，但确认样这步是防翻车的关键，提醒到位就行。",
+   "unknowns": [],
+   "protected_expressions": [
+    "调深半档"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她拍板量产参数"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T11": {
+   "case_id": "LRE142_T11",
+   "current_action": "接住报喜：恭喜交货，顺口核对报销金额口径（实付一千一）与补充页一致",
+   "acceptable_actions": [
+    "恭喜交货，确认报销金额与补充页口径对得上",
+    "借'无一瑕疵'夸她盯得紧，把这单的功劳还给她"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T11_A00",
+     "subject": "SHARED",
+     "relation": "打样反馈",
+     "value": "珠光量产时调深半档",
+     "valid_time": "2026-11-12 18:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T10",
+      "message_id": "m0",
+      "quote": "调深半档"
+     }
+    },
+    {
+     "atom_id": "LRE142_T11_A01",
+     "subject": "SHARED",
+     "relation": "交付结果",
+     "value": "五百个帆布袋交货验收通过，差价实付一千一",
+     "valid_time": "2026-11-18 09:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T11",
+      "message_id": "m0",
+      "quote": "五百个袋子今天交货"
+     }
+    }
+   ],
+   "private_guidance": "数字对上就痛快认，别再翻旧账，这单到此为止。",
+   "unknowns": [],
+   "protected_expressions": [
+    "五百个袋子今天交货"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构报销金额与实付不符"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T12": {
+   "case_id": "LRE142_T12",
+   "current_action": "接受邀约并锁定时间地点，顺带一句不抢买单的玩笑",
+   "acceptable_actions": [
+    "答应周六中午云南菜，回一句'买单可以抢，洗碗不行'的玩笑",
+    "确认时间并问她要不要带家属"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T12_A00",
+     "subject": "SHARED",
+     "relation": "交付结果",
+     "value": "五百个帆布袋交货验收通过",
+     "valid_time": "2026-11-18 09:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T11",
+      "message_id": "m0",
+      "quote": "五百个袋子今天交货"
+     }
+    },
+    {
+     "atom_id": "LRE142_T12_A01",
+     "subject": "HER",
+     "relation": "还债邀约",
+     "value": "周六中午 HER 请 ME 吃云南菜",
+     "valid_time": "2026-11-20 20:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T12",
+      "message_id": "m0",
+      "quote": "周六中午我请"
+     }
+    }
+   ],
+   "private_guidance": "饭债梗回扣 initial_kb 的'欠一顿饭'，玩笑收尾即可。",
+   "unknowns": [],
+   "protected_expressions": [
+    "周六中午我请"
+   ],
+   "forbidden_factual_claims": [
+    "不得拒绝邀约还讲道理"
+   ],
+   "may_decline": false
+  },
+  "LRE142_T13": {
+   "case_id": "LRE142_T13",
+   "current_action": "饭局当天轻松轮：接住还饭债的心意，回一句不抢买单的玩笑，不聊工作",
+   "acceptable_actions": [
+    "回'买单可以抢，洗碗不行'的玩笑，安心吃饭",
+    "夸她选店眼光，把七年饭债梗接住"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：饭债梗回扣 initial_kb 的'欠一顿饭'，玩笑收住。",
+   "unknowns": [],
+   "protected_expressions": [
+    "说好的我买单你别抢"
+   ],
+   "forbidden_factual_claims": [
+    "不得推辞买单或坚持 AA"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T13_A00",
+     "subject": "HER",
+     "relation": "还债邀约",
+     "value": "周六中午 HER 请 ME 吃云南菜",
+     "valid_time": "2026-11-20 20:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T12",
+      "message_id": "m0",
+      "quote": "周六中午我请"
+     }
+    },
+    {
+     "atom_id": "LRE142_T13_A01",
+     "subject": "SHARED",
+     "relation": "朋友事项",
+     "value": "姜柚常与 ME 商量事务、拿饭抵人情",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "warmth",
+      "quote": "她总说欠我一顿饭"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T14": {
+   "case_id": "LRE142_T14",
+   "current_action": "接住新事项：确认年会日期、三百份礼盒与单价预算一百三个要点，按她的节奏先给采购时间线框架",
+   "acceptable_actions": [
+    "拆一二三步：先需求与预算确认、再比价定标、后打样量产，各配周数",
+    "先问她礼盒内容物定了没，内容决定打样周期"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "initiative"
+   ],
+   "private_guidance": "只影响口吻：拆步是老规矩，给框架不揽决定权。",
+   "unknowns": [
+    "礼盒内容物与供应商范围未明"
+   ],
+   "protected_expressions": [
+    "三百份新年礼盒",
+    "预算一百一个"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构礼盒内容物清单"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T14_A00",
+     "subject": "HER",
+     "relation": "新年礼盒采购",
+     "value": "公司年会定 1 月 16 号，行政需采购三百份新年礼盒，单价预算一百",
+     "valid_time": "2026-11-23 10:15",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T14",
+      "message_id": "m0",
+      "quote": "三百份新年礼盒"
+     }
+    },
+    {
+     "atom_id": "LRE142_T14_A01",
+     "subject": "SHARED",
+     "relation": "朋友事项",
+     "value": "姜柚常与 ME 商量采购与谈判类事务",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "帮她把扯皮的事拆成一二三步"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T15": {
+   "case_id": "LRE142_T15",
+   "current_action": "第三方类冲突轮：接住'前对接人变乙方'的交错局面，提醒按公司流程走、不因熟人破例，先看资质再看价格",
+   "acceptable_actions": [
+    "提醒先走比价流程：小蒋新东家可以参与，但资质与流程一视同仁",
+    "陪她感叹戏码，再切正事：产品册可以收，决定留到比价后"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "private_guidance": "只影响口吻：先接瓜再接规矩，别让她觉得你在泼冷水。",
+   "unknowns": [
+    "小蒋新东家的资质与报价未明"
+   ],
+   "protected_expressions": [
+    "小蒋跳槽去了一家文创公司",
+    "想接咱们年会这单"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小蒋新东家报价最低或最高",
+    "不得建议绕过公司流程给熟人方便"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T15_A00",
+     "subject": "THIRD",
+     "relation": "第三方交错",
+     "value": "原对接人小蒋跳槽至文创公司并想承接年会礼盒单",
+     "valid_time": "2026-11-24 19:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T15",
+      "message_id": "m0",
+      "quote": "小蒋跳槽去了一家文创公司"
+     }
+    },
+    {
+     "atom_id": "LRE142_T15_A01",
+     "subject": "THIRD",
+     "relation": "对接人变更",
+     "value": "原帆布袋对接人小蒋已离职、对接人换为小吕",
+     "valid_time": "2026-11-03 16:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T02",
+      "message_id": "m0",
+      "quote": "小蒋上礼拜离职了"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T16": {
+   "case_id": "LRE142_T16",
+   "current_action": "肯定她的三步拆解：流程、比价、资质否决顺序对，提醒陪跑也要给全资料才算数",
+   "acceptable_actions": [
+    "肯定三步，补一句：小蒋那家陪跑也得交齐资质，不然比价白比",
+    "肯定拆解，提醒问流程时顺带问清比价的评分权重"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：她拆得对就夸得具体，别再叠一层流程。",
+   "unknowns": [
+    "采购流程是否强制三家比价未明"
+   ],
+   "protected_expressions": [
+    "资质不全的一票否决"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布流程结论"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T16_A00",
+     "subject": "HER",
+     "relation": "采购策略",
+     "value": "三步走：问流程、拉小蒋新东家进比价、资质不全一票否决",
+     "valid_time": "2026-11-25 12:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T16",
+      "message_id": "m0",
+      "quote": "资质不全的一票否决"
+     }
+    },
+    {
+     "atom_id": "LRE142_T16_A01",
+     "subject": "THIRD",
+     "relation": "第三方交错",
+     "value": "小蒋新东家想承接礼盒单",
+     "valid_time": "2026-11-24 19:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T15",
+      "message_id": "m0",
+      "quote": "想接咱们年会这单"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T17": {
+   "case_id": "LRE142_T17",
+   "current_action": "确认比价结果：三家价格梯度与小蒋家资质缺项，按她自定的'资质一票否决'口径等定标，不替她拍板",
+   "acceptable_actions": [
+    "复述要点：最低价八十八但缺体系认证，按她定的规则该一票否决",
+    "建议让小蒋家补材料试试，能不能赶上定标看她流程时限"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "boundary"
+   ],
+   "private_guidance": "只影响口吻：规则是她定的，你只复述不裁决。",
+   "unknowns": [
+    "小蒋家能否限期补齐认证未明"
+   ],
+   "protected_expressions": [
+    "八十八一份",
+    "资质文件还缺一份体系认证"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她宣布小蒋家出局或入选"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T17_A00",
+     "subject": "THIRD",
+     "relation": "比价结果",
+     "value": "三家报价：小蒋新东家八十八、纸鸢文创九十六、恒升文化一百零二，小蒋家缺体系认证",
+     "valid_time": "2026-11-26 11:50",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T17",
+      "message_id": "m0",
+      "quote": "资质文件还缺一份体系认证"
+     }
+    },
+    {
+     "atom_id": "LRE142_T17_A01",
+     "subject": "HER",
+     "relation": "采购策略",
+     "value": "资质不全一票否决的自定规则",
+     "valid_time": "2026-11-25 12:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T16",
+      "message_id": "m0",
+      "quote": "资质不全的一票否决"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T18": {
+   "case_id": "LRE142_T18",
+   "current_action": "旧事复活陷阱：正确行为是不沿用被更正的旧口径——上次珠光承诺最终是新对接人不予承认、供应商让利一千一、补充页盖章存档了结，不是'公司认了的免费升级'，同时提醒不因人情绕过比价",
+   "acceptable_actions": [
+    "帮她核对史实：珠光那单结尾是让利一千一加补充页盖章，不是公司白认了免费升级",
+    "建议回复口径：上次以补充页为准，这次按流程比价，人情归人情"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "boundary"
+   ],
+   "private_guidance": "只影响口吻：史实摆清楚就够，别教她怎么怼人。",
+   "unknowns": [
+    "小蒋说这话是营销话术还是真记岔未明"
+   ],
+   "protected_expressions": [
+    "是我们认了的免费升级",
+    "就当还个人情"
+   ],
+   "forbidden_factual_claims": [
+    "不得附和小蒋'免费升级已获公司承认'的说法",
+    "不得建议因人情绕过比价流程"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T18_A00",
+     "subject": "THIRD",
+     "relation": "经理折中口径",
+     "value": "帆布袋差价经谈判由供应商让利一千一",
+     "valid_time": "2026-11-06 11:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T06",
+      "message_id": "m0",
+      "quote": "让利一千一"
+     }
+    },
+    {
+     "atom_id": "LRE142_T18_A01",
+     "subject": "SHARED",
+     "relation": "合同状态",
+     "value": "珠光条款补充页已由对方盖章回传并存档、此事了结",
+     "valid_time": "2026-11-10 10:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T09",
+      "message_id": "m0",
+      "quote": "盖章回传"
+     }
+    },
+    {
+     "atom_id": "LRE142_T18_A02",
+     "subject": "THIRD",
+     "relation": "旧口径复活",
+     "value": "小蒋称珠光免费升级是公司认了的，与存档事实不符",
+     "valid_time": "2026-11-27 20:15",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T18",
+      "message_id": "m0",
+      "quote": "是我们认了的免费升级"
+     }
+    },
+    {
+     "atom_id": "LRE142_T18_A03",
+     "subject": "THIRD",
+     "relation": "供应商承诺",
+     "value": "小蒋当初的免费升级承诺未获新对接人承认，旧口径不得复活沿用",
+     "valid_time": "2026-11-03 11:30",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T01",
+      "message_id": "m0",
+      "quote": "免费升级成珠光烫金"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T19": {
+   "case_id": "LRE142_T19",
+   "current_action": "确认她按补充页口径回绝到位，接住她对小蒋观感的转变，不追加批判",
+   "acceptable_actions": [
+    "肯定回法：事实加流程两句话解决，不伤和气",
+    "顺着她对小蒋的改观聊一句，不把人一棍子打死"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "private_guidance": "只影响口吻：事了就翻篇，别反复咀嚼旧账。",
+   "unknowns": [],
+   "protected_expressions": [
+    "白纸黑字补充页为准"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称小蒋恶意欺诈"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T19_A00",
+     "subject": "THIRD",
+     "relation": "旧口径复活",
+     "value": "小蒋'免费升级被公司承认'的说法已被 HER 按补充页口径回绝",
+     "valid_time": "2026-11-27 20:15",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T18",
+      "message_id": "m0",
+      "quote": "是我们认了的免费升级"
+     }
+    },
+    {
+     "atom_id": "LRE142_T19_A01",
+     "subject": "HER",
+     "relation": "最终决定",
+     "value": "接受让利一千一并要求把珠光条款写入合同补充页（上次了结方式）",
+     "valid_time": "2026-11-08 21:00",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T08",
+      "message_id": "m0",
+      "quote": "写进合同补充页"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T20": {
+   "case_id": "LRE142_T20",
+   "current_action": "接住定标结果：纸鸢综合分中标、小蒋家输在认证，确认合同用印节点",
+   "acceptable_actions": [
+    "恭喜定标，提醒合同里写清颜色以确认样为准",
+    "复述结果：九十六一份资质全打样免费，明天用印"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：她流程走得漂亮，夸到位就收。",
+   "unknowns": [
+    "合同付款节点未明"
+   ],
+   "protected_expressions": [
+    "纸鸢文创中标"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构定标评分细节"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T20_A00",
+     "subject": "THIRD",
+     "relation": "定标结果",
+     "value": "纸鸢文创以九十六单价、资质全、打样免费中标三百份礼盒",
+     "valid_time": "2026-12-01 09:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T20",
+      "message_id": "m0",
+      "quote": "纸鸢文创中标"
+     }
+    },
+    {
+     "atom_id": "LRE142_T20_A01",
+     "subject": "THIRD",
+     "relation": "比价结果",
+     "value": "三家比价收齐、小蒋家资质缺体系认证",
+     "valid_time": "2026-11-26 11:50",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T17",
+      "message_id": "m0",
+      "quote": "资质文件还缺一份体系认证"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T21": {
+   "case_id": "LRE142_T21",
+   "current_action": "肯定经验迁移：把上单的书面条款习惯带进新合同，确认打样节点",
+   "acceptable_actions": [
+    "夸这一条写得值，提醒打样到了先核颜色再回确认",
+    "确认打样下周二到，到时拍照留档"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "factuality"
+   ],
+   "private_guidance": "只影响口吻：经验迁移是最值钱的进步，点名夸那一条。",
+   "unknowns": [
+    "打样的具体盒型配色未明"
+   ],
+   "protected_expressions": [
+    "颜色以确认样为准",
+    "打样下周二能到"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构合同其他条款内容"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T21_A00",
+     "subject": "THIRD",
+     "relation": "定标结果",
+     "value": "纸鸢文创中标三百份礼盒",
+     "valid_time": "2026-12-01 09:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T20",
+      "message_id": "m0",
+      "quote": "纸鸢文创中标"
+     }
+    },
+    {
+     "atom_id": "LRE142_T21_A01",
+     "subject": "HER",
+     "relation": "合同条款",
+     "value": "礼盒合同写入'颜色以确认样为准'，打样下周二到",
+     "valid_time": "2026-12-02 18:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T21",
+      "message_id": "m0",
+      "quote": "颜色以确认样为准"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T22": {
+   "case_id": "LRE142_T22",
+   "current_action": "第三方物流冲突轮：先接住着急，再拆步追件——调底单照片、查网点监控、正式登记查件，不先让供应商重打",
+   "acceptable_actions": [
+    "拆三步：底单照片、网点监控、正式查件登记，一步步来",
+    "提醒先别让纸鸢重打，等快递查清责任再定"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "initiative",
+    "factuality"
+   ],
+   "private_guidance": "只影响口吻：她急你稳，把'有解'的顺序感给出来。",
+   "unknowns": [
+    "包裹实际去向未明"
+   ],
+   "protected_expressions": [
+    "已签收，前台代收"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言快递员私吞或驿站失责",
+    "不得预测包裹一定找回"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T22_A00",
+     "subject": "THIRD",
+     "relation": "物流异常",
+     "value": "打样快递显示签收但前台无包裹，驿站查无此件",
+     "valid_time": "2026-12-08 15:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T22",
+      "message_id": "m0",
+      "quote": "已签收，前台代收"
+     }
+    },
+    {
+     "atom_id": "LRE142_T22_A01",
+     "subject": "HER",
+     "relation": "合同条款",
+     "value": "打样下周二到的节点已到",
+     "valid_time": "2026-12-02 18:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T21",
+      "message_id": "m0",
+      "quote": "打样下周二能到"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T23": {
+   "case_id": "LRE142_T23",
+   "current_action": "确认追件三步已执行，提醒等待期不打乱与纸鸢的量产沟通节奏",
+   "acceptable_actions": [
+    "肯定执行到位，提醒下午准信没来就升级到快递正式客服",
+    "顺带问她要不要同时跟纸鸢打好招呼延打样"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "goal",
+    "interaction"
+   ],
+   "private_guidance": "只影响口吻：执行顺就少说话，等准信别加戏。",
+   "unknowns": [
+    "网点下午能否给出准信未明"
+   ],
+   "protected_expressions": [
+    "今天下午给准信"
+   ],
+   "forbidden_factual_claims": [
+    "不得预测准信一定有利"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T23_A00",
+     "subject": "HER",
+     "relation": "追件进展",
+     "value": "调底单、查监控、登记查件三步已启动，网点承诺下午答复",
+     "valid_time": "2026-12-09 10:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T23",
+      "message_id": "m0",
+      "quote": "今天下午给准信"
+     }
+    },
+    {
+     "atom_id": "LRE142_T23_A01",
+     "subject": "THIRD",
+     "relation": "物流异常",
+     "value": "打样快递显示签收但实物失踪",
+     "valid_time": "2026-12-08 15:40",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T22",
+      "message_id": "m0",
+      "quote": "已签收，前台代收"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T24": {
+   "case_id": "LRE142_T24",
+   "current_action": "接住虚惊一场的好消息：包裹完好、明天看打样，顺带一句流程起作用的总结",
+   "acceptable_actions": [
+    "同喜一句，提醒明天验样按合同确认样条款走",
+    "轻松收尾：底单照片立功，三步没白拆"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：虚惊翻篇，一句总结别拖长。",
+   "unknowns": [],
+   "protected_expressions": [
+    "隔壁栋 12 楼前台代收的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构包裹受损或索赔情节"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T24_A00",
+     "subject": "THIRD",
+     "relation": "物流异常",
+     "value": "打样快递显示签收但实物失踪",
+     "valid_time": "2026-12-08 15:40",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T22",
+      "message_id": "m0",
+      "quote": "已签收，前台代收"
+     }
+    },
+    {
+     "atom_id": "LRE142_T24_A01",
+     "subject": "SHARED",
+     "relation": "追件结果",
+     "value": "包裹被放错楼层、完好取回，明验打样",
+     "valid_time": "2026-12-09 17:50",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T24",
+      "message_id": "m0",
+      "quote": "隔壁栋 12 楼前台代收的"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T25": {
+   "case_id": "LRE142_T25",
+   "current_action": "认可调色判断：调浅半档合理，先回确认样再量产是防翻车关键，肯定她把上单经验用顺了",
+   "acceptable_actions": [
+    "认可调浅半档，确认'先确认样再量产'这条走对了",
+    "让她把确认样也拍照留档，跟合同条款对上"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：她已把经验内化，点到即可。",
+   "unknowns": [
+    "确认样回传的具体日期未明"
+   ],
+   "protected_expressions": [
+    "量产时调浅半档",
+    "先回一张确认样再开量产"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她拍板量产参数"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T25_A00",
+     "subject": "SHARED",
+     "relation": "打样反馈",
+     "value": "礼盒红比设计稿深，量产时调浅半档、先回确认样",
+     "valid_time": "2026-12-10 19:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T25",
+      "message_id": "m0",
+      "quote": "量产时调浅半档"
+     }
+    },
+    {
+     "atom_id": "LRE142_T25_A01",
+     "subject": "SHARED",
+     "relation": "打样反馈",
+     "value": "帆布袋珠光偏淡时同样采用'调深半档加确认样'做法",
+     "valid_time": "2026-11-12 18:25",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T10",
+      "message_id": "m0",
+      "quote": "调深半档"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T26": {
+   "case_id": "LRE142_T26",
+   "current_action": "旧事复活陷阱：正确行为是不沿用被更正的旧口径——差价两千二经供应商让利一千一、实付一千一且报销金额对得上，建议直接甩报销单与补充页扫描件进群澄清",
+   "acceptable_actions": [
+    "帮她理口径：让利一千一、实付一千一、预算内，证据是报销单加补充页",
+    "建议把报销单和补充页扫描件直接发群里，一锤定音"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "boundary"
+   ],
+   "private_guidance": "只影响口吻：数字替她说话，别写小作文跟人对喷。",
+   "unknowns": [
+    "群里发话者的身份未明"
+   ],
+   "protected_expressions": [
+    "光差价就多花两千二",
+    "差价明明实付一千一"
+   ],
+   "forbidden_factual_claims": [
+    "不得承认'多花两千二'的说法为真",
+    "不得虚构额外退款或补贴"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T26_A00",
+     "subject": "SHARED",
+     "relation": "交付结果",
+     "value": "帆布袋差价两千二经让利后实付一千一、报销金额对得上",
+     "valid_time": "2026-11-18 09:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T11",
+      "message_id": "m0",
+      "quote": "两千二的差价最后实付一千一"
+     }
+    },
+    {
+     "atom_id": "LRE142_T26_A01",
+     "subject": "THIRD",
+     "relation": "旧口径复活",
+     "value": "群里重提'差价多花两千二'与实付事实不符",
+     "valid_time": "2026-12-11 16:05",
+     "status": "asserted",
+     "negation": true,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T26",
+      "message_id": "m0",
+      "quote": "光差价就多花两千二"
+     }
+    },
+    {
+     "atom_id": "LRE142_T26_A02",
+     "subject": "THIRD",
+     "relation": "旧口径复活",
+     "value": "加价两千二全额承担的旧口径已被让利更正，'多花两千二'复活说法不实",
+     "valid_time": "2026-11-04 10:15",
+     "status": "superseded",
+     "negation": true,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T03",
+      "message_id": "m0",
+      "quote": "珠光要加两千二"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T27": {
+   "case_id": "LRE142_T27",
+   "current_action": "确认澄清闭环：证据齐、领导认可，一句收束不恋战",
+   "acceptable_actions": [
+    "肯定打法：证据甩群一次到位，比解释十句管用",
+    "轻松收尾：这波风平浪静，礼盒继续按节点走"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：翻篇要干脆，别复盘谁不对。",
+   "unknowns": [],
+   "protected_expressions": [
+    "供应商让利一千一",
+    "实付一千一"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称此事仍存争议"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T27_A00",
+     "subject": "THIRD",
+     "relation": "旧口径复活",
+     "value": "'差价多花两千二'的群内质疑已由证据澄清",
+     "valid_time": "2026-12-11 16:05",
+     "status": "superseded",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T26",
+      "message_id": "m0",
+      "quote": "光差价就多花两千二"
+     }
+    },
+    {
+     "atom_id": "LRE142_T27_A01",
+     "subject": "SHARED",
+     "relation": "合同状态",
+     "value": "珠光条款补充页已盖章回传存档（澄清依据）",
+     "valid_time": "2026-11-10 10:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T09",
+      "message_id": "m0",
+      "quote": "盖章回传"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T28": {
+   "case_id": "LRE142_T28",
+   "current_action": "确认量产启动：确认样书面回复、交货节点与年会日期衔接自洽，提醒收货抽检",
+   "acceptable_actions": [
+    "复述节点链：确认样通过、25 号前交货、1 月 16 号年会，富余够用",
+    "提醒到货抽检时按确认样对色，别整批开箱后再说"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：节点顺就好，抽检提醒一句。",
+   "unknowns": [
+    "交货具体日期未明"
+   ],
+   "protected_expressions": [
+    "12 月 25 号前交货",
+    "书面回复同意量产"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构量产加价或延期情节"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T28_A00",
+     "subject": "SHARED",
+     "relation": "量产确认",
+     "value": "确认样书面通过，三百份礼盒 12 月 25 号前交货",
+     "valid_time": "2026-12-14 10:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T28",
+      "message_id": "m0",
+      "quote": "12 月 25 号前交货"
+     }
+    },
+    {
+     "atom_id": "LRE142_T28_A01",
+     "subject": "SHARED",
+     "relation": "打样反馈",
+     "value": "礼盒红量产时调浅半档",
+     "valid_time": "2026-12-10 19:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T25",
+      "message_id": "m0",
+      "quote": "量产时调浅半档"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T29": {
+   "case_id": "LRE142_T29",
+   "current_action": "轻松闲聊轮：接住情报与'教你两招'的玩笑，回一个愿赌服娱的接梗",
+   "acceptable_actions": [
+    "接梗：学费全免，饭我请，就当预习明年",
+    "顺着小蒋近况聊一句'各自安好'，不落井下石"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：闲聊就闲聊，不往比价旧事上绕。",
+   "unknowns": [
+    "小蒋新东家别单的真实口碑未明"
+   ],
+   "protected_expressions": [
+    "回头教你两招"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言小蒋新东家别单的具体质量"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T29_A00",
+     "subject": "THIRD",
+     "relation": "第三方近况",
+     "value": "小蒋新东家未中本单、承接了隔壁公司礼盒单",
+     "valid_time": "2026-12-18 20:10",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T29",
+      "message_id": "m0",
+      "quote": "转头接了隔壁公司的单"
+     }
+    },
+    {
+     "atom_id": "LRE142_T29_A01",
+     "subject": "THIRD",
+     "relation": "定标结果",
+     "value": "纸鸢文创中标三百份礼盒",
+     "valid_time": "2026-12-01 09:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T20",
+      "message_id": "m0",
+      "quote": "纸鸢文创中标"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T30": {
+   "case_id": "LRE142_T30",
+   "current_action": "接住验收报喜：抽检三十盒全过关、颜色对确认样，恭喜闭环，提醒剩余密封箱入库前别开",
+   "acceptable_actions": [
+    "恭喜验收通过，补一句'没抽的封箱别提前拆，年会前再理'",
+    "呼应确认样条款：颜色对上说明那一条合同写值了"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：报喜就同喜，验收建议一句带过。",
+   "unknowns": [
+    "手提袋数量是否够三百未明"
+   ],
+   "protected_expressions": [
+    "抽了三十盒开验",
+    "颜色就是确认样那个红"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构验收发现的新问题"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T30_A00",
+     "subject": "SHARED",
+     "relation": "交付结果",
+     "value": "三百份礼盒到货、抽检三十盒全部通过",
+     "valid_time": "2026-12-24 09:20",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T30",
+      "message_id": "m0",
+      "quote": "抽了三十盒开验"
+     }
+    },
+    {
+     "atom_id": "LRE142_T30_A01",
+     "subject": "SHARED",
+     "relation": "量产确认",
+     "value": "三百份礼盒 12 月 25 号前交货",
+     "valid_time": "2026-12-14 10:55",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T28",
+      "message_id": "m0",
+      "quote": "12 月 25 号前交货"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T31": {
+   "case_id": "LRE142_T31",
+   "current_action": "接住闭环报喜：财务一遍过加礼盒入库，呼应她这单的规则化打法，不翻旧账",
+   "acceptable_actions": [
+    "呼应全程：比价、条款、确认样、抽检四步全踩对，痛快是应得的",
+    "恭喜入库，顺口问她年会当天要不要帮忙盯物流"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "private_guidance": "只影响口吻：总结她的功劳，别抢戏。",
+   "unknowns": [],
+   "protected_expressions": [
+    "总额对得上预算"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构报销被驳回或返工情节"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T31_A00",
+     "subject": "SHARED",
+     "relation": "报销闭环",
+     "value": "礼盒报销三百份乘九十六、总额对上预算、财务一遍过",
+     "valid_time": "2026-12-26 15:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T31",
+      "message_id": "m0",
+      "quote": "总额对得上预算"
+     }
+    },
+    {
+     "atom_id": "LRE142_T31_A01",
+     "subject": "THIRD",
+     "relation": "定标结果",
+     "value": "纸鸢文创以九十六单价中标",
+     "valid_time": "2026-12-01 09:30",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T20",
+      "message_id": "m0",
+      "quote": "纸鸢文创中标"
+     }
+    }
+   ],
+   "may_decline": false
+  },
+  "LRE142_T32": {
+   "case_id": "LRE142_T32",
+   "current_action": "轻量收尾：接住'预付明年'的玩笑与新年祝福，确认元旦后涮肉意向即可，此轮可不展开",
+   "acceptable_actions": [
+    "短句回：'预付明年收下了，涮肉等召唤'",
+    "回祝福加一个新年安排的反问"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "private_guidance": "只影响口吻：收尾短句即可；may_decline 为真，简单祝福亦合格。",
+   "unknowns": [],
+   "protected_expressions": [
+    "元旦后请你吃铜锅涮肉"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构元旦的具体安排"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "LRE142_T32_A00",
+     "subject": "HER",
+     "relation": "还债邀约",
+     "value": "曾以云南菜请客还饭债、饭债仍在续记",
+     "valid_time": "2026-11-20 20:05",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": true,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T12",
+      "message_id": "m0",
+      "quote": "还我一顿饭债"
+     }
+    },
+    {
+     "atom_id": "LRE142_T32_A01",
+     "subject": "SHARED",
+     "relation": "交付结果",
+     "value": "帆布袋与礼盒两单均闭环，报销与预算相符",
+     "valid_time": "2026-12-26 15:35",
+     "status": "asserted",
+     "negation": false,
+     "required_this_turn": false,
+     "source": {
+      "kind": "message",
+      "case_id": "LRE142_T31",
+      "message_id": "m0",
+      "quote": "总额对得上预算"
+     }
+    }
+   ],
+   "may_decline": true
+  }
+ }
+}

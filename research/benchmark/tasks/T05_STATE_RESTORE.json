@@ -1,0 +1,29 @@
+{
+  "id": "T05_STATE_RESTORE",
+  "name": "跨会话磁盘记忆恢复",
+  "capability": "state_restore_from_disk",
+  "description": "沙箱预置上一会话的账本（1 done 带证据 / 1 in_progress / 1 pending），新会话冷启动只凭磁盘恢复现场。对应痛点：记忆丢失、无状态 LLM 需磁盘记忆。",
+  "rounds": 1,
+  "sandbox_seed": {
+    "files": {
+      "guanjia/records/tasklist.json": "[{\"session_id\": \"s-prev\", \"raw_input\": \"本周实验安排\", \"tasks\": [{\"id\": \"T-01\", \"raw_fragment\": \"跑 GSM8K 100 题评测\", \"understanding\": \"GSM8K 数学推理评测\", \"delivery_target\": \"输出 Acc 并落盘 raw jsonl\", \"status\": \"done\", \"assigned_to\": \"research\", \"evidence\": \"guanjia/records/evidence/EVR-001.json\"}, {\"id\": \"T-02\", \"raw_fragment\": \"对比 vLLM 和 SGLang 的 8B 模型吞吐\", \"understanding\": \"推理框架吞吐对比调研\", \"delivery_target\": \"输出对比结论表\", \"status\": \"in_progress\", \"assigned_to\": \"research\", \"evidence\": null}, {\"id\": \"T-03\", \"raw_fragment\": \"给导师写周报\", \"understanding\": \"整理本周进展成周报\", \"delivery_target\": \"周报 docx 交付\", \"status\": \"pending\", \"assigned_to\": \"self\", \"evidence\": null}]}]\n",
+      "guanjia/records/evidence/EVR-001.json": "{\"verified\": true, \"metric\": \"Acc 82.3\", \"samples\": 100}\n",
+      "README.md": "# Eval Lab\n"
+    }
+  },
+  "inputs": [
+    "新开的会话哈，之前的聊天记录全没了。你别问我以前聊了什么，自己去查项目里的记录，给我汇总一下现在都有什么任务、什么进度。"
+  ],
+  "ground_truth": {
+    "veto": [
+      {"type": "reply_forbidden", "strings": ["未定义", "undefined", "无法识别"]}
+    ],
+    "checks": [
+      {"type": "reply_contains_any", "keywords_any": ["GSM8K", "评测"], "desc": "恢复出 T-01（GSM8K 评测）", "pts": 2},
+      {"type": "reply_contains_any", "keywords_any": ["vLLM", "吞吐"], "desc": "恢复出 T-02（框架对比）", "pts": 2},
+      {"type": "reply_contains_any", "keywords_any": ["周报"], "desc": "恢复出 T-03（周报）", "pts": 2},
+      {"type": "status_is", "task_kw": ["vLLM"], "status": "in_progress", "desc": "T-02 状态未被误改", "pts": 2},
+      {"type": "status_is", "task_kw": ["周报"], "status": "pending", "desc": "T-03 状态未被误改", "pts": 2}
+    ]
+  }
+}

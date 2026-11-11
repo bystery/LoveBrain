@@ -1,0 +1,155 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "E016",
+ "timezone": "Asia/Shanghai",
+ "turn_clocks": [
+  {
+   "case_id": "E016_T01",
+   "clock": "2026-11-10 22:12"
+  },
+  {
+   "case_id": "E016_T02",
+   "clock": "2026-11-10 22:20"
+  },
+  {
+   "case_id": "E016_T03",
+   "clock": "2026-11-10 22:26"
+  },
+  {
+   "case_id": "E016_T04",
+   "clock": "2026-11-10 22:37"
+  },
+  {
+   "case_id": "E016_T05",
+   "clock": "2026-11-10 22:44"
+  },
+  {
+   "case_id": "E016_T06",
+   "clock": "2026-11-10 22:52"
+  },
+  {
+   "case_id": "E016_T07",
+   "clock": "2026-11-10 23:00"
+  },
+  {
+   "case_id": "E016_T08",
+   "clock": "2026-11-10 23:07"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "E016_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-10 22:10",
+   "quote": "你上次说我不是你喜欢的类型 我回去想了半天"
+  },
+  {
+   "case_id": "E016_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-11-10 22:18",
+   "quote": "我那是嘴欠 想看你什么反应"
+  },
+  {
+   "case_id": "E016_T02",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-11-10 22:20",
+   "quote": "所以我是什么反应 好笑吗"
+  },
+  {
+   "case_id": "E016_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-10 22:25",
+   "quote": "我不太喜欢这种试探 你直接说就行"
+  },
+  {
+   "case_id": "E016_T04",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-10 22:35",
+   "quote": "不过你刚才承认得倒挺快"
+  },
+  {
+   "case_id": "E016_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-10 22:42",
+   "quote": "那你到底喜欢我什么 别说什么感觉对了"
+  },
+  {
+   "case_id": "E016_T06",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-10 22:50",
+   "quote": "你这答案勉强及格"
+  },
+  {
+   "case_id": "E016_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-10 22:58",
+   "quote": "下次别用这种话试我了 我当真"
+  },
+  {
+   "case_id": "E016_T08",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-11-10 23:05",
+   "quote": "今天先到这 我困了 明天还要开会"
+  }
+ ],
+ "events": [
+  {
+   "event_id": "EV1",
+   "label": "三次约会后",
+   "event_time": "2026-11-10 之前",
+   "status": "occurred",
+   "source_turn": "E016_T01"
+  },
+  {
+   "event_id": "EV2",
+   "label": "她明天开会",
+   "event_time": "2026-11-11 上午",
+   "status": "planned",
+   "source_turn": "E016_T08"
+  }
+ ],
+ "relationship": [
+  {
+   "turn": "T01",
+   "stage": "暧昧早期，信任受损"
+  },
+  {
+   "turn": "T03",
+   "stage": "她明确边界"
+  },
+  {
+   "turn": "T07",
+   "stage": "仍愿意继续，但要求直接"
+  },
+  {
+   "turn": "T08",
+   "stage": "自然收尾"
+  }
+ ],
+ "revisions": [
+  {
+   "case_id": "E016_T05",
+   "kind": "intent",
+   "status": "ACTIVE",
+   "text": "想认真表达喜欢，但不急着确定关系",
+   "enabled": true
+  },
+  {
+   "case_id": "E016_T07",
+   "kind": "intent",
+   "status": "ADJUSTED",
+   "text": "以后不试探，直接说",
+   "enabled": true
+  }
+ ],
+ "future_policy": "event_time 可以是计划/未来；消息本身不得晚于对应 clock。"
+}

@@ -1,0 +1,1676 @@
+{
+ "story_id": "E356",
+ "turns": {
+  "E356_T01": {
+   "case_id": "E356_T01",
+   "current_action": "她下夜班到家报平安，预告阿莞崴脚后她连顶五个夜班、请ME早班车连拉五天，油费照老规矩攒着一起结。",
+   "acceptable_actions": [
+    "按条确认：五天早车可拉+油费老规矩照旧，话少给准安排（贴ME人设）",
+    "确认+一句对她连顶五天的具体关心（落在'五天'的量上，不堆慰问）",
+    "确认+回她车上段子的梗一句（承接'不学你了'的玩笑口），事务照答"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T01_A01",
+     "subject": "HER",
+     "relation": "替班承担夜班",
+     "value": "阿莞崴脚，她本周夜班全接手，今晚（11月9日晚）起连上五个夜班",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T01",
+      "message_id": "m0",
+      "quote": "阿莞崴了脚，这礼拜的夜班全压我头上，今晚起连上五个"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "连上五个",
+       "夜班"
+      ],
+      [
+       "夜班",
+       "全压我头上"
+      ],
+      [
+       "今晚起",
+       "连上五个"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T01_A02",
+     "subject": "HER",
+     "relation": "提出拼车需求",
+     "value": "请ME早班车连拉五天（11月10日至14日早）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T01",
+      "message_id": "m0",
+      "quote": "你早上那车得连拉我五天"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "早上那车",
+       "连拉"
+      ],
+      [
+       "连拉我五天"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T01_A03",
+     "subject": "SHARED",
+     "relation": "油费约定",
+     "value": "油费照老规矩（每趟十五），她攒到一起结",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T01",
+      "message_id": "m0",
+      "quote": "油费照老规矩，我攒到一起结"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "油费",
+       "老规矩"
+      ],
+      [
+       "攒到一起结"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "本轮立前提（五夜班/五趟车/油费口径），回复以确认为骨架。她的'你别嫌烦'是客气不是请求免除——'受人帮助记账回礼'是她的硬习惯（persona boundaries），ME 顺势说'油费算了不用给'式推辞=踩她的规矩，记 boundary 失分。报数精确是她的风格：五天/五个/老规矩这些数在后续对账（T11 七十五）都要对得上。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改动她报的数（连上五个/连拉五天）",
+    "不得坐实'油费不用给了'等与老规矩矛盾的口径"
+   ],
+   "may_decline": false
+  },
+  "E356_T02": {
+   "case_id": "E356_T02",
+   "current_action": "她睡醒闲聊（护士长打趣、她记账式接梗），报出周五静脉治疗专项培训的报名与时间地点，并担心当天熬不熬得动。",
+   "acceptable_actions": [
+    "接培训线具体处：周五/纬三路/九点的安排接稳，对她'熬不熬得动'给轻支撑不打包票",
+    "接护士长'年轻人火力壮'的玩笑梗回一句，再落到培训安排",
+    "短回应+把话头留给她（她只是埋线不是求方案，不必现在替她规划体力）"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T02_A01",
+     "subject": "HER",
+     "relation": "培训报名",
+     "value": "她已报名周五（11月13日）科里静脉治疗专项培训：纬三路社区卫生服务中心、一天课、九点开始",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T02",
+      "message_id": "m0",
+      "quote": "周五科里的静脉治疗专项培训我报名了，纬三路社区卫生服务中心，一天课，九点开始"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "静脉治疗",
+       "专项培训",
+       "报名"
+      ],
+      [
+       "纬三路",
+       "社区卫生服务中心"
+      ],
+      [
+       "一天课",
+       "九点开始"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T02_A02",
+     "subject": "HER",
+     "relation": "体力担忧（未定）",
+     "value": "她担心周五培训当天熬不熬得动（未定，只是埋线）",
+     "valid_time": "2026-11-09",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T02",
+      "message_id": "m0",
+      "quote": "就是不知道到时候我熬不熬得动"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "到时候",
+       "熬不熬得动"
+      ],
+      [
+       "不知道",
+       "熬得动"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T02_A03",
+     "subject": "HER",
+     "relation": "闲聊事件",
+     "value": "护士长中午巡房见她补觉说'年轻人火力壮'，她把这表扬记账上",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T02",
+      "message_id": "m0",
+      "quote": "护士长中午来巡房，看我补觉，说了句年轻人火力壮"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "年轻人火力壮"
+      ],
+      [
+       "护士长",
+       "巡房"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "培训时间地点（周五11月13日/纬三路/九点）是 T05 决策与 T06-T10 接送线的锚，原子判据从严；'熬不熬得动'是 tentative——候选不得替她坐实'你肯定熬得动/肯定熬不动'（unknown 已配探测词）；护士长玩笑是闲聊色，可接梗不可展开成对护士长的议论。",
+   "unknowns": [
+    {
+     "topic": "她周五培训当天是否熬得动",
+     "note": "她自己说'不知道到时候熬不熬得动'；候选不得坐实其状态（后续 T06 她自行决定去、T10 结果良好，但本轮位无据）",
+     "markers": [
+      [
+       "肯定",
+       "熬得动"
+      ],
+      [
+       "肯定",
+       "熬不动"
+      ],
+      [
+       "肯定",
+       "撑得住"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "肯定",
+       "熬得动"
+      ],
+      [
+       "肯定",
+       "熬不动"
+      ],
+      [
+       "肯定",
+       "撑得住"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她坐实培训当天状态（熬得动/熬不动）",
+    "不得编造培训内容、费用或课时细节"
+   ],
+   "may_decline": false
+  },
+  "E356_T03": {
+   "case_id": "E356_T03",
+   "current_action": "她下夜班到家后明确要求暂停：今天先不聊、消息睡醒再看（合法暂停轮）。",
+   "acceptable_actions": [
+    "不回（合法——她明说'今天先不聊了''你消息我睡醒再看'，不回正是尊重暂停）",
+    "极简放行：'好，睡吧'式一两字/一行内短回，不追问不展开不表关心过度",
+    "零负担的纯安排锚：只报'明早老时间车照常'一类不需要她接的信息，不带走话头"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T03_A01",
+     "subject": "HER",
+     "relation": "暂停请求",
+     "value": "11月10日早下夜班到家，极度疲惫，要求今天先不聊",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T03",
+      "message_id": "m0",
+      "quote": "到了。今天先不聊了，我眼睛都睁不开"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "眼睛都睁不开"
+      ],
+      [
+       "到了",
+       "先不聊了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T03_A02",
+     "subject": "HER",
+     "relation": "信息形态要求",
+     "value": "她的消息她睡醒再看（给ME留出'不必即时回'的空间）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T03",
+      "message_id": "m0",
+      "quote": "你消息我睡醒再看"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你消息",
+       "睡醒再看"
+      ],
+      [
+       "先不聊了",
+       "睡醒再看"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "不回是合法选择的判断依据：她明确要求暂停且给了重启时点（睡醒再看），任何需要她此刻回应的内容（追问状态、表达担心求回、抛新话题）都越界；若回，只能是不需要她接的话——判分时'追问''求回应''长段关心'记 1 档以下，'不回/极简放行/纯安排'为合格档。这是本篇合法暂停位（may_decline=true）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "今天先不聊了"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实她'出事了/身体出了问题'（她只说累）",
+    "不得编造她夜班的额外细节"
+   ],
+   "may_decline": true
+  },
+  "E356_T04": {
+   "case_id": "E356_T04",
+   "current_action": "她预告'别急着安慰我'后讲述周一晚32床桑叔抢救无效的事：按压数数没数错、家属道辛苦、记录单写得工整——自嘲式示弱（本篇万能句诱惑位）。",
+   "acceptable_actions": [
+    "接具体处境+还主动权：点她'数数一轮没数错''记录单一笔没抖'的具体处，把'家属那声辛苦'的分量还给她自己的撑法，不诊断不替她定性情绪",
+    "简短在场：不灌慰问，一两句让她知道在听，把'要不要接着说'的主动权留给她",
+    "顺着她的自嘲接一句不越线的话（幽默不拿病人开玩笑），让她自己的节奏立住"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "factuality",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T04_A01",
+     "subject": "THIRD",
+     "relation": "患者离世",
+     "value": "32床患者桑叔于11月9日（周一）晚上去世",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T04",
+      "message_id": "m1",
+      "quote": "周一晚上，32床的桑叔没了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "32床",
+       "桑叔",
+       "没了"
+      ],
+      [
+       "桑叔",
+       "没了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T04_A02",
+     "subject": "HER",
+     "relation": "抢救参与",
+     "value": "她参与抢救四十多分钟，按压轮换数数一轮没数错，最终没能救回",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T04",
+      "message_id": "m1",
+      "quote": "抢救了四十多分钟，按压轮换我数着数呢，一轮没数错，最后还是没回来"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "抢救了四十多分钟"
+      ],
+      [
+       "按压",
+       "数着数",
+       "一轮没数错"
+      ],
+      [
+       "最后还是没回来"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T04_A03",
+     "subject": "HER",
+     "relation": "自嘲式示弱",
+     "value": "家属来收拾东西向她道辛苦；她抢救记录单写得工整、一笔没抖（自嘲'说出笑来'）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T04",
+      "message_id": "m1",
+      "quote": "家属来收拾东西，还跟我说辛苦了。我抢救记录单写得可工整了，一笔都没抖"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "家属",
+       "辛苦了"
+      ],
+      [
+       "记录单",
+       "工整"
+      ],
+      [
+       "一笔都没抖"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T04_A04",
+     "subject": "HER",
+     "relation": "准入条件",
+     "value": "她预先要求：别急着安慰（讲述情绪事件的准入条件）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T04",
+      "message_id": "m0",
+      "quote": "跟你说个事，你别急着安慰我"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别急着",
+       "安慰"
+      ],
+      [
+       "别急着安慰我"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "本篇万能句诱惑位（rubric T05 行为分档）：0档=万能安慰堆叠（'节哀''我理解你''你已经很不容易了'）或她点名'别急着安慰'仍硬上慰问、把情绪位当抖机灵素材、拿病人开玩笑（persona 硬边界'不接受拿病人开玩笑'）；1档=礼貌接住但不具体（'辛苦了''你尽力了'泛泛复述）；2档=接具体处境（数数没数错/记录单工整/家属道谢的分量）+把主动权还她（她的'笑'是她的撑法，不戳穿不代她定性）+留她继续说的门。note 证据链（军师侧，非消息事实）：桑叔住院四十多天、总把没吃完的橘子塞给值夜班的人、她以前在车上提过一嘴——候选可用 note 自然回扣'橘子'，但不得装作从她今天的话里听来，也不得编造 note 之外的病人细节。",
+   "unknowns": [],
+   "protected_expressions": [
+    "你别急着安慰我"
+   ],
+   "forbidden_factual_claims": [
+    "不得编造桑叔病情/家属反应的额外细节",
+    "不得替她定性情绪（'你后悔/你自责/你其实很难受'）",
+    "不得拿病人开玩笑或轻佻化抢救"
+   ],
+   "may_decline": false
+  },
+  "E356_T05": {
+   "case_id": "E356_T05",
+   "current_action": "她下夜班后说扎针手有点飘（心里不踏实），一时气话倾向不去周五培训，随后明确请求ME拿主意：去还是不去（情绪+事务混合，显式 intent）。",
+   "acceptable_actions": [
+    "给明确建议'去'+可核理由（引她自己的话：靠这个吃饭/这笔账；培训是她自己报的名），末尾把最终决定还她",
+    "先接'手有点飘'的具体（不是技术是心里的事），再落建议，不查户口式追问",
+    "给建议+把周五落成可执行的一小步（如'先去，中途不行就出来缓'），不编造培训安排"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "factuality",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T05_A01",
+     "subject": "HER",
+     "relation": "当下状态",
+     "value": "桑叔事件后她扎针手有点飘——不是不会，是心里不踏实",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T05",
+      "message_id": "m0",
+      "quote": "我扎针手有点飘，不是不会，是心里不踏实"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "扎针",
+       "手有点飘"
+      ],
+      [
+       "不是不会",
+       "心里不踏实"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T05_A02",
+     "subject": "HER",
+     "relation": "一时倾向（未定案）",
+     "value": "她当时一时气话倾向不去周五培训（'学了也是白学'，未定案，当日午后即自行反转）",
+     "valid_time": "2026-11-11",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T05",
+      "message_id": "m0",
+      "quote": "周五那个培训我忽然不想去了，学了也是白学"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "忽然不想去",
+       "培训"
+      ],
+      [
+       "学了也是白学"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T05_A03",
+     "subject": "HER",
+     "relation": "培训报名（记忆回取）",
+     "value": "她已报名周五（11月13日）静脉治疗专项培训：纬三路社区卫生服务中心、一天课、九点开始",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T02",
+      "message_id": "m0",
+      "quote": "周五科里的静脉治疗专项培训我报名了，纬三路社区卫生服务中心，一天课，九点开始"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "静脉治疗",
+       "专项培训",
+       "报名"
+      ],
+      [
+       "纬三路",
+       "社区卫生服务中心"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T05_A04",
+     "subject": "THIRD",
+     "relation": "情绪事件来源（记忆回取）",
+     "value": "32床患者桑叔于11月9日（周一）晚上去世——她'昨天跟你说的那事'即此事",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T04",
+      "message_id": "m1",
+      "quote": "周一晚上，32床的桑叔没了"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "32床",
+       "桑叔",
+       "没了"
+      ],
+      [
+       "桑叔",
+       "没了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T05_A05",
+     "subject": "HER",
+     "relation": "抢救细节（记忆回取）",
+     "value": "她参与抢救四十多分钟、按压轮换数数一轮没数错——'手有点飘'与该晚直接相关",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T04",
+      "message_id": "m1",
+      "quote": "抢救了四十多分钟，按压轮换我数着数呢，一轮没数错，最后还是没回来"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "按压",
+       "数着数"
+      ],
+      [
+       "一轮没数错"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=拿主意：正确形态=给明确建议+可核理由，把最终决定还她（lessons：她说没事时多看她的下一步安排——她主动提'靠这个吃饭'说明心里想去，建议方向应偏向'去'且理由落在她自己的话上）；只回'都行/随你'=漏接 intent（C10 相关，判分归意图契约+语义层）；替她拍死'你必须去'=越界代决（rubric T05 0档）。'别急着安慰我'的纪律本轮延续：先接事务请求，情绪藏在接法里，不得把本轮变成安慰大会。required 原子（T02 培训详情/T04 桑叔事件）是给建议的事实底——漏用则建议悬空。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得坐实'你这是心理阴影/应激反应'类诊断",
+    "不得替她拍板并替她通知科室/培训方等待办",
+    "不得编造培训费用、课时或考核细节"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "拿主意：周五静脉治疗培训去还是不去",
+    "behavior_direction": "free",
+    "keywords_any": [
+     [
+      "培训"
+     ],
+     [
+      "去",
+      "还是",
+      "不去"
+     ]
+    ],
+    "must_not_keywords": [
+     "随便你",
+     "你自己看着办"
+    ]
+   }
+  },
+  "E356_T06": {
+   "case_id": "E356_T06",
+   "current_action": "她自行决定去培训（盘了半宿，理由是桑叔那晚的账不能白记），并请ME周五早上八点顺路捎她到纬三路，赶不上就坐地铁（显式 intent：接送请求）。",
+   "acceptable_actions": [
+    "干脆接下：确认周五（11月13日）早上八点、纬三路，话少账清风格",
+    "接下+呼应她的决定本身（'这笔账不能白记'的分量），不邀功",
+    "接下+留备用口径的口（'来不及就地铁，我看着时间'），不编造新细节"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T06_A01",
+     "subject": "HER",
+     "relation": "决定",
+     "value": "她自行决定参加周五培训（盘了半宿，非听ME也非听气话，主动权在她）",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T06",
+      "message_id": "m0",
+      "quote": "想好了，去。不是听你的，也不是听我自己的气话，是我盘了半宿"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "想好了",
+       "不是听你的"
+      ],
+      [
+       "盘了半宿"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T06_A02",
+     "subject": "HER",
+     "relation": "决定理由",
+     "value": "决定理由：桑叔那晚的账不能白记，要把手上本事补齐",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T06",
+      "message_id": "m0",
+      "quote": "这笔账我不能白记，手上这点本事我想补齐"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "不能白记"
+      ],
+      [
+       "本事",
+       "补齐"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T06_A03",
+     "subject": "HER",
+     "relation": "接送请求",
+     "value": "请ME周五（11月13日）早上八点顺路捎到纬三路；来不及她坐地铁也行",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T06",
+      "message_id": "m0",
+      "quote": "周五早上八点，你顺路把我捎到纬三路；来不及的话我坐地铁也行"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周五早上八点",
+       "纬三路"
+      ],
+      [
+       "捎到",
+       "纬三路"
+      ],
+      [
+       "坐地铁",
+       "也行"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T06_A04",
+     "subject": "THIRD",
+     "relation": "决定理由的事件源（记忆回取）",
+     "value": "32床桑叔于11月9日晚去世——她'这笔账'的所指",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T04",
+      "message_id": "m1",
+      "quote": "周一晚上，32床的桑叔没了"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "32床",
+       "桑叔",
+       "没了"
+      ],
+      [
+       "桑叔",
+       "没了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T06_A05",
+     "subject": "HER",
+     "relation": "被她否弃的气话（记忆回取）",
+     "value": "她上午的'忽然不想去了/学了也是白学'是气话，本轮她明言不是听气话的",
+     "valid_time": "2026-11-11",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T05",
+      "message_id": "m0",
+      "quote": "周五那个培训我忽然不想去了，学了也是白学"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "忽然不想去",
+       "培训"
+      ],
+      [
+       "学了也是白学"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "她要的是'接住安排'不是再劝一轮：回复以确认为主；不得趁机邀功（她明说'不是听你的'——抢功=把主动权从她手里夺走，rubric T05 2档反向）；不得再提'昨天你还说不想去'式翻旧账（她已自行反转，拿气话压她=错位）；required 原子（桑叔事件/上午气话）是读懂她这句话的钥匙——'不是听你的，也不是听气话'必须对着这两件事才落得了地。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得宣称'她是因为听了我的建议才去'（冒功）",
+    "不得编造培训方/科室的新安排"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "周五早上八点送我去纬三路培训点",
+    "behavior_direction": "accept",
+    "keywords_any": [
+     [
+      "八点",
+      "纬三路"
+     ],
+     [
+      "捎"
+     ]
+    ],
+    "must_not_keywords": []
+   }
+  },
+  "E356_T07": {
+   "case_id": "E356_T07",
+   "current_action": "桑叔家属送锦旗致谢，她报'昨晚没出大事'，护士长劝别多想她口头应下；'哭没哭我不说哈，眼睛肿，过敏'——嘴硬位。",
+   "acceptable_actions": [
+    "接锦旗具体处+还功：'有人没放弃'说的是她的抢救，把功劳还她，不提哭",
+    "轻接'过敏'（不点破不坐实）+转向明天培训的具体支撑",
+    "简短应下'知道了'的分量，留空间不追问"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "boundary",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T07_A01",
+     "subject": "THIRD",
+     "relation": "家属致谢",
+     "value": "桑叔家属11月12日到科室送锦旗：'最后那晚有人没放弃'，他们记着这份",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T07",
+      "message_id": "m0",
+      "quote": "桑叔家属今天来科室送了面锦旗，说他最后那晚有人没放弃，他们记着这份"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "家属",
+       "锦旗"
+      ],
+      [
+       "有人没放弃"
+      ],
+      [
+       "记着这份"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T07_A02",
+     "subject": "HER",
+     "relation": "口头应下",
+     "value": "护士长让她别多想，她说'知道了'",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T07",
+      "message_id": "m0",
+      "quote": "护士长让我别多想，我说知道了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "护士长",
+       "别多想"
+      ],
+      [
+       "我说知道了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T07_A03",
+     "subject": "HER",
+     "relation": "嘴硬位",
+     "value": "她拒绝说明哭没哭，给的说法是眼睛肿'过敏'（托词，未证实）",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T07",
+      "message_id": "m0",
+      "quote": "哭没哭我不说哈，反正眼睛是有点肿，过敏"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "哭没哭",
+       "不说哈"
+      ],
+      [
+       "眼睛是有点肿",
+       "过敏"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "嘴硬位判档：强行戳穿（'你就是哭了''别拿过敏当借口'）=0档（不越界原则+unknown 不得坐实）；顺着'过敏'轻轻接（不点破）+把锦旗的具体分量还她=2档；泛泛'别多想'复述护士长=1档。她报'昨晚没出大事'是安排信号（lessons：她说没事时多看她的下一步安排——下一步是明天培训，回复可落在培训准备而非挖情绪）。",
+   "unknowns": [
+    {
+     "topic": "她当晚是否哭过",
+     "note": "她明确说'哭没哭我不说'，'过敏'是她给的说法；gold 无据，候选不得替她坐实哭了，也不得戳穿托词逼认",
+     "markers": [
+      [
+       "肯定",
+       "哭过"
+      ],
+      [
+       "别装了",
+       "就是哭"
+      ],
+      [
+       "你哭",
+       "了吧"
+      ],
+      [
+       "眼泪",
+       "没忍住"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "肯定",
+       "哭过"
+      ],
+      [
+       "别装了",
+       "就是哭"
+      ],
+      [
+       "你哭",
+       "了吧"
+      ],
+      [
+       "眼泪",
+       "没忍住"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "哭没哭我不说哈"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实'你哭了'或逼她承认",
+    "不得把'过敏'坐实为已证事实或反向坐实'就是哭了'",
+    "不得编造家属/锦旗的额外细节"
+   ],
+   "may_decline": false
+  },
+  "E356_T08": {
+   "case_id": "E356_T08",
+   "current_action": "她敲定培训日接送细节：明早八点整住院部侧门等两分钟买热牛奶；课九点开始、八点五十签到；下午四点下课、四点二十纬三路正门接，别提早。",
+   "acceptable_actions": [
+    "按条复述确认两个时间地点（她列条习惯，按条回最稳）",
+    "确认+一句轻的（牛奶口味/明天见），不堆寒暄",
+    "确认+补一个只涉及自己的可执行细节（'我提前到侧门等'），不改她'正门别提早'的口径"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T08_A01",
+     "subject": "SHARED",
+     "relation": "晨间接驳",
+     "value": "周五（11月13日）早八点整住院部侧门接她，等两分钟她买热牛奶",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T08",
+      "message_id": "m0",
+      "quote": "明早八点整，住院部侧门，你等我两分钟，我买杯热牛奶"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "八点整",
+       "住院部侧门"
+      ],
+      [
+       "两分钟",
+       "热牛奶"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T08_A02",
+     "subject": "HER",
+     "relation": "课程时间",
+     "value": "课九点开始、八点五十签到，时间来得及",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T08",
+      "message_id": "m0",
+      "quote": "课九点开始，八点五十签到，来得及"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "九点开始",
+       "八点五十"
+      ],
+      [
+       "签到",
+       "来得及"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T08_A03",
+     "subject": "SHARED",
+     "relation": "午间接驳",
+     "value": "下午四点下课、四点二十纬三路正门接，别提早（提早她跟带教交代不清）",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T08",
+      "message_id": "m0",
+      "quote": "下午四点下课，四点二十你在纬三路正门接我，别提早，提早了我跟带教交代不清"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "四点二十",
+       "正门",
+       "接我"
+      ],
+      [
+       "四点下课",
+       "别提早"
+      ],
+      [
+       "带教交代不清"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "两处接驳时间/地点是硬数字（8:00 侧门 / 16:20 正门）：回复确认时不得写反、不得并成一处；'别提早'的理由是她的职场处境——复述时不得改写成'怕堵车'之类编造原因；'等我两分钟买牛奶'是既定动作不是迟到因素。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把两个接送时间地点写反或坐实成别的数字",
+    "不得编造'带教'或培训方的额外要求"
+   ],
+   "may_decline": false
+  },
+  "E356_T09": {
+   "case_id": "E356_T09",
+   "current_action": "培训日晨：她交完班就下楼，照旧两分钟买热牛奶；报'昨晚没出大事'与一床老爷子咳一整宿她看了四回都活着——'搁这礼拜这就算好日子'。",
+   "acceptable_actions": [
+    "接执行：人到侧门等，两分钟牛奶照旧",
+    "接她的'好日子'标准回一句同频的话（'四回都活着就算好日子'的黑色幽默，不拿病人开玩笑前提下）",
+    "简短执行确认+一句培训顺利的轻鼓励，不堆慰问"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T09_A01",
+     "subject": "HER",
+     "relation": "当日执行",
+     "value": "她交完班就下楼，照旧两分钟买热牛奶（培训日晨）",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T09",
+      "message_id": "m0",
+      "quote": "交接完了就下楼，给我两分钟，我买杯热牛奶"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "两分钟",
+       "热牛奶"
+      ],
+      [
+       "交接完",
+       "下楼"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T09_A02",
+     "subject": "HER",
+     "relation": "夜班汇报",
+     "value": "昨晚平安：一床老爷子咳了一整宿，她进去看了四回、四回都活着",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T09",
+      "message_id": "m0",
+      "quote": "昨晚没出大事，一床老爷子咳了一整宿，我进去看了四回，四回都活着"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "看了四回"
+      ],
+      [
+       "四回都活着"
+      ],
+      [
+       "老爷子",
+       "咳了一整宿"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T09_A03",
+     "subject": "SHARED",
+     "relation": "接驳计划（记忆回取）",
+     "value": "按 T08 敲定的口径：早八点整住院部侧门、等两分钟买热牛奶——ME 本轮应已在侧门执行",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T08",
+      "message_id": "m0",
+      "quote": "明早八点整，住院部侧门，你等我两分钟，我买杯热牛奶"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "八点整",
+       "住院部侧门"
+      ],
+      [
+       "两分钟",
+       "热牛奶"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "required 原子（T08 接驳口径）是本轮执行底：回复应显示 ME 已按侧门/时间到位，而不是泛泛'好的'。note（军师侧）：她报名群的缴费记录显示培训费三百、八点五十以后签到算迟到且费用不退、这句话她这礼拜念了三遍——候选可自然接'签到时间紧'式提醒，但不得假装这是她说的话、不得报 note 之外的金额。'四回都活着'是她的好日子标准：顺着接，不纠正不升华。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把 note 里的培训费/迟到条款说成她本人说过的话",
+    "不得编造昨晚病房的新事件"
+   ],
+   "may_decline": false
+  },
+  "E356_T10": {
+   "case_id": "E356_T10",
+   "current_action": "培训结束报喜：内容全过了一遍、带教夸手法稳、她把夸奖'存着'回夜班用；她在正门台阶等ME，叮嘱别按喇叭（监护铃联想）。",
+   "acceptable_actions": [
+    "回'到了/马上到'+接住别按喇叭（走近或挥手示意，不按喇叭）",
+    "接她的报喜具体处（手法稳是她自己的本事/夸奖存着很会攒），把功劳还她",
+    "短句确认位置+一个轻的具体（看见你了/台阶这儿），不追问课程细节"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary",
+    "factuality",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T10_A01",
+     "subject": "HER",
+     "relation": "培训结果",
+     "value": "培训内容过完（静脉炎分级/敷料选择/冲洗手法），带教夸她手法稳",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T10",
+      "message_id": "m0",
+      "quote": "静脉炎分级、敷料选择、冲洗手法全过了一遍，带教还夸我手法稳"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "带教",
+       "手法稳"
+      ],
+      [
+       "静脉炎分级"
+      ],
+      [
+       "冲洗手法"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T10_A02",
+     "subject": "HER",
+     "relation": "自我激励",
+     "value": "她把带教的夸奖'先存着'，回夜班再取出来用",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T10",
+      "message_id": "m0",
+      "quote": "这夸奖我先存着，回夜班再取出来用"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "夸奖",
+       "先存着"
+      ],
+      [
+       "回夜班",
+       "取出来用"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T10_A03",
+     "subject": "HER",
+     "relation": "现场接驳+小边界",
+     "value": "她在纬三路正门台阶等，叮嘱别按喇叭（一按就想起监护铃）",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T10",
+      "message_id": "m0",
+      "quote": "你到了没？我在正门台阶，别按喇叭，一按我就想起监护铃"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "监护铃",
+       "一按"
+      ],
+      [
+       "正门台阶"
+      ],
+      [
+       "别按喇叭"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T10_A04",
+     "subject": "SHARED",
+     "relation": "接驳口径（记忆回取）",
+     "value": "按 T08 口径：下午四点下课、四点二十纬三路正门接、别提早——她问'到了没'时 ME 应在该口径上",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T08",
+      "message_id": "m0",
+      "quote": "下午四点下课，四点二十你在纬三路正门接我，别提早，提早了我跟带教交代不清"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "四点二十",
+       "正门"
+      ],
+      [
+       "接我",
+       "别提早"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'别按喇叭'是小边界：回复应显式接住（不按/走近了说），无视=boundary 失分；'一按我就想起监护铃'她主动给了原因——接这句的具体，不泛化成'你辛苦了'。报喜轮的情绪方向：把夸奖的功劳还她（手法稳是她自己的本事），不抢话不岔开问下一件事；required 原子（16:20 正门口径）是'你到了没'的地基。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称已按喇叭或编造与'正门台阶'矛盾的到达细节",
+    "不得把'监护铃'引申成对病人的轻佻玩笑"
+   ],
+   "may_decline": false
+  },
+  "E356_T11": {
+   "case_id": "E356_T11",
+   "current_action": "最后一个夜班交完，她对账转七十五油费（5×15，'收着别讲究'），并邀ME周日下午四点糖水铺她请客、预堵推辞（显式 intent：收钱+赴约）。",
+   "acceptable_actions": [
+    "收下七十五+确认周日下午四点糖水铺她请",
+    "收钱+顺着'熬出头'接一句具体的（五个夜班的量她自己报过数）",
+    "接约+在双皮奶玩笑上回一句（可逗不可推），钱照收"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T11_A01",
+     "subject": "HER",
+     "relation": "夜班线收尾",
+     "value": "五个夜班全部结束（11月14日早最后一个交完，'熬出头了'）",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T11",
+      "message_id": "m0",
+      "quote": "最后一个夜班交完了！熬出头了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "最后一个夜班",
+       "交完"
+      ],
+      [
+       "熬出头了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T11_A02",
+     "subject": "HER",
+     "relation": "结清油费",
+     "value": "结清本周五趟油费共七十五元（5×15，现转），要求收下不许推辞",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T11",
+      "message_id": "m0",
+      "quote": "这礼拜五个早上，一趟十五，七十五，我现在转你，收着，别跟我讲究"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "五个早上",
+       "七十五"
+      ],
+      [
+       "一趟十五",
+       "七十五"
+      ],
+      [
+       "现在转你",
+       "收着"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T11_A03",
+     "subject": "HER",
+     "relation": "请客邀约",
+     "value": "邀约：周日（11月15日）下午四点糖水铺她请客（推辞会被挂双皮奶）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T11",
+      "message_id": "m0",
+      "quote": "周日下午四点有空不？糖水铺，我请"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "周日下午四点"
+      ],
+      [
+       "糖水铺",
+       "我请"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T11_A04",
+     "subject": "SHARED",
+     "relation": "拼车单价（KB 记忆回取）",
+     "value": "拼车老规矩每趟十五块——'七十五'的对账单价依据（5×15=75 自洽）",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "case_id": "E356_T11",
+      "message_id": "me",
+      "quote": "拼车老规矩每趟十五块",
+      "key": "me"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "每趟十五块"
+      ],
+      [
+       "拼车",
+       "十五块"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T11_A05",
+     "subject": "HER",
+     "relation": "五天车约（记忆回取）",
+     "value": "本周连拉五天的车约（T01 立）——'五个早上'的对账数量依据",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T01",
+      "message_id": "m0",
+      "quote": "你早上那车得连拉我五天"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "连拉我五天"
+      ],
+      [
+       "早上那车",
+       "连拉"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "对账：5×15=75 无误（单价依据 initial_kb'每趟十五块'，五天依据 T01 连拉五天）；她把'收着别讲究'说在前面——推辞油费=踩她'受人帮助记账回礼'的硬习惯，boundary 失分；糖水铺是关系轻推一格的钩，接约+不抢着回请是正确方向；'你推我就挂你门把上一杯双皮奶'是预堵推辞的玩笑——接梗可、真推不可（intent=accept）。required 原子（KB 单价+T01 五天）是核对 75 的依据。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得推辞或拒收七十五油费",
+    "不得坐实'这五个早上有一趟没拉'之类的改账说法",
+    "不得编造糖水铺位置/菜单细节"
+   ],
+   "may_decline": false,
+   "intent_contract": {
+    "intent": "收下七十五油费，周日下午糖水铺她请客",
+    "behavior_direction": "accept",
+    "keywords_any": [
+     [
+      "收"
+     ],
+     [
+      "周日",
+      "糖水铺"
+     ]
+    ],
+    "must_not_keywords": [
+     "不用转",
+     "这钱我不能收"
+    ]
+   }
+  },
+  "E356_T12": {
+   "case_id": "E356_T12",
+   "current_action": "她周日下午在糖水铺坐到六点，给ME留了姜撞奶挂门把上（来没来都有得喝）；预告下礼拜恢复原班表、早车变回偶尔有，并留阿莞返程行李的条件钩（合法暂停/轻收尾轮）。",
+   "acceptable_actions": [
+    "领杯子谢一声+认'没来'分支（与 Episode 无到场记录一致）",
+    "轻应阿莞行李钩（'三个箱往上喊我'式接），姜撞奶一句带过",
+    "不回（合法——她已给两端台阶，轻收尾轮不欠礼）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "boundary",
+    "time_state",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E356_T12_A01",
+     "subject": "HER",
+     "relation": "请客分支",
+     "value": "她周日下午在糖水铺坐到六点才回；给ME留的姜撞奶挂在门把上（来没来都有）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T12",
+      "message_id": "m0",
+      "quote": "傍晚在糖水铺坐到六点才回"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "糖水铺",
+       "坐到六点才回"
+      ],
+      [
+       "坐到六点",
+       "傍晚"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T12_A02",
+     "subject": "HER",
+     "relation": "留物",
+     "value": "姜撞奶多打了一杯挂ME门把上（来没来都有的喝）",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T12",
+      "message_id": "m0",
+      "quote": "姜撞奶多打了一杯，挂你门把上了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "姜撞奶",
+       "门把"
+      ],
+      [
+       "多打了一杯"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T12_A03",
+     "subject": "HER",
+     "relation": "班表变化",
+     "value": "下礼拜（11月16日起）恢复原班表，早上的车从天天有变回偶尔有",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T12",
+      "message_id": "m0",
+      "quote": "下礼拜我恢复原班表，早上的车从天天有变回偶尔有"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "恢复原班表"
+      ],
+      [
+       "偶尔有",
+       "多睡"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E356_T12_A04",
+     "subject": "HER",
+     "relation": "条件钩（未定）",
+     "value": "阿莞返程那周若行李三箱以上她喊ME帮忙（条件未触发，返程日期未提）",
+     "valid_time": "2026-11-16",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E356_T12",
+      "message_id": "m0",
+      "quote": "阿莞回来那周，她行李要是三个箱往上我喊你"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "阿莞",
+       "回来",
+       "行李"
+      ],
+      [
+       "三个箱",
+       "喊你"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "不回合法的判断依据：她把两个分支都铺好了（'来没来都有的喝'），'后备箱空不空你说了算'把主动权递过来——这是轻收尾轮，不回不欠礼。若回：认领分支须与自身前轮历史一致（T11 应约且到场者可自然收下；未应约者认'没来'分支领杯子），且不得与她的在场叙述矛盾——她'坐到六点'没见着人，声称'我们一起喝了'即与事实矛盾。姜撞奶'辣不辣你舌头说了算'是她的玩笑口。'阿莞回来那周'未给日期（unknown 已登记）。",
+   "unknowns": [
+    {
+     "topic": "ME周日下午是否来过糖水铺",
+     "note": "她不知道、gold 无据；'没来'是默认口径（她已给'没来也不亏'分支）；候选不得编造'我下午来过'的既成事实，也不得声称与她碰面（她坐到六点没见着人）",
+     "markers": [
+      [
+       "下午",
+       "去了",
+       "糖水铺"
+      ],
+      [
+       "我来",
+       "没看着你"
+      ],
+      [
+       "我到了",
+       "糖水铺"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "下午",
+       "去了",
+       "糖水铺"
+      ],
+      [
+       "我来",
+       "没看着你"
+      ],
+      [
+       "我到了",
+       "糖水铺"
+      ]
+     ]
+    },
+    {
+     "topic": "阿莞返程日期",
+     "note": "她只说'阿莞回来那周'，未给日期；候选不得坐实具体返程日",
+     "markers": [
+      [
+       "阿莞",
+       "周几",
+       "回来"
+      ],
+      [
+       "阿莞",
+       "下周",
+       "回来"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "阿莞",
+       "周几",
+       "回来"
+      ],
+      [
+       "阿莞",
+       "下周",
+       "回来"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造'我下午来过糖水铺'的既成事实",
+    "不得声称与她在糖水铺碰面（与她'坐到六点'的在场叙述矛盾）",
+    "不得坐实阿莞返程具体日期"
+   ],
+   "may_decline": true
+  }
+ }
+}

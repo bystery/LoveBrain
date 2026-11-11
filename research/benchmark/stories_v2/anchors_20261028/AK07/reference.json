@@ -1,0 +1,88 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "AK07",
+ "turns": {
+  "AK07_T01": {
+   "case_id": "AK07_T01",
+   "current_action": "她答应并指定我带真题——把下午的具体时点、楼层座位和带什么讲清楚",
+   "acceptable_actions": [
+    "定下午两点+说带哪本",
+    "定时间+问她要不要先看错题",
+    "确认+说两小时后散"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK07_A01",
+     "subject": "她",
+     "relation": "状态",
+     "value": "模考三门过两门，实务最没底",
+     "valid_time": "2026-12-14 21:30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK07_T01",
+      "message_id": "m0",
+      "quote": "模考过了两门"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK07_A02",
+     "subject": "她",
+     "relation": "请求",
+     "value": "要我带那本真题",
+     "valid_time": "2026-12-14 21:44",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK07_T01",
+      "message_id": "m2",
+      "quote": "你带那本真题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK07_A03",
+     "subject": "我",
+     "relation": "依据",
+     "value": "去年过实务靠刷真题",
+     "valid_time": null,
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "考第二年中过一门"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'你带那本真题'是任务指派，必须回应在不在手上；把约定停在'周六见'就漏了。",
+   "unknowns": [
+    "真题册在不在家",
+    "图书馆周六是否开放"
+   ],
+   "protected_expressions": [
+    "你带那本真题"
+   ],
+   "forbidden_factual_claims": [
+    "不要承诺真题一定能押中题",
+    "不要把她'过两门'说成一定拿证"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六下午图书馆一起攻实务那门两小时",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

@@ -1,0 +1,263 @@
+{
+ "episode_id": "E143",
+ "persona": {
+  "her": {
+   "name": "祝晓",
+   "traits": [
+    "电商公司运营",
+    "备考明年法考",
+    "计划性强但容易在压力下自我怀疑"
+   ],
+   "boundaries": [
+    "不接受彻底摆烂",
+    "不喜欢被空洞打气"
+   ]
+  },
+  "me": {
+   "name": "阿灿",
+   "traits": [
+    "去年通过法考",
+    "打卡群前管理员",
+    "擅长把学习计划切成小块"
+   ]
+  },
+  "relationship_stage": "学习搭子朋友期（打卡群认识一年，线下喝过一次咖啡）"
+ },
+ "initial_kb": {
+  "me": "我去年过的法考，群里当过半年打卡管理员，擅长把学习计划切成可执行的小块，知道全量计划断裂的心理成本。",
+  "her": "祝晓在一家电商公司做运营，备考明年法考，每天雷打不动刷两小时题，项目上线期会连轴加班，一断打卡就自责。",
+  "warmth": "打卡群认识一年，互相批过主观题，线下喝过一次咖啡，关系熟但不腻，她考砸会先跟我说。",
+  "style": "她习惯晚上十点后发消息复盘当天，我喜欢给她列选项让她挑，少讲大道理。",
+  "stage": "学习搭子朋友期。"
+ },
+ "turns": [
+  {
+   "case_id": "E143_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "这周天天加班到十点，今天题都没刷，打卡要断了，烦死了。",
+      "ts": "2026-11-03 22:10"
+     }
+    ],
+    "clock": "2026-11-03 22:15",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "疲惫带自责，打卡链路告急"
+   }
+  },
+  {
+   "case_id": "E143_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我在想干脆停两周，等项目 18 号上线了再全速捡起来，省得天天焦虑。",
+      "ts": "2026-11-04 22:35"
+     }
+    ],
+    "clock": "2026-11-04 22:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "出现全停计划，仍在犹豫"
+   }
+  },
+  {
+   "case_id": "E143_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "群里打卡搭子劝我别断，说断一次就捡不起来了。可我真的撑不住全量，怎么办？",
+      "ts": "2026-11-05 21:25"
+     }
+    ],
+    "clock": "2026-11-05 21:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "两头拉扯：搭子劝阻与自身疲惫对冲"
+   }
+  },
+  {
+   "case_id": "E143_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "听你的，我不停死：改成每天地铁上刷十题保底，周末补一套卷。法考我还是考的，别让我搭子误会我摆烂。",
+      "ts": "2026-11-06 20:45"
+     }
+    ],
+    "clock": "2026-11-06 20:50",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "决定落地：降档而非停摆，并主动澄清立场"
+   }
+  },
+  {
+   "case_id": "E143_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "保底跑了一周，十题都完成了，就是错题率比之前高，有点挫败。",
+      "ts": "2026-11-10 22:15"
+     }
+    ],
+    "clock": "2026-11-10 22:20",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "计划兑现但质量指标下滑，挫败感出现"
+   }
+  },
+  {
+   "case_id": "E143_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "错题翻了下，八成集中在民法。我想周末加一节民法网课，你看值不值？",
+      "ts": "2026-11-12 22:25"
+     }
+    ],
+    "clock": "2026-11-12 22:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "从挫败转向主动找补强方案"
+   }
+  },
+  {
+   "case_id": "E143_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "看中一门民法真题精讲，正价两百九。纠结要不要买，买贵的肉疼，买便宜的路过。",
+      "ts": "2026-11-13 21:05"
+     }
+    ],
+    "clock": "2026-11-13 21:10",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "在价格与质量间权衡"
+   }
+  },
+  {
+   "case_id": "E143_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "闲鱼淘到那门课的二手讲义，三十块包邮，今天到货了，翻着还挺新。省钱小能手就是我。",
+      "ts": "2026-11-15 19:15"
+     }
+    ],
+    "clock": "2026-11-15 19:20",
+    "may_decline": true
+   },
+   "feedback": {
+    "her_state_shift": "得意洋洋的日常分享，无待办"
+   }
+  },
+  {
+   "case_id": "E143_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周末拿讲义配着做了套卷，民法正确率上来了，整卷 68%，比上周高六个点！",
+      "ts": "2026-11-16 21:55"
+     }
+    ],
+    "clock": "2026-11-16 22:00",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "数据回升，士气反弹"
+   }
+  },
+  {
+   "case_id": "E143_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "项目确定 18 号上线。上线完我想把全量计划捡回来，想定个明确的恢复日，免得又拖。",
+      "ts": "2026-11-17 21:35"
+     }
+    ],
+    "clock": "2026-11-17 21:40",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "开始规划重启，主动要求外部约束"
+   }
+  },
+  {
+   "case_id": "E143_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "就定 20 号！周三上线收尾，周四我休一天，周五 20 号全量重启。到时候你戳我一下，怕我赖床。",
+      "ts": "2026-11-18 22:25"
+     }
+    ],
+    "clock": "2026-11-18 22:30",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "恢复日敲定，郑重托付"
+   }
+  },
+  {
+   "case_id": "E143_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "全量第一天打卡完成！两小时题加半小时复盘，一点没少。今天你还没戳我，我自己就起来了，哼。",
+      "ts": "2026-11-20 22:40"
+     }
+    ],
+    "clock": "2026-11-20 22:45",
+    "may_decline": false
+   },
+   "feedback": {
+    "her_state_shift": "重启成功，撒娇式邀功"
+   }
+  }
+ ]
+}

@@ -1,0 +1,180 @@
+{
+ "episode_id": "E182",
+ "persona": {
+  "her": {
+   "name": "何佳宁",
+   "traits": ["自己张罗老房翻新", "执行力强爱记账", "吃软不吃硬"],
+   "boundaries": ["增项必须写单子才付款", "认赔但要有凭证"]
+  },
+  "me": {
+   "name": "沈一舟",
+   "traits": ["去年自己翻新过卫生间", "熟悉防水和闭水试验流程", "愿意跑腿搭手"]
+  },
+  "relationship_stage": "长期熟人(大学同学，谁装修谁搬家都互相搭手)"
+ },
+ "initial_kb": {
+  "her": "何佳宁在收拾一套老房子，这轮先翻卫生间：重铺墙地砖、重做防水，楼下住着一对平时好说话的夫妻。",
+  "me": "沈一舟去年自己翻新过卫生间，踩过防水返工的坑，知道闭水试验要养够48小时。",
+  "warmth": "老同学，谁家有事都搭手，账算得清楚但不伤感情。",
+  "style": "沈一舟给步骤和数字，何佳宁自己拍板，事后爱晒进度。",
+  "lessons": "装修增项落单子，邻里赔偿留凭证，闭水试验48小时起步。"
+ },
+ "turns": [
+  {
+   "case_id": "E182_T01",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-05 19:30", "text": "装修队约好了，瓦工这周六早上八点进场贴我卫生间，我下午去建材城看砖。你去年那卫生间的砖是在哪儿买的？给我个参考。"}
+    ],
+    "clock": "2026-11-05 19:33",
+    "may_decline": true
+   },
+   "feedback": {"her_state": "开工在即", "change_note": "由筹备转为约期已定，顺带求购砖参考"}
+  },
+  {
+   "case_id": "E182_T02",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-06 12:10", "text": "砖定了！哑光砖一箱四片能贴0.72平，师傅量出来墙加地一共16平，我按23箱再加两箱损耗，搬了25箱过去放楼道了。"}
+    ],
+    "clock": "2026-11-06 12:13",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "材料就位", "change_note": "从看砖转为下单搬运，算账清楚"}
+  },
+  {
+   "case_id": "E182_T03",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-07 20:00", "text": "变卦了，瓦工说他上一家没收尾，周六进不来，挪到下周一早上。我这一楼道的砖白搬了。"}
+    ],
+    "clock": "2026-11-07 20:03",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "第一次改期", "change_note": "期待进场被推延，带一点白搬砖的抱怨"}
+  },
+  {
+   "case_id": "E182_T04",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-09 08:40", "text": "周一早上瓦工到了，说贴砖前先做闭水试验，养够48小时，周三来看结果再贴。砖我又码回我家客厅了。"}
+    ],
+    "clock": "2026-11-09 08:43",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "进场兑现", "change_note": "改期后的新档期落地，流程被师傅改序为先闭水"}
+  },
+  {
+   "case_id": "E182_T05",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-11 18:50", "text": "坏了，闭水试验没过！楼下天花板洇了一小片，师傅说防水层有沙眼，得铲了重刷，再养48小时，贴砖接着往后推。"}
+    ],
+    "clock": "2026-11-11 18:53",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "返工冲击", "change_note": "从等结果转为失败返工，情绪跌到本轮最低"}
+  },
+  {
+   "case_id": "E182_T06",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-12 21:15", "text": "楼下那家我上门道歉了，物业来核过，说印子能自己干，我赔了300，拍了照留了凭证，师傅也给写了情况说明。"}
+    ],
+    "clock": "2026-11-12 21:18",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "邻事处理", "change_note": "由沮丧转为行动：道歉、赔偿、留证一条龙"}
+  },
+  {
+   "case_id": "E182_T07",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-13 12:30", "text": "防水师傅说得刷三遍，我原来那桶5公斤的料不够，又补了两小桶，这回我盯着他每遍干透再上下一遍。"}
+    ],
+    "clock": "2026-11-13 12:33",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "盯工模式", "change_note": "由被动接受返工转为亲自盯工艺和补料"}
+  },
+  {
+   "case_id": "E182_T08",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 19:00", "text": "二次闭水过了！瓦工定周四早上八点进场，这回他在群里发了文字确认，我截图存好了。"}
+    ],
+    "clock": "2026-11-15 19:03",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "定档安心", "change_note": "返工阴霾散去，改用文字确认防再变卦"}
+  },
+  {
+   "case_id": "E182_T09",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-18 21:00", "text": "明天进场，我想起来角阀还没换，师傅说趁贴砖前换省得后头拆，我明早七点先去五金店拎一对。"}
+    ],
+    "clock": "2026-11-18 21:03",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "查漏补缺", "change_note": "进场前夕主动排查配套件，节奏变细"}
+  },
+  {
+   "case_id": "E182_T10",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-19 15:40", "text": "贴到一半了，师傅说砖还剩三箱半，损耗比想的小，省下来的工钱他说匀给我，够买个不锈钢地漏了。"}
+    ],
+    "clock": "2026-11-19 15:43",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "进度过半", "change_note": "由准备转为施工中，开始算省料的意外小账"}
+  },
+  {
+   "case_id": "E182_T11",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-21 20:30", "text": "砖贴完了！效果比我想的正，美缝师傅周日来，另算400，我让他把这400写进增项单再开工。"}
+    ],
+    "clock": "2026-11-21 20:33",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "主体验收", "change_note": "贴砖完工的成就感，增项必须落单的边界没松"}
+  },
+  {
+   "case_id": "E182_T12",
+   "turn_type": "reply",
+   "gold": {},
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-23 21:10", "text": "美缝也收工了，卫生间跟新的一样。楼下的天花板干透了，我拎了果篮上去坐了会儿，300块赔得踏实。这轮多亏你陪我捋流程。"}
+    ],
+    "clock": "2026-11-23 21:13",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "闭环收尾", "change_note": "工程与邻里两线都闭环，向ME致谢"}
+  }
+ ]
+}

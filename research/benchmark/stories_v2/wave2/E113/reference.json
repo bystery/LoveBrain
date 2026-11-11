@@ -1,0 +1,919 @@
+{
+ "story_id": "E113",
+ "turns": {
+  "E113_T01": {
+   "case_id": "E113_T01",
+   "current_action": "接住她的兴奋和邀约，先把'看雪貂'这个由头接得热络，顺口跟她确认一句场次信息以订单为准，为后面的日期纠错埋好自然的口子。",
+   "acceptable_actions": [
+    "答应考虑同行，让她把购票订单或须知转给自己看一眼",
+    "先接雪貂的兴致，问她麻薯出门带什么装备",
+    "应下来并提醒她市集人多，给兔子留个躲人的Plan B"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "initiative",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A01",
+     "subject": "SHARED",
+     "relation": "market_ticket_claimed",
+     "value": "她称抢到宠物友好市集门票并邀ME同行",
+     "valid_time": "2026-10-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T01",
+      "message_id": "m0",
+      "quote": "我抢到宠物友好市集的票了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A02",
+     "subject": "SHARED",
+     "relation": "market_date_believed",
+     "value": "她认定市集在10月24日周六上午场",
+     "valid_time": "2026-10-15至2026-10-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T01",
+      "message_id": "m0",
+      "quote": "10月24号周六上午场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A03",
+     "subject": "HER",
+     "relation": "pet_rabbit",
+     "value": "她的兔子名叫麻薯，计划带去市集开眼界",
+     "valid_time": "2026-10-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T01",
+      "message_id": "m0",
+      "quote": "带麻薯去开眼界"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：兴致要对等，确认信息那句要轻，像顺嘴一提而不是审单。",
+   "unknowns": [
+    "市集真实日期她未出示凭证",
+    "ME 是否已应约未定"
+   ],
+   "protected_expressions": [
+    "10月24号周六上午场",
+    "你不是一直说想看雪貂嘛"
+   ],
+   "forbidden_factual_claims": [
+    "不得替主办方确认真实日期",
+    "不得虚构票价与购票渠道"
+   ]
+  },
+  "E113_T02": {
+   "case_id": "E113_T02",
+   "current_action": "接住她把周六整天空出来的安排，对借推车的请求给出可行答复或替代方案；她的请求落在ME同事身上，归属清晰，不越权替同事答应。",
+   "acceptable_actions": [
+    "答应去问同事借推车，约定回复时间",
+    "提出替代：同事的推车若借不到，可先用外带包加毛毯",
+    "提醒她麻薯胆小，市集当天音响和人流要提前想到"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A04",
+     "subject": "SHARED",
+     "relation": "saturday_kept_clear",
+     "value": "她按24号周六全天空档来布置行程",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T02",
+      "message_id": "m0",
+      "quote": "24号我全天没安排"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A05",
+     "subject": "THIRD",
+     "relation": "stroller_borrow_channel",
+     "value": "推车唯一可行来源是ME部门同事那辆",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T02",
+      "message_id": "m0",
+      "quote": "你们部门同事那辆借得到不"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A06",
+     "subject": "THIRD",
+     "relation": "rabbit_timidity",
+     "value": "麻薯胆小，需要推车遮蔽降低应激",
+     "valid_time": "2026-10-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T02",
+      "message_id": "m0",
+      "quote": "麻薯胆子小"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：借东西的话要说实——能借给准话，不能借给替代，不吊着她。",
+   "unknowns": [
+    "同事是否愿借推车未知"
+   ],
+   "protected_expressions": [
+    "你们部门同事那辆借得到不",
+    "周六用一天"
+   ],
+   "forbidden_factual_claims": [
+    "不得替同事承诺出借",
+    "不得虚构推车型号与租借价格"
+   ]
+  },
+  "E113_T03": {
+   "case_id": "E113_T03",
+   "current_action": "接住她把周六腾干净的安排：外婆买菜改舅舅代班、双票出好；肯定她办事周全，同时轻问一句外婆那边是否知道具体哪天，把承诺的锚点记牢。",
+   "acceptable_actions": [
+    "肯定她安排得妥帖，顺口确认代班是24号当天",
+    "夸胸背带准备得专业，问要不要帮着试装",
+    "提醒她出票后核对一遍场次和入场时间"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A07",
+     "subject": "SHARED",
+     "relation": "grandma_duty_delegated",
+     "value": "外婆周六买菜改由舅舅代班，她得以腾空周六",
+     "valid_time": "2026-10-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T03",
+      "message_id": "m0",
+      "quote": "这周六买菜让舅舅代班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A08",
+     "subject": "SHARED",
+     "relation": "tickets_issued",
+     "value": "两张市集票已出好，含ME一份",
+     "valid_time": "2026-10-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T03",
+      "message_id": "m0",
+      "quote": "票两张都出好了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A09",
+     "subject": "HER",
+     "relation": "gear_purchased",
+     "value": "她为麻薯购入兔子胸背带",
+     "valid_time": "2026-10-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T03",
+      "message_id": "m0",
+      "quote": "买了兔子胸背带"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她的周全要点到，'核对场次'这句放在夸奖后面说。",
+   "unknowns": [
+    "舅舅代班是否已获外婆最终确认未提",
+    "T03“这周六”指 10-24，口语歧义按上下文消歧；T01 邀 ME 同行后未确认成行，T11 起属刻意留白"
+   ],
+   "protected_expressions": [
+    "票两张都出好了",
+    "连你的份一起"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构票面信息",
+    "不得断言外婆改约已敲定日期"
+   ]
+  },
+  "E113_T04": {
+   "case_id": "E113_T04",
+   "current_action": "接住舅舅退出的突发：她想让ME顶上陪跑并去外婆那边圆场。这请求越了ME的边界（外婆认生、代班是家事），婉拒但给出替代路径——劝她直接跟外婆改约，而不是硬凑人头。",
+   "acceptable_actions": [
+    "婉拒替她圆场，理由是外婆认生，外人到场反而添乱",
+    "建议她跟外婆商量把买菜改期或缩短，而不是找人顶",
+    "表示市集当天她若需要跑腿帮忙可以出力，但外婆那边不插手"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "goal",
+    "interaction",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A10",
+     "subject": "THIRD",
+     "relation": "uncle_schedule_conflict",
+     "value": "舅舅周六被公司临时叫去值班，买菜代班泡汤",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T04",
+      "message_id": "m0",
+      "quote": "周六公司临时叫他值班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A11",
+     "subject": "HER",
+     "relation": "cover_request_to_me",
+     "value": "她请求ME周六陪跑并去外婆那边圆场",
+     "valid_time": "2026-10-19",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T04",
+      "message_id": "m0",
+      "quote": "外婆那边你帮我圆一下场"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A12",
+     "subject": "SHARED",
+     "relation": "saturday_delegation_suspended",
+     "value": "舅舅代班外婆买菜的安排悬空，周六承诺出现缺口",
+     "valid_time": "2026-10-17/2026-10-19",
+     "status": "suspended",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T03",
+      "message_id": "m0",
+      "quote": "这周六买菜让舅舅代班"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：拒绝要快且暖，'随口一问'是她的台阶，别让她真觉得欠了你。",
+   "unknowns": [
+    "外婆是否接受改期未知"
+   ],
+   "protected_expressions": [
+    "外婆那边你帮我圆一下场就行",
+    "你别有负担"
+   ],
+   "forbidden_factual_claims": [
+    "不得答应冒充家人或熟身份圆场",
+    "不得虚构舅舅单位情况"
+   ]
+  },
+  "E113_T05": {
+   "case_id": "E113_T05",
+   "current_action": "确认她采纳建议与外婆改约周日中午包饺子、外婆应允；把这个新承诺的时间和原话记牢——它马上会和真实市集日期撞车，此刻只肯定她处理得体，不预支担忧。",
+   "acceptable_actions": [
+    "肯定改约处理得好，夸她外婆爽快",
+    "顺口把'25号周日'复述一遍，帮她锁记忆",
+    "提醒她周六专心带麻薯，装备再过一遍"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "interaction",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A13",
+     "subject": "SHARED",
+     "relation": "dumpling_sunday_booked",
+     "value": "她与外婆改约周日中午包饺子，外婆应允",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T05",
+      "message_id": "m0",
+      "quote": "改约周日中午去她家包饺子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A14",
+     "subject": "THIRD",
+     "relation": "grandma_time_locked",
+     "value": "外婆把饺子局定在25号并称备好了馅",
+     "valid_time": "2026-10-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T05",
+      "message_id": "m0",
+      "quote": "那就25号，饺子馅我都备好"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A15",
+     "subject": "SHARED",
+     "relation": "saturday_believed_free",
+     "value": "她认定24号周六已无他事可专心市集",
+     "valid_time": "2026-10-20至2026-10-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T05",
+      "message_id": "m0",
+      "quote": "这下24号周六我干干净净"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：复述日期要说得像陪她高兴，不像核账。",
+   "unknowns": [],
+   "protected_expressions": [
+    "改约周日中午去她家包饺子",
+    "外婆高兴坏了"
+   ],
+   "forbidden_factual_claims": [
+    "不得预判市集日期有误",
+    "不得虚构外婆家具体位置"
+   ]
+  },
+  "E113_T06": {
+   "case_id": "E113_T06",
+   "current_action": "接住日期倒错实证引爆：主办方须知证实市集是25号周日，她把周六当周日安排的全部布置对撞。先陪她懊恼，再帮把损失清单摊开——票、推车、外婆的饺子局，逐项看哪些能动。",
+   "acceptable_actions": [
+    "先共情记错的懊恼，再说票和安排都还有救",
+    "把冲突拆开：市集可压缩时段，饺子局不可动，优先外婆",
+    "劝她第一时间再跟外婆确认一次时间，别让承诺悬着"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "attribution",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A16",
+     "subject": "SHARED",
+     "relation": "market_date_corrected",
+     "value": "主办方须知证实市集为10月25日周日",
+     "valid_time": "2026-10-22",
+     "status": "confirmed",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T06",
+      "message_id": "m0",
+      "quote": "市集是10月25号周日"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A17",
+     "subject": "SHARED",
+     "relation": "wrong_date_belief_retracted",
+     "value": "市集在24号周六的错误认知被实证撤回",
+     "valid_time": "2026-10-15/2026-10-22",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T01",
+      "message_id": "m0",
+      "quote": "10月24号周六上午场"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E113_A18",
+     "subject": "SHARED",
+     "relation": "sunday_double_booking",
+     "value": "周日市集与外婆饺子局正面相撞，两项承诺同时有效",
+     "valid_time": "2026-10-20/2026-10-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T05",
+      "message_id": "m0",
+      "quote": "改约周日中午去她家包饺子"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：别先说'我早提醒过'，她此刻需要的是同伙不是裁判。",
+   "unknowns": [
+    "市集是否可退票或转让未知",
+    "外婆得知改期的反应未知"
+   ],
+   "protected_expressions": [
+    "我记错了",
+    "全建在错的那天上"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言票不可退",
+    "不得替主办方补发须知原文"
+   ]
+  },
+  "E113_T07": {
+   "case_id": "E113_T07",
+   "current_action": "陪她把三条路摆上桌：她的直觉已经偏向方案二（压缩市集赶饺子局），帮她把这条路的可行性和兔子应激风险过一遍，最后把决定权还给她。",
+   "acceptable_actions": [
+    "支持方案二，建议她给麻薯留足垫料和水并压缩停留",
+    "分析方案三的代价：妈妈顶班会记她一笔，外婆也未必愿意",
+    "提示她查一眼须知里能否中途出场再入场"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A19",
+     "subject": "HER",
+     "relation": "option_two_leading",
+     "value": "她倾向中午12点前撤市集赶去包饺子的方案二",
+     "valid_time": "2026-10-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T07",
+      "message_id": "m0",
+      "quote": "中午12点前从市集撤"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A20",
+     "subject": "THIRD",
+     "relation": "rabbit_stress_concern",
+     "value": "她担心麻薯长时间待在包里应激",
+     "valid_time": "2026-10-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T07",
+      "message_id": "m0",
+      "quote": "怕兔子在包里待太久应激"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A21",
+     "subject": "SHARED",
+     "relation": "collision_unresolved",
+     "value": "周日双承诺相撞悬而未决，待方案敲定",
+     "valid_time": "2026-10-22",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T06",
+      "message_id": "m0",
+      "quote": "周日中午跟外婆包饺子正面撞车"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：三条路都别贬得一文不值，她骂自己'缺德'时要接一句宽心话。",
+   "unknowns": [
+    "市集实际开放时段未知"
+   ],
+   "protected_expressions": [
+    "你说哪条不那么缺德"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构市集出场规则",
+    "不得替她做最终决定"
+   ]
+  },
+  "E113_T08": {
+   "case_id": "E113_T08",
+   "current_action": "确认方案二敲定：10点进场、12点撤、12点40到外婆家；推车落空改用外带包——把这个变数接住，给她外带包替代方案的具体建议（垫料、透气、限时）。",
+   "acceptable_actions": [
+    "肯定时间表掐得稳，建议路上留意麻薯状态",
+    "给外带包使用要点：垫 familiar 的毯子，缩短连续背负时间",
+    "提醒她12点前手机别静音，撤场前互报平安"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A22",
+     "subject": "SHARED",
+     "relation": "plan_two_confirmed",
+     "value": "方案二敲定：10点进场12点撤场12点40到外婆家",
+     "valid_time": "2026-10-23",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T08",
+      "message_id": "m0",
+      "quote": "逛到12点准时撤"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A23",
+     "subject": "THIRD",
+     "relation": "stroller_plan_fell_through",
+     "value": "同事周日自用，推车借约落空",
+     "valid_time": "2026-10-23",
+     "status": "retracted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T02",
+      "message_id": "m0",
+      "quote": "你们部门同事那辆借得到不"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A24",
+     "subject": "HER",
+     "relation": "carrier_fallback",
+     "value": "她改用外带包背负麻薯赶场",
+     "valid_time": "2026-10-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T08",
+      "message_id": "m0",
+      "quote": "我用外带包背着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：'推车黄了'要接得轻，重点给她'外带包也够用'的底气。",
+   "unknowns": [
+    "外带包内垫料是否备齐未知"
+   ],
+   "protected_expressions": [
+    "掐着和面之前到",
+    "怕麻薯在里面蹬腿"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构同事借车的细节",
+    "不得断言外带包必然无应激"
+   ]
+  },
+  "E113_T09": {
+   "case_id": "E113_T09",
+   "current_action": "共享市集现场的兴奋：麻薯被围观、雪貂长队；把她的'11:50闹钟'接住——这是她对方案二的自我执行，肯定她玩得尽兴又守约，不催不泼冷水。",
+   "acceptable_actions": [
+    "让她发麻薯被围观的场面，陪她高兴两句",
+    "肯定闹钟设得好，玩到点安心撤",
+    "提醒雪貂队若排不上不必硬排，饺子局优先"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A25",
+     "subject": "SHARED",
+     "relation": "market_scene_live",
+     "value": "周日上午她携麻薯到场，麻薯全场唯一被围观",
+     "valid_time": "2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T09",
+      "message_id": "m0",
+      "quote": "麻薯是全场唯一一只兔子"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A26",
+     "subject": "HER",
+     "relation": "exit_alarm_set",
+     "value": "她设11:50闹钟执行12点前撤场的计划",
+     "valid_time": "2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T09",
+      "message_id": "m0",
+      "quote": "我手机定了11:50的闹钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A27",
+     "subject": "SHARED",
+     "relation": "plan_two_in_execution",
+     "value": "方案二的撤场时点正在被她主动执行",
+     "valid_time": "2026-10-23/2026-10-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T08",
+      "message_id": "m0",
+      "quote": "逛到12点准时撤"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：现场的热闹要接得有画面感，'饺子优先'回一句稳她的心。",
+   "unknowns": [
+    "雪貂摊位是否来得及排未知"
+   ],
+   "protected_expressions": [
+    "到点就撤，饺子优先"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构市集内具体摊位布局",
+    "不得替她估算人流"
+   ]
+  },
+  "E113_T10": {
+   "case_id": "E113_T10",
+   "current_action": "接住她提前撤场赶路的紧绷：11:48出门、出租车在途、麻薯有点蔫；先肯定她兑现承诺，再给她一句麻薯状态的实际安抚，让她别一路自责。",
+   "acceptable_actions": [
+    "肯定她11:48出门掐表成功，承诺守住了",
+    "安抚麻薯蔫是正常，垫了草编窝到家就会缓",
+    "提醒她到外婆家先给麻薯安顿再进厨房"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A28",
+     "subject": "SHARED",
+     "relation": "early_exit_executed",
+     "value": "她11:48撤场，正乘出租赶往外婆家",
+     "valid_time": "2026-10-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T10",
+      "message_id": "m0",
+      "quote": "11:48出的门"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A29",
+     "subject": "HER",
+     "relation": "self_commitment_kept",
+     "value": "提前撤场兑现了'12点前撤'的自我承诺",
+     "valid_time": "2026-10-23/2026-10-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T08",
+      "message_id": "m0",
+      "quote": "逛到12点准时撤"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E113_A30",
+     "subject": "THIRD",
+     "relation": "rabbit_condition",
+     "value": "麻薯撤场后有点蔫，已垫草编窝安抚",
+     "valid_time": "2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T10",
+      "message_id": "m0",
+      "quote": "麻薯有点蔫，我买了个草编窝给它垫着"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：报时的欣慰要具体——'比闹钟还早两分钟'，别催她看路况。",
+   "unknowns": [
+    "她是否准时抵达外婆家未知"
+   ],
+   "protected_expressions": [
+    "应该不算迟到"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构行车路线与时长",
+    "不得对麻薯状态做兽医判断"
+   ]
+  },
+  "E113_T11": {
+   "case_id": "E113_T11",
+   "current_action": "共享饺子局圆满与外婆的暖反应：看照片、装冻饺子、约下回带兔娃；再接住她的'雪貂一只没看着'——把这份小遗憾接成下回的钩子而不是损失。",
+   "acceptable_actions": [
+    "先恭喜两头都赶上了，夸她两小时拆成两场用",
+    "顺着外婆的话头，答应下次一起带麻薯去看外婆",
+    "把雪貂遗憾接成钩子：春季再约，讲给你听"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A31",
+     "subject": "SHARED",
+     "relation": "dumpling_completed",
+     "value": "饺子局圆满，外婆装冻饺子给她带回",
+     "valid_time": "2026-10-25",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T11",
+      "message_id": "m0",
+      "quote": "饺子局圆满"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A32",
+     "subject": "THIRD",
+     "relation": "grandma_follow_up",
+     "value": "外婆看照片后提出下回带麻薯给她瞧瞧",
+     "valid_time": "2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T11",
+      "message_id": "m0",
+      "quote": "下回赶集把兔娃带上让我也瞧瞧"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A33",
+     "subject": "SHARED",
+     "relation": "ferret_missed",
+     "value": "她雪貂队排到一半撤场，一只没看着，留下遗憾钩子",
+     "valid_time": "2026-10-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T09",
+      "message_id": "m0",
+      "quote": "雪貂那队排出去三十米"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：外婆的部分要暖，雪貂的部分要俏，别让遗憾变沉重。",
+   "unknowns": [],
+   "protected_expressions": [
+    "一只没看着",
+    "本来是陪你来开眼界的"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构雪貂外貌细节",
+    "不得替外婆补更多台词"
+   ]
+  },
+  "E113_T12": {
+   "case_id": "E113_T12",
+   "current_action": "接住春季市集的再约：她带麻薯、ME当讲解员补上雪貂，谁也不欠谁——笑纳分工并确认，顺着麻薯啃草窝的日常把这事温柔收尾，不引入新议题。",
+   "acceptable_actions": [
+    "答应春季市集当讲解员，让她把外婆那边提前打好招呼",
+    "顺着麻薯啃草窝调侃一句，把日子感收住",
+    "夸冰箱贴的照片选得好，给这场赶场画句号"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E113_A34",
+     "subject": "SHARED",
+     "relation": "spring_market_reinvite",
+     "value": "春季花房市集再约：她带麻薯，ME负责讲解雪貂摊",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T12",
+      "message_id": "m0",
+      "quote": "你负责把雪貂那摊给我讲明白"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E113_A35",
+     "subject": "SHARED",
+     "relation": "ferret_debt_callback",
+     "value": "讲解员之约回扣本次雪貂未看成的遗憾",
+     "valid_time": "2026-10-25/2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T11",
+      "message_id": "m0",
+      "quote": "一只没看着"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E113_A36",
+     "subject": "THIRD",
+     "relation": "rabbit_settled",
+     "value": "麻薯已安顿，啃新草窝、照片上冰箱贴",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E113_T12",
+      "message_id": "m0",
+      "quote": "啃新草窝啃得起劲"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾要轻要暖，'谁也不欠谁'接一句'下回一起欠'即可，不翻旧账。",
+   "unknowns": [],
+   "protected_expressions": [
+    "谁也不欠谁"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构春季市集日期",
+    "不得引入新的家庭或工作议题"
+   ]
+  }
+ }
+}

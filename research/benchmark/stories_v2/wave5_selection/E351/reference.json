@@ -1,0 +1,1461 @@
+{
+ "story_id": "E351",
+ "turns": {
+  "E351_T01": {
+   "case_id": "E351_T01",
+   "current_action": "排练夜战报：第三幕被推翻她的台词砍到两句，她数了 ME 搬道具十七趟一件没磕，并报演出定档 28 号周六与卖票任务",
+   "acceptable_actions": [
+    "接'十七趟'的记账式致意（她专门数了——回一句'你数得比场记还准'），把被看见的劳动接住",
+    "接砍台词的沮丧线（两句也稳/戏红人不红之类），先接情绪再接卖票的正事",
+    "接卖票任务给具体承诺（几张/跟谁卖），把定档信息落成行动"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T01_A01",
+     "subject": "SHARED",
+     "relation": "第三幕推翻改稿",
+     "value": "导演把《候车》第三幕全推翻，她的台词从八句砍到两句",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T01",
+      "message_id": "m0",
+      "quote": "导演把《候车》第三幕全推翻了，我的台词从八句砍到两句"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "第三幕",
+       "推翻"
+      ],
+      [
+       "八句砍到两句"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T01_A02",
+     "subject": "ME",
+     "relation": "十七趟道具（本篇签名数字）",
+     "value": "散场她数了 ME 搬道具来回十七趟，一件没磕",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T01",
+      "message_id": "m0",
+      "quote": "你搬道具来回十七趟，一件没磕"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "来回十七趟"
+      ],
+      [
+       "一件没磕"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T01_A03",
+     "subject": "SHARED",
+     "relation": "演出定档（后被 T04 更正）",
+     "value": "《候车》定档 28 号周六晚七点半青年宫演出，社里每人摊五个名额卖票、一张四十",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T01",
+      "message_id": "m0",
+      "quote": "28号周六晚七点半青年宫演出，社里每人摊五个名额卖票，一张四十"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "28号周六"
+      ],
+      [
+       "青年宫演出"
+      ],
+      [
+       "五个名额",
+       "一张四十"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "开场三件事实（改稿/十七趟/定档卖票）一次给出——回复不必全覆盖，但把'十七趟'这个她特意数的数字晾掉=漏她真正想说的（她的关注点在他）。'一件没磕'是对 ME 手艺的认证，接法自选。定档信息 T04 将被连环更正，本轮如实按 28 号口径回应即可。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E351_T02": {
+   "case_id": "E351_T02",
+   "current_action": "她多买了一张《雷雨》票邀 ME 周六同看（两点半场、一张八十），附时限与备选：没空就转手小橡，下午得回话",
+   "acceptable_actions": [
+    "去——直接应下（对齐时间地点，问一句要不要一起吃点东西），不拖过时限",
+    "去不了——直说+让她转手小橡（她已备好备选），干脆不吊着",
+    "去——带一句轻的（'八十看你值不值'式玩笑），应约里带互损"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "goal",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T02_A01",
+     "subject": "SHARED",
+     "relation": "《雷雨》邀约（待复）",
+     "value": "她多买了一张周六（11-14）下午市话剧团《雷雨》两点半场的票，一张八十，邀 ME 同去",
+     "valid_time": "2026-11-14",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T02",
+      "message_id": "m0",
+      "quote": "周六下午市话剧团的《雷雨》，两点半场，一张八十，我多买了一张"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "《雷雨》",
+       "多买了一张"
+      ],
+      [
+       "两点半场",
+       "八十"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T02_A02",
+     "subject": "HER",
+     "relation": "时限与备选",
+     "value": "ME 没空她就转手给小橡，下午就得回人家话",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T02",
+      "message_id": "m0",
+      "quote": "你要没空我转手给小橡，她肯定要。去不去给个话，我下午就得回人家"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "转手给小橡"
+      ],
+      [
+       "去不去给个话"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "邀约轮（T04 接钩位：给具体下一步，不排队等她解释）：她给了时限（下午回话）与备选（小橡）——'看情况/尽量'式回复会把票拖黄，判低；拒绝完全合法（备选现成），但要给准话。邀约事实去留未定（tentative），回复即裁决位；剧价八十为事实，不得改写。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E351_T03": {
+   "case_id": "E351_T03",
+   "current_action": "看戏归来：她报三个半小时没看表值回票价，提出'人走了灯才亮'的新结尾，明天连排跟导演提，讨一句'你押我成不成'",
+   "acceptable_actions": [
+    "押她（'成'+给一个具体理由如灯的意象跟《候车》候的主题咬合），把讨的注给实",
+    "押一半（'成了算你眼光，不成算导演没懂'式玩笑押注），接住但不盲从",
+    "接新结尾本身给一个具体反馈（最后一场才亮灯的舞台效果怎么实现），用道具组的实话押注"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T03_A01",
+     "subject": "SHARED",
+     "relation": "同看《雷雨》（T02 邀约兑现）",
+     "value": "两人同看《雷雨》三个半小时，她调侃 ME 居然没看表，这八十花得值",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T03",
+      "message_id": "m0",
+      "quote": "《雷雨》三个半小时你居然没看表，这八十花得值"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三个半小时"
+      ],
+      [
+       "居然没看表"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T03_A02",
+     "subject": "HER",
+     "relation": "新结尾想法（待提）",
+     "value": "她路上想的新结尾：候车亭的灯到最后一场才亮，人走了灯才亮——明天连排跟导演提",
+     "valid_time": "2026-11-15",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T03",
+      "message_id": "m0",
+      "quote": "候车亭的灯到最后一场才亮，人走了灯才亮——明天连排我跟导演提"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "候车亭的灯"
+      ],
+      [
+       "人走了灯才亮"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T03_A03",
+     "subject": "HER",
+     "relation": "讨一句押注",
+     "value": "她要 ME 押她成不成",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T03",
+      "message_id": "m0",
+      "quote": "明天连排我跟导演提，你押我成不成"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "你押我成不成"
+      ],
+      [
+       "跟导演提"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'你押我成不成'是 T04 式自出钩（她把创作提议连着信任一起递过来）——押与不押都合法，但只回'看明天吧'把钩原样踢回=缩钩判低；押注要给理由（哪怕玩笑理由），空喊'你肯定行'=万能句。新结尾最终是否被导演采纳题面未给（tentative），不得预判结果。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E351_T04": {
+   "case_id": "E351_T04",
+   "current_action": "演出转折：老利搬布景闪腰、B组顶上，演出顺延改到 29 号周日七点半、场地换城北文化馆剧场、票不退不补差，嘱 ME 票别弄丢（intent：通知延期换场地）",
+   "acceptable_actions": [
+    "确认新口径（29号周日七点半城北文化馆）+确认票在手，把三处变更一次复述清",
+    "确认+先问老利的腰（人事关心优先于事务确认），再落到票务与档期",
+    "确认+接'票别弄丢'的嘱托（'五张一张不少'式点收），顺带问要不要帮忙改签通知买家"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T04_A00",
+     "subject": "SHARED",
+     "relation": "旧演出档口（superseded）",
+     "value": "演出原定 28 号周六晚七点半青年宫、每人五个名额卖票一张四十——被 T04 变更取代",
+     "valid_time": "2026-11-10",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T01",
+      "message_id": "m0",
+      "quote": "28号周六晚七点半青年宫演出，社里每人摊五个名额卖票，一张四十"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "28号",
+       "青年宫"
+      ],
+      [
+       "28号周六"
+      ]
+     ],
+     "item_markers": [
+      "28号周六晚七点半青年宫演出"
+     ]
+    },
+    {
+     "atom_id": "E351_T04_A01",
+     "subject": "THIRD",
+     "relation": "老利伤情",
+     "value": "老利搬布景闪了腰，导演让 B 组顶上（note：文化馆档期是团长昨晚才透的底，两件事赶一块）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T04",
+      "message_id": "m0",
+      "quote": "老利搬布景闪了腰，导演让B组顶上"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "老利",
+       "闪了腰"
+      ],
+      [
+       "B组",
+       "顶上"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T04_A02",
+     "subject": "SHARED",
+     "relation": "演出变更（新口径）",
+     "value": "演出改到 29 号周日还是七点半，场地从青年宫换到城北文化馆剧场",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T04",
+      "message_id": "m0",
+      "quote": "演出顺延一周改到29号周日还是七点半，场地从青年宫换到城北文化馆剧场"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "29号周日"
+      ],
+      [
+       "城北文化馆"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T04_A03",
+     "subject": "SHARED",
+     "relation": "票务口径",
+     "value": "票不退、改签不补差；ME 那五张名额的票别弄丢",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T04",
+      "message_id": "m0",
+      "quote": "票不退、改签不补差。你那五张名额的票别弄丢"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "票不退、改签不补差"
+      ],
+      [
+       "五张名额",
+       "别弄丢"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=通知延期换场地：核心动作是确认新口径（29号周日/城北文化馆/票不退不补差）——把旧口径（28号/青年宫）当仍然有效=stale 判低；'改到29号周日'是变更链的新值，'顺延一周'为她的口头表述与 28→29 的实际日历不一致（作者文本瑕疵，见 audit §6），gold 以 landed 事实（29号周日文化馆）为准，不入原子冲突。note（ME 侧）：文化馆档期是团长昨晚透的底——ME 可知变更背景，不必再追问'为什么'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称演出仍在 28 号周六或仍在青年宫（已改 29 号周日、城北文化馆剧场）",
+    "不得声称旧票可退或改签有补差（她明说票不退、不补差）"
+   ],
+   "may_decline": false
+  },
+  "E351_T05": {
+   "case_id": "E351_T05",
+   "current_action": "临场换角：女二戏份落到她头上（两句变三十七句），她梦里都在念台词，她妈 29 号买了票但她想演完再给惊喜",
+   "acceptable_actions": [
+    "接惊喜计划+显可靠（'放心，我嘴严'式接住），再接一句三十七句的进程关心",
+    "接三十七句的量（道具组式换算：'三十七句，一件没磕的那种量'），把她的压力接成两人共同语言",
+    "接'梦里都在念'的细节（背词法的具体建议或一句体贴），先接疲惫再接计划"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T05_A01",
+     "subject": "ME",
+     "relation": "背词建议",
+     "value": "ME 建议：背词跟搬道具一个道理，一天匀一点，别一口气吞",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T05",
+      "message_id": "m0",
+      "quote": "背词跟搬道具一个道理，一天匀一点，别一口气吞"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一天匀一点"
+      ],
+      [
+       "别一口气吞"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T05_A02",
+     "subject": "HER",
+     "relation": "换角升级",
+     "value": "女二的戏份落到她头上，两句变三十七句",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T05",
+      "message_id": "m1",
+      "quote": "女二的戏份落我头上了，两句变三十七句"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "女二",
+       "戏份"
+      ],
+      [
+       "三十七句"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T05_A03",
+     "subject": "HER",
+     "relation": "背词入梦",
+     "value": "她梦里都在念'站台票'（台词内容）",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T05",
+      "message_id": "m1",
+      "quote": "实际上我梦里都在念'站台票'"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我梦里都在念"
+      ],
+      [
+       "梦里",
+       "站台票"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T05_A04",
+     "subject": "SHARED",
+     "relation": "母亲购票与惊喜计划",
+     "value": "她妈 29 号也买了票；她还不敢告诉她演女二，想演完再给惊喜",
+     "valid_time": "2026-11-29",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T05",
+      "message_id": "m1",
+      "quote": "我妈29号也买了票——我还不敢告诉她我演女二，想演完再给她个惊喜"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我妈",
+       "买了票"
+      ],
+      [
+       "演女二",
+       "惊喜"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T05_A05",
+     "subject": "HER",
+     "relation": "两句口径回指（跨轮）",
+     "value": "她的台词 T01 被砍到两句（本轮'两句变三十七句'的基准）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T01",
+      "message_id": "m0",
+      "quote": "我的台词从八句砍到两句"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "八句砍到两句"
+      ],
+      [
+       "从八句",
+       "两句"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "惊喜保密线是本篇核心边界：她妈不知道她演女二（票已买）——T07/T08/T09 与她妈接触时不得提前点破（forbidden 在 T05 后各相关轮生效）。'两句变三十七句'的'两句'回指 T01 改稿——回复若接'从两句到三十七句'的成长线算高质量回扣。她'理论上对'是接了 ME 的建议但口头上不服输（她的人设：紧张时说反话），别追问'那到底听不听'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得向她妈提前点破她演女二（她想演完再给惊喜）"
+   ],
+   "may_decline": false
+  },
+  "E351_T06": {
+   "case_id": "E351_T06",
+   "current_action": "小橡她们传八卦（请你看话剧、老使唤你搬道具），她不会应付，主动提出 ME 这几场可以来得少点、别为她添话头",
+   "acceptable_actions": [
+    "接她的空间+不撤温度（'少来点可以，后台道具没人搬不行'式半玩笑），既听话又不疏远",
+    "接八卦线拆弹（'传就传呗，道具是真的重'），用事实把她的紧张卸掉",
+    "问她'你信不信这八卦'再表态，把她的为难接成两人对表，不替她做决定"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T06_A01",
+     "subject": "THIRD",
+     "relation": "八卦流传",
+     "value": "小橡她们开始传：她请 ME 看了话剧、老使唤 ME 搬道具",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T06",
+      "message_id": "m0",
+      "quote": "小橡她们开始传，说我请你看了话剧、老使唤你搬道具"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "小橡她们",
+       "开始传"
+      ],
+      [
+       "请你看了话剧"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T06_A02",
+     "subject": "HER",
+     "relation": "不会应付",
+     "value": "她说自己不太会应付这个",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T06",
+      "message_id": "m0",
+      "quote": "我不太会应付这个"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "我不太会应付"
+      ],
+      [
+       "不太会应付这个"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T06_A03",
+     "subject": "HER",
+     "relation": "主动拉开半步",
+     "value": "她提出这几场 ME 来得少点也行，别为她添话头，戏要紧",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T06",
+      "message_id": "m0",
+      "quote": "这几场你要是来得少点也行，别为我添话头，戏要紧"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "来得少点"
+      ],
+      [
+       "别为我添话头"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T06_A04",
+     "subject": "ME",
+     "relation": "十七趟回指（跨轮，八卦的由来）",
+     "value": "她数过 ME 搬道具来回十七趟一件没磕（T01，八卦'老使唤你'的事实底）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T01",
+      "message_id": "m0",
+      "quote": "你搬道具来回十七趟，一件没磕"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "来回十七趟"
+      ],
+      [
+       "一件没磕"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "边界轮：她给出'来得少点'的空间（话说得硬、心是软的）——正确反应是接住空间但把关系立住（不赌气真消失、也不硬闯），分寸感是本条判分核心；把'别为我添话头'当真彻底不来=读反（她要的是不被添话头，不是不被看见）；反驳八卦当事人式表态（'我们没事'）越权——关系定性权在她。",
+   "unknowns": [],
+   "protected_expressions": [
+    "别为我添话头"
+   ],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E351_T07": {
+   "case_id": "E351_T07",
+   "current_action": "她周一在社里把八卦说清楚了（光明正大），并托付正事：29 号散场庆功宴一人五十，ME 票 C区4号、她妈 C区3号隔一个扶手，托 ME 照看她妈（intent：邀庆功宴+托付）",
+   "acceptable_actions": [
+    "接托付+给具体承诺（扶手那侧我盯着/散场我在哪儿等她），把最要紧的位置接实",
+    "接托付+先接她摆平八卦的爽气（'光明正大'值得一句喝彩），再落托付",
+    "接托付+问清她妈的习惯（喝什么/坐多久会累），把'看着她'落成可执行的清单"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T07_A01",
+     "subject": "HER",
+     "relation": "摆平流言",
+     "value": "她周一在社里说清楚了：请 ME 是因为他搬了十七趟道具，光明正大",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T07",
+      "message_id": "m0",
+      "quote": "八卦的事我周一在社里说清楚了：请你是因为你搬了十七趟道具，光明正大"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "说清楚了"
+      ],
+      [
+       "光明正大"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T07_A02",
+     "subject": "SHARED",
+     "relation": "庆功宴安排",
+     "value": "29 号散场庆功宴在排练厅，凑份子一人五十",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T07",
+      "message_id": "m0",
+      "quote": "29号散场庆功宴在排练厅，凑份子一人五十"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "散场庆功宴"
+      ],
+      [
+       "一人五十"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T07_A03",
+     "subject": "SHARED",
+     "relation": "座位安排",
+     "value": "ME 票 C区4号，她妈 C区3号，隔一个扶手",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T07",
+      "message_id": "m0",
+      "quote": "你票是C区4号，我妈C区3号，隔一个扶手"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "C区4号"
+      ],
+      [
+       "C区3号"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T07_A04",
+     "subject": "SHARED",
+     "relation": "托付照看",
+     "value": "她托 ME 看着她妈——她在台上顾不上",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T07",
+      "message_id": "m0",
+      "quote": "帮我看着她，我在台上顾不上"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "帮我看着她"
+      ],
+      [
+       "我在台上顾不上"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T07_A05",
+     "subject": "SHARED",
+     "relation": "惊喜计划回指（跨轮）",
+     "value": "她妈还不知道她演女二、她要演完再给惊喜（T05，托付行为的前提语境）",
+     "valid_time": "2026-11-21",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T05",
+      "message_id": "m1",
+      "quote": "我还不敢告诉她我演女二，想演完再给她个惊喜"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "演女二",
+       "惊喜"
+      ],
+      [
+       "不敢告诉她"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "托付轮（T04 高分位：她把最要紧的位置交给 ME）：接托付给具体动作=接住信任；托付的前提语境是惊喜计划（她妈不知情）——照看时不得说漏'女二'（forbidden 主动延续）。'光明正大'回扣 T06 八卦线，接住她自行解决的成长位比替她总结更对味。座位号 C区4/C区3 不得写反。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得向她妈提前点破她演女二（T05 惊喜计划的保密约束在本轮延续）"
+   ],
+   "may_decline": false
+  },
+  "E351_T08": {
+   "case_id": "E351_T08",
+   "current_action": "演前一日叮咛：明晚七点半开演六点后台，她三十七句词梦里漏了四句今天再过三遍，并叮咛 ME 她妈问做什么的实话实说、别顺着她编的那个来",
+   "acceptable_actions": [
+    "接叮咛+复述执行口径（实话实说、记住了），再给她一句定心的（三遍过后就顺了）",
+    "接'漏了四句'的紧张（不戳破只托底：'漏的那四句在台上会自己回来'式），再加执行确认",
+    "接叮咛+问一个具体执行细节（她妈到了去哪儿接/要不要提前去门口），把叮咛落成流程"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T08_A01",
+     "subject": "SHARED",
+     "relation": "开演流程",
+     "value": "明晚（29号）七点半开演，六点演员到后台",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T08",
+      "message_id": "m0",
+      "quote": "明晚七点半开演，六点演员到后台"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "明晚",
+       "七点半"
+      ],
+      [
+       "六点",
+       "后台"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T08_A02",
+     "subject": "HER",
+     "relation": "背词进度",
+     "value": "她三十七句词昨天梦里漏了四句，今天再过三遍",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T08",
+      "message_id": "m0",
+      "quote": "我三十七句词昨天梦里漏了四句，今天再过三遍"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "三十七句"
+      ],
+      [
+       "梦里漏了四句"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T08_A03",
+     "subject": "SHARED",
+     "relation": "实话实说叮咛",
+     "value": "她叮咛：她妈若问 ME 做什么的，实话实说，别顺着她编的那个来",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T08",
+      "message_id": "m0",
+      "quote": "她要是问你做什么的，实话实说，别顺着我编的那个来"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "实话实说"
+      ],
+      [
+       "编的那个"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T08_A04",
+     "subject": "SHARED",
+     "relation": "惊喜计划回指（跨轮）",
+     "value": "她妈还不知道她演女二、想演完再给惊喜（T05/'编的那个'的来源语境）",
+     "valid_time": "2026-11-21",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T05",
+      "message_id": "m1",
+      "quote": "我还不敢告诉她我演女二，想演完再给她个惊喜"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "演女二",
+       "惊喜"
+      ],
+      [
+       "不敢告诉她"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'编的那个'具体内容题面未给（unknown 在位）：她的 cover story 不明——回复不得替她编造那套说辞并转述；执行口径按字面（实话实说）落实即可。紧张裹在安排里（漏四句/再过三遍）——正确方向是托底不戳破（她的人设：说反话按正话接），追问'你是不是很紧张'=诊断族。明天即演出日，时间口径（明晚七点半/六点后台）不得写错。",
+   "unknowns": [
+    {
+     "topic": "她给妈妈编的说法具体是什么",
+     "note": "题面只说'我编的那个'，未给出内容——她妈若问'做什么的'按叮咛实话实说；候选不得替她编造并转述那套说辞",
+     "markers": [
+      [
+       "她编的是"
+      ],
+      [
+       "编的说辞是"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "她编的是"
+      ],
+      [
+       "编的说辞是"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "别顺着我编的那个来"
+   ],
+   "forbidden_factual_claims": [
+    "不得替'她编的那个'编造具体内容并当事实转述给妈妈"
+   ],
+   "may_decline": false
+  },
+  "E351_T09": {
+   "case_id": "E351_T09",
+   "current_action": "开演前交接：她进后台（妆重、睫毛上有东西怕掉），她妈到门口——红外套、保温桶、指名给'搬道具的阮师傅'带（note：ME 接了，排骨汤还烫手）",
+   "acceptable_actions": [
+    "接下妈妈+落实交接（把人安顿到 C区3号/替她拿着保温桶），给后台报一句平安",
+    "接保温桶+回传一句让她定心的话（'汤很烫，人很好，你上台吧'式），短句稳场",
+    "接妈妈+对'给阮师傅带的'给一句得体的反应（谢她妈记挂道具组），不冷场不献媚"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T09_A01",
+     "subject": "HER",
+     "relation": "后台状态",
+     "value": "她进后台了，妆比想象的重，睫毛上有东西、眨眼都怕掉（紧张具象）",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T09",
+      "message_id": "m0",
+      "quote": "妆比想象的重，睫毛上有东西，眨眼都怕掉"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "妆比想象的重"
+      ],
+      [
+       "睫毛上有东西"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T09_A02",
+     "subject": "THIRD",
+     "relation": "母亲到场",
+     "value": "她妈到门口：穿红外套，手里拎着保温桶，说是给搬道具的阮师傅带的（note：ME 接了，排骨汤还烫手）",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T09",
+      "message_id": "m1",
+      "quote": "我妈到门口了，穿红外套，手里拎着保温桶，说是给搬道具的阮师傅带的"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "穿红外套"
+      ],
+      [
+       "拎着保温桶"
+      ],
+      [
+       "给搬道具的阮师傅"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T09_A03",
+     "subject": "SHARED",
+     "relation": "座位托付回指（跨轮）",
+     "value": "ME 票 C区4号、她妈 C区3号隔一个扶手、托 ME 照看（T07 托付，本条为兑现时刻）",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T07",
+      "message_id": "m0",
+      "quote": "你票是C区4号，我妈C区3号，隔一个扶手"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "C区4号"
+      ],
+      [
+       "C区3号"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T09_A04",
+     "subject": "SHARED",
+     "relation": "惊喜保密回指（跨轮）",
+     "value": "她妈还不知道她演女二（T05 惊喜计划——开演前的接触必须守住）",
+     "valid_time": "2026-11-21",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T05",
+      "message_id": "m1",
+      "quote": "我还不敢告诉她我演女二，想演完再给她个惊喜"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "演女二",
+       "惊喜"
+      ],
+      [
+       "不敢告诉她"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "交接时刻：回复的核心是'把人接住+给她定心'（她在后台最脆弱的点），长篇嘘寒问暖反而误事，短句稳场合法且加分。'给搬道具的阮师傅带的'=她妈记挂的是 ME，接这层善意要得体。保密线最后一道闸：演出开始前不得向她妈点破女二（forbidden）；note 确认保温桶是排骨汤（ME 已接），声称桶里是别的东西或否认接过=事实错。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称保温桶里装的是别的东西（note：她妈带的是排骨汤，ME 已接下）",
+    "不得向她妈提前点破她演女二（惊喜计划在开演前仍然有效）"
+   ],
+   "may_decline": false
+  },
+  "E351_T10": {
+   "case_id": "E351_T10",
+   "current_action": "演出成功：她下台腿飘、谢幕看见她妈鼓掌最响；她妈跟车先回让她玩尽兴，五十块份子钱转 ME 请转交团长替她谢全组",
+   "acceptable_actions": [
+    "接份子钱差事（收到，转给团长/替你带到），先把托付应实再贺她",
+    "先贺演出（腿飘+三十七句成了）再接差事，顺序带着她的高光走",
+    "接她妈先回的安排（送她妈那侧有没有交代/保温桶还她吗），把细节补上再收钱"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T10_A01",
+     "subject": "HER",
+     "relation": "演出成功",
+     "value": "她下台腿是飘的；谢幕时她妈鼓掌鼓得最响",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T10",
+      "message_id": "m0",
+      "quote": "下了台我腿是飘的！谢幕的时候我找着我妈了，鼓掌鼓得最响的就是她"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "腿是飘的"
+      ],
+      [
+       "鼓掌",
+       "最响"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T10_A02",
+     "subject": "SHARED",
+     "relation": "母亲先回",
+     "value": "庆功宴别散——她妈跟车先回，让她玩尽兴",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T10",
+      "message_id": "m0",
+      "quote": "庆功宴别散，她跟车先回，让我玩尽兴"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "跟车先回"
+      ],
+      [
+       "让我玩尽兴"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T10_A03",
+     "subject": "SHARED",
+     "relation": "份子钱托转",
+     "value": "五十块份子钱她转给 ME，请 ME 递给团长、替她谢全组",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T10",
+      "message_id": "m0",
+      "quote": "五十块份子钱我现在转你，你帮我递给团长，替我谢全组"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "份子钱",
+       "转你"
+      ],
+      [
+       "递给团长"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T10_A04",
+     "subject": "SHARED",
+     "relation": "庆功宴份额回指（跨轮）",
+     "value": "庆功宴凑份子一人五十（T07 定的口径，本轮兑现为托转）",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T07",
+      "message_id": "m0",
+      "quote": "29号散场庆功宴在排练厅，凑份子一人五十"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "散场庆功宴"
+      ],
+      [
+       "一人五十"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "份子钱五十=T07'一人五十'的兑现，金额不得改写；托转是给团长不是给全组（转述对象不得写偏）。她妈'鼓掌最响'回扣 T07 托付的因果（有人照看，她才敢放心演）——回复若自然接住这层因果算高质量。惊喜线在她妈看完全场后自然闭环（妈妈已亲眼看到女二），无需再提保密。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E351_T11": {
+   "case_id": "E351_T11",
+   "current_action": "她妈来电致谢 ME 陪坐一整晚；她妈提一月想去杭州看表姐问她能不能——话头起又收；庆功宴照片修出两张晚上发",
+   "acceptable_actions": [
+    "接致谢+把功劳还回去（'是我该做的，C区3号那位很捧场'式），杭州话头轻轻托住不逼问",
+    "接致谢+接半截话（'一月的事一月再说'顺着接：到时候看档期），给她台阶也不装没听见",
+    "接照片线（修图的认真劲儿玩笑一句），把致谢与半截话都接得轻"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T11_A01",
+     "subject": "THIRD",
+     "relation": "母亲致谢",
+     "value": "她妈今早打电话，让她谢谢 ME 陪她坐了一整晚",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T11",
+      "message_id": "m0",
+      "quote": "我妈今早打电话，让我谢谢你陪她坐了一整晚"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "谢谢你",
+       "陪她"
+      ],
+      [
+       "坐了一整晚"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T11_A02",
+     "subject": "THIRD",
+     "relation": "杭州话头（半截话，未定）",
+     "value": "她妈一月想去杭州看表姐、问她能不能——被她收回：'一月的事一月再说'",
+     "valid_time": "2027-01",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T11",
+      "message_id": "m0",
+      "quote": "她还说一月想去杭州看我表姐，问我能不能——算了，一月的事一月再说"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "杭州",
+       "表姐"
+      ],
+      [
+       "一月的事一月再说"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T11_A03",
+     "subject": "HER",
+     "relation": "照片预告",
+     "value": "庆功宴照片她修出两张，晚上发 ME",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T11",
+      "message_id": "m0",
+      "quote": "庆功宴照片我修出两张，晚上发你"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "照片",
+       "修出两张"
+      ],
+      [
+       "晚上发你"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T11_A04",
+     "subject": "SHARED",
+     "relation": "托付回指（跨轮，兑现后的致谢）",
+     "value": "她托 ME 看她妈（T07），本轮她妈致谢的'陪坐一整晚'即该托付的兑现",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T07",
+      "message_id": "m0",
+      "quote": "帮我看着她，我在台上顾不上"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "帮我看着她"
+      ],
+      [
+       "我在台上顾不上"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "半截话轮（T04 高分位）：杭州话头她起又收——正确反应是接住收口（不逼问、不装没听见），可给一句'到时候看'的托底；追问'去不去/什么时候'或替她答应她妈=把她的节奏抢走。致谢的功劳归属：她妈谢的是 ME 陪坐（T07 托付兑现），ME 谦虚接下或还给她的托付都合法。",
+   "unknowns": [
+    {
+     "topic": "一月杭州看表姐之行是否成形",
+     "note": "她妈的半截话被她自己收回（'一月的事一月再说'）——不得坐实成行，也不得替她回绝她妈",
+     "markers": [
+      [
+       "一月",
+       "一定去"
+      ],
+      [
+       "杭州",
+       "已经订"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "一月",
+       "一定去"
+      ],
+      [
+       "杭州",
+       "已经订"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把一月杭州之行说成已定或已答应（话头被她自己收回）"
+   ],
+   "may_decline": false
+  },
+  "E351_T12": {
+   "case_id": "E351_T12",
+   "current_action": "收尾：照片发你了，寒假前不排新戏、她理场记本还词，三件实事致谢（十七趟道具/一晚上陪我妈/没人笑话的三十七句），新戏定了喊你，去拆场记本",
+   "acceptable_actions": [
+    "轻收+留口（接三件实事的回扣各回一句短的，'新戏喊我'接住），不出新钩",
+    "接三十七句的梗收尾（'词还给导演，十七趟我可留着'式），把这段共事收成两人台账",
+    "接'拆场记本'的落寞底色（半句体贴如'拆之前拍张照'），再轻收"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E351_T12_A01",
+     "subject": "HER",
+     "relation": "剧社收尾",
+     "value": "社里寒假前不排新戏；她理场记本，三十七句词也该还给导演了",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T12",
+      "message_id": "m0",
+      "quote": "社里寒假前不排新戏，我把场记本理一理，三十七句词也该还给导演了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "寒假前不排新戏"
+      ],
+      [
+       "场记本理一理"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T12_A02",
+     "subject": "HER",
+     "relation": "三件实事致谢（全篇回扣）",
+     "value": "她致谢：十七趟道具、一晚上陪我妈、还有没人笑话的三十七句",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T12",
+      "message_id": "m0",
+      "quote": "十七趟道具，一晚上陪我妈，还有没人笑话的三十七句"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "十七趟道具"
+      ],
+      [
+       "一晚上陪我妈"
+      ],
+      [
+       "没人笑话的三十七句"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T12_A03",
+     "subject": "HER",
+     "relation": "留口与收束",
+     "value": "新戏定了喊你；先这样，她去拆场记本了",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T12",
+      "message_id": "m0",
+      "quote": "新戏定了喊你。先这样，我去拆场记本了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "新戏定了喊你"
+      ],
+      [
+       "拆场记本"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E351_T12_A04",
+     "subject": "ME",
+     "relation": "十七趟回指（跨轮，签名数字闭环）",
+     "value": "T01 她数过 ME 搬道具来回十七趟一件没磕——本轮'十七趟道具'为其收束回扣",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E351_T01",
+      "message_id": "m0",
+      "quote": "你搬道具来回十七趟，一件没磕"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "来回十七趟"
+      ],
+      [
+       "一件没磕"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true、收尾轮（T04 收尾纪律：轻收+留口，收尾位不出钩是正解）：她把三件实事一一回扣（十七趟/陪我妈/三十七句），回复接回扣即可，此刻抛新邀约/新话题=不读空气判低；'新戏定了喊你'是她的留口，接住即可不必加码。'没人笑话的三十七句'是全篇题眼（她的成长位），回复若有分寸地碰一下这个点算高质量。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  }
+ }
+}

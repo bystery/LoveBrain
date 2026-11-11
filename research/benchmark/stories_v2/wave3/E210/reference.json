@@ -1,0 +1,862 @@
+{
+ "story_id": "E210",
+ "turns": {
+  "E210_T01": {
+   "case_id": "E210_T01",
+   "current_action": "告知自己照常到场,顺口确认7人怎么分桌,把小唐带人这事先接住不急着评判",
+   "acceptable_actions": [
+    "照常到场,先问7个人是拼一桌还是分两桌,顺口提一句人多就跑轻量本",
+    "接住报备,表示人到齐再说,提醒人多开局会慢,今天别上重策",
+    "回复时间地点照旧,对小唐带人先不评判,只确认桌数安排"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A01",
+     "subject": "SHARED",
+     "relation": "今日局安排",
+     "value": "11月8日下午在小区活动室三楼照常开局",
+     "valid_time": "2026-11-08 下午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T01",
+      "message_id": "m0",
+      "quote": "今天下午的局照旧,活动室三楼"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A02",
+     "subject": "THIRD",
+     "relation": "小唐跟局",
+     "value": "同事小唐要跟局,还捎带一个朋友,人数挤到7人",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T01",
+      "message_id": "m0",
+      "quote": "我同事小唐说想见识一下,非要跟来,还捎带了个她朋友,咱这局一下子挤到7个人"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A03",
+     "subject": "SHARED",
+     "relation": "固定局阵容",
+     "value": "固定阵容五人:苏芮、老郑、阿凯、小满、纪明",
+     "valid_time": "认识以来",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "固定阵容五人:她、老郑、阿凯、小满和纪明"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "口吻像老成员,别当场给小唐定性;把注意力放在桌数和局型安排上",
+   "unknowns": [
+    "小唐带来的朋友是否会常来未知"
+   ],
+   "protected_expressions": [
+    "活动室三楼",
+    "一下子挤到7个人"
+   ],
+   "forbidden_factual_claims": [
+    "老郑已经同意小唐常驻",
+    "今天的局被取消了"
+   ]
+  },
+  "E210_T02": {
+   "case_id": "E210_T02",
+   "current_action": "先接住社死现场的尴尬,不批评任何人,提一个当下能用的缓招:下次把开局时间提前写死,迟到自罚续局",
+   "acceptable_actions": [
+    "共情夹在中间难受,提议下次开局时间写死,迟到的人自罚买个甜品桌",
+    "先打圆场说头回带人难免乱,再建议人多改跑轻量本,重策留给核心局",
+    "接尴尬情绪,给当下支招:散场时顺口说下回准时开局,别当场翻脸"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "initiative",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A04",
+     "subject": "THIRD",
+     "relation": "小唐现场表现",
+     "value": "迟到50分钟才来,一来直接插桌接着玩,还悔了两回棋",
+     "valid_time": "2026-11-08 下午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T02",
+      "message_id": "m0",
+      "quote": "小唐迟到了50分钟才来,一来就直接插桌接着玩,还悔了两回棋"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A05",
+     "subject": "THIRD",
+     "relation": "老郑态度",
+     "value": "全程没给好脸色",
+     "valid_time": "2026-11-08 下午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T02",
+      "message_id": "m0",
+      "quote": "老郑全程没给好脸色"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A02b",
+     "subject": "THIRD",
+     "relation": "小唐跟局",
+     "value": "同事小唐带朋友跟局,人数到7人",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T01",
+      "message_id": "m0",
+      "quote": "咱这局一下子挤到7个人"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这一轮重点接情绪缓场子,别落井下石;缓招要小而具体,别上升到立规矩",
+   "unknowns": [
+    "小唐自己是否意识到不合适未知"
+   ],
+   "protected_expressions": [
+    "迟到了50分钟",
+    "悔了两回棋"
+   ],
+   "forbidden_factual_claims": [
+    "老郑当场发飙离席",
+    "小唐被请出了局"
+   ]
+  },
+  "E210_T03": {
+   "case_id": "E210_T03",
+   "current_action": "先不站队,反问苏芮自己想要什么样的局,把问题从带不带生人拆成局型问题",
+   "acceptable_actions": [
+    "不站队,先问她想要的是五人重策局还是热闹大局,把分歧拆开",
+    "接住老郑通牒,指出核心矛盾是局型混在一起,提议分开谈",
+    "先共情组局人难当,再反问她舍不得的是哪一头的体验"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A06",
+     "subject": "THIRD",
+     "relation": "老郑表态",
+     "value": "老郑私聊说明月起重策局不带生人",
+     "valid_time": "2026-11-09 私聊",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T03",
+      "message_id": "m0",
+      "quote": "明月起他那种重策局不带生人"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A07",
+     "subject": "HER",
+     "relation": "两难处境",
+     "value": "小唐是同事抬头不见低头见,不愿直接驳",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T03",
+      "message_id": "m0",
+      "quote": "小唐是我同事,抬头不见低头见,我总不能说驳就驳吧"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A04b",
+     "subject": "THIRD",
+     "relation": "小唐现场表现",
+     "value": "迟到插桌悔棋,老郑没好脸色",
+     "valid_time": "2026-11-08 下午",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T02",
+      "message_id": "m0",
+      "quote": "一来就直接插桌接着玩,还悔了两回棋"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "边界类落实前奏:不替老郑传狠话,也不替小唐求情,把选择权还给她",
+   "unknowns": [
+    "老郑是气话还是长期决定未知"
+   ],
+   "protected_expressions": [
+    "不带生人",
+    "抬头不见低头见"
+   ],
+   "forbidden_factual_claims": [
+    "老郑已把小唐移出群",
+    "小唐知道老郑私聊的事"
+   ]
+  },
+  "E210_T04": {
+   "case_id": "E210_T04",
+   "current_action": "把核心局加开放局的方案展开讲清:每月第二个周六定为开放局谁都能带人,第一个周六核心局跑老阵容战役本",
+   "acceptable_actions": [
+    "讲清双轨:第一个周六核心局五人跑战役本,第二个周六开放局谁都能带人,人多跑轻量",
+    "拆解给小唐的话术:开放局就是为带朋友设计的,先给她留足面子",
+    "先讲规则再讲分桌:核心局人齐才连剧情,开放局热闹随便带"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "boundary",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A08",
+     "subject": "SHARED",
+     "relation": "双轨方案",
+     "value": "核心局加开放局:每月第一个周六核心局老阵容,第二个周六开放局可带人",
+     "valid_time": "2026-11-11 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T04",
+      "message_id": "m0",
+      "quote": "你昨天说的那个局型的法子,展开讲讲"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A09",
+     "subject": "THIRD",
+     "relation": "小唐新动向",
+     "value": "小唐在群里问下周六的局,还说有个朋友也想来",
+     "valid_time": "2026-11-11 群里",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T04",
+      "message_id": "m0",
+      "quote": "小唐又在群里问下周六的局,还说她有个朋友也想来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A06b",
+     "subject": "THIRD",
+     "relation": "老郑表态",
+     "value": "重策局不带生人",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T03",
+      "message_id": "m0",
+      "quote": "明月起他那种重策局不带生人"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是方案落实轮:要给出可直接执行的局型规则,别只讲道理;方案须同时安放老郑和小唐",
+   "unknowns": [
+    "小唐能否接受局型说法未知"
+   ],
+   "protected_expressions": [
+    "下周六的局",
+    "局型的法子"
+   ],
+   "forbidden_factual_claims": [
+    "老郑已同意双轨方案",
+    "小唐已被明确拒绝"
+   ]
+  },
+  "E210_T05": {
+   "case_id": "E210_T05",
+   "current_action": "教她用局型说法代替不许来:开放局人多热闹适合带新朋友,核心局要连跑战役本人齐才好玩,不是针对谁",
+   "acceptable_actions": [
+    "给话术:把开放局说成为带朋友设计的热闹场,核心局说成连剧情得人齐,不提小唐半句",
+    "支招:先在群里把局型公告立好,再私聊小唐邀她开放局带朋友,给足台阶",
+    "提醒别单独找小唐解释太多,规则是针对局的不是针对人,说多了反而像区别对待"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A08b",
+     "subject": "SHARED",
+     "relation": "双轨方案",
+     "value": "核心局加开放局双轨",
+     "valid_time": "2026-11-11 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T04",
+      "message_id": "m0",
+      "quote": "你昨天说的那个局型的法子,展开讲讲"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E210_A10",
+     "subject": "HER",
+     "relation": "顾虑",
+     "value": "怕小唐多想,觉得被划出去,像区别对待",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T05",
+      "message_id": "m0",
+      "quote": "我就怕小唐多想,觉得被划出去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "给的话术要能直接转发,别教她撒谎;落点是规矩对局不对人",
+   "unknowns": [
+    "小唐对开放局的兴趣未知"
+   ],
+   "protected_expressions": [
+    "觉得被划出去",
+    "区别对待"
+   ],
+   "forbidden_factual_claims": [
+    "小唐已被约谈",
+    "公告已经发出"
+   ]
+  },
+  "E210_T06": {
+   "case_id": "E210_T06",
+   "current_action": "肯定开放局首秀跑通了,点出人多跑轻量本路子对,提醒开放局别上重策保住热闹",
+   "acceptable_actions": [
+    "肯定首秀成功,说8个人跑俩轻量本正合适,开放局就按这个路子走",
+    "接热闹,顺带把老郑没来的事圆过去,说核心局留给他就行",
+    "夸这局立住了,建议开放局固定备两三个轻量本,谁来都能开"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A11",
+     "subject": "SHARED",
+     "relation": "开放局首秀",
+     "value": "11月15日开放局来了8人,小唐带俩朋友,跑了俩轻量本,老郑没来",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T06",
+      "message_id": "m0",
+      "quote": "今天来了8个人,小唐带了俩朋友,反倒热闹,跑了俩轻量本,老郑没来"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A08c",
+     "subject": "SHARED",
+     "relation": "双轨方案",
+     "value": "核心局加开放局双轨已试运行",
+     "valid_time": "2026-11-11 提出,2026-11-15 首次执行",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T04",
+      "message_id": "m0",
+      "quote": "你昨天说的那个局型的法子,展开讲讲"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "验证轮:回应要承认方案跑通这一事实,别泼冷水;老郑缺席不当问题处理",
+   "unknowns": [
+    "8人局的场地是否坐得下未知"
+   ],
+   "protected_expressions": [
+    "来了8个人",
+    "跑了俩轻量本"
+   ],
+   "forbidden_factual_claims": [
+    "老郑参加了开放局",
+    "开放局跑了重策战役本"
+   ]
+  },
+  "E210_T07": {
+   "case_id": "E210_T07",
+   "current_action": "接核心局收工的喜报,夸五人齐整跑战役本的爽感,确认双轨各自成立",
+   "acceptable_actions": [
+    "接住这才是局的梗,确认核心局五人连剧情的爽感回来了,双轨成立",
+    "夸战役本推进一整章,顺带说老郑的气顺了,两边的体验都保住了",
+    "肯定核心局人齐重要,提议下次继续把剧情连着跑"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A12",
+     "subject": "SHARED",
+     "relation": "核心局战况",
+     "value": "11月22日核心局五人齐,战役本推进一整章,老郑眉开眼笑",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T07",
+      "message_id": "m0",
+      "quote": "五个人齐齐整整,战役本推进了一整章,老郑眉开眼笑"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A11b",
+     "subject": "SHARED",
+     "relation": "开放局首秀",
+     "value": "开放局8人跑通,双轨首月验证",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T06",
+      "message_id": "m0",
+      "quote": "今天来了8个人,小唐带了俩朋友,反倒热闹"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "轻松接喜报即可,别再翻旧账提悔棋;顺势确认两条轨各玩各的",
+   "unknowns": [
+    "战役本还剩几章未知"
+   ],
+   "protected_expressions": [
+    "五个人齐齐整整",
+    "这才是局"
+   ],
+   "forbidden_factual_claims": [
+    "核心局来了超过五人",
+    "小唐参加了核心局"
+   ]
+  },
+  "E210_T08": {
+   "case_id": "E210_T08",
+   "current_action": "肯定她顶住了没松口,给小唐台阶:下次开放局提前问问她想带谁,把冷场接住但不改规矩",
+   "acceptable_actions": [
+    "肯定她守住了,支招下次开放局前主动问小唐想带谁,给台阶不改规则",
+    "接住她的后怕,说小唐冷一阵正常,规矩对局不对人,站住别动",
+    "肯定话术用对了,提醒别反复解释,下次开放局照常邀她就是补台阶"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A13",
+     "subject": "THIRD",
+     "relation": "小唐试探",
+     "value": "小唐私聊问第一个周六为什么不能去,听到战役本说法后回了个哦,有点冷",
+     "valid_time": "2026-11-24 私聊",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T08",
+      "message_id": "m0",
+      "quote": "小唐私聊问我第一个周六为什么不能去"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A14",
+     "subject": "HER",
+     "relation": "边界维持",
+     "value": "她用战役本说法顶住了,没有松口让小唐进核心局",
+     "valid_time": "2026-11-24",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T08",
+      "message_id": "m0",
+      "quote": "我把战役本的事说了,就回了句要连着跑剧情,人齐才好玩"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A08d",
+     "subject": "SHARED",
+     "relation": "双轨方案",
+     "value": "核心局加开放局双轨已运行",
+     "valid_time": "2026-11-11 起",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T04",
+      "message_id": "m0",
+      "quote": "你昨天说的那个局型的法子,展开讲讲"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是边界落实轮:回应必须支持规矩不松,不能劝她为了关系放人进核心局;台阶给在开放局一侧",
+   "unknowns": [
+    "小唐冷几天会否接受未知"
+   ],
+   "protected_expressions": [
+    "第一个周六为什么不能去",
+    "要连着跑剧情"
+   ],
+   "forbidden_factual_claims": [
+    "苏芮答应了小唐进核心局",
+    "小唐退出了群"
+   ]
+  },
+  "E210_T09": {
+   "case_id": "E210_T09",
+   "current_action": "应下帮写公告文案,给出带局味儿的两条:第一个周六核心局连战役本人齐开局,第二个周六开放局带朋友随便来",
+   "acceptable_actions": [
+    "给出公告文案:每月两个局型分开写,核心局连剧情人齐开局,开放局带朋友随便来",
+    "先给骨架再给措辞:一条讲局型节奏,一条讲带人规则,末尾加一句零食欢迎",
+    "提供两个版本,正经版发公告,皮一点的发群里活跃气氛"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "goal",
+    "boundary",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A15",
+     "subject": "HER",
+     "relation": "固化打算",
+     "value": "想把两条规矩写进群公告,要带局味儿,别像贴告示",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T09",
+      "message_id": "m0",
+      "quote": "我想干脆把两条规矩写进群公告,省得月月解释"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A08e",
+     "subject": "SHARED",
+     "relation": "双轨方案",
+     "value": "第一个周六核心局,第二个周六开放局",
+     "valid_time": "2026-11-11 提出",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T04",
+      "message_id": "m0",
+      "quote": "你昨天说的那个局型的法子,展开讲讲"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "文案要口语带桌游味儿,不出现生硬的禁止字眼;内容不得超出已有事实",
+   "unknowns": [
+    "公告是否需要老郑过目未知"
+   ],
+   "protected_expressions": [
+    "写进群公告",
+    "省得月月解释"
+   ],
+   "forbidden_factual_claims": [
+    "公告已经发布",
+    "规矩改成了每周一局"
+   ]
+  },
+  "E210_T10": {
+   "case_id": "E210_T10",
+   "current_action": "接公告点赞和小唐带零食赴开放局的圆满结果,玩笑收一下,确认规矩被接住了",
+   "acceptable_actions": [
+    "接开放局真香的梗,说零食比报名费管用,规矩立住靠的不是墙是台阶",
+    "轻松收账:点赞一片说明大家都认,老郑蹭零食说明气彻底顺了",
+    "夸小唐上道,提醒开放局零食传统可以写进公告,玩笑收尾"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A16",
+     "subject": "THIRD",
+     "relation": "小唐反馈",
+     "value": "公告发出后小唐带朋友赴开放局还拎了两大袋零食,说开放局真香",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T10",
+      "message_id": "m0",
+      "quote": "小唐今天带了朋友来开放局,还拎了两大袋零食,说了句开放局真香"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A15b",
+     "subject": "SHARED",
+     "relation": "公告状态",
+     "value": "两条规矩已写进群公告,获得一片点赞",
+     "valid_time": "2026-11-29 发布",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T10",
+      "message_id": "m0",
+      "quote": "公告一发,底下一排点赞"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A13b",
+     "subject": "THIRD",
+     "relation": "小唐试探",
+     "value": "小唐此前私聊试探核心局被顶回,一度有点冷",
+     "valid_time": "2026-11-24",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T08",
+      "message_id": "m0",
+      "quote": "小唐私聊问我第一个周六为什么不能去"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "可合法不回的分享轮;回应短而暖,别趁机复盘教育",
+   "unknowns": [
+    "零食具体是什么未知"
+   ],
+   "protected_expressions": [
+    "开放局真香",
+    "底下一排点赞"
+   ],
+   "forbidden_factual_claims": [
+    "小唐进了核心局",
+    "老郑退出了局"
+   ]
+  },
+  "E210_T11": {
+   "case_id": "E210_T11",
+   "current_action": "接场地换址的新变量,核一遍账:包场一小时80,8人AA一人10块不贵,提醒先确认一场要几小时再拍板",
+   "acceptable_actions": [
+    "先算账:80除以8一人10块,不算贵,但先问清一场常规局要包几小时",
+    "接新场地话题,认可人均10块在可接受范围,建议踩点时试坐看桌位够不够8人",
+    "肯定她算得对,提醒明年场地费让AA写进公告,别到时候口说无凭"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A17",
+     "subject": "SHARED",
+     "relation": "场地变化",
+     "value": "活动室12月底装修,明年局需换地方,看中桌游咖啡馆包场一小时80,8人AA一人10块",
+     "valid_time": "2026-12-01 商量,12月底起生效",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T11",
+      "message_id": "m0",
+      "quote": "活动室12月底要装修,明年的局得换地方。我看中一家桌游咖啡馆,包场一小时80,8个人AA一人10块"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A18",
+     "subject": "THIRD",
+     "relation": "小满提议",
+     "value": "小满提出活动室12月底装修的事",
+     "valid_time": "2026-12-01 转述",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T11",
+      "message_id": "m0",
+      "quote": "小满说活动室12月底要装修"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A16b",
+     "subject": "THIRD",
+     "relation": "开放局人气",
+     "value": "小唐带朋友赴开放局还带零食,开放局已稳定有人气",
+     "valid_time": "2026-11-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T10",
+      "message_id": "m0",
+      "quote": "小唐今天带了朋友来开放局,还拎了两大袋零食"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "账目要顺着她给的数字核:80与8人的商是10,不得算错也不得引入新单价;提醒包场时长这个未定项",
+   "unknowns": [
+    "一场常规局实际需要包场几小时未知"
+   ],
+   "protected_expressions": [
+    "包场一小时80",
+    "一人10块"
+   ],
+   "forbidden_factual_claims": [
+    "咖啡馆已预订成功",
+    "每人要付40块场地费"
+   ]
+  },
+  "E210_T12": {
+   "case_id": "E210_T12",
+   "current_action": "接定档消息,肯定两条规矩立住,轻收尾祝她踩点顺利,自然结束",
+   "acceptable_actions": [
+    "确认双轨节奏落定,祝踩点顺利,顺嘴说明年首局留座,收尾",
+    "接住立住了的说法,夸她这月把局盘活了,自然结束",
+    "肯定12月排期,轻收尾不再开新话题"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E210_A19",
+     "subject": "SHARED",
+     "relation": "12月排期",
+     "value": "12月第一个周六核心局,第二个开放局,咖啡馆周末踩点",
+     "valid_time": "2026-12-02 定档",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T12",
+      "message_id": "m0",
+      "quote": "12月第一个周六核心局,第二个开放局,咖啡馆那边我周末去踩个点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A20",
+     "subject": "SHARED",
+     "relation": "规矩状态",
+     "value": "两条规矩立住,局明年继续开",
+     "valid_time": "2026-12-02 确认",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T12",
+      "message_id": "m0",
+      "quote": "两条规矩总算是立住了,就冲这个,这局明年还得接着开"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E210_A17b",
+     "subject": "SHARED",
+     "relation": "场地变化",
+     "value": "活动室12月底装修,需换场地,咖啡馆待踩点",
+     "valid_time": "2026-12-01 商量",
+     "status": "pending",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E210_T11",
+      "message_id": "m0",
+      "quote": "活动室12月底要装修,明年的局得换地方"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "收尾轮,她已给出结束节奏;回应短而暖,不开新话题",
+   "unknowns": [
+    "咖啡馆踩点结果未知"
+   ],
+   "protected_expressions": [
+    "第一个周六核心局",
+    "两条规矩总算是立住了"
+   ],
+   "forbidden_factual_claims": [
+    "咖啡馆包场已付款",
+    "核心局规矩已废除"
+   ]
+  }
+ }
+}

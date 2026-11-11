@@ -1,0 +1,804 @@
+{
+ "story_id": "E315",
+ "turns": {
+  "E315_T01": {
+   "case_id": "E315_T01",
+   "current_action": "温荔转发群招募：11月21-22日青龙湖露营（人均160含营位两餐），并亮出老贺连着@她三次问去不去",
+   "acceptable_actions": [
+    "接招募信息+接'老贺三连@'的调侃，把去不去的球先稳稳放回她那儿",
+    "接招募+给出自己的态度（自己去不去、想不想搭伙），不催她决定",
+    "接信息+轻问一句她自己的意向（一次一钩）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T01_A01",
+     "subject": "SHARED",
+     "relation": "露营招募",
+     "value": "群里发秋季招募：11月21号周六进营、22号周日中午拔营，青龙湖营地，人均160含营位、周六晚饭和周日早饭，帐篷睡袋自带",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T01",
+      "message_id": "m0",
+      "quote": "11 月 21 号周六进营，22 号周日中午拔营，青龙湖营地，人均 160"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T01_A02",
+     "subject": "THIRD",
+     "relation": "老贺催促",
+     "value": "群主老贺在群里连着@了她三次，问她去不去",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T01",
+      "message_id": "m0",
+      "quote": "老贺在群里连着@了我三次，问我去不去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她转招募但没表态——此刻她抛的是'信息+被催'不是决定请求。评审判回复是否接住'被@三次'的喜剧感并给她空间；直接劝她报名判越界（lessons：不爱被人替她做决定）。",
+   "unknowns": [
+    {
+     "topic": "活动报名的截止时间",
+     "note": "T05 才揭示周三截止；本轮未提",
+     "markers": [
+      [
+       "截止",
+       "周三"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "截止",
+       "周三"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得替她答复老贺",
+    "不得编造营地的其他设施"
+   ],
+   "may_decline": false
+  },
+  "E315_T02": {
+   "case_id": "E315_T02",
+   "current_action": "温荔交底：想去（去年老鸦山是两年最开心一次），但夜班排到18号、19号才倒回白班，这周第六个夜班，就现在体力心里没底",
+   "acceptable_actions": [
+    "接住'想去'和'没底'两半都是真的——不催决定，认可她的犹豫有实际原因",
+    "帮她把账摆出来（19号倒回白班到21号进营的间隔），把判断留给她",
+    "接'连楼都懒得下'的状态描述，给一句体贴但不替她做主"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "emotion_relation",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T02_A01",
+     "subject": "HER",
+     "relation": "夜班约束",
+     "value": "她十月底换了班组，这轮夜班排到18号、19号才倒回白班，这周已是第六个夜班；下夜班连楼都懒得下",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T02",
+      "message_id": "m0",
+      "quote": "这轮夜班排到 18 号，19 号才倒回白班，这周已经是第六个夜班"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T02_A02",
+     "subject": "HER",
+     "relation": "想去",
+     "value": "她想去：去年十月老鸦山那回是她这两年玩得最开心的一次",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T02",
+      "message_id": "m0",
+      "quote": "去年十月老鸦山那回，是我这两年玩得最开心的一次"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T02_A03",
+     "subject": "HER",
+     "relation": "体力没底",
+     "value": "就现在这个体力，她心里没底",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T02",
+      "message_id": "m0",
+      "quote": "就现在这个体力，我心里没底"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "犹豫的具体原因全在这轮：夜班排期（排到18号）+体力没底。评审注意：回复若把她的犹豫读成客气或直接给'你肯定行'式打气都判错读——她的没底是护士的诚实。老鸦山活动在魏来入群之前（note），他没赶上，不得装作一起去过。",
+   "unknowns": [],
+   "protected_expressions": [
+    "我心里没底"
+   ],
+   "forbidden_factual_claims": [
+    "不得宣称自己参加过去年老鸦山活动",
+    "不得替她判断体力够不够"
+   ],
+   "may_decline": false
+  },
+  "E315_T03": {
+   "case_id": "E315_T03",
+   "current_action": "温荔抛出装备卡点：帐篷去年被大风拉崩拉链、一直没修，报名表要填装备清单——群里要是有租装备的还好",
+   "acceptable_actions": [
+    "提出自己有备用帐篷睡袋（KB：装备都有备份）可以借——留退路的给法（'你先用，不合适再说'），不替她拍板",
+    "帮她去问群里租装备的渠道，把'没辙'变成可解决",
+    "接'人肉帐篷'的梗，再指出问题其实有解（借/租），不施压"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T03_A01",
+     "subject": "HER",
+     "relation": "帐篷损坏",
+     "value": "她的帐篷去年那场大风把拉链拉崩了，一直扔在阳台没修",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T03",
+      "message_id": "m0",
+      "quote": "我帐篷去年那场大风把拉链拉崩了，一直扔在阳台没修"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T03_A02",
+     "subject": "HER",
+     "relation": "装备清单",
+     "value": "报名表要填装备清单，帐篷睡袋自带",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T03",
+      "message_id": "m0",
+      "quote": "报名表要填装备清单"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "ME 是装备控且有备份（KB 明写'帐篷睡袋炉头都有备份'）——借装备是本轮的自然正解位。判据是'给选项不给决定'：'你用我的'加'就这么定了'判越界；她若接了借装备的提议，后续轮次自然延续。",
+   "unknowns": [
+    {
+     "topic": "群里是否有人出租装备",
+     "note": "她原话'群里要是有租装备的还好'；答案未提",
+     "markers": [
+      [
+       "群里",
+       "租",
+       "帐篷"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "群里",
+       "租",
+       "帐篷"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "我总不能填个“人肉帐篷”"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她承诺已经找好租装备渠道（还没问）",
+    "不得编造租装备的价格"
+   ],
+   "may_decline": false
+  },
+  "E315_T04": {
+   "case_id": "E315_T04",
+   "current_action": "温荔下夜班分享误吞磁力珠的病例（小孩万幸没事），说自己人还飘着——找个人说说话",
+   "acceptable_actions": [
+    "接住她的倾诉：对病例给真实反应（万幸、家长后怕这类），肯定她的处理",
+    "轻声接+不追问细节，让她说她说想说的",
+    "简短接+注意到她还没睡够（八点下班睡到刚才人还飘），劝她接着补觉"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T04_A01",
+     "subject": "THIRD",
+     "relation": "磁力珠病例",
+     "value": "昨晚下夜班收了个误吞磁力珠的小孩，万幸片子看着没事，家长吓瘫了",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T04",
+      "message_id": "m0",
+      "quote": "万幸片子看着没事"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T04_A02",
+     "subject": "HER",
+     "relation": "下夜班状态",
+     "value": "她今早八点下的班，睡到刚才人还是飘的；说下夜班的人总得找个人说说话",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T04",
+      "message_id": "m0",
+      "quote": "我今早八点下的班，睡到刚才，人还是飘的"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "情绪位、非活动位：她明说'没别的意思，就是找个人说说话'——借机转回露营话题判情绪承接失败。boundary：夜班后白天只补觉不安排事。追问病例细节（怎么取的、洗胃没有）判 boundary 失分。",
+   "unknowns": [],
+   "protected_expressions": [
+    "跟你说这个没别的意思"
+   ],
+   "forbidden_factual_claims": [
+    "不得追问病例处置细节",
+    "不得借机聊活动报名"
+   ],
+   "may_decline": false
+  },
+  "E315_T05": {
+   "case_id": "E315_T05",
+   "current_action": "老贺又催（周三报名截止要准话），温荔没敢回消息，明示'你也别催我，还得再想想'——intent 是回应老贺催报名的事",
+   "acceptable_actions": [
+    "明确不催+给她空间（截止前你自己定，想好了说一声就行）",
+    "不催+提供一个无压力的信息增量（如自己21-22有空、可以当移动装备库），说完就收",
+    "接住'没敢回消息'的自嘲，轻一句后明确不催"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T05_A01",
+     "subject": "THIRD",
+     "relation": "报名截止",
+     "value": "老贺又来催，说周三报名截止，让温荔给个准话；她到现在没敢回消息",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T05",
+      "message_id": "m0",
+      "quote": "说周三报名截止，让我给个准话"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T05_A02",
+     "subject": "HER",
+     "relation": "别催边界",
+     "value": "她明示'你别也催我啊'，自己还得再想想",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T05",
+      "message_id": "m0",
+      "quote": "你别也催我啊，我就是……还得再想想"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'给空间'轮的边界表述（T04 核心判定位）：'别催我'是本轮的 required 边界——任何形式的催（问进度、设提醒、替她倒计时）都判 boundary 失分。intent 是回应催报名这件事：不催+支撑是正解，不回复问题本身（沉默躲开）判 goal 失分。",
+   "unknowns": [
+    {
+     "topic": "她最终去与不去的倾向",
+     "note": "'还得再想想'是原话；不得替她表态",
+     "markers": [
+      [
+       "你",
+       "肯定",
+       "去"
+      ],
+      [
+       "你",
+       "不去了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "你",
+       "肯定",
+       "去"
+      ],
+      [
+       "你",
+       "不去了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "你别也催我啊"
+   ],
+   "forbidden_factual_claims": [
+    "不得替她回复老贺或承诺代报",
+    "不得预测她最后去不去"
+   ],
+   "may_decline": false
+  },
+  "E315_T06": {
+   "case_id": "E315_T06",
+   "current_action": "温荔自提折中方案：不过夜，周六白天过去玩半天、傍晚班车回市里，问老贺收不收白天散客、白天票怎么算",
+   "acceptable_actions": [
+    "支持折中方案（保住了她想去的+她怕乱的节奏），主动说去帮问老贺白天票",
+    "认可这个方案像她想出来的路（她自己心里有下一步），补一个小建议（如确认傍晚班车的时间）",
+    "支持+确认她需要自己做什么（等她问老贺，不抢）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T06_A01",
+     "subject": "HER",
+     "relation": "折中方案",
+     "value": "她的折中：不过夜，周六白天过去跟他们玩半天，傍晚坐班车回市里，夜班倒白班的节奏不至于全乱",
+     "valid_time": "2026-11-21",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T06",
+      "message_id": "m0",
+      "quote": "周六白天过去跟你们玩半天，傍晚坐班车回市里"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T06_A02",
+     "subject": "HER",
+     "relation": "白天票未知",
+     "value": "她不知道老贺收不收白天散客、白天票怎么算",
+     "valid_time": "2026-11-17",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T06",
+      "message_id": "m0",
+      "quote": "就是不知道老贺收不收白天散客，白天票怎么算"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "方案是她自己提出的——评审重点看 ME 是'帮衬'还是'接管'：去帮她问老贺是帮忙，替她跟老贺定下来是越界。白天票价格此时未知（T07 才揭晓80），回复报出具体价格判无据。",
+   "unknowns": [
+    {
+     "topic": "白天票的价格与是否含餐",
+     "note": "T07 才问清（80含周六午餐）；本轮未知",
+     "markers": [
+      [
+       "白天票",
+       "80"
+      ],
+      [
+       "含午餐"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "白天票",
+       "80"
+      ],
+      [
+       "含午餐"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得报出白天票的具体价格",
+    "不得替她向老贺拍板"
+   ],
+   "may_decline": false
+  },
+  "E315_T07": {
+   "case_id": "E315_T07",
+   "current_action": "温荔问好了并报上：白天票80含周六午餐、九点营地门口集合；冷空气周六夜里营地零下二，过夜的周五下午出发——她自嘲躲过一劫",
+   "acceptable_actions": [
+    "恭喜她把这事落定（自己问自己报），接'躲过一劫'的玩笑",
+    "接'送个开头'的梗（周五过夜的人当她的前菜），说好周六见",
+    "认真接冷空气信息（自己过夜要带厚睡袋），顺带一句周六白天见"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T07_A01",
+     "subject": "SHARED",
+     "relation": "白天票定案",
+     "value": "老贺收白天散客：白天票80含周六午餐，早上九点营地门口集合，她报上了",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T07",
+      "message_id": "m0",
+      "quote": "老贺说白天票 80，含周六午餐，早上九点营地门口集合，我报上了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T07_A02",
+     "subject": "THIRD",
+     "relation": "过夜安排",
+     "value": "过夜的人周五下午出发；这波冷空气周六夜里营地能到零下二，过夜的都要带厚睡袋",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T07",
+      "message_id": "m0",
+      "quote": "这波冷空气周六夜里营地能到零下二"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "折中方案正式落地（tentative 变 asserted）：她报上了白天票。评审看回复是否跟上'她来半天、ME 过夜'的新结构——周六营地见是新的共同锚点。",
+   "unknowns": [],
+   "protected_expressions": [
+    "就当我躲过一劫"
+   ],
+   "forbidden_factual_claims": [
+    "不得改白天票价格或集合时间",
+    "不得劝她改回过夜"
+   ],
+   "may_decline": false
+  },
+  "E315_T08": {
+   "case_id": "E315_T08",
+   "current_action": "温荔敲定明天交通（7点40的812路、八点五十到营地门口）并确认白天票不用带过夜装备——intent 是对齐交通和集合细节",
+   "acceptable_actions": [
+    "确认白天票不含过夜装备（睡袋防潮垫都不用带），对好九点前后在营地门口碰",
+    "确认+提醒白天也冷（她怕冷，带件厚外套——合理关怀不是替她决定）",
+    "确认+说自己在营地会去门口迎她（她比集合早十分钟）"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T08_A01",
+     "subject": "HER",
+     "relation": "明日交通",
+     "value": "她明早坐7点40的812路，八点五十到营地门口（比九点集合早十分钟），只背个小包",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T08",
+      "message_id": "m0",
+      "quote": "明天我坐 7 点 40 的 812 路，八点五十到营地门口，比集合还早十分钟"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T08_A02",
+     "subject": "HER",
+     "relation": "装备确认",
+     "value": "她确认白天票不含装备、睡袋防潮垫那些都不用带",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T08",
+      "message_id": "m0",
+      "quote": "白天票不含装备吧？睡袋防潮垫那些都不用带了吧？"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "事实核对位：白天票80含周六午餐（T07 口径），装备是过夜的事——回答'不用带'是正确口径，让她带睡袋判事实错误。她的交通信息（7点40/8点五十）是她给的，照单确认即可，不得改。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得让她带睡袋防潮垫等过夜装备",
+    "不得修改她的班车时间或到达时间"
+   ],
+   "may_decline": false
+  },
+  "E315_T09": {
+   "case_id": "E315_T09",
+   "current_action": "温荔抵达营地门口歪脖子老槐树（迎客槐）下，报平安并说作息回来了（昨晚十一点睡、五点半自然醒）",
+   "acceptable_actions": [
+    "迎她+接作息玩笑（人模人样/自然醒都不敢信）",
+    "迎+说自己在营地哪个位置、几步过来",
+    "短回复+让她原地等自己去接（她在集合点，不用动）"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T09_A01",
+     "subject": "HER",
+     "relation": "抵达报到",
+     "value": "她到了营地门口那棵歪脖子老槐树（群里叫'迎客槐'）底下",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T09",
+      "message_id": "m0",
+      "quote": "我在营地门口那棵歪脖子老槐树底下"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T09_A02",
+     "subject": "HER",
+     "relation": "作息恢复",
+     "value": "这两天白班上得人模人样，昨晚十一点就睡、今早五点半自然醒",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T09",
+      "message_id": "m0",
+      "quote": "昨晚十一点就睡了，今早五点半自然醒"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "碰头位：她在迎客槐下等——回复应含一个动作（来接/方位指引），纯寒暄不接人判轻。作息恢复回扣 T02 的夜班线（第六个夜班→倒白班→自然醒），点破这层是 memory_use 高光。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得改她的集合位置",
+    "不得编造营地现场情况"
+   ],
+   "may_decline": false
+  },
+  "E315_T10": {
+   "case_id": "E315_T10",
+   "current_action": "温荔上了四点半回程班车（五点半到市里），老贺塞了两个烤红薯——今天比想象的开心，虽然只当了半天散客",
+   "acceptable_actions": [
+    "接'开心'的小结+接烤红薯的梗（老贺塞的）",
+    "接小结+认可半天散客也值（回扣她'就当我给你们送个开头'）",
+    "合法不回（may_decline=true，她在班车上）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T10_A01",
+     "subject": "HER",
+     "relation": "返程",
+     "value": "她上了四点半发车的回程班车，五点半到市里；老贺硬塞了两个烤红薯还在包里冒热气",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T10",
+      "message_id": "m0",
+      "quote": "四点半发车，五点半到市里"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T10_A02",
+     "subject": "HER",
+     "relation": "开心小结",
+     "value": "今天比她想象的开心，虽然只当了半天散客",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T10",
+      "message_id": "m0",
+      "quote": "今天比我想象的开心"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的'比想象的开心'是折中方案成功的验证——回复认可这个结果（半天也值）比'下次过夜'的推进更合分寸。班车上回复宜短或合法不回。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得编造她白天活动的具体细节",
+    "不得此刻催她考虑下次活动"
+   ],
+   "may_decline": true
+  },
+  "E315_T11": {
+   "case_id": "E315_T11",
+   "current_action": "老贺预告12月5日周六'篝火下午场'（不过夜、白天票制、12月1号截止），温荔有点想去但12月初可能又轮回夜班——问魏来的看法，intent 是给个看法",
+   "acceptable_actions": [
+    "给看法：把决定结构摆出来（排班是硬约束、1号截止是软期限——排班表先出再说来得及），决定权留她",
+    "给看法+表明自己12月5日的意向（去或不去都真实说），同去与否看她排班",
+    "给看法+回扣这次半天散客的验证（白天票制对她成立）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T11_A01",
+     "subject": "THIRD",
+     "relation": "篝火下午场",
+     "value": "老贺预告12月5号周六'篝火下午场'：不过夜、中午玩到晚上九点、还是白天票制，12月1号截止",
+     "valid_time": "2026-12-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T11",
+      "message_id": "m0",
+      "quote": "中午玩到晚上九点，还是白天票制，12 月 1 号截止"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E315_T11_A02",
+     "subject": "HER",
+     "relation": "排班变量",
+     "value": "她有点想去，但12月初可能又轮回夜班，得看排班",
+     "valid_time": "2026-12-01",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T11",
+      "message_id": "m0",
+      "quote": "12 月初可能又轮回夜班，得看排班"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她明确征询看法（intent 给看法）——不表态判 goal 失分；表态催她报名判 boundary 失分。正解形态：给结构性意见+不替她定。'可能又轮夜班'是她的猜测，不得坐实。",
+   "unknowns": [
+    {
+     "topic": "12月排班表的具体轮换",
+     "note": "'可能又轮回夜班'是她的猜测；排班未出",
+     "markers": [
+      [
+       "排班",
+       "出",
+       "了"
+      ],
+      [
+       "肯定",
+       "夜班"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "排班",
+       "出",
+       "了"
+      ],
+      [
+       "肯定",
+       "夜班"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [
+    "你觉得呢？"
+   ],
+   "forbidden_factual_claims": [
+    "不得坐实12月她一定轮夜班",
+    "不得催她现在就报名"
+   ],
+   "may_decline": false
+  },
+  "E315_T12": {
+   "case_id": "E315_T12",
+   "current_action": "温荔决定先不报、等下个月排班表出来再说（反正1号才截止），道谢'半天散客当得挺值'，晚安",
+   "acceptable_actions": [
+    "晚安+认可先不报的决定（排班没出，等是对的）",
+    "晚安+回扣今天的半天散客（红薯/迎客槐），轻收",
+    "合法不回（她已说睡了，may_decline=true）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E315_T12_A01",
+     "subject": "HER",
+     "relation": "先不报决定",
+     "value": "她决定先不报，等下个月排班表出来再说，反正12月1号才截止",
+     "valid_time": "2026-11-22",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E315_T12",
+      "message_id": "m0",
+      "quote": "行，那我先不报，等下个月排班表出来再说，反正 1 号才截止"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮（may_decline=true）：她的'先不报'是决定不是征求意见——回复再推一把（'你可以先报上嘛'）判 boundary 失分。轻收+晚安是正解，不出新钩。",
+   "unknowns": [],
+   "protected_expressions": [
+    "睡了我，晚安"
+   ],
+   "forbidden_factual_claims": [
+    "不得催她报名或改决定",
+    "不得新开话题拖长收尾"
+   ],
+   "may_decline": true
+  }
+ }
+}

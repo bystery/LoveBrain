@@ -1,0 +1,39 @@
+{
+ "kind": "story_manifest",
+ "stage": "wave4_dev",
+ "date": "2026-11-08",
+ "built_by": "tools/benchmark_v1/build_wave_manifest.py",
+ "count": 1,
+ "turn_per_story": [
+  12,
+  24,
+  32
+ ],
+ "stories": [
+  {
+   "story_id": "E337",
+   "title": "搬家周记与豆包的减重事业",
+   "themes": [
+    "T09",
+    "长程24轮",
+    "三线并行：搬家/水彩课筹备/宠物与兴趣班",
+    "更正链：日期/时间/数量/地点",
+    "取消-不复活"
+   ],
+   "domain": "搬家生活",
+   "conflict_type": "",
+   "dir": "benchmark/stories_v2/wave4_dev/E337",
+   "turns": 24,
+   "files": {
+    "episode.json": "74a053bc5763b14a13d837822bba14878a19e4a6600e9e9c5e8f089b4b9d1db3",
+    "reference.json": "5617ed8dc28e1bc2445ccd49ee7cdcb86f6d110a9695e8cc23b4f9eff7f6f128",
+    "timeline.json": "4d1ed3cd1f9497bd4319c8f90d3f449cff65de85d225e31e62b5115929bda99d",
+    "exposure.json": "9e4d19f525fff31912efcda0fbe576f40cbdb61fa183d9c7bcd0fd0395c6eb67",
+    "audit.md": "81f10d83e7712b13519fd8b92bfce7992073e805439cfcd7a0e13f6f6e638cc2"
+   },
+   "lineage_group_id": "LG-E337",
+   "primary_topic": "T09"
+  }
+ ],
+ "note": "derived split manifest for mixed-length wave4_dev validation (turns=24)"
+}

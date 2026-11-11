@@ -1,0 +1,505 @@
+{
+ "story_id": "E178",
+ "turns": {
+  "E178_T01": {
+   "case_id": "E178_T01",
+   "current_action": "接住游泳体验课消息，给一份实用装备清单（泳镜泳帽、拖鞋、防雾喷雾），顺口问几点开始",
+   "acceptable_actions": [
+    "给装备清单并提醒提前二十分钟到办入场",
+    "接住消息，顺口问她会不会游，好判断要不要陪练",
+    "列装备清单外加一句'别听人劝你办卡'的玩笑预警"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A01",
+     "subject": "HER",
+     "relation": "计划参加",
+     "value": "HER 团购滨江游泳馆周六上午的体验课",
+     "valid_time": "2026-11-14 上午（计划）",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T01", "message_id": "m0", "quote": "团了周六上午的游泳体验课，就在滨江那家馆"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A02",
+     "subject": "HER",
+     "relation": "运动背景",
+     "value": "HER 久坐办公肩颈发紧，十年没系统游泳",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "her", "quote": "十年没系统游泳"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "实用清单为主，玩笑预警一句就收，别提前灌输反推销说教",
+   "unknowns": ["体验课具体时长未知"],
+   "protected_expressions": ["周六上午的游泳体验课"],
+   "forbidden_factual_claims": ["不得声称课已上完", "不得虚构馆内收费结构"]
+  },
+  "E178_T02": {
+   "case_id": "E178_T02",
+   "current_action": "临行前给她打气，回一句'有底子怕什么'的轻松鼓励",
+   "acceptable_actions": [
+    "轻松打气，提醒下水前热身肩颈",
+    "接住紧张，说防雾喷雾买对了，游完等她战报",
+    "鼓励加一句实用提醒：第一趟别冲太快"
+   ],
+   "applicable_dimensions": ["emotion_relation", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A03",
+     "subject": "HER",
+     "relation": "临场状态",
+     "value": "HER 十年未下水，出发前有些紧张，备了防雾喷雾",
+     "valid_time": "2026-11-14 早上",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T02", "message_id": "m0", "quote": "十年没下水，有点虚，泳镜刚买了防雾喷雾"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已出发，只做情绪燃料，不塞新信息",
+   "unknowns": [],
+   "protected_expressions": ["有点虚"],
+   "forbidden_factual_claims": ["不得声称 ME 也在现场", "不得虚构课程开始时间"]
+  },
+  "E178_T03": {
+   "case_id": "E178_T03",
+   "current_action": "先分享她'有底子'的高兴，再接年卡推销话题，站在她这边把推销定义为待评估信息",
+   "acceptable_actions": [
+    "先夸正反馈，再说年卡数字让她先拍照留价别当场表态",
+    "接住纠结，问她年卡含哪些内容，帮她拆开看",
+    "肯定体验，提醒她按自己'先试后买'的老规矩来"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A04",
+     "subject": "THIRD",
+     "relation": "推销行为",
+     "value": "体验课后教练推销三千九百八十元年卡加私教包",
+     "valid_time": "2026-11-14 课后",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T03", "message_id": "m0", "quote": "推三千九百八的年卡加私教包"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A05",
+     "subject": "HER",
+     "relation": "体验反馈",
+     "value": "教练评价 HER 游泳有底子",
+     "valid_time": "2026-11-14 课后",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T03", "message_id": "m0", "quote": "教练夸我有底子"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A06",
+     "subject": "ME",
+     "relation": "劝购立场",
+     "value": "ME 逢人劝'先试后买'，办卡这事习惯泼冷水",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "lessons", "quote": "此后逢人就劝'先试后买'"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "先情绪后立场，把决策权递回给她，不上来就否定教练",
+   "unknowns": ["年卡具体权益未详"],
+   "protected_expressions": ["推三千九百八的年卡加私教包"],
+   "forbidden_factual_claims": ["不得声称 HER 已婉拒（本轮尚未）", "不得虚构年卡折扣活动"]
+  },
+  "E178_T04": {
+   "case_id": "E178_T04",
+   "current_action": "针对'肩颈必须每周两次私教'的施压话术给解压：体感与免费验证优先，把'必须'降级为'可选项'",
+   "acceptable_actions": [
+    "指出'必须'是话术，建议她先用自己节奏游两周看体感",
+    "接住被吓到的情绪，说明肩颈不适可先热身拉伸观察",
+    "半拆穿式玩笑：卖私教的都说你必须，让她别被吓着"
+   ],
+   "applicable_dimensions": ["boundary", "factuality", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A07",
+     "subject": "THIRD",
+     "relation": "施压话术",
+     "value": "教练声称 HER 肩颈有问题，必须每周两次私教矫正",
+     "valid_time": "2026-11-14 课后",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T04", "message_id": "m0", "quote": "说我肩颈有问题，必须每周两次私教矫正"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A08",
+     "subject": "HER",
+     "relation": "内心状态",
+     "value": "HER 对私教说法半信半疑，被说动又不敢信",
+     "valid_time": "2026-11-14 午后",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T04", "message_id": "m0", "quote": "说得挺吓人的，我有点被说动了又不太信"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A09",
+     "subject": "HER",
+     "relation": "肩颈背景",
+     "value": "HER 因久坐办公肩颈发紧属实",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "her", "quote": "肩颈发紧"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "不诊断不否定她的肩颈问题，只拆'必须'二字的推销属性，给可执行的低成本验证",
+   "unknowns": ["HER 肩颈实际状况未经医疗评估"],
+   "protected_expressions": ["必须每周两次私教矫正"],
+   "forbidden_factual_claims": ["不得断言 HER 肩颈无问题", "不得声称私教课无效"]
+  },
+  "E178_T05": {
+   "case_id": "E178_T05",
+   "current_action": "为她的拍板叫好：不办年卡不上私教，二十次次卡四周试游，正是'先试后买'的样板",
+   "acceptable_actions": [
+    "叫好并回扣自己的年卡闲置教训，说次卡党欢迎她",
+    "肯定拍板，提醒她把'四周试'的截止日记下来",
+    "赞成决定，顺口问次卡要不要和晨泳搭子拼着买"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A10",
+     "subject": "HER",
+     "relation": "消费决定",
+     "value": "HER 决定不办年卡、不上私教，改买二十次次卡试游四周",
+     "valid_time": "2026-11-14 决定",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E178_T05", "message_id": "m0", "quote": "年卡我不办，私教也不上，先买二十次的次卡自己游四周试试"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A11",
+     "subject": "HER",
+     "relation": "推销拒绝",
+     "value": "三千九百八十元年卡方案被 HER 否决",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E178_T03", "message_id": "m0", "quote": "推三千九百八的年卡加私教包"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E178_A12",
+     "subject": "ME",
+     "relation": "前车之鉴",
+     "value": "ME 曾办年卡闲置大半，此后劝人先试后买",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "lessons", "quote": "办过年卡闲置大半"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她自己做对了决定，夸要落在'决定是她自己做的'，别抢功",
+   "unknowns": ["次卡有效期与使用规则未详"],
+   "protected_expressions": ["年卡我不办，私教也不上"],
+   "forbidden_factual_claims": ["不得声称 ME 替她做的决定", "不得虚构次卡折扣"]
+  },
+  "E178_T06": {
+   "case_id": "E178_T06",
+   "current_action": "接住教练退让改推一千二次卡套餐的消息，确认她没被翻脸吓到，认可这个价格量级可控",
+   "acceptable_actions": [
+    "肯定她守住边界后局面反而变好，确认一千二在预算内",
+    "接住消息，提醒她次卡也按四周用量买别囤",
+    "轻松接住'没翻脸'，说谈崩才不正常，边界本来就合理"
+   ],
+   "applicable_dimensions": ["boundary", "interaction", "emotion_relation", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A13",
+     "subject": "THIRD",
+     "relation": "推销退让",
+     "value": "教练改推一千二百元的次卡套餐",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T06", "message_id": "m0", "quote": "改推一千二的次卡套餐"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A14",
+     "subject": "HER",
+     "relation": "边界状态",
+     "value": "不办年卡不上私教的边界已向教练表达且未被翻脸",
+     "valid_time": "2026-11-15 反馈",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T06", "message_id": "m0", "quote": "跟教练说了，他也没翻脸"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "短确认为主，别把教练妖魔化，也别劝她再加码消费",
+   "unknowns": ["一千二套餐是否就是二十次卡未确认"],
+   "protected_expressions": ["改推一千二的次卡套餐"],
+   "forbidden_factual_claims": ["不得声称 HER 已购买一千二套餐", "不得虚构教练威胁她"]
+  },
+  "E178_T07": {
+   "case_id": "E178_T07",
+   "current_action": "接住柜子被长期占用的憋闷，支持她找前台问规则，建议拍照留证",
+   "acceptable_actions": [
+    "接住情绪，建议她拍下挂锁柜子号再去找前台",
+    "支持问规则，顺口问是固定柜还是流动柜",
+    "共情'没地放'，提醒她贵重东西先别放那排柜子"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "initiative", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A15",
+     "subject": "THIRD",
+     "relation": "设施占用",
+     "value": "更衣室一柜子被挂锁长期占用，前台暂时说不清规则",
+     "valid_time": "2026-11-18 反映",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T07", "message_id": "m0", "quote": "有个柜子被一把挂锁锁了好久，前台也说不清"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "小事按小事处理，共情一句加一个留证动作，不升级成投诉指导",
+   "unknowns": ["占锁者身份未知"],
+   "protected_expressions": ["被一把挂锁锁了好久"],
+   "forbidden_factual_claims": ["不得声称占锁者是员工", "不得虚构馆方拒绝处理"]
+  },
+  "E178_T08": {
+   "case_id": "E178_T08",
+   "current_action": "确认柜子规则问清：当日清空、超时剪锁收工本费，肯定她留证的做法",
+   "acceptable_actions": [
+    "确认规则，夸她拍照留证这手稳",
+    "接住'问到了'的踏实，顺带说超时剪锁这规则挺硬气",
+    "确认后轻问她要不要把规则截图存在手机里"
+   ],
+   "applicable_dimensions": ["factuality", "memory_use", "emotion_relation", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A16",
+     "subject": "THIRD",
+     "relation": "柜子规则",
+     "value": "馆方规则为柜子当日清空，超时剪锁并收工本费",
+     "valid_time": "2026-11-19 问明",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T08", "message_id": "m0", "quote": "柜子当日清空，超时馆里剪锁收工本费"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A17",
+     "subject": "THIRD",
+     "relation": "占用悬置",
+     "value": "柜子占用此前处于前台说不清的悬置状态",
+     "valid_time": "2026-11-18 时点",
+     "status": "resolved",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T07", "message_id": "m0", "quote": "前台也说不清"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "短确认轮，把'规则问清'当事件收口，不引申维权话题",
+   "unknowns": ["占用柜子最终是否被清理未知"],
+   "protected_expressions": ["超时馆里剪锁收工本费"],
+   "forbidden_factual_claims": ["不得声称挂锁已被剪", "不得虚构有人被罚款"]
+  },
+  "E178_T09": {
+   "case_id": "E178_T09",
+   "current_action": "接住八百米成就与周六岸边观战邀约，用酸奶梗接住，确认到场",
+   "acceptable_actions": [
+    "接住邀约，玩笑应下'酸奶我请'，周六岸边见",
+    "祝贺八百米，问她要不要顺便帮拍游泳视频",
+    "应约并回扣两人羽毛球输赢请酸奶的老规矩"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A18",
+     "subject": "HER",
+     "relation": "成就事件",
+     "value": "HER 首次独立游完八百米",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T09", "message_id": "m0", "quote": "今天独立游完八百米"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A19",
+     "subject": "SHARED",
+     "relation": "观战邀约",
+     "value": "HER 邀 ME 下周六到泳池岸边观战，带酸奶梗",
+     "valid_time": "2026-11-28 周六（计划）",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T09", "message_id": "m0", "quote": "下周六你来岸边看我呗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A20",
+     "subject": "SHARED",
+     "relation": "酸奶老规矩",
+     "value": "两人每周打球输的人请酸奶",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "case_id": "initial_kb", "key": "warmth", "quote": "输的人请酸奶"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "成就轮要给足情绪价值，酸奶梗回扣老规矩，别泼任何冷水",
+   "unknowns": ["周六具体几点到场未定"],
+   "protected_expressions": ["下周六你来岸边看我呗"],
+   "forbidden_factual_claims": ["不得声称 ME 已在岸边（尚未发生）", "不得虚构 HER 参加比赛"]
+  },
+  "E178_T10": {
+   "case_id": "E178_T10",
+   "current_action": "接住她用体感推翻'必须私教'的得意，确认这正是不上私教的验证结果",
+   "acceptable_actions": [
+    "附议她的体感结论，回扣'必须'二字的推销属性",
+    "替她高兴，说四周试游的价值这就算兑现了",
+    "轻松接住，提醒肩颈持续不适仍要正经就医评估，与私教推销两码事"
+   ],
+   "applicable_dimensions": ["memory_use", "factuality", "emotion_relation", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A21",
+     "subject": "HER",
+     "relation": "体感验证",
+     "value": "HER 按自己节奏游泳后肩颈反而放松",
+     "valid_time": "2026-11-23 反馈",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T10", "message_id": "m0", "quote": "我就按自己节奏游，肩颈反而松了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A22",
+     "subject": "HER",
+     "relation": "话术推翻",
+     "value": "HER 由此认定不需要'必须每周两次私教'",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E178_T10", "message_id": "m0", "quote": "哪用什么必须私教啊"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A23",
+     "subject": "THIRD",
+     "relation": "原施压话术",
+     "value": "教练此前称 HER 肩颈有问题必须每周两次私教矫正",
+     "valid_time": "2026-11-14",
+     "status": "superseded",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T04", "message_id": "m0", "quote": "必须每周两次私教矫正"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "附议她的验证，但补半句就医边界，别把'不办私教'扩大成'不看医生'",
+   "unknowns": ["肩颈长期状况仍未经专业评估"],
+   "protected_expressions": ["哪用什么必须私教啊"],
+   "forbidden_factual_claims": ["不得声称私教无用是普遍结论", "不得虚构 HER 已就医"]
+  },
+  "E178_T11": {
+   "case_id": "E178_T11",
+   "current_action": "为晨泳搭子落定道喜，回扣'有人互相盯着'能帮她把四周之约坐实",
+   "acceptable_actions": [
+    "道喜并说搭子一到，四周之约稳了一半",
+    "肯定她把运动变成社交，顺口问八点会不会太早",
+    "接住消息，玩笑说酸奶供应商又要多一个客户"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A24",
+     "subject": "THIRD",
+     "relation": "搭子约定",
+     "value": "HER 与同班宝妈约定每周六早上八点晨泳互盯",
+     "valid_time": "2026-11-25 约定",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T11", "message_id": "m0", "quote": "跟同班一个宝妈约成晨泳搭子了，每周六早上八点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A25",
+     "subject": "HER",
+     "relation": "试游承诺",
+     "value": "HER 处于二十次次卡四周试游期",
+     "valid_time": "2026-11-14 起",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T05", "message_id": "m0", "quote": "先买二十次的次卡自己游四周试试"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "轻快道喜，把搭子和四周之约连起来说，不加新任务",
+   "unknowns": ["搭子是否长期稳定未知"],
+   "protected_expressions": ["每周六早上八点"],
+   "forbidden_factual_claims": ["不得虚构搭子姓名", "不得声称 ME 也加入晨泳"]
+  },
+  "E178_T12": {
+   "case_id": "E178_T12",
+   "current_action": "接住四周之约过半的复盘，支持'保持就续次卡、年卡仍不办'的原则，约周六岸边见",
+   "acceptable_actions": [
+    "支持她的原则复述，回扣'先试后买'，约周六岸边见",
+    "肯定过半战果，顺口问八百米有没有想冲一千米",
+    "接住复盘，把续次卡的条件和周六观战一起确认"
+   ],
+   "applicable_dimensions": ["boundary", "memory_use", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E178_A26",
+     "subject": "HER",
+     "relation": "复盘决定",
+     "value": "次卡已用六次，四周之约过半，保持则续次卡、年卡仍不办",
+     "valid_time": "2026-11-28 复盘",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E178_T12", "message_id": "m0", "quote": "我就续次卡，年卡还是不办"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E178_A27",
+     "subject": "HER",
+     "relation": "原消费决定",
+     "value": "此前不办年卡不上私教的边界继续生效",
+     "valid_time": "2026-11-14 起",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E178_T05", "message_id": "m0", "quote": "年卡我不办，私教也不上"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E178_A28",
+     "subject": "SHARED",
+     "relation": "观战邀约",
+     "value": "周六岸边观战之约待兑现",
+     "valid_time": "2026-11-28 周六",
+     "status": "open",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E178_T09", "message_id": "m0", "quote": "下周六你来岸边看我呗"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "收尾轮：原则复述加观战确认，语气松弛，允许一点球友式调侃",
+   "unknowns": ["四周后是否续卡由 HER 届时决定"],
+   "protected_expressions": ["年卡还是不办"],
+   "forbidden_factual_claims": ["不得声称 HER 已续卡", "不得虚构 HER 改办年卡"]
+  }
+ }
+}

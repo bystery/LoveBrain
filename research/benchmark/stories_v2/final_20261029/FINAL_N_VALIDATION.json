@@ -1,0 +1,70 @@
+{
+ "kind": "story_v2_final_20261029_validation",
+ "date": "2026-10-27",
+ "turn_per_story": 12,
+ "expected_count": 2,
+ "passed": true,
+ "stories": [
+  {
+   "story_id": "N01",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "N01",
+    "turns": 12,
+    "atoms": 12,
+    "required_atoms": 0,
+    "may_decline": [
+     "N01_T06",
+     "N01_T12"
+    ],
+    "intents": [
+     "N01_T01",
+     "N01_T02",
+     "N01_T03",
+     "N01_T04",
+     "N01_T05",
+     "N01_T06",
+     "N01_T07",
+     "N01_T08",
+     "N01_T09",
+     "N01_T10",
+     "N01_T11",
+     "N01_T12"
+    ]
+   }
+  },
+  {
+   "story_id": "N02",
+   "errors": [],
+   "warnings": [],
+   "stats": {
+    "story_id": "N02",
+    "turns": 12,
+    "atoms": 12,
+    "required_atoms": 0,
+    "may_decline": [
+     "N02_T06",
+     "N02_T12"
+    ],
+    "intents": [
+     "N02_T01",
+     "N02_T02",
+     "N02_T03",
+     "N02_T04",
+     "N02_T05",
+     "N02_T06",
+     "N02_T07",
+     "N02_T08",
+     "N02_T09",
+     "N02_T10",
+     "N02_T11",
+     "N02_T12"
+    ]
+   }
+  }
+ ],
+ "errors": [],
+ "unique_cases": 24,
+ "stories_passed": 2
+}

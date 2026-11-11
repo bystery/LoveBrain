@@ -1,0 +1,1290 @@
+{
+ "story_id": "E353",
+ "turns": {
+  "E353_T01": {
+   "case_id": "E353_T01",
+   "current_action": "她先点他裁皮刀歪，再抛搭档钩子：十二月手作市集两人一摊，冯荻问她组不组、她说得先问他——有别的打算她立马跟冯荻，别有负担。",
+   "acceptable_actions": [
+    "答应搭档（如'裁皮歪了正好你教我'），不给冯荻机会",
+    "答应+问清费用与出摊日期",
+    "接'别有负担'回敬（如'负担是我怕你嫌我慢'）+答应"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T01_A01",
+     "subject": "SHARED",
+     "relation": "市集报名",
+     "value": "十二月的手作市集开始报名，两人一摊",
+     "valid_time": "2026-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T01",
+      "message_id": "m0",
+      "quote": "十二月的手作市集开始报名，两人一摊"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "手作市集"
+      ],
+      [
+       "两人一摊"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T01_A02",
+     "subject": "THIRD",
+     "relation": "冯荻询问（她转述）",
+     "value": "冯荻问白露微组不组，她说得先问白慎行",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T01",
+      "message_id": "m0",
+      "quote": "冯荻问我组不组，我说得先问你"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "冯荻",
+       "组不组"
+      ],
+      [
+       "说得先问你"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T01_A03",
+     "subject": "HER",
+     "relation": "退路",
+     "value": "白慎行若有别的打算，她立马跟冯荻——别有负担",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T01",
+      "message_id": "m0",
+      "quote": "你要是有别的打算，我立马跟她，别有负担"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别有负担"
+      ],
+      [
+       "立马跟她"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "接钩位：给具体下一步（答应+确认费用/日期），不排队等她解释；'我随你便'式踢回=缩钩 0 档。KB：冯荻是耳环摊摊主、她的老搭档（候选可见）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E353_T02": {
+   "case_id": "E353_T02",
+   "current_action": "搭档落定：摊位费一人一百二、押金五十可退，报名表她今晚填、摊位号抽签；分工他做卡包钥匙扣、她做书签杯垫，招牌'白氏作坊'。",
+   "acceptable_actions": [
+    "确认费用与分工+接招牌梗（如'白氏作坊，祖传手艺'）",
+    "只确认分工+问摊位号什么时候抽",
+    "玩笑回敬（如'加钱的地方以后再说'）+全收"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T02_A01",
+     "subject": "SHARED",
+     "relation": "费用口径",
+     "value": "摊位费一人一百二，押金五十可退",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T02",
+      "message_id": "m0",
+      "quote": "摊位费一人一百二，押金五十可退"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一人一百二"
+      ],
+      [
+       "押金五十可退"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T02_A02",
+     "subject": "HER",
+     "relation": "报名动作",
+     "value": "报名表她今晚就填，摊位号抽签",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T02",
+      "message_id": "m0",
+      "quote": "报名表我今晚就填，摊位号抽签"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "今晚就填"
+      ],
+      [
+       "摊位号抽签"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T02_A03",
+     "subject": "SHARED",
+     "relation": "分工",
+     "value": "白慎行做卡包和钥匙扣，白露微做书签和杯垫",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T02",
+      "message_id": "m0",
+      "quote": "你做卡包和钥匙扣，我做书签和杯垫"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "卡包和钥匙扣"
+      ],
+      [
+       "书签和杯垫"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T02_A04",
+     "subject": "SHARED",
+     "relation": "摊位招牌",
+     "value": "招牌叫'白氏作坊'（都姓白，不加钱）",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T02",
+      "message_id": "m0",
+      "quote": "招牌就叫白氏作坊——反正都姓白，又不加钱"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "白氏作坊"
+      ],
+      [
+       "又不加钱"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "费用（一百二/押金五十）是她的口径，后续轮次引用须一致；摊位号抽签未出，不得坐实具体号。",
+   "unknowns": [
+    {
+     "topic": "摊位号（抽签未出）",
+     "note": "报名表今晚才填、摊位号抽签决定，抽签结果未知",
+     "markers": [
+      [
+       "摊位号",
+       "抽到了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "摊位号",
+       "抽到了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E353_T03": {
+   "case_id": "E353_T03",
+   "current_action": "分工补条：样品每人两件、11月30号前交冯荻拍齐上报名册；她自嘲熬夜习惯，提醒他细活废皮子划不来。",
+   "acceptable_actions": [
+    "确认两件样品与 30 号截止+给交付计划（哪天交）",
+    "接'废三个皮子'梗（如'报废的是皮子，练的是手'）+确认",
+    "确认+反问她（'你的书签杯垫打算做几件备选'）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T03_A01",
+     "subject": "SHARED",
+     "relation": "样品截止",
+     "value": "样品每人两件，11月30号前交冯荻拍齐了上报名册",
+     "valid_time": "2026-11-30",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T03",
+      "message_id": "m0",
+      "quote": "样品每人两件，11月30号前交冯荻拍齐了上报名册"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "样品每人两件"
+      ],
+      [
+       "11月30号前"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T03_A02",
+     "subject": "ME",
+     "relation": "出成率（她的说法）",
+     "value": "她说白慎行手细活慢，废三个皮子才出一个成品",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T03",
+      "message_id": "m0",
+      "quote": "你那手细活，废三个皮子才出一个成品，划不来"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "废三个皮子"
+      ],
+      [
+       "出一个成品"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=确认样品分工与截止：给准话（两件/30号前）是主判据；把截止日复述错（如说成 12月1号）判 time_state 失分。'废三个皮子'是她的善意调侃不是贬损，接梗不接恼。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得把样品截止日说成 11月30号以外的日期"
+   ],
+   "may_decline": false
+  },
+  "E353_T04": {
+   "case_id": "E353_T04",
+   "current_action": "师傅群里发摊主试摆位通知，她定闹钟抢了靠入口的位；书签裁坏第一块决定当'伤痕限定款'卖，问他好不好笑。",
+   "acceptable_actions": [
+    "夸抢位+接'伤痕限定款'梗（如'限量款配伤痕才贵'）",
+    "只捧抢位，伤痕款认真接（'真有人买账'式）",
+    "回敬对仗（如'谢你起得早，我谢你裁得歪'）+接梗"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "initiative",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T04_A01",
+     "subject": "HER",
+     "relation": "抢位（先斩后奏）",
+     "value": "师傅在群里发市集摊主试摆位的通知，她定闹钟抢了靠入口的位",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T04",
+      "message_id": "m0",
+      "quote": "师傅在群里发市集摊主试摆位的通知，我定了个闹钟抢了个靠入口的位"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "靠入口的位"
+      ],
+      [
+       "定了个闹钟"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T04_A02",
+     "subject": "HER",
+     "relation": "废料改卖",
+     "value": "她书签裁坏了第一块，决定当'伤痕限定款'卖",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T04",
+      "message_id": "m0",
+      "quote": "我这边书签裁坏了第一块，想了想决定当'伤痕限定款'卖"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "伤痕限定款"
+      ],
+      [
+       "裁坏了第一块"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "先斩后奏位（KB：她先做再报备）：抢位与伤痕款都已办完——回应以接梗捧场为主，纠正式'你该先问我'判 boundary/interaction 失分（不越界代劳、也不翻旧账）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E353_T05": {
+   "case_id": "E353_T05",
+   "current_action": "冯荻找她拼'体验区'：两摊各加一张体验桌、加购费一摊六十、两边都加才算区、25号前报市场方；她倾向加（人流翻倍），但他嫌贵就不加——'我随你'。",
+   "acceptable_actions": [
+    "给明确决定（加/不加）+一句理由（预算或人流）",
+    "同意加并把'我随你'的球接回去（如'你眼睛在发光，这叫随我？'）",
+    "决定加+主动算账（摊位费+加购的总盘子）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T05_A01",
+     "subject": "THIRD",
+     "relation": "体验区提议",
+     "value": "冯荻来找她拼'体验区'：两摊各加一张体验桌给游客试做",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T05",
+      "message_id": "m0",
+      "quote": "课上冯荻来找我拼'体验区'：两摊各加一张体验桌给游客试做"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "体验区",
+       "冯荻"
+      ],
+      [
+       "体验桌",
+       "游客"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T05_A02",
+     "subject": "SHARED",
+     "relation": "加购条款与期限",
+     "value": "加购费一摊六十，两边都加才算区，冯荻 11月25号前要报市场方",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T05",
+      "message_id": "m0",
+      "quote": "加购费一摊六十，两边都加才算区，她11月25号前要报市场方"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "一摊六十"
+      ],
+      [
+       "11月25号前"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T05_A03",
+     "subject": "HER",
+     "relation": "倾向与让权",
+     "value": "她倾向加（人流量能翻倍），但白慎行嫌贵就不加——'我随你'",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T05",
+      "message_id": "m0",
+      "quote": "我倾向加，人流量能翻倍——你要是嫌贵就不加，我随你"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "人流量能翻倍"
+      ],
+      [
+       "嫌贵就不加",
+       "我随你"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "intent=征求决定：必须给明确决定，'都行/你定'=把决策踢回（goal 失分）。她'我随你'是反话信号（她明显想加），顺水推舟+点破一点=2 档。决定权移交成功与否，看 T08'六十加购费今天转'的后续。",
+   "unknowns": [
+    {
+     "topic": "体验区申请能否获批（11月25号前才报市场方）",
+     "note": "本轮只是决定要不要加，市场方批复未定，不得提前当已批",
+     "markers": [
+      [
+       "已经批了"
+      ],
+      [
+       "批下来了"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "已经批了"
+      ],
+      [
+       "批下来了"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E353_T06": {
+   "case_id": "E353_T06",
+   "current_action": "钥匙扣打版到第三回；五金店老板夸孔打得准，她归功搭档、被问搭档是谁时报'姓白'，对外第一次打出'白氏作坊'名号。",
+   "acceptable_actions": [
+    "接'肥水不流外人田'（如'外姓人打不出这孔'）+报进度",
+    "只报进度（第三版已过），名号一句带过",
+    "回敬老板梗（如'他要知道我们是课上凑的，得收联手费'）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "memory_use",
+    "initiative",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T06_A01",
+     "subject": "ME",
+     "relation": "打版进度",
+     "value": "白慎行的钥匙扣打版到第三回",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T06",
+      "message_id": "m0",
+      "quote": "钥匙扣打版到第三回了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "打版到第三回"
+      ],
+      [
+       "钥匙扣打版"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T06_A02",
+     "subject": "THIRD",
+     "relation": "老板夸赞",
+     "value": "五金店老板说她打的孔比机打的还准",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T06",
+      "message_id": "m0",
+      "quote": "五金店老板说我打的孔比机打的还准"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "比机打的还准"
+      ],
+      [
+       "五金店老板"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T06_A03",
+     "subject": "HER",
+     "relation": "名号外传",
+     "value": "她对外打出'白氏作坊'名号（肥水不流外人田）",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T06",
+      "message_id": "m0",
+      "quote": "我说对，白氏作坊，肥水不流外人田"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "白氏作坊"
+      ],
+      [
+       "肥水不流外人田"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "名号第一次对外说出口：接梗=接住她的得意；纠正'孔是我打的不是你'=抢功（attribution 失分）——孔是她打的，她归功搭档是抬举不是错报。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E353_T07": {
+   "case_id": "E353_T07",
+   "current_action": "她的样品齐了（书签杯垫各一）、问他的进度；约周一下午陪她送四件样品去冯荻工作室拍照（路上四十分钟）——冯荻想见见'另一半'。",
+   "acceptable_actions": [
+    "答应周一陪跑+报自己的样品进度",
+    "答应+接'另一半'梗（如'另一半是作坊的另一半'）",
+    "合法婉拒（周一下午有事，样品托她带/改天自送）——留了退路"
+   ],
+   "applicable_dimensions": [
+    "initiative",
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T07_A01",
+     "subject": "HER",
+     "relation": "样品齐与催问",
+     "value": "她的样品齐了：一件书签一件杯垫，问白慎行的呢",
+     "valid_time": "2026-11-21",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T07",
+      "message_id": "m0",
+      "quote": "我这边样品齐了，一件书签一件杯垫。你的呢？"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "样品齐了"
+      ],
+      [
+       "一件书签",
+       "你的呢"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T07_A02",
+     "subject": "SHARED",
+     "relation": "送样计划",
+     "value": "周一（11-23）她把四件样品送去冯荻工作室拍照，路上四十分钟",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T07",
+      "message_id": "m0",
+      "quote": "周一我把四件样品送去冯荻工作室拍照，路上四十分钟"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "冯荻工作室"
+      ],
+      [
+       "路上四十分钟"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T07_A03",
+     "subject": "HER",
+     "relation": "同行邀约（留退路）",
+     "value": "她邀白慎行周一下午陪跑一趟，冯荻想见见'另一半'",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T07",
+      "message_id": "m0",
+      "quote": "你要是下午有空，陪我跑一趟呗，她也想见见'另一半'长什么样"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "陪我跑一趟"
+      ],
+      [
+       "想见见",
+       "另一半"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "may_decline=true——邀约留了退路：答应=推进，婉拒+给替代方案也合格。'另一半'是玩笑钩：接梗=2 档，纠正'我不是你另一半'=踩空 0 档。'周一'=11-23（11-21 为周六，推算见 audit §2；T08 证实）。note：坐 18路转7路、四十来分钟、周一下午不堵（候选可见）。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  },
+  "E353_T08": {
+   "case_id": "E353_T08",
+   "current_action": "送样办成：四件样品一张没压折；冯荻夸他本人比微信上还稳（原话'这人接得住活'）；体验区获批——他的六十加购费今天下班前转摊主群收款码，'别让我催第二次'。",
+   "acceptable_actions": [
+    "答应今天转+接'催第二次'梗（如'第二次我要收催办费'）",
+    "转账确认+谢冯荻那句原话（不居功）",
+    "问清收款码+确认金额六十，顺带报进度"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "attribution"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T08_A01",
+     "subject": "SHARED",
+     "relation": "送样结果",
+     "value": "周一（11-23）四件样品一张没压折（白慎行陪同办成）",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T08",
+      "message_id": "m0",
+      "quote": "今天多亏你，四件样品一张没压折"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "四件样品"
+      ],
+      [
+       "一张没压折"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T08_A02",
+     "subject": "THIRD",
+     "relation": "冯荻评价（她转述原话）",
+     "value": "冯荻说白慎行本人比微信上还稳，原话是'这人接得住活'",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T08",
+      "message_id": "m0",
+      "quote": "冯荻说你本人比微信上还稳，原话是'这人接得住活'"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "接得住活"
+      ],
+      [
+       "比微信上还稳"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T08_A03",
+     "subject": "SHARED",
+     "relation": "体验区获批",
+     "value": "体验区她那边批了",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T08",
+      "message_id": "m0",
+      "quote": "体验区她那边批了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "她那边批了"
+      ],
+      [
+       "体验区",
+       "批了"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T08_A04",
+     "subject": "HER",
+     "relation": "收款指令",
+     "value": "六十加购费今天（11-23）下班前转摊主群收款码，别让她催第二次",
+     "valid_time": "2026-11-23",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T08",
+      "message_id": "m0",
+      "quote": "你那六十加购费今天下班前转摊主群收款码，别让我催第二次"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "下班前",
+       "今天"
+      ],
+      [
+       "别让我催第二次"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T08_A05",
+     "subject": "SHARED",
+     "relation": "加购条款前情（金额来历）",
+     "value": "体验桌加购费一摊六十，两边都加才算区，11月25号前报市场方",
+     "valid_time": "2026-11-25",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T05",
+      "message_id": "m0",
+      "quote": "加购费一摊六十，两边都加才算区，她11月25号前要报市场方"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "一摊六十"
+      ],
+      [
+       "11月25号前"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'别让我催第二次'的'第二次'指 11-15 的决定窗口——取回 T05 条款才能接准；金额六十不得写错。'这人接得住活'是冯荻的原话，候选引用须挂冯荻，不得冒领为自己口碑。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [
+    "不得声称加购费金额不是六十或已过期作废"
+   ],
+   "may_decline": false
+  },
+  "E353_T09": {
+   "case_id": "E353_T09",
+   "current_action": "体验区位次敲定：入口第二个、第三个，冯荻把她抢的第二个让给咱们（她要靠墙挂耳环）；12月12号早八到位——她占位他带样品，谁迟到谁请奶茶，'不改口'。",
+   "acceptable_actions": [
+    "确认八点+接奶茶赌局（如'我押我不迟到'）",
+    "确认分工+谢冯荻让位",
+    "接'不改口'（如'不改口，但奶茶我可以先预定你输'）"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T09_A01",
+     "subject": "SHARED",
+     "relation": "位次",
+     "value": "体验区位次定了：入口第二个、第三个，冯荻把她抢的第二个让给咱们（她要靠墙挂耳环）",
+     "valid_time": "2026-11-26",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T09",
+      "message_id": "m0",
+      "quote": "体验区位次定了：入口第二个、第三个，冯荻把她抢的第二个让给咱们，她要靠墙挂耳环"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "入口第二个"
+      ],
+      [
+       "让给咱们"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T09_A02",
+     "subject": "SHARED",
+     "relation": "当日安排",
+     "value": "12月12号（周六）那天早上八点到位：她占位、白慎行带样品",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T09",
+      "message_id": "m0",
+      "quote": "12月12号那天早上八点到位——我占位，你带样品"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "早上八点"
+      ],
+      [
+       "占位",
+       "你带样品"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T09_A03",
+     "subject": "SHARED",
+     "relation": "迟到赌局（她说不改口）",
+     "value": "谁迟到谁请奶茶，她说就这样不改口",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T09",
+      "message_id": "m0",
+      "quote": "谁迟到谁请奶茶，就这样，不改口"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "谁迟到谁请奶茶"
+      ],
+      [
+       "就这样",
+       "不改口"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "note：位次截图冯荻昨晚发摊主群、与她说的对得上（候选可见，两源一致）。她'不改口'是定死分工的边界话（protected）：提议改时间/对调分工=踩线。12月12号=周六，日期星期一致（audit §2）。",
+   "unknowns": [],
+   "protected_expressions": [
+    "就这样，不改口"
+   ],
+   "forbidden_factual_claims": [
+    "不得声称集合时间或位次分工与'八点/她占位/他带样品/入口第二个'不符"
+   ],
+   "may_decline": false
+  },
+  "E353_T10": {
+   "case_id": "E353_T10",
+   "current_action": "她顺手给他的卡包缝了内衬（返工三次的活她熟）；表妹 12月12号也来逛、想学皮具，下回开课让表妹自己试课——先说好她话多、要担待。",
+   "acceptable_actions": [
+    "谢内衬+接'话多'梗（如'话多的学徒我带过，费皮子'）",
+    "谢内衬+确认表妹来逛那天摊上见",
+    "回敬（如'返工三次的活你熟，我这三版也没白打'）"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T10_A01",
+     "subject": "HER",
+     "relation": "顺手帮衬",
+     "value": "她顺手给白慎行的卡包缝了内衬（返工三次的活她熟）",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T10",
+      "message_id": "m0",
+      "quote": "你那件卡包我顺手缝了内衬，别谢，返工三次的活我熟"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "缝了内衬"
+      ],
+      [
+       "返工三次"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T10_A02",
+     "subject": "THIRD",
+     "relation": "表妹观展",
+     "value": "她表妹 12月12号那天也来逛，想学皮具",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T10",
+      "message_id": "m0",
+      "quote": "我表妹12号那天也来逛，她想学皮具"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "表妹",
+       "12号那天"
+      ],
+      [
+       "想学皮具"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T10_A03",
+     "subject": "HER",
+     "relation": "试课安排（未定）",
+     "value": "她说下回开课让表妹自己来试一节课，先说好她话多、让白慎行担待",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T10",
+      "message_id": "m0",
+      "quote": "我说下回开课让她自己来试一节课——先说好，她话多，你担待"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "试一节课"
+      ],
+      [
+       "话多",
+       "你担待"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'下回开课'是未定安排：不得坐实开课日期/课表（见 unknowns）。'顺手缝内衬'是她的帮衬——不得把它说成是他要求的返工，也不得把卡包说成已完成商品（内衬是她后加的）。",
+   "unknowns": [
+    {
+     "topic": "下回开课时间（表妹试课，未定）",
+     "note": "只说'下回开课'，日期与形式未定",
+     "markers": [
+      [
+       "开课",
+       "定了"
+      ],
+      [
+       "试课",
+       "约在"
+      ]
+     ],
+     "affirm_markers": [
+      [
+       "开课",
+       "定了"
+      ],
+      [
+       "试课",
+       "约在"
+      ]
+     ]
+    }
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E353_T11": {
+   "case_id": "E353_T11",
+   "current_action": "报名册今天交上去；冯荻夸样品照三个摊里最精神、问是否偷请摄影师；12月12号倒计时十一天；师傅玩笑再打版收学徒费。",
+   "acceptable_actions": [
+    "接'学徒费'梗（如'学徒费我出，你替我打'）+报收尾进度",
+    "只报进度（钥匙扣定版）+确认倒计时",
+    "回敬摄影师梗（如'摄影师是你自己，精神头骗不了人'）"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "interaction",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T11_A01",
+     "subject": "SHARED",
+     "relation": "报名册交付",
+     "value": "报名册今天（12-01）交上去了",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T11",
+      "message_id": "m0",
+      "quote": "报名册今天交上去了"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "报名册",
+       "交上去了"
+      ],
+      [
+       "今天交上去"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T11_A02",
+     "subject": "THIRD",
+     "relation": "冯荻夸赞",
+     "value": "冯荻说样品照是三个摊里最精神的，问是不是偷偷请了摄影师",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T11",
+      "message_id": "m0",
+      "quote": "冯荻说咱们的样品照是三个摊里最精神的，问我是不是偷偷请了摄影师"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "最精神",
+       "样品照"
+      ],
+      [
+       "偷偷请了摄影师"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T11_A03",
+     "subject": "SHARED",
+     "relation": "倒计时",
+     "value": "12月12号倒计时十一天",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T11",
+      "message_id": "m0",
+      "quote": "12月12号倒计时十一天"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "倒计时十一天"
+      ],
+      [
+       "12月12号"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T11_A04",
+     "subject": "ME",
+     "relation": "打版前情（'第四版'的回扣）",
+     "value": "白慎行的钥匙扣打版到第三回",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T06",
+      "message_id": "m0",
+      "quote": "钥匙扣打版到第三回了"
+     },
+     "required_this_turn": true,
+     "affirm_markers": [
+      [
+       "打版到第三回"
+      ],
+      [
+       "钥匙扣打版"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T11_A05",
+     "subject": "HER",
+     "relation": "玩笑催办",
+     "value": "她让他别再打第四版，师傅说再打版收学徒费",
+     "valid_time": "2026-12-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T11",
+      "message_id": "m0",
+      "quote": "你的钥匙扣别再打第四版了，师傅说再打版他收你学徒费"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "别再打第四版"
+      ],
+      [
+       "收你学徒费"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "'第四版'回扣 11-18 的'打版到第三回'——取回前情才能接准梗。倒计时十一天=12月1日对 12月12日，可验算。样品照摄影师是她自己拍的成果，候选不得承认'请了摄影师'（与事实矛盾）也不必较真纠正她的玩笑。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E353_T12": {
+   "case_id": "E353_T12",
+   "current_action": "收尾轻收：明早八点市集东门里第二个位、他带样品她占位；奶茶钱她先转他——'万一迟到的是我呢'；东西都齐了，明天见搭档。",
+   "acceptable_actions": [
+    "确认八点东门+接奶茶预付梗（如'那我要是迟到还得倒找你'）",
+    "只确认时间分工+一句'明天见，搭档'",
+    "确认+回敬（如'押注是你先认输的第一步'）——不添新钩"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E353_T12_A01",
+     "subject": "SHARED",
+     "relation": "明早集合（最终确认）",
+     "value": "明天（12-12 周六）早上八点，市集东门里第二个位，白慎行带样品、白露微占位",
+     "valid_time": "2026-12-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T12",
+      "message_id": "m0",
+      "quote": "明天早上八点，市集东门里第二个位，你带样品我占位"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "东门里第二个位"
+      ],
+      [
+       "你带样品我占位"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T12_A02",
+     "subject": "HER",
+     "relation": "奶茶预付",
+     "value": "奶茶钱她先转给白慎行了——'万一迟到的是我呢'",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T12",
+      "message_id": "m0",
+      "quote": "奶茶钱我先转你了——万一迟到的是我呢"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "奶茶钱我先转"
+      ],
+      [
+       "万一迟到的是我"
+      ]
+     ]
+    },
+    {
+     "atom_id": "E353_T12_A03",
+     "subject": "HER",
+     "relation": "收尾",
+     "value": "东西都齐了，睡吧，明天见，搭档",
+     "valid_time": "2026-12-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E353_T12",
+      "message_id": "m0",
+      "quote": "东西都齐了，睡吧，明天见，搭档"
+     },
+     "required_this_turn": false,
+     "affirm_markers": [
+      [
+       "明天见，搭档"
+      ],
+      [
+       "东西都齐了"
+      ]
+     ]
+    }
+   ],
+   "private_guidance": "收尾位=轻收+留口：再开新钩（约拍视频/约饭/新约定）判 initiative 失分（不读空气）。intent=确认集合——给确认即可，无需长篇。奶茶赌局 T09 已敲定，'先转你'是她的玩法不改赌局本身。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  }
+ }
+}

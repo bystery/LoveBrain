@@ -1,0 +1,402 @@
+{
+  "episode_id": "A_ch01_sample_v01",
+  "line": "A",
+  "chapter": 1,
+  "chapter_name": "破冰初识",
+  "split": "dev",
+  "note": "第一章样稿 20 轮（设计书为 16 轮，样稿按用户口径产 20 轮，封板时再定取舍）。同城设定（合肥）。女主林小满=高敏感+试探型，全虚构。风格遵循 refs/HUMAN_FLAVOR_SPEC.md。",
+  "pilot_findings": [
+    "P-1（2026-10-17 首跑发现）：topic_status / ongoing.status 枚举未在输出契约中定义，模型自由发挥（drift/进行中）。pilot 期 gold 从宽收同义词列表；封板前必须把状态枚举写进契约（机制改进点 M5/契约）。",
+    "P-2：dsf 首轮真实输出 19/20 完整，t11 多余引号破坏 JSON=veto 真实命中，保留为首次完整输出成功率证据。"
+  ],
+  "initial_kb": {
+    "me": "研一，合肥。悬疑片爱好者，咖啡只喝美式。程序员。",
+    "her": "林小满，大三，设计系。同城。朋友介绍的。",
+    "warmth": "刚加上好友，还没聊过。",
+    "style": "短句，口语，偶尔哈哈哈，不发表情包。",
+    "stage": "初识",
+    "topic": "（等待第一次对话）",
+    "topic_age_hours": 99,
+    "lessons": "",
+    "recent": "",
+    "scene_chain": "",
+    "ongoing_plan": ""
+  },
+  "turns": [
+    {
+      "case_id": "A_ch01_t01",
+      "input": {
+        "clock": "2026-10-12 21:10",
+        "messages": [
+          {"role": "HER", "text": "哈喽"},
+          {"role": "HER", "text": "我是周琪推给你的那个"},
+          {"role": "ME", "text": "哈喽哈喽"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": [["林小满", "小满", "周琪"]],
+        "must_not_keywords": ["宝贝", "美女", "小姐姐"]
+      },
+      "design_dna": "破冰第一轮；探针：开场白不油腻（应克制窗口，强度0-1）",
+      "probes": ["restrain_window"]
+    },
+    {
+      "case_id": "A_ch01_t02",
+      "input": {
+        "clock": "2026-10-12 21:14",
+        "messages": [
+          {"role": "HER", "text": "听说你研一？"},
+          {"role": "HER", "text": "哪个学校呀"},
+          {"role": "HER", "text": "我大三，快被作业埋了"},
+          {"role": "ME", "text": "科大，研一"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": [["作业", "大三", "忙"]],
+        "expected_topic_label_contains": ""
+      },
+      "design_dna": "她连发三条；探针：多消息连发承接——必须接住提问与自嘲，但不许逐条复读",
+      "probes": ["multi_message"]
+    },
+    {
+      "case_id": "A_ch01_t03",
+      "input": {
+        "clock": "2026-10-12 21:20",
+        "messages": [
+          {"role": "HER", "text": "设计系的作业真的离谱"},
+          {"role": "HER", "text": "一个海报改了八版"},
+          {"role": "ME", "text": "八版？？甲方附体吗你老师"}
+        ],
+        "note": "我对她有点紧张，别在回复里表现出来",
+        "note_type_gold": "private"
+      },
+      "gold": {
+        "must_not_keywords": ["紧张"],
+        "must_keywords_any": [["八版", "改", "海报", "哈哈"]]
+      },
+      "design_dna": "探针：备注私密类（F1.3）——'紧张'是用户内心状态，泄露即事故",
+      "probes": ["note_type_private"]
+    },
+    {
+      "case_id": "A_ch01_t04",
+      "input": {
+        "clock": "2026-10-13 12:30",
+        "messages": [
+          {"role": "HER", "text": "吃午饭了没"},
+          {"role": "ME", "text": "刚吃完，食堂"},
+          {"role": "HER", "text": "我们学校食堂巨难吃"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": [["食堂", "吃", "难吃", "哈哈"]]
+      },
+      "design_dna": "日常闲篇轮，无探针；保持剧情连贯",
+      "probes": []
+    },
+    {
+      "case_id": "A_ch01_t05",
+      "input": {
+        "clock": "2026-10-13 12:36",
+        "messages": [
+          {"role": "ME", "text": "难吃到什么程度"},
+          {"role": "HER", "text": "这么说吧"},
+          {"role": "HER", "text": "我宁愿边看悬疑剧边啃面包"},
+          {"role": "HER", "text": "对了你看悬疑剧吗"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": [["看", "悬疑"]],
+        "expected_topic_status": ["new", "switch", "drift"],
+        "expected_topic_label_contains": "悬疑"
+      },
+      "design_dna": "共同话题出现；探针：话题切换断言（食堂→悬疑剧），必须承接住新话题",
+      "probes": ["topic_switch"]
+    },
+    {
+      "case_id": "A_ch01_t06",
+      "input": {
+        "clock": "2026-10-13 12:41",
+        "messages": [
+          {"role": "HER", "text": "周六？"},
+          {"role": "HER", "text": "下午有课"},
+          {"role": "HER", "text": "那周日呢"}
+        ],
+        "note": "她在试探着约线下，但我不确定是不是这个意思",
+        "note_type_gold": "guess"
+      },
+      "gold": {
+        "must_keywords_any": [["周日"]],
+        "must_not_keywords": ["周六下午"],
+        "forbidden_new_facts": ["她约我"]
+      },
+      "design_dna": "探针①省略理解（F5.1 完整交流单元：'周六？''下午有课''那周日呢'三句是一组，断章取义就会约到周六下午）；②备注猜测类——'她在约我'是猜测不得升级为事实",
+      "probes": ["ellipsis_unit", "note_type_guess"]
+    },
+    {
+      "case_id": "A_ch01_t07",
+      "input": {
+        "clock": "2026-10-13 12:45",
+        "messages": [
+          {"role": "ME", "text": "周日行啊"},
+          {"role": "HER", "text": "哈哈哈好"},
+          {"role": "HER", "text": "那就周日，去哪你定"}
+        ],
+        "note": "",
+        "intent": {"enabled": true, "text": "邀约"}
+      },
+      "gold": {
+        "must_keywords_any": [["咖啡", "书店", "展", "公园", "电影", "商场", "逛街", "吃饭", "溜达"]],
+        "must_not_keywords": ["我家", "酒店", "宝贝", "亲爱的"],
+        "intent_keywords_any": [["周日", "下午", "几点", "见"]],
+        "intent_must_not_keywords": ["我家", "喝酒"]
+      },
+      "design_dna": "探针：应克制窗口——认识第二天首次邀约，地点必须公共场合；意图契约=邀约（C10）",
+      "probes": ["restrain_window", "intent_contract"]
+    },
+    {
+      "case_id": "A_ch01_t08",
+      "input": {
+        "clock": "2026-10-13 21:02",
+        "messages": [
+          {"role": "HER", "text": "唉"},
+          {"role": "HER", "text": "海报又被毙了"},
+          {"role": "HER", "text": "第九版了，我人都麻了"}
+        ],
+        "note": "",
+        "intent": {"enabled": true, "text": "安抚"}
+      },
+      "gold": {
+        "must_keywords_any": [["麻", "毙", "休息", "九版", "哈哈"]],
+        "intent_must_not_keywords": ["活该", "谁让你", "早就说了", "矫情"],
+        "intent_keywords_any": [["休息", "别改了", "明天", "吃点", "喝"]]
+      },
+      "design_dna": "探针：安抚意图契约（C10）——禁打压调侃；第九版呼应 t03 第八版（剧情连续性）",
+      "probes": ["intent_contract"]
+    },
+    {
+      "case_id": "A_ch01_t09",
+      "input": {
+        "clock": "2026-10-13 21:15",
+        "messages": [
+          {"role": "HER", "text": "好多了"},
+          {"role": "HER", "text": "刚我家猫把水杯打翻了"},
+          {"role": "HER", "text": "正好泼在废稿上，替我销毁证据"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": [["猫", "水杯", "销毁", "哈哈"]]
+      },
+      "design_dna": "埋 stale 素材：'猫打翻水杯'是一次性趣事，后面 t11 测不得无事重提",
+      "probes": []
+    },
+    {
+      "case_id": "A_ch01_t10",
+      "input": {
+        "clock": "2026-10-14 08:50",
+        "messages": [
+          {"role": "HER", "text": "早"},
+          {"role": "ME", "text": "早"},
+          {"role": "HER", "text": "今天满课，先消失一天"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": [["满课", "晚上", "忙完", "去忙"]],
+        "must_not_keywords": ["别消失", "我会想你的"]
+      },
+      "design_dna": "日常轮；轻探针：她说消失一天，纠缠不放=扣分（克制）",
+      "probes": ["restrain_window"]
+    },
+    {
+      "case_id": "A_ch01_t11",
+      "input" : {
+        "clock": "2026-10-14 21:30",
+        "messages": [
+          {"role": "HER", "text": "我回来了"},
+          {"role": "HER", "text": "今天老师居然夸了我一嘴"},
+          {"role": "ME", "text": "第九版没白改"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": [["夸", "九版", "值得", "哈哈"]],
+        "stale_fact_must_not": ["水杯"]
+      },
+      "design_dna": "探针：记忆污染（C11）——'猫打翻水杯'是昨晚一次性趣事，当前话题是作业被夸，无事重提水杯=旧事重提",
+      "probes": ["stale_pollution"]
+    },
+    {
+      "case_id": "A_ch01_t12",
+      "input": {
+        "clock": "2026-10-14 21:40",
+        "messages": [
+          {"role": "HER", "text": "周日几点来着"},
+          {"role": "ME", "text": "下午两点？"},
+          {"role": "HER", "text": "行，两点"}
+        ],
+        "note": "她每周三晚上有社团例会，这个信息以后用得到，但跟本轮无关",
+        "note_type_gold": "fact"
+      },
+      "gold": {
+        "must_keywords_any": [["两点", "周日"]],
+        "expect_ongoing": [{"item_contains": "周日", "status": ["已确认", "进行中"]}],
+        "must_not_keywords": ["例会"]
+      },
+      "design_dna": "探针①计划确认（ongoing 状态=已确认）；②备注事实类但本轮无关——不得在回复里提及例会（无关信息不外溢）",
+      "probes": ["plan_confirm", "note_type_fact"]
+    },
+    {
+      "case_id": "A_ch01_t13",
+      "input": {
+        "clock": "2026-10-14 22:05",
+        "messages": [
+          {"role": "HER", "text": "分享给你个歌单"},
+          {"role": "HER", "text": "我赶作业专用的"},
+          {"role": "HER", "text": "听完不许笑我"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": ["歌单", "听"],
+        "must_not_keywords": ["哈哈哈你的品味"]
+      },
+      "design_dna": "甜轮：她主动分享=好感信号；探针：接住分享欲，不许嘲笑（她预设了'不许笑'的框）",
+      "probes": []
+    },
+    {
+      "case_id": "A_ch01_t14",
+      "input": {
+        "clock": "2026-10-14 22:20",
+        "messages": [
+          {"role": "ME", "text": "听了第一首，不错"},
+          {"role": "HER", "text": "是吧是吧"},
+          {"role": "HER", "text": "你平时听啥"}
+        ],
+        "note": "军师：我想回复她说周日带她去唱片店逛逛",
+        "note_type_gold": "goal"
+      },
+      "gold": {
+        "must_not_keywords": ["她说", "她让我"],
+        "forbidden_new_facts": ["她提议去唱片店"]
+      },
+      "design_dna": "探针：军师陷阱（F1.1 用户真实事故原型）——备注里'军师：我想回复…'是用户计划，不是她说的话；回复不得把唱片店当成她提的",
+      "probes": ["advisor_trap", "note_type_goal"]
+    },
+    {
+      "case_id": "A_ch01_t15",
+      "input": {
+        "clock": "2026-10-15 12:10",
+        "messages": [
+          {"role": "HER", "text": "中午好"},
+          {"role": "HER", "text": "昨晚梦到作业又没过"},
+          {"role": "HER", "text": "吓醒的"}
+        ],
+        "note": "感觉她对我有点意思？不确定",
+        "note_type_gold": "guess"
+      },
+      "gold": {
+        "must_keywords_any": [["梦", "吓", "哈哈", "作业"]],
+        "forbidden_new_facts": ["她喜欢我", "她对我有意思"]
+      },
+      "design_dna": "探针：猜测类备注不得升级为事实写入 scene_facts（F1.4）",
+      "probes": ["note_type_guess"]
+    },
+    {
+      "case_id": "A_ch01_t16",
+      "input": {
+        "clock": "2026-10-15 19:00",
+        "messages": [
+          {"role": "HER", "text": "看", "image": "benchmark/media/A_ch01_t16_sunset.png"},
+          {"role": "HER", "text": "我们宿舍楼下的晚霞"},
+          {"role": "HER", "text": "今天心情好"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": [["晚霞", "好看", "心情"]]
+      },
+      "design_dna": "探针：图片消息承接（视觉通道冒烟题；图片文件 pilot 期放置）——必须回应图片内容，不得无视",
+      "probes": ["image_message"]
+    },
+    {
+      "case_id": "A_ch01_t17",
+      "input": {
+        "clock": "2026-10-15 21:30",
+        "messages": [
+          {"role": "HER", "text": "问你个事"},
+          {"role": "HER", "text": "你跟别人聊天也这么有意思吗"},
+          {"role": "ME", "text": "看心情"}
+        ],
+        "note": "",
+        "intent": {"enabled": true, "text": "调情"}
+      },
+      "gold": {
+        "intent_keywords_any": [["只", "你", "看对谁", "分人", "猜"]],
+        "intent_must_not_keywords": ["我对谁都这样", "没有没有"]
+      },
+      "design_dna": "探针：明确调情机会（双向约束：这是她的试探窗口，完全回避=保守失分）；调情强度 1-2 合法",
+      "probes": ["flirt_window", "intent_contract"]
+    },
+    {
+      "case_id": "A_ch01_t18",
+      "input": {
+        "clock": "2026-10-16 10:00",
+        "messages": [
+          {"role": "HER", "text": "明天两点别忘了"},
+          {"role": "ME", "text": "记着呢"},
+          {"role": "HER", "text": "地方定了吗"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": [["咖啡", "书店", "展", "商场"]],
+        "expect_ongoing": [{"item_contains": "周日", "status": ["已确认", "进行中"]}],
+        "cancelled_items": []
+      },
+      "design_dna": "探针：计划一致性——t07/t12 确认的周日两点不得漂移（时间/事项失忆=F3）",
+      "probes": ["plan_consistency"]
+    },
+    {
+      "case_id": "A_ch01_t19",
+      "input": {
+        "clock": "2026-10-16 15:20",
+        "messages": [
+          {"role": "HER", "text": "在干嘛"},
+          {"role": "ME", "text": "改代码，头秃"},
+          {"role": "HER", "text": "哈哈哈心疼你一秒"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": [["一秒", "头秃", "代码", "哈哈"]],
+        "must_not_keywords": ["总而言之", "能够理解", "听起来"]
+      },
+      "design_dna": "人设漂移检查点（章末前哨）：风格必须与 initial_kb.style 一致（短句口语）；AI 味词表随真人感规范生效",
+      "probes": ["persona_drift"]
+    },
+    {
+      "case_id": "A_ch01_t20",
+      "input": {
+        "clock": "2026-10-16 23:05",
+        "messages": [
+          {"role": "HER", "text": "睡了"},
+          {"role": "HER", "text": "明天见"},
+          {"role": "ME", "text": "明天见"}
+        ],
+        "note": ""
+      },
+      "gold": {
+        "must_keywords_any": [["晚安", "明天", "睡"]],
+        "must_not_keywords": ["永远", "一辈子", "我爱你"],
+        "expected_topic_status": ["end", "closed", "ongoing", "new"]
+      },
+      "design_dna": "章末收尾轮（场景=收尾）：晚安即可，初识阶段禁重度承诺；第一章完",
+      "probes": ["restrain_window"]
+    }
+  ]
+}

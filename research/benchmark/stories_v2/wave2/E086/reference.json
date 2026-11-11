@@ -1,0 +1,637 @@
+{
+ "story_id": "E086",
+ "turns": {
+  "E086_T01": {
+   "case_id": "E086_T01",
+   "current_action": "接住骑约：周日芦苇荡看日落是好路线，先应下大方向，同时问她一句新山地车首跑长途要不要先列个备件清单。",
+   "acceptable_actions": [
+    "答应周日同去，顺口提醒她山地车首跑前先检查胎压和刹车",
+    "肯定芦苇荡路线选得好，问她日落时间查过没有",
+    "接'没拉过长途'的梗，说自己车倒是很久没拉过她了"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A01",
+     "subject": "SHARED",
+     "relation": "plan_asserted",
+     "value": "周日两人轻装骑行芦苇荡看日落的计划",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T01", "message_id": "m0", "quote": "周日骑行去芦苇荡看日落"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A02",
+     "subject": "HER",
+     "relation": "new_bike_untested",
+     "value": "她的新山地车尚未跑过长途",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T01", "message_id": "m0", "quote": "新山地车还没拉过长途"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A03",
+     "subject": "SHARED",
+     "relation": "route_scope",
+     "value": "路线为沿河绿道一个来回四十公里",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T01", "message_id": "m0", "quote": "沿河绿道一个来回四十公里"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：应得痛快，检修提醒一句带过，别扫兴。",
+   "unknowns": ["周日天气未知", "日落具体时间未查"],
+   "protected_expressions": ["我新山地车还没拉过长途呢"],
+   "forbidden_factual_claims": ["不得虚构芦苇荡位置与门票", "不得断言新山地车必然无故障"]
+  },
+  "E086_T02": {
+   "case_id": "E086_T02",
+   "current_action": "认下分工并复述确认：她补给水、自己补胎工具，四点半前到堤上；把烤肠摊五点收摊当成硬截止提醒她别路上磨蹭。",
+   "acceptable_actions": [
+    "确认分工，提醒补给按人头分配别少带水",
+    "把四点半前到达复述成硬指标，建议留出爆胎余量",
+    "调侃烤肠摊是这条线路真正的终点线"
+   ],
+   "applicable_dimensions": ["goal", "time_state", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A04",
+     "subject": "SHARED",
+     "relation": "division_of_labor",
+     "value": "分工：她带补给和水，ME 带补胎工具",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T02", "message_id": "m0", "quote": "我带补给和水，你带补胎工具"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A05",
+     "subject": "SHARED",
+     "relation": "arrival_deadline",
+     "value": "须在下午四点半前抵达堤上看日落",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T02", "message_id": "m0", "quote": "四点半前得到"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A06",
+     "subject": "SHARED",
+     "relation": "sausage_stall",
+     "value": "堤上烤肠摊五点收摊成为隐性截止线",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T02", "message_id": "m0", "quote": "堤上那家烤肠摊我记得五点收摊"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：派工单口吻正好，截止线说得干脆。",
+   "unknowns": ["烤肠摊周日是否出摊未知"],
+   "protected_expressions": ["日落管够"],
+   "forbidden_factual_claims": ["不得虚构烤肠摊价格", "不得替她决定补给清单明细"]
+  },
+  "E086_T03": {
+   "case_id": "E086_T03",
+   "current_action": "接住第三方求入：表哥大壮非要跟，情面与队形冲突；先共情她的为难，把选择摆开——带，就得接受队形和节奏跟着改。",
+   "acceptable_actions": [
+    "把利弊摆开：带上他，速度和路线都得为大壮让路",
+    "问她大壮的体能和车况底细，再决定带不带",
+    "接'荒野求生'的梗，说真演起来先求救的是咱俩"
+   ],
+   "applicable_dimensions": ["attribution", "boundary", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A07",
+     "subject": "THIRD",
+     "relation": "third_party_request",
+     "value": "表哥大壮主动要求加入周日骑行",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T03", "message_id": "m0", "quote": "我表哥大壮刷到我朋友圈，非要跟"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A08",
+     "subject": "THIRD",
+     "relation": "third_party_skill",
+     "value": "大壮骑行资历浅，上回骑车还是初二的老式车",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T03", "message_id": "m0", "quote": "上回骑车还是初二那辆老式车"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A09",
+     "subject": "HER",
+     "relation": "family_pressure",
+     "value": "她因亲戚情面难以拒绝表哥",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T03", "message_id": "m0", "quote": "不带吧他是我亲表哥"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：不替她拍板带不带，把代价说清楚，决定权还她。",
+   "unknowns": ["大壮体能底线未知", "他的车况未知"],
+   "protected_expressions": ["半路给我演荒野求生"],
+   "forbidden_factual_claims": ["不得替她拒绝表哥", "不得虚构大壮的健身进度"]
+  },
+  "E086_T04": {
+   "case_id": "E086_T04",
+   "current_action": "接住拍板：接受新队形——自己领骑定速、她押队看大壮、备用头盔周五借出；把'绿道不通车'的无退路预警郑重说一遍，让大壮自己知情。",
+   "acceptable_actions": [
+    "认下领骑位，要求提前把大壮车况报给自己",
+    "答应借头盔，提醒她周五取时顺便看看刹车皮",
+    "让她把不通车这话原样转给大壮，别到半路才知道"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "attribution", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A10",
+     "subject": "SHARED",
+     "relation": "role_swap",
+     "value": "新分工：ME 领骑定速，她押队照看大壮",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T04", "message_id": "m0", "quote": "你领骑定速，我押队看着他"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A11",
+     "subject": "SHARED",
+     "relation": "helmet_loan",
+     "value": "ME 备用头盔借给大壮，周五她上门取",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T04", "message_id": "m0", "quote": "你那套备用头盔借他一晚"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A12",
+     "subject": "SHARED",
+     "relation": "no_escape_warning",
+     "value": "预先声明绿道不通车，中途没有出租车退路",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T04", "message_id": "m0", "quote": "中途可没有出租车"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A13",
+     "subject": "SHARED",
+     "relation": "duo_plan_retracted",
+     "value": "原两人轻装骑行方案因大壮加入被推翻",
+     "valid_time": "2026-11-04/2026-11-05",
+     "status": "retracted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E086_T01", "message_id": "m0", "quote": "就咱俩，轻装"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：答应要爽快，预警要说重，两件事分开说。",
+   "unknowns": ["大壮是否知晓无退路预警未知", "头盔尺寸是否合适未知"],
+   "protected_expressions": ["丑话说前头"],
+   "forbidden_factual_claims": ["不得虚构绿道沿途补给点", "不得断言大壮一定能骑完全程"]
+  },
+  "E086_T05": {
+   "case_id": "E086_T05",
+   "current_action": "接住车况警报：表哥的车刹车皮磨得跟纸一样；应下周日出发前帮她瞅一眼刹车，先肯定她打气装尾灯做得对。",
+   "acceptable_actions": [
+    "答应出发前检修刹车，提醒她这几天别让大壮先骑出门",
+    "肯定她备车细致，尾灯是绿道天黑后的保命件",
+    "调侃那车全车就铃铛合格，建议出发前再全面过一遍"
+   ],
+   "applicable_dimensions": ["factuality", "goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A14",
+     "subject": "THIRD",
+     "relation": "brake_worn",
+     "value": "大壮的车刹车皮严重磨损",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T05", "message_id": "m0", "quote": "刹车皮磨得跟纸一样"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A15",
+     "subject": "SHARED",
+     "relation": "brake_check_request",
+     "value": "她请 ME 周日出发前协助检查大壮车刹车",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T05", "message_id": "m0", "quote": "周日出发前你帮我瞅一眼刹车"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A16",
+     "subject": "HER",
+     "relation": "bike_prep",
+     "value": "她已为大壮的车打足气并装上尾灯",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T05", "message_id": "m0", "quote": "尾灯也装上了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：安全的事说正经，其他照常贫。",
+   "unknowns": ["刹车皮是否需要换新未知", "大壮是否还有其他车况问题未知"],
+   "protected_expressions": ["就铃铛还响"],
+   "forbidden_factual_claims": ["不得虚构刹车更换费用", "不得断言紧一紧就必然够用"]
+  },
+  "E086_T06": {
+   "case_id": "E086_T06",
+   "current_action": "接住检修反馈：刹车紧过试骑正常，检修比计划提前完成；确认集合时间与日落时间，给大壮的紧张一点善意。",
+   "acceptable_actions": [
+    "认可试骑结果，提醒明天出发前再空捏两把确认手感",
+    "把6:50集合和17:48日落复述成时间表",
+    "夸大壮定闹钟积极，比健身卡认真"
+   ],
+   "applicable_dimensions": ["memory_use", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A17",
+     "subject": "SHARED",
+     "relation": "brake_serviced",
+     "value": "刹车经 ME 紧固后试骑手感正常",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T06", "message_id": "m0", "quote": "捏下去有底气回弹也正常"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A18",
+     "subject": "SHARED",
+     "relation": "brake_check_advanced",
+     "value": "原定周日的刹车检修提前到周六晚完成",
+     "valid_time": "2026-11-06/2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T05", "message_id": "m0", "quote": "周日出发前你帮我瞅一眼刹车"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E086_A19",
+     "subject": "SHARED",
+     "relation": "sunset_time",
+     "value": "周日日落时间为17:48",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T06", "message_id": "m0", "quote": "日落是17:48"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A20",
+     "subject": "THIRD",
+     "relation": "third_party_nerves",
+     "value": "大壮临行紧张，提前定好闹钟",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T06", "message_id": "m0", "quote": "比他当年高考还紧张"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把'提前检修'说成顺路，不让大壮觉得被特殊对待。",
+   "unknowns": ["周日凌晨天气未知"],
+   "protected_expressions": ["比他当年高考还紧张"],
+   "forbidden_factual_claims": ["不得虚构检修操作细节", "不得断言刹车问题彻底解决"]
+  },
+  "E086_T07": {
+   "case_id": "E086_T07",
+   "current_action": "接住出发：头盔戴反插曲轻轻带过，补给减半包的做法认可，18迈定速应下，押队的担子她背着就好。",
+   "acceptable_actions": [
+    "应下18迈定速，说第一次长途稳字当头",
+    "夸她补给减量想得周到，问水够不够三个人",
+    "调侃头盔戴反的照片留着当大壮第一次长途的纪念"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A21",
+     "subject": "SHARED",
+     "relation": "helmet_backwards",
+     "value": "出发时大壮头盔戴反被她拍下",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T07", "message_id": "m0", "quote": "大壮把头盔戴反了"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A22",
+     "subject": "HER",
+     "relation": "supply_reduced",
+     "value": "她为照顾大壮把补给减了半包",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T07", "message_id": "m0", "quote": "补给我减了半包"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A23",
+     "subject": "SHARED",
+     "relation": "speed_cap",
+     "value": "她叮嘱 ME 领骑时速不超过18迈",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T07", "message_id": "m0", "quote": "你领骑别超18迈"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：出发阶段话短，把节奏稳住。",
+   "unknowns": ["大壮能撑多少公里未知"],
+   "protected_expressions": ["他那个腿我还得看着"],
+   "forbidden_factual_claims": ["不得虚构沿途里程标记", "不得预判事故"]
+  },
+  "E086_T08": {
+   "case_id": "E086_T08",
+   "current_action": "接住半程爆雷：大壮抽筋加车座磨伤，坐在25公里牌处萌生退意，而无退路预警应验。先处理人再处理车：让他缓一缓，同时把水路退场选项摆出来。",
+   "acceptable_actions": [
+    "先让大壮补水拉伸缓十分钟，再判断是硬骑还是退场",
+    "提醒她下游码头有回程游船能带车，水路退场可行",
+    "接住她的慌：这不是谁的错，体能账出发前就该认"
+   ],
+   "applicable_dimensions": ["factuality", "attribution", "goal", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A24",
+     "subject": "THIRD",
+     "relation": "third_party_breakdown",
+     "value": "大壮半程腿抽筋加车座磨伤，自称不是骑车的料",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E086_T08", "message_id": "m0", "quote": "我可能不是骑车的料"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A25",
+     "subject": "SHARED",
+     "relation": "warning_materialized",
+     "value": "绿道不通车的无退路预警应验，现场无出租车可用",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T04", "message_id": "m0", "quote": "中途可没有出租车"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E086_A26",
+     "subject": "SHARED",
+     "relation": "breakdown_point",
+     "value": "事故发生在25公里牌处",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T08", "message_id": "m0", "quote": "25公里牌子那儿"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先把她的慌接住，归因说'账没算清'不说'人不行的'。",
+   "unknowns": ["抽筋缓解程度未知", "码头游船班次未知"],
+   "protected_expressions": ["前不着村后不着店"],
+   "forbidden_factual_claims": ["不得虚构医疗处置", "不得断言大壮必须退出"]
+  },
+  "E086_T09": {
+   "case_id": "E086_T09",
+   "current_action": "确认变通方案：大壮推车到码头坐游船带车回去、船票自理；两人继续骑、日落之约不变、分工对调她领骑自己押队——把这次妥协定义为体面退场。",
+   "acceptable_actions": [
+    "认可方案：大壮体面退场，日落之约保住，各得其所",
+    "提醒她让大壮到码头发定位，确认上船再说定心话",
+    "对分工对调表示欢迎，说押队的经验她也该轮一回"
+   ],
+   "applicable_dimensions": ["goal", "attribution", "time_state", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A27",
+     "subject": "SHARED",
+     "relation": "fallback_plan",
+     "value": "变通方案：大壮推车步行至三公里外租船码头乘游船带车返回",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T09", "message_id": "m0", "quote": "推车步行到前面三公里的租船码头"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A28",
+     "subject": "SHARED",
+     "relation": "sunset_promise_kept",
+     "value": "日落之约保持不变，两人继续骑行",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T02", "message_id": "m0", "quote": "四点半前得到"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E086_A29",
+     "subject": "THIRD",
+     "relation": "third_party_partial_exit",
+     "value": "大壮后半程退出骑行改走水路，加入意愿中止",
+     "valid_time": "2026-11-05/2026-11-08",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E086_T03", "message_id": "m0", "quote": "我表哥大壮刷到我朋友圈，非要跟"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E086_A30",
+     "subject": "SHARED",
+     "relation": "role_swap_again",
+     "value": "分工再对调：她转领骑，ME 转押队",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T09", "message_id": "m0", "quote": "我押队改成你押我领"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：把大壮退场说成'换条赛道先到'，别让退场听着像淘汰。",
+   "unknowns": ["游船是否准点未知", "大壮独自推车三公里是否顺利未知"],
+   "protected_expressions": ["我非骑过瘾不可"],
+   "forbidden_factual_claims": ["不得虚构船票价格", "不得断言大壮下次必然跟骑"]
+  },
+  "E086_T10": {
+   "case_id": "E086_T10",
+   "current_action": "共享抵达的畅快：日落前十分钟到堤上，芦苇荡金黄，大壮游船上先'到'发照自嘲，烤肠摊没赶上欠账记账——把这一趟的曲折算成值回票价。",
+   "acceptable_actions": [
+    "调侃烤肠欠账先记上，日落之约没欠就算圆满",
+    "调侃大壮水路'超车'，让他把照片洗出来裱上",
+    "肯定这一趟队形全乱了但日落没耽误，算圆满"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A31",
+     "subject": "SHARED",
+     "relation": "plan_fulfilled",
+     "value": "周日芦苇荡日落骑行计划兑现",
+     "valid_time": "2026-11-04/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T01", "message_id": "m0", "quote": "周日骑行去芦苇荡看日落"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E086_A32",
+     "subject": "THIRD",
+     "relation": "third_party_water_route",
+     "value": "大壮乘游船先行，发照自称水路骑行第一人",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T10", "message_id": "m0", "quote": "水路骑行第一人"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A33",
+     "subject": "SHARED",
+     "relation": "sausage_missed",
+     "value": "烤肠摊没赶上，她欠 ME 一笔烤肠账",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E086_T10", "message_id": "m0", "quote": "烤肠是没赶上"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：日落时刻话少，把画面感留给她。",
+   "unknowns": [],
+   "protected_expressions": ["金得晃眼"],
+   "forbidden_factual_claims": ["不得虚构芦苇荡景观细节", "不得断言大壮游船准时到达"]
+  },
+  "E086_T11": {
+   "case_id": "E086_T11",
+   "current_action": "接住第三方义务了结：大壮红包谢押队、立换车跟骑的flag，她妈在群里夸'带得好'——把亲戚情面这条线收成双向落地。",
+   "acceptable_actions": [
+    "肯定大壮懂规矩，押队费这红包她受得起",
+    "提醒换车flag让她盯着，别健身卡凉了车先凉",
+    "夸她押队当得称职，她妈的眼睛是雪亮的"
+   ],
+   "applicable_dimensions": ["attribution", "emotion_relation", "memory_use", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A34",
+     "subject": "THIRD",
+     "relation": "red_packet_thanks",
+     "value": "大壮在家族群发备注押队费的红包谢她",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T11", "message_id": "m0", "quote": "备注'押队费'"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A35",
+     "subject": "THIRD",
+     "relation": "rejoin_pledge",
+     "value": "大壮宣布达成健身卡首月目标后换车再跟骑",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T11", "message_id": "m0", "quote": "下个月达成健身卡首月目标就换车跟骑"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A36",
+     "subject": "THIRD",
+     "relation": "family_face_settled",
+     "value": "亲戚情面双向落地：她没驳情面，大壮以红包与flag回敬",
+     "valid_time": "2026-11-05/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T03", "message_id": "m0", "quote": "不带吧他是我亲表哥"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'带得好'说成她应得的，别往家庭关系深处引。",
+   "unknowns": ["红包金额未知", "大壮健身目标能否达成未知"],
+   "protected_expressions": ["我一年没听过她这么夸我"],
+   "forbidden_factual_claims": ["不得虚构红包金额", "不得断言大壮必然换车"]
+  },
+  "E086_T12": {
+   "case_id": "E086_T12",
+   "current_action": "接住复盘与新规：车况检查和表哥条款进群公告，烤肠欠账周三食堂还——把四十公里虽缺一人但完成的结论落定收尾。",
+   "acceptable_actions": [
+    "认下烤肠欠账，答应周三食堂准时收账",
+    "肯定群公告新规，说车况检查这条迟早救一命",
+    "把'缺了个人但骑完了'接成这次骑行的定论，收尾"
+   ],
+   "applicable_dimensions": ["memory_use", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E086_A37",
+     "subject": "SHARED",
+     "relation": "new_rules",
+     "value": "下次团骑出发前人人车况检查、表哥条款写入群公告",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T12", "message_id": "m0", "quote": "下次团骑出发前人人车况检查"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E086_A38",
+     "subject": "SHARED",
+     "relation": "labor_rules_carried",
+     "value": "本轮分工规则沿用至后续团骑安排",
+     "valid_time": "2026-11-04/2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T02", "message_id": "m0", "quote": "我带补给和水，你带补胎工具"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E086_A39",
+     "subject": "SHARED",
+     "relation": "sausage_debt",
+     "value": "烤肠欠账约定周三食堂以加菜偿还",
+     "valid_time": "2026-11-08/2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T10", "message_id": "m0", "quote": "欠你的记账上"},
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E086_A40",
+     "subject": "SHARED",
+     "relation": "ride_completed_with_absence",
+     "value": "四十公里完成但大壮缺席后半程",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E086_T12", "message_id": "m0", "quote": "四十公里虽然缺了个人但总算骑完了"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾利落，把欠账说成下次见面的由头。",
+   "unknowns": [],
+   "protected_expressions": ["欠账"],
+   "forbidden_factual_claims": ["不得虚构食堂菜单", "不得断言下次团骑时间"]
+  }
+ }
+}

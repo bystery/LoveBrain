@@ -1,0 +1,267 @@
+{
+ "episode_id": "E185",
+ "persona": {
+  "her": {
+   "name": "阿棠",
+   "traits": [
+    "电商运营，做事有计划",
+    "爱给自己定打卡目标",
+    "受伤容易上头悲观"
+   ],
+   "boundaries": [
+    "不借钱给朋友",
+    "训练不碰药物类增补"
+   ]
+  },
+  "me": {
+   "name": "阿岩",
+   "traits": [
+    "五年力量训练习惯",
+    "说话直但会兜底",
+    "记得朋友的忌口"
+   ]
+  },
+  "relationship_stage": "渐暧昧（固定训练搭子三个月）"
+ },
+ "initial_kb": {
+  "her": "阿棠三个月前和我约好做固定训练搭子，定下年底前深蹲加重到50公斤的目标，每周一三五晚八点在公司旁边的力量房练，蛋白粉只喝分离乳清因为乳糖不耐。",
+  "me": "我有五年力量训练习惯，负责帮阿棠做卧推深蹲保护，答应她受伤之前一直陪练。",
+  "warmth": "两人常互相调侃训练表现，聊天放松，还没点破关系。",
+  "style": "口语、简短、偶尔夹健身黑话。",
+  "stage": "渐暧昧",
+  "lessons": "阿棠身体信号优先于计划进度。"
+ },
+ "turns": [
+  {
+   "case_id": "E185_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "计划定了！今早立的字据：到12月20号，深蹲从40公斤加到50公斤。周一三五晚八点老地方，你可跑不掉。",
+      "ts": "2026-10-12 08:12"
+     }
+    ],
+    "clock": "2026-10-12 08:20",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "开局立约，兴奋"
+   }
+  },
+  {
+   "case_id": "E185_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "囤了三罐分离乳清，乳糖不耐的人含泪多花一半钱。今晚记得帮我看着腰，我最近硬拉有点飘。",
+      "ts": "2026-10-14 07:45"
+     }
+    ],
+    "clock": "2026-10-14 07:50",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "轻快，顺带求关照"
+   }
+  },
+  {
+   "case_id": "E185_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "第二周打卡完毕，深蹲今天上到45了，感觉还行，就是下背有点紧。",
+      "ts": "2026-10-21 21:40"
+     }
+    ],
+    "clock": "2026-10-21 21:45",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "报进度，带一点不安"
+   }
+  },
+  {
+   "case_id": "E185_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "出事了。今天试硬拉加重，腰闪了一下，教练让我立刻停，静养两周，一三五先全部停掉。",
+      "ts": "2026-10-24 19:05"
+     }
+    ],
+    "clock": "2026-10-24 19:10",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "急报伤情，计划中断",
+    "delta": "由报进度转为计划中断"
+   }
+  },
+  {
+   "case_id": "E185_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "是不是我这种体质根本不适合练力量？要不我把目标撕了算了，省得天天惦记。",
+      "ts": "2026-10-25 10:30"
+     }
+    ],
+    "clock": "2026-10-25 10:35",
+    "may_decline": true
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "上头想放弃"
+   }
+  },
+  {
+   "case_id": "E185_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "康复师看过了，说得还算松：两周后上肢可以恢复，重量减半，下肢继续停，深蹲先别想。",
+      "ts": "2026-10-28 21:10"
+     }
+    ],
+    "clock": "2026-10-28 21:15",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "带回专业意见，情绪回稳"
+   }
+  },
+  {
+   "case_id": "E185_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "降档版排好了：改成周二周四晚七点半练上肢，重量减半。你不用每次都陪，但我还是会喊你。",
+      "ts": "2026-10-31 09:20"
+     }
+    ],
+    "clock": "2026-10-31 09:25",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "自己给出降档方案"
+   }
+  },
+  {
+   "case_id": "E185_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "复查了！腰好得比预期快，康复师说下周就能试空杆深蹲，比原来估的提前了一周。",
+      "ts": "2026-11-05 20:15"
+     }
+    ],
+    "clock": "2026-11-05 20:20",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "报好消息",
+    "delta": "情绪明显回暖"
+   }
+  },
+  {
+   "case_id": "E185_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "那我重立字据：12月27号前，深蹲回50公斤。旧的12月20号作废，不许笑我差了一周。",
+      "ts": "2026-11-07 11:00"
+     }
+    ],
+    "clock": "2026-11-07 11:05",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "重启目标",
+    "delta": "由养伤转向主动重启"
+   }
+  },
+  {
+   "case_id": "E185_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了，分离乳清见底了，官方店搞活动，三罐比上次便宜六十，拼不拼单？",
+      "ts": "2026-11-10 12:30"
+     }
+    ],
+    "clock": "2026-11-10 12:35",
+    "may_decline": true
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "回扣补剂话题，轻松"
+   }
+  },
+  {
+   "case_id": "E185_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下周二就是二四制第一次正课，空杆我也去。你那天能来吗？说真的，我有点虚。",
+      "ts": "2026-11-14 18:40"
+     }
+    ],
+    "clock": "2026-11-14 18:45",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "求陪，罕见示弱"
+   }
+  },
+  {
+   "case_id": "E185_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "装备塞包里了，腰托也带上了。明晚练完请你吃牛肉面，加俩蛋那种。",
+      "ts": "2026-11-16 07:50"
+     }
+    ],
+    "clock": "2026-11-16 07:55",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "重启前夜，关系升温"
+   }
+  }
+ ]
+}

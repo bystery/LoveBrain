@@ -1,0 +1,166 @@
+{
+ "episode_id": "E056",
+ "persona": {
+  "her": {
+   "name": "满满",
+   "traits": ["爱操心", "安排控", "出远门必列清单", "怕欠人情"],
+   "boundaries": ["安排要白纸黑字", "欠人情要还双份", "猫的事不让步"]
+  },
+  "me": {
+   "name": "阿则",
+   "traits": ["她的行程与交接清单外挂", "补漏洞不抢拍板", "复盘不居功"]
+  },
+  "relationship_stage": "长期熟人"
+ },
+ "initial_kb": {
+  "her": "满满，29岁，养了两岁橘白猫'豆包'，猫粮早晚各一顿，罐头一天半个。11月12-15日要去外地参加大学室友的婚礼，行程四天。",
+  "me": "我记着满满的日程：11月12-15日外地婚礼行程；豆包日常口粮早晚各一顿，罐头一天半个。",
+  "warmth": "长期熟人，她习惯把安排扔给我复盘，我补漏洞她认账，互相损但账目分明。"
+ },
+ "turns": [
+  {
+   "case_id": "E056_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-10-31 12:15", "text": "请柬来了！！阿岚婚礼定在11月12到15号，得请四天假，高兴归高兴，豆包怎么办啊，四天呢，我家祖宗离了人饭都不好好吃"}
+    ],
+    "clock": "2026-10-31 12:20",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "喜忧参半", "warmth": "high", "shift": "喜事引出寄养难题"}
+  },
+  {
+   "case_id": "E056_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-01 18:40", "text": "我先问了小鹿，她一口答应，说四天都包了，天天上门铲屎喂饭，我感动得差点当场给她磕一个"}
+    ],
+    "clock": "2026-11-01 18:45",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "感动", "warmth": "high", "shift": "第三方小鹿全包承诺入场"}
+  },
+  {
+   "case_id": "E056_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-03 20:11", "text": "常去的那家宠物店也问了，四天三百二含独间，就是周日不接返，我得周一才能接，价格和时间都输给小鹿了，先当备胎吧"}
+    ],
+    "clock": "2026-11-03 20:16",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "精明盘算", "warmth": "high", "shift": "宠物店成为备选方案"}
+  },
+  {
+   "case_id": "E056_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-05 19:33", "text": "我妈知道以后非说寄养不靠谱，要豆包去她家住，可我爸猫毛过敏，打个喷嚏能掀翻屋顶，她俩一个坚持一个遭罪，我夹中间头都大了"}
+    ],
+    "clock": "2026-11-05 19:38",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "夹心饼干", "warmth": "medium-high", "shift": "第三方诉求冲突：母亲坚持、父亲过敏"}
+  },
+  {
+   "case_id": "E056_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-06 21:20", "text": "我想了个折中：小鹿12号13号上门喂，14号我妈过来住一晚看猫顺便看看我新房子，15号中午航班我飞回来接手，你帮我把交接事项记个清单，我明天发给小鹿"}
+    ],
+    "clock": "2026-11-06 21:26",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "拍板", "warmth": "high", "shift": "分工初案成形，请 ME 记清单"}
+  },
+  {
+   "case_id": "E056_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 10:05", "text": "计划有变！小鹿13号家里有事来不了，只能保证12号一整天，13号全空了，我头皮发麻"}
+    ],
+    "clock": "2026-11-08 10:10",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "头皮发麻", "warmth": "medium", "shift": "第三方变卦，13日出现空档"}
+  },
+  {
+   "case_id": "E056_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-08 16:29", "text": "给我妈打电话，她答应13号下午过来住到15号早上，但13号早上有广场舞汇演走不开，13号白天小鹿和我妈都够不着，还得想辙"}
+    ],
+    "clock": "2026-11-08 16:34",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "排兵布阵", "warmth": "medium-high", "shift": "母亲时间窗明确，13日上午仍空"}
+  },
+  {
+   "case_id": "E056_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-09 19:52", "text": "排好了：12号小鹿上门早晚各一趟，13号上午自动喂食器顶一顿，我妈下午到岗住到15号早上，15号中午我落地接盘，缝隙全堵上了，豆包的档期比我赶婚礼还满"}
+    ],
+    "clock": "2026-11-09 19:58",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "大功告成", "warmth": "high", "shift": "分工定稿，空档被堵上"}
+  },
+  {
+   "case_id": "E056_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-11 21:41", "text": "清单你核一下：猫粮早晚一顿、罐头一天半个、猫砂两天一铲、免疫本在电视柜第二个抽屉，我妈那边备了抗过敏药，还有啥漏的？明早八点的高铁"}
+    ],
+    "clock": "2026-11-11 21:46",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "临行检查", "warmth": "high", "shift": "出发前夜清单核对"}
+  },
+  {
+   "case_id": "E056_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-12 08:55", "text": "人在高铁上了，早上交接完小鹿说豆包冲她打了招呼，没炸毛，我悬着的石头先落地一半，婚礼我尽量给你们录视频"}
+    ],
+    "clock": "2026-11-12 09:00",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "石头落地一半", "warmth": "high", "shift": "首日交接顺利"}
+  },
+  {
+   "case_id": "E056_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-14 21:23", "text": "战报：我妈和豆包已和平共处，我爸躲在卧室戴口罩看球，说这是他近年离猫最近的一次，我妈拍了豆包睡她枕头的照片，笑死"}
+    ],
+    "clock": "2026-11-14 21:28",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "看戏模式", "warmth": "high", "shift": "第三方格局稳定，喜剧化"}
+  },
+  {
+   "case_id": "E056_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {"role": "HER", "ts": "2026-11-15 18:47", "text": "到家！豆包在门口蹲我，喜糖给小鹿留了双份，这回多亏排班排得细，下次短差就抄这套模板，你那个清单我要设成固定栏目了"}
+    ],
+    "clock": "2026-11-15 18:52",
+    "may_decline": false
+   },
+   "feedback": {"her_state": "圆满", "warmth": "high", "shift": "方案闭环沉淀为模板，自然收尾"}
+  }
+ ]
+}

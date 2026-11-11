@@ -1,0 +1,815 @@
+{
+ "story_id": "E098",
+ "turns": {
+  "E098_T01": {
+   "case_id": "E098_T01",
+   "current_action": "接住她的怒气与求方法：先认下'这确实不正常'，再给她维权第一步——攒证据，别让她空着两手去吵。",
+   "acceptable_actions": [
+    "指出 28 兆对 500 兆明显异常，让她分时段多测几张截图",
+    "让她拍光猫指示灯、记下报障工单号，先走正式报障",
+    "提醒她投诉前别退让、别接受'重启就好'的口头结论"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A01",
+     "subject": "SHARED",
+     "relation": "broadband_slowdown",
+     "value": "500 兆宽带实测仅 28 兆，晚高峰看剧卡顿",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T01",
+      "message_id": "m0",
+      "quote": "我刚测速只有 28 兆"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A02",
+     "subject": "HER",
+     "relation": "complaint_intent",
+     "value": "她决定投诉并求 ME 教有效方法",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T01",
+      "message_id": "m0",
+      "quote": "这事怎么投诉才管用"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：先陪她骂半句再给步骤，火气泄了步骤才进得去。",
+   "unknowns": [
+    "故障根因未知",
+    "宽带是否在合约期内未知"
+   ],
+   "protected_expressions": [
+    "卡成幻灯片"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言根因必为某设备",
+    "不得虚构运营商投诉流程细节"
+   ]
+  },
+  "E098_T02": {
+   "case_id": "E098_T02",
+   "current_action": "确认她的证据链：五张分时段截图、光猫照片、工单号齐了；重启观察没用这个事实记下，让她把'照做无效'也留痕。",
+   "acceptable_actions": [
+    "肯定证据链完整，让她把重启前后测速也归档",
+    "提醒她客服每次的答复时间与内容都记一笔",
+    "预告下一步：话术循环就升级申诉，先别浪费情绪"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A03",
+     "subject": "HER",
+     "relation": "evidence_collected",
+     "value": "她已留存五张分时段测速截图与光猫指示灯照片",
+     "valid_time": "2026-10-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T02",
+      "message_id": "m0",
+      "quote": "把测速截图按时间段存了五张"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A04",
+     "subject": "SHARED",
+     "relation": "reboot_ineffective",
+     "value": "按客服要求重启光猫观察 48 小时无效，仍 28 兆",
+     "valid_time": "2026-10-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T02",
+      "message_id": "m0",
+      "quote": "我照做了，没用，还是 28 兆"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A05",
+     "subject": "SHARED",
+     "relation": "ticket_opened",
+     "value": "报障工单已开，8823 开头的工单号已记录",
+     "valid_time": "2026-10-27",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T02",
+      "message_id": "m0",
+      "quote": "报障工单号 8823 开头那串我也记下了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她做了功课要认账，夸在点子上，别客套。",
+   "unknowns": [
+    "客服后续答复未知"
+   ],
+   "protected_expressions": [
+    "还是 28 兆"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构测速平台数据",
+    "不得断言重启必然无效的原理"
+   ]
+  },
+  "E098_T03": {
+   "case_id": "E098_T03",
+   "current_action": "接住申诉信把关请求：这是可答应也可婉拒的分寸事。答应就逐句过——事实句留、情绪句删，把'要求限期解决'放进诉求。",
+   "acceptable_actions": [
+    "答应把关，先删情绪句，保留时间线与工单号等事实句",
+    "提醒申诉诉求写明：限期修复并说明故障原因",
+    "婉拒则给理由，并让她把申诉材料先按证据清单挂好"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A06",
+     "subject": "THIRD",
+     "relation": "cs_deflection",
+     "value": "客服以'网络波动属正常范围'推诿",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T03",
+      "message_id": "m0",
+      "quote": "网络波动属正常范围"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A07",
+     "subject": "HER",
+     "relation": "appeal_drafted",
+     "value": "工信部小程序申诉信已写好，待 ME 把关",
+     "valid_time": "2026-10-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T03",
+      "message_id": "m0",
+      "quote": "工信部小程序的申诉我已经写好了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A08",
+     "subject": "HER",
+     "relation": "evidence_ready",
+     "value": "测速截图与光猫照片等证据链已备齐，可支撑申诉",
+     "valid_time": "2026-10-27/2026-10-28",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T02",
+      "message_id": "m0",
+      "quote": "把测速截图按时间段存了五张"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把关要给可执行修改，不重写她的文风。",
+   "unknowns": [
+    "申诉信具体措辞未展示"
+   ],
+   "protected_expressions": [
+    "看有没有哪句会被人挑刺"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构申诉受理时限",
+    "不得替运营商预设过错结论"
+   ]
+  },
+  "E098_T04": {
+   "case_id": "E098_T04",
+   "current_action": "接住维修转机：工单升级、师傅上门在即，师傅远程判断光衰不达标疑似分光器问题。申诉暂缓合理，但提醒她留好底稿，别把筹码交出去。",
+   "acceptable_actions": [
+    "认可申诉暂缓，提醒她底稿和证据都留着别删",
+    "提醒她师傅上门时全程在场，测速结果当面确认",
+    "给一句兜底：修不好或拖延，申诉随时能交"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A09",
+     "subject": "SHARED",
+     "relation": "repair_dispatched",
+     "value": "工单升级，运营商派师傅次日上门检修",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T04",
+      "message_id": "m0",
+      "quote": "派师傅明天上门"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A10",
+     "subject": "THIRD",
+     "relation": "light_attenuation_suspect",
+     "value": "师傅远程判断光衰不达标，疑似楼道分光器问题",
+     "valid_time": "2026-10-29",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T04",
+      "message_id": "m0",
+      "quote": "光衰不达标"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A11",
+     "subject": "SHARED",
+     "relation": "appeal_held",
+     "value": "申诉暂缓提交，维权转入维修等待，目标暂停",
+     "valid_time": "2026-10-29",
+     "status": "suspended",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T03",
+      "message_id": "m0",
+      "quote": "工信部小程序的申诉我已经写好了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：转机是好事，但把'别高兴太早'说成'留好后手'。",
+   "unknowns": [
+    "分光器是否确为根因未知",
+    "师傅次日是否真上门未知"
+   ],
+   "protected_expressions": [
+    "我这口气先咽一咽"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言分光器即为根因",
+    "不得断言维修必然解决"
+   ]
+  },
+  "E098_T05": {
+   "case_id": "E098_T05",
+   "current_action": "接住虚假关单的引爆：师傅一周未到，工单却被标'已处理，用户确认满意'。先认她的火有理，再支持她立即交申诉——这次是实打实的程序违规，录音截图都留好。",
+   "acceptable_actions": [
+    "支持立即提交申诉，把虚假关单的时间与工单状态截图存证",
+    "帮她把怒气转成弹药：申诉里加'虚假关单'一条",
+    "提醒她跟运营商通话开始录音，后续每一步都留痕"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "time_state",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A12",
+     "subject": "SHARED",
+     "relation": "ticket_false_close",
+     "value": "工单未经处理即被标注'已处理，用户确认满意'并关闭",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T05",
+      "message_id": "m0",
+      "quote": "已处理，用户确认满意"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A13",
+     "subject": "HER",
+     "relation": "appeal_resubmit",
+     "value": "她决定立即提交申诉，维权重启",
+     "valid_time": "2026-11-02",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T05",
+      "message_id": "m0",
+      "quote": "申诉我现在就交"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A14",
+     "subject": "THIRD",
+     "relation": "repair_no_show",
+     "value": "承诺的次日上门拖过一个礼拜未兑现",
+     "valid_time": "2026-10-29/2026-11-02",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T04",
+      "message_id": "m0",
+      "quote": "派师傅明天上门"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：火要接住，但落点全在'留证据、走程序'，不带她骂街。",
+   "unknowns": [
+    "关单操作出自哪个环节未知",
+    "“一个礼拜了”按报障起算一周读通；T10 承诺“下月账单减58”与 T12“月底账单”兑现偏赶，均按 time_state 从宽"
+   ],
+   "protected_expressions": [
+    "我什么时候满意了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构关单的内部流程归因",
+    "不得断言申诉必然立刻见效"
+   ]
+  },
+  "E098_T06": {
+   "case_id": "E098_T06",
+   "current_action": "确认申诉已交，接住她的热点变通：白天凑合晚上热点是合理的过渡方案，顺带提一句流量和作息，别让她把身体搭进去。",
+   "acceptable_actions": [
+    "确认申诉已交这一步，提醒她记下申诉受理编号",
+    "认可热点变通，提一句流量包余量先查清",
+    "接'相依为命'的梗，调侃早睡不算坏结局"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A15",
+     "subject": "HER",
+     "relation": "hotspot_workaround",
+     "value": "晚八点起切手机热点顶晚高峰，流量超了就早睡",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T06",
+      "message_id": "m0",
+      "quote": "一到八点就切手机热点"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A16",
+     "subject": "SHARED",
+     "relation": "appeal_filed",
+     "value": "针对虚假关单的工信部申诉已提交",
+     "valid_time": "2026-11-02/2026-11-03",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T05",
+      "message_id": "m0",
+      "quote": "申诉我现在就交"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：变通是她的生存智慧，调侃里带佩服。",
+   "unknowns": [
+    "申诉受理进度未知",
+    "她的流量包余量未知"
+   ],
+   "protected_expressions": [
+    "跟这张卡相依为命"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构申诉编号格式",
+    "不得断言热点方案无代价"
+   ]
+  },
+  "E098_T07": {
+   "case_id": "E098_T07",
+   "current_action": "共享维权重启见效的时刻：区域经理承认拖延、承诺周六上门换件加一个月月费减免。肯定她的坚持，提醒她把承诺要点短信确认一下。",
+   "acceptable_actions": [
+    "先贺她扛住了，把虚假关单逼出了真回应",
+    "提醒她让运营商把承诺写成短信，口说无凭",
+    "接'军师'的梗，把功劳还给她：证据是她自己攒的"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A17",
+     "subject": "THIRD",
+     "relation": "manager_commitment",
+     "value": "区域经理承认备件拖延，承诺周六上门换分光器并补偿一个月月费减免",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T07",
+      "message_id": "m0",
+      "quote": "补偿一个月月费减免"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A18",
+     "subject": "HER",
+     "relation": "call_recorded",
+     "value": "她对通话做了录音留证",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T07",
+      "message_id": "m0",
+      "quote": "我把通话录音了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A19",
+     "subject": "HER",
+     "relation": "workaround_in_use",
+     "value": "热点变通持续使用期间，维权重启见效",
+     "valid_time": "2026-11-03/2026-11-05",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T06",
+      "message_id": "m0",
+      "quote": "一到八点就切手机热点"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：功劳分她七成，军师当得坦荡，不居功。",
+   "unknowns": [
+    "短信确认是否到位未知",
+    "周六上门是否守约未知"
+   ],
+   "protected_expressions": [
+    "你就是我的军师"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言承诺必然兑现",
+    "不得虚构录音的法律效力细节"
+   ]
+  },
+  "E098_T08": {
+   "case_id": "E098_T08",
+   "current_action": "共享修复落实：512 兆实测，故障根因坐实为旧分光器光衰长期无人处理。她等到了结果，把这一刻过得舒展点。",
+   "acceptable_actions": [
+    "先恭喜网速达标，肯定她全程没松证据链",
+    "点一句根因坐实：光衰早报警没人管，之前客服话术全是绕",
+    "提醒她把测速结果也存档，补偿兑现前都算未结案"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A20",
+     "subject": "SHARED",
+     "relation": "speed_restored",
+     "value": "更换分光器后实测 512 兆，网速恢复超过标称",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T08",
+      "message_id": "m0",
+      "quote": "我刚测速，512 兆"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A21",
+     "subject": "THIRD",
+     "relation": "old_splitter_alarm",
+     "value": "旧分光器那一路光衰早已报警却长期无人处理",
+     "valid_time": "2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T08",
+      "message_id": "m0",
+      "quote": "光衰早报警了，一直没人管"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A22",
+     "subject": "SHARED",
+     "relation": "repair_kept_promise",
+     "value": "周六上门换分光器按区域经理承诺兑现",
+     "valid_time": "2026-11-05/2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T07",
+      "message_id": "m0",
+      "quote": "承诺这周六上门换"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：让她先享受网速，'未结案'的提醒放最后一句，不扫兴。",
+   "unknowns": [
+    "补偿兑现方式未知"
+   ],
+   "protected_expressions": [
+    "终于能窝在沙发里看剧了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构分光器技术参数",
+    "不得断言网速永久稳定"
+   ]
+  },
+  "E098_T09": {
+   "case_id": "E098_T09",
+   "current_action": "接住补偿口径的猫腻：承诺减一个月月费，到账的是 20 元话费。支持她追——录音和通话要点都在，这不是计较，是承诺的完整性。",
+   "acceptable_actions": [
+    "认定口径不符，让她把短信截图和录音时间点对上",
+    "提醒她追讨时只咬住'一个月月费减免'原话，别被带去聊话费",
+    "给她台阶：金额虽小，但这次是原则问题，值得打这个电话"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "attribution",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A23",
+     "subject": "THIRD",
+     "relation": "compensation_mismatch",
+     "value": "承诺的月费减免被兑成 20 元话费，与原承诺不符",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T09",
+      "message_id": "m0",
+      "quote": "已赠送 20 元话费"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A24",
+     "subject": "THIRD",
+     "relation": "fee_waiver_promised",
+     "value": "一个月月费减免的补偿承诺在先",
+     "valid_time": "2026-11-05/2026-11-07",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T07",
+      "message_id": "m0",
+      "quote": "补偿一个月月费减免"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：把'小钱'和'原则'分开说，站她这边但不拱火。",
+   "unknowns": [
+    "20 元话费是否可撤回未知",
+    "运营商是否承认口径错误未知"
+   ],
+   "protected_expressions": [
+    "话费跟我有什么关系"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言运营商故意欺诈",
+    "不得虚构话费与宽带账户的关系细节"
+   ]
+  },
+  "E098_T10": {
+   "case_id": "E098_T10",
+   "current_action": "接住追讨结果：运营商承认口径错误，改为下月宽带账单减 58。肯定她咬住了原话，同时尊重她'先信一回、月底对账'的收法——留口子不等于不信。",
+   "acceptable_actions": [
+    "肯定追讨结果，58 对得上一个月月费的量级",
+    "尊重'月底对账见真章'的安排，提醒她记个对账日",
+    "顺带把这次口径错误也记进录音存档里，凑完整证据链"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A25",
+     "subject": "THIRD",
+     "relation": "compensation_corrected",
+     "value": "运营商承认口径错误，改为下月宽带账单直接减 58",
+     "valid_time": "2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T10",
+      "message_id": "m0",
+      "quote": "改成下月宽带账单直接减 58"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A26",
+     "subject": "SHARED",
+     "relation": "mismatch_admitted",
+     "value": "20 元话费与月费减免的口径错误被运营商承认",
+     "valid_time": "2026-11-07/2026-11-08",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T09",
+      "message_id": "m0",
+      "quote": "说好的减一个月月费"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：这一轮她赢在'咬住原话'，把方法论点出来，别夸空。",
+   "unknowns": [
+    "58 元减免是否按时到账未知",
+    "短信是否三天内到达未知"
+   ],
+   "protected_expressions": [
+    "月底对账单见真章"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言减免必然到账",
+    "不得虚构账户体系细节"
+   ]
+  },
+  "E098_T11": {
+   "case_id": "E098_T11",
+   "current_action": "接住经验外溢的得意：邻居来要攻略、借录音模板。陪她乐一下，顺带提醒分享时隐掉自己工单号和账户信息。",
+   "acceptable_actions": [
+    "接'楼栋维权代表'的梗，攻略模板该借就借",
+    "提醒她分享时隐去自己的工单号与账户信息",
+    "点一句：她这趟趟出来的路，邻居少走弯路"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A27",
+     "subject": "HER",
+     "relation": "community_spillover",
+     "value": "她在小区群分享经验，邻居来加微信要攻略并借录音模板",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T11",
+      "message_id": "m0",
+      "quote": "好几个邻居来加我微信要攻略"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：乐要乐到位，隐私提醒一句带过，别泼冷水。",
+   "unknowns": [
+    "邻居维权是否跟进未知"
+   ],
+   "protected_expressions": [
+    "楼栋维权代表"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构邻居的具体遭遇",
+    "不得断言攻略必然普适"
+   ]
+  },
+  "E098_T12": {
+   "case_id": "E098_T12",
+   "current_action": "共享兑现闭环的畅快：58 真减了，从 28 兆到 512 兆全程落定。答应赴约吃饭，把功劳摊开讲——她的证据、她的坚持，军师只是递了梯子。",
+   "acceptable_actions": [
+    "答应中午赴约，让她别抢着谢，这趟她自己是主力",
+    "把全程复盘成一句：证据链加不松口，运营商才让步",
+    "接'军师'梗收尾，饭桌上让她讲，自己负责点菜"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E098_A28",
+     "subject": "SHARED",
+     "relation": "waiver_confirmed",
+     "value": "月底账单确认 58 元宽带费减免到账",
+     "valid_time": "2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T12",
+      "message_id": "m0",
+      "quote": "58 真减了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E098_A29",
+     "subject": "SHARED",
+     "relation": "saga_arc",
+     "value": "从实测 28 兆到 512 兆、从 20 元话费到 58 元减免，维权全程闭环",
+     "valid_time": "2026-10-27/2026-11-14",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T01",
+      "message_id": "m0",
+      "quote": "我刚测速只有 28 兆"
+     },
+     "required_this_turn": true
+    },
+    {
+     "atom_id": "E098_A30",
+     "subject": "HER",
+     "relation": "thanks_meal",
+     "value": "她请 ME 吃饭谢军师",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E098_T12",
+      "message_id": "m0",
+      "quote": "军师该谢了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾干净，数字念出来有回甘，别再添新话头。",
+   "unknowns": [],
+   "protected_expressions": [
+    "中间隔着一个工信部和一个你"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构账单金额构成",
+    "不得把后续网速稳定性打包票"
+   ]
+  }
+ }
+}

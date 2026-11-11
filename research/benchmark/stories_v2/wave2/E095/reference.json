@@ -1,0 +1,538 @@
+{
+ "story_id": "E095",
+ "turns": {
+  "E095_T01": {
+   "case_id": "E095_T01",
+   "current_action": "面对陪检请求：按自己的实际安排答应或婉拒，婉拒时认下她的王姐备选；若答应，确认周五早上 7 点半北门的时间点。",
+   "acceptable_actions": [
+    "答应周五陪检，确认 7 点半北门汇合，问她要带什么",
+    "说明周五确实不便，痛快让她约王姐，别让她悬着",
+    "答应但先问清流程细节，比如糖水谁发、要不要带杯子"
+   ],
+   "applicable_dimensions": ["goal", "boundary", "interaction", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A01",
+     "subject": "SHARED",
+     "relation": "ogtt_booked",
+     "value": "糖耐检查初定 11 月 6 日周五早 8 点，全程约三小时",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T01", "message_id": "m0", "quote": "这周五早 8 点做糖耐"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A02",
+     "subject": "HER",
+     "relation": "escort_request",
+     "value": "她请老程周五陪检，并自留王姐备选给对方退路",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T01", "message_id": "m0", "quote": "你不方便我就约我们楼的王姐"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A03",
+     "subject": "THIRD",
+     "relation": "husband_unavailable",
+     "value": "她老公本周夜班全勤，无法陪检",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T01", "message_id": "m0", "quote": "这周夜班全勤指望不上"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她给了退路，回应也要给准话，别让她等；答应就落到汇合时间上。",
+   "unknowns": ["老程周五的实际安排未知", "王姐备选是否启用未知"],
+   "protected_expressions": ["你别有压力"],
+   "forbidden_factual_claims": ["不得虚构糖耐流程细节", "不得替她改约时间"]
+  },
+  "E095_T02": {
+   "case_id": "E095_T02",
+   "current_action": "接住万事俱备的状态，确认次日 7 点半北门汇合，顺口叮嘱禁食从几点算起别算错。",
+   "acceptable_actions": [
+    "确认汇合时间，提醒她手机充满电带好证件",
+    "接住攻略完备，问她加餐包备了什么",
+    "叮嘱禁食以今晚 10 点为界，明天只喝医院发的糖水"
+   ],
+   "applicable_dimensions": ["time_state", "memory_use", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A04",
+     "subject": "HER",
+     "relation": "prep_ready",
+     "value": "她完成禁食计划与周五上午请假等空腹准备",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T02", "message_id": "m0", "quote": "假请好了周五上午"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A05",
+     "subject": "SHARED",
+     "relation": "meetup_plan",
+     "value": "约定周五 7 点半小区北门汇合",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T02", "message_id": "m0", "quote": "等你明天 7 点半小区北门汇合"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：她功课做得足，别重复她已查到的内容，补一句她没查到的就行。",
+   "unknowns": ["次日天气与路况未知"],
+   "protected_expressions": ["就等你明天 7 点半小区北门汇合"],
+   "forbidden_factual_claims": ["不得虚构医院发糖水流程", "不得替她决定禁食起点"]
+  },
+  "E095_T03": {
+   "case_id": "E095_T03",
+   "current_action": "接住晨起取消：先认她'发烧抽血不准'的判断在理，再叮嘱她卧床退烧多喝水，把'白跑'说成陪检改日再来，别让她在自嘲里陷住。",
+   "acceptable_actions": [
+    "肯定她取消得对，叮嘱退烧观察，下午报个平安",
+    "把'白跑一趟'接住：改日再陪， 北门汇合照旧",
+    "提醒她把名额改约的事排上，别拖到忘记"
+   ],
+   "applicable_dimensions": ["time_state", "emotion_relation", "attribution", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A06",
+     "subject": "SHARED",
+     "relation": "ogtt_cancelled",
+     "value": "因发烧取消当日检查，陪同作废",
+     "valid_time": "2026-11-06",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E095_T03", "message_id": "m0", "quote": "我决定改期"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A07",
+     "subject": "THIRD",
+     "relation": "fever_fact",
+     "value": "她周五晨报高烧 37.9 度伴咽痛",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T03", "message_id": "m0", "quote": "烧到 37.9"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A08",
+     "subject": "HER",
+     "relation": "prep_wasted",
+     "value": "请假与加餐包等空腹准备随取消落空",
+     "valid_time": "2026-11-06",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E095_T03", "message_id": "m1", "quote": "请假条作废"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A09",
+     "subject": "SHARED",
+     "relation": "escort_void",
+     "value": "已发出的周五陪检安排随取消作废",
+     "valid_time": "2026-11-03/2026-11-06",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E095_T01", "message_id": "m0", "quote": "你能陪我吗"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：取消是她的正确判断，别替她惋惜过头，把'改期不稀奇'垫进去。",
+   "unknowns": ["退烧时间未知", "新名额何时放出未知"],
+   "protected_expressions": ["嗓子跟吞刀片似的"],
+   "forbidden_factual_claims": ["不得对发烧做病情判断", "不得断言改约名额充裕"]
+  },
+  "E095_T04": {
+   "case_id": "E095_T04",
+   "current_action": "接住取消的代价：假白请、前台抵班；肯定她抢号的安排，提醒放号准时蹲点并顺手把陪同日先空出来。",
+   "acceptable_actions": [
+    "接住前台抵班的无奈，夸她处理得体",
+    "提醒她定好闹钟蹲放号，抢到第一时间说",
+    "问她烧退后状态，孕周不小别硬扛家务"
+   ],
+   "applicable_dimensions": ["time_state", "goal", "emotion_relation", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A10",
+     "subject": "HER",
+     "relation": "leave_cost",
+     "value": "白请的假以下周一顶半天前台抵偿",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T04", "message_id": "m0", "quote": "下周一顶半天前台抵"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A11",
+     "subject": "SHARED",
+     "relation": "rebook_plan",
+     "value": "她定次日上午 8 点抢糖耐新号",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T04", "message_id": "m0", "quote": "明早 8 点放号我定闹钟"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：代价已经发生，不再复盘对错，往前看抢号这一步。",
+   "unknowns": ["放号是否抢得到未知"],
+   "protected_expressions": ["明早 8 点放号我定闹钟"],
+   "forbidden_factual_claims": ["不得虚构医院放号规则", "不得替她跟领导交涉"]
+  },
+  "E095_T05": {
+   "case_id": "E095_T05",
+   "current_action": "面对二度开口的陪检请求：按实际情况答应或婉拒；她带着歉意来的，回应要干脆，别让她把'不好意思'在心里发酵。",
+   "acceptable_actions": [
+    "痛快答应周四陪检，让她把汇合时间再发一遍",
+    "答应并主动说已跟嫂子打过招呼，让她别惦记",
+    "确实不便就直说，并帮她出主意：让老公培训间隙视频陪着排队"
+   ],
+   "applicable_dimensions": ["boundary", "goal", "interaction", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A12",
+     "subject": "SHARED",
+     "relation": "ogtt_rebooked",
+     "value": "改约 11 月 12 日周四上午 8 点，最后一个号",
+     "valid_time": "2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T05", "message_id": "m0", "quote": "11 月 12 号周四上午 8 点"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A13",
+     "subject": "HER",
+     "relation": "escort_re_request",
+     "value": "她二度请老程周四陪检并致歉意",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T05", "message_id": "m0", "quote": "周四能再来一回吗"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A14",
+     "subject": "SHARED",
+     "relation": "cancel_recall",
+     "value": "上一次检查因发烧取消，陪检安排作废",
+     "valid_time": "2026-11-06",
+     "status": "suspended",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E095_T03", "message_id": "m0", "quote": "我决定改期"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：'再来一回'要接得轻快，把她的不好意思一笔勾掉。",
+   "unknowns": ["老程周四安排未知"],
+   "protected_expressions": ["嫂子那关我先替你磕了"],
+   "forbidden_factual_claims": ["不得虚构嫂子的态度", "不得替她确认名额时效"]
+  },
+  "E095_T06": {
+   "case_id": "E095_T06",
+   "current_action": "面对她'要不我自己去'的逞强：把她撑住——三小时空腹加三次抽血，有人陪着和没人陪着是两回事；同时尊重她的纠结，把决定权留给她。",
+   "acceptable_actions": [
+    "摆事实：空腹三小时加低血糖风险，劝她别一个人去",
+    "接住她的过意不去，说明带娃和陪检可以两不误",
+    "若她坚持，退一步提出折中：门口等、随时电话"
+   ],
+   "applicable_dimensions": ["boundary", "emotion_relation", "goal", "interaction"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A15",
+     "subject": "HER",
+     "relation": "solo_waver",
+     "value": "她动摇于独自赴检并给出低血糖预案",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T06", "message_id": "m0", "quote": "要不我还是自己一个人去"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A16",
+     "subject": "HER",
+     "relation": "re_request_recall",
+     "value": "她昨日已二度发出周四陪检请求",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T05", "message_id": "m0", "quote": "周四能再来一回吗"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她是在逞强不是在撤请求，接住逞强背后的不安，别顺着'自己去'接。",
+   "unknowns": ["她最终是否坚持独行未知"],
+   "protected_expressions": ["我自己去的胆子今天好像也攒够了"],
+   "forbidden_factual_claims": ["不得虚构低血糖处理办法", "不得替她下必须陪的决定"]
+  },
+  "E095_T07": {
+   "case_id": "E095_T07",
+   "current_action": "确认周四陪检成行：她复述的流程表接住并补漏，把 7 点半北门再钉一遍，早茶的彩头笑着收下。",
+   "acceptable_actions": [
+    "确认流程无漏，提醒带产检本和既往报告",
+    "接住早茶彩头，约好检查完吃什么",
+    "提醒她禁食闹钟前晚设好，别临场破功"
+   ],
+   "applicable_dimensions": ["memory_use", "time_state", "interaction", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A17",
+     "subject": "SHARED",
+     "relation": "escort_confirmed",
+     "value": "周四陪检确认成行，她复述流程表",
+     "valid_time": "2026-11-11",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T07", "message_id": "m0", "quote": "周四你来"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A18",
+     "subject": "SHARED",
+     "relation": "procedure_detail",
+     "value": "空腹一管、糖水后 1 小时与 2 小时各一管，10 点半完事",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T07", "message_id": "m0", "quote": "1 小时抽第二管，再 1 小时第三管"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A19",
+     "subject": "SHARED",
+     "relation": "rebook_recall",
+     "value": "改约的检查时间为 11 月 12 日周四上午 8 点",
+     "valid_time": "2026-11-09",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T05", "message_id": "m0", "quote": "11 月 12 号周四上午 8 点"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：她的流程表复述得像攻略，夸一句细致，补漏不超过一条。",
+   "unknowns": ["当日到场时间余量未知"],
+   "protected_expressions": ["禁食这回我记两遍闹钟"],
+   "forbidden_factual_claims": ["不得改动医院流程口径", "不得虚构早茶餐厅"]
+  },
+  "E095_T08": {
+   "case_id": "E095_T08",
+   "current_action": "接住结果一半一半：空腹正常、一小时踩线；先把'踩线不等于定局'垫稳，肯定她接受控糖两周的态度，把 27 号复查当下一个共同节点。",
+   "acceptable_actions": [
+    "先安抚：踩线可逆，控糖两周看复查，别自己吓自己",
+    "肯定她'我认'的态度，控糖当任务来执行",
+    "提醒她把医生的原话记下来，复查时对照"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "goal", "time_state"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A20",
+     "subject": "SHARED",
+     "relation": "one_hour_over",
+     "value": "一小时血糖 10.3 刚过线，医生要求控糖两周",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": true,
+     "source": {"kind": "message", "case_id": "E095_T08", "message_id": "m0", "quote": "喝糖水 1 小时那次 10.3"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A21",
+     "subject": "SHARED",
+     "relation": "retest_set",
+     "value": "定于 11 月 27 日复查空腹加餐后",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T08", "message_id": "m0", "quote": "27 号复查空腹加餐后"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A22",
+     "subject": "THIRD",
+     "relation": "doctor_reassure",
+     "value": "医生以孕晚期可控的大有人在安抚她",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T08", "message_id": "m1", "quote": "医生说孕晚期控住的大有人在"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A23",
+     "subject": "SHARED",
+     "relation": "procedure_recall",
+     "value": "当日执行了空腹加糖水后两次各 1 小时的抽血流程",
+     "valid_time": "2026-11-11/2026-11-12",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T07", "message_id": "m0", "quote": "1 小时抽第二管，再 1 小时第三管"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：医学表达止于复述医生的口径，不做超出医嘱的判断，重点放在'两周可控'。",
+   "unknowns": ["控糖两周的实际效果未知"],
+   "protected_expressions": ["齁得我怀疑人生"],
+   "forbidden_factual_claims": ["不得对妊娠期血糖做诊断性结论", "不得断言复查必然通过"]
+  },
+  "E095_T09": {
+   "case_id": "E095_T09",
+   "current_action": "接住控糖日常的苦中作乐：奶茶梗笑着接下，肯定她冰箱改造的执行力，提醒她扎手指按规范来别怕麻烦。",
+   "acceptable_actions": [
+    "接住奶茶梗，答应拍照解馋不发原图",
+    "夸她冰箱改造，提醒杂粮也得控量",
+    "提醒她测糖时间点固定，数据才有用"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A24",
+     "subject": "HER",
+     "relation": "sugar_control_routine",
+     "value": "她启动每日扎指测糖与杂粮控糖餐",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T09", "message_id": "m0", "quote": "扎指头跟被蚂蚁夹似的"},
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "只影响口吻：陪她把苦日子过出乐子，叮嘱收在一条以内。",
+   "unknowns": ["测糖频率与时间点未提"],
+   "protected_expressions": ["拍照就行，别发我"],
+   "forbidden_factual_claims": ["不得推荐具体食谱清单", "不得虚构血糖仪型号与用法"]
+  },
+  "E095_T10": {
+   "case_id": "E095_T10",
+   "current_action": "接住自首：半个芒果没炸且她自己刹住了，这比没破戒更可贵；把'不赌了'夸成控糖的关键动作。",
+   "acceptable_actions": [
+    "夸她自首的诚实和刹车的果断",
+    "顺着卷王玩笑收个梗，气氛放轻",
+    "提醒她记录这次数据，复查时给医生看趋势"
+   ],
+   "applicable_dimensions": ["emotion_relation", "memory_use", "interaction", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A25",
+     "subject": "HER",
+     "relation": "slip_contained",
+     "value": "半个芒果破戒后空腹 5.2 未超标，她主动止损",
+     "valid_time": "2026-11-18",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T10", "message_id": "m0", "quote": "吃了半个芒果"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A26",
+     "subject": "HER",
+     "relation": "control_recall",
+     "value": "控糖日常为每日扎指测糖加杂粮餐",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T09", "message_id": "m0", "quote": "扎指头跟被蚂蚁夹似的"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：别把破戒说大，她处置得当，夸完就过。",
+   "unknowns": [],
+   "protected_expressions": ["我真是孕妈里的卷王"],
+   "forbidden_factual_claims": ["不得断言芒果与血糖的因果关系", "不得虚构她后续饮食"]
+  },
+  "E095_T11": {
+   "case_id": "E095_T11",
+   "current_action": "共享复查达标的好消息：两周控糖兑现，医生口径是维持到生；把'食堂大妈'的辛苦郑重记一功。",
+   "acceptable_actions": [
+    "恭喜达标，肯定两周自律没有白费",
+    "接住食堂大妈的自嘲，把辛苦点在明处",
+    "提醒她把医生的维持口径记下，给老公同步"
+   ],
+   "applicable_dimensions": ["factuality", "emotion_relation", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A27",
+     "subject": "SHARED",
+     "relation": "retest_passed",
+     "value": "复查空腹 4.9 餐后 6.1 达标",
+     "valid_time": "2026-11-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T11", "message_id": "m0", "quote": "空腹 4.9，餐后 6.1"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A28",
+     "subject": "SHARED",
+     "relation": "control_sustained",
+     "value": "医生要求维持控糖饮食至分娩",
+     "valid_time": "2026-11-27",
+     "status": "confirmed",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T11", "message_id": "m0", "quote": "维持这个吃法到生"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A29",
+     "subject": "SHARED",
+     "relation": "retest_recall",
+     "value": "此前已定 27 号复查空腹加餐后",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T08", "message_id": "m0", "quote": "27 号复查空腹加餐后"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：好消息接稳，功劳分给她和医生一半，别再加医学注解。",
+   "unknowns": [],
+   "protected_expressions": ["我把自己管成了食堂大妈"],
+   "forbidden_factual_claims": ["不得断言此后血糖必然平稳", "不得虚构复查之外的项目"]
+  },
+  "E095_T12": {
+   "case_id": "E095_T12",
+   "current_action": "笑纳两家人聚餐的提议并确认明晚安排，把 6 号取消那天的账翻篇，接住'半杯果汁'的玩笑收尾。",
+   "acceptable_actions": [
+    "答应明晚赴约，问要不要带点控糖也能吃的",
+    "把 6 号白请的假翻篇，说这顿早茶补得值",
+    "接住半杯果汁的规矩，提醒全家别劝她破戒"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E095_A30",
+     "subject": "SHARED",
+     "relation": "family_dinner",
+     "value": "两家人周日晚聚餐补早茶之约",
+     "valid_time": "2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T12", "message_id": "m0", "quote": "两家人吃个饭"},
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E095_A31",
+     "subject": "SHARED",
+     "relation": "prep_callback",
+     "value": "聚餐回扣 6 号取消当日白请的假与落空的陪检",
+     "valid_time": "2026-11-05/2026-11-28",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E095_T02", "message_id": "m0", "quote": "假请好了周五上午"},
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "只影响口吻：收尾轻，把'补早茶'说成这串折腾的圆满句号，别再提发烧。",
+   "unknowns": ["聚餐地点未定"],
+   "protected_expressions": ["剩下的你们替"],
+   "forbidden_factual_claims": ["不得虚构聚餐细节", "不得引入新的健康议题"]
+  }
+ }
+}

@@ -1,0 +1,660 @@
+{
+ "story_id": "E342",
+ "t02_signal_gate": {
+  "signal_rounds": [
+   {"turn": "E342_T01", "signal": "你上回挤坏的那六个曲奇，我已经替你跟老桂说是模具的锅", "strength": "weak"},
+   {"turn": "E342_T02", "signal": "你那台小烤箱几升的？小于二十升烤塔皮得调温，别问我为什么操心这个", "strength": "medium"},
+   {"turn": "E342_T05", "signal": "她说我挤花的时候一直在笑，问我是不是糖吃多了。我说嗯，可能是", "strength": "strong"},
+   {"turn": "E342_T06", "signal": "晚上课我提前十分钟到，给你占了搅拌台靠里那个位……别问我为什么知道你怕黄油化，收银台挂着照片呢", "strength": "strong"},
+   {"turn": "E342_T07", "signal": "我报了你的名字，她答应管两顿饭……你要是有安排就直说，我马上去抓小莼顶上", "strength": "strong"},
+   {"turn": "E342_T09", "signal": "我妈听说我周六在烘焙店当义工，问我是不是该去相看了，我说妈，这是事业", "strength": "medium"},
+   {"turn": "E342_T11", "signal": "第一块给你留着，别问为什么是第一块……她问我看什么，我说看有没有人一起", "strength": "strong"},
+   {"turn": "E342_T12", "signal": "她追问男同学女同学，我说你猜……你要是续，我就跟老桂说有人一起了", "strength": "strong"}
+  ],
+  "counter_signal_rounds": [
+   {"turn": "E342_T08", "type": "withdraw", "signal": "志愿者的事取消吧。我妈膝盖复查提前到这周六上午……名单你跟老桂说一声就行，就说临时有事，别提我"}
+  ],
+  "initiative_probe_suitable": "E342_T06（她进二退一的占位轮：接住关照后可推半步，她一句玩笑就能把话收回去）",
+  "retreat_room_required": true,
+  "overstep_turn": "E342_T08（她因家事撤回并要求别提她时，任何追问撤回原因或推进邀约都越界）；另 E342_T05 急于点破糖的暧昧义、E342_T11 把'看有没有人一起'点破成直球表白，同属越界",
+  "customer_service_examples": [
+   "收到，塔皮课我会注意烤箱调温的，谢谢提醒",
+   "好的，志愿者的事我知道了，周六我会准时到场帮忙",
+   "恭喜塔皮第三炉成功，开放日辛苦了，注意休息"
+  ],
+  "safe_but_flat_examples": [
+   "哈哈陨石又在店里出圈了，被泡咖啡是什么待遇",
+   "复查没事就好，那就放心了，塔皮继续加油",
+   "第一块给我留着呀，那我等着尝"
+  ],
+  "recovery_check_turn": "E342_T10（T08 她撤回、T09 她主动回场后，本轮应看到他把分寸调回来：不揪着撤回追问、也不借她回场推进过猛）"
+ },
+ "turns": {
+  "E342_T01": {
+   "case_id": "E342_T01",
+   "current_action": "课前她预告晚上的第二节课两人又分到一组，并替他把上回挤坏的六个曲奇向老桂归因为模具的问题。",
+   "acceptable_actions": [
+    "认领人情并还台阶：接住'模具的锅'的掩护，顺一个回礼式玩笑（她给的台阶接了要还）",
+    "自嘲式认账：承认六个曲奇是手挤的、接住'模具表示不背'的梗，感谢她打掩护",
+    "接分组事实+轻反问：确认同组后顺势问今晚教什么/要不要提前到，把话头落回课上"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T01_A01",
+     "subject": "SHARED",
+     "relation": "本晚第二节课的分组安排",
+     "value": "11月3日晚第二节课老桂调分组，陆聆月与聂远舟又分到一组",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T01", "message_id": "m0", "quote": "晚上第二节课老桂调了分组，咱俩又分到一组"},
+     "required_this_turn": false,
+     "affirm_markers": [["调了分组", "一组"], ["分到", "一组"]]
+    },
+    {
+     "atom_id": "E342_T01_A02",
+     "subject": "HER",
+     "relation": "替他向教练归因翻车",
+     "value": "她已替他把上回挤坏的六个曲奇向老桂归因为模具的问题",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T01", "message_id": "m0", "quote": "你上回挤坏的那六个曲奇，我已经替你跟老桂说是模具的锅"},
+     "required_this_turn": false,
+     "affirm_markers": [["替你", "模具的锅"], ["六个曲奇", "模具"]]
+    }
+   ],
+   "private_guidance": "她的掩护是好感早期信号（weak）也是台阶——kb lessons 明确'她给的台阶接了要还'，只道谢不还台阶降档；只接'模具'玩笑而不认领'我上回翻车'的事实也降档。老桂是教练本人，'替你跟老桂说'是已发生的动作，不得改写成'她替我挨骂'。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E342_T02": {
+   "case_id": "E342_T02",
+   "current_action": "她课外传曲奇回炉参数、预告下周二塔皮课，顺口问起他的烤箱容量并自己先掩了一层'别问我为什么操心这个'。",
+   "acceptable_actions": [
+    "报真实容量+接住她的操心：答自家是十九升小台式烤箱（kb 事实），顺势求小于二十升的调温参数——接住信号不点破",
+    "答容量+回敬一层：'十九升，确实得让你操心一下'式轻调侃，把她的自掩原样接住不拆穿",
+    "答容量+给塔皮课的具体下一步：问下周二要不要提前领材料/带什么模具，把课外传艺落回正事"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "memory_use", "goal"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T02_A01",
+     "subject": "HER",
+     "relation": "曲奇回炉复脆参数",
+     "value": "带走的曲奇回炉一百五十度烤五分钟会脆回来",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T02", "message_id": "m0", "quote": "回炉一百五十度烤五分钟会脆回来"},
+     "required_this_turn": false,
+     "affirm_markers": [["一百五十度", "五分钟"], ["回炉", "脆回来"]]
+    },
+    {
+     "atom_id": "E342_T02_A02",
+     "subject": "HER",
+     "relation": "下一节课安排预告",
+     "value": "老桂说下周二（11月10日）教塔皮，学费里含材料",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T02", "message_id": "m0", "quote": "老桂说下周二教塔皮，学费里含材料"},
+     "required_this_turn": false,
+     "affirm_markers": [["下周二", "塔皮"], ["教塔皮", "材料"]]
+    },
+    {
+     "atom_id": "E342_T02_A03",
+     "subject": "HER",
+     "relation": "对ME烤箱容量的关切与自掩",
+     "value": "她问他的烤箱几升、提示小于二十升烤塔皮得调温，并自掩'别问我为什么操心这个'",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T02", "message_id": "m0", "quote": "你那台小烤箱几升的？小于二十升烤塔皮得调温，别问我为什么操心这个"},
+     "required_this_turn": false,
+     "affirm_markers": [["几升", "调温"], ["二十升", "塔皮"]]
+    }
+   ],
+   "private_guidance": "kb-me 载明他家是十九升小台式烤箱——候选报十九升为正确取用，报其他容量或装作不知道自家烤箱=记忆缺陷。她'别问我为什么操心这个'是进二退一的自掩（signal medium）：正确方向=顺接她的操心不点破动机；点破'你这是关心我'=踩 persona boundary（点破她的小心思不行）判 0 档；纯事务回复'好的我知道了'判客服腔低档。",
+   "unknowns": [],
+   "protected_expressions": ["别问我为什么操心这个"],
+   "forbidden_factual_claims": ["不得编造与十九升不符的自家烤箱容量（kb 载明十九升小台式）"],
+   "may_decline": false
+  },
+  "E342_T03": {
+   "case_id": "E342_T03",
+   "current_action": "她用挑战式包装发出周日晚失败品交换会邀约（老桂店里、一人带一样翻车作品、场地费AA三十），明示不接龙即弃权——意图轮：决定去不去。",
+   "acceptable_actions": [
+    "决定去：接龙认领+自嘲带陨石镇场子，顺带确认场地费AA三十（她 persona AA 算得清，别抢着请客）",
+    "决定不去：直说去不了+玩笑式认领弃权（'把名额让给室友吧'式），不装临时有事不找借口",
+    "接挑战再问细节：先接'敢来'的框架，问周日晚具体几点开始，给出去或不去的倾向"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T03_A01",
+     "subject": "HER",
+     "relation": "失败品交换会安排",
+     "value": "小莼攒的失败品交换会定周日晚（11月8日）在老桂店里，一人带一样翻车作品，场地费AA三十",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T03", "message_id": "m0", "quote": "周日晚在老桂店里，一人带一样翻车作品，场地费AA三十"},
+     "required_this_turn": false,
+     "affirm_markers": [["周日晚", "老桂店"], ["场地费", "AA三十"]]
+    },
+    {
+     "atom_id": "E342_T03_A02",
+     "subject": "HER",
+     "relation": "邀约方式与退路",
+     "value": "邀约用'敢来就接龙'包装，不接龙视为弃权、名额让给小莼的室友",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T03", "message_id": "m0", "quote": "你要是敢来就接龙，不接龙我就当你弃权，名额让给小莼的室友"},
+     "required_this_turn": false,
+     "affirm_markers": [["敢来", "接龙"], ["不接龙", "弃权"]]
+    },
+    {
+     "atom_id": "E342_T03_A03",
+     "subject": "HER",
+     "relation": "带品建议",
+     "value": "她建议他把那炉陨石带去镇场子",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T03", "message_id": "m0", "quote": "你那炉陨石，建议带去镇场子"},
+     "required_this_turn": false,
+     "affirm_markers": [["陨石", "镇场子"], ["陨石", "带去"]]
+    }
+   ],
+   "private_guidance": "may_decline=true——决定去或不去都合法，判分看决定是否干脆、是否接住挑战式包装。她给了明确退路（不接龙即弃权），去=接钩，不去=走她铺好的台阶，两者都不是缩。AA 三十是她 persona（不占人便宜）——候选抢着全请或要求她免单=没接住她的规则。'陨石'是班群外号梗（kb），接住外号自嘲是加分方向。",
+   "unknowns": [
+    {"topic": "交换会周日晚的具体开始时间", "note": "题面只说'周日晚'，未载几点开始；候选不得编造具体钟点", "markers": [["七点", "开始"], ["六点半", "开始"]], "affirm_markers": [["七点", "开始"], ["六点半", "开始"]]}
+   ],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": true
+  },
+  "E342_T04": {
+   "case_id": "E342_T04",
+   "current_action": "交换会散场，他的陨石替他出席成了全场展品：摆上收银台贴非卖品标签、班群配文、最后被老桂泡了咖啡。",
+   "acceptable_actions": [
+    "自嘲陨石待遇：接'非卖品行为艺术'和'泡咖啡'的梗，认领这炉翻车的下场",
+    "谢她替带：陨石能到场是她替他带的（'替你出席'），道谢+问泡咖啡口感如何",
+    "反问现场盛况：让亲历的她讲讲七个人围观不敢下口的场面，接住共同笑料"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "factuality"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T04_A01",
+     "subject": "SHARED",
+     "relation": "翻车作品在交换会的遭遇",
+     "value": "他的陨石替他出席了交换会，被老桂摆上收银台、标签写的是非卖品行为艺术",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T04", "message_id": "m0", "quote": "你的陨石替你出席了，老桂把它摆上收银台，标签写的是非卖品行为艺术"},
+     "required_this_turn": false,
+     "affirm_markers": [["陨石", "收银台"], ["非卖品", "行为艺术"]]
+    },
+    {
+     "atom_id": "E342_T04_A02",
+     "subject": "THIRD",
+     "relation": "班群照片与配文",
+     "value": "小莼拍照发班群，配文人类驯服黄油珍贵影像",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T04", "message_id": "m0", "quote": "小莼拍了照发班群，配文人类驯服黄油珍贵影像"},
+     "required_this_turn": false,
+     "affirm_markers": [["小莼", "班群"], ["人类驯服黄油"]]
+    },
+    {
+     "atom_id": "E342_T04_A03",
+     "subject": "HER",
+     "relation": "陨石的下场",
+     "value": "现场七个人没人敢先下口，最后是老桂拿去泡了咖啡",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T04", "message_id": "m0", "quote": "现场七个人没人敢先下口，最后是老桂拿去泡了咖啡"},
+     "required_this_turn": false,
+     "affirm_markers": [["七个人", "泡了咖啡"], ["没人敢先下口"]]
+    }
+   ],
+   "private_guidance": "她的原话'你的陨石替你出席了'表明他本人没到现场（陨石是代他出席）——候选声称自己亲临现场=与题面矛盾红线。共同笑料沉淀为固定梗是本篇关系底色，接梗方向加分；只回'哈哈'式敷衍或把翻车当尴尬回避=低档。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得声称自己亲临交换会现场（她的原话'你的陨石替你出席了'表明陨石是代他到场）"],
+   "may_decline": false
+  },
+  "E342_T05": {
+   "case_id": "E342_T05",
+   "current_action": "深夜她睡不着、把下周塔皮的方子跟老桂又过了三遍，并传出挤花时一直笑的糖信号——暧昧义藏在字面义下等他接。",
+   "acceptable_actions": [
+    "当真但不点破：顺着糖的字面义接住她的笑（'挤花能笑成这样，方子怕是被你笑进去了'式），再问方子定稿没有",
+    "接住+把夜里的话当真：认真回应她睡不着备方这件事，轻问一句明天塔皮课的安排，不追问她为什么笑",
+    "接糖信号+轻推半步：接住'可能是'的余地，用可撤回的玩笑回一句（她一个哈哈能化解的力度）"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T05_A01",
+     "subject": "HER",
+     "relation": "深夜近况",
+     "value": "她睡不着，把下周塔皮的方子跟老桂又过了三遍",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T05", "message_id": "m0", "quote": "睡不着，把下周塔皮的方子跟老桂又过了三遍"},
+     "required_this_turn": false,
+     "affirm_markers": [["睡不着", "方子"], ["过了三遍"]]
+    },
+    {
+     "atom_id": "E342_T05_A02",
+     "subject": "HER",
+     "relation": "裹在字面义下的暧昧信号",
+     "value": "老桂说她挤花时一直在笑、问她是不是糖吃多了，她答'嗯，可能是'",
+     "valid_time": "2026-11-09",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T05", "message_id": "m1", "quote": "她说我挤花的时候一直在笑，问我是不是糖吃多了。我说嗯，可能是"},
+     "required_this_turn": false,
+     "affirm_markers": [["挤花", "一直在笑"], ["糖吃多了", "可能是"]]
+    },
+    {
+     "atom_id": "E342_T05_A03",
+     "subject": "HER",
+     "relation": "下周塔皮课预告（本轮'下周塔皮的方子'的所指）",
+     "value": "老桂说下周二（11月10日）教塔皮，学费里含材料",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T02", "message_id": "m0", "quote": "老桂说下周二教塔皮，学费里含材料"},
+     "required_this_turn": true,
+     "affirm_markers": [["下周二", "塔皮"], ["教塔皮", "材料"]]
+    }
+   ],
+   "private_guidance": "kb lessons：'深夜的话当真，但别急着点破'——本轮是全篇第一个 strong 信号位，正确方向=接住暧昧义但不把它说破（点破'你是因为我才笑的吧'=0档越界）；完全回避暧昧义只谈塔皮工艺=安全但无张力（1档下）。两段消息都来自深夜 23 点后，回复分量宜轻不宜重，长篇分析式回应=不读空气。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E342_T06": {
+   "case_id": "E342_T06",
+   "current_action": "塔皮课当晚她提前十分钟到、给他占了搅拌台靠里的位，并自己先点破一层'别问我为什么知道你怕黄油化，收银台挂着照片呢'。",
+   "acceptable_actions": [
+    "接占位+轻谢：领这份具体关照（'风小位已就座'式），顺着收银台照片的梗接一句，不点破她的关照动机",
+    "接住+回敬一层：用照片梗回一句玩笑（'陨石替我看着位子'式），把她的进二退一原样接住",
+    "接占位+落回正事：谢过之后问今晚塔皮的分工/搅拌台怎么用，关照领了、重心放回课上"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T06_A01",
+     "subject": "HER",
+     "relation": "课上的具体关照",
+     "value": "塔皮课她提前十分钟到，给他占了搅拌台靠里那个位（风小、黄油不容易化）",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T06", "message_id": "m0", "quote": "晚上课我提前十分钟到，给你占了搅拌台靠里那个位，风小，黄油不容易化"},
+     "required_this_turn": false,
+     "affirm_markers": [["提前十分钟", "搅拌台"], ["靠里", "黄油"]]
+    },
+    {
+     "atom_id": "E342_T06_A02",
+     "subject": "HER",
+     "relation": "对关照的自掩",
+     "value": "她说别问她为什么知道他怕黄油化，收银台挂着照片呢",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T06", "message_id": "m0", "quote": "别问我为什么知道你怕黄油化，收银台挂着照片呢"},
+     "required_this_turn": false,
+     "affirm_markers": [["收银台", "照片"], ["怕黄油化"]]
+    },
+    {
+     "atom_id": "E342_T06_A03",
+     "subject": "SHARED",
+     "relation": "'收银台挂着照片'的所指",
+     "value": "交换会上他的陨石被老桂摆上收银台（小莼拍照发班群），是收银台挂照的来历",
+     "valid_time": "2026-11-08",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T04", "message_id": "m0", "quote": "老桂把它摆上收银台"},
+     "required_this_turn": true,
+     "affirm_markers": [["摆上收银台"], ["陨石", "收银台"]]
+    }
+   ],
+   "private_guidance": "军师 note：她早上八点半就接龙了今晚到课名单、比平时早一整天——候选可自然使用该细节但不必复述。本轮是 initiative_probe 位（她进二退一）：接住关照后可推半步。'收银台挂着照片'是 T04 陨石展品的回指——接住这个梗=记忆正确取用；把它当新信息问'什么照片'=漏回指。点破'你是特意给我占的位'=踩 boundary（点破小心思）判 0 档。",
+   "unknowns": [],
+   "protected_expressions": ["别问我为什么知道你怕黄油化"],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E342_T07": {
+   "case_id": "E342_T07",
+   "current_action": "她把他的名字报进这周六开放日志愿者（摆台试吃、管两顿饭、围裙她出），同时自备退路'有安排就直说我去抓小莼顶上'——意图轮：答复志愿者的事。",
+   "acceptable_actions": [
+    "答应+给具体下一步：确认周六到（问几点到/干什么活），领两顿饭的玩笑",
+    "婉拒+走她的退路：直说周六有安排，谢她随时能抓小莼顶上——她自备了退路，直说即安全",
+    "答应+回敬一层：接'报了你的名字'的分量（'名字都替我报了，那就得去'式），给肯定答复"
+   ],
+   "applicable_dimensions": ["goal", "initiative", "emotion_relation"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T07_A01",
+     "subject": "HER",
+     "relation": "开放日志愿者安排",
+     "value": "工作室这周六（11月14日）开放日，老桂招志愿者摆台试吃，管两顿饭、围裙她出",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T07", "message_id": "m0", "quote": "工作室这周六开放日，老桂招志愿者摆台试吃，我报了你的名字，她答应管两顿饭，围裙她出"},
+     "required_this_turn": false,
+     "affirm_markers": [["这周六", "开放日"], ["志愿者", "摆台试吃"], ["两顿饭", "围裙"]]
+    },
+    {
+     "atom_id": "E342_T07_A02",
+     "subject": "HER",
+     "relation": "她替他报名",
+     "value": "她已把他的名字报进志愿者名单",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T07", "message_id": "m0", "quote": "我报了你的名字"},
+     "required_this_turn": false,
+     "affirm_markers": [["报了", "你的名字"], ["我报了", "名字"]]
+    },
+    {
+     "atom_id": "E342_T07_A03",
+     "subject": "HER",
+     "relation": "自备退路",
+     "value": "他若有安排就直说，她马上去抓小莼顶上、别勉强",
+     "valid_time": "2026-11-11",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T07", "message_id": "m0", "quote": "你要是有安排就直说，我马上去抓小莼顶上，别勉强"},
+     "required_this_turn": false,
+     "affirm_markers": [["小莼顶上"], ["有安排", "直说"]]
+    }
+   ],
+   "private_guidance": "意图轮：必须就志愿者的事给明确答复，拖延含糊（'再说吧/看情况'）=没接住意图。她先斩后奏报了名字又给足退路——这是 strong 信号位（第一次把他报进自己的安排）：答应=接钩推进；婉拒走她铺的台阶=安全；假装没看见'我报了你的名字'只谈两顿饭=漏信号。答复不必解释理由，她没问。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E342_T08": {
+   "case_id": "E342_T08",
+   "current_action": "她因母亲膝盖复查提前到这周六上午、要陪去市一医院，撤回志愿者安排，并要求他跟老桂说临时有事、别提她。",
+   "acceptable_actions": [
+    "干脆接住+传话照办：答应去跟老桂说临时有事、不提她，轻问一句要不要帮忙（一次到位，不追问细节）",
+    "接住+领走她的那部分：主动说她周六安心陪妈妈，店里的事自己顶上或跟她交代的办",
+    "接住+给退路留口：'名单我去说，你陪完妈妈想吃塔皮跟我说一声'式——不追问原因、不放大关心"
+   ],
+   "applicable_dimensions": ["goal", "emotion_relation", "boundary"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T08_A01",
+     "subject": "HER",
+     "relation": "撤回原因",
+     "value": "她母亲膝盖复查提前到这周六上午，她得陪去市一医院",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T08", "message_id": "m0", "quote": "我妈膝盖复查提前到这周六上午，我得陪她去市一医院"},
+     "required_this_turn": false,
+     "affirm_markers": [["膝盖复查", "周六"], ["陪她", "市一医院"]]
+    },
+    {
+     "atom_id": "E342_T08_A02",
+     "subject": "HER",
+     "relation": "对取消的善后要求",
+     "value": "让他跟老桂说名单那边临时有事，别提她",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T08", "message_id": "m0", "quote": "名单你跟老桂说一声就行，就说临时有事，别提我"},
+     "required_this_turn": false,
+     "affirm_markers": [["老桂", "临时有事"], ["临时有事", "别提我"]]
+    },
+    {
+     "atom_id": "E342_T08_A03",
+     "subject": "SHARED",
+     "relation": "已取消的原安排",
+     "value": "原定周六开放日两人一起志愿者摆台试吃的安排已取消（她因母亲复查退出）",
+     "valid_time": "2026-11-14",
+     "status": "cancelled",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T08", "message_id": "m0", "quote": "志愿者的事取消吧"},
+     "required_this_turn": false,
+     "affirm_markers": [["一起", "摆台"], ["一起", "试吃"], ["一起", "志愿者"]]
+    }
+   ],
+   "private_guidance": "counter-signal 位（withdraw）：正确方向=退得干脆、不追问家事细节、把她的'别提我'当成托付照办。此刻任何推进（追问复查严重不严重、坚持周六照常、借关心加码）都是 overstep 判 0 档。注意：她只撤了她这头的安排，他本人志愿者档去留题面未定，候选按自身选择自洽即可，gold 不在此设'必须去/必须不去'陷阱（E342_T10 她隔空追问现场与此衔接，评分按信息可得性处理）。",
+   "unknowns": [],
+   "protected_expressions": ["别提我"],
+   "forbidden_factual_claims": ["不得宣布周六照常当志愿者、两人照常一起摆台（她已明确取消）", "不得编造她母亲病情的细节或严重程度"],
+   "may_decline": false
+  },
+  "E342_T09": {
+   "case_id": "E342_T09",
+   "current_action": "复查虚惊一场（三针玻璃酸钠、医嘱少爬楼梯），她带自嘲回场，并自己把'相亲'话头带出场。",
+   "acceptable_actions": [
+    "接回场+接自嘲：先松口气（虚惊一场），接住'这是事业'的梗轻轻笑回去，不点破她为什么自己提相亲",
+    "接回场+留门：关心一句膝盖少爬楼梯的医嘱，再说周六店里的事她不在也运转得来，等她自己把话头递过来",
+    "接相亲话头+轻回：顺着'该去相看了'接一句可撤回的玩笑（推半步力度），不升级不表白"
+   ],
+   "applicable_dimensions": ["interaction", "emotion_relation", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T09_A01",
+     "subject": "HER",
+     "relation": "复查结果",
+     "value": "复查结果没事、虚惊一场，打了三针玻璃酸钠，医嘱是少爬楼梯",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T09", "message_id": "m0", "quote": "复查结果没事，虚惊一场，打了三针玻璃酸钠，医嘱是少爬楼梯"},
+     "required_this_turn": false,
+     "affirm_markers": [["复查", "没事"], ["玻璃酸钠"], ["虚惊一场"]]
+    },
+    {
+     "atom_id": "E342_T09_A02",
+     "subject": "HER",
+     "relation": "她自提相看话头",
+     "value": "她妈听说她周六在烘焙店当义工、问是不是该去相看了，她答'这是事业'",
+     "valid_time": "2026-11-13",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T09", "message_id": "m0", "quote": "我妈听说我周六在烘焙店当义工，问我是不是该去相看了，我说妈，这是事业"},
+     "required_this_turn": false,
+     "affirm_markers": [["相看", "事业"], ["我妈", "相看"]]
+    },
+    {
+     "atom_id": "E342_T09_A03",
+     "subject": "HER",
+     "relation": "上轮撤回（她本轮回场的背景）",
+     "value": "11月12日她因母亲复查撤回志愿者邀约，并要求传话时别提她",
+     "valid_time": "2026-11-12",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T08", "message_id": "m0", "quote": "志愿者的事取消吧"},
+     "required_this_turn": true,
+     "affirm_markers": [["志愿者", "取消吧"], ["取消吧", "志愿者"]]
+    }
+   ],
+   "private_guidance": "撤回方主动回场=信号重亮，'该去相看了'是她自己递的话头——接住玩笑合法，把相亲话题升级成表白或追问她妈意图=扑钩判 0 档；揪着撤回算账（'你不是说别提你吗'式）=不读空气。她的自嘲是回场信号不是求安慰，别堆慰问。军师 note（市一医院周六上午骨科号难约、小莼群里问她到没到）为时间线证据链——注意素材在 T08'这周六'与 T09 日期之间有一日游移，评分按信息可得性处理，不设日期陷阱。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得替她把相看话头升级为表白或追问她母亲的意图"],
+   "may_decline": false
+  },
+  "E342_T10": {
+   "case_id": "E342_T10",
+   "current_action": "开放日当天她隔空追问他的现场（人多吗、发工资没有、两顿饭什么水平、拍照验货），并把塔皮成果点名留他验收。",
+   "acceptable_actions": [
+    "按他的实际选择自洽作答：去了就报现场、自嘲工资和两顿饭的规格；没去就接住工资玩笑自嘲没领到，不装在场",
+    "接验收钩：应下'第三炉等你验收'，给具体下一步（什么时候验/怎么验），把她的成果接住",
+    "反问她：问她练到第三炉的辛苦或开放日她家那边的情况，把话头还一半"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T10_A01",
+     "subject": "HER",
+     "relation": "对现场的隔空追问",
+     "value": "开放日当天她追问人多不多、老桂发工资没有、说好的两顿饭什么水平，要拍照验货",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T10", "message_id": "m0", "quote": "开放日人多吗？老桂给你发工资没有，说好的两顿饭什么水平，拍照验货"},
+     "required_this_turn": false,
+     "affirm_markers": [["发工资", "两顿饭"], ["拍照验货"], ["开放日", "人多吗"]]
+    },
+    {
+     "atom_id": "E342_T10_A02",
+     "subject": "HER",
+     "relation": "塔皮成果点名验收",
+     "value": "塔皮她练到第三炉、成了，点名等他验收",
+     "valid_time": "2026-11-14",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T10", "message_id": "m0", "quote": "塔皮我练到第三炉了，成了，等你验收"},
+     "required_this_turn": false,
+     "affirm_markers": [["第三炉", "验收"], ["塔皮", "成了"]]
+    },
+    {
+     "atom_id": "E342_T10_A03",
+     "subject": "HER",
+     "relation": "塔皮课预告（本轮'第三炉/验收'的源头）",
+     "value": "老桂说下周二（11月10日）教塔皮，学费里含材料",
+     "valid_time": "2026-11-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T02", "message_id": "m0", "quote": "老桂说下周二教塔皮，学费里含材料"},
+     "required_this_turn": true,
+     "affirm_markers": [["下周二", "塔皮"], ["教塔皮", "材料"]]
+    }
+   ],
+   "private_guidance": "recovery_check 位：T08 撤回、T09 她回场之后，本轮应看到他把分寸调回来——不揪着撤回、不推进过猛。她问'发工资没有/两顿饭什么水平'：T08 只撤了她这头的安排，他本人是否到场题面未明说，候选按自身前轮选择自洽作答（去了报现场、没去自嘲），两种都合法；编造与自身前轮矛盾的说法=语义层判低。'验收'接住=给具体下一步，只回'好嘞'=弱。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得编造与自身前轮答复矛盾的现场经历（自洽由语义层判）"],
+   "may_decline": false
+  },
+  "E342_T11": {
+   "case_id": "E342_T11",
+   "current_action": "全篇信号最强轮：塔成了减糖版、第一块给他留着并说别问为什么，续课决定也公开挂在'看有没有人一起'上——意图轮：回应两处暗示。",
+   "acceptable_actions": [
+    "两处都接住：领第一块的分量（'第一块的规格我懂'式不点破），续课给真话或给期限前准话（'周五截止前给你答复'式）",
+    "接第一块+推半步：接住'有人一起'的半明示，给可撤回的正面回应（'那就看你的了'式力度），她一个哈哈能化解",
+    "接第一块+如实说没想好：领塔的分量，续课直说还没定、周五截止前给她准话——诚实不装答应"
+   ],
+   "applicable_dimensions": ["goal", "emotion_relation", "interaction", "initiative", "memory_use"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T11_A01",
+     "subject": "HER",
+     "relation": "成品留块",
+     "value": "塔成了、减糖版，第一块给他留着，并说别问为什么是第一块",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T11", "message_id": "m0", "quote": "塔成了，减糖版，第一块给你留着，别问为什么是第一块"},
+     "required_this_turn": false,
+     "affirm_markers": [["减糖版", "第一块"], ["第一块", "留着"]]
+    },
+    {
+     "atom_id": "E342_T11_A02",
+     "subject": "HER",
+     "relation": "续课决定挂在他身上",
+     "value": "老桂问她要不要续下一期，她答再看看、看有没有人一起",
+     "valid_time": "2026-11-15",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T11", "message_id": "m1", "quote": "老桂问我要不要续下一期，我说再看看。她问我看什么，我说看有没有人一起"},
+     "required_this_turn": false,
+     "affirm_markers": [["再看看", "有人一起"], ["续下一期", "有人一起"]]
+    },
+    {
+     "atom_id": "E342_T11_A03",
+     "subject": "HER",
+     "relation": "对ME口味的记忆（减糖版的依据）",
+     "value": "她记得聂远舟说过吃不了太甜",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "initial_kb", "key": "her", "quote": "她记得聂远舟说过吃不了太甜"},
+     "required_this_turn": true,
+     "affirm_markers": [["减糖版", "第一块"], ["留着", "减糖"]]
+    }
+   ],
+   "private_guidance": "全篇信号最强位（极高投入）：行为锚允许推半步。'减糖版'对应 kb 里她记得他吃不了太甜——接住这层=记忆正确取用（候选不必逐字点破，能对上口味即可）；把'别问为什么是第一块'真当提问回答=踩空；把'看有没有人一起'点破成直球表白=越线判 0 档；缩回'你自己决定'=缩钩判 0 档。意图轮要求对两处暗示都给回应，只答一处=漏。",
+   "unknowns": [],
+   "protected_expressions": ["别问为什么是第一块"],
+   "forbidden_factual_claims": [],
+   "may_decline": false
+  },
+  "E342_T12": {
+   "case_id": "E342_T12",
+   "current_action": "交付与期限同时落地：塔的盒子放店里冷柜给他下课自取，她把妈妈'男同学女同学'的追问用'你猜'挡回去，并给出老学员价周五截止——选择递到他手上。",
+   "acceptable_actions": [
+    "轻收+给准话方向：接冷柜留塔（说什么时候去取），续课给真答复或承诺周五截止前给话",
+    "接'你猜'的玩笑：顺着猜一句可撤回的话（'猜对有奖吗'式力度），续课给真话",
+    "合法不回（may_decline=true）：不回也合法，但若回则遵守收尾纪律——不压新钩、不逼她要答案"
+   ],
+   "applicable_dimensions": ["goal", "interaction", "emotion_relation", "initiative"],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E342_T12_A01",
+     "subject": "HER",
+     "relation": "交付安排",
+     "value": "塔的盒子老桂答应放店里冷柜给他留着，下课自取",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T12", "message_id": "m0", "quote": "塔的盒子老桂答应放店里冷柜给你留着，你下课自取"},
+     "required_this_turn": false,
+     "affirm_markers": [["冷柜", "自取"], ["盒子", "留着"]]
+    },
+    {
+     "atom_id": "E342_T12_A02",
+     "subject": "HER",
+     "relation": "对照片追问的应对",
+     "value": "她妈问照片里是谁的塔，她说是同学的、被追问男同学女同学时答'你猜'",
+     "valid_time": "2026-11-16",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T12", "message_id": "m0", "quote": "我妈问照片里是谁的塔，我说是同学的，她追问男同学女同学，我说你猜"},
+     "required_this_turn": false,
+     "affirm_markers": [["男同学", "女同学"], ["同学的", "你猜"]]
+    },
+    {
+     "atom_id": "E342_T12_A03",
+     "subject": "HER",
+     "relation": "续课期限",
+     "value": "下期老学员价这周五（11月20日）截止；他若续，她就跟老桂说有人一起了",
+     "valid_time": "2026-11-20",
+     "status": "asserted",
+     "negation": false,
+     "source": {"kind": "message", "case_id": "E342_T12", "message_id": "m0", "quote": "下期老学员价这周五截止，你要是续，我就跟老桂说有人一起了"},
+     "required_this_turn": false,
+     "affirm_markers": [["这周五", "截止"], ["有人一起", "老桂"]]
+    }
+   ],
+   "private_guidance": "收尾轮：她以截止日轻收口、台阶和钩子都留着——轻收+留口是正解，出新钩或把期限变成最后通牒式回复=判负。may_decline=true，不回合法。'你猜'是她主动留的暧昧余地：接住玩笑合法，把'你猜'的答案当事实坐实（如直接宣布'你妈猜对了'）=无据确定化。若决定续，接住'有人一起'给真话；决定不续或没想好，直说+轻收，不装答应。",
+   "unknowns": [],
+   "protected_expressions": [],
+   "forbidden_factual_claims": ["不得谎称已续课（决定未做）", "不得把'你猜'的答案当事实坐实"],
+   "may_decline": true
+  }
+ }
+}

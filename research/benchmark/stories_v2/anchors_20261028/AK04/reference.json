@@ -1,0 +1,89 @@
+{
+ "kind": "story_reference_v2",
+ "story_id": "AK04",
+ "turns": {
+  "AK04_T01": {
+   "case_id": "AK04_T01",
+   "current_action": "约定已经成形（周六八点）——按她的条件接住：带水别带话，别临时加建议或拉别人",
+   "acceptable_actions": [
+    "确认周六八点+只带水",
+    "确认+说坐第一排不互动",
+    "确认+问她要不要留票给同事"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "AK04_A01",
+     "subject": "她",
+     "relation": "事件",
+     "value": "周六被排进开放麦，五分钟首台",
+     "valid_time": "2026-12-09 22:20",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK04_T01",
+      "message_id": "m0",
+      "quote": "老板给我排进周六了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK04_A02",
+     "subject": "她",
+     "relation": "条件",
+     "value": "要我带水别带话",
+     "valid_time": "2026-12-09 22:32",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK04_T01",
+      "message_id": "m2",
+      "quote": "你带水别带话"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "AK04_A03",
+     "subject": "双方",
+     "relation": "约定",
+     "value": "周六八点鼓楼",
+     "valid_time": "2026-12-09 22:32",
+     "status": "confirmed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "AK04_T01",
+      "message_id": "m2",
+      "quote": "周六八点"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "'带水别带话'是她把需求说清楚了；照着做就是接住，讲道理是越界。",
+   "unknowns": [
+    "是否要提前到场",
+    "她同事去不去"
+   ],
+   "protected_expressions": [
+    "你带水别带话"
+   ],
+   "forbidden_factual_claims": [
+    "不要临场提出帮她改段子",
+    "不要把'坐第一排'升级成要上台互动"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "周六八点去鼓楼看她第一次开放麦",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  }
+ }
+}

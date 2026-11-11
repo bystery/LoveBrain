@@ -1,0 +1,33 @@
+{
+ "kind": "story_exposure_v2",
+ "story_id": "K01",
+ "title": "K01",
+ "themes": [],
+ "author": "实施 worker 本人（2026-10-29；写题前已读全部候选答卷、旧故事与全局复核报告，见本目录 audit.md §0）",
+ "author_type": "AI_worker_new_material_final",
+ "real_user_material": false,
+ "source_notes": "虚构人物与对话；素材非真实用户材料；作者知道答案。本批用于长期知识、恢复、正向互动与组件价值评估，不用于回溯修改旧批结论。",
+ "readers": [
+  "实施 worker（作者兼派发者）",
+  "独立复核者"
+ ],
+ "independent_review": false,
+ "review_note": "诚实边界：作者看过候选答卷，本集不是盲化材料、也不是独立封存；它只能回答'在同类现实局面上，新机制是否比原版更好'，不能证明跨域泛化。",
+ "created_at": "2026-10-29",
+ "frozen_at": "2026-10-29T09:56:30",
+ "status": "final_new_material_20261029",
+ "experiments_used": [],
+ "dev_exposed": false,
+ "validation_claim": false,
+ "turns": 24,
+ "may_decline_turns": [
+  "K01_T24"
+ ],
+ "hashes": {
+  "episode.json": "2dba325f99c567215928c297fd5f74d5e86f9ec07f3fa8561dee44e1f65e16a7",
+  "reference.json": "e8df81d8ef8eb258725520ea83cf337907ba57f2476a2ecefb18a68dab0f9403",
+  "timeline.json": "efd386b83e02e4b91528a34d1976d6252d8889650c38e7d896dcb28d36d1af1b",
+  "audit.md": "775e2cc3f26347ee69b45d72cd65fc5eb4e1b324fd4d5cccf336cd9640231392"
+ },
+ "runner_copy": "benchmark/episodes/K01.json"
+}

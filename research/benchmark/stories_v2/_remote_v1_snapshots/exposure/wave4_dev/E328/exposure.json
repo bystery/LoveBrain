@@ -1,0 +1,38 @@
+{
+ "status": "annotated_pending_audit",
+ "author": "ZCode bm1-wave4 author-A6 (AI)",
+ "author_type": "AI",
+ "real_user_material": false,
+ "dev_exposed": false,
+ "experiments_used": [],
+ "themes": [
+  "T07 事实/人物归属/不确定性",
+  "不确定信息与猜测不坐实",
+  "凭据核对（小票/快递/台球时限）",
+  "人数区间不坐实"
+ ],
+ "title": "团建采购的三个记不清",
+ "may_decline_turns": [
+  "E328_T07",
+  "E328_T12"
+ ],
+ "created_at": "2026-11-08",
+ "domain": "团建采购",
+ "primary_topic": "T07",
+ "lineage_group_id": "LG-E328",
+ "frozen_at": "2026-11-08T13:00:00+08:00",
+ "readers": [
+  "author",
+  "annotator"
+ ],
+ "runner_copy": "benchmark/stories_v2/wave4_dev/E328/runner_episode.json",
+ "kind": "standard_12t",
+ "batch": "W4-DEV-20261108",
+ "session": "W4-DEV-A6",
+ "hashes": {
+  "episode.json": "6c352b1521ac6839f5f954db13ac00a67c4da6051f57f157627128c03bc9f3ed",
+  "reference.json": "4deef57e5fdba664667c040452880d3caff8b468871c451e6efd0b9bc1b2af03",
+  "timeline.json": "fde398a1974368a4f6169cc6dbee5ff1b688d0c38bd7edc1a593820cd3b3b3d7",
+  "audit.md": "1e2319bc91c3db401396dc0f8c8f2ce9a8dc8519e23ea4380adcc22035d2a6cd"
+ }
+}

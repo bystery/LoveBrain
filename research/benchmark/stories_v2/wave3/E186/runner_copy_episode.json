@@ -1,0 +1,269 @@
+{
+ "episode_id": "E186",
+ "persona": {
+  "her": {
+   "name": "林珂",
+   "traits": [
+    "带毕业班，时间死板",
+    "重承诺，饭局纪律感强",
+    "不愿当众撕破脸"
+   ],
+   "boundaries": [
+    "不替别人的失误买单",
+    "不参加临时拼凑的陌生人局"
+   ]
+  },
+  "me": {
+   "name": "阿澈",
+   "traits": [
+    "饭局老手，擅长拆局",
+    "说话留三分余地"
+   ]
+  },
+  "relationship_stage": "渐暧昧（大学社团认识的老朋友）"
+ },
+ "initial_kb": {
+  "her": "林珂在筹备大学毕业十年聚，定在11月7日周六晚六点城西拾光小馆，因带学生军训走不开，托共同朋友赵磊代订包间，已预收每人150元共8人。",
+  "me": "阿澈和林珂同校社团出身，帮她参谋过多次饭局，知道她最烦临时加人。",
+  "warmth": "两人玩笑有分寸，遇到事她第一个问阿澈。",
+  "style": "口语，短句，吐槽中带分寸。",
+  "stage": "渐暧昧",
+  "lessons": "饭局规则一旦说定就不轻易改，改了必须当面说明。"
+ },
+ "turns": [
+  {
+   "case_id": "E186_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "十年聚定档了！11月7号周六晚六点，城西拾光小馆包间。我这周带军训走不开，订位的事托给赵磊了。",
+      "ts": "2026-11-01 21:30"
+     }
+    ],
+    "clock": "2026-11-01 21:35",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "定档报喜"
+   }
+  },
+  {
+   "case_id": "E186_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "赵磊说包间搞定了，最低消费688，八个人随便点都够。他办事是快，就怕他大方过头。",
+      "ts": "2026-11-03 20:40"
+     }
+    ],
+    "clock": "2026-11-03 20:45",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "报进展，带一句提防"
+   }
+  },
+  {
+   "case_id": "E186_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "AA预收我转他了，每人150，八个人一共1200，说好多退少补。名单我按老室友圈的来的，一个都不多。",
+      "ts": "2026-11-05 22:10"
+     }
+    ],
+    "clock": "2026-11-05 22:15",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "账目清楚，规矩立住"
+   }
+  },
+  {
+   "case_id": "E186_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "赵磊刚发消息，说包间让给他表哥的公司用了，咱们改大堂圆桌，还顺手拉了他两个棋友进群，说热闹。我人还没回去，局先不是那个局了。",
+      "ts": "2026-11-06 18:20"
+     }
+    ],
+    "clock": "2026-11-06 18:25",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "急报第三方变卦",
+    "delta": "由有序筹备转为被搅局"
+   }
+  },
+  {
+   "case_id": "E186_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "要不我退了吧，这局我没法站在大堂里给两个陌生人当主人。你说句实话。",
+      "ts": "2026-11-06 20:05"
+     }
+    ],
+    "clock": "2026-11-06 20:10",
+    "may_decline": true,
+    "intent": {
+     "enabled": true,
+     "status": "explicit",
+     "text": "问要不要退出这场局"
+    }
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "认真请她拿主意"
+   }
+  },
+  {
+   "case_id": "E186_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "按你说的，我单独找赵磊谈了，给他两条路：要么包间坐回去，要么我自己退出、各玩各的。他没敢挂电话。",
+      "ts": "2026-11-06 22:40"
+     }
+    ],
+    "clock": "2026-11-06 22:45",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "执行单独沟通后的回执"
+   }
+  },
+  {
+   "case_id": "E186_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "结果出来了：包间要不回来，大堂拼成两桌，低消差价他补。他那两个棋友他自己招待，不许再进咱们桌。",
+      "ts": "2026-11-07 09:30"
+     }
+    ],
+    "clock": "2026-11-07 09:35",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "报处理结果，边界落地"
+   }
+  },
+  {
+   "case_id": "E186_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我想了一晚上还是不去了。让赵磊把我那份150退回来，一分不少。老室友那桌该怎么吃怎么吃，我礼数到位，人缺席。",
+      "ts": "2026-11-07 12:50"
+     }
+    ],
+    "clock": "2026-11-07 12:55",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "退出决定，账目与礼数两清"
+   }
+  },
+  {
+   "case_id": "E186_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周航看不下去，说今晚他家楼下馆子补一场，就当年宿舍六个人，不许赵磊沾手。你说我去不去？",
+      "ts": "2026-11-08 15:20"
+     }
+    ],
+    "clock": "2026-11-08 15:25",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "补救局邀约，重新来劲"
+   }
+  },
+  {
+   "case_id": "E186_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "想了想还是去，都是老室友，别为赵磊误了十年这个由头。我这就出门。",
+      "ts": "2026-11-08 17:40"
+     }
+    ],
+    "clock": "2026-11-08 17:45",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "决定出门，情绪转正"
+   }
+  },
+  {
+   "case_id": "E186_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "到包间了，周航这局舒服多了。赵磊那边我转了200给周航，算我垫的水果钱，礼数到了，两清。",
+      "ts": "2026-11-08 21:30"
+     }
+    ],
+    "clock": "2026-11-08 21:35",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "现场报喜，账目两清"
+   }
+  },
+  {
+   "case_id": "E186_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "散场了，今天这顿值。回头宵夜跟你细讲赵磊的表情管理，绝了。周末有空吗？",
+      "ts": "2026-11-08 23:10"
+     }
+    ],
+    "clock": "2026-11-08 23:15",
+    "may_decline": false
+   },
+   "gold": {},
+   "feedback": {
+    "tone": "散场收尾，关系升温"
+   }
+  }
+ ]
+}

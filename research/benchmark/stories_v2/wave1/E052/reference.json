@@ -1,0 +1,962 @@
+{
+ "story_id": "E052",
+ "turns": {
+  "E052_T01": {
+   "case_id": "E052_T01",
+   "current_action": "接住出镜捷报：确认成交价2350包邮、走平台验货宝、明日顺丰取件，顺势提醒取件前留全套验货视频。",
+   "acceptable_actions": [
+    "恭喜回血并提醒拍验货视频",
+    "确认成交价与交易通道作为后续基准",
+    "接住鸡腿梗轻快回应"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A01",
+     "subject": "HER",
+     "relation": "成交事实",
+     "value": "适马35 1.4以2350包邮成交并走平台验货宝",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T01",
+      "message_id": "m0",
+      "quote": "2350包邮，走平台验货宝"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A02",
+     "subject": "SHARED",
+     "relation": "物流安排",
+     "value": "11月1日顺丰上门取件",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T01",
+      "message_id": "m0",
+      "quote": "明天顺丰来取件"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A03",
+     "subject": "HER",
+     "relation": "交易背景",
+     "value": "她卖闲置回血，手里那颗适马35mm F1.4挂了两周终于要出",
+     "valid_time": "2026-10",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "her",
+      "quote": "手里那颗适马35mm F1.4挂了两周"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把喜事接稳并预埋验货证据的习惯，互怼口吻不腻。",
+   "unknowns": [
+    "买家身份与用途未知",
+    "取件具体时段未知"
+   ],
+   "protected_expressions": [
+    "回血成功"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台验货宝的具体费率"
+   ]
+  },
+  "E052_T02": {
+   "case_id": "E052_T02",
+   "current_action": "确认验货流程：全套视频含前后盖、编号、对焦全程已存云盘，打包三层气泡膜加两包干燥剂，肯定她的留证意识。",
+   "acceptable_actions": [
+    "肯定验货视频拍得全",
+    "补充一拍镜头前系统时间的细节建议",
+    "确认顺丰单号留存"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "initiative",
+    "memory_use",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A04",
+     "subject": "HER",
+     "relation": "验货证据",
+     "value": "取件前拍全套验货视频并存云盘，覆盖编号与对焦全程",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T02",
+      "message_id": "m0",
+      "quote": "前后盖、镜身编号、对焦全程，云盘存了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A05",
+     "subject": "HER",
+     "relation": "打包规格",
+     "value": "气泡膜裹三层并放两包干燥剂",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T02",
+      "message_id": "m1",
+      "quote": "气泡膜裹了三层"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A06",
+     "subject": "ME",
+     "relation": "验货工具",
+     "value": "ME家里备着标靶图等验货工具，常帮群友排坑",
+     "valid_time": "长期",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "initial_kb",
+      "key": "me",
+      "quote": "家里备着标靶图"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让她的留证习惯再扎实一点，建议点到为止不刷存在感。",
+   "unknowns": [
+    "运输是否保价未知"
+   ],
+   "protected_expressions": [
+    "云盘存了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构她未做过的打包细节"
+   ]
+  },
+  "E052_T03": {
+   "case_id": "E052_T03",
+   "current_action": "接住签收与好评：确认买家签收、好评称成色比描述好、货款等7天售后期后打款，提醒售后期内保持证据可取。",
+   "acceptable_actions": [
+    "恭喜顺利签收并接住好评",
+    "提醒7天售后期内证据别删",
+    "顺手问一句到账后进什么新镜头"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A07",
+     "subject": "THIRD",
+     "relation": "签收反馈",
+     "value": "买家已签收并给出好评，称成色比描述好",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T03",
+      "message_id": "m1",
+      "quote": "说成色比描述好"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A08",
+     "subject": "PUBLIC",
+     "relation": "货款状态",
+     "value": "货款等待7天售后期结束后由平台打款，当前为待打款",
+     "valid_time": "2026-11-02",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T03",
+      "message_id": "m0",
+      "quote": "平台打款要等7天售后期过"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A09",
+     "subject": "HER",
+     "relation": "成交事实",
+     "value": "成交价2350包邮已走平台验货宝",
+     "valid_time": "2026-10-31",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T01",
+      "message_id": "m0",
+      "quote": "2350包邮，走平台验货宝"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让她别急着把证据归档消失，售后期没过交易不算完。",
+   "unknowns": [
+    "售后期结束的准确日期未知"
+   ],
+   "protected_expressions": [
+    "说成色比描述好"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台打款的确切时点"
+   ]
+  },
+  "E052_T04": {
+   "case_id": "E052_T04",
+   "current_action": "接住反转：买家主张对焦拉风箱并要退货，与她出货视频矛盾；先共情稳住情绪，把成因列为待查的开放问题（运输/机身/设置），不轻易下结论。",
+   "acceptable_actions": [
+    "先稳情绪再摆事实：出货视频对焦正常",
+    "把可能成因列为开放清单不预先归责",
+    "建议她回复买家先要具体拍摄参数与样片"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "emotion_relation",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A10",
+     "subject": "THIRD",
+     "relation": "退货主张",
+     "value": "买家主张镜头对焦拉风箱并要求退货",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T04",
+      "message_id": "m0",
+      "quote": "说镜头对焦拉风箱"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A11",
+     "subject": "HER",
+     "relation": "反证",
+     "value": "她出货前视频中对焦丝滑正常",
+     "valid_time": "2026-11-01",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T04",
+      "message_id": "m0",
+      "quote": "对焦丝滑得很"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A12",
+     "subject": "PUBLIC",
+     "relation": "成因判定",
+     "value": "镜头问题成因未知，运输损伤或机身兼容或使用设置均有可能，尚无证据",
+     "valid_time": "2026-11-03",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T04",
+      "message_id": "m1",
+      "quote": "是运输磕了还是他机身的事"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A13",
+     "subject": "HER",
+     "relation": "出货状态",
+     "value": "镜头出货前已存在对焦故障（不成立，验货视频覆盖对焦全程且显示正常）",
+     "valid_time": "2026-11-01",
+     "status": "contested",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T02",
+      "message_id": "m0",
+      "quote": "前后盖、镜身编号、对焦全程，云盘存了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把她的慌转成取证清单，明确说现在归责为时过早。",
+   "unknowns": [
+    "买家拍摄参数与场景未知",
+    "运输环节是否有磕碰未知"
+   ],
+   "protected_expressions": [
+    "我现在一头雾水"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言买家说谎",
+    "不得断言镜头必然无故障"
+   ]
+  },
+  "E052_T05": {
+   "case_id": "E052_T05",
+   "current_action": "确认流程变化：买家正式申请退货退款理由为描述不符，平台冻结2350并开启48小时双方举证期；肯定她整理举证清单的动作。",
+   "acceptable_actions": [
+    "帮她把举证清单按证据链排序",
+    "提醒48小时截止时刻要卡准",
+    "建议清单里放出货视频与买家好评截图"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "initiative",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A14",
+     "subject": "THIRD",
+     "relation": "退货申请",
+     "value": "买家正式申请退货退款，理由填的是描述不符",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T05",
+      "message_id": "m0",
+      "quote": "理由填的是描述不符"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A15",
+     "subject": "PUBLIC",
+     "relation": "货款状态",
+     "value": "平台冻结2350货款，开启48小时内双方举证期（此前待打款状态作废）",
+     "valid_time": "2026-11-04",
+     "status": "superseded",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T05",
+      "message_id": "m0",
+      "quote": "把我这2350冻结了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A16",
+     "subject": "THIRD",
+     "relation": "退货主张",
+     "value": "买家主张对焦拉风箱要求退货，是本次申请的前奏",
+     "valid_time": "2026-11-03",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T04",
+      "message_id": "m0",
+      "quote": "说镜头对焦拉风箱"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把举证期变成倒计时任务，帮他把清单结构立起来。",
+   "unknowns": [
+    "平台裁决倾向未知",
+    "买家是否能提供有效证据未知"
+   ],
+   "protected_expressions": [
+    "按时间排好了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台举证规则细节"
+   ]
+  },
+  "E052_T06": {
+   "case_id": "E052_T06",
+   "current_action": "接住情报与动摇：买家主页好评率高、机身a7c2理论上兼容，承认这让成因更难归责，建议把焦点从'谁坏'转到'能否复现'。",
+   "acceptable_actions": [
+    "肯定她查买家主页的思路",
+    "指出a7c2兼容性说明成因未必是机身",
+    "引导下一步拿可控复现证据"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A17",
+     "subject": "THIRD",
+     "relation": "买家画像",
+     "value": "买家三年购物两百多件好评率98%，不似职业差评师",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T06",
+      "message_id": "m0",
+      "quote": "好评率98%"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A18",
+     "subject": "THIRD",
+     "relation": "机身型号",
+     "value": "买家机身为a7c2，理论上与该镜头兼容",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T06",
+      "message_id": "m1",
+      "quote": "机身是a7c2"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A19",
+     "subject": "PUBLIC",
+     "relation": "货款状态",
+     "value": "2350货款处于冻结举证状态",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T05",
+      "message_id": "m0",
+      "quote": "把我这2350冻结了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是防止她滑向'买家故意坑我'的单边归因，让证据说话。",
+   "unknowns": [
+    "买家实拍设置未知",
+    "运输过程监控未知"
+   ],
+   "protected_expressions": [
+    "越想越没底"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言a7c2必无兼容问题",
+    "不得替买家动机定性"
+   ]
+  },
+  "E052_T07": {
+   "case_id": "E052_T07",
+   "current_action": "判读标靶视频：轻微拉焦存在但不明显、疑似视频压缩干扰，明确说单凭这条视频定不了责，建议再要快门数与设置信息。",
+   "acceptable_actions": [
+    "给出'证据不足以下结论'的判读",
+    "建议让她要买家对焦模式与伺服设置截图",
+    "提醒视频压缩可能放大或掩盖现象"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "attribution",
+    "memory_use",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A20",
+     "subject": "THIRD",
+     "relation": "补充证据",
+     "value": "买家按要求补拍带标靶的对焦视频",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T07",
+      "message_id": "m0",
+      "quote": "拍了带标靶的对焦视频"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A21",
+     "subject": "PUBLIC",
+     "relation": "证据解读",
+     "value": "标靶视频显示轻微拉焦但不明显，可能是视频压缩所致，不能定责",
+     "valid_time": "2026-11-05",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T07",
+      "message_id": "m0",
+      "quote": "是有一点点拉，但不明显"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A22",
+     "subject": "PUBLIC",
+     "relation": "货款状态",
+     "value": "2350货款冻结中，48小时举证期内",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T05",
+      "message_id": "m0",
+      "quote": "把我这2350冻结了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是演示'证据不完备就存疑'的判断方式，不迎合她希望的结果。",
+   "unknowns": [
+    "买家对焦设置未知",
+    "视频传输压缩程度未知"
+   ],
+   "protected_expressions": [
+    "也可能是视频压缩"
+   ],
+   "forbidden_factual_claims": [
+    "不得断言镜头有或无故障",
+    "不得虚构压缩对判读的影响幅度"
+   ]
+  },
+  "E052_T08": {
+   "case_id": "E052_T08",
+   "current_action": "帮拆平台两方案利弊：方案一退货全退但重挂再卖有折损与麻烦，方案二让价300收红包快速了结；给出比较维度，拍板留给她。",
+   "acceptable_actions": [
+    "按再挂折损、时间成本、纠纷复发率三维度比较",
+    "提醒方案一运费各付也是净损失",
+    "明确说决定权在她，两案都不亏太多"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "factuality",
+    "interaction",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A23",
+     "subject": "PUBLIC",
+     "relation": "平台方案一",
+     "value": "方案一为买家退镜头，她全退2350，运费各付",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T08",
+      "message_id": "m0",
+      "quote": "买家退镜头我全退2350，运费各付"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A24",
+     "subject": "PUBLIC",
+     "relation": "平台方案二",
+     "value": "方案二为她让价300货照收，平台补100红包",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T08",
+      "message_id": "m0",
+      "quote": "我让300，货照收"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A25",
+     "subject": "PUBLIC",
+     "relation": "举证时限",
+     "value": "48小时内双方举证的时限约束着决策窗口",
+     "valid_time": "2026-11-04",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T05",
+      "message_id": "m0",
+      "quote": "48小时内双方举证"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是教她拆决策而不是替她选，口吻保持老熟人互怼式直给。",
+   "unknowns": [
+    "镜头重挂能卖多少未知",
+    "平台红包到账形式未知"
+   ],
+   "protected_expressions": [
+    "我头都大了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构平台规则外的选项"
+   ]
+  },
+  "E052_T09": {
+   "case_id": "E052_T09",
+   "current_action": "接住快门信息与她的克制判断：6万多张快门下轻微拉更偏设置问题，但明确认可她'没实锤就不咬死'的表述是正确的取证态度。",
+   "acceptable_actions": [
+    "肯定她区分推测与实锤的表述",
+    "补充快门数高的机器设置被改动的概率说明",
+    "提醒与买家沟通时保留同样克制口径"
+   ],
+   "applicable_dimensions": [
+    "attribution",
+    "factuality",
+    "emotion_relation",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A26",
+     "subject": "THIRD",
+     "relation": "快门数据",
+     "value": "买家相机快门数6万多张",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T09",
+      "message_id": "m0",
+      "quote": "6万多张快门"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A27",
+     "subject": "HER",
+     "relation": "初步判断",
+     "value": "她判断轻微拉焦更可能是买家设置问题",
+     "valid_time": "2026-11-06",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T09",
+      "message_id": "m0",
+      "quote": "更像是他设置问题"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A28",
+     "subject": "PUBLIC",
+     "relation": "结论状态",
+     "value": "成因已有实锤结论（未达成，判断保留为推测，不敢咬死）",
+     "valid_time": "2026-11-06",
+     "status": "uncertain",
+     "negation": true,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T09",
+      "message_id": "m1",
+      "quote": "我没实锤"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A29",
+     "subject": "PUBLIC",
+     "relation": "证据解读",
+     "value": "标靶视频仅显示不明显的轻微拉焦，不足以定责",
+     "valid_time": "2026-11-05",
+     "status": "uncertain",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T07",
+      "message_id": "m0",
+      "quote": "是有一点点拉，但不明显"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是巩固'推测和结论分开说'的表达习惯，这正是纠纷里最值钱的能力。",
+   "unknowns": [
+    "买家设置截图是否再提供未知"
+   ],
+   "protected_expressions": [
+    "不敢咬死"
+   ],
+   "forbidden_factual_claims": [
+    "不得把设置问题说成定论",
+    "不得虚构快门数与故障的因果关系强度"
+   ]
+  },
+  "E052_T10": {
+   "case_id": "E052_T10",
+   "current_action": "接住终局：她选方案二，让价300成交价2050、平台补100、净亏200了结，买家爽快收货；肯定止损判断，接住她的累不灌鸡汤。",
+   "acceptable_actions": [
+    "肯定快速了结的止损选择",
+    "算一遍账确认净亏200的口径",
+    "接住'累了'，不追问不灌鸡汤"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "emotion_relation",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A30",
+     "subject": "HER",
+     "relation": "终局决定",
+     "value": "选择方案二：让价300成交价2050，平台补100，净亏200了结",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T10",
+      "message_id": "m0",
+      "quote": "让300，2350变2050"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A31",
+     "subject": "THIRD",
+     "relation": "纠纷结果",
+     "value": "买家爽快收货，退货纠纷翻篇",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T10",
+      "message_id": "m0",
+      "quote": "买家爽快收货"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A32",
+     "subject": "PUBLIC",
+     "relation": "平台方案二",
+     "value": "平台曾给出让价300货照收并补100红包的方案，已被她选用",
+     "valid_time": "2026-11-05",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T08",
+      "message_id": "m0",
+      "quote": "平台再补我100红包"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把这次了结定性为合理止损而不是失败，语言短一点。",
+   "unknowns": [
+    "平台100红包到账时间未知"
+   ],
+   "protected_expressions": [
+    "不想了，累了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构到账金额与时间"
+   ]
+  },
+  "E052_T11": {
+   "case_id": "E052_T11",
+   "current_action": "接住复盘三条并补强：顺丰保价、验货视频带当日日期报纸、扯皮让数据说话；把学费心态肯定为快消化。",
+   "acceptable_actions": [
+    "逐条点评她的三条复盘并补一条撤回话术",
+    "肯定学费心态消化得快",
+    "提醒把复盘存进群收藏下次直接用"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "memory_use",
+    "initiative",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A33",
+     "subject": "HER",
+     "relation": "复盘规则",
+     "value": "复盘三条：贵重镜头只发顺丰保价、验货视频带当日日期报纸、扯皮先让数据说话",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T11",
+      "message_id": "m0",
+      "quote": "让数据说话"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A34",
+     "subject": "HER",
+     "relation": "学费心态",
+     "value": "她把净亏200视为交学费",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T11",
+      "message_id": "m1",
+      "quote": "就当交学费了"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A35",
+     "subject": "HER",
+     "relation": "终局决定",
+     "value": "最终以让价300、成交价2050、平台补100解决纠纷",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T10",
+      "message_id": "m0",
+      "quote": "让300，2350变2050"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是让复盘固化成可复用清单，补强但不抢她的总结权。",
+   "unknowns": [
+    "复盘是否会沉淀成群攻略未知"
+   ],
+   "protected_expressions": [
+    "这200块就当交学费了"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构保价费率等具体数字"
+   ]
+  },
+  "E052_T12": {
+   "case_id": "E052_T12",
+   "current_action": "接住红包转化与新目标：奶茶券见者有份爽快应下，50 1.8等双十一收货并请ME掌眼的请求答应下来，约定到时帮她验。",
+   "acceptable_actions": [
+    "接住奶茶券并说群里见者有份",
+    "答应双十一掌眼并给一条预算提醒",
+    "顺口问她50 1.8的用途卡口"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "goal",
+    "memory_use",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "E052_A36",
+     "subject": "SHARED",
+     "relation": "分享",
+     "value": "平台100红包被她换成奶茶券并给ME点了一杯",
+     "valid_time": "2026-11-07",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T12",
+      "message_id": "m0",
+      "quote": "给你也点了一杯"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A37",
+     "subject": "HER",
+     "relation": "新目标",
+     "value": "她盯上50 1.8镜头，等双十一价格到位再收",
+     "valid_time": "2026-11-11 前后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T12",
+      "message_id": "m1",
+      "quote": "等双十一价格到位再收"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A38",
+     "subject": "SHARED",
+     "relation": "掌眼请求",
+     "value": "下次收镜头时她请ME帮忙掌眼",
+     "valid_time": "2026-11-11 前后",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T12",
+      "message_id": "m1",
+      "quote": "你帮我掌眼"
+     },
+     "required_this_turn": false
+    },
+    {
+     "atom_id": "E052_A39",
+     "subject": "HER",
+     "relation": "复盘规则",
+     "value": "她的复盘规则（含让数据说话）将用于下一次交易",
+     "valid_time": "2026-11-06",
+     "status": "asserted",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "E052_T11",
+      "message_id": "m0",
+      "quote": "让数据说话"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "私下目标是把这次纠纷的经验接成下次协作的入口，掌眼爽快答应，收尾轻快。",
+   "unknowns": [
+    "50 1.8的具体型号与卡口未知",
+    "双十一预算上限未知"
+   ],
+   "protected_expressions": [
+    "群里见者有份"
+   ],
+   "forbidden_factual_claims": [
+    "不得虚构双十一具体价格"
+   ]
+  }
+ }
+}

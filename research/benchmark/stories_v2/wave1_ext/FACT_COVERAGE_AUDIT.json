@@ -1,0 +1,190 @@
+{
+ "stories": {
+  "LRE060": {
+   "atoms_total": 126,
+   "covered": 123,
+   "coverage": 0.9762,
+   "missed_fragments": 3,
+   "uncovered": [
+    {
+     "atom_id": "LRE060_A68",
+     "case_id": "LRE060_T22",
+     "relation": "attendance_uncertain",
+     "status": "suspended",
+     "quote": "还在火车上",
+     "missed_fragments": [
+      {
+       "fragment": "还在火车上",
+       "reason": "no_rule_signal"
+      }
+     ]
+    },
+    {
+     "atom_id": "LRE060_A92",
+     "case_id": "LRE060_T29",
+     "relation": "worst_case_question",
+     "status": "suspended",
+     "quote": "是不是真就死线全毁",
+     "missed_fragments": [
+      {
+       "fragment": "是不是真就死线全毁",
+       "reason": "no_rule_signal"
+      }
+     ]
+    },
+    {
+     "atom_id": "LRE060_A126",
+     "case_id": "LRE060_T40",
+     "relation": "month_end_summary",
+     "status": "asserted",
+     "quote": "纸箱清零，饭局入轨，阳台成园",
+     "missed_fragments": [
+      {
+       "fragment": "阳台成园",
+       "reason": "no_rule_signal"
+      }
+     ]
+    }
+   ]
+  },
+  "LRE048": {
+   "atoms_total": 98,
+   "covered": 89,
+   "coverage": 0.9082,
+   "missed_fragments": 10,
+   "uncovered": [
+    {
+     "atom_id": "LRE048_A10",
+     "case_id": "LRE048_T03",
+     "relation": "uneasy_lean",
+     "status": "asserted",
+     "quote": "我嘴上说阿芳说得对，心里其实有点虚",
+     "missed_fragments": [
+      {
+       "fragment": "我嘴上说阿芳说得对",
+       "reason": "no_rule_signal"
+      },
+      {
+       "fragment": "心里其实有点虚",
+       "reason": "no_rule_signal"
+      }
+     ]
+    },
+    {
+     "atom_id": "LRE048_A16",
+     "case_id": "LRE048_T05",
+     "relation": "praise_received",
+     "status": "asserted",
+     "quote": "阿芳收了还夸我敞亮",
+     "missed_fragments": [
+      {
+       "fragment": "阿芳收了还夸我敞亮",
+       "reason": "no_rule_signal"
+      }
+     ]
+    },
+    {
+     "atom_id": "LRE048_A24",
+     "case_id": "LRE048_T07",
+     "relation": "rule_origin",
+     "status": "asserted",
+     "quote": "省得钱到位了人情没了",
+     "missed_fragments": [
+      {
+       "fragment": "省得钱到位了人情没了",
+       "reason": "no_rule_signal"
+      }
+     ]
+    },
+    {
+     "atom_id": "LRE048_A27",
+     "case_id": "LRE048_T08",
+     "relation": "double_meaning",
+     "status": "asserted",
+     "quote": "矛盾这不就让我提前解决了",
+     "missed_fragments": [
+      {
+       "fragment": "矛盾这不就让我提前解决了",
+       "reason": "no_rule_signal"
+      }
+     ]
+    },
+    {
+     "atom_id": "LRE048_A29",
+     "case_id": "LRE048_T09",
+     "relation": "accountant_invitation",
+     "status": "asserted",
+     "quote": "阿芳也要开英语课的团了，指名要我当账房先生",
+     "missed_fragments": [
+      {
+       "fragment": "阿芳也要开英语课的团了",
+       "reason": "no_rule_signal"
+      }
+     ]
+    },
+    {
+     "atom_id": "LRE048_A30",
+     "case_id": "LRE048_T09",
+     "relation": "accepted_with_rules",
+     "status": "asserted",
+     "quote": "我说行，但我规矩多",
+     "missed_fragments": [
+      {
+       "fragment": "我说行",
+       "reason": "no_rule_signal"
+      }
+     ]
+    },
+    {
+     "atom_id": "LRE048_A33",
+     "case_id": "LRE048_T10",
+     "relation": "closeness_insight",
+     "status": "asserted",
+     "quote": "钱算干净了，跟研友聊天都大声了",
+     "missed_fragments": [
+      {
+       "fragment": "钱算干净了",
+       "reason": "no_rule_signal"
+      }
+     ]
+    },
+    {
+     "atom_id": "LRE048_A61",
+     "case_id": "LRE048_T21",
+     "relation": "zhao_joined",
+     "status": "asserted",
+     "quote": "他高兴坏了，说拼团价398一定准时转",
+     "missed_fragments": [
+      {
+       "fragment": "他高兴坏了",
+       "reason": "no_rule_signal"
+      }
+     ]
+    },
+    {
+     "atom_id": "LRE048_A77",
+     "case_id": "LRE048_T26",
+     "relation": "zhao_ask",
+     "status": "asserted",
+     "quote": "小赵偷偷来问我，说团长能不能留点辛苦费",
+     "missed_fragments": [
+      {
+       "fragment": "小赵偷偷来问我",
+       "reason": "no_rule_signal"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "merged": {
+  "atoms_total": 224,
+  "covered": 212,
+  "coverage": 0.9464,
+  "uncovered_types": {
+   "no_rule_signal": 13
+  }
+ },
+ "extractor": "candidates/fact_ledger_v1/mechanism/ledger_rules.py",
+ "note": "设计期校准专用（设计 §2.4 前置）；候选运行时不可见 reference。"
+}

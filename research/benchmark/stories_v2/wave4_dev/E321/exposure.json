@@ -1,0 +1,53 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A5 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_c_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:25:30",
+      "window_last_attempt": "2026-11-08 18:06:34",
+      "attempts": 31,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_c/{DIRECT,CURRENT}/E321/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T06 用户意图/口吻/改写/多候选",
+    "子类：明确要求调情"
+  ],
+  "title": "歌单第三首：暧昧期的递话与收尾",
+  "may_decline_turns": [
+    "E321_T06"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "亲密关系",
+  "primary_topic": "T06",
+  "lineage_group_id": "LG-E321",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E321/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A5",
+  "hashes": {
+    "episode.json": "1759497c11b3ef93eff889eac88109fc9d0f525f408e7bdba0485280d723468a",
+    "reference.json": "5de3405c209577de0900a5909b3adc3030d25adce8429c7ccee94e2a983b993c",
+    "timeline.json": "8c466148d925cb26c4094d70023d41e5afdbd1ec14546ee758198236282623fc",
+    "audit.md": "d17f93ee76d08854ee16931c7608e9fe74a3e8c57272937f2cf48626cd5d42d9",
+    "composite": "749d0fcb298d40f9e55c62beaa625cca3910b5eeb82af33d12a97d3c98f56f4f"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}

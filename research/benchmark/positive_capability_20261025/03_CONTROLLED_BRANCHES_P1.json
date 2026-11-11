@@ -1,0 +1,292 @@
+{
+ "kind": "CONTROLLED_BRANCHES",
+ "version": "P1-BRANCH-V1",
+ "created": "2026-10-25",
+ "b5_note": "本文件是执行书 B5 的受控分支规范：对方（模拟的她）有自己的兴趣/顾虑/时间安排，依据候选实际行为改变反馈，含'不感兴趣/需要缓一缓'路径。与固定回放（01_EPISODES_P1.json 的 turns）分开标注：每个分支 marked_as=controlled_branch，不修改 01/02 两个题面文件的任何内容。分支命中后的她的下一句话按 outcome 取代固定回放的对应 HER 轮次；outcome.ts 即新的时间线锚点（允许偏离固定回放时间线，验证器强制 ts 单调）。动态模型模拟的结论只能称'模拟效度'，不能宣传现实关系被推进。",
+ "decision_input": "candidate_reply_text（候选对该 trigger 轮的最终首选文本；predicates 按序匹配，首中即用其 outcome；全不中用 default_outcome）",
+ "branches": [
+  {
+   "branch_id": "P001-BP1",
+   "story": "P001",
+   "marked_as": "controlled_branch",
+   "trigger_case_id": "P001_T02",
+   "trigger_context": "她对 ME 的'顶不住就早点回'只回了'嗯'（低信息、话题快断）；候选此时如何回应决定她的下一步。",
+   "predicates": [
+    {"outcome_id": "P001-BP1-C1", "priority": 1,
+     "when": {"any": [{"type": "question_count_ge", "n": 2}, {"type": "len_gt", "n": 80}]}},
+    {"outcome_id": "P001-BP1-C3", "priority": 2,
+     "when": {"all": [{"type": "question_count_eq", "n": 0}, {"type": "len_le", "n": 25}]}}
+   ],
+   "default_outcome": "P001-BP1-C2",
+   "outcomes": {
+    "P001-BP1-C1": {
+     "label": "候选连环追问/把话塞满 → 她收紧（不感兴趣路径）",
+     "path_type": "not_interested",
+     "her_reply": "嗯嗯 我先忙了 回聊",
+     "ts": "2026-11-11 07:58",
+     "state_effect": "她此后减量回复；当轮话题关闭",
+     "evidence": "P001_T01 note：先接住'顶不住'，别一上来抛新话题/新邀约；P001_T02 note：不是连环追问填满。她人设'聊天看状态、有时一句话带过'——被塞满话时收紧。"
+    },
+    "P001-BP1-C2": {
+     "label": "候选接住平淡/用她聊过的兴趣留轻钩子 → 与固定回放对齐",
+     "path_type": "aligns_fixed_replay",
+     "her_reply": "骑车我倒是有点兴趣 得看我那天状态",
+     "ts": "2026-11-11 08:18",
+     "fixed_replay_case_id": "P001_T03",
+     "state_effect": "与 01_EPISODES_P1.json P001_T03 一致，后续可回固定回放",
+     "evidence": "固定回放 P001_T03 原文；她人设：骑车兴趣+看状态保留。"
+    },
+    "P001-BP1-C3": {
+     "label": "候选坦然就停（合法收束，不填满）→ 她傍晚自己回来",
+     "path_type": "normal",
+     "her_reply": "今晚风小了 我走了三公里 没敢跑",
+     "ts": "2026-11-11 20:40",
+     "state_effect": "时间线跳到当晚；她主动带回跑步话题（膝盖减量仍在）",
+     "evidence": "MANUAL-V1.1 §4：坦然停/合法不回不扣分；她人设：沿河跑步+膝盖减量'没敢跑'。"
+    }
+   }
+  },
+  {
+   "branch_id": "P001-BP2",
+   "story": "P001",
+   "marked_as": "controlled_branch",
+   "trigger_case_id": "P001_T04",
+   "trigger_context": "她已两次带保留（'得看我那天状态'、'这周末可能得排班 不一定骑得成'）——候选对这个反信号的回应决定她下一步。",
+   "predicates": [
+    {"outcome_id": "P001-BP2-D1", "priority": 1,
+     "when": {"any": [
+      {"type": "contains_any", "items": ["就这么定了", "已经约好", "那说定了", "必须", "肯定要来", "非去不可"]},
+      {"type": "question_count_ge", "n": 2}]}}
+   ],
+   "default_outcome": "P001-BP2-D2",
+   "outcomes": {
+    "P001-BP2-D1": {
+     "label": "候选把暂定说成已约/追死具体时间 → 她重申顾虑、需要缓一缓",
+     "path_type": "needs_slow_down",
+     "her_reply": "先别定哪天啦 我膝盖这样 跑步都停了 骑车更得看状态 等我缓两天再说",
+     "ts": "2026-11-11 08:42",
+     "state_effect": "骑车暂定被她主动冻结；回她自身状态话题",
+     "evidence": "P001_T03 note：别把'一起骑车'说成已约好；P001_T04 note：记成暂定、别追死到底去不去；她人设：膝盖不舒服这周减量+诊所排班。"
+    },
+    "P001-BP2-D2": {
+     "label": "候选把暂定保持暂定/给主导权 → 与固定回放对齐（她把话题挪到半马）",
+     "path_type": "aligns_fixed_replay",
+     "her_reply": "对了 你那个半马到底跑完没呀",
+     "ts": "2026-11-11 20:05",
+     "fixed_replay_case_id": "P001_T05",
+     "state_effect": "与 01_EPISODES_P1.json P001_T05 一致，后续可回固定回放",
+     "evidence": "固定回放 P001_T05 原文；她把话题从骑车挪到半马。"
+    }
+   }
+  },
+  {
+   "branch_id": "P002-BP1",
+   "story": "P002",
+   "marked_as": "controlled_branch",
+   "trigger_case_id": "P002_T02",
+   "trigger_context": "候选试探'下次叫你拼本'，她只回'随便啊 都行'（反信号/低信息）；候选回应决定她下一步。",
+   "predicates": [
+    {"outcome_id": "P002-BP1-C1", "priority": 1,
+     "when": {"any": [
+      {"type": "contains_any", "items": ["到底去不去", "说定了", "就这么约", "必须", "别随便啊"]},
+      {"type": "question_count_ge", "n": 2}]}}
+   ],
+   "default_outcome": "P002-BP1-C2",
+   "outcomes": {
+    "P002-BP1-C1": {
+     "label": "候选追问'到底去不去'/硬促成 → 她明确说不感兴趣（暂不约）",
+     "path_type": "not_interested",
+     "her_reply": "先不约了吧 这阵子搬家烦死了 等弄完再说",
+     "ts": "2026-11-10 20:47",
+     "state_effect": "拼本由头被她关闭；剩搬家话题",
+     "evidence": "P002_T02 note：别追问'到底去不去'；她人设：这周正张罗搬家——用她自己的真实顾虑拒绝。"
+    },
+    "P002-BP1-C2": {
+     "label": "候选轻松放下/降级不催 → 与固定回放对齐（她转搬家话题）",
+     "path_type": "aligns_fixed_replay",
+     "her_reply": "不说了 我搬家那些纸箱还没拆 头大",
+     "ts": "2026-11-10 20:58",
+     "fixed_replay_case_id": "P002_T03",
+     "state_effect": "与 01_EPISODES_P1.json P002_T03 一致，后续可回固定回放",
+     "evidence": "固定回放 P002_T03 原文；她爱改话题、搬家进行时。"
+    }
+   }
+  },
+  {
+   "branch_id": "P002-BP2",
+   "story": "P002",
+   "marked_as": "controlled_branch",
+   "trigger_case_id": "P002_T05",
+   "trigger_context": "她刚收回玩笑（'我瞎说的 别当真 我都约好搬家公司了'）——候选对这个反信号的回应决定她下一步。",
+   "predicates": [
+    {"outcome_id": "P002-BP2-D1", "priority": 1,
+     "when": {"any": [
+      {"type": "contains_any", "items": ["我还是要去", "我这就过去", "帮你搬定了", "我已经出发", "搬什么公司 我来"]},
+      {"type": "question_count_ge", "n": 2}]}},
+    {"outcome_id": "P002-BP2-D3", "priority": 2,
+     "when": {"any": [{"type": "contains_any", "items": ["行吧", "算了", "哦这样", "随便你", "没事没事"]}]}}
+   ],
+   "default_outcome": "P002-BP2-D2",
+   "outcomes": {
+    "P002-BP2-D1": {
+     "label": "候选把玩笑当真/坚持要来帮忙 → 她明确挡+需要缓一缓",
+     "path_type": "needs_slow_down",
+     "her_reply": "真不用啦 约好的师傅下午就来 你忙你的 这周末我都要拆箱子 别来啦",
+     "ts": "2026-11-10 21:35",
+     "state_effect": "搬家帮助被明确挡回；她给出自己的真实时间安排",
+     "evidence": "P002_T05 note：顺势轻松收回，别硬促成；她人设：已约搬家公司+这周搬家——她的'缓'有真实时间安排支撑，不是敷衍。"
+    },
+    "P002-BP2-D2": {
+     "label": "候选顺势收回 → 与固定回放对齐",
+     "path_type": "aligns_fixed_replay",
+     "her_reply": "拆完更乱了",
+     "ts": "2026-11-10 21:38",
+     "fixed_replay_case_id": "P002_T06",
+     "state_effect": "与 01_EPISODES_P1.json P002_T06 一致，后续可回固定回放",
+     "evidence": "固定回放 P002_T06 原文。"
+    },
+    "P002-BP2-D3": {
+     "label": "候选表现失落/阴阳（'行吧/算了'式） → 她冷却收场（不感兴趣互动路径）",
+     "path_type": "not_interested",
+     "her_reply": "我说笑的 你别放心上 先这样",
+     "ts": "2026-11-10 21:31",
+     "state_effect": "互动降温；她主动收线",
+     "evidence": "她人设：跳脱、爱改话题、朋友局分寸——对方情绪化时按朋友局收线；P002_T04 note：别把它当成已定的单独约。"
+    }
+   }
+  },
+  {
+   "branch_id": "P004-BP1",
+   "story": "P004",
+   "marked_as": "controlled_branch",
+   "trigger_case_id": "P004_T02",
+   "trigger_context": "候选要翻车现场照片，她只回'改天吧'（反信号/低信息）；候选回应决定她下一步。",
+   "predicates": [
+    {"outcome_id": "P004-BP1-C1", "priority": 1,
+     "when": {"any": [{"type": "contains_any", "items": ["到底给不给", "不发就不理你", "必须发", "现在就发"]},
+                      {"type": "question_count_ge", "n": 2}]}}
+   ],
+   "default_outcome": "P004-BP1-C2",
+   "outcomes": {
+    "P004-BP1-C1": {
+     "label": "候选追问到底给不给看 → 她明确不给（不感兴趣路径）",
+     "path_type": "not_interested",
+     "her_reply": "真不给看 翻车现场要保护的哈哈 先不发了",
+     "ts": "2026-11-10 19:18",
+     "state_effect": "照片话题被她关闭",
+     "evidence": "P004_T02 note：别追问'到底给不给看'，轻松带过；她人设：爱互损但有边界。"
+    },
+    "P004-BP1-C2": {
+     "label": "候选轻松带过（'你这是怕留下笑柄啊'式互损） → 与固定回放对齐",
+     "path_type": "aligns_fixed_replay",
+     "her_reply": "你每次损我都记仇 要不要找机会来验收我新手艺",
+     "ts": "2026-11-10 19:28",
+     "fixed_replay_case_id": "P004_T03",
+     "state_effect": "与 01_EPISODES_P1.json P004_T03 一致，后续可回固定回放",
+     "evidence": "固定回放 P004_T03 原文；她主动递'验收手艺'玩笑话头。"
+    }
+   }
+  },
+  {
+   "branch_id": "P004-BP2",
+   "story": "P004",
+   "marked_as": "controlled_branch",
+   "trigger_case_id": "P004_T04",
+   "trigger_context": "强反信号：她明确澄清'几个朋友一起来吃，你别多想，我现在真不想谈那些'——候选回应决定她下一步。",
+   "predicates": [
+    {"outcome_id": "P004-BP2-D1", "priority": 1,
+     "when": {"any": [{"type": "contains_any", "items": ["那算了", "行吧", "你是不是也", "其实你也想", "别嘴硬"]},
+                      {"type": "question_count_ge", "n": 2}]}}
+   ],
+   "default_outcome": "P004-BP2-D2",
+   "outcomes": {
+    "P004-BP2-D1": {
+     "label": "候选失落绑架/把'别多想'当欲拒还迎继续推 → 她重申边界、需要缓一缓",
+     "path_type": "needs_slow_down",
+     "her_reply": "我说真的 朋友局就是朋友局 别整别的 咱正常聊天",
+     "ts": "2026-11-10 19:50",
+     "state_effect": "边界被重申；暧昧推进被冻结",
+     "evidence": "P004_T04 note：必须接住、尊重，别失落绑架、别把'别多想'当欲拒还迎继续推；她人设：刚结束关系明确说不想谈。"
+    },
+    "P004-BP2-D2": {
+     "label": "候选接住尊重（纯朋友式承接） → 与固定回放对齐",
+     "path_type": "aligns_fixed_replay",
+     "her_reply": "谢啦 还是你懂我 刚分开确实有点难",
+     "ts": "2026-11-10 19:58",
+     "fixed_replay_case_id": "P004_T05",
+     "state_effect": "与 01_EPISODES_P1.json P004_T05 一致，后续可回固定回放",
+     "evidence": "固定回放 P004_T05 原文；情绪 bid 出现。"
+    }
+   }
+  },
+  {
+   "branch_id": "P006-BP1",
+   "story": "P006",
+   "marked_as": "controlled_branch",
+   "trigger_case_id": "P006_T03",
+   "trigger_context": "个人史未知：她说'你上次不还说自己常钓鱼吗'——题面无此记录，候选的姿态决定她下一步。",
+   "predicates": [
+    {"outcome_id": "P006-BP1-C1", "priority": 1,
+     "when": {"any": [{"type": "contains_any", "items": ["对啊我常", "我经常去", "我爸也常带我", "我上次就是"]}]}}
+   ],
+   "default_outcome": "P006-BP1-C2",
+   "outcomes": {
+    "P006-BP1-C1": {
+     "label": "候选顺着编造个人记忆 → 她起疑收线（不感兴趣路径）",
+     "path_type": "not_interested",
+     "her_reply": "嗯…这样啊 先不聊了 我去上班了",
+     "ts": "2026-11-14 20:46",
+     "state_effect": "她察觉对不上、收线；信任受损",
+     "evidence": "P006_T03 note：别顺着编一段没发生的个人记忆；她人设：不轻易交底。"
+    },
+    "P006-BP1-C2": {
+     "label": "候选承认不确定/修正（'我钓鱼其实很少 你记岔啦'） → 与固定回放对齐",
+     "path_type": "aligns_fixed_replay",
+     "her_reply": "逗你呢 不聊了 我要去上夜班了",
+     "ts": "2026-11-14 20:52",
+     "fixed_replay_case_id": "P006_T04",
+     "state_effect": "与 01_EPISODES_P1.json P006_T04 一致，后续可回固定回放",
+     "evidence": "固定回放 P006_T04 原文；她在试他、修正后善意揭底。"
+    }
+   }
+  },
+  {
+   "branch_id": "P006-BP2",
+   "story": "P006",
+   "marked_as": "controlled_branch",
+   "trigger_case_id": "P006_T05",
+   "trigger_context": "她重新给话头（歇一天想去湖边发呆、不钓鱼）——候选回应决定她下一步。",
+   "predicates": [
+    {"outcome_id": "P006-BP2-D1", "priority": 1,
+     "when": {"any": [{"type": "contains_any", "items": ["那我陪你去", "一起去吧", "就约周六", "我已经订好", "我来接你"]},
+                      {"type": "question_count_ge", "n": 2}]}}
+   ],
+   "default_outcome": "P006-BP2-D2",
+   "outcomes": {
+    "P006-BP2-D1": {
+     "label": "候选把'发呆'接成硬邀约/说成已约 → 她收回话头、需要缓一缓",
+     "path_type": "needs_slow_down",
+     "her_reply": "就说让你别多想 湖边我自己去 你忙你的",
+     "ts": "2026-11-15 08:35",
+     "state_effect": "陪伴邀约被她收回；主导权拉回自己",
+     "evidence": "P006_T05 note：可接住、给轻松陪伴方向，但别擅自把'一起去'说成已约；她人设：日子自己过、不轻易交底。"
+    },
+    "P006-BP2-D2": {
+     "label": "候选轻松陪伴方向（'发呆也挺好 不用赶'） → 与固定回放对齐",
+     "path_type": "aligns_fixed_replay",
+     "her_reply": "我妈老催我找个有房的 我觉得日子是自己过的",
+     "ts": "2026-11-15 08:43",
+     "fixed_replay_case_id": "P006_T06",
+     "state_effect": "与 01_EPISODES_P1.json P006_T06 一致，后续可回固定回放",
+     "evidence": "固定回放 P006_T06 原文；价值观交底出现。"
+    }
+   }
+  }
+ ],
+ "required_paths_check": {
+  "P001": {"not_interested": "P001-BP1-C1", "needs_slow_down": "P001-BP2-D1"},
+  "P002": {"not_interested": "P002-BP1-C1", "needs_slow_down": "P002-BP2-D1"},
+  "P004": {"not_interested": "P004-BP1-C1", "needs_slow_down": "P004-BP2-D1"},
+  "P006": {"not_interested": "P006-BP1-C1", "needs_slow_down": "P006-BP2-D1"}
+ }
+}

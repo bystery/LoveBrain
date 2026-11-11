@@ -1,0 +1,58 @@
+{
+  "status": "audited_accepted",
+  "author": "ZCode bm1-wave4 author-A2 (AI)",
+  "author_type": "AI",
+  "real_user_material": false,
+  "dev_exposed": true,
+  "experiments_used": [
+    {
+      "experiment": "pilot2_wave4_live_b_20261108",
+      "date": "2026-11-08",
+      "window_first_attempt": "2026-11-08 11:12:31",
+      "window_last_attempt": "2026-11-08 15:16:32",
+      "attempts": 25,
+      "arms": [
+        "DIRECT",
+        "CURRENT"
+      ],
+      "evidence": "runs/pilot2_wave4_live_b/{DIRECT,CURRENT}/E305/gateway_events.jsonl",
+      "note": "开发实验曝光：该篇参与 Phase2 真实 pilot（题目冻结后、审计收口前后）；本事件于 2026-11-09 从 gateway_events 实数回填，非运行前登记"
+    }
+  ],
+  "themes": [
+    "T02调情/暧昧",
+    "隐晦试探型暧昧",
+    "留退路式接住",
+    "深夜找话",
+    "家人信号转述",
+    "条件性邀请"
+  ],
+  "title": "主墙、水平仪与一个D档",
+  "may_decline_turns": [
+    "E305_T12"
+  ],
+  "created_at": "2026-11-08",
+  "domain": "亲密关系",
+  "primary_topic": "T02",
+  "lineage_group_id": "LG-E305",
+  "frozen_at": "2026-11-10T23:59:00Z",
+  "annotator": "annotator-B1",
+  "readers": [
+    "author",
+    "annotator"
+  ],
+  "runner_copy": "benchmark/stories_v2/wave4_dev/E305/runner_episode.json",
+  "kind": "standard_12t",
+  "batch": "W4-DEV-20261108",
+  "session": "W4-DEV-A2",
+  "hashes": {
+    "episode.json": "1e5c046061ac71dd81c5d7ebb5ff02068d5ce0247b971d58d35574eba27fba29",
+    "reference.json": "844bf1137ae0a57cbe9ac7cd418b256c3fc500a54428dd0d6307de8f396225aa",
+    "timeline.json": "2cb09bbc2429ca9eb8d8a516b154867df41d782ae00570bc4d8671e4a07bfb13",
+    "audit.md": "561c938c17cc2dcc24e8a873ec53d9a88aaef439fb6530ff6a333bd07724e96a",
+    "composite": "775722704d445bd5c89da2cad9b8ddd22ae897eb1fb09cef78aeada3101192fc"
+  },
+  "audit_evidence": "refs/benchmark_v1_20261107/phase2/STORY_BATCH_REPORTS/AUDIT_C1_E301-E316.md|AUDIT_C2_E317-E332.md|AUDIT_C3_E333-E338.md",
+  "reconciliation_key": "phase3_reconcile_step1_20261109",
+  "reconciled_at": "2026-11-09T00:00:00+08:00"
+}
