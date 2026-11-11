@@ -37,7 +37,7 @@
 - 证书 SHA-256 = `98e10b2808ba0ab6c047c2cfff15fcedc5fd14de0f4da98d1914a5490530dbaf`，与 `scripts/signing-baseline.txt` 钉的 `cert_sha256` **逐字一致**（v1.4.0 起现行钥匙，非 2026-10-07 已销毁的历史钥匙）。
 
 签名链路结构（app/build.gradle.kts）：
-- `keystore.properties`（仓库根，已 gitignore）提供 storeFile/storePassword/keyAlias/keyPassword **四字段均存在**；storeFile 指向 `D:/TeamWorkspace/keystores/lovebrain-release.jks`（2766 B，存在）。
+- `keystore.properties`（仓库根，已 gitignore）提供 storeFile/storePassword/keyAlias/keyPassword **四字段均存在**；storeFile 指向中央工作区 keystore 目录下的 release 签名库（路径属内部治理信息，公开副本脱敏）。
 - release 与 debug buildType 在该文件存在时都挂 `signingConfigs.release`；不存在时不指定 signingConfig——release 产 unsigned APK，debug 回 AGP 默认 key，绝不静默回退 debug 签名冒充发布（设计正确，本次路径未触发）。
 - 注：仓库根 `keystore/` 目录为空，真实 keystore 不在仓库内。
 
