@@ -17,7 +17,7 @@
 | `archive/` | 历史归档（移植原型、交付快照、脱敏指南，均附索引说明） | 81（含 14 个交付快照包；另 27 件登记未复制：9 件 Q8 待定、15 件 TRANSIENT_REVIEW、1 件待脱敏、2 件目录级排除） | 完整迁移 |
 | `provenance/` | 迁移证据（映射表、迁移清单、隐私与许可审查） | 5（迁移清单 74,183 行） | 完整迁移 |
 | `tools/` | 评测/审计/重评分工具与测试（含 benchmark_v1 在研区） | 507 | 完整迁移 |
-| `architecture/` | 架构文档（以 `arena/` 实际代码与 refs 材料撰写） | 1（ARCHITECTURE.md 含机制研究叙事） | 已落位 |
+| `architecture/` | 架构文档（以 `arena/` 实际代码与 refs 材料撰写）；机制三主线与实验证据详见 `research/architecture/ARCHITECTURE.md` 与 `research/refs/VERDICT-INDEX.md` | 1（ARCHITECTURE.md 含机制研究叙事） | 已落位 |
 | `PAPER.md` | 研究论文稿（成绩表述须与 runs/判决书互查） | 1 | 完整迁移 |
 | 合计（十一区 + `PAPER.md`） | 落盘实测 74,130 件（不含本 README）；迁移清单 74,183 行口径 = 已落盘 73,962 行 + 登记未复制 221 行；另 62 件 evil_link 物化件已落盘（清单记录路径待同步）、106 件清单外新增落盘 | 74,130（74,183 清单行口径） | 完整迁移 |
 
@@ -157,7 +157,7 @@ export LB_MODEL="<model-id>"                              # 未设置时网关�
 - **批次级索引**：`runs-registry.csv` 逐批次登记 14 列（run 名 / 文件数 / 字节量 / 最新修改时间 / 是否含集级清单 / 评分文件数 / 布局形态等）——随 `research/experiments/` 落位。
 - **run 目录典型内容**：回合级 `manifest.json` / `scoring.json` / `reply_raw.txt` / `calls.json`（敏感面，含端点痕迹，公开前过扫描）/ `mechanism_notes.txt`；集级 `episode_manifest.json`、身份与机制说明件；run 级 `run_identity.json`、授权账本 `ledger.json`（含校验伴生件）与 `attempt_ledger.jsonl`；`checkpoint.json/bin`（bin 可再生）。**layout 三形态**：`out_layout` / `variant_episode` / `rh_batch`（另有残留形态，读前先看 registry 行）。
 - **代表性批次**（体量头部）：selection_v1（10,090 文件 / 70.3 MB）、pilot2_wave4_20261108（4,701 / 25.4 MB）、pilot2_all（5,042 / 21.7 MB）、holdout_v1（4,281 / 21.3 MB）。
-- **判决与评审材料**：`research/refs/`（`KNOWN_FAILURES.md` 为失败证据入口）+ `research/evaluation/`（98 文件版本链：FINAL 79 / SUPERSEDED 6 / INTERIM 5 / BUGGY 3 / PREVIEW 3 / MOCK 1 / DEBUG 1；错误版不删）+ `research/experiments/{decisions,ablations,failures}/` 薄索引。读取路径以迁移落盘后的实际索引为准；"任意批次可按此读通"未验证。
+- **判决与评审材料**：`research/refs/`（`KNOWN_FAILURES.md` 为失败证据入口，`VERDICT-INDEX.md` 为 53 份判决→机制主线映射索引）+ `research/evaluation/`（97 文件版本链：FINAL 79 / SUPERSEDED 6 / INTERIM 5 / BUGGY 3 / PREVIEW 3 / MOCK 1 / DEBUG 1；错误版不删）。读取路径以迁移落盘后的实际索引为准；"任意批次可按此读通"未验证。
 
 ### 2.12 如何生成数据统计
 
