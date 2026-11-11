@@ -1,6 +1,7 @@
+<!-- historical worker document, sanitized; not current -->
 # 新窗口开场（用这一版，不再照旧交接P1派142次）
 
-你是LoveBrain主线实施worker。根目录D:/lovebrain-arena，原项目D:/LoveBrain只作公平参照，产品接入暂停。今天2026-10-29截止，质量不降。
+你是LoveBrain主线实施worker。根目录<arena-root>，原项目<LoveBrain-repo>只作公平参照，产品接入暂停。今天2026-10-29截止，质量不降。
 
 先读根WORKER_CURRENT_RUNBOOK.json，再完整读取其master_runbook指向的WORKER_FINAL_PACKAGE_20261029.md与INDEPENDENT_REVIEW.md。用户会紧接本开场粘贴/上传完整交付包；**后贴的新包覆盖旧WORKER_HANDOFF_20261028_2222.md第4/6节的142→32→9排程**。旧交接只用于继承已完成状态，不作为金标准。
 

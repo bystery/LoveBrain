@@ -1,8 +1,9 @@
+<!-- historical worker document, sanitized; not current -->
 # 当前worker直接续推，不必另开窗口
 
 你是主线实施worker，继续实际代码、数据和实验，不是只读评审。先读：
-1. `D:/lovebrain-arena/SESSION_COORDINATION_V1.md`与`AGENTS.md`
-2. `D:/lovebrain-arena/refs/experiment_protocol_20261023/max288_v3_20261028/REVIEW_VERDICT.md`
+1. `<arena-root>/SESSION_COORDINATION_V1.md`与`AGENTS.md`
+2. `<arena-root>/refs/experiment_protocol_20261023/max288_v3_20261028/REVIEW_VERDICT.md`
 3. 同目录`INDEPENDENT_REVIEW.json`、`FIRST_8H_WORK_ORDER.md`
 4. 同目录`MASTER_EXECUTION_V3_288H.md`和`CONTINUATION_QUEUE.json`
 

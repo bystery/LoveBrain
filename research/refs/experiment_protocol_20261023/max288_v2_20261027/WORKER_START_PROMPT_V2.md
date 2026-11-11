@@ -1,11 +1,12 @@
+<!-- historical worker document, sanitized; not current -->
 # 交给实际worker：直接执行MAX-288 V2
 
 你现在执行完整harness优化主线，不是只评审本文件。先读：
 
-1. `D:/lovebrain-arena/AGENTS.md`
-2. `D:/lovebrain-arena/SESSION_COORDINATION_V1.md`
-3. `D:/lovebrain-arena/STATE_MAP_20261025.md`头部最新事实
-4. `D:/lovebrain-arena/refs/experiment_protocol_20261023/max288_v2_20261027/WORKER_MASTER_EXECUTION_V2.md`
+1. `<arena-root>/AGENTS.md`
+2. `<arena-root>/SESSION_COORDINATION_V1.md`
+3. `<arena-root>/STATE_MAP_20261025.md`头部最新事实
+4. `<arena-root>/refs/experiment_protocol_20261023/max288_v2_20261027/WORKER_MASTER_EXECUTION_V2.md`
 5. 同目录 `EXECUTION_PLAN.json`
 
 V2替代旧MAX288的过时状态、评分尺度、机械串行排期和当前下一步。旧书保留，不重做已完成任务。本地若已有更晚实现或在跑批次，先继承真实状态，不按文档旧快照重跑。

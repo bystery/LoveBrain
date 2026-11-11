@@ -1,3 +1,4 @@
+<!-- historical worker document, sanitized; not current -->
 # WORKER_MAX288.md — LoveBrain MAX-288 完整 Harness 质量优先长期主线执行书（大牛续写版）
 
 > **来源与保全声明（侧窗记录）**：2026-10-27 01:40 前后由用户原话转交（"上面的是大牛的新的任务，你保存一下"），
@@ -98,10 +99,10 @@
 
 恢复并核验：
 
-- `D:\lovebrain-arena\AGENTS.md`
-- `D:\lovebrain-arena\STATE_MAP_20261025.md`
-- `D:\lovebrain-arena\refs\experiment_protocol_20261023\quality_first_benchmark_audit_20261026\`
-- `D:\lovebrain-arena\refs\experiment_protocol_20261023\knowledge_quality_independent_review_20261026\`
+- `<arena-root>\AGENTS.md`
+- `<arena-root>\STATE_MAP_20261025.md`
+- `<arena-root>\refs\experiment_protocol_20261023\quality_first_benchmark_audit_20261026\`
+- `<arena-root>\refs\experiment_protocol_20261023\knowledge_quality_independent_review_20261026\`
 - `WORKER_NEXT_MAINLINE.md`
 - `REVIEW_AND_VERDICT.md`
 - `INDEPENDENT_RESULTS.json`
@@ -110,7 +111,7 @@
 
 这些是历史会话中明确提及的路径。实际执行必须先确认存在、读取并核对版本和散列，不得仅凭文件名或汇报假设内容有效。
 
-同时读取项目正式治理入口。`D:\LoveBrain` 是产品目录，`D:\lovebrain-arena` 是实验目录，`D:\TeamWorkspace` 是此前工作流涉及的协作治理目录；不得混淆其职责，也不得未经检查覆盖产品 `AGENTS.md`。
+同时读取项目正式治理入口。`<LoveBrain-repo>` 是产品目录，`<arena-root>` 是实验目录，`<TeamWorkspace-repo>` 是此前工作流涉及的协作治理目录；不得混淆其职责，也不得未经检查覆盖产品 `AGENTS.md`。
 
 ### 0.3 当前应保留的判断
 
@@ -509,7 +510,7 @@
 
 Token、等待和费用单独作为附表。这样才不会再次发生**"做了很多实验，却不知道哪个 Harness 真正更好"**的问题。
 
-最后明确一下执行边界：这次实际完成的是原会话恢复、状态复核以及完整 MAX-288 长周期执行书的续写。 我没有访问到你 Windows 工作区内的实时代码，没有实际发起新模型实验，也没有宣称 288 小时已经开始运行。要执行它，应交给能够访问 `D:\lovebrain-arena` 的 Worker，并使用上述可恢复工作队列。
+最后明确一下执行边界：这次实际完成的是原会话恢复、状态复核以及完整 MAX-288 长周期执行书的续写。 我没有访问到你 Windows 工作区内的实时代码，没有实际发起新模型实验，也没有宣称 288 小时已经开始运行。要执行它，应交给能够访问 `<arena-root>` 的 Worker，并使用上述可恢复工作队列。
 
 这份指导书与旧会话最后的方向一致：先拿出可信的质量成绩，再大规模优化 Harness，最后才谈产品接入。
 
