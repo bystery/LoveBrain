@@ -1,0 +1,5 @@
+# research/tools 依赖声明（依据 asset-audit/code-scan-report.md §2.1，2026-11-12 实测盘点）
+# tools/ 除下列唯一第三方依赖外全部使用 Python 标准库；
+# arena/ 零第三方依赖，由 ../arena/pyproject.toml 声明（dependencies = []），两处分文件各管各域。
+# Python >= 3.12（实测 3.12.4）；版本未固定——原仓库从未声明过 Pillow 版本，不虚报。
+Pillow

@@ -1,0 +1,23 @@
+# LoveBrain 研究工作台环境声明（arena 考场运行时框架 + tools 工具集）
+# 依据：D:\桌面\lovebrian\asset-audit\code-scan-report.md §2（2026-11-12 只读盘点 + 本机实测）
+# - arena/ 全部 31 个 .py 纯标准库实现（模型调用走 urllib.request），零第三方依赖
+# - tools/ 除 Pillow 外全部标准库（12 个文件 import PIL，见下方 extras 注释）
+# - 运行版本实测 CPython 3.12.4 全链导入通过（__pycache__ 全为 cpython-312）
+# - Windows 平台语义：msvcrt 文件锁 / ctypes DPAPI / CreateProcessWithLogonW；
+#   authorization_budget.py 的 fcntl 分支仅在 POSIX 触发，Windows 下不走
+
+[project]
+name = "lovebrain-research-harness"
+version = "0.1.0"
+description = "LoveBrain research harness: arena exam runtime (stdlib-only) plus research tools (Pillow optional)"
+requires-python = ">=3.12"
+# arena 零第三方依赖：不虚报任何运行时依赖（code-scan §2.1）
+dependencies = []
+
+[project.optional-dependencies]
+# tools/ 侧唯一第三方依赖 Pillow，供 12 个文件使用：
+# build_pilot_json / gen_coverage_matrix / gen_split_manifest / make_blind_samples /
+# mk_pilot_assets / review_wiring_drill / rereval_unified / render_pilot_views /
+# run_p07_pilot / test_g11_standin / test_no_reply_protocol / rereval_v09
+# 安装方式：pip install -e research/arena[tools] 或 research/tools/requirements.txt
+tools = ["Pillow"]
