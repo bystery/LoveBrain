@@ -1,0 +1,36 @@
+{
+  "case_id": "ATK_t01",
+  "turn_type": "reply",
+  "candidate": "_attack_fixture",
+  "adapter": "openai_compat",
+  "model": "canary",
+  "lifecycle": "v2",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "contract": "legacy",
+  "run_id": "iso_20261022_162323_63a5f4",
+  "runner_pid": 28216,
+  "audit_errors": [],
+  "settlement_pending": false,
+  "clock_injected": "2026-10-29 13:00",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 0,
+    "completion": 0,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "none",
+    "n_calls": 0,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 0,
+  "latency_ms": 0,
+  "score10": 0.0,
+  "veto": "json_schema_broken",
+  "mechanism_error": null,
+  "ts": "2026-10-22 16:23:24",
+  "prompt_chars": {
+    "prompt_sum": 0,
+    "reply_sum": 0
+  },
+  "isolated": true
+}

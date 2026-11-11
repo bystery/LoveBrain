@@ -1,0 +1,32 @@
+{
+  "case_id": "E342_T10",
+  "turn_type": "reply",
+  "candidate": "rh_b17_memorycard",
+  "adapter": "bm1_mock_light",
+  "model": "mock",
+  "lifecycle": "v2",
+  "run_id": "rp1_mock_rh_b17_memorycard_D60-012",
+  "runner_pid": 40828,
+  "audit_errors": [],
+  "clock_injected": "2026-11-15 10:30",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 1845,
+    "completion": 53,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "kotlin_len_chars",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 6,
+  "score10": 0.0,
+  "veto": "unknown_payload_field",
+  "mechanism_error": null,
+  "ts": "2026-11-11 08:21:40",
+  "prompt_chars": {
+    "prompt_sum": 1845,
+    "reply_sum": 53
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "02:30:30",
+    "latency_ms": 12197,
+    "prompt_chars": 764,
+    "reply_chars": 268,
+    "usage": {
+      "prompt": 764,
+      "completion": 268,
+      "cache_hit": 256,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '宋屹', 'traits': ['大四，考计算机', '计划控，错题必归型', '单词打卡连续287天没断', '保温杯里常年泡枸杞']}\n对方：{'name': '姜蔓', 'traits': ['大四，考新传', '嘴硬心软，爱自我吐槽', '自习室固定靠窗第三排', '完型是强项'], 'boundaries': ['互怼可以，别拿目标院校和分数开玩笑', '真焦虑的时候不喜欢被灌鸡汤']}\n\n【既有背景信息】\n{\"me\": \"宋屹英语目标75分，平时模考在70到72之间；单词打卡连续287天没断；政治靠刷题，保温杯常年泡枸杞。\", \"her\": \"姜蔓目标360分，考试在12月19日；完型是强项，阅读不稳定，上次英语模考阅读错了四个；她和室友关系不错，室友爱半夜追剧。\", \"warmth\": \"研友半年，互怼是日常；真出状态问题的时候，都会先问一句'你那边怎么样'。两人约好考完去学校南门的烤五花店，一人三十串起步是姜蔓定的规矩。\", \"style\": \"她管宋屹叫'宋老师'，纯属反讽，正经请教时会换全名；消息里爱用省略号；提要求多用'要不要'起头，不下命令。\", \"lessons\": \"她自嘲的时候顺着接比正面安慰有用；她问'要不要'的时候要给具体选项；约定的时间地点要重复确认一遍。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息；已确定性省略无实质内容的旧寒暄）\n[对方] 英语一阅读又错四个，还剩四十天。宋老师，我是不是可以提前准备二战了。\n\n【当前时间】2026-11-09 20:37\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-aa18af20-86c3-4f1e-be1f-8dee6fdb8caa",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 12193.1,
+      "completion_ms": 12193.4,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 1652,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"错四个错得挺稳定啊，跟上回一模一样……二战先别急着报名，明晚自习室把你那四道错题拿来，我看看是主旨还是细节，要不要？\"}"
+  }
+]

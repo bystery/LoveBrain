@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "12:09:04",
+    "latency_ms": 16330,
+    "prompt_chars": 838,
+    "reply_chars": 346,
+    "usage": {
+      "prompt": 838,
+      "completion": 346,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '戚野', 'traits': ['有车手稳', '话少事细', '对猫毛过敏但忍着']}\n对方：{'name': '盛楠', 'traits': ['计划控但常被现实改稿', '对猫极度心软', '爱自嘲不爱诉苦'], 'boundaries': ['麻烦别人必还人情', '答应的事一定办，办不了提前说']}\n\n【既有背景信息】\n{\"me\": \"戚野家里有车，周末基本空闲，对猫毛过敏但从不拒绝帮盛楠的忙；做事细，工具齐全。\", \"her\": \"盛楠在写字楼做行政，养猫豆包，五岁橘白；这次要从老小区搬到荔枝苑，样样要列清单。\", \"warmth\": \"上下楼邻居三年，互相收过快递看过猫，关系稳熟，帮忙不客气也不越界。\", \"style\": \"盛楠爱列一二三，报数精确，自嘲多；戚野回话短，常用“行”“收到”。\", \"lessons\": \"改期改时她直说新值，旧值作废；帮忙后她必请饭，地点她说换就换，听最新的。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 戚野，大事！我要搬家了，11 月 21 号，周六。房东不续租，我看中荔枝苑一套，离公司近两站，带电梯，最关键是能养猫。周六上午你有空吗？猫和电脑走你车，大件我另叫货车。\n[对方] 早。豆包体检报告出来了，5.8 公斤，医生说超了，目标 5.5，猫粮从今天起每天 60 克，不准心软投喂。它刚才对我哈气，你评评理。\n[对方] 报了个高兴的：11 月 28 号周六，河畔画室水彩体验课，画完正好给新家书房挂画。98 一人，我帮你交了，别跟我客气，你就欠着我。颜料画架画室全包，人去就行。\n\n【当前时间】2026-11-17 21:07\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-171d5f54-66ba-4684-a794-fb26b377b0b8",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 16326.9,
+      "completion_ms": 16327.1,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 1839,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"周六上午有空，几点出发你定。豆包那 60 克你稳住，它哈气是嫌少。画室 98 我转你，别推。\"}"
+  }
+]

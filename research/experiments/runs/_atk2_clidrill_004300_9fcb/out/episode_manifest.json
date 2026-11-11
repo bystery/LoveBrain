@@ -1,0 +1,81 @@
+{
+  "episode_id": "NCA_CORR_INTENT_v1",
+  "candidate": "phase0_beta_single",
+  "adapter": "mock",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "lifecycle": "v2",
+  "contract": {
+    "style_keys": [
+      "recommended",
+      "bad_boy",
+      "playful",
+      "warm"
+    ],
+    "directions": 4,
+    "min_nonempty": 1,
+    "may_decline": true
+  },
+  "run_id": "iso_20261023_004300_eaf98c",
+  "runner_pid": 52496,
+  "turns": 6,
+  "turns_total": 6,
+  "complete": true,
+  "resumed_from": 2,
+  "mean_score10": 6.43,
+  "veto_turns": 2,
+  "first_pass_rate": 0.6667,
+  "tokens_total": {
+    "prompt": 57430,
+    "completion": 2208
+  },
+  "latency_ms": {
+    "p50": 47,
+    "p95": 86,
+    "max": 93,
+    "n": 6
+  },
+  "integrity": {
+    "episode_sha256": "018826ba3f7025edd8139cb7b02267d38e096589ecf5f6c9dbe4e43778470e57",
+    "code": {
+      "lb_runner.py": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+      "lb_gateway.py": "a1f46a632d76a5e4759b5d15f6cc8872ec9aee2eee491b638d864f3198de07b6",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "59b4290cfe366e00dc3804894eafe07f5ab93764842520d267eaf22747e43e84",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "params.json": "e215b71811aee85d7051514c2ff13fdfc12323fbaf8aee75cdc987ebfe0406dc",
+      "assets/README.md": "6ab2967043cce40e0b5b559471c88c373feeeb44961c335ca2556f8d92d3497c",
+      "assets/counseling.md": "dc37afc7541f428af2f817dec1cfe21ec9cd88e4cf669a778adc2f528bd2556c",
+      "assets/polish.md": "256f84d815749b0769d8d360ea4eb3a2e8a3bdd03026579b8191c98668f1ccbd",
+      "assets/proactive.md": "ba018ae7e353ed2186c84bd48518b91158301920aad675315a568e64e3d68da3",
+      "assets/knowledge_prompt/lessons.md": "67f917a2ac405d95b355be2a8e57182bd8dec9a90cbcb1f2905def1c4822a837",
+      "assets/knowledge_prompt/onboarding.md": "5783ce986fb2bfe6c93ea4ec55c3c08b78a7a376c070fc0b20fb741c2af3fcd4",
+      "assets/knowledge_prompt/reflect.md": "d342b62006be36a1e22d7f84c61776ce99195eabc2d51b8d204f33f8d5b63d02",
+      "assets/knowledge_prompt/vector.md": "15b2a2d872c5f537ee0421cfe9ab5475a2705b0983f74a75b6ecf6c18e76fa15",
+      "assets/system_prompt/aggressive.md": "67abc1afbebdc1a4b6953fbbbd53c846381d586c0c9ee2e915bcd4ebcbe26a12",
+      "assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+      "assets/system_prompt/format.md": "e329e64ec5abdfe6ebf0e9d233d2bc6881cfc695a5b2fdb360310ae2a299236d",
+      "assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+      "assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+      "assets/system_prompt/stage.md": "1bd2f92f3ed49868c386ed0d5ac2bf2a19b80004ac0fa71a0bc681d609c43431",
+      "mechanism/mechanism.py": "b2ef19d5275d9bb2793088c56efe5f62e4098779fca5a819691fee64a6aa7db7"
+    }
+  },
+  "isolated": true,
+  "settlement_pending_turns": [],
+  "execution_fingerprint": {
+    "episode_id": "NCA_CORR_INTENT_v1",
+    "episode_sha256_16": "018826ba3f7025ed",
+    "candidate": "phase0_beta_single",
+    "adapter": "mock",
+    "model": "mock",
+    "temperature": 0.7
+  },
+  "report_metadata": {
+    "authorization_id": null,
+    "budget": null,
+    "evidence_paths": "报告/路径元数据不参与执行指纹"
+  },
+  "ts": "2026-10-23 00:43:05"
+}

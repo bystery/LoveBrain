@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "13:37:27",
+    "latency_ms": 61508,
+    "prompt_chars": 766,
+    "reply_chars": 328,
+    "usage": {
+      "prompt": 766,
+      "completion": 328,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。\n\n请一步一步思考：先检查已有事实、对方当前的情绪、用户真正想表达的意思以及双方的关系分寸，再生成最合适的回复。不要展示思考过程，只输出最终 JSON。",
+    "user": "【人物背景】\n我：{'name': '傅临川', 'traits': ['组里腿最勤镜头最稳', '被怼不急，赢了不抖', '记性好，谁报过什么鸟都记得']}\n对方：{'name': '沈疏桐', 'traits': ['观鸟记录对到小数点', '好胜，认细节不认人', '嘴硬，谢人不超过三个字'], 'boundaries': ['公私分明，组务不掺私交', '不收不明不白的好处']}\n\n【既有背景信息】\n{\"me\": \"傅临川每周六早七点带城市绿道观鸟小组走北湖线，适马150-600镜头从不外借，组里报过的鸟种他背得比谁都熟。\", \"her\": \"沈疏桐在会计师事务所做审计，年底年审连着两周周六加班，观鸟记录中心账号是她个人的，报鸟名必查图鉴。\", \"warmth\": \"因为抢着纠鸟名熟起来，互损是常态，出了组门就装不熟。\", \"style\": \"叫他傅临川，全名，赢了会拖长音，输了就转移话题。\", \"lessons\": \"争输赢先认细节；她给的东西先谢再收，别问来路。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 你周六嘴里的那只'北红尾鸲'，我回去对着照片查了，是红胁蓝尾鸲，今年雄鸟的冬羽。记录中心我标了，阿荞审核也过了。以后报鸟名先翻图鉴，别拖我组平均分。\n\n【当前时间】2026-11-14 21:17\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-d1283026-a19d-4c03-8fca-b741cdb98cae",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "completion_ms": 61494.4,
+      "headers_ms": 61494.1,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 1688,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"认了，红胁蓝尾鸲冬羽。周六北湖线我把图鉴带上，你报错我也照标。\"}"
+  }
+]

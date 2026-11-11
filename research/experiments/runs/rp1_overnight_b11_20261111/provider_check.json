@@ -1,0 +1,28 @@
+{
+  "report_version": "provider_check_v1",
+  "base": "https://api.llm.ustc.edu.cn/v1",
+  "model": "deepseek-flash-2",
+  "key_present": true,
+  "steps": [
+    {
+      "step": "list_models",
+      "http": 200,
+      "n_models": 12,
+      "target_present": true,
+      "target_matches": [
+        "deepseek-flash-2"
+      ]
+    },
+    {
+      "step": "minimal_chat",
+      "http": 200,
+      "resp_model": "deepseek-flash-2",
+      "resp_id": "chatcmpl-f408ccc8-8772-4b7b-af00-b139d61f59d5",
+      "finish_reason": "stop",
+      "usage_present": true,
+      "content_chars": 2
+    }
+  ],
+  "verdict": "OK",
+  "reason": null
+}

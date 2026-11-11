@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "13:17:46",
+    "latency_ms": 19909,
+    "prompt_chars": 684,
+    "reply_chars": 384,
+    "usage": {
+      "prompt": 684,
+      "completion": 384,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '解千山', 'traits': ['文体中心游泳教练', '兼带普拉提小班', '说话稳']}\n对方：{'name': '商晚晴', 'traits': ['健身三分钟热度选手', '热情话密', '报数字爱往上凑'], 'boundaries': ['课卡钱要花得值', '不占教练便宜']}\n\n【既有背景信息】\n{\"me\": \"解千山在社区文体中心做教练，周二周四晚带普拉提小班，周六上午十点有游泳班，学员改约要提前半天说。\", \"her\": \"商晚晴买了十节私教课卡，跟着解千山上普拉提和游泳，课卡余量在场馆 app 上能查。\", \"warmth\": \"跟课一年半，商晚晴给解千山带过自家卤味，解千山帮她改过几次约，处得像朋友。\", \"style\": \"称呼解教练，感叹号多，正经事要来回确认两遍。\", \"lessons\": \"改约提前说，撤销也提前说，别让教练白等。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 解教练，我课卡就剩三节了：明晚普拉提、周六游泳、下周二普拉提。周六那节我想改到下午，上午十点实在起不来，你们下午有班次吗？\n\n【当前时间】2026-11-09 12:22\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-9f66f095-2d32-428a-a1cf-daa565f0750c",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 19905.5,
+      "completion_ms": 19905.8,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 2053,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"明晚和下周二这两节普拉提我先给你记上。周六下午游泳这边没排班，我帮你问问场馆下午有没有空出来的场次，有信儿就回你，你先别急着定。\"}"
+  }
+]

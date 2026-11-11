@@ -1,0 +1,65 @@
+{
+  "episode_id": "ATK_MATRIX_v1",
+  "candidate": "_attack_fixture",
+  "adapter": "openai_compat",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "lifecycle": "v2",
+  "contract": "legacy",
+  "run_id": "iso_20261023_011712_9f4841",
+  "runner_pid": 49400,
+  "turns": 1,
+  "turns_total": 1,
+  "complete": true,
+  "resumed_from": null,
+  "mean_score10": 0.0,
+  "veto_turns": 1,
+  "first_pass_rate": 0.0,
+  "tokens_total": {
+    "prompt": 5,
+    "completion": 2
+  },
+  "latency_ms": {
+    "p50": 176,
+    "p95": 176,
+    "max": 176,
+    "n": 1
+  },
+  "integrity": {
+    "episode_sha256": "79e2c7d730778577e5b909a39506ef1a6df8faad66e8c4951d148fe0f29d3345",
+    "code": {
+      "lb_runner.py": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+      "lb_gateway.py": "a1f46a632d76a5e4759b5d15f6cc8872ec9aee2eee491b638d864f3198de07b6",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "59b4290cfe366e00dc3804894eafe07f5ab93764842520d267eaf22747e43e84",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "params.json": "1d21e85bdea75fff87b11025e7fa75ac050a40bfa5cce988e671e99c21ff919c",
+      "mechanism/mechanism.py": "6dab756780d25eacc31f5b3502a6bafd797341785b46ed63d6b2fc02e28ba1b9"
+    }
+  },
+  "isolated": true,
+  "settlement_pending_turns": [],
+  "execution_fingerprint": {
+    "episode_id": "ATK_MATRIX_v1",
+    "episode_sha256_16": "79e2c7d730778577",
+    "candidate": "_attack_fixture",
+    "adapter": "openai_compat",
+    "model": "canary",
+    "temperature": 0.7
+  },
+  "report_metadata": {
+    "authorization_id": "AUTH-MATRIX-keyed-011712_17b9",
+    "budget": {
+      "authorization_id": "AUTH-MATRIX-keyed-011712_17b9",
+      "used": 1,
+      "max_attempts": 2,
+      "remaining": 1,
+      "closed": false,
+      "close_reason": null,
+      "ledger": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-011712_17b9.jsonl"
+    },
+    "evidence_paths": "报告/路径元数据不参与执行指纹"
+  },
+  "ts": "2026-10-23 01:17:13"
+}

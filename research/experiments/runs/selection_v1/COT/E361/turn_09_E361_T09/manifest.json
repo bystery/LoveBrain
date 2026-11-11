@@ -1,0 +1,32 @@
+{
+  "case_id": "E361_T09",
+  "turn_type": "reply",
+  "candidate": "cot_baseline",
+  "adapter": "openai_compat",
+  "model": "deepseek-flash-2",
+  "lifecycle": "v2",
+  "run_id": "bm1_live_COT_E361",
+  "runner_pid": 47268,
+  "audit_errors": [],
+  "clock_injected": "2026-11-21 22:05",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 1336,
+    "completion": 476,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 33344,
+  "score10": 0.0,
+  "veto": "unknown_payload_field",
+  "mechanism_error": null,
+  "ts": "2026-11-10 14:21:28",
+  "prompt_chars": {
+    "prompt_sum": 1336,
+    "reply_sum": 476
+  }
+}

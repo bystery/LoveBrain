@@ -1,0 +1,38 @@
+{
+  "case_id": "ATK_t01",
+  "turn_type": "reply",
+  "candidate": "_attack_fixture",
+  "adapter": "mock",
+  "model": "mock",
+  "lifecycle": "v2",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "contract": "legacy",
+  "run_id": "iso_20261026_105915_3a2e3a",
+  "runner_pid": 58972,
+  "audit_errors": [],
+  "settlement_pending": false,
+  "clock_injected": "2026-10-29 11:00",
+  "case_input_sha256": "47969dfd3f8233408fdb3314a7c04b4c87d191857e1ad5701c43fbc5fd42f2fb",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 0,
+    "completion": 0,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "none",
+    "n_calls": 0,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 0,
+  "latency_ms": 18,
+  "score10": 0.0,
+  "veto": "json_schema_broken",
+  "reply_ingest": "text",
+  "mechanism_error": null,
+  "ts": "2026-10-26 10:59:15",
+  "prompt_chars": {
+    "prompt_sum": 0,
+    "reply_sum": 0
+  },
+  "isolated": true
+}

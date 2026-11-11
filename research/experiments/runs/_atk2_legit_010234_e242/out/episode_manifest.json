@@ -1,0 +1,57 @@
+{
+  "episode_id": "ATK_MATRIX_v1",
+  "candidate": "_attack_fixture",
+  "adapter": "mock",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "lifecycle": "v2",
+  "contract": "legacy",
+  "run_id": "iso_20261023_010234_948a50",
+  "runner_pid": 40652,
+  "turns": 2,
+  "turns_total": 2,
+  "complete": true,
+  "resumed_from": null,
+  "mean_score10": 0.0,
+  "veto_turns": 2,
+  "first_pass_rate": 0.0,
+  "tokens_total": {
+    "prompt": 43,
+    "completion": 1104
+  },
+  "latency_ms": {
+    "p50": 63,
+    "p95": 64,
+    "max": 64,
+    "n": 2
+  },
+  "integrity": {
+    "episode_sha256": "e3f8268729cf4b31e5e8da39474fb999d6227af13d730309f5d9b48b885e9577",
+    "code": {
+      "lb_runner.py": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+      "lb_gateway.py": "a1f46a632d76a5e4759b5d15f6cc8872ec9aee2eee491b638d864f3198de07b6",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "59b4290cfe366e00dc3804894eafe07f5ab93764842520d267eaf22747e43e84",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "params.json": "1d21e85bdea75fff87b11025e7fa75ac050a40bfa5cce988e671e99c21ff919c",
+      "mechanism/mechanism.py": "6dab756780d25eacc31f5b3502a6bafd797341785b46ed63d6b2fc02e28ba1b9"
+    }
+  },
+  "isolated": true,
+  "settlement_pending_turns": [],
+  "execution_fingerprint": {
+    "episode_id": "ATK_MATRIX_v1",
+    "episode_sha256_16": "e3f8268729cf4b31",
+    "candidate": "_attack_fixture",
+    "adapter": "mock",
+    "model": "mock",
+    "temperature": 0.7
+  },
+  "report_metadata": {
+    "authorization_id": null,
+    "budget": null,
+    "evidence_paths": "报告/路径元数据不参与执行指纹"
+  },
+  "ts": "2026-10-23 01:02:36"
+}

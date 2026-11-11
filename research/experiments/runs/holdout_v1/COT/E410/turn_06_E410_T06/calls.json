@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "18:19:54",
+    "latency_ms": 23373,
+    "prompt_chars": 828,
+    "reply_chars": 179,
+    "usage": {
+      "prompt": 828,
+      "completion": 179,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。\n\n请一步一步思考：先检查已有事实、对方当前的情绪、用户真正想表达的意思以及双方的关系分寸，再生成最合适的回复。不要展示思考过程，只输出最终 JSON。",
+    "user": "【人物背景】\n我：{'name': '厍前子', 'traits': ['同事关系', '观察力强但不张扬', '行动比话多']}\n对方：{'name': '灌慕晴', 'traits': ['工作狂加班多', '嘴上说不用管但期待被照顾', '用忙碌掩饰在意'], 'boundaries': ['不喜被说工作太拼', '拒绝帮助时是在试探']}\n\n【既有背景信息】\n{\"me\": \"厍前子和灌慕晴同部门四个月，最近发现她经常加班到很晚，开始留意她有没有吃晚饭。\", \"her\": \"灌慕晴工作拼命经常加班，对厍前子有好感但嘴上说不用管，用工作忙碌掩饰在意。\", \"warmth\": \"同事四个月，从纯工作到最近开始互相关心吃饭问题，刚越过同事线。\", \"style\": \"叫他前子，加班时话少但偶尔冒一句关心的，嘴硬说不用管但每次都接了。\", \"lessons\": \"她说不用管的时候不是真不用；送东西别问要不要直接到位。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 前子你还没走啊，我刚改完第三版方案，困得眼睛都花了，你呢忙完没\n[对方] 你桌上那杯咖啡凉了吧，我刚去茶水间看见还放着，要不要我帮你倒一杯热的\n[对方] 阿荞发消息说楼下便利店今晚关得早，我想买点吃的也没了，算了忍到回家再说\n[对方] 其实每次加班到这个时候最想看见的就是你工位还亮着灯，不然我一个人空荡荡的整层楼挺瘆人的\n[对方] 你不用特意陪我加班，我说的是真话，你要是有事就先走，我打个车回去就行\n[对方] 你真给我买了粥啊，我刚说不用的，但既然买了那我就不浪费了，什么馅的\n\n【当前时间】2026-11-09 22:58\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-0f042938-c9ea-4c50-9b2f-33c0d7e395d0",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 23371.4,
+      "completion_ms": 23371.6,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 1252,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"皮蛋瘦肉的，趁热喝，凉了腥。喝完再改方案，眼睛能撑久点\"}"
+  }
+]

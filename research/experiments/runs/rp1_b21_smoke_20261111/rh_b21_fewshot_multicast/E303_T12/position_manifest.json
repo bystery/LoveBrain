@@ -1,0 +1,58 @@
+{
+  "position_id": "D60-024",
+  "episode_id": "E303",
+  "case_id": "E303_T12",
+  "turn_index": 12,
+  "arm": "rh_b21_fewshot_multicast",
+  "candidate": "rh_b21_fewshot_multicast",
+  "mechanism": "candidate:mechanism\\mechanism.py",
+  "lifecycle": "v2",
+  "contract": {
+    "may_decline": true
+  },
+  "adapter": "openai_compat",
+  "mode": "live",
+  "run_id": "rp1_live_rh_b21_fewshot_multicast_D60-024",
+  "authorization": "AUTH-RP1-UNLIMITED-20261111-03",
+  "replay_turns_no_network": 11,
+  "target_turn_real_calls": 1,
+  "tokens": {
+    "prompt": 1661,
+    "completion": 218,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "e2e_ms": 19857,
+  "latency_ms_run_turn": 19853,
+  "score10": 0.0,
+  "veto": "unknown_payload_field",
+  "mechanism_notes": "",
+  "integrity": {
+    "episode_sha256": "9d61fbfc5bcb40a0ffeca0a9a7f91b49f066e6b7ab71748e427ca7d896d68c21",
+    "code": {
+      "lb_runner.py": "e540ad1bd4798d74657d9ccf7b070d35476c3ef70782274480ac7986a119f7d5",
+      "lb_gateway.py": "85f53d1068e2a4e2a572e09cecf5cd8a469b684fe247f3d32430742a0b2ecf98",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "c9bf7648be1d7aa31b287062ca3a9ddba5248af80237feb9cf657895ab3c71d7",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "params.json": "7972c38eeb2d4ab81ec42791308cbac3110879ee9b0465a41d3b9743ca398a04",
+      "assets/system_prompt/core.md": "6b54fe917c164bceca7ac0dabb2e21ea314049e19e3183af7df59dada7d91569",
+      "assets/system_prompt/format.md": "08e1de9445a62c854362aa9060f0cb850b3f3f9e5187edb3ca3483e9b77cee12",
+      "assets/system_prompt/naturalness_check.md": "486ed3bde30e6ee1b2ffcbec4169f1913bcba7b5843c56144b29e4bad374cd99",
+      "assets/system_prompt/redline.md": "77ab01c4b1d3f27958b0c9a0687a266f295f497116cd873cece7165148b300c7",
+      "mechanism/mechanism.py": "0db0698b6199abf1d9184b668972ce04f544b3bc9fc0631eea9110ccaf84b86b",
+      "mechanism/__pycache__/mechanism.cpython-312.pyc": "3a341fb0d6d0254b9d8cbb2e36032fbb7c0de9b52eed2eb40742559880742d21"
+    }
+  },
+  "dev_set": {
+    "set_id": "DEV_FAST_SET_v1",
+    "sha256": "99e8fe68acf293eb61190573c58cbf6a5aaa47be7b3624a6669005dec3dea2fe"
+  },
+  "ts": "2026-11-11 15:42:34"
+}

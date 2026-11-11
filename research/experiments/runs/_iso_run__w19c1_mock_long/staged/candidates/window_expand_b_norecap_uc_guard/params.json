@@ -1,0 +1,9 @@
+{
+  "role": "candidate",
+  "parent": "window_expand_b_norecap_uc",
+  "output_contract": null,
+  "mechanism_flags": {
+    "contract_guard_fix": true
+  },
+  "note": "window_expand_b_norecap_uc_guard（W19-C1 单变量合并）：父本 window_expand_b_norecap_uc（>24 域冠军）逐字复制 + 唯一增量 = 从 window_expand_b_norecap_guard（≤24 域冠军）移植确定性输出契约守卫（mechanism/contract_guard.py + _vendor/output_repair.py + _vendor/normalize_reply_contract.py，与 guard 候选逐字节相同）。prompt 构造、3600 CU 历史预算、未定事项段、intent/note 装配、事件存储全部未改动；守卫只对 gw.generate 返回文本做确定性修复+审计。不加 suppression、不恢复 recap。父本两目录不改。"
+}

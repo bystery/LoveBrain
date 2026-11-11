@@ -1,0 +1,43 @@
+{
+  "runner_version": "phase3_runner_v1",
+  "generated_at": "2026-11-09 01:15:58",
+  "mode": "plan",
+  "arms": {
+    "DIRECT": {
+      "candidate_dir": "tools/benchmark_v1/baseline_candidates/direct_baseline",
+      "identity_sha256": {
+        "direct_baseline": "c5257585a49f475a8758b6cfa89fe6f07ab45bdface80c2c7b3019dc5ec16142"
+      }
+    },
+    "COT": {
+      "candidate_dir": "tools/benchmark_v1/baseline_candidates/cot_baseline",
+      "identity_sha256": {
+        "cot_baseline": "d028a6e7e3f55d4831253cac9756810a522df0d00fe3b07d3f6c6815636fb3d7"
+      }
+    },
+    "LEGACY_COMPAT_R9": {
+      "candidate_dir": "tools/benchmark_v1/baseline_candidates/legacy_compat_r9",
+      "identity_sha256": {
+        "legacy_compat_r9": "e09cd8774331feffb67f5f144b3efc095f8fa0a8fc8a4b105e7847aa1091b7dc"
+      }
+    },
+    "CURRENT": {
+      "candidate_dir": "candidates/window_expand_b_norecap_guard",
+      "identity_sha256": {
+        "window_expand_b_norecap_guard": "be85ee7b167beb3b6aeb44defc9126072d07b776fa102c37de8e058afc0b9751"
+      }
+    }
+  },
+  "episodes": {
+    "E301": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E301/episode.json",
+      "turn_count": 12
+    }
+  },
+  "auth": {
+    "batch": "ph3_mock_smoke",
+    "cap": 999999,
+    "kind": "dev_mock",
+    "model": "deepseek-flash-2"
+  }
+}

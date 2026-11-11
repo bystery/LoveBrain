@@ -1,0 +1,58 @@
+{
+  "metric_version": "pilot_metrics_v0",
+  "generated_at": "2026-11-08 18:08:41",
+  "arms": {
+    "DIRECT": {
+      "positions": 260,
+      "completed_reply": 254,
+      "no_reply": 5,
+      "parse_ok_rate": 0.9962,
+      "contract_ok_rate": 0.9962,
+      "empty_or_error": {
+        "parse": 1
+      },
+      "diag_na": 242,
+      "diag_cancel_affirm_violations": 0,
+      "diag_required_total": 25,
+      "diag_required_hits": 0,
+      "diag_required_affirm_rate": 0.0,
+      "latency_ms_p50": 11679,
+      "latency_ms_p95": 29896,
+      "api_usage_rows": 260,
+      "prompt_tokens_sum": 281838,
+      "completion_tokens_sum": 80741,
+      "non_api_usage_rows": 0,
+      "program_score10_mean": 0.192,
+      "note": "score10=程序层(契约/断言)读数，不冒充回复质量；开放式质量=盲评包+带资格限制的 judge 诊断，另行记录"
+    },
+    "COT": {
+      "positions": 0
+    },
+    "LEGACY": {
+      "positions": 0
+    },
+    "CURRENT": {
+      "positions": 260,
+      "completed_reply": 260,
+      "no_reply": 0,
+      "parse_ok_rate": 1.0,
+      "contract_ok_rate": 0.9962,
+      "empty_or_error": {
+        "veto:illegal_source_id:1,1": 1
+      },
+      "diag_na": 242,
+      "diag_cancel_affirm_violations": 0,
+      "diag_required_total": 25,
+      "diag_required_hits": 0,
+      "diag_required_affirm_rate": 0.0,
+      "latency_ms_p50": 68922,
+      "latency_ms_p95": 131430,
+      "api_usage_rows": 260,
+      "prompt_tokens_sum": 663679,
+      "completion_tokens_sum": 371072,
+      "non_api_usage_rows": 0,
+      "program_score10_mean": 9.955,
+      "note": "score10=程序层(契约/断言)读数，不冒充回复质量；开放式质量=盲评包+带资格限制的 judge 诊断，另行记录"
+    }
+  }
+}

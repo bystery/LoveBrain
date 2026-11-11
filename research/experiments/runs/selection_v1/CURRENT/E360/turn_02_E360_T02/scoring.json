@@ -1,0 +1,40 @@
+{
+  "score10": 8.33,
+  "veto": null,
+  "checks": [
+    {
+      "id": "json_schema_valid",
+      "desc": "输出契约：单 JSON，style_keys 非空≥1，directions=4，含 analysis",
+      "pts": 2,
+      "got": 2,
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "id": "source_ids_exist",
+      "desc": "analysis.scene_facts 的 source_ids 必须指向真实消息 id",
+      "pts": 2,
+      "got": 2,
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "id": "ai_flavor",
+      "desc": "AI 味违禁词表零命中",
+      "pts": 1,
+      "got": 1,
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "id": "style_diversity",
+      "desc": "风格趋同：候选话术两两 LCS 子串比 ≤ 0.60（F4.3）",
+      "pts": 1,
+      "got": 0,
+      "pass": false,
+      "evidence": "max=0.66 pair=('warm', 'recommended')"
+    }
+  ],
+  "pts_got": 5,
+  "pts_total": 6
+}

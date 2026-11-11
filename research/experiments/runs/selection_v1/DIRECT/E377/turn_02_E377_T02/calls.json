@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "15:55:59",
+    "latency_ms": 41632,
+    "prompt_chars": 775,
+    "reply_chars": 548,
+    "usage": {
+      "prompt": 775,
+      "completion": 548,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '潘望北', 'traits': ['邻居里的园艺好手', '耐心', '给建议给到可执行']}\n对方：{'name': '曹清晏', 'traits': ['园艺新手', '行动派', '爱拍照记录', '答应的事排日子'], 'boundaries': ['签了认养就要养好', '不占公共便宜']}\n\n【既有背景信息】\n{\"me\": \"潘望北是小区里公认的园艺好手，阳台一架子花。曹清晏认养社区花园的事，他答应当技术顾问，开垦和种植那天去搭把手。\", \"her\": \"曹清晏报名认养社区花园 3 号地块，约 20 平米，年费 480，打算种郁金香和角堇，评审签约前不动土。\", \"warmth\": \"同小区两年，楼上楼下送过花苗搭过手，她叫他潘哥，有事直接开口，他不推。\", \"style\": \"报日期报尺寸，拍照发进度，问意见时会给两个选项让顾问挑。\", \"lessons\": \"种植的事看节气和温度；改期要给相关的人挨个打招呼；方案板上写实不写虚。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 潘哥，社区花园的认养报名我交了：3 号地块，20 平米，年费 480。公告说评审时间等业委会通知，通过了才能签约动土。我打算种郁金香种球加角堇，技术顾问就是你，别想跑。\n[对方] 老桑在群里发通知了：认养评审定在 11 月 21 号周六上午，每户 8 分钟陈述，加实地看方案板。我第一次弄这个，陈述词和方案板都没头绪，你说我该怎么准备？\n\n【当前时间】2026-11-04 21:07\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-ed8487ec-e274-458c-a827-b78e2f304ab2",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 41630.4,
+      "completion_ms": 41630.7,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 2638,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"别慌，这两样都好弄。陈述词分三段写：为什么认养 3 号地块、20 平米怎么分区（郁金香种球多少颗、角堇怎么走边）、从 11 月到明年春天能看出什么变化。8 分钟你讲 3 分钟就够了，剩下留给提问。方案板拿张 A2，先按比例画出 20 平米的框、标上尺寸，再分区块写品种和数量，最后把栽球和预计开花的时间点标上，别写虚的。要不这周六或周日下午你上来我阳台，咱把板子和陈述词过一遍？你挑个时间。\"}"
+  }
+]

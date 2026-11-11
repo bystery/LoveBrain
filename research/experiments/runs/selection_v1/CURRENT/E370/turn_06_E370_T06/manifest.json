@@ -1,0 +1,32 @@
+{
+  "case_id": "E370_T06",
+  "turn_type": "reply",
+  "candidate": "window_expand_b_norecap_guard",
+  "adapter": "openai_compat",
+  "model": "deepseek-flash-2",
+  "lifecycle": "v2",
+  "run_id": "bm1_live_CURRENT_E370",
+  "runner_pid": 17804,
+  "audit_errors": [],
+  "clock_injected": "2026-11-15 10:35",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 2461,
+    "completion": 1037,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 72661,
+  "score10": 10.0,
+  "veto": null,
+  "mechanism_error": null,
+  "ts": "2026-11-10 15:30:03",
+  "prompt_chars": {
+    "prompt_sum": 2461,
+    "reply_sum": 1037
+  }
+}

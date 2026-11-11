@@ -1,0 +1,55 @@
+{
+  "episode_id": "LRE121",
+  "candidate": "window_expand_b_norecap_uc",
+  "adapter": "openai_compat",
+  "mechanism": "candidate:mechanism\\mechanism.py",
+  "lifecycle": "v2",
+  "contract": "legacy",
+  "run_id": "bm1_live_CURRENT_LRE121",
+  "runner_pid": 24056,
+  "turns": 40,
+  "turns_total": 40,
+  "complete": true,
+  "resumed_from": 5,
+  "mean_score10": 10.0,
+  "probe_weighted_score10": 10.0,
+  "probe_report": [],
+  "veto_turns": 0,
+  "first_pass_rate": 1.0,
+  "stale_pollution": {
+    "probes": 0,
+    "hits": 0,
+    "rate": null
+  },
+  "tokens_total": {
+    "prompt": 123867,
+    "completion": 58218
+  },
+  "latency_ms_p95": 113502,
+  "latency_ms_max": 128334,
+  "latency_ms_n": 40,
+  "integrity": {
+    "episode_sha256": "4c8e3ed7ae5661bac2bdef42c67b595aab44e4a85665375ebf4211c2de180274",
+    "code": {
+      "lb_runner.py": "e540ad1bd4798d74657d9ccf7b070d35476c3ef70782274480ac7986a119f7d5",
+      "lb_gateway.py": "1ca5976e434ee206e289493af2273805b7d09501457088ed1d408ab6c9d19aec",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "c9bf7648be1d7aa31b287062ca3a9ddba5248af80237feb9cf657895ab3c71d7",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "IDENTITY.md": "aaa5b4ef323d90faeb7e49107fb9236a1436d26ca09e654b21393bed47ceb61a",
+      "MECHANISM.md": "74893d363c6fa09ecb28cef6e12227c11e46032cc177ea11d9d02fecbf6da9e9",
+      "params.json": "4f3d7cc7c23604398863700bd2d7d75606e8062350d4e72be12a90f3f579bad9",
+      "assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+      "assets/system_prompt/format.md": "9d5f07ead2ee937680c7401a3ff6c4dc2452c0221cc396d97cca67eae43cc00a",
+      "assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+      "assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+      "mechanism/mechanism.py": "f9a1860b411558fa1470828ca894237858974b6ae99fa5001f3c06a69c29275c",
+      "mechanism/uncertain_rules.py": "11706e0d6b6c884c54453e8174e996e97b7558b14eac1ab7f6eb4f08245a0d47",
+      "mechanism/__pycache__/mechanism.cpython-312.pyc": "5950443d9a210f26371eee4d88c905c1870451527c7696e784178d9833224c75",
+      "mechanism/__pycache__/uncertain_rules.cpython-312.pyc": "0f38b543fe565f19754e4924615aa361c9f48f4dfcb83a392921d6f9d99d2524"
+    }
+  },
+  "ts": "2026-11-08 12:17:45"
+}

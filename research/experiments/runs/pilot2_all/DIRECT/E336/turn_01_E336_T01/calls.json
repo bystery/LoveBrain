@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "12:07:08",
+    "latency_ms": 11933,
+    "prompt_chars": 730,
+    "reply_chars": 310,
+    "usage": {
+      "prompt": 730,
+      "completion": 310,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '陆言', 'traits': ['体力稳配速匀', '回话简短', '周三晚固定跑步']}\n对方：{'name': '闻笛', 'traits': ['徒步路线控攻略细', '装备讲究但抠门', '说话干脆爱下结论'], 'boundaries': ['借的装备按时还，磕碰要说明白', 'AA 分明，不占人便宜']}\n\n【既有背景信息】\n{\"me\": \"陆言周三晚固定跑步保持体力，右踝有旧伤，负重刻意控制；有台用了五年的旧相机，徒步爱拍但技术一般。\", \"her\": \"闻笛装备控，路线攻略做得极细，念叨半年“找个周末走青屿山”；表弟阿珂在山屿户外做兼职，她的户外装备常从他那儿来。\", \"warmth\": \"大学登山社同届，毕业后各忙各的，半年没见，这次才把青屿山真正约上。\", \"style\": \"闻笛说话干脆，爱直接下结论“就这么定了”；陆言回话短，常用“行”“嗯”收尾。\", \"lessons\": \"她定的路线和集合时间直接执行，不磨叽；装备借还的账要清清楚楚，谁的东西谁负责。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 陆言，就这么定了！周日青屿山，环线 11 公里，爬升 700，攻略我发你了，睡前扫一眼就行。\n[对方] 过夜版升级：这趟扎营，加一顶双人帐。帐的事我搞定，你不用管，周六给你准信。\n\n【当前时间】2026-11-17 21:12\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-d5a51f96-1368-49cc-b5f2-d79aed99d12b",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 11928.8,
+      "completion_ms": 11929.0,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 1809,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"行，攻略睡前扫一眼。帐你搞定就好，周六等你准信，我这边就管好自己那份负重。\"}"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "11:02:43",
+    "latency_ms": 37239,
+    "prompt_chars": 858,
+    "reply_chars": 409,
+    "usage": {
+      "prompt": 858,
+      "completion": 409,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：30岁，程序员，驾照五年无事故；陪她练车时会讲原理但不多嘴。\n对方：26岁，电商运营，科目二挂过一次；越临近考试越嘴硬，实际手心出汗。\n\n【既有背景信息】\n{\"me\": \"车是家里那台自动挡；周末上午有空。\", \"her\": \"科目一 96 分一次过；科目二上个月挂了一次，挂在倒库压线。\", \"warmth\": \"同事关系，她知道我驾龄长才来问我；没到暧昧。\", \"style\": \"她说话冲但听劝；聊规则爱抠细节。\", \"stage\": \"同事兼陪练，第一次挂科后开始常聊。\", \"lessons\": \"她自我怀疑时先给事实再给鼓励；规则以驾考中心口径为准，我不装权威。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 跟你说个丢人事 科目二上个月挂了一次 倒库压线 我补考约在 11 月 28 号 你说我咋这么笨\n[我] 补考要间隔十天 你这个节奏完全正常 不用报陪练班 考前周末我陪你去场地外练一圈\n[对方] 那可说好了 你驾龄长 帮我看看我还能救吗\n[对方] 我工作日晚上都在驾校加练 教练说我倒库有救 就是紧张\n[我] 周六上午九点 场地外那条断头路 倒库起步都过一遍 我在那等你\n[对方] 行 那我周六见 我带瓶水给你\n[对方] 出鬼事 短信说 28 号考不了 我打驾考中心也没人说清 好烦\n[对方] 客服回了 考场系统升级 12 月 5 号重考 我这十天白练了吗\n[对方] 改期之后我反而松了 不过工作日晚上加班多 我把晚上的班都停了 周末早上练\n[我] 实习期一年 扣满 12 分直接注销 高速那条要三年内驾龄陪同 这条你再跟官方核一下\n[对方] 嗯 我拿本之后第一时间贴实习标 原来还有这么多门道\n\n【当前时间】2026-11-26 21:00\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-5da7f2f3-d32f-40bf-a5f5-9659f9ac0eeb",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 37236.0,
+      "completion_ms": 37236.3,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 2198,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"实习标那些等拿本了再操心，先把倒库稳住。周六九点还是老地方，倒库和起步照原计划过一遍。\"}"
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "case_id": "NCB_t01",
+  "turn_type": "reply",
+  "candidate": "reference_product_v1",
+  "adapter": "echo",
+  "model": "mock",
+  "lifecycle": "v2",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "contract": "legacy",
+  "run_id": "iso_20261026_124111_3c78e0",
+  "runner_pid": 46300,
+  "audit_errors": [],
+  "settlement_pending": false,
+  "clock_injected": "2026-10-29 20:35",
+  "case_input_sha256": "afab9cd109ce153e0287cda50f64710d97595632ca74baf3e25215a7b3c98505",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 8998,
+    "completion": 239,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "kotlin_len_chars",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 15,
+  "score10": 8.57,
+  "veto": null,
+  "reply_ingest": "json",
+  "mechanism_error": null,
+  "ts": "2026-10-26 12:41:11",
+  "prompt_chars": {
+    "prompt_sum": 8998,
+    "reply_sum": 239
+  },
+  "isolated": true
+}

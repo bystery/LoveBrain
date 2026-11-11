@@ -1,0 +1,64 @@
+{
+  "episode_id": "NCA_CORR_INTENT_v1",
+  "candidate": "reference_product_v1",
+  "adapter": "echo",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "lifecycle": "v2",
+  "contract": "legacy",
+  "run_id": "iso_20261023_004315_e4ae1b",
+  "runner_pid": 4296,
+  "turns": 6,
+  "turns_total": 6,
+  "complete": true,
+  "resumed_from": null,
+  "mean_score10": 9.76,
+  "veto_turns": 0,
+  "first_pass_rate": 1.0,
+  "tokens_total": {
+    "prompt": 54319,
+    "completion": 1434
+  },
+  "latency_ms": {
+    "p50": 44,
+    "p95": 49,
+    "max": 49,
+    "n": 6
+  },
+  "integrity": {
+    "episode_sha256": "018826ba3f7025edd8139cb7b02267d38e096589ecf5f6c9dbe4e43778470e57",
+    "code": {
+      "lb_runner.py": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+      "lb_gateway.py": "a1f46a632d76a5e4759b5d15f6cc8872ec9aee2eee491b638d864f3198de07b6",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "59b4290cfe366e00dc3804894eafe07f5ab93764842520d267eaf22747e43e84",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "IDENTITY.md": "20f163a62342464289a7ed1e53f2e488251425e8579b8edb3b82ceeb2434d24a",
+      "params.json": "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+      "product_memory.py": "fee3b418beebc104f8bd21266d73117c0ff82985d932c380cbba12350504b6c7",
+      "reference_chain.py": "5ee21efd98697c6173597e718e696f8aace650fbc0262fe84fb06d2d309e1737",
+      "assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+      "assets/system_prompt/format.md": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+      "assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+      "assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+      "mechanism/mechanism.py": "6c5f4b366df3c6764321ab2d0cb04f06c94d11a3cc55fe212e2f3f6754c0af16"
+    }
+  },
+  "isolated": true,
+  "settlement_pending_turns": [],
+  "execution_fingerprint": {
+    "episode_id": "NCA_CORR_INTENT_v1",
+    "episode_sha256_16": "018826ba3f7025ed",
+    "candidate": "reference_product_v1",
+    "adapter": "echo",
+    "model": "mock",
+    "temperature": 0.7
+  },
+  "report_metadata": {
+    "authorization_id": null,
+    "budget": null,
+    "evidence_paths": "报告/路径元数据不参与执行指纹"
+  },
+  "ts": "2026-10-23 00:43:16"
+}

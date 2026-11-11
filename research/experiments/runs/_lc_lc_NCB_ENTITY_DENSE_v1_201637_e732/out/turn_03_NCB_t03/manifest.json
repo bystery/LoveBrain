@@ -1,0 +1,37 @@
+{
+  "case_id": "NCB_t03",
+  "turn_type": "reply",
+  "candidate": "reference_product_v1",
+  "adapter": "echo",
+  "model": "mock",
+  "lifecycle": "v2",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "contract": "legacy",
+  "run_id": "iso_20261022_201637_1082e2",
+  "runner_pid": 16696,
+  "audit_errors": [],
+  "settlement_pending": false,
+  "clock_injected": "2026-10-30 19:00",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 8888,
+    "completion": 239,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "kotlin_len_chars",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 30,
+  "score10": 10.0,
+  "veto": null,
+  "reply_ingest": "json",
+  "mechanism_error": null,
+  "ts": "2026-10-22 20:16:38",
+  "prompt_chars": {
+    "prompt_sum": 8888,
+    "reply_sum": 239
+  },
+  "isolated": true
+}

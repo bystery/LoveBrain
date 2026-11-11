@@ -1,0 +1,32 @@
+{
+ "universal_version": "universal_scorer_v2",
+ "guards_version": "semantic_guards_v2",
+ "per_arm": {
+  "rh_b04_anchored_layout": {
+   "n_turns": 59,
+   "parse_ok_rate": 1.0,
+   "contract_ok_rate_own_layer": 1.0,
+   "valid_reply_rate": 0.9831,
+   "no_reply_rate": 0.0169,
+   "severe_error_rate": 0.0339,
+   "cancel_affirm_violation_turns": 2,
+   "required_hits": 4,
+   "required_total": 10,
+   "required_NA_turns": 47,
+   "tokens_total": 75089
+  },
+  "rh_b09_extractive_slim": {
+   "n_turns": 60,
+   "parse_ok_rate": 1.0,
+   "contract_ok_rate_own_layer": 1.0,
+   "valid_reply_rate": 0.9833,
+   "no_reply_rate": 0.0167,
+   "severe_error_rate": 0.0333,
+   "cancel_affirm_violation_turns": 2,
+   "required_hits": 6,
+   "required_total": 11,
+   "required_NA_turns": 48,
+   "tokens_total": 76512
+  }
+ }
+}

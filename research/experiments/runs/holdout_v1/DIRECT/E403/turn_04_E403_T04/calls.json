@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "17:51:14",
+    "latency_ms": 17630,
+    "prompt_chars": 747,
+    "reply_chars": 249,
+    "usage": {
+      "prompt": 747,
+      "completion": 249,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '经洄浦', 'traits': ['养过猫有经验', '冷静务实', '愿意帮忙但不冲动']}\n对方：{'name': '满苓溪', 'traits': ['心软爱动物', '行动力强但缺经验', '容易上心'], 'boundaries': ['不愿看到动物受苦', '自己力所能及才帮忙']}\n\n【既有背景信息】\n{\"me\": \"经洄浦住满苓溪隔壁楼，养过两只猫，对流浪猫常见病症和护理有经验，常备猫粮在楼下花坛边。\", \"her\": \"满苓溪三个月前开始在小区喂流浪猫，目前固定喂两只，一只狸花一只三花，都做了绝育。\", \"warmth\": \"因猫认识两个月，互相帮忙照看过猫，关系友好但以猫为纽带。\", \"style\": \"叫他洄浦，说话直接，遇到猫的事容易急，会连发好几条消息。\", \"lessons\": \"先安抚她的情绪再给具体建议；不替她决定是否领养。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 洄浦，今天楼下花坛那边来了一只橘猫，瘦得肋骨都看得见，我给了点猫粮它吃得狼吞虎咽\n[对方] 刚又去看了一眼，它还窝在那儿，天这么冷，你说要不要弄个纸箱子给它挡挡风\n[对方] 早上喂猫的时候发现那只橘猫眼睛有点分泌物，精神也不太好，是不是生病了\n[对方] 我问了附近宠物医院，他们说先观察两天如果还这样就得带去看，挂号费五十起步\n\n【我的备注】\n消息转述自宠物医院公众号在线咨询回复。\n\n【当前时间】2026-11-17 19:23\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-ed824694-58dc-44fc-b628-b9b297aec748",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 17627.0,
+      "completion_ms": 17627.3,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 1607,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"纸箱子可以弄一个，垫件旧衣服，口朝墙别对着风口。眼睛有分泌物先别急着跑医院，你留意它吃不吃东西、有没有打喷嚏流鼻涕——肯吃就还好，不吃或者分泌物越来越多就得带去看了。明早我下楼喂猫时顺路看一眼？\"}"
+  }
+]

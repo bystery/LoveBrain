@@ -1,0 +1,32 @@
+{
+  "case_id": "E410_T11",
+  "turn_type": "reply",
+  "candidate": "legacy_compat_r9",
+  "adapter": "openai_compat",
+  "model": "deepseek-flash-2",
+  "lifecycle": "v2",
+  "run_id": "bm1_live_LEGACY_E410",
+  "runner_pid": 44632,
+  "audit_errors": [],
+  "clock_injected": "2026-11-10 22:38",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 4936,
+    "completion": 1017,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 60213,
+  "score10": 10.0,
+  "veto": null,
+  "mechanism_error": null,
+  "ts": "2026-11-10 18:33:57",
+  "prompt_chars": {
+    "prompt_sum": 4936,
+    "reply_sum": 1017
+  }
+}

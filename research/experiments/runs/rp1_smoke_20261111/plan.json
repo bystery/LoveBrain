@@ -1,0 +1,267 @@
+{
+  "runner_version": "prototype_runner_v1",
+  "mode": "plan",
+  "dev_set": {
+    "set_id": "DEV_FAST_SET_v1",
+    "sha256": "99e8fe68acf293eb61190573c58cbf6a5aaa47be7b3624a6669005dec3dea2fe"
+  },
+  "arms": {
+    "rh_b04_anchored_layout": {
+      "candidate_dir": "tools/benchmark_v1/prototype_candidates/rh_b04_anchored_layout",
+      "identity_sha256": "8e555b8883eb51cb920924a6bc546f8a83b6e624f607f0950206d1c525976200"
+    },
+    "rh_b06_tiny_cascade": {
+      "candidate_dir": "tools/benchmark_v1/prototype_candidates/rh_b06_tiny_cascade",
+      "identity_sha256": "a78db7670537d789ecddd59b74674d36382fd0fa64fcc922246487f141aca64e"
+    },
+    "rh_b09_extractive_slim": {
+      "candidate_dir": "tools/benchmark_v1/prototype_candidates/rh_b09_extractive_slim",
+      "identity_sha256": "89b38aa3ce73ce66da243e2e32973beae35b519cb50b7d0caba10cb75ed22090"
+    }
+  },
+  "positions": [
+    {
+      "position_id": "D60-001",
+      "episode": "E339",
+      "case_id": "E339_T01",
+      "turn_no": 1,
+      "topics": [
+        "T01"
+      ]
+    },
+    {
+      "position_id": "D60-002",
+      "episode": "E341",
+      "case_id": "E341_T04",
+      "turn_no": 4,
+      "topics": [
+        "T02",
+        "T06",
+        "T09"
+      ]
+    },
+    {
+      "position_id": "D60-003",
+      "episode": "E347",
+      "case_id": "E347_T03",
+      "turn_no": 3,
+      "topics": [
+        "T03",
+        "T08"
+      ]
+    },
+    {
+      "position_id": "D60-004",
+      "episode": "E351",
+      "case_id": "E351_T05",
+      "turn_no": 5,
+      "topics": [
+        "T04",
+        "T08"
+      ]
+    },
+    {
+      "position_id": "D60-005",
+      "episode": "E355",
+      "case_id": "E355_T03",
+      "turn_no": 3,
+      "topics": [
+        "T05",
+        "T07"
+      ]
+    },
+    {
+      "position_id": "D60-006",
+      "episode": "E364",
+      "case_id": "E364_T02",
+      "turn_no": 2,
+      "topics": [
+        "T06",
+        "T09",
+        "T08"
+      ]
+    },
+    {
+      "position_id": "D60-007",
+      "episode": "E369",
+      "case_id": "E369_T12",
+      "turn_no": 12,
+      "topics": [
+        "T07",
+        "T09",
+        "T08"
+      ]
+    },
+    {
+      "position_id": "D60-008",
+      "episode": "E373",
+      "case_id": "E373_T07",
+      "turn_no": 7,
+      "topics": [
+        "T08",
+        "T06",
+        "T09"
+      ]
+    },
+    {
+      "position_id": "D60-009",
+      "episode": "E374",
+      "case_id": "E374_T22",
+      "turn_no": 22,
+      "topics": [
+        "T09",
+        "T07"
+      ]
+    },
+    {
+      "position_id": "D60-010",
+      "episode": "E376",
+      "case_id": "E376_T04",
+      "turn_no": 4,
+      "topics": [
+        "T10",
+        "T06",
+        "T09",
+        "T08"
+      ]
+    },
+    {
+      "position_id": "D60-011",
+      "episode": "E301",
+      "case_id": "E301_T01",
+      "turn_no": 1,
+      "topics": [
+        "T01"
+      ]
+    },
+    {
+      "position_id": "D60-012",
+      "episode": "E342",
+      "case_id": "E342_T10",
+      "turn_no": 10,
+      "topics": [
+        "T02",
+        "T08"
+      ]
+    },
+    {
+      "position_id": "D60-013",
+      "episode": "E309",
+      "case_id": "E309_T01",
+      "turn_no": 1,
+      "topics": [
+        "T03",
+        "T07"
+      ]
+    },
+    {
+      "position_id": "D60-014",
+      "episode": "E313",
+      "case_id": "E313_T01",
+      "turn_no": 1,
+      "topics": [
+        "T04",
+        "T06",
+        "T07"
+      ]
+    },
+    {
+      "position_id": "D60-015",
+      "episode": "E317",
+      "case_id": "E317_T01",
+      "turn_no": 1,
+      "topics": [
+        "T05",
+        "T07"
+      ]
+    },
+    {
+      "position_id": "D60-016",
+      "episode": "E360",
+      "case_id": "E360_T01",
+      "turn_no": 1,
+      "topics": [
+        "T06"
+      ]
+    },
+    {
+      "position_id": "D60-017",
+      "episode": "E366",
+      "case_id": "E366_T01",
+      "turn_no": 1,
+      "topics": [
+        "T07",
+        "T06"
+      ]
+    },
+    {
+      "position_id": "D60-018",
+      "episode": "E329",
+      "case_id": "E329_T01",
+      "turn_no": 1,
+      "topics": [
+        "T08"
+      ]
+    },
+    {
+      "position_id": "D60-019",
+      "episode": "E374",
+      "case_id": "E374_T10",
+      "turn_no": 10,
+      "topics": [
+        "T09",
+        "T08"
+      ]
+    },
+    {
+      "position_id": "D60-020",
+      "episode": "E333",
+      "case_id": "E333_T01",
+      "turn_no": 1,
+      "topics": [
+        "T10"
+      ]
+    },
+    {
+      "position_id": "D60-021",
+      "episode": "E301",
+      "case_id": "E301_T02",
+      "turn_no": 2,
+      "topics": [
+        "T01"
+      ]
+    },
+    {
+      "position_id": "D60-022",
+      "episode": "E302",
+      "case_id": "E302_T01",
+      "turn_no": 1,
+      "topics": [
+        "T01",
+        "T07"
+      ]
+    },
+    {
+      "position_id": "D60-023",
+      "episode": "E302",
+      "case_id": "E302_T03",
+      "turn_no": 3,
+      "topics": [
+        "T01"
+      ]
+    },
+    {
+      "position_id": "D60-024",
+      "episode": "E303",
+      "case_id": "E303_T12",
+      "turn_no": 12,
+      "topics": [
+        "T01",
+        "T06",
+        "T07"
+      ]
+    }
+  ],
+  "planned_real_calls_max": 96,
+  "ts": "2026-11-11 01:08:08"
+}

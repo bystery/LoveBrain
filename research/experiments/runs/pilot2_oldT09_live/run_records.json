@@ -1,0 +1,38 @@
+[
+  {
+    "arm": "DIRECT",
+    "episode": "E063",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E063",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 24
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "LRE121",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_LRE121",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 40
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "LRE121",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_LRE121",
+    "candidate": "window_expand_b_norecap_uc",
+    "status": "ok",
+    "turns_done": 40
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E063",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E063",
+    "candidate": "window_expand_b_norecap_uc",
+    "status": "ok",
+    "turns_done": 24
+  }
+]

@@ -1,0 +1,58 @@
+{
+  "episode_id": "NCB_ENTITY_DENSE_v1",
+  "candidate": "reference_product_v1",
+  "adapter": "echo",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "lifecycle": "v2",
+  "contract": "legacy",
+  "run_id": "iso_20261022_201837_33add8",
+  "runner_pid": 39752,
+  "turns": 5,
+  "turns_total": 5,
+  "complete": true,
+  "resumed_from": null,
+  "mean_score10": 9.43,
+  "veto_turns": 0,
+  "first_pass_rate": 1.0,
+  "tokens_total": {
+    "prompt": 44485,
+    "completion": 1195
+  },
+  "latency_ms_p95": 37,
+  "integrity": {
+    "episode_sha256": "8fbb29b5fec8f6ab61a0e89d8fe9e121024d482aeb4cda9f125f7b5c6afb62f7",
+    "code": {
+      "lb_runner.py": "89568033f74124a032e388d7bee0df2635b2ca97c2031a79b5ae02377cf137de",
+      "lb_gateway.py": "a1f46a632d76a5e4759b5d15f6cc8872ec9aee2eee491b638d864f3198de07b6",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "59b4290cfe366e00dc3804894eafe07f5ab93764842520d267eaf22747e43e84",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "IDENTITY.md": "a33af2a30fa404603769431e6aa99a424a53bed5e3a42708188d2f50ad82d59d",
+      "params.json": "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+      "reference_chain.py": "5ee21efd98697c6173597e718e696f8aace650fbc0262fe84fb06d2d309e1737",
+      "assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+      "assets/system_prompt/format.md": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+      "assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+      "assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+      "mechanism/mechanism.py": "c162e390f62a7555e7f871792348ac04c69067604ea6073152403b904412fc23"
+    }
+  },
+  "isolated": true,
+  "settlement_pending_turns": [],
+  "execution_fingerprint": {
+    "episode_id": "NCB_ENTITY_DENSE_v1",
+    "episode_sha256_16": "8fbb29b5fec8f6ab",
+    "candidate": "reference_product_v1",
+    "adapter": "echo",
+    "model": "mock",
+    "temperature": 0.7
+  },
+  "report_metadata": {
+    "authorization_id": null,
+    "budget": null,
+    "evidence_paths": "报告/路径元数据不参与执行指纹"
+  },
+  "ts": "2026-10-22 20:18:39"
+}

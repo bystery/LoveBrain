@@ -1,0 +1,6 @@
+{
+  "role": "candidate",
+  "parent": "v0_minimal_events",
+  "output_contract": null,
+  "note": "window_expand_b（W12 对照臂 B，设计 W12_FACT_LEDGER_DESIGN_20261101.md §3）。复制 v0_minimal_events mechanism，仅两处 delta：①历史预算 1400→3600 CU；②被裁消息的确定性摘取式 recap（首个 R1–R4 信号 clause 逐字一行，零模型调用，≤400 CU）。检验'容量本身够不够'；output_contract 沿用 v0 口径：legacy 契约不声明。system 资产沿用 v0 同份精简资产。"
+}

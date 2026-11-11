@@ -1,0 +1,38 @@
+{
+  "case_id": "ATK_t02",
+  "turn_type": "reply",
+  "candidate": "_attack_fixture",
+  "adapter": "mock",
+  "model": "mock",
+  "lifecycle": "v2",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "contract": "legacy",
+  "run_id": "iso_20261022_145950_a96acd",
+  "runner_pid": 33960,
+  "audit_errors": [],
+  "settlement_pending": false,
+  "clock_injected": "2026-10-29 10:05",
+  "media_refs": [
+    "D:\\lovebrain-arena\\runs\\_atk2_legit\\media_canary_02.png"
+  ],
+  "tokens": {
+    "prompt": 31,
+    "completion": 736,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "kotlin_len_chars",
+    "n_calls": 2,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 2,
+  "latency_ms": 72,
+  "score10": 0.0,
+  "veto": "json_schema_broken",
+  "mechanism_error": null,
+  "ts": "2026-10-22 14:59:52",
+  "prompt_chars": {
+    "prompt_sum": 31,
+    "reply_sum": 736
+  },
+  "isolated": true
+}

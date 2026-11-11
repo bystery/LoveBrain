@@ -1,0 +1,58 @@
+{
+  "position_id": "D60-018",
+  "episode_id": "E329",
+  "case_id": "E329_T01",
+  "turn_index": 1,
+  "arm": "rh_b19_strategy_driven",
+  "candidate": "rh_b19_strategy_driven",
+  "mechanism": "candidate:mechanism\\mechanism.py",
+  "lifecycle": "v2",
+  "contract": {
+    "may_decline": true
+  },
+  "adapter": "bm1_mock_light",
+  "mode": "mock",
+  "run_id": "rp1_mock_rh_b19_strategy_driven_D60-018",
+  "authorization": null,
+  "replay_turns_no_network": 0,
+  "target_turn_real_calls": 2,
+  "tokens": {
+    "prompt": 2821,
+    "completion": 106,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "kotlin_len_chars",
+    "n_calls": 2,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 2,
+  "e2e_ms": 12,
+  "latency_ms_run_turn": 10,
+  "score10": 0.0,
+  "veto": "unknown_payload_field",
+  "mechanism_notes": "",
+  "integrity": {
+    "episode_sha256": "425affaa700aeea74d7d1579c444ecb0e87c427b7a52a47be2191c3218a29071",
+    "code": {
+      "lb_runner.py": "e540ad1bd4798d74657d9ccf7b070d35476c3ef70782274480ac7986a119f7d5",
+      "lb_gateway.py": "85f53d1068e2a4e2a572e09cecf5cd8a469b684fe247f3d32430742a0b2ecf98",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "c9bf7648be1d7aa31b287062ca3a9ddba5248af80237feb9cf657895ab3c71d7",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "params.json": "f52b20b56309777f1a52e5be5c242cf5dd0f518f58457be6e02cc356d725c97f",
+      "assets/system_prompt/core.md": "6b54fe917c164bceca7ac0dabb2e21ea314049e19e3183af7df59dada7d91569",
+      "assets/system_prompt/format.md": "049c69f3bdd40a872c19b91b38bad9c1f4e44aedbe25b6437e31ebe21851c8a0",
+      "assets/system_prompt/naturalness_check.md": "486ed3bde30e6ee1b2ffcbec4169f1913bcba7b5843c56144b29e4bad374cd99",
+      "assets/system_prompt/redline.md": "77ab01c4b1d3f27958b0c9a0687a266f295f497116cd873cece7165148b300c7",
+      "mechanism/mechanism.py": "46af638ac93c14f74932a789334940a5335533719d3692e2d87809abc1af0fc3",
+      "mechanism/__pycache__/mechanism.cpython-312.pyc": "e57f8f634da6eea326798b184a328d79bed5ea6ea0020c99a0816738c97123b5"
+    }
+  },
+  "dev_set": {
+    "set_id": "DEV_FAST_SET_v1",
+    "sha256": "99e8fe68acf293eb61190573c58cbf6a5aaa47be7b3624a6669005dec3dea2fe"
+  },
+  "ts": "2026-11-11 14:35:23"
+}

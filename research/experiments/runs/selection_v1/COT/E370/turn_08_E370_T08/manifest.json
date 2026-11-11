@@ -1,0 +1,32 @@
+{
+  "case_id": "E370_T08",
+  "turn_type": "reply",
+  "candidate": "cot_baseline",
+  "adapter": "openai_compat",
+  "model": "deepseek-flash-2",
+  "lifecycle": "v2",
+  "run_id": "bm1_live_COT_E370",
+  "runner_pid": 47268,
+  "audit_errors": [],
+  "clock_injected": "2026-11-16 09:30",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 1196,
+    "completion": 495,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 36069,
+  "score10": 0.0,
+  "veto": "unknown_payload_field",
+  "mechanism_error": null,
+  "ts": "2026-11-10 14:43:42",
+  "prompt_chars": {
+    "prompt_sum": 1196,
+    "reply_sum": 495
+  }
+}

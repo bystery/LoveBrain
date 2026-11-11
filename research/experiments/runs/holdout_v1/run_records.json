@@ -1,0 +1,634 @@
+[
+  {
+    "arm": "DIRECT",
+    "episode": "E402",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E402",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E404",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E404",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E402",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E402",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E403",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E403",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E403",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E403",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E401",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E401",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E404",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E404",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E405",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E405",
+    "candidate": "cot_baseline",
+    "status": "error",
+    "error": "TypeError: write() argument must be str, not None",
+    "turns_done_before_error": 9,
+    "note": "该故事自失败轮起缺失，不伪造完整结果"
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E405",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E405",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E406",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E406",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E404",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E404",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E404",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E404",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E405",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E405",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E406",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E406",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E403",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E403",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E407",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E407",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E406",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E406",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E405",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E405",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E406",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E406",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E407",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E407",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E408",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E408",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E407",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E407",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E408",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E408",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E409",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E409",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E407",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E407",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E409",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E409",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E410",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E410",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E409",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E409",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E408",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E408",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E410",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E410",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E410",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E410",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E408",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E408",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E409",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E409",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E411",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E411",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E412",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E412",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E411",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E411",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E410",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E410",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E412",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E412",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E413",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E413",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E411",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E411",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E412",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E412",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E413",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E413",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E411",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E411",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E413",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E413",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E414",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E414",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E412",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E412",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E415",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E415",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E414",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E414",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E413",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E413",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E414",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E414",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E415",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E415",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E416",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E416",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E415",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E415",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E416",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E416",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E417",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E417",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E415",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E415",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E414",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E414",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E417",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E417",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E416",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E416",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E418",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E418",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E418",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E418",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E419",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E419",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E417",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E417",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E416",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E416",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "LEGACY",
+    "episode": "E417",
+    "mode": "live",
+    "run_id": "bm1_live_LEGACY_E417",
+    "candidate": "legacy_compat_r9",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E419",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E419",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E418",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E418",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "COT",
+    "episode": "E420",
+    "mode": "live",
+    "run_id": "bm1_live_COT_E420",
+    "candidate": "cot_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "DIRECT",
+    "episode": "E420",
+    "mode": "live",
+    "run_id": "bm1_live_DIRECT_E420",
+    "candidate": "direct_baseline",
+    "status": "ok",
+    "turns_done": 12
+  },
+  {
+    "arm": "CURRENT",
+    "episode": "E419",
+    "mode": "live",
+    "run_id": "bm1_live_CURRENT_E419",
+    "candidate": "window_expand_b_norecap_guard",
+    "status": "ok",
+    "turns_done": 12
+  }
+]

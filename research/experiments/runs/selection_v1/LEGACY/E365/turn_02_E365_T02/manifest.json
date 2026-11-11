@@ -1,0 +1,32 @@
+{
+  "case_id": "E365_T02",
+  "turn_type": "reply",
+  "candidate": "legacy_compat_r9",
+  "adapter": "openai_compat",
+  "model": "deepseek-flash-2",
+  "lifecycle": "v2",
+  "run_id": "bm1_live_LEGACY_E365",
+  "runner_pid": 42864,
+  "audit_errors": [],
+  "clock_injected": "2026-11-09 14:38",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 4636,
+    "completion": 1838,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 109415,
+  "score10": 10.0,
+  "veto": null,
+  "mechanism_error": null,
+  "ts": "2026-11-10 13:39:08",
+  "prompt_chars": {
+    "prompt_sum": 4636,
+    "reply_sum": 1838
+  }
+}

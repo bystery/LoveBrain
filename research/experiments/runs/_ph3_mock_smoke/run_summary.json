@@ -1,0 +1,48 @@
+{
+  "mode": "mock",
+  "reserves_total": 0,
+  "arms_selected": [
+    "DIRECT",
+    "COT",
+    "LEGACY_COMPAT_R9",
+    "CURRENT"
+  ],
+  "records": [
+    {
+      "arm": "DIRECT",
+      "episode": "E301",
+      "mode": "mock",
+      "run_id": "ph3_mock_DIRECT_E301",
+      "candidate": "direct_baseline",
+      "status": "ok",
+      "turns_done": 12
+    },
+    {
+      "arm": "COT",
+      "episode": "E301",
+      "mode": "mock",
+      "run_id": "ph3_mock_COT_E301",
+      "candidate": "cot_baseline",
+      "status": "ok",
+      "turns_done": 12
+    },
+    {
+      "arm": "LEGACY_COMPAT_R9",
+      "episode": "E301",
+      "mode": "mock",
+      "run_id": "ph3_mock_LEGACY_COMPAT_R9_E301",
+      "candidate": "legacy_compat_r9",
+      "status": "ok",
+      "turns_done": 12
+    },
+    {
+      "arm": "CURRENT",
+      "episode": "E301",
+      "mode": "mock",
+      "run_id": "ph3_mock_CURRENT_E301",
+      "candidate": "window_expand_b_norecap_guard",
+      "status": "ok",
+      "turns_done": 12
+    }
+  ]
+}

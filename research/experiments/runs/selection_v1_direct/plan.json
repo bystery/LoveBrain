@@ -1,0 +1,990 @@
+{
+  "runner_version": "four_arm_runner_v1",
+  "generated_at": "2026-11-10 12:59:39",
+  "arms": {
+    "DIRECT": {
+      "candidate": "direct_baseline",
+      "candidate_dir": "tools/benchmark_v1/baseline_candidates/direct_baseline",
+      "identity_sha256": {
+        "direct_baseline": "c5257585a49f475a8758b6cfa89fe6f07ab45bdface80c2c7b3019dc5ec16142"
+      },
+      "episodes": {
+        "E339": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E340": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E341": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E342": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E343": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E344": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E345": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E346": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E347": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E348": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E349": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E350": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E351": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E352": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E353": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E354": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E355": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E356": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E357": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E358": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E359": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E360": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E361": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E362": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E363": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E364": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E365": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E366": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E367": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E368": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E369": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E370": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E371": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E372": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E373": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E374": {
+          "turn_count": 24,
+          "planned_model_positions": 24,
+          "current_routing": null
+        },
+        "E375": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E376": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E377": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E378": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        }
+      }
+    }
+  },
+  "episodes": {
+    "E339": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E339/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E340": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E340/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E341": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E341/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E342": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E342/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E343": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E343/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E344": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E344/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E345": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E345/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E346": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E346/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E347": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E347/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E348": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E348/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E349": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E349/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E350": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E350/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E351": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E351/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E352": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E352/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E353": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E353/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E354": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E354/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E355": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E355/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E356": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E356/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E357": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E357/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E358": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E358/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E359": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E359/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E360": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E360/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E361": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E361/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E362": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E362/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E363": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E363/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E364": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E364/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E365": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E365/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E366": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E366/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E367": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E367/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E368": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E368/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E369": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E369/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E370": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E370/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E371": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E371/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E372": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E372/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E373": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E373/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E374": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E374/episode.json",
+      "turn_count": 24,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E375": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E375/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E376": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E376/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E377": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E377/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E378": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E378/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    }
+  },
+  "policy": {
+    "E339": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E340": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E341": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E342": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E343": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E344": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E345": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E346": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E347": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E348": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E349": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E350": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E351": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E352": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E353": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E354": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E355": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E356": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E357": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E358": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E359": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E360": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E361": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E362": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E363": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E364": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E365": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E366": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E367": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E368": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E369": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E370": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E371": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E372": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E373": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E374": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E375": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E376": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E377": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E378": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    }
+  },
+  "plan_sha256": "f8dca984aec7eb6f5fc8fc71a50b8b51768a94a8c1629f1e45c65072c1b84e49",
+  "rotation": {
+    "DIRECT": [
+      "E339",
+      "E340",
+      "E341",
+      "E342",
+      "E343",
+      "E344",
+      "E345",
+      "E346",
+      "E347",
+      "E348",
+      "E349",
+      "E350",
+      "E351",
+      "E352",
+      "E353",
+      "E354",
+      "E355",
+      "E356",
+      "E357",
+      "E358",
+      "E359",
+      "E360",
+      "E361",
+      "E362",
+      "E363",
+      "E364",
+      "E365",
+      "E366",
+      "E367",
+      "E368",
+      "E369",
+      "E370",
+      "E371",
+      "E372",
+      "E373",
+      "E374",
+      "E375",
+      "E376",
+      "E377",
+      "E378"
+    ],
+    "COT": [
+      "E340",
+      "E341",
+      "E342",
+      "E343",
+      "E344",
+      "E345",
+      "E346",
+      "E347",
+      "E348",
+      "E349",
+      "E350",
+      "E351",
+      "E352",
+      "E353",
+      "E354",
+      "E355",
+      "E356",
+      "E357",
+      "E358",
+      "E359",
+      "E360",
+      "E361",
+      "E362",
+      "E363",
+      "E364",
+      "E365",
+      "E366",
+      "E367",
+      "E368",
+      "E369",
+      "E370",
+      "E371",
+      "E372",
+      "E373",
+      "E374",
+      "E375",
+      "E376",
+      "E377",
+      "E378",
+      "E339"
+    ],
+    "LEGACY": [
+      "E341",
+      "E342",
+      "E343",
+      "E344",
+      "E345",
+      "E346",
+      "E347",
+      "E348",
+      "E349",
+      "E350",
+      "E351",
+      "E352",
+      "E353",
+      "E354",
+      "E355",
+      "E356",
+      "E357",
+      "E358",
+      "E359",
+      "E360",
+      "E361",
+      "E362",
+      "E363",
+      "E364",
+      "E365",
+      "E366",
+      "E367",
+      "E368",
+      "E369",
+      "E370",
+      "E371",
+      "E372",
+      "E373",
+      "E374",
+      "E375",
+      "E376",
+      "E377",
+      "E378",
+      "E339",
+      "E340"
+    ],
+    "CURRENT": [
+      "E342",
+      "E343",
+      "E344",
+      "E345",
+      "E346",
+      "E347",
+      "E348",
+      "E349",
+      "E350",
+      "E351",
+      "E352",
+      "E353",
+      "E354",
+      "E355",
+      "E356",
+      "E357",
+      "E358",
+      "E359",
+      "E360",
+      "E361",
+      "E362",
+      "E363",
+      "E364",
+      "E365",
+      "E366",
+      "E367",
+      "E368",
+      "E369",
+      "E370",
+      "E371",
+      "E372",
+      "E373",
+      "E374",
+      "E375",
+      "E376",
+      "E377",
+      "E378",
+      "E339",
+      "E340",
+      "E341"
+    ]
+  }
+}

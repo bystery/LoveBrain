@@ -1,0 +1,60 @@
+{
+  "position_id": "D60-038",
+  "episode_id": "E349",
+  "case_id": "E349_T01",
+  "turn_index": 1,
+  "arm": "rh_b04_anchored_layout",
+  "candidate": "rh_b04_anchored_layout",
+  "mechanism": "candidate:mechanism\\mechanism.py",
+  "lifecycle": "v2",
+  "contract": {
+    "may_decline": true
+  },
+  "adapter": "openai_compat",
+  "mode": "live",
+  "run_id": "rp1_live_rh_b04_anchored_layout_D60-038",
+  "authorization": "AUTH-RP1-OVERNIGHT-20261111-02",
+  "replay_turns_no_network": 0,
+  "target_turn_real_calls": 1,
+  "tokens": {
+    "prompt": 705,
+    "completion": 282,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "e2e_ms": 15257,
+  "latency_ms_run_turn": 15253,
+  "score10": 0.0,
+  "veto": "unknown_payload_field",
+  "mechanism_notes": "",
+  "integrity": {
+    "episode_sha256": "0a980acf453e5be72132dc42a65a561cb4d24891a5832f92f44d85e7225e3796",
+    "code": {
+      "lb_runner.py": "e540ad1bd4798d74657d9ccf7b070d35476c3ef70782274480ac7986a119f7d5",
+      "lb_gateway.py": "85f53d1068e2a4e2a572e09cecf5cd8a469b684fe247f3d32430742a0b2ecf98",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "c9bf7648be1d7aa31b287062ca3a9ddba5248af80237feb9cf657895ab3c71d7",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "IDENTITY.md": "743b78ab1933ff8c969f81d5f913197f11fb19419aeeef78f0cedbf8a1ce79fd",
+      "MECHANISM.md": "6c641301b5488a6599e2737553ae8dedf3d66c2a8c2b3ae0c92a0fa5edb49192",
+      "params.json": "c15d5efe7a3e9d287449841ae388e3c282b683613d02b2457ab8711d8fafa018",
+      "assets/system_prompt/core.md": "6b54fe917c164bceca7ac0dabb2e21ea314049e19e3183af7df59dada7d91569",
+      "assets/system_prompt/format.md": "049c69f3bdd40a872c19b91b38bad9c1f4e44aedbe25b6437e31ebe21851c8a0",
+      "assets/system_prompt/naturalness_check.md": "486ed3bde30e6ee1b2ffcbec4169f1913bcba7b5843c56144b29e4bad374cd99",
+      "assets/system_prompt/redline.md": "77ab01c4b1d3f27958b0c9a0687a266f295f497116cd873cece7165148b300c7",
+      "mechanism/mechanism.py": "e9eff655538454bd633cd6c73c2eb15d48fc4074b382f563067dd8a011a8d359",
+      "mechanism/__pycache__/mechanism.cpython-312.pyc": "be6782725415022518e1ea5390aefad646b92097e5722042761491bcfc4c983d"
+    }
+  },
+  "dev_set": {
+    "set_id": "DEV_FAST_SET_v1",
+    "sha256": "99e8fe68acf293eb61190573c58cbf6a5aaa47be7b3624a6669005dec3dea2fe"
+  },
+  "ts": "2026-11-11 02:42:05"
+}

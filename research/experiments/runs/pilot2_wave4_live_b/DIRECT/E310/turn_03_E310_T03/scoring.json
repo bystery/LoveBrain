@@ -1,0 +1,16 @@
+{
+  "score10": 0.0,
+  "veto": "unknown_payload_field",
+  "checks": [
+    {
+      "id": "json_schema_valid",
+      "desc": "输出契约：协议顶层键=action,analysis,decline_reason,directions,reason,response（未知字段政策见契约）",
+      "pts": 2,
+      "got": 0,
+      "pass": false,
+      "evidence": "unknown_payload_field:recommended"
+    }
+  ],
+  "pts_got": 0,
+  "pts_total": 2
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "LRE147_T09",
+  "turn_index": 9,
+  "error": "HOST_EXCEPTION: RuntimeError: gateway generate failed: quota exceeded | frame={'error': 'HOST_EXCEPTION', 'detail': 'RuntimeError: gateway generate failed: quota exceeded', 'trace_tail': 'run__w19c1_mock_long\\\\staged\\\\candidates\\\\window_expand_b_norecap_uc_guard\\\\mechanism\\\\mechanism.py\", line 231, in run_turn\\n    res = gw.generate(h[\"system_prompt\"], prompt, images=images or None, tag=\"main\")\\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+  "adapter": "mock",
+  "ts": "2026-11-03 14:54:53"
+}

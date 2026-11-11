@@ -1,0 +1,32 @@
+{
+  "case_id": "E374_T22",
+  "turn_type": "reply",
+  "candidate": "rh_b17_memorycard",
+  "adapter": "openai_compat",
+  "model": "deepseek-flash-2",
+  "lifecycle": "v2",
+  "run_id": "rp1_live_rh_b17_memorycard_D60-009",
+  "runner_pid": 19788,
+  "audit_errors": [],
+  "clock_injected": "2026-12-04 17:12",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 2002,
+    "completion": 258,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 15730,
+  "score10": 0.0,
+  "veto": "unknown_payload_field",
+  "mechanism_error": null,
+  "ts": "2026-11-11 08:24:39",
+  "prompt_chars": {
+    "prompt_sum": 2002,
+    "reply_sum": 258
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "11:38:19",
+    "latency_ms": 9449,
+    "prompt_chars": 800,
+    "reply_chars": 278,
+    "usage": {
+      "prompt": 800,
+      "completion": 278,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '曹斌', 'traits': ['垫付走心细', '关键数字较真', '不爱绕弯子']}\n对方：{'name': '齐悦', 'traits': ['爱薅年底活动羊毛', '报数字快但爱凑整', '直爽认账'], 'boundaries': ['不占同事便宜', '算错的账一定认']}\n\n【既有背景信息】\n{\"me\": \"曹斌在城东动力健身房练了三年，年底活动季帮同事拼过两次单，垫付款走手机银行，转账备注习惯写清用途。\", \"her\": \"齐悦和曹斌同部门两年，爱在年底活动里薅羊毛，报数字脱口而出，偶尔要回头对一遍，对出错来也认账。她哥家在临江，常托她代购健身周边。\", \"warmth\": \"同事两年，午休常一起拼饭拼单，钱上的事习惯当场说清，互信够。\", \"style\": \"她说话快，句尾爱带'哈'，口头禅'凑个整'，报金额直接报数。\", \"lessons\": \"跟她对账，两笔钱分开各报各的，等她自己复述一遍再确认。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 曹斌，楼下动力健身房年底搞活动，私教课平时240一节，现在10节1800，我一个人吃不下，拼不拼？咱俩一人5节，一人900，你说划算不划算。\n[对方] 活动这周四就截止了，我今下午特意问的前台。还有啊，我哥也想凑一份，前台说这卡最多两人拼，所以我哥没戏，你别被他缠上哈。\n[对方] 那就这么定：钱你先整笔垫付1800，我把我那份900转你，转账备注你写清楚哈。中午前我转过去。\n\n【我的意图】\n确认垫付与第一笔转账安排\n\n【当前时间】2026-11-10 09:35\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-8a43bbb8-ecfa-4f93-9f01-abf097c65a0c",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 9447.8,
+      "completion_ms": 9448.1,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 1555,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"行，就按这个来。我上午把1800整笔垫了，备注写“动力健身房私教课10节拼单”，付完截图发你。你那900转过来备注一下“私教课5节”，到账我跟你说一声哈。你哥那边就不管了，前台说了最多两人拼。\"}"
+  }
+]

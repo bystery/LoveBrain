@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "12:12:53",
+    "latency_ms": 5810,
+    "prompt_chars": 757,
+    "reply_chars": 168,
+    "usage": {
+      "prompt": 757,
+      "completion": 168,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '韩澈', 'traits': ['有车能扛', '话少梗多', '球技一般好胜']}\n对方：{'name': '薛迟', 'traits': ['职场体力怪爱复盘', '记账带段子', '老家事上心'], 'boundaries': ['帮忙必须记账，有借有还', '方案可以改，饭点不能动']}\n\n【既有背景信息】\n{\"me\": \"韩澈跳槽后离薛迟公司两站地，有台 SUV 后备箱能装，球技一般但好胜，输了记仇一星期。\", \"her\": \"薛迟是品牌方市场专员，常年承办会管物料；老家在临江，姥姥的七十大寿是全家头等大事。\", \"warmth\": \"前同事处成球友，每周四晚雷打不动，互损互请，账目清楚。\", \"style\": \"薛迟爱用复盘腔讲段子，报数精确；韩澈回话短，损人不带脏字。\", \"lessons\": \"时间地点变更以最新通知为准，旧口径作废；帮忙的账她记得比谁都清。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 韩澈，通知：12 月 12 号周六，城西会展中心，智家优品冬季生活展，我们公司参展，展位 B27，连开两天。\n[对方] 你是编外后勤：周五晚上先帮我搬物料，两箱画册一个易拉宝，公司仓库到你车，再到展馆。就这么定了。\n[对方] 周四晚八点老时间，球馆 3 号场地，球我带，你带那筒新球，别舍不得。输的人请脉动。\n\n【当前时间】2026-11-24 12:37\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-ad29c4df-9808-4db3-a0e4-1e5d2063b43c",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 5806.9,
+      "completion_ms": 5807.2,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 1158,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"编外后勤收到，两箱画册一个易拉宝，周五几点仓库见？周四新球我带上，脉动你先冰好。\"}"
+  }
+]

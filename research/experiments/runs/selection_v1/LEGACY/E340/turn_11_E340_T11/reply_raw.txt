@@ -1,0 +1,94 @@
+{
+  "response": {
+    "recommended": "独唱段稳住了就好，我在台侧看你抬手那一下，心也跟着提起来。馄饨摊我骑车过去看一眼，开着就给你信。",
+    "bad_boy": "推了散伙饭，跟家里说家里有事，转头问我馄饨摊开不开——顾星晚，你这谎撒得挺有方向。我过去看一眼，开着就喊你。",
+    "playful": "你哥眼睛亮亮的，我这边耳朵还嗡嗡的。馄饨摊我这就去探个路，开着就给你打手势，跟台侧那个一样。",
+    "warm": "下台就好。那句你没笑场，我在台侧差点没绷住。馄饨摊我骑车去瞅一眼，开着就等你。"
+  },
+  "directions": [
+    "要是关着，我绕回来接你，咱们现找一家。",
+    "你哥那句“什么搭子”，后来你答了没？",
+    "说真的，你那句和声接上来的时候，我比你还紧。",
+    null
+  ],
+  "analysis": {
+    "signal": "积极",
+    "goal_category": "推进见面",
+    "action_taken": "承接",
+    "anchor": "m0",
+    "hook": {
+      "kind": "观察",
+      "text": "馄饨摊我骑车过去看一眼，开着就给你信"
+    },
+    "facts": [
+      {
+        "text": "她的独唱段在汇演上稳住了",
+        "subject": "HER",
+        "relation": "演出",
+        "quote": "独唱段稳住了",
+        "src_ids": ["m0"],
+        "certainty": "confirmed",
+        "event_time": "2026-11-29 晚"
+      },
+      {
+        "text": "我在台侧踩台板给她打拍子，她看见了",
+        "subject": "ME",
+        "relation": "演出配合",
+        "quote": "你在台侧踩台板给我打的拍子我看见了",
+        "src_ids": ["m0"],
+        "certainty": "confirmed",
+        "event_time": "2026-11-29 晚"
+      },
+      {
+        "text": "她哥到场，鼓掌鼓得最响",
+        "subject": "THIRD",
+        "relation": "家人",
+        "quote": "我哥鼓掌鼓得最响",
+        "src_ids": ["m0"],
+        "certainty": "confirmed",
+        "event_time": "2026-11-29 晚"
+      },
+      {
+        "text": "她把散伙饭推了，说家里有事",
+        "subject": "HER",
+        "relation": "安排",
+        "quote": "散伙饭我推了，就说家里有事",
+        "src_ids": ["m1"],
+        "certainty": "confirmed",
+        "event_time": "2026-11-29"
+      },
+      {
+        "text": "她问桥东馄饨摊周日晚上还开着吗",
+        "subject": "HER",
+        "relation": "提问",
+        "quote": "桥东那家馄饨摊，周日晚上还开着吗？",
+        "src_ids": ["m1"],
+        "certainty": "confirmed",
+        "event_time": "2026-11-29 晚"
+      }
+    ],
+    "tentatives": [
+      {
+        "text": "今晚去桥东馄饨摊，取决于摊子开不开",
+        "quote": "桥东那家馄饨摊，周日晚上还开着吗？",
+        "src_ids": ["m1"]
+      }
+    ],
+    "updates": [
+      {
+        "fact_id": "f_0020",
+        "action": "complete",
+        "new_text": "11月29日汇演，她的独唱段稳住了",
+        "quote": "独唱段稳住了",
+        "src_ids": ["m0"]
+      },
+      {
+        "fact_id": "f_0027",
+        "action": "cancel",
+        "new_text": "她把散伙饭推了，说家里有事",
+        "quote": "散伙饭我推了",
+        "src_ids": ["m1"]
+      }
+    ]
+  }
+}

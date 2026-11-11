@@ -1,0 +1,77 @@
+{
+  "n_checks": 9,
+  "all_pass": true,
+  "turns_checked": 64,
+  "checks": [
+    {
+      "name": "b_line_and_sealed_excluded",
+      "pass": true,
+      "details": {
+        "violations": []
+      }
+    },
+    {
+      "name": "candidate_hash_pinned",
+      "pass": true,
+      "details": {
+        "drift": []
+      }
+    },
+    {
+      "name": "direct_cot_input_equivalence",
+      "pass": true,
+      "details": {
+        "failures": []
+      }
+    },
+    {
+      "name": "no_evalside_gold_leak",
+      "pass": true,
+      "details": {
+        "hits": []
+      }
+    },
+    {
+      "name": "no_future_turn_leak",
+      "pass": true,
+      "details": {
+        "hits": []
+      }
+    },
+    {
+      "name": "no_unexplained_gold_atom",
+      "pass": true,
+      "details": {
+        "suspicious": [],
+        "note": "断言值出现在 prompt 且不在截至本轮可见历史=可疑；等义转述不在本检查能力内"
+      }
+    },
+    {
+      "name": "four_arm_state_isolated",
+      "pass": true,
+      "details": {
+        "missing": [],
+        "recorded_init_failures": []
+      }
+    },
+    {
+      "name": "api_key_never_persisted",
+      "pass": true,
+      "details": {
+        "files": []
+      }
+    },
+    {
+      "name": "attempts_consistent",
+      "pass": true,
+      "details": {
+        "actual": 130,
+        "expected_from_records": 128,
+        "harness_turns_allowance": 64,
+        "planned_full": 256,
+        "lost_to_recorded_failures": 128,
+        "note": "mock/轻量臂每组每轮恰 1 次调用；live harness 臂允许内部附加调用（增量<=该臂已完成轮数），超出即 FAIL（如实记录）"
+      }
+    }
+  ]
+}

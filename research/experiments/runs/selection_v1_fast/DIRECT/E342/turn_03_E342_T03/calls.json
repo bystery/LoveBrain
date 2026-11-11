@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "10:47:42",
+    "latency_ms": 24055,
+    "prompt_chars": 880,
+    "reply_chars": 441,
+    "usage": {
+      "prompt": 880,
+      "completion": 441,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '聂远舟', 'traits': ['新学员手残', '接得住玩笑', '回消息慢半拍']}\n对方：{'name': '陆聆月', 'traits': ['手稳话密', '损人留三分', '夜里比白天诚实'], 'boundaries': ['调笑可以，点破她的小心思不行', '不占人便宜，AA 算得清']}\n\n【既有背景信息】\n{\"me\": \"聂远舟上个月报了拾麦烘焙工作室的11月周二晚班，六节课四百八，第一节把一炉曲奇挤糊了，在班群得了陨石哥的外号。他在测绘院画图，家里是十九升的小台式烤箱。\", \"her\": \"陆聆月是拾麦工作室第三期的续费老学员，裱花是班里最好的，家里早年开过甜品店后来关了。她记得聂远舟说过吃不了太甜。\", \"warmth\": \"同班两节课，互相记住了对方的翻车作品，她替他在老桂面前打过掩护，关系友好但谁都没点破。\", \"style\": \"她叫他全名聂远舟当昵称用，爱用反问和损人开头，正话反说。\", \"lessons\": \"先接住玩笑再谈正事；她给的台阶接了要还；深夜的话当真，但别急着点破。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 聂远舟，晚上第二节课老桂调了分组，咱俩又分到一组。你上回挤坏的那六个曲奇，我已经替你跟老桂说是模具的锅，模具表示不背。\n[对方] 昨晚带走的曲奇别直接吃，回炉一百五十度烤五分钟会脆回来。另外老桂说下周二教塔皮，学费里含材料。你那台小烤箱几升的？小于二十升烤塔皮得调温，别问我为什么操心这个。\n[对方] 周末愉快。小莼在班里攒了个失败品交换会，周日晚在老桂店里，一人带一样翻车作品，场地费AA三十。你要是敢来就接龙，不接龙我就当你弃权，名额让给小莼的室友。你那炉陨石，建议带去镇场子。\n\n【我的意图】\n决定去不去周日的失败品交换会\n\n【当前时间】2026-11-06 18:28\n\n【本轮允许不回复吗】是\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-4c240bb4-8f3e-47ca-882f-76b2dc87e096",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 24052.3,
+      "completion_ms": 24052.5,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 2268,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"接龙加我一个，三十块到时候转你。烤箱十九升，正好卡在你说的那条线下面——塔皮那天温度怎么调，我提前问你。陨石我留着呢，镇场子不能白镇，得让老桂一眼认出来。\"}"
+  }
+]

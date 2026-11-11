@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "18:43:22",
+    "latency_ms": 9657,
+    "prompt_chars": 803,
+    "reply_chars": 132,
+    "usage": {
+      "prompt": 803,
+      "completion": 132,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。\n\n请一步一步思考：先检查已有事实、对方当前的情绪、用户真正想表达的意思以及双方的关系分寸，再生成最合适的回复。不要展示思考过程，只输出最终 JSON。",
+    "user": "【人物背景】\n我：{'name': '舒子川', 'traits': ['取景稳', '会借光', '不抢拍她不乐意的']}\n对方：{'name': '储晚舟', 'traits': ['爱拍人不爱被拍', '嘴上调侃但记得光影', '给人拍好看会得意'], 'boundaries': ['不轻易让人拍自己正脸', '不收来路不明的镜头']}\n\n【既有背景信息】\n{\"me\": \"舒子川周末常去外拍，取景稳会借光，认识储晚舟三次，她拍人他配合当模特。\", \"her\": \"储晚舟爱拍人不爱被拍，嘴上调侃，给舒子川拍过两张满意的，外拍偶遇三次。\", \"warmth\": \"外拍搭子三次，她拍他配合，互损两句，第三次开始约着同去取景。\", \"style\": \"称呼子川，说话带光圈快门，爱用‘你这角度不行’开头损人。\", \"stage\": \"外拍搭子偏熟，单独接触刚从群拍延伸到两人同去。\", \"lessons\": \"她不让拍正脸就不拍，给侧背或手；她拍的照片夸具体不夸虚的。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 子川你今天又当模特？我上次给你拍的那张逆光侧脸群里都说好，今天这光比上次还软，你再站那个位置，我给你来一组。你这人站那儿不动就是好用。\n[对方] 你那个50定焦借我用用？我带的变焦不够锐，你这颗出片肉感正好。换你用我的变焦，公平吧？\n\n【我的备注】\n50mm f1.8定焦与24-70变焦互换使用，各自保管原挂绳。\n\n【当前时间】2026-11-07 15:48\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-23bc6189-5c54-4690-8cb9-968a5531aa17",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 9654.1,
+      "completion_ms": 9654.4,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 995,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"行啊，换就换，挂绳各留各的，别回头缠一块儿了。不过你先说清楚，我这人站那儿不动是“好用”还是“省事”？这俩差着意思呢。我这就把50摘下来给你。\"}"
+  }
+]

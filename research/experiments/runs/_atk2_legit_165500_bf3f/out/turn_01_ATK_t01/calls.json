@@ -1,0 +1,24 @@
+[
+  {
+    "tag": "param_atk",
+    "ts": "16:55:01",
+    "latency_ms": 16,
+    "prompt_chars": 12,
+    "reply_chars": 368,
+    "usage": {
+      "prompt": 12,
+      "completion": 368,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "kotlin_len_chars"
+    },
+    "system": "",
+    "user": "PARAM-CANARY",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": null,
+    "resp_id": null,
+    "finish": "stop",
+    "raw_text": "{\"response\": {\"recommended\": \"我一般挑悬疑片，看到最后还得回想一下。你呢\", \"bad_boy\": \"你猜我看哪种，猜对有奖\", \"playful\": \"悬疑片重度用户，要不要交换片单\", \"warm\": \"看得挺杂的，你平时爱看哪种呀\"}, \"directions\": [\"你呢，平时看哪种\", null, \"最近有部悬疑不错\", null], \"analysis\": {\"topic_status\": \"new\", \"topic_label\": \"电影\", \"scene_facts\": [{\"text\": \"她今晚要加班\", \"source_ids\": [\"m0\"]}, {\"text\": \"她问我周末看什么类型电影\", \"source_ids\": [\"m2\"]}], \"ongoing\": []}}"
+  }
+]

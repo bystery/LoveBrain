@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "l4",
+    "ts": "10:59:16",
+    "latency_ms": 106,
+    "prompt_chars": 5,
+    "reply_chars": 2,
+    "usage": {
+      "prompt": 5,
+      "completion": 2,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "",
+    "user": "L4-PROBE",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "canary",
+    "resp_id": "canary",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 95.2,
+      "completion_ms": 95.3,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 257,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "UPSTREAM-OK canary"
+  }
+]

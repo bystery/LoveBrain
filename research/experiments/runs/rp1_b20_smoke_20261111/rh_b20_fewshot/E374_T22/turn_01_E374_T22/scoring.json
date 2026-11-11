@@ -1,0 +1,16 @@
+{
+  "score10": 0.0,
+  "veto": "json_schema_broken",
+  "checks": [
+    {
+      "id": "json_schema_valid",
+      "desc": "输出契约：单 JSON，style_keys 非空≥1，directions=4，含 analysis（或合法 decline）",
+      "pts": 2,
+      "got": 0,
+      "pass": false,
+      "evidence": ""
+    }
+  ],
+  "pts_got": 0,
+  "pts_total": 2
+}

@@ -1,0 +1,54 @@
+{
+  "episode_id": "E301",
+  "candidate": "direct_baseline",
+  "adapter": "bm1_mock_light",
+  "mechanism": "candidate:mechanism\\mechanism.py",
+  "lifecycle": "v2",
+  "contract": {
+    "may_decline": true
+  },
+  "run_id": "ph3_mock_DIRECT_E301",
+  "runner_pid": 10132,
+  "turns": 12,
+  "turns_total": 12,
+  "complete": true,
+  "resumed_from": null,
+  "mean_score10": 0.0,
+  "probe_weighted_score10": 0.0,
+  "probe_report": [],
+  "veto_turns": 12,
+  "first_pass_rate": 0.0,
+  "stale_pollution": {
+    "probes": 0,
+    "hits": 0,
+    "rate": null
+  },
+  "tokens_total": {
+    "prompt": 19735,
+    "completion": 636
+  },
+  "latency_ms_p95": 7,
+  "latency_ms_max": 8,
+  "latency_ms_n": 12,
+  "integrity": {
+    "episode_sha256": "3468f4899af2d8d0a1e593a424984bf36ae396abae9b26d4cc169438a27d48d3",
+    "code": {
+      "lb_runner.py": "e540ad1bd4798d74657d9ccf7b070d35476c3ef70782274480ac7986a119f7d5",
+      "lb_gateway.py": "1ca5976e434ee206e289493af2273805b7d09501457088ed1d408ab6c9d19aec",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "c9bf7648be1d7aa31b287062ca3a9ddba5248af80237feb9cf657895ab3c71d7",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "IDENTITY.md": "df645f9111e4cedb95d1523943c1301e8a48d9fa9105bd50ad4997022fd8d131",
+      "params.json": "8b78ccd01e1a2e2522c5634aaa8e5a80af5c392532fb825682b6b2cf67b0f6f7",
+      "assets/system_prompt/core.md": "6b54fe917c164bceca7ac0dabb2e21ea314049e19e3183af7df59dada7d91569",
+      "assets/system_prompt/format.md": "049c69f3bdd40a872c19b91b38bad9c1f4e44aedbe25b6437e31ebe21851c8a0",
+      "assets/system_prompt/naturalness_check.md": "486ed3bde30e6ee1b2ffcbec4169f1913bcba7b5843c56144b29e4bad374cd99",
+      "assets/system_prompt/redline.md": "77ab01c4b1d3f27958b0c9a0687a266f295f497116cd873cece7165148b300c7",
+      "mechanism/mechanism.py": "553207172c3d6b261e7574e2604ddd5272199bc4a90ae1b1f7b53ead2fbb5b7a",
+      "mechanism/__pycache__/mechanism.cpython-312.pyc": "d88a6f078fc7d17cf8ad3a2e3a9f12829d8c78b749416d61b0ebe613d85368cc"
+    }
+  },
+  "ts": "2026-11-09 01:06:59"
+}

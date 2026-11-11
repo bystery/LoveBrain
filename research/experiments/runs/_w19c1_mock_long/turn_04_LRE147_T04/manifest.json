@@ -1,0 +1,38 @@
+{
+  "case_id": "LRE147_T04",
+  "turn_type": "reply",
+  "candidate": "window_expand_b_norecap_uc_guard",
+  "adapter": "mock",
+  "model": "mock",
+  "lifecycle": "v2",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "contract": "legacy",
+  "run_id": "iso_20261103_145452_93cc99",
+  "runner_pid": 6232,
+  "audit_errors": [],
+  "settlement_pending": false,
+  "clock_injected": "2026-11-05 21:20",
+  "case_input_sha256": "7084dbc64f93b9c543354b94ca237b3e4929de851cd6ea3ffd3868e32fa64307",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 3614,
+    "completion": 368,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "kotlin_len_chars",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 5,
+  "score10": 0.0,
+  "veto": "illegal_source_id:m2",
+  "reply_ingest": "json",
+  "mechanism_error": null,
+  "ts": "2026-11-03 14:54:53",
+  "prompt_chars": {
+    "prompt_sum": 3614,
+    "reply_sum": 368
+  },
+  "isolated": true
+}

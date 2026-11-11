@@ -1,0 +1,32 @@
+{
+  "case_id": "E350_T01",
+  "turn_type": "reply",
+  "candidate": "window_expand_b_norecap_guard",
+  "adapter": "openai_compat",
+  "model": "deepseek-flash-2",
+  "lifecycle": "v2",
+  "run_id": "bm1_live_CURRENT_E350",
+  "runner_pid": 37552,
+  "audit_errors": [],
+  "clock_injected": "2026-11-03 19:47",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 1984,
+    "completion": 420,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 31808,
+  "score10": 10.0,
+  "veto": null,
+  "mechanism_error": null,
+  "ts": "2026-11-10 11:37:16",
+  "prompt_chars": {
+    "prompt_sum": 1984,
+    "reply_sum": 420
+  }
+}

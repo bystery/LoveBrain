@@ -1,0 +1,32 @@
+{
+  "case_id": "LRE121_T38",
+  "turn_type": "reply",
+  "candidate": "direct_baseline",
+  "adapter": "openai_compat",
+  "model": "deepseek-flash-2",
+  "lifecycle": "v2",
+  "run_id": "bm1_live_DIRECT_LRE121",
+  "runner_pid": 30160,
+  "audit_errors": [],
+  "clock_injected": "2027-01-05 21:37",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 2307,
+    "completion": 299,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 11171,
+  "score10": 0.0,
+  "veto": "unknown_payload_field",
+  "mechanism_error": null,
+  "ts": "2026-11-08 11:14:01",
+  "prompt_chars": {
+    "prompt_sum": 2307,
+    "reply_sum": 299
+  }
+}

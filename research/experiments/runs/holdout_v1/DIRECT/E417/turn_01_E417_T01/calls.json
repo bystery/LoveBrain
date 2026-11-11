@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "18:50:50",
+    "latency_ms": 11412,
+    "prompt_chars": 706,
+    "reply_chars": 148,
+    "usage": {
+      "prompt": 706,
+      "completion": 148,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '车山关', 'traits': ['接话准', '加班手稳', '不点破她的钩']}\n对方：{'name': '元如素', 'traits': ['爱用典故试探', '话里带钩', '接得住才往下走'], 'boundaries': ['不轻易让人送回家', '听不懂的钩不硬解释']}\n\n【既有背景信息】\n{\"me\": \"车山关周末常去楼下咖啡馆加班，接话准，跟元如素拼桌三周，她抛的钩他接得住。\", \"her\": \"元如素爱用典故试探，加班话里带钩，跟车山关拼桌三周，接得住才往下走。\", \"warmth\": \"拼桌三周，她抛钩他接，谁都看出她在试他识不识货，谁都没点破。\", \"style\": \"称呼山关，说话带典故和反问，爱用‘你读过那篇吧’开头抛钩。\", \"stage\": \"拼桌搭子偏熟，单独接触刚从咖啡馆延伸到加班后同走。\", \"lessons\": \"她的钩接得住但不点破，留半句让她自己往下抛；不替她解释典故。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 又拼桌？这咖啡馆周末就咱俩最勤快。你加班的活我看你敲了一上午，是那种写到一半卡住的吧——博尔赫斯说过，写不完的草稿是给读者的信，你那封信写完没？\n\n【当前时间】2026-11-07 14:38\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-8a58ffbe-ac7d-46dd-8de5-5fda39761703",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 11396.6,
+      "completion_ms": 11396.9,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 1070,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"信写到一半，卡在落款上。你先别急着当读者——你是来收信的，还是来催稿的？\"}"
+  }
+]

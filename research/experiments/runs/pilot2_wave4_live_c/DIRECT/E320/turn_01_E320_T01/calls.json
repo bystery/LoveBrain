@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "11:21:42",
+    "latency_ms": 9194,
+    "prompt_chars": 768,
+    "reply_chars": 284,
+    "usage": {
+      "prompt": 768,
+      "completion": 284,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '韩澈', 'traits': ['社区卫生服务中心护士', '先答能不能，再讲怎么做', '周三晚打羽毛球']}\n对方：{'name': '桑禾', 'traits': ['小学六年级语文老师', '遇事先列清单再慌', '报忧绕着弯说'], 'boundaries': ['不爱麻烦别人', '自己张罗的事自己收尾']}\n\n【既有背景信息】\n{\"me\": \"韩澈是社区卫生服务中心的护士，每周三晚和桑禾在社区球馆打羽毛球，11月起她连续缺席。\", \"her\": \"桑禾的父亲63岁，胆囊腹腔镜手术后定于11月14日出院，母亲在外地照顾外婆，家里只有她张罗。\", \"warmth\": \"球友处成了朋友，她不开口的事也会在打球间隙说出来。\", \"style\": \"桑禾遇事先列清单，报忧绕着弯说；韩澈回复先答能不能，再讲怎么做。\", \"lessons\": \"她绕着弯说的事才是正事；她先说别麻烦你了的时候，是不好意思，不是真的不用。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 韩澈，明早我爸出院，我想跟你对一下他那三种药怎么吃。医院给的单子字太潦草，我照着念是不是这样：利胆的午晚餐后各一次，护胃的睡前一次，消炎的一天三次跟着饭吃？还有复查约在28号周六上午，单子上说预约要提前一周，我现在还没约，是不是来不及了？我妈还在外地照顾我姥姥，这些事全在我身上。\n\n【我的备注】\n出院小结原文：利胆药每日两次、午晚餐后；护胃药每晚睡前一次；消炎药每日三次、餐后。复查需提前一周预约。\n\n【我的意图】\n核对父亲出院用药并咨询复查预约\n\n【当前时间】2026-11-13 21:28\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-229d561f-9358-4f31-ace7-0a74e5851c09",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 9179.4,
+      "completion_ms": 9179.6,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 1586,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\":\"reply\",\"recommended\":\"药你念的全对：利胆的午晚餐后各一次，护胃的睡前一次，消炎的三餐后各一次，跟单子一致。复查也来得及，提前一周是至少七天，28号离现在还有两周，明天出院路上或者今晚在手机上就能约上。明天拿药时再让药房把吃法写在盒子上，省得你对着单子认字。\"}"
+  }
+]

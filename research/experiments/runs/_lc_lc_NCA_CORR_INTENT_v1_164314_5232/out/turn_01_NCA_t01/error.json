@@ -1,0 +1,7 @@
+{
+  "case_id": "NCA_t01",
+  "turn_index": 1,
+  "error": "HOST_EXCEPTION: RuntimeError: gateway generate failed: budget authority required (non-mock adapter without authorization budget) | frame={'error': 'HOST_EXCEPTION', 'detail': 'RuntimeError: gateway generate failed: budget authority required (non-mock adapter without authorization budget)', 'trace_tail': 'reference_product_v1\\\\mechanism\\\\mechanism.py\", line 262, in run_turn\\n    res = gw.generate(h[\"system_prompt\"], prompt, images=images or None,\\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"D:\\\\",
+  "adapter": "echo",
+  "ts": "2026-10-22 16:43:16"
+}

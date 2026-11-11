@@ -1,0 +1,4210 @@
+{
+ "kind": "logs_index",
+ "generated_at": "2026-11-02T21:22:01",
+ "note": "一级索引（目录内最多下钻 2 层计数）；历史批目录只增不改，判决只认 refs/ 下 verdict 文档",
+ "n_entries": 600,
+ "n_files": 116434,
+ "bytes": 863789180,
+ "entries": [
+  {
+   "name": "_b1_run_console.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 496,
+   "mtime": "2026-10-31 11:42"
+  },
+  {
+   "name": "_ep_test_plan",
+   "kind": "dir",
+   "n_files": 1,
+   "bytes": 17056,
+   "mtime": "2026-10-28 11:54"
+  },
+  {
+   "name": "_exam2_accept_v15",
+   "kind": "dir",
+   "n_files": 11,
+   "bytes": 56163,
+   "mtime": "2026-10-24 10:17"
+  },
+  {
+   "name": "_exam2_accept_v16",
+   "kind": "dir",
+   "n_files": 14,
+   "bytes": 73644,
+   "mtime": "2026-10-24 12:08"
+  },
+  {
+   "name": "_exam2_accept_v17",
+   "kind": "dir",
+   "n_files": 14,
+   "bytes": 73644,
+   "mtime": "2026-10-24 12:41"
+  },
+  {
+   "name": "_freeze_20261024.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 8997,
+   "mtime": "2026-10-24 16:47"
+  },
+  {
+   "name": "_freeze_v4_20261024.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 8997,
+   "mtime": "2026-10-24 17:36"
+  },
+  {
+   "name": "_g1_review_console.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2146,
+   "mtime": "2026-10-31 11:40"
+  },
+  {
+   "name": "_g1_run_console.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2306,
+   "mtime": "2026-10-31 11:14"
+  },
+  {
+   "name": "_invalid",
+   "kind": "dir",
+   "n_files": 336,
+   "bytes": 1063199,
+   "mtime": "2026-10-18 09:59"
+  },
+  {
+   "name": "_lr1_review_console.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1893,
+   "mtime": "2026-10-31 12:33"
+  },
+  {
+   "name": "_lr1_run_console.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2297,
+   "mtime": "2026-10-31 12:14"
+  },
+  {
+   "name": "_manifest_probe",
+   "kind": "dir",
+   "n_files": 1,
+   "bytes": 16786,
+   "mtime": "2026-10-24 10:26"
+  },
+  {
+   "name": "_mock_v15",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 30369,
+   "mtime": "2026-10-24 09:59"
+  },
+  {
+   "name": "_plan_probe",
+   "kind": "dir",
+   "n_files": 1,
+   "bytes": 17056,
+   "mtime": "2026-10-28 11:54"
+  },
+  {
+   "name": "_replay_compose_tmp",
+   "kind": "dir",
+   "n_files": 52,
+   "bytes": 3241854,
+   "mtime": "2026-10-31 10:33"
+  },
+  {
+   "name": "_replay_slim_tmp",
+   "kind": "dir",
+   "n_files": 0,
+   "bytes": 0,
+   "mtime": ""
+  },
+  {
+   "name": "_repwire_v15",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 16950,
+   "mtime": "2026-10-24 10:15"
+  },
+  {
+   "name": "_rt_probe",
+   "kind": "dir",
+   "n_files": 0,
+   "bytes": 0,
+   "mtime": ""
+  },
+  {
+   "name": "_rt_probe4",
+   "kind": "dir",
+   "n_files": 0,
+   "bytes": 0,
+   "mtime": ""
+  },
+  {
+   "name": "_rt_probe5",
+   "kind": "dir",
+   "n_files": 0,
+   "bytes": 0,
+   "mtime": ""
+  },
+  {
+   "name": "_smoke_em1",
+   "kind": "dir",
+   "n_files": 0,
+   "bytes": 0,
+   "mtime": ""
+  },
+  {
+   "name": "_smoke_ga1",
+   "kind": "dir",
+   "n_files": 0,
+   "bytes": 0,
+   "mtime": ""
+  },
+  {
+   "name": "_smoke_refactor",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 18833,
+   "mtime": "2026-10-24 09:48"
+  },
+  {
+   "name": "_v6_cand_test.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2878,
+   "mtime": "2026-10-27 22:20"
+  },
+  {
+   "name": "_v6_restore_test.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 564,
+   "mtime": "2026-10-27 22:20"
+  },
+  {
+   "name": "a3_judge_live_live1",
+   "kind": "dir",
+   "n_files": 4,
+   "bytes": 2234679,
+   "mtime": "2026-10-26 06:38"
+  },
+  {
+   "name": "a3_judge_mock_m1",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 165109,
+   "mtime": "2026-10-26 05:31"
+  },
+  {
+   "name": "a3_judge_mock_m2",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 165262,
+   "mtime": "2026-10-26 05:32"
+  },
+  {
+   "name": "a3_judge_mock_m3",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 164681,
+   "mtime": "2026-10-26 05:32"
+  },
+  {
+   "name": "annotation_binding_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2391,
+   "mtime": "2026-10-26 12:40"
+  },
+  {
+   "name": "api_trial_plan",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 10210,
+   "mtime": "2026-10-23 00:40"
+  },
+  {
+   "name": "arena_v1_acceptance",
+   "kind": "dir",
+   "n_files": 82,
+   "bytes": 206734,
+   "mtime": "2026-10-23 01:18"
+  },
+  {
+   "name": "auth_budget",
+   "kind": "dir",
+   "n_files": 312,
+   "bytes": 3670044,
+   "mtime": "2026-11-02 20:45"
+  },
+  {
+   "name": "auth_budget_rehearsal",
+   "kind": "dir",
+   "n_files": 422,
+   "bytes": 4995683,
+   "mtime": "2026-11-02 19:33"
+  },
+  {
+   "name": "baseline_carryover_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1257,
+   "mtime": "2026-10-26 12:41"
+  },
+  {
+   "name": "baseline_parity_extra_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1695,
+   "mtime": "2026-10-26 12:41"
+  },
+  {
+   "name": "baseline_parity_extra_result_ABC.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1695,
+   "mtime": "2026-10-24 00:44"
+  },
+  {
+   "name": "baseline_parity_extra_result_R5.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1695,
+   "mtime": "2026-10-23 17:53"
+  },
+  {
+   "name": "bignode_judge_probe.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 637,
+   "mtime": "2026-10-27 18:36"
+  },
+  {
+   "name": "c4_plan_probe_b1",
+   "kind": "dir",
+   "n_files": 928,
+   "bytes": 5243578,
+   "mtime": "2026-10-26 07:49"
+  },
+  {
+   "name": "c4_plan_probe_b2_v5_vs_goal",
+   "kind": "dir",
+   "n_files": 928,
+   "bytes": 3910715,
+   "mtime": "2026-10-26 07:51"
+  },
+  {
+   "name": "c4_plan_probe_b3_v5_vs_mem",
+   "kind": "dir",
+   "n_files": 928,
+   "bytes": 3613964,
+   "mtime": "2026-10-26 07:51"
+  },
+  {
+   "name": "c4_prep_a_20261026",
+   "kind": "dir",
+   "n_files": 928,
+   "bytes": 5612433,
+   "mtime": "2026-10-26 12:15"
+  },
+  {
+   "name": "c4_prep_b_20261026",
+   "kind": "dir",
+   "n_files": 928,
+   "bytes": 3613715,
+   "mtime": "2026-10-26 12:17"
+  },
+  {
+   "name": "c4_sweep_a_orig_vs_goal_live_20261026",
+   "kind": "dir",
+   "n_files": 941,
+   "bytes": 6192176,
+   "mtime": "2026-10-26 13:19"
+  },
+  {
+   "name": "c4_sweep_a_orig_vs_goal_live_20261026.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1741,
+   "mtime": "2026-10-26 13:19"
+  },
+  {
+   "name": "c4_sweep_a_orig_vs_goal_live_20261026.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 20533,
+   "mtime": "2026-10-26 13:19"
+  },
+  {
+   "name": "c4_sweep_a_orig_vs_goal_live_20261026.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29924,
+   "mtime": "2026-10-26 13:19"
+  },
+  {
+   "name": "c4_sweep_a_runner.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1901,
+   "mtime": "2026-10-26 13:19"
+  },
+  {
+   "name": "c4_sweep_b_runner.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1894,
+   "mtime": "2026-10-26 13:55"
+  },
+  {
+   "name": "c4_sweep_b_v5_vs_mem_live_20261026",
+   "kind": "dir",
+   "n_files": 941,
+   "bytes": 4150075,
+   "mtime": "2026-10-26 13:55"
+  },
+  {
+   "name": "c4_sweep_b_v5_vs_mem_live_20261026.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1736,
+   "mtime": "2026-10-26 13:55"
+  },
+  {
+   "name": "c4_sweep_b_v5_vs_mem_live_20261026.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 20495,
+   "mtime": "2026-10-26 13:55"
+  },
+  {
+   "name": "c4_sweep_b_v5_vs_mem_live_20261026.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29925,
+   "mtime": "2026-10-26 13:55"
+  },
+  {
+   "name": "c_contrast2_retest_run.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6679,
+   "mtime": "2026-10-29 18:14"
+  },
+  {
+   "name": "c_contrast_live_20261029_173054",
+   "kind": "dir",
+   "n_files": 27,
+   "bytes": 645503,
+   "mtime": "2026-10-29 17:42"
+  },
+  {
+   "name": "c_contrast_live_20261029_180538",
+   "kind": "dir",
+   "n_files": 21,
+   "bytes": 500962,
+   "mtime": "2026-10-29 18:14"
+  },
+  {
+   "name": "c_contrast_run.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 8785,
+   "mtime": "2026-10-29 17:42"
+  },
+  {
+   "name": "decisions.md",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 8230,
+   "mtime": "2026-10-07 21:49"
+  },
+  {
+   "name": "defect_quotes_20261020.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7131,
+   "mtime": "2026-10-20 21:17"
+  },
+  {
+   "name": "e007_12_mock_load",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 33253,
+   "mtime": "2026-10-24 16:36"
+  },
+  {
+   "name": "exam1_20261023",
+   "kind": "dir",
+   "n_files": 244,
+   "bytes": 1910579,
+   "mtime": "2026-10-24 00:45"
+  },
+  {
+   "name": "exam2_cf_emit_20261102",
+   "kind": "dir",
+   "n_files": 2616,
+   "bytes": 14909683,
+   "mtime": "2026-11-02 02:28"
+  },
+  {
+   "name": "exam2_execute_20261024_002914",
+   "kind": "dir",
+   "n_files": 1,
+   "bytes": 16786,
+   "mtime": "2026-10-24 00:29"
+  },
+  {
+   "name": "exam2_execute_20261024_002934",
+   "kind": "dir",
+   "n_files": 1,
+   "bytes": 16786,
+   "mtime": "2026-10-24 00:29"
+  },
+  {
+   "name": "exam2_execute_20261024_003117",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 18849,
+   "mtime": "2026-10-24 00:31"
+  },
+  {
+   "name": "exam2_execute_20261024_155217",
+   "kind": "dir",
+   "n_files": 14,
+   "bytes": 74269,
+   "mtime": "2026-10-24 15:53"
+  },
+  {
+   "name": "exam2_execute_20261024_164101",
+   "kind": "dir",
+   "n_files": 14,
+   "bytes": 74269,
+   "mtime": "2026-10-24 16:42"
+  },
+  {
+   "name": "exam2_execute_20261024_164908",
+   "kind": "dir",
+   "n_files": 14,
+   "bytes": 74269,
+   "mtime": "2026-10-24 16:50"
+  },
+  {
+   "name": "exam2_execute_20261024_212621",
+   "kind": "dir",
+   "n_files": 14,
+   "bytes": 74269,
+   "mtime": "2026-10-24 21:27"
+  },
+  {
+   "name": "exam2_execute_20261025_104230",
+   "kind": "dir",
+   "n_files": 14,
+   "bytes": 74269,
+   "mtime": "2026-10-25 10:43"
+  },
+  {
+   "name": "exam2_execute_20261025_123506",
+   "kind": "dir",
+   "n_files": 14,
+   "bytes": 74269,
+   "mtime": "2026-10-25 12:36"
+  },
+  {
+   "name": "exam2_execute_20261025_153914",
+   "kind": "dir",
+   "n_files": 14,
+   "bytes": 74269,
+   "mtime": "2026-10-25 15:40"
+  },
+  {
+   "name": "exam2_execute_ABC",
+   "kind": "dir",
+   "n_files": 6,
+   "bytes": 22549,
+   "mtime": "2026-10-24 00:31"
+  },
+  {
+   "name": "exam2_fljudge_emit_20261101",
+   "kind": "dir",
+   "n_files": 1812,
+   "bytes": 11756483,
+   "mtime": "2026-11-01 21:07"
+  },
+  {
+   "name": "exam2_flreg2_emit_20261101",
+   "kind": "dir",
+   "n_files": 622,
+   "bytes": 3609639,
+   "mtime": "2026-11-01 19:32"
+  },
+  {
+   "name": "exam2_flreg_emit_20261101",
+   "kind": "dir",
+   "n_files": 622,
+   "bytes": 3605365,
+   "mtime": "2026-11-01 18:30"
+  },
+  {
+   "name": "exam2_flregb_emit_20261101",
+   "kind": "dir",
+   "n_files": 622,
+   "bytes": 3501951,
+   "mtime": "2026-11-01 20:19"
+  },
+  {
+   "name": "exam2_ld1_emit_20261102",
+   "kind": "dir",
+   "n_files": 3808,
+   "bytes": 24020454,
+   "mtime": "2026-11-02 06:11"
+  },
+  {
+   "name": "exam2_lr2_emit_20261101",
+   "kind": "dir",
+   "n_files": 1812,
+   "bytes": 11244011,
+   "mtime": "2026-11-01 15:22"
+  },
+  {
+   "name": "exam2_lr2r7_emit_20261101",
+   "kind": "dir",
+   "n_files": 1006,
+   "bytes": 8124077,
+   "mtime": "2026-11-01 17:36"
+  },
+  {
+   "name": "exam2_rehearsal_20261023_174608",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 12015,
+   "mtime": "2026-10-23 17:46"
+  },
+  {
+   "name": "execute_plan_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2221,
+   "mtime": "2026-10-28 11:54"
+  },
+  {
+   "name": "expr_audit_baseline_20261020.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6799,
+   "mtime": "2026-10-20 21:15"
+  },
+  {
+   "name": "expr_audit_baseline_20261020.summary.txt",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 51,
+   "mtime": "2026-10-20 21:15"
+  },
+  {
+   "name": "f1_blind_review_20261029_094731",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 2624618,
+   "mtime": "2026-10-29 11:49"
+  },
+  {
+   "name": "f1_blind_review_mock_20261029_094713",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 7772,
+   "mtime": "2026-10-29 09:47"
+  },
+  {
+   "name": "f1_controls_live.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 145,
+   "mtime": "2026-10-29 10:07"
+  },
+  {
+   "name": "f1_partial_analysis.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 9857,
+   "mtime": "2026-10-29 10:44"
+  },
+  {
+   "name": "f3_early_check",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 23514,
+   "mtime": "2026-10-29 10:51"
+  },
+  {
+   "name": "f3_judge_20261029_115709",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 1510771,
+   "mtime": "2026-10-29 12:44"
+  },
+  {
+   "name": "f3_newmat_live_live_20261029",
+   "kind": "dir",
+   "n_files": 477,
+   "bytes": 4173319,
+   "mtime": "2026-10-29 10:22"
+  },
+  {
+   "name": "f3_newmat_live_restart_20261029",
+   "kind": "dir",
+   "n_files": 1501,
+   "bytes": 13031453,
+   "mtime": "2026-10-29 11:30"
+  },
+  {
+   "name": "f3_newmat_mock_mockcheck",
+   "kind": "dir",
+   "n_files": 817,
+   "bytes": 6934059,
+   "mtime": "2026-10-29 10:00"
+  },
+  {
+   "name": "f3_newmat_mock_mockcheck2",
+   "kind": "dir",
+   "n_files": 1501,
+   "bytes": 12010346,
+   "mtime": "2026-10-29 10:00"
+  },
+  {
+   "name": "f3_smoke_20261029",
+   "kind": "dir",
+   "n_files": 402,
+   "bytes": 2926849,
+   "mtime": "2026-10-29 09:59"
+  },
+  {
+   "name": "f4_component_20261029",
+   "kind": "dir",
+   "n_files": 1809,
+   "bytes": 14955124,
+   "mtime": "2026-10-29 12:03"
+  },
+  {
+   "name": "f4_component_20261029_retry",
+   "kind": "dir",
+   "n_files": 1228,
+   "bytes": 10338525,
+   "mtime": "2026-10-29 11:59"
+  },
+  {
+   "name": "f4_component_knowfix_20261029",
+   "kind": "dir",
+   "n_files": 1137,
+   "bytes": 9757901,
+   "mtime": "2026-10-29 12:21"
+  },
+  {
+   "name": "f4_judge_20261029_120529",
+   "kind": "dir",
+   "n_files": 4,
+   "bytes": 257570,
+   "mtime": "2026-10-29 12:19"
+  },
+  {
+   "name": "f4_mock_20261029",
+   "kind": "dir",
+   "n_files": 226,
+   "bytes": 1459556,
+   "mtime": "2026-10-29 10:13"
+  },
+  {
+   "name": "f4_mock_know",
+   "kind": "dir",
+   "n_files": 188,
+   "bytes": 1389482,
+   "mtime": "2026-10-29 11:19"
+  },
+  {
+   "name": "f4_mock_probe",
+   "kind": "dir",
+   "n_files": 226,
+   "bytes": 1615831,
+   "mtime": "2026-10-29 10:40"
+  },
+  {
+   "name": "f5_judge_20261029_134800",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 232615,
+   "mtime": "2026-10-29 13:57"
+  },
+  {
+   "name": "f5_judge_20261029_140906",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 237642,
+   "mtime": "2026-10-29 14:17"
+  },
+  {
+   "name": "f5_judge_mock_20261029_134751",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 21371,
+   "mtime": "2026-10-29 13:47"
+  },
+  {
+   "name": "f5_judge_mockswap",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 21359,
+   "mtime": "2026-10-29 14:08"
+  },
+  {
+   "name": "f5_recheck_live2_20261029_133653",
+   "kind": "dir",
+   "n_files": 112,
+   "bytes": 879040,
+   "mtime": "2026-10-29 13:45"
+  },
+  {
+   "name": "f5_recheck_live_20261029_133608",
+   "kind": "dir",
+   "n_files": 34,
+   "bytes": 231312,
+   "mtime": "2026-10-29 13:36"
+  },
+  {
+   "name": "f5_recheck_mocktest2_20261029_133546",
+   "kind": "dir",
+   "n_files": 112,
+   "bytes": 806397,
+   "mtime": "2026-10-29 13:35"
+  },
+  {
+   "name": "f5_recheck_mocktest_20261029_133520",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 8508,
+   "mtime": "2026-10-29 13:35"
+  },
+  {
+   "name": "final_guard_smoke_20261029",
+   "kind": "dir",
+   "n_files": 238,
+   "bytes": 1666016,
+   "mtime": "2026-10-29 09:42"
+  },
+  {
+   "name": "fs1_a_capture_20261030",
+   "kind": "dir",
+   "n_files": 1326,
+   "bytes": 9944617,
+   "mtime": "2026-10-30 01:46"
+  },
+  {
+   "name": "fs1_a_capture_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1586,
+   "mtime": "2026-10-30 01:46"
+  },
+  {
+   "name": "fs1_a_capture_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29286,
+   "mtime": "2026-10-30 01:46"
+  },
+  {
+   "name": "fs1_a_capture_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 43462,
+   "mtime": "2026-10-30 01:46"
+  },
+  {
+   "name": "fs1_a_live2_20261030",
+   "kind": "dir",
+   "n_files": 1325,
+   "bytes": 10819914,
+   "mtime": "2026-10-30 02:55"
+  },
+  {
+   "name": "fs1_a_live2_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1651,
+   "mtime": "2026-10-30 02:55"
+  },
+  {
+   "name": "fs1_a_live2_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 30158,
+   "mtime": "2026-10-30 02:55"
+  },
+  {
+   "name": "fs1_a_live2_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 43515,
+   "mtime": "2026-10-30 02:55"
+  },
+  {
+   "name": "fs1_a_live_20261030",
+   "kind": "dir",
+   "n_files": 83,
+   "bytes": 518416,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "fs1_a_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1958,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "fs1_a_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1193,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "fs1_a_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 3747,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "fs1_b_capture_20261030",
+   "kind": "dir",
+   "n_files": 1326,
+   "bytes": 7763908,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "fs1_b_capture_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1580,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "fs1_b_capture_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29203,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "fs1_b_capture_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 43329,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "fs1_b_live2_20261030",
+   "kind": "dir",
+   "n_files": 1325,
+   "bytes": 8453092,
+   "mtime": "2026-10-30 02:53"
+  },
+  {
+   "name": "fs1_b_live2_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1644,
+   "mtime": "2026-10-30 02:53"
+  },
+  {
+   "name": "fs1_b_live2_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 30033,
+   "mtime": "2026-10-30 02:53"
+  },
+  {
+   "name": "fs1_b_live2_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 43350,
+   "mtime": "2026-10-30 02:53"
+  },
+  {
+   "name": "fs1_b_live_20261030",
+   "kind": "dir",
+   "n_files": 83,
+   "bytes": 518266,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "fs1_b_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1952,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "fs1_b_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1187,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "fs1_b_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 3709,
+   "mtime": "2026-10-30 01:47"
+  },
+  {
+   "name": "g11_real_integration_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2518,
+   "mtime": "2026-10-22 16:40"
+  },
+  {
+   "name": "g11_standin_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 287,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "gemini_recovery_watch.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1835,
+   "mtime": "2026-10-27 18:23"
+  },
+  {
+   "name": "hygiene_audit_20261102.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 10817,
+   "mtime": "2026-11-02 21:21"
+  },
+  {
+   "name": "identity_closure_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 966,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "identity_freeze_ABC.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6321,
+   "mtime": "2026-10-24 00:45"
+  },
+  {
+   "name": "identity_freeze_R51.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 4030,
+   "mtime": "2026-10-23 17:55"
+  },
+  {
+   "name": "importer_selftest",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 1772,
+   "mtime": "2026-10-22 16:33"
+  },
+  {
+   "name": "isolation_matrix_20261021_163203.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 4314,
+   "mtime": "2026-10-21 16:33"
+  },
+  {
+   "name": "isolation_matrix_20261021_163742.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 4734,
+   "mtime": "2026-10-21 16:39"
+  },
+  {
+   "name": "isolation_matrix_20261021_165152.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5909,
+   "mtime": "2026-10-21 16:53"
+  },
+  {
+   "name": "isolation_matrix_20261021_165355.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5909,
+   "mtime": "2026-10-21 16:55"
+  },
+  {
+   "name": "isolation_matrix_20261021_165632.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5899,
+   "mtime": "2026-10-21 16:58"
+  },
+  {
+   "name": "isolation_matrix_20261021_170406.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5899,
+   "mtime": "2026-10-21 17:05"
+  },
+  {
+   "name": "isolation_matrix_20261021_170803.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5899,
+   "mtime": "2026-10-21 17:09"
+  },
+  {
+   "name": "isolation_matrix_20261021_171013.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5899,
+   "mtime": "2026-10-21 17:11"
+  },
+  {
+   "name": "isolation_matrix_20261021_171212.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5899,
+   "mtime": "2026-10-21 17:13"
+  },
+  {
+   "name": "isolation_matrix_20261021_171421.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5899,
+   "mtime": "2026-10-21 17:15"
+  },
+  {
+   "name": "isolation_matrix_20261021_171644.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5899,
+   "mtime": "2026-10-21 17:18"
+  },
+  {
+   "name": "isolation_matrix_20261021_171903.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5899,
+   "mtime": "2026-10-21 17:20"
+  },
+  {
+   "name": "isolation_matrix_20261021_172316.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5899,
+   "mtime": "2026-10-21 17:24"
+  },
+  {
+   "name": "isolation_matrix_20261021_202225.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 3203,
+   "mtime": "2026-10-21 20:22"
+  },
+  {
+   "name": "isolation_matrix_20261021_204521.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 3368,
+   "mtime": "2026-10-21 20:45"
+  },
+  {
+   "name": "isolation_matrix_20261021_212330.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 3368,
+   "mtime": "2026-10-21 21:23"
+  },
+  {
+   "name": "isolation_matrix_20261021_220916.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 3368,
+   "mtime": "2026-10-21 22:09"
+  },
+  {
+   "name": "isolation_matrix_20261021_221542.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 3368,
+   "mtime": "2026-10-21 22:16"
+  },
+  {
+   "name": "isolation_matrix_20261021_222034.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 3368,
+   "mtime": "2026-10-21 22:21"
+  },
+  {
+   "name": "isolation_matrix_20261021_222503.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 3368,
+   "mtime": "2026-10-21 22:25"
+  },
+  {
+   "name": "isolation_matrix_20261021_222827.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 3368,
+   "mtime": "2026-10-21 22:28"
+  },
+  {
+   "name": "isolation_matrix_20261022_095608.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6928,
+   "mtime": "2026-10-22 09:56"
+  },
+  {
+   "name": "isolation_matrix_20261022_100247.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6955,
+   "mtime": "2026-10-22 10:02"
+  },
+  {
+   "name": "isolation_matrix_20261022_100522.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6947,
+   "mtime": "2026-10-22 10:05"
+  },
+  {
+   "name": "isolation_matrix_20261022_100658.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6955,
+   "mtime": "2026-10-22 10:07"
+  },
+  {
+   "name": "isolation_matrix_20261022_102343.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6957,
+   "mtime": "2026-10-22 10:23"
+  },
+  {
+   "name": "isolation_matrix_20261022_102614.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6957,
+   "mtime": "2026-10-22 10:26"
+  },
+  {
+   "name": "isolation_matrix_20261022_105631.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6957,
+   "mtime": "2026-10-22 10:56"
+  },
+  {
+   "name": "isolation_matrix_20261022_110315.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6957,
+   "mtime": "2026-10-22 11:03"
+  },
+  {
+   "name": "isolation_matrix_20261022_110611.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6955,
+   "mtime": "2026-10-22 11:06"
+  },
+  {
+   "name": "isolation_matrix_20261022_111812.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6957,
+   "mtime": "2026-10-22 11:18"
+  },
+  {
+   "name": "isolation_matrix_20261022_150414.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6981,
+   "mtime": "2026-10-22 15:04"
+  },
+  {
+   "name": "isolation_matrix_20261022_162313.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7059,
+   "mtime": "2026-10-22 16:23"
+  },
+  {
+   "name": "isolation_matrix_20261022_162402.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7059,
+   "mtime": "2026-10-22 16:24"
+  },
+  {
+   "name": "isolation_matrix_20261022_162847.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6981,
+   "mtime": "2026-10-22 16:29"
+  },
+  {
+   "name": "isolation_matrix_20261022_164249.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6981,
+   "mtime": "2026-10-22 16:43"
+  },
+  {
+   "name": "isolation_matrix_20261022_165500.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6981,
+   "mtime": "2026-10-22 16:55"
+  },
+  {
+   "name": "isolation_matrix_20261022_170028.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6981,
+   "mtime": "2026-10-22 17:00"
+  },
+  {
+   "name": "isolation_matrix_20261022_170408.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6981,
+   "mtime": "2026-10-22 17:04"
+  },
+  {
+   "name": "isolation_matrix_20261022_170551.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6981,
+   "mtime": "2026-10-22 17:06"
+  },
+  {
+   "name": "isolation_matrix_20261022_172408.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6978,
+   "mtime": "2026-10-22 17:24"
+  },
+  {
+   "name": "isolation_matrix_20261022_201144.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7338,
+   "mtime": "2026-10-22 20:12"
+  },
+  {
+   "name": "isolation_matrix_20261022_201252.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7649,
+   "mtime": "2026-10-22 20:13"
+  },
+  {
+   "name": "isolation_matrix_20261022_201416.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7647,
+   "mtime": "2026-10-22 20:14"
+  },
+  {
+   "name": "isolation_matrix_20261022_201608.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7649,
+   "mtime": "2026-10-22 20:16"
+  },
+  {
+   "name": "isolation_matrix_20261022_201808.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7649,
+   "mtime": "2026-10-22 20:18"
+  },
+  {
+   "name": "isolation_matrix_20261023_004056.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7649,
+   "mtime": "2026-10-23 00:41"
+  },
+  {
+   "name": "isolation_matrix_20261023_004248.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7649,
+   "mtime": "2026-10-23 00:43"
+  },
+  {
+   "name": "isolation_matrix_20261023_010234.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7649,
+   "mtime": "2026-10-23 01:02"
+  },
+  {
+   "name": "isolation_matrix_20261023_011504.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7647,
+   "mtime": "2026-10-23 01:15"
+  },
+  {
+   "name": "isolation_matrix_20261023_011703.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7649,
+   "mtime": "2026-10-23 01:17"
+  },
+  {
+   "name": "isolation_matrix_20261026_105914.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7649,
+   "mtime": "2026-10-26 10:59"
+  },
+  {
+   "name": "isolation_matrix_20261026_110225.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7649,
+   "mtime": "2026-10-26 11:02"
+  },
+  {
+   "name": "isolation_matrix_20261026_124206.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 7649,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "judge_v1_1_live_20261025_232116",
+   "kind": "dir",
+   "n_files": 14,
+   "bytes": 6347008,
+   "mtime": "2026-10-26 01:14"
+  },
+  {
+   "name": "judge_v1_1_mock_20261025_222821",
+   "kind": "dir",
+   "n_files": 0,
+   "bytes": 0,
+   "mtime": ""
+  },
+  {
+   "name": "judge_v1_1_mock_20261025_230455",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417131,
+   "mtime": "2026-10-25 23:04"
+  },
+  {
+   "name": "judge_v1_1_mock_20261025_230459",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 2086,
+   "mtime": "2026-10-25 23:04"
+  },
+  {
+   "name": "judge_v1_1_mock_20261025_230547",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417131,
+   "mtime": "2026-10-25 23:05"
+  },
+  {
+   "name": "judge_v1_1_mock_20261025_233019",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417150,
+   "mtime": "2026-10-25 23:30"
+  },
+  {
+   "name": "judge_v1_1_mock_20261025_233050",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417150,
+   "mtime": "2026-10-25 23:30"
+  },
+  {
+   "name": "judge_v1_1_mock_20261025_233115",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417150,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_20261025_233133",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417150,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_20261025_233150",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417150,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_20261025_233215",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417150,
+   "mtime": "2026-10-25 23:32"
+  },
+  {
+   "name": "judge_v1_1_mock_20261025_233235",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417150,
+   "mtime": "2026-10-25 23:32"
+  },
+  {
+   "name": "judge_v1_1_mock_20261026_002146",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417234,
+   "mtime": "2026-10-26 00:21"
+  },
+  {
+   "name": "judge_v1_1_mock_20261026_105918",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417234,
+   "mtime": "2026-10-26 10:59"
+  },
+  {
+   "name": "judge_v1_1_mock_20261026_110229",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417234,
+   "mtime": "2026-10-26 11:02"
+  },
+  {
+   "name": "judge_v1_1_mock_20261026_124210",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 417234,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "judge_v1_1_mock_conc_2945306571",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 50850,
+   "mtime": "2026-10-26 00:21"
+  },
+  {
+   "name": "judge_v1_1_mock_conc_2983558623",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 50850,
+   "mtime": "2026-10-26 10:59"
+  },
+  {
+   "name": "judge_v1_1_mock_conc_2983749494",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 50850,
+   "mtime": "2026-10-26 11:02"
+  },
+  {
+   "name": "judge_v1_1_mock_conc_2989730141",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 50850,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "judge_v1_1_mock_failfast",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 10854,
+   "mtime": "2026-10-25 23:30"
+  },
+  {
+   "name": "judge_v1_1_mock_failfast_2942250828",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11069,
+   "mtime": "2026-10-25 23:30"
+  },
+  {
+   "name": "judge_v1_1_mock_failfast_2942275728",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11069,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_failfast_2942292933",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11069,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_failfast_2942310365",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11069,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_failfast_2942335311",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11069,
+   "mtime": "2026-10-25 23:32"
+  },
+  {
+   "name": "judge_v1_1_mock_failfast_2942355465",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11069,
+   "mtime": "2026-10-25 23:32"
+  },
+  {
+   "name": "judge_v1_1_mock_failfast_2945306571",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11153,
+   "mtime": "2026-10-26 00:21"
+  },
+  {
+   "name": "judge_v1_1_mock_failfast_2983558623",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11153,
+   "mtime": "2026-10-26 10:59"
+  },
+  {
+   "name": "judge_v1_1_mock_failfast_2983749494",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11153,
+   "mtime": "2026-10-26 11:02"
+  },
+  {
+   "name": "judge_v1_1_mock_failfast_2989730141",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11153,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "judge_v1_1_mock_rej_dynamic",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 8311,
+   "mtime": "2026-10-25 23:30"
+  },
+  {
+   "name": "judge_v1_1_mock_rej_static",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 2174,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "judge_v1_1_mock_rejdyn_2942250828",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 8371,
+   "mtime": "2026-10-25 23:30"
+  },
+  {
+   "name": "judge_v1_1_mock_rejdyn_2942275728",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 8371,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_rejdyn_2942292933",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 8371,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_rejdyn_2942310365",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 8371,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_rejdyn_2942335311",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 8371,
+   "mtime": "2026-10-25 23:32"
+  },
+  {
+   "name": "judge_v1_1_mock_rejdyn_2942355465",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 8371,
+   "mtime": "2026-10-25 23:32"
+  },
+  {
+   "name": "judge_v1_1_mock_rejdyn_2945306571",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 8455,
+   "mtime": "2026-10-26 00:21"
+  },
+  {
+   "name": "judge_v1_1_mock_rejdyn_2983558623",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 8455,
+   "mtime": "2026-10-26 10:59"
+  },
+  {
+   "name": "judge_v1_1_mock_rejdyn_2983749494",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 8455,
+   "mtime": "2026-10-26 11:02"
+  },
+  {
+   "name": "judge_v1_1_mock_rejdyn_2989730141",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 8455,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "judge_v1_1_mock_res_2942250828",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11004,
+   "mtime": "2026-10-25 23:30"
+  },
+  {
+   "name": "judge_v1_1_mock_res_2942275728",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11004,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_res_2942292933",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11004,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_res_2942310365",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11004,
+   "mtime": "2026-10-25 23:31"
+  },
+  {
+   "name": "judge_v1_1_mock_res_2942335311",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 11004,
+   "mtime": "2026-10-25 23:32"
+  },
+  {
+   "name": "judge_v1_1_mock_res_2942355465",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 20451,
+   "mtime": "2026-10-25 23:32"
+  },
+  {
+   "name": "judge_v1_1_mock_res_2945306571",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 20625,
+   "mtime": "2026-10-26 00:21"
+  },
+  {
+   "name": "judge_v1_1_mock_res_2983558623",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 20625,
+   "mtime": "2026-10-26 10:59"
+  },
+  {
+   "name": "judge_v1_1_mock_res_2983749494",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 20625,
+   "mtime": "2026-10-26 11:02"
+  },
+  {
+   "name": "judge_v1_1_mock_res_2989730141",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 20625,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "judge_v1_1_mock_resume_t",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 10926,
+   "mtime": "2026-10-25 23:30"
+  },
+  {
+   "name": "kb_probe_live_20261029_164332",
+   "kind": "dir",
+   "n_files": 99,
+   "bytes": 782862,
+   "mtime": "2026-10-29 16:56"
+  },
+  {
+   "name": "kb_probe_mock_20261029_164303",
+   "kind": "dir",
+   "n_files": 19,
+   "bytes": 114757,
+   "mtime": "2026-10-29 16:43"
+  },
+  {
+   "name": "kotlin_flavor_freeze_test.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1809,
+   "mtime": "2026-10-26 13:36"
+  },
+  {
+   "name": "kp_live_run.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2472,
+   "mtime": "2026-10-29 16:56"
+  },
+  {
+   "name": "kp_precheck_20261029",
+   "kind": "dir",
+   "n_files": 18,
+   "bytes": 208918,
+   "mtime": "2026-10-29 16:42"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_906m0c75_cap",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 77996,
+   "mtime": "2026-10-21 13:28"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_906m0c75_chaos",
+   "kind": "dir",
+   "n_files": 29,
+   "bytes": 505629,
+   "mtime": "2026-10-21 13:28"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_906m0c75_ck",
+   "kind": "dir",
+   "n_files": 80,
+   "bytes": 1794024,
+   "mtime": "2026-10-21 13:28"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_906m0c75_ck2",
+   "kind": "dir",
+   "n_files": 8,
+   "bytes": 76657,
+   "mtime": "2026-10-21 13:28"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_906m0c75_ck3",
+   "kind": "dir",
+   "n_files": 8,
+   "bytes": 76657,
+   "mtime": "2026-10-21 13:28"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_906m0c75_clean",
+   "kind": "dir",
+   "n_files": 80,
+   "bytes": 1794811,
+   "mtime": "2026-10-21 13:28"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_906m0c75_occ",
+   "kind": "dir",
+   "n_files": 8,
+   "bytes": 74958,
+   "mtime": "2026-10-21 13:28"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_fj1ihelq_cap",
+   "kind": "dir",
+   "n_files": 6,
+   "bytes": 43732,
+   "mtime": "2026-10-21 12:10"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_fj1ihelq_chaos",
+   "kind": "dir",
+   "n_files": 28,
+   "bytes": 464860,
+   "mtime": "2026-10-21 12:10"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_fj1ihelq_ck",
+   "kind": "dir",
+   "n_files": 79,
+   "bytes": 1731967,
+   "mtime": "2026-10-21 12:10"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_fj1ihelq_ck2",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 42268,
+   "mtime": "2026-10-21 12:10"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_fj1ihelq_ck3",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 42268,
+   "mtime": "2026-10-21 12:10"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_fj1ihelq_clean",
+   "kind": "dir",
+   "n_files": 79,
+   "bytes": 1732596,
+   "mtime": "2026-10-21 12:10"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_fj1ihelq_occ",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 40694,
+   "mtime": "2026-10-21 12:10"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_gxrpzej2_cap",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 77996,
+   "mtime": "2026-10-21 13:27"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_gxrpzej2_chaos",
+   "kind": "dir",
+   "n_files": 29,
+   "bytes": 505628,
+   "mtime": "2026-10-21 13:27"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_gxrpzej2_ck",
+   "kind": "dir",
+   "n_files": 80,
+   "bytes": 1794025,
+   "mtime": "2026-10-21 13:27"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_gxrpzej2_ck2",
+   "kind": "dir",
+   "n_files": 8,
+   "bytes": 76657,
+   "mtime": "2026-10-21 13:27"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_gxrpzej2_ck3",
+   "kind": "dir",
+   "n_files": 8,
+   "bytes": 76657,
+   "mtime": "2026-10-21 13:27"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_gxrpzej2_clean",
+   "kind": "dir",
+   "n_files": 80,
+   "bytes": 1794812,
+   "mtime": "2026-10-21 13:27"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_gxrpzej2_occ",
+   "kind": "dir",
+   "n_files": 8,
+   "bytes": 74958,
+   "mtime": "2026-10-21 13:27"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_mj4ywo0g_cap",
+   "kind": "dir",
+   "n_files": 6,
+   "bytes": 43732,
+   "mtime": "2026-10-21 12:09"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_mj4ywo0g_chaos",
+   "kind": "dir",
+   "n_files": 28,
+   "bytes": 464859,
+   "mtime": "2026-10-21 12:08"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_mj4ywo0g_ck",
+   "kind": "dir",
+   "n_files": 79,
+   "bytes": 1731971,
+   "mtime": "2026-10-21 12:09"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_mj4ywo0g_ck2",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 42268,
+   "mtime": "2026-10-21 12:09"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_mj4ywo0g_ck3",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 42268,
+   "mtime": "2026-10-21 12:09"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_mj4ywo0g_clean",
+   "kind": "dir",
+   "n_files": 79,
+   "bytes": 1732751,
+   "mtime": "2026-10-21 12:08"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_mj4ywo0g_occ",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 40694,
+   "mtime": "2026-10-21 12:08"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_mu1gp3s3_clean",
+   "kind": "dir",
+   "n_files": 6,
+   "bytes": 42253,
+   "mtime": "2026-10-21 12:08"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_u12hhxtk_cap",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 84556,
+   "mtime": "2026-10-21 14:33"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_u12hhxtk_chaos",
+   "kind": "dir",
+   "n_files": 29,
+   "bytes": 512189,
+   "mtime": "2026-10-21 14:33"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_u12hhxtk_ck",
+   "kind": "dir",
+   "n_files": 80,
+   "bytes": 1800581,
+   "mtime": "2026-10-21 14:33"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_u12hhxtk_ck2",
+   "kind": "dir",
+   "n_files": 8,
+   "bytes": 83217,
+   "mtime": "2026-10-21 14:33"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_u12hhxtk_ck3",
+   "kind": "dir",
+   "n_files": 8,
+   "bytes": 83217,
+   "mtime": "2026-10-21 14:33"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_u12hhxtk_clean",
+   "kind": "dir",
+   "n_files": 80,
+   "bytes": 1801364,
+   "mtime": "2026-10-21 14:33"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_u12hhxtk_occ",
+   "kind": "dir",
+   "n_files": 8,
+   "bytes": 81518,
+   "mtime": "2026-10-21 14:33"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_uketph62_cap",
+   "kind": "dir",
+   "n_files": 6,
+   "bytes": 43732,
+   "mtime": "2026-10-21 12:41"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_uketph62_chaos",
+   "kind": "dir",
+   "n_files": 28,
+   "bytes": 464861,
+   "mtime": "2026-10-21 12:41"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_uketph62_ck",
+   "kind": "dir",
+   "n_files": 79,
+   "bytes": 1731974,
+   "mtime": "2026-10-21 12:41"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_uketph62_ck2",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 42268,
+   "mtime": "2026-10-21 12:41"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_uketph62_ck3",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 42268,
+   "mtime": "2026-10-21 12:41"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_uketph62_clean",
+   "kind": "dir",
+   "n_files": 79,
+   "bytes": 1732761,
+   "mtime": "2026-10-21 12:41"
+  },
+  {
+   "name": "l3b_52_t_l3b52_test_uketph62_occ",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 40694,
+   "mtime": "2026-10-21 12:41"
+  },
+  {
+   "name": "l3b_66_drill_v2",
+   "kind": "dir",
+   "n_files": 65,
+   "bytes": 1833502,
+   "mtime": "2026-10-20 23:35"
+  },
+  {
+   "name": "l3b_66_drill_v3",
+   "kind": "dir",
+   "n_files": 37,
+   "bytes": 418142,
+   "mtime": "2026-10-20 23:35"
+  },
+  {
+   "name": "l3b_66_dryrun_v2",
+   "kind": "dir",
+   "n_files": 64,
+   "bytes": 1834074,
+   "mtime": "2026-10-20 23:35"
+  },
+  {
+   "name": "l3b_66_dryrun_v3",
+   "kind": "dir",
+   "n_files": 66,
+   "bytes": 1890095,
+   "mtime": "2026-10-20 23:35"
+  },
+  {
+   "name": "l3b_66_dryrun_v4",
+   "kind": "dir",
+   "n_files": 66,
+   "bytes": 1890114,
+   "mtime": "2026-10-21 10:23"
+  },
+  {
+   "name": "l3b_66_real66_v1",
+   "kind": "dir",
+   "n_files": 66,
+   "bytes": 1944119,
+   "mtime": "2026-10-21 10:54"
+  },
+  {
+   "name": "l3b_66_t_l3b66_test_7a1gfkn__cap",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 5873,
+   "mtime": "2026-10-21 10:20"
+  },
+  {
+   "name": "l3b_66_t_l3b66_test_7a1gfkn__chaos",
+   "kind": "dir",
+   "n_files": 37,
+   "bytes": 419396,
+   "mtime": "2026-10-21 10:20"
+  },
+  {
+   "name": "l3b_66_t_l3b66_test_7a1gfkn__ck",
+   "kind": "dir",
+   "n_files": 4,
+   "bytes": 29541,
+   "mtime": "2026-10-21 10:20"
+  },
+  {
+   "name": "l3b_66_t_l3b66_test_7a1gfkn__clean",
+   "kind": "dir",
+   "n_files": 66,
+   "bytes": 1896092,
+   "mtime": "2026-10-21 10:20"
+  },
+  {
+   "name": "l3b_66_t_l3b66_test_7a1gfkn__occupied",
+   "kind": "dir",
+   "n_files": 6,
+   "bytes": 38755,
+   "mtime": "2026-10-21 10:20"
+  },
+  {
+   "name": "l3b_66_t_l3b66_test_boa_edc4_cap",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 5873,
+   "mtime": "2026-10-21 10:22"
+  },
+  {
+   "name": "l3b_66_t_l3b66_test_boa_edc4_chaos",
+   "kind": "dir",
+   "n_files": 37,
+   "bytes": 419360,
+   "mtime": "2026-10-21 10:22"
+  },
+  {
+   "name": "l3b_66_t_l3b66_test_boa_edc4_ck",
+   "kind": "dir",
+   "n_files": 4,
+   "bytes": 29541,
+   "mtime": "2026-10-21 10:22"
+  },
+  {
+   "name": "l3b_66_t_l3b66_test_boa_edc4_clean",
+   "kind": "dir",
+   "n_files": 66,
+   "bytes": 1896087,
+   "mtime": "2026-10-21 10:22"
+  },
+  {
+   "name": "l3b_66_t_l3b66_test_boa_edc4_occupied",
+   "kind": "dir",
+   "n_files": 6,
+   "bytes": 38755,
+   "mtime": "2026-10-21 10:22"
+  },
+  {
+   "name": "l3b_fork",
+   "kind": "dir",
+   "n_files": 1346,
+   "bytes": 8350675,
+   "mtime": "2026-10-20 18:26"
+  },
+  {
+   "name": "l3b_mini",
+   "kind": "dir",
+   "n_files": 54,
+   "bytes": 258210,
+   "mtime": "2026-10-18 10:06"
+  },
+  {
+   "name": "live_48_extract.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 23164,
+   "mtime": "2026-10-24 17:42"
+  },
+  {
+   "name": "live_48_readable.txt",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 44484,
+   "mtime": "2026-10-24 17:44"
+  },
+  {
+   "name": "longprobe_a_live_20261030",
+   "kind": "dir",
+   "n_files": 1241,
+   "bytes": 10719052,
+   "mtime": "2026-10-30 05:39"
+  },
+  {
+   "name": "longprobe_a_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1645,
+   "mtime": "2026-10-30 05:39"
+  },
+  {
+   "name": "longprobe_a_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 30135,
+   "mtime": "2026-10-30 05:39"
+  },
+  {
+   "name": "longprobe_a_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 42450,
+   "mtime": "2026-10-30 05:39"
+  },
+  {
+   "name": "longprobe_b1_live_20261030",
+   "kind": "dir",
+   "n_files": 1859,
+   "bytes": 16268415,
+   "mtime": "2026-10-30 07:35"
+  },
+  {
+   "name": "longprobe_b1_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1658,
+   "mtime": "2026-10-30 07:35"
+  },
+  {
+   "name": "longprobe_b1_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 44522,
+   "mtime": "2026-10-30 07:35"
+  },
+  {
+   "name": "longprobe_b1_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 62960,
+   "mtime": "2026-10-30 07:35"
+  },
+  {
+   "name": "longprobe_b2_live_20261030",
+   "kind": "dir",
+   "n_files": 1859,
+   "bytes": 16108671,
+   "mtime": "2026-10-30 08:42"
+  },
+  {
+   "name": "longprobe_b2_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1657,
+   "mtime": "2026-10-30 08:42"
+  },
+  {
+   "name": "longprobe_b2_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 44613,
+   "mtime": "2026-10-30 08:42"
+  },
+  {
+   "name": "longprobe_b2_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 63022,
+   "mtime": "2026-10-30 08:41"
+  },
+  {
+   "name": "longprobe_c1_live_20261030",
+   "kind": "dir",
+   "n_files": 1241,
+   "bytes": 10965339,
+   "mtime": "2026-10-30 10:12"
+  },
+  {
+   "name": "longprobe_c1_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1650,
+   "mtime": "2026-10-30 10:12"
+  },
+  {
+   "name": "longprobe_c1_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 30136,
+   "mtime": "2026-10-30 10:12"
+  },
+  {
+   "name": "longprobe_c1_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 42434,
+   "mtime": "2026-10-30 10:12"
+  },
+  {
+   "name": "longprobe_cf1_live_20261102",
+   "kind": "dir",
+   "n_files": 2655,
+   "bytes": 19116199,
+   "mtime": "2026-11-02 05:26"
+  },
+  {
+   "name": "longprobe_cf1_live_20261102.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1627,
+   "mtime": "2026-11-02 04:20"
+  },
+  {
+   "name": "longprobe_cf1_live_20261102.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 58662,
+   "mtime": "2026-11-02 04:20"
+  },
+  {
+   "name": "longprobe_cf1_live_20261102.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 85296,
+   "mtime": "2026-11-02 04:20"
+  },
+  {
+   "name": "longprobe_d1_live_20261030",
+   "kind": "dir",
+   "n_files": 1241,
+   "bytes": 10554852,
+   "mtime": "2026-10-31 00:45"
+  },
+  {
+   "name": "longprobe_d1_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1655,
+   "mtime": "2026-10-31 00:45"
+  },
+  {
+   "name": "longprobe_d1_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 30075,
+   "mtime": "2026-10-31 00:45"
+  },
+  {
+   "name": "longprobe_d1_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 42428,
+   "mtime": "2026-10-31 00:45"
+  },
+  {
+   "name": "longprobe_e1_live_20261030",
+   "kind": "dir",
+   "n_files": 1241,
+   "bytes": 10867929,
+   "mtime": "2026-10-31 02:33"
+  },
+  {
+   "name": "longprobe_e1_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1656,
+   "mtime": "2026-10-31 02:33"
+  },
+  {
+   "name": "longprobe_e1_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 30057,
+   "mtime": "2026-10-31 02:33"
+  },
+  {
+   "name": "longprobe_e1_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 42418,
+   "mtime": "2026-10-31 02:33"
+  },
+  {
+   "name": "longprobe_f1_live_20261030",
+   "kind": "dir",
+   "n_files": 1241,
+   "bytes": 11059968,
+   "mtime": "2026-10-31 04:05"
+  },
+  {
+   "name": "longprobe_f1_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1641,
+   "mtime": "2026-10-31 04:05"
+  },
+  {
+   "name": "longprobe_f1_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 30103,
+   "mtime": "2026-10-31 04:05"
+  },
+  {
+   "name": "longprobe_f1_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 42396,
+   "mtime": "2026-10-31 04:05"
+  },
+  {
+   "name": "longprobe_f2_live_20261030",
+   "kind": "dir",
+   "n_files": 1241,
+   "bytes": 11024979,
+   "mtime": "2026-10-31 04:52"
+  },
+  {
+   "name": "longprobe_f2_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1660,
+   "mtime": "2026-10-31 04:52"
+  },
+  {
+   "name": "longprobe_f2_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29996,
+   "mtime": "2026-10-31 04:52"
+  },
+  {
+   "name": "longprobe_f2_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 42368,
+   "mtime": "2026-10-31 04:52"
+  },
+  {
+   "name": "longprobe_f3_live_20261030",
+   "kind": "dir",
+   "n_files": 1241,
+   "bytes": 11029316,
+   "mtime": "2026-10-31 06:06"
+  },
+  {
+   "name": "longprobe_f3_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1660,
+   "mtime": "2026-10-31 06:06"
+  },
+  {
+   "name": "longprobe_f3_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 30015,
+   "mtime": "2026-10-31 06:06"
+  },
+  {
+   "name": "longprobe_f3_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 42387,
+   "mtime": "2026-10-31 06:06"
+  },
+  {
+   "name": "longprobe_fljudge_live_20261101",
+   "kind": "dir",
+   "n_files": 1822,
+   "bytes": 15468574,
+   "mtime": "2026-11-01 23:19"
+  },
+  {
+   "name": "longprobe_fljudge_live_20261101.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1653,
+   "mtime": "2026-11-01 22:32"
+  },
+  {
+   "name": "longprobe_fljudge_live_20261101.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 44460,
+   "mtime": "2026-11-01 22:32"
+  },
+  {
+   "name": "longprobe_fljudge_live_20261101.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 63157,
+   "mtime": "2026-11-01 22:32"
+  },
+  {
+   "name": "longprobe_flreg2_live_20261101",
+   "kind": "dir",
+   "n_files": 624,
+   "bytes": 4286745,
+   "mtime": "2026-11-01 20:02"
+  },
+  {
+   "name": "longprobe_flreg2_live_20261101.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1634,
+   "mtime": "2026-11-01 20:01"
+  },
+  {
+   "name": "longprobe_flreg2_live_20261101.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 15622,
+   "mtime": "2026-11-01 20:01"
+  },
+  {
+   "name": "longprobe_flreg2_live_20261101.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 21876,
+   "mtime": "2026-11-01 20:01"
+  },
+  {
+   "name": "longprobe_flreg_live_20261101",
+   "kind": "dir",
+   "n_files": 624,
+   "bytes": 4262615,
+   "mtime": "2026-11-01 19:03"
+  },
+  {
+   "name": "longprobe_flreg_live_20261101.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1630,
+   "mtime": "2026-11-01 19:03"
+  },
+  {
+   "name": "longprobe_flreg_live_20261101.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 15595,
+   "mtime": "2026-11-01 19:03"
+  },
+  {
+   "name": "longprobe_flreg_live_20261101.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 21858,
+   "mtime": "2026-11-01 19:02"
+  },
+  {
+   "name": "longprobe_flregb_live_20261101",
+   "kind": "dir",
+   "n_files": 624,
+   "bytes": 4123936,
+   "mtime": "2026-11-01 20:52"
+  },
+  {
+   "name": "longprobe_flregb_live_20261101.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1635,
+   "mtime": "2026-11-01 20:51"
+  },
+  {
+   "name": "longprobe_flregb_live_20261101.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 15573,
+   "mtime": "2026-11-01 20:51"
+  },
+  {
+   "name": "longprobe_flregb_live_20261101.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 21839,
+   "mtime": "2026-11-01 20:51"
+  },
+  {
+   "name": "longprobe_g1_live_20261030",
+   "kind": "dir",
+   "n_files": 941,
+   "bytes": 7145614,
+   "mtime": "2026-10-31 11:14"
+  },
+  {
+   "name": "longprobe_g1_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1654,
+   "mtime": "2026-10-31 11:14"
+  },
+  {
+   "name": "longprobe_g1_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 20382,
+   "mtime": "2026-10-31 11:14"
+  },
+  {
+   "name": "longprobe_g1_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 30070,
+   "mtime": "2026-10-31 11:14"
+  },
+  {
+   "name": "longprobe_ld1_live_20261102",
+   "kind": "dir",
+   "n_files": 3825,
+   "bytes": 31636383,
+   "mtime": "2026-11-02 10:52"
+  },
+  {
+   "name": "longprobe_ld1_live_20261102.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1635,
+   "mtime": "2026-11-02 09:25"
+  },
+  {
+   "name": "longprobe_ld1_live_20261102.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 92480,
+   "mtime": "2026-11-02 09:25"
+  },
+  {
+   "name": "longprobe_ld1_live_20261102.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 131715,
+   "mtime": "2026-11-02 09:25"
+  },
+  {
+   "name": "longprobe_lr1_live_20261030",
+   "kind": "dir",
+   "n_files": 623,
+   "bytes": 4155361,
+   "mtime": "2026-10-31 12:14"
+  },
+  {
+   "name": "longprobe_lr1_live_20261030.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1645,
+   "mtime": "2026-10-31 12:14"
+  },
+  {
+   "name": "longprobe_lr1_live_20261030.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 15586,
+   "mtime": "2026-10-31 12:14"
+  },
+  {
+   "name": "longprobe_lr1_live_20261030.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 21854,
+   "mtime": "2026-10-31 12:14"
+  },
+  {
+   "name": "longprobe_lr2_live_20261101",
+   "kind": "dir",
+   "n_files": 1818,
+   "bytes": 15525328,
+   "mtime": "2026-11-01 17:04"
+  },
+  {
+   "name": "longprobe_lr2_live_20261101.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1661,
+   "mtime": "2026-11-01 17:03"
+  },
+  {
+   "name": "longprobe_lr2_live_20261101.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 44487,
+   "mtime": "2026-11-01 17:03"
+  },
+  {
+   "name": "longprobe_lr2_live_20261101.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 63178,
+   "mtime": "2026-11-01 17:03"
+  },
+  {
+   "name": "longprobe_lr2r7_live_20261101",
+   "kind": "dir",
+   "n_files": 1008,
+   "bytes": 11621276,
+   "mtime": "2026-11-01 18:32"
+  },
+  {
+   "name": "longprobe_lr2r7_live_20261101.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1664,
+   "mtime": "2026-11-01 18:32"
+  },
+  {
+   "name": "longprobe_lr2r7_live_20261101.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 25311,
+   "mtime": "2026-11-01 18:32"
+  },
+  {
+   "name": "longprobe_lr2r7_live_20261101.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 35708,
+   "mtime": "2026-11-01 18:32"
+  },
+  {
+   "name": "nca_ncb_mock_replay_20261020.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6053,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "newstory96_live_20261026",
+   "kind": "dir",
+   "n_files": 732,
+   "bytes": 4534244,
+   "mtime": "2026-10-26 02:29"
+  },
+  {
+   "name": "newstory96_live_20261026.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 745,
+   "mtime": "2026-10-26 02:29"
+  },
+  {
+   "name": "newstory96_live_20261026.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 44144,
+   "mtime": "2026-10-26 02:29"
+  },
+  {
+   "name": "newstory96_live_20261026_reports",
+   "kind": "dir",
+   "n_files": 677,
+   "bytes": 3921816,
+   "mtime": "2026-10-26 02:29"
+  },
+  {
+   "name": "newstory96_plan_probe",
+   "kind": "dir",
+   "n_files": 1388,
+   "bytes": 7728962,
+   "mtime": "2026-10-26 01:28"
+  },
+  {
+   "name": "note_lcs_diag_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 682,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "p02_stage1_capture_20261027",
+   "kind": "dir",
+   "n_files": 1848,
+   "bytes": 11663628,
+   "mtime": "2026-10-27 13:32"
+  },
+  {
+   "name": "p02_stage1_capture_e_20261027",
+   "kind": "dir",
+   "n_files": 1848,
+   "bytes": 11963909,
+   "mtime": "2026-10-27 13:34"
+  },
+  {
+   "name": "p06_A_capture_20261027_1310",
+   "kind": "dir",
+   "n_files": 942,
+   "bytes": 5473765,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_A_capture_20261027_1310.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1599,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_A_capture_20261027_1310.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 19905,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_A_capture_20261027_1310.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29884,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_A_live_20261027",
+   "kind": "dir",
+   "n_files": 941,
+   "bytes": 5817072,
+   "mtime": "2026-10-27 13:42"
+  },
+  {
+   "name": "p06_A_live_20261027.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1644,
+   "mtime": "2026-10-27 13:42"
+  },
+  {
+   "name": "p06_A_live_20261027.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 20444,
+   "mtime": "2026-10-27 13:42"
+  },
+  {
+   "name": "p06_A_live_20261027.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29859,
+   "mtime": "2026-10-27 13:42"
+  },
+  {
+   "name": "p06_B_capture_20261027_1315",
+   "kind": "dir",
+   "n_files": 942,
+   "bytes": 5895719,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_B_capture_20261027_1315.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1597,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_B_capture_20261027_1315.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 19925,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_B_capture_20261027_1315.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29892,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_B_live_20261027",
+   "kind": "dir",
+   "n_files": 941,
+   "bytes": 6263724,
+   "mtime": "2026-10-27 14:23"
+  },
+  {
+   "name": "p06_B_live_20261027.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1644,
+   "mtime": "2026-10-27 14:23"
+  },
+  {
+   "name": "p06_B_live_20261027.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 20513,
+   "mtime": "2026-10-27 14:23"
+  },
+  {
+   "name": "p06_B_live_20261027.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29916,
+   "mtime": "2026-10-27 14:23"
+  },
+  {
+   "name": "p06_C_capture_20261027_1315",
+   "kind": "dir",
+   "n_files": 942,
+   "bytes": 6267731,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_C_capture_20261027_1315.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1595,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_C_capture_20261027_1315.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 19923,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_C_capture_20261027_1315.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29882,
+   "mtime": "2026-10-27 13:04"
+  },
+  {
+   "name": "p06_C_live_20261027",
+   "kind": "dir",
+   "n_files": 941,
+   "bytes": 6799095,
+   "mtime": "2026-10-27 14:59"
+  },
+  {
+   "name": "p06_C_live_20261027.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1643,
+   "mtime": "2026-10-27 14:59"
+  },
+  {
+   "name": "p06_C_live_20261027.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 20558,
+   "mtime": "2026-10-27 14:59"
+  },
+  {
+   "name": "p06_C_live_20261027.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29937,
+   "mtime": "2026-10-27 14:59"
+  },
+  {
+   "name": "p06_judge_gem_gemrun.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 122,
+   "mtime": "2026-10-27 16:44"
+  },
+  {
+   "name": "p06_judge_gem_resume3.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 122,
+   "mtime": "2026-10-27 17:40"
+  },
+  {
+   "name": "p06_judge_gem_resume6.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 121,
+   "mtime": "2026-10-27 17:28"
+  },
+  {
+   "name": "p06_judge_gem_resume_gem2.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 121,
+   "mtime": "2026-10-27 18:40"
+  },
+  {
+   "name": "p06_judge_gem_resume_retry.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 123,
+   "mtime": "2026-10-27 19:06"
+  },
+  {
+   "name": "p06_judge_live_20261027",
+   "kind": "dir",
+   "n_files": 8,
+   "bytes": 816165,
+   "mtime": "2026-10-27 15:34"
+  },
+  {
+   "name": "p06_judge_live_20261027.console.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 0,
+   "mtime": "2026-10-27 15:09"
+  },
+  {
+   "name": "p06_judge_live_20261027.resume1.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 119,
+   "mtime": "2026-10-27 15:34"
+  },
+  {
+   "name": "p06_judge_live_gemrun",
+   "kind": "dir",
+   "n_files": 16,
+   "bytes": 9081859,
+   "mtime": "2026-10-27 19:06"
+  },
+  {
+   "name": "p06_judge_live_gemrun.repaired",
+   "kind": "dir",
+   "n_files": 17,
+   "bytes": 7473395,
+   "mtime": "2026-10-27 18:47"
+  },
+  {
+   "name": "p06_judge_live_probe1",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 2027,
+   "mtime": "2026-10-27 15:43"
+  },
+  {
+   "name": "p06_judge_live_probe3",
+   "kind": "dir",
+   "n_files": 7,
+   "bytes": 50864,
+   "mtime": "2026-10-27 15:42"
+  },
+  {
+   "name": "p06_judge_live_qrun1",
+   "kind": "dir",
+   "n_files": 6,
+   "bytes": 34380,
+   "mtime": "2026-10-27 15:53"
+  },
+  {
+   "name": "p06_judge_mock_gmr1",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 50910,
+   "mtime": "2026-10-27 16:09"
+  },
+  {
+   "name": "p06_judge_mock_qr1",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 50905,
+   "mtime": "2026-10-27 15:38"
+  },
+  {
+   "name": "p06_judge_mock_r1",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 50718,
+   "mtime": "2026-10-27 15:04"
+  },
+  {
+   "name": "p06_judge_qwen2_qrun1.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 118,
+   "mtime": "2026-10-27 15:53"
+  },
+  {
+   "name": "p06_judge_qwen_probe1.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 113,
+   "mtime": "2026-10-27 15:43"
+  },
+  {
+   "name": "p06_live_chain_20261027.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2585,
+   "mtime": "2026-10-27 13:06"
+  },
+  {
+   "name": "p06_live_chain_20261027_livefix.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 5938,
+   "mtime": "2026-10-27 14:59"
+  },
+  {
+   "name": "p06_recovery_qualify.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 430,
+   "mtime": "2026-10-27 23:13"
+  },
+  {
+   "name": "p06_recovery_qualify120.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 402,
+   "mtime": "2026-10-27 23:22"
+  },
+  {
+   "name": "p06_recovery_review_20261027",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 135910,
+   "mtime": "2026-10-27 23:34"
+  },
+  {
+   "name": "p06_recovery_small12.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 844,
+   "mtime": "2026-10-27 23:34"
+  },
+  {
+   "name": "p07_pilot2.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1079,
+   "mtime": "2026-10-27 22:35"
+  },
+  {
+   "name": "p07_pilot2_20261027",
+   "kind": "dir",
+   "n_files": 19,
+   "bytes": 316247,
+   "mtime": "2026-10-27 22:35"
+  },
+  {
+   "name": "p07_pilot_20261027",
+   "kind": "dir",
+   "n_files": 4,
+   "bytes": 90692,
+   "mtime": "2026-10-27 22:17"
+  },
+  {
+   "name": "p07_pilot_v2_20261028_005344",
+   "kind": "dir",
+   "n_files": 4,
+   "bytes": 29050,
+   "mtime": "2026-10-28 00:59"
+  },
+  {
+   "name": "p07_pilot_v2_20261028_010448",
+   "kind": "dir",
+   "n_files": 27,
+   "bytes": 126216,
+   "mtime": "2026-10-28 08:14"
+  },
+  {
+   "name": "p07_pilot_v2_20261028_032742",
+   "kind": "dir",
+   "n_files": 18,
+   "bytes": 186999,
+   "mtime": "2026-10-28 03:31"
+  },
+  {
+   "name": "p07_pilot_v2_20261028_052708",
+   "kind": "dir",
+   "n_files": 6,
+   "bytes": 180968,
+   "mtime": "2026-10-28 05:37"
+  },
+  {
+   "name": "p07_pilot_v2_20261028_055728a",
+   "kind": "dir",
+   "n_files": 4,
+   "bytes": 24181,
+   "mtime": "2026-10-28 06:00"
+  },
+  {
+   "name": "p07_pilot_v2_20261028_055728b",
+   "kind": "dir",
+   "n_files": 9,
+   "bytes": 33164,
+   "mtime": "2026-10-28 06:00"
+  },
+  {
+   "name": "p07_pilot_v2_20261028_055728c",
+   "kind": "dir",
+   "n_files": 17,
+   "bytes": 157154,
+   "mtime": "2026-10-28 06:41"
+  },
+  {
+   "name": "p07_pilot_v2_20261028_065658a",
+   "kind": "dir",
+   "n_files": 4,
+   "bytes": 79427,
+   "mtime": "2026-10-28 07:09"
+  },
+  {
+   "name": "p07_pilot_v2_20261028_065658b",
+   "kind": "dir",
+   "n_files": 11,
+   "bytes": 100917,
+   "mtime": "2026-10-28 07:07"
+  },
+  {
+   "name": "p07_pilot_v2_20261028_065658c",
+   "kind": "dir",
+   "n_files": 4,
+   "bytes": 39002,
+   "mtime": "2026-10-28 07:16"
+  },
+  {
+   "name": "p07_review_bias_check_20261028",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 28941,
+   "mtime": "2026-10-28 06:32"
+  },
+  {
+   "name": "p07_smoke.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1262,
+   "mtime": "2026-10-27 22:06"
+  },
+  {
+   "name": "p07_smoke2.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 529,
+   "mtime": "2026-10-27 22:08"
+  },
+  {
+   "name": "p07_smoke3.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 529,
+   "mtime": "2026-10-27 22:17"
+  },
+  {
+   "name": "p07_w09_20261028_a",
+   "kind": "dir",
+   "n_files": 110,
+   "bytes": 1930815,
+   "mtime": "2026-10-28 09:08"
+  },
+  {
+   "name": "p08_d1_live_20261028",
+   "kind": "dir",
+   "n_files": 473,
+   "bytes": 3928038,
+   "mtime": "2026-10-28 18:08"
+  },
+  {
+   "name": "p08_d1_live_20261028.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1615,
+   "mtime": "2026-10-28 18:08"
+  },
+  {
+   "name": "p08_d1_live_20261028.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 10813,
+   "mtime": "2026-10-28 18:08"
+  },
+  {
+   "name": "p08_d1_live_20261028.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 15639,
+   "mtime": "2026-10-28 18:08"
+  },
+  {
+   "name": "p08_r3a_capture_20261028",
+   "kind": "dir",
+   "n_files": 773,
+   "bytes": 5178838,
+   "mtime": "2026-10-28 19:31"
+  },
+  {
+   "name": "p08_r3a_live_20261028",
+   "kind": "dir",
+   "n_files": 792,
+   "bytes": 6238469,
+   "mtime": "2026-10-28 20:12"
+  },
+  {
+   "name": "p08_r3a_live_20261028.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1622,
+   "mtime": "2026-10-28 20:12"
+  },
+  {
+   "name": "p08_r3a_live_20261028.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 15582,
+   "mtime": "2026-10-28 20:12"
+  },
+  {
+   "name": "p08_r3a_live_20261028.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 23767,
+   "mtime": "2026-10-28 20:12"
+  },
+  {
+   "name": "p08_r3a_live_chain.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1881,
+   "mtime": "2026-10-28 20:12"
+  },
+  {
+   "name": "p08_r3b_capture_20261028",
+   "kind": "dir",
+   "n_files": 189,
+   "bytes": 1315304,
+   "mtime": "2026-10-28 19:31"
+  },
+  {
+   "name": "p08_r3b_live_20261028",
+   "kind": "dir",
+   "n_files": 192,
+   "bytes": 1510231,
+   "mtime": "2026-10-28 19:41"
+  },
+  {
+   "name": "p08_r3b_live_20261028.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1621,
+   "mtime": "2026-10-28 19:41"
+  },
+  {
+   "name": "p08_r3b_live_20261028.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 4813,
+   "mtime": "2026-10-28 19:41"
+  },
+  {
+   "name": "p08_r3b_live_20261028.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 6877,
+   "mtime": "2026-10-28 19:41"
+  },
+  {
+   "name": "p08_r3b_live_chain.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1893,
+   "mtime": "2026-10-28 19:41"
+  },
+  {
+   "name": "p08_s1_capture_20261028",
+   "kind": "dir",
+   "n_files": 1326,
+   "bytes": 9287024,
+   "mtime": "2026-10-28 12:40"
+  },
+  {
+   "name": "p08_s1_capture_20261028.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1575,
+   "mtime": "2026-10-28 12:40"
+  },
+  {
+   "name": "p08_s1_capture_20261028.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 29274,
+   "mtime": "2026-10-28 12:40"
+  },
+  {
+   "name": "p08_s1_capture_20261028.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 43412,
+   "mtime": "2026-10-28 12:40"
+  },
+  {
+   "name": "p08_s1_live_20261028",
+   "kind": "dir",
+   "n_files": 1325,
+   "bytes": 10134339,
+   "mtime": "2026-10-28 13:37"
+  },
+  {
+   "name": "p08_s1_live_20261028.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1628,
+   "mtime": "2026-10-28 13:37"
+  },
+  {
+   "name": "p08_s1_live_20261028.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 30162,
+   "mtime": "2026-10-28 13:37"
+  },
+  {
+   "name": "p08_s1_live_20261028.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 43482,
+   "mtime": "2026-10-28 13:37"
+  },
+  {
+   "name": "p08_s1_live_chain.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1886,
+   "mtime": "2026-10-28 13:37"
+  },
+  {
+   "name": "p08_s2_capture_20261028",
+   "kind": "dir",
+   "n_files": 798,
+   "bytes": 3875152,
+   "mtime": "2026-10-28 13:11"
+  },
+  {
+   "name": "p08_s2_capture_20261028.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1575,
+   "mtime": "2026-10-28 13:11"
+  },
+  {
+   "name": "p08_s2_capture_20261028.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1188,
+   "mtime": "2026-10-28 13:11"
+  },
+  {
+   "name": "p08_s2_capture_20261028.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 17679,
+   "mtime": "2026-10-28 13:11"
+  },
+  {
+   "name": "p08_s2_live_20261028",
+   "kind": "dir",
+   "n_files": 797,
+   "bytes": 4161348,
+   "mtime": "2026-10-28 13:54"
+  },
+  {
+   "name": "p08_s2_live_20261028.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1596,
+   "mtime": "2026-10-28 13:49"
+  },
+  {
+   "name": "p08_s2_live_20261028.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1176,
+   "mtime": "2026-10-28 13:49"
+  },
+  {
+   "name": "p08_s2_live_20261028.REPORTS_V2.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 8475,
+   "mtime": "2026-10-28 13:54"
+  },
+  {
+   "name": "p08_s2_live_20261028.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 17698,
+   "mtime": "2026-10-28 13:48"
+  },
+  {
+   "name": "p08_s2_live_chain.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1878,
+   "mtime": "2026-10-28 13:49"
+  },
+  {
+   "name": "p08_s2r_live_20261028",
+   "kind": "dir",
+   "n_files": 797,
+   "bytes": 4323797,
+   "mtime": "2026-10-28 16:47"
+  },
+  {
+   "name": "p08_s2r_live_20261028.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1627,
+   "mtime": "2026-10-28 16:47"
+  },
+  {
+   "name": "p08_s2r_live_20261028.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 8440,
+   "mtime": "2026-10-28 16:47"
+  },
+  {
+   "name": "p08_s2r_live_20261028.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 17667,
+   "mtime": "2026-10-28 16:47"
+  },
+  {
+   "name": "p08_s3_live_20261028",
+   "kind": "dir",
+   "n_files": 797,
+   "bytes": 4029267,
+   "mtime": "2026-10-28 17:37"
+  },
+  {
+   "name": "p08_s3_live_20261028.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1617,
+   "mtime": "2026-10-28 17:37"
+  },
+  {
+   "name": "p08_s3_live_20261028.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 8496,
+   "mtime": "2026-10-28 17:37"
+  },
+  {
+   "name": "p08_s3_live_20261028.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 17635,
+   "mtime": "2026-10-28 17:37"
+  },
+  {
+   "name": "phase0",
+   "kind": "dir",
+   "n_files": 3647,
+   "bytes": 18194778,
+   "mtime": "2026-10-17 12:09"
+  },
+  {
+   "name": "phase05",
+   "kind": "dir",
+   "n_files": 8088,
+   "bytes": 26137090,
+   "mtime": "2026-10-17 13:00"
+  },
+  {
+   "name": "phase1a",
+   "kind": "dir",
+   "n_files": 15,
+   "bytes": 318634,
+   "mtime": "2026-10-18 08:54"
+  },
+  {
+   "name": "pilot",
+   "kind": "dir",
+   "n_files": 363,
+   "bytes": 1580907,
+   "mtime": "2026-10-17 10:39"
+  },
+  {
+   "name": "pilot_capture_carryover",
+   "kind": "dir",
+   "n_files": 215,
+   "bytes": 2051954,
+   "mtime": "2026-10-23 00:40"
+  },
+  {
+   "name": "pilot_capture_drill",
+   "kind": "dir",
+   "n_files": 9,
+   "bytes": 69461,
+   "mtime": "2026-10-22 20:09"
+  },
+  {
+   "name": "pilot_capture_drill2",
+   "kind": "dir",
+   "n_files": 164,
+   "bytes": 1398741,
+   "mtime": "2026-10-22 20:09"
+  },
+  {
+   "name": "pilot_capture_drill3",
+   "kind": "dir",
+   "n_files": 164,
+   "bytes": 1396326,
+   "mtime": "2026-10-22 20:09"
+  },
+  {
+   "name": "pilot_capture_mainline",
+   "kind": "dir",
+   "n_files": 188,
+   "bytes": 1925933,
+   "mtime": "2026-10-22 20:10"
+  },
+  {
+   "name": "pilot_r1",
+   "kind": "dir",
+   "n_files": 153,
+   "bytes": 892911,
+   "mtime": "2026-10-18 09:10"
+  },
+  {
+   "name": "pilot_r3",
+   "kind": "dir",
+   "n_files": 157,
+   "bytes": 970697,
+   "mtime": "2026-10-20 18:27"
+  },
+  {
+   "name": "pilot_v02_import_check.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 57260,
+   "mtime": "2026-10-22 20:13"
+  },
+  {
+   "name": "pilot_v02_import_fixed.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 57260,
+   "mtime": "2026-10-22 16:32"
+  },
+  {
+   "name": "quality_panel_v1_live_20261027_003723",
+   "kind": "dir",
+   "n_files": 15,
+   "bytes": 6657134,
+   "mtime": "2026-10-27 05:06"
+  },
+  {
+   "name": "quality_panel_v1_mock_20261027_003550",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 215096,
+   "mtime": "2026-10-27 00:35"
+  },
+  {
+   "name": "quality_panel_v1_mock_20261027_003618",
+   "kind": "dir",
+   "n_files": 6,
+   "bytes": 664921,
+   "mtime": "2026-10-27 01:09"
+  },
+  {
+   "name": "r2_ctx_live_20261024",
+   "kind": "dir",
+   "n_files": 366,
+   "bytes": 2248908,
+   "mtime": "2026-10-24 23:14"
+  },
+  {
+   "name": "r2_ctx_live_20261024.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 883,
+   "mtime": "2026-10-24 23:14"
+  },
+  {
+   "name": "r2_ctx_live_20261024.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 22747,
+   "mtime": "2026-10-24 23:14"
+  },
+  {
+   "name": "r2_ctx_live_20261024_reports",
+   "kind": "dir",
+   "n_files": 341,
+   "bytes": 2112900,
+   "mtime": "2026-10-24 23:14"
+  },
+  {
+   "name": "r2_live_run.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 641,
+   "mtime": "2026-10-24 23:14"
+  },
+  {
+   "name": "real66_v1_all_alternatives.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 56184,
+   "mtime": "2026-10-21 11:00"
+  },
+  {
+   "name": "real66_v1_all_recommended.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 22974,
+   "mtime": "2026-10-21 10:56"
+  },
+  {
+   "name": "real66_v1_expr_audit.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 17571,
+   "mtime": "2026-10-21 10:55"
+  },
+  {
+   "name": "real66_v1_stderr.txt",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 0,
+   "mtime": "2026-10-21 10:33"
+  },
+  {
+   "name": "real66_v1_stdout.jsonl",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1863,
+   "mtime": "2026-10-21 10:54"
+  },
+  {
+   "name": "regress_v02",
+   "kind": "dir",
+   "n_files": 5,
+   "bytes": 26241,
+   "mtime": "2026-10-16 16:33"
+  },
+  {
+   "name": "replay149_gate_v17_20261021.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 27993,
+   "mtime": "2026-10-21 14:28"
+  },
+  {
+   "name": "replay_sandbox",
+   "kind": "dir",
+   "n_files": 0,
+   "bytes": 0,
+   "mtime": ""
+  },
+  {
+   "name": "rereval_v092_unified_20261020.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 28406,
+   "mtime": "2026-10-20 21:31"
+  },
+  {
+   "name": "retr_dev_nodes_obs_20261020.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 536,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "round_0_smoke",
+   "kind": "dir",
+   "n_files": 10,
+   "bytes": 52437,
+   "mtime": "2026-10-07 22:39"
+  },
+  {
+   "name": "smoke_v1",
+   "kind": "dir",
+   "n_files": 106,
+   "bytes": 471017,
+   "mtime": "2026-10-17 10:23"
+  },
+  {
+   "name": "stream_int_live_20261025",
+   "kind": "dir",
+   "n_files": 152,
+   "bytes": 753289,
+   "mtime": "2026-10-26 01:21"
+  },
+  {
+   "name": "stream_int_offline_20261025",
+   "kind": "dir",
+   "n_files": 154,
+   "bytes": 740583,
+   "mtime": "2026-10-25 23:24"
+  },
+  {
+   "name": "stream_int_offline_test_20261025",
+   "kind": "dir",
+   "n_files": 0,
+   "bytes": 0,
+   "mtime": ""
+  },
+  {
+   "name": "v0_minimal_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2082,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "v2_recall_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2333,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "v2_recall_result_20261023.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1635,
+   "mtime": "2026-10-23 16:20"
+  },
+  {
+   "name": "v2_recall_result_ABC.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2333,
+   "mtime": "2026-10-24 00:44"
+  },
+  {
+   "name": "v2_recall_result_C.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 2333,
+   "mtime": "2026-10-24 00:07"
+  },
+  {
+   "name": "v2_recall_result_R3.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1809,
+   "mtime": "2026-10-23 17:15"
+  },
+  {
+   "name": "v3_deletion_capture_20261024",
+   "kind": "dir",
+   "n_files": 698,
+   "bytes": 3735867,
+   "mtime": "2026-10-24 16:02"
+  },
+  {
+   "name": "v3_deletion_capture_r3",
+   "kind": "dir",
+   "n_files": 698,
+   "bytes": 3741845,
+   "mtime": "2026-10-24 17:12"
+  },
+  {
+   "name": "v3_deletion_live_20261024",
+   "kind": "dir",
+   "n_files": 366,
+   "bytes": 2192324,
+   "mtime": "2026-10-24 17:40"
+  },
+  {
+   "name": "v3_deletion_live_20261024.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 793,
+   "mtime": "2026-10-24 17:40"
+  },
+  {
+   "name": "v3_deletion_live_20261024.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 22673,
+   "mtime": "2026-10-24 17:40"
+  },
+  {
+   "name": "v3_deletion_live_20261024_reports",
+   "kind": "dir",
+   "n_files": 341,
+   "bytes": 2059034,
+   "mtime": "2026-10-24 17:40"
+  },
+  {
+   "name": "v3_deletion_live_run.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 525,
+   "mtime": "2026-10-24 17:40"
+  },
+  {
+   "name": "v3_slim_replay_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 593,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "v4_intent_context_r2_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1606,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "v4_intent_context_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1378,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "v5_ctx_live_20261025",
+   "kind": "dir",
+   "n_files": 366,
+   "bytes": 2217196,
+   "mtime": "2026-10-25 10:06"
+  },
+  {
+   "name": "v5_ctx_live_20261025.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 881,
+   "mtime": "2026-10-25 10:06"
+  },
+  {
+   "name": "v5_ctx_live_20261025.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 22766,
+   "mtime": "2026-10-25 10:06"
+  },
+  {
+   "name": "v5_ctx_live_20261025_reports",
+   "kind": "dir",
+   "n_files": 341,
+   "bytes": 2082192,
+   "mtime": "2026-10-25 10:06"
+  },
+  {
+   "name": "v5_live_run.log",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 641,
+   "mtime": "2026-10-25 10:06"
+  },
+  {
+   "name": "v5_purpose_aligned_result.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1199,
+   "mtime": "2026-10-26 12:42"
+  },
+  {
+   "name": "w0603_intent_scenarios_20261031",
+   "kind": "dir",
+   "n_files": 2,
+   "bytes": 7720714,
+   "mtime": "2026-10-31 08:42"
+  },
+  {
+   "name": "w0805_branches_20261031",
+   "kind": "dir",
+   "n_files": 3,
+   "bytes": 2476000,
+   "mtime": "2026-10-31 09:48"
+  },
+  {
+   "name": "w12_02_ckpt_20261102",
+   "kind": "dir",
+   "n_files": 189,
+   "bytes": 913822,
+   "mtime": "2026-11-02 01:54"
+  },
+  {
+   "name": "w1303_newdom_live_20261102",
+   "kind": "dir",
+   "n_files": 1985,
+   "bytes": 13366945,
+   "mtime": "2026-11-02 16:55"
+  },
+  {
+   "name": "w1303_newdom_live_20261102.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1640,
+   "mtime": "2026-11-02 16:55"
+  },
+  {
+   "name": "w1303_newdom_live_20261102.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 44568,
+   "mtime": "2026-11-02 16:55"
+  },
+  {
+   "name": "w1303_newdom_live_20261102.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 64509,
+   "mtime": "2026-11-02 16:55"
+  },
+  {
+   "name": "w1304_stage_live_20261102",
+   "kind": "dir",
+   "n_files": 1985,
+   "bytes": 13150712,
+   "mtime": "2026-11-02 20:04"
+  },
+  {
+   "name": "w1304_stage_live_20261102.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1636,
+   "mtime": "2026-11-02 20:04"
+  },
+  {
+   "name": "w1304_stage_live_20261102.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 44516,
+   "mtime": "2026-11-02 20:04"
+  },
+  {
+   "name": "w1304_stage_live_20261102.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 64431,
+   "mtime": "2026-11-02 20:04"
+  },
+  {
+   "name": "w14j_long4_live_20261102",
+   "kind": "dir",
+   "n_files": 3630,
+   "bytes": 19921665,
+   "mtime": "2026-11-02 17:20"
+  },
+  {
+   "name": "w14j_long4_live_20261102.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1631,
+   "mtime": "2026-11-02 17:19"
+  },
+  {
+   "name": "w14j_long4_live_20261102.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 88399,
+   "mtime": "2026-11-02 17:19"
+  },
+  {
+   "name": "w14j_long4_live_20261102.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 125497,
+   "mtime": "2026-11-02 17:18"
+  },
+  {
+   "name": "w14r_e061_live_20261102",
+   "kind": "dir",
+   "n_files": 623,
+   "bytes": 4147985,
+   "mtime": "2026-11-02 14:14"
+  },
+  {
+   "name": "w14r_e061_live_20261102.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1622,
+   "mtime": "2026-11-02 14:14"
+  },
+  {
+   "name": "w14r_e061_live_20261102.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 15720,
+   "mtime": "2026-11-02 14:14"
+  },
+  {
+   "name": "w14r_e061_live_20261102.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 21963,
+   "mtime": "2026-11-02 14:14"
+  },
+  {
+   "name": "w15n_mock_parallel_test",
+   "kind": "dir",
+   "n_files": 623,
+   "bytes": 3543101,
+   "mtime": "2026-11-02 19:32"
+  },
+  {
+   "name": "w15n_mock_parallel_test.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1537,
+   "mtime": "2026-11-02 19:32"
+  },
+  {
+   "name": "w15n_mock_parallel_test.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 16150,
+   "mtime": "2026-11-02 19:32"
+  },
+  {
+   "name": "w15n_mock_parallel_test.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 22630,
+   "mtime": "2026-11-02 19:32"
+  },
+  {
+   "name": "w15n_norecap_live_20261102",
+   "kind": "dir",
+   "n_files": 2010,
+   "bytes": 11615490,
+   "mtime": "2026-11-02 20:17"
+  },
+  {
+   "name": "w15n_norecap_live_20261102.DONE.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 1637,
+   "mtime": "2026-11-02 20:17"
+  },
+  {
+   "name": "w15n_norecap_live_20261102.REPORTS.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 49424,
+   "mtime": "2026-11-02 20:17"
+  },
+  {
+   "name": "w15n_norecap_live_20261102.RESULT.json",
+   "kind": "file",
+   "n_files": 1,
+   "bytes": 70023,
+   "mtime": "2026-11-02 20:17"
+  }
+ ]
+}

@@ -1,0 +1,32 @@
+{
+  "case_id": "E305_T09",
+  "turn_type": "reply",
+  "candidate": "direct_baseline",
+  "adapter": "bm1_mock_light",
+  "model": "mock",
+  "lifecycle": "v2",
+  "run_id": "bm1_mock_DIRECT_E305",
+  "runner_pid": 30780,
+  "audit_errors": [],
+  "clock_injected": "2026-11-22 20:38",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 1944,
+    "completion": 53,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "kotlin_len_chars",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 5,
+  "score10": 0.0,
+  "veto": "unknown_payload_field",
+  "mechanism_error": null,
+  "ts": "2026-11-08 06:05:25",
+  "prompt_chars": {
+    "prompt_sum": 1944,
+    "reply_sum": 53
+  }
+}

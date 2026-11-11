@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "02:45:14",
+    "latency_ms": 16754,
+    "prompt_chars": 710,
+    "reply_chars": 377,
+    "usage": {
+      "prompt": 710,
+      "completion": 377,
+      "cache_hit": 256,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '沈聿', 'traits': ['出版社文学编辑', '先接她做的事，再谈感受', '说话不抢话']}\n对方：{'name': '岑悦', 'traits': ['儿童绘本插画师', '嘴硬心软，难受时先说无所谓再说细节', '做事有仪式感'], 'boundaries': ['不跟家里报忧', '答应的饭局一定认账']}\n\n【既有背景信息】\n{\"me\": \"沈聿两年前帮岑悦看过《候鸟旅馆》的样张，一直存着她画的明信片。\", \"her\": \"岑悦为青梧奖准备了三个月，参赛作品是八幅组画《候鸟旅馆》，家里只知道她在忙新项目。\", \"warmth\": \"老同学处得松弛，她落选后第一个告诉他；他存过她每一张样张。\", \"style\": \"岑悦嘴硬心软，情绪都藏在动作里；沈聿回复不抢话，先看她做了什么。\", \"lessons\": \"她说无所谓的时候，看行动：删没删、改没改名、约没约饭。\"}\n\n【我的备注】\n青梧奖是插画行业两年一届的赛事，主赛复评取前二十名。\n\n【当前时间】2026-11-09 21:22\n\n【最近消息】（本轮对话直接依据）\n[对方] 沈聿，青梧奖出结果了，我没进。差0.6分，名单上我排第21，取前20。就差一个人。三个月，八张画，我盯着打分表看了一晚上，评委C给我那张打了最低档。你说这事是不是特没意思。\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-754d38f8-f217-45c1-af5b-8fd6ad185fa6",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 16749.3,
+      "completion_ms": 16749.6,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 2041,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"三个月八张画，一张也没少，第21名也还是八张。你盯着打分表看了一晚上，是不是就卡在评委C那一档上？哪张？\"}"
+  }
+]

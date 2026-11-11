@@ -1,0 +1,37 @@
+{
+  "response": {
+    "recommended": "饭我随便吃没问题，你那句话我没法当没听见。你先忙，忙完再说也行。",
+    "bad_boy": "随便吃可以，话收回去不行。",
+    "playful": "行，今晚我负责随便吃。不过'当我没说'这个功能我这儿没有。",
+    "warm": "不做就不做，你自己也别饿着。昨天那句我没当没听见，等你想说的时候我在。"
+  },
+  "directions": [
+    "锅你留着，碗我来洗，别自己又去刷。",
+    null,
+    "那句话我没打算当没听见，你也不用急着收回去。",
+    null
+  ],
+  "analysis": {
+    "signal": "暂缓",
+    "goal_category": "暂缓",
+    "action_taken": "承接",
+    "anchor": "m0",
+    "hook": {
+      "kind": "未展开角度",
+      "text": "你那句话我没法当没听见"
+    },
+    "facts": [
+      {
+        "text": "她今晚不做饭，让他随便吃",
+        "subject": "HER",
+        "relation": "晚饭安排",
+        "quote": "今晚不做了，你随便吃吧",
+        "src_ids": ["m0"],
+        "certainty": "confirmed",
+        "event_time": "2026-11-12 晚"
+      }
+    ],
+    "tentatives": [],
+    "updates": []
+  }
+}

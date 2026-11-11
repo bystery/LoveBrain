@@ -1,0 +1,591 @@
+{
+  "runner_version": "four_arm_runner_v1",
+  "generated_at": "2026-11-08 18:08:27",
+  "arms": {
+    "DIRECT": {
+      "candidate": "direct_baseline",
+      "candidate_dir": "tools/benchmark_v1/baseline_candidates/direct_baseline",
+      "identity_sha256": {
+        "direct_baseline": "c5257585a49f475a8758b6cfa89fe6f07ab45bdface80c2c7b3019dc5ec16142"
+      },
+      "episodes": {
+        "E320": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E321": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E322": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E323": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E324": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E325": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E326": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E327": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E328": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E329": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E330": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E331": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E332": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E333": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E334": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E335": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E336": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E337": {
+          "turn_count": 24,
+          "planned_model_positions": 24,
+          "current_routing": null
+        },
+        "E338": {
+          "turn_count": 32,
+          "planned_model_positions": 32,
+          "current_routing": null
+        }
+      }
+    },
+    "CURRENT": {
+      "candidate": "window_expand_b_norecap_uc",
+      "candidate_dir": "candidates/window_expand_b_norecap_uc",
+      "identity_sha256": {
+        "window_expand_b_norecap_guard": "be85ee7b167beb3b6aeb44defc9126072d07b776fa102c37de8e058afc0b9751",
+        "window_expand_b_norecap_uc": "2c0728f5b00f6b142c94e2b23f1dab3836933d44a81813cdb25708d4804d7ac9"
+      },
+      "episodes": {
+        "E320": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E321": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E322": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E323": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E324": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E325": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E326": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E327": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E328": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E329": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E330": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E331": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E332": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E333": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E334": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E335": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E336": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E337": {
+          "turn_count": 24,
+          "planned_model_positions": 24,
+          "current_routing": "window_expand_b_norecap_guard"
+        },
+        "E338": {
+          "turn_count": 32,
+          "planned_model_positions": 32,
+          "current_routing": "window_expand_b_norecap_uc"
+        }
+      }
+    }
+  },
+  "episodes": {
+    "E320": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E320/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E321": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E321/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E322": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E322/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E323": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E323/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E324": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E324/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E325": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E325/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E326": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E326/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E327": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E327/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E328": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E328/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E329": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E329/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E330": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E330/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E331": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E331/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E332": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E332/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E333": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E333/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E334": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E334/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E335": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E335/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E336": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E336/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E337": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E337/episode.json",
+      "turn_count": 24,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E338": {
+      "episode_path": "benchmark/stories_v2/wave4_dev/E338/episode.json",
+      "turn_count": 32,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    }
+  },
+  "policy": {
+    "E320": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E321": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E322": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E323": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E324": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E325": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E326": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E327": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E328": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E329": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E330": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E331": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E332": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E333": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E334": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E335": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E336": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E337": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E338": {
+      "waived": true,
+      "reason": "wave4_dev 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    }
+  },
+  "plan_sha256": "c1d41020404b201d1b7b50ccc792519e7bb8f15346b5cb53cedfb83cc7c6c7ea",
+  "rotation": {
+    "DIRECT": [
+      "E320",
+      "E321",
+      "E322",
+      "E323",
+      "E324",
+      "E325",
+      "E326",
+      "E327",
+      "E328",
+      "E329",
+      "E330",
+      "E331",
+      "E332",
+      "E333",
+      "E334",
+      "E335",
+      "E336",
+      "E337",
+      "E338"
+    ],
+    "COT": [
+      "E321",
+      "E322",
+      "E323",
+      "E324",
+      "E325",
+      "E326",
+      "E327",
+      "E328",
+      "E329",
+      "E330",
+      "E331",
+      "E332",
+      "E333",
+      "E334",
+      "E335",
+      "E336",
+      "E337",
+      "E338",
+      "E320"
+    ],
+    "LEGACY": [
+      "E322",
+      "E323",
+      "E324",
+      "E325",
+      "E326",
+      "E327",
+      "E328",
+      "E329",
+      "E330",
+      "E331",
+      "E332",
+      "E333",
+      "E334",
+      "E335",
+      "E336",
+      "E337",
+      "E338",
+      "E320",
+      "E321"
+    ],
+    "CURRENT": [
+      "E323",
+      "E324",
+      "E325",
+      "E326",
+      "E327",
+      "E328",
+      "E329",
+      "E330",
+      "E331",
+      "E332",
+      "E333",
+      "E334",
+      "E335",
+      "E336",
+      "E337",
+      "E338",
+      "E320",
+      "E321",
+      "E322"
+    ]
+  }
+}

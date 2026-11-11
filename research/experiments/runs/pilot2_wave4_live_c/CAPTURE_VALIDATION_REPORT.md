@@ -1,0 +1,13 @@
+# Capture 校验报告
+
+- 结论: **PASS**（9/9 检查通过，轮位覆盖 260）
+
+- [PASS] b_line_and_sealed_excluded — {"violations": []}
+- [PASS] candidate_hash_pinned — {"drift": []}
+- [PASS] direct_cot_input_equivalence — {"failures": []}
+- [PASS] no_evalside_gold_leak — {"hits": []}
+- [PASS] no_future_turn_leak — {"hits": []}
+- [PASS] no_unexplained_gold_atom — {"suspicious": [], "note": "断言值出现在 prompt 且不在截至本轮可见历史=可疑；等义转述不在本检查能力内"}
+- [PASS] four_arm_state_isolated — {"missing": [], "recorded_init_failures": []}
+- [PASS] api_key_never_persisted — {"files": []}
+- [PASS] attempts_consistent — {"actual": 557, "expected_from_records": 520, "harness_turns_allowance": 260, "planned_full": 1040, "lost_to_recorded_failures": 520, "note": "mock/轻量臂每组每轮恰 1 次调用；live harness 臂允许内部附加调用（增量<=该臂已完成轮数），超出即 FAIL（如实记录）"}

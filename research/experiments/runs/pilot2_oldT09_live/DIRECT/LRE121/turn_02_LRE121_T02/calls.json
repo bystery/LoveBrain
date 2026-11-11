@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "main",
+    "ts": "11:06:10",
+    "latency_ms": 8486,
+    "prompt_chars": 624,
+    "reply_chars": 214,
+    "usage": {
+      "prompt": 624,
+      "completion": 214,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage"
+    },
+    "system": "# 任务\n\n你在帮助\"我\"（用户，ME）回复聊天对象（HER）。你会看到：双方人物背景、当前可见的真实聊天记录、\n我的备注与意图（若有）、当前时间。请根据这些信息，生成**一条此刻可以直接发送给对方的回复**。\n\n要求：\n- 只基于提供的可见信息，不自行虚构或补充聊天历史；\n- 分清\"对方说的话\"与\"我说的话\"；\n- 回复自然、符合中文日常聊天习惯，符合双方当前关系分寸；\n- 若本轮明确允许不回复且回复并不合适，可以选择不回复。\n\n# 输出格式\n\n只输出一个 JSON 对象，不输出任何其他文本：\n\n```json\n{\"action\": \"reply\", \"recommended\": \"可直接发送的回复\"}\n```\n\n若决定本轮不回复：\n\n```json\n{\"action\": \"no_reply\", \"recommended\": null}\n```\n\n# 红线\n\n- 不虚构未发生过的聊天内容、约定或承诺；\n- 不替对方编造发言；\n- 不在回复中泄露\"我\"的私密备注中明确要求保密的内容。\n\n# 自然度\n\n回复应当像真人随手打出来的消息：符合语境的长度，不用书面腔，不堆砌客套。",
+    "user": "【人物背景】\n我：{'name': '秦朗', 'traits': ['饭搭子', '周末顺路', '嘴严']}\n对方：{'name': '乔安', 'traits': ['行动派', '怕被家人念', '重承诺'], 'boundaries': ['请客要还清', '不欠人情']}\n\n【既有背景信息】\n{\"her\": \"乔安母亲入秋后反复催她接种流感疫苗，乔安行动力强但最怕家人唠叨。\", \"me\": \"秦朗与乔安在公司附近常搭伙吃早茶，周末顺路。\", \"warmth\": \"两人以饭搭子相处，惯用请客与吐槽维系默契。\", \"style\": \"语速快，爱用夸张词。\", \"lessons\": \"答应的事必须给下文。\"}\n\n【可见聊天记录】（按时间顺序，只含真实发生过的消息）\n[对方] 我妈又开始催了，说我一个天天空调房的人不打流感疫苗等于裸奔。我约了这周六上午九点半，桂溪社区卫生服务中心。\n[对方] 你那天顺路不？陪我去呗，打完请你喝早茶，虾饺我请，肠粉你随意。\n\n【当前时间】2026-11-10 12:57\n\n【本轮允许不回复吗】否\n\n【输出要求】只输出一个 JSON 对象：{\"action\": \"reply\" 或 \"no_reply\", \"recommended\": \"可直接发送的回复\"}；选择不回复时 recommended 为 null。",
+    "temperature": 0.7,
+    "images": [],
+    "resp_model": "deepseek-flash-2",
+    "resp_id": "chatcmpl-c290507f-6020-4692-912b-7fe1179a0dfc",
+    "finish": "stop",
+    "timing": {
+      "pre_request_ms": 0.0,
+      "headers_ms": 8481.6,
+      "completion_ms": 8482.0,
+      "first_usable_ms": null,
+      "usable_reason": "not_verified",
+      "preview_contract_status": "none",
+      "requires_full_payload": true,
+      "usage_source": "api_usage",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 0,
+      "bytes_total": 1294,
+      "first_content_ms": null,
+      "first_content_reason": "non_stream_single_shot"
+    },
+    "raw_text": "{\"action\": \"reply\", \"recommended\": \"顺路！九点半桂溪是吧，我八点五十到你楼下，别赖床。虾饺你请定了，我负责排队取号，打完针别揉胳膊啊。\"}"
+  }
+]

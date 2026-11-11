@@ -1,0 +1,36 @@
+{
+  "case_id": "NCA_t01",
+  "turn_type": "reply",
+  "candidate": "reference_product_v1",
+  "adapter": "openai_compat",
+  "model": "dsf",
+  "lifecycle": "v2",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "contract": "legacy",
+  "run_id": "iso_20261022_134917_17cb65",
+  "runner_pid": 11428,
+  "audit_errors": [],
+  "settlement_pending": false,
+  "clock_injected": "2026-10-27 09:12",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 7057,
+    "completion": 214,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 22139,
+  "score10": 10.0,
+  "veto": null,
+  "mechanism_error": null,
+  "ts": "2026-10-22 13:49:41",
+  "prompt_chars": {
+    "prompt_sum": 7057,
+    "reply_sum": 214
+  },
+  "isolated": true
+}

@@ -1,0 +1,78 @@
+{
+  "runner_version": "four_arm_runner_v1",
+  "generated_at": "2026-11-10 18:02:13",
+  "arms": {
+    "LEGACY": {
+      "candidate": "legacy_compat_r9",
+      "candidate_dir": "tools/benchmark_v1/baseline_candidates/legacy_compat_r9",
+      "identity_sha256": {
+        "legacy_compat_r9": "e09cd8774331feffb67f5f144b3efc095f8fa0a8fc8a4b105e7847aa1091b7dc"
+      },
+      "episodes": {
+        "E368": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        },
+        "E369": {
+          "turn_count": 12,
+          "planned_model_positions": 12,
+          "current_routing": null
+        }
+      }
+    }
+  },
+  "episodes": {
+    "E368": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E368/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    },
+    "E369": {
+      "episode_path": "benchmark/stories_v2/wave5_selection/E369/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": null,
+      "b_line_member": false,
+      "policy_problems": [],
+      "policy_waived": true
+    }
+  },
+  "policy": {
+    "E368": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    },
+    "E369": {
+      "waived": true,
+      "reason": "wave5_selection 新题豁免（exposure 政策门代替 custody 账本）",
+      "problems": [
+        "custody=None(需 EXPOSED)"
+      ]
+    }
+  },
+  "plan_sha256": "5924f8ced7dcd200b2b7dde88d4e78af1b40867f90e88db2010a7d6fb85830b6",
+  "rotation": {
+    "DIRECT": [
+      "E368",
+      "E369"
+    ],
+    "COT": [
+      "E369",
+      "E368"
+    ],
+    "LEGACY": [
+      "E368",
+      "E369"
+    ],
+    "CURRENT": [
+      "E369",
+      "E368"
+    ]
+  }
+}
