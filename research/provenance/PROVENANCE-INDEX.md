@@ -19,6 +19,21 @@
 
 ---
 
+## 配套登记（provenance 域外，2026-11-12 增补）
+
+以下登记对象不在 `provenance/` 目录，属各研究域的配套文档与登记事项；本索引只登记落位与一句话职责，正文以其卷首版本行为准。
+
+| 对象 | 落位（仓库相对路径） | 一句话登记 |
+| --- | --- | --- |
+| `STATISTICS.md` | `research/benchmark/STATISTICS.md` | benchmark 域公开统计口径定稿：八个公开口径数字逐数字版本化（208 / 221 / 259 / 299 / 4,082 / 9,646 / 317 / 248，每数字带口径/统计时间/来源/边界），恒等式闭合（§二）、六条使用纪律（§三）、与 `research/README.md` §2.4/§2.5 口径链交叉核对一致（§四） |
+| `ARCHITECTURE.md` | `research/architecture/ARCHITECTURE.md` | 正式架构总览：三层结构（产品/研究/治理）、产品生产调用链、Arena 研究架构、接线三态红线（不把计划画成已启用）；含机制研究叙事（公开口径定稿）；全部引用限本仓可核验，三图节点逐项实测（§5） |
+| KNOWN_FAILURES 双落位 | 权威 = `research/refs/KNOWN_FAILURES.md`；引用 = `research/arena/KNOWN_FAILURES.md` | 已知故障回归门禁：refs 侧为唯一权威副本（与源仓原件逐字节一致；v0.2 门禁 9 失败族、活跃）；arena 侧为 harness 代码域挂的位置引用说明——门禁正文不在该侧，登记新失败族一律改 refs 侧，防双源漂移 |
+| `PAPER.md` 迁移译注块 | `research/PAPER.md` 卷首 | 正文为源件原样迁移（零改动）；卷首并列口径译注十条——三条版本标签（数据集总量为 2026-11-03 口径、已被 v2 重建取代，现行权威见 `benchmark/STATISTICS.md`；B 线叙述为 2026-11-03 时点事实记录，现行安排以用户决策后口径为准；W22 判决数字以 REV2 判决为口径）+ 两条实质差异注记 + 五条简要注记；引用 PAPER 数字前先读译注 |
+
+**REAL66 族剔除登记（2026-11-12 处置闭环）**：REAL66 族（逐字真实对话 + 真实 persona 身份要素）已从公开树全部剔除——剔除量按处置口径为 16 路径 + 3 交付 zip（第一批次 = refs 侧 15 文本件 + v12_real66.zip 共 16 路径；第二批次 = v13_wave15.zip + v14_offline_ready.zip；另 W14 判决记录 ARCHIVED 件曾按判决链需要同 blob 复位、复核纠错后补剔出树，净计 18 路径）。`MIGRATION_MANIFEST.csv` 相应 18 行改判 `PRIVATE_SENSITIVE` / `EXCLUDED_PRIVATE`（行数不变）；原件在 arena 私有研究区安全保留、零删除。注意：HEAD 可达历史中上述路径仍可恢复，公开出站方式为推送前用户决策项（登记在案）；处置独立复核详见审计工作区 `real66-remediation-verify.md` / `real66-reverify.md`。
+
+---
+
 ## 逐件详述
 
 ### 1. SOURCE_MAP.md（终稿）
@@ -121,7 +136,7 @@ EVIDENCE-INDEX.md（对外引用出口）
 
 ## 建议阅读顺序
 
-**SOURCE_MAP → MIGRATION_MANIFEST → PRIVACY_REVIEW → LICENSE_AND_RIGHTS → EVIDENCE-INDEX**
+**SOURCE_MAP → STATISTICS → MIGRATION_MANIFEST → PRIVACY_REVIEW → LICENSE_AND_RIGHTS → EVIDENCE-INDEX → ARCHITECTURE**
 
 1. **SOURCE_MAP**：先建全景——从哪来（§1/§2）、怎么放（§3）、什么没来（§9）、数字是否闭合（§13）。
 2. **MIGRATION_MANIFEST**：落到行级——逐件出处、状态与处置；读法先看 SOURCE_MAP §12 字段定义，避免误读已停用的 sha 列。
@@ -130,6 +145,8 @@ EVIDENCE-INDEX.md（对外引用出口）
 5. **EVIDENCE-INDEX**：对外引用——最终"引用某资产应写哪个路径"的公开出口，以及 29 项实测核验结论。
 
 前三件回答"事实是什么"，第四件回答"凭什么可以公开"，第五件回答"对外怎么写路径"。
+
+2026-11-12 增补两步（域文档插读）：**STATISTICS** 在 SOURCE_MAP 之后读——动用任何 benchmark 数字前先立口径尺（八数字版本化，不同版本/分母/统计单位的数字不相加不互改）；**ARCHITECTURE** 在五件叙事收尾之后读——架构总览含机制研究叙事，是研究面全景的域级收口。
 
 ---
 
