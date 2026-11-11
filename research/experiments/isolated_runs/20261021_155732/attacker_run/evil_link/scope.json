@@ -1,0 +1,29 @@
+{
+ "document_type": "arena_scope_decision",
+ "decided_at": "2026-10-22T20:10:00+08:00",
+ "decided_by": "user",
+ "revision": 2,
+ "supersedes": "2026-10-22T19:40:00+08:00 (candidate=api_text; withdrawn as wrong)",
+ "candidate_model": "harness_with_fixed_api",
+ "statement": "参赛对象是完整 harness 版本（提示词+知识库+记忆+检索+意图+上下文+调用策略）；dsf API 是各 harness 共用的模型服务，同批比较时固定端点/model/采样；同批固定的是考场/评分/题目，不是 harness。",
+ "authority": "refs/harness_api_mainline_20261022/HARNESS_API_MAINLINE_GUIDE_20261022.md",
+ "os_isolation_prerequisite": false,
+ "os_isolation_note": "未向 API 开放本地执行能力；harness 由本项目编写。G08 系统账户/防火墙/ACL 不作为本模式前置，旧 FAIL 事实保留不改写。",
+ "account_deployment": "WITHDRAWN",
+ "reference": "refs/arena_v1/SCOPE_DECISION_API_CANDIDATE_20261022.md",
+ "call_list": "refs/arena_v1/CALL_LIST_EXAM1_20261022.md",
+ "pilot_entry": "tools/api_trial.py",
+ "boundary_test": "tools/test_api_boundary.py",
+ "keep": [
+  "授权级预算权威",
+  "输入边界与未来信息隔离",
+  "原始答卷逐字留档",
+  "确定性评分 + 语义评审（评分卡不进输入）",
+  "API 返回物只当数据（不 eval/exec/import、无工具通道）",
+  "冻结发布与逐文件散列"
+ ],
+ "withdraw": [
+  "G08 账户/防火墙/ACL 部署作为试考前置于",
+  "把考生定义为 API、把提示词冻结为考场装置的表述"
+ ]
+}

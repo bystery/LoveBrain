@@ -1,0 +1,29 @@
+{
+  "document_type": "G11_REAL_INTEGRATION_AUTHORIZATION",
+  "authorization_id": "AUTH-G11-20261022-01",
+  "authorized": false,
+  "status": "EXCEEDED_AND_CLOSED",
+  "closed_reason": "实际消耗 12 attempts（两次 6 轮 run 合计）超出 max_attempts=8，超额 4；额度按整个 authorization_id 累计。详见 refs/arena_v1/AUTHORIZATION_INCIDENT_CORRECTION_20261022.md。本授权不得复用；新授权只能来源于用户。",
+  "budget_authority": "整个 authorization_id（持久授权账本 logs/auth_budget/AUTH-G11-20261022-01.jsonl），不属于 run 目录、代理实例或 release 显示名",
+  "authorized_by": "user（本会话口头批准，2026-10-22 13:40）",
+  "scope": "G11 真实集成验证：隔离链 + 已授权本地上游的有限执行",
+  "real_endpoint": {
+    "authorized": true,
+    "api_base": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "api_key_env": "LB_API_KEY=local（用户本地网关，非云凭据）",
+    "temperature": 0.7,
+    "max_attempts": 8,
+    "evidence_file": "logs/g11_real_integration_result.json",
+    "failure_policy": "失败即停批（pending_settlement），禁止重试超额度"
+  },
+  "rules": [
+    "总额度硬上限 8 attempts（attempt 账本持久，重启不重置）",
+    "只经隔离链（tools/iso_run.py --adapter openai_compat）调用，禁止旁路",
+    "model/temperature 以可信配置强制（candidate 覆盖被拒并记账）",
+    "单次授权，完成后关闭；再跑需重新批准",
+    "未修改系统权限；未开新窗口"
+  ],
+  "evidence_file": "logs/g11_real_integration_result.json",
+  "issued_at": "2026-10-22T13:40:00+08:00"
+}

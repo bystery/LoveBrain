@@ -1,0 +1,167 @@
+{
+ "date": "2026-10-21",
+ "rows": [
+  {
+   "id": "R1",
+   "clause": "契约可发送总数≥8（显式声明强制）",
+   "fn": "normalize_contract",
+   "input": "style_keys=2, directions=3 → 总数5",
+   "want": "ValueError",
+   "got": "output_contract 可发送候选总数 5 < 8（rubric v0.3 硬约束）",
+   "verdict": "PASS"
+  },
+  {
+   "id": "R2",
+   "clause": "directions[i] = string|null；null=该方向不交付",
+   "fn": "output_structure_errors",
+   "input": "directions 全 null",
+   "want": "空（合法）",
+   "got": "空",
+   "verdict": "PASS"
+  },
+  {
+   "id": "R3",
+   "clause": "directions 非字符串拒绝",
+   "fn": "output_structure_errors",
+   "input": "directions[0]=1",
+   "want": "非空错误",
+   "got": "directions[0]:int",
+   "verdict": "PASS"
+  },
+  {
+   "id": "R4",
+   "clause": "scene_facts[].text 非字符串/null 拒绝",
+   "fn": "analysis_type_errors",
+   "input": "text=None",
+   "want": "非空错误",
+   "got": [
+    "analysis.scene_facts[0].text:NoneType"
+   ],
+   "verdict": "PASS"
+  },
+  {
+   "id": "R5",
+   "clause": "ongoing[].item/status 非字符串拒绝",
+   "fn": "analysis_type_errors",
+   "input": "item=1",
+   "want": "非空错误",
+   "got": [
+    "ongoing[0].item:int"
+   ],
+   "verdict": "PASS"
+  },
+  {
+   "id": "R6a",
+   "clause": "response 未声明文本字段拒绝",
+   "fn": "output_structure_errors",
+   "input": "response.secret=非空字符串",
+   "want": "非空错误",
+   "got": [
+    "response.secret:未声明文本字段(非空字符串)"
+   ],
+   "verdict": "PASS"
+  },
+  {
+   "id": "R6b",
+   "clause": "extra_text_fields 声明后合法（null=缺省放行）",
+   "fn": "output_structure_errors",
+   "input": "reply='补充话术'（已声明）",
+   "want": "空",
+   "got": "空",
+   "verdict": "PASS"
+  },
+  {
+   "id": "R7",
+   "clause": "未知顶层键非空字符串 → veto=unknown_payload_field",
+   "fn": "lb_scorer.run_case_scoring",
+   "input": "smuggled_text='待发正文'",
+   "want": "veto 含 unknown_payload_field",
+   "got": "unknown_payload_field",
+   "verdict": "PASS"
+  },
+  {
+   "id": "R8a",
+   "clause": "不回动作与非空正文并存 → veto=decline_with_text",
+   "fn": "run_case_scoring",
+   "input": "action=no_reply + response 非空",
+   "want": "veto 含 decline_with_text",
+   "got": "decline_with_text",
+   "verdict": "PASS"
+  },
+  {
+   "id": "R8b",
+   "clause": "action=reply 与非空 decline_reason 并存 → action_conflict",
+   "fn": "run_case_scoring",
+   "input": "action=reply + decline_reason",
+   "want": "veto 含 action_conflict",
+   "got": "action_conflict",
+   "verdict": "PASS"
+  },
+  {
+   "id": "R8c",
+   "clause": "非法 action 值 → veto=invalid_action",
+   "fn": "run_case_scoring",
+   "input": "action=maybe",
+   "want": "veto 含 invalid_action",
+   "got": "invalid_action",
+   "verdict": "PASS"
+  },
+  {
+   "id": "R9",
+   "clause": "轮级未允许时 no_reply → veto=unauthorized_no_reply（全不回不能白拿分）",
+   "fn": "run_case_scoring",
+   "input": "may_decline=False + action=no_reply",
+   "want": "veto 含 unauthorized_no_reply",
+   "got": "unauthorized_no_reply",
+   "verdict": "PASS"
+  },
+  {
+   "id": "R10",
+   "clause": "source_id 只证编号合法；伪编号 → illegal_source_id（不证语义支持）",
+   "fn": "run_case_scoring",
+   "input": "source_ids=['m99']（未登记）",
+   "want": "veto 含 illegal_source_id",
+   "got": "illegal_source_id:m99",
+   "verdict": "PASS"
+  },
+  {
+   "id": "R11",
+   "clause": "gold.soft_keywords_any 命中 → 证据层 pts=0，不计硬分",
+   "fn": "run_case_scoring",
+   "input": "gold.soft_keywords_any=[[\"哈哈\",\"笑死\"]] 且正文命中",
+   "want": "soft_kw 检查 pts=0 + evidence=hit",
+   "got": [
+    [
+     "soft_kw_0",
+     0,
+     "hit"
+    ]
+   ],
+   "verdict": "PASS"
+  },
+  {
+   "id": "R12",
+   "clause": "原始解析失败留证（parse fail），审计不中断",
+   "fn": "run_case_scoring_safe",
+   "input": "raw='这不是json{{{'",
+   "want": "结构化失败结果",
+   "got": "{\"score10\": 0.0, \"veto\": \"json_schema_broken\", \"checks\": [{\"id\": \"json_schema_va",
+   "verdict": "PASS"
+  },
+  {
+   "id": "R13",
+   "clause": "response/directions 坏类型 → veto=json_schema_broken（类型先于语义）",
+   "fn": "run_case_scoring",
+   "input": "response=str, directions=str",
+   "want": "veto 含 json_schema_broken",
+   "got": "json_schema_broken",
+   "verdict": "PASS"
+  }
+ ],
+ "summary": {
+  "total": 16,
+  "pass": 16,
+  "fail": []
+ },
+ "note": "每行结果由实际函数执行产生；'没实现的能力不写成层1已会判'——任何 FAIL 行即契约未闭合项，须修复或登记差异。"
+}

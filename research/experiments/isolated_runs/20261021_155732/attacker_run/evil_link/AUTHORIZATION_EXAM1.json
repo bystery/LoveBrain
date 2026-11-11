@@ -1,0 +1,30 @@
+{
+  "document_type": "EXAM1_BASELINE_AUTHORIZATION",
+  "authorization_id": "AUTH-EXAM1-20261023-01",
+  "authorized": true,
+  "status": "ACTIVE",
+  "authorized_by": "user（本会话：2026-10-22「批准 A + B」；2026-10-23 复核明确「首场前补齐原版记忆写回适配，再按批准的 24 次预算执行」）",
+  "authorized_at": "2026-10-23T00:50:00+08:00",
+  "scope": "首场开发基线测量：reference_product_v1（含跨轮记忆闭环）× E001/E002/E003，共 24 位，每位 1 次生成",
+  "budget_authority": "整个 authorization_id（持久账本 logs/auth_budget/AUTH-EXAM1-20261023-01.jsonl）；跨 story/进程/重启累计，不因换 episode 重置",
+  "real_endpoint": {
+    "authorized": true,
+    "api_base": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "temperature": 0.7,
+    "max_attempts": 24,
+    "api_key_env": "LB_API_KEY=local（用户本机网关，非云凭据）",
+    "failure_policy": "失败即停批，原始失败保留，不自动重试、不补问、不换位；不预留补跑额度"
+  },
+  "rules": [
+    "硬上限 24 attempts；派发前持久占额，失败与未决同样计消耗",
+    "只经隔离链（tools/api_trial.py --live → IsolatedRun --adapter openai_compat），禁止旁路",
+    "model / temperature 由可信侧强制，harness 覆盖被拒并记账",
+    "不继承任何旧授权（AUTH-G11-20261022-01 已 EXCEEDED_AND_CLOSED，不得复活）",
+    "运行中不扩额度；报告更正不重烧调用",
+    "本次不修改系统权限、不建账户、不改防火墙/ACL"
+  ],
+  "harness_identity_expected": "399c82b784c00223fa534fc28f6a4c05680f245b5bc079fe1acf39699a8c7e42",
+  "call_manifest": "logs/api_trial_plan/CALL_MANIFEST.json",
+  "evidence_dir_expected": "logs/exam1_<timestamp>/"
+}
