@@ -1,0 +1,442 @@
+{
+  "synthetic": true,
+  "generated_at": "2026-11-12",
+  "generation_method": "AI原生子代理学习真实KB结构后生成",
+  "generator": "generate_synthetic_kb.mjs (ZCode AI subagent, deterministic seeded)",
+  "note": "全合成公开样本：无任何真实人物、真实对话片段、真实事件；所有人名/昵称/城市/大学/公司均为虚构；时间戳落在 2026-11 ~ 2027-03（避开真实快照 2026-08~2026-10 日期区）；round msgIds 与 32 位 hex 为种子随机生成，非内容派生值。",
+  "placeholder_dictionary": {
+    "{{KB_NAME}}": "synthetic_kb_01 … synthetic_kb_05（目录名即 kb.json.name，不含任何真实姓名拼音）",
+    "{{DISPLAY_NAME}}": "虚构昵称：阿May / 小满 / 桃桃-3 / 阿澄 / 栗子-2（与真实库昵称零重合）",
+    "{{TS}}": "虚构时间戳：kb_01 主区间 2027-01~2027-02（关系起点 2026-11）；其余样本 2027-01~2027-03",
+    "{{UUID}}": "round:msgIds 注释中的 UUID，种子随机生成，不复用任何真实 msgIds",
+    "{{TOPIC_TITLE}}": "中性虚构话题名（养猫日常 / 周末爬山计划 / 毕业论文进度等）",
+    "{{USER_LINE}} / {{COMPANION_LINE}}": "AI 原创虚构对话（她：… / 我：… / 我（最终回复：方案X-标题）：… / 想法：…）",
+    "{{DIM}}:{{SCORE}} (+{{DELTA}})": "五维词表（亲密/激情/承诺/信任/安全）× 虚构分值序列，不复制真实分值",
+    "{{ITEM_NAME}} / {{STATUS}}": "虚构日常事项名 + 状态枚举（进行中/已完成）",
+    "{{STAGE}}": "枚举：稳定期 / 暧昧期",
+    "{{EVENT_SUMMARY}}": "一句虚构事件摘要（raw_scene / moment/scene.md）",
+    "{{HEX32}}": ".round_commit_state.json 的 committedRounds/projections 值：种子随机 hex32，非内容派生哈希"
+  },
+  "samples": [
+    {
+      "dir": "synthetic_kb_01",
+      "kb_name": "synthetic_kb_01",
+      "display_name": "阿May",
+      "stage": "稳定期",
+      "turn_count": 193,
+      "topic_count": 24,
+      "file_count": 18,
+      "total_bytes": 34715,
+      "files": [
+        {
+          "path": "synthetic_kb_01/kb.json",
+          "bytes": 202
+        },
+        {
+          "path": "synthetic_kb_01/.schema_version",
+          "bytes": 1
+        },
+        {
+          "path": "synthetic_kb_01/memory/counseling_log.md",
+          "bytes": 3050
+        },
+        {
+          "path": "synthetic_kb_01/memory/lessons.md",
+          "bytes": 1823
+        },
+        {
+          "path": "synthetic_kb_01/memory/raw_chat.md",
+          "bytes": 1011
+        },
+        {
+          "path": "synthetic_kb_01/memory/raw_scene.md",
+          "bytes": 651
+        },
+        {
+          "path": "synthetic_kb_01/memory/raw_topic.md",
+          "bytes": 12813
+        },
+        {
+          "path": "synthetic_kb_01/memory/reflect_history.md",
+          "bytes": 2521
+        },
+        {
+          "path": "synthetic_kb_01/memory/vector_history.md",
+          "bytes": 1466
+        },
+        {
+          "path": "synthetic_kb_01/moment/plan.md",
+          "bytes": 927
+        },
+        {
+          "path": "synthetic_kb_01/moment/recent.md",
+          "bytes": 967
+        },
+        {
+          "path": "synthetic_kb_01/moment/scene.md",
+          "bytes": 278
+        },
+        {
+          "path": "synthetic_kb_01/moment/topic.md",
+          "bytes": 118
+        },
+        {
+          "path": "synthetic_kb_01/moment/.round_commit_state.json",
+          "bytes": 794
+        },
+        {
+          "path": "synthetic_kb_01/moment/ongoing_cooldown.json",
+          "bytes": 121
+        },
+        {
+          "path": "synthetic_kb_01/understand/her.md",
+          "bytes": 3232
+        },
+        {
+          "path": "synthetic_kb_01/understand/me.md",
+          "bytes": 1996
+        },
+        {
+          "path": "synthetic_kb_01/understand/warmth.md",
+          "bytes": 2744
+        }
+      ]
+    },
+    {
+      "dir": "synthetic_kb_02",
+      "kb_name": "synthetic_kb_02",
+      "display_name": "小满",
+      "stage": "暧昧期",
+      "turn_count": 216,
+      "topic_count": 33,
+      "file_count": 18,
+      "total_bytes": 25145,
+      "files": [
+        {
+          "path": "synthetic_kb_02/kb.json",
+          "bytes": 202
+        },
+        {
+          "path": "synthetic_kb_02/.schema_version",
+          "bytes": 1
+        },
+        {
+          "path": "synthetic_kb_02/memory/counseling_log.md",
+          "bytes": 395
+        },
+        {
+          "path": "synthetic_kb_02/memory/lessons.md",
+          "bytes": 2030
+        },
+        {
+          "path": "synthetic_kb_02/memory/raw_chat.md",
+          "bytes": 68
+        },
+        {
+          "path": "synthetic_kb_02/memory/raw_scene.md",
+          "bytes": 68
+        },
+        {
+          "path": "synthetic_kb_02/memory/raw_topic.md",
+          "bytes": 8229
+        },
+        {
+          "path": "synthetic_kb_02/memory/reflect_history.md",
+          "bytes": 2847
+        },
+        {
+          "path": "synthetic_kb_02/memory/vector_history.md",
+          "bytes": 1600
+        },
+        {
+          "path": "synthetic_kb_02/moment/plan.md",
+          "bytes": 768
+        },
+        {
+          "path": "synthetic_kb_02/moment/recent.md",
+          "bytes": 842
+        },
+        {
+          "path": "synthetic_kb_02/moment/scene.md",
+          "bytes": 272
+        },
+        {
+          "path": "synthetic_kb_02/moment/topic.md",
+          "bytes": 115
+        },
+        {
+          "path": "synthetic_kb_02/moment/.round_commit_state.json",
+          "bytes": 934
+        },
+        {
+          "path": "synthetic_kb_02/moment/ongoing_cooldown.json",
+          "bytes": 232
+        },
+        {
+          "path": "synthetic_kb_02/understand/her.md",
+          "bytes": 2556
+        },
+        {
+          "path": "synthetic_kb_02/understand/me.md",
+          "bytes": 1826
+        },
+        {
+          "path": "synthetic_kb_02/understand/warmth.md",
+          "bytes": 2160
+        }
+      ]
+    },
+    {
+      "dir": "synthetic_kb_03",
+      "kb_name": "synthetic_kb_03",
+      "display_name": "桃桃-3",
+      "stage": "暧昧期",
+      "turn_count": 561,
+      "topic_count": 58,
+      "file_count": 18,
+      "total_bytes": 32971,
+      "files": [
+        {
+          "path": "synthetic_kb_03/kb.json",
+          "bytes": 224
+        },
+        {
+          "path": "synthetic_kb_03/.schema_version",
+          "bytes": 1
+        },
+        {
+          "path": "synthetic_kb_03/memory/counseling_log.md",
+          "bytes": 2478
+        },
+        {
+          "path": "synthetic_kb_03/memory/lessons.md",
+          "bytes": 2104
+        },
+        {
+          "path": "synthetic_kb_03/memory/raw_chat.md",
+          "bytes": 1043
+        },
+        {
+          "path": "synthetic_kb_03/memory/raw_scene.md",
+          "bytes": 68
+        },
+        {
+          "path": "synthetic_kb_03/memory/raw_topic.md",
+          "bytes": 11847
+        },
+        {
+          "path": "synthetic_kb_03/memory/reflect_history.md",
+          "bytes": 2459
+        },
+        {
+          "path": "synthetic_kb_03/memory/vector_history.md",
+          "bytes": 1767
+        },
+        {
+          "path": "synthetic_kb_03/moment/plan.md",
+          "bytes": 1158
+        },
+        {
+          "path": "synthetic_kb_03/moment/recent.md",
+          "bytes": 810
+        },
+        {
+          "path": "synthetic_kb_03/moment/scene.md",
+          "bytes": 278
+        },
+        {
+          "path": "synthetic_kb_03/moment/topic.md",
+          "bytes": 133
+        },
+        {
+          "path": "synthetic_kb_03/moment/.round_commit_state.json",
+          "bytes": 1354
+        },
+        {
+          "path": "synthetic_kb_03/moment/ongoing_cooldown.json",
+          "bytes": 358
+        },
+        {
+          "path": "synthetic_kb_03/understand/her.md",
+          "bytes": 2677
+        },
+        {
+          "path": "synthetic_kb_03/understand/me.md",
+          "bytes": 1733
+        },
+        {
+          "path": "synthetic_kb_03/understand/warmth.md",
+          "bytes": 2479
+        }
+      ]
+    },
+    {
+      "dir": "synthetic_kb_04",
+      "kb_name": "synthetic_kb_04",
+      "display_name": "阿澄",
+      "stage": "暧昧期",
+      "turn_count": 27,
+      "topic_count": 5,
+      "file_count": 18,
+      "total_bytes": 12604,
+      "files": [
+        {
+          "path": "synthetic_kb_04/kb.json",
+          "bytes": 200
+        },
+        {
+          "path": "synthetic_kb_04/.schema_version",
+          "bytes": 1
+        },
+        {
+          "path": "synthetic_kb_04/memory/counseling_log.md",
+          "bytes": 395
+        },
+        {
+          "path": "synthetic_kb_04/memory/lessons.md",
+          "bytes": 1245
+        },
+        {
+          "path": "synthetic_kb_04/memory/raw_chat.md",
+          "bytes": 1128
+        },
+        {
+          "path": "synthetic_kb_04/memory/raw_scene.md",
+          "bytes": 68
+        },
+        {
+          "path": "synthetic_kb_04/memory/raw_topic.md",
+          "bytes": 3111
+        },
+        {
+          "path": "synthetic_kb_04/memory/reflect_history.md",
+          "bytes": 804
+        },
+        {
+          "path": "synthetic_kb_04/memory/vector_history.md",
+          "bytes": 569
+        },
+        {
+          "path": "synthetic_kb_04/moment/plan.md",
+          "bytes": 492
+        },
+        {
+          "path": "synthetic_kb_04/moment/recent.md",
+          "bytes": 723
+        },
+        {
+          "path": "synthetic_kb_04/moment/scene.md",
+          "bytes": 68
+        },
+        {
+          "path": "synthetic_kb_04/moment/topic.md",
+          "bytes": 115
+        },
+        {
+          "path": "synthetic_kb_04/moment/.round_commit_state.json",
+          "bytes": 584
+        },
+        {
+          "path": "synthetic_kb_04/moment/ongoing_cooldown.json",
+          "bytes": 116
+        },
+        {
+          "path": "synthetic_kb_04/understand/her.md",
+          "bytes": 1001
+        },
+        {
+          "path": "synthetic_kb_04/understand/me.md",
+          "bytes": 810
+        },
+        {
+          "path": "synthetic_kb_04/understand/warmth.md",
+          "bytes": 1174
+        }
+      ]
+    },
+    {
+      "dir": "synthetic_kb_05",
+      "kb_name": "synthetic_kb_05",
+      "display_name": "栗子-2",
+      "stage": "暧昧期",
+      "turn_count": 55,
+      "topic_count": 8,
+      "file_count": 18,
+      "total_bytes": 18772,
+      "files": [
+        {
+          "path": "synthetic_kb_05/kb.json",
+          "bytes": 202
+        },
+        {
+          "path": "synthetic_kb_05/.schema_version",
+          "bytes": 1
+        },
+        {
+          "path": "synthetic_kb_05/memory/counseling_log.md",
+          "bytes": 1723
+        },
+        {
+          "path": "synthetic_kb_05/memory/lessons.md",
+          "bytes": 1644
+        },
+        {
+          "path": "synthetic_kb_05/memory/raw_chat.md",
+          "bytes": 881
+        },
+        {
+          "path": "synthetic_kb_05/memory/raw_scene.md",
+          "bytes": 68
+        },
+        {
+          "path": "synthetic_kb_05/memory/raw_topic.md",
+          "bytes": 6025
+        },
+        {
+          "path": "synthetic_kb_05/memory/reflect_history.md",
+          "bytes": 1125
+        },
+        {
+          "path": "synthetic_kb_05/memory/vector_history.md",
+          "bytes": 1065
+        },
+        {
+          "path": "synthetic_kb_05/moment/plan.md",
+          "bytes": 765
+        },
+        {
+          "path": "synthetic_kb_05/moment/recent.md",
+          "bytes": 578
+        },
+        {
+          "path": "synthetic_kb_05/moment/scene.md",
+          "bytes": 281
+        },
+        {
+          "path": "synthetic_kb_05/moment/topic.md",
+          "bytes": 115
+        },
+        {
+          "path": "synthetic_kb_05/moment/.round_commit_state.json",
+          "bytes": 724
+        },
+        {
+          "path": "synthetic_kb_05/moment/ongoing_cooldown.json",
+          "bytes": 240
+        },
+        {
+          "path": "synthetic_kb_05/understand/her.md",
+          "bytes": 1210
+        },
+        {
+          "path": "synthetic_kb_05/understand/me.md",
+          "bytes": 877
+        },
+        {
+          "path": "synthetic_kb_05/understand/warmth.md",
+          "bytes": 1248
+        }
+      ]
+    }
+  ]
+}

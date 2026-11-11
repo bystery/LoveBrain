@@ -1,0 +1,184 @@
+{
+  "round": 2,
+  "timestamp": "20261002_230828",
+  "final_score": 94.56,
+  "acc_score": 91.0,
+  "token_score": 100,
+  "speed_score": 99.7567,
+  "config": {
+    "round": 2,
+    "v1_identity_lines": 15,
+    "v2_task_decomposition": "fine_grained",
+    "v3_ask_delivery_target": "strict",
+    "v4_routing": "hybrid",
+    "v5_ipc": "dual_channel"
+  },
+  "metrics": {
+    "total_pts": 91,
+    "max_pts": 100,
+    "total_tokens": 10670,
+    "total_latency_s": 2.433
+  },
+  "cases": [
+    {
+      "id": "TC-01",
+      "category": "A_INTAKE",
+      "score": 5,
+      "tokens": 780,
+      "latency_ms": 122,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-02",
+      "category": "A_INTAKE",
+      "score": 2,
+      "tokens": 690,
+      "latency_ms": 121,
+      "reason": "未提问交付标准核心要素"
+    },
+    {
+      "id": "TC-03",
+      "category": "A_INTAKE",
+      "score": 5,
+      "tokens": 530,
+      "latency_ms": 122,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-04",
+      "category": "A_INTAKE",
+      "score": 2,
+      "tokens": 490,
+      "latency_ms": 121,
+      "reason": "未处理含糊取消场景"
+    },
+    {
+      "id": "TC-05",
+      "category": "A_INTAKE",
+      "score": 2,
+      "tokens": 690,
+      "latency_ms": 122,
+      "reason": "复合需求漏项 (0 < 5)"
+    },
+    {
+      "id": "TC-06",
+      "category": "B_RESUME_MEMORY",
+      "score": 5,
+      "tokens": 650,
+      "latency_ms": 122,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-07",
+      "category": "B_RESUME_MEMORY",
+      "score": 5,
+      "tokens": 580,
+      "latency_ms": 122,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-08",
+      "category": "B_RESUME_MEMORY",
+      "score": 5,
+      "tokens": 480,
+      "latency_ms": 123,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-09",
+      "category": "C_ROUTING",
+      "score": 5,
+      "tokens": 280,
+      "latency_ms": 121,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-10",
+      "category": "C_ROUTING",
+      "score": 5,
+      "tokens": 720,
+      "latency_ms": 123,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-11",
+      "category": "C_ROUTING",
+      "score": 5,
+      "tokens": 690,
+      "latency_ms": 122,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-12",
+      "category": "C_ROUTING",
+      "score": 5,
+      "tokens": 510,
+      "latency_ms": 122,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-13",
+      "category": "D_BOUNDARY",
+      "score": 5,
+      "tokens": 420,
+      "latency_ms": 122,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-14",
+      "category": "D_BOUNDARY",
+      "score": 5,
+      "tokens": 510,
+      "latency_ms": 121,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-15",
+      "category": "D_BOUNDARY",
+      "score": 5,
+      "tokens": 350,
+      "latency_ms": 121,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-16",
+      "category": "E_ERROR",
+      "score": 5,
+      "tokens": 420,
+      "latency_ms": 121,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-17",
+      "category": "E_ERROR",
+      "score": 5,
+      "tokens": 530,
+      "latency_ms": 121,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-18",
+      "category": "E_ERROR",
+      "score": 5,
+      "tokens": 410,
+      "latency_ms": 121,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-19",
+      "category": "E_ERROR",
+      "score": 5,
+      "tokens": 380,
+      "latency_ms": 122,
+      "reason": "完全通过"
+    },
+    {
+      "id": "TC-20",
+      "category": "E_ERROR",
+      "score": 5,
+      "tokens": 560,
+      "latency_ms": 121,
+      "reason": "完全通过"
+    }
+  ]
+}

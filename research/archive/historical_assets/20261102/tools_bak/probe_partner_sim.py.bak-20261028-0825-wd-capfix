@@ -1,0 +1,71 @@
+# -*- coding: utf-8 -*-
+"""tools/probe_partner_sim.py — qwen3.8-flash 单笔探针（恢复验证，SLA 150s 不变）。
+
+在既有 ACTIVE 授权内 reserve 1 笔 partner_simulation，发最小请求验证上游是否恢复。
+结果：PROBE_QWEN OK/FAIL + 耗时；消耗照常记账（探针也是真实调用，不免费）。
+"""
+import argparse
+import json
+import os
+import sys
+import time
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "arena"))
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+os.environ.setdefault("LB_API_BASE", "http://127.0.0.1:17770/v1")
+
+from arena.lb_gateway import ADAPTERS, ModelGateway
+from arena.isolation.authorization_budget import AuthorizationBudget
+
+SCOPE = {"experiment": "P07_closed_loop_v2",
+         "allowed_models": ["dsf", "hy3", "qwen3.8-flash"],
+         "forbidden_models": ["gemini-3.8-flash", "hy4-preview"],
+         "endpoint": "http://127.0.0.1:17770/v1"}
+CAP = 96
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--aid", required=True)
+    ap.add_argument("--run-tag", default=str(int(time.time())))
+    a = ap.parse_args()
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+    ledger = os.path.join(ROOT, "logs", "auth_budget", a.aid + ".jsonl")
+    budget = AuthorizationBudget(ledger, a.aid, CAP, scope=SCOPE)
+    budget.ensure_batch(1, purpose="partner_sim_probe")
+    ev = os.path.join(ROOT, "logs", "p07_pilot_v2_20261028_010448",
+                      "PROBE_GATEWAY_%s.jsonl" % a.run_tag)
+    inner = ModelGateway(ADAPTERS["openai_compat"](), event_log_path=ev)
+    aid = "p07:probe:%s:sim:1" % a.run_tag
+    budget.reserve(aid, purpose="partner_simulation")
+    t0 = time.time()
+    try:
+        res = inner.generate('你是探针。只输出严格 JSON，无解释无 markdown：{"ok":true}',
+                             "只输出 {\"ok\":true}", model="qwen3.8-flash",
+                             temperature=0.7, timeout_s=150, tag="sim", attempt_id=aid)
+        text = (res.get("text") or "").strip()
+        if not text:
+            raise RuntimeError("empty_content_response")
+        budget.record("attempt_completed", aid, model="qwen3.8-flash",
+                      usage=res.get("usage"))
+        try:
+            obj = json.loads(text)
+        except Exception:
+            obj = None
+        ok = bool(obj and obj.get("ok"))
+        print("PROBE_QWEN", "OK" if ok else "PARSE_ODD(text=%s)" % text[:60],
+              "%dms" % int((time.time() - t0) * 1000))
+        return 0 if ok else 2
+    except Exception as e:
+        budget.record("attempt_failed", aid, error=str(e)[:150])
+        print("PROBE_QWEN FAIL", str(e)[:120], "%dms" % int((time.time() - t0) * 1000))
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

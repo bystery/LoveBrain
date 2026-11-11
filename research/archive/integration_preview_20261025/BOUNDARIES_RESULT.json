@@ -1,0 +1,54 @@
+{
+ "suite": "integration_preview boundary reproduction",
+ "checks": [
+  {
+   "check": "note_kind_is_structural_not_string_matched",
+   "verdict": "PASS",
+   "detail": "kind PASS: ADVISOR_NOTE→note/HER,ME→chat 结构化; note 不可转聊天; 草稿仍 chat; 未知 kind 拒"
+  },
+  {
+   "check": "idea_note_does_not_leak_into_sent_chat_or_event_store",
+   "verdict": "PASS",
+   "detail": "leak PASS: IDEA 仅走 note 进提示; 不进 <chat>; 不落事件存储(events 只=在吗)"
+  },
+  {
+   "check": "restore_then_rerun_real_turn_with_stub_gateway",
+   "verdict": "PASS",
+   "detail": "restore PASS: 恢复后真正再发一轮; 真实历史续用; 私密备注不残留/不落库"
+  },
+  {
+   "check": "consumer_never_crashes_on_legal_shape_variants",
+   "verdict": "PASS",
+   "detail": "crash PASS: []/response为列表/标量/null/not-json 均分类不崩; 原文保留; 合法输出仍 ok"
+  },
+  {
+   "check": "consumer_keeps_raw_byte_for_byte",
+   "verdict": "PASS",
+   "detail": "raw PASS: 各形状原文逐字节保留; 零宽键原文未被改写"
+  },
+  {
+   "check": "protocol_key_normalization_recovers_required_slot",
+   "verdict": "PASS",
+   "detail": "keynorm PASS: bad_bo+U+200B+y→bad_boy; 值不变; 审计(original_repr/normalized/slot)"
+  },
+  {
+   "check": "protocol_key_normalization_covers_other_format_chars",
+   "verdict": "PASS",
+   "detail": "keynorm2 PASS: 键名首尾空白/BOM 归一; 值内零宽字符保持不动"
+  },
+  {
+   "check": "key_normalization_does_not_weaken_content_validation",
+   "verdict": "PASS",
+   "detail": "no-weaken PASS: 正文校验不放宽; 缺槽不臆造; 无归一时审计为空"
+  },
+  {
+   "check": "zero_real_model_calls_guaranteed",
+   "verdict": "PASS",
+   "detail": "nodels PASS: 全程 stub gateway; 无真实模型/网络调用"
+  }
+ ],
+ "failed": 0,
+ "real_model_calls": 0,
+ "review_source": "refs/experiment_protocol_20261023/v5_real_independent_review_20261025",
+ "note": "修复限于 integration_preview/；不动 D:/LoveBrain、冻结候选 v5_purpose_aligned、tools 评分器、logs 付费证据；全程替身网关零真实调用。"
+}

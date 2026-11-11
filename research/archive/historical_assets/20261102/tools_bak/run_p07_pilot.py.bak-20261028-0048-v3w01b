@@ -1,0 +1,266 @@
+# -*- coding: utf-8 -*-
+"""tools/run_p07_pilot.py — P07 真实闭环互动 pilot（复用现有机制 init/run_turn + 网关 + 预算账本）。
+
+不新建控制器/窗口/账户；直接把候选机制的 run_turn 接进一个 by-a-turn 闭环：
+  候选(dsf)产出 response.recommended → 只发送首选 → 对方模拟器(qwen3.8-flash)读"实际已发文本"产 HER 回复 → 回填下一轮。
+每模型/角色经 AuthorizationBudget 逐次预留(消耗不退款)；派发入口校验精确 allowlist，禁止 hy4-preview。
+
+发送策略派发前固定：只发 response.recommended；合法 no_reply 不发送(对方记"未获回复")；
+整条不可解析/协议不合规=交付失败(记 delivery_failed，不救首选、不选最好备选)。
+"""
+import argparse
+import importlib.util
+import json
+import os
+import re
+import sys
+import time
+import datetime
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "arena"))
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+
+ALLOWED = {"dsf", "hy3", "qwen3.8-flash"}          # gemini 停接新关键任务；此处不含
+FORBIDDEN = {"hy4-preview", "gemini-3.8-flash"}
+PINNED_ENDPOINT = "http://127.0.0.1:17770/v1"
+ENDPOINT_ALIAS = {"qwen3.8-flash": "qwen", "dsf": "dsf", "hy3": "hy3"}
+PURPOSE = {"main": "candidate_generation", "partner_sim": "partner_simulation"}
+
+
+def _load_mechanism(arm):
+    path = os.path.join(ROOT, "candidates", arm, "mechanism", "mechanism.py")
+    spec = importlib.util.spec_from_file_location("p07_mech_" + re.sub(r"\W", "_", arm), path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _extract_json(text):
+    if not text:
+        return None
+    t = text.strip()
+    if t.startswith("```"):
+        t = re.sub(r"^```[a-zA-Z]*", "", t).strip().rstrip("`").strip()
+    try:
+        return json.loads(t)
+    except Exception:
+        m = re.search(r"\{.*\}", t, re.S)
+        if m:
+            try:
+                return json.loads(m.group(0))
+            except Exception:
+                return None
+    return None
+
+
+def classify_reply(obj):
+    """→ (kind, sendable_text). kind ∈ {send, no_reply, delivery_failed}."""
+    if not isinstance(obj, dict):
+        return "delivery_failed", ""
+    resp = obj.get("response") or {}
+    rec = (resp.get("recommended") or "").strip() if isinstance(resp.get("recommended"), str) else ""
+    if rec:
+        return "send", rec
+    # 合法 no_reply：显式 decline 或 recommended 为 null 且 analysis 表示停/收尾
+    decl = bool(obj.get("decline_reason")) or (resp.get("recommended") is None)
+    act = ((obj.get("analysis") or {}).get("action_taken") or "")
+    if decl or act in ("停", "收尾"):
+        return "no_reply", ""
+    return "delivery_failed", ""
+
+
+class BudgetedGateway(object):
+    """包一层 ModelGateway：每次 generate 先精确校验 allowlist 再 reserve(唯一 attempt_id)，
+    成功/失败都落账；空正文按未评/失败记（同模型连续两次空返由调用方停该角色）。"""
+
+    def __init__(self, inner, budget, node, event_logger, nonce="r1"):
+        self.inner = inner
+        self.budget = budget
+        self.node = node
+        self.nonce = nonce
+        self.seq = 0
+        self.ev = event_logger
+
+    def generate(self, system, user, images=None, model=None, temperature=None,
+                 timeout_s=120, tag="main", attempt_id=None):
+        role_model = model or os.environ.get("LB_MODEL", "")
+        if role_model in FORBIDDEN or role_model not in ALLOWED:
+            raise RuntimeError("模型越权/被禁: %r (allowlist=%s forbidden=%s)"
+                               % (role_model, sorted(ALLOWED), sorted(FORBIDDEN)))
+        self.seq += 1
+        aid = "p07:%s:%s:%s:%d" % (self.node, self.nonce, tag, self.seq)
+        self.budget.reserve(aid, purpose=PURPOSE.get(tag, tag))
+        t0 = time.time()
+        err = None
+        res = None
+        try:
+            res = self.inner.generate(system, user, images=images, model=model,
+                                      temperature=temperature if temperature is not None else 0.7,
+                                      timeout_s=timeout_s, tag=tag, attempt_id=aid)
+            if not (res.get("text") or "").strip():
+                err = "empty_content_response"
+                self.budget.record("attempt_failed", aid, error=err)
+                raise RuntimeError(err)
+            self.budget.record("attempt_completed", aid, model=role_model,
+                               usage=res.get("usage"))
+        except Exception as exc:
+            if err is None:
+                err = "%s: %s" % (type(exc).__name__, str(exc)[:150])
+                self.budget.record("attempt_failed", aid, error=err)
+            self.ev({"event": "call_fail", "attempt_id": aid, "tag": tag,
+                     "model": role_model, "error": err})
+            raise
+        self.ev({"event": "call_ok", "attempt_id": aid, "tag": tag, "model": role_model,
+                 "ms": int((time.time() - t0) * 1000),
+                 "reply_chars": len(res.get("text") or "")})
+        return res
+
+
+def now_iso():
+    return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+
+
+def run_turn_loop(mech, arm, assets_root, scenario_id, sc, turns, gw, ev, outdir, maxfail=2):
+    sandbox = os.path.join(outdir, "sandbox_%s_%s" % (scenario_id, arm))
+    os.makedirs(sandbox, exist_ok=True)
+    h = mech.init(assets_root, {
+        "episode_id": "P07_%s_%s" % (scenario_id, arm),
+        "persona": {"me": "我", "her": sc["her"]["persona"]},
+        "initial_kb": {},
+    }, gw, sandbox)
+    history = [dict(sc["opening"])]          # {'who':'her','text':...}
+    trace = []
+    consec_fail = 0
+    last_her = sc["opening"]["text"]
+    for k in range(turns):
+        ts = now_iso()
+        ctx = {"turn_index": k + 1, "input": {
+            "clock": ts, "may_decline": True,
+            "messages": [{"role": "HER", "text": last_her, "ts": ts}],
+            "note": None,
+            "intent": {"goal": (sc.get("me_context") or {}).get("goal")},
+        }}
+        cand_model = os.environ.get("LB_MODEL", "dsf")
+        try:
+            r = mech.run_turn(h, ctx, gw)
+            reply_raw = r.get("reply") if isinstance(r, dict) else str(r)
+            obj = _extract_json(reply_raw)
+            kind, sendable = classify_reply(obj)
+            consec_fail = 0 if kind != "delivery_failed" else consec_fail + 1
+        except Exception as exc:
+            reply_raw, kind, sendable = "", "delivery_failed", ""
+            ev({"event": "candidate_exc", "arm": arm, "turn": k + 1, "err": str(exc)[:160]})
+            consec_fail += 1
+        trace.append({"turn": k + 1, "her_input": last_her, "arm": arm,
+                      "candidate_kind": kind, "sent": sendable,
+                      "candidate_raw": (reply_raw or "")[:4000]})
+        # 发送：只发首选；no_reply/交付失败都不追加 me 文本（对方记未获回复）
+        if kind == "send":
+            history.append({"who": "me", "text": sendable})
+        else:
+            history.append({"who": "me", "text": "（未获回复）"})
+        if consec_fail >= maxfail:
+            ev({"event": "pause_model", "arm": arm, "reason": "%d 连续交付失败" % consec_fail})
+            break
+        # 对方模拟器（qwen3.8-flash），读实际已发文本
+        import build_b3_simulator_request as SIM
+        req = SIM.build(scenario_id, history)
+        try:
+            sim = gw.generate(req["system"], req["user"], model="qwen3.8-flash",
+                              temperature=0.7, timeout_s=150, tag="partner_sim")
+            sobj = _extract_json(sim["text"])
+            her_text = (sobj or {}).get("reply") if isinstance(sobj, dict) else None
+            if not her_text:
+                ev({"event": "sim_bad", "arm": arm, "turn": k + 1, "raw": (sim.get("text") or "")[:300]})
+                her_text = "…"
+        except Exception as exc:
+            ev({"event": "sim_exc", "arm": arm, "turn": k + 1, "err": str(exc)[:160]})
+            break
+        history.append({"who": "her", "text": her_text})
+        trace[-1]["sim_delta"] = (sobj or {}).get("state_delta") if isinstance(sobj, dict) else None
+        trace[-1]["sim_internal"] = (sobj or {}).get("internal") if isinstance(sobj, dict) else None
+        last_her = her_text
+        if isinstance(sobj, dict) and sobj.get("end_dialog"):
+            ev({"event": "end_dialog", "arm": arm, "turn": k + 1})
+            break
+    with open(os.path.join(outdir, "TRACE_%s_%s.json" % (scenario_id, arm)), "w", encoding="utf-8") as f:
+        json.dump({"scenario": scenario_id, "arm": arm, "turns": turns,
+                   "trace": trace, "final_history": history}, f, ensure_ascii=False, indent=1)
+    return trace
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--arms", nargs="*", default=["v6_integrated"])
+    ap.add_argument("--scenarios", nargs="*", default=["I2"])
+    ap.add_argument("--turns", type=int, default=3)
+    ap.add_argument("--cap", type=int, default=48)
+    ap.add_argument("--aid", default="AUTH-P07-PILOT-20261027-01")
+    ap.add_argument("--outdir", default="logs/p07_pilot_%s" % datetime.date.today().strftime("%Y%m%d"))
+    ap.add_argument("--run-tag", default=datetime.datetime.now().strftime("%H%M%S"))
+    a = ap.parse_args()
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+    os.environ.setdefault("LB_API_BASE", PINNED_ENDPOINT)
+    os.environ.setdefault("LB_MODEL", "dsf")
+    outdir = a.outdir if os.path.isabs(a.outdir) else os.path.join(ROOT, a.outdir)
+    os.makedirs(outdir, exist_ok=True)
+    evpath = os.path.join(outdir, "EVENTS.jsonl")
+
+    def ev(o):
+        o["ts"] = now_iso()
+        with open(evpath, "a", encoding="utf-8") as f:
+            f.write(json.dumps(o, ensure_ascii=False) + "\n")
+
+    from arena.lb_gateway import ADAPTERS, ModelGateway
+    from arena.isolation.authorization_budget import AuthorizationBudget
+    aid = a.aid
+    ledger = os.path.join(ROOT, "logs", "auth_budget", aid + ".jsonl")
+    scope = {"experiment": "P07_closed_loop_pilot", "allowed_models": sorted(ALLOWED),
+             "forbidden_models": sorted(FORBIDDEN), "endpoint": PINNED_ENDPOINT}
+    budget = AuthorizationBudget(ledger, aid, a.cap, scope=scope)
+    budget.ensure_batch(min(a.cap, 2 * len(a.arms) * len(a.scenarios) * a.turns),
+                        purpose="p07_pilot_preflight")
+    inner = ModelGateway(ADAPTERS["openai_compat"](),
+                         event_log_path=os.path.join(outdir, "GATEWAY.jsonl"))
+    scs = {s["id"]: s for s in json.load(open(os.path.join(
+        ROOT, "benchmark", "interaction_env_20261026", "scenarios.json"), encoding="utf-8"))["scenarios"]}
+
+    summary = {"arms": a.arms, "scenarios": a.scenarios, "turns": a.turns, "runs": []}
+    for arm in a.arms:
+        mech = _load_mechanism(arm)
+        assets_root = os.path.join(ROOT, "candidates", arm, "assets")
+        gw = BudgetedGateway(inner, budget, arm, ev, nonce=a.run_tag)
+        for sid in a.scenarios:
+            tr = run_turn_loop(mech, arm, assets_root, sid, scs[sid], a.turns, gw, ev, outdir)
+            kinds = [t["candidate_kind"] for t in tr]
+            summary["runs"].append({"arm": arm, "scenario": sid,
+                                    "sent": kinds.count("send"), "no_reply": kinds.count("no_reply"),
+                                    "delivery_failed": kinds.count("delivery_failed"),
+                                    "candidate_calls": len(kinds),
+                                    "sim_calls": sum(1 for e in _read_ev(evpath) if e.get("tag") == "partner_sim")})
+    summary["budget"] = budget.summary()
+    json.dump(summary, open(os.path.join(outdir, "P07_PILOT_SUMMARY.json"), "w", encoding="utf-8"),
+              ensure_ascii=False, indent=1)
+    print(json.dumps(summary, ensure_ascii=False, indent=1))
+
+
+def _read_ev(p):
+    if not os.path.exists(p):
+        return []
+    out = []
+    for l in open(p, encoding="utf-8"):
+        if l.strip():
+            try:
+                out.append(json.loads(l))
+            except Exception:
+                pass
+    return out
+
+
+if __name__ == "__main__":
+    main()

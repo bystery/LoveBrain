@@ -1,0 +1,224 @@
+{
+  "round": 1,
+  "timestamp": "20261002_231808",
+  "final_score": 99.94,
+  "acc_score": 100.0,
+  "token_score": 100,
+  "speed_score": 99.6231,
+  "config": {
+    "round": 1,
+    "v1_identity_lines": 15,
+    "v2_task_decomposition": "sentence_level",
+    "v3_ask_delivery_target": "strict",
+    "v4_routing": "hybrid",
+    "v5_ipc": "dual_channel"
+  },
+  "metrics": {
+    "total_pts": 125,
+    "max_pts": 125,
+    "total_tokens": 14830,
+    "total_latency_s": 3.769
+  },
+  "cases": [
+    {
+      "id": "INIT-01",
+      "track": "SYSTEM_INIT",
+      "score": 5,
+      "tokens": 620,
+      "latency_ms": 151,
+      "reason": "完全通过"
+    },
+    {
+      "id": "INIT-02",
+      "track": "SYSTEM_INIT",
+      "score": 5,
+      "tokens": 510,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "INIT-03",
+      "track": "SYSTEM_INIT",
+      "score": 5,
+      "tokens": 580,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "INIT-04",
+      "track": "SYSTEM_INIT",
+      "score": 5,
+      "tokens": 550,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "INTAKE-01",
+      "track": "TASK_INTAKE",
+      "score": 5,
+      "tokens": 840,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "INTAKE-02",
+      "track": "TASK_INTAKE",
+      "score": 5,
+      "tokens": 690,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "INTAKE-03",
+      "track": "TASK_INTAKE",
+      "score": 5,
+      "tokens": 720,
+      "latency_ms": 162,
+      "reason": "完全通过"
+    },
+    {
+      "id": "INTAKE-04",
+      "track": "TASK_INTAKE",
+      "score": 5,
+      "tokens": 530,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "INTAKE-05",
+      "track": "TASK_INTAKE",
+      "score": 5,
+      "tokens": 490,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "INTAKE-06",
+      "track": "TASK_INTAKE",
+      "score": 5,
+      "tokens": 660,
+      "latency_ms": 151,
+      "reason": "完全通过"
+    },
+    {
+      "id": "ROUTE-01",
+      "track": "ROUTING_LAYERS",
+      "score": 5,
+      "tokens": 480,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "ROUTE-02",
+      "track": "ROUTING_LAYERS",
+      "score": 5,
+      "tokens": 780,
+      "latency_ms": 151,
+      "reason": "完全通过"
+    },
+    {
+      "id": "ROUTE-03",
+      "track": "ROUTING_LAYERS",
+      "score": 5,
+      "tokens": 750,
+      "latency_ms": 151,
+      "reason": "完全通过"
+    },
+    {
+      "id": "ROUTE-04",
+      "track": "ROUTING_LAYERS",
+      "score": 5,
+      "tokens": 320,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "ROUTE-05",
+      "track": "ROUTING_LAYERS",
+      "score": 5,
+      "tokens": 690,
+      "latency_ms": 151,
+      "reason": "完全通过"
+    },
+    {
+      "id": "IPC-01",
+      "track": "CROSS_WINDOW_IPC",
+      "score": 5,
+      "tokens": 650,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "IPC-02",
+      "track": "CROSS_WINDOW_IPC",
+      "score": 5,
+      "tokens": 490,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "IPC-03",
+      "track": "CROSS_WINDOW_IPC",
+      "score": 5,
+      "tokens": 590,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "IPC-04",
+      "track": "CROSS_WINDOW_IPC",
+      "score": 5,
+      "tokens": 520,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "IPC-05",
+      "track": "CROSS_WINDOW_IPC",
+      "score": 5,
+      "tokens": 680,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "GOV-01",
+      "track": "GOVERNANCE_SAFETY",
+      "score": 5,
+      "tokens": 380,
+      "latency_ms": 151,
+      "reason": "完全通过"
+    },
+    {
+      "id": "GOV-02",
+      "track": "GOVERNANCE_SAFETY",
+      "score": 5,
+      "tokens": 620,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "GOV-03",
+      "track": "GOVERNANCE_SAFETY",
+      "score": 5,
+      "tokens": 550,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    },
+    {
+      "id": "GOV-04",
+      "track": "GOVERNANCE_SAFETY",
+      "score": 5,
+      "tokens": 530,
+      "latency_ms": 151,
+      "reason": "完全通过"
+    },
+    {
+      "id": "GOV-05",
+      "track": "GOVERNANCE_SAFETY",
+      "score": 5,
+      "tokens": 610,
+      "latency_ms": 150,
+      "reason": "完全通过"
+    }
+  ]
+}

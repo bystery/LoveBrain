@@ -1,0 +1,181 @@
+# -*- coding: utf-8 -*-
+"""tools/normalize_reply_contract.py — 候选输出契约的确定性消费归一器 + 离线回放（零模型调用）。
+
+背景：P06 交付失败族（见 PROTOCOL_FAILURES.json）——(a) 模型把中文弯/全角引号用作 JSON 结构引号致
+json.loads 失败；(b) 风格键漂移 bad_boys≠bad_boy；(c) directions 数量<4。这是**共享输出协议脆弱族**
+（父本 reference 亦有 illegal_source_id/坏键族），非候选独有；故消费规则对基线与候选**同规则离线重放**，
+不把共同修正只算 v6 收益。
+
+三层保留：原始模型输出原文(raw) → 本器确定性规范(canonical) → 实际可发(sendable=preferred)。
+本器只做可逆、可审计的确定性归一，不新增模型调用、不编造缺失内容、不丢弃坏槽（缺 directions 只补 null 并登记）。
+
+运行（离线回放 8 条已知失败 + 抽样基线成功件）：
+  D:/anaconda/python.exe tools/normalize_reply_contract.py --replay
+"""
+import argparse
+import glob
+import json
+import os
+import re
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PK = os.path.join(ROOT, "refs", "experiment_protocol_20261023",
+                  "p06_fast_recovery_review_20261027", "PROTOCOL_FAILURES.json")
+
+# 风格键别名 → 规范键
+STYLE_KEY_ALIASES = {"bad_boys": "bad_boy", "bad_boy ": "bad_boy", "playfull": "playful",
+                    "recomended": "recommended", "recommned": "recommended", "warm ": "warm"}
+RESPONSE_CANON = ["recommended", "bad_boy", "playful", "warm"]
+DIRECTIONS_LEN = 4
+# 常用作结构引号的弯/全角引号（仅在 json.loads 失败时按序尝试替换后重试）
+CURLY = [("\u201c", '"'), ("\u201d", '"'), ("\u2018", "'"),
+         ("\uff02", '"'), ("\uff07", "'")]
+
+
+def _try_json(s):
+    try:
+        return json.loads(s), None
+    except Exception as e:                                   # noqa: BLE001
+        return None, str(e)
+
+
+def repair_json(text):
+    """确定性 JSON 修复：去 markdown 围栏、按序把结构弯引号换直引号后重试。
+    返回 (obj_or_None, repairs[])。只做机械替换，不猜内容。"""
+    repairs = []
+    if not text:
+        return None, ["empty_raw"]
+    t = text.strip()
+    if t.startswith("```"):
+        t = re.sub(r"^```[a-zA-Z]*", "", t).strip()
+        t = re.sub(r"```$", "", t).strip()
+        repairs.append("strip_markdown_fence")
+    obj, err = _try_json(t)
+    if obj is None:
+        # 逐个把弯/全角引号替换后重试（保守：任一使 loads 成功即采纳，记录替换项）
+        cur = t
+        for a, b in CURLY:
+            if a in cur:
+                trial = cur.replace(a, b)
+                o2, _ = _try_json(trial)
+                if o2 is not None:
+                    cur = trial
+                    repairs.append("quote_normalize:%s->%s" % (json.dumps(a), json.dumps(b)))
+                    obj = o2
+                    break
+        if obj is None:
+            # 抽取最外层 {...} 再试一次
+            m = re.search(r"\{.*\}", cur, re.S)
+            if m:
+                o3, _ = _try_json(m.group(0))
+                if o3 is not None:
+                    obj = o3
+                    repairs.append("extract_outer_object")
+        if obj is None:
+            return None, repairs + ["unparseable:%s" % (err or "")[:80]]
+    return obj, repairs
+
+
+def normalize(obj):
+    """键漂移 + directions 补齐（缺失填 null 并登记，绝不编造文本）。"""
+    repairs = []
+    if not isinstance(obj, dict):
+        return obj, ["not_object"]
+    resp = obj.get("response")
+    if isinstance(resp, dict):
+        for k in list(resp.keys()):
+            canon = STYLE_KEY_ALIASES.get(k)
+            if canon and canon not in resp:
+                resp[canon] = resp.pop(k)
+                repairs.append("style_key_fix:%s->%s" % (k, canon))
+            elif canon and canon in resp:
+                resp.pop(k)
+                repairs.append("style_key_drop_dup:%s" % k)
+        for need in RESPONSE_CANON:
+            if need not in resp:
+                resp[need] = None
+                repairs.append("response_slot_add_null:%s" % need)
+    dirs = obj.get("directions")
+    if isinstance(dirs, list):
+        if len(dirs) < DIRECTIONS_LEN:
+            for i in range(len(dirs), DIRECTIONS_LEN):
+                dirs.append(None)
+            repairs.append("directions_pad_to_%d" % DIRECTIONS_LEN)
+        elif len(dirs) > DIRECTIONS_LEN:
+            obj["directions"] = dirs[:DIRECTIONS_LEN]
+            repairs.append("directions_truncate_to_%d" % DIRECTIONS_LEN)
+    return obj, repairs
+
+
+def sendable(obj):
+    if not isinstance(obj, dict):
+        return "delivery_failed", ""
+    rec = (obj.get("response") or {}).get("recommended")
+    rec = rec.strip() if isinstance(rec, str) else ""
+    if rec:
+        return "send", rec
+    return "no_reply_or_empty", ""
+
+
+def normalize_raw(raw_text):
+    obj, r1 = repair_json(raw_text)
+    obj, r2 = normalize(obj) if obj is not None else (obj, [])
+    kind, sent = sendable(obj)
+    return {"canonical": obj, "repairs": r1 + r2, "outcome": kind, "sendable": sent}
+
+
+def replay():
+    fails = json.load(open(PK, encoding="utf-8"))
+    out = []
+    for f in fails:
+        rp = os.path.join(f["path"], "reply_raw.txt")
+        raw = open(rp, encoding="utf-8", errors="replace").read() if os.path.exists(rp) else ""
+        res = normalize_raw(raw)
+        veto = f["veto"]
+        if veto.startswith("illegal_source"):
+            classify = "needs_src_validator_not_consumer"   # 来源成员合法性属另一校验层，本器不改判
+        elif res["outcome"] == "send":
+            classify = "consumer_recovered"
+        else:
+            classify = "still_malformed"
+        out.append({"case": "%s/%s/%s" % (f["batch"], f["arm"], f["case_id"]),
+                    "veto": veto, "raw_len": len(raw), "classify": classify,
+                    "after_repairs": res["repairs"], "after_outcome": res["outcome"],
+                    "after_sendable": res["sendable"][:80]})
+    # 回归检查：对已合格(无 veto)的成功件同规则重放，确认不改坏可发首选
+    samples = []
+    for arm in ["parent", "candidate"]:
+        tps = sorted(glob.glob(os.path.join(
+            ROOT, "logs", "p06_A_live_20261027", "%s_*" % arm, "out", "turn_*")))[:4]
+        for tp in tps:
+            rp = os.path.join(tp, "reply_raw.txt")
+            if not os.path.exists(rp):
+                continue
+            raw = open(rp, encoding="utf-8", errors="replace").read()
+            before = _try_json(raw.strip())[0]
+            before_send = isinstance(before, dict) and bool((before.get("response") or {}).get("recommended"))
+            res = normalize_raw(raw)
+            samples.append({"path": os.path.relpath(tp, ROOT),
+                            "before_parse_ok": before is not None, "before_sendable": before_send,
+                            "after_sendable": res["outcome"] == "send",
+                            "repairs_applied": res["repairs"],
+                            "regression": before_send and res["outcome"] != "send"})
+    from collections import Counter
+    tally = Counter(o["classify"] for o in out)
+    result = {"failures_replayed": out, "classify_tally": dict(tally),
+              "clean_samples_no_regression": samples,
+              "regressions": [s for s in samples if s["regression"]],
+              "note": "确定性消费归一只修机械族(风格键漂移/directions 数量/结构弯引号)；"
+                      "illegal_source_id 属来源成员校验层(本器不改判)；真正结构畸形不编造修复。基线/候选同规则。"}
+    dst = os.path.join(ROOT, "evaluation", "P06_DELIVERY_NORMALIZER_REPLAY.json")
+    json.dump(result, open(dst, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print("WROTE", os.path.relpath(dst, ROOT))
+    print("tally:", dict(tally), "clean_checked:", len(samples), "regressions:", len(result["regressions"]))
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--replay", action="store_true")
+    a = ap.parse_args()
+    if a.replay:
+        replay()

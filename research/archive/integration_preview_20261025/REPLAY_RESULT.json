@@ -1,0 +1,13 @@
+{
+ "suite": "integration_preview replay_fixture",
+ "checks": 4,
+ "failed": 0,
+ "real_model_calls": 0,
+ "note": "接口与恢复行为用替身I/O证明；不证产品UI/编译/体验验收，不切生产默认。",
+ "lines": [
+  "PASS interface1_event_normalize_and_draft_split — I1 PASS: HER/ME→PARTNER/USER+ts 归一, 草稿 committed=False 与已发送分开, 未知 speaker 拒",
+  "PASS interface2_intent_effective_status — I2 PASS: IntentPolicy.effectiveStatus 语义—旧终态/禁用→关闭, 不误删真实约定由 I3/I5 保证",
+  "PASS interface4_output_consume_empty_analysis_valid — I4 PASS: 可发选项保留; 空 analysis 合法且不触发旧摘要写回; 坏输出不猜不补",
+  "PASS interface3_and5_new_old_switch_store_isolation_restore — I3+I5 PASS: 新旧引擎开关/回退可用, 联系人×故事隔离, snapshot/restore 后真正再发一轮续用真实历史且私密备注不落库/不残留, 两份互不覆盖"
+ ]
+}

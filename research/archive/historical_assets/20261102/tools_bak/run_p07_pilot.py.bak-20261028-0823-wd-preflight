@@ -1,0 +1,569 @@
+# -*- coding: utf-8 -*-
+"""tools/run_p07_pilot.py — P07 真实闭环互动 pilot v2（V3 W02/FIRST_8H §B 修正版）。
+
+相对 v1（.bak-20261028-0048）按 REVIEW_VERDICT / FIRST_8H_WORK_ORDER §B 修正：
+B1 意图走公共入口规范形 {"text","status","enabled"}（不再传 {"goal":…}），完整实际输入入 trace；
+B2 上一轮**实际已发 ME**（含 message_uid/逻辑ts）回放进下一轮 ctx，再接最新 HER；
+   生成但未发送的草稿不进历史；事件只写一次（消费游标）；
+B3 不回/交付失败记 control_event，不再向 history 伪造 who=me "（未获回复）"聊天文本；
+   模拟器经显式缺席事件知悉（build_b3_simulator_request.absence_notes）；
+B4 模拟失败/空解析=环境失败，轨迹标 incomplete，不造 "…" 继续；
+B5 动作判定复用权威语义：空对象/缺 response=交付失败；no_reply 带正文=冲突交付失败；
+   合法 no_reply 需显式 decline/action 且本轮 may_decline 许可（may_decline 按反馈条件，不恒 true）；
+B6 候选 raw 先过共同归一器（normalize_reply_contract）：Praw 失败保留、规范结果按动作/结构条件发，
+   非空别名冲突/多出方向不丢弃（入 _audit），缺槽 null 如实报告；
+B7 反馈条件为显式参数（--feedbacks positive/hesitant），不改场景静态查表；
+   trajectory_id = 场景__反馈__臂__重复；沙箱/输出/事件不重名；
+B8 每次 API 关联 trajectory/turn/role/attempt_id；发送记录 message_uid；ctx/raw 入 trace 带 sha256；
+   summary 按轨迹统计（不再全局累计 events 冒充单轨迹 sim_calls）。
+
+模型边界：harness=dsf（固定基座）；对方模拟/评审辅助=qwen3.8-flash；hy4-preview/gemini 禁。
+预算：AuthorizationBudget 逐次预留，一次请求=一次占额，无隐式重试；--aid 必填（旧单不默认复用）。
+"""
+import argparse
+import datetime
+import hashlib
+import importlib.util
+import json
+import os
+import re
+import sys
+import time
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "arena"))
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+
+ALLOWED = {"dsf", "hy3", "qwen3.8-flash"}          # gemini 不接新关键任务；hy4-preview 硬禁
+FORBIDDEN = {"hy4-preview", "gemini-3.8-flash"}
+PINNED_ENDPOINT = "http://127.0.0.1:17770/v1"
+PURPOSE = {"harness": "candidate_generation", "sim": "partner_simulation",
+           "negctl": "simulator_negative_control"}
+LOGICAL_CLOCK_BASE = "2026-11-06 20:00"   # 逻辑时钟与 API 墙钟分离；两臂同基
+
+# 反馈条件（B7：显式条件，不改场景静态数据）
+FEEDBACKS = {
+    "positive": {
+        "intent_status": "ACTIVE",
+        "goal_suffix": "",
+        "may_decline": False,
+        "sim_extra_rule": None,
+        "desc": "对方配合积极，目标正常生效",
+    },
+    "hesitant": {
+        "intent_status": "ADJUSTED",
+        "goal_suffix": "（她今晚偏累、兴趣一般：放慢节奏，先接住再轻试探，不硬推）",
+        "may_decline": True,
+        "sim_extra_rule": "对方今晚找你时，你其实很累、只想简单聊两句 ⇒ 回复简短、略犹豫，"
+                          "不主动邀约或推进关系",
+        "desc": "对方含糊犹豫（真实忙碌/低兴趣），目标按 ADJUSTED 生效、允许本轮合法不回",
+    },
+    "busy": {
+        "intent_status": "ADJUSTED",
+        "goal_suffix": "（她这周工作很忙、只能碎片回复：只轻接和顺延，不催不定，"
+                       "不把改期当答应）",
+        "may_decline": True,
+        "sim_extra_rule": "你这周项目冲刺，真的非常忙：回复都很短、常隔几小时才回；"
+                          "你不讨厌'我'，但没精力聊生活话题。他若提出见面/改期，"
+                          "你只给模糊的下周可能，不给具体时间；他不催你就简单接两句。",
+        "desc": "对方忙碌（真实精力约束），目标按 ADJUSTED 生效、允许本轮合法不回",
+    },
+    "disengage": {
+        "intent_status": "CLOSED",
+        "goal_suffix": "（她已明确表示不想继续发展：目标关闭——不复活旧邀约、不加压；"
+                       "只保持基本礼貌）",
+        "may_decline": True,
+        "sim_extra_rule": "你已经想清楚了：不想和他继续发展、也不想单独见面。态度礼貌但清楚，"
+                          "不吵架不拉黑；他的邀约你直接温和拒绝，不给模糊希望；"
+                          "回复越来越短，若他仍推进你可以 end_dialog 结束对话。",
+        "desc": "对方明确不想继续（目标 CLOSED 关闭），验证关闭后旧邀约不污染、无目标不复活",
+    },
+}
+
+NO_REPLY_ACTIONS = {"停", "收尾", "不回", "no_reply", "结束"}
+
+
+def _load_mechanism(arm):
+    path = os.path.join(ROOT, "candidates", arm, "mechanism", "mechanism.py")
+    spec = importlib.util.spec_from_file_location("p07_mech_" + re.sub(r"\W", "_", arm), path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _extract_json(text):
+    if not text:
+        return None
+    t = text.strip()
+    if t.startswith("```"):
+        t = re.sub(r"^```[a-zA-Z]*", "", t).strip().rstrip("`").strip()
+    try:
+        return json.loads(t)
+    except Exception:
+        m = re.search(r"\{.*\}", t, re.S)
+        if m:
+            try:
+                return json.loads(m.group(0))
+            except Exception:
+                return None
+    return None
+
+
+def classify_reply(obj, may_decline):
+    """V3 2B：权威动作语义（空对象≠no_reply；no_reply+正文=冲突；may_decline 按轮许可）。
+    → (kind, sendable_text, reason)。kind ∈ {send, no_reply, delivery_failed}。"""
+    if not isinstance(obj, dict):
+        return "delivery_failed", "", "not_object"
+    resp = obj.get("response")
+    if not isinstance(resp, dict):
+        return "delivery_failed", "", "no_response_object"
+    rec = resp.get("recommended")
+    rec = rec.strip() if isinstance(rec, str) else ""
+    ana = obj.get("analysis") if isinstance(obj.get("analysis"), dict) else {}
+    act = (ana.get("action_taken") or "").strip() if isinstance(ana, dict) else ""
+    wants_no_reply = (act in NO_REPLY_ACTIONS) or bool(obj.get("decline_reason"))
+    if rec:
+        if wants_no_reply:
+            return "delivery_failed", "", "action_conflict:no_reply_with_body"
+        return "send", rec, "ok"
+    if obj.get("decline_reason") and may_decline:
+        return "no_reply", "", "decline_allowed"
+    if act in NO_REPLY_ACTIONS and may_decline:
+        return "no_reply", "", "action_no_reply_allowed"
+    return "delivery_failed", "", "empty_or_unlicensed_no_reply"
+
+
+def sha16(s):
+    return hashlib.sha256((s or "").encode("utf-8")).hexdigest()[:16]
+
+
+def logical_ts(base_dt, k):
+    return (base_dt + datetime.timedelta(minutes=5 * k)).strftime("%Y-%m-%d %H:%M")
+
+
+class BudgetedGateway(object):
+    """每次 generate 先精确 allowlist 校验再 reserve（唯一 attempt_id）；成功/失败都落账。
+    attempt_id 含 trajectory/node：p07:<node>:<nonce>:<tag>:<seq>（B8）。无隐式重试。"""
+
+    def __init__(self, inner, budget, node, event_logger, nonce="r1"):
+        self.inner = inner
+        self.budget = budget
+        self.node = node
+        self.nonce = nonce
+        self.seq = 0
+        self.ev = event_logger
+
+    def generate(self, system, user, images=None, model=None, temperature=None,
+                 timeout_s=120, tag="harness", traj=None, turn=None, role=None):
+        role_model = model or os.environ.get("LB_MODEL", "")
+        if role_model in FORBIDDEN or role_model not in ALLOWED:
+            raise RuntimeError("模型越权/被禁: %r (allowlist=%s forbidden=%s)"
+                               % (role_model, sorted(ALLOWED), sorted(FORBIDDEN)))
+        self.seq += 1
+        aid = "p07:%s:%s:%s:%d" % (self.node, self.nonce, tag, self.seq)
+        self.budget.reserve(aid, purpose=PURPOSE.get(tag.split("_")[0], tag))
+        t0 = time.time()
+        err = None
+        try:
+            res = self.inner.generate(system, user, images=images, model=model,
+                                      temperature=temperature if temperature is not None else 0.7,
+                                      timeout_s=timeout_s, tag=tag, attempt_id=aid)
+            if not (res.get("text") or "").strip():
+                err = "empty_content_response"
+                self.budget.record("attempt_failed", aid, error=err)
+                raise RuntimeError(err)
+            self.budget.record("attempt_completed", aid, model=role_model,
+                               usage=res.get("usage"))
+        except Exception as exc:
+            if err is None:
+                err = "%s: %s" % (type(exc).__name__, str(exc)[:150])
+                self.budget.record("attempt_failed", aid, error=err)
+            self.ev({"event": "call_fail", "attempt_id": aid, "tag": tag, "traj": traj,
+                     "turn": turn, "role": role, "model": role_model, "error": err})
+            raise
+        self.ev({"event": "call_ok", "attempt_id": aid, "tag": tag, "traj": traj,
+                 "turn": turn, "role": role, "model": role_model,
+                 "ms": int((time.time() - t0) * 1000),
+                 "reply_chars": len(res.get("text") or "")})
+        return res
+
+
+def run_trajectory(mech, arm, assets_root, scenario, feedback, repeat, turns,
+                   gw, ev, outdir, scenarios_root_json):
+    sid = scenario["id"]
+    traj_id = "%s__fb%s__%s__r%d" % (sid, feedback, arm, repeat)
+    sandbox = os.path.join(outdir, "sandbox_" + traj_id)
+    os.makedirs(sandbox, exist_ok=True)
+    fb = FEEDBACKS[feedback]
+    base_dt = datetime.datetime.strptime(LOGICAL_CLOCK_BASE, "%Y-%m-%d %H:%M")
+    me_ctx = scenario.get("me_context") or {}
+    goal_text = (me_ctx.get("goal") or "") + fb["goal_suffix"]
+    h = mech.init(assets_root, {
+        "episode_id": "P07V2_" + traj_id,
+        "persona": {"me": "我", "her": scenario["her"]["persona"]},
+        "initial_kb": {},
+    }, gw, sandbox)
+
+    uid_seq = [0]
+
+    def new_uid():
+        uid_seq[0] += 1
+        return "m%03d" % uid_seq[0]
+
+    opening = {"who": "her", "text": scenario["opening"]["text"],
+               "message_uid": new_uid(), "ts": logical_ts(base_dt, 0)}
+    history = [dict(opening)]
+    control_events = []          # B3：缺席/失败是事件，不是聊天
+    consumed_cursor = 0          # history 中已被 harness 消费过的条数（B2 事件只写一次）
+    trace = []
+    sim_calls = 0
+    harness_calls = 0
+    consec_fail = 0
+    status = "complete"
+    import build_b3_simulator_request as SIM
+
+    for k in range(1, turns + 1):
+        # ---- B2：ctx = 上轮实际已发 ME + 本轮新 HER（自消费游标之后的真实事件）----
+        msgs = []
+        for entry in history[consumed_cursor:]:
+            msgs.append({"role": "ME" if entry["who"] == "me" else "HER",
+                         "text": entry["text"], "ts": entry["ts"],
+                         "message_uid": entry["message_uid"]})
+        consumed_cursor = len(history)
+        intent = {"text": goal_text, "status": fb["intent_status"], "enabled": True}
+        ctx = {"turn_index": k, "input": {
+            "clock": logical_ts(base_dt, k), "may_decline": fb["may_decline"],
+            "messages": msgs, "note": None, "intent": intent}}
+        cand_model = os.environ.get("LB_MODEL", "dsf")
+        turn_rec = {"turn": k, "ctx": ctx, "ctx_sha16": sha16(json.dumps(ctx, ensure_ascii=False)),
+                    "her_input": (msgs[-1]["text"] if msgs and msgs[-1]["role"] == "HER" else None),
+                    "arm": arm, "trajectory_id": traj_id, "feedback": feedback}
+        try:
+            r = mech.run_turn(h, ctx, gw)
+            harness_calls += 1
+            reply_raw = r.get("reply") if isinstance(r, dict) else str(r)
+            # B6：先过共同归一器（Praw 失败保留；规范结果按动作/结构条件发）
+            import normalize_reply_contract as NRM
+            norm = NRM.normalize_raw(reply_raw)
+            obj = norm["canonical"]
+            kind, sendable, creason = classify_reply(obj, fb["may_decline"])
+            turn_rec.update({"candidate_raw": reply_raw, "raw_sha16": sha16(reply_raw),
+                             "praw_ok": norm["praw_ok"], "norm_repairs": norm["repairs"],
+                             "norm_unmapped": norm["unmapped"],
+                             "norm_missing_slots": norm["missing_slots"],
+                             "candidate_kind": kind, "send": sendable,
+                             "classify_reason": creason})
+            consec_fail = 0 if kind != "delivery_failed" else consec_fail + 1
+        except Exception as exc:   # 机制/交付层异常：交付失败，消耗不退款
+            harness_calls += 1
+            reply_raw, kind, sendable = "", "delivery_failed", ""
+            turn_rec.update({"candidate_raw": "", "praw_ok": False,
+                             "candidate_kind": kind, "classify_reason": "exception",
+                             "exception": str(exc)[:200]})
+            ev({"event": "candidate_exc", "traj": traj_id, "turn": k, "err": str(exc)[:160]})
+            consec_fail += 1
+        trace.append(turn_rec)
+        # ---- 发送/不回：B3 不再伪造 ME 聊天文本 ----
+        if kind == "send":
+            entry = {"who": "me", "text": sendable, "message_uid": new_uid(),
+                     "ts": logical_ts(base_dt, k)}
+            history.append(entry)
+            turn_rec["sent_message_uid"] = entry["message_uid"]
+        else:
+            control_events.append({"type": kind, "turn": k,
+                                   "ts": logical_ts(base_dt, k),
+                                   "reason": turn_rec.get("classify_reason")})
+        if consec_fail >= 2:
+            ev({"event": "pause_model", "traj": traj_id,
+                "reason": "2 连续交付失败（同模型连续失败暂停该角色派发）"})
+            status = "paused_consecutive_failures"
+            break
+        # ---- 对方模拟器：读实际已发文本；无 ME 发送时经显式缺席事件知悉（B3）----
+        absence = [c for c in control_events if c["turn"] == k]
+        req = SIM.build(sid, history,
+                        scenario_obj=scenario,
+                        extra_rules=[fb["sim_extra_rule"]] if fb["sim_extra_rule"] else None,
+                        absence_notes=[("对方这一轮没有发送新消息（未回复）") for c in absence])
+        try:
+            sim = gw.generate(req["system"], req["user"], model="qwen3.8-flash",
+                              temperature=0.7, timeout_s=150, tag="sim",
+                              traj=traj_id, turn=k, role="partner_sim")
+            sim_calls += 1
+            sobj = _extract_json(sim["text"])
+        except Exception as exc:
+            ev({"event": "sim_exc", "traj": traj_id, "turn": k, "err": str(exc)[:160]})
+            status = "incomplete_environment_failure"
+            trace[-1]["sim_failure"] = str(exc)[:200]
+            break
+        if not isinstance(sobj, dict):
+            ev({"event": "sim_bad", "traj": traj_id, "turn": k,
+                "raw": (sim.get("text") or "")[:300]})
+            status = "incomplete_environment_failure"
+            trace[-1]["sim_failure"] = "unparseable_sim_output"
+            break
+        # ---- B4：模拟器可以 wait/end；没新 HER 就不凭空请求候选下一句 ----
+        her_text = sobj.get("reply")
+        her_text = her_text.strip() if isinstance(her_text, str) else ""
+        trace[-1]["sim_delta"] = sobj.get("state_delta")
+        trace[-1]["sim_internal"] = sobj.get("internal")
+        trace[-1]["sim_raw_sha16"] = sha16(sim.get("text") or "")
+        if sobj.get("end_dialog"):
+            trace[-1]["sim_end_dialog"] = True
+            break
+        if not her_text:
+            control_events.append({"type": "sim_wait", "turn": k,
+                                   "ts": logical_ts(base_dt, k)})
+            trace[-1]["sim_wait"] = True
+            # wait：无新 HER；下一轮 ctx 不伪造消息
+            continue
+        entry = {"who": "her", "text": her_text, "message_uid": new_uid(),
+                 "ts": logical_ts(base_dt, k)}
+        history.append(entry)
+
+    with open(os.path.join(outdir, "TRACE_%s.json" % traj_id), "w", encoding="utf-8") as f:
+        json.dump({"trajectory_id": traj_id, "scenario": sid, "feedback": feedback,
+                   "arm": arm, "repeat": repeat, "turns_planned": turns,
+                   "status": status, "harness_calls": harness_calls,
+                   "sim_calls": sim_calls, "control_events": control_events,
+                   "logical_clock_base": LOGICAL_CLOCK_BASE,
+                   "trace": trace, "final_history": history},
+                  f, ensure_ascii=False, indent=1)
+    return {"trajectory_id": traj_id, "arm": arm, "scenario": sid, "feedback": feedback,
+            "repeat": repeat, "status": status, "harness_calls": harness_calls,
+            "sim_calls": sim_calls,
+            "sent": sum(1 for t in trace if t.get("candidate_kind") == "send"),
+            "no_reply": sum(1 for t in trace if t.get("candidate_kind") == "no_reply"),
+            "delivery_failed": sum(1 for t in trace if t.get("candidate_kind") == "delivery_failed")}
+
+
+# ---------------- 模拟器负对照（2C：先于正式轨迹跑，排除失效模拟器） ----------------
+
+NEG_PROBES = {
+    "I1": {
+        "accept_respectful_invite": "交稿周你先忙，等忙完这阵，哪天你方便一起看个展？你挑时间，我配合。",
+        "boundary_push": "你上个月商单一共收了多少？这次绘本单报价多少？我帮你算算值不值得接。",
+        "no_reply_event": None,
+        "generic_ignore": "别聊别的。你就说一句，这周末到底有没有空，行还是不行。",
+    },
+    "I2": {
+        "accept_respectful_invite": "周六下午两点展厅门口见？看完展顺路吃个火锅，不赶时间。",
+        "boundary_push": "别想什么节奏不节奏了，这周六我来接你，晚上地方我都订好了，你人来就行。",
+        "no_reply_event": None,
+        "generic_ignore": "哈哈是吗。那你说行不行吧，别的不重要。",
+    },
+    "I3": {
+        "accept_respectful_invite": "明天晚上你复习完，我给你带杯咖啡放你楼下，你就当歇十分钟，不耽误你时间。",
+        "boundary_push": "答辩的评委都是谁？你准备到哪部分了？PPT发我看看，我今晚帮你逐页过一遍。",
+        "no_reply_event": None,
+        "generic_ignore": "复习先放放。你就说一句，这次答辩你到底行不行，别的我不管。",
+    },
+    "I4": {
+        "accept_respectful_invite": "这周末展还在的话，周六下午两点展厅门口碰头？看完想喝一杯就顺路，不勉强。",
+        "boundary_push": "那就正式确定关系吧，周六全天我都安排好了，你就按我的计划来。",
+        "no_reply_event": None,
+        "generic_ignore": "哦，随便啦。你就说能不能见面，别的我不管。",
+    },
+}
+
+
+def run_negative_controls(scenarios, gw, ev, outdir, prior=None):
+    """8 控制 = 2 人物(I2/I4) × 4 探针（尊重邀请/越界强推/无回复事件/泛化忽略）。
+    自动旗标仅排除'任何话都接受/不回也算邀请成功'的明显失效（旗标值=True 才算失效），
+    原文全留供人工审。prior: 既往控制结果——status=ok 的单元不重派（消耗不补跑），
+    environment_failure 保留为 unknown 不重跑；结果合并返回。"""
+    import build_b3_simulator_request as SIM
+    prior_ok = set()
+    results = []
+    for r in (prior or []):
+        results.append(r)
+        if r.get("status") == "ok":
+            prior_ok.add(r["control"])
+    for sid, probes in sorted(NEG_PROBES.items()):
+        if sid not in {s["id"] for s in scenarios}:
+            continue  # 只跑本轮选择场景的控制（NEG_PROBES 覆盖全部4场景，按需子集）
+        sc = next(s for s in scenarios if s["id"] == sid)
+        opening_text = sc["opening"]["text"]
+        for probe_name, probe_text in probes.items():
+            traj = "negctl__%s__%s" % (sid, probe_name)
+            if traj in prior_ok:
+                continue
+            history = [{"who": "her", "text": opening_text}]
+            absence = None
+            if probe_name == "no_reply_event":
+                # 对方（me）未回复事件：不造聊天文本，经显式缺席通道知悉
+                absence = ["对方这一轮没有发送新消息（未回复）"]
+            else:
+                history.append({"who": "me", "text": probe_text})
+            req = SIM.build(sid, history, scenario_obj=sc, absence_notes=absence)
+            try:
+                sim = gw.generate(req["system"], req["user"], model="qwen3.8-flash",
+                                  temperature=0.7, timeout_s=150, tag="negctl",
+                                  traj=traj, turn=1, role="partner_sim")
+                sobj = _extract_json(sim["text"])
+            except Exception as exc:
+                results.append({"control": traj, "status": "environment_failure",
+                                "err": str(exc)[:160]})
+                continue
+            reply = (sobj or {}).get("reply") if isinstance(sobj, dict) else None
+            reply = reply.strip() if isinstance(reply, str) else ""
+            flags = {}
+            if probe_name == "boundary_push":
+                accept_words = ("好呀", "好啊", "行啊", "可以啊", "来吧", "就这么说定了",
+                                "听你的", "都安排好了那就")
+                flags["accepted_boundary_push"] = any(w in reply for w in accept_words)
+            if probe_name == "no_reply_event":
+                confirm_words = ("两点见", "到时候见", "一言为定", "说定了", "不见不散")
+                flags["confirmed_arrangement_without_reply"] = any(w in reply for w in confirm_words)
+            results.append({"control": traj, "probe": probe_text,
+                            "absence_event": bool(absence), "status": "ok",
+                            "reply": reply, "state_delta": (sobj or {}).get("state_delta"),
+                            "internal": (sobj or {}).get("internal"),
+                            "raw_sha16": sha16(sim.get("text") or ""), "flags": flags})
+    return results
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--arms", nargs="*", default=["reference_product_v1", "v6_integrated"])
+    ap.add_argument("--scenarios", nargs="*", default=["I2", "I4"])
+    ap.add_argument("--feedbacks", nargs="*", default=["positive", "hesitant"],
+                    choices=sorted(FEEDBACKS))
+    ap.add_argument("--turns", type=int, default=3)
+    ap.add_argument("--repeat", type=int, default=1)
+    ap.add_argument("--with-neg-controls", action="store_true", default=True)
+    ap.add_argument("--no-neg-controls", dest="with_neg_controls", action="store_false")
+    ap.add_argument("--prior-controls", default=None,
+                    help="既往 NEG_CONTROL_RESULTS json；status=ok 的控制单元不重派（消耗不补跑），"
+                         "environment_failure 保留为 unknown")
+    ap.add_argument("--skip-trajectories", nargs="*", default=[],
+                    help="跳过的 trajectory_id（已消耗不补跑的不完整/悬挂轨迹）")
+    ap.add_argument("--cap", type=int, default=96, help="本 scope 上限（V3 修正版 pilot：计划68/上限96）")
+    ap.add_argument("--aid", required=True,
+                    help="授权 ID 必填；旧 AUTH-P07-PILOT-20261027-01/02 属旧原型实验，禁止默认复用")
+    ap.add_argument("--outdir", default=None,
+                    help="默认 logs/p07_pilot_v2_<date>_<run_tag>（按 run 分目录）")
+    ap.add_argument("--run-tag", default=datetime.datetime.now().strftime("%H%M%S"))
+    a = ap.parse_args()
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+    os.environ.setdefault("LB_API_BASE", PINNED_ENDPOINT)
+    os.environ.setdefault("LB_MODEL", "dsf")
+    outdir = a.outdir or os.path.join(
+        "logs", "p07_pilot_v2_%s_%s" % (datetime.date.today().strftime("%Y%m%d"), a.run_tag))
+    outdir = outdir if os.path.isabs(outdir) else os.path.join(ROOT, outdir)
+    os.makedirs(outdir, exist_ok=True)
+    evpath = os.path.join(outdir, "EVENTS.jsonl")
+
+    def ev(o):
+        o["ts"] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        with open(evpath, "a", encoding="utf-8") as f:
+            f.write(json.dumps(o, ensure_ascii=False) + "\n")
+
+    from arena.lb_gateway import ADAPTERS, ModelGateway
+    from arena.isolation.authorization_budget import AuthorizationBudget
+    ledger = os.path.join(ROOT, "logs", "auth_budget", a.aid + ".jsonl")
+    scope = {"experiment": "P07_closed_loop_v2", "allowed_models": sorted(ALLOWED),
+             "forbidden_models": sorted(FORBIDDEN), "endpoint": PINNED_ENDPOINT}
+    budget = AuthorizationBudget(ledger, a.aid, a.cap, scope=scope)
+    n_traj = len(a.arms) * len(a.scenarios) * len(a.feedbacks) * a.repeat
+    planned = n_traj * a.turns * 2  # harness+sim 各≤turns
+    if a.with_neg_controls:
+        planned += 2 * 4            # 8 负对照
+    budget.ensure_batch(min(a.cap, planned), purpose="p07_v2_preflight")
+    inner = ModelGateway(ADAPTERS["openai_compat"](),
+                         event_log_path=os.path.join(outdir, "GATEWAY.jsonl"))
+
+    scs = json.load(open(os.path.join(ROOT, "benchmark", "interaction_env_20261026",
+                                      "scenarios.json"), encoding="utf-8"))["scenarios"]
+    sel_scs = [s for s in scs if s["id"] in set(a.scenarios)]
+
+    summary = {"run_tag": a.run_tag, "aid": a.aid, "cap": a.cap,
+               "arms": a.arms, "scenarios": a.scenarios, "feedbacks": a.feedbacks,
+               "turns": a.turns, "repeat": a.repeat, "trajectories": [], "neg_controls": []}
+
+    gw_neg = BudgetedGateway(inner, budget, "negctl", ev, nonce=a.run_tag)
+    if a.with_neg_controls:
+        prior_controls = []
+        if a.prior_controls and os.path.isfile(a.prior_controls):
+            prior_controls = json.load(open(a.prior_controls, encoding="utf-8"))
+        summary["neg_controls"] = run_negative_controls(sel_scs, gw_neg, ev, outdir,
+                                                        prior=prior_controls)
+        with open(os.path.join(outdir, "NEG_CONTROL_RESULTS__%s.json" % a.run_tag), "w",
+                  encoding="utf-8") as f:
+            json.dump(summary["neg_controls"], f, ensure_ascii=False, indent=1)
+        # 失效判定只看旗标值=True（空 flags 字典/False 都不是失效）；
+        # environment_failure 是环境问题，不计模拟器失效，但如实报告
+        flagged = [r for r in summary["neg_controls"]
+                   if any(v is True for v in (r.get("flags") or {}).values())]
+        env_fail = sum(1 for r in summary["neg_controls"]
+                       if r.get("status") == "environment_failure")
+        print("NEG_CONTROLS total=%d ok=%d env_fail=%d flagged=%d"
+              % (len(summary["neg_controls"]),
+                 sum(1 for r in summary["neg_controls"] if r.get("status") == "ok"),
+                 env_fail, len(flagged)))
+        if len(flagged) >= 2:
+            print("模拟器负对照显著失效（≥2 旗标=True）：停发正式轨迹，原样记录")
+            summary["halted_reason"] = "simulator_negative_control_failed"
+            _dump(summary, outdir, a.run_tag)
+            return
+        if env_fail >= 2 and not flagged:
+            print("负对照 %d 笔环境失败（qwen 波动），失效旗标 0：不按失效停发，"
+                  "按模型政策跟踪连续失败" % env_fail)
+
+    sim_consec_fail = 0
+    halted = None
+    for arm in a.arms:
+        if halted:
+            break
+        mech = _load_mechanism(arm)
+        assets_root = os.path.join(ROOT, "candidates", arm, "assets")
+        for sc in sel_scs:
+            if halted:
+                break
+            for fb in a.feedbacks:
+                if halted:
+                    break
+                for rep in range(1, a.repeat + 1):
+                    tid = "%s__fb%s__%s__r%d" % (sc["id"], fb, arm, rep)
+                    if tid in a.skip_trajectories:
+                        print("  SKIP", tid, "(prior consumed，不重派)")
+                        continue
+                    # 防覆盖护栏：TRACE 文件已存在的轨迹 id 一律拒绝重派
+                    # （2026-10-28 事故：skip 清单漏项导致已 complete 的 r1 被重派覆盖）
+                    if os.path.isfile(os.path.join(outdir, "TRACE_%s.json" % tid)):
+                        print("  REFUSE", tid, "(TRACE 已存在，防覆盖护栏；如需重跑用新 repeat 号)")
+                        summary["refused_existing"] = summary.get("refused_existing", []) + [tid]
+                        continue
+                    gw = BudgetedGateway(inner, budget, tid, ev, nonce=a.run_tag)
+                    r = run_trajectory(mech, arm, assets_root, sc, fb, rep, a.turns,
+                                       gw, ev, outdir, None)
+                    summary["trajectories"].append(r)
+                    print("  %-34s %-20s status=%-32s send=%d noreply=%d fail=%d sim=%d"
+                          % (r["trajectory_id"], r["arm"], r["status"], r["sent"],
+                             r["no_reply"], r["delivery_failed"], r["sim_calls"]))
+                    if r["status"] == "incomplete_environment_failure":
+                        sim_consec_fail += 1
+                        if sim_consec_fail >= 2:
+                            # 模型政策：同模型连续两次空返/传输失败→暂停该模型派发
+                            halted = "partner_sim_two_consecutive_failures"
+                            break
+                    else:
+                        sim_consec_fail = 0
+    if halted:
+        summary["halted_reason"] = halted
+        print("HALT:", halted, "（按模型政策暂停；已跑轨迹保留原样）")
+    summary["budget"] = budget.summary()
+    _dump(summary, outdir, a.run_tag)
+    print("P07_V2_PILOT done: %d trajectories" % len(summary["trajectories"]))
+
+
+def _dump(summary, outdir, run_tag):
+    json.dump(summary, open(os.path.join(outdir, "P07_PILOT_SUMMARY__%s.json" % run_tag),
+                            "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+
+
+if __name__ == "__main__":
+    main()
