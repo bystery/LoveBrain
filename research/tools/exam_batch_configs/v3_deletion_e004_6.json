@@ -1,0 +1,33 @@
+{
+  "batch_id": "BATCH-V3-DELETION-20261024",
+  "protocol": "refs/experiment_protocol_20261023/mainline_independent_review_20261024/REVIEW_AND_EXECUTE.md §3/§7-P0",
+  "hypothesis": "资产删减：精简 system(v3_system_slim) vs 原版重 system(reference_product_v1)，同记忆/同题/同卡/同采样；测意图/事实/互动是否变差、主动性/调侃/推进是否改善、真实 token/时延变化",
+  "primary_variable": "仅 system 资产(长度+内容)；记忆机制逐字同、输出契约同（见 test_v3_slim_replay 24/24 装配同）",
+  "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "v3_system_slim"
+  },
+  "episode_order": [
+    { "episode": "E004", "arm_order": "parent_first" },
+    { "episode": "E005", "arm_order": "candidate_first" },
+    { "episode": "E006", "arm_order": "parent_first" }
+  ],
+  "episodes_note": "修订版公开开发集 E004/E005/E006（r2-20261024，未参与回忆实验调参）；两臂使用同一修订版",
+  "cards_path": "benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json",
+  "recall_capable": false,
+  "recall_capable_note": "v3_system_slim 无 v2 式【回忆】新增段：recall/injection 指标记 N/A，不伪报通过、不强塞检查；token 收益用跨臂 user prompt 长差（通用诊断）+ 分层 tokens/latency 报告",
+  "frozen_config": {
+    "endpoint": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "temperature": 0.7
+  },
+  "budget": {
+    "authorization_level": true,
+    "separate_from_48_recall": true,
+    "fail_fast": true,
+    "no_makeup_pairing": true,
+    "full_batch_preflight": "execute_plan 首发前 ensure_batch(48)",
+    "note": "AUTH-EXAM1-20261023-01 已 CLOSED(24/24)，不得挪用于 v3；本批需一份全新、逐字绑定端点/model/temp、覆盖整批 48 的授权"
+  },
+  "optional_third_arm": "v0_minimal_events 作公平最小对照候选，独立预算另列，本首选清单不含"
+}

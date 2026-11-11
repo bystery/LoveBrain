@@ -1,0 +1,29 @@
+{
+  "batch_id": "BATCH-S1-ACTION-20261028",
+  "protocol": "refs/experiment_protocol_20261023/deadline_quality_20261028/QUALITY_FIRST_DEADLINE_ORDER.md §4-B",
+  "hypothesis": "action_policy_r1（v6_integrated + 五项行动/合同/目标/钩子/修复/自 grounding 修订）在固定连续故事上是否比忠实原版更有能力：目标让位与推进、接住钩子、失败修复、不越权推进、无据编造。质量一级；token/时延只作附表。",
+  "primary_variable": "仅候选侧行动策略五修订（flag 门控，全关=逐字节回到 v6_integrated）；两臂同一公共装配/同一题面/同一卡/同一采样",
+  "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "action_policy_r1"
+  },
+  "episode_order": [
+    { "episode": "E024", "arm_order": "parent_first" },
+    { "episode": "E027", "arm_order": "candidate_first" },
+    { "episode": "E031", "arm_order": "parent_first" },
+    { "episode": "E034", "arm_order": "candidate_first" }
+  ],
+  "episodes_note": "Stage2 公开开发集 4 族各一（普通朋友/调侃搭子/渐暧昧邀约+取消改期/长期事实纠错+第三人），12 位/故事=48 位×2 臂=96 生成；E027_T03 原子语义支撑缺陷已于封板前修正（.bak 保留，无旧批使用）",
+  "cards_path": "benchmark/stories_v2/stage2/GRADING_CARDS_E024_E027_E031_E034.json",
+  "recall_capable": false,
+  "recall_capable_note": "action_policy_r1 无 v2 式【回忆】新增段（继承 v6_integrated）：recall/injection 指标如实记 N/A，不伪报通过；知识能力用知识链六项逐位审",
+  "frozen_config": { "endpoint": "http://127.0.0.1:17770/v1", "model": "dsf", "temperature": 0.7 },
+  "budget": {
+    "authorization_level": true,
+    "purpose_split": "S1 固定故事 96 独立登记，不与 S2 反馈锚点/S3 父子归因混账",
+    "fail_fast": true,
+    "no_makeup_pairing": true,
+    "full_batch_preflight": "execute_plan 首发前 ensure_batch(96)",
+    "note": "既有持续授权内登记有限 scope；不复活 CLOSED 单，不加新总帽，失败照样记账"
+  }
+}

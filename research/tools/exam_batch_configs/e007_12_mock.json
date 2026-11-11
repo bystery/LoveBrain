@@ -1,0 +1,14 @@
+{
+  "batch_id": "MOCK-E007-E012-LOAD",
+  "arm_map": { "parent": "reference_product_v1", "candidate": "v3_system_slim" },
+  "episode_order": [
+    { "episode": "E007", "arm_order": "parent_first" },
+    { "episode": "E008", "arm_order": "candidate_first" },
+    { "episode": "E009", "arm_order": "parent_first" },
+    { "episode": "E010", "arm_order": "candidate_first" },
+    { "episode": "E011", "arm_order": "parent_first" },
+    { "episode": "E012", "arm_order": "candidate_first" }
+  ],
+  "cards_path": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "recall_capable": false
+}

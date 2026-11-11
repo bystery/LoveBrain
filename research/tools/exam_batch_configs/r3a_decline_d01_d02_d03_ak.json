@@ -1,0 +1,24 @@
+{
+  "batch_id": "BATCH-R3A-DECLINE-20261028",
+  "protocol": "refs/experiment_protocol_20261023/deadline_quality_20261028/FINAL_VERDICT_20261028.md §8（FIX-9 修复后必须新身份真实复验，修复前后分列）",
+  "hypothesis": "action_policy_r2 在 D01_T08/D02_T08 两格（她报成果后道谢告别）选择了不回，而两张卡的 acceptable 里没有不回；r2 的菜单还会在 may_decline=false 的 忙碌/暂缓 轮给出不回语义的 收尾（E024_T10/E031_T09/D01_T03 实测 3 处）。action_policy_r3 把不回收敛到唯一动作 停、并要求她明确给过免回授权：受影响格应改为发一句认可；AK09/AK12（她明确 别等/结果出来我再说）应继续允许不回；D03 定向复验格（成果+推后细节、拒绝要接住、委屈无免回）不得出现不回；D03_T04/T06（明确免回）允许不回。",
+  "primary_variable": "候选侧 FIX-9 不回范围收窄 + 成果/求助必须接住；父臂=action_policy_r2（同一计划内配对，修复前=父臂），候选臂=action_policy_r3（新身份）；两臂同题面/同卡/同采样/同公共装配",
+  "arm_map": { "parent": "action_policy_r2", "candidate": "action_policy_r3" },
+  "episode_order": [
+    { "episode": "D01", "arm_order": "parent_first" },
+    { "episode": "D02", "arm_order": "candidate_first" },
+    { "episode": "D03", "arm_order": "parent_first" },
+    { "episode": "AK09", "arm_order": "candidate_first" },
+    { "episode": "AK12", "arm_order": "parent_first" }
+  ],
+  "episodes_note": "D01/D02 = D1 批同一题面（8 位，受影响格 T06/T08 + 12 个退化对照格）；D03 = 定向复验新材料（6 位，作者知道答案，见其 exposure.json 与 audit.md §0）；AK09/AK12 = 合法不回对照（1 位）。全部题面与卡在本批之前已冻结。",
+  "cards_path": "benchmark/stories_v2/stageD/GRADING_CARDS_R3_DECLINE.json",
+  "cards_note": "跨素材族逐字合并（24 卡，sha 见文件 sources）；D01/D02 卡与 D1 批完全同一份内容，D03 卡由 reference.json 派生后合并，未改任何既有卡。",
+  "recall_capable": false,
+  "recall_capable_note": "无 v2 式【回忆】段：recall/injection 记 N/A",
+  "frozen_config": { "endpoint": "http://127.0.0.1:17770/v1", "model": "dsf", "temperature": 0.7 },
+  "budget": { "authorization_level": true, "purpose_split": "R3A 独立账本（AUTH-P08-R3A），不与 S1/S2/S2R/S3/D1 混用额度",
+              "fail_fast": true, "no_makeup_pairing": true,
+              "note": "5 题面×位数 24 位×2 臂=48 次真实生成；一物理请求一 attempt，失败照样记账，不补配对、不复活旧单" },
+  "honest_boundary": "本批只测 FIX-9 一项（r2→r3 唯一差异），因此可以单独归因；但同一候选在 S1/S2 类题目上的整体质量不因本批而改变——本批不构成本动摇/推翻主比较，只回答'过度沉默是否修好、合法不回是否保住、其他位点是否退化'。r2 侧的答卷在本批是**新生成**（不是复用 D1 批旧答卷），确保配对同条件；D1 旧答卷只用于三分对照的描述，不进入本批配对统计。"
+}

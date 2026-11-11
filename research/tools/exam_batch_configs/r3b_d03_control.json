@@ -1,0 +1,20 @@
+{
+  "batch_id": "BATCH-R3B-D03-CONTROL-20261028",
+  "protocol": "refs/experiment_protocol_20261023/deadline_quality_20261028/QUALITY_FIRST_DEADLINE_ORDER.md §4-D（新材料上的两臂真实对照）",
+  "hypothesis": "D03 是 r3 之前从未见过的题面（定向复验材料）。本批只回答一件事：在 D03 的 6 个位点上，忠实原版 reference_product_v1 与 action_policy_r3 谁更符合卡面要求——特别是 3 个'必须接住'格（T02 拒绝/T03 成果/T05 委屈）与 2 个'可以不回'格（T04 明确别等/T06 明确结果出来她再说）。不回是否合法由卡面判，不由评分器绿灯判。",
+  "primary_variable": "完整 harness：忠实原版 vs action_policy_r3；同题面/同卡/同采样/同公共装配；与 R3A 同一份冻结卡与题面，仅臂不同",
+  "arm_map": { "parent": "reference_product_v1", "candidate": "action_policy_r3" },
+  "episode_order": [
+    { "episode": "D03", "arm_order": "candidate_first" }
+  ],
+  "episodes_note": "D03 租房续约/半马/膝盖六轮（定向复验材料，作者知道答案；见 benchmark/stories_v2/stageD/D03/audit.md §0）。与 R3A 同一份 episode.json（sha 5f997563…）。",
+  "cards_path": "benchmark/stories_v2/stageD/GRADING_CARDS_R3_DECLINE.json",
+  "cards_note": "与 R3A 同一份冻结卡（D03 六卡由 reference.json 逐字派生），不改题不改卡。",
+  "recall_capable": false,
+  "recall_capable_note": "无 v2 式【回忆】段：recall/injection 记 N/A",
+  "frozen_config": { "endpoint": "http://127.0.0.1:17770/v1", "model": "dsf", "temperature": 0.7 },
+  "budget": { "authorization_level": true, "purpose_split": "R3B 独立账本（AUTH-P08-R3B），不与 R3A/S1/S2/S2R/S3/D1 混用",
+              "fail_fast": true, "no_makeup_pairing": true,
+              "note": "1 题面×6 位×2 臂=12 次真实生成；一物理请求一 attempt，失败照样记账" },
+  "honest_boundary": "D03 由实施 worker 本人撰写（已读候选答卷），它只能证伪'FIX-9 是否只在原三格成立'，不能证明跨域泛化；'作者知道答案'这一事实无法在本轮消除，只能标注。"
+}

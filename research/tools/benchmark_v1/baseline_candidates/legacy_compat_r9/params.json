@@ -1,0 +1,7 @@
+{
+  "role": "baseline",
+  "arm_id": "LEGACY_COMPAT_R9",
+  "benchmark_v1_phase": "phase2",
+  "output_contract": null,
+  "note": "经输入适配的历史版本，非原版。薄包装 candidates/action_policy_r9_slim（运行时闭包 r9_slim→r2→r1→v6→v5→reference_product_v1，按绝对路径 importlib 复用其模块，原候选零改动）：仅在 init 前把 wave 系 dict 型 persona.me/her 确定性降为旧版闭包期望的字符串形式（r1 mechanism.py:270 _seed_facts 对 persona.me/her 调 .strip() 在 dict persona 上 AttributeError）；str 型 persona、initial_kb、persona 其它键原样透传；init/run_turn/snapshot/restore/set_memory_access/build_system_prompt 全部转发原机制。output_contract 与 r9_slim 对齐：原 params.json 即 output_contract=null，此处同为 null（load_contract 返回 None 语义一致）。身份哈希见 refs/benchmark_v1_20261107/phase1/ARM_REGISTRY.json 的 LEGACY_COMPAT_R9 条目与 refs/benchmark_v1_20261107/phase2/LEGACY_COMPAT_REPORT.md。"
+}

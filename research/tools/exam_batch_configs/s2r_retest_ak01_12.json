@@ -1,0 +1,31 @@
+{
+  "batch_id": "BATCH-S2R-FIX-20261028",
+  "protocol": "refs/experiment_protocol_20261023/deadline_quality_20261028/QUALITY_FIRST_DEADLINE_ORDER.md §4-C（故障族根因修复后真实复验）",
+  "hypothesis": "S2 真实批暴露的三处候选侧缺口（合法不回无法在输出合同里表达、单 JSON 结构提前闭合/键名写坏/directions 超槽、无据回扣她没说过的旧事）修复后：(1) 收尾轮的 no_reply 能被评分器识别且不再产生零可发正文；(2) 非收尾位点的积极推进不因此保守化；(3) 结构类故障率下降。原版 vs action_policy_r2（新身份）。",
+  "primary_variable": "候选侧 FIX-6 不回表达 + FIX-7 单 JSON 硬约束 + FIX-8 回扣有据；两臂同一公共装配/同一锚点/同一卡/同一采样（dsf/0.7/17770/v1）",
+  "arm_map": { "parent": "reference_product_v1", "candidate": "action_policy_r2" },
+  "episode_order": [
+    { "episode": "AK01", "arm_order": "candidate_first" },
+    { "episode": "AK02", "arm_order": "parent_first" },
+    { "episode": "AK03", "arm_order": "candidate_first" },
+    { "episode": "AK04", "arm_order": "parent_first" },
+    { "episode": "AK05", "arm_order": "candidate_first" },
+    { "episode": "AK06", "arm_order": "parent_first" },
+    { "episode": "AK07", "arm_order": "candidate_first" },
+    { "episode": "AK08", "arm_order": "parent_first" },
+    { "episode": "AK09", "arm_order": "candidate_first" },
+    { "episode": "AK10", "arm_order": "parent_first" },
+    { "episode": "AK11", "arm_order": "candidate_first" },
+    { "episode": "AK12", "arm_order": "parent_first" }
+  ],
+  "episodes_note": "与 S2 完全同一 12 锚点、同一卡、同一请求位；交错顺序整体取反（S2 里 AK01 是 parent_first，本批是 candidate_first），使'配对方向'不成为本批与 S2 之间的混淆变量。受影响条件：AK06/AK09/AK12（may_decline=true，其中 AK09/AK12 上一批因不回无法表达被判零可发）；退化对照条件：其余 9 个非收尾位点（必须仍然主动推进，不得被'允许不回'训成一律收声）。",
+  "cards_path": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+  "cards_note": "与 S2 同一份已冻结卡文件（sha 不变）：复验不得改题改卡，否则'修复有效'不可比。",
+  "recall_capable": false,
+  "recall_capable_note": "无 v2 式【回忆】段：recall/injection 记 N/A；锚点只测反馈/目标机会，单列统计不并入 S1 均分",
+  "frozen_config": { "endpoint": "http://127.0.0.1:17770/v1", "model": "dsf", "temperature": 0.7 },
+  "budget": { "authorization_level": true, "purpose_split": "S2R 独立账本（AUTH-P08-S2R），不与 S1/S2/S3/D1 混用额度",
+              "fail_fast": true, "no_makeup_pairing": true,
+              "note": "既有持续授权内有限登记；一物理请求一 attempt，失败照样记账，不补配对、不复活旧单" },
+  "honest_boundary": "本批 candidate 同时带三项修复，只能证明'故障族是否消失+是否退化'，不能单独归因到哪一项（逐项消融 3×12 次已登记为欠账）。S2 的 r1 答卷只作修复前对照分列，不套用为本批成绩。"
+}

@@ -1,0 +1,9 @@
+{
+  "role": "baseline",
+  "arm_id": "DIRECT",
+  "benchmark_v1_phase": "phase1",
+  "output_contract": {
+    "may_decline": true
+  },
+  "note": "Benchmark V1 Phase1 A 组：最小直接提示基线。轻量输出契约 {action, recommended}；无 LoveBrain 记忆/阶段/风格机制。主比较只用 recommended（normalize_output 固定规则，不挑最优备选）。"
+}

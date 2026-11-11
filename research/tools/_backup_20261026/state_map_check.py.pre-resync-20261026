@@ -1,0 +1,420 @@
+# -*- coding: utf-8 -*-
+"""tools/state_map_check.py — STATE_MAP_20261025.md 四栏权威索引的可重复校验器。
+
+只读：不写任何文件、不联网。对【现行权威】做存在性+哈希校验，对【历史保留】做存在性校验，
+对【诱饵】做存在性+标记+数量校验，对【噪声】做存在性+计数校验；并内置检索排除规则自测。
+输出 OK / WARN / MISMATCH 清单；存在 MISMATCH 时退出码 1。
+
+运行：  set PYTHONIOENCODING=utf-8 && D:\\anaconda\\python.exe D:\\lovebrain-arena\\tools\\state_map_check.py
+维护：  修改 STATE_MAP_20261025.md 四栏内容后，必须同步更新本文件期望表。
+"""
+import argparse
+import json
+import os
+import re
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+STATE_MAP = os.path.join(ROOT, 'STATE_MAP_20261025.md')
+
+# 检索/统计必须默认排除的目录与文件模式（STATE_MAP §0-3）
+EXCLUDE_DIR_PATTERNS = [
+    re.compile(r'.*acl_locked_.*'),          # 顶层 130 个 ACL 副本 + benchmark 内副本
+    re.compile(r'^dist$'),
+    re.compile(r'^isol_runs$'),
+    re.compile(r'^_archive_v1$'),
+    re.compile(r'^probe_fz$'),
+    re.compile(r'^drill_v2$'),
+    re.compile(r'^dryrun_v2$'),
+    re.compile(r'^t_l3b66_test_.*'),
+    re.compile(r'^_atk2_.*'),                # runs/ 下攻击演练
+    re.compile(r'^__pycache__$'),
+]
+EXCLUDE_FILE_PATTERNS = [re.compile(r'.*\.zip$')]
+
+# ---- 【A 现行权威】哈希表（sha16 = sha256 前16位；来源 ARCHIVE_INDEX_20261025 与本会话实测）----
+# sev: must=不一致即 FAIL（冻结证据，绝不该变）；soft=不一致 WARN（运行时/待修件，变更是预期，须同步更新 STATE_MAP）
+CURRENT_AUTHORITY_HASHED = [
+    ('evaluation/JUDGE_MANUAL_V1_1.md', 'dbbbf9cde656875e', 'must'),
+    ('evaluation/JUDGE_MANUAL_V1.md', '66e6286259bfbaae', 'must'),
+    ('benchmark/dev_expansion_v01/05_GRADING_CARDS_R2REV_20261025.json', '530a3cd66c6c67fa', 'must'),
+    ('evaluation/CARD_CONFLICTS_V1.json', '391fcac175115514', 'must'),
+    ('evaluation/DELIVERY_AND_COST_COLUMNS_V2.json', '61150f23ad4c2285', 'must'),
+    ('evaluation/EVIDENCE_CORRECTIONS_V1.md', '258230bd8557fe29', 'must'),
+    ('evaluation/CALIBRATION_PACKET_V1_1/nodes_public.jsonl', '63cfe6801ae2d9cb', 'must'),
+    ('evaluation/CALIBRATION_PACKET_V1_1/nodes.jsonl', '5d96dd0711736331', 'must'),
+    ('evaluation/CALIBRATION_PACKET_V1_1/SEALED_KEY_V1_1.json', 'd758b75f5c268b7d', 'must'),
+    ('evaluation/CALIBRATION_PACKET_V1_1/REFERENCE_LABELS_V1_1.json', 'e8d06608eaa1ecf2', 'must'),
+    ('evaluation/CALIBRATION_PACKET_V1_1/FROZEN_MANIFEST.json', 'c41b3f968e18e386', 'must'),
+    ('evaluation/CALIBRATION_PACKET_V1_1/reference_overrides.json', 'd673fdf33b083d77', 'must'),
+    ('evaluation/CALIBRATION_PACKET_V1_1/CONTROLS_REF.json', '708bff7ffbea0abb', 'must'),
+    ('evaluation/CALIBRATION_PACKET_V1_1/CLAIMS_MECHANICAL.json', '15e31827504445f2', 'must'),
+    ('benchmark/positive_capability_20261025/01_EPISODES_P1.json', '0aae58594e0e4634', 'must'),
+    ('benchmark/positive_capability_20261025/02_GRADING_CARDS_P1.json', 'd0aeda20beb1f3bd', 'must'),
+    ('integration_preview/PRODUCT_WIRING_INVENTORY_V1.md', 'fafdcdcaaaf482f6', 'must'),
+    ('evaluation/JUDGE_QUALITY_THRESHOLDS_DECLARED_V1.md', '188a20fbc64278d7', 'must'),
+    ('refs/experiment_protocol_20261023/v5_next_batch_20261025/V5_INDEPENDENT_RESULTS_REV01.json', 'dabc54ee41a33b40', 'must'),
+    ('tools/test_stream_timing_v2.py', '2dfe0535516d4266', 'must'),
+    ('tools/test_stream_timing.py', 'c88c6d65cec255ac', 'must'),
+    ('tools/test_positive_capability_stories_p1.py', 'ed525c03054a86c2', 'must'),
+    ('tools/build_calibration_packet_v1_1.py', '69efdd3cbf077ab3', 'must'),
+    ('tools/build_reference_labels_v1_1.py', 'b411cb5d45d41665', 'must'),
+    ('refs/experiment_protocol_20261023/evaluation_baseline_review_20261025/HANDOFF_TO_NEXT_SESSION.md', '65cc8f9f5a35581e', 'must'),
+    ('refs/experiment_protocol_20261023/evaluation_baseline_review_20261025/WORKER_EXECUTION.md', '307314eabf3fb0c3', 'must'),
+    ('refs/experiment_protocol_20261023/evaluation_baseline_review_20261025/REVIEW.md', 'd4d32067406970fa', 'must'),
+    ('tools/run_judge_batch_v1_1.py', 'd48effa98087efb6', 'soft'),  # 已修复+续跑版（96批收口后再次确认）；再变更 → WARN 提示更新 STATE_MAP
+    ('tools/analyze_irr_v2.py', '7f3f44e1abdbd897', 'soft'),        # v2 分析器（含 not_rated 口径修正）；变更 → WARN
+    ('tools/test_judge_batch_v1_1_mock.py', 'e469bca6a5dc6ef3', 'soft'),  # 96批收口后再次确认
+    ('benchmark/positive_capability_20261025/03_CONTROLLED_BRANCHES_P1.json', 'f3c966299ee628cf', 'must'),
+    ('tools/test_controlled_branches_p1.py', '41c1d37960da9966', 'soft'),
+    ('tools/build_v5_evidence_review.py', 'ae0cac94bcc56b52', 'soft'),
+    ('arena/lb_gateway.py', '56867a44380fe03df4e84e945b1ed854a211d2f0b92d93b80b9e42d54e051d8e', 'soft'),  # 运行时身份，变更须更新 STATE_MAP §3-12
+]
+# 存在性校验（现行权威，无登记哈希）
+CURRENT_AUTHORITY_EXISTS = [
+    'AGENTS.md', 'OBJECTIVE.md', 'benchmark/rubric.md', 'STATE_MAP_20261025.md',
+    'evaluation/ARCHIVE_INDEX_20261025.md', 'evaluation/ARCHIVE_INDEX_20261025.json',
+    'evaluation/USER_CALIBRATION_SHEET_V1.md', 'evaluation/GOALS_AND_SCOPE_V1.md',
+    'refs/experiment_protocol_20261023/stream_integration_20261025/AUTHORIZATION.json',
+    'refs/experiment_protocol_20261023/stream_integration_20261025/INTERLEAVE_PLAN.json',
+    'refs/experiment_protocol_20261023/harness_performance_phase_20261025/AUTHORIZATION_PHASE.json',
+    'refs/experiment_protocol_20261023/harness_performance_phase_20261025/PERFORMANCE_AND_MAINLINE_EXECUTION.md',
+    'arena/lb_stream_timing.py', 'arena/api_candidate.py',
+    'arena/isolation/authorization_budget.py', 'tools/delivery_columns_v2.py',
+    'tools/state_map_check.py', 'tools/analyze_irr_v2.py',
+    'tools/test_judge_batch_v1_1_mock.py',
+    'tools/_backup_20261025/run_judge_batch_v1_1.py.pre-fix-20261025',
+    'integration_preview/engine_adapter.py', 'integration_preview/replay_fixture.py',
+    'integration_preview/KOTLIN_INTEGRATION_MAP.md',
+    'logs/exam1_20261023', 'logs/v3_deletion_live_20261024', 'logs/r2_ctx_live_20261024',
+    'logs/v5_ctx_live_20261025',
+]
+# 【B 历史保留只读】存在性（不得删除）
+HISTORICAL_READONLY_EXISTS = [
+    'evaluation/CALIBRATION_PACKET_V1/nodes.jsonl',
+    'evaluation/CALIBRATION_PACKET_V1/SEALED_KEY.json',
+    'evaluation/CALIBRATION_PACKET_V1/SEALED_CATEGORIES.json',
+    'evaluation/CALIBRATION_PACKET_V1/IRR_SUBSET_NORMAL.jsonl',
+    'evaluation/CALIBRATION_PACKET_V1/IRR_SUBSET_SWAPPED.jsonl',
+    'evaluation/CALIBRATION_PACKET_V1/RATINGS_R1.jsonl',
+    'evaluation/CALIBRATION_PACKET_V1/RATINGS_R2.jsonl',
+    'evaluation/CALIBRATION_PACKET_V1/RATINGS_R3.jsonl',
+    'evaluation/DELIVERY_AND_COST_COLUMNS_V1.json',
+    'evaluation/DELIVERY_AND_COST_COLUMNS_V1.md',
+    'evaluation/IRR_AGREEMENT_V1.json',
+    'evaluation/JUDGE_QUALITY_REPORT_V1.md',
+    'evaluation/TASK_MAP_AND_DATASET_V1.md',
+    'evaluation/STREAM_TIMING_PLUMBING_V1.md',
+    'tools/analyze_irr.py',
+    'tools/build_calibration_packet.py',
+    'tools/delivery_columns_offline.py',
+    'START_PROMPT.md', '指导书.md', '_ACL_LOCKED_LEDGER.json',
+    'refs/harness_api_mainline_20261022/HARNESS_API_MAINLINE_GUIDE_20261022.md',
+    'refs/experiment_protocol_20261023/HARNESS_OPTIMIZATION_EXECUTION_GUIDE_20261024.md',
+    'refs/experiment_protocol_20261023/EVALUATION_MASTER_DRAFT_20261025.md',
+    'refs/experiment_protocol_20261023/v5_next_batch_20261025/V5_VERDICT.md',
+    'refs/experiment_protocol_20261023/v5_next_batch_20261025/V5_VERDICT_REVISION_01.md',
+    'refs/arena_v1/CLOSEOUT_REPORT_V2_20261022.md',
+    'refs/arena_v1/CLOSEOUT_REPORT_V3_20261022.md',
+]
+# 【C 诱饵】目录 → 必含标记文件、期望文件数
+# 注：这两个 evil_link 是指向 refs/arena_v1 的 NTFS junction（同一 inode），
+# 所以"诱饵文件数"实际量的就是 refs/arena_v1 的文件数。2026-10-26 12:41
+# tools/test_baseline_parity.py 收证据时新写了可再生清单
+# refs/arena_v1/baseline_parity_fixtures.json（sha256 8a98bc31d6339ed1…），两目录同时 31→32。
+# 计数格保留不删：它的用途是"多出一个来源不明的文件必须被抓"，这次来源是已知生成器，故登记。
+DECOY_DIRS = {
+    'isol_runs/20261021_155732/attacker_run/evil_link': {
+        'markers': ['AUTHORIZATION_EXAM1.json', 'CLOSEOUT_REPORT_V2_20261022.md',
+                    'CLOSEOUT_REPORT_V3_20261022.md', 'APPROVAL_REQUEST_20261022.md'],
+        'files': 32},
+    'isol_runs/20261021_160056/attacker_run/evil_link': {
+        'markers': ['AUTHORIZATION_EXAM1.json', 'CLOSEOUT_REPORT_V2_20261022.md'],
+        'files': 32},
+}
+DECOY_FIXTURES = ['candidates/_attack_fixture', 'candidates/neg_a_amnesia',
+                  'candidates/neg_b_dumper', 'candidates/neg_c_service']
+# 【D 噪声】存在性
+NOISE_EXISTS = ['dist/arena_v1_pkg', '_archive_v1', 'probe_fz', 'drill_v2', 'dryrun_v2',
+                't_l3b66_test_j0cqwha3_clean', 'benchmark/_acl_locked_episodes',
+                'benchmark/_acl_locked_episodes_probe2']
+# 【D 噪声】计数（exact=必须一致；info=只提示，可合法增长）
+ACL_LOCKED_DIR_EXPECT = 130
+DIST_PKG_SNAPSHOTS_EXPECT = 49
+ROOT_ZIPS_EXPECT = 14
+LOGS_SUBDIRS_EXPECT = 117      # info：logs 会随新批次合法增长
+REFS_TOPLEVEL_EXPECT = 91      # info
+ACL_LOCKED_PREFIXES = ('arena', 'refs', 'benchmark_cases', 'benchmark_episodes', 'benchmark_anchors')
+
+# 账本期望
+PERF_LEDGER = 'logs/auth_budget/AUTH-HARNESS-PERF-PHASE1-20261025-01.jsonl'
+PERF_LEDGER_CAP = 256
+PERF_LEDGER_USED = 4
+V5_LEDGER = 'logs/auth_budget/AUTH-V5-CTX-20261025-01.jsonl'
+R2_LEDGER = 'logs/auth_budget/AUTH-R2-CTX-20261024-01.jsonl'
+V3_LEDGER = 'logs/auth_budget/AUTH-V3-DELETION-20261024-01.jsonl'
+JUDGE_LEDGER = 'logs/auth_budget/AUTH-EVAL-JUDGE-20261025-01.jsonl'   # 必须"尚不存在"，直到包C 启动
+STREAM_LEDGER = 'logs/auth_budget/AUTH-STREAM-INT-20261025-01.jsonl'  # 必须"尚不存在"，直到 D5 启动
+
+
+def sha256_file(path):
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, 'rb') as f:
+        for chunk in iter(lambda: f.read(1 << 20), b''):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def is_excluded_dir(name):
+    return any(p.match(name) for p in EXCLUDE_DIR_PATTERNS)
+
+
+def is_excluded_file(name):
+    return any(p.match(name) for p in EXCLUDE_FILE_PATTERNS)
+
+
+def iter_repo_files():
+    """默认排除规则的仓库遍历器（检索/统计脚本应复用此规则）。"""
+    for dirpath, dirnames, filenames in os.walk(ROOT):
+        rel_dir = os.path.relpath(dirpath, ROOT)
+        parts = [] if rel_dir == '.' else rel_dir.split(os.sep)
+        dirnames[:] = [d for d in dirnames if not is_excluded_dir(d)
+                       and not any(is_excluded_dir(p) for p in parts)]
+        for fn in filenames:
+            if is_excluded_file(fn):
+                continue
+            yield os.path.join(dirpath, fn)
+
+
+def count_files(d):
+    n = 0
+    for _r, _ds, fs in os.walk(d):
+        n += len(fs)
+    return n
+
+
+class Report(object):
+    def __init__(self):
+        self.ok, self.warn, self.mismatch = [], [], []
+
+    def add(self, status, msg):
+        {'OK': self.ok, 'WARN': self.warn, 'MISMATCH': self.mismatch}[status].append(msg)
+
+    def print_all(self):
+        for title, items in (('OK', self.ok), ('WARN', self.warn), ('MISMATCH', self.mismatch)):
+            print('\n== %s (%d) ==' % (title, len(items)))
+            for m in items:
+                print('  ' + m)
+
+    @property
+    def exit_code(self):
+        return 1 if self.mismatch else 0
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--json', default=None, help='额外把结果写入 JSON 文件（默认完全只读）')
+    args = ap.parse_args()
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+    rep = Report()
+    p = lambda *a: os.path.join(ROOT, *a)
+
+    # ---- A1 现行权威：哈希 ----
+    for rel, exp, sev in CURRENT_AUTHORITY_HASHED:
+        fp = p(*rel.split('/'))
+        if not os.path.isfile(fp):
+            rep.add('MISMATCH' if sev == 'must' else 'WARN',
+                    '[A] 现行权威缺失: %s' % rel)
+            continue
+        got = sha256_file(fp)
+        if got.startswith(exp):
+            rep.add('OK', '[A] %s sha16=%s' % (rel, exp))
+        else:
+            rep.add('MISMATCH' if sev == 'must' else 'WARN',
+                    '[A] 哈希漂移: %s 期望 %s… 实际 %s…%s'
+                    % (rel, exp, got[:16],
+                       '（该件标记 soft：请同步更新 STATE_MAP_20261025.md 后更新期望表）'
+                       if sev == 'soft' else '（冻结证据不得变化——若真需变更，走版本化流程并重写 STATE_MAP）'))
+
+    # ---- A2 现行权威：存在性 ----
+    for rel in CURRENT_AUTHORITY_EXISTS:
+        if os.path.exists(p(*rel.split('/'))):
+            rep.add('OK', '[A] 存在: %s' % rel)
+        else:
+            rep.add('MISMATCH', '[A] 现行权威缺失: %s' % rel)
+
+    # ---- A3 冻结清单内部自洽（FROZEN_MANIFEST 哈希 vs 实际文件）----
+    fm_path = p('evaluation', 'CALIBRATION_PACKET_V1_1', 'FROZEN_MANIFEST.json')
+    try:
+        fm = json.load(open(fm_path, encoding='utf-8'))
+        for name, h in fm.get('hashes', {}).items():
+            # manifest 里多数文件在 PK 目录；JUDGE_MANUAL_V1_1 / THRESHOLDS 两件在 evaluation/
+            fp = p('evaluation', 'CALIBRATION_PACKET_V1_1', name)
+            if not os.path.isfile(fp):
+                fp = p('evaluation', name)
+            if not os.path.isfile(fp):
+                rep.add('MISMATCH', '[A] 冻结清单内文件缺失: %s' % name)
+            elif sha256_file(fp) != h:
+                rep.add('MISMATCH', '[A] 冻结清单哈希不符: %s（冻结证据被改动！）' % name)
+            else:
+                rep.add('OK', '[A] 冻结自洽: %s' % name)
+        st = fm.get('stats', {})
+        expect_stats = {'claims_total': 1064, 'human_reviewed': 17, 'constructed_reference': 39,
+                        'mechanical_only': 1008, 'disputed': 5}
+        for k, v in expect_stats.items():
+            if st.get(k) != v:
+                rep.add('MISMATCH', '[A] 冻结统计 %s 期望 %s 实际 %s' % (k, v, st.get(k)))
+            else:
+                rep.add('OK', '[A] 冻结统计 %s=%s' % (k, v))
+    except Exception as exc:  # noqa: BLE001
+        rep.add('MISMATCH', '[A] FROZEN_MANIFEST 读取失败: %s' % exc)
+
+    # ---- B 历史保留 ----
+    for rel in HISTORICAL_READONLY_EXISTS:
+        if os.path.exists(p(*rel.split('/'))):
+            rep.add('OK', '[B] 历史保留在位: %s' % rel)
+        else:
+            rep.add('MISMATCH', '[B] 历史文件丢失（不得删除）: %s' % rel)
+
+    # ---- C 诱饵 ----
+    for rel, spec in DECOY_DIRS.items():
+        dp = p(*rel.split('/'))
+        if not os.path.isdir(dp):
+            rep.add('MISMATCH', '[C] 诱饵目录缺失（STATE_MAP 需更新）: %s' % rel)
+            continue
+        names = os.listdir(dp)
+        n_files = count_files(dp)
+        for m in spec['markers']:
+            if m in names:
+                rep.add('OK', '[C] 诱饵标记在位: %s\\%s' % (rel, m))
+            else:
+                rep.add('MISMATCH', '[C] 诱饵标记缺失: %s\\%s' % (rel, m))
+        if n_files == spec['files']:
+            rep.add('OK', '[C] 诱饵文件数 %s = %d' % (rel, n_files))
+        else:
+            rep.add('MISMATCH', '[C] 诱饵文件数漂移: %s 期望 %d 实际 %d' % (rel, spec['files'], n_files))
+    for rel in DECOY_FIXTURES:
+        if os.path.exists(p(*rel.split('/'))):
+            rep.add('OK', '[C] 安全夹具在位: %s' % rel)
+        else:
+            rep.add('MISMATCH', '[C] 安全夹具缺失: %s' % rel)
+
+    # ---- D 噪声 ----
+    for rel in NOISE_EXISTS:
+        if os.path.exists(p(*rel.split('/'))):
+            rep.add('OK', '[D] 噪声目录在位(排除检索): %s' % rel)
+        else:
+            rep.add('MISMATCH', '[D] 噪声目录缺失（STATE_MAP 需更新）: %s' % rel)
+    acl = [d for d in os.listdir(ROOT)
+           if any(d.startswith(pref + '_acl_locked_20261021_') for pref in ACL_LOCKED_PREFIXES)
+           and os.path.isdir(p(d))]
+    if len(acl) == ACL_LOCKED_DIR_EXPECT:
+        rep.add('OK', '[D] 顶层 ACL 副本 = %d' % len(acl))
+    else:
+        rep.add('MISMATCH', '[D] 顶层 ACL 副本数 %d ≠ 期望 %d' % (len(acl), ACL_LOCKED_DIR_EXPECT))
+    pkg = p('dist', 'arena_v1_pkg')
+    if os.path.isdir(pkg):
+        n_snap = len([d for d in os.listdir(pkg) if os.path.isdir(p('dist', 'arena_v1_pkg', d))])
+        if n_snap == DIST_PKG_SNAPSHOTS_EXPECT:
+            rep.add('OK', '[D] dist/arena_v1_pkg 快照 = %d' % n_snap)
+        else:
+            rep.add('MISMATCH', '[D] dist/arena_v1_pkg 快照数 %d ≠ 期望 %d' % (n_snap, DIST_PKG_SNAPSHOTS_EXPECT))
+    zips = [f for f in os.listdir(ROOT) if f.lower().endswith('.zip') and os.path.isfile(p(f))]
+    if len(zips) == ROOT_ZIPS_EXPECT:
+        rep.add('OK', '[D] 根目录 zip = %d' % len(zips))
+    else:
+        rep.add('MISMATCH', '[D] 根目录 zip 数 %d ≠ 期望 %d' % (len(zips), ROOT_ZIPS_EXPECT))
+    n_logs = len([d for d in os.listdir(p('logs')) if os.path.isdir(p('logs', d))])
+    rep.add('OK' if n_logs == LOGS_SUBDIRS_EXPECT else 'WARN',
+            '[D] logs 子目录 = %d（期望 %d，可合法增长，增长时更新 STATE_MAP）' % (n_logs, LOGS_SUBDIRS_EXPECT))
+    n_refs = len(os.listdir(p('refs')))
+    rep.add('OK' if n_refs == REFS_TOPLEVEL_EXPECT else 'WARN',
+            '[D] refs 顶层项 = %d（期望 %d，可合法增长）' % (n_refs, REFS_TOPLEVEL_EXPECT))
+
+    # ---- 预算账本现状 ----
+    try:
+        recs = [json.loads(l) for l in open(p(*PERF_LEDGER.split('/')), encoding='utf-8') if l.strip()]
+        auth = next(r for r in recs if r.get('kind') == 'authorization_scope')
+        used = sum(1 for r in recs if r.get('kind') == 'attempt_started')
+        cap = auth.get('max_attempts')
+        judge_forbidden = auth.get('scope', {}).get('automatic_judge_generations') is False
+        if used == PERF_LEDGER_USED and cap == PERF_LEDGER_CAP:
+            rep.add('OK', '[账本] %s used=%d cap=%d 余=%d' % (PERF_LEDGER, used, cap, cap - used))
+        else:
+            rep.add('MISMATCH', '[账本] %s used=%d cap=%d ≠ 期望 used=%d cap=%d（STATE_MAP §2-A 预算行需更新）'
+                    % (PERF_LEDGER, used, cap, PERF_LEDGER_USED, PERF_LEDGER_CAP))
+        if judge_forbidden:
+            rep.add('OK', '[账本] 性能阶段 scope 禁止 judge（automatic_judge_generations=false）')
+        else:
+            rep.add('MISMATCH', '[账本] 性能阶段 scope 的 judge 禁令字段异常')
+    except Exception as exc:  # noqa: BLE001
+        rep.add('MISMATCH', '[账本] 性能账本解析失败: %s' % exc)
+    for rel, who in ((V5_LEDGER, 'v5'), (R2_LEDGER, 'r2'), (V3_LEDGER, 'v3')):
+        try:
+            recs = [json.loads(l) for l in open(p(*rel.split('/')), encoding='utf-8') if l.strip()]
+            closed = any(r.get('kind') == 'authorization_closed' for r in recs)
+            (rep.add('OK', '[账本] %s 批账本已关闭（不得复活）' % who) if closed
+             else rep.add('MISMATCH', '[账本] %s 批账本缺关闭事件' % who))
+        except Exception as exc:  # noqa: BLE001
+            rep.add('MISMATCH', '[账本] %s 账本解析失败: %s' % (who, exc))
+    for rel, who, expected in ((JUDGE_LEDGER, '裁判批 AUTH-EVAL-JUDGE', 'running_or_done'),
+                               (STREAM_LEDGER, '流式集成 AUTH-STREAM-INT', 'not_started')):
+        if os.path.exists(p(*rel.split('/'))):
+            if expected == 'not_started':
+                rep.add('WARN', '[账本] %s 账本已出现（D5 已启动）→ 请更新 STATE_MAP §2-A/§4' % who)
+            else:
+                try:
+                    recs = [json.loads(l) for l in open(p(*rel.split('/')), encoding='utf-8') if l.strip()]
+                    used = sum(1 for x in recs if x.get('kind') == 'attempt_started')
+                    closed = any(x.get('kind') == 'authorization_closed' for x in recs)
+                    if 0 < used <= 204:
+                        rep.add('OK', '[账本] %s 账本在位 used=%d/204 closed=%s' % (who, used, closed))
+                    else:
+                        rep.add('MISMATCH', '[账本] %s used=%d 越界或为 0' % (who, used))
+                except Exception as exc:  # noqa: BLE001
+                    rep.add('MISMATCH', '[账本] %s 解析失败: %s' % (who, exc))
+        else:
+            if expected == 'not_started':
+                rep.add('OK', '[账本] %s 账本不存在 = 该批 0 调用 ✓' % who)
+            else:
+                rep.add('MISMATCH', '[账本] %s 账本缺失——STATE_MAP 记录该批已启动（2026-10-25 23:21），'
+                                    '若确未跑请更新 STATE_MAP' % who)
+
+    # ---- 检索排除规则自测 ----
+    hits = [os.path.relpath(f, ROOT).replace(os.sep, '/') for f in iter_repo_files()
+            if os.path.basename(f) == 'AUDIT_PHASE0.md']
+    if hits == ['refs/AUDIT_PHASE0.md']:
+        rep.add('OK', '[自测] 排除规则下 AUDIT_PHASE0.md 仅命中权威原件 1 处（不再刷屏）')
+    else:
+        rep.add('MISMATCH', '[自测] 排除规则失效：AUDIT_PHASE0.md 命中 %s' % hits)
+    bad = [f for f in iter_repo_files()
+           if 'evil_link' in f or '\\dist\\' in f or '/dist/' in f
+           or 'isol_runs' in os.path.relpath(f, ROOT)]
+    if bad:
+        rep.add('MISMATCH', '[自测] 遍历器泄漏排除目录/诱饵路径 %d 个，示例: %s' % (len(bad), bad[:3]))
+    else:
+        rep.add('OK', '[自测] 遍历器不泄漏 dist/isol_runs/evil_link')
+
+    # ---- STATE_MAP 本体存在 ----
+    if os.path.isfile(STATE_MAP):
+        rep.add('OK', '[A] STATE_MAP_20261025.md 在位')
+    else:
+        rep.add('MISMATCH', '[A] STATE_MAP_20261025.md 缺失')
+
+    rep.print_all()
+    print('\nSUMMARY: ok=%d warn=%d mismatch=%d exit=%d'
+          % (len(rep.ok), len(rep.warn), len(rep.mismatch), rep.exit_code))
+    if args.json:
+        with open(args.json, 'w', encoding='utf-8') as f:
+            json.dump({'ok': rep.ok, 'warn': rep.warn, 'mismatch': rep.mismatch},
+                      f, ensure_ascii=False, indent=1)
+        print('json -> %s' % args.json)
+    sys.exit(rep.exit_code)
+
+
+if __name__ == '__main__':
+    main()

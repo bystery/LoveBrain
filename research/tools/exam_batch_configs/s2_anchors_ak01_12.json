@@ -1,0 +1,29 @@
+{
+  "batch_id": "BATCH-S2-ANCHORS-20261028",
+  "protocol": "refs/experiment_protocol_20261023/deadline_quality_20261028/QUALITY_FIRST_DEADLINE_ORDER.md §4-B",
+  "hypothesis": "当前目标在真实反馈下的处理：积极反馈时推进被承接、含糊时继续试探但不把害羞当同意、明确忙/疲惫时目标让位但不一律沉默。原版 vs action_policy_r1。",
+  "primary_variable": "候选侧行动策略五修订；两臂同一公共装配/同一锚点/同一卡/同一采样",
+  "arm_map": { "parent": "reference_product_v1", "candidate": "action_policy_r1" },
+  "episode_order": [
+    { "episode": "AK01", "arm_order": "parent_first" },
+    { "episode": "AK02", "arm_order": "candidate_first" },
+    { "episode": "AK03", "arm_order": "parent_first" },
+    { "episode": "AK04", "arm_order": "candidate_first" },
+    { "episode": "AK05", "arm_order": "parent_first" },
+    { "episode": "AK06", "arm_order": "candidate_first" },
+    { "episode": "AK07", "arm_order": "parent_first" },
+    { "episode": "AK08", "arm_order": "candidate_first" },
+    { "episode": "AK09", "arm_order": "parent_first" },
+    { "episode": "AK10", "arm_order": "candidate_first" },
+    { "episode": "AK11", "arm_order": "parent_first" },
+    { "episode": "AK12", "arm_order": "candidate_first" }
+  ],
+  "episodes_note": "S2 反馈锚点集：4 生活领域×(积极/含糊/明确忙或疲惫)=12 锚点，各 1 请求位；同作者公开开发集，非独立封存；may_decline=true 仅 3 个（她已明确收尾），避免把情绪让位训成一律不回",
+  "cards_path": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+  "recall_capable": false,
+  "recall_capable_note": "无 v2 式【回忆】段：recall/injection 记 N/A；锚点只测反馈/目标机会，单列统计不并入 S1 均分",
+  "frozen_config": { "endpoint": "http://127.0.0.1:17770/v1", "model": "dsf", "temperature": 0.7 },
+  "budget": { "authorization_level": true, "purpose_split": "S2 独立账本，不与 S1/S3 混用",
+              "fail_fast": true, "no_makeup_pairing": true,
+              "note": "既有持续授权内有限登记；不复活 CLOSED，失败照样记账" }
+}

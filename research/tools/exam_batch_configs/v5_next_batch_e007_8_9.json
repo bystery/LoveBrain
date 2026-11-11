@@ -1,0 +1,35 @@
+{
+  "batch_id": "BATCH-V5-CTX-20261025",
+  "protocol": "refs/experiment_protocol_20261023/r2_real_independent_review_20261025/REVIEW_AND_NEXT_EXECUTION.md §四 C 包",
+  "hypothesis": "用途对齐的简化 harness 对原版：v5_purpose_aligned 继承 r2 简化真实事件记忆+目标作用域/上下文优先级+三护栏，另删本 harness 从不消费的内部摘要(analysis→{})并以通用事实/行动边界替代多加禁止词。整套对原版比较:目标启停、面前进与收尾、第三人/共同朋友归属(E008)、既有承诺的暂定/确认/完成/重开与跨话题事项(E009)。质量相当而资源/等待/维护实质改善即支持效率型保留;不要求回复更短。",
+  "primary_variable": "整套 harness(记忆架构+目标/上下文组织+输出协议用途对齐+事实行动边界),非单条规则;组件独立贡献留待后续消融,本批不冒领",
+  "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "v5_purpose_aligned"
+  },
+  "episode_order": [
+    { "episode": "E007", "arm_order": "parent_first" },
+    { "episode": "E008", "arm_order": "candidate_first" },
+    { "episode": "E009", "arm_order": "parent_first" }
+  ],
+  "episodes_note": "公开开发集 E007/E008/E009(r1-20261024;本批已一次修齐输入公平:E007 her偏好+私密邀约目标移出永久种子、E008 妹妹→her保留归属/共同朋友→warmth、E009 修电脑承诺→warmth 既有承诺不补日期)。E007为已暴露故障回归;E008/E009是新增公开实跑覆盖(非未见泛化)。三故事分别测目标启停与现场资料不凭空保证、第三人/共同朋友归属、既有承诺事项状态与跨话题记忆。",
+  "cards_path": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "recall_capable": false,
+  "recall_capable_note": "v5 无 v2 式【回忆】新增段:recall/injection 指标记 N/A,不伪报通过、不强塞检查;资源用真实 API usage tokens/latency 分层+配对。",
+  "frozen_config": {
+    "endpoint": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "temperature": 0.7
+  },
+  "budget": {
+    "authorization_level": true,
+    "separate_from_r2_48": true,
+    "fail_fast": true,
+    "no_makeup_pairing": true,
+    "no_auto_retry": true,
+    "no_third_arm": true,
+    "no_auto_judge": true,
+    "full_batch_preflight": "execute_plan(mode=live) 首发前 ensure_batch(48)",
+    "note": "旧 AUTH-R2-CTX-20261024-01 已 authorization_closed(48/48耗尽),不得复活/挪用/补跑。本指导书(r2真实结果复核+下一批)未明示追加48次生成额度,worker不自行补造许可;离线A/B/C完成后只一次性提交本清单请求批准。"
+  }
+}

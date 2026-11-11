@@ -1,0 +1,21 @@
+{
+  "batch_id": "BATCH-D1-GENERAL-20261028",
+  "protocol": "refs/experiment_protocol_20261023/deadline_quality_20261028/QUALITY_FIRST_DEADLINE_ORDER.md §4-D（候选冻结后新材料复验）",
+  "hypothesis": "S1/S2/S2R 的提升若来自 harness 机制本身而不是练过的素材，就必须在候选从未见过的新材料上复现。本批用 2 个新故事×8 位（跨窗口知识机会、目标生命周期 ACTIVE→ADJUSTED→COMPLETED、含糊≠同意、情绪让位、第三人归属、旧事实更正陷阱、合法不回收尾）测泛化；不达标就是泛化缺口，不许用熟题提升替代。",
+  "primary_variable": "完整 harness：忠实原版 reference_product_v1 vs 当前最优候选 action_policy_r2（含 r1 五修订 + r2 三项故障族修复）；两臂同题面/同卡/同采样/同公共装配",
+  "arm_map": { "parent": "reference_product_v1", "candidate": "action_policy_r2" },
+  "episode_order": [
+    { "episode": "D01", "arm_order": "parent_first" },
+    { "episode": "D02", "arm_order": "candidate_first" }
+  ],
+  "episodes_note": "D01 后备箱咖啡摊（市集名额/供电/制冰机返修三连），D02 离异带娃+驾校科二（练车时段/接娃/母亲发烧相撞）；两者均为编造成年人在职场景，题材不与 E024/E027/E031/E034 或 AK01–AK12 重合，作者侧未接触候选资产与答卷。",
+  "cards_path": "benchmark/stories_v2/stageD/GRADING_CARDS_D01_D02.json",
+  "cards_note": "题面与卡在派发前已冻结：卡由 reference.json 逐字派生（16 卡 0 机械错），episode/reference 哈希在建卡前后一致。",
+  "recall_capable": false,
+  "recall_capable_note": "无 v2 式【回忆】段：recall/injection 记 N/A；跨窗口知识机会改由卡内 atoms 的早期轮/initial_kb 来源+worker 逐位判词度量（memory_use 维），不以机械回忆段充当",
+  "frozen_config": { "endpoint": "http://127.0.0.1:17770/v1", "model": "dsf", "temperature": 0.7 },
+  "budget": { "authorization_level": true, "purpose_split": "D1 独立账本（AUTH-P08-D1），不与 S1/S2/S2R/S3 混用",
+              "fail_fast": true, "no_makeup_pairing": true,
+              "note": "2 故事×8 位×2 臂=32 次真实生成；一物理请求一 attempt，失败照样记账" },
+  "honest_boundary": "本批只能标注为『前瞻新材料 / 作者侧候选盲化』：出题子代理未读候选资产与答卷，但审题卡与派发由看过候选答卷的实施 worker 完成，且素材出自同一 session 委托——不声称独立人类封存。若本批方向反转，照实报反转，不删故事。"
+}

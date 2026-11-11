@@ -1,0 +1,31 @@
+{
+  "batch_id": "BATCH-S3-ATTRIB-20261028",
+  "protocol": "refs/experiment_protocol_20261023/deadline_quality_20261028/QUALITY_FIRST_DEADLINE_ORDER.md §4-D（父子归因）",
+  "hypothesis": "S1/S2 的对照是『忠实原版 vs action_policy_r1』（血缘比较，两臂资产逐字节相同），因此不能证明五项修复自身的增量。本批把父本换成直接父本 v6_integrated，同 12 锚点、同卡、同采样，只变动一个变量=action_policy 五修订，用于回答『增量来自修订还是来自 v6 底子』。",
+  "primary_variable": "action_policy_r1 相对其直接父本 v6_integrated 的五修订（发送合同对齐/目标让位/钩子承接/交付失败修复意识/自我状态有据）；其余基座逐字节相同",
+  "arm_map": { "parent": "v6_integrated", "candidate": "action_policy_r1" },
+  "episode_order": [
+    { "episode": "AK01", "arm_order": "parent_first" },
+    { "episode": "AK02", "arm_order": "candidate_first" },
+    { "episode": "AK03", "arm_order": "parent_first" },
+    { "episode": "AK04", "arm_order": "candidate_first" },
+    { "episode": "AK05", "arm_order": "parent_first" },
+    { "episode": "AK06", "arm_order": "candidate_first" },
+    { "episode": "AK07", "arm_order": "parent_first" },
+    { "episode": "AK08", "arm_order": "candidate_first" },
+    { "episode": "AK09", "arm_order": "parent_first" },
+    { "episode": "AK10", "arm_order": "candidate_first" },
+    { "episode": "AK11", "arm_order": "parent_first" },
+    { "episode": "AK12", "arm_order": "candidate_first" }
+  ],
+  "episodes_note": "与 S2/S2R 同一 12 锚点、同一请求位；交错方向与 S2 一致（保持与 S2 可比），与 S2R 相反。本批是归因，不替换 S1/S2 的主比较。",
+  "cards_path": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+  "cards_note": "同一份已冻结卡（sha 不变）。",
+  "recall_capable": false,
+  "recall_capable_note": "无【回忆】段：recall/injection 记 N/A；归因结果单列，不并进 S1/S2 均分",
+  "frozen_config": { "endpoint": "http://127.0.0.1:17770/v1", "model": "dsf", "temperature": 0.7 },
+  "budget": { "authorization_level": true, "purpose_split": "S3 独立账本（AUTH-P08-S3），不与 S1/S2/S2R/D1 混用",
+              "fail_fast": true, "no_makeup_pairing": true,
+              "note": "action 侧 12 次是新生成、重新计费，不假装复用 S2 答卷" },
+  "honest_boundary": "归因只看'相对直接父本的增量'；r1 的 FIX-1 本身含已知缺陷（不回表达），该缺陷在本批会再次出现——它是五修订的一部分，不是本批的新增故障。"
+}

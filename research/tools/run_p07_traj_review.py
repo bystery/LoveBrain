@@ -1,0 +1,150 @@
+# -*- coding: utf-8 -*-
+"""tools/run_p07_traj_review.py — P07 v2 成对轨迹评审（V3 FIRST_8H §D 尾项，qwen 单模型）。
+
+输入：同一场景同一反馈条件下的两条完整轨迹（TRACE_*.json，双臂）。
+盲化：臂名绝不进 prompt；左右随机（seed 落盘），并支持 --swap 做正反序双评审以查位置偏置。
+评审维度（MASTER_EXECUTION_V3 §W02 出口/§5B 指标，0-3）：
+  goal_action（合适目标动作）/ hook_response（具体钩子与话题回应）/
+  feedback_adaptation（依据反馈调整）/ misunderstanding_repair（误解修复）/
+  promise_confirmation（提议→确认的真实状态变化）/ factual_safety（无据事实与主体状态错误，3=无）/
+  no_reply_fitness（合适不回/发送纪律）。
+每次调用独立 reserve（purpose=trajectory_review），无隐式重试；--aid 必填。
+"""
+import argparse
+import json
+import os
+import random
+import sys
+import time
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "arena"))
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+os.environ.setdefault("LB_API_BASE", "http://127.0.0.1:17770/v1")
+
+ALLOWED = ["dsf", "hy3", "qwen3.8-flash"]
+FORBIDDEN = ["gemini-3.8-flash", "hy4-preview"]
+EP = "http://127.0.0.1:17770/v1"
+
+SYS_TMPL = """你是闭环对话轨迹评审。给定同一场景、同一反馈条件下两个匿名臂（left/right）的完整轨迹，
+逐维独立打 0-3 整数并给逐字引用。维度：
+goal_action(本轮目标动作是否合适并兑现)/hook_response(具体钩子与话题回应质量)/
+feedback_adaptation(依据对方反馈松紧调整)/misunderstanding_repair(误解与失误的修复)/
+promise_confirmation(提议→确认的真实状态变化，空转承诺给低分)/
+factual_safety(无据事实与主体状态错误：3=无错误，越错越低)/
+no_reply_fitness(不回/发送纪律是否得当)。
+
+重要——独立性纪律：
+1) 左右顺序是随机的，位置不代表质量；不要因为某臂排在左边就给它更高分。
+2) 可能两臂都好、都差或接近；若某维度两臂接近，允许同分——不要为了制造区分而硬造差异。
+3) 两臂独立打分，不因另一臂好坏而调整。
+4) 任何 ≤1 的维度、以及两臂各自的最好与最差维度，都必须在 issues 里给逐字 quote 与依据。
+低分必须给 quote(逐字)+note；没问题 issues 留空。
+严格只输出 JSON 无解释无 markdown：
+{"left":{"goal_action":0-3,"hook_response":0-3,"feedback_adaptation":0-3,"misunderstanding_repair":0-3,"promise_confirmation":0-3,"factual_safety":0-3,"no_reply_fitness":0-3},
+ "right":{同结构},
+ "issues":[{"side":"left|right","turn":1,"dimension":"","quote":"逐字","note":""}]}"""
+
+
+def fmt_trace(tr, side):
+    lines = ["【%s臂轨迹】状态=%s" % (side, tr.get("status"))]
+    for t in tr.get("trace", []):
+        lines.append("第%d轮 对方说：%s" % (t["turn"], (t.get("her_input") or "（无新消息）")[:120]))
+        lines.append("  我方发送：%s" % ((t.get("send") or "（本轮未发送：%s）" % t.get("classify_reason", ""))[:120]))
+        if t.get("sim_delta"):
+            lines.append("  对方状态变化：%s" % json.dumps(t["sim_delta"], ensure_ascii=False))
+        if t.get("sim_failure"):
+            lines.append("  （模拟器环境失败，轨迹到此为止）")
+    ctrl = tr.get("control_events") or []
+    if ctrl:
+        lines.append("控制事件：%s" % json.dumps(ctrl, ensure_ascii=False)[:300])
+    return "\n".join(lines)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--trace-a", required=True)
+    ap.add_argument("--trace-b", required=True)
+    ap.add_argument("--pair-id", required=True)
+    ap.add_argument("--aid", required=True)
+    ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--swap", action="store_true", help="正反序双评审（查位置偏置）")
+    ap.add_argument("--outdir", required=True)
+    ap.add_argument("--run-tag", default=str(int(time.time())))
+    a = ap.parse_args()
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+    ta = json.load(open(a.trace_a, encoding="utf-8"))
+    tb = json.load(open(a.trace_b, encoding="utf-8"))
+    for t in (ta, tb):
+        assert t.get("status") == "complete", "只评审 complete 轨迹: %s" % t.get("trajectory_id")
+
+    rng = random.Random(a.seed)
+    if rng.random() < 0.5:
+        left, right, map_lr = ta, tb, {"left": ta["trajectory_id"], "right": tb["trajectory_id"]}
+    else:
+        left, right, map_lr = tb, ta, {"left": tb["trajectory_id"], "right": ta["trajectory_id"]}
+    if a.swap:
+        left, right = right, left
+        map_lr = {"left": left["trajectory_id"], "right": right["trajectory_id"]}
+
+    user = ("场景反馈条件：%s / 臂A=left、臂B=right（匿名）。\n\n%s\n\n%s\n\n请独立评审两臂。"
+            % (a.pair_id, fmt_trace(left, "left"), fmt_trace(right, "right")))
+    for bad in ("v6", "reference_product", "integrated", "goal_context"):
+        assert bad not in user, "臂泄漏: " + bad
+
+    from arena.lb_gateway import ADAPTERS, ModelGateway
+    from arena.isolation.authorization_budget import AuthorizationBudget
+    ledger = os.path.join(ROOT, "logs", "auth_budget", a.aid + ".jsonl")
+    scope = {"experiment": "P07_closed_loop_v2", "allowed_models": ALLOWED,
+             "forbidden_models": FORBIDDEN, "endpoint": EP}
+    budget = AuthorizationBudget(ledger, a.aid, 96, scope=scope)
+    budget.ensure_batch(1, purpose="trajectory_review")
+    outdir = a.outdir if os.path.isabs(a.outdir) else os.path.join(ROOT, a.outdir)
+    os.makedirs(outdir, exist_ok=True)
+    inner = ModelGateway(ADAPTERS["openai_compat"](),
+                         event_log_path=os.path.join(outdir, "REVIEW_GATEWAY.jsonl"))
+    aid = "p07:trajrev:%s:%s:%d" % (a.pair_id, a.run_tag, 2 if a.swap else 1)
+    budget.reserve(aid, purpose="trajectory_review")
+    t0 = time.time()
+    try:
+        res = inner.generate(SYS_TMPL, user, model="qwen3.8-flash", temperature=0.0,
+                             timeout_s=150, tag="review", attempt_id=aid)
+        text = (res.get("text") or "").strip()
+        if not text:
+            raise RuntimeError("empty_content_response")
+        budget.record("attempt_completed", aid, model="qwen3.8-flash", usage=res.get("usage"))
+    except Exception as e:
+        budget.record("attempt_failed", aid, error=str(e)[:150])
+        print("REVIEW_FAIL", str(e)[:120])
+        return 1
+    obj = None
+    try:
+        obj = json.loads(text.strip().strip("`").lstrip("json").strip())
+    except Exception:
+        import re
+        m = re.search(r"\{.*\}", text, re.S)
+        if m:
+            try:
+                obj = json.loads(m.group(0))
+            except Exception:
+                obj = None
+    out = {"pair_id": a.pair_id, "seed": a.seed, "swap": a.swap,
+           "map_left_right": map_lr, "verdict_raw": text, "parsed": obj,
+           "ms": int((time.time() - t0) * 1000), "attempt_id": aid}
+    suffix = "_swap" if a.swap else ""
+    dst = os.path.join(outdir, "TRAJ_REVIEW__%s%s.json" % (a.pair_id, suffix))
+    with open(dst, "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, indent=1)
+    print("REVIEW_OK ->", os.path.relpath(dst, ROOT))
+    if obj:
+        print("left:", json.dumps(obj.get("left"), ensure_ascii=False))
+        print("right:", json.dumps(obj.get("right"), ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,35 @@
+{
+  "batch_id": "BATCH-R2-CTX-20261024",
+  "protocol": "refs/experiment_protocol_20261023/real_v3_independent_review_20261024/WORKER_NEXT_BATCH_REVISED.md §4 / REVIEW_AND_NEXT_EXECUTION.md §四§五",
+  "hypothesis": "整套架构重构 vs 原版：v0 简单真实事件记忆 + 当前目标作用域/上下文优先级 + r2 三项输入边界加固(v4_intent_context_r2)，对照重多层 reference_product_v1；同题/同卡/同端点/同采样(0.7)。主检验=三故事目标链(启用敢推进·关闭能停·变化能切换·确认后不复问)与事实/交付边界，并量真实 token/时延。质量相当而资源或性能实质改善即可支持效率型保留，不要求回复更短。",
+  "primary_variable": "整套 harness(记忆架构+目标/上下文组织+输入边界)，非单条规则；组件独立贡献留待后续消融，本批不冒领",
+  "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "v4_intent_context_r2"
+  },
+  "episode_order": [
+    { "episode": "E007", "arm_order": "parent_first" },
+    { "episode": "E010", "arm_order": "candidate_first" },
+    { "episode": "E012", "arm_order": "parent_first" }
+  ],
+  "episodes_note": "公开开发集 E007/E010/E012（r1-20261024；本批已一次修齐输入公平：E007 her 偏好映射到支持字段、私密邀约目标移出永久种子，E010 公开事实/E012 背景映射到 warmth，两臂均消费；未参与回忆实验调参）。三故事分别测目标启停/重开、私下目的转合理行动与反馈商量、日常→邀约→退回→再推进→收尾。",
+  "cards_path": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+  "recall_capable": false,
+  "recall_capable_note": "v4_intent_context_r2 无 v2 式【回忆】新增段：recall/injection 指标记 N/A，不伪报通过、不强塞检查；资源用真实 API usage tokens/latency 分层+配对报告。",
+  "frozen_config": {
+    "endpoint": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "temperature": 0.7
+  },
+  "budget": {
+    "authorization_level": true,
+    "separate_from_v3_48": true,
+    "fail_fast": true,
+    "no_makeup_pairing": true,
+    "no_auto_retry": true,
+    "no_third_arm": true,
+    "no_auto_judge": true,
+    "full_batch_preflight": "execute_plan(mode=live) 首发前 ensure_batch(48)",
+    "note": "旧 AUTH-V3-DELETION-20261024-01 已 authorization_closed(48/48 耗尽)，不得复活/挪用/补跑；本批需一份全新、逐字绑定端点/model/temp、覆盖整批 48 次的授权。本指导书(复核+推进)未明示追加 48 次生成额度，worker 不自行补造许可。"
+  }
+}

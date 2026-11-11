@@ -1,0 +1,13 @@
+{
+  "batch_id": "BATCH-FINAL-GUARD-SMOKE-20261029",
+  "protocol": "2026-10-29 F2 capture smoke: final candidate staging + contract guard wiring; no live calls",
+  "hypothesis": "action_policy_r4_guard_final can be staged through the normal closure and returns a 4-slot contract in capture mode.",
+  "arm_map": { "parent": "action_policy_r2", "candidate": "action_policy_r4_guard_final" },
+  "episode_order": [
+    { "episode": "D01", "arm_order": "parent_first" }
+  ],
+  "cards_path": "benchmark/stories_v2/stageD/GRADING_CARDS_D01_D02.json",
+  "recall_capable": false,
+  "frozen_config": { "endpoint": "http://127.0.0.1:17770/v1", "model": "dsf", "temperature": 0.7 },
+  "budget": { "authorization_level": false, "note": "capture smoke only; zero real model calls" }
+}

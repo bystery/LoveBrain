@@ -1,0 +1,8 @@
+{
+  "role": "research_prototype",
+  "arm_id": "rh_b22_persona_internalize",
+  "research_p1": "loop14_persona_frame_shift",
+  "hypothesis_id": "RH-B-22",
+  "output_contract": { "may_decline": true },
+  "note": "LOOP-14 撞墙后从头重设计: system prompt advisor帧→participant帧 + JSON state字段(单次调用内内心状态) + b20示例锚定保留. 文献: Deep Persona(2609.22255)/EchoChat/MemRole(2611.01778)/From Memory to Behavior(2609.21349). 目标: Q2逻辑连贯>=4.3(b20=4.0), 五维>=4.75(首超DIRECT)"
+}

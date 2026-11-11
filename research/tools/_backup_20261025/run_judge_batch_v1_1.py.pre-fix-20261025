@@ -1,0 +1,212 @@
+# -*- coding: utf-8 -*-
+"""tools/run_judge_batch_v1_1.py — 裁判标定批次（独立评估账本，204 次硬上限，失败停批不补跑）。
+
+前置条件（缺一即拒绝启动）：
+  1) evaluation/CALIBRATION_PACKET_V1_1/FROZEN_MANIFEST.json 存在（参考/分组/阈值先冻结）；
+  2) 使用独立的评估阶段账本 AUTH-EVAL-JUDGE-20261025-01（scope=evaluation_judge_calibration_v1_1），
+     不借用性能阶段账本（那个 scope 禁止 judge 调用）；上限 204；
+  3) 评审输入只来自 nodes_public.jsonl：无臂名、无旧判词、无参考标签、无散列、无 split；
+  4) 三份判词如实命名为 R1/R2/R3 = 同一模型服务、同一 prompt、不同会话，绝不称三个独立模型。
+
+计划（与 WORKER_EXECUTION 包C 一致，共 204 attempts）：
+  60 对 × 3 评审者 = 180（正序）+ 12 对正序重跑 + 12 对换序 = 204。
+
+模式：
+  --mock  零网络：桩判词写入 logs/judge_v1_1_mock/，只验证接线、预算、停批与落盘；
+  --live  真实调用：需要 LB_ALLOW_LIVE_JUDGE=1，端点/模型/温度从 arena.lb_gateway 读取并记入清单。
+"""
+import argparse
+import hashlib
+import json
+import os
+import sys
+import time
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+
+PK = os.path.join(ROOT, 'evaluation', 'CALIBRATION_PACKET_V1_1')
+AID = 'AUTH-EVAL-JUDGE-20261025-01'
+SCOPE = 'evaluation_judge_calibration_v1_1'
+CAP = 204
+RATERS = ('R1', 'R2', 'R3')
+TEMPERATURE = 0.7
+MODEL_ALIAS = 'dsf'
+
+JUDGE_SYSTEM = """你是聊天回复评审者。只依据给定材料与所附评审手册（MANUAL-V1.1）判断，不要猜测答案来源、版本或成本。
+硬性要求：
+1) 逐条主张标注四轴：statement_type（事实/类指常识/新提议/玩笑/观点/疑问/不确定表达）、
+   evidence_status（支持/冲突/未提供/不适用）、stance（确定/有条件/试探/承认未知）、severity（关键/次要/无），
+   并给出该主张原文片段与证据片段（必须逐字摘自输入）。
+2) 调侃、新提议、条件句、承认未知、观点表达是受保护表达；不得因为"没核实来源/没澄清"就判失败。
+3) 目标完成度给 0-3：3=动作到位且无关键无据断言；2=平淡但正确；1=安全但回避该做的动作；0=该回未回或做相反动作。
+4) 输入信息确实不足时，问/不问/试探/承认未知都可以是对的；只有把无据细节说成已核实才算错。
+5) 输出严格 JSON，不要任何解释性文字、不要 markdown 代码块。
+输出 schema：
+{"claims":[{"who":"甲|乙","text":"主张原文逐字","statement_type":"...","evidence_status":"...",
+  "stance":"...","severity":"...","evidence_quote":"输入中的逐字片段"}],
+ "goal":{"甲":0-3,"乙":0-3,"action_basis":{"甲":"这轮该做的动作","乙":"..."}},
+ "insufficient_info":{"甲":"ok|wrong|na","乙":"ok|wrong|na"},
+ "protocol_anomaly":{"甲":"none|key_contamination|missing_slot|directions_invalid|unparseable",
+  "乙":"..."},
+ "pref":"甲|乙|都行|都不想|说不清", "pref_basis":"依据手册的哪一条（不要写个人口味）"}
+"""
+
+
+def sha(s):
+    return hashlib.sha256((s or '').encode('utf-8')).hexdigest()
+
+
+def load_nodes():
+    return [json.loads(l) for l in open(os.path.join(PK, 'nodes_public.jsonl'), encoding='utf-8')]
+
+
+def user_payload(node, swapped):
+    a, b = node['answers']['甲'], node['answers']['乙']
+    left, right = (b, a) if swapped else (a, b)
+    lab = ('乙', '甲') if swapped else ('甲', '乙')
+    body = {'evidence': node['evidence'],
+            'answers': {lab[0]: left, lab[1]: right}}
+    return json.dumps(body, ensure_ascii=False)
+
+
+def build_plan(nodes):
+    """180 正序 + 12 正序重跑 + 12 换序；重复抽样用固定 seed 选择并在派发前冻结。"""
+    import random
+    rnd = random.Random(20261102)
+    ids = [n['node_id'] for n in nodes]
+    rep_same = sorted(rnd.sample(ids, 12))
+    rep_swap = sorted(rnd.sample(ids, 12))
+    plan = []
+    for r in RATERS:
+        for n in nodes:
+            plan.append({'rater': r, 'node_id': n['node_id'], 'swapped': False, 'kind': 'primary'})
+    for n in nodes:
+        if n['node_id'] in rep_same:
+            plan.append({'rater': RATERS[0], 'node_id': n['node_id'], 'swapped': False, 'kind': 'repeat_same'})
+    for n in nodes:
+        if n['node_id'] in rep_swap:
+            plan.append({'rater': RATERS[0], 'node_id': n['node_id'], 'swapped': True, 'kind': 'repeat_swapped'})
+    return plan, {'repeat_same': rep_same, 'repeat_swapped': rep_swap}
+
+
+def judge_user(node, swapped):
+    return ("按手册评审下面这一对回答（甲/乙标签已随机化，顺序见输入）。只输出 JSON。\n\n"
+            + user_payload(node, swapped))
+
+
+def stub_response(node, swapped, rater, seq):
+    """mock 模式桩判词：结构完整，内容故意不核对，只测接线/停批/落盘。"""
+    who_l, who_r = ('乙', '甲') if swapped else ('甲', '乙')
+    return json.dumps({'claims': [{'who': who_l, 'text': (node['answers'][who_l]['primary'] or '')[:12],
+                                   'statement_type': '观点', 'evidence_status': '不适用',
+                                   'stance': '有条件', 'severity': '无',
+                                   'evidence_quote': (str(node['evidence'].get('current_window')) or '')[:12]},
+                                  {'who': who_r, 'text': (node['answers'][who_r]['primary'] or '')[:12],
+                                   'statement_type': '事实', 'evidence_status': '未提供',
+                                   'stance': '确定', 'severity': '关键',
+                                   'evidence_quote': 'NOT-A-REAL-QUOTE'}],
+                       'goal': {who_l: 2, who_r: 1, 'action_basis': {who_l: '接住', who_r: '推进'}},
+                       'insufficient_info': {who_l: 'ok', who_r: 'na'},
+                       'protocol_anomaly': {who_l: 'none', who_r: 'none'},
+                       'pref': who_l if (seq % 3) else '说不清',
+                       'pref_basis': '手册 §3'}, ensure_ascii=False)
+
+
+def live_response(gw, system_text, user_text, cfg):
+    """正式链路：走 ModelGateway + OpenAICompatAdapter（同端点/模型/温度，非流式配置身份）。"""
+    res = gw.generate(system=system_text, user=user_text, model=cfg['model'],
+                      temperature=cfg['temperature'], tag='judge')
+    return res
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--mode', default='mock', choices=('mock', 'live'))
+    ap.add_argument('--limit', type=int, default=None, help='只跑前 N 个 attempt（用于 dry-run）')
+    a = ap.parse_args()
+    sys.stdout.reconfigure(encoding='utf-8')
+
+    frozen = os.path.join(PK, 'FROZEN_MANIFEST.json')
+    if not os.path.exists(frozen):
+        raise SystemExit('拒绝启动：评价方法未冻结（缺 FROZEN_MANIFEST.json）')
+    nodes = {n['node_id']: n for n in load_nodes()}
+    plan, sampling = build_plan(list(nodes.values()))
+    if len(plan) > CAP:
+        raise SystemExit('拒绝启动：计划 %d > 硬上限 %d' % (len(plan), CAP))
+    if a.limit:
+        plan = plan[:a.limit]
+    tag = time.strftime('%Y%m%d_%H%M%S')
+    outdir = os.path.join(ROOT, 'logs', 'judge_v1_1_%s_%s' % (a.mode, tag))
+    os.makedirs(outdir, exist_ok=True)
+
+    from arena.isolation.authorization_budget import AuthorizationBudget, BudgetRefused
+    led = os.path.join(ROOT, 'logs', 'auth_budget', 'AUTH-EVAL-JUDGE-20261025-01.jsonl')
+    budget = AuthorizationBudget(led, AID, CAP, authorization_scope=SCOPE)
+
+    cfg = {'system_sha256': sha(JUDGE_SYSTEM), 'model_alias': MODEL_ALIAS,
+           'temperature': TEMPERATURE, 'stream': False,
+           'api_config_identity': 'api_cfg:openai_compat_stream_false_v1',
+           'manual': 'MANUAL-V1.1', 'packet': 'CALIB-V1.1',
+           'frozen_manifest_sha256': sha(open(frozen, encoding='utf-8').read()),
+           'raters': 'R1/R2/R3 = 同一模型服务同一 prompt 的不同会话，不是三个独立模型'}
+    json.dump({'plan_len': len(plan), 'sampling': sampling, 'config': cfg},
+              open(os.path.join(outdir, 'DISPATCH_PLAN.json'), 'w', encoding='utf-8'),
+              ensure_ascii=False, indent=1)
+
+    records, stopped = [], None
+    manual_text = open(os.path.join(ROOT, 'evaluation', 'JUDGE_MANUAL_V1_1.md'), encoding='utf-8').read()
+    for i, p in enumerate(plan):
+        node = nodes[p['node_id']]
+        user = judge_user(node, p['swapped'])
+        try:
+            budget.reserve(1, note='%s/%s/%s' % (p['rater'], p['node_id'], p['kind']))
+        except BudgetRefused as exc:
+            stopped = {'reason': 'budget_refused', 'at': i, 'detail': str(exc)}
+            break
+        t0 = time.time()
+        if a.mode == 'mock':
+            raw = stub_response(node, p['swapped'], p['rater'], i)
+            ok = True
+        else:
+            try:
+                res = live_response(user, {'model': MODEL_ALIAS, 'temperature': TEMPERATURE,
+                                           'system': JUDGE_SYSTEM + '\n\n---\n\n' + manual_text})
+                raw, ok = res['text'], True
+            except Exception as exc:                          # noqa: BLE001
+                raw, ok = '%s: %s' % (type(exc).__name__, exc), False
+        parsed, perr = None, None
+        if ok:
+            try:
+                parsed = json.loads(raw)
+            except Exception as exc:                          # noqa: BLE001
+                perr = '%s' % exc
+        rec = {'seq': i, 'rater': p['rater'], 'node_id': p['node_id'], 'swapped': p['swapped'],
+               'kind': p['kind'], 'authorization_id': AID, 'ledger': os.path.relpath(led, ROOT),
+               'user_sha256': sha(user), 'raw_sha256': sha(raw), 'transport_ok': ok,
+               'parse_ok': parsed is not None, 'parse_error': perr,
+               'wall_ms': int((time.time() - t0) * 1000), 'raw': raw}
+        if parsed is not None:
+            rec['pref'] = parsed.get('pref')
+            rec['claims_n'] = len(parsed.get('claims') or [])
+        records.append(rec)
+        if not ok and a.mode == 'live':
+            stopped = {'reason': 'transport_fail_fast', 'at': i, 'detail': raw[:200]}
+            break
+        with open(os.path.join(outdir, 'RATINGS_%s.jsonl' % p['rater']), 'a', encoding='utf-8') as f:
+            f.write(json.dumps(rec, ensure_ascii=False) + '\n')
+
+    summary = {'mode': a.mode, 'attempts': len(records), 'planned': len(plan),
+               'transport_fail': sum(1 for r in records if not r['transport_ok']),
+               'parse_fail': sum(1 for r in records if r['transport_ok'] and not r['parse_ok']),
+               'stopped': stopped, 'config': cfg, 'outdir': os.path.relpath(outdir, ROOT),
+               'budget': budget.summary()}
+    json.dump(summary, open(os.path.join(outdir, 'JUDGE_BATCH_SUMMARY.json'), 'w', encoding='utf-8'),
+              ensure_ascii=False, indent=1)
+    print('JUDGE BATCH mode=%s attempts=%d transport_fail=%d parse_fail=%d stopped=%s budget_used=%s'
+          % (a.mode, len(records), summary['transport_fail'], summary['parse_fail'],
+             (stopped or {}).get('reason'), summary['budget'].get('reserved')))
+
+
+if __name__ == '__main__':
+    main()
