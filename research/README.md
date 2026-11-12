@@ -176,17 +176,7 @@ export LB_MODEL="<model-id>"                              # 未设置时网关�
 **需要真实模型 API 的功能**：`openai_compat` 驱动的全部 live 批次；Judge live 判决批（受 `LB_ALLOW_LIVE_JUDGE` / `LB_ALLOW_QUALITY_PANEL_LIVE` 危险开关控制）；连通性探测类工具——均属"需要外部模型服务"，与离线验收分开记录。
 **可完全离线复核的功能（设计可行，全部待实测）**：arena 核心模块导入链（源仓库已实测，迁移副本待实测）；Gold Sidecar 加载；已保存 scoring 的确定性重评分；mock/echo 适配器全生命周期；Judge 离线投票模拟；端到端分段计时；mock 类 test_* 离线回归；通用评分器纯函数层 + 离线分层。
 
-**七项范围声明（原文级诚实）**：
-
-1. **可从公开数据离线重算的结果**：已保存 scoring 的确定性重算、mock/echo 批次重跑——须经 smoke test 与实测确认后才可写"可重算"；当前登记为"设计可行、待实测"。
-2. **依赖历史模型服务响应的结果**：全部 live 批次的原始答卷——只能重放与重评分，**不能重新生成**。
-3. **依赖特定模型 endpoint 的结果**：网关默认模型 `gpt-oss-120b`；历史批次钉死端点为本地替身上游 `http://127.0.0.1:17770/v1`；授权单↔端点一致性校验是 tools 批执行器硬门槛。
-4. **可能已不可用的历史 API 服务**：本地替身上游（127.0.0.1:17770）非公开服务；Judge live 批次所用外部服务无任何可用性承诺。
-5. **只保留原始答卷、无法保证重新调用得到相同结果的实验**：全部 live 批次（采样参数与上游行为不可复现）。
-6. **有 Judge 器械效度限制的评审结果**：judge 校准以 ≥80% 人评一致率为上岗门槛（20 道人评锚点 + trap 负样本）；位置偏差（5 候选随机重排）与温度×位置 2×2 不稳定归因实验并存；机器判定 fuzzy 命中未经人工复核**不得进对外结论**。
-7. **不是当前 Android 生产代码的候选**：`research/candidates/` 全部 50 个候选目录均为研究资产（champion 9 / historical 32 / negative_control 4 / ablation 3 / template 1 / reference 1）；`research/archive/integration_preview_20261025/` 是历史移植原型，**不冒充当前生产接线**；`best/score.json` 不作独立冠军判决；`PAPER.md` 成绩表述须与 runs/判决书互查。
-
-历史模型实验的原始答卷和判决已保留（§5、[refs/KNOWN_FAILURES.md](refs/KNOWN_FAILURES.md)）；一键完全重跑不在当前复现范围内（见 [REPRODUCIBILITY.md](REPRODUCIBILITY.md) §10）。
+复现范围七项声明见 [REPRODUCIBILITY.md](REPRODUCIBILITY.md) §8.2（权威来源）。历史模型实验的原始答卷和判决已保留（§5、[refs/KNOWN_FAILURES.md](refs/KNOWN_FAILURES.md)）；一键完全重跑不在当前复现范围内（见 [REPRODUCIBILITY.md](REPRODUCIBILITY.md) §10）。
 
 ## 3. dataset 域口径（三口径）
 
