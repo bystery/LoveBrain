@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" font-family="Microsoft YaHei, SimHei, sans-serif">
 <rect width="960" height="600" fill="#ffffff"/>
-<text x="480" y="32" font-size="20" font-weight="bold" fill="#333333" text-anchor="middle">图表 A：D1–D7 方向覆盖条图（批次 A 最终回填口径，按 Episode 去重）</text>
-<text x="24" y="54" font-size="12" fill="#555555">数据源：asset-audit/dataset-final-reconciliation.csv（nine_steps·8_d1_d7 与 d1_d7 节）· 数据截至 2026-11-12</text>
+<text x="480" y="32" font-size="20" font-weight="bold" fill="#333333" text-anchor="middle">图表 A：D1–D7 方向覆盖条图（枚举去重回填口径，按 Episode 去重）</text>
+<text x="24" y="54" font-size="12" fill="#555555">数据源：research/benchmark/dataset-final-reconciliation.csv（nine_steps·8_d1_d7 与 d1_d7 节）· 数据截至 2026-11-12</text>
 <text x="24" y="70" font-size="12" fill="#555555">各方向去重数可重叠、不相加；唯一池 = GOLD 覆盖 299</text>
 <rect x="400" y="74" width="12" height="12" fill="#4e79a7"/>
 <text x="418" y="84" font-size="11" fill="#333333">D3·C14 枚举 143</text>
@@ -55,9 +55,9 @@
 <text x="874.9" y="90.0" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle">200</text>
 <text x="874.9" y="462" font-size="13" font-weight="bold" fill="#333333" text-anchor="middle">D7</text>
 <text x="874.9" y="480" font-size="10.5" fill="#333333" text-anchor="middle">上下文预算/输出契约</text>
-<text x="24" y="502" font-size="11" fill="#555555">① D4 检索相关性：程序化覆盖 0 为最大缺口，如实保留不美化；judge-only 200 为人工评判口径，单列不计入本图程序化覆盖。</text>
-<text x="24" y="520" font-size="11" fill="#555555">② 口径出入登记（见对账 CSV discrepancies 节）：D1 claimed 27 vs 枚举去重回填 29（X1）；D3 C14 claimed ~102 / C8 claimed 31 vs 枚举 143/42（X2/X3）。</text>
+<text x="24" y="502" font-size="11" fill="#555555">① D4 检索相关性：程序化覆盖 0 为最大缺口；judge-only 200 为人工评判口径，单列不计入本图程序化覆盖。</text>
+<text x="24" y="520" font-size="11" fill="#555555">② 口径出入（见对账 CSV discrepancies 节）：D1 claimed 27 vs 枚举去重回填 29（X1）；D3 C14 claimed ~102 / C8 claimed 31 vs 枚举 143/42（X2/X3）。</text>
 <text x="24" y="538" font-size="11" fill="#555555">③ D6 的 C8 信号（claimed 31 / 枚举 42）计入 D3，不在 D6 重复计；D7 与 D2 同池（200），不代表独立新增。</text>
 <text x="24" y="556" font-size="11" fill="#555555">④ 本图 Y 轴自 0 起；各方向样本可重叠，禁止将柱高相加；唯一池 = GOLD 覆盖 299（STATISTICS.md §三.3）。</text>
-<text x="24" y="580" font-size="10.5" fill="#888888">脚本：chart-materials/generate_chart_a.py（纯标准库，可复跑：python -I generate_chart_a.py）· 数字程序化解析自源 CSV，脚本内零硬编码</text>
+<text x="24" y="580" font-size="10.5" fill="#888888">脚本：research/benchmark/charts/generate_chart_a.py（纯标准库，可复跑：python -I research/benchmark/charts/generate_chart_a.py）· 数字程序化解析自源 CSV，脚本内零硬编码</text>
 </svg>

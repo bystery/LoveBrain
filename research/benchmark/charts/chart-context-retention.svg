@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" font-family="Microsoft YaHei, SimHei, sans-serif">
+<rect width="960" height="560" fill="#ffffff"/>
+<text x="480.0" y="30" font-size="19" font-weight="bold" fill="#333333" text-anchor="middle">关键断言覆盖：四臂 16.8%–21.6%，未显示显著差异（null 结果）</text>
+<text x="24" y="54" font-size="12" fill="#555555">最终汇总口径（FOUR_ARM_SUMMARY.json）：Gold 要求的原子断言（required）被回复覆盖的比例；CURRENT 与 LEGACY 差约 +4.7 个百分点，统计上不显著。</text>
+<text x="24" y="70" font-size="12" fill="#555555">数据源：research/refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_SUMMARY.json · 数据截至 2026-11-12</text>
+<text x="24" y="86" font-size="12" fill="#555555">本图为 null 结果与通道局限，不作为机制优势证据。</text>
+<line x1="88" y1="384.0" x2="900" y2="384.0" stroke="#bbbbbb" stroke-width="1"/>
+<text x="82" y="388.0" font-size="11" fill="#333333" text-anchor="end">0%</text>
+<line x1="88" y1="331.2" x2="900" y2="331.2" stroke="#bbbbbb" stroke-width="1"/>
+<text x="82" y="335.2" font-size="11" fill="#333333" text-anchor="end">5%</text>
+<line x1="88" y1="278.4" x2="900" y2="278.4" stroke="#bbbbbb" stroke-width="1"/>
+<text x="82" y="282.4" font-size="11" fill="#333333" text-anchor="end">10%</text>
+<line x1="88" y1="225.6" x2="900" y2="225.6" stroke="#bbbbbb" stroke-width="1"/>
+<text x="82" y="229.6" font-size="11" fill="#333333" text-anchor="end">15%</text>
+<line x1="88" y1="172.8" x2="900" y2="172.8" stroke="#bbbbbb" stroke-width="1"/>
+<text x="82" y="176.8" font-size="11" fill="#333333" text-anchor="end">20%</text>
+<line x1="88" y1="120.0" x2="900" y2="120.0" stroke="#bbbbbb" stroke-width="1"/>
+<text x="82" y="124.0" font-size="11" fill="#333333" text-anchor="end">25%</text>
+<line x1="88" y1="120" x2="88" y2="384" stroke="#333333" stroke-width="1.5"/>
+<line x1="88" y1="384" x2="900" y2="384" stroke="#333333" stroke-width="1.5"/>
+<text x="26" y="252" font-size="12" fill="#333333" text-anchor="middle" transform="rotate(-90 26 252)">required 断言覆盖率</text>
+<rect x="141.5" y="161.0" width="96" height="223.0" fill="#b0b0b0"/>
+<text x="189.5" y="154.0" font-size="12.5" font-weight="bold" fill="#333333" text-anchor="middle">49/232（21.1%）</text>
+<text x="189.5" y="408" font-size="11.5" font-weight="bold" fill="#333333" text-anchor="middle">DIRECT</text>
+<text x="189.5" y="423" font-size="10" fill="#333333" text-anchor="middle">直接基线</text>
+<rect x="344.5" y="156.4" width="96" height="227.6" fill="#8a8a8a"/>
+<text x="392.5" y="149.4" font-size="12.5" font-weight="bold" fill="#333333" text-anchor="middle">50/232（21.6%）</text>
+<text x="392.5" y="408" font-size="11.5" font-weight="bold" fill="#333333" text-anchor="middle">COT</text>
+<text x="392.5" y="423" font-size="10" fill="#333333" text-anchor="middle">CoT 基线</text>
+<rect x="547.5" y="206.5" width="96" height="177.5" fill="#e15759"/>
+<text x="595.5" y="199.5" font-size="12.5" font-weight="bold" fill="#333333" text-anchor="middle">39/232（16.8%）</text>
+<text x="595.5" y="408" font-size="11.5" font-weight="bold" fill="#333333" text-anchor="middle">LEGACY</text>
+<text x="595.5" y="423" font-size="10" fill="#333333" text-anchor="middle">历史 Harness</text>
+<rect x="750.5" y="156.4" width="96" height="227.6" fill="#4e79a7"/>
+<text x="798.5" y="149.4" font-size="12.5" font-weight="bold" fill="#333333" text-anchor="middle">50/232（21.6%）</text>
+<text x="798.5" y="408" font-size="11.5" font-weight="bold" fill="#333333" text-anchor="middle">CURRENT</text>
+<text x="798.5" y="423" font-size="10" fill="#333333" text-anchor="middle">LoveBrain 装配</text>
+<text x="24" y="448" font-size="11" fill="#555555">样本：4 臂 × 492 轮；每臂 232 项 required 断言，约 193–198 轮适用（其余 294–299 轮无适用断言，N/A）。</text>
+<text x="24" y="464" font-size="11" fill="#555555">已知边界：universal_scorer_v2 记载该通道 required 标记僵化（refs/research_harness_20261110/overnight/RESUME_STATE.json）。</text>
+<text x="24" y="480" font-size="11" fill="#555555">v1 评分快照（LEGACY 478 轮）同通道为 38/220（17.3%），结论一致（selection_v1_universal_scores.csv）。</text>
+<text x="24" y="496" font-size="11" fill="#555555">长程事实保持的机制效果结论待 holdout_v1（已执行 14.2%，暂无结论）与后续更细评分通道补充。</text>
+<text x="24" y="512" font-size="11" fill="#555555">详见 research/BENCHMARK_EVALUATION.md 第5节（四臂实验）。</text>
+<text x="24" y="532" font-size="10.5" fill="#888888">脚本：research/benchmark/charts/generate_selection_charts.py（纯标准库）· 复跑：python -I research/benchmark/charts/generate_selection_charts.py</text>
+</svg>

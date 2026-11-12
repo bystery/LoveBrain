@@ -2,7 +2,7 @@
 
 > 状态：2026-11-12 首版（迁移落盘快照口径）。本文回答四个问题：**环境怎么搭、入口在哪、数据怎么读、哪些能复现哪些不能**。"待实测"逐项标注（§10）。
 > 纪律：零真实密钥、零真实聊天内容；API 配置一律占位符；文内 `research/...` 均为本仓相对路径；完整性口径 = **文件数 + 字节量**（见 §9）。
-> 关联文档：环境说明十四项全文见 `research/README.md` §2；dataset 三口径见 `research/README.md` §3；机制与架构见 `research/architecture/ARCHITECTURE.md`。本文与 README 口径一致；离线 smoke test 的实测进展以本文 §7 为最新记录（README §2.10 为十项设计口径）。
+> 关联文档：环境说明全文见本文 §1–§5；dataset 三口径见 `research/DATASET_DOCUMENTATION.md` §8；机制与架构见 `research/architecture/ARCHITECTURE.md`。本文与 README 口径一致；离线 smoke test 的实测进展以本文 §7 为最新记录（十项设计口径见本文 §7）。
 
 ## 1. 研究环境（实测口径）
 
@@ -12,7 +12,7 @@
   - `research/arena/`：全部模块**零第三方依赖**，纯标准库实现（模型调用用 `urllib.request`，无 SDK）。
   - `research/tools/`：507 文件中仅 **12 个**使用第三方库 Pillow (PIL)，其余全部标准库。
 - 平台语义：Windows 专属标准库 `msvcrt`（文件锁）、`ctypes.wintypes`（DPAPI / 跨账户进程拉起）；POSIX `fcntl` 在平台分支内，Windows 下不触发。**跨平台运行未验证。**
-- 环境声明文件：源仓库全树不存在 `requirements*.txt` / `pyproject.toml` / `setup.py` 等声明文件；迁移需补一份环境声明（内容口径 = Python 3.12 + Pillow，其余标准库；Windows 语义注记）——**补文件动作待执行（T4），补齐前以本节登记为准。**
+- 环境声明文件：**已落盘（2026-11-12）**——`research/arena/pyproject.toml`（`requires-python = ">=3.12"`、运行时 `dependencies = []` 零第三方、`[project.optional-dependencies] tools = ["Pillow"]`）与 `research/tools/requirements.txt`（Pillow 一项，版本不锁定——源仓库从未声明过版本，不虚报）。两文件各自声明其域，口径与本节登记一致（Python 3.12 + Pillow，其余标准库；Windows 语义注记写在文件头注释）。
 
 ## 2. 依赖安装
 
@@ -59,11 +59,11 @@
 
 ## 4. 数据与 Gold 加载路径（简要）
 
-- 题库：`research/benchmark/`（完整迁移）；公开开发集 episode 在 `research/benchmark/episodes/` 与 `research/benchmark/stories_v2/` 各开发波次目录；`research/benchmark/b_line/` 为盲测线，复现流程默认**零读取**（红线见 §7）。
-- Gold 加载：`research/arena/gold_sidecar.py`（`find_turn_gold` / `apply_sidecar`；离线零模型调用；must-not-affirm 状态族；向 lb_scorer 喂 C14/C15）。权威数据根 = `research/benchmark/stories_v2/GOLD_SIDECAR/`（本地 v2 重建，14 文件）；三代口径（schema 文档自述 / 远端快照 13 文件 / 本地 v2 重建 14 文件）并列登记、不混写，详见 `research/README.md` §2.5。
+- 题库：`research/benchmark/`（完整迁移）；公开开发集 episode 在 `research/benchmark/episodes/` 与 `research/benchmark/stories_v2/` 各开发波次目录；`research/benchmark/b_line/` 为**公开 Benchmark / 历史 B 线**（24 篇题目与对应 Gold 已随公开分支公开，自公开时起不再是未曝光盲测集，状态标注见 `benchmark/b_line/B_LINE_README.md` §0）；复现流程默认零读取它（smoke 十项执行口径，见 §7）。
+- Gold 加载：`research/arena/gold_sidecar.py`（`find_turn_gold` / `apply_sidecar`；离线零模型调用；must-not-affirm 状态族；向 lb_scorer 喂 C14/C15）。权威数据根 = `research/benchmark/stories_v2/GOLD_SIDECAR/`（本地 v2 重建，14 文件）；三代口径（schema 文档自述 / 远端快照 13 文件 / 本地 v2 重建 14 文件）并列登记、不混写，详见 `research/DATASET_DOCUMENTATION.md` §6。
 - rubric 两版并存：`research/benchmark/rubric.md`（现行版）+ `research/benchmark/rubric_v0_6_draft.md`（历史草案留档）。scorer 两代并存：`research/arena/lb_scorer.py`（v0.7，现行权威）+ `research/arena/scorer.py`（v3，前置代际，不互相冒充）。**重算必须与产出该文件的评分器版本对齐；"版本↔批次"对照表待登记（T7）。**
-- 数据集统计口径：权威口径链 = 319 story 目录 / 317 唯一 story / 299 Gold 覆盖 episodes（4,082 turns / 9,646 atoms）/ 248 custody 注册 story / 315 仅 episode.json 支撑的唯一 ID（机器重算、交叉核对一致）；历史口径并列登记不改写，详见 `research/README.md` §2.4。
-- dataset 原件（真实 KB 快照，84 文件 / 735,202 B）**不出站**；公开面 = 结构摘要 + 合成样本（三口径详见 `research/README.md` §3）。
+- 数据集统计口径：权威口径链 = 319 story 目录 / 317 唯一 story / 299 Gold 覆盖 episodes（4,082 turns / 9,646 atoms）/ 248 custody 注册 story / 315 仅 episode.json 支撑的唯一 ID（机器重算、交叉核对一致）；历史口径并列登记不改写，详见 `research/benchmark/STATISTICS.md`。
+- dataset 原件（真实 KB 快照，84 文件 / 735,202 B）**不出站**；公开面 = 结构摘要 + 合成样本（三口径详见 `research/DATASET_DOCUMENTATION.md` §8）。
 
 ## 5. 模型服务配置与 API Key 环境变量（占位符）
 
@@ -84,12 +84,12 @@
 ## 6. 复现步骤（当前实测边界）
 
 - **离线复核路径（无需密钥、无需网络）**：标准 Python 3.12 环境 →（如需 tools）安装 Pillow → 按 §7 十项口径复核离线可加载/可解析面 → 按 §8.1 离线功能表逐项验证。状态：十项首跑已记录（§7）；tools 侧统计与重评分脚本逐项实测清单待建立（T9/T11）。
-- **需要模型服务的路径**：设置 §5 三个环境变量 → 网关 `openai_compat` 适配器 → run 族入口。状态：**实测通过的端到端命令示例当前为空（T1）**；live 复现另受 §8.2 七项声明第 2–5 项约束（live 原始答卷不可重新生成、历史端点无可用性承诺）。
+- **需要模型服务的路径**：设置 §5 三个环境变量 → 网关 `openai_compat` 适配器 → run 族入口。状态：**实测通过的端到端命令示例当前为空（T1）**；live 复现另受 §8.2 第 2–5 项约束（live 原始答卷不可重新生成、历史端点无可用性承诺）。
 - 命令纪律：只登记实测通过的命令；未实测命令一律不写。
 
 ## 7. 离线 smoke test（十项）与首跑实测记录
 
-> 设计口径与十项定义见 `research/README.md` §2.10；本节为**实测记录**。红线：全程不调用真实模型 API、不读取任何 B 线题面正文。
+> 设计口径与十项定义见本节 §7 十项表；本节为**实测记录**。首跑执行口径：全程不调用真实模型 API、未读取任何 B 线题面正文（第 10 项实测记录；B 线现为公开资产，该口径是首跑行为的如实记录，不再是保护性红线）。
 > 首跑：2026-11-12，在本仓迁移落盘副本上以标准库脚本（`python -I` 运行，零第三方依赖、零网络、零子进程）只读执行，未向被测树写入任何文件。**汇总：PASS = 9 / FAIL = 0 / 停用 = 1。**
 
 | # | 项目 | 首跑结果（2026-11-12） |
@@ -102,7 +102,7 @@
 | 6 | 已保存 scoring 文件可读取 | PASS——scoring 文件覆盖 231 个 run，实抽 3 个（含 veto 非 null 案例），分值、veto 与检查点字段均正常读出 |
 | 7 | 判决材料能找到对应原始结果 | PASS——2 份判决件（`research/refs/experiment_protocol_20261023/` 下 `W09-02_SLIM_VERDICT_20261031.md` 与 `W02_EXIT_VERDICT.json`）合计抽出引用 8 条、树内命中 4 条，判决→原始结果对应链走通；未命中引用逐条随运行记录保留，不在本文推断原因 |
 | 8 | 数据统计脚本能运行 | PASS——17 组全遍历：story 目录 319 / episode.json 317 / 去重 ID 315，与 §4 权威口径链一致；GOLD 组覆盖 12/12 |
-| 9 | 完整性校验脚本（停用项） | **停用**——基于哈希清单的公开校验流程在本版防御性分析停用，不实现、不执行；完整性口径 = 文件数 + 字节量（§9） |
+| 9 | 完整性校验脚本（停用项） | **停用**——完整性核验以文件数 + 字节量清单承载（§9），本项不实现、不执行 |
 | 10 | 全程零模型 API 调用、零 B 线题面读取 | PASS——B 线 26 文件仅做 stat 元数据级统计（未打开任何内容），护栏违规 0；脚本导入面无任何网络/子进程模块，未实例化网关与适配器 |
 
 记录边界（诚实声明）：
@@ -130,7 +130,7 @@
 | mock 类 `test_*` 离线回归 | 待实测 |
 | 通用评分器纯函数层 + 离线分层（`benchmark_v1/universal_scorer` + `exam_layered_score`） | 待实测 |
 
-### 8.2 七项范围声明（原文级诚实）
+### 8.2 复现范围与边界
 
 1. **可从公开数据离线重算的结果**：已保存 scoring 的确定性重算、mock/echo 批次重跑——须经 smoke test 与实测确认后才可写"可重算"；当前登记为"设计可行、待实测"。
 2. **依赖历史模型服务响应的结果**：全部 live 批次的原始答卷——只能重放与重评分，**不能重新生成**。
@@ -144,7 +144,7 @@
 
 ## 9. 完整性核验口径
 
-- **本版完整性口径 = 文件数 + 字节量**：逐域文件数见 `research/README.md` §1 导览表；逐文件字节量随 `research/provenance/` 迁移清单登记（每文件一行）。
+- **本版完整性口径 = 文件数 + 字节量**：逐域文件数见 `research/provenance/SOURCE_MAP.md` §13 数字对账表；逐文件字节量随 `research/provenance/MIGRATION_MANIFEST.csv` 登记（每文件一行）。
 - 复核方式：按清单比对目录文件数与累计字节量；历史 run 的授权账本自带校验伴生件可逐对核对。
 - 环境说明原第 13 项"验证文件内容指纹"：**停用**——完整性以文件数 + 字节量口径登记；源文件与脱敏副本的对应关系以迁移清单的路径与字节量字段承载。
 
@@ -155,7 +155,7 @@
 | T1 | 迁移副本上 13 入口点命令行可运行 | 待实测——smoke 第 1 项只覆盖模块级导入；实测通过命令示例清单仍为空（§3.2） |
 | T2 | Pillow 安装后 12 个工具可运行 | 待实测——实测后补版本锁定（§2） |
 | T3 | tools 对历史集成预览模块与候选参考链的跨目录 import 可解析 | 待实测——tools 全量可运行声明前必须收口（§2） |
-| T4 | 环境声明文件（requirements/pyproject）补齐 | 待执行——补齐前以 §1 登记为准 |
+| T4 | 环境声明文件（requirements/pyproject）补齐 | **已收口**——`research/arena/pyproject.toml` 与 `research/tools/requirements.txt` 已落盘（2026-11-12），内容口径与 §1 登记一致 |
 | T5 | 数据集权威口径链重算 | **已收口**——机器重算并与既有审计交叉核对一致；历史口径并列登记不消除（§4） |
 | T6 | Gold 侧车 14 vs 13 文件对账 | **已收口**——双轨三代口径，本地 v2 重建 14 文件为权威 + 远端快照 13 文件并存（§4） |
 | T7 | 批次↔rubric/scorer 版本对照表 | 待登记——逐批次登记后补（§4） |

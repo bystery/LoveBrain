@@ -1,8 +1,7 @@
 # DATASET_DOCUMENTATION — 数据集文档
 
-> 定位：第 8 份指导书 §11.3 研究文档表中的**数据集文档**落位件（该表称 `DATASET_OVERVIEW.md`，本文件为其落位文件，覆盖同一验收项：数据规模、构造方式、七个专项、Gold 和局限）。按总章程阶段 8 原文口径组织：**总量、构造方式、测试能力、一个简单例子和必要局限**，另按 2026-11-12 迁移决策补 Gold 双轨、B 线口径与合成样本三节。
-> 版本标注纪律：每个数字带版本标签；不同版本、不同分母、不同统计单位的数字**不相加、不互改**；历史口径并列登记、不覆盖。benchmark 域公开统计的唯一口径页为 [`benchmark/STATISTICS.md`](benchmark/STATISTICS.md)，本文与其逐项一致。
-> 完整性口径：**文件数 + 字节量**（逐文件见 [`provenance/`](provenance/) 迁移清单）。本文不登记任何哈希值。
+> 定位：数据集文档——回答"数据怎么构造、有多少、长什么样、怎么标注、有什么局限"。覆盖两个数据域：评测题库（[benchmark/](benchmark/)，episode 题面 + Gold 断言侧车）与 KB 快照（[dataset/](dataset/)，真实产品运行时导出的研究语料，原件不出站、公开面为结构摘要 + 合成样本）。
+> 版本纪律：每个数字带版本标签；不同版本、不同分母、不同统计单位的数字**不相加、不互改**；历史口径并列登记、不覆盖。benchmark 域公开统计的唯一口径页为 [`benchmark/STATISTICS.md`](benchmark/STATISTICS.md)，本文与其逐项一致。
 > 隐私纪律：本文零真实姓名、零真实对话、零真实事件细节；§4 示例为纯构造性演示内容。
 
 本文覆盖两个数据域：
@@ -18,27 +17,20 @@
 
 ### 1.1 评测题库主口径（stories_v2 文件系统 + Gold 侧车）
 
-四个主数字由**三个相互独立来源逐项相等**确认：本地最终审计（2026-11-11）→ 机器重算（2026-11-11，标准库脚本独立遍历）→ 第三重复算（2026-11-12）；账本侧另有备份副本直读互证。
+四个主数字经多路独立来源复算一致（本地最终审计 2026-11-11 → 机器重算 2026-11-11 → 第三重复算 2026-11-12；账本侧另有备份副本直读互证）。
 
 | 值 | 口径（版本标签） | 边界与说明 |
 | ---: | --- | --- |
 | **319** | stories_v2 全部 story 目录数（文件系统口径，17 个 wave/stage 组目录逐一遍历） | 含 2 个同 ID 版本副本目录；不计内层探针子目录 |
 | **317** | 按 episode ID 去重后唯一 story 数（319 − 2：D01/D02 在 stageD 与 stageD_src 各一份） | 其中 315 个有 episode.json 支撑（2 个 bundle 目录无 episode.json，按目录名回退计 ID） |
 | **299** | Gold 覆盖 episode 数（GOLD_SIDECAR_v2 本地重建口径，generated=2026-11-10T04:25:15，14 文件） | 覆盖的是既有 story，不是新增独立故事；未覆盖差集 18 = anchors 组 12 + final 组 6（设计如此）；无磁盘外幽灵 ID、无跨文件重复 |
-| **248** | custody 账本注册 story 数（**审计时点口径**，账本最后写入 2026-11-10） | 账本键集合与目录侧注册集逐 ID 相等（集合全等）；2026-11-12 决策二补登 wave5 40 篇后**当前口径 288**（纯追加），两口径并列登记、不相加不互改 |
+| **248** | custody 账本注册 story 数（**审计时点口径**，账本最后写入 2026-11-10） | 账本键集合与目录侧注册集逐 ID 相等（集合全等）；2026-11-12 wave5 补登 40 篇后**当前口径 288**（纯追加），两口径并列登记、不相加不互改 |
 
 伴随口径（同权威轨 299，三重一致）：**Gold Turn 4,082**（一次题目轮为一轮；含库外探针轮）、**Gold Atomic Assertions 9,646**（可核验原子断言；quote 逐字回验 9,646/9,646 全通过）。有断言轮 3,899（95.5%）+ 空 Gold 轮 79 + 有卡无断言轮 104。
 
-### 1.2 恒等式（对账闭合）
+### 1.2 恒等式
 
-```text
-319 − 2（D01/D02 版本副本）          = 317
-317 = 299（Gold 覆盖） + 12（anchors） + 6（final）
-248 = 299 − 8（stage1） − 3（stageD） − 40（wave5）      （审计时点）
-288 = 248 + 40（wave5 补登，2026-11-12 纯追加）          （当前口径）
-317 − 288 = 29（未注册，设计如此 = stage1 8 + stageD 3 + anchors 12 + final 6）
-12 个 GOLD 分文件 episodes/turns/atoms 求和 = GOLD_INDEX.totals（逐项全等）
-```
+对账恒等式（317 = 299 + 12（anchors） + 6（final）、248/288 账本口径关系、12 个 GOLD 分文件求和 = GOLD_INDEX.totals 等）逐项复算通过，见 [`benchmark/STATISTICS.md`](benchmark/STATISTICS.md) §二（唯一口径页，不在此重复）。
 
 ### 1.3 历史口径（并列登记，不覆盖、不相加）
 
@@ -252,26 +244,26 @@ Gold 侧车**两套实体文件并存、零覆盖、无静默选择**（同一 r
 
 ---
 
-## 7. B 线 24 篇（普通资产口径，2026-11-12 决策一）
+## 7. B 线 24 篇（公开对照资产）
 
 - **位置**：B 线 24 篇 episode 题面位于各 wave 正式层（wave1 ×10、wave2 ×6、wave3 ×4、wave3_ext ×4），其 Gold 断言内嵌于对应波次 GOLD 分文件（抽查 E045→GOLD_wave1、E069→GOLD_wave2、E150→GOLD_wave3、LRE119→GOLD_wave3_ext；24/24 全量复核随迁移收口批次执行）。
-- **口径**：按 2026-11-12 用户决策，B 线 24 篇为**普通研究资产**，直接并入公开迁移流程，与其它资产走同一套迁移与登记流程。公开树与 provenance 文档**不加任何特殊状态标签**——不出现 EXPOSED/SEALED/已曝光类标记、文件名后缀或"特殊批次"单列；本节亦仅陈述落位与流程，不做特殊化解释。
-- **账本历史**：custody 账本（`refs/experiment_protocol_20261023/global_harness_program_20261030/STORY_CUSTODY_LEDGER.json`）中 B 线的既有历史记录随账本原样保留，不修改、不强调（历史事实登记，非公开树标签）。
+- **状态**：题目与 Gold 已随公开研究分支公开——**自公开时起，该批次不再是未曝光测试集**，按普通公开 Benchmark / 历史 B 线资产使用与引用。如需严格意义的独立泛化终验，须另用从未公开的数据并在公开前完成；本仓未做该终验，如实登记为"独立泛化终验未完成"。状态详见 [`benchmark/b_line/B_LINE_README.md`](benchmark/b_line/B_LINE_README.md) §0。
+- **账本历史**：custody 账本（`refs/experiment_protocol_20261023/global_harness_program_20261030/STORY_CUSTODY_LEDGER.json`）中 B 线的既有历史记录随账本原样保留（历史事实登记，不做特殊化标注）。
 - **使用边界**：B 线 24 篇不写作 Benchmark V1 的 120 篇 HOLDOUT（后者 0/120 未生成，如实登记）。
 
 ---
 
-## 8. 合成样本说明（synthetic_samples/，2026-11-12 决策三）
+## 8. 合成样本说明（synthetic_samples/）
 
 **原件不出站**：dataset/ 的 5 个真实 KB 快照目录（84 文件 / 735,202 字节）为真实聊天导出的记忆快照，含真实姓名、真实对话与健康信息，属"无法安全脱敏"档——**原件 100% 不进公开仓库（含任何脱敏形式），本地保留**；逐文件敏感性判定与审查明细为内部记录，不随本仓库公开。
 
-**公开形态 = 结构摘要 + 合成替代样本**（决策三：AI 学习真实 KB 结构后生成假数据公开，不发布脱敏原件）：
+**公开形态 = 结构摘要 + 合成替代样本**（AI 学习真实 KB 结构后生成假数据公开，不发布脱敏原件）：
 
 1. [`dataset/manifests/STRUCTURAL-SUMMARY.md`](dataset/manifests/STRUCTURAL-SUMMARY.md) — 目录树模板、19 种文件名矩阵、字段/章节骨架、行数与字节量统计。零原件正文、零真实姓名、零对话。
 2. [`dataset/synthetic_samples/`](dataset/synthetic_samples/) — 92 件 = `synthetic_kb_01`–`synthetic_kb_05`（每套 18 文件）+ `SYNTHETIC_MANIFEST.json` + `README-synthetic.md`，合计 136,465 字节（样本 90 件）。
    - **生成方式**：AI 原生子代理学习真实 KB 的目录结构、字段模板、话题分布与对话格式后生成——结构相似、内容全假；零真实姓名残留、零真实对话片段、零可还原特征。人物/城市/机构均为虚构名，时间戳落在 2026-11 ~ 2027-03（避开真实库日期区），msgIds 与 32 位 hex 为种子随机生成。
    - **三层 synthetic 标记（缺一不可）**：库级 `SYNTHETIC_MANIFEST.json`（`synthetic: true`）+ 每个 `kb.json` 的 `synthetic: true` 键 + 每个 md 文件首行注释（70/70），防止单文件被拷出后失去身份。
-   - **强制隐私门禁**：生成于隔离区，经独立复核方隐私扫描全项 PASS 后方复制进公开树——A 类 94 词条 blocklist × 全部 90 文件 0 命中；手机号/邮箱/URL/证件号等 7 项格式扫描 0 命中；双向碰撞 0 命中（虚构 token → 真实库反向 0 命中；真实库全量标识符 → 合成件前向 0 命中）。扫描记录为内部审计产物，不随公开树发布。
+   - **强制隐私门禁**：生成于隔离区，经独立复核方隐私扫描全项 PASS 后方复制进公开树——敏感词 blocklist 全文件扫描、手机号/邮箱/URL/证件号等格式扫描、合成标识与真实库的双向碰撞检查全部 0 命中。扫描记录为内部审计产物，不随公开树发布。
    - **边界**：合成样本仅作结构与形态展示样例，**不是评测数据**——评测消费（§1–§6）只走 `benchmark/` 域，与 `dataset/` 合成样本零重叠。
 
 ---
@@ -287,4 +279,4 @@ Gold 侧车**两套实体文件并存、零覆盖、无静默选择**（同一 r
 | KB 快照结构模板与字段骨架 | [`dataset/manifests/STRUCTURAL-SUMMARY.md`](dataset/manifests/STRUCTURAL-SUMMARY.md) |
 | 合成样本身份声明 | [`dataset/synthetic_samples/README-synthetic.md`](dataset/synthetic_samples/README-synthetic.md) |
 | 迁移来源、隐私审查与逐文件清单 | [`provenance/SOURCE_MAP.md`](provenance/SOURCE_MAP.md)、[`provenance/PRIVACY_REVIEW.md`](provenance/PRIVACY_REVIEW.md)、[`provenance/MIGRATION_MANIFEST.csv`](provenance/MIGRATION_MANIFEST.csv) |
-| 研究环境与复现范围总览 | [`README.md`](README.md) §2（数据口径链 §2.4/§2.5、dataset 域三口径 §3） |
+| 研究环境与复现范围总览 | [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md)（§4 数据与 Gold 加载路径、§8 复现范围声明） |

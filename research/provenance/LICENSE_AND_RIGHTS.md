@@ -2,6 +2,8 @@
 
 > 状态：**许可与权利登记草稿（DRAFT）**——第1份指导书 `01_ASSET_PRESERVATION_AND_MIGRATION.md` §10.5（L1863-1873）五份 provenance 文档之一；随晨间用户终审后定稿为 `LICENSE_AND_RIGHTS.md`。
 >
+> **2026-11-13 一致性复核增补：** 公开研究分支 `research-migration-20261112` 已实际推送出站。编写时的"runs/ 原始回复本地保留、R2 裁决前不出站"口径与现实已不一致——runs/（290 个一级 run 目录、50,197 文件，含 reply_raw 8,845）与 17 个历史 ZIP、B 线 24 篇、dataset 合成样本均已公开（逐项登记见 [PRIVACY_REVIEW.md](PRIVACY_REVIEW.md) §0）。§1/§2/§3/§5 相关行已按实际公开状态改口径；**R2 的"模型服务商输出再分发条款核实 + reply_raw 逐批复核"仍维持待决与开放**，本文件不为已公开状态追认许可推定。
+>
 > 纪律声明：
 > - 全文**零真实姓名、零对话原文、零密钥形态值**。`dataset/` 下以真实姓名拼音首字母命名的 KB 目录，本文件统一以 **KB-g** 代指（别名约定同 PRIVACY_REVIEW-DRAFT.md 卷首说明；实际路径仅登记于内部明细 `dataset-privacy-review.csv`，不外发）。
 > - 全程只读审查；本文件是本任务唯一新增产物；未修改任何许可文件（章程红线："不得未经核实就更改代码许可"）。
@@ -78,8 +80,11 @@
 
 - **来源**：`runs/`（远端 33.7MB / 5,400 文件 / 289 批次）+ `logs/`（2.1GB 本地原始逐调用答卷）+ `evaluation/`（98 文件）+ 判决/消融/失败分析（refs/）。（license-review §四 R2、§五.4/5）
 - **许可现状**："模型生成内容可以无条件公开"不成立（§8.4 不自动证明清单）；模型服务商服务条款对输出的再分发约束**未核实**；答卷上下文可能嵌入真实用户素材。（license-review §四 R2）
-- **公开许可动作**：评分聚合、账本结构、calibration 分析、判决书与协议文档可公开（自产研究记录）；原始答卷原件本地保留（logs/ 仅本地保留不入库纪律不变，license-review §六.4）；公开形态 = 结构摘要 + 评分结果聚合 + 脱敏副本；logs/ 按 §11 矩阵走**脱敏副本 Release/LFS + raw_logs/ 索引**，不上传密钥/真实隐私；isol_runs/ 审查后公开且不得漏掉授权和隔离说明（§11）。
-- **阻塞项**：**R2 待用户决策**（模型服务商输出再分发条款核实 + 答卷正文脱敏审查后，方可决定公开副本形态）；R3（evaluation 嵌原文件脱敏副本）、R4（密件原件不公开）、R9（archive 本地独有件逐件审查）为审查会话推进项（§3）。
+- **公开许可动作（2026-11-13 按实际公开状态改口径）**：
+  - **已实际公开**：runs/ 全部批目录（290 个一级 run 目录 / 50,197 文件，含 episode_manifest / plan / summary 等结构记账件、scoring.json 聚合 8,844 份、reply_raw 原始回复 8,845 个）随公开研究分支出站；评分聚合、账本结构、calibration 分析、判决书与协议文档同批公开。结构/聚合件的公开依据是自产研究记录 + 既有密钥扫描结论（PRIVACY_REVIEW §4.6–§4.7）。
+  - **维持本地**：logs/ 2.1GB 原始逐调用答卷原件仅本地保留不入库（公开树 raw_logs/ 仅 1 件索引），纪律不变（license-review §六.4）。
+  - **仍开放**：reply_raw 8,845 个原始回复的"是否嵌入真实用户素材"逐批人工复核未完成，隐私定性开放；模型服务商输出再分发条款核实未完成——**已公开不等于许可问题已闭环**，R2 裁决（维持公开/收缩/撤回）仍待用户裁定。
+- **阻塞项**：**R2 待用户决策**（模型服务商输出再分发条款核实 + reply_raw 逐批复核后，方可对 runs/ 现行公开形态作出"维持/收缩/撤回"裁定）；R3（evaluation 嵌原文件脱敏副本）、R4（密件原件不公开）、R9（archive 本地独有件逐件审查）为审查会话推进项（§3）。
 
 ### 1.7 外部材料的引用和许可
 
@@ -104,7 +109,9 @@
 | ACL 残骸 4,321 件 | archive/20261107_root_cleanup/acl_locked_snapshots_20261021/ | 内部事故证据，PRIVATE_OPERATIONAL，零触碰零深读，不迁移不公开 | PRIVACY_REVIEW-DRAFT §4.4/§7 |
 | TeamWorkspace 全部 | 私有治理仓库 | 私有治理内容不迁移（§8.3） | PRIVACY_REVIEW-DRAFT §6/§7 |
 | onsite_check 2 个 token 字段 | PROCESS_SNAPSHOT.json（165KB）内 2 字段 | 过期会话 token（UUID 与 64-hex 形态），真实凭据材料——删除/打码后其余内容可公开（B 档） | PRIVACY_REVIEW-DRAFT §4.3/§7.4 |
-| logs/ 2.1GB 原始答卷原件、runs/ 原始回复 | R2 涉及范围 | 模型服务商输出再分发条款未核实 + 答卷上下文可能嵌入真实用户素材——裁定前原件仅本地保留 | license-review §四 R2 |
+| logs/ 2.1GB 原始答卷原件 | R2 涉及范围（本地独有） | 模型服务商输出再分发条款未核实 + 答卷上下文可能嵌入真实用户素材——原件维持仅本地保留 | license-review §四 R2 |
+
+（2026-11-13 口径注记：本表原行"logs/ 2.1GB 原始答卷原件、runs/ 原始回复"中的 **runs/ 部分已随公开研究分支出站**（290 个一级 run 目录 / 50,197 文件，含 reply_raw 8,845）——不再列入"不能公开"清单，改为"已公开、reply_raw 逐批复核开放、R2 裁决维持/收缩/撤回待定"（§1.6；PRIVACY_REVIEW §0）；logs/ 原件维持本行口径。）
 
 另有两处出站注意（脱敏点，非整件禁公开）：version_closeout 文档中指向 TeamWorkspace 私有签名材料的 keystore 绝对路径（公开前脱敏为占位描述，PRIVACY_REVIEW-DRAFT §9.7）；API_COMPATIBILITY_REPORT.md / provider_check.json 的内部网关 base URL 与模型名（无 key 材料，已逐字核实，公开前脱敏 endpoint，PRIVACY_REVIEW-DRAFT §4.4）。
 
@@ -136,7 +143,7 @@
 
 - 权利定性：模型生成原始答卷（2.1GB 本地逐调用）——授权边界未闭环（R2 待决）。
 - 公开形态：**脱敏副本 Release/LFS + raw_logs/ 索引**（§11 logs 行）；原件本地保留不入库；不上传密钥/真实隐私。
-- 阻塞：R2（§3 待决）。
+- 阻塞：R2（§3 待决）。（2026-11-13 现状核验：公开树 raw_logs/ 仅 1 件索引（INDEX.json，87,994 B），无答卷正文；runs/ 同类原始回复已随公开分支出站、单独按 §1.6/§3 R2 口径登记，logs/ 原件维持本地。）
 
 ### 2.5 GOLD v1/v2 双轨
 
@@ -165,7 +172,7 @@
 | 编号 | 资产 | 当前状态 | decision_owner | 说明 |
 | --- | --- | --- | --- | --- |
 | R1 | dataset/ 整目录（5 个 KB 快照，84 文件） | **已关闭（用户决策三）** | user（已裁定） | 原件永不出站 + 合成样本公开路线；migration-decisions §决策三 |
-| R2 | 原始答卷正文（runs/ reply_raw、logs/ 2.1GB 原始逐调用答卷） | **待决** | user | 模型服务商输出再分发条款核实 + 答卷正文脱敏审查后，方可决定公开副本形态（license-review §四 R2） |
+| R2 | 原始答卷正文（runs/ reply_raw、logs/ 2.1GB 原始逐调用答卷） | **待决（2026-11-13 口径更新：runs/ 已随公开研究分支出站——290 个一级 run 目录 / 50,197 文件，含 reply_raw 8,845；公开形态裁定项升级为"维持公开/收缩/撤回"三选一）** | user | 模型服务商输出再分发条款核实 + reply_raw 逐批人工复核（答卷上下文是否嵌入真实用户素材）完成前，runs/ 现行公开形态的许可与隐私定性均维持开放；logs/ 原件维持仅本地保留（license-review §四 R2；PRIVACY_REVIEW §0） |
 | R3 | evaluation/ 真实原文嵌入件（KNOWLEDGE_ATOM_AUDIT_V1.md、C4_FOUR_ARM_REVIEW_PACK_V1） | 推进项（脱敏副本路线已定） | worker 审查会话 | 制作脱敏副本后可公开；原件本地保留（license-review §四 R3） |
 | R4 | SEALED_KEY ×2、USER_W_SAMPLE_BINDINGS_V1.json | 原件不公开（已定）；纪律例外存在与否待确认 | 用户确认纪律例外 | 公开时仅保留"存在密件"的结构说明（license-review §四 R4） |
 | R5 | 外部论文笔记（22 篇 arxiv 阅读笔记） | 推进项 | worker 审查会话 | 逐篇 verbatim 复制比例复核，合格后公开、不合格改写为引用+自述（license-review §四 R5） |
@@ -198,7 +205,7 @@
 
 - **权利链完整、可直接公开**（随双许可伞 + provenance）：benchmark/stories_v2 全部题库（315/315 `real_user_material=false`）与 GOLD 双轨、benchmark 各批次数据（含 b_line 26 文件，provenance 回链 stories_v2）、benchmark/media 合成图、arena/ + tools/ 原创代码（零第三方依赖）、判决/协议/评估主体文档、根文档正文、candidates 全树。
 - **权利链以"合成替代 + 结构摘要"路线闭环**：dataset/——原件隐私不可公开，公开权利链经用户决策三授权的合成样本（注明生成方式）+ 结构摘要实现。
-- **授权边界未闭环、原件本地保留**：原始答卷（runs/ + logs/）R2 待决；产品图片素材 R6 待决；framework-guanjia R8 待决。
+- **授权边界未闭环（2026-11-13 按实际公开状态改口径）**：runs/ 已随公开研究分支出站（290 个一级 run 目录，含 reply_raw 8,845）——"已公开"不等于许可闭环，reply_raw 逐批复核与模型输出再分发条款核实维持开放，R2 待决；logs/ 2.1GB 原件维持本地独有；产品图片素材 R6 待决；framework-guanjia R8 待决。
 - **负面清单（不可公开）**：§1.8 所列——全部已定位、已登记处置（PRIVACY_REVIEW-DRAFT §6/§7）。
 - **总判定：主体可公开、负面清单必须隔离、三项待决（R2/R6/R8）不阻塞核心研究链公开**——与 PRIVACY_REVIEW-DRAFT §11 总体判定一致，并叠加本文件许可维度：双许可再许可门槛（§1.1 第 3 条）对公开候选集全部满足（自有原创或合成替代资产；无强 copyleft 第三方依赖）。
 

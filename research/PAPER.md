@@ -1,36 +1,15 @@
-> **迁移译注（2026-11-12）** 本文件是 `D:\lovebrain-arena\PAPER.md` 的原样迁移副本（12,980 字节逐字节一致），正文一字未改。以下译注由迁移侧逐字复核（2026-11-12）登记，是并列口径信息，供读者阅读正文数字时对照，不属于正文。
->
-> **版本标签（三条必须项）**
->
-> 1. **数据集总量数字**：正文全部数据集总量数字（208 集 / 2,944 库内轮 / 221 集 / 3,102 轮 / 2,919 / 94.1% / 6,603 / 711 / 1,099 等）为 **GOLD_SIDECAR 2026-11-03 口径**（与 `refs/dataset_review_20261107/A_COMPOSITION_AND_PROVENANCE.md` 的 2026-11-07 机器复算吻合，8/8 恒等式 PASS）。该口径已被 **2026-11-10 v2 重建（299 集 / 4,082 轮 / 9,646 原子断言）取代**，现行权威口径见 `benchmark/STATISTICS.md`。
-> 2. **B 线相关叙述**：正文中 B 线（`benchmark/b_line/`，24 篇）的独立保管、一次性消费、未消费等叙述均为 **2026-11-03 时点事实记录**（当时属实）。**2026-11-12 用户决策后，B 线 24 篇按普通数据集资产处理、并入公开迁移**，上述叙述不再反映现行安排，仅作历史记录。
-> 3. **W22 判决数字**：正文 W22 行（A 族 0 vs 2、JSON 失败 11→22、veto 19→29、swap 翻转 7/22、KEEP_NO_PROMOTE）以 **`refs/experiment_protocol_20261023/long_probe_20261030/W22FULL_VERDICT_REV2_20261104.md`（REV2 判决，取代同日 REV1）**为口径。
->
-> **口径注记（两条实质差异，登记不改原文）**
->
-> 4. **域字段计数（正文 L90）**：正文"221 集中 184 篇有 manifest 显式域字段、32 篇由归一化映射派生"，按 A-doc 脚本复算应为 **184 = 152 显式 + 32 派生（合计恰为 184 篇标准剧集）**；正文把总数 184 误挂到"显式"名下（184+32=216≠221，不闭合），属孤立转写错误，在此登记勘误口径。
-> 5. **"字节级对拍"（正文 L53）**：对拍载体为 `tools/test_baseline_parity.py` 的 **26 夹具 / 9 多轮** fixture 对拍；该表述是对对拍方法的强调，不能读成"全量逐字节等价已证"（`refs/arena_v1/BASELINE_PARITY.md` 明文登记 mergeSceneEntries 合并策略"仍不完全逐字节"残留）。
->
-> **其余迁移注记（简要）**
->
-> 6. **正文 L59 账本快照**：210/161/49/173 四数为 **2026-11-07 对账口径**；账本此后继续登记，2026-11-12 wave5 补登后为 288 stories / 379 events，现行状态以账本原件为准。
-> 7. **正文 L19 `example-LoveBrain/`**：该快照不随迁（不在本地公开树）；远端 arena 树内嵌快照为 LoveBrain main 提交 `40c1f12` 的 app/src 完整快照（702/702 一致），复现引用 git 提交。
-> 8. **正文 L11/L41 滑窗基线 38.6–55.7%**：为 **LR2 亲读口径**（机械口径为 47.6–50.4%）。
-> 9. **正文 L54 FS1-B**：取意图口径（KEEP 方向）；首轮报告另有 C1 阈值勘误双口径披露（字面 REWORK / 意图 KEEP），正文为选摘、非错述。
-> 10. **其余判决数字（L42–45、L98–109 等）**：经两轮逐字核对与判决书逐点吻合、无一错抄；除上述 W22 REV2 标签外无需额外标签。
-
----
-
 # LoveBrain Arena：在同一模型服务下，完整聊天 Harness 的可验证迭代研究
 
-> **一句话**：在固定的模型服务上，用 208 条连续剧情剧集（2,944 个请求轮）、6,603 条可核验原子断言、预注册判据与双重评审，对"完整聊天 harness"做了 30+ 次真实同场对照，得到分域冠军链与全部判决账本——包括那些**没赢、被我们自己的门拦下来**的尝试。
+> **一句话**：在固定的模型服务上，用 317 个唯一故事（299 个 Gold 覆盖 episode、4,082 个请求轮、9,646 条可核验原子断言）、预注册判据与双重评审，对"完整聊天 harness"做了 30+ 次真实同场对照，得到分域冠军链与全部判决账本——包括那些**没赢、被我们自己的门拦下来**的尝试。
+>
+> 本稿成文于第一代主库口径时点（2026-11-03）；数据集总量数字已统一为现行权威口径（见 [benchmark/STATISTICS.md](benchmark/STATISTICS.md)）。历史口径与逐项勘误登记于文末[附注](#附注历史口径与迁移登记2026-11-13-收敛)。
 
 ---
 
 ## 0. TL;DR
 
 1. **被测对象是完整 harness**（提示资产＋意图处理＋记忆存取＋上下文组织＋调用策略），不是 API、不是单句提示词。模型服务固定（`dsf @ 127.0.0.1:17770/v1`，temperature 0.7），同批比较端点/model/采样完全一致。
-2. **数据集**：208 条对话剧集 / 2,944 库内轮 + 库外探针共 **3,102 轮**，94.1% 的轮带可核验断言（6,603 条原子断言，100% 带时间戳，10.8% 是"禁止坐实/取消"反向探针）；另有 24 篇**物理封存**的盲测集（B 线），只许最终验收消费一次。
+2. **数据集**：317 个唯一 story（299 个 Gold 覆盖 episode / 4,082 轮 / 9,646 条原子断言；每条断言带逐字原文引用，quote 回验 9,646/9,646 通过；其中 832 条为"禁止坐实/已取消"反向探针）。构成含标准 12 轮剧、40/32 轮长剧（专测长程逐字事实保持）与反事实孪生（专测目标跟随）；另有 24 篇 B 线故事集为公开对照资产（原设计为一次性盲测集，自公开时起不再是未曝光测试集，见附注 2）。
 3. **主结果**：长程逐字事实保持从滑窗基线的 38.6–55.7% 提升到 **1.0**（跨 4 个新域复现），prompt 用量最多 **−52.2%**，输出契约违规 7/72 → 2/72；同时如实报告：账本式记忆候选被淘汰、归因锚定候选被契约门阻断、用户愿发盲评未做。
 
 ---
@@ -39,13 +18,13 @@
 
 ### 1.1 被测对象与边界
 
-原项目 LoveBrain 是一个 Android 聊天辅助产品；本仓库（Arena）是它的**研究考场**：`example-LoveBrain/` 快照作对照，`reference_product_v1` 是按声明范围移植的 Python 参考基线（保真边界如实登记于 `refs/arena_v1/BASELINE_PARITY.md`），`candidates/*` 是参赛 harness。
+原项目 LoveBrain 是一个 Android 聊天辅助产品；本研究的**研究考场**以参考基线 `reference_product_v1`（按声明范围移植的 Python 参考版，保真边界如实登记于 `research/refs/arena_v1/BASELINE_PARITY.md`）与 `candidates/*` 参赛 harness 为对照（原 `example-LoveBrain/` 产品快照不随公开迁移，见附注 9）。
 
 **API 只当数据源**：harness 把组织好的输入发给固定模型服务，返回文本只经 `json.loads` 解析，不执行、不自动补问、出站请求体白名单构造（验收点 `tools/test_api_boundary.py`）。**有效答卷上的质量问题一律归 harness 待解决**，不得以"模型不行"搪塞，也不许换更强模型冒充进步。
 
 ### 1.2 动机：六个真实故障族
 
-题目与机制全部围绕产品真实痛点构建（`refs/KNOWN_FAILURES.md`）：
+题目与机制全部围绕产品真实痛点构建（`research/refs/KNOWN_FAILURES.md`）：
 
 | 族 | 名称 | 典型症状 |
 |---|---|---|
@@ -73,34 +52,28 @@
 
 ## 2. 公平性协议（怎么防止自说自话）
 
-- **公平参照**：`reference_product_v1` 按 BASELINE_PARITY 声明范围移植并与 Kotlin 原版字节级对拍；未移植能力（WAL 恢复、FactSubjectResolver、后台重估、谈心/主动/润色）如实列出。
+- **公平参照**：`reference_product_v1` 按 BASELINE_PARITY 声明范围移植，并以 26 组夹具 / 9 组多轮 fixture 对拍（合并策略存在登记的残留差异，见 `research/refs/arena_v1/BASELINE_PARITY.md`）；未移植能力（WAL 恢复、FactSubjectResolver、后台重估、谈心/主动/润色）如实列出。
 - **最小对照**：`v0_minimal_events` 等极简架构与复杂架构同场竞争（Bmin 对原版参考 8/9 维为正、prompt −63.6%）。
 - **预注册**：每批判决判据在跑前冻结（如 W22 的 G1 主假设=G3 契约门=G5 swap 门），不事后改尺。
-- **唯一程序计分器**：`arena/lb_scorer.py`（rubric 层 1）；judge（层 2）**永不单独判死**，severe 判定必须过引文逐字硬校验（`tools/quote_hard_check.py`，strict 命中率 ~75–84%、无中生有引文 no_hit=0）+ 人工亲读（B3）复核。
+- **唯一程序计分器**：`research/arena/lb_scorer.py`（rubric 层 1）；judge（层 2）**永不单独判死**，severe 判定必须过引文逐字硬校验（`tools/quote_hard_check.py`，strict 命中率 ~75–84%、无中生有引文 no_hit=0）+ 人工亲读（B3）复核。
 - **swap 复核**：评审交换候选顺序复跑，翻转数超门即阻断单冠军宣布（W21 翻转 3/10、W22 翻转 7/22 均如实阻断）。
 - **每次调用记账**：授权账本（scope+cap）+ calls.json 落盘可复核；全部尝试/失败入账，不无限重试、不复活关闭单。
-- **生成隔离**：出题会话与评审会话物理隔离，`STORY_CUSTODY_LEDGER.json`（210 注册 / 161 SEALED / 49 EXPOSED / 173 事件）逐篇记录暴露状态。
-- **B 线封存**：`benchmark/b_line/` 24 篇盲测集 sha256 双向校验封存，`only_once` 条款——运行一次即转 CONSUMED，禁止按逐题错误回修。
+- **生成隔离**：出题会话与评审会话物理隔离，`STORY_CUSTODY_LEDGER.json` 逐篇记录暴露状态（账本原件随 `research/refs/` 迁移保留）。
+- **B 线对照集**：`research/benchmark/b_line/` 24 篇已随公开研究分支公开——自公开时起为公开对照资产，不再是未曝光盲测集（状态见 `benchmark/b_line/B_LINE_README.md` §0）。
 
 ---
 
 ## 3. 数据集：构成与覆盖
 
-### 3.1 总量
+### 3.1 总量（现行权威口径）
 
-| 部分 | 条数 | 轮数 | 说明 |
-|---|---|---|---|
-| 标准剧集 | 184 | 2,272 | 168×12 轮 + 8×8 轮（stage3）+ 8×24 轮（stage4 深检） |
-| 长剧集 | 16 | 576 | 8×40 轮 + 8×32 轮（wave3_ext，LRE 系列） |
-| 反事实孪生 | 8 | 96 | 每篇有对照孪生，测"目标跟随"而非记忆 |
-| **库内合计** | **208** | **2,944** | 逐篇 episode.json 实测 |
-| 库外探针 | 13 篇+12 锚 | 158 | stage1 64 轮、stageD 22、wave1_ext 72（FK-LR2-01 原始战场）、K/N 深检 24+12 |
-| 锚点单轮 | 12 | 12 | 用户口味锚（busy/hesitant/positive 反馈） |
-| **Gold 侧车覆盖** | **221 集** | **3,102** | 其中 2,919 轮（94.1%）有断言，79 轮诚实空 gold |
+权威轨为 `benchmark/stories_v2/GOLD_SIDECAR/`（GOLD_SIDECAR_v2 本地重建，2026-11-10，14 文件）：**319 个 story 目录 → 317 个唯一 story（按 ID 去重）→ 299 个 Gold 覆盖 episode / 4,082 轮 / 9,646 条原子断言**（有断言轮 3,899 = 95.5%，空 Gold 轮 79，有卡无断言轮 104）。
 
-### 3.2 这个数据集的百分之几在检查什么
+故事按 17 个层组逐批构造：stage 系列、wave 系列（wave3_ext / wave1_ext 为长剧集 LRE 系）、wave4_dev（开发诊断）、wave5_selection（选题消费）、锚点批与收口探针批；含标准 12 轮剧、40/32 轮长剧（专测 FK-LR2-01 长程逐字事实保持）与反事实孪生（专测目标跟随）。逐层组构成、恒等式与全部口径边界见 [DATASET_DOCUMENTATION.md](DATASET_DOCUMENTATION.md) §1–§2 与 [benchmark/STATISTICS.md](benchmark/STATISTICS.md)；本稿成文时的第一代主库口径（208 / 2,944 / 6,603）作为历史口径登记于文末附注 1。
 
-**篇级构成**（n=208）：标准日常剧 **88.5%**（12 个生活域：工作职场 19、数码消费 19、运动健身 18、学习成长 18、家居装修 18、医疗健康 18、餐饮聚会 17、宠物 17、出行拼车 16、家庭事务 15、兴趣社交 8、其他 1）／长剧 **7.7%**（专测 FK-LR2-01 长程逐字事实）／反事实孪生 **3.8%**（专测目标跟随与旧事复用）。另有封存盲测集 24 篇（16 标准+4 长剧+4 反事实）独立于上列。
+### 3.2 覆盖构成（按第一代主库口径 n=208 / 2,944 轮 / 6,603 断言计量，见附注 1）
+
+**篇级构成**（n=208）：标准日常剧 **88.5%**（12 个生活域：工作职场 19、数码消费 19、运动健身 18、学习成长 18、家居装修 18、医疗健康 18、餐饮聚会 17、宠物 17、出行拼车 16、家庭事务 15、兴趣社交 8、其他 1）／长剧 **7.7%**（专测 FK-LR2-01 长程逐字事实）／反事实孪生 **3.8%**（专测目标跟随与旧事复用）。
 
 **轮级九维覆盖**（2,944 个评分轮的 `applicable_dimensions` 实测）：互动质量 65.4%／记忆使用 55.2%／目标完成 55.1%／情绪与关系 49.6%／事实性 41.9%／时间状态 30.8%／边界 25.9%／主动性 19.7%／归属归因 11.7%（一题可多维）。
 
@@ -110,7 +83,7 @@
 
 ### 3.3 诚实声明
 
-Gold 断言来自 **AI 隔离出题会话的评分卡逐字搬运**（`tools/build_gold_sidecar.py` 不新造一字），不是人工标注真值；221 集中 184 篇有 manifest 显式域字段、32 篇由归一化映射派生；judge 有资格表（boundary/memory 维器械效度不足已停用）。这些边界全部写在 `EVALUATION_BASELINE_AUDIT_20261103.md`。
+Gold 断言来自 **AI 隔离出题会话的评分卡逐字搬运**（`research/tools/build_gold_sidecar.py` 不新造一字），不是人工标注真值；judge 有资格表（boundary/memory 维器械效度不足已停用）。这些边界全部写在 `research/refs/experiment_protocol_20261023/global_harness_program_20261030/EVALUATION_BASELINE_AUDIT_20261103.md`。Gold 侧车的分层局限（"宁 unrated 不误判"、程序化可判面边界）见 [DATASET_DOCUMENTATION.md](DATASET_DOCUMENTATION.md) §5。
 
 ---
 
@@ -131,9 +104,9 @@ Gold 断言来自 **AI 隔离出题会话的评分卡逐字搬运**（`tools/bui
 | W14M02 | 账本式记忆（b2） | 单方说法被坐实（LRE146_T20）触发 H_SUP_null | **淘汰** |
 | CF1 | 反事实跟随率 | 0.681 vs 0.698（落入不确定带，不补跑） | UNCERTAIN（如实不判） |
 
-**现行冠军**：>24 轮域 `window_expand_b_norecap_uc`；≤24 轮域 `window_expand_b_norecap_guard`（2026-11-03 起，谱系见 `VERSION_LINEAGE_V2.json`）。全程累计 2,726+ 次真实调用、79 本授权账本（36 已闭），全部可对账。
+**现行冠军**：>24 轮域 `window_expand_b_norecap_uc`；≤24 轮域 `window_expand_b_norecap_guard`（2026-11-03 起，谱系见 `research/candidates/VERSION_LINEAGE_V2.json`）。全程累计 2,726+ 次真实调用、79 本授权账本（36 已闭），全部可对账。
 
-**冠军 ≠ 可直接替换产品**：BASELINE_PARITY 明文"整体优于原版仍未证明"；谈心/主动开场/润色/Android 交互不在基线比较范围；用户愿发盲评未做。冠军已以 **SHADOW 影子模式**移植进产品分支（默认 OFF、不展示、不写主记忆），晋级走 S1 shadow → S2 → S3 → B 线一次性盲评 → 用户亲自选愿发回复。
+**冠军 ≠ 可直接替换产品**：BASELINE_PARITY 明文"整体优于原版仍未证明"；谈心/主动开场/润色/Android 交互不在基线比较范围；用户愿发盲评未做。冠军机制已按分域以 LIVE_AUTO 档接入产品正常回复主链路（>24 轮 uc / ≤24 轮 guard；`closeout-20261106` 产品分支默认档 LIVE_AUTO，真机行为级验收待执行；接线架构见 [architecture/ARCHITECTURE.md](architecture/ARCHITECTURE.md) §4）。移植档位谱系（shadow → 单风格 → 全量三阶段开关）与用户主观偏好实测（愿发率，唯一不可替代的验收）仍未完成。
 
 ---
 
@@ -141,31 +114,59 @@ Gold 断言来自 **AI 隔离出题会话的评分卡逐字搬运**（`tools/bui
 
 1. "整体优于原版"未证明（比较对象主要是候选 vs 直接父本）。
 2. 用户主观偏好（愿发率）未收集——这是最终替换的必要条件。
-3. B 线盲测集封存未消费，泛化终验未跑。
+3. 独立泛化终验未完成——原 B 线 24 篇已作为公开对照资产并入数据集，自公开时起不再是未曝光测试集；如需严格终验须另用从未公开的数据并在公开前完成。
 4. Gold 为 AI 出题断言（非人工真值）；boundary/memory 维 judge 器械效度不足已停用。
 5. W22 的 JSON 回归与提示词长度的因果关系未做隔离消融（只登记了跨批一致的关联）。
-6. 原始逐调用答卷（约 2.1GB）在研究者本地，GitHub 快照不含；独立复算需本地账本与 `logs/`。
+6. 原始逐调用日志原件未进 git（按 run 边界分卷走 Release/LFS；索引见 `research/experiments/raw_logs/`）；独立复算需授权账本与原始日志齐备。
 
 ---
 
 ## 6. 下一步（阶段收尾 ≠ 研究结束）
 
-当前处于**版本收口**阶段（机制线冻结、冠军机制合并进产品走三阶段开关）；收口完成后恢复迭代循环：
+当前处于**版本收口**阶段（机制线冻结、冠军机制按分域接入产品）；收口完成后恢复迭代循环：
 
 1. 评估基准补强（判别素材补建、severe 人工真值扩容、维度映射表——W21-03/04/05）；
 2. judge 逐维校准扩样（锚点校准报告 W20_03 已建框架）；
-3. S1 shadow 对账 → S2 单风格 → S3 全量，B 线一次性盲评；
-4. 用户愿发实测（唯一不可替代的验收）；
+3. 移植三阶段开关收尾（shadow 对账 → 单风格 → 全量）与真机行为级验收；
+4. 用户愿发实测（唯一不可替代的验收）；独立泛化终验须另用未曝光数据；
 5. 题库按暴露账本继续扩（wave 机制已建，0 近重簇纪律）。
 
 ## 7. 证据索引
 
 | 内容 | 位置 |
 |---|---|
-| 治理宪法 | `AGENTS.md`（v1.6）、`OBJECTIVE.md`、`benchmark/rubric.md`（v0.5） |
-| 当前状态（机读） | `refs/experiment_protocol_20261023/global_harness_program_20261030/RESEARCH_STATE.json`、`TASK_QUEUE.json` |
-| 全部判决书 | `refs/experiment_protocol_20261023/long_probe_20261030/`（W16/W17B/W17C/W15N01/W14M02/W21FULL/W22FULL_REV2/FLJUDGE/CF1/LD1…） |
-| 故障族与评分缺口 | `refs/KNOWN_FAILURES.md`（F1–F6、FK-LR2-01、FK-INJECT-01、FK-SCORE-01） |
-| 基线保真边界 | `refs/arena_v1/BASELINE_PARITY.md` |
-| 数据集 | `benchmark/stories_v2/`（+`GOLD_SIDECAR/GOLD_INDEX.json`）、封存盲测 `benchmark/b_line/`（B_LINE_MANIFEST.json，only_once） |
-| 原始答卷与账本 | `logs/`（约 2.1GB，本地）+ 各批 calls.json/授权账本 |
+| 历史阶段状态（机读） | `research/refs/experiment_protocol_20261023/global_harness_program_20261030/RESEARCH_STATE.json`、`TASK_QUEUE.json`；历史治理与阶段快照见 `research/archive/historical_assets/`（均附 historical 标注） |
+| 全部判决书 | `research/refs/experiment_protocol_20261023/long_probe_20261030/`（W16/W17B/W17C/W15N01/W14M02/W21FULL/W22FULL_REV2/FLJUDGE/CF1/LD1…；53 份判决总索引见 `research/refs/VERDICT-INDEX.md`） |
+| 故障族与评分缺口 | `research/refs/KNOWN_FAILURES.md`（F1–F6、FK-LR2-01、FK-INJECT-01、FK-SCORE-01） |
+| 基线保真边界 | `research/refs/arena_v1/BASELINE_PARITY.md` |
+| 数据集 | `research/benchmark/stories_v2/`（+ `GOLD_SIDECAR/GOLD_INDEX.json`）；公开对照集 `research/benchmark/b_line/`（B_LINE_MANIFEST.json） |
+| 原始答卷与账本 | 各批 calls.json / 授权账本随 `research/experiments/` 落盘；原始日志索引 `research/experiments/raw_logs/`（原件按 run 边界分卷走 Release/LFS） |
+
+---
+
+<a id="附注历史口径与迁移登记2026-11-13-收敛"></a>
+## 附注：历史口径与迁移登记（2026-11-13 收敛）
+
+本稿成文于第一代主库口径时点（2026-11-03）。2026-11-12 迁移收敛时，正文数据集总量数字已统一为现行权威口径（299 / 4,082 / 9,646，唯一口径页 [benchmark/STATISTICS.md](benchmark/STATISTICS.md)）。以下登记历史口径与逐项勘误，供对照旧 runs 与判决文件时使用。
+
+1. **第一代主库口径**（正文原 §3.1 表，2026-11-07 只读复算；已被 2026-11-10 v2 重建取代；更早的"296"口径无法可靠复现，弃用）：
+
+   | 部分 | 条数 | 轮数 | 说明 |
+   |---|---|---|---|
+   | 标准剧集 | 184 | 2,272 | 168×12 轮 + 8×8 轮（stage3）+ 8×24 轮（stage4 深检） |
+   | 长剧集 | 16 | 576 | 8×40 轮 + 8×32 轮（wave3_ext，LRE 系列） |
+   | 反事实孪生 | 8 | 96 | 每篇有对照孪生，测"目标跟随"而非记忆 |
+   | **库内合计** | **208** | **2,944** | 逐篇 episode.json 实测 |
+   | 库外探针 | 13 篇+12 锚 | 158 | stage1 64 轮、stageD 22、wave1_ext 72（FK-LR2-01 原始战场）、K/N 深检 24+12 |
+   | 锚点单轮 | 12 | 12 | 用户口味锚（busy/hesitant/positive 反馈） |
+   | **Gold 侧车覆盖** | **221 集** | **3,102** | 其中 2,919 轮（94.1%）有断言，79 轮诚实空 gold；6,603 条原子断言 |
+
+2. **B 线叙述**：正文原称 B 线 24 篇"物理封存、只许最终验收消费一次"为 2026-11-03 时点事实记录（当时属实）。2026-11-12 起 B 线按普通公开研究资产处理并入公开迁移，自公开时起不再是未曝光盲测集；正文已按现行状态表述。
+3. **W22 判决数字**：正文 W22 行以 `W22FULL_VERDICT_REV2_20261104.md`（REV2，取代同日 REV1）为口径。
+4. **域字段计数勘误**：原稿"221 集中 184 篇有 manifest 显式域字段、32 篇由归一化映射派生"不闭合（184+32=216≠221），属孤立转写错误；正确口径为 184 篇标准剧集 = 152 显式 + 32 派生。该细节已从正文移除。
+5. **"字节级对拍"口径**：对拍载体为 `tools/test_baseline_parity.py` 的 26 夹具 / 9 多轮 fixture；mergeSceneEntries 合并策略存在登记的残留差异（BASELINE_PARITY.md），不能读成"全量逐字节等价已证"。
+6. **账本快照**：原稿 210/161/49/173 四数为 2026-11-07 对账口径；账本此后继续登记，2026-11-12 wave5 补登后为 288 stories / 379 events，现行状态以账本原件为准。
+7. **滑窗基线 38.6–55.7%**（正文 §0/§1.3）：为 LR2 亲读口径（机械口径为 47.6–50.4%）。
+8. **FS1-B**：取意图口径（KEEP 方向）；首轮报告另有 C1 阈值勘误双口径披露（字面 REWORK / 意图 KEEP），正文为选摘、非错述。
+9. **`example-LoveBrain/` 快照**：不随公开迁移；远端 arena 树内嵌快照为产品 main 提交 `40c1f12` 的 app/src 完整快照（702/702 一致），复现引用 git 提交。
+10. **其余判决数字**（§4 表等）：经两轮逐字核对与判决书逐点吻合、无一错抄。

@@ -133,7 +133,8 @@ class ChampionEngine(
     /** shadow 装配侧的角色白名单：非 HER/ME 的输入在装配前就拒（与 store.append 同口径）。 */
     private fun requireRealRoleForShadow(role: String, text: String) {
         check(role == "HER" || role == "ME") {
-            "champion shadow 收到非真实消息（role=$role），拒绝装配 text=${text.take(20)}…"
+            // 异常消息只记 role，不带消息正文片段（避免用户原话进异常日志）。
+            "champion shadow 收到非真实消息（role=$role），拒绝装配"
         }
     }
 

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-"""图表 A 生成脚本：D1-D7 方向覆盖条图（批次 A 最终回填口径）。
+"""图表 A 生成脚本：D1-D7 方向覆盖条图（枚举去重回填口径）。
 
-纪律（章程阶段 8）：
-- 数据全部来自 dataset-final-reconciliation.csv（nine_steps/8_d1_d7 行 + d1_d7 节），
-  由本脚本程序化解析，脚本内零硬编码数字；解析失败即报错退出，不回退、不补数。
-- Y 轴从 0 起（不截断坐标轴）；D4 程序化 0 如实画出（基线标记 + 0 标签）。
-- 纯 Python 标准库，零第三方依赖；零哈希值输出。
+- 数据全部来自 dataset-final-reconciliation.csv（仓库内 research/benchmark/dataset-final-reconciliation.csv，
+  nine_steps/8_d1_d7 行 + d1_d7 节），由本脚本程序化解析，脚本内零硬编码数字；
+  解析失败即报错退出，不回退、不补数。
+- Y 轴从 0 起（不截断坐标轴）；D4 程序化覆盖为 0，以基线标记 + 0 标签画出。
+- 纯 Python 标准库，零第三方依赖。
 
 复跑：python -I generate_chart_a.py
 输出：本脚本同目录 chart-A-d1d7.svg
@@ -35,7 +35,7 @@ def read_csv():
 
 
 def parse_nine_steps(rows):
-    """从 nine_steps/8_d1_d7 行解析批次 A 最终回填数字（唯一权威来源）。"""
+    """从 nine_steps/8_d1_d7 行解析各方向去重回填数字（唯一权威来源）。"""
     val = None
     for r in rows:
         if r["section"] == "nine_steps" and r["item"] == "8_d1_d7":
@@ -106,7 +106,7 @@ def cross_check(ns, detail):
 
 
 def extract_annotations(detail):
-    """从 d1_d7 行提取 claimed 数字用于诚实注释（解析失败即退出）。"""
+    """从 d1_d7 行提取 claimed 数字用于脚注出入说明（解析失败即退出）。"""
     ann = {}
     m = re.search(r"claimed=(\d+)", detail["D1"]["full"])
     if not m:
@@ -171,9 +171,9 @@ def build_svg(ns, ann):
 
     # 标题 / 副标题（副标题两行左对齐，避免超宽）
     e.append(f'<text x="{W/2:.0f}" y="32" font-size="20" font-weight="bold" '
-             f'fill="{C_TEXT}" text-anchor="middle">图表 A：D1–D7 方向覆盖条图（批次 A 最终回填口径，按 Episode 去重）</text>')
+             f'fill="{C_TEXT}" text-anchor="middle">图表 A：D1–D7 方向覆盖条图（枚举去重回填口径，按 Episode 去重）</text>')
     e.append(f'<text x="24" y="54" font-size="12" fill="{C_NOTE}">'
-             f'数据源：asset-audit/dataset-final-reconciliation.csv（nine_steps·8_d1_d7 与 d1_d7 节）· 数据截至 {DATA_CUTOFF}</text>')
+             f'数据源：research/benchmark/dataset-final-reconciliation.csv（nine_steps·8_d1_d7 与 d1_d7 节）· 数据截至 {DATA_CUTOFF}</text>')
     e.append(f'<text x="24" y="70" font-size="12" fill="{C_NOTE}">'
              f'各方向去重数可重叠、不相加；唯一池 = GOLD 覆盖 299</text>')
 
@@ -219,7 +219,7 @@ def build_svg(ns, ann):
             e.append(f'<text x="{cx:.1f}" y="{y8 + h8/2 + 4:.1f}" font-size="12" font-weight="bold" '
                      f'fill="#ffffff" text-anchor="middle">C8 {v8}</text>')
         elif ns[d][0] == 0:
-            # D4 程序化 0：如实画出（基线方块标记 + 0 标签），不美化
+            # D4 程序化覆盖为 0：以基线方块标记 + 0 标签画出
             e.append(f'<rect x="{cx-4:.1f}" y="{MT+PLOT_H-4:.1f}" width="8" height="8" fill="{C_AXIS}"/>')
             e.append(f'<text x="{cx:.1f}" y="{MT+PLOT_H-12:.1f}" font-size="13" font-weight="bold" '
                      f'fill="{C_AXIS}" text-anchor="middle">0</text>')
@@ -240,8 +240,8 @@ def build_svg(ns, ann):
     # 脚注（口径与出入登记，全部来自对账 CSV）
     fy = H - MB + 62
     notes = [
-        f'① D4 检索相关性：程序化覆盖 0 为最大缺口，如实保留不美化；judge-only {ann["D4_judge_only"]} 为人工评判口径，单列不计入本图程序化覆盖。',
-        f'② 口径出入登记（见对账 CSV discrepancies 节）：D1 claimed {ann["D1_claimed"]} vs 枚举去重回填 {ns["D1"][0]}（X1）；'
+        f'① D4 检索相关性：程序化覆盖 0 为最大缺口；judge-only {ann["D4_judge_only"]} 为人工评判口径，单列不计入本图程序化覆盖。',
+        f'② 口径出入（见对账 CSV discrepancies 节）：D1 claimed {ann["D1_claimed"]} vs 枚举去重回填 {ns["D1"][0]}（X1）；'
         f'D3 C14 claimed ~{ann["D3_claimed_C14"]} / C8 claimed {ann["D3_claimed_C8"]} vs 枚举 {ns["D3"][0]}/{ns["D3"][1]}（X2/X3）。',
         f'③ D6 的 C8 信号（claimed {ann["D6_C8_claimed"]} / 枚举 {ann["D6_C8_enum"]}）计入 D3，不在 D6 重复计；D7 与 D2 同池（{ns["D7"][0]}），不代表独立新增。',
         f'④ 本图 Y 轴自 0 起；各方向样本可重叠，禁止将柱高相加；唯一池 = GOLD 覆盖 299（STATISTICS.md §三.3）。',
@@ -251,7 +251,7 @@ def build_svg(ns, ann):
 
     # 源与脚本信息
     e.append(f'<text x="{ML-56}" y="{fy + 4*18 + 6}" font-size="10.5" fill="#888888">'
-             f'脚本：chart-materials/generate_chart_a.py（纯标准库，可复跑：python -I generate_chart_a.py）· 数字程序化解析自源 CSV，脚本内零硬编码</text>')
+             f'脚本：research/benchmark/charts/generate_chart_a.py（纯标准库，可复跑：python -I research/benchmark/charts/generate_chart_a.py）· 数字程序化解析自源 CSV，脚本内零硬编码</text>')
     e.append('</svg>')
     return "\n".join(e) + "\n"
 

@@ -2,15 +2,16 @@
 
 > **状态：** 正式架构文档（research/architecture/ 第一份，2026-11-12 编制）。面向外部读者：文中全部引用只需本仓（`app/` 与 `research/`）即可核验。
 > **证据基准：** 产品树 = `closeout-20261106` 分支 @ `a0104be0` 工作树实测（2026-11-12，porcelain 干净）；研究树 = `research/` 迁移落盘快照（2026-11-12，导览见 [research/README.md](../README.md)）。行号随仓库前移会漂移，引用时以当时实际状态为准。
-> **接线状态红线：** 本文严格区分状态——「现状已接线」「已接线（附 commit）」「保持（回退/直通语义不变）」。LIVE_AUTO 生产链路**已接线**（guide-6 批次 A-D，commit `afa9559f`→`a0104be0`，2026-11-12 实测）：默认档 LIVE_AUTO，显式 OFF 永远尊重（全链回退原生路径保持），SHADOW 行为不变（§4）。不把计划画成已启用，也不把已接线画成待实施。
-> **口径与隐私：** 完整性口径 = 文件数 + 字节量（本文化完整性基线见 research/README.md §1）；本文零文件哈希值。零真实密钥、零真实聊天内容、零个人数据；API 配置一律占位符（§3 环境变量名为代码事实）。
+> **分支状态声明（2026-11-13 复核）：** 本文所述 LIVE_AUTO 接线（§2/§4，commit `afa9559f`→`a0104be0`）实测于 `closeout-20261106` 产品分支。**本文所在的研究分支 `research-migration-20261112` 的 `app/` 代码不含该接线**：`data/SecurePrefs.kt` 的 `championEngineMode` 键不存在时默认读 OFF（:366，fail-closed），`domain/champion/ChampionEngine.kt` 的 `ChampionMode` 枚举仅 OFF/SHADOW/SINGLE_STYLE/FULL（:25-32，无 LIVE_AUTO），且 SINGLE_STYLE/FULL 读写两侧均按 OFF 收敛（S2/S3 未接线）。两分支分叉、互不包含对方新增提交。引用本文接线状态必须带分支名，不得跨分支声称"本分支已集成"。
+> **接线状态红线：** 本文严格区分状态——「现状已接线」「已接线（附 commit）」「保持（回退/直通语义不变）」。LIVE_AUTO 生产链路**已在 `closeout-20261106` 分支接线**（guide-6 批次 A-D，commit `afa9559f`→`a0104be0`，2026-11-12 实测）：该分支默认档 LIVE_AUTO，显式 OFF 永远尊重（全链回退原生路径保持），SHADOW 行为不变（§4）。**该状态是 closeout 分支事实，不是本分支事实**（见上方分支状态声明）。不把计划画成已启用，也不把已接线画成待实施。
+> **口径与隐私：** 完整性口径 = 文件数 + 字节量（本文化完整性基线见 `research/provenance/SOURCE_MAP.md` §13 数字对账表）；本文零文件哈希值。零真实密钥、零真实聊天内容、零个人数据；API 配置一律占位符（§3 环境变量名为代码事实）。
 > **路径基准：** §2 中 `〔domain/PromptBuilder.kt〕` 形式的路径均相对 `app/src/main/java/com/lovebrain/app/`；`research/...` 为本仓相对路径。
 
 ---
 
 ## 1. 项目三层结构：产品 / 研究 / 治理
 
-LoveBrain 项目由三个仓库构成，角色不互相混淆。**产品仓 `bystery/LoveBrain`**（唯一公开仓库）：Android 聊天辅助产品（Kotlin/Compose，main 分支发布 1.4.2 / versionCode 11），`closeout-20261106` 分支承载机制移植与收口，`research/` 目录承载研究资产公开面；**研究仓 `bystery/arena`**（私有）：研究考场——`arena/` 考场运行时框架 + `isolation/` 隔离包、`tools/` 评测工具、`candidates/` 参赛候选与双域冠军、`runs/` 实验账本、判决书与实验协议，其公开面已按迁移清单整体平移至本仓 `research/` 十二区；**治理仓 `bystery/TeamWorkspace`**（私有，全程只读）：产品规格、工程规则与任务台账，对产品仓的合并与发布施加治理约束（机制上线须真机验收与明确授权）。三者之间的信息流是单向收敛的：产品真实故障族进入研究考场形成实验与判决，只有获得 KEEP/MERGE 判决的机制才向产品移植，移植后以受控档位（当前 SHADOW）接入产品，治理仓负责守住合并门槛。下图为三仓库关系与主要迁移/约束边。
+LoveBrain 项目由三个仓库构成，角色不互相混淆。**产品仓 `bystery/LoveBrain`**（唯一公开仓库）：Android 聊天辅助产品（Kotlin/Compose，main 分支发布 1.4.2 / versionCode 11），`closeout-20261106` 分支承载机制移植与收口，`research/` 目录承载研究资产公开面；**研究仓 `bystery/arena`**（私有）：研究考场——`arena/` 考场运行时框架 + `isolation/` 隔离包、`tools/` 评测工具、`candidates/` 参赛候选与双域冠军、`runs/` 实验账本、判决书与实验协议，其公开面已按迁移清单整体平移至本仓 `research/` 十二区；**治理仓 `bystery/TeamWorkspace`**（私有，全程只读）：产品规格、工程规则与任务台账，对产品仓的合并与发布施加治理约束（机制上线须真机验收与明确授权）。三者之间的信息流是单向收敛的：产品真实故障族进入研究考场形成实验与判决，只有获得 KEEP/MERGE 判决的机制才向产品移植，移植后以受控档位接入产品（本研究分支当前 SHADOW；`closeout-20261106` 分支已接线 LIVE_AUTO 分域，见卷首分支状态声明），治理仓负责守住合并门槛。下图为三仓库关系与主要迁移/约束边。
 
 ```mermaid
 flowchart TB
@@ -25,7 +26,7 @@ flowchart TB
     end
     subgraph RL["bystery/LoveBrain · 唯一公开面试展示仓（本仓）"]
         L_APP["app/ Android 产品（Kotlin/Compose）<br/>main=40c1f12 v1.4.2/versionCode 11；<br/>closeout-20261106=a0104be0 领先 8（含接线批次 A-D 落码接线）"]
-        L_CHAMP["app/src/main/java/com/lovebrain/app/domain/champion/ 6 文件<br/>+ app/src/main/assets/engine/champion/ 4 资产<br/>SHADOW 已接线；LIVE_AUTO 已落码已接线（批次 A-D）<br/>默认档 LIVE_AUTO、显式 OFF 回退保持"]
+        L_CHAMP["app/src/main/java/com/lovebrain/app/domain/champion/ 6 文件<br/>+ app/src/main/assets/engine/champion/ 4 资产<br/>LIVE_AUTO 接线=closeout-20261106 分支（批次 A-D）：<br/>默认档 LIVE_AUTO、显式 OFF 回退保持；<br/>本研究分支 app/ 无此接线：默认 OFF、S2/S3 未接线"]
         L_RES["research/ 研究资产树（十二区导览<br/>见 research/README.md）"]
         L_ARCHDOC["research/architecture/ 架构文档落点<br/>（本文即该落点产出）"]
     end
@@ -57,7 +58,7 @@ flowchart TB
 
 ## 2. 产品生产调用链
 
-**现状主链（OFF/SHADOW/LIVE_AUTO 下已全部接线）：** ViewModel 一次性冻结请求输入 → `GenerationEngine.replyStream` → PromptBuilder 装配 → AiGateway 端口 → DeepSeekRepository 唯一实现 → OpenAiChatWire/CancellableHttpTransport → 上游模型一次流式请求 → 增量解析 → 事件流按 requestId 收敛 → UI 结果区；正式提交点在 `nextRound`（topicRecorder 成功后才入库，事件库只收真实 HER/ME 消息）。SHADOW 为独立影子链：原链路照常生成，冠军引擎并行生成只写 shadow_log，不 emit、不入 UI、不触发提交。图中「分域」部分（prepareLiveContext / GUARD_SHORT / UC_LONG / Guard 主链分支 / 区块注入）为 **LIVE_AUTO 生产接线，已落码已接线（commit `afa9559f`→`a0104be0`）**（§4），节点与边均逐项标注状态。
+**现状主链（OFF/SHADOW/LIVE_AUTO 下已全部接线——接线状态为 `closeout-20261106` 分支 @ `a0104be0` 实测口径；本研究分支 `app/` 无 LIVE_AUTO、默认 OFF，见卷首分支状态声明）：** ViewModel 一次性冻结请求输入 → `GenerationEngine.replyStream` → PromptBuilder 装配 → AiGateway 端口 → DeepSeekRepository 唯一实现 → OpenAiChatWire/CancellableHttpTransport → 上游模型一次流式请求 → 增量解析 → 事件流按 requestId 收敛 → UI 结果区；正式提交点在 `nextRound`（topicRecorder 成功后才入库，事件库只收真实 HER/ME 消息）。SHADOW 为独立影子链：原链路照常生成，冠军引擎并行生成只写 shadow_log，不 emit、不入 UI、不触发提交。图中「分域」部分（prepareLiveContext / GUARD_SHORT / UC_LONG / Guard 主链分支 / 区块注入）为 **LIVE_AUTO 生产接线，已落码已接线（commit `afa9559f`→`a0104be0`）**（§4），节点与边均逐项标注状态。
 
 ```mermaid
 flowchart TD
@@ -157,7 +158,7 @@ flowchart TD
 
 **不是。Prompt 只是输入的一部分；LoveBrain 还决定记忆如何形成、信息何时注入、旧事实何时失效、当前话题如何切换，以及模型输出如何被确定性处理。**
 
-`research/arena/`（28 个 .py + harness_loader.md，其中 `isolation/` 子包 10 个 .py）是研究考场的运行时框架：**纯标准库、零第三方依赖**（模型调用走 `urllib.request`），Python 3.12（源机实测 3.12.4 全链导入通过）。分层读法自底向上：叶子边界层（请求体白名单 / 输出协议校验 / Gold 侧车）→ 装配与网关（`lb_assembly` / `lb_gateway`）→ 评分（`lb_scorer` 唯一计分器 v0.7）→ 机制契约（`lb_mechanism`）→ 运行时（`lb_runner`）→ Judge 判决实验族（校准 / 重排 / 2×2 归因）→ 隔离包（`isolation/`，可信控制器零候选执行 + 跨账户沙箱）。模块间为平铺导入（`import lb_assembly` 形态）+ `sys.path.insert` 自举；`isolation/` 包要求 arena 目录与 isolation 包同时在 `sys.path`——迁移整体平移，不得拆包。工具面 `research/tools/`（507 文件）为评测/审计/重评分工具与测试；唯一第三方依赖 Pillow 仅 12 个文件使用。题库与 Gold 双轨口径见 research/README.md §2.4–§2.5（权威 GOLD 侧车 14 文件 / 299 episodes / 4,082 turns / 9,646 atoms）。
+`research/arena/`（28 个 .py + harness_loader.md，其中 `isolation/` 子包 10 个 .py）是研究考场的运行时框架：**纯标准库、零第三方依赖**（模型调用走 `urllib.request`），Python 3.12（源机实测 3.12.4 全链导入通过）。分层读法自底向上：叶子边界层（请求体白名单 / 输出协议校验 / Gold 侧车）→ 装配与网关（`lb_assembly` / `lb_gateway`）→ 评分（`lb_scorer` 唯一计分器 v0.7）→ 机制契约（`lb_mechanism`）→ 运行时（`lb_runner`）→ Judge 判决实验族（校准 / 重排 / 2×2 归因）→ 隔离包（`isolation/`，可信控制器零候选执行 + 跨账户沙箱）。模块间为平铺导入（`import lb_assembly` 形态）+ `sys.path.insert` 自举；`isolation/` 包要求 arena 目录与 isolation 包同时在 `sys.path`——迁移整体平移，不得拆包。工具面 `research/tools/`（507 文件）为评测/审计/重评分工具与测试；唯一第三方依赖 Pillow 仅 12 个文件使用。题库与 Gold 双轨口径见 `research/benchmark/STATISTICS.md` 与 `research/DATASET_DOCUMENTATION.md` §6（权威 GOLD 侧车 14 文件 / 299 episodes / 4,082 turns / 9,646 atoms）。
 
 ```mermaid
 flowchart LR
@@ -246,15 +247,15 @@ flowchart LR
 | 隔离包 | `arena/isolation/`（10 .py） | trusted_controller V14：零候选执行、模型代理授权面、账本硬边界、ACL Deny 施加与还原；host_runtime 隔离宿主运行时（IpcGateway 同签名替换，评分留可信侧）；_candidate_host 被 spawn 的进程入口（python -I -B）；candidate_host 旧版宿主；authorization_budget 授权级预算权威（msvcrt/fcntl 文件锁）；sandbox_mode 运行时开关（默认关闭）；win_runas 跨账户拉起（纯 ctypes）；wincred 凭据 DPAPI；synthetic_candidate 攻击/合法矩阵合成 canary（测试夹具） |
 | 独立 CLI | `arena/scorer.py`、`init_sandbox.py`、`lb_epgen.py`、`lb_verify_phase0.py`、`lb_vote_sim.py`、`lb_phase05_discrimination.py`、`isolation/wincred.py`（自测） | 不依赖其他 arena 模块（图中不画依赖边） |
 | 工具面 | `tools/`（507 文件） | 评测/审计/重评分工具与测试：根级 308 .py（含 67 个 test_*）、benchmark_v1 在研区（four_arm_runner 四臂对照、universal_scorer 通用评分层+语义守卫等）、2 个历史运维 .ps1；确定性可迁核心约 30，一次性探针/批次执行器约 150+ |
-| 题库与 Gold | `benchmark/stories_v2/GOLD_SIDECAR/` | 本地 v2 重建 14 文件（权威口径 299/4,082/9,646）；加载按传入目录消费、不扫兄弟目录；三代口径双轨并存见 research/README.md §2.5 |
+| 题库与 Gold | `benchmark/stories_v2/GOLD_SIDECAR/` | 本地 v2 重建 14 文件（权威口径 299/4,082/9,646）；加载按传入目录消费、不扫兄弟目录；三代口径双轨并存见 `research/DATASET_DOCUMENTATION.md` §6 |
 
-运行入口（13 个）与环境变量（含占位符设置方式）见 research/README.md §2.3/§2.8–§2.9；「迁移副本上端到端可运行」待实测清单见同文 §4，本文不重复承诺。
+运行入口（13 个）与环境变量（含占位符设置方式）见 `research/REPRODUCIBILITY.md` §3/§5；「迁移副本上端到端可运行」待实测清单见同文 §10，本文不重复承诺。
 
 ---
 
 ## 4. 新增机制接线架构（LIVE_AUTO 分域）
 
-> **状态标注：已落码已接线（commit `afa9559f`→`a0104be0`）：分域 ≤24 GUARD_SHORT / ≥25 UC_LONG，实施=guide-6 批次 A-D。**
+> **状态标注：已落码已接线（commit `afa9559f`→`a0104be0`）：分域 ≤24 GUARD_SHORT / ≥25 UC_LONG，实施=guide-6 批次 A-D——以下全部为 `closeout-20261106` 产品分支状态；本研究分支 `app/` 不含该接线（默认 OFF、无 LIVE_AUTO，见卷首分支状态声明）。**
 > 接线批次已收口（2026-11-12）：LIVE_AUTO 进生产链，默认档 LIVE_AUTO（键未写入哨兵默认；显式 OFF 永远尊重＝全链回退原生路径保持），SHADOW 行为不变。分域口径红线：≤24 轮 → guard（短域判决 W17C MERGE）；≥25 轮 → uc（长域判决 W16 KEEP；W19-03 分域不叠加）；两域不同时启用 UC 与 Guard，不宣布单一全域冠军，不得以任何形式变相启用未晋升的合并候选。
 
 **现状基线（2026-11-12 @ `a0104be0` 实测）：** guide-6 批次 A-D 已落码已接线（commit `afa9559f`→`a0104be0`），生产调用点齐备（下表逐项登记）。以下机制单元已存在于产品树：
@@ -314,11 +315,11 @@ KbContext.committedTurnCount ─┬─ 分域环：currentTurn = committedTurnCo
 | APIC/PP/GSC/ASM/AGW/STIM/ASC/MECH/ARUN/JC/JR/J22 + scorer 等 | `research/arena/` 根级 18 .py + harness_loader.md | R | ls 实存：根级 20 项（18 .py + 1 md + isolation 目录），isolation/ 内 10 .py，合计 28 .py + 1 md |
 | isolation 包（TC/HR/CH/CHOLD/AB/SM/WR/WC/SYN） | `research/arena/isolation/` | R | ls 实存 10 .py |
 | TOOLS/BM | `research/tools/`（507 文件）、`tools/benchmark_v1/` | R | find 实测：总 507 文件、根级 308 .py（含 67 个 test_*）、benchmark_v1 下 54 .py、2 .ps1 |
-| EXT | `integration_preview/engine_adapter.py` / `candidates/reference_product_v1/reference_chain.py`（源形态） | R（引用方落位后 import 可解析性待实测） | 引用计数 7/9 文件（静态盘点口径）；research/README.md §4 已登记待实测 |
+| EXT | `integration_preview/engine_adapter.py` / `candidates/reference_product_v1/reference_chain.py`（源形态） | R（引用方落位后 import 可解析性待实测） | 引用计数 7/9 文件（静态盘点口径）；`research/REPRODUCIBILITY.md` §10（T3）已登记待实测 |
 | PIL | 12 个 tools 文件使用 | R | 静态盘点口径；零第三方依赖声明仅指 `arena/` 本体 |
 | GLD | `research/benchmark/stories_v2/GOLD_SIDECAR/` | R | ls 实测 14 文件 |
 
-导入链实测口径：源仓库 Python 3.12.4 `-B -I` 全链导入通过（含 universal_scorer）；迁移副本导入可运行性属待实测清单（research/README.md §2.10），本文不声称迁移副本已实测。
+导入链实测口径：源仓库 Python 3.12.4 `-B -I` 全链导入通过（含 universal_scorer）；迁移副本导入可运行性属待实测清单（`research/REPRODUCIBILITY.md` §10，T1/T8），本文不声称迁移副本已实测。
 
 ### 5.3 图（三仓库关系，§1）
 
@@ -332,10 +333,10 @@ KbContext.committedTurnCount ─┬─ 分域环：currentTurn = committedTurnCo
 
 1. **接线批次行号漂移：** 批次 A（冻结输入 + LIVE_AUTO 确定性内核，commit `afa9559f`，+398/-14 于 ChampionEngine.kt / GenerationInput.kt / ChampionEngineTest.kt）使两文件行号相对更早快照整体下移（如 `enum class ChampionMode` :25→:27、`class ChampionEngine` :57→:110、`commitConfirmedTurn` :188→:310）；批次 B/C（生产链路接线，commit `61afbc92`，+1073/-79 共 8 文件）使 `replyStream` :146→:149、`buildReplyUserPromptWithRefs` :227→:265、`collectStream` 定义 :590→:659；批次 D（ViewModel 冻结 + 默认档，commit `a0104be0`，+271/-45 共 9 文件）使 `nextRound` :1492→:1520、SecurePrefs 默认档 :366→:371。本文一律以 2026-11-12 @ `a0104be0` 实测为准。
 2. **治理仓冻结链行号漂移：** 治理仓架构契约文档（T_ARCH）所引 `replyStream` :136 / `buildSystemPrompt` :75 为其编写时快照，当前实测 :146 / :82；冻结链语义不变，行号漂移如实登记，不改对方文档。
-3. **arena .py 计数：** 早期材料曾有「根级 20 个 / 全部 31 个」的登记；实测（2026-11-12 ls）= 根级 18 .py + isolation/ 10 .py = 28 .py + harness_loader.md，与 research/README.md §1 的 29 文件口径一致。以实测为准。
+3. **arena .py 计数：** 早期材料曾有「根级 20 个 / 全部 31 个」的登记；实测（2026-11-12 ls）= 根级 18 .py + isolation/ 10 .py = 28 .py + harness_loader.md，与 `research/provenance/SOURCE_MAP.md` §13 J 行的 29 文件口径一致。以实测为准。
 4. **tools 布局：** 67 个 test_* 当前实际平铺于 `research/tools/` 根级（"归 tests/ 子目录"为整理计划，非现状布局）；本文 §3 图节点按实测布局表述。
 5. **runs 批次计数：** 以 `research/experiments/runs-registry.csv` 逐批次登记为准；源侧另有批次级登记口径，本文图中不写具体计数以免漂移。
-6. **数据集权威口径：** 299 episodes / 4,082 turns / 9,646 atoms（GOLD 覆盖）与 248 custody 注册等，以 research/README.md §2.4 机器重算口径链为权威，本文直接引用不另算。
+6. **数据集权威口径：** 299 episodes / 4,082 turns / 9,646 atoms（GOLD 覆盖）与 248 custody 注册等，以 `research/benchmark/STATISTICS.md` §一 权威口径链为权威，本文直接引用不另算。
 
 ---
 
@@ -343,9 +344,9 @@ KbContext.committedTurnCount ─┬─ 分域环：currentTurn = committedTurnCo
 
 1. **面向外部读者：** 本文全部引用只需本仓可解析——产品代码（`app/`，行号锚点）、研究资产（`research/`，相对路径）、判决文件（`research/refs/` 落位的 W 系列判决书，文件名即引用）。
 2. **零内部编号、零 worker 流水账：** 不携带内部任务台账、执行日志、临时产物与单元编号；唯一的跨文档编号引用是 §4 的接线实施计划口径（guide-6 批次 A–D 状态标注），因为接线状态必须可追溯到实施依据，否则"接线状态"无从核验。除此之外的状态判断全部落在代码 grep 与文件实测上。
-3. **状态红线（不把计划画成已启用）：** 全文状态标注「现状已接线 / 已接线（附 commit）/ 保持（回退/直通语义不变）」；LIVE_AUTO 生产链路已随 guide-6 批次 A-D 收口接线（commit `afa9559f`→`a0104be0`，2026-11-12 实测），收口前的「已落码·未接线 / 接线待实施」标注已全部转为已接线、不再出现；SHADOW≠主链路启用；SINGLE_STYLE/FULL 按 OFF 收敛；分域冠军是分域的，不是全域的。
+3. **状态红线（不把计划画成已启用）：** 全文状态标注「现状已接线 / 已接线（附 commit）/ 保持（回退/直通语义不变）」；LIVE_AUTO 生产链路已随 guide-6 批次 A-D 收口接线（commit `afa9559f`→`a0104be0`，2026-11-12 实测，**`closeout-20261106` 分支状态；本研究分支不含该接线，见卷首分支状态声明**），收口前的「已落码·未接线 / 接线待实施」标注已全部转为已接线、不再出现；SHADOW≠主链路启用；SINGLE_STYLE/FULL 按 OFF 收敛；分域冠军是分域的，不是全域的。
 4. **零隐私：** 零真实密钥、零真实聊天内容、零个人数据、零签名材料；API 配置只出现环境变量名与占位符语义；私有治理仓内容只作角色与约束级描述，不引用台账细节；原始日志原件不进 git（索引与脱敏副本落 `research/experiments/raw_logs/`，原件走 Release/LFS 十卷）。
-5. **完整性口径：** 文件数 + 字节量（research/README.md §1 与 `research/provenance/` 迁移清单）；本文不含任何文件哈希值。
+5. **完整性口径：** 文件数 + 字节量（`research/provenance/SOURCE_MAP.md` §13 数字对账表与 `research/provenance/MIGRATION_MANIFEST.csv`）；本文不含任何文件哈希值。
 6. **Mermaid 语法纪律：** 节点 id 全 ASCII 字母开头、仅字母数字下划线；含中文/括号/冒号/比较符的标签一律双引号包裹，换行用 `<br/>`；路径标注统一正斜杠；subgraph 用 `subgraph ID["标题"]` 带引号形式且 id 唯一（本文 §1 图 RA/RL/RT）；不使用 classDef/style（避免渲染器差异），现状/计划区分由标签文字承载。三图已按此纪律做机械自检（id 合法性、保留字、声明/引用闭合、块内唯一性），自检通过记录见随附核对报告。
 
 *证据时效：本文全部行号/文件数取自 2026-11-12 实测（产品树 closeout-20261106@a0104be0 干净工作树、研究树迁移落盘快照）；仓库前移后引用需重核。*

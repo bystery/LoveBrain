@@ -6,14 +6,13 @@
 
 - 路径均相对本仓库根目录。产品代码 = `app/src/main/java/com/lovebrain/app/`（下文简写为 `app/…`），行号实测于 2026-11-12，产品分支 `closeout-20261106` @ 提交 `a0104be0`，工作树干净。
 - 研究资产 = `research/…`（Arena 运行时、候选机制目录、判决文件均已随迁移落盘于本仓）。
-- 实验数字一律来自 `research/refs/` 下的判决原文件（文件名 + 日期即出处），逐字或按原口径转写；限定语与数字同源，整句携带、不截断。
-- 本文不计算、不引用、不比对任何文件完整性哈希值；完整性口径 = 文件数 + 字节量 + 时间戳。文中出现的 `afa9559f` / `61afbc92` / `a0104be0` 为本仓 git 提交标识，用于锚定接线代码，非完整性校验。
+- 实验数字一律来自 `research/refs/` 下的判决原文件（文件名 + 日期即出处），逐字或按原口径转写；限定语与数字同源，整句携带、不截断。文中出现的 `afa9559f` / `61afbc92` / `a0104be0` 为产品仓 git 提交标识，用于锚定接线代码状态。
 - **三实现状态口径（全文通用）：**
   | 状态 | 含义 |
   | --- | --- |
   | Arena 研究原型 | `research/candidates/`（历史机制线）或 `research/tools/benchmark_v1/prototype_candidates/`（新研究线）中的 Python 机制 |
   | Kotlin 移植件（SHADOW 影子链路） | `app/…/domain/champion/` 已移植并在 Android 侧注册，经显式 SHADOW 档在影子请求中运行，不影响主回复 |
-  | 生产接线（LIVE_AUTO 主链路） | 正常回复主请求按轮次自动装配/守卫（本地提交 `afa9559f`→`61afbc92`→`a0104be0` 落码；真机行为级验收清单待执行，推送待授权——本文所有"已接线"表述均为代码与本地确定性测试级，不代表真机已验证） |
+  | 生产接线（LIVE_AUTO 主链路） | 正常回复主请求按轮次自动装配/守卫（提交 `afa9559f`→`61afbc92`→`a0104be0` 落码于产品分支 `closeout-20261106`；**本研究分支 `app/` 不含该接线，默认 OFF**——引用接线状态须带分支名。真机行为级验收清单待执行：本文所有"已接线"表述均为代码与本地确定性测试级，不代表真机已验证） |
 
 ---
 
@@ -21,7 +20,7 @@
 
 > LoveBrain 的 Harness 围绕上下文装配、证据记忆和生成约束三条主线设计。系统首先根据当前意图、场景、话题和持续事项筛选相关信息，再通过完整历史事件和来源身份保留关键证据，并使用未确认事项约束与确定性输出守卫减少事实升级和结构错误。我们将这些机制放入独立 Arena，在固定模型服务下进行连续对话对照和消融，再将有价值的机制移植回 Android 产品。
 
-（上段为公开叙事定稿原文，与 `research/architecture/ARCHITECTURE.md` 同一逐字文本。）
+（上段与 `research/architecture/ARCHITECTURE.md` 的机制研究叙事为同一文本。）
 
 | 主线 | 核心问题 | 主要机制 | 判决映射（详见 §2–§4） |
 | --- | --- | --- | --- |
@@ -184,51 +183,13 @@ Kotlin（`app/…/domain/champion/`，行号 2026-11-12 实测）：
 
 ## 5. 接线架构概述（LIVE_AUTO 分域）
 
-### 5.1 分域规则与实现契约
+正常回复主请求按轮次自动选择分域策略，规则唯一且纯确定性：请求轮次 = 已提交轮数 + 1；**≤24 → GUARD_SHORT**（历史块注入、uc 恒空、guard 于 parse 前执行）；**≥25 → UC_LONG**（历史块 + uc 注入、guard 不执行）。边界 24 单点定义于 `ChampionEngine.kt` :69（closeout-20261106 分支行号），任何地方不得散写数值比较。依据：短域判决 `W17C_MERGE_VERDICT_20261103.md`（guard）+ 长域判决 `W16_UNC_VERDICT_20261102.md`（uc）+ `W19CROSS_VERDICT_20261103.md`（两域不叠加、合并候选不晋升）。
 
-正常回复主请求按轮次自动选择分域策略，规则唯一且纯确定性：
+关键工程约定：引擎全部判据来自生成开始时一次性冻结的模式与轮次快照（生成中改设置不影响本轮，`committedTurnCount` 永远是已提交轮数原值）；`prepareLiveContext` 零模型调用、不启动影子；事件提交点唯一（`commitConfirmedTurn`，话题记录成功后）。
 
-- 请求轮次 = 已提交轮数 + 1；**≤24 → GUARD_SHORT**（历史块注入、uc 恒空、guard 执行）；**≥25 → UC_LONG**（历史块 + uc 注入、guard 不执行）。边界 24 单点定义于 `ChampionTurnStrategy.SHORT_DOMAIN_MAX_TURN`（`ChampionEngine.kt` :69），任何地方不得散写数值比较。
-- 依据：短域判决 `W17C_MERGE_VERDICT_20261103.md`（guard）+ 长域判决 `W16_UNC_VERDICT_20261102.md`（uc）+ `W19CROSS_VERDICT_20261103.md`（两域不叠加、合并候选不晋升）。
+回退与安全边界：显式 OFF 全链短路；`committedTurnCount` 读取失败不猜轮次，整链回退原生路径，正常生成继续——辅助机制故障绝不拖垮产品回复；guard 异常或无修复能力（空回复、全乱码）不触碰不伪造，保留原文进 parser；LIVE_AUTO 分支不调用影子链路；超预算时历史/未定两块只整块保留或整块移除，禁止裸截断、切半条、破坏聊天 JSON 行边界、删 recent。
 
-实现契约（签名要点，已按此落码）：
-
-| 契约件 | 锚点（行号 2026-11-12 实测） | 语义 |
-| --- | --- | --- |
-| `ChampionMode.LIVE_AUTO` | `ChampionEngine.kt` :41 | 新增生产档；`isMainPathGuarded` :49 保持只认旧两档，守卫判据走 strategy，不复用旧档位语义 |
-| `ChampionTurnStrategy` | :61-73（`forTurn` :72） | 纯函数分域；`GUARD_SHORT` / `UC_LONG` |
-| `ChampionLiveContext` | :81 | 本轮冻结装配结果：currentTurn/strategy/historyBlock/uncertainBlock/historyCu/uncertainCu |
-| `prepareLiveContext` | :245 | 读唯一事件库 → `budgetHistory` 3600 CU 整条装配 → 当前轮仅作临时输入（不 append/不落盘/不入 shadow 日志）→ forTurn → 仅 UC_LONG 调 `UncertainBlockDetector`；零模型调用；不启动协程/影子 |
-| `commitConfirmedTurn` 双轨门禁 | :310 | 生产链路传冻结快照（不回读设置）；null 走原语义；OFF → 空返回零 IO |
-| 冻结输入 | `model/GenerationInput.kt`：`championMode` 字段、`KbContext.committedTurnCount` | 引擎全部判据来自冻结字段，不回读设置；字段名即口径——`committedTurnCount` 永远是 `getTurnCount` 原值（已提交轮数），任何"当前请求轮次"现场 +1 |
-| Prompt 三参 | `domain/PromptBuilder.kt` :272-274（`historicalBlock`/`uncertainBlock`/`currentTurn`）；`domain/PromptBudget.kt` :38-39 | 空默认串拼零字符；拼装序 = 知识+场景+意图+军师备注+历史+未定+聊天+时间戳；裁剪序 = 知识段尾→recent→整块移除历史块→整块移除未定块→对话头部，两块只整块保留或整块移除 |
-| 默认档 | `data/SecurePrefs.kt` :371（null 哨兵 `?: return "LIVE_AUTO"`) | 键不存在 → LIVE_AUTO；显式 OFF/SHADOW 原样尊重；旧档位与脏值 fail-closed 读为 OFF；键名不变、启动期不写盘覆盖 |
-| ViewModel 冻结 | `viewmodel/LoveBrainViewModel.kt` :1237/:1239（一次性冻结）→ :1264-1265（传入）；提交门禁 :1608、`modeSnapshot` :1641 | 模式与轮次在生成开始各读一次；生成中改设置不影响本轮；topicRecorder 成功后才提交，事件写失败只记日志不回滚产品落盘 |
-
-### 5.2 生产调用链（接线后）
-
-```text
-runReplyRequest（生成开始，一次性冻结 championMode + committedTurnCount）
-  ▼ GenerationInput（冻结快照，引擎零回读设置）
-replyStream 分支：
-  分支 1 显式 OFF     → 原生装配路径（不装配/不读事件库/不修文/不影子，提交零 IO）
-  分支 2 SHADOW       → 原生主回复 + 收尾块按冻结快照跑影子请求（旧影子行为，判据来源改冻结输入）
-  分支 3 LIVE_AUTO    → prepareLiveContext（零模型调用）
-        · "仅看本轮"为第一判据：全跳过，仍只发一次模型请求
-        · 轮次缺失不猜轮次：整链回退原生路径
-        · ≤24（GUARD_SHORT）：历史块进原生 Prompt、uc 空、guard 于 parse 前执行
-        · ≥25（UC_LONG）：历史块 + uc 进原生 Prompt、无 guard、绝不跑影子
-  ▼ 原生 PromptBuilder（画像/阶段/场景/recent/持续事项等能力全部保留）→ 恰好一次流式请求
-  ▼ ≤24：guard 修改原文时先发 UI 重置事件再重放修复全文（UI 最终显示 = 最终解析结果）→ parser → 完成
-nextRound 提交点：冻结快照门禁 → 话题记录成功 → commitConfirmedTurn（HER/ME 过滤、msgUid=消息 id）→ 产品落盘
-```
-
-### 5.3 回退与安全边界
-
-- 显式 OFF 全链短路；`committedTurnCount` 读取失败不猜轮次（不默认第 1 轮也不默认第 25 轮），整链回退原生路径，正常生成继续——辅助机制故障绝不拖垮产品回复。
-- guard 异常或无修复能力范围（空回复、全乱码）不触碰不伪造，保留原文进 parser；守卫未修改原文不发任何 UI 重置。
-- 影子语义零改动：`launchShadow`/`shadowTurn`/影子日志原样，LIVE_AUTO 分支不调用影子。
-- 超预算时历史/未定两块只整块保留或整块移除，禁止裸截断、切半条、破坏聊天 JSON 行边界、删 recent。
+实现契约逐件锚点（`ChampionMode.LIVE_AUTO` / `ChampionTurnStrategy` / `prepareLiveContext` / `SecurePrefs` 默认档 / ViewModel 冻结 / Prompt 三参）、生产调用链图与分支限定详见 [architecture/ARCHITECTURE.md](architecture/ARCHITECTURE.md) §4（接线架构权威文档，本文不重复）。
 
 ---
 
@@ -259,7 +220,7 @@ nextRound 提交点：冻结快照门禁 → 话题记录成功 → commitConfir
 **如实登记（不越过证据级别）：**
 
 - 上述全部判定为"本地确定性测试 + 源码证据 + 构建产物"级；**真机行为级验收清单（60 项）待执行**——不得把单测通过写成真机已通过。
-- 接线三笔提交（`afa9559f` / `61afbc92` / `a0104be0`）在本地 `closeout-20261106` 分支，**未推送**（待授权）。
+- 接线三笔提交（`afa9559f` / `61afbc92` / `a0104be0`）已在 `closeout-20261106` 分支并推送至远端（本地与 `origin/closeout-20261106` 均包含，2026-11-13 核对）。
 - 提交边界三项断言（只提交 HER/ME、事件写失败不回滚产品保存、"仅看本轮"确认消息下一轮仍入库）由生产码结构（角色过滤、异常只记日志、提交点与生成期开关无耦合）+ 关联测试（入口拒稿、影子正向提交链）覆盖，暂无独立专测方法，登记为低优先补充项。
 
 ---
@@ -315,19 +276,8 @@ nextRound 提交点：冻结快照门禁 → 话题记录成功 → commitConfir
 | 确定性输出契约守卫 guard | W17B / W17C / W19（分域维持） | `window_expand_b_norecap_guard/mechanism/contract_guard.py` + `_vendor/` | `domain/champion/ContractGuard.kt` :45/:65/:784 | LIVE_AUTO 仅 ≤24 轮（GUARD_SHORT）于 parse 前执行 |
 | 持续事项选择/场景/意图/预算装配 | 产品原生（架构核对，见 `research/architecture/ARCHITECTURE.md`） | rh_converge 重组验证 | `domain/OngoingContextSelector.kt` 等 12 件 | 一直在正常回复链路生效 |
 | 整合 Harness rh_converge | `overnight/` 台账三件（`LIVE_LOOP_LOG.md` 对应完成节；rh_converge 判决行 + `RESUME_STATE.json` + `WATCHDOG_VERDICT.json` 对应条目） | `tools/benchmark_v1/prototype_candidates/rh_converge/` | 无移植件 | **未接线（研究线结论）** |
-| LIVE_AUTO 分域生产档 | W16 + W17C + W19 组合判决的程序化落地 | （无 Arena 侧对应物——分域策略是产品接线设计） | `ChampionEngine.kt` :41/:61-73/:245/:310、`GenerationEngine.kt` :163/:328、`LoveBrainViewModel.kt` :1237/:1608、`SecurePrefs.kt` :371 | 已落码默认启用（真机待验、推送待授权） |
+| LIVE_AUTO 分域生产档 | W16 + W17C + W19 组合判决的程序化落地 | （无 Arena 侧对应物——分域策略是产品接线设计） | `ChampionEngine.kt` :41/:61-73/:245/:310、`GenerationEngine.kt` :163/:328、`LoveBrainViewModel.kt` :1237/:1608、`SecurePrefs.kt` :371 | 已接线（`closeout-20261106` 分支默认档 LIVE_AUTO，真机行为级验收待执行；本研究分支 `app/` 无该接线，默认 OFF） |
 
 ---
 
-## 10. 文档纪律自检
-
-| 检查项 | 结论 |
-| --- | --- |
-| 零哈希 | 本文不计算、不引用、不比对任何文件完整性哈希值；字节冻结门以"内容指纹与字节数"描述测试机制、只登记字节量读数；代码内部行为描述"事件存储文件名使用键哈希防碰撞（`ChampionEvent.kt` :89-97）"属源码行为描述，未展开算法名与任何哈希值；`afa9559f`/`61afbc92`/`a0104be0` 为 git 提交标识，非完整性校验 |
-| 限定语整句保留 | ① rh_converge"效率型整合候选/不应写成全面击败 DIRECT 的质量冠军"整句落位（§2.3）；② recap 依据用判决原口径"6 篇/仅在 T34+/≤199 CU/全程为空"（§3.3）；③ FLJUDGE/LD1 父本读数一律标"滑窗父本（r9_slim）"，不写"对照"（§3.3）；④ W22 标 REV2 取代 REV1（§8.1）；⑤ b2 带"检测覆盖缺口，非压制失效"归因（§8.1）；⑥ 四数表带"被选中（first-passing）"行名 + ±0.1–0.2 校准差与不可直比声明 + 交付口径整句（§8）；⑦ CF1"保留原始结果，不把它包装成胜出机制"整句（§8.1）；⑧ 早期循环降级整句（§8.2）；⑨ 晨报口径整句（§2.3）；⑩ DIRECT 4.69 口径注记（§2.3/§8）；⑪ 成绩表隔离整句（§1）；⑫ W15N01"无损可删/不是 recap 有害"整句（§3.1）；⑬ W17B"8/9 正"不写成"9/9"、离线回放与 live 分口径（§4.3）；⑭ uc 实现口径"预算截断保最新，无显式相关性评分"（§4.1） |
-| 不利读数如实并列 | rh_converge e2e 42s vs 20s、Prompt +0.78%/+0%、九维 8/9（initiative −0.058）、b15 成本 2.13 倍、W19 长域空回复、W22 契约失败 11→22 均如实登记 |
-| 三实现状态不混写 | 每条主线按"Arena 研究原型 / Kotlin 移植件（SHADOW 影子链路）/ 生产接线（LIVE_AUTO 主链路）"分栏；rh_converge 明示未接线；接线级表述全部注明"代码与本地确定性测试级，真机待验" |
-| 零内部任务编号 | 全文出处只写本仓相对路径、判决文件名、测试类名与 git 提交标识；不出现内部任务书编号、阶段/批次编号与内部审计件编号。"LOOP-7/LOOP-14"仅出现在晨报口径限定整句内——该句为必须逐字携带的限定语，其中标识符是 `overnight/` 台账公开文件的节名，同 W16/W17C 判决文件名的引用口径；除该句外全文零 LOOP 编号 |
-| 数字溯源 | 全部实验数字可按文件名 + 路径直查判决原文件；机制行号实测于 2026-11-12（产品分支 `closeout-20261106` @ `a0104be0`，工作树干净；研究树落盘副本与源侧逐件同内容） |
-
-*本文为核心机制详解与判决映射，与 `research/architecture/ARCHITECTURE.md`（架构与接线）、`research/PAPER.md`（研究论文）互为引用，不重复承载环境与复现说明（见 `research/README.md`）。*
+*本文为核心机制详解与判决映射，与 `research/architecture/ARCHITECTURE.md`（架构与接线）、`research/PAPER.md`（研究论文）互为引用，不重复承载环境与复现说明（见 `research/REPRODUCIBILITY.md`）。*
