@@ -227,7 +227,7 @@ LoveBrain 项目由三个仓库构成，角色不互相混淆。**产品仓 `bys
 6. **有 Judge 器械效度限制的评审结果**：judge 校准以 ≥80% 人评一致率为上岗门槛（20 道人评锚点 + trap 负样本）；位置偏差（5 候选随机重排）与温度×位置 2×2 不稳定归因实验并存；机器判定 fuzzy 命中未经人工复核**不得进对外结论**。
 7. **不是当前 Android 生产代码的候选**：[candidates/](candidates/) 全部 50 个候选目录均为研究资产；[archive/integration_preview_20261025/](archive/integration_preview_20261025/) 是历史移植原型，**不冒充当前生产接线**；`best/score.json` 不作独立冠军判决；[PAPER.md](PAPER.md) 成绩表述须与 runs/判决书互查。
 
-**底线句（原样保留）**：不承诺"所有历史模型实验可以一键完全重跑"，除非真的完成了可复现验证。
+历史模型实验的原始答卷和判决已保留（§5、[refs/KNOWN_FAILURES.md](refs/KNOWN_FAILURES.md)）；一键完全重跑不在当前复现范围内（见 [REPRODUCIBILITY.md](REPRODUCIBILITY.md) §10）。
 
 ### 7.4 表达红线
 

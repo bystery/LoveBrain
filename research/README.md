@@ -1,7 +1,7 @@
 # research/ 研究资产总览与环境说明
 
-> 状态：迁移落盘中（2026-11-12 快照）。本文如实登记当前实测状态与已验证边界，"待实测"逐项标注（§4），**不承诺任何未验证的能力**。零真实密钥、零真实聊天内容；API 配置一律占位符；文内 `research/...` 均为本仓相对路径。
-> 完整性口径：**文件数 + 字节量**（逐域见 §1，逐文件见 `research/provenance/` 迁移清单；基于哈希的公开清单与复算流程在本版**防御性分析停用**）。
+> 状态：迁移落盘中（2026-11-12 快照）。"待实测"逐项标注（§4）。零真实密钥、零真实聊天内容；API 配置一律占位符；文内 `research/...` 均为本仓相对路径。
+> 完整性口径：**文件数 + 字节量**（逐域见 §1，逐文件见 `research/provenance/` 迁移清单）。
 
 ## 1. 目录导览（十二区，文件数为迁移 worktree 实测，2026-11-12）
 
@@ -186,7 +186,7 @@ export LB_MODEL="<model-id>"                              # 未设置时网关�
 6. **有 Judge 器械效度限制的评审结果**：judge 校准以 ≥80% 人评一致率为上岗门槛（20 道人评锚点 + trap 负样本）；位置偏差（5 候选随机重排）与温度×位置 2×2 不稳定归因实验并存；机器判定 fuzzy 命中未经人工复核**不得进对外结论**。
 7. **不是当前 Android 生产代码的候选**：`research/candidates/` 全部 50 个候选目录均为研究资产（champion 9 / historical 32 / negative_control 4 / ablation 3 / template 1 / reference 1）；`research/archive/integration_preview_20261025/` 是历史移植原型，**不冒充当前生产接线**；`best/score.json` 不作独立冠军判决；`PAPER.md` 成绩表述须与 runs/判决书互查。
 
-**底线句（原样保留）**：不承诺"所有历史模型实验可以一键完全重跑"，除非真的完成了可复现验证。
+历史模型实验的原始答卷和判决已保留（§5、[refs/KNOWN_FAILURES.md](refs/KNOWN_FAILURES.md)）；一键完全重跑不在当前复现范围内（见 [REPRODUCIBILITY.md](REPRODUCIBILITY.md) §10）。
 
 ## 3. dataset 域口径（三口径）
 
