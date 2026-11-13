@@ -142,7 +142,7 @@
 | cases-freeze-notes.md | 1 | 16398 |
 | cases-schema.md（v1.0） | 1 | 11255 |
 | scoring-templates.md（v1.1 对称重评版） | 1 | 40383 |
-| protocol-v1.1-addendum.md（v1.1 增补冻结件） | 1 | 15721 |
+| protocol-v1.1-addendum.md（v1.1 增补冻结件） | 1 | 15715 |
 | protocol-FROZEN.md（本文件） | 1 | 冻结执行时由执行代理记录于冻结日志（本文件不含自引用字节数） |
 | outputs.jsonl（两线原始输出，205 行） | 1 | 123644 |
 | showcase-case.md（展示案例：turn03 输入→输出→判分维度） | 1 | 12441 |

@@ -1,0 +1,478 @@
+{
+  "ledger_only": {
+    "public_repo_semantics": "审计对照用途。本文件是公开仓库中匿名盲评件的解匿名对照（匿名代号 → 真实臂身份）。生成它的各评审包总账原本带有 ledger_only:true 约束，其公开仓库语义为『评审期禁止进入任何评审输入』——该约束只针对评审进行期间；全部盲评已收口后按落位计划解除，本文件仅保留审计对照用途：供审阅者把 judgments 中的匿名 A/B 裁决对照回真实臂身份，核查盲评协议诚实性（评审期间评审侧确实零臂信息、A/B 轮换随机且与臂身份无相关性）。本文件不参与任何评分计算。",
+    "generated_date": "2026-11-14",
+    "source_entry_counts": {
+      "hline_e5_pair_map（H 线 E5 盲评 v1.0 与 v1.1 重评共用，12 对）": 12,
+      "nline_e5_npair_map（N 线 E5 盲评 v1.0，12 对）": 12,
+      "e4_v11_slot_map（E4 v1.1 盲评，24 包）": 24,
+      "nline_v1_1_npair2_map": 12,
+      "total_mapping_entries": 60
+    },
+    "trimming_rule": "仅取映射身份列：pair/npair → rotation（A/B→臂）+ case_id/story_id/turn_case_id；E4 代号 → slot/arm/case_id。各源总账中除上述身份列外的全部字段（staging 路径串、来源指针、装配注记、字节量等非身份元数据）一律未迁出。"
+  },
+  "hline_e5_blind_pairs": {
+    "covers": "H 线 E5 盲评 v1.0（12 对，评审代号 pair01..pair12 的 A/B）与 v1.1 对称重评（e5h-v11-judge-pkg）共用同一 pair 编号与 A/B 轮换：v1.1 不新建臂账，臂身份唯一载体为本节。臂记号口径：CURRENT=机制臂（带知识库检索的完整机制），DIRECT=直接基线臂。",
+    "pairs": {
+      "pair01": {
+        "case_id": "uv1-E5-001",
+        "story_id": "E340",
+        "turn_case_id": "E340_T10",
+        "rotation": {
+          "A": "CURRENT",
+          "B": "DIRECT"
+        }
+      },
+      "pair02": {
+        "case_id": "uv1-E5-002",
+        "story_id": "E359",
+        "turn_case_id": "E359_T11",
+        "rotation": {
+          "A": "DIRECT",
+          "B": "CURRENT"
+        }
+      },
+      "pair03": {
+        "case_id": "uv1-E5-003",
+        "story_id": "E373",
+        "turn_case_id": "E373_T09",
+        "rotation": {
+          "A": "CURRENT",
+          "B": "DIRECT"
+        }
+      },
+      "pair04": {
+        "case_id": "uv1-E5-004",
+        "story_id": "E378",
+        "turn_case_id": "E378_T10",
+        "rotation": {
+          "A": "DIRECT",
+          "B": "CURRENT"
+        }
+      },
+      "pair05": {
+        "case_id": "uv1-E5-005",
+        "story_id": "E341",
+        "turn_case_id": "E341_T04",
+        "rotation": {
+          "A": "CURRENT",
+          "B": "DIRECT"
+        }
+      },
+      "pair06": {
+        "case_id": "uv1-E5-006",
+        "story_id": "E361",
+        "turn_case_id": "E361_T03",
+        "rotation": {
+          "A": "DIRECT",
+          "B": "CURRENT"
+        }
+      },
+      "pair07": {
+        "case_id": "uv1-E5-007",
+        "story_id": "E367",
+        "turn_case_id": "E367_T07",
+        "rotation": {
+          "A": "CURRENT",
+          "B": "DIRECT"
+        }
+      },
+      "pair08": {
+        "case_id": "uv1-E5-008",
+        "story_id": "E345",
+        "turn_case_id": "E345_T03",
+        "rotation": {
+          "A": "DIRECT",
+          "B": "CURRENT"
+        }
+      },
+      "pair09": {
+        "case_id": "uv1-E5-009",
+        "story_id": "E346",
+        "turn_case_id": "E346_T11",
+        "rotation": {
+          "A": "CURRENT",
+          "B": "DIRECT"
+        }
+      },
+      "pair10": {
+        "case_id": "uv1-E5-010",
+        "story_id": "E356",
+        "turn_case_id": "E356_T12",
+        "rotation": {
+          "A": "DIRECT",
+          "B": "CURRENT"
+        }
+      },
+      "pair11": {
+        "case_id": "uv1-E5-011",
+        "story_id": "E366",
+        "turn_case_id": "E366_T11",
+        "rotation": {
+          "A": "CURRENT",
+          "B": "DIRECT"
+        }
+      },
+      "pair12": {
+        "case_id": "uv1-E5-012",
+        "story_id": "E370",
+        "turn_case_id": "E370_T03",
+        "rotation": {
+          "A": "DIRECT",
+          "B": "CURRENT"
+        }
+      }
+    }
+  },
+  "nline_e5_blind_pairs": {
+    "covers": "N 线 E5 盲评 v1.0（12 对，评审代号 npair01..npair12 的 A/B）。臂记号口径：L=机制臂（真实分域冠军 Harness 输出），B1=单条基线臂。轮换规则（协议冻结 §4.1）：pair 序号奇数 → A=L、B=B1；偶数 → A=B1、B=L。",
+    "pairs": {
+      "npair01": {
+        "case_id": "uv1-E5-001",
+        "story_id": "E340",
+        "turn_case_id": "E340_T10",
+        "rotation": {
+          "A": "L",
+          "B": "B1"
+        }
+      },
+      "npair02": {
+        "case_id": "uv1-E5-002",
+        "story_id": "E359",
+        "turn_case_id": "E359_T11",
+        "rotation": {
+          "A": "B1",
+          "B": "L"
+        }
+      },
+      "npair03": {
+        "case_id": "uv1-E5-003",
+        "story_id": "E373",
+        "turn_case_id": "E373_T09",
+        "rotation": {
+          "A": "L",
+          "B": "B1"
+        }
+      },
+      "npair04": {
+        "case_id": "uv1-E5-004",
+        "story_id": "E378",
+        "turn_case_id": "E378_T10",
+        "rotation": {
+          "A": "B1",
+          "B": "L"
+        }
+      },
+      "npair05": {
+        "case_id": "uv1-E5-005",
+        "story_id": "E341",
+        "turn_case_id": "E341_T04",
+        "rotation": {
+          "A": "L",
+          "B": "B1"
+        }
+      },
+      "npair06": {
+        "case_id": "uv1-E5-006",
+        "story_id": "E361",
+        "turn_case_id": "E361_T03",
+        "rotation": {
+          "A": "B1",
+          "B": "L"
+        }
+      },
+      "npair07": {
+        "case_id": "uv1-E5-007",
+        "story_id": "E367",
+        "turn_case_id": "E367_T07",
+        "rotation": {
+          "A": "L",
+          "B": "B1"
+        }
+      },
+      "npair08": {
+        "case_id": "uv1-E5-008",
+        "story_id": "E345",
+        "turn_case_id": "E345_T03",
+        "rotation": {
+          "A": "B1",
+          "B": "L"
+        }
+      },
+      "npair09": {
+        "case_id": "uv1-E5-009",
+        "story_id": "E346",
+        "turn_case_id": "E346_T11",
+        "rotation": {
+          "A": "L",
+          "B": "B1"
+        }
+      },
+      "npair10": {
+        "case_id": "uv1-E5-010",
+        "story_id": "E356",
+        "turn_case_id": "E356_T12",
+        "rotation": {
+          "A": "B1",
+          "B": "L"
+        }
+      },
+      "npair11": {
+        "case_id": "uv1-E5-011",
+        "story_id": "E366",
+        "turn_case_id": "E366_T11",
+        "rotation": {
+          "A": "L",
+          "B": "B1"
+        }
+      },
+      "npair12": {
+        "case_id": "uv1-E5-012",
+        "story_id": "E370",
+        "turn_case_id": "E370_T03",
+        "rotation": {
+          "A": "B1",
+          "B": "L"
+        }
+      }
+    }
+  },
+  "nline_v1_1_re_eval_pairs": {
+    "covers": "N 线 E5 盲评 v1.1 对称重评（e5n-v2-judge-pkg 重派装配，12 对，评审代号 npair2-01..npair2-12 的 A/B）。臂记号口径：L2=机制臂（真实分域冠军 Harness + KB 注入修复重生成输出，多候选整组呈现），B1=单条基线臂（v1.0 S44 冻结输出原样复用）。轮换规则（源总账 npair2-map 冻结 rotation_rule）：pair 序号奇数 → A=L2、B=B1；偶数 → A=B1、B=L2。评审代号 npair2-01..12 与 v1.0 的 npair01..12 互不通用：本节为 v1.1 重评 12 对臂身份唯一载体，v1.0 的 12 对（机制臂 L）见 nline_e5_blind_pairs 节。",
+    "pairs": {
+      "npair2-01": {
+        "case_id": "uv1-E5-001",
+        "story_id": "E340",
+        "turn_case_id": "E340_T10",
+        "rotation": {
+          "A": "L2",
+          "B": "B1"
+        }
+      },
+      "npair2-02": {
+        "case_id": "uv1-E5-002",
+        "story_id": "E359",
+        "turn_case_id": "E359_T11",
+        "rotation": {
+          "A": "B1",
+          "B": "L2"
+        }
+      },
+      "npair2-03": {
+        "case_id": "uv1-E5-003",
+        "story_id": "E373",
+        "turn_case_id": "E373_T09",
+        "rotation": {
+          "A": "L2",
+          "B": "B1"
+        }
+      },
+      "npair2-04": {
+        "case_id": "uv1-E5-004",
+        "story_id": "E378",
+        "turn_case_id": "E378_T10",
+        "rotation": {
+          "A": "B1",
+          "B": "L2"
+        }
+      },
+      "npair2-05": {
+        "case_id": "uv1-E5-005",
+        "story_id": "E341",
+        "turn_case_id": "E341_T04",
+        "rotation": {
+          "A": "L2",
+          "B": "B1"
+        }
+      },
+      "npair2-06": {
+        "case_id": "uv1-E5-006",
+        "story_id": "E361",
+        "turn_case_id": "E361_T03",
+        "rotation": {
+          "A": "B1",
+          "B": "L2"
+        }
+      },
+      "npair2-07": {
+        "case_id": "uv1-E5-007",
+        "story_id": "E367",
+        "turn_case_id": "E367_T07",
+        "rotation": {
+          "A": "L2",
+          "B": "B1"
+        }
+      },
+      "npair2-08": {
+        "case_id": "uv1-E5-008",
+        "story_id": "E345",
+        "turn_case_id": "E345_T03",
+        "rotation": {
+          "A": "B1",
+          "B": "L2"
+        }
+      },
+      "npair2-09": {
+        "case_id": "uv1-E5-009",
+        "story_id": "E346",
+        "turn_case_id": "E346_T11",
+        "rotation": {
+          "A": "L2",
+          "B": "B1"
+        }
+      },
+      "npair2-10": {
+        "case_id": "uv1-E5-010",
+        "story_id": "E356",
+        "turn_case_id": "E356_T12",
+        "rotation": {
+          "A": "B1",
+          "B": "L2"
+        }
+      },
+      "npair2-11": {
+        "case_id": "uv1-E5-011",
+        "story_id": "E366",
+        "turn_case_id": "E366_T11",
+        "rotation": {
+          "A": "L2",
+          "B": "B1"
+        }
+      },
+      "npair2-12": {
+        "case_id": "uv1-E5-012",
+        "story_id": "E370",
+        "turn_case_id": "E370_T03",
+        "rotation": {
+          "A": "B1",
+          "B": "L2"
+        }
+      }
+    }
+  },
+  "e4_v11_blind_slots": {
+    "covers": "E4 v1.1 对称重评盲评（24 包，评审代号 e4m-001a..e4m-012b，代号尾缀 a/b 即评审侧匿名 A/B）。臂记号口径：L=机制臂（response.recommended 主建议），B1=基线臂（单条主建议）。slot 为与 E4 用例（slot001..slot012）的交叉引用号。",
+    "mapping": {
+      "e4m-001a": {
+        "slot": "slot001",
+        "arm": "L",
+        "case_id": "uv1-E4-001"
+      },
+      "e4m-001b": {
+        "slot": "slot001",
+        "arm": "B1",
+        "case_id": "uv1-E4-001"
+      },
+      "e4m-002a": {
+        "slot": "slot002",
+        "arm": "B1",
+        "case_id": "uv1-E4-002"
+      },
+      "e4m-002b": {
+        "slot": "slot002",
+        "arm": "L",
+        "case_id": "uv1-E4-002"
+      },
+      "e4m-003a": {
+        "slot": "slot003",
+        "arm": "L",
+        "case_id": "uv1-E4-003"
+      },
+      "e4m-003b": {
+        "slot": "slot003",
+        "arm": "B1",
+        "case_id": "uv1-E4-003"
+      },
+      "e4m-004a": {
+        "slot": "slot004",
+        "arm": "B1",
+        "case_id": "uv1-E4-004"
+      },
+      "e4m-004b": {
+        "slot": "slot004",
+        "arm": "L",
+        "case_id": "uv1-E4-004"
+      },
+      "e4m-005a": {
+        "slot": "slot005",
+        "arm": "L",
+        "case_id": "uv1-E4-005"
+      },
+      "e4m-005b": {
+        "slot": "slot005",
+        "arm": "B1",
+        "case_id": "uv1-E4-005"
+      },
+      "e4m-006a": {
+        "slot": "slot006",
+        "arm": "B1",
+        "case_id": "uv1-E4-006"
+      },
+      "e4m-006b": {
+        "slot": "slot006",
+        "arm": "L",
+        "case_id": "uv1-E4-006"
+      },
+      "e4m-007a": {
+        "slot": "slot007",
+        "arm": "L",
+        "case_id": "uv1-E4-007"
+      },
+      "e4m-007b": {
+        "slot": "slot007",
+        "arm": "B1",
+        "case_id": "uv1-E4-007"
+      },
+      "e4m-008a": {
+        "slot": "slot008",
+        "arm": "B1",
+        "case_id": "uv1-E4-008"
+      },
+      "e4m-008b": {
+        "slot": "slot008",
+        "arm": "L",
+        "case_id": "uv1-E4-008"
+      },
+      "e4m-009a": {
+        "slot": "slot009",
+        "arm": "L",
+        "case_id": "uv1-E4-009"
+      },
+      "e4m-009b": {
+        "slot": "slot009",
+        "arm": "B1",
+        "case_id": "uv1-E4-009"
+      },
+      "e4m-010a": {
+        "slot": "slot010",
+        "arm": "L",
+        "case_id": "uv1-E4-010"
+      },
+      "e4m-010b": {
+        "slot": "slot010",
+        "arm": "B1",
+        "case_id": "uv1-E4-010"
+      },
+      "e4m-011a": {
+        "slot": "slot011",
+        "arm": "B1",
+        "case_id": "uv1-E4-011"
+      },
+      "e4m-011b": {
+        "slot": "slot011",
+        "arm": "L",
+        "case_id": "uv1-E4-011"
+      },
+      "e4m-012a": {
+        "slot": "slot012",
+        "arm": "L",
+        "case_id": "uv1-E4-012"
+      },
+      "e4m-012b": {
+        "slot": "slot012",
+        "arm": "B1",
+        "case_id": "uv1-E4-012"
+      }
+    }
+  }
+}
