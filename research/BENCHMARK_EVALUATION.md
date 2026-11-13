@@ -293,3 +293,19 @@ P06_RESULTS.md=INTERIM（自declared 初步裁决，公开索引不得冒充 FIN
 | 数字带版本标签 | 通过——全部数字标注来源文件与日期口径 |
 | B 线按普通研究资产登记 | 通过——§5.1 一行中性登记 |
 | 红线（不同条件不拼分） | 通过——§3 全节落实 |
+
+---
+
+## 9. 用户价值五项实验（user_value_v1，2026-11-13）
+
+完整方法、结果主表与逐对证据见 [report.md](evaluation/user_value_v1/report.md)（含 §3 结果主表、§9 盲评逐对表）。
+
+2026-11-13 新增一批面向用户价值的对照实验，落位 `research/evaluation/user_value_v1/`（14 文件：protocol.md、protocol-v1.1-addendum.md、cases.jsonl、cases-schema.md、outputs.jsonl、judgments.jsonl、scores.csv、scoring-templates.md、anon-map-revealed.json、summary.json、report.md、plot_results_v11.py、user-value-results.svg、showcase-case.md；protocol.md §7 承诺的最小交付集 8 件全部在场）。实验评五项指标 M1–M5，对应根 [README.md](../README.md) 用户语言版的 E1–E5 通俗名（关键记忆 / 纠错与关系状态 / 不编造、不越界 / 当下意图与分寸 / 自然、好发）。结果按两条独立线统计、禁止合并：H 线=历史固定模型复评（`selection_v1` 四臂原始回复重评，不重新生成），N 线=原生子代理新生成（B1 基线 vs L 机制臂真实生成+盲评）。本文不复写该实验数值——通俗五问与结果主表见根 README 用户语言版（README 更新版落位后生效），逐题判定与计分明细见 `research/evaluation/user_value_v1/` 内文件。
+
+### 9.1 v1.1 重评口径
+
+- **对称重评**：评分规则以 v1.1 冻结件为准（`protocol-v1.1-addendum.md` 与 scoring-templates v1.1 对称重评版，先冻结、后批量）；规则冻结 v1.1 后所有比较臂对称重评，不在看见输赢后改分；v1.0 判定与数据全部留档、原样保留，与 v1.1 并列呈现。
+- **E5 更名**：E5 定名"盲评回复偏好/自然度与可发送性代理评分"——原生子代理代理评分（回复级五选一偏好裁决 + 可发送性 0–3 量尺），全处结果按代理评分口径引用，不称用户发送率。
+- **M2 双门**：M2 采用 M-PAIR 双门口径，pair_score = min(recall, suppress)，无半分，分门落盘，负对照自检作为批量前门禁。
+- **两类实验分开**：产品整体对比（完整 Harness vs 基线，保留双方各自真实候选集合与正常生成流程）与单机制消融（只切换单机制、结论只讲该机制的因果贡献）分开设计与报告，各自独立成立。
+- **E5-N v2 口径**：N 线机制臂使用分域冠军 Harness `window_expand_b_norecap_guard`（KB 注入修复版）整组多候选盲评；v1.0 N 线因 KB 未注入、候选不对等而作废，按 v1.1 全候选口径重建重跑，纠偏史如实留档于 v1.0 判定件。重跑结果：冠军 Harness 整组盲评 L2 11/B1 1（n=12，复评 3/3 胜负一致）（npair2-11 自然度单维分歧经第三评委仲裁终裁 5），逐对证据见 report.md §9。

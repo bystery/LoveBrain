@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 170" role="img" aria-label="LoveBrain 建议生成流程：对方消息/历史 → 记住什么 → 这次该说什么 → 多风格候选">
+  <title>LoveBrain 建议生成流程</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8f8f8f"/>
+    </marker>
+  </defs>
+  <g font-family="'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif" text-anchor="middle">
+    <!-- 步骤 1 -->
+    <rect x="18" y="34" width="170" height="104" rx="10" fill="#ebebeb" stroke="#b6b6b6" stroke-width="1.5"/>
+    <circle cx="103" cy="34" r="11" fill="#ebebeb" stroke="#b6b6b6" stroke-width="1.5"/>
+    <text x="103" y="39" font-size="16" font-weight="700" fill="#4d4d4d">1</text>
+    <text x="103" y="76" font-size="18" font-weight="700" fill="#1a1a1a">对方消息 / 历史</text>
+    <text x="103" y="104" font-size="16" fill="#4d4d4d">聊天内容持续进来</text>
+    <!-- 步骤 2 -->
+    <rect x="216" y="34" width="170" height="104" rx="10" fill="#ebebeb" stroke="#b6b6b6" stroke-width="1.5"/>
+    <circle cx="301" cy="34" r="11" fill="#ebebeb" stroke="#b6b6b6" stroke-width="1.5"/>
+    <text x="301" y="39" font-size="16" font-weight="700" fill="#4d4d4d">2</text>
+    <text x="301" y="76" font-size="18" font-weight="700" fill="#1a1a1a">记住什么</text>
+    <text x="301" y="102" font-size="16" fill="#4d4d4d">关键事实 · 纠错</text>
+    <text x="301" y="124" font-size="16" fill="#4d4d4d">未定标记</text>
+    <!-- 步骤 3 -->
+    <rect x="414" y="34" width="170" height="104" rx="10" fill="#ebebeb" stroke="#b6b6b6" stroke-width="1.5"/>
+    <circle cx="499" cy="34" r="11" fill="#ebebeb" stroke="#b6b6b6" stroke-width="1.5"/>
+    <text x="499" y="39" font-size="16" font-weight="700" fill="#4d4d4d">3</text>
+    <text x="499" y="76" font-size="18" font-weight="700" fill="#1a1a1a">这次该说什么</text>
+    <text x="499" y="104" font-size="16" fill="#4d4d4d">挑选相关的上下文</text>
+    <!-- 步骤 4 -->
+    <rect x="612" y="34" width="170" height="104" rx="10" fill="#ebebeb" stroke="#b6b6b6" stroke-width="1.5"/>
+    <circle cx="697" cy="34" r="11" fill="#ebebeb" stroke="#b6b6b6" stroke-width="1.5"/>
+    <text x="697" y="39" font-size="16" font-weight="700" fill="#4d4d4d">4</text>
+    <text x="697" y="76" font-size="18" font-weight="700" fill="#1a1a1a">多风格候选</text>
+    <text x="697" y="104" font-size="16" fill="#4d4d4d">可编辑的建议</text>
+    <!-- 连接箭头 -->
+    <line x1="190" y1="86" x2="209" y2="86" stroke="#8f8f8f" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
+    <line x1="388" y1="86" x2="407" y2="86" stroke="#8f8f8f" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
+    <line x1="586" y1="86" x2="605" y2="86" stroke="#8f8f8f" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
+  </g>
+</svg>

@@ -453,19 +453,27 @@ def run_case(case_path: str, candidate_dir: str, out_dir: str, adapter_name: str
     case_eval = copy.deepcopy(case)
     ctx = sanitize_turn(case)
     os.makedirs(out_dir, exist_ok=True)
+    # 单题模式 ep_meta：initial_kb 是"语义上已发生且允许候选知道"的显式可见入口
+    # （与 run_episode 的 EP_META_VISIBLE_KEYS 同源）。单题 case 无 episode 级 initial_kb，
+    # 从 case input.kb 的冻结快照按 KB_VISIBLE_KEYS 白名单提取，修复单题 KB 注入缺口。
+    case_meta = {"mode": "single"}
+    kb_src = (case.get("input") or {}).get("kb")
+    if isinstance(kb_src, dict):
+        case_meta["initial_kb"] = {k: copy.deepcopy(kb_src[k])
+                                   for k in KB_VISIBLE_KEYS if k in kb_src}
     m = None
     err = None
     try:
         if version == "v2":
             sandbox = os.path.join(out_dir, "_sandbox")
             os.makedirs(sandbox, exist_ok=True)
-            handle = mech.init(os.path.join(candidate_dir, "assets"), {"mode": "single"}, gateway, sandbox)
+            handle = mech.init(os.path.join(candidate_dir, "assets"), case_meta, gateway, sandbox)
             ctx["assets_root"] = os.path.join(candidate_dir, "assets")
             ctx["turn_type"] = case.get("turn_type", "reply")
             ctx["turn_index"] = 1
             m = _exec_turn_v2(case_eval, ctx, candidate_dir, out_dir, gateway, mech, handle, contract)
         else:
-            state = mech.init_state(os.path.join(candidate_dir, "assets"), {"mode": "single"})
+            state = mech.init_state(os.path.join(candidate_dir, "assets"), case_meta)
             m = _exec_turn_v1(case_eval, ctx, candidate_dir, out_dir, gateway, mech, state, contract)
         m["mechanism"] = origin
         m["contract"] = contract or "legacy"
