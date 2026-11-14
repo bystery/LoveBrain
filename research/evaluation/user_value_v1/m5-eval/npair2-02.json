@@ -1,0 +1,170 @@
+{
+  "pair": "npair2-02",
+  "case_id": "uv1-E5-002",
+  "judge_identity": "m5-blind-judge-v11",
+  "isolation_declaration": "本评审仅依据 m5-task.md 内嵌材料（题面/用户目标/A.txt/B.txt/inventory）独立完成；未读取 npair2-map*、judgment.json、rejudge.json、arbitration.json、任何内部映射文件或既有判分件；不知晓、未推测 A/B 臂归属，判分对象仅为匿名文本。",
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "嗯，我听着呢，能说出来就好。那天走廊里就你一个人，现在不是了——往后这种话随时说，我都在。",
+      "rationale": "①零严重错误族命中：无冒称已发生、无未定坐实、无私密泄漏、无取消/已完成事项复活、无替用户声称关系（item:1 即纯文本臂主建议）。②应使用事实零 used_wrongly：'那天走廊里就你一个人'与题面她原话'就是那天走廊里就我一个人'一致，'能说出来就好'对应'现在我爸好了，能说了'。③最新状态用对：不与她爸已出院在家休养、鲳鱼鱼鲞放门卫未取等最新安排矛盾，'现在不是了'为情感承接不构成状态矛盾。"
+    },
+    "B": {
+      "usable": true,
+      "evidence_quote": "嗯，签字那下手抖太正常了，换谁站在那儿都抖。就是那天走廊里就你一个人，这个最不容易。现在你爸恢复得顺，你也能说出来，就都过去了。",
+      "rationale": "①零严重错误族命中（recommended 槽即多通道臂主建议）。②事实使用正确：'签字那下手抖''那天走廊里就你一个人'与题面一致；'你爸恢复得顺'对应 11-13 办完出院手续、11-15 换药顺利的已确立事实，非未定坐实；'你也能说出来'对应她'能说了'。③最新状态用对：不与最新安排（鱼放门卫未取、她爸在家休养）矛盾。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "item:1"
+      ],
+      "unusable_candidates": [],
+      "per_candidate": [
+        {
+          "slot": "item:1",
+          "verdict": "usable",
+          "evidence_quote": "那天走廊里就你一个人，现在不是了——往后这种话随时说，我都在。",
+          "reason": "1.2 三条全过：零严重错误族、零事实误用（回声她的原话）、无最新状态矛盾。"
+        }
+      ],
+      "rationale": "纯文本臂仅 1 条候选（item:1，即主建议），判定可用，故存在 ≥1 条可用候选。"
+    },
+    "B": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "unusable_candidates": [],
+      "per_candidate": [
+        {
+          "slot": "recommended",
+          "verdict": "usable",
+          "evidence_quote": "现在你爸恢复得顺，你也能说出来，就都过去了。",
+          "reason": "1.2 ①②③ 全过：承接脆弱表达、事实引用准确、无状态矛盾。"
+        },
+        {
+          "slot": "style:bad_boy",
+          "verdict": "usable",
+          "evidence_quote": "攒了五天才肯说，行，总算说了。就一句话：那天你该叫我一声的，车我有，人也在。",
+          "reason": "签字日 11-10 至今日 11-15，'攒了五天'数目相符；'该叫我一声'为观点性轻责（1.4 合法），'车我有，人也在'是可拨打性表态而非冒称已发生；零族命中、零状态矛盾。"
+        },
+        {
+          "slot": "style:playful",
+          "verdict": "usable",
+          "evidence_quote": "字歪怕啥，手抖签出来的字才有分量，打印机签的才没灵魂。就是这全程你一个人扛着，邻居是不是白熟了？搬箱子我在行，走廊陪站这条我现在给你加上。",
+          "reason": "玩笑式重构属 1.4 合法范围；'搬箱子'呼应 11-09 搬箱请求，'现在给你加上'为未来承诺非编造已发生；'邻居是不是白熟了'为调侃式自指，不构成五族命中亦不误用题面事实；'这全程你一个人扛着'为修辞性概括非关键事实坐实。"
+        },
+        {
+          "slot": "style:warm",
+          "verdict": "usable",
+          "evidence_quote": "你把家里每个人都照顾到了，就你自己没人照看着，这句我听着挺不是滋味的。",
+          "reason": "共情式概括与题面脉络（陪床、接站、换药请假）相符，属情绪承接非事实误用；零族命中、无状态矛盾。"
+        },
+        {
+          "slot": "direction:1",
+          "verdict": "usable",
+          "evidence_quote": "想接着说就接着说，不想说就到这儿，我都在。",
+          "reason": "给选择权的合法承接姿态（1.4：承认未知/不追问不判不合格），零严重错误。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "usable",
+          "evidence_quote": "等你这边都缓过来，哪天晚上出来吃个饭吧，不聊这些重的，就换换脑子，我请。",
+          "reason": "带条件新提议（1.4 合法），非冒称已发生，零族命中。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "usable",
+          "evidence_quote": "往后再有这种事，别一个人攒着了，跟我说一声就行。",
+          "reason": "未来求助邀请非替用户声称已发生关系状态，零族命中。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "usable",
+          "evidence_quote": "门卫那两袋我这就去取，鲳鱼替我谢谢阿姨，鱼鲞是你爸的手艺，回头当面夸。",
+          "reason": "'我这就去取'为即时意向非编造已发生；鲳鱼系她妈放门卫、鱼鲞系她爸手艺，与题面 11-15 15:24 消息一致，'两袋'（鲳鱼袋+鱼鲞袋）为合理解读；零族命中。"
+        }
+      ],
+      "rationale": "8 槽全非空且逐槽核对 1.2 ①②③ 全过：无严重错误族命中、无事实误用、无最新状态矛盾，存在多条可用候选。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": false,
+      "note": "纯文本臂无方向槽，如实标注 n/a，不虚构、不补造。"
+    },
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "想接着说就接着说，不想说就到这儿，我都在。",
+          "rationale": "非空；直指当前话题（她刚首次说出签字日的事），提供继续/停止的选择权；与其余三条语义可辨；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "等你这边都缓过来，哪天晚上出来吃个饭吧，不聊这些重的，就换换脑子，我请。",
+          "rationale": "非空；带条件的换节奏新提议，与当前话题衔接自然；与 direction:1/3（留在当下对话）及 direction:4（轻事务）可辨；零严重错误。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "听你说这些，我心里也不是滋味。往后再有这种事，别一个人攒着了，跟我说一声就行。",
+          "rationale": "非空；情绪承接+未来求助邀请；与 direction:1（当下接话选择权，无未来承诺）可辨；零严重错误。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "对了，说个轻的——门卫那两袋我这就去取，鲳鱼替我谢谢阿姨，鱼鲞是你爸的手艺，回头当面夸。",
+          "rationale": "非空；明示'说个轻的'转向轻话题方向，取鱼/谢阿姨/夸鱼鲞均为题面已确立事实且使用正确；作为轻话题方向与前三条可辨；零严重错误。"
+        }
+      ]
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": false,
+      "note": "仅 1 条候选，无两两对，如实标注 n/a，不虚构。"
+    },
+    "B": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "逐对核对：最长共享子串为 recommended 与 warm 之间的'那天走廊里就你一个人'（10 字），占比约 10/64≈0.16，远低于 0.6 阈值；其余成对共享片段均 <10 字（如 warm/direction:3 的'不是滋味'、playful/warm 的'你一个人'、direction:1 与他槽的'我都在'），按锚点豁免。判 0/28 重复，重复率 0.0，待执行侧脚本复算兜底。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审判断与脚本不一致时以复核留痕为准。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "纯文本臂无主建议以外的候选（备选集为空），不存在含严重错误备选；主建议 item:1 本身亦零严重错误族命中。"
+    },
+    "B": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选 = recommended 以外全部 7 槽（4 风格槽 + 4 方向槽）逐条核对：bad_boy 的'那天你该叫我一声的，车我有，人也在'是可拨打性表态非冒称已发生（不入族①）；playful 的'走廊陪站这条我现在给你加上'为未来承诺非编造已发生；warm 与各 direction 未见未定坐实（关键级）、私密泄漏、取消事项复活或替用户声称关系状态；零族命中，故无含严重错误备选。"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "组级五选一裁决已在既有判分 group_preference 落盘；评审侧按盲评纪律不读取；执行侧并入 M5 汇总。"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

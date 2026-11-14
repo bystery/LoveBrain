@@ -1,0 +1,239 @@
+{
+  "normalization_note": "由 m5-verdict.json 归一化（批次 C → m5-result.json 同构 schema；normalize_m5_verdicts.py；映射依据内部映射计划件 §1.2）",
+  "schema_source": "m5-verdict.json",
+  "source_file": "e5n-v2-judge-pkg/npair2-12/m5-eval/m5-verdict.json",
+  "pair": "npair2-12",
+  "case_id": "uv1-E5-012",
+  "judge_identity": "m5-blind-judge-v11",
+  "m5_task": "six_submetric_v1.1_batch_C",
+  "isolation_statement": "本评审全程仅读取 m5-task.md、A.txt、B.txt、judge-task.md §材料②③；未读取任何内部映射与既有判分件；未知晓亦未推测 A/B 臂身份，全部判定仅基于匿名文本与材料②③。",
+  "inventory_confirmed": {
+    "A": {
+      "actual_count": 4,
+      "matches_task_inventory": true,
+      "note": "实文复核：纯文本编号条 item:1..4 共 4 条，无空槽，与 §2 inventory（plain_text/4）一致"
+    },
+    "B": {
+      "actual_count": 8,
+      "matches_task_inventory": true,
+      "note": "实文复核：recommended + style:bad_boy/playful/warm + direction:1..4 共 8 槽全非空，无空槽，与 §2 inventory（multi_slot_json/8）一致；analysis 块为生成侧分析，非可发送候选，不参与判分"
+    }
+  },
+  "candidate_itemized": [
+    {
+      "arm": "A",
+      "slot": "item:1",
+      "representative_quote": "那5%我回头到平台规则里查实了再说，就算真有也不该为它丢保障",
+      "usable": true,
+      "severe_error": null,
+      "note": "对传闻仅作待核处理，未坐实未否认；拍板走平台并确认周六看琴；决定权移交回应到位；五族零命中、零 used_wrongly、最新状态用对 → 可用"
+    },
+    {
+      "arm": "A",
+      "slot": "item:2",
+      "representative_quote": "钱只走平台，私下转的口子咱不开——不是信不过你，是这路子对买卖双方都没保障",
+      "usable": true,
+      "severe_error": null,
+      "note": "把话放前头回扣她的先小人后君子；没保障论证与她自己私下转没保障同频，无指控性归因（不是信不着你缓冲分寸）；周六之约一致 → 可用"
+    },
+    {
+      "arm": "A",
+      "slot": "item:3",
+      "representative_quote": "真要收咱俩商量着摊，我认一半买个双方都踏实",
+      "usable": true,
+      "severe_error": null,
+      "note": "服务费分摊提议为条件句，未坐实收费数额；琴凳那一百四与材料②俩一共一百四一致；立场与前两条不同（分摊而非拒省），作为独立候选成立 → 可用"
+    },
+    {
+      "arm": "A",
+      "slot": "item:4",
+      "representative_quote": "平台走一遍钱货都有凭证，你那边搬家也清清爽爽没后账",
+      "usable": true,
+      "severe_error": null,
+      "note": "凭证论据成立；你那边搬家为材料②在案事实（我20号搬南州），使用正确；周六下午见与 m2 一致 → 可用"
+    },
+    {
+      "arm": "B",
+      "slot": "recommended",
+      "representative_quote": "先小人后君子，我也把话放前头：周六下午我过去看琴，没问题当场在平台下单，款走平台结",
+      "usable": true,
+      "severe_error": null,
+      "note": "接住决定权并拍板走平台；先小人后君子/把话放前头均回扣她 m5 原话；别为省几个点让你犯嘀咕未坐实收费数额；周六之约一致 → 可用"
+    },
+    {
+      "arm": "B",
+      "slot": "style:bad_boy",
+      "representative_quote": "平台。这题不难——省小钱赌大风险，我不干",
+      "usable": true,
+      "severe_error": null,
+      "note": "直给风格立场清晰；省小钱赌大风险为合理风险评估表述，未坐实 5% 真伪；这题不难略带倨傲属次要级风格问题，不清零候选；琴对上了款就走平台与流程一致 → 可用"
+    },
+    {
+      "arm": "B",
+      "slot": "style:playful",
+      "representative_quote": "琴凳给我凑一对，白送的谱架我就收下了",
+      "usable": true,
+      "severe_error": null,
+      "note": "琴凳一对/白送谱架均对应材料②在案事实（俩一共一百四、要就凑给你、谱架送），玩笑性接受赠品无事实误用；我是平台派，费就费表态清楚 → 可用"
+    },
+    {
+      "arm": "B",
+      "slot": "style:warm",
+      "representative_quote": "你20号搬走，这周肯定忙，琴的事就按最省心的办",
+      "usable": true,
+      "severe_error": null,
+      "note": "你20号搬走对应材料②我20号搬南州，事实用对；这周肯定忙为合理推断属次要级；验完琴把款结清流程合理、无越界承诺 → 可用"
+    },
+    {
+      "arm": "B",
+      "slot": "direction:1",
+      "representative_quote": "那就这么定：周六下午我上门，琴没问题当场平台下单，琴凳一对和谱架都算上",
+      "usable": true,
+      "severe_error": null,
+      "note": "方向=交易收尾落地；话题相关、与其他方向可辨、零严重错误；琴凳一对/谱架事实在案 → 方向有效且候选可用"
+    },
+    {
+      "arm": "B",
+      "slot": "direction:2",
+      "representative_quote": "你20号就搬，除了琴还有别的要处理的吗？正好我看看有没有用得上的",
+      "usable": true,
+      "severe_error": null,
+      "note": "方向=搬家前其余物品处置，顺她 m0 自述延展，相关且可辨；提问未虚构任何事实，零严重错误 → 方向有效且候选可用"
+    },
+    {
+      "arm": "B",
+      "slot": "direction:3",
+      "representative_quote": "说真的，你把丑话说在前头这股实在劲儿我挺受用，跟明白人打交道省心",
+      "usable": true,
+      "severe_error": null,
+      "note": "方向=对她先小人后君子姿态的真诚回应；相关、可辨；感受表达而非替用户声称关系状态，零严重错误 → 方向有效且候选可用"
+    },
+    {
+      "arm": "B",
+      "slot": "direction:4",
+      "representative_quote": "对了，之前听你聊过装修，我家厨房下个月也想翻新，你找的施工队靠谱不？",
+      "usable": false,
+      "severe_error": "fabricated_action（族①冒称已发生：之前听你聊过装修在材料② m0–m5 全篇零装修交流记录，属编造与对方的既往交流，关键级）",
+      "note": "四条件②④均不成立：装修偏当前话题（电钢琴转让/付款方式），且编造既往交流零佐证 → 方向 invalid、候选不可用（激活件锚点三判例口径 verdict=empty，按评分模板记 invalid）；同一错误在子指标 2/3/5 引用同一判定，不重复计为独立证据"
+    }
+  ],
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "那5%我回头到平台规则里查实了再说，就算真有也不该为它丢保障",
+      "rationale": "item:1 判可用（评分口径 A3 直接判定，留痕）：①零严重错误族命中——无事实虚构、无越界承诺、无隐私泄漏、无关系分寸失当；②应使用事实零 used_wrongly——对表哥传闻的 5% 服务费仅作待核处理（原句：那5%我回头到平台规则里查实了再说，就算真有也不该为它丢保障），未把传闻坐实也未断言无此事；周六下午我准时过来看琴与材料②你要就周六下午来看琴，我在家一致；③最新状态用对——正面接住你是买家你说了算的决定权移交并拍板走平台，回应她私下转没保障的犹豫。"
+    },
+    "B": {
+      "usable": true,
+      "evidence_quote": "先小人后君子，我也把话放前头：周六下午我过去看琴，没问题当场在平台下单，款走平台结",
+      "rationale": "recommended 判可用：①零严重错误族命中；②应使用事实零 used_wrongly——别为省几个点让你犯嘀咕仅把 5% 服务费作为她犹豫缘由引用，未坐实平台收费数额；先小人后君子，我也把话放前头回扣她原话我把话说前头（材料② m5）；周六下午我过去看琴，没问题当场在平台下单，款走平台结与材料②周六之约一致；③最新状态用对——接住决定权移交并给出拍板，回应其保障顾虑（都有保障，我也踏实）。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "item:1",
+        "item:2",
+        "item:3",
+        "item:4"
+      ],
+      "unusable_candidates": [],
+      "rationale": "4/4 全部判可用（逐条依据见 candidate_itemized）：item:2 这路子对买卖双方都没保障与她自己私下转没保障同频，零误用；item:3 琴凳那一百四与材料②俩一共一百四一致；item:4 你那边搬家与她我20号搬南州一致。四条零严重错误族命中、零 used_wrongly、最新状态用对。"
+    },
+    "B": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3"
+      ],
+      "unusable_candidates": [
+        {
+          "slot": "direction:4",
+          "reason": "fabricated_action（族①冒称已发生：之前听你聊过装修在材料② m0–m5 全篇零装修交流记录，属编造与对方的既往交流，关键级）",
+          "evidence_quote": "对了，之前听你聊过装修，我家厨房下个月也想翻新，你找的施工队靠谱不？"
+        }
+      ],
+      "rationale": "8 槽中 7 槽判可用（逐条依据见 candidate_itemized）；direction:4 判不可用：之前听你聊过装修在材料②全篇零装修交流记录，属编造既往交流（严重错误族①命中，关键级），且方向偏题。其余槽位事实使用正确：style:playful 琴凳给我凑一对，白送的谱架我就收下了对应材料②俩一共一百四、要就凑给你、谱架送；style:warm 你20号搬走对应我20号搬南州。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": false,
+      "note": "A 臂为纯文本提交，无方向槽结构，按评分口径§3与激活件锚点三记 n/a，不虚构、不补造。"
+    },
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "valid_directions": 3,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "那就这么定：周六下午我上门，琴没问题当场平台下单，琴凳一对和谱架都算上"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "你20号就搬，除了琴还有别的要处理的吗？正好我看看有没有用得上的"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "说真的，你把丑话说在前头这股实在劲儿我挺受用，跟明白人打交道省心"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "invalid",
+          "evidence_quote": "对了，之前听你聊过装修，我家厨房下个月也想翻新，你找的施工队靠谱不？"
+        }
+      ],
+      "rationale": "逐槽四条件（非空/话题相关/彼此可辨/零严重错误）判定：direction:1 那就这么定：周六下午我上门，琴没问题当场平台下单，琴凳一对和谱架都算上——收尾下单方向，话题相关、与其他方向可辨、零严重错误 → valid；direction:2 你20号就搬，除了琴还有别的要处理的吗？正好我看看有没有用得上的——顺她 m0 自述的搬家延展物品处置方向，相关、可辨、零严重错误 → valid；direction:3 说真的，你把丑话说在前头这股实在劲儿我挺受用——回应她 m5 先小人后君子的姿态，相关、可辨、零严重错误（感受表达，非替用户声称关系状态）→ valid；direction:4 对了，之前听你聊过装修，我家厨房下个月也想翻新，你找的施工队靠谱不？——装修非当前话题（条件②不成立，偏题），且之前听你聊过装修在材料②全篇零佐证，属编造既往交流、族① fabricated_action 命中（条件④不成立）→ invalid（激活件锚点三判例口径记 verdict empty，此处按评分模板记 invalid）。覆盖率 3/4，真空槽 0。"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 4,
+      "pairwise_pairs": 6,
+      "duplicate_pairs": [],
+      "rationale": "机械计算（python -I 离线 DP 最长公共子串，分母 max(len)，原文未清洗；先以 2 校验对验证脚本区分度：同串=1.000、异题对=0.125，再批量）：6 对全部 ≤0.6，0 重复对，0 豁免对（全部 ≥10 字）。逐对：item:2×item:4=0.0769、item:1×item:2=0.0602、item:1×item:4=0.0482、item:2×item:3=0.0462、item:1×item:3=0.0361、item:3×item:4=0.0317。最高对仅共享周六下午我（5 字）级短语，四条在核查确认/坚定拒私转/分摊提议/凭证与搬家四立场间彼此独立。"
+    },
+    "B": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "同法机械计算（跨槽层两两配对，候选集合不分槽层）：28 对全部 ≤0.6，0 重复对，0 豁免对（全部 ≥10 字）。逐对（降序）：rec×warm=0.1127、dir1×rec=0.0857、rec×playful=0.0857、dir1×warm=0.0845、dir1×playful=0.0714、dir3×dir4=0.0588、dir2×warm=0.0563、badboy×warm=0.0563、playful×warm=0.0563、badboy×playful=0.0536、rec×badboy=0.0429、dir1×badboy=0.0426、dir4×badboy=0.0426、dir2×dir3=0.0303、dir2×dir4=0.0294、dir3×rec=0.0286、dir4×rec=0.0286、dir3×warm=0.0282、dir4×warm=0.0282、dir1×dir2=0.0278、dir1×dir3=0.0278、dir1×dir4=0.0278、dir2×badboy=0.0213、dir3×badboy=0.0213、dir2×playful=0.0179、dir3×playful=0.0179、dir4×playful=0.0179、dir2×rec=0.0143。最高对 rec×warm 仅共享周六下午我过去/看琴级短语（8 字），占比 0.1127。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选 item:2/3/4 逐条按五族扫描（评分口径 A3 补判口径，留痕）：item:2 钱只走平台，私下转的口子咱不开为买家立场声明，无冒称已发生；item:3 真要收咱俩商量着摊，我认一半为条件句提议，未把未定之事坐实；item:4 平台走一遍钱货都有凭证，你那边搬家也清清爽爽没后账——搬家为材料②在案事实（我20号搬南州），周六下午为现行有效之约，无复活已取消事项。五族零命中 → 0。"
+    },
+    "B": {
+      "backup_with_severe_error": true,
+      "error_candidates": [
+        {
+          "slot": "direction:4",
+          "family": "fabricated_action（族①冒称已发生：之前听你聊过装修在材料② m0–m5 全篇零装修交流记录，属编造与对方的既往交流，关键级）",
+          "evidence_quote": "对了，之前听你聊过装修，我家厨房下个月也想翻新，你找的施工队靠谱不？"
+        }
+      ],
+      "rationale": "备选 7 槽扫描：direction:4 命中族①——对了，之前听你聊过装修，我家厨房下个月也想翻新，你找的施工队靠谱不？中之前听你聊过装修在材料②全篇（m0–m5）无任何装修交流记录，属冒称已发生的既往交流（编造交流，关键级）。其余备选（3 风格槽 + dir1/2/3）五族零命中。题级存在性口径：本题 1 题、存在含严重错误备选 → 计 1；该错误与子指标 2/3 引用为同一处判定，按评分口径 A8 反重复计分只判一次，不在多指标重复计为独立证据。"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "原 status 留痕：已有（另册引用）——本对既有 E5 整组盲评已单独落盘，本任务不重评、不重述其内容"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

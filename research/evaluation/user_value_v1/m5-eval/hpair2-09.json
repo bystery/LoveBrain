@@ -1,0 +1,182 @@
+{
+  "pair": "pair09",
+  "case_id": "uv1-E5-009",
+  "judge_identity": "m5h-blind-judge-v11",
+  "proxy_judge_statement": "全部结果为原生子代理结构化评估，不是真人用户调查，不代表真人发送率；判分对象仅为匿名文本 A/B，评审全程不知晓、不利用、不猜测任何臂归属信息。",
+  "candidate_inventory": {
+    "A": {
+      "envelope": "multi_slot_json",
+      "candidate_count": 7,
+      "slots": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "empty_slots": [
+        "direction:4"
+      ]
+    },
+    "B": {
+      "envelope": "single_slot_json",
+      "candidate_count": 1,
+      "slots": [
+        "recommended"
+      ],
+      "empty_slots": []
+    },
+    "inventory_check": "按评审材料第5/6节全文实点清点：A 非空候选 7（总槽位 8，direction:4=null 空槽）、B 非空候选 1（总槽位 1），与第 2 节 inventory 一致。"
+  },
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "行，椅子我坐，机位我守。狮子座连一颗星都不裁，整片留给你。栗子记得趁热，凉了算你欠我一锅。",
+      "rationale": "对照 1.2 逐条：① 零严重错误族命中——椅子我坐/机位我守/不裁狮子座均为对今晚安排的应允（未来动作），非冒称已发生（族①不命中）；栗子条款（凉了算你欠我一锅）为玩笑性条件，属 1.4 合格处理。② 应使用事实零 used_wrongly——顶班走不开、椅子替坐、机位替守、狮子座不裁、栗子换照片全部按题面 T11 正确使用。③ 最新状态用对——应允今晚替她占位拍照与 T11 安排一致，未与 T08/T09 已确认的周二椅子照摆矛盾。本题计 1/1。"
+    },
+    "B": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "行，今晚我去。椅子替你坐，机位替你守，狮子座一颗不裁，辐射点也给你留着。照片拍完就发你，栗子等你下夜班再换，凉了不好剥。顶班悠着点，别熬太狠。",
+      "rationale": "对照 1.2 逐条：① 零严重错误族命中——全句为今晚安排的应允与叮嘱；辐射点也给你留着为修辞性说法，不属关键级未定坐实（族②不命中）；凉了不好剥为无害生活常识玩笑。② 应使用事实零 used_wrongly——椅子/机位/狮子座/辐射点/栗子交换方向（她出栗子、他出照片）均与题面一致，辐射点后半夜升高的背景（T06）未被误用。③ 最新状态用对——今晚我去、照片拍完就发、栗子等下夜班再换，与 T11 安排一致。本题计 1/1。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "applicable": true,
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3"
+      ],
+      "unusable_candidates": [],
+      "per_candidate_supplementary_verdicts": [
+        {
+          "slot": "recommended",
+          "verdict": "usable",
+          "evidence_quote": "行，椅子我坐，机位我守。狮子座连一颗星都不裁，整片留给你。栗子记得趁热，凉了算你欠我一锅。",
+          "rationale": "same_verdict_ref: submetric1_first_usable.A（反重复计分，不重评）。"
+        },
+        {
+          "slot": "style:bad_boy",
+          "verdict": "usable",
+          "evidence_quote": "顶班就顶班，别说得像欠我什么。椅子我坐定了，狮子座也给你留着；栗子要热的，凉的我不收。",
+          "rationale": "① 应允均为今晚未来动作，无冒称已发生；② 栗子交换方向正确（她出栗子），凉的我不收为玩笑条款（1.4 合法）；③ 与 T11 顶班/占位安排一致，无矛盾。"
+        },
+        {
+          "slot": "style:playful",
+          "verdict": "usable",
+          "evidence_quote": "一锅栗子换一张带狮子座的照片？这买卖我亏。不过机位是你占的，成交，栗子要热的。",
+          "rationale": "① 这买卖我亏为玩笑性自夸，非严重错误族（1.4 玩笑带过合法）；② 机位是你占的与 T06 她自述占机位的事实一致；③ 成交为应允今晚安排，无最新状态矛盾。"
+        },
+        {
+          "slot": "style:warm",
+          "verdict": "usable",
+          "evidence_quote": "知道了，上班要紧。晚上我去，椅子替你坐，看到流星我替你许一个。栗子别急着买，等你下班再说。",
+          "rationale": "① 零族命中，替你许一个为条件性玩笑；② 正确承接她顶班走不开的事实；③ 栗子等你下班再说与 T11 她今晚无法离开一致，无矛盾。"
+        },
+        {
+          "slot": "direction:1",
+          "verdict": "usable",
+          "evidence_quote": "顶到几点？后半夜要是散了，机位还给你留着。",
+          "rationale": "提问+条件性承诺，无冒称、无坐实；机位承接 T06/T11 持续有效的占位安排，无已取消事项复活。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "usable",
+          "evidence_quote": "辐射点在狮子座那块，我把广角对着它，后半夜升起来正好，拍完发你原图。",
+          "rationale": "① 零族命中；② 辐射点位于狮子座、后半夜升高与 T06 她给出的事实一致（正确使用而非误用）；③ 拍完发你原图为未来承诺，与题面照片交换安排一致。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "usable",
+          "evidence_quote": "栗子不急，你先上班，回头我拿照片上门换。",
+          "rationale": "① 回头拿照片上门换为新提议（1.4 新提议合法），非冒称已发生；② 栗子交换方向正确；③ 你先上班承接顶班事实，无最新状态矛盾。"
+        }
+      ],
+      "rationale": "多候选臂适用。既有语义判定层未覆盖风格槽/方向槽候选，故按题面自足口径逐候选独立补判（上方 per_candidate_supplementary_verdicts 即补判留痕载体）：7 条全部零严重错误族命中、应使用事实零 used_wrongly、最新状态用对，7/7 可用，any_usable=true，本题计 1/1。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单通道臂 candidate_count:1（v1.1 §5 激活范围条款）：多候选子指标如实记 n/a，不虚构、不补造；等价参考：此值 ≡ 其首选可用率（submetric1_first_usable.B = usable true，计 1/1），汇总侧如需并入请如实注记。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": true,
+      "nonempty_directions": 3,
+      "empty_slots": [
+        "direction:4"
+      ],
+      "valid_directions": 3,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "顶到几点？后半夜要是散了，机位还给你留着。",
+          "rationale": "非空；与当前话题（今晚顶班/占位续守）相关；提问型，与其他方向彼此可辨；零严重错误嫌疑（same_verdict_ref: submetric2_any_usable.A per_candidate_supplementary_verdicts direction:1）。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "辐射点在狮子座那块，我把广角对着它，后半夜升起来正好，拍完发你原图。",
+          "rationale": "非空；拍摄执行细节方向，与话题相关且有独立信息增量（辐射点/广角/原图）；与 direction:1（她的排班）、direction:3（栗子交换）可辨；零严重错误（same_verdict_ref: submetric2_any_usable.A direction:2）。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "栗子不急，你先上班，回头我拿照片上门换。",
+          "rationale": "非空；栗子交换安排方向，与话题相关；与 direction:1/2 可辨；上门换为新提议合法（1.4），零严重错误（same_verdict_ref: submetric2_any_usable.A direction:3）。"
+        }
+      ],
+      "note": "per_direction 只列非空方向槽；direction:4 为空槽，按 rubric v0.5 §4 合法 null 条款记该位本轮不交付，单列不算不合格。覆盖 3/3。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无方向槽，n/a，不虚构、不补造（非空方向槽数 0 注记）。"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 7,
+      "pairwise_pairs": 21,
+      "duplicate_pairs": [],
+      "rationale": "逐对核对最长公共子串：最大者为 recommended/style:bad_boy 的「椅子我坐」（4 字，4/45≈0.09）与 style:bad_boy/direction:1 的「给你留着」（4 字，4/43≈0.09）；其余各对最长共享片段 ≤3 字（狮子座/栗子/机位/后半夜/上班等话题词）。全部远低于 0.6 阈值；无候选长度 <10 字，<10 字豁免条款未触发。重复率 0/21=0，越低越好，A 达最优值。注：执行侧确定性脚本（python -I）复算兜底，如有出入以复核留痕为准，评审不静默改判。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无两两对数（pairwise_pairs=0，对数 0 注记），按 v1.1 §5 激活范围条款记 n/a，不虚构、不补造。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "applicable": true,
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选共 6 条（style:bad_boy、style:playful、style:warm、direction:1、direction:2、direction:3），逐条对照 1.3 五族核对：无编造已发生安排（全部为今晚未来动作/新提议/提问）；无关键级未定坐实；无私密泄漏；无已取消/已完成事项复活（暗夜公园为 11-15 已过事项且各候选未误用，椅子/机位为 T08/T09/T11 持续有效安排）；无替用户声称关系状态。error_candidates=[]，本题计 0/1。逐条依据 same_verdict_ref: submetric2_any_usable.A per_candidate_supplementary_verdicts（反重复计分，不重复评审）。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无备选（备选数 0，n/a 注记）；其唯一候选的严重错误核查已并入 submetric1_first_usable.B 条件①（结论：零五族命中）。"
+    }
+  },
+  "submetric6_group_preference": {
+    "preference": "A",
+    "winner_label": "A",
+    "decisive_dimension": "usable_distinction",
+    "reason_quote": "辐射点在狮子座那块，我把广角对着它，后半夜升起来正好，拍完发你原图。（A 组 direction:2 原句）",
+    "rationale": "整组对照 1.6 判定基准：两组均零严重错误污染、首选均可用、无大海捞针问题（A 重复率 0/21，七条彼此可辨）。哪组更能帮用户找到真正想发送的那条——A 组在全部可用的基础上提供真实内容区别化路线：style:warm 的「晚上我去，椅子替你坐，看到流星我替你许一个」（温情路线）、direction:2 的辐射点/广角/原图（拍摄执行路线）、direction:1 的「顶到几点？」（排班互动/续守路线）、direction:3 的「回头我拿照片上门换」（交换安排路线），用户可按当晚心境与侧重选择；B 组仅一条完整可靠回复（「行，今晚我去。椅子替你坐……顶班悠着点，别熬太狠」），单条本身合格但无选择空间。decisive_dimension=usable_distinction。防长度/数量偏自查：A 未因候选更多而加分，B 的单条更长更完整未被视为缺陷；若决定理由仅为数量差异应改判 tie，但此处实质差异是选项存在真实可用且互不重叠的内容区别（四条路线各自独立、非同义重写），故维持 A 胜。代理评委声明：本裁决为原生子代理结构化评估，非真人调查，不代表真人发送率。"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

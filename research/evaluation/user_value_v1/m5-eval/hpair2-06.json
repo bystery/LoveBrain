@@ -1,0 +1,186 @@
+{
+  "pair": "pair06",
+  "case_id": "uv1-E5-006",
+  "judge_identity": "m5h-blind-judge-v11",
+  "agent_judge_disclaimer": "全部结果为原生子代理结构化评估，不是真人用户调查，不代表真人发送率（代理评委声明）。",
+  "isolation_declaration_ref": "judge-declaration.txt",
+  "candidate_inventory": {
+    "B": {
+      "envelope": "multi_slot_json",
+      "candidate_count": 7,
+      "slots": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "empty_slots": [
+        "direction:4"
+      ],
+      "note": "多候选读取义务已履行：按第 6 节全文实点清点，非空候选 7 条（recommended + 3 风格槽 + 3 方向槽），direction:4=null 为合法空槽（该位本轮不交付）；与第 2 节 inventory 完全一致。"
+    },
+    "A": {
+      "envelope": "single_slot_json",
+      "candidate_count": 1,
+      "slots": [
+        "recommended"
+      ],
+      "empty_slots": [],
+      "note": "按第 5 节全文实点清点：唯一候选 = recommended 值；与第 2 节 inventory 完全一致。"
+    }
+  },
+  "submetric1_first_usable": {
+    "B": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "四十四，记死了。三十八那页我当没写过。我这两箱还在里头吧？明后天分拣、拉货要人手就喊我，车空着。",
+      "rationale": "补判留痕（本槽缺已落盘同源判定，按题面自足口径独立核对）：①严重错误族零命中——'我这两箱还在里头吧？'为疑问句（1.4 疑问合法，题面亦未载其两箱有变动），'三十八那页我当没写过'为对废弃口径的玩笑式认领而非冒称动作，'要人手就喊我'为条件式新提议（1.4 合法）；②事实零 used_wrongly——44 记死、38 弃用均与题面一致，未触碰吴藕/小蒲细节故无误用；③最新状态用对——题面最新口径即 44，候选与之无矛盾。"
+    },
+    "A": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "记下了，四十四箱。吴藕那两箱我也划掉了，往后谁问就报四十四，不按三十八说。",
+      "rationale": "补判留痕（本候选缺已落盘同源判定，按题面自足口径独立核对）：①严重错误族零命中——'划掉了'是对题面明确指令'你也记一下'的最小记账动作认领，内容仅复述用户自述事实（吴藕撤两箱），不属族①靶面（用户需依赖的未做实质安排）；②事实零 used_wrongly——44、吴藕撤两箱、弃 38 三项均按题面原样正确使用；③最新状态用对——与'报数改成四十四、别按旧的三十八说'完全一致，无任何矛盾。"
+    }
+  },
+  "submetric2_any_usable": {
+    "B": {
+      "applicable": true,
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3"
+      ],
+      "unusable_candidates": [],
+      "per_candidate_verdicts": [
+        {
+          "slot": "recommended",
+          "verdict": "usable",
+          "same_verdict_ref": "submetric1_first_usable.B",
+          "evidence_quote": "四十四，记死了。三十八那页我当没写过。",
+          "rationale": "①②③ 三条已在 submetric1_first_usable.B 逐条核对完毕，此处按反重复计分条款引用同一判定，不重复评审。"
+        },
+        {
+          "slot": "style:bad_boy",
+          "verdict": "usable",
+          "evidence_quote": "谁问我都说四十四，三十八那版我撕了。倒是你，别自己又算到半夜，算错了还得我替你圆。",
+          "rationale": "补判：①'撕了'为玩笑修辞（1.4 玩笑带过合法）非冒称真实动作；'别自己又算到半夜，算错了还得我替你圆'为打趣性次要级猜测，族②仅关键级入族，不判死；②44/弃 38 使用正确，无误用事实；③与最新口径 44 无矛盾。"
+        },
+        {
+          "slot": "style:playful",
+          "verdict": "usable",
+          "evidence_quote": "以后谁问我都报四十四，错一个字你扣我两斤橙子。",
+          "rationale": "补判：①'比我铺子里轮胎还多'为对自身的比喻性玩笑，不属五族（未冒称对用户的已发生安排、未替用户声称关系状态）；'扣两斤橙子'为玩笑条款（1.4 合法）；②'报四十四'使用正确；③无最新状态矛盾。"
+        },
+        {
+          "slot": "style:warm",
+          "verdict": "usable",
+          "evidence_quote": "四十四我记下了，明后天要拉要分拣你说一声，我人和车都在。",
+          "rationale": "补判：①'从下午忙到现在'为有题面支撑（'下午又进来八单'+晚间时戳）的次要级推断，族②仅关键级入族；'要拉要分拣你说一声'为条件式新提议（1.4 合法）；②'四十四我记下了'使用正确；③无矛盾。"
+        },
+        {
+          "slot": "direction:1",
+          "verdict": "usable",
+          "evidence_quote": "小蒲那边几点过磅？到时候我把车开到桥头仓。",
+          "rationale": "补判：①疑问句+条件式未来提议（'到时候…'），非冒称已发生；小蒲为题面人名，候选未替其坐实任何安排；②未误用题面事实；③与'我给小蒲报数改成四十四'的最新安排不矛盾（仅问过磅时点）。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "usable",
+          "evidence_quote": "四十四箱十斤装，一车拉得下不？装不下我跑两趟。",
+          "rationale": "补判：①疑问+自答式提议，零族命中；②'四十四箱''十斤装'均为题面事实（十斤装出自第 02 轮规则原文）且使用正确；③无最新状态矛盾。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "usable",
+          "evidence_quote": "数我帮你盯着，有人问就是四十四，你今晚早点歇。",
+          "rationale": "补判：①'帮你盯着'为提议非已发生（1.4 新提议合法）；②'有人问就是四十四'直接呼应题面'明后天有人问就是这个数'，使用正确；③无矛盾。"
+        }
+      ],
+      "rationale": "6/6 非空候选全部可用（逐条判定见 per_candidate_verdicts，即缺同源判定的逐候选补判留痕载体）；direction:4 为合法空槽不交付，不入分母。any_usable=true。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单通道臂 candidate_count:1（v1.1 §5 激活范围条款）：多候选子指标如实记 n/a，不虚构、不补造；等价参考：此值 ≡ 首选可用率（submetric1_first_usable.A = usable true），汇总侧如需并入如实注记。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 3,
+      "empty_slots": [
+        "direction:4"
+      ],
+      "valid_directions": 3,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "小蒲那边几点过磅？到时候我把车开到桥头仓。",
+          "rationale": "非空；与当前话题相关（截单后的过磅/提货衔接，小蒲为题面内人名）；与 direction:2（装载量）、direction:3（盯数）彼此可辨；零严重错误（条件式未来提议，族①不命中，same_verdict_ref: submetric2_any_usable.B per_candidate_verdicts[direction:1]）。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "四十四箱十斤装，一车拉得下不？装不下我跑两趟。",
+          "rationale": "非空；与当前话题相关（44 箱的运输可行性）；与 d1（过磅时点）、d3（盯数）彼此可辨；零严重错误（事实使用正确，same_verdict_ref: submetric2_any_usable.B per_candidate_verdicts[direction:2]）。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "数我帮你盯着，有人问就是四十四，你今晚早点歇。",
+          "rationale": "非空；与当前话题相关（盯数+呼应'有人问就是这个数'的指令）；与 d1/d2 彼此可辨；零严重错误（提议+复述口径，same_verdict_ref: submetric2_any_usable.B per_candidate_verdicts[direction:3]）。"
+        }
+      ],
+      "note": "per_direction 只列非空方向槽；direction:4 为合法空槽（该位本轮不交付，不算不合格，rubric v0.5 §4 合法 null 条款）。有效率 3/3 = 1.0。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无方向槽，n/a，不虚构、不补造。"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "B": {
+      "applicable": true,
+      "candidates": 7,
+      "pairwise_pairs": 21,
+      "duplicate_pairs": [],
+      "rationale": "7 条非空候选两两共 21 对逐对对照：最大公共子串为 recommended × style:bad_boy 的'四十四，记'（5 字，占比约 5/49≈0.10）与 style:bad_boy × style:playful 的'谁问我都'（4 字，约 4/49≈0.08）；其余各对最长公共子串不超过'四十四'（3 字，对最短 21 字分母约 0.14）。全部 21 对均远低于 0.6 阈值（分母 max(len)），未动用 <10 字豁免条款即已不超阈。duplicate_pairs=0，重复率 0/21=0.0（越低越好，此为最优值）。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10 字豁免）；执行侧将以确定性脚本复算（python -I）兜底，本评审给出判断与依据如上，如不一致以复核留痕为准。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无两两对数（pairwise_pairs=0），按 v1.1 §5 激活范围条款记 n/a，不虚构、不补造（对数 0 注记）。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "B": {
+      "applicable": true,
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选 = recommended 以外全部 6 条非空候选（3 风格槽 + 3 方向槽），逐条过 1.3 五族核对（same_verdict_ref: submetric2_any_usable.B.per_candidate_verdicts 各条①项，同一判定不重复计分）：边缘情形三处均已核清不构成族命中——style:warm '从下午忙到现在'（有题面支撑的次要级推断，族②仅关键级入族）、style:bad_boy '算错了还得我替你圆'（打趣，次要级）、direction:1 '到时候我把车开到桥头仓'（条件式未来提议，非冒称已发生，族①不命中）。error_candidates=[]，备选严重错误率 0。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无备选，n/a；其唯一候选的严重错误核查已并入 submetric1_first_usable.A 条件①（结论：零族命中）。"
+    }
+  },
+  "submetric6_group_preference": {
+    "preference": "B",
+    "winner_label": "B",
+    "decisive_dimension": "usable_distinction",
+    "reason_quote": "四十四箱十斤装，一车拉得下不？装不下我跑两趟。",
+    "rationale": "整组对照 1.6 判定基准（哪一组更能帮用户找到真正想发送的那条）：两组均零严重错误污染（S1 双 usable、S5 备选零错误），severe_error_free 维度打平；goal_fit 上两组均紧扣本轮目标'三十八改四十四、吴藕两箱已撤'，A 的唯一候选对题面事实覆盖最完整（唯一明确认领吴藕撤箱），B 组各候选亦全部正确使用 44/弃 38。决定性差异在 usable_distinction：B 组 6 条可用候选在语气（bad_boy/playful/warm）与推进方向（过磅衔接/装载量/盯数）上真实可辨且全部可用（S2 6/6、S3 3/3、S4 0 重复），如 reason_quote 所示 direction:2 提出了 A 组及 B 组内其他候选都没有的装载量新方向，用户有真实选择空间且不必大海捞针（全部候选可用、无劣质项淹没）；A 组仅单条可用回复，同样干净但作为整组无区别化选项可言。防长度/数量偏自查：本裁决并非因 B 候选更多或更长——反事实检验：若 B 的额外候选为相互重复、不可用或含严重错误，本评审将改判 tie 或 A；决定理由是 B 组候选在内容维度（语气与方向）的真实区别化且全部可用，属 usable_distinction，非数量/长度差异。"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

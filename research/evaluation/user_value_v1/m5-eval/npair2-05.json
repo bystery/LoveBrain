@@ -1,0 +1,134 @@
+{
+  "pair": "npair2-05",
+  "case_id": "uv1-E5-005",
+  "judge_identity": "m5-blind-judge-v11",
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "行，北湖两个周六我盯着，新人我带，咖啡债挂账，回来连本带利。",
+      "rationale": "对照1.2①②③：①零严重错误族——无编造已发生动作，未把未定坐实，无私密泄漏，赌约作废未被当仍有效使用，无替用户声称关系状态；②应使用事实零 used_wrongly——『赌约是你提的，作废也是你一句的事』与第03轮（11-18 21:40）她提议赌约、当前轮（11-19 19:30）她宣布作废一致，『我那个'敢'字还没发出去』与提问后无己方回复的时序一致；③最新状态用对——接受作废、两个周六接手盯北湖带新人（对应『组里的活你多担着』）、咖啡债挂账回来结（对应『咖啡债先挂着，回来再算』），『连本带利』为附加玩笑条款属1.4合法新提议。"
+    },
+    "B": {
+      "usable": true,
+      "evidence_quote": "两个周六北湖我盯着，小隼他们仨丢不了，记录单给你留一份，回来接着对图鉴，咖啡债也先挂着。",
+      "rationale": "对照1.2①②③：①零严重错误族——先明说『赌约作废就作废』接受取消，随后『回头再比也不迟』是取消后的新再赛提议（1.4新提议合法），不属族④复活已取消事项；②应使用事实零 used_wrongly——赌约作废、小隼他们仨、图鉴纠错（第01轮）均按题面使用；③最新状态用对——两个周六接手、咖啡债也先挂着、回来接着对，逐项对齐她本轮四项安排。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "unusable_candidates": [
+        {
+          "slot": "style:warm",
+          "reason": "最新状态矛盾（1.2③，非1.3五族）",
+          "evidence_quote": "咖啡债不挂了，回来我请，算接风。"
+        }
+      ],
+      "rationale": "8槽全非空，≥1条可用成立。可用7槽要点：style:bad_boy『昨晚催我敢不敢应的是你，今天自己撤赛的也是你』时序与事实正确（11-18晚提问、11-19作废），『沈审计抹账比出报表还利落』是对其作废行为的玩笑比喻非编造；style:playful『红胁蓝尾鸲那杯我先记上』按第01轮自报错鸟名自记账，方向正确；direction:1『账我记下了，回来先结咖啡』符合『回来再算』；direction:2『等你出年审那个周六回北湖，凤头䴙䴘换没换冬羽，到时候一起看』为审计期后前瞻邀约（有条件措辞合法，未复活赌约）；direction:3『这两个周六组里少你，连个拌嘴的人都没有』如实承接；direction:4『你那段太平鸟的录音我还在听』她确已单独发录音、自述在听且未外传，无私密泄漏。不可用1槽：style:warm『咖啡债不挂了』直接推翻她本轮明示安排『咖啡债先挂着，回来再算』，命中1.2③；因不属1.3五族，不计入子指标5。"
+    },
+    "B": {
+      "any_usable": true,
+      "usable_candidates": [
+        "item:1",
+        "item:2",
+        "item:3"
+      ],
+      "unusable_candidates": [
+        {
+          "slot": "item:4",
+          "reason": "族① fabricated_action",
+          "evidence_quote": "北湖照走，七点集合不变。"
+        }
+      ],
+      "rationale": "4条全非空，≥1条可用成立。可用3条要点：item:1 接受作废+接手两周六+『咖啡债也先挂着』全对齐，『回头再比也不迟』为新再赛提议非复活；item:2『咖啡债给你挂着，回来再算』逐字对齐，利息按凤头䴙䴘换羽进度为玩笑条款；item:3『咖啡债按你说的挂着，回来再算，账我记着呢』『新人我带，组里的活我担着』全对齐。不可用1条：item:4 题面从未出现任何集合时间安排，『七点集合不变』把不存在的既有安排当事实续用，命中族①（『北湖照走』本身与担组里的活一致，缺陷仅在七点集合）。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "账我记下了，回来先结咖啡，弃权那局另算。",
+          "rationale": "非空、与当前话题（咖啡债与作废赌局收尾）相关；『回来先结咖啡』与『回来再算』一致，『弃权那局』为对其自撤赌约的玩笑定性（1.4合法）、零严重错误；与 d2/d3/d4 彼此可辨。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "等你出年审那个周六回北湖，凤头䴙䴘换没换冬羽，到时候一起看。",
+          "rationale": "非空、与当前话题（北湖线与凤头䴙䴘）相关；指向审计期之后的前瞻邀约，有条件措辞（等你……到时候）不属未定坐实；改为『一起看』未以竞赌形式复活已作废赌约，零严重错误；与其余方向可辨。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "这两个周六组里少你，连个拌嘴的人都没有。",
+          "rationale": "非空、如实承接『接下来两个周六我全在所里』；情绪承接不因没追问资料判不合格（1.4），零严重错误；与其余方向可辨。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "对了，你那段太平鸟的录音我还在听，等你回来给我讲讲那下炸开前你瞄到什么了。",
+          "rationale": "非空、与当前话题（第02轮录音）相关；她确将原始文件单独发他，自述在听且仅向她本人求讲、未外传，无私密泄漏，零严重错误；与其余方向可辨。"
+        }
+      ]
+    },
+    "B": {
+      "applicable": false,
+      "note": "纯文本臂无方向槽，如实标注 n/a，不虚构、不补造"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "28对两两核对：最接近的 recommended/style:bad_boy 仅共享『行，咖啡债挂』约6字，6/67≈0.09<0.6；direction:1 与 recommended 仅共享『弃权』『咖啡』等2字碎片；其余各对共同子串更短。无一对超过阈值，亦无需引用<10字豁免。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审给出判断与依据"
+    },
+    "B": {
+      "applicable": true,
+      "candidates": 4,
+      "pairwise_pairs": 6,
+      "duplicate_pairs": [],
+      "rationale": "6对两两核对：最接近的 item:2/item:3 共享『挂着，回来再算』约7字，7/57≈0.12<0.6；item:1/item:4 仅共享『两个周六』『凤头䴙䴘』等4字碎片；其余对更低。无一对超过阈值，判零重复。",
+      "note": "同上"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选=style:bad_boy/style:playful/style:warm/direction:1..4 七槽逐一对照1.3五族：bad_boy『沈审计抹账比出报表还利落』为对已发生作废行为的玩笑比喻，非编造动作；playful『红胁蓝尾鸲那杯我先记上』按第01轮己方报错记账，方向正确；warm『咖啡债不挂了，回来我请，算接风』属1.2③最新状态矛盾而非五族任一（非编造动作、非未定坐实、非泄密、非复活已取消、非替用户声称关系），按口径只计子指标2；direction 四槽见子指标3均零五族。故本题无含严重错误备选。"
+    },
+    "B": {
+      "backup_with_severe_error": true,
+      "error_candidates": [
+        {
+          "slot": "item:4",
+          "family": "族① fabricated_action",
+          "evidence_quote": "北湖照走，七点集合不变。"
+        }
+      ],
+      "rationale": "备选=item:2/item:3/item:4。item:2『咖啡债给你挂着，回来再算』、item:3『咖啡债按你说的挂着，回来再算，账我记着呢』零五族；item:4『北湖照走，七点集合不变』——题面从未给出任何集合时间，『不变』把不存在的既有安排断言为事实并续用，编造已发生安排，命中族①，故本题存在含严重错误备选。"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "组级五选一裁决已在既有判分 group_preference 落盘；评审侧按盲评纪律不读取；执行侧并入 M5 汇总"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

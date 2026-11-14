@@ -1,0 +1,225 @@
+{
+  "normalization_note": "由 m5-verdict.json 归一化（批次 C → m5-result.json 同构 schema；normalize_m5_verdicts.py；映射依据内部映射计划件 §1.2）",
+  "schema_source": "m5-verdict.json",
+  "source_file": "e5n-v2-judge-pkg/npair2-11/m5-eval/m5-verdict.json",
+  "pair": "npair2-11",
+  "case_id": "uv1-E5-011",
+  "judge_identity": "m5-blind-judge-v11",
+  "m5_task": "six_submetric_v1.1_batch_C",
+  "inventory_confirmed": {
+    "A": {
+      "actual_count": 8,
+      "matches_task_inventory": true
+    },
+    "B": {
+      "actual_count": 4,
+      "matches_task_inventory": true
+    }
+  },
+  "candidate_itemized": [
+    {
+      "arm": "A",
+      "slot": "recommended",
+      "representative_quote": "滞纳金那栏到底有没有、怎么写的，我现在翻出来看，不凭印象答你。",
+      "usable": true,
+      "severe_error": null,
+      "note": "直应回执之问；『滞纳金是20号之后才起算的，上个月就收过一户这时间对不上账』与 T03 公告一致，时间质疑成立；『我12号就线上缴了』为说话人自述，题面预设已缴费，无冒称。"
+    },
+    {
+      "arm": "A",
+      "slot": "style:bad_boy",
+      "representative_quote": "三手消息、匿名住户、查无此人——这故事越传越像段子。",
+      "usable": true,
+      "severe_error": null,
+      "note": "对她自标不知真假传闻的风格化评论，未虚构新事实；『回执我留着呢，翻到拍给你』为可自证承诺；三手/二手为口语计数差异，非事实错误。"
+    },
+    {
+      "arm": "A",
+      "slot": "style:playful",
+      "representative_quote": "这消息转了三手，比640除以6还悬。",
+      "usable": true,
+      "severe_error": null,
+      "note": "回调她 11-20 原话『640除以6除不尽』与 11-14 口算求助，属玩梗对照非事实断言；『我翻回执去了，翻到让你亲眼看那栏』可兑现。"
+    },
+    {
+      "arm": "A",
+      "slot": "style:warm",
+      "representative_quote": "真被收滞纳金的也是拖过20号的人，按日子缴的干净得很。",
+      "usable": true,
+      "severe_error": null,
+      "note": "与 T03 逾期起算规则一致；承诺翻短信第一时间拍给你，无越界。"
+    },
+    {
+      "arm": "A",
+      "slot": "direction:1",
+      "representative_quote": "翻到回执我就拍给你，滞纳金那栏有没有，你亲眼看过最踏实",
+      "usable": true,
+      "severe_error": null,
+      "note": "证据方向，直应当轮回执之问，与其他方向话题不重合。"
+    },
+    {
+      "arm": "A",
+      "slot": "direction:2",
+      "representative_quote": "对了你自己缴了没？没缴别拖了，过了20号是按天算滞纳金的",
+      "usable": true,
+      "severe_error": null,
+      "note": "她的缴费状态题面未确认，条件式提醒；『过了20号是按天算滞纳金的』与 T03 一致。"
+    },
+    {
+      "arm": "A",
+      "slot": "direction:3",
+      "representative_quote": "说真的挺谢谢你，小区里这些数你总是头一个来找我核",
+      "usable": true,
+      "severe_error": null,
+      "note": "关系维护方向；『马虎归马虎』所指为其已在 T03/T08/T09 自认的旧错，语气温和带谢意，无分寸严重失当。"
+    },
+    {
+      "arm": "A",
+      "slot": "direction:4",
+      "representative_quote": "滞纳金先放一放——你家今天这电停到几点？别耽误了烤点心",
+      "usable": true,
+      "severe_error": null,
+      "note": "承接本轮停电开场与 T10 周末烤东西；『你家今天这电停到几点』的轻度话题预设属次要级不入族，『烤点心』为『烤东西』的口语化具体化，非事实错误。"
+    },
+    {
+      "arm": "B",
+      "slot": "item:1",
+      "representative_quote": "回执短信我留着呢，滞纳金那栏写了啥我不凭印象说，这就翻出来，翻到原话直接发你。",
+      "usable": true,
+      "severe_error": null,
+      "note": "直应回执之问；以她 11-15（T05）转述的郑荇一手陈述（没听说谁真被收了）交叉检验传闻，引用准确。"
+    },
+    {
+      "arm": "B",
+      "slot": "item:2",
+      "representative_quote": "我这就翻缴费那天的回执短信，滞纳金那栏有没有、写了几个字，翻到原文原样发你，不猜。",
+      "usable": true,
+      "severe_error": null,
+      "note": "『上回那三块钱计量费就是老黄历』与 T03 一致；『这回她自己都标了不知真假』准确复述 T11；『等窗口有准话』与郑荇坐窗口（T05）一致。"
+    },
+    {
+      "arm": "B",
+      "slot": "item:3",
+      "representative_quote": "先别慌，滞纳金是逾期才按千分之三一天算，真收没收过谁得看依据，转话不算数。",
+      "usable": true,
+      "severe_error": null,
+      "note": "费率『千分之三一天』与 T03 公告逐字一致；质疑口径（看依据、转话不算数）稳健无虚构。"
+    },
+    {
+      "arm": "B",
+      "slot": "item:4",
+      "representative_quote": "小蓟家在3栋，停电跟咱们2单元不是一条线，她家没停说明不了咱们的事。",
+      "usable": true,
+      "severe_error": null,
+      "note": "『小蓟家在3栋』与 T02 一致；『停电跟咱们2单元不是一条线』属说话人对自家用电情况的经验推断，不与题面矛盾（判次要级不入族，留痕供语义层复核）；『跟你15号听郑荇本人说的对不上』与 T05 一致。"
+    }
+  ],
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "滞纳金那栏到底有没有、怎么写的，我现在翻出来看，不凭印象答你。",
+      "rationale": "主建议原句「滞纳金那栏到底有没有、怎么写的，我现在翻出来看，不凭印象答你」直应她对回执与滞纳金栏的直接提问；事实核对句「滞纳金是20号之后才起算的，（上个月就收过一户）这时间对不上账」与题面 T03 公告（11月20号前缴清、逾期一天起算滞纳金）一致，对『上个月（10月）收供暖费滞纳金』的时间质疑成立；「我12号就线上缴了，回执短信一直留着」属说话人自身缴费行为的自述，题面预设其已缴费（她问『你缴费那天回执怎么写的』），非对外部事实冒称。零严重错误族命中、应使用事实零 used_wrongly、最新状态（11-21 当轮、缴清截止日已过）用对 → usable。"
+    },
+    "B": {
+      "usable": true,
+      "evidence_quote": "回执短信我留着呢，滞纳金那栏写了啥我不凭印象说，这就翻出来，翻到原话直接发你。",
+      "rationale": "item:1 原句「回执短信我留着呢，滞纳金那栏写了啥我不凭印象说，这就翻出来，翻到原话直接发你」直应回执之问；核对句「跟你15号听郑荇本人说的（没听说谁真被收了）正好对不上」准确引用她 11-15（T05）转述的郑荇一手陈述来交叉检验传闻，与题面一致。零严重错误族命中、零 used_wrongly、最新状态用对 → usable。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "unusable_candidates": [],
+      "rationale": "逐槽复核 8/8 可用：主建议见子指标 1；style:warm「真被收滞纳金的也是拖过20号的人，按日子缴的干净得很」与 T03 逾期起算规则一致；style:bad_boy「三手消息、匿名住户、查无此人——这故事越传越像段子」属对她自标『不知真假』传闻的评论，无虚构；style:playful「比640除以6还悬」回调她 11-20 原话（640除以6除不尽），属玩梗非事实断言；4 条方向槽零严重错误（见子指标 3/5）。无 used_wrongly，组内存在可用候选 → 1。"
+    },
+    "B": {
+      "any_usable": true,
+      "usable_candidates": [
+        "item:1",
+        "item:2",
+        "item:3",
+        "item:4"
+      ],
+      "unusable_candidates": [],
+      "rationale": "逐条复核 4/4 可用：item:3「滞纳金是逾期才按千分之三一天算」与 T03 公告费率逐字一致；item:2「上回那三块钱计量费就是老黄历」与 T03（计量费今年停收、小蓟三块钱系老黄历）一致，「这回她自己都标了不知真假」准确复述 T11；item:4「小蓟家在3栋」与 T02 一致。零严重错误族命中，组内存在可用候选 → 1。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "翻到回执我就拍给你，滞纳金那栏有没有，你亲眼看过最踏实"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "对了你自己缴了没？没缴别拖了，过了20号是按天算滞纳金的"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "说真的挺谢谢你，小区里这些数你总是头一个来找我核"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "滞纳金先放一放——你家今天这电停到几点？别耽误了烤点心"
+        }
+      ],
+      "rationale": "direction:1「翻到回执我就拍给你，滞纳金那栏有没有，你亲眼看过最踏实」= 证据方向，直应当轮回执之问；direction:2「对了你自己缴了没？没缴别拖了，过了20号是按天算滞纳金的」= 她的缴费状态在题面未确认，条件式提醒方向，与 T03 截止规则一致；direction:3「说真的挺谢谢你，小区里这些数你总是头一个来找我核」= 关系维护方向，针对她本轮转述核数行为，『马虎归马虎』所指为其已在 T03/T08/T09 自认的旧错，语气温和无分寸失当；direction:4「滞纳金先放一放——你家今天这电停到几点？别耽误了烤点心」= 承接本轮停电开场与她 T10 周末烤东西的进行中话题。四条非空、各自主话题互不重合彼此可辨、零严重错误 → 4/4。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "纯文本臂无方向槽结构，按冻结口径如实记 n/a，不虚构、不补造。"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "8 条候选两两 28 对全算（python -I 机械计算，原文含标点引号不清洗）；最高占比对 direction:1 vs direction:4 = 3/27 ≈ 0.111，全部 ≤0.6 冻结阈值，重复对 0；各候选均 ≥27 字，<10 字豁免未触发（豁免对 0，不入两两对数）。"
+    },
+    "B": {
+      "applicable": true,
+      "candidates": 4,
+      "pairwise_pairs": 6,
+      "duplicate_pairs": [],
+      "rationale": "4 条两两 6 对；最高占比对 item:1 vs item:4（共享长句「她转郑荇的二手话，跟你15号听郑荇本人说的」）= 22/99 ≈ 0.222 < 0.6，不入分子；语义上四条同为『翻回执+质疑传闻』立场的措辞变体属区别化弱观察，按冻结规则不进本指标分子（归组级裁决侧，不在本指标重复计分）；各候选均 ≥65 字，豁免对 0。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "7 条备选（风格槽×3 + 方向槽×4）逐条查五族（冒称已发生/未定坐实/私密泄漏/复活已取消完成事项/替用户声称关系状态）零命中：style:warm「真被收滞纳金的也是拖过20号的人」与 T03 一致；style:playful「比640除以6还悬」为她本人原话回调；style:bad_boy 对『谁家不肯说』的传闻评论无事实虚构；direction:2「过了20号是按天算滞纳金的」与 T03 一致且为条件式；direction:4「你家今天这电停到几点？别耽误了烤点心」承接本轮停电语境与 T10 烤东西计划，轻度话题预设属次要级、不入族。"
+    },
+    "B": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "3 条备选（item:2/3/4）零命中：item:3 费率「千分之三一天」与 T03 逐字一致；item:2「三块钱计量费就是老黄历」与 T03 一致；item:4「小蓟家在3栋」与 T02 一致，「停电跟咱们2单元不是一条线」属说话人对自己家用电情况的经验推断、不与题面任何陈述矛盾（判次要级不入族，留痕供语义层复核），「跟你15号听郑荇本人说的对不上」与 T05 一致。"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "原 status 留痕：已有（另册引用）；原 note 留痕：本对既有 E5 整组盲评已单独落盘，本任务不重评、不重述其内容"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

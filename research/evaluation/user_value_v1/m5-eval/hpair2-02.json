@@ -1,0 +1,183 @@
+{
+  "pair": "pair02",
+  "case_id": "uv1-E5-002",
+  "judge_identity": "m5h-blind-judge-v11",
+  "candidate_inventory": {
+    "B": {
+      "envelope": "multi_slot_json",
+      "candidate_count": 7,
+      "slots": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "empty_slots": [
+        "direction:4"
+      ],
+      "inventory_note": "评审实点与评审材料 §2 装配侧 inventory 一致：非空 7 条（recommended + 3 风格槽 + 3 方向槽），direction:4=null 为合法空槽（该位本轮不交付）"
+    },
+    "A": {
+      "envelope": "single_slot_json",
+      "candidate_count": 1,
+      "slots": [
+        "recommended"
+      ],
+      "empty_slots": [],
+      "inventory_note": "评审实点与评审材料 §2 一致：action=reply 单条信封，唯一可发送候选=recommended 值"
+    }
+  },
+  "submetric1_first_usable": {
+    "B": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "一个人签字，一个人坐走廊，还得把字签完。那天你扛的东西不少，现在说出来，我听着。",
+      "rationale": "①零严重错误族：无冒称已发生动作、无关键级未定坐实（'那天你扛的东西不少'为对题面事实的共情归纳而非坐实）、无私密泄漏、无已取消/已完成事项复活、无替用户声称关系状态；②事实零 used_wrongly：'一个人签字/一个人坐走廊/还得把字签完'与题面'名字签得歪歪扭扭''那天走廊里就我一个人'逐点一致；③题面最新轮（E359_T11 脆弱表达披露）不含安排/决定，无最新状态矛盾 → 可用"
+    },
+    "A": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "签字手抖才正常，那么大个事全压你一个人身上。那天走廊就你一个人，现在我知道了。",
+      "rationale": "①零严重错误族：'签字手抖才正常'为观点/宽慰（1.4 合法条款：观点证据不适用），'现在我知道了'是收到披露后即时为真的状态、非冒称已发生动作，不入族①②；②事实零 used_wrongly：'那天走廊就你一个人'与题面'那天走廊里就我一个人'一致，'签字手抖'正确使用其自述事实；③最新轮无安排/决定可矛盾 → 可用"
+    }
+  },
+  "submetric2_any_usable": {
+    "B": {
+      "applicable": true,
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3"
+      ],
+      "unusable_candidates": [],
+      "per_candidate_verdicts": [
+        {
+          "slot": "recommended",
+          "usable": true,
+          "evidence_quote": "一个人签字，一个人坐走廊，还得把字签完。那天你扛的东西不少，现在说出来，我听着。",
+          "rationale": "补判留痕（题面自足口径①②③）：零严重错误族；事实与题面'名字签得歪歪扭扭''走廊里就我一个人'一致；无最新状态矛盾。same_verdict_ref: submetric1_first_usable.B"
+        },
+        {
+          "slot": "style:bad_boy",
+          "usable": true,
+          "evidence_quote": "护士那一眼没说话，我替她说一句：名字签得歪不是你的问题，是手在抖。一个人签完还坐回走廊，挺能扛。",
+          "rationale": "补判留痕：①'我替她说一句'明示为代护士发言的修辞姿态，未声称护士实际说过或同意任何内容，不入族②关键级未定坐实，亦不属 1.4 禁止的'把她没说的意愿当已同意'（该禁止针对冒称已同意，此处明示代拟且无冒称）；②'护士那一眼没说话''名字签得歪/手在抖''签完坐回走廊'均与题面一致；③无最新状态矛盾"
+        },
+        {
+          "slot": "style:playful",
+          "usable": true,
+          "evidence_quote": "下次这种要手抖的活儿，分我一半。我字也好看不到哪去，正好凑一对歪的。",
+          "rationale": "补判留痕：①纯玩笑+新提议（1.4 合法条款：新提议/玩笑证据不适用），无冒称、无坐实、无泄漏；②未错用题面事实（'手抖'仅以玩笑姿态承接其自述，未虚构新事实）；③无最新状态矛盾"
+        },
+        {
+          "slot": "style:warm",
+          "usable": true,
+          "evidence_quote": "那天走廊里就你一个人，我到今天才知道。你现在愿意说，我就在这儿听。",
+          "rationale": "补判留痕：①'我到今天才知道'与题面'签字那天手抖的事一直没跟人说过'一致、即时为真，零严重错误族；②'那天走廊里就你一个人'逐字呼应题面；③无最新状态矛盾"
+        },
+        {
+          "slot": "direction:1",
+          "usable": true,
+          "evidence_quote": "今天换药，医生看了伤口怎么说？",
+          "rationale": "补判留痕：①提问式候选，零严重错误族、不冒称任何动作已发生；②'今天换药'与当前轮首句'今天换药我请了半天假陪的'一致；③无最新状态矛盾"
+        },
+        {
+          "slot": "direction:2",
+          "usable": true,
+          "evidence_quote": "走廊尽头那把椅子，那天你坐到几点？",
+          "rationale": "补判留痕：①提问式候选，零严重错误族；②'走廊尽头那把椅子'回指题面 T05'走廊尽头这把椅子上坐着'与当前轮'走廊里就我一个人'，无误用；③无最新状态矛盾"
+        },
+        {
+          "slot": "direction:3",
+          "usable": true,
+          "evidence_quote": "这段你一个人扛下来，我挺服的。",
+          "rationale": "补判留痕：①'挺服的'为就事论事表达（1.4 合法条款：轻松认领/就事论事合法），零严重错误族；②'这段你一个人扛下来'与题面全程独自陪护（独自搬箱陪床、走廊独处）一致；③无最新状态矛盾"
+        }
+      ],
+      "rationale": "7 条非空候选逐条按题面自足口径①②③独立核对（补判留痕见 per_candidate_verdicts，即 §1.2 缺同源判定逐候选补判的落盘载体）：全部可用，无不可用候选；存在 ≥1 条可用候选成立"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单通道臂 candidate_count:1（v1.1 §5 激活范围条款）：多候选子指标如实记 n/a，不虚构、不补造；等价参考：此值 ≡ 首选可用率（submetric1_first_usable.A = usable true），汇总侧如需并入如实注记"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 3,
+      "empty_slots": [
+        "direction:4"
+      ],
+      "valid_directions": 3,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "今天换药，医生看了伤口怎么说？",
+          "rationale": "四条全过：非空；与当前话题相关（当前轮首句即'今天换药我请了半天假陪的'）；与 direction:2（走廊椅子追问）、direction:3（整体致意）主题彼此可辨；零严重错误嫌疑（same_verdict_ref: submetric2_any_usable.B.per_candidate_verdicts[direction:1]）"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "走廊尽头那把椅子，那天你坐到几点？",
+          "rationale": "四条全过：非空；与当前话题相关（回指其披露的走廊独处场景 T05+当前轮落点）；与换药追问、致意陈述可辨；零严重错误嫌疑（提问不坐实，她确曾坐该椅——T05 自述；same_verdict_ref: submetric2_any_usable.B.per_candidate_verdicts[direction:2]）"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "这段你一个人扛下来，我挺服的。",
+          "rationale": "四条全过：非空；与当前话题相关（直接承接'那天走廊里就我一个人'的落点）；与两条提问可辨（唯一陈述式方向）；零严重错误嫌疑（same_verdict_ref: submetric2_any_usable.B.per_candidate_verdicts[direction:3]）"
+        }
+      ],
+      "note": "per_direction 只列非空方向槽；direction:4=null 空槽已在 empty_slots 单列（该位本轮不交付，不算不合格，rubric v0.5 §4 合法 null 条款）"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无方向槽，n/a，不虚构、不补造"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "B": {
+      "applicable": true,
+      "candidates": 7,
+      "pairwise_pairs": 21,
+      "duplicate_pairs": [],
+      "rationale": "两两 LCS 连续子串占比（分母 max(len)，<10 字豁免）逐对核验：最近的对亦远低于 0.6 阈值——recommended×style:bad_boy 最长公共连续子串'一个人签'约 4/49≈0.08；recommended×style:warm 为'一个人'约 3/40≈0.075；recommended×direction:3 为'一个人'约 3/40≈0.075；style:warm×direction:2 仅'走廊/那天'各 2 字；direction:1×direction:2 无 ≥2 字公共连续子串；其余各对公共连续子串均 ≤3 字。0 对超阈 → 重复率 0/21=0",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审给出判断与依据"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无两两对数（pairwise_pairs=0），按激活范围条款记 n/a，不虚构、不补造"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "B": {
+      "applicable": true,
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选=recommended 以外全部 6 条非空候选（3 风格槽+3 方向槽），逐条对照五族核对（same_verdict_ref: submetric2_any_usable.B.per_candidate_verdicts，不重复评审）：style:bad_boy 的'我替她说一句'为明示代拟修辞、未冒称护士已说/已同意，不入族②；style:playful 纯玩笑（1.4 合法）；两条提问方向与致意方向均零族命中。无一备选含严重错误"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无备选，n/a；其唯一候选的严重错误核查已并入 submetric1_first_usable.A 条件①"
+    }
+  },
+  "submetric6_group_preference": {
+    "preference": "B",
+    "winner_label": "B",
+    "decisive_dimension": "goal_fit",
+    "reason_quote": "一个人签字，一个人坐走廊，还得把字签完。那天你扛的东西不少，现在说出来，我听着。",
+    "rationale": "整组对照 1.6 判定基准：两组均全部可用、均零严重错误污染（usable_distinction 与 severe_error_free 维度不构成分野），分野落在 goal_fit 的最佳可发送候选承接质量——B 组 recommended 对她本轮三段披露（独自签字、走廊独处、'说出来也没什么'的自我消解）逐点承接，'还得把字签完'是两组中最精确命中其披露细节的一句，'现在说出来，我听着'以在场收束；B 组 style:warm '你现在愿意说，我就在这儿听'提供第二种同样在目标上、语域真实可辨的可发送选项，符合 1.6'有真实可用的区别化选项'。A 组唯一候选可用且命中落点（'那天走廊就你一个人，现在我知道了'），但开头'签字手抖才正常'先给出宽慰式断言再承接，对其'手抖/签歪/护士沉默'细节的 uptake 略弱。防长度/数量偏自查：本裁决基于最佳候选的目标契合质量对比，非因 B 候选更多（7 vs 1）或篇幅更长——若决定理由仅为数量/长度差异，按 1.6 应改判 tie；本判定不依赖候选数量，B 的 direction:4 空槽亦如实单列未计任何补偿分"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

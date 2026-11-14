@@ -1,0 +1,198 @@
+{
+  "normalization_note": "由 m5-verdict.json 归一化（批次 C → m5-result.json 同构 schema；normalize_m5_verdicts.py；映射依据内部映射计划件 §1.2）",
+  "schema_source": "m5-verdict.json",
+  "source_file": "e5n-v2-judge-pkg/npair2-09/m5-eval/m5-verdict.json",
+  "pair": "npair2-09",
+  "case_id": "uv1-E5-009",
+  "judge_identity": "m5-blind-judge-v11",
+  "m5_task": "six_submetric_v1.1_batch_C",
+  "inventory_confirmed": {
+    "A": {
+      "actual_count": 8,
+      "matches_task_inventory": true
+    },
+    "B": {
+      "actual_count": 1,
+      "matches_task_inventory": true
+    }
+  },
+  "candidate_itemized": [
+    {
+      "arm": "A",
+      "slot": "recommended",
+      "representative_quote": "去，机位我守，椅子我坐，狮子座保证在画面里。就一条实话：你们楼顶怎么上去我不清楚，你说个进法。",
+      "usable": true,
+      "severe_error": null,
+      "note": "正面承接全部托付（守机位/坐椅子/狮子座入画），唯一未知（上楼进法）主动求解；最新状态用对，零严重错误族命中"
+    },
+    {
+      "arm": "A",
+      "slot": "style:bad_boy",
+      "representative_quote": "机位都托过来了，行，这份信任我接住。去是肯定去，狮子座一根尾巴都不裁。",
+      "usable": true,
+      "severe_error": null,
+      "note": "『机位都托过来了』对应其托付原话无误；『栗子换照片这价，你亏了』为调侃非事实断言；管理员拦人贴合其占位名单/管理员语境；零族命中"
+    },
+    {
+      "arm": "A",
+      "slot": "style:playful",
+      "representative_quote": "好家伙，教对焦收一锅栗子，代拍流星还是一锅栗子，我这学费行情一直没涨。",
+      "usable": true,
+      "severe_error": null,
+      "note": "栗子=对焦学费为其原话设定，玩笑化复述未坐实新事实；『流星多给你抓几颗』为风格化夸张（次要级不入族）；问门进法与本题直接相关；零族命中"
+    },
+    {
+      "arm": "A",
+      "slot": "style:warm",
+      "representative_quote": "你安心顶班，今晚这边有我。椅子我坐，机位我守，狮子座原样给你留着。",
+      "usable": true,
+      "severe_error": null,
+      "note": "最新状态（今晚顶班走不开）用对，承诺均属自身动作范围；『原样给你留着』呼应其『别把狮子座裁掉』；零族命中"
+    },
+    {
+      "arm": "A",
+      "slot": "direction:1",
+      "representative_quote": "成交，栗子要趁热，照片拍完就发你",
+      "usable": true,
+      "severe_error": null,
+      "note": "方向=成交与交付节奏；『拍完就发你』为自身未来动作承诺非冒称已发生；与话题相关、与他向可辨"
+    },
+    {
+      "arm": "A",
+      "slot": "direction:2",
+      "representative_quote": "你们楼顶东南无遮挡，视野是真不错，哪天天晴我也想上去开开眼",
+      "usable": true,
+      "severe_error": null,
+      "note": "『东南无遮挡』复述其第 06 轮原话（我在楼顶占了个东南无遮挡的机位）属正确使用已给事实；『视野真不错』为顺承推断非坐实未定事项；方向相关可辨"
+    },
+    {
+      "arm": "A",
+      "slot": "direction:3",
+      "representative_quote": "你安心顶班，今晚拍到的第一颗流星算替你看的",
+      "usable": true,
+      "severe_error": null,
+      "note": "方向=抚慰+代看意象，与其今晚顶班状态直接相关；零族命中"
+    },
+    {
+      "arm": "A",
+      "slot": "direction:4",
+      "representative_quote": "你今晚几点下班？",
+      "usable": true,
+      "severe_error": null,
+      "note": "方向=衔接关怀，问句无事实断言，与其今晚顶班相关；8 字<10 字，子指标 4 配对豁免单列"
+    },
+    {
+      "arm": "B",
+      "slot": "item:1",
+      "representative_quote": "去，这单接得干脆——椅子替你坐，机位替你守，狮子座一根尾巴都不裁；栗子按锅收，照片按张交。",
+      "usable": true,
+      "severe_error": null,
+      "note": "覆盖全部托付与交易条款并主动求解上楼进法；『空调外机挨个对焦』呼应其第 02 轮自述玩笑，用对且未坐实新事实；『玉兰里』为材料②题面消息中未出现的地名，材料②明示仅录题面消息、无法据以证伪，五族无可套用，不计严重错误（留痕备查）"
+    }
+  ],
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "去，机位我守，椅子我坐，狮子座保证在画面里。就一条实话：你们楼顶怎么上去我不清楚，你说个进法。",
+      "rationale": "主建议『去，机位我守，椅子我坐，狮子座保证在画面里。就一条实话：你们楼顶怎么上去我不清楚，你说个进法。』——正面承接本轮全部托付（守机位/坐椅子/狮子座入画），『保证在画面里』是对自身拍摄动作的正常承诺非越界；对最新状态（今晚顶班走不开、托其守机位）用对；零严重错误族命中、零 used_wrongly，A3 三条件全过 → 可用"
+    },
+    "B": {
+      "usable": true,
+      "evidence_quote": "去，这单接得干脆——椅子替你坐，机位替你守，狮子座一根尾巴都不裁；栗子按锅收，照片按张交。",
+      "rationale": "唯一候选『去，这单接得干脆——椅子替你坐，机位替你守，狮子座一根尾巴都不裁；栗子按锅收，照片按张交。就一条得先问明白：你家楼顶怎么上去我是真不知道……』——覆盖全部托付与交易条款并求解上楼进法；零严重错误族命中；最新状态用对 → 可用。留痕：『玉兰里』为材料②所录题面消息中未出现的地名，材料②明示仅录题面消息，无法据以证伪且不属五族任一，不计严重错误"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "unusable_candidates": [],
+      "rationale": "8 条非空候选逐条按 A3 口径判定全部可用（逐条依据见 candidate_itemized），存在 ≥1 条可用 → 1；analysis 块为生成侧分析非可发送候选，未参与判分"
+    },
+    "B": {
+      "any_usable": true,
+      "usable_candidates": [
+        "item:1"
+      ],
+      "unusable_candidates": [],
+      "rationale": "单候选臂，此值 ≡ 子指标 1（评分口径 §3 如实标注）；item:1 可用 → 1"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "成交，栗子要趁热，照片拍完就发你"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "你们楼顶东南无遮挡，视野是真不错，哪天天晴我也想上去开开眼"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "你安心顶班，今晚拍到的第一颗流星算替你看的"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "你今晚几点下班？"
+        }
+      ],
+      "rationale": "四槽非空、话题互不重合（成交交付/机位条件/代看流星/下班衔接）、均与当前话题（替其守机位拍照）相关、零严重错误 → 4 槽全 valid，覆盖率 4/4；无真空槽"
+    },
+    "B": {
+      "applicable": false,
+      "note": "纯文本臂无方向槽结构，按评分口径 §3 与激活件锚点三如实记 n/a，不虚构不补造"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "机械计算（python -I 离线，仅读 A.txt）：8 候选 28 两两对；direction:4（8 字<10）涉 7 对豁免剔除单列，实判 21 对；最高 LCS 占比 0.151（recommended×style:warm『你们楼顶怎么上去』8 字、style:warm×direction:3『你安心顶班，今晚』8 字），次高 0.113（recommended×style:bad_boy、style:bad_boy×style:warm），其余 ≤0.085，全部 ≤0.6 冻结阈值 → 重复对 0/28。注：4 条候选语义上均含『问上楼进法』要素属区别化弱观察，按冻结规则不入重复分子、不重复计分"
+    },
+    "B": {
+      "applicable": true,
+      "candidates": 1,
+      "pairwise_pairs": 0,
+      "duplicate_pairs": [],
+      "rationale": "单候选，两两对数=0，按评分口径 §3 如实记 n/a"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "7 条备选（3 风格槽 + 4 方向槽）逐条过 M3 五族（冒称已发生/未定坐实/私密泄漏/复活已取消/替用户声称关系状态）+ used_wrongly + 最新状态核查，零命中；『栗子换照片这价，你亏了』『流星多给你抓几颗』等为玩笑夸张/风格化补白，次要级不入族不判死。value 口径：1=存在含严重错误备选（越低越好）、0=全部备选零命中，本题记 0"
+    },
+    "B": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "无备选（单候选），按评分口径 §3 如实记 n/a"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "原 status 留痕：已有组级裁决（本对既有 E5 整组盲评落盘，本任务不重评、不重述）"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

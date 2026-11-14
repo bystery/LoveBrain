@@ -1,0 +1,183 @@
+{
+  "pair": "pair05",
+  "case_id": "uv1-E5-005",
+  "judge_identity": "m5h-blind-judge-v11",
+  "candidate_inventory": {
+    "A": {
+      "envelope": "multi_slot_json",
+      "candidate_count": 8,
+      "slots": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "empty_slots": []
+    },
+    "B": {
+      "envelope": "single_slot_json",
+      "candidate_count": 1,
+      "slots": [
+        "recommended"
+      ],
+      "empty_slots": []
+    }
+  },
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "作废不批，改成延期。北湖我盯，凤头䴙䴘先给你留着，你回来那天再算。",
+      "rationale": "①零严重错误族：无编造已发生动作（北湖我盯/你回来那天再算均为表态或未来承诺，族①不成立）；无未定坐实（族②）、无私密泄漏（族③）、无替用户声称关系状态（族⑤）。赌约被撤后本句以玩笑口吻改称延期，属1.4合法新提议/玩笑，未把已取消安排当现行事实使用，且咖啡处理（你回来那天再算）与题面最新轮明示的咖啡债先挂着回来再算一致，族④复活不成立。②used_wrongly=0：作废、两个周六、咖啡债等题面事实均按原样使用，无错用。③最新状态用对：北湖我盯承接组里的活你多担着与北湖你别等我，未与所里年审两个周六矛盾。"
+    },
+    "B": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "赌约作废就作废，账先挂着，回来连本带利一起算。北湖这两趟我带，小隼他们仨我盯着，你在所里安心对账就行。录音我收了，不外传。",
+      "rationale": "①零严重错误族：赌约作废就作废为直接承接而非复活（族④不成立）；录音我收了与题面T02原始文件发你了一致、非编造（族①不成立），不外传是对私密约定的遵守而非泄漏（族③不成立）；无未定坐实（族②）、无替用户声称关系（族⑤）。②used_wrongly=0：小隼他们仨=题面新人小隼他们三人的正确使用；账先挂着与回来再算按原样承接；两个周六在所里、北湖别等我均正确使用。③最新状态用对：你在所里安心对账呼应年审两个周六在所里，北湖这两趟我带呼应组里的活你多担着，无矛盾。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "applicable": true,
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "unusable_candidates": [],
+      "usable_candidates_detail": [
+        {
+          "slot": "recommended",
+          "evidence_quote": "作废不批，改成延期。北湖我盯，凤头䴙䴘先给你留着，你回来那天再算。",
+          "rationale": "same_verdict_ref=submetric1_first_usable.A：1.2①②③全部满足；作废不批改口为1.4合法玩笑/新提议，非族④复活。"
+        },
+        {
+          "slot": "style:bad_boy",
+          "evidence_quote": "行，赌约挂着，债也挂着，别以为加两个班就能赖掉。北湖我担着，咖啡等你回来照请。",
+          "rationale": "①赌约挂着/债也挂着沿用她本人的挂着框架（题面原话咖啡债先挂着），属玩笑口吻而非把已取消安排当现行事实使用，族④不成立；无编造已发生动作、无未定坐实、无泄漏、无替用户表态（族①②③⑤不成立）。②北湖我担着正确承接组里的活你多担着，咖啡债按其原话使用。③别以为加两个班就能赖掉是打趣非事实断言，与最新安排无矛盾。"
+        },
+        {
+          "slot": "style:playful",
+          "evidence_quote": "收到，代班费按镜头折旧算。两个周六我扛，你安心对着报表数小数点去。",
+          "rationale": "①代班费按镜头折旧算为1.4合法玩笑新提议，非事实断言；五族无嫌疑。②两个周六正确对应接下来两个周六。③两个周六我扛呼应组里的活你多担着，你安心对着报表数小数点去呼应所里年审，无矛盾。"
+        },
+        {
+          "slot": "style:warm",
+          "evidence_quote": "知道了。北湖这边交给我，你忙所里的事，忙完吱一声。",
+          "rationale": "①纯承接型回复，五族零嫌疑。②③北湖这边交给我对应组里的活你多担着/北湖你别等我，你忙所里的事对应两个周六在所里，最新状态全部用对。"
+        },
+        {
+          "slot": "direction:1",
+          "evidence_quote": "新人那趟我来带，名单今晚我跟老驰说一声。",
+          "rationale": "①今晚我跟老驰说一声是未来动作承诺非编造已发生（族①不成立）；名单在句内指新人那趟带队事宜，与题面新人就小隼他们仨一致，非错用。②③她因年审两个周六缺席，带队归属顺延是T03遗留话题的自然承接，与最新安排不矛盾。"
+        },
+        {
+          "slot": "direction:2",
+          "evidence_quote": "凤头䴙䴘我先不记，等你回来一起认。",
+          "rationale": "①等你回来一起认是未来提议，未把已撤赌约当现行事实使用（族④不成立）；五族无嫌疑。②③与北湖你别等我一致：不抢先记，留到她回来一起，最新状态用对。"
+        },
+        {
+          "slot": "direction:3",
+          "evidence_quote": "咖啡债我记着，不催。",
+          "rationale": "①③与题面咖啡债先挂着回来再算逐点对应，五族零嫌疑、无矛盾；②咖啡债事实按原样使用。"
+        },
+        {
+          "slot": "direction:4",
+          "evidence_quote": "对了，太平鸟那录音我听了三遍，第47秒那声你听见没。",
+          "rationale": "①录音确为题面T02她单独发我的原始文件，听录音是persona自述且与既有事实一致（族①不成立）；只谈内容不提外传、无泄漏（族③不成立）；第47秒为自述细节，非对题面事实的错用。②③以她私下托付的录音自然延续信任线，与当前轮安排无矛盾。"
+        }
+      ],
+      "rationale": "8条候选按题面自足口径逐候选独立核对（补判留痕载体=usable_candidates_detail逐条evidence_quote/rationale）：全部满足1.2①②③，0条不可用，any_usable=true。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单通道臂 candidate_count:1（激活范围条款）：多候选子指标如实记 n/a，不虚构、不补造；等价参考：此值 ≡ 首选可用率（见 submetric1_first_usable.B，判定为可用），汇总侧如需并入如实注记"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "empty_slots": [],
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "新人那趟我来带，名单今晚我跟老驰说一声。",
+          "rationale": "非空；与当前话题相关（她缺席两个周六后，T03遗留的新人那趟带队归属是现实落点）；与direction:2/3/4彼此可辨（队务线）；零严重错误嫌疑（same_verdict_ref=submetric2_any_usable.A.usable_candidates_detail.direction:1）。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "凤头䴙䴘我先不记，等你回来一起认。",
+          "rationale": "非空；相关（凤头䴙䴘是刚被撤赌约的标的物，转为共同观鸟延续线）；与direction:3同涉赌约遗存但对象与内容不同、彼此可辨；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "咖啡债我记着，不催。",
+          "rationale": "非空；相关（咖啡债是她本轮明示挂账的事项）；与direction:2可辨（债务线vs认鸟线）；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "对了，太平鸟那录音我听了三遍，第47秒那声你听见没。",
+          "rationale": "非空；相关（录音是她T02单独托付、仍处信任期内的物件，属关系延续方向）；与其余三条可辨（录音线）；零严重错误嫌疑（不提外传、无泄漏）。"
+        }
+      ],
+      "note": "per_direction 只列非空方向槽；空槽已在 empty_slots 单列（该位本轮不交付，不算不合格）"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无方向槽，n/a，不虚构、不补造"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "8候选两两28对逐一对照：任一对最长公共子串不超过4字（recommended与direction:2共享凤头䴙䴘4字、style:bad_boy与direction:3共享咖啡2字、recommended与style:bad_boy共享北湖我3字、recommended/bad_boy与direction:2共享你回来3字），各对分母 max(len) 实际范围约17-39字，占比全部远低于0.6阈值；最短候选direction:3为10字不触发<10字豁免，但其对内亦无超阈对。判定 duplicate_pairs=0，越低越好项表现优。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审给出判断与依据"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无两两对数（pairwise_pairs=0），按激活范围条款记 n/a，不虚构、不补造"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "applicable": true,
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "same_verdict_ref": "submetric2_any_usable.A.usable_candidates_detail",
+      "rationale": "主建议以外7条备选（style:bad_boy/playful/warm + direction:1-4）按1.3五族逐条核对（same_verdict_ref指向submetric2逐候选判定，不重复计分）：0命中。边界件说明：赌约挂着/作废不批等改口依1.4认定为玩笑/新提议而非族④复活——未把已取消安排当现行事实使用，且咖啡债处理与题面明示的挂着回来再算一致。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无备选，n/a；其唯一候选的严重错误核查已并入 submetric1_first_usable.B 条件①（结论：五族零命中）"
+    }
+  },
+  "submetric6_group_preference": {
+    "preference": "A",
+    "winner_label": "A",
+    "decisive_dimension": "usable_distinction",
+    "reason_quote": "知道了。北湖这边交给我，你忙所里的事，忙完吱一声。",
+    "rationale": "整组对照1.6基准：两组均无严重错误污染、均无需大海捞针。A组提供真实可用的区别化选项——bad_boy打趣（别以为加两个班就能赖掉）、playful玩笑（代班费按镜头折旧算）、warm顺从承接（北湖这边交给我，你忙所里的事，忙完吱一声）是三种不同姿态的可发送项，另有四条互不重叠的方向槽（带队/认鸟/咖啡债/录音）延伸对话；B组单条本身干净且事实落点精确（小隼他们仨我盯着/录音我收了，不外传），但仅此一条、无第二姿态可选。判定基准首项即有真实可用的区别化选项，A以候选间实质的姿态区别且全部可用胜出。防长度/数量偏自查：A候选更多（8对1）、B单条更长，两者均未作为决定理由——决定理由是A存在真实的可用姿态区分；若A多出的槽位为凑数或污染则应改判tie，实测8条全部独立可用且零严重错误，故不判tie。"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

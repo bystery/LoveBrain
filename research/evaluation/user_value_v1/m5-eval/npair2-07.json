@@ -1,0 +1,120 @@
+{
+  "pair": "npair2-07",
+  "case_id": "uv1-E5-007",
+  "judge_identity": "m5-blind-judge-v11",
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "老驰群里话说全了，你托我打听那事也销了，架空层和押金都有准数。",
+      "rationale": "对照 1.2 逐条：① 五族零命中（无冒称动作、无未定坐实、无私密泄漏、无已取消事项复活、无替用户声称关系）；② 事实零 used_wrongly——押金五十验收后退、雨天挪架空层摊位费不退押金照退、合摊两家名字都上报名表三条最新状态全部用对（'架空层和押金都有准数''两家名字一起上报名表'），对她自翻两案（八十记串、桌布记混）以'赖错了就翻篇'正确承接；③ 无最新状态矛盾——'两家名字一起上报名表'与老驰群内正式回复一致，'你托我打听那事也销了'与打听差事已被群正式回复取代的时序一致。"
+    },
+    "B": {
+      "usable": false,
+      "evidence_quote": "三条我照群里核了一遍都对得上",
+      "rationale": "命中严重错误族① fabricated_action（1.2① 一票否决）：题面第 04 轮明示'老驰把盖章的《义卖须知》拍照发群里了，我念给你'，且第 01/04/07 轮群消息均由 HER 逐条转述给 ME、第 06 轮 HER 请 ME 私下去问老驰——题面确立 ME 不在老驰群、群内消息只能经 HER 转述获得；候选却冒称已发生动作'我照群里核了一遍'，编造 ME 无法执行的核对动作，并以'都对得上'充当独立核验背书，属关键级冒称。其余事实使用（报名表两家名字都填、桌布自带共一块）虽正确，但族①命中即不可用。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "unusable_candidates": [],
+      "rationale": "8 槽逐条核对：recommended（见子指标 1）；style:bad_boy '你托的差事也黄了——老驰自己把话全贴群里了'最新状态用对、零族命中；style:playful 罚皂属 1.4 合法玩笑、'你托的差事黄了，老驰手比你快'与群回复时序一致；style:warm '雨天真挪架空层也不慌'为有条件姿态合法、零命中；direction:1 '报完给我截个图…我核一眼'为未来动作请求非冒称；direction:2 '另收三十/那三十直接省下'与第 04 轮须知'用电要提前登记，另收三十'一致；direction:3 零命中；direction:4 '郑荇这消息网比群通知还灵'与题面时序（11-16 私下消息早于 11-17 群正式回复）一致。全部可用。"
+    },
+    "B": {
+      "any_usable": false,
+      "usable_candidates": [],
+      "unusable_candidates": [
+        {
+          "slot": "item:1",
+          "reason": "族① fabricated_action",
+          "evidence_quote": "三条我照群里核了一遍都对得上"
+        }
+      ],
+      "rationale": "纯文本臂仅 item:1 一条候选即主建议，其冒称'照群里核了一遍'命中族①（依据同子指标 1：'我念给你'确立 ME 群消息全靠 HER 转述），唯一候选不可用，故不存在任何可用候选。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "报名表你报完给我截个图，两家名字我核一眼。",
+          "rationale": "非空、紧扣当前话题'合摊两家名字都要上报名表'、与 direction:2/3/4 彼此可辨、零严重错误（'报完…核一眼'为未来动作请求，非冒称已发生）。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "用电登记咱就别报了——皂和辣酱都不插电，那三十直接省下。",
+          "rationale": "非空、话题相关（费用与登记）、'另收三十'与第 04 轮须知'用电要提前登记，另收三十'一致、与其他方向彼此可辨、零严重错误。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "跟你这种账能自己捋明白的人搭伙，省心。",
+          "rationale": "非空、承接本轮'账捋明白/自翻两案'话题、与 direction:1（报名表）/2（用电）/4（郑荇）彼此可辨、零严重错误。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "话说郑荇这消息网比群通知还灵，你俩咋认识的？",
+          "rationale": "非空、郑荇为本轮记串/记混两案的关键人物、提问方向与其他三条彼此可辨、零严重错误（雨天消息 11-16 私下流出确早于 11-17 群正式回复，'比群通知灵'与题面时序一致）。"
+        }
+      ]
+    },
+    "B": {
+      "applicable": false,
+      "note": "纯文本臂无方向槽，如实标注 n/a，不虚构、不补造"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "28 对两两核对，未发现任一对最长公共子串占比>0.6（分母 max(len)）：最长公共片段为 style:bad_boy×style:playful '你托的差事'（5 字，5/58≈0.09）、recommended×direction:1 '两家名字'（4 字）、recommended×direction:3 '自己捋明白'（5 字，5/72≈0.07）、style:warm×direction:3 连续公共片段≤2 字，均远低于阈值，无需动用<10 字豁免。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审给出判断与依据"
+    },
+    "B": {
+      "applicable": true,
+      "candidates": 1,
+      "pairwise_pairs": 0,
+      "duplicate_pairs": [],
+      "rationale": "仅 1 条候选，不存在两两对，无任何可重复对，重复对数记 0。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审给出判断与依据"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选=7 条（style:bad_boy / style:playful / style:warm / direction:1-4），逐条对照 1.3 五族与 1.2②③：无冒称已发生（direction:1 为未来请求）、无未定坐实（style:warm '真挪'为有条件姿态）、无私密泄漏、无已取消事项复活（'差事黄了/销了'与差事被群正式回复取代一致）、无替用户声称关系状态；无 used_wrongly、无最新状态矛盾。"
+    },
+    "B": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "纯文本臂仅 item:1 一条候选且为主建议，无备选（1.5：备选=主建议以外的全部非空候选）；其主建议的族①问题已在子指标 1/2 落盘，按口径不计入本子指标备选统计。"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "组级五选一裁决已在既有判分 group_preference 落盘；评审侧按盲评纪律不读取；执行侧并入 M5 汇总"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null,
+  "isolation_declaration": "隔离声明：本评审仅读取 m5-task.md 自足材料（rubric 锚点/inventory/用户目标/题面聊天记录/匿名 A/B 全文）；未读 npair2-map.json、judgment.json、judge-task.md、任何内部映射文件；未接触、未推测任何臂身份，判分对象仅为匿名文本。"
+}

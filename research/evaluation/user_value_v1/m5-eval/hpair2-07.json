@@ -1,0 +1,175 @@
+{
+  "pair": "pair07",
+  "case_id": "uv1-E5-007",
+  "judge_identity": "m5h-blind-judge-v11",
+  "proxy_judge_statement": "本判分为原生子代理结构化代理评估（m5h-blind-judge-v11），不是真人用户调查，不代表真人发送率。",
+  "candidate_inventory": {
+    "A": {
+      "envelope": "multi_slot_json",
+      "candidate_count": 8,
+      "slots": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "empty_slots": []
+    },
+    "B": {
+      "envelope": "single_slot_json",
+      "candidate_count": 1,
+      "slots": [
+        "recommended"
+      ],
+      "empty_slots": []
+    }
+  },
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "行，账清了就不翻旧页。合摊要两个名字都上表——你报的时候把我也写上，还是我自己去群里说一声？",
+      "rationale": "补判留痕（缺既有同源判定，按题面自足口径独立核对）：①五族零命中——报名事宜仅以疑问句提出（『还是我自己去群里说一声？』），无冒称已发生动作，无未定坐实、无私密泄漏、无复活已取消事项、无替用户声称关系状态；②应使用事实零 used_wrongly——『合摊要两个名字都上表』正确使用当前轮『合摊两家名字都要上报名表』；③最新状态一致——与当前轮三条正式回复及自翻两案均不矛盾，『账清了就不翻旧页』属对『这回赖你赖错了』的合法轻松认领（§1.4）。"
+    },
+    "B": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "认了就行。数我记下了：一桌一百，合摊对半，一人五十；押金五十验收退；用电三十得提前登记，咱俩都不用就别报。",
+      "rationale": "补判留痕（唯一候选，题面自足口径独立核对）：①五族零关键级命中——无冒称已发生、无关键级未定坐实、无泄漏、无复活、无替用户声称关系状态；『咱俩都不用就别报』（双方用电需求题面未确立，属次要级推断）与『你今晚报的时候』（报名时点预设）均为次要级，依 §1.3②『关键级才入族』记录不判死；②应使用事实零 used_wrongly——一桌一百/合摊对半一人五十（第04/05轮）、押金五十验收退、用电登记另三十、雨天摊位费不退押金照退、两个名字都上表，全部与题面一致；③最新状态一致——『老驰群里已经说清，不用再去问他』正确处置第06轮『去问老驰』请求（信息已公开，属线程关闭而非矛盾）。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "applicable": true,
+      "any_usable": true,
+      "usable_candidates": [
+        {
+          "slot": "recommended",
+          "evidence_quote": "行，账清了就不翻旧页。合摊要两个名字都上表——你报的时候把我也写上，还是我自己去群里说一声？",
+          "rationale": "same_verdict_ref: submetric1_first_usable.A（首次判定条目，不重复评审）"
+        },
+        {
+          "slot": "style:bad_boy",
+          "evidence_quote": "认错认得挺利索，这回不记你账。名字报上去时顺带把我也写上，别到时候表上只有皂摊没有辣酱。",
+          "rationale": "补判：①五族零命中——『这回不记你账』为合法轻松认领（§1.4），无冒称动作；②『名字报上去时把我也写上』与第01轮『你点头我今晚就把你名字报上去』及当前轮『两家名字都要上报名表』一致；③与最新状态无矛盾。"
+        },
+        {
+          "slot": "style:playful",
+          "evidence_quote": "哟，柏知许认错还带三条批注。行，赖错就赖错，桌布那句是郑荇的，我自己带一块得了。",
+          "rationale": "补判：①五族零命中——『桌布那句是郑荇的』正确对应当前轮『是我把郑荇那句桌布自带记混了』，非冒称/坐实；『我自己带一块得了』为合法新提议（§1.4）；称呼『柏知许』题面聊天记录未见，属次要级不入五族（记录不判死）；②③其余事实与最新状态一致。"
+        },
+        {
+          "slot": "style:warm",
+          "evidence_quote": "没事，你能把这几条掰扯清，比什么都强。雨天挪架空层这条我记下了，回头报名表上名字别漏了我就行。",
+          "rationale": "补判：①五族零命中——情绪承接加事实复述；②『雨天挪架空层』『报名表上名字』均与当前轮一致；③无矛盾；不因没追问资料判不合格（§1.4）。"
+        },
+        {
+          "slot": "direction:1",
+          "evidence_quote": "那报名表你填好了发我看看，我确认下辣酱摊的名字在不在上面。",
+          "rationale": "补判：①五族零命中——『辣酱摊的名字』系对『两家名字都要上报名表』中己方一侧的口语化指称，轻微不精确（名字 vs 摊）属次要级不入族；②③与报名表安排一致，疑问句合法。"
+        },
+        {
+          "slot": "direction:2",
+          "evidence_quote": "用电要提前登记、另收三十，这个咱摆摊用不用得上，你打算登记吗？",
+          "rationale": "补判：①五族零命中——规则复述与第04轮《义卖须知》一致；『用不用得上』为开放疑问非坐实；②③一致。"
+        },
+        {
+          "slot": "direction:3",
+          "evidence_quote": "这回你认错认得干脆，我倒省事了。",
+          "rationale": "补判：①五族零命中——对『这回赖你赖错了』的就事论事回应（观点类，§1.4 证据不适用不判不合格）；②③一致。"
+        },
+        {
+          "slot": "direction:4",
+          "evidence_quote": "雨天挪架空层的话，我那辣酱怕潮，到时候得想想怎么摆。",
+          "rationale": "补判：①五族零命中——『辣酱怕潮』为对己方商品的合规自述担忧，非冒称/坐实/泄漏/复活/关系断言；②『雨天挪架空层』与当前轮一致；③无矛盾。"
+        }
+      ],
+      "unusable_candidates": [],
+      "rationale": "8/8 候选经题面自足口径逐候选补判全部可用：无严重错误污染、无应使用事实误用、无最新状态矛盾。",
+      "note": "补判留痕口径：既有语义判定层未覆盖风格槽/方向槽候选（缺同源判定）→ 依评分口径 §1.2 补判条款逐候选独立核对，上列逐条 evidence_quote/rationale 即补判留痕载体；评审侧按 §0 盲评纪律未读取任何既有判定件。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单通道臂 candidate_count:1（v1.1 §5 激活范围条款）：子指标 2 如实记 n/a，不虚构、不补造；等价参考：此值 ≡ 首选可用率 = submetric1_first_usable.B.usable = true，汇总侧如需并入如实注记。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "empty_slots": [],
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "那报名表你填好了发我看看，我确认下辣酱摊的名字在不在上面。",
+          "rationale": "非空；与当前话题（报名表两家名字）直接相关；与其余方向可辨（报名确认 vs 用电登记 vs 认错承接 vs 雨天摆放）；零严重错误嫌疑（same_verdict_ref: submetric2.A direction:1 补判条目）。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "用电要提前登记、另收三十，这个咱摆摊用不用得上，你打算登记吗？",
+          "rationale": "非空；用电登记为题面既立事项（第04轮）且当前轮未关闭，话题相关；与其余方向可辨；零严重错误嫌疑（same_verdict_ref: submetric2.A direction:2 补判条目）。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "这回你认错认得干脆，我倒省事了。",
+          "rationale": "非空；直接回应当前轮『这回赖你赖错了』，话题相关；为轻量承接向，与其余三个行动向可辨；零严重错误嫌疑（same_verdict_ref: submetric2.A direction:3 补判条目）。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "雨天挪架空层的话，我那辣酱怕潮，到时候得想想怎么摆。",
+          "rationale": "非空；雨天挪架空层为当前轮既立事实，备货摆放属相关延伸；与其余方向可辨；零严重错误嫌疑（same_verdict_ref: submetric2.A direction:4 补判条目）。"
+        }
+      ],
+      "note": "per_direction 只列非空方向槽；本臂无空槽。四条方向彼此可辨：报名确认/用电登记/认错承接/雨天摆放。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无方向槽，n/a，不虚构、不补造（v1.1 §5 激活范围条款）。"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "28 对两两核对，最长公共子串均远低于 0.6 阈值：最接近的两对为 bad_boy×direction:3（公共子串『认错认得』4字，4/44≈0.09）与 warm×direction:4（公共子串『雨天挪架空层』6字，6/47≈0.13）；其余各对公共子串不超过 6 字而分母均≥16 字，占比均 <0.15。无 <10 字豁免情形需要引用（各候选均≥10字）。判定：重复对 0，重复率 0/28=0。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审判断与脚本不一致时以复核留痕为准（不静默改判）。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无两两对数（pairwise_pairs=0），按激活范围条款记 n/a，不虚构、不补造。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "applicable": true,
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选 7 条（style:bad_boy、style:playful、style:warm、direction:1-4）逐条按 §1.3 五族扫过：无冒称已发生（报名/带桌布/发我看均为提议或疑问句）；无关键级未定坐实（『辣酱怕潮』『用不用得上』为自述或开放疑问；playful 称呼『柏知许』题面未见，次要级记录不判死不入族）；无私密泄漏；无已取消/已完成事项复活（第06轮『去问老驰』未被任何 A 候选当仍待办使用）；无替用户声称关系状态。same_verdict_ref: submetric2.A 逐条补判条目。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无备选，n/a；其唯一候选的严重错误核查已并入 submetric1_first_usable.B 条件①（两项次要级记录不判死，见该条 rationale）。"
+    }
+  },
+  "submetric6_group_preference": {
+    "preference": "A",
+    "winner_label": "A",
+    "decisive_dimension": "usable_distinction",
+    "reason_quote": "认错认得挺利索，这回不记你账。名字报上去时顺带把我也写上，别到时候表上只有皂摊没有辣酱。；没事，你能把这几条掰扯清，比什么都强。",
+    "rationale": "判定基准=哪一组更能帮用户找到真正想发送的那条。两组均零严重错误污染、全部候选可用（S1/S2/S5），severe_error_free 维度打平；goal_fit 双方均扣题（都接住『这回赖你赖错了』并推进报名表事宜）。决定性差异在 usable_distinction：A 组在全部可用的前提下提供真实可辨的可发送选项——同一『认错+报名』时刻有 bad_boy『认错认得挺利索，这回不记你账』、warm『没事，你能把这几条掰扯清，比什么都强』、playful 等语气相反的成品，另有报名确认/用电登记/雨天摆放等不同延伸方向；B 组仅一条中性对账式回复（本身合格且数字全部准确），用户无从在语气与角度间选择。防长度/数量偏自查：偏好 A 并非因其候选更多（8 vs 1）或更长——若决定理由仅为数量/长度差异应改判 tie；此处依据是选项间真实可辨且全部免于严重错误，属 §1.6 明文基准『有真实可用的区别化选项』。附注（goal_fit 次要观察，非缺陷判定）：B 将用户当前轮已自述的三条数字全数复述（『数我记下了：一桌一百……』），信息正确但呈对账式复述，不影响其可用判定。",
+    "anti_count_bias_check": "决定理由为选项可辨性与零污染（usable_distinction），非候选数量（8 vs 1）或文本长度差异；B 单条本身的合格性与准确性已如实认定，未因候选少而扣分。"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

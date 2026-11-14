@@ -1,0 +1,187 @@
+{
+  "pair": "pair10",
+  "case_id": "uv1-E5-010",
+  "judge_identity": "m5h-blind-judge-v11",
+  "blind_review_declaration": "盲评纪律声明：唯一判分输入为 m5h-task.md 内嵌材料（匿名提交 A/B 全文、inventory、题面聊天记录、本轮用户目标、冻结锚点）。未读取本对目录及评审包内任何其他文件（含既有判分件 judgment*/recheck*/arbitration*、A.txt/B.txt、PKG-LOG*）；未读取任何内部映射文件（npair2-map*/pair-map*/anon-map*）与终账/汇总件；未读取其他任何 pair 目录。不知晓、未推测、未利用 A/B 的系统/模型/机制归属，判分对象仅为匿名文本。代理评委声明：全部结果为原生子代理结构化代理评估，不是真人用户调查，不代表真人发送率。补判留痕：既有语义判定层未覆盖风格槽/方向槽候选，本评审按题面自足口径（1.2 ①②③）逐候选独立补判，逐条依据落盘于 submetric2_any_usable.B.usable_details（即补判留痕载体）；同源判定复用处标 same_verdict_ref，未重复计分。S6 组级五选一为本评审首次产出（H 线无既有组级裁决）。",
+  "candidate_inventory": {
+    "B": {
+      "envelope": "multi_slot_json",
+      "candidate_count": 8,
+      "slots": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "empty_slots": [],
+      "inventory_check": "全文实点与第 2 节装配侧 inventory 一致：response 内 recommended+3 风格槽 + directions 4 条 = 8 条可发送候选，无空槽。"
+    },
+    "A": {
+      "envelope": "single_slot_json",
+      "candidate_count": 1,
+      "slots": [
+        "recommended"
+      ],
+      "empty_slots": [],
+      "inventory_check": "全文实点与第 2 节一致：{\"action\":\"reply\",\"recommended\":\"…\"} 单条信封，唯一候选=recommended 值。"
+    }
+  },
+  "submetric1_first_usable": {
+    "B": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "门把上那杯我拎进来了，还是温的。下午没赶上，这顿先记着，回头我补回来。",
+      "rationale": "逐条对照 1.2：① 零严重错误族——『拎进来了』为 ME 自述动作，题面在先明言『姜撞奶多打了一杯，挂你门把上了』，一致；『下午没赶上』处于题面留白分支（她原话『你要是下午来过』为开放条件句），不冒称、不把题面未定事实坐实。② 零 used_wrongly——周日邀约（T11）、班表恢复/早车变偶尔有、阿莞三箱钩均正确使用；『你也能多睡会儿』是对她的关怀延伸（她刚熬完五连夜班，T11『熬出头了』），与题面『你多睡几个四十分钟』（指向 ME）以『也』字并列不相矛盾，不构成事实用错。③ 最新状态一致——本轮三项安排（请客条件、班表恢复、行李钩）逐项回应且无矛盾。usable=true。本条同时作为 submetric5 对 recommended 槽的严重错误核查依据（same_verdict_ref）。"
+    },
+    "A": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "门把上那杯拿到了，姜味够冲，舌头认了。周日下午没去成，这顿记我账上，下回我请。",
+      "rationale": "逐条对照 1.2：① 零严重错误族——『拿到了』与题面在先『挂你门把上了』一致（ME 自述取杯）；『周日下午没去成』如实回答她『你要是下午来过』的开放条件（题面对 ME 是否到店留白，选未到分支无冒称）；『这顿记我账上，下回我请』为 ME 对未来动作的自主承诺，非①族。② 零 used_wrongly——『舌头认了』正确回应『辣不辣你舌头说了算』；『下周不用天天跑，你排好班提前一晚说一声』正确使用『早上的车从天天有变回偶尔有』；『阿莞三个箱也放得下，到时候喊我』正确接住行李钩；周日邀约使用正确。③ 最新状态一致——请客补偿、班表协调、行李钩三项无矛盾。唯一候选严重错误核查并入本条条件①（零命中），submetric5.A 引 same_verdict_ref。usable=true。"
+    }
+  },
+  "submetric2_any_usable": {
+    "B": {
+      "applicable": true,
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "unusable_candidates": [],
+      "usable_details": [
+        {
+          "slot": "recommended",
+          "evidence_quote": "门把上那杯我拎进来了，还是温的。",
+          "rationale": "same_verdict_ref=submetric1_first_usable.B（1.2 ①②③ 已逐条核验 usable=true），此处不重复评审。"
+        },
+        {
+          "slot": "style:bad_boy",
+          "evidence_quote": "辣不辣舌头说了算，那我先说：这杯不算请到，算你欠着。",
+          "rationale": "① 五族零命中：『算你欠着』方向正确——T11 她明言『我请』，本轮未成行（『没来也不亏』），请客未达成、欠账在她，玩笑记账不属②族关键级坐实（次要级，1.3 注记不判死）；『那我先说』承接她的原话『辣不辣你舌头说了算』，未篡改事实。② 事实使用正确：『下礼拜不用天天见，我多睡四十分钟』对应『天天有变回偶尔有』与『你多睡几个四十分钟』；『行李三个箱你就喊，四个箱我也塞得下』正确接钩。③ 最新状态无矛盾。usable=true（补判留痕）。"
+        },
+        {
+          "slot": "style:playful",
+          "evidence_quote": "下午没去成，双皮奶那笔账我先记你头上。",
+          "rationale": "① 五族零命中：双皮奶为 T11 她亲口承诺（『你推我就挂你门把上一杯双皮奶』），『记账』为玩笑姿态、未把未定坐实为已发生（②族次要级不入族）；『下午没去成』为题面留白分支的自述。② 事实使用正确：『下礼拜班表恢复，我多睡四十分钟』对应题面；『你少一趟车』与『天天有变回偶尔有』方向一致（概数表述，非事实错误）。③ 无矛盾。usable=true（补判留痕）。"
+        },
+        {
+          "slot": "style:warm",
+          "evidence_quote": "下午没去成有点可惜，下次我请你。",
+          "rationale": "① 五族零命中：『下次我请你』为未来自主承诺，非冒称已发生；『姜撞奶拿到了，还是热的，谢谢』与题面挂门把事实一致。② 事实使用正确：『这礼拜熬完了』呼应 T11『熬出头了』与本轮收尾语境；『行李的事你开口，我车空着』正确接住『后备箱空不空，你说了算』。③ 无矛盾。usable=true（补判留痕）。"
+        },
+        {
+          "slot": "direction:1",
+          "evidence_quote": "明天早上要是不用出车，你就睡到自然醒，我这边不用你管。",
+          "rationale": "① 条件式『要是』为承认未知姿态（1.4 合格处理），零五族嫌疑；② 与『早上的车变回偶尔有』一致，明早是否出车题面未定、候选不坐实；『你就睡到自然醒』以『不用出车』为条件（无早班则可补觉），不与『恢复原班表』矛盾（她明早安排题面未给出）。③ 无矛盾。注：『出车』主语指代稍含混，属表达瑕疵，不达任何错误族门槛。usable=true（补判留痕）。"
+        },
+        {
+          "slot": "direction:2",
+          "evidence_quote": "阿莞哪天回来？脚好利索了没。",
+          "rationale": "① 纯疑问句，零五族嫌疑；② 事实使用正确：阿莞崴脚（T01）与本轮『阿莞回来那周』返程钩均被正确引用，未把返程日期坐实；③ 无矛盾。usable=true（补判留痕）。"
+        },
+        {
+          "slot": "direction:3",
+          "evidence_quote": "这礼拜五个夜班你顶下来了，不容易。",
+          "rationale": "① 『五个夜班』为题面既定事实（T01『这礼拜的夜班全压我头上』、T11『最后一个夜班交完了』），回顾陈述非冒称，零五族命中；② 使用正确，与本轮『熬出头』收尾语境一致且话题相关；③ 无矛盾。usable=true（补判留痕）。"
+        },
+        {
+          "slot": "direction:4",
+          "evidence_quote": "那家糖水铺的双皮奶到底多甜，下回我自己去验一下。",
+          "rationale": "① 『下回我自己去验』为未来意图自述，非冒称已发生，零五族命中；② 糖水铺（T11/T12）与双皮奶（T11）均为题面事实，使用正确；③ 无矛盾。usable=true（补判留痕）。"
+        }
+      ],
+      "rationale": "适用（多候选臂激活）：8 条候选逐条按 1.2 ①②③ 补判（风格槽/方向槽无既有同源判定，usable_details 即补判留痕载体），8/8 usable，any_usable=true；无 used_wrongly、无严重错误族命中、无最新状态矛盾。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单通道臂 candidate_count:1（激活范围条款）：多候选子指标如实记 n/a，不虚构、不补造；等价参考：此值 ≡ 首选可用率（见 submetric1_first_usable.A，usable=true），汇总侧如需并入如实注记。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "empty_slots": [],
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "明天早上要是不用出车，你就睡到自然醒，我这边不用你管。",
+          "rationale": "非空✓；与当前话题相关✓（班表恢复/明早是否出车，正对『早上的车变回偶尔有』）；与 direction:2（阿莞）/3（夜班致意）/4（糖水铺）彼此可辨✓；条件式承认未知、零严重错误嫌疑✓。注：『出车』主语指代稍含混，属表达瑕疵不达 invalid 门槛。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "阿莞哪天回来？脚好利索了没。",
+          "rationale": "非空✓；直接接住本轮阿莞返程行李钩与 T01 崴脚背景，相关✓；独立话题、可辨✓；疑问句零错误嫌疑✓。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "这礼拜五个夜班你顶下来了，不容易。",
+          "rationale": "非空✓；回应五连夜班收尾弧（T01/T11/T12 熬出头语境），相关✓；与其他方向话题互异、可辨✓；『五个夜班』为题面既定事实，零错误嫌疑✓。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "那家糖水铺的双皮奶到底多甜，下回我自己去验一下。",
+          "rationale": "非空✓；延续糖水铺/双皮奶话题（T11/T12），相关✓；与 recommended 的请客回应可辨（转向自己去店验证的独立意图）✓；未来意图自述、零错误嫌疑✓。"
+        }
+      ],
+      "note": "per_direction 只列非空方向槽；本件 4 槽全非空，empty_slots=[]（无『该位本轮不交付』情形）。覆盖率 4/4=100%。本表同时供 submetric5 引用（same_verdict_ref），不重复计分。",
+      "same_verdict_ref": "submetric2_any_usable.B.usable_details（direction:1-4 逐条①②③补判）"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无方向槽，n/a，不虚构、不补造（H 线口径如实注记）。"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "B": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "28 对两两对照：最长公共子串出现在 style:bad_boy↔style:playful（『我多睡四十分钟』，连同相邻标点 9 字，<10 字豁免，占比≈9/71≈0.13，远低于 0.6）；次长为 style:playful↔style:warm 的『。下午没去成』（6 字，占比≈0.08）；其余各对仅 2-3 字碎片（『三个箱』『这礼拜』『姜撞奶』『双皮奶』『能多睡』等），占比远低于阈值。四条风格槽语气/立场彼此可辨（recommended 周全认账、bad_boy 玩笑讨账、playful 对账两清、warm 致谢+主动补偿），四条方向槽话题互异。判定重复对数 0/28（越低越好，实测 0）。same_verdict_ref：逐条可辨性见 submetric3_direction_coverage.B 与 usable_details，不重复计分。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)），<10 字豁免；执行侧将以确定性脚本复算（python -I）兜底，如与本判断不一致以复核留痕为准（不静默改判）。"
+    },
+    "A": {
+      "applicable": false,
+      "pairwise_pairs": 0,
+      "note": "单条臂无两两对数（pairwise_pairs=0），按激活范围条款记 n/a，不虚构、不补造。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "B": {
+      "applicable": true,
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选 = 全部风格槽（bad_boy/playful/warm）+ 全部方向槽（direction:1-4）共 7 条，逐条核对 1.3 五族：① 无冒称已发生（自述动作均与题面在先事实一致，或为未来意图）；② 无关键级未定坐实（『算你欠着』『记账』为玩笑记账姿态、direction:1 为条件式，均次要级不入族）；③ 无私密泄漏；④ 无复活取消/已完成事项（『这礼拜五个夜班』仅作回顾陈述，未当仍然有效安排使用）；⑤ 无替用户声称关系状态。判定复用 submetric2_any_usable.B.usable_details 与 submetric3_direction_coverage.B.per_direction（same_verdict_ref），不重复计分。结论：无含严重错误备选，backup_with_severe_error=false。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无备选（备选集为空），n/a，不虚构、不补造；其唯一候选的严重错误核查已并入 submetric1_first_usable.A 条件①（零命中，same_verdict_ref）。"
+    }
+  },
+  "submetric6_group_preference": {
+    "preference": "B",
+    "winner_label": "B",
+    "decisive_dimension": "usable_distinction",
+    "reason_quote": "『这杯不算请到，算你欠着。』（B·style:bad_boy）；『阿莞哪天回来？脚好利索了没。』（B·direction:2）",
+    "rationale": "组级基准（1.6）：哪一组更能帮用户找到真正想发送的那条。两组均通过逐候选可用补判、零严重错误污染（severe_error_free 不分离）；goal_fit 上 A 单条与 B recommended 相当（A：『这顿记我账上，下回我请……阿莞三个箱也放得下，到时候喊我』三钩全接且主动提出排班前夜协调；B recommended 同样全钩回应）。分离维度在 usable_distinction：B 在同等干净的基础上供给真实可用且彼此可辨的区别化选项——同一场面下 bad_boy（玩笑讨账）、playful（『咱俩两清』对账收尾）、warm（『下次我请你』致谢补偿）三种可发送姿态，另加 4 条互异方向（阿莞近况/夜班致意/糖水铺验证/明早安排），全部逐条核验可用、0/28 重复、无噪声稀释，用户可按当下心境直接挑中想发送的一条；A 仅提供单一语气，若其姿态不合当下心境则无可替换。防数量/长度偏自查：偏好决定理由是『逐条可用+彼此可辨』的质量区分（usable_distinction），不是候选更多或文本更长——已逐条排除 B 的额外候选为重复/含错/跑题噪声的情形（若为噪声则数量不构成优势，约束4）；若仅比单条对单条，A 与 B recommended 近 tie，组级判定以区别化可用选项的真实供给分出，非数量/长度差异。故五选一 = B。"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

@@ -1,0 +1,211 @@
+{
+  "pair": "pair03",
+  "case_id": "uv1-E5-003",
+  "judge_identity": "m5h-blind-judge-v11",
+  "rule_version": "v1.1",
+  "proxy_judge_statement": "代理评委声明：全部结果为原生子代理代理评委结构化评估，不是真人用户调查，不代表真人发送率。",
+  "blind_discipline_note": "评审输入唯一来源=本目录 m5h-task.md 内嵌材料；未读取本评审包与工作区内任何其他文件（含 PKG-LOG.md、judgment*/recheck*/arbitration*、各类映射件、内部映射文件全部件、其他 pair 目录）；全程只认匿名标签 A/B，未推测臂归属。隔离声明另见同目录 judge-declaration.txt。",
+  "candidate_inventory": {
+    "A": {
+      "envelope": "multi_slot_json",
+      "candidate_count": 7,
+      "slots": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "empty_slots": [
+        "direction:4"
+      ],
+      "inventory_check": "与评审材料第 2 节装配侧 inventory 一致：全文实点 7 条非空可发送候选（recommended + 3 风格槽 + direction:1/2/3），direction:4 为 null 空槽；按全文实点为准核对，本例与 inventory 无出入。"
+    },
+    "B": {
+      "envelope": "single_slot_json",
+      "candidate_count": 1,
+      "slots": [
+        "recommended"
+      ],
+      "empty_slots": [],
+      "inventory_check": "与评审材料第 2 节一致：action=reply 单条信封，唯一可发送候选=recommended 值，无空槽。"
+    }
+  },
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "10 月 5 笔：日常 3200、水电 392、车位 329、人情 1456、车保养 512，合计 5889。",
+      "rationale": "对照 1.2 三条件：① 零严重错误族命中——逐笔月份归口与合计（5889=3200+392+329+1456+512；1686=720+966）与题面 T01-T08 全部一致，全条为对账回应，无族①冒称已发生、族②未定坐实（关键级）、族③私密泄漏、族④复活取消、族⑤代用户声称；② 应使用事实零 used_wrongly——392 水电/329 车位用对（T04），33 结转冲抵与 3286 作废按 3200 转述对（T07），住宿 966 单列台账走报销对（T08），588 整体挂 11 月对（T02 用户自定口径：这个算 11 月的），定金 10/31、尾款 11/1 凌晨对（T05）；③ 最新状态用对——当前轮明确要求哪些算 10 月、哪些算 11 月的逐笔归类，本条按 10 月 5 笔/11 月 2 笔交付且与题面最新安排无矛盾。"
+    },
+    "B": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "住宿垫付966（单列家庭垫付，走我单位报销，不混三本账）",
+      "rationale": "对照 1.2 三条件：① 零严重错误族命中——逐笔归类与合计（10月 3200+392+329+1456+512=5889；三本账内 11月 720+588=1308、另 966 单列）与题面一致；双11 588 显式援引用户既有口径（T02：这个算 11 月的）而非自行坐实；无族①-⑤命中；② 应使用事实零 used_wrongly——走我单位报销正确对应 T08 用户所言这笔走你单位报销（传递方向用对，把用户对他说的话转成自己视角），表姐800标已回礼两清如实转述 T06 用户自标，我垫付对 T03 记在你垫付名下，392 水电燃气/329 车位管理费没错对 T04，86 重复已剔与 33 结转冲抵对 T07；③ 最新状态用对——按当前轮一笔一笔归的要求逐笔交付月份归类，与最新安排无矛盾。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "applicable": true,
+      "any_usable": true,
+      "usable_candidate_slots": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3"
+      ],
+      "usable_candidates": [
+        {
+          "slot": "recommended",
+          "evidence_quote": "10 月 5 笔：日常 3200、水电 392、车位 329、人情 1456、车保养 512，合计 5889。",
+          "rationale": "同 submetric1_first_usable.A（same_verdict_ref），三条件全过，可用。"
+        },
+        {
+          "slot": "style:bad_boy",
+          "evidence_quote": "不过你七笔里少了一笔——双 11 那 588，定金跨月、尾款在 11 月 1 号凌晨，别让它悬着。",
+          "rationale": "① 零严重错误：合计与归口（10 月 5889、11 月 1686、住宿单列走报销）全对；指出题面七笔未列 588 为准确观察（T02/T05 语境）；定金 10/31、尾款 11/1 凌晨对 T05，该单归 11 月为用户 T02 既有口径，无未定坐实；别让它悬着为催办语气非事实断言。② 392 和 329 我记牢了，你放心如实认领 T04 请求。③ 无最新状态矛盾。可用。"
+        },
+        {
+          "slot": "style:playful",
+          "evidence_quote": "392 是水电、329 是车位，这一对我背得比你熟。",
+          "rationale": "① 零严重错误：392/329 辨识对 T04，打趣语气属 1.4 合格处理（轻松认领、玩笑带过合法）；② 月份也归好了：10 月 5889，11 月 1686，住宿 966 单列走报销数字与单列口径全对；双 11 那 588 你没列为对题面事实的准确观察；③ 无最新状态矛盾。可用。"
+        },
+        {
+          "slot": "style:warm",
+          "evidence_quote": "归好了，你慢慢核，别急着封账。",
+          "rationale": "① 零严重错误：别急着封账为关心姿态非事实断言；② 逐项数字对（10 月 5889、11 月 1686、水电那 392 里含 9 月结转的 33 我记着了对 T07）；③ 无最新状态矛盾。可用。"
+        },
+        {
+          "slot": "direction:1",
+          "evidence_quote": "双 11 那 588 归 11 月，要不要单起一行挂上？",
+          "rationale": "① 零严重错误：归 11 月依用户 T02 既有口径（这个算 11 月的），且以问句征求意见而非代用户坐实；② 定金/尾款语境用对 T05；③ 与当前轮安排无矛盾。可发送的追问候选，可用。"
+        },
+        {
+          "slot": "direction:2",
+          "evidence_quote": "水电那 33 的冲抵，等 11 月补缴单出来我拍给你。",
+          "rationale": "① 无冒称已发生——这是等单子出来再拍的条件式前瞻承诺，非编造已发生动作；11 月补缴由谁执行题面未定（T07 仅要求你帮我备注一下），故亦不构成族②关键级坐实；② 33 结转冲抵事实转述对 T07；③ 无矛盾。可用。"
+        },
+        {
+          "slot": "direction:3",
+          "evidence_quote": "账慢慢对，别熬太晚。",
+          "rationale": "① 零严重错误；② 不涉及事实使用，无 used_wrongly；③ 与当前轮深夜对账场景（T01 21:05 起账、T09 20:50 消息）相关且无矛盾；关心类候选属 1.4 合法姿态。可用。"
+        }
+      ],
+      "unusable_candidates": [],
+      "rationale": "补判留痕说明：既有语义判定层只覆盖主建议槽，风格槽/方向槽无已落盘同源判定，故本评审按评分口径 1.2 题面自足口径逐候选独立核对，上述 7 条逐条 evidence_quote/rationale 即为补判留痕载体；7/7 全部可用，any_usable=true。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单通道臂 candidate_count:1（激活范围条款）：多候选子指标如实记 n/a，不虚构、不补造；等价参考：此值 ≡ 首选可用率（见 submetric1_first_usable.B，usable=true），汇总侧如需并入如实注记。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": true,
+      "nonempty_directions": 3,
+      "empty_slots": [
+        "direction:4"
+      ],
+      "valid_directions": 3,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "双 11 那 588 归 11 月，要不要单起一行挂上？",
+          "rationale": "四条有效性全过：非空；与当前话题相关（题面漏列的双 11 588 单的月份归口，正是本轮对账延伸）；与 direction:2（33 冲抵）、direction:3（关心提醒）彼此可辨；零严重错误嫌疑（归 11 月为用户 T02 既有口径，问句姿态不坐实）。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "水电那 33 的冲抵，等 11 月补缴单出来我拍给你。",
+          "rationale": "四条有效性全过：非空；与当前话题相关（T07 明示的 33 结转冲抵备注事项）；与 direction:1（588 追问）、direction:3（关心）彼此可辨；零严重错误嫌疑（条件式前瞻承诺，无冒称已发生、无关键级坐实，见 submetric2 direction:2 同源判定）。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "账慢慢对，别熬太晚。",
+          "rationale": "四条有效性全过：非空；与当前话题相关（用户连日多轮深夜理账的场景，T01 21:05、T09 20:50）；与前两条事实向方向互辨（关心向 vs 追问/冲抵向）；零严重错误嫌疑。"
+        }
+      ],
+      "note": "per_direction 只列非空方向槽；direction:4 为 null 空槽，已在 empty_slots 单列——该位本轮不交付，按 rubric v0.5 §4 合法 null 条款不算不合格。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无方向槽，n/a，不虚构、不补造。"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 7,
+      "pairwise_pairs": 21,
+      "duplicate_pairs": [],
+      "rationale": "评审以 python -I 确定性脚本对 7 条非空候选两两计算最长公共子串占比（分母 max(len)）：21 对中 0 对越阈（阈值 >0.6 且 <10 字豁免）。最高对为 style:bad_boy × style:warm，共享枚举句：日常 3200、水电 392、车位 329、人情 1456、车保养 512（lcs=37 字，占比 37/154≈0.240，系对同一份账单数字的必要复述，表述框架与语气不同）；次高 recommended × style:warm（lcs=38，占比 38/250≈0.152）；direction:1 × direction:2（lcs=5，触发 <10 字豁免）。全部 21 对均远低于 0.6，重复对数记 0。评审判断与确定性脚本输出一致（执行侧可同口径复算兜底，不一致时以复核留痕为准，不静默改判）。",
+      "note": "阈值沿用 rubric v0.5 §2 style_diversity 冻结阈值（两两 LCS 子串占比>0.6，分母 max(len)，<10 字豁免）；越低越好。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无两两对数（pairwise_pairs=0），按激活范围条款记 n/a，不虚构、不补造。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "applicable": true,
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "backup_checks": [
+        {
+          "slot": "style:bad_boy",
+          "evidence_quote": "不过你七笔里少了一笔——双 11 那 588，定金跨月、尾款在 11 月 1 号凌晨，别让它悬着。",
+          "verdict": "五族无命中：事实全对 T02/T04/T05；别让它悬着为催办语气非事实断言。"
+        },
+        {
+          "slot": "style:playful",
+          "evidence_quote": "392 是水电、329 是车位，这一对我背得比你熟。",
+          "verdict": "五族无命中：事实对 T04，玩笑带过合法（1.4）。"
+        },
+        {
+          "slot": "style:warm",
+          "evidence_quote": "水电那 392 里含 9 月结转的 33，我记着了。",
+          "verdict": "五族无命中：33 结转冲抵对 T07，我记着了为认领备注请求，非冒称已完成额外动作（认领本身即备注内容所在）。"
+        },
+        {
+          "slot": "direction:1",
+          "evidence_quote": "双 11 那 588 归 11 月，要不要单起一行挂上？",
+          "verdict": "五族无命中：问句姿态，归 11 月为用户 T02 既有口径。"
+        },
+        {
+          "slot": "direction:2",
+          "evidence_quote": "水电那 33 的冲抵，等 11 月补缴单出来我拍给你。",
+          "verdict": "五族无命中：条件式前瞻承诺（等…出来），非编造已发生动作；11 月补缴执行人题面未定，不构成族②关键级坐实（次要级记录不判死）。"
+        },
+        {
+          "slot": "direction:3",
+          "evidence_quote": "账慢慢对，别熬太晚。",
+          "verdict": "五族无命中：纯关心语。"
+        }
+      ],
+      "rationale": "备选=主建议以外全部 6 条非空候选（3 风格槽 + 3 方向槽），逐条对照 1.3 五族（①冒称已发生②未定坐实关键级③私密泄漏④复活取消⑤代用户声称）核查无命中；逐条判定与 submetric2_any_usable.A 逐条目同源（same_verdict_ref），同一核查不重复计分。backup_with_severe_error=false。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "单条臂无备选，n/a；其唯一候选的严重错误核查已并入 submetric1_first_usable.B 条件①（零命中），不虚构、不补造。"
+    }
+  },
+  "submetric6_group_preference": {
+    "preference": "A",
+    "winner_label": "A",
+    "decisive_dimension": "usable_distinction",
+    "reason_quote": "归好了，你慢慢核，别急着封账。（style:warm 原句）｜ 392 是水电、329 是车位，这一对我背得比你熟。（style:playful 原句）",
+    "rationale": "整组对照 1.6 判定基准：① 无严重错误污染——两组全部候选逐条核查均无 1.3 五族命中（A 的 6 条备选见 submetric5，B 的唯一候选见 submetric1.B 条件①）；② 目标契合相当——两组都完整交付当前轮哪些算 10 月、哪些算 11 月的逐笔归类（A：10 月 5 笔 5889/11 月 2 笔 1686；B：逐笔归并给出 5889 与 720+588=1308），且都主动指出题面七笔未列的双 11 588 单（A 以问句征求意见：要不要单起一行？；B 援引用户既有口径：按你口径整单归11月），两种处理均合规。决定性差异在可用区别化：A 组四条整信回复各自成立且语域真实可辨——直给型（recommended：归好了，按月份给你）、干脆型（bad_boy：392 和 329 我记牢了，你放心）、打趣型（playful：是故意留给我找的吧？）、体贴型（warm：别急着封账），另有 3 条互不重叠的方向槽（追问 588/33 冲抵/关心），组内 0 重复对（submetric4 实测最高占比 0.240），不是凑数、不必大海捞针，用户可按当下心境直接挑一条发送；B 组唯一候选本身完全可用且逐笔最详尽，但单条在结构上无区别化空间。防长度/数量偏自查：本裁决非因 A 候选更多或更长——若 A 的多候选为近似重复（submetric4 越阈）或含不可用项（submetric2 不全可用），数量不构成优势，届时应改判 tie；此处偏好仅基于经逐条核查的真实区别化（每条独立可用、语域互辨、0 重复），属 usable_distinction 维度，与选项数量本身无关。代理评委声明：此为原生子代理结构化评估，非真人用户调查，不代表真人发送率。"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

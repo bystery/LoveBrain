@@ -1,0 +1,184 @@
+{
+  "pair": "pair12",
+  "case_id": "uv1-E5-012",
+  "judge_identity": "m5h-blind-judge-v11",
+  "proxy_judge_declaration": "本判分为原生子代理结构化代理评估（judge_identity=m5h-blind-judge-v11），不是真人用户调查，不代表真人发送率；评审全程未读取评审材料以外任何文件，未接触任何臂归属信息，判分对象仅为匿名文本。完整隔离声明见同目录 judge-declaration.txt。",
+  "candidate_inventory": {
+    "B": {
+      "envelope": "multi_slot_json",
+      "candidate_count": 8,
+      "slots": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "empty_slots": [],
+      "inventory_check_note": "与评审材料第6节全文实点核对一致：response.recommended + style:bad_boy/playful/warm + directions 数组4条 = 共8条可发送候选，无空槽；实点数与第2节 inventory 表一致，无差异留痕。"
+    },
+    "A": {
+      "envelope": "single_slot_json",
+      "candidate_count": 1,
+      "slots": [
+        "recommended"
+      ],
+      "empty_slots": [],
+      "inventory_check_note": "与评审材料第5节全文实点核对一致：action=reply 单条信封，唯一可发送候选 = recommended 值；实点数与第2节 inventory 表一致，无差异留痕。"
+    }
+  },
+  "submetric1_first_usable": {
+    "B": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "5%确实肉疼，但这单我还是想走平台：周六下午我过去验琴，没问题当场确认收货，钱直接到你账上，你不用追着我。",
+      "rationale": "补判留痕（recommended 槽无已落盘同源判定，按评分口径1.2补判条款、题面自足核对①②③）：①严重错误五族零命中——『我过去验琴』『当场确认收货』均为面向未来的提议，非冒称已发生（族①不命中）；『钱直接到你账上』以『没问题当场确认收货』为条件，非把未定坐实（族②不命中）；族③④⑤不命中。②used_wrongly=0——『5%确实肉疼』正确承接题面『卖家要交成交价5%的服务费』（费用落在用户侧），『周六下午我过去验琴』与题面第02轮『你要就周六下午来看琴，我在家』一致。③最新状态门——题面最新轮用户把决定权交给买家（『你是买家你说了算，先小人后君子』），本候选以买家身份明确决定走平台并确认周六流程，与题面最新安排无矛盾。判定 usable=true。"
+    },
+    "A": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "走平台吧，别私下转，咱俩都省心。",
+      "rationale": "补判留痕（唯一候选无已落盘同源判定，按评分口径1.2补判条款、题面自足核对①②③）：①严重错误五族零命中——『真要交我出一半』附条件表述不坐实（族②不命中）；『周六下午我过去看琴』『验完没问题当场在平台拍下付款』均为未来提议（族①不命中）；『琴凳一对一百四我要了』为买家对自身购买的当场表态，非冒称已发生、非替用户断言（族①⑤不命中）；族③④不命中。②used_wrongly=0——『琴凳一对一百四我要了』与题面『俩一共一百四』一致，『运费我出』与题面『运费你出』（买家承担）一致，『周六下午我过去看琴』与题面一致；5%服务费语境使用正确（题面明示费用在卖家侧，候选『不能让你一个人贴』据此主动分摊，方向无误）。③最新状态门——正面回应当前轮口径冲突并把决定落为走平台，与用户移交决定权（『你是买家你说了算』）不矛盾。判定 usable=true。"
+    }
+  },
+  "submetric2_any_usable": {
+    "B": {
+      "applicable": true,
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "usable_candidate_verdicts": [
+        {
+          "slot": "recommended",
+          "evidence_quote": "没问题当场确认收货，钱直接到你账上，你不用追着我。",
+          "rationale": "①五族零命中（提议性、附条件表述）；②5%/周六下午按题面原样使用；③承接买家决定权，无矛盾。usable（same_verdict_ref=submetric1_first_usable.B）"
+        },
+        {
+          "slot": "style:bad_boy",
+          "evidence_quote": "你表哥算的是省5%，我算的是万一琴有毛病，这5%不够吵一架的。",
+          "rationale": "①五族零命中——『这5%不够吵一架的』为观点/夸张修辞（1.4合法），非把未定坐实；②『你表哥』正确指代题面用户自述的表哥，『省5%』正确转述题面『私下收款省这笔』；③与最新轮不矛盾。usable"
+        },
+        {
+          "slot": "style:playful",
+          "evidence_quote": "韩哥这算盘打得响。不过我这人买大件有个毛病：不见平台不撒手。",
+          "rationale": "①五族零命中——表哥是题面用户自己提起并给出姓名（韩蒿）的人物，玩笑化点评属1.4玩笑带过合法，非私密泄漏（族③不命中）、非关系断言（族⑤不命中）；②5%/周六使用正确；③无矛盾。usable"
+        },
+        {
+          "slot": "style:warm",
+          "evidence_quote": "你能把这话说前头，我反倒更放心。",
+          "rationale": "①五族零命中；②『这话说前头』正确对应题面『我把话说前头』，『你搬家一堆事』正确对应题面『20号搬南州』；③无矛盾。usable"
+        },
+        {
+          "slot": "direction:1",
+          "evidence_quote": "周六下午几点方便？我先把订单拍下，验完再确认收货。",
+          "rationale": "①五族零命中——『先把订单拍下』在『几点方便』征询语境下为提议的未来动作，非冒称已发生；②『周六下午』与题面一致；③与用户移交决定权不矛盾。usable"
+        },
+        {
+          "slot": "direction:2",
+          "evidence_quote": "琴凳一百四我要了，踏板和谱架按你说的来。",
+          "rationale": "①五族零命中——买家对自身购买的表态，非冒称用户动作；②『琴凳一百四』与题面『俩一共一百四』一致，『踏板和谱架按你说的来』对应题面『踏板原装，谱架送』，无错用；③无矛盾。usable"
+        },
+        {
+          "slot": "direction:3",
+          "evidence_quote": "说实话，你这么直说，我更愿意跟你做这单。",
+          "rationale": "①五族零命中；②『你这么直说』正确对应题面『先小人后君子，我把话说前头』的直说姿态；③无矛盾。usable"
+        },
+        {
+          "slot": "direction:4",
+          "evidence_quote": "20号搬南州，东西打包得差不多了？",
+          "rationale": "①五族零命中；②『20号搬南州』与题面第01轮一致；③无矛盾。usable"
+        }
+      ],
+      "unusable_candidates": [],
+      "rationale": "补判留痕总注：风格槽/方向槽候选无既有同源判定（既有语义判定层仅覆盖各臂主建议槽），按评分口径1.2补判条款以题面自足口径逐候选独立核对①严重错误五族②used_wrongly③最新状态门，逐条 evidence_quote/rationale 见本节 usable_candidate_verdicts（即补判留痕载体）。8/8 全部可用，any_usable=true。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单通道臂 candidate_count:1（激活范围条款）：多候选子指标如实记 n/a，不虚构、不补造；等价参考：此值 ≡ 首选可用率（见 submetric1_first_usable.A，usable=true），汇总侧如需并入如实注记。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "empty_slots": [],
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "周六下午几点方便？我先把订单拍下，验完再确认收货。",
+          "rationale": "非空；与当前话题直接相关（周六看琴时间协调+平台拍单/确认收货流程，正对当前轮口径冲突的落地）；与其他方向彼此可辨（本条=流程/时间协调向）；严重错误零命中（same_verdict_ref=submetric2_any_usable.B.usable_candidate_verdicts[direction:1]，不重复计分）。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "琴凳一百四我要了，踏板和谱架按你说的来。",
+          "rationale": "非空；与当前交易相关（承接题面第02轮琴凳/踏板/谱架附加项）；与其他方向可辨（本条=附加件成交确认向）；严重错误零命中（same_verdict_ref=submetric2_any_usable.B.usable_candidate_verdicts[direction:2]）。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "说实话，你这么直说，我更愿意跟你做这单。",
+          "rationale": "非空；相关（对题面『先小人后君子』直说姿态的信任承接，稳住成交意愿，属情绪承接合法向）；与其他方向可辨（本条=信任/关系承接向）；严重错误零命中（same_verdict_ref=submetric2_any_usable.B.usable_candidate_verdicts[direction:3]）。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "20号搬南州，东西打包得差不多了？",
+          "rationale": "非空；相关（20号搬家是题面明示的交易背景与用户时间线，属关系维持向闲聊，1.4合法，且不与本轮任何安排冲突）；与其他方向可辨（本条=搬家闲聊向，与流程/附加件/信任三条均不同）；严重错误零命中（same_verdict_ref=submetric2_any_usable.B.usable_candidate_verdicts[direction:4]）。"
+        }
+      ],
+      "note": "per_direction 只列非空方向槽；本对无空槽（empty_slots=[]，该类『该位本轮不交付』单列条款本轮未触发）。方向覆盖率 4/4=1.0。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无方向槽，n/a，不虚构、不补造。"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "B": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "28对逐对核查最长公共子串（分母 max(len)；各候选均≥10字，<10字豁免条款不触发）：跨候选最长公共子串均≤4字——如 recommended×direction:1 仅『确认收货』（4字，占分母最高约0.16）、『周六下午』；recommended×style:bad_boy 仅『走平台』（3字，约0.06）；style:warm×direction:3 语义相近但字面最长公共子串仅2字级；其余对更低。全部远低于0.6冻结阈值 → duplicate_pairs=0，重复率 0/28=0。执行侧确定性脚本复算兜底（python -I），如不一致以复核留痕为准、不静默改判。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无两两对数（pairwise_pairs=0），按激活范围条款记 n/a，不虚构、不补造。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "B": {
+      "applicable": true,
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选=除 recommended 外全部7条非空候选（style:bad_boy/style:playful/style:warm/direction:1-4），逐条按1.3五族核查全部零命中；判定载体 same_verdict_ref=submetric2_any_usable.B.usable_candidate_verdicts（同一判定不重复计分）→ backup_with_severe_error=false，error_candidates=[]。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无备选，n/a；其唯一候选的严重错误核查已并入 submetric1_first_usable.A 条件①（五族零命中，留痕见该节 rationale）。"
+    }
+  },
+  "submetric6_group_preference": {
+    "preference": "B",
+    "winner_label": "B",
+    "decisive_dimension": "usable_distinction",
+    "reason_quote": "你表哥算的是省5%，我算的是万一琴有毛病，这5%不够吵一架的。走平台，我验货你收钱，谁也不欠谁。",
+    "rationale": "整组对照1.6判定基准：两组均零严重错误污染（B组8/8、A组1/1全部可用，见 submetric2/S5 核查）、无大海捞针问题；判定落在『有真实可用的区别化选项』——B组8条候选在语气与内容两个维度实质彼此可辨（style:bad_boy 把5%换算成纠纷风险『这5%不够吵一架的』、style:warm 承接用户坦率『你能把这话说前头，我反倒更放心』、direction:1 落地下单流程、direction:2 确认附加件、direction:4 搬家闲聊），为用户『找到真正想发送的那条』提供真实不同的可用选项。A组为单条集成回复，本身质量高且 goal_fit 有亮点（『真要交我出一半，不能让你一个人贴』是本对中最直接缓解用户费用顾虑的句子），但组内无替代选项可比。防长度/数量偏自查：A未因更短/更少被扣分，B未因更多/更长被加分——若B的多余候选为凑数/重复/含错，本案将改判 tie；B胜因是候选间实质区别化且全部可用（数量仅为区别化的载体，非决定理由），非数量本身。"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

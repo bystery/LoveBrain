@@ -1,0 +1,118 @@
+{
+  "pair": "npair2-06",
+  "case_id": "uv1-E5-006",
+  "judge_identity": "m5-blind-judge-v11",
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "记下了，三十八作废，口径改成四十四，吴藕那两箱也划了。",
+      "rationale": "首选 item:1 对照 1.2：① 五族零命中——无冒称已发生、无关键级未定坐实、无私密泄漏、无复活取消项、无替用户声称关系；② 题面事实（三十八改四十四、吴藕两箱撤）零 used_wrongly，'口径改成四十四'与用户'别按旧的三十八说'一致；③ 最新状态（四十四箱已报小蒲）使用正确，无矛盾。"
+    },
+    "B": {
+      "usable": true,
+      "evidence_quote": "四十四，记下了。明后天谁问我就报这个数，旧的三十八在我这儿作废。",
+      "rationale": "首选 recommended 对照 1.2：① 五族零命中；② 报数四十四、三十八作废均与题面一致，零 used_wrongly；③ 与最新轮'明后天有人问就是这个数，别按旧的三十八说'的安排完全吻合，无矛盾。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "item:1",
+        "item:2",
+        "item:3",
+        "item:4"
+      ],
+      "unusable_candidates": [],
+      "rationale": "四条逐一核对均可用：item:2 '收到，我这就把仓库的账改过来：四十四，吴藕两箱撤单不算。'——数字与吴藕撤单均正确，'我这就改'为将来承诺非冒称已发生，不落族①；item:3 '四十四，记牢了，吴藕两箱撤了也一并记了。'——数字正确，'明早拉货前要是数对不上'为有条件姿态且拉货时点属次要级预设（1.3 ② 次要级记录不判死、1.4 有条件合法）；item:4 '行，按你报的改：三十八改四十四，吴藕两箱划掉。'——数字、口径、吴藕均正确，'让他找你重对账'与用户记账角色一致。四条零严重错误、零 used_wrongly、最新状态全对。"
+    },
+    "B": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "unusable_candidates": [],
+      "rationale": "八槽逐一核对均可用：bad_boy '四十四，记死了。往后谁跟这个数对不上，我可不背锅'——数字正确，'只找报数的你'为玩笑不落五族；playful '四十四，刻脑子里了'——数字正确，'我自己的铺子'为自指玩笑（1.4 玩笑合法）；warm '从改规则到截单你一环没乱'——与题面改规则（T02）、截单（T03）事实一致；direction:1 '过磅的实数出来要是和四十四有出入'——有条件姿态；direction:2 '我那两箱'——与接龙'郝行野，2箱'一致且为疑问句；direction:3/4——数字正确、观点/关心合法。analysis 块按 1.5 非候选不计分。八槽零严重错误、零 used_wrongly、最新状态全对。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": false,
+      "note": "纯文本臂无方向槽，如实标注 n/a，不虚构、不补造"
+    },
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "过磅的实数出来要是和四十四有出入，你头一个喊我。",
+          "rationale": "非空；与当前话题（报数四十四）直接相关；有条件姿态合法（1.4）；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "对了，我那两箱到时候是去桥头仓自提，还是老驰顺道捎给我？",
+          "rationale": "非空；与其订单交付相关（'我那两箱'与题面'郝行野，2箱'一致）；疑问句提议选项属 1.4 疑问证据不适用，未坐实任何事实，零严重错误嫌疑；与 direction:1 彼此可辨（交付方式 vs 数目核验）。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "这团一路张罗到四十四箱，你这团长是真有章法。",
+          "rationale": "非空；数字四十四正确；评价性观点合法（1.4）；赞美角度与 warm 槽可辨（章法 vs 一环没乱），与 direction:1/2 话题角度可辨；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "橙子的事先放放，你晚饭吃了没？别光顾着数箱子。",
+          "rationale": "非空；承接'数箱子'语境后转向关心，与当前话题相关；疑问/关心合法（1.4）；与其他三条方向彼此可辨；零严重错误嫌疑。"
+        }
+      ]
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 4,
+      "pairwise_pairs": 6,
+      "duplicate_pairs": [],
+      "rationale": "6 对逐一核对：最大公共子串为 item:2/item:3 的'，吴藕两箱撤'6 字，6/48≈0.13；其余对最长 3-4 字（'四十四'/'吴藕两箱'），占比均 ≤0.13，全部远低于 0.6 阈值，判零重复对。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审给出判断与依据"
+    },
+    "B": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "28 对逐一核对：最大公共子串为 recommended/warm 的'四十四，记下了。'8 字，8/33≈0.24；其余对最长公共子串 ≤5 字，占比均 ≤0.24，全部远低于 0.6 阈值，判零重复对。",
+      "note": "同上：阈值 LCS>0.6（分母 max(len)，<10字豁免）；执行侧脚本复算兜底"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选 item:2/3/4 逐条对照 1.3 五族：数字口径全部用对（四十四、吴藕撤两箱、三十八作废），无冒称已发生（item:2 '我这就改'为将来承诺），无关键级未定坐实（item:3 '明早拉货'为次要级预设，记录不判死），无私密泄漏、无复活取消项、无替用户声称关系。"
+    },
+    "B": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选 7 槽逐条对照 1.3 五族：数字均正确（recommended 明示三十八作废）；playful 自指'我自己的铺子'与 direction:2 提及'桥头仓/老驰'均在疑问/玩笑语境，未坐实已发生事实，不落五族；无私密泄漏、无复活取消项（无人错用吴藕撤单）、无替用户声称关系。analysis 块按 1.5 不参与打分。"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "组级五选一裁决已在既有判分 group_preference 落盘；评审侧按盲评纪律不读取；执行侧并入 M5 汇总"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

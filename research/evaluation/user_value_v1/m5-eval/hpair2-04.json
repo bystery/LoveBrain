@@ -1,0 +1,137 @@
+{
+  "pair": "pair04",
+  "case_id": "uv1-E5-004",
+  "judge_identity": "m5h-blind-judge-v11",
+  "candidate_inventory": {
+    "B": {
+      "envelope": "multi_slot_json",
+      "candidate_count": 7,
+      "slots": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "empty_slots": [
+        "direction:4"
+      ]
+    },
+    "A": {
+      "envelope": "single_slot_json",
+      "candidate_count": 1,
+      "slots": [
+        "recommended"
+      ],
+      "empty_slots": []
+    }
+  },
+  "submetric1_first_usable": {
+    "B": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "苗一棵没蔫，这九天没白放。明天几点开工？我按你定的点过去，先撒底肥再翻土，顺序别倒。",
+      "rationale": "补判口径逐条核对（缺同源判定，题面自足逐候选补判留痕）：①严重错误族零命中——无冒称已发生、无关键级未定坐实（'我按你定的点过去'为对未来到场动作的认领，非冒称已发生安排）、无私密泄漏、无复活已取消事项、无替用户声称关系状态；②事实零 used_wrongly——'苗一棵没蔫'与题面『种球晾得干干爽爽，一棵没蔫』一致，'这九天'与题面『苗在小莼家放了九天』一致，'先撒底肥再翻土'用对题面『底肥两袋』，题面未规定施肥顺序，不构成矛盾；③最新状态用对——题面最新轮『明天开垦』，候选问'明天几点开工'并认领到场，与最新安排一致，无冲突。"
+    },
+    "A": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "明天几点开工？我过去搭把手。叉子耙子够了，我再带把铲子和一个水桶。底肥翻进去拌匀，先晾一晚，种球别急着下地，等土松透了再种更稳。",
+      "rationale": "补判口径逐条核对：①严重错误族零命中——'我过去搭把手''再带把铲子和一个水桶'均为对未来自身动作的认领，非冒称已发生，五族零命中（其唯一候选严重错误核查并入本条条件①，单条臂无备选）；②事实零 used_wrongly——'叉子耙子够了'对上题面『翻土的叉子、耙子各一把』，'底肥翻进去'用对『底肥两袋』，'先晾一晚，种球别急着下地，等土松透了再种'为新增建议性观点（所指为翻土后土壤静置），题面未给出下种时间安排，按 1.4 新提议/观点合法，不构成矛盾；③最新状态用对——'明天几点开工'与题面最新轮『明天开垦』一致。"
+    }
+  },
+  "submetric2_any_usable": {
+    "B": {
+      "applicable": true,
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3"
+      ],
+      "unusable_candidates": [],
+      "rationale": "补判留痕（风格槽/方向槽无已落盘同源判定，按题面自足口径①严重错误族②used_wrongly③最新状态逐候选补判；本条目即补判留痕载体）：\n- recommended｜same_verdict_ref=submetric1_first_usable.B｜usable\n- style:bad_boy｜『工具都借齐了，看来明天我这个顾问只剩出力这一项。几点？我人到。』｜①自嘲玩笑+到场认领均为合法姿态，五族零命中；②'工具都借齐了'与题面『工具我都借好了，翻土的叉子、耙子各一把，底肥两袋』一致；③'明天'与『明天开垦』一致→usable\n- style:playful｜『在小莼家阳台上养了九天，苗比人还精神。明天你指挥，我翻土，几点集合？』｜①玩笑+'我翻土'为自身未来动作认领，零命中；②'小莼家阳台上…九天'对上题面『苗在小莼家放了九天』及第05轮『先放小莼家阳台北角』；③与『明天开垦』一致→usable\n- style:warm｜『苗都好好的，这九天你惦记的事总算落地了。明天我早点过去，重活归我。』｜①'你惦记的事总算落地了'为情感承接（对应第04轮苗安置忧虑已按第05轮方案解决），非族②关键坐实、非族⑤替用户声称关系状态；②'苗都好好的'对上『一棵没蔫』；③一致→usable\n- direction:1｜『明天几点开工？我照着点过去。』｜①零命中；②无事实误用；③与『明天开垦』一致，疑问姿态按1.4合法→usable\n- direction:2｜『翻完地当天就把种球下下去，还是先晾一天再种？』｜①零命中；②题面未规定下种时间，纯提问把决定权交还用户，不构成矛盾、非未定坐实；③话题与当前备耕直接相关→usable\n- direction:3｜『这九天你安排得挺稳，明天我在。』｜①零命中；②'这九天'属实（11-19到货入小莼家至11-28今晨搬回）；③'明天我在'与开垦安排一致→usable\n结论：7/7 全部可用，any_usable=true，unusable_candidates=[]。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单通道臂 candidate_count:1（激活范围条款）：多候选子指标如实记 n/a，不虚构、不补造；等价参考：此值 ≡ 首选可用率（见 submetric1_first_usable.A，usable=true），汇总侧如需并入如实注记。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 3,
+      "empty_slots": [
+        "direction:4"
+      ],
+      "valid_directions": 3,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "明天几点开工？我照着点过去。",
+          "rationale": "非空；与当前话题（明天开垦的开工安排）直接相关；与 direction:2（下种时机提问）、direction:3（肯定+在场）彼此可辨，本条为纯开工时间 logistics 向；疑问姿态按 1.4 合法，零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "翻完地当天就把种球下下去，还是先晾一天再种？",
+          "rationale": "非空；聚焦'下种时机'这一当前备耕话题的真实待决点；与 direction:1（开工时间）、direction:3（在场确认）彼此可辨；提问姿态按 1.4 合法，题面未规定下种时间，零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "这九天你安排得挺稳，明天我在。",
+          "rationale": "非空；肯定用户九天晾苗安排+认领到场，与当前话题相关；与 direction:1/2 彼此可辨（本条为情感肯定向）；'这九天'与题面『苗在小莼家放了九天』相符，零严重错误嫌疑。"
+        }
+      ],
+      "note": "per_direction 只列非空方向槽；direction:4 为空槽，已在 empty_slots 单列（'该位本轮不交付'，rubric v0.5 §4 合法 null 条款，不算不合格）。覆盖 3/3。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无方向槽，n/a，不虚构、不补造。"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "B": {
+      "applicable": true,
+      "candidates": 7,
+      "pairwise_pairs": 21,
+      "duplicate_pairs": [],
+      "rationale": "7 条非空候选两两 C(7,2)=21 对，按'LCS 子串占比>0.6（分母 max(len)，<10字豁免）'核查：最接近的三对为 style:warm×direction:3（最长公共子串'这九天你'4字，4/33≈0.12）、recommended×direction:1（'明天几点开工？'7字，7/42≈0.17）、recommended×style:warm（'这九天'3字，3/42≈0.07）；其余各对最长公共子串≤4字（'明天''几点''九天'级别），全部远低于 0.6 阈值；全部候选≥14字，<10字豁免条款未触发。重复候选对数=0，重复率 0/21=0.000，无凑数式 paraphrase 灌水。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审判断与脚本不一致时以复核留痕为准（不静默改判）。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无两两对数（pairwise_pairs=0，对数 0 注记），按激活范围条款记 n/a，不虚构、不补造。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "B": {
+      "applicable": true,
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选=6 条（style:bad_boy、style:playful、style:warm、direction:1、direction:2、direction:3），逐条对照 1.3 五族核查：无冒称已发生动作（'我人到/我翻土/重活归我/明天我在'均为对未来自身动作的认领）、无关键级未定坐实、无私密泄漏、无已取消/已完成事项复活（'苗都好好的'对上题面现势）、无替用户声称关系状态，五族零命中。逐条判定依据与 submetric2_any_usable.B 各条 rationale 同源（same_verdict_ref），本子指标无新增错误条目；本题不存在含严重错误备选，rate 0/1=0。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无备选，n/a（对数 0 注记）；其唯一候选的严重错误核查已并入 submetric1_first_usable.A 条件①（结论：五族零命中）。"
+    }
+  },
+  "submetric6_group_preference": {
+    "preference": "B",
+    "winner_label": "B",
+    "decisive_dimension": "usable_distinction",
+    "reason_quote": "「工具都借齐了，看来明天我这个顾问只剩出力这一项。几点？我人到。」（style:bad_boy）；「翻完地当天就把种球下下去，还是先晾一天再种？」（direction:2）",
+    "rationale": "组级对照 1.6 判定基准：两组均零严重错误污染、全部候选可用（A 唯一条 usable，B 7/7 usable）。决定维度为 usable_distinction：B 组各候选是真实可发送且彼此可辨的不同表达意图——自嘲幽默（style:bad_boy）、玩笑调侃（style:playful）、情感承接（style:warm）、纯开工 logistics（direction:1）、把下种时机决定权交还用户的提问（direction:2）、稳态肯定+在场（direction:3），用户可按'此刻想说什么'直接挑中；A 组单条实质充分（补工具+施肥翻土建议+到场认领），但整组只有一个建议型姿态，用户想玩笑、想承接情绪、想把时机决定交给对方时无对应选项。防长度/数量偏自查：胜出理由不是 B 候选更多或更长——B 无凑数条目（S4 重复率 0/21，无 paraphrase 灌水，每条均可用且意图彼此可辨），区别化是意图覆盖的实质差异而非数量差异；若决定理由仅为数量/长度差异应改判 tie，本例不属此情形，故判 B 组胜。"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

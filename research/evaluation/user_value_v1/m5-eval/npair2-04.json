@@ -1,0 +1,111 @@
+{
+  "pair": "npair2-04",
+  "case_id": "uv1-E5-004",
+  "judge_identity": "m5-blind-judge-v11",
+  "blind_isolation_statement": "本评审仅依据 m5-task.md 内嵌材料（题面聊天记录、本轮用户目标、inventory、匿名 A/B 全文与第 1 节冻结锚点）独立判分；全程未读取、未接触、未推测 npair2-map*、judgment.json、rejudge.json、arbitration.json、内部映射文件等任何臂身份信息，判分对象仅为匿名文本 A/B。",
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "晾了九天一棵没蔫，这批种球下地稳了。明天开垦我过来搭手，八点到地头",
+      "rationale": "①零严重错误族：'下地稳了'是基于题面事实（晾九天、一棵没蔫）的顾问性判断/观点，属 1.4 合法观点，不构成把未定关键事实坐实（族②关键级不命中）；'明天开垦我过来搭手，八点到地头'为说话人对自身明日行动的新承诺，非冒称已发生（族①不命中），族③④⑤无涉。②应使用事实零 used_wrongly：'晾了九天一棵没蔫'与题面一致（11-19 到货放小莼家、11-28 今早搬来，恰九天）；'翻土下肥'对应已借的翻土叉子与底肥；'角堇苗'确已到货（T04 苗圃 19 号发货），无用错。③最新状态用对：不与'苗今早搬来、明天开垦、工具已借齐'矛盾。usable=true。"
+    },
+    "B": {
+      "usable": true,
+      "evidence_quote": "一棵没蔫，这九天没白忙。对了，锹备了没？开生地全靠它，没有的话我明天带一把过去搭手。",
+      "rationale": "①零严重错误族：'这九天没白忙''一棵没蔫'为题面事实复述；'锹备了没？'为提问（题面已借工具为叉子/耙子/底肥，未提锹，提问合法且补位合理）；'没有的话我明天带一把过去搭手'为有条件承诺（1.4 合法姿态），非冒称已发生（族①）、非关键级未定坐实（族②），族③④⑤无涉。②事实零 used_wrongly：九天/没蔫/明日开垦均与题面一致。③最新状态用对：不与最新安排矛盾。usable=true。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "item:1"
+      ],
+      "unusable_candidates": [],
+      "rationale": "唯一候选 item:1 按 1.2 逐条核对：零严重错误族命中；事实零 used_wrongly（九天没蔫/明天开垦/翻土下肥/角堇苗均与题面相符）；最新状态无矛盾，判可用。"
+    },
+    "B": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "unusable_candidates": [],
+      "rationale": "8 条候选逐一核对：recommended 与三个风格槽均零严重错误族、事实使用正确（九天在小莼家/今早搬来/叉子耙子底肥已借齐/18:05 傍晚均合题面）、不与最新状态矛盾（'先去吃口热乎饭''掐点到场'为合法建议与自我承诺）；四个方向槽逐条判定见 submetric3，均 valid。任一可用成立，无不可用候选。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": false,
+      "note": "纯文本臂无方向槽，如实标注 n/a，不虚构、不补造"
+    },
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "明天几点开工？我按点过去搭手。",
+          "rationale": "非空；问明日开垦开工时间并附到场承诺，与当前话题直接相关；与其他方向（技术要领/历程肯定/奶茶回访）彼此可辨；提问+自我承诺均属 1.4 合法，零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "郁金香下地记着十公分深、一棵一拳的间距，到时候我帮你拉线打点。",
+          "rationale": "非空；种植技术要领与明日开垦下地话题相关；角度独特可辨；技术建议属技术顾问（T01 明示'技术顾问就是你'）角色内合法输出，非未定坐实、非冒称已发生，零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "从报名到备耕你一步一步都踩得实，看着这块地真办起来，我这顾问比谁都高兴。",
+          "rationale": "非空；肯定线与题面历程相符（T01 报名→T08 评审过→T09 签约→T10 备耕），事实零 used_wrongly；情绪承接表达合法（1.4），不因没追问资料判不合格；与其他方向可辨；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "对了，评审那天小莼非要请你的奶茶兑现没？明天开完垦正好该犒劳一轮。",
+          "rationale": "非空；奶茶回访+犒劳衔接明日开垦，话题相关；事实核对正确：T08 明示'小莼非要请我喝奶茶'（请的是 HER），本条问 HER 兑现与否，指向无误，未把传递人当来源、未把她没说的意愿当已同意（1.4 口径）；与其他方向可辨；零严重错误嫌疑。"
+        }
+      ]
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": false,
+      "note": "仅 1 条候选，无两两对，如实标注 n/a，不虚构"
+    },
+    "B": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "28 对两两核对：跨候选最大公共子串仅 4 字（recommended↔warm 共享'一棵没蔫'、recommended↔direction:1 共享'过去搭手'），对最长候选（42-45 字）占比 ≤4/42≈0.10，远低于 0.6 阈值（且公共子串<10 字，落入豁免口径）；其余共享段为'明天''九天''到场'等 1-4 字短语，属话题功能词。内容角度（工具追问/玩笑/关怀/技术/回访/肯定）彼此可辨，无一超阈，判定重复对数 0/28，越低越好口径下表现良好。执行侧确定性脚本复算兜底。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "纯文本臂仅 item:1 一条候选，主建议之外无非空备选（备选集为空），按定义不存在'含严重错误备选'，如实记 false，非豁免性放水。"
+    },
+    "B": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选=7 条（style:bad_boy/style:playful/style:warm + direction:1-4）。逐条对照五族：①无冒称已发生（'明天我到场''掐点到场''按点过去搭手'均为明日新承诺）；②无关键级未定坐实（'越晾越精神'为玩笑夸张、'一步一步都踩得实'与题面历程相符，均非把未定关键事实写成已确定）；③无私密泄漏；④无已取消/已完成事项复活（评审已过、协议已签、480 已交均被当已完成背景正确使用，非复活使用）；⑤无替用户声称关系状态。事实核对含 direction:4 奶茶指向正确（小莼请 HER）。零命中，false。"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "组级五选一裁决已在既有判分 group_preference 落盘；评审侧按盲评纪律不读取；执行侧并入 M5 汇总"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

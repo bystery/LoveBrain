@@ -1,0 +1,187 @@
+{
+  "normalization_note": "由 m5-verdict.json 归一化（批次 C → m5-result.json 同构 schema；normalize_m5_verdicts.py；映射依据内部映射计划件 §1.2）",
+  "schema_source": "m5-verdict.json",
+  "source_file": "e5n-v2-judge-pkg/npair2-10/m5-eval/m5-verdict.json",
+  "pair": "npair2-10",
+  "case_id": "uv1-E5-010",
+  "judge_identity": "m5-blind-judge-v11",
+  "m5_task": "six_submetric_v1.1_batch_C",
+  "inventory_confirmed": {
+    "A": {
+      "actual_count": 1,
+      "matches_task_inventory": true
+    },
+    "B": {
+      "actual_count": 7,
+      "matches_task_inventory": true
+    }
+  },
+  "candidate_itemized": [
+    {
+      "arm": "A",
+      "slot": "item:1",
+      "representative_quote": "姜撞奶喝了，姜下得正好，我舌头说不辣。",
+      "usable": true,
+      "severe_error": null,
+      "note": "无编号行文=唯一整条即主建议（A1）。三线事实（姜撞奶口味/原班表四十分钟/阿莞三箱后备箱）全用对；「后备箱我提前一天清出来」为 ME 自主前向承诺非捏造她方事实；零严重错误族、零 used_wrongly、最新状态用对。"
+    },
+    {
+      "arm": "B",
+      "slot": "recommended",
+      "representative_quote": "姜撞奶喝到了，不辣，正对胃口。",
+      "usable": true,
+      "severe_error": null,
+      "note": "三线全覆盖且用对；「早车偶尔有」照题面预告；「箱子超三个你喊我，后备箱提前腾」承接条件钩且为 ME 自主动作；零严重错误族、零 used_wrongly、最新状态用对。"
+    },
+    {
+      "arm": "B",
+      "slot": "style:bad_boy",
+      "representative_quote": "想用一杯姜撞奶收买我？行，收买成功——不辣，及格，下次可以再辣点。",
+      "usable": true,
+      "severe_error": null,
+      "note": "「收买成功——不辣」玩笑自述接住口味待答事项；「下次可以再辣点」为新提议非捏造；「箱子的事到时喊我一声就行」条件钩原样承接；零严重错误族（未覆盖原班表线，缺覆盖不属可用三条件）。"
+    },
+    {
+      "arm": "B",
+      "slot": "style:playful",
+      "representative_quote": "你这挂门把的手法跟扎针一样稳。",
+      "usable": true,
+      "severe_error": null,
+      "note": "「签收/舌头测评」回应口味；「挂门把的手法跟扎针一样稳」类比双方均有事实基础（她本轮挂门把、T10 带教夸手法稳），次要级不入族；「后备箱24小时待命」承接条件钩；零严重错误族。"
+    },
+    {
+      "arm": "B",
+      "slot": "style:warm",
+      "representative_quote": "五个夜班总算熬到头了，累了一礼拜还惦记着给我留杯甜的，谢谢你。",
+      "usable": true,
+      "severe_error": null,
+      "note": "「五个夜班总算熬到头了」正确使用 T11 她自述「最后一个夜班交完了！熬出头了」的既确立事实，非复活族；「留杯甜的」「喝着呢，不辣」本轮事实用对；零严重错误族（未覆盖原班表/行李线，缺覆盖不属可用三条件）。"
+    },
+    {
+      "arm": "B",
+      "slot": "direction:1",
+      "representative_quote": "不辣，姜味正，你这手艺都能出摊了。",
+      "usable": true,
+      "severe_error": null,
+      "note": "四条件全过：非空；话题=姜撞奶口味与当前相关；与 direction:2/3 话题互不重合、彼此可辨；「你这手艺」把制作归她属至多次要级措辞假设（她言「姜撞奶多打了一杯」），记录不入族、不清零。"
+    },
+    {
+      "arm": "B",
+      "slot": "direction:2",
+      "representative_quote": "阿莞回来那周你提前两天说一声，我把后备箱腾出来等你。",
+      "usable": true,
+      "severe_error": null,
+      "note": "四条件全过：话题=阿莞返程行李后备箱钩，与当前相关；「提前两天说一声」为 ME 对她「行李三个箱往上我喊你」的新提议，非捏造她方事实；与 direction:1/3 可辨；零严重错误。"
+    },
+    {
+      "arm": "B",
+      "slot": "direction:3",
+      "representative_quote": "七十五块收了，这五个早上一趟没白跑，值。",
+      "usable": true,
+      "severe_error": null,
+      "note": "四条件全过：话题=车费收讫，与当前相关且与 direction:1/2 可辨；「七十五块收了」与 T11「一趟十五，七十五，我现在转你，收着」一致，ME 自述收款非捏造；零严重错误。"
+    }
+  ],
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "姜撞奶喝了，姜下得正好，我舌头说不辣。",
+      "rationale": "主建议=唯一整条（无编号行文，A1）。三条件按 A3 补判口径直接判定留痕：①零严重错误族命中——「姜撞奶喝了，姜下得正好，我舌头说不辣」为 ME 自述，与题面「来没来都有的喝，辣不辣你舌头说了算」严丝合缝，无冒称她方已发生行为；②应使用事实零 used_wrongly——姜撞奶口味、下礼拜原班表与四十分钟、阿莞三个箱与后备箱三线均按题面原样使用；③最新状态用对——所引三条均为本轮 E356_T12 新出事实且引用无误。"
+    },
+    "B": {
+      "usable": true,
+      "evidence_quote": "姜撞奶喝到了，不辣，正对胃口。",
+      "rationale": "主建议 recommended 三条件直接判定：①零严重错误族——「姜撞奶喝到了，不辣，正对胃口」为 ME 自述口味，「下礼拜早车偶尔有」照题面，「后备箱提前腾」为 ME 自主承诺，无冒称她方行为；②零 used_wrongly——姜撞奶/原班表四十分钟/阿莞三箱三线全用对（「那几个四十分钟我就不客气了」呼应「你多睡几个四十分钟」）；③最新状态用对。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "item:1"
+      ],
+      "unusable_candidates": [],
+      "rationale": "此值 ≡ 子指标 1（单候选臂，如实标注）。组内唯一候选 item:1 可用，判定与依据同子指标 1（同一处判定不重复计分）。"
+    },
+    "B": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3"
+      ],
+      "unusable_candidates": [],
+      "rationale": "7 条非空候选逐条判定全部可用：风格槽以「收买成功——不辣」「舌头测评：不辣」「姜撞奶我喝着呢，不辣」正确接住本轮口味待答事项，方向槽三条分别覆盖口味/阿莞行李/车费且零严重错误族命中（逐条依据见 candidate_itemized，同源判定不双计）。存在 ≥1 条可用 → 档 2。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": false,
+      "note": "A 臂为无方向槽结构的单候选纯文本，如实记 n/a，不虚构、不补造。"
+    },
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 3,
+      "valid_directions": 3,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "不辣，姜味正，你这手艺都能出摊了。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "阿莞回来那周你提前两天说一声，我把后备箱腾出来等你。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "七十五块收了，这五个早上一趟没白跑，值。"
+        }
+      ],
+      "empty_slots_not_delivered": [
+        "direction:4"
+      ],
+      "rationale": "3 条非空方向槽全部有效：direction:1「不辣，姜味正，你这手艺都能出摊了」话题=口味赞手艺，direction:2「阿莞回来那周你提前两天说一声，我把后备箱腾出来等你」话题=行李钩，direction:3「七十五块收了，这五个早上一趟没白跑，值」话题=车费——三者话题互不重合、彼此可辨、零严重错误（「你这手艺」至多次要级措辞假设，记录不入族不清零）。direction:4 为 null 真空槽 → 单列「该位本轮不交付」（rubric v0.5 §4 合法 null 条款），不入分母、不算不合格。"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 1,
+      "pairwise_pairs": 0,
+      "duplicate_pairs": [],
+      "rationale": "A 臂单候选，两两对数=0，如实记 n/a。"
+    },
+    "B": {
+      "applicable": true,
+      "candidates": 7,
+      "pairwise_pairs": 21,
+      "duplicate_pairs": [],
+      "rationale": "7 条非空候选两两 21 对，python -I 离线机械计算（先 2 对手知样本验证输出有区分度再批量）：单对最高占比 0.1000（recommended×style:playful 与 recommended×direction:2，最长公共子串各 6 字），全部 ≤0.6 冻结阈值 → 0 重复对；全部候选 ≥10 字，0 豁免对。语义同立场变体按冻结规则只看 LCS 字面占比，不另设惩罚。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "A 臂无备选（单候选），不存在含严重错误备选 → 0。"
+    },
+    "B": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "6 条备选（3 风格槽 + 3 方向槽）按 M3 五族逐条扫描零命中：「收买成功」「签收」「喝着呢」均为 ME 自述本轮待答事项，无冒称她方行为；「你这挂门把的手法跟扎针一样稳」玩笑类比双方均有事实基础（她本轮挂门把、带教曾夸手法稳），次要级不入族；「七十五块收了」与 T11「我现在转你，收着」一致；无隐私泄漏、无已取消事项复活、无替用户声称关系状态。同一处次要级观察已在子指标 3 依据记录，不重复计为独立证据。"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "原 status 留痕：已有（另册引用）"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

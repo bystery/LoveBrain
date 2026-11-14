@@ -1,0 +1,766 @@
+{
+  "ledger": "m5h-six-tally",
+  "generated_at": "2026-11-14 13:33:09",
+  "generated_by": "M5-H 终账聚合员（机械聚合，零 LLM 判断；python -I 确定性脚本复算）",
+  "source": {
+    "verdict_files": [
+      "m5-eval/hpair2-01.json",
+      "m5-eval/hpair2-02.json",
+      "m5-eval/hpair2-03.json",
+      "m5-eval/hpair2-04.json",
+      "m5-eval/hpair2-05.json",
+      "m5-eval/hpair2-06.json",
+      "m5-eval/hpair2-07.json",
+      "m5-eval/hpair2-08.json",
+      "m5-eval/hpair2-09.json",
+      "m5-eval/hpair2-10.json",
+      "m5-eval/hpair2-11.json",
+      "m5-eval/hpair2-12.json"
+    ],
+    "judge_identity": "m5h-blind-judge-v11",
+    "arm_map": "H 线装配口径奇偶轮换：奇 pair A=CURRENT 整组/B=DIRECT 单条；偶 pair 反转（A=DIRECT/B=CURRENT）",
+    "rotation_rule_in_map": "奇 pair（01/03/05/07/09/11）A=CURRENT；偶 pair（02/04/06/08/10/12）A=DIRECT",
+    "metrics_scope": "S2/S3/S4/S5 单条臂（DIRECT）按激活范围条款 n/a；S6 组级五选一为本评审真评（12/12）"
+  },
+  "cross_checks": {
+    "odd_even_rotation_per_pair": "PASS",
+    "rotation_mapping_12_lines": [
+      "pair01  case=uv1-E5-001  odd_even=odd  A=CURRENT(multi_slot_json,n=7) B=DIRECT(single_slot_json,n=1)  [PASS]",
+      "pair02  case=uv1-E5-002  odd_even=even  A=DIRECT(single_slot_json,n=1) B=CURRENT(multi_slot_json,n=7)  [PASS]",
+      "pair03  case=uv1-E5-003  odd_even=odd  A=CURRENT(multi_slot_json,n=7) B=DIRECT(single_slot_json,n=1)  [PASS]",
+      "pair04  case=uv1-E5-004  odd_even=even  A=DIRECT(single_slot_json,n=1) B=CURRENT(multi_slot_json,n=7)  [PASS]",
+      "pair05  case=uv1-E5-005  odd_even=odd  A=CURRENT(multi_slot_json,n=8) B=DIRECT(single_slot_json,n=1)  [PASS]",
+      "pair06  case=uv1-E5-006  odd_even=even  A=DIRECT(single_slot_json,n=1) B=CURRENT(multi_slot_json,n=7)  [PASS]",
+      "pair07  case=uv1-E5-007  odd_even=odd  A=CURRENT(multi_slot_json,n=8) B=DIRECT(single_slot_json,n=1)  [PASS]",
+      "pair08  case=uv1-E5-008  odd_even=even  A=DIRECT(single_slot_json,n=1) B=CURRENT(multi_slot_json,n=7)  [PASS]",
+      "pair09  case=uv1-E5-009  odd_even=odd  A=CURRENT(multi_slot_json,n=7) B=DIRECT(single_slot_json,n=1)  [PASS]",
+      "pair10  case=uv1-E5-010  odd_even=even  A=DIRECT(single_slot_json,n=1) B=CURRENT(multi_slot_json,n=8)  [PASS]",
+      "pair11  case=uv1-E5-011  odd_even=odd  A=CURRENT(multi_slot_json,n=8) B=DIRECT(single_slot_json,n=1)  [PASS]",
+      "pair12  case=uv1-E5-012  odd_even=even  A=DIRECT(single_slot_json,n=1) B=CURRENT(multi_slot_json,n=8)  [PASS]"
+    ],
+    "win_count_sum_is_12": "PASS",
+    "pairs_parsed": 12,
+    "score_domain_check_n_a_arm_excluded": "PASS",
+    "score_domain_problems": [],
+    "rotation_problems": [],
+    "missing_fields": [],
+    "parse_errors": [],
+    "unjudgeable_pairs": []
+  },
+  "aggregate": {
+    "s6_group_preference_wins": {
+      "CURRENT": 11,
+      "DIRECT": 0,
+      "tie": 1,
+      "sum": 12
+    },
+    "tie_pairs": [
+      "pair08"
+    ],
+    "s1_first_usable_rate_by_arm": {
+      "CURRENT": {
+        "usable_n": 12,
+        "n": 12,
+        "rate": 1.0
+      },
+      "DIRECT": {
+        "usable_n": 11,
+        "n": 12,
+        "rate": 0.9167
+      }
+    },
+    "s2_any_usable_by_arm": {
+      "CURRENT": {
+        "any_usable_n": 12,
+        "n": 12,
+        "rate": 1.0
+      },
+      "DIRECT": "n/a（单通道臂不计入分母，12 对分母全为 CURRENT 臂）；等价注记（冻结表 #2：单通道臂此值≡首选可用率）→ 见 s1_first_usable_rate_by_arm.DIRECT"
+    },
+    "s3_direction_coverage_CURRENT": {
+      "valid_directions_total": 41,
+      "nonempty_directions_total": 41,
+      "rate": 1.0,
+      "empty_slots_total": 7
+    },
+    "s4_duplicate_rate_CURRENT": {
+      "duplicate_pairs_total": 0,
+      "pairwise_pairs_total": 287,
+      "rate": 0.0
+    },
+    "s5_backup_severe_error_by_arm": {
+      "CURRENT": {
+        "backup_with_severe_error_n": 0,
+        "n": 12,
+        "rate": 0.0
+      },
+      "DIRECT": "n/a（单条臂无备选，不计入分母）"
+    }
+  },
+  "backup_severe_error_all": [],
+  "per_pair": [
+    {
+      "pair": "pair01",
+      "case_id": "uv1-E5-001",
+      "rotation": {
+        "A": "CURRENT",
+        "B": "DIRECT"
+      },
+      "envelope": {
+        "A": "multi_slot_json",
+        "B": "single_slot_json"
+      },
+      "candidate_count": {
+        "A": 7,
+        "B": 1
+      },
+      "verdict_bytes": 12847,
+      "s1_first_usable": {
+        "A": true,
+        "B": false,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": false
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 3,
+        "valid_directions": 3,
+        "empty_slots": [
+          "direction:4"
+        ]
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 7,
+        "pairwise_pairs": 21,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "A",
+        "winner_label": "A",
+        "winner_arm": "CURRENT",
+        "decisive_dimension": "usable_distinction",
+        "reason_quote": "没理他就对了，留着明天台上给他答案。你哥坐哪排？我那句和声下去，让他自己判断是什么搭子。"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    },
+    {
+      "pair": "pair02",
+      "case_id": "uv1-E5-002",
+      "rotation": {
+        "A": "DIRECT",
+        "B": "CURRENT"
+      },
+      "envelope": {
+        "A": "single_slot_json",
+        "B": "multi_slot_json"
+      },
+      "candidate_count": {
+        "A": 1,
+        "B": 7
+      },
+      "verdict_bytes": 12025,
+      "s1_first_usable": {
+        "A": true,
+        "B": true,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": true
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 3,
+        "valid_directions": 3,
+        "empty_slots": [
+          "direction:4"
+        ]
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 7,
+        "pairwise_pairs": 21,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "B",
+        "winner_label": "B",
+        "winner_arm": "CURRENT",
+        "decisive_dimension": "goal_fit",
+        "reason_quote": "一个人签字，一个人坐走廊，还得把字签完。那天你扛的东西不少，现在说出来，我听着。"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    },
+    {
+      "pair": "pair03",
+      "case_id": "uv1-E5-003",
+      "rotation": {
+        "A": "CURRENT",
+        "B": "DIRECT"
+      },
+      "envelope": {
+        "A": "multi_slot_json",
+        "B": "single_slot_json"
+      },
+      "candidate_count": {
+        "A": 7,
+        "B": 1
+      },
+      "verdict_bytes": 15505,
+      "s1_first_usable": {
+        "A": true,
+        "B": true,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": true
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 3,
+        "valid_directions": 3,
+        "empty_slots": [
+          "direction:4"
+        ]
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 7,
+        "pairwise_pairs": 21,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "A",
+        "winner_label": "A",
+        "winner_arm": "CURRENT",
+        "decisive_dimension": "usable_distinction",
+        "reason_quote": "归好了，你慢慢核，别急着封账。（style:warm 原句）｜ 392 是水电、329 是车位，这一对我背得比你熟。（style:playful 原句）"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    },
+    {
+      "pair": "pair04",
+      "case_id": "uv1-E5-004",
+      "rotation": {
+        "A": "DIRECT",
+        "B": "CURRENT"
+      },
+      "envelope": {
+        "A": "single_slot_json",
+        "B": "multi_slot_json"
+      },
+      "candidate_count": {
+        "A": 1,
+        "B": 7
+      },
+      "verdict_bytes": 10980,
+      "s1_first_usable": {
+        "A": true,
+        "B": true,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": true
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 3,
+        "valid_directions": 3,
+        "empty_slots": [
+          "direction:4"
+        ]
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 7,
+        "pairwise_pairs": 21,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "B",
+        "winner_label": "B",
+        "winner_arm": "CURRENT",
+        "decisive_dimension": "usable_distinction",
+        "reason_quote": "「工具都借齐了，看来明天我这个顾问只剩出力这一项。几点？我人到。」（style:bad_boy）；「翻完地当天就把种球下下去，还是先晾一天再种？」（direction:2）"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    },
+    {
+      "pair": "pair05",
+      "case_id": "uv1-E5-005",
+      "rotation": {
+        "A": "CURRENT",
+        "B": "DIRECT"
+      },
+      "envelope": {
+        "A": "multi_slot_json",
+        "B": "single_slot_json"
+      },
+      "candidate_count": {
+        "A": 8,
+        "B": 1
+      },
+      "verdict_bytes": 12256,
+      "s1_first_usable": {
+        "A": true,
+        "B": true,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": true
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 4,
+        "valid_directions": 4,
+        "empty_slots": []
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 8,
+        "pairwise_pairs": 28,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "A",
+        "winner_label": "A",
+        "winner_arm": "CURRENT",
+        "decisive_dimension": "usable_distinction",
+        "reason_quote": "知道了。北湖这边交给我，你忙所里的事，忙完吱一声。"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    },
+    {
+      "pair": "pair06",
+      "case_id": "uv1-E5-006",
+      "rotation": {
+        "A": "DIRECT",
+        "B": "CURRENT"
+      },
+      "envelope": {
+        "A": "single_slot_json",
+        "B": "multi_slot_json"
+      },
+      "candidate_count": {
+        "A": 1,
+        "B": 7
+      },
+      "verdict_bytes": 12640,
+      "s1_first_usable": {
+        "A": true,
+        "B": true,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": true
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 3,
+        "valid_directions": 3,
+        "empty_slots": [
+          "direction:4"
+        ]
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 7,
+        "pairwise_pairs": 21,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "B",
+        "winner_label": "B",
+        "winner_arm": "CURRENT",
+        "decisive_dimension": "usable_distinction",
+        "reason_quote": "四十四箱十斤装，一车拉得下不？装不下我跑两趟。"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    },
+    {
+      "pair": "pair07",
+      "case_id": "uv1-E5-007",
+      "rotation": {
+        "A": "CURRENT",
+        "B": "DIRECT"
+      },
+      "envelope": {
+        "A": "multi_slot_json",
+        "B": "single_slot_json"
+      },
+      "candidate_count": {
+        "A": 8,
+        "B": 1
+      },
+      "verdict_bytes": 13309,
+      "s1_first_usable": {
+        "A": true,
+        "B": true,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": true
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 4,
+        "valid_directions": 4,
+        "empty_slots": []
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 8,
+        "pairwise_pairs": 28,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "A",
+        "winner_label": "A",
+        "winner_arm": "CURRENT",
+        "decisive_dimension": "usable_distinction",
+        "reason_quote": "认错认得挺利索，这回不记你账。名字报上去时顺带把我也写上，别到时候表上只有皂摊没有辣酱。；没事，你能把这几条掰扯清，比什么都强。"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    },
+    {
+      "pair": "pair08",
+      "case_id": "uv1-E5-008",
+      "rotation": {
+        "A": "DIRECT",
+        "B": "CURRENT"
+      },
+      "envelope": {
+        "A": "single_slot_json",
+        "B": "multi_slot_json"
+      },
+      "candidate_count": {
+        "A": 1,
+        "B": 7
+      },
+      "verdict_bytes": 11211,
+      "s1_first_usable": {
+        "A": true,
+        "B": true,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": true
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 3,
+        "valid_directions": 3,
+        "empty_slots": [
+          "direction:4"
+        ]
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 7,
+        "pairwise_pairs": 21,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "tie",
+        "winner_label": null,
+        "winner_arm": "tie",
+        "decisive_dimension": null,
+        "reason_quote": "A：行，六点二十到，角落位给我留着。开场白是现场念还是先发我看看？我提前把挑刺的劲儿攒着。｜B：六点二十，记下了。开场白留着，我到了先听——改的是哪一段，先给我透半句？"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    },
+    {
+      "pair": "pair09",
+      "case_id": "uv1-E5-009",
+      "rotation": {
+        "A": "CURRENT",
+        "B": "DIRECT"
+      },
+      "envelope": {
+        "A": "multi_slot_json",
+        "B": "single_slot_json"
+      },
+      "candidate_count": {
+        "A": 7,
+        "B": 1
+      },
+      "verdict_bytes": 12339,
+      "s1_first_usable": {
+        "A": true,
+        "B": true,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": true
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 3,
+        "valid_directions": 3,
+        "empty_slots": [
+          "direction:4"
+        ]
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 7,
+        "pairwise_pairs": 21,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "A",
+        "winner_label": "A",
+        "winner_arm": "CURRENT",
+        "decisive_dimension": "usable_distinction",
+        "reason_quote": "辐射点在狮子座那块，我把广角对着它，后半夜升起来正好，拍完发你原图。（A 组 direction:2 原句）"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    },
+    {
+      "pair": "pair10",
+      "case_id": "uv1-E5-010",
+      "rotation": {
+        "A": "DIRECT",
+        "B": "CURRENT"
+      },
+      "envelope": {
+        "A": "single_slot_json",
+        "B": "multi_slot_json"
+      },
+      "candidate_count": {
+        "A": 1,
+        "B": 8
+      },
+      "verdict_bytes": 16280,
+      "s1_first_usable": {
+        "A": true,
+        "B": true,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": true
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 4,
+        "valid_directions": 4,
+        "empty_slots": []
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 8,
+        "pairwise_pairs": 28,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "B",
+        "winner_label": "B",
+        "winner_arm": "CURRENT",
+        "decisive_dimension": "usable_distinction",
+        "reason_quote": "『这杯不算请到，算你欠着。』（B·style:bad_boy）；『阿莞哪天回来？脚好利索了没。』（B·direction:2）"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    },
+    {
+      "pair": "pair11",
+      "case_id": "uv1-E5-011",
+      "rotation": {
+        "A": "CURRENT",
+        "B": "DIRECT"
+      },
+      "envelope": {
+        "A": "multi_slot_json",
+        "B": "single_slot_json"
+      },
+      "candidate_count": {
+        "A": 8,
+        "B": 1
+      },
+      "verdict_bytes": 13657,
+      "s1_first_usable": {
+        "A": true,
+        "B": true,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": true
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 4,
+        "valid_directions": 4,
+        "empty_slots": []
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 8,
+        "pairwise_pairs": 28,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "A",
+        "winner_label": "A",
+        "winner_arm": "CURRENT",
+        "decisive_dimension": "usable_distinction",
+        "reason_quote": "她前阵子还跟你说没听说谁被收过，这回又成了“真收过一户”，还是小蓟转的第三手。"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    },
+    {
+      "pair": "pair12",
+      "case_id": "uv1-E5-012",
+      "rotation": {
+        "A": "DIRECT",
+        "B": "CURRENT"
+      },
+      "envelope": {
+        "A": "single_slot_json",
+        "B": "multi_slot_json"
+      },
+      "candidate_count": {
+        "A": 1,
+        "B": 8
+      },
+      "verdict_bytes": 13601,
+      "s1_first_usable": {
+        "A": true,
+        "B": true,
+        "by_arm": {
+          "CURRENT": true,
+          "DIRECT": true
+        }
+      },
+      "s2_any_usable": {
+        "CURRENT": true,
+        "DIRECT": "n/a（单通道臂，激活范围条款；等价参考 ≡ 该臂首选可用率，见 s1_first_usable.DIRECT）"
+      },
+      "s3_direction_coverage_CURRENT": {
+        "nonempty_directions": 4,
+        "valid_directions": 4,
+        "empty_slots": []
+      },
+      "s4_duplicate_rate_CURRENT": {
+        "candidates": 8,
+        "pairwise_pairs": 28,
+        "duplicate_pairs_count": 0
+      },
+      "s5_backup_severe_error_CURRENT": {
+        "backup_with_severe_error": false,
+        "error_candidates_count": 0,
+        "error_candidates": []
+      },
+      "s5_DIRECT": "n/a（单条臂无备选；其唯一候选严重错误核查已并入 submetric1 条件①，见裁决件）",
+      "s6_group_preference": {
+        "preference_raw": "B",
+        "winner_label": "B",
+        "winner_arm": "CURRENT",
+        "decisive_dimension": "usable_distinction",
+        "reason_quote": "你表哥算的是省5%，我算的是万一琴有毛病，这5%不够吵一架的。走平台，我验货你收钱，谁也不欠谁。"
+      },
+      "unjudgeable": false,
+      "unjudgeable_reason": null
+    }
+  ],
+  "note": "M5-H 终账（12/12 全落盘后机械聚合）；只读评审件 m5h-verdict.json（S1-S6×A/B），不回填 summary（M5_H 槽回填另行执行）；未碰 git；零哈希（完整性口径=文件数+字节量，verdict_bytes 逐对留痕）；n/a 臂已从 S2/S3/S4/S5 分母排除（S2/S5 分母=12 全为 CURRENT 臂，S3/S4 分母为 CURRENT 臂槽位/两两对数）。"
+}

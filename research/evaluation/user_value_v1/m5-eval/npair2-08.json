@@ -1,0 +1,138 @@
+{
+  "pair": "npair2-08",
+  "case_id": "uv1-E5-008",
+  "judge_identity": "m5-blind-judge-v11",
+  "isolation_declaration": "未读映射/终账/金标：未读取任何内部映射文件、既有判分件与评审任务件，仅依据 m5-task.md 自足材料（题面/用户目标/匿名 A/B 全文/inventory/冻结锚点）完成盲评",
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "行，六点半就六点半，我六点二十前到。新开场白我听——等我到了你念一遍，比上回顺不顺，当场给你句准话。",
+      "rationale": "首选=item:1。①零五族命中：纯到场承诺+试听应答，无冒称已发生/未定坐实/私密泄漏/复活已取消/代用户声称关系；②零 used_wrongly：六点半开场、六点二十前到、试听她重写的新开场白均与题面当前轮一致，'比上回顺不顺'正确承接她'比上回那个顺'原话；③与最新轮安排零矛盾。"
+    },
+    "B": {
+      "usable": true,
+      "evidence_quote": "去。六点二十前到，你重写的开场白我当场听，顺不顺听完给你准话。",
+      "rationale": "首选=recommended 槽。①零五族命中；②零 used_wrongly：六点二十前到、当场听重写开场白与题面事实一致，无编造与坐实；③与最新轮安排（提前到六点半、六点二十前到、听新开场白）一致无矛盾。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "item:1",
+        "item:2",
+        "item:3",
+        "item:4"
+      ],
+      "unusable_candidates": [],
+      "rationale": "四条逐核对全部可用：item:2 '角落位照旧'承接 T01 既定安排且未被最新轮推翻，'费不费灯一听便知'为对 T02 她原话玩笑的回用（1.4 玩笑合法）；item:3 '六点半开场'正确、语音/到店两种试听方式为合法提议；item:4 '清场归老利管'归因与题面一致、'准时归我管'为自我承诺非冒称；全部零五族、零 used_wrongly、与最新安排无矛盾。"
+    },
+    "B": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3"
+      ],
+      "unusable_candidates": [
+        {
+          "slot": "style:bad_boy",
+          "reason": "used_wrongly：把提前量写错为'二十分钟'——题面给出开场由七点提前到六点半、到场由六点五十提前到六点二十，均为提前三十分钟（六点二十对六点半开场仅早十分钟），题面任何口径均不得二十分钟",
+          "evidence_quote": "行，提前二十分钟就提前。"
+        },
+        {
+          "slot": "style:playful",
+          "reason": "used_wrongly：同上把提前入场量错写为'二十分钟'，与题面时间事实不符；玩笑框架不免除时间事实正确性（本词证据适用，1.4 不豁免）",
+          "evidence_quote": "会员日待遇，观众提前二十分钟入场。"
+        },
+        {
+          "slot": "direction:4",
+          "reason": "族①编造已发生事件作前提：'新申请入队的阿莞'人与事件在题面零依据（题面仅出现小莼/阿荞/老利），以问句预设冒称共同已知",
+          "evidence_quote": "对了，新申请入队的阿莞，周三那场她上不上？"
+        }
+      ],
+      "rationale": "recommended 可用故 any_usable=true；style:warm '直奔你留的角落位'与 T01 一致、'六点二十前到'正确；direction:1-3 事实使用无误；不可用三条见 unusable_candidates（两条时间数字用错+一条编造前提）。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": false,
+      "note": "纯文本臂无方向槽，如实标注 n/a，不虚构、不补造"
+    },
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "valid_directions": 3,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "开场白你打算周三现场直接上，还是这两晚先给我过一遍？",
+          "rationale": "非空；紧扣当前话题（新开场白试听安排）；开放式二选一不预设事实；与其他方向彼此可辨（试听安排角度）；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "手记本里除了我那段，还抄了谁的？我看看我在你本子里排第几。",
+          "rationale": "非空；承接本轮对话今日 T02 手记本线索，话题相关；'还抄了谁的'为开放疑问不预设；事实使用正确（T02 她把他那段抄进手记本）；与 direction:3 同对象但角度（打趣探底）可辨；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "说真的，你把我复盘抄进手记本，我挺受用的——比阿荞夸我十句都实在。",
+          "rationale": "非空；承接 T02 的致谢方向，话题相关；'你把我复盘抄进手记本''阿荞夸'与题面一致；与 direction:2（打趣）角度可辨（真诚致谢）；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "invalid",
+          "evidence_quote": "对了，新申请入队的阿莞，周三那场她上不上？",
+          "rationale": "非空且贴合周三场，但以问句前提冒称共同已知事件：'阿莞''新申请入队'零题面依据，命中严重错误嫌疑（族①编造已发生动作作前提），不满足'零严重错误嫌疑'有效条件。"
+        }
+      ]
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 4,
+      "pairwise_pairs": 6,
+      "duplicate_pairs": [],
+      "rationale": "六对中最长公共子串为 item:1 与 item:2 共享的'六点二十前到'（6 字，6/max(len)≈0.12），其余对最长仅 4 字（如 item:1/item:4 的'六点二十'），全部远低于 0.6 阈值，无重复对。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审给出判断与依据"
+    },
+    "B": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "28 对中最长公共子串为 style:bad_boy 与 style:playful 共享的'提前二十分钟'（6 字，6/max(len)≈0.14）、recommended 与 style:warm 共享的'重写的开场白'与'六点二十前到'（各 6 字，≈0.14），全部远低于 0.6，无重复对（analysis 块非可发送候选，不参与）。",
+      "note": "同上"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选 item:2/3/4 逐条核对五族：无冒称已发生、无未定坐实、无私密泄漏、无已取消/已完成复活（'角落位照旧'为 T01 有效安排延续）、无代用户声称关系；'费不费灯'属玩笑回用合法，不入族。"
+    },
+    "B": {
+      "backup_with_severe_error": true,
+      "error_candidates": [
+        {
+          "slot": "direction:4",
+          "family": "族①",
+          "evidence_quote": "对了，新申请入队的阿莞，周三那场她上不上？"
+        }
+      ],
+      "rationale": "direction:4 编造'阿莞新申请入队'已发生事件作问句前提（题面无此人此事），入族①；style:bad_boy/playful 的'提前二十分钟'为时间数字 used_wrongly，不属五族，仅计入子指标 2 不可用、不入本子指标。"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "组级五选一裁决已在既有判分 group_preference 落盘；评审侧按盲评纪律不读取；执行侧并入 M5 汇总"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

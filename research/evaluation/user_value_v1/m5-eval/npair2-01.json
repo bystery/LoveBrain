@@ -1,0 +1,130 @@
+{
+  "pair": "npair2-01",
+  "case_id": "uv1-E5-001",
+  "judge_identity": "m5-blind-judge-v11",
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "散了场，'什么搭子'的答案你亲自来听——先说好，这答案有点长，得配夜宵。",
+      "rationale": "对照1.2逐条：①零严重错误族命中——无冒称已发生、无关键级未定坐实、无私密泄漏、无复活已取消事项、无替用户声称关系；夜宵为重新发出的有条件邀约（'先说好……得配夜宵'），未把她没说的意愿当已同意，属1.4合法姿态。②事实零误用：'什么搭子'追问与散场语境出自T10原文；夜宵线承接T07提出、T08收回、T09借小莼名义问'价便宜量又大'餐馆的信号弧，引用准确，且T09重新示好使重发邀约不构成对T08的状态矛盾。③与最新轮T10无矛盾：演出明日、哥哥到场、'特别稳的低音搭子'称呼均被正确回应。"
+    },
+    "B": {
+      "usable": true,
+      "evidence_quote": "「什么搭子」这题你不用接，明天让你哥坐在台下听完就懂。",
+      "rationale": "对照1.2逐条：①零严重错误族命中；②事实零误用——T10哥哥追问未被回应、T06手势约定、T10'台上从来不抢拍'均正确引用；'今晚别再熬夜背词'由T07'睡不着，词在脑子里排队'合理外推，属关怀性推断而非事实误用；③与最新轮T10无矛盾——不接追问的建议恰针对T10现场处境，最新安排（明日演出、哥在台下）被正确使用。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "unusable_candidates": [],
+      "rationale": "8/8逐候选对照1.2全部通过：recommended与direction:2的夜宵重发为有条件邀约（'让他散了场跟你一块来听答案——管饭'）未宣称她已同意；direction:3'我收下了，也当真了'只认领她当众给的头衔，不代她声称关系状态（无族⑤）；direction:4'三分糖去冰'与T01规格逐字一致，'开演前我去买奶茶'为将来意图非冒称已发生（无族①）；style:warm正确引用T06手势与'低音贴着你的高音走'；style:bad_boy对'不理他'动机的调侃为观点探问（1.4合法）。唯一记录项：style:playful'明天下午正式营业'隐含断定演出时段为下午（题面未给时段，散场夜宵语境更似晚间），属族②次要级，按锚点'关键级才入族；次要级记录不判死'不影响可用判定。"
+    },
+    "B": {
+      "any_usable": true,
+      "usable_candidates": [
+        "item:1",
+        "item:2",
+        "item:4"
+      ],
+      "unusable_candidates": [
+        {
+          "slot": "item:3",
+          "reason": "族① fabricated_action",
+          "evidence_quote": "你随口问的那家馆子我真去看过了，价便宜量又大，散伙饭都坐得下。"
+        }
+      ],
+      "rationale": "item:1/2/4对照1.2全部通过：item:2以'招牌我接了'认领头衔、'你就说搭子就是搭子'为给她的应对建议而非代答（无族⑤）；item:4'抖不了'为结果性承诺，按1.4不要求结果性保证亦不入五族。item:3冒称已发生：题面T09至T10无任何ME探店/看馆子的记录，候选却以'真去看过了'断言已完成动作并给出具体结论（价便宜量又大、散伙饭都坐得下），与锚点族①示例'未订票说票我订好了'同构——题面未建立的动作被坐实为已发生，命中1.2①故不可用。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "明天你几点到场？开演前把你高音后头接的那句低音跟你单独过一遍，稳不稳当场验。",
+          "rationale": "非空；与明日汇演及'稳'字话题直接相关；'高音后头接的那句低音'与T06'你那句低音和声接我的高音'一致（零误用）；她T04声带禁唱为11-19当周口径，T06（11-24）已恢复练习（'我练到刚才'），开演前过活不构成矛盾；问到场时间+单独过活，与其他方向功能可辨；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "就让他散了场跟你一块来听答案——管饭，听完他自己会懂。",
+          "rationale": "非空；直接针对T10哥哥'什么搭子'追问给出处理方向，与当前话题相关；邀约对象是哥哥（家人），不与T08'团里人多眼杂'矛盾；有条件邀约姿态合法（1.4）；与d1（排练过活）、d3（认领表态）、d4（奶茶关怀）可辨；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "你跟你哥那句'特别稳的低音搭子'，我收下了，也当真了。",
+          "rationale": "非空；正面承接T10她向哥哥介绍的头衔，属就事论事的认领（1.4'轻松认领被评价'合法），只表态自己'当真'，未替用户声称任何已发生的关系状态（无族⑤）；与d2同涉'搭子'但功能（表态vs应对追问）彼此可辨；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "开演前我去买奶茶，三分糖去冰的规格我记着呢，你哥那份也带上。",
+          "rationale": "非空；演出日开演前的实务安排，与当前话题相关；'三分糖去冰'与T01奶茶规格逐字一致（零误用）；'我去买'为将来意图非冒称已发生（无族①）；带哥哥一份与T10家人在场语境呼应；与其他方向可辨；零严重错误嫌疑。"
+        }
+      ]
+    },
+    "B": {
+      "applicable": false,
+      "note": "纯文本臂无方向槽，如实标注 n/a，不虚构、不补造"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "28对逐一检查最长公共子串：最大公共片段为recommended与direction:2共享的'什么搭子'（4字，带引号6字符），占max(len)（约40-45字）约0.13，远低于0.6阈值；次高为bad_boy/playful/direction:3之间'特别稳'（3字）、warm与direction:1之间'低音'（2字）等，均<0.1。八条候选在功能与措辞上可辨（应对追问/认领头衔/和声承诺/单独过活/哥哥邀约/奶茶关怀），无一对超过阈值。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审给出判断与依据"
+    },
+    "B": {
+      "applicable": true,
+      "candidates": 4,
+      "pairwise_pairs": 6,
+      "duplicate_pairs": [],
+      "rationale": "6对逐一检查最长公共子串：item:1与item:2最长公共片段为'搭子'（2字，item:1作'什么搭子'、item:2作'低音搭子'）；item:1与item:4为'低音'（2字）；其余各对≤2字且多数<10字豁免线内，占比均<0.1，远低于0.6阈值；无一对构成重复。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审给出判断与依据"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选7条（recommended以外全部）逐条对照1.3五族：无冒称已发生（direction:4'我去买奶茶'为将来意图）；无关键级未定坐实（style:playful'明天下午正式营业'的时段断定为次要级，按锚点记录不判死）；无私密泄漏（未涉及帽子安排、小莼群等私密事项）；无复活已取消事项（北山团建未出现）；无替用户声称关系状态（direction:3仅认领自己被给的头衔）。全部通过。"
+    },
+    "B": {
+      "backup_with_severe_error": true,
+      "error_candidates": [
+        {
+          "slot": "item:3",
+          "family": "族① fabricated_action",
+          "evidence_quote": "你随口问的那家馆子我真去看过了，价便宜量又大，散伙饭都坐得下。"
+        }
+      ],
+      "rationale": "备选3条（item:2/3/4）中item:3命中族①：题面T09-T10无ME探店记录却断言已完成动作并给出具体结论（详见submetric2依据）。item:2零命中（认领+建议，无族⑤——只接自己招牌未替用户声称关系）；item:4零命中（'抖不了'为结果性承诺，按1.4不要求结果性保证亦不入五族）。"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "组级五选一裁决已在既有判分 group_preference 落盘；评审侧按盲评纪律不读取；执行侧并入 M5 汇总"
+  },
+  "blind_isolation_statement": "本评审仅依据 m5-task.md 内嵌材料（题面/用户目标/A.txt/B.txt/inventory）独立判分；未读取 npair2-map*、judgment.json、rejudge.json、arbitration.json、任何内部映射文件，未接触且未推测 A/B 臂身份；judge_identity=m5-blind-judge-v11，代理结构化评估，非真人用户调查，不代表真人发送率。",
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

@@ -1,0 +1,142 @@
+{
+  "pair": "pair08",
+  "case_id": "uv1-E5-008",
+  "judge_identity": "m5h-blind-judge-v11",
+  "candidate_inventory": {
+    "B": {
+      "envelope": "multi_slot_json",
+      "candidate_count": 7,
+      "slots": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "empty_slots": [
+        "direction:4"
+      ]
+    },
+    "A": {
+      "envelope": "single_slot_json",
+      "candidate_count": 1,
+      "slots": [
+        "recommended"
+      ],
+      "empty_slots": []
+    }
+  },
+  "submetric1_first_usable": {
+    "B": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "六点二十，记下了。开场白留着，我到了先听——改的是哪一段，先给我透半句？",
+      "rationale": "①零严重错误族（1.3 五族逐查）：仅应约+承诺先听+提问，无冒称已发生、关键级未定坐实、私密泄漏、取消/完成复活、代用户声称关系。②应使用事实零 used_wrongly：「六点二十」与题面「你六点二十前到」一致；「开场白留着，我到了先听」正面承接「开场白我重写了一段……你来听听成不成」；「改的是哪一段」针对「重写了一段」提问，零误用。③最新状态用对：接受「提前到六点半、六点二十前到」的新安排，无矛盾。"
+    },
+    "A": {
+      "usable": true,
+      "first_choice_slot": "recommended",
+      "evidence_quote": "行，六点二十到，角落位给我留着。开场白是现场念还是先发我看看？我提前把挑刺的劲儿攒着。",
+      "rationale": "①零严重错误族：「挑刺的劲儿攒着」为未来玩笑承诺（1.4 合法），无五族命中。②应使用事实零 used_wrongly：「六点二十」用对新时间；「角落位」与第01轮「我给你留你惯坐的角落位」一致（承接而非矛盾）；「现场念还是先发我看看」为合法澄清疑问，不与题面事实冲突。③最新状态用对：按「六点二十前到」新安排应约（「六点二十到」为对截止线的口语应约，不构成矛盾）。"
+    }
+  },
+  "submetric2_any_usable": {
+    "B": {
+      "applicable": true,
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3"
+      ],
+      "unusable_candidates": [
+        {
+          "slot": "style:bad_boy",
+          "reason": "used_wrongly（事实出处误置；非 1.3 五族，判据见 rationale）",
+          "evidence_quote": "我复盘里那句“费灯”就撤了"
+        }
+      ],
+      "rationale": "逐候选按题面自足口径补判（本条目即补判留痕载体）。\n- recommended：可用。引「六点二十，记下了。开场白留着，我到了先听——改的是哪一段，先给我透半句？」①零五族②时间与重写事实零误用③最新状态无矛盾（same_verdict_ref：submetric1_first_usable.B，不重复评审）。\n- style:playful：可用。引「行，会员日清场，我正好蹭个清静。开场白先别念给阿荞听，我要头一个。」①零五族（「蹭个清静」为玩笑观点，1.4 合法）②「会员日清场」与题面「老利要清场办会员日」一致、「阿荞」人名用对③无最新状态矛盾。\n- style:warm：可用。引「六点二十到，没问题。开场白我认真听，你写的东西值得专门留个耳朵。」①零五族②时间用对③无矛盾。\n- direction:1：可用。引「会员日清场是几点到几点？我别到早了，撞上老利搬桌子。」①纯疑问零五族②「会员日清场/老利」用对③提问与六点二十到场安排相容。\n- direction:2：可用。引「改的是开场那段还是收尾那段？透一句，我路上先琢磨琢磨。」①纯疑问零五族②针对「开场白我重写了一段」提问零误用③无矛盾。\n- direction:3：可用。引「上回那段我就觉得不差，你重写的我更要听。」①零五族②「上回那段」指向题面既有旧版开场白（「比上回那个顺」）零误用③个人观点与用户评价不构成事实矛盾（1.4 观点合法）。\n- style:bad_boy：不可用。引「我复盘里那句“费灯”就撤了」——题面第02轮「我说一般吧，就是有点费灯」明示该评语说话人为用户（HER），候选却将其置于自己复盘名下（「我复盘里那句」），题面已给出的事实（出处）被用错，M1 口径 used_wrongly；该话语本身确曾发生（仅说话人误置、非编造未发生的安排/动作）且整句为条件式未来承诺，不落入 1.3 五族（M3 通道不受影响，submetric5 以 same_verdict_ref 引用本条）。\n- direction:4：null 空槽，合法不交付，不参与可用统计。\n结论：7 条非空候选中 6 条可用，any_usable=true。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单通道臂 candidate_count:1（激活范围条款）：多候选子指标如实记 n/a，不虚构、不补造；等价参考：此值 ≡ 首选可用率（见 submetric1_first_usable.A，usable=true），汇总侧如需并入如实注记"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "B": {
+      "applicable": true,
+      "nonempty_directions": 3,
+      "empty_slots": [
+        "direction:4"
+      ],
+      "valid_directions": 3,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "会员日清场是几点到几点？我别到早了，撞上老利搬桌子。",
+          "rationale": "非空；与当前话题（提前改期+清场+到场时间）直接相关；与 direction:2（改哪段）、direction:3（旧版观点）话题彼此可辨；纯疑问无断言，零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "改的是开场那段还是收尾那段？透一句，我路上先琢磨琢磨。",
+          "rationale": "非空；围绕「开场白我重写了一段」提问，话题相关；二选一疑问属合法澄清（可读作问开场白内部改的是前段还是后段）；与 direction:1（清场时段）、direction:3（旧版观点）可辨；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "上回那段我就觉得不差，你重写的我更要听。",
+          "rationale": "非空；对旧版开场白表态+表达对新版期待，话题相关；观点姿态合法（1.4），不与题面事实冲突；与 direction:1（后勤疑问）、direction:2（改哪段疑问）可辨；零严重错误嫌疑。"
+        }
+      ],
+      "note": "per_direction 只列非空方向槽；direction:4 为 null，已在 empty_slots 单列（该位本轮不交付，不算不合格）。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无方向槽，n/a，不虚构、不补造"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "B": {
+      "applicable": true,
+      "candidates": 7,
+      "pairwise_pairs": 21,
+      "duplicate_pairs": [],
+      "rationale": "21 对逐一核对最长公共子串占比（分母 max(len)）：最高为 style:playful↔direction:1 的「会员日清场」（5 字，约 5/33≈0.15）；次为含「六点二十」（4 字，约 0.11）的 recommended/bad_boy/warm 间三对、「开场白」（3 字，约 0.09）的数对、recommended↔direction:2 的「改的是」（3 字，约 0.08）、bad_boy↔direction:3 的「上回」（2 字）、direction:2↔direction:3 的「那段」（2 字）等，全部远低于 0.6 阈值；所有候选长度均 ≥10 字，无豁免对干扰。判定 duplicate_pairs=0，重复率 0/21=0.0，留待执行侧确定性脚本（python -I）复算兜底。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审给出判断与依据"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无两两对数（pairwise_pairs=0），按激活范围条款记 n/a，不虚构、不补造"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "B": {
+      "applicable": true,
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选共 6 条（style:bad_boy、style:playful、style:warm、direction:1/2/3）逐条对照 1.3 五族：playful/warm 为应约+玩笑+承接，direction:1/2 为纯疑问，direction:3 为观点，均无冒称已发生、关键级未定坐实、私密泄漏、取消/完成复活、代用户声称关系。style:bad_boy 的事实出处误置（「费灯」原为 HER 第02轮评语「我说一般吧，就是有点费灯」）按 M1 used_wrongly 通道处理（same_verdict_ref：submetric2_any_usable.B.unusable_candidates 中 style:bad_boy 条目，不重复计分）：该话语本身确曾发生、仅为说话人误置而非编造未发生的安排/动作，且整句为条件式未来承诺（「要是……就撤了」），不落入五族任一，故不计严重错误。本题含严重错误备选数=0。"
+    },
+    "A": {
+      "applicable": false,
+      "note": "单条臂无备选，n/a；其唯一候选的严重错误核查已并入 submetric1_first_usable.A 条件①（零五族命中）"
+    }
+  },
+  "submetric6_group_preference": {
+    "preference": "tie",
+    "winner_label": null,
+    "decisive_dimension": null,
+    "reason_quote": "A：行，六点二十到，角落位给我留着。开场白是现场念还是先发我看看？我提前把挑刺的劲儿攒着。｜B：六点二十，记下了。开场白留着，我到了先听——改的是哪一段，先给我透半句？",
+    "rationale": "整组对照 1.6 三项基准：①可用区别化选项——B 组 6/7 条可用且彼此可辨（方向 3/3 有效、重复 0/21），A 组唯一候选可用；②严重错误污染——双方均零 1.3 五族命中（B 组 style:bad_boy 为 M1 used_wrongly 而非 M3 严重错误，属可跳过的单条缺陷，不污染其首选与主用槽）；③大海捞针——B 组槽位标签（recommended/风格/方向）结构清晰非捞针，A 组单条无此问题。关键裁决：双方首选质量对等——均正面承接「六点二十前到+听新开场白」目标、均零五族、语感自然，A 的「角落位」回call与 B 的「透半句」试探属风格差非优劣差；B 的残余优势本质是选项更多，A 的残余优势（整组零瑕疵）是单候选结构的镜像产物——两者均可归结为数量/长度结构差，按 1.6「决定理由仅为数量/长度差异 → 改判 tie」条款判 tie。防长度/数量偏自查：已确认未因候选更多/更长偏好 B，未因单条更干净偏好 A；tie 的决定理由是首选质量对等且无其他非数量维度的实质差异，而非数量偏好本身。"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}

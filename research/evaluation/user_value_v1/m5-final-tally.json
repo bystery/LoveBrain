@@ -1,0 +1,871 @@
+{
+ "ledger": "e5n-v2-m5-six-tally",
+ "generated_at": "2026-11-14 13:48:13",
+ "generated_by": "M5 六子指标终账（机械聚合 python -I + npair2-map 归臂 + m5-recheck-tally final 值链；零 LLM 判断、零哈希）",
+ "source": {
+  "recheck_tally": "内部复评终账件（final 值唯一事实源；01/11 一致终值、06 仲裁终值 m5-arbitration.json、9 对未抽样=首评值）",
+  "arm_map": "奇偶轮换（奇 pair A=L2、偶 pair A=B1；逐对 rotation 已与奇偶规则核对）",
+  "rubric_anchor": "评分锚点依据 v1.1 冻结评分模板（公开口径）+ scoring-templates-v1.1.md §5/§7",
+  "submetric6_refs": [
+   "内部首次终账",
+   "内部仲裁校正账（终裁 01=A/06=B/11=A）",
+   "repo-landing/summary.json metrics.M5.N L2_wins/B1_wins 照录"
+  ],
+  "writeback_trace": "_tmp_m5/m5-stage5-writeback-report.txt（阶段⑤终值回写留痕）"
+ },
+ "cross_checks": {
+  "odd_even_rotation_per_pair": "PASS",
+  "odd_even_mapping_printout": [
+   "npair2-01 → A=L2, B=B1",
+   "npair2-02 → A=B1, B=L2",
+   "npair2-03 → A=L2, B=B1",
+   "npair2-04 → A=B1, B=L2",
+   "npair2-05 → A=L2, B=B1",
+   "npair2-06 → A=B1, B=L2",
+   "npair2-07 → A=L2, B=B1",
+   "npair2-08 → A=B1, B=L2",
+   "npair2-09 → A=L2, B=B1",
+   "npair2-10 → A=B1, B=L2",
+   "npair2-11 → A=L2, B=B1",
+   "npair2-12 → A=B1, B=L2"
+  ],
+  "pair_count_sum_is_12": "PASS",
+  "pair_count_bookkeeping": [
+   "产出对数=12（解析 0 失败 / 0 缺席）",
+   "s1/s2/s5 每臂 适用+单列=12（单列 unjudgeable={}）",
+   "s3 多通道臂 nonempty 簿记=47（12 对 L2 侧；真空槽单列 direction:4）",
+   "s6 引用件五选一和=12"
+  ],
+  "score_domain_check": "PASS",
+  "three_way_consistency_summary_scores_tally": "PASS",
+  "three_way_notes": [],
+  "missing_scores": [],
+  "domain_errors": [],
+  "aggregate_status": "PASS",
+  "blocking_errors": []
+ },
+ "aggregate": {
+  "submetric1_first_usable": {
+   "L2": {
+    "num": 12,
+    "den": 12,
+    "rate": 100.0
+   },
+   "B1": {
+    "num": 11,
+    "den": 12,
+    "rate": 91.7
+   },
+   "better": "higher",
+   "tie": false
+  },
+  "submetric2_any_usable": {
+   "L2": {
+    "num": 12,
+    "den": 12,
+    "rate": 100.0
+   },
+   "B1": {
+    "num": 11,
+    "den": 12,
+    "rate": 91.7
+   },
+   "better": "higher",
+   "tie": false
+  },
+  "submetric3_direction_coverage": {
+   "L2": {
+    "valid": 44,
+    "nonempty": 47,
+    "rate": 93.6
+   },
+   "B1": null,
+   "B1_na_reason": "纯文本臂无方向槽（激活件 §7 表 B 行 3；不虚构）",
+   "better": "higher",
+   "true_empty_slots": [
+    "npair2-10 direction:4"
+   ],
+   "pooled_ratio": "44/47"
+  },
+  "submetric4_duplicate_rate": {
+   "L2": {
+    "dup_pairs": 0,
+    "pairwise": 329,
+    "rate": 0.0,
+    "exempt_pairs_lt10chars": 7
+   },
+   "B1": {
+    "dup_pairs": 0,
+    "pairwise": 36,
+    "rate": 0.0,
+    "exempt_pairs_lt10chars": 0
+   },
+   "better": "lower",
+   "tie": true
+  },
+  "submetric5_backup_severe_error": {
+   "L2": {
+    "num": 3,
+    "den": 12,
+    "rate": 25.0,
+    "hit_pairs": [
+     "npair2-06",
+     "npair2-08",
+     "npair2-12"
+    ]
+   },
+   "B1": {
+    "num": 2,
+    "den": 12,
+    "rate": 16.7,
+    "hit_pairs": [
+     "npair2-01",
+     "npair2-05"
+    ]
+   },
+   "better": "lower",
+   "tie": false
+  },
+  "submetric6_group_preference": {
+   "status": "引用件不重评",
+   "value": "11/12",
+   "wins_ref": {
+    "L2_wins": 11,
+    "B1_wins": 1,
+    "tie": 0,
+    "both_unqualified": 0,
+    "insufficient_info": 0
+   },
+   "cited_from": "firstpass-tally aggregate + recheck-arbitration-tally 终裁（01=A/06=B/11=A）+ summary 照录断言一致",
+   "declaration": "M5 组级六子指标为原生子代理结构化盲评（子指标1-5）+ 既有组级盲评引用（子指标6），全部为代理评委产出，不是真人用户调查，不代表真人发送率。"
+  }
+ },
+ "recheck_arbitration_single_listing": {
+  "recheck_pairs": [
+   "npair2-01",
+   "npair2-06",
+   "npair2-11"
+  ],
+  "recheck_consistent_pairs": [
+   "npair2-01",
+   "npair2-11"
+  ],
+  "arbitration_pairs": [
+   "npair2-06"
+  ],
+  "arbitration_file": "npair2-06/m5-eval/m5-arbitration.json（终裁 B direction:2 invalid，s3.B=3/4、s5.B=true、s2.B 剔 direction:2；arb_bytes=11603）",
+  "misreport_registered": {
+   "first": 8,
+   "rejudge": 0,
+   "note": "按 v1.1 §7.2 记误报、单列计数（不进正确数/错误数，只进可靠性说明）"
+  },
+  "not_sampled_pairs": [
+   "npair2-02",
+   "npair2-03",
+   "npair2-04",
+   "npair2-05",
+   "npair2-07",
+   "npair2-08",
+   "npair2-09",
+   "npair2-10",
+   "npair2-12"
+  ],
+  "not_sampled_note": "复评抽样名单 npair2-01/06/11（v1.1 §7.1 ≡1 mod 5，3/12=25%≥20%）；名单外 9 对设计使然无复评对照，final=首评值"
+ },
+ "per_pair": [
+  {
+   "pair": "npair2-01",
+   "case_id": "uv1-E5-001",
+   "turn_case_id": "E340_T10",
+   "rotation": {
+    "A": "L2",
+    "B": "B1"
+   },
+   "envelope": {
+    "A": "multi_slot_json",
+    "B": "plain_text"
+   },
+   "recheck_status": "compared",
+   "final_basis": "recheck_consistent_final",
+   "judgment_file": "m5-eval/npair2-01.json",
+   "judgment_bytes": 9636,
+   "rejudge_file": "npair2-01/m5-eval/m5-rejudge.json",
+   "arbitration_file": null,
+   "candidate_count": {
+    "A": 8,
+    "B": 4
+   },
+   "m5six": {
+    "A": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": [
+      4,
+      4
+     ],
+     "s4": [
+      0,
+      28,
+      0
+     ]
+    },
+    "B": {
+     "envelope": "plain_text",
+     "s1": true,
+     "s2": true,
+     "s5": true,
+     "s3": null,
+     "s4": [
+      0,
+      6,
+      0
+     ]
+    }
+   },
+   "preference": "A",
+   "winner_arm": "L2",
+   "decisive_dimension": "severe_error_free",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  },
+  {
+   "pair": "npair2-02",
+   "case_id": "uv1-E5-002",
+   "turn_case_id": "E359_T11",
+   "rotation": {
+    "A": "B1",
+    "B": "L2"
+   },
+   "envelope": {
+    "A": "plain_text",
+    "B": "multi_slot_json"
+   },
+   "recheck_status": "not_sampled",
+   "final_basis": "first_eval_not_sampled",
+   "judgment_file": "m5-eval/npair2-02.json",
+   "judgment_bytes": 10186,
+   "rejudge_file": null,
+   "arbitration_file": null,
+   "candidate_count": {
+    "A": 1,
+    "B": 8
+   },
+   "m5six": {
+    "A": {
+     "envelope": "plain_text",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": null,
+     "s4": null
+    },
+    "B": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": [
+      4,
+      4
+     ],
+     "s4": [
+      0,
+      28,
+      0
+     ]
+    }
+   },
+   "preference": "B",
+   "winner_arm": "L2",
+   "decisive_dimension": "usable_distinction",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  },
+  {
+   "pair": "npair2-03",
+   "case_id": "uv1-E5-003",
+   "turn_case_id": "E373_T09",
+   "rotation": {
+    "A": "L2",
+    "B": "B1"
+   },
+   "envelope": {
+    "A": "multi_slot_json",
+    "B": "plain_text"
+   },
+   "recheck_status": "not_sampled",
+   "final_basis": "first_eval_not_sampled",
+   "judgment_file": "m5-eval/npair2-03.json",
+   "judgment_bytes": 9024,
+   "rejudge_file": null,
+   "arbitration_file": null,
+   "candidate_count": {
+    "A": 8,
+    "B": 1
+   },
+   "m5six": {
+    "A": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": [
+      4,
+      4
+     ],
+     "s4": [
+      0,
+      28,
+      0
+     ]
+    },
+    "B": {
+     "envelope": "plain_text",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": null,
+     "s4": null
+    }
+   },
+   "preference": "A",
+   "winner_arm": "L2",
+   "decisive_dimension": "usable_distinction",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  },
+  {
+   "pair": "npair2-04",
+   "case_id": "uv1-E5-004",
+   "turn_case_id": "E378_T10",
+   "rotation": {
+    "A": "B1",
+    "B": "L2"
+   },
+   "envelope": {
+    "A": "plain_text",
+    "B": "multi_slot_json"
+   },
+   "recheck_status": "not_sampled",
+   "final_basis": "first_eval_not_sampled",
+   "judgment_file": "m5-eval/npair2-04.json",
+   "judgment_bytes": 7752,
+   "rejudge_file": null,
+   "arbitration_file": null,
+   "candidate_count": {
+    "A": 1,
+    "B": 8
+   },
+   "m5six": {
+    "A": {
+     "envelope": "plain_text",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": null,
+     "s4": null
+    },
+    "B": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": [
+      4,
+      4
+     ],
+     "s4": [
+      0,
+      28,
+      0
+     ]
+    }
+   },
+   "preference": "B",
+   "winner_arm": "L2",
+   "decisive_dimension": "usable_distinction",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  },
+  {
+   "pair": "npair2-05",
+   "case_id": "uv1-E5-005",
+   "turn_case_id": "E341_T04",
+   "rotation": {
+    "A": "L2",
+    "B": "B1"
+   },
+   "envelope": {
+    "A": "multi_slot_json",
+    "B": "plain_text"
+   },
+   "recheck_status": "not_sampled",
+   "final_basis": "first_eval_not_sampled",
+   "judgment_file": "m5-eval/npair2-05.json",
+   "judgment_bytes": 8732,
+   "rejudge_file": null,
+   "arbitration_file": null,
+   "candidate_count": {
+    "A": 8,
+    "B": 4
+   },
+   "m5six": {
+    "A": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": [
+      4,
+      4
+     ],
+     "s4": [
+      0,
+      28,
+      0
+     ]
+    },
+    "B": {
+     "envelope": "plain_text",
+     "s1": true,
+     "s2": true,
+     "s5": true,
+     "s3": null,
+     "s4": [
+      0,
+      6,
+      0
+     ]
+    }
+   },
+   "preference": "A",
+   "winner_arm": "L2",
+   "decisive_dimension": "usable_distinction",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  },
+  {
+   "pair": "npair2-06",
+   "case_id": "uv1-E5-006",
+   "turn_case_id": "E361_T03",
+   "rotation": {
+    "A": "B1",
+    "B": "L2"
+   },
+   "envelope": {
+    "A": "plain_text",
+    "B": "multi_slot_json"
+   },
+   "recheck_status": "compared",
+   "final_basis": "arbitration_final",
+   "judgment_file": "m5-eval/npair2-06.json",
+   "judgment_bytes": 7206,
+   "rejudge_file": "npair2-06/m5-eval/m5-rejudge.json",
+   "arbitration_file": "npair2-06/m5-eval/m5-arbitration.json",
+   "candidate_count": {
+    "A": 4,
+    "B": 8
+   },
+   "m5six": {
+    "A": {
+     "envelope": "plain_text",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": null,
+     "s4": [
+      0,
+      6,
+      0
+     ]
+    },
+    "B": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": true,
+     "s3": [
+      3,
+      4
+     ],
+     "s4": [
+      0,
+      28,
+      0
+     ]
+    }
+   },
+   "preference": "B",
+   "winner_arm": "L2",
+   "decisive_dimension": "usable_distinction",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  },
+  {
+   "pair": "npair2-07",
+   "case_id": "uv1-E5-007",
+   "turn_case_id": "E367_T07",
+   "rotation": {
+    "A": "L2",
+    "B": "B1"
+   },
+   "envelope": {
+    "A": "multi_slot_json",
+    "B": "plain_text"
+   },
+   "recheck_status": "not_sampled",
+   "final_basis": "first_eval_not_sampled",
+   "judgment_file": "m5-eval/npair2-07.json",
+   "judgment_bytes": 7632,
+   "rejudge_file": null,
+   "arbitration_file": null,
+   "candidate_count": {
+    "A": 8,
+    "B": 1
+   },
+   "m5six": {
+    "A": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": [
+      4,
+      4
+     ],
+     "s4": [
+      0,
+      28,
+      0
+     ]
+    },
+    "B": {
+     "envelope": "plain_text",
+     "s1": false,
+     "s2": false,
+     "s5": false,
+     "s3": null,
+     "s4": null
+    }
+   },
+   "preference": "A",
+   "winner_arm": "L2",
+   "decisive_dimension": "usable_distinction",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  },
+  {
+   "pair": "npair2-08",
+   "case_id": "uv1-E5-008",
+   "turn_case_id": "E345_T03",
+   "rotation": {
+    "A": "B1",
+    "B": "L2"
+   },
+   "envelope": {
+    "A": "plain_text",
+    "B": "multi_slot_json"
+   },
+   "recheck_status": "not_sampled",
+   "final_basis": "first_eval_not_sampled",
+   "judgment_file": "m5-eval/npair2-08.json",
+   "judgment_bytes": 8013,
+   "rejudge_file": null,
+   "arbitration_file": null,
+   "candidate_count": {
+    "A": 4,
+    "B": 8
+   },
+   "m5six": {
+    "A": {
+     "envelope": "plain_text",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": null,
+     "s4": [
+      0,
+      6,
+      0
+     ]
+    },
+    "B": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": true,
+     "s3": [
+      3,
+      4
+     ],
+     "s4": [
+      0,
+      28,
+      0
+     ]
+    }
+   },
+   "preference": "B",
+   "winner_arm": "L2",
+   "decisive_dimension": "usable_distinction",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  },
+  {
+   "pair": "npair2-09",
+   "case_id": "uv1-E5-009",
+   "turn_case_id": "E346_T11",
+   "rotation": {
+    "A": "L2",
+    "B": "B1"
+   },
+   "envelope": {
+    "A": "multi_slot_json",
+    "B": "plain_text"
+   },
+   "recheck_status": "not_sampled",
+   "final_basis": "first_eval_not_sampled",
+   "judgment_file": "m5-eval/npair2-09.json",
+   "judgment_bytes": 8067,
+   "rejudge_file": null,
+   "arbitration_file": null,
+   "candidate_count": {
+    "A": 8,
+    "B": 1
+   },
+   "m5six": {
+    "A": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": [
+      4,
+      4
+     ],
+     "s4": [
+      0,
+      28,
+      7
+     ]
+    },
+    "B": {
+     "envelope": "plain_text",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": null,
+     "s4": null
+    }
+   },
+   "preference": "A",
+   "winner_arm": "L2",
+   "decisive_dimension": "usable_distinction",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  },
+  {
+   "pair": "npair2-10",
+   "case_id": "uv1-E5-010",
+   "turn_case_id": "E356_T12",
+   "rotation": {
+    "A": "B1",
+    "B": "L2"
+   },
+   "envelope": {
+    "A": "plain_text",
+    "B": "multi_slot_json"
+   },
+   "recheck_status": "not_sampled",
+   "final_basis": "first_eval_not_sampled",
+   "judgment_file": "m5-eval/npair2-10.json",
+   "judgment_bytes": 8801,
+   "rejudge_file": null,
+   "arbitration_file": null,
+   "candidate_count": {
+    "A": 1,
+    "B": 7
+   },
+   "m5six": {
+    "A": {
+     "envelope": "plain_text",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": null,
+     "s4": null
+    },
+    "B": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": [
+      3,
+      3
+     ],
+     "s4": [
+      0,
+      21,
+      0
+     ]
+    }
+   },
+   "preference": "B",
+   "winner_arm": "L2",
+   "decisive_dimension": "usable_distinction",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  },
+  {
+   "pair": "npair2-11",
+   "case_id": "uv1-E5-011",
+   "turn_case_id": "E366_T11",
+   "rotation": {
+    "A": "L2",
+    "B": "B1"
+   },
+   "envelope": {
+    "A": "multi_slot_json",
+    "B": "plain_text"
+   },
+   "recheck_status": "compared",
+   "final_basis": "recheck_consistent_final",
+   "judgment_file": "m5-eval/npair2-11.json",
+   "judgment_bytes": 11642,
+   "rejudge_file": "npair2-11/m5-eval/m5-rejudge.json",
+   "arbitration_file": null,
+   "candidate_count": {
+    "A": 8,
+    "B": 4
+   },
+   "m5six": {
+    "A": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": [
+      4,
+      4
+     ],
+     "s4": [
+      0,
+      28,
+      0
+     ]
+    },
+    "B": {
+     "envelope": "plain_text",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": null,
+     "s4": [
+      0,
+      6,
+      0
+     ]
+    }
+   },
+   "preference": "A",
+   "winner_arm": "L2",
+   "decisive_dimension": "usable_distinction",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  },
+  {
+   "pair": "npair2-12",
+   "case_id": "uv1-E5-012",
+   "turn_case_id": "E370_T03",
+   "rotation": {
+    "A": "B1",
+    "B": "L2"
+   },
+   "envelope": {
+    "A": "plain_text",
+    "B": "multi_slot_json"
+   },
+   "recheck_status": "not_sampled",
+   "final_basis": "first_eval_not_sampled",
+   "judgment_file": "m5-eval/npair2-12.json",
+   "judgment_bytes": 13320,
+   "rejudge_file": null,
+   "arbitration_file": null,
+   "candidate_count": {
+    "A": 4,
+    "B": 8
+   },
+   "m5six": {
+    "A": {
+     "envelope": "plain_text",
+     "s1": true,
+     "s2": true,
+     "s5": false,
+     "s3": null,
+     "s4": [
+      0,
+      6,
+      0
+     ]
+    },
+    "B": {
+     "envelope": "multi_slot_json",
+     "s1": true,
+     "s2": true,
+     "s5": true,
+     "s3": [
+      3,
+      4
+     ],
+     "s4": [
+      0,
+      28,
+      0
+     ]
+    }
+   },
+   "preference": "A",
+   "winner_arm": "B1",
+   "decisive_dimension": "usable_distinction",
+   "unjudgeable": {
+    "A": false,
+    "B": false
+   }
+  }
+ ],
+ "completeness": {
+  "note": "完整性口径=文件数+字节量（禁 sha256/哈希）",
+  "per_pair_file_count": 12,
+  "first_bytes_total": 110011,
+  "rejudge_bytes_total": 27962,
+  "arbitration_bytes_total": 11603
+ },
+ "note": "M5 六子指标终账（子指标 1–5 复评对照后终值聚合 + 子指标 6 引用件 11/12）；与 E5-N 首评账分开落盘互不覆盖（metrics.M5.N / metrics.E5.N 槽位分离）；runbook §0.1 #16 补齐件；两线禁合并（N 线单表）。",
+ "no_hash_used": true,
+ "source_files_untouched": true
+}

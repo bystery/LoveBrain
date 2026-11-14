@@ -1,0 +1,112 @@
+{
+  "pair": "npair2-03",
+  "case_id": "uv1-E5-003",
+  "judge_identity": "m5-blind-judge-v11",
+  "isolation_declaration": "本评审仅依据 m5-task.md 内嵌匿名材料（题面聊天记录、本轮用户目标、A.txt/B.txt 全文、inventory 清单）与第 1 节冻结锚点独立判分；全程未读取 npair2-map*、judgment.json、rejudge.json、arbitration.json、judge-task.md、任何内部映射文件，未接触、未推测任何臂身份、系统或机制归属；判分对象仅为匿名文本 A/B。",
+  "submetric1_first_usable": {
+    "A": {
+      "usable": true,
+      "evidence_quote": "归好了，全按你报的数，一笔没动：10 月五笔——日常 3200、水电 392、车位 329、人情 1456、我垫的车保养 512，小计 5889；11 月两笔——宽带 720、我垫的住宿 966，小计 1686。",
+      "rationale": "①零严重错误：月份归类与题面各笔完全一致（宽带 720/住宿 966 为 11 月见第 05/08 轮，其余五笔为 10 月见第 01/02/03 轮，车保养'走前'即 10/15 离开前属 10 月），无族①-⑤命中；②零 used_wrongly：3200 用的是第 07 轮改口后新数（3286 作废未被复用），392/329 未混淆（符合第 04 轮口径），且'水电 392 里含 9 月结转的 33 我也备注了，11 月补缴时冲抵'正确落实第 07 轮备注请求——'我也备注了'是对'你帮我备注一下'的直接履约确认，属合格处理而非冒称外部安排；③最新状态用对：5889=3200+392+329+1456+512、1686=720+966 算术正确，未触碰 800 已回礼两清、966 单列走报销等已定事项。"
+    },
+    "B": {
+      "usable": true,
+      "evidence_quote": "算 10 月的五笔——日常 3200（按你改口后的新数为准，3286 作废）、水电 392（备注：含 9 月结转过来的 33，11 月补缴时冲抵）、车位 329、人情 1456（表姐那 800 按你标的已回礼两清）、车保养 512（我走前垫的），合计 5889",
+      "rationale": "①零严重错误：10 月五笔/11 月两笔归类与题面一致，'我走前垫的'与第 03 轮'你走前微信里说的车保养'由用户本人确认过，无族①-⑤命中；②零 used_wrongly：3200 采用第 07 轮改口新数并明写 3286 作废；'392 是水电燃气，329 才是车位管理费'正确归于用户第 04 轮原话（'你记的没错'）；800 注明'按你标的已回礼两清'未复活已了结事项；966'照旧单列，走单位报销，不进三本账'与第 08 轮逐字吻合；宽带'5 号续的年费'与第 05 轮（11-06 称昨天续）一致；③最新状态用对：5889 算术正确；补充句'双 11 那单 588 也是 11 月的……你之前算得对'是对用户第 02/05 轮自定口径（定金 150 算 11 月、150+438=588）的确认，非新断言。"
+    }
+  },
+  "submetric2_any_usable": {
+    "A": {
+      "any_usable": true,
+      "usable_candidates": [
+        "recommended",
+        "style:bad_boy",
+        "style:playful",
+        "style:warm",
+        "direction:1",
+        "direction:2",
+        "direction:3",
+        "direction:4"
+      ],
+      "unusable_candidates": [],
+      "rationale": "8 个槽位逐一按 1.2 ①②③ 核对均可用：四个风格槽月份归类全部正确且数字照用（如 bad_boy'归完了：10 月 3200、392、329、1456、512；11 月 720、966，你的数一笔没动'），warm 对 86 重复、3286 作废的复用与第 07 轮一致（'连重复的那笔 86 你都自己揪出来了'），四个 direction 槽见 submetric3 per_direction 逐条依据；无 any_usable 之外的失效候选。"
+    },
+    "B": {
+      "any_usable": true,
+      "usable_candidates": [
+        "item:1"
+      ],
+      "unusable_candidates": [],
+      "rationale": "纯文本臂仅 1 条候选 item:1，即主建议，按 1.2 ①②③ 核对可用（依据同 submetric1 B，如'3286 作废''已回礼两清''照旧单列，走单位报销'逐项与题面最新状态一致），unusable 为空。"
+    }
+  },
+  "submetric3_direction_coverage": {
+    "A": {
+      "applicable": true,
+      "nonempty_directions": 4,
+      "valid_directions": 4,
+      "per_direction": [
+        {
+          "slot": "direction:1",
+          "verdict": "valid",
+          "evidence_quote": "七笔归完，剩下的就是 11 月补缴冲抵那 33，和月底对平封存了吧？",
+          "rationale": "非空；与当前话题相关：承接第 07 轮 33 冲抵与对账收尾；'…了吧？'疑问收尾属有条件姿态，'月底对平封存'为新提议非冒称已发生；与 d2-d4 方向彼此可辨（后续事项确认方向）；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:2",
+          "verdict": "valid",
+          "evidence_quote": "要不月底封存前你把三本账的表发我一份，我在这边也留个底，咱俩两头都有数。",
+          "rationale": "非空；与对账话题相关（账表存档底备）；'要不…'为提议式请求，无冒称；与 d1（收尾确认）、d3（情感认可）、d4（生活分享）彼此可辨（存档底账方向）；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:3",
+          "verdict": "valid",
+          "evidence_quote": "看你这十来天一笔一笔把账理下来，我在项目上真觉得踏实，家里有你管账，我没什么可操心的。",
+          "rationale": "非空；与当前话题相关（对账过程的情绪承接）；'十来天'与题面时序（11-03 开理至 11-13）相容，'我在项目上'与第 08 轮出差语境相容且属第一人称自述；按 1.4 情绪承接不因没追问资料判不合格；与其他方向可辨；零严重错误嫌疑。"
+        },
+        {
+          "slot": "direction:4",
+          "verdict": "valid",
+          "evidence_quote": "账先放着——表姐那箱大闸蟹 9 号发货，到了没？到了挑两只大的，视频里我看着你吃。",
+          "rationale": "非空；与人情线话题相关（第 06 轮表姐回礼大闸蟹、定 11-09 发货，今日 11-13 问'到了没'时序合理）；只问不断言到货，无未定坐实；'视频里我看着你吃'属玩笑/提议合法姿态；与其他方向可辨；零严重错误嫌疑。"
+        }
+      ]
+    },
+    "B": {
+      "applicable": false,
+      "note": "纯文本臂无方向槽，如实标注 n/a，不虚构、不补造（inventory slots=[\"item:1\"]，无 direction 槽；此为协议结构差异，按盲评纪律不计缺陷）。"
+    }
+  },
+  "submetric4_duplicate_rate": {
+    "A": {
+      "applicable": true,
+      "candidates": 8,
+      "pairwise_pairs": 28,
+      "duplicate_pairs": [],
+      "rationale": "逐对核对 28 对：共享度最高的是数字串——bad_boy×warm 的最长公共子串'10 月 3200、392、329、1456、512'约 27 字符，占 max(len)≈93 的约 0.29（bad_boy×playful 同理约 22/85≈0.26），均远低于 0.6 阈值；recommended 因候选使用全名（'日常 3200、水电 392、车位 329…'）与各风格槽无长连续公共子串；四个 direction 主语与功能互异（d1×d2 仅共享'月底''封存'等 ≤4 字碎片，<10 字豁免线以下）。无任何一对 LCS 占比>0.6，duplicate_pairs=0，重复率 0/28=0。",
+      "note": "阈值：两两 LCS 子串占比>0.6（分母 max(len)，<10字豁免）；执行侧将以确定性脚本复算（python -I），评审给出判断与依据。"
+    },
+    "B": {
+      "applicable": false,
+      "note": "仅 1 条候选，两两对数为 0，无重复率可计，如实标注 n/a，不虚构。"
+    }
+  },
+  "submetric5_backup_severe_error": {
+    "A": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "备选=recommended 以外全部 7 条（bad_boy/playful/warm/direction:1-4），逐条核对五族：无族①冒称已发生（'我帮你盯着''月底对平咱就封存'均为当下承诺/新提议）；无族②未定坐实关键级（d4'到了没？'只问不断言）；无族③私密泄漏（账目信息均为题面双方共有）；无族④已取消复活（未触碰 3286 作废与 800 两清事项，warm'连重复的那笔 86 你都自己揪出来了'是对第 07 轮改口的正确复用）；无族⑤替用户声称关系状态。全部零命中。"
+    },
+    "B": {
+      "backup_with_severe_error": false,
+      "error_candidates": [],
+      "rationale": "纯文本臂主建议=item:1，备选=item:2..N 为空集，不存在含严重错误的备选（空备选集按锚点不记缺陷、不计入分子），如实记 false；主建议本身已在 submetric1 按五族核对零命中（如'表姐那 800 按你标的已回礼两清'未复活已了结事项）。"
+    }
+  },
+  "submetric6_group_preference": {
+    "status": "已有_补跑不重评",
+    "note": "组级五选一裁决已在既有判分 group_preference 落盘；评审侧按盲评纪律不读取；执行侧并入 M5 汇总"
+  },
+  "unjudgeable": false,
+  "unjudgeable_reason": null
+}
