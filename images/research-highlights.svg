@@ -1,25 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 400" role="img" aria-labelledby="title desc">
-<title id="title">LoveBrain 研究成绩：25–32 轮记忆保持率 100%、严重事实错误 6 降至 1、两批整组盲评 11:1 与 11:0</title>
-<desc id="desc">历史长程记忆 FLJUDGE 与滑窗父本比较；事实边界 W16 与父本比较；M5-N 12 组中 11 胜 1 负；M5-H 12 组中 11 胜 0 负 1 平。各项属于不同实验。</desc>
+<title id="title">LoveBrain 研究成绩：25–32 轮长程记忆保持率 1.0、跨域四场景保持 1.0×4、严重事实错误 6 降至 1、整组盲评 11:1</title>
+<desc id="desc">长程记忆与旧滑窗父本同批同判据比较；跨域四场景保持 1.0，旧机制 32.3%–62.4%（对照 r9_slim）；严重错误 6→1（对照同批父本）；整组盲评 11 胜 1 负（vs 普通基线，代理评分，多候选 12 组）。各项属于不同实验。</desc>
 <rect width="1440" height="400" rx="22" fill="#101827"/>
 <text x="48" y="51" fill="#E7EAF0" font-size="24" font-weight="600" font-family="system-ui,'PingFang SC','Microsoft YaHei',sans-serif">把聊天上下文变成优势，而不只是多打一段 Prompt</text>
 <g font-family="system-ui,'PingFang SC','Microsoft YaHei',sans-serif">
 <rect x="40" y="82" width="328" height="256" rx="18" fill="#1C2B43"/>
-<text x="64" y="129" fill="#B9C4D6" font-size="22">25–32 轮事实保持</text>
-<text x="64" y="230" fill="#59E4B2" font-size="90" font-weight="750">100%</text>
-<text x="64" y="287" fill="#E7EAF0" font-size="21">旧滑窗：49.3% / 50.9%</text>
 <rect x="384" y="82" width="328" height="256" rx="18" fill="#1C2B43"/>
-<text x="408" y="129" fill="#B9C4D6" font-size="22">未确认事项严重错误</text>
-<text x="408" y="230" fill="#FFBE76" font-size="88" font-weight="750">6 → 1</text>
-<text x="408" y="287" fill="#E7EAF0" font-size="21">同批旧机制 → 新机制</text>
 <rect x="728" y="82" width="328" height="256" rx="18" fill="#1C2B43"/>
-<text x="752" y="129" fill="#B9C4D6" font-size="22">新生成 · 整组盲评</text>
-<text x="752" y="230" fill="#59E4B2" font-size="90" font-weight="750">11 : 1</text>
-<text x="752" y="287" fill="#E7EAF0" font-size="21">LoveBrain vs 普通基线</text>
 <rect x="1072" y="82" width="328" height="256" rx="18" fill="#1C2B43"/>
-<text x="1096" y="129" fill="#B9C4D6" font-size="22">历史固定模型 · 整组盲评</text>
-<text x="1096" y="230" fill="#59E4B2" font-size="90" font-weight="750">11 : 0</text>
-<text x="1096" y="287" fill="#E7EAF0" font-size="21">另有 1 平 · vs Direct</text>
+<text x="64" y="129" fill="#B9C4D6" font-size="22">长程记忆保持 · 25–32 轮</text>
+<text x="64" y="230" fill="#59E4B2" font-size="90" font-weight="750">1.0</text>
+<text x="64" y="287" fill="#E7EAF0" font-size="21">旧滑窗：0.493 / 0.509</text>
+<text x="64" y="316" fill="#B9C4D6" font-size="18">同批同判据 · 判决文件公开</text>
+<text x="408" y="129" fill="#B9C4D6" font-size="22">跨域四场景 · 事实保持</text>
+<text x="408" y="230" fill="#59E4B2" font-size="90" font-weight="750">1.0×4</text>
+<text x="408" y="287" fill="#E7EAF0" font-size="21">旧机制：32.3%–62.4%</text>
+<text x="408" y="316" fill="#B9C4D6" font-size="18">出行 · 职场 · 餐饮 · 医疗</text>
+<text x="752" y="129" fill="#B9C4D6" font-size="22">未确认事项严重错误</text>
+<text x="752" y="230" fill="#FFBE76" font-size="88" font-weight="750">6 → 1</text>
+<text x="752" y="287" fill="#E7EAF0" font-size="21">同批旧机制 → 新机制</text>
+<text x="1096" y="129" fill="#B9C4D6" font-size="22">新生成 · 整组盲评</text>
+<text x="1096" y="230" fill="#59E4B2" font-size="90" font-weight="750">11 : 1</text>
+<text x="1096" y="287" fill="#E7EAF0" font-size="21">LoveBrain vs 普通基线</text>
+<text x="1096" y="316" fill="#B9C4D6" font-size="18">多候选 · 代理评分（12 组）</text>
 </g>
-<text x="46" y="381" fill="#B9C4D6" font-size="17" font-family="system-ui,'PingFang SC','Microsoft YaHei',sans-serif">真实研究批次：FLJUDGE / W16 / M5-N / M5-H；各自同批对照，非同一总实验。详见证据索引。</text>
+<text x="46" y="381" fill="#B9C4D6" font-size="17" font-family="system-ui,'PingFang SC','Microsoft YaHei',sans-serif">真实研究批次：FLJUDGE / LD1 / W16 / M5-N；长程与四域对照 = 旧滑窗机制 r9_slim。各自同批对照，非同一总实验。详见证据索引。</text>
 </svg>
