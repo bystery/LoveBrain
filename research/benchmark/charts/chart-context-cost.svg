@@ -84,9 +84,9 @@
 <text x="882.2" y="449" font-size="10" fill="#333333" text-anchor="middle">LoveBrain 装配</text>
 <text x="300.0" y="118" font-size="12.5" font-weight="bold" fill="#333333" text-anchor="middle">单轮 token 成本（prompt + completion）</text>
 <text x="757.0" y="118" font-size="12.5" font-weight="bold" fill="#333333" text-anchor="middle">单轮端到端平均延迟</text>
-<text x="24" y="480" font-size="11" fill="#555555">样本：同一实验 4 臂 × 40 集，同模型 deepseek-flash-2 同采样（2026-11-10）；每臂 492 轮（LEGACY 快照 478/492）。</text>
-<text x="24" y="496" font-size="11" fill="#555555">LEGACY 最终 492 轮总量见同目录 FOUR_ARM_SUMMARY.json（单轮均值差 &lt;1%，脚本自动交叉核对）；延迟为同文件 latency_ms 均值。</text>
-<text x="24" y="512" font-size="11" fill="#555555">结论由脚本计算：CURRENT/LEGACY 单轮 token = 60.4%（降 39.6%），平均延迟 = 89.0%。</text>
+<text x="24" y="480" font-size="11" fill="#555555">样本：同一实验 4 臂 × 40 集，同模型 deepseek-flash-2 同采样（2026-11-10）；每臂 492 轮（左图柱高用 CSV 快照，LEGACY 478/492）。</text>
+<text x="24" y="496" font-size="11" fill="#555555">结论口径：token 比 = FOUR_ARM_SUMMARY.json 全量 tokens_total（两臂各 492 轮）；延迟比 = FOUR_ARM_RESULTS.csv 全量 492×2 轮求和比；脚本自动交叉核对快照均值差 &lt;1%。</text>
+<text x="24" y="512" font-size="11" fill="#555555">结论由脚本计算：CURRENT/LEGACY 单轮 token = 60.2%（降 39.8%），平均延迟 = 89.1%（全样本 492×2 轮口径）。</text>
 <text x="24" y="528" font-size="11" fill="#555555">基线臂 token 更低，但其回复几乎不满足结构化输出协议（见 chart-contract-quality.svg），非同机制公平对比；同机制对比 = LEGACY → CURRENT。</text>
 <text x="24" y="544" font-size="11" fill="#555555">关键条件：CURRENT 为双域冠军按轮数分流；LEGACY 为历史 Harness；详见 research/BENCHMARK_EVALUATION.md 第5节（四臂实验）。</text>
 <text x="24" y="564" font-size="10.5" fill="#888888">脚本：research/benchmark/charts/generate_selection_charts.py（纯标准库，数字全部程序化解析）· 复跑：python -I research/benchmark/charts/generate_selection_charts.py</text>

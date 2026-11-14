@@ -14,6 +14,7 @@
 数据源（仓库相对路径，clone 后可直接运行）：
 - research/refs/benchmark_v1_20261107/phase3/experiments/selection_v1/selection_v1_universal_scores.csv
 - research/refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_SUMMARY.json
+- research/refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv（延迟结论全样本求和）
 - research/experiments/runs/selection_v1/<ARM>/<EP>/<turn>/scoring.json（1,968 个文件，逐轮遍历）
 
 复跑：python -I research/benchmark/charts/generate_selection_charts.py
@@ -33,6 +34,7 @@ RESEARCH = SCRIPT_PATH.parent.parent.parent          # research/
 SEL_DIR = RESEARCH / "refs" / "benchmark_v1_20261107" / "phase3" / "experiments" / "selection_v1"
 SCORES_CSV = SEL_DIR / "selection_v1_universal_scores.csv"
 SUMMARY_JSON = SEL_DIR / "FOUR_ARM_SUMMARY.json"
+RESULTS_CSV = SEL_DIR / "FOUR_ARM_RESULTS.csv"
 RUNS_DIR = RESEARCH / "experiments" / "runs" / "selection_v1"
 OUT_DIR = SCRIPT_PATH.parent
 
@@ -136,6 +138,35 @@ def cross_check_tokens(agg, summary):
             fail(f"{a} token 均值交叉核对超差: CSV {csv_mean:.1f} vs SUMMARY {sum_mean:.1f}")
 
 
+def load_results_latency():
+    """读取宽表 FOUR_ARM_RESULTS.csv（每臂全量 492 轮，无缺行），返回逐臂 latency_ms 总量。
+
+    延迟结论改由本全样本求和比计算：FOUR_ARM_SUMMARY.json 无延迟字段，
+    而 universal_scores.csv 的 LEGACY 快照缺 14 轮（478/492），不能作结论口径
+    （原 89.0% 即该快照均值比，2026-11-14 勘误为全样本 89.1%）。
+    """
+    if not RESULTS_CSV.is_file():
+        fail(f"源文件不存在: {RESULTS_CSV}")
+    with open(RESULTS_CSV, encoding="utf-8-sig") as f:
+        rows = list(csv.DictReader(f))
+    if len(rows) != 492:
+        fail(f"FOUR_ARM_RESULTS.csv 行数 {len(rows)} != 492")
+    lat_total = {a: 0 for a in ARMS}
+    for r in rows:
+        for a in ARMS:
+            v = (r.get(f"{a}.latency_ms") or "").strip()
+            if not v:
+                fail(f"FOUR_ARM_RESULTS.csv {a} latency_ms 存在空值（case_id={r.get('case_id')}）")
+            try:
+                lat_total[a] += int(float(v))
+            except Exception as e:
+                fail(f"FOUR_ARM_RESULTS.csv {a} latency_ms 解析失败（case_id={r.get('case_id')}）: {e}")
+    for a in ARMS:
+        if lat_total[a] <= 0:
+            fail(f"FOUR_ARM_RESULTS.csv {a} latency 总量非法: {lat_total[a]}")
+    return lat_total
+
+
 def load_contract():
     """遍历 selection_v1 全部 1,968 个逐轮 scoring.json，统计输出协议合规与否决。"""
     if not RUNS_DIR.is_dir():
@@ -233,14 +264,16 @@ def finish(e, out_name):
 
 # ---------- 图 1：上下文使用成本 ----------
 
-def chart_context_cost(agg, summary):
+def chart_context_cost(agg, summary, lat_total):
     cross_check_tokens(agg, summary)
     n_tok = {a: {"p": agg[a]["prompt"] / agg[a]["n"], "c": agg[a]["completion"] / agg[a]["n"]}
              for a in ARMS}
     lat = {a: agg[a]["latency"] / agg[a]["n"] / 1000.0 for a in ARMS}
-    tok_ratio = n_tok["CURRENT"]["p"] + n_tok["CURRENT"]["c"]
-    tok_ratio /= n_tok["LEGACY"]["p"] + n_tok["LEGACY"]["c"]
-    lat_ratio = lat["CURRENT"] / lat["LEGACY"]
+    # 结论数字口径（2026-11-14 勘误）：改由全样本权威源计算，两臂各 492 轮，总量比=均值比——
+    # token = FOUR_ARM_SUMMARY.json 全量 tokens_total；延迟 = FOUR_ARM_RESULTS.csv 全量求和。
+    # 原 CSV 快照均值比（60.4%/89.0%）系 LEGACY 快照缺 14 轮（478/492）的样本不完整偏差，已废弃。
+    tok_ratio = summary["CURRENT"]["tokens_total"] / summary["LEGACY"]["tokens_total"]
+    lat_ratio = lat_total["CURRENT"] / lat_total["LEGACY"]
 
     H, MT, MB = 660, 140, 250
     PLX0, PLX1, PRX0, PRX1 = 88, 512, 590, 924
@@ -312,9 +345,9 @@ def chart_context_cost(agg, summary):
              f'fill="{C_TEXT}" text-anchor="middle">单轮端到端平均延迟</text>')
 
     footer(e, H - MB + 70, [
-        f'样本：同一实验 4 臂 × 40 集，同模型 deepseek-flash-2 同采样（2026-11-10）；每臂 492 轮（LEGACY 快照 478/492）。',
-        f'LEGACY 最终 492 轮总量见同目录 FOUR_ARM_SUMMARY.json（单轮均值差 <1%，脚本自动交叉核对）；延迟为同文件 latency_ms 均值。',
-        f'结论由脚本计算：CURRENT/LEGACY 单轮 token = {tok_ratio*100:.1f}%（降 {100-tok_ratio*100:.1f}%），平均延迟 = {lat_ratio*100:.1f}%。',
+        f'样本：同一实验 4 臂 × 40 集，同模型 deepseek-flash-2 同采样（2026-11-10）；每臂 492 轮（左图柱高用 CSV 快照，LEGACY 478/492）。',
+        f'结论口径：token 比 = FOUR_ARM_SUMMARY.json 全量 tokens_total（两臂各 492 轮）；延迟比 = FOUR_ARM_RESULTS.csv 全量 492×2 轮求和比；脚本自动交叉核对快照均值差 <1%。',
+        f'结论由脚本计算：CURRENT/LEGACY 单轮 token = {tok_ratio*100:.1f}%（降 {100-tok_ratio*100:.1f}%），平均延迟 = {lat_ratio*100:.1f}%（全样本 492×2 轮口径）。',
         f'基线臂 token 更低，但其回复几乎不满足结构化输出协议（见 chart-contract-quality.svg），非同机制公平对比；同机制对比 = LEGACY → CURRENT。',
         f'关键条件：CURRENT 为双域冠军按轮数分流；LEGACY 为历史 Harness；详见 {DOC_REF}。',
     ], '脚本：research/benchmark/charts/generate_selection_charts.py（纯标准库，数字全部程序化解析）· '
@@ -440,8 +473,9 @@ def chart_context_retention(summary):
 def main():
     agg = load_scores()
     summary = load_summary()
+    lat_total = load_results_latency()
     contract = load_contract()
-    chart_context_cost(agg, summary)
+    chart_context_cost(agg, summary, lat_total)
     chart_contract_quality(contract)
     chart_context_retention(summary)
     print("[OK] 三张图生成完毕")
