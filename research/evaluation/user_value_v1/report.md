@@ -6,7 +6,7 @@
 
 本报告给出 LoveBrain 用户价值五项实验（M1–M5 + E5，共六行指标）在 60 题冻结测试集上的量化结果：12 题长程事实、12 题最新状态纠错、12 题不编造边界、12 题情境分寸、12 题多候选价值、12 对盲评偏好。测试集含 48 题仓库既有公开合成故事（stories_v2）与 12 题本轮新合成故事（逐题内嵌合成声明）。结果按两条独立结果线分别制表（H 线历史复评 / N 线新生成），另设一条只读引用线（R 线）转引既有专项判决。全部语义判分由原生子代理代理评委完成，非真人用户调查。
 
-当前状态：v1.1 评分规则对称重评进行中；M4（N 线）v1.1 三维重评、E5-H 12/12 对全量判定、E5-N v2 首评 12/12 对与 M1 事实级分臂（H 线）已回填（来源见 §12 回填记录）；H 线 E1–E3 语义终值已落盘并回填（144 行闭合：pass 77 / fail 67 / pending 0 / unjudgeable 0，来源见 §12 回填记录）；N 线 M1/M2/M3 本轮不适用（仅 H 线评，依冻结协议 §3）；其余结果单元格仍为 PENDING；落位前按 summary.json 一次收口，此后不再改数。
+当前状态：v1.1 评分规则对称重评进行中；M4（N 线）v1.1 三维重评、E5-H 12/12 对全量判定、E5-N v2 首评 12/12 对、M1 事实级分臂（H 线）与 M5-N 组级六子指标已回填（来源见 §12 回填记录）；H 线 E1–E3 语义终值已落盘并回填（144 行闭合：pass 77 / fail 67 / pending 0 / unjudgeable 0，来源见 §12 回填记录）；N 线 M1/M2/M3 本轮不适用（仅 H 线评，依冻结协议 §3）；其余结果单元格仍为 PENDING；落位前按 summary.json 一次收口，此后不再改数。
 
 ## 2. 三条结果线与臂身份（诚实化声明）
 
@@ -31,7 +31,7 @@
 | M2 纠正与旧事抑制双成功（pair） | 12 | 3/12（25.0%） | 2/12（16.7%） | −1 题（−8.3pp） | 内部证据索引 B-1/B-2 |
 | M3 未确认事实与隐私边界（首选通过率） | 12 | 9/12（75.0%） | 10/12（83.3%） | +1 题（+8.3pp） | 内部证据索引 B-1/B-2 |
 | M4 情境与关系目标 | — | — | — | 仅 N 线运行（冻结口径） | — |
-| M5 完整多候选价值 | 12 | PENDING | PENDING | PENDING | scores.csv |
+| M5 完整多候选价值 | 12 | 11/12（91.7%） | 12/12（100.0%） | +1 题（+8.3pp） | summary metrics.M5.H（终账件 m5h-six-tally.json；组级六子指标详表见 §8.1） |
 | E5 盲评回复偏好/自然度与可发送性（代理评分） | 12 对 | 6 | 6 | 6/6 持平（tie 等单列 0） | 内部证据索引 B-3 |
 
 注：M1 行有效题数 = 12（题量）；应使用事实基线 = 预登记 31 条 must_use_facts，事实级分子/分母口径在 scores.csv 分列。**M1–M3 三行来源：内部证据索引 B-1（S43 机械汇总，2026-11-14；144 行闭合 pass 77 / fail 67 / pending 0 / unjudgeable 0；终值规则 = 语义复核优先、无复核且程序化正面命中 → 程序化终值）。M1 行现填题级口径（pass = 全部 must_use 事实 used_correctly，混合按 fail 计）；事实级分臂率已回填（见 §4，S86）；多候选相关行（§4/§6 各 PENDING 行）待分臂汇总回填。** E5 行胜率分母 = 非平局对数，平局/双不合格/信息不足单列。**本表全部 E5 结果为原生子代理代理评审，非真人用户调查。**
@@ -44,7 +44,7 @@
 | M2 纠正与旧事抑制双成功（pair） | 12 | — | — | 不适用（本轮仅 H 线评，依冻结协议 §3） | — |
 | M3 未确认事实与隐私边界（首选通过率） | 12 | — | — | 不适用（本轮仅 H 线评，依冻结协议 §3） | — |
 | M4 情境与关系目标（三维全合格率） | 12 | 12/12 = 100% | 12/12 = 100% | 同率（tie，见 §7 区分度说明） | 内部证据索引 B-4 |
-| M5 完整多候选价值 | 12 | PENDING | PENDING | PENDING | scores.csv |
+| M5 完整多候选价值 | 12 | 11/12（91.7%） | 12/12（100.0%） | +8.3pp | 内部证据索引 B-9（组级六子指标详表见 §8.1） |
 | E5 盲评回复偏好/自然度与可发送性（代理评分） | 12 对 | 1 | 11 | L 11 / B1 1（tie 0 单列，首评） | 内部证据索引 B-8 |
 
 注：同 3.1 口径注；M4 评审输入含"允许动作范围 + 两条合格例"硬约束；M1/M2/M3 行不适用 = 本轮语义评审仅 H 线（冻结协议 §3），非待办。**本表全部 E5/M4 结果为原生子代理代理评审，非真人用户调查。**
@@ -154,14 +154,68 @@
 
 | # | 子指标 | 分子 / 分母 | H 线 B1 | H 线 L | N 线 B1 | N 线 L |
 |---|---|---|---|---|---|---|
-| 1 | 首选可用率 | 首选可用题数 / 适用题数 | PENDING | PENDING | PENDING | PENDING |
-| 2 | 至少一条可用率 | 存在 ≥1 条可用候选的题数 / 适用题数 | PENDING | PENDING | PENDING | PENDING |
-| 3 | 有效方向覆盖 | 有效方向槽数 / 非空方向槽数 | n/a（单通道） | PENDING | n/a（单通道） | PENDING |
-| 4 | 候选重复率（越低越好） | 重复候选对数 / 两两对数（LCS > 0.6，<10 字豁免） | n/a（单通道） | PENDING | n/a（单通道） | PENDING |
-| 5 | 备选严重错误率（越低越好） | 引用 M3 统计② | PENDING | PENDING | PENDING | PENDING |
-| 6 | 整组盲评偏好（代理评分） | 机制组胜 /（机制组胜 + 基线组胜） | — | PENDING | — | PENDING |
+| 1 | 首选可用率 | 首选可用题数 / 适用题数 | 11/12（91.7%） | 12/12（100.0%） | 11/12（91.7%） | 12/12（100.0%） |
+| 2 | 至少一条可用率 | 存在 ≥1 条可用候选的题数 / 适用题数 | n/a（单通道；≡ 首选可用率 91.7%） | 12/12（100.0%） | 11/12（91.7%） | 12/12（100.0%） |
+| 3 | 有效方向覆盖 | 有效方向槽数 / 非空方向槽数 | n/a（单通道） | 41/41（100.0%） | n/a（纯文本臂无方向槽） | 44/47（93.6%） |
+| 4 | 候选重复率（越低越好） | 重复候选对数 / 两两对数（LCS > 0.6，<10 字豁免） | n/a（单通道） | 0.0（0/287，豁免 0） | 0.0（0/36，豁免 0） | 0.0（0/329，豁免 7） |
+| 5 | 备选严重错误率（越低越好） | 引用 M3 统计② | n/a（单条臂无备选） | 0/12（0.0%） | 2/12（16.7%） | 3/12（25.0%） |
+| 6 | 整组盲评偏好（代理评分） | 机制组胜 /（机制组胜 + 基线组胜） | — | 11/12 = 91.7%（真评 CURRENT 11 / DIRECT 0 / tie 1，metrics.M5.H） | — | 11/12 = 91.7%（引用 metrics.E5.N） |
 
 **口径与已知问题（最终口径）**：候选多本身不加分，有区别且可用才加分；多候选子指标按臂输出实际通道结构激活，单通道臂如实标注 `candidate_count:1` / n/a，不虚构、不补造；空方向槽记"该位本轮不交付"单列，不算不合格；整组裁决五选一（A/B/tie/both_unqualified/insufficient_info），后三类单列不计入分母；决定理由仅为数量/长度差异 → 改判平局。子指标 6 为原生子代理代理偏好，非真人用户调查。
+
+### 8.1 六子指标结果（v1.1 §M5 激活；M5-N 补跑回填）
+
+本小节为 M5-N 组级六子指标补跑结果（e5n-v2-judge-pkg npair2-01..12 共 12 对，m5-eval 结构化评审，单题落盘跨对机械汇总）。子指标 6 不重跑，直接引用 E5-N 已有裁决（见 §9；口径见 m5-vs-e5n-relation.md）。**M5-H 状态（如实登记）**：M5-H 组级评审已完成终账并回填（summary metrics.M5.H：S1 CURRENT 12/12 vs DIRECT 11/12、S3 41/41、S4 0/287、S5 0/12、S6 真评 CURRENT 11/DIRECT 0/tie 1；终账件 `m5h-six-tally.json`）。
+
+| # | 子指标 | 分子 / 分母 | N 线 B1（基线臂，纯文本） | N 线 L（机制臂，多通道） | 单列项 |
+|---|---|---|---|---|---|
+| 1 | 首选可用率 | 首选可用题数 / 适用题数 | 11/12（91.7%） | 12/12（100.0%） | unjudgeable 计数单列：0 |
+| 2 | 至少一条可用率 | 存在 ≥1 条可用候选的题数 / 适用题数 | 11/12（91.7%） | 12/12（100.0%） | 补判失败退出分母计数：0 |
+| 3 | 有效方向覆盖 | 有效方向槽数 / 非空方向槽数 | n/a（纯文本臂无方向槽） | 44/47（93.6%） | 空槽「该位本轮不交付」单列：1 处 = npair2-10 direction:4 真空槽（终账件 true_empty_slots，不计分母） |
+| 4 | 候选重复率（越低越好） | 重复候选对数 / 两两对数（LCS > 0.6，<10 字豁免） | 0.0（0/36，豁免 0） | 0.0（0/329，豁免 7） | 豁免对数单列：L 7 / B1 0；B1 单候选 6 对无两两对、不进分母（单列） |
+| 5 | 备选严重错误率（越低越好） | 存在含严重错误备选的题数 / 适用题数（M3 严重错误族口径） | 2/12（16.7%） | 3/12（25.0%） | 严重错误族分族计数单列：族①×4（L：npair2-08 / npair2-12 direction:4；B1：npair2-01 item:3 / npair2-05 item:4）、族②×1（L：npair2-06 direction:2，仲裁终裁关键级）；族③④⑤ 0 |
+| 6 | 整组盲评偏好（代理评分） | 机制组胜 /（机制组胜 + 基线组胜） | — | 11/12 = 91.7%（引用 metrics.E5.N：机制组胜 / 非平局分母） | tie / both_unqualified / insufficient_info 三类单列：0 / 0 / 0 |
+
+注：N 线 B1 为纯文本臂（无风格/方向槽结构），子指标按评审件实际候选清单激活——12 对中 6 对单候选（`candidate_count:1`）、6 对 4 条候选；单候选对子指标 4 无两两对、不进分母（单列），子指标 3 对纯文本臂不适用。逐对候选清单对照见 `_ledger/npair2-map.json`。
+
+**来源**：M5-N 六子指标机械汇总件（内部证据索引 B-9 = `e5n-v2-judge-pkg/_ledger/m5-six-tally.json`，python -I 纯机器计算）+ M5 首评产出 12/12 对（`e5n-v2-judge-pkg/npair2-*/m5-eval/`，三命名并列落盘：m5-result.json ×6 / m5-verdict.json ×5 / m5-six-metric-result.json ×1）+ 子指标 6 引用件 `e5n-v2-judge-pkg/npair2-*/judgment.json`（E5-N 既有判定 12/12）；judge_identity = `m5-blind-judge-v11` 随件落盘；臂归属经 `_ledger/npair2-map.json` 解盲（奇 pair A=L2/B=B1、偶 pair 反转），评审侧盲评不可见。
+
+**子指标 6 行注**：该值为 §9 N 线整组裁决同槽引用（metrics.E5.N，终值口径）；M5 槽 metrics.M5.N 不重复计分、不二次评审——槽位分离与两把尺口径见 m5-vs-e5n-relation.md（落位后为仓库内对应文件）。
+
+**代理评委声明**：本小节子指标 1–5 为原生子代理结构化盲评、子指标 6 为既有组级盲评引用，全部为原生子代理代理评委产出，非真人用户调查，不代表真人发送率。
+
+**复评抽样（M5-N）**：已完成 3 包（npair2-01/06/11，3/12 = 25% ≥ 20%，来源各包 `m5-eval/m5-rejudge.json`）：npair2-01/11 复评与首评逐字段一致（一致即终判；judge_identity 等元数据差异只登记不仲裁）；npair2-06 分歧 8 处单维分歧（direction:2 可用性与严重错误、子指标 2 可用/不可用槽清单、子指标 3 该槽判定与覆盖率、子指标 5 落旗与槽清单）经第三评委终裁闭环——终值 = B direction:2 invalid（族②关键级）、s3.B = 3/4、s5.B = true、子指标 2 剔 direction:2（依据 `npair2-06/m5-eval/m5-arbitration.json`）；首评 8 条记误报、单列计数（复评 0）；无在途仲裁（summary metrics.M5.N `arbitration_pending_pairs = []`）。名单外 9 对设计使然无复评对照（final = 首评值）。
+
+**判例引用**：
+
+- **组级裁决逐对小表**（12 行；裁决 = 匿名 A/B 五选一读数，数据取 `npair2-*/judgment.json` group_preference 字段 + `_ledger/npair2-map.json` 解盲；与 §9 N 线 tally 同源核对一致：L 11 / B1 1 / tie 0）：
+
+| pair | case_id | 裁决 | 归臂 |
+|---|---|---|---|
+| npair2-01 | uv1-E5-001 | A | L（机制臂）胜 |
+| npair2-02 | uv1-E5-002 | B | L（机制臂）胜 |
+| npair2-03 | uv1-E5-003 | A | L（机制臂）胜 |
+| npair2-04 | uv1-E5-004 | B | L（机制臂）胜 |
+| npair2-05 | uv1-E5-005 | A | L（机制臂）胜 |
+| npair2-06 | uv1-E5-006 | B | L（机制臂）胜 |
+| npair2-07 | uv1-E5-007 | A | L（机制臂）胜 |
+| npair2-08 | uv1-E5-008 | B | L（机制臂）胜 |
+| npair2-09 | uv1-E5-009 | A | L（机制臂）胜 |
+| npair2-10 | uv1-E5-010 | B | L（机制臂）胜 |
+| npair2-11 | uv1-E5-011 | A | L（机制臂）胜 |
+| npair2-12 | uv1-E5-012 | A | B1（基线臂）胜 |
+
+- **组级判例卡五判例**（agg/m5-group-cases.md，引文逐字实引已落盘评审件、评审件只读未改；臂归属按终账解盲补注）：
+  - 判例 1｜npair2-01（uv1-E5-001）：盲标 B 组 item:3（解盲 = B1 臂）命中族① fabricated_action——「我真去看过了」冒称已发生；子指标 2 记不可用槽（同组 item:1/2/4 可用，any_usable 仍 true）、子指标 5 落旗 backup_with_severe_error=true（引源 `npair2-01/m5-eval/m5-six-metric-result.json`）。
+  - 判例 2｜npair2-05（uv1-E5-005）：盲标 A 组（解盲 = L2 臂）style:warm 推翻咖啡债明示安排——可用三条件③最新状态矛盾，不入五族、只计子指标 2 不计子指标 5（引源 `npair2-05/m5-eval/m5-result.json`）。
+  - 判例 3｜npair2-07（uv1-E5-007）：盲标 B 组（解盲 = B1 臂）唯一候选 item:1 命中族①——单点连崩形态（子指标 1 与 2 同时 false，为 B1 臂 12 对中唯一 s1/s2 失分对）；单候选臂无备选冗余，一票否决直达组级可用性（引源 `npair2-07/m5-eval/m5-result.json`）。
+  - 判例 4｜npair2-08（uv1-E5-008）：盲标 B 组（解盲 = L2 臂）direction:4 编造「新申请入队的阿莞」入族①（子指标 2/3/5 三处落账）；同组 style:bad_boy / style:playful 把提前量写错为「二十分钟」属 used_wrongly 不入族——族内/族外边界对照（引源 `npair2-08/m5-eval/m5-result.json`）。
+  - 判例 5｜npair2-12（uv1-E5-012）：盲标 B 组（解盲 = L2 臂）direction:4 编造既往交流判 invalid（族①）——同一处错误在子指标 2/3/5 引用同一判定，按任务书 A8 只判一次、不重复计为独立证据（引源 `npair2-12/m5-eval/m5-verdict.json`）。
+- **usable/unusable 判例一条**（示范「可用」判定形态，取自 npair2-01 盲标 B 组 m5-eval 评审件）：unusable_candidates 槽位 = item:3；理由 = 族① fabricated_action（冒称已发生）；证据引句 = 「你随口问的那家馆子我真去看过了，价便宜量又大，散伙饭都坐得下。」（原句照抄）；candidate_inventory 计数：candidate_count = 4（该组纯文本 4 条候选），empty_slots 单列 = 无槽位结构（纯文本臂，无空槽单列项）。
+- **showcase 闭合（uv1-E5-003，npair2-03）**：§5.1 已预告「本案例的胜负判定见 M5-N 正式汇总，不在本节预告」，在此闭合——组级裁决 = A（经 `_ledger/npair2-map.json` 解盲 = 机制臂 L 胜；decisive_dimension = usable_distinction）；决定性理由引一句（`npair2-03/judgment.json` group_preference 槽 reason_quote 原句照抄，盲标 A/B 原样）：「就是 392 和 329 这对双胞胎，我帮你盯着，别再让它们串门。」——A 组的 recommended 已完整归月（「10 月五笔……小计 5889；11 月两笔……小计 1686」），在此之上还把她此前「这两个数长得太像，我怕后面抄错」的真实担心变成一条可直接挑中发送的区别化选项；四条候选语气彼此可辨、四个方向（收尾/留底/情绪/换题）均可用，B 组仅单条无挑选余地——胜因是区别化选项真实可用，并非候选更多。
+- **口径替代注**：M5-N 的 usable 判定按 m5-task.md 自带锚点（v1.1 §5 原文 + 严重错误族定义）自评——N 线 M1/M2/M3 本轮不适用（依冻结协议 §3，无同源判定件可引），不写成「引用了 N 线 M1/M3 判定」；M5-N 汇总件同注。
+
+> M5-N 与 E5-N 是同一六子指标框架的两半，互补不互替、分开呈现不合并计分：子指标 1-5 = 组级结构化质量（本小节实值），子指标 6 = 整组盲评偏好（引用 §9 的 E5-N 读数，metrics.E5.N 槽）。关系详见 m5-vs-e5n-relation.md（五句话口径 + 槽位分离规则 metrics.M5.N / metrics.E5.N 互不覆盖）。
 
 ## 9. E5 盲评回复偏好/自然度与可发送性代理评分
 
@@ -267,9 +321,10 @@
 |---|---|
 | N 线 E1–E3 语义评审件落盘与并入 | 不适用（本轮仅 H 线评，依冻结协议 §3） |
 | 程序化 `uncertain` / 零命中（E2 invalidated 零复现、E3 零错误）语义确认 | H 线已完成（105 包语义复核：翻正 36 / 维持 57 / 判违 12，144 行闭合 pending=0，见内部证据索引 B-1）；N 线 PENDING（随 v2） |
-| ≥20% 复评抽样（每指标 ≡1 mod 5）执行与一致率 | 部分：E4 v1.1 复评 6/24 包完成并收口（5 包一致；e4m-006b 自然度 3→2 分歧经第三评委终裁 = 3，维持首评，`arbitration-judgment.json` 已落盘）；E5-H 复评 3/12 包完成并终裁闭环（pair06 一致；pair01 B.sendability 2→1 经终裁 = 1 维持复评终值、pair11 B.naturalness 5→4 经终裁 = 5 维持首评，winner 均维持 A）；E5-N v2 复评胜负 3/3 一致（npair2-01/06 全字段一致；npair2-11 自然度 B 臂 4→5 分歧经仲裁终裁 = 5，维持复评）；其余指标 PENDING |
+| ≥20% 复评抽样（每指标 ≡1 mod 5）执行与一致率 | 部分：E4 v1.1 复评 6/24 包完成并收口（5 包一致；e4m-006b 自然度 3→2 分歧经第三评委终裁 = 3，维持首评，`arbitration-judgment.json` 已落盘）；E5-H 复评 3/12 包完成并终裁闭环（pair06 一致；pair01 B.sendability 2→1 经终裁 = 1 维持复评终值、pair11 B.naturalness 5→4 经终裁 = 5 维持首评，winner 均维持 A）；E5-N v2 复评胜负 3/3 一致（npair2-01/06 全字段一致；npair2-11 自然度 B 臂 4→5 分歧经仲裁终裁 = 5，维持复评）；M5-N 组级六子指标复评 3/12 包完成并收口（npair2-01/06/11 各包 `m5-eval/m5-rejudge.json`：npair2-01/11 全字段一致、npair2-06 分歧 8 处经第三评委终裁闭环，首评误报 8 条单列，见 §8.1）；其余指标 PENDING |
 | E5-N 对称重评（v1.1 全候选口径） | v1.1 v2 重跑首评 12/12 对闭合并已回填（机制臂 L 11 / 基线臂 B1 1 / tie 0，见 §3.2/§9 与 §12 S86 记录）；复评胜负 3/3 一致，npair2-11 自然度 B 臂分歧经仲裁终裁 = 5（维持复评，B1 自然度均值终值口径 4.6667）；v1 的 12 条判定已作废留档，读数不引用 |
 | 激活检查表 activation-checklist.jsonl 60 行落盘 | 已完成（2026-11-14：60/60 行落盘，E1–E5 激活率均 100%，低激活 0，见 `activation-summary.md`） |
+| M5 组级六子指标（M5-N 补跑） | N 线已回填（见 §8.1，来源内部证据索引 B-9；summary slot_status.M5_N = filled）；复评抽样已完成 3 包（npair2-01/06/11，3/12 = 25%）：npair2-01/11 全字段一致，npair2-06 8 处单维分歧经第三评委终裁闭环（首评误报 8 条单列，见 §8.1）；M5-H 组级评审已完成终账并回填（m5h-six-tally.json；summary slot_status.M5_H = filled，H 线现值见 §3.1/§8/§8.1） |
 | 金标缺席题 UNRATED 计数 | 0（本轮在册判定，`accounting.unrated_total = 0`） |
 
 4. **低激活题纪律**：激活检查表未命中故障条件的题记 `low_activation`，不删除、不替换，结果照常进表并单列标记；优势结论不依赖低激活题支撑的分子。
@@ -295,13 +350,19 @@
 
 - **刷新来源（staging 已落盘文件，纯读数、无外部 API、无哈希）**：`e5n-v2-judge-pkg/_ledger/e5n-v2-firstpass-tally.json`（E5-N v2 首评终账，S54 机械汇总，12/12 对）+ `e5n-v2-judge-pkg/npair2-*/judgment.json`（五选一类别/≥2 率/套话逐对机械计数）+ `e5n-v2-judge-pkg/npair2-01|06|11/rejudge.json`（E5-N 复评 3 包）；`e5-judge-pkg/_ledger/pair-map.json` rotation + `e5h-v11-judge-pkg/pair08|pair12/judgment.json` preference（E5-H 归臂机械复核）；`e5h-v11-judge-pkg/pair01|pair06|pair11/recheck-judgment.json`（E5-H 复评 3 包）；repo-landing/summary.json supplementary `metrics.M1.H.fact_level_by_arm`（M1 事实级分臂机械重算）；`e4-v11-judge-pkg/e4m-006b/arbitration-judgment.json`（终裁件）。
 - **刷新内容**：① **E5-N v2 首评回填**（§3.2 E5 行、§9 指标表 N 线列与首评来源段）：机制臂 L 胜 11 / 基线臂 B1 胜 1 / tie 0（n=12 全判，五选一类别 both_unqualified/insufficient_info 均 0）；非平局 12，机制臂偏好胜率 11/12 = 91.7%；自然度均值 L 4.92 / B1 4.58（首评口径）；可发送性均值 L 2.92 / B1 2.67、≥2 率 24/24 = 100%；套话命中 0/24。tally 口径 L2 = 本报告 N 线机制臂 L（nline-v2 gen-L2 装配，逐对 rotation 经 `_ledger/npair2-map.json` 奇偶规则机械核对 PASS）。**E5-N 复评 3/3 偏好一致**（npair2-01/06/11 `rejudge.json` 落盘，胜者逐对同首评 A/B/A；npair2-01/06 全字段一致；npair2-11 自然度 B 臂附评单维分歧：首评 judgment.json B nat=4 → 复评 rejudge.json B nat=5，同挑 item:1 槽，经第三评委仲裁终裁 = 5（维持复评，winner 维持 A）——PKG-LOG/judgments.jsonl 的"复评全一致"注记与首评源件逐字段读数不符，本报告以落盘源件为准）。② **E5-H 逐对表 pair08/pair12 归臂对调**（机械复核：pair08 pref B → rotation B=CURRENT → L 胜；pair12 pref A → rotation A=DIRECT → B1 胜；此前两行互串，对调后总数 6/6 不变）。③ **E5-H 复评计数 2/12 → 3/12**（pair01/pair06/pair11）：pair06 全字段一致；pair01 偏好一致但 B.sendability 2→1、pair11 偏好一致但 B.naturalness 5→4，两处单维分歧经第三评委终裁闭环：pair01 终值 = 1（维持复评终值）、pair11 终值 = 5（维持首评），winner 均维持 A。④ **N 线 M1/M2/M3 转不适用**（本轮语义评审仅 H 线，依冻结协议 §3 与 summary.json slot_status not_applicable，非待办）。⑤ **M1 事实级分臂回填**（§4）：H 线 L/CURRENT 24/31（77.42%，not_used 7 / used_wrongly 0）/ B1/DIRECT 21/31（67.74%，not_used 9 / used_wrongly 1），四臂合计 124 = 100/23/1/0 不变。⑥ **e4m-006b 终裁收口登记**（终裁 = 3，维持首评，CONSISTENT）。⑦ **证据引用修复**：scores-v1.1.csv/judgments-v1.1.jsonl/summary-v1.1 引用名对齐落盘名 scores.csv/judgments.jsonl/summary.json；showcase-case.md 链接改仓库相对路径；agg/* 内部汇总件引用改"内部证据索引 B-N"并新增附录 B。
-- **仍 PENDING**：E5-N v2 npair2-11 自然度 B 臂附评分歧仲裁（首评 4 vs 复评 5，若改判则 B1 自然度均值 4.58（首评口径）随之单列更新）→ **已终裁收口：终值 = 5（维持复评，winner 维持 A），B1 自然度均值终值口径 4.6667，见 §9 现值（源 `e5n-v2-judge-pkg/_ledger/e5n-v2-recheck-arbitration-tally.json`）**；E5-H pair01/pair11 复评单维分歧仲裁 → **均已终裁收口：pair01 B.sendability 终值 = 1（维持复评终值）、pair11 B.naturalness 终值 = 5（维持首评），winner 均维持 A，见 §9 与 summary.json**；M5-H/M5-N 组级六子指标；M2 门级分臂诊断、M3 备选/全组/错误族分列（UNRATED 分臂计数已回填：H 线 = 0，N 线不适用，见 §6）、COT/LEGACY 的 M5/E5 分列；金标缺席题 UNRATED 计数（= 0，`accounting.unrated_total = 0`，见 §6/§11）。
+- **仍 PENDING**：E5-N v2 npair2-11 自然度 B 臂附评分歧仲裁（首评 4 vs 复评 5，若改判则 B1 自然度均值 4.58（首评口径）随之单列更新）→ **已终裁收口：终值 = 5（维持复评，winner 维持 A），B1 自然度均值终值口径 4.6667，见 §9 现值（源 `e5n-v2-judge-pkg/_ledger/e5n-v2-recheck-arbitration-tally.json`）**；E5-H pair01/pair11 复评单维分歧仲裁 → **均已终裁收口：pair01 B.sendability 终值 = 1（维持复评终值）、pair11 B.naturalness 终值 = 5（维持首评），winner 均维持 A，见 §9 与 summary.json**；M5-H/M5-N 组级六子指标（M5-N 已由 S87 回填收口，见下条；M5-H 组级终账已聚合 m5h-six-tally.json、summary M5_H 槽已回填收口（slot_status filled），H 线现值见 §3.1/§8/§8.1）；M2 门级分臂诊断、M3 备选/全组/错误族分列（UNRATED 分臂计数已回填：H 线 = 0，N 线不适用，见 §6）、COT/LEGACY 的 M5/E5 分列；金标缺席题 UNRATED 计数（= 0，`accounting.unrated_total = 0`，见 §6/§11）。
 
 ### 部分回填记录（S63，2026-11-14）
 
 - **回填来源（staging 已落盘文件，纯读数、无外部 API、无哈希）**：内部证据索引 B-1/B-2（H 线 E1–E3 终值，S43 机械汇总）；内部证据索引 B-6（E5-H v1.0 参考行，S25 机械汇总）；`evidence-cards.md` 卡 5（W15N01，摘自存档判决原文）；`activation-summary.md`（激活检查 60/60）。
 - **回填范围**：§3.1 M1–M3 行、§3.3 COT/LEGACY 分列、§4 前置激活段与 H 线列（题级合格率 / irrelevant_misuse / unjudgeable）、§5 主判与 unjudgeable、§6 首选通过率、§9 v1.0 参考行、§10 卡 5、§11 激活/程序化语义确认/E5-N 行与特例留痕第 7 条。
 - **仍 PENDING**：H 线 M1 事实级分臂率、M2 门级分臂率、M3 备选/全组/错误族分列与 UNRATED 分臂计数；E5-N v2 对称重评；E5-H pair01 复评仲裁（已闭环：pair01/pair11 终裁均已落盘，见 §9 / summary.json）；summary 终版收口。
+
+### 回填更新记录（S87，2026-11-14）
+
+- **刷新来源（staging 已落盘文件，纯读数、无外部 API、无哈希）**：内部证据索引 B-9（`e5n-v2-judge-pkg/_ledger/m5-six-tally.json`，M5-N 六子指标终账：子指标 1–5 聚合 + 子指标 6 引用 11/12，python -I 机械聚合）+ `e5n-v2-judge-pkg/npair2-*/m5-eval/` 首评产出 12/12（三命名并列：m5-result.json ×6 / m5-verdict.json ×5 / m5-six-metric-result.json ×1）+ `npair2-01|06|11/m5-eval/m5-rejudge.json`（复评 3 包）+ `npair2-06/m5-eval/m5-arbitration.json`（终裁件）+ `_ledger/npair2-map.json`（归臂总账）+ `repo-landing/summary.json` metrics.M5.N 槽与 slot_status（终值回写后实盘核对）；`e5h-v11-judge-pkg/_ledger/m5h-six-tally.json`（M5-H 终账件，H 线状态句如实引用）+ `agg/m5-group-cases.md`（组级判例卡五判例）+ `agg/m5-vs-e5n-relation.md`（槽位分离口径件）。
+- **刷新内容**（枚举六项）：① §8.1 新增 + §8 定义表 N 线列回填（H 线两列保持 PENDING）；② §3.2 M5 行回填（子指标 1 双臂实值 + 8.3pp 机械差值 + §8.1 索引）；③ §11 pending 清单新增 M5 行（M5-N 已回填、M5-H 回填在途如实句）；④ §5.1 showcase 预告闭合说明（uv1-E5-003 = npair2-03 组级裁决 A → 机制臂 L 胜，在 §8.1 判例引用闭合，showcase-case.md 本体不改）；⑤ 附录 B 新增 M5-N 汇总件条目（B-9）；⑥ §1 当前状态句补「M5-N 组级六子指标已回填」。
+- **仍 PENDING**：M5-H 组级六子指标 summary 槽回填（组级评审已完成终账 `m5h-six-tally.json`，metrics.M5_H 槽回填并行收口中，收口前 §3.1/§8 定义表 H 线列保持 PENDING 不预填）→ **已回填收口：slot_status.M5_H = filled、metrics.M5.H 28 键落盘，§3.1 M5 行与 §8 定义表 H 线列 9 格已回填现值，见 §8.1**；COT/LEGACY 的 M5 分列（§3.3，随 H 线）；M2 门级分臂、M3 备选/全组/错误族分列（S86 未收口项顺延）。
 
 ### v1.0 → v1.1 对称重评声明
 
@@ -327,7 +388,7 @@
 
 **完整性登记口径**：文件数 + 字节量（本报告不含任何哈希）。
 
-## 附录 B：内部证据索引（B-1–B-8）
+## 附录 B：内部证据索引（B-1–B-9）
 
 公开仓库树不含下列内部机械汇总与评审证据件；正文所引"内部证据索引 B-N"即指下列 staging 落盘件（随内部归档迁移，完整性口径 = 文件数 + 字节量）：
 
@@ -341,3 +402,4 @@
 | B-6 | agg/summary-partial.json | E5-H v1.0 参考行（per_pair 12 对逐条） | S25 |
 | B-7 | hline-semantic-pkg/*（105 包） | H 线语义复核评审件 | S43 |
 | B-8 | e5n-v2-judge-pkg/_ledger/e5n-v2-firstpass-tally.json | E5-N v2 首评终账（12/12 对机械汇总） | S54 |
+| B-9 | e5n-v2-judge-pkg/_ledger/m5-six-tally.json | M5-N 六子指标终账（子指标 1–5 聚合 + 子指标 6 引用 11/12；per_pair 12 对 + 复评对照终值） | S87 |

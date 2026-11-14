@@ -1,725 +1,1861 @@
 {
-  "schema": "user-value-v1 summary v1.1（PLOT-V11-NOTES §2；消费方 plot_results_v11.py）",
-  "generated_by": "S77（机械汇总构建，python -I；零外部 API、零 LLM 判分、零哈希）",
-  "generated_at": "2026-11-14T01:15:36",
-  "changelog": [
-    "2026-11-14 E5.N 回填收口+账目清理"
-  ],
-  "normalization": {
-    "H_line": {
-      "L": "CURRENT（机制臂）",
-      "B1": "DIRECT（普通基线）",
-      "rule": "protocol-FROZEN §3：H 线主表 L=CURRENT、B1=DIRECT"
-    },
-    "N_line": {
-      "L": "L",
-      "B1": "B1"
-    },
-    "H_line_model_identity": "deepseek-flash-2（selection_v1 既有四臂输出复评，未重新生成）",
-    "N_line_model_identity": "原生子代理新生成（平台未提供版本则如实写）"
+ "schema": "user-value-v1 summary v1.1（PLOT-V11-NOTES §2；消费方 plot_results_v11.py）",
+ "generated_by": "S77（机械汇总构建，python -I；零外部 API、零 LLM 判分、零哈希）",
+ "generated_at": "2026-11-14T01:15:36",
+ "changelog": [
+  "2026-11-14 E5.N 回填收口+账目清理",
+  "2026-11-14 M5.N 六子指标补跑聚合回填（aggregate_m5.py --apply）",
+  "2026-11-14 M5.N npair2-06 仲裁终值回写（_tmp_m5/m5_stage5_writeback.py --apply）",
+  "2026-11-14 M5.H 组级六子指标终账回填（_tmp_m5/fill_m5h_summary.py --apply）"
+ ],
+ "normalization": {
+  "H_line": {
+   "L": "CURRENT（机制臂）",
+   "B1": "DIRECT（普通基线）",
+   "rule": "protocol-FROZEN §3：H 线主表 L=CURRENT、B1=DIRECT"
   },
-  "metrics": {
-    "M1": {
-      "H": {
-        "L": {
-          "num": 7,
-          "den": 12,
-          "rate": 58.33
-        },
-        "B1": {
-          "num": 5,
-          "den": 12,
-          "rate": 41.67
-        },
-        "diff_pp": 16.67,
-        "diff_note": "diff_pp = L 率 − B1 率（百分点），由原始分数计算后四舍五入 2 位。",
-        "basis": "case_level_final_verdict（题级：pass = 全部 must_use 事实 used_correctly，混合按 fail 计）",
-        "source": "agg/hline-final-scores.csv",
-        "notes": "终值来源 = agg/hline-final-scores.csv（144 行闭合：pass 77 / fail 67 / pending 0 / unjudgeable 0；终值规则 = 语义复核优先、无复核且程序化正面命中 → 程序化终值）；H 线归臂 L=CURRENT / B1=DIRECT（protocol §3）；H 线评审单位 = recommended 回复（多通道与单通道同口径只评 recommended）。",
-        "fact_level_by_arm": {
-          "L": {
-            "num": 24,
-            "den": 31,
-            "rate": 77.42,
-            "not_used": 7,
-            "used_wrongly": 0,
-            "unjudgeable": 0,
-            "raw_arm": "CURRENT"
-          },
-          "B1": {
-            "num": 21,
-            "den": 31,
-            "rate": 67.74,
-            "not_used": 9,
-            "used_wrongly": 1,
-            "unjudgeable": 0,
-            "raw_arm": "DIRECT"
-          },
-          "definition": "事实级口径（scoring-templates-v1.1 §1 主判 = 首选 used_correctly 数 / (应使用事实总数 − unjudgeable)）；由 hline-semantic-pkg 48 个 E1 review.json 机器重算，四臂合计交叉核对 124/100/23/1 一致；本字段为 supplementary 分列，主判 num/den 保持题级（与 report-draft §3.1 回填口径一致）。",
-          "four_arm_total": {
-            "used_correctly": 100,
-            "not_used": 23,
-            "used_wrongly": 1,
-            "unjudgeable": 0,
-            "facts": 124
-          }
-        },
-        "irrelevant_misuse_by_arm": {
-          "L": 2,
-          "B1": 4,
-          "definition": "辅助指标单列，不进主比率；四臂合计 12 条（COT 3 / LEGACY 3，见 SUMMARY-LOG）。",
-          "verdict_breakdown": {
-            "legitimate": 11,
-            "misuse": 1
-          }
-        }
-      }
+  "N_line": {
+   "L": "L",
+   "B1": "B1"
+  },
+  "H_line_model_identity": "deepseek-flash-2（selection_v1 既有四臂输出复评，未重新生成）",
+  "N_line_model_identity": "原生子代理新生成（平台未提供版本则如实写）"
+ },
+ "metrics": {
+  "M1": {
+   "H": {
+    "L": {
+     "num": 7,
+     "den": 12,
+     "rate": 58.33
     },
-    "M2": {
-      "H": {
-        "L": {
-          "num": 2,
-          "den": 12,
-          "rate": 16.67
-        },
-        "B1": {
-          "num": 3,
-          "den": 12,
-          "rate": 25.0
-        },
-        "diff_pp": -8.33,
-        "basis": "case_level_final_verdict（题级：latest_state_used_correctly 且零 invalidated 复现；与 v1.1 M-PAIR pair_score=min(recall,suppress) 语义同构，分门结构落盘见复核包）",
-        "source": "agg/hline-final-scores.csv",
-        "notes": "终值来源 = agg/hline-final-scores.csv（144 行闭合：pass 77 / fail 67 / pending 0 / unjudgeable 0；终值规则 = 语义复核优先、无复核且程序化正面命中 → 程序化终值）；H 线归臂 L=CURRENT / B1=DIRECT（protocol §3）；H 线评审单位 = recommended 回复（多通道与单通道同口径只评 recommended）。",
-        "gate_level_diagnostics": "PENDING（门级分臂通过率未汇总落盘；复核明细 10 包见 agg/HLINE-SEMANTIC-SUMMARY.md §4）。"
-      }
+    "B1": {
+     "num": 5,
+     "den": 12,
+     "rate": 41.67
     },
-    "M3": {
-      "H": {
-        "L": {
-          "num": 10,
-          "den": 12,
-          "rate": 83.33
-        },
-        "B1": {
-          "num": 9,
-          "den": 12,
-          "rate": 75.0
-        },
-        "diff_pp": 8.33,
-        "basis": "case_level_final_verdict（题级首选通过：零严重错误族命中；v1.0 三族口径，v1.1 新增族④⑤未重评——见 SUMMARY-LOG 口径注）",
-        "source": "agg/hline-final-scores.csv",
-        "notes": "终值来源 = agg/hline-final-scores.csv（144 行闭合：pass 77 / fail 67 / pending 0 / unjudgeable 0；终值规则 = 语义复核优先、无复核且程序化正面命中 → 程序化终值）；H 线归臂 L=CURRENT / B1=DIRECT（protocol §3）；H 线评审单位 = recommended 回复（多通道与单通道同口径只评 recommended）。",
-        "special_cases": [
-          {
-            "case": "uv1-E3-001__CURRENT",
-            "note": "pass；review.json quote 字段未转义引号作语法级转义修复（判定内容零改动，evidence_ref #syntax-repaired 留痕）"
-          },
-          {
-            "case": "uv1-E3-009__DIRECT",
-            "note": "fail；无语义复核包，按终值规则取程序化正面命中 fail 终值"
-          }
-        ],
-        "backup_and_group_rates": "PENDING（H 线评审单位 = recommended 单输出，备选/全组比率不适用本次复核范围）"
-      }
+    "diff_pp": 16.67,
+    "diff_note": "diff_pp = L 率 − B1 率（百分点），由原始分数计算后四舍五入 2 位。",
+    "basis": "case_level_final_verdict（题级：pass = 全部 must_use 事实 used_correctly，混合按 fail 计）",
+    "source": "agg/hline-final-scores.csv",
+    "notes": "终值来源 = agg/hline-final-scores.csv（144 行闭合：pass 77 / fail 67 / pending 0 / unjudgeable 0；终值规则 = 语义复核优先、无复核且程序化正面命中 → 程序化终值）；H 线归臂 L=CURRENT / B1=DIRECT（protocol §3）；H 线评审单位 = recommended 回复（多通道与单通道同口径只评 recommended）。",
+    "fact_level_by_arm": {
+     "L": {
+      "num": 24,
+      "den": 31,
+      "rate": 77.42,
+      "not_used": 7,
+      "used_wrongly": 0,
+      "unjudgeable": 0,
+      "raw_arm": "CURRENT"
+     },
+     "B1": {
+      "num": 21,
+      "den": 31,
+      "rate": 67.74,
+      "not_used": 9,
+      "used_wrongly": 1,
+      "unjudgeable": 0,
+      "raw_arm": "DIRECT"
+     },
+     "definition": "事实级口径（scoring-templates-v1.1 §1 主判 = 首选 used_correctly 数 / (应使用事实总数 − unjudgeable)）；由 hline-semantic-pkg 48 个 E1 review.json 机器重算，四臂合计交叉核对 124/100/23/1 一致；本字段为 supplementary 分列，主判 num/den 保持题级（与 report-draft §3.1 回填口径一致）。",
+     "four_arm_total": {
+      "used_correctly": 100,
+      "not_used": 23,
+      "used_wrongly": 1,
+      "unjudgeable": 0,
+      "facts": 124
+     }
     },
-    "M4": {
-      "N": {
-        "L": {
-          "all_three_qualified": {
-            "num": 12,
-            "den": 12,
-            "rate": 100.0
-          },
-          "dims": {
-            "intent": {
-              "excellent_rate": 100.0
-            },
-            "boundary": {
-              "excellent_rate": 100.0
-            },
-            "naturalness": {
-              "excellent_rate": 100.0
-            }
-          },
-          "dimension_mean": {
-            "intent": 3.0,
-            "boundary": 3.0,
-            "naturalness": 3.0
-          }
-        },
-        "B1": {
-          "all_three_qualified": {
-            "num": 12,
-            "den": 12,
-            "rate": 100.0
-          },
-          "dims": {
-            "intent": {
-              "excellent_rate": 100.0
-            },
-            "boundary": {
-              "excellent_rate": 100.0
-            },
-            "naturalness": {
-              "excellent_rate": 100.0
-            }
-          },
-          "dimension_mean": {
-            "intent": 3.0,
-            "boundary": 3.0,
-            "naturalness": 3.0
-          }
-        },
-        "counts": {
-          "expected": 24,
-          "judgment_found": 24,
-          "pending": [],
-          "per_arm": {
-            "L": 12,
-            "B1": 12
-          }
-        },
-        "saturation_note": "饱和如实填：v1.1 对称重评双臂 24 份判定全部三维 3/3/3，三维全合格率与优秀率均 100%，无区分度（区分度结论 = 该 12 题子集对 M4 不敏感）。",
-        "v1_0_parallel_note": "v1.0（e4-judge-pkg，12 slot 全锚点）判定结果为全锚点 2、无区分度；v1.1 对称重评判定结果为 L/B1 双臂 24 份全部三维 3/3/3、同样无区分度。两轮结果并列陈述，不做纵向优劣比较。",
-        "recheck_note": "复评 6/24 包：5 包一致；e4m-006b 自然度 3→2 分歧经第三评委终裁 = 3（维持首评），arbitration-judgment.json 已落盘。",
-        "definitions": {
-          "全合格率": "三维(intent/boundary/naturalness)分数均 >= 2 的样本占比（2=合格锚）",
-          "优秀率": "三维分数均 = 3 的样本占比",
-          "均值": "该维度 0-3 分的算术平均，保留 2 位小数"
-        },
-        "source": "agg/e4-v11-summary.json"
-      }
-    },
-    "E5": {
-      "H": {
-        "L_wins": 6,
-        "B1_wins": 6,
-        "ties": 0,
-        "both_unqualified": 0,
-        "insufficient_info": 0,
-        "n": 12,
-        "n_clear": 12,
-        "L_win_rate": 50.0,
-        "B1_win_rate": 50.0,
-        "tie_rate": 0.0,
-        "by_label": {
-          "A": 8,
-          "B": 4,
-          "tie": 0,
-          "both_unqualified": 0,
-          "insufficient_info": 0
-        },
-        "expected_pairs": 12,
-        "judged_pairs": 12,
-        "pending_pairs": [],
-        "pending_count": 0,
-        "pending_note": "已完成 12/12 对判定；pending 单列保留结构位（当前计数 0，非缺失）。",
-        "naturalness_mean_by_arm": {
-          "L": 4.8333,
-          "B1": 4.6667
-        },
-        "sendability_ge2_rate_by_arm": {
-          "L": 100.0,
-          "B1": 91.67
-        },
-        "sendability_mean_by_arm": {
-          "L": 2.9167,
-          "B1": 2.8333
-        },
-        "boilerplate_hit_by_arm": {
-          "L": 0,
-          "B1": 0
-        },
-        "unjudgeable_counts": {},
-        "recheck_pairs": [
-          "pair01",
-          "pair06",
-          "pair11"
-        ],
-        "recheck_consistent_pairs": [
-          "pair06"
-        ],
-        "arbitration_pending_pairs": [],
-        "arbitration_note": "复评分歧待第三评委终裁（protocol §4.5）；首评计数为本块主判，分歧仅涉单维评分时偏好计数不受影响。pair01 校准（2026-11-14）：B.sendability 首评 2→复评 1，第三评委仲裁终值 = 1（依据 e5h-v11-judge-pkg/pair01/arbitration.json，winner 维持 A）；sendability_mean_by_arm.B1 原值 2.9167（按首评 B=2 计，sum 35/12）→ 终值 2.8333（仲裁 pair01：pair01 B 按 1 计，sum 34/12，四舍五入 4 位），L 臂 2.9167 不受影响；arbitration_pending_pairs 原值 [pair01, pair11] → [pair11]（仲裁 pair01）。sendability_ge2_rate_by_arm 维持首评口径未动（若按终值口径 B1 应为 11/12=91.67，留待统一重算时更正）。pair11 终裁（2026-11-14）：B.naturalness 首评 5→复评 4，第三评委仲裁终值 = 5（依据 e5h-v11-judge-pkg/pair11/arbitration.json，winner 维持 A）；复评 4 被终裁 5，naturalness_mean_by_arm.B1=4.6667 按 5 计不变。arbitration_pending_pairs 原值 [pair11] → []（仲裁 pair11）。sendability_ge2_rate_by_arm.B1 校准（统一重算执行）：原值 100.0（首评口径 12/12）→ 91.67（终值口径 11/12；pair01 经仲裁终值 1 后 B 臂 ge2 计数 11/12，与 sendability_mean_by_arm.B1=2.8333 同口径）；L 臂 100.0 经逐对机械复算 12 份 judgment.json 核实（L 臂 sendability 全部 ≥2、零 unjudgeable），原样保留。recheck_pairs 保留 pair11（复评分歧属实，分歧记录位），分歧经终裁闭环；recheck_consistent_pairs=[pair06] 不变。",
-        "judge_identity": "native-subagent-blind-judge-v11（复评 -recheck 后缀）",
-        "proxy_statement": "原生子代理盲评代理评分，不是真人用户发送率。",
-        "per_pair": [
-          {
-            "pair_id": "pair01",
-            "case_id": "uv1-E5-001",
-            "origin_case": "uv1-E1-001",
-            "rotation": {
-              "A": "CURRENT",
-              "B": "DIRECT"
-            },
-            "preference": "A",
-            "winner_arm": "CURRENT",
-            "decisive_dimension": "goal_fit"
-          },
-          {
-            "pair_id": "pair02",
-            "case_id": "uv1-E5-002",
-            "origin_case": "uv1-E1-005",
-            "rotation": {
-              "A": "DIRECT",
-              "B": "CURRENT"
-            },
-            "preference": "A",
-            "winner_arm": "DIRECT",
-            "decisive_dimension": "naturalness"
-          },
-          {
-            "pair_id": "pair03",
-            "case_id": "uv1-E5-003",
-            "origin_case": "uv1-E1-008",
-            "rotation": {
-              "A": "CURRENT",
-              "B": "DIRECT"
-            },
-            "preference": "A",
-            "winner_arm": "CURRENT",
-            "decisive_dimension": "naturalness"
-          },
-          {
-            "pair_id": "pair04",
-            "case_id": "uv1-E5-004",
-            "origin_case": "uv1-E1-012",
-            "rotation": {
-              "A": "DIRECT",
-              "B": "CURRENT"
-            },
-            "preference": "B",
-            "winner_arm": "CURRENT",
-            "decisive_dimension": "goal_fit"
-          },
-          {
-            "pair_id": "pair05",
-            "case_id": "uv1-E5-005",
-            "origin_case": "uv1-E2-001",
-            "rotation": {
-              "A": "CURRENT",
-              "B": "DIRECT"
-            },
-            "preference": "B",
-            "winner_arm": "DIRECT",
-            "decisive_dimension": "goal_fit"
-          },
-          {
-            "pair_id": "pair06",
-            "case_id": "uv1-E5-006",
-            "origin_case": "uv1-E2-005",
-            "rotation": {
-              "A": "DIRECT",
-              "B": "CURRENT"
-            },
-            "preference": "A",
-            "winner_arm": "DIRECT",
-            "decisive_dimension": "goal_fit"
-          },
-          {
-            "pair_id": "pair07",
-            "case_id": "uv1-E5-007",
-            "origin_case": "uv1-E2-008",
-            "rotation": {
-              "A": "CURRENT",
-              "B": "DIRECT"
-            },
-            "preference": "A",
-            "winner_arm": "CURRENT",
-            "decisive_dimension": "naturalness"
-          },
-          {
-            "pair_id": "pair08",
-            "case_id": "uv1-E5-008",
-            "origin_case": "uv1-E2-002",
-            "rotation": {
-              "A": "DIRECT",
-              "B": "CURRENT"
-            },
-            "preference": "B",
-            "winner_arm": "CURRENT",
-            "decisive_dimension": "goal_fit"
-          },
-          {
-            "pair_id": "pair09",
-            "case_id": "uv1-E5-009",
-            "origin_case": "uv1-E3-002",
-            "rotation": {
-              "A": "CURRENT",
-              "B": "DIRECT"
-            },
-            "preference": "B",
-            "winner_arm": "DIRECT",
-            "decisive_dimension": "goal_fit"
-          },
-          {
-            "pair_id": "pair10",
-            "case_id": "uv1-E5-010",
-            "origin_case": "uv1-E3-005",
-            "rotation": {
-              "A": "DIRECT",
-              "B": "CURRENT"
-            },
-            "preference": "A",
-            "winner_arm": "DIRECT",
-            "decisive_dimension": "goal_fit"
-          },
-          {
-            "pair_id": "pair11",
-            "case_id": "uv1-E5-011",
-            "origin_case": "uv1-E3-008",
-            "rotation": {
-              "A": "CURRENT",
-              "B": "DIRECT"
-            },
-            "preference": "A",
-            "winner_arm": "CURRENT",
-            "decisive_dimension": "goal_fit"
-          },
-          {
-            "pair_id": "pair12",
-            "case_id": "uv1-E5-012",
-            "origin_case": "uv1-E3-012",
-            "rotation": {
-              "A": "DIRECT",
-              "B": "CURRENT"
-            },
-            "preference": "A",
-            "winner_arm": "DIRECT",
-            "decisive_dimension": "goal_fit"
-          }
-        ]
-      },
-      "N": {
-        "L2_wins": 11,
-        "B1_wins": 1,
-        "ties": 0,
-        "both_unqualified": 0,
-        "insufficient_info": 0,
-        "n": 12,
-        "n_clear": 12,
-        "L2_win_rate": 91.7,
-        "B1_win_rate": 8.3,
-        "tie_rate": 0.0,
-        "by_label": {
-          "A": 7,
-          "B": 5,
-          "tie": 0,
-          "both_unqualified": 0,
-          "insufficient_info": 0
-        },
-        "expected_pairs": 12,
-        "judged_pairs": 12,
-        "pending_pairs": [],
-        "pending_count": 0,
-        "pending_note": "首评 12/12 完成（first_pass DONE）；复评 3/3（npair2-01/npair2-06/npair2-11）胜负与首评一致，npair2-11 nat_B 分歧经仲裁终裁 5；pending 单列保留结构位（当前计数 0，非缺失）。",
-        "naturalness_mean_by_arm": {
-          "L2": 4.9167,
-          "B1": 4.6667
-        },
-        "sendability_ge2_rate_by_arm": {
-          "L2": 100.0,
-          "B1": 100.0
-        },
-        "sendability_mean_by_arm": {
-          "L2": 2.9167,
-          "B1": 2.6667
-        },
-        "boilerplate_hit_by_arm": {
-          "L2": 0,
-          "B1": 0
-        },
-        "unjudgeable_counts": {},
-        "recheck_pairs": [
-          "npair2-01",
-          "npair2-06",
-          "npair2-11"
-        ],
-        "recheck_consistent_pairs": [
-          "npair2-01",
-          "npair2-06",
-          "npair2-11"
-        ],
-        "arbitration_pending_pairs": [],
-        "arbitration_note": "复评分歧待第三评委终裁（protocol §4.5）；首评计数为本块主判。E5-N v2 复评 3/3（npair2-01/npair2-06/npair2-11，rejudge.json）胜负与首评一致（npair2-01 winner A、npair2-06 winner B、npair2-11 winner A 均维持）；npair2-11 nat_B 分歧（首评 4/复评 5）经第三评委仲裁终裁 5、misreport 单列（首评 4 被终裁推翻记误报，单列计数不进正确数/错误数）。校准（2026-11-14）：naturalness_mean_by_arm.B1 原值 4.5833 → 终值 4.6667（npair2-11 nat_B 按终裁 5 计，B1 sum 55→56，56/12=4.6667；依据 _ledger/e5n-v2-recheck-arbitration-tally.json + npair2-11/arbitration.json，winner 维持 A）；胜负 L2 11/B1 1 不变；sendability_mean_by_arm（2.9167/2.6667）与 sendability_ge2_rate_by_arm（100.0/100.0）不变（复评 send 双臂 3/3；终裁 nat_B=5 仍 ≥2 不影响 ≥2 计数）。",
-        "judge_identity": "native-subagent-blind-judge-v11",
-        "proxy_statement": "E5-N 为盲评回复偏好/自然度与可发送性代理评分（原生子代理），不是真人用户发送率。",
-        "per_pair": [
-          {
-            "pair_id": "npair2-01",
-            "case_id": "uv1-E5-001",
-            "origin_case": "uv1-E1-001",
-            "rotation": {
-              "A": "L2",
-              "B": "B1"
-            },
-            "preference": "A",
-            "winner_arm": "L2",
-            "decisive_dimension": "severe_error_free"
-          },
-          {
-            "pair_id": "npair2-02",
-            "case_id": "uv1-E5-002",
-            "origin_case": "uv1-E1-005",
-            "rotation": {
-              "A": "B1",
-              "B": "L2"
-            },
-            "preference": "B",
-            "winner_arm": "L2",
-            "decisive_dimension": "usable_distinction"
-          },
-          {
-            "pair_id": "npair2-03",
-            "case_id": "uv1-E5-003",
-            "origin_case": "uv1-E1-008",
-            "rotation": {
-              "A": "L2",
-              "B": "B1"
-            },
-            "preference": "A",
-            "winner_arm": "L2",
-            "decisive_dimension": "usable_distinction"
-          },
-          {
-            "pair_id": "npair2-04",
-            "case_id": "uv1-E5-004",
-            "origin_case": "uv1-E1-012",
-            "rotation": {
-              "A": "B1",
-              "B": "L2"
-            },
-            "preference": "B",
-            "winner_arm": "L2",
-            "decisive_dimension": "usable_distinction"
-          },
-          {
-            "pair_id": "npair2-05",
-            "case_id": "uv1-E5-005",
-            "origin_case": "uv1-E2-001",
-            "rotation": {
-              "A": "L2",
-              "B": "B1"
-            },
-            "preference": "A",
-            "winner_arm": "L2",
-            "decisive_dimension": "usable_distinction"
-          },
-          {
-            "pair_id": "npair2-06",
-            "case_id": "uv1-E5-006",
-            "origin_case": "uv1-E2-005",
-            "rotation": {
-              "A": "B1",
-              "B": "L2"
-            },
-            "preference": "B",
-            "winner_arm": "L2",
-            "decisive_dimension": "usable_distinction"
-          },
-          {
-            "pair_id": "npair2-07",
-            "case_id": "uv1-E5-007",
-            "origin_case": "uv1-E2-008",
-            "rotation": {
-              "A": "L2",
-              "B": "B1"
-            },
-            "preference": "A",
-            "winner_arm": "L2",
-            "decisive_dimension": "usable_distinction"
-          },
-          {
-            "pair_id": "npair2-08",
-            "case_id": "uv1-E5-008",
-            "origin_case": "uv1-E2-002",
-            "rotation": {
-              "A": "B1",
-              "B": "L2"
-            },
-            "preference": "B",
-            "winner_arm": "L2",
-            "decisive_dimension": "usable_distinction"
-          },
-          {
-            "pair_id": "npair2-09",
-            "case_id": "uv1-E5-009",
-            "origin_case": "uv1-E3-002",
-            "rotation": {
-              "A": "L2",
-              "B": "B1"
-            },
-            "preference": "A",
-            "winner_arm": "L2",
-            "decisive_dimension": "usable_distinction"
-          },
-          {
-            "pair_id": "npair2-10",
-            "case_id": "uv1-E5-010",
-            "origin_case": "uv1-E3-005",
-            "rotation": {
-              "A": "B1",
-              "B": "L2"
-            },
-            "preference": "B",
-            "winner_arm": "L2",
-            "decisive_dimension": "usable_distinction"
-          },
-          {
-            "pair_id": "npair2-11",
-            "case_id": "uv1-E5-011",
-            "origin_case": "uv1-E3-008",
-            "rotation": {
-              "A": "L2",
-              "B": "B1"
-            },
-            "preference": "A",
-            "winner_arm": "L2",
-            "decisive_dimension": "usable_distinction"
-          },
-          {
-            "pair_id": "npair2-12",
-            "case_id": "uv1-E5-012",
-            "origin_case": "uv1-E3-012",
-            "rotation": {
-              "A": "B1",
-              "B": "L2"
-            },
-            "preference": "A",
-            "winner_arm": "B1",
-            "decisive_dimension": "usable_distinction"
-          }
-        ]
-      }
+    "irrelevant_misuse_by_arm": {
+     "L": 2,
+     "B1": 4,
+     "definition": "辅助指标单列，不进主比率；四臂合计 12 条（COT 3 / LEGACY 3，见 SUMMARY-LOG）。",
+     "verdict_breakdown": {
+      "legitimate": 11,
+      "misuse": 1
+     }
     }
+   }
   },
-  "slot_status": {
-    "M1_H": "filled",
-    "M2_H": "filled",
-    "M3_H": "filled",
-    "M4_N": "filled",
-    "E5_H": "filled",
-    "M1_N": "not_applicable",
-    "M2_N": "not_applicable",
-    "M3_N": "not_applicable",
-    "M4_H": "not_applicable",
-    "M5_H": "pending",
-    "M5_N": "pending",
-    "E5_N": "filled"
-  },
-  "not_applicable": {
-    "M1_N/M2_N/M3_N": {
-      "reason": "protocol-FROZEN §3：E1–E3（M1–M3）语义评审仅 H 线——H 线对 selection_v1 既有四臂输出做五项指标重评；N 线范围 = 真实生成 + 盲评（E4 绝对锚点 + E5 配对），无 E1–E3 约束核对与语义复评环节。",
-      "evidence": "protocol-FROZEN.md §3 两线表；nline-v2/NLINE-V2-LOG.md（N 线装配 = 12 个 E5 origin turn）。"
+  "M2": {
+   "H": {
+    "L": {
+     "num": 2,
+     "den": 12,
+     "rate": 16.67
     },
-    "M4_H": {
-      "reason": "M4 仅 N 线运行（protocol v1.1 冻结口径，scoring-templates-v1.1 §4：延续 v1.0；H 线扩评须两臂对称且只进深入报告）。"
-    }
+    "B1": {
+     "num": 3,
+     "den": 12,
+     "rate": 25.0
+    },
+    "diff_pp": -8.33,
+    "basis": "case_level_final_verdict（题级：latest_state_used_correctly 且零 invalidated 复现；与 v1.1 M-PAIR pair_score=min(recall,suppress) 语义同构，分门结构落盘见复核包）",
+    "source": "agg/hline-final-scores.csv",
+    "notes": "终值来源 = agg/hline-final-scores.csv（144 行闭合：pass 77 / fail 67 / pending 0 / unjudgeable 0；终值规则 = 语义复核优先、无复核且程序化正面命中 → 程序化终值）；H 线归臂 L=CURRENT / B1=DIRECT（protocol §3）；H 线评审单位 = recommended 回复（多通道与单通道同口径只评 recommended）。",
+    "gate_level_diagnostics": "PENDING（门级分臂通过率未汇总落盘；复核明细 10 包见 agg/HLINE-SEMANTIC-SUMMARY.md §4）。"
+   }
   },
-  "pending": {
-    "M5_H": "M5 完整多候选价值（六子指标）v1.1 评审未建包未执行；E5-H v1.1 回复级盲评数据归位 metrics.E5.H，不冒充 M5 组级偏好/可用率（scoring-templates-v1.1 §5 组级评审与 §6 回复级评审为两个独立评审，禁止单条比较冒充多候选价值）。",
-    "M5_N": "M5 组级评审未执行，且 E5-N v2 评委包未建（v1.0 npair 判定已作废，不冒充 v1.1）。"
-  },
-  "accounting": {
-    "unrated_total": 0,
-    "unrated_note": "H 线 E1–E3 144 行闭合（pending 0 / unjudgeable 0）；E4-N 24/24；E5-H 12/12——本轮在册判定无 UNRATED。",
-    "pending_total": 2,
-    "pending_items": [
-      "M5_H",
-      "M5_N"
+  "M3": {
+   "H": {
+    "L": {
+     "num": 10,
+     "den": 12,
+     "rate": 83.33
+    },
+    "B1": {
+     "num": 9,
+     "den": 12,
+     "rate": 75.0
+    },
+    "diff_pp": 8.33,
+    "basis": "case_level_final_verdict（题级首选通过：零严重错误族命中；v1.0 三族口径，v1.1 新增族④⑤未重评——见 SUMMARY-LOG 口径注）",
+    "source": "agg/hline-final-scores.csv",
+    "notes": "终值来源 = agg/hline-final-scores.csv（144 行闭合：pass 77 / fail 67 / pending 0 / unjudgeable 0；终值规则 = 语义复核优先、无复核且程序化正面命中 → 程序化终值）；H 线归臂 L=CURRENT / B1=DIRECT（protocol §3）；H 线评审单位 = recommended 回复（多通道与单通道同口径只评 recommended）。",
+    "special_cases": [
+     {
+      "case": "uv1-E3-001__CURRENT",
+      "note": "pass；review.json quote 字段未转义引号作语法级转义修复（判定内容零改动，evidence_ref #syntax-repaired 留痕）"
+     },
+     {
+      "case": "uv1-E3-009__DIRECT",
+      "note": "fail；无语义复核包，按终值规则取程序化正面命中 fail 终值"
+     }
     ],
-    "false_positive_suspects": {
-      "total": 9,
-      "ruled_false_positive": 8,
-      "confirmed_error": 1,
-      "confirmed_case": "uv1-E3-012__CURRENT（unknown_as_certain，计判违）",
-      "definition": "被仲裁/语义裁决推翻的判分记误报，单列计数，不进正确数也不进错误数。"
-    },
-    "excluded": [],
-    "excluded_note": "串题/隔离破坏排除 0 例（在册判定件未见）。",
-    "E1_irrelevant_misuse": {
-      "total": 12,
-      "by_arm": {
-        "CURRENT": 2,
-        "COT": 3,
-        "DIRECT": 4,
-        "LEGACY": 3
+    "backup_and_group_rates": "PENDING（H 线评审单位 = recommended 单输出，备选/全组比率不适用本次复核范围）"
+   }
+  },
+  "M4": {
+   "N": {
+    "L": {
+     "all_three_qualified": {
+      "num": 12,
+      "den": 12,
+      "rate": 100.0
+     },
+     "dims": {
+      "intent": {
+       "excellent_rate": 100.0
       },
-      "note": "辅助单列，不进 M1 主比率。"
+      "boundary": {
+       "excellent_rate": 100.0
+      },
+      "naturalness": {
+       "excellent_rate": 100.0
+      }
+     },
+     "dimension_mean": {
+      "intent": 3.0,
+      "boundary": 3.0,
+      "naturalness": 3.0
+     }
     },
-    "story_count_unique": {
-      "registry_rows": 60,
-      "unique_story_ids": 38,
-      "source": "cases-freeze-draft.jsonl（60 行冻结登记表）"
-    }
+    "B1": {
+     "all_three_qualified": {
+      "num": 12,
+      "den": 12,
+      "rate": 100.0
+     },
+     "dims": {
+      "intent": {
+       "excellent_rate": 100.0
+      },
+      "boundary": {
+       "excellent_rate": 100.0
+      },
+      "naturalness": {
+       "excellent_rate": 100.0
+      }
+     },
+     "dimension_mean": {
+      "intent": 3.0,
+      "boundary": 3.0,
+      "naturalness": 3.0
+     }
+    },
+    "counts": {
+     "expected": 24,
+     "judgment_found": 24,
+     "pending": [],
+     "per_arm": {
+      "L": 12,
+      "B1": 12
+     }
+    },
+    "saturation_note": "饱和如实填：v1.1 对称重评双臂 24 份判定全部三维 3/3/3，三维全合格率与优秀率均 100%，无区分度（区分度结论 = 该 12 题子集对 M4 不敏感）。",
+    "v1_0_parallel_note": "v1.0（e4-judge-pkg，12 slot 全锚点）判定结果为全锚点 2、无区分度；v1.1 对称重评判定结果为 L/B1 双臂 24 份全部三维 3/3/3、同样无区分度。两轮结果并列陈述，不做纵向优劣比较。",
+    "recheck_note": "复评 6/24 包：5 包一致；e4m-006b 自然度 3→2 分歧经第三评委终裁 = 3（维持首评），arbitration-judgment.json 已落盘。",
+    "definitions": {
+     "全合格率": "三维(intent/boundary/naturalness)分数均 >= 2 的样本占比（2=合格锚）",
+     "优秀率": "三维分数均 = 3 的样本占比",
+     "均值": "该维度 0-3 分的算术平均，保留 2 位小数"
+    },
+    "source": "agg/e4-v11-summary.json"
+   }
   },
-  "judge_identity": {
-    "程序化": "deterministic-keyword-scorer-v0.1",
-    "语义": "native-subagent-semantic-reviewer",
-    "E5/E4 盲评": "native-subagent-blind-judge-v11（复评 -recheck 后缀）"
+  "E5": {
+   "H": {
+    "L_wins": 6,
+    "B1_wins": 6,
+    "ties": 0,
+    "both_unqualified": 0,
+    "insufficient_info": 0,
+    "n": 12,
+    "n_clear": 12,
+    "L_win_rate": 50.0,
+    "B1_win_rate": 50.0,
+    "tie_rate": 0.0,
+    "by_label": {
+     "A": 8,
+     "B": 4,
+     "tie": 0,
+     "both_unqualified": 0,
+     "insufficient_info": 0
+    },
+    "expected_pairs": 12,
+    "judged_pairs": 12,
+    "pending_pairs": [],
+    "pending_count": 0,
+    "pending_note": "已完成 12/12 对判定；pending 单列保留结构位（当前计数 0，非缺失）。",
+    "naturalness_mean_by_arm": {
+     "L": 4.8333,
+     "B1": 4.6667
+    },
+    "sendability_ge2_rate_by_arm": {
+     "L": 100.0,
+     "B1": 91.67
+    },
+    "sendability_mean_by_arm": {
+     "L": 2.9167,
+     "B1": 2.8333
+    },
+    "boilerplate_hit_by_arm": {
+     "L": 0,
+     "B1": 0
+    },
+    "unjudgeable_counts": {},
+    "recheck_pairs": [
+     "pair01",
+     "pair06",
+     "pair11"
+    ],
+    "recheck_consistent_pairs": [
+     "pair06"
+    ],
+    "arbitration_pending_pairs": [],
+    "arbitration_note": "复评分歧待第三评委终裁（protocol §4.5）；首评计数为本块主判，分歧仅涉单维评分时偏好计数不受影响。pair01 校准（2026-11-14）：B.sendability 首评 2→复评 1，第三评委仲裁终值 = 1（依据 e5h-v11-judge-pkg/pair01/arbitration.json，winner 维持 A）；sendability_mean_by_arm.B1 原值 2.9167（按首评 B=2 计，sum 35/12）→ 终值 2.8333（仲裁 pair01：pair01 B 按 1 计，sum 34/12，四舍五入 4 位），L 臂 2.9167 不受影响；arbitration_pending_pairs 原值 [pair01, pair11] → [pair11]（仲裁 pair01）。sendability_ge2_rate_by_arm 维持首评口径未动（若按终值口径 B1 应为 11/12=91.67，留待统一重算时更正）。pair11 终裁（2026-11-14）：B.naturalness 首评 5→复评 4，第三评委仲裁终值 = 5（依据 e5h-v11-judge-pkg/pair11/arbitration.json，winner 维持 A）；复评 4 被终裁 5，naturalness_mean_by_arm.B1=4.6667 按 5 计不变。arbitration_pending_pairs 原值 [pair11] → []（仲裁 pair11）。sendability_ge2_rate_by_arm.B1 校准（统一重算执行）：原值 100.0（首评口径 12/12）→ 91.67（终值口径 11/12；pair01 经仲裁终值 1 后 B 臂 ge2 计数 11/12，与 sendability_mean_by_arm.B1=2.8333 同口径）；L 臂 100.0 经逐对机械复算 12 份 judgment.json 核实（L 臂 sendability 全部 ≥2、零 unjudgeable），原样保留。recheck_pairs 保留 pair11（复评分歧属实，分歧记录位），分歧经终裁闭环；recheck_consistent_pairs=[pair06] 不变。",
+    "judge_identity": "native-subagent-blind-judge-v11（复评 -recheck 后缀）",
+    "proxy_statement": "原生子代理盲评代理评分，不是真人用户发送率。",
+    "per_pair": [
+     {
+      "pair_id": "pair01",
+      "case_id": "uv1-E5-001",
+      "origin_case": "uv1-E1-001",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "A",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "goal_fit"
+     },
+     {
+      "pair_id": "pair02",
+      "case_id": "uv1-E5-002",
+      "origin_case": "uv1-E1-005",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "A",
+      "winner_arm": "DIRECT",
+      "decisive_dimension": "naturalness"
+     },
+     {
+      "pair_id": "pair03",
+      "case_id": "uv1-E5-003",
+      "origin_case": "uv1-E1-008",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "A",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "naturalness"
+     },
+     {
+      "pair_id": "pair04",
+      "case_id": "uv1-E5-004",
+      "origin_case": "uv1-E1-012",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "B",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "goal_fit"
+     },
+     {
+      "pair_id": "pair05",
+      "case_id": "uv1-E5-005",
+      "origin_case": "uv1-E2-001",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "B",
+      "winner_arm": "DIRECT",
+      "decisive_dimension": "goal_fit"
+     },
+     {
+      "pair_id": "pair06",
+      "case_id": "uv1-E5-006",
+      "origin_case": "uv1-E2-005",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "A",
+      "winner_arm": "DIRECT",
+      "decisive_dimension": "goal_fit"
+     },
+     {
+      "pair_id": "pair07",
+      "case_id": "uv1-E5-007",
+      "origin_case": "uv1-E2-008",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "A",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "naturalness"
+     },
+     {
+      "pair_id": "pair08",
+      "case_id": "uv1-E5-008",
+      "origin_case": "uv1-E2-002",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "B",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "goal_fit"
+     },
+     {
+      "pair_id": "pair09",
+      "case_id": "uv1-E5-009",
+      "origin_case": "uv1-E3-002",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "B",
+      "winner_arm": "DIRECT",
+      "decisive_dimension": "goal_fit"
+     },
+     {
+      "pair_id": "pair10",
+      "case_id": "uv1-E5-010",
+      "origin_case": "uv1-E3-005",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "A",
+      "winner_arm": "DIRECT",
+      "decisive_dimension": "goal_fit"
+     },
+     {
+      "pair_id": "pair11",
+      "case_id": "uv1-E5-011",
+      "origin_case": "uv1-E3-008",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "A",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "goal_fit"
+     },
+     {
+      "pair_id": "pair12",
+      "case_id": "uv1-E5-012",
+      "origin_case": "uv1-E3-012",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "A",
+      "winner_arm": "DIRECT",
+      "decisive_dimension": "goal_fit"
+     }
+    ]
+   },
+   "N": {
+    "L2_wins": 11,
+    "B1_wins": 1,
+    "ties": 0,
+    "both_unqualified": 0,
+    "insufficient_info": 0,
+    "n": 12,
+    "n_clear": 12,
+    "L2_win_rate": 91.7,
+    "B1_win_rate": 8.3,
+    "tie_rate": 0.0,
+    "by_label": {
+     "A": 7,
+     "B": 5,
+     "tie": 0,
+     "both_unqualified": 0,
+     "insufficient_info": 0
+    },
+    "expected_pairs": 12,
+    "judged_pairs": 12,
+    "pending_pairs": [],
+    "pending_count": 0,
+    "pending_note": "首评 12/12 完成（first_pass DONE）；复评 3/3（npair2-01/npair2-06/npair2-11）胜负与首评一致，npair2-11 nat_B 分歧经仲裁终裁 5；pending 单列保留结构位（当前计数 0，非缺失）。",
+    "naturalness_mean_by_arm": {
+     "L2": 4.9167,
+     "B1": 4.6667
+    },
+    "sendability_ge2_rate_by_arm": {
+     "L2": 100.0,
+     "B1": 100.0
+    },
+    "sendability_mean_by_arm": {
+     "L2": 2.9167,
+     "B1": 2.6667
+    },
+    "boilerplate_hit_by_arm": {
+     "L2": 0,
+     "B1": 0
+    },
+    "unjudgeable_counts": {},
+    "recheck_pairs": [
+     "npair2-01",
+     "npair2-06",
+     "npair2-11"
+    ],
+    "recheck_consistent_pairs": [
+     "npair2-01",
+     "npair2-06",
+     "npair2-11"
+    ],
+    "arbitration_pending_pairs": [],
+    "arbitration_note": "复评分歧待第三评委终裁（protocol §4.5）；首评计数为本块主判。E5-N v2 复评 3/3（npair2-01/npair2-06/npair2-11，rejudge.json）胜负与首评一致（npair2-01 winner A、npair2-06 winner B、npair2-11 winner A 均维持）；npair2-11 nat_B 分歧（首评 4/复评 5）经第三评委仲裁终裁 5、misreport 单列（首评 4 被终裁推翻记误报，单列计数不进正确数/错误数）。校准（2026-11-14）：naturalness_mean_by_arm.B1 原值 4.5833 → 终值 4.6667（npair2-11 nat_B 按终裁 5 计，B1 sum 55→56，56/12=4.6667；依据 _ledger/e5n-v2-recheck-arbitration-tally.json + npair2-11/arbitration.json，winner 维持 A）；胜负 L2 11/B1 1 不变；sendability_mean_by_arm（2.9167/2.6667）与 sendability_ge2_rate_by_arm（100.0/100.0）不变（复评 send 双臂 3/3；终裁 nat_B=5 仍 ≥2 不影响 ≥2 计数）。",
+    "judge_identity": "native-subagent-blind-judge-v11",
+    "proxy_statement": "E5-N 为盲评回复偏好/自然度与可发送性代理评分（原生子代理），不是真人用户发送率。",
+    "per_pair": [
+     {
+      "pair_id": "npair2-01",
+      "case_id": "uv1-E5-001",
+      "origin_case": "uv1-E1-001",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "severe_error_free"
+     },
+     {
+      "pair_id": "npair2-02",
+      "case_id": "uv1-E5-002",
+      "origin_case": "uv1-E1-005",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "B",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction"
+     },
+     {
+      "pair_id": "npair2-03",
+      "case_id": "uv1-E5-003",
+      "origin_case": "uv1-E1-008",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction"
+     },
+     {
+      "pair_id": "npair2-04",
+      "case_id": "uv1-E5-004",
+      "origin_case": "uv1-E1-012",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "B",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction"
+     },
+     {
+      "pair_id": "npair2-05",
+      "case_id": "uv1-E5-005",
+      "origin_case": "uv1-E2-001",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction"
+     },
+     {
+      "pair_id": "npair2-06",
+      "case_id": "uv1-E5-006",
+      "origin_case": "uv1-E2-005",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "B",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction"
+     },
+     {
+      "pair_id": "npair2-07",
+      "case_id": "uv1-E5-007",
+      "origin_case": "uv1-E2-008",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction"
+     },
+     {
+      "pair_id": "npair2-08",
+      "case_id": "uv1-E5-008",
+      "origin_case": "uv1-E2-002",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "B",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction"
+     },
+     {
+      "pair_id": "npair2-09",
+      "case_id": "uv1-E5-009",
+      "origin_case": "uv1-E3-002",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction"
+     },
+     {
+      "pair_id": "npair2-10",
+      "case_id": "uv1-E5-010",
+      "origin_case": "uv1-E3-005",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "B",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction"
+     },
+     {
+      "pair_id": "npair2-11",
+      "case_id": "uv1-E5-011",
+      "origin_case": "uv1-E3-008",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction"
+     },
+     {
+      "pair_id": "npair2-12",
+      "case_id": "uv1-E5-012",
+      "origin_case": "uv1-E3-012",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "A",
+      "winner_arm": "B1",
+      "decisive_dimension": "usable_distinction"
+     }
+    ]
+   }
   },
-  "proxy_statement": "E4/E5 全部结果为原生子代理代理评审/代理评分，非真人用户调查；每处引用须带此声明。",
-  "sources": [
-    {
-      "file": "agg/hline-final-scores.csv",
-      "rows": 144
+  "M5": {
+   "H": {
+    "CURRENT_wins": 11,
+    "DIRECT_wins": 0,
+    "ties": 1,
+    "both_unqualified": 0,
+    "insufficient_info": 0,
+    "n": 12,
+    "n_clear": 11,
+    "CURRENT_win_rate": 91.7,
+    "DIRECT_win_rate": 0.0,
+    "tie_rate": 8.3,
+    "by_label": {
+     "A": 6,
+     "B": 5,
+     "tie": 1,
+     "both_unqualified": 0,
+     "insufficient_info": 0
     },
-    {
-      "file": "agg/e4-v11-summary.json",
-      "judgments": 24
+    "expected_pairs": 12,
+    "judged_pairs": 12,
+    "pending_pairs": [],
+    "pending_count": 0,
+    "pending_note": "组级盲评偏好（子指标6）为本包真评非引用：12/12 m5h-verdict.json（e5h-v11-judge-pkg/pair01..12/m5h-eval/），CURRENT 11 / DIRECT 0 / tie 1（tie=pair08）；子指标1-5 结构化评审 12/12，机械聚合终账 e5h-v11-judge-pkg/_ledger/m5h-six-tally.json。DIRECT 单条臂按激活范围条款 n/a：S2 等价注记（冻结表 #2：单通道臂此值≡首选可用率）见 first_usable_rate_by_arm.DIRECT=91.7；S3/S4 分母=CURRENT 臂实收方向槽/两两对数；S5 单条臂无备选不计分母。S3 真空槽 7 个（pair01/pair02/pair03/pair04/pair06/pair08/pair09 的 direction:4）单列不计分母，覆盖分母=41 实收方向槽（41/41=100.0）。M5-H 无复评环节，recheck 三键如实空列表。本槽为原生子代理盲评+机械复算代理结果，不是真人用户调查，不代表真人发送率。",
+    "first_usable_rate_by_arm": {
+     "CURRENT": 100.0,
+     "DIRECT": 91.7
     },
-    {
-      "file": "e5h-v11-judge-pkg/pair01..12/judgment.json",
-      "judgments": 12
+    "any_usable_rate_by_arm": {
+     "CURRENT": 100.0,
+     "DIRECT": null
     },
-    {
-      "file": "e5h-v11-judge-pkg/pair01/pair06/pair11/recheck-judgment.json",
-      "rechecks": 3
+    "direction_coverage_rate_by_arm": {
+     "CURRENT": 100.0,
+     "DIRECT": null
     },
-    {
-      "file": "e5-judge-pkg/_ledger/pair-map.json",
-      "pairs": 12,
-      "note": "ledger_only 归臂总账"
+    "duplicate_rate_by_arm": {
+     "CURRENT": 0.0,
+     "DIRECT": null
     },
-    {
-      "file": "hline-semantic-pkg/uv1-E1-*/review.json",
-      "packages": 48
+    "backup_severe_error_rate_by_arm": {
+     "CURRENT": 0.0,
+     "DIRECT": null
     },
-    {
-      "file": "hline-semantic-pkg/uv1-E3-*/review.json",
-      "packages": 47
+    "unjudgeable_counts": {
+     "sub1": {
+      "CURRENT": 0,
+      "DIRECT": 0
+     },
+     "sub2": {
+      "CURRENT": 0,
+      "DIRECT": 0
+     },
+     "sub3": {
+      "CURRENT": 0,
+      "DIRECT": 0
+     },
+     "sub4": {
+      "CURRENT": 0,
+      "DIRECT": 0
+     },
+     "sub5": {
+      "CURRENT": 0,
+      "DIRECT": 0
+     },
+     "s3_empty_slots_undelivered": 0,
+     "s4_exempt_pairs": {
+      "CURRENT": 0,
+      "DIRECT": 0
+     },
+     "s4_single_candidate_excluded": [
+      "pair01:DIRECT",
+      "pair02:DIRECT",
+      "pair03:DIRECT",
+      "pair04:DIRECT",
+      "pair05:DIRECT",
+      "pair06:DIRECT",
+      "pair07:DIRECT",
+      "pair08:DIRECT",
+      "pair09:DIRECT",
+      "pair10:DIRECT",
+      "pair11:DIRECT",
+      "pair12:DIRECT"
+     ],
+     "pair_level": []
     },
-    {
-      "file": "cases-freeze-draft.jsonl",
-      "rows": 60
+    "recheck_pairs": [],
+    "recheck_consistent_pairs": [],
+    "arbitration_pending_pairs": [],
+    "judge_identity": "m5h-blind-judge-v11",
+    "proxy_statement": "M5-H 组级六子指标为原生子代理结构化盲评（子指标1-5）+ 组级五选一真评（子指标6，本包真评非引用），全部为代理评委产出，不是真人用户调查，不代表真人发送率。",
+    "per_pair": [
+     {
+      "pair_id": "pair01",
+      "case_id": "uv1-E5-001",
+      "origin_case": "uv1-E1-001",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "A",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "candidates": 7,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 3,
+         "valid_directions": 3,
+         "empty_slots": [
+          "direction:4"
+         ]
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 21
+        }
+       },
+       "B": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": false,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       }
+      }
+     },
+     {
+      "pair_id": "pair02",
+      "case_id": "uv1-E5-002",
+      "origin_case": "uv1-E1-005",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "B",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "goal_fit",
+      "m5six": {
+       "A": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": true,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "candidates": 7,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 3,
+         "valid_directions": 3,
+         "empty_slots": [
+          "direction:4"
+         ]
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 21
+        }
+       }
+      }
+     },
+     {
+      "pair_id": "pair03",
+      "case_id": "uv1-E5-003",
+      "origin_case": "uv1-E1-008",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "A",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "candidates": 7,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 3,
+         "valid_directions": 3,
+         "empty_slots": [
+          "direction:4"
+         ]
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 21
+        }
+       },
+       "B": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": true,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       }
+      }
+     },
+     {
+      "pair_id": "pair04",
+      "case_id": "uv1-E5-004",
+      "origin_case": "uv1-E1-012",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "B",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": true,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "candidates": 7,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 3,
+         "valid_directions": 3,
+         "empty_slots": [
+          "direction:4"
+         ]
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 21
+        }
+       }
+      }
+     },
+     {
+      "pair_id": "pair05",
+      "case_id": "uv1-E5-005",
+      "origin_case": "uv1-E2-001",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "A",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "candidates": 8,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 4,
+         "valid_directions": 4,
+         "empty_slots": []
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 28
+        }
+       },
+       "B": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": true,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       }
+      }
+     },
+     {
+      "pair_id": "pair06",
+      "case_id": "uv1-E5-006",
+      "origin_case": "uv1-E2-005",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "B",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": true,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "candidates": 7,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 3,
+         "valid_directions": 3,
+         "empty_slots": [
+          "direction:4"
+         ]
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 21
+        }
+       }
+      }
+     },
+     {
+      "pair_id": "pair07",
+      "case_id": "uv1-E5-007",
+      "origin_case": "uv1-E2-008",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "A",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "candidates": 8,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 4,
+         "valid_directions": 4,
+         "empty_slots": []
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 28
+        }
+       },
+       "B": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": true,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       }
+      }
+     },
+     {
+      "pair_id": "pair08",
+      "case_id": "uv1-E5-008",
+      "origin_case": "uv1-E2-002",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "tie",
+      "winner_arm": "tie",
+      "decisive_dimension": null,
+      "m5six": {
+       "A": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": true,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "candidates": 7,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 3,
+         "valid_directions": 3,
+         "empty_slots": [
+          "direction:4"
+         ]
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 21
+        }
+       }
+      }
+     },
+     {
+      "pair_id": "pair09",
+      "case_id": "uv1-E5-009",
+      "origin_case": "uv1-E3-002",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "A",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "candidates": 7,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 3,
+         "valid_directions": 3,
+         "empty_slots": [
+          "direction:4"
+         ]
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 21
+        }
+       },
+       "B": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": true,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       }
+      }
+     },
+     {
+      "pair_id": "pair10",
+      "case_id": "uv1-E5-010",
+      "origin_case": "uv1-E3-005",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "B",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": true,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "candidates": 8,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 4,
+         "valid_directions": 4,
+         "empty_slots": []
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 28
+        }
+       }
+      }
+     },
+     {
+      "pair_id": "pair11",
+      "case_id": "uv1-E5-011",
+      "origin_case": "uv1-E3-008",
+      "rotation": {
+       "A": "CURRENT",
+       "B": "DIRECT"
+      },
+      "preference": "A",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "candidates": 8,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 4,
+         "valid_directions": 4,
+         "empty_slots": []
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 28
+        }
+       },
+       "B": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": true,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       }
+      }
+     },
+     {
+      "pair_id": "pair12",
+      "case_id": "uv1-E5-012",
+      "origin_case": "uv1-E3-012",
+      "rotation": {
+       "A": "DIRECT",
+       "B": "CURRENT"
+      },
+      "preference": "B",
+      "winner_arm": "CURRENT",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "single_slot_json",
+        "candidates": 1,
+        "s1": true,
+        "s2": null,
+        "s5": null,
+        "s3": null,
+        "s4": null
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "candidates": 8,
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": {
+         "nonempty_directions": 4,
+         "valid_directions": 4,
+         "empty_slots": []
+        },
+        "s4": {
+         "duplicate_pairs": 0,
+         "pairwise_pairs": 28
+        }
+       }
+      }
+     }
+    ]
+   },
+   "N": {
+    "L2_wins": 11,
+    "B1_wins": 1,
+    "ties": 0,
+    "both_unqualified": 0,
+    "insufficient_info": 0,
+    "n": 12,
+    "n_clear": 12,
+    "L2_win_rate": 91.7,
+    "B1_win_rate": 8.3,
+    "tie_rate": 0.0,
+    "by_label": {
+     "A": 7,
+     "B": 5,
+     "tie": 0,
+     "both_unqualified": 0,
+     "insufficient_info": 0
     },
-    {
-      "file": "e5n-v2-judge-pkg/npair2-01..12/judgment.json",
-      "judgments": 12
+    "expected_pairs": 12,
+    "judged_pairs": 12,
+    "pending_pairs": [],
+    "pending_count": 0,
+    "pending_note": "组级盲评偏好（子指标6）为引用件：E5-N v2 既有 12/12 judgment.json 归臂 L2 11 / B1 1 / tie 0，不重评；子指标1-5 结构化补跑落盘 12/12。有效方向覆盖仅多通道臂生效（纯文本臂 n/a，真空槽单列不计分母）；候选重复率为 LCS>0.6 冻结阈值机械口径、越低越好（<10 字豁免对单列），执行侧确定性复算兜底；备选严重错误率为题级存在性、越低越好；本槽为原生子代理盲评+机械复算代理结果，不是真人用户调查，不代表真人发送率。",
+    "first_usable_rate_by_arm": {
+     "L2": 100.0,
+     "B1": 91.7
     },
-    {
-      "file": "e5n-v2-judge-pkg/npair2-01/npair2-06/npair2-11/rejudge.json",
-      "rechecks": 3
+    "any_usable_rate_by_arm": {
+     "L2": 100.0,
+     "B1": 91.7
     },
-    {
-      "file": "e5n-v2-judge-pkg/_ledger/e5n-v2-firstpass-tally.json",
-      "first_pass": 12,
-      "note": "E5-N v2 首评终账（12/12；severe_error_suspects 9 明细单列不入槽）"
+    "direction_coverage_rate_by_arm": {
+     "L2": 93.6,
+     "B1": null
     },
-    {
-      "file": "judgments.jsonl",
-      "rows": 220,
-      "note": "全线判定流水分；E5-N v2 实记录 = 首评 12 + 复评 3 + 仲裁 1（行 220 npair2-11 仲裁登记，final naturalness_B=5）（另有 v1.0 npair PENDING 占位 12 行，件内标注占位不计入任何统计）"
-    }
-  ],
-  "snapshot_diff": {
-    "e5h_s62": {
-      "snapshot_judged": 12,
-      "recomputed_judged": 12,
-      "snapshot_pair03": false,
-      "note": "S62 快照生成时 pair03 判定未落盘；本块以判定件重算为准。"
-    }
+    "duplicate_rate_by_arm": {
+     "L2": 0.0,
+     "B1": 0.0
+    },
+    "backup_severe_error_rate_by_arm": {
+     "L2": 25.0,
+     "B1": 16.7
+    },
+    "unjudgeable_counts": {
+     "sub1": {
+      "L2": 0,
+      "B1": 0
+     },
+     "sub2": {
+      "L2": 0,
+      "B1": 0
+     },
+     "sub3": {
+      "L2": 0,
+      "B1": 0
+     },
+     "sub4": {
+      "L2": 0,
+      "B1": 0
+     },
+     "sub5": {
+      "L2": 0,
+      "B1": 0
+     },
+     "s3_empty_slots_undelivered": 0,
+     "s4_exempt_pairs": {
+      "L2": 7,
+      "B1": 0
+     },
+     "s4_single_candidate_excluded": [
+      "npair2-02:B1",
+      "npair2-03:B1",
+      "npair2-04:B1",
+      "npair2-07:B1",
+      "npair2-09:B1",
+      "npair2-10:B1"
+     ],
+     "pair_level": []
+    },
+    "recheck_pairs": [
+     "npair2-01",
+     "npair2-06",
+     "npair2-11"
+    ],
+    "recheck_consistent_pairs": [
+     "npair2-01",
+     "npair2-11"
+    ],
+    "arbitration_pending_pairs": [],
+    "judge_identity": "m5-blind-judge-v11",
+    "proxy_statement": "M5 组级六子指标为原生子代理结构化盲评（子指标1-5）+ 既有组级盲评引用（子指标6），全部为代理评委产出，不是真人用户调查，不代表真人发送率。",
+    "per_pair": [
+     {
+      "pair_id": "npair2-01",
+      "case_id": "uv1-E5-001",
+      "origin_case": "uv1-E1-001",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "severe_error_free",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": [
+         4,
+         4
+        ],
+        "s4": [
+         0,
+         28,
+         0
+        ]
+       },
+       "B": {
+        "envelope": "plain_text",
+        "s1": true,
+        "s2": true,
+        "s5": true,
+        "s3": null,
+        "s4": [
+         0,
+         6,
+         0
+        ]
+       }
+      }
+     },
+     {
+      "pair_id": "npair2-02",
+      "case_id": "uv1-E5-002",
+      "origin_case": "uv1-E1-005",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "B",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "plain_text",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": null,
+        "s4": null
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": [
+         4,
+         4
+        ],
+        "s4": [
+         0,
+         28,
+         0
+        ]
+       }
+      }
+     },
+     {
+      "pair_id": "npair2-03",
+      "case_id": "uv1-E5-003",
+      "origin_case": "uv1-E1-008",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": [
+         4,
+         4
+        ],
+        "s4": [
+         0,
+         28,
+         0
+        ]
+       },
+       "B": {
+        "envelope": "plain_text",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": null,
+        "s4": null
+       }
+      }
+     },
+     {
+      "pair_id": "npair2-04",
+      "case_id": "uv1-E5-004",
+      "origin_case": "uv1-E1-012",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "B",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "plain_text",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": null,
+        "s4": null
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": [
+         4,
+         4
+        ],
+        "s4": [
+         0,
+         28,
+         0
+        ]
+       }
+      }
+     },
+     {
+      "pair_id": "npair2-05",
+      "case_id": "uv1-E5-005",
+      "origin_case": "uv1-E2-001",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": [
+         4,
+         4
+        ],
+        "s4": [
+         0,
+         28,
+         0
+        ]
+       },
+       "B": {
+        "envelope": "plain_text",
+        "s1": true,
+        "s2": true,
+        "s5": true,
+        "s3": null,
+        "s4": [
+         0,
+         6,
+         0
+        ]
+       }
+      }
+     },
+     {
+      "pair_id": "npair2-06",
+      "case_id": "uv1-E5-006",
+      "origin_case": "uv1-E2-005",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "B",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "plain_text",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": null,
+        "s4": [
+         0,
+         6,
+         0
+        ]
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": true,
+        "s3": [
+         3,
+         4
+        ],
+        "s4": [
+         0,
+         28,
+         0
+        ]
+       }
+      }
+     },
+     {
+      "pair_id": "npair2-07",
+      "case_id": "uv1-E5-007",
+      "origin_case": "uv1-E2-008",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": [
+         4,
+         4
+        ],
+        "s4": [
+         0,
+         28,
+         0
+        ]
+       },
+       "B": {
+        "envelope": "plain_text",
+        "s1": false,
+        "s2": false,
+        "s5": false,
+        "s3": null,
+        "s4": null
+       }
+      }
+     },
+     {
+      "pair_id": "npair2-08",
+      "case_id": "uv1-E5-008",
+      "origin_case": "uv1-E2-002",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "B",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "plain_text",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": null,
+        "s4": [
+         0,
+         6,
+         0
+        ]
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": true,
+        "s3": [
+         3,
+         4
+        ],
+        "s4": [
+         0,
+         28,
+         0
+        ]
+       }
+      }
+     },
+     {
+      "pair_id": "npair2-09",
+      "case_id": "uv1-E5-009",
+      "origin_case": "uv1-E3-002",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": [
+         4,
+         4
+        ],
+        "s4": [
+         0,
+         28,
+         7
+        ]
+       },
+       "B": {
+        "envelope": "plain_text",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": null,
+        "s4": null
+       }
+      }
+     },
+     {
+      "pair_id": "npair2-10",
+      "case_id": "uv1-E5-010",
+      "origin_case": "uv1-E3-005",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "B",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "plain_text",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": null,
+        "s4": null
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": [
+         3,
+         3
+        ],
+        "s4": [
+         0,
+         21,
+         0
+        ]
+       }
+      }
+     },
+     {
+      "pair_id": "npair2-11",
+      "case_id": "uv1-E5-011",
+      "origin_case": "uv1-E3-008",
+      "rotation": {
+       "A": "L2",
+       "B": "B1"
+      },
+      "preference": "A",
+      "winner_arm": "L2",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": [
+         4,
+         4
+        ],
+        "s4": [
+         0,
+         28,
+         0
+        ]
+       },
+       "B": {
+        "envelope": "plain_text",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": null,
+        "s4": [
+         0,
+         6,
+         0
+        ]
+       }
+      }
+     },
+     {
+      "pair_id": "npair2-12",
+      "case_id": "uv1-E5-012",
+      "origin_case": "uv1-E3-012",
+      "rotation": {
+       "A": "B1",
+       "B": "L2"
+      },
+      "preference": "A",
+      "winner_arm": "B1",
+      "decisive_dimension": "usable_distinction",
+      "m5six": {
+       "A": {
+        "envelope": "plain_text",
+        "s1": true,
+        "s2": true,
+        "s5": false,
+        "s3": null,
+        "s4": [
+         0,
+         6,
+         0
+        ]
+       },
+       "B": {
+        "envelope": "multi_slot_json",
+        "s1": true,
+        "s2": true,
+        "s5": true,
+        "s3": [
+         3,
+         4
+        ],
+        "s4": [
+         0,
+         28,
+         0
+        ]
+       }
+      }
+     }
+    ]
+   }
+  }
+ },
+ "slot_status": {
+  "M1_H": "filled",
+  "M2_H": "filled",
+  "M3_H": "filled",
+  "M4_N": "filled",
+  "E5_H": "filled",
+  "M1_N": "not_applicable",
+  "M2_N": "not_applicable",
+  "M3_N": "not_applicable",
+  "M4_H": "not_applicable",
+  "M5_H": "filled",
+  "M5_N": "filled",
+  "E5_N": "filled"
+ },
+ "not_applicable": {
+  "M1_N/M2_N/M3_N": {
+   "reason": "protocol-FROZEN §3：E1–E3（M1–M3）语义评审仅 H 线——H 线对 selection_v1 既有四臂输出做五项指标重评；N 线范围 = 真实生成 + 盲评（E4 绝对锚点 + E5 配对），无 E1–E3 约束核对与语义复评环节。",
+   "evidence": "protocol-FROZEN.md §3 两线表；nline-v2/NLINE-V2-LOG.md（N 线装配 = 12 个 E5 origin turn）。"
   },
-  "integration_note": "落位公开仓库时本文件按 repo-landing-plan §2.7 路径卫生改写来源为仓库相对路径。"
+  "M4_H": {
+   "reason": "M4 仅 N 线运行（protocol v1.1 冻结口径，scoring-templates-v1.1 §4：延续 v1.0；H 线扩评须两臂对称且只进深入报告）。"
+  }
+ },
+ "pending": {},
+ "accounting": {
+  "unrated_total": 0,
+  "unrated_note": "H 线 E1–E3 144 行闭合（pending 0 / unjudgeable 0）；E4-N 24/24；E5-H 12/12——本轮在册判定无 UNRATED。",
+  "pending_total": 0,
+  "pending_items": [],
+  "false_positive_suspects": {
+   "total": 9,
+   "ruled_false_positive": 8,
+   "confirmed_error": 1,
+   "confirmed_case": "uv1-E3-012__CURRENT（unknown_as_certain，计判违）",
+   "definition": "被仲裁/语义裁决推翻的判分记误报，单列计数，不进正确数也不进错误数。"
+  },
+  "excluded": [],
+  "excluded_note": "串题/隔离破坏排除 0 例（在册判定件未见）。",
+  "E1_irrelevant_misuse": {
+   "total": 12,
+   "by_arm": {
+    "CURRENT": 2,
+    "COT": 3,
+    "DIRECT": 4,
+    "LEGACY": 3
+   },
+   "note": "辅助单列，不进 M1 主比率。"
+  },
+  "story_count_unique": {
+   "registry_rows": 60,
+   "unique_story_ids": 38,
+   "source": "cases-freeze-draft.jsonl（60 行冻结登记表）"
+  }
+ },
+ "judge_identity": {
+  "程序化": "deterministic-keyword-scorer-v0.1",
+  "语义": "native-subagent-semantic-reviewer",
+  "E5/E4 盲评": "native-subagent-blind-judge-v11（复评 -recheck 后缀）"
+ },
+ "proxy_statement": "E4/E5 全部结果为原生子代理代理评审/代理评分，非真人用户调查；每处引用须带此声明。",
+ "sources": [
+  {
+   "file": "agg/hline-final-scores.csv",
+   "rows": 144
+  },
+  {
+   "file": "agg/e4-v11-summary.json",
+   "judgments": 24
+  },
+  {
+   "file": "e5h-v11-judge-pkg/pair01..12/judgment.json",
+   "judgments": 12
+  },
+  {
+   "file": "e5h-v11-judge-pkg/pair01/pair06/pair11/recheck-judgment.json",
+   "rechecks": 3
+  },
+  {
+   "file": "e5-judge-pkg/_ledger/pair-map.json",
+   "pairs": 12,
+   "note": "ledger_only 归臂总账"
+  },
+  {
+   "file": "hline-semantic-pkg/uv1-E1-*/review.json",
+   "packages": 48
+  },
+  {
+   "file": "hline-semantic-pkg/uv1-E3-*/review.json",
+   "packages": 47
+  },
+  {
+   "file": "cases-freeze-draft.jsonl",
+   "rows": 60
+  },
+  {
+   "file": "e5n-v2-judge-pkg/npair2-01..12/judgment.json",
+   "judgments": 12
+  },
+  {
+   "file": "e5n-v2-judge-pkg/npair2-01/npair2-06/npair2-11/rejudge.json",
+   "rechecks": 3
+  },
+  {
+   "file": "e5n-v2-judge-pkg/_ledger/e5n-v2-firstpass-tally.json",
+   "first_pass": 12,
+   "note": "E5-N v2 首评终账（12/12；severe_error_suspects 9 明细单列不入槽）"
+  },
+  {
+   "file": "judgments.jsonl",
+   "rows": 220,
+   "note": "全线判定流水分；E5-N v2 实记录 = 首评 12 + 复评 3 + 仲裁 1（行 220 npair2-11 仲裁登记，final naturalness_B=5）（另有 v1.0 npair PENDING 占位 12 行，件内标注占位不计入任何统计）"
+  }
+ ],
+ "snapshot_diff": {
+  "e5h_s62": {
+   "snapshot_judged": 12,
+   "recomputed_judged": 12,
+   "snapshot_pair03": false,
+   "note": "S62 快照生成时 pair03 判定未落盘；本块以判定件重算为准。"
+  }
+ },
+ "integration_note": "落位公开仓库时本文件按 repo-landing-plan §2.7 路径卫生改写来源为仓库相对路径。"
 }

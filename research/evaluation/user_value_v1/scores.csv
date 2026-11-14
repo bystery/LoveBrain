@@ -211,3 +211,27 @@ N,uv1-E5-011,M5,npair11,L,L2_win,"winner=A→L2;A/L2:nat=5,send=3;B/B1:nat=4,sen
 N,uv1-E5-011,M5,npair11,B1,L2_win,"winner=A→L2;A/L2:nat=5,send=3;B/B1:nat=4,send=3；nat_B=4 为首评口径，终值口径见 summary.json arbitration_note（仲裁终裁 5，B1 均值 4.6667）",e5n-v2-judge-pkg/npair2-11/judgment.json
 N,uv1-E5-012,M5,npair12,L,B1_win,"winner=A→B1;A/B1:nat=5,send=3;B/L2:nat=5,send=3",e5n-v2-judge-pkg/npair2-12/judgment.json
 N,uv1-E5-012,M5,npair12,B1,B1_win,"winner=A→B1;A/B1:nat=5,send=3;B/L2:nat=5,send=3",e5n-v2-judge-pkg/npair2-12/judgment.json
+N,uv1-E5-001,M5,npair2-01,L,L2_win,m5six;s1=1;s2=1;s3=4/4;s4=0/28;s5=0;winner=A→L2,e5n-v2-judge-pkg/npair2-01/m5-eval/m5-six-metric-result.json;e5n-v2-judge-pkg/npair2-01/judgment.json
+N,uv1-E5-001,M5,npair2-01,B1,L2_win,m5six;s1=1;s2=1;s3=n/a;s4=0/6;s5=1;winner=A→L2,e5n-v2-judge-pkg/npair2-01/m5-eval/m5-six-metric-result.json;e5n-v2-judge-pkg/npair2-01/judgment.json
+N,uv1-E5-002,M5,npair2-02,B1,L2_win,m5six;s1=1;s2=1;s3=n/a;s4=n/a;s5=0;winner=B→L2,e5n-v2-judge-pkg/npair2-02/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-02/judgment.json
+N,uv1-E5-002,M5,npair2-02,L,L2_win,m5six;s1=1;s2=1;s3=4/4;s4=0/28;s5=0;winner=B→L2,e5n-v2-judge-pkg/npair2-02/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-02/judgment.json
+N,uv1-E5-003,M5,npair2-03,L,L2_win,m5six;s1=1;s2=1;s3=4/4;s4=0/28;s5=0;winner=A→L2,e5n-v2-judge-pkg/npair2-03/m5-eval/m5-verdict.json;e5n-v2-judge-pkg/npair2-03/judgment.json
+N,uv1-E5-003,M5,npair2-03,B1,L2_win,m5six;s1=1;s2=1;s3=n/a;s4=n/a;s5=0;winner=A→L2,e5n-v2-judge-pkg/npair2-03/m5-eval/m5-verdict.json;e5n-v2-judge-pkg/npair2-03/judgment.json
+N,uv1-E5-004,M5,npair2-04,B1,L2_win,m5six;s1=1;s2=1;s3=n/a;s4=n/a;s5=0;winner=B→L2,e5n-v2-judge-pkg/npair2-04/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-04/judgment.json
+N,uv1-E5-004,M5,npair2-04,L,L2_win,m5six;s1=1;s2=1;s3=4/4;s4=0/28;s5=0;winner=B→L2,e5n-v2-judge-pkg/npair2-04/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-04/judgment.json
+N,uv1-E5-005,M5,npair2-05,L,L2_win,m5six;s1=1;s2=1;s3=4/4;s4=0/28;s5=0;winner=A→L2,e5n-v2-judge-pkg/npair2-05/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-05/judgment.json
+N,uv1-E5-005,M5,npair2-05,B1,L2_win,m5six;s1=1;s2=1;s3=n/a;s4=0/6;s5=1;winner=A→L2,e5n-v2-judge-pkg/npair2-05/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-05/judgment.json
+N,uv1-E5-006,M5,npair2-06,B1,L2_win,m5six;s1=1;s2=1;s3=n/a;s4=0/6;s5=0;winner=B→L2,e5n-v2-judge-pkg/npair2-06/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-06/judgment.json
+N,uv1-E5-006,M5,npair2-06,L,L2_win,m5six;s1=1;s2=1;s3=3/4;s4=0/28;s5=1;winner=B→L2；s3/s5 为仲裁终值（第三评委终裁 B direction:2 invalid，详见 npair2-06/m5-eval/m5-arbitration.json；首评 s3=4/4、s5=0 记误报单列）,e5n-v2-judge-pkg/npair2-06/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-06/judgment.json
+N,uv1-E5-007,M5,npair2-07,L,L2_win,m5six;s1=1;s2=1;s3=4/4;s4=0/28;s5=0;winner=A→L2,e5n-v2-judge-pkg/npair2-07/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-07/judgment.json
+N,uv1-E5-007,M5,npair2-07,B1,L2_win,m5six;s1=0;s2=0;s3=n/a;s4=n/a;s5=0;winner=A→L2,e5n-v2-judge-pkg/npair2-07/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-07/judgment.json
+N,uv1-E5-008,M5,npair2-08,B1,L2_win,m5six;s1=1;s2=1;s3=n/a;s4=0/6;s5=0;winner=B→L2,e5n-v2-judge-pkg/npair2-08/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-08/judgment.json
+N,uv1-E5-008,M5,npair2-08,L,L2_win,m5six;s1=1;s2=1;s3=3/4;s4=0/28;s5=1;winner=B→L2,e5n-v2-judge-pkg/npair2-08/m5-eval/m5-result.json;e5n-v2-judge-pkg/npair2-08/judgment.json
+N,uv1-E5-009,M5,npair2-09,L,L2_win,m5six;s1=1;s2=1;s3=4/4;s4=0/28;s5=0;winner=A→L2,e5n-v2-judge-pkg/npair2-09/m5-eval/m5-result-normalized.json;e5n-v2-judge-pkg/npair2-09/judgment.json
+N,uv1-E5-009,M5,npair2-09,B1,L2_win,m5six;s1=1;s2=1;s3=n/a;s4=n/a;s5=0;winner=A→L2,e5n-v2-judge-pkg/npair2-09/m5-eval/m5-result-normalized.json;e5n-v2-judge-pkg/npair2-09/judgment.json
+N,uv1-E5-010,M5,npair2-10,B1,L2_win,m5six;s1=1;s2=1;s3=n/a;s4=n/a;s5=0;winner=B→L2,e5n-v2-judge-pkg/npair2-10/m5-eval/m5-result-normalized.json;e5n-v2-judge-pkg/npair2-10/judgment.json
+N,uv1-E5-010,M5,npair2-10,L,L2_win,m5six;s1=1;s2=1;s3=3/3;s4=0/21;s5=0;winner=B→L2,e5n-v2-judge-pkg/npair2-10/m5-eval/m5-result-normalized.json;e5n-v2-judge-pkg/npair2-10/judgment.json
+N,uv1-E5-011,M5,npair2-11,L,L2_win,m5six;s1=1;s2=1;s3=4/4;s4=0/28;s5=0;winner=A→L2,e5n-v2-judge-pkg/npair2-11/m5-eval/m5-result-normalized.json;e5n-v2-judge-pkg/npair2-11/judgment.json
+N,uv1-E5-011,M5,npair2-11,B1,L2_win,m5six;s1=1;s2=1;s3=n/a;s4=0/6;s5=0;winner=A→L2,e5n-v2-judge-pkg/npair2-11/m5-eval/m5-result-normalized.json;e5n-v2-judge-pkg/npair2-11/judgment.json
+N,uv1-E5-012,M5,npair2-12,B1,B1_win,m5six;s1=1;s2=1;s3=n/a;s4=0/6;s5=0;winner=A→B1,e5n-v2-judge-pkg/npair2-12/m5-eval/m5-result-normalized.json;e5n-v2-judge-pkg/npair2-12/judgment.json
+N,uv1-E5-012,M5,npair2-12,L,B1_win,m5six;s1=1;s2=1;s3=3/4;s4=0/28;s5=1;winner=A→B1,e5n-v2-judge-pkg/npair2-12/m5-eval/m5-result-normalized.json;e5n-v2-judge-pkg/npair2-12/judgment.json
