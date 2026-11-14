@@ -133,6 +133,18 @@ LoveBrain 项目由三个仓库构成，角色不互相混淆。**产品仓 `bys
 
 ---
 
+### 5.3 最新用户价值收口（2026-11-14）
+
+在 Arena 历史判决之外，本轮还使用 60 题冻结集评估聊天用户真正看到的回复。**两批各 12 对的完整候选组盲评已全部结算**：
+
+- **新生成 M5-N：LoveBrain 11 胜 / 普通基线 1 胜**；首选可用率 12/12 vs 11/12；44/47 非空方向有效（93.6%）。
+- **历史固定模型 M5-H：CURRENT 11 胜 / DIRECT 0 胜 / 1 平**；首选可用率 12/12 vs 11/12；41/41 非空方向有效（100%）。
+- **M5 六子指标全数落盘**：还包括候选重复率、备选严重错误率、至少一条可用率；完整表在 [M5-N 终账](evaluation/user_value_v1/m5-final-tally.json)、[M5-H 终账](evaluation/user_value_v1/m5h-final-tally.json) 与 [实验成绩索引](../docs/appendix/EVIDENCE_INDEX.md)。
+
+本轮**尊重每个系统真实交付的候选组**，不强迫生成数量相等；两组评分与长剧专门测试独立统计，不混分母。E340 真实合成故事的首选与风格候选示例已在 [根 README](../README.md) 使用。
+
+---
+
 ## 6. 公开资产导览
 
 研究目录十二区（benchmark / dataset / candidates / evaluation / experiments / arena / refs / archive / provenance / tools / architecture / PAPER.md）的逐区说明见 [README.md](README.md) 目录导览，件级索引与阅读路径见 [RESEARCH_INDEX.md](RESEARCH_INDEX.md)；迁移证据（来源映射、逐件清单、隐私与许可审查）见 [provenance/PROVENANCE-INDEX.md](provenance/PROVENANCE-INDEX.md)。
