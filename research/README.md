@@ -4,6 +4,8 @@
 
 **数据规模（权威口径，详见 [benchmark/STATISTICS.md](benchmark/STATISTICS.md)）：** 317 个唯一故事 / 299 个 Gold 覆盖 episode / 4,082 轮对话 / 9,646 条可核验原子断言。
 
+**最新用户价值实验已结账：** 两批完整候选组盲评分别为 **11:1** 与 **11:0（另 1 平）**。直接查看 [完整成绩与对照证据](../docs/appendix/EVIDENCE_INDEX.md) 或 [M5 六项结果](evaluation/user_value_v1/summary.json)。
+
 ## 核心文档
 
 | 文档 | 回答什么问题 |
