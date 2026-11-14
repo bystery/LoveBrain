@@ -9,7 +9,7 @@
 | 长聊天不会因窗口缩短丢掉关键证据 | 第 25–32 轮保持率 **1.000 vs 0.493 / 0.509**；Prompt −41.9% | 同批滑窗父本 `r9_slim`，两篇独立故事各一个父本读数 | [FLJUDGE](../../research/refs/experiment_protocol_20261023/long_probe_20261030/FLJUDGE_VERDICT_20261102.md) |
 | 长程保持跨四域仍成立 | 出行/职场/餐饮/健康四域第 25–32 轮 **1.000 / 1.000 / 1.000 / 1.000**；父本 **.323 / .512 / .624 / .568**；终态 425/430 | 同批原滑窗父本 | [LD1](../../research/refs/experiment_protocol_20261023/long_probe_20261030/LD1_VERDICT_20261102.md) |
 | 避免把未定的事说成已经发生 | 严重事实错误 **1 vs 6**（亲读终值）；memory +.301 / fact +.287 / goal +.278 / emotion +.226 / boundary +.148，九维全部为正 | 同批不带 UC 约束块的父本 | [W16](../../research/refs/experiment_protocol_20261023/long_probe_20261030/W16_UNC_VERDICT_20261102.md) |
-| 多风格回复确有整组选择价值（新生成） | **LoveBrain 11 胜 / B1 1 胜**，12 对、无平局 | 原生子代理同批生成与盲评，完整候选组比较 | [M5-N 最终账](../../research/evaluation/user_value_v1/m5-final-tally.json) · [逐对摘要](../../research/evaluation/user_value_v1/summary.json) |
+| 多风格回复确有整组选择价值（新生成） | **LoveBrain 11 胜 / B1 1 胜**，12 对、无平局 | 原生子代理同批生成与盲评，完整候选组比较 | [M5-N 最终账（权威）](../../research/evaluation/user_value_v1/m5-final-tally.json) · [逐对摘要（次级）](../../research/evaluation/user_value_v1/summary.json) |
 | 历史固定模型、按整组比较再次获胜 | **CURRENT 11 胜 / DIRECT 0 胜 / 1 平** | deepseek-flash-2 历史输出，原生子代理按组评审 | [M5-H 最终账](../../research/evaluation/user_value_v1/m5h-final-tally.json) |
 | 主建议直接可用 | **12/12 vs 11/12**（N 和 H 两批分别测得同数） | 各自同批的普通基线 | [M5-N](../../research/evaluation/user_value_v1/m5-final-tally.json) · [M5-H](../../research/evaluation/user_value_v1/m5h-final-tally.json) |
 | 有效话题方向，不是同义词换皮 | **44/47 = 93.6%**（新生成）与 **41/41 = 100%**（历史固定模型）；有效候选重复率 **0/329**（新）与 **0/287**（旧） | 内部有效性与重复性检验，基线没有完全同构的方向槽 | [M5-N](../../research/evaluation/user_value_v1/m5-final-tally.json) · [M5-H](../../research/evaluation/user_value_v1/m5h-final-tally.json) |
@@ -33,7 +33,7 @@
 | 存在严重错误备选的题比例（越低越好） | 3/12 | 2/12 | 0/12 | 单通道不适用 |
 | 整组盲评偏好 | **11 胜** | 1 胜 | **11 胜** | 0 胜、1 平 |
 
-六项标准在实验前的 [评分规则 `5](../../research/evaluation/user_value_v1/scoring-templates.md) 冻结：**可用**不是空泛的喜欢，是事实没有用错、未定事项没有坐实、没有越过重要边界；**有效方向**必须与当下话题相关、彼此真正不同；**重复**按最长公共子串占比超过 0.6 判定；**整组偏好**匿名交换顺序，评委选择哪一组更方便找到想发送的回复。子指标 6（N）直接复用已完成的 E5-N 盲评，没有二次跑题或重生成。
+六项标准在实验前的 [评分规则 5](../../research/evaluation/user_value_v1/scoring-templates.md) 冻结：**可用**不是空泛的喜欢，是事实没有用错、未定事项没有坐实、没有越过重要边界；**有效方向**必须与当下话题相关、彼此真正不同；**重复**按最长公共子串占比超过 0.6 判定；**整组偏好**匿名交换顺序，评委选择哪一组更方便找到想发送的回复。子指标 6（N）直接复用已完成的 E5-N 盲评，没有二次跑题或重生成。
 
 **此处公开全部六项，是为了准确记录实验，不是要求继续改造：** N 线备选严重错误题比例 3/12 对 2/12；M4 两臂同为 12/12 优秀；它们在这里保留，但不喧宾夺主地占据首页黄金位置。
 

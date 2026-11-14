@@ -109,7 +109,7 @@ LoveBrain 要处理的是真实聊天里的连续状态。它有三层协同机�
 | **无据坐实、严重事实错误** | **1 处** | 旧机制 6 处 | [W16](research/refs/experiment_protocol_20261023/long_probe_20261030/W16_UNC_VERDICT_20261102.md) |
 | **新生成回复组的盲评选择** | **11 胜** | 普通 B1 1 胜 | [M5-N](research/evaluation/user_value_v1/m5-final-tally.json) |
 | **历史固定模型回复组的盲评选择** | **11 胜** | Direct 0 胜、1 平 | [M5-H](research/evaluation/user_value_v1/m5h-final-tally.json) |
-| **第一条建议即可用** | **12/12** | 11/12 | [M5 六项终账](research/evaluation/user_value_v1/summary.json) |
+| **第一条建议即可用** | **12/12** | 11/12 | [M5-N](research/evaluation/user_value_v1/m5-final-tally.json) · [M5-H](research/evaluation/user_value_v1/m5h-final-tally.json) · [六项总览](research/evaluation/user_value_v1/summary.json) |
 | **不同话题方向真正有效** | **44/47（93.6%）** | 普通基线无同构方向槽 | [M5-N](research/evaluation/user_value_v1/m5-final-tally.json) |
 | **结构化回复契约违规** | **2/72** | 旧机制 7/72 | [W17B](research/refs/experiment_protocol_20261023/long_probe_20261030/W17B_GUARD_VERDICT_20261103.md) |
 

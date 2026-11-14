@@ -75,7 +75,7 @@ N 批基线在部分题也输出多条候选，H 批 Direct 为单条；产品�
 - **swap 复核**：评审交换候选顺序复跑，翻转数超门即阻断单冠军宣布（W21 翻转 3/10、W22 翻转 7/22 均如实阻断）。
 - **每次调用记账**：授权账本（scope+cap）+ calls.json 落盘可复核；全部尝试/失败入账，不无限重试、不复活关闭单。
 - **生成隔离**：出题会话与评审会话物理隔离，`STORY_CUSTODY_LEDGER.json` 逐篇记录暴露状态（账本原件随 `research/refs/` 迁移保留）。
-- **B 线对照集**：`research/benchmark/b_line/` 24 篇已随公开研究分支公开——自公开时起为公开对照资产，不再是未曝光盲测集（状态见 `benchmark/b_line/B_LINE_README.md` `0）。
+- **B 线对照集**：`research/benchmark/b_line/` 24 篇已随公开研究分支公开——自公开时起为公开对照资产，不再是未曝光盲测集（状态见 `benchmark/b_line/B_LINE_README.md` §0）。
 
 ---
 
@@ -85,7 +85,7 @@ N 批基线在部分题也输出多条候选，H 批 Direct 为单条；产品�
 
 权威轨为 `benchmark/stories_v2/GOLD_SIDECAR/`（GOLD_SIDECAR_v2 本地重建，2026-11-10，14 文件）：**319 个 story 目录 → 317 个唯一 story（按 ID 去重）→ 299 个 Gold 覆盖 episode / 4,082 轮 / 9,646 条原子断言**（有断言轮 3,899 = 95.5%，空 Gold 轮 79，有卡无断言轮 104）。
 
-故事按 17 个层组逐批构造：stage 系列、wave 系列（wave3_ext / wave1_ext 为长剧集 LRE 系）、wave4_dev（开发诊断）、wave5_selection（选题消费）、锚点批与收口探针批；含标准 12 轮剧、40/32 轮长剧（专测 FK-LR2-01 长程逐字事实保持）与反事实孪生（专测目标跟随）。逐层组构成、恒等式与全部口径边界见 [DATASET_DOCUMENTATION.md](DATASET_DOCUMENTATION.md) `1–`2 与 [benchmark/STATISTICS.md](benchmark/STATISTICS.md)；本稿成文时的第一代主库口径（208 / 2,944 / 6,603）作为历史口径登记于文末附注 1。
+故事按 17 个层组逐批构造：stage 系列、wave 系列（wave3_ext / wave1_ext 为长剧集 LRE 系）、wave4_dev（开发诊断）、wave5_selection（选题消费）、锚点批与收口探针批；含标准 12 轮剧、40/32 轮长剧（专测 FK-LR2-01 长程逐字事实保持）与反事实孪生（专测目标跟随）。逐层组构成、恒等式与全部口径边界见 [DATASET_DOCUMENTATION.md](DATASET_DOCUMENTATION.md) §1–§2 与 [benchmark/STATISTICS.md](benchmark/STATISTICS.md)；本稿成文时的第一代主库口径（208 / 2,944 / 6,603）作为历史口径登记于文末附注 1。
 
 ### 3.2 覆盖构成（按第一代主库口径 n=208 / 2,944 轮 / 6,603 断言计量，见附注 1）
 
@@ -99,7 +99,7 @@ N 批基线在部分题也输出多条候选，H 批 Direct 为单条；产品�
 
 ### 3.3 诚实声明
 
-Gold 断言来自 **AI 隔离出题会话的评分卡逐字搬运**（`research/tools/build_gold_sidecar.py` 不新造一字），不是人工标注真值；judge 有资格表（boundary/memory 维器械效度不足已停用）。这些边界全部写在 `research/refs/experiment_protocol_20261023/global_harness_program_20261030/EVALUATION_BASELINE_AUDIT_20261103.md`。Gold 侧车的分层局限（"宁 unrated 不误判"、程序化可判面边界）见 [DATASET_DOCUMENTATION.md](DATASET_DOCUMENTATION.md) `5。
+Gold 断言来自 **AI 隔离出题会话的评分卡逐字搬运**（`research/tools/build_gold_sidecar.py` 不新造一字），不是人工标注真值；judge 有资格表（boundary/memory 维器械效度不足已停用）。这些边界全部写在 `research/refs/experiment_protocol_20261023/global_harness_program_20261030/EVALUATION_BASELINE_AUDIT_20261103.md`。Gold 侧车的分层局限（"宁 unrated 不误判"、程序化可判面边界）见 [DATASET_DOCUMENTATION.md](DATASET_DOCUMENTATION.md) §5。
 
 ---
 
@@ -122,14 +122,14 @@ Gold 断言来自 **AI 隔离出题会话的评分卡逐字搬运**（`research/
 
 **现行冠军**：>24 轮域 `window_expand_b_norecap_uc`；≤24 轮域 `window_expand_b_norecap_guard`（2026-11-03 起，谱系见 `research/candidates/VERSION_LINEAGE_V2.json`）。全程累计 2,726+ 次真实调用、79 本授权账本（36 已闭），全部可对账。
 
-**冠军 ≠ 可直接替换产品**：BASELINE_PARITY 明文"整体优于原版仍未证明"；谈心/主动开场/润色/Android 交互不在基线比较范围；用户价值整组盲评已于 2026-11-14 完成，数值见 `0.1；但它与早期 Arena 的固定模型研究是两类独立实验。冠军机制已按分域以 LIVE_AUTO 档接入产品正常回复主链路（>24 轮 uc / ≤24 轮 guard；`closeout-20261106` 产品分支默认档 LIVE_AUTO，真机行为级验收待执行；接线架构见 [architecture/ARCHITECTURE.md](architecture/ARCHITECTURE.md) `4）。移植档位谱系（shadow → 单风格 → 全量三阶段开关）与用户主观偏好实测（愿发率，唯一不可替代的验收）仍未完成。
+**冠军 ≠ 可直接替换产品**：BASELINE_PARITY 明文"整体优于原版仍未证明"；谈心/主动开场/润色/Android 交互不在基线比较范围；用户价值整组盲评已于 2026-11-14 完成，数值见 §0.1；但它与早期 Arena 的固定模型研究是两类独立实验。冠军机制已按分域以 LIVE_AUTO 档接入产品正常回复主链路（>24 轮 uc / ≤24 轮 guard；`closeout-20261106` 产品分支默认档 LIVE_AUTO，真机行为级验收待执行；接线架构见 [architecture/ARCHITECTURE.md](architecture/ARCHITECTURE.md) §4）。移植档位谱系（shadow → 单风格 → 全量三阶段开关）与用户主观偏好实测（愿发率，唯一不可替代的验收）仍未完成。
 
 ---
 
 ## 5. 没有证明什么（边界清单）
 
 1. "整体优于原版"未证明（比较对象主要是候选 vs 直接父本）。
-2. 用户主观偏好（愿发率）未收集——这是最终替换的必要条件。
+2. 用户主观偏好（愿发率）未收集——这是最终替换的必要条件；代理盲评已完成（原生子代理实验，不替代真实愿发实测），见 §0.1 代理盲评。
 3. 独立泛化终验未完成——原 B 线 24 篇已作为公开对照资产并入数据集，自公开时起不再是未曝光测试集；如需严格终验须另用从未公开的数据并在公开前完成。
 4. Gold 为 AI 出题断言（非人工真值）；boundary/memory 维 judge 器械效度不足已停用。
 5. W22 的 JSON 回归与提示词长度的因果关系未做隔离消融（只登记了跨批一致的关联）。
@@ -144,7 +144,7 @@ Gold 断言来自 **AI 隔离出题会话的评分卡逐字搬运**（`research/
 1. 评估基准补强（判别素材补建、severe 人工真值扩容、维度映射表——W21-03/04/05）；
 2. judge 逐维校准扩样（锚点校准报告 W20_03 已建框架）；
 3. 移植三阶段开关收尾（shadow 对账 → 单风格 → 全量）与真机行为级验收；
-4. 用户愿发实测（唯一不可替代的验收）；独立泛化终验须另用未曝光数据；
+4. 用户愿发实测（唯一不可替代的验收；代理盲评已完成，见 §0.1 代理盲评）；独立泛化终验须另用未曝光数据；
 5. 题库按暴露账本继续扩（wave 机制已建，0 近重簇纪律）。
 
 ## 7. 证据索引
@@ -165,7 +165,7 @@ Gold 断言来自 **AI 隔离出题会话的评分卡逐字搬运**（`research/
 
 本稿成文于第一代主库口径时点（2026-11-03）。2026-11-12 迁移收敛时，正文数据集总量数字已统一为现行权威口径（299 / 4,082 / 9,646，唯一口径页 [benchmark/STATISTICS.md](benchmark/STATISTICS.md)）。以下登记历史口径与逐项勘误，供对照旧 runs 与判决文件时使用。
 
-1. **第一代主库口径**（正文原 `3.1 表，2026-11-07 只读复算；已被 2026-11-10 v2 重建取代；更早的"296"口径无法可靠复现，弃用）：
+1. **第一代主库口径**（正文原 §3.1 表，2026-11-07 只读复算；已被 2026-11-10 v2 重建取代；更早的"296"口径无法可靠复现，弃用）：
 
    | 部分 | 条数 | 轮数 | 说明 |
    |---|---|---|---|
@@ -182,7 +182,7 @@ Gold 断言来自 **AI 隔离出题会话的评分卡逐字搬运**（`research/
 4. **域字段计数勘误**：原稿"221 集中 184 篇有 manifest 显式域字段、32 篇由归一化映射派生"不闭合（184+32=216≠221），属孤立转写错误；正确口径为 184 篇标准剧集 = 152 显式 + 32 派生。该细节已从正文移除。
 5. **"字节级对拍"口径**：对拍载体为 `tools/test_baseline_parity.py` 的 26 夹具 / 9 多轮 fixture；mergeSceneEntries 合并策略存在登记的残留差异（BASELINE_PARITY.md），不能读成"全量逐字节等价已证"。
 6. **账本快照**：原稿 210/161/49/173 四数为 2026-11-07 对账口径；账本此后继续登记，2026-11-12 wave5 补登后为 288 stories / 379 events，现行状态以账本原件为准。
-7. **滑窗基线 38.6–55.7%**（正文 `0/`1.3）：为 LR2 亲读口径（机械口径为 47.6–50.4%）。
+7. **滑窗基线 38.6–55.7%**（正文 §0/§1.3）：为 LR2 亲读口径（机械口径为 47.6–50.4%）。
 8. **FS1-B**：取意图口径（KEEP 方向）；首轮报告另有 C1 阈值勘误双口径披露（字面 REWORK / 意图 KEEP），正文为选摘、非错述。
 9. **`example-LoveBrain/` 快照**：不随公开迁移；远端 arena 树内嵌快照为产品 main 提交 `40c1f12` 的 app/src 完整快照（702/702 一致），复现引用 git 提交。
-10. **其余判决数字**（`4 表等）：经两轮逐字核对与判决书逐点吻合、无一错抄。
+10. **其余判决数字**（§4 表等）：经两轮逐字核对与判决书逐点吻合、无一错抄。
