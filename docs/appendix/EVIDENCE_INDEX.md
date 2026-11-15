@@ -14,7 +14,7 @@
 | 主建议直接可用 | **12/12 vs 11/12**（N 和 H 两批分别测得同数） | 各自同批的普通基线 | [M5-N](../../research/evaluation/user_value_v1/m5-final-tally.json) · [M5-H](../../research/evaluation/user_value_v1/m5h-final-tally.json) |
 | 有效话题方向，不是同义词换皮 | **44/47 = 93.6%**（新生成）与 **41/41 = 100%**（历史固定模型）；有效候选重复率 **0/329**（新）与 **0/287**（旧） | 内部有效性与重复性检验，基线没有完全同构的方向槽 | [M5-N](../../research/evaluation/user_value_v1/m5-final-tally.json) · [M5-H](../../research/evaluation/user_value_v1/m5h-final-tally.json) |
 | 输出结构更稳，能被应用解析 | **契约违规 2/72 vs 7/72**；同批严重错误 **0 vs 2**；零额外模型调用 | 同批不启用 ContractGuard 的父本 | [W17B](../../research/refs/experiment_protocol_20261023/long_probe_20261030/W17B_GUARD_VERDICT_20261103.md) |
-| 有价值的简化而非堆复杂度 | 删除 recap 后长程保持两臂仍 **1.0/1.0**，Prompt −0.3% | recap 有无消融 | [W15N01](../../research/refs/experiment_protocol_20261023/long_probe_20261030/W15N01_ABLATION_VERDICT_20261102.md) |
+| 有价值的简化而非堆复杂度 | 删除 recap 后长程保持两臂仍 **1.0/1.0**，Prompt −0.3% | recap 有无消融 | [W15N01](../../research/ARCHIVE_LEDGER.md#p-09) |
 
 **读表说明：** 前三行及契约守卫是具体机制相对历史父本的同批实验；M5 是完整候选组与普通基线的用户价值对比。不能把旧滑窗父本直接写成 CoT，也不能把两批 M5 胜数合并冒充单个 24 对盲评。对用户而言，它们共同解释了产品价值：不丢早期事实、不乱坐实事实、给出有意义的不同回复选择。
 
@@ -59,7 +59,7 @@
 
 - [E340 合唱团真实合成测试故事](../../research/benchmark/stories_v2/wave5_selection/E340/episode.json)；[LoveBrain CURRENT 原始回复](../../research/experiments/runs/selection_v1/CURRENT/E340/turn_10_E340_T10/reply_raw.txt)；[Direct 原始回复](../../research/experiments/runs/selection_v1/DIRECT/E340/turn_10_E340_T10/reply_raw.txt)；[E340 的 M5-H 逐候选评语](../../research/evaluation/user_value_v1/m5-eval/hpair2-01.json)；[新生成对照的 M5-N 逐候选评语](../../research/evaluation/user_value_v1/m5-eval/npair2-01.json)。
 - [数据集权威统计](../../research/benchmark/STATISTICS.md)：317 个去重故事，其中 299 个 Gold 覆盖，4,082 题目轮、9,646 条细粒度断言。60 题为当前用户价值冻结集，12 对为本次 M5 盲评的实际对比规模；这三个数量不是同一个分母。
-- [53 份已有判决的全目录](../../research/refs/VERDICT-INDEX.md)；[候选机制与结果映射](../../research/CORE_MECHANISMS.md)；[原始评审报告](../../research/evaluation/user_value_v1/report.md)；[可复现范围](../../research/REPRODUCIBILITY.md)。
+- [53 份已有判决的全目录（已归档）](../../research/ARCHIVE_LEDGER.md#w1-privacy)；[候选机制与结果映射](../../research/CORE_MECHANISMS.md)；[原始评审报告](../../research/evaluation/user_value_v1/report.md)；[可复现范围](../../research/REPRODUCIBILITY.md)。
 - [Android 演示 GIF](../../images/demo.gif) · [架构示意图](../../images/lovebrain-pipeline.svg) · [正式 APK Releases](https://github.com/bystery/LoveBrain/releases/latest)。
 
 ## F. 研究成果与 Android 发版的关系

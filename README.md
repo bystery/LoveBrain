@@ -112,7 +112,7 @@ LoveBrain 的 Harness 把模型生成前后的工作组织成一条完整链路�
 
 判分不是问“哪句更漂亮”这么简单：事实题对照 Gold 与聊天时间线；状态题检查旧状态是否被撤回；边界题检查无据断言与私人信息；候选题逐条判断可用性，再进行匿名完整组比较。评分模板规定了分子、分母、严重错误、重复候选、合法空方向和 tie 规则。
 
-[数据集统计](research/benchmark/STATISTICS.md) · [数据构造说明](research/DATASET_DOCUMENTATION.md) · [60 案例评测协议](research/evaluation/user_value_v1/protocol.md) · [冻结评分标准](research/evaluation/user_value_v1/scoring-templates.md) · [完整实验报告](research/evaluation/user_value_v1/report.md)
+[数据集统计](research/benchmark/STATISTICS.md) · [数据构造说明](research/DATASET_DOCUMENTATION.md) · [60 案例评测协议（已归档）](research/ARCHIVE_LEDGER.md#w1-privacy) · [冻结评分标准](research/evaluation/user_value_v1/scoring-templates.md) · [完整实验报告](research/evaluation/user_value_v1/report.md)
 
 ## 下载与使用
 
@@ -128,7 +128,7 @@ LoveBrain 的 Harness 把模型生成前后的工作组织成一条完整链路�
 <summary><strong>展开：完整研究判决、额外对照与工程结果</strong></summary>
 
 - [研究论文与总结果](research/PAPER.md)
-- [53 项实验判决索引](research/refs/VERDICT-INDEX.md)
+- [实验判决索引（已归档）](research/ARCHIVE_LEDGER.md#w1-privacy)
 - [长程记忆：25–32 轮关键事实保持](research/refs/experiment_protocol_20261023/long_probe_20261030/FLJUDGE_VERDICT_20261102.md)
 - [跨领域记忆复现](research/refs/experiment_protocol_20261023/long_probe_20261030/LD1_VERDICT_20261102.md)
 - [未确认事实边界：6 处降至 1 处](research/refs/experiment_protocol_20261023/long_probe_20261030/W16_UNC_VERDICT_20261102.md)
@@ -139,6 +139,18 @@ LoveBrain 的 Harness 把模型生成前后的工作组织成一条完整链路�
 - [完整数据集与复现说明](research/REPRODUCIBILITY.md)
 
 </details>
+
+## 仓库结构与治理
+
+本分支按三层归口管理：
+
+- **正式库内容（Git 内）**：研究协议与评审判决（`research/refs/` 收口件）、冻结数据集（`research/benchmark/`）、最终评分与实验报告（`research/evaluation/`）、复现脚本（`research/tools/`、`research/arena/`、`scripts/`）、迁移溯源（`research/provenance/`）。全量清单见 [`research/RESEARCH_INDEX.md`](research/RESEARCH_INDEX.md)。
+- **归档账本（Git 内登记，包体外置）**：逐集 runs 原始载荷、experiment_protocol 大卷、历史交付 zip、候选历史版本等批次单元，按批次打包脱离 Git；每个包位的编号、范围、文件数、字节量与去向登记在归档账本 [`research/ARCHIVE_LEDGER.md`](research/ARCHIVE_LEDGER.md)（P-01~P-14）。
+- **复现入口**：[`research/REPRODUCIBILITY.md`](research/REPRODUCIBILITY.md)——环境、依赖锁、冠军 Harness 配置（`research/candidates/window_expand_b_norecap_guard/`）与一键复跑路径从这里进入；架构总览见 [`research/architecture/ARCHITECTURE.md`](research/architecture/ARCHITECTURE.md)。
+
+### 展示链保可达声明
+
+本文引用的逐条证据路径在治理后仍保留在 Git 内（白名单豁免，不随批次归档）：`selection_v1` 冠军线两个对照轮次（CURRENT 与 DIRECT 各一）共 9 文件 / 22,791 B，及 long_probe 四份判决文件共 4 文件 / 17,647 B。其余 selection_v1 载荷（10,090 文件 / 70,295,441 B 中除上述白名单外）整体入归档层（账本 P-02），其聚合结论已蒸馏进评测报告与判决记录。
 
 ## 项目与许可
 
