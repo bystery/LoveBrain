@@ -1,5 +1,9 @@
 # 性能读数
 
+> **来源口径：** 下表数字为历史孤本快照（2026-09-03 那一轮运行的留档，原始载荷未随库保留），不是可复算基准。
+> 可复算口径见 research 分支（`research-migration-20261112`）：[research/benchmark/STATISTICS.md](https://github.com/bystery/LoveBrain/blob/research-migration-20261112/research/benchmark/STATISTICS.md) 与 [research/BENCHMARK_EVALUATION.md](https://github.com/bystery/LoveBrain/blob/research-migration-20261112/research/BENCHMARK_EVALUATION.md)。
+> 本文件不附任何脚本；复跑与统计方法以上述两处为准。
+
 这份文件只放一次真实运行的读数，以及它们能说到什么程度。README 里不放这些数字，
 免得一张表变成对所有人的承诺。
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="images/demo.gif" alt="LoveBrain 悬浮面板演示" width="360"/>
+<img src="https://github.com/bystery/LoveBrain/releases/latest/download/LoveBrain-demo.gif" alt="LoveBrain 悬浮面板演示" width="360"/>
 
 <sub>演示录制于 v1.3.x，其后的界面已经改版，看流程就好。</sub>
 
@@ -45,7 +45,7 @@
 
 ## 它是怎么工作的
 
-<img src="images/owerview.jpg" alt="LoveBrain 工作原理：触发捕获 → 检索装配 → 组装提示词 → 流式生成 → 挑选改写 → 后台沉淀 → 闭环回读" width="760"/>
+<img src="https://github.com/bystery/LoveBrain/releases/latest/download/LoveBrain-owerview.jpg" alt="LoveBrain 工作原理：触发捕获 → 检索装配 → 组装提示词 → 流式生成 → 挑选改写 → 后台沉淀 → 闭环回读" width="760"/>
 
 整条链路分四层：悬浮球 UI 负责捕获聊天文本、呈现候选回复（`ui/` + `feature/`，84 个文件）；`viewmodel` 与 `domain/GenerationEngine` 负责组装提示词、调度流式生成、挑选与改写（56 个文件）；`data/` 与 `KnowledgeRepository` 负责本地知识库、加密存储与事件沉淀（31 个文件）；`core/` 与 `model/` 承载基础设施与数据结构（49 个文件）。
 
