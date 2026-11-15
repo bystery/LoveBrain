@@ -120,7 +120,7 @@
 - **SEALED_KEY ×2**（evaluation/CALIBRATION_PACKET_V1/SEALED_KEY.json 29,671B、CALIBRATION_PACKET_V1_1/SEALED_KEY_V1_1.json 43,909B）：盲测密件（臂身份/原文绑定/作者既判），纪律明示评审者不得读取 → **不入公开仓**。
 - **USER_W_SAMPLE_BINDINGS_V1.json**（3,925B）：W 样本密封映射，文件头自述"不得与公开展示包一同分发" → **不入公开仓**。
 - **wave5 登记状态（已收口）**：wave5_selection 40 篇（E339–E378）此前账本零登记，经 wave5-batchname-confirmation.md 确认精确消费批名（selection_v1 四臂 × 2026-11-10）后，已按用户决策二执行补登（§9.1）。
-- **mapping_secret.json**（benchmark/releases/arena_v1/review_loop/，8,045B，dist/ 内 38 份快照副本 + 活动树 4 份）：经 c1 全文专项审查（mapping-secret-review.md）定性为**纯评分盲测揭盲映射台账，不是凭据材料**；其隐私维度（材料↔匿名臂绑定的可关联性）按专项结论处理。
+- **eval_blind_map_desensitized_v1.json**（benchmark/releases/arena_v1/review_loop/，8,045B，dist/ 内 38 份快照副本 + 活动树 4 份）：经 c1 全文专项审查（mapping-secret-review.md）定性为**纯评分盲测揭盲映射台账，不是凭据材料**；其隐私维度（材料↔匿名臂绑定的可关联性）按专项结论处理。
 
 ### 4.6 密钥补扫 d5b（源：secrets-gap-scan.md）
 
@@ -133,7 +133,7 @@
 
 - 四目录（archive/ 排除 ACL 残骸、dist/、best/、guanjia/）10 族内容级 + 严格形复核：严格形（`Authorization:<值>`、`Bearer <值>`、URL query 凭据参数）全 0；命中 6 组全部良性——dist/ F3 python 标识符误捕 64 行、dist/ F5 假测试占位符 38 行（与 d5 已登记的 standin 假值同一）、dist/ F5b env 名/元文本宽族 411 行、archive/ F5b env 占位 2 行（空串与本地占位）、guanjia/ F6 keystore 词形为扫描台账自引 4 文件、guanjia/ F8 `config.env` 引用 5 文件。
 - `guanjia/watchdog/config.env` 专项核验（今晚自建基建，128B/6 行）：全部为路径与数值键，**无 webhook、无 token、无密钥形态值**；guanjia/ 判定 0 密钥材料。
-- **mapping_secret.json**（58 包内 38+4 份）：10 族 grep 0 命中，与 c1 专项定性一致（§4.5）。
+- **eval_blind_map_desensitized_v1.json**（58 包内 38+4 份）：10 族 grep 0 命中，与 c1 专项定性一致（§4.5）。
 - **58 个 zip**（数量勘误：d5 所记 64 按其口径多算 5 个无 zip 的快照目录，实测 58 = 14 历史交付包 + 44 payload 包）：全部清单级成功；包内文件名宽关键词集命中 14 个唯一条目名（anchors_key 评分答案要点、盲测揭盲映射台账、A/B 盲测分配表、probe_restricted_token 实验脚本），逐条 `unzip -p` 抽取并 10 族 grep——**全部 0 命中**，抽取完整性逐条核验非空。
 - **无新增 PRIVATE_SENSITIVE。d5 + d5b + d5c 合并终局判定：全仓 0 真实密钥、0 私钥块、0 会话凭据、0 带凭据 URL、0 keystore 材料；仓库顶层目录密钥内容级扫描无空白。**
 
@@ -149,7 +149,7 @@
 | d2 dataset | 全库标记词扫描（synthetic/sanitized/origin=/mock/fake/placeholder = 0）；交叉扫描 5 族（手机号/邮箱/身份证/账号关键词/URL = 0）；机构名定向扫描 14 行/5 文件 | **84/84 逐文件人工判定**：<20KB 全读；3 个大文件（59KB/131KB/318KB）头+中+尾抽样并用真实姓名定向 grep 验证覆盖 |
 | c2 refs | grep 全域抽查（api_key/password/secret/sk-）；CSV 逐条登记 | 高危 4 处 + 中危 2 处**逐字核读定性**；AUTH×127 抽查（含 AUTH-EXAM1、AUTH-LONGRANGE-B1、AUTH-P08-S1）确认登记结构无凭据；provider_check.json 逐字核实仅 `key_present` 布尔位 |
 | d7 特殊目录 | find/du/stat 实测；远端 blob 跟踪状态对账（arena-remote-files.csv） | 50 对象全登记；关键文件内容核实（AGENTS.md 头部 v1.6、指导书.md 头部、TASK_BOARD/RUN_STATE 自证废止、API_COMPATIBILITY_REPORT 逐字核读） |
-| 关联域 | eval-snippets.txt 抽样 + classification CSV 交叉；账本结构与事件流逐条核对 | SEALED_KEY×2 / USER_W_BINDINGS 依据文件头纪律自述与 d3 评审结论；wave5 零登记经账本 events 零命中验证、补登后实测复核（§9.1）；mapping_secret.json 全文专项审查（c1） |
+| 关联域 | eval-snippets.txt 抽样 + classification CSV 交叉；账本结构与事件流逐条核对 | SEALED_KEY×2 / USER_W_BINDINGS 依据文件头纪律自述与 d3 评审结论；wave5 零登记经账本 events 零命中验证、补登后实测复核（§9.1）；eval_blind_map_desensitized_v1.json 全文专项审查（c1） |
 
 **汇总（推导自上表）**：逐文件/逐条人工判定合计约 **320 项**（前批约 285：d2 84 + d5 114 + c2 高中危 6 + AUTH 抽查与全域命中定性 + d7 50 + 关联域密件及根文件核实项；补扫新增：d5b 16 行逐条 + d5c 6 组逐组 + 14 个 zip 关键词条目 + config.env 专项）。另有程序化专项合计约 46,000 个文件（28,297 + 8,845 + 8,865 个 calls.json/reply_raw/manifest 专项）与两轮阳性对照。所有计数可在各源 CSV 与补扫报告中逐行对账。
 
@@ -243,7 +243,7 @@
 
 ## 10. 复核人
 
-- 夜间审查执行与初审：各域审查代理——dataset 域（d2）、密钥域（d5 + 补扫 d5b + 终扫 d5c）、refs 域（c2）、特殊目录域（d7）、evaluation/custody 关联域、mapping_secret 专项（c1）、许可域（license-review），同批产出、互相独立。
+- 夜间审查执行与初审：各域审查代理——dataset 域（d2）、密钥域（d5 + 补扫 d5b + 终扫 d5c）、refs 域（c2）、特殊目录域（d7）、evaluation/custody 关联域、eval_blind_map_desensitized_v1 专项（c1）、许可域（license-review），同批产出、互相独立。
 - 本文件汇总起草：夜间汇总代理（2026-11-12，草案 e9 → 本终稿）。
 - 人工终审与定稿签字：**用户（晨间，待签）**——§9 开放项与风险确认后，本文件作为 `PRIVACY_REVIEW.md` 落位 `research/provenance/`。
 

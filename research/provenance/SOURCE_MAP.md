@@ -50,7 +50,7 @@
 | `benchmark/stories_v2/GOLD_SIDECAR/`（14 文件，v2 重建） | `research/benchmark/stories_v2/GOLD_SIDECAR/` | 13 BOTH_DIFFERENT + 1 本地独有 | **权威轨**，本地字节纯复制（已完成）；远端已提交 13 件快照轨落 `GOLD_SIDECAR_v1_remote_snapshot/`（已恢复，§10 D-4） |
 | `benchmark/stories_v2/*/exposure.json`（80 件实质差异） | 原位 `<layer>/<EID>/exposure.json` | BOTH_DIFFERENT | 权威轨=本地补录版（已完成）；远端提交版快照轨落 `_remote_v1_snapshots/exposure/…`（已恢复，§10） |
 | `benchmark/b_line/`（26 文件：MANIFEST v2 + README v1 + 24 episode） | `research/benchmark/b_line/` | 24/24 逐件对应（条数+字节量与封存登记一致） | **普通资产完整迁移（已完成，用户决策一）**：无任何特殊标记；README v1 vs MANIFEST v2 冲突随行登记原样保留 |
-| `benchmark/episodes/ releases/ dev_pilot_v02/ anchors/ annotations/ cases/ dev_expansion_v01/ tasks/ media/ c4_screen_20261026/ interaction_env_20261026/ positive_capability_20261025/ _templates/ _acl_locked_episodes(_probe2)/` 及顶层 7 文件 | 同名随迁 | 与远端一致或本地独有未跟踪 | 完整迁移；`_acl_locked_*` 保持锁定清单；`releases/arena_v1/review_loop/mapping_secret.json` 经全文审查为盲测揭盲映射表（非凭据），随迁 |
+| `benchmark/episodes/ releases/ dev_pilot_v02/ anchors/ annotations/ cases/ dev_expansion_v01/ tasks/ media/ c4_screen_20261026/ interaction_env_20261026/ positive_capability_20261025/ _templates/ _acl_locked_episodes(_probe2)/` 及顶层 7 文件 | 同名随迁 | 与远端一致或本地独有未跟踪 | 完整迁移；`_acl_locked_*` 保持锁定清单；`releases/arena_v1/review_loop/eval_blind_map_desensitized_v1.json` 经全文审查为盲测揭盲映射表（非凭据），随迁 |
 | `benchmark/benchmark/` 空目录壳 | — | — | 不迁（脚本残留，登记待清理） |
 
 - **stories_v2 目标侧验收账目**：2,023（本地原样）+ 13（GOLD 快照）+ 80（exposure 快照）+ 3（两个 SNAPSHOT_README + REMOTE_V1_SNAPSHOT_MANIFEST.json）= **2,119 文件**；benchmark 域 manifest 行 = 2,398（本地源）+ 93（远端源）= **2,491 行**。

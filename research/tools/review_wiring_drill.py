@@ -169,7 +169,7 @@ def run_drill(work=None):
 
     # ---- gen（真实流程：匿名材料 + 空白表 + 映射） ----
     review_loop.cmd_gen(spec_path)
-    mp = json.load(open(os.path.join(work, "mapping_secret.json"),
+    mp = json.load(open(os.path.join(work, "eval_blind_map_desensitized_v1.json"),
                         encoding="utf-8"))
     mids = sorted(mp["mapping"].keys())
     assert len(mids) == 3, "应生成 3 份材料，实得 %d" % len(mids)

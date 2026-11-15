@@ -13,7 +13,7 @@
 | C3 划分登记 | `benchmark/releases/arena_v1/split_manifest.json` | 5 家族（dev_stories / anchors_split / real66_evidence / selection_set / b_line_sealed）× 31 文件散列，missing=0 |
 | C3 封存接口 | `refs/arena_v1/seal_fixture/` + `tools/verify_seal_fixture.py` | 合成 canary 夹具三重校验 PASS（LOCK==payload / 身份 / 真实B线零读取） |
 | C5 评审闭环 | `tools/review_loop.py`（gen/ingest/aggregate/lookup）+ `review_drill_spec.json` | 见下 |
-| C5 演练产物 | `benchmark/releases/arena_v1/review_loop/`（materials×12 / forms / entries / mapping_secret / ingest_result / review_summary） | 12 份离线演练 |
+| C5 演练产物 | `benchmark/releases/arena_v1/review_loop/`（materials×12 / forms / entries / eval_blind_map_desensitized_v1 / ingest_result / review_summary） | 12 份离线演练 |
 | C4/C6 口径 | 覆盖矩阵 F12 + `review_summary.json` | 控制样本分层；汇总层见下 |
 
 ## C1 覆盖矩阵要点
@@ -41,7 +41,7 @@
 
 | 环节 | 结果 |
 |---|---|
-| gen（材料生成） | 12 份：冻结题面+真实历史+本轮消息+意图+有效许可+原样输出+匿名顺序+绑定散列；映射另存 `mapping_secret.json`，材料零臂名零分数 |
+| gen（材料生成） | 12 份：冻结题面+真实历史+本轮消息+意图+有效许可+原样输出+匿名顺序+绑定散列；映射另存 `eval_blind_map_desensitized_v1.json`，材料零臂名零分数 |
 | ingest（导入校验） | accepted=11 / rejected=1（entry_06 缺 reviewer 身份被拒，拒因落盘） |
 | aggregate（汇总） | total=12（分母不消失）/ 已审=11 / 争议未审=1 / style_preference_tags=1 |
 | lookup（反查） | MAT_08 乙 → arm_y 原文"我看过你的备注…"，映射与原文一致 |

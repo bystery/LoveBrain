@@ -266,7 +266,7 @@ class Verify:
     def g07_review_loop(self):
         W = os.path.join(ROOT, "benchmark/releases/arena_v1/review_loop")
         try:
-            mp = json.load(open(os.path.join(W, "mapping_secret.json"),
+            mp = json.load(open(os.path.join(W, "eval_blind_map_desensitized_v1.json"),
                                 encoding="utf-8"))
             spec = json.load(open(os.path.join(
                 ROOT, "refs/arena_v1/review_drill_spec.json"),

@@ -1,0 +1,65 @@
+{
+  "mapping": {
+    "MAT_01": {
+      "material_id": "MAT_01",
+      "case_ref": "E001:E001_T01",
+      "gid": "E001:E001_T01",
+      "file": "benchmark\\episodes\\E001.json",
+      "anon_to_arm": {
+        "乙": "arm_x",
+        "甲": "arm_y"
+      },
+      "binding_sha256_16": "cee8913dcffa3615",
+      "material_sha256_16": "5f374ff2e9e83d5c",
+      "arms": "<arm甲回复语料已按W1隐私裁定脱敏撤档,此处仅留角色代号>|<arm乙回复语料已按W1隐私裁定脱敏撤档,此处仅留角色代号>",
+      "state": "正常"
+    },
+    "MAT_02": {
+      "material_id": "MAT_02",
+      "case_ref": "E001:E001_T05",
+      "gid": "E001:E001_T05",
+      "file": "benchmark\\episodes\\E001.json",
+      "anon_to_arm": {
+        "甲": "arm_x",
+        "乙": "arm_y"
+      },
+      "binding_sha256_16": "c20ea866c5d8bdba",
+      "material_sha256_16": "f708099f087b390e",
+      "arms": "<arm甲回复语料已按W1隐私裁定脱敏撤档,此处仅留角色代号>|<arm乙回复语料已按W1隐私裁定脱敏撤档,此处仅留角色代号>",
+      "state": "正常"
+    },
+    "MAT_03": {
+      "material_id": "MAT_03",
+      "case_ref": "E002:E002_T03",
+      "gid": "E002:E002_T03",
+      "file": "benchmark\\episodes\\E002.json",
+      "anon_to_arm": {
+        "甲": "arm_x",
+        "乙": "arm_y"
+      },
+      "binding_sha256_16": "d2f7f4e0c2800501",
+      "material_sha256_16": "c6117c42783a7c66",
+      "arms": "<arm甲回复语料已按W1隐私裁定脱敏撤档,此处仅留角色代号>|<arm乙回复语料已按W1隐私裁定脱敏撤档,此处仅留角色代号>",
+      "state": "正常"
+    }
+  },
+  "index": [
+    {
+      "material_id": "MAT_01",
+      "case_ref": "E001:E001_T01",
+      "state": "正常"
+    },
+    {
+      "material_id": "MAT_02",
+      "case_ref": "E001:E001_T05",
+      "state": "正常"
+    },
+    {
+      "material_id": "MAT_03",
+      "case_ref": "E002:E002_T03",
+      "state": "正常"
+    }
+  ],
+  "seed": 20261022,
+  "material_version": "rv2"
+}

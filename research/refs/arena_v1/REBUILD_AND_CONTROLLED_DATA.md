@@ -20,7 +20,7 @@
   reply 字符串——不携带任何身份信息。
 - 重建入口：`python -B -X utf8 tools/review_loop.py gen refs/arena_v1/review_drill_spec.json`
   生成 `benchmark/releases/arena_v1/review_loop/`（materials/forms/mapping）。
-- 演练现场文件（随包分发）：`materials/`、`mapping_secret.json`（anon↔臂映射
+- 演练现场文件（随包分发）：`materials/`、`eval_blind_map_desensitized_v1.json`（anon↔臂映射
   与绑定散列；**不含任何凭据**，文件名沿用历史）、`ingest_result.json`、
   `entries/`（fixture/reviewer 演练表单）。`forms/` 空白表可由 gen 重建，不进包亦可。
 

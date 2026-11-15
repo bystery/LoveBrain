@@ -93,7 +93,7 @@ def main():
         fails.append("T1: 正常表单未接受 accepted=%d" % len(ing["accepted"]))
 
     # --- T2 篡改展示原文（保留旧 binding hash）→ 必拒 ---
-    mp = json.load(open(os.path.join(work, "mapping_secret.json"),
+    mp = json.load(open(os.path.join(work, "eval_blind_map_desensitized_v1.json"),
                         encoding="utf-8"))
     old_binding = mp["mapping"]["MAT_01"]["binding_sha256_16"]
     m = json.load(open(os.path.join(work, "materials", "MAT_01.json"),

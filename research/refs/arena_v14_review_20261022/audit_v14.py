@@ -81,7 +81,7 @@ def review_material_probe():
         dump(mp,obj)
         vv=v.Verify('offline',str(ROOT/'refs/arena_v1/release.json'),str(EV/'g07'))
         accepted=vv.g07_review_loop()
-        mapping=json.loads((mp.parent.parent/'mapping_secret.json').read_text(encoding='utf-8'))
+        mapping=json.loads((mp.parent.parent/'eval_blind_map_desensitized_v1.json').read_text(encoding='utf-8'))
         why=[]
         rl.verify_material_content(str(mp),mapping['mapping']['MAT_01'],why,'review')
         return {'tampered_display_g07_pass':bool(accepted),'actual_content_validator_reasons':why,'gate':vv.gates}

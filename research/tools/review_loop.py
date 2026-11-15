@@ -22,7 +22,7 @@ R3#4（独立复核 §8）加固：
 C5 硬约束落实：
   - 材料由冻结题面+实际calls+reply_raw 生成，含共同背景/真实历史/本轮消息/
     意图/有效许可/原样输出/匿名顺序/材料版本与绑定散列；
-  - 映射另存 mapping_secret.json，审查材料不含臂名或分数；
+  - 映射另存 eval_blind_map_desensitized_v1.json，审查材料不含臂名或分数；
   - 缺陷必须指向原文字段并附证据或标"个人风格偏好"；
   - 演练标签 fixture/reviewer，不伪造用户投票。
 
@@ -201,15 +201,15 @@ def cmd_gen(spec_path):
                       "state": m["state"]})
     json.dump({"mapping": mapping, "index": index, "seed": spec.get("seed", 20261021),
                "material_version": MATERIAL_VERSION},
-              open(os.path.join(WORK, "mapping_secret.json"), "w",
+              open(os.path.join(WORK, "eval_blind_map_desensitized_v1.json"), "w",
                    encoding="utf-8"), ensure_ascii=False, indent=1)
-    print("gen: %d materials -> %s/materials, forms, mapping_secret.json"
+    print("gen: %d materials -> %s/materials, forms, eval_blind_map_desensitized_v1.json"
           % (len(index), os.path.relpath(WORK, ROOT) if WORK.startswith(ROOT) else WORK))
 
 
 # ---------- ingest ----------
 def cmd_ingest(entries_dir):
-    mp = json.load(open(os.path.join(WORK, "mapping_secret.json"),
+    mp = json.load(open(os.path.join(WORK, "eval_blind_map_desensitized_v1.json"),
                         encoding="utf-8"))
     accepted, rejected, superseded = [], [], []
     seen = {}   # (material_id, reviewer) -> (revision, entry filename)
@@ -291,7 +291,7 @@ def cmd_ingest(entries_dir):
 
 # ---------- aggregate ----------
 def cmd_aggregate():
-    mp = json.load(open(os.path.join(WORK, "mapping_secret.json"), encoding="utf-8"))
+    mp = json.load(open(os.path.join(WORK, "eval_blind_map_desensitized_v1.json"), encoding="utf-8"))
     ing = json.load(open(os.path.join(WORK, "ingest_result.json"), encoding="utf-8"))
     entries = []
     binding_bad = []
@@ -366,7 +366,7 @@ def cmd_aggregate():
 
 # ---------- lookup ----------
 def cmd_lookup(anon_material_id, arm=None):
-    mp = json.load(open(os.path.join(WORK, "mapping_secret.json"), encoding="utf-8"))
+    mp = json.load(open(os.path.join(WORK, "eval_blind_map_desensitized_v1.json"), encoding="utf-8"))
     rec = mp["mapping"].get(anon_material_id)
     if not rec:
         print("未找到", anon_material_id)
@@ -390,7 +390,7 @@ def verify_workdir(work_dir=None):
     W = work_dir or WORK
     issues = []
     try:
-        mp = json.load(open(os.path.join(W, "mapping_secret.json"),
+        mp = json.load(open(os.path.join(W, "eval_blind_map_desensitized_v1.json"),
                             encoding="utf-8"))
     except Exception as e:
         return {"ok": False, "issues": ["mapping 不可读: %s" % e]}

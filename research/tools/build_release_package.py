@@ -45,7 +45,7 @@ PAYLOAD_DIRS = [
     ("benchmark/cases", []),
     # 复核 v3 §2C：24 题内容版本（原件+评审卡+DEV_EXPOSED 清单）随包
     ("benchmark/dev_pilot_v02", []),
-    # R3#7：评审闭环演练现场（G07 干净目录复验所需；mapping_secret 为演练
+    # R3#7：评审闭环演练现场（G07 干净目录复验所需；eval_blind_map_desensitized_v1 为演练
     # 映射非凭据，FORBIDDEN 例外见 _ALLOWED_PATTERNS）
     ("benchmark/releases/arena_v1/review_loop", []),
 ]
@@ -139,7 +139,7 @@ FORBIDDEN_PATTERNS = [
 ]
 _ALLOWED_PATTERNS = {
     # 评审演练映射： anon<->arm 映射与绑定散列，不含任何凭据（R3#7 审定）
-    "benchmark/releases/arena_v1/review_loop/mapping_secret.json",
+    "benchmark/releases/arena_v1/review_loop/eval_blind_map_desensitized_v1.json",
 }
 
 
@@ -241,7 +241,7 @@ def build(pkg_root):
                          "tools/test_protocol_public.py",
                          "tools/verify_arena_v1.py",
                          "benchmark/releases/arena_v1/review_loop/"
-                         "mapping_secret.json"):
+                         "eval_blind_map_desensitized_v1.json"):
                 if not os.path.isfile(os.path.join(unpacked, must)):
                     smoke_ok, smoke_detail = False, "缺件 %s" % must
             if smoke_ok:
