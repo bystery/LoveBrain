@@ -4,7 +4,7 @@
 #
 # Crash gate. The audited workflow ran
 #     adb logcat -d | grep -i "FATAL EXCEPTION" || true
-# which returns success EVEN WHEN IT FOUND A CRASH ( 第3节: "adb logcat |
+# which returns success EVEN WHEN IT FOUND A CRASH (2026-09-23 audit: "adb logcat |
 # grep 'FATAL EXCEPTION' || true 即使发现崩溃也返回成功"). Here the polarity is
 # correct: a match fails the job.
 #

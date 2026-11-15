@@ -27,7 +27,7 @@
 用法：
     python3 scripts/audit_cancellation.py             # 人读汇总
     python3 scripts/audit_cancellation.py --list      # 逐站点判定
-    python3 scripts/audit_cancellation.py --report    # markdown 汇总（验收包引用）
+    python3 scripts/audit_cancellation.py --report    # markdown 汇总（审计报告引用）
     python3 scripts/audit_cancellation.py --check     # CI 门禁
 """
 import argparse
@@ -264,7 +264,7 @@ def main():
     ap.add_argument('--check', action='store_true')
     ap.add_argument('--report', action='store_true')
     ap.add_argument('--list', action='store_true')
-    ap.add_argument('--write', default=None, help='把审计结果写成 markdown 文档（验收包与 CI 产物）')
+    ap.add_argument('--write', default=None, help='把审计结果写成 markdown 文档（审计报告与 CI 产物）')
     ap.add_argument('--root', default=None)
     args = ap.parse_args()
 

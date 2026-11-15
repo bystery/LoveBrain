@@ -5,7 +5,7 @@
 # Extracts and VERIFIES release APK metadata: SHA-256, package, versionCode,
 # versionName, minSdk/targetSdk and launchable activity.
 #
-#  2026-09-23 (第3节, 第8节 step 3.8): "APK SHA-256、versionCode/versionName"
+#  2026-09-23 (audit, step 3.8): "APK SHA-256、versionCode/versionName"
 # must be real evidence, not a comment. Any expectation mismatch fails the job.
 #
 # Usage:
@@ -22,7 +22,7 @@
 #
 #   --expect-release  additionally proves the artifact is NOT a debug build:
 #                     android:debuggable must be absent/false. The 2026-09-23
-#                      (第3节) flagged the upgrade gate for installing an
+#                      audit flagged the upgrade gate for installing an
 #                     assembleDebug APK as if it were the shipped candidate.
 #   --r8-mapping      path that must exist and be non-empty, i.e. R8 actually ran.
 #
@@ -136,7 +136,7 @@ log "launcher   : ${LAUNCHABLE:-<none reported>}"
 log "size       : $BYTES bytes"
 log "sha256     : $SHA256"
 
-# ── release-build evidence (audit 第3节: the audited gate installed a debug APK) ─
+# ── release-build evidence (audit 2026-09-23: the audited gate installed a debug APK) ─
 DEBUGGABLE="not-declared"
 if [ "$EXPECT_RELEASE" -eq 1 ]; then
   XMLTREE="$("$AAPT2" dump xmltree --file AndroidManifest.xml "$(to_native_path "$APK")" 2>/dev/null)" ||

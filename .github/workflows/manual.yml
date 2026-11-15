@@ -1,22 +1,22 @@
 name: Manual
 
-# 手动触发的慢/设备级门禁（从 ci.yml 挪出，见 /.md）。
+# 手动触发的慢/设备级门禁（从 ci.yml 挪出）。
 # 目的：push CI 不再为模拟器、像素比对、R8 打包与覆盖安装买单；这四个 job
 # （ui-test / visual-baseline / r8-release-check / upgrade-test）只在 workflow_dispatch 时跑。
 # 语义守恒：upgrade-test 的 if 条件、四道 secret 门、脚本调用一字未改，只是换了承载文件。
 #   · 原 ci.yml 里 upgrade-test 的 needs: [verify, ui-test] 跨文件失效 → 这里去掉 needs；
 #     如需"UI 先绿再跑升级"，在 dispatch 后按顺序手点即可。
 #
-# §13.2（指导书 LoveBrain_1.4.0 L342）口径："全量模拟器与 release R8 打包放明确的手动/
+# 口径："全量模拟器与 release R8 打包放明确的手动/
 # 发布验证，发布前必要的一次仍执行" —— 模拟器 ui-test 必须**存在**于手动层，不能只剩注释里
-# 的名声。ci.yml 的收尾注释（/.md  L9）早就声明"ui-test 移到 manual.yml"，但 bacede8 只从
+# 的名声。ci.yml 的收尾注释早就声明"ui-test 移到 manual.yml"，但 bacede8 只从
 # ci.yml 删了它（原 ci.yml@7758148 :121-196），manual.yml 里从未落地 ⇒ 2026-10-07 补回：
 # 下面这个 job 的步骤体是那段原文逐行照搬（checkout / setup-java / setup-gradle / Enable KVM /
 # reactivecircus android-emulator-runner(api-level 29, disable-animations: true) / 四个证据
 # 产物上传 + 各自的 if-no-files-found: error），一个 flag 没松、没加 continue-on-error、
 # 没改成 warn 放行；只把"保留在 push"那句失效的 job 注释换掉。
 # 它不再出现在 push 上，靠的是**本文件只有 workflow_dispatch 触发器**（下面 on: ），
-# 与 upgrade-test job 上那个显式 if 是同一类保险，不构成第三套门禁（§13.2 L340）。
+# 与 upgrade-test job 上那个显式 if 是同一类保险，不构成第三套门禁。
 
 on:
   workflow_dispatch:
@@ -28,10 +28,10 @@ jobs:
   # 全量模拟器 Compose UI 测试（原 ci.yml@7758148 :121-196 的 `ui-test` job）。
   # UI 测试属于最终质量门禁——在手动这一发里失败必须让该 run 红灯，
   # emulator 偶发问题通过 scripts/run_ui_tests.sh 的 retry 处理，不得用放行标志掩盖。
-  # 发布前必要的一次 = 手点这一发（§13.2 L342），push/PR 不跑它。
+  # 发布前必要的一次 = 手点这一发，push/PR 不跑它。
   # ⚠ 不要在 release.yml 里 --require-job ui-test：它是另一个 workflow run 的 job，
-  #   resolve_ci_run.sh 按 ci.yml 解析，"job 名不存在"直接 exit 1（§13.2 L342 那句
-  #   "不让发布永远找不到任务"就是这个意思）。
+  #   resolve_ci_run.sh 按 ci.yml 解析，"job 名不存在"直接 exit 1——那句
+  #   "不让发布永远找不到任务"就是这个意思。
   ui-test:
     runs-on: ubuntu-latest
 
@@ -101,11 +101,11 @@ jobs:
           path: |
             /tmp/logcat*.txt
             app/build/outputs/androidTest-results/connected/
-          # 缺这条就是"空产物 warning 放行"（ 第 6 条）。
+          # 缺这条就是"空产物 warning 放行"。
           if-no-files-found: error
           retention-days: 7
 
-  # 视觉基线：只在 verify 模式比对，绝不自动覆盖 baseline（ :538）。
+  # 视觉基线：只在 verify 模式比对，绝不自动覆盖 baseline。
   # 重新生成基线是显式人工动作：./gradlew :app:recordRoborazziDebug + 人看过 + 单独提交。
   visual-baseline:
     runs-on: ubuntu-latest
@@ -142,15 +142,15 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Moved-out source-scan family must still run (§13.2 发布前专用入口)
+      - name: Moved-out source-scan family must still run (发布前专用入口)
         # ci-lite 排除档把两族移出默认 push（排除档见 app/build.gradle.kts 尾部注释），
-        # 这一格是它们唯一的运行入口，发布前必须绿——移走≠删掉，§13.2 的"不能全删/不能假绿"就在这一步兑现：
-        #   ① architecture.*——源码文本/字符串预算/形状所有权/层级依赖（§13.2 L340 前半句，原有）；
+        # 这一格是它们唯一的运行入口，发布前必须绿——移走≠删掉，"不能全删/不能假绿"就在这一步兑现：
+        #   ① architecture.*——源码文本/字符串预算/形状所有权/层级依赖（原有）；
         #   ② 逐档矩阵渲染族——UiMatrixFullSweepTest（4 宽×3 字全跑）+ LongProviderNameSemanticsTest
-        #      （FULL + FONT_SCALES 字号族）——§13.2 L340 后半句"昂贵的全量 JVM UI 渲染/多尺寸多字号"，本轮补。
+        #      （FULL + FONT_SCALES 字号族）——"昂贵的全量 JVM UI 渲染/多尺寸多字号"，本轮补。
         # 两族都是**类名档黑名单**移出 push，新测试默认仍跑；这里并列列出、不新建 job、不建第三套发布门禁。
         # ⚠ 用多个 --tests 并列（Gradle 会把它们取并集），不能塞进一个逗号串——单个 --tests 值里的逗号
-        #   不是分隔符，会被当成一个类名去匹配 ⇒ 谁都不匹配 ⇒ rc=0 空跑＝假绿，正是 §13.2 要防的形状。
+        #   不是分隔符，会被当成一个类名去匹配 ⇒ 谁都不匹配 ⇒ rc=0 空跑＝假绿，正是这套门禁要防的形状。
         run: >-
           ./gradlew :app:testDebugUnitTest --no-daemon
           --tests "com.lovebrain.app.architecture.*"
@@ -158,18 +158,18 @@ jobs:
           --tests "com.lovebrain.app.ui.home.LongProviderNameSemanticsTest"
 
   # R8 / Release 打包与 APK 元数据校验（原文照搬自 ci.yml@7758148 :81-119 的 verify 步骤）。
-  # §13.2（L342）："全量模拟器与 release R8 打包放明确的手动/发布验证，发布前必要的一次仍执行"
+  # 口径："全量模拟器与 release R8 打包放明确的手动/发布验证，发布前必要的一次仍执行"
   # —— bacede8 把它从 push 删掉并在 ci.yml :6-8 声称"移到 release.yml 的本地手动流程"，
   # 但 release.yml 里既没有 assembleRelease 也不产元数据（只核对人交回的证据），
   # 于是 R8/proguard 规则的回归在 CI 侧彻底没人管：debug 编译证明不了 minify 得动。
-  # 这里补回它在手动层的家：只在 workflow_dispatch 跑，push 时间成本为零（§13.2 L340
+  # 这里补回它在手动层的家：只在 workflow_dispatch 跑，push 时间成本为零（原则：
   # "不增加新矩阵或第三套发布门禁" —— 本 job 不被 release.yml 的 --require-job 引用，
   # 不是发布闸，只是一发手动体检）。
-  # ⚠ 产物是 **unsigned**（本 job 没有也不该有签名 secret）：§13.3 L360 明说
-  #   "最新 CI unsigned-r8-check-apk 不能交用户"。正式 APK 仍然只能由本地固定私钥那一把
-  #   产出（§13.3 L358），这个 job 验的是"R8 跑得通 + 包名/版本/mapping 对得上"。
+  # ⚠ 产物是 **unsigned**（本 job 没有也不该有签名 secret）：
+  #   unsigned-r8-check-apk 不能交用户。正式 APK 仍然只能由本地固定私钥那一把
+  #   产出，这个 job 验的是"R8 跑得通 + 包名/版本/mapping 对得上"。
   # 与原文的差异只有两处，都不动语义：
-  #   1. apk-metadata 上传门禁 always()→success()（原 :103），按 §13.2 L342"报告只有真实
+  #   1. apk-metadata 上传门禁 always()→success()（原 :103），按"报告只有真实
   #      生成时才上传"，避免 R8/元数据一步失败拖出第二条"找不到产物"的红；
   #   2. 原文那句 "The verify job has no release keystore on purpose" 里的 job 名改成
   #      本 job 名（它不再住在 verify 里）。脚本名与 flag 一字未改。
@@ -229,7 +229,7 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  # : 升级安装测试——下载并校验发布夹具 v1.4.0（F04，2026-10-15：与候选同钥匙，
+  # 升级安装测试——下载并校验发布夹具 v1.4.0（F04，2026-10-15：与候选同钥匙，
   # 覆盖安装才是"真会发生的一对"；旧 v1.3.1 夹具属跨签名，只保留迁移警示）、
   # 安装旧版、真实写夹具、覆盖安装**签名/R8 Release** 候选、
   # 断言数据可读 + schema 达当前下限 + 主页面可用。

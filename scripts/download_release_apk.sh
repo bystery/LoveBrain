@@ -4,7 +4,7 @@
 #
 # Downloads a published GitHub Release APK and PROVES it is the real artifact.
 #
-#  2026-09-23 第3节: the old-APK download used `|| echo "No v1.3.1 APK
+#  2026-09-23 audit: the old-APK download used `|| echo "No v1.3.1 APK
 # found, skipping upgrade test"` together with `continue-on-error: true`, so a
 # failed download silently turned the whole upgrade gate into a no-op. Here a
 # failed / unverified download is a hard failure.

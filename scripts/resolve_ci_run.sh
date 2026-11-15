@@ -6,7 +6,7 @@
 # which of its jobs must be green, and hand the id to the next step — which is
 # the only thing `gh run download` accepts as its positional argument.
 #
-# Why this exists (audit 2026-09-30 第1节 , second half): the release workflow
+# Why this exists (audit 2026-09-30, second half): the release workflow
 # used to run
 #     gh run download "$GITHUB_SHA" --name test-xml-report ...
 # `gh run download` takes a **run database id**, not a commit SHA, so that step
@@ -19,7 +19,7 @@
 #
 # Required jobs are checked by NAME against the resolved run's jobs, so the
 # gate can demand exactly the jobs the current release model keeps in CI.
-# Since 2026-10-07 (§13.2 slimming) `ui-test` is no longer a push-verify job —
+# Since 2026-10-07 (CI slimming) `ui-test` is no longer a push-verify job —
 # it lives in manual.yml as a dispatch-only job — and release.yml therefore
 # passes `--require-job verify` only. The gate must NOT demand `upgrade-test`:
 # since 2026-09-29 the

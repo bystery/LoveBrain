@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 #
-# scripts/record_visual_baseline.sh — 第6节第5条 视觉基线的**人工重录**入口（与 verify 那一条相对）。
+# scripts/record_visual_baseline.sh — 视觉基线的**人工重录**入口（与 verify 那一条相对）。
 #
-# 为什么要有这个脚本（它补的是坑表里那条"文档在、工具不在"）：
+# 为什么要有这个脚本（它补的是审计点名的那条"文档在、工具不在"）：
 #   `scripts/verify_visual_baseline.sh:74` 的失败提示一直让人去跑
 #   `bash scripts/record_visual_baseline.sh`，而这个文件此前**不存在**（全仓仅此一处引用）。
-#    第76节 把这条记为待修：
+#    审计把这条记为待修：
 #   「人工重录这条路目前是文档在、工具不在，要单独修」。
 #
 # ⚠⚠ 这个脚本的**边界**，写死在这里：
 #   1. 它只重录，不判定。record 出来的图一律落在 build/ 里（roborazzi 的
 #      `app/build/outputs/roborazzi/`），**不进** `app/src/test/roborazzi/`；
 #   2. 它**绝不** `git add` / `git commit` / `git push`，也**绝不**把实到图 cp 进基线目录。
-#      基线是"人看过之后单独一笔提交"（ :538；ci.yml:59 同一条），
-#      自动放进基线目录 = 把"没人看过"伪装成"已过审"，那正是 第6节第5条 要堵的路；
+#      基线是"人看过之后单独一笔提交"（ci.yml:59 同一条），
+#      自动放进基线目录 = 把"没人看过"伪装成"已过审"，那正是本边界要堵的路；
 #   3. 它**先清 build/ 残留**再录，与 verify 那条契约同一理由：上一发 record 留在 build/ 的图
 #      会冒充这一轮的东西（本仓库第一次接线就踩在这里，见 verify 脚本头部）；
 #   4. 它**不许**改动已提交的基线。录之前先给 `app/src/test/roborazzi/` 拍一份哈希快照，

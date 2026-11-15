@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 #
-# scripts/verify_visual_baseline.sh — 第6节第5条 视觉基线的**唯一比对入口**（本机与 CI 同一份）。
+# scripts/verify_visual_baseline.sh — 视觉基线的**唯一比对入口**（本机与 CI 同一份）。
 #
 # 为什么要有这个脚本，而不是直接 `./gradlew :app:verifyRoborazziDebug`：
-#   实测（ 的失败原文）roborazzi 在 verify 模式找的"原图"是
+#   实测失败原文：roborazzi 在 verify 模式找的"原图"是
 #     app/build/outputs/roborazzi/<类名>.<方法名>.png
 #   而不是仓库里提交的 app/src/test/roborazzi/*.png：
 #     "Roborazzi: The original file(/home/runner/.../build/outputs/roborazzi/….png) was not found."
 #   ⇒ 直接在干净检出上跑 verifyRoborazziDebug 必然三格全红（没有原图可比），
 #   而在开发机上跑，比的是**上一次 record 留在 build/ 的残留**——那既不是仓库的基线，
-#   也不是"没有基线"，是一种会骗人的绿。（本仓库第一次接线时就踩了这条，见坑表 134。）
+#   也不是"没有基线"，是一种会骗人的绿。（本仓库第一次接线时就踩了这条。）
 #
 # 所以这里把契约写明：
 #   1. 清掉 build/ 里的历史残留（绝不允许上一次 record 冒充基线）；

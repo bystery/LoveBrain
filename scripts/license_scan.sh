@@ -4,7 +4,7 @@
 #
 # REAL dependency license scan + SBOM generation.
 #
-#  2026-09-23 第3节: "'Dependency license scan' 其实只是 gradle dependencies,
+#  2026-09-23 audit: "'Dependency license scan' 其实只是 gradle dependencies,
 # 并且带 || true; 既不是许可证扫描,也不是 SBOM 门禁." This script replaces that
 # step. It
 #
