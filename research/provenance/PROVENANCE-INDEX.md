@@ -169,3 +169,11 @@ EVIDENCE-INDEX.md（对外引用出口）
 
 1. 各文档版本状态以其卷首为准：SOURCE_MAP、PRIVACY_REVIEW 为终稿；LICENSE_AND_RIGHTS 仍为草稿（定稿前提 = 用户终审）；EVIDENCE-INDEX 为改写件。本索引只登记落位与结构，不代替各文档的版本行。
 2. 扫描与对账底稿留存审计工作区，本目录五件按文件名引用其结论；`MIGRATION_MANIFEST.csv` 与 tree-audit 共同构成"交付完整性总账"载体（SOURCE_MAP §14.3 T10）。
+
+---
+
+## 2026-11-15 增补：MIGRATION_MANIFEST.csv 降层登记与轻量索引（D30-⑦，W3 拆分波）
+
+- **处置**：`MIGRATION_MANIFEST.csv`（1 件 / 27,298,958 B，git blob 口径）随 research 三层拆分退出 Git 正式库（G9 裁决 = ②归档 + ①留轻量索引）。原件复制入私有归档区 `D:\LoveBrain-archive\w3-originals\provenance\MIGRATION_MANIFEST.csv` 后撤支（磁盘副本 27,373,142 B，与 blob 差 74,184 B = 行数 × 1，系 CRLF 换行符归一化级差，即 J6/X04 登记的 Δ=行数现象）。上文"五件文档一览"中该行的读数（27,363,053 B / 74,121 数据行）为 2026-11-12 工作树侧记录，按不改史原则保留原样，体量以本次 blob 实测为准。
+- **轻量索引**：数据行 74,183（另表头 1 行）；字段结构 22+1 列，字段口径唯一权威定义 = SOURCE_MAP §12（未变动）；逐件出处、落位、处置与核验结论查归档原件对应列。归档去向同时登记于 [ARCHIVE_LEDGER](../ARCHIVE_LEDGER.md) P-14 包位。
+- **anchors 勘误登记（X04 揭出，随 D1 处置同步收口）**：manifest 中 `benchmark/anchors/*` 相关 9 行（BM-00041~BM-00049：ANCHORS_20.md、ANCHORS_20_v2.md、anchors_key.json、anchors_key_v2.json、real/REPLAY_PICKER.html、SPLIT_v1.json、user_taste_anchors_61.json、交接_PROMPT_真实锚点采集.md、用户口味画像_v1.md）`privacy_status` 全部误标 `PUBLIC`，应更正为 `PRIVATE_SENSITIVE`。该 9 件已按 D1 于 2026-11-15 整目录撤支（原件在 `w1-originals`），本勘误为登记性更正，不改动归档原件；撤支后公开树不再含 anchors 内容，其展示结论均基于合成故事。
