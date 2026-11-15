@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "generated_on": "2026-11-15",
+  "source": "Existing M5 pair-level judgment JSON files; no model generation and no judge reruns.",
+  "method": "For each pair and arm, candidate_count = len(usable_candidates) + len(unusable_candidates); usable_count = len(usable_candidates), read from submetric2_any_usable. Arm identity is recovered from the rotation map in the corresponding final tally.",
+  "derived_metric_note": "Candidate-level usable-option totals are a supplementary derived statistic. They do not replace the six frozen M5 submetrics.",
+  "cohorts": {
+    "new_generation": {
+      "pairs": 12,
+      "lovebrain": {
+        "arm": "L2",
+        "candidate_count": 95,
+        "usable_count": 90,
+        "usable_rate": 0.947368,
+        "usable_options_per_case": 7.5
+      },
+      "baseline": {
+        "arm": "B1",
+        "description": "Plain-text baseline; actual candidate count varies by case.",
+        "candidate_count": 30,
+        "usable_count": 27,
+        "usable_rate": 0.9,
+        "usable_options_per_case": 2.25
+      },
+      "usable_option_multiplier": 3.333333,
+      "group_preference": {
+        "lovebrain_wins": 11,
+        "baseline_wins": 1,
+        "ties": 0
+      },
+      "first_usable_cases": {
+        "lovebrain": 12,
+        "baseline": 11,
+        "denominator": 12
+      },
+      "effective_directions": {
+        "valid": 44,
+        "nonempty": 47
+      },
+      "duplicate_candidate_pairs": {
+        "lovebrain": {
+          "duplicates": 0,
+          "pairs": 329
+        },
+        "baseline": {
+          "duplicates": 0,
+          "pairs": 36
+        }
+      },
+      "backup_severe_error_cases": {
+        "lovebrain": 3,
+        "baseline": 2,
+        "denominator": 12
+      }
+    },
+    "historical_fixed_outputs": {
+      "pairs": 12,
+      "lovebrain": {
+        "arm": "CURRENT",
+        "candidate_count": 89,
+        "usable_count": 88,
+        "usable_rate": 0.988764,
+        "usable_options_per_case": 7.333333
+      },
+      "baseline": {
+        "arm": "DIRECT",
+        "description": "One direct reply per case.",
+        "candidate_count": 12,
+        "usable_count": 11,
+        "usable_rate": 0.916667,
+        "usable_options_per_case": 0.916667
+      },
+      "usable_option_multiplier": 8,
+      "group_preference": {
+        "lovebrain_wins": 11,
+        "baseline_wins": 0,
+        "ties": 1
+      },
+      "first_usable_cases": {
+        "lovebrain": 12,
+        "baseline": 11,
+        "denominator": 12
+      },
+      "effective_directions": {
+        "valid": 41,
+        "nonempty": 41
+      },
+      "duplicate_candidate_pairs": {
+        "lovebrain": {
+          "duplicates": 0,
+          "pairs": 287
+        }
+      },
+      "backup_severe_error_cases": {
+        "lovebrain": 0,
+        "denominator": 12,
+        "baseline": "not_applicable_single_candidate"
+      }
+    }
+  },
+  "source_files": {
+    "new_generation": [
+      "m5-eval/npair2-01.json through m5-eval/npair2-12.json",
+      "m5-final-tally.json"
+    ],
+    "historical_fixed_outputs": [
+      "m5-eval/hpair2-01.json through m5-eval/hpair2-12.json",
+      "m5h-final-tally.json"
+    ]
+  }
+}
