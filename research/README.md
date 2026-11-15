@@ -13,11 +13,11 @@
 | [RESEARCH_OVERVIEW.md](RESEARCH_OVERVIEW.md) | 研究了什么、为什么、主要贡献（一页入口） |
 | [CORE_MECHANISMS.md](CORE_MECHANISMS.md) | 机制怎么工作、为何有效、判决映射 |
 | [DATASET_DOCUMENTATION.md](DATASET_DOCUMENTATION.md) | 数据怎么构造、数量、例子、标注与局限 |
-| [BENCHMARK_EVALUATION.md](BENCHMARK_EVALUATION.md) | 如何评估、Baseline、可比性规则 |
+| [BENCHMARK_EVALUATION.md（已归档）](ARCHIVE_LEDGER.md#w1-privacy) | 如何评估、Baseline、可比性规则 |
 | [architecture/ARCHITECTURE.md](architecture/ARCHITECTURE.md) | 系统模块与真实调用关系 |
 | [REPRODUCIBILITY.md](REPRODUCIBILITY.md) | 环境怎么搭、入口在哪、哪些能复现哪些不能 |
 | [PAPER.md](PAPER.md) | 完整研究总结（论文稿，文末附历史口径附注） |
-| [FAILURE_ANALYSIS.md](FAILURE_ANALYSIS.md) | 已知失败族与未入选候选 |
+| [FAILURE_ANALYSIS.md（已归档）](ARCHIVE_LEDGER.md#w1-privacy) | 已知失败族与未入选候选 |
 
 ## 目录导览（十二区）
 
@@ -29,8 +29,8 @@
 | [evaluation/](evaluation/) | 评审判决版本链（FINAL / SUPERSEDED / INTERIM / BUGGY 等全保留，错误版不删）。 |
 | [experiments/](experiments/) | 实验账本：runs 批次目录、逐批次登记表（runs-registry.csv）、隔离测试与原始日志索引（原始日志原件走 Release/LFS）。 |
 | [arena/](arena/) | 研究考场运行时框架：纯标准库 Python，含网关、计分器、Gold 加载、Judge 器械族与隔离包。 |
-| [refs/](refs/) | 判决书、实验协议、独立评审与失败分析（[VERDICT-INDEX.md](refs/VERDICT-INDEX.md) 为 53 份判决的入口索引）。 |
-| [archive/](archive/) | 历史归档：移植原型、交付快照与历史工作指引副本（均附索引与 historical 标注）。 |
+| [refs/](refs/) | 判决书、实验协议、独立评审与失败分析（[VERDICT-INDEX.md（已归档）](ARCHIVE_LEDGER.md#w1-privacy) 为 53 份判决的入口索引）。 |
+| [archive/（已归档）](ARCHIVE_LEDGER.md#p-11) | 历史归档：移植原型、交付快照与历史工作指引副本（均附索引与 historical 标注）。 |
 | [provenance/](provenance/) | 迁移证据：来源映射、逐文件迁移清单、隐私与许可审查。 |
 | [tools/](tools/) | 评测/审计/重评分工具与测试（唯一第三方依赖 Pillow）。 |
 | [architecture/](architecture/) | 架构文档：真实生产链路、研究架构与接线状态。 |
@@ -40,7 +40,7 @@
 
 ## 阅读路径
 
-- **第一次了解（约 20 分钟）：** [RESEARCH_OVERVIEW.md](RESEARCH_OVERVIEW.md) → [PAPER.md](PAPER.md) §0 TL;DR → [STATISTICS.md](benchmark/STATISTICS.md) §一 → 在 [refs/VERDICT-INDEX.md](refs/VERDICT-INDEX.md) 挑感兴趣的判决看结论。
+- **第一次了解（约 20 分钟）：** [RESEARCH_OVERVIEW.md](RESEARCH_OVERVIEW.md) → [PAPER.md](PAPER.md) §0 TL;DR → [STATISTICS.md](benchmark/STATISTICS.md) §一 → 在 [refs/](refs/) 判决原件中挑感兴趣的判决看结论（判决索引已随 W1 撤支归档：[ARCHIVE_LEDGER.md #w1-privacy](ARCHIVE_LEDGER.md#w1-privacy)）。
 - **核验或复用：** [REPRODUCIBILITY.md](REPRODUCIBILITY.md)（环境、入口、复现范围与 smoke test 实测记录）→ [STATISTICS.md](benchmark/STATISTICS.md)（全部口径、恒等式与使用纪律）→ [experiments/runs-registry.csv](experiments/runs-registry.csv)（选批次）→ `refs/` 判决原件。
 
 ## 快速入口

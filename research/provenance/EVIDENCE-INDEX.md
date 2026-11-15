@@ -5,6 +5,7 @@
 - 登记口径：每条给出【02 原索引项 → 旧路径 → 新路径 → 存在性核验结果 → 备注】五元组
 - 纪律：零 sha256（完整性按文件数 + 字节量口径）；本件产出全程只读核验，除本件自身及其 worktree 副本外零写入
 - "在" = worktree 实测目标路径存在；"缺" = 期望落位但实测不存在；"待" = 待后续阶段落位
+- 2026-11-15 增补：W1 隐私撤支（`4836b017`/`236b261d`）与 W3 归档（`b040ca3c`）使本件部分落位路径退场，涉改行的新路径/存在性栏已就地改指 [ARCHIVE_LEDGER.md](../ARCHIVE_LEDGER.md) 对应锚点（#p-11/#p-12/#w1-privacy）；各行备注与 §F 统计保留 2026-11-12 产出日快照口径
 
 ## §A §12.1 LoveBrain 产品仓库（Public）——五项（产品仓路径）
 
@@ -36,18 +37,18 @@
 
 | # | 02 原索引项 | 旧路径（GitHub arena，私有） | 新路径（research/ 相对路径） | 存在性核验 | 备注 |
 | --- | --- | --- | --- | --- | --- |
-| C1 | Arena README | `bystery/arena/blob/main/harness-lovebrain/README.md` | `research/README.md`（新撰研究资产总览取代源 README）；源 README 原件另落 `research/archive/historical_assets/README.md` | 两处均：在（worktree 实测） | 新撰总览登记"迁移落盘中"快照口径；源 README 带历史标注 |
+| C1 | Arena README | `bystery/arena/blob/main/harness-lovebrain/README.md` | `research/README.md`（新撰研究资产总览取代源 README）；源 README 原件原落 `research/archive/historical_assets/README.md`，已随 W3 归档退场 → [ARCHIVE_LEDGER.md #p-11](../ARCHIVE_LEDGER.md#p-11) | 总览：在（worktree 实测）；历史原件：已随 W3 归档（P-11） | 新撰总览登记"迁移落盘中"快照口径；源 README 带历史标注 |
 | C2 | Arena PAPER.md | `…/blob/main/harness-lovebrain/PAPER.md` | `research/PAPER.md` | 在（worktree 实测） | 引用时须与 runs/判决书互查，禁写成全面优于原版（SOURCE_MAP §3.K） |
-| C3 | Arena AGENTS.md | `…/blob/main/harness-lovebrain/AGENTS.md` | `research/archive/historical_worker_guides/AGENTS-v1.6.md` | 在（worktree 实测） | 唯一允许改名件（renamed-historical）；首行已带 historical worker 标注；worktree 内该件存在未提交改动（8+/7−，CRLF 警告），提交前须收口 |
-| C4 | Arena OBJECTIVE.md | `…/blob/main/harness-lovebrain/OBJECTIVE.md` | `research/archive/historical_assets/OBJECTIVE.md` | 在（worktree 实测） | 历史标注 |
+| C3 | Arena AGENTS.md | `…/blob/main/harness-lovebrain/AGENTS.md` | `research/archive/historical_worker_guides/AGENTS-v1.6.md`，已随 W1 隐私撤支退场 → [ARCHIVE_LEDGER.md #w1-privacy](../ARCHIVE_LEDGER.md#w1-privacy) | 已随 W1 撤支归档（w1-originals） | 唯一允许改名件（renamed-historical）；首行已带 historical worker 标注；worktree 内该件存在未提交改动（8+/7−，CRLF 警告），提交前须收口 |
+| C4 | Arena OBJECTIVE.md | `…/blob/main/harness-lovebrain/OBJECTIVE.md` | `research/archive/historical_assets/OBJECTIVE.md`，已随 W3 归档退场 → [ARCHIVE_LEDGER.md #p-11](../ARCHIVE_LEDGER.md#p-11) | 已随 W3 归档（P-11 切包） | 历史标注 |
 | C5 | 评分协议 rubric v0.5 | `…/blob/main/harness-lovebrain/benchmark/rubric.md` | `research/benchmark/rubric.md`（现行版）；历史草案并列 `research/benchmark/rubric_v0_6_draft.md` | 两处均：在（worktree 实测） | rubric.md 实测为 v0.5 宪法文本；v0.6 为草案留档不冒充现行 |
-| C6 | 候选版本谱系 | `…/blob/main/harness-lovebrain/VERSION_LINEAGE_V2.json` | `research/candidates/VERSION_LINEAGE_V2.json` | 在（worktree 实测） | 候选身份谱系不得重写（SOURCE_MAP §3.C） |
-| C7 | 当前研究运行入口 | `…/blob/main/harness-lovebrain/WORKER_CURRENT_RUNBOOK.json` | 根级"当前入口"不迁移：`research/WORKER_CURRENT_RUNBOOK.json` 实测不存在（如实登记）；登记 6 处历史副本：`research/archive/historical_worker_guides/WORKER_CURRENT_RUNBOOK.json` + `research/refs/experiment_protocol_20261023/` 下 5 处（`deadline_quality_20261028/WORKER_CURRENT_RUNBOOK.json.before`、`direction_check_20261030_0008/ENTRY_BEFORE/`、`final_mainline_review_20261029/ENTRY_BEFORE/`、`global_harness_program_20261030/ENTRY_BEFORE/`、`submission_review_20261029_1510/ENTRY_BEFORE/` 各 WORKER_CURRENT_RUNBOOK.json） | 6 处副本全部：在（逐一实测）；根级：缺（设计使然，非丢失） | 名为 CURRENT 仍须标注"非当前执行指令"；6 件均为 sanitized-copy（2026-11-12 已执行脱敏，分别 23/6/9/7/9/9 处）；索引建议改指历史副本，不虚指"当前入口" |
+| C6 | 候选版本谱系 | `…/blob/main/harness-lovebrain/VERSION_LINEAGE_V2.json` | `research/candidates/VERSION_LINEAGE_V2.json`，已随 W3 归档退场 → [ARCHIVE_LEDGER.md #p-12](../ARCHIVE_LEDGER.md#p-12) | 已随 W3 归档（P-12 CAND-HISTORY） | 候选身份谱系不得重写（SOURCE_MAP §3.C） |
+| C7 | 当前研究运行入口 | `…/blob/main/harness-lovebrain/WORKER_CURRENT_RUNBOOK.json` | 根级"当前入口"不迁移：`research/WORKER_CURRENT_RUNBOOK.json` 实测不存在（如实登记）；登记 6 处历史副本（均已随 W1 隐私撤支退场 → [ARCHIVE_LEDGER.md #w1-privacy](../ARCHIVE_LEDGER.md#w1-privacy)，协议侧对应 P-09）：`research/archive/historical_worker_guides/WORKER_CURRENT_RUNBOOK.json` + `research/refs/experiment_protocol_20261023/` 下 5 处（`deadline_quality_20261028/WORKER_CURRENT_RUNBOOK.json.before`、`direction_check_20261030_0008/ENTRY_BEFORE/`、`final_mainline_review_20261029/ENTRY_BEFORE/`、`global_harness_program_20261030/ENTRY_BEFORE/`、`submission_review_20261029_1510/ENTRY_BEFORE/` 各 WORKER_CURRENT_RUNBOOK.json） | 6 处副本：产出日实测在，现均已随 W1 撤支归档（w1-originals）；根级：缺（设计使然，非丢失） | 名为 CURRENT 仍须标注"非当前执行指令"；6 件均为 sanitized-copy（2026-11-12 已执行脱敏，分别 23/6/9/7/9/9 处）；索引建议改指历史副本，不虚指"当前入口" |
 | C8 | Benchmark V1 Phase 1 | `…/tree/main/harness-lovebrain/refs/benchmark_v1_20261107/phase1` | `research/refs/benchmark_v1_20261107/phase1/` | 在（目录实测；30 文件） | refs 保留历史相对层级 |
 | C9 | Benchmark V1 Phase 2 | `…/tree/main/harness-lovebrain/refs/benchmark_v1_20261107/phase2` | `research/refs/benchmark_v1_20261107/phase2/` | 在（目录实测；52 文件） | 同上 |
-| C10 | Phase 2 Pilot 报告 | `…/blob/main/…/phase2/PHASE2_PILOT_REPORT.md` | `research/refs/benchmark_v1_20261107/phase2/PHASE2_PILOT_REPORT.md` | 在（worktree 实测） | — |
-| C11 | Judge 校准报告 | `…/blob/main/…/phase2/JUDGE_CALIBRATION_REPORT.md` | `research/refs/benchmark_v1_20261107/phase2/JUDGE_CALIBRATION_REPORT.md` | 在（worktree 实测） | 引用时随 R4 快照滞后注记（report §6.1） |
-| C12 | 数据集独立审查入口 | `…/blob/main/…/dataset_review_20261107/REVIEW_INDEX.md` | `research/refs/dataset_review_20261107/REVIEW_INDEX.md` | 在（worktree 实测） | — |
+| C10 | Phase 2 Pilot 报告 | `…/blob/main/…/phase2/PHASE2_PILOT_REPORT.md` | `research/refs/benchmark_v1_20261107/phase2/PHASE2_PILOT_REPORT.md`，已随 W1 隐私撤支退场 → [ARCHIVE_LEDGER.md #w1-privacy](../ARCHIVE_LEDGER.md#w1-privacy) | 已随 W1 撤支归档（w1-originals） | — |
+| C11 | Judge 校准报告 | `…/blob/main/…/phase2/JUDGE_CALIBRATION_REPORT.md` | `research/refs/benchmark_v1_20261107/phase2/JUDGE_CALIBRATION_REPORT.md`，已随 W1 隐私撤支退场 → [ARCHIVE_LEDGER.md #w1-privacy](../ARCHIVE_LEDGER.md#w1-privacy) | 已随 W1 撤支归档（w1-originals） | 引用时随 R4 快照滞后注记（report §6.1） |
+| C12 | 数据集独立审查入口 | `…/blob/main/…/dataset_review_20261107/REVIEW_INDEX.md` | `research/refs/dataset_review_20261107/REVIEW_INDEX.md`，已随 W1 隐私撤支退场 → [ARCHIVE_LEDGER.md #w1-privacy](../ARCHIVE_LEDGER.md#w1-privacy) | 已随 W1 撤支归档（w1-originals） | — |
 
 ## §D §12.3 TeamWorkspace（Private）——七项（不迁移项结论性登记）
 
@@ -67,7 +68,7 @@
 
 | 新增条目 | research/ 路径 | 存在性核验 | 备注 |
 | --- | --- | --- | --- |
-| 判决原文件目录（mechanisms E3/E19） | `research/refs/experiment_protocol_20261023/long_probe_20261030/`（W13–W22/FLJUDGE/LD1/CF1 各 *_VERDICT_*.md）+ `…/global_harness_program_20261030/`（W04-04_SCORECARD、LR1_VERDICT_W1005 等） | 在：long_probe 实测 27 个 VERDICT/SCORECARD 命名文件；global_harness 含 W04-04_FS1_FULL_SCORECARD.json/.md、LR1_VERDICT_W1005_20261031.md 等 | W22 引用 REV2（`W22FULL_VERDICT_REV2_20261104.md` 在，初版 `W22FULL_VERDICT_20261104.md` 亦在，引用以 REV2 为准） |
+| 判决原文件目录（mechanisms E3/E19） | `research/refs/experiment_protocol_20261023/long_probe_20261030/`（W13–W22/FLJUDGE/LD1/CF1 各 *_VERDICT_*.md；现留 Git 为展示链白名单 4 判决）+ `…/global_harness_program_20261030/`（W04-04_SCORECARD、LR1_VERDICT_W1005 等；已随 W1 协议整目录撤支退场 → [ARCHIVE_LEDGER.md #w1-privacy](../ARCHIVE_LEDGER.md#w1-privacy)，对应 P-09） | 在：long_probe 实测 4 件白名单判决（FLJUDGE/LD1/W16_UNC/W17B）；global_harness：已随 W1 协议整目录撤支归档（产出日 27 件口径为快照） | W22 引用 REV2（`W22FULL_VERDICT_REV2_20261104.md` 在，初版 `W22FULL_VERDICT_20261104.md` 亦在，引用以 REV2 为准） |
 | 已知故障索引 | `research/refs/KNOWN_FAILURES.md` | 在（worktree 实测） | 失败证据入口，不得删除失败族 |
 | 批次级 runs 索引 | `research/experiments/`（runs-registry.csv 逐批次登记） | 待：`research/experiments/` 下实测无 runs-registry.csv（登记口径：工作副本在 asset-audit，289 行含表头；`research/experiments/runs/` 实测 290 个批次目录已落位） | registry 文件落位为遗留待办，归因：属 provenance 件而非资产复制域，尚未执行复制步骤 |
 | 评审判决版本链 | `research/evaluation/` | 在：实测 97 文件 = 98 分类件 − 3 排除件（SEALED_KEY ×2 + USER_W_SAMPLE_BINDINGS_V1.json，实测确认不存在）+ audits/hc2 2 件 | 版本链口径 FINAL 79 / SUPERSEDED 6 / INTERIM 5 / BUGGY 3 / PREVIEW 3 / MOCK 1 / DEBUG 1（=98）与 classification CSV 逐类一致；SOURCE_MAP §3.D 对 KNOWLEDGE_ATOM_AUDIT_V1.md / C4_FOUR_ARM_REVIEW_PACK_V1.md/.json 的"HELD_REVIEW 待脱敏"表述滞后：manifest 末列已登记 Q7 处置=脱敏副本（2026-11-12 执行，分别 538 处脱敏点），三件实测在树中为脱敏副本 |
