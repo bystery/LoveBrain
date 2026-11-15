@@ -81,3 +81,15 @@ LoveBrain_*.md
 
 # Node
 node_modules/
+
+# Research process artifacts — never enter the public repo (W1 governance)
+research/experiments/runs/
+**/out/
+**/checkpoint*
+**/*.log
+**/*.lock
+**/staged/
+**/sandbox/
+archive/delivery_zips_root/
+**/D_RELATED_PATHS.jsonl
+**/*.tmp.driveupload/
