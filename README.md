@@ -47,6 +47,28 @@
 
 <img src="images/owerview.jpg" alt="LoveBrain 工作原理：触发捕获 → 检索装配 → 组装提示词 → 流式生成 → 挑选改写 → 后台沉淀 → 闭环回读" width="760"/>
 
+整条链路分四层：悬浮球 UI 负责捕获聊天文本、呈现候选回复（`ui/` + `feature/`，84 个文件）；`viewmodel` 与 `domain/GenerationEngine` 负责组装提示词、调度流式生成、挑选与改写（56 个文件）；`data/` 与 `KnowledgeRepository` 负责本地知识库、加密存储与事件沉淀（31 个文件）；`core/` 与 `model/` 承载基础设施与数据结构（49 个文件）。
+
+提示词本体不是散落在代码里的字符串，而是 `app/src/main/assets/engine/` 下的版本化资产：system_prompt 六件套、流程与知识引擎资产各归其位，并有契约单测锁定结构。深读入口：[assets/engine/README.md](app/src/main/assets/engine/README.md)。
+
+main 分支源码分层实测（236 个 Kotlin 文件）：ui 65 · domain 47 · data 31 · core 27 · model 22 · feature 19 · viewmodel 9 · util 7 · service 6 · di 1，另有根级 App/Config 2 个。
+
+## 验证与质量
+
+[![CI](https://github.com/bystery/LoveBrain/actions/workflows/ci.yml/badge.svg)](https://github.com/bystery/LoveBrain/actions/workflows/ci.yml)
+
+每次推送到 main 或提交 PR，CI 的 `verify` job 会自动跑一遍：单元测试、lint、androidTest 编译检查、协程取消静态护栏。R8 体积检查与模拟器 UI 测试放在手动工作流（`manual.yml`），发布核对在 `release.yml`。
+
+本地验证一行命令：
+
+```bash
+./gradlew testDebugUnitTest
+```
+
+测试体量：`app/src` 下 604 个 Kotlin 文件中，368 个是测试（358 个单元测试 + 10 个 androidTest）——每一条生成链路改动都有对应的契约与行为测试兜底。
+
+延迟、缓存命中率、单轮成本这类量化读数，连同它们的适用边界，单独放在 [`BENCHMARK.md`](BENCHMARK.md)：数字只代表 2026-09-03 那一轮真实运行（19 场景 / 50 题，deepseek-v4-flash），换模型、换时段就是另一组数，所以不进 README 正文，要看边界说明请点进去。
+
 ## 关于隐私
 
 - **不需要 LoveBrain 账号。** 知识库、关系画像和聊天归档主要保存在设备的 App 私有空间，API Key 使用 Android 加密存储。
