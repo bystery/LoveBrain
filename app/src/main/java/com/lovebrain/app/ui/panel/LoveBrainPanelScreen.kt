@@ -193,10 +193,26 @@ private class PanelSurfaceHolder(
     var batchImportOpen: Boolean by mutableStateOf(false)
         private set
 
+    /**
+     * 自动拆分回落时的原文预填：null = 长按开的干净一版；非 null = 那次 tap 认出了转录
+     * 但还有昵称没认过角色，浮层带着这份原文与已知归属开，用户只补指定一次。
+     */
+    var batchImportPrefillRaw: String? by mutableStateOf(null)
+        private set
+
     fun openSettings() { settingsOpen = true }
     fun closeSettings() { settingsOpen = false }
 
-    fun openBatchImport() { batchImportOpen = true }
+    fun openBatchImport() {
+        batchImportPrefillRaw = null
+        batchImportOpen = true
+    }
+
+    fun openBatchImportPrefilled(raw: String) {
+        batchImportPrefillRaw = raw
+        batchImportOpen = true
+    }
+
     fun closeBatchImport() { batchImportOpen = false }
 
     /** 预览：越界与刻度外的值先落回合法刻度，画出去的永远就是盘上可能存着的那一档 */
@@ -918,14 +934,20 @@ fun LoveBrainPanelScreen(
                             if (editingIndex >= 0) {
                                 viewModel.updateMessage(editingIndex, composeRole, text)
                                 viewModel.setEditingIndex(-1)
+                                viewModel.setDraft("")
                             } else if (inputKind == ComposerInputKind.SUPPLEMENT) {
                                 // 选《补充》时这一格写的是"给军师的话"，不是聊天流里的一条消息。
                                 // 走 SubmitNote，绝不进 messages（进了就会被记成"我说过这句话"）。
                                 viewModel.composer.accept(ComposerStore.Intent.SubmitNote(text))
+                                viewModel.setDraft("")
+                            } else if (viewModel.addDraftAuto(text, composeRole)) {
+                                // 单条照旧；认全角色的转录整批原子入库——两种都消费掉了草稿
+                                viewModel.setDraft("")
                             } else {
-                                viewModel.addMessage(composeRole, text)
+                                // 有昵称没认过角色：开既有浮层预填原文显式指定一次。
+                                // 草稿不清——用户关掉浮层时这句话还在输入框里，不丢。
+                                surface.openBatchImportPrefilled(text)
                             }
-                            viewModel.setDraft("")
                         }
                     },
                     inputId = "reply",
@@ -1221,11 +1243,20 @@ fun LoveBrainPanelScreen(
             onDismiss = { surface.closeBatchImport() },
             onSubmit = { drafts ->
                 viewModel.importBatchMessages(drafts)
+                // 自动拆分回落那一扇：提交消费掉的就是输入框里那份原文，同拍清草稿——
+                // 不清的话再点一次 ➕ 会把同一份转录重复入库。长按开的干净一版不碰草稿。
+                if (surface.batchImportPrefillRaw != null && draftText.trim() == surface.batchImportPrefillRaw) {
+                    viewModel.setDraft("")
+                }
                 surface.closeBatchImport()
             },
             // 审计 R1-3：粘贴框也要上报编辑意图——悬浮窗默认 FLAG_NOT_FOCUSABLE，
             // 不上报这一颗就永远弹不出 IME（与 intent_editor / settings 同一条链路）
-            onInputIntent = { onInputIntent("batch_import") }
+            onInputIntent = { onInputIntent("batch_import") },
+            // 自动拆分回落：原文与已知归属种进预览，提交时把归属表记回盘上（下一次 tap 零摩擦）
+            initialRaw = surface.batchImportPrefillRaw,
+            initialNameRoles = viewModel.batchImportKnownRoles,
+            onRememberRoles = { viewModel.rememberBatchImportNameRoles(it) }
         )
 
         // 「记录实际发送」那扇浮层连同它的状态接线一起摘掉，这里不留残件。

@@ -479,7 +479,7 @@ class ComposerStore(
      */
     private fun addMessages(drafts: List<BatchImportDraft>) {
         if (drafts.isEmpty()) return
-        val valid = drafts.filter { it.content.isNotBlank() }
+        val valid = drafts.filter { it.role != ChatMessage.Role.IDEA && it.content.isNotBlank() }
         if (valid.isEmpty()) return
         _messages.value = _messages.value + valid.map { ChatMessage(role = it.role, content = it.content.trim()) }
         onContentChanged()

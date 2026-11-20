@@ -132,12 +132,10 @@ class KnowledgeMemoryStoreTest {
     }
 
     /**
-     * revision 写失败时：标记必须保持原值。
+     * revision 写失败时：标记保持原值，且返回值必须是 false。
      *
-     * ⚠ 这里**照抄改造前的语义**：`saveCorrection` 当年就以"纠正文件有没有写成"作为返回值，
-     * 第二个写（revision 标记）失败时仍报 true。要不要收紧是另一件事（它会让"记下了纠正但
-     * 版本没跳"变成可见的失败），本轮只钉住一条：不许悄悄把 revision 跳上去，
-     * 否则后台防护会以为这一版已经处理过。
+     * 标记不许悄悄跳上去（否则后台防护以为这一版已处理过）；返回值也不许报成功——
+     * 纠正落了盘而版本没跳是可见的失败，调用方据此重试，而不是被 true 蒙混过去。
      */
     @Test
     fun aRefusedRevisionWriteLeavesTheRevisionMarkerUnbumped() {
@@ -146,7 +144,7 @@ class KnowledgeMemoryStoreTest {
         failRevisionWrite = true
         val s = store(files)
 
-        s.save("kb", "z", CorrectionAction.WRONG, "标记写失败")
+        assertFalse("revision 写失败必须如实报 false", s.save("kb", "z", CorrectionAction.WRONG, "标记写失败"))
 
         assertEquals("revision 标记保持原值", 4, s.revisionOf("kb"))
         assertEquals(
@@ -158,6 +156,34 @@ class KnowledgeMemoryStoreTest {
             transactions.last()
         )
         failRevisionWrite = false
+    }
+
+    /** revision 写失败报 false 之后，恢复写入重试必须成功：标记推进、记录与标记一致。 */
+    @Test
+    fun aFailedRevisionWriteReportsFalseAndRecoversOnRetry() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 4, ids = listOf("a"))
+        failRevisionWrite = true
+        val s = store(files)
+
+        assertFalse("revision 写失败必须报 false，调用方才会重试", s.save("kb", "z", CorrectionAction.WRONG, "标记写失败"))
+        assertEquals("失败时标记不动", 4, s.revisionOf("kb"))
+
+        failRevisionWrite = false
+        assertTrue("恢复写入后重试必须成功", s.save("kb", "z", CorrectionAction.WRONG, "标记写失败"))
+        assertEquals("重试后标记推进到 5", 5, s.revisionOf("kb"))
+        assertEquals("5", files["kb/${KnowledgeMemoryStore.MEMORY_REVISION_FILE}"])
+        val records = s.corrections("kb")
+        assertEquals("记录与库级标记一致", 5, records.getValue("z").revision)
+        assertTrue("任何记录的 revision 都不超过库级标记", records.values.all { it.revision <= 5 })
+        assertEquals(
+            "重试这一批：纠正与 revision 都写成",
+            listOf(
+                KnowledgeMemoryStore.CORRECTIONS_FILE to true,
+                KnowledgeMemoryStore.MEMORY_REVISION_FILE to true
+            ),
+            transactions.last()
+        )
     }
 
     @Test

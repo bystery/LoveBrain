@@ -10,10 +10,15 @@ import com.lovebrain.app.BubbleSizeTier
 import com.lovebrain.app.PanelBackdropOpacity
 import com.lovebrain.app.ReplyCardLayout
 import com.lovebrain.app.domain.port.SettingsStorePort
+import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.ProviderTicket
 import com.lovebrain.app.service.CopyCaptureService
 import com.lovebrain.app.util.L
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.put
 import kotlinx.serialization.serializer
 
 /**
@@ -240,6 +245,35 @@ class SecurePrefs(context: Context) : SettingsStorePort {
     var batchImportHintShown: Boolean
         get() = prefs.getBoolean(KEY_BATCH_IMPORT_HINT_SHOWN, false)
         set(value) = prefs.edit().putBoolean(KEY_BATCH_IMPORT_HINT_SHOWN, value).apply()
+
+    /**
+     * 批量导入的昵称 → 她/我 归属表：自动拆分零摩擦的那本账。用户在浮层里显式指定过一次，
+     * 此后同一昵称的转录 tap ➕ 直接按序入库，不再问第二次。
+     *
+     * 盘上形状是 JSON 对象（昵称 → "HER"/"ME"）。**脏值整体 fail-closed 成空表**——
+     * 非 JSON、值不是 HER/ME（含 IDEA）、空昵称，任何一种都宁可让用户回浮层重新显式指定，
+     * 绝不猜一个角色把对方的话标成我。解析口只有这一处（同 [replyCardLayout] 的先例）。
+     * 与 [batchImportHintShown] 同一先例：消费方是 `LoveBrainViewModel`（经 `di/AppModule`
+     * 那对函数接进来），不进 [SettingsStorePort] 端口面。
+     */
+    var batchImportNameRoles: Map<String, ChatMessage.Role>
+        get() {
+            val raw = prefs.getString(KEY_BATCH_IMPORT_NAME_ROLES, null) ?: return emptyMap()
+            return runCatching {
+                Json.parseToJsonElement(raw).jsonObject.entries.associate { (name, value) ->
+                    require(name.isNotBlank()) { "空昵称不是合法归属" }
+                    val roleName = value.jsonPrimitive.content
+                    require(roleName == "HER" || roleName == "ME") { "非法角色：$roleName" }
+                    name to ChatMessage.Role.valueOf(roleName)
+                }
+            }.getOrElse { emptyMap() }
+        }
+        set(value) {
+            val json = buildJsonObject {
+                value.forEach { (name, role) -> put(name, role.name) }
+            }
+            prefs.edit().putString(KEY_BATCH_IMPORT_NAME_ROLES, json.toString()).apply()
+        }
 
     // ═══ 消息捕获开关（ 问题 4）═══
 
@@ -647,6 +681,9 @@ private const val KEY_CONNECTION_VERIFIED_IDENTITY = "connection_verified_identi
 
         // 批量导入入口首次轻提示的"提示过没有"（外部审计 F3-2；同一先例：落盘后不再重弹）
         private const val KEY_BATCH_IMPORT_HINT_SHOWN = "batch_import_hint_seen"
+
+        // 批量导入昵称 → 她/我 归属表（JSON 对象；脏值读侧整体 fail-closed 成空表）
+        private const val KEY_BATCH_IMPORT_NAME_ROLES = "batch_import_name_roles"
 
         // 工单系统键
         private const val KEY_TICKER_LIST_JSON = "worker_tickets_json"

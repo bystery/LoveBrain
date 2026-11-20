@@ -304,4 +304,83 @@ class PromptBudgetTest {
         assertFalse("不留碎片", over.contains("周五见面的事"))
         assertTrue("当前聊天记录完整保留", over.contains(chatBody(2, 20)))
     }
+
+    // ─── 最终总长复核：估算/短对话分支留下的超预算必须被收回 ──────────────
+
+    @Test
+    fun `short chat with oversized blocks is rechecked down to budget`() {
+        // else 分支在"对话太短不值得裁"时整段保留对话，旧写法就此超预算返回；
+        // 最终复核先把对话收到全省略形，再按条目边界收知识段，回到预算内。
+        val idea = "想".repeat(3000) + "\n"
+        val knowledge = "# 旧记忆\n" + "旧".repeat(12000)
+        val out = blocks(knowledge = knowledge, chatBody = chatBody(1, 20), ideaBlock = idea)
+        assertTrue("总长必须复核回预算内：实到 ${out.length}", out.length <= AppConfig.TOTAL_BUDGET)
+        assertTrue("完整 IDEA 不能被裁", out.contains(idea))
+        assertTrue("围栏闭合", out.contains("</chat>"))
+        assertTrue("对话应收到全省略形", out.contains("对话记录因长度限制已省略"))
+        assertTrue("知识段头按整行保留", out.contains("# 旧记忆\n"))
+    }
+
+    @Test
+    fun `150-char json lines stay whole and within budget after the recheck`() {
+        val chat = chatBody(70, 268) // 每行 16 + 268/2 = 150 字
+        val out = blocks(knowledge = "# 画像\n" + "背".repeat(2000), chatBody = chat)
+        assertTrue("总长在预算内：实到 ${out.length}", out.length <= AppConfig.TOTAL_BUDGET)
+        assertTrue("围栏闭合", out.contains("</chat>"))
+        val inner = out.substringAfter("<chat>\n").substringBefore("\n</chat>")
+        assertTrue("对话段应被裁过", inner.contains("…"))
+        val payloadLines = inner.lines().filter { it.isNotBlank() && !it.startsWith("…") }
+        assertTrue("裁完应还剩些完整行", payloadLines.isNotEmpty())
+        val originalLines = chat.lines().toSet()
+        for (line in payloadLines) {
+            assertTrue("半行 JSON：${line.take(24)}", line.startsWith("{") && line.endsWith("}"))
+            assertEquals("每行都是原样整行", 151, line.length)
+            assertTrue("必须是原样保留的整行", line in originalLines)
+        }
+    }
+
+    @Test
+    fun `the recheck drops extra whole lines when the estimate under-drops`() {
+        // 短 JSON 行（<60 字）：按 60 估算丢行数会少裁，旧写法仍超预算；
+        // 最终复核对着真实长度再丢整行，绝不裸 take 半行。
+        val chat = chatBody(200, 20) // 每行 16 + 20/2 = 26 字
+        val out = blocks(knowledge = "# 画像\n" + "背".repeat(4000), chatBody = chat)
+        assertTrue("总长必须复核回预算内：实到 ${out.length}", out.length <= AppConfig.TOTAL_BUDGET)
+        assertTrue("围栏闭合", out.contains("</chat>"))
+        val inner = out.substringAfter("<chat>\n").substringBefore("\n</chat>")
+        val payloadLines = inner.lines().filter { it.isNotBlank() && !it.startsWith("…") }
+        val originalLines = chat.lines().toSet()
+        assertTrue("裁完应还剩些完整行", payloadLines.isNotEmpty())
+        for (line in payloadLines) {
+            assertTrue("半行 JSON", line.startsWith("{") && line.endsWith("}"))
+            assertTrue("必须是原样保留的整行", line in originalLines)
+        }
+    }
+
+    @Test
+    fun `when fixed blocks alone exceed budget the chat floors and knowledge shrinks to whole entries`() {
+        // 不可动的固定区块（IDEA）单独就超预算的极端：对话收全省略形、知识段按条目边界
+        // 收（可能为空）、围栏闭合、IDEA 整块保留——绝不裸截固定区块凑数。
+        val idea = "想".repeat(9000) + "\n"
+        val knowledge = "# 画像\n她喜欢猫\n"
+        val out = blocks(knowledge = knowledge, chatBody = chatBody(3, 268), ideaBlock = idea)
+        assertTrue("完整 IDEA 不能被裁", out.contains(idea))
+        assertTrue("围栏闭合", out.contains("</chat>"))
+        assertTrue("对话收全省略形", out.contains("对话记录因长度限制已省略"))
+        assertFalse("不许留半行 JSON", out.contains("{\"r\""))
+        assertFalse("知识段按条目边界收（此极端为空）", out.contains("她喜欢猫"))
+        val expected = "\n\n" + "## 场景\n推断：约会\n" + "## 持续意图\n目标：周末见\n" + idea +
+            "以下是本轮对话：\n" + "<chat>\n…（对话记录因长度限制已省略）…\n</chat>\n" + "\n\n" + "当前时间：2026-09-24 10:00"
+        assertEquals("极端情形收敛到确定性的最小形态", expected, out)
+    }
+
+    @Test
+    fun `fitting legacy seven-arg calls stay byte-identical after the final guard`() {
+        val knowledge = "# 画像\n她喜欢猫\n"
+        val chat = chatBody(3, 40)
+        val expected = knowledge + "\n\n" + "## 场景\n推断：约会\n" + "## 持续意图\n目标：周末见\n" +
+            "想法：软一点\n" + "以下是本轮对话：\n" + chat + "\n\n" + "当前时间：2026-09-24 10:00"
+        assertEquals("放得下的旧 7 参调用原样返回，最终复核不加任何字符", expected, legacyBlocks(knowledge, chat))
+        assertEquals("空 LIVE 区块与旧 7 参逐字节一致", expected, blocks(knowledge = knowledge, chatBody = chat, ideaBlock = "想法：软一点\n"))
+    }
 }

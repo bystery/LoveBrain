@@ -129,6 +129,13 @@ internal class OverlayPanelWindow(
     var isShowing = false
         private set
 
+    /**
+     * 屏幕上是否还看得见这扇窗。淡出动画一开始 [isShowing] 就置 false，
+     * 但窗口要到动画结束才 GONE——临时隐藏记"隐藏前形态"必须认这一颗，
+     * 否则淡出途中隐藏会把面板误记成球，恢复时只亮球不亮面板。
+     */
+    val isOnScreen: Boolean get() = isShowing || isPanelHiding
+
     // ═══════════ PanelFocusWindow：焦点状态机对窗口的全部需求 ═══════════
 
     override fun isPresent(): Boolean = composeView != null
@@ -136,8 +143,14 @@ internal class OverlayPanelWindow(
     override fun applyFlags(flags: Int): Boolean {
         val cv = composeView ?: return false
         val params = cv.layoutParams as? WindowManager.LayoutParams ?: return false
+        val previousFlags = params.flags
         params.flags = flags
-        return host.updateLayout(cv, params)
+        val applied = host.updateLayout(cv, params)
+        // 失败必须连活着的 LayoutParams 一起回滚：状态机只退 mode，若 EDITING flags
+        // 留在这份对象上，下一次 setMode(PASSIVE) 因 mode 已相等而早退，
+        // 窗口就永久抢着宿主焦点。
+        if (!applied) params.flags = previousFlags
+        return applied
     }
 
     override fun hideIme() {
@@ -305,7 +318,9 @@ internal class OverlayPanelWindow(
      * 孤儿菜单悬浮在宿主 App 上（也把 EDITING 状态泄漏到下一次打开）。
      */
     fun hideInstantly() {
-        if (!isShowing) return
+        // 淡出途中 isShowing 已是 false 但动画还在跑：不认 isPanelHiding 就会早退，
+        // 留下退出动画在临时隐藏之后继续回调。
+        if (!isShowing && !isPanelHiding) return
         isShowing = false
         focus.releaseInput("hide_instant")
         composeView?.let { cv ->

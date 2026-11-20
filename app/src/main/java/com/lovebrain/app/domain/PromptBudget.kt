@@ -40,9 +40,9 @@ object PromptBudget {
     ): String {
         // 拼装序（§7.3）：knowledge + "\n\n" + scene + intent + idea + historical + uncertain
         //             + chat + "\n\n" + timestamp。historical/uncertain 为空串时不加任何字符。
-        fun compose(knowledge: String, historical: String, uncertain: String): String =
+        fun compose(knowledge: String, historical: String, uncertain: String, chat: String = chatBody): String =
             knowledge + "\n\n" + sceneBlock + intentBlock + ideaBlock + historical + uncertain +
-                chatHeader + chatBody + "\n\n" + timestampBlock
+                chatHeader + chat + "\n\n" + timestampBlock
 
         val fullText = compose(knowledgeBlock, historicalBlock, uncertainBlock)
         if (fullText.length <= AppConfig.TOTAL_BUDGET) return fullText
@@ -111,7 +111,45 @@ object PromptBudget {
             chatBody
         }
 
-        return knowledge + "\n\n" + sceneBlock + intentBlock + ideaBlock + chatHeader + trimmedChat + "\n\n" + timestampBlock
+        // 最终总长复核：按行数估算（CHAT_LINE_ESTIMATE）与"对话太短不值得裁"的 else 分支
+        // 都可能让拼好的文本仍超预算。这里对着真实长度逐整行丢最旧对话，丢到全省略形为止；
+        // 还超就按条目边界收知识段——固定区块（场景/意图/IDEA/时间戳）与围栏不动。
+        val chatOpen = "<chat>\n"
+        val chatClose = "</chat>\n"
+        var chat = trimmedChat
+        var finalText = compose(knowledge, "", "", chat)
+        while (finalText.length > AppConfig.TOTAL_BUDGET) {
+            if (!chat.startsWith(chatOpen) || !chat.endsWith(chatClose)) break
+            val payload = chat.removePrefix(chatOpen).removeSuffix(chatClose)
+                .lines().filter { it.isNotBlank() && !it.startsWith("…") }
+            if (payload.isEmpty()) {
+                val floored = chatOpen + "…（对话记录因长度限制已省略）…\n" + chatClose
+                if (chat == floored || floored.length >= chat.length) break
+                chat = floored
+            } else {
+                val rest = payload.drop(1)
+                chat = if (rest.isEmpty()) {
+                    chatOpen + "…（对话记录因长度限制已省略）…\n" + chatClose
+                } else {
+                    chatOpen + "…（较早的对话已省略）…\n" + rest.joinToString("\n") + "\n" + chatClose
+                }
+            }
+            finalText = compose(knowledge, "", "", chat)
+        }
+        if (finalText.length > AppConfig.TOTAL_BUDGET) {
+            val residual = finalText.length - AppConfig.TOTAL_BUDGET
+            val target = (knowledge.length - residual).coerceAtLeast(0)
+            // 知识段尾若已有省略标记，收条目时把标记留住：裁的是旧记忆正文，不是“这里裁过”的交代。
+            val marker = "\n…（旧记忆因长度限制已省略）…\n"
+            knowledge = if (knowledge.endsWith(marker)) {
+                val body = knowledge.removeSuffix(marker)
+                trimToEntryBoundary(body, (target - marker.length).coerceAtLeast(0)) + marker
+            } else {
+                trimToEntryBoundary(knowledge, target)
+            }
+            finalText = compose(knowledge, "", "", chat)
+        }
+        return finalText
     }
 
     /** 对话行的估算宽度——只用来决定"大约要丢几行" */

@@ -165,6 +165,10 @@ val appModule = module {
             // 接在同一个 SecurePrefs 上——盘上那一格只有一份，落盘后每次回来不再重弹。
             readBatchImportHintShown = { get<SecurePrefs>().batchImportHintShown },
             writeBatchImportHintShown = { get<SecurePrefs>().batchImportHintShown = it },
+            // 批量导入昵称 → 她/我 归属表：与上面几对同一形状、接在同一个 SecurePrefs 上。
+            // 用户在浮层里显式指定过一次就落盘，此后同一昵称的转录 tap ➕ 直接整批入库。
+            readBatchImportNameRoles = { get<SecurePrefs>().batchImportNameRoles },
+            writeBatchImportNameRoles = { get<SecurePrefs>().batchImportNameRoles = it },
             // 冠军引擎（审计 R2-1）：可空注入——事件正式提交点在 nextRound。
             championEngine = getOrNull()
         )

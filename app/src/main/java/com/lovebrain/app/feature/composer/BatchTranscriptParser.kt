@@ -25,8 +25,10 @@ package com.lovebrain.app.feature.composer
  *    全角冒号一律算新记录；半角冒号只有后面跟空白才算（防止把 `比例3:2`、`https://…`
  *    这类正文当发言人拆掉）。冒号行是**冒号/编号格式**的记录分隔符；块格式正文里的
  *    "地址：北京市"这类行（昵称不是已知发言人）照旧归并进当前条。
- *    冒号/编号格式里的**字段词行**（"地址：…""备注：…"等元数据前缀，R6 审计回归）
- *    同样不硬拆：并入上一条 + warning 标注，由预览界面裁决。
+ *    冒号/编号格式里的**续行形态前缀**不硬拆为新发言人：常见字段词（"地址：…""备注：…"）
+ *    与以人称代词开头的多字前缀（"我想说：其实我不饿"是正文里的冒号句，不是发言人叫
+ *    "我想说"），并入上一条 + warning 标注，由预览界面裁决；该名字已作为发言人确认过
+ *    时照常换条。单字代词（我/她/他）与未知短昵称（B）仍是正常发言人。
  * 3. **编号转发格式**（多选 → 合并转发 → 复制）：
  *    ```
  *    1. 昵称
@@ -101,12 +103,35 @@ object BatchTranscriptParser {
         return Result(ctx.entries, ctx.warnings)
     }
 
+    /**
+     * 轻点自动解析的共享契约：只有「确信这是一段多条完整对话」时才交出条目，
+     * 否则返回 null，调用方退回单条输入 / 长按批量预览，绝不静默猜。
+     *
+     * 确信判据（须全部满足，复用 [parse]，不另立第二份规则）：
+     * - 至少 2 条；
+     * - 每条都有文本里写着的发言人（speakerName != null）；
+     * - 零 warning（没有跳过行 / 续行合并 / 空壳条等需要人裁决的情况）；
+     * - 发言人并非**全是**续行形态前缀（字段词 / 人称代词多字前缀）——整段都是
+     *   "地址：…""我想说：…"时，大概率是一条正文里的冒号句而非真多人对话。
+     *
+     * 纯函数、零 Android 依赖，JVM 可单测。
+     */
+    fun autoSplitEntries(raw: String): List<Entry>? {
+        val result = parse(raw)
+        val entries = result.entries
+        if (entries.size < 2 || result.warnings.isNotEmpty()) return null
+        if (entries.any { it.speakerName == null }) return null
+        if (entries.all { isContinuationPrefix(it.speakerName!!, emptySet()) }) return null
+        return entries
+    }
+
     /** 单次 [parse] 的全部可变状态——进出都是局部量，object 本身无状态 */
     private class Ctx {
         val entries = mutableListOf<Entry>()
         val warnings = mutableListOf<String>()
 
-        /** 见过的发言人昵称：开条目时登记；"已知昵称的冒号行必是新条"的判据 */
+        /** 已确认的发言人昵称：条目真正带上正文时才登记（空壳条不登记，免得污染续行判定）；
+         *  块格式借冒号换条、以及续行形态「已确认发言人」例外的判据 */
         private val seenSpeakers = mutableSetOf<String>()
 
         /** 当前条是按哪种格式开的：冒号/编号格式里冒号行就是记录分隔符，块格式里不是 */
@@ -187,7 +212,7 @@ object BatchTranscriptParser {
                         val colon = colonSplit(rest, allowNewSpeaker = true)
                         if (colon != null) {
                             startOpen(colon.first, null, lineNo, Origin.COLON)
-                            if (colon.second.isNotBlank()) openLines.add(colon.second)
+                            if (colon.second.isNotBlank()) addContent(colon.second)
                         } else if (TIME_LINE.matches(nextLine)) {
                             // `1. 昵称` 换行 `时间`：名字被下一行的时间确认
                             startOpen(rest, nextLine, lineNo, Origin.NUMBERED)
@@ -219,31 +244,27 @@ object BatchTranscriptParser {
                 allowNewSpeaker = !openExists ||
                     openOrigin == Origin.COLON || openOrigin == Origin.NUMBERED
             )?.let { (name, content) ->
-                // ── R6 审计回归：字段词续行不硬拆为发言人 ─────────────────────
-                // 冒号/编号格式里"地址：西湖边""备注：带伞"这类行是上一条正文的续行，
-                // 不是发言人叫"地址"的新条。判据（宁可不误拆）：已有进行中的冒号/编号
-                // 条目 + 该名字是常见字段词 + 从未作为发言人出现 + 冒号后有内容。
-                // 命中就并入上一条并写 warning 标注，交预览界面裁决（T2 原则）；
-                // 昵称真叫"地址/时间"且已出现过（name in seenSpeakers）时走正常换条。
+                // 续行不硬拆为发言人：已开的冒号/编号条目里，前缀是续行形态（字段词或
+                // 人称代词开头的多字前缀）且未确认过是发言人时，这行是上一条正文的冒号句
+                // （"我想说：其实我不饿"），并入上一条 + warning 交预览裁决，而非猜一个新昵称。
                 if (openExists &&
                     (openOrigin == Origin.COLON || openOrigin == Origin.NUMBERED) &&
-                    name !in seenSpeakers &&
                     content.isNotBlank() &&
-                    name in CONTENT_LABELS
+                    isContinuationPrefix(name, seenSpeakers)
                 ) {
                     if (openLines.isNotEmpty() && blanks > 0) {
                         repeat(blanks) { openLines.add("") }
                     }
-                    openLines.add(line)
+                    addContent(line)
                     warnings.add(
-                        "第 $lineNo 行：「$line」疑似上一条正文的续行（「$name」是常见字段词，" +
+                        "第 $lineNo 行：「$line」疑似上一条正文的续行（「$name」是字段词/人称代词前缀，" +
                             "未拆为新发言人）；如确是新发言人，请在预览中手动处理"
                     )
                     return i + 1
                 }
                 flushPending()
                 startOpen(name, null, lineNo, Origin.COLON)
-                if (content.isNotBlank()) openLines.add(content)
+                if (content.isNotBlank()) addContent(content)
                 return i + 1
             }
 
@@ -264,7 +285,7 @@ object BatchTranscriptParser {
                 // 条目内部的空行是正文：原样补回（开条目后的前导空行由 trim 吃掉）
                 repeat(blanks) { openLines.add("") }
             }
-            openLines.add(line)
+            addContent(line)
             return i + 1
         }
 
@@ -291,7 +312,6 @@ object BatchTranscriptParser {
 
         private fun startOpen(speaker: String?, time: String?, lineNo: Int, origin: Origin) {
             closeOpen()
-            if (speaker != null) seenSpeakers.add(speaker)
             openExists = true
             openSpeaker = speaker
             openTime = time
@@ -300,10 +320,23 @@ object BatchTranscriptParser {
         }
 
         /**
+         * 正文行入账，并在此刻才确认发言人：只有真正带正文的条目才登记 seenSpeakers。
+         * 空壳条（识别到昵称却没正文、最终跳过）若提前登记，会让后续同名续行被误判成
+         * 「已确认发言人」而硬拆——登记推迟到正文落地即可避免这种污染。
+         */
+        private fun addContent(line: String) {
+            openLines.add(line)
+            val speaker = openSpeaker
+            if (speaker != null) seenSpeakers.add(speaker)
+        }
+
+        /**
          * 冒号行拆分：返回 (发言人, 内容)，不是冒号行返回 null。
          *
-         * [knownSpeakerOnly] 为真（已开条目）时只有**再出现的已知昵称**才认作新记录——
-         * 正文里的冒号句（"我想说：晚安"）不是已知发言人，归并进当前条继续累积。
+         * [allowNewSpeaker]=false（块格式正文）时只有已确认发言人（seenSpeakers）才认作
+         * 新记录，未知昵称的冒号句留给正文归并；=true（未开条目，或当前条是冒号/编号格式）
+         * 时任何合法昵称都拆。昵称是否属于「续行形态」由 [isContinuationPrefix] 另行判定，
+         * 不在这里——这里只管「是不是冒号行、昵称合不合法」。
          */
         private fun colonSplit(line: String, allowNewSpeaker: Boolean): Pair<String, String>? {
             val m = COLON_LINE.find(line) ?: return null
@@ -329,14 +362,37 @@ object BatchTranscriptParser {
     private val COLON_LINE = Regex("^([^：:]{1,30})(?:：|:\\s)(.*)$")
 
     /**
-     * 常见字段词（R6 审计回归）：冒号/编号格式正文里"地址：…""备注：…"这类续行的
-     * 冒号前缀。极短、语义上是消息元数据而非人称，真实联系人用它当昵称极少见；
-     * 真撞上时只要该名字已作为发言人出现过（seenSpeakers），仍按发言人换条。
+     * 常见字段词：冒号/编号格式正文里"地址：…""备注：…"这类续行的冒号前缀。
+     * 语义上是消息元数据而非人称，真实联系人用它当昵称极少见；真撞上时只要该名字
+     * 已作为发言人确认过（seenSpeakers），仍按发言人换条。
      */
     private val CONTENT_LABELS = setOf(
         "地址", "地点", "时间", "日期", "电话", "手机", "座机", "备注", "附", "附言",
         "邮箱", "邮编", "网址", "链接", "姓名", "性别", "年龄", "坐标", "QQ", "微信"
     )
+
+    /** 人称代词：多字冒号前缀以这些字开头（我想说/他觉得/她说）是正文冒号句，不是昵称 */
+    private const val PRONOUN_PREFIXES = "我你她他它"
+
+    /**
+     * 续行判定（纯函数，无状态）：已开的冒号/编号条目里，冒号行前缀 [name] 是不是
+     * 上一条正文的续行，而非一个新发言人。
+     *
+     * 续行形态两种（命中其一即是）：
+     * 1. 常见字段词（[CONTENT_LABELS]，如「地址：西湖边」）；
+     * 2. 以人称代词 我/你/她/他/它 开头的**多字**前缀（「我想说：其实我不饿」是正文里的
+     *    冒号句，不是发言人叫「我想说」）。单字代词（我/她/他）是正常短昵称，不算续行；
+     *    未知短昵称（B）也照常拆条。
+     *
+     * 例外：该名字已作为发言人被确认过（[seenSpeakers]）——昵称真叫「地址/我想说」且已
+     * 出现过时，以已出现为准，返回 false（照常换条）。[autoSplitEntries] 以空集合复用本
+     * 函数判断「发言人是否全是续行形态」，不另立第二份规则。
+     */
+    private fun isContinuationPrefix(name: String, seenSpeakers: Set<String>): Boolean {
+        if (name in seenSpeakers) return false
+        if (name in CONTENT_LABELS) return true
+        return name.length >= 2 && name.first() in PRONOUN_PREFIXES
+    }
 
     /** 空白类：含全角空格 U+3000 与不换行空格 U+00A0（微信粘贴里出现，`\s` 不认） */
     private val WS = "[\\s\\u3000\\u00A0]"
@@ -359,6 +415,6 @@ object BatchTranscriptParser {
             "\\d{1,2}:\\d{2}(?::\\d{2})?)$"
     )
 
-    /** 编号转发前缀：`1.` `12、` `3)` `4．` */
-    private val NUMBERED = Regex("^(\\d{1,3})[.、)．]\\s*(.*)$")
+    /** 编号转发前缀：`1.` `12、` `3)` `4．`；标记后紧跟数字的是小数（1.5倍焦距），不是编号 */
+    private val NUMBERED = Regex("^(\\d{1,3})[.、)．](?!\\d)\\s*(.*)$")
 }

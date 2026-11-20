@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,7 +51,8 @@ import com.lovebrain.app.ui.theme.*
  *    军师备注/补充通道在本浮层里根本没有出口。
  *
  * 显示文案全部走资源（`batch_import_*`）：不往可见字面量预算里加新债。
- * 单行输入行布局一寸未动——入口是 ➕ 的长按（见 [ReplyInput] 的 `onBatchImport`）。
+ * 单行输入行布局一寸未动——入口是 ➕ 的长按（见 [ReplyInput] 的 `onBatchImport`），
+ * 以及普通 tap 认出转录但昵称归属没认全时的自动回落（宿主预填原文与已知归属开这一扇）。
  */
 @Composable
 fun BatchImportSheet(
@@ -64,22 +66,50 @@ fun BatchImportSheet(
      * IME 才弹得出来。与 [PanelTextInput] / [com.lovebrain.app.core.designsystem.LbFieldInput]
      * 的同一范式：null（默认）= 跑在普通 Activity，不需要这条信号。
      */
-    onInputIntent: (() -> Unit)? = null
+    onInputIntent: (() -> Unit)? = null,
+    /** 自动拆分回落的预填原文：那次 tap 认出了转录但还有昵称没认过角色（null = 长按开的干净一版）。 */
+    initialRaw: String? = null,
+    /** 盘上已知的昵称归属：种进预览，用户只补没认过的那几个，不必从头再指一遍。 */
+    initialNameRoles: Map<String, ChatMessage.Role> = emptyMap(),
+    /** 提交时把整份归属表交回宿主落盘——同一昵称的转录下一次 tap 零摩擦。 */
+    onRememberRoles: ((Map<String, ChatMessage.Role>) -> Unit)? = null
 ) {
-    // visible 每次翻转都重置整份状态：重开浮层看到的是干净的一版，不是上一次的残稿
-    var raw by remember(visible) { mutableStateOf("") }
-    var parsed by remember(visible) { mutableStateOf<List<BatchTranscriptParser.Entry>?>(null) }
-    var warnings by remember(visible) { mutableStateOf<List<String>>(emptyList()) }
+    // 只在**打开的上升沿**重置整份状态：重开浮层看到的是干净的一版（或预填的那一版），
+    // 不是上一次的残稿。退场那 200ms 里 visible=false 但树还在画——若随 visible 翻转重置
+    // （旧 remember(visible) 写法），用户刚提交的预览会在淡出中途凭空清空。
+    var raw by remember { mutableStateOf("") }
+    var parsed by remember { mutableStateOf<List<BatchTranscriptParser.Entry>?>(null) }
+    var warnings by remember { mutableStateOf<List<String>>(emptyList()) }
     // 审计 R1-1（陈旧解析结果）：parsed 是 raw 的派生物，必须与解析那一刻的原文绑定。
     // parsedRaw 记的就是"解析结果对应哪一版原文"；原文一旦改了，旧 parsed 立即作废，
     // 预览收回、提交键回到禁用——用户必须重新点解析，提交的永远是他眼前这份原文的结果。
-    var parsedRaw by remember(visible) { mutableStateOf<String?>(null) }
+    var parsedRaw by remember { mutableStateOf<String?>(null) }
     // 昵称 → 她/我：同一昵称的所有条目一起生效（一份归属，不是每条猜一次）
-    var nameRoles by remember(visible) { mutableStateOf<Map<String, ChatMessage.Role>>(emptyMap()) }
+    var nameRoles by remember { mutableStateOf<Map<String, ChatMessage.Role>>(emptyMap()) }
     // 未识别发言人的条目按序号各自指定
-    var orphanRoles by remember(visible) { mutableStateOf<Map<Int, ChatMessage.Role>>(emptyMap()) }
+    var orphanRoles by remember { mutableStateOf<Map<Int, ChatMessage.Role>>(emptyMap()) }
     // 预览里被用户移除的条目（解析器的边角误拆，移除比让它挡住提交更诚实）
-    var removed by remember(visible) { mutableStateOf<Set<Int>>(emptySet()) }
+    var removed by remember { mutableStateOf<Set<Int>>(emptySet()) }
+
+    LaunchedEffect(visible) {
+        if (!visible) return@LaunchedEffect
+        raw = initialRaw.orEmpty()
+        nameRoles = initialNameRoles
+        orphanRoles = emptyMap()
+        removed = emptySet()
+        if (initialRaw.isNullOrBlank()) {
+            parsed = null
+            warnings = emptyList()
+            parsedRaw = null
+        } else {
+            // 预填直接出预览：用户只补指定发言人，不必再点一次「解析预览」。
+            // 结果与这一版原文绑定，陈旧失效判据与手动解析完全同一条。
+            val result = BatchTranscriptParser.parse(initialRaw)
+            parsed = result.entries
+            warnings = result.warnings
+            parsedRaw = initialRaw
+        }
+    }
 
     val entries = parsed.orEmpty().withIndex().filter { it.index !in removed }
     val allAssigned = entries.isNotEmpty() && entries.all { (i, e) -> roleOf(e, i, nameRoles, orphanRoles) != null }
@@ -205,6 +235,8 @@ fun BatchImportSheet(
                                 ?.let { r -> BatchImportDraft(r, e.content) }
                         }
                         if (drafts.size == entries.size) {
+                            // 先记住归属再交草稿：宿主提交后即关浮层，落盘不能落在关闭之后
+                            onRememberRoles?.invoke(nameRoles)
                             onSubmit(drafts)
                         }
                     }

@@ -213,7 +213,7 @@ class PromptByteFreezeBaselineTest {
         "reply/stage-unknown" to Frozen("a500ba194219626919046193b660c14bc035c4e165f4bc2f7efab0551f2afb12", 1319),
         "reply/no-selector" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
         "reply/scene-chain-stale" to Frozen("4e1d5aad029d264217e49cf086d22d1796ce7bbb03dc78c8c523deac456cb342", 2842),
-        "reply/budget-overflow" to Frozen("5783d7eccf9d999820ddcfeba10123d2e90b69e41a921ce494b6aba7c92742a2", 26661),
+        "reply/budget-overflow" to Frozen("d6b3892ba664ecea2734c77fe7e67216b6cf57e7b705ccbffee380108bba9cfa", 26638),
         "reply/intent-one-day" to Frozen("74bcc71bb7d5d6fa2dd13347641fb60734a77a44b6d7177abd88a7b062782f75", 2893),
         "reply/intent-one-hour-future" to Frozen("3bba8551891ba0b711fc54977d9f928990748c8c26d6de79427eb300be898f59", 2884),
         "reply/intent-one-day-future" to Frozen("a2333bcdf71c24fe9db53b9048bff5668dfb570142f745f1ada435de62701b8e", 2878),

@@ -9,6 +9,8 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.longClick
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
@@ -193,6 +195,54 @@ class BatchImportWiringTest {
             "onBatchImport = null 时语义树上不许有批量导入的长按入口",
             0, allNodes().count { it.config.getOrNull(SemanticsActions.OnLongClick)?.label == importLabel }
         )
+    }
+
+    /**
+     * 非空草稿时手势长按仍开批量：轻点与长按共用一颗节点后，两条语义都在、各干各的。
+     * 旧写法两颗手势节点抢同一份 DOWN，恰恰在草稿非空（canAdd=true）时长按死掉。
+     */
+    @Test
+    fun withANonBlankDraftTheGestureLongPressStillOpensBatchImport() {
+        var imports = 0
+        var adds = 0
+        rule.setContent {
+            UiMatrix(360).RenderIn(LocalDensity.current.density) {
+                ReplyInput(
+                    draftText = "在吗",
+                    currentRole = com.lovebrain.app.model.ChatMessage.Role.ME,
+                    editingIndex = -1,
+                    onDraftChange = {},
+                    onRoleChange = {},
+                    onAdd = { adds++ },
+                    onFocusChange = {},
+                    onBatchImport = { imports++ }
+                )
+            }
+        }
+        rule.mainClock.advanceTimeBy(16L)
+
+        val importLabel = ctx.getString(R.string.a11y_batch_import)
+        val longClickNodes = allNodes().filter {
+            it.config.getOrNull(SemanticsActions.OnLongClick)?.label == importLabel
+        }
+        assertEquals(
+            "非空草稿时语义树上该恰有一颗名为「$importLabel」的长按节点，实到 ${longClickNodes.size}",
+            1, longClickNodes.size
+        )
+        assertTrue(
+            "同一颗节点必须同时带点击语义（轻点添加的合同不因长按接线而丢）",
+            longClickNodes.single().config.contains(SemanticsActions.OnClick)
+        )
+
+        rule.onNodeWithContentDescription("添加").performTouchInput { longClick() }
+        rule.waitForIdle()
+        assertEquals("手势长按必须开批量导入", 1, imports)
+        assertEquals("长按不许投递消息", 0, adds)
+
+        rule.onNodeWithContentDescription("添加").performClick()
+        rule.waitForIdle()
+        assertEquals("轻点仍恰好投递一条", 1, adds)
+        assertEquals("轻点不许再开批量", 1, imports)
     }
 
     /** R1-3：触碰粘贴框必须上报编辑意图（悬浮窗宿主由此把窗口切进 EDITING、IME 才能弹出） */

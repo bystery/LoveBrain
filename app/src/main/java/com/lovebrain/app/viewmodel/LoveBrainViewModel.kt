@@ -21,6 +21,7 @@ import com.lovebrain.app.domain.port.KnowledgeRuntimePort
 import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.feature.composer.BatchImportDraft
+import com.lovebrain.app.feature.composer.BatchTranscriptParser
 import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.feedback.CaseSaveOutcome
 import com.lovebrain.app.feature.feedback.caseSaveNoticeText
@@ -186,7 +187,17 @@ class LoveBrainViewModel(
      * 不是这一格的语义。
      */
     private val readBatchImportHintShown: (() -> Boolean)? = null,
-    private val writeBatchImportHintShown: ((Boolean) -> Unit)? = null
+    private val writeBatchImportHintShown: ((Boolean) -> Unit)? = null,
+    /**
+     * 批量导入昵称 → 她/我 归属表那一对接口（读 / 写）。
+     *
+     * 与 [readBatchImportHintShown] 那一对同一形状、同一理由：盘上那一格
+     * （`batch_import_name_roles`）住在 `data/SecurePrefs` 这个具体实现类上，端口面没有这一员，
+     * 由装配侧（`di/AppModule`）接进来。**没接时读空表、写丢弃**：每次自动拆分都回浮层
+     * 显式指定——宁可多问一次，绝不猜角色把对方的话标成我。
+     */
+    private val readBatchImportNameRoles: (() -> Map<String, ChatMessage.Role>)? = null,
+    private val writeBatchImportNameRoles: ((Map<String, ChatMessage.Role>) -> Unit)? = null
 ) : ViewModel() {
 
     /**
@@ -1067,6 +1078,53 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     fun importBatchMessages(drafts: List<BatchImportDraft>) {
         composer.accept(ComposerStore.Intent.AddMessages(drafts))
         markBatchImportDiscovered()
+    }
+
+    /**
+     * 昵称 → 她/我 归属表的读口：真源只有盘上那一格（`SecurePrefs.batchImportNameRoles`），
+     * 这里不另存会话副本——每次读都问盘，读数与落盘永远同一份，也不在 VM 里长第二颗可写状态。
+     */
+    private val batchImportNameRoles: Map<String, ChatMessage.Role>
+        get() = readBatchImportNameRoles?.invoke() ?: emptyMap()
+
+    /** 浮层预填的只读出口：已知归属随原文一起种进预览，用户只补没认过的那几个昵称。 */
+    val batchImportKnownRoles: Map<String, ChatMessage.Role> get() = batchImportNameRoles
+
+    /**
+     * 普通 ➕  tap 的自动拆分入口（不新增第二条输入链）：
+     * · 解析器没把握（[BatchTranscriptParser.autoSplitEntries] 交 null）→ 原样走单条 [addMessage]；
+     * · 有把握且每个昵称都在归属表里 → 按映射角色整批走 [importBatchMessages]
+     *   （同一条原子 AddMessages、同一次通知、顺序即转录顺序）；
+     * · 有任一昵称没认过 → 交 false，宿主开**既有**浮层预填原文与已知归属，用户显式指定一次。
+     *   绝不把未认昵称默认成当前 composeRole——那会把对方整段话标成我。
+     */
+    fun addDraftAuto(text: String, composeRole: ChatMessage.Role): Boolean {
+        val entries = BatchTranscriptParser.autoSplitEntries(text)
+        if (entries == null) {
+            addMessage(composeRole, text)
+            return true
+        }
+        val known = batchImportNameRoles
+        val drafts = entries.mapNotNull { e ->
+            val name = e.speakerName ?: return@mapNotNull null
+            known[name]?.let { BatchImportDraft(it, e.content) }
+        }
+        if (drafts.size == entries.size) {
+            importBatchMessages(drafts)
+            return true
+        }
+        // 回浮层 = 用户即将看见批量入口，同拍收掉首次轻提示（与长按入口同一判据）
+        markBatchImportDiscovered()
+        return false
+    }
+
+    /**
+     * 浮层提交时记住归属表：**并入**盘上那份（本次转录没出现的旧昵称不丢），
+     * 落盘后同一昵称的转录下一次 tap 零摩擦。空表不写盘。
+     */
+    fun rememberBatchImportNameRoles(roles: Map<String, ChatMessage.Role>) {
+        if (roles.isEmpty()) return
+        writeBatchImportNameRoles?.invoke(batchImportNameRoles + roles)
     }
 
     fun updateMessage(index: Int, role: ChatMessage.Role, content: String) { // facade — delegates to ComposerStore

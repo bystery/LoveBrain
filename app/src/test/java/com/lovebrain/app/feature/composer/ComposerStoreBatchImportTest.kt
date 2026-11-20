@@ -1,6 +1,8 @@
 package com.lovebrain.app.feature.composer
 
 import com.lovebrain.app.model.ChatMessage
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import org.junit.Assert.assertEquals
@@ -165,5 +167,52 @@ class ComposerStoreBatchImportTest {
         assertEquals("军师备注不被批量导入碰（KNOWN_FAILURES F1/F3 边界）", "本轮备注", store.noteTextNow)
         assertEquals("捕获默认角色不被批量导入带着走", ChatMessage.Role.ME, store.currentRoleNow)
         assertEquals("追加确实标了一次 stale（差值恰好 1）", before + 1, contentChanges)
+    }
+
+    /**
+     * 绕过构造期硬挡的 IDEA 草稿仍进不了真实对话通道。
+     *
+     * 构造期 require 是第一道防线，store 侧过滤是同一判据的镜像。这里用 mockk 绕过
+     * 构造器造出一条 IDEA 草稿（模拟未来反序列化/内部重构等旁路），证明镜像那道真的挡，
+     * 而不是只靠构造期——否则旁路一旦成立，备注正文就会混进 HER/ME 对话。
+     */
+    @Test
+    fun ideaDraftsBypassingConstructionAreStillFilteredOutByTheStore() {
+        val bypassed = mockk<BatchImportDraft>()
+        every { bypassed.role } returns ChatMessage.Role.IDEA
+        every { bypassed.content } returns "想冒充对话的备注"
+
+        val store = newStore()
+        val before = contentChanges
+        store.accept(
+            ComposerStore.Intent.AddMessages(
+                listOf(bypassed, BatchImportDraft(ChatMessage.Role.HER, "真实的一条"))
+            )
+        )
+
+        val after = store.messagesNow
+        assertEquals("IDEA 被滤掉，只剩真实消息", 1, after.size)
+        assertEquals(ChatMessage.Role.HER, after[0].role)
+        assertEquals("真实的一条", after[0].content)
+        assertTrue("列表里没有任何 IDEA", after.all { it.role != ChatMessage.Role.IDEA })
+        assertEquals("仍有有效条目 → 恰好一次通知", before + 1, contentChanges)
+        assertEquals("备注通道不被批量导入污染", "", store.noteTextNow)
+    }
+
+    /** 整批都是绕过构造期的 IDEA：有效条目为零 = 零追加、零通知（与空批量同一形状）。 */
+    @Test
+    fun anAllIdeaBypassedBatchIsANoOpWithZeroNotifications() {
+        val bypassed = mockk<BatchImportDraft>()
+        every { bypassed.role } returns ChatMessage.Role.IDEA
+        every { bypassed.content } returns "想冒充对话的备注"
+
+        val store = newStore()
+        store.accept(ComposerStore.Intent.AddMessage(ChatMessage.Role.HER, "已有一条"))
+        val before = contentChanges
+
+        store.accept(ComposerStore.Intent.AddMessages(listOf(bypassed)))
+
+        assertEquals("零追加", 1, store.messagesNow.size)
+        assertEquals("零通知", before, contentChanges)
     }
 }

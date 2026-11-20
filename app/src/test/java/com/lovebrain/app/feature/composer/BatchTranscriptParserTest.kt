@@ -2,6 +2,7 @@ package com.lovebrain.app.feature.composer
 
 import com.lovebrain.app.model.ChatMessage
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -606,5 +607,194 @@ class BatchTranscriptParserTest {
         )
         assertEquals(2, result.entries.size)
         assertEquals("地址：北京市朝阳区", result.entries[0].content)
+    }
+
+    // ───────────────── 续行判定 / 编号小数 / 空壳登记 / 自动解析契约 ─────────────────
+
+    /** 用户 2026-11-20 提供的真实块样本（逐字，条目间两空行，末条「行啵」） */
+    private val userBlockSample =
+        "W-2f\n2026年11月20日 15:14\n那我要晚一点粗发嘛\n\n\n" +
+            "W-2f\n2026年11月20日 15:14\n四点出发？\n\n\n" +
+            "陆晓\n2026年11月20日 15:15\n哈哈哈不急\n\n\n" +
+            "陆晓\n2026年11月20日 15:15\n等我出发的时候和你是哦\n\n\n" +
+            "陆晓\n2026年11月20日 15:15\n咱俩应该差不多同时到\n\n\n" +
+            "W-2f\n2026年11月20日 15:16\n行啵"
+
+    /** 冒号续行反例：「我想说：其实我不饿」是正文冒号句，并入上一条 + 1 警告，不猜新发言人 */
+    @Test
+    fun colonPronounPrefixContinuationMergesWithWarning() {
+        val result = BatchTranscriptParser.parse("小美：今天去吃饭\n我想说：其实我不饿")
+        assertEquals(1, result.entries.size)
+        assertEquals("小美", result.entries[0].speakerName)
+        assertEquals("今天去吃饭\n我想说：其实我不饿", result.entries[0].content)
+        assertEquals(1, result.warnings.size)
+        assertTrue(result.warnings[0].contains("我想说"))
+    }
+
+    /** 多字代词前缀（我觉得/他说）并入；单字代词（我）仍是正常发言人，照常换条 */
+    @Test
+    fun colonMultiCharPronounPrefixesMergeButSinglePronounSplits() {
+        val result = BatchTranscriptParser.parse(
+            """
+            小美：周末安排
+            我觉得：先看天气
+            他说：随便
+            我：好
+            """.trimIndent()
+        )
+        assertEquals(2, result.entries.size)
+        assertEquals("小美", result.entries[0].speakerName)
+        assertEquals("周末安排\n我觉得：先看天气\n他说：随便", result.entries[0].content)
+        assertEquals("我", result.entries[1].speakerName)
+        assertEquals("好", result.entries[1].content)
+        assertEquals(2, result.warnings.size)
+    }
+
+    /** 未知短昵称不受续行规则影响：A：/B：/A：仍拆 3 条、零警告（与 entryOrderFollowsTextOrder 同夹具） */
+    @Test
+    fun shortUnknownNicknamesStillSplitWithoutWarnings() {
+        val result = BatchTranscriptParser.parse("A：第一条\nB：第二条\nA：第三条")
+        assertEquals(3, result.entries.size)
+        assertEquals(listOf("A", "B", "A"), result.entries.map { it.speakerName })
+        assertEquals(listOf("第一条", "第二条", "第三条"), result.entries.map { it.content })
+        assertTrue(result.warnings.isEmpty())
+    }
+
+    /** 已确认发言人例外：昵称真叫「我想说」且已出现过 → 照常换条，不当续行 */
+    @Test
+    fun confirmedPronounPrefixSpeakerStillSplits() {
+        val result = BatchTranscriptParser.parse("我想说：第一\n我：好\n我想说：第二")
+        assertEquals(3, result.entries.size)
+        assertEquals(listOf("我想说", "我", "我想说"), result.entries.map { it.speakerName })
+        assertTrue(result.warnings.isEmpty())
+    }
+
+    /** 续行合并时正文里的 URL / 比例原样保留，不被半角冒号拆条 */
+    @Test
+    fun continuationMergeKeepsUrlsAndRatiosIntact() {
+        val result = BatchTranscriptParser.parse(
+            """
+            小美：发你个图
+            我想说：比例3:2的图
+            链接：https://example.com/a:b
+            我：收到
+            """.trimIndent()
+        )
+        assertEquals(2, result.entries.size)
+        assertEquals("发你个图\n我想说：比例3:2的图\n链接：https://example.com/a:b", result.entries[0].content)
+        assertEquals("收到", result.entries[1].content)
+        assertEquals(2, result.warnings.size)
+    }
+
+    /** 用户真实块样本（逐字）：6 条有序、时间串原样、零警告 */
+    @Test
+    fun userBlockSampleSixMessagesParsesVerbatim() {
+        val result = BatchTranscriptParser.parse(userBlockSample)
+        assertEquals(6, result.entries.size)
+        assertEquals(
+            listOf("W-2f", "W-2f", "陆晓", "陆晓", "陆晓", "W-2f"),
+            result.entries.map { it.speakerName }
+        )
+        assertEquals(
+            listOf("那我要晚一点粗发嘛", "四点出发？", "哈哈哈不急", "等我出发的时候和你是哦", "咱俩应该差不多同时到", "行啵"),
+            result.entries.map { it.content }
+        )
+        assertEquals(
+            listOf(
+                "2026年11月20日 15:14", "2026年11月20日 15:14", "2026年11月20日 15:15",
+                "2026年11月20日 15:15", "2026年11月20日 15:15", "2026年11月20日 15:16"
+            ),
+            result.entries.map { it.timestampText }
+        )
+        assertTrue(result.warnings.isEmpty())
+    }
+
+    /** 块样本单换行变体（条目间无空行）：仍靠时间锚拆条 */
+    @Test
+    fun userBlockSampleSingleNewlineVariantSplits() {
+        val raw = "W-2f\n2026年11月20日 15:14\n那我要晚一点粗发嘛\n" +
+            "陆晓\n2026年11月20日 15:15\n哈哈哈不急"
+        val result = BatchTranscriptParser.parse(raw)
+        assertEquals(2, result.entries.size)
+        assertEquals(listOf("W-2f", "陆晓"), result.entries.map { it.speakerName })
+        assertEquals(listOf("那我要晚一点粗发嘛", "哈哈哈不急"), result.entries.map { it.content })
+        assertEquals(
+            listOf("2026年11月20日 15:14", "2026年11月20日 15:15"),
+            result.entries.map { it.timestampText }
+        )
+        assertTrue(result.warnings.isEmpty())
+    }
+
+    /** 编号标记后紧跟数字是小数正文，不被当编号拆碎 */
+    @Test
+    fun decimalLineIsNotNumberedMarker() {
+        val result = BatchTranscriptParser.parse("小美：拍照参数\n1.5倍焦距\n我：好")
+        assertEquals(2, result.entries.size)
+        assertEquals("拍照参数\n1.5倍焦距", result.entries[0].content)
+        assertEquals("好", result.entries[1].content)
+        assertTrue(result.warnings.isEmpty())
+    }
+
+    /** 小数独立成行：整行原样进未识别条目，不碎成「5倍焦距」 */
+    @Test
+    fun standaloneDecimalLineStaysIntact() {
+        val result = BatchTranscriptParser.parse("1.5倍焦距")
+        assertEquals(1, result.entries.size)
+        assertNull(result.entries[0].speakerName)
+        assertEquals("1.5倍焦距", result.entries[0].content)
+    }
+
+    /** 空壳条不登记发言人：后续同名续行仍受保护，不被空壳污染成「已确认发言人」而硬拆 */
+    @Test
+    fun emptyContentRecordDoesNotPoisonContinuationProtection() {
+        val result = BatchTranscriptParser.parse("地址：\n小美：周末见面\n地址：西湖边")
+        assertEquals(1, result.entries.size)
+        assertEquals("小美", result.entries[0].speakerName)
+        assertEquals("周末见面\n地址：西湖边", result.entries[0].content)
+        // 空壳「地址：」仍按既有行为留警告；续行合并再留一条
+        assertEquals(2, result.warnings.size)
+        assertTrue(result.warnings.any { it.contains("没有正文") })
+    }
+
+    // ── autoSplitEntries：轻点自动解析共享契约（确信才交出，否则 null）──
+
+    /** 确信多条：用户块样本 → 6 条原样交出 */
+    @Test
+    fun autoSplitReturnsEntriesForConfidentBlockSample() {
+        val entries = BatchTranscriptParser.autoSplitEntries(userBlockSample)
+        assertNotNull(entries)
+        assertEquals(6, entries!!.size)
+        assertEquals(listOf("W-2f", "W-2f", "陆晓", "陆晓", "陆晓", "W-2f"), entries!!.map { it.speakerName })
+    }
+
+    /** 确信多条：普通冒号对话（含单字代词发言人「我」）→ 交出 */
+    @Test
+    fun autoSplitReturnsEntriesForPlainColonConversation() {
+        val entries = BatchTranscriptParser.autoSplitEntries("小美：在吗\n我：在")
+        assertNotNull(entries)
+        assertEquals(2, entries!!.size)
+        assertEquals(listOf("小美", "我"), entries!!.map { it.speakerName })
+    }
+
+    /** 不确信：单行 / 多行纯文本（无发言人）→ null */
+    @Test
+    fun autoSplitReturnsNullForPlainText() {
+        assertNull(BatchTranscriptParser.autoSplitEntries("你好"))
+        assertNull(BatchTranscriptParser.autoSplitEntries("这是一段没有格式的文字\n第二行也是"))
+    }
+
+    /** 不确信：孤儿时间行 / 空壳条 / 续行合并等带警告 → null */
+    @Test
+    fun autoSplitReturnsNullWhenWarningsPresent() {
+        assertNull(BatchTranscriptParser.autoSplitEntries("14:30"))
+        assertNull(BatchTranscriptParser.autoSplitEntries("小美\n2024-01-01 12:00"))
+        assertNull(BatchTranscriptParser.autoSplitEntries("小美：在吗\n地址：西湖边\n我：好"))
+    }
+
+    /** 不确信：发言人全是字段词 / 代词续行形态（即便拆出 ≥2 条、零警告）→ null */
+    @Test
+    fun autoSplitReturnsNullWhenAllSpeakersAreContinuationForms() {
+        assertNull(BatchTranscriptParser.autoSplitEntries("地址：西湖边\n地址：东湖边"))
+        assertNull(BatchTranscriptParser.autoSplitEntries("我想说：第一\n我想说：第二"))
     }
 }

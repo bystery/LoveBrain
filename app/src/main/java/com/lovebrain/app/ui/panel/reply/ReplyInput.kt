@@ -1,9 +1,11 @@
 package com.lovebrain.app.ui.panel.reply
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -702,6 +704,7 @@ private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
  *   那是**顺手改掉别人守卫着的性质**，已退回。"禁用是灰着还在"那条只管
  *   页面唯一主动作（主动发回退合同），次级入口不在它范围内。
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AddMessageButton(
     canAdd: Boolean,
@@ -709,46 +712,50 @@ private fun AddMessageButton(
     onAdd: () -> Unit,
     onBatchImport: (() -> Unit)? = null
 ) {
-    // 长按 = 批量导入入口（Issue #7）。挂在**外层热区盒**的 pointerInput 上：
-    // · 轻点仍旧直达内层那颗原有的 clickable（子节点 Main pass 先吃，不抢不挡）；
-    // · 按住不动 500ms 触发 onBatchImport——不新增 OnClick 语义，语义树可点节点数不变，
-    //   `ComposerAddButtonGatingTest` 的三格判据（空草稿不可点、一次点击恰好一条）原样成立；
-    // · 读屏的长按动作走 `onLongClick(label)`，名字来自资源（可见字面量预算不加债）。
     val batchImport = onBatchImport
     val batchImportLabel = stringResource(R.string.a11y_batch_import)
     val (addInteraction, addScale) = rememberPressScale(0.92f, "addScale")
     // 热区与视觉分两层（与 RoleChip / RoundScopeChip 同一范式）：
     // 外层透明盒垫到 48dp 见方承担点击/热区下限，内层可见胶囊只有 24dp——
     // 视觉紧凑（用户要求的"缩小按钮占用空间"），手指与读屏拿到的都是 48。
-    // 旧版把 widthIn(min=48) 撑在外层但内层只有 24dp 可见、且高度只有 36dp，
-    // 两轴都没到 48 → PanelHostSemanticsTest 量的就是这一颗。
     Box(
         modifier = Modifier
             .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .then(
-                if (batchImport != null) Modifier
-                    .pointerInput(Unit) {
-                        // 长按（批量导入）：pointerInput 不声明 OnClick，不进"可点节点"的账
-                        detectTapGestures(onLongPress = { batchImport() })
-                    }
-                    .semantics {
-                        // 审计 R1-2：读屏的长按必须与手势长按同一行为——只 return true
-                        // 而不调 batchImport() 的旧写法，让 TalkBack 用户宣布"吃掉了这个动作"。
-                        onLongClick(batchImportLabel) {
-                            batchImport()
-                            true
+                when {
+                    // 轻点与长按必须落在同一颗手势节点上：拆成 pointerInput + clickable 两颗时，
+                    // 后挂的 clickable 先把 DOWN 消费掉，长按检测器永远等不到未消费的 down——
+                    // 草稿非空那一刻长按批量入口恰好死掉。combinedClickable 一颗节点带两条语义，
+                    // 可点节点数不变，按压缩放仍走同一份 interaction。
+                    canAdd && batchImport != null -> Modifier.combinedClickable(
+                        interactionSource = addInteraction,
+                        indication = null,
+                        role = Role.Button,
+                        onLongClickLabel = batchImportLabel,
+                        onLongClick = batchImport,
+                        onClick = onAdd
+                    )
+                    canAdd -> Modifier.clickable(
+                        interactionSource = addInteraction,
+                        indication = null,
+                        role = Role.Button,
+                        onClick = onAdd
+                    )
+                    // 空草稿不带 OnClick 语义（门控合同，ComposerAddButtonGatingTest 守着）；
+                    // 长按批量入口仍在，读屏动作与手势长按同一行为。
+                    batchImport != null -> Modifier
+                        .pointerInput(Unit) {
+                            detectTapGestures(onLongPress = { batchImport() })
                         }
-                    }
-                else Modifier
-            )
-            .then(
-                if (canAdd) Modifier.clickable(
-                    interactionSource = addInteraction,
-                    indication = null,
-                    role = Role.Button,
-                    onClick = onAdd
-                ) else Modifier
+                        .semantics {
+                            onLongClick(batchImportLabel) {
+                                batchImport()
+                                true
+                            }
+                        }
+                    else -> Modifier
+                }
             ),
         contentAlignment = Alignment.Center
     ) {

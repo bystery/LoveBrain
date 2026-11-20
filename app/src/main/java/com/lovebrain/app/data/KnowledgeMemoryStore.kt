@@ -156,7 +156,9 @@ internal class KnowledgeMemoryStore(private val storage: MemoryStorage) {
             if (written && persistedFacts != null) {
                 written = write(PERSISTED_FACTS_FILE, persistedFacts)
             }
-            if (written) write(MEMORY_REVISION_FILE, revision.toString())
+            // revision 写失败也要如实报 false：否则"记下了纠正但版本没跳"会被当成成功，
+            // 调用方不重试，后台防护的冻结快照比对就永远停在这一版。
+            if (written) written = write(MEMORY_REVISION_FILE, revision.toString())
         }
         if (!written) {
             storage.note("memory write refused or failed: kb=$kbName revision=$revision")

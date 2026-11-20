@@ -436,8 +436,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         // 阻断D修复：幂等 guard——已经临时隐藏时不重复覆盖 preHiddenState
         if (windowState == WindowState.TEMP_HIDDEN) return
 
-        // 记录隐藏前展示形态
-        preHiddenState = if (panel.isShowing) WindowState.VISIBLE_PANEL else WindowState.VISIBLE_BUBBLE
+        // 记录隐藏前展示形态：认"屏幕上还看得见"——淡出动画期间 isShowing 已置 false
+        // 但面板仍在屏上，用它会把面板误记成球，恢复时只亮球。
+        preHiddenState = if (panel.isOnScreen) WindowState.VISIBLE_PANEL else WindowState.VISIBLE_BUBBLE
 
         // 释放输入焦点、关闭键盘
         panel.releaseInput("temp_hide")
