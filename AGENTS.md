@@ -1,22 +1,29 @@
-# 项目工作入口
+# 开发说明
 
-项目 ID：lovebrain。
+LoveBrain 是一个 Android 悬浮助手应用：单模块 `:app`，Kotlin + Jetpack Compose，`minSdk 26` / `compileSdk 35`。
 
-中央根按下面这个顺序解析，不要把本机的绝对路径写进这个文件——它随公开仓库一起分发：
+## 构建与测试
 
-1. 环境变量 `TEAM_WORKSPACE_ROOT`。
-2. 落空时用本仓库的同级目录：`<本仓库目录>/../TeamWorkspace`。
-3. 两条都落空：停下报告「中央根定位失败」，不要凭旧记忆猜路径去改产品。
+- 调试构建：`./gradlew :app:assembleDebug`
+- 单元测试（JVM + Robolectric，无需设备）：`./gradlew :app:testDebugUnitTest`
+- 发布签名由仓库根目录的 `keystore.properties` 提供（已 gitignore）。本地没有该文件时，release 构建产出
+  unsigned APK（仍可验证 R8、资源裁剪与编译），不会回退 debug 签名冒充正式发布。
 
-正式入口：`<中央根>/team/projects/lovebrain/START_HERE.md`。
+## 代码风格
 
-修改前读取上述入口并按任务加载正式规则；核对实际仓库、分支与未提交改动。
-本文件只负责连接中央工作区，不复制整套制度。
-需求投递口：`<中央根>/team/projects/lovebrain/requests/`（新文件丢这里就行，文件名不用告诉我）。
-投递的原件是否仍需施工，以中央 ACTIVE 登记状态为准，不因文件还在投递口就重做
-（匹配协议见中央工作流文档 §1）。
-一句话开工：我只说「继续」时，按中央工作流文档里那条固定的读取顺序自己读完再开工，
-不要求我复述背景、不追问已经能查到的事实。
-用户最新明确要求优先于旧记录；冲突说明来源，不静默忽略。
-入口读取失败时先修定位/访问条件，继续可做的只读诊断，不凭旧记忆改产品。
-完成时更新中央当前任务的结果和续接信息。
+- Kotlin 官方风格；Compose 界面优先复用 `core/designsystem` 里的 `Lb*` 组件，不直接调用 Material 的
+  `AlertDialog` / 自绘卡底。
+- 新增的用户可见文案放进 `app/src/main/res/values/strings.xml`，不在 composable 里另写一份字面量。
+- 注释写"为什么"（约束、反例、取舍），不复述代码在做什么。
+
+## 边界
+
+- 不提交密钥、签名材料与 `local.properties`；API Key 只经 `SecurePrefs` 加密存储，明文不落盘。
+- 知识库、聊天归档与画像只落在 App 私有目录；导出物是明文文件，涉及真实对话时必须先让用户确认。
+- 生成的是供你选择和编辑的建议，应用不代发消息、不自动点击。
+
+## 目录
+
+- `app/src/main/java/com/lovebrain/app/`：`data/`（持久化与网络）、`domain/`（生成与提示词）、`ui/`（界面）、
+  `service/`（悬浮窗与消息捕获）
+- `app/src/test/java/com/lovebrain/app/`：JVM / Robolectric 测试
