@@ -1091,32 +1091,43 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     val batchImportKnownRoles: Map<String, ChatMessage.Role> get() = batchImportNameRoles
 
     /**
-     * 普通 ➕  tap 的自动拆分入口（不新增第二条输入链）：
-     * · 解析器没把握（[BatchTranscriptParser.autoSplitEntries] 交 null）→ 原样走单条 [addMessage]；
-     * · 有把握且每个昵称都在归属表里 → 按映射角色整批走 [importBatchMessages]
-     *   （同一条原子 AddMessages、同一次通知、顺序即转录顺序）；
-     * · 有任一昵称没认过 → 交 false，宿主开**既有**浮层预填原文与已知归属，用户显式指定一次。
+     * 普通 ➕  tap 的自动拆分入口（不新增第二条输入链），按 [BatchTranscriptParser.autoSplit]
+     * 的三态分流：
+     * · [BatchTranscriptParser.AutoSplit.NotTranscript] → 原样走单条 [addMessage]；
+     * · [BatchTranscriptParser.AutoSplit.NeedsReview]（已拆出 ≥2 条完备记录但需人裁决，
+     *   如转发标题被跳过 / 续行被并回正文）→ 交 false，宿主开**既有**浮层预填原文，
+     *   用户看过预览与 warning 后显式提交；绝不直吞成一条、也绝不默认 composeRole；
+     * · [BatchTranscriptParser.AutoSplit.Ready] 且每个昵称都在归属表里 → 按映射角色整批走
+     *   [importBatchMessages]（同一条原子 AddMessages、同一次通知、顺序即转录顺序）；
+     *   有任一昵称没认过 → 交 false 开同一扇浮层预填已知归属，用户显式指定一次。
      *   绝不把未认昵称默认成当前 composeRole——那会把对方整段话标成我。
      */
-    fun addDraftAuto(text: String, composeRole: ChatMessage.Role): Boolean {
-        val entries = BatchTranscriptParser.autoSplitEntries(text)
-        if (entries == null) {
-            addMessage(composeRole, text)
-            return true
+    fun addDraftAuto(text: String, composeRole: ChatMessage.Role): Boolean =
+        when (val split = BatchTranscriptParser.autoSplit(text)) {
+            BatchTranscriptParser.AutoSplit.NotTranscript -> {
+                addMessage(composeRole, text)
+                true
+            }
+            is BatchTranscriptParser.AutoSplit.NeedsReview -> {
+                // 回浮层 = 用户即将看见批量入口，同拍收掉首次轻提示（与长按入口同一判据）
+                markBatchImportDiscovered()
+                false
+            }
+            is BatchTranscriptParser.AutoSplit.Ready -> {
+                val known = batchImportNameRoles
+                val drafts = split.entries.mapNotNull { e ->
+                    val name = e.speakerName ?: return@mapNotNull null
+                    known[name]?.let { BatchImportDraft(it, e.content) }
+                }
+                if (drafts.size == split.entries.size) {
+                    importBatchMessages(drafts)
+                    true
+                } else {
+                    markBatchImportDiscovered()
+                    false
+                }
+            }
         }
-        val known = batchImportNameRoles
-        val drafts = entries.mapNotNull { e ->
-            val name = e.speakerName ?: return@mapNotNull null
-            known[name]?.let { BatchImportDraft(it, e.content) }
-        }
-        if (drafts.size == entries.size) {
-            importBatchMessages(drafts)
-            return true
-        }
-        // 回浮层 = 用户即将看见批量入口，同拍收掉首次轻提示（与长按入口同一判据）
-        markBatchImportDiscovered()
-        return false
-    }
 
     /**
      * 浮层提交时记住归属表：**并入**盘上那份（本次转录没出现的旧昵称不丢），

@@ -7,8 +7,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -17,6 +15,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
@@ -36,6 +35,11 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -45,6 +49,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onLongClick
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -261,14 +266,13 @@ fun PanelTextInput(
             .testTag(PANEL_INPUT_TOUCH_TAG)
             .then(
                 if (focusRequester != null) Modifier.pointerInput(focusRequester) {
-                    // 胶囊外的空档也是输入行的热区：轻点→把焦点转给可编辑节点，
-                    // 并同步上报编辑意图（碰到输入区 = 想编辑，与胶囊内触碰同一语义）
-                    detectTapGestures(onTap = {
-                        focusRequester.requestFocus()
-                        onInputIntent?.invoke()
-                    })
+                    // 胶囊外的空档也是输入行的热区：轻点→把焦点转给可编辑节点。
+                    // 编辑意图由下面整块热区上的边沿机制统一持有，这里不再重复上报。
+                    detectTapGestures(onTap = { focusRequester.requestFocus() })
                 } else Modifier
             )
+            // 编辑意图唯一拥有者：整块热区（含胶囊外空档）按下那一跳报一次。
+            .overlayInputIntent(onInputIntent)
     ) {
         // 视觉层：旧版那颗胶囊（min 高度语义，防系统大字号截断）
         Box(
@@ -278,17 +282,6 @@ fun PanelTextInput(
                 .heightIn(min = height)
                 .background(SurfaceCard, LoveBrainShape.md)
                 .border(AppDimens.BORDER_WIDTH_DP.dp, if (value.isNotEmpty()) PrimarySubtle else Border, LoveBrainShape.md)
-                // 编辑意图：用户触碰输入框区域 → 通知 FloatingService 进入 EDITING
-                // 边沿触发（H4）：只在每次手势**按下那一跳**上报一次。旧写法对每个 pressed
-                // 事件都上报——面板窗口 flags（NOT_FOCUSABLE↔可聚焦）就会跟着 updateViewLayout
-                // 反复抖动，长按手势正压在窗口属性更新的同一帧上，手势流可能被系统打断
-                // （选区/长按菜单因此时有时无）。进入编辑一次就够了。
-                .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
-                    awaitEachGesture {
-                        awaitFirstDown(requireUnconsumed = false)
-                        onInputIntent()
-                    }
-                } else Modifier)
                 .padding(horizontal = Spacing.lg)
         ) {
             if (value.isEmpty()) {
@@ -309,12 +302,23 @@ fun PanelTextInput(
                 // 这里把同一句话挂成 contentDescription：节点本身永远有名字，
                 // 名字随输入对象变（她/我/补充），但不写死在语义里——传进来什么就是什么。
                 .semantics { contentDescription = placeholder }
+                .onPreviewKeyEvent { e ->
+                    // 单行胶囊只画一行：硬件回车不许往值里注入看不见的换行（IME 动作键仍走 Done；
+                    // 粘贴文本里的 \n 不经过键盘事件，原样保留给 autoSplit）。
+                    e.type == KeyEventType.KeyDown && (e.key == Key.Enter || e.key == Key.NumPadEnter)
+                }
             if (focusRequester != null) tfModifier = tfModifier.focusRequester(focusRequester)
             if (onFocusChange != null) tfModifier = tfModifier.onFocusChanged { onFocusChange(it.isFocused) }
             BasicTextField(
                 value = value,
                 onValueChange = onValueChange,
-                singleLine = true,
+                // singleLine=false 让 EditorInfo 带上 MULTI_LINE：真机 IME 粘贴时才保留换行，
+                // 整段微信转录才能落到 autoSplit 拆条（单行编辑器会被 IME 拍平成一行）。
+                // maxLines=1 保住 28dp 胶囊与宽度预算不变；动作键仍是 Done，硬件回车由上面那颗
+                // onPreviewKeyEvent 吃掉——不往值里注入看不见的换行（粘贴文本的 \n 不经键事件）。
+                singleLine = false,
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 // 裸字号走排版令牌（bodyMedium = 13sp）
                 textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
                 cursorBrush = SolidColor(Primary),

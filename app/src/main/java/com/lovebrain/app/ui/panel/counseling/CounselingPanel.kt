@@ -9,8 +9,6 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
@@ -26,7 +24,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -87,14 +84,8 @@ fun CounselingPanel(
                 .background(SurfaceCard)
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
                 // 编辑意图：用户触碰输入框区域 → 通知 FloatingService 进入 EDITING
-                // 边沿触发（H4，同 ReplyInput）：只在每次手势按下那一跳上报一次，
-                // 避免窗口 flags 随每个 pressed 事件反复 updateViewLayout 抖断长按手势。
-                .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
-                    awaitEachGesture {
-                        awaitFirstDown(requireUnconsumed = false)
-                        onInputIntent()
-                    }
-                } else Modifier)
+                //（边沿触发、不消费事件，通用 WHY 归 [overlayInputIntent]；与 ReplyInput 同一条链）。
+                .overlayInputIntent(onInputIntent)
                 .padding(horizontal = Spacing.lg)
         ) {
             BasicTextField(
@@ -346,13 +337,8 @@ fun CounselingPanel(
                                         .background(SurfaceInset)
                                         .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
                                         // 编辑意图：追问输入框同样需要进入 EDITING
-                                        // 边沿触发（H4，同主输入区那颗）：每次手势只上报一次
-                                        .then(if (onFollowUpInputIntent != null) Modifier.pointerInput(Unit) {
-                                            awaitEachGesture {
-                                                awaitFirstDown(requireUnconsumed = false)
-                                                onFollowUpInputIntent()
-                                            }
-                                        } else Modifier)
+                                        //（边沿触发，与主输入区共用 [overlayInputIntent]）。
+                                        .overlayInputIntent(onFollowUpInputIntent)
                                         .padding(horizontal = Spacing.lg, vertical = Spacing.md)
                                 ) {
                                     if (followUpText.isEmpty()) {

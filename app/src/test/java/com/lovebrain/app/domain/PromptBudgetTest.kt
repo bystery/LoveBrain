@@ -383,4 +383,43 @@ class PromptBudgetTest {
         assertEquals("放得下的旧 7 参调用原样返回，最终复核不加任何字符", expected, legacyBlocks(knowledge, chat))
         assertEquals("空 LIVE 区块与旧 7 参逐字节一致", expected, blocks(knowledge = knowledge, chatBody = chat, ideaBlock = "想法：软一点\n"))
     }
+
+    // ─── 知识段收尾的有界复核：标记兜底留下的残差必须被收回 ──────────────
+
+    @Test
+    fun `marker-floor knowledge converges to the empty-knowledge minimal form within budget`() {
+        // 固定区块单独放得下、加上知识省略标记就超的极端：旧写法收一次就返回，带着标记超预算。
+        // 复核循环必须继续按残差收，直到知识段触底为空。知识段自带上一轮的省略标记
+        // （对已裁过的知识再裁剪是合法输入），尺寸全部相对预算取，不写死数字。
+        val idea = "想".repeat(AppConfig.TOTAL_BUDGET - 100) + "\n"
+        val marker = "\n…（旧记忆因长度限制已省略）…\n"
+        val knowledge = "# 旧记忆\n" + "旧".repeat(500) + "\n" + marker
+        val out = blocks(knowledge = knowledge, chatBody = chatBody(3, 268), ideaBlock = idea)
+        assertTrue("固定区块单独放得下时总长必须在预算内：实到 ${out.length}", out.length <= AppConfig.TOTAL_BUDGET)
+        assertTrue("完整 IDEA 不能被裁", out.contains(idea))
+        assertTrue("围栏闭合", out.contains("</chat>"))
+        assertTrue("对话收全省略形", out.contains("对话记录因长度限制已省略"))
+        assertFalse("不许留半行 JSON", out.contains("{\"r\""))
+        assertFalse("知识段触底为空，标记也不留", out.contains("旧记忆因长度限制已省略"))
+        val expected = "\n\n" + "## 场景\n推断：约会\n" + "## 持续意图\n目标：周末见\n" + idea +
+            "以下是本轮对话：\n" + "<chat>\n…（对话记录因长度限制已省略）…\n</chat>\n" + "\n\n" + "当前时间：2026-09-24 10:00"
+        assertEquals("极端情形收敛到确定性的最小形态", expected, out)
+    }
+
+    @Test
+    fun `the recheck keeps the omission marker when the floored knowledge still fits`() {
+        // 固定区块 + 标记恰好放得下：知识段收到「只剩标记」这一档就停——
+        // 标记是“这里裁过”的交代，装得下就必须留住，不许顺手丢掉。
+        val idea = "想".repeat(AppConfig.TOTAL_BUDGET - 114) + "\n"
+        val marker = "\n…（旧记忆因长度限制已省略）…\n"
+        val knowledge = "# 旧记忆\n" + "旧".repeat(500) + "\n" + marker
+        val out = blocks(knowledge = knowledge, chatBody = chatBody(3, 268), ideaBlock = idea)
+        assertTrue("总长在预算内：实到 ${out.length}", out.length <= AppConfig.TOTAL_BUDGET)
+        assertTrue("知识段触底仍留住省略标记", out.contains(marker))
+        assertFalse("正文按整行收掉", out.contains("旧".repeat(100)))
+        assertTrue("围栏闭合", out.contains("</chat>"))
+        val expected = marker + "\n\n" + "## 场景\n推断：约会\n" + "## 持续意图\n目标：周末见\n" + idea +
+            "以下是本轮对话：\n" + "<chat>\n…（对话记录因长度限制已省略）…\n</chat>\n" + "\n\n" + "当前时间：2026-09-24 10:00"
+        assertEquals("收敛到「只剩标记」的确定性形态", expected, out)
+    }
 }

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,8 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.R
@@ -28,17 +25,16 @@ import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.LB_SHEET_ACTION_MIN_DP
 import com.lovebrain.app.core.designsystem.LbDialogAction
 import com.lovebrain.app.core.designsystem.LbDialogActionTone
+import com.lovebrain.app.core.designsystem.LbFieldInput
 import com.lovebrain.app.core.designsystem.LbModalSheet
 import com.lovebrain.app.core.designsystem.LbModalSheetActions
 import com.lovebrain.app.core.designsystem.LbModalSheetTitle
-import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.PrimaryDark
 import com.lovebrain.app.core.designsystem.Spacing
-import com.lovebrain.app.core.designsystem.TextHint
-import com.lovebrain.app.core.designsystem.TextPrimary
 import com.lovebrain.app.core.designsystem.TextSecondary
 import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.model.MuteDuration
+import com.lovebrain.app.ui.panel.rememberOverlayInputFocusReporter
 
 /**
  * 第6节第4条：「本轮参考记忆」那条纠正流程的**状态持有者**。
@@ -142,7 +138,13 @@ fun MemoryCorrectionFlowHost(
     flow: MemoryCorrectionFlow,
     onMute: (String, MuteDuration) -> Unit,
     onWrong: (String, String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    /**
+     * 标错草稿框的编辑意图信号：与其余悬浮窗输入面同一范式——碰到输入区 = 想打字，
+     * 宿主据此把窗口切到可聚焦让 IME 弹出。null（默认）= 普通 Activity，不需要这条信号。
+     * 焦点边沿另经面板绑定的共享通道交回（见 [rememberOverlayInputFocusReporter]）。
+     */
+    onInputIntent: (() -> Unit)? = null
 ) {
     // 可见性只看"现在有没有请求"；卡片内容用最后一次那一条（两者都 null 时这一棵从没被画过，
     // 空串取不到——它落不进组合，只是让类型说得通）。
@@ -181,27 +183,27 @@ fun MemoryCorrectionFlowHost(
     ) {
         LbModalSheetTitle(stringResource(R.string.memory_mark_wrong_sheet_title))
         Spacer(Modifier.height(Spacing.sm))
-        // 第6节第5条 第②栏：屏幕上那行说明与输入框的读屏名字共用同一条资源
+        // 屏幕上那行说明与输入框的读屏名字共用同一条资源
         val wrongHint = stringResource(R.string.memory_wrong_input_hint)
+        // 焦点边沿 + 浮层摘树时的补报，经面板绑定的通道交回宿主
+        val reportFocus = rememberOverlayInputFocusReporter()
         Text(
             text = wrongHint,
             style = AppTypography.labelSmall,
             color = TextSecondary
         )
         Spacer(Modifier.height(Spacing.xs))
-        OutlinedTextField(
+        // 草稿框归公共输入件（Block 档三行），意图与焦点走悬浮窗同一条链路。
+        // 读屏名字取上面那句说明：组件把 placeholder 挂成可编辑节点自己的名字，而该节点本身是
+        // mergeDescendants 边界、外层再合并也吞不进去，故直接把 hint 交给 placeholder 这颗名字入口。
+        LbFieldInput(
             value = shownWrongDraft,
             onValueChange = { flow.editWrongDraft(it) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .semantics { contentDescription = wrongHint },
-            placeholder = {
-                Text(stringResource(R.string.memory_wrong_input_placeholder), style = AppTypography.labelSmall, color = TextHint)
-            },
-            textStyle = AppTypography.labelSmall.copy(color = TextPrimary),
-            singleLine = false,
+            placeholder = wrongHint,
             maxLines = 3,
-            shape = LoveBrainShape.sm
+            textStyle = AppTypography.labelSmall,
+            onInputIntent = onInputIntent,
+            onFocusChange = reportFocus
         )
         Spacer(Modifier.height(Spacing.md))
         LbModalSheetActions(

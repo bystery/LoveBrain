@@ -3,6 +3,8 @@ package com.lovebrain.app.ui.common
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -18,8 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.platform.TextToolbar
 import androidx.compose.ui.platform.TextToolbarStatus
@@ -39,14 +43,30 @@ import com.lovebrain.app.core.designsystem.TextPrimary
  */
 class OverlayTextToolbar(context: Context) : TextToolbar {
 
-    /** 发布给 Compose 的唯一状态：不可变快照，只含锚定区域与有序 label。 */
-    private data class Menu(val rect: Rect, val labels: List<String>)
+    /**
+     * 发布给 Compose 的唯一状态：不可变快照。回调与 label 同序构建、随快照一起发布，
+     * 点击永远取「渲染出这份 label 的那份快照」里的回调——组合与点击之间框架换入新动作集
+     * （如剪切出现）也不会下标错位。
+     *
+     * 相等判定刻意只比 rect+labels：框架每次 showMenu 都递新 lambda，把回调身份算进去
+     * 会让快照恒不相等，每次调用都打脏观察者。
+     */
+    private class Menu(
+        val rect: Rect,
+        val labels: List<String>,
+        val actions: List<() -> Unit>
+    ) {
+        override fun equals(other: Any?): Boolean =
+            this === other || (other is Menu && rect == other.rect && labels == other.labels)
+
+        override fun hashCode(): Int = 31 * rect.hashCode() + labels.hashCode()
+    }
 
     private val menu = mutableStateOf<Menu?>(null, structuralEqualityPolicy())
 
-    // 回调不进快照：框架每次 showMenu 都新建 lambda，把它们纳入相等判定会让快照恒不相等，
-    // 于是每次调用都打脏观察者。与 Menu.labels 同序构建、同批赋值，下标一一对应。
-    private var actions: List<() -> Unit> = emptyList()
+    /** showMenu 调用计数（快照相等也递增）：宿主据此豁免「手势期间框架重新 showMenu」的收起。 */
+    internal var showGeneration: Int = 0
+        private set
 
     // 读 status 必须绕开读观察：框架的 hideSelectionToolbar() 就在 CoreTextField 的重组作用域里
     // 读它，普通读会把那个作用域登记成观察者，随后 showMenu 的写又把它打脏 —— 自激回路。
@@ -72,14 +92,13 @@ class OverlayTextToolbar(context: Context) : TextToolbar {
         onCut?.let { labels.add("剪切"); callbacks.add(it) }
         onPaste?.let { labels.add("粘贴"); callbacks.add(it) }
         onSelectAll?.let { labels.add("全选"); callbacks.add(it) }
-        actions = callbacks
+        showGeneration++
         // 结构相等策略下，rect+labels 没变的赋值不产生新状态记录、不通知任何观察者，
         // 所以这里不必先读再比 —— 那次读反而会把调用方登记成观察者。
-        menu.value = Menu(rect, labels)
+        menu.value = Menu(rect, labels, callbacks)
     }
 
     override fun hide() {
-        actions = emptyList()
         menu.value = null
     }
 
@@ -102,7 +121,8 @@ class OverlayTextToolbar(context: Context) : TextToolbar {
                 // 抢焦点会丢掉底下输入框的选区，复制/剪切/粘贴的回调也就没了对象。
                 focusable = false,
                 // 点外自动收依赖子窗口收到 ACTION_OUTSIDE，而打开菜单的那次长按还没结束，
-                // 部分机型会把它判成 OUTSIDE，菜单当场闪退。收起只交给框架与返回键。
+                // 部分机型会把它判成 OUTSIDE，菜单当场闪退。面板内的点外收起由宿主走
+                // 清焦 → 框架失焦收起那条路（见 OverlayTextToolbarHost），不靠这个开关。
                 dismissOnClickOutside = false,
                 dismissOnBackPress = true
             )
@@ -119,7 +139,7 @@ class OverlayTextToolbar(context: Context) : TextToolbar {
                         color = TextPrimary,
                         modifier = Modifier
                             .clickable {
-                                actions.getOrNull(index)?.invoke()
+                                snapshot.actions.getOrNull(index)?.invoke()
                                 hide()
                             }
                             .padding(horizontal = 12.dp, vertical = 8.dp)
@@ -148,10 +168,34 @@ fun OverlayTextToolbarHost(
     toolbar: OverlayTextToolbar,
     content: @Composable () -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
     CompositionLocalProvider(LocalTextToolbar provides toolbar) {
-        // 不在这里观察 DOWN 收菜单：选区还活着时框架会紧接着重新 showMenu，两边对着干
-        // 就是"菜单/手柄闪一下、长按粘贴菜单来不及点"。收起只由框架（选区塌陷/失焦）负责。
-        Box {
+        Box(
+            modifier = Modifier.pointerInput(toolbar, focusManager) {
+                // 点面板里非聚焦区域时没人清焦，框架没有收起时机，菜单会一直挂着。
+                // 这里被动观察「完整一次轻点」：按下时菜单已开、且手势期间框架没有重新
+                // showMenu，松手才 clearFocus——收起仍由框架在失焦时做，不另起选区来源。
+                // 不碰 DOWN、也不在框架刚重新 showMenu 的手势上动手：打开菜单的那次长按与
+                // 重选区长按都会被豁免，不会回到「两边对着干」的闪烁。
+                awaitEachGesture {
+                    awaitFirstDown(requireUnconsumed = false)
+                    val showingAtDown = toolbar.isShowing
+                    val generationAtDown = toolbar.showGeneration
+                    var released = false
+                    while (!released) {
+                        released = awaitPointerEvent().changes.none { it.pressed }
+                    }
+                    if (showingAtDown && toolbar.isShowing &&
+                        toolbar.showGeneration == generationAtDown
+                    ) {
+                        // 长按弹菜单时输入框正是「主动焦点」：不带 force 的 clearFocus 只清
+                        // 非主动焦点，对这颗等于空操作、菜单继续挂住。force 才交得出去，
+                        // 与面板交回输入（LoveBrainPanelScreen 的唯一出口）同一口径。
+                        focusManager.clearFocus(force = true)
+                    }
+                }
+            }
+        ) {
             content()
             toolbar.Content()
         }

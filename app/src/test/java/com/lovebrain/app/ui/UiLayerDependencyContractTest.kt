@@ -1455,6 +1455,12 @@ class UiLayerDependencyContractTest {
             "知识库编辑页那几格表单输入直读了档；该改读 CompactInput（或搬进 core 之后的那一颗）",
         "ui/panel/reply/ReplyInput.kt#INPUT_ROW_HEIGHT_DP" to
             "回复那一行的默认形参；合同给这一条的是 28 档、不是通用 36，两档别混：\u21d2 该由回复自己的具名档接手",
+        // 2026-11-21：批量导入浮层那颗「解析预览/重新解析」chip 与粘贴框同走紧凑行档。
+        // 此前页面写的是裸数 36dp（抄了数），本轮改指回 core 这一颗；页面仍直读矮档，
+        // 按本表规矩登记主人与去向——chip 的高度档该由 LbChip 的具名档接手（与
+        // ReplyInput#CARD_ACTION_HIT_DP 同一笔债：LbChip 缺紧凑外盒档），接手后本行销账。
+        "ui/panel/reply/BatchImportSheet.kt#INPUT_ROW_HEIGHT_DP" to
+            "批量导入那两颗解析 chip 的胶囊高；与粘贴框同档，\u21d2 该由 LbChip 的具名紧凑档接手（现缺）",
         // 2026-10-08 范围符号那一颗（`onlyThisRound` 那颗开关，屏上画的是 `◉`）登记：
         // · 为什么这里非读不可：那颗的**行宽预算**与它自己的**热区边长**必须是同一颗数，
         //   抄两份就有一处会漂（`ReplyInput.kt#ReplyDimens.ROUND_SCOPE_HIT` 是命中轴与占位轴共同的

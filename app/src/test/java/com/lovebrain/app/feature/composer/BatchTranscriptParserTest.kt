@@ -756,45 +756,206 @@ class BatchTranscriptParserTest {
         assertTrue(result.warnings.any { it.contains("没有正文") })
     }
 
-    // ── autoSplitEntries：轻点自动解析共享契约（确信才交出，否则 null）──
+    // ───────────────── 代词续行收窄：从句动词 + 再出现发言人例外 ─────────────────
 
-    /** 确信多条：用户块样本 → 6 条原样交出 */
+    /** 代词开头但非动词承接的真实昵称（我的宝贝）：单次出现也拆条，不再被当续行吞掉 */
     @Test
-    fun autoSplitReturnsEntriesForConfidentBlockSample() {
-        val entries = BatchTranscriptParser.autoSplitEntries(userBlockSample)
-        assertNotNull(entries)
-        assertEquals(6, entries!!.size)
-        assertEquals(listOf("W-2f", "W-2f", "陆晓", "陆晓", "陆晓", "W-2f"), entries!!.map { it.speakerName })
+    fun pronounLedRealNicknameWithoutClauseVerbSplits() {
+        val result = BatchTranscriptParser.parse("小美：在吗\n我的宝贝：在呢")
+        assertEquals(2, result.entries.size)
+        assertEquals(listOf("小美", "我的宝贝"), result.entries.map { it.speakerName })
+        assertEquals(listOf("在吗", "在呢"), result.entries.map { it.content })
+        assertTrue(result.warnings.isEmpty())
     }
 
-    /** 确信多条：普通冒号对话（含单字代词发言人「我」）→ 交出 */
+    /** 再出现例外：代词开头前缀全文出现 ≥2 次就是真昵称——哪怕撞了从句动词形态也照常换条 */
     @Test
-    fun autoSplitReturnsEntriesForPlainColonConversation() {
-        val entries = BatchTranscriptParser.autoSplitEntries("小美：在吗\n我：在")
-        assertNotNull(entries)
-        assertEquals(2, entries!!.size)
-        assertEquals(listOf("小美", "我"), entries!!.map { it.speakerName })
+    fun recurringPronounLedNicknameSplitsAsSpeaker() {
+        val nickname = BatchTranscriptParser.parse("小美：在吗\n我的宝贝：在呢\n小美：好\n我的宝贝：嗯")
+        assertEquals(4, nickname.entries.size)
+        assertEquals(listOf("小美", "我的宝贝", "小美", "我的宝贝"), nickname.entries.map { it.speakerName })
+        assertTrue(nickname.warnings.isEmpty())
+
+        // 「我觉得」单现是续行形态，但全文再出现 ⇒ 以全文证据为准当发言人
+        val verbLed = BatchTranscriptParser.parse("小美：在吗\n我觉得：在呢\n小美：好\n我觉得：嗯")
+        assertEquals(4, verbLed.entries.size)
+        assertEquals(listOf("小美", "我觉得", "小美", "我觉得"), verbLed.entries.map { it.speakerName })
+        assertTrue(verbLed.warnings.isEmpty())
+
+        // 真昵称对话满足自动解析契约：零 warning → Ready
+        val auto = BatchTranscriptParser.autoSplit("我的宝贝：在呢\n我的宝贝：嗯")
+        val ready = auto as? BatchTranscriptParser.AutoSplit.Ready
+        assertNotNull("真昵称对话零 warning：该是 Ready", ready)
+        assertEquals(2, ready!!.entries.size)
     }
 
-    /** 不确信：单行 / 多行纯文本（无发言人）→ null */
+    /** 我想说：其实… 仍是正文冒号句（单次出现 + 从句动词）：并入上一条 + 1 警告 */
     @Test
-    fun autoSplitReturnsNullForPlainText() {
-        assertNull(BatchTranscriptParser.autoSplitEntries("你好"))
-        assertNull(BatchTranscriptParser.autoSplitEntries("这是一段没有格式的文字\n第二行也是"))
+    fun pronounClauseVerbContinuationStillMerges() {
+        val result = BatchTranscriptParser.parse("小美：今天去吃饭\n我想说：其实我不饿")
+        assertEquals(1, result.entries.size)
+        assertEquals("小美", result.entries[0].speakerName)
+        assertEquals("今天去吃饭\n我想说：其实我不饿", result.entries[0].content)
+        assertEquals(1, result.warnings.size)
+        assertTrue(result.warnings[0].contains("我想说"))
+
+        // 动词表里的其它从句动词同样命中续行
+        val worried = BatchTranscriptParser.parse("小美：明天体检\n她担心：要空腹吗")
+        assertEquals(1, worried.entries.size)
+        assertEquals("明天体检\n她担心：要空腹吗", worried.entries[0].content)
+        assertEquals(1, worried.warnings.size)
     }
 
-    /** 不确信：孤儿时间行 / 空壳条 / 续行合并等带警告 → null */
+    /** 单字代词（我/你/她/他/它）是正常短昵称：照常拆条，零警告 */
     @Test
-    fun autoSplitReturnsNullWhenWarningsPresent() {
-        assertNull(BatchTranscriptParser.autoSplitEntries("14:30"))
-        assertNull(BatchTranscriptParser.autoSplitEntries("小美\n2024-01-01 12:00"))
-        assertNull(BatchTranscriptParser.autoSplitEntries("小美：在吗\n地址：西湖边\n我：好"))
+    fun singleCharPronounSpeakersSplit() {
+        val result = BatchTranscriptParser.parse("小美：好\n我：嗯\n你：行\n她：来\n他：到\n它：汪")
+        assertEquals(6, result.entries.size)
+        assertEquals(listOf("小美", "我", "你", "她", "他", "它"), result.entries.map { it.speakerName })
+        assertTrue(result.warnings.isEmpty())
     }
 
-    /** 不确信：发言人全是字段词 / 代词续行形态（即便拆出 ≥2 条、零警告）→ null */
+    // ── autoSplit：轻点自动解析共享契约（Ready 整批 / NeedsReview 浮层预览 / NotTranscript 单条）──
+
+    /** Ready：用户块样本零 warning → 6 条原样交出 */
     @Test
-    fun autoSplitReturnsNullWhenAllSpeakersAreContinuationForms() {
-        assertNull(BatchTranscriptParser.autoSplitEntries("地址：西湖边\n地址：东湖边"))
-        assertNull(BatchTranscriptParser.autoSplitEntries("我想说：第一\n我想说：第二"))
+    fun autoSplitReadyForConfidentBlockSample() {
+        val split = BatchTranscriptParser.autoSplit(userBlockSample)
+        val ready = split as? BatchTranscriptParser.AutoSplit.Ready
+        assertNotNull("零 warning 的块样本该是 Ready", ready)
+        assertEquals(6, ready!!.entries.size)
+        assertEquals(
+            listOf("W-2f", "W-2f", "陆晓", "陆晓", "陆晓", "W-2f"),
+            ready.entries.map { it.speakerName })
+    }
+
+    /** Ready：普通冒号对话（含单字代词发言人「我」）→ 交出 */
+    @Test
+    fun autoSplitReadyForPlainColonConversation() {
+        val split = BatchTranscriptParser.autoSplit("小美：在吗\n我：在")
+        val ready = split as? BatchTranscriptParser.AutoSplit.Ready
+        assertNotNull("零 warning 的冒号对话该是 Ready", ready)
+        assertEquals(2, ready!!.entries.size)
+        assertEquals(listOf("小美", "我"), ready.entries.map { it.speakerName })
+    }
+
+    /** NotTranscript：单行 / 多行纯文本（无发言人）→ 照旧单条消息 */
+    @Test
+    fun autoSplitNotTranscriptForPlainText() {
+        assertEquals(BatchTranscriptParser.AutoSplit.NotTranscript, BatchTranscriptParser.autoSplit("你好"))
+        assertEquals(
+            BatchTranscriptParser.AutoSplit.NotTranscript,
+            BatchTranscriptParser.autoSplit("这是一段没有格式的文字\n第二行也是"))
+    }
+
+    /** NotTranscript：孤儿时间行 / 空壳条（拆不满 2 条完备记录） */
+    @Test
+    fun autoSplitNotTranscriptWhenNoTwoCompleteRecords() {
+        assertEquals(BatchTranscriptParser.AutoSplit.NotTranscript, BatchTranscriptParser.autoSplit("14:30"))
+        assertEquals(
+            BatchTranscriptParser.AutoSplit.NotTranscript,
+            BatchTranscriptParser.autoSplit("小美\n2024-01-01 12:00"))
+    }
+
+    /** NeedsReview：拆出 2 条完备记录但夹续行合并 warning → 交浮层预览，不直吞成一条 */
+    @Test
+    fun autoSplitNeedsReviewWhenContinuationMergedButTwoSpeakersRemain() {
+        val split = BatchTranscriptParser.autoSplit("小美：在吗\n地址：西湖边\n我：好")
+        val review = split as? BatchTranscriptParser.AutoSplit.NeedsReview
+        assertNotNull("有续行 warning 但两条发言人都在：该交浮层预览", review)
+        assertEquals(2, review!!.entries.size)
+        assertEquals(listOf("小美", "我"), review.entries.map { it.speakerName })
+        assertEquals(listOf("在吗\n地址：西湖边", "好"), review.entries.map { it.content })
+        assertTrue(review.warnings.isNotEmpty())
+    }
+
+    /** NotTranscript：发言人全是字段词 / 代词续行形态（即便拆出 ≥2 条、零警告） */
+    @Test
+    fun autoSplitNotTranscriptWhenAllSpeakersAreContinuationForms() {
+        assertEquals(
+            BatchTranscriptParser.AutoSplit.NotTranscript,
+            BatchTranscriptParser.autoSplit("地址：西湖边\n地址：东湖边"))
+        assertEquals(
+            BatchTranscriptParser.AutoSplit.NotTranscript,
+            BatchTranscriptParser.autoSplit("我想说：第一\n我想说：第二"))
+    }
+
+    /** NeedsReview：合并转发的标题行必产 warning，但两条记录完备——交浮层预览而非单条入库 */
+    @Test
+    fun autoSplitNeedsReviewForForwardedTitlePlusTwoRecords() {
+        val split = BatchTranscriptParser.autoSplit("小美和小红的聊天记录\n小美：在吗\n我：在")
+        val review = split as? BatchTranscriptParser.AutoSplit.NeedsReview
+        assertNotNull("转发标题被跳过 = 有 warning，两条记录完备 → 交浮层预览", review)
+        assertEquals(2, review!!.entries.size)
+        assertEquals(listOf("小美", "我"), review.entries.map { it.speakerName })
+        assertTrue("标题行跳过的 warning 必须交给预览", review.warnings.any { it.contains("聊天记录") })
+    }
+
+    /** 同行时间多记录：连续 `昵称 12:00` 逐条换条（旧条件会并进上一条 → 只剩 1 条） */
+    @Test
+    fun autoSplitSameLineTimeRecordsSplitEveryTime() {
+        val split = BatchTranscriptParser.autoSplit("小美 12:00\n你好\n我 12:01\n在吗\n小美 12:02\n行")
+        val ready = split as? BatchTranscriptParser.AutoSplit.Ready
+        assertNotNull("连续多条「昵称 时间」同行必须逐条拆开且零 warning", ready)
+        assertEquals(3, ready!!.entries.size)
+        assertEquals(listOf("小美", "我", "小美"), ready.entries.map { it.speakerName })
+        assertEquals(listOf("你好", "在吗", "行"), ready.entries.map { it.content })
+        assertEquals(listOf("12:00", "12:01", "12:02"), ready.entries.map { it.timestampText })
+    }
+
+    /** 带日期的同行时间多记录：同样逐条换条 */
+    @Test
+    fun autoSplitDatedSameLineTimeRecordsSplit() {
+        val split = BatchTranscriptParser.autoSplit(
+            "小美 2024-01-01 12:00\n你好\n我 2024-01-01 12:01\n在吗")
+        val ready = split as? BatchTranscriptParser.AutoSplit.Ready
+        assertNotNull("带日期的「昵称 时间」同行同样拆条", ready)
+        assertEquals(2, ready!!.entries.size)
+        assertEquals(listOf("小美", "我"), ready.entries.map { it.speakerName })
+        assertEquals(listOf("你好", "在吗"), ready.entries.map { it.content })
+        assertEquals(
+            listOf("2024-01-01 12:00", "2024-01-01 12:01"),
+            ready.entries.map { it.timestampText })
+    }
+
+    /**
+     * 续行护栏：进行中条目里的「我想说 12:00」是正文续行，不得当发言人。
+     * 该样本只有一位真发言人 ⇒ 拆不出 ≥2 条完备记录 ⇒ NotTranscript（绝不拿续行凑出 Ready）；
+     * 续行并入时仍留 warning，补上第二位发言人后同一 warning 让结果落 NeedsReview。
+     */
+    @Test
+    fun autoSplitSameLineTimeContinuationNeverBecomesSpeaker() {
+        val solo = BatchTranscriptParser.autoSplit("小美 12:00\n你好\n我想说 12:00\n算了")
+        assertEquals(
+            "「我想说」不当发言人：只剩一位发言人 → NotTranscript，绝不 Ready",
+            BatchTranscriptParser.AutoSplit.NotTranscript, solo)
+        val parsed = BatchTranscriptParser.parse("小美 12:00\n你好\n我想说 12:00\n算了")
+        assertEquals(1, parsed.entries.size)
+        assertEquals("小美", parsed.entries[0].speakerName)
+        assertEquals("你好\n我想说 12:00\n算了", parsed.entries[0].content)
+        assertTrue("并入时留 warning 供预览裁决", parsed.warnings.any { it.contains("我想说") })
+
+        val split = BatchTranscriptParser.autoSplit(
+            "小美 12:00\n你好\n我想说 12:00\n算了\n我 12:02\n在吗")
+        val review = split as? BatchTranscriptParser.AutoSplit.NeedsReview
+        assertNotNull("第二位发言人凑齐 ≥2 条，续行仍只是 warning → 交浮层预览", review)
+        assertEquals(2, review!!.entries.size)
+        assertEquals(listOf("小美", "我"), review.entries.map { it.speakerName })
+        assertEquals("你好\n我想说 12:00\n算了", review.entries[0].content)
+        assertEquals("在吗", review.entries[1].content)
+        assertTrue(review.warnings.any { it.contains("我想说") })
+    }
+
+    /** 冒号优先：`小美：明天 12:00` 是冒号行（正文含时间），不是昵称+同行时间的块头 */
+    @Test
+    fun autoSplitColonLineWithTrailingTimeStaysColonRecord() {
+        val split = BatchTranscriptParser.autoSplit("小美：明天 12:00\n我：好")
+        val ready = split as? BatchTranscriptParser.AutoSplit.Ready
+        assertNotNull(ready)
+        assertEquals(2, ready!!.entries.size)
+        assertEquals("小美", ready.entries[0].speakerName)
+        assertEquals("明天 12:00", ready.entries[0].content)
+        assertEquals("我", ready.entries[1].speakerName)
+        assertEquals("好", ready.entries[1].content)
     }
 }

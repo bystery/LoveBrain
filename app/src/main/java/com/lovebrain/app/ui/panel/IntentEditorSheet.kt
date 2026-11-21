@@ -151,6 +151,8 @@ internal fun IntentEditorBody(
     var editText by remember { mutableStateOf(text) }
     var editEnabled by remember { mutableStateOf(enabled) }
     val overLimit = editText.length > INTENT_MAX_LENGTH
+    // 焦点边沿经面板绑定的通道交回宿主（含离树补报）；这一层不认识输入 id
+    val reportFocus = rememberOverlayInputFocusReporter()
 
     Column(modifier = Modifier.fillMaxWidth()) {
         LbModalSheetTitle(stringResource(R.string.intent_editor_title))
@@ -180,7 +182,8 @@ internal fun IntentEditorBody(
                 value = editText,
                 onValueChange = { editText = it },
                 placeholder = stringResource(R.string.intent_content_placeholder),
-                onInputIntent = onInputIntent
+                onInputIntent = onInputIntent,
+                onFocusChange = reportFocus
             )
         }
         // 简化字数计数——只一行，超限走上面的错误行

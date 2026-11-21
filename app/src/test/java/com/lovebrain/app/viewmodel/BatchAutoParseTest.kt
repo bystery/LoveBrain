@@ -39,12 +39,14 @@ import org.junit.Test
  * · 普通文本照旧走单条 AddMessage——**被误拆成多条 = 红**；
  * · 认全角色的转录整批走同一条原子 AddMessages：顺序逐位保持、**列表只更新一次**
  *   （逐条投 N 次 AddMessage = 红，那是外部审计 F3 修过的形状）；
+ * · 拆出 ≥2 条完备记录但夹 warning（NeedsReview：转发标题被跳过 / 续行并回正文等）→
+ *   只交回落信号走**既有浮层预览**，**一条都不许入库**，也不许直吞成一条（认全角色也一样）；
  * · 有昵称没认过角色 → 只交回落信号，**一条都不许落列表**，更不许默认成当前 composeRole
  *   （把对方的话标成我 = 红）；
  * · 浮层提交记住的归属表要落盘、要并入旧账（丢旧昵称 = 红），下一次 tap 零摩擦；
  * · 没接落盘口子时读空表：转录一律回落显式指定，绝不猜角色。
  *
- * 解析置信判据（≥2 条、全部有昵称、无警告才交非 null）归 `BatchTranscriptParser.autoSplitEntries`
+ * 解析三态判据（NotTranscript / NeedsReview / Ready）归 `BatchTranscriptParser.autoSplit`
  * 的合同，这里只消费它的产物，不复制第二份规则。
  */
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -115,7 +117,7 @@ class BatchAutoParseTest {
         )
     }
 
-    /** 冒号行格式转录：两条以上、全部有昵称、无警告——autoSplitEntries 该有把握的那一种 */
+    /** 冒号行格式转录：两条以上、全部有昵称、无警告——autoSplit 该交 Ready 的那一种 */
     private val transcript = "小美：在吗\n我：在的\n小美：今晚一起吃饭？"
 
     private val fullRoles = mapOf(
@@ -168,6 +170,27 @@ class BatchAutoParseTest {
             listOf(ChatMessage.Role.ME to "小美：在吗"),
             vm.composer.messagesNow.map { it.role to it.content }
         )
+    }
+
+    @Test
+    fun `a transcript that needs review opens the sheet and never becomes one blob`() = runBlocking {
+        // 合并转发首行必产 warning（标题跳过），后面两条记录完备：NeedsReview 该走浮层预览，
+        // 既不静默丢弃，也不直吞成一条——即便归属表已认全也不许绕开预览。
+        val vm = makeVm(readRoles = { fullRoles }, writeRoles = { })
+        delay(120)
+
+        var consumed = true
+        val updates = countListUpdatesDuring(vm) {
+            consumed = vm.addDraftAuto("小美和小红的聊天记录\n小美：在吗\n我：在的", ChatMessage.Role.ME)
+        }
+
+        assertFalse("≥2 条完备记录但有 warning → 交既有浮层预览，不直吞", consumed)
+        assertEquals(
+            "NeedsReview 一条都不许入库（变成一大坨 = 红）",
+            emptyList<ChatMessage>(), vm.composer.messagesNow
+        )
+        assertEquals("零追加零通知", 0, updates)
+        assertFalse("回浮层 = 即将看见批量入口，首次轻提示同拍收掉", vm.batchImportHintVisible.value)
     }
 
     @Test

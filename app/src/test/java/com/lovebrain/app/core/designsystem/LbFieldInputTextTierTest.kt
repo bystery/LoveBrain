@@ -132,8 +132,11 @@ class LbFieldInputTextTierTest {
      * 这颗件的行为清册：加这一档不许顺手带走任何一颗。
      *
      * 五态表、36dp 可见框与 48dp 热区分层、尾部槽、禁用仍报 Disabled、placeholder 转读屏名、
-     * 密码遮蔽、编辑意图那两条上报链、单行/多行由 `maxLines` 说——每一族按落点颗数钉着，
-     * 掉哪一族就点名是哪一族、第几行。颗数是这颗件今天的实扫读数，不是抄来的。
+     * 密码遮蔽、编辑意图那两条上报链（空档轻点 + 按下边沿——后者已搬进共享扩展
+     * `Modifier.overlayInputIntent`，本文件只剩挂载点这一颗，边沿语义归 `LbFieldInputBehaviorTest`
+     * 的 intent reports once per gesture 那一格继续钉）、内容保真恒 `singleLine = false`、
+     * 视觉档由 `maxLines` 说——每一族按落点颗数钉着，掉哪一族就点名是哪一族、第几行。
+     * 颗数是这颗件今天的实扫读数，不是抄来的。
      */
     @Test
     fun `adding the text tier knob does not take any other behaviour of this field with it`() {
@@ -344,9 +347,9 @@ class LbFieldInputTextTierTest {
                 5
             ),
             Ledger(
-                "热区层垫到全站下限那一句",
+                "热区下限两句：外层 Box 恒垫 + Block 可编辑节点垫（Row 一行可视不垫）",
                 Regex("""heightIn\(min\s*=\s*AppDimens\.TOUCH_TARGET_MIN_DP\.dp\)"""),
-                1
+                2
             ),
             Ledger(
                 "可见框那一档仍由视觉层自己读",
@@ -359,18 +362,12 @@ class LbFieldInputTextTierTest {
                 1
             ),
             Ledger(
-                "点空档获焦时上报编辑意图",
-                Regex("""onInputIntent\?\.invoke\(\)"""),
-                1
-            ),
-            Ledger(
-                "触碰输入区上报编辑意图那条链",
-                Regex("""if\s*\(\s*onInputIntent\s*!=\s*null\s*\)"""),
-                1
-            ),
-            Ledger(
-                "上面那条链自己发出的那一颗",
-                Regex("""(?<![A-Za-z0-9_])onInputIntent\(\)"""),
+                // 轻点获焦与长按/拖动同走这一颗按下的边沿——不再有"tap-up 另报一次"的第二通道。
+                // 挂载点必须留在**外层 48dp 热区**（含胶囊外空档）：这条源码尺数不出位置，
+                // 由 LbFieldInputBehaviorTest 的 `tapping the hot zone band outside the capsule
+                // still reports intent` 用行为钉住——退回内层胶囊会在那一格红。
+                "触碰输入区上报编辑意图那条链（机制已搬进共享扩展，这里只剩唯一挂载点）",
+                Regex("""overlayInputIntent\("""),
                 1
             ),
             Ledger(
@@ -394,9 +391,23 @@ class LbFieldInputTextTierTest {
                 1
             ),
             Ledger(
-                "单行与多行仍由 maxLines 说",
-                Regex("""singleLine\s*=\s*maxLines\s*==\s*1"""),
+                "内容保真：单行开关恒关（IME 会话带 MULTI_LINE，粘贴换行不被拍扁）",
+                Regex("""singleLine\s*=\s*false"""),
                 1
+            ),
+            Ledger(
+                "视觉档仍由 maxLines 说（Row/Block 只分岔一次）",
+                Regex("""maxLines\s*==\s*1"""),
+                1
+            ),
+            // ⚠ 「编辑意图只在按下那一跳上报」（awaitFirstDown(requireUnconsumed = false)）那一颗
+            // 已搬进 `OverlayInputIntent.kt`：这颗件的源码里不再出现该形状，所以删掉这一条，
+            // 不留「该 1 颗、实到 0 行」的死条；边沿语义由 LbFieldInputBehaviorTest 的
+            // `intent reports once per gesture not per pressed event` 继续钉。
+            Ledger(
+                "逐 pressed 事件上报的旧循环不许回来（窗口 flags 抖动、长按被打断的来路）",
+                Regex("""awaitPointerEvent\(\)"""),
+                0
             )
         )
     }

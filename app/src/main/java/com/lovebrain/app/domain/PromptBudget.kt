@@ -136,14 +136,19 @@ object PromptBudget {
             }
             finalText = compose(knowledge, "", "", chat)
         }
-        if (finalText.length > AppConfig.TOTAL_BUDGET) {
+        // 条目边界收知识段也要对着真实长度复核：整行粒度与省略标记兜底都可能留下残差
+        // （固定区块加上标记本身就能超预算）。每轮按残差继续收，直到预算内或知识段
+        // 触底为空——绝不裸 take 对话行、不动固定区块，</chat> 始终闭合。
+        val marker = "\n…（旧记忆因长度限制已省略）…\n"
+        while (finalText.length > AppConfig.TOTAL_BUDGET && knowledge.isNotEmpty()) {
             val residual = finalText.length - AppConfig.TOTAL_BUDGET
             val target = (knowledge.length - residual).coerceAtLeast(0)
-            // 知识段尾若已有省略标记，收条目时把标记留住：裁的是旧记忆正文，不是“这里裁过”的交代。
-            val marker = "\n…（旧记忆因长度限制已省略）…\n"
             knowledge = if (knowledge.endsWith(marker)) {
                 val body = knowledge.removeSuffix(marker)
-                trimToEntryBoundary(body, (target - marker.length).coerceAtLeast(0)) + marker
+                val kept = trimToEntryBoundary(body, (target - marker.length).coerceAtLeast(0))
+                // 正文还在收就留住标记（裁的是旧记忆，不是“这里裁过”的交代）；
+                // 正文已触底时标记自身可能就是残差来源，落到空串这最后一档。
+                if (kept.length < body.length) kept + marker else ""
             } else {
                 trimToEntryBoundary(knowledge, target)
             }

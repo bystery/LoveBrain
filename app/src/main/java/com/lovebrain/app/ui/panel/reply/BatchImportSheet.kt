@@ -3,8 +3,6 @@ package com.lovebrain.app.ui.panel.reply
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -15,7 +13,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,7 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +31,12 @@ import com.lovebrain.app.feature.composer.BatchImportDraft
 import com.lovebrain.app.feature.composer.BatchTranscriptParser
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.ui.theme.*
+
+/** 粘贴框的测试标签：整屏挂载时输入行那颗编辑框也在树上，靠这颗把浮层粘贴框单独认出来。 */
+internal const val BATCH_PASTE_TEST_TAG = "batch_import_paste_field"
+
+/** 预览行那两颗指定 chip 的测试标签：整屏挂载时输入行的她/我角色 chip 同文，靠这颗把浮层里的圈出来。 */
+internal const val BATCH_ENTRY_CHIPS_TAG = "batch_import_entry_chips"
 
 /**
  * 批量导入聊天记录的预览浮层（Issue #7）。
@@ -72,11 +75,18 @@ fun BatchImportSheet(
     /** 盘上已知的昵称归属：种进预览，用户只补没认过的那几个，不必从头再指一遍。 */
     initialNameRoles: Map<String, ChatMessage.Role> = emptyMap(),
     /** 提交时把整份归属表交回宿主落盘——同一昵称的转录下一次 tap 零摩擦。 */
-    onRememberRoles: ((Map<String, ChatMessage.Role>) -> Unit)? = null
+    onRememberRoles: ((Map<String, ChatMessage.Role>) -> Unit)? = null,
+    /**
+     * 粘贴框原文的回报（播种与每次编辑都报一次）：宿主提交时拿它与输入草稿比对，
+     * 判断这次提交消费掉的是不是草稿那份转录——与预填来源无关，长按开的干净一版里
+     * 粘贴同一份转录再提交，一样要清草稿，否则下一次 tap 会把它重复入库。
+     * null（默认）= 宿主不需要这条回报，旧调用点行为不变。
+     */
+    onRawChange: ((String) -> Unit)? = null
 ) {
-    // 只在**打开的上升沿**重置整份状态：重开浮层看到的是干净的一版（或预填的那一版），
-    // 不是上一次的残稿。退场那 200ms 里 visible=false 但树还在画——若随 visible 翻转重置
-    // （旧 remember(visible) 写法），用户刚提交的预览会在淡出中途凭空清空。
+    // 只在**打开的上升沿**或**预填原文换了**时重置整份状态：重开浮层看到的是干净的一版
+    // （或预填的那一版），不是上一次的残稿。退场那 200ms 里 visible=false 但树还在画——
+    // 下降沿不重置，用户刚提交的预览才不会在淡出中途凭空清空。
     var raw by remember { mutableStateOf("") }
     var parsed by remember { mutableStateOf<List<BatchTranscriptParser.Entry>?>(null) }
     var warnings by remember { mutableStateOf<List<String>>(emptyList()) }
@@ -91,8 +101,13 @@ fun BatchImportSheet(
     // 预览里被用户移除的条目（解析器的边角误拆，移除比让它挡住提交更诚实）
     var removed by remember { mutableStateOf<Set<Int>>(emptySet()) }
 
-    LaunchedEffect(visible) {
-        if (!visible) return@LaunchedEffect
+    // 重置发生在**组合期**而不是 LaunchedEffect：effect 跑在首帧组合之后，重开那一帧会先把
+    // 上一场的 raw/预览/可提交键画出去、下一拍才清掉（真机闪一帧残稿）；预填原文在 visible
+    // 不动时换了，LaunchedEffect(visible) 更不会重跑（陈旧转录）。组合期同步重置让重开/换预填
+    // 的第一帧就是新会话。条件收敛（播种后不再触发），写的都是已 remember 的状态，不多画一帧。
+    var seededVisible by remember { mutableStateOf(false) }
+    var seededRaw by remember { mutableStateOf<String?>(null) }
+    if (visible && (!seededVisible || seededRaw != initialRaw)) {
         raw = initialRaw.orEmpty()
         nameRoles = initialNameRoles
         orphanRoles = emptyMap()
@@ -109,6 +124,12 @@ fun BatchImportSheet(
             warnings = result.warnings
             parsedRaw = initialRaw
         }
+        seededVisible = true
+        seededRaw = initialRaw
+        onRawChange?.invoke(raw)
+    } else if (!visible) {
+        // 只记下降沿、不动内容：退场淡出保留刚提交的预览，下一次 true 才是重开、才重置。
+        seededVisible = false
     }
 
     val entries = parsed.orEmpty().withIndex().filter { it.index !in removed }
@@ -133,6 +154,7 @@ fun BatchImportSheet(
             // 审计 R1-1：原文任何变化都让旧解析结果作废（与解析时刻的原文不一致即失效）
             onValueChange = { next ->
                 raw = next
+                onRawChange?.invoke(next)
                 if (parsedRaw != null && next != parsedRaw) {
                     parsed = null
                     warnings = emptyList()
@@ -163,7 +185,7 @@ fun BatchImportSheet(
                 },
                 interaction = LbChipInteraction.Action,
                 enabled = raw.isNotBlank(),
-                style = LbChipStyles.filled.copy(pillHeight = 36.dp)
+                style = LbChipStyles.filled.copy(pillHeight = AppDimens.INPUT_ROW_HEIGHT_DP.dp)
             )
         }
 
@@ -271,14 +293,8 @@ private fun BatchPasteField(
             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
             // 审计 R1-3：与 [PanelTextInput] 同一条编辑意图链路——用户碰到输入区 = 想编辑，
             // 悬浮窗宿主收到就 PASSIVE→EDITING（拆掉 FLAG_NOT_FOCUSABLE，IME 才能弹出）。
-            // 边沿触发（H4）：只在每次手势按下那一跳上报一次，不逐事件重复上报，
-            // 窗口 flags 不被 updateViewLayout 反复抖动。不消费事件，BasicTextField 照常获焦。
-            .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
-                awaitEachGesture {
-                    awaitFirstDown(requireUnconsumed = false)
-                    onInputIntent()
-                }
-            } else Modifier)
+            // 边沿触发与"不消费事件"由共享扩展 [overlayInputIntent] 持有，BasicTextField 照常获焦。
+            .overlayInputIntent(onInputIntent)
             .padding(Spacing.md)
     ) {
         if (value.isEmpty()) {
@@ -289,7 +305,7 @@ private fun BatchPasteField(
             onValueChange = onValueChange,
             textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
             cursorBrush = SolidColor(Primary),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().testTag(BATCH_PASTE_TEST_TAG)
         )
     }
 }
@@ -341,7 +357,7 @@ private fun BatchEntryRow(
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = Spacing.xs)
+            modifier = Modifier.padding(top = Spacing.xs).testTag(BATCH_ENTRY_CHIPS_TAG)
         ) {
             SpeakerPickChip(
                 label = ROLE_LABEL_HER,

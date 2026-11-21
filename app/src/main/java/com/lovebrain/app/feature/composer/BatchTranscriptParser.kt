@@ -26,9 +26,11 @@ package com.lovebrain.app.feature.composer
  *    这类正文当发言人拆掉）。冒号行是**冒号/编号格式**的记录分隔符；块格式正文里的
  *    "地址：北京市"这类行（昵称不是已知发言人）照旧归并进当前条。
  *    冒号/编号格式里的**续行形态前缀**不硬拆为新发言人：常见字段词（"地址：…""备注：…"）
- *    与以人称代词开头的多字前缀（"我想说：其实我不饿"是正文里的冒号句，不是发言人叫
- *    "我想说"），并入上一条 + warning 标注，由预览界面裁决；该名字已作为发言人确认过
- *    时照常换条。单字代词（我/她/他）与未知短昵称（B）仍是正常发言人。
+ *    与代词+从句动词开头的多字前缀（"我想说：其实我不饿"是正文里的冒号句，不是发言人叫
+ *    "我想说"），并入上一条 + warning 标注，由预览界面裁决。该名字已作为发言人确认过、
+ *    或作为代词开头前缀在全文出现 ≥2 次（再出现的真昵称，如"我的宝贝"）时照常换条。
+ *    单字代词（我/她/他）、代词开头但非动词承接的真实昵称（我的宝贝）与未知短昵称（B）
+ *    仍是正常发言人。
  * 3. **编号转发格式**（多选 → 合并转发 → 复制）：
  *    ```
  *    1. 昵称
@@ -74,12 +76,30 @@ object BatchTranscriptParser {
 
     fun parse(raw: String): Result {
         if (raw.isBlank()) return Result(emptyList(), emptyList())
-        val ctx = Ctx()
         // 换行统一 + 剪贴板不可见污染清洗（BOM/零宽字符）：它们不是正文，留着会破坏
         // 发言人行/时间行的锚定（trim 不吃 U+FEFF）。
         val lines = raw.replace("\r\n", "\n").replace('\r', '\n')
             .replace('\uFEFF', ' ').replace('\u200B', ' ')
             .split('\n')
+        // 再出现发言人例外要先看全文：同一冒号前缀出现 ≥2 次就是真昵称（哪怕代词开头），
+        // 不能等逐行解析时「第一次见过」才知道——第一次出现时证据就已经在全文里了。
+        val prefixCounts = HashMap<String, Int>()
+        for (rawLine in lines) {
+            val t = rawLine.trim()
+            if (t.isEmpty()) continue
+            val candidate = NUMBERED.find(t)?.groupValues?.get(2)?.trim() ?: t
+            val m = COLON_LINE.find(candidate) ?: continue
+            val name = m.groupValues[1].trim()
+            if (name.isEmpty() || name.length > 30 || name.all { it.isDigit() }) continue
+            prefixCounts[name] = (prefixCounts[name] ?: 0) + 1
+        }
+        // 例外只豁免代词开头的前缀：字段词（地址/备注）的续行保护仍只认 seenSpeakers，
+        // 否则正文里重复出现的字段行会被误拆成发言人。
+        val recurringSpeakers = prefixCounts.entries
+            .filter { (name, count) -> count >= 2 && name.first() in PRONOUN_PREFIXES }
+            .map { it.key }
+            .toSet()
+        val ctx = Ctx(recurringSpeakers)
         var i = 0
         while (i < lines.size) {
             val line = lines[i].trim()
@@ -104,29 +124,48 @@ object BatchTranscriptParser {
     }
 
     /**
-     * 轻点自动解析的共享契约：只有「确信这是一段多条完整对话」时才交出条目，
-     * 否则返回 null，调用方退回单条输入 / 长按批量预览，绝不静默猜。
+     * 轻点自动解析的三态结果——调用方据此决定「单条 / 浮层预览 / 整批」：
      *
-     * 确信判据（须全部满足，复用 [parse]，不另立第二份规则）：
-     * - 至少 2 条；
-     * - 每条都有文本里写着的发言人（speakerName != null）；
-     * - 零 warning（没有跳过行 / 续行合并 / 空壳条等需要人裁决的情况）；
-     * - 发言人并非**全是**续行形态前缀（字段词 / 人称代词多字前缀）——整段都是
-     *   "地址：…""我想说：…"时，大概率是一条正文里的冒号句而非真多人对话。
+     * - [NotTranscript]：不像多人转录 → 原文整段照旧走单条消息（普通文本永不被拆）；
+     * - [NeedsReview]：已拆出 ≥2 条完备记录，但夹着需要人裁决的情况（转发标题被跳过、
+     *   续行被并回正文、空壳条被略过……）→ 既不静默丢弃也不直吞成一条，交**既有**
+     *   浮层预览预填原文与 [NeedsReview.warnings]，用户看过标记后再显式提交；
+     * - [Ready]：≥2 条完备记录且零 warning → 可按归属表整批入库。
+     */
+    sealed interface AutoSplit {
+        data class Ready(val entries: List<Entry>) : AutoSplit
+        data class NeedsReview(val entries: List<Entry>, val warnings: List<String>) : AutoSplit
+        data object NotTranscript : AutoSplit
+    }
+
+    /**
+     * 轻点自动解析的共享契约（复用 [parse]，不另立第二份规则）。判据按序：
+     *
+     * 1. 少于 2 条 → [AutoSplit.NotTranscript]（单行/普通多行文本不拆）；
+     * 2. 任一条没有文本里写着的发言人（speakerName == null）→
+     *    [AutoSplit.NotTranscript]——普通多行文本不长这样，保住"普通文本仍是一条消息"；
+     * 3. 发言人**全是**续行形态前缀（字段词 / 代词+从句动词前缀）→
+     *    [AutoSplit.NotTranscript]：整段都是"地址：…""我想说：…"，大概率是一条正文里的
+     *    冒号句而非真多人对话；
+     * 4. 有 warning（跳过行 / 续行合并 / 空壳条等需要人裁决）→ [AutoSplit.NeedsReview]；
+     * 5. 否则 → [AutoSplit.Ready]。
      *
      * 纯函数、零 Android 依赖，JVM 可单测。
      */
-    fun autoSplitEntries(raw: String): List<Entry>? {
+    fun autoSplit(raw: String): AutoSplit {
         val result = parse(raw)
         val entries = result.entries
-        if (entries.size < 2 || result.warnings.isNotEmpty()) return null
-        if (entries.any { it.speakerName == null }) return null
-        if (entries.all { isContinuationPrefix(it.speakerName!!, emptySet()) }) return null
-        return entries
+        if (entries.size < 2) return AutoSplit.NotTranscript
+        if (entries.any { it.speakerName == null }) return AutoSplit.NotTranscript
+        if (entries.all { isContinuationPrefix(it.speakerName!!, emptySet()) }) {
+            return AutoSplit.NotTranscript
+        }
+        if (result.warnings.isNotEmpty()) return AutoSplit.NeedsReview(entries, result.warnings)
+        return AutoSplit.Ready(entries)
     }
 
     /** 单次 [parse] 的全部可变状态——进出都是局部量，object 本身无状态 */
-    private class Ctx {
+    private class Ctx(private val recurringSpeakers: Set<String>) {
         val entries = mutableListOf<Entry>()
         val warnings = mutableListOf<String>()
 
@@ -228,10 +267,27 @@ object BatchTranscriptParser {
                 return i + 1
             }
 
-            // ── `昵称 12:00`（昵称与时间同一行，仅在没有进行中记录/待定行时认）──
-            if (!openExists && pendingText == null && NAME_THEN_TIME.matches(line)) {
+            // ── `昵称 12:00`（昵称与时间同一行）：微信转录常见形态，进行中条目里也认 ──
+            // 连续多条同格式时，第二条起也必须换条（旧条件要求"没有进行中记录"，
+            // 第二个昵称+时间被并进上一条正文 → 只剩 1 条 → 整段退化成一大坨）。
+            if (pendingText == null && NAME_THEN_TIME.matches(line)) {
                 val m = NAME_THEN_TIME.find(line)!!
-                startOpen(m.groupValues[1].trim(), m.groupValues[2].trim(), lineNo, Origin.BLOCK)
+                val name = m.groupValues[1].trim()
+                val time = m.groupValues[2].trim()
+                // 续行护栏：进行中条目里"我想说 12:00"这类字段词/代词+从句动词前缀是
+                // 上一条正文，不猜成新发言人——并入正文 + warning 交预览裁决（与冒号续行同口径）。
+                if (openExists && isContinuationPrefix(name, seenSpeakers, recurringSpeakers)) {
+                    if (openLines.isNotEmpty() && blanks > 0) {
+                        repeat(blanks) { openLines.add("") }
+                    }
+                    addContent(line)
+                    warnings.add(
+                        "第 $lineNo 行：「$line」疑似上一条正文的续行（「$name」是字段词/代词+动词前缀，" +
+                            "未拆为新发言人）；如确是新发言人，请在预览中手动处理"
+                    )
+                    return i + 1
+                }
+                startOpen(name, time, lineNo, Origin.BLOCK)
                 return i + 1
             }
 
@@ -244,20 +300,21 @@ object BatchTranscriptParser {
                 allowNewSpeaker = !openExists ||
                     openOrigin == Origin.COLON || openOrigin == Origin.NUMBERED
             )?.let { (name, content) ->
-                // 续行不硬拆为发言人：已开的冒号/编号条目里，前缀是续行形态（字段词或
-                // 人称代词开头的多字前缀）且未确认过是发言人时，这行是上一条正文的冒号句
-                // （"我想说：其实我不饿"），并入上一条 + warning 交预览裁决，而非猜一个新昵称。
+                // 续行不硬拆为发言人：已开的冒号/编号条目里，前缀是续行形态（字段词，或
+                // 代词+从句动词的多字前缀）且未确认过是发言人、也不是全文再出现的昵称时，
+                // 这行是上一条正文的冒号句（"我想说：其实我不饿"），并入上一条 + warning
+                // 交预览裁决，而非猜一个新昵称。
                 if (openExists &&
                     (openOrigin == Origin.COLON || openOrigin == Origin.NUMBERED) &&
                     content.isNotBlank() &&
-                    isContinuationPrefix(name, seenSpeakers)
+                    isContinuationPrefix(name, seenSpeakers, recurringSpeakers)
                 ) {
                     if (openLines.isNotEmpty() && blanks > 0) {
                         repeat(blanks) { openLines.add("") }
                     }
                     addContent(line)
                     warnings.add(
-                        "第 $lineNo 行：「$line」疑似上一条正文的续行（「$name」是字段词/人称代词前缀，" +
+                        "第 $lineNo 行：「$line」疑似上一条正文的续行（「$name」是字段词/代词+动词前缀，" +
                             "未拆为新发言人）；如确是新发言人，请在预览中手动处理"
                     )
                     return i + 1
@@ -371,8 +428,17 @@ object BatchTranscriptParser {
         "邮箱", "邮编", "网址", "链接", "姓名", "性别", "年龄", "坐标", "QQ", "微信"
     )
 
-    /** 人称代词：多字冒号前缀以这些字开头（我想说/他觉得/她说）是正文冒号句，不是昵称 */
+    /** 人称代词：多字冒号前缀以这些字开头（我想说/他觉得/她说）才可能是正文冒号句 */
     private const val PRONOUN_PREFIXES = "我你她他它"
+
+    /**
+     * 代词后的从句动词：「我想说/她担心/他打算」是正文里的冒号句；而「我的宝贝」这类
+     * 代词开头的真实昵称后面不是动词，不算续行——只凭代词开头会误吞真发言人。
+     */
+    private val CLAUSE_VERBS = listOf(
+        "想", "觉得", "说", "问", "看", "听", "猜", "担心", "怕", "希望",
+        "要是", "如果", "打算", "感觉", "以为", "认为", "记得", "知道", "准备"
+    )
 
     /**
      * 续行判定（纯函数，无状态）：已开的冒号/编号条目里，冒号行前缀 [name] 是不是
@@ -380,18 +446,27 @@ object BatchTranscriptParser {
      *
      * 续行形态两种（命中其一即是）：
      * 1. 常见字段词（[CONTENT_LABELS]，如「地址：西湖边」）；
-     * 2. 以人称代词 我/你/她/他/它 开头的**多字**前缀（「我想说：其实我不饿」是正文里的
-     *    冒号句，不是发言人叫「我想说」）。单字代词（我/她/他）是正常短昵称，不算续行；
-     *    未知短昵称（B）也照常拆条。
+     * 2. 人称代词 我/你/她/他/它 开头、后接从句动词（[CLAUSE_VERBS]）的**多字**前缀
+     *    （「我想说：其实我不饿」是正文里的冒号句，不是发言人叫「我想说」）。
+     *    单字代词（我/她/他）是正常短昵称；代词开头但后接非动词（我的宝贝）是真实昵称，
+     *    都不算续行；未知短昵称（B）也照常拆条。
      *
-     * 例外：该名字已作为发言人被确认过（[seenSpeakers]）——昵称真叫「地址/我想说」且已
-     * 出现过时，以已出现为准，返回 false（照常换条）。[autoSplitEntries] 以空集合复用本
-     * 函数判断「发言人是否全是续行形态」，不另立第二份规则。
+     * 例外（命中其一即返回 false，照常换条）：
+     * - 该名字已作为发言人被确认过（[seenSpeakers]）；
+     * - 该名字是全文再出现的代词开头前缀（[recurringSpeakers]，出现 ≥2 次）——真昵称
+     *   哪怕撞了续行形态，也以全文证据为准。字段词不受此例外影响（正文里重复的字段行
+     *   仍是续行）。[autoSplit] 以空集合复用本函数判断「发言人是否全是续行形态」，
+     *   不另立第二份规则。
      */
-    private fun isContinuationPrefix(name: String, seenSpeakers: Set<String>): Boolean {
-        if (name in seenSpeakers) return false
+    private fun isContinuationPrefix(
+        name: String,
+        seenSpeakers: Set<String>,
+        recurringSpeakers: Set<String> = emptySet()
+    ): Boolean {
+        if (name in seenSpeakers || name in recurringSpeakers) return false
         if (name in CONTENT_LABELS) return true
-        return name.length >= 2 && name.first() in PRONOUN_PREFIXES
+        return name.length >= 2 && name.first() in PRONOUN_PREFIXES &&
+            CLAUSE_VERBS.any { name.startsWith(it, startIndex = 1) }
     }
 
     /** 空白类：含全角空格 U+3000 与不换行空格 U+00A0（微信粘贴里出现，`\s` 不认） */
@@ -406,9 +481,13 @@ object BatchTranscriptParser {
             "(?:上午|下午|晚上|凌晨|中午)?$"
     )
 
-    /** 行尾是时间戳、行首是昵称：`昵称 2024-01-01 12:00` */
+    /**
+     * 行尾是时间戳、行首是昵称：`昵称 2024-01-01 12:00`。
+     * 昵称组排除冒号（半角/全角都不进昵称）：`小美：明天 12:00` 是冒号行、正文含时间，
+     * 必须落到 colonSplit，不能被误认成"昵称+同行时间"的块头。
+     */
     private val NAME_THEN_TIME = Regex(
-        "^(.{1,30}?)$WS+" +
+        "^([^：:]{1,30}?)$WS+" +
             "((?:(?:\\d{4}[-/.年]\\d{1,2}[-/.月]\\d{1,2}日?)|(?:\\d{1,2}[-/月]\\d{1,2}日?))?$WS*" +
             "(?:昨天|前天|今天|星期[一二三四五六日天]|周[一二三四五六日天])?$WS*" +
             "(?:上午|下午|晚上|凌晨|中午)?$WS*" +

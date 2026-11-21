@@ -28,6 +28,7 @@ import com.lovebrain.app.core.designsystem.LbFieldInput
 import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.ui.home.MiniSwitch
 import com.lovebrain.app.ui.panel.INTENT_MAX_LENGTH
+import com.lovebrain.app.ui.panel.rememberOverlayInputFocusReporter
 import kotlinx.coroutines.delay
 
 /**
@@ -201,6 +202,8 @@ internal fun SettingsIntentEntry(
         // 它是开关行的**兄弟段**（同一张组外框之内、两段之间不画分隔线），不是页面那一层的另一行，
         // 也不是塞进开关行里的第三颗控件——原型 `<div id="intent-edit">` 就长在 `.item` 之后。
         if (intentEnabled) {
+            // 焦点边沿只报宿主、不写盘（提交仍只有开关与保存两处）；关开关/关页离树时补一次失焦
+            val reportFocus = rememberOverlayInputFocusReporter()
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
@@ -215,6 +218,7 @@ internal fun SettingsIntentEntry(
                     },
                     placeholder = stringResource(R.string.intent_row_placeholder),
                     onInputIntent = onInputIntent,
+                    onFocusChange = reportFocus,
                     // 字阶吃原型那一档（`.intent-edit input{font-size:11px}`，比行标签 `.lbl` 的 12px 还小一档）：
                     // 公共件默认那档是 13sp 正文，挂在这一页就会"输入的字比行标签还大"，主次倒过来。
                     // 走的是那颗件新加的字阶参数，默认值不变 ⇒ 别的页面一个字没动。
