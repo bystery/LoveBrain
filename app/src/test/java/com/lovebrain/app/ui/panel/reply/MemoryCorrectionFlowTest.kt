@@ -72,7 +72,7 @@ import org.robolectric.annotation.GraphicsMode
  *   所以「不对」这一支在**两种语言下都是 0**——`values-en` 那份是 "This one is wrong"；
  * - 「暂时别提」这一支在 `values/strings.xml:298` 里逐字没变，却在同一台机器上报 0
  *   ⇒ 解析出来的是英文那份（"Skip it for now"）。本机 Robolectric 默认落 en-US 这件事
- *   在本仓库早有别处实测（`CaptureAppsScreenStatesTest:277`）。
+ *   在本仓库早有别处实测。
  * 反向证人是同一台仪器上**绿的** `MemoryRefsFeedTest`：它的锚点全从 `app.getString(...)` 取，
  * 生产的渲染也走同一颗资源 ⇒ 红的原因只能是锚点没跟着搬。
  * 修法是**换锚点**（`WRONG_ACTION` 本来就声明了、只是九个调用点没接上；`MUTE_ACTION`

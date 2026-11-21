@@ -339,8 +339,7 @@ class SetupActivityGuideTest {
     // ⚠ 为什么这三格用源码形状、不挂组件：页面闸的**另一头**是 `SetupRoot` 的导航账（`rememberSaveable`
     // 的 destination）与 Activity 的 onResume，两者在 `createComposeRule()` 摆出来的那棵树上都没有
     // 真宿主可推（本仓库在 `CapturePageResumeRefreshTest` 顶上记过同一条仪器事实）。
-    // 闸**本身**的行为（关了整块不画、开了整块回来）由 `HomeCoachMarksSemanticsTest`
-    // 的 `the overlay leaves entirely when a subpage takes the screen` 量语义树，两把尺各管一头。
+    // 闸**本身**的行为（关了整块不画、开了整块回来）由语义树侧的罩子用例量，两把尺各管一头。
 
     private val rootSource: String by lazy {
         SourceScan.maskComments(mainSourceOf("ui/home/SetupRoot.kt").readText())

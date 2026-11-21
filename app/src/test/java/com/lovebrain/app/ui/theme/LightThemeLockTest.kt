@@ -50,8 +50,8 @@ import java.io.File
  * ⑤ 最后按**像素**验一次"画到屏幕上的那一块确实是亮色底"。
  * 三格判的是同一句话的三个层次，任何一层读不到数都抛，不静默。
  *
- * 关于 ③④⑤ 的 `@Config`：类级那一串是**照抄** `PanelHeaderSemanticsTest` /
- * `UsageExtremeValuesSemanticsTest`（已删） 的（同一台仪器、同一个 600dp 窗口，不另起炉灶），
+ * 关于 ③④⑤ 的 `@Config`：类级那一串是**照抄**已删的 `UsageExtremeValuesSemanticsTest`
+ * 的（同一台仪器、同一个 600dp 窗口，不另起炉灶），
  * 只在夜档那三格多带一个 `-night` 词——这一档要的前提就是"系统在要求深色"。
  * 不用 `CompositionLocalProvider(LocalConfiguration …)` 自己伪造：那等于测试把答案喂进去，
  * 生产真去读系统配置时反而没人判。
@@ -180,7 +180,7 @@ class LightThemeLockTest {
      * 没有这一格，后面两格随时会空过——`-night` 那个词万一没进 `uiMode`
      * （qualifier 串写错、compose 测试宿主自己覆盖了配置……），后面两格就会在
      * "系统根本没要求深色"的前提下判"深色没生效"，那种绿最难发现。
-     * 判据形状与 `PanelHeaderSemanticsTest` 第一格同一句话：**先证明仪表量到了东西**。
+     * 判据形状是同一句话：**先证明仪表量到了东西**。
      */
     @Test
     @Config(qualifiers = "sw600dp-w600dp-h1200dp-normal-long-night-mdpi")

@@ -21,7 +21,7 @@ import java.io.File
  * 这里只能证明"某一档的数写在源码里、而且真的挂在那条 Modifier 链上"。
  * PanelHeader 外面套 48dp 的 Box、真正 clickable 仍挂在 20dp 的内层标签上时，
  * 本文件那两格头部判据照样会绿。判"点得到点不到"的权威断言在语义树侧
- * （`ui/panel/PanelHeaderSemanticsTest`、androidTest 的 `PanelHeaderTouchTargetsTest`、
+ * （androidTest 的 `PanelHeaderTouchTargetsTest`、
  * `LbPrimaryButtonStateTest`、`ReplyPrimaryActionsContractTest`：它们读组合后每个可点击节点的
  * boundsInRoot）。两条都要，但只有后者能证明用户行为。
  *
@@ -126,8 +126,8 @@ class ProductionUiContractTest {
      * 本轮合同（ 第3节第2条 尺寸表）明写 30/24/20，且它是**明写的例外**：
      * 全站那颗下限 [AppDimens.TOUCH_TARGET_MIN_DP] 一个字没改，页面主体、列表行、弹窗按钮照旧走它，
      * 所以这里同时钉反向那条——48 那一档不许回到这一行。
-     * 判"手指到底点不点得到"的权威断言在语义树侧（`ui/panel/PanelHeaderSemanticsTest`、
-     * androidTest 的 `PanelHeaderTouchTargetsTest`）；这一格只买"档位来源与数值"。
+     * 判"手指到底点不点得到"的权威断言在语义树侧（androidTest 的 `PanelHeaderTouchTargetsTest`）；
+     * 这一格只买"档位来源与数值"。
      */
     @Test
     fun `panel header keeps the 30dp row with a 24dp collapse box and a 20dp glyph`() {
@@ -160,7 +160,7 @@ class ProductionUiContractTest {
      * ②承载胶囊 + 高亮 + 三段的那一栏整段都不许有 clickable（点击所有者只有一层）；
      * ③视觉层那一截必须真的画着 20dp 那一档——否则②会因为"根本没有视觉层"而自动成立。
      * ⚠ 它仍然**测不到真实热区**（源码级）：树上那三段的边界由
-     * `ui/panel/PanelHeaderSemanticsTest` 与 androidTest 那边量 `boundsInRoot`。
+     * androidTest 那边量 `boundsInRoot`。
      *
      * 视觉层那一截**按结构认，不按注释文字认**。上一版在这里找的是 `// ── 视觉层` 那样的锚点，
      * 而本文件的 [codeOf] 先把注释剥光再交给判据 ⇒ 那种锚点**永远找不到**，

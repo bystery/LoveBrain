@@ -230,8 +230,7 @@ class PanelPageSwipePagerTest {
 
     /**
      * 手动推 n 帧（一帧 16ms）：关掉 `autoAdvance` 之后唯一的推进办法，
-     * 与本仓库既有的写法同源（`PanelUsageMetricSemanticsTest.kt:97`、
-     * `ReplyPrimaryActionsContractTest.kt:180`）。
+     * 与本仓库既有的写法同源（`ReplyPrimaryActionsContractTest.kt:180`）。
      */
     private fun stepFrames(n: Int) {
         repeat(n) { rule.mainClock.advanceTimeBy(16L) }
@@ -723,7 +722,6 @@ class PanelPageSwipePagerTest {
      * 仪器口径与已知边界：
      * · 必须手动推帧（`autoAdvance = false` + 一帧 16ms），否则 `waitForIdle` 会把那 200ms 一路
      *   喂完，中间帧根本读不到（同一颗写法在本仓库已有先例：
-     *   `PanelUsageMetricSemanticsTest.kt:92` 冻时钟 + `:97`「一帧 16ms」、
      *   `LbPrimaryButtonStateTest.kt:248` 与 `:254` 的 `advanceTimeByFrame()`）；
      * · 只读**进场那一页**：切换一开始离屏那页就被 `clearAndSetSemantics` 清掉（这是既有合同，
      *   见 `切页保留各自草稿与谈心历史`），所以那一侧的落点在这一格里读不到；
@@ -903,7 +901,7 @@ class PanelPageSwipePagerTest {
         assertTrue("滑完这一行还在（不许被切页切掉）", after.isNotEmpty())
         val afterRight = after.first().boundsInRoot.right
         // 首颗 `boundsInRoot.left` 判不出滚动：它贴在视口左沿，被 scroll 容器裁掉之后 `left` 恒为 0
-        // （见 CounselingTemplateChipTest 类头那句「滚出视口的那几颗在语义树里被压成 0x0 或半截」）。
+        // （滚出视口的那几颗在语义树里被压成 0x0 或半截）。
         // 首颗右沿才跟着 `scrollState.value` 走：没滚=chipWidth，滚了 S=chipWidth-S。
         assertTrue(
             "chip 行自己该滚起来：首颗右缘向左收窄。beforeRight=$beforeRight afterRight=$afterRight",

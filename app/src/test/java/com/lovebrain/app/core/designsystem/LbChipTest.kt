@@ -207,8 +207,7 @@ class LbChipTest {
      * 三种形状都要量：单层实心（`filled`）、热区分两层（`layeredTouch`）、
      * 以及换行容器里那一颗（上一格已经量过它的角色，这里量它的盒子）。
      * `touchFloor = false` 那一档**故意不在这里量**：它是两处既有欠账
-     * （持续意图那颗胶囊、有效期那一排）的形状，欠着什么由 `SuggestIntentChipTest`
-     * 那一格说明，别让它躲在这一格里被"全达标"读过去。
+     * （持续意图那颗胶囊、有效期那一排）的形状，别让它躲在这一格里被"全达标"读过去。
      */
     @Test
     fun `every shape that claims the floor actually fills it`() {

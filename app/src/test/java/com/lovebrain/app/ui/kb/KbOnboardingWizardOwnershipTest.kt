@@ -10,7 +10,7 @@ import java.io.File
  * 建库向导从 `ui/KnowledgeBaseActivity.kt` 搬进 `ui/kb/` 之后的**归位合同**（工单 W-D）。
  *
  * ⚠ 这一族读的是**结构**，不是行为：它证明"这次搬家没被搬坏、也没有被搬回去"，
- * 证明不了"这一屏长得对"——后者归 `KbOnboardingWizardSemanticsTest` 那棵语义树判。
+ * 证明不了"这一屏长得对"——后者归语义树侧判。
  * 之所以还值得单写一格，理由与 `ui/panel/reply/ResultAreaOwnershipTest` 同一句：
  * 搬家最常见的坏法不是编译不过（那当场就红），而是几周后有人把向导重新内联回 Activity，
  * 于是同一个变化理由再次住进两个文件，而语义树那几格照样全绿。

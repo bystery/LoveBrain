@@ -200,7 +200,7 @@ class SettingsOverlayPointerGateTest {
     // ═══════════ 夹具 ═══════════
 
     /**
-     * 整屏挂载（与 `PanelHostSemanticsTest` 同一套桩），走生产齿轮开设置页。
+     * 整屏挂载，走生产齿轮开设置页。
      * `panelBackdropOpacityPercent` 桩在 80：显示轴落在中段（20%），
      * "往右拖变大"这句判据才立得住（relaxed 的 0 = 全透 = 顶格 80，没法往右）。
      */
@@ -337,7 +337,7 @@ class SettingsOverlayPointerGateTest {
         )
     }
 
-    /** 持有者侧桩：与 `PanelHostSemanticsTest` 同一套（整屏那些流一条条点名） */
+    /** 持有者侧桩：整屏那些流一条条点名 */
     private fun fakeVm(): LoveBrainViewModel {
         val vm = mockk<LoveBrainViewModel>(relaxed = true)
         val composer = mockk<ComposerStore>(relaxed = true)

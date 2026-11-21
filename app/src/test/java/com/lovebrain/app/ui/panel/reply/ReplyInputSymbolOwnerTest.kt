@@ -200,8 +200,8 @@ class ReplyInputSymbolOwnerTest {
      * 命中轴两轴都垫到 core 那颗紧凑档（只垫高度＝假分层，正是本轮实测过的坏形状）、
      * 可见轴那颗 22dp 胶囊一寸没动、占位轴不许再包一层全站下限（那会把紧凑档作废）。
      *
-     * ⚠ 这里判的是"链上写了谁"，不是"屏上量到几 dp"——量边界那两把是 `RoundScopeChipFootprintTest`
-     * （占位两轴 < 48）与 `PanelHostSemanticsTest`（整屏逐颗换尺），三把尺各看一件事。
+     * ⚠ 这里判的是"链上写了谁"，不是"屏上量到几 dp"——量边界那把是 `ResultAreaTouchTargetsTest`
+     * 一族同款的占位两轴 < 48 尺，两把尺各看一件事。
      */
     @Test
     fun `the symbol keeps the hit floor on its own tier without resizing the visible pill`() {

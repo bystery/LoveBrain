@@ -48,7 +48,7 @@ import org.robolectric.annotation.Config
 )
 class ReplyInputWidthBudgetTest {
 
-    /** 面板自己左右各扣 `Spacing.xl`，才是行 1 真正拿到的宽（与 `RoleChipSemanticsTest` 同一口径） */
+    /** 面板自己左右各扣 `Spacing.xl`，才是行 1 真正拿到的宽 */
     private fun rowWidthOf(windowWidthDp: Int): Float =
         windowWidthDp - 2f * Spacing.xl.value
 

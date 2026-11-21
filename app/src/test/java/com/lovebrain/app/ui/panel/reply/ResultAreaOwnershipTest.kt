@@ -11,7 +11,7 @@ import java.io.File
  *
  * ⚠ 这一格读的是**结构**，不是行为：它证明的是"这次搬家没被搬坏、也没有搬回原处"，
  * 证明不了"这一屏长得对"。后者一律在语义树那边判
- * （`ResultAreaTouchTargetsTest`、`MemoryCorrectionFlowTest`、`PanelHostSemanticsTest`）。
+ * （`ResultAreaTouchTargetsTest`、`MemoryCorrectionFlowTest`）。
  * 还值得写这一格的原因很具体：搬家最常见的坏法不是编译不过（那当场就红），
  * 而是几周后有人把菜单又内联回 ResultArea.kt，于是同一个变化理由重新住进两个文件，
  * 而语义树那几格照样全绿——它们判的是屏幕，不是文件归位。
