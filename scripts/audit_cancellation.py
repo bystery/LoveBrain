@@ -10,12 +10,15 @@
 扫 app/src/main 的每一个 `catch (:Exception)` / `catch (:Throwable)` / `runCatching {`，逐个判定：
 
   PROTECTED      块内（或紧随块尾 4 行内，Kotlin 惯用的 `r.exceptionOrNull() is CancellationException
-                 → throw` 写法）显式出现 CancellationException —— 取消信号被显式放行
+                 → throw` 写法）**代码里**显式出现 CancellationException —— 取消信号被显式放行
+                 （注释里提到这个词不算：判据先剥注释，见 strip_kotlin_comments）
   WAIVED        站点同行或紧邻上一行写了 `cancel-safe:` + 非空理由 —— 人工复核过的豁免
   SUSPEND-FREE   块体内没有任何挂起点：纯字符串解析 / 纯 java.io 文件读写 / 非挂起工具函数。
                  取消信号不可能从这些调用栈里抛出，吞掉 Exception 不构成吞取消
   NEEDS_REVIEW   以上都不是，且块体内确实存在挂起调用 —— 协程被取消时会被静默吞掉，
                  表现为"取消后继续跑/把取消当成业务失败上报"，--check 下直接失败
+  CANCEL-SWALLOWED  `runCatching { … }` 包住了可挂起的代码却没有随后把取消重抛出去：
+                 任务会以"正常完成"收场，`job.isCancelled` 变成 false —— --check 下直接失败
 
 挂起点判据不靠猜：先从整个 app/src/main 收集所有 `suspend fun` 的名字，
 再叠加协程库与 java 并发包里公认的挂起 API（withContext/delay/withLock/await/collect…）。
@@ -64,6 +67,79 @@ LIBRARY_SUSPEND = {
 def strip_line_comment(line):
     idx = line.find('//')
     return (line[:idx], line[idx:]) if idx >= 0 else (line, '')
+
+def strip_kotlin_comments(text):
+    """剥掉 Kotlin 注释（`//` 与可嵌套的 `/* */`），只留代码；字符串/字符字面量原样跳过。
+
+    为什么必须剥：判据认的是"代码里显式放行了取消"。注释里写到 CancellationException
+    （比如一句解释"本仓这里不吞取消"）不能让一个吞取消的站点变成 PROTECTED——
+    那正是这一版修掉的假 PASS。字符串字面量同理（日志文案不是保护）。
+
+    换行一个不少地保留（注释与三引号串里的也算）：调用方可能按行号对回源码。
+    """
+    out = []
+    i, n = 0, len(text)
+    while i < n:
+        ch = text[i]
+        if text.startswith('//', i):
+            j = text.find('\n', i)
+            if j < 0:
+                break
+            i = j                       # 换行留给主循环原样带出
+            continue
+        if text.startswith('/*', i):
+            depth = 1
+            i += 2
+            newlines = 0
+            while i < n and depth > 0:
+                if text.startswith('/*', i):    # Kotlin 块注释可嵌套
+                    depth += 1
+                    i += 2
+                elif text.startswith('*/', i):
+                    depth -= 1
+                    i += 2
+                else:
+                    if text[i] == '\n':
+                        newlines += 1
+                    i += 1
+            out.append('\n' * newlines)
+            continue
+        if text.startswith('"""', i):
+            # 收尾的三引号可能更长：`""""` 表示内容里带一个引号，真正的收尾是最后那三个。
+            j = text.find('"""', i + 3)
+            while j >= 0 and j + 3 < n and text[j + 3] == '"':
+                j = text.find('"""', j + 1)
+            end = n if j < 0 else j + 3
+            out.append('""' + '\n' * text.count('\n', i, end))
+            i = end
+            continue
+        if ch == '"':
+            i += 1
+            while i < n:
+                if text[i] == '\\':
+                    i += 2
+                    continue
+                if text[i] == '"':
+                    i += 1
+                    break
+                i += 1
+            out.append('""')
+            continue
+        if ch == "'":
+            i += 1
+            while i < n:
+                if text[i] == '\\':
+                    i += 2
+                    continue
+                if text[i] == "'":
+                    i += 1
+                    break
+                i += 1
+            out.append("''")
+            continue
+        out.append(ch)
+        i += 1
+    return ''.join(out)
 
 def block_end(lines, start_idx):
     """从 start_idx 起第一个 `{` 的配平右括号所在行（含）。
@@ -187,7 +263,13 @@ def collect_ce_catches(main_root):
             if not CE_CATCH_RE.search(code):
                 continue
             end = block_end(lines, i)
-            body = chr(10).join(lines[i + 1:end + 1])
+            body = strip_kotlin_comments(chr(10).join(lines[i + 1:end + 1]))
+            if not body.strip() and end == i:
+                # 单行写法 `catch (e: CancellationException) { throw e }`：块体就在本行 `{` 之后，
+                # 只看下一行会把它当成"空块没重抛"（假 CANCEL-SWALLOWED）。
+                code_line = strip_kotlin_comments(lines[i])
+                brace = code_line.find('{')
+                body = code_line[brace + 1:] if brace >= 0 else code_line
             waived = None
             for probe in (comment, lines[i - 1] if i > 0 else ''):
                 m = WAIVE_RE.search(probe)
@@ -211,12 +293,12 @@ def collect(main_root, suspend_names):
             if not SITE_RE.search(code):
                 continue
             end = block_end(lines, i)
-            body = '\n'.join(lines[i:end + 1])
-            above = '\n'.join(lines[max(0, i - 3):i])
+            body = strip_kotlin_comments('\n'.join(lines[i:end + 1]))
+            above = strip_kotlin_comments('\n'.join(lines[max(0, i - 3):i]))
             # 紧随其后 2 行：Kotlin 惯用的 `val r = runCatching{...}
             # if (r.exceptionOrNull() is CancellationException) throw ...` 写法。
             # 窗口不放大——放大到 4 行以上会把无关的取消处理算成本站点的保护，制造漏报。
-            after = '\n'.join(lines[end + 1:min(len(lines), end + 3)])
+            after = strip_kotlin_comments('\n'.join(lines[end + 1:min(len(lines), end + 3)]))
             waived = None
             for probe in (line, lines[i - 1] if i > 0 else ''):
                 _, comment = strip_line_comment(probe)
@@ -227,8 +309,8 @@ def collect(main_root, suspend_names):
             if is_catch:
                 guard_start, guard_end = matching_try_span(lines, i)
                 # 同一条 try 链上任何位置显式放行取消，本 catch 就吞不到它
-                chain = (chr(10).join(lines[guard_start:catch_chain_end(
-                    lines, guard_start, guard_end) + 1]) if guard_start is not None else '')
+                chain = (strip_kotlin_comments(chr(10).join(lines[guard_start:catch_chain_end(
+                    lines, guard_start, guard_end) + 1])) if guard_start is not None else '')
             else:
                 guard_start, guard_end = i, end
                 chain = ''
@@ -243,10 +325,20 @@ def collect(main_root, suspend_names):
                 'suspend_call': susp if reachable else None,
                 'unreachable_call': susp if (susp and not reachable) else None,
                 'is_catch': is_catch,
+                # `runCatching { … }` 与 catch 分开判：前者没有"块内重抛"这条路，
+                # 它唯一的放行写法是块尾紧跟 `… is CancellationException → throw`，
+                # 没写就是吞取消（CANCEL-SWALLOWED），不能混进 NEEDS_REVIEW 里当"待复核"。
+                'run_catching': not is_catch,
             })
     return sites
 
 def verdict(site):
+    """单个站点的判定。
+
+    `runCatching { … }` 与 `catch (:Exception)` 分开判：前者**唯一的**放行写法是块尾
+    （或紧邻上一行）显式 `is CancellationException → throw`，没写就是吞取消，
+    与 `catch (CancellationException)` 不重抛同罪——都记 CANCEL-SWALLOWED，而不是"待复核"。
+    """
     if site.get('kind') == 'ce-catch':
         if site['propagated']:
             return 'PROPAGATED'
@@ -257,6 +349,8 @@ def verdict(site):
         return 'PROTECTED'
     if site['waived']:
         return 'WAIVED'
+    if site.get('run_catching'):
+        return 'CANCEL-SWALLOWED' if site['suspend_call'] else 'SUSPEND-FREE'
     return 'NEEDS_REVIEW' if site['suspend_call'] else 'SUSPEND-FREE'
 
 def main():
@@ -299,7 +393,8 @@ def main():
             ('SUSPEND-FREE', '块体内无挂起点，吞掉 Exception 不等于吞掉取消'),
             ('NEEDS_REVIEW', '协程可挂起处吞掉取消信号 —— 必须修'),
             ('PROPAGATED', '`catch (CancellationException)` 块内确实重抛 —— 取消继续往上传'),
-            ('CANCEL-SWALLOWED', '接住取消却没重抛：任务以"正常完成"收场 —— 必须修或写明豁免理由'),
+            ('CANCEL-SWALLOWED', '接住取消却没重抛（catch 块内无 throw／runCatching 块尾未重抛）：'
+                                 '任务以"正常完成"收场 —— 必须修或写明豁免理由'),
         ]
         for k, why in rows:
             print('| %s | %d | %s |' % (k, counts.get(k, 0), why))
@@ -337,7 +432,9 @@ def main():
             '| 判定 | 含义 |',
             '|---|---|',
             '| PROPAGATED | `catch (:CancellationException)` 块内有 `throw` —— 取消继续传播 |',
-            '| CANCEL-SWALLOWED | 接住取消却没重抛：`job.isCancelled` 会变成 false，等它的人以为跑完了 —— `--check` 直接失败 |',
+            '| CANCEL-SWALLOWED | 接住取消却没重抛：`catch (CancellationException)` 块内无 `throw`，或 '
+            '`runCatching { … }` 包住可挂起代码后没在块尾 `is CancellationException → throw` —— '
+            '`job.isCancelled` 会变成 false，等它的人以为跑完了 —— `--check` 直接失败 |',
             '| PROTECTED | 块内、紧邻上下文或同一条 try 链上显式处理 `CancellationException` |',
             '| WAIVED | 站点旁写了 `cancel-safe:` + 非空理由，人工复核过 |',
             '| SUSPEND-FREE | 受保护代码段内没有挂起点，且所在函数不是 suspend：吞异常不等于吞取消 |',
@@ -358,8 +455,8 @@ def main():
         lines.append('| 合计 | %d |' % len(sites))
         lines += [
             '',
-            '`--check` 结论：%s' % ('**PASS**（没有未处置的可挂起吞取消站点，'
-                                     '且每一处 `catch (CancellationException)` 都重抛了）' if not bad
+            '`--check` 结论：%s' % ('**PASS**（没有未处置的可挂起吞取消站点：`catch (CancellationException)` '
+                                     '都重抛了，`runCatching` 都没有吞掉可挂起代码的取消）' if not bad
                                      else '**FAIL**（%d 个待处置）' % len(bad)),
             '',
             '## 逐站点',
@@ -382,12 +479,17 @@ def main():
     if bad:
         print('[cancel-audit] FAIL 有 %d 个站点会吞掉取消信号：' % len(bad))
         for s in bad[:60]:
+            if s.get('kind') == 'ce-catch':
+                where = '[catch (CancellationException) 未重抛]'
+            elif s.get('run_catching'):
+                where = '[runCatching 未重抛取消，挂起点 %s]' % s['suspend_call']
+            else:
+                where = '[挂起点 %s]' % s['suspend_call']
             print('  %-17s %s:%d  %s' % (
-                verdict(s), rel(s['path']), s['line'],
-                '[挂起点 %s]' % s['suspend_call'] if s.get('suspend_call') else '[取消未重抛]'))
+                verdict(s), rel(s['path']), s['line'], where))
         return 1
     print('[cancel-audit] PASS 每个可挂起的吞异常站点都显式放行了取消信号，'
-          '且每一处 catch (CancellationException) 都重抛了')
+          '每一处 catch (CancellationException) 都重抛了，runCatching 也都没有吞掉可挂起代码的取消')
     return 0
 
 if __name__ == '__main__':

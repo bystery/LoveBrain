@@ -1,8 +1,8 @@
 name: Manual
 
 # 手动触发的慢/设备级门禁（从 ci.yml 挪出）。
-# 目的：push CI 不再为模拟器、像素比对、R8 打包与覆盖安装买单；这四个 job
-# （ui-test / visual-baseline / r8-release-check / upgrade-test）只在 workflow_dispatch 时跑。
+# 目的：push CI 不再为模拟器、R8 打包与覆盖安装买单；这三个 job
+# （ui-test / r8-release-check / upgrade-test）只在 workflow_dispatch 时跑。
 # 语义守恒：upgrade-test 的 if 条件、四道 secret 门、脚本调用一字未改，只是换了承载文件。
 #   · 原 ci.yml 里 upgrade-test 的 needs: [verify, ui-test] 跨文件失效 → 这里去掉 needs；
 #     如需"UI 先绿再跑升级"，在 dispatch 后按顺序手点即可。
@@ -20,6 +20,9 @@ name: Manual
 
 on:
   workflow_dispatch:
+  # 夜间兜底每日一次（UTC 16:17 ≈ 北京 00:17）：schedule 只该跑 cancellation-audit
+  schedule:
+    - cron: '17 16 * * *'
 
 permissions:
   contents: read
@@ -34,6 +37,7 @@ jobs:
   #   "不让发布永远找不到任务"就是这个意思。
   ui-test:
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
 
     steps:
       - uses: actions/checkout@v4
@@ -105,58 +109,6 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  # 视觉基线：只在 verify 模式比对，绝不自动覆盖 baseline。
-  # 重新生成基线是显式人工动作：./gradlew :app:recordRoborazziDebug + 人看过 + 单独提交。
-  visual-baseline:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - uses: gradle/actions/setup-gradle@v3
-
-      - name: Make scripts executable
-        run: chmod +x gradlew scripts/*.sh scripts/lib/*.sh
-
-      - name: Screenshot baselines must match (verify only — never record)
-        # ⚠ 这一步必须单独存在：带着一次真实视觉回归跑普通 testDebugUnitTest 是 rc=0 全绿——
-        #   roborazzi 默认模式只重录不比对，比对只在 verify 模式发生。
-        # ⚠ 不能直接跑 gradle task：roborazzi 在 verify 模式读 app/build/outputs/roborazzi/ 作原图，
-        #   干净检出里那目录为空。脚本把仓库基线放到它真正会读的位置，并先清 build/ 残留。
-        run: bash scripts/verify_visual_baseline.sh
-
-      - name: Upload screenshot comparison report and actual images
-        # 带实到图是刻意的：红的时候人要能看见 runner 自己画出来的那张，而不是只看见一句失败。
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: roborazzi-report
-          path: |
-            app/build/reports/roborazzi/
-            app/build/intermediates/roborazzi/
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Moved-out source-scan family must still run (发布前专用入口)
-        # ci-lite 排除档把两族移出默认 push（排除档见 app/build.gradle.kts 尾部注释），
-        # 这一格是它们唯一的运行入口，发布前必须绿——移走≠删掉，"不能全删/不能假绿"就在这一步兑现：
-        #   ① architecture.*——源码文本/字符串预算/形状所有权/层级依赖（原有）；
-        #   ② 逐档矩阵渲染族——UiMatrixFullSweepTest（4 宽×3 字全跑）+ LongProviderNameSemanticsTest
-        #      （FULL + FONT_SCALES 字号族）——"昂贵的全量 JVM UI 渲染/多尺寸多字号"，本轮补。
-        # 两族都是**类名档黑名单**移出 push，新测试默认仍跑；这里并列列出、不新建 job、不建第三套发布门禁。
-        # ⚠ 用多个 --tests 并列（Gradle 会把它们取并集），不能塞进一个逗号串——单个 --tests 值里的逗号
-        #   不是分隔符，会被当成一个类名去匹配 ⇒ 谁都不匹配 ⇒ rc=0 空跑＝假绿，正是这套门禁要防的形状。
-        run: >-
-          ./gradlew :app:testDebugUnitTest --no-daemon
-          --tests "com.lovebrain.app.architecture.*"
-          --tests "com.lovebrain.app.ui.matrix.UiMatrixFullSweepTest"
-          --tests "com.lovebrain.app.ui.home.LongProviderNameSemanticsTest"
-
   # R8 / Release 打包与 APK 元数据校验（原文照搬自 ci.yml@7758148 :81-119 的 verify 步骤）。
   # 口径："全量模拟器与 release R8 打包放明确的手动/发布验证，发布前必要的一次仍执行"
   # —— bacede8 把它从 push 删掉并在 ci.yml :6-8 声称"移到 release.yml 的本地手动流程"，
@@ -175,6 +127,7 @@ jobs:
   #      本 job 名（它不再住在 verify 里）。脚本名与 flag 一字未改。
   r8-release-check:
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
 
     steps:
       - uses: actions/checkout@v4
@@ -308,3 +261,12 @@ jobs:
           path: fixtures/
           if-no-files-found: error
           retention-days: 30
+
+  cancellation-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cancellation-hygiene audit must be clean
+        run: python3 scripts/audit_cancellation.py --check

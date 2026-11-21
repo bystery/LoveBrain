@@ -1,7 +1,7 @@
 name: CI
 
-# 精简 2026-10-07（发布收口）：push/PR 只有一个 verify job，四件事——
-# unit test + lint + androidTest 编译检查 + 协程取消静态护栏，别的都不在默认门上。
+# 精简 2026-10-07（发布收口）：push/PR 只有一个 verify job，三件事——
+# unit test + lint + androidTest 编译检查，别的都不在默认门上。
 # 慢件的去处（原则："移到已有手动工作流"，不是删掉）：
 #   · R8 assembleRelease + APK 元数据校验（原 ci.yml@7758148 :81-119）
 #     → .github/workflows/manual.yml 的 `r8-release-check`（workflow_dispatch）。
@@ -14,8 +14,8 @@ name: CI
 #     逐行补回（步骤体 diff 为空）。release.yml 的 --require-job ui-test 因此**不能**恢复：
 #     它是另一个 workflow run 的 job，写进发布门禁 = 发布永远找不到任务。
 # 保留的理由：unit test / lint 是"核心回归 + 必要 lint"；androidTest 编译
-# 是"相关测试编译"（只编不跑，跑在 manual.yml ⇒ "不重复编译相同测试"）；
-# 协程取消审计秒级、防真崩溃，不属于"源码文本/字符串预算/形状所有权"那类扫描。
+# 是"相关测试编译"（只编不跑，跑在 manual.yml ⇒ "不重复编译相同测试"）。
+# 协程取消审计已移出 push 门禁 → manual.yml 的 cancellation-audit（手点 + 每日夜间兜底）。
 # 产物上传门禁：两个报告只在 success() 时上传，见下面两步的注释。
 
 on:
@@ -70,9 +70,6 @@ jobs:
 
       - name: Instrumentation sources must compile (same SHA, same job)
         run: ./gradlew :app:compileDebugAndroidTestKotlin --no-daemon
-
-      - name: Cancellation-hygiene audit must be clean
-        run: python3 scripts/audit_cancellation.py --check
 
       - name: Upload lint report
         # 同上：原 if: always()（ci.yml@504cb65 :64；更早 ci.yml@7758148 :73）改 success()。
