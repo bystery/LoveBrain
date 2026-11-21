@@ -13,9 +13,9 @@ object AssetRegistry {
     const val STAGE = "engine/system_prompt/stage.md"
     const val REDLINE = "engine/system_prompt/redline.md"
     const val NATURALNESS = "engine/system_prompt/naturalness_check.md"
-    const val AGGRESSIVE = "engine/system_prompt/aggressive.md"
+    // aggressive.md 已不在资产树中：登记留在这里等于让启动自检每次假红。
     const val FORMAT = "engine/system_prompt/format.md"
-    // ═══ 冠军引擎资产（T4 Kotlin 移植 W1：arena 双冠军机制移植；不动上面 CORE 四件）═══
+    // ═══ 冠军引擎资产（Kotlin 移植的双冠军机制；不动上面 CORE 四件）═══
     // v3_system_slim 系精简资产 + champion/ 目录命名空间，由
     // domain/champion/ChampionPromptAssembler.ChampionAssets 消费。
     const val CHAMPION_CORE_SLIM = "engine/champion/core_slim.md"
@@ -46,7 +46,7 @@ object AssetRegistry {
 
     /** 全部注册资产（启动自检用；新增资产必须登记于此，否则自检覆盖不到） */
     val ALL: List<String> = listOf(
-        CORE, STAGE, REDLINE, NATURALNESS, AGGRESSIVE, FORMAT,
+        CORE, STAGE, REDLINE, NATURALNESS, FORMAT,
         COUNSELING, POLISH, PROACTIVE,
         LESSONS, ONBOARDING, REFLECT, VECTOR, ENGINE_README,
         CHAMPION_CORE_SLIM, CHAMPION_NATURALNESS, CHAMPION_REDLINE, CHAMPION_FORMAT

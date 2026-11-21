@@ -2,6 +2,7 @@ package com.lovebrain.app.data
 
 import com.lovebrain.app.model.KbName
 import com.lovebrain.app.model.KnowledgeBase
+import com.lovebrain.app.model.KnowledgeSchemaVersion
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.FileOutputStream
@@ -75,18 +76,49 @@ object KbArchiveTransfer {
                 // 库名可能任意长，甩进消息里会把噪音带回 UI。
                 throw TransferException("知识库名不符合本机命名规则（长度或字符非法），导入中止")
             }
+            // 版本闸：导入是**搬目录**，不经过仓库的写链与迁移判定。旧版 App 收下一本
+            // 未来 schema（v4）的库，之后每一次"只读保护"都只靠进程内的迁移集合，
+            // 一旦没先打开过这本库，v3 代码就会把 v4 结构覆写掉。这里在搬入之前就拒：
+            // 结构比本机新，就不让这本库进入本机的 knowledge/ 树。
+            val stagedVersion = detectSchemaVersion(topDir)
+            if (KnowledgeSchemaVersion.isBeyondSupported(stagedVersion)) {
+                throw TransferException("知识库结构版本高于本机 App 支持范围，导入中止（避免旧版覆写新结构）")
+            }
             val target = File(knowledgeRoot, topDir.name)
             if (target.exists()) {
                 throw TransferException("已存在同名知识库，导入中止")
             }
             knowledgeRoot.mkdirs()
-            // minSdk=26：java.nio.file 可用；同盘 rename = 原子搬入
-            Files.move(topDir.toPath(), target.toPath())
+            // minSdk=26：java.nio.file 可用；同盘 rename = 原子搬入。
+            // 不用 REPLACE_EXISTING：目标已存在必须是失败（上面查过一次，这里是并发下的兜底）。
+            try {
+                Files.move(topDir.toPath(), target.toPath())
+            } catch (e: java.nio.file.FileAlreadyExistsException) {
+                throw TransferException("已存在同名知识库，导入中止", e)
+            } catch (e: Exception) {
+                throw TransferException("知识库搬入失败，导入中止", e)
+            }
             return kb.name
         } finally {
             // 任何路径都清理暂存壳：成功时剩下的是空目录，失败时是半截包
             runCatching { stagingRoot.deleteRecursively() }
         }
+    }
+
+    /**
+     * 暂存库的 schema 版本（与 [KnowledgeMigrator] 同一把尺：优先 `.schema_version`，
+     * 缺失时按 [KnowledgeSchemaVersion.legacyMarkers] 推断，最小值 1）。
+     * 只在**搬入之前**读暂存区，不读 knowledge/ 树。
+     */
+    private fun detectSchemaVersion(topDir: File): Int {
+        val content = runCatching { File(topDir, ".schema_version").readText().trim() }.getOrNull()
+        val version = content?.toIntOrNull()
+        if (version != null && version > 0) return version
+        var maxVersion = 1
+        for ((markerName, markerVersion) in KnowledgeSchemaVersion.legacyMarkers) {
+            if (File(topDir, markerName).exists() && markerVersion > maxVersion) maxVersion = markerVersion
+        }
+        return maxVersion
     }
 
     private fun extractToStaging(input: InputStream, stagingRoot: File) {

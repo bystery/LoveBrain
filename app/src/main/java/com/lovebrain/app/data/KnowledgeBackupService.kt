@@ -1,9 +1,7 @@
 package com.lovebrain.app.data
 
+import com.lovebrain.app.util.TimeFmt
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 /**
  * 备份需要的最小存储视图——**故意不是** [KbStorageAccess]。
@@ -70,7 +68,7 @@ internal class KnowledgeBackupService(
         val lastBackup = if (marker.exists()) runCatching { marker.readText().toLong() }.getOrDefault(0L) else 0L
         if (now - lastBackup < intervalMs) return
 
-        val timestamp = SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault()).format(Date())
+        val timestamp = TimeFmt.stampNow()
         val backupRoot = File(root, BACKUP_DIR_NAME)
         backupRoot.mkdirs()
 

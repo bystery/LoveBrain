@@ -64,8 +64,18 @@ internal class KnowledgeMigrator(private val io: KbStorageAccess) {
     /** schema 高于本 App 支持范围的库——只读，拒绝写入 */
     private val schemaTooNewKbs = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
 
-    /** 该库是否因 schema 过新而进入只读保护 */
-    fun isReadOnly(kbName: String): Boolean = schemaTooNewKbs.contains(kbName)
+    /**
+     * 该库是否因 schema 过新而进入只读保护。
+     *
+     * 2026-11 之前这里只查内存集合：集合由 `migrateIfNeeded` 填充，而写入并不保证
+     * 先跑过迁移（导入搬进来的库、还没打开过的 v4 库、进程刚启动的窗口）——于是
+     * 「只读」只剩一个进程内的印象，磁盘上的 v4 库照样被 v3 代码改写。
+     * 现在每次判定都同时看**磁盘真相**（`.schema_version` / legacy marker），
+     * 内存集合只是已知结论的缓存，不再是唯一闸门。
+     */
+    fun isReadOnly(kbName: String): Boolean =
+        schemaTooNewKbs.contains(kbName) ||
+            KnowledgeSchemaVersion.isBeyondSupported(detectSchemaVersion(kbName))
 
     /**
      * 使用单一 .schema_version 文件检测当前 schema 版本。

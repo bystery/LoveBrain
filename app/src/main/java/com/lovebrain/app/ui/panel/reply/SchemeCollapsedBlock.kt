@@ -44,7 +44,7 @@ object SchemeCopyFeedback {
  * 方案卡默认态展示块——从 SchemeCard 抽离的纯展示子组件。
  *
  * 默认态（Collapsed）：正文 + 操作行（复制/赞/踩）。
- * - 空回复：按 [notSuitable] 分两张脸（§11.2 三因分家的文案那一半）——
+ * - 空回复：按 [notSuitable] 分两张脸（三因分家的文案那一半）——
  *   true = 协议允许的 null 方向，念「本轮不适合」；false = 这一项没生成，念「未生成」。
  *   两种都不带操作行——**不伪造一句正文把卡片填满**，也不把没生成说成不适合。
  * - 非空：正文（可滚）+ 右下角三颗紧凑动作
@@ -57,7 +57,7 @@ object SchemeCopyFeedback {
  *
  * 复制对钩按 [identityKey] + 正文记：只有对应那张卡变勾，正文换版后旧勾自己清。
  *
- * [contentHeightBounded]（§3 两种阅读方向唯一的内容侧分叉，由 [SchemeCard] 传下来）：
+ * [contentHeightBounded]（两种阅读方向唯一的内容侧分叉，由 [SchemeCard] 传下来）：
  * - true＝横向档，卡片高度固定，正文那一格 `weight(1f)` 撑开剩余高度、超出在**卡内**滚；
  * - false＝纵向档，卡片按内容长高，正文整条摊开、不嵌第二条滚动（溢出归外层那唯一一颗
  *   `readScroll`）。此时拿 `weight(1f)`/`verticalScroll` 读到的是无限高度约束，量不出真尺寸。

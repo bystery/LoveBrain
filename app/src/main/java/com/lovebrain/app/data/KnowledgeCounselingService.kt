@@ -17,8 +17,8 @@ internal interface CounselingStorage {
     /** 过 canonical 守门的读：越界、非法、不存在都得到空串 */
     fun read(kbName: String, relativePath: String): String
 
-    /** 锁区内写入核心（调用方已持有 fileMutex）；只读 schema 拒绝在仓库那一侧 */
-    fun writeUnlocked(kbName: String, relativePath: String, content: String)
+    /** 锁区内写入核心（调用方已持有 fileMutex）；只读 schema 拒绝在仓库那一侧。false = 一个字节都没落 */
+    fun writeUnlocked(kbName: String, relativePath: String, content: String): Boolean
 }
 
 /**
@@ -73,7 +73,9 @@ internal class KnowledgeCounselingService(private val storage: CounselingStorage
                 if (analysisEntry.isNotBlank()) append("\n").append(analysisEntry.trim()).append("\n")
             }
         }
-        storage.writeUnlocked(kbName, path, newContent)
+        if (!storage.writeUnlocked(kbName, path, newContent)) {
+            storage.note("appendCounselingEntries failed: write refused or failed ($path)")
+        }
     }
 
     /**
@@ -87,7 +89,10 @@ internal class KnowledgeCounselingService(private val storage: CounselingStorage
         }
         val recentPath = "moment/recent.md"
         val existing = storage.read(kbName, recentPath)
-        storage.writeUnlocked(kbName, recentPath, existing + entry)
+        if (!storage.writeUnlocked(kbName, recentPath, existing + entry)) {
+            storage.note("appendActualSentRecord failed: write refused or failed ($recentPath)")
+            return false
+        }
         return true
     }
 
@@ -107,7 +112,10 @@ internal class KnowledgeCounselingService(private val storage: CounselingStorage
             return false
         }
         val updated = existing.replace(oldEntry, newEntry)
-        storage.writeUnlocked(kbName, recentPath, updated)
+        if (!storage.writeUnlocked(kbName, recentPath, updated)) {
+            storage.note("replaceActualSentRecord failed: write refused or failed ($recentPath)")
+            return false
+        }
         return true
     }
 

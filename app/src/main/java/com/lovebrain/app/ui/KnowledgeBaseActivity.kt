@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,16 +58,26 @@ class KnowledgeBaseActivity : ComponentActivity() {
     // 数据访问一律经 ViewModel：Activity 不 inject Repository，只负责窗口标记与 Activity Result 启动
     private val viewModel: KnowledgeBaseViewModel by viewModel()
 
-    /** 导出目标库：CreateDocument 回调只回传 Uri，需自行配对 */
+    /**
+     * 导出目标库：CreateDocument 回调只回传 Uri，需自行配对。
+     * 存进 savedInstanceState——选择器期间转屏会把 Activity 重建，普通字段丢了回调就配不上
+     * 目标库（旧行为是静默不导出）。
+     */
     private var pendingExportKb: String? = null
+
+    /** CreateDocument 回来了却配不上目标库（进程重建等）：交给页面那条既有提示，不静默 */
+    private val exportTargetLost = mutableStateOf(false)
 
     private val exportLauncher = registerForActivityResult(
         ActivityResultContracts.CreateDocument("application/zip")
     ) { uri: Uri? ->
         val kbName = pendingExportKb
         pendingExportKb = null
-        if (uri == null || kbName == null) return@registerForActivityResult
-        viewModel.export(kbName, uri)
+        when {
+            uri == null -> Unit
+            kbName == null -> exportTargetLost.value = true
+            else -> viewModel.export(kbName, uri)
+        }
     }
 
     private val importLauncher = registerForActivityResult(
@@ -77,6 +88,7 @@ class KnowledgeBaseActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        pendingExportKb = savedInstanceState?.getString(KEY_PENDING_EXPORT)
         // FLAG_SECURE——知识库内容含关系数据，防止最近任务截图泄露
         window.setFlags(
             android.view.WindowManager.LayoutParams.FLAG_SECURE,
@@ -87,6 +99,7 @@ class KnowledgeBaseActivity : ComponentActivity() {
             LoveBrainTheme {
                 KbManagementScreen(
                     viewModel = viewModel,
+                    exportTargetLost = exportTargetLost,
                     onEdit = { name ->
                         startActivity(
                             Intent(this, KbEditActivity::class.java).putExtra("kb_name", name)
@@ -106,6 +119,15 @@ class KnowledgeBaseActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(KEY_PENDING_EXPORT, pendingExportKb)
+    }
+
+    private companion object {
+        const val KEY_PENDING_EXPORT = "pending_export_kb"
+    }
 }
 
 /**
@@ -116,21 +138,32 @@ class KnowledgeBaseActivity : ComponentActivity() {
 @Composable
 private fun KbManagementScreen(
     viewModel: KnowledgeBaseViewModel,
+    exportTargetLost: MutableState<Boolean>,
     onEdit: (String) -> Unit,
     onExport: (String) -> Unit,
     onImport: () -> Unit,
     onBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    // 建库在飞以 VM 那一格为准：向导不再自己揣"生成中"，未配模型/在飞/失败都自动复位
+    val creating by viewModel.creating.collectAsStateWithLifecycle()
     var showOnboarding by remember { mutableStateOf(false) }
     var feedback by remember { mutableStateOf<String?>(null) }
     // 未配置供应商二选一弹窗：继续 = 空模板库，取消 = 留在向导内
     var showNoProviderDialog by remember { mutableStateOf(false) }
 
+    // 导出回调配不上目标库（转屏/进程重建丢了那一格）：走同一条反馈弹窗，不再静默
+    LaunchedEffect(exportTargetLost.value) {
+        if (exportTargetLost.value) {
+            exportTargetLost.value = false
+            feedback = "导出失败，请重试"
+        }
+    }
+
     // 读盘时机 = 这一页每次回到前台，而不是"组合那一次"。
     // 挂在 `LaunchedEffect(Unit)` 上会漏掉最常被走的那一趟：去编辑页改完再回来，Activity 只是
     // resume、这一屏没有重新装配，卡片上还停在出发前那一读（阶段与轮次都是编辑会动的数）——
-    // 这就是 §12.1 三分法里「列表没刷新」那一支，也是 §12.3「正常返回…仍能找到各库」要的件事。
+    // 这就是三分法里「列表没刷新」那一支，也是「正常返回…仍能找到各库」要的件事。
     // 观察者写法照 `ui/home/CaptureAppsScreen.kt` 那一颗（同一族问题、同一个写法），不立第二套。
     // 首次进入也走这一条：状态已经是 RESUMED 时 `addObserver` 会当场补发一次 ON_RESUME。
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -161,11 +194,11 @@ private fun KbManagementScreen(
                         viewModel.refresh()
                     }
                     KbCreationOutcome.EmptyCreateFailed -> {
-                        showOnboarding = false
+                        // 失败不关向导：问卷是用户刚答的，关掉就再也找不回来（原来这里连同
+                        // "生成中"一起收场，用户只看到一句失败、答案全丢）
                         feedback = "创建失败：可能名称重复，请重试"
                     }
                     KbCreationOutcome.OnboardingCreateFailed -> {
-                        showOnboarding = false
                         feedback = "创建知识库失败，请重试"
                     }
                     KbCreationOutcome.Cancelled -> showOnboarding = false
@@ -174,10 +207,14 @@ private fun KbManagementScreen(
                 KbEvent.Exported -> feedback = "已导出"
                 KbEvent.ExportFailed -> feedback = "导出失败，请重试"
                 KbEvent.Imported -> feedback = "已导入"
+                // 导入写入已经落盘、列表也刷新过了，只是"当前库"没钉回原处：这一句必须
+                // 说成导入成功 + 请用户自己点一下要用的库，不能说成"不是有效的备份文件"
+                KbEvent.ImportActiveFixFailed ->
+                    feedback = "已导入，但当前库没切回来，请在列表里点一下要用的库"
                 KbEvent.ImportFailed -> feedback = "导入失败：不是有效的知识库备份文件"
                 KbEvent.DeleteFailed -> feedback = "删除失败，请重试"
                 KbEvent.RenameFailed -> feedback = "重命名失败，请重试"
-                // §12.2 / §2.2 第 4 条：点非活动卡就是切库，切完了必须当场说出切到了哪一座——
+                // 点非活动卡就是切库，切完了必须当场说出切到了哪一座——
                 // 「使用中」那一槽说的是结果，这一句说的是"刚才那一下点出了什么"，两件一起做
                 // 才把"打开"与"启用"这两种混淆解释开。名字由 ViewModel 从真实数据流里取。
                 is KbEvent.ActiveSwitched -> feedback = "已切换到「${event.displayName}」"
@@ -216,7 +253,9 @@ private fun KbManagementScreen(
             onCancelGenerating = {
                 viewModel.cancelOnboarding()
                 showOnboarding = false
-            }
+            },
+            // 向导的"生成中"读 VM 这一格：未配模型、在飞、失败三种返回都自动复位
+            creating = creating
         )
     }
 
@@ -291,19 +330,19 @@ internal fun KbListScreen(
     var pendingRename by remember { mutableStateOf<KnowledgeBase?>(null) }
     var renameText by remember { mutableStateOf("") }
 
-    // §12.2 表第一行：页头与共同管理页同族（`ScreenPage` 那一颗），标题就是「知识库」——
+    // 表第一行：页头与共同管理页同族（`ScreenPage` 那一颗），标题就是「知识库」——
     // 旧的「知识库管理」是这一页自己加的后缀，其它管理页（反馈案例、模型供应商）都没有。
     ScreenPage(title = "知识库", onBack = onBack) {
         Column(
             modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
-            // 基线 v1.1 §3.3：F1 族列表间距 16→12，四页不许再各写各的（旧档 `spacedBy(Spacing.xl)` 作废）。
+            // F1 族列表间距 16→12，四页不许再各写各的（旧档 `spacedBy(Spacing.xl)` 作废）。
             verticalArrangement = Arrangement.spacedBy(Spacing.lg)
         ) {
         // 四态只在这里出现一次。替换前这里是一张自造的 40 行空态卡（图标 + 标题 + 一句
         // "点下方「新建知识库」"的指路文字），版式与反馈案例页、供应商区各不相同。
         LbAsyncState(screenState) { shown ->
             // LbAsyncState.Content 的 slot 是 Box——多张卡必须在此处给纵向布局，
-            // 否则 forEach 画出的卡会叠在 Box 同一位置（指导书§6 P0 叠放回归根因）。
+            // 否则 forEach 画出的卡会叠在 Box 同一位置（P0 叠放回归根因）。
             // ProviderSection.kt 同一族也是自己在这里包 Column。
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -426,25 +465,25 @@ internal fun KbListScreen(
 }
 
 /**
- * 知识库这一条的卡 = [LbListCard] 本身（基线 v1.1 §3.6；母版页从今天起也**只交内容**，
+ * 知识库这一条的卡 = [LbListCard] 本身（母版页从今天起也**只交内容**，
  * 卡底形状、字阶、行数上限、动作写法全部归公共件——"母版"不再是"那个还在自己画卡的页面"）。
  *
  * 五个槽每一颗都有真源，没有一颗是编出来的：
  * - `title`：库的显示名（单行 + ellipsis 由公共件钉，页面传不进 `maxLines`）；
  * - `status`：只有当前在用的库有这一槽（旧档那颗"当前使用"是 `background(PrimaryLight)` 自画徽章，
- *   §3.4 之后静息结构归描边、状态归状态槽：6dp 点 + `bodySmall`12 字同一行）；
+ *   之后静息结构归描边、状态归状态槽：6dp 点 + `bodySmall`12 字同一行）；
  * - `meta`：「阶段：X」与「已对话 N 轮」交**两段**，`｜` 分隔符的主人是 `lbMetaLine`（在公共件里），
  *   页面不再拼整句、也不再并排两颗 `Text`；
- * - `actions`：重命名 / 编辑 / 导出恰好三颗次级胶囊（§3.6 动作行上限）。「编辑」「导出」「重命名」
+ * - `actions`：重命名 / 编辑 / 导出恰好三颗次级胶囊（动作行上限）。「编辑」「导出」「重命名」
  *   三个词接上仓里**已有**的 `a11y_action_edit` / `a11y_action_export` / `a11y_action_rename`
  *   （中英两份都在盘上，此前只有读屏在用），不是新文案；
  * - `trailingIcon`：删除从动作行挪到顶右角的垃圾桶图标。语气仍恒走 [LbTextActionTone.Destructive]，
  *   热区与角色归 [LbTextAction] 那唯一一处主人（公共件这一槽只给落点，不画 clickable），
  *   名字接仓里**已有**的 `a11y_action_delete`；点了走页面层那扇既有删除确认弹窗（`pendingDelete`）。
  * - `onClick`：点整卡 = 激活（与旧交互一致）；当前在用的库没有"再激活一次"这件事，交 `null`，
- *   公共件此时不挂 `Role.Button`（旧档靠 `clickable(enabled = !isActive)` 压死一颗活按钮）。
+ *   公共件此时不挂 `Role.Button`（旧档靠 `clickable(enabled =!isActive)` 压死一颗活按钮）。
  *
- * ⚠ 改之前「重命名」是动作行装不下的第四颗，挂在 `detail` 槽（理由见 2026-10-06-L1b 接线单）。
+ * ⚠ 改之前「重命名」是动作行装不下的第四颗，挂在 `detail` 槽（理由见 2026-10-06-L1b 规范）。
  * 这一轮把删除挪去顶右角、动作行让位给 rename/edit/export 三颗次级胶囊：`detail` 槽退场，
  * 「⋯ 溢出档」那条债随这一改一并还清——四件事都在屏上、且都走动作行/尾图标这两条有主人的路。
  */

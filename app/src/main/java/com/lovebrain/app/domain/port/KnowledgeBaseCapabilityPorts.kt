@@ -24,7 +24,7 @@ import com.lovebrain.app.model.ProfileTransactionResult
  *   也没有绕过版本校验的 writeFile。于是"首页删不掉一本库"第一次变成可静态检查的事实，而不是靠自觉。
  *
  * **与 [KnowledgeReadPort] / [KnowledgeWritePort] 的分工**：那一对是给 domain 用的，
- * domain 只碰正文、WAL 与主题轮转；这里的三颗是给页面用的，页面还要管库的生命周期与内容台账。
+ * domain 只碰正文、WAL 与主题轮转；这里的三颗是给页面用的，页面还要管库的生命周期与内容记录。
  * [KnowledgeDocumentPort] 与 [KnowledgeRuntimePort] 由同一个具体仓库实现；
  * [KnowledgeBaseCatalogPort] 由仓库持有的那位目录写侧主人实现（`data/KnowledgeCatalogWriteStore`，
  * 绑定见 di/AppModule.kt 那段说明）——它不持锁、不摸 File、不落盘，锁、路径守门、落盘、编解码
@@ -47,7 +47,9 @@ import com.lovebrain.app.model.ProfileTransactionResult
 interface KnowledgeDocumentPort {
     suspend fun migrateIfNeeded(kbName: String)
     suspend fun readFile(kbName: String, relativePath: String): String
-    suspend fun writeFile(kbName: String, relativePath: String, content: String)
+    // 交回「是否真的落盘」：目标库已删时是 no-op 不复活（与 KnowledgeWritePort.writeFile 同一语义，
+    // 唯一实现 KnowledgeRepository 已按 Boolean 交回），调用方据此报「记入失败」而不是撒谎成功。
+    suspend fun writeFile(kbName: String, relativePath: String, content: String): Boolean
     suspend fun readFileWithVersion(kbName: String, relativePath: String): Pair<String, String>
     suspend fun writeFileWithVersion(
         kbName: String, relativePath: String, content: String, expectedVersion: String
@@ -71,12 +73,12 @@ interface KnowledgeBaseCatalogPort {
     suspend fun updateDisplayName(kbName: String, newDisplay: String)
     suspend fun updateStage(kbName: String, stage: String)
 
-    /** 建库之后写画像三段：内容级写，但由"管理库"这件事带出来 */
-    suspend fun writeFile(kbName: String, relativePath: String, content: String)
+    /** 建库之后写画像三段：内容级写，但由"管理库"这件事带出来；Boolean＝是否真的落盘（同 KnowledgeWritePort） */
+    suspend fun writeFile(kbName: String, relativePath: String, content: String): Boolean
 }
 
 /**
- * 对话运行时对当前库需要的那一族：读上下文、写内容台账。
+ * 对话运行时对当前库需要的那一族：读上下文、写内容记录。
  *
  * 这一颗刻意**不包含** [KnowledgeBaseCatalogPort.setActive] / [KnowledgeBaseCatalogPort.create] /
  * [KnowledgeBaseCatalogPort.delete]，也不包含 [KnowledgeDocumentPort.writeFile] 那种
@@ -107,7 +109,7 @@ interface KnowledgeRuntimePort {
     suspend fun updateWarmthStageLabel(kbName: String, newStage: String)
 
     /**
-     * 已正式提交轮数（kb.json `turnCount` 原值口径——§5.5/§D 轮次唯一合法来源）。
+     * 已正式提交轮数（kb.json `turnCount` 原值口径——/D 轮次唯一合法来源）。
      *
      * guide-6 Step 5：ViewModel 在生成开始各只读一次，冻结进
      * GenerationInput.KbContext.committedTurnCount（读失败传 null → 域内全链回退
@@ -144,7 +146,7 @@ interface KnowledgeRuntimePort {
         status: IntentStatus = IntentStatus.ACTIVE
     ): IntentConfig
 
-    // ── 纠正台账（revision 单调，撤销也递增）──
+    // ── 纠正记录（revision 单调，撤销也递增）──
     suspend fun readCorrections(kbName: String): Map<String, MemoryCorrection>
     suspend fun readCorrectionsAndRevision(kbName: String): Pair<Map<String, MemoryCorrection>, Int>
     suspend fun getCorrectionsRevision(kbName: String): Int

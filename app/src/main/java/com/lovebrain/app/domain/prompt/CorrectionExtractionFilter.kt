@@ -1,5 +1,6 @@
 package com.lovebrain.app.domain.prompt
 
+import com.lovebrain.app.domain.SceneFactCodec
 import com.lovebrain.app.model.CorrectionAction
 import com.lovebrain.app.model.MemoryCorrection
 import com.lovebrain.app.model.MemoryKind
@@ -261,10 +262,10 @@ object CorrectionExtractionFilter {
     /** 单条事实 → 原文：剥掉 `|src=…|spk=…|subj=…` 装饰（新格式）与 `⟨ids⟩` 后缀（旧格式） */
     private fun factTextOf(factText: String): String = when {
         factText.contains("|src=") || factText.contains("|spk=") || factText.contains("|subj=") ->
-            factText.substringBefore('|').trim()
+            SceneFactCodec.decode(factText.substringBefore('|').trim())
         factText.endsWith("⟩") ->
-            Regex("(.*)⟨(.+)⟩$").find(factText)?.groupValues?.get(1)?.trim() ?: factText
-        else -> factText
+            Regex("(.*)⟨(.+)⟩$").find(factText)?.groupValues?.get(1)?.trim()?.let { SceneFactCodec.decode(it) } ?: factText
+        else -> SceneFactCodec.decode(factText)
     }
 
     /** 逐行映射：transform 返回 null = 该行剔除；未剔除的行按返回值落位，行尾换行原样保留 */

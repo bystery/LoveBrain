@@ -86,7 +86,6 @@ import com.lovebrain.app.core.designsystem.LbRowState
 import com.lovebrain.app.core.designsystem.ScreenState
 import com.lovebrain.app.core.designsystem.ScreenAction
 import com.lovebrain.app.model.ProviderTicket
-import com.lovebrain.app.ui.common.RowActionButton
 import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
@@ -94,6 +93,7 @@ import com.lovebrain.app.core.designsystem.Border
 import com.lovebrain.app.core.designsystem.Error
 import com.lovebrain.app.core.designsystem.LbTextAction
 import com.lovebrain.app.core.designsystem.LbTextActionGlyph
+import com.lovebrain.app.core.designsystem.LbTextActionSize
 import com.lovebrain.app.core.designsystem.LbTextActionTone
 import com.lovebrain.app.core.designsystem.LoveBrainShape
 import com.lovebrain.app.core.designsystem.Neutral300
@@ -129,7 +129,7 @@ private object ProviderDimens {
     // 超时档位那一排不再自带私有高度：它接设计系统的具名分段档
     // `LbChipStyles.segmented`，内格可见高读 `AppDimens.CHIP_SEGMENTED_HEIGHT_DP`（32）、
     // 热区由那颗分层外盒读到 `AppDimens.TOUCH_TARGET_MIN_DP`（48）。旧的私有
-    // `TIER_PILL_HEIGHT_DP = 24` 与它带进设计系统外的第二把尺一起收编，见 §③-7 / §⑥ 第20条。
+    // `TIER_PILL_HEIGHT_DP = 24` 与它带进设计系统外的第二把尺一起收编，见。
 
     /** 旧表单滚动柱写死的那一档：现在只当**封顶**，不再当作实际可用高度 */
     const val FORM_SCROLL_MAX_HEIGHT_DP = 520
@@ -144,7 +144,7 @@ private object ProviderDimens {
 /**
  * 展开态那三颗节点的**定位把手**（分隔线 / 供应商列表 / 添加入口）。
  *
- * 只给语义测试量"三者顶坐标严格递增"这一问用（request2 §一：叠放缺陷的证人）。
+ * 只给语义测试量"三者顶坐标严格递增"这一问用（一：叠放缺陷的证人）。
  * 与本页形状、热区、颜色、回调一概无关——加不加这三颗 tag，屏上像素一寸不变；
  * 先例同 `MessageList.kt#MESSAGE_ROW_TEST_TAG`（页内 internal 常量，不进设计系统）。
  */
@@ -179,7 +179,7 @@ private fun providerFormViewportCap(): Dp {
  * ## 这一页的外观从哪儿来
  *
  * 与已踩案例页、捕获范围页、知识库页同一副壳：[ScreenPage] 那一族（页头 + 内容边距）+
- * 一张白卡装着两行摘要与行内紧凑动作（[RowActionButton]）。改之前这一页自己拼
+ * 一张白卡装着两行摘要与行内紧凑动作（[LbTextAction]）。改之前这一页自己拼
  * `LbScreenScaffold` + `LbTopBar(title = "模型供应商")`，页名是内联中文（英文环境念中文）；
  * 现在页名走 `provider_page_title` 一条资源。
  * ⚠ 首页那一格入口卡片的标题现在仍写在  那一边，两边要收成同一条资源（见交接报告）。
@@ -203,7 +203,7 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
     val tickets by viewModel.tickets.collectAsStateWithLifecycle()
     val activeTicket by viewModel.activeTicket.collectAsStateWithLifecycle()
     val providerReady by viewModel.providerReady.collectAsStateWithLifecycle()
-    // ── 「表单在不在场」这两颗归 `rememberSaveable`（指导书§6：返回不能丢未提交字段）──
+    // ── 「表单在不在场」这两颗归 `rememberSaveable`（返回不能丢未提交字段）──
     // 宿主 `SetupActivity` 没写 `android:configChanges`（Manifest 三条 activity 都没写），
     // 所以旋转、系统改字号/深色、开发者选项"不保留活动"都要把整棵页面重挂一遍；
     // 裸 `remember` 的那一份随树一起没了 ⇒ 弹窗自己关掉，里面已经打进去的字一个不剩。
@@ -292,7 +292,7 @@ fun ProviderSection(viewModel: SetupViewModel, onBack: () -> Unit) {
  * 行底色与那颗「＋ 添加供应商」全部原样，只把三处 `showAdd = true` / `editing = t`（今天写作
  * `editingTicketId = it.id`，见 [ProviderSection] 那一簇状态声明）/ `pendingDelete = t`
  * 换成同义的回调。语义树里每一颗节点、每一个 48dp 热区与搬家前相同
- * （证人：`LongProviderNameSemanticsTest`、`ProviderSectionSemanticsTest`）。
+ * （证人：`ProviderSectionSemanticsTest`）。
  * `expanded` 只有这一格在读，所以它与 chevron 那段动画跟着一起搬进来——首页那层
  * 因此少一颗杂散布尔，而展开/收起这件事仍然只有这一格知道。
  */
@@ -301,7 +301,7 @@ internal fun ProviderManageEntry(
     tickets: List<ProviderTicket>,
     activeTicket: ProviderTicket?,
     providerReady: Boolean,
-    // §③-9 / C8 / §⑥ 第19条：这一格今天只有 Empty/Content 两格，与知识库页（完整四态）不同构。
+    // / C8：这一格今天只有 Empty/Content 两格，与知识库页（完整四态）不同构。
     // 补上的 Loading/Error 两格**仍由同一颗 `LbAsyncState` 画**，不自己画第二套状态件。
     // 两条入参都带默认值：供应商工单是从 `SetupViewModel` 既有的 `tickets` 那一条 StateFlow
     // 同步读出来的（没有独立的"加载中/读取失败"流），所以默认走今天这条 Empty/Content 路径、
@@ -328,7 +328,6 @@ internal fun ProviderManageEntry(
             // 默认字号下语义树量到 **46dp**（320/360/412 三档全 46、600 档 45），
             // 到 1.3 倍字号才涨到 56 —— 也就是**平时就不达标**，不是窄屏才不达标。
             // 数不抄第二份：指回全站唯一那一颗 `AppDimens.TOUCH_TARGET_MIN_DP`。
-            // 证人：`LongProviderNameSemanticsTest`（热区那一问在这一条路径上是开着的）。
             .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .clip(LoveBrainShape.lg)
             .clickable { expanded = !expanded }
@@ -385,13 +384,13 @@ internal fun ProviderManageEntry(
                 )
             }
 
-            // §9.2 N18：供应商展开/收起用真实内容渐进，不只是转 chevron
+            // N18：供应商展开/收起用真实内容渐进，不只是转 chevron
             AnimatedVisibility(
                 visible = expanded,
                 enter = expandVertically(),
                 exit = shrinkVertically()
             ) {
-                // 布局缺陷修复（request2 §一）：`AnimatedVisibility` 的 KDoc 明写「内容若发射多颗
+                // 布局缺陷修复（一）：`AnimatedVisibility` 的 KDoc 明写「内容若发射多颗
                 // 布局节点，按 Box 叠放」——此前分隔线、`LbAsyncState` 列表与「添加供应商」三条兄弟
                 // 节点因此叠在同一块位置上。修法只有一条：补一颗真正的纵向 Column，让三者回到
                 // 同一条上下排布流。Card、`LbAsyncState` 判据、按钮、圆角、颜色与全部业务回调逐字保留。
@@ -401,7 +400,7 @@ internal fun ProviderManageEntry(
                         color = Border.copy(alpha = 0.5f),
                         modifier = Modifier.testTag(ProviderExpandTags.DIVIDER)
                     )
-                    // 第6节第3条 / §③-9：空 / 加载中 / 失败 / 有内容四格由同一个 ScreenState 判定，
+                    // 第6节第3条：空 / 加载中 / 失败 / 有内容四格由同一个 ScreenState 判定，
                     // 全部由同一颗 LbAsyncState 画。优先级 Loading > Error > Empty > Content 与知识库页同构，
                     // 判定只在这一处、版式也只在这一处。
                     // Loading/Error 两格由入参驱动（默认 false/null ⇒ 今天这条 Empty/Content 路径逐像素不变），
@@ -461,9 +460,19 @@ internal fun ProviderManageEntry(
                                             overflow = TextOverflow.Ellipsis
                                         )
                                     }
-                                    RowActionButton("编辑") { onEdit(t) }
+                                    LbTextAction(
+                                        label = "编辑",
+                                        tone = LbTextActionTone.RowSecondary,
+                                        size = LbTextActionSize.RowCapsule,
+                                        onClick = { onEdit(t) }
+                                    )
                                     Spacer(Modifier.width(Spacing.sm))
-                                    RowActionButton("删除", tint = Error) { onDelete(t) }
+                                    LbTextAction(
+                                        label = "删除",
+                                        tone = LbTextActionTone.Destructive,
+                                        size = LbTextActionSize.RowCapsule,
+                                        onClick = { onDelete(t) }
+                                    )
                                 }
                                 if (index < shownTickets.lastIndex) {
                                     HorizontalDivider(
@@ -571,7 +580,7 @@ internal val ProviderTimeoutTierSaver: Saver<GenerationTimeoutTier, Int> = Saver
  * ⚠ 抽的是**容器**，不是"顺手重构"：`commitModelInput`/`deleteModel` 与 Column 里的每一行
  * 都逐字搬过来（只减缩进），状态声明仍挂在**这一棵树的同一个位置上**。
  * 本轮只换了一件东西的主人：那些还没提交的字段从裸 `remember` 换成 `rememberSaveable`
- * （指导书§6「返回不能丢未提交字段」；理由、三条例外与各自代价写在下面那一段声明上）。
+ * （「返回不能丢未提交字段」；理由、三条例外与各自代价写在下面那一段声明上）。
  * 「Dialog 关闭即作废」这一条行为一字未动：`rememberSaveable` 的存档只被消费一次，
  * 用户主动关掉这扇窗再打开，拿回来的仍是 `ticket` 那一份，不是上一次没保存的草稿。
  */
@@ -591,7 +600,7 @@ internal fun ProviderFormBody(
     val scope = rememberCoroutineScope()
     val formError by viewModel.formError.collectAsStateWithLifecycle()
 
-    // ── 这些是**用户还没按保存**的字段：指导书§6 那一句"返回不能丢未提交字段"管的就是这一簇 ──
+    // ── 这些是**用户还没按保存**的字段：那一句"返回不能丢未提交字段"管的就是这一簇 ──
     // 主人换成 `rememberSaveable`：宿主 Activity 没有声明 `android:configChanges`，
     // 旋转、系统里改字号/深色、"不保留活动"都会把这棵表单整株拔掉再重挂；裸 `remember`
     // 在那一刻等于把用户打了一半的字全清掉，而他并没有点「取消」。
@@ -649,7 +658,7 @@ internal fun ProviderFormBody(
 
     // 表单骨架换主人：这一柱以前是一条 `spacedBy(Spacing.md)` 的均匀 Column，标签是裸
     // `Text(labelMedium)`、控件是 `ui/common/CompactInput`、错误是跟在地址后面的
-    // `✗ $formError`——标签/控件/错误三件各写各的（D1 §② C1/C3/C7：标签与字段同距 = 视觉上没分组、
+    // `✗ $formError`——标签/控件/错误三件各写各的（C1/C3/C7：标签与字段同距 = 视觉上没分组、
     // 输入框聚焦一寸不变、错误不归属字段）。现在三段各有主人：分组归 `LbFormGroup`、
     // 字段（标签→4dp→控件→错误行）归 `LbFormField`、可见框归五态的 `LbFieldInput`。
     // 组间距由 `LbFormGroup` 自带的 top 16 排，这一柱不再自己 spacedBy（同一段空白不扣两遍）。
@@ -706,7 +715,7 @@ internal fun ProviderFormBody(
                     placeholder = if (ticket != null && viewModel.getKeyMask(ticket.id).isNotEmpty())
                         stringResource(R.string.provider_form_key_placeholder) else "sk-…",
                     passwordVisible = keyVisible,
-                    // 显隐那颗改走 `LbFieldInput` 的**尾部槽**（item 3 / D1 §② C4）：
+                    // 显隐那颗改走 `LbFieldInput` 的**尾部槽**（item 3 /C4）：
                     // 可编辑节点右侧为它让出 `AppDimens.INPUT_TRAILING_SLOT_DP`(40) 那一格，
                     // 槽宽只在那颗组件里读一次；这颗自己 `fillMaxHeight` 吃掉所在字段框的可见高度，
                     // 不再是在中层 36 胶囊里挂一条自输的 `heightIn(min = 36)` 死链。
@@ -900,10 +909,10 @@ internal fun ProviderFormBody(
         //    这一族原来还有一行"只放宽读回复的时间"的解释——那是参数原理、属要删的废话，
         //    真配置项（标题 + 四档）一个没少。
         //
-        // 换的只有**形状与档位归属**（item 2 / D1 §② C2）：旧的私有
+        // 换的只有**形状与档位归属**（item 2 /C2）：旧的私有
         // `timeoutTierChipStyle = LbChipStyles.soft.copy(pillHeight = 24.dp, radius = full, …)`
         // 是"为一页 copy 设计系统档"的病灶，其可见高 24 与 full 圆角正是用户点名的"难看"。
-        // 现在接设计系统的具名分段档 `LbChipStyles.segmented`（基线 §③-7/§⑥ 第20条明写这一族的落点）：
+        // 现在接设计系统的具名分段档 `LbChipStyles.segmented`（明写这一族的落点）：
         // 内格可见高读 `AppDimens.CHIP_SEGMENTED_HEIGHT_DP`(32)、圆角 `Sm`(6)、整行热区由那颗分层外盒
         // 垫到 `AppDimens.TOUCH_TARGET_MIN_DP`(48)，互斥单选的语义（Role.Tab + Selected）仍由
         // `LbChipInteraction.Single` 交出、"哪一格选中"仍由 `selected=` 交出。
@@ -926,7 +935,7 @@ internal fun ProviderFormBody(
                     }
                 }
             }
-            // 思考开关：整行可点（item 5 / D1 §② C5，基线 §③-4"热区买一次"）——
+            // 思考开关：整行可点（item 5 /C5，"热区买一次"）——
             // 那颗开关自己的 48 见方热区删了，可见轨道仍是 36×20，点整行任意处即翻，
             // Role.Switch 与 contentDescription 由 `MiniSwitchRow` 那一格统一给。
             MiniSwitchRow(checked = thinking, onCheckedChange = { thinking = it })
@@ -1008,7 +1017,7 @@ private val SECRET_IN_TEXT = Regex(
  * 那颗 36×20 的**纯视觉**开关轨道：轨道、球、球离轨边都只在这里画一次，
  * 本身**不带点击、不带语义**——它是给外面那颗"会点的那一层"看的装饰。
  *
- * 拆出来的原因（基线 §③-4 / D1 §② C5 的"热区买一次"）：轨道既给 standalone 那颗
+ * 拆出来的原因（C5 的"热区买一次"）：轨道既给 standalone 那颗
  * [MiniSwitch]（消息捕获页直接用它，热区由它自己垫到 48 见方）用，也给整行可点的
  * [MiniSwitchRow]（供应商表单里那颗，热区由整行给）用。两处共用同一份视觉，
  * 才不会出现"同一个开关有两种轨道画法"。
@@ -1074,10 +1083,10 @@ internal fun MiniSwitch(
 }
 
 /**
- * "思考模式"那一行：**整行可点**的那一型（基线 §③-4 / D1 §② C5 的"热区买一次"）。
+ * "思考模式"那一行：**整行可点**的那一型（C5 的"热区买一次"）。
  *
  * 改之前这里把 [MiniSwitch] 那颗 48×48 见方的热区直接摆在行尾——那颗盒子把**行版式**撑到 48 见方，
- * 于是标签与胶囊之间凭空一段空白（TEAM_RULES §3 反对的"一颗控件同时买版式与热区"形态），
+ * 于是标签与胶囊之间凭空一段空白（TEAM_RULES反对的"一颗控件同时买版式与热区"形态），
  * 而手指要点中的其实只是右边那一小块。现在把这一行修成两条轴各归各位：
  * - **热区**：整行那一颗 `Row` 自己就是可点的开关（`toggleable` + `Role.Switch` +
  *   `contentDescription`），高度垫到 [AppDimens.TOUCH_TARGET_MIN_DP]、宽度铺满整行——
@@ -1121,7 +1130,7 @@ internal fun MiniSwitchRow(
 // `LbChipStyles.segmented`（`ProviderFormBody` 里那四颗 `LbChip` 直接读它）。
 // 旧的 `timeoutTierChipStyle = LbChipStyles.soft.copy(pillHeight = 24.dp, radius = full, …)` 已删——
 // "为一页 copy 设计系统档、把胶囊自己钉到 24 高 + full 圆角"正是用户点名的"难看"，也是
-// 基线 §③-7 / §⑥ 第20条 明令收编进具名档的那处病灶。具名档自带 32 可见 / Sm 圆角 / 分层 48 热区，
+// /明令收编进具名档的那处病灶。具名档自带 32 可见 / Sm 圆角 / 分层 48 热区，
 // 页面这一层只交 `label/selected/onClick`，不再交任何一条形状链。
 //
 // 顺带更正一句旧注释：它曾称这里与 `ui/panel/settings/SettingsAdvancedEntry.kt` 是"两份同数"，

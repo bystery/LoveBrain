@@ -14,7 +14,8 @@ import com.lovebrain.app.domain.port.SettingsStorePort
  * 所以它拿不到删库、切库这类能力（见 [KnowledgeDocumentPort] 那份 KDoc）。
  *
  * 保存契约与 [KnowledgeDocumentPort.writeFileWithVersion] 一致：
- * 返回新版本号 = 落盘成功，返回 null = 版本冲突或库已删除，调用方必须保留草稿而不是静默覆盖。
+ * 返回新版本号 = 落盘成功，返回 null = 版本冲突、库已删除、写被拒或落盘失败，
+ * 调用方必须保留草稿并报失败，而不是静默覆盖或报"已保存"。
  */
 class KbEditViewModel(
     private val repo: KnowledgeDocumentPort,
@@ -38,8 +39,10 @@ class KbEditViewModel(
     /**
      * 带版本校验的保存。
      *
-     * @param expectedVersion 读取时拿到的版本快照；为 null 时退化为无校验覆盖并回传新内容哈希
-     * @return 新版本号，null = 冲突（调用方保留草稿）
+     * @param expectedVersion 读取时拿到的版本快照；为 null（整页那次读没拿到版本）时先补读一次当前版本，
+     *                        再走同一条版本化写——端口那口不带校验的写没有失败通道，写完只能自己编一个
+     *                        新版本号，写被拒（只读库/路径守门/落盘失败）也会被当成成功
+     * @return 新版本号；null = 冲突、库已不在、写被拒或落盘失败（调用方保留草稿并报失败）
      */
     suspend fun save(
         kbName: String,
@@ -50,7 +53,8 @@ class KbEditViewModel(
         if (expectedVersion != null) {
             return repo.writeFileWithVersion(kbName, relativePath, content, expectedVersion)
         }
-        repo.writeFile(kbName, relativePath, content)
-        return repo.hashContent(content)
+        // 无版本分支同样要听写核的回答：先取当前版本，再让版本化写这一口回 true/false（null = 没落成）。
+        val current = repo.readFileWithVersion(kbName, relativePath).second
+        return repo.writeFileWithVersion(kbName, relativePath, content, current)
     }
 }

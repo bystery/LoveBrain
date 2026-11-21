@@ -204,7 +204,12 @@ class FeedbackCaseRepository(context: Context) {
         }
     }
 
-    /** 导出为结构化 JSON（便于 AI 分析） */
+    /**
+     * 导出为结构化 JSON（便于 AI 分析）。
+     *
+     * ⚠ 导出的 `dialogueSnapshot` 是**真实对话原文**，落盘文件还是明文：确认这一步归 UI
+     * （`FeedbackCasesScreen` 的导出确认浮层），仓库这一层只负责序列化，不做二次确认。
+     */
     suspend fun exportJson(filteredCases: List<FeedbackCase>): String = withContext(Dispatchers.IO) {
         json.encodeToString(filteredCases)
     }

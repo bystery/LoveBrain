@@ -77,20 +77,21 @@ object SceneChainInjection {
 
     /**
      * 从事实文本里剥掉来源标记，只留事实文本用于注入。
-     * 与写入端 `TopicRecorder.parseStoredFact` 用同一套格式，新旧两种都要认。
+     * 与写入端 `SceneChainStore.parseStoredFact` 用同一套格式，新旧两种都要认；
+     * 落盘时被编码的分隔符（`\uXXXX`）在这里解码还原，注入正文与模型原话一致。
      */
     fun cleanFact(factText: String): String {
         // 新格式：事实文本|src=...|spk=...|subj=...
         if (factText.contains("|src=") || factText.contains("|spk=") || factText.contains("|subj=")) {
             val parts = factText.split("|").map { it.trim() }
-            return parts.firstOrNull()?.trim().orEmpty()
+            return SceneFactCodec.decode(parts.firstOrNull()?.trim().orEmpty())
         }
         // 旧格式：事实文本⟨sourceIds⟩
         val srcMatch = Regex("(.*)⟨.+⟩$").find(factText)
         if (srcMatch != null) {
-            return srcMatch.groupValues[1].trim()
+            return SceneFactCodec.decode(srcMatch.groupValues[1].trim())
         }
         // 无标记：纯文本
-        return factText.trim()
+        return SceneFactCodec.decode(factText.trim())
     }
 }

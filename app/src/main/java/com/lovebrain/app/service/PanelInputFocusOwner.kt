@@ -72,6 +72,10 @@ internal interface PanelFocusWindow {
  * 变化理由只有一条：**Panel 与宿主 App 抢不抢输入焦点**。
  * 什么时候进 EDITING、什么时候必须退回 PASSIVE、失焦的是不是当前那个输入框——
  * 全部收在这里，窗口类与 Service 都只能经它问一句、改一次。
+ *
+ * 输入 id 不是实例 id：方案卡的多个自定义框共用 `scheme_adjust`（横向列表里每张卡各一颗）。
+ * 所以"还有没有人持焦"要按**实例**记账（instanceKey → inputId），而不是按 id 或一颗布尔猜——
+ * 见 [onInputFocusChanged]。
  */
 internal class PanelInputFocusOwner(private val window: PanelFocusWindow) {
 
@@ -82,6 +86,18 @@ internal class PanelInputFocusOwner(private val window: PanelFocusWindow) {
     /** 当前持有输入焦点的输入框 ID（null = 无输入框获焦） */
     var activeInputId: String? = null
         private set
+
+    /**
+     * 获焦实例的账：instanceKey → inputId。
+     *
+     * 为什么按实例记账：同一个 id 可以挂多颗输入框（`scheme_adjust` 在横向方案卡里一处一颗），
+     * A 卡失焦与 B 卡获焦是两条独立边沿。旧实现按 id 计数，A 的失焦会把 B 获焦记的那一份
+     * 一起减掉；而且若系统把 A 的失焦排在 B 的获焦**之前**，中途那次归零还会把窗口打回
+     * PASSIVE。按实例记账后，失焦只摘自己那一格——迟到的、重复的、认不出账的失焦边沿
+     * 都动不了别人，账空了才交回所有权（获焦那一跳自己会重新进 EDITING，
+     * 见 [onInputFocusChanged]，先失焦后获焦的交接也不必再点一次）。
+     */
+    private val focusedInstances = mutableMapOf<Any, String>()
 
     /** Compose 输入焦点清理回调（由 Panel 层注册，releaseInput 时调用） */
     var clearComposeFocusCallback: (() -> Unit)? = null
@@ -123,8 +139,9 @@ internal class PanelInputFocusOwner(private val window: PanelFocusWindow) {
      * 关闭顺序：1.清 TextField Focus → 2.Hide IME → 3.Window → PASSIVE
      */
     fun releaseInput(reason: String) {
-        // 0. 清空输入所有者
+        // 0. 清空输入所有者（获焦实例的账一起作废：窗口都交回去了，谁也不再持焦）
         activeInputId = null
+        focusedInstances.clear()
         // 1. 清理 Compose 输入焦点
         clearComposeFocusCallback?.invoke()
         // 2. 隐藏 IME（通过清除焦点自动隐藏，此处兜底）
@@ -140,12 +157,28 @@ internal class PanelInputFocusOwner(private val window: PanelFocusWindow) {
     }
 
     /**
-     * 焦点变化：只有当前 activeInputId 的失焦才允许退出 EDITING。
-     * 如果 activeInputId 已经被新输入框接管，则忽略旧输入框的 blur。
+     * 焦点变化：获焦即确证"有人在打字"，把这一颗实例记进账并进 EDITING；
+     * 失焦只摘本实例的账，账空了才交回所有权。
+     *
+     * 获焦必须进 EDITING（不再只是登记）：A 卡指向 B 卡时，两条边沿之间窗口可能已经被打回
+     * PASSIVE（失焦那一跳排在获焦之前），旧实现"获焦不重新进编辑态"就变成
+     * "光标在闪、键盘不起，要再点一次"。获焦这一句是补上的那一半：窗口此刻必须可聚焦。
+     * 已是 EDITING 时 [setMode] 同态直接 return，所以正常路径一颗 flags 都不会多写。
+     *
+     * 失焦按实例摘账：同 id 的多实例（方案卡同时开多个自定义框）各记各的格，
+     * 账上还有别人时既不夺所有权，也不退回 PASSIVE——这正是"按 id 计数会被别人的
+     * 失焦零掉"那个竞态的修法。
      */
-    fun onInputFocusChanged(inputId: String, focused: Boolean) {
+    fun onInputFocusChanged(instanceKey: Any, inputId: String, focused: Boolean) {
         if (focused) {
+            focusedInstances[instanceKey] = inputId
             activeInputId = inputId
+            enterEditing("input_focus:$inputId")
+            return
+        }
+        focusedInstances.remove(instanceKey)
+        if (focusedInstances.isNotEmpty()) {
+            // 账上还有实例持焦：这颗失焦不代表"没人要打字了"
             return
         }
         if (activeInputId == inputId) {
@@ -160,6 +193,8 @@ internal class PanelInputFocusOwner(private val window: PanelFocusWindow) {
      */
     fun resetForDestroy() {
         mode = PanelFocusMode.PASSIVE
+        // 获焦实例的账是"谁还持焦"的记录：窗口都要销毁了，这笔账不该留到下一次生命周期
+        focusedInstances.clear()
         clearComposeFocusCallback = null
     }
 }

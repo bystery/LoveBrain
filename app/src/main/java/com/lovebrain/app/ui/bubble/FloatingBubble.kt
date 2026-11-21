@@ -69,7 +69,7 @@ import android.view.accessibility.AccessibilityManager
 // ══════════════════════════════════════════════════════════════════
 
 /**
- * 悬浮球内部几何：全部从**当前档位直径**这一颗数推出（指导书 2026-10-10 §1「大小调节」）。
+ * 悬浮球内部几何：全部从**当前档位直径**这一颗数推出（「大小调节」）。
  *
  * 标准档（[com.lovebrain.app.BubbleSizeTier.STANDARD_DP]）的读数与这一笔之前**逐字相同**，
  * 因为那几个数就是原来的手调常量，只是从此按 `sizeDp / 标准档` 等比走；
@@ -228,7 +228,7 @@ fun FloatingBubble(
                     .graphicsLayer {
                         scaleX = badgeScale.value
                         scaleY = badgeScale.value
-                        // 未读角标与主球共用**同一颗**有效 alpha（§1 原话：作用到"悬浮图标整体，
+                        // 未读角标与主球共用**同一颗**有效 alpha（原话：作用到"悬浮图标整体，
                         // 包括主图标和角标"）。这一层不另乘第二档：`dimAlpha` 已经是
                         // `PanelBackdropOpacity.effectiveAlpha` 的读数，再乘一次就是把红点洗到看不见。
                         alpha = enterAnim.value * dimAlpha

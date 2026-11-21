@@ -29,8 +29,8 @@ interface ProfileStorage {
     /** 过 canonical 守门的读：越界、非法、不存在都得到空串（旧布局有回退） */
     fun read(kbName: String, relativePath: String): String
 
-    /** 唯一写链：仓库的 `writeFileUnlocked`，带着只读 schema 拒绝与备份节流 */
-    fun writeUnlocked(kbName: String, relativePath: String, content: String)
+    /** 唯一写链：仓库的 `writeFileUnlocked`，带着只读 schema 拒绝与备份节流。false = 一个字节都没落 */
+    fun writeUnlocked(kbName: String, relativePath: String, content: String): Boolean
 
     /** kb.json 的当前内容；读不到或解析不了给 null */
     fun metaOf(kbName: String): KnowledgeBase?
@@ -152,7 +152,10 @@ internal class KnowledgeProfileStore(private val storage: ProfileStorage) {
             }
             warmth = warmth.replaceFirst(dimRegex, "$1$v")
         }
-        storage.writeUnlocked(kbName, WARMTH_FILE, warmth)
+        if (!storage.writeUnlocked(kbName, WARMTH_FILE, warmth)) {
+            storage.note("writeVector 落盘被拒或失败：$WARMTH_FILE")
+            return false
+        }
         return true
     }
 
@@ -169,7 +172,10 @@ internal class KnowledgeProfileStore(private val storage: ProfileStorage) {
         if (warmth.isBlank()) return false
         val updated = rewriteStageLine(warmth, stage)
         if (updated == warmth) return false
-        storage.writeUnlocked(kbName, WARMTH_FILE, updated)
+        if (!storage.writeUnlocked(kbName, WARMTH_FILE, updated)) {
+            storage.note("updateWarmthStageLabel 落盘被拒或失败：$WARMTH_FILE")
+            return false
+        }
         return true
     }
 

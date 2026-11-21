@@ -43,6 +43,8 @@ sealed interface KbEvent {
     data object Exported : KbEvent
     data object ExportFailed : KbEvent
     data object Imported : KbEvent
+    /** 归档已落盘、列表已刷新，但"把当前库钉回原处"这一步没成（重名/版本/Keystore 解码失败） */
+    data object ImportActiveFixFailed : KbEvent
     data object ImportFailed : KbEvent
     data object DeleteFailed : KbEvent
     data object RenameFailed : KbEvent
@@ -130,7 +132,26 @@ class KnowledgeBaseViewModel(
     /** 建库/AI 生成协程 = 事务唯一 owner；isActive 即互斥标记，不另设 boolean 台账 */
     private var creationJob: Job? = null
 
-    val isCreating: Boolean get() = creationJob?.isActive == true
+    /**
+     * 建库是否在飞。向导那一屏读的是这一格，不再自己揣一颗"生成中"——
+     * 本地置真的那颗回退路径（未配模型 / 在飞 / 失败）全都漏了，界面就永远停在生成中。
+     *
+     * 只有 [publishCreating] 写它：这一格是 [creationJob] 活性的投影，不是第二本账。
+     */
+    private val _creating = MutableStateFlow(false)
+    val creating: StateFlow<Boolean> = _creating.asStateFlow()
+
+    val isCreating: Boolean get() = _creating.value
+
+    /**
+     * 把 [creationJob] 的活性映到 [creating]——唯一写入口。
+     *
+     * 旧写法在四个地方各手写一次 true/false（两个入口置真、取消与收尾置假），
+     * 少写一处向导就永远停在"生成中"；现在只认 job 自己：改完 creationJob 紧跟一次本函数。
+     */
+    private fun publishCreating() {
+        _creating.value = creationJob?.isActive == true
+    }
 
     // ═══════════ 列表读写 ═══════════
 
@@ -275,12 +296,20 @@ class KnowledgeBaseViewModel(
             return
         }
         creationJob = viewModelScope.launch {
-            // cancel-safe: 取消不吞——finishCreation 按 exceptionOrNull() 的**类型**把
-            // CancellationException 分流成 KbCreationOutcome.Cancelled（不建库、不报失败），
-            // 由 KnowledgeBaseViewModelTest 的 cancelling generation 用例钉住
-            val outcome = runCatching { runOnboardingCreation(schema) }
-            finishCreation(outcome)
+            // cancel-safe: 取消先按 Cancelled 回传给 UI（不建库、不报失败），**随后把取消原样抛回**。
+            // 用 runCatching 收这一趟会把 CancellationException 变成"正常完成"的 Result：
+            // 协程以成功收场、job.isCancelled 变成 false，等它的人以为真跑完了
+            // （`scripts/audit_cancellation.py` 判 CANCEL-SWALLOWED）。取消必须继续向上传。
+            try {
+                finishCreation(Result.success(runOnboardingCreation(schema)))
+            } catch (e: CancellationException) {
+                finishCreation(Result.failure(e))
+                throw e
+            } catch (e: Exception) {
+                finishCreation(Result.failure(e))
+            }
         }
+        publishCreating()
     }
 
     private suspend fun runOnboardingCreation(schema: OnboardingSchema): KbCreationOutcome {
@@ -375,22 +404,33 @@ class KnowledgeBaseViewModel(
     fun createEmptyKb() {
         if (isCreating) return
         creationJob = viewModelScope.launch {
-            // cancel-safe: 同上——取消经 finishCreation 转成 Cancelled，不伪装成 CreateFailed
-            val outcome = runCatching {
+            // cancel-safe: 同上——取消先回传 Cancelled（不伪装成 CreateFailed），再把取消抛回
+            try {
                 // §4 场景②「全新安装跳过问卷 ⇒ 1 个可使用的空库」：
                 // 首次初始化那一步留下的空壳若还没被用过，它就是这一次要的结果（写侧复用它），
                 // 于是"跳过"得到的是一座能直接用的空库而不是第二座；没有可复用的才真的加一座库。
-                if (createKnowledgeBase(autoKbName(), "新知识库") != null) KbCreationOutcome.EmptyCreated
-                else KbCreationOutcome.EmptyCreateFailed
+                val outcome =
+                    if (createKnowledgeBase(autoKbName(), "新知识库") != null) {
+                        KbCreationOutcome.EmptyCreated
+                    } else {
+                        KbCreationOutcome.EmptyCreateFailed
+                    }
+                finishCreation(Result.success(outcome))
+            } catch (e: CancellationException) {
+                finishCreation(Result.failure(e))
+                throw e
+            } catch (e: Exception) {
+                finishCreation(Result.failure(e))
             }
-            finishCreation(outcome)
         }
+        publishCreating()
     }
 
     /** 生成中取消：cancel 协程，不落盘、不提示 */
     fun cancelOnboarding() {
         creationJob?.cancel()
         creationJob = null
+        publishCreating()
     }
 
     /**
@@ -411,6 +451,7 @@ class KnowledgeBaseViewModel(
 
     private fun finishCreation(outcome: Result<KbCreationOutcome>) {
         creationJob = null
+        publishCreating()
         val event = when {
             outcome.isSuccess -> outcome.getOrThrow()
             outcome.exceptionOrNull() is CancellationException -> KbCreationOutcome.Cancelled
@@ -456,27 +497,44 @@ class KnowledgeBaseViewModel(
     /**
      * 从 [source] 导入。解压+校验在 IO 线程；成功后强制修正 active，
      * 防止导入库自带 active=true 造成双激活。
+     *
+     * 两段必须分开判：写入一旦成功，盘上就已经多了一本库，列表**必须**刷新——
+     * 旧写法把 active 修正和写入裹在同一个 try 里，重名/版本/Keystore 任一处抛错都会
+     * 让"已落盘的导入"报成"不是有效的备份文件"，并且在 refresh 之前就退出。
      */
     fun import(source: Uri) {
         viewModelScope.launch(ioContext) {
-            val ok = try {
+            val imported = try {
                 val input = appContext.contentResolver.openInputStream(source)
                     ?: error("无法打开导入文件")
                 input.use { archive.importFrom(it) }
-                val currentActive = repo.getActive()?.name ?: repo.listAll().firstOrNull()?.name
-                if (currentActive != null) repo.setActive(currentActive)
                 true
             } catch (e: CancellationException) {
-                // active 修正是挂起调用：取消必须原样上抛，不能被算成"导入失败"再提示用户
-                // （原来这里 return@launch 让协程以"正常完成"收场，与注释的说法相反）
+                // 页面已销毁不是"导入失败"：取消必须原样上抛，不能被算成一次业务失败
                 L.w("knowledge import cancelled")
                 throw e
             } catch (e: Exception) {
                 L.e("knowledge import failed", e)
                 false
             }
-            if (ok) loadState()
-            _events.tryEmit(if (ok) KbEvent.Imported else KbEvent.ImportFailed)
+            if (!imported) {
+                _events.tryEmit(KbEvent.ImportFailed)
+                return@launch
+            }
+            loadState()
+            val activeFixed = try {
+                val currentActive = repo.getActive()?.name ?: repo.listAll().firstOrNull()?.name
+                if (currentActive != null) repo.setActive(currentActive)
+                true
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e("imported archive landed but the active library could not be pinned", e)
+                false
+            }
+            _events.tryEmit(
+                if (activeFixed) KbEvent.Imported else KbEvent.ImportActiveFixFailed
+            )
         }
     }
 

@@ -5,7 +5,7 @@ package com.lovebrain.app.domain.prompt
  *
  * 这一块是纯表示层：给定五维向量与当前阶段、最近对话场景文本，写出 reflect 用的固定格式段。
  * 它不读知识库、不读资产、不读时钟，也不持有状态，因此是纯函数。搬运前后对同一批输入
- * 必须给出逐字相同的字符串（字节证据见 `domain/prompt/PromptByteFreezeBaselineTest` 的冻结表）。
+ * 必须给出逐字相同的字符串。
  *
  * 语义约束（搬运时一条都没改）：
  * - 五维默认值 50；阶段空时显示「待确定」。

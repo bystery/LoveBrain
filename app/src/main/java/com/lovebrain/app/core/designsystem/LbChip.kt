@@ -150,7 +150,7 @@ internal val LbChipPressFeedback.pressCurve: FiniteAnimationSpec<Float>
  *        高度轴永远跟 [touchFloor] 走，这条旋钮只管宽度：应用管理页的普通控件**保持双轴下限**
  *        （缺省 true，现行形状一寸不动）；悬浮窗的紧凑胶囊（角色胶囊那类"可见 30dp 宽、
  *        外盒被撑到 48"）认领 false——横向命中区回落到可见胶囊本体，纵向仍是 48 满档，
- *        这是 §4.3「三种尺寸分开测」在悬浮窗紧凑档下的取舍，不许拿它当全局缩热区的口子
+ *        这是「三种尺寸分开测」在悬浮窗紧凑档下的取舍，不许拿它当全局缩热区的口子
  * @param pillHeight 胶囊自己的高度；`null` = 由内容决定
  * @param pillMinWidth 胶囊**自己**的最小宽度（dp 档）；`null` = 由内容决定。
  *        这一颗管的是**看得见**那一条：调用方从 `modifier` 传进来的 `widthIn` 落在分层写法的
@@ -186,7 +186,7 @@ data class LbChipStyle(
  * 芯片的常用形状档位。名字跟着**语义**走，不跟着页面走——
  * 新增一档之前先问"它表达的是不是另一件事"，只是颜色不同的话应该改调用方的档位选择。
  * 页面要微调某一档里某一个数，走 `copy`，**不要新长一档**，更不要回到页面里自己画那条链。
- * ⚠ 唯一的收口例外（基线 v1 §3.8）：**胶囊自己的高度**这一族不再归页面 `copy`——
+ * ⚠ 唯一的收口例外：**胶囊自己的高度**这一族不再归页面 `copy`——
  * 分段看 [segmented]；悬浮窗面板胶囊的紧凑档暂未并成具名档，按族各有一个主人：
  * 谈心一族在 `ui/panel/counseling/CounselingTemplateChips.kt` 的 `counselingCompactChipTier`，
  * 回复输入行一族在 `ui/panel/reply/ReplyInput.kt` 的 `ReplyDimens`（并档是跨页决策，动前先对两边量）。
@@ -214,10 +214,10 @@ object LbChipStyles {
      * 这里把它接回原位——**这一档的名字管的是"没有选中态"，标签贴左上属于它的形状**。
      * 要一颗居中的动作芯片请新长一档，不要在这里改数。
      *
-     * 族属登记（基线 v1 §3.8）：这颗连同 `TopStart` 属于**「无选中态的动作胶囊·模板形」**
+     * 族属登记：这颗连同 `TopStart` 属于**「无选中态的动作胶囊·模板形」**
      * 一族（谈心模板那颗归并前的原形）；悬浮窗里"可见 28、标签居中"的面板胶囊是另一族，
      * 紧凑档主人见 `ui/panel/counseling/CounselingTemplateChips.kt` 的 `counselingCompactChipTier`，
-     * 别拿这颗去摆面板行（D1 §② E3 的过高版式就是这么来的）。
+     * 别拿这颗去摆面板行（E3 的过高版式就是这么来的）。
      */
     val neutral = LbChipStyle(
         backgroundSelected = SurfaceInset,
@@ -254,7 +254,7 @@ object LbChipStyles {
     )
 
     /**
-     * **分段选择器的一格**（基线 v1 §3.8 / D1 §③-7 的"60/120/180/300 那一族"落点）。
+     * **分段选择器的一格**（约定的"60/120/180/300 那一族"落点）。
      *
      * 三轴各归各位：
      *  - **可见**：[AppDimens.CHIP_SEGMENTED_HEIGHT_DP]（32dp 一格，比行内动作那颗 [AppDimens.ROW_ACTION_COMPACT_MIN_HEIGHT_DP] 同数不同用途）；
@@ -455,7 +455,7 @@ fun LbChip(
     val fixedPillHeight = style.pillHeight
 
     // 语义与热区这一层：动作挂在它身上，合并语义把里面的文案收进同一颗节点。
-    // 高度轴与宽度轴拆开（§4.3 三种尺寸）：高度轴跟 [LbChipStyle.touchFloor]，
+    // 高度轴与宽度轴拆开（三种尺寸）：高度轴跟 [LbChipStyle.touchFloor]，
     // 宽度轴另有 [LbChipStyle.widthFloor]——缺省 true 时与旧形状逐像素相同，
     // 悬浮窗紧凑族认领 false 才放下那 18dp 的纯占位。
     val floorModifier = if (style.touchFloor) {
@@ -470,7 +470,7 @@ fun LbChip(
     } else {
         Modifier
     }
-    // ⚠ **单层那一档的约束链按大小取，不按先后覆盖**（§10.1「看着小，仍占48dp」判的就是这条链）。
+    // ⚠ **单层那一档的约束链按大小取，不按先后覆盖**（「看着小，仍占48dp」判的就是这条链）。
     // 单层的可点节点就是胶囊自己：`height(22.dp)` 排在前面、`heightIn(min = 48.dp)` 排在后面时，
     // 两条约束直接冲突（min 48 / max 22），Compose 把 min 夹回 max ⇒ 颗粒只有 22dp——
     // 那句"我垫到全局下限"于是成了**装饰**：读源码的说有 48，量语义树的读到 22，两边都以为修过了。

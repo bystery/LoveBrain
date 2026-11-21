@@ -87,9 +87,8 @@ val appModule = module {
     // 领域层（单例）
     // Clock 显式 get()，不靠构造参数默认值：默认值是给测试用的后门，
     // 图上必须能看见"生产的时间从哪来"，否则上面那条 single<Clock> 就是装饰。
-    single { com.lovebrain.app.domain.OngoingContextSelector(get(), get()) }
     // PromptBuilder 只认 PromptSourcePort（第一格），不再传 androidContext()
-    single { PromptBuilder(get(), get(), get(), get()) }
+    single { PromptBuilder(get(), get(), get()) }
     single { RoundCommitJournal(get()) }
     // 事务日志必须由容器给出，不能在这里再 new 一个：
     // TopicRecorder 持有手工构造的 journal、容器又注册另一个 journal，
@@ -97,7 +96,7 @@ val appModule = module {
     single { TopicRecorder(get(), get(), get()) }
     single { KnowledgeTriggerCoordinator(get(), get(), get(), get()) }
     // ═══ 冠军引擎（T4 Kotlin 移植 W1；默认 OFF——不改变现有用户行为）═══
-    // 第 7 个写入面：champion_events/<contactId>__<story>.jsonl，与 kb 投影物理分离（规格书 §2.2）。
+    // 第 7 个写入面：champion_events/<contactId>__<story>.jsonl，与 kb 投影物理分离。
     single<com.lovebrain.app.domain.champion.ChampionEventStorage> {
         com.lovebrain.app.domain.champion.FileChampionEventStorage(
             File(androidContext().filesDir, "champion/events")
@@ -150,25 +149,17 @@ val appModule = module {
             // 这两行不接时 VM 那侧是"读默认 100%、写丢弃"，面板照常能画，但设置滑杆就不跨重启了。
             readBackdropOpacityPercent = { get<SecurePrefs>().panelBackdropOpacityPercent },
             writeBackdropOpacityPercent = { get<SecurePrefs>().panelBackdropOpacityPercent = it },
-            // 「仅看本轮」首次轻提示的"提示过没有"旗标（§2.2 第 3 条）：与上面那对同一形状、
+            // 「仅看本轮」首次轻提示的"提示过没有"旗标：与上面那对同一形状、
             // 接在同一个 SecurePrefs 上——盘上那一格只有一份，落盘后每次回来不再重弹。
             readRoundScopeHintShown = { get<SecurePrefs>().roundScopeHintShown },
             writeRoundScopeHintShown = { get<SecurePrefs>().roundScopeHintShown = it },
-            // 悬浮图标档位与回复卡方向那两对（指导书 2026-10-10 §1、§3）：与上面两对同一形状，
+            // 悬浮图标档位与回复卡方向那两对：与上面两对同一形状，
             // 盘上那两格都住在 SecurePrefs 这个具体实现类上（刻度与回落分别在 `BubbleSizeTier`、
             // `ReplyCardLayout` 身上），VM 只拿到两对函数、不认识存储类。
             readBubbleSizeDp = { get<SecurePrefs>().bubbleSizeDp },
             writeBubbleSizeDp = { get<SecurePrefs>().bubbleSizeDp = it },
             readReplyCardLayout = { get<SecurePrefs>().replyCardLayout },
             writeReplyCardLayout = { get<SecurePrefs>().replyCardLayout = it },
-            // 批量导入入口首次轻提示的"提示过没有"旗标（外部审计 F3-2）：与上面几对同一形状、
-            // 接在同一个 SecurePrefs 上——盘上那一格只有一份，落盘后每次回来不再重弹。
-            readBatchImportHintShown = { get<SecurePrefs>().batchImportHintShown },
-            writeBatchImportHintShown = { get<SecurePrefs>().batchImportHintShown = it },
-            // 批量导入昵称 → 她/我 归属表：与上面几对同一形状、接在同一个 SecurePrefs 上。
-            // 用户在浮层里显式指定过一次就落盘，此后同一昵称的转录 tap ➕ 直接整批入库。
-            readBatchImportNameRoles = { get<SecurePrefs>().batchImportNameRoles },
-            writeBatchImportNameRoles = { get<SecurePrefs>().batchImportNameRoles = it },
             // 冠军引擎（审计 R2-1）：可空注入——事件正式提交点在 nextRound。
             championEngine = getOrNull()
         )

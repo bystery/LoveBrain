@@ -8,7 +8,7 @@ import com.lovebrain.app.model.MemoryCorrection
  * KnowledgeWritePort / Clock」）。
  *
  * 成员不是"把 KnowledgeRepository 的 public API 抄一遍"，而是**domain 这六个月真正调用过的**
- * 那些：RoundCommitJournal、TopicRecorder、OngoingContextSelector、PromptBuilder、
+ * 那些：RoundCommitJournal、TopicRecorder、PromptBuilder、
  * KnowledgeTriggerCoordinator 各自用到的读操作（脚本实测枚举，不是凭印象）。
  * 少一层"接口=实现影子"，接口隔离才有意义：
  * 读端口里没有 deleteFile，所以只读的调用方拿不到写能力。
@@ -19,7 +19,6 @@ interface KnowledgeReadPort {
     suspend fun getCurrentStage(kbName: String): String
     suspend fun getCurrentTopic(kbName: String): String
     suspend fun getTurnCount(kbName: String): Int
-    suspend fun getTopicAgeHours(kbName: String): Int
     suspend fun readPlanActive(kbName: String): String
     suspend fun readVector(kbName: String): Map<String, Int>
     suspend fun readCounselingAnalysisBlocks(kbName: String, count: Int): String
@@ -92,8 +91,8 @@ sealed interface LessonsRewriteResult {
  * 收窄到 domain 真正需要的操作，不是第二套写路径。
  */
 interface KnowledgeWritePort {
-    suspend fun writeFile(kbName: String, relativePath: String, content: String)
-    suspend fun appendFile(kbName: String, relativePath: String, content: String)
+    suspend fun writeFile(kbName: String, relativePath: String, content: String): Boolean
+    suspend fun appendFile(kbName: String, relativePath: String, content: String): Boolean
     suspend fun deleteFile(kbName: String, relativePath: String): Boolean
     suspend fun setCurrentTopic(kbName: String, topicLabel: String)
     suspend fun rotateTopic(kbName: String)

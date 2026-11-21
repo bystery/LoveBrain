@@ -79,6 +79,9 @@ class OverlayTextToolbar(context: Context) : TextToolbar {
     val isShowing: Boolean
         get() = status == TextToolbarStatus.Shown
 
+    val menuRect: Rect?
+        get() = menu.value?.rect
+
     override fun showMenu(
         rect: Rect,
         onCopy: (() -> Unit)?,

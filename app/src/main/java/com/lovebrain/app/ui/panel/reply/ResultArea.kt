@@ -1,6 +1,5 @@
 package com.lovebrain.app.ui.panel.reply
 
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -53,14 +52,13 @@ import com.lovebrain.app.model.SchemeFeedback
 import com.lovebrain.app.model.SchemeIdentity
 import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.CorrectionAction
-import com.lovebrain.app.core.designsystem.rememberPressScale
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 
 /** 结果区内部尺寸常量（ 令牌化：数值不变，仅外放命名） */
 internal object ResultDimens {
     /**
-     * 结果区那几条**文字入口**（现在只剩「修正记忆」那颗常驻出口）的可点击盒子下限。
+     * 参考容器首行那颗 toggle 的可点击盒子下限（声明在 ResultDimens、由 MemoryRefsFeed 读）。
      * 盒子按这颗数垫，里面的字仍按文字档那一号画——"点得中"和"长什么样"是两层，
      * 不能为了前者把后者撑成一颗大按钮。
      */
@@ -72,7 +70,6 @@ internal object ResultDimens {
 @Composable
 fun ResultArea(
     result: GenerateResult?,
-    @Suppress("UNUSED_PARAMETER") isGenerating: Boolean,
     streamingCoreText: String,
     isGeneratingCore: Boolean,
     streamingSchemes: List<Scheme>,
@@ -92,7 +89,7 @@ fun ResultArea(
     onClearRewriteState: (SchemeIdentity) -> Unit = {},
     onCancelRewrite: (SchemeIdentity) -> Unit = {},
     // 改写完成后界面不再画"返回原版/用这版"那条工具条：完成就是正文换了的一张默认卡
-    // （§13.3 既定设计）。撤销能力仍住在数据层（RewriteStore，VM 门面 `undoRewrite`
+    // （既定设计）。撤销能力仍住在数据层（RewriteStore，VM 门面 `undoRewrite`
     // 保留为 JVM 出入口）；本组件不再为它留一颗从不读取的形参——旧的"有槽无行为"
     // 那颗已删，谁也不许再传。
     // 自定义改写回调
@@ -116,15 +113,15 @@ fun ResultArea(
     // 「记录实际发送」的可见入口已随结果区那颗总工具菜单一起退场，本组件不再调用它。
     // 同上：留着实参只为让面板现有的调用点照常编译。
     @Suppress("UNUSED_PARAMETER") onRecordSent: () -> Unit = {},
-    // 结果区下方那条「纠正记忆」文字入口：这里只发"打开纠正中心"这一句意图，
-    // 清单与撤销归 CorrectionCenter 自己画
+    // 参考容器行尾那颗「纠正中心」常驻动作的去向：这里只发"打开纠正中心"这一句意图，
+    // 中心里那份清单与撤销动作归 CorrectionCenter 自己画。
+    // 旧的独立「修正记忆」文字入口已并进参考容器（2026-11-21 信息减法），本组件不再自画入口。
     onShowCorrectionCenter: () -> Unit = {},
-    // 「本轮参考」那份清单的展开态由调用方持有（卡片行下方那一条文字入口去翻它）。
+    // 「本轮参考」那份清单的展开态由调用方持有（翻它的是参考容器首行那颗 toggle）。
     // 默认收起：收起时 AnimatedVisibility 不占纵向高度。这一层留成入参而不是本地布尔，
-    // 是因为翻它的入口在卡片那一侧、渲染清单的是这一块——状态得住在两者之上才换得动。
+    // 是因为翻它的状态住在面板、渲染清单的是结果区——状态得住在两者之上才换得动。
     memoryRefsExpanded: Boolean = false,
-    // 卡片行下方那一条文字入口点谁：展开的是**本轮共享**的参考清单（不是这张卡专属的证据关联），
-    // 所以这一颗 toggle 整轮只渲染一次；清单没内容时调用方传 null，入口就不渲染。
+    // 参考容器首行那颗 toggle 点谁：展开/收起的是**本轮共享**的那一份清单。
     onToggleMemoryRefs: () -> Unit = {},
     // 纠正浮层的状态与渲染归 MemoryCorrectionFlow（这一屏只发意图、不画浮层）。
     // 面板顶层传进来时遮罩盖满面板；没传就在本地建一颗并就地渲染——
@@ -132,7 +129,7 @@ fun ResultArea(
     correctionFlow: MemoryCorrectionFlow? = null,
     // 稳定轮次身份——只在整轮 generate 成功时变化
     generationRoundId: Int = 0,
-    // §3「回复卡片纵向排列」：方向由宿主从现有偏好喂进来
+    // 「回复卡片纵向排列」：方向由宿主从现有偏好喂进来
     //（`SecurePrefs.replyCardLayout` → VM → 面板这一格的实参），本组件不读盘、也不自己揣一颗开关。
     // 默认纵向＝需求原话的"默认开启"；横向＝保留现有的横向卡片排列。
     // ⚠ 换这一颗**只换摆法**：它不进任何请求参数、不参与 generationRoundId 与 rowState 的身份，
@@ -141,18 +138,6 @@ fun ResultArea(
     onInputIntent: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
-    // 卡片行下方那条文字入口的可见性判据：本轮一条参考信息都没有就不摆空工具块
-    //（要求的"没有参考信息时不放一个空工具块"），有则整轮共用同一个 toggle、只渲染一次——
-    // 展开的是本轮共享清单，不是"这张卡专属引用"的归属。
-    // ⚠ 还要再过一次 [memoryRefsFeedVisible]（把展开态当 true 问一句"这块**画得出来吗**"）：
-    // 这一份结果当时是「仅看本轮」时清单被那颗布尔挡死，留着卡片那条入口就成了一颗
-    // "点下去什么都不会出现"的死路——入口能给的时刻必须是清单真给得出的时刻。
-    // 判据仍只有那一颗纯函数，这里不重写第二套 when。
-    val feedCanDraw: Boolean =
-        memoryRefsFeedVisible(memoryRefs, showRefs = true, onlyThisRound = frozenOnlyThisRound)
-    val roundRefsClick: (() -> Unit)? =
-        if (feedCanDraw) onToggleMemoryRefs else null
-
     // 卡片行的**行级状态**：哪几张卡在调整展开态、每张卡在窗口里的落点、自定义草稿与
     // 自定义是否展开。四项一律按 identity.key 记，且住在 LazyRow item **之上**——
     // item 滑出视口会被销毁，状态留在卡里就是"滑出去再滑回来没了"或"串到同名标签的另一张卡"。
@@ -183,10 +168,17 @@ fun ResultArea(
 
     // 阅读位置的主人只有一份：**流式档与完成档共用同一颗 ScrollState**。
     // 原来两个分支各自 `verticalScroll(rememberScrollState())`，流式→完成那一跳换了新的一颗
-    // ⇒ 用户正往下读、结果一落地就弹回顶部——§13.2「结束保留结果位置与当前阅读位置」与
-    // §16.1 第 5 条「返回保留已读位置」在分支切换这一格是同一件事（L1 复核挑中；
+    // ⇒ 用户正往下读、结果一落地就弹回顶部——「结束保留结果位置与当前阅读位置」与
+    // 「返回保留已读位置」在分支切换这一格是同一件事（L1 复核挑中；
     // 席 C 报告里"纵向滚动住在 ResultArea 层不丢"只对了一半：主人对，主人被换了）。
     val readScroll = rememberScrollState()
+
+    var correctedIds by remember(generationRoundId) { mutableStateOf(emptySet<String>()) }
+    val onRefCorrected: (String) -> Unit = { correctedIds = correctedIds + it }
+    val onRefUndo: (String) -> Unit = {
+        correctedIds = correctedIds - it
+        onUndoCorrection(it)
+    }
 
     when {
         // Phase 1 加载中：核心回复（schemes）还没出来
@@ -210,7 +202,6 @@ fun ResultArea(
                             onClearRewriteState = onClearRewriteState,
                             onCancelRewrite = onCancelRewrite,
                             onCustomRewrite = onCustomRewrite,
-                            onReferenceClick = roundRefsClick,
                             rowState = rowState,
                             // 流式那一档与完成那一档读的是**同一颗**方向：边出卡边换方向也不会
                             // 出现"上半截横、下半截竖"
@@ -218,29 +209,20 @@ fun ResultArea(
                             onInputIntent = onInputIntent
                         )
                     }
-                    // 卡片行下方那条入口在流式那一档也是同一份**公共清单**，不是每张卡一份：
-                    // 展开态、清单本体与逐条纠正都走成功档那一条通路（清单本体在 MemoryRefsFeed.kt）。
-                    if (memoryRefs.isNotEmpty()) {
-                        MemoryRefsSection(
-                            memoryRefs = memoryRefs,
-                            onlyThisRound = frozenOnlyThisRound,
-                            showRefs = memoryRefsExpanded,
-                            onCorrection = onCorrection,
-                            onUndoCorrection = onUndoCorrection,
-                            correctionFlow = flow,
-                            onCollapse = onToggleMemoryRefs
-                        )
-                    }
-                    // 这条入口与成功档那一条是**同一颗**（本文件下面那颗 `MemoryCorrectionEntry`）：流式那一档
-                    // 原来根本没有这条出口，而本轮没有参考记忆时卡片入口与清单都不画
-                    //（`roundRefsClick` 为 null + `memoryRefsFeedVisible` 判空），流式档就一个字都不剩。
-                    // 清单照样不假装有一轮参考，但出口一直在；清单不在屏上时由它念那一句"这一刻用的是哪份上下文"
-                    // ——那一句跟着真读数换档（F06：没有真引用就不许念"本轮参考的记忆"）。
-                    MemoryCorrectionEntry(
-                        feedOnScreen = feedCanDraw && memoryRefsExpanded,
-                        feedCanDraw = feedCanDraw,
+                    // 「本轮参考」那份清单在流式那一档与成功档是**同一颗紧凑容器**
+                    // （本体在 MemoryRefsFeed.kt）：无引用（或那一轮「仅看本轮」）整区不画，
+                    // 有引用时首行计数小字 + 行尾「纠正中心」，展开态仍是外面传进来的。
+                    MemoryRefsSection(
+                        memoryRefs = memoryRefs,
                         onlyThisRound = frozenOnlyThisRound,
-                        onShowCorrectionCenter = onShowCorrectionCenter
+                        showRefs = memoryRefsExpanded,
+                        onCorrection = onCorrection,
+                        onUndoCorrection = onRefUndo,
+                        correctionFlow = flow,
+                        onToggleRefs = onToggleMemoryRefs,
+                        onShowCorrectionCenter = onShowCorrectionCenter,
+                        correctedIds = correctedIds,
+                        onRefCorrected = onRefCorrected
                     )
                     Spacer(Modifier.height(Spacing.md))
                     Box(
@@ -308,13 +290,12 @@ fun ResultArea(
                     onClearRewriteState = onClearRewriteState,
                     onCancelRewrite = onCancelRewrite,
                     onCustomRewrite = onCustomRewrite,
-                    onReferenceClick = roundRefsClick,
                     rowState = rowState,
                     cardLayout = cardLayout,
                     onInputIntent = onInputIntent
                 )
 
-                // §11.2: 八项里真缺的那几项要说出来——不静默隐藏，也不把合法 null 的
+                // 八项里真缺的那几项要说出来——不静默隐藏，也不把合法 null 的
                 // 「本轮不适合」报成缺项（那句文案归空卡自己，见 SchemeCollapsedBlock）。
                 replyCompletenessNotice(response.replyCompleteness)?.let { notice ->
                     Spacer(Modifier.height(Spacing.sm))
@@ -326,34 +307,21 @@ fun ResultArea(
                     OngoingSection(items = response.analysis.ongoing)
                 }
 
-                // 「本轮参考」那份清单在主 Column 中按正常文档流渲染，展开态是外面传进来的：
-                // 默认收起时 AnimatedVisibility 不占纵向高度，展开后才正常增加信息高度，
-                // 不覆盖方案卡。清单本体与逐条纠正词表住在 MemoryRefsFeed.kt。
-                // 这一份是**整轮共用的一条清单**：卡片行下面那一条文字入口翻的就是它。
-                if (memoryRefs.isNotEmpty()) {
-                    MemoryRefsSection(
-                        memoryRefs = memoryRefs,
-                        onlyThisRound = frozenOnlyThisRound,
-                        showRefs = memoryRefsExpanded,
-                        onCorrection = onCorrection,
-                        onUndoCorrection = onUndoCorrection,
-                        correctionFlow = flow,
-                        onCollapse = onToggleMemoryRefs
-                    )
-                }
-
-                // 结果区下方那条「修正记忆」：一颗文字入口，不常驻大型纠正工具区（就是本文件下面那颗 `MemoryCorrectionEntry`）。
-                // 中心里那份清单与撤销动作归 CorrectionCenter，这里只发"打开它"这一句意图。
-                // **与本轮有没有参考记忆、与那一轮是不是「仅看本轮」都无关**：那两种状态下
-                // 卡片下方那条入口与那份清单都不画（`roundRefsClick` 为 null / `memoryRefsFeedVisible` 为假），
-                // 这条出口仍在树上，并由它那句说明交代"这一刻军师用的是哪一份上下文、去哪儿改"
-                //（形状、热区与说明句不念第二遍的判据都写在 `MemoryCorrectionEntry` 那一份的 KDoc 里；
-                //  那一句说的是什么，由 `memoryContextNoteRes` 跟着真读数换档——F06，书 §7）。
-                MemoryCorrectionEntry(
-                    feedOnScreen = feedCanDraw && memoryRefsExpanded,
-                    feedCanDraw = feedCanDraw,
+                // 「本轮参考」那份清单：一个紧凑容器（本体在 MemoryRefsFeed.kt），按正常文档流渲染。
+                // 无引用（或那一轮「仅看本轮」）时整区不画、不留说明壳；有引用时首行小字念
+                // 「本轮参考 N 条」＋ 行尾「纠正中心」，点首行展开整轮共用的那一份清单。
+                // 展开态是外面传进来的：收起时 AnimatedVisibility 不占纵向高度，展开后才增加信息高度。
+                MemoryRefsSection(
+                    memoryRefs = memoryRefs,
                     onlyThisRound = frozenOnlyThisRound,
-                    onShowCorrectionCenter = onShowCorrectionCenter
+                    showRefs = memoryRefsExpanded,
+                    onCorrection = onCorrection,
+                    onUndoCorrection = onRefUndo,
+                    correctionFlow = flow,
+                    onToggleRefs = onToggleMemoryRefs,
+                    onShowCorrectionCenter = onShowCorrectionCenter,
+                    correctedIds = correctedIds,
+                    onRefCorrected = onRefCorrected
                 )
 
                 LocalCorrectionFlowHostIfNeeded(
@@ -375,7 +343,7 @@ fun ResultArea(
                 container = LbStateContainer.Strip,
                 // 这里原来挂着一颗就地「重试」。本轮合同要回复档的主动作**只有一个插入槽**，
                 // 而错误档属于"还没有结果"——槽上此刻画的正是那颗 40dp「生成回复」，
-                // 再在错误条上放第二颗就变成同一屏两个入口做同一件事（实施书那句
+                // 再在错误条上放第二颗就变成同一屏两个入口做同一件事（规范那句
                 // "不可在结果底部再放第二份"）。错因照旧念出来，撤掉的只是那颗重复动作。
                 modifier = modifier
             )
@@ -420,114 +388,6 @@ fun ResultArea(
     }
 }
 
-/**
- * 结果区那条出口上方的**那一句说明**该念哪一句（F06，2026-10-15 书 §7）——三档一句话的唯一真源。
- *
- * 输入只有两颗已有的真读数，不新造状态：
- * · `feedCanDraw` 是调用方拿同一颗 [memoryRefsFeedVisible]（把展开态当 `true`）问出来的
- *   "这一块清单**画得出来吗**"——为真就意味着这一轮**真有**被引用的历史记忆，只是此刻收着没展开；
- * · `onlyThisRound` 是这一份结果**当时**冻结的范围（`replyGenerationContext.onlyThisRound`）。
- *
- * 三档说的话各不相同，而且**不许有两档念同一句**（`MemoryCorrectionEntryTest` 里那格真值表
- * 按资源 id 比三句互不相等，抄串了就红）：
- * · 有真引用 ⇒ `memory_refs_note`（"调整军师本轮参考的记忆"）——这一句现在终于只在真有的时候说；
- * · 「仅看本轮」那一轮 ⇒ `memory_note_only_this_round`（那一轮请求里根本没有历史记忆，
- *   说"本轮参考的记忆"就是编）；
- * · 其余（没有真引用） ⇒ `memory_note_no_refs`（"本轮没有引用历史记忆"）。
- *
- * `feedCanDraw` 为真时 `onlyThisRound` 必为假（那颗判据里就带着这一条），所以前两档不会撞车；
- * 真值表那一格仍把 `true + true` 那一格钉成"跟着『有真引用』那一档走"，免得后来人换判据时撞车没人喊。
- */
-@StringRes
-internal fun memoryContextNoteRes(feedCanDraw: Boolean, onlyThisRound: Boolean): Int = when {
-    feedCanDraw -> R.string.memory_refs_note
-    onlyThisRound -> R.string.memory_note_only_this_round
-    else -> R.string.memory_note_no_refs
-}
-
-/**
- * 结果区（含流式出卡那一档）下方那颗**常驻**的纠正出口：`入口 +（清单此刻不在屏上时）那一句上下文说明`。
- *
- * 它为什么必须一直画得出（M20：结果区那条记忆纠正入口不易发现）：
- * [MemoryRefsSection] 那块清单按 [memoryRefsFeedVisible] 的三输入真值表决定画不画——本轮没有真引用、
- * 或者这一份结果当时是「仅看本轮」时，那块清单**一个字都不画**（那是第10节第3条 不许撤的显示侧保险，
- * 不许在这里用"补一张空壳/编一条占位条目"去绕开）。可用户在那两种时刻恰恰最需要知道
- * ① 这一刻军师用的是什么上下文，② 从哪里改它。这两样由这一颗承担，所以它的可见性
- * **既不看** `memoryRefs` 空不空、**也不看**那颗布尔——它只发"打开纠正中心"这一句意图。
- *
- * **那一句话说的是哪一刻**（F06，2026-10-15 书 §7）：说明句不能永远念同一句"调整军师本轮参考的记忆"。
- * 没有真引用、或那一轮本来就是「仅看本轮」的时候，屏上却念着"本轮参考的记忆"，用户点进去只看见
- * "没有记录"——那是书点名的误导形状（"不要同时念『调整本轮参考的记忆』并让用户点进去只看到空态"）。
- * 现在三档由 [memoryContextNoteRes] 一处判：有真引用（只是清单此刻收着）才念那一句原话，
- * 其余两档各念自己那句诚实的短话。入口本体、位置、热区都没动——**改的只是那一句说什么**。
- *
- * 那一句话只在**清单本体不在屏上**时跟着入口念一遍（`feedOnScreen` 由调用方用同一颗
- * [memoryRefsFeedVisible] 算出来，这里不重写第二套 when）：清单展开时那句说明本来就挂在清单头上
- * （`memory_refs_note`），这一颗再念一遍就是同一句话说两遍。
- *
- * 三种坏实现各红在 `MemoryCorrectionEntryTest` 对应那一格上：
- * - 把出口也挂在"有真引用"之后（本轮没引用 ⇒ 整条出口消失，用户既读不到上下文也改不动）；
- * - 流式出卡那一档不画出口（旧形状只有成功档有它，卡还在流式里就没路可走）；
- * - 点它顺手改数据（这颗组件**没有** `onCorrection` 形参——结构上就改不了）。
- * 第四种是 F06 那一族：**没有真引用时仍念"调整军师本轮参考的记忆"** ⇒ 那三格各红在新那一句上
- * （旧句子数到 0、新句子数到 1），真值表那一格红在档数上。
- *
- * 形状仍是"热区与字形两层"：外面那颗盒子按 [ResultDimens.UTILITY_HITBOX_DP] 垫两轴到可点下限
- * 并当那处点击，里面的字仍按文字档画——把字撑大不是"更好点"，那是把外观一起改了。
- * `clickable` 排在 `padding` 之前（排后面等于自己把热区削掉一圈，本文件另有两处同一课）。
- * 这颗盒子留在本文件而不搬去别的所有者：`ProductionUiContractTest` 与 `ResultAreaOwnershipTest`
- * 那两颗闸就是按"结果区这条入口的热区住在哪里"读源码的（`UTILITY_HITBOX_DP` 现在唯一读它的就是这里）。
- *
- * 词表全部走资源（入口 `memory_fix_entry`、三句说明 `memory_refs_note` /
- * `memory_note_no_refs` / `memory_note_only_this_round`），这里不新增内联中文。
- */
-@Composable
-internal fun MemoryCorrectionEntry(
-    /** 那份共享清单本体此刻在不在屏上（调用方按 [memoryRefsFeedVisible] 算）：在，则说明句不念第二遍 */
-    feedOnScreen: Boolean,
-    /** 这一块清单**画得出来吗**（把展开态当 true 问过同一颗判据）：有真引用才念那一句原话 */
-    feedCanDraw: Boolean,
-    /** 这一份结果**当时**是不是「仅看本轮」（冻结读数，不是界面上那颗实时开关） */
-    onlyThisRound: Boolean,
-    onShowCorrectionCenter: () -> Unit
-) {
-    val (interaction, scale) = rememberPressScale(0.96f, "correctionEntryScale")
-    Spacer(Modifier.height(Spacing.xs))
-    if (!feedOnScreen) {
-        // 一眼说清"这一刻军师用的是哪一份上下文"：三档各念自己那句，都由那颗真值表选
-        Text(
-            text = stringResource(memoryContextNoteRes(feedCanDraw, onlyThisRound)),
-            style = AppTypography.labelSmall,
-            color = TextHint
-        )
-        Spacer(Modifier.height(Spacing.xs))
-    }
-    Box(
-        modifier = Modifier
-            .heightIn(min = ResultDimens.UTILITY_HITBOX_DP.dp)
-            .widthIn(min = ResultDimens.UTILITY_HITBOX_DP.dp)
-            .graphicsLayer {
-                scaleX = scale
-                scaleY = scale
-            }
-            .clip(LoveBrainShape.sm)
-            .clickable(
-                interactionSource = interaction,
-                indication = null,
-                role = Role.Button,
-                onClick = onShowCorrectionCenter
-            )
-            .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = stringResource(R.string.memory_fix_entry),
-            style = AppTypography.labelSmall,
-            color = PrimaryDark
-        )
-    }
-}
-
 /** 方案筛选模式 */
 private enum class SchemeFilter { ALL, LIKED, DISLIKED }
 
@@ -535,7 +395,7 @@ private enum class SchemeFilter { ALL, LIKED, DISLIKED }
  * 一条横向列表要渲染的方案：四风格在前、四方向在后，按原有顺序接成 A B C D F E X S。
  *
  * reply 为空的卡片不删除——八项宇宙里少一张就少了 A–H 的一个编号（用户看到 7 而不是 8）。
- * 空卡的**成因**由 scheme 自己带（§11.2 三因分家）：合法 null 的方向 notSuitable=true 走
+ * 空卡的**成因**由 scheme 自己带（三因分家）：合法 null 的方向 notSuitable=true 走
  * 「本轮不适合」，没生成的那几项走「未生成」，见 SchemeCollapsedBlock。
  * 顺序与判据的唯一真源在 `LoveBrainResponse.mergedEightItems`，完整性读数与这一排共用它。
  */
@@ -543,7 +403,7 @@ internal fun mergedSchemesInRoundOrder(response: LoveBrainResponse): List<Scheme
     response.mergedEightItems
 
 /**
- * 八项完整性读数 → 用户看得见的那一句轻提示（§11.2「提示与空卡文案各归各」）。
+ * 八项完整性读数 → 用户看得见的那一句轻提示（「提示与空卡文案各归各」）。
  *
  * 纯函数，不挂 Compose，好让 JVM 那侧直接钉住读数：
  * - 缺项：点名**真正没生成**的那几项，数量按整池八项说（`2/8`），不拿局部数冒充全体；
@@ -721,7 +581,7 @@ internal fun toggleRewriteExpansion(
     }
 
 /**
- * 方案卡片行——**同一套卡片逻辑，两种摆法**（§3「回复卡片纵向排列」，默认纵向），Phase 1 完成就立刻渲染。
+ * 方案卡片行——**同一套卡片逻辑，两种摆法**（「回复卡片纵向排列」，默认纵向），Phase 1 完成就立刻渲染。
  *
  * 这一排管着三样东西，**两档共用同一批主人**，方向不改它们的归属：
  * - 筛选：`filter` 仍住在本行本地（`remember(rowState)`），已赞/已踩按数量出现；
@@ -751,14 +611,10 @@ private fun SchemeCardsRow(
     onClearRewriteState: (SchemeIdentity) -> Unit = {},
     onCancelRewrite: (SchemeIdentity) -> Unit = {},
     onCustomRewrite: (SchemeIdentity, String) -> Unit = { _, _ -> },
-    // 整轮共用那一条"这轮参考了哪些信息？"：null=这一轮根本不给入口。
-    // 它**不再往下传给每一张卡**——八张卡挂八条同样的入口，点开的是同一份共享清单，
-    // 白占八段滚动距离；这一颗由本行在卡片容器之后渲染一次（纵向/横向两档共用同一条）。
-    onReferenceClick: (() -> Unit)? = null,
     // 展开集合 / 落点 / 草稿：住在调用方（LazyRow item 之上），换一整轮整包作废
     rowState: SchemeRowState,
     onInputIntent: (() -> Unit)? = null,
-    // §3 的方向：由 `ResultArea` 从偏好透传下来（本行不读盘、也不自己发明第三种摆法）。
+    // 约定的方向：由 `ResultArea` 从偏好透传下来（本行不读盘、也不自己发明第三种摆法）。
     // 它是这一颗**唯一**新增的形参——其余全部原样透传，两档因此共用同一套卡逻辑。
     cardLayout: ReplyCardLayout = ReplyCardLayout.VERTICAL
 ) {
@@ -923,7 +779,7 @@ private fun SchemeCardsRow(
                 // 纵向档：一卡一行，按当前方案顺序接排（风格在前、方向在后，见
                 // [mergedSchemesInRoundOrder]）。这里用普通 `Column` 而不是 `LazyColumn`：
                 // 外层 `verticalScroll(readScroll)` 给的正是无限高度约束，在里面再嵌一棵无限高
-                // 懒列表就是 §3 点名禁止的坏法（`ResultAreaReadingPositionTest` 也钉着全文件
+                // 懒列表就是点名禁止的坏法（`ResultAreaReadingPositionTest` 也钉着全文件
                 // 只许骨架那一颗私有 ScrollState）。八项宇宙就这 8 张卡位，整列组合得起，
                 // 而且"切换方向后逐条还在"这一格因此在语义树里能一次数完。
                 Column(
@@ -948,17 +804,9 @@ private fun SchemeCardsRow(
                     items(displaySchemes, key = { it.identity.key }) { scheme -> cardEntry(scheme) }
                 }
             }
-            // 「本轮参考了哪些信息？」这一条入口**一轮只出现一次**，位置在整组方案卡之后：
-            // 八张卡下面挂八条一样的入口，点开翻的都是同一份共享清单，等于用八段 48dp 热区
-            // 换一次点击——省下来的就是用户要划的那段空白。文案与语气仍复用卡片那一族
-            // 既有的那颗常量与设计系统那颗文字动作（不新增第二份文案、不另画盒、不加 Spacer）。
-            if (onReferenceClick != null) {
-                LbTextAction(
-                    label = SchemeCardCopy.REFERENCE_ENTRY_LABEL,
-                    tone = LbTextActionTone.Muted,
-                    onClick = onReferenceClick
-                )
-            }
+            // 「这轮参考了哪些信息？」那条问句入口已退场（2026-11-21 信息减法）：
+            // 参考区的唯一入口是下面由 ResultArea 渲染的紧凑容器首行（MemoryRefsFeed.kt），
+            // 卡片行不再自带任何文字入口。
             // 去掉卡片下方的四个点（当前卡片指示器）
         }
     }
@@ -1024,7 +872,7 @@ private fun SchemeFilterTab(
 @Composable
 private fun CoreLoadingIndicator(
     streamingCoreText: String,
-    // §3：骨架屏那 4 张占位卡**跟着同一颗方向**摆，否则"加载完成那一跳"会从横排翻成纵列——
+    // 骨架屏那 4 张占位卡**跟着同一颗方向**摆，否则"加载完成那一跳"会从横排翻成纵列——
     // 正是下面那行注释写着要消除的那次跳变。尺寸仍只从 `SchemeCardDimens` 那两颗分叉口取。
     cardLayout: ReplyCardLayout = ReplyCardLayout.VERTICAL,
     modifier: Modifier = Modifier
@@ -1059,7 +907,7 @@ private fun CoreLoadingIndicator(
     ) {
         // 骨架卡片占位：4 张灰色卡片，让用户预知即将出现的内容布局
         // 骨架卡尺寸引用 SchemeCardDimens（166→150 对齐实体卡，消除加载完成瞬间跳变）
-        // §3 之后这句话更算数了：占位卡与实体卡**读同一颗方向、同一两颗尺寸分叉口**
+        // 之后这句话更算数了：占位卡与实体卡**读同一颗方向、同一两颗尺寸分叉口**
         //（横向＝固定 158x150 并排滑；纵向＝铺满整行、按同一颗 150 当下限一卡一行），
         // 所以加载完成那一跳换的只是"格子里填上真话术"，摆法与尺寸语义一个字都不换。
         val skeletonPlaceholder: @Composable () -> Unit = {
@@ -1106,7 +954,7 @@ private fun CoreLoadingIndicator(
         }
         if (cardLayout == ReplyCardLayout.VERTICAL) {
             // 纵向档：一卡一行。这里同样**不嵌 LazyColumn**——本柱自己已经吃了那条私有滚动，
-            // 再嵌一棵无限高懒列表就是 §3 点名禁止的坏法（四张占位更没必要）。
+            // 再嵌一棵无限高懒列表就是点名禁止的坏法（四张占位更没必要）。
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(Spacing.md)
@@ -1188,9 +1036,9 @@ private fun LocalCorrectionFlowHostIfNeeded(
 }
 
 /**
- * §11.2：八项回复不完整时的一行轻量提示 ＋ 一颗真的能点的「重试」。
+ * 八项回复不完整时的一行轻量提示 ＋ 一颗真的能点的「重试」。
  *
- * 指导书要求"用户应能看清是八项中的哪个没生成，不能静默隐藏"。
+ * 规范要求"用户应能看清是八项中的哪个没生成，不能静默隐藏"。
  * 这里只做展示——已有的候选卡片仍保留，不删不清；再生成走 [onRetry]（宿主＝
  * `viewModel.retryCurrentReply()`，一次点击发一次请求，不自动反复补齐付费请求）。
  * 与主动发那条 [ProactiveStore.closeRun] 同一族轻量提示语言：
@@ -1199,7 +1047,7 @@ private fun LocalCorrectionFlowHostIfNeeded(
  * `internal` 而不是 `private`：这一颗要能被 JVM 那侧单独挂起来量「点一次＝回调一次」，
  * 抽成 internal 是本项目量悬浮窗内联控件的既有做法（同族先例见谈心模板那颗）。
  * 热区按悬浮窗紧凑档给（[Spacing.sm] / [Spacing.xs] 内边距），**不套全局 48dp 容器**——
- * 套了就等于把这屏的紧凑档作废（指导书 第4节第3条）。可点性因此是可衡量的权衡，
+ * 套了就等于把这屏的紧凑档作废（规范 第4节第3条）。可点性因此是可衡量的权衡，
  * 真机上要按实际尺寸验收，不宣称为普适无障碍标准。
  */
 @Composable

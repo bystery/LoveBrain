@@ -292,6 +292,10 @@
     <string name="feedback_categories">分类：%1$s</string>
     <string name="feedback_reasons">原因：%1$s</string>
     <string name="feedback_exporting">导出中…</string>
+    <!-- 2026-11-21 导出确认浮层的标题与正文（`FeedbackCasesScreen` 那两句内联中文迁进来）；
+         浮层两颗动作词复用既有 a11y_action_confirm / a11y_action_cancel，不另造。 -->
+    <string name="feedback_export_confirm_title">导出提醒</string>
+    <string name="feedback_export_confirm_message">导出文件是明文，里面带着真实对话原文，别发给别人。</string>
     <string name="provider_page_title">模型供应商</string>
     <!-- 供应商表单的四组分组标题（`LbFormGroup(title=…)` 的那四颗；表单里从此不许再有内联中文）。
          这四格是"资源补齐"不是"新写文案"：分组标题原本根本没有，是把裸标签并给 `LbFormField` 时
@@ -315,17 +319,15 @@
     <string name="notice_record_failed">记入失败，请重试</string>
 
     <!-- 记忆纠正这一族的入口与动作（产品定名的短词）。
-         形状：行上只有入口那两个到四个字；点开才看见四种说法与最后一行撤销；
-         整块说明只有 memory_refs_note 那一句，菜单里不再常驻"标记为错误内容"那一类技术解释。
-         这四条动作与「撤销」调的就是已有的 MemoryCorrection 机制，不是给对方发新消息。 -->
+         形状：参考区只有一个紧凑容器——首行小字念「本轮参考 N 条」，点首行展开才看见清单；
+         行上只有入口那两个到四个字，点开才看见四种说法与最后一行撤销。
+         没有引用（或那一轮「仅看本轮」）时整区不渲染：问句标题、说明句、独立入口三样已并进容器，
+         不再铺任何说明壳。这四条动作与「撤销」调的就是已有的 MemoryCorrection 机制，不是给对方发新消息。 -->
     <string name="memory_fix_entry">修正记忆</string>
-    <string name="memory_refs_note">调整军师本轮参考的记忆</string>
-    <!-- F06（2026-10-15 书 §7）：那一句说明必须跟着**本轮真有没有引用**走。
-         以前没有真引用、或那一轮本来就是「仅看本轮」时，也念同一句"调整军师本轮参考的记忆"，
-         用户点进去只看见"没有记录"——说的是没有的事，那就是误导。三句共用同一颗判据
-         （`ResultArea.memoryContextNoteRes`），不自建第二套 when。 -->
-    <string name="memory_note_no_refs">本轮没有引用历史记忆</string>
-    <string name="memory_note_only_this_round">这一轮只看本轮对话，没用历史记忆</string>
+    <!-- 参考容器首行的计数句：N 是这一轮真被引用的条数（来自 memoryRefs.size），念错条数就是编 -->
+    <string name="memory_refs_summary">本轮参考 %1$d 条</string>
+    <!-- 参考容器首行行尾那颗常驻动作：打开记忆纠正中心（旧的独立「修正记忆」文字入口已并进容器） -->
+    <string name="memory_center_entry">纠正中心</string>
     <string name="memory_refs_more">更多 %1$d 条</string>
     <string name="memory_action_wrong">这条不对</string>
     <string name="memory_action_mute">暂时别提</string>
@@ -373,20 +375,4 @@
     <string name="intent_enable_switch_label">启用持续意图</string>
     <string name="intent_too_long_error">意图过长，请精简到 %1$d 字以内</string>
     <string name="intent_save">保存</string>
-
-    <!-- 批量导入聊天记录（Issue #7：长按 ➕ → 粘贴 → 解析预览 → 指定发言人 → 一次导入） -->
-    <string name="batch_import_title">批量导入聊天记录</string>
-    <string name="batch_import_paste_hint">粘贴微信多选/合并转发复制的聊天文本，解析后逐条确认发言人再导入。</string>
-    <string name="batch_import_paste_placeholder">在此粘贴多行聊天记录…</string>
-    <string name="batch_import_parse">解析预览</string>
-    <string name="batch_import_reparse">重新解析</string>
-    <string name="batch_import_pick_speaker">请为每一条指定「她 / 我」；未指定的条目不会导入。</string>
-    <string name="batch_import_unknown_speaker">发言人未识别</string>
-    <string name="batch_import_empty_result">没有解析出任何消息，请检查粘贴的内容。</string>
-    <string name="batch_import_submit">导入 %1$d 条</string>
-    <string name="batch_import_cancel">取消</string>
-    <!-- 外部审计 F3-2：批量导入入口（➕ 长按）太深，首次进回复输入面板时走通知位给一条一次性轻提示 -->
-    <string name="batch_import_first_hint">长按「＋」可批量粘贴导入聊天记录</string>
-    <string name="a11y_batch_import_row_remove">移除这一条</string>
-    <string name="a11y_batch_import">批量导入聊天记录（长按）</string>
 </resources>

@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * 列表卡（页面族 F1 的"列表卡"那一档，基线 v1.1 §1 表 F1 行 + §3.4 + §3.6）。
+ * 列表卡（页面族 F1 的"列表卡"那一档，表 F1 行）。
  *
  * ## 它替代的是什么
  *
@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
  * （旧 `FeedbackCasesScreen.kt:301-335`：自绘 `Card` + `shadow(4)` + 正文当标题）。
  * 这一颗把壳的所有者交回设计系统：页面只交出**内容**，拿不到形状、字阶、行数、阴影与动作写法。
  *
- * ## 五个槽，各有各的硬档（基线 §3.6，D1 §③-9）
+ * ## 五个槽，各有各的硬档
  *
  * | 槽 | 参数 | 档 | 谁被钉住 |
  * | --- | --- | --- | --- |
@@ -51,13 +51,13 @@ import androidx.compose.ui.unit.dp
  * | 5 动作行 | [actions] | ≤3 颗 [LbTextActionSize.RowCapsule]（可见 32 / 热区 48），删除恒 Destructive | 语气只能从三颗具名档里挑 |
  *
  * 三件没有旋钮的事，是这一颗存在的理由：
- * 1. **卡底 = `Border` 1dp + 无阴影**（基线 §3.4：描边管静息、阴影管浮起）。这里不许出现
+ * 1. **卡底 = `Border` 1dp + 无阴影**（描边管静息、阴影管浮起）。这里不许出现
  *    `.shadow(`——`ELEVATION_MAX` 那一档只属于 Sheet/弹窗/浮层与首页 hero。合同由
  *    `LbListCardContractTest` 按源码形状钉着（JVM 读不出像素，这一族的真实观感仍要截图）。
  * 2. **卡高由内容给**：本文件没有一处给卡体写 `heightIn(min = …)`。整颗组件的高是
  *    "槽 1 + 它下面真存在的那几槽"加出来的，空白槽不画、也不留幽灵文本节点（与
  *    `LbSettingRow` 的 subtitle/statusText 同一口径）。
- * 3. **动作只有一个所有者**（基线 §3.5）：这一行的每一颗都转进 [LbTextAction]，
+ * 3. **动作只有一个所有者**：这一行的每一颗都转进 [LbTextAction]，
  *    页面既拿不到 `Box(size(48)).clickable`，也拿不到 `TextButton + heightIn(min = …)`。
  *
  * [detail] 是第五槽之外唯一的补充位，也是母版没有的那一个概念：已踩案例要把
@@ -83,7 +83,7 @@ object LbListCardTags {
  *
  * ⚠ [STATUS_DOT_DP] 与 `LbSettingRow` 里那颗状态点是同一个数（6dp），但**两处各自画**：
  * 归并它得先动 `LbSettingRow`（本轮不属于任何一张列表卡的写入区）。缺的那一颗已经按
- * `LbListCardContractTest` 的说法登记在交接单里，等"状态点"上提成公共件再并。
+ * `LbListCardContractTest` 的说法登记在规范里，等"状态点"上提成公共件再并。
  */
 private object LbListCardDimens {
     const val STATUS_DOT_DP = 6f
@@ -91,7 +91,7 @@ private object LbListCardDimens {
     const val SUMMARY_MAX_LINES = 2
     const val META_MAX_LINES = 1
 
-    /** 动作行的颗数上限（基线 §3.6）：超出的槽位今天没有主人，见文件末那句 ⚠ */
+    /** 动作行的颗数上限：超出的槽位今天没有主人，见文件末那句 ⚠ */
     const val MAX_ACTION_SLOTS = 3
 }
 
@@ -107,7 +107,7 @@ private const val META_SEPARATOR = " ｜ "
 /**
  * 把若干段元信息合成一行（槽 4 的唯一画法）。
  *
- * 空白段直接丢：母版那一行从不写"暂无XX"，空字段排是 D1 §③-9 点名要治的那一条（A4）。
+ * 空白段直接丢：母版那一行从不写"暂无XX"，空字段排是点名要治的那一条（A4）。
  * 页面要合并就调这一颗，不要自己 `joinToString("｜")`——分隔符长出第二个主人，
  * 下一次统一就只有一处生效。
  */
@@ -158,7 +158,7 @@ class LbListCardAction private constructor(
  * F1 族列表卡：五个槽位 + 整卡一处操作。
  *
  * [title] 必填（类型上就不可空）；空白时不画那一行、也不留幽灵文本节点——
- * "无标题业务真源时不许编标题"是 D1 §③-9 明写的，页面自己截出来的那句不算编标题的话
+ * "无标题业务真源时不许编标题"是明写的，页面自己截出来的那句不算编标题的话
  * 请传真实在的那一句（已踩案例传的是回复首句）。
  *
  * [onClick] 交 `null` 时这张卡不可点（纯容器），此时**不挂** `Role.Button`：
@@ -189,8 +189,8 @@ fun LbListCard(
         colors = CardDefaults.cardColors(containerColor = SurfaceCard),
         modifier = modifier
             .fillMaxWidth()
-            // 基线 §3.4：静息结构由 1dp 描边管，阴影那一档不在列表卡上。
-            // 描边圆角 == 卡片圆角（D1 §8 规则 R2），两档都取自 LoveBrainShape.lg，只写一次。
+            // 静息结构由 1dp 描边管，阴影那一档不在列表卡上。
+            // 描边圆角 == 卡片圆角（规则 R2），两档都取自 LoveBrainShape.lg，只写一次。
             .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
             .then(
                 if (onClick == null) Modifier
@@ -198,7 +198,7 @@ fun LbListCard(
             )
             .testTag(LbListCardTags.CARD)
     ) {
-        // 卡内边距 = Spacing.lg（12，基线 §3.3 的"卡内 16→12"）。高由内容给，所以这里没有 heightIn。
+        // 卡内边距 = Spacing.lg（12，约定的"卡内 16→12"）。高由内容给，所以这里没有 heightIn。
         Column(modifier = Modifier.padding(Spacing.lg)) {
             // ── 槽 1 标题（+ 可选尾图标，顶右角）──────────────────────────────────
             // 标题与尾图标同一行：标题占余宽 + ellipsis，尾图标贴尾部。两颗都没有时不画这一行。
@@ -285,7 +285,7 @@ fun LbListCard(
                     modifier = Modifier.fillMaxWidth().testTag(LbListCardTags.ACTION_ROW)
                 ) {
                     // 母版的读法：元信息占余宽、动作贴尾部（KnowledgeBaseActivity.kt）。
-                    // 这一行没有第二颗"主按钮"——基线 §3.5：同一排只允许一颗。
+                    // 这一行没有第二颗"主按钮"——同一排只允许一颗。
                     Box(modifier = Modifier.weight(1f))
                     actions.take(LbListCardDimens.MAX_ACTION_SLOTS).forEach { action ->
                         LbTextAction(

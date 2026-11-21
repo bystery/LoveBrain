@@ -1,9 +1,6 @@
 package com.lovebrain.app.domain.port
 
 import com.lovebrain.app.util.TimeFmt
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 /**
  * 时间端口（复核 第4节 DIP 目标里列的 `Clock`：domain 只依赖
@@ -57,11 +54,11 @@ class FixedClock(startMs: Long = DEFAULT_START_MS) : Clock {
 
     override fun epochMs(): Long = ms
 
-    override fun wallClock(): String =
-        SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(Date(ms))
+    // 与生产同走 TimeFmt：测试时钟也要给出与主路径同一串字节——否则注入什么格式，
+    // 断言的就是什么格式，th_TH 机器上 fake 会把佛历年份带进 prompt 基线。
+    override fun wallClock(): String = TimeFmt.format(ms)
 
-    override fun today(): String =
-        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(ms))
+    override fun today(): String = TimeFmt.date(ms)
 
     companion object {
         /** 2026-09-24 09:00 —— 与本轮被审提交同一天，便于和真实产物对得上 */

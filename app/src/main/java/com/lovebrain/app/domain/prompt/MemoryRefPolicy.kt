@@ -13,7 +13,7 @@ import com.lovebrain.app.model.MuteDuration
  * （文件级 / 条目级 ID），并按 corrections 表决定该段是跳过、补正、还是静音。它不读知识库、
  * 不读资产、不读时钟，也不持有任何状态，只接收**已经读出来的文本**与**纠正表**，
  * 因此是纯函数——搬运前后对同一批输入必须给出逐字相同的 MemoryRef 清单与 StringBuilder
- * 追加结果（字节证据见 `domain/prompt/PromptByteFreezeBaselineTest` 的冻结表）。
+ * 追加结果。
  *
  * 语义约束（搬运时一条都没改）：
  * - ID 为 `kind:sourcePath` 稳定 ID；条目级再追 `:entryId`。旧实现用内容 hash 做 ID，
@@ -91,11 +91,16 @@ object MemoryRefPolicy {
 
     /**
      * 检查 MUTED 纠正是否已过期。
-     * - THIS_ROUND: 持久 corrections.json 中的 THIS_ROUND 记录视为 legacy expired。
-     *   旧版本可能持久化了 THIS_ROUND，升级后不应变成永久静音。
-     *   THIS_ROUND 的真实生命周期由 ViewModel roundCorrections transient map 管理。
-     * - TODAY: 今天剩余时间。跨天后恢复。
-     * - UNTIL_RESTORE: 永不过期，只能手动撤销。
+     *
+     * 时间语义分两族：
+     * - **无墙钟窗口**（THIS_ROUND / 无时间戳）：在内存里存在就是有效，清掉就失效。
+     *   本轮瞬时静音由 `RoundCorrectionStore` 管理，它写记录时刻意留空 muteTimestamp
+     *   （见 `MemoryCorrectionPolicy.transientMute`）——所以"空时间戳 + THIS_ROUND = 生效"，
+     *   紧接着的下一次生成就会过滤该条，与界面文案"下次生成将过滤"一致。
+     * - **按时间**（TODAY）：跨天恢复；UNTIL_RESTORE 永不过期，只能手动撤销。
+     *
+     * 唯一例外是 **非空时间戳的 THIS_ROUND**：那是旧版本持久化进 corrections.json 的记录。
+     * 升级后不该变成永久静音，按 legacy expired 处理（恢复注入）。
      * 旧数据无 muteDuration 字段时默认为 UNTIL_RESTORE，保持原语义。
      */
     fun isMuteExpired(correction: MemoryCorrection): Boolean {
@@ -103,8 +108,7 @@ object MemoryRefPolicy {
         return when (correction.muteDuration) {
             MuteDuration.UNTIL_RESTORE -> false
             MuteDuration.THIS_ROUND -> {
-                // 持久层不应存在 THIS_ROUND 记录；如果存在，视为 legacy expired。
-                // 旧版本持久化的 THIS_ROUND 升级后不应变成永久静音。
+                // 走到这里说明时间戳非空 = 旧版本落过盘的 THIS_ROUND，按 legacy expired 处理。
                 true
             }
             MuteDuration.TODAY -> {

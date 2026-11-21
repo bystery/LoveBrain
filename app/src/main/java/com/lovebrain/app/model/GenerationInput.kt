@@ -154,7 +154,6 @@ fun buildGenerationInput(
     corrections: Map<String, MemoryCorrection>,
     correctionsRevision: Int,
     onlyThisRound: Boolean,
-    aggressive: Boolean,
     providerIdentity: ProviderIdentity?,
     kbProfile: String,
     kbRevision: String,
@@ -192,7 +191,7 @@ fun buildGenerationInput(
     return GenerationInput(
         requestId = requestId,
         dialogue = dialogue,
-        replyDirective = ReplyDirective(text = combinedHint, aggressive = aggressive),
+        replyDirective = ReplyDirective(text = combinedHint),
         kbContext = knowledgeBase?.let { kb ->
             KbContext(
                 name = kb.name,

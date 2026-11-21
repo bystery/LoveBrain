@@ -21,7 +21,7 @@ import kotlin.math.sin
 import kotlin.math.tan
 
 /**
- * 基线 v1 §3.10 那颗公共件：**实心三角 / 停止方块的圆角字形**。
+ * 那颗公共件：**实心三角 / 停止方块的圆角字形**。
  *
  * 用户原话（第 6 条）："所有朝右三角形的三个角都要真圆角，不许是尖角。"
  * 圆化半径按**比例**算，不按固定 dp：`半径 = 字形边长 × [LB_GLYPH_CORNER_RATIO]`
@@ -41,11 +41,11 @@ import kotlin.math.tan
  * 只管**实心**三角与停止方块。返回 chevron、`PanelHeader.kt:157`、`ic_chevron_down.xml`、
  * `LbTopBar.kt:134`、`ProviderSection.kt:308`、`LbActionCard.kt` 尾部那颗
  * `Icons.AutoMirrored.Filled.KeyboardArrowRight` 都是**线性指示器**，
- * 不是播放形状，一律不许换成这一颗（§3.10 明写）。
+ * 不是播放形状，一律不许换成这一颗（明写）。
  */
 
 /**
- * 实心字形的圆化比例（§3.10 定版值：边长 × 0.18）。
+ * 实心字形的圆化比例（定版值：边长 × 0.18）。
  *
  * 这颗比例**只住在这里**：`Dimens.kt` 管的是容器与热区那几档下限，字形圆化不是间距 token，
  * 上提过去会让下一个人以为它能被别的件借走。停止方块与三角共用这一个数（同件同比例）。
@@ -252,7 +252,7 @@ private fun Path.addArc(corner: LbGlyphCornerArc) {
  * 三个旋钮只有"多大、哪一档墨、什么形"，**没有 `color:`、没有 `cornerRadius:`**——
  * 比例由 [LB_GLYPH_CORNER_RATIO] 独享，页面拿不到它，也就长不出第二种圆角。
  *
- * 三轴分离（§3.1）：这一颗只管**可见尺寸**那一轴，边长就是交进来的 [sizeDp]，
+ * 三轴分离：这一颗只管**可见尺寸**那一轴，边长就是交进来的 [sizeDp]，
  * 盒子外面一寸不涨；热区归调用方那颗可点盒子自己垫（首页那颗走 `AppDimens.TOUCH_TARGET_MIN_DP`）。
  *
  * 只读不点：体里没有 `clickable`，谁负责点击仍由挂着交互的那一层决定——
@@ -267,7 +267,7 @@ fun LbTriangleGlyph(
 ) {
     val ink = tone.ink
     when (shape) {
-        // 停止块：同一颗件、同一个比例（§3.10"停止方块同件同比例"），不再抄一颗固定 6dp
+        // 停止块：同一颗件、同一个比例（"停止方块同件同比例"），不再抄一颗固定 6dp
         LbTriangleGlyphShape.StopSquare -> Box(
             modifier = modifier
                 .size(sizeDp)

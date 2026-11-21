@@ -66,8 +66,7 @@ class SceneChainStore(
         kbName: String,
         topicLabel: String,
         sceneFacts: List<SceneFact>,
-        frozenMessages: List<ChatMessage>,
-        sourceAliasMap: Map<String, String> = emptyMap() // B项修复
+        frozenMessages: List<ChatMessage>
     ) {
         val chainPath = "moment/scene.md"
         val historyPath = "memory/raw_scene.md"
@@ -79,11 +78,8 @@ class SceneChainStore(
             .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
             .associate { it.id to it.role }
 
-        // B项修复：将别名（her-0, me-1）转换为实际消息 ID 后再校验
-        fun resolveSourceId(rawId: String): String {
-            // 先查别名映射（her-0 → UUID），找不到则认为已经是实际 ID
-            return sourceAliasMap[rawId] ?: rawId
-        }
+        // 别名（her-0 → 真实消息 ID）由调用方 [TopicRecorder.record] 在进 WAL 之前解析完，
+        // 首次提交与崩溃恢复用的是同一份 payload；这里不再收一份死参数。
 
         // 校验每条新事实的来源，过滤掉非法来源的事实
         val validatedFacts = mutableListOf<StoredFact>()
@@ -104,9 +100,8 @@ class SceneChainStore(
                 continue
             }
 
-            // B项修复：先将别名转为实际消息 ID，再校验是否属于冻结快照中的 HER/ME
-            val resolvedIds = sf.sourceIds.map { resolveSourceId(it) }
-            val validIds = resolvedIds.filter { id -> id in validSourceMap }
+            // 来源 ID 已由调用方解析成真实消息 ID；这里只做"是否属于冻结快照"的校验
+            val validIds = sf.sourceIds.filter { id -> id in validSourceMap }
             if (validIds.isEmpty()) {
                 // 所有来源都不合法 → 拒绝该事实（不影响合法事实）
                 // 只记长度与来源数：被拒的正文是从聊天里抽出来的，按 util/L.kt 的隐私红线不许进日志
@@ -162,13 +157,17 @@ class SceneChainStore(
         }
 
         // /E项修复: 对每条新事实做匹配决策
-        // - 如果 sourceIds 与已有事实完全相同且文本相同 → 幂等跳过
-        // - 如果 sourceIds 与已有事实完全相同但文本不同 → 同一事项新状态，替换（E项修复：恢复替换）
+        // - 同来源 + 同主体 + 同文本 → 幂等跳过（首次提交重复、或崩溃恢复重放都走这条）
+        // - 同来源 + 同主体 + 不同文本 + 组内只有一条旧事实 → 同一事项新状态，替换
+        // - 同来源但组内有多条旧事实（或已被本批认领）→ 追加，绝不覆盖已有事实
+        //    （重放时同来源多条事实共用一组来源 ID，逐条替换会互相覆盖、只剩末条）
         // - 如果 sourceIds 为空（未核实）→ 追加，不覆盖已有事实，不刷新时间
         // - 如果 sourceIds 不同 → 新事实，追加
         // - "她"和"我"的事实即使文本相似也不合并
         val toAdd = mutableListOf<StoredFact>()
         val toReplace = mutableMapOf<StoredFact, StoredFact>() // old → new
+        // 本批已认领（幂等命中或已用于替换）的旧事实：后续同来源事实不得再替换它们
+        val claimed = mutableSetOf<StoredFact>()
 
         for (nf in validatedFacts) {
             if (nf.sourceIds.isEmpty()) {
@@ -178,24 +177,30 @@ class SceneChainStore(
             continue
             }
 
-            // E项修复：同来源的旧事实 → 检查是否需要更新
-            // 同来源 + 不同文本 → 同一事项新状态，替换旧版本
-            val sameSourceMatch = allExistingFacts.firstOrNull { (ef, _) ->
+            // 同来源 + 同主体的旧事实组
+            val sameSourceGroup = allExistingFacts.filter { (ef, _) ->
                 ef.sourceIds.toSet() == nf.sourceIds.toSet() &&
                 ef.subject == nf.subject
             }
 
-            if (sameSourceMatch != null) {
-                val (ef, _) = sameSourceMatch
-                if (ef.text == nf.text) {
-                    // 幂等——完全相同文本+来源 → 不重复写入
-                    com.lovebrain.app.util.L.w("SceneFact idempotent skip: $nf")
-                } else {
-                    // E项修复：同来源新文本 → 替换旧版本（同事项新状态）
-                    toReplace[ef] = nf.copy(evidenceTime = ef.evidenceTime)
-                }
+            // 幂等——组内已有完全相同文本的事实：第一次提交已写成，本次是重放
+            val identical = sameSourceGroup.firstOrNull { (ef, _) -> ef.text == nf.text }
+            if (identical != null) {
+                claimed.add(identical.first)
+                // 只记长度/来源数：正文是从聊天里抽出来的，按 util/L.kt 的隐私红线不许进日志
+                com.lovebrain.app.util.L.w(
+                    "SceneFact idempotent skip: textLen=${nf.text.length} sources=${nf.sourceIds.size}"
+                )
+                continue
+            }
+
+            // 组内只剩一条未被本批认领的旧事实 → 视为同一事项的新状态，就地替换
+            val replaceable = sameSourceGroup.singleOrNull()?.first?.takeIf { it !in claimed }
+            if (replaceable != null) {
+                claimed.add(replaceable)
+                toReplace[replaceable] = nf.copy(evidenceTime = replaceable.evidenceTime)
             } else {
-                // 新事实，追加
+                // 组内多条（或都被本批认领）→ 保守追加：宁可多一条，不许把旧事实覆盖丢
                 toAdd.add(nf)
             }
         }
@@ -283,50 +288,43 @@ class SceneChainStore(
         expired: List<SceneEntry>
     ) {
         // 渲染 scene.md——事实带 speaker/subject 持久化
-        val newChainContent = if (kept.isEmpty()) "" else kept.joinToString("\n") { entry ->
-            val factsStr = entry.facts.joinToString("；") { f ->
-                val parts = mutableListOf<String>()
-                parts.add(f.text)
-                if (f.sourceIds.isNotEmpty()) {
-                    parts.add("src=${f.sourceIds.joinToString(",")}")
-                }
-                // 持久化 speaker/subject
-                if (f.speaker != EntityRef.UNKNOWN) {
-                    parts.add("spk=${f.speaker.name}")
-                }
-                if (f.subject != EntityRef.UNKNOWN) {
-                    parts.add("subj=${f.subject.name}")
-                }
-                parts.joinToString("|")
-            }
-            "- [${entry.timeStr}] ${entry.label}：${factsStr}"
-        } + "\n"
+        val newChainContent = if (kept.isEmpty()) "" else kept.joinToString("\n") { renderEntry(it) } + "\n"
 
         knowledgeRepo.writeFile(kbName, chainPath, newChainContent)
 
         // 归档过期条目
         if (expired.isNotEmpty()) {
             val historyContent = buildString {
-                expired.forEach { entry ->
-                    val factsStr = entry.facts.joinToString("；") { f ->
-                        val parts = mutableListOf<String>()
-                        parts.add(f.text)
-                        if (f.sourceIds.isNotEmpty()) {
-                            parts.add("src=${f.sourceIds.joinToString(",")}")
-                        }
-                        if (f.speaker != EntityRef.UNKNOWN) {
-                            parts.add("spk=${f.speaker.name}")
-                        }
-                        if (f.subject != EntityRef.UNKNOWN) {
-                            parts.add("subj=${f.subject.name}")
-                        }
-                        parts.joinToString("|")
-                    }
-                    append("- [${entry.timeStr}] ${entry.label}：${factsStr}\n")
-                }
+                expired.forEach { entry -> append(renderEntry(entry)).append("\n") }
             }
             knowledgeRepo.appendFile(kbName, historyPath, historyContent)
         }
+    }
+
+    /**
+     * 条目行渲染：`- [时间] 标签：事实1；事实2`，每条事实再以 `|` 拼 `src=/spk=/subj=`。
+     *
+     * 事实正文里的 `|`、`；`、`;`、`：` 与换行是行内分隔符本身，原样写会把一条事实拆错、
+     * 读回来丢条目——落盘前经 [SceneFactCodec] 编码成不含分隔符的 `\uXXXX` 序列，
+     * 读侧 [parseStoredFact] 解码还原。不含这些字符的正文一个字节都不变（旧格式照样读）。
+     */
+    private fun renderEntry(entry: SceneEntry): String {
+        val factsStr = entry.facts.joinToString("；") { f ->
+            val parts = mutableListOf<String>()
+            parts.add(SceneFactCodec.encode(f.text))
+            if (f.sourceIds.isNotEmpty()) {
+                parts.add("src=${f.sourceIds.joinToString(",")}")
+            }
+            // 持久化 speaker/subject
+            if (f.speaker != EntityRef.UNKNOWN) {
+                parts.add("spk=${f.speaker.name}")
+            }
+            if (f.subject != EntityRef.UNKNOWN) {
+                parts.add("subj=${f.subject.name}")
+            }
+            parts.joinToString("|")
+        }
+        return "- [${entry.timeStr}] ${entry.label}：${factsStr}"
     }
 
     /** 解析 scene.md 为结构化条目列表 */
@@ -388,12 +386,15 @@ class SceneChainStore(
      * 旧格式：事实文本⟨sourceIds⟩
      * 新格式：事实文本|src=id1,id2|spk=HER|subj=ME
      * 无标记：纯文本（旧数据或无来源）
+     *
+     * 三条路径的正文都过一遍 [SceneFactCodec.decode]：写入侧只把分隔符编成 `\uXXXX`，
+     * 不含分隔符的正文编码前后逐字相同，所以旧数据解码是恒等变换。
      */
     private fun parseStoredFact(factText: String, timeMs: Long): StoredFact {
         // 优先检查新格式（| 分隔的字段）
         if (factText.contains("|src=") || factText.contains("|spk=") || factText.contains("|subj=")) {
             val parts = factText.split("|").map { it.trim() }
-            val text = parts.firstOrNull()?.trim().orEmpty()
+            val text = SceneFactCodec.decode(parts.firstOrNull()?.trim().orEmpty())
             val srcIds = parts.firstOrNull { it.startsWith("src=") }
                 ?.removePrefix("src=")?.split(",")?.map { it.trim() }?.filter { it.isNotBlank() }
                 ?: emptyList()
@@ -409,12 +410,56 @@ class SceneChainStore(
         // 旧格式：⟨sourceIds⟩ 后缀
         val srcMatch = Regex("(.*)⟨(.+)⟩$").find(factText)
         if (srcMatch != null) {
-            val text = srcMatch.groupValues[1].trim()
+            val text = SceneFactCodec.decode(srcMatch.groupValues[1].trim())
             val srcIds = srcMatch.groupValues[2].split(',').map { it.trim() }.filter { it.isNotBlank() }
             return StoredFact(text = text, sourceIds = srcIds, evidenceTime = timeMs, subject = extractSubject(text))
         }
 
         // 无标记：纯文本
-        return StoredFact(text = factText, sourceIds = emptyList(), evidenceTime = timeMs, subject = extractSubject(factText))
+        val text = SceneFactCodec.decode(factText)
+        return StoredFact(text = text, sourceIds = emptyList(), evidenceTime = timeMs, subject = extractSubject(text))
     }
 }
+
+/**
+ * 场景事实正文的行内编解码。
+ *
+ * `moment/scene.md` 是单行条目 + 行内分隔符（`；`/`;` 分事实、`|` 分字段、首`：`分标签），
+ * 正文里出现分隔符或换行时写入侧会被拆错、读回来丢条目。这里只做**最小转义**：
+ * 命中 [RISKY] 里的字符才编码，正文原样时不产生任何转义（旧数据一字不动）。
+ *
+ * 编码形如 `\u007c`（反斜杠 + u + 4 位十六进制），自身不含任何分隔符，
+ * 所以写入侧仍可按分隔符直接切分，切完再解码。
+ */
+internal object SceneFactCodec {
+
+    /** 需要编码的字符：反斜杠自身、两种分号、竖线、全角冒号、换行/回车 */
+    private val RISKY = charArrayOf('\\', '；', ';', '|', '：', '\n', '\r')
+    private val ESCAPE_REGEX = Regex("\\\\u([0-9a-fA-F]{4})")
+
+    fun encode(text: String): String {
+        if (text.none { it in RISKY }) return text
+        val sb = StringBuilder(text.length + 8)
+        for (ch in text) {
+            if (ch in RISKY) {
+                sb.append("\\u").append(ch.code.toString(16).padStart(4, '0'))
+            } else {
+                sb.append(ch)
+            }
+        }
+        return sb.toString()
+    }
+
+    /**
+     * 解码。只认 `\u` + 4 位十六进制，其余反斜杠原样保留；
+     * 旧数据（从未编码）里出现这种序列的概率可以忽略，这是"读取兼容旧格式"的代价。
+     */
+    fun decode(text: String): String {
+        if (!text.contains("\\u")) return text
+        return ESCAPE_REGEX.replace(text) { m ->
+            val code = m.groupValues[1].toInt(16)
+            if (code in 0..0xFFFF) code.toChar().toString() else m.value
+        }
+    }
+}
+

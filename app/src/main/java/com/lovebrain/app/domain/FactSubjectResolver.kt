@@ -23,22 +23,22 @@ object FactSubjectResolver {
      *
      * @param factText 事实文本
      * @param speaker 已确定的说话人（由 FactSpeakerResolver 推导）
-     * @param sourceIds 来源消息 ID
-     * @param dialogue 冻结对话快照
+     * @param sourceIds 来源消息 ID（当前不被读取：Level 3 已停用，未来恢复校验时才用得上）
+     * @param dialogue 冻结对话快照（同上，当前不被读取）
      * @return EntityRef（HER / ME / UNKNOWN）
      */
     fun resolve(
         factText: String,
         speaker: EntityRef,
-        sourceIds: List<String>,
-        dialogue: List<DialogueMessage>
+        @Suppress("UNUSED_PARAMETER") sourceIds: List<String>,
+        @Suppress("UNUSED_PARAMETER") dialogue: List<DialogueMessage>
     ): EntityRef {
         // Level 1: 代码可确定——基于 speaker + 代词
         val level1 = resolveByPronoun(factText, speaker)
         if (level1 != null) return level1
 
         // Level 2: 简单实体规则（未来可扩展）
-        val level2 = resolveByEntityRule(factText, speaker, sourceIds, dialogue)
+        val level2 = resolveByEntityRule(factText)
         if (level2 != null) return level2
 
         // Level 3: 封板期保守策略——不信任 AI subject_candidate。
@@ -101,12 +101,7 @@ object FactSubjectResolver {
      *
      * 新增：保守处理亲属、第三人、引语——不确定的返回 null，不进任何一方确定画像。
      */
-    private fun resolveByEntityRule(
-        factText: String,
-        speaker: EntityRef,
-        @Suppress("UNUSED_PARAMETER") sourceIds: List<String>,
-        @Suppress("UNUSED_PARAMETER") dialogue: List<DialogueMessage>
-    ): EntityRef? {
+    private fun resolveByEntityRule(factText: String): EntityRef? {
         val trimmed = factText.trim()
 
         // 事实文本以"她"开头 → 描述对方

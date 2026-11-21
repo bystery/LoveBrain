@@ -1,7 +1,6 @@
 package com.lovebrain.app.ui.home
 
 import android.content.Intent
-import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -30,42 +32,43 @@ import com.lovebrain.app.core.designsystem.LbTopBar
 import com.lovebrain.app.core.designsystem.LbTopBarLevel
 import com.lovebrain.app.core.designsystem.LB_SCREEN_HORIZONTAL_MARGIN
 import com.lovebrain.app.core.designsystem.Spacing
+import com.lovebrain.app.service.overlayPermissionGranted
 import com.lovebrain.app.ui.KnowledgeBaseActivity
 import com.lovebrain.app.viewmodel.HomeStatusViewModel
 
 /**
  * 首页——精简但有完成度的一屏：一行应用标识、一条浮起来的 hero 状态卡、仅黄灯时那一行**带出口**的缺项、2×2 四入口。
  *
- * 依据指导书 §5.1（页面从上到下**只有**这四格：应用标识与必要标题 → 状态主卡和开始/停止 →
- * 有缺项时的紧凑提示 → 四入口）+ §3 表"应用首页"那一行（保留结构 = 状态主卡、真实缺项提示、
+ * 首页规格：页面从上到下**只有**这四格：应用标识与必要标题 → 状态主卡和开始/停止 →
+ * 有缺项时的紧凑提示 → 四入口）+ "应用首页"那一行（保留结构 = 状态主卡、真实缺项提示、
  * 知识库/已踩案例/消息捕获/模型供应商四入口；不塞 = 调试参数、大段介绍、重复统计、旧锦囊入口）。
  * 从上到下：
  * 0. [LbTopBar] 的 `Identity` 档——**只有应用名**（`R.string.app_name`，既有资源）：
- *    §5.1 那一格写的是"应用标识与必要标题"，而旧版那句价值说明（"帮你更自然地表达"）已被合同删掉，
+ *    这一格写的是"应用标识与必要标题"，而旧版那句价值说明（"帮你更自然地表达"）已被合同删掉，
  *    标题这一档因此只剩标识本身。页头**不自己画**：字号档、行高、热区全在设计系统那一颗里，
  *    `Identity` 这一档在 [com.lovebrain.app.core.designsystem.LbTopBarLevel] 的注释里点名的就是首页；
  *    不带返回钮（这一屏的返回就是退出 Activity，走 [BackHandler]）、不带分割线（那是 `ScreenPage` 那一族的规格）；
  * 1. [AssistantStatusCard]：左边红/黄/绿小灯 + **写在屏幕上的状态名**，右边朝右三角（开始）或方块（停止）；
  *    `Xl` 24 圆角 + 四边等距 16 + `PrimaryLight` 浅蓝底 + `PrimarySubtle` 细描边 + **零阴影**——
- *    M09 §5 第 1 条要把 1.3.1 那一级浅蓝层次买回来，用的是旧版就在盘上的那三颗令牌，不新增颜色；
+ *    设计规格第 1 条要把 1.3.1 那一级浅蓝层次买回来，用的是旧版就在盘上的那三颗令牌，不新增颜色；
  *    第 1 条同时明令"不要同时堆满阴影、描边和渐变"，所以这一格**描边与阴影二选一**（选了描边）；
  * 2. 只有黄灯才存在的 [HomeSetupHint]：一行 `bodySmall` 12 的黄字（浅黄底容器，不是裸奔的一行 log），
- *    末尾配一颗设计系统现有的行内胶囊动作——回应"不能只给一句黄警告让用户自己摸索"（§2.2 第 5 条）；
+ *    末尾配一颗设计系统现有的行内胶囊动作——回应"不能只给一句黄警告让用户自己摸索"（缺项提示规格第 5 条）；
  * 3. 四入口 = 设计系统 `LbActionCard` 的 `GridCell` 紧凑档：`Lg` 16 圆角 + 内 12 + **无阴影**，
- *    名字 + 一句 5–7 字的**辅助描述**（M09 §5 第 4 条：旧版每格都带 `subtitle`，上一批收掉空槽之后
+ *    名字 + 一句 5–7 字的**辅助描述**（设计规格第 4 条：旧版每格都带 `subtitle`，上一批收掉空槽之后
  *    四格只剩名字；文案真源在 `AdvisorStatus.kt` 的 `internal const` 那一族，不在调用里内联中文）。
  *
  * 层级不是靠新文案、也不是靠第五种状态买来的：hero 与入口卡是**两档**（圆角 24 对 16、
  * 内距 16 对 12、`PrimaryLight` 浅蓝对 `SurfaceCard` 白、状态名 18 对标题 15——
- * "主卡是视觉焦点、入口不许与主卡同样抢眼"（§5.1）这一条之前只剩阴影在扛，
+ * "主卡是视觉焦点、入口不许与主卡同样抢眼"（主卡是视觉焦点那条）之前只剩阴影在扛，
  * 现在由浅蓝底 + 字阶两处一起扛），段间距 16、卡与缺项 8、入口两排之间 12、列间 12——
  * 旧版那"三处一律 12dp"读不出层级，四格 + 一卡于是就是五个等大方块。
  *
  * 页面不判任何条件：灯色、形状、黄字全部来自 [AdvisorStatus.render]，那一行末尾**有没有**去处、
  * 是**哪一条**去处来自 [AdvisorStatus.primaryAction]，而那一行的状态来自
- * [HomeStatusViewModel]——它才是唯一会看权限、配置、知识库与探针结果的地方（§4.1 第 3 条）。
+ * [HomeStatusViewModel]——它才是唯一会看权限、配置、知识库与探针结果的地方（状态与探针的唯一出口）。
  *
- * ## 那一行末尾的那一颗去处（§5.2 末段 + §2.2 第 5 条）
+ * ## 那一行末尾的那一颗去处（缺项去处规格）
  *
  * **至多一颗**，跟着清单里最有用的那一项走，一条一个目的地，不堆同级大按钮、也不新增一排：
  * 悬浮权限缺 → 「去授权」（宿主那条平台链，它才认得系统授权页与回来续跑那半截）；
@@ -111,7 +114,7 @@ fun HomeScreen(
     onNavigateProviders: () -> Unit,
     onNavigateCaptureApps: () -> Unit,
     /**
-     * 黄字行那颗「去设置」的**第二件事**（G1b 接线单 §5）：按过引导"稍后"的人，
+     * 黄字行那颗「去设置」的**第二件事**（首页引导接线）：按过引导"稍后"的人，
      * 盘上游标是 `DEFERRED_TO_HINT`，罩子不再回来。宿主把 `SetupViewModel.resumeGuide` 接在这里，
      * 于是"缺项提示点到去设置"与"引导不会一翻页就没"是同一条闭环。
      * 默认值 = 不动游标（这一屏的判据里"点了黄字行"本来就只判导航那一半）。
@@ -119,14 +122,19 @@ fun HomeScreen(
     onResumeGuide: () -> Unit = {},
     onBack: () -> Unit,
     /**
-     * 悬浮权限这一颗**默认值就是原行为**：生产直读 `Settings.canDrawOverlays`。
+     * 悬浮权限这一颗**默认值就是原行为**：生产走 `overlayPermissionGranted`（与挂窗/设置页同一判据）。
      * 留成参数不是为了改行为，而是这一屏的判据里"有没有权限"决定黄字念哪一句，
      * JVM 用例必须能把这一件事实摆出来（读系统设置在 Robolectric 里给不出真值）。
      */
     overlayGrantedOverride: Boolean? = null
 ) {
     val context = LocalContext.current
-    val overlayGranted = overlayGrantedOverride ?: Settings.canDrawOverlays(context)
+    // 悬浮权限**不是组合期常量**：从系统授权页回来只走 Activity 的 ON_RESUME，不会触发重组，
+    // 把首帧读到的那一个值闭进 DisposableEffect 里，灯就会一直按"离开前"那一档算。
+    // 所以初值在组合期取一次，之后每次 ON_RESUME 现读刷新（override 只给用例摆事实）。
+    var overlayGranted by remember(overlayGrantedOverride) {
+        mutableStateOf(overlayGrantedOverride ?: overlayPermissionGranted(context))
+    }
     val status by homeStatus.status.collectAsStateWithLifecycle()
     val render = status.render()
     // 知识库管理页这一格**只有一个开法**：入口卡与缺项那颗去处共用下面这一条链。
@@ -148,7 +156,7 @@ fun HomeScreen(
                 // 借的是这一句短词，不新抄一份——与上面那颗「去设置」同一条纪律。
                 HomeMissingAction.GrantOverlay -> R.string.home_grant_accessibility
                 // 「新建知识库」：当前对象没有库时唯一要说的事（目的地是知识库管理页，
-                // 那一页的空态主动作就叫这个名字）。§5.2 想要的是「去管理」那一档更中性，
+                // 那一页的空态主动作就叫这个名字）。缺项去处规格想要的是「去管理」那一档更中性，
                 // 而 `res` 里没有那颗键：已回报要一颗，键落地前先用这一颗真在盘上的词，不内联。
                 HomeMissingAction.OpenKnowledgeBase -> R.string.home_go_manage
                 // 「重试」：读到没读到那一格 = 重读本地事实；本次请求失败那一格 = 再发那一次
@@ -172,7 +180,7 @@ fun HomeScreen(
         null -> null
         // 授权这一颗**只走宿主那条平台链**：`SetupActivity.startFloatingService` 才认得
         // "没权限就去系统授权页、回来后接着启动"那半截，页面自己再发一遍 Intent 就是第二套行为
-        // （§4.1 第 2 条：复用同时包含外观、行为和宿主）。它不碰 `onPlay`，一次请求都不发。
+        // （复用同时包含外观、行为和宿主）。它不碰 `onPlay`，一次请求都不发。
         HomeMissingAction.GrantOverlay -> onStartService
         HomeMissingAction.OpenProviders -> goProviders
         HomeMissingAction.OpenKnowledgeBase -> openKnowledgeManagement
@@ -182,11 +190,15 @@ fun HomeScreen(
 
     BackHandler { onBack() }
 
-    // 从系统授权页回来：Activity resume，而这一屏没有重新装配 → 重读一次本地事实
+    // 从系统授权页回来：Activity resume，而这一屏没有重新装配 → **现读**权限再重读本地事实。
+    // 这一颗观察器挂得比组合久（key 只有 lifecycleOwner），所以不能在闭包里用组合期那份读数。
     val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
+    DisposableEffect(lifecycleOwner, overlayGrantedOverride) {
         val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) homeStatus.returnedFromSubpage(overlayGranted)
+            if (event == Lifecycle.Event.ON_RESUME) {
+                overlayGranted = overlayGrantedOverride ?: overlayPermissionGranted(context)
+                homeStatus.returnedFromSubpage(overlayGranted)
+            }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
@@ -195,7 +207,7 @@ fun HomeScreen(
     LaunchedEffect(Unit) { homeStatus.returnedFromSubpage(overlayGranted) }
 
     LbScreenScaffold {
-        // 段与段之间 16（`Spacing.xl`）——M09 §5 第 3 条"收紧主页大区块间距"落在这一格：
+        // 段与段之间 16（`Spacing.xl`）——设计规格第 3 条"收紧主页大区块间距"落在这一格：
         // 上一版是 `Spacing.xxxl`(24)，与 1.3.1 那条 `Arrangement.spacedBy(Spacing.xl)`＝**16** 对不上，
         // 主页因此比旧版松一圈。这里换的只是**这一处用哪一档既有 token**，
         // `Spacing.xxxl` 那颗数值、`Spacing` 整张表、水平边距那颗 24（`LB_SCREEN_HORIZONTAL_MARGIN`）
@@ -213,7 +225,7 @@ fun HomeScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(Spacing.xl)
         ) {
-            // ── 应用标识（§5.1 第一格）：只有名字，没有副标题、没有返回钮、没有分割线。
+            // ── 应用标识（第一格）：只有名字，没有副标题、没有返回钮、没有分割线。
             //    页头这一格交回设计系统那一颗（`Identity` 档点名的就是首页），页面不自画第二套行高。──
             LbTopBar(
                 title = stringResource(R.string.app_name),
@@ -244,7 +256,7 @@ fun HomeScreen(
 
             // ── 2×2 四入口：同一颗 LbActionCard 紧凑档，两排之间 12、列间 12 ──
             // 四格那五个数（方块 40 / 图标 22 / 尾部箭头 20 / 卡圆角 16 / 列间 12）与 1.3.1 逐字同值。
-            // M09 §5 第 4 条这一轮补回的是**副标题那一行**：旧版每格都带 4–7 字的辅助描述
+            // 设计规格第 4 条这一轮补回的是**副标题那一行**：旧版每格都带 4–7 字的辅助描述
             // （`FeatureCard` 的 `subtitle` 槽），上一批把空槽收掉之后四格只剩名字，
             // 于是"已踩案例""消息捕获"这种三四个字的名字读不出点进去是什么。
             // 文案真源仍走 `AdvisorStatus.kt` 那一族 `internal const`（与四颗名字同一形状），
@@ -298,14 +310,14 @@ fun HomeScreen(
                 }
             }
 
-            // ── 累计使用那一块只读小卡（M25 §五 取舍③，新决定替代旧规「不恢复使用概览」）──
+            // ── 累计使用那一块只读小卡（新决定替代旧规「不恢复使用概览」）──
             // 放在**四入口之后**，是这一屏既有节奏里的最后一格：一个读数，不是第五个目的地，
             // 也不并进主卡（主卡仍只有一颗可点，由 HomeHeroActionTest 钉）。它自己**不可点**：
             // 此刻首页没有"使用概览"这一页可去，硬造一颗就是假按钮（与那两条没去处的缺项同一纪律）。
             // 数字一律来自那一条只读通道（`HomeUsageReadout` 的四颗 `total*`，见 HomeUsageReadout.kt 的
             // "数字来路只有一条"），界面里没有一颗写死的数；
             // 四格（生成 / 复制 / 采纳 / 花费）刻意收得比面板那条更窄——只是"一块简洁小卡"，
-            // 不恢复上一轮删掉的版本区/内部指标格（新指导书 §五 取舍③第④条）。
+            // 不恢复上一轮删掉的版本区/内部指标格（本轮产品口径第④条）。
             // 标签与单位串一律现读资源（`stringResource` 只能在组合期调，故先解成实参再交给
             // 纯映射 `homeUsageMetrics`——那颗不是 @Composable，不能在它里面摸资源）。
             val usage by homeStatus.usage.collectAsStateWithLifecycle()

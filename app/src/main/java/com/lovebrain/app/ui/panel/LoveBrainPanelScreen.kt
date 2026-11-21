@@ -5,13 +5,6 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,11 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
@@ -51,7 +41,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.PanelBackdropOpacity
 import com.lovebrain.app.R
-import com.lovebrain.app.feature.composer.ComposerInputKind
 import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.model.ChatMessage
@@ -67,7 +56,6 @@ import com.lovebrain.app.ui.panel.settings.LoveBrainSettingsContent
 import com.lovebrain.app.ui.panel.stats.UsageStatBar
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
-import com.lovebrain.app.domain.IntentPolicy
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
 import com.lovebrain.app.viewmodel.FloatingServiceHomePort
 import com.lovebrain.app.service.FloatingService
@@ -125,19 +113,20 @@ private val NON_REPORTING_INPUT_IDS = emptyList<String>()
 /**
  * 悬浮窗输入面的焦点边沿通道：面板按面绑一颗（稳定输入 id + 与 reply/counseling 同一颗
  * 宿主回调 [LoveBrainPanelScreen.onInputFocusChange]），面内只经
- * [rememberOverlayInputFocusReporter] 交给 `LbFieldInput.onFocusChange`，不自带 id。
+ * [rememberOverlayInputFocusReporter] 交给 `LbFieldInput.onFocusChange`，不自带 id；
+ * 首参 instanceKey 是每颗输入框自己的实例身份，宿主按它记账、失焦只摘自己那一格。
  * 没绑定（普通 Activity / 单独挂载）= 空操作，既有调用点一寸不动。
  */
-internal val LocalOverlayInputFocus = compositionLocalOf<(Boolean) -> Unit> { {} }
+internal val LocalOverlayInputFocus = compositionLocalOf<(Any, Boolean) -> Unit> { { _, _ -> } }
 
 /** 给一颗输入面绑稳定 id 的焦点上报器：lambda 身份稳定（不随重组打脏读取方），宿主回调永远取当下那份。 */
 @Composable
 internal fun rememberOverlayFocusReporter(
     inputId: String,
-    onInputFocusChange: (String, Boolean) -> Unit
-): (Boolean) -> Unit {
+    onInputFocusChange: (Any, String, Boolean) -> Unit
+): (Any, Boolean) -> Unit {
     val currentHost by rememberUpdatedState(onInputFocusChange)
-    return remember(inputId) { { focused -> currentHost(inputId, focused) } }
+    return remember(inputId) { { key, focused -> currentHost(key, inputId, focused) } }
 }
 
 /**
@@ -152,16 +141,17 @@ internal fun rememberOverlayFocusReporter(
 internal fun rememberOverlayInputFocusReporter(): (Boolean) -> Unit {
     val report = LocalOverlayInputFocus.current
     val currentReport by rememberUpdatedState(report)
+    val instanceKey = remember { Any() }
     // 多实例可能共绑同一 id：方案卡可同时开多个自定义框，横向列表滑出即回收。
     // 只有本实例真正报过获焦，离树时才补 false——别的实例被回收不许把持焦者的
     // 输入所有权一起打掉（光标还在时窗口被打回 PASSIVE，键盘会消失）。
     var claimed by remember { mutableStateOf(false) }
     DisposableEffect(Unit) {
-        onDispose { if (claimed) currentReport(false) }
+        onDispose { if (claimed) currentReport(instanceKey, false) }
     }
     return remember(report) { { focused ->
         claimed = focused
-        report(focused)
+        report(instanceKey, focused)
     } }
 }
 
@@ -220,64 +210,8 @@ private class PanelSurfaceHolder(
     var cardLayout: ReplyCardLayout by mutableStateOf(initialCardLayout)
         private set
 
-    /**
-     * 「批量导入」浮层开不开（Issue #7）。与 [settingsOpen] 同一颗持有者形状：
-     * 屏幕级决策面走 holder，不在屏函数中间摊裸布尔。
-     */
-    var batchImportOpen: Boolean by mutableStateOf(false)
-        private set
-
-    /**
-     * 自动拆分回落时的原文预填：null = 长按开的干净一版；非 null = 那次 tap 认出了转录
-     * 但还有昵称没认过角色，浮层带着这份原文与已知归属开，用户只补指定一次。
-     */
-    var batchImportPrefillRaw: String? by mutableStateOf(null)
-        private set
-
-    /**
-     * 这一扇浮层**是不是由输入草稿打开的**（自动拆分回落那一路）。
-     *
-     * 提交后清不清草稿，绑的是"这扇浮层消费的是不是草稿那份转录"，而不是"浮层原文与草稿
-     * 逐字相等"：用户在浮层里删掉转发标题行、末尾补一句，原文就不再等于草稿；按同文判，
-     * 草稿会留着，下一次点 ➕ 又把同一份转录处理一遍——归属已落盘时自动拆分认全角色，
-     * 于是静默重复入库。长按开的干净一版没有草稿来源，仍按同文判据。
-     */
-    var batchImportPrefillFromDraft: Boolean by mutableStateOf(false)
-        private set
-
-    /**
-     * 浮层粘贴框此刻的原文（浮层经 onRawChange 回报，播种与每次编辑都报）：
-     * 长按开的干净一版提交时与输入草稿比对，判断粘贴的恰好是不是草稿那份转录。
-     * 只在点击回调里读写、不进组合，所以是一颗普通 var，不是快照状态。
-     */
-    var batchImportSheetRaw: String = ""
-
     fun openSettings() { settingsOpen = true }
     fun closeSettings() { settingsOpen = false }
-
-    fun openBatchImport() {
-        batchImportPrefillRaw = null
-        // 长按开的是干净一版，没有草稿来源：提交侧只剩"粘贴的恰好是草稿那份"这一条判据。
-        batchImportPrefillFromDraft = false
-        batchImportOpen = true
-    }
-
-    fun openBatchImportPrefilled(raw: String) {
-        batchImportPrefillRaw = raw
-        // 这一扇由草稿打开：草稿就是这扇浮层在处理的转录，提交即视为消费掉它。
-        batchImportPrefillFromDraft = true
-        batchImportOpen = true
-    }
-
-    fun closeBatchImport() {
-        batchImportOpen = false
-        // 预填只属于刚结束的那一次：留着它，下一扇浮层会继承旧原文、提交侧也会按旧预填判。
-        // 关闭即清——开哪一扇（干净/预填）由开的那一句决定，不由上一场的残留决定。
-        batchImportPrefillRaw = null
-        // 来源旗标与预填同拍清（提交那一次已在 onSubmit 里读过）：留到下一扇，长按开的
-        // 干净一版会误按"草稿来源"清掉一份跟这次提交并不相干的草稿。
-        batchImportPrefillFromDraft = false
-    }
 
     /** 预览：越界与刻度外的值先落回合法刻度，画出去的永远就是盘上可能存着的那一档 */
     fun setBackdropPreview(percent: Int) {
@@ -420,7 +354,7 @@ private fun PanelSettingsPage(
 @Composable
 fun LoveBrainPanelScreen(
     viewModel: LoveBrainViewModel,
-    onInputFocusChange: (String, Boolean) -> Unit,
+    onInputFocusChange: (Any, String, Boolean) -> Unit,
     onInputIntent: (String) -> Unit,
     onClearComposeFocus: ((() -> Unit) -> Unit),
     onResize: (Int, Int) -> Unit,
@@ -593,7 +527,7 @@ fun LoveBrainPanelScreen(
     val handOffInput: () -> Unit = {
         keyboard?.hide()
         focusManager.clearFocus(force = true)
-        NON_REPORTING_INPUT_IDS.forEach { onInputFocusChange(it, false) }
+        NON_REPORTING_INPUT_IDS.forEach { onInputFocusChange(Any(), it, false) }
     }
     val currentHandOffInput by rememberUpdatedState(handOffInput)
     DisposableEffect(onClearComposeFocus) {
@@ -615,7 +549,7 @@ fun LoveBrainPanelScreen(
     }
 
     // ── 另外几条失焦路径也走同一个交接出口 ─────────────────────────────────
-    // 设置页盖层打开/关闭、意图编辑器关闭、批量导入浮层开合这三族路径同样需要交出 Compose 焦点。
+    // 设置页盖层打开/关闭、意图编辑器关闭这两族路径同样需要交出 Compose 焦点。
     // 旧版只接了 `panelMode` 切页，设置页从主面盖上来（或收回去）时，正在获焦的那根
     // BasicTextField 不会自动失焦——`onFocusChanged(false)` 不触发，
     // `PanelInputFocusOwner.activeInputId` 不清、窗口仍挂 EDITING、IME 不收。
@@ -634,16 +568,6 @@ fun LoveBrainPanelScreen(
         if (!showIntentEditor) {
             currentHandOffInput()
         }
-    }
-
-    // 批量导入浮层开合同样交出焦点。粘贴框那颗（`batch_import`）的失焦由下面那圈
-    // 容器级观测自己报（浮层组件没有焦点上报入口，观测点挂在整个浮层子树上）：
-    // 开/关层这一翻走唯一出口清焦，浮层退场动画期间树还在，容器报得出真实失焦；
-    // 不清的话，浮层关了宿主还认为 batch_import 持焦：窗口卡 EDITING、键盘收不起来。
-    // 与设置页同款：`batchImportOpen` 一翻就清一次——打开时主面被盖在下层、
-    // 不该继续持焦；关闭时浮层里那颗粘贴框跟着退场、也不该留着。
-    LaunchedEffect(surface.batchImportOpen) {
-        currentHandOffInput()
     }
 
     // 标错浮层的草稿框如今也带意图与焦点上报：关闭时同样经唯一出口交接——
@@ -812,7 +736,6 @@ fun LoveBrainPanelScreen(
                     onCollapse = onCollapse,
 
                     // 页头整行也是拖动窗口的手柄：不接这颗，只能靠顶部那条细槽拖动
-                    // 输出模式（回复/主动发）的状态在 VM 里，页头不持有它
                     onHeaderDrag = onMove,
                     // 左上角齿轮：整窗切设置页（弹窗、半屏 Sheet、外部 Activity 都不是这一格的答案）
                     onOpenSettings = { surface.openSettings() }
@@ -956,22 +879,12 @@ fun LoveBrainPanelScreen(
                 // 正文全拖进纯缩进 diff，真改动就被 240 行缩进淹掉）。
                 Column(modifier = Modifier.fillMaxSize()) {
                 val inputFocusRequester = remember { FocusRequester() }
+                val replyFocusKey = remember { Any() }
                 // ── 次级控制的两处挂载点，共用同一份状态 ──────────────────────────
                 // 口径只算一次：`hasRealDialogueRows(messages)` 就是 `MessageList` 内部那一口，
                 // 有真实消息 → 挂输入区行 2；没有 → 收进消息卡空态分支。两处二选一，绝不在
                 // 两处各存一份开关（那才是"意图与仅看本轮各长两个所有者"的第二份状态）。
                 val hasRealRows = hasRealDialogueRows(messages)
-                // 批量导入入口的首次轻提示（外部审计 F3-2）：入口只有 ➕ 的长按、太深，
-                // 首次进回复输入面板时走通知位给一条紧凑短提示（文案在 strings.xml，
-                // 经 stringResource 在屏上解析——VM 没有 Context，这一步只能由屏上交进来）。
-                // 旗标与投递都在上游 VM（`maybeShowBatchImportFirstHint`）：
-                // 投一次就落盘，长按过 ➕（onBatchImport 里 mark）或完成过一次导入
-                // （importBatchMessages 里 mark）之后永远不再弹。
-                // 通知位一次只显示一条、到点自散——不给输入行加任何常驻控件。
-                if (composerMode == ComposerMode.REPLY) {
-                    val batchImportHint = stringResource(R.string.batch_import_first_hint)
-                    LaunchedEffect(Unit) { viewModel.maybeShowBatchImportFirstHint(batchImportHint) }
-                }
                 ReplyInput(
                     draftText = draftText,
                     currentRole = composeRole,
@@ -991,36 +904,36 @@ fun LoveBrainPanelScreen(
                     onOnlyThisRoundChange = { viewModel.toggleOnlyThisRound() },
                     // hasRealMessages 与 MessageList 共用同一口径（hasRealRows）；仅看本轮不再随它二选一挂载。
                     hasRealMessages = hasRealRows,
-                    // 批量导入入口（Issue #7）：长按 ➕ 开预览浮层，不改单行输入框布局。
-                    // 审计 F3-2：长按 = 用户已发现入口，同拍收掉首次轻提示的旗标（此后不再提示）。
-                    onBatchImport = {
-                        viewModel.markBatchImportDiscovered()
-                        surface.openBatchImport()
-                    },
+                    // 用户口径（2026-11-21 原话）："不要加入新的UI！！即不要长按解析！！直接输入 输入框直接解析"。
+                    // 轻点 ➕ 就是把输入框内容解析成多条消息——A/B 分流与入库都在 `addDraftAuto` 里，
+                    // 这一颗只是它唯一的手势入口：无预览、无浮层、不长按。
                     onAdd = {
-                        val text = draftText.trim()
-                        if (text.isNotEmpty()) {
+                        // 原样交给 A/B 分流：A 路正文的行首缩进/行尾空格是粘贴文本的一部分，
+                        // 在这里 trim 掉就再也补不回来（解析器与 AddMessages 都不削正文）；
+                        // B 路/备注/编辑各自的落点照旧自行 trim，两条路不共用同一份预清洗。
+                        val text = draftText
+                        if (text.isNotBlank()) {
                             if (editingIndex >= 0) {
                                 viewModel.updateMessage(editingIndex, composeRole, text)
                                 viewModel.setEditingIndex(-1)
                                 viewModel.setDraft("")
-                            } else if (inputKind == ComposerInputKind.SUPPLEMENT) {
-                                // 选《补充》时这一格写的是"给军师的话"，不是聊天流里的一条消息。
+                            } else if (composeRole == ChatMessage.Role.IDEA) {
+                                // IDEA（《补充》）不是消息角色：这一格写的是"给军师的话"，
                                 // 走 SubmitNote，绝不进 messages（进了就会被记成"我说过这句话"）。
+                                // 判据用 composeRole 而不是另读 inputKind：分流下游 `addDraftAuto`
+                                // 也只认这个角色，两处同源，IDEA 不可能漏进批量通道。
                                 viewModel.composer.accept(ComposerStore.Intent.SubmitNote(text))
                                 viewModel.setDraft("")
-                            } else if (viewModel.addDraftAuto(text, composeRole)) {
-                                // 单条照旧；认全角色的转录整批原子入库——两种都消费掉了草稿
-                                viewModel.setDraft("")
                             } else {
-                                // 有昵称没认过角色：开既有浮层预填原文显式指定一次。
-                                // 草稿不清——用户关掉浮层时这句话还在输入框里，不丢。
-                                surface.openBatchImportPrefilled(text)
+                                // A/B 分流都在它里面：A 路（空行分块）只取每块正文、角色全部用 composeRole
+                                // 整批入库；B 路原文一条按 `composeRole`；IDEA 不会走到这里（上一支）。
+                                // 返回 Unit，落空也清草稿。
+                                viewModel.addDraftAuto(text, composeRole)
+                                viewModel.setDraft("")
                             }
                         }
                     },
-                    inputId = "reply",
-                    onFocusChange = { focused -> onInputFocusChange("reply", focused) },
+                    onFocusChange = { focused -> onInputFocusChange(replyFocusKey, "reply", focused) },
                     onInputIntent = { onInputIntent("reply") },
                     focusRequester = inputFocusRequester
                 )
@@ -1146,7 +1059,6 @@ fun LoveBrainPanelScreen(
                             ) {
                             ResultArea(
                                 result = result,
-                                isGenerating = isGenerating,
                                 // 回复卡摆法：默认纵向，设置页那颗开关换的就是这一颗读数。
                                 // 它**不参与**请求、也不进本轮身份——换方向不重新生成、不重新付费、不清空回复。
                                 cardLayout = surface.cardLayout,
@@ -1224,12 +1136,18 @@ fun LoveBrainPanelScreen(
                 // 换成页槽位里的一页。`weight(1f)` 那一档高度现在由滑页宿主给（上面那行
                 // `modifier = Modifier.fillMaxWidth().weight(1f)`），这一格照旧铺满页。
                 Box(modifier = Modifier.fillMaxSize()) {
+                    val counselingFocusKey = remember { Any() }
+                    val followUpFocusKey = remember { Any() }
                     CounselingPanel(
                         viewModel = viewModel,
                         inputId = "counseling_main",
-                        onFocusChange = { focused -> onInputFocusChange("counseling_main", focused) },
+                        onFocusChange = { focused ->
+                            onInputFocusChange(counselingFocusKey, "counseling_main", focused)
+                        },
                         onInputIntent = { onInputIntent("counseling_main") },
-                        onFollowUpFocusChange = { focused -> onInputFocusChange("counseling_followup", focused) },
+                        onFollowUpFocusChange = { focused ->
+                            onInputFocusChange(followUpFocusKey, "counseling_followup", focused)
+                        },
                         onFollowUpInputIntent = { onInputIntent("counseling_followup") },
                         modifier = Modifier.fillMaxSize()
                     )
@@ -1318,42 +1236,6 @@ fun LoveBrainPanelScreen(
             )
             }
 
-        // 批量导入浮层（Issue #7）——与意图编辑浮层同层（面板根部渲染，遮罩盖整屏）。
-        // 提交走 importBatchMessages：逐条经 ComposerStore.Intent.AddMessage 进真实对话
-        // 通道（HER/ME），与手工输入同一条存储与装配路径；浮层自身只产 BatchImportDraft
-        // （构造期拒绝 IDEA），军师备注通道在这里没有出口。
-        // 粘贴框在浮层组件内部没有焦点上报入口：容器级观测，焦点进出这棵子树就是那颗粘贴框
-        Box(
-            modifier = Modifier.onFocusChanged { state ->
-                onInputFocusChange("batch_import", state.hasFocus)
-            }
-        ) {
-        BatchImportSheet(
-            visible = surface.batchImportOpen,
-            onDismiss = { surface.closeBatchImport() },
-            onSubmit = { drafts ->
-                viewModel.importBatchMessages(drafts)
-                // 提交消费掉的判据是"这扇浮层是不是由草稿打开的"，不是原文逐字相等：
-                // 回落预填这一扇由草稿打开，提交即视为消费该草稿——用户在浮层里编辑过原文
-                // （删掉转发标题行、末尾补一句）也算，那仍是同一份转录；不清草稿的话，
-                // 下次点 ➕ 会把归属已落盘的同一份转录静默重复入库。
-                // 长按开的干净一版没有草稿来源，仍按同文判据：粘贴的恰好就是草稿那份才清。
-                if (surface.batchImportPrefillFromDraft || draftText.trim() == surface.batchImportSheetRaw.trim()) {
-                    viewModel.setDraft("")
-                }
-                surface.closeBatchImport()
-            },
-            // 审计 R1-3：粘贴框也要上报编辑意图——悬浮窗默认 FLAG_NOT_FOCUSABLE，
-            // 不上报这一颗就永远弹不出 IME（与 intent_editor / settings 同一条链路）
-            onInputIntent = { onInputIntent("batch_import") },
-            // 自动拆分回落：原文与已知归属种进预览，提交时把归属表记回盘上（下一次 tap 零摩擦）
-            initialRaw = surface.batchImportPrefillRaw,
-            initialNameRoles = viewModel.batchImportKnownRoles,
-            onRememberRoles = { viewModel.rememberBatchImportNameRoles(it) },
-            onRawChange = { surface.batchImportSheetRaw = it }
-        )
-        }
-
         // 「记录实际发送」那扇浮层连同它的状态接线一起摘掉，这里不留残件。
         // 点赞 / 采用 / 记入知识库这三条机制原样保留；VM 的 `recordActualSentMessage` 也原样留着，
         // 只是界面不再替用户手写"我实际发了什么"——那件事从来不是应用检测到的发送。
@@ -1413,10 +1295,10 @@ fun LoveBrainPanelScreen(
 /**
  * 面板顶部那一张通知条（知识库回执 / 面板级警告 / 五维重估摘要，**同一格一次只画一条**）。
  *
- * 它以前是本文件里自画的一颗异形（登记在 `OddShapeOwnershipTest` 的异形清单里），而且带着两个
+ * 它以前是本文件里自画的一颗异形（异形清单已随其登记文件删除），而且带着两个
  * **颜色旋钮**：`container: Color = SuccessBg`、`textColor: Color = Success`，
  * 第二处调用再现场填一对 `WarningBg`/`Warning`——"这条通知是什么语气"由调用方
- * 自选颜色，下一对颜色没有任何地方拦得住（`OddShapeOwnershipTest` 要挡的正是这个形状：
+ * 自选颜色，下一对颜色没有任何地方拦得住（要挡的正是这个形状：
  * 页面自己拿颜色决定语气，颜色就会一页一个样）。
  * 现在语气走 [LbStateTone] 那张词表（字色与浅底成对，都只在 `LbAsyncState.kt` 里写一次），
  * 容器走 [LbStateContainer.Notice]（面板通知原先太大，这一档就是它的落点：轻通知收成**单档**——

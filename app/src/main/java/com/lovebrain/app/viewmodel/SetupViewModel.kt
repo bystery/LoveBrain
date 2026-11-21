@@ -69,7 +69,7 @@ class SetupViewModel(
      * 免得被当成新人重走一遍。判定逻辑与"补标记"这个写动作都在 ViewModel 里，
      * Activity 只拿一个布尔结果。
      *
-     * ⚠ 2026-10-05 基线 v1 §6.8 后本颗**只作旧合同兼容**留在树上（`SetupViewModelOnboardingTest`
+     * ⚠ 2026-10-05后本颗**只作旧合同兼容**留在树上（`SetupViewModelOnboardingTest`
      * 前五格钉的就是它）；Activity 的引导闸门已改走 [shouldShowIntro] + [currentGuideCursor]，
      * "点了去配置"这一格从此不再有任何写成完成的通道。
      */
@@ -92,7 +92,7 @@ class SetupViewModel(
      *
      * 三条出口各是谁：看过或明确跳过 → [markIntroSeen] 只写 `introSeen`；
      * 老用户（旧旗标或真状态命中）→ 补写 `introSeen + cursor=DONE`，
-     * **升级上来的用户既不会被拽回介绍，也不会被遮罩追着重配**（基线 §6.8"已有用户不能被强制重看"）。
+     * **升级上来的用户既不会被拽回介绍，也不会被遮罩追着重配**（"已有用户不能被强制重看"）。
      */
     fun shouldShowIntro(): Boolean {
         if (securePrefs.introSeen) return false
@@ -189,7 +189,7 @@ class SetupViewModel(
     }
 
     /**
-     * 介绍层第几格的**唯一读写口**（G1b 接线单 §4）。
+     * 介绍层第几格的**唯一读写口**（G1b）。
      *
      * 钳制放在这里而不是 `SecurePrefs`：盘上那一份只是"存了一个整数"，
      * "这一本一共几格"是产品知识（介绍层四格 ⇒ 0…3），归 VM。
@@ -747,13 +747,19 @@ sealed class ExportState {
             L.w("refused to allowlist a second-reject package: ${packageName.takeLast(24)}")
             return
         }
-        val next = if (allowed) _captureAllowedPackages.value + packageName
-        else _captureAllowedPackages.value - packageName
+        val current = _captureAllowedPackages.value
+        val next = if (allowed) current + packageName else current - packageName
+        val scopeChanged = next != current
         securePrefs.captureAllowedPackages = next
         _captureAllowedPackages.value = next
         if (!allowed) com.lovebrain.app.service.CopyCaptureService.discardPendingCapture()
-        // allowlist 变更必须提高披露版本要求：旧 consent 覆盖不了新的采集范围
-        L.w("capture allowlist changed: size=${next.size}")
+        // 采集范围变了，旧 consent 覆盖不了新的采集范围 ⇒ 重新置为待披露。
+        // 判据只有一个主人：`isAccessibilityDisclosureConfirmed` 读的就是这颗版本号，
+        // 服务侧同一条判据会当场拒到 consent_pending；页面下次读事实/再拨开关就会端出披露长文。
+        if (scopeChanged) {
+            securePrefs.accessibilityDisclosureVersion = 0
+            L.w("capture allowlist changed: size=${next.size}|disclosure reset to pending")
+        }
     }
 
     /** 一个可被授权捕获的 App */

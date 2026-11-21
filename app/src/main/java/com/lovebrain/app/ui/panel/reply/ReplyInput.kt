@@ -1,11 +1,9 @@
 package com.lovebrain.app.ui.panel.reply
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
@@ -47,7 +45,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.onLongClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.font.FontWeight
@@ -304,7 +301,7 @@ fun PanelTextInput(
                 .semantics { contentDescription = placeholder }
                 .onPreviewKeyEvent { e ->
                     // 单行胶囊只画一行：硬件回车不许往值里注入看不见的换行（IME 动作键仍走 Done；
-                    // 粘贴文本里的 \n 不经过键盘事件，原样保留给 autoSplit）。
+                    // 粘贴文本里的 \n 不经过键盘事件，原样保留给块结构解析）。
                     e.type == KeyEventType.KeyDown && (e.key == Key.Enter || e.key == Key.NumPadEnter)
                 }
             if (focusRequester != null) tfModifier = tfModifier.focusRequester(focusRequester)
@@ -313,7 +310,7 @@ fun PanelTextInput(
                 value = value,
                 onValueChange = onValueChange,
                 // singleLine=false 让 EditorInfo 带上 MULTI_LINE：真机 IME 粘贴时才保留换行，
-                // 整段微信转录才能落到 autoSplit 拆条（单行编辑器会被 IME 拍平成一行）。
+                // 空行分块的转录（块头/时间行/正文）才有块边界可切（单行编辑器会被 IME 拍平成一行）。
                 // maxLines=1 保住 28dp 胶囊与宽度预算不变；动作键仍是 Done，硬件回车由上面那颗
                 // onPreviewKeyEvent 吃掉——不往值里注入看不见的换行（粘贴文本的 \n 不经键事件）。
                 singleLine = false,
@@ -400,8 +397,6 @@ fun ReplyInput(
     showRoleChips: Boolean = true,
     showAddButton: Boolean = true,
     placeholderOverride: String? = null,
-    // 输入框身份令牌（目前仅用于文档追踪，实际透传由调用方完成）
-    inputId: String = "reply",
     /**
      * 输入对象（她/我/补充）。 的三轴之一，**不传就按 [currentRole] 推**
      * （旧宿主传的是 `composeRole`，IDEA 读成补充）——两种给法算出来的那一颗 chip 是同一颗。
@@ -417,14 +412,7 @@ fun ReplyInput(
      * 当前是否有真实消息（HER/ME）。保留给宿主与 [MessageList] 共用同一口径的那一根线
      * （见 `hasRealDialogueRows`）；「仅看本轮」现已常驻行 1，这一参不再决定它的挂载点。
      */
-    hasRealMessages: Boolean = true,
-    /**
-     * 「批量导入」入口（Issue #7）：**长按 ➕** 打开粘贴-预览-指定发言人浮层。
-     * 不改单行输入框布局——行 1 的宽度预算、语义树的可点节点数目都不动
-     * （长按挂在 `pointerInput` 上，不新增 OnClick 语义，`ComposerAddButtonGatingTest`
-     * 钉着的那几格照旧）。传 null 就没有这一入口（与「仅看本轮」同一接线惯例）。
-     */
-    onBatchImport: (() -> Unit)? = null
+    hasRealMessages: Boolean = true
 ) {
     val isEditing = editingIndex >= 0
     val kind = inputKind ?: currentRole.toComposerInputKind()
@@ -498,8 +486,7 @@ fun ReplyInput(
             AddMessageButton(
                 canAdd = draftText.isNotBlank(),
                 isEditing = isEditing,
-                onAdd = onAdd,
-                onBatchImport = onBatchImport
+                onAdd = onAdd
             )
         }
     }
@@ -621,16 +608,16 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
  * · 它仍是一颗符号，不是一句话：不往这一排新增常驻文字，行宽预算一寸没多占
  *   （§2.2 第 3 条"不要新增常驻文字撑宽整行"、§7.1"不恢复四字常驻按钮"）。
  *
- * ⚠ **换形与否不由这一轮定**：request2 §三 那份约 22KB 的完整 Worker 指导书没有落到本机，
- * §四 那一行只给了结论（不许硬编码）没给字形细则。⇒ 本轮落的是**字形保持 U+25C9、
- * 只把硬编码挪出 Kotlin**；"要不要换成另一颗形状"已登记为待主线程指认（M22），不自决。
+ * ⚠ **换形与否不由这一轮定**：相应规格文档没有落到本机，
+ * 规格里只给了结论（不许硬编码）没给字形细则。⇒ 本轮落的是**字形保持 U+25C9、
+ * 只把硬编码挪出 Kotlin**；"要不要换成另一颗形状"已登记为待主线程指认，不自决。
  *
  * ⚠ **它还不是"既有图标族"的那一颗线条图标**：这一排另一颗符号是 `Icons.Filled.Add`，
  * 要拿同一族的 ImageVector 摆在这里，得让 `LbChip` 交出一个图标/前缀槽（现在只收 `label: String`），
- * 或者由 core 给悬浮窗那颗紧凑胶囊立一档图标 toggle。在这一页自己画一颗 Box + Icon 会撞上两处闸：
- * `OddShapeOwnershipTest` 把 `ReplyInput.kt#RoundScopeChip` 记在**委托壳**那一本（壳里长出 Box 当场红），
- * `UiLayerDependencyContractTest` 的 `BrandLedger` 只给这一页留了一处品牌底。
- * ⇒ 这一条已按缺口报回主线程（要的是 core 那一颗槽，不是这里破两处账）。
+ * 或者由 core 给悬浮窗那颗紧凑胶囊立一档图标 toggle。在这一页自己画一颗 Box + Icon 会撞上闸：
+ * `UiLayerDependencyContractTest` 的 `BrandLedger` 只给这一页留了一处品牌底
+ * （RoundScopeChip 原在异形登记文件的委托壳那一本，那本已随文件删除）。
+ * ⇒ 这一条已按缺口报回主线程（要的是 core 那一颗槽，不是这里破账）。
  *
  * 读屏念的全名仍是 [PANEL_ROUND_SCOPE_LABEL]（挂在 contentDescription 上，这就是 §2.2 第 3 条与 §7.1 要的
  * "中文语义描述"——名字里没有任何"锁"字）。开与不开真正的行为（下一轮快照生效、
@@ -707,17 +694,16 @@ private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
  *   带上点击语义 = CI 那 7 格的成因"。这一颗试过写成 `clickable(enabled = canAdd, ...)`，
  *   那是**顺手改掉别人守卫着的性质**，已退回。"禁用是灰着还在"那条只管
  *   页面唯一主动作（主动发回退合同），次级入口不在它范围内。
+ *
+ * 轻点是唯一入口：草稿里的空行分块转录由宿主在 `onAdd` 里整批入库（角色全部用输入框当前角色），
+ * 其余文本整段一条；这一颗不上长按、不上浮层——手势面就是一颗 `clickable`。
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AddMessageButton(
     canAdd: Boolean,
     isEditing: Boolean,
-    onAdd: () -> Unit,
-    onBatchImport: (() -> Unit)? = null
+    onAdd: () -> Unit
 ) {
-    val batchImport = onBatchImport
-    val batchImportLabel = stringResource(R.string.a11y_batch_import)
     val (addInteraction, addScale) = rememberPressScale(0.92f, "addScale")
     // 热区与视觉分两层（与 RoleChip / RoundScopeChip 同一范式）：
     // 外层透明盒垫到 48dp 见方承担点击/热区下限，内层可见胶囊只有 24dp——
@@ -727,38 +713,16 @@ private fun AddMessageButton(
             .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .then(
-                when {
-                    // 轻点与长按必须落在同一颗手势节点上：拆成 pointerInput + clickable 两颗时，
-                    // 后挂的 clickable 先把 DOWN 消费掉，长按检测器永远等不到未消费的 down——
-                    // 草稿非空那一刻长按批量入口恰好死掉。combinedClickable 一颗节点带两条语义，
-                    // 可点节点数不变，按压缩放仍走同一份 interaction。
-                    canAdd && batchImport != null -> Modifier.combinedClickable(
-                        interactionSource = addInteraction,
-                        indication = null,
-                        role = Role.Button,
-                        onLongClickLabel = batchImportLabel,
-                        onLongClick = batchImport,
-                        onClick = onAdd
-                    )
-                    canAdd -> Modifier.clickable(
+                if (canAdd) {
+                    Modifier.clickable(
                         interactionSource = addInteraction,
                         indication = null,
                         role = Role.Button,
                         onClick = onAdd
                     )
-                    // 空草稿不带 OnClick 语义（门控合同，ComposerAddButtonGatingTest 守着）；
-                    // 长按批量入口仍在，读屏动作与手势长按同一行为。
-                    batchImport != null -> Modifier
-                        .pointerInput(Unit) {
-                            detectTapGestures(onLongPress = { batchImport() })
-                        }
-                        .semantics {
-                            onLongClick(batchImportLabel) {
-                                batchImport()
-                                true
-                            }
-                        }
-                    else -> Modifier
+                } else {
+                    // 空草稿不带 OnClick 语义（门控合同，ComposerAddButtonGatingTest 守着）。
+                    Modifier
                 }
             ),
         contentAlignment = Alignment.Center

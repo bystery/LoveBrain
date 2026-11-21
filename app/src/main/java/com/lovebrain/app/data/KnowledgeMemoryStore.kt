@@ -66,7 +66,8 @@ internal class KnowledgeMemoryStore(private val storage: MemoryStorage) {
         storage.read(kbName, MEMORY_REVISION_FILE).trim().toIntOrNull() ?: 0
 
     /**
-     * 保存一条纠正。返回 false = 库不在了，或被只读保护挡下（此时一个字节都没写）。
+     * 保存一条纠正。返回 false = 库不在了，或被只读保护挡下
+     * （纠正记录写成后 revision/依据写失败时，记录会被回滚，磁盘回到调用前的样子）。
      *
      * 撤销之后再新增也必须递增，所以这里读的是**持久化标记**而不是剩余记录的 max（）。
      *
@@ -84,7 +85,8 @@ internal class KnowledgeMemoryStore(private val storage: MemoryStorage) {
         muteDuration: MuteDuration = MuteDuration.UNTIL_RESTORE
     ): Boolean {
         if (!storage.kbExists(kbName)) return false
-        val nextRevision = revisionOf(kbName) + 1
+        val current = corrections(kbName)
+        val nextRevision = nextRevisionOf(kbName, current)
         val now = storage.timestamp()
         val correction = MemoryCorrection(
             memoryId = memoryId,
@@ -96,7 +98,7 @@ internal class KnowledgeMemoryStore(private val storage: MemoryStorage) {
             muteDuration = muteDuration,
             muteTimestamp = if (action == CorrectionAction.MUTED) now else ""
         )
-        val updated = corrections(kbName).toMutableMap().apply { this[memoryId] = correction }
+        val updated = current.toMutableMap().apply { this[memoryId] = correction }
         return persist(kbName, updated.values.toList(), nextRevision, persistedSceneFacts(kbName, memoryId))
     }
 
@@ -113,13 +115,23 @@ internal class KnowledgeMemoryStore(private val storage: MemoryStorage) {
         if (!storage.kbExists(kbName)) return false
         val current = corrections(kbName)
         if (!current.containsKey(memoryId)) return false
-        val nextRevision = revisionOf(kbName) + 1
+        val nextRevision = nextRevisionOf(kbName, current)
         val updated = current.toMutableMap().apply { remove(memoryId) }
         return persist(
             kbName, updated.values.toList(), nextRevision,
             if (CorrectionExtractionFilter.isSceneFileCorrection(memoryId)) "" else null
         )
     }
+
+    /**
+     * 下一个 revision：**持久标记与现存记录里的最大值再加一**。
+     *
+     * 只读标记不够：上一批"纠正写成、标记写失败"被回滚挡不住时（回滚本身也失败），
+     * 记录里的 revision 会比标记大一号。跟着标记走会让下一次纠正复用同一个号
+     * （两条记录同 revision），跟着两者的最大值走就永远不会重号。
+     */
+    private fun nextRevisionOf(kbName: String, current: Map<String, MemoryCorrection>): Int =
+        maxOf(revisionOf(kbName), current.values.maxOfOrNull { it.revision } ?: 0) + 1
 
     /**
      * scene 文件级纠正的持久依据内容（ S3 遗漏 B）：当时 scene.md 的条目原文，
@@ -148,17 +160,36 @@ internal class KnowledgeMemoryStore(private val storage: MemoryStorage) {
      *
      *  S3 遗漏 B：[persistedFacts] 非 null（scene 纠正的保存/撤销）时，持久依据文件
      * 排在纠正记录之后、revision 之前，同一事务——依据写失败同样不推进 revision。
+     *
+     * 失败一致语义（审计 #4）：纠正记录已经写成、后面的依据或 revision 写失败时，
+     * 在**同一事务**里把纠正文件写回写入前的原文再返回 false。这样磁盘上始终满足
+     * "纠正表变了 ⇔ revision 跳了"——否则记录已经生效、版本却停在旧值，按 revision
+     * 比对的后台防护会漏掉这次变更，调用方看到的"保存失败"也与实际落盘不符。
+     * 回滚写本身再失败时（只读保护下并不罕见）状态无法收敛：此时靠
+     * [nextRevisionOf] 的"取标记与记录最大值的较大者"保证重试不重号、revision 不倒退。
      */
     private fun persist(kbName: String, records: List<MemoryCorrection>, revision: Int, persistedFacts: String? = null): Boolean {
+        // 回滚基准：这一批之前的纠正文件原文（缺失时是空串）
+        val previous = storage.read(kbName, CORRECTIONS_FILE)
+        val previousFacts = storage.read(kbName, PERSISTED_FACTS_FILE)
         var written = false
+        var correctionsWritten = false
+        var factsWritten = false
         storage.writeTransaction(kbName) {
             written = write(CORRECTIONS_FILE, storage.encodeCorrections(records))
+            correctionsWritten = written
             if (written && persistedFacts != null) {
                 written = write(PERSISTED_FACTS_FILE, persistedFacts)
+                factsWritten = written
             }
             // revision 写失败也要如实报 false：否则"记下了纠正但版本没跳"会被当成成功，
             // 调用方不重试，后台防护的冻结快照比对就永远停在这一版。
             if (written) written = write(MEMORY_REVISION_FILE, revision.toString())
+            if (!written && correctionsWritten) {
+                // 纠正记录已落盘、后续写失败：写回旧内容，保证"记录与 revision 同进同退"
+                write(CORRECTIONS_FILE, previous)
+                if (factsWritten) write(PERSISTED_FACTS_FILE, previousFacts)
+            }
         }
         if (!written) {
             storage.note("memory write refused or failed: kb=$kbName revision=$revision")

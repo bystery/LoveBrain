@@ -409,7 +409,7 @@ data class ProactiveOption(
  *
  * [expiry] / [expiryDate] / [status] 三样是**兼容字段**：
  * - 盘上老文件（`moment/intent.json`）里就带着它们，读侧照单收下、不改写用户数据；
- *   但旧终态**不再无害**（F02，2026-10-15 书 §3）：`status ∈ {COMPLETED, EXPIRED, PAUSED}`
+ *   但旧终态**不再无害**（F02，2026-10-15）：`status ∈ {COMPLETED, EXPIRED, PAUSED}`
  *   或 `expiry = COMPLETED` 的旧文件在唯一读口（`KnowledgeIntentService.decode`）被归一化成
  *   **显示关闭**（文本原样保留），旧 ACTIVE 但到期时刻已过去的同样按关闭收——
  *   升级不该把用户点过"已完成"的意图悄悄唤醒注入；用户此后主动拨开就是无限期启用；
@@ -436,7 +436,7 @@ data class IntentConfig(
  * 注入提示词与进行中事项的检索授权读的是同一颗——两处各写一遍判据，
  * 就会长成"一处注入、一处检索拒绝"那种自相矛盾的判决（历史上正长成过这样）。
  *
- * 第三句 `status == ACTIVE` 是 F02（2026-10-15 书 §3）的**防线**而不是日常判据：
+ * 第三句 `status == ACTIVE` 是 F02的**防线**而不是日常判据：
  * 新数据每一次保存都落 ACTIVE（`IntentController` 写侧统一），这一句对它们恒真、行为不变；
  * 它挡的是**没走归一化读口**的旧终态配置——COMPLETED/EXPIRED/PAUSED 就算带着
  * `enabled=true` 从别处构造出来，也注不进提示词。日常路径上旧文件早在

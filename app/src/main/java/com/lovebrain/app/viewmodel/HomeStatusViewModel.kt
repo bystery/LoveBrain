@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
  * （[CredentialFingerprint.of]，SHA-256 前 12 位十六进制）。
  *
  * ⚠ 明文 Key 与明文地址**都不下这一层**：这一颗会被摆进 [HomeFacts]、进 UI 状态、
- * 会随 `toString` 进日志与反馈报告，只有摘要可以说出口。§11.1 要的只是"地址/Key 真变了要能判出来"，
+ * 会随 `toString` 进日志与反馈报告，只有摘要可以说出口。要的只是"地址/Key 真变了要能判出来"，
  * 判等用摘要就够，不需要把凭据本身搬来搬去。
  *
  * 无 Key / 无地址时那一段是**空串**（与"有值"天然可区分：有值永远是 12 个十六进制字符）。
@@ -57,7 +57,7 @@ enum class HomeKnowledgePresence { Present, Missing, Unknown }
 data class HomeKnowledgeSnapshot(val presence: HomeKnowledgePresence, val name: String?)
 
 /**
- * 首页那一块累计使用小卡的**只读快照**。2026-10-10 §五 取舍③（活台账 M25）新决定：
+ * 首页那一块累计使用小卡的**只读快照**。2026-10-10 五 取舍③（历史背景 M25）新决定：
  * 首页重新加入一块累计使用小卡，**替代**旧规「不恢复使用概览/统计仪表盘」——但上限就是
  * **一块简洁小卡**，不是放行复杂版，所以这里只交出那一屏要画的四颗既有读数，
  * **不新建第二本统计账**。
@@ -161,7 +161,7 @@ class SettingsStoreHomeProviderPort(private val store: SettingsStorePort) : Home
             name = ticket.name,
             model = ticket.model,
             hasKey = !key.isNullOrBlank(),
-            // §11.1：地址与 Key 真变了才让旧成功作废——所以这两位要进身份，
+            // 地址与 Key 真变了才让旧成功作废——所以这两位要进身份，
             // 但进的是摘要片段（无 Key ⇒ 空串），不是凭据本身。
             baseUrlFingerprint = CredentialFingerprint.of(ticket.baseUrl),
             keyFingerprint = CredentialFingerprint.of(key)
@@ -201,7 +201,7 @@ object UnknownHomeKnowledgePort : HomeKnowledgePort {
  * 当前对象 = active 知识库。不 new 仓库、不 import 具体实现类
  * （`PackageDependencyTest` 那条 viewmodel→data 的账）。
  *
- * **有效已选的库就算已建立**（指导书 §7.4）：`getActive()` 成功读回一个有真名的库，这一格就答 `Present`。
+ * **有效已选的库就算已建立**：`getActive()` 成功读回一个有真名的库，这一格就答 `Present`。
  * `turnCount`、`topicCount`、阶段、正文有没有内容都**不参与存在性**——新建库的初值就是
  * `stage = "待确定"、turnCount = 0`（`KnowledgeCatalogWriteStore.createWithin`），手工编辑画像也不动计数
  * （`KnowledgeProfileStore.contentRevision`），所以"选了库但还没积累"是常态，不该被念成"请为当前对象建立知识库"。
@@ -222,7 +222,7 @@ class ReadPortHomeKnowledgePort(private val read: KnowledgeReadPort) : HomeKnowl
         }
         val name = kb?.name?.takeIf { it.isNotBlank() }
             ?: return HomeKnowledgeSnapshot(HomeKnowledgePresence.Missing, null)
-        // 读到了带真名的活动库就算"已建立"：轮数与归档计数不参与这一判（§7.4）
+        // 读到了带真名的活动库就算"已建立"：轮数与归档计数不参与这一判
         return HomeKnowledgeSnapshot(presence = HomeKnowledgePresence.Present, name = name)
     }
 }
@@ -327,7 +327,7 @@ internal class HomeConnectionLedger {
  * 3. **绿只认这一组身份下的真凭据，而凭据按身份记账、不按身份淘汰**：[HomeConnectionLedger] 里
  *    换供应商 / 换生效模型都会算出一个取不到的新身份（于是当场不绿，见纪律 1 的反面），
  *    切回旧身份则当场取回旧结论；只有 [stopClicked]（用户主动关）才清账。
- *    连接身份只属于供应商配置（§11.1），切知识库不改连接灯。
+ *    连接身份只属于供应商配置，切知识库不改连接灯。
  */
 class HomeStatusViewModel(
     private val service: HomeServicePort = FloatingServiceHomePort,
@@ -341,7 +341,7 @@ class HomeStatusViewModel(
     val status: StateFlow<AdvisorStatus> = _status.asStateFlow()
 
     /**
-     * 累计使用那一块小卡的**只读**读数（M25 §五 取舍③）。**这只是一个新增的只读物**：
+     * 累计使用那一块小卡的**只读**读数（M25 五 取舍③）。**这只是一个新增的只读物**：
      * 它不改 [status]、不参与 [advisorStatusOf] / [advisorMissingSteps] / `render` 那三张派生表，
      * 也不新建统计账——数字全部原样读自 [store] 上那四颗被这一屏画出来的 `total*`
      * （端口第五颗 `totalRewriteCount` 不在这一格里，理由见 [HomeUsageReadout]）。
@@ -383,7 +383,7 @@ class HomeStatusViewModel(
     init {
         viewModelScope.launch {
             service.runningChanges().collect { running ->
-                // 指导书 2026-10-10 §2 验收「关闭后主页显示真实停止状态」：
+                // 验收「关闭后主页显示真实停止状态」：
                 // 从悬浮窗里那颗开关关掉服务，走的仍是与主页 ■ 同一个停止入口，但主页这侧的
                 // `userStarted` 闸门不会被 `stopClicked()` 清——灯于是会说"需要设置"而不是"已停止"。
                 // 这里只认**曾经跑起来、现在不在了**这一条变迁：点了 ▶ 但服务从来没起来的那一支
@@ -466,8 +466,8 @@ class HomeStatusViewModel(
     /**
      * 冻结身份：换供应商 / 换生效模型 / **换地址 / 换 Key** 让旧结论取不回来（新身份没账）。
      *
-     * 连接身份只属于供应商配置（指导书 §11.1）：切知识库不改连接灯。四位串的形状 =
-     * `工单 id | 生效模型 | 地址摘要 | Key 摘要`，逐字对应 §11.1 末句
+     * 连接身份只属于供应商配置：切知识库不改连接灯。四位串的形状 =
+     * `工单 id | 生效模型 | 地址摘要 | Key 摘要`，逐字对应末句
      * 「**地址/Key/模型真正变化才使旧成功无效**」——少任何一位，绿灯就会带着旧凭据继续；
      * 后两位是 [CredentialFingerprint.of] 出来的 12 位十六进制片段，**明文 Key 与明文地址
      * 永远不在这串里**（这一串要落 `SharedPreferences`、要进日志可达的 `toString`）。
@@ -564,7 +564,7 @@ class HomeStatusViewModel(
         if (ref == null || !ref.usable) return HomeConnectionVerdict.NotApplicable
         ledger.recall(identity)?.let { return it }
         // 全新 VM（ledger 整本空）：落盘副本兜底，重进屏幕不落回黄
-        // §11.1：只在身份匹配时才兜底——换了供应商/模型不沿用旧结论
+        // 只在身份匹配时才兜底——换了供应商/模型不沿用旧结论
         if (ledger.remembered == 0 && store?.connectionVerified == true &&
             store?.connectionVerifiedIdentity == identity) {
             return HomeConnectionVerdict.Verified

@@ -29,7 +29,7 @@ import java.util.Locale
  * 4. 删库那道 canonical 守卫留在仓库（[CatalogWriteStorage.removeCatalogDir]），
  *    本类连"这个目录在不在树内"都不自己判——判据只许有一处。
  *
- * 本轮（§4 M01/M02）这份清单多了一员**读**（[CatalogWriteStorage.readCatalogSlot]），
+ * 本轮（M01/M02）这份清单多了一员**读**（[CatalogWriteStorage.readCatalogSlot]），
  * 上面四条一条都没被它松动：它交不出 `File`、也落不下字节，只是把"这座库到底有没有真实内容"
  * 这件事交给文档格那**唯一**一道守门来回答——判据只许有一处，读法的"一处"算在内。
  *
@@ -89,7 +89,7 @@ internal interface CatalogWriteStorage {
     /**
      * 守门读某一格的**正文**（缺文件、越界、非法路径都给空串，不抛）。
      *
-     * 为什么目录写侧需要一把读尺：§4 M01 那句「判断可以复用必须基于真实元数据与内容状态」
+     * 为什么目录写侧需要一把读尺：M01 那句「判断可以复用必须基于真实元数据与内容状态」
      * 问的就是盘上此刻有什么，而 kb.json 那四格回答不了正文——
      * `HomeStatusViewModel` 今天明写 turnCount/topicCount/stage/正文都不参与存在性，
      * 全仓唯一那颗存在性读数（`FileKnowledgePresence`）只数根目录条目、连 kb.json 都不验。
@@ -125,8 +125,8 @@ internal interface CatalogWriteStorage {
     /** 阶段标签（白名单归一化在画像格，见 `KnowledgeProfileStore.setStage`） */
     suspend fun writeStage(kbName: String, stage: String)
 
-    /** 正文写（建库之后补画像三段用；路径守门与只读判定在文档格与写链那一侧） */
-    suspend fun writeDocument(kbName: String, relativePath: String, content: String)
+    /** 正文写（建库之后补画像三段用；路径守门与只读判定在文档格与写链那一侧）；Boolean＝是否真的落盘 */
+    suspend fun writeDocument(kbName: String, relativePath: String, content: String): Boolean
 }
 
 /**
@@ -210,11 +210,11 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
      * 于是 101+ 字符的库"建得出来、每一读都被路径守门判非法"，盘上还留下半套 seed 文件。
      *
      * 同一条理由管到 seed 写本身：seed 半途失败时这次刚造的目录一并收回（见 [createWithin]），
-     * 「报失败」与「列表里多出一座能用的空库」不许同时发生——§12.3 那句
+     * 「报失败」与「列表里多出一座能用的空库」不许同时发生——那句
      * 「创建完成才出现在可用列表，失败显示失败」要的就是这一条。
      *
      * ## 为什么复用判据也在这颗口里，而不是另开一条"首次建库"流程
-     * §4（活台账 M01/M02）把「首次初始化」与「首次正式建库」定为**同一个用户流程的两步**，
+     * （历史背景 M01/M02）把「首次初始化」与「首次正式建库」定为**同一个用户流程的两步**，
      * 而"第一步留下的那顶空壳还没被人用过"这件事只有在持锁的一刻才判得准。
      * 判据见 [reusableInitialKb]：它只读真实元数据与真实正文，**目录名不参与**。
      * 复用时内部身份（目录名 = kb.json 的 name）一个字都不动，只按流程结果改显示名，
@@ -258,7 +258,7 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
         try {
             storage.writeCatalogTransaction(safeName) {
                 // 写入失败传播：write 返回 false = 被只读保护或路径非法挡下。
-                // 必须抛异常让上层 ViewModel 捕获报失败，不得假成功（指导书§6）。
+                // 必须抛异常让上层 ViewModel 捕获报失败，不得假成功。
                 val metaOk = write(KnowledgeCatalogStore.META_FILE, storage.encodeMeta(kb))
 
                 // 全部文件从 assets/schema/ 加载（schema 是知识库结构的唯一来源）
@@ -284,7 +284,7 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
         } catch (e: Exception) {
             // seed 半途失败：这一次调用进来时那格名字还没占位（上面第三道 require 判的就是它），
             // 所以这一颗目录是自己刚造的，收回去不销毁任何旧证据。
-            // 留着它的后果是 §12.3 那两句同时被破：报了失败，可用列表里却多出一座空库；
+            // 留着它的后果是那两句同时被破：报了失败，可用列表里却多出一座空库；
             // 而它若是盘上第一座库，偏好里的当前库是空的，getActive 的兜底会把这座半成品当成
             // 在用库——面板之后的每一格都往它里面写。
             // 回收仍走仓库那道 canonical 守卫，本类不自己判目录在不在树内；
@@ -303,7 +303,7 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
      *
      * 「不止一座就新建」是护栏，不是保守：M01 说的复用只发生在「首次初始化 → 首次正式建库」
      * 这一条用户流程里，而流程能走到第二座库时盘上必然已经有一座带内容的了
-     * （§4 场景④「已有一个真实库再主动新建 ⇒ 正常变 2 个」——那条必须照样变 2 个）。
+     * （场景④「已有一个真实库再主动新建 ⇒ 正常变 2 个」——那条必须照样变 2 个）。
      */
     private fun reusableInitialKb(): KnowledgeBase? {
         val all = storage.entries()
@@ -314,7 +314,7 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
     /**
      * 「这座库还是不是首次初始化那一步留下的、一个字都没用过的空壳」——全仓唯一回答者。
      *
-     * 判据的输入**全是盘上的真实读数**（§4「判断可以复用必须基于真实元数据与内容状态」），
+     * 判据的输入**全是盘上的真实读数**（「判断可以复用必须基于真实元数据与内容状态」），
      * 一条都不许是推断：
      * 1. `kb.json` 的四格：[KnowledgeBase.stage] 仍是初始那一个、
      *    [KnowledgeBase.turnCount] 与 [KnowledgeBase.topicCount] 仍是 0（对话与归档各只在那里自增）、
@@ -322,7 +322,7 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
      * 2. 画像三段与此刻/记忆各格的**正文**（经 [CatalogWriteStorage.readCatalogSlot] 读真字节）：
      *    首次 seed 写的是真空内容，任何非空都只能来自用户或模型；
      * 3. 话题行仍是"等待第一次对话"那一句（[KbTextOps.topicLabel] 是话题行的唯一读法）；
-     * 4. 两份用户台账文件（持续意图、记忆纠正）仍是空的。
+     * 4. 两份用户记录文件（持续意图、记忆纠正）仍是空的。
      *
      * ⚠ **目录名一个字都不参与判断**——既不是充分条件也不是必要条件。
      *   它只承担"复用后要保留的稳定内部身份"这一件事（[KnowledgeCatalogStore] 强制
@@ -349,7 +349,7 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
      * 复用那顶初始库：一次持锁里的**一次事务**，只改 `displayName`（与 `updatedAt`）那一格。
      *
      * 内部身份不动（见 [isPristineInitialKb] 那条 ⚠）；画像三段与阶段仍由调用方经现有
-     * [writeFile] / [updateStage] 落进去——§4「复用时继续使用现有 KnowledgeCatalogWriteStore、
+     * [writeFile] / [updateStage] 落进去——「复用时继续使用现有 KnowledgeCatalogWriteStore、
      * 知识库存储事务与互斥机制，不要另写一条文件系统建库流程」要的就是这个形状。
      *
      * 显示名为空白时不覆盖（沿用 [renameWithin] 那条 no-op 规矩）；复用后的库不再是空壳，
@@ -400,7 +400,7 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
      * 它问的是目录，而目录不是库：一次中断的建库、一份坏掉的 kb.json、一个 name
      * 与目录名不相等的元数据，都会留下一颗进不了清单的目录（判据见
      * [KnowledgeCatalogStore]，它才是"这个根下有哪几座库"的唯一回答者）。把当前库交给那一颗，
-     * 得到的就是 §12.3 明令不许出现的「活动引用指向一个不存在的库」——而且 [activateWithin]
+     * 得到的就是明令不许出现的「活动引用指向一个不存在的库」——而且 [activateWithin]
      * 会顺手把清单里每一座库的 kb.json 都改成 active=false，三级回退的第一判据
      * （同名且 active）从此再也落不下去，界面只能靠兜底读数猜在用哪一个。
      *
@@ -457,7 +457,7 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
      *
      * 这一格只负责**第一步**（把一座可用的空壳摆上盘）。第二步（首次正式建库）由
      * [create] 承接，它先用 [reusableInitialKb] 问一句"那顶空壳还没人用过吗"，
-     * 有就复用、没有才加库——两条路径因此在同一个用户流程里只留下一座有效库（§4 M01/M02）。
+     * 有就复用、没有才加库——两条路径因此在同一个用户流程里只留下一座有效库（M01/M02）。
      * 这里 seed 的形状（画像真·空、话题初始标签、显示名 [DEFAULT_DISPLAY_NAME]）
      * 就是那颗判据读的三样事实，改任何一样都要回去看 [isPristineInitialKb]。
      *
@@ -605,8 +605,8 @@ internal class KnowledgeCatalogWriteStore(private val storage: CatalogWriteStora
          *
          * 刻意不列 `moment/plan.md`（seed 就是 schema 模板正文，非空）与 [TOPIC_FILE]（单独判标签）。
          * `understand/style.md` 两条 seed 路径都不写，用户写了就是内容。
-         * `memory/corrections.json`（纠正台账）与 `moment/intent.json`（持续意图）也在这一列里：
-         * 它们一旦存在就是用户动过台账，跟正文同一个读法、同一道守门。
+         * `memory/corrections.json`（纠正记录）与 `moment/intent.json`（持续意图）也在这一列里：
+         * 它们一旦存在就是用户动过记录，跟正文同一个读法、同一道守门。
          */
         private val PRISTINE_BLANK_SLOTS = listOf(
             "understand/me.md", "understand/her.md", "understand/warmth.md", "understand/style.md",

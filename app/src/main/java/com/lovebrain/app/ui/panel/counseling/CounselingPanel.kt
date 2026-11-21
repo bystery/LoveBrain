@@ -120,9 +120,9 @@ fun CounselingPanel(
             }
         }
 
-        // 拖动归属（§8.4 表 + §9）：这一条**只调输入框高度**，不是移动悬浮窗的那一颗。
+        // 拖动归属（表）：这一条**只调输入框高度**，不是移动悬浮窗的那一颗。
         // 用户说的"谈心那面透明拖动区太难命中"归页面顶部那条连续命中带（`ui/panel/DragHandle`
-        // + `DragBand`，热区在整屏最上面那一格），把它改粗不等于解决——§9 明写"不能把回复页
+        // + `DragBand`，热区在整屏最上面那一格），把它改粗不等于解决——明写"不能把回复页
         // 分隔线改粗就宣称解决"。这一条的尺寸本轮一寸没动。
         DraggableDivider(
             onDragDelta = { delta ->
@@ -263,7 +263,7 @@ fun CounselingPanel(
                         // PrimarySubtle 描边 + labelMedium/PrimaryDark/SemiBold 字 + lg/sm 内边距 + 0.92 按压）
                         // 逐项抄进 [LbChipStyles.soft] 的 `.copy`，不在页面里另画一条 Modifier 链。
                         // ⚠ 高度/热区/标签位/行数那一档**不在这里写**：走 [counselingCompactChipTier]
-                        //（§9「谈心模板整组用同一紧凑档」——谈心这一族的这一档只有一处主人，
+                        //（「谈心模板整组用同一紧凑档」——谈心这一族的这一档只有一处主人，
                         // 这里再抄一遍就是"同一档散在几处、随时各自跑偏回 48 整行占高"的旧形状）。
                         // ⚠ 这是**动作入口**（点下去开/收追问区），不是"在哪一格"——故选
                         // [LbChipInteraction.Action]：`Role.Button`，语义树不发 `selected`；

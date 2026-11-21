@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.core.designsystem.LbMetric
 import com.lovebrain.app.core.designsystem.Spacing
+import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.max
@@ -20,11 +21,39 @@ import kotlin.math.max
  *    不是某个数字的后半截；
  * 3. 宽度还没量到的那一帧一律按「放得下」处理（**不轮播、不渐隐**；平移留给渲染层，首帧由它按居中
  *    保底摆放，见 [usageStatPageTranslationsPx] 与 `UsageStatBar` 的 Box `contentAlignment`），
- *    量到之后才可能翻成轮播。**§7.2**：量到宽且整行放得下的短组相对视口居中，不再默认左贴边。
+ *    量到之后才可能翻成轮播。**居中规则**：量到宽且整行放得下的短组相对视口居中，不再默认左贴边。
  *
- * 费用口径不在这里：[LbMetric.value] 是上游已经格式化好的整串（「—」「不足 ¥0.01」「¥0.123」），
- * 本文件不认识 Double，也就没有第二条「把不知道念成 0」的路径。
+ * 费用分档判据不在这里：[LbMetric.value] 是上游已经格式化好的整串（「—」「不足 ¥0.01」「¥0.123」），
+ * 本文件只负责摆格子；金额串本身的格式化归 [costAmountText]（两档场景一个实现）。
  */
+
+// ══════════════════════ 金额读数 ══════════════════════
+
+/**
+ * 金额读数的两档场景：首页小卡与面板顶部那条的**既有显示口径**不同（位数 / Locale / 货币符），
+ * 但格式化只该有一处实现——调用方按场景选档，不再在各页各写一遍 `String.format`。
+ *
+ * 两档的输出一字不改：Home = 两位小数、跟随系统 Locale、全角 ￥、金额取绝对值；
+ * Panel = 三位小数、锁 US、半角 ¥。显示差异是账本既有欠账，合并实现不等于合并显示。
+ */
+internal enum class CostAmountStyle(
+    val decimals: Int,
+    val currency: String,
+    /** null = 每次格式化时现读 `Locale.getDefault()`（与旧首页实现同一时机） */
+    val locale: Locale?,
+    val absolute: Boolean
+) {
+    Home(decimals = 2, currency = "￥", locale = null, absolute = true),
+    Panel(decimals = 3, currency = "¥", locale = Locale.US, absolute = false)
+}
+
+/** 一笔金额的可读串（「—」「不足 …」两档占位归 `costReadout`，不在这里） */
+internal fun costAmountText(yuan: Double, style: CostAmountStyle): String =
+    style.currency + String.format(
+        style.locale ?: Locale.getDefault(),
+        "%.${style.decimals}f",
+        if (style.absolute) abs(yuan) else yuan
+    )
 
 /**
  * 自动换组的停顿：看得清的几秒级常量，**不是配置项**——
@@ -152,7 +181,7 @@ data class UsageStatPage(
     val fadeTrailing: Boolean
 )
 
-/** @param rotates 要不要整组轮播：`false` 时各页同时摆在这一行里，由 [usageStatPageTranslationsPx] 相对视口居中（§7.2） */
+/** @param rotates 要不要整组轮播：`false` 时各页同时摆在这一行里，由 [usageStatPageTranslationsPx] 相对视口居中 */
 data class UsageStatLayout(
     val pages: List<UsageStatPage>,
     val rotates: Boolean,
@@ -229,17 +258,17 @@ fun usageStatNaturalStartsPx(widthsPx: List<Int>, gapPx: Int): List<Float> {
  * 于是「半个数字」在这个组件的静止态里是不存在的形状，而不是「尽量别出现」。
  * 拖动时只把**要进来的那一页**接到边上，其余仍然停在外面——手指跟着走的是整页。
  *
- * **不轮播那一档（[rotates] = false 且 [oversizedPage] = false，即整行放得下）现在按 §7.2 居中**：
+ * **不轮播那一档（[rotates] = false 且 [oversizedPage] = false，即整行放得下）现在按居中规则摆**：
  * 一行放得下的短组（首次零值/占位）相对**实际可用视口**居中——把整条自然排布（各页挨个摆开后的
  * 总宽 [usageStatNaturalStartsPx]）当成一个整体平移 `(viewportPx - 总宽) / 2f`，各页仍保持彼此间的
  * 自然间距，当前页不再左贴边。这是「三态同一套短组居中关系」里**已知宽度**那一档的算式；
  * 数值更新后（宽度仍已知、仍放得下）走的是同一条式子，居中关系不变。
  * 宽度尚未量到（首帧回灌晚于绘制：[viewportPx] = 0 或有页宽为 0）时**不猜**：返回全 0，
  * 那一帧的居中由渲染层 `UsageStatBar` 的 Box `contentAlignment` 保底（fillMaxWidth 的量算约束先于
- * onSizeChanged 落定，故首帧即按真实视口居中）——「先按居中布局」，见台账 impl-I2。
+ * onSizeChanged 落定，故首帧即按真实视口居中）——「先按居中布局」，与既有居中取舍同源。
  *
  * [oversizedPage] = 当前页本身就比这一行还宽：它**不居中**（居中会把标签和金额的头几位一起裁掉），
- * 保持行首对齐 + [panPx] 横向平移，让用户把这一格**单行**看完（§7.2 明令不许顺手居中的那一档）。
+ * 保持行首对齐 + [panPx] 横向平移，让用户把这一格**单行**看完（明令不许顺手居中的那一档）。
  */
 fun usageStatPageTranslationsPx(
     widthsPx: List<Int>,

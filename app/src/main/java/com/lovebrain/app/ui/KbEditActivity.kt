@@ -99,9 +99,9 @@ private object KbEditDimens {
      * 键盘把外框 `imePadding()` 让出多少，槽位就矮多少，这一棵跟着矮（本页键盘责任已单一化，见 `onCreate`）；
      * 槽位矮到这一档以下时正文停在这一档，外层 `verticalScroll` 宿主真的滚起来，
      * 「保存 / 放弃修改」那一排在宿主之外常驻可达——地板以下不再是溢出，也不再是"被压成一粒"。
-     * 这一颗仍取小而不要取大：取大了就是"正文只露地板、其余全靠滚"，那是把 §7.1 腾出来的空间又吃回去。
+     * 这一颗仍取小而不要取大：取大了就是"正文只露地板、其余全靠滚"，那是把腾出来的空间又吃回去。
      *
-     * **这一档不会反过来遮住操作（§12.4"不能设置过高最小值遮住操作"按现场几何验过，不是"组件在就算过"）**：
+     * **这一档不会反过来遮住操作（"不能设置过高最小值遮住操作"按现场几何验过，不是"组件在就算过"）**：
      * 地板加在**滚动宿主的子节点**上（下面那一棵 `OutlinedTextField.height(...)`），
      * 而宿主自己是被 `BoxWithConstraints` 那一格的实测高夹住的——子节点要 96dp、宿主只给 S dp 时，
      * 多出来的 `96 − S` 变成**可滚的余量**而不是把动作排顶出屏的溢出
@@ -155,6 +155,15 @@ private val KB_FILES = listOf(
 private const val DEFAULT_KB_FILE_PATH = "moment/recent.md"
 
 /**
+ * 分区路径 → 用户认得出的名字（纠正中心那条标题读它）。
+ *
+ * 名单只有上面 [KB_FILES] 这一份：再抄一张 path→label 的表，改名单时两处会悄悄分叉，
+ * 纠正中心就开始念一个已经不叫这个名字的分区。
+ */
+internal fun kbSectionLabel(path: String): String? =
+    KB_FILES.firstOrNull { it.path == path }?.label
+
+/**
  * 卡头那颗 toggle 在**编辑态**显示的文案（回预览，不落盘；「放弃修改」会把基线写回磁盘，不是同义出口）。
  * ⚠ 写成文件私有一层而不是直接落在 `Text(` 实参里，只为对 `UiStringLiteralBudgetTest` **净增 0**：
  * 那本账刚被对齐到当前树，本屏恢复这颗 toggle 不许替它把读数顶涨。
@@ -188,6 +197,25 @@ internal fun resolveInitialKbFile(files: List<KbFile>, lastFile: String?): KbFil
     files.firstOrNull { it.path == lastFile }
         ?: files.firstOrNull { it.path == DEFAULT_KB_FILE_PATH }
         ?: files.firstOrNull()
+
+/**
+ * 进编辑页前那一次补齐迁移。异常**不许穿出** `LaunchedEffect`：那会让 `loaded` 再也没人置真，
+ * 这一屏就永远停在加载态；取消则必须原样上抛（吞掉 = 退出/切库静默半程）。
+ *
+ * 返回 false = 迁移失败，由调用方落成既有那格"读失败 + 重试"，不另造一套错误态。
+ */
+internal suspend fun runKbEditMigration(
+    kbName: String,
+    ensureMigrated: suspend (String) -> Unit
+): Boolean = try {
+    ensureMigrated(kbName)
+    true
+} catch (e: kotlinx.coroutines.CancellationException) {
+    throw e
+} catch (e: Exception) {
+    L.w("KbEdit migrate failed: $kbName")
+    false
+}
 
 class KbEditActivity : ComponentActivity() {
 
@@ -241,41 +269,65 @@ class KbEditActivity : ComponentActivity() {
         setContent {
             LoveBrainTheme {
                 var loaded by remember { mutableStateOf(false) }
+                // 迁移失败与"读失败"走同一格（既有 `kb_edit_read_failed` + 重试），不新造一套措辞
+                var migrateFailed by remember { mutableStateOf(false) }
+                var retryTick by remember { mutableIntStateOf(0) }
 
-                LaunchedEffect(kbName) {
-                    viewModel.ensureMigrated(kbName)
+                LaunchedEffect(kbName, retryTick) {
+                    migrateFailed = !runKbEditMigration(kbName) { viewModel.ensureMigrated(it) }
                     loaded = true
                 }
 
-                if (!loaded) {
-                    // 加载态也是一整屏，所以它的外框归同一个所有者 [ScreenPage]（与知识库列表页、
-                    // 反馈案例页同一副版式），不再自己拼第二个 `LbScreenScaffold + Box(background)`。
-                    // 转圈那一棵照 [LbAsyncState] Loading 档的形状画一次：Primary 色、`Spacing.xl` 见方、
-                    // 带 `LbAsyncTags.LOADING` 锚点（与其它页那一格同一 tag，自动化找得到）。
-                    ScreenPage(title = "知识库编辑", onBack = { finish() }) {
-                        Box(
-                            modifier = Modifier.weight(1f).fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(
-                                color = Primary,
-                                modifier = Modifier
-                                    .size(Spacing.xl)
-                                    .testTag(LbAsyncTags.LOADING)
-                            )
+                val readFailedHint = stringResource(R.string.kb_edit_read_failed)
+                val retryLabel = stringResource(R.string.action_retry)
+
+                when {
+                    !loaded -> {
+                        // 加载态也是一整屏，所以它的外框归同一个所有者 [ScreenPage]（与知识库列表页、
+                        // 反馈案例页同一副版式），不再自己拼第二个 `LbScreenScaffold + Box(background)`。
+                        // 转圈那一棵照 [LbAsyncState] Loading 档的形状画一次：Primary 色、`Spacing.xl` 见方、
+                        // 带 `LbAsyncTags.LOADING` 锚点（与其它页那一格同一 tag，自动化找得到）。
+                        ScreenPage(title = "知识库编辑", onBack = { finish() }) {
+                            Box(
+                                modifier = Modifier.weight(1f).fillMaxWidth(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    color = Primary,
+                                    modifier = Modifier
+                                        .size(Spacing.xl)
+                                        .testTag(LbAsyncTags.LOADING)
+                                )
+                            }
                         }
                     }
-                } else {
-                    KbEditScreen(
-                        files = KB_FILES,
-                        lastFile = viewModel.lastFile,
-                        onLastFileChange = { viewModel.lastFile = it },
-                        readFile = { path -> viewModel.read(kbName, path) },
-                        saveFile = { path, content, version ->
-                            viewModel.save(kbName, path, content, version)
-                        },
-                        onBack = { finish() }
-                    )
+                    migrateFailed -> {
+                        ScreenPage(title = "知识库编辑", onBack = { finish() }) {
+                            LbAsyncState(
+                                state = ScreenState.Error(
+                                    readFailedHint,
+                                    ScreenAction(retryLabel) {
+                                        loaded = false
+                                        migrateFailed = false
+                                        retryTick++
+                                    }
+                                ),
+                                modifier = Modifier.weight(1f).fillMaxWidth()
+                            ) { }
+                        }
+                    }
+                    else -> {
+                        KbEditScreen(
+                            files = KB_FILES,
+                            lastFile = viewModel.lastFile,
+                            onLastFileChange = { viewModel.lastFile = it },
+                            readFile = { path -> viewModel.read(kbName, path) },
+                            saveFile = { path, content, version ->
+                                viewModel.save(kbName, path, content, version)
+                            },
+                            onBack = { finish() }
+                        )
+                    }
                 }
             }
         }
@@ -353,7 +405,7 @@ internal fun KbEditScreen(
      *
      * 三条路都只往这一格里挂号、也只从这一格里读：切分区的静默自动保存、退出前的批量自动保存、
      * 卡里那颗手动保存。它是**状态**，不是第四套保存逻辑：一个字都没碰落盘顺序与版本语义
-     * （§2.2 第 6 条"不能为了样式改写数据行为"里的那一条）。
+     * （"不能为了样式改写数据行为"里的那一条）。
      *
      * 按**路径**存而不是存一颗整屏布尔：`saveAllAndExit` 那一趟是逐格写的，
      * 用户要看得见的是"这一格正在写"，不是"这屏有事发生"。
@@ -450,7 +502,7 @@ internal fun KbEditScreen(
         if (selectedPath in savingPaths) return
         scope.launch {
             // 这一趟究竟有没有真的写字，决定了切过去之后要不要报"已保存"：
-            // 没改动时 autosave 直接返回 true，那句"已保存"就是假话（§2.2 第 6 条要的就是可预期）。
+            // 没改动时 autosave 直接返回 true，那句"已保存"就是假话（要的就是可预期）。
             val pending = isDirty(selectedPath)
             val ok = autosave(selectedPath)
             if (!ok) {
@@ -465,7 +517,7 @@ internal fun KbEditScreen(
     }
 
     // ── 退出：自动保存全部脏文件；失败则留下并红字提示（不静默丢改动）──
-    // 这一趟的"保存中"与"失败"都从 [savingPaths] / 提示行那**同一个真源**报（§12.4 四态要可辨）。
+    // 这一趟的"保存中"与"失败"都从 [savingPaths] / 提示行那**同一个真源**报（四态要可辨）。
     // 旧写法这里两头都没有：写盘那一整段屏上没有任何反应，失败那句红字又住在编辑那一支里，
     // 而这一趟**只在预览态被按下** ⇒ 用户按返回、什么都没发生，只能反复按那一颗。
     fun saveAllAndExit() {
@@ -509,7 +561,7 @@ internal fun KbEditScreen(
         onBack = { if (anyDirty) saveAllAndExit() else onBack() }
     ) {
         // 编辑态收起分区三排：键盘弹出时它们仍占固定 ~120dp，会挤压正文编辑器。
-        // 指导书§7.1："在编辑态精简/收起上方固定区域，保证正文视口与保存动作可达"。
+        // "在编辑态精简/收起上方固定区域，保证正文视口与保存动作可达"。
         // 预览态展开三排让用户切文件；编辑态只需要当前分区名 + 编辑器 + 保存。
         if (isPreview) {
         // 三档分区名留在页面上（它们就是这一页的目录），后面那串括号里的是**内部分层说明**
@@ -596,7 +648,7 @@ internal fun KbEditScreen(
             // 阴影统一收进 2/4 令牌（6→4 为唯一超限修正）
             modifier = Modifier.fillMaxWidth().weight(1f).shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.lg)
         ) {
-            // 指导书§7.1：编辑态精简卡内固定区域，让正文编辑器拿到更多可用高度。
+            // 编辑态精简卡内固定区域，让正文编辑器拿到更多可用高度。
             // 预览态保持 xl(24dp)；编辑态用 md(16dp)，上下各省 8dp。
             Column(modifier = Modifier.padding(if (isPreview) Spacing.xl else Spacing.md)) {
                 // 页头那一行（标题 + 「编辑 / 预览」那颗）画在状态件**外面**，四格都在。
@@ -609,7 +661,7 @@ internal fun KbEditScreen(
 
                 // 「编辑 / 预览」那颗 toggle **两态都画**（8a8be95 曾在编辑态摘掉它换 ~20dp 行高）：
                 // 摘掉后"不落盘回预览"的出口就没了——底下那颗「放弃修改」会把基线**写回磁盘**，不是同义出口；
-                // 而 §7.1 要腾的固定区域由 09a790b 收起分区三排那笔买到，不靠摘这颗。
+                // 而要腾的固定区域由 09a790b 收起分区三排那笔买到，不靠摘这颗。
                 // 缺席判据在同族两格里钉着：`KbEditScreenStatesTest` ⑥⑦点它回预览、
                 // `KbEditScreenSemanticsTest` 的缺席表要"预览"在编辑态的树上。
                 // bottom padding 编辑态用 xs(8dp)，预览态保持 md(16dp)。
@@ -618,13 +670,12 @@ internal fun KbEditScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // 卡头左半边这一格是"保存四态"里**正在编辑 / 保存中**那两档唯一的出口（§12.4）。
+                    // 卡头左半边这一格是"保存四态"里**正在编辑 / 保存中**那两档唯一的出口。
                     // 改之前这两档在这一屏根本没有出口：脏小圆点只画在分区那一排的按钮上，
                     // 而编辑态那一排整个被收起（09a790b 腾高度那一笔），于是"正敲着、还没落盘"
                     // 这件事在编辑态一个字都看不出来；"保存中"更没有——下面那颗「保存」的
                     // `state` 是写死的 `LbButtonState.Idle`，写盘那一整趟屏幕上一个变化都没有。
-                    // 预览态且这篇是干净的（生产首屏、也是那张像素基线）这一格**不组合任何一棵**，
-                    // 所以 `KbEditScreenVisualBaselineTest` 的像素一个字没动。
+                    // 预览态且这篇是干净的（生产首屏）这一格**不组合任何一棵**。
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             "${selected.label} ｜ $liveLen 字",
@@ -679,7 +730,7 @@ internal fun KbEditScreen(
                 // 它是"已保存 / 失败"这两档在全屏唯一的出口，而 `hint` 有两个来源根本不在编辑态发生：
                 // 切分区的自动保存失败（`switchToFile`）与退出前的批量自动保存失败（`saveAllAndExit`），
                 // 这两趟都在**预览态**开火。改之前提示行写在编辑那一支的里侧，那两句话因此
-                // 永远画不出来：按了返回、写盘失败、屏上一个字都没变（§12.4 保存状态要可辨）。
+                // 永远画不出来：按了返回、写盘失败、屏上一个字都没变（保存状态要可辨）。
                 // `hint` 为 null 时这一格不组合任何一棵 ⇒ 预览态首屏的像素与那张基线完全一致。
                 hint?.let { (msg, isError) ->
                     Text(
@@ -708,7 +759,7 @@ internal fun KbEditScreen(
                             // Content 支接到那一格的容器上，容器拿到 `weight` 之后，这一支把容器填满即可。
                             // 旧写法在这里自己再写一遍 `weight(1f)` 是"Content 支吞掉传入 modifier"逼出来的
                             // 兜底；一旦状态件把 modifier 接上，这棵就不该再抢一份权重（否则 `weight`
-                            // 落进 Box 的 BoxScope 直接失效）。见 handoff《2026-10-05-I3b-LbAsyncState接线单》。
+                            // 落进 Box 的 BoxScope 直接失效）。见 handoff规范。
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(Spacing.sm)
                         ) {
@@ -732,7 +783,7 @@ internal fun KbEditScreen(
                         //   编辑器高度 = 槽位实测高（窗口让多少矮多少，与旧 `weight(1f)` 是同一份数），
                         //   [KbEditDimens.EDITOR_MIN_HEIGHT_DP] 是地板——槽位矮到地板以下时正文停在地板、
                         //   宿主**真的滚**。09a790b 收起分区三排时把这一屏最后一个滚动宿主（横排标签排）
-                        //   一起摘出了编辑态，§7.1 的"腾空间"从来不是"取消滚动"，滚动主人由横排换回正文这一棵；
+                        //   一起摘出了编辑态，约定的"腾空间"从来不是"取消滚动"，滚动主人由横排换回正文这一棵；
                         // - 文本超出这一棵自己的视口时，`OutlinedTextField` 内部滚动，
                         //   并由 [bringIntoViewRequester] 在键盘弹起/光标移动时把当前行要回来
                         //   （这一回它外面真的站着一棵可滚的宿主；此前编辑态没有任何纵向滚动祖先）。
@@ -804,10 +855,10 @@ internal fun KbEditScreen(
                         )
                             }
                         }
-                        // 指导书§7.1：编辑态用更紧凑的间距（xs=4dp），预览态保持 sm(8dp)。
+                        // 编辑态用更紧凑的间距（xs=4dp），预览态保持 sm(8dp)。
                         Spacer(modifier = Modifier.height(if (isPreview) Spacing.sm else Spacing.xs))
                         // 「放弃修改 / 保存」那一排留在滚动宿主**之外**：它是这一支唯一常驻可达的动作排，
-                        // 正文矮到地板以下时靠上面那棵宿主滚，不靠把这排顶出屏（§12.4 保存路径必须可见）。
+                        // 正文矮到地板以下时靠上面那棵宿主滚，不靠把这排顶出屏（保存路径必须可见）。
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(Spacing.md),
@@ -823,7 +874,7 @@ internal fun KbEditScreen(
                                     ?: ""
                                 drafts = drafts + (selectedPath to baseline)
                                 editorStates.remove(selectedPath)
-                                // 「放弃」的范围只覆盖**明确还没落盘的那一部分**（§12.4 原话）。
+                                // 「放弃」的范围只覆盖**明确还没落盘的那一部分**（原话）。
                                 // `saved` 只在"写成功"或"读回来"时更新，所以 baseline == saved
                                 // 就是说磁盘上已经是这一份：这一趟没有任何未持久化的修改可放弃。
                                 // 旧写法不管有没有改动都照写一次，于是"放弃"伪装成一次保存、
@@ -867,7 +918,7 @@ internal fun KbEditScreen(
                             // 并把热区留在外层透明盒里（`CompactInput` 的两层写法），
                             // 页面这一侧不该再自己抄一个 44 出来。
                             LbPrimaryButton(
-                                // 「保存中」这一档在页面上唯一的出口（§12.4 保存状态要可辨）。
+                                // 「保存中」这一档在页面上唯一的出口（保存状态要可辨）。
                                 // 改之前这颗的 `state` 是**写死的** `LbButtonState.Idle`：
                                 // 那一次真写盘（`saveFile` → `KbEditViewModel.save` → 版本校验 → IO 落盘）
                                 // 整整一趟里屏幕上一点变化都没有，用户分不清"点了没用上"与"还在写"。

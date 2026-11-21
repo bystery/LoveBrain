@@ -10,7 +10,7 @@ import com.lovebrain.app.model.OngoingItem
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SceneFact
 import com.lovebrain.app.util.L
-import kotlinx.coroutines.CancellationException
+import java.io.IOException
 
 /**
  * 话题生命周期管理器——**一轮提交的事务协调者**。
@@ -80,9 +80,6 @@ class TopicRecorder(
     // knowledgeRepo 这本仓库同时 implements 读口与写口，同一实例、同一条写链，只是视角收窄。
     private val planStore = OngoingPlanStore(knowledgeRepo, knowledgeRepo)
     private val contextReader = KnowledgeContextReader(knowledgeRepo)
-    // 审计 #19：进行中事项冷却的唯一落盘点——与选择侧共用同一个 store 类
-    // （暂存注册表在 companion 层，这里只负责在确认事务点 apply）。
-    private val ongoingCooldownStore = OngoingCooldownStore(knowledgeRepo, clock)
 
     /**
      * 记录一轮对话 + 处理话题状态 + 更新场景链 + 合并进行中事项。
@@ -125,7 +122,7 @@ class TopicRecorder(
 
         // 1. 确定本轮变更意图（不写任何 target）——必须在 WAL PREPARED 之前完成
         val curTopic = knowledgeRepo.getCurrentTopic(kb.name)
-        val hasTopic = curTopic.isNotBlank() && curTopic != "（等待第一次对话）"
+        val hasTopic = curTopic.isNotBlank() && curTopic != TOPIC_INITIAL_LABEL
 
         // F2.1 加固 + R5 佐证独立性修正：topic_status=new 不再单独触发归档/清空——必须经
         // TopicSwitchGate 命中至少一个**非模型源**佐证信号（scene 链已空 / 证据时间间隔 /
@@ -197,42 +194,10 @@ class TopicRecorder(
         )
 
         return when (val outcome = journal.commit(kb.name, event) { e -> applyRound(e) }) {
-            is RoundCommitJournal.CommitOutcome.Committed -> {
-                commitPendingOngoingCooldown(kb.name, conversationalMessages)
-                outcome.value
-            }
+            is RoundCommitJournal.CommitOutcome.Committed -> outcome.value
             // 另一个协程在本协程排队等锁时把这一轮提交了：本轮没有新话题切换。
-            // 冷却暂存同样要消费掉——同一轮的 pending 不许漏到下一轮。
-            RoundCommitJournal.CommitOutcome.AlreadyCommitted -> {
-                commitPendingOngoingCooldown(kb.name, conversationalMessages)
-                false
-            }
+            RoundCommitJournal.CommitOutcome.AlreadyCommitted -> false
         }
-    }
-
-    /**
-     * 审计 #19（读取/准备请求 ≠ 确认一次真实状态变化）：把 Prompt 准备阶段
-     * [OngoingContextSelector.selectForInjection] 暂存的冷却更新在本确认事务点落盘。
-     *
-     * 只消费与本轮 HER/ME 消息指纹匹配的暂存——用户改写消息、换轮或生成失败后的
-     * 陈旧暂存指纹不匹配，冷却与证据状态**不推进**。指纹两侧用同一个
-     * [OngoingCooldownStore.roundFingerprint]，选择侧传冻结快照、这里传提交消息，
-     * 同一轮必然一致。该函数在 journal 提交成功之后调用；冷却写失败只记日志，
-     * 不把已提交的轮次拖成失败（冷却只是防重复注入的辅助状态）。
-     */
-    private suspend fun commitPendingOngoingCooldown(
-        kbName: String,
-        conversationalMessages: List<ChatMessage>
-    ) {
-        val pending = OngoingCooldownStore.consumeIfMatch(
-            kbName,
-            OngoingCooldownStore.roundFingerprint(conversationalMessages)
-        ) ?: return
-        runCatching { ongoingCooldownStore.applyUpdate(pending) }
-            .onFailure {
-                if (it is CancellationException) throw it
-                L.w("ongoing cooldown commit failed (round already committed, cooldown 未推进): ${it.message}")
-            }
     }
 
     /**
@@ -276,7 +241,14 @@ class TopicRecorder(
         // 投影 3：moment/recent.md
         apply(RoundCommitJournal.PROJ_RECENT) {
             if (event.recentEntry.isNotBlank()) {
-                recentStore.writeRecent(kbName, event.recentEntry, event.roundMsgIds)
+                // writeRecent 只在两笔都真落盘时返回 true；false = 这一轮没落盘（溢出没进暂存，或 recent 被拒写/IO 失败）。
+                // 必须抛出去而不是记个日志继续：只有抛出才走不到 apply 的水位推进，
+                // journal 留在 WRITING，同一 roundId 重试只重跑本投影；调用方也收不到"已记入"。
+                // 只记 roundId 这类非内容信息（util/L.kt 隐私红线），正文一个字节都不进日志。
+                if (!recentStore.writeRecent(kbName, event.recentEntry, event.roundMsgIds)) {
+                    L.e("recent projection did not land (round ${event.roundId}); round kept for retry", null)
+                    throw IOException("recent projection did not land for round ${event.roundId}")
+                }
             }
         }
 
@@ -327,4 +299,15 @@ class TopicRecorder(
 
     /** 向量重估专用上下文：当前话题 + 场景 + 最近对话 + 最近 N 个话题档案 */
     suspend fun getVectorContext(kbName: String): String = contextReader.getVectorContext(kbName)
+
+    companion object {
+        /**
+         * 新库初始化时写进 moment/topic.md 的那句话。
+         *
+         * 字面量必须住在 domain：读侧（本类的 `hasTopic`、PromptKnowledgeSection 的注入判据）
+         * 不能 import data（PackageDependencyTest 禁 domain → data），写侧
+         * `KbTextOps.TOPIC_INITIAL_LABEL` 转调这里，全仓仍只有这一份字面量。
+         */
+        const val TOPIC_INITIAL_LABEL = "（等待第一次对话）"
+    }
 }

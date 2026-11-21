@@ -44,7 +44,7 @@ private const val ADJUST_OPTIONS_PER_ROW = 2
  * （纵向档宽铺满、高按同一颗 150 当下限按内容长高，见 `SchemeCardDimens.widthFor/heightFor`），
  * 横向档内容顶不下就整块纵向滚动兜底。
  *
- * ⚠ 那句"内容顶不下就整块纵向滚动兜底"只属于**横向档**（[contentHeightBounded]＝true，§3）：
+ * ⚠ 那句"内容顶不下就整块纵向滚动兜底"只属于**横向档**（[contentHeightBounded]＝true）：
  * 纵向档卡片自己按内容长高，外层那一条唯一的纵向滚动已经接住了溢出，这里再嵌一条就是
  * 在可滚的柱里再套一条无限高的滚——所以纵向档这一块的根 Column 不挂 verticalScroll。
  * 两档共用这一份实现，分叉只有"溢出归谁管"这一条。
@@ -230,7 +230,7 @@ private fun AdjustOption(
  * 自定义那一格展开后的输入与提交：卡内紧凑档。
  *
  * 输入复用公共 [LbFieldInput]——五态视觉、焦点生命周期、编辑意图信号全走同一颗公共件，
- * 不再自己 Box + BasicTextField + pointerInput（§7.2「直接复用，不再自己做输入行为」）。
+ * 不再自己 Box + BasicTextField + pointerInput（「直接复用，不再自己做输入行为」）。
  *
  * 焦点这一头两颗都由调用方（[SchemeAdjustingBlock]）持有：
  * · [focusRequester] 交进 [LbFieldInput]——那颗组件的规则是"外部给了就用外部的，

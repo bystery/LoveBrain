@@ -42,6 +42,7 @@ import com.lovebrain.app.core.designsystem.AppDimens
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Border
 import com.lovebrain.app.core.designsystem.LbAsyncState
+import com.lovebrain.app.core.designsystem.LbFieldInput
 import com.lovebrain.app.core.designsystem.LbRowState
 import com.lovebrain.app.core.designsystem.LbSettingRow
 import com.lovebrain.app.core.designsystem.LoveBrainShape
@@ -52,7 +53,6 @@ import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.SurfaceCard
 import com.lovebrain.app.core.designsystem.TextHint
 import com.lovebrain.app.ui.common.ScreenPage
-import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.viewmodel.FloatingServiceHomePort
 import com.lovebrain.app.viewmodel.SetupViewModel
 import kotlinx.coroutines.Dispatchers
@@ -189,7 +189,8 @@ fun CaptureAppsScreen(
     // **从系统授权页回来必须自己重读一遍**（2026-10-06 真机读数；"未授权 → 点击去设置 →
     // **返回刷新**"这一条要求到今天才真的成立）：
     // 这一页的四颗事实（扫包 / 无障碍授权 / 这一版同意记录 / 悬浮窗在不在）只在
-    // `LaunchedEffect(rescanTick)` 里读一次；跳去系统设置给完权限再回来，Activity 只是 resume，
+    // `LaunchedEffect(rescanTick)` 里整批读一次（同意记录另随采集范围重读，见下面那颗
+    // `LaunchedEffect(allowed)`）；跳去系统设置给完权限再回来，Activity 只是 resume，
     // 这一屏**没有重新装配**，于是 `accessibilityGranted` 还留在出发前的 false——
     // 用户看到的正是他描述的那一串：「我已经开启了啊，拨开关却又跳去设置，卡好几次，
     // 退出页面重进才发现好了」（重进 = 重新组合 = 才会重读）。
@@ -228,6 +229,14 @@ fun CaptureAppsScreen(
         disclosureConfirmed = batch.disclosure
         floatingUp = batch.floatingRunning
         scanning = false
+    }
+
+    // 范围一变，这一版同意记录当场作废（`SetupViewModel.setCaptureAllowed` 把版本号清零），
+    // 而上面那一批读数只在 resume/重扫时重跑：同页里勾掉或加上一个 App 之后，快照还留着
+    // 出发前的 true，状态行继续念"已开启"，"开启前请确认"要退出重进才看得见。
+    // 所以范围这颗 stateflow 一变就重读一次——读的仍是同一颗版本号，不落第二本账。
+    LaunchedEffect(allowed) {
+        disclosureConfirmed = withContext(Dispatchers.IO) { viewModel.isAccessibilityDisclosureConfirmed() }
     }
 
     /**
@@ -460,7 +469,7 @@ internal fun CaptureScopePicker(
     )
 
     Column(modifier) {
-        CompactInput(
+        LbFieldInput(
             value = query,
             onValueChange = onQueryChange,
             placeholder = stringResource(R.string.capture_apps_search),

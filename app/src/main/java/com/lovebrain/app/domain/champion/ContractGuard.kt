@@ -11,31 +11,29 @@ import kotlinx.serialization.json.put
 import java.io.File
 
 /**
- * 确定性输出契约守卫（T4 Kotlin 移植 §1.5）——逐字移植
- * `window_expand_b_norecap_guard/mechanism/contract_guard.py` +
- * `_vendor/output_repair.py` + `_vendor/normalize_reply_contract.py`（内聚为一个文件，
- * 三层规则顺序固定，后层作用于前层结果；零模型调用）。
+ * 确定性输出契约守卫：三层规则顺序固定，后层作用于前层结果，零模型调用。
  *
- * ## 三层规则（注释保留移植来源）
+ * ## 三层规则
  *
- * 1. **解析兜底（vendor I1–I4 + E1–E3）**：剥 markdown 围栏 → 弯/全角引号按序换直引号
- *    重试 → 抽最外层对象；键别名映射（规范槽非空绝不覆盖，别名值全文进
- *    `unmapped_preserved`）；directions 保全（多出整条进 `extra_directions_preserved`）；
- *    缺槽补 null 登记；E1 通用键名归一（去空白/不可见字符后比对）；E2 提前闭合重拼
- *    （实测样本 AK02_T01）；E3 多余包裹对象拆开（实测样本 N01_T05，五条件全过才只动括号）。
- * 2. **漂移族补修（guard 层，W17 观察族）**：未知风格键按字符相似度 ≥0.5 映射到
+ * 1. **解析兜底（I1–I4 + E1–E3）**：剥 markdown 围栏 → 弯/全角引号按序换直引号
+ *    重试 → 抽最外层对象；键别名映射（规范槽非空绝不覆盖，别名值只登记字符量）；
+ *    directions 保全（多出的方向只登记条数与字符量）；缺槽补 null 登记；
+ *    E1 通用键名归一（去空白/不可见字符后比对）；E2 提前闭合重拼；E3 多余包裹对象
+ *    拆开（五条件全过才只动括号）。
+ * 2. **漂移族补修（guard 层）**：未知风格键按字符相似度 ≥0.5 映射到
  *    recommended/bad_boy/playful/warm（仅目标槽空时；**见下方 FUZZY_MAP_ENABLED**）；
- *    response 少 4 槽补 null（不编造）；directions 截 4/补 null（显式 action=no_reply 不补）；
+ *    response 少 4 槽补 null（不编造）；directions 截 4（缺位保持原样）；
  *    顶层 action↔response 互改（反向只认 action 形状）；空 response 只标
  *    `empty_response` 原样返回，不伪造内容。
  * 3. **输出纪律**：只有对象相对原文实际变化才重新序列化（非 ASCII 不转义，
  *    对齐 `json.dumps(..., ensure_ascii=False)`）；否则**逐字节返回原文本**。
- *    每次变化写审计（turn/meta 全字段）到 `champion/contract_guard_audit.jsonl`；
+ *    每次变化写审计到 `champion/contract_guard_audit.jsonl`——审计载荷只含
+ *    规则名、计数与字符量，**聊天正文不落盘**（meta 里的被丢弃文本同样只留长度）；
  *    守卫自身异常 → 降级原样回复并记 `guard_exception`。**零模型调用。**
  *
- * ## 已登记的移植偏差（详见 W1_CHAMPION_ENGINE_IMPL.md）
- * - Python `difflib.SequenceMatcher.ratio()` 无 JDK 等价物：本文件移植了同算法
- *   （最长匹配块递归，2.0*M/T，含 autojunk）。**规格书 §1.5：未与 Python 夹具对拍前
+ * ## 已知实现偏差
+ * - Python `difflib.SequenceMatcher.ratio()` 无 JDK 等价物：本文件按同算法实现
+ *   （最长匹配块递归，2.0*M/T，含 autojunk）。**未与参考实现夹具逐例对拍前
  *   不得启用 fuzzy_map**——[FUZZY_MAP_ENABLED] 默认 false，未启用时未知风格键走
  *   保守路径 `unmapped_style_removed`（与相似度低于阈值的形状一致）。
  * - Python `json.loads` 接受 NaN/Infinity 等非严格输入：MiniJson 不接受（契约字段
@@ -61,7 +59,7 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
     )
     private val INVISIBLE = setOf("\u200b", "\u200c", "\u200d", "\ufeff", "\u00a0", " ", "\t", "\r", "\n")
 
-    /** 未对拍前整体关闭（规格书 §1.5 风险登记）；关闭时走 unmapped_style_removed 保守路径。 */
+    /** 未逐例对拍前整体关闭；关闭时走 unmapped_style_removed 保守路径。 */
     private val FUZZY_MAP_ENABLED = false
 
     // ═══════════ MiniJson：带位置的解析 + Python 风格序列化 ═══════════
@@ -366,15 +364,17 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
     private fun lossEntry(rule: String, vararg pairs: Pair<String, JsonElement>): JsonObject =
         buildJsonObject { put("rule", rule); pairs.forEach { (k, v) -> put(k, v) } }
 
-    private fun jvalToJson(v: JVal): JsonElement = when (v) {
-        is JNull -> JsonNull
-        is JBool -> JsonPrimitive(v.value)
-        is JNum -> v.lexeme.toLongOrNull()?.let { JsonPrimitive(it) }
-            ?: v.lexeme.toDoubleOrNull()?.let { JsonPrimitive(it) }
-            ?: JsonPrimitive(v.lexeme)
-        is JStr -> JsonPrimitive(v.value)
-        is JArr -> JsonArray(v.items.map { jvalToJson(it) })
-        is JObj -> JsonObject(v.entries.mapValues { jvalToJson(it.value) })
+    /**
+     * 诊断里的正文一律只留字符量：被丢弃/被裁掉的候选文本不落 meta、不落审计
+     * （聊天内容不进日志，长度足以定位"丢了多少"）。
+     */
+    private fun charsOf(v: JVal?): Int = when (v) {
+        null -> 0
+        is JNull -> 0
+        is JStr -> v.value.length
+        is JArr -> v.items.sumOf { charsOf(it) }
+        is JObj -> v.entries.values.sumOf { charsOf(it) }
+        else -> 0
     }
 
     /** 字符串状态感知的栈扫描：把"在 [ 内部用 } 收尾"的那一个括号改成 ]（至多 1 处）。 */
@@ -465,7 +465,7 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
         }
         if (obj0 != null) return obj0
 
-        // E2：提前闭合重拼（只在继承解析失败后启用；实测样本 AK02_T01）
+        // E2：提前闭合重拼（只在继承解析失败后启用）
         try {
             val (_, end) = rawDecode(rawText, 0)
             val tail = rawText.substring(end)
@@ -541,8 +541,8 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
                     aliasEmpty -> repairs += "style_key_drop_empty_dup:$k"
                     else -> {
                         unmapped += buildJsonObject {
-                            put("alias_key", k); put("alias_value", jvalToJson(aliasVal))
-                            put("canon_key", canon); put("canon_value", jvalToJson(cur!!))
+                            put("alias_key", k); put("alias_value_chars", charsOf(aliasVal))
+                            put("canon_key", canon); put("canon_value_chars", charsOf(cur))
                         }
                         repairs += "style_key_keep_unmapped:$k"
                     }
@@ -560,10 +560,7 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
         }
         val dirs = obj.entries["directions"]
         if (dirs is JArr) {
-            if (dirs.items.size < DIRECTIONS_LEN) {
-                while (dirs.items.size < DIRECTIONS_LEN) dirs.items.add(JNull)
-                repairs += "directions_pad_to_$DIRECTIONS_LEN"
-            } else if (dirs.items.size > DIRECTIONS_LEN) {
+            if (dirs.items.size > DIRECTIONS_LEN) {
                 val extra = dirs.items.drop(DIRECTIONS_LEN)
                 obj.entries["_audit_extra_directions"] = JArr(extra.toMutableList())
                 while (dirs.items.size > DIRECTIONS_LEN) dirs.items.removeAt(dirs.items.size - 1)
@@ -626,12 +623,12 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
                 val vEmpty = slotEmpty(v)
                 if (newResp.containsKey(ck) && !curEmpty && !vEmpty) {
                     auditUnmapped += buildJsonObject {
-                        put("alias_key", k); put("alias_value", jvalToJson(v))
-                        put("canon_key", ck); put("canon_value", jvalToJson(cur!!))
+                        put("alias_key", k); put("alias_value_chars", charsOf(v))
+                        put("canon_key", ck); put("canon_value_chars", charsOf(cur))
                     }
                     loss += lossEntry(
                         "E1_duplicate_canon_key_preserved_to_audit",
-                        "to" to JsonPrimitive(ck), "preserved_text" to jvalToJson(v)
+                        "to" to JsonPrimitive(ck), "preserved_chars" to JsonPrimitive(charsOf(v))
                     )
                     continue
                 }
@@ -642,17 +639,17 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
             if (auditUnmapped.isNotEmpty()) obj.entries["_audit_unmapped"] = JArr(auditUnmapped.map { toJVal(it) }.toMutableList())
         }
 
-        // I3 的全文保全写进了 _audit_extra_directions；这里只记进留损日志
+        // I3 的全文保全不进契约 JSON；这里只登记条数与字符量
         val extra = obj.entries["_audit_extra_directions"] as? JArr
         if (extra != null && extra.items.isNotEmpty()) {
             loss += buildJsonObject {
                 put("rule", "I3_directions_overflow_preserved")
                 put("given", JsonPrimitive(extra.items.size + 4))
-                put("preserved_directions", JsonArray(extra.items.map { jvalToJson(it) }))
+                put("preserved_chars", JsonPrimitive(extra.items.sumOf { charsOf(it) }))
             }
         }
 
-        // R4：只登记，不代候选做决定
+        // 空正文 + 全 null 方向：只登记，不代候选做决定
         val dirs = obj.entries["directions"]
         val respObj = obj.entries["response"] as? JObj
         val ks = CANON.filter { respObj?.entries?.containsKey(it) == true }
@@ -673,7 +670,7 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
     // ═══════════ 第二层：漂移族补修（guard 层） ═══════════
 
     private fun bestStyleSlot(key: String): Pair<String?, Double> {
-        // 未对拍前不启用 fuzzy_map（规格书 §1.5）：保守路径直接返回 None。
+        // 未逐例对拍前不启用 fuzzy_map：保守路径直接返回 None。
         if (!FUZZY_MAP_ENABLED) return null to 0.0
         val ck = cleanKey(key)
         if (ck.isEmpty()) return null to 0.0
@@ -701,9 +698,9 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
         val repairLoss = mutableListOf<JsonObject>()
         val styleKeyMap = mutableListOf<JsonObject>()
         val unmappedPreserved = mutableListOf<JsonObject>()
-        val extraDirectionsPreserved = mutableListOf<JsonElement>()
+        /** 被裁掉的多余 directions：只记每条字符量（正文不落诊断）。 */
+        val extraDirectionsPreserved = mutableListOf<Int>()
         val responseSlotsAdded = mutableListOf<String>()
-        var directionsPadded = 0
         var directionsTruncated = 0
         var actionToResponse = false
         var responseToAction = false
@@ -716,7 +713,7 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
     }
 
     private fun mapStyleKeys(obj: JObj, meta: Meta) {
-        // 未知 response 键 → 规范槽（仅槽空时）；不可映射的非空值全文进 meta 后移除。
+        // 未知 response 键 → 规范槽（仅槽空时）；不可映射的非空值只登记字符量后移除。
         val resp = obj.entries["response"] as? JObj ?: return
         val newResp = LinkedHashMap<String, JVal>()
         var changed = false
@@ -733,19 +730,19 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
             val (target, score) = bestStyleSlot(k)
             if (target == null) {
                 meta.unmappedPreserved += buildJsonObject {
-                    put("key", k); put("value", jvalToJson(v)); put("reason", "no_style_match")
+                    put("key", k); put("value_chars", charsOf(v)); put("reason", "no_style_match")
                 }
                 changed = true
                 meta.addRule("unmapped_style_removed")
                 continue
             }
             if (!slotEmpty(newResp[target])) {
-                // 规范槽已有非空文本：绝不覆盖，别名值全文保留到审计
+                // 规范槽已有非空文本：绝不覆盖，别名值只留字符量进诊断
                 meta.unmappedPreserved += buildJsonObject {
-                    put("key", k); put("value", jvalToJson(v))
+                    put("key", k); put("value_chars", charsOf(v))
                     put("reason", "canonical_slot_nonempty")
                     put("canonical_key", target)
-                    put("canonical_value", jvalToJson(newResp[target]!!))
+                    put("canonical_value_chars", charsOf(newResp[target]))
                 }
                 changed = true
                 meta.addRule("unmapped_style_preserved")
@@ -799,6 +796,7 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
 
     private fun writeAudit(meta: JsonObject, auditContext: JsonObject) {
         val sink = auditSink ?: return
+        // meta 只有规则名/计数/字符量（正文在上游已换成长度），整行可直接落盘。
         val changed = (meta["changed"] as? JsonPrimitive)?.content == "true"
         val unmapped = (meta["unmapped_preserved"] as? JsonArray).orEmpty().isNotEmpty()
         val extra = (meta["extra_directions_preserved"] as? JsonArray).orEmpty().isNotEmpty()
@@ -844,10 +842,10 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
             return GuardOutcome(rawText, m)
         }
 
-        // 0) repair 的审计载荷不进入返回契约 JSON（全文进 meta）
+        // 0) repair 的审计载荷不进入返回契约 JSON（只留条数与字符量进 meta）
         val extraDir = obj.entries.remove("_audit_extra_directions") as? JArr
         if (extraDir != null && extraDir.items.isNotEmpty()) {
-            meta.extraDirectionsPreserved.addAll(extraDir.items.map { jvalToJson(it) })
+            meta.extraDirectionsPreserved.addAll(extraDir.items.map { charsOf(it) })
             meta.addRule("directions_overflow")
         }
         val auditUnmapped = obj.entries.remove("_audit_unmapped") as? JArr
@@ -875,7 +873,7 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
             meta.addRule("response_to_action")
         }
 
-        // 2) 风格键漂移（W17：bad_but/bad_bo/bad_young/bad_girl/bad/...）
+        // 2) 风格键漂移（bad_but/bad_bo/bad_young/bad_girl/bad/...）
         mapStyleKeys(obj, meta)
 
         meta.noReplyAction = (obj.entries["action"] as? JStr)?.value?.trim() == "no_reply"
@@ -896,26 +894,16 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
             }
         }
 
-        // 4) directions 截到 4 / 补 null（合法 no_reply 不补缺省键）
+        // 4) directions 截到 4（缺位保持原样输出）
         val dirs = obj.entries["directions"]
         if (dirs is JArr) {
             if (dirs.items.size > DIRECTIONS_LEN) {
                 val overflow = dirs.items.drop(DIRECTIONS_LEN)
                 while (dirs.items.size > DIRECTIONS_LEN) dirs.items.removeAt(dirs.items.size - 1)
-                meta.extraDirectionsPreserved.addAll(overflow.map { jvalToJson(it) })
+                meta.extraDirectionsPreserved.addAll(overflow.map { charsOf(it) })
                 meta.directionsTruncated = overflow.size
                 meta.addRule("directions_truncated")
             }
-            if (dirs.items.size < DIRECTIONS_LEN) {
-                val pad = DIRECTIONS_LEN - dirs.items.size
-                repeat(pad) { dirs.items.add(JNull) }
-                meta.directionsPadded = pad
-                meta.addRule("directions_pad_null")
-            }
-        } else if (dirs == null && !meta.noReplyAction) {
-            obj.entries["directions"] = JArr(MutableList(DIRECTIONS_LEN) { JNull })
-            meta.directionsPadded = DIRECTIONS_LEN
-            meta.addRule("directions_added_null")
         } else if (dirs != null) {
             meta.directionsNotList = dirs.javaClass.simpleName
             meta.addRule("directions_not_list")
@@ -971,9 +959,8 @@ class ContractGuard(private val auditSink: GuardAuditSink? = null) {
         put("repair_loss", JsonArray(meta.repairLoss))
         put("style_key_map", JsonArray(meta.styleKeyMap))
         put("unmapped_preserved", JsonArray(meta.unmappedPreserved))
-        put("extra_directions_preserved", JsonArray(meta.extraDirectionsPreserved))
+        put("extra_directions_preserved", JsonArray(meta.extraDirectionsPreserved.map { JsonPrimitive(it) }))
         put("response_slots_added", JsonArray(meta.responseSlotsAdded.map { JsonPrimitive(it) }))
-        put("directions_padded", meta.directionsPadded)
         put("directions_truncated", meta.directionsTruncated)
         put("action_to_response", meta.actionToResponse)
         put("response_to_action", meta.responseToAction)

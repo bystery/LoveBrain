@@ -78,10 +78,10 @@ import kotlin.math.roundToInt
  * `SetupViewModel.currentGuideCursor(context)` 从真状态派生。这一层不判"哪一步没做"，
  * 只把游标翻译成锚点键（[coachAnchorKeyFor]）与那一格的字（[CoachStepCopy]）。
  *
- * 数值按设计基线 v1.1 §6.7：遮罩 0.55 黑、目标描边 2dp `Primary` 外扩 4dp、
+ * 数值按设计：遮罩 0.55 黑、目标描边 2dp `Primary` 外扩 4dp、
  * 箭头 12×8 每角圆、提示板宽 ≤260dp、内边距 12、圆角 16、优先放目标下方。
  *
- * 指向那一格的形状**不自己画**：用 core 的公共件 `LbTriangleGlyph`（§3.10 那颗圆化三角，
+ * 指向那一格的形状**不自己画**：用 core 的公共件 `LbTriangleGlyph`（那颗圆化三角，
  * 半径比例由它独享，页面拿不到），见 [CoachPointerSlot]。
  */
 
@@ -221,21 +221,21 @@ internal fun coachAnchorKeyFor(cursor: GuideCursor): String? = when (cursor) {
  * 因此指回 `AppDimens.TOUCH_TARGET_MIN_DP` 那一颗）。每一颗注明基线出处。
  */
 private object CoachMarksDimens {
-    /** 遮罩黑度（§6.7 定版 0.55） */
+    /** 遮罩黑度（定版 0.55） */
     const val SCRIM_ALPHA = 0.55f
 
-    /** 目标描边宽（§6.7 定版 2dp；全站细描边那颗 1dp 是 `AppDimens.BORDER_WIDTH_DP`，用途不同） */
+    /** 目标描边宽（定版 2dp；全站细描边那颗 1dp 是 `AppDimens.BORDER_WIDTH_DP`，用途不同） */
     const val HIGHLIGHT_STROKE_DP = 2
 
-    /** 箭头字形的两条可见边（§6.7 定版 12×8dp：外盒这一档，字形取等边的 8dp 那一档） */
+    /** 箭头字形的两条可见边（定版 12×8dp：外盒这一档，字形取等边的 8dp 那一档） */
     const val ARROW_WIDTH_DP = 12
     const val ARROW_HEIGHT_DP = 8
 
-    /** 提示板可见宽上限（§6.7 定版 ≤260dp） */
+    /** 提示板可见宽上限（定版 ≤260dp） */
     const val PLATE_MAX_WIDTH_DP = 260
 
     /**
-     * "往下放还是往上翻"那一格的估算高（§6.7 只说优先放目标下方，没给预留值）。
+     * "往下放还是往上翻"那一格的估算高（只说优先放目标下方，没给预留值）。
      * 它**不是**提示板的排版高——板的落点公式里板高自己抵消（见 [CoachHintPlate] 那条偏移）。
      */
     val PLATE_RESERVE = 120.dp
@@ -249,14 +249,14 @@ private object CoachMarksDimens {
  * 引导仍在场、字仍指同一格，只是没有罩子与箭头——这是**几何没就绪那一帧**的退路，不是缺接线的借口
  * （`HomeScreen` 四入口的 `.coachAnchor(...)` 已经接上）。
  *
- * ## 只在首页在场（指导书 §9.1「进入子页暂停/移除」）
+ * ## 只在首页在场（「进入子页暂停/移除」）
  *
  * [onHome] 是这一族**唯一**的"页面闸"：首页被 `SetupRoot` 换成任一子页时它转 false，罩子整块离场
  * （连"无锚点退路"那一档的提示板一起收）。原先这里只按锚点/文案早退——子页没有首页锚点，
- * 罩子就退化成一张浮在子页上的提示板，正是 §9.1 判的那条"遮罩没有限定只在首页显示"。
+ * 罩子就退化成一张浮在子页上的提示板，正是判的那条"遮罩没有限定只在首页显示"。
  *
  * @param onOpenTarget 提示板主动作，两件事：① 让路（罩子不再吃掉目标格之外的点击）
- *   ② 经宿主 `SetupActivity` 的 `guideTarget` 直达那一格子页（G1b 接线单 §3 那条线**已经接上**，
+ *   ② 经宿主 `SetupActivity` 的 `guideTarget` 直达那一格子页（G1b那条线**已经接上**，
  *   跳过去之后这一层的 [onHome] 随之转 false）。
  */
 @Composable
@@ -392,8 +392,8 @@ fun HomeCoachMarks(
 }
 
 /**
- * 遮罩：一张 `Path` 以 EvenOdd 差集挖出目标那一格（§6.7"单张 Canvas/Path 差集挖洞"）。
- * 洞 = 目标外扩 4dp，圆角与提示板同取 `LoveBrainShape.lg`（描边圆角等于填充圆角，§3.4）。
+ * 遮罩：一张 `Path` 以 EvenOdd 差集挖出目标那一格（"单张 Canvas/Path 差集挖洞"）。
+ * 洞 = 目标外扩 4dp，圆角与提示板同取 `LoveBrainShape.lg`（描边圆角等于填充圆角）。
  *
  * 点击口径：洞**里**那一下一个字都不消费，让被指的那颗入口自己收到；洞外归罩子。
  * 提示板里三颗动作各自先消费（[awaitFirstDown] 默认只等未被消费的那一下）。
@@ -469,15 +469,15 @@ private fun cornerPxOf(shape: RoundedCornerShape, size: Size, density: Density):
     shape.topStart.toPx(size, density)
 
 /**
- * 指向被指物的那一格：形状用 core 的公共件 [LbTriangleGlyph]（基线 v1.1 §3.10 的圆化三角，
+ * 指向被指物的那一格：形状用 core 的公共件 [LbTriangleGlyph]（约定的圆化三角，
  * 半径 = 边长 × `LB_GLYPH_CORNER_RATIO`，页面拿不到那颗比例、也长不出第二种圆角）。
  *
- * 方向照 §6.7"优先放目标下方"那一支：提示板在目标下面 → 三角朝上（`TriangleDown` 转 180°）；
+ * 方向照"优先放目标下方"那一支：提示板在目标下面 → 三角朝上（`TriangleDown` 转 180°）；
  * 屏幕放不下整摞翻到上方 → 直接 `TriangleDown` 朝下。旋转挂在字形自己的 `graphicsLayer` 上
  * （与 `DragHandle` 那一族同一口径：形状语义不动，方向由调用方拿着），盒子与偏移一寸不因旋转漂。
  *
- * ⚠ §6.7 给的是 12×8 那种**长短分离**的箭头，公共件只有等边档：这里外盒留 12×8 的位、
- * 字形取 8dp 那一档（更接近"小指头"而不是"色块"）。要真 12×8 得 core 那侧加档——已写进交接单 §2。
+ * ⚠给的是 12×8 那种**长短分离**的箭头，公共件只有等边档：这里外盒留 12×8 的位、
+ * 字形取 8dp 那一档（更接近"小指头"而不是"色块"）。要真 12×8 得 core 那侧加档——已写进。
  */
 @Composable
 private fun CoachPointerSlot(
@@ -516,10 +516,10 @@ private fun CoachPointerSlot(
 }
 
 /**
- * 提示板：这一格缺什么 + 三条出口。宽 ≤260dp、内边距 12、圆角 16（§6.7）。
+ * 提示板：这一格缺什么 + 三条出口。宽 ≤260dp、内边距 12、圆角 16。
  *
  * 三颗动作全借设计系统的件（`LbPrimaryButton` / `LbTextAction`）：热区因此指回全站那一颗下限，
- * 页面不给它们垫盒子（§3.1、§3.5）。
+ * 页面不给它们垫盒子。
  *
  * 落点公式：往下放从顶边对齐，偏移就是目标底边往下一摞；往上翻从底边对齐，偏移写成
  * "目标顶边 − 那一摞 − 整屏高"，提示板自己的排版高在两项相减里抵消 ⇒ 不需要估它的高度。

@@ -85,7 +85,7 @@ internal class KnowledgeIntentService(private val storage: IntentStorage) {
             persisted = write(INTENT_FILE, json.encodeToString(IntentConfig.serializer(), updated))
         }
         if (!persisted) {
-            // F01（2026-10-15 书 §2）：一个字节都没落就不许把新配置当成功交回。
+            // F01：一个字节都没落就不许把新配置当成功交回。
             // 旧写法这里只 note 一句然后 `return updated`，而 `IntentController` 认的是
             // "正常返回＝落盘成功"——于是只读/schema 过新的库上屏幕念「已保存」、
             // 成功回执加一票，盘上却还是旧配置：契约断裂不是审美问题。
@@ -108,7 +108,7 @@ internal class KnowledgeIntentService(private val storage: IntentStorage) {
     }
 
     /**
-     * 历史终态归一化（2026-10-15 书 §3 F02，判据只在这一处）：
+     * 历史终态归一化（2026-10-15F02，判据只在这一处）：
      *
      * · 旧版"已完成"留下的 `enabled=true + status=COMPLETED/EXPIRED/PAUSED`
      *   （以及配对的 `expiry=COMPLETED`）——升级后**不许**悄悄醒过来注入提示词：
@@ -117,7 +117,7 @@ internal class KnowledgeIntentService(private val storage: IntentStorage) {
      *   书点名"不要保留一个永远不会执行的隐藏定时器"，判"过去没有"只在**读的那一刻**算一次；
      *   时刻解析不出（脏值/别的格式）就当不可比、**不杀**——归一化不替脏数据编造关闭；
      * · 只改内存里的 `enabled` 一个字段，不改写盘上 JSON、不删旧字段（序列化兼容先于整洁，
-     *   书 §11），`revision` 也不动——归一化不是一次保存；
+     *   ），`revision` 也不动——归一化不是一次保存；
      * · 用户之后主动拨开/再保存，写侧统一落 ACTIVE + 空时刻，旧字段从此不再控制行为。
      *
      * `IntentConfig.isIntentEffective` 另留同口径的 status 防线（挡没走这颗读口的构造路径）。

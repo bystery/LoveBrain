@@ -71,17 +71,11 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
 
     // ═══════════ 工单系统门面（委托 [ProviderConfigResolver]） ═══════════
 
-    /** 获取所有工单列表 */
-    fun getAllTickets(): List<ProviderTicket> = configResolver.allTickets()
-
     /** 获取激活工单 */
     fun getActiveTicket(): ProviderTicket? = configResolver.activeTicket()
 
     /** 获取激活工单的 API Key */
     fun getActiveApiKey(): String? = configResolver.activeApiKey()
-
-    /** 获取激活工单绑定的模型名（一工单 = 一模型） */
-    fun getActiveModel(): String? = configResolver.activeModel()
 
     /**
      * 设置激活工单
@@ -206,7 +200,7 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
                 // 日志脱敏，只记 host 和消息长度
                 L.w("API onFailure host=${request.url.host} msgLen=${e.message?.length}")
                 trySend(StreamEvent.Error(
-                    classifyApiError(e.message ?: ""),
+                    classifyStreamBreak(e),
                     accumulated.toString()
                 ))
                 close()
@@ -286,7 +280,7 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
                             // 日志脱敏，只记消息长度
                             L.w("API stream error msgLen=${e.message?.length}")
                             trySend(StreamEvent.Error(
-                                classifyApiError(e.message ?: ""),
+                                classifyStreamBreak(e),
                                 accumulated.toString()
                             ))
                         }
@@ -304,7 +298,7 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
     /** 将累积文本解析为 LoveBrainResponse（单次调用：response + analysis）
      * : 至少一个真实非空风格才可作为回复成功；全空 response 被拒绝。
      * b3-9: 解析降级——当 response 全空但 directions 有非空项时，使用 directions 作为回复。
-     * §11.2: 收尾对八项（四风格+四方向）做轻量完整性检查——
+     * 收尾对八项（四风格+四方向）做轻量完整性检查——
      *   不足八项时保留已有候选并记录，不拒绝；重复正文也记录。 */
     override fun parseReplyResponse(content: String): LoveBrainResponse {
         val jsonStr = com.lovebrain.app.util.Jsons.extractJsonBlock(content)
@@ -322,7 +316,7 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
             throw IllegalStateException("返回格式不完整：所有回复方案均为空，请重试")
         }
 
-        // §11.2: 八项完整性轻量检查——保留已有候选，不拒绝，但按**三个成因**分别记录。
+        // 八项完整性轻量检查——保留已有候选，不拒绝，但按**三个成因**分别记录。
         // missing 只数真正没生成的那几项；合法 null 的方向走 notSuitable，不混进 missing。
         when (val completeness = resp.replyCompleteness) {
             is com.lovebrain.app.model.ReplyCompleteness.Complete -> { /* 无缺项、无重复 */ }
@@ -622,6 +616,25 @@ class DeepSeekRepository(securePrefs: SecurePrefs) : AiGateway {
          */
         internal fun classifyApiError(raw: String, code: Int = 0): ProviderFailure =
             OpenAiChatWire.classifyApiError(raw, code)
+
+        /**
+         * 流在途中被打断时的分类：异常**类型**本身就是判据——SocketTimeout →
+         * [ReplyFailureKind.Timeout]，其余 IOException（连接重置、`unexpected end of stream`
+         * 这类中途断流）→ [ReplyFailureKind.Network]。
+         *
+         * 以前一律把 `e.message` 丢给 [classifyApiError]（供应商错误词汇表），断流消息里
+         * 没有任何 provider 关键词，于是落进 Unknown——引擎看不出"这条还值得重试"，
+         * 只能把半截正文当结果、把网络故障报成解析失败。
+         * 类型给不出答案（非 IO 异常，如"响应体为空"）时仍回退到那唯一一份词汇表。
+         */
+        internal fun classifyStreamBreak(e: Exception): ProviderFailure {
+            val byType = ReplyFailureKind.fromException(e)
+            return if (byType is ReplyFailureKind.Unknown) {
+                classifyApiError(e.message ?: "")
+            } else {
+                ProviderFailure(byType)
+            }
+        }
     }
 }
 

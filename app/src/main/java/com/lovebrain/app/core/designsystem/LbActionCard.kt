@@ -62,7 +62,7 @@ internal val LbActionCardIconBlock.blockSize: Dp
  *
  * 为什么方块与留白同进同退：这一档说的本来就是"这张卡住在哪一格"。半行宽的一格
  * （首页 2×2 那一族）与整行宽的一张卡要的不是同一种呼吸——前者 12 让四格读成一组，
- * 后者 16 让一张卡读成一段。基线 v1 §3.3 那句"卡内 16→12"收的就是前者。
+ * 后者 16 让一张卡读成一段。那句"卡内 16→12"收的就是前者。
  *
  * ⚠ [LbActionCardIconBlock.Standalone] 那一档一寸没跟着动（今天 0 处调用；别处哪天用它，
  * 不该被首页这一档带着走）。两档的**卡圆角**也仍是同一个 `Lg` 16——那一档不跟这个 enum 走，
@@ -81,7 +81,7 @@ internal val LbActionCardIconBlock.contentPadding: Dp
  * 图标方块那一档的尺寸不交给页面自己选：调用方只交出"这张卡住在哪一格"（[iconBlock]），
  * 数仍只有本文件这一处主人。字号、圆角、底色、描边、按压缩放与"整卡一处操作"一律没有旋钮。
  *
- * ## 静息档：描边管静息、阴影管浮起（基线 v1 §3.4）
+ * ## 静息档：描边管静息、阴影管浮起
  *
  * 这一颗住的是 F1/F2 的**入口卡**那一档：`Lg` 16 圆角 + 1dp 描边 + **零阴影**。阴影那一档只留给
  * 首页 hero 与 Sheet/弹窗/浮层，同一张卡上不许 shadow + border 双叠。
@@ -148,7 +148,7 @@ fun LbActionCard(
                 }
                 Spacer(Modifier.weight(1f))
                 // 尾部这一颗是**进入下一级的 chevron**（Material 线性字形），不是播放键：
-                // §3.10 的圆角改造只管实心三角，这一颗与 `LbTopBar` 返回那颗同样不许换成三角形状。
+                // 约定的圆角改造只管实心三角，这一颗与 `LbTopBar` 返回那颗同样不许换成三角形状。
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = null,
@@ -166,7 +166,7 @@ fun LbActionCard(
             if (subtitle.isNotEmpty()) {
                 // 第二行话**只在真有话的时候占位**：空串仍旧画一颗空 Text + 一道间距，
                 // 卡的下半截就空着（那是"方框空半截"的物理成因，与传不传副标题是两件事）。
-                // 首页那四格今天各交一句真话（M09 §5 第 4 条把辅助描述买了回来），
+                // 首页那四格今天各交一句真话（把辅助描述买了回来），
                 // 但**默认值仍是空**：别处不交第二行话时这一格一寸都不占，不靠调用方记得传 `""`。
                 Spacer(Modifier.height(Spacing.xs))
                 Text(

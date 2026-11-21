@@ -72,20 +72,29 @@ class RecentRoundStore(
         }
     }
 
-    /** 职责2（自 record 拆出）：写入 moment/recent.md，保留最近 N 轮，溢出→对话暂存
+    /**
+     * 职责2（自 record 拆出）：写入 moment/recent.md，保留最近 N 轮，溢出→对话暂存。
      * 未识别内容（不符合时间戳格式的块）原样保留，不当垃圾丢弃。
-     * marker 只作本文件内的去重，不承担跨文件提交标记。 */
-    internal suspend fun writeRecent(kbName: String, entry: String, roundMsgIds: String = "") {
+     * marker 只作本文件内的去重，不承担跨文件提交标记。
+     *
+     * 返回 false = 这一次**没能完整落盘**（溢出没进暂存，或 recent 没写成）。
+     *
+     * 为什么现在要交回成败：这两笔分两次加锁（`appendFile` 清溢出、`writeFile` 写最近），
+     * 各自的 Boolean 返回是"字节到底落没落"的唯一凭据——哪一笔被只读保护/IO 失败挡下
+     * 就整轮报失败、不写 recent（宁可整轮重试，也不把最老几轮静默吞掉），绝不假成功。
+     * 追加前的暂存查重同时守住跨文件次序与重试幂等：暂存里已有这段就不重复追加。
+     */
+    internal suspend fun writeRecent(kbName: String, entry: String, roundMsgIds: String = ""): Boolean {
         val recentPath = "moment/recent.md"
         if (roundMsgIds.isNotBlank()) {
             val marker = "${RoundCommitJournal.WRITER_MARKER_PREFIX}$roundMsgIds -->"
             if (knowledgeRepo.readFile(kbName, recentPath).contains(marker)) {
                 L.w("recent.md already holds this round locally, skipping append")
-                return
+                return true
             }
         }
         val existing = knowledgeRepo.readFile(kbName, recentPath)
-        if (existing.isNotBlank()) {
+        val overflowText = if (existing.isNotBlank()) {
             val allParts = existing.split(Regex("(?=^- \\[)", RegexOption.MULTILINE)).map { it.trim() }
             val validBlocks = allParts.filter { validRoundBlock(it) }
             // 未识别内容原样保留——拼回文件头部，不被当作轮次计数或溢出处理
@@ -94,9 +103,17 @@ class RecentRoundStore(
             val kept = validBlocks.takeLast(maxTopicTurns - 1)
             val overflow = validBlocks.dropLast(maxTopicTurns - 1)
             if (overflow.isNotEmpty()) {
-                knowledgeRepo.appendFile(kbName, "memory/raw_chat.md", "\n" + overflow.joinToString("\n\n") + "\n")
+                val staged = overflow.joinToString("\n\n")
+                // 上一次在"溢出已进暂存、recent 没写成"处失败时，重试会把同一批最老轮再追加一遍。
+                // 先看暂存里有没有这段，有就不重复追加——写入幂等，重试不会造出两份。
+                if (!knowledgeRepo.readFile(kbName, "memory/raw_chat.md").contains(staged) &&
+                    !knowledgeRepo.appendFile(kbName, "memory/raw_chat.md", "\n" + staged + "\n")
+                ) {
+                    L.e("recent.md overflow did not land in raw_chat.md; refusing to rewrite recent", null)
+                    return false
+                }
             }
-            val newRecent = buildString {
+            buildString {
                 // 未识别内容拼回头部
                 if (unrecognized.isNotEmpty()) {
                     unrecognized.forEach { append(it).append("\n\n") }
@@ -104,10 +121,14 @@ class RecentRoundStore(
                 kept.forEach { append(it).append("\n\n") }
                 append(entry).append("\n")
             }
-            knowledgeRepo.writeFile(kbName, recentPath, newRecent)
         } else {
-            knowledgeRepo.writeFile(kbName, recentPath, entry + "\n")
+            entry + "\n"
         }
+        if (!knowledgeRepo.writeFile(kbName, recentPath, overflowText)) {
+            L.e("recent.md write did not land; the round must be retried", null)
+            return false
+        }
+        return true
     }
 
     /** 轮次块校验：首行必须是真实时间戳行（防模板示例行被当作轮次流入暂存/档案） */

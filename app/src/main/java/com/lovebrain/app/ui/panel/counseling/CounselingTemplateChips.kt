@@ -76,7 +76,7 @@ internal fun CounselingTemplateChips(
 }
 
 /**
- * 谈心这一族芯片的**紧凑档只有一个主人**（书 §9「谈心模板整组用同一紧凑档」）。
+ * 谈心这一族芯片的**紧凑档只有一个主人**（「谈心模板整组用同一紧凑档」）。
  *
  * 「整组」管的是谈心这一页里所有 [LbChip] 调用点：模板行那六颗（[PanelTemplateChipStyle]）、
  * 结果区那两颗动作（`CounselingPanel.kt` 的「继续追问」「清空重聊」）。改之前这一档被**抄了三遍**
@@ -85,7 +85,7 @@ internal fun CounselingTemplateChips(
  * 行数上限一处 1 一处缺省 `Int.MAX_VALUE`。抄三遍的下场不是"难看"，是**这一档随时会各自跑偏**：
  * [LbChipStyle.touchFloor] 的缺省值是 `true`，谁漏抄一句"不垫下限"，那颗就回到
  * `LbChip.kt` 单层那条"取 pillHeight 与下限里更大的那颗"链上 ⇒ 可见胶囊被撑到 48、
- * **它所在那一整行跟着占高 48**（旧台账第 12 条「谈心案例那一排太高」判的就是整行占位，
+ * **它所在那一整行跟着占高 48**（旧记录第 12 条「谈心案例那一排太高」判的就是整行占位，
  * 不是胶囊自己多高）。所以现在只有一处能写这几个旋钮。
  *
  * 管的是**高度与热区这两轴**（可见胶囊多高、要不要垫到全局下限、标签贴哪儿、允许几行）；
@@ -98,13 +98,13 @@ internal fun CounselingTemplateChips(
  * 当年 LbChip.kt KDoc 指向它的两处死引用已在 2026-10-09 收口波改写掉，本段是它最后的
  * 历史注记（回复输入行那一族的高度档是 `ReplyDimens.ROLE_CHIP_HEIGHT_DP` + `chipsCap`，
  * 谈心这一族的主人在下面那颗 `counselingCompactChipTier`：两族各归各主，不再共档）。
- * 上提与合并是跨页决策，要动就先在台账立行，不在这里替公共件发明 API。
+ * 上提与合并是跨页决策，要动就先在记录立行，不在这里替公共件发明 API。
  *
- * 三轴分离后的三个数（§3.1 / §12.1 R12）：
+ * 三轴分离后的三个数（R12）：
  * · **可见**：胶囊 [AppDimens.CHIP_PANEL_HEIGHT_DP] 高、标签居中（`Center`）、竖内边距 0；
  * · **热区**：`layeredTouch=true` 分两层，外层透明盒负责语义与 clickable；
  *   `touchFloor=false` 不再垫到 48——横滚行里 chip 宽度充足，这一档高的点击区是可接受的紧凑视觉
- *   （TEAM_RULES §3：确实无法同时满足紧凑视觉和全局热区下限时，保留用户指定的紧凑视觉）；
+ *   （TEAM_RULES：确实无法同时满足紧凑视觉和全局热区下限时，保留用户指定的紧凑视觉）；
  * · **相邻布局**：行高由这颗胶囊自己决定，不再是 48 外层盒——这正是 R12 要修的"整行仍占高"。
  */
 internal fun counselingCompactChipTier(base: LbChipStyle): LbChipStyle = base.copy(

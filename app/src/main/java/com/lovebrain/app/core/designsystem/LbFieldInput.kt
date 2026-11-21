@@ -3,15 +3,18 @@ package com.lovebrain.app.core.designsystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,9 +33,11 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -40,6 +45,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
 
 /**
  * 输入框的五态名册：静息 / 聚焦 / 已填 / 错误 / 禁用。
@@ -99,8 +105,11 @@ internal fun lbFieldVisualState(
  *    粘贴的换行不被拍平。编辑态（光标/选区/IME 组合）住在内部那颗 [TextFieldValue] 里，
  *    外部 String 真变了才同步，回写往返不打断输入；越界的选区/组合由 TextFieldValue 自己收拢。
  *  - **视觉档**：由 [maxLines] 派生，只分岔一次。`maxLines == 1` = Row：固定胶囊高
- *    [AppDimens.INPUT_ROW_HEIGHT_DP]、一行可视、框内自滚、动作键 Done（回车不注入换行）；
+ *    [AppDimens.INPUT_ROW_HEIGHT_DP]、一行可视、**框内横向滚动**、动作键 Done（回车不注入换行）；
  *    `maxLines > 1` = Block：同一 token 做最小高、随内容长到 maxLines 行、纵向自滚。
+ *    Row 的横向滚动为什么不能靠 `singleLine = true`：那会把 IME 会话变成单行，真机粘贴的换行
+ *    被 IME 拍平成空格（内容轴的事，不许拿它换视觉）。可行的做法只有"可编辑节点按内容宽度
+ *    铺开、不折行，滚动交给外层"，见组件体里 decorationBox 那一段注释。
  *  - **焦点/意图**：[onInputIntent] 经 [overlayInputIntent] 挂载：只在每次手势**按下那一跳**
  *    上报一次（边沿触发、不消费事件；WHY 见那颗扩展）。[onFocusChange] 把获焦/失焦边沿
  *    交给宿主，宿主不必再拿"哪些输入框不上报"的名单去猜失焦。
@@ -166,6 +175,38 @@ fun LbFieldInput(
     // 视觉档只在这里分岔一次：Row 固定胶囊高，Block 拿同一 token 当最小高。
     val isRow = maxLines == 1
 
+    // ── Row 档的横向滚动（多行输入没有横向滚动，这里补给它） ─────────────────
+    // 病根：可编辑节点拿到的是有界宽 ⇒ 长文本折行，而 maxLines = 1 只画第一行，
+    // 于是右半边"折到第二行、却看不见也滚不到"= 用户报的"折行裁切、横向滚动消失"。
+    // 退回 singleLine = true 能换回横向滚动，但 IME 会话变成单行、真机粘贴的换行被拍平成空格
+    // （内容轴那条红线，不能换）。所以只动视觉轴：把可编辑节点交给一颗横向滚动视口，
+    // 它 measure 子节点时给的是**无界宽** ⇒ TextLayout 不折行、按内容宽度铺开，
+    // 值里的 \n 仍是唯一断行；未滚动的部分靠外层视口横向拖出来。
+    val rowScrollState = rememberScrollState()
+    var rowLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+    val rowDensity = LocalDensity.current
+    // 光标跟手：横向滚动收不到"光标动了"（输入框内部的横向跟随只服务 singleLine 档），
+    // 按最新布局把光标矩形贴回视口——否则打到行尾之外就看不见正在打的字。
+    // 视口宽与可滚范围进键：它们由布局写回来，首帧读到 0 时这一趟只会空转，得再跑一次。
+    LaunchedEffect(
+        isRow, focused, fieldValue.selection, rowLayoutResult,
+        rowScrollState.viewportSize, rowScrollState.maxValue
+    ) {
+        if (!isRow || !focused) return@LaunchedEffect
+        val layout = rowLayoutResult ?: return@LaunchedEffect
+        val viewport = rowScrollState.viewportSize
+        if (viewport <= 0) return@LaunchedEffect
+        val offset = fieldValue.selection.end.coerceIn(0, layout.layoutInput.text.length)
+        val cursorX = layout.getCursorRect(offset).left
+        val margin = with(rowDensity) { Spacing.sm.toPx() }
+        val target = when {
+            cursorX - margin < rowScrollState.value -> cursorX - margin
+            cursorX + margin > rowScrollState.value + viewport -> cursorX + margin - viewport
+            else -> return@LaunchedEffect
+        }.roundToInt().coerceIn(0, rowScrollState.maxValue)
+        rowScrollState.scrollTo(target)
+    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -227,6 +268,23 @@ fun LbFieldInput(
                 visualTransformation = if (passwordVisible) VisualTransformation.None
                     else PasswordVisualTransformation(),
                 cursorBrush = SolidColor(Primary),
+                // 光标跟随的唯一读数口：布局一变就把结果交给上面那颗 LaunchedEffect。
+                onTextLayout = { result -> if (isRow) rowLayoutResult = result },
+                decorationBox = { innerTextField ->
+                    if (isRow) {
+                        // Row 档：视口 fillMaxWidth，子节点按无界宽 measure ⇒ 不折行，
+                        // 横向滚动把超宽那一段拖出来（Block 档原样：折行 + 纵向长高）。
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rowScrollState)
+                        ) {
+                            innerTextField()
+                        }
+                    } else {
+                        innerTextField()
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterStart)

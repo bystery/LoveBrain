@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Auto Backup 规则（android:fullBackupContent，API 23+；本项目 minSdk 26）。
+     只写 exclude、不写 include：include 会把备份收窄成白名单，漏一项就丢必要配置；
+     这里保留系统默认纳入面，只把下面几处本机数据挡在外面。
+     domain 按官方定义取值：file = getFilesDir()，root = /data/data/<pkg>（cache 在其下）。
+     路径是落盘名的真源，改目录名时两边一起改：
+       file/knowledge       KnowledgeRepository 根（记忆/画像/聊天归档都在库内，含 .backup/ 快照）
+       file/champion        ChampionEngine 根（events/*.jsonl、shadow_log.jsonl、contract_guard_audit.jsonl）
+       file/feedback        FeedbackCaseRepository（cases.json 带真实消息的诊断快照）
+       file/lb_log.txt      util/L.init 的运行日志
+       file/capture_diag.log CopyCaptureService.DIAG_FILE 的诊断日志
+       root/cache           导入/导出暂存（KbArchiveTransfer stagingBase 指向 cacheDir）
+       sharedpref/lovebrain_secure_prefs.xml / lovebrain_prefs_fallback.xml
+                            SecurePrefs 的加密主存与 Keystore 不可用时的降级明文存 -->
+<full-backup-content>
+    <exclude domain="file" path="knowledge" />
+    <exclude domain="file" path="champion" />
+    <exclude domain="file" path="feedback" />
+    <exclude domain="file" path="lb_log.txt" />
+    <exclude domain="file" path="capture_diag.log" />
+    <exclude domain="root" path="cache" />
+    <exclude domain="sharedpref" path="lovebrain_secure_prefs.xml" />
+    <exclude domain="sharedpref" path="lovebrain_prefs_fallback.xml" />
+</full-backup-content>

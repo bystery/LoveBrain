@@ -34,6 +34,9 @@ import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.AppTypography
 import com.lovebrain.app.core.designsystem.Error
 import com.lovebrain.app.core.designsystem.LbAsyncState
+import com.lovebrain.app.core.designsystem.LbDialog
+import com.lovebrain.app.core.designsystem.LbDialogAction
+import com.lovebrain.app.core.designsystem.LbDialogActionTone
 import com.lovebrain.app.core.designsystem.LbListCard
 import com.lovebrain.app.core.designsystem.LbTextAction
 import com.lovebrain.app.core.designsystem.LbTextActionSize
@@ -60,9 +63,9 @@ import kotlinx.coroutines.launch
  * 今天这一页全部走同一颗公共件 `core/designsystem/LbListCard.kt` 拿：卡底、字阶、行数上限、
  * 动作写法与槽位间距都由那一颗持有，这一层只交内容（首句 / 余文 / 时间 / 展开层）。
  * 于是这张卡与知识库卡是**同一个壳、两种业务身份**：这里不会出现"阶段/编辑画像"，
- * 知识库那边也不会出现"导出"（`重做页通过判据` 的 M-10 就是逐区核对这一条）。
+ * 知识库那边也不会出现"导出"。
  *
- * 内容优先级按母版重排（D1 §③-9 的 A4 那一条）：
+ * 内容优先级按母版重排：
  * - **标题槽** = 回复的**首句**（[splitFirstSentence]），单行截断；旧写法是把整段正文当标题；
  * - **摘要槽** = 首句之后的余文，最多两行；折叠时能看到的是"这一条被踩的话开头 + 一点续文"；
  * - **元信息槽** = 时间，与母版同一档 `labelSmall` 10、同一颗 `lbMetaLine` 合并器（多条才用 `｜`）；
@@ -74,7 +77,7 @@ import kotlinx.coroutines.launch
  * ## 这次删掉的三样东西（都是用户点名的废话，不是数据）
  *
  * - 分类 chips 与 `filterCategory` 那一族分支：列表就是全部已踩案例，没有"全部/理解错误"这一排；
- * - Markdown/JSON 切换与大段导出文本预览弹窗：导出只有 JSON 一档，点一下直接进系统保存流程；
+ * - Markdown/JSON 切换与大段导出文本预览弹窗：导出只有 JSON 一档，确认之后直接进系统保存流程；
  * - 卡片默认那一行诊断字段（空的「【】」、模型名、《待分析》、`上下文模式：full`、
  *   `版本：1.40-re1（release）`、buildType、tokens、费用）。
  *
@@ -85,7 +88,7 @@ import kotlinx.coroutines.launch
  * 所以状态槽在这一页交的是 `null`（见 [CaseCard] 那段），不是"忘了填"。
  */
 
-/** 导出只有这一档 MIME；文件名固定 `.json`（，界面上没有可切的格式） */
+/** 导出只有这一档 MIME；文件名固定 `.json`（界面上没有可切的格式） */
 internal const val FEEDBACK_EXPORT_MIME = "application/json"
 internal const val FEEDBACK_EXPORT_FILE_NAME = "feedback_cases.json"
 
@@ -136,6 +139,9 @@ fun FeedbackCasesScreen(
     var pendingJson by remember { mutableStateOf<String?>(null) }
     // 就地短提示的那一句话（保存失败 / 导出失败都写在这里，不再起 Dialog）
     var inlineError by remember { mutableStateOf<String?>(null) }
+    // 导出前的确认闸：导出物带着真实对话原文、而且是明文文件，原来点一下就直接进系统保存流程，
+    // 一次误触就把私聊交出去。与知识库导出同一档做法——先说清楚，再由用户自己点头。
+    var pendingExport by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) { viewModel.loadFeedbackCases() }
 
@@ -199,7 +205,7 @@ fun FeedbackCasesScreen(
                     label = stringResource(R.string.feedback_export_json)
                 ) {
                     inlineError = null
-                    viewModel.exportFeedback(cases, FEEDBACK_EXPORT_FORMAT)
+                    pendingExport = true
                 }
             }
         ) {
@@ -246,7 +252,7 @@ fun FeedbackCasesScreen(
                         scope.launch { viewModel.loadFeedbackCases() }
                     }
                 )
-                // 空态也给出下一步那一颗真实动作（重做页通过判据 M-9：三页空态不许三种写法）。
+                // 空态也给出下一步那一颗真实动作（三页空态同一写法，不许各写一套）。
                 // 为什么是"重试"而不是"去做一条"：这一页没有跳到回复面板的入口（那条路归首页），
                 // 而案例库真会被悬浮窗在别处写进新记录——重新读一次库是这一屏**做得到**的那件事，
                 // 走的还是同一个 `loadFeedbackCases()`，不起第二份状态源。文案复用盘上已有的那一句。
@@ -264,9 +270,8 @@ fun FeedbackCasesScreen(
                     // 水平那一档归零——外框已经把整列往里推了一档，本页**不许**再自加水平 padding
                     // （第二个边距主人会被 `ScreenScaffoldFrameTest` 量成"这一页还在自己写外框"）。
                     modifier = Modifier.fillMaxWidth().weight(1f),
-                    // 基线 §3.3 的目标档：列表间距与卡内 12（`Spacing.lg`）、页尾 16（`Spacing.xl`）。
-                    // ⚠ 这一页能自证的只有列表间距；水平边距那一档 24→16 归 `LbScreenScaffold`
-                    // （M1 那层还没落，见 impl-M3b 台账的"待 M1 归一后回查"）。
+                    // 列表间距与卡内 12（`Spacing.lg`）、页尾 16（`Spacing.xl`）同一档。
+                    // ⚠ 这一页能自证的只有列表间距；水平边距那一档归 `LbScreenScaffold` 那一层。
                     // 顶部那一档归零：与知识库一级页同一副版式，首张卡紧接页头，不再多一档 12dp 顶部留白。
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(
                         bottom = Spacing.xl
@@ -290,6 +295,28 @@ fun FeedbackCasesScreen(
                     modifier = Modifier.fillMaxWidth().weight(1f)
                 ) { }
             }
+        }
+
+        // 确认之后才把整库交给导出；点取消/点外面等于放弃这一次，不落盘也不留状态。
+        // 文案只说用户要做的决定：文件是明文、里面是真实对话原文——不是数据结构的说明书。
+        if (pendingExport) {
+            LbDialog(
+                title = stringResource(R.string.feedback_export_confirm_title),
+                onDismissRequest = { pendingExport = false },
+                message = stringResource(R.string.feedback_export_confirm_message),
+                confirm = LbDialogAction(
+                    label = stringResource(R.string.a11y_action_confirm),
+                    onClick = {
+                        pendingExport = false
+                        viewModel.exportFeedback(cases, FEEDBACK_EXPORT_FORMAT)
+                    }
+                ),
+                dismiss = LbDialogAction(
+                    label = stringResource(R.string.a11y_action_cancel),
+                    onClick = { pendingExport = false },
+                    tone = LbDialogActionTone.Muted
+                )
+            )
         }
     }
 }
@@ -464,7 +491,7 @@ internal fun splitFirstSentence(text: String): Pair<String, String> {
  * [LbTextActionSize.RowCapsule]，都由 [LbTextAction] 那一颗公共件画），
  * 只保留"点一下导出"这一个动作；零结果时切到 disabled。
  *
- * 指导书§9.2：导出走次级动作档，不占主动作 48dp 那颗。
+ * 导出走次级动作档，不占主动作 48dp 那颗。
  *
  * ⚠ **`size` 这一颗实参是这一格唯一的形状主人**：`LbTextAction` 的默认档是
  * [LbTextActionSize.Standard]（48dp 见方、无底——那是空态引导/错误重试那一族"一个人占一格"的
