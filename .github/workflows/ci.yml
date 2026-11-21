@@ -23,7 +23,20 @@ on:
     branches:
       - main
       - closeout-20261106
+    # 增量触发：纯文档/纯研究资产改动不烧全量门禁
+    paths:
+      - "app/**"
+      - "*.gradle.kts"
+      - "gradle/**"
+      - "gradle.properties"
+      - ".github/workflows/ci.yml"
   pull_request:
+    paths:
+      - "app/**"
+      - "*.gradle.kts"
+      - "gradle/**"
+      - "gradle.properties"
+      - ".github/workflows/ci.yml"
   workflow_dispatch:
 
 permissions:
