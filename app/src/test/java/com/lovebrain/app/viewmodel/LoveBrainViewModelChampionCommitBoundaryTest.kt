@@ -28,7 +28,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -51,7 +50,7 @@ import java.io.File
  *   commitConfirmedTurn 都走**冻结快照**（ReplyGenerationContext.championMode →
  *   modeSnapshot），不现场回读设置。
  * - **scope 未命中零副作用**：SHADOW 开着但 contact|story 不在白名单里，同样零 IO。
- * - **冻结一次（guide-6 §15.7）**：模式/轮数在生成开始各只读一次（GenerationInput
+ * - **冻结一次**：模式/轮数在生成开始各只读一次（GenerationInput
  *   快照可断言）；生成中把设置翻成 OFF 不影响本轮提交判定。
  * - **提交边界**：topicRecorder.record 成功才 commitConfirmedTurn；record 失败不提交
  *   （事件库零痕迹），同一轮修复后重试才入库。
@@ -82,7 +81,6 @@ class LoveBrainViewModelChampionCommitBoundaryTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -111,7 +109,6 @@ class LoveBrainViewModelChampionCommitBoundaryTest {
     private fun newPrefs() {
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -145,7 +142,7 @@ class LoveBrainViewModelChampionCommitBoundaryTest {
         } returns false
         generationEngine = mockk(relaxed = true)
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns ConfigValidationResult(0, emptyList())
         every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
 
         return LoveBrainViewModel(
@@ -265,7 +262,7 @@ class LoveBrainViewModelChampionCommitBoundaryTest {
         stubEngineSuccess()
         vm.generate()
         delay(200)
-        // 冻结断言（§15.7「冻结一次」）：GenerationInput 携带生成开始时的模式与轮数快照，
+        // 冻结断言（「冻结一次」）：GenerationInput 携带生成开始时的模式与轮数快照，
         // ReplyGenerationContext 冻结同一份模式（提交门禁的唯一判据）
         assertEquals("SHADOW", capturedInput?.championMode)
         assertEquals(1, capturedInput?.kbContext?.committedTurnCount)
@@ -312,5 +309,47 @@ class LoveBrainViewModelChampionCommitBoundaryTest {
         delay(500)
         val store = ChampionEventStore(FileChampionEventStorage(eventsDir()))
         assertEquals("record 成功后才 commitConfirmedTurn", 1, store.events("kb-test__kb-test").size)
+    }
+
+    /**
+     * 冠军历史里那条 `ts` 必须与主路径同一颗格式器（[com.lovebrain.app.util.TimeFmt]）。
+     *
+     * 生产侧原先是 `SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())`：
+     * th_TH 下同一条消息会写成佛历 2569，而主 prompt 写的是 2026——研究侧对拍会把这当成
+     * 输入差异，更糟的是历史 prompt 里凭空多出一条"未来"消息。这里在切换默认 Locale 下判产出串。
+     */
+    @Test
+    fun `champion history ts is gregorian under a thai default locale`() = runBlocking {
+        championMode = "SHADOW"
+        championScope = emptySet()
+        val vm = newViewModel()
+        var recordedMessages: List<ChatMessage> = emptyList()
+        coEvery {
+            topicRecorder.record(any(), any(), any(), any(), any(), any(), any(), any(), any())
+        } answers {
+            recordedMessages = arg<List<ChatMessage>>(1)
+            false
+        }
+        val saved = java.util.Locale.getDefault()
+        try {
+            java.util.Locale.setDefault(java.util.Locale.forLanguageTag("th-TH"))
+            vm.refreshKnowledgeBases()
+            delay(100)
+            vm.addMessage(ChatMessage.Role.HER, "今天好累")
+            stubEngineSuccess()
+            vm.generate()
+            delay(200)
+            vm.nextRound()
+            delay(500)
+        } finally {
+            java.util.Locale.setDefault(saved)
+        }
+
+        assertTrue("先证明这一轮真的走到了 record", recordedMessages.isNotEmpty())
+        val expected = com.lovebrain.app.util.TimeFmt.format(recordedMessages.first().timestamp)
+        val event = ChampionEventStore(FileChampionEventStorage(eventsDir()))
+            .events("kb-test__kb-test").single()
+        assertEquals("ts 必须与主路径同一颗格式器（Locale.ROOT + 公历）", expected, event.ts)
+        assertFalse("th_TH 下不许出现佛历年份", event.ts.contains("2569"))
     }
 }

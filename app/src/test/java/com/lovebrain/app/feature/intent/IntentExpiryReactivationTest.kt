@@ -27,7 +27,7 @@ import java.io.File
  *   开着的一条意图不许被背后那次读盘改写，更不许被关掉。
  *
  * 判据：**开 且 正文非空 且 状态是活动档**（`model/Models.kt` 的 [isIntentEffective]）。
- * 第三句是 2026-10-15 书 §3（F02）加的防线：旧 `EXPIRED` / `COMPLETED` / `PAUSED` 就算带着
+ * 第三句是 2026-10-15（F02）加的防线：旧 `EXPIRED` / `COMPLETED` / `PAUSED` 就算带着
  * `enabled=true` 也不算数、不注入；日常路径上这类旧文件在唯一读口
  * （`KnowledgeIntentService.decode`）已被归一化成显示关闭（真盘三格由 `IntentStorageTest` 钉），
  * 这里①"到期不自动关"两格钉的是**控制器与时刻无关**（时钟不参与任何判决），
@@ -97,7 +97,7 @@ class IntentExpiryReactivationTest {
      *
      * ⚠ 这一格钉的是**控制器不持时钟**：直接交给控制器的配置（内存路径）绝不因
      * `expiryDate` 被背后改写或关掉。文件级"过去的时刻⇒读回关闭"归唯一读口管
-     * （F02 书 §3 第 3 条，`IntentStorageTest` 真盘三格钉着），两层判据、两层格子。
+     * （F02，`IntentStorageTest` 真盘三格钉着），两层判据、两层格子。
      */
     @Test
     fun `reading a kb with a deadline that already passed leaves the intent switched on`() {
@@ -115,7 +115,7 @@ class IntentExpiryReactivationTest {
     }
 
     /**
-     * 旧终态那三样**不再无害**（F02，2026-10-15 书 §3）：`enabled=true` 配上
+     * 旧终态那三样**不再无害**（F02，2026-10-15）：`enabled=true` 配上
      * COMPLETED/EXPIRED/PAUSED 的配置——不管它是从哪条路进到消费者眼前的——
      * 判据说不算、提示词段是空、盘上数据仍不许被背后改写。
      * 坏实现两个方向都有牙：把第三句防线摘掉（旧"终态无害"形状）⇒ 第二句红；
@@ -238,8 +238,7 @@ class IntentExpiryReactivationTest {
     @Test
     fun the_injection_and_the_retrieval_read_the_very_same_predicate() {
         val consumers = listOf(
-            "domain/prompt/IntentIdeaBlock.kt",
-            "domain/OngoingContextSelector.kt"
+            "domain/prompt/IntentIdeaBlock.kt"
         )
         for (relative in consumers) {
             val file = appSource(relative)
@@ -303,7 +302,7 @@ class IntentExpiryReactivationTest {
             legacy(enabled = false, status = IntentStatus.EXPIRED).isIntentEffective
         )
         assertFalse(
-            "F02 防线：开着 + 旧 COMPLETED ⇒ 不算（书 §3『至少旧终态不能注入』）",
+            "F02 防线：开着 + 旧 COMPLETED ⇒ 不算（『至少旧终态不能注入』）",
             legacy(enabled = true, status = IntentStatus.COMPLETED).isIntentEffective
         )
     }

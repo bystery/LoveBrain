@@ -179,7 +179,10 @@ class FloatingServiceStopEntryConsistencyTest {
             "panel.cancelExitAnimation()",
             "bubble.remove()",
             "panel.destroy()",
-            "scope.cancel()",
+            // 停监听与收集、清 VM/store 收进了幂等的 disposeRuntime()；
+            // 它内部“先 scope.cancel、再 VM 收尾、最后 store.clear”的顺序在
+            // FloatingServiceViewModelOwnershipTest 里逐行钉住。
+            "disposeRuntime()",
             "stopForeground(STOP_FOREGROUND_REMOVE)"
         )
         var cursor = 0

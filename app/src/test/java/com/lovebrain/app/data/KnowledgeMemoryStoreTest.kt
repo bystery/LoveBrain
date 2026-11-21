@@ -132,10 +132,12 @@ class KnowledgeMemoryStoreTest {
     }
 
     /**
-     * revision 写失败时：标记保持原值，且返回值必须是 false。
+     * revision 写失败时：标记保持原值、纠正记录被回滚，且返回值必须是 false。
      *
      * 标记不许悄悄跳上去（否则后台防护以为这一版已处理过）；返回值也不许报成功——
      * 纠正落了盘而版本没跳是可见的失败，调用方据此重试，而不是被 true 蒙混过去。
+     * 审计 #4：记录已写成、标记没写时必须把记录写回旧内容，否则"纠正表变了 ⇔ revision 跳了"
+     * 这条不变式在磁盘上不成立。
      */
     @Test
     fun aRefusedRevisionWriteLeavesTheRevisionMarkerUnbumped() {
@@ -148,13 +150,16 @@ class KnowledgeMemoryStoreTest {
 
         assertEquals("revision 标记保持原值", 4, s.revisionOf("kb"))
         assertEquals(
-            "失败的那一批：先成功写了纠正、再尝试写 revision（顺序与旧实现一致）",
+            "失败的那一批：先写纠正、再试写 revision，最后把纠正写回旧内容（回滚）",
             listOf(
                 KnowledgeMemoryStore.CORRECTIONS_FILE to true,
-                KnowledgeMemoryStore.MEMORY_REVISION_FILE to false
+                KnowledgeMemoryStore.MEMORY_REVISION_FILE to false,
+                KnowledgeMemoryStore.CORRECTIONS_FILE to true
             ),
             transactions.last()
         )
+        assertFalse("回滚后纠正表里不该留下这条", s.corrections("kb").containsKey("z"))
+        assertEquals("回滚后老记录原样", setOf("a"), s.corrections("kb").keys)
         failRevisionWrite = false
     }
 
@@ -184,6 +189,48 @@ class KnowledgeMemoryStoreTest {
             ),
             transactions.last()
         )
+    }
+
+    /**
+     * 审计 #4：纠正写成、revision 写失败时，回滚让"记录变了 ⇔ 版本跳了"重新成立，
+     * 重试从同一个号继续，不会出现两条记录共用一个 revision。
+     */
+    @Test
+    fun aFailedRevisionWriteLeavesNoCorrectionBehindAndTheRetryReusesTheSameNumber() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 4, ids = listOf("a"))
+        failRevisionWrite = true
+        val s = store(files)
+
+        assertFalse(s.save("kb", "z", CorrectionAction.WRONG, "标记写失败"))
+        assertFalse("回滚后这条纠正不该留在表里", s.corrections("kb").containsKey("z"))
+
+        failRevisionWrite = false
+        assertTrue(s.save("kb", "z", CorrectionAction.WRONG, "标记写失败"))
+        val records = s.corrections("kb")
+        assertEquals("重试从同一个号继续，不跳过也不重号", 5, records.getValue("z").revision)
+        assertEquals(5, s.revisionOf("kb"))
+        assertEquals("每条记录的 revision 都不同", records.size, records.values.map { it.revision }.toSet().size)
+    }
+
+    /**
+     * 回滚本身也失败（只读保护下并不罕见）时，磁盘上会留下"记录 revision 比标记大"的残留。
+     * 下一次纠正必须跟着两者的较大者走，不许复用旧号。
+     */
+    @Test
+    fun aRecordNewerThanTheMarkerStillAdvancesTheNextRevision() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 4, ids = emptyList())
+        files["kb/${KnowledgeMemoryStore.CORRECTIONS_FILE}"] = json.encodeToString(
+            ListSerializer(MemoryCorrection.serializer()),
+            listOf(MemoryCorrection(memoryId = "a", action = CorrectionAction.WRONG, revision = 9))
+        )
+        val s = store(files)
+
+        assertTrue(s.save("kb", "z", CorrectionAction.WRONG))
+
+        assertEquals("标记 4、记录 9 → 下一个号是 10", 10, s.revisionOf("kb"))
+        assertEquals(10, s.corrections("kb").getValue("z").revision)
     }
 
     @Test
@@ -308,6 +355,40 @@ class KnowledgeMemoryStoreTest {
         val persisted = files.getValue("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}")
         assertTrue("旧话题里被纠正的原文不因覆盖漏回", persisted.contains("她在杭州出差"))
         assertTrue("新话题的被纠正原文一并累积", persisted.contains("她感冒了"))
+    }
+
+    @Test
+    fun `a failed revision write rolls the persisted facts back too`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        files["kb/moment/scene.md"] = "- [2026-11-04 09:00] 旧话题：她在杭州出差\n"
+        val s = store(files)
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+
+        files["kb/moment/scene.md"] = "- [2026-11-06 09:00] 新话题：她感冒了\n"
+        failRevisionWrite = true
+        assertFalse(
+            "revision 写失败必须如实报 false",
+            s.save("kb", "SCENE:moment/scene.md", CorrectionAction.MUTED, muteDuration = MuteDuration.TODAY)
+        )
+        assertEquals(
+            "依据文件回滚到写入前原文，不留下新依据+旧纠正+旧 revision 的混合态",
+            "她在杭州出差",
+            files["kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"]
+        )
+        assertEquals("revision 标记保持原值", 1, s.revisionOf("kb"))
+        assertEquals(
+            "失败那一批：纠正、依据、revision 依次落盘，失败后纠正与依据一起写回旧内容",
+            listOf(
+                KnowledgeMemoryStore.CORRECTIONS_FILE to true,
+                KnowledgeMemoryStore.PERSISTED_FACTS_FILE to true,
+                KnowledgeMemoryStore.MEMORY_REVISION_FILE to false,
+                KnowledgeMemoryStore.CORRECTIONS_FILE to true,
+                KnowledgeMemoryStore.PERSISTED_FACTS_FILE to true
+            ),
+            transactions.last()
+        )
+        failRevisionWrite = false
     }
 
     @Test

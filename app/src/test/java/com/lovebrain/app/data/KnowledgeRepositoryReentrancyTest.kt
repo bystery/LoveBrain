@@ -92,12 +92,16 @@ class KnowledgeRepositoryReentrancyTest {
     @Test
     fun appendCounselingEntries_completes_and_keeps_two_sections() = runTest {
         withContext(Dispatchers.IO) {
-            withTimeout(10_000) {
             val dir = kbDir()
             writeKbJson(dir, KnowledgeBase(name = "kb", displayName = "kb", updatedAt = "2026-08-27T09:00:00+08:00"))
             dir.sub("memory/counseling_log.md").writeText("# 谈心记录\n# 军师分析\n")
 
-            newRepo().appendCounselingEntries("kb", "R1", "A1")
+            // newRepo() 的 mockk 首次插桩是本 JVM 的秒级冷启动开销（本类按字母序最先跑，
+            // 又撞上 maxParallelForks=8 的并行 JVM 争抢），不该计入"append 不许挂死"的窗口：
+            // withTimeout 这把尺护的是被测操作本身，构造期放在窗口外
+            val repo = newRepo()
+            withTimeout(10_000) {
+            repo.appendCounselingEntries("kb", "R1", "A1")
 
             val content = dir.sub("memory/counseling_log.md").readText()
             val idxH2 = content.indexOf("# 军师分析")

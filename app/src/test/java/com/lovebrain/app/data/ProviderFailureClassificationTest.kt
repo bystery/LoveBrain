@@ -135,6 +135,35 @@ class ProviderFailureClassificationTest {
         assertEquals(ReplyFailureKind.Network, failure.kind)
     }
 
+    /**
+     * 流中途被打断：先按异常**类型**分类，再回退到词汇表。
+     *
+     * 断流消息（"unexpected end of stream"）里没有任何 provider 关键词，只走词汇表
+     * 会落进 Unknown——引擎据此判断"这条值不值得重试"，于是半截正文被当成结果、
+     * 网络故障被报成解析失败。
+     */
+    @Test
+    fun `a mid stream break is classified by anomaly type`() {
+        assertEquals(
+            "断流（协议层 EOF）必须归到网络类，引擎才会把重试预算用完",
+            ReplyFailureKind.Network,
+            DeepSeekRepository.classifyStreamBreak(
+                java.net.ProtocolException("unexpected end of stream")
+            ).kind
+        )
+        assertEquals(
+            ReplyFailureKind.Timeout,
+            DeepSeekRepository.classifyStreamBreak(
+                java.net.SocketTimeoutException("timeout")
+            ).kind
+        )
+        // 类型给不出答案（非 IO 异常）时仍走那唯一一份词汇表：不新造分类
+        assertTrue(
+            DeepSeekRepository.classifyStreamBreak(IllegalStateException("响应体为空")).kind
+                is ReplyFailureKind.Unknown
+        )
+    }
+
     @Test
     fun `own business exceptions keep their finished copy`() {
         val failure = com.lovebrain.app.model.ProviderFailure.fromThrowable(

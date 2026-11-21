@@ -19,7 +19,7 @@ import java.io.File
  * | --- | --- |
  * | 面板里 `focusManager.clearFocus(` **恰好一处**，且在唯一出口 `handOffInput` 里 | 有人在某个 `LaunchedEffect` 里再手写一次 `clearFocus`（数到 2）——那份没有 `hide()`、也没点名宿主，就是旧 bug 的续集 |
  * | 那一颗出口同时做 `hide()` / `clearFocus(force = true)` / 保留名单点名点 | 去掉 `hide()` ⇒ 键盘不收；去掉 `force` ⇒ 主动焦点清不掉；拆掉点名点 ⇒ 日后再出现非上报路就没有登记处 |
- * | 七个交接点（注册口 + 切页 + 设置层 + 编辑器 + 批量导入层 + 标错浮层 + 返回键）都只调那一颗出口 | 任何一处改回自己拼 ⇒ `currentHandOffInput()` 数不到 7 |
+ * | 六个交接点（注册口 + 切页 + 设置层 + 编辑器 + 标错浮层 + 返回键）都只调那一颗出口 | 任何一处改回自己拼 ⇒ `currentHandOffInput()` 数不到 6 |
  * | 非上报名单**为空**，且每颗悬浮窗输入 id 都绑了焦点上报器/容器观测 | 名单里塞回 id ⇒ 有人又造了一条不报失焦的路；某颗 id 没绑上报 ⇒ 那条路的 EDITING 永不退出 |
  * | 面板里有 `BackHandler` 且**同一层**提供了 `LocalOnBackPressedDispatcherOwner` | 只留 `BackHandler` 不供 owner ⇒ 悬浮窗里拿到 null，activity-compose 1.9.0 走的是 `throw IllegalStateException` 那一条（整扇面板起不来，不是静默失效） |
  * | 返回键由本屏根 view 的 `setOnKeyListener` 在 IME 之前那一站泵进 dispatcher | 删掉监听 ⇒ 回调进了表也没人泵；删掉 `hasEnabledCallbacks()` 守卫 ⇒ 没人听也吞键 |
@@ -90,11 +90,11 @@ class PanelInputFocusHandoffTest {
 
     @Test
     fun everyHandoffPointGoesThroughThatSingleExit() {
-        // 注册口 / 切页 / 设置层开合 / 编辑器关闭 / 批量导入层开合 / 标错浮层关闭 / 返回键 = 七处
+        // 注册口 / 切页 / 设置层开合 / 编辑器关闭 / 标错浮层关闭 / 返回键 = 六处
         val calls = count(panelCode, "currentHandOffInput\\(\\)")
         assertEquals(
-            "七个交接点全部走那一颗出口（实到 $calls 处）：少一处就是那条路又自己拼了一遍",
-            7, calls
+            "六个交接点全部走那一颗出口（实到 $calls 处）：少一处就是那条路又自己拼了一遍",
+            6, calls
         )
         assertTrue(
             "宿主反向那条链（onClearComposeFocus）也必须是同一颗出口",
@@ -103,32 +103,6 @@ class PanelInputFocusHandoffTest {
         // 反向证人：合成形状里三处调用就数到 3
         assertEquals(3, count("a { currentHandOffInput() } b { currentHandOffInput() } " +
             "c { currentHandOffInput() }", "currentHandOffInput\\(\\)"))
-    }
-
-    @Test
-    fun theBatchImportSheetOpeningAndClosingHandsFocusBackThroughThatExit() {
-        // 批量导入浮层的全部关闭路径（遮罩/取消键/提交成功）都汇到 `surface.closeBatchImport()`，
-        // 粘贴框的失焦由容器级观测报——开/关层这一翻必须经唯一出口清焦：退场动画期间树还在，
-        // 清焦才触发得了容器那次真实失焦。缺这一句，浮层关了宿主还认为 batch_import 持焦：
-        // 窗口卡 EDITING、键盘不收。
-        val effect = Regex("""LaunchedEffect\(surface\.batchImportOpen\)\s*\{([^}]*)\}""")
-            .find(panelCode)
-        assertTrue(
-            "面板里必须有一颗 LaunchedEffect(surface.batchImportOpen) 接住浮层开合——" +
-                "关层不交焦点就是审计 06 续那条 P0 原样复发",
-            effect != null
-        )
-        assertTrue(
-            "那颗 LaunchedEffect 的体必须走唯一出口，不许自己拼第二份 clearFocus：\n" +
-                effect!!.groupValues[1],
-            effect.groupValues[1].contains("currentHandOffInput()")
-        )
-        // 反向证人：key 换成别的状态就数不到——这把尺抓的确实是 batchImportOpen 那一颗
-        val wrongKeyShape = "LaunchedEffect(surface.settingsOpen) { currentHandOffInput() }"
-        assertEquals(
-            "证人：对错 key 的形状这把尺必须数到 0",
-            0, Regex("""LaunchedEffect\(surface\.batchImportOpen\)""").findAll(wrongKeyShape).count()
-        )
     }
 
     @Test
@@ -172,14 +146,11 @@ class PanelInputFocusHandoffTest {
                 surface.contains("onFocusChange =")
             )
         }
-        // 粘贴框在冻结组件里没有字段级入口：容器级观测直接点名宿主，意图信号仍在
-        assertEquals(1, count(panelCode, """onInputFocusChange\("batch_import"""))
-        assertEquals(1, count(panelCode, """onInputIntent\("batch_import"\)"""))
         // reply / counseling 两颗参照面保持自报（新通道不许把它们吞掉）
         for (id in listOf("reply", "counseling_main", "counseling_followup")) {
             assertEquals(
-                "`$id` 仍走它自己那颗 onFocusChange 直报",
-                1, count(panelCode, """onInputFocusChange\("$id", focused\)""")
+                "`$id` 仍走它自己那颗 onFocusChange 直报（带上自己的实例身份）",
+                1, count(panelCode, """onInputFocusChange\(\w+, "$id", focused\)""")
             )
         }
         // 反向证人：凭空的名字数到 0；合成"名单塞回一颗 id"的坏形状必须被这把尺抓得住

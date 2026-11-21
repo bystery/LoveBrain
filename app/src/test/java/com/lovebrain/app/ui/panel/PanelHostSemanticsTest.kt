@@ -2,7 +2,6 @@ package com.lovebrain.app.ui.panel
 import com.lovebrain.app.feature.composer.ComposerInputKind
 import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.intent.IntentController
-import com.lovebrain.app.feature.roundcommit.ActualSentState
 
 import android.content.Context
 import androidx.compose.ui.platform.LocalDensity
@@ -102,8 +101,6 @@ class PanelHostSemanticsTest {
         // 点页头那两段走的就是这一条方法：把它接到上面的 flow 上，界面才会真的换档
         every { vm.setPanelMode(any()) } answers { panelModeFlow.value = firstArg() }
         every { vm.activeKb } returns MutableStateFlow(null)
-        every { vm.actualSentState } returns
-            MutableStateFlow(ActualSentState.IDLE)
         every { vm.composerMode } returns MutableStateFlow(ComposerMode.REPLY)
         every { composer.counselingDraft } returns MutableStateFlow("")
         every { vm.counselingError } returns MutableStateFlow(null)
@@ -169,7 +166,7 @@ class PanelHostSemanticsTest {
                 LoveBrainTheme {
                     LoveBrainPanelScreen(
                         viewModel = fakeVm(),
-                        onInputFocusChange = { _, _ -> },
+                        onInputFocusChange = { _, _, _ -> },
                         onInputIntent = { },
                         onClearComposeFocus = { },
                         onResize = { _, _ -> },

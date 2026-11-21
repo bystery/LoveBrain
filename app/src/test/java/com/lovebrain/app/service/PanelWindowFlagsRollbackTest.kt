@@ -97,7 +97,7 @@ class PanelWindowFlagsRollbackTest {
             panelFlagsFor(PanelFocusMode.EDITING), liveParams.flags
         )
 
-        window.onInputFocusChanged("reply", focused = false)
+        window.onInputFocusChanged(Any(), "reply", focused = false)
         assertEquals(
             "失焦必须落回 PASSIVE 那一份（带 NOT_FOCUSABLE）",
             panelFlagsFor(PanelFocusMode.PASSIVE), liveParams.flags

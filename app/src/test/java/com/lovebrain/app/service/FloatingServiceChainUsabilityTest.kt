@@ -31,9 +31,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -73,11 +71,6 @@ class FloatingServiceChainUsabilityTest {
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
     }
 
     /**
@@ -295,7 +288,6 @@ class FloatingServiceChainUsabilityTest {
         every { securePrefs.loadCounselingResult() } returns null
         every { securePrefs.counselingDraft } returns ""
         every { securePrefs.thinkingMode } returns 0
-        every { securePrefs.outputMode } returns 0
         every { securePrefs.panelMode } returns 0
         every { securePrefs.activeTicketId } returns null
         every { securePrefs.totalGenerateCount } returns 0

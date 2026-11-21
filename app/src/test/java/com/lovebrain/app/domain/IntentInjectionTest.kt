@@ -75,7 +75,7 @@ class IntentInjectionTest {
     @Test
     fun `enabled_intent_with_text_is_injected`() = runBlocking {
         val intent = IntentConfig(text = "先恢复轻松交流", enabled = true, revision = 1)
-        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), mkMessages(), "test hint", false, intent)
+        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), mkMessages(), "test hint", intent)
 
         assertTrue("持续意图应被注入", prompt.contains("【持续意图】"))
         assertTrue("意图文本应出现", prompt.contains("先恢复轻松交流"))
@@ -88,7 +88,7 @@ class IntentInjectionTest {
     @Test
     fun `disabled_intent_not_injected`() = runBlocking {
         val intent = IntentConfig(text = "先恢复轻松交流", enabled = false, revision = 1)
-        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), mkMessages(), "", false, intent)
+        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), mkMessages(), "", intent)
 
         assertFalse("持续意图不应被注入", prompt.contains("【持续意图】"))
         assertFalse("意图文本不应出现", prompt.contains("先恢复轻松交流"))
@@ -101,7 +101,7 @@ class IntentInjectionTest {
     @Test
     fun `empty_intent_text_not_injected`() = runBlocking {
         val intent = IntentConfig(text = "", enabled = true, revision = 1)
-        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), mkMessages(), "", false, intent)
+        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), mkMessages(), "", intent)
 
         assertFalse("空持续意图不应被注入", prompt.contains("【持续意图】"))
     }
@@ -113,7 +113,7 @@ class IntentInjectionTest {
     @Test
     fun `idea_hint_still_injected_with_intent`() = runBlocking {
         val intent = IntentConfig(text = "先恢复轻松交流", enabled = true, revision = 1)
-        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), mkMessages(), "不约，接她吐槽", false, intent)
+        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), mkMessages(), "不约，接她吐槽", intent)
 
         assertTrue("IDEA hint 应被注入", prompt.contains("不约，接她吐槽"))
         assertTrue("持续意图应被注入", prompt.contains("【持续意图】"))
@@ -131,7 +131,7 @@ class IntentInjectionTest {
             ChatMessage(role = if (i % 2 == 0) ChatMessage.Role.HER else ChatMessage.Role.ME, content = "msg$i " + "x".repeat(180))
         } + ChatMessage(role = ChatMessage.Role.HER, content = "最新消息_UNIQUE_MARKER")
         val intent = IntentConfig(text = "测试意图", enabled = true, revision = 1)
-        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), longMessages, "测试想法", false, intent)
+        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), longMessages, "测试想法", intent)
 
         // 最新消息应保留
         assertTrue("最新消息应保留", prompt.contains("最新消息_UNIQUE_MARKER"))
@@ -143,7 +143,7 @@ class IntentInjectionTest {
 
     @Test
     fun `chat_fence_not_broken`() = runBlocking {
-        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), mkMessages(), "", false, IntentConfig())
+        val prompt = promptBuilder.buildReplyUserPrompt(mkKb(), mkMessages(), "", IntentConfig())
 
         // <chat> 和 </chat> 都应存在
         assertTrue("chat 开标签应存在", prompt.contains("<chat>"))

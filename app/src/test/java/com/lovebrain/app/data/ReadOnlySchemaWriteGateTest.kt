@@ -108,7 +108,6 @@ class ReadOnlySchemaWriteGateTest {
         repo = newRepo()
         runBlocking { repo.migrateIfNeeded("kb") }
         assertTrue("the library must be detected as read-only", repo.isSchemaReadOnly("kb"))
-        assertFalse("and therefore not writable", repo.isWritable("kb"))
     }
 
     private data class FileSnapshot(val sha256: String, val bytes: Long)
@@ -147,7 +146,7 @@ class ReadOnlySchemaWriteGateTest {
             runBlocking { repo.writeVectorWithRevisionCheck("kb", mapOf("intimacy" to 99), 0) }
         },
         "setActive" to { runBlocking { repo.catalogWrites.setActive("kb") } },
-        // `saveIntent` **不在这一列**（2026-10-15 书 §2 改了它的失败传法）：写门挡下时它现在
+        // `saveIntent` **不在这一列**（2026-10-15改了它的失败传法）：写门挡下时它现在
         // 抛 IOException——旧形状"不抛但把新配置当成功返回"正是假成功，屏幕念「已保存」而盘没动。
         // 这颗写入口的专属判据移到下面 `saveIntent ... throws ...` 一格（审计名单不漏，只是换了判据形状）。
         "saveCorrection" to {
@@ -213,7 +212,7 @@ class ReadOnlySchemaWriteGateTest {
     /**
      * `saveIntent` 在这一族里的专属判据（从上面"不许抛"名单里摘出来的那颗）。
      *
-     * 2026-10-15 书 §2 之前：只读库上它静默返回新配置——磁盘一个字节没动，调用方却拿到
+     * 2026-10-15之前：只读库上它静默返回新配置——磁盘一个字节没动，调用方却拿到
      * "成功"，屏幕上「已保存」涂出来。之后：写门挡下必须**以异常传递失败**（控制器的
      * 「保存失败，请重试」那一支接住），磁盘合同与上面同一条：一个字节都不许多。
      * 坏实现两个方向都有牙：把它改回静默返回 ⇒ 第一句红；顺手真写进去 ⇒ 第二句红。

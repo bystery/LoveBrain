@@ -212,7 +212,7 @@ fun ProductionPanel(
     LoveBrainTheme {
         LoveBrainPanelScreen(
             viewModel = viewModel,
-            onInputFocusChange = { _, _ -> },
+            onInputFocusChange = { _, _, _ -> },
             onInputIntent = { },
             onClearComposeFocus = { },
             onResize = { _, _ -> },

@@ -27,8 +27,8 @@ import org.junit.Test
  * 与 **fake 侧**（[InMemorySettingsStoreContractTest]（已删）：纯内存 [InMemorySettingsStore]）各跑一遍。
  * 于是"内存 fake 有没有把越界钳制、空态默认、同名清理这些做对"第一次变成可被同一份合同咬住的事。
  *
- * CAP4（2026-10-06）一处合同公开重写：`抓取开关默认开` 那格改钉 fail-closed——旧默认被用户原话
- * 否决（隐私能力不许默认开），按 TEAM_RULES §1 记在这里而不是静默改。开关的**一次性归一**是
+ * CAP4一处合同公开重写：`抓取开关默认开` 那格改钉 fail-closed——旧默认被用户原话
+ * 否决（隐私能力不许默认开），按 TEAM_RULES记在这里而不是静默改。开关的**一次性归一**是
  * 生产侧构造期行为，fake 没有"盘上键存不存在"这一层，因此单独由
  * [SecurePrefsCaptureEnabledReconciliationTest]（已删） 钉在生产侧，不塞进合同抽象类逼 fake 演第二本账。
  */
@@ -41,7 +41,6 @@ abstract class SettingsStorePortContract {
     fun `an empty store reports the documented defaults, not invented values`() {
         val s = newStore()
         assertEquals(0, s.thinkingMode)
-        assertEquals(0, s.outputMode)
         assertEquals(0, s.panelMode)
         assertEquals("", s.counselingDraft)
         assertNull(s.activeTicketId)
@@ -55,7 +54,7 @@ abstract class SettingsStorePortContract {
         assertFalse("未确认过引导就不能算完成", s.hasCompletedOnboarding)
         // CAP4（2026-10-06）：这一格旧版钉的是"抓取开关默认开"，那条已被用户原话
         // （"现在你的默认刚打开，你的开关就是拨开的"）否决——隐私能力不许默认开。
-        // 按 TEAM_RULES §1 依新形状重写，不删格；老安装升级不断捕获归构造期一次性归一管
+        // 按 TEAM_RULES依新形状重写，不删格；老安装升级不断捕获归构造期一次性归一管
         // （`SecurePrefsCaptureEnabledReconciliationTest`（已删） 那一族），不靠这颗默认值兜。
         assertFalse("没写过这颗键 = 用户从没要过捕获 ⇒ 读出来必须是关（fail-closed）", s.captureEnabled)
         assertFalse("没检查过连接 = 默认未验证", s.connectionVerified)
@@ -81,7 +80,6 @@ abstract class SettingsStorePortContract {
     @Test
     fun `plain settings round-trip`() {
         val s = newStore()
-        s.outputMode = 1
         s.panelMode = 1
         s.counselingDraft = "她：下周考雅思"
         s.lastKbEditFile = "moment/plan.md"
@@ -92,7 +90,6 @@ abstract class SettingsStorePortContract {
         s.connectionVerified = true
         s.accessibilityDisclosureVersion = 2
 
-        assertEquals(1, s.outputMode)
         assertEquals(1, s.panelMode)
         assertEquals("她：下周考雅思", s.counselingDraft)
         assertEquals("moment/plan.md", s.lastKbEditFile)
@@ -198,7 +195,7 @@ abstract class SettingsStorePortContract {
     @Test
     fun `champion engine scope round-trips as a set and empty means everyone`() {
         val s = newStore()
-        assertEquals("空集 = 全体（规格书 T4 §3.1 原文口径）", emptySet<String>(), s.championEngineScope)
+        assertEquals("空集 = 全体（规范原文口径）", emptySet<String>(), s.championEngineScope)
         s.championEngineScope = setOf("contactA|story1", "*")
         assertEquals(setOf("contactA|story1", "*"), s.championEngineScope)
     }
@@ -278,7 +275,6 @@ class ProductionSettingsStoreContractTest : SettingsStorePortContract() {
 class InMemorySettingsStore : SettingsStorePort {
     override var thinkingMode: Int = 0
         set(value) { field = value.coerceIn(0, 1) }
-    override var outputMode: Int = 0
     override var panelMode: Int = 0
     override var counselingDraft: String = ""
 

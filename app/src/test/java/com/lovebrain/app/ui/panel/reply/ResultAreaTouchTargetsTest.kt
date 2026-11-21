@@ -35,7 +35,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 第6节第1条 :490 与 第6节第5条 :531/:532 一起欠的那笔：**`ResultArea` 从来没在 JVM 语义树里挂起来过**。
+ * 第6节第1条:490 与 第6节第5条:531/:532 一起欠的那笔：**`ResultArea` 从来没在 JVM 语义树里挂起来过**。
  *
  * 因为挂不起来，账本 第38节第7条 里那 7 处自造按钮有 **两处就在这屏**（`:340`、`:1230`）
  * 却一处没判——当时的原话是"不搬不是因为它们没问题，是因为我证不了"。
@@ -55,7 +55,7 @@ import org.robolectric.annotation.GraphicsMode
  * 说出"为什么这一排允许低于全站下限"——三颗紧凑档放得进卡内容宽、三颗下限放不下），
  * 其余每一颗仍是全站下限，认不出档的新控件也按全站下限判。
  *
- * ⚠ 2026-10-10 §3「回复卡片纵向排列」（默认纵向）落地后，这一族**整族钉在横向档**
+ * ⚠ 2026-10-10「回复卡片纵向排列」（默认纵向）落地后，这一族**整族钉在横向档**
  * （`cardLayout = ReplyCardLayout.HORIZONTAL`），理由是走法本身：这把尺靠 `performScrollToIndex`
  * 沿那条 `LazyRow` 逐张滚过去，每张卡在某一档完整露出一次才量得准。纵向档那一列是一棵普通
  * `Column`——八张一次全组合，没有"滚过去才在"这一发；而卡片铺满整行后，右下角那三颗会贴到视口
@@ -78,15 +78,21 @@ class ResultAreaTouchTargetsTest {
         const val SCHEME_ROW_TAG = "scheme_cards_row"
 
         /**
-         * 结果区下方那条文字入口的名字。
+         * 参考容器首行计数句与行尾「纠正中心」动作的名字。
          *
-         * 2026-10-10 起它进了资源（`R.string.memory_fix_entry`，屏上字样统一成「修正记忆」），
-         * 所以这里按旧 KDoc 自己写好的那句"哪天它换成资源，这一格跟着改成 `ctx.getString(...)`"
-         * 现取资源——**不写死串**，也不放宽成"有一个按钮就行"：这一格判的仍是
-         * "这一屏说得出这句话"，只是那句话的主人换成了资源文件（同一把尺、更准的锚点）。
+         * 2026-11-21 信息减法后，参考区的唯一入口是 MemoryRefsFeed 那个紧凑容器：
+         * 首行小字「本轮参考 N 条」（`R.string.memory_refs_summary`，带 %1$d，这里按 1 条拼）
+         * ＋ 行尾「纠正中心」（`R.string.memory_center_entry`）。锚点从资源现取——**不写死串**，
+         * 也不放宽成"有一个按钮就行"：这一格判的仍是"这一屏说得出这句话、报得出角色"
+         * （同一把尺、更准的锚点；旧的独立「修正记忆」入口已并进容器）。
          */
-        val CORRECTION_ENTRY_LABEL: String
-            get() = ApplicationProvider.getApplicationContext<Context>().getString(R.string.memory_fix_entry)
+        val REFS_SUMMARY_LABEL: String
+            get() = ApplicationProvider.getApplicationContext<Context>()
+                .getString(R.string.memory_refs_summary, 1)
+
+        val CENTER_ENTRY_LABEL: String
+            get() = ApplicationProvider.getApplicationContext<Context>()
+                .getString(R.string.memory_center_entry)
 
         /**
          * 判断"这两颗是排在同一排里紧挨着的"所用的容差（dp）。
@@ -159,7 +165,6 @@ class ResultAreaTouchTargetsTest {
             matrix.RenderIn(deviceDensity) {
                 ResultArea(
                     result = result,
-                    isGenerating = false,
                     streamingCoreText = "先把这轮的重点说出来，再决定要不要发。",
                     isGeneratingCore = false,
                     streamingSchemes = emptyList(),
@@ -374,7 +379,12 @@ class ResultAreaTouchTargetsTest {
         // 会报 "out of bounds [0, 4)"，而不是安静地少滚两档。
         val cards = mergedSchemesInRoundOrder((result as GenerateResult.Success).response).size
         assertEquals("夹具这一轮该有的卡数", 8, cards)
-        mount(result, UiMatrix(600))
+        // 交进一条真参考：参考容器的紧凑入口（首行计数 + 行尾「纠正中心」）才有东西可量
+        mount(
+            result,
+            UiMatrix(600),
+            memoryRefs = listOf(refFixture("她把猫送到医院那天的原话"))
+        )
         val row = schemeRow()
         // 逐张滚过去，每一档都重扫整棵树。要求的是**滚完之后累计**至少见过
         // N 种卡内控件——否则 LazyRow 会让我们以为这屏很干净（首屏只露得出三张半）。
@@ -394,8 +404,9 @@ class ResultAreaTouchTargetsTest {
             seen.containsAll(
                 listOf(
                     "$copyLabel|Button", "$likeLabel|Button", "$dislikeLabel|Button",
-                    // 结果区下方那条文字入口：它现在是这一屏唯一的工具类动作
-                    "$CORRECTION_ENTRY_LABEL|Button"
+                    // 参考容器的紧凑入口：首行计数 + 行尾「纠正中心」
+                    // （信息减法后参考区的唯一入口，旧的独立文字入口已并进容器）
+                    "$REFS_SUMMARY_LABEL|Button", "$CENTER_ENTRY_LABEL|Button"
                 )
             )
         )
@@ -424,7 +435,6 @@ class ResultAreaTouchTargetsTest {
             UiMatrix(600).RenderIn(deviceDensity) {
                 ResultArea(
                     result = fixture(),
-                    isGenerating = false,
                     streamingCoreText = "",
                     isGeneratingCore = false,
                     streamingSchemes = emptyList(),
@@ -443,6 +453,8 @@ class ResultAreaTouchTargetsTest {
         }
         // 默认收起：那条正文读不到，清单不占这一屏的纵向高度
         rule.onNode(hasText(refText, substring = true)).assertDoesNotExist()
+        // 收起态留下的只有那条紧凑首行（信息减法后的形状：计数小字 + 行尾「纠正中心」）
+        rule.onNode(hasText(REFS_SUMMARY_LABEL)).assertExists()
         // 反向证人：展开态传成 true 时同一条正文读得到。
         // 少了这半条，"清单整块被删空"也能让上面那条永远绿。
         rule.runOnIdle { expanded.value = true }
@@ -451,34 +463,53 @@ class ResultAreaTouchTargetsTest {
     }
 
     /**
-     * 结果区下方那条「纠正记忆」是**一颗报得出角色的按钮、一个够下限的热区**，
+     * 参考容器的紧凑入口——首行「本轮参考 N 条」与行尾「纠正中心」——各自是
+     * **一颗报得出角色的按钮、一个够下限的热区**，
      * 而不是又一颗"点得中但读屏说不出干什么"的自画文字。
      *
      * 同时钉住那颗 `⋯` 总工具入口整块退场：语义树里再没有拿那条资源当名字的节点。
      */
     @Test
-    fun `the correction entry is a labelled button and the utility popup is gone`() {
-        mount(fixture(), UiMatrix(600))
+    fun `the refs header and the center entry are labelled buttons and the utility popup is gone`() {
+        mount(
+            fixture(),
+            UiMatrix(600),
+            memoryRefs = listOf(refFixture("她把猫送到医院那天的原话"))
+        )
         val all = probe.actionableTargets(rule, "ResultArea 纠正入口")
         // 找那颗入口时只认**尺寸 > 0** 的那些颗：滚动容器会把滚出视口的那份压成 0x0 @(0,0)，
         // 而这里用的是 `firstOrNull{名字}`——留着它就会选中那颗 0x0，红在"0 小于下限"
         // 这种没发生过的话上，而不是红在真缺陷上。排除判据是尺寸，不是把这一格改成"只数数量"。
         val targets = probe.laid(all)
-        val entry = targets.firstOrNull { it.label == CORRECTION_ENTRY_LABEL }
+        val header = targets.firstOrNull { it.label == REFS_SUMMARY_LABEL }
         assertTrue(
-            "结果区下方该有一条「纠正记忆」文字入口，实到名字集合：" +
+            "参考区该有一条「本轮参考 N 条」首行，实到名字集合：" +
                 targets.map { it.label }.distinct(),
-            entry != null
+            header != null
         )
-        val hit = entry!!
+        val head = header!!
         assertEquals(
-            "那条入口要报 Button（它就是一个动作）：" + hit.describe(),
-            "Button", hit.role
+            "首行要报 Button（展开/收起就落在它身上）：" + head.describe(),
+            "Button", head.role
         )
         assertTrue(
-            "热区两轴都要垫到下限（字形大小另算，那是外观不是可点范围）。" +
-                "这一颗不住在卡内那一排里，所以走的仍是全站下限，不跟着紧凑档一起松：" + hit.describe(),
-            !hit.tooSmall(probe.floorDp)
+            "首行热区两轴都要垫到下限（字形大小另算，那是外观不是可点范围）。" +
+                "这一颗不住在卡内那一排里，走的是全站下限：" + head.describe(),
+            !head.tooSmall(probe.floorDp)
+        )
+        val center = targets.firstOrNull { it.label == CENTER_ENTRY_LABEL }
+        assertTrue(
+            "行尾该有一颗「纠正中心」常驻动作，实到名字集合：" +
+                targets.map { it.label }.distinct(),
+            center != null
+        )
+        assertEquals(
+            "「纠正中心」要报 Button（它就是一个动作）：" + center!!.describe(),
+            "Button", center.role
+        )
+        assertTrue(
+            "「纠正中心」的热区同样走全站下限：" + center.describe(),
+            !center.tooSmall(probe.floorDp)
         )
         // ⋯ 那颗的锚点是它自己的 contentDescription（资源），不按位置猜。
         // ⚠ "已经不在了"那一判读的是**整棵树**（含 0x0 的那些颗）：排除只服务于尺寸判据，

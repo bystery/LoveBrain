@@ -96,7 +96,7 @@ class CaptureAppRowSemanticsTest {
      * （工单明文），打 stdout 进交付表。硬断言只有两条——
      * ①哨兵：十二格必须各量到一次（循环没被谁悄悄短路）；
      * ②样本下限：判到的节点数低于下限就是这格在空转，别读成「全达标」。
-     * 换格子靠 hoisted 状态（一个用例只 `setContent` 一次，同 `UiMatrixFullSweepTest`）。
+     * 换格子靠 hoisted 状态（一个用例只 `setContent` 一次）。
      */
     private val matrixCell: MutableState<UiMatrix> = mutableStateOf(UiMatrix.FULL.first())
 
@@ -183,7 +183,7 @@ class CaptureAppRowSemanticsTest {
 
     /** 按行标题找那一行的可交互节点——一行必须**恰好**一颗，多出来就是有人又画了一层点击 */
     private fun rowTarget(label: String): SemanticsProbe.Target {
-        // 确定性等待（§13.1 对这一族的判词："定点检查异步状态等待"）：CI 的 Linux runner
+        // 确定性等待（对这一族的判词："定点检查异步状态等待"）：CI 的 Linux runner
         // 读到过"树里还没长出这一行"的那一帧（本机绿、云端 0 颗）。现在**逐帧等到恰 1 颗**再扫：
         // 上限 3.2s（200 帧）；超时不瞎猜——把整屏可交互 label 的实到计数直接写进红话，
         // 下一次红从日志里当场定位，不再赌"我机器上绿过一次"。

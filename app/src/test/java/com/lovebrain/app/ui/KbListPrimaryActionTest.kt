@@ -57,7 +57,7 @@ class KbListPrimaryActionTest {
      *
      * 原判据（此处留档再判废）：旧 `KnowledgeBaseActivity.kt#KbCard` 第一行的改名与删除是两颗
      * "横向 48、纵向吃行版式那一行字高（v1.3.1 量到 22dp）"的自绘透明盒，当时按逐族显式传档
-     * 给了 `rowActionHeightDp = 22f` 一把特尺。作废理由：基线 v1.1 §3.5/§3.6 把行内动作收进
+     * 给了 `rowActionHeightDp = 22f` 一把特尺。作废理由：把行内动作收进
      * `LbTextAction` 的 `RowCapsule` 一档（可见 32 / **热区两轴 48**），页面自绘盒这个形状已经
      * 不存在——22 那一档从此没有可量的对象；留着特尺等于给"把盒垫回行高"留门。
      * 新判据回退成什么会红：① 任一动作退回自绘盒（某一轴热区 < 全站下限 48）；
@@ -176,13 +176,13 @@ class KbListPrimaryActionTest {
 
     /**
      * 整卡一处操作 = 激活：非当前库可点、报 Button、点了真落回调。
-     * 旧档靠 `clickable(enabled = !isActive)` 让当前库也挂着一颗点不动的活按钮——
+     * 旧档靠 `clickable(enabled =!isActive)` 让当前库也挂着一颗点不动的活按钮——
      * 新档把那一格交给公共件（`onClick = null` 时不挂 `Role.Button`），所以拆成两格各判一边。
      *
      * ⚠ 2026-10-06 L1b 后本格判据重写（C 档：不是链断，是点击点的形状变了）：
      * 接线现场——`KnowledgeBaseActivity.kt:434` `onClick = if (isActive) null else onActivate`、
      * `LbListCard.kt:186-190` 把 clickable 挂在卡底自己那一层——都在，激活链没断。
-     * 红的真因：基线 §3.6 把行内动作收进 `RowCapsule`（热区**两轴 48**），这张矮卡上四颗胶囊
+     * 红的真因：把行内动作收进 `RowCapsule`（热区**两轴 48**），这张矮卡上四颗胶囊
      * （动作行三颗 + detail「重命名」）的 48dp 热区盖住了卡底的几何中心；
      * `performClick` 走中心点注入，中心落在子胶囊热区上就被那颗动作正当吃掉——
      * "点中心落了 0 次"是新形状的事实，不是整卡失效的证据。
@@ -193,7 +193,7 @@ class KbListPrimaryActionTest {
      *  ② CARD 节点自己那份 OnClick 动作用 `performSemanticsAction` 直接触发：
      *     谁把"整卡可点"只挂到某个子节点上 ⇒ 动作解析到那颗子件（编辑/重命名被按下去，
      *     激活一动不动），这一句红；
-     *  ③ 两枚点各落**恰好**一次（+1、+2 逐次对数）⇒ 双订阅当场红；
+     *  ③ 两枚点各落**恰好**一次（1、+2 逐次对数）⇒ 双订阅当场红；
      *  ④ 「把 onClick 恒传（当前库能把自己再激活一次）」仍由另一格
      *     `the active library card is not announced as a dead button` 判红。
      * 回退成旧写法会红：任何一步少落或多落，数字都对不上。

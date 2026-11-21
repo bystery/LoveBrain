@@ -51,7 +51,6 @@ class ChampionEngineTest {
         var scope: Set<String> = emptySet()
     ) : SettingsStorePort {
         override var thinkingMode: Int = 0
-        override var outputMode: Int = 0
         override var panelMode: Int = 0
         override var counselingDraft: String = ""
         private var counselingResult: String? = null
@@ -167,8 +166,8 @@ class ChampionEngineTest {
     }
 
     @Test
-    fun `S2 S3 tiers are not wired and clamp to OFF with a log`() {
-        // 审计 R2-3：枚举保留档位名，但 SINGLE_STYLE/FULL 无实现——引擎读到按 OFF 处理
+    fun `unwired tiers clamp to OFF with a log`() {
+        // 模式诚实化：枚举保留档位名，但 SINGLE_STYLE/FULL 无实现——引擎读到按 OFF 处理
         val single = FakeSettings(mode = "SINGLE_STYLE")
         assertEquals(ChampionMode.OFF, newEngine(single).first.mode())
         assertEquals(ChampionMode.OFF, newEngine(single).first.effectiveMode("c", "s"))
@@ -190,7 +189,7 @@ class ChampionEngineTest {
         assertEquals(ChampionMode.SHADOW, engine.effectiveMode("x", "y"))
     }
 
-    // ── 提交点模式门禁（审计 S1-P0-1：OFF 零副作用）──
+    // ── 提交点模式门禁（OFF 零副作用）──
 
     @Test
     fun `commitConfirmedTurn is a zero-IO no-op when the effective mode is OFF`() = runTest {
@@ -208,7 +207,7 @@ class ChampionEngineTest {
             dirty.first.commitConfirmedTurn("c", "s", listOf(ChampionMessage("HER", "x", "t", "m1"))).isEmpty()
         )
         assertFalse(File(dirty.second, "events").exists())
-        // S2/S3 未接线被 mode() 收敛为 OFF——同样零 IO
+        // SINGLE_STYLE/FULL 未接线被 mode() 收敛为 OFF——同样零 IO
         val unwired = newEngine(FakeSettings(mode = "SINGLE_STYLE"))
         assertTrue(
             unwired.first.commitConfirmedTurn("c", "s", listOf(ChampionMessage("ME", "x", "t", "m1"))).isEmpty()
@@ -236,7 +235,7 @@ class ChampionEngineTest {
 
     @Test
     fun `commitConfirmedTurn honours the frozen mode snapshot without rereading settings`() = runTest {
-        // guide-6 Step 2：生产链路传冻结快照（ReplyGenerationContext.championMode）——
+        // 生产链路传冻结快照（ReplyGenerationContext.championMode）——
         // 快照非 OFF：即使当前设置已改回 OFF，本轮提交按冻结快照放行（scope 命中）
         val (offNow, _) = newEngine(FakeSettings(mode = "OFF"))
         val committed = offNow.commitConfirmedTurn(
@@ -244,7 +243,7 @@ class ChampionEngineTest {
             modeSnapshot = "LIVE_AUTO"
         )
         assertEquals("冻结快照 LIVE_AUTO 放行（不回读设置）", 1, committed.size)
-        // 快照 OFF：即使当前设置是 SHADOW，显式 OFF 快照仍零 IO（尊重显式关闭，§16 条 13）
+        // 快照 OFF：即使当前设置是 SHADOW，显式 OFF 快照仍零 IO（尊重显式关闭）
         val (shadowNow, shadowDir) = newEngine(FakeSettings(mode = "SHADOW"))
         assertTrue(
             shadowNow.commitConfirmedTurn(
@@ -272,18 +271,7 @@ class ChampionEngineTest {
         )
     }
 
-    // ── LIVE_AUTO 分域与确定性装配（guide-6 §17 Step 2 / §15.1）──
-
-    @Test
-    fun `turn domain table 1 23 24 guard short and 25 40 uc long`() {
-        // 边界 24 单点定义在 SHORT_DOMAIN_MAX_TURN；轮次 1-24 = GUARD_SHORT，25+ = UC_LONG
-        assertEquals(24, ChampionTurnStrategy.SHORT_DOMAIN_MAX_TURN)
-        assertEquals(ChampionTurnStrategy.GUARD_SHORT, ChampionTurnStrategy.forTurn(1))
-        assertEquals(ChampionTurnStrategy.GUARD_SHORT, ChampionTurnStrategy.forTurn(23))
-        assertEquals(ChampionTurnStrategy.GUARD_SHORT, ChampionTurnStrategy.forTurn(24))
-        assertEquals(ChampionTurnStrategy.UC_LONG, ChampionTurnStrategy.forTurn(25))
-        assertEquals(ChampionTurnStrategy.UC_LONG, ChampionTurnStrategy.forTurn(40))
-    }
+    // ── LIVE_AUTO 确定性装配（零模型调用）──
 
     @Test
     fun `LIVE_AUTO is a wired mode but never flips the legacy guard predicate`() {
@@ -291,38 +279,18 @@ class ChampionEngineTest {
         val live = newEngine(FakeSettings(mode = "LIVE_AUTO")).first
         assertEquals(ChampionMode.LIVE_AUTO, live.mode())
         assertEquals(ChampionMode.LIVE_AUTO, live.effectiveMode("c", "s"))
-        // isMainPathGuarded 只认 S2/S3——LIVE_AUTO 的守卫判据走 strategy，旧档位语义不被偷换
-        assertFalse(ChampionMode.isMainPathGuarded(ChampionMode.LIVE_AUTO))
-        assertTrue(ChampionMode.isMainPathGuarded(ChampionMode.SINGLE_STYLE))
-        assertTrue(ChampionMode.isMainPathGuarded(ChampionMode.FULL))
+        // isMainPathGuarded 只登记旧档位语义——生产守卫的触发判据已与轮次/档位解耦
+        // （GenerationEngine 收尾块：championEngine != null && fullText.isNotBlank()）
     }
 
     @Test
-    fun `prepareLiveContext returns null when onlyThisRound`() = runTest {
-        // §16 条 14：onlyThisRound 禁读任何 Champion 历史——方法内防御返回 null
-        val (engine, _) = newEngine(FakeSettings(mode = "LIVE_AUTO"), gateway = NoModelGateway())
-        val ctx = engine.prepareLiveContext(
-            "c", "s", currentTurn = 1,
-            dialogue = listOf(DialogueMessage(id = "m1", speaker = DialogueSpeaker.PARTNER, text = "hi")),
-            onlyThisRound = true
-        )
-        assertNull("onlyThisRound 防御返回 null", ctx)
-    }
-
-    @Test
-    fun `prepareLiveContext first turn has empty history guard short and zero IO`() = runTest {
+    fun `prepareLiveContext first turn has empty history and zero IO`() = runTest {
         val (engine, dir) = newEngine(FakeSettings(mode = "LIVE_AUTO"), gateway = NoModelGateway())
         val ctx = engine.prepareLiveContext(
             "c", "s", currentTurn = 1,
-            dialogue = listOf(DialogueMessage(id = "m1", speaker = DialogueSpeaker.PARTNER, text = "周五见？")),
-            onlyThisRound = false
+            dialogue = listOf(DialogueMessage(id = "m1", speaker = DialogueSpeaker.PARTNER, text = "周五见？"))
         )!!
-        assertEquals(ChampionTurnStrategy.GUARD_SHORT, ctx.strategy)
-        assertEquals("无内容不出空标题（§7.3）", "", ctx.historyBlock)
-        assertEquals(0, ctx.historyCu)
-        assertEquals("GUARD_SHORT 的 UC 恒空串", "", ctx.uncertainBlock)
-        assertEquals(0, ctx.uncertainCu)
-        assertEquals(1, ctx.currentTurn)
+        assertEquals("无内容不出空标题", "", ctx.historyBlock)
         // 装配零写入：不 append/不落盘，连事件库目录都不创建
         assertFalse("装配不创建事件库目录", File(dir, "events").exists())
     }
@@ -343,22 +311,19 @@ class ChampionEngineTest {
         // 正常轮：历史块 = 段头 + 两条 m_src 行（HER→PARTNER / ME→USER），当前轮消息不在其中
         val ctx = engine.prepareLiveContext(
             "c", "s", currentTurn = 2,
-            dialogue = listOf(DialogueMessage(id = "m3", speaker = DialogueSpeaker.PARTNER, text = "路上吗？")),
-            onlyThisRound = false
+            dialogue = listOf(DialogueMessage(id = "m3", speaker = DialogueSpeaker.PARTNER, text = "路上吗？"))
         )!!
         assertTrue(ctx.historyBlock.startsWith("# 【真实历史消息：仅实际发送；模型回复是草稿，不在此列】"))
         assertTrue(ctx.historyBlock.contains("m_src[0] | 2026-11-06 09:59 | PARTNER | 周五见？"))
         assertTrue(ctx.historyBlock.contains("m_src[1] | 2026-11-06 10:00 | USER | 好"))
         assertFalse(ctx.historyBlock.contains("路上吗？"))
-        assertTrue(ctx.historyCu > 0)
         // 重复生成边缘：当前轮输入携带已提交的 msgUid（m1）→ priorEvents 按 msgUid 排除，不重计
         val retry = engine.prepareLiveContext(
             "c", "s", currentTurn = 2,
             dialogue = listOf(
                 DialogueMessage(id = "m1", speaker = DialogueSpeaker.PARTNER, text = "周五见？"),
                 DialogueMessage(id = "m4", speaker = DialogueSpeaker.PARTNER, text = "新消息")
-            ),
-            onlyThisRound = false
+            )
         )!!
         assertFalse("已提交同 msgUid 的当前轮消息不得重复进历史", retry.historyBlock.contains("m_src[0]"))
         assertTrue(retry.historyBlock.contains("m_src[1]"))
@@ -368,23 +333,8 @@ class ChampionEngineTest {
     }
 
     @Test
-    fun `multi message turn still counts as one round for the domain split`() = runTest {
-        // 轮次口径（§5.3 排除清单）：一轮可含多条 HER/ME 消息，正式轮数只 +1——
-        // 分域只认 currentTurn 参数（committedTurnCount+1），绝不取 dialogue.size
-        val (engine, _) = newEngine(FakeSettings(mode = "LIVE_AUTO"), gateway = NoModelGateway())
-        val threeMsgs = listOf(
-            DialogueMessage(id = "a", speaker = DialogueSpeaker.PARTNER, text = "第一条"),
-            DialogueMessage(id = "b", speaker = DialogueSpeaker.PARTNER, text = "第二条"),
-            DialogueMessage(id = "c", speaker = DialogueSpeaker.USER, text = "第三条")
-        )
-        val t24 = engine.prepareLiveContext("c", "s", currentTurn = 24, dialogue = threeMsgs, onlyThisRound = false)!!
-        assertEquals("已提交 23 + 1 = 24：即使 3 条消息仍是短域", ChampionTurnStrategy.GUARD_SHORT, t24.strategy)
-        val t25 = engine.prepareLiveContext("c", "s", currentTurn = 25, dialogue = threeMsgs, onlyThisRound = false)!!
-        assertEquals("已提交 24 + 1 = 25：即使 3 条消息仍是长域", ChampionTurnStrategy.UC_LONG, t25.strategy)
-    }
-
-    @Test
-    fun `prepareLiveContext builds uc block only in the long domain`() = runTest {
+    fun `prepareLiveContext is turn agnostic and never emits an uncertain block`() = runTest {
+        // 未定/待确认事项块已整段删除（用户口径：未定块完全不要）——任何轮次都只产出历史块
         val (engine, _) = newEngine(FakeSettings(mode = "LIVE_AUTO"), gateway = NoModelGateway())
         runBlocking {
             engine.commitConfirmedTurn(
@@ -393,27 +343,12 @@ class ChampionEngineTest {
                 modeSnapshot = "LIVE_AUTO", turn = 24
             )
         }
-        // 短域（第 24 轮）：同数据 UC 恒空——短域禁 UC（禁变相 uc_guard，§0.2）
-        val short = engine.prepareLiveContext(
-            "c", "s", currentTurn = 24,
-            dialogue = listOf(DialogueMessage(id = "m2", speaker = DialogueSpeaker.PARTNER, text = "那周五的事呢")),
-            onlyThisRound = false
-        )!!
-        assertEquals(ChampionTurnStrategy.GUARD_SHORT, short.strategy)
-        assertEquals("", short.uncertainBlock)
-        assertEquals(0, short.uncertainCu)
-        // 长域（第 25 轮）：UC 按 UncertainBlockDetector 规则生成（未定事项在场才注入）
-        val long = engine.prepareLiveContext(
+        val ctx = engine.prepareLiveContext(
             "c", "s", currentTurn = 25,
-            dialogue = listOf(DialogueMessage(id = "m2", speaker = DialogueSpeaker.PARTNER, text = "那周五的事呢")),
-            onlyThisRound = false
+            dialogue = listOf(DialogueMessage(id = "m2", speaker = DialogueSpeaker.PARTNER, text = "那周五的事呢"))
         )!!
-        assertEquals(ChampionTurnStrategy.UC_LONG, long.strategy)
-        // UC 只注入命中的分句（clause 粒度），非整条消息原文
-        assertTrue("未定事项在场 → 注入逐字分句", long.uncertainBlock.contains("听说快递周五到"))
-        assertTrue(long.uncertainBlock.startsWith(UncertainBlockDetector.UNCERTAIN_TITLE))
-        assertTrue(long.uncertainCu > 0)
-        assertEquals(long.uncertainCu, UncertainBlockDetector.utf16Len(long.uncertainBlock))
+        assertTrue(ctx.historyBlock.startsWith("# 【真实历史消息：仅实际发送；模型回复是草稿，不在此列】"))
+        assertTrue("历史块照旧注入", ctx.historyBlock.contains("听说快递周五到，还没收到呢"))
     }
 
     @Test
@@ -423,7 +358,7 @@ class ChampionEngineTest {
             requestId = "r", messages = emptyList(), userHint = "",
             knowledgeBase = KnowledgeBase(name = "kb1", displayName = "kb1", stage = "S"),
             intentConfig = IntentConfig(), corrections = emptyMap(), correctionsRevision = 0,
-            onlyThisRound = false, aggressive = false, providerIdentity = null,
+            onlyThisRound = false, providerIdentity = null,
             kbProfile = "p", kbRevision = "v", promptAssetHash = "h"
         )
         assertEquals("OFF", legacy.championMode)
@@ -433,7 +368,7 @@ class ChampionEngineTest {
             requestId = "r", messages = emptyList(), userHint = "",
             knowledgeBase = KnowledgeBase(name = "kb1", displayName = "kb1", stage = "S"),
             intentConfig = IntentConfig(), corrections = emptyMap(), correctionsRevision = 0,
-            onlyThisRound = false, aggressive = false, providerIdentity = null,
+            onlyThisRound = false, providerIdentity = null,
             kbProfile = "p", kbRevision = "v", promptAssetHash = "h",
             championMode = "LIVE_AUTO", committedTurnCount = 24
         )
@@ -444,7 +379,7 @@ class ChampionEngineTest {
             buildGenerationInput(
                 requestId = "r", messages = emptyList(), userHint = "", knowledgeBase = null,
                 intentConfig = IntentConfig(), corrections = emptyMap(), correctionsRevision = 0,
-                onlyThisRound = false, aggressive = false, providerIdentity = null,
+                onlyThisRound = false, providerIdentity = null,
                 kbProfile = "", kbRevision = "", promptAssetHash = "h",
                 championMode = "LIVE_AUTO", committedTurnCount = 24
             ).kbContext
@@ -454,7 +389,7 @@ class ChampionEngineTest {
     // ── shadow 全链路 ──
 
     @Test
-    fun `shadowTurn assembles generates guards and logs both sides without touching the event store`() = runTest {
+    fun `shadowTurn assembles generates guards and logs lengths only without touching the event store`() = runTest {
         val settings = FakeSettings(mode = "SHADOW")
         val (engine, dir) = newEngine(settings)
         val out = engine.shadowTurn(
@@ -471,13 +406,28 @@ class ChampionEngineTest {
         assertEquals("req-1", log["requestId"]!!.jsonPrimitive.content)
         assertEquals(1, log["turn"]!!.jsonPrimitive.content.toInt())
         assertEquals(0, log["history_cu"]!!.jsonPrimitive.content.toInt())   // 首轮无旧史
-        assertEquals("原链路草稿", log["original_reply"]!!.jsonPrimitive.content)
-        assertTrue(log["shadow_reply"]!!.jsonPrimitive.content.contains("好的"))
-        // fake 回复缺 3 个风格槽与 directions → 守卫补齐重写（changed=true），审计随行
+        // 未定块整段删除：影子日志不再携带任何 UC 计量/条目字段
+        assertFalse("影子日志无 uc_cu", log.containsKey("uc_cu"))
+        assertFalse("影子日志无 uc_items", log.containsKey("uc_items"))
+        assertFalse("影子日志无 uc_item_texts", log.containsKey("uc_item_texts"))
+        // 日志只留长度：两侧回复正文一个字都不进 shadow_log
+        assertEquals("原链路草稿".length, log["original_chars"]!!.jsonPrimitive.int)
+        assertTrue("shadow 侧只记字符量", log["shadow_chars"]!!.jsonPrimitive.int > 0)
+        assertFalse("不再写 original_reply", log.containsKey("original_reply"))
+        assertFalse("不再写 shadow_reply", log.containsKey("shadow_reply"))
+        assertFalse("日志不含原链路正文", log.toString().contains("原链路草稿"))
+        assertFalse("日志不含 shadow 正文", log.toString().contains("好的"))
+        // fake 回复缺 3 个风格槽与 directions → 守卫补齐重写（changed=true），规则名随行
         assertTrue(log["guard_changed"]!!.jsonPrimitive.content == "true")
-        assertTrue(log["shadow_reply"]!!.jsonPrimitive.content.contains("\"directions\": [null, null, null, null]"))
+        val guardMeta = log["guard_meta"]!!.jsonObject
+        assertTrue(
+            "守卫 meta 保留规则名",
+            guardMeta["rules"]!!.jsonArray.map { it.jsonPrimitive.content }
+                .contains("harness_text_rewritten")
+        )
+        assertTrue("守卫 meta 保留字符量", guardMeta.containsKey("raw_chars"))
         assertEquals(11, log["prompt_tokens"]!!.jsonPrimitive.content.toInt())
-        // 审计 R2-1：shadow 生成路径不写事件库——未确认输入零持久痕迹
+        // shadow 生成路径不写事件库——未确认输入零持久痕迹
         val store = ChampionEventStore(FileChampionEventStorage(File(dir, "events")))
         assertEquals(0, runBlocking { store.events("c1__s1") }.size)
         // 正式提交点入库（uid = pending uid，与 shadow 日志 source_id 一致）
@@ -489,16 +439,18 @@ class ChampionEngineTest {
         }
         assertEquals(listOf(0L, 1L), committed.map { it.uid })
         assertTrue(committed.none { it.text.contains("好的") })   // shadow 回复永不入库
-        // shadow_log 落盘（jsonl，两侧输出与装配差异）
+        // shadow_log 落盘（jsonl，只记长度/规则名）
         engine.appendShadowLog(log)
         val logFile = File(dir, "shadow_log.jsonl")
         assertTrue(logFile.isFile)
         val line = logFile.readText().trim()
         // shadow_log 走 kotlinx 序列化（紧凑格式，无空格）；guard 审计走 Python dumps 形
         assertTrue(line.contains("\"requestId\":\"req-1\""))
-        assertTrue(line.contains("\"original_reply\":\"原链路草稿\""))
-        assertTrue(line.contains("\"shadow_reply\""))
+        assertTrue(line.contains("\"original_chars\":"))
+        assertTrue(line.contains("\"shadow_chars\":"))
         assertTrue(line.contains("\"guard_meta\""))
+        assertFalse("落盘日志不含原链路正文", line.contains("原链路草稿"))
+        assertFalse("落盘日志不含 shadow 正文", line.contains("好的"))
     }
 
     @Test
@@ -533,7 +485,7 @@ class ChampionEngineTest {
 
     @Test
     fun `two identical messages in the same minute commit as two events`() = runTest {
-        // 审计 F2-1 主案情走完整提交点：对方同一分钟连发两次"好"是两条真实消息——
+        // 主案情走完整提交点：对方同一分钟连发两次"好"是两条真实消息——
         // 不同 ChatMessage.id ⇒ 两条事件；旧 role|text|ts 键在这里把第二条合没了。
         val settings = FakeSettings(mode = "SHADOW")
         val (engine, dir) = newEngine(settings)
@@ -579,38 +531,87 @@ class ChampionEngineTest {
         assertTrue(out.error != null || (out.logLine["generate_error"]?.jsonPrimitive?.content ?: "").isNotEmpty())
     }
 
-    // ── PORT_IDENTITY（custody 三 hash）──
+    @Test
+    fun `shadow rejection message carries role and length but not the message text`() = runTest {
+        // 非 HER/ME 的输入在这里被拒：拒绝原因只许带角色与长度，正文一个字都不能进日志
+        val settings = FakeSettings(mode = "SHADOW")
+        val (engine, _) = newEngine(settings)
+        val secret = "不该出现在异常里的正文"
+        val out = engine.shadowTurn(
+            "r-bad", "c", "s", turn = 1,
+            messages = listOf(Triple("REPLY", secret, "2026-11-06 10:00")),
+            intent = IntentConfig(), advisorNote = "", originalReply = "",
+            timeoutMs = 5_000, providerConfig = null
+        )
+        assertFalse(out.ok)
+        val error = out.logLine["shadow_error"]!!.jsonPrimitive.content
+        assertFalse("异常文案不含正文", error.contains(secret))
+        assertTrue("只带角色与长度", error.contains("len=${secret.length}"))
+    }
+
+    // ── 运行时身份文件（单一候选口径 + 接线状态）──
 
     @Test
-    fun `PORT_IDENTITY carries the three custody hashes`() {
+    fun `PORT_IDENTITY registers one champion candidate and the wired modes`() {
         val (_, dir) = newEngine(FakeSettings())
         val assembler = ChampionPromptAssembler(timestampBlock = { "" }, promptSource = { "[$it]" })
         ChampionIdentity.writeIdentityFile(dir, assembler)
-        val file = File(dir, "PORT_IDENTITY.json")
+        val file = File(dir, ChampionIdentity.PORT_IDENTITY_FILE)
         assertTrue(file.isFile)
-        val obj = Json.parseToJsonElement(file.readText()).jsonObject
+        val text = file.readText()
+        val obj = Json.parseToJsonElement(text).jsonObject
         assertTrue(obj.containsKey("champion_asset_hash"))
-        assertEquals("window_expand_b_norecap_uc_guard", obj["arena_candidate"]!!.jsonPrimitive.content)
-        // 审计 R2-3：接线状态显式登记——S2/S3 未接线按 OFF 处理
-        assertTrue(obj["s2_s3_status"]!!.jsonPrimitive.content.contains("NOT_WIRED"))
-        // guide-6 Step 6：LIVE_AUTO 生产接线登记——wired_modes 扩到三档 + 分域候选来源
+        // 候选名只有一个来源：两处登记都等于同一常量，且历史候选名不再出现
+        assertEquals("window_expand_b_norecap_guard", obj["arena_candidate"]!!.jsonPrimitive.content)
+        assertEquals(ChampionIdentity.ARENA_CANDIDATE, obj["arena_candidate"]!!.jsonPrimitive.content)
+        assertTrue(
+            obj["live_candidate"]!!.jsonPrimitive.content.startsWith(ChampionIdentity.ARENA_CANDIDATE)
+        )
+        assertFalse("历史候选名不得出现", text.contains("uc_guard"))
+        assertFalse("候选名不再按轮次分域", text.contains("by_turn"))
+        // 不再有任何哈希表/哈希登记字段
+        assertFalse(text.contains("sha256"))
+        assertFalse(obj.containsKey("champion_source_sha256"))
+        assertFalse(obj.containsKey("arena_mechanism_sha256"))
+        assertFalse(obj.containsKey("sha256_registration"))
+        assertFalse(obj.containsKey("legacy_shadow_candidate"))
+        // 接线状态显式登记——未接线的档位按 OFF 处理
+        assertTrue(obj["unwired_modes"]!!.jsonPrimitive.content.contains("NOT_WIRED"))
         val wired = obj["wired_modes"]!!.jsonArray.map { it.jsonPrimitive.content }
         assertEquals(listOf("OFF", "SHADOW", "LIVE_AUTO"), wired)
         assertEquals("LIVE_AUTO", obj["default_mode"]!!.jsonPrimitive.content)
         assertEquals("LoveBrain PromptBuilder", obj["live_prompt_source"]!!.jsonPrimitive.content)
-        assertTrue(obj["live_candidate_by_turn"]!!.jsonPrimitive.content.contains("<=24"))
-        assertTrue(obj["live_candidate_by_turn"]!!.jsonPrimitive.content.contains(">=25"))
-        assertTrue(obj["legacy_shadow_candidate"]!!.jsonPrimitive.content
-            .contains("CROSS_DOMAIN_NOT_PROMOTED"))
         assertEquals(3600, obj["history_budget_cu"]!!.jsonPrimitive.int)
         assertTrue(obj["history_commit_point"]!!.jsonPrimitive.content.contains("nextRound"))
         assertEquals("BYPASS_CHAMPION_CONTEXT", obj["only_this_round"]!!.jsonPrimitive.content)
-        // 2026-11-12 用户纪律：sha256 防御性分析停用——登记内容照常，哈希登记字段注明停用
-        assertTrue(obj["sha256_registration"]!!.jsonPrimitive.content.contains("DISABLED"))
-        // 历史 hash 表（移植/F2 批次实测值；对应源文件 guide-6 批次零改动，不重算）
-        val arena = obj["arena_mechanism_sha256"]!!.jsonObject
-        assertEquals(5, arena.size)
-        assertTrue(arena["mechanism/contract_guard.py"]!!.jsonPrimitive.content.startsWith("c26c68c0"))
+    }
+
+    @Test
+    fun `shadow log keeps lengths and rule names but never the chat body`() = runTest {
+        val settings = FakeSettings(mode = "SHADOW")
+        val shadowReply = "{\"response\": {\"recommended\": \"影子回复正文不落日志\"}}"
+        val (engine, dir) = newEngine(settings, gateway = FakeGateway(shadowReply))
+        val original = "原链路回复正文不落日志"
+        val incoming = "对方发来的隐私消息"
+        val out = engine.shadowTurn(
+            "r-priv", "c", "s", turn = 1,
+            messages = listOf(Triple("HER", incoming, "2026-11-06 10:00")),
+            intent = IntentConfig(), advisorNote = "", originalReply = original,
+            timeoutMs = 5_000, providerConfig = null
+        )
+        engine.appendShadowLog(out.logLine)
+        val line = File(dir, "shadow_log.jsonl").readText()
+        assertFalse("原链路正文不进日志", line.contains(original))
+        assertFalse("影子回复正文不进日志", line.contains("影子回复正文不落日志"))
+        assertFalse("输入消息正文不进日志", line.contains(incoming))
+        assertTrue(line.contains("\"original_chars\":" + original.length))
+        assertTrue(line.contains("\"shadow_chars\":"))
+        assertEquals(original.length, out.logLine["original_chars"]!!.jsonPrimitive.int)
+        assertTrue("shadow 侧只记字符量", out.logLine["shadow_chars"]!!.jsonPrimitive.int > 0)
+        // 诊断价值保留：规则名与字符量照旧
+        assertTrue(line.contains("harness_text_rewritten"))
+        assertTrue(line.contains("\"raw_chars\":"))
+        assertFalse("日志不写哈希", line.contains("sha256"))
     }
 
     @Test

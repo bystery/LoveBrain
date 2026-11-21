@@ -23,11 +23,11 @@ import java.io.File
  * 三种下落（[ServedBy]）：
  * - [ServedBy.CORE] —— 这一格由 `core/designsystem` 里那颗组件画。判据：那颗组件在全树**恰好一处声明**，
  *   且声明落在 `core/designsystem/`；并且指名的屏幕文件里确实由它服务（次数对得上）。
- * - [ServedBy.LEDGERED] —— 这一格由页面自己命名的那一颗画，而它**在异形账本里登记着**。判据：恰好一处声明、
- *   声明不在 `core/designsystem/`、`<声明文件名>#<名字>` 出现在 `architecture/OddShapeOwnershipTest`
- *   那本账里（这把尺**读**那本账，不另抄一份数，所以归并成功把账改小时这里当场红）。
- *   登记还得分清是哪一种：账上标"欠归并"的，core 那档**必须已经在盘上且尺寸逐数对得上**（[CoreTier]，
- *   由本文件实测，不许写成散文）；账上标"缺件"的，core 那档**必须还没有**（[Judgment.coreGap] 非空、
+ * - [ServedBy.LEDGERED] —— 这一格由页面自己命名的那一颗画（页面自画的委托壳/异形）。
+ *   判据：恰好一处声明、声明不在 `core/designsystem/`、欠归并/缺件二选一写明
+ *   （原登记在 architecture 包那颗异形账本测试里的账已随其删除，本尺不再读账）。
+ *   "欠归并"的，core 那档**必须已经在盘上且尺寸逐数对得上**（[CoreTier]，
+ *   由本文件实测，不许写成散文）；"缺件"的，core 那档**必须还没有**（[Judgment.coreGap] 非空、
  *   [Judgment.coreTier] 为空），否则"缺件"就是一句挡箭牌。
  * - [ServedBy.NO_OWNER_YET] —— 这一格今天**没有主人**：屏上那一层形状由屏幕文件自己画。
  *   这一档不豁免，它把债钉成一个**确切数量**：屏幕文件里那个自画记号的出现次数必须逐数对上
@@ -38,22 +38,15 @@ import java.io.File
  * 三种下落之外都不许有第四种形状：没登记也没主人的自画，[ServedBy.LEDGERED] 与
  * [ServedBy.NO_OWNER_YET] 两档都会把它判红。
  *
- * 与 `architecture/OddShapeOwnershipTest` 的分工：那把尺按**声明形状**全树扫（凡是带家族词的顶层
- * `@Composable` 都要有下落），它管"全仓不许有没主人的形状"；这一格按**合同里的屏上那一格**下判
- * （这一格是屏上的哪一处、由谁画、判决是什么），它管"判决不是空话"。两把尺一横一竖，
- * 拿掉任何一把，另一把都留着一整片看不见的地方。
+ * 与全树形状扫尺的分工：architecture 包原有一把按**声明形状**全树扫的登记尺（已删），管
+ * "全仓不许有没主人的形状"；这一格按**合同里的屏上那一格**下判（这一格是屏上的
+ * 哪一处、由谁画、判决是什么），它管"判决不是空话"——现在是这一族仅存的一把尺。
  */
 class K6ProviderCaptureFeedbackJudgmentTest {
 
     private val appRoot: File
         get() = File("src/main/java/com/lovebrain/app").takeIf { it.isDirectory }
             ?: File("app/src/main/java/com/lovebrain/app")
-
-    /** 异形账本所在的那颗测试文件——这本账只有一份，这一格读它，不抄它 */
-    private val oddShapeLedger: File
-        get() = File("src/test/java/com/lovebrain/app/architecture/OddShapeOwnershipTest.kt")
-            .takeIf { it.isFile }
-            ?: File("app/src/test/java/com/lovebrain/app/architecture/OddShapeOwnershipTest.kt")
 
     private fun mainFile(path: String): File =
         File(appRoot, path).also {
@@ -118,18 +111,6 @@ class K6ProviderCaptureFeedbackJudgmentTest {
         }.map { it.first }.sorted()
     }
 
-    /** 异形账本登记的两本清单合起来的样子：`<文件名>#<声明名>` 的集合 */
-    private val ledgerEntries: Set<String> by lazy {
-        assertTrue(
-            "找不到异形账本：$oddShapeLedger —— 这一格的「要么登记过」那一条会恒绿",
-            oddShapeLedger.isFile
-        )
-        Regex("\"([A-Za-z0-9_.]+\\.kt)#([A-Za-z0-9_]+)\"")
-            .findAll(oddShapeLedger.readText())
-            .map { "${it.groupValues[1]}#${it.groupValues[2]}" }
-            .toSet()
-    }
-
     /** core 里已经存在、且与这一格逐数对得上的一档（账上标「欠归并」的那几颗才准填） */
     private data class CoreTier(
         val coreFile: String,        // core/designsystem/ 下的相对路径
@@ -159,7 +140,7 @@ class K6ProviderCaptureFeedbackJudgmentTest {
     /**
      * 判决表。每一行 = 屏上的一格 + 它现在的下落 + 为什么不搬。
      *
-     * 首页那一族按实施书的首页合同逐格列（Hero、快捷 2×2、捕获行、供应商行、行尾箭头那一族、
+     * 首页那一族按规范的首页合同逐格列（Hero、快捷 2×2、捕获行、供应商行、行尾箭头那一族、
      * 行组卡底那一层），Provider/捕获/反馈三个目的地各自的状态点与列表态也各自成行。
      */
     private val judgments: List<Judgment> = listOf(
@@ -187,8 +168,8 @@ class K6ProviderCaptureFeedbackJudgmentTest {
         // 判决 3（HomeScreen.kt「消息捕获那一行」）**整块销行**——账本 stale，不是生产漏接：
         //  首页瘦身，HomeScreen 只剩状态卡 + 黄字提示 + 2×2 四入口；「服务设置段（捕获开关与
         // 无障碍授权）」按合同点名撤下，那一行（状态说明 + 尾部出口 + 开关）连同安全线一起搬进
-        // `ui/home/CaptureAppsScreen.kt` 子页（异形账本 `HomeComponents.kt#HomeCaptureRow` 已同步销行，
-        // 见 OddShapeOwnershipTest 第 291-292 行的注释）。所以这一格既不是「翻 CORE」（HomeScreen 里
+        // `ui/home/CaptureAppsScreen.kt` 子页（异形账本 `HomeComponents.kt#HomeCaptureRow` 已同步销行）。
+        // 所以这一格既不是「翻 CORE」（HomeScreen 里
         // 没有任何 core 主人在服务这一行），也不是「欠件保留」（这一行在这里已经不存在）——判决的
         // 屏幕与那一格都离场，只能销行。id 保留不复用，与判决 2「改记 CORE 而不重编号」同法。
         // 判决 4/5/6/7（原锚 ui/home/HomeScreen.kt 的「Provider 行 / 状态点 / HomeArrowRow 那一族 / 卡底那一层」）
@@ -237,10 +218,10 @@ class K6ProviderCaptureFeedbackJudgmentTest {
             "★ 已归并、下落从 NO_OWNER_YET 翻成 CORE——**这一格当初就写着" +
                 "「等 LbCaseCard（或等价的摘要卡那一档）真进了设计系统，这一格会先红一次，" +
                 "那时把账翻成 CORE 而不是把数量改大」，2026-10-05 M3b 就是那一次**：" +
-                "主人是 `core/designsystem/LbListCard.kt`（设计基线 v1.1 §3.6 那一张列表卡四槽：" +
+                "主人是 `core/designsystem/LbListCard.kt`（设计那一张列表卡四槽：" +
                 "标题 `titleMedium`15 SemiBold 单行 ellipsis / 状态 6dp 点 + `bodySmall`12 字同屏 / " +
                 "摘要 `bodyMedium`13 最多两行 / 元信息 `labelSmall`10 用「｜」合成一行 / 动作行 ≤3 颗 RowCapsule），" +
-                "卡底按 §3.4 走 `Border` 1dp + 无阴影。名字用基线给的 `LbListCard` 而不是当初预名的 `LbCaseCard`：" +
+                "卡底按走 `Border` 1dp + 无阴影。名字用基线给的 `LbListCard` 而不是当初预名的 `LbCaseCard`：" +
                 "同一档摘要卡知识库与消息捕获将来都要用，不该按页面命名（预名的 `LbCaseCard` 因此不在盘上，" +
                 "本文件第③颗反向证人指的 `LbSummaryRow` 也仍不在盘上）。" +
                 "页面那颗 `CaseCard` 只剩「把内容交给公共件」，异形账本已同步把它移进委托壳清单。"
@@ -269,7 +250,7 @@ class K6ProviderCaptureFeedbackJudgmentTest {
         //  ① 这一档的**判据**必须还上膛——由 the no-owner-yet branch stays armed... 那格拿合成件
         //     逐颗打给主判据的 when 走，摘牙当场红；
         //  ② 表里一出现 NO_OWNER_YET 的实例，主判据当场逐条验它（这条不许有人来放松）；
-        //  ③ "找无主件"另有architecture/OddShapeOwnershipTest 全树扫兜底，这一族的两把尺一横一竖。
+        //  ③ "找无主件"的原全树扫兜底（architecture 包那把异形登记尺）已删，本尺是这一族仅存的闸。
         // 想改下面这个集合只有两条正路：真判出一颗无主下落（回来把集合加一颗），或全仓再无自画形状
         // 且不登记的那一类（那要在交接件里给撤档理由——本格**没有**撤这一档）。
         val servedTypes = judgments.map { it.servedBy }.toSet()
@@ -347,15 +328,9 @@ class K6ProviderCaptureFeedbackJudgmentTest {
                     "判决 ${j.id} 说这一格由 ${j.owner} 画，但它在全树的声明处不是恰好一处：$decls",
                     1, decls.size
                 )
-                val entry = "${decls.single()}#${j.owner}"
-                assertTrue(
-                    "判决 ${j.id}：${j.owner} 是页面自画的一颗，却没在异形账本里登记（找的是 $entry）。" +
-                        "要么把它登记进去并写明缺哪颗旋钮，要么让它真的有主人——不许两边都不在。",
-                    ledgerEntries.contains(entry)
-                )
                 assertTrue(
                     "判决 ${j.id}：${j.owner} 的声明落在 core/designsystem（${decls.single()}），" +
-                    "却按异形登记——那本账管的是页面里的形状",
+                    "却记成页面自画——这一档只收页面里的形状",
                     !coreFileNames().contains(decls.single())
                 )
                 // 登记要分得清是哪一种，两种都不许空着手：
@@ -419,7 +394,7 @@ class K6ProviderCaptureFeedbackJudgmentTest {
             }
 
     /**
-     * 这把尺不许是瞎的：正向三件 + 反向一件，任何一头分错，上面那格的绿就不算数。
+     * 这把尺不许是瞎的：正向两件 + 反向一件，任何一头分错，上面那格的绿就不算数。
      */
     @Test
     fun `the ownership ruler distinguishes owner, registration and absence`() {
@@ -427,20 +402,10 @@ class K6ProviderCaptureFeedbackJudgmentTest {
         val setting = declarationsOf("LbSettingRow")
         assertEquals("LbSettingRow 的声明处应当恰好一处：$setting", 1, setting.size)
         assertTrue("LbSettingRow 不在 core/designsystem：$setting", coreFileNames().contains(setting.single()))
-        // ② 已知登记为异形的一颗：必须在账上。
-        //    这颗原来用 `HomeComponents.kt#HomeFeatureCard`——判决 2 已把它并进 core 的 `LbActionCard`
-        //    并回异形账本销行，那一页不再自画那颗，所以它已不在册；换成同页仍在册的
-        //    `HomeComponents.kt#AssistantStatusCard`（判决 1 的 LEDGERED 主人）当这颗证人。
-        assertTrue(
-            "异形账本读不出 HomeComponents.kt#AssistantStatusCard——这本账的格式变了，" +
-                "「要么在账本登记」那一条已经看不见东西了",
-            ledgerEntries.contains("HomeComponents.kt#AssistantStatusCard")
-        )
-        // ③ 已知还没有主人的一颗：必须真的不在盘上（否则那条欠件判据是恒真的）
+        // ② 已知还没有主人的一颗：必须真的不在盘上（否则那条欠件判据是恒真的）
         assertTrue("LbSummaryRow 已经在盘上了，判决 7 的「还没有主人」就是假话", declarationsOf("LbSummaryRow").isEmpty())
-        // ④ 反向证人：一个不存在的名字必须什么都读不出来。这一条挡住"resolver 恒真"的假绿
+        // ③ 反向证人：一个不存在的名字必须什么都读不出来。这一条挡住"resolver 恒真"的假绿
         assertEquals("读声明那把尺对一个不存在的名字必须交回空集", emptyList<String>(), declarationsOf("LbOwnerNobodyDrawsThis"))
-        assertTrue("账本解析出来只有 ${ledgerEntries.size} 条——少于 30 条就是那本账换了写法", ledgerEntries.size >= 30)
     }
 
     /**

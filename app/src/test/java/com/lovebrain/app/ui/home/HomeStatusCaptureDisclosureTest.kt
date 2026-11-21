@@ -24,7 +24,10 @@ import com.lovebrain.app.service.CopyCaptureService
 import com.lovebrain.app.viewmodel.SetupViewModel
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -98,6 +101,13 @@ class HomeStatusCaptureDisclosureTest {
         var toggleCount = 0
         var confirmCount = 0
 
+        /**
+         * 这一页那批 IO 读数真的被跑到那一刻的信号：生产把 `floatingRunning` 当批内**第四颗**
+         * 读数调（`CaptureAppsScreen` 的 `LaunchedEffect(rescanTick)`），夹具借这颗注入口
+         * 把"生产真的走到这一批"钉成 `CompletableDeferred`——不是拿来吸收抖动的赌注。
+         */
+        val batchRead = CompletableDeferred<Unit>()
+
         /** 同意记录写入那一刻的意图读数：顺序证人（"confirm" 必须在 "no-intent-yet" 之前） */
         val confirmOrder = mutableListOf<String>()
 
@@ -132,13 +142,27 @@ class HomeStatusCaptureDisclosureTest {
     private fun mount(h: Harness) {
         rule.setContent {
             UiMatrix(360).RenderIn(androidx.compose.ui.platform.LocalDensity.current.density) {
-                CaptureAppsScreen(viewModel = h.model, onBack = {})
+                CaptureAppsScreen(
+                    viewModel = h.model,
+                    onBack = {},
+                    // 第四颗读数的注入口当信号用：批内真的调到它 = 生产真的走到这一批
+                    floatingRunning = { h.batchRead.complete(Unit); false }
+                )
             }
         }
         rule.waitForIdle()
-        // **等这一批 IO 读数落位之后再许点**，不是"睡一会儿"：
+        // **先等"这一批 IO 读数真的被跑到"再许点**，不赌一段固定延时：
+        // `waitForIdle` 不跟踪 `Dispatchers.IO` 上的协程，全量并行 fork 把冷 JVM、
+        // mockk 插桩与 Robolectric 挤进同一个高载窗口时，"睡/轮询够久"可能等不到——
+        // 旧写法就在那一格里两次跑出两种颜色。等的是纯锁（CompletableDeferred.await），
+        // 不依赖主线程活着，5s 是"超时就是量具坏了"的哨兵（照 GenBatchTest t5 同款配方）。
+        runBlocking { withTimeoutOrNull(5_000) { h.batchRead.await() } }
+            ?: error("这一批 IO 读数从未被生产跑到（量具坏了，不是断言松紧）")
+        // 读完的回派（四颗事实 + scanning=false 落进合成状态）要主线程泵一拍
+        rule.waitForIdle()
+        // **等这一批读数落位之后再许点**，不是"睡一会儿"：
         // `CaptureAppsScreen` 把扫包 / 无障碍授权 / 这一版同意记录读成一批，并把
-        // `scanning = false` 排在三个赋值的**最后一颗**，所以"列表里那一行画出来了"
+        // `scanning = false` 排在赋值的**最后一颗**，所以"列表里那一行画出来了"
         // 就是"闸门要吃的两颗布尔都已经落位"的可观测定点。
         // 不等这一格会把量具自己测红：`waitForIdle` 不跟踪 `Dispatchers.IO` 上的协程，
         // 于是"已授予不骚扰"那一格可能在 `granted` 还是初值 false 时被点下去，

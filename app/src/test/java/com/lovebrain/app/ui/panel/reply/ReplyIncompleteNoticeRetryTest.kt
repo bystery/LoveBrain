@@ -16,7 +16,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 八项没生成齐时，提示条里那颗「重试」**真的把回调打出去**（指导书 第13节第1条：
+ * 八项没生成齐时，提示条里那颗「重试」**真的把回调打出去**（规范 第13节第1条：
  * 「应坦诚显示未完整生成与可用的重试」）。
  *
  * 为什么单独挂这一颗：`ResultArea` 的 `onRetry` 参数在 2026-10-08 之前一直是**有槽无行为**——

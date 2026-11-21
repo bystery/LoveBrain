@@ -19,7 +19,7 @@ import kotlin.math.abs
  * - 临时隐藏恢复：横向同拖拽，纵向同吸边，且把上限再兜一层 coerceAtLeast(48)。
  * 用 identity 的 dp（1dp=1px）跑，断言都是看得懂的数。
  *
- * ═══ M04 之后这些格**按档位跑**（指导书 2026-10-10 §1）═══
+ * ═══ M04 之后这些格**按档位跑**═══
  * 以前每一格都硬写 `mainSize = 56`，那既是全仓唯一的尺寸真值、也是唯一被量过的那一档。
  * 现在档位有三颗（[BubbleSizeTier.ALLOWED_DP] = 48 / 56 / 64），所以：
  * - 三把尺的每一格都对**三档各跑一遍**，期望值一律写成 `f(size)` 的算式，而不是抄三个数进来；
@@ -43,7 +43,7 @@ class OverlayBubbleWindowTest {
     @Test
     fun `the tier ruler has exactly three sizes and its default is the size on screen today`() {
         assertEquals("三档就是小/标准/大这三颗，从小到大", listOf(48, 56, 64), tiers)
-        assertEquals("默认档必须是 56：§1 验收「默认外观与现有版本一致」靠这一颗成立", 56, BubbleSizeTier.DEFAULT_DP)
+        assertEquals("默认档必须是 56：验收「默认外观与现有版本一致」靠这一颗成立", 56, BubbleSizeTier.DEFAULT_DP)
         assertEquals("落盘键拼写一旦上线就是盘上格式", "bubble_size_dp", BubbleSizeTier.PREF_KEY)
     }
 
@@ -290,7 +290,7 @@ class OverlayBubbleWindowTest {
             val code = SourceScan.maskComments(file.readText(Charsets.UTF_8))
             assertFalse(
                 "$name 里不许再读 AppConfig.BUBBLE_SIZE：那颗单一尺寸常量已被 BubbleSizeTier 取代，" +
-                    "留着它就有第二份真值（窗口 56dp、球体另算就是书 §1 点名的坏法）",
+                    "留着它就有第二份真值（窗口 56dp、球体另算就是点名的坏法）",
                 code.contains("BUBBLE_SIZE")
             )
         }

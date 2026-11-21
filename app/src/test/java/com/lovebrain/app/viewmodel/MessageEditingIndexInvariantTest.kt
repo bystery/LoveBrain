@@ -1,6 +1,7 @@
 package com.lovebrain.app.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.lovebrain.app.data.KnowledgeRepository
 import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.domain.PromptBuilder
@@ -14,6 +15,7 @@ import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -45,10 +47,20 @@ class MessageEditingIndexInvariantTest {
 
     private var cases = 0
 
+    /**
+     * 虚拟主调度器必须与 runTest 共用同一颗：viewModelScope（init 里的建库/工单刷新/计费订阅）
+     * 全派在 Main 上。若 setMain 与 runTest 各持一颗调度器，advanceUntilIdle 泵的是空的那颗，
+     * 生产 init 永远不执行，"等生产真的走到那一步"就退化成死等赌注。共享后
+     * advanceUntilIdle 才真的把 init 排空，断言前的状态是生产结算过的状态。
+     */
+    private val mainDispatcher = StandardTestDispatcher()
+
+    /** 本类创建的全部 VM：teardown 要逐个掐断 viewModelScope，不让 init 协程活过 resetMain */
+    private val createdVms = mutableListOf<LoveBrainViewModel>()
+
     private fun newVm(): LoveBrainViewModel {
         val prefs = mockk<SecurePrefs>(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -61,7 +73,7 @@ class MessageEditingIndexInvariantTest {
         coEvery { repo.readVector(any()) } returns emptyMap()
         coEvery { repo.getCorrectionsRevision(any()) } returns 0
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns ConfigValidationResult(0, emptyList())
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             knowledgeRepo = repo,
@@ -73,7 +85,7 @@ class MessageEditingIndexInvariantTest {
             operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(
                 kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob())
             )
-        )
+        ).also { createdVms.add(it) }
     }
 
     @Before
@@ -84,11 +96,19 @@ class MessageEditingIndexInvariantTest {
         every { Log.e(any(), any<String>()) } returns 0
         every { Log.i(any(), any<String>()) } returns 0
         every { Log.d(any(), any<String>()) } returns 0
-        Dispatchers.setMain(StandardTestDispatcher())
+        Dispatchers.setMain(mainDispatcher)
     }
 
     @After
     fun tearDown() {
+        // 撤 Main 的顺序有讲究（全量门禁 XML 实证）：init 协程若还挂在真实 Dispatchers.IO 上，
+        // resetMain 之后才回派 Main 就炸 "Module with the Main dispatcher had failed to
+        // initialize"，账算到 fork 里下一个开跑的类头上（单类跑没有"下一类"，永远绿）。所以：
+        // ①先掐断本类创建的全部 VM，init 后台协程当场死；
+        createdVms.forEach { it.viewModelScope.cancel() }
+        // ②共享调度器排空取消与收尾的回派；
+        mainDispatcher.scheduler.advanceUntilIdle()
+        // ③最后才撤 Main。
         Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
@@ -119,7 +139,7 @@ class MessageEditingIndexInvariantTest {
     }
 
     @Test
-    fun reorderNeverStrandsTheEditingIndex() = runTest {
+    fun reorderNeverStrandsTheEditingIndex() = runTest(mainDispatcher) {
         for (n in 1..4) {
             for (editing in -1 until n) {
                 for (from in 0 until n) for (to in 0 until n) {
@@ -139,7 +159,7 @@ class MessageEditingIndexInvariantTest {
     }
 
     @Test
-    fun removingMessagesKeepsTheEditingIndexOnTheSameMessage() = runTest {
+    fun removingMessagesKeepsTheEditingIndexOnTheSameMessage() = runTest(mainDispatcher) {
         for (n in 1..4) {
             for (editing in -1 until n) {
                 for (victim in 0 until n) {
@@ -168,7 +188,7 @@ class MessageEditingIndexInvariantTest {
 
     /** 没有编辑位时，两个操作都不该擅自造出一个编辑位 */
     @Test
-    fun operationsWithoutAnEditingIndexDoNotInventOne() = runTest {
+    fun operationsWithoutAnEditingIndexDoNotInventOne() = runTest(mainDispatcher) {
         val vm = newVm()
         seed(vm, 3, -1)
         advanceUntilIdle()
@@ -191,7 +211,7 @@ class MessageEditingIndexInvariantTest {
      * `editingIndex >= 0` 就进编辑态——等于允许界面显示"正在编辑一条不存在的消息"。
      */
     @Test
-    fun aDanglingEditingIndexIsClearedByRealOperations() = runTest {
+    fun aDanglingEditingIndexIsClearedByRealOperations() = runTest(mainDispatcher) {
         val vm = newVm()
         seed(vm, 3, 2)
         vm.setEditingIndex(7)

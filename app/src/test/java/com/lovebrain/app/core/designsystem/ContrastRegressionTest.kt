@@ -85,12 +85,12 @@ class ContrastRegressionTest {
     }
 
     /**
-     * 单方法覆盖全部 7 个修后组合（ 口径：本批新增用例恰 1）。
+     * 单方法覆盖全部 7 个修后组合（口径：本批新增用例恰 1）。
      * 断言组合：
      * - TextHint vs SurfaceCard / SurfaceInset / PrimaryLight
      * - Success vs SurfaceCard；白字 on Success
      * - Warning vs SurfaceCard；Warning vs WarningBg
-     * - 2026-10-10 §5 主卡改回浅蓝底之后加的两对：TextPrimary / TextSecondary vs PrimaryLight
+     * - 2026-10-10主卡改回浅蓝底之后加的两对：TextPrimary / TextSecondary vs PrimaryLight
      *   （主页主卡的标题与次级文案现在住在 `PrimaryLight` 上，这两对是本屏真实存在的组合；
      *   加在**同一个方法**里，用例数仍为 1，不新开一格）
      */

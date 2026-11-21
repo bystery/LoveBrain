@@ -24,10 +24,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -93,16 +91,10 @@ class SetupViewModelSettingsSaveTest {
         every { prefs.getWorkerApiKey("A") } returns "sk-key-A"
         every { prefs.getWorkerApiKey("B") } returns "sk-key-B"
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
         every { prefs.loadTodayCost() } returns null
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
     }
 
     private fun newPanelViewModel(
@@ -116,7 +108,7 @@ class SetupViewModelSettingsSaveTest {
             (emptyMap<String, com.lovebrain.app.model.MemoryCorrection>() to 0)
         coEvery { knowledgeRepo.readIntent(any()) } returns com.lovebrain.app.model.IntentConfig()
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns ConfigValidationResult(0, emptyList())
         every { promptBuilder.assetHashOf(*anyVararg()) } returns "asset-hash"
         return LoveBrainViewModel(
             deepSeekRepo = mockk<DeepSeekRepository>(relaxed = true),

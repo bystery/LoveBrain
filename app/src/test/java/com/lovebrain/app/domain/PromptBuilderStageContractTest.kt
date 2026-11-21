@@ -1,6 +1,7 @@
 package com.lovebrain.app.domain
 
 import com.lovebrain.app.model.StageCatalog
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -89,6 +90,8 @@ class PromptBuilderStageContractTest {
 
     @Test
     fun `all AssetRegistry registered assets exist on test classpath`() {
+        // 2026-11-21：aggressive.md 已随进攻模式整块删除，registry 的常量与 ALL 登记也清掉了。
+        // 这条守卫恢复严格口径：ALL 里每一格都必须真实存在（启动自检同理）。
         AssetRegistry.ALL.forEach { path ->
             val res = javaClass.classLoader!!.getResource(path)
             assertTrue(
@@ -96,6 +99,10 @@ class PromptBuilderStageContractTest {
                 res != null
             )
         }
+        assertFalse(
+            "AssetRegistry.ALL 仍登记已删除的 aggressive.md",
+            AssetRegistry.ALL.any { it.contains("aggressive") }
+        )
     }
 
     // : suggest.md 已重写——不再包含阶段标题，此一致性检查只看 stage.md。

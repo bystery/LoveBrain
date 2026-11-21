@@ -92,7 +92,7 @@ import kotlin.math.abs
  *
  * ## 夹具边界（如实写明，别把它读成"真机"）
  *
- * 宿主那一层按 `SettingsPageVisualBaselineTest` 同一份复现：`LoveBrainTheme` 长在悬浮窗
+ * 宿主那一层按原型页同一份复现：`LoveBrainTheme` 长在悬浮窗
  * `ComposeView` 的根上，面板根部给 `padding(start/end = Spacing.xl, bottom = Spacing.lg)` 与表面底色。
  * 这两颗不补时本机实量到的是"组名贴窗口左缘被切半字 + 滑杆回到 Material 紫"——那是量具瞎。
  * `@Config(qualifiers)` 钉死 `zh-rCN`（locale 不写等于不固定，换台机器换语言就换读数）与
@@ -197,8 +197,7 @@ class SettingsPagePrototypeFidelityTest {
      * 0 对 0，整格恒绿）。`Box` 把同一份约束分别交给每个子节点，参照拿到满窗，量得到数。
      *
      * 挂完先判"整页画进这一窗"再让用例量东西：`verticalScroll` 会把滚出去的那半截照样组合进树、
-     * 照样报完整文案，拿它的几何做判据 = 拿一张看不见的图做判据（同一件事写在
-     * `SettingsPageVisualBaselineTest#assertWholePageIsDrawnBeforeCapture`）。
+     * 照样报完整文案，拿它的几何做判据 = 拿一张看不见的图做判据（所以先判整页画进这一窗）。
      */
     private fun mountPage(
         widthDp: Int = PROTOTYPE_WIDTH_DP,
@@ -536,7 +535,7 @@ class SettingsPagePrototypeFidelityTest {
      *
      * 这一条判的就是10-11 那一版那张脸：三颗各自带描边的盒子、中间空一大段。
      * ⚠ 描边本身是**画**出来的，语义树里没有这一槽，所以这里用的是"轨道包住 + 格子相邻"这一族
-     *   只有量才能看见的等价证据；描边那一半由整页截图基线（`SettingsPageVisualBaselineTest`）看着。
+     *   只有量才能看见的等价证据；描边那一半的像素级闸（原整页截图基线）已随基线族删除，暂无人看着。
      */
     private fun trackViolations(
         trackName: String,
@@ -612,7 +611,7 @@ class SettingsPagePrototypeFidelityTest {
      * 宽度不低于"同一颗件同文案的自然宽参照"、没被撑高（换行）、右缘不出内容框、且在输入框右侧。
      *
      * ⚠ "三档都看得见完整两个字"只能这么量：语义树在被裁掉的那一截上仍报完整字符串
-     * （同一条坑写在 `LongProviderNameSemanticsTest`），所以"读得出『保存』两个字"证明不了"看得见"；
+     * （本仓库记过同一条坑），所以"读得出『保存』两个字"证明不了"看得见"；
      * 也不许抄一个宽度字面量当判据（字号或词表哪天一改就假红），比的是**另一颗同文案参照**。
      */
     private fun saveRowViolations(

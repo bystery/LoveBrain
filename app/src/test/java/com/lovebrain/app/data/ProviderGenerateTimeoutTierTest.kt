@@ -227,7 +227,7 @@ class ProviderGenerateTimeoutTierTest {
             LoveBrainResponse(response = ReplySchemes(recommended = "r"))
         val pb = mockk<PromptBuilder>(relaxed = true)
         every { pb.buildSystemPrompt() } returns "system"
-        coEvery { pb.buildReplyUserPromptWithRefs(any(), any(), any(), any(), any(), any()) } returns
+        coEvery { pb.buildReplyUserPromptWithRefs(any(), any(), any(), any(), any()) } returns
             PromptBuilder.PromptBuildResult("user", emptyList())
         every { pb.replyPromptAssetHash() } returns "assets"
         return GenerationEngine(gateway, pb)
@@ -238,7 +238,7 @@ class ProviderGenerateTimeoutTierTest {
             requestId = "req-tier", messages = emptyList(), userHint = "", knowledgeBase = null,
             intentConfig = com.lovebrain.app.model.IntentConfig(),
             corrections = emptyMap(), correctionsRevision = 0,
-            onlyThisRound = false, aggressive = false,
+            onlyThisRound = false,
             providerIdentity = config.toIdentity(),
             kbProfile = "", kbRevision = "rev", promptAssetHash = "assets"
         )
@@ -434,7 +434,7 @@ class ProviderGenerateTimeoutTierTest {
         val events = mutableListOf<ProactiveEvent>()
         val job = launch {
             engineOnANeverEndingStream(config)
-                .proactiveStream("req-pro", "", null, emptyList())
+                .proactiveStream("req-pro", "")
                 .collect { events.add(it) }
         }
         settleIntoTheStreamWindow()
@@ -456,7 +456,7 @@ class ProviderGenerateTimeoutTierTest {
         val events = mutableListOf<ProactiveEvent>()
         val job = launch {
             engineOnANeverEndingStream(configAt(60))
-                .proactiveStream("req-pro", "", null, emptyList())
+                .proactiveStream("req-pro", "")
                 .collect { events.add(it) }
         }
         settleIntoTheStreamWindow()

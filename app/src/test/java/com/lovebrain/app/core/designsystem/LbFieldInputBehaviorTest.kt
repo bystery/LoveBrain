@@ -20,6 +20,7 @@ import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.longClick
@@ -339,6 +340,82 @@ class LbFieldInputBehaviorTest {
                 threeLines, node.config.getOrNull(SemanticsProperties.EditableText)?.text
             )
         }
+    }
+
+    // ═══════════ Row 档横向滚动（长文本不许折行裁切） ═══════════
+
+    /**
+     * Row 档：长文本必须**横向滚得动**，不是折到第二行去（`maxLines = 1` 下第二行永远看不见）。
+     *
+     * 判据只用横向滚动语义的 `maxValue`：内容比视口宽 ⇒ > 0。
+     * 折行的实现在这颗视口上恒为 0（没有这颗节点时本格直接失败），这正是这个 bug 的形状；
+     * 不拿节点高度判——`maxLines = 1` 下折行也只画一行，高度区分不出"折了还是滚了"，
+     * 所以它当初躲过了视觉断言。
+     */
+    @Test
+    fun `long row text scrolls horizontally instead of wrapping out of view`() {
+        val longText = "长".repeat(120)
+        val host = mountField(initial = longText)
+
+        assertEquals("长文本一个字都不许丢（折行裁切若发生在内容轴，这里会少字符）", longText, host.value)
+        assertEquals("语义树里的编辑文本同样是全文", longText, editableText())
+        val (_, max) = horizontalRange()
+        assertTrue(
+            "长文本必须落在一颗可横向滚动的视口里（max=$max）；折行的实现这里恒为 0",
+            max > 0f
+        )
+    }
+
+    /**
+     * 粘贴进来的长文本 + 换行：值原样保留（内容轴），同时视口仍可横向滚动（视觉轴）。
+     * 两轴各判一次——把换行拍平或把长行折掉，都会让其中一条红。
+     */
+    @Test
+    fun `a long pasted value keeps its newline and still scrolls horizontally`() {
+        val longLine = "a".repeat(100)
+        val pasted = "$longLine\nsecond"
+        val host = mountField()
+        val field = rule.onNode(hasSetTextAction())
+        field.performClick()
+        field.performTextInput(pasted)
+        rule.waitForIdle()
+
+        assertEquals("粘贴值必须原样保留（含换行）", pasted, host.value)
+        assertEquals("语义树里的编辑文本也原样带换行", pasted, editableText())
+        val (_, max) = horizontalRange()
+        assertTrue("第一行仍比视口宽、仍可横向滚动（max=$max）", max > 0f)
+    }
+
+    /** 打一长串：光标必须被带进视口（否则"看不见正在打的字"就是修完滚动后的新病） */
+    @Test
+    fun `typing past the row viewport keeps the caret in view`() {
+        val longText = "long-text-".repeat(30)
+        val host = mountField()
+        val field = rule.onNode(hasSetTextAction())
+        field.performClick()
+        rule.waitForIdle()
+        field.performTextInput(longText)
+        rule.waitForIdle()
+        // 光标跟随是"布局落定之后的一颗 LaunchedEffect"，多泵几帧让它真的跑完
+        repeat(5) { rule.mainClock.advanceTimeBy(16L) }
+        rule.waitForIdle()
+
+        assertEquals("整段都进了值", longText, host.value)
+        val (offset, max) = horizontalRange()
+        assertTrue("超宽文本必须可横向滚动（max=$max）", max > 0f)
+        assertTrue(
+            "打完一长串之后视口必须跟着光标走（scroll=$offset）：光标留在视口外 = 看不见正在打的字",
+            offset > 0f
+        )
+    }
+
+    /** 横向滚动视口的语义读数：(`当前偏移`, `最大偏移`)；节点不存在/没有这颗语义就当场失败 */
+    private fun horizontalRange(): Pair<Float, Float> {
+        // 输入框自己的语义是 mergeDescendants 的，滚动那颗必须去未合并树里找
+        val node = rule.onNode(hasScrollAction(), useUnmergedTree = true).fetchSemanticsNode()
+        val range = node.config.getOrNull(SemanticsProperties.HorizontalScrollAxisRange)
+            ?: error("找不到横向滚动语义：Row 档没有把可编辑节点包进横向滚动视口")
+        return rule.runOnIdle { range.value() to range.maxValue() }
     }
 
     // ═══════════ 焦点/意图：边沿触发 ═══════════

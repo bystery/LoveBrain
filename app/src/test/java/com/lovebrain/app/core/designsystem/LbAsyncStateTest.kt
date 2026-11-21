@@ -125,7 +125,7 @@ class LbAsyncStateTest {
     }
 
     /**
-     * 四档 modifier 归属里最要紧的那一格：**Content 档的外盒尺寸必须跟随传入约束**（基线 v1 §3.12 / M11）。
+     * 四档 modifier 归属里最要紧的那一格：**Content 档的外盒尺寸必须跟随传入约束**（M11）。
      *
      * `LbAsyncState` 四支里 Content 那支从前写成 `content(state.value)`、一个字节都没吃传入 `modifier`
      * （`KbEditActivity` 传下去的 `weight(1f)` 因此在 Content 档被丢弃）。现在写成

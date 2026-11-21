@@ -9,12 +9,12 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 /**
- * 事件存储验收（规格书 §5.4 对拍项 + 审计 F2-1）：
+ * 事件存储验收：
  * - 同一 msgUid 重发不重复入库（uid 复用、顺序稳定）——同一 pending 轮重试 = 同一事件；
  * - **同分钟同内容的不同消息（不同 msgUid）各成一条事件**——旧 `role|text|ts` 键会把
- *   对方同一分钟连发的两条"好"合并成一条，审计 F2-1 修复的正是这一丢消息形状；
+ *   对方同一分钟连发的两条"好"合并成一条，msgUid 去重修的正是这一丢消息形状；
  * - 回复草稿入库请求被拒（reply never committed）；空 msgUid 同样在入口被拒；
- * - 存储落盘往返（第 7 个写入面：`champion_events/<sha 命名>.json`）。
+ * - 存储落盘往返（第 7 个写入面：`champion_events/<摘要命名>.json`）。
  */
 class ChampionEventStoreTest {
 
@@ -52,7 +52,7 @@ class ChampionEventStoreTest {
 
     @Test
     fun `two identical texts in the same minute are two distinct events`() = runTest {
-        // 审计 F2-1 主案情：提交侧时间只格式化到分钟，旧 role|text|ts 键把同一分钟
+        // 提交侧时间只格式化到分钟，旧 role|text|ts 键把同一分钟
         // 连发的两条"好"合并成一条——真实对话顺序被丢弃。msgUid 不同 ⇒ 两条事件。
         val store = newStore()
         store.append("k", listOf(
@@ -149,12 +149,57 @@ class ChampionEventStoreTest {
 
     @Test
     fun `distinct keys never collapse into one file even when sanitization collides`() {
-        // 审计 R2-2：文件名 = 清洗前缀 + SHA-256(key)——清洗多对一不再导致互相覆盖
+        // 文件名 = 清洗前缀 + SHA-256(key)——清洗多对一不再导致互相覆盖
         val dir = tmp.newFolder()
         val storage = FileChampionEventStorage(dir)
         storage.save("a/b c", ChampionEventState(uidSeq = 1))
         storage.save("a_b_c", ChampionEventState(uidSeq = 2))
         assertEquals(1, storage.load("a/b c").uidSeq)
         assertEquals(2, storage.load("a_b_c").uidSeq)
+    }
+
+    // ─── 坏 JSON 不许当空态回写（历史与 uidSeq 全灭），rename 前要 fsync ───
+
+    @Test
+    fun `corrupt event file aborts append and keeps the original bytes`() = runTest {
+        val dir = tmp.newFolder()
+        val storage = FileChampionEventStorage(dir)
+        storage.save(
+            "k",
+            ChampionEventState(
+                events = listOf(ChampionEvent(0L, "HER", "旧消息", "2026-11-06 09:00", 1, "m0")),
+                uidSeq = 1
+            )
+        )
+        val file = dir.listFiles()!!.single()
+        file.writeText("{ broken", Charsets.UTF_8)
+
+        val thrown = runCatching {
+            kotlinx.coroutines.runBlocking {
+                ChampionEventStore(storage).append(
+                    "k", listOf(msg("HER", "新消息", "2026-11-06 10:00", "m1")), turn = 2
+                )
+            }
+        }.exceptionOrNull()
+
+        assertTrue("坏数据必须在 load 处打断，不许被当成空态：$thrown", thrown is ChampionEventCorruptException)
+        assertEquals("原文件一个字节都不许被覆盖", "{ broken", file.readText(Charsets.UTF_8))
+    }
+
+    @Test
+    fun `saving over an unreadable file preserves it aside instead of overwriting`() {
+        val dir = tmp.newFolder()
+        val storage = FileChampionEventStorage(dir)
+        storage.save("k", ChampionEventState(uidSeq = 1))
+        val file = dir.listFiles()!!.single()
+        file.writeText("{ broken", Charsets.UTF_8)
+
+        // 正常路径不会走到这里（append 先在 load 处抛）；直接 save 的调用方也不许原地覆盖
+        storage.save("k", ChampionEventState(uidSeq = 2))
+
+        val preserved = dir.listFiles()!!.filter { it.name.contains(".corrupt-") }
+        assertEquals("坏文件必须被保留成旁证：${dir.list()?.toList()}", 1, preserved.size)
+        assertEquals("{ broken", preserved.single().readText(Charsets.UTF_8))
+        assertEquals("新状态照常落盘", 2, storage.load("k").uidSeq)
     }
 }

@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -41,7 +45,7 @@ import org.robolectric.annotation.GraphicsMode
  * 「正在被引用的具体内容」这一族在屏幕上的三条判据，每条都能被一种具体的坏实现打破：
  *
  * ① **没有真引用就一块都不画**（`an empty ref list draws nothing`）——
- *    空清单时铺一张带说明句与「收起」的空壳、或者替这一轮编一条占位条目，红。
+ *    空清单时铺一个带说明句的空壳、或者替这一轮编一条占位条目，红。
  *    这一条盯的就是用户原话里那件没底的事：开着「仅看本轮」的那一轮，旧记忆整块没进
  *    prompt，请求侧交回来的清单**本来就是空的**（`buildReplyUserPromptOnlyThisRound`
  *    返回空 refs，`GenerationEngine` 把那份空清单原样发成事件）。这时屏幕上还画得出
@@ -49,7 +53,7 @@ import org.robolectric.annotation.GraphicsMode
  *    东西逐字同形，不是随手 `emptyList()` 凑个数。
  *    光这一条还不算钉住：整块被删空同样永远数到 0。反向证人在
  *    `a real ref still renders`——同一个挂载路径传一条真引用，正文、入口、短标签、
- *    「收起」都必须读得到。两格一起才说明红绿是判据在起作用。
+ *    首行计数与行尾「纠正中心」都必须读得到。两格一起才说明红绿是判据在起作用。
  * ①ʼ **开关开着的那一轮不许画任何引用，哪怕手里攥着一条**
  *    （`a round-only turn draws no refs even when a non-empty list is handed in`）——
  *    第10节第3条 点名的就是这一格："「仅看本轮」开启后没有旧记忆引用，不能仍显示假引用。"
@@ -61,13 +65,13 @@ import org.robolectric.annotation.GraphicsMode
  *    inputs` 把 `memoryRefsFeedVisible` 的整个输入空间钉成"有且只有一种输入画得出"，
  *    两侧同时夹住（漏布尔 ⇒ 那四行红；整块删空 ⇒ "恰好一种"红）。它存在是因为同一族那台
  *    Robolectric 仪器这一轮出过 8 格锚点漂移的红，禁令得有一条不靠那台仪器也读得数的判据。
- * ② **说明只有一句，而且日常页面不常驻技术解释**
+ * ② **壳只有首行计数与行尾动作，日常页面不常驻技术解释**
  *    （`the feed speaks exactly one sentence of explanation` /
  *    `the menu offers the four wordings plus undo`）——
- *    展开区里说得出字的句子必须**正好是那张表里的那些**：说明一句、短标签、正文、入口、
- *    「收起」。多叠一行使用说明（哪怕只是把卡片下方那句"这轮参考了哪些信息"再念一遍）
- *    就红。行尾菜单里以前每项跟一行技术解释（「标记为错误内容」「暂停作为续聊素材」…），
- *    那五行现在一颗都不许在树里。
+ *    展开区里说得出字的句子必须**正好是那张表里的那些**：首行「本轮参考 N 条」、短标签、
+ *    正文、入口、行尾「纠正中心」。多叠一行使用说明（问句标题、「调整军师本轮参考的记忆」
+ *    那类句子已在 2026-11-21 信息减法里退场）就红。行尾菜单里以前每项跟一行技术解释
+ *    （「标记为错误内容」「暂停作为续聊素材」…），那五行现在一颗都不许在树里。
  * ③ **入口点开的就是那四种说法 + 撤销，各交回原有的那一种纠正**
  *    （`every wording hands over the correction it names`）——
  *    名字走资源（中英各一份），交出去的 `CorrectionAction` 与改词之前一字不差；
@@ -99,8 +103,10 @@ class MemoryRefsFeedTest {
 
     // ── 这一族的可见名字：与生产取的是同一份资源 ─────────────────────────
     private val entryLabel get() = app.getString(R.string.memory_fix_entry)
-    private val noteLabel get() = app.getString(R.string.memory_refs_note)
-    private val collapseLabel get() = app.getString(R.string.action_collapse)
+    private val centerLabel get() = app.getString(R.string.memory_center_entry)
+
+    /** 容器首行的计数句：N 必须是真条数，测试也从同一份资源按同一颗格式拼 */
+    private fun summaryOf(count: Int): String = app.getString(R.string.memory_refs_summary, count)
     private val wrongLabel get() = app.getString(R.string.memory_action_wrong)
     private val muteLabel get() = app.getString(R.string.memory_action_mute)
     private val finishedLabel get() = app.getString(R.string.memory_action_finished)
@@ -120,13 +126,32 @@ class MemoryRefsFeedTest {
     /** 调用方交回来的动作，这一格只记录、不落盘 */
     private var correctionCalls = mutableListOf<Triple<String, CorrectionAction, MuteDuration>>()
     private var undoCalls = mutableListOf<String>()
+
+    /**
+     * 「这一行刚交出去过纠正」的登记账：四种说法都必须经 [com.lovebrain.app.ui.panel.reply.MemoryRefsSection]
+     * 的 `onRefCorrected` 交回一次（新契约——登记住在调用方 ResultArea 的
+     * `remember(generationRoundId)`，清单只消费入参）。
+     */
+    private var registeredIds = mutableListOf<String>()
     private val flow = MemoryCorrectionFlow()
 
     private fun mount(refs: List<MemoryRef>, showRefs: Boolean, onlyThisRound: Boolean = false) {
         correctionCalls.clear()
         undoCalls.clear()
+        registeredIds.clear()
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
+                // 调用方那一侧的同一份契约（ResultArea）：登记账住在调用方，
+                // 纠正经 onRefCorrected 加一条、撤销把那一条摘出去，清单只读入参
+                var correctedIds by remember { mutableStateOf(emptySet<String>()) }
+                val onRefCorrected: (String) -> Unit = {
+                    registeredIds.add(it)
+                    correctedIds = correctedIds + it
+                }
+                val onRefUndo: (String) -> Unit = {
+                    correctedIds = correctedIds - it
+                    undoCalls.add(it)
+                }
                 Box(modifier = Modifier.width(360.dp).height(900.dp)) {
                     Column {
                         MemoryRefsSection(
@@ -135,9 +160,11 @@ class MemoryRefsFeedTest {
                             onCorrection = { id, action, _, duration ->
                                 correctionCalls.add(Triple(id, action, duration))
                             },
-                            onUndoCorrection = { id -> undoCalls.add(id) },
+                            onUndoCorrection = onRefUndo,
                             correctionFlow = flow,
-                            onlyThisRound = onlyThisRound
+                            onlyThisRound = onlyThisRound,
+                            correctedIds = correctedIds,
+                            onRefCorrected = onRefCorrected
                         )
                     }
                 }
@@ -207,13 +234,14 @@ class MemoryRefsFeedTest {
         assertEquals("空清单不该有可点入口", 0, clickableCount())
     }
 
-    /** ① 的反向证人：真引用进来必须念得出正文、入口、短标签与那条回得去的路 */
+    /** ① 的反向证人：真引用进来必须念得出正文、入口、短标签、首行计数与行尾动作 */
     @Test
     fun `a real ref still renders`() {
         mount(refs = listOf(refA), showRefs = true)
         assertEquals("真引用的正文必须读得到", 1, plainTextCount(refA.text))
         assertEquals("真引用旁边必须恰好有一颗入口", 1, buttonCount(entryLabel))
-        assertEquals("展开区得恰好给一条回得去的路", 1, buttonCount(collapseLabel))
+        assertEquals("首行计数小字念的是真条数", 1, plainTextCount(summaryOf(1)))
+        assertEquals("行尾那颗「纠正中心」常驻动作必须在", 1, buttonCount(centerLabel))
         assertEquals("正文旁边那颗短标签走的是资源，不是 Kotlin 常量",
             1, plainTextCount(kindLabel(refA)))
     }
@@ -229,7 +257,7 @@ class MemoryRefsFeedTest {
      *
      * 三种坏实现都被这一格打破：
      * - **没接这颗布尔**（`visible` 只看 `memoryRefs.isNotEmpty()`，也就是这一格改之前的写法）
-     *   → 正文/入口/标签/「收起」四样全部涨过 0，红；
+     *   → 正文/入口/标签/首行计数四样全部涨过 0，红；
      * - **接了但顺手补一句解释**（"本轮只看当前对话，没有引用旧记忆"之类）
      *   → 可见文字从 0 变成 1，红；
      * - **画一颗灰掉的开关/占位条目** → 可点数或文字数涨过 0，红。
@@ -256,7 +284,7 @@ class MemoryRefsFeedTest {
         mount(refs = listOf(refA), showRefs = true, onlyThisRound = false)
         assertEquals("关闭开关的那一轮正文必须读得到", 1, plainTextCount(refA.text))
         assertEquals("关闭开关的那一轮恰好一颗入口", 1, buttonCount(entryLabel))
-        assertEquals("关闭开关的那一轮给一条回得去的路", 1, buttonCount(collapseLabel))
+        assertEquals("关闭开关的那一轮首行计数在", 1, plainTextCount(summaryOf(1)))
     }
 
     /**
@@ -286,7 +314,8 @@ class MemoryRefsFeedTest {
      *   renders` 与这一格"必须恰好画得出一种"两头夹）；
      * - 只钉"关着 ⇒ 画"这一侧：漏掉那颗布尔的实现恒绿（`onlyThisRound` 那四行立刻红）；
      * - 把 `showRefs` 也当成"能不画"的挡箭牌（即只按 `!onlyThisRound` 判）：
-     *   `a collapsed feed stays out of the way` 那一侧同样会红，因为收起态本来就不画。
+     *   `a collapsed feed leaves only the one-line summary` 那一侧同样会红，因为收起态
+     *   清单本体本来就不画。
      */
     @Test
     fun `the visibility gate is one truth table over its three inputs`() {
@@ -342,47 +371,52 @@ class MemoryRefsFeedTest {
     fun `the feed speaks exactly one sentence of explanation`() {
         mount(refs = listOf(refA), showRefs = true)
         assertEquals(
-            "展开区里的每一句可见文字都该在这张表里；说明整块只许一句",
-            setOf(noteLabel, kindLabel(refA), refA.text, entryLabel, collapseLabel),
+            "展开区里的每一句可见文字都该在这张表里；壳只剩首行计数与行尾动作，不再有说明句",
+            setOf(summaryOf(1), kindLabel(refA), refA.text, entryLabel, centerLabel),
             spokenTexts()
         )
-        assertEquals("说明句只念得出一次", 1, plainTextCount(noteLabel))
+        assertEquals("首行计数只念得出一次", 1, plainTextCount(summaryOf(1)))
         assertTrue(
-            "那一句必须短到一行内说完（产品口径：必要说明最多一句），实到「$noteLabel」",
-            !noteLabel.contains('\n') && noteLabel.count { it == '.' || it == '。' } <= 1
+            "首行必须短到一行内说完（信息减法：壳不许长成说明书），实到「${summaryOf(1)}」",
+            !summaryOf(1).contains('\n') && summaryOf(1).count { it == '.' || it == '。' } <= 1
         )
     }
 
-    /** 收起态同样不占地方，且不许把说明句常驻在页面上 */
+    /** 收起态只留下首行那一行紧凑占位：清单正文与逐条入口都不占地方，说明句不许回来 */
     @Test
-    fun `a collapsed feed stays out of the way`() {
+    fun `a collapsed feed leaves only the one-line summary`() {
         mount(refs = listOf(refA), showRefs = false)
-        assertEquals(
-            "没展开时这一族一个字都不该念出来（说明句不许常驻日常页面），实到：${spokenTexts()}",
-            emptySet<String>(), spokenTexts()
-        )
-        assertEquals("没展开时不该有多出来的可点节点", 0, clickableCount())
+        assertEquals("收起时清单正文一个字都不念", 0, plainTextCount(refA.text))
+        assertEquals("收起时逐条入口也不在", 0, buttonCount(entryLabel))
+        assertEquals("留下的只有首行计数小字", 1, plainTextCount(summaryOf(1)))
+        assertEquals("和行尾那颗「纠正中心」常驻动作", 1, buttonCount(centerLabel))
+        assertEquals("除这两颗外不该有多出来的可点节点", 2, clickableCount())
     }
 
     /**
-     * ③ 行尾入口点开是**五项短词**，每项一行；以前那几行技术解释一颗都不许在。
+     * ③ 行尾入口点开是**四项短词**，每项一行；以前那几行技术解释一颗都不许在。
      *
-     * 常驻的仍然只有一颗入口（四种动作不铺开），与 `MemoryCorrectionFlowTest` 里
-     * "菜单没展开时这一行只有一颗可点的东西"是同一判据的两面。
+     * 「撤销」**不在这一档**：留在清单里的引用按定义都还没被纠正（纠正过的会被注入侧过滤掉），
+     * 对它点撤销只会得到一次注定的假失败。撤销只在"这一行真的交出去过纠正"之后出现，
+     * 那一格在下面 `undo appears only after this row was corrected`。
      */
     @Test
-    fun `the menu offers the four wordings plus undo`() {
+    fun `the menu offers the four wordings and no undo before any correction`() {
         mount(refs = listOf(refA), showRefs = true)
         assertEquals("菜单没展开时行上只该有入口这一颗可点的说法",
             1, buttonCount(entryLabel))
         rule.onAllNodes(hasText(entryLabel) and hasClickAction())[0].performClick()
         rule.mainClock.advanceTimeBy(16L)
 
-        val menuLabels = listOf(wrongLabel, muteLabel, finishedLabel, wrongPersonLabel, undoLabel)
+        val menuLabels = listOf(wrongLabel, muteLabel, finishedLabel, wrongPersonLabel)
         menuLabels.forEach { label ->
             assertEquals("菜单里「$label」应当恰好一颗按钮，实到 ${buttonCount(label)} 颗",
                 1, buttonCount(label))
         }
+        assertEquals(
+            "没纠正过这一条时不该出现撤销（点下去只会是一次假失败）",
+            0, buttonCount(undoLabel)
+        )
         retiredGlosses.forEach { gloss ->
             assertEquals("菜单里不该再常驻技术解释「$gloss」", 0, plainTextCount(gloss))
         }
@@ -390,12 +424,47 @@ class MemoryRefsFeedTest {
         val targets = probe.actionableTargets(rule, "修正记忆菜单")
         val menuTargets = targets.filter { it.label in menuLabels }
         assertEquals(
-            "菜单里应当恰好五颗可点的说法：" + menuTargets.joinToString { it.describe() },
-            5, menuTargets.size
+            "菜单里应当恰好四颗可点的说法：" + menuTargets.joinToString { it.describe() },
+            4, menuTargets.size
         )
         menuTargets.forEach { t ->
             assertTrue("每一项都得够全站下限：" + t.describe(), !t.tooSmall(probe.floorDp))
         }
+    }
+
+    /**
+     * ③ʼ 「撤销」的出场条件：这一行**刚刚真的交出去过纠正**。
+     *
+     * 防的是旧形状：每条引用恒带一颗「撤销」，而未纠正的 id 在
+     * `KnowledgeMemoryStore.undo` 那里返回 false——界面把一次本来就该是无操作的点按
+     * 报成"撤销失败"。撤销完这一颗必须退场（本地记账跟着清），不留一颗恒假的出口。
+     */
+    @Test
+    fun `undo appears only after this row was corrected`() {
+        mount(refs = listOf(refA), showRefs = true)
+
+        fun openMenu() {
+            rule.onAllNodes(hasText(entryLabel) and hasClickAction())[0].performClick()
+            rule.mainClock.advanceTimeBy(16L)
+        }
+
+        openMenu()
+        rule.onAllNodes(hasText(finishedLabel))[0].performClick()
+        rule.mainClock.advanceTimeBy(16L)
+        assertEquals(
+            "「$finishedLabel」交回的仍是 FINISHED 那一笔",
+            listOf(Triple("mem-a", CorrectionAction.FINISHED, MuteDuration.UNTIL_RESTORE)),
+            correctionCalls.toList()
+        )
+
+        openMenu()
+        assertEquals("纠正过之后撤销必须出现", 1, buttonCount(undoLabel))
+        rule.onAllNodes(hasText(undoLabel))[0].performClick()
+        rule.mainClock.advanceTimeBy(16L)
+        assertEquals("撤销那颗交回的是这条记忆的 id", listOf("mem-a"), undoCalls.toList())
+
+        openMenu()
+        assertEquals("撤销完之后这一颗要退场（不留恒假的出口）", 0, buttonCount(undoLabel))
     }
 
     /**
@@ -432,6 +501,13 @@ class MemoryRefsFeedTest {
             ),
             correctionCalls.toList()
         )
+        // 新契约：登记账住在调用方（ResultArea 的 remember(generationRoundId)），四种说法
+        // 每一种都必须经 onRefCorrected 交回这一条，否则「撤销」永远不出场
+        assertEquals(
+            "四种说法都得把这一条经 onRefCorrected 登记成「刚纠正过」",
+            listOf("mem-a", "mem-a", "mem-a", "mem-a"),
+            registeredIds.toList()
+        )
 
         pick(undoLabel)
         assertEquals("撤销那颗交回的是这条记忆的 id", listOf("mem-a"), undoCalls.toList())
@@ -446,7 +522,8 @@ class MemoryRefsFeedTest {
     fun `every label in this family resolves to its own words`() {
         val watched = listOf(
             R.string.memory_fix_entry,
-            R.string.memory_refs_note,
+            R.string.memory_refs_summary,
+            R.string.memory_center_entry,
             R.string.memory_action_wrong,
             R.string.memory_action_mute,
             R.string.memory_action_finished,
@@ -464,6 +541,8 @@ class MemoryRefsFeedTest {
         }
         val moreZh = text("zh", R.string.memory_refs_more, 3)
         assertTrue("「更多 N 条」要把条数拼进句子：zh=$moreZh", moreZh.contains('3'))
+        val summaryZh = text("zh", R.string.memory_refs_summary, 2)
+        assertTrue("「本轮参考 N 条」要把真条数拼进句子：zh=$summaryZh", summaryZh.contains('2'))
         assertTrue(
             "这些标签在中文下解析成空白：\n" + blank.joinToString("\n"),
             blank.isEmpty()

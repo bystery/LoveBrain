@@ -30,7 +30,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -72,7 +71,6 @@ class LikedSchemeRecordingTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -89,7 +87,6 @@ class LikedSchemeRecordingTest {
 
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -100,7 +97,7 @@ class LikedSchemeRecordingTest {
         coEvery { topicRecorder.record(any(), any(), any(), any(), any(), any(), any(), any(), any()) } returns false
         generationEngine = mockk(relaxed = true)
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns ConfigValidationResult(0, emptyList())
         // 准备阶段冻结 prompt 资产指纹，严格 mock 需要显式答案
         every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
         return LoveBrainViewModel(

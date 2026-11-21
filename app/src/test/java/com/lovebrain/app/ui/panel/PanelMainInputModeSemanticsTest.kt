@@ -23,7 +23,6 @@ import com.lovebrain.app.core.testing.UiProbeApplication
 import com.lovebrain.app.feature.intent.IntentController
 import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.feature.profile.ProfileReview
-import com.lovebrain.app.feature.roundcommit.ActualSentState
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.IntentConfig
@@ -184,7 +183,6 @@ class PanelMainInputModeSemanticsTest {
         // 点页头那两段走的就是这一条方法：接到上面的 flow 上，界面才真的换档
         every { vm.setPanelMode(any()) } answers { panelModeFlow.value = firstArg() }
         every { vm.activeKb } returns MutableStateFlow(null)
-        every { vm.actualSentState } returns MutableStateFlow(ActualSentState.IDLE)
         every { composer.counselingDraft } returns counselingDraft
         every { vm.counselingError } returns MutableStateFlow(null)
         every { vm.counselingResult } returns MutableStateFlow(null)
@@ -250,7 +248,7 @@ class PanelMainInputModeSemanticsTest {
                 LoveBrainTheme {
                     LoveBrainPanelScreen(
                         viewModel = fakeVm(),
-                        onInputFocusChange = { _, _ -> },
+                        onInputFocusChange = { _, _, _ -> },
                         onInputIntent = { },
                         onClearComposeFocus = { },
                         onResize = { _, _ -> },

@@ -34,7 +34,7 @@ import kotlin.math.abs
  * 面板那一族折叠指示三角（`ui/panel/DragHandle.kt#TriangleArrow`）换成公共件之后的读数。
  *
  * 这是"所有朝右三角形真圆角"那一族里，全站最后一颗仍留在页面里自绘的实心尖角
- * （同类形状审计的落点；清单与闸见 `architecture/SolidGlyphShapeAuditTest`）。
+ * （同类形状审计的落点；原清单与闸所在的登记文件已删）。
  * 旧体是一条 `Path().apply { moveTo → lineTo → lineTo → close }`，三颗顶点全是尖角。
  *
  * ⚠ **观感那一半没有在这里被验证，也不可能在这里被验证**：本机没有设备、也没有可用的
@@ -113,7 +113,7 @@ class DragHandleGlyphTest {
     /**
      * 热区不在字形上：体里没有 `clickable`，可点那一轴仍归调用方那一排（谈心页那颗 `LbChip` 动作）。
      * 所以这一屏里**一颗可点节点都不许出现**，而可见盒也不该被垫到 48dp 那一档——
-     * 真垫上去就是把"可见"与"热区"两根轴重新绑回一件事（§3.1 明令禁止的那种叠法）。
+     * 真垫上去就是把"可见"与"热区"两根轴重新绑回一件事（明令禁止的那种叠法）。
      *
      * 反例：给 `TriangleArrow` 自己加 `clickable` 或 `heightIn(min = TOUCH_TARGET_MIN_DP)` ⇒ 两句都红。
      */

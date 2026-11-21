@@ -27,11 +27,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.AfterClass
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotSame
@@ -64,10 +62,10 @@ import org.koin.core.context.stopKoin
  * （缺项里总会有"军师服务没起来"那一条）。这一族因此不判"绿"，只判三件事：
  * 请求发了几次、旧结论还在不在、缺项念的是哪一句。
  *
- * ⚠ 「旧结论还在不在」这一件的**判据主人换过**：指导书 §11.1（2026-10-06，本轮标尺）写着
+ * ⚠ 「旧结论还在不在」这一件的**判据主人换过**：现行判据是
  * 「连接事实只属于实际供应商配置，去掉知识库身份……新建/改名/切知识库不影响连接灯……地址/Key/模型
  * 真正变化才使旧成功无效」，于是这一族里"切库/删库要作废连接结论"那两句旧判据作废（代码同一判落在
- * `identityOf(ref)`，见 f65605a）。作废现在只有换供应商/换模型那一条路（`switching provider…` 两格钉着），
+ * `identityOf(ref)`）。作废现在只有换供应商/换模型那一条路（`switching provider…` 两格钉着），
  * 而"切库/删库之后不许念连接那一句、又永远不许绿"这两件新事，由 `switching to another empty library…`
  * 与 `deleting the active library…` 两格的**逐表相等**钉住。
  */
@@ -117,7 +115,7 @@ class HomeStatusDiProbeTest {
          * `isDispatchNeeded` 当场炸成 `CoroutinesInternalError`，被 kotlinx-coroutines-test
          * 的全局 ExceptionCollector 存进"测试开始前"的队列，毒死**下一格**的 `runTest`。
          * 用类级的 Unconfined：回交永不排队，就在交出结果的那根 IO 线程上同步走完，
-         * 类跑完才 resetMain——在飞的回交早已落地，没有窗口。
+         * 类跑完也不 resetMain——委托在 fork 存续期内始终合法。
          * 同步语义与原来一致：viewModelScope 走"不排队那一档"，"按 ▶ → 探针 → 落灯"
          * 仍在调用点同步走完，计数不是时序赌博（各格里的 `advanceUntilIdle()` 管的是
          * runTest 自己的调度器，不受影响）。
@@ -126,12 +124,6 @@ class HomeStatusDiProbeTest {
         @BeforeClass
         fun installMainForClass() {
             Dispatchers.setMain(Dispatchers.Unconfined)
-        }
-
-        @JvmStatic
-        @AfterClass
-        fun releaseMainForClass() {
-            Dispatchers.resetMain()
         }
     }
 
@@ -227,7 +219,7 @@ class HomeStatusDiProbeTest {
         vm.returnedFromSubpage(overlayGranted = true)
         advanceUntilIdle()
         coVerify(exactly = 0) { gateway.testConnectionWithProbe(any(), any(), any()) }
-        // 进页面这一档在 第7节第2条 那张表上就是第一行："未启动/已关闭 → 红 + ▶ + 无常驻解释"。
+        // 进页面这一档就是红档的第一格："未启动/已关闭 → 红 + ▶ + 无常驻解释"。
         // 上一版这里要求缺项里出现"连接还没检查成功"，那一句话**不属于红档**：
         // 红档按合同不念任何缺项（`AdvisorStatus(Stopped)` 的 missing 本来就是空表），
         // 而 `userStarted == false` 时派生表走的正是那一支。实到 `缺项 []` 是对的，
@@ -324,7 +316,7 @@ class HomeStatusDiProbeTest {
         }
     }
 
-    // ═══════════ 3. 当前对象知识库的存在性判据（指导书 §7.4：有效已选即已建立）═══════════
+    // ═══════════ 3. 当前对象知识库的存在性判据（有效已选即已建立）═══════════
 
     /**
      * 只筛知识库两格（悬浮权限/供应商/服务/连接与这一族判点无关）。
@@ -336,9 +328,7 @@ class HomeStatusDiProbeTest {
     }
 
     /**
-     * 这一格旧版钉的是"空库 = Missing（主线程 2026-10-03 拍）"，那条行为已被用户原话
-     * 第 13 条否定，2026-10-05 依指导书 §7.4 按新判据改写（台账
-     * `evidence/2026-10-05-feedback/impl-G2-empty-kb.md` 有改写前后对照）。四格：
+     * 这一格旧版钉的是"空库 = Missing"，那条行为后来按"有效已选即已建立"的新判据改写。四格：
      * ① 新建/默认空库（两计数全 0）→ 已建立，既不念"请建立"也不念"还没读到"；
      * ①' 对话一轮后再读（只有 turnCount 动、库名没动）→ 判定不许出现错误翻转，
      *     同一身份的已验证结论也不许作废；
@@ -400,7 +390,7 @@ class HomeStatusDiProbeTest {
     }
 
     /**
-     * §7.4 的另一半：真缺失照旧要念。没有活动库、库名空白（无效引用）都还是 `Missing`，
+     * 另一条判据的另一半：真缺失照旧要念。没有活动库、库名空白（无效引用）都还是 `Missing`，
      * 缺项仍是"请为当前对象建立知识库"。
      * 反例：修空库误报时把"没有库"也吞成 Present → 两句 `kbSays` 相等各红；
      * 反例：吞成 Unknown → 筛出来的是 `KnowledgeUnread`，同样红。
@@ -432,14 +422,13 @@ class HomeStatusDiProbeTest {
     }
 
     /**
-     * 切到另一张**空**库：新库照样算已建立（§7.4 同一条），连接那一格**不因此作废**，
+     * 切到另一张**空**库：新库照样算已建立（同一条判据），连接那一格**不因此作废**，
      * 而且**不补发**探针。
      *
-     * 本格旧判据「切库后旧结论必须作废（身份里库名换了）」已被外部指导书 **§11.1**（2026-10-06，
-     * `requests/LoveBrain_1.4.0_发布收口与逐项整改指导书_2026-10-06.md`）翻案：
+     * 本格旧判据「切库后旧结论必须作废（身份里库名换了）」后来按新判据翻案：
      * 「连接事实只属于实际供应商配置，去掉知识库身份……新建/改名/切知识库不影响连接灯……
      * 地址/Key/模型真正变化才使旧成功无效」——代码侧同一判落在 `identityOf(ref)`。
-     * 同一节末段还写着「实际缺权限/缺库仍显示其真实状态，**不靠把首页所有状态强制绿来修连接**」，
+     * 同一判据还写着「实际缺权限/缺库仍显示其真实状态，**不靠把首页所有状态强制绿来修连接**」，
      * 所以这一格在 JVM 上仍然是黄的，而且必须黄得出台阶来。
      *
      * 反例（缺陷态会怎么红）：
@@ -472,7 +461,7 @@ class HomeStatusDiProbeTest {
             listOf(AdvisorMissing.ServiceNotRunning), vm.status.value.missing
         )
         assertNotEquals(
-            "服务没起来这一态永远不许是绿的（§11.1 末段：不靠强制绿修连接）",
+            "服务没起来这一态永远不许是绿的（不靠强制绿修连接）",
             AdvisorState.RunningReady, vm.status.value.state
         )
         coVerify(exactly = 1) { gateway.testConnectionWithProbe(any(), any(), any()) }
@@ -481,14 +470,14 @@ class HomeStatusDiProbeTest {
     /**
      * 活动库被删：重读回 `Missing` → 当场念"请为当前对象建立知识库"，而连接那一格**不因删库作废**。
      *
-     * 本格旧判据「删库 → 身份位没了 → 旧结论作废」同被指导书 **§11.1** 翻案（原文见上面那格）：
-     * 删库改的是知识库那一格，不是供应商配置那一格；而 §11.1 末段「实际缺权限/缺库仍显示其真实状态」
+     * 本格旧判据「删库 → 身份位没了 → 旧结论作废」同被上面那条判据翻案：
+     * 删库改的是知识库那一格，不是供应商配置那一格；而同一判据要求「实际缺权限/缺库仍显示其真实状态」
      * 正是这里第一、第二句要念的那两句真话。
      *
      * 反例（缺陷态会怎么红）：
      * - 删除后 publish 仍吃旧快照（不重读）→ 第一句红（`kbSays` 会是空表）；
      * - 库的存在性/库名又混进连接身份 → 缺项多出 `ConnectionUnchecked`，第二句那句**逐表相等**红；
-     * - 缺库被吞成 Present（§7.4 修过头）→ 第一、第二句一起红；
+     * - 缺库被吞成 Present（把判据修过头）→ 第一、第二句一起红；
      * - 派生表掉了 `ServiceNotRunning`（绿不认服务）→ 第二句与第三句一起红。
      */
     @Test
@@ -520,7 +509,7 @@ class HomeStatusDiProbeTest {
 
     /**
      * 只有空库的机器上切供应商：作废与补发纪律和原有那格一致——
-     * **修空库误报不许让任何一格亮绿灯**（§7.4 末段与 F4 的守卫）。
+     * **修空库误报不许让任何一格亮绿灯**。
      * 反例：presence 变 Present 被当成点绿条件 → `ConnectionUnchecked`/非绿两句一起红；
      * 反例：切供应商不作废 → 第一句红；反例：返回补发付费请求 → `coVerify` 红。
      */

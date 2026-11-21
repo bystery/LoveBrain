@@ -100,7 +100,7 @@ class SuggestCounselingTargetsTest {
      * ⚠ 排除项**连同尺寸打进失败信息**，且要求留下的样本 >= 2：
      * 筛掉必须是看得见的动作，否则过滤条件就是把能抹红的橡皮。
      *
-     * R12/§12.1：模板 chip 的行高已从 48 收到 28（用户原话第 12 条"模板胶囊卡片太高"），
+     * R12：模板 chip 的行高已从 48 收到 28（用户原话第 12 条"模板胶囊卡片太高"），
      * 它们有专门的 `CounselingTemplateChipTest` 覆盖，这里排除它们只查其余控件的 48dp 下限。
      */
     private fun assertAllMeetFloor(what: String) {

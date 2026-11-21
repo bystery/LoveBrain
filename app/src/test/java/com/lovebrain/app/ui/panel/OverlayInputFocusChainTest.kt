@@ -109,9 +109,9 @@ class OverlayInputFocusChainTest {
             intents++
             owner.onInputIntent(id)
         }
-        val onFocusChange: (String, Boolean) -> Unit = { inputId, focused ->
+        val onFocusChange: (Any, String, Boolean) -> Unit = { instanceKey, inputId, focused ->
             focusReports += inputId to focused
-            owner.onInputFocusChanged(inputId, focused)
+            owner.onInputFocusChanged(instanceKey, inputId, focused)
         }
     }
 
@@ -349,7 +349,66 @@ class OverlayInputFocusChainTest {
         assertDisposeBlurReleases(host, field) { flow.dismiss() }
     }
 
-    // ═══════════ 同 id 多实例：离树补报按实例认领 ═══════════
+    // ═══════════ 同 id 多实例：跨卡切换焦点 / 离树补报按实例认领 ═══════════
+
+    /**
+     * 方案卡那一种形状的另一半：多颗自定义框共绑同一 id `scheme_adjust`，用户从 A 卡的自定义框
+     * 直接点去 B 卡的自定义框。两条焦点边沿共用一颗 id，旧状态机"获焦只登记、不进 EDITING"
+     * ⇒ A 的失焦把窗口打回 PASSIVE 之后没人再带回去，键盘消失、要点第二次。
+     * 现在获焦这一跳自己确证编辑态，所以切过去之后必须仍在 EDITING。
+     */
+    @Test
+    fun switchingBetweenTwoFieldsThatShareTheSameInputIdStaysInEditing() {
+        val host = Host("scheme_adjust")
+        val toolbar = OverlayTextToolbar(ctx)
+        rule.setContent {
+            UiMatrix(360, heightDp = 900).RenderIn(LocalDensity.current.density) {
+                OverlayTextToolbarHost(toolbar = toolbar) {
+                    CompositionLocalProvider(
+                        LocalOverlayInputFocus provides
+                            rememberOverlayFocusReporter(host.id, host.onFocusChange)
+                    ) {
+                        Column {
+                            LbFieldInput(
+                                value = "",
+                                onValueChange = {},
+                                placeholder = "FIELD_A",
+                                onInputIntent = host.onIntent,
+                                onFocusChange = rememberOverlayInputFocusReporter()
+                            )
+                            LbFieldInput(
+                                value = "",
+                                onValueChange = {},
+                                placeholder = "FIELD_B",
+                                onInputIntent = host.onIntent,
+                                onFocusChange = rememberOverlayInputFocusReporter()
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        rule.waitForIdle()
+
+        rule.onAllNodes(hasSetTextAction())[0].performClick()
+        rule.waitForIdle()
+        assertEquals("点 A 卡必须进 EDITING", PanelFocusMode.EDITING, host.owner.mode)
+        assertEquals(host.id, host.owner.activeInputId)
+
+        rule.onAllNodes(hasSetTextAction())[1].performClick()
+        rule.waitForIdle()
+        assertEquals(
+            "A 卡 → B 卡（同 id）：窗口必须仍停在 EDITING——退回 PASSIVE 就是键盘消失、再点一次那个 bug",
+            PanelFocusMode.EDITING, host.owner.mode
+        )
+        assertEquals("所有权仍在这颗 id 上", host.id, host.owner.activeInputId)
+        // 两条获焦边沿（A 一次、B 一次）都真的报到了宿主；不判先后——进出顺序归框架，
+        // 这一格判的是"切过去之后还留在 EDITING"，那一条对两种顺序都成立。
+        assertEquals(
+            "B 卡获焦也必须报一条 true 边沿：${host.focusReports}",
+            2, host.focusReports.count { it.first == host.id && it.second }
+        )
+    }
 
     /**
      * 方案卡那一种形状：多颗自定义框共绑同一 id `scheme_adjust`。未获焦的兄弟实例

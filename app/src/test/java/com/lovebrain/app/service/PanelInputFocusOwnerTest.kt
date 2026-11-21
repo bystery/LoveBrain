@@ -145,7 +145,7 @@ class PanelInputFocusOwnerTest {
         focus.onInputIntent("reply")
 
         focus.onInputIntent("counseling")
-        focus.onInputFocusChanged("reply", focused = false)
+        focus.onInputFocusChanged("reply_field", "reply", focused = false)
 
         assertEquals(
             "焦点已经在 counseling，reply 那条迟到的 blur 不能把窗口整体退回 PASSIVE",
@@ -159,47 +159,108 @@ class PanelInputFocusOwnerTest {
         val (focus, _) = owner()
         focus.onInputIntent("reply")
 
-        focus.onInputFocusChanged("reply", focused = false)
+        focus.onInputFocusChanged("reply_field", "reply", focused = false)
 
         assertNull("失焦后必须没有人持有输入所有权", focus.activeInputId)
         assertEquals(PanelFocusMode.PASSIVE, focus.mode)
     }
 
     @Test
-    fun `批量导入浮层关闭后宿主焦点状态回归 PASSIVE`() {
-        // 审计 06 续：BatchPasteField 触摸 → onInputIntent("batch_import") 进 EDITING，
-        // 但粘贴框没有失焦回报入口；浮层关闭时面板侧的交接出口按 NON_REPORTING_INPUT_IDS
-        // 逐颗点名 onInputFocusChanged(id, false)。这一条 JVM 判据证的就是点名那一下
-        // 真的把 batch_import 的编辑态收掉，而不是只清了记号。
+    fun `获焦是确证要打字：窗口已被打回 PASSIVE 时获焦必须重新进编辑态`() {
         val (focus, window) = owner()
-        focus.onInputIntent("batch_import")
-        assertEquals(PanelFocusMode.EDITING, focus.mode)
-        window.log.clear()
 
-        focus.onInputFocusChanged("batch_import", focused = false)
+        focus.onInputFocusChanged("field", "scheme_adjust", focused = true)
 
-        assertNull("浮层已关，粘贴框必须交回输入所有权", focus.activeInputId)
-        assertEquals("宿主焦点状态必须回归 PASSIVE（键盘才收得起来）",
-            PanelFocusMode.PASSIVE, focus.mode)
+        assertEquals("scheme_adjust", focus.activeInputId)
         assertEquals(
-            "退出时窗口 flags 必须落回 PASSIVE 那一份（带 NOT_FOCUSABLE）",
-            "applyFlags:${panelFlagsFor(PanelFocusMode.PASSIVE)}",
+            "A 卡的失焦把窗口打回 PASSIVE 之后，B 卡获焦这一跳必须自己把窗口带回 EDITING——" +
+                "否则光标在闪、键盘不起，要再点一次",
+            PanelFocusMode.EDITING, focus.mode
+        )
+        assertEquals(
+            "获焦这一跳要把 EDITING 的 flags 真的落到窗口上",
+            "applyFlags:${panelFlagsFor(PanelFocusMode.EDITING)}",
             window.log.single { it.startsWith("applyFlags") }
         )
     }
 
     @Test
-    fun `get 焦点时只登记所有权，不擅自进编辑态`() {
+    fun `窗口已经是编辑态时获焦不再多写一次 flags`() {
         val (focus, window) = owner()
+        focus.onInputIntent("reply")
+        window.log.clear()
 
-        focus.onInputFocusChanged("reply", focused = true)
+        focus.onInputFocusChanged("reply_field", "reply", focused = true)
 
         assertEquals("reply", focus.activeInputId)
-        assertEquals(
-            "Compose 侧报来焦点时窗口本来就应该是 EDITING；这里不该再写一次 flags",
-            PanelFocusMode.PASSIVE, focus.mode
+        assertEquals(PanelFocusMode.EDITING, focus.mode)
+        assertTrue(
+            "触碰已经进过 EDITING，获焦这一跳同态直接 return：不许每次获焦都白刷一次窗口",
+            window.log.none { it.startsWith("applyFlags") }
         )
-        assertTrue(window.log.none { it.startsWith("applyFlags") })
+    }
+
+    // ═══════════ 同 id 多实例（方案卡多颗自定义框共用 scheme_adjust） ═══════════
+
+    @Test
+    fun `同 id 有人获焦时兄弟的失焦不许退出编辑态`() {
+        val (focus, window) = owner()
+        focus.onInputFocusChanged("a", "scheme_adjust", focused = true) // A 卡：落一次 EDITING flags
+        focus.onInputFocusChanged("b", "scheme_adjust", focused = true) // B 卡（获焦边沿先到）：同态不写
+        assertEquals(
+            "两次获焦只该落一次 flags（第二次是同态）",
+            1, window.log.count { it.startsWith("applyFlags") }
+        )
+
+        focus.onInputFocusChanged("a", "scheme_adjust", focused = false) // A 卡失焦
+
+        assertEquals(
+            "同 id 的 B 卡还持焦：A 这一颗 blur 不许把窗口打回 PASSIVE（键盘会消失）",
+            PanelFocusMode.EDITING, focus.mode
+        )
+        assertEquals("所有权仍在这个 id 上", "scheme_adjust", focus.activeInputId)
+        assertEquals(
+            "兄弟的失焦不许写任何 flags",
+            1, window.log.count { it.startsWith("applyFlags") }
+        )
+
+        focus.onInputFocusChanged("b", "scheme_adjust", focused = false) // B 卡失焦
+        assertNull("这个 id 再没人持焦，才交回所有权", focus.activeInputId)
+        assertEquals(PanelFocusMode.PASSIVE, focus.mode)
+    }
+
+    @Test
+    fun `同 id 交接时失焦先到也不会留下需要再点一次的 PASSIVE`() {
+        val (focus, _) = owner()
+        focus.onInputFocusChanged("a", "scheme_adjust", focused = true) // A 卡
+
+        // 系统把 A 的失焦排在 B 的获焦之前：这一跳按当前记账确实没人持焦
+        focus.onInputFocusChanged("a", "scheme_adjust", focused = false)
+        // 紧跟的 B 卡获焦边沿必须自己把窗口带回编辑态
+        focus.onInputFocusChanged("b", "scheme_adjust", focused = true)
+
+        assertEquals(
+            "交接的最后一跳是获焦 ⇒ 窗口必须停在 EDITING，用户不必再点一次",
+            PanelFocusMode.EDITING, focus.mode
+        )
+        assertEquals("scheme_adjust", focus.activeInputId)
+    }
+
+    @Test
+    fun `释放输入把焦点计数一起作废`() {
+        val (focus, _) = owner()
+        focus.onInputFocusChanged("a", "scheme_adjust", focused = true)
+        focus.onInputFocusChanged("b", "scheme_adjust", focused = true)
+
+        focus.releaseInput("outside_touch")
+
+        assertNull(focus.activeInputId)
+        assertEquals(PanelFocusMode.PASSIVE, focus.mode)
+        // 计数若没作废，下一次失焦会被当成"还有人持焦"而永不退出编辑态
+        focus.onInputIntent("scheme_adjust")
+        focus.onInputFocusChanged("a", "scheme_adjust", focused = false)
+        assertNull("旧计数的残留不许吞掉下一次失焦", focus.activeInputId)
+        assertEquals(PanelFocusMode.PASSIVE, focus.mode)
     }
 
     // ═══════════ 关闭顺序 ═══════════

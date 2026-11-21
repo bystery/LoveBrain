@@ -73,7 +73,7 @@ class HomeNavigationTest {
         assertEquals(HomeDestination.Home, current)
     }
 
-    // ─────────────── §9.2：根导航一整族都是滑入滑出（排序 + 形状两把尺）───────────────
+    // ───────────────：根导航一整族都是滑入滑出（排序 + 形状两把尺）───────────────
     //
     // ⚠ 为什么排序用行为、支路用形状：`AnimatedContent` 的 transitionSpec 是**进场前后**才成立的
     // 读数，Robolectric 这一棵树上量不到动画本体（只能等真机录像）；能静态钉死的是
@@ -119,7 +119,7 @@ class HomeNavigationTest {
     }
 
     /**
-     * 三支分支**全部**带滑入或滑出：§9.2 要的是"统一根导航的前进/返回过渡"，
+     * 三支分支**全部**带滑入或滑出：要的是"统一根导航的前进/返回过渡"，
      * 表行②判的那句"前进分支实际只有新页淡入"复测属实的是**旧读数**（`bacede8` 已把前进那一支
      * 补成滑入），本轮收的是剩下那一支——子页↔子页原先是纯淡入淡出（"一次性淡入"）。
      *
@@ -134,7 +134,7 @@ class HomeNavigationTest {
         assertEquals("前进两支都要 slideInHorizontally", 2, Regex("""slideInHorizontally\(""").findAll(spec).count())
         assertEquals("离场三支都要 slideOutHorizontally", 3, Regex("""slideOutHorizontally\(""").findAll(spec).count())
         assertEquals(
-            "一支都不许只剩「淡入配淡出」（§9.2：不每页各补一份一次性淡入）",
+            "一支都不许只剩「淡入配淡出」（不每页各补一份一次性淡入）",
             0, Regex("""fadeIn\((?:[^()]|\([^()]*\))*\)\s*togetherWith\s*fadeOut""").findAll(spec).count()
         )
         assertEquals("方向按 rank 判，且只有那一处判据", 1, Regex("""targetState\.rank > initialState\.rank""")

@@ -5,7 +5,6 @@ import com.lovebrain.app.domain.champion.ChampionEventStore
 import com.lovebrain.app.domain.champion.ChampionLiveContext
 import com.lovebrain.app.domain.champion.ChampionMessage
 import com.lovebrain.app.domain.champion.ChampionPromptAssembler
-import com.lovebrain.app.domain.champion.ChampionTurnStrategy
 import com.lovebrain.app.domain.champion.ContractGuard
 import com.lovebrain.app.domain.champion.FileChampionEventStorage
 import com.lovebrain.app.domain.port.AiGateway
@@ -55,21 +54,22 @@ import org.junit.rules.TemporaryFolder
 import java.io.File
 
 /**
- * guide-6 §15.6：GenerationEngine LIVE_AUTO 生产接线（阶段 06 的**证据核心**）。
+ * GenerationEngine LIVE_AUTO 生产接线（阶段 06 的**证据核心**）。
  *
- * §17 验收标准不是"Champion 代码存在"，而是：已选定的机制**真实影响正常产品回复**。
+ * 验收标准不是"Champion 代码存在"，而是：已选定的机制**真实影响正常产品回复**。
  * 这一族测试从 [GenerationEngine.replyStream]（生产调用入口）驱动：
  * - 冻结输入 [com.lovebrain.app.model.GenerationInput.championMode] /
  *   [com.lovebrain.app.model.KbContext.committedTurnCount] 分流（引擎不回读设置）；
- * - LIVE_AUTO 的历史块 / UC 块经**原生 PromptBuilder 的新可选参数**进入主请求
+ * - LIVE_AUTO 的历史块经**原生 PromptBuilder 的新可选参数**进入主请求
  *   （spy prompt builder 把收到的区块原样嵌进 user prompt，网关捕获即可对证）；
- * - 短域（≤24）Guard 执行且 UI reset 与修复文本一致；长域（>24）Guard 不执行；
- * - onlyThisRound / OFF / 轮次缺失 / null 引擎全走原路径；
+ * - **契约守卫与轮次完全无关**：只要注入了 ChampionEngine，长域（>24）、onlyThisRound、
+ *   轮次缺失三种情形全部照过守卫；未定块（UC）已整段删除；
+ * - 守卫补齐的 directions 尾部 null 在 parser 前裁掉（缺位 ≠ 显式 null）；
  * - LIVE_AUTO 绝不调 launchShadow，正常请求模型调用恰一次；
  * - Guard 异常原文回退；取消信号原样传播。
  *
  * 全部确定性：fake gateway + spy prompt builder + 真实 ChampionEngine（本地事件库），
- * 零模型 API、不扩展为效果实验（§15.6 原文纪律）。
+ * 零模型 API、不扩展为效果实验（原文纪律）。
  */
 class GenerationEngineLiveAutoWiringTest {
 
@@ -80,8 +80,8 @@ class GenerationEngineLiveAutoWiringTest {
 
     /**
      * 记录型网关：捕获每次 (system,user) 请求与 parse 输入；应答文本可配置。
-     * [FENCED_REPLY_JSON] 是契约破损形状（markdown 围栏）——短域 ContractGuard 的
-     * strip_markdown_fence 规则可**确定性**修复，长域按判决不修。
+     * [FENCED_REPLY_JSON] 是契约破损形状（markdown 围栏）——ContractGuard 的
+     * strip_markdown_fence 规则可**确定性**修复；守卫与轮次无关，任何轮次都会修。
      */
     private class RecordingGateway(private val replyText: String) : AiGateway {
         val streamCalls = mutableListOf<Pair<String, String>>()   // (system, user)
@@ -118,9 +118,10 @@ class GenerationEngineLiveAutoWiringTest {
                 model = "m", thinkingMode = 0, generateTimeoutMs = 5_000
             )
 
-            /** 契约完好的主回复（守卫不改写） */
+            /** 契约完好的主回复（四风格槽齐、四方向齐且非 null → 守卫不改写） */
             const val CLEAN_REPLY_JSON =
-                """{"response": {"recommended": "辛苦了，早点休息", "badBoy": "b", "playful": "p", "warm": "w"}, """ +
+                """{"response": {"recommended": "辛苦了，早点休息", "bad_boy": "b", "playful": "p", "warm": "w"}, """ +
+                    """"directions": ["d1", "d2", "d3", "d4"], """ +
                     """"analysis": {"topic_status": "same", "topic_label": "日常"}}"""
 
             /** 带 markdown 围栏的破损契约（guard strip_markdown_fence 可确定性修复） */
@@ -133,7 +134,6 @@ class GenerationEngineLiveAutoWiringTest {
         var scope: Set<String> = emptySet()
     ) : SettingsStorePort {
         override var thinkingMode: Int = 0
-        override var outputMode: Int = 0
         override var panelMode: Int = 0
         override var counselingDraft: String = ""
         private var counselingResult: String? = null
@@ -185,8 +185,9 @@ class GenerationEngineLiveAutoWiringTest {
     }
 
     /**
-     * spy prompt builder：记录 buildReplyUserPromptWithRefs 的全部新参取值，
-     * 并把收到的两个区块**原样嵌进**返回的 user prompt——网关捕获到的请求正文里
+     * spy prompt builder：记录 buildReplyUserPromptWithRefs 的新参取值
+     * （新签名：historicalBlock 保留、uncertainBlock 已从产品装配删除），
+     * 并把收到的历史区块**原样嵌进**返回的 user prompt——网关捕获到的请求正文里
      * 出现区块文本 = "区块真的经原生 PromptBuilder 进了主请求"的直接证据。
      */
     private class PromptSpy {
@@ -198,12 +199,12 @@ class GenerationEngineLiveAutoWiringTest {
             every { builder.replyPromptAssetHash() } returns "assets"
             coEvery {
                 builder.buildReplyUserPromptWithRefs(
-                    any(), any(), any(), any(), any(), any(), any(), any(), any()
+                    any(), any(), any(), any(), any(), any(), any()
                 )
             } answers {
-                withRefsCalls += listOf(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8])
+                withRefsCalls += listOf(args[0], args[1], args[2], args[3], args[4], args[5], args[6])
                 PromptBuilder.PromptBuildResult(
-                    "user[hist=${args[6]}][uc=${args[7]}][turn=${args[8]}]",
+                    "user[hist=${args[5]}][turn=${args[6]}]",
                     emptyList()
                 )
             }
@@ -211,10 +212,6 @@ class GenerationEngineLiveAutoWiringTest {
                 builder.buildReplyUserPromptOnlyThisRound(any(), any())
             } returns PromptBuilder.PromptBuildResult("user-otr", emptyList())
         }
-
-        /** WithRefs 的 (historicalBlock, uncertainBlock, currentTurn) 取值 */
-        val liveArgs: List<Triple<String, String, Int?>>
-            get() = withRefsCalls.map { Triple(it[6] as String, it[7] as String, it[8] as Int?) }
     }
 
     // ── 装配 ──
@@ -272,7 +269,6 @@ class GenerationEngineLiveAutoWiringTest {
         corrections = emptyMap(),
         correctionsRevision = 0,
         onlyThisRound = onlyThisRound,
-        aggressive = false,
         providerIdentity = RecordingGateway.ticketConfig.toIdentity(),
         kbProfile = "",
         kbRevision = "rev",
@@ -284,14 +280,18 @@ class GenerationEngineLiveAutoWiringTest {
     private fun completed(events: List<ReplyEvent>): ReplyCompleted =
         events.filterIsInstance<ReplyCompleted>().single()
 
-    // ── §15.6 判据 ──
+    // ──判据 ──
 
     @Test
-    fun `OFF routes to the native prompt path without touching champion context`() = runTest {
+    fun `OFF keeps the native prompt path but the contract guard still runs`() = runTest {
         val gateway = RecordingGateway(RecordingGateway.CLEAN_REPLY_JSON)
-        // mockk 引擎：任何意外调用（装配/守卫/影子）都会让 verify 爆红
+        // mockk 引擎：装配/影子任何意外调用都会让 verify 爆红；守卫按契约**无条件**执行
         val mockChampion = mockk<ChampionEngine>()
         val spy = PromptSpy()
+        every { mockChampion.repairAndAudit(any(), any(), any()) } returns ContractGuard.GuardOutcome(
+            RecordingGateway.CLEAN_REPLY_JSON,
+            kotlinx.serialization.json.JsonObject(emptyMap())   // meta 缺省 = changed 非 true = 不改写
+        )
         val engine = GenerationEngine(gateway, spy.builder, mockChampion)
 
         val events = engine.replyStream(input("OFF", committedTurnCount = 23)).toList()
@@ -299,12 +299,13 @@ class GenerationEngineLiveAutoWiringTest {
         assertTrue(completed(events).result is GenerateResult.Success)
         assertEquals("只发主回复一次请求", 1, gateway.streamCalls.size)
         assertEquals(
-            "OFF 不装配任何区块：user prompt 里 hist/uc 为空、selector 拿冻结轮次原值",
-            "user[hist=][uc=][turn=23]",
+            "OFF 不装配任何区块：user prompt 里 hist 为空、selector 拿冻结轮次原值",
+            "user[hist=][turn=23]",
             gateway.streamCalls.single().second
         )
-        coVerify(exactly = 0) { mockChampion.prepareLiveContext(any(), any(), any(), any(), any()) }
-        verify(exactly = 0) { mockChampion.repairAndAudit(any(), any(), any()) }
+        coVerify(exactly = 0) { mockChampion.prepareLiveContext(any(), any(), any(), any()) }
+        // 守卫与轮次/档位无关：只要注入了引擎就跑（契约守卫属于基础解析，不再由轮次门控）
+        verify(exactly = 1) { mockChampion.repairAndAudit(any(), any(), any()) }
         verify(exactly = 0) {
             mockChampion.launchShadow(
                 any<String>(), any<String>(), any<String>(), any(),
@@ -313,6 +314,8 @@ class GenerationEngineLiveAutoWiringTest {
             )
         }
         assertEquals("spy prompt builder 收到了正常的 WithRefs 调用", 1, spy.withRefsCalls.size)
+        assertEquals("守卫未改写 → parser 收到原文", RecordingGateway.CLEAN_REPLY_JSON, gateway.parseInputs.single())
+        assertTrue("守卫未改写不发 UI reset", events.none { it is ReplyChunkReset || it is ReplySchemesReset })
         assertFalse(File(tmp.root, "champion/shadow_log.jsonl").exists())
     }
 
@@ -328,7 +331,7 @@ class GenerationEngineLiveAutoWiringTest {
         assertEquals("主回复 + 影子 = 两次请求", 2, gateway.streamCalls.size)
         assertEquals(
             "SHADOW 不装配 LIVE 区块（不调 prepareLiveContext）",
-            "user[hist=][uc=][turn=23]",
+            "user[hist=][turn=23]",
             gateway.streamCalls[0].second
         )
         assertTrue("第二次请求是影子请求（冠军装配 prompt）", gateway.streamCalls[1].second.isNotEmpty())
@@ -337,12 +340,16 @@ class GenerationEngineLiveAutoWiringTest {
             "影子路径不写事件库（R2-1 复钉）",
             0, runBlocking { fx.store.events("kb__kb").size }
         )
-        // 主链路不带旧档位守卫（SHADOW 不触发 repairAndAudit→无 reset）
-        assertTrue("SHADOW 主链路不发 UI reset", events.none { it is ReplyChunkReset })
+        // 主链路守卫照跑（无条件），但 CLEAN_REPLY_JSON 四项 directions 齐全 → 不改写 → 无 reset
+        assertEquals(
+            "守卫未改写 → parser 收到原文",
+            RecordingGateway.CLEAN_REPLY_JSON, gateway.parseInputs.single()
+        )
+        assertTrue("守卫未改写的主链路不发 UI reset", events.none { it is ReplyChunkReset })
     }
 
     @Test
-    fun `LIVE_AUTO at turn 24 puts the history block into the native prompt with no uc and runs the guard`() = runTest {
+    fun `LIVE_AUTO at turn 24 puts the history block into the native prompt and runs the guard`() = runTest {
         val gateway = RecordingGateway(RecordingGateway.FENCED_REPLY_JSON)
         val fx = realEngine(gateway)
         runBlocking {
@@ -355,7 +362,7 @@ class GenerationEngineLiveAutoWiringTest {
 
         val events = fx.engine.replyStream(input("LIVE_AUTO", committedTurnCount = 23)).toList()
 
-        // ① 主请求恰好一次（LIVE_AUTO 不追加影子请求/额外模型调用，§9.2）
+        // ① 主请求恰好一次（LIVE_AUTO 不追加影子请求/额外模型调用）
         assertEquals("LIVE_AUTO 只发主回复一次请求", 1, gateway.streamCalls.size)
         val user = gateway.streamCalls.single().second
         // ② 历史块经**原生 PromptBuilder** 进入主请求（spy 把收到的区块原样嵌入）
@@ -364,15 +371,15 @@ class GenerationEngineLiveAutoWiringTest {
         assertTrue("ME 历史行映射为 USER", user.contains("m_src[1] | 2026-11-12 10:00 | USER | 好"))
         // ③ 当前轮临时消息不在历史块里（未确认输入不提前入库/不混入历史）
         assertFalse("当前轮消息不进历史块", user.contains("那周五的事呢"))
-        // ④ 短域 UC 恒空（禁变相 uc_guard）
-        assertFalse("短域不注入 UC", user.contains("# 【未定/待确认事项"))
+        // ④ 未定块整段删除：任何轮次都不再注入（用户口径：未定块完全不要）
+        assertFalse("未定块已删除，prompt 不含该段", user.contains("# 【未定/待确认事项"))
         assertTrue("selector 拿 committedTurnCount 原值（23，不加 1）", user.endsWith("[turn=23]"))
         // ⑤ Guard 执行：围栏被 strip_markdown_fence 确定性修复（守卫按 Python 形状重序列化，
         //    修复文本 ≠ 原文；判据 = 围栏消失 + 契约键在场 + 与原文不同）
         val parsed = gateway.parseInputs.single()
         assertTrue("parser 收到的是修复后文本（围栏已剥）", !parsed.contains("```") && parsed != RecordingGateway.FENCED_REPLY_JSON)
         assertTrue("修复文本仍是合法契约形状", parsed.contains("\"recommended\"") && parsed.contains("\"analysis\""))
-        // ⑥ §8.3 UI 一致性：先 reset 再把修复全文经同一 reducer 重放——
+        // ⑥UI 一致性：先 reset 再把修复全文经同一 reducer 重放——
         //    重放的 ReplyChunk 与 parser 输入**同一份文本**（UI 最终显示 = 最终解析结果）
         val firstResetIdx = events.indexOfFirst { it is ReplyChunkReset }
         assertTrue("Guard 改文必须发 ReplyChunkReset", firstResetIdx >= 0)
@@ -388,7 +395,7 @@ class GenerationEngineLiveAutoWiringTest {
     }
 
     @Test
-    fun `LIVE_AUTO at turn 25 puts history and uc into the native prompt and skips the guard`() = runTest {
+    fun `LIVE_AUTO at turn 25 injects history only and still runs the guard`() = runTest {
         val gateway = RecordingGateway(RecordingGateway.FENCED_REPLY_JSON)
         val fx = realEngine(gateway)
         runBlocking {
@@ -403,19 +410,20 @@ class GenerationEngineLiveAutoWiringTest {
         assertEquals("只发主回复一次请求", 1, gateway.streamCalls.size)
         val user = gateway.streamCalls.single().second
         assertTrue("历史块进入主请求", user.contains("m_src[0] | 2026-11-12 09:59 | PARTNER | 听说快递周五到，还没收到呢"))
-        // UC 按规则生成：历史未定项「听说快递周五到」与本轮锚点（周五）同场 → 注入
-        assertTrue("UC 段头进入主请求", user.contains("# 【未定/待确认事项：尚未核实，不得当作已发生】"))
-        assertTrue("UC 注入逐字分句", user.contains("「听说快递周五到」（T24）"))
-        // 长域禁 Guard（防变相 uc_guard）：破损契约原样进 parser、无 UI reset
-        assertEquals("长域 parser 收到原文（守卫未执行）", RecordingGateway.FENCED_REPLY_JSON, gateway.parseInputs.single())
-        assertTrue("长域不发 UI reset", events.none { it is ReplyChunkReset || it is ReplySchemesReset })
+        // 未定/待确认事项块整段删除：长域也不再注入（用户口径：未定块完全不要）
+        assertFalse("未定块已删除（长域同样不注入）", user.contains("# 【未定/待确认事项"))
+        // 守卫与轮次完全无关：第 25 轮（长域）照过守卫——围栏被修掉、UI reset 与修复文本一致
+        val parsed = gateway.parseInputs.single()
+        assertTrue("长域 parser 收到修复后文本（围栏已剥）", !parsed.contains("```") && parsed != RecordingGateway.FENCED_REPLY_JSON)
+        assertTrue("守卫改文必须发 ReplyChunkReset", events.any { it is ReplyChunkReset })
+        assertTrue("守卫改文必须发 ReplySchemesReset", events.any { it is ReplySchemesReset })
         assertTrue(completed(events).result is GenerateResult.Success)
         assertFalse("LIVE_AUTO 不写 shadow_log", File(fx.root, "shadow_log.jsonl").exists())
         assertEquals("事件库仍只有已提交那一条", 1, runBlocking { fx.store.events("kb__kb").size })
     }
 
     @Test
-    fun `LIVE_AUTO with onlyThisRound skips champion context guard and shadow entirely`() = runTest {
+    fun `LIVE_AUTO with onlyThisRound skips champion context and shadow but still guards`() = runTest {
         val gateway = RecordingGateway(RecordingGateway.FENCED_REPLY_JSON)
         val settings = FakeSettings(mode = "OFF")
         val root = File(tmp.root, "champion")
@@ -443,12 +451,15 @@ class GenerationEngineLiveAutoWiringTest {
             input("LIVE_AUTO", committedTurnCount = 23, onlyThisRound = true)
         ).toList()
 
-        // §16 条 14 / §9.3：onlyThisRound 第一判据——不读历史、不注入、不守卫、不影子
+        // onlyThisRound 第一判据——不读历史、不注入、不影子（轮次/守卫不受影响）
         assertEquals("只发主回复一次请求", 1, gateway.streamCalls.size)
         assertEquals("仍走 buildReplyUserPromptOnlyThisRound", "user-otr", gateway.streamCalls.single().second)
         assertEquals("WithRefs（原生带记忆装配）整条未被调用", 0, spy.withRefsCalls.size)
-        assertEquals("parser 收到原文（Guard 未执行）", RecordingGateway.FENCED_REPLY_JSON, gateway.parseInputs.single())
-        assertTrue("无 UI reset", events.none { it is ReplyChunkReset || it is ReplySchemesReset })
+        // 守卫与轮次/onlyThisRound 完全无关：仅看本轮照过守卫（围栏被剥）
+        val parsed = gateway.parseInputs.single()
+        assertTrue("onlyThisRound 仍过守卫", !parsed.contains("```") && parsed != RecordingGateway.FENCED_REPLY_JSON)
+        assertTrue("守卫改文必须发 ReplyChunkReset", events.any { it is ReplyChunkReset })
+        assertTrue("守卫改文必须发 ReplySchemesReset", events.any { it is ReplySchemesReset })
         assertFalse("不写 shadow_log", File(root, "shadow_log.jsonl").exists())
         assertEquals(
             "已提交历史不受影响（生成路径零持久痕迹）",
@@ -458,8 +469,9 @@ class GenerationEngineLiveAutoWiringTest {
     }
 
     @Test
-    fun `LIVE_AUTO with a null committed turn count falls back to the native path`() = runTest {
-        // §5.4：轮次缺失不猜（不默认第 1 轮也不默认第 25 轮）→ 整链回退原生，正常生成继续
+    fun `LIVE_AUTO with a null committed turn count still runs the guard`() = runTest {
+        // 轮次缺失不猜（不默认第 1 轮也不默认第 25 轮）→ 历史块不装配；
+        // 但输出契约守卫与轮次完全无关——原始文本照样在 parser 前过守卫
         val gateway = RecordingGateway(RecordingGateway.FENCED_REPLY_JSON)
         val fx = realEngine(gateway)
         runBlocking {
@@ -473,31 +485,28 @@ class GenerationEngineLiveAutoWiringTest {
 
         assertEquals("只发主回复一次请求", 1, gateway.streamCalls.size)
         assertEquals(
-            "历史块/UC 块均为空、selector 轮次为 null（自读口径）",
-            "user[hist=][uc=][turn=null]",
+            "历史块为空、selector 轮次为 null（自读口径）",
+            "user[hist=][turn=null]",
             gateway.streamCalls.single().second
         )
-        assertEquals("parser 收到原文（Guard 未执行）", RecordingGateway.FENCED_REPLY_JSON, gateway.parseInputs.single())
-        assertTrue("无 UI reset", events.none { it is ReplyChunkReset || it is ReplySchemesReset })
+        val parsed = gateway.parseInputs.single()
+        assertTrue("无轮次上下文仍过守卫", !parsed.contains("```") && parsed != RecordingGateway.FENCED_REPLY_JSON)
+        assertTrue("守卫改文必须发 ReplyChunkReset", events.any { it is ReplyChunkReset })
+        assertTrue("守卫改文必须发 ReplySchemesReset", events.any { it is ReplySchemesReset })
         assertFalse("不写 shadow_log", File(fx.root, "shadow_log.jsonl").exists())
         assertTrue(completed(events).result is GenerateResult.Success)
     }
 
     @Test
     fun `a guard exception keeps the original text and never resets the ui`() = runTest {
-        // R2：守卫自身异常 → 保留原文进 parser，绝不拖垮正常回复（§8.1 原文回退）
+        // R2：守卫自身异常 → 保留原文进 parser，绝不拖垮正常回复（原文回退）
         val gateway = RecordingGateway(RecordingGateway.FENCED_REPLY_JSON)
         val spy = PromptSpy()
         val mockChampion = mockk<ChampionEngine>()
         coEvery {
-            mockChampion.prepareLiveContext(any(), any(), any(), any(), any())
+            mockChampion.prepareLiveContext(any(), any(), any(), any())
         } returns ChampionLiveContext(
-            currentTurn = 24,
-            strategy = ChampionTurnStrategy.GUARD_SHORT,
-            historyBlock = "",
-            uncertainBlock = "",
-            historyCu = 0,
-            uncertainCu = 0
+            historyBlock = ""
         )
         every { mockChampion.repairAndAudit(any(), any(), any()) } throws RuntimeException("guard boom")
         val engine = GenerationEngine(gateway, spy.builder, mockChampion)
@@ -511,8 +520,64 @@ class GenerationEngineLiveAutoWiringTest {
     }
 
     @Test
+    fun `a guard exception in the long domain also keeps the original text`() = runTest {
+        // 守卫与轮次无关：长域（第 25 轮起）的异常回退原文口径与短域完全一致
+        val gateway = RecordingGateway(RecordingGateway.FENCED_REPLY_JSON)
+        val spy = PromptSpy()
+        val mockChampion = mockk<ChampionEngine>()
+        coEvery {
+            mockChampion.prepareLiveContext(any(), any(), any(), any())
+        } returns ChampionLiveContext(
+            historyBlock = ""
+        )
+        every { mockChampion.repairAndAudit(any(), any(), any()) } throws RuntimeException("guard boom")
+        val engine = GenerationEngine(gateway, spy.builder, mockChampion)
+
+        val events = engine.replyStream(input("LIVE_AUTO", committedTurnCount = 40)).toList()
+
+        assertTrue("长域守卫异常不崩主链路", completed(events).result is GenerateResult.Success)
+        assertEquals("长域 parser 收到原始文本（回退原文）", RecordingGateway.FENCED_REPLY_JSON, gateway.parseInputs.single())
+        assertTrue("长域守卫异常不发 UI reset", events.none { it is ReplyChunkReset || it is ReplySchemesReset })
+    }
+
+    @Test
+    fun `guard-padded directions tail nulls are trimmed before the parser`() = runTest {
+        // 守卫把 directions 补齐到 4 个 null 只是契约形状保险；产品用 directions.size 区分
+        // 「缺位（没生成）」与「显式 null（本轮不适合）」——补齐的尾部 null 必须在 parser 前裁掉。
+        val gateway = RecordingGateway(
+            "{\"response\": {\"recommended\": \"a\", \"bad_boy\": \"b\", \"playful\": \"p\", \"warm\": \"w\"}, " +
+                "\"directions\": [\"只看这一版\"], \"analysis\": {\"topic_status\": \"same\"}}"
+        )
+        val fx = realEngine(gateway)
+
+        fx.engine.replyStream(input("LIVE_AUTO", committedTurnCount = 23)).toList()
+
+        val parsed = gateway.parseInputs.single()
+        assertTrue("守卫补齐的 3 个尾部 null 被裁掉", parsed.contains("\"directions\": [\"只看这一版\"]"))
+        assertFalse("尾部不再出现守卫补的 null", parsed.contains("\"只看这一版\", null"))
+    }
+
+    @Test
+    fun `explicit direction nulls written by the model are preserved`() = runTest {
+        // 只有「守卫补的」尾部 null 会被裁；模型自己写的显式 null（本轮不适合）原样保留
+        val gateway = RecordingGateway(
+            "{\"response\": {\"recommended\": \"a\", \"bad_boy\": \"b\", \"playful\": \"p\", \"warm\": \"w\"}, " +
+                "\"directions\": [\"只看这一版\", null], \"analysis\": {\"topic_status\": \"same\"}}"
+        )
+        val fx = realEngine(gateway)
+
+        fx.engine.replyStream(input("LIVE_AUTO", committedTurnCount = 23)).toList()
+
+        val parsed = gateway.parseInputs.single()
+        assertTrue(
+            "模型显式 null 保留、仅尾部补齐 null 被裁",
+            parsed.contains("\"directions\": [\"只看这一版\", null]")
+        )
+    }
+
+    @Test
     fun `cancellation propagates out of the reply stream`() {
-        // §16 条 8：取消信号原样传播（不被普通异常降级逻辑吞掉、不降级成 ReplyCompleted error）
+        // 取消信号原样传播（不被普通异常降级逻辑吞掉、不降级成 ReplyCompleted error）
         val gateway = RecordingGateway(RecordingGateway.CLEAN_REPLY_JSON).apply { hang = true }
         val fx = realEngine(gateway)
         runBlocking {

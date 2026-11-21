@@ -127,7 +127,7 @@ class CaptureAppsScreenStatesTest {
      * 第6节第5条 矩阵：把这一屏从固定 360dp 推到 4 宽 × 3 字号（`UiMatrix.FULL`）。
      * 量具，不是闸：热区 < 48dp、越槽只登记不改码（工单明文），打 stdout 进交付表。
      * 硬断言只有哨兵（十二格各量到一次）+ 样本下限（防空转）。
-     * 换格子靠 hoisted 状态（一个用例只 `setContent` 一次，同 `UiMatrixFullSweepTest`）。
+     * 换格子靠 hoisted 状态（一个用例只 `setContent` 一次）。
      */
     private val matrixCell: MutableState<UiMatrix> = mutableStateOf(UiMatrix.FULL.first())
 

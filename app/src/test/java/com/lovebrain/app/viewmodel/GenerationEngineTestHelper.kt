@@ -255,7 +255,7 @@ object GenerationEngineTestHelper {
 
     /** Stub 一次主动发/润色 */
     fun stubProactive(engine: GenerationEngine, block: ProactiveRecorder.() -> Unit) {
-        every { engine.proactiveStream(any(), any(), any(), any(), any(), any()) } answers {
+        every { engine.proactiveStream(any(), any()) } answers {
             val recorder = ProactiveRecorder().apply { requestId = arg<String>(0) }
             recorder.record(block)
         }

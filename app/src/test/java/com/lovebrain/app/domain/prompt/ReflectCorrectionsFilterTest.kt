@@ -37,7 +37,7 @@ class ReflectCorrectionsFilterTest {
         if (corrections.isNotEmpty()) port.seedCorrections(kb, corrections)
         return PromptBuilder(
             PromptSourcePort { path -> error("reflect 提取支不该读资产：$path") },
-            port, null
+            port
         )
     }
 
@@ -116,7 +116,7 @@ class ReflectCorrectionsFilterTest {
         if (corrections.isNotEmpty()) port.seedCorrections(kb, corrections)
         return PromptBuilder(
             PromptSourcePort { path -> error("reflect 提取支不该读资产：$path") },
-            port, null
+            port
         )
     }
 

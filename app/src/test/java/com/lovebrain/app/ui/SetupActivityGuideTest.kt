@@ -20,7 +20,7 @@ import java.io.File
 
 /**
  * 引导闸门与三条出口的落盘合同（用户原话第 14 条「引导一翻页就没了」；需求映射第 14 行；
- * 设计基线 v1.1 §6.8「完成状态一律派生自真实状态，废除提前 complete 与 `recreate()` 通道」）。
+ * 设计「完成状态一律派生自真实状态，废除提前 complete 与 `recreate()` 通道」）。
  *
  * 两把尺各管一件事：
  * - **源码那一把**钉住"通道断了"：旧写法（一次性 local val + 三条出口都 `completeOnboarding()+recreate()`）
@@ -28,11 +28,11 @@ import java.io.File
  * - **行为那一把**拿真 `SetupViewModel` + `InMemorySettingsStore` 跑，判"盘上到底落成什么"，
  *   所以它钉的是状态而不是按钮。
  *
- * ⚠ 边界（照 TEAM_RULES §5 如实标）：这一组里 `accessibilityGranted` **永远读不到真值**——
+ * ⚠ 边界（照 TEAM_RULES如实标）：这一组里 `accessibilityGranted` **永远读不到真值**——
  * 纯 JVM 下 `Settings.Secure.getString` 走 `isReturnDefaultValues=true` 交回 null，
  * 于是派生游标最远只能到 `ACCESSIBILITY`。"三步齐 → DONE 并把旧完成旗标补真"那一格
  * 由主线程的 `GuideCursorResolveTest`（纯函数）与本席的 `stopBeingGuided` 那两格合起来覆盖，
- * 真机上的完整走一遍仍是未验证项（见台账 impl-G1b）。
+ * 真机上的完整走一遍仍是未验证项。
  */
 class SetupActivityGuideTest {
 
@@ -110,7 +110,7 @@ class SetupActivityGuideTest {
         listOf("completeOnboarding(", "recreate(").forEach { banned ->
             assertFalse(
                 "SetupActivity 里不该再有 `$banned`——三条出口各走 SetupViewModel 的语义 API，" +
-                    "完成与否由 currentGuideCursor 派生（基线 §6.8）",
+                    "完成与否由 currentGuideCursor 派生",
                 activitySource.contains(banned)
             )
         }
@@ -185,7 +185,7 @@ class SetupActivityGuideTest {
 
     /**
      * 「完成」= 介绍层走完了：游标停在**最早未满足那一格**（这里是没有供应商 → PROVIDER），
-     * 而不是 DONE。基线 §6.8 与需求映射第 14 行同一条："配置不算引导完成"反过来也成立——
+     * 而不是 DONE。与需求映射第 14 行同一条："配置不算引导完成"反过来也成立——
      * 没配齐就不能算完成。
      */
     @Test
@@ -304,7 +304,7 @@ class SetupActivityGuideTest {
 
     /**
      * 老用户迁移：旧完成旗标为真 = 介绍与指引都收工。
-     * 回退成什么就红：只补 introSeen 不补游标——升级用户会被罩子追着重配一遍（基线 §6.8）。
+     * 回退成什么就红：只补 introSeen 不补游标——升级用户会被罩子追着重配一遍。
      */
     @Test
     fun `an upgraded existing user gets both new ledgers backfilled`() {
@@ -334,7 +334,7 @@ class SetupActivityGuideTest {
         assertEquals(GuideCursor.PROVIDER.name, store.guideCursor)
     }
 
-    // ─────────────── D 组：§9.1 页面闸与"子页返回"的游标刷新（形状尺）───────────────
+    // ─────────────── D 组：页面闸与"子页返回"的游标刷新（形状尺）───────────────
     //
     // ⚠ 为什么这三格用源码形状、不挂组件：页面闸的**另一头**是 `SetupRoot` 的导航账（`rememberSaveable`
     // 的 destination）与 Activity 的 onResume，两者在 `createComposeRule()` 摆出来的那棵树上都没有

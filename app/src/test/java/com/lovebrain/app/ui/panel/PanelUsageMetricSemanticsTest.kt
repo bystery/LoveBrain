@@ -183,7 +183,7 @@ class PanelUsageMetricSemanticsTest {
                 LoveBrainTheme {
                     LoveBrainPanelScreen(
                         viewModel = fakeVm(usage),
-                        onInputFocusChange = { _, _ -> },
+                        onInputFocusChange = { _, _, _ -> },
                         onInputIntent = { },
                         onClearComposeFocus = { },
                         onResize = { _, _ -> },
@@ -541,7 +541,7 @@ class PanelUsageMetricSemanticsTest {
                         viewModel = fakeVm(fullUsage).also { vm ->
                             every { vm.currentNotice } returns notices.current
                         },
-                        onInputFocusChange = { _, _ -> },
+                        onInputFocusChange = { _, _, _ -> },
                         onInputIntent = { },
                         onClearComposeFocus = { },
                         onResize = { _, _ -> },

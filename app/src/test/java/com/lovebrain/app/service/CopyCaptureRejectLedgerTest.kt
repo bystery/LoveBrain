@@ -13,58 +13,34 @@ import org.robolectric.annotation.Config
 import java.io.File
 
 /**
- * CAP1（2026-10-06）：捕获服务"静默"三格的读数账（A1 取证 source-10 候选①③④）。
+ * CAP1（2026-10-06）：捕获服务"静默"三格的**诊断账**（A1 取证 source-10 候选①③④）。
  *
- * 修的是可读性，**不是采集面**——所以这一族钉两件事：
+ * 进程内那五颗 @Volatile 读数只服务两个测试、生产零读者，已按"无用机制删掉"处理；
+ * 真机分诊的唯一出口回到 `capture_diag.log`。所以这一族现在只钉两件事：
  *
- * 1. 每条被闸住/被拒的路径都必须在进程内留一颗可核对的读数（与 capture_diag.log 同一时刻
- *    的另一本账），拒绝原因只有标签、没有任何正文；
+ * 1. 每条被闸住/被拒的路径都必须在 diag 里留一行带原因标签的记录（不记正文）；
  * 2. 被拒路径**不产生任何入库内容**：`EventBus.emitCapturedMessage` 在整个服务里只有
  *    一个调用点，钉死它只能住在"菜单确认 ∧ 悬浮窗在"的那一条 else 分支里；
  *    悬浮窗不在的分支必须**只记账不投递**（候选③：当场不记 + 状态说原因，不暂存、不补录、
  *    不自动拉起——回退成"顺手 emit 一下"或"暂存待补"都会红在这里）。
  *
  * 第 2 组用源码形状判（与仓库既有的架构尺同一手法：`SourceScan.maskComments` 剥注释，
- * 行号/偏移可信）；行为半段用 companion 读数直接拨。
+ * 行号/偏移可信）。
  *
  * 逐格"回退成什么会红"：
- * - Deny 分支不 call `recordCaptureReject` → 格 2 红；
- * - `emitCapturedMessage` 多出一个调用点（比如给 serviceDown 分支加暂存重发）→ 格 3 红；
- * - serviceDown 分支里出现 emit（＝"悬浮窗没起也先把内容投出去"）→ 格 4 红；
- * - 把 SystemClock 默认参数换成读正文再记（reason 里带内容）——本表钉不了文案，钉的是
- *   读数只可能是标签：见格 1 用显式 reason 断言的两颗字段。
+ * - Deny 分支不写 `DENY|` diag → 格 1 红；
+ * - `emitCapturedMessage` 多出一个调用点（比如给 serviceDown 分支加暂存重发）→ 格 2 红；
+ * - serviceDown 分支里出现 emit（＝"悬浮窗没起也先把内容投出去"）→ 格 2 红。
  */
 @RunWith(RobolectricTestRunner::class)
-// 本族只拨 companion 读数 + 读源码文件，不碰依赖容器；Robolectric 要走不 startKoin 的空壳 App。
+// 本族只读源码文件，不碰依赖容器；Robolectric 要走不 startKoin 的空壳 App。
 // 清单默认那颗 App 在 onCreate 里无条件 startKoin，而 Koin 的 GlobalContext 是 JVM 静态的——
 // 同沙箱第二个用例再建一次 Application 就炸在装配阶段（栈顶早于本类任何 @Before，用例里拦不住）。
-// 读数账、形状判一颗没改：换的只是 Application，不是判据。
+// 形状判一颗没改：换的只是 Application，不是判据。
 @Config(application = UiProbeApplication::class)
 class CopyCaptureRejectLedgerTest {
 
-    // ═══════════ 1. 读数本体：纯 companion，可摆 ═══════════
-
-    @Test
-    fun `reject reading stores only the reason label and the timestamp`() {
-        CopyCaptureService.recordCaptureReject("allowlist_empty", uptimeMs = 42L)
-        assertEquals("allowlist_empty", CopyCaptureService.lastRejectReason)
-        assertEquals(42L, CopyCaptureService.lastRejectUptimeMs)
-
-        CopyCaptureService.recordCaptureReject("consent_pending", uptimeMs = 43L)
-        assertEquals("consent_pending", CopyCaptureService.lastRejectReason)
-        assertEquals(43L, CopyCaptureService.lastRejectUptimeMs)
-    }
-
-    @Test
-    fun `service-down drops are counted, never silently lost`() {
-        val before = CopyCaptureService.serviceDownDropCount
-        CopyCaptureService.recordServiceDownDrop(uptimeMs = 7L)
-        CopyCaptureService.recordServiceDownDrop(uptimeMs = 9L)
-        assertEquals("当场不记必须逐条计数（候选③的可见代价账）", before + 2, CopyCaptureService.serviceDownDropCount)
-        assertEquals(9L, CopyCaptureService.lastDropUptimeMs)
-    }
-
-    // ═══════════ 2-4. 源码形状：拒绝留账 + 入库唯一出口钉在确认分支 ═══════════
+    // ═══════════ 1. 三闸都在 diag 留原因标签 ═══════════
 
     private fun serviceSourceMasked(): String {
         val f = File("src/main/java/com/lovebrain/app/service/CopyCaptureService.kt")
@@ -75,21 +51,21 @@ class CopyCaptureRejectLedgerTest {
     @Test
     fun `every silent gate now records a readable reject`() {
         val src = serviceSourceMasked()
-        // 三闸（allowlist 拒绝 / 开关 / 披露）都必须在各自分支里 call recordCaptureReject——
-        // 尺按"分支头到下一条分支/返回"的切片判，防止 call 被挪到公共段冒充三格都记了。
+        // 三闸（allowlist 拒绝 / 开关 / 披露）都必须在各自分支里写带标签的 diag——
+        // 尺按"分支头到下一条分支/返回"的切片判，防止 diag 被挪到公共段冒充三格都记了。
         val denyBranch = sliceAfter(src, "if (decision is CapturePolicy.Decision.Deny) {")
-        assertTrue("allowlist 拒绝不留读数：$denyBranch", denyBranch.contains("recordCaptureReject("))
+        assertTrue("allowlist 拒绝不留诊断：$denyBranch", denyBranch.contains("appendDiag(\"DENY|"))
         val switchBranch = sliceAfter(src, "if (!capEnabled) {")
-        assertTrue("开关闸口不留读数：$switchBranch", switchBranch.contains("recordCaptureReject("))
+        assertTrue("开关闸口不留诊断：$switchBranch", switchBranch.contains("appendDiag(\"SWITCH_OFF|"))
         val consentBranch = sliceAfter(src, "if (consentVersion < CURRENT_DISCLOSURE_VERSION) {")
-        assertTrue("披露闸口不留读数：$consentBranch", consentBranch.contains("recordCaptureReject("))
+        assertTrue("披露闸口不留诊断：$consentBranch", consentBranch.contains("appendDiag(\"CONSENT_PENDING|"))
     }
 
     /**
      * 候选③的形状账：
      * - `EventBus.emitCapturedMessage(` 全文件恰好 1 个调用点；
      * - 它必须落在悬浮窗在跑的那条 else 分支里，`instance == null` 分支**只许**
-     *   计数 + diag + 清 pending。
+     *   diag + 清 pending。
      */
     @Test
     fun `rejected and dropped paths hold no delivery to the knowledge chain`() {
@@ -102,7 +78,6 @@ class CopyCaptureRejectLedgerTest {
         assertTrue("尺读不到候选③那一格（分支形状被改了要连这本账一起改）", at >= 0)
         val downBranch = src.substring(at, src.indexOf("} else {", at))
         assertFalse("悬浮窗不在时不许投递任何东西：$downBranch", downBranch.contains(emit))
-        assertTrue("悬浮窗不在必须记一笔可核对的读数", downBranch.contains("recordServiceDownDrop("))
         assertTrue("diag 那一本账保持不动（真机分诊第一读数源）", downBranch.contains("serviceDown|dropped"))
         assertNotNull("当场不记之后仍要清 pending（旧话自己冒出来的那味药不能倒掉）",
             downBranch.indexOf("clearPending(").takeIf { it >= 0 })

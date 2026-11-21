@@ -152,11 +152,12 @@ class ResultAreaOwnershipTest {
             listOf("ResultArea.kt" to "UTILITY_HITBOX_DP = AppDimens.TOUCH_TARGET_MIN_DP"),
             declarations.toList()
         )
-        // 反向证人：读它的那一份还在读——现在读它的是结果区下方那条文字入口自己。
-        // 入口被删掉的话这颗数就成了没人读的定义，这一条会红，而不是留下一颗"没人用但照样绿"的下限。
+        // 反向证人：读它的那一份还在读——2026-11-21 信息减法后，读它的是参考容器首行那颗
+        // toggle（住 MemoryRefsFeed.kt）。没人读的话这颗数就成了没人用的定义，
+        // 这一条会红，而不是留下一颗"没人用但照样绿"的下限。
         assertTrue(
-            "ResultArea.kt 必须还在读 ResultDimens.UTILITY_HITBOX_DP（不读就说明那颗文字入口没了）",
-            stripComments(codeOf("ResultArea.kt")).contains("ResultDimens.UTILITY_HITBOX_DP")
+            "参考容器的首行热区必须还在读 ResultDimens.UTILITY_HITBOX_DP（不读就说明那颗下限没了主人）",
+            stripComments(codeOf("MemoryRefsFeed.kt")).contains("ResultDimens.UTILITY_HITBOX_DP")
         )
     }
 }

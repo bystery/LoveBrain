@@ -143,8 +143,8 @@ class DesignSystemVocabularyOwnershipTest {
     /**
      * 尺自己看得见东西：整目录的中文字面量读数（连同实到清单一起报出来）。
      *
-     * 扫到 0 条就说明掩码或配对先坏了——那种"账本一致"是假的（`OddShapeOwnershipTest`
-     * 同一格判据的写法：看不见东西时宁可失败也别猜）。
+     * 扫到 0 条就说明掩码或配对先坏了——那种"账本一致"是假的
+     * （看不见东西时宁可失败也别猜，不另抄一份别人的读数）。
      */
     @Test
     fun `the scanner is not blind on the real design system`() {

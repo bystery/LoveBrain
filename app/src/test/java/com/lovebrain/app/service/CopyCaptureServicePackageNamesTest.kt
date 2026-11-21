@@ -29,12 +29,12 @@ import java.io.File
  *    - 把数组来源换成写死的包名（不调 `packageNamesFor`）→ 换算格红；
  *    - 在 diag 里 dump 包名明细（`joinToString`）→ 读数只许数数量格红；
  *    - onServiceConnected / onAccessibilityEvent 不再复检范围 → 接线格红。
- * 3. companion 读数：只留"声明了 N 个包名"这一级数量（-1＝从未设过）。
+ * 3. 真机可核对的出口只有 diag 的 `PACKAGE_SCOPE|count=` 一行（进程内 companion 读数已删）。
  *
  * 语义树/`stringResource` 这轮用不到，故不涉及。
  */
 @RunWith(RobolectricTestRunner::class)
-// 本族只算纯函数 + 拨 companion 读数 + 读源码文件，一行都不依赖 Koin 容器；走不 startKoin 的空壳 App。
+// 本族只算纯函数 + 读源码文件，一行都不依赖 Koin 容器；走不 startKoin 的空壳 App。
 // 默认清单那颗 App 在 onCreate 无条件 startKoin，而 GlobalContext 是 JVM 静态的——同沙箱第二个
 // Application 必抛 KoinAppAlreadyStartedException，且抛在 Robolectric 装配阶段（用例里 stopKoin 拦不住）。
 // 换的只是 Application：形状判的数法（maskComments 后数调用点、函数体配对）一颗没动。
@@ -77,17 +77,7 @@ class CopyCaptureServicePackageNamesTest {
         assertArrayEquals(arrayOf("com.tencent.mm"), names)
     }
 
-    // ═══════════ 2. companion 读数：只到数量级 ═══════════
-
-    @Test
-    fun `declared package count reading stores only the count`() {
-        CopyCaptureService.recordDeclaredPackageCount(3)
-        assertEquals(3, CopyCaptureService.declaredPackageNameCount)
-        CopyCaptureService.recordDeclaredPackageCount(0)
-        assertEquals(0, CopyCaptureService.declaredPackageNameCount)
-    }
-
-    // ═══════════ 3. 源码形状：真源 → 换算 → 回写，且范围接线不脱 ═══════════
+    // ═══════════ 2. 源码形状：真源 → 换算 → 回写，且范围接线不脱 ═══════════
 
     private fun serviceSourceMasked(): String {
         val f = File("src/main/java/com/lovebrain/app/service/CopyCaptureService.kt")

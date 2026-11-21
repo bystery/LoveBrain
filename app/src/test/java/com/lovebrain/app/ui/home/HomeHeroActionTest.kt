@@ -119,7 +119,7 @@ class HomeHeroActionTest {
     }
 
     /**
-     * §3.10 的闭合判据（源码级来路）：▶/■ 这两颗形状**必须由设计系统那颗圆角字形件画**，
+     * 约定的闭合判据（源码级来路）：▶/■ 这两颗形状**必须由设计系统那颗圆角字形件画**，
      * 页面里不许再留一条自己拼的实心尖 Path。
      *
      * 为什么这一格按来路判而不是按像素判：本机没有设备、也没有可用的 AVD/system-image，
@@ -146,7 +146,7 @@ class HomeHeroActionTest {
         assertTrue("找不到 $file——这把尺会恒绿", file.isFile)
         val code = com.lovebrain.app.core.testing.SourceScan.maskComments(file.readText(Charsets.UTF_8))
 
-        assertEquals("页面里不许再自己拼 Path（§3.10 那颗件才是主人）", 0, Regex("\\bPath\\(\\)").findAll(code).count())
+        assertEquals("页面里不许再自己拼 Path（那颗件才是主人）", 0, Regex("\\bPath\\(\\)").findAll(code).count())
         assertEquals("页面里不许再自己 lineTo 出尖角", 0, Regex("\\blineTo\\(").findAll(code).count())
         assertEquals("页面里不许再自己 drawPath", 0, Regex("\\bdrawPath\\(").findAll(code).count())
         // 一颗调用点，两颗形状（三角 / 停止块）都从它走

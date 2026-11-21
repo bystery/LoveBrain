@@ -22,7 +22,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 主动发候选卡的展示结构账（书 §14.1「展示结构」在语义树上的那一半）。
+ * 主动发候选卡的展示结构账（「展示结构」在语义树上的那一半）。
  *
  * 链路侧（字段解析、留场、迟到事件丢弃）由 `ProactiveStoreTest` / `ProactiveOptionFieldsTest` /
  * `ProactiveResultRetentionTest` / `ProactiveFailureKeepsPartialBodyTest` 各自钉着；
@@ -31,9 +31,9 @@ import org.robolectric.annotation.GraphicsMode
  * 1. **可复制正文在前、短角度说明为辅**：正文节点在角度节点上方；没写角度的候选
  *    不画一个空标签行。坏实现把角度提到正文上面、或对空角度照画"角度："，当场红。
  * 2. **时机/先别发/准备材料默认收起、按需展开，且展开后带类别标签**：
- *    收起时三类正文一行都不在（默认收起是 §14.1 的硬话），但入口讲得出里面是哪几类
- *    （不是一颗裸箭头）；展开后每行以"时机：/先别发：/需要准备："开头——三类句子长得像，
- *    没有标签就分不清哪句是等待依据（§14.2 末行拦的混淆）。默认展开、展开无标签，都红。
+ *    收起时三类正文一行都不在（默认收起是约定的硬话），但入口讲得出里面是哪几类
+ *    （不是一颗裸箭头）；展开后每行以"时机：先别发：需要准备："开头——三类句子长得像，
+ *    没有标签就分不清哪句是等待依据（末行拦的混淆）。默认展开、展开无标签，都红。
  * 3. **复制只带走可发送正文**：整卡点击交出去的字符串逐字等于 `text`，角度/时机/先别发/
  *    准备四个字段的记号一个都不许混进剪贴板——把策略行拼进复制载荷的实现当场红。
  *    展开之后再点，复制内容不变。
@@ -45,7 +45,7 @@ import org.robolectric.annotation.GraphicsMode
  *    展开账本跨批不销账的实现，红。
  *
  * ⚠ 标签一律 `getString` 从资源取，不写死中文（`NoticeStripSemanticsTest` 头部记过的教训）。
- * ⚠ 数量判据**只有"渲染几条画几条"**：书 §14.2 九类方向是评审差异用的，本文件与生产
+ * ⚠ 数量判据**只有"渲染几条画几条"**：九类方向是评审差异用的，本文件与生产
  *    两侧都不写"必须有 N 张"；夹具只用一两条候选，任何"九张"断言都不该在这棵测试树上出生。
  */
 @RunWith(RobolectricTestRunner::class)
@@ -113,7 +113,7 @@ class ProactiveOptionCardSemanticsTest {
             .fetchSemanticsNode()
         assertTrue(
             "角度说明(${angleLine.boundsInRoot.top})该排在正文(${body.boundsInRoot.top})下面——" +
-                "§14.1 的次序是可复制正文在前、短角度说明为辅",
+                "约定的次序是可复制正文在前、短角度说明为辅",
             angleLine.boundsInRoot.top > body.boundsInRoot.top
         )
     }

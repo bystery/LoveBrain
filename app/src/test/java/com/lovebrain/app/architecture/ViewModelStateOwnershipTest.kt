@@ -64,7 +64,8 @@ data class VmStateSite(val shape: VmMutableShape, val name: String) : Comparable
  *
  * ⚠ 账本里的名字**只能来自这一格打印出来的实到清单**，不许照叙述填
  * （同一族坑：数形状的尺必须先扫现状、把数打印出来，照心象填就是假账）。
- * 本次登记 12 颗 = 9 FLOW + 3 VAR；COLL / LATEINIT / LEAKED 三支在生产里实测各 0，
+ * 本次登记 6 颗 = 2 FLOW + 4 VAR（`kbRefreshSeq` 是 refreshKnowledgeBases 的请求序号）；
+ * COLL / LATEINIT / LEAKED 三支在生产里实测各 0，
  * 所以那三支**只能靠夹具证明它们不是死正则**——"这一格绿了"本身不构成证据。
  */
 class ViewModelStateOwnershipTest {
@@ -88,7 +89,7 @@ class ViewModelStateOwnershipTest {
     private val movedOut = mapOf(
         "ComposerStore" to listOf(
             "_panelState", "_messages", "_currentRole", "_editingIndex", "_ideaComposeMode",
-            "_draftText", "_counselingDraft", "_panelMode", "_outputMode"
+            "_draftText", "_counselingDraft", "_panelMode"
         ),
         "NoticeBoard" to listOf("_kbNotice", "_panelWarning", "_vectorUpdate"),
         "ProviderTicketStore" to listOf("_activeTicket", "_providerReady"),
@@ -110,7 +111,8 @@ class ViewModelStateOwnershipTest {
         "ComposerStore" to "composer.accept(",
         "NoticeBoard" to "notices.",
         "ProviderTicketStore" to "ticketStore.",
-        "ActualSentRecorder" to "actualSent.",
+        // W2 已把 ActualSentRecorder 的死接线从 VM 摘除：VM 里不再出现 `actualSent.`，
+        // 反向判据随之撤销（movedOut 里那颗 `_actualSentState` 保留，防它重新长回 VM）
         "ProfileUpdateController" to "profileUpdates.",
         "ReplyVersionStack" to "versions.",
         "IntentController" to "intents.",
@@ -125,13 +127,14 @@ class ViewModelStateOwnershipTest {
      * 还留在 ViewModel 里的可写状态——**逐颗点名登记**。
      *
      * 第 20 窗口搬走了八颗（轮次上下文、模式、向量、阶段建议、用量），
-     * 剩下四颗是台账标 ★不搬 / 排在最后搬的：
+     * 剩下四颗是记录标 ★不搬 / 排在最后搬的：
      * · `_activeKb`——激活库是中心读数，六个块都读它，不属于任何单个 feature；
      * · `replyGenerationContext`——一轮生成的不可变快照，是所有块的公共上游；
      * · `recordingRound`——本轮提交的重入闩；
      * · `roundScopeHintShown`——仅看本轮首次轻提示的"提示过没有"（落盘格在 SecurePrefs）。
-     * 外部审计 F3-2 又加了批量导入那对（`batchImportHintShown` + `_batchImportHintVisible`），
-     * 与 `roundScopeHintShown` 同一条账法（落盘格在 SecurePrefs）。
+     * 外部审计 F3-2 曾给批量导入加过一对「首次提示旗标 + 只读出口」；2026-11-21 用户否决
+     * 批量导入浮层（轻点 ➕ 直接按输入框角色入库，无预览 / 无首次提示 / 无昵称归属表）后，
+     * 那两颗与归属表一起从 VM 删除，账上不再有它们。
      */
     private val ledger: Map<VmStateSite, String> = mapOf(
         VmStateSite(VmMutableShape.FLOW, "_activeKb") to
@@ -141,19 +144,14 @@ class ViewModelStateOwnershipTest {
             "→ 轮次上下文那一块：一轮生成的不可变快照，十几个成员读它、是所有块的公共上游，所以排在最后搬",
         VmStateSite(VmMutableShape.VAR, "recordingRound") to
             "→ 本轮提交那一块：下一轮的重入闩，只有那条链读写",
+        VmStateSite(VmMutableShape.VAR, "kbRefreshSeq") to
+            "→ 刷新激活库那一块：refreshKnowledgeBases 的请求序号，只用来丢弃慢的旧读（挂起点分布在读激活库/列库/读向量三处）。" +
+                "它不是响应式状态、没有 UI 读者，放进任何 store 都要给那个 store 新开一个'时序判据'口子；" +
+                "与 recordingRound 同族（一条链自己的准入判据），所以留在 VM",
         VmStateSite(VmMutableShape.VAR, "roundScopeHintShown") to
-            "→ 仅看本轮首次轻提示那一块：跨会话一次性记录（'提示过没有'，§2.2 第 3 条），" +
+            "→ 仅看本轮首次轻提示那一块：跨会话一次性记录（'提示过没有'），" +
                 "不参与任何响应式状态图；盘上主人在 SecurePrefs.roundScopeHintShown（AppModule 那对函数接进来），" +
                 "VM 只是会话内副本——放 RoundStateStore 得给它接落盘口子，把纯状态持有者拖成第二个持久化主人",
-        VmStateSite(VmMutableShape.VAR, "batchImportHintShown") to
-            "→ 批量导入首次轻提示那一块（外部审计 F3-2）：跨会话一次性记录（'提示过没有/已发现'），" +
-                "与 roundScopeHintShown 同一条账法；盘上主人在 SecurePrefs.batchImportHintShown" +
-                "（AppModule 那对函数接进来），VM 只是会话内副本——放 ComposerStore 得给它接落盘口子，" +
-                "把纯状态持有者拖成第二个持久化主人",
-        VmStateSite(VmMutableShape.FLOW, "_batchImportHintVisible") to
-            "→ 批量导入首次提示的只读出口（'还该不该给'）：与上颗旗标同帧收口（落盘即翻 false），" +
-                "面板只读它决定通知位投不投；它不是可写业务状态（写只发生在旗标收口那一条链上），" +
-                "放 ComposerStore 反而要把通知文案/落盘口子拖进输入区那一块",
         VmStateSite(VmMutableShape.FLOW, "_knowledgeBasesState") to
             "★不搬：知识库列表是面板设置页与首页共用的中心读数，与 _activeKb 同族——" +
                 "单独搬它就是『搬字段不减行』那条教训的复现"

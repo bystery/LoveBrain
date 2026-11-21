@@ -8,11 +8,9 @@ import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.performTouchInput
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
@@ -48,6 +46,9 @@ import org.robolectric.annotation.GraphicsMode
  *  A 不推帧就点 → ➕ 当时确实不带点击语义，点击确实什么都没启动（复现 CI 症状）；
  *  B 推到它带上点击语义再点 → 一次点击恰好投递一条消息。
  * B 就是夹具该照的样子：等的是"这个入口真的能点"，不是"我猜它已经能点了"。
+ *
+ * ⚠ 这颗按钮的手势面只有**一颗 clickable**：长按不再是任何入口（用户口径"不要长按解析"，
+ *   多行解析由 `onAdd` → `addDraftAuto` 直接吞），所以这里不再有长按那条台账。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -62,14 +63,12 @@ class ComposerAddButtonGatingTest {
 
     private var adds = 0
     private var draftAtAdd = ""
-    private var imports = 0
 
     /** 生产接线：草稿由宿主持有（真面板里是 ViewModel），➕ 读的就是这一份 */
-    private fun mountComposer(autoAdvance: Boolean, onBatchImport: (() -> Unit)? = null) {
+    private fun mountComposer(autoAdvance: Boolean) {
         val draft: MutableState<String> = mutableStateOf("")
         adds = 0
         draftAtAdd = ""
-        imports = 0
         rule.mainClock.autoAdvance = autoAdvance
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
@@ -80,8 +79,7 @@ class ComposerAddButtonGatingTest {
                     onDraftChange = { draft.value = it },
                     onRoleChange = {},
                     onAdd = { adds++; draftAtAdd = draft.value },
-                    onFocusChange = {},
-                    onBatchImport = onBatchImport
+                    onFocusChange = {}
                 )
             }
         }
@@ -127,41 +125,20 @@ class ComposerAddButtonGatingTest {
     }
 
     /**
-     * 非空草稿 + 批量接线：长按与轻点共用一颗节点，两条手势都必须活。
-     * 旧写法（pointerInput + clickable 同盒）里 clickable 先消费 DOWN，
-     * 恰恰在草稿非空这一刻长按批量入口死掉——这一格就是量它的尺。
+     * 非空草稿：➕ 可点，一次轻点恰好投递一次（多行解析也走同一次 `onAdd`，
+     * 这一颗按钮的账就是"一次点击 = 一次提交"，不在手势层数第二遍）。
      */
     @Test
-    fun withANonBlankDraftLongPressOpensBatchImportAndTapStillAddsExactlyOne() {
-        mountComposer(autoAdvance = true, onBatchImport = { imports++ })
+    fun withANonBlankDraftOneTapAddsExactlyOnce() {
+        mountComposer(autoAdvance = true)
         rule.onNode(hasSetTextAction()).performTextInput("在吗")
         rule.waitForIdle()
         assertTrue("非空草稿 ➕ 必须带点击语义", addButtonIsActionable())
 
-        rule.onNodeWithContentDescription("添加").performTouchInput { longClick() }
-        rule.waitForIdle()
-        assertEquals("长按必须开批量导入", 1, imports)
-        assertEquals("长按不许顺手投递消息", 0, adds)
-
         rule.onNodeWithContentDescription("添加").performClick()
         rule.waitForIdle()
-        assertEquals("轻点仍恰好投递一条", 1, adds)
-        assertEquals("轻点不许再开批量", 1, imports)
+        assertEquals("轻点恰好投递一条", 1, adds)
         assertEquals("投递的必须是刚输入的那句草稿", "在吗", draftAtAdd)
-    }
-
-    /** 空草稿 + 批量接线：门控不破（无 OnClick 语义），长按入口仍可用 */
-    @Test
-    fun withABlankDraftAndBatchWiredThereIsStillNoClickSemanticsButLongPressWorks() {
-        mountComposer(autoAdvance = true, onBatchImport = { imports++ })
-        rule.waitForIdle()
-
-        assertFalse("空草稿时 ➕ 不许带点击语义（批量接线不改门控）", addButtonIsActionable())
-
-        rule.onNodeWithContentDescription("添加").performTouchInput { longClick() }
-        rule.waitForIdle()
-        assertEquals("空草稿长按仍开批量导入", 1, imports)
-        assertEquals(0, adds)
     }
 
     /** B：夹具该照的样子——等到入口真的能点，再点，就恰好投递一条 */

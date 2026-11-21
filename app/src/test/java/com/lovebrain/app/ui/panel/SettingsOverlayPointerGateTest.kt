@@ -39,7 +39,6 @@ import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.intent.IntentController
 import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.feature.profile.ProfileReview
-import com.lovebrain.app.feature.roundcommit.ActualSentState
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.IntentConfig
@@ -213,7 +212,7 @@ class SettingsOverlayPointerGateTest {
                 LoveBrainTheme {
                     LoveBrainPanelScreen(
                         viewModel = vm,
-                        onInputFocusChange = { _, _ -> },
+                        onInputFocusChange = { _, _, _ -> },
                         onInputIntent = { },
                         onClearComposeFocus = { },
                         onResize = { _, _ -> },
@@ -347,7 +346,6 @@ class SettingsOverlayPointerGateTest {
         every { vm.panelBackdropOpacityPercent } returns 80
         every { vm.replyCardLayout } returns ReplyCardLayout.DEFAULT
         every { vm.activeKb } returns MutableStateFlow(null)
-        every { vm.actualSentState } returns MutableStateFlow(ActualSentState.IDLE)
         every { vm.composerMode } returns MutableStateFlow(ComposerMode.REPLY)
         every { composer.counselingDraft } returns MutableStateFlow("")
         every { vm.counselingError } returns MutableStateFlow(null)

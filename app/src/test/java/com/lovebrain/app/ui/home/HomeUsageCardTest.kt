@@ -29,7 +29,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 首页那一块累计使用**小卡**（M25 §五 取舍③：新决定**替代**旧规「不恢复使用概览/内部统计」，
+ * 首页那一块累计使用**小卡**（M25 五 取舍③：新决定**替代**旧规「不恢复使用概览/内部统计」，
  * 但新决定自己带了上限——"一块简洁的小卡，不恢复大而复杂的仪表盘"）的守卫。
  *
  * 四条判据各钉一件能被坏实现打破的事：
@@ -200,7 +200,7 @@ class HomeUsageCardTest {
         val entryHeightDp = (entry.bottom - entry.top) / density
         assertTrue(
             "这块统计小卡的高度不许超过一颗入口卡（小卡 ${cardHeightDp.toInt()}dp / 入口 ${entryHeightDp.toInt()}dp）" +
-                "——§五 取舍③ 的上限是『一块简洁的小卡，不是大而复杂的仪表盘』",
+                "——五 取舍③ 的上限是『一块简洁的小卡，不是大而复杂的仪表盘』",
             cardHeightDp <= entryHeightDp
         )
     }

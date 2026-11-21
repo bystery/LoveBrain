@@ -122,7 +122,7 @@ class GenerationEngineTimeoutLanesTest {
         every { promptBuilder.buildSystemPrompt() } returns "system"
         every { promptBuilder.replyPromptAssetHash() } returns "assets"
         coEvery {
-            promptBuilder.buildReplyUserPromptWithRefs(any(), any(), any(), any(), any(), any())
+            promptBuilder.buildReplyUserPromptWithRefs(any(), any(), any(), any(), any())
         } returns PromptBuilder.PromptBuildResult("user", emptyList())
         return GenerationEngine(gateway, promptBuilder)
     }
@@ -136,7 +136,6 @@ class GenerationEngineTimeoutLanesTest {
         corrections = emptyMap(),
         correctionsRevision = 0,
         onlyThisRound = false,
-        aggressive = false,
         providerIdentity = config.toIdentity(),
         kbProfile = "",
         kbRevision = "rev",
@@ -272,7 +271,7 @@ class GenerationEngineTimeoutLanesTest {
         // 用户在请求已经发出去之后把档位从 300 改到 60：这正是设置页与在飞请求会撞上的那一刻
         gateway.onStreamEntered = { gateway.liveConfig = savedDuring }
 
-        val events = engineWith(gateway).proactiveStream("req-pro", "", kb, emptyList()).toList()
+        val events = engineWith(gateway).proactiveStream("req-pro", "").toList()
 
         assertEquals("交给网关的必须是发起时冻结的那一份，而不是改过之后的", startedWith, gateway.configsHandedIn.single())
         assertTrue(
@@ -292,13 +291,13 @@ class GenerationEngineTimeoutLanesTest {
         )
         val engine = engineWith(gateway)
 
-        val firstRound = engine.proactiveStream("req-1", "", kb, emptyList()).toList()
+        val firstRound = engine.proactiveStream("req-1", "").toList()
         assertTrue("前置条件：300 秒档下 70 秒那条该到达：" + firstRound,
             firstRound.filterIsInstance<ProactiveOptions>().lastOrNull()?.options?.size == 2)
 
         gateway.liveConfig = fast   // 这一轮结束之后才改设置
 
-        val secondRound = engine.proactiveStream("req-2", "", kb, emptyList()).toList()
+        val secondRound = engine.proactiveStream("req-2", "").toList()
 
         assertEquals("下一轮该按新档位发请求", fast, gateway.configsHandedIn.last())
         assertTrue(
@@ -334,7 +333,7 @@ class GenerationEngineTimeoutLanesTest {
             hangsAfterTimeline = false
         )
 
-        val events = engineWith(gateway).proactiveStream("req-once", "", kb, emptyList()).toList()
+        val events = engineWith(gateway).proactiveStream("req-once", "").toList()
 
         assertEquals("一次点击一次请求：" + gateway.configsHandedIn, 1, gateway.configsHandedIn.size)
         assertTrue(

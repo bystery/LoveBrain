@@ -128,10 +128,10 @@ class IntentPolicyTest {
         assertTrue("空到期时刻要拒：$reason", reason!!.contains("不能为空"))
     }
 
-    // ─── §10.2: 完成/到期后重新启用恢复 ACTIVE ───────────────────
+    // ───: 完成/到期后重新启用恢复 ACTIVE ───────────────────
 
     /**
-     * §10.2：effectiveStatus 保留调用方传入的 status——如果调用方传了旧的 COMPLETED，
+     * effectiveStatus 保留调用方传入的 status——如果调用方传了旧的 COMPLETED，
      * 时间档不会自动恢复 ACTIVE。这钉住了"恢复 ACTIVE 是 UI 层的职责"这条语义：
      * UI 层在重新启用/换档时必须传 ACTIVE，不能传旧的终态。
      */
@@ -174,7 +174,7 @@ class IntentPolicyTest {
         )
     }
 
-    // ─── §10.2: saveDecision（到期重开要重算期限 / 只改正文保原期限）─────
+    // ───: saveDecision（到期重开要重算期限 / 只改正文保原期限）─────
 
     /** 到期现场：`IntentController.refreshForKb` 判过期时就是这一份形状（关着 + 旧时刻已过） */
     private fun expired(

@@ -35,7 +35,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * §11.2 三因分家的**空卡文案那一半**：八项池里每一张空卡念的是自己那一条成因。
+ * 三因分家的**空卡文案那一半**：八项池里每一张空卡念的是自己那一条成因。
  *
  * 空卡有两张脸，由 `Scheme.notSuitable` 决定（数据侧分家判据在
  * `LoveBrainResponse.directionSchemes`，提示语那一半在 [replyCompletenessNotice]）：

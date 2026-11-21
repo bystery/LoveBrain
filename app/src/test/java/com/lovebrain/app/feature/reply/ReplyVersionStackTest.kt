@@ -155,6 +155,32 @@ class ReplyVersionStackTest {
         assertFalse("同一个理由，canRollback 也不许说可以", s.canRollback("B", "A"))
     }
 
+    /**
+     * 失败轮不是回退目标（审计：v1、v2 成功后 v3 失败，再回退不能删掉 v2）。
+     *
+     * 失败轮没有快照，栈顶仍停在上一条成功版本；把栈顶当"当前版本"配对，
+     * 删掉的就是用户眼前那条 v2，它再也回不来了。
+     */
+    @Test
+    fun `a failed round is not a rollback target and never costs the latest success`() {
+        val s = stack()
+        val v1 = vid().also { s.record(it, res, "ctx-1", "A") }
+        val v2 = vid().also { s.record(it, res, "ctx-2", "A") }
+
+        s.markRoundFailed()   // v3 这一轮失败：不多一条快照，屏幕上也不再是 v2
+
+        assertFalse("失败轮没有可丢的当前版本", s.canRollback("A", "A"))
+        assertTrue(s.rollback("A", "A") is RollbackOutcome.Rejected)
+        assertEquals("最近成功版本一条都不能少", listOf(v1, v2), s.snapshots.value.map { it.versionId })
+        assertEquals("拒绝也不许改版本身份", v2, s.currentVersionId.value)
+
+        // 失败之后重新成功：配对恢复正常——丢新那条、恢复 v2
+        val v4 = vid().also { s.record(it, res, "ctx-4", "A") }
+        val out = s.rollback("A", "A") as RollbackOutcome.Applied<String, String>
+        assertEquals(v4, out.dropped.versionId)
+        assertEquals(v2, out.restored.versionId)
+    }
+
     @Test
     fun `the oldest snapshot is pushed out past the capacity`() {
         val s = stack(capacity = 3)

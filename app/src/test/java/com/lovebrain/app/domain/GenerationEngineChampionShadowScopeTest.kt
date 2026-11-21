@@ -90,7 +90,6 @@ class GenerationEngineChampionShadowScopeTest {
         var scope: Set<String> = emptySet()
     ) : SettingsStorePort {
         override var thinkingMode: Int = 0
-        override var outputMode: Int = 0
         override var panelMode: Int = 0
         override var counselingDraft: String = ""
         private var counselingResult: String? = null
@@ -162,7 +161,7 @@ class GenerationEngineChampionShadowScopeTest {
         every { pb.buildSystemPrompt() } returns "system"
         every { pb.replyPromptAssetHash() } returns "assets"
         coEvery {
-            pb.buildReplyUserPromptWithRefs(any(), any(), any(), any(), any(), any())
+            pb.buildReplyUserPromptWithRefs(any(), any(), any(), any(), any())
         } returns PromptBuilder.PromptBuildResult("user-full", emptyList())
         coEvery {
             pb.buildReplyUserPromptOnlyThisRound(any(), any())
@@ -182,12 +181,11 @@ class GenerationEngineChampionShadowScopeTest {
         corrections = emptyMap(),
         correctionsRevision = 0,
         onlyThisRound = onlyThisRound,
-        aggressive = false,
         providerIdentity = CountingGateway.ticketConfig.toIdentity(),
         kbProfile = "",
         kbRevision = "rev",
         promptAssetHash = "assets",
-        // guide-6 §17 Step 4：SHADOW 判据来源改为冻结快照（引擎收尾块不再回读设置）——
+        // SHADOW 判据来源改为冻结快照（引擎收尾块不再回读设置）——
         // 影子行为语义不变，来源从 settings 换成 GenerationInput.championMode
         championMode = "SHADOW"
     )

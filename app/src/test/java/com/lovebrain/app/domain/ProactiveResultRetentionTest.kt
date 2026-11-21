@@ -100,7 +100,7 @@ class ProactiveResultRetentionTest {
 
         // 用户点了"生成开场"：VM 先进模式，再收流
         observing.accept(ProactiveStore.Intent.EnterProactive)
-        val events = engineWith(gateway).proactiveStream("req-1", "", kb, emptyList()).toList()
+        val events = engineWith(gateway).proactiveStream("req-1", "").toList()
         events.forEach { observing.accept(ProactiveStore.Intent.Apply(it)) }
 
         assertTrue("剧本没跑到 store 这一侧：一条事件都没收到：" + events, events.isNotEmpty())
@@ -145,7 +145,7 @@ class ProactiveResultRetentionTest {
     fun `what stays on the screen is copy-ready text, not raw json`() = runTest {
         val gateway = ScriptedGateway(listOf(firstOption, secondOption), config)
 
-        val events = engineWith(gateway).proactiveStream("req-2", "", kb, emptyList()).toList()
+        val events = engineWith(gateway).proactiveStream("req-2", "").toList()
         val delivered = events.filterIsInstance<ProactiveOptions>().last().options
 
         assertEquals(2, delivered.size)
@@ -172,7 +172,7 @@ class ProactiveResultRetentionTest {
             config
         )
 
-        val events = engineWith(gateway).proactiveStream("req-3", "", kb, emptyList()).toList()
+        val events = engineWith(gateway).proactiveStream("req-3", "").toList()
         val delivered = events.filterIsInstance<ProactiveOptions>().last().options
 
         assertEquals(

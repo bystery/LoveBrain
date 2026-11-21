@@ -21,7 +21,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -55,7 +54,6 @@ class KbgBatch8Test {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -260,7 +258,6 @@ class KbgBatch8Test {
         }
         val prefs = mockk<SecurePrefs>(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -268,7 +265,7 @@ class KbgBatch8Test {
         every { prefs.getWorkerTickets() } returns emptyList()
         every { prefs.activeTicketId } returns null
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns ConfigValidationResult(0, emptyList())
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             knowledgeRepo = knowledgeRepo,

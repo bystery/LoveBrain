@@ -66,7 +66,7 @@ import org.robolectric.annotation.GraphicsMode
  * 英文环境下 `a11y_close_notice` 解析成 "Dismiss notice"，所以锚点一律 `getString` 取，
  * 不写死（CI 上红掉的那一批就是这个形状）。
  *
- * ⚠ 那一档外观**本轮已经落地**（原话第 16 条 / 基线 v1 §6.3、§3.9）：轻通知走设计系统新立的
+ * ⚠ 那一档外观**本轮已经落地**（原话第 16 条）：轻通知走设计系统新立的
  * `LbStateContainer.Notice`——合同外观就是 11sp/16sp 的字、圆角 10、关闭那颗 14dp 字形坐在
  * **24dp** 见方盒里（[LbTextActionGlyph.Notice]，复用建议卡那一套 labelMedium 紧凑语言）。
  * 所以下面三处量热区的判据**从全站 48dp 换成 `TouchTier.PANEL_HEADER_HOTZONE`（24dp）那一档**：
@@ -75,7 +75,7 @@ import org.robolectric.annotation.GraphicsMode
  * compact notice height tier` 那一格的 `boundsInRoot` 几何判据当场红。
  * ⚠ 前提：宿主 `KbNoticeBanner`（`LoveBrainPanelScreen.kt`，主线程持有）须把
  * `container = LbStateContainer.Strip` 翻成 `LbStateContainer.Notice`；本测试挂的是生产那一颗，
- * 未翻则这几格仍读到旧 Strip 的 48dp——那是宿主没接线，不是这一族的问题（见台账 impl-N1b）。
+ * 未翻则这几格仍读到旧 Strip 的 48dp——那是宿主没接线，不是这一族的问题（见记录 impl-N1b）。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -144,7 +144,6 @@ class NoticeStripSemanticsTest {
             UiMatrix(360, 1000).RenderIn(LocalDensity.current.density) {
                 ResultArea(
                     result = GenerateResult.Error(message),
-                    isGenerating = false,
                     streamingCoreText = "",
                     isGeneratingCore = false,
                     streamingSchemes = emptyList(),
@@ -273,7 +272,7 @@ class NoticeStripSemanticsTest {
     }
 
     /**
-     * 横条**总高**的几何判据（原话第 16 条 / 基线 v1 §6.3）：轻通知档单行必须留在紧凑那一档里。
+     * 横条**总高**的几何判据（原话第 16 条）：轻通知档单行必须留在紧凑那一档里。
      *
      * 这一格量的是 `boundsInRoot` 的整条高度，不是热区——语义树读得出"这条横条被撑到多高"。
      * 反面（也是**必须红**的那一个反例）：把关闭那颗从 24dp 图标盒换回 `ScreenAction` 默认那颗

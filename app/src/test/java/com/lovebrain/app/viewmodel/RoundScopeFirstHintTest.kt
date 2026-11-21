@@ -21,7 +21,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -32,7 +31,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * 「仅看本轮」首次轻提示（§2.2 第 3 条"仅看本轮开启时有明显选中态＋中文语义描述与
+ * 「仅看本轮」首次轻提示（"仅看本轮开启时有明显选中态＋中文语义描述与
  * 一次轻提示"）——钉在 VM 这条真实切换路径上（`toggleOnlyThisRound` →
  * `maybeShowRoundScopeFirstHint`）。判据与先例（`intent_intro_seen` 落设置存储：
  * 每次回来不再重弹）同款，每格的红条件写在断言消息里：
@@ -41,7 +40,7 @@ import org.junit.Test
  * · 投一次就落旗标——**旗标不落盘（写丢弃）→ 第二次开启又弹 = 红**；
  * · 落盘的旗标构造时要读回来——**落了盘但构造不读 → 重启后第一次开启又弹 = 红**；
  * · 通道走 Knowledge（回执形态、到点自散）——**投进 Warning 通道 = 屏上画成大黄警告
- *   （§4.4"普通成功不许画成大黄警告"）= 红**；
+ *   （"普通成功不许画成大黄警告"）= 红**；
  * · 没接落盘口子时的回落（读默认、写丢弃）：**同一 VM 会话内重复弹 = 红**。
  *
  * 开关本身的状态机语义归 `RoundStateStore` 那一族测试；通知位的排队/刷新归 `NoticeBoardTest`。
@@ -62,7 +61,6 @@ class RoundScopeFirstHintTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -74,7 +72,6 @@ class RoundScopeFirstHintTest {
     ): LoveBrainViewModel {
         val prefs = mockk<SecurePrefs>(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -94,8 +91,8 @@ class RoundScopeFirstHintTest {
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
 
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            PromptBuilder.ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            PromptBuilder.ConfigValidationResult(0, emptyList())
         every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
 
         return LoveBrainViewModel(
@@ -125,13 +122,13 @@ class RoundScopeFirstHintTest {
         vm.toggleOnlyThisRound()
 
         val notice = vm.currentNotice.value
-        assertNotNull("第一次把开关打开就该给那条轻提示（§2.2 第 3 条）", notice)
+        assertNotNull("第一次把开关打开就该给那条轻提示", notice)
         assertEquals(
             "文案就是层内那一条常量（语义与真实范围合同一致）",
             ROUND_SCOPE_FIRST_HINT, notice!!.message
         )
         assertEquals(
-            "走回执那格，不走 Warning——投进 Warning 会画成大黄警告（§4.4），这一格就是红",
+            "走回执那格，不走 Warning——投进 Warning 会画成大黄警告，这一格就是红",
             NoticeBoard.Channel.Knowledge, notice.channel
         )
         assertNotNull("回执形态自带时限（到点自散），不是要用户确认的那一种", notice.autoDismissMillis)

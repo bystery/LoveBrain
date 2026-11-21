@@ -8,12 +8,15 @@ import org.junit.Test
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.int
+import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import org.junit.rules.TemporaryFolder
 
 /**
- * ContractGuard 三层修复路径（规格书 §5.3：漂移族夹具在 Kotlin 侧与 Python 输出一致；
- * E2/E3 实测样本 AK02_T01、N01_T05 形状；fuzzy_map 未对拍前关闭）。
+ * ContractGuard 三层修复路径（漂移族夹具与参考实现输出一致；E2/E3 的重拼形状；
+ * fuzzy_map 未对拍前关闭）。诊断（meta / 审计 jsonl）只保留规则名与字符量，
+ * 聊天正文不落盘。
  */
 class ContractGuardTest {
 
@@ -93,7 +96,7 @@ class ContractGuardTest {
 
     @Test
     fun `E1 zero-width characters in style keys are normalized`() {
-        // W17 实测形状：'bad_bo\u200by' 夹零宽字符（U+200B）
+        // 零宽字符夹在风格键里的实测形状：'bad_bo\u200by'（U+200B）
         val raw = "{\"response\": {\"recommended\": \"主\", \"bad_bo\\u200by\": \"备\"}, \"directions\": [null, null, null, null], \"analysis\": {}}"
         val out = newGuard().repairAndAudit(raw)
         assertTrue(out.changed)
@@ -112,12 +115,12 @@ class ContractGuardTest {
     }
 
     @Test
-    fun `E1 both non-empty keeps the alias value in audit, never overwrites the canonical slot (I2)`() {
+    fun `E1 both non-empty keeps the alias value out of the contract and logs its length (I2)`() {
         val raw = "{\"response\": {\"bad_boys\": \"别名文本\", \"bad_boy\": \"规范文本\"}, \"directions\": [null, null, null, null], \"analysis\": {}}"
         val out = newGuard().repairAndAudit(raw)
         assertTrue(out.changed)
         assertFalse(out.text.contains("别名文本"))
-        // 与 Python 逐字一致：I2 别名路径的别名值只进留损计数（unmapped_style_keys），
+        // 与参考实现逐字一致：I2 别名路径的别名值只进留损计数（unmapped_style_keys），
         // 不进 meta.unmapped_preserved（那是未知键/零宽键路径的保全通道）
         val unmapped = (metaOf(out)["unmapped_preserved"] as? kotlinx.serialization.json.JsonArray).orEmpty()
         assertTrue(unmapped.isEmpty())
@@ -125,7 +128,7 @@ class ContractGuardTest {
     }
 
     @Test
-    fun `E2 premature top-level brace rejoins analysis (AK02_T01 shape)`() {
+    fun `E2 premature top-level brace rejoins analysis`() {
         // 实测形状：directions 之后提前闭合顶层 }，analysis 原样接回
         val raw = "{\"response\": {\"recommended\": \"好\", \"bad_boy\": null, \"playful\": null, \"warm\": null}, \"directions\": [null, null, null, null]}, \"analysis\": {\"topic\": \"t\"}}"
         val out = newGuard().repairAndAudit(raw)
@@ -135,7 +138,7 @@ class ContractGuardTest {
     }
 
     @Test
-    fun `E3 stray wrapper object is unwrapped with a mismatched closer (N01_T05 shape)`() {
+    fun `E3 stray wrapper object is unwrapped with a mismatched closer`() {
         // 实测形状：...,"directions":[...},{"analysis":{...}}（数组被 } 收尾 + analysis 多包一层）
         val raw = "{\"response\": {\"recommended\": \"好\", \"bad_boy\": null, \"playful\": null, \"warm\": null}, \"directions\": [null, null, null, null},{\"analysis\": {\"topic\": \"t\"}}}"
         val out = newGuard().repairAndAudit(raw)
@@ -161,23 +164,26 @@ class ContractGuardTest {
     }
 
     @Test
-    fun `directions overflow is truncated to 4 with the extras preserved to audit`() {
+    fun `directions overflow is truncated to 4 with the extras logged as character counts only`() {
         val raw = "{\"response\": {\"recommended\": \"好\", \"bad_boy\": null, \"playful\": null, \"warm\": null}, \"directions\": [\"一\", \"二\", \"三\", \"四\", \"五\"], \"analysis\": {}}"
         val out = newGuard().repairAndAudit(raw)
         assertTrue(out.changed)
         assertTrue(out.text.contains("\"directions\": [\"一\", \"二\", \"三\", \"四\"]"))
         val extras = (metaOf(out)["extra_directions_preserved"] as? kotlinx.serialization.json.JsonArray).orEmpty()
-        assertEquals(1, extras.size)
-        assertTrue(extras.joinToString().contains("五"))
+        assertEquals("裁掉的方向只记条数", 1, extras.size)
+        assertEquals("每条只记字符量", 1, extras.single().jsonPrimitive.int)
+        assertFalse("多出的方向正文不进诊断", out.meta.toString().contains("五"))
     }
 
     @Test
-    fun `missing directions list is padded to four nulls`() {
+    fun `missing directions list is kept as-is without null padding`() {
         val raw = "{\"response\": {\"recommended\": \"好\", \"bad_boy\": null, \"playful\": null, \"warm\": null}, \"analysis\": {}}"
         val out = newGuard().repairAndAudit(raw)
-        assertTrue(out.changed)
-        assertTrue(out.text.contains("\"directions\": [null, null, null, null]"))
-        assertTrue("directions_added_null" in rulesOf(out))
+        assertFalse(out.changed)
+        assertEquals(raw, out.text)
+        assertFalse("directions_added_null" in rulesOf(out))
+        assertFalse("directions_pad_null" in rulesOf(out))
+        assertTrue(metaOf(out)["directions_padded"] == null)
     }
 
     @Test
@@ -191,7 +197,8 @@ class ContractGuardTest {
         assertTrue("action_to_response" in rulesOf(out))
         assertTrue(metaOf(out)["empty_response"]?.toString() == "true")
         val unmapped = (metaOf(out)["unmapped_preserved"] as? kotlinx.serialization.json.JsonArray).orEmpty()
-        assertTrue(unmapped.joinToString().contains("decline"))
+        // 只有键名与字符量进诊断，被移除的键值正文不留
+        assertTrue(unmapped.joinToString().contains("decline_reason"))
     }
 
     @Test
@@ -207,13 +214,18 @@ class ContractGuardTest {
 
     @Test
     fun `unknown style keys take the conservative unmapped path while fuzzy_map is off`() {
-        // W17 观察族：bad_but——相似度本可 ≥0.5，但未对拍前整体走保守路径
-        val raw = "{\"response\": {\"recommended\": \"主\", \"bad_but\": \"漂移文本\"}, \"directions\": [null, null, null, null], \"analysis\": {}}"
+        // 漂移族：bad_but——相似度本可 ≥0.5，但未对拍前整体走保守路径
+        val body = "漂移文本"
+        val raw = "{\"response\": {\"recommended\": \"主\", \"bad_but\": \"$body\"}, \"directions\": [null, null, null, null], \"analysis\": {}}"
         val out = newGuard().repairAndAudit(raw)
         assertTrue(out.changed)
-        assertFalse(out.text.contains("漂移文本"))
+        assertFalse(out.text.contains(body))
         val unmapped = (metaOf(out)["unmapped_preserved"] as? kotlinx.serialization.json.JsonArray).orEmpty()
-        assertTrue(unmapped.joinToString().contains("漂移文本"))
+        assertEquals(1, unmapped.size)
+        val entry = unmapped.single() as kotlinx.serialization.json.JsonObject
+        assertEquals("bad_but", entry["key"]!!.jsonPrimitive.content)
+        assertEquals("被丢弃的正文只记字符量", body.length, entry["value_chars"]!!.jsonPrimitive.int)
+        assertFalse("诊断不含正文", unmapped.toString().contains(body))
         assertTrue("unmapped_style_removed" in rulesOf(out))
         assertFalse("style_key_fuzzy_map" in rulesOf(out))
     }
@@ -240,6 +252,24 @@ class ContractGuardTest {
         assertTrue(lines[0].contains("\"requestId\": \"r1\""))
         assertTrue(lines[0].contains("\"turn\": 3"))
         assertTrue(lines[0].contains("\"changed\": true"))
+    }
+
+    @Test
+    fun `audit jsonl keeps rule names and character counts but never the reply body`() {
+        val dir = tmp.newFolder()
+        val guard = ContractGuard(ContractGuard.FileGuardAuditSink(dir))
+        val body = "这段漂移正文不得落审计盘"
+        guard.repairAndAudit(
+            "{\"response\": {\"recommended\": \"主\", \"bad_but\": \"$body\"}, \"directions\": [null, null, null, null], \"analysis\": {}}",
+            kotlinx.serialization.json.buildJsonObject { put("requestId", "r1") }
+        )
+        val line = java.io.File(dir, "contract_guard_audit.jsonl").readText()
+        assertFalse("审计不含正文", line.contains(body))
+        assertTrue(line.contains("\"unmapped_preserved\""))
+        assertTrue("审计保留字符量", line.contains("\"value_chars\": ${body.length}"))
+        assertTrue("审计保留规则名", line.contains("unmapped_style_removed"))
+        assertTrue(line.contains("\"raw_chars\":"))
+        assertFalse("审计不含哈希字段", line.contains("sha256"))
     }
 
     @Test

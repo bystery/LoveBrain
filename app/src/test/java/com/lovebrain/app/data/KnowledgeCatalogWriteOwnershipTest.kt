@@ -175,8 +175,9 @@ class KnowledgeCatalogWriteOwnershipTest {
             events += "stage:$kbName"
         }
 
-        override suspend fun writeDocument(kbName: String, relativePath: String, content: String) {
+        override suspend fun writeDocument(kbName: String, relativePath: String, content: String): Boolean {
             events += "document:$kbName/$relativePath"
+            return true
         }
     }
 
@@ -284,7 +285,7 @@ class KnowledgeCatalogWriteOwnershipTest {
     }
 
     /**
-     * §12.3「删除当前库时……选用明确的有效库」「不得删除后让活动引用指向不存在的库」。
+     * 「删除当前库时……选用明确的有效库」「不得删除后让活动引用指向不存在的库」。
      *
      * "明确的有效库"= 目录读侧那份枚举认下来的那一座（[KnowledgeCatalogStore] 才是
      * "这个根下有哪几座库"的唯一回答者）。mtime 最新的**目录**不是库：一次中断的建库、
@@ -310,7 +311,7 @@ class KnowledgeCatalogWriteOwnershipTest {
                 rec.events.contains("meta:her"))
         }
 
-    /** 一座有效库都不剩时**清除选择**，不拿一颗进不了清单的目录顶上（§12.3「按既有契约清除选择」） */
+    /** 一座有效库都不剩时**清除选择**，不拿一颗进不了清单的目录顶上（「按既有契约清除选择」） */
     @Test
     fun `deleting the active library with no valid library left clears the choice`() = runBlocking {
         val rec = Recorder()
@@ -327,7 +328,7 @@ class KnowledgeCatalogWriteOwnershipTest {
     }
 
     /**
-     * §12.3「创建完成才出现在可用列表，失败显示失败」。
+     * 「创建完成才出现在可用列表，失败显示失败」。
      *
      * seed 半途被写链拒掉时，那颗目录是**这次调用自己造的**（进来前第三道 require 判过它不占位），
      * 留着它就同时破两条：报了失败、可用列表里却多出一座空库；而它若是盘上第一座，
@@ -364,7 +365,7 @@ class KnowledgeCatalogWriteOwnershipTest {
         assertEquals(1, rec.backupsWritten)
     }
 
-    // ═══════════ 首次流程的第二步：复用那顶还没用过的初始库（§4 M01/M02 的编排那一面）═══════════
+    // ═══════════ 首次流程的第二步：复用那顶还没用过的初始库（M01/M02 的编排那一面）═══════════
 
     /** 首次 seed 落盘的那座库在 kb.json 里的真实形状（判据读的元数据四格） */
     private fun pristineInitial(name: String = "default") = KnowledgeBase(
@@ -421,7 +422,7 @@ class KnowledgeCatalogWriteOwnershipTest {
         assertEquals(emptyList<String>(), rec.events.filter { it.startsWith("skeleton:") })
     }
 
-    /** 元数据四格里任意一格不像"没用过"，都必须照常加第二座库（§4 场景④） */
+    /** 元数据四格里任意一格不像"没用过"，都必须照常加第二座库（场景④） */
     @Test
     fun `any used metadata fact on its own forces a brand new library`() = runBlocking {
         val vetoed = listOf(
@@ -496,7 +497,7 @@ class KnowledgeCatalogWriteOwnershipTest {
 
         val made = runBlocking { store.create("kb_new", "新建的库") }
 
-        assertEquals("两座库时照常加库（§4 场景④）", "kb_new", made.name)
+        assertEquals("两座库时照常加库（场景④）", "kb_new", made.name)
         assertEquals(emptyList<String>(), rec.metaTouched)
         assertEquals(listOf("kb_new"), rec.transactions)
     }
@@ -809,7 +810,7 @@ class KnowledgeCatalogWriteOwnershipTest {
     fun `the new owner holds no second copy of path lock or write power`() {
         val code = codeOf(source("data/KnowledgeCatalogWriteStore.kt"))
         // 按**词边界**判：`writeFile(` 里含子串 `File(`，按子串数会把"转手给端口"报成"自己摸磁盘"
-        // （这条坑在 OddShapeOwnershipTest 的头注里写过一次，同一个误判不许在新尺上重来）。
+        // （这条坑是本仓库早前在形状账本尺上记过的误判，不许在新尺上重来）。
         val tells = listOf(
             "自己摸 File" to Regex("""(?<![\w.])File\("""),
             "自持锁" to Regex("""(?<![\w.])Mutex\(|withLock"""),

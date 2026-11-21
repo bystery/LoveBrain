@@ -1,7 +1,5 @@
 package com.lovebrain.app.ui.panel.reply
 
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -21,6 +19,8 @@ import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.KnowledgeBase
 import com.lovebrain.app.model.MemoryCorrection
+import com.lovebrain.app.ui.panel.LoveBrainPanelScreen
+import com.lovebrain.app.ui.theme.LoveBrainTheme
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
 import io.mockk.coEvery
 import io.mockk.every
@@ -29,12 +29,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -46,12 +42,13 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 真实回复输入行 → 真实 VM/ComposerStore 的粘贴-拆条接线（不新增第二条输入链）。
+ * 真实面板输入行 → 真实 VM/ComposerStore 的粘贴-解析接线（**只有一条输入链**）。
  *
- * 钉的是用户旅程那一段：整段微信转录进输入框 → 轻点 ➕ → addDraftAuto 按归属表整批原子入库。
- * 换行保真由 [ReplyInputImeContractTest] 在 IME 会话参数那一层钉（真机粘贴不被拍平）；
- * 这一格量的是"换行一旦进了输入框，下游拆条/角色/原子性/草稿清除"整条接线对不对。
- * performTextInput 绕过 IME 直接写值，所以这里能逐字喂进多行样本。
+ * 用户口径：不要浮层、不要长按——多行文本粘进输入框，轻点 ➕ 就由面板生产 `onAdd`
+ * 调 `addDraftAuto` 直接解析入库。这一格量的是"换行进了输入框之后下游真会按块拆条、
+ * 角色统一用输入框那颗"，并且**走 [LoveBrainPanelScreen] 的 onAdd 生产接线**（不是在测试里手抄一段
+ * 同名逻辑）。换行保真由 [ReplyInputImeContractTest] 在 IME 会话参数那一层钉（真机粘贴不被拍平）；
+ * `performTextInput` 绕过 IME 直接写值，所以这里能逐字喂进多行样本。
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
@@ -72,43 +69,24 @@ class ReplyPasteTranscriptWiringTest {
         Dispatchers.setMain(testDispatcher)
     }
 
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
+    /** 空行分块的三块转录：块头/时间行只是结构，正文三句是条目 */
+    private val transcript =
+        "小美\n2024-01-01 12:00\n在吗\n\n" +
+            "我\n2024-01-01 12:01\n在的\n\n" +
+            "小美\n2024-01-01 12:02\n晚安"
 
-    /** 用户真实块样本（逐字，条目间两空行，末条「行啵」）：6 条、中文日期、零警告 */
-    private val userBlockSample =
-        "W-2f\n2026年11月20日 15:14\n那我要晚一点粗发嘛\n\n\n" +
-            "W-2f\n2026年11月20日 15:14\n四点出发？\n\n\n" +
-            "陆晓\n2026年11月20日 15:15\n哈哈哈不急\n\n\n" +
-            "陆晓\n2026年11月20日 15:15\n等我出发的时候和你是哦\n\n\n" +
-            "陆晓\n2026年11月20日 15:15\n咱俩应该差不多同时到\n\n\n" +
-            "W-2f\n2026年11月20日 15:16\n行啵"
-
-    private val sampleRoles = mapOf(
-        "W-2f" to ChatMessage.Role.ME,
-        "陆晓" to ChatMessage.Role.HER
-    )
-
-    private val expectedSix = listOf(
-        ChatMessage.Role.ME to "那我要晚一点粗发嘛",
-        ChatMessage.Role.ME to "四点出发？",
-        ChatMessage.Role.HER to "哈哈哈不急",
-        ChatMessage.Role.HER to "等我出发的时候和你是哦",
-        ChatMessage.Role.HER to "咱俩应该差不多同时到",
-        ChatMessage.Role.ME to "行啵"
+    /** A 路全部条目 role = 输入框当前角色（这几格不设角色，默认 HER） */
+    private val expectedComposeRoleEntries = listOf(
+        ChatMessage.Role.HER to "在吗",
+        ChatMessage.Role.HER to "在的",
+        ChatMessage.Role.HER to "晚安"
     )
 
     // ═══════════ 装配（与 BatchAutoParseTest.makeVm 同一副 mockk 骨架） ═══════════
 
-    private fun makeVm(
-        readRoles: (() -> Map<String, ChatMessage.Role>)? = null,
-        writeRoles: ((Map<String, ChatMessage.Role>) -> Unit)? = null
-    ): LoveBrainViewModel {
+    private fun makeVm(): LoveBrainViewModel {
         val prefs = mockk<SecurePrefs>(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -128,8 +106,8 @@ class ReplyPasteTranscriptWiringTest {
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
 
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            PromptBuilder.ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            PromptBuilder.ConfigValidationResult(0, emptyList())
         every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
 
         return LoveBrainViewModel(
@@ -142,39 +120,30 @@ class ReplyPasteTranscriptWiringTest {
             generationEngine = mockk(relaxed = true),
             operationCoordinator = ForegroundOperationCoordinator(
                 CoroutineScope(SupervisorJob())
-            ),
-            readBatchImportNameRoles = readRoles,
-            writeBatchImportNameRoles = writeRoles
+            )
         )
     }
 
-    /** 生产接线的输入行半边：草稿读 composer.draftText，➕ 走 addDraftAuto，回落交宿主信号 */
-    private fun mountReply(vm: LoveBrainViewModel, onFallback: (String) -> Unit = {}) {
+    /** 生产接线：整屏面板，草稿/角色全读真 composer，➕ 走面板自己的 onAdd */
+    private fun mountPanel(vm: LoveBrainViewModel) {
         rule.setContent {
-            UiMatrix(360).RenderIn(LocalDensity.current.density) {
-                val draft by vm.composer.draftText.collectAsState()
-                ReplyInput(
-                    draftText = draft,
-                    currentRole = ChatMessage.Role.ME,
-                    editingIndex = -1,
-                    onDraftChange = { vm.setDraft(it) },
-                    onRoleChange = { vm.setCurrentRole(it) },
-                    onAdd = {
-                        val text = draft.trim()
-                        if (text.isNotEmpty()) {
-                            if (vm.addDraftAuto(text, ChatMessage.Role.ME)) {
-                                vm.setDraft("")
-                            } else {
-                                onFallback(text)
-                            }
-                        }
-                    },
-                    onFocusChange = {},
-                    onBatchImport = {}
-                )
+            UiMatrix(360, 1000).RenderIn(LocalDensity.current.density) {
+                LoveBrainTheme {
+                    LoveBrainPanelScreen(
+                        viewModel = vm,
+                        onInputFocusChange = { _, _, _ -> },
+                        onInputIntent = { },
+                        onClearComposeFocus = { },
+                        onResize = { _, _ -> },
+                        onMove = { _, _ -> },
+                        onCopy = { },
+                        onOpenAppPage = { },
+                        onCollapse = { }
+                    )
+                }
             }
         }
-        rule.mainClock.advanceTimeBy(16L)
+        rule.waitForIdle()
     }
 
     private fun fieldText(): String =
@@ -185,19 +154,6 @@ class ReplyPasteTranscriptWiringTest {
         rule.onNodeWithContentDescription("添加").fetchSemanticsNode()
             .config.contains(SemanticsActions.OnClick)
 
-    /** 列表更新计数：StateFlow 每真更新一帧；原子整批 = 1，逐条投 = N（unconfined 收集器同步收） */
-    private fun listUpdatesDuring(vm: LoveBrainViewModel, block: () -> Unit): Int {
-        val scope = CoroutineScope(testDispatcher)
-        var updates = 0
-        val job = scope.launch { vm.composer.messages.collect { updates++ } }
-        val before = updates
-        block()
-        val delta = updates - before
-        job.cancel()
-        scope.cancel()
-        return delta
-    }
-
     private fun tapAdd() {
         rule.onNodeWithContentDescription("添加").performClick()
         rule.waitForIdle()
@@ -205,90 +161,88 @@ class ReplyPasteTranscriptWiringTest {
 
     // ═══════════ 判据格 ═══════════
 
-    /** (a) 整段转录：换行逐字进框 → 轻点一次 → 6 条按序按映射角色、草稿清空、恰好一次原子更新 */
+    /** (a) 多行转录：换行逐字进框 → 轻点一次 → 多条按序、角色全部 = 输入框当前角色、草稿清空 */
     @Test
-    fun pastedTranscriptLandsAsSixOrderedMessagesInOneAtomicUpdate() {
-        val vm = makeVm(readRoles = { sampleRoles }, writeRoles = {})
-        mountReply(vm)
+    fun pastedBlockTranscriptLandsAsOrderedMessagesUnderTheComposeRole() {
+        val vm = makeVm()
+        mountPanel(vm)
 
-        rule.onNode(hasSetTextAction()).performTextInput(userBlockSample)
+        rule.onNode(hasSetTextAction()).performTextInput(transcript)
         rule.waitForIdle()
         assertEquals(
             "原始换行逐字留在输入框里（maxLines=1 只收视觉，不裁值）",
-            userBlockSample, fieldText()
+            transcript, fieldText()
         )
         assertTrue("非空草稿推到 ➕ 带上点击语义再点", addActionable())
 
-        val updates = listUpdatesDuring(vm) { tapAdd() }
+        tapAdd()
 
-        assertEquals("整批恰好一次列表更新（同一条原子 AddMessages）；逐条投六次 = 红", 1, updates)
         assertEquals(
-            "顺序即转录顺序，角色按归属表逐位对齐（composeRole 是 ME 也不许把陆晓标成我）",
-            expectedSix, vm.composer.messagesNow.map { it.role to it.content }
+            "三条按原文顺序入库，角色全部 = 输入框当前角色（默认 HER）",
+            expectedComposeRoleEntries, vm.composer.messagesNow.map { it.role to it.content }
         )
-        assertEquals("消费完整批草稿清空", "", vm.composer.draftTextNow)
+        assertEquals("消费完草稿清空", "", vm.composer.draftTextNow)
         assertEquals("输入框同步清空", "", fieldText())
     }
 
-    /** (b) 普通文本照旧单条：不被误拆，角色就是输入行选的那颗 */
+    /** (b) 普通文本照旧单条：不被误拆，角色就是输入行那颗 */
     @Test
     fun plainTextStillTakesTheSingleAddPath() {
-        val vm = makeVm(readRoles = { sampleRoles }, writeRoles = {})
-        mountReply(vm)
+        val vm = makeVm()
+        vm.setCurrentRole(ChatMessage.Role.ME)
+        mountPanel(vm)
 
         rule.onNode(hasSetTextAction()).performTextInput("今晚一起吃饭")
         rule.waitForIdle()
         assertTrue(addActionable())
 
-        val updates = listUpdatesDuring(vm) { tapAdd() }
+        tapAdd()
 
-        assertEquals("单条路径一次列表更新", 1, updates)
         assertEquals(
-            "普通文本只落一条，原文一字不动",
+            "普通文本只落一条，原文一字不动、角色 = 输入框那颗",
             listOf(ChatMessage.Role.ME to "今晚一起吃饭"),
             vm.composer.messagesNow.map { it.role to it.content }
         )
         assertEquals("", vm.composer.draftTextNow)
     }
 
-    /** (c) 有昵称没认过角色：只交回落信号（宿主开预填浮层），一条都不许落列表，草稿不丢 */
+    /** (c) CRLF 变体：换行形态不同仍拆出同样三条，正文逐字不变、角色同样 = 输入框当前角色 */
     @Test
-    fun unmappedSpeakerFallsBackToThePrefilledSheetSignalWithoutAdding() {
-        var fallbackRaw: String? = null
-        val vm = makeVm(readRoles = { emptyMap() }, writeRoles = {})
-        mountReply(vm, onFallback = { fallbackRaw = it })
-
-        rule.onNode(hasSetTextAction()).performTextInput(userBlockSample)
-        rule.waitForIdle()
-        assertTrue(addActionable())
-
-        val updates = listUpdatesDuring(vm) { tapAdd() }
-
-        assertEquals("回落时零追加零通知", 0, updates)
-        assertEquals("一条都不许落列表（默认成 composeRole 会把对方整段话标成我）",
-            emptyList<ChatMessage>(), vm.composer.messagesNow)
-        assertEquals("回落信号把原文交给宿主开预填浮层", userBlockSample, fallbackRaw)
-        assertEquals("回落不清草稿：用户关掉浮层这句话还在输入框里", userBlockSample, fieldText())
-    }
-
-    /** (d) CRLF 变体：换行形态不同仍拆出同样 6 条（解析器统一换行），原子一次 */
-    @Test
-    fun crlfTranscriptVariantStillSplitsIntoTheSameSixMessages() {
-        val crlf = userBlockSample.replace("\n", "\r\n")
-        val vm = makeVm(readRoles = { sampleRoles }, writeRoles = {})
-        mountReply(vm)
+    fun crlfTranscriptVariantStillSplitsIntoTheSameMessages() {
+        val crlf = transcript.replace("\n", "\r\n")
+        val vm = makeVm()
+        mountPanel(vm)
 
         rule.onNode(hasSetTextAction()).performTextInput(crlf)
         rule.waitForIdle()
         val raw = fieldText()
         assertTrue("CRLF 粘贴的换行也留在框里", raw.contains('\n') || raw.contains('\r'))
-        assertEquals("换行形态归一后正文逐字不变", userBlockSample, raw.replace("\r\n", "\n"))
+        assertEquals("换行形态归一后正文逐字不变", transcript, raw.replace("\r\n", "\n"))
         assertTrue(addActionable())
 
-        val updates = listUpdatesDuring(vm) { tapAdd() }
+        tapAdd()
 
-        assertEquals("CRLF 整批仍恰好一次原子更新", 1, updates)
-        assertEquals(expectedSix, vm.composer.messagesNow.map { it.role to it.content })
+        assertEquals(expectedComposeRoleEntries, vm.composer.messagesNow.map { it.role to it.content })
+        assertEquals("", vm.composer.draftTextNow)
+    }
+
+    /** (d) 单块转录：结构成立也拆出正文一条，块头/时间行被结构吃掉，角色 = 输入框当前角色 */
+    @Test
+    fun singleBlockTranscriptLandsAsOneEntryUnderTheComposeRole() {
+        val vm = makeVm()
+        vm.setCurrentRole(ChatMessage.Role.ME)
+        mountPanel(vm)
+
+        rule.onNode(hasSetTextAction()).performTextInput("小美\n2024-01-01 12:00\n今天好累")
+        rule.waitForIdle()
+        assertTrue(addActionable())
+
+        tapAdd()
+
+        assertEquals(
+            listOf(ChatMessage.Role.ME to "今天好累"),
+            vm.composer.messagesNow.map { it.role to it.content }
+        )
         assertEquals("", vm.composer.draftTextNow)
     }
 }

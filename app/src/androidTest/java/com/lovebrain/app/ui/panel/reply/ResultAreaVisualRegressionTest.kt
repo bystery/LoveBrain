@@ -49,7 +49,6 @@ class ResultAreaVisualRegressionTest {
         composeRule.setContent {
             ResultArea(
                 result = makeSuccessResult(),
-                isGenerating = false,
                 streamingCoreText = "",
                 isGeneratingCore = false,
                 streamingSchemes = emptyList(),

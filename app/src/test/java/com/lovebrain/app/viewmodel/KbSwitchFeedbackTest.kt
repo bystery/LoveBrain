@@ -15,7 +15,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -29,7 +28,7 @@ import org.junit.Test
  *
  * 写侧那一次切库在被只读保护拒掉时是**静默返回**的（`KnowledgeRepository.setActive` 这员
  * 没有失败通道），所以"调用没抛"证明不了切换落地。守卫的判据：重读回来真的换人才算成功；
- * 成功不发通知（选中态与列表高亮就是反馈），失败在面板警告位说一句可重试的话（§11.1
+ * 成功不发通知（选中态与列表高亮就是反馈），失败在面板警告位说一句可重试的话（
  * 「点击成功才更新选中态」「失败不假成功」）。
  *
  * 红条件：把 `switchActiveKb` 里的"重读核实 + 失败警告"拿掉（退回旧形状），第一格当场红——
@@ -51,7 +50,6 @@ class KbSwitchFeedbackTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -59,7 +57,6 @@ class KbSwitchFeedbackTest {
     private fun makeVm(knowledgeRepo: KnowledgeRepository): LoveBrainViewModel {
         val prefs = mockk<com.lovebrain.app.data.SecurePrefs>(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -67,8 +64,8 @@ class KbSwitchFeedbackTest {
         every { prefs.getWorkerTickets() } returns emptyList()
         every { prefs.activeTicketId } returns null
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            PromptBuilder.ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            PromptBuilder.ConfigValidationResult(0, emptyList())
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             knowledgeRepo = knowledgeRepo,
@@ -136,7 +133,7 @@ class KbSwitchFeedbackTest {
         assertEquals("切换落地后选中态要跟过去", "kb-b", vm.activeKb.value?.name)
         val notice = vm.currentNotice.value
         assertNull(
-            "成功不发通知：列表高亮就是反馈（成功借警告位是 §4.4 明令禁止的形状）",
+            "成功不发通知：列表高亮就是反馈（成功借警告位是明令禁止的形状）",
             notice?.takeIf { it.channel == NoticeBoard.Channel.Warning }
         )
     }

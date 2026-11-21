@@ -17,14 +17,16 @@ import org.junit.Test
  * 消费。`Intent.AddMessages` 把"一次批量"当一次写入，这里判三件事：
  *
  * · **一次批量恰好一次通知**——`onContentChanged` 的增量是 1，不是条数（漏标 0 也红）；
- * · **校验失败零追加**——空批量、以及有效条目为零的批量，都是"零追加、零通知"，
- *   不允许"清一次列表再还原"的中间态形状；
+ * · **校验失败零追加，且是全有或全无**——空批量、以及混进任何非法草稿的批量，都是
+ *   "整批拒绝、零追加、零通知"，不允许"滤掉坏项、余项照导"的部分导入，也不允许
+ *   "清一次列表再还原"的中间态形状；
  * · **与既有单条路径行为一致**——批量不比逐条多特权：同一条批量逐条拆开投与整批投，
- *   最终列表的（角色、正文）序列逐位相同；trim 判据也与 [ComposerStore.Intent.AddMessage]
- *   同一套（单条空正文 no-op，批量有效条目为零零追加）。
+ *   最终列表的（角色、正文）序列逐位相同（无缩进正文）；判空判据同（单条空正文 no-op，
+ *   批量里有一条非法就整批不落），正文口径按 A 路要求保真——批量只裁块级首尾空行，
+ *   不削正文行首缩进（单条路径沿用旧 trim）。
  *
  * 非法草稿（IDEA / 空正文）在 [BatchImportDraft] 构造期就被硬挡——那一格也在这里钉住：
-   "校验"的第一道防线在类型上，store 侧的过滤只是同一判据的镜像。
+   "校验"的第一道防线在类型上，store 侧的整批拒绝只是同一判据的镜像。
  *
  * 全 JVM：`ComposerStore` 不碰 Android、不碰持久层，不需要 Robolectric 也不需要 mockk
  * （与 `ComposerSwitchRoleTest` 同一口径）。
@@ -86,10 +88,9 @@ class ComposerStoreBatchImportTest {
     }
 
     /**
-     * 校验失败零追加（store 侧镜像格）：有效条目为零 = 零追加、零通知。
-     * 逐条路径上空正文是 no-op（ComposerStore.addMessage 的 isBlank 判据），
-     * 批量路径上"有效条目为零"必须是同一个形状。能进到这一格的空白草稿只能来自
-     * 绕过构造期的方式，所以这里用 store 的同判据单条路径做反向证人。
+     * 校验失败零追加（store 侧镜像格）：逐条路径上空正文是 no-op（ComposerStore.addMessage
+     * 的 isBlank 判据），批量路径上"有一条非法就整批不落"必须给出同样的零追加、零通知。
+     * 能进到这一格的空白草稿只能来自绕过构造期的方式，所以这里用单条路径做反向证人。
      */
     @Test
     fun singleBlankContentStaysANoOpMirroringTheBatchValidation() {
@@ -100,6 +101,86 @@ class ComposerStoreBatchImportTest {
 
         assertEquals("单条空正文 no-op：批量与逐条共用同一套判空的镜像", 0, store.messagesNow.size)
         assertEquals("零通知", before, contentChanges)
+    }
+
+    /**
+     * 批级空白项（store 侧镜像格）：`[HER, "  "]`——合法项与空白项同批，整批拒绝。
+     *
+     * 构造期 require 已挡空白正文，能进到 store 的空白项只能来自旁路（这里用 mockk 模拟
+     * 未来反序列化）。删掉 store 的 `isBlank` 判据，这一格会把空白项与合法项一起落库，
+     * 或落进"滤掉坏项、余项照导"的残缺对话——两种都必须红。空白项放批首、批尾各试一次。
+     */
+    @Test
+    fun aBatchWithAnyBlankDraftIsRejectedWholeWithZeroWritesAndNotifications() {
+        val blank = mockk<BatchImportDraft>()
+        every { blank.role } returns ChatMessage.Role.HER
+        every { blank.content } returns "  "
+
+        val store = newStore()
+        store.accept(ComposerStore.Intent.AddMessage(ChatMessage.Role.HER, "已有一条"))
+        val before = contentChanges
+
+        store.accept(
+            ComposerStore.Intent.AddMessages(
+                listOf(BatchImportDraft(ChatMessage.Role.HER, "真实的一条"), blank)
+            )
+        )
+        assertEquals("空白项在批尾也整批拒绝，合法项不许先落", 1, store.messagesNow.size)
+        assertEquals("已有一条", store.messagesNow[0].content)
+        assertEquals("整批拒绝 = 零通知", before, contentChanges)
+
+        store.accept(
+            ComposerStore.Intent.AddMessages(
+                listOf(blank, BatchImportDraft(ChatMessage.Role.HER, "真实的一条"))
+            )
+        )
+        assertEquals("空白项在批首同样整批拒绝", 1, store.messagesNow.size)
+        assertEquals("整批拒绝 = 零通知", before, contentChanges)
+    }
+
+    /** 整批都是绕过构造期的空白项：整批拒绝 = 零追加、零通知（与空批量同一形状） */
+    @Test
+    fun anAllBlankBypassedBatchIsANoOpWithZeroNotifications() {
+        val blankHer = mockk<BatchImportDraft>()
+        every { blankHer.role } returns ChatMessage.Role.HER
+        every { blankHer.content } returns "  "
+        val blankMe = mockk<BatchImportDraft>()
+        every { blankMe.role } returns ChatMessage.Role.ME
+        every { blankMe.content } returns "\n\t"
+
+        val store = newStore()
+        store.accept(ComposerStore.Intent.AddMessage(ChatMessage.Role.HER, "已有一条"))
+        val before = contentChanges
+
+        store.accept(ComposerStore.Intent.AddMessages(listOf(blankHer, blankMe)))
+
+        assertEquals("零追加", 1, store.messagesNow.size)
+        assertEquals("零通知", before, contentChanges)
+    }
+
+    /**
+     * A 路正文保真：批量只裁块级首尾空行，正文行首缩进与行尾空格原样写入。
+     *
+     * 解析器（`BatchTranscriptParser`）刻意不 trim 正文行；store 若沿用逐条路径的
+     * `trim()`，这里削掉的是用户要发出去的字，且端到端没有任何一层能补回来。
+     */
+    @Test
+    fun aBatchPreservesBodyIndentationAndStripsOnlyBlankEdgeLines() {
+        val store = newStore()
+        val before = contentChanges
+
+        store.accept(
+            ComposerStore.Intent.AddMessages(
+                draftList(
+                    ChatMessage.Role.HER to "  在吗\n在的  ",
+                    ChatMessage.Role.ME to "\n\n收到\n\n"
+                )
+            )
+        )
+
+        assertEquals("行首缩进与行尾空格原样保留（不 trim 正文）", "  在吗\n在的  ", store.messagesNow[0].content)
+        assertEquals("只裁块级首尾空行，块内正文不动", "收到", store.messagesNow[1].content)
+        assertEquals("整批仍只通知一次", before + 1, contentChanges)
     }
 
     /** 非法草稿（IDEA / 空白正文）在构造期就被拒——"校验"的第一道防线在类型上 */
@@ -170,36 +251,59 @@ class ComposerStoreBatchImportTest {
     }
 
     /**
-     * 绕过构造期硬挡的 IDEA 草稿仍进不了真实对话通道。
+     * 全有或全无：混进一条非法草稿就整批拒绝——**合法项也不许跟着落库**。
      *
-     * 构造期 require 是第一道防线，store 侧过滤是同一判据的镜像。这里用 mockk 绕过
-     * 构造器造出一条 IDEA 草稿（模拟未来反序列化/内部重构等旁路），证明镜像那道真的挡，
-     * 而不是只靠构造期——否则旁路一旦成立，备注正文就会混进 HER/ME 对话。
+     * 构造期 require 是第一道防线，store 侧校验是同一判据的镜像。这里用 mockk 绕过
+     * 构造器造出一条 IDEA 草稿（模拟未来反序列化/内部重构等旁路），并且把坏项放在批首、
+     * 批尾各试一次：旧写法是"滤掉坏项、余项照导"，于是 [IDEA, HER] 会静默落进一条
+     * 用户没确认过的残缺对话；现在两条都必须整批不动。
      */
     @Test
-    fun ideaDraftsBypassingConstructionAreStillFilteredOutByTheStore() {
+    fun aBatchWithAnyIllegalDraftIsRejectedWholeSoNoLegalDraftLeaksIn() {
         val bypassed = mockk<BatchImportDraft>()
         every { bypassed.role } returns ChatMessage.Role.IDEA
         every { bypassed.content } returns "想冒充对话的备注"
 
         val store = newStore()
+        store.accept(ComposerStore.Intent.AddMessage(ChatMessage.Role.HER, "已有一条"))
         val before = contentChanges
+
+        // 坏项在批尾：[HER, IDEA]
+        store.accept(
+            ComposerStore.Intent.AddMessages(
+                listOf(BatchImportDraft(ChatMessage.Role.HER, "真实的一条"), bypassed)
+            )
+        )
+        assertEquals("坏项在批尾也整批拒绝，合法项不许先落", 1, store.messagesNow.size)
+        assertEquals("已有一条", store.messagesNow[0].content)
+        assertEquals("整批拒绝 = 零通知", before, contentChanges)
+
+        // 坏项在批首：[IDEA, HER]
         store.accept(
             ComposerStore.Intent.AddMessages(
                 listOf(bypassed, BatchImportDraft(ChatMessage.Role.HER, "真实的一条"))
             )
         )
-
-        val after = store.messagesNow
-        assertEquals("IDEA 被滤掉，只剩真实消息", 1, after.size)
-        assertEquals(ChatMessage.Role.HER, after[0].role)
-        assertEquals("真实的一条", after[0].content)
-        assertTrue("列表里没有任何 IDEA", after.all { it.role != ChatMessage.Role.IDEA })
-        assertEquals("仍有有效条目 → 恰好一次通知", before + 1, contentChanges)
+        assertEquals("坏项在批首同样整批拒绝", 1, store.messagesNow.size)
+        assertEquals("整批拒绝 = 零通知", before, contentChanges)
         assertEquals("备注通道不被批量导入污染", "", store.noteTextNow)
+
+        // 拒绝不是"卡死"：紧接着的合法批仍然整批落库
+        store.accept(
+            ComposerStore.Intent.AddMessages(
+                draftList(
+                    ChatMessage.Role.HER to "重新导入的一条",
+                    ChatMessage.Role.ME to "我的一条"
+                )
+            )
+        )
+        assertEquals("合法批全部落库", 3, store.messagesNow.size)
+        assertEquals("重新导入的一条", store.messagesNow[1].content)
+        assertEquals("我的一条", store.messagesNow[2].content)
+        assertEquals("合法批恰好一次通知", before + 1, contentChanges)
     }
 
-    /** 整批都是绕过构造期的 IDEA：有效条目为零 = 零追加、零通知（与空批量同一形状）。 */
+    /** 整批都是绕过构造期的 IDEA：整批拒绝 = 零追加、零通知（与空批量同一形状）。 */
     @Test
     fun anAllIdeaBypassedBatchIsANoOpWithZeroNotifications() {
         val bypassed = mockk<BatchImportDraft>()

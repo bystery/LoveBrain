@@ -20,11 +20,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -43,13 +41,13 @@ import java.util.zip.ZipOutputStream
  * 职责拆分的行为合同。
  *
  * 建库事务原先写在 KnowledgeBaseActivity 里，靠 `kbCreationInProgress` boolean 与 `onboardingJob`
- * 两套台账共同维护，且只能在真机上验证。迁到 [KnowledgeBaseViewModel] 后本组用例钉住四件事：
+ * 两套记录共同维护，且只能在真机上验证。迁到 [KnowledgeBaseViewModel] 后本组用例钉住四件事：
  * 1. 事务只有一个 owner——生成中重复点击不会建出第二个库；
  * 2. 画像完整 / 降级 / 建库失败 / 取消四种结果各发各的事件，UI 只按事件选文案；
  * 3. 未配置供应商时不碰 Repository；
  * 4. 导入导出归 ViewModel，导入后强制修正 active，坏包不落库。
  *
- * 2026-10-08 这一族又加了两件事（§12.2 / §12.3 / §2.2 第 4 条）：
+ * 2026-10-08 这一族又加了两件事：
  * 5. 切库、改名、删除的**结果**只认"重读回来的真实数据流"——端口上 setActive 与
  *    updateDisplayName 都是 `Unit`，写侧被只读保护或目录已不在时是静默降级的，
  *    只信"调用有没有抛"就会把没落地的改动说成成功；
@@ -74,11 +72,6 @@ class KnowledgeBaseViewModelTest {
         filesRoot = File(tmp.root, "files").apply { mkdirs() }
         kbRoot = File(filesRoot, "knowledge").apply { mkdirs() }
         cacheRoot = File(tmp.root, "cache").apply { mkdirs() }
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
     }
 
     private fun fakeContext(assetText: String = "ONBOARDING-SYSTEM"): Context {
@@ -113,7 +106,7 @@ class KnowledgeBaseViewModelTest {
         val repo = mockk<KnowledgeBaseCatalogPort>(relaxed = true)
         // create 回来的是**真库名**（生产侧的写侧契约：返回的那一座就是落盘的那一座）。
         // 用 relaxed mock 交一个 name="" 的假对象，"目标库绑在哪一座"这条判据就什么都测不出来——
-        // 2026-10-10 §4 M01 复用上线后，写侧可能把库里已有的那顶初始空壳当目标库回来，
+        // 2026-10-10M01 复用上线后，写侧可能把库里已有的那顶初始空壳当目标库回来，
         // 所以这一格必须让回来的名字与提出的一致（复用那一支的反面证据在
         // `a reused initial library is never reclaimed on cancellation` 与真磁盘那一族）。
         coEvery { repo.create(any(), any()) } answers {
@@ -279,7 +272,7 @@ class KnowledgeBaseViewModelTest {
     }
 
     /**
-     * 引擎报错 ⇒ **一个目录都不许多造**（§4 场景⑤；2026-10-10 由「降级建库」改成本行为）。
+     * 引擎报错 ⇒ **一个目录都不许多造**（场景⑤；2026-10-10 由「降级建库」改成本行为）。
      *
      * 这一格改的是既存判据，不是放松：旧断言（raw="" 照样 create，回报 TemplateOnlyCreated）
      * 正是「首次建库出现两个库」里最难解释的那一支——它在 default 之外又落了一座 13 格全模板的
@@ -299,7 +292,7 @@ class KnowledgeBaseViewModelTest {
         model.createKbWithOnboarding(schema())
         advanceUntilIdle()
 
-        // 「失败显示失败」（§12.3），而且盘上什么都没发生
+        // 「失败显示失败」，而且盘上什么都没发生
         assertEquals(listOf(KbEvent.Creation(KbCreationOutcome.OnboardingCreateFailed)), events)
         coVerify(exactly = 0) { repo.create(any(), any()) }
         coVerify(exactly = 0) { repo.writeFile(any(), any(), any()) }
@@ -354,6 +347,7 @@ class KnowledgeBaseViewModelTest {
             val relativePath = secondArg<String>()
             seenPaths += relativePath
             if (relativePath == "understand/her.md") gate.await()
+            true
         }
 
         val model = vm(fakeContext(), repo, deepSeek)
@@ -389,6 +383,7 @@ class KnowledgeBaseViewModelTest {
             val relativePath = secondArg<String>()
             seenPaths += relativePath
             if (relativePath == "understand/her.md") gate.await()
+            true
         }
 
         val model = vm(fakeContext(), repo, deepSeek)
@@ -484,11 +479,11 @@ class KnowledgeBaseViewModelTest {
     // ═══════════ 切库 / 改名 / 删除的验收：判据是重读回来的真实数据流 ═══════════
 
     /**
-     * §12.2「点击非活动卡用于切换当前知识库时，应明确反馈『已切换到……』」。
+     * 「点击非活动卡用于切换当前知识库时，应明确反馈『已切换到……』」。
      *
      * 这一格读的是事件里那颗**显示名**：写侧落的是内部库名（目录身份），
      * 而用户要知道的是刚切到了"哪一座"，两者不是同一个东西——事件要是把内部名端出来，
-     * 卡片那一行念的会是 kb_b 这种目录名（§12.2「不展示内部文件名」同一判据）。
+     * 卡片那一行念的会是 kb_b 这种目录名（「不展示内部文件名」同一判据）。
      */
     @Test
     fun `switching the active library names the library it switched to`() = runTest(dispatcher) {
@@ -587,7 +582,7 @@ class KnowledgeBaseViewModelTest {
         assertEquals("带空白的名字", model.state.value.knowledgeBases.single().displayName)
     }
 
-    /** 写侧说删成了、清单里却还认得这座库 = 这一删没落到真实数据流上（§12.1「列表没刷新」那一支） */
+    /** 写侧说删成了、清单里却还认得这座库 = 这一删没落到真实数据流上（「列表没刷新」那一支） */
     @Test
     fun `a delete that left the library in the list is reported as a failure`() = runTest(dispatcher) {
         val repo = newRepo()
@@ -605,7 +600,7 @@ class KnowledgeBaseViewModelTest {
     }
 
     /**
-     * §12.3「生成或写入在开始时绑定目标库，切库后迟到结果不能写入新对象」。
+     * 「生成或写入在开始时绑定目标库，切库后迟到结果不能写入新对象」。
      *
      * 这里量的是建库那趟事务：库名在发起生成**之前**就定了，画像三段与阶段写的全是它。
      * 判据是"每一个写入目标 = 这一次 create 拿到名字"，而盘上另有一座一直在用的库当对照——
@@ -633,7 +628,7 @@ class KnowledgeBaseViewModelTest {
         val stageTargets = mutableListOf<String>()
         coEvery { repo.writeFile(any(), any(), any()) } coAnswers {
             writeTargets += firstArg<String>()
-            Unit
+            true
         }
         coEvery { repo.updateStage(any(), any()) } coAnswers {
             stageTargets += firstArg<String>()

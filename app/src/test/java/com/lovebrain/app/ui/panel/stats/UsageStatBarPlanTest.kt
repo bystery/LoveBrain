@@ -110,11 +110,11 @@ class UsageStatBarPlanTest {
             assertFalse("未测量那一帧不该画渐隐（左）", it.fadeLeading)
             assertFalse("未测量那一帧不该画渐隐（右）", it.fadeTrailing)
         }
-        // §7.2 改写说明：旧名「widths that are not measured yet keep the old flat behaviour」钉的正是
+        // 改写说明：旧名「widths that are not measured yet keep the old flat behaviour」钉的正是
         // "未测量 ⇒ 平移 0 ⇒ 左贴边"这一被本轮否定的判据。planUsageStatLayout 这一层的输出（不轮播/
         // 不渐隐）仍然成立、保留；但那"左贴边"改由渲染层保底居中——纯算式拿不到宽时**不猜**，返回 0，
         // 首帧居中交给 Box contentAlignment（fillMaxWidth 的量算约束先于 onSizeChanged 落定）。
-        // 见台账 impl-I2 与 UsageStatBarSemanticsTest 的首帧注释。反例：若算式改为拿 0 宽去"猜"居中，
+        // 见记录 impl-I2 与 UsageStatBarSemanticsTest 的首帧注释。反例：若算式改为拿 0 宽去"猜"居中，
         // 下面这条会红——未测量必须诚实地报 0。
         val unmeasuredWidths = listOf(0, 0)
         assertEquals(
@@ -213,7 +213,7 @@ class UsageStatBarPlanTest {
 
     @Test
     fun `a line that holds everything centers the whole row instead of pinning it to the left`() {
-        // §7.2 改写说明：旧栏名「puts every page exactly where the old flat row did」+
+        // 改写说明：旧栏名「puts every page exactly where the old flat row did」+
         // `assertEquals(listOf(0f, 0f), translations)` 钉的正是"整行放得下 ⇒ 平移 0 ⇒ 左贴边"——
         // 被本轮否定的历史判据。按新预期改写为"整条自然排布相对视口居中"。反例（牙）：把
         // usageStatPageTranslationsPx 的 `!rotates && !oversizedPage` 分支退回 `return List { 0f }`
@@ -242,7 +242,7 @@ class UsageStatBarPlanTest {
 
     @Test
     fun `a measured short group is centered on the viewport across first, measured, and updated states`() {
-        // 生产真实形状：五格短数据在宽面板上放得下 ⇒ 一整组，静止态就该居中而非左贴（§7.2）
+        // 生产真实形状：五格短数据在宽面板上放得下 ⇒ 一整组，静止态就该居中而非左贴
         val gapPx = 48
         val viewportPx = 2400
         val firstShortWidths = listOf(160, 90, 120, 110, 150)   // 今日/本次/首字/累计/已统计 的自然宽（px）

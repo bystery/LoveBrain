@@ -4,7 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 /**
- * `resolveGuideCursor` 的判据（基线 v1 §6.8 / 原始第 14 条）。
+ * `resolveGuideCursor` 的判据（原始第 14 条）。
  *
  * 这条链的**病灶形状**是"点了去配置就把整段引导 complete 掉"——所以每一格都用
  * "派生事实"当输入，不许有任何一格是"用户按过某颗按钮"。

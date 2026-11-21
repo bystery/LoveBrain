@@ -132,6 +132,94 @@ class TopicRecorderStoreOwnershipTest {
         assertFalse("非法来源只拒绝该事实：\n$scene", scene.contains("编造事实"))
     }
 
+    /**
+     * 审计 #2：崩溃恢复重放（效果已写、水位未写）时，同一条消息里抽出的事实共用一组来源 ID。
+     * 旧实现按"同来源 + 同主体"取第一条旧事实来替换，第二条就把第一条盖掉——
+     * 重放一次丢一条，且丢掉的那条永久找不回来。
+     */
+    @Test
+    fun `scene chain replay keeps every fact that shares one source`() = runBlocking {
+        val p = port("moment/scene.md" to "", "memory/raw_scene.md" to "")
+        val store = SceneChainStore(p, FixedClock())
+        val messages = listOf(ChatMessage(id = "m1", role = ChatMessage.Role.HER, content = "我感冒了，还有点发烧"))
+        val facts = listOf(
+            SceneFact(text = "她感冒了", sourceIds = listOf("m1")),
+            SceneFact(text = "她发烧了", sourceIds = listOf("m1"))
+        )
+
+        store.updateSceneChain("kb", "感冒", facts, messages)
+        val first = p.readFile("kb", "moment/scene.md")
+        assertTrue("第一条要写进来：\n$first", first.contains("她感冒了"))
+        assertTrue("第二条要写进来：\n$first", first.contains("她发烧了"))
+
+        // 模拟恢复：同一批事实再跑一遍
+        store.updateSceneChain("kb", "感冒", facts, messages)
+        val replayed = p.readFile("kb", "moment/scene.md")
+        assertTrue("重放后第一条不许被第二条盖掉：\n$replayed", replayed.contains("她感冒了"))
+        assertTrue("重放后第二条仍在：\n$replayed", replayed.contains("她发烧了"))
+        assertEquals("重放必须幂等：文件逐字不变", first, replayed)
+        assertEquals("每条事实只出现一次：\n$replayed", 2, Regex("她(感冒|发烧)了").findAll(replayed).count())
+
+        // 同来源不同文本 + 组内已有多条 → 追加，不许覆盖任何一条已有事实
+        store.updateSceneChain("kb", "感冒", listOf(SceneFact(text = "她有点低烧", sourceIds = listOf("m1"))), messages)
+        val appended = p.readFile("kb", "moment/scene.md")
+        assertTrue("旧事实不许被盖：\n$appended", appended.contains("她感冒了") && appended.contains("她发烧了"))
+        assertTrue("新文本要落进去：\n$appended", appended.contains("她有点低烧"))
+    }
+
+    /**
+     * 审计 #5：事实正文里的 `|`、`；`、`：`、换行是行内分隔符本身。
+     * 写入侧编码成 `\uXXXX`，读侧解码——往返一次必须逐字还原，不许把一条事实拆成几条。
+     */
+    @Test
+    fun `scene facts with delimiters and newlines survive a write read round trip`() = runBlocking {
+        val p = port("moment/scene.md" to "", "memory/raw_scene.md" to "")
+        val store = SceneChainStore(p, FixedClock())
+        val messages = listOf(ChatMessage(id = "m1", role = ChatMessage.Role.HER, content = "原文"))
+        val tricky = "她说：先吃饭|再睡觉；然后打豆豆\n第二行;带分号"
+        val facts = listOf(SceneFact(text = tricky, sourceIds = listOf("m1")))
+
+        store.updateSceneChain("kb", "日常", facts, messages)
+
+        val scene = p.readFile("kb", "moment/scene.md")
+        val line = scene.lines().first { it.startsWith("- [") }
+        val factsRaw = line.substringAfter('：')
+        assertEquals("一条事实不许被分隔符拆成多条：\n$line", 1, factsRaw.split('；', ';').size)
+        assertFalse("正文里的竖线必须编码，不许混进字段分隔符：\n$line", factsRaw.substringBefore("|src=").contains('|'))
+        assertEquals("换行必须编码，不许把一条事实写成两行：\n$scene", 1, scene.lines().count { it.isNotBlank() })
+
+        assertEquals(
+            "注入侧要还原成人话（SceneChainInjection 与写侧同一个解码器）",
+            tricky, SceneChainInjection.cleanFact(factsRaw)
+        )
+
+        // 再跑一遍：解析回来的正文若与写入时不是逐字相同，这里会多出一条/被替换
+        store.updateSceneChain("kb", "日常", facts, messages)
+        assertEquals("往返后必须幂等：解析结果与写入正文逐字相同", scene, p.readFile("kb", "moment/scene.md"))
+    }
+
+    /** 编码是"命中才转义"：不含分隔符的旧数据读进来一个字都不变，旧格式 ⟨ids⟩ 照样认。 */
+    @Test
+    fun `legacy scene lines still parse after the codec change`() = runBlocking {
+        val clock = FixedClock()
+        val p = port(
+            "moment/scene.md" to "- [${clock.wallClock()}] 旧话题：她感冒了⟨m0⟩；住西湖酒店",
+            "memory/raw_scene.md" to ""
+        )
+        val store = SceneChainStore(p, clock)
+        store.updateSceneChain(
+            kbName = "kb",
+            topicLabel = "日常",
+            sceneFacts = listOf(SceneFact(text = "她刚吃完午饭", sourceIds = listOf("m1"))),
+            frozenMessages = listOf(ChatMessage(id = "m1", role = ChatMessage.Role.HER, content = "刚吃完午饭"))
+        )
+
+        val scene = p.readFile("kb", "moment/scene.md")
+        assertTrue("旧格式事实原样保留：\n$scene", scene.contains("她感冒了"))
+        assertTrue("旧格式相邻事实原样保留：\n$scene", scene.contains("住西湖酒店"))
+        assertTrue("新事实写入：\n$scene", scene.contains("她刚吃完午饭"))
+    }
+
     // ─── OngoingPlanStore：稳定身份、幂等与防旧任务复活 ───────────────
 
     @Test

@@ -497,7 +497,7 @@ class UsageStatBarSemanticsTest {
 
     @Test
     fun `a short group that fits sits centered on the bar instead of hugging the left edge`() {
-        // §7.2：测量完成后放得下的短组，整条相对实际可用视口居中——不是"只把数值字符 TextAlign.Center
+        // 测量完成后放得下的短组，整条相对实际可用视口居中——不是"只把数值字符 TextAlign.Center
         // 而整组 Row 仍靠左"，也不是左贴边。这一格读几何、量两侧留白，与被裁/被挤的读数无关。
         val cell = mutableStateOf(UiMatrix(600))
         mountBar(cell, shortFields)

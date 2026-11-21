@@ -86,7 +86,7 @@ class ClockWiringTest {
     @Test
     fun `prompt timestamp section comes from the port too`() {
         val clock = FixedClock()
-        val builder = PromptBuilder(PromptSourcePort { "" }, InMemoryKnowledgePort(), null, clock)
+        val builder = PromptBuilder(PromptSourcePort { "" }, InMemoryKnowledgePort(), clock)
 
         assertTrue(
             "buildTimestampPrompt 必须用注入时间：${builder.buildTimestampPrompt()}",

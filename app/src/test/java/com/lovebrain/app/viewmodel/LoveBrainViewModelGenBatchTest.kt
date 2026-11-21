@@ -39,9 +39,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 // advanceUntilIdle only works inside runTest; using delay() in runBlocking tests
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -80,15 +80,14 @@ class LoveBrainViewModelGenBatchTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
     /** promptBuilder 是严格 mock：prepare 阶段真正会读的两个资产口径必须显式桩 */
     private fun newPromptBuilder(): PromptBuilder {
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            ConfigValidationResult(0, emptyList())
         every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
         every { promptBuilder.assetHashOf(*anyVararg()) } returns "asset-hash"
         return promptBuilder
@@ -97,7 +96,6 @@ class LoveBrainViewModelGenBatchTest {
     private fun newPrefs(): SecurePrefs {
         val p = mockk<SecurePrefs>(relaxed = true)
         every { p.thinkingMode } returns 0
-        every { p.outputMode } returns 0
         every { p.panelMode } returns 0
         every { p.counselingDraft } returns ""
         every { p.loadCounselingResult() } returns null
@@ -300,7 +298,7 @@ class LoveBrainViewModelGenBatchTest {
 
         var callCount = 0
         val gate = CompletableDeferred<Unit>()
-        every { generationEngine.proactiveStream(any(), any(), any(), any(), any(), any()) } answers {
+        every { generationEngine.proactiveStream(any(), any()) } answers {
             callCount++
             val requestId = arg<String>(0)
             flow {
@@ -309,12 +307,12 @@ class LoveBrainViewModelGenBatchTest {
             }
         }
 
-        vm.generateProactive("草稿", "场景")
+        vm.generateProactive("草稿")
         delay(200)
         assertEquals(1, callCount)
         assertTrue("isProactive 应为 true", vm.isProactive.value)
 
-        vm.generateProactive("再试", "场景")
+        vm.generateProactive("再试")
         delay(100)
         assertEquals("不应重复调用", 1, callCount)
 
@@ -418,7 +416,9 @@ class LoveBrainViewModelGenBatchTest {
 
         val capturedMessages = slot<GenerationInput>()
         val gate = CompletableDeferred<Unit>()
+        val engineCalled = CompletableDeferred<Unit>()
         every { generationEngine.replyStream(capture(capturedMessages)) } answers {
+            engineCalled.complete(Unit)
             val requestId = capturedMessages.captured.requestId
             flow {
                 emit(ReplyStarted(requestId))
@@ -427,7 +427,11 @@ class LoveBrainViewModelGenBatchTest {
         }
 
         vm.generate()
-        delay(200)
+        // 引擎的调用发生在协调器自己的调度线程上：等它真的被调到再读快照，不赌一段固定延时。
+        // 8 路并行 fork 把这类分进冷 JVM 时（机器高载 + 类懒加载 + mockk 插桩全挤在窗口里），
+        // 200ms 可能等不到，旧写法直接"Value not yet captured"。
+        withTimeoutOrNull(5_000) { engineCalled.await() }
+            ?: error("replyStream 从未被调用")
 
         // 生成期间编辑 A → A'
         vm.updateMessage(0, ChatMessage.Role.HER, "A'")

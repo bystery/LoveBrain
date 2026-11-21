@@ -15,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -44,7 +43,6 @@ class LoveBrainViewModelR2RegressionTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -55,7 +53,6 @@ class LoveBrainViewModelR2RegressionTest {
     ): LoveBrainViewModel {
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -64,8 +61,8 @@ class LoveBrainViewModelR2RegressionTest {
         every { prefs.getWorkerTickets() } returns emptyList()
         every { prefs.activeTicketId } returns null
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            ConfigValidationResult(0, emptyList())
         every { promptBuilder.assetHashOf(*anyVararg()) } returns "asset-hash"
         // 任务由 coordinator 创建并拥有——把它挂在测试调度器上，
         // 否则 advanceUntilIdle() 推进不到生成任务里，测的就不是同一条时间线。

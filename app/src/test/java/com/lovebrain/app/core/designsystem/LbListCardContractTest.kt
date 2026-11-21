@@ -7,13 +7,13 @@ import org.junit.Test
 import java.io.File
 
 /**
- * 列表卡那一族的**形状合同**（基线 v1.1 §3.4「描边管静息、阴影管浮起」+ §3.6「卡高由内容给」+ §3.5「动作只有一个所有者」）。
+ * 列表卡那一族的**形状合同**（「描边管静息、阴影管浮起」+「卡高由内容给」+「动作只有一个所有者」）。
  *
  * ## 为什么这一族只能按源码形状判
  *
  * 语义树里没有 elevation、没有描边宽度、也没有字号：`shadow(4)` 换成 `Border 1` 这件事
- * 在树上**一个读数都不动**（本仓库把这条坑记在 `LongProviderNameSemanticsTest` 的文件头：
- * 文本判据无牙，几何判据也看不见"底是描边还是投影"）。所以这里用仓库里那把共用的尺
+ * 在树上**一个读数都不动**（本仓库记过这条坑：文本判据无牙，几何判据也看不见
+ * "底是描边还是投影"）。所以这里用仓库里那把共用的尺
  * [SourceScan] 按形状判，失败信息点名文件与行号；真实观感仍由截图那一格负责（本机无设备，已登记未验证）。
  *
  * ## 每一句"回退成什么会红"
@@ -21,9 +21,9 @@ import java.io.File
  * | 判据 | 回退成什么就红 |
  * | --- | --- |
  * | 卡底无 `.shadow(` | 把母版旧档 `shadow(ELEVATION_MAX)` 抄回来 |
- * | 卡底有且只有 1 条 `Border` 1dp 描边 | 描边删了（卡与底同色）、或描边又叠回阴影（§3.4 禁"shadow + border 双叠"） |
- * | 卡体无 `heightIn(` | 给卡写 `heightIn(min = …)`（§3.6 明令不许） |
- * | 圆角只有一档 `Lg` | 换成 `md`/`xl`，或描边圆角与填充圆角不一致（§8 规则 R2） |
+ * | 卡底有且只有 1 条 `Border` 1dp 描边 | 描边删了（卡与底同色）、或描边又叠回阴影（禁"shadow + border 双叠"） |
+ * | 卡体无 `heightIn(` | 给卡写 `heightIn(min = …)`（明令不许） |
+ * | 圆角只有一档 `Lg` | 换成 `md`/`xl`，或描边圆角与填充圆角不一致（规则 R2） |
  * | 动作行只 call `LbTextAction`、且是 `RowCapsule` 档 | 页面/组件里再画一颗 `Box + clickable`（第四种动作写法） |
  * | 案例页不再自绘卡底 | `FeedbackCasesScreen.kt` 里又出现裸 `Card(` 或 `shadow(` |
  * | 母版页（知识库一级）也不再自绘卡底 | `KnowledgeBaseActivity.kt` 里复活旧母版的 `Card(` / `shadow(` / 三种自绘动作写法（改名透明盒、`Box+clickable`、`RowActionButton`）、或页面自己抄 `｜` |
@@ -59,12 +59,12 @@ class LbListCardContractTest {
 
     private fun count(code: String, regex: String) = Regex(regex).findAll(code).count()
 
-    /** §3.4：列表卡的静息结构由描边管，阴影那一档不在这一族里 */
+    /** 列表卡的静息结构由描边管，阴影那一档不在这一族里 */
     @Test
     fun `the list card is stroked, not elevated`() {
         val code = listCardCode
         assertEquals(
-            "F1 列表卡不许有阴影（基线 §3.4：`ELEVATION_MAX` 只留给浮层投影，卡内禁止 shadow + border 双叠）。" +
+            "F1 列表卡不许有阴影（`ELEVATION_MAX` 只留给浮层投影，卡内禁止 shadow + border 双叠）。" +
                 "实到 ${count(code, """\.shadow\(""")} 处",
             0, count(code, """\.shadow\(""")
         )
@@ -84,15 +84,15 @@ class LbListCardContractTest {
         assertEquals(
             "注件没就位：把 shadow 抄回来时这一句应当数到 1，实到",
             1, count("Modifier.shadow(AppDimens.ELEVATION_MAX_DP.dp, LoveBrainShape.lg)", """\.shadow\(""")
-        )
+)
     }
 
-    /** §3.6：卡高由内容给——这一族里一处 `heightIn` 都不许有（胶囊那两层在 LbTextAction 自己家里） */
+    /**：卡高由内容给——这一族里一处 `heightIn` 都不许有（胶囊那两层在 LbTextAction 自己家里） */
     @Test
     fun `the list card never gives itself a height floor`() {
         val code = listCardCode
         assertEquals(
-            "列表卡里出现 `heightIn(` = 卡高不再由内容给（基线 §3.6 明令）。实到 ${count(code, """heightIn\(""")} 处",
+            "列表卡里出现 `heightIn(` = 卡高不再由内容给（明令）。实到 ${count(code, """heightIn\(""")} 处",
             0, count(code, """heightIn\(""")
         )
         assertEquals(
@@ -101,17 +101,17 @@ class LbListCardContractTest {
         assertEquals(
             "注件没就位：合成一颗 `heightIn(min = 96.dp)` 的卡体应当数到 1",
             1, count("Modifier.heightIn(min = 96.dp)", """heightIn\(""")
-        )
+)
     }
 
-    /** §8 规则 R2：描边圆角必须等于填充圆角，而这一族只许有一档卡片圆角 */
+    /**规则 R2：描边圆角必须等于填充圆角，而这一族只许有一档卡片圆角 */
     @Test
     fun `the list card carries exactly one corner tier`() {
         val code = listCardCode
         // 填充那一档与描边那一档各写一次，且**必须是同一个名字**（这两句合起来就是 R2 的形状判据）
         assertEquals("Card 的填充圆角应当恰好一处 `shape = LoveBrainShape.lg`",
             1, count(code, """shape = LoveBrainShape\.lg"""))
-        assertEquals("描边的圆角必须是同一档 lg（§8 R2：描边圆角 == 填充圆角）",
+        assertEquals("描边的圆角必须是同一档 lg（R2：描边圆角 == 填充圆角）",
             1, count(code, """\.border\(AppDimens\.BORDER_WIDTH_DP\.dp, Border, LoveBrainShape\.lg\)"""))
         assertEquals("这一族不许出现第二档卡片圆角（`md`/`xl`/`sm`）——同屏三档圆角的上限从这里开始算",
             0, count(code, """LoveBrainShape\.(md|xl|sm)"""))
@@ -119,11 +119,11 @@ class LbListCardContractTest {
         assertTrue(
             "注件没就位：合成一句 `clip(LoveBrainShape.md)` 应当数到 1",
             count("Box(modifier = Modifier.clip(LoveBrainShape.md))", """LoveBrainShape\.(md|xl|sm)""") == 1
-        )
+)
     }
 
     /**
-     * §3.5 动作矩阵：这一族的行内动作**只有一个所有者**——`LbTextAction` 的 `RowCapsule` 档。
+     *动作矩阵：这一族的行内动作**只有一个所有者**——`LbTextAction` 的 `RowCapsule` 档。
      *
      * 与 `UiLayerDependencyContractTest > the design-system text action has exactly one owner` 的分工：
      * 那一格管 `LbTextAction.kt`/`LbAsyncState.kt` 自己家里那两层热区，这一格管**新主人不许又画一颗**。
@@ -174,7 +174,7 @@ class LbListCardContractTest {
     @Test
     fun `the cases page no longer draws its own card`() {
         val code = casesCode
-        assertEquals("案例页不许再有阴影（母版旧档已被 §3.4 作废）", 0, count(code, """\.shadow\("""))
+        assertEquals("案例页不许再有阴影（母版旧档已被作废）", 0, count(code, """\.shadow\("""))
         assertEquals("案例页不许再自绘 Material `Card(`（卡底的主人现在是 `LbListCard`）",
             0, count(code, """(?<![\w.])Card\("""))
         // 裸标识符的计数点先摘 import：`import androidx.compose.material3.CardDefaults` 那条
@@ -224,11 +224,11 @@ class LbListCardContractTest {
             "feedback_filter_all",       // 分类 chips 那一排
             "feedback_format_markdown",  // Markdown/JSON 切换
             "feedback_export_markdown"
-        ).forEach { res ->
+).forEach { res ->
             assertEquals(
                 "这一页又引用了被删掉的展示位资源 R.string.$res——那一行就会回到屏上",
                 0, count(code, Regex.escape("R.string.$res"))
-            )
+)
         }
         assertEquals("feedback_status_pending 不应再被引用",
             0, count(code, Regex.escape("R.string.feedback_status_pending")))
@@ -250,13 +250,13 @@ class LbListCardContractTest {
      * 每一句"回退成什么会红"：
      * | 判据 | 回退成什么就红 |
      * | --- | --- |
-     * | `.shadow(` = 0 | 旧母版 `:399` 那颗 `shadow(ELEVATION_MAX)` 抄回来（§3.4 已把列表卡的阴影档作废） |
+     * | `.shadow(` = 0 | 旧母版 `:399` 那颗 `shadow(ELEVATION_MAX)` 抄回来（已把列表卡的阴影档作废） |
      * | 裸 `Card(` / `CardDefaults` = 0 | 卡底从公共件退回页面自绘（`KbCard(` 有前导词母，不被 `(?<![\w.])` 误计） |
      * | `LbListCard(` = 恰好 1 | 页面又抄第二份壳，或公共件调用被摘掉退回自绘 |
      * | 自绘 clickable = 0 | 三种旧动作写法里任何种回来（透明改名盒 / 删除盒 / 行内 `RowActionButton` 的底层 clickable）——接好之后这一页**一颗**自绘可点控件都不该有，唯一那处 clickable 在 `LbListCard.kt` 自己家里 |
-     * | `size(48` / `48.dp` = 0 | "把盒子垫到 48"的旧热区写法回来（三轴分离 §3.1：热区归 `LbTextAction`，不归页面） |
+     * | `size(48` / `48.dp` = 0 | "把盒子垫到 48"的旧热区写法回来（三轴分离：热区归 `LbTextAction`，不归页面） |
      * | `RowActionButton(` = 0 | 第三种动作写法重新进这一页 |
-     * | `｜` = 0 | 页面又开始自己拼元信息行——分隔符唯一主人是 `lbMetaLine`（本文件那颗组件的 :105），长第二个主人处，下一次统一就只有一处生效 |
+     * | `｜` = 0 | 页面又开始自己拼元信息行——分隔符唯一主人是 `lbMetaLine`（本文件那颗组件的:105），长第二个主人处，下一次统一就只有一处生效 |
      * | secondary 恰好 3、destructive 恰好 0 | rename/edit/export 三颗次级胶囊；删除挪去尾图标，动作行不再有 destructive 档 |
      * | `LbTextAction(` 恰好 1 且 `LbTextActionTone.Destructive` 1 / `RowSecondary` 0 / `RowCapsule` 0 | 尾图标那颗垃圾桶走 `LbTextAction` 图标档（destructive 语气），`detail` 槽已退场——页面不再自报 RowSecondary/RowCapsule |
      */
@@ -264,7 +264,7 @@ class LbListCardContractTest {
     fun `the master page no longer draws its own card`() {
         val code = kbPageCode
         assertTrue("找不到知识库一级页——这一格会扫了个空集恒绿", File(appRoot, "ui/KnowledgeBaseActivity.kt").isFile)
-        assertEquals("母版页不许有阴影（旧档 `shadow(ELEVATION_MAX)` 已被 §3.4 作废）",
+        assertEquals("母版页不许有阴影（旧档 `shadow(ELEVATION_MAX)` 已被作废）",
             0, count(code, """\.shadow\("""))
         assertEquals("母版页不许再自绘 Material `Card(`（卡底的主人现在是 `LbListCard`）",
             0, count(code, """(?<![\w.])Card\("""))

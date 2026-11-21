@@ -51,8 +51,6 @@ class InMemoryKnowledgePort : KnowledgePort {
 
     override suspend fun getTurnCount(kbName: String): Int = meta[kbName]?.turnCount ?: 0
 
-    override suspend fun getTopicAgeHours(kbName: String): Int = 0
-
     override suspend fun readPlanActive(kbName: String): String =
         files[key(kbName, "moment/plan.md")].orEmpty()
 
@@ -76,14 +74,16 @@ class InMemoryKnowledgePort : KnowledgePort {
     private fun refused(kbName: String): Boolean =
         kbName in readOnlyLibraries || meta[kbName] == null || !safe(kbName, "")
 
-    override suspend fun writeFile(kbName: String, relativePath: String, content: String) {
-        if (refused(kbName) || !safe(kbName, relativePath)) return
+    override suspend fun writeFile(kbName: String, relativePath: String, content: String): Boolean {
+        if (refused(kbName) || !safe(kbName, relativePath)) return false
         files[key(kbName, relativePath)] = content
+        return true
     }
 
-    override suspend fun appendFile(kbName: String, relativePath: String, content: String) {
-        if (refused(kbName) || !safe(kbName, relativePath)) return
+    override suspend fun appendFile(kbName: String, relativePath: String, content: String): Boolean {
+        if (refused(kbName) || !safe(kbName, relativePath)) return false
         files[key(kbName, relativePath)] = files[key(kbName, relativePath)].orEmpty() + content
+        return true
     }
 
     override suspend fun deleteFile(kbName: String, relativePath: String): Boolean {

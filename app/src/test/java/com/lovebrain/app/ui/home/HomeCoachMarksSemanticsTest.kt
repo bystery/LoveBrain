@@ -39,7 +39,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 首页遮罩引导的几何与出口（用户原话第 14 条；规格按设计基线 v1.1 §6.7）。
+ * 首页遮罩引导的几何与出口（用户原话第 14 条；规格按设计）。
  *
  * ⚠ 本仓库三条仪器事实决定了这里怎么判：
  * 1. `maxLines + TextOverflow.Ellipsis` 时语义树仍报**完整原文** ⇒ 文本断言抓不到"字被裁/板太宽"，
@@ -74,7 +74,7 @@ class HomeCoachMarksSemanticsTest {
     private val registry = CoachAnchorRegistry()
 
     /**
-     * 宿主那颗**页面闸**的替身（§9.1）。
+     * 宿主那颗**页面闸**的替身。
      *
      * 生产里它由 `SetupActivity` 从 `SetupRoot` 的只读出口 `onDestinationChanged` 喂进来；
      * 测试没有真导航，就让它直接改这一棵树的形状：**闸一关，首页那一整棵（含四入口替身）一起离场**
@@ -102,7 +102,7 @@ class HomeCoachMarksSemanticsTest {
      *
      * @param anchored 关掉替身的 [coachAnchor]，模拟 `HomeScreen` 那一行还没接上时罩子的退路
      * @param anchorRowBottom 把那一排入口沉到屏幕下沿——用来验"下方放不下就整摞翻到上方"那一支
-     * @param homeInitially 开局首页在不在场（§9.1 的页面闸）；测试中途可用 [onHome] 翻转
+     * @param homeInitially 开局首页在不在场（约定的页面闸）；测试中途可用 [onHome] 翻转
      */
     private fun mount(
         cursor: GuideCursor,
@@ -210,7 +210,7 @@ class HomeCoachMarksSemanticsTest {
             plate.top >= target.bottom - 1f || plate.bottom <= target.top + 1f
         )
         assertTrue(
-            "提示板可见宽要 ≤260dp（§6.7 定版），实到 " + plate.width.dpNumber() + "dp",
+            "提示板可见宽要 ≤260dp（定版），实到 " + plate.width.dpNumber() + "dp",
             plate.width.dpNumber() <= 260f + 0.5f
         )
         // 反空跑：遮罩也得在场，否则"指着"只是画了张图
@@ -349,7 +349,7 @@ class HomeCoachMarksSemanticsTest {
     }
 
     /**
-     * §9.1 的**页面闸**：根导航换到子页那一刻，罩子整块离场；回首页整块回来。
+     * 约定的**页面闸**：根导航换到子页那一刻，罩子整块离场；回首页整块回来。
      *
      * 表行判的就是这一条：「遮罩没有限定只在首页显示」——改前这一层只有"锚点/文案"两道早退，
      * 子页上当然没有首页那四颗锚点，于是罩子退化成"无锚点退路"那张提示板，**浮在子页上**。
@@ -371,7 +371,7 @@ class HomeCoachMarksSemanticsTest {
         assertEquals("子页不许留遮罩", 0, count(LbCoachTags.SCRIM))
         assertEquals("子页不许留箭头", 0, count(LbCoachTags.POINTER))
         assertEquals(
-            "子页最不许留的是那张提示板（§9.1「点击洞和提示按钮都不能把旧板留到子页」）",
+            "子页最不许留的是那张提示板（「点击洞和提示按钮都不能把旧板留到子页」）",
             0, count(LbCoachTags.PLATE)
         )
 
@@ -411,7 +411,7 @@ class HomeCoachMarksSemanticsTest {
     }
 
     /**
-     * 罩子里每一颗可交互节点都够全站 48dp 下限（§3.1/§3.5：三颗动作全借设计系统的件，
+     * 罩子里每一颗可交互节点都够全站 48dp 下限（三颗动作全借设计系统的件，
      * 页面不给自己垫热区盒）。回退成什么就红：出口被画成一格 24dp 的小字。
      */
     @Test

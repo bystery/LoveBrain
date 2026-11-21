@@ -34,7 +34,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * `LbListCard` 的五槽合同（设计基线 v1.1 §3.6 / D1 §③-9，母版 = `KnowledgeBaseActivity.kt`）。
+ * `LbListCard` 的五槽合同（设计，母版 = `KnowledgeBaseActivity.kt`）。
  *
  * ## 每一格都在判"真复用母版"，不是"换了个壳"
  *
@@ -42,7 +42,7 @@ import org.robolectric.annotation.GraphicsMode
  * **完整原文**，所以"标题有没有被裁成一行""摘要是不是只有两行"这类判据若写成字符串相等，
  * 永远看不见裁切）。凡判行数，都用**控制组**那一法：同一棵组件在同一个 `RenderIn`（= 同一把字号）里
  * 挂两遍，第二遍套进 `requiredWidth(2400dp)` 量"这句话排一行到底要多宽、多高"，被测那一遍与它比几何。
- * 体例照 `LongProviderNameSemanticsTest:124` 与 `UsageStatBarSemanticsTest:196`。
+ * 体例照 `UsageStatBarSemanticsTest:196`。
  *
  * ## 反向那半边（每条判据都说得出"回退成什么会红"）
  *
@@ -200,7 +200,7 @@ class LbListCardTest {
     /**
      * 状态槽的两件事：点是 6dp 那一档，点与字**同一行**。
      *
-     * 母版那一行没有状态点，所以"点与字同屏"只能按基线 §3.6 的字面判：点单独画、字单独画，
+     * 母版那一行没有状态点，所以"点与字同屏"只能按约定的字面判：点单独画、字单独画，
      * 分成两行就不算这一槽。回退成"点画到标题前""只有字没有点"都在这一格红。
      */
     @Test
@@ -243,7 +243,7 @@ class LbListCardTest {
         assertTrue(
             "标题排一行要 ${natural.widthDp.toInt()}dp、被测槽位只给 ${probed.widthDp.toInt()}dp，" +
                 "而被测实到高 ${probed.heightDp.toInt()}dp、一行高 ${natural.heightDp.toInt()}dp" +
-                " ⇒ 不再是单行（基线 §3.6 槽 1 要的是单行 + ellipsis）",
+                " ⇒ 不再是单行（槽 1 要的是单行 + ellipsis）",
             probed.heightDp < 1.8f * natural.heightDp
         )
     }
@@ -271,7 +271,7 @@ class LbListCardTest {
         )
         assertTrue(
             "摘要超出两行：一行高 ${oneLine.toInt()}dp、被测实到高 ${probed.heightDp.toInt()}dp" +
-                "（基线 §3.6 槽 3 的上限是两行）",
+                "（槽 3 的上限是两行）",
             probed.heightDp <= 2.6f * oneLine
         )
     }
@@ -301,7 +301,7 @@ class LbListCardTest {
     }
 
     /**
-     * 动作行最多三颗（基线 §3.6）。第四颗今天没有主人（`⋯` 溢出档还没进设计系统，已按缺口登记），
+     * 动作行最多三颗。第四颗今天没有主人（`⋯` 溢出档还没进设计系统，已按缺口登记），
      * 所以多出来的那一颗不许出现在屏上。
      *
      * 这一格同时是那条缺口的证人：谁补上 `⋯`，读数会从"3 颗"变成"3 颗 + 1 颗溢出钮"，
@@ -423,7 +423,7 @@ class LbListCardTest {
     }
 
     /**
-     * 空白标题/摘要/元信息不画幽灵节点（D1 §③-9：无业务真源时不许编标题）。
+     * 空白标题/摘要/元信息不画幽灵节点（无业务真源时不许编标题）。
      * 回退成什么会红：无条件画那一行 ⇒ 锚点数到 1 颗而串是空的，或行里留着一段空白。
      */
     @Test

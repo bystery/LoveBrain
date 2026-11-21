@@ -32,7 +32,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 指导书 §10.1 范围符号那一颗（「仅看本轮」，在 ＋ 之后）的**占用空间**判据：
+ * 范围符号那一颗（「仅看本轮」，在 ＋ 之后）的**占用空间**判据：
  *
  * > 角色、＋、范围是紧凑固定控件……不要继续用 22dp 图标外包巨大布局盒造成「看着小，仍占48dp」。
  *
@@ -72,7 +72,7 @@ class RoundScopeChipFootprintTest {
     /**
      * 真实输入行上的那颗范围按钮：可见的就是那颗 22dp 胶囊，外层不再有 48dp 大盒。
      *
-     * 两轴都要判（§10 那句「看着小，仍占48dp」里 48 既指高也指宽）：
+     * 两轴都要判（那句「看着小，仍占48dp」里 48 既指高也指宽）：
      * 只收高度、把 `widthIn(min = 48)` 留在外面那颗盒子上，占的还是一个 48dp 见方。
      */
     @Test
@@ -117,7 +117,7 @@ class RoundScopeChipFootprintTest {
 
         val scope = boxOf(PANEL_ROUND_SCOPE_TEST_TAG)
         assertTrue(
-            "范围按钮外层仍占高度（§10.1「看着小，仍占48dp」）：${scope.describe()}",
+            "范围按钮外层仍占高度（「看着小，仍占48dp」）：${scope.describe()}",
             scope.heightDp + 0.5f < floor
         )
         assertTrue(
@@ -194,7 +194,7 @@ class RoundScopeChipFootprintTest {
             assertTrue("关掉下限后仍占 48dp 高：${chip.describe()}", chip.heightDp + 0.5f < floor)
             assertTrue("胶囊自己也得在位：${chip.describe()}", chip.heightDp in 16f..30f)
             // 这一格不判宽度：两颗证人是文字标签芯片，宽度=文案自然宽（"COMPACT_LAYERED"
-            // 这句就有 85dp），与 48 下限无关。§10 点名的"巨大布局盒"是 min **高度**那一轴，
+            // 这句就有 85dp），与 48 下限无关。点名的"巨大布局盒"是 min **高度**那一轴，
             // 图标芯片的两轴读数以真正那颗「仅看本轮」（21x22）与反证 ≥48 的档位为准。
         }
     }
