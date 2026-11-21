@@ -143,7 +143,7 @@ class ProactiveFailureKeepsPartialBodyTest {
         val effects = mutableListOf<ProactiveStore.Effect>()
         val store = ProactiveStore(isCurrentRequest = { true }, onEffect = { effects.add(it) })
         store.accept(ProactiveStore.Intent.EnterProactive)
-        val events = engineWith(gateway).proactiveStream(requestId, "", kb, emptyList()).toList()
+        val events = engineWith(gateway).proactiveStream(requestId, "").toList()
         events.forEach { store.accept(ProactiveStore.Intent.Apply(it)) }
         return Outcome(store, effects, events)
     }

@@ -182,10 +182,15 @@ class KnowledgeTriggerCoordinator(
                 L.w("reestimateVector skipped at write time: corrections changed (frozen=$frozenCorrectionsRev)")
                 return
             }
-            withContext(Dispatchers.IO) {
+            // vector_history 是向量本体之外的旁账流水：没落成不能把这次真写成的向量回滚，
+            // 但也不许一声不响——留一条不含正文的记录，别让"记上了"与"没记上"长得一样。
+            val historyWritten = withContext(Dispatchers.IO) {
                 knowledgeRepo.appendFileWithRevisionCheck(
                     kbName, "memory/vector_history.md", histEntry + "\n", frozenCorrectionsRev
                 )
+            }
+            if (!historyWritten) {
+                L.w("reestimateVector: 向量已写，vector_history 流水未落成（revision 变了或写被拒），本条流水丢弃")
             }
             emit(
                 KnowledgeTriggerEvent.VectorUpdated(
@@ -209,11 +214,14 @@ class KnowledgeTriggerCoordinator(
                     (if (reason.isNotBlank()) "\n依据：$reason" else "")
                 emit(KnowledgeTriggerEvent.VectorSummary(kbName, summary))
                 val time = TimeFmt.now()
-                withContext(Dispatchers.IO) {
+                val summaryWritten = withContext(Dispatchers.IO) {
                     knowledgeRepo.appendFileWithRevisionCheck(
                         kbName, "memory/reflect_history.md",
                         "\n\n### [$time] 五维向量变化\n$summary", frozenCorrectionsRev
                     )
+                }
+                if (!summaryWritten) {
+                    L.w("reestimateVector: 五维摘要未写进 reflect_history（revision 变了或写被拒），屏上那条摘要仍是真读数")
                 }
             }
 
@@ -447,7 +455,9 @@ $lastRaw"""
                     )
                 }
                 if (!written) {
-                    L.w("generateReflect skipped at write time: corrections changed (frozen=$frozenCorrectionsRev)")
+                    // 这一支的 false 不只 revision 变了：只读库/路径守门也是 false。流水没记上而已，
+                    // 建议已在上一颗事件里交给页面（用户确认后才入库），不许把这次 append 说成成功。
+                    L.w("generateReflect: 画像建议已上屏，但 reflect_history 未记上（revision 变了或写被拒）")
                 }
             } else {
                 // 截断/格式错误——展示失败建议（带"重新生成"按钮）

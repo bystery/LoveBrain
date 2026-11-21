@@ -732,7 +732,10 @@ class UiLayerDependencyContractTest {
         val (_, floorValue) = requireFloorConstant(sources)
         val allowedDeclarations = setOf(
             ownerPath to "TOUCH_TARGET_MIN_DP",      // 唯一那颗下限
-            ownerPath to "EMPTY_ICON_CONTAINER_DP"   // 版式尺寸，恰好同数，不是下限
+            ownerPath to "EMPTY_ICON_CONTAINER_DP",  // 版式尺寸，恰好同数，不是下限
+            // W4b 的兜底带外扩余量（rect 探针拿不到时的 ACTION_OUTSIDE 判定圈，盖住悬在面板外的菜单
+            // 与手柄）——判定圈半径与下限同数，但它不约束任何控件的热区下限，不是第二颗下限
+            "service/OverlayPanelWindow.kt" to "TOOLBAR_BAND_MARGIN_DP"
         )
         // 内联字面量的存量账：登记的都是"某处确实还写着一颗与下限同数的**版式**尺寸"。
         // 多出的是新债（要改成引用）；清零了的就是还完了（那一行要删，不许留着当已有闸）。
@@ -752,7 +755,7 @@ class UiLayerDependencyContractTest {
         }
 
         assertTrue(
-            "把 48 当数值写进 decl 的只许白名单那两处；多出的一律改成引用 AppDimens.TOUCH_TARGET_MIN_DP" +
+            "把 48 当数值写进 decl 的只许白名单那三处；多出的一律改成引用 AppDimens.TOUCH_TARGET_MIN_DP" +
                 "（版式尺寸也要自己说明它为什么不是下限）。实到：$declarations",
             declarations.toSet() == allowedDeclarations
         )
@@ -1455,6 +1458,10 @@ class UiLayerDependencyContractTest {
             "知识库编辑页那几格表单输入直读了档；该改读 CompactInput（或搬进 core 之后的那一颗）",
         "ui/panel/reply/ReplyInput.kt#INPUT_ROW_HEIGHT_DP" to
             "回复那一行的默认形参；合同给这一条的是 28 档、不是通用 36，两档别混：\u21d2 该由回复自己的具名档接手",
+        // 2026-11-21：`ui/panel/reply/BatchImportSheet.kt#INPUT_ROW_HEIGHT_DP` **销行**——
+        // 用户否决了批量导入浮层（"不要加入新的UI"，直接输入框直接解析），那个文件连同
+        // 两颗解析 chip 一起从 main 源码树删除，页面侧这颗矮档直读点已无落点，
+        // 按本表"还了债就删行、不留虚闸"处理。
         // 2026-10-08 范围符号那一颗（`onlyThisRound` 那颗开关，屏上画的是 `◉`）登记：
         // · 为什么这里非读不可：那颗的**行宽预算**与它自己的**热区边长**必须是同一颗数，
         //   抄两份就有一处会漂（`ReplyInput.kt#ReplyDimens.ROUND_SCOPE_HIT` 是命中轴与占位轴共同的
@@ -1679,7 +1686,7 @@ class UiLayerDependencyContractTest {
         // 账本自己的规矩：债还完了就删行，留一条不成立的豁免比没有豁免更坏。
         // "home/HomeComponents.kt" 那一行（原额度 1，"只剩军师控制条「停止」那颗实心方块的直涂 Primary 底
         // （AdvisorStopGlyph，热区盒自己无底）"）于 2026-10-06 **删掉**：那颗 ▶/■ 交回设计系统的
-        // `LbTriangleGlyph`（全类实心字形审计见 `SolidGlyphShapeAuditTest`），实心方块的直涂 Primary 底随私有 Canvas 离场，
+        // `LbTriangleGlyph`，实心方块的直涂 Primary 底随私有 Canvas 离场，
         // 本页 `.background(` 里已经没有品牌色（实到：`lamp.color` 那颗灯与一处非品牌底，都不在本把尺射程）。
         // 灯与播放/停止字形仍各有主人：`HomeDimens.LAMP_VISIBLE_DP` 与 `AppDimens.ARROW_SIZE_DP`。
         "home/ProviderSection.kt" to BrandLedger(3, "LbRowState", "模型行的选中态该走 LbRowState；第三处是 MiniSwitch 的轨道底（缺件）"),

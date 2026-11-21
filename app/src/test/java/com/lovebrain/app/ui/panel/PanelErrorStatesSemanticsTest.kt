@@ -24,6 +24,8 @@ import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.GenerateResult
 import com.lovebrain.app.model.IntentConfig
 import com.lovebrain.app.model.LoveBrainResponse
+import com.lovebrain.app.model.MemoryKind
+import com.lovebrain.app.model.MemoryRef
 import com.lovebrain.app.model.ReplyAnalysis
 import com.lovebrain.app.model.ReplySchemes
 import com.lovebrain.app.model.ResultMode
@@ -113,13 +115,16 @@ class PanelErrorStatesSemanticsTest {
      *  写死中文会在文案改动或环境换语言时假红，而屏上其实什么都没坏 */
     private val retryLabel: String get() = ctx.getString(com.lovebrain.app.R.string.panel_retry_tap)
 
-    private fun mountResult(result: GenerateResult?, ready: Boolean) {
+    private fun mountResult(
+        result: GenerateResult?,
+        ready: Boolean,
+        memoryRefs: List<MemoryRef> = emptyList()
+    ) {
         rule.setContent {
             val d = LocalDensity.current.density
             UiMatrix(360, 1000).RenderIn(d) {
                 ResultArea(
                     result = result,
-                    isGenerating = false,
                     streamingCoreText = "",
                     isGeneratingCore = false,
                     streamingSchemes = emptyList(),
@@ -128,7 +133,8 @@ class PanelErrorStatesSemanticsTest {
                     onCopyScheme = {},
                     onRetry = {},
                     providerReady = ready,
-                    onOpenSettings = {}
+                    onOpenSettings = {},
+                    memoryRefs = memoryRefs
                 )
             }
         }
@@ -288,26 +294,17 @@ class PanelErrorStatesSemanticsTest {
     /**
      * 结果区右上角那颗「⋯」总工具入口**已经不存在了**，这一格跟着换成新语义的两条判据。
      *
-     * 原来这一格判的是"点开下拉菜单的那颗要报 `DropdownList`"——那颗触发器连同整条
-     * `⋯` 通路都已经删掉（改完不许改名成「更多」继续堆同样四项），继续留那条断言
-     * 就等于判一件已经不存在的形状。换成两条：
-     *
      * ① **不许有下拉式工具入口回来**：这一屏读不出 `DropdownList` 角色，
      *    也读不出「更多操作」那句资源名（资源还在，触发器不许在）。
      *    反例：有人把那颗 `⋯` 换个名字画回来——这一条当场红。
-     * ② **删了入口不等于删了出口**：成功档仍然读得到那条记忆纠正出口（2026-10-10 起字样走资源
-     *    `com.lovebrain.app.R.string.memory_fix_entry`「修正记忆」，所以这一格现取资源，不写死串），
-     *    它有角色（`Button`）、热区在全站下限之上。
-     *    反例：把总工具菜单整片删光、忘了给纠正中心留那条文字入口——第二条红。
-     *
-     * ⚠ 卡片下方那条「这轮参考了哪些信息？」的文字入口（`SchemeCardCopy.REFERENCE_ENTRY_LABEL`）
-     *   在这一族**量不到**，原因出在夹具而不在生产：那颗入口只在 `roundRefsClick` 非空时才画，
-     *   而它要求 `memoryRefsFeedVisible` 过关——本文件的 `mountResult` 没交任何记忆参考清单
-     *   （`memoryRefs` 走默认空表），清单为空 ⇒ 入口根本不出现。
-     *   要立那一格，先让夹具交进一份非空的参考清单；写在这里是为了别把它当成"已经判过了"。
+     * ② **参考区的唯一入口是那个紧凑容器**（2026-11-21 信息减法）：首行小字「本轮参考 N 条」
+     *    （资源 `memory_refs_summary`，这里按 1 条拼）＋ 行尾「纠正中心」（资源 `memory_center_entry`）
+     *    ——两颗都报 `Button`、热区在全站下限之上。旧的问句标题、说明句与独立「修正记忆」入口
+     *    已并进容器，整棵树里不许再念那颗独立出口。
+     *    反例：把独立入口画回来，或把容器首行画成削过热区的自画文字——第二条红。
      */
     @Test
-    fun `the success state has no dropdown utility trigger but keeps its text entry`() {
+    fun `the success state has no dropdown utility trigger and keeps its labelled refs container`() {
         mountResult(
             GenerateResult.Success(
                 LoveBrainResponse(
@@ -316,13 +313,20 @@ class PanelErrorStatesSemanticsTest {
                     analysis = ReplyAnalysis()
                 )
             ),
-            ready = true
+            ready = true,
+            memoryRefs = listOf(
+                MemoryRef(
+                    id = "mem-x", kbId = "kb", kind = MemoryKind.PROFILE,
+                    text = "她对周五的安排有执念", sourcePath = "understand/her.md"
+                )
+            )
         )
-        // 2026-10-10：结果卡默认档改成**纵向一列**，八张卡摊开之后，这条文字入口落在视口之外。
-        // `SemanticsNode.boundsInRoot` 会被滚动祖先裁掉 ⇒ 屏外那颗读来是 `0x0 @(0,0)`，
-        // 下一句热区判据会把"这一条在屏外"误读成"这一条太小"（量具瞎，不是实现没画）。
-        // 先把它滚进视口再量：量的仍然是那一句要量的东西（热区下限），只是让尺看得见它。
-        rule.runOnIdle { rule.onAllNodes(hasText(ctx.getString(com.lovebrain.app.R.string.memory_fix_entry)))[0].performScrollTo() }
+        // 纵向八张卡摊开之后，参考容器落在视口之外：先把它滚进视口再量。
+        // 屏外那颗读来是 `0x0 @(0,0)`，下一句热区判据会把"这一条在屏外"误读成"这一条太小"
+        // （量具瞎，不是实现没画）。先滚进视口再量：量的仍是角色与热区下限，只是让尺看得见。
+        val summaryLabel = ctx.getString(com.lovebrain.app.R.string.memory_refs_summary, 1)
+        val centerLabel = ctx.getString(com.lovebrain.app.R.string.memory_center_entry)
+        rule.runOnIdle { rule.onAllNodes(hasText(summaryLabel))[0].performScrollTo() }
         val targets = probe.actionableTargets(rule, "结果区·成功档")
         val menuDescription = ctx.getString(com.lovebrain.app.R.string.panel_result_menu)
         val dropdowns = targets.filter {
@@ -333,20 +337,37 @@ class PanelErrorStatesSemanticsTest {
                 dropdowns.joinToString { it.describe() },
             dropdowns.isEmpty()
         )
-        val correctionEntry = targets.filter { it.label.contains(ctx.getString(com.lovebrain.app.R.string.memory_fix_entry)) }
+        val header = targets.filter { it.label == summaryLabel }
         assertEquals(
-            "结果区下方该且只该有一条「纠正记忆」文字入口（ 表：记忆纠正中心走这条简洁入口）：" +
-                targets.joinToString { it.describe() },
-            1, correctionEntry.size
+            "参考区该且只该有一条「本轮参考 N 条」首行：" + targets.joinToString { it.describe() },
+            1, header.size
         )
-        val entry = correctionEntry.single()
         assertEquals(
-            "那条文字入口也得说得出自己是什么（读屏不能只念一串字）：" + entry.describe(),
-            "Button", entry.role
+            "首行要说得出自己是什么（读屏不能只念一串字）：" + header.single().describe(),
+            "Button", header.single().role
         )
         assertTrue(
-            "那条入口的热区低于全站下限：" + entry.describe(),
-            !entry.tooSmall(probe.floorDp)
+            "首行的热区低于全站下限：" + header.single().describe(),
+            !header.single().tooSmall(probe.floorDp)
+        )
+        val center = targets.filter { it.label == centerLabel }
+        assertEquals(
+            "行尾该且只该有一颗「纠正中心」：" + targets.joinToString { it.describe() },
+            1, center.size
+        )
+        assertEquals(
+            "它也得说得出自己是什么：" + center.single().describe(),
+            "Button", center.single().role
+        )
+        assertTrue(
+            "它的热区低于全站下限：" + center.single().describe(),
+            !center.single().tooSmall(probe.floorDp)
+        )
+        // 旧的独立「修正记忆」入口已并进容器：这一屏不许再念那颗常驻出口
+        assertEquals(
+            "独立的「修正记忆」入口不许回来（纠正中心走容器行尾那颗）：" +
+                targets.joinToString { it.describe() },
+            0, targets.count { it.label.contains(ctx.getString(com.lovebrain.app.R.string.memory_fix_entry)) }
         )
     }
 
@@ -435,7 +456,7 @@ class PanelErrorStatesSemanticsTest {
                 LoveBrainTheme {
                     LoveBrainPanelScreen(
                         viewModel = vm,
-                        onInputFocusChange = { _, _ -> },
+                        onInputFocusChange = { _, _, _ -> },
                         onInputIntent = { },
                         onClearComposeFocus = { },
                         onResize = { _, _ -> },

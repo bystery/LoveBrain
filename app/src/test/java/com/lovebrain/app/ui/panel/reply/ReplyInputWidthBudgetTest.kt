@@ -14,7 +14,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 /**
- * 行 1 的**宽度预算**本体（request2 §四「按钮间距 — 热区占位不同，宽度预算还有重复预留」）。
+ * 行 1 的**宽度预算**本体（四「按钮间距 — 热区占位不同，宽度预算还有重复预留」）。
  *
  * 本轮修的是**重复预留**那一半：旧 `ReplyDimens` 把「范围符号与前一颗粒之间那段 `Spacing.sm`」
  * 烧进了那颗占位常量（`ROUND_SCOPE_RESERVE = ROUND_SCOPE_HIT + Spacing.sm`，改动前第 121 行），
@@ -48,7 +48,7 @@ import org.robolectric.annotation.Config
 )
 class ReplyInputWidthBudgetTest {
 
-    /** 面板自己左右各扣 `Spacing.xl`，才是行 1 真正拿到的宽（与 `RoleChipSemanticsTest` 同一口径） */
+    /** 面板自己左右各扣 `Spacing.xl`，才是行 1 真正拿到的宽 */
     private fun rowWidthOf(windowWidthDp: Int): Float =
         windowWidthDp - 2f * Spacing.xl.value
 
@@ -144,7 +144,7 @@ class ReplyInputWidthBudgetTest {
     // ═══════════ ③ 三轴各归各位（数值这一半；形状那一半在 ReplyInputSymbolOwnerTest） ═══════════
 
     /**
-     * 那颗范围符号的**三轴**（§4.3「三种尺寸分开测」）：
+     * 那颗范围符号的**三轴**（「三种尺寸分开测」）：
      * 命中轴 = core 那颗具名紧凑档（28，**有意低于**全站 48，指回主人不是页面自造）；
      * 占位轴 = 同一颗数（本轮把重复预留并掉之后它不再虚高）；
      * 而且占位轴必须**仍然低于**全站那颗下限——给紧凑件再包一层 48dp 见方容器（本轮明令禁的形状）
@@ -166,7 +166,7 @@ class ReplyInputWidthBudgetTest {
             ReplyDimens.roundScopeFootprint(1f)
         )
         assertTrue(
-            "占位轴占回了全站下限——那就是 §4.3 禁的『给紧凑件包一层 48dp 见方容器』：" +
+            "占位轴占回了全站下限——那就是禁的『给紧凑件包一层 48dp 见方容器』：" +
                 ReplyDimens.roundScopeFootprint(1f),
             ReplyDimens.roundScopeFootprint(1f) < AppDimens.TOUCH_TARGET_MIN_DP.dp
         )
@@ -292,10 +292,10 @@ class ReplyInputWidthBudgetTest {
     }
 
     /**
-     * 主动发那一档（＋ 与符号都不上树）不许按最满的那一排扣宽——旧写法在这里也白扣一段间隔。
+     * 主动发那一档（与符号都不上树）不许按最满的那一排扣宽——旧写法在这里也白扣一段间隔。
      *
      * 这一格管的是"预算照着这一排**真实有什么**算"那半句：短路的件一份都不许留在账上，
-     * 否则 chip 段会在根本没有 ＋ 的屏上白白多让一档（request2 §四 那句"重复预留"的同族形状）。
+     * 否则 chip 段会在根本没有 ＋ 的屏上白白多让一档（四 那句"重复预留"的同族形状）。
      */
     @Test
     fun `a row without the add button and the symbol does not pay for them`() {

@@ -15,6 +15,15 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.lovebrain.app.util.L
 
 /**
+ * 悬浮窗权限的唯一判据。
+ *
+ * 挂窗（本文件）、设置页申请（`SetupActivity`）与首页灯（`HomeScreen`）读的是同一件事，
+ * 三处各写一次会让"什么算有权限"出现三种解释；这里把既有判据收成一颗，不新增 Android API。
+ */
+internal fun overlayPermissionGranted(context: Context): Boolean =
+    Settings.canDrawOverlays(context)
+
+/**
  * 悬浮窗挂载结果。
  *
  * 宿主类不知道 Service 的存在（它只借到一只 Context），所以"权限被回收 / WindowManager 拒挂"
@@ -103,7 +112,7 @@ internal class OverlayWindowHost(
         params: WindowManager.LayoutParams,
         tag: String
     ): OverlayAttach {
-        if (!Settings.canDrawOverlays(context)) {
+        if (!overlayPermissionGranted(context)) {
             L.w("overlay permission revoked, stopping service")
             return OverlayAttach.PERMISSION_REVOKED
         }
@@ -141,12 +150,8 @@ internal class OverlayWindowHost(
 
     /** 矩形外露修复：强制悬浮窗 view 背景透明（addView 后调用，防 ComposeView attach 后重设主题背景） */
     private fun View.forceTransparentWindowBackground() {
-        try {
-            background = null
-            setBackgroundColor(Color.TRANSPARENT)
-            setClipToOutline(false)
-        } catch (_: Exception) {
-            // 忽略：最坏情况保持原背景
-        }
+        background = null
+        setBackgroundColor(Color.TRANSPARENT)
+        setClipToOutline(false)
     }
 }

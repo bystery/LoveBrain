@@ -32,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.*
-import com.lovebrain.app.ui.common.CompactInput
 import com.lovebrain.app.ui.common.ScreenPage
 import com.lovebrain.app.ui.theme.*
 
@@ -45,10 +44,10 @@ import com.lovebrain.app.ui.theme.*
  *   分支、红线隐藏项与补充说明，收尾交出一份 `OnboardingSchema`。
  * - **谁触发**：`ui/KnowledgeBaseActivity.kt` 的 `KbManagementScreen`——空态那颗动作与
  *   底部那条「新建知识库」大按钮都只把 `showOnboarding` 置真，这一屏才挂起来。
- * - **状态归谁**：全部是这一屏的局部状态（currentStep / branch / answers / myName /
- *   herName / generating / showCustomInput / maxSelectionToast）。Activity 与
- *   `KnowledgeBaseViewModel` 从来没有持有过其中任何一格，跨出去的只有三个回调
- *   （onSkip / onComplete / onCancelGenerating）加一条返回。
+ * - **状态归谁**：答题相关全是这一屏的局部状态（currentStep / branch / answers / myName /
+ *   herName / showCustomInput / maxSelectionToast），跨出去的只有三个回调
+ *   （onSkip / onComplete / onCancelGenerating）加一条返回；**"生成中"不在本地**
+ *   （见 [creating]：它读 VM 的开建状态，本地那颗没有复位路径）。
  * - **今天有格子吗**：有——`ui/OnboardingScreenSemanticsTest`（逐颗热区下限、角色、
  *   五题答到底）、`ui/OnboardingPrimaryActionTest`（这一屏唯一那颗主动作）。
  *   它们挂的就是这颗 `internal` 入口，搬家后仍挂生产那一颗，只多一行 import。
@@ -63,7 +62,16 @@ internal fun OnboardingScreen(
     onDismiss: () -> Unit,
     onSkip: () -> Unit,
     onComplete: (com.lovebrain.app.domain.OnboardingSchema) -> Unit,
-    onCancelGenerating: () -> Unit
+    onCancelGenerating: () -> Unit,
+    /**
+     * 建库是否在飞——**VM 那一格是唯一真源**。
+     *
+     * 这一屏以前自己 `remember` 一颗 `generating`，点「完成」先置真再回调；可回调那头
+     * 有三条路不会开建（未配模型 / 已在飞 / 未开始就失败），于是本地那颗永远没人复位：
+     * 选项全禁用、底部停在"生成中"、问卷再也交不出去。读 VM 状态之后，这三种返回
+     * 天然把 generating 复位成假，答案还在，用户可以直接重试。
+     */
+    creating: Boolean = false
 ) {
     // v4.2 向导状态：currentStep 1-5 答题，6 称呼收尾
     var currentStep by remember { mutableStateOf(1) }
@@ -74,7 +82,7 @@ internal fun OnboardingScreen(
     }
     var myName by remember { mutableStateOf("") }
     var herName by remember { mutableStateOf("") }
-    var generating by remember { mutableStateOf(false) }
+    val generating = creating
     // 补充说明展开状态
     var showCustomInput by remember { mutableStateOf(false) }
     // 多选上限提示
@@ -292,7 +300,7 @@ internal fun OnboardingScreen(
                         var customText by remember(currentStep, existingCustom) {
                             mutableStateOf(existingCustom)
                         }
-                        CompactInput(
+                        LbFieldInput(
                             value = customText,
                             onValueChange = {
                                 customText = it.take(100)
@@ -318,13 +326,13 @@ internal fun OnboardingScreen(
                 // Step6：称呼输入（选填）
                 Text("选填（不填也能建，之后能改）", style = AppTypography.bodySmall, color = TextSecondary)
                 Spacer(modifier = Modifier.height(Spacing.xs))
-                CompactInput(
+                LbFieldInput(
                     value = myName,
                     onValueChange = { myName = it },
                     placeholder = "你的称呼"
                 )
                 Spacer(modifier = Modifier.height(Spacing.xs))
-                CompactInput(
+                LbFieldInput(
                     value = herName,
                     onValueChange = { herName = it },
                     placeholder = "她的称呼"
@@ -357,7 +365,8 @@ internal fun OnboardingScreen(
                 state = LbButtonState.Idle,
                 label = stringResource(R.string.kb_finish_profile),
                 onClick = {
-                    generating = true
+                    // 不在这里置"生成中"：那一步由 VM 的开建状态说话，否则未配模型/在飞
+                    // 这两条不开建的路会把这一屏永久钉在生成中
                     val schema = com.lovebrain.app.domain.OnboardingSchemaBuilder.build(
                         answers.toMap(), myName.trim(), herName.trim()
                     )

@@ -10,7 +10,7 @@ import androidx.compose.ui.input.pointer.positionChangeConsumed
 import androidx.compose.ui.input.pointer.PointerInputScope
 
 /**
- * 切页动效与"一次有意横滑就切换"判据的**私有辅助件**（基线 v1.1 §6.5 / 需求映射 原始 11、20）。
+ * 切页动效与"一次有意横滑就切换"判据的**私有辅助件**（需求映射 原始 11、20）。
  *
  * 这一格里只有三类东西：被两个文件同时读的**动效时长**、切页那一段位移的**位置模型**、
  * 以及横滑那记手势本身。三者都住在生产路径上：时长被 `PanelPagePager` 与 `PanelHeader`
@@ -44,7 +44,7 @@ import androidx.compose.ui.input.pointer.PointerInputScope
  * （[PageMotion.onDragSettle] 的实现处），owner 回来后 `LaunchedEffect` 认 `pendingSwipeTarget`
  * 那道去重闸门，不再补第二次位移。
  *
- * 这里**没有**延时、没有临时遮罩、没有整页淡出（§6.5 明令禁止用这三样掩盖闪烁）；
+ * 这里**没有**延时、没有临时遮罩、没有整页淡出（明令禁止用这三样掩盖闪烁）；
  * [OWNER_HANDOFF_MS] 只在"owner 根本没接手"那条错误分支上兜底，不是"等一等再画"。
  *
  * ── 页宽还没量到（冷启动首帧）────────────────────────────────────────────
@@ -54,7 +54,7 @@ import androidx.compose.ui.input.pointer.PointerInputScope
  */
 internal object PanelPageMotion {
 
-    /** 切页过渡与页头高亮平移的**唯一**时长（原 220/250 ⇒ 两档合一，基线 v1.1 §6.5） */
+    /** 切页过渡与页头高亮平移的**唯一**时长（原 220/250 ⇒ 两档合一） */
     const val SLIDE_MS: Int = 200
 
     /**

@@ -15,14 +15,14 @@ internal interface RevisionCheckStorage {
     /** 库级 memory revision（单调递增的持久化标记） */
     fun revisionOf(kbName: String): Int
 
-    /** 锁区内追加核心（调用方已持有 fileMutex） */
-    fun appendUnlocked(kbName: String, relativePath: String, content: String)
+    /** 锁区内追加核心（调用方已持有 fileMutex）。false = 一个字节都没落 */
+    fun appendUnlocked(kbName: String, relativePath: String, content: String): Boolean
 
-    /** 锁区内写入核心（调用方已持有 fileMutex） */
-    fun writeUnlocked(kbName: String, relativePath: String, content: String)
+    /** 锁区内写入核心（调用方已持有 fileMutex）。false = 一个字节都没落 */
+    fun writeUnlocked(kbName: String, relativePath: String, content: String): Boolean
 
-    /** 锁区内向量写入核心（调用方已持有 fileMutex） */
-    fun writeVectorUnlocked(kbName: String, values: Map<String, Int>)
+    /** 锁区内向量写入核心（调用方已持有 fileMutex）。false = 一个字节都没落 */
+    fun writeVectorUnlocked(kbName: String, values: Map<String, Int>): Boolean
 }
 
 /**
@@ -34,7 +34,7 @@ internal interface RevisionCheckStorage {
  * （仓库的 fileMutex + `atomicWriteText`）。
  *
  * b3-8: 在锁内一次性完成 revision 检查和文件写入，消除先检查后写入的竞态窗口。
- * @return true = 写入成功，false = revision 已变或 KB 不存在
+ * @return true = 写入成功，false = revision 已变、KB 不存在，**或写被拒/失败**
  */
 internal class KnowledgeRevisionCheckedWriteService(private val storage: RevisionCheckStorage) {
 
@@ -54,7 +54,10 @@ internal class KnowledgeRevisionCheckedWriteService(private val storage: Revisio
             storage.note("appendFileWithRevisionCheck skipped: revision changed (expected=$expectedRevision, current=$currentRevision)")
             return false
         }
-        storage.appendUnlocked(kbName, relativePath, content)
+        if (!storage.appendUnlocked(kbName, relativePath, content)) {
+            storage.note("appendFileWithRevisionCheck failed: write refused or failed ($relativePath)")
+            return false
+        }
         return true
     }
 
@@ -74,7 +77,10 @@ internal class KnowledgeRevisionCheckedWriteService(private val storage: Revisio
             storage.note("writeFileWithRevisionCheck skipped: revision changed (expected=$expectedRevision, current=$currentRevision)")
             return false
         }
-        storage.writeUnlocked(kbName, relativePath, content)
+        if (!storage.writeUnlocked(kbName, relativePath, content)) {
+            storage.note("writeFileWithRevisionCheck failed: write refused or failed ($relativePath)")
+            return false
+        }
         return true
     }
 
@@ -93,7 +99,10 @@ internal class KnowledgeRevisionCheckedWriteService(private val storage: Revisio
             storage.note("writeVectorWithRevisionCheck skipped: revision changed (expected=$expectedRevision, current=$currentRevision)")
             return false
         }
-        storage.writeVectorUnlocked(kbName, values)
+        if (!storage.writeVectorUnlocked(kbName, values)) {
+            storage.note("writeVectorWithRevisionCheck failed: write refused or failed")
+            return false
+        }
         return true
     }
 }

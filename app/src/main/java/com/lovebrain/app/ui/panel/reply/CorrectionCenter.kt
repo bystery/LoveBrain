@@ -96,7 +96,7 @@ fun CorrectionCenterHost(
         if (corrections.isEmpty()) {
             // 空态交回设计系统里那唯一一处：这里原来是一行自己画的文字，
             // 改的是所有者——同一个"没有记录"不该每页长一个样。
-            // 说法本身按 F06（2026-10-15 书 §7）换成**用户看得懂的那件事**：
+            // 说法本身按 F06换成**用户看得懂的那件事**：
             // 旧那句"暂无纠正记录。在「本轮参考」中可对记忆发起纠正"既写着术语化的"纠正记录"，
             // 又点名了一颗屏上并不叫这个名字的入口（那条写的是"这轮参考了哪些信息？"），
             // 用户照着找就找不到。现在说的是"还没有修正过记忆"，指引只描述时机与去处，不编名字。
@@ -150,12 +150,40 @@ private fun CorrectionRecordRow(
 ) {
     LbSettingRow(
         leading = { CorrectionActionTag(correction) },
-        title = memoryId.takeLast(30),
+        title = readableMemoryTitle(memoryId),
         subtitle = if (correction.replacementText.isBlank()) ""
         else "→ ${correction.replacementText.take(20)}",
         trailingText = "撤销",
         onTrailingClick = onUndo
     )
+}
+
+/** legacy 内容 hash ID 的尾巴（8 位十六进制）——它不是条目名，不许当标题念 */
+private val LEGACY_HASH_TAIL = Regex("[0-9a-fA-F]{8}")
+
+/**
+ * 纠正记录那一行**念什么**：memoryId 只做 key（它是 `kind:sourcePath[:entryId]` 的内部形状），
+ * 标题换成用户写得出来、也认得出的东西。
+ *
+ * 顺序按"离用户最近"排：
+ * 1. 条目级 id 的第三段是**事项名**（`MemoryRefPolicy.makeOngoingEntryRef` 写的就是它），直接用；
+ *    但旧版本用内容 hash 当 id，那种尾巴不是人话，按形状剔掉；
+ * 2. 文件级 id 的第二段是分区路径，交给知识库编辑页那张唯一的名单换成「我是谁」这类名字；
+ * 3. 认不出的（历史/改名后的路径）保留旧的 `takeLast(30)` 兜底——宁可少说，也不编。
+ */
+internal fun readableMemoryTitle(memoryId: String): String {
+    // 条目名是用户自己写的一句话，里面出现冒号也不该被切开 ⇒ 最多切三段
+    val parts = memoryId.split(':', limit = 3)
+    val kind = parts.getOrNull(0)
+    val path = parts.getOrNull(1)
+    val entry = parts.getOrNull(2)
+    if (kind == "ONGOING" && !entry.isNullOrBlank() && !LEGACY_HASH_TAIL.matches(entry)) {
+        return entry
+    }
+    if (path != null) {
+        com.lovebrain.app.ui.kbSectionLabel(path)?.let { return it }
+    }
+    return memoryId.takeLast(30)
 }
 
 /**

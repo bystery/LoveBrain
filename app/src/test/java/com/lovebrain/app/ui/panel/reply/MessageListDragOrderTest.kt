@@ -18,8 +18,8 @@ import java.io.File
  *
  * 全 JVM、不碰 Robolectric：这里判的是**读数同源**与**算式**，不是手感。
  *
- * ① **顺序这一条本轮没发现分叉，这一族钉的是"以后不许分叉"**（台账同一条）：
- *    屏上那份列表 = `messages.mapIndexed{}.filter { role != IDEA }`（[MessageList] 里的
+ * ① **顺序这一条本轮没发现分叉，这一族钉的是"以后不许分叉"**（记录同一条）：
+ *    屏上那份列表 = `messages.mapIndexed{}.filter { role!= IDEA }`（[MessageList] 里的
  *    `dialogueDisplayed`，不排序），prompt 那份 = `ComposerStore.messageSnapshot()` →
  *    `realChatOf` 同样的 filter + `mapIndexed`，再由 [ChatTranscriptBlock.render] 在同一次遍历里
  *    按出现顺序编号 m0…；两边读的都是 `_messages` 这**一颗** StateFlow。所以两件事一起做：
@@ -36,7 +36,7 @@ import java.io.File
  *    一条"夹了仍然进得去首格与末格"（夹持与交换判据共用同一颗中心线，夹错的写法会把首格夹死）。
  *
  * ⚠ 这一族**证明不了手感**：跟不跟手、指下到底看不看得见，JVM 判不了；
- *    语义树那一半在 `MessageListDragContainmentTest`，真机录屏归台账"未验证-需真机"。
+ *    语义树那一半在 `MessageListDragContainmentTest`，真机录屏归记录"未验证-需真机"。
  */
 class MessageListDragOrderTest {
 
@@ -364,7 +364,7 @@ class MessageListDragOrderTest {
     }
 
     /**
-     * §8 之后这一族的形状变了，这一格跟着改口径（旧格写的是"只有手指那一半夹视口"）：
+     * 之后这一族的形状变了，这一格跟着改口径（旧格写的是"只有手指那一半夹视口"）：
      * 夹持算式现在**每一帧**都要跑（手指帧 + 自动滚动帧），但两处都只经同一颗 [dragFramePlan]，
      * 所以调用点全部落在纯函数里面，composable 里一次都不许有——
      * 旧写法在 composable 里另读一份 `layoutInfo` 夹一次，读的就是上一帧的布局，
@@ -398,7 +398,7 @@ class MessageListDragOrderTest {
 
     /**
      * 发重排那一支必须仍带着"落地闸门"，而且闸门键与发出的那一发**同时**写。
-     * §8 之后这些判据都在 [dragFramePlan] 里（UI 只把算式交回的数写回状态），这一格判的是
+     * 之后这些判据都在 [dragFramePlan] 里（UI 只把算式交回的数写回状态），这一格判的是
      * "判据没有被搬回 UI 侧手抄一遍"：
      * 反例：闸门摘掉 ⇒ 上面时间线那一格先红，这一格再把"闸门只在纯函数那一侧"钉住；
      * 反例：发了重排却不交回闸门键 ⇒ 第三句红（重复那一发又没人挡）；

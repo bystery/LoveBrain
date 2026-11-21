@@ -15,11 +15,15 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -61,7 +65,6 @@ class ProfileTransactionResultTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -70,7 +73,6 @@ class ProfileTransactionResultTest {
     ): LoveBrainViewModel {
         val prefs = mockk<SecurePrefs>(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -88,8 +90,8 @@ class ProfileTransactionResultTest {
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
 
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            ConfigValidationResult(0, emptyList())
 
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
@@ -113,23 +115,46 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
         )
     }
 
-    /** 轮询等待 panelWarning 或 kbNotice 出现（withContext(Dispatchers.IO) 走真实线程） */
-    private fun waitForWarning(vm: LoveBrainViewModel, runTest: kotlinx.coroutines.test.TestScope) {
-        repeat(100) {
-            if (vm.panelWarning.value == null) {
-                Thread.sleep(10)
+    /**
+     * 前置检查的两颗读数（库存在性 / 纠正 revision，LoveBrainViewModel.kt:381-382）各走一次
+     * 真实 Dispatchers.IO，每颗回派都要虚拟主调度器泵一次；事务分支（写库/前置失败判定）
+     * 是确认链真正落地的最后一步。三枚"生产真的走到这一步"的信号齐了才放行断言，
+     * 取代 Thread.sleep 轮询赌注；等不到就 error() 哨兵，不弱断言。
+     *
+     * 为什么还要挂一颗后台泵：真实线程上"complete 信号"与"把回派排进虚拟调度器队列"
+     * 不是原子的——测试线程自己只泵一次可能跑在排队前面，收尾（清卡/警告）就永远没人执行
+     * （全量并行高载下这一窗口会被拉宽，断言就跑在半路上）。后台泵在信号齐之前持续排空
+     * 调度器队列（TestCoroutineScheduler 自带锁，runTest 的 workRunner 同款用法），
+     * 回派一到就被执行，不再赌线程唤醒时序。与 ProfileConfirmTest / GenBatchTest t5 同配方。
+     */
+    private fun pumpConfirmThroughPreconditions(
+        runTest: kotlinx.coroutines.test.TestScope,
+        kbGate: CompletableDeferred<Unit>,
+        revGate: CompletableDeferred<Unit>,
+        txGate: CompletableDeferred<Unit>
+    ) {
+        runTest.advanceUntilIdle() // 泵到第一次真实 IO 挂起（listAll 已在真实线程上跑）
+        runBlocking {
+            val pump = launch(Dispatchers.Default) {
+                while (isActive && !(kbGate.isCompleted && revGate.isCompleted && txGate.isCompleted)) {
+                    runTest.advanceUntilIdle()
+                    Thread.sleep(1) // 泵的节拍，不是等待赌注——放行仍只看三枚信号
+                }
                 runTest.advanceUntilIdle()
             }
-        }
-    }
-
-    private fun waitForNotice(vm: LoveBrainViewModel, runTest: kotlinx.coroutines.test.TestScope) {
-        repeat(100) {
-            if (vm.kbNotice.value == null) {
-                Thread.sleep(10)
-                runTest.advanceUntilIdle()
+            try {
+                withTimeoutOrNull(5_000) { kbGate.await() }
+                    ?: error("listAll（库存在性检查）从未被真实线程跑到")
+                withTimeoutOrNull(5_000) { revGate.await() }
+                    ?: error("getCorrectionsRevision（前置检查）从未被真实线程跑到")
+                withTimeoutOrNull(5_000) { txGate.await() }
+                    ?: error("applyProfileUpdateAtomically（事务分支）从未被走到")
+            } finally {
+                pump.cancel()
+                pump.join()
             }
         }
+        runTest.advanceUntilIdle() // 收尾（清卡/警告/回执）在虚拟主调度器上一帧排空
     }
 
     // ═══ 1. Success → 清卡 + "画像已更新" ═══
@@ -137,20 +162,37 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
     @Test
     fun `Success clears card and shows notice`() = runTest {
         val repo = mockk<KnowledgeRepository>(relaxed = true)
+        // 事务分支的落点信号：applyProfileUpdateAtomically 被真实走到才放行断言
+        val txGate = CompletableDeferred<Unit>()
         coEvery { repo.getActive() } returns KnowledgeBase(name = "kb1", displayName = "她", active = true)
         coEvery { repo.migrateIfNeeded(any()) } returns Unit
         coEvery { repo.readVector(any()) } returns emptyMap()
         coEvery { repo.listAll() } returns listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
         coEvery { repo.getCorrectionsRevision(any()) } returns 0
-        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns
+        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } answers {
+            txGate.complete(Unit)
             ProfileTransactionResult.Success
+        }
 
         val vm = newViewModel(repoOverride = repo)
         advanceUntilIdle()
 
         vm.feedProfileSuggestion(makeSuggestion())
+
+        // 前置检查两颗读数各走一次真实 Dispatchers.IO——各留一枚"生产真的走到这一步"的信号
+        val kbGate = CompletableDeferred<Unit>()
+        coEvery { repo.listAll() } answers {
+            kbGate.complete(Unit)
+            listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
+        }
+        val revGate = CompletableDeferred<Unit>()
+        coEvery { repo.getCorrectionsRevision(any()) } answers {
+            revGate.complete(Unit)
+            0
+        }
+
         vm.confirmProfileUpdate()
-        waitForNotice(vm, this)
+        pumpConfirmThroughPreconditions(this, kbGate, revGate, txGate)
 
         assertNull(vm.profileReview.value.suggestion, "Success 应清卡")
         assertEquals("画像已更新", vm.kbNotice.value)
@@ -161,20 +203,37 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
     @Test
     fun `PreconditionFailed KB_NOT_FOUND clears card and warns`() = runTest {
         val repo = mockk<KnowledgeRepository>(relaxed = true)
+        // 事务分支的落点信号：applyProfileUpdateAtomically 被真实走到才放行断言
+        val txGate = CompletableDeferred<Unit>()
         coEvery { repo.getActive() } returns KnowledgeBase(name = "kb1", displayName = "她", active = true)
         coEvery { repo.migrateIfNeeded(any()) } returns Unit
         coEvery { repo.readVector(any()) } returns emptyMap()
         coEvery { repo.listAll() } returns listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
         coEvery { repo.getCorrectionsRevision(any()) } returns 0
-        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns
+        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } answers {
+            txGate.complete(Unit)
             ProfileTransactionResult.PreconditionFailed(PreconditionReason.KB_NOT_FOUND)
+        }
 
         val vm = newViewModel(repoOverride = repo)
         advanceUntilIdle()
 
         vm.feedProfileSuggestion(makeSuggestion())
+
+        // 前置检查两颗读数各走一次真实 Dispatchers.IO——各留一枚"生产真的走到这一步"的信号
+        val kbGate = CompletableDeferred<Unit>()
+        coEvery { repo.listAll() } answers {
+            kbGate.complete(Unit)
+            listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
+        }
+        val revGate = CompletableDeferred<Unit>()
+        coEvery { repo.getCorrectionsRevision(any()) } answers {
+            revGate.complete(Unit)
+            0
+        }
+
         vm.confirmProfileUpdate()
-        waitForWarning(vm, this)
+        pumpConfirmThroughPreconditions(this, kbGate, revGate, txGate)
 
         assertNull(vm.profileReview.value.suggestion, "KB 不存在应清卡")
         assertEquals("原知识库已删除，这条画像建议已失效", vm.panelWarning.value)
@@ -185,20 +244,37 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
     @Test
     fun `PreconditionFailed REVISION_CONFLICT clears card and warns`() = runTest {
         val repo = mockk<KnowledgeRepository>(relaxed = true)
+        // 事务分支的落点信号：applyProfileUpdateAtomically 被真实走到才放行断言
+        val txGate = CompletableDeferred<Unit>()
         coEvery { repo.getActive() } returns KnowledgeBase(name = "kb1", displayName = "她", active = true)
         coEvery { repo.migrateIfNeeded(any()) } returns Unit
         coEvery { repo.readVector(any()) } returns emptyMap()
         coEvery { repo.listAll() } returns listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
         coEvery { repo.getCorrectionsRevision(any()) } returns 0
-        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns
+        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } answers {
+            txGate.complete(Unit)
             ProfileTransactionResult.PreconditionFailed(PreconditionReason.REVISION_CONFLICT)
+        }
 
         val vm = newViewModel(repoOverride = repo)
         advanceUntilIdle()
 
         vm.feedProfileSuggestion(makeSuggestion())
+
+        // 前置检查两颗读数各走一次真实 Dispatchers.IO——各留一枚"生产真的走到这一步"的信号
+        val kbGate = CompletableDeferred<Unit>()
+        coEvery { repo.listAll() } answers {
+            kbGate.complete(Unit)
+            listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
+        }
+        val revGate = CompletableDeferred<Unit>()
+        coEvery { repo.getCorrectionsRevision(any()) } answers {
+            revGate.complete(Unit)
+            0
+        }
+
         vm.confirmProfileUpdate()
-        waitForWarning(vm, this)
+        pumpConfirmThroughPreconditions(this, kbGate, revGate, txGate)
 
         assertNull(vm.profileReview.value.suggestion, "Revision 冲突应清卡")
         assertEquals("资料已变化，请重新生成", vm.panelWarning.value)
@@ -215,21 +291,38 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
     @Test
     fun `PreconditionFailed LIBRARY_READ_ONLY keeps the card and says why`() = runTest {
         val repo = mockk<KnowledgeRepository>(relaxed = true)
+        // 事务分支的落点信号：applyProfileUpdateAtomically 被真实走到才放行断言
+        val txGate = CompletableDeferred<Unit>()
         coEvery { repo.getActive() } returns KnowledgeBase(name = "kb1", displayName = "她", active = true)
         coEvery { repo.migrateIfNeeded(any()) } returns Unit
         coEvery { repo.readVector(any()) } returns emptyMap()
         coEvery { repo.listAll() } returns listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
         coEvery { repo.getCorrectionsRevision(any()) } returns 0
-        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns
+        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } answers {
+            txGate.complete(Unit)
             ProfileTransactionResult.PreconditionFailed(PreconditionReason.LIBRARY_READ_ONLY)
+        }
 
         val vm = newViewModel(repoOverride = repo)
         advanceUntilIdle()
 
         val suggestion = makeSuggestion()
         vm.feedProfileSuggestion(suggestion)
+
+        // 前置检查两颗读数各走一次真实 Dispatchers.IO——各留一枚"生产真的走到这一步"的信号
+        val kbGate = CompletableDeferred<Unit>()
+        coEvery { repo.listAll() } answers {
+            kbGate.complete(Unit)
+            listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
+        }
+        val revGate = CompletableDeferred<Unit>()
+        coEvery { repo.getCorrectionsRevision(any()) } answers {
+            revGate.complete(Unit)
+            0
+        }
+
         vm.confirmProfileUpdate()
-        waitForWarning(vm, this)
+        pumpConfirmThroughPreconditions(this, kbGate, revGate, txGate)
 
         // 这里用的是 kotlin.test 的 assertEquals：message 在**最后一个**参数
         assertEquals(suggestion, vm.profileReview.value.suggestion, "只读只是这次写不进去，建议要留着等升级后重试")
@@ -244,22 +337,39 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
     @Test
     fun `RolledBack keeps card and says recovered`() = runTest {
         val repo = mockk<KnowledgeRepository>(relaxed = true)
+        // 事务分支的落点信号：applyProfileUpdateAtomically 被真实走到才放行断言
+        val txGate = CompletableDeferred<Unit>()
         coEvery { repo.getActive() } returns KnowledgeBase(name = "kb1", displayName = "她", active = true)
         coEvery { repo.migrateIfNeeded(any()) } returns Unit
         coEvery { repo.readVector(any()) } returns emptyMap()
         coEvery { repo.listAll() } returns listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
         coEvery { repo.getCorrectionsRevision(any()) } returns 0
         val writeError = IOException("disk full")
-        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns
+        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } answers {
+            txGate.complete(Unit)
             ProfileTransactionResult.RolledBack(writeError)
+        }
 
         val vm = newViewModel(repoOverride = repo)
         advanceUntilIdle()
 
         val suggestion = makeSuggestion()
         vm.feedProfileSuggestion(suggestion)
+
+        // 前置检查两颗读数各走一次真实 Dispatchers.IO——各留一枚"生产真的走到这一步"的信号
+        val kbGate = CompletableDeferred<Unit>()
+        coEvery { repo.listAll() } answers {
+            kbGate.complete(Unit)
+            listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
+        }
+        val revGate = CompletableDeferred<Unit>()
+        coEvery { repo.getCorrectionsRevision(any()) } answers {
+            revGate.complete(Unit)
+            0
+        }
+
         vm.confirmProfileUpdate()
-        waitForWarning(vm, this)
+        pumpConfirmThroughPreconditions(this, kbGate, revGate, txGate)
 
         // RolledBack——卡片保留（用户可重试同一条建议）
         assertEquals(suggestion.suggestionId, vm.profileReview.value.suggestion?.suggestionId,
@@ -276,22 +386,39 @@ operationCoordinator = com.lovebrain.app.domain.ForegroundOperationCoordinator(k
     @Test
     fun `RollbackFailed keeps card and warns data may be corrupted`() = runTest {
         val repo = mockk<KnowledgeRepository>(relaxed = true)
+        // 事务分支的落点信号：applyProfileUpdateAtomically 被真实走到才放行断言
+        val txGate = CompletableDeferred<Unit>()
         coEvery { repo.getActive() } returns KnowledgeBase(name = "kb1", displayName = "她", active = true)
         coEvery { repo.migrateIfNeeded(any()) } returns Unit
         coEvery { repo.readVector(any()) } returns emptyMap()
         coEvery { repo.listAll() } returns listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
         coEvery { repo.getCorrectionsRevision(any()) } returns 0
         val writeError = IOException("disk I/O error")
-        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } returns
+        coEvery { repo.applyProfileUpdateAtomically(any(), any(), any(), any(), any(), any(), any()) } answers {
+            txGate.complete(Unit)
             ProfileTransactionResult.RollbackFailed(writeError, listOf("understand/me.md", "understand/warmth.md"))
+        }
 
         val vm = newViewModel(repoOverride = repo)
         advanceUntilIdle()
 
         val suggestion = makeSuggestion()
         vm.feedProfileSuggestion(suggestion)
+
+        // 前置检查两颗读数各走一次真实 Dispatchers.IO——各留一枚"生产真的走到这一步"的信号
+        val kbGate = CompletableDeferred<Unit>()
+        coEvery { repo.listAll() } answers {
+            kbGate.complete(Unit)
+            listOf(KnowledgeBase(name = "kb1", displayName = "她", active = true))
+        }
+        val revGate = CompletableDeferred<Unit>()
+        coEvery { repo.getCorrectionsRevision(any()) } answers {
+            revGate.complete(Unit)
+            0
+        }
+
         vm.confirmProfileUpdate()
-        waitForWarning(vm, this)
+        pumpConfirmThroughPreconditions(this, kbGate, revGate, txGate)
 
         // RollbackFailed——卡片保留（但建议可能已不可安全重试）
         assertEquals(suggestion.suggestionId, vm.profileReview.value.suggestion?.suggestionId,

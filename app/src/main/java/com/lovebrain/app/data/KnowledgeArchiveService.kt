@@ -96,8 +96,13 @@ internal class KnowledgeArchiveService(private val storage: ArchiveStorage) {
      * 恢复语义保留原样：只要状态文件在，就**信任里面记录的已完成步骤**跳过它们；
      * 因为 `CLEAR_SOURCES` 会改源文件，恢复时不能拿内容哈希去验（那会把已归档的内容判成"新内容"再归一次）。
      * 哈希只参与 `operationId` 的唯一性。
+     *
+     * 返回 false = 中途某一步**没有落成**（被只读保护挡下、路径非法、或磁盘写失败）。
+     * 此时：已完成步骤仍按原样记在状态文件里（可重试且不重复），未完成的那一步不记账，
+     * 绝不会出现"报了推进但字节没落"的半成品状态机。旧实现在每一段事务里丢掉写入返回值，
+     * 于是只读库上照样把四步全记成完成。
      */
-    fun rotate(kbName: String) {
+    fun rotate(kbName: String): Boolean {
         val existingOp = readState(kbName)
 
         val rawChat = storage.read(kbName, "memory/raw_chat.md")
@@ -105,7 +110,7 @@ internal class KnowledgeArchiveService(private val storage: ArchiveStorage) {
         val rawScene = storage.read(kbName, "memory/raw_scene.md")
         val scene = storage.read(kbName, "moment/scene.md")
 
-        val opState = existingOp ?: createState(kbName, rawChat, recent, rawScene, scene)
+        val opState = existingOp ?: createState(kbName, rawChat, recent, rawScene, scene) ?: return false
 
         val completed = opState.completedSteps.toMutableList()
         val hasContent =
@@ -113,33 +118,74 @@ internal class KnowledgeArchiveService(private val storage: ArchiveStorage) {
 
         // 步骤 2 — 追加归档条目（幂等：做过就跳）
         if (hasContent && ArchiveStep.APPEND_ARCHIVE !in completed) {
-            storage.runTransaction(kbName) {
-                append(ARCHIVE_FILE, archiveEntry(opState, rawChat, recent, rawScene, scene))
+            val entry = archiveEntry(opState, rawChat, recent, rawScene, scene)
+            if (!writeTransactionChecked(kbName, "append $ARCHIVE_FILE") { append(ARCHIVE_FILE, entry) }) {
+                return false
             }
             completed.add(ArchiveStep.APPEND_ARCHIVE)
-            writeState(kbName, opState.copy(completedSteps = completed.toList()))
+            if (!writeState(kbName, opState.copy(completedSteps = completed.toList()))) return false
         }
 
         // 步骤 3 — 计数 +1（幂等）
         if (hasContent && ArchiveStep.INCREMENT_COUNT !in completed) {
-            storage.runTransaction(kbName) {
-                updateMeta { kb -> kb.copy(topicCount = kb.topicCount + 1, updatedAt = storage.metaTimestamp()) }
+            if (!writeTransactionChecked(kbName, "increment kb.json topicCount") {
+                    updateMeta { kb -> kb.copy(topicCount = kb.topicCount + 1, updatedAt = storage.metaTimestamp()) }
+                }
+            ) {
+                return false
             }
             completed.add(ArchiveStep.INCREMENT_COUNT)
-            writeState(kbName, opState.copy(completedSteps = completed.toList()))
+            if (!writeState(kbName, opState.copy(completedSteps = completed.toList()))) return false
         }
 
         // 步骤 4 — 清空四个源文件（幂等；无内容时也要清，这是原来的行为）
         if (ArchiveStep.CLEAR_SOURCES !in completed) {
-            storage.runTransaction(kbName) {
-                for (path in SOURCE_FILES) write(path, "")
+            var cleared = false
+            if (!writeTransactionChecked(kbName, "clear source files") {
+                    cleared = SOURCE_FILES.all { write(it, "") }
+                    cleared
+                }
+            ) {
+                return false
+            }
+            if (!cleared) {
+                storage.note("话题归档：清空源文件未全部落盘，状态保持可重试")
+                return false
             }
             completed.add(ArchiveStep.CLEAR_SOURCES)
-            writeState(kbName, opState.copy(completedSteps = completed.toList()))
+            if (!writeState(kbName, opState.copy(completedSteps = completed.toList()))) return false
         }
 
-        // 四步都做完 —— 状态文件不该留着
-        storage.runTransaction(kbName) { delete(STATE_FILE) }
+        // 四步都做完 —— 状态文件不该留着。删不掉（被拒/IO 失败）要留痕：
+        // 留着它不会丢数据（重跑只会命中幂等分支），但会让人以为"上次没完成"。
+        var deleteAttempted = false
+        var deleted = false
+        storage.runTransaction(kbName) {
+            deleteAttempted = true
+            deleted = delete(STATE_FILE)
+        }
+        if (deleteAttempted && !deleted && storage.read(kbName, STATE_FILE).isNotBlank()) {
+            storage.note("归档操作状态没落盘：$STATE_FILE 删除被拒或失败，下次将按已完成步骤跳过")
+        }
+        return true
+    }
+
+    /**
+     * 一次归档写事务的成败判定：**事务根本没开**（只读库被外层跳过）与
+     * **块里的写返回 false**（路径非法/底层拒绝）都算失败。
+     */
+    private fun writeTransactionChecked(kbName: String, what: String, block: ArchiveTx.() -> Boolean): Boolean {
+        var attempted = false
+        var written = false
+        storage.runTransaction(kbName) {
+            attempted = true
+            written = block()
+        }
+        if (!attempted || !written) {
+            storage.note("话题归档失败（$what）：只读（schema 过新）、路径非法或落盘失败，该步骤未记账")
+            return false
+        }
+        return true
     }
 
     /**
@@ -167,13 +213,17 @@ internal class KnowledgeArchiveService(private val storage: ArchiveStorage) {
     fun countArchiveEntries(content: String): Int =
         Regex("^## \\[", RegexOption.MULTILINE).findAll(content).count()
 
+    /**
+     * 建立本次操作的状态。返回 null = 状态文件没落成：此时**一步都不许做**——
+     * 没有恢复记录就清源/追加，崩溃后重跑要么重复归档、要么把内容吞掉。
+     */
     private fun createState(
         kbName: String,
         rawChat: String,
         recent: String,
         rawScene: String,
         scene: String
-    ): ArchiveOperationState {
+    ): ArchiveOperationState? {
         val timestamp = storage.stamp()
         val oldTopic = KbTextOps.topicLabel(storage.read(kbName, "moment/topic.md"))
         val inputHash = KbTextOps.contentHash(rawChat, recent, rawScene, scene, oldTopic)
@@ -184,7 +234,7 @@ internal class KnowledgeArchiveService(private val storage: ArchiveStorage) {
             oldTopic = oldTopic,
             contentHash = inputHash
         )
-        writeState(kbName, newState)
+        if (!writeState(kbName, newState)) return null
         return newState
     }
 
@@ -198,8 +248,10 @@ internal class KnowledgeArchiveService(private val storage: ArchiveStorage) {
      * 状态落盘。**两种"没写成"都要留痕**：事务里的写被挡下（返回 false），
      * 以及整个事务被外层跳过（block 一次都没跑）。静默跳过就等于"报了推进却没写"，
      * 下次崩溃恢复会重做已经完成的步骤。
+     *
+     * @return true = 状态真的落盘了；false = 一个字节都没写（调用方必须停在这一步）
      */
-    private fun writeState(kbName: String, state: ArchiveOperationState) {
+    private fun writeState(kbName: String, state: ArchiveOperationState): Boolean {
         var attempted = false
         var written = false
         storage.runTransaction(kbName) {
@@ -208,7 +260,9 @@ internal class KnowledgeArchiveService(private val storage: ArchiveStorage) {
         }
         if (!attempted || !written) {
             storage.note("归档操作状态没落盘：$STATE_FILE 只读（schema 过新）或路径非法")
+            return false
         }
+        return true
     }
 
     companion object {

@@ -55,7 +55,6 @@ class ResultAreaInteractionTest {
         composeRule.setContent {
             ResultArea(
                 result = makeSuccessResult(),
-                isGenerating = false,
                 streamingCoreText = "",
                 isGeneratingCore = false,
                 streamingSchemes = emptyList(),
@@ -89,7 +88,6 @@ class ResultAreaInteractionTest {
         composeRule.setContent {
             ResultArea(
                 result = null,
-                isGenerating = false,
                 streamingCoreText = "",
                 isGeneratingCore = false,
                 streamingSchemes = emptyList(),
@@ -122,7 +120,6 @@ class ResultAreaInteractionTest {
         composeRule.setContent {
             ResultArea(
                 result = makeSuccessResult(),
-                isGenerating = false,
                 streamingCoreText = "",
                 isGeneratingCore = false,
                 streamingSchemes = emptyList(),
@@ -153,7 +150,6 @@ class ResultAreaInteractionTest {
         composeRule.setContent {
             ResultArea(
                 result = makeSuccessResult(),
-                isGenerating = false,
                 streamingCoreText = "",
                 isGeneratingCore = false,
                 streamingSchemes = emptyList(),
@@ -178,7 +174,6 @@ class ResultAreaInteractionTest {
         composeRule.setContent {
             ResultArea(
                 result = makeSuccessResult(),
-                isGenerating = false,
                 streamingCoreText = "",
                 isGeneratingCore = false,
                 streamingSchemes = emptyList(),

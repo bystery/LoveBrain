@@ -23,9 +23,9 @@ import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
 
 /**
- * 新手引导的**介绍层**——一张 LoveBrain 介绍页，可跳过（指导书 §9.1）。
+ * 新手引导的**介绍层**——一张 LoveBrain 介绍页，可跳过。
  *
- * §9.1 的口径是"保留一张介绍页，后续都在**实际 App 主页面**用遮罩/高亮/箭头指向模型配置、
+ * 约定的口径是"保留一张介绍页，后续都在**实际 App 主页面**用遮罩/高亮/箭头指向模型配置、
  * 无障碍入口、消息捕获"，**不再造第二、第三、第四张教学页**：
  * 1. 这一页只做一件事——用预置结果演示消息体验（不伪装在线生成），三条出口交给宿主；
  * 2. 真正的"配模型 / 给无障碍 / 开捕获"三步由首页罩子 `ui/home/HomeCoachMarks.kt` 在场时指，
@@ -41,7 +41,7 @@ import com.lovebrain.app.ui.theme.*
  * 2. **步号不再只住在内存里**：原先 `var currentStep by remember { mutableStateOf(0) }`
  *    在翻页、旋转与 Activity 重建之后一律回到第 0 格（这正是"一翻页就没了"的另一半）。
  *    现在步号归宿主（[currentStep] / [onStepChange]），宿主流转 `savedInstanceState`
- *    并在进程被杀之前把同一步落进 `SettingsStorePort`（那颗键要主线程加，见交接单 §4）。
+ *    并在进程被杀之前把同一步落进 `SettingsStorePort`（那颗键要主线程加，见）。
  *
  * @param currentStep 现在第几格；单页那一档恒 0，越界由这一处钳回合法档，UI 不判第二本账
  * @param onStepChange 换步的唯一出口——**这一层不再自己 remember 步号**（今天一张页，没人调它）
@@ -85,9 +85,9 @@ fun OnboardingFlow(
 
             Spacer(Modifier.height(Spacing.xl))
 
-            // §9.1「保留一张 LoveBrain 介绍页」：这一层今天**只有一张页**（`LAST_STEP = 0`）。
+            // 「保留一张 LoveBrain 介绍页」：这一层今天**只有一张页**（`LAST_STEP = 0`）。
             // 原先这里套了一格 `AnimatedContent(targetState = step)`，而 body 永远画同一张页
-            // ——那是一段永不发生的过渡，正是 §9 顶句"真实渐进，不是写个动画函数"点的那种形状，
+            // ——那是一段永不发生的过渡，正是顶句"真实渐进，不是写个动画函数"点的那种形状，
             // 所以换成 `key(step)`：只给重组身份，不冒充入场动画。
             // 底下那三张旧页（`OnboardingStep1/2/3`）与 `ConfigItem` 已删：`8ef9a16`/`504cb65` 把
             // 这一层收成一张页之后它们再没有入口画（`OnboardingFlow` 只调 `OnboardingStep0`）。

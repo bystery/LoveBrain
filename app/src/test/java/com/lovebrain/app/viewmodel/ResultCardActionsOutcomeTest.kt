@@ -22,7 +22,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -34,7 +33,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * 结果卡片三颗行内动作的**结果语义**（指导书 §13.2 / R28，接在
+ * 结果卡片三颗行内动作的**结果语义**（R28，接在
  * `DislikeCaseSaveTest`（纯函数格）与 `FeedbackCaseControllerTest`（控制器格）之后，
  * 把最后一段没有证人的 VM 接线钉住）：
  *
@@ -65,7 +64,6 @@ class ResultCardActionsOutcomeTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -77,7 +75,6 @@ class ResultCardActionsOutcomeTest {
     ): LoveBrainViewModel {
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -86,8 +83,8 @@ class ResultCardActionsOutcomeTest {
         every { prefs.activeTicketId } returns null
         every { prefs.totalAdoptCount } returns 0
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            PromptBuilder.ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            PromptBuilder.ConfigValidationResult(0, emptyList())
         every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
@@ -118,7 +115,7 @@ class ResultCardActionsOutcomeTest {
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
         coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
         coEvery { knowledgeRepo.readFile(any(), any()) } returns ""
-        coEvery { knowledgeRepo.writeFile(any(), any(), any()) } returns Unit
+        coEvery { knowledgeRepo.writeFile(any(), any(), any()) } returns true
     }
 
     /** 走到「有一条 Success 结果在架」这一步，返回第一条方案的 identity.key */
@@ -260,11 +257,11 @@ class ResultCardActionsOutcomeTest {
 
         coVerify(exactly = 1) { engine.replyStream(any()) }
         coVerify(exactly = 0) { engine.counselingStream(any(), any(), any()) }
-        coVerify(exactly = 0) { engine.proactiveStream(any(), any(), any(), any(), any(), any()) }
+        coVerify(exactly = 0) { engine.proactiveStream(any(), any()) }
     }
 
     /**
-     * 复制只交回可发送正文（§13.2 明文「不带分析、风格名和理由」）。
+     * 复制只交回可发送正文（明文「不带分析、风格名和理由」）。
      *
      * 红条件：任何在 `copyScheme` 里拼前缀/后缀的改法——带上风格名（title）、
      * 带上分析、带上点赞理由——返回值不再是 `scheme.reply` 原文，当场红。

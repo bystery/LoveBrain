@@ -64,7 +64,7 @@ sealed class HomeDestination {
     }
 }
 
-/** 根导航的前进/后退判据：Home 排最前，三格子页按上面声明的顺序排（§9.2 统一过渡读这一颗） */
+/** 根导航的前进/后退判据：Home 排最前，三格子页按上面声明的顺序排（统一过渡读这一颗） */
 internal val HomeDestination.rank: Int
     get() = when (this) {
         HomeDestination.Home -> 0
@@ -80,11 +80,11 @@ internal val HomeDestination.rank: Int
  * 旧版这里 `when` 里同一个 `CaptureApps` 分支写了两遍（重复的那一份永远不会被执行），
  * 现在只剩一份；`About` / `Usage` 两格随首页那几段一起撤。
  *
- * ## 只读出口：destination 现在住在哪一格（§9.1）
+ * ## 只读出口：destination 现在住在哪一格
  *
  * `destination` 是这一层自己的导航账，**不上提**（上提会让首页/子页两套代码各拿一半导航状态）。
  * [onDestinationChanged] 是这一层唯一的只读出口：**只说"现在站在哪一格"，不回写任何导航**。
- * 宿主 `SetupActivity` 用它做两件 §9.1 点名的动作：
+ * 宿主 `SetupActivity` 用它做两件点名的动作：
  * 1. 罩子整块只在 Home 那一格在场（`HomeCoachMarks(onHome = …)`），进子页即移除；
  * 2. 回到 Home 时重算一次游标——同一 Activity 内的子页来回**不触发 `onResume`**，
  *    少了这一个刷新点，回首页的罩子会停在出发前那一格（表行判的"子页返回未接上游标刷新"）。
@@ -101,7 +101,7 @@ fun SetupRoot(
     onTempHide: () -> Unit,
     onRestore: () -> Unit,
     /**
-     * 引导罩子里那颗主动作要的**直达目标**（G1b 接线单 §3）。
+     * 引导罩子里那颗主动作要的**直达目标**（G1b）。
      *
      * 为什么是"宿主给一颗目标、这一层消费掉"而不是把 `destination` 整体上提：
      * `destination` 是这一层自己的导航账（`rememberSaveable`），上提会让首页/子页两套代码
@@ -112,7 +112,7 @@ fun SetupRoot(
     guideTarget: HomeDestination? = null,
     onGuideTargetConsumed: () -> Unit = {},
     /**
-     * 只读出口（§9.1）：每次导航真的发生那一刻同步一次，**包括回到 Home**。
+     * 只读出口：每次导航真的发生那一刻同步一次，**包括回到 Home**。
      *
      * 为什么挂在写点上而不是 `LaunchedEffect(destination)`：后者要等下一帧才通知，
      * 那 250ms 滑入动画里会有一帧让旧提示板浮在正在进场子的页面上——正是这一条要收的口。
@@ -159,7 +159,7 @@ fun SetupRoot(
         contentAlignment = Alignment.TopCenter
     ) {
         Box(modifier = Modifier.fillMaxWidth().widthIn(max = CONTENT_MAX_WIDTH_DP.dp)) {
-            // §9.2：根导航**一整族**统一前进/返回过渡——子页从右侧滑入、返回时向右滑出，
+            // 根导航**一整族**统一前进/返回过渡——子页从右侧滑入、返回时向右滑出，
             // 与知识库 Activity 的默认方向一致；不每页各补一份负 padding 或一次性淡入。
             // 子页↔子页（原先是纯淡入淡出那一支）现在同一把尺：按 [HomeDestination.rank] 判前进/后退。
             AnimatedContent(
@@ -190,7 +190,7 @@ fun SetupRoot(
                     onNavigateFeedback = { goTo(HomeDestination.FeedbackCases) },
                     onNavigateProviders = { goTo(HomeDestination.Providers) },
                     onNavigateCaptureApps = { goTo(HomeDestination.CaptureApps) },
-                    // 按过"稍后"的人唯一的回程（G1b 接线单 §5）：先清掉盘上的 DEFERRED_TO_HINT，
+                    // 按过"稍后"的人唯一的回程（G1b）：先清掉盘上的 DEFERRED_TO_HINT，
                     // 再走导航——顺序反过来的话，回到首页时游标还是"稍后"，罩子从此不再回来。
                     onResumeGuide = { viewModel.resumeGuide(context) },
                     onBack = { (context as? Activity)?.finish() }

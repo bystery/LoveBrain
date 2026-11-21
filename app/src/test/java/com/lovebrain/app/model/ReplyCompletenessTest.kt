@@ -5,7 +5,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * 八项回复完整性检查（指导书 §11.2）——四风格 + 四方向 = 八项，**三个成因分家**。
+ * 八项回复完整性检查——四风格 + 四方向 = 八项，**三个成因分家**。
  *
  * 钉住的是 [LoveBrainResponse.replyCompleteness] 与 [LoveBrainResponse.directionSchemes]
  * 这两颗纯函数的**读数**，不是屏幕字符串：
@@ -61,7 +61,7 @@ class ReplyCompletenessTest {
     }
 
     /**
-     * 合法 null 的方向**不计入缺项**（§11.2：只有协议明确允许的这一档才是「不适合」）。
+     * 合法 null 的方向**不计入缺项**（只有协议明确允许的这一档才是「不适合」）。
      *
      * 旧混判态：`Partial(missingLabels = [展开])` ⇒ 这一格红。
      */

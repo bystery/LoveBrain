@@ -8,20 +8,22 @@ import org.junit.Test
 import java.io.File
 
 /**
- * §12.2「输入焦点生命周期」这条合同表行点的形状尺。
+ * 「输入焦点生命周期」这条合同表行点的形状尺。
  *
  * 用户那一行写的是：设置和自定义改写接了"进入编辑"信号，**仍缺完整的宿主失焦交接**，
- * 因此不能据此保证输入法、长按选区和退出输入都正常。本轮收的就是"失焦交接"那一半，
- * 三处各钉一条判据，每条都写清"回退成什么就红"：
+ * 因此不能据此保证输入法、长按选区和退出输入都正常。失焦交接如今由各输入面**自己报**
+ * （字段边沿 + 离树补报，经面板按面绑定的共享通道），面板这一侧收的是"唯一出口 + 各面接线"，
+ * 每处各钉一条判据，每条都写清"回退成什么就红"：
  *
  * | 判据 | 回退成什么就红 |
  * | --- | --- |
  * | 面板里 `focusManager.clearFocus(` **恰好一处**，且在唯一出口 `handOffInput` 里 | 有人在某个 `LaunchedEffect` 里再手写一次 `clearFocus`（数到 2）——那份没有 `hide()`、也没点名宿主，就是旧 bug 的续集 |
- * | 那一颗出口同时做 `hide()` / `clearFocus(force = true)` / 点名非上报输入路 | 去掉 `hide()` ⇒ 键盘不收；去掉 `force` ⇒ 主动焦点清不掉；去掉点名 ⇒ 设置页/浮层/自定义改写那三条路的 EDITING 永不退出 |
- * | 四个交接点（注册口 + 切页 + 设置层 + 编辑器）与返回键都只调那一颗出口 | 任何一处改回自己拼 ⇒ `currentHandOffInput()` 数到 4 |
+ * | 那一颗出口同时做 `hide()` / `clearFocus(force = true)` / 保留名单点名点 | 去掉 `hide()` ⇒ 键盘不收；去掉 `force` ⇒ 主动焦点清不掉；拆掉点名点 ⇒ 日后再出现非上报路就没有登记处 |
+ * | 六个交接点（注册口 + 切页 + 设置层 + 编辑器 + 标错浮层 + 返回键）都只调那一颗出口 | 任何一处改回自己拼 ⇒ `currentHandOffInput()` 数不到 6 |
+ * | 非上报名单**为空**，且每颗悬浮窗输入 id 都绑了焦点上报器/容器观测 | 名单里塞回 id ⇒ 有人又造了一条不报失焦的路；某颗 id 没绑上报 ⇒ 那条路的 EDITING 永不退出 |
  * | 面板里有 `BackHandler` 且**同一层**提供了 `LocalOnBackPressedDispatcherOwner` | 只留 `BackHandler` 不供 owner ⇒ 悬浮窗里拿到 null，activity-compose 1.9.0 走的是 `throw IllegalStateException` 那一条（整扇面板起不来，不是静默失效） |
  * | 返回键由本屏根 view 的 `setOnKeyListener` 在 IME 之前那一站泵进 dispatcher | 删掉监听 ⇒ 回调进了表也没人泵；删掉 `hasEnabledCallbacks()` 守卫 ⇒ 没人听也吞键 |
- * | 自定义改写块有 `FocusRequester` + `onFocusChanged` + 展开那一次点名编辑意图 | 少任何一颗 ⇒ "点了自定义，光标在闪而键盘起不来"回来了 |
+ * | 自定义改写块有 `FocusRequester` + 容器 `onFocusChanged` + 展开那一次点名编辑意图 + 字段级焦点上报 | 少任何一颗 ⇒ "点了自定义，光标在闪而键盘起不来"或"焦点走了宿主不知道"回来了 |
  *
  * ⚠ 每把尺都配**反向证人**（合成形状与合成坏形状各数一次）：本仓库的老规矩是
  * "数到 0 永远不许单独当结论"——正则扫空集恒绿那种事不能再犯。
@@ -62,7 +64,7 @@ class PanelInputFocusHandoffTest {
         assertTrue("出口里必须收输入法：\n${body.take(300)}", hideAt >= 0)
         assertTrue("出口里必须交回 Compose 焦点（force = true 才算交出主动焦点）：\n${body.take(300)}",
             clearAt >= 0)
-        assertTrue("出口里必须点名那三条只有进入编辑信号的路：\n${body.take(300)}", reportAt >= 0)
+        assertTrue("出口里必须保留名单点名点（如今名单为空，各面自报；拆了它就没有登记处）：\n${body.take(300)}", reportAt >= 0)
         assertTrue("顺序：收键盘在交焦点之前", hideAt < clearAt)
         assertTrue("顺序：交焦点在点名宿主之前", clearAt < reportAt)
 
@@ -88,11 +90,11 @@ class PanelInputFocusHandoffTest {
 
     @Test
     fun everyHandoffPointGoesThroughThatSingleExit() {
-        // 注册口 / 切页 / 设置层开合 / 编辑器关闭 / 返回键 = 五处
+        // 注册口 / 切页 / 设置层开合 / 编辑器关闭 / 标错浮层关闭 / 返回键 = 六处
         val calls = count(panelCode, "currentHandOffInput\\(\\)")
         assertEquals(
-            "五个交接点全部走那一颗出口（实到 $calls 处）：少一处就是那条路又自己拼了一遍",
-            5, calls
+            "六个交接点全部走那一颗出口（实到 $calls 处）：少一处就是那条路又自己拼了一遍",
+            6, calls
         )
         assertTrue(
             "宿主反向那条链（onClearComposeFocus）也必须是同一颗出口",
@@ -104,28 +106,59 @@ class PanelInputFocusHandoffTest {
     }
 
     @Test
-    fun theNonReportingInputListNamesOnlyIdsThePanelActuallyUses() {
-        // 名单不是凭空写的：那三颗 id 必须真的在面板里作为"进入编辑"信号出现过
-        val declared = Regex("""NON_REPORTING_INPUT_IDS\s*=\s*listOf\(([^)]*)\)""")
-            .find(panelCode)
-        assertTrue("面板里找不到那份名单——交接点就没东西可点名", declared != null)
-        val ids = Regex("\"([^\"]+)\"").findAll(declared!!.groupValues[1])
-            .map { it.groupValues[1] }.toList()
-        assertEquals("名单应有三条只有进入编辑、没有失焦的输入路，实到 $ids", 3, ids.size)
-        for (id in ids) {
+    fun theNonReportingListIsEmptyAndEveryOverlayInputReportsFocus() {
+        // 名单必须存在且为空：失焦由各面自报（边沿 + 离树补报），不再靠名单猜
+        val declared = Regex("""NON_REPORTING_INPUT_IDS\s*=\s*([^\n]+)""").find(panelCode)
+        assertTrue("面板里找不到那份名单——出口的点名点就没东西可登记", declared != null)
+        assertTrue(
+            "名单应为空（各面自报）；塞回 id 就是有人又造了一条不报失焦的路：${declared!!.groupValues[1]}",
+            declared.groupValues[1].contains("emptyList")
+        )
+        assertEquals(
+            "名单里不该再留任何 id 字面量",
+            0, Regex("\"[^\"]+\"").findAll(declared.groupValues[1]).count()
+        )
+
+        // 四颗 LbFieldInput 面：面板按面绑焦点上报器（id 与那颗意图信号同名），
+        // 面内取共享上报器交给字段——两头都接上，失焦才真的有人报
+        val surfaces = mapOf(
+            "settings" to "ui/panel/settings/SettingsIntentEntry.kt",
+            "intent_editor" to "ui/panel/IntentEditorSheet.kt",
+            "scheme_adjust" to "ui/panel/reply/SchemeAdjustingBlock.kt",
+            "memory_wrong" to "ui/panel/reply/MemoryCorrectionFlow.kt"
+        )
+        for ((id, file) in surfaces) {
             assertEquals(
-                "`$id` 必须真的是面板交出去的一颗 onInputIntent id，否则点名的是空名字",
+                "`$id` 必须真的是面板交出去的一颗 onInputIntent id",
                 1, count(panelCode, """onInputIntent\("$id"\)""")
             )
+            assertEquals(
+                "`$id` 必须在面板调用点绑了焦点上报器，否则面内报的是空通道",
+                1, count(panelCode, """rememberOverlayFocusReporter\("$id""")
+            )
+            val surface = codeOf(file)
+            assertTrue(
+                "$file 必须取共享上报器（字段边沿 + 离树补报那一颗）",
+                surface.contains("rememberOverlayInputFocusReporter()")
+            )
+            assertTrue(
+                "$file 必须把上报器交给 LbFieldInput 的 onFocusChange",
+                surface.contains("onFocusChange =")
+            )
         }
-        // 会自己报失焦的那两格不许混进名单（混进来就是多发一次空操作之外的第二本账）
-        for (reporting in listOf("reply", "counseling_main", "counseling_followup")) {
-            assertFalse("名单里不该有 $reporting（它自己 onFocusChanged 就报了）",
-                ids.contains("\"$reporting\"") || ids.contains(reporting))
+        // reply / counseling 两颗参照面保持自报（新通道不许把它们吞掉）
+        for (id in listOf("reply", "counseling_main", "counseling_followup")) {
+            assertEquals(
+                "`$id` 仍走它自己那颗 onFocusChange 直报（带上自己的实例身份）",
+                1, count(panelCode, """onInputFocusChange\(\w+, "$id", focused\)""")
+            )
         }
-        // 反向证人：凭空的名字数到 0，说明这一句真抓得住接错的线
-        assertEquals(0, count(panelCode, """onInputIntent\("notARealInputId"\)"""))
-        assertEquals(1, count("onInputIntent(\"settings\")", """onInputIntent\("settings"\)"""))
+        // 反向证人：凭空的名字数到 0；合成"名单塞回一颗 id"的坏形状必须被这把尺抓得住
+        assertEquals(0, count(panelCode, """rememberOverlayFocusReporter\("notARealInputId"""))
+        val badShape = "private val NON_REPORTING_INPUT_IDS = listOf(\"settings\")"
+        val badDecl = Regex("""NON_REPORTING_INPUT_IDS\s*=\s*([^\n]+)""").find(badShape)!!
+        assertFalse("证人：空名单判据对塞了 id 的坏形状必须判假", badDecl.groupValues[1].contains("emptyList"))
+        assertEquals(1, Regex("\"[^\"]+\"").findAll(badDecl.groupValues[1]).count())
     }
 
     // ─── ② 返回键：退出输入那一条路 ────────────────────────────────────
@@ -190,13 +223,24 @@ class PanelInputFocusHandoffTest {
                 count(schemeCode, "\\.onFocusChanged\\s*\\{") + " 处",
             1, count(schemeCode, "\\.onFocusChanged\\s*\\{")
         )
+        // 字段级焦点上报也要接上：容器观测只管这一行的账，交回宿主靠字段边沿 + 离树补报
+        assertTrue(
+            "自定义改写块必须取共享焦点上报器（边沿 + 离树补报那一颗）",
+            schemeCode.contains("rememberOverlayInputFocusReporter()")
+        )
+        assertEquals(
+            "上报器必须交进 LbFieldInput 的 onFocusChange，实到 " +
+                count(schemeCode, "onFocusChange\\s*=") + " 处",
+            1, count(schemeCode, "onFocusChange\\s*=")
+        )
         // 反向证人：这几把尺对合成形状各数得到 1，对"什么都没有"数到 0
         val emptyShape = "@Composable fun X() { Column { Text(\"hi\") } }"
-        for (needle in listOf("FocusRequester\\(\\)", "\\.requestFocus\\(\\)", "\\.onFocusChanged\\s*\\{")) {
+        for (needle in listOf("FocusRequester\\(\\)", "\\.requestFocus\\(\\)", "\\.onFocusChanged\\s*\\{", "onFocusChange\\s*=")) {
             assertEquals("证人：$needle 在空形状里必须数到 0", 0, count(emptyShape, needle))
         }
         assertEquals(1, count("Row(Modifier.onFocusChanged { })", "\\.onFocusChanged\\s*\\{"))
         assertEquals(1, count("val r = remember { FocusRequester() }", "FocusRequester\\(\\)"))
         assertEquals(1, count("runCatching { customFocusRequester.requestFocus() }", "\\.requestFocus\\(\\)"))
+        assertEquals(1, count("LbFieldInput(onFocusChange = r)", "onFocusChange\\s*="))
     }
 }

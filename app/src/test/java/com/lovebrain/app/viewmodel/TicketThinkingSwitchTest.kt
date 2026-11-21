@@ -17,8 +17,8 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * （工单直出/思考开关·数据面）契约测试（演进表计划 3 条，本文件 4 条）：
- * 老格式兼容（null）/ 新建默认直出 / 翻转落盘 / 老工单继承全局后翻转（ 契约）。
+ * （工单直出/思考开关·数据面）契约测试：
+ * 老格式兼容（null）/ 新建默认直出 / 翻转落盘 / 老工单继承全局后翻转。
  */
 class TicketThinkingSwitchTest {
 
@@ -26,7 +26,7 @@ class TicketThinkingSwitchTest {
 
     @Before
     fun setUp() {
-        // SetupViewModel 经 L.w 记工单日志——单测环境静态 mock android.util.Log（先例 R6-T5）
+        // SetupViewModel 经 L.w 记工单日志——单测环境静态 mock android.util.Log
         mockkStatic(Log::class)
         every { Log.w(any(), any<String>()) } returns 0
     }
@@ -106,12 +106,12 @@ class TicketThinkingSwitchTest {
         every { prefs.activeTicketId } returns null
         val vm = SetupViewModel(prefs, mockk<DeepSeekRepository>(relaxed = true))
 
-        vm.addTicket("本地", "http://127.0.0.1:17766/v1", listOf("glm-5.2-sophnet", "deepseek-v4-flash"), "")
+        vm.addTicket("本地", "http://127.0.0.1:8080/v1", listOf("model-a", "model-b"), "")
         val id = vm.tickets.value.single().id
-        assertEquals("glm-5.2-sophnet", vm.tickets.value.single().model)
+        assertEquals("model-a", vm.tickets.value.single().model)
 
-        vm.setTicketModel(id, "deepseek-v4-flash")
-        assertEquals("deepseek-v4-flash", vm.tickets.value.single().model)
-        assertEquals(listOf("glm-5.2-sophnet", "deepseek-v4-flash"), vm.tickets.value.single().models)
+        vm.setTicketModel(id, "model-b")
+        assertEquals("model-b", vm.tickets.value.single().model)
+        assertEquals(listOf("model-a", "model-b"), vm.tickets.value.single().models)
     }
 }

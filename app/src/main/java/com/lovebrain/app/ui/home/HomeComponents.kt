@@ -50,8 +50,8 @@ import com.lovebrain.app.core.designsystem.rememberPressScale
 // 首页这一屏自己的组件：一条状态卡（hero 档）+ 仅黄灯时那一行缺项。
 // 四入口不在这里——它们直接是设计系统 `LbActionCard` 的紧凑档，页面不再套一层。
 //
-// 依据基线 v1 §1（F2 首页族）+ §3.3/3.4/3.9/3.10 与 §4 的首页裁决（candidate-a 方向），
-// 并按 M09（活台账）§5 那一串"恢复 1.3.1 级别的视觉体验、保留新版状态判断"的方向：
+// 依据（F2 首页族）+/3.4/3.9/3.10 与约定的首页裁决（candidate-a 方向），
+// 并按 M09（历史背景）那一串"恢复 1.3.1 级别的视觉体验、保留新版状态判断"的方向：
 // **精简不等于空**。这一屏的层级由三件事买出来，一件都不靠新增文案或新增状态：
 // ① hero 状态卡是**这一屏唯一一块浅蓝**（`Xl` 24 圆角 + `PrimaryLight` 底 + `PrimarySubtle`
 //    细描边 + 四边等距 16 + **零阴影**）——三样手段只挑一对，阴影/描边/渐变不叠满；
@@ -69,7 +69,7 @@ import com.lovebrain.app.core.designsystem.rememberPressScale
 /**
  * 首页自己的版式尺寸。
  *
- * ⚠ 三轴分离（§3.1）：下面两颗都是**可见尺寸**那一轴（灯 12dp、字形 20dp）。
+ * ⚠ 三轴分离：下面两颗都是**可见尺寸**那一轴（灯 12dp、字形 20dp）。
  * 触摸热区另写一处，走全站那一条 [AppDimens.TOUCH_TARGET_MIN_DP]，
  * 不给可见控件垫高再叠 padding——那正是"整站一起变大"的成因。
  *
@@ -107,7 +107,7 @@ object LbHomeTags {
     const val ENTRY_CAPTURE = "lb_home_entry_capture"
     const val ENTRY_PROVIDER = "lb_home_entry_provider"
     /**
-     * 累计使用那一块只读小卡（M25 §五 取舍③：首页重新加入一块简洁小卡）。
+     * 累计使用那一块只读小卡（M25 五 取舍③：首页重新加入一块简洁小卡）。
      * 它自己**不可点**——只是一个读数，不是第五颗按钮，也不并进主卡（主卡仍只有一颗可点）。
      */
     const val USAGE_CARD = "lb_home_usage_card"
@@ -137,10 +137,10 @@ internal fun AssistantStatusCard(
 ) {
     Card(
         shape = LoveBrainShape.xl,
-        // ── 浅蓝那一档回来了（M09 §5 第 1 条）：底走 `PrimaryLight`、静息边线走 `PrimarySubtle`，
+        // ── 浅蓝那一档回来了：底走 `PrimaryLight`、静息边线走 `PrimarySubtle`，
         //    两颗都是 1.3.1 那版就在盘上的既有令牌（`core/designsystem/Color.kt:19,20`），本轮**一颗新色都没加**。
         // ⚠ 三选一不堆满：这一格只买「浅底 + 细描边」这一对。旧格用 `ELEVATION_DEFAULT` 阴影浮起、
-        //    自己不许描边（§3.4 拦的就是同一张卡上 shadow + border 双叠）；本轮把形状换成
+        //    自己不许描边（拦的就是同一张卡上 shadow + border 双叠）；本轮把形状换成
         //    旧版那一圈描边 ⇒ 阴影跟着退到 0。渐变也不叠（v1.3.1 那层 `Brush.linearGradient`
         //    是压在 PrimaryLight 底上的第三层手段，需求明令不要三样一起上）。
         colors = CardDefaults.cardColors(containerColor = PrimaryLight),
@@ -165,7 +165,7 @@ internal fun AssistantStatusCard(
             //
             // 字阶这一档本轮抬了一级（`titleMedium` 15/22 → `titleLarge` 18/26，同一族里已有的档）：
             // 改之前主卡那五个字与四入口那四个标题是**同一个 style 加同一个字重**，
-            // 于是"主卡是视觉焦点、入口不许与主卡同样抢眼"（§5.1）只剩阴影在扛，
+            // 于是"主卡是视觉焦点、入口不许与主卡同样抢眼"只剩阴影在扛，
             // 录下来的那张基线上一眼读不出谁是主。抬这一档买的就是这一处层次差——
             // 不新造字阶、不缩任何别的字，入口那一档一个字没动（那颗件也不在本席写入范围）。
             // ⚠ 行高 26 < 热区 48：卡高仍是「热区 48 + 上下各 16」那一算式，没被这一档顶高。
@@ -209,21 +209,21 @@ private fun AdvisorLampDot(lamp: AdvisorLamp) {
  * 右半边那颗控件：热区垫到全站 48dp 那一档，**可见字形仍是 20dp**（两轴各自有主人）。
  *
  * 形状交回设计系统那颗 [LbTriangleGlyph]：▶ 与 ■ 出自同一颗件、同一个圆化比例
- * （§3.10：边长 × 0.18，20dp → 3.6dp），三个角真圆，不再是三条 `lineTo` 拼出来的尖 Path。
+ * （边长 × 0.18，20dp → 3.6dp），三个角真圆，不再是三条 `lineTo` 拼出来的尖 Path。
  * 名字与角色挂在带 `clickable` 的那一层盒子上，读屏念"开始军师服务/停止军师服务"。
  *
- * ## 这一格现在有"按钮本体"了（M09 §5 第 2 条）
+ * ## 这一格现在有"按钮本体"了
  *
  * 旧形状是一颗**完全透明**的热区盒：四边没有任何底、没有任何边，屏上只有 20dp 那一枚蓝色小字形
  * 漂在卡片上——第一次打开 App 的人得先读懂"三角=启动"才找得到出口。
  * 现在同一颗盒子上有本体了：`SurfaceCard` 的白底 + 一圈 `Primary` 细描边（`LoveBrainShape.md` 10，
  * 这一屏既有的一档：缺项那一行与入口卡的图标底用的是同一档），字形墨色仍是 `Primary`
- * （经 [LbTriangleGlyphTone.Accent]，见那颗件的墨色词表——页面拿不到 `color:` 旋钮，§3.10）。
+ * （经 [LbTriangleGlyphTone.Accent]，见那颗件的墨色词表——页面拿不到 `color:` 旋钮）。
  * 于是这一格读起来是"一块能按的东西"，不是一枚装饰。
  *
  * ⚠ 三件事这一格**没做**，都是刻意的：
  * - 没换组件、没换动作：还是同一颗 `AdvisorControlButton`，按下去走的仍是宿主那条
- *   `onStartService` / `stopClicked`（真实服务控制动作，M09 §5 第 2 条点名要保持的那一颗）；
+ *   `onStartService` / `stopClicked`（真实服务控制动作，点名要保持的那一颗）；
  * - 没把可见尺寸垫大：本体只到热区那一档 48dp（`HomeHeroActionTest` 钉着 ≤56dp），
  *   字形 20dp 一寸没动——动的是"有没有边、有没有底"，不是"多大"；
  * - 底**不是**品牌色：这一格挂在已经是 `PrimaryLight` 的主卡上，再涂一颗品牌底就是
@@ -283,7 +283,7 @@ private fun AdvisorControlButton(
  * 它是**要用户读完去办事**的一句话，不是行脚注。
  * 同一档圆角（10）已经是这一屏既有的一档（入口卡里那块图标底），所以这一格没有长第四种圆角。
  *
- * ## 那一行的左边缘与主卡的内容柱对齐（§5.1"调整对齐"）
+ * ## 那一行的左边缘与主卡的内容柱对齐（"调整对齐"）
  *
  * 容器自己不吃水平边距（左右 24 的唯一主人仍是 `LbScreenScaffold`），但**内距**本轮从
  * `Spacing.lg`(12) 抬到 `Spacing.xl`(16)：主卡的内容柱就在"卡边 + 16"那一格，

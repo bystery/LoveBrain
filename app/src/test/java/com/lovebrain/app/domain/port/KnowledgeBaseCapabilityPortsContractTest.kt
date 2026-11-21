@@ -88,10 +88,11 @@ class InMemoryKnowledgeDocumentPort : KnowledgeDocumentPort {
     override suspend fun migrateIfNeeded(kbName: String) { /* schema always current in fake */ }
     override suspend fun readFile(kbName: String, relativePath: String): String =
         files[key(kbName, relativePath)] ?: ""
-    override suspend fun writeFile(kbName: String, relativePath: String, content: String) {
+    override suspend fun writeFile(kbName: String, relativePath: String, content: String): Boolean {
         val k = key(kbName, relativePath)
         files[k] = content
         versions[k] = content.hashCode().toString()
+        return true
     }
     override suspend fun readFileWithVersion(kbName: String, relativePath: String): Pair<String, String> {
         val k = key(kbName, relativePath)
@@ -190,8 +191,9 @@ class InMemoryKnowledgeBaseCatalogPort : KnowledgeBaseCatalogPort {
     override suspend fun updateStage(kbName: String, stage: String) {
         bases[kbName]?.let { bases[kbName] = it.copy(stage = stage) }
     }
-    override suspend fun writeFile(kbName: String, relativePath: String, content: String) {
-        /* 建库事务写画像三段——目录写侧只转手，内容级写归仓库；fake 仅记账不落盘 */
+    override suspend fun writeFile(kbName: String, relativePath: String, content: String): Boolean {
+        /* 建库事务写画像三段——目录写侧只转手，内容级写归仓库；fake 仅记账不落盘，恒报成功 */
+        return true
     }
 }
 
@@ -216,7 +218,7 @@ abstract class KnowledgeRuntimePortContract {
         }
         assertEquals("推进周末见面", first.text)
         assertTrue(first.enabled)
-        // 第二次保存换"关着"这一档（2026-10-15 书 §3 F02 后旧终态 status 会被唯一读口
+        // 第二次保存换"关着"这一档（2026-10-15F02 后旧终态 status 会被唯一读口
         // 归一化成关闭，拿 PAUSED 测往返量的就不是往返了）：revision 单调与回读等值两条不变。
         val second = runBlocking {
             p.saveIntent("kb", "推进周末见面", enabled = false, status = IntentStatus.ACTIVE)
@@ -314,6 +316,9 @@ class InMemoryKnowledgeRuntimePort : KnowledgeRuntimePort {
     override suspend fun readProfile(kbName: String): String = profiles[kbName] ?: ""
     override suspend fun contentRevision(kbName: String): String = (contentRevisions[kbName] ?: 0).toString()
     override suspend fun updateWarmthStageLabel(kbName: String, newStage: String) { stages[kbName] = newStage }
+    // guide-6 Step 5：运行时端口补读已提交轮数（fake 无提交路径，默认 0 = 首轮口径）
+    private val turnCounts = mutableMapOf<String, Int>()
+    override suspend fun getTurnCount(kbName: String): Int = turnCounts[kbName] ?: 0
 
     override suspend fun applyProfileUpdateAtomically(
         kbName: String, me: String?, her: String?, warmth: String?,

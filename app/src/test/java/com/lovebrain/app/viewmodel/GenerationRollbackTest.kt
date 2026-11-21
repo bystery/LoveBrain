@@ -23,7 +23,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -58,7 +57,6 @@ class GenerationRollbackTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -68,7 +66,6 @@ class GenerationRollbackTest {
     ): LoveBrainViewModel {
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -77,8 +74,8 @@ class GenerationRollbackTest {
         every { prefs.activeTicketId } returns null
         every { prefs.totalAdoptCount } returns 0
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            PromptBuilder.ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            PromptBuilder.ConfigValidationResult(0, emptyList())
         // 准备阶段会冻结 prompt 资产指纹——严格 mock 必须给答案，
         // 否则 generate() 在 buildGenerationInput 处就抛 MockKException。
         every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
@@ -110,7 +107,7 @@ class GenerationRollbackTest {
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
         coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
         coEvery { knowledgeRepo.readFile(any(), any()) } returns ""
-        coEvery { knowledgeRepo.writeFile(any(), any(), any()) } returns Unit
+        coEvery { knowledgeRepo.writeFile(any(), any(), any()) } returns true
     }
 
     private fun makeResponse(text: String): LoveBrainResponse {
@@ -301,7 +298,7 @@ class GenerationRollbackTest {
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
         coEvery { knowledgeRepo.getLessonCount(any()) } returns 0
         coEvery { knowledgeRepo.readFile(any(), any()) } returns ""
-        coEvery { knowledgeRepo.writeFile(any(), any(), any()) } returns Unit
+        coEvery { knowledgeRepo.writeFile(any(), any(), any()) } returns true
 
         val engine = mockk<com.lovebrain.app.domain.GenerationEngine>(relaxed = true)
         GenerationEngineTestHelper.stubReplyGenerateSuccess(engine)

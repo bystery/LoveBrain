@@ -20,8 +20,14 @@ interface DocumentStorage {
 
     fun kbExists(kbName: String): Boolean
 
-    /** 仓库的 `writeFileUnlocked` 转发：只读库拒绝、建父目录、备份节流都仍在那一处 */
-    fun writeUnlocked(kbName: String, relativePath: String, content: String)
+    /**
+     * 仓库的 `writeFileUnlocked` 转发：只读库拒绝、建父目录、备份节流都仍在那一处。
+     *
+     * 返回值就是"这一次到底有没有落盘"：false = 只读库 / 路径被守门拒收 / 原子写失败。
+     * 旧签名返回 Unit，于是 `writeWithVersion` 在写被拒之后照样回一个新 SHA——
+     * 调用方拿到"新版本号"，磁盘上还是旧内容，下一次版本比对就直接冲突。
+     */
+    fun writeUnlocked(kbName: String, relativePath: String, content: String): Boolean
 }
 
 /**
@@ -125,12 +131,28 @@ internal class KnowledgeDocumentStore(private val storage: DocumentStorage) {
         else -> null
     }
 
-    /** 读一个文档（自动兼容旧路径）。非法路径与不存在的文件都给空串，不给异常 */
+    /** 读一个文档（自动兼容旧路径）。非法路径、不存在的文件与读取失败都给空串，不给异常 */
     fun read(kbName: String, relativePath: String): String {
         val file = resolve(kbName, relativePath) ?: return ""
-        if (file.exists()) return file.readText()
+        if (file.exists()) return readTextOrLog(file, relativePath)
         return readLegacy(kbName, relativePath)
     }
+
+    /**
+     * 读路径的 IO 异常一律降级为空串并记一条**不含正文**的日志。
+     *
+     * 缺文件早已 fail-open，但"存在却读不出来"（权限、被占用、同名目录）以前会把
+     * IOException 一路抛到生成链路，整轮回复因此失败——知识库读不出来不该让聊天发不出去。
+     * 写入路径不经过这里：写失败仍要原样可见（[writeWithVersion] 继续返回 null）。
+     */
+    private fun readTextOrLog(file: File, label: String): String =
+        try {
+            file.readText()
+        } catch (e: Exception) {
+            // 只吞可恢复的读取失败（IOException/SecurityException 等）；Error 照常上抛
+            storage.note("read failed, treated as empty: $label (${e.javaClass.simpleName})")
+            ""
+        }
 
     /**
      * 旧版布局回退：新版路径没有时再看老位置有没有。
@@ -141,7 +163,7 @@ internal class KnowledgeDocumentStore(private val storage: DocumentStorage) {
     private fun readLegacy(kbName: String, relativePath: String): String {
         val oldPath = OLD_PATH_MAP[relativePath] ?: return ""
         val oldFile = resolve(kbName, oldPath) ?: return ""
-        return if (oldFile.exists()) oldFile.readText() else ""
+        return if (oldFile.exists()) readTextOrLog(oldFile, oldPath) else ""
     }
 
     /** 读取内容 + 版本号（SHA-256）；调用方持有版本号，写回时用于冲突检测 */
@@ -156,7 +178,8 @@ internal class KnowledgeDocumentStore(private val storage: DocumentStorage) {
     /**
      * 乐观并发写：磁盘上当前内容必须仍等于调用方读到的那个版本，否则拒写。
      *
-     * 返回新版本号 = 写成功；返回 null = 库不在了、路径非法，或版本冲突（调用方保留草稿）。
+     * 返回新版本号 = 写成功；返回 null = 库不在了、路径非法、版本冲突，**或写被拒/失败**
+     * （调用方保留草稿）。
      * 注意这里**不自己落盘**：写仍回到 [DocumentStorage.writeUnlocked]，
      * 只读库拒绝与备份节流因此不会被这条路绕开。
      */
@@ -176,7 +199,11 @@ internal class KnowledgeDocumentStore(private val storage: DocumentStorage) {
             storage.note("writeFileWithVersion conflict: $relativePath")
             return null
         }
-        storage.writeUnlocked(kbName, relativePath, content)
+        if (!storage.writeUnlocked(kbName, relativePath, content)) {
+            // 写被拒（只读库/守门）或落盘失败：绝不能再回一个新版本号冒充成功。
+            storage.note("writeFileWithVersion write refused or failed: $relativePath")
+            return null
+        }
         return KbTextOps.sha256(content)
     }
 

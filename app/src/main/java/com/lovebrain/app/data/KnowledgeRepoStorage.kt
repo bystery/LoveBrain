@@ -125,18 +125,18 @@ internal class KnowledgeRepoStorage(private val repo: KnowledgeRepository) : KbS
     /**
      * 文档格的唯一写出口：回到仓库的 [KnowledgeRepository.writeFileUnlocked]。
      * 那里带着只读 schema 拒绝与备份节流，所以新版本写也不可能绕开它们。
+     * 返回值原样上交"这一次到底写没写成"，不再把拒绝报成成功。
      */
-    override fun writeUnlocked(kbName: String, relativePath: String, content: String) =
+    override fun writeUnlocked(kbName: String, relativePath: String, content: String): Boolean =
         repo.writeFileUnlocked(kbName, relativePath, content)
 
     /** revision-check 格的追加写：回到仓库的 [KnowledgeRepository.appendFileUnlocked]（唯一写链） */
-    override fun appendUnlocked(kbName: String, relativePath: String, content: String) =
+    override fun appendUnlocked(kbName: String, relativePath: String, content: String): Boolean =
         repo.appendFileUnlocked(kbName, relativePath, content)
 
     /** revision-check 格的向量写：回到画像格那一份 [KnowledgeProfileStore.setVector] */
-    override fun writeVectorUnlocked(kbName: String, values: Map<String, Int>) {
+    override fun writeVectorUnlocked(kbName: String, values: Map<String, Int>): Boolean =
         repo.profile.setVector(kbName, values)
-    }
 
     /** revision-check 格读 revision：回到记忆格那一份 [KnowledgeMemoryStore.revisionOf] */
     override fun revisionOf(kbName: String): Int = repo.memory.revisionOf(kbName)
@@ -289,9 +289,8 @@ internal class KnowledgeRepoStorage(private val repo: KnowledgeRepository) : KbS
     override fun isReadOnly(kbName: String): Boolean = repo.migrator.isReadOnly(kbName)
     override fun memoryRevisionOf(kbName: String): Int = repo.memory.revisionOf(kbName)
     override fun readVector(kbName: String): Map<String, Int> = repo.profile.vectorOf(kbName)
-    override fun writeVector(kbName: String, values: Map<String, Int>) {
+    override fun writeVector(kbName: String, values: Map<String, Int>): Boolean =
         repo.profile.setVector(kbName, values)
-    }
     override fun normalizeStage(raw: String, opLabel: String): String? =
         repo.profile.normalizeStage(raw, opLabel)
     override fun rewriteStageLine(warmth: String, stage: String): String =

@@ -20,7 +20,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -61,14 +60,12 @@ class GenerationRoundIdTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
     private fun newViewModel(): LoveBrainViewModel {
         val prefs = mockk<SecurePrefs>(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -86,8 +83,8 @@ class GenerationRoundIdTest {
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
 
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            PromptBuilder.ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            PromptBuilder.ConfigValidationResult(0, emptyList())
 
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),

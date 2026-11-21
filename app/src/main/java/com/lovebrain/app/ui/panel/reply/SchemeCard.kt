@@ -44,7 +44,7 @@ import com.lovebrain.app.ui.theme.*
  * 卡内这一族小动作因此由卡片自己画（[SchemeCollapsedBlock] 里那一个私有紧凑件），
  * 设计系统那颗文字动作的 48dp 档位继续管全站别处，两边都不改。
  *
- * ⚠ 2026-10-10 §3 加了"纵向阅读"那一档之后，**尺寸语义只有下面 [widthFor] / [heightFor] /
+ * ⚠ 2026-10-10加了"纵向阅读"那一档之后，**尺寸语义只有下面 [widthFor] / [heightFor] /
  * [hasBoundedContentHeight] 三颗分叉口**：一张卡换方向摆不改颜色、边框、圆角、字号、按钮与
  * 按压缩放，只改"宽度铺满还是固定、高度按内容还是固定"。所以别的文件**不许**再抄一份
  * `CARD_WIDTH_DP`/`CARD_HEIGHT_DP` 的替代常量，也不许在调用点直接 `.width(...)`/`.height(...)`。
@@ -85,7 +85,7 @@ object SchemeCardDimens {
     const val CUSTOM_FIELD_MIN_HEIGHT_DP = 28
     const val CUSTOM_FIELD_MAX_HEIGHT_DP = 36
 
-    // ═══ 两种阅读方向下的尺寸语义（§3：纵向/横向只有这三颗分叉口，别的都不许分叉）═══
+    // ═══ 两种阅读方向下的尺寸语义（纵向/横向只有这三颗分叉口，别的都不许分叉）═══
 
     /**
      * 一张卡在两种方向下的**宽度**：横向档固定 [CARD_WIDTH_DP]（并排滑着读），
@@ -180,7 +180,7 @@ sealed class SchemeCardPresentationState {
  * [onCardBoundsChanged] 把卡片自己在窗口里的落点报给行容器做"点卡外收起"的判据——
  * 那份 bounds 只服务点击判断，这里不铺任何遮罩、不接跨窗口手势系统。
  *
- * [cardLayout] 是这一张卡**唯一的**方向开关（§3「回复卡片纵向排列」）：它只改尺寸语义
+ * [cardLayout] 是这一张卡**唯一的**方向开关（「回复卡片纵向排列」）：它只改尺寸语义
  * （见 [SchemeCardDimens.widthFor] / [SchemeCardDimens.heightFor] /
  * [SchemeCardDimens.hasBoundedContentHeight]），不改颜色、边框、圆角、字号、按钮与按压缩放，
  * 也不改身份、回调、展开态与自定义草稿那套逻辑——两档共用下面同一条分发，没有第二张卡。

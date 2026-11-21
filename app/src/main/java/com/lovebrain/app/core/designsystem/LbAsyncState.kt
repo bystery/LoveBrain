@@ -89,9 +89,9 @@ enum class LbStateContainer {
      * 文本 `labelMedium` 11/16、圆角仍 [LoveBrainShape.md] 10、内边距横 12 / 竖 4、
      * 尾部那颗关闭走**图标 14 坐在 24dp 见方盒**（[LbTextActionGlyph.Notice]），不是 48×48 的无底文字盒。
      *
-     * 为什么是**第三档**而不是把 [Strip] 直接改小（基线 v1 §6.3、原话第 16 条）：
+     * 为什么是**第三档**而不是把 [Strip] 直接改小（原话第 16 条）：
      * `Strip` 还管着面板里另外几处 empty/error 横条，把它的字号 / 关闭一起压小 = 全站那些条无差别变小，
-     * 正是指导书 §7.5 明令"别把旧 Strip 测试一把放松"要挡的形状。所以另立一档、`Block`/`Strip` 一字不动。
+     * 正是明令"别把旧 Strip 测试一把放松"要挡的形状。所以另立一档、`Block`/`Strip` 一字不动。
      *
      * 复用视觉**不等于**复用确认行为：这一档没有确认键、不靠用户点了才消失，
      * 排队 / 通道 / 显示起算的过期时间全部由 `feature/notice/NoticeBoard` 那一格自己带着。
@@ -113,7 +113,7 @@ enum class LbStateContainer {
  * **"一条带语气浅底的状态条"只有这一个主人**，页面不许再自画 `Box/Row + .background(…Bg)`：
  * 1. **字阶由这一处定，页面传不进来**：[Strip] 是 [AppTypography.bodyMedium]，
  *    [Notice]（轻通知档，原话第 16 条）与画像 / 阶段建议卡的正文**同用** [AppTypography.labelMedium]——
- *    这是"直接复用紧凑语言"落到的那一个现成字阶，不新增字号档（基线 v1 §3.2）。
+ *    这是"直接复用紧凑语言"落到的那一个现成字阶，不新增字号档。
  *    改字阶要回扫 `EmptyStateOwnershipSemanticsTest` 与 `NoticeStripSemanticsTest` 那两栏排布判据。
  * 2. **通知条不裁行**（没有 `maxLines = 1 + Ellipsis`）：裁掉半句等于丢话，
  *    而这一族的说明正是用户下一步该做什么的唯一依据。整句排开，条子按内容长高。
@@ -158,11 +158,11 @@ fun LbEmptyState(
         }
 
         // 轻通知档（原话第 16 条）：同一条浅底容器，但整条收进画像 / 阶段建议卡那一套紧凑语言。
-        // 与 Strip 的三处差异逐条对上基线 v1 §6.3：① 字阶换成建议卡正文那颗 labelMedium；
+        // 与 Strip 的三处差异逐条对上：① 字阶换成建议卡正文那颗 labelMedium；
         // ② 内边距横 12 / 竖 4（Strip 是 8 / 4）；③ 尾部那颗关闭从 48×48 的无底文字盒
         //   换成图标 14 坐在 24dp 见方盒（[StateAction] 的 compact 那一支）——正是这条把
         //   24dp 一横条顶成 56dp 的元凶。圆角仍是 LoveBrainShape.md（10），不改。
-        //   `Block`/`Strip` 上面两支一字没动，全站那些 empty/error 条不会因此变小（§7.5）。
+        //   `Block`/`Strip` 上面两支一字没动，全站那些 empty/error 条不会因此变小。
         LbStateContainer.Notice -> Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -214,7 +214,7 @@ private fun StateMessage(
  * [compact] 为真时（轻通知档 [LbStateContainer.Notice] 的关闭那颗，原话第 16 条）交回的是
  * [LbTextAction] 的**图标档**：一枚 `Icons.Filled.Close` 坐在 [LbTextActionGlyph.Notice] 的 24dp
  * 见方盒里，读屏名字仍来自 [ScreenAction.label]（那句 `a11y_close_notice` 资源）。失败语气用图标、
- * 不写 `✗` 字符——字面符号在资源/读屏两侧都是坑（基线 v1 §3.9）。
+ * 不写 `✗` 字符——字面符号在资源/读屏两侧都是坑。
  *
  * ⚠ 本文件里 `LbTextAction(` 出现**两次**（文字档一次、[compact] 图标档一次，都在 `StateAction` 一个函数里）、
  * `.clickable(` 只许出现**零次**——这两个数是 `UiLayerDependencyContractTest > the design-system text

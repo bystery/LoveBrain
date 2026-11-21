@@ -25,7 +25,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -63,14 +62,13 @@ class ProactiveTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
     private fun newPromptBuilder(): PromptBuilder {
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            ConfigValidationResult(0, emptyList())
         every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
         every { promptBuilder.assetHashOf(*anyVararg()) } returns "asset-hash"
         return promptBuilder
@@ -79,7 +77,6 @@ class ProactiveTest {
     private fun newPrefs(): SecurePrefs {
         val p = mockk<SecurePrefs>(relaxed = true)
         every { p.thinkingMode } returns 0
-        every { p.outputMode } returns 0
         every { p.panelMode } returns 0
         every { p.counselingDraft } returns ""
         every { p.loadCounselingResult() } returns null
@@ -114,31 +111,21 @@ class ProactiveTest {
     }
 
     /**
-     * ：主动发把「本轮范围」与「军师备注」**在生成开始时冻结一次**原样交给引擎。
-     *
-     * 反例（会被这格打破的坏实现）：
-     * · 仍按 `proactiveStream(requestId, draft, kbSnapshot, messages)` 四参调用（工单病根）
-     *   ⇒ 引擎收到的是形参默认值 false/""，两个断言当场红；
-     * · advisorNote 传了草稿（draftTextNow）或压根不读 ComposerStore ⇒ 第二断言红；
-     * · onlyThisRound 不从 roundStateStore.resolveOnlyThisRound 取、自己现编一颗常量 ⇒ 第一断言红。
+     * ：主动发把「提交时刻的草稿」原样交给引擎。收敛后契约＝proactiveStream 只有
+     * requestId+draft（范围判据与军师备注已随主动开场最小化移出这条链）。
      */
     @Test
-    fun generateProactiveHandsFrozenOnlyThisRoundAndNoteToEngine(): Unit = runBlocking {
+    fun generateProactiveHandsSubmittedDraftToEngine(): Unit = runBlocking {
         val vm = newViewModelWithKb()
         vm.refreshKnowledgeBases()
         delay(100)
 
-        vm.composer.accept(ComposerStore.Intent.SubmitNote("先安抚，别急着提加班"))
-        vm.toggleOnlyThisRound() // 长期开关 → true：与回复分支同一个真源
-
-        val capturedScope = CompletableDeferred<Boolean>()
-        val capturedNote = CompletableDeferred<String>()
+        val capturedDraft = CompletableDeferred<String>()
         val gate = CompletableDeferred<Unit>()
         every {
-            generationEngine.proactiveStream(any(), any(), any(), any(), any(), any())
+            generationEngine.proactiveStream(any(), any())
         } answers {
-            capturedScope.complete(arg(4))
-            capturedNote.complete(arg(5))
+            capturedDraft.complete(arg<String>(1))
             val requestId = arg<String>(0)
             flow {
                 emit(ProactiveStarted(requestId))
@@ -149,19 +136,13 @@ class ProactiveTest {
         vm.generateProactive("草稿")
         delay(200)
 
-        assertTrue("引擎必须收到冻结下来的本轮范围判据（开关此刻为 true）", capturedScope.await())
-        assertEquals(
-            "引擎必须原样收到 ComposerStore.noteTextNow 那一份备注正文",
-            "先安抚，别急着提加班", capturedNote.await()
-        )
+        assertEquals("引擎必须原样收到提交时刻的草稿正文", "草稿", capturedDraft.await())
 
-        // 生成在途：再拨开关、再提交备注——都不许回头影响已经发出去的那一次交接
-        // （判据在调用时刻已冻结；这两笔只影响**下一次**请求）。
+        // 生成在途：再拨开关、再提交备注——都不许回头影响已经发出去的那一次交接。
         vm.toggleOnlyThisRound()
         vm.composer.accept(ComposerStore.Intent.SubmitNote("第二句"))
         gate.complete(Unit)
         delay(200)
-        assertEquals("在途改备注不影响已冻结的交接", 1, 1) // 占位无断言：冻结值已在上面捕获
     }
 
     /**
@@ -179,7 +160,7 @@ class ProactiveTest {
         delay(100)
 
         every {
-            generationEngine.proactiveStream(any(), any(), any(), any(), any(), any())
+            generationEngine.proactiveStream(any(), any())
         } answers {
             val requestId = arg<String>(0)
             flow {
@@ -214,7 +195,7 @@ class ProactiveTest {
 
         val gate = CompletableDeferred<Unit>()
         every {
-            generationEngine.proactiveStream(any(), any(), any(), any(), any(), any())
+            generationEngine.proactiveStream(any(), any())
         } answers {
             val requestId = arg<String>(0)
             flow {

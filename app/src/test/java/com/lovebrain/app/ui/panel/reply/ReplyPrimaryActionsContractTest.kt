@@ -75,8 +75,8 @@ class ReplyPrimaryActionsContractTest {
     /**
      * 某一**档**的尺：`SemanticsProbe` 的两条边仍然真读 `boundsInRoot`，这里只是把尺换成那一档的数。
      *
-     * 下限本身没有被放宽——默认档那把尺（[probe]，48dp）仍在 `LbPrimaryButtonStateTest`、
-     * `UiMatrixFullSweepTest` 那些格子上生效；这一格说的是"面板这一排落在具名档上"。
+     * 下限本身没有被放宽——默认档那把尺（[probe]，48dp）仍在 `LbPrimaryButtonStateTest`
+     * 那些格子上生效；这一格说的是"面板这一排落在具名档上"。
      */
     private fun probeAt(tier: LbButtonHeightTier) =
         SemanticsProbe(density, tier.minHeightDp.toFloat())
@@ -231,7 +231,7 @@ class ReplyPrimaryActionsContractTest {
         )
     }
 
-    // ═════════════ 生成中"选态"统一（request2 §二第一条 / §四"生成动画"） ═════════════
+    // ═════════════ 生成中"选态"统一（二第一条 / 四"生成动画"） ═════════════
 
     /**
      * 只读**按钮状态**那一面的读数，把"选到 Loading"与"选回 Stop"分成两个值。

@@ -189,7 +189,7 @@ class SettingsPageSemanticsTest {
      * 回退成用 `LbTopBarLevel.Page`（返回撑回 48、整行 48）**会被下面那两句绝对值一起判红**：
      * · 短边下限从 `PANEL_HEADER_HOTZONE`（24）起——把返回盒缩到 24 以下红；
      * · 整行/返回盒不许被撑回旧那一条 48 厚顶栏——`≤ PANEL_HEADER_ROW`（30），48 的返回当场红。
-     * 这两句一头一尾，正是"不是把尺整体调松了事"的凭据（同本体 `PanelHeaderTouchTargetsTest` 的写法）。
+     * 这两句一头一尾，正是"不是把尺整体调松了事"的凭据。
      *
      * 滑杆为什么不是 48：界面合同把这一族的小件写成同一档——模式栏「外层 30dp / 内部字形 20dp」、
      * 供应商行内「28dp 盒 / 16dp 字形」、思考模式那颗是 MiniSwitch **36×20dp**。

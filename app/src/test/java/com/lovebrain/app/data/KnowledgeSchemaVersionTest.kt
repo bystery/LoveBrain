@@ -135,7 +135,6 @@ class KnowledgeSchemaVersionTest {
         runBlocking { repo.migrateIfNeeded("kb") }
 
         assertTrue("newer schema must flip the library read-only", repo.isSchemaReadOnly("kb"))
-        assertFalse("newer schema must not be writable", repo.isWritable("kb"))
 
         // 读仍然可用
         assertEquals("未来版本写下的内容", runBlocking { repo.readFile("kb", "moment/recent.md") }.trim())

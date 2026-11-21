@@ -4,7 +4,6 @@ import com.lovebrain.app.AppConfig
 import com.lovebrain.app.domain.port.AiGateway
 import com.lovebrain.app.domain.prompt.MemoryRefPolicy
 import com.lovebrain.app.model.ProviderRequestConfig
-import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.CounselingChunk
 import com.lovebrain.app.model.CounselingEnded
 import com.lovebrain.app.model.CounselingEvent
@@ -52,7 +51,7 @@ import kotlinx.coroutines.withTimeout
 /** 降级提示驻留时长（reset 前） */
 private const val DEGRADE_HINT_HOLD_MS = 1000L
 
-/** §11.3：主动发有效候选上限，超过按约定收敛 */
+/** 主动发有效候选上限，超过按约定收敛 */
 private const val MAX_PROACTIVE_OPTIONS = 10
 
 /** 宽松 JSON（流式提前渲染 response 对象用） */
@@ -119,7 +118,21 @@ object PartialJsonObjects {
  */
 class GenerationEngine(
     private val deepSeekRepo: AiGateway,
-    private val promptBuilder: PromptBuilder
+    private val promptBuilder: PromptBuilder,
+    /**
+     * 冠军引擎（T4 Kotlin 移植 W1）。可空：测试与旧图不传 = 不装配历史块。
+     * 非 OFF 时按**冻结输入** [GenerationInput.championMode] 分流（guide-6
+     * 引擎不再回读设置）：
+     * - LIVE_AUTO：请求前 [ChampionEngine.prepareLiveContext] 装配历史块（零模型调用），
+     *   经原生 PromptBuilder 可选参数进主请求；**不调 launchShadow、不额外调用模型**；
+     * - SHADOW：原链路照走，请求结束后 fire-and-forget 追加一次冠军生成，
+     *   只写 champion/shadow_log.jsonl（不 emit、不入 UI、不触发 TopicRecorder）；
+     * - **输出契约守卫（无条件）**：只要注入了本引擎，原始返回文本在
+     *   parseReplyResponse **之前**一律过 ContractGuard——与轮次、档位、onlyThisRound 全无关
+     *   （守卫修复的是 JSON 契约，必须在产品解析器之前跑）。未定/待确认事项块（UC）
+     *   已整段删除，不再参与装配。
+     */
+    private val championEngine: com.lovebrain.app.domain.champion.ChampionEngine? = null
 ) {
 
     // ═══════════ 回复生成（主生成） ═══════════
@@ -139,19 +152,25 @@ class GenerationEngine(
         // ── 准备阶段：读资产、组 prompt、按冻结 ticketId 取请求配置 ──
         val system: String
         val buildResult: PromptBuilder.PromptBuildResult
+        val liveContext: com.lovebrain.app.domain.champion.ChampionLiveContext?
         val providerConfig: ProviderRequestConfig?
         try {
             system = withContext(Dispatchers.IO) { promptBuilder.buildSystemPrompt() }
             val messages = input.toChatMessages()
             val userHint = input.replyDirective.text
             val knowledgeBase = input.kbContext?.toKnowledgeBase()
+            // LIVE_AUTO 冻结分流的确定性装配（零模型调用；失败回退原生）
+            liveContext = prepareLiveContextOrNull(input)
             buildResult = withContext(Dispatchers.IO) {
                 if (input.onlyThisRound) {
                     promptBuilder.buildReplyUserPromptOnlyThisRound(messages, userHint)
                 } else {
                     promptBuilder.buildReplyUserPromptWithRefs(
                         knowledgeBase, messages, userHint,
-                        input.replyDirective.aggressive, input.intentConfig, input.corrections
+                        input.intentConfig, input.corrections,
+                        historicalBlock = liveContext?.historyBlock.orEmpty(),
+                        // selector 口径 = committedTurnCount 原值（请求轮次口径只活在 liveContext 内）
+                        currentTurn = input.kbContext?.committedTurnCount
                     )
                 }
             }
@@ -215,6 +234,9 @@ class GenerationEngine(
             attemptsUsed++
             // 每个 attempt 一套独立的增量解析状态，防上一次失败 attempt 的半成品污染重试
             val responseScanner = IncrementalSingleObjectScanner("response")
+            // 正文同理：本 attempt 只认自己收到的字节。读超时是从 collectStream 里抛出来的，
+            // 那次赋值根本没发生——不清空的话，上一轮半成品会冒充本次 attempt 的正文（脏拼接）。
+            fullText = ""
 
             if (attemptsUsed > 1) {
                 val degradeMsg = when {
@@ -291,12 +313,102 @@ class GenerationEngine(
                 failure = caught
                 if (fullText.isBlank() && caught.isConfigProblem) break
             }
-            if (fullText.isNotBlank()) break
+            // 传输层断流/读超时：**即使已经收到半截正文**也要把尝试次数用完。
+            // 半截 JSON 交给 parser 必然失败，拿它直接收工等于把真实网络故障谎报成
+            // "解析失败"，还白扔剩下的重试预算（下一次 attempt 的缓冲已在循环开头清空）。
+            val transportBroken = failure?.let { isTransportFailure(it) } == true
+            if (transportBroken && attemptsUsed < AppConfig.GENERATE_MAX_ATTEMPTS) continue
+            // 非传输错误（或次数已用尽）：有正文就交给 parser 判，没有就继续沿用既有重试
+            if (!transportBroken && fullText.isNotBlank()) break
+        }
+
+        val lastFailure = failure
+        // 次数用尽仍停在传输错误上：这是网络/断流，不是"解析失败"。
+        // 半截正文不是可用结果（产品失败通道只承载一句话），如实报传输错误，长度只进日志。
+        if (lastFailure != null && isTransportFailure(lastFailure)) {
+            if (fullText.isNotBlank()) {
+                L.w("PERF transport failure after $attemptsUsed attempts, dropping ${fullText.length}-char partial")
+            }
+            emitFailed(requestId, lastFailure.kind)
+            return@flow
         }
 
         if (fullText.isBlank()) {
-            emitFailed(requestId, failure?.kind ?: ReplyFailureKind.Unknown(null))
+            emitFailed(requestId, lastFailure?.kind ?: ReplyFailureKind.Unknown(null))
             return@flow
+        }
+
+        // ── 冠军引擎收尾（判据全部来自冻结输入，不再回读 effectiveMode）──
+        // 旧 L316 的生成中途回读（effectiveMode）已删除——生成中途改模式/改设置不影响本轮。
+        // 输出契约守卫（**无条件**）：与轮次、分域策略、onlyThisRound 全部无关——只要注入了
+        // championEngine，原始返回文本在 parseReplyResponse 之前一律先过 ContractGuard
+        //（用户口径："main 中基础版本的 json 解析直接替换成契约守卫，和轮次完全无关"）。
+        // 旧 GUARD_SHORT 判据与 S2/S3 档位守卫随中途回读一并移除（mode() 对 SINGLE_STYLE/FULL
+        // 恒收敛 OFF，旧分支本就不可达；PORT_IDENTITY 登记如实保留）。
+        // LIVE_AUTO 不走 SHADOW（已是正式生产路径，不再有影子请求/额外模型调用）。
+        if (championEngine != null && fullText.isNotBlank()) {
+            val championContact = input.kbContext?.name ?: ""
+            // 守卫插在 parseReplyResponse 之前——修复的是原始返回文本的 JSON 契约
+            //（围栏/键名/槽位），必须先跑才能让 Parse 失败分支少吞正文完好的轮次；
+            // 原始文本此刻已被流式落盘/记账（usageTracker + PERF），满足「原文在守卫前已留痕」。
+            // 守卫异常 → getOrNull() = null → 保留原文进 parser（R2：守卫故障不拖垮回复）。
+            val guarded = runCatching {
+                championEngine!!.repairAndAudit(fullText, requestId, championContact)
+            }.getOrNull()
+            val repaired = guarded?.text
+            if (repaired != null && repaired != fullText) {
+                fullText = repaired
+                // UI 流式状态必须与最终文本一致——先 reset 既有流式内容，
+                // 再把修复全文经同一 reducer 重放：ReplyChunk 一次 + 单对象扫描器重扫出
+                // ReplySchemesArrived（复用 attempts 循环 L250-259 的既有范式，不另建 UI 状态源）。
+                // 守卫未修改原文时整个块不 emit（上面的 != 判据），不发多余 reset。
+                emit(ReplyChunkReset(requestId))
+                emit(ReplySchemesReset(requestId))
+                emit(ReplyChunk(requestId, repaired))
+                val repairedScanner = IncrementalSingleObjectScanner("response")
+                val objStr = repairedScanner.feed(repaired)
+                if (objStr != null) {
+                    val schemes = runCatching {
+                        jsonLenient.decodeFromString<com.lovebrain.app.model.ReplySchemes>(objStr).toSchemes()
+                    }.getOrDefault(emptyList())
+                    if (schemes.isNotEmpty()) emit(ReplySchemesArrived(requestId, schemes))
+                }
+            }
+        }
+        // S1 shadow：判据来源改为冻结快照（input.championMode；显式 OFF 短路），
+        // 不再回读设置。LIVE_AUTO 恒不进这里（只有 SHADOW 档走影子）；onlyThisRound 保留原语义：
+        // 用户明确选了「仅看本轮」时影子请求整块跳过（审计 S1-P0-2）。
+        // 审计 R2-1：真实消息入库不在这里——挂在 LoveBrainViewModel.nextRound 的
+        // commitConfirmedTurn（产品正式提交点），生成路径对未确认输入零持久痕迹。
+        if (input.championMode == com.lovebrain.app.domain.champion.ChampionMode.SHADOW.raw &&
+            !input.onlyThisRound
+        ) {
+            val championContact = input.kbContext?.name ?: ""
+            // 审计 R2-3（种子核查）：W1 偏离——种子没传。指定
+            // initial_kb 来源 = KB 画像快照（understand/*.md）。产品侧数据经
+            // KnowledgeRepository.readProfile 冻结进 KbContext.profile（本轮生成
+            // 同一快照），按规范要求的「平面标量 JSON」传给装配器；
+            // 产品无独立 persona 数据源，persona 缺省（该段非空才出现）。
+            val championSeed = input.kbContext?.profile?.takeIf { it.isNotBlank() }?.let { profileText ->
+                com.lovebrain.app.domain.champion.ChampionPromptAssembler.ChampionSeed(
+                    initialKb = kotlinx.serialization.json.buildJsonObject {
+                        put("understand_profile", kotlinx.serialization.json.JsonPrimitive(profileText))
+                    }
+                )
+            }
+            championEngine!!.launchShadow(
+                requestId = requestId,
+                contactId = championContact,
+                story = championContact,
+                dialogue = input.dialogue,
+                intent = input.intentConfig,
+                advisorNote = input.replyDirective.text,
+                originalReply = fullText,
+                timeoutMs = providerConfig?.generateTimeoutMs
+                    ?: com.lovebrain.app.AppConfig.GENERATE_TIMEOUT_MS,
+                providerConfig = providerConfig,
+                seed = championSeed ?: com.lovebrain.app.domain.champion.ChampionPromptAssembler.ChampionSeed()
+            )
         }
 
         val parsed = runCatching { deepSeekRepo.parseReplyResponse(fullText) }
@@ -316,12 +428,68 @@ class GenerationEngine(
         L.w("PERF t3 ★ result rendered (+${System.currentTimeMillis() - t0}ms)")
     }
 
+    /**
+     * LIVE_AUTO 本轮确定性装配入口——**只产出历史块**。
+     *
+     * 分支判据全部来自 [GenerationInput] 冻结字段（末段警示：引擎不读 SecurePrefs /
+     * ViewModel 状态）：
+     * 1. [GenerationInput.onlyThisRound] 第一判据——不调 prepareLiveContext、不读事件库、
+     *    不注入历史块（不偷读旧历史）；
+     * 2. 冻结 championMode!= "LIVE_AUTO"（显式 OFF / SHADOW）短路——OFF 全链回退原生路径
+     *    SHADOW 走收尾块自己的影子分支；
+     * 3. kbContext 缺失（无有效知识库身份）或 committedTurnCount == null（轮次缺失）→ null，
+     *    不猜轮次（不默认第 1 轮也不默认第 25 轮）；
+     * 4. championEngine 注入缺失 → null。
+     *
+     * 守卫不在这里判：输出契约守卫与轮次无关、与是否有历史块无关（见 replyStream 收尾块）。
+     * 未定/待确认事项块（UC）已整段删除，本方法不再产生任何 UC 分支。
+     *
+     * 调用本身零模型调用、不启动协程/SHADOW（prepareLiveContext 的职责边界）。
+     * 非取消异常 → 记日志得 null：辅助机制故障绝不拖垮产品回复（R5）；
+     * [kotlinx.coroutines.CancellationException] 原样上抛。
+     */
+    private suspend fun prepareLiveContextOrNull(
+        input: GenerationInput
+    ): com.lovebrain.app.domain.champion.ChampionLiveContext? {
+        if (input.onlyThisRound) return null
+        if (input.championMode != com.lovebrain.app.domain.champion.ChampionMode.LIVE_AUTO.raw) return null
+        val kb = input.kbContext ?: return null
+        val committedTurnCount = kb.committedTurnCount ?: return null
+        val engine = championEngine ?: return null
+        return try {
+            engine.prepareLiveContext(
+                contactId = kb.name,
+                story = kb.name,
+                // 请求轮次口径（D 守则 1）：currentTurn = committedTurnCount + 1，只活在局部/ChampionLiveContext
+                currentTurn = committedTurnCount + 1,
+                dialogue = input.dialogue
+            )
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            L.e("prepareLiveContext failed, falling back to native prompt path", e)
+            null
+        }
+    }
+
     private suspend fun kotlinx.coroutines.flow.FlowCollector<ReplyEvent>.emitFailed(
         requestId: String,
         failure: ReplyFailureKind
     ) {
         emit(ReplyCompleted(requestId, GenerateResult.Error(failure.userMessage)))
     }
+
+    /**
+     * 传输类失败（断流 / 读超时 / 连接中断）：这一类**重试有意义**，
+     * 且和"模型给了内容、只是契约不对"不同——半截正文不能当结果。
+     * 分类本身在 Provider 边界做完（[com.lovebrain.app.data.DeepSeekRepository]），
+     * 这里只按 typed kind 选控制流，不解析文案。
+     */
+    private fun isTransportFailure(failure: com.lovebrain.app.model.ProviderFailure): Boolean =
+        when (failure.kind) {
+            ReplyFailureKind.Network, ReplyFailureKind.Timeout -> true
+            else -> false
+        }
 
     // ═══════════ 谈心模式 ═══════════
 
@@ -411,31 +579,10 @@ class GenerationEngine(
      *
      * 结束事件排在最后一批 options **之后**，而 [com.lovebrain.app.feature.proactive.ProactiveStore]
      * 收到它时一个字都不写——所以生成完那几条开场一直留在屏幕上可复制（）。
-     *
-     * ⚠ **[onlyThisRound]：「仅看本轮」这条开关判据（此前主动发整条链路读不到它）**
-     * 主动发过去**无条件**吃 KB 画像与近期历史，于是"仅看本轮"总开关画在公共输入区、
-     * 主动发却悄悄继续用旧记忆——那是产品级假开关。现在的判据与回复分支同语义、
-     * 同一个真源（这颗布尔由调用方按 `RoundStateStore` 的开关 ∨ 这一次点名只读本轮算出来，
-     * 沿回复那条 [GenerationInput.onlyThisRound] 的算法，不在这里二次现读开关）：
-     * - `true` → 请求正文只有**当前对话 + 当前草稿/备注**（加通用规则、输出格式、
-     *   由本轮推断的场景与当前时间）；画像、阶段、历史聊天/近期对话、经验、旧事项、
-     *   表达偏好、持续意图**一条都不进**，因为 [PromptBuilder.buildProactiveUserPrompt]
-     *   在这一档**一次知识库读取都不做**。
-     * - `false` → 普通分支带全部相关记忆（画像 + 近期对话 + 表达偏好），并且**先拼本轮真实输入**
-     *   （备注 / 本轮场景 / 本轮真实对话），再拼相关记忆。
-     *
-     * [advisorNote] 是本轮军师备注（`ReplyDirective` 那一份）。原始第 18 条之前，普通分支只读画像/近期
-     * 对话、从不引用 [messages] 与 [advisorNote]——用户补了背景但主动发看不见；现在两档都把它们拼进请求正文，
-     * 表达偏好也从 `understand/style.md` 真接了来源（不再是资产里写了却没接入的假声明）。
      */
     fun proactiveStream(
         requestId: String,
-        draft: String,
-        knowledgeBase: KnowledgeBase?,
-        messages: List<ChatMessage>,
-        onlyThisRound: Boolean = false,
-        advisorNote: String = "",
-        intentConfig: com.lovebrain.app.model.IntentConfig = com.lovebrain.app.model.IntentConfig()
+        draft: String
     ): Flow<ProactiveEvent> = flow {
         emit(ProactiveStarted(requestId))
         val providerConfig = deepSeekRepo.snapshotProviderConfig()
@@ -445,11 +592,8 @@ class GenerationEngine(
             return@flow
         }
         val t0 = System.currentTimeMillis()
-        // 使用主动开场 prompt：开关关闭时含画像和近期对话，开启时只用本轮草稿/备注与当前对话
         val user = withContext(Dispatchers.IO) {
-            promptBuilder.buildProactiveUserPrompt(
-                draft, knowledgeBase, messages, onlyThisRound, advisorNote, intentConfig
-            )
+            promptBuilder.buildProactiveUserPrompt(draft)
         }
         val system = withContext(Dispatchers.IO) { promptBuilder.buildProactiveSystemPrompt() }
 
@@ -501,7 +645,7 @@ class GenerationEngine(
             val finalOptions = parseProactiveOptions(fullText.ifBlank { buffer.toString() })
             if (finalOptions.isNotEmpty()) emit(ProactiveOptions(requestId, finalOptions))
         }
-        // §11.3：超过 10 条按约定收敛
+        // 超过 10 条按约定收敛
         if (seen.size > MAX_PROACTIVE_OPTIONS) {
             val capped = seen.take(MAX_PROACTIVE_OPTIONS)
             emit(ProactiveOptions(requestId, capped))

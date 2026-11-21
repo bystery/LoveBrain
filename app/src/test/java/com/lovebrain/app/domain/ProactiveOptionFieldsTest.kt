@@ -22,7 +22,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * 原始第 18 条 / §9.2：主动候选扩出 `timing`/`hold_back`/`prepare` 三颗字段后的**解析闭环**（机械可复现）。
+ * 原始第 18 条：主动候选扩出 `timing`/`hold_back`/`prepare` 三颗字段后的**解析闭环**（机械可复现）。
  *
  * 关键风险是 F7 点名的 `jsonLenient`（`GenerationEngine.kt:56-60`）`ignoreUnknownKeys=true`：
  * **只改资产不改 schema，新字段会被静默丢而不是报错**。这几格正反夹住：
@@ -71,7 +71,7 @@ class ProactiveOptionFieldsTest {
 
     private suspend fun deliver(script: List<StreamEvent>): List<ProactiveOption> {
         val events = engineWith(ScriptedGateway(script, config))
-            .proactiveStream("req", "", kb, emptyList()).toList()
+            .proactiveStream("req", "").toList()
         assertTrue("收尾必须是 Ended，否则剧本没跑完：" + events, events.last() is ProactiveEnded)
         return events.filterIsInstance<ProactiveOptions>().lastOrNull()?.options ?: emptyList()
     }

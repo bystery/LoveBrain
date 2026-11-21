@@ -15,11 +15,14 @@ import android.os.PersistableBundle
 import android.os.SystemClock
 import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistry
@@ -36,6 +39,7 @@ import com.lovebrain.app.ui.common.rememberOverlayTextToolbar
 import com.lovebrain.app.ui.panel.LoveBrainPanelScreen
 import com.lovebrain.app.util.L
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -46,10 +50,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.android.inject
 
 /**
- * 捕获洪峰去重的那一条判据（§15.1「不能改错层」）。
+ * 捕获洪峰去重的那一条判据（「不能改错层」）。
  *
  * 抽成纯函数只有一个理由：这一格的边界（300ms、同一文本、闭区间）此前只能靠真机长按两次去猜，
  * 现在 JVM 单测能量到（`test/.../data/EventBusCaptureTest.kt`）。判据本身一个字没变：
@@ -58,8 +63,8 @@ import org.koin.android.ext.android.inject
  * 三条容易被拿错的口径写在这里，免得下一手把它当成别的东西：
  * - 不同文本**永远**放行——这条规则不是"所有消息的统一冷却"，谁把它写成冷却窗就是改错层；
  * - 窗口宽度只有 [AppConfig.BURST_DEDUP_WINDOW_MS] 一颗（本轮 1500→300）；
- * - 长按与菜单的**事件配对**在 `CopyCaptureService`（寿命那颗是
- *   [AppConfig.PENDING_MAX_AGE_MS]），不在这一格，不跟着收敛。
+ * - 长按与菜单的**事件配对**在 `CopyCaptureService`（寿命由它自家的
+ *   [CopyCaptureService.MENU_PENDING_MAX_AGE_MS] 管），不在这一格，不跟着收敛。
  */
 internal object ClipBurstDedup {
 
@@ -138,7 +143,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             private set
 
         /**
-         * **真实停止动作的计数锚点**（M05/M06「三个入口必须走到同一颗停止动作」的可证读数）。
+         * **真实停止动作的计数锚点**（「三个入口必须走到同一颗停止动作」的可证读数）。
          *
          * 全仓唯一的加笔者是下面 [setWindowState] 里「第一次落到 [WindowState.STOPPED]」那一次迁移，
          * 而生产里只有 [onDestroy] 会那么落（这一条钉在
@@ -192,8 +197,29 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     }
 
     // ═══════════ Koin 注入 ═══════════
-    private val viewModel: LoveBrainViewModel by inject()
     private val securePrefs: SecurePrefs by inject()
+
+    /**
+     * LoveBrainViewModel 的唯一来源：经本服务的 [store] 创建，工厂仍用 Koin 那一格（构造参数不变）。
+     *
+     * WHY：服务不是 Activity，Koin 裸 `inject()` 造出来的 VM 没有任何 ViewModelStore 持有者，
+     * 关浮窗时没人 clear —— 旧 VM 的 EAGER stateIn 流与 costEvents 收集器留在 viewModelScope
+     * 里继续跑，重复/倒退地回写累计花费，且每开关一次多留一份。
+     */
+    private val viewModelFactory = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            this@FloatingService.getKoin().get<LoveBrainViewModel>(LoveBrainViewModel::class) as T
+    }
+
+    /**
+     * [disposeRuntime] 之后置空：clear 过的 VM 不许再被晚到回调触碰，
+     * 也不许在这里悄悄重建一个无主实例（那正是本次消掉的泄漏形状）。
+     */
+    private var viewModelInstance: LoveBrainViewModel? = null
+
+    private val viewModel: LoveBrainViewModel
+        get() = checkNotNull(viewModelInstance) { "LoveBrainViewModel touched after ViewModelStore.clear()" }
 
     // ═══════════ Lifecycle / ViewModelStore / SavedState ═══════════
 
@@ -212,6 +238,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
      * 只有这里可以 launch；拆出去的窗口与焦点类一律不持有 scope / Job。
      */
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
+    /** 一次性闸：停止入口与 onDestroy 可能都走到 teardown，第二遍不许再 clear 或碰 VM */
+    private val runtimeDisposed = AtomicBoolean(false)
 
     private lateinit var host: OverlayWindowHost
     private lateinit var bubble: OverlayBubbleWindow
@@ -279,6 +308,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         savedStateController.performRestore(null)
         lifecycleRegistry.currentState = Lifecycle.State.CREATED
 
+        // 先挂进本服务的 store，再交给任何窗口回调（面板/球读档位与浓度的 lambda 都指向它）
+        viewModelInstance = ViewModelProvider(store, viewModelFactory)[LoveBrainViewModel::class.java]
+
         host = OverlayWindowHost(this, this)
 
         // 面板尺寸持久化：恢复上次用户调整的面板大小（调研：NN/G 10 Heuristics #3 User Control and Freedom）
@@ -295,7 +327,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
                 securePrefs.panelHeight = h
             },
             content = { PanelContent() },
-            // 面板贴哪一边是拿**当前档位的球心**算的（§1：档位一变，球半径就变，贴边结论跟着变）
+            // 面板贴哪一边是拿**当前档位的球心**算的（档位一变，球半径就变，贴边结论跟着变）
             bubbleSizeDp = { viewModel.bubbleSizeDp }
         )
         bubble = OverlayBubbleWindow(
@@ -309,7 +341,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             // 球每次被摸一下都要重启闲置计时；计时器本身留在这里（唯一那本账）
             onUserInteraction = { resetIdleTimer() },
             // 档位与浓度这两颗读数由 Service 喂：本类不认识存储类，也不自己发明第二份真值。
-            // 档位＝`BubbleSizeTier` 那一把尺（窗口宽高、球径、角标、吸边都从它推，§1）；
+            // 档位＝`BubbleSizeTier` 那一把尺（窗口宽高、球径、角标、吸边都从它推）；
             // 浓度＝与面板背景**同一个百分比、同一颗换算函数**（`effectiveAlpha`，闲置那一档由
             // [resetIdleTimer] 那条链上的 dimmed 决定，这里交的是静止态）。
             bubbleSizeDp = { viewModel.bubbleSizeDp },
@@ -359,11 +391,11 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     }
 
     /**
-     * 设置页改完**悬浮图标档位 / 背景浓度**之后的重读口（指导书 2026-10-10 §1：
+     * 设置页改完**悬浮图标档位 / 背景浓度**之后的重读口（档位规格：
      * 「大小更改后可以立即点击、拖动、吸边」——不立刻重读就等于换档后要重启服务才生效）。
      *
      * 它只把已有的两份读数再取一次：球那一侧按新档位重设窗口宽高并校正位置（宽高与球径、角标、
-     * 吸边、点击区同一把尺推出来，§1 禁的是只对 Compose 缩放而留着旧窗口点击区）；面板那侧
+     * 吸边、点击区同一把尺推出来，禁的是只对 Compose 缩放而留着旧窗口点击区）；面板那侧
      * 跟着重贴一次边（贴边算的是**球心**，档位变了结论就变）。
      * 这里**不**新造状态、不写盘、不碰 `WindowState`：在不在跑仍由那唯一一颗状态说了算。
      */
@@ -380,14 +412,31 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         panel.cancelExitAnimation()
         bubble.remove()
         panel.destroy()
-        viewModel.dispose()      // 显式取消 VM 生成协程，防泄漏
-        scope.cancel()
+        disposeRuntime()
         lifecycleRegistry.currentState = Lifecycle.State.CREATED
         lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
-        store.clear()
         // 销毁时确保前台状态结束
         stopForeground(STOP_FOREGROUND_REMOVE)
         super.onDestroy()
+    }
+
+    /**
+     * VM 与 store 的唯一 teardown 落点：停止入口与 onDestroy 谁先到都走这里，重复调用直接返回。
+     *
+     * 顺序是判据，不能换：先停服务这一侧的监听与收集（[scope] 里挂着 EventBus 两条 collect
+     * 与闲置计时），再做 VM 的显式收尾（冲刷草稿 + 关前台任务协调器），最后才 clear。
+     * clear 会取消 viewModelScope，此后这个 VM 一个字都不许再碰。
+     */
+    internal fun disposeRuntime() {
+        if (!runtimeDisposed.compareAndSet(false, true)) return
+        scope.cancel()
+        try {
+            viewModelInstance?.dispose()
+        } finally {
+            // 即使 VM 收尾抛了，store 也必须清：漏一次 clear 就是又一个无主 VM 常驻
+            store.clear()
+            viewModelInstance = null
+        }
     }
 
     // ═══════════ 悬浮球：装配层只剩"挂上 / 摘掉"两个动作 ═══════════
@@ -409,7 +458,7 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
      *
      * 只拦 [ClipBurstDedup] 那一条：**≤300ms 内的同一文本**（同一次手势的系统连发）。
      * 不同文本一律放行，间隔更久的重捕也一律入库——这里没有"所有消息的统一冷却"。
-     * 判据本体是纯函数，边界钉在单元测试里（§15.1）。
+     * 判据本体是纯函数，边界钉在单元测试里。
      */
     private fun addClipIfNew(text: String?, role: ChatMessage.Role = viewModel.composer.currentRole.value): Boolean {
         if (text.isNullOrEmpty()) return false
@@ -435,8 +484,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         // 阻断D修复：幂等 guard——已经临时隐藏时不重复覆盖 preHiddenState
         if (windowState == WindowState.TEMP_HIDDEN) return
 
-        // 记录隐藏前展示形态
-        preHiddenState = if (panel.isShowing) WindowState.VISIBLE_PANEL else WindowState.VISIBLE_BUBBLE
+        // 记录隐藏前展示形态：认"屏幕上还看得见"——淡出动画期间 isShowing 已置 false
+        // 但面板仍在屏上，用它会把面板误记成球，恢复时只亮球。
+        preHiddenState = if (panel.isOnScreen) WindowState.VISIBLE_PANEL else WindowState.VISIBLE_BUBBLE
 
         // 释放输入焦点、关闭键盘
         panel.releaseInput("temp_hide")
@@ -505,7 +555,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
         if (!panel.present()) return
         bubble.hideForPanel()
 
-        scope.launch(Dispatchers.IO) { viewModel.refreshKnowledgeBases() }
+        // 先取引用再交给 IO：teardown 会把 getter 的口关掉，晚到的协程不该撞上 use-after-clear
+        val vm = viewModel
+        scope.launch(Dispatchers.IO) { vm.refreshKnowledgeBases() }
         //  死锁修复：composition 跨面板隐藏/显示存活，LaunchedEffect(Unit) 只执行一次；
         // showPanel 每次开面板必经，在此强制重读工单三态（配置后 isProviderReady 即时生效）
         viewModel.refreshTicketState()
@@ -520,6 +572,9 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             if (windowState != WindowState.TEMP_HIDDEN) {
                 bubble.makeVisible()
                 setWindowState(WindowState.VISIBLE_BUBBLE)
+                // 收起后重开闲置计时：面板开着时那颗计时早已到点（onIdleElapsed 在面板期间不降档），
+                // 不重置的话球亮回来后就再也不会半透明——闲置降透明"停摆"。
+                resetIdleTimer()
                 // 读屏播报——气泡重新可见后告知面板已关闭（固定文案）
                 bubble.announcePanelClosed()
             }
@@ -544,11 +599,21 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
     @Composable
     private fun PanelContent() {
         val overlayToolbar = rememberOverlayTextToolbar()
+        // H2 配套：把"菜单开没开"告诉窗口层——ACTION_OUTSIDE 判定在菜单/选区手柄
+        // （都是面板 token 的子窗口）显示期间不得释放输入，探针是那一判定的唯一事实源。
+        DisposableEffect(overlayToolbar) {
+            panel.registerTextToolbarShowingProbe { overlayToolbar.isShowing }
+            panel.registerTextToolbarRectProbe { overlayToolbar.menuRect }
+            onDispose {
+                panel.registerTextToolbarShowingProbe(null)
+                panel.registerTextToolbarRectProbe(null)
+            }
+        }
         OverlayTextToolbarHost(toolbar = overlayToolbar) {
             LoveBrainPanelScreen(
                 viewModel = viewModel,
-                onInputFocusChange = { inputId, focused ->
-                    panel.onInputFocusChanged(inputId, focused)
+                onInputFocusChange = { instanceKey, inputId, focused ->
+                    panel.onInputFocusChanged(instanceKey, inputId, focused)
                 },
                 onInputIntent = { inputId ->
                     panel.onInputIntent(inputId)
@@ -591,11 +656,16 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
      * ⚠ 真机放行与否本轮**无设备可验**，已登记"未验证-需真机"。
      */
     private fun openAppMainPage() {
-        runCatching {
+        val launched = runCatching {
             startActivity(
                 Intent(this, SetupActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             )
+        }.isSuccess
+        // 后台拉起被系统拒绝时不能静默：用户点了「去设置」却毫无反应等于入口失效
+        if (!launched) {
+            L.w("openAppMainPage: startActivity failed")
+            Toast.makeText(this, "打开设置页失败，请从桌面进入应用", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -633,9 +703,14 @@ class FloatingService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedSta
             extras.putBoolean("android.content.extra.IS_SENSITIVE", true)
         }
         clip.description.extras = extras
-        cm.setPrimaryClip(clip)
-        // 复制成功可见反馈（固定文案，不含用户内容）
-        Toast.makeText(this, "已复制", Toast.LENGTH_SHORT).show()
+        // 只有真正写进剪贴板才弹「已复制」：失败必须给出可见反馈，不许假报成功
+        val written = runCatching { cm.setPrimaryClip(clip) }.isSuccess
+        if (written) {
+            Toast.makeText(this, "已复制", Toast.LENGTH_SHORT).show()
+        } else {
+            L.w("copyToClipboard: setPrimaryClip failed")
+            Toast.makeText(this, "复制失败，请重试", Toast.LENGTH_SHORT).show()
+        }
         //  修复：不再写 recentClips——复制的是军师回复，不是捕获的消息，不应影响捕获去重
     }
 

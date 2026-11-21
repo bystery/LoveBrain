@@ -115,8 +115,10 @@ internal fun SettingsKbSwitcherEntry(
     val shownName = knowledgeBases.firstOrNull { it.name == activeKbName }
         ?.let { it.displayName.ifBlank { it.name } }
         ?: activeKbName
-    val others = knowledgeBases.filterNot { it.name == activeKbName }
-    if (shownName == null && others.isEmpty()) return
+    // 目录空 + 没有当前库时**整行也留着**：这一行是"当前知识库"的唯一读数，抽掉它用户
+    // 会以为设置页坏了；空态用同一句话说明还没有库（这就是扫描到的事实）。
+    // 早退还会把下面那颗展开触发一起抽走，于是"看不到库"连点开确认的机会都没有。
+    val emptyLabel = stringResource(R.string.kb_empty_message)
     // 展开永远可用——**哪怕目录里只有当前这一本**也要能点开，让用户亲眼看到"扫描就剩这一本"。
     // 上一版在这里挂过一道 `canOpen = others.isNotEmpty()` 的门：只有一本时藏箭头、禁用整行，
     // 结果真机目录一旦只剩一本，这一格就成了一颗点不动、无箭头的死标签（2026-10-15 真机报，
@@ -148,7 +150,7 @@ internal fun SettingsKbSwitcherEntry(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = shownName.orEmpty(),
+                    text = shownName ?: emptyLabel,
                     style = AppTypography.labelMedium,
                     color = TextSecondary,
                     // 名字靠右（与同一组里别行的选择器同一侧），过长就省略号——想去看不属于这一格的

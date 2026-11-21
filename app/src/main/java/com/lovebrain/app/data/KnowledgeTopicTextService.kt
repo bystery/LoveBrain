@@ -14,12 +14,12 @@ internal interface TopicTextStorage {
     /** 过 canonical 守门的读：越界、非法、不存在都得到空串 */
     fun read(kbName: String, relativePath: String): String
 
-    /** 锁区内写入核心（调用方已持有 fileMutex）；只读 schema 拒绝在仓库那一侧 */
-    fun writeUnlocked(kbName: String, relativePath: String, content: String)
+    /** 锁区内写入核心（调用方已持有 fileMutex）；只读 schema 拒绝在仓库那一侧。false = 一个字节都没落 */
+    fun writeUnlocked(kbName: String, relativePath: String, content: String): Boolean
 }
 
 /**
- * 第5节第3条 后续拆出的话题文本轮：话题标签读写 + 计划事项解析 + 话题年龄。
+ * 第5节第3条 后续拆出的话题文本轮：话题标签读写 + 计划事项解析。
  *
  * 搬出来的理由是 `readPlanActive` 那 22 行解析逻辑（跨行注释块跟踪、分区判定、
  * 裸说明行防御）以前混在仓库里，只能连临时目录一起测；现在解析规则有一个名字，
@@ -41,7 +41,9 @@ internal class KnowledgeTopicTextService(private val storage: TopicTextStorage) 
             return
         }
         val time = com.lovebrain.app.util.TimeFmt.now()
-        storage.writeUnlocked(kbName, TOPIC_FILE, KbTextOps.topicLine(time, topicLabel))
+        if (!storage.writeUnlocked(kbName, TOPIC_FILE, KbTextOps.topicLine(time, topicLabel))) {
+            storage.note("setCurrentTopic failed: write refused or failed ($TOPIC_FILE)")
+        }
     }
 
     /** 读取 plan.md「## 进行中」分区的事项行（注入 prompt；已结束不注入） */
@@ -67,15 +69,6 @@ internal class KnowledgeTopicTextService(private val storage: TopicTextStorage) 
             }
         }
         return sb.toString().trim()
-    }
-
-    /** 获取当前话题的年龄（小时），用于时间衰减判断 */
-    fun topicAgeHours(kbName: String): Int {
-        val content = storage.read(kbName, TOPIC_FILE)
-        val match = Regex("\\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})]").find(content) ?: return 99
-        val updated = com.lovebrain.app.util.TimeFmt.parse(match.groupValues[1])
-        if (updated <= 0) return 99
-        return ((System.currentTimeMillis() - updated) / 3600_000).toInt()
     }
 
     companion object {

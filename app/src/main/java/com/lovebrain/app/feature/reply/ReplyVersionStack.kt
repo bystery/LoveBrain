@@ -42,13 +42,16 @@ sealed interface RollbackOutcome<out Ctx, out Res> {
 /**
  * 回复的版本栈（复核 第5节第2条 第 6 步：从 ViewModel 里搬出来的第三块**行为**）。
  *
- * 它管四条判据，四条原来都摊在 ViewModel 里：
+ * 它管五条判据，五条原来都摊在 ViewModel 里：
  * 1. **单向回退**（one-way undo）：`[v1,v2,v3]` 回退 → 删掉 v3、恢复 v2，栈变 `[v1,v2]`；
  *    之后基于 v2 生成 v4 → `[v1,v2,v4]`；再回退恢复 v2。**被丢弃的 v3 永不复活**——
  *    这条最早是用"再回退拿到的版本 id 不等于 v3"来证的（`GenerationRollbackTest`）。
  * 2. **按知识库分栈**：A 的历史高度不能给 B 用，回退也只删 A 那条；
  * 3. **KB 边界**：当前结果的上下文不属于激活库时一律拒绝（用户已经切到 B，就不许操作 A 的版本栈）；
- * 4. **上限**：session 内最多留 [capacity] 条，超了挤掉最旧的（防止长 session 无限增长）。
+ * 4. **上限**：session 内最多留 [capacity] 条，超了挤掉最旧的（防止长 session 无限增长）；
+ * 5. **配对基准是"当前实际显示/选中的版本"**（[currentVersionId]），不是栈顶；
+ *    失败轮（[markRoundFailed]）没有快照，不参与配对，回退一律拒绝——
+ *    否则 v1、v2 成功后 v3 失败再回退，删掉的是用户眼前的 v2。
  *
  * 与搬之前一致的两点，写在这里免得被"顺手优化"：
  * · 这是**内存态**，杀进程即清——不声称跨重启的完整版本历史；
@@ -62,6 +65,15 @@ class ReplyVersionStack<Ctx, Res>(
 
     private val _snapshots = MutableStateFlow<List<VersionSnapshot<Ctx, Res>>>(emptyList())
     private val _currentVersionId = MutableStateFlow<GenerationVersionId?>(null)
+
+    /**
+     * 最近一轮**没有产出快照**（生成失败）：屏幕上此刻不是任何一条记录在案的版本。
+     *
+     * 失败轮不参与配对——它没有快照可丢，硬拿栈顶当"当前版本"就会把用户
+     * 刚看到的最近一条成功版本删掉。下一次成功（[record] / [advanceVersionOnly]）
+     * 或 [clear] 会把它复位。
+     */
+    private var currentRoundFailed = false
 
     /** 只读视图：UI 与测试都从这里看，写只有下面几个方法 */
     val snapshots: StateFlow<List<VersionSnapshot<Ctx, Res>>> = _snapshots.asStateFlow()
@@ -90,6 +102,7 @@ class ReplyVersionStack<Ctx, Res>(
         kbName: String?
     ) {
         _currentVersionId.value = versionId
+        currentRoundFailed = false
         val snapshot = VersionSnapshot(
             versionId = versionId,
             result = result,
@@ -103,9 +116,21 @@ class ReplyVersionStack<Ctx, Res>(
     /** 没有本轮上下文的一次成功：只前进版本身份，**不写历史**（点踩/发送绑的是版本 id） */
     fun advanceVersionOnly(versionId: GenerationVersionId) {
         _currentVersionId.value = versionId
+        currentRoundFailed = false
     }
 
-    /** 能不能回退：KB 边界一致 + 这一块库在当前栈里至少两条 */
+    /**
+     * 记一次**没有快照**的失败轮：屏幕上换成了一条失败，它不属于任何版本。
+     *
+     * 失败轮不参与配对——此刻回退没有"当前版本"可丢，硬拿栈顶当当前版本
+     * 会把用户最近看到的成功版本一并删掉（v1、v2 成功后 v3 失败再回退，
+     * v2 就永久丢失了）。失败之后回退一律拒绝，栈一字未动。
+     */
+    fun markRoundFailed() {
+        currentRoundFailed = true
+    }
+
+    /** 能不能回退：KB 边界一致 + 这一块库至少有两条 + 最近一轮不是失败轮（失败轮没有可丢的当前版本） */
     fun canRollback(activeKbName: String?, contextKbName: String?): Boolean =
         selectPair(activeKbName, contextKbName) != null
 
@@ -127,6 +152,7 @@ class ReplyVersionStack<Ctx, Res>(
     fun clear() {
         _snapshots.value = emptyList()
         _currentVersionId.value = null
+        currentRoundFailed = false
     }
 
     private fun selectPair(
@@ -135,9 +161,18 @@ class ReplyVersionStack<Ctx, Res>(
     ): Pair<VersionSnapshot<Ctx, Res>, VersionSnapshot<Ctx, Res>>? {
         // KB 边界：上下文的库与激活库不一致就什么都不做（含上下文为空的情况）
         if (contextKbName == null || contextKbName != activeKbName) return null
+        // 失败轮不参与配对：屏幕上那条不是版本，没有可丢的"当前版本"，
+        // 拿栈顶顶替会把最近一条成功版本删掉
+        if (currentRoundFailed) return null
         val kbHistory = _snapshots.value.filter { it.kbName == activeKbName }
-        if (kbHistory.size < 2) return null
-        return kbHistory.last() to kbHistory[kbHistory.size - 2]
+        // 以**当前实际显示/选中的版本**为基准配对，而不是假设栈顶就是当前版本：
+        // 两者不一致时（例如当前版本由 advanceVersionOnly 前进、没有快照），
+        // 拿栈顶配对会删错人。找不到锚点才退回栈顶（与旧行为一致的兜底）。
+        val anchor = _currentVersionId.value
+        val anchorIndex = if (anchor == null) -1 else kbHistory.indexOfLast { it.versionId == anchor }
+        val currentIndex = if (anchorIndex >= 0) anchorIndex else kbHistory.lastIndex
+        if (currentIndex < 1) return null
+        return kbHistory[currentIndex] to kbHistory[currentIndex - 1]
     }
 
     companion object {

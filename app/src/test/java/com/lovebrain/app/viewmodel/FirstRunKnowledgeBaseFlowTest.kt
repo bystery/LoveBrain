@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
@@ -37,7 +36,7 @@ import java.io.File
 import java.nio.file.Files
 
 /**
- * **跨两条调用路径的首次建库回归**（§4 活台账 M01/M02，本轮唯一 P0）。
+ * **跨两条调用路径的首次建库回归**（历史背景 M01/M02，本轮唯一 P0）。
  *
  * 被测的不是某个函数，而是那一条用户流程：
  * `LoveBrainViewModel.init` 里那一句 `knowledgeRepo.ensureInitialKnowledgeBase()`（路径一，
@@ -60,7 +59,7 @@ import java.nio.file.Files
  * ⚠ 时间一律真实：本类不用虚拟时间调度器当同步点（真磁盘那几跳在别的线程上，虚拟时间会抢在它们
  * 前面收场，把没跑完的流程读成跑完了）。Main 用 `UnconfinedTestDispatcher`（就地执行，不需要泵），
  * 同步点是"先挂上事件订阅者、再用真实超时等这一次流程交回结果"。等不到就是红——
- * 「没结果」与「结果为成功」在 §12.3 那两句里是两格，不许混。
+ * 「没结果」与「结果为成功」在那两句里是两格，不许混。
  *
  * 每格头注写的是**喂成什么坏样子这一格会红**（静态变异自证；本轮未跑构建，待主线程编译）。
  */
@@ -102,7 +101,6 @@ class FirstRunKnowledgeBaseFlowTest {
         appScope.cancel()
         root.deleteRecursively()
         cacheRoot.deleteRecursively()
-        Dispatchers.resetMain()
     }
 
     // ═══════════ 夹具 ═══════════
@@ -401,7 +399,7 @@ class FirstRunKnowledgeBaseFlowTest {
      * （连 kb.json 的 updatedAt 都不许漂），并且根下不许多出任何目录。
      * 坏样子：
      * - 顺序没改（先建目录再发现没内容可写）→ `kbDirs()` 多一座、事件也不是失败收场；
-     * - 失败被咽成"降级建库成功"→ 事件那条红（§12.3「失败显示失败」）；
+     * - 失败被咽成"降级建库成功"→ 事件那条红（「失败显示失败」）；
      * - 反过来为了"清理重复"去删那座旧库 → 指纹与"还在"两条红。
      */
     @Test
@@ -561,7 +559,7 @@ class FirstRunKnowledgeBaseFlowTest {
     }
 
     /**
-     * 与⑥同一条需求里的另一判据：**「可以复用」不看目录名**（§4 明写"不以目录叫 default 作为唯一依据"）。
+     * 与⑥同一条需求里的另一判据：**「可以复用」不看目录名**（明写"不以目录叫 default 作为唯一依据"）。
      *
      * 这里把首次 seed 那份**真空壳**落在一个叫 `legacy_shell` 的目录名下（旧版本或导入留下的形状：
      * 用真 seed 再改目录名与 kb.json 的 name，保证形状与生产一致）。
@@ -605,12 +603,13 @@ class FirstRunKnowledgeBaseFlowTest {
     ) : KnowledgeBaseCatalogPort by delegate {
         private var hung = false
 
-        override suspend fun writeFile(kbName: String, relativePath: String, content: String) {
+        override suspend fun writeFile(kbName: String, relativePath: String, content: String): Boolean {
             delegate.writeFile(kbName, relativePath, content)
-            if (hung) return
+            if (hung) return true
             hung = true
             started.complete(Unit)
             gate.await()
+            return true
         }
     }
 }

@@ -23,7 +23,7 @@ internal fun bubbleWindowFlags(): Int =
         WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
 
 /**
- * 窗口宽高与 Compose 画的那颗球**必须是同一颗数**（指导书 2026-10-10 §1：
+ * 窗口宽高与 Compose 画的那颗球**必须是同一颗数**（
  * 「不能只对 Compose 使用 scale()，而保持系统窗口原来的 56dp 点击区域」）。
  * 系统窗口的边长只有这一个算法：档位 dp → 像素，横竖同一条。
  */

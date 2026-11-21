@@ -21,7 +21,7 @@ import java.io.File
  * 这里只能证明"某一档的数写在源码里、而且真的挂在那条 Modifier 链上"。
  * PanelHeader 外面套 48dp 的 Box、真正 clickable 仍挂在 20dp 的内层标签上时，
  * 本文件那两格头部判据照样会绿。判"点得到点不到"的权威断言在语义树侧
- * （`ui/panel/PanelHeaderSemanticsTest`、androidTest 的 `PanelHeaderTouchTargetsTest`、
+ * （androidTest 的 `PanelHeaderTouchTargetsTest`、
  * `LbPrimaryButtonStateTest`、`ReplyPrimaryActionsContractTest`：它们读组合后每个可点击节点的
  * boundsInRoot）。两条都要，但只有后者能证明用户行为。
  *
@@ -126,8 +126,8 @@ class ProductionUiContractTest {
      * 本轮合同（ 第3节第2条 尺寸表）明写 30/24/20，且它是**明写的例外**：
      * 全站那颗下限 [AppDimens.TOUCH_TARGET_MIN_DP] 一个字没改，页面主体、列表行、弹窗按钮照旧走它，
      * 所以这里同时钉反向那条——48 那一档不许回到这一行。
-     * 判"手指到底点不点得到"的权威断言在语义树侧（`ui/panel/PanelHeaderSemanticsTest`、
-     * androidTest 的 `PanelHeaderTouchTargetsTest`）；这一格只买"档位来源与数值"。
+     * 判"手指到底点不点得到"的权威断言在语义树侧（androidTest 的 `PanelHeaderTouchTargetsTest`）；
+     * 这一格只买"档位来源与数值"。
      */
     @Test
     fun `panel header keeps the 30dp row with a 24dp collapse box and a 20dp glyph`() {
@@ -160,7 +160,7 @@ class ProductionUiContractTest {
      * ②承载胶囊 + 高亮 + 三段的那一栏整段都不许有 clickable（点击所有者只有一层）；
      * ③视觉层那一截必须真的画着 20dp 那一档——否则②会因为"根本没有视觉层"而自动成立。
      * ⚠ 它仍然**测不到真实热区**（源码级）：树上那三段的边界由
-     * `ui/panel/PanelHeaderSemanticsTest` 与 androidTest 那边量 `boundsInRoot`。
+     * androidTest 那边量 `boundsInRoot`。
      *
      * 视觉层那一截**按结构认，不按注释文字认**。上一版在这里找的是 `// ── 视觉层` 那样的锚点，
      * 而本文件的 [codeOf] 先把注释剥光再交给判据 ⇒ 那种锚点**永远找不到**，
@@ -203,29 +203,35 @@ class ProductionUiContractTest {
     }
 
     /**
-     * 结果区下方那颗**「纠正记忆」文字入口**的热区：48 见方的外盒 + 里面的字按文字档画。
+     * 参考容器首行那颗 toggle 的热区：**数还在、链上真的挂着**，已删除的独立「修正记忆」
+     * 文字入口不许借任何名字复活。
      *
-     * 这一格原先叫 `result utility trigger hit box…`，而那颗 `…/⋯` 总工具菜单本轮已按合同删除
-     * （连同"记录实际发送"的独立入口）。`UTILITY_HITBOX_DP` 现在真正被读它的地方只剩这一处：
-     * 结果区下面那条「纠正记忆」。所以**改名 + 换档对象**，不删守卫——
-     * 文字入口的热区仍是全站下限那一档（本轮没给它开例外）。
+     * 这一格原先叫 `the memory correction text entry keeps a 48dp hit box…`，钉的是结果区下方
+     * 那颗独立的 `MemoryCorrectionEntry`（`heightIn + widthIn` 两轴垫 48 的外盒）。那条独立入口
+     * 已随 2026-11-21 信息减法整删，热区并进参考容器的紧凑首行：首行小字「本轮参考 N 条」
+     * 自己就是 toggle，行尾是常驻「纠正中心」动作。所以本格换成钉新契约的两件事：
+     * ①首行 toggle 的 Modifier 链上真的用 `heightIn(min = …)` 垫了那颗数——数不是只躺在
+     *   object 里（`ResultAreaOwnershipTest` 钉声明唯一性，这里钉"声明着却被没人挂"的假绿）；
+     * ②旧的独立入口 `MemoryCorrectionEntry` 与早先退场的 `ResultUtilityMenu` / `RecordSentFlow`
+     *   不许在结果区复活。
+     * "首行与「纠正中心」各自两轴真够 48"的权威断言在语义树侧（`ResultAreaTouchTargetsTest`
+     * 量 boundsInRoot），那两格已经钉了，本格不重复量尺寸。
      */
     @Test
-    fun `the memory correction text entry keeps a 48dp hit box around a text-sized label`() {
-        val code = codeOf(source("ui", "panel", "reply", "ResultArea.kt"))
-        val value = dimenValue("UTILITY_HITBOX_DP", code)
+    fun `the refs header keeps the 48dp hit box and the standalone correction entry stays gone`() {
+        val value = dimenValue("UTILITY_HITBOX_DP", codeOf(source("ui", "panel", "reply", "ResultArea.kt")))
         assertTrue("UTILITY_HITBOX_DP 必须解析到一个数（指回全局那颗也算），实到 $value", value != null)
-        assertTrue("文字入口的热区仍是全站下限 >=48dp，实到 $value", value!! >= 48)
-        // 牙：数不仅要写着，还要挂在那一条 Modifier 链上（两轴都要）
+        assertTrue("首行 toggle 的热区仍是全站下限 >=48dp，实到 $value", value!! >= 48)
+        val feed = codeOf(source("ui", "panel", "reply", "MemoryRefsFeed.kt"))
         assertTrue(
-            "纠正记忆那颗的外盒必须真的用 UTILITY_HITBOX_DP 垫两轴",
-            Regex("\\.heightIn\\(\\s*min = ResultDimens\\.UTILITY_HITBOX_DP\\.dp\\)").containsMatchIn(code) &&
-                Regex("\\.widthIn\\(\\s*min = ResultDimens\\.UTILITY_HITBOX_DP\\.dp\\)").containsMatchIn(code)
+            "参考容器首行 toggle 的外盒必须真的用 UTILITY_HITBOX_DP 垫（数躺在 object 里、链上不挂 = 假绿）",
+            Regex("\\.heightIn\\(\\s*min = ResultDimens\\.UTILITY_HITBOX_DP\\.dp\\)").containsMatchIn(feed)
         )
-        // 反向：那颗总工具菜单与"记录实际发送"的可见入口不许借这个名字复活
+        val resultArea = codeOf(source("ui", "panel", "reply", "ResultArea.kt"))
         assertTrue(
-            "ResultUtilityMenu / RecordSentFlow 不许回来（本轮合同删的正是它们）",
-            !Regex("ResultUtilityMenu|RecordSentFlow").containsMatchIn(code)
+            "独立「修正记忆」入口已并进参考容器，MemoryCorrectionEntry / ResultUtilityMenu / " +
+                "RecordSentFlow 不许在结果区复活（本轮合同删的正是它们）",
+            !Regex("MemoryCorrectionEntry|ResultUtilityMenu|RecordSentFlow").containsMatchIn(resultArea)
         )
     }
 

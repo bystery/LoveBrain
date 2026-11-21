@@ -11,7 +11,7 @@ import java.io.File
  *
  * ⚠ 这一格读的是**结构**，不是行为：它证明的是"这次搬家没被搬坏、也没有搬回原处"，
  * 证明不了"这一屏长得对"。后者一律在语义树那边判
- * （`ResultAreaTouchTargetsTest`、`MemoryCorrectionFlowTest`、`PanelHostSemanticsTest`）。
+ * （`ResultAreaTouchTargetsTest`、`MemoryCorrectionFlowTest`）。
  * 还值得写这一格的原因很具体：搬家最常见的坏法不是编译不过（那当场就红），
  * 而是几周后有人把菜单又内联回 ResultArea.kt，于是同一个变化理由重新住进两个文件，
  * 而语义树那几格照样全绿——它们判的是屏幕，不是文件归位。
@@ -152,11 +152,12 @@ class ResultAreaOwnershipTest {
             listOf("ResultArea.kt" to "UTILITY_HITBOX_DP = AppDimens.TOUCH_TARGET_MIN_DP"),
             declarations.toList()
         )
-        // 反向证人：读它的那一份还在读——现在读它的是结果区下方那条文字入口自己。
-        // 入口被删掉的话这颗数就成了没人读的定义，这一条会红，而不是留下一颗"没人用但照样绿"的下限。
+        // 反向证人：读它的那一份还在读——2026-11-21 信息减法后，读它的是参考容器首行那颗
+        // toggle（住 MemoryRefsFeed.kt）。没人读的话这颗数就成了没人用的定义，
+        // 这一条会红，而不是留下一颗"没人用但照样绿"的下限。
         assertTrue(
-            "ResultArea.kt 必须还在读 ResultDimens.UTILITY_HITBOX_DP（不读就说明那颗文字入口没了）",
-            stripComments(codeOf("ResultArea.kt")).contains("ResultDimens.UTILITY_HITBOX_DP")
+            "参考容器的首行热区必须还在读 ResultDimens.UTILITY_HITBOX_DP（不读就说明那颗下限没了主人）",
+            stripComments(codeOf("MemoryRefsFeed.kt")).contains("ResultDimens.UTILITY_HITBOX_DP")
         )
     }
 }

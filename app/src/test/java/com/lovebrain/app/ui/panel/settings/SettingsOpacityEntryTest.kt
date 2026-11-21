@@ -42,8 +42,8 @@ import org.robolectric.annotation.GraphicsMode
  * · **形状照原型**（`input[type=range]`：轨 4dp、球 15dp、整根最宽 125dp、无刻度点）——
  *   这一格量的是语义树读得到的那一半：整根宽度上限 125dp、它不占满整行，
  *   外加行根那颗 `settings-row-opacity` 仍走族里的行骨架（≥48）。
- *   轨厚与球径是**画出来的**，语义树里没有对应读数 ⇒ 那一半归截图基线
- *   `ui/visual/SettingsPageVisualBaselineTest`（席 F）；这里不拿"读不到就当过"糊弄过去；
+ *   轨厚与球径是**画出来的**，语义树里没有对应读数 ⇒ 那一半本机无设备、暂无截图基线闸
+ *   （原席 F 那颗基线测试已删）；这里不拿"读不到就当过"糊弄过去；
  * · **刻度吸附**：拖动连续、松手吸附到 [PanelBackdropOpacity.steps] 那一档，
  *   屏上读数与那一笔 commit 同一拍（`releasing between two ticks snaps and the readout matches the commit`）；
  * · **非法/越界回落**：宿主交来 180 / 12 / -40 / 62 这样的脏数，屏上不许出现越界或不在格上的读数。

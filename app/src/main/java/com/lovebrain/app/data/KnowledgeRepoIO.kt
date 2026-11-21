@@ -1,11 +1,9 @@
 package com.lovebrain.app.data
 
 import com.lovebrain.app.model.KnowledgeBase
+import com.lovebrain.app.util.TimeFmt
 import java.io.File
 import java.io.FileOutputStream
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 /**
  * 原子写入工具（从 [KnowledgeRepository] 拆出）。
@@ -147,6 +145,74 @@ internal fun KnowledgeRepository.rawAtomicWriteText(file: File, content: String)
     }
 }
 
+/**
+ * 启动恢复：收拾上一次进程在中途死掉时留下的 `.<name>.tmp` / `.<name>.bak`。
+ *
+ * 原子写的主路（NIO move）在崩溃时只会留下临时文件；**回退路**（target→bak、
+ * tmp→target 两次 rename）在中途死掉会把目标文件暂时留在 `.bak` 里——旧实现没有
+ * 任何启动恢复，于是那一次写入等于凭空消失，而调用方上一轮还以为写成了。
+ *
+ * 判据只有两条，都不猜内容：
+ * - `.bak`：目标不在 ⇒ 把备份 rename 回目标（旧内容恢复，至少不是丢文件）；
+ *   目标在 ⇒ **原样保留**（可能是用户自己的备份，删错一个文件的代价更高）。
+ * - `.tmp`：目标不在 ⇒ 把它 rename 成目标（临时文件是 fsync 之后才留的，内容完整）；
+ *   目标在 ⇒ 目标赢，删掉陈旧临时文件（绝不为了"更新的那份"去删一个可读的文件）。
+ *
+ * 不持有第二条写链：这里只用 rename/delete，不碰 [atomicWriteText]。
+ * 调用方必须已持有文件互斥锁（或处于启动期尚无并发写者的单线程路径）。
+ */
+internal fun KnowledgeRepository.recoverInterruptedWritesUnlocked() {
+    val root = knowledgeRoot
+    if (!root.isDirectory) return
+    var restored = 0
+    var dropped = 0
+    runCatching {
+        // `.backup/` 是备份副本目录（备份不走原子写的 tmp/bak 命名），跳过它省一遍全量遍历
+        root.walkTopDown()
+            .onEnter { it.name != ".backup" }
+            .filter { it.isFile }
+            .toList()
+            .forEach { stray ->
+                val name = stray.name
+                val suffix = when {
+                    name.startsWith(".") && name.endsWith(".bak") -> ".bak"
+                    name.startsWith(".") && name.endsWith(".tmp") -> ".tmp"
+                    else -> return@forEach
+                }
+                val targetName = name.removePrefix(".").removeSuffix(suffix)
+                if (targetName.isBlank() || targetName == name) return@forEach
+                val parent = stray.parentFile ?: return@forEach
+                val target = File(parent, targetName)
+                if (target.exists()) {
+                    if (suffix == ".tmp") {
+                        // tmp 是 fsync 之后才留下的临时文件，目标已在 ⇒ 陈旧残留，删掉即可
+                        if (stray.delete()) dropped++ else {
+                            com.lovebrain.app.util.L.w("stray write cleanup failed: ${stray.name}")
+                        }
+                    } else {
+                        // `.bak` 目标已在：不动它——它可能是用户自己命名的备份，
+                        // 删错一个文件的代价远高于多留一个隐藏文件
+                        com.lovebrain.app.util.L.w("stale .bak kept (target exists): ${stray.name}")
+                    }
+                } else if (stray.renameTo(target)) {
+                    restored++
+                    com.lovebrain.app.util.L.w(
+                        "recovered interrupted write: ${stray.parentFile?.name}/${stray.name} -> $targetName"
+                    )
+                } else {
+                    com.lovebrain.app.util.L.e(
+                        "interrupted write could not be recovered: ${stray.absolutePath}", null
+                    )
+                }
+            }
+    }.onFailure {
+        com.lovebrain.app.util.L.e("stray write recovery failed", it)
+    }
+    if (restored > 0 || dropped > 0) {
+        com.lovebrain.app.util.L.w("stray write recovery: restored=$restored dropped=$dropped")
+    }
+}
+
 // ═══════════ 写核与守门（从 KnowledgeRepository 拆出的无锁原语） ═══════════
 //
 // 这些是仓库内部「已持有 fileMutex」路径用的无锁原语与守门判定。
@@ -175,23 +241,32 @@ internal fun KnowledgeRepository.refusedByReadOnlySchema(kbName: String, op: Str
     return true
 }
 
-/** 锁区内写入核心：不抢锁。调用方必须已持有文件互斥锁（Mutex 非重入，锁内再抢=永久挂起） */
-internal fun KnowledgeRepository.writeFileUnlocked(kbName: String, relativePath: String, content: String) {
-    if (refusedByReadOnlySchema(kbName, "writeFile", relativePath)) return
-    val file = safeKbFile(kbName, relativePath) ?: return
+/**
+ * 锁区内写入核心：不抢锁。调用方必须已持有文件互斥锁（Mutex 非重入，锁内再抢=永久挂起）。
+ *
+ * 返回 false 表示**一个字节都没落**（只读库、路径守门拒收，或底层原子写失败）；
+ * 旧签名返回 Unit，于是"被拒"与"写成"在调用方手里长得一模一样——保存类动作据此
+ * 回了 true、版本化写回了新 SHA。现在失败必须能往上传（false / null / 异常），
+ * 备份节流也只在真的写成之后才排。
+ */
+internal fun KnowledgeRepository.writeFileUnlocked(kbName: String, relativePath: String, content: String): Boolean {
+    if (refusedByReadOnlySchema(kbName, "writeFile", relativePath)) return false
+    val file = safeKbFile(kbName, relativePath) ?: return false
     file.parentFile?.mkdirs()
-    atomicWriteText(file, content)
+    if (!atomicWriteText(file, content)) return false
     scheduleDebouncedBackup()
+    return true
 }
 
-/** 锁区内追加核心：不抢锁。调用方必须已持有文件互斥锁 */
-internal fun KnowledgeRepository.appendFileUnlocked(kbName: String, relativePath: String, content: String) {
-    if (refusedByReadOnlySchema(kbName, "appendFile", relativePath)) return
-    val file = safeKbFile(kbName, relativePath) ?: return
+/** 锁区内追加核心：不抢锁。调用方必须已持有文件互斥锁。false 的语义同 [writeFileUnlocked] */
+internal fun KnowledgeRepository.appendFileUnlocked(kbName: String, relativePath: String, content: String): Boolean {
+    if (refusedByReadOnlySchema(kbName, "appendFile", relativePath)) return false
+    val file = safeKbFile(kbName, relativePath) ?: return false
     file.parentFile?.mkdirs()
     val existing = if (file.exists()) file.readText() else ""
-    atomicWriteText(file, existing + content)
+    if (!atomicWriteText(file, existing + content)) return false
     scheduleDebouncedBackup()
+    return true
 }
 
 /**
@@ -321,5 +396,4 @@ internal fun KnowledgeRepository.updateWarmthStageLabelUnlocked(kbName: String, 
     profile.setWarmthStageLabel(kbName, newStage)
 }
 
-internal fun KnowledgeRepository.isoNow(): String =
-    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault()).format(Date())
+internal fun KnowledgeRepository.isoNow(): String = TimeFmt.isoNow()

@@ -1,13 +1,14 @@
 package com.lovebrain.app.domain.port
 
 import com.lovebrain.app.model.KnowledgeBase
+import com.lovebrain.app.model.MemoryCorrection
 
 /**
  * 知识库读端口（复核 第4节 DIP 行、第5节「domain 只依赖 AiGateway / KnowledgeReadPort /
  * KnowledgeWritePort / Clock」）。
  *
  * 成员不是"把 KnowledgeRepository 的 public API 抄一遍"，而是**domain 这六个月真正调用过的**
- * 那些：RoundCommitJournal、TopicRecorder、OngoingContextSelector、PromptBuilder、
+ * 那些：RoundCommitJournal、TopicRecorder、PromptBuilder、
  * KnowledgeTriggerCoordinator 各自用到的读操作（脚本实测枚举，不是凭印象）。
  * 少一层"接口=实现影子"，接口隔离才有意义：
  * 读端口里没有 deleteFile，所以只读的调用方拿不到写能力。
@@ -18,12 +19,21 @@ interface KnowledgeReadPort {
     suspend fun getCurrentStage(kbName: String): String
     suspend fun getCurrentTopic(kbName: String): String
     suspend fun getTurnCount(kbName: String): Int
-    suspend fun getTopicAgeHours(kbName: String): Int
     suspend fun readPlanActive(kbName: String): String
     suspend fun readVector(kbName: String): Map<String, Int>
     suspend fun readCounselingAnalysisBlocks(kbName: String, count: Int): String
     suspend fun getCorrectionsRevision(kbName: String): Int
     suspend fun getLessonCount(kbName: String): Int
+
+    /**
+     * 纠正表（`memory/corrections.json`）读侧口（ F3.3：提取链消费 corrections）。
+     *
+     * 此前纠正表只在页面侧端口（KnowledgeRuntimePort）可见，注入侧（PromptBuilder →
+     * MemoryRefPolicy）经调用方传入；后台提取链（KnowledgeContextReader / reflect）读
+     * 源材料时拿不到它，被纠正过的旧内容按原文回流进经验与画像。现在读端口把这张表
+     * 交给 domain 的读取层——只读，不含写/撤销能力（那仍在页面侧端口）。
+     */
+    suspend fun readCorrections(kbName: String): Map<String, MemoryCorrection>
 }
 
 /**
@@ -81,8 +91,8 @@ sealed interface LessonsRewriteResult {
  * 收窄到 domain 真正需要的操作，不是第二套写路径。
  */
 interface KnowledgeWritePort {
-    suspend fun writeFile(kbName: String, relativePath: String, content: String)
-    suspend fun appendFile(kbName: String, relativePath: String, content: String)
+    suspend fun writeFile(kbName: String, relativePath: String, content: String): Boolean
+    suspend fun appendFile(kbName: String, relativePath: String, content: String): Boolean
     suspend fun deleteFile(kbName: String, relativePath: String): Boolean
     suspend fun setCurrentTopic(kbName: String, topicLabel: String)
     suspend fun rotateTopic(kbName: String)

@@ -36,7 +36,7 @@ class ReplyCardLayoutTest {
     fun `the layout enum has exactly the two named tiers and vertical is the default`() {
         assertEquals("布局枚举只有纵向/横向两档，要加第三档先回来写清判据",
             listOf("VERTICAL", "HORIZONTAL"), ReplyCardLayout.entries.map { it.name })
-        assertEquals("默认档必须是纵向（§3「默认开启」）", ReplyCardLayout.VERTICAL, ReplyCardLayout.DEFAULT)
+        assertEquals("默认档必须是纵向（「默认开启」）", ReplyCardLayout.VERTICAL, ReplyCardLayout.DEFAULT)
         assertEquals("落盘键只有一个，读写不许再发明第二个", "reply_card_layout", ReplyCardLayout.PREF_KEY)
     }
 
@@ -63,13 +63,13 @@ class ReplyCardLayoutTest {
     fun `the drawing side defaults to vertical and never hands itself a horizontal default`() {
         val code = masked("ResultArea.kt")
         assertTrue(
-            "ResultArea 的 cardLayout 默认值必须是纵向——§3 那句「默认开启」就落在这颗默认值上：" +
+            "ResultArea 的 cardLayout 默认值必须是纵向——那句「默认开启」就落在这颗默认值上：" +
                 "画侧没有这颗默认值，未接线的宿主就会拿到没人认领的一档",
             code.lines().any { "cardLayout: ReplyCardLayout = ReplyCardLayout.VERTICAL" in it }
         )
         assertFalse(
             "画侧不许出现 `cardLayout: ReplyCardLayout = ReplyCardLayout.HORIZONTAL` 这种默认：" +
-                "偏好读不到时它会把这一屏静默退回横向（§3 要的默认纵向就是这么丢的）。" +
+                "偏好读不到时它会把这一屏静默退回横向（要的默认纵向就是这么丢的）。" +
                 "横向档只能由宿主显式传进来。",
             code.lines().any { "cardLayout: ReplyCardLayout = ReplyCardLayout.HORIZONTAL" in it }
         )
@@ -257,7 +257,7 @@ class ReplyCardLayoutTest {
         )
         assertEquals(
             "ResultArea.kt 里不许出现 LazyColumn：外层已经是无限高滚动，" +
-                "里面再嵌一棵无限高懒列表就是 §3 明令禁止的坏法（纵向一列用普通 Column）",
+                "里面再嵌一棵无限高懒列表就是明令禁止的坏法（纵向一列用普通 Column）",
             0, occurrences(code, "LazyColumn")
         )
     }

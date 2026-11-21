@@ -3,7 +3,7 @@
 # scripts/run_ui_tests.sh
 #
 # The Compose / instrumentation run, with the retry loop that used to live
-# inline in ci.yml.  2026-09-23 第3节 and 第8节 step 1.2:
+# inline in ci.yml.  2026-09-23 audit, step 1.2:
 #   "修复 emulator retry：把完整 retry 写成仓库内可本地执行的 bash 脚本，
 #    workflow 只调用脚本；脚本加 set -euo pipefail 并保留最终退出码"
 # The inline YAML block failed on the runner with
@@ -154,7 +154,7 @@ fi
 #   `FLAG_SECURE` 就是让系统拒绝把这一屏画进截图 ⇒ "设备拍两张真屏幕"这条要求
 #   在这个 app 上结构性拿不到证据；继续要 PNG 只会再次收下一张假证据。
 #
-# 取代它的是 **JVM 截图基线**（ :610 点名的 roborazzi / paparazzi 二选一，这里选 roborazzi）：
+# 取代它的是 **JVM 截图基线**（评审点名的 roborazzi / paparazzi 二选一，这里选 roborazzi）：
 #   基线在 `app/src/test/roborazzi/`，CI 只跑 `:app:verifyRoborazziDebug`（不匹配即红）；
 #   重新生成是显式人工动作（`./gradlew :app:recordRoborazziDebug` + 人看过 + 单独一笔提交）。
 #   ⚠ 它不能靠普通单测那一步：实测带着一次真实视觉回归（主按钮 min 高度 48dp → 64dp）

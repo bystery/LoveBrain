@@ -53,9 +53,10 @@ class KnowledgeProfileStoreTest {
             return files[kbName]?.get(relativePath) ?: ""
         }
 
-        override fun writeUnlocked(kbName: String, relativePath: String, content: String) {
-            if (!guarded(kbName)) return
+        override fun writeUnlocked(kbName: String, relativePath: String, content: String): Boolean {
+            if (!guarded(kbName)) return false
             files.getOrPut(kbName) { mutableMapOf() }[relativePath] = content
+            return true
         }
 
         override fun metaOf(kbName: String): KnowledgeBase? =

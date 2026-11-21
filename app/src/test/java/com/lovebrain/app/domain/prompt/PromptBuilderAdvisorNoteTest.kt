@@ -11,23 +11,18 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * 等 的**产出一侧**：军师备注必须真的进到发给 provider 的那份 user prompt 里，
- * 而且是全量、不带旧的那句窄解释。
+ * 用户备注（旧称"军师备注"）必须真的进到发给 provider 的那份 user prompt 里，
+ * 而且是全量、不带旧的那句窄解释；2026-11-21 起标题改为「用户备注」。
  *
- * 判据取的是 `PromptBuilder` 公开入口吐出来的字符串，不是源码里有没有出现某个符号——
- * 后者是本项目已知的恒真形态（"改了函数名就算改了行为"）。
- * 只 round 那一支不读资产（无知识库），所以夹具给的是一颗**一读就抛**的假资产口：
- * 一旦有人给这一支塞进资产读取，这一格会因为那颗假口当场炸，不是静默绿。
+ * 判据取的是 `PromptBuilder` 公开入口吐出来的字符串，不是源码里有没有出现某个符号。
+ * 只 round 那一支不读资产（无知识库），所以夹具给的是一颗**一读就抛**的假资产口。
  */
 class PromptBuilderAdvisorNoteTest {
 
     private fun builder(): PromptBuilder {
-        // 这一支（kb=null / only-round）不读资产也不读库：假口只是把构造参数填满。
-        // 真有人给它加上资产读取，上面 KDoc 说的那件事就会发生——测试当场炸，不是静默绿。
-        // （端口化前这里是 relaxed Context；那颗 mock 在资产上的表现本就是"读不到就别读"，这颗假口把话挑明。）
         return PromptBuilder(
             PromptSourcePort { path -> error("这一支不该读资产：$path") },
-            InMemoryKnowledgePort(), null, FixedClock()
+            InMemoryKnowledgePort(), FixedClock()
         )
     }
 
@@ -38,9 +33,6 @@ class PromptBuilderAdvisorNoteTest {
 
     /**
      * 备注全量进 only-round prompt，且旧的"用户想这样回 / 润色出4种方案"一个字都不剩。
-     *
-     * 反例：区块换了名但 `PromptBuilder` 还在调旧函数（或反过来只改了旧函数留了第二份实现）
-     * ⇒ 这两条 assertFalse 里必有一条红；正文尾巴那条 assertTrue 红则是"展示省略=发送也省略"。
      */
     @Test
     fun onlyRoundPromptCarriesTheWholeNoteAndNoOldNarrowWording() = runBlocking {
@@ -48,25 +40,28 @@ class PromptBuilderAdvisorNoteTest {
         val prompt = builder().buildReplyUserPromptOnlyThisRound(twoMsgs, note).prompt
 
         assertTrue("备注正文没进发给军师的 prompt", prompt.contains(note))
-        assertTrue("备注段没有身份标题：$prompt", prompt.contains(IntentIdeaBlock.NOTE_BLOCK_HEADER))
+        assertTrue("备注段没有身份标题：$prompt", prompt.contains(IntentIdeaBlock.USER_NOTE_HEADER))
         assertFalse("仍在把备注读成待发送话术", prompt.contains("用户想这样回"))
         assertFalse("仍在把输出数量钉成 4 种", prompt.contains("润色出4种方案"))
         assertFalse("旧段名残留", prompt.contains("# 用户的回复想法"))
         // 真实对话仍在围栏里，没被备注通道吞掉
         assertTrue("她的消息仍在对话围栏里", prompt.contains("今天真的好累"))
+        // 备注排在 chat 之后、时间之前
+        val iClose = prompt.indexOf("</chat>")
+        val iNote = prompt.indexOf(IntentIdeaBlock.USER_NOTE_HEADER)
+        val iTime = prompt.indexOf("【当前时间】")
+        assertTrue("备注必须在围栏之后、时间戳之前", iClose >= 0 && iClose < iNote && iNote < iTime)
     }
 
     /** 没有备注 → 整段不出现（屏上不留空标题，prompt 里也不留空段） */
     @Test
     fun emptyNoteEmitsNoSectionInThePrompt() = runBlocking {
         val prompt = builder().buildReplyUserPromptOnlyThisRound(twoMsgs, "   ").prompt
-        assertFalse("空备注仍画了一段标题：$prompt", prompt.contains(IntentIdeaBlock.NOTE_BLOCK_HEADER))
+        assertFalse("空备注仍画了一段标题：$prompt", prompt.contains(IntentIdeaBlock.USER_NOTE_HEADER))
     }
 
     /**
      * 正常回复那支（无知识库分支，走 PromptBudget）同样不许裁备注正文。
-     *
-     * 反例：预算裁剪把 ideaBlock 也当成可裁的那一段 ⇒ 用户的长提醒后半句在预算压力下丢掉。
      */
     @Test
     fun budgetPathKeepsTheNoteBodyIntact() = runBlocking {
@@ -75,6 +70,15 @@ class PromptBuilderAdvisorNoteTest {
 
         assertTrue("备注后半句被裁掉了", prompt.contains("最后这半句是别走开"))
         assertFalse("旧措辞还在正常回复那支里", prompt.contains("用户想这样回"))
-        assertTrue("备注段身份标题在场", prompt.contains(IntentIdeaBlock.NOTE_BLOCK_HEADER))
+        assertTrue("备注段身份标题在场", prompt.contains(IntentIdeaBlock.USER_NOTE_HEADER))
+        assertTrue("备注排在 chat 之后", prompt.indexOf("</chat>") < prompt.indexOf(IntentIdeaBlock.USER_NOTE_HEADER))
+    }
+
+    /** 影子链路默认标题不变：不传 header 时仍是「军师备注」 */
+    @Test
+    fun defaultHeaderStaysAdvisorNoteForTheShadowChain() {
+        val out = IntentIdeaBlock.buildAdvisorNoteBlock("先听听她的")
+        assertTrue(out.startsWith(IntentIdeaBlock.NOTE_BLOCK_HEADER))
+        assertFalse(out.startsWith(IntentIdeaBlock.USER_NOTE_HEADER))
     }
 }

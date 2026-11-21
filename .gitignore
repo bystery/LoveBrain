@@ -68,7 +68,11 @@ api_key.txt
 *.png.tmp
 
 # Local-only docs and drafts
-/docs/
+# (must be /docs/* not /docs/: git cannot re-include anything under a wholly
+#  excluded directory, and release.yml asserts docs/release-evidence/<tag>/)
+/docs/*
+!/docs/release-evidence/
+!/docs/release-evidence/**
 LoveBrain_*.md
 
 # Local scratch / archives (rename-only, never committed)
@@ -82,7 +86,10 @@ LoveBrain_*.md
 # Node
 node_modules/
 
-# Process artifacts — hard block (W2M1)
+# Process artifacts
+research/experiments/runs/
 **/out/
 **/checkpoint*
-research/experiments/runs/
+**/staged/
+**/sandbox/
+**/*.tmp.driveupload/

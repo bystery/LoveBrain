@@ -131,20 +131,21 @@ internal class ApiUsageTracker(private val securePrefs: SecurePrefs) {
     }
 
     /**
-     * 一次请求开始（流式）：请求数 +1 并刷新快照。
-     * 与搬前 `_totalRequests.incrementAndGet(); refreshStats()` 逐字同序。
-     */
-    fun startRequest() {
-        _totalRequests.incrementAndGet()
-        refreshStats()
-    }
-
-    /**
      * 一次请求开始（非流式）：只 +1 计数，不在此处刷新快照——
      * 搬前的 `generateRawWithMetadata` 就是这个口径（快照由随后的 success/failure 刷新落盘）。
+     * 请求数的自增只有这一处：[startRequest] 转调它，两个入口不许各写一份 +1。
      */
     fun countRequest() {
         _totalRequests.incrementAndGet()
+    }
+
+    /**
+     * 一次请求开始（流式）：记一次请求并立即刷新快照。
+     * 与搬前 `_totalRequests.incrementAndGet(); refreshStats()` 逐字同序。
+     */
+    fun startRequest() {
+        countRequest()
+        refreshStats()
     }
 
     /** 一次请求成功 */

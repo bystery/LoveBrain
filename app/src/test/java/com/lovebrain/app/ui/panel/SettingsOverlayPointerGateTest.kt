@@ -39,7 +39,6 @@ import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.intent.IntentController
 import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.feature.profile.ProfileReview
-import com.lovebrain.app.feature.roundcommit.ActualSentState
 import com.lovebrain.app.model.ChatMessage
 import com.lovebrain.app.model.ComposerMode
 import com.lovebrain.app.model.IntentConfig
@@ -201,7 +200,7 @@ class SettingsOverlayPointerGateTest {
     // ═══════════ 夹具 ═══════════
 
     /**
-     * 整屏挂载（与 `PanelHostSemanticsTest` 同一套桩），走生产齿轮开设置页。
+     * 整屏挂载，走生产齿轮开设置页。
      * `panelBackdropOpacityPercent` 桩在 80：显示轴落在中段（20%），
      * "往右拖变大"这句判据才立得住（relaxed 的 0 = 全透 = 顶格 80，没法往右）。
      */
@@ -213,7 +212,7 @@ class SettingsOverlayPointerGateTest {
                 LoveBrainTheme {
                     LoveBrainPanelScreen(
                         viewModel = vm,
-                        onInputFocusChange = { _, _ -> },
+                        onInputFocusChange = { _, _, _ -> },
                         onInputIntent = { },
                         onClearComposeFocus = { },
                         onResize = { _, _ -> },
@@ -338,7 +337,7 @@ class SettingsOverlayPointerGateTest {
         )
     }
 
-    /** 持有者侧桩：与 `PanelHostSemanticsTest` 同一套（整屏那些流一条条点名） */
+    /** 持有者侧桩：整屏那些流一条条点名 */
     private fun fakeVm(): LoveBrainViewModel {
         val vm = mockk<LoveBrainViewModel>(relaxed = true)
         val composer = mockk<ComposerStore>(relaxed = true)
@@ -347,7 +346,6 @@ class SettingsOverlayPointerGateTest {
         every { vm.panelBackdropOpacityPercent } returns 80
         every { vm.replyCardLayout } returns ReplyCardLayout.DEFAULT
         every { vm.activeKb } returns MutableStateFlow(null)
-        every { vm.actualSentState } returns MutableStateFlow(ActualSentState.IDLE)
         every { vm.composerMode } returns MutableStateFlow(ComposerMode.REPLY)
         every { composer.counselingDraft } returns MutableStateFlow("")
         every { vm.counselingError } returns MutableStateFlow(null)

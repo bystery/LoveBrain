@@ -71,9 +71,6 @@ object AppConfig {
     const val COUNSELING_MAX_HISTORY_ROUNDS = 6 // 谈心追问只带最近 6 轮问答（防 context length）
 
     // ═══ 无障碍服务 ═══
-    // pending 生命期（H2）：超过 30s 的旧暂存不再消费——慢菜单(>3s)照捕，只拦久远残留
-    // ⚠ 这一颗**不跟着下面那格一起收敛**：它是"长按 ↔ 菜单"的事件配对预算，不是重复合并。
-    const val PENDING_MAX_AGE_MS = 30_000L
     // 洪峰去重窗口：仅拦 ≤300ms 内**同一文本**的重复事件（同一次手势的系统连发），不拦用户主动重捕。
     // 含义只有这一条，不是"所有消息的统一冷却"：判据（含"不同文本一律放行"）住在
     // `service/ClipBurstDedup`，300ms 这一格的边界钉在 `test/.../data/EventBusCaptureTest.kt`。
@@ -234,7 +231,7 @@ object PanelBackdropOpacity {
     fun fromTransparencyPercent(transparency: Int?): Int =
         snapPercent(transparency?.let { MAX_PERCENT - it })
 
-    // ═══ 有效 alpha：悬浮球 + 面板背景共用的那一把尺（指导书 2026-10-10 §1「同一百分比同时作用」）═══
+    // ═══ 有效 alpha：悬浮球 + 面板背景共用的那一把尺（「同一百分比同时作用」）═══
 
     /**
      * 闲置降遮挡的**绝对降幅**，直接从原来那颗 [AppConfig.BUBBLE_IDLE_ALPHA] 推出来（1f − 0.78f = 0.22f）。
@@ -291,17 +288,17 @@ object PanelBackdropOpacity {
 }
 
 /**
- * 悬浮图标大小的三档（指导书 2026-10-10 §1「大小调节」）。
+ * 悬浮图标大小的三档（「大小调节」）。
  *
  * 只做三档、不做连续 1dp 调节：原话写明「三个档位已覆盖日常需求，也更容易保证布局和手势正确」。
  * 标准档（[STANDARD_DP] = 56dp）就是这一项出现之前屏幕上那颗球（原来的 `AppConfig.BUBBLE_SIZE`
- * 那颗单一常量已随这一笔退场，全仓不许再有第二个尺寸真值），所以 §1 验收里
+ * 那颗单一常量已随这一笔退场，全仓不许再有第二个尺寸真值），所以验收里
  * 「默认外观与现有版本一致」由默认值成立，不靠改画。
  *
  * **单一真值**：系统窗口宽高、主球与内部图标比例、未读角标偏移、当前位置的边界修正、
  * 拖动吸边的落点、点击区、面板依据球位算出的贴边坐标，全都必须从同一颗数推出来。
  * 只对 Compose 用 `scale()` 而把窗口点击区留在 56dp，正是这一格要防的那件事
- * （书 §1：「不能只对 Compose 使用 scale()，而保持系统窗口原来的 56dp 点击区域」）。
+ * （「不能只对 Compose 使用 scale()，而保持系统窗口原来的 56dp 点击区域」）。
  */
 object BubbleSizeTier {
 
@@ -312,7 +309,7 @@ object BubbleSizeTier {
     const val STANDARD_DP: Int = 56
     const val LARGE_DP: Int = 64
 
-    /** 默认档 = 现有版本的外观（§1 验收第一条）。 */
+    /** 默认档 = 现有版本的外观（验收第一条）。 */
     const val DEFAULT_DP: Int = STANDARD_DP
 
     /** 合法档位，从小到大；界面上「小 / 标准 / 大」三颗按这个顺序画。 */
@@ -330,7 +327,7 @@ object BubbleSizeTier {
 }
 
 /**
- * 回复结果卡片的排列方向（指导书 2026-10-10 §3）。
+ * 回复结果卡片的排列方向。
  *
  * 默认纵向；横向＝「保留现在的横向卡片排列」那一档。两档共用同一套卡逻辑
  * （稳定身份、复制/赞/踩/改写、自定义改写、已赞已踩筛选、流式与已完成内容），
@@ -352,7 +349,7 @@ enum class ReplyCardLayout {
         /** 落盘键：读写都只在 `SecurePrefs.replyCardLayout` 这一格。 */
         const val PREF_KEY: String = "reply_card_layout"
 
-        /** 默认方向（§3「默认开启」＝纵向）。 */
+        /** 默认方向（「默认开启」＝纵向）。 */
         val DEFAULT: ReplyCardLayout = VERTICAL
 
         /** 解析口只有这一处：画侧与 VM 都不许再手写 `== "VERTICAL"` 那种第二次判断。 */

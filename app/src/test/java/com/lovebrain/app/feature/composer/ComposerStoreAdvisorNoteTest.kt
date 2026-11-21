@@ -219,6 +219,65 @@ class ComposerStoreAdvisorNoteTest {
         assertEquals("我现在不想约见面\n也别提她前任", store.noteTextNow)
     }
 
+    // ═══════════ 清备注：草稿不是备注的一部分 ═══════════
+
+    /**
+     * 侧滑清备注 / 本轮收尾（`ClearNote`）不许把**未提交的草稿**一起删掉。
+     *
+     * 反例（这一格红给它）：`clearNote()` 无条件 `_draftText.value = ""` —— 用户写了一半的她/我
+     * 话术在"清备注"那一下静默消失，而清备注本来只针对灰字那一行。
+     */
+    @Test
+    fun clearingTheNoteKeepsAnUnsubmittedDraftThatIsNotTheNote() {
+        val store = newStore()
+        // 备注先有正文（灰字行上那一份）
+        store.accept(ComposerStore.Intent.SubmitNote("别只替她解释"))
+        // 用户回到《她》写了一条还没提交的草稿，备注仍在灰字行上
+        store.accept(ComposerStore.Intent.SetInputKind(ComposerInputKind.HER))
+        store.accept(ComposerStore.Intent.SetDraft("今天她加班到十点"))
+
+        store.accept(ComposerStore.Intent.ClearNote)
+
+        assertEquals("备注必须清掉", "", store.noteTextNow)
+        assertEquals("未提交的草稿不是备注，不许跟着被删", "今天她加班到十点", store.draftTextNow)
+        assertEquals("清备注也不许把 HER 草稿并进备注", "", store.ideaHint())
+    }
+
+    /**
+     * 唯一例外：此刻编辑对象**就是备注**。那份草稿本身就是备注正文，清备注必须连它一起清——
+     * 留着它，`effectiveNoteText` 下一次会把它并回备注，灰字原地复活，等于没清。
+     */
+    @Test
+    fun clearingTheNoteWhileEditingItAlsoDropsThatDraftSoTheNoteCannotComeBack() {
+        val store = newStore()
+        store.accept(ComposerStore.Intent.SubmitNote("别只替她解释"))
+        store.accept(ComposerStore.Intent.BeginNoteEdit)
+        assertEquals("点灰字：输入框接的是备注全文", "别只替她解释", store.draftTextNow)
+        store.accept(ComposerStore.Intent.SetDraft("别只替她解释；也别提她前任"))
+
+        store.accept(ComposerStore.Intent.ClearNote)
+
+        assertEquals("备注必须清掉", "", store.noteTextNow)
+        assertEquals(
+            "正在编辑的备注正文必须跟着走：留着它，下一次读备注会把同一句并回来",
+            "", store.draftTextNow
+        )
+        assertEquals("灰字不许复活", "", store.ideaHint())
+    }
+
+    /** 没有备注可清时：不动草稿、也不产生一次内容变化通知（清位是空操作） */
+    @Test
+    fun clearingAnEmptyNoteLeavesTheDraftAndTheNotificationAlone() {
+        val store = newStore()
+        store.accept(ComposerStore.Intent.SetDraft("还没提交的一句"))
+        val before = contentChanges
+
+        store.accept(ComposerStore.Intent.ClearNote)
+
+        assertEquals("没有备注可清：不该多报一次内容变化", before, contentChanges)
+        assertEquals("草稿原样留着", "还没提交的一句", store.draftTextNow)
+    }
+
     /**
      * 备注为空 = 什么都没有：不显示空标题、不进 directive。
      *
@@ -279,7 +338,6 @@ class ComposerStoreAdvisorNoteTest {
             corrections = emptyMap<String, MemoryCorrection>(),
             correctionsRevision = 0,
             onlyThisRound = false,
-            aggressive = false,
             providerIdentity = null,
             kbProfile = "",
             kbRevision = "",
@@ -344,11 +402,10 @@ class ComposerStoreAdvisorNoteTest {
 
     /** 普通切模式（面板档/输出档）不清备注——只有"本轮收尾"和"换对象"两类事件会动它 */
     @Test
-    fun switchingModeOrOutputDoesNotTouchTheNote() {
+    fun switchingModeDoesNotTouchTheNote() {
         val store = newStore()
         store.accept(ComposerStore.Intent.SubmitNote("先听我说完"))
         store.accept(ComposerStore.Intent.SetPanelMode(1))
-        store.accept(ComposerStore.Intent.SetOutputMode(1))
         store.accept(ComposerStore.Intent.SetPanelState(com.lovebrain.app.model.PanelState.KEYBOARD))
         assertEquals("跨回复/谈心切页与切模式都要还看得见", "先听我说完", store.noteTextNow)
     }
@@ -439,7 +496,6 @@ class ComposerStoreAdvisorNoteTest {
             corrections = emptyMap<String, MemoryCorrection>(),
             correctionsRevision = 0,
             onlyThisRound = false,
-            aggressive = false,
             providerIdentity = null,
             kbProfile = "",
             kbRevision = "",
@@ -462,7 +518,6 @@ class ComposerStoreAdvisorNoteTest {
             corrections = emptyMap<String, MemoryCorrection>(),
             correctionsRevision = 0,
             onlyThisRound = false,
-            aggressive = false,
             providerIdentity = null,
             kbProfile = "",
             kbRevision = "",
@@ -604,7 +659,6 @@ class ComposerStoreAdvisorNoteTest {
             corrections = emptyMap<String, MemoryCorrection>(),
             correctionsRevision = 0,
             onlyThisRound = false,
-            aggressive = false,
             providerIdentity = null,
             kbProfile = "",
             kbRevision = "",
@@ -640,7 +694,6 @@ class ComposerStoreAdvisorNoteTest {
             corrections = emptyMap<String, MemoryCorrection>(),
             correctionsRevision = 0,
             onlyThisRound = false,
-            aggressive = false,
             providerIdentity = null,
             kbProfile = "",
             kbRevision = "",

@@ -1,15 +1,15 @@
 package com.lovebrain.app.ui.home
 
 import com.lovebrain.app.core.designsystem.LbMetric
+import com.lovebrain.app.ui.panel.stats.CostAmountStyle
+import com.lovebrain.app.ui.panel.stats.costAmountText
 import com.lovebrain.app.viewmodel.HomeUsageReadout
 import com.lovebrain.app.viewmodel.costReadout
-import java.util.Locale
-import kotlin.math.absoluteValue
 
 /*
  * 首页那一块累计使用**小卡**的口径层。
  *
- * **为什么这一块现在可以存在**：2026-10-10 新指导书 §五 取舍③（活台账 M25）是本会话的**新决定**，
+ * **为什么这一块现在可以存在**：累计使用卡的取舍是本会话的**新决定**，
  * 用户原话「首页可以重新加入累计使用面板。这是你这次的新决定，优先于旧文档里删除使用概览的规定。
  * 只是需要控制规模，维持一块简洁的小卡，不恢复大而复杂的仪表盘。」⇒ 它**替代**旧规
  * 「不恢复使用概览 / 不增加无业务价值的统计仪表盘 / 不恢复内部统计」那几条禁令；
@@ -31,22 +31,20 @@ import kotlin.math.absoluteValue
  *    单位"次"与占位串（「—」「不足 …」）也都来自资源，所以 `UiStringLiteralBudgetTest` 四栏读数
  *    不因这一格变化。
  * 4. **规模是判据**：这一格**只有四格**（累计生成 / 复制 / 采纳 / 花费），
- *    多一格就不是"简洁小卡"；刻意不收"内部指标/版本区"那一类（上一轮已删、本轮新指导书第④条明令
+ *    多一格就不是"简洁小卡"；刻意不收"内部指标/版本区"那一类（上一轮已删、本轮产品口径第④条明令
  *    不许恢复），也不收端口那第五颗 `totalRewriteCount`（没有格子画它，带进快照就是死读数）。
  */
 
 /**
- * 首页这一格自带的货币符号（全角 ￥，与面板顶部那条的半角 ¥ 分家：那条 10sp、这一条 18sp，
- * 两处口径本来就不同，见 `UsageStats.kt` 的 amountText 说明）。
- * ⚠ 它不是"文字"（`HAN_LITERAL` 数不到全角货币符），也不是统计账里的一颗数——只是格式化旋钮。
- * `internal` 而非 `private`：`cost_below_cent` 那条资源也要用同一个符号（"不足 ￥0.01"），
- * 让这一颗符号在首页这一格只有一位主人，不在调用点抄第二遍。
+ * 首页这一格自带的货币符号（全角 ￥，与面板顶部那条的半角 ¥ 分属两档显示场景）。
+ * ⚠ 它不是"文字"（`HAN_LITERAL` 数不到全角货币符），也不是统计账里的一颗数——只是格式化旋钮；
+ * 符号与位数统一住在 [costAmountText] 的 `CostAmountStyle.Home`，这里只做别名给首页资源用
+ * （`cost_below_cent` 那条资源也要用同一个符号，不在调用点抄第二遍）。
  */
-internal const val HOME_COST_CURRENCY = "￥"
+internal val HOME_COST_CURRENCY: String = CostAmountStyle.Home.currency
 
-/** 首页的花费读数取**两位小数**（与旧版使用概览同一口径，不锁 Locale；面板那条才是三位+锁 US） */
-internal fun homeYuanText(yuan: Double): String =
-    HOME_COST_CURRENCY + String.format(Locale.getDefault(), "%.2f", yuan.absoluteValue)
+/** 首页花费读数 = 共用格式化的 Home 档（两位小数、跟随系统 Locale、全角 ￥） */
+internal fun homeYuanText(yuan: Double): String = costAmountText(yuan, CostAmountStyle.Home)
 
 /**
  * 把 VM 交回的只读快照换成 `LbMetricGrid` 要的那四格。

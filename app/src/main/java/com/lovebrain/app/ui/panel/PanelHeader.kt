@@ -61,16 +61,16 @@ private object HeaderDimens {
  * 面板头部。
  *
  * 当前布局：[齿轮] [回复/谈心 两段切换 weight] [收起按钮]
- * 进攻模式的开关已从 UI 移除（进攻逻辑保留在 VM，无 UI 开关，静默留档）。
+ * 进攻模式的开关已整删。
  * 齿轮是这一族**唯一**新增的入口：点它把整扇悬浮窗切到设置页（宿主换内容，不是弹窗、不是半屏
  * Sheet、也不跳外部 Activity），所以这里只交一句意图 `onOpenSettings`，页面归宿主画。
  * 传 null 就不画那一格——这颗控件要能在没有依赖容器的情况下被组合（同 `onHeaderDrag` 的接法）。
- * 整行支持拖拽移动面板，但**没有**给整扇悬浮窗加一个抢走横滑/长按/焦点的父手势处理器（§8.4 正文）。
+ * 整行支持拖拽移动面板，但**没有**给整扇悬浮窗加一个抢走横滑/长按/焦点的父手势处理器（正文）。
  *
- * 拖动归属（§8.4 表末行 + §9，这里只说清**这一行**管到哪）：`onHeaderDrag` 挂在整行那一颗粒上，
+ * 拖动归属（表末行，这里只说清**这一行**管到哪）：`onHeaderDrag` 挂在整行那一颗粒上，
  * 实际归它的却是这一行里**没被 clickable 占走**的那些像素（齿轮/收起外包盒上下那几 dp、
  * 两段切换器左右那 8dp 内边距）。两段与两颗按钮自己的点击区一寸都不让给拖动——
- * §9 明写"透明热区不能覆盖它们"。行**外面**那条更宽的连续命中带归 `DragHandle`
+ * 明写"透明热区不能覆盖它们"。行**外面**那条更宽的连续命中带归 `DragHandle`
  * （顶部 4dp 槽位 + 上下两段真空白，数值见 `DragBand`）：这一行的上沿就是那条带子的下沿，
  * 两颗上下相接、不重叠。起手有 touch slop ⇒ 短点击只选中、不会把窗口带跑；真横拖才交回 `onMove`。
  *
@@ -215,7 +215,7 @@ private fun ModeSegmentTwo(
 ) {
     val indicatorOffset by animateFloatAsState(
         targetValue = selectedIndex.toFloat(),
-        // 时长与页面平移**同一颗主人**（`PanelPageMotion.SLIDE_MS`，基线 v1.1 §6.5）：
+        // 时长与页面平移**同一颗主人**（`PanelPageMotion.SLIDE_MS`）：
         // 这里原来是裸写的 `tween(250)`，页面那一段是 220ms ⇒ 点一次 tab 有两条不同时长的
         // 并行过渡，视觉上读成"抖一下"。两段合一之后一次切换只有一条时序。
         animationSpec = tween(PanelPageMotion.SLIDE_MS, easing = FastOutSlowInEasing),
@@ -304,7 +304,4 @@ private fun ModeSegmentLabel(
     }
 }
 
-/**
- * 双态胶囊开关已随  统一删除（进攻改文字 chip 后无调用方，2026-08-30）。
- * 保留占位注释防误引用；如需双态开关请复用 SetupActivity.MiniSwitch 或文字 chip 语言。
- */
+/** 双态胶囊开关已整删。 */

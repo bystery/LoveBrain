@@ -20,6 +20,8 @@ import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.domain.port.KnowledgeRuntimePort
 import com.lovebrain.app.domain.toIdentity
 import com.lovebrain.app.model.ChatMessage
+import com.lovebrain.app.feature.composer.BatchImportDraft
+import com.lovebrain.app.feature.composer.BatchTranscriptParser
 import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.feedback.CaseSaveOutcome
 import com.lovebrain.app.feature.feedback.caseSaveNoticeText
@@ -29,8 +31,6 @@ import com.lovebrain.app.feature.mode.ModeController
 import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.feature.profile.ProfileReview
 import com.lovebrain.app.feature.profile.ProfileUpdateController
-import com.lovebrain.app.feature.roundcommit.ActualSentRecorder
-import com.lovebrain.app.feature.roundcommit.ActualSentState
 import com.lovebrain.app.feature.provider.ProviderTicketStore
 import com.lovebrain.app.feature.roundstate.RoundScope
 import com.lovebrain.app.feature.roundstate.RoundStateStore
@@ -101,6 +101,14 @@ private const val TITLE_FALLBACK_LIMIT = 40
 internal const val ROUND_SCOPE_FIRST_HINT = "仅看本轮：只带这一轮的对话与备注，不带画像和历史"
 
 /**
+ * 前台槽被占时的提示（生成 / 谈心 / 改写被协调器拒绝）。
+ *
+ * 为什么要有这一句：这些入口被拒时以前只写一行日志——用户点了"重试"或"改写"，
+ * 屏幕上什么都不会发生，看上去像按钮坏了。走既有的面板警告位，不新增 UI 元素。
+ */
+internal const val FOREGROUND_SLOT_BUSY_HINT = "另一项操作正在进行，请稍后再试"
+
+/**
  * 军师核心 ViewModel v4（ 后为状态壳：生成逻辑下沉到 GenerationEngine）。
  *
  * 仓库这一格注入 [KnowledgeRuntimePort]：对话运行时对知识库要的那一族（在用库、文档读、
@@ -120,6 +128,13 @@ class LoveBrainViewModel(
     val operationCoordinator: ForegroundOperationCoordinator,
     // 反馈案例仓库——点踩时本地保存
     private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null,
+    /**
+     * 冠军引擎（审计 R2-1）：可空注入（getOrNull），缺位 = 恒 OFF，行为与从前逐字同形。
+     * 只为 [nextRound] 的 `commitConfirmedTurn` 服务——冠军事件入库的唯一入口挂在本 VM
+     * 的产品正式提交点上（T4 §1.1：`actualSent`/下一轮事务点），生成路径（GenerationEngine
+     * 的 shadow）对未确认输入不产生任何持久痕迹。
+     */
+    private val championEngine: com.lovebrain.app.domain.champion.ChampionEngine? = null,
     /**
      * 面板**背景层**浓度那一格的落盘口子（读 / 写，量纲是整数百分比）。
      *
@@ -182,27 +197,18 @@ class LoveBrainViewModel(
      * 输入区与消息列表的状态持有者（复核 第5节第2条 第 6 步"VM 不再持有状态"的第一块）。
      *
      * 这里接管的是九颗原本各写各的 `MutableStateFlow`：面板状态、消息列表、当前角色、
-     * 编辑位、《想法》chip 态、两条草稿、输入模式、输出模式、计划面板。
+     * 编辑位、《想法》chip 态、两条草稿、输入模式、计划面板。
      * 这一家子**没有**留同名出口（第5节第2条 第 6 步"调用点迁完后删除 facade"）：面板与 Service
      * 直接读 `composer.panelState` 那十颗只读流，写法同下面 `intents` 那一族。
      * VM 这一侧只剩下面两条接线：
      *  - `onContentChanged`：内容一变就去判"旧结果是否 stale"，这条判据不能靠每个写的人记得调用；
-     *  - 三个持久化回调：store 不知道有 `SecurePrefs` 这回事（第5节第1条：`feature` 不许 import `data`）。
+     *  - 两个持久化回调：store 不知道有 `SecurePrefs` 这回事（第5节第1条：`feature` 不许 import `data`）。
      */
     val composer = ComposerStore(
         scope = viewModelScope,
-        initialOutputMode = securePrefs.outputMode,
         onContentChanged = { markCurrentResultStaleIfNeeded() },
         savePanelMode = { securePrefs.panelMode = it },
-        persistCounselingDraft = { securePrefs.counselingDraft = it },
-        saveOutputMode = { securePrefs.outputMode = it },
-        normalizeOutputMode = { mode ->
-            // 直出/思考的合法组合规则住在 prompt 配置层，这里不复制一份，只把警告照原样落日志
-            promptBuilder.validateConfig(securePrefs.thinkingMode, mode).let { r ->
-                r.warnings.forEach { L.w("⚠️ $it") }
-                r.outputMode
-            }
-        }
+        persistCounselingDraft = { securePrefs.counselingDraft = it }
     )
 
     // ═══ 回复流程唯一状态源 ═══
@@ -283,6 +289,12 @@ class LoveBrainViewModel(
         val sourceAliasMap: Map<String, String> = emptyMap(), // B项修复：别名→实际消息ID映射
         val inputFingerprint: String = "", // 输入指纹——对 KB+消息正文+角色+顺序+IDEA+onlyThisRound+intent revision 做哈希
         val onlyThisRound: Boolean = false, // 冻结 onlyThisRound 状态
+        // guide-6 Step 5：本轮冻结的有效 Champion 模式快照（effectiveMode().raw；
+        // "OFF"|"SHADOW"|"LIVE_AUTO"）。生成开始时各只读一次——生成中途改设置不影响
+        // 本轮：引擎分流读 GenerationInput.championMode（单一快照源，§10.1），提交门禁
+        // 与 commitConfirmedTurn 的 modeSnapshot 都只认这份快照，不再现场回读设置。
+        // committedTurnCount 不复制进 context（同一快照已随 GenerationInput 走域内）。
+        val championMode: String = "OFF",
         // 生成本轮真正使用的 system prompt 资产指纹——点踩案例记的是它，不是 App 版本名。
         // 版本名没发就永远算不出"prompt 被改过"，硬编码字符串更会把诊断指向错误的 prompt。
         val promptVersion: String = ""
@@ -909,12 +921,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             }
             refreshKnowledgeBases()
         }
-        val persisted = promptBuilder.validateConfig(securePrefs.thinkingMode, securePrefs.outputMode)
+        val persisted = promptBuilder.validateConfig(securePrefs.thinkingMode)
         if (!persisted.isValid) {
             persisted.warnings.forEach { L.w("⚠️ 启动配置校验：$it") }
-            composer.accept(ComposerStore.Intent.RestoreOutputMode(persisted.outputMode))
             securePrefs.thinkingMode = persisted.thinkingMode
-            securePrefs.outputMode = persisted.outputMode
         }
 
         // 今日花费载入（跨天清零）+ 订阅计费事件流（ 口径）
@@ -972,6 +982,52 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     fun addMessage(role: ChatMessage.Role, content: String) { // facade — delegates to ComposerStore
         composer.accept(ComposerStore.Intent.AddMessage(role, content))
+    }
+
+    // ═══════════ 批量导入（Issue #7） ═══════════
+
+    /**
+     * 批量导入（Issue #7）：多条消息**按序一次**落进真实对话通道。
+     *
+     * 走 [ComposerStore.Intent.AddMessages]——与手工输入/自动捕获同一漏斗、同一存储、
+     * 同一装配路径（`GenerationInput.dialogue` 只认 HER/ME），一次校验、一次追加、一次
+     * 通知（外部审计 F3：几十条导入不再逐条触发几十次列表更新）。顺序即条目顺序，
+     * 前后文上下文因此保持。绝不投 SubmitNote/IDEA：军师备注是另一条边界
+     * （KNOWN_FAILURES F1/F3），而 [BatchImportDraft] 在构造期就硬挡了 IDEA。
+     */
+    fun importBatchMessages(drafts: List<BatchImportDraft>) {
+        composer.accept(ComposerStore.Intent.AddMessages(drafts))
+    }
+
+    /**
+     * 轻点 ➕ 的**唯一**入库路径，只做 A/B 分流：
+     *
+     * - **A 路**（[BatchTranscriptParser.autoSplitEntries] 交出条目）：整批一次入库，
+     *   所有条目角色统一 = [composeRole]——空行分块结构里首行只是块头（谁说的话客户端才写），
+     *   角色以输入框当前那颗为准（B 路同规则）；
+     * - **B 路**（解析器返回 null）：整段原文按一条消息、角色 = [composeRole] 落库。
+     *
+     * 空文本 no-op（不碰任何通道）。[composeRole] 若不是 HER/ME（《补充》/IDEA 通道），
+     * 一律走 B 路单条——批量通道只接受真实对话角色，[BatchImportDraft] 构造期会硬挡 IDEA，
+     * 这里分流而不是让它抛异常。
+     *
+     * A 路多条走 [importBatchMessages] 的同一条原子 AddMessages：一次追加、一次通知，顺序即原文顺序。
+     */
+    fun addDraftAuto(text: String, composeRole: ChatMessage.Role) {
+        if (text.isBlank()) return
+        val entries = if (composeRole == ChatMessage.Role.HER || composeRole == ChatMessage.Role.ME) {
+            BatchTranscriptParser.autoSplitEntries(text)
+        } else {
+            // IDEA 不是消息角色：不拆、不进批量通道，交给单条路径按备注处理
+            null
+        }
+        if (entries == null) {
+            addMessage(composeRole, text)
+            return
+        }
+        importBatchMessages(
+            entries.map { entry -> BatchImportDraft(composeRole, entry.content) }
+        )
     }
 
     fun updateMessage(index: Int, role: ChatMessage.Role, content: String) { // facade — delegates to ComposerStore
@@ -1051,6 +1107,9 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         if (lease == null) {
             L.w("generate rejected: another foreground operation owns the slot")
+            // 被占槽时"重试/生成"点下去没有任何可见变化，看起来像按钮坏了：
+            // 复用已有的面板警告位说一句，不改任何 UI 结构。
+            showPanelWarning(FOREGROUND_SLOT_BUSY_HINT)
         }
     }
 
@@ -1127,12 +1186,30 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
             // 构建不可变 GenerationInput——冻结本轮全部输入，
             // 含 KB 内容修订、画像正文、Provider 完整非敏感身份与 prompt 资产 hash
-            val aggressive = composer.outputModeNow == 1
             // 这一次请求实际读多大范围的上下文：纯读、不写任何状态（长按不拨开关）。
             // 下面三处（生成输入 / 冻结指纹 / 冻结上下文）共用这一颗，判据只算一次——
             // 三处各自现读开关的话，长按那一条会产出"输入按只读本轮、指纹却按开关"的错配。
             val onlyThisRound = roundStateStore.resolveOnlyThisRound(roundScope)
             val providerConfig = deepSeekRepo.snapshotProviderConfig()
+
+            // ── guide-6 Step 5：Champion 冻结输入——本轮各只读一次（§5.2 拆现场回读）──
+            // 模式快照 = effectiveMode().raw（OFF/SHADOW/LIVE_AUTO；scope 未命中=OFF）。
+            // 已提交轮数 = getTurnCount 原值口径（kb.json turnCount；读失败 → null →
+            // 域内全链回退原生路径，不猜轮次 §5.4）。两项冻结后，本轮内生成中途改设置、
+            // 写盘递增轮数都不再回读——分域判据与提交门禁只认这份快照。
+            val championModeSnapshot =
+                kbName?.let { championEngine?.effectiveMode(it, it)?.raw } ?: "OFF"
+            val committedTurnCountSnapshot = kbName?.let { name ->
+                try {
+                    withContext(Dispatchers.IO) { knowledgeRepo.getTurnCount(name) }
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    L.w("getTurnCount failed: ${e.message}")
+                    null
+                }
+            }
+
             val input = buildGenerationInput(
                 requestId = requestId,
                 messages = snapshot,
@@ -1142,11 +1219,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 corrections = mergedCorrections,
                 correctionsRevision = correctionsRevision,
                 onlyThisRound = onlyThisRound,
-                aggressive = aggressive,
                 providerIdentity = providerConfig?.toIdentity(),
                 kbProfile = kbName?.let { readOrNull("") { knowledgeRepo.readProfile(it) } } ?: "",
                 kbRevision = kbName?.let { readOrNull("") { knowledgeRepo.contentRevision(it) } } ?: "",
-                promptAssetHash = promptBuilder.replyPromptAssetHash()
+                promptAssetHash = promptBuilder.replyPromptAssetHash(),
+                championMode = championModeSnapshot,
+                committedTurnCount = committedTurnCountSnapshot
             )
 
             replyGenerationContext = ReplyGenerationContext(
@@ -1162,6 +1240,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     snapshot, userHint, kbName, onlyThisRound, effectiveIntent.revision
                 ),
                 onlyThisRound = onlyThisRound,
+                championMode = championModeSnapshot,
                 promptVersion = promptBuilder.replyPromptAssetHash()
             )
 
@@ -1193,6 +1272,14 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      */
     internal fun dispatchReply(event: ReplyEvent) {
         replyStore.accept(ReplyStore.Intent.Apply(event))
+        // 失败轮不产出快照：不告诉版本栈的话，下一次回退会拿栈顶当"当前版本"，
+        // 把用户最近看到的成功版一并删掉（v1/v2 成功后 v3 失败再回退 → 丢 v2）。
+        // 只记真正落定的那一条：被 reducer 拒掉的迟到事件根本没进状态（对象身份不同）。
+        if (event is ReplyCompleted && event.result is GenerateResult.Error &&
+            replyUi.value.result === event.result
+        ) {
+            versions.markRoundFailed()
+        }
     }
 
     /**
@@ -1220,18 +1307,29 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 if (ctx == null) {
                     versions.advanceVersionOnly(versionId)
                 } else {
+                    // 记忆引用与别名表是这一轮**真正发出去**的产物，只在成功这一刻与结果配对。
+                    // 两者必须写回 live context 而不只是记进版本栈：`getCurrentMemoryRefs()`
+                    // 与下一轮 `TopicRecorder` 的来源映射读的都是 live context——只记进栈的话，
+                    // 最新一次成功永远显示"没有引用"，空别名表还会让场景事实的来源校验落空。
+                    val committed = ctx.copy(
+                        memoryRefs = effect.memoryRefs,
+                        sourceAliasMap = effect.sourceAliasMap
+                    )
+                    replyGenerationContext = committed
                     versions.record(
                         versionId = versionId,
                         result = effect.result,
-                        context = ctx.copy(
-                            memoryRefs = effect.memoryRefs,
-                            sourceAliasMap = effect.sourceAliasMap
-                        ),
+                        context = committed,
                         kbName = ctx.kbName
                     )
                 }
-                // 生成成功后重置输入变化标记
-                modeController.accept(ModeController.Intent.SetInputChanged(false))
+                // 生成期间用户可能又改了输入：无条件置 false 会把"输入已变化"擦掉，
+                // 于是一条按旧输入生成的回复被当成当前输入的答案。改成重算指纹、与生成时快照比对。
+                if (ctx == null) {
+                    modeController.accept(ModeController.Intent.SetInputChanged(false))
+                } else {
+                    checkInputChanged()
+                }
                 // 递增累计生成次数
                 usageStatsStore.accept(UsageStats.Event.Generated)
             }
@@ -1254,8 +1352,15 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             ForegroundOperationCoordinator.OperationType.REPLY
         )
         // 先取消任务，再落 Idle——避免任务在 Idle 之后又写入状态
-        operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.REPLY)
+        val stopped = operationCoordinator.stopCurrent(ForegroundOperationCoordinator.OperationType.REPLY)
         replyStore.accept(ReplyStore.Intent.DiscardPendingChunks)
+        if (!stopped) {
+            // 没有在飞的 REPLY 任务（已落定 / 刚成功 / 刚失败）：这一次点击什么都没停。
+            // 照旧清 context 会把刚成功那轮的上下文丢掉——下一轮静默返回、点踩拿不到案例；
+            // 所以只有确实停掉一个任务时才清。
+            L.w("stopGeneration ignored: no REPLY task in flight")
+            return
+        }
         current?.let { dispatchReply(ReplyStopped(it.requestId)) }
         // 停止生成时清 context（本轮无成功结果），但消息本身不删
         replyGenerationContext = null
@@ -1391,6 +1496,15 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     /** nextRound 重入保护——仅在 nextRound() 内读写，但它编排 7+ feature store（composer/feedback/replyStore/roundState/roundCorrections/topicRecorder/triggerCoordinator），无法移入单一 store。 */
     private var recordingRound = false
+
+    /**
+     * 后台三引擎收集的单飞闸——不是 UI 状态，只是这条旁路的准入判据。
+     *
+     * 连续两次 nextRound 会各开一条收集：两轮同时跑向量/经验/画像引擎 ⇒ 重复计费、
+     * 同一批经验写两遍。在飞就跳过（不排队），跑完再按新的 lesson 计数判下一轮。
+     */
+    private val triggerRunLock = kotlinx.coroutines.sync.Mutex()
+
     /* private val _probeFakeInBlock = MutableStateFlow(0)
        private var probeFakeInBlockVar = 0 */
     // private val _probeFakeInLine = MutableSharedFlow<Int>()
@@ -1406,6 +1520,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         // 使用生成时绑定的 context，不用实时状态
         val context = replyGenerationContext ?: return
+
+        // 写盘是异步的，这段时间用户可以再点一次生成。收尾只许动"自己那一轮"：
+        // 所以在开始时把当时的请求身份冻结下来，写完只在它仍是当前 owner 时才清/发清空指令。
+        val ownerRequestId = replyUi.value.ownerRequestId
 
         recordingRound = true
 
@@ -1430,9 +1548,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
         // 无 KB 时保持当前产品语义（可结束但提示未记入）
         if (kbName == null) {
-            commitReplyRound(context.messageIds)
+            commitReplyRound(context.messageIds, ownerRequestId)
             showPanelWarning("未激活知识库，本轮对话未记入")
-            replyGenerationContext = null
+            // 只清自己那一轮的快照：期间已发起的新请求不许被这条早退路径抹掉
+            if (replyGenerationContext === context) replyGenerationContext = null
             recordingRound = false
             return
         }
@@ -1466,20 +1585,91 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                         sourceAliasMap = context.sourceAliasMap
                     )
                     if (topicRotated) {
-                        // 后台三引擎不占用前台租约；收集方（本 VM 的 viewModelScope）就是这段工作的 owner
-                        viewModelScope.launch {
-                            triggerCoordinator.triggerEvents(kb.name)
-                                .collect { applyTriggerEvent(it) }
+                        // 后台三引擎不占用前台租约；收集方（本 VM 的 viewModelScope）就是这段工作的 owner。
+                        // 单飞：上一次还在跑时再开一条收集会让两轮各跑一遍引擎——重复计费、
+                        // 同一批经验写两遍。在飞就跳过这一次，下一轮按新的 lesson 计数再判。
+                        viewModelScope.launch triggerRun@{
+                            if (!triggerRunLock.tryLock()) {
+                                L.w("trigger events skipped: previous run still in flight")
+                                return@triggerRun
+                            }
+                            try {
+                                triggerCoordinator.triggerEvents(kb.name)
+                                    .collect { applyTriggerEvent(it) }
+                            } finally {
+                                triggerRunLock.unlock()
+                            }
                         }
                     }
                 }
                 L.w("PERF t7 kb write done (${System.currentTimeMillis() - t7Start}ms)")
 
+                // ── 冠军引擎事件正式提交点（审计 R2-1 / T4 §1.1）──
+                // 事件入库挂在本产品正式提交历史的同一事务点（topicRecorder.record 成功之后、
+                // commitReplyRound 之前）；生成/shadow 路径不写事件库——用户删掉重来的未确认
+                // 输入永不进事件库，同一输入多次生成只在本提交点记一次（按 msgUid 去重）。
+                // 提交失败只记日志：冠军事件是辅助账，绝不把本轮产品落盘拖成「保存失败」。
+                // 审计 S1-P0-1（OFF 零副作用）：提交点检查 Champion 有效模式+作用域——
+                // guide-6 Step 5：门禁判据从「现场回读 effectiveMode」换成**冻结快照**
+                // context.championMode（与生成输入同一份快照，单一快照源 §10.1）——生成中
+                // 改设置不影响本轮提交判定；fromRaw 对脏值 fail-closed 为 OFF。
+                // OFF（显式回退档）零副作用，连事件库目录都不创建。
+                // commitConfirmedTurn 内部还有同一道门禁兜底（双保险，modeSnapshot 同值）；
+                // 这里提前判，是为了 OFF 时连消息格式化都不做。
+                if (championEngine != null &&
+                    com.lovebrain.app.domain.champion.ChampionMode.fromRaw(context.championMode) !=
+                        com.lovebrain.app.domain.champion.ChampionMode.OFF
+                ) {
+                    // §10.5：turn = record 成功后的 getTurnCount（record 已把本轮计入），
+                    // 读失败传 -1 → commitConfirmedTurn 内部按事件库 nextTurn 兜底；
+                    // 轮数读失败不影响本轮已保存事实。
+                    val championTurn = try {
+                        withContext(Dispatchers.IO) { knowledgeRepo.getTurnCount(kbName) }
+                    } catch (e: kotlinx.coroutines.CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        L.w("getTurnCount after record failed: ${e.message}")
+                        -1
+                    }
+                    val championMsgs = messagesSnapshot
+                        .filter { it.role == ChatMessage.Role.HER || it.role == ChatMessage.Role.ME }
+                        .map { m ->
+                            com.lovebrain.app.domain.champion.ChampionMessage(
+                                role = if (m.role == ChatMessage.Role.HER) "HER" else "ME",
+                                text = m.content,
+                                // 同一颗格式器（Locale.ROOT + 公历）：ts 会进冠军历史 prompt，
+                                // SimpleDateFormat + 默认 Locale 在 th_TH 会写成佛历 2569。
+                                ts = com.lovebrain.app.util.TimeFmt.format(m.timestamp),
+                                msgUid = m.id
+                            )
+                        }
+                    if (championMsgs.isNotEmpty()) {
+                        try {
+                            championEngine.commitConfirmedTurn(
+                                contactId = kbName,
+                                story = kbName,
+                                messages = championMsgs,
+                                // guide-6 Step 5：生产链路传冻结快照——commitConfirmedTurn
+                                // 按快照过 scope 门，不再回读设置（旧调用方 null 走原语义）
+                                modeSnapshot = context.championMode,
+                                turn = championTurn
+                            )
+                        } catch (e: kotlinx.coroutines.CancellationException) {
+                            throw e
+                        } catch (t: Throwable) {
+                            L.e("champion commitConfirmedTurn failed（不影响本轮产品落盘）", t)
+                        }
+                    }
+                }
+
                 // 写盘成功 → 才提交 UI 状态
-                commitReplyRound(consumedIds)
-                replyGenerationContext = null
-                // 清空本轮瞬时纠正——新轮次不再受 THIS_ROUND mute 影响
-                roundCorrections.clear()
+                commitReplyRound(consumedIds, ownerRequestId)
+                // 只清自己那一轮的快照：写盘期间用户可能已经点了新的生成，
+                // 那条新请求的 context 属于它自己，旧收尾不许把它置空。
+                if (replyGenerationContext === context) replyGenerationContext = null
+                // 清空本轮瞬时纠正——新轮次不再受 THIS_ROUND mute 影响；
+                // 但已经有新请求在飞时，这份 mute 已经属于新一轮，不能在这里清掉
+                if (replyUi.value.ownerRequestId == ownerRequestId) roundCorrections.clear()
                 // 写盘成功 → 报一句成。用户 2026-10-03 原话："每次记入知识库都一个特别难看的通知，
                 // 你直接说一个 ✅已记入 不就行了吗"。那句"候选未作为已发送消息记录"是内部语义，
                 // 不是用户需要知道的下一步 ⇒ 不再展示；后台那条区分（点赞/采用/记入三条机制、
@@ -1502,13 +1692,20 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     /**
      * 提交本轮 UI 状态 — 只删除本轮 snapshot 对应的消息（按 ID），不盲目清空全部。
      * 同时修正 editingIndex/draftText 防止指向已删除的位置。
+     *
+     * [ownerRequestId] 是**发起这次收尾的那一轮**的请求身份（不是现读的 owner）：
+     * 写盘期间用户可能已经点了新的生成，用现读值发清空指令就是把新请求抹掉。
      */
-    private fun commitReplyRound(consumedMessageIds: Set<String>) {
-        // 消息列表、编辑位与草稿的联动全部在 ComposerStore 那一处（三处列表改动共用同一条判据）
+    private fun commitReplyRound(consumedMessageIds: Set<String>, ownerRequestId: String?) {
+        // 消息列表、编辑位与草稿的联动全部在 ComposerStore 那一处（三处列表改动共用同一条判据）。
+        // 这一轮已经落盘：它自己那批消息与赞踩必须收掉，否则下一轮会把它们再存一遍。
         composer.accept(ComposerStore.Intent.ConsumeMessages(consumedMessageIds))
         feedbackCases.clearFeedbacks()
+        // 下面这些是"开新轮"的复位动作，只属于被收尾的这一轮：owner 已经换了就整段跳过，
+        // 留给那条新请求自己——旧收尾（哪怕只发一条 ReplyCleared）不许动新请求的 owner/context。
+        if (replyUi.value.ownerRequestId != ownerRequestId) return
         // 结果/流式态的清空也走 reducer，不再各自写四个 StateFlow
-        dispatchReply(ReplyCleared(replyUi.value.ownerRequestId ?: ""))
+        dispatchReply(ReplyCleared(ownerRequestId ?: ""))
         // /（  N6）：用户手动结束本轮的收尾处投 ClearNote。
         // 上面 ConsumeMessages 只在这一轮真的消费了消息时顺手清备注暂存位（ids 非空才有动作），
         // 而"备注不该留到下一轮"不该依赖那次顺手的巧合：清场后备注还挂着，
@@ -1527,70 +1724,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         usageStatsStore.accept(UsageStats.Event.Copied)
         return scheme.reply
     }
-
-    // ═══════════ 记录实际发送的版本 ═══════════
-
-    /**
-     * /: 记录用户确认已发送的版本。
-     *
-     * 用户自行确认发送，不代表应用检测到了发送行为。
-     * 确认后写为"我"的真实消息，保存用户确认来源、关联候选版本（若有）、时间。
-     * 同一轮只能有一份当前最终发送记录；同一 generation version 再次确认更新替换。
-     *
-     * 删除同步返回 ActualSentResult.RECORDED——RECORDED 只在 Repository 确认写盘后产生。
-     * 异步结果通过 actualSentState StateFlow 通知 UI。
-     * 不自动绑定第一张卡——linkedSchemeIdentityKey 必须由调用方明确传入，
-     * 不再从 displaySchemes 自动推断。
-     * 同一 generationVersionId 的记录使用 upsert（替换），不 append 多条。
-     */
-    /**
-     * "我确认这条真的发出去了"这一族的**行为与状态**都住在 [ActualSentRecorder]
-     * （复核 第5节第2条 第 6 步：这一块搬的是行为，不是几颗字段）。
-     *
-     * VM 在这里只剩三件事，每件都是"别人家的知识"：交出本轮上下文的三个读数、
-     * 把落盘转给仓库（含 IO 调度）、把回执/面板警告/adopt 计数接回它们各自的主人。
-     * 原来这里还写着 upsert 身份、五种结果的分岔、"每次尝试先回 IDLE"那条防死路判据——
-     * 那些判据现在只有一处，并且能在 JVM 上直接测（`ActualSentRecorderTest`）。
-     */
-    private val actualSent = ActualSentRecorder(
-        scope = viewModelScope,
-        readContext = {
-            replyGenerationContext?.let { ActualSentRecorder.AttemptContext(it.kbName) }
-        },
-        readVersionKey = { versions.currentVersionIdNow?.value },
-        readCandidateText = { key ->
-            key?.let {
-                val result = replyResult as? GenerateResult.Success
-                val identity = com.lovebrain.app.model.SchemeIdentity.fromKey(it)
-                if (result != null && identity != null) ReplyPatch.textOf(result.response, identity) else null
-            }
-        },
-        writeRecord = { kbName, entry, replaces ->
-            withContext(Dispatchers.IO) {
-                if (replaces != null) {
-                    // 替换旧记录——先删旧 entry 再追加新的（仓库那边是两步，这里只表达"替换"）
-                    knowledgeRepo.replaceActualSentRecord(kbName, replaces, entry)
-                } else {
-                    knowledgeRepo.appendActualSentRecord(kbName, entry)
-                }
-            }
-        },
-        onWarning = { msg -> showPanelWarning(msg) },
-        onNotice = { msg -> notices.show(NoticeBoard.Channel.Knowledge, msg) },
-        onAdopted = { usageStatsStore.accept(UsageStats.Event.Adopted) },
-        onError = { e -> L.e("recordActualSentMessage failed", e) }
-    )
-
-    /** 五种结果的原样转发：面板订阅它、并靠"一次跳变"解除「保存中」 */
-    val actualSentState: StateFlow<ActualSentState> = actualSent.state
-
-    fun dismissActualSentState() = actualSent.dismiss() // facade — delegates to ActualSentRecorder
-
-    /** 返回这一次尝试的任务句柄；语义与 `ActualSentRecorder.record` 一致（取消要看得见） */
-    fun recordActualSentMessage(
-        sentText: String,
-        linkedSchemeIdentityKey: String? = null
-    ): kotlinx.coroutines.Job = actualSent.record(sentText, linkedSchemeIdentityKey)
 
     // ═══════════ KnowledgeTriggerCoordinator 事件的唯一落点 ═══════════
 
@@ -1715,7 +1848,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 throw e
             }
         }
-        if (lease == null) L.w("counseling rejected: foreground slot taken")
+        if (lease == null) {
+            L.w("counseling rejected: foreground slot taken")
+            // 同 generate：占槽被拒要说一句，否则"谈心"点了像没反应
+            showPanelWarning(FOREGROUND_SLOT_BUSY_HINT)
+        }
     }
 
     fun stopCounseling() {
@@ -1840,7 +1977,17 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     suspend fun listKnowledgeBases(): List<KnowledgeBase> =
         withContext(Dispatchers.IO) { knowledgeRepo.listAll() }
 
+    /**
+     * 刷新激活库 / 库列表 / 意图这一族。
+     *
+     * 这条链里有多处挂起（读激活库、列库、读向量、刷意图）。连续触发两次时，
+     * 慢的旧读回来会把 `_activeKb` 写回旧值——所以每次发起取一个序号，
+     * 只应用"仍是最后一次发起"的那一份结果；序号只是这条链的准入判据，不是 UI 状态。
+     */
+    private var kbRefreshSeq = 0
+
     fun refreshKnowledgeBases() {
+        val seq = ++kbRefreshSeq
         viewModelScope.launch {
             // intents.refreshForKb 现在是结构化 child（suspend），
             // 不再是 fire-and-forget sibling coroutine。
@@ -1849,6 +1996,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 // KBUI-01：切库时清理上一 KB 的瞬时 vector UI（delta / update / notice）
                 val oldKbName = _activeKb.value?.name
                 val newKb = knowledgeRepo.getActive()
+                // 更晚发起的那次已经接管：这一次读到的值不再许写回任何状态
+                if (seq != kbRefreshSeq) return@launch
                 if (oldKbName != newKb?.name) {
                     vectorStore.accept(VectorStore.Intent.ClearDelta)
                     // 上一块库的瞬时 UI（重估摘要 + 后台回执）整族清掉；面板级警告不属于这一族，
@@ -1863,7 +2012,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 }
                 _activeKb.value = newKb
                 // §10.3：刷新库列表快照——设置一直打开时新建/改名后也能看到最新列表
-                _knowledgeBasesState.value = knowledgeRepo.listAll()
+                val kbList = knowledgeRepo.listAll()
+                // listAll 同样有挂起点：回来时再对一次号，慢读不许把旧列表落账
+                if (seq != kbRefreshSeq) return@launch
+                _knowledgeBasesState.value = kbList
                 // 等 的对象隔离：备注是按"当前对象"暂存的一份补充，切对象必须换账本。
                 // 不投这一颗的话 `_subject` 恒为 null ⇒ 所有库共用同一个暂存位，
                 // A 对象写的"我让军师注意…"会跟着带到 B 对象那屏（用户没要求的串味）。
@@ -1872,7 +2024,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     knowledgeRepo.migrateIfNeeded(it.name)
                     // WAL 崩溃恢复——检查未完成的 round commit 事务并 roll-forward
                     topicRecorder.recoverIfNeeded(it.name)
-                    vectorStore.accept(VectorStore.Intent.SetCurrent(knowledgeRepo.readVector(it.name)))
+                    val vector = knowledgeRepo.readVector(it.name)
+                    // readVector 挂起过：旧读回来时激活库可能已经换了，这一份向量不再上屏
+                    if (seq != kbRefreshSeq) return@launch
+                    vectorStore.accept(VectorStore.Intent.SetCurrent(vector))
                     // 结构化 child——在当前协程内直接 await，不再 fire-and-forget。
                     // intents.refreshForKb 内部有 KB identity guard 保护 UI commit。
                     intents.refreshForKb(it.name)
@@ -1897,52 +2052,19 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
 
     /**
      * 主动发——coordinator 注册的唯一前台任务。
-     *
-     * /：「仅看本轮」与「军师备注」现在也接进这一条链，判据与回复分支同语义、
-     * 同一个真源（回复那一路见 [runReplyRequest] 的 `roundStateStore.resolveOnlyThisRound(roundScope)`）：
-     * 两颗值都在**生成开始时冻结一次**——不在事件流里现读。流里现读的话，
-     * 生成期间拨开关/提交备注会半路改写一次已经发出去的请求该带的上下文范围，
-     * 那一轮的 prompt 就成了"前半段按旧范围、后半段按新范围"的错配（ 的病根之一）。
-     * 引擎形参（`proactiveStream` 的 `onlyThisRound` / `advisorNote`）早已备好并透传给
-     * `buildProactiveUserPrompt`，缺的只是调用点把冻结值递进去。
      */
-    fun generateProactive(draft: String = "", scene: String = "") {
+    fun generateProactive(draft: String = "") {
         // 主动发生成入口——模式由 store 持有，结果区那一半仍归本类
         proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.EnterProactive)
         modeController.accept(ModeController.Intent.SetResultMode(ResultMode.PROACTIVE))
 
         val requestId = ReplyRequestState.newRequestId()
-        val kbSnapshot = _activeKb.value
-        val messages = composer.messageSnapshot()
-        // ──  冻结点（发起这一次请求时读一次，之后本轮不再回读）──
-        // 主动发入口目前没有长按变体，所以走 resolveOnlyThisRound 的默认档 FollowSwitch；
-        // 用这颗函数而不是裸读 onlyThisRoundNow，是为了和回复分支共用同一颗"本轮范围"判据。
-        val onlyThisRound = roundStateStore.resolveOnlyThisRound()
-        // 备注真源是 ComposerStore.noteTextNow（本轮已提交的军师备注），与草稿一样按发起时刻冻结
-        val advisorNote = composer.noteTextNow
         val lease = operationCoordinator.start(
             ForegroundOperationCoordinator.OperationType.PROACTIVE, requestId
         ) {
             proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(ProactiveStarted(requestId)))
             try {
-                // §10.2：主动发也注入持续意图——与回复分支同一颗 IntentPolicy 判到期、
-                // 同一颗 IntentIdeaBlock.buildIntentBlock 组 prompt。"仅看本轮"开启时
-                // buildProactiveUserPrompt 走 buildRoundScope 那一路，intent 一条都不进。
-                val intentSnapshot = kbSnapshot?.name?.let { name ->
-                    try {
-                        withContext(Dispatchers.IO) { knowledgeRepo.readIntent(name) }
-                    } catch (e: kotlinx.coroutines.CancellationException) {
-                        throw e
-                    } catch (e: Exception) {
-                        L.w("proactive readIntent failed: ${e.message}")
-                        null
-                    }
-                } ?: com.lovebrain.app.model.IntentConfig()
-                val effectiveIntent =
-                    if (com.lovebrain.app.domain.IntentPolicy.shouldAutoExpire(intentSnapshot, com.lovebrain.app.util.TimeFmt.now())) {
-                        intentSnapshot.copy(status = com.lovebrain.app.model.IntentStatus.EXPIRED)
-                    } else intentSnapshot
-                generationEngine.proactiveStream(requestId, draft, kbSnapshot, messages, onlyThisRound, advisorNote, effectiveIntent)
+                generationEngine.proactiveStream(requestId, draft)
                     .collect { proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(it)) }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 proactiveStore.accept(com.lovebrain.app.feature.proactive.ProactiveStore.Intent.Apply(ProactiveEnded(requestId)))
@@ -2375,7 +2497,11 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 )
             }
         }
-        if (lease == null) L.w("rewrite rejected: foreground slot taken")
+        if (lease == null) {
+            L.w("rewrite rejected: foreground slot taken")
+            // 生成/谈心占着槽时点"改写"以前只有日志：面板警告位说一句，别让卡片像死键
+            showPanelWarning(FOREGROUND_SLOT_BUSY_HINT)
+        }
     }
 
     /**

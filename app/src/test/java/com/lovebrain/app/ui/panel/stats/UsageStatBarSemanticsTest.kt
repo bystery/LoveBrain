@@ -45,8 +45,7 @@ import org.robolectric.annotation.GraphicsMode
  *
  * 这批判据一律读几何、不读"字符串等不等"。本仓库在这儿栽过：文本挂上
  * `maxLines = 1 + overflow = Ellipsis` 之后，语义树**照样把完整原串报回来**，
- * 于是"串没变"看着就像"没被裁"，判据一点牙都没有（见 `UsageExtremeValuesSemanticsTest`（已删）
- * 与 `EmptyStateOwnershipSemanticsTest` 里为同一件事被逼出来的自然宽控制组）。
+ * 于是"串没变"看着就像"没被裁"，判据一点牙都没有（见 `UsageExtremeValuesSemanticsTest`（已删））。
  * 所以每一栏都同时挂一份**控制组**：同一颗组件、同一格字号、套在 `requiredWidth(2400dp)` 里，
  * 它必然只排一行——用它量出"一行该多高""每一格自然该多宽"，再拿这把尺量被测那一颗。
  * 这把尺**每个格子档位都要重量一次**：字号倍率是套在整棵子树上的，控制组与被测那一颗
@@ -497,7 +496,7 @@ class UsageStatBarSemanticsTest {
 
     @Test
     fun `a short group that fits sits centered on the bar instead of hugging the left edge`() {
-        // §7.2：测量完成后放得下的短组，整条相对实际可用视口居中——不是"只把数值字符 TextAlign.Center
+        // 测量完成后放得下的短组，整条相对实际可用视口居中——不是"只把数值字符 TextAlign.Center
         // 而整组 Row 仍靠左"，也不是左贴边。这一格读几何、量两侧留白，与被裁/被挤的读数无关。
         val cell = mutableStateOf(UiMatrix(600))
         mountBar(cell, shortFields)

@@ -2,7 +2,7 @@
 #
 # scripts/assert_artifacts.sh
 #
-# Empty-evidence gate ( 2026-09-23 第8节第1条 item 6: "XML/HTML/截图为空视为
+# Empty-evidence gate (2026-09-23 audit item 6: "XML/HTML/截图为空视为
 # 失败,不允许 warn 后放行").
 #
 # This script FAILS when instrumentation test evidence is missing or empty:

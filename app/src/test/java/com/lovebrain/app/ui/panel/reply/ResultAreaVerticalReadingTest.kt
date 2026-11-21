@@ -41,7 +41,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * §3「回复卡片纵向排列」的**行为**那一半（默认纵向）：把 [ResultArea] 真挂进语义树量，
+ * 「回复卡片纵向排列」的**行为**那一半（默认纵向）：把 [ResultArea] 真挂进语义树量，
  * 与 `ReplyCardLayoutTest`（纯函数 + 源码结构那一半）分家。
  *
  * 这一族买四件事，每件都对着一条坏实现：
@@ -130,7 +130,6 @@ class ResultAreaVerticalReadingTest {
                     // 在这里补一句 `cardLayout = VERTICAL` 就等于把被测的那颗默认值换掉了
                     ResultArea(
                         result = result,
-                        isGenerating = false,
                         streamingCoreText = "",
                         isGeneratingCore = false,
                         streamingSchemes = emptyList(),
@@ -145,7 +144,6 @@ class ResultAreaVerticalReadingTest {
                 } else {
                     ResultArea(
                         result = result,
-                        isGenerating = false,
                         streamingCoreText = "",
                         isGeneratingCore = false,
                         streamingSchemes = emptyList(),
@@ -217,7 +215,7 @@ class ResultAreaVerticalReadingTest {
         rule.runOnIdle { layout.value = ReplyCardLayout.HORIZONTAL }
         settle()
         rule.onNodeWithTag(SCHEME_ROW_TAG).assertExists()
-        assertEquals("切到横向档不许发一次重新生成（§3：不重新请求 AI、不重新付费）", 0, retryCalls)
+        assertEquals("切到横向档不许发一次重新生成（不重新请求 AI、不重新付费）", 0, retryCalls)
 
         rule.runOnIdle { layout.value = ReplyCardLayout.VERTICAL }
         settle()
@@ -392,7 +390,6 @@ class ResultAreaVerticalReadingTest {
             UiMatrix(widthDp = 600, heightDp = 1200).RenderIn(deviceDensity) {
                 ResultArea(
                     result = round,
-                    isGenerating = false,
                     streamingCoreText = "",
                     isGeneratingCore = false,
                     streamingSchemes = emptyList(),

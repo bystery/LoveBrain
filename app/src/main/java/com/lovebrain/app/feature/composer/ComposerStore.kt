@@ -62,7 +62,7 @@ sealed interface ComposerEditingTarget {
  * 输入区与消息列表的状态持有者（复核 第5节第2条 第 6 步"VM 不再是状态壳"的第一块）。
  *
  * 它接管 VM 里那九颗各自可写的 `MutableStateFlow`：面板状态、消息列表、当前角色、
- * 编辑位、《想法》chip 态、两条草稿、输入/输出模式、计划面板。搬之前它们的写法是
+ * 编辑位、《想法》chip 态、两条草稿、输入模式、计划面板。搬之前它们的写法是
  * "谁需要谁 `_messages.value = …`"，共 11 处；其中"改完列表要顺手修正编辑位"这件事
  * 在三个地方各抄了一遍（[MessageListEditing] 的 KDoc 记着这段历史）。
  *
@@ -76,8 +76,8 @@ sealed interface ComposerEditingTarget {
  * `checkInputChanged()` 的，既有测试与真机门禁证据都按这个时序写。改成异步会把
  * "喂完意图就断言状态"变成"还得等一次调度"，那是拿结构改进换一批时序漂移。
  *
- * 持久化不在这个类里：它只交出 [savePanelMode] / [persistCounselingDraft] / [saveOutputMode]
- * 三个回调，所以 store 不知道有 `SecurePrefs` 这回事（第5节第1条 的包边界：`feature` 不许 import `data`）。
+ * 持久化不在这个类里：它只交出 [savePanelMode] / [persistCounselingDraft]
+ * 两个回调，所以 store 不知道有 `SecurePrefs` 这回事（第5节第1条 的包边界：`feature` 不许 import `data`）。
  *
  * ##  之后：三轴各有主人，谁都不许替谁猜
  * | 轴 | 存在哪 | 谁能改它 |
@@ -96,17 +96,10 @@ class ComposerStore(
     /** 谈心草稿防抖窗口。测试要能改小，否则每测一次防抖都要真等 600ms。 */
     private val draftDebounceMs: Long = DEFAULT_DRAFT_DEBOUNCE_MS,
     initialPanelMode: Int = 0,
-    initialOutputMode: Int = 0,
     /** 消息/草稿内容变化——调用方借此判断"旧结果是否该标 stale"。同步调用，见类 KDoc。 */
     private val onContentChanged: () -> Unit = {},
     private val savePanelMode: (Int) -> Unit = {},
-    private val persistCounselingDraft: (String) -> Unit = {},
-    private val saveOutputMode: (Int) -> Unit = {},
-    /**
-     * 输出模式的校验出口——"直出/进攻"的合法组合规则住在 prompt 配置层，不在这里复制一份。
-     * 默认恒等，供不需要校验的调用方（与测试）使用。
-     */
-    private val normalizeOutputMode: (Int) -> Int = { it }
+    private val persistCounselingDraft: (String) -> Unit = {}
 ) {
 
     /** 唯一入口：外部只能投意图。状态 flow 全是私有字段。 */
@@ -115,7 +108,6 @@ class ComposerStore(
         data class SetDraft(val text: String) : Intent
         data class SetCounselingDraft(val text: String) : Intent
         data class SetPanelMode(val mode: Int) : Intent
-        data class SetOutputMode(val mode: Int) : Intent
 
         /**
          * 旧调用点（宿主、捕获链）仍在投这一颗：`IDEA` 被读成"输入对象 = 补充"，
@@ -142,21 +134,44 @@ class ComposerStore(
          */
         data class SubmitNote(val text: String) : Intent
 
-        /** 显式清掉本轮备注（"结束本轮"之外的清位，例如面板主动作废） */
+        /**
+         * 显式清掉本轮备注（"结束本轮"之外的清位，例如面板侧滑清备注 / 本轮收尾）。
+         *
+         * ⚠ **不默认清输入框草稿**：那条草稿是用户还没提交的输入，不是备注（见 [clearNote]）。
+         * 唯一例外是"此刻正在编辑备注"——那份草稿本身就是备注正文，必须一起清，
+         * 否则下一次读备注会把它并回来，备注等于没清。
+         */
         data object ClearNote : Intent
 
         data class AddMessage(val role: ChatMessage.Role, val content: String) : Intent
+
+        /**
+         * 批量导入（Issue #7 / 外部审计 F3）的一次落点：预览确认后的多条真实对话**按序一次**追加。
+         *
+         * 为什么不是让调用方循环投 [AddMessage]：几十条导入 = 几十次列表重建与几十次
+         * `onContentChanged`（旧结果标 stale 的钩子），中间没有任何人消费那些中间态。
+         * 这一颗把"一次批量"当一次写入：**一次校验、一次追加、一次通知**（[addMessages]）。
+         * 校验是**全有或全无**：混进一条非法草稿就整批不落，绝不"滤掉坏项、余项照导"。
+         *
+         * 与逐条路径的关系：单条 [AddMessage] 原样保留（手工输入/自动捕获仍走它），
+         * 两颗漏斗落进**同一份列表**、同一套判空判据，批量不比逐条多任何特权。
+         * 正文口径唯一不同：逐条沿用旧的 trim（手工输入习惯），批量只裁块级首尾空行、
+         * 不削正文行首缩进（A 路转录的正文必须原样入库，见 [addMessages]）。
+         * 元素是 [BatchImportDraft] 而不是裸 (role, content)：构造期就硬挡了 `IDEA` 与
+         * 空正文——军师备注通道（KNOWN_FAILURES F1/F3 边界）在类型上就进不了批量。
+         */
+        data class AddMessages(val drafts: List<BatchImportDraft>) : Intent
         data class UpdateMessage(val index: Int, val role: ChatMessage.Role, val content: String) : Intent
         data class RemoveMessage(val index: Int) : Intent
         data class RemoveMessageById(val id: String) : Intent
 
         /**
-         * §8.1 方向映射里"向内"那一条的落点：把**这一条**消息换成对话的另一方（她 ↔ 我）。
+         * 换边方向映射里"向内"那一条的落点：把**这一条**消息换成对话的另一方（她 ↔ 我）。
          *
          * 落点只认稳定 id（与 [RemoveMessageById] 同一口径：横滑的落点在松手那一帧才算清，
          * 那之前下标可能已经因为增删/重排过期，按下标改就会改到邻居身上）。
          *
-         * 它只改这一条的角色，其余一律不动——§8.1 点名的"不能连带改变"三件事在这里都有主：
+         * 它只改这一条的角色，其余一律不动——换边规则点名的"不能连带改变"三件事在这里都有主：
          * 输入框当前角色（[_inputKind]）、捕获默认角色（[_currentRole]）、正在编辑的对象
          * （[_editingTarget] / [_editingIndex]）与草稿正文都不在这一颗的射程里。
          * id、正文、时间戳与列表顺序原样保留（同一条数据换了说话人，不是删一条再建一条）。
@@ -171,8 +186,6 @@ class ComposerStore(
         /** 进程内恢复：只改状态，**不写回持久层**（写回是用户动作的结果，不是启动的副作用） */
         data class RestorePanelMode(val mode: Int) : Intent
         data class RestoreCounselingDraft(val text: String) : Intent
-        /** 启动时把"已按持久层校验过的"输出模式放进来——校验与落盘由调用方在它之前做完 */
-        data class RestoreOutputMode(val mode: Int) : Intent
 
         /** 清空谈心草稿：状态与防抖尾一起处理，防"清空后旧草稿被防抖任务写回"那一类复活竞态 */
         data object ClearCounselingDraft : Intent
@@ -200,7 +213,6 @@ class ComposerStore(
     private val _draftText = MutableStateFlow("")
     private val _counselingDraft = MutableStateFlow("")
     private val _panelMode = MutableStateFlow(initialPanelMode)
-    private val _outputMode = MutableStateFlow(initialOutputMode)
 
     // ──  新增的三轴真值（见类 KDoc 那张表） ────────────────────────────
     private val _inputKind = MutableStateFlow(ComposerInputKind.HER)
@@ -242,7 +254,6 @@ class ComposerStore(
     val draftText: StateFlow<String> = _draftText.asStateFlow()
     val counselingDraft: StateFlow<String> = _counselingDraft.asStateFlow()
     val panelMode: StateFlow<Int> = _panelMode.asStateFlow()
-    val outputMode: StateFlow<Int> = _outputMode.asStateFlow()
 
     /** 谈心草稿防抖写盘任务（取消旧任务 + 延迟落盘，防每击键一次加密写盘） */
     private var draftPersistJob: Job? = null
@@ -254,7 +265,6 @@ class ComposerStore(
     val editingIndexNow: Int get() = _editingIndex.value
     val currentRoleNow: ChatMessage.Role get() = _currentRole.value
     val ideaComposeModeNow: Boolean get() = _ideaComposeMode.value
-    val outputModeNow: Int get() = _outputMode.value
     val inputKindNow: ComposerInputKind get() = _inputKind.value
     val editingTargetNow: ComposerEditingTarget get() = _editingTarget.value
     val subjectNow: String? get() = _subject.value
@@ -284,11 +294,6 @@ class ComposerStore(
                 _panelMode.value = mode
                 savePanelMode(mode)
             }
-            is Intent.SetOutputMode -> {
-                val mode = normalizeOutputMode(intent.mode)
-                _outputMode.value = mode
-                saveOutputMode(mode)
-            }
             is Intent.SetCurrentRole ->
                 // 兼容入口：旧宿主与 `FloatingService` 还在投这颗。
                 // `IDEA` 只表示"输入对象 = 补充"，**不落捕获角色**——真实聊天捕获的角色
@@ -301,6 +306,7 @@ class ComposerStore(
             is Intent.SubmitNote -> if (intent.text.isNotBlank()) commitSupplement(intent.text.trim())
             Intent.ClearNote -> clearNote()
             is Intent.AddMessage -> addMessage(intent.role, intent.content)
+            is Intent.AddMessages -> addMessages(intent.drafts)
             is Intent.UpdateMessage -> updateMessage(intent.index, intent.role, intent.content)
             is Intent.RemoveMessage -> removeMessage(intent.index)
             is Intent.RemoveMessageById -> removeMessageById(intent.id)
@@ -308,7 +314,6 @@ class ComposerStore(
             is Intent.ReorderMessages -> reorderMessages(intent.from, intent.to)
             is Intent.ConsumeMessages -> consumeMessages(intent.ids)
             is Intent.RestorePanelMode -> if (intent.mode in 0..1) _panelMode.value = intent.mode
-            is Intent.RestoreOutputMode -> _outputMode.value = intent.mode
             is Intent.RestoreCounselingDraft ->
                 if (intent.text.isNotEmpty()) _counselingDraft.value = intent.text
             Intent.ClearCounselingDraft -> clearCounselingDraft()
@@ -447,6 +452,57 @@ class ComposerStore(
     }
 
     /**
+     * 批量导入的 reducer：**一次校验、一次追加、一次通知**（外部审计 F3 的第一条）。
+     *
+     * 校验是**全有或全无**：任一草稿非法（IDEA / 空正文）就整批拒绝，`false` 回给调用方，
+     * 列表与通知一个字都不动。为什么不是"滤掉坏项、余项照导"：批量导入是一次提交，用户
+     * 交来的是一份完整转录，静默吞掉其中几条再落其余，得到的是一份没人确认过的残缺对话，
+     * 而且"少了一条"在下游完全看不出来。单条 [Intent.AddMessage] 的 no-op 语义不受影响。
+     *
+     * [BatchImportDraft] 构造期已挡过一次 IDEA 与空正文，这里再判一次是同一防线在 store
+     * 侧的镜像：任何绕过构造期的方式（未来反序列化、内部重构）都不会让一条空白/备注正文
+     * 混进真实对话通道——也不会让同批的真实条目跟着漏进去。
+     *
+     * 通知只叫**一次** [onContentChanged]：stale 判定是"输入变没变"的布尔钩子，
+     * 几十条一次落与逐条落五十次的最终状态相同，旧结果该被标过时的判定也相同——
+     * 重复通知只会让宿主把同一份 stale 判定白跑几十遍。
+     *
+     * 追加在尾部、顺序即预览顺序；不触碰编辑位/草稿/备注（追加不改变任何既有条目的
+     * 下标与身份，与逐条 [addMessage] 同一口径）。
+     *
+     * 正文口径：只裁**块级首尾空行**，行首缩进与行尾空格原样写入。不能沿用逐条路径的
+     * `trim()`——解析器（`BatchTranscriptParser`）刻意保留正文行首缩进，这里再 trim 一次
+     * 等于把它削掉，端到端没有第三层能补回来。
+     *
+     * @return true = 整批已落；false = 整批被拒（零写入、零通知）。
+     */
+    private fun addMessages(drafts: List<BatchImportDraft>): Boolean {
+        if (drafts.isEmpty()) return false
+        if (drafts.any { it.role == ChatMessage.Role.IDEA || it.content.isBlank() }) return false
+        _messages.value = _messages.value +
+            drafts.map { ChatMessage(role = it.role, content = stripBlankEdgeLines(it.content)) }
+        onContentChanged()
+        return true
+    }
+
+    /**
+     * 批量正文的写入口径：只去掉块级首尾空行，行首缩进与行尾空格原样保留。
+     *
+     * 解析器交出的正文本就不带块首尾空行；这里再裁一次是给绕过解析器的调用方兜底。
+     * 不能用 `trim()`：行首缩进是粘贴文本的一部分（`BatchTranscriptParser` 为此不 trim），
+     * 在这里削掉就再也没有一处能把它补回来。
+     */
+    private fun stripBlankEdgeLines(text: String): String {
+        val lines = text.lines()
+        val first = lines.indexOfFirst { it.isNotBlank() }
+        if (first < 0) return ""
+        val last = lines.indexOfLast { it.isNotBlank() }
+        // 没有可裁的行就原样返回，连换行形态都不动（正常无缩进文本零变化）
+        if (first == 0 && last == lines.lastIndex) return text
+        return lines.subList(first, last + 1).joinToString("\n")
+    }
+
+    /**
      * 提交一次编辑——**落点只认 [ComposerEditingTarget] 那个身份**，不认输入行此刻亮着哪颗 chip。
      *
      * 这是  三轴分工在这里唯一真正生效的地方。旧写法第一行就是
@@ -530,7 +586,7 @@ class ComposerStore(
      * 与 [removeMessageById] / [updateMessage] 同一口径：落点只认身份。
      *
      * 这里刻意不叫 [applyEditedList]：列表长度、顺序与每一条的 id 都没变，编辑位与草稿不会
-     * 因为一次换边而漂移；§8.1 要的正是不连带改这几样。
+     * 因为一次换边而漂移；换边规则要的正是不连带改这几样。
      */
     private fun switchMessageRoleById(id: String) {
         val list = _messages.value
@@ -732,15 +788,30 @@ class ComposerStore(
         onContentChanged()
     }
 
-    private fun clearNote() {
-        if (_replyNote.value.isEmpty() && _draftText.value.isBlank() &&
-            _editingTarget.value !is ComposerEditingTarget.Note
-        ) {
+    /**
+     * 清掉本轮备注（灰字那一行）+ 备注按对象的暂存位。
+     *
+     * 草稿归谁：输入框里那段是**用户还没提交的输入**，不是备注的一部分，所以默认**不**跟着走
+     * ——侧滑清备注、本轮收尾都不该顺手删掉用户正在写的她/我/新的那半句。
+     * 旧写法无条件 `_draftText = ""`，于是"备注预填过 → 用户改了草稿 → 清备注"会把草稿一起清掉。
+     *
+     * 唯一必须连草稿一起清的例外：**此刻编辑对象就是备注**。那份草稿本身就是备注正文
+     * （[Intent.BeginNoteEdit] 预填进来的），留着它，下一次 [effectiveNoteText] 会把它并回备注，
+     * 界面上的灰字原地复活——那等于这次清备注没发生。
+     *
+     * @param clearDraft 调用方确实要连草稿一起作废时显式传 true；目前的两个生产调用点
+     *   （面板侧滑清备注、本轮收尾）都不需要。
+     */
+    private fun clearNote(clearDraft: Boolean = false) {
+        val editingNote = _editingTarget.value is ComposerEditingTarget.Note
+        // 早退只看备注本体与编辑位：草稿不是备注（上面 KDoc），没有备注可清时必须完全 no-op，
+        // 连内容变化通知都不许报（否则只有草稿的那一轮被误判"输入变了"）。
+        if (_replyNote.value.isEmpty() && !editingNote) {
             return
         }
         clearNoteStashForCurrentSubject()
-        _draftText.value = ""
-        if (_editingTarget.value is ComposerEditingTarget.Note) applyEditingTarget(ComposerEditingTarget.None)
+        if (clearDraft || editingNote) _draftText.value = ""
+        if (editingNote) applyEditingTarget(ComposerEditingTarget.None)
         onContentChanged()
     }
 

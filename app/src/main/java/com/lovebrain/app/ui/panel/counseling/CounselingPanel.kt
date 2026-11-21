@@ -24,7 +24,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -85,17 +84,8 @@ fun CounselingPanel(
                 .background(SurfaceCard)
                 .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.lg)
                 // 编辑意图：用户触碰输入框区域 → 通知 FloatingService 进入 EDITING
-                // 使用 pointerInput 检测 Press 事件但不消费，让 BasicTextField 仍能收到点击获焦
-                .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
-                    awaitPointerEventScope {
-                        while (true) {
-                            val event = awaitPointerEvent()
-                            if (event.changes.any { it.pressed }) {
-                                onInputIntent()
-                            }
-                        }
-                    }
-                } else Modifier)
+                //（边沿触发、不消费事件，通用 WHY 归 [overlayInputIntent]；与 ReplyInput 同一条链）。
+                .overlayInputIntent(onInputIntent)
                 .padding(horizontal = Spacing.lg)
         ) {
             BasicTextField(
@@ -130,9 +120,9 @@ fun CounselingPanel(
             }
         }
 
-        // 拖动归属（§8.4 表 + §9）：这一条**只调输入框高度**，不是移动悬浮窗的那一颗。
+        // 拖动归属（表）：这一条**只调输入框高度**，不是移动悬浮窗的那一颗。
         // 用户说的"谈心那面透明拖动区太难命中"归页面顶部那条连续命中带（`ui/panel/DragHandle`
-        // + `DragBand`，热区在整屏最上面那一格），把它改粗不等于解决——§9 明写"不能把回复页
+        // + `DragBand`，热区在整屏最上面那一格），把它改粗不等于解决——明写"不能把回复页
         // 分隔线改粗就宣称解决"。这一条的尺寸本轮一寸没动。
         DraggableDivider(
             onDragDelta = { delta ->
@@ -273,7 +263,7 @@ fun CounselingPanel(
                         // PrimarySubtle 描边 + labelMedium/PrimaryDark/SemiBold 字 + lg/sm 内边距 + 0.92 按压）
                         // 逐项抄进 [LbChipStyles.soft] 的 `.copy`，不在页面里另画一条 Modifier 链。
                         // ⚠ 高度/热区/标签位/行数那一档**不在这里写**：走 [counselingCompactChipTier]
-                        //（§9「谈心模板整组用同一紧凑档」——谈心这一族的这一档只有一处主人，
+                        //（「谈心模板整组用同一紧凑档」——谈心这一族的这一档只有一处主人，
                         // 这里再抄一遍就是"同一档散在几处、随时各自跑偏回 48 整行占高"的旧形状）。
                         // ⚠ 这是**动作入口**（点下去开/收追问区），不是"在哪一格"——故选
                         // [LbChipInteraction.Action]：`Role.Button`，语义树不发 `selected`；
@@ -347,17 +337,8 @@ fun CounselingPanel(
                                         .background(SurfaceInset)
                                         .border(AppDimens.BORDER_WIDTH_DP.dp, Border, LoveBrainShape.md)
                                         // 编辑意图：追问输入框同样需要进入 EDITING
-                                        // 使用 pointerInput 检测 Press 事件但不消费
-                                        .then(if (onFollowUpInputIntent != null) Modifier.pointerInput(Unit) {
-                                            awaitPointerEventScope {
-                                                while (true) {
-                                                    val event = awaitPointerEvent()
-                                                    if (event.changes.any { it.pressed }) {
-                                                        onFollowUpInputIntent()
-                                                    }
-                                                }
-                                            }
-                                        } else Modifier)
+                                        //（边沿触发，与主输入区共用 [overlayInputIntent]）。
+                                        .overlayInputIntent(onFollowUpInputIntent)
                                         .padding(horizontal = Spacing.lg, vertical = Spacing.md)
                                 ) {
                                     if (followUpText.isEmpty()) {

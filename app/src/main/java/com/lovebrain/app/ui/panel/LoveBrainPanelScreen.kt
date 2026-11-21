@@ -5,13 +5,6 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,10 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
@@ -50,7 +41,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lovebrain.app.PanelBackdropOpacity
 import com.lovebrain.app.R
-import com.lovebrain.app.feature.composer.ComposerInputKind
 import com.lovebrain.app.feature.composer.ComposerStore
 import com.lovebrain.app.feature.notice.NoticeBoard
 import com.lovebrain.app.model.ChatMessage
@@ -66,7 +56,6 @@ import com.lovebrain.app.ui.panel.settings.LoveBrainSettingsContent
 import com.lovebrain.app.ui.panel.stats.UsageStatBar
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.ui.theme.*
-import com.lovebrain.app.domain.IntentPolicy
 import com.lovebrain.app.viewmodel.LoveBrainViewModel
 import com.lovebrain.app.viewmodel.FloatingServiceHomePort
 import com.lovebrain.app.service.FloatingService
@@ -113,20 +102,58 @@ private object PanelDimens {
 private val OnboardGuideLineHeight = 20.sp
 
 /**
- * 这三条输入路**只有"进入编辑"信号、没有失焦信号**，宿主收不到它们交回焦点。
+ * 曾经登记"只有进入编辑信号、没有失焦信号"的输入路，面板交回焦点时替它们逐条点名。
  *
- * 名单里的字面量就是宿主 `PanelInputFocusOwner.activeInputId` 里记着的那三颗——它们各自经
- * `onInputIntent("settings")` / `("intent_editor")` / `("scheme_adjust")` 进 EDITING，
- * 但那条链上只有 `LbFieldInput` 的 `onInputIntent`；这颗组件压根没有上报焦点变化的入口，
- * 所以焦点走了也没人替它报一声（对照 "reply / counseling" 两格：那两格自带 `onFocusChange`，
- * 自己会报）。面板交回焦点时因此要把这三颗逐条点名一次：宿主的 `onInputFocusChanged(id, false)`
- * 按 `activeInputId` 认人，不是它记着的那一颗就直接 return ⇒ 多发的是空操作，
- * 不会误关别处的编辑态。
- *
- * ⚠ 这三颗名字**不许**在这里单方面改：它们由各调用点自己传进来，要改得连着那三处一起改。
- * 正解是那三条链把失焦也接上（给 `LbFieldInput` 补一个焦点回调），接上之后这一份名单就该清空。
+ * 现在清空了：每一颗悬浮窗输入面都自己报焦点边沿（见 [LocalOverlayInputFocus]），
+ * 失焦由真实边沿交回宿主，不再靠名单猜。唯一出口里那颗点名点保留——日后再出现
+ * 报不了失焦的路，登记在这里，不许在别处另拼一份交接。
  */
-private val NON_REPORTING_INPUT_IDS = listOf("settings", "intent_editor", "scheme_adjust")
+private val NON_REPORTING_INPUT_IDS = emptyList<String>()
+
+/**
+ * 悬浮窗输入面的焦点边沿通道：面板按面绑一颗（稳定输入 id + 与 reply/counseling 同一颗
+ * 宿主回调 [LoveBrainPanelScreen.onInputFocusChange]），面内只经
+ * [rememberOverlayInputFocusReporter] 交给 `LbFieldInput.onFocusChange`，不自带 id；
+ * 首参 instanceKey 是每颗输入框自己的实例身份，宿主按它记账、失焦只摘自己那一格。
+ * 没绑定（普通 Activity / 单独挂载）= 空操作，既有调用点一寸不动。
+ */
+internal val LocalOverlayInputFocus = compositionLocalOf<(Any, Boolean) -> Unit> { { _, _ -> } }
+
+/** 给一颗输入面绑稳定 id 的焦点上报器：lambda 身份稳定（不随重组打脏读取方），宿主回调永远取当下那份。 */
+@Composable
+internal fun rememberOverlayFocusReporter(
+    inputId: String,
+    onInputFocusChange: (Any, String, Boolean) -> Unit
+): (Any, Boolean) -> Unit {
+    val currentHost by rememberUpdatedState(onInputFocusChange)
+    return remember(inputId) { { key, focused -> currentHost(key, inputId, focused) } }
+}
+
+/**
+ * 输入面这一侧取这一颗：把获焦/失焦边沿交给宿主，并在**离开树**时补一次失焦。
+ *
+ * 为什么离树那一半不可省：本版 Compose 不给已摘除的节点派发焦点事件
+ * （FocusInvalidationManager 派发前逐颗查 isAttached）——关设置页、拨关意图开关、
+ * 卡片滑出视口这些"框跟着树一起没"的路，边沿回调永远等不到；只接边沿的话，
+ * 宿主会记着那颗已不存在的框永久挂在 EDITING。
+ */
+@Composable
+internal fun rememberOverlayInputFocusReporter(): (Boolean) -> Unit {
+    val report = LocalOverlayInputFocus.current
+    val currentReport by rememberUpdatedState(report)
+    val instanceKey = remember { Any() }
+    // 多实例可能共绑同一 id：方案卡可同时开多个自定义框，横向列表滑出即回收。
+    // 只有本实例真正报过获焦，离树时才补 false——别的实例被回收不许把持焦者的
+    // 输入所有权一起打掉（光标还在时窗口被打回 PASSIVE，键盘会消失）。
+    var claimed by remember { mutableStateOf(false) }
+    DisposableEffect(Unit) {
+        onDispose { if (claimed) currentReport(instanceKey, false) }
+    }
+    return remember(report) { { focused ->
+        claimed = focused
+        report(instanceKey, focused)
+    } }
+}
 
 /**
  * 本屏自己那份 `OnBackPressedDispatcherOwner`，用来让返回键先退掉输入。
@@ -327,7 +354,7 @@ private fun PanelSettingsPage(
 @Composable
 fun LoveBrainPanelScreen(
     viewModel: LoveBrainViewModel,
-    onInputFocusChange: (String, Boolean) -> Unit,
+    onInputFocusChange: (Any, String, Boolean) -> Unit,
     onInputIntent: (String) -> Unit,
     onClearComposeFocus: ((() -> Unit) -> Unit),
     onResize: (Int, Int) -> Unit,
@@ -490,17 +517,17 @@ fun LoveBrainPanelScreen(
     //    只把 Compose 焦点交回去不保证键盘自己收（此前这三处就是只"交出"、从不"收键盘"）。
     // 2. `focusManager.clearFocus(force = true)`——交回 Compose 焦点。`force` 才动得了用户
     //    正在打字那一颗**主动**焦点；不带 force 的 clearFocus 只清非主动焦点，等于什么都没交。
-    // 3. 把那三条**只有"进入编辑"信号、没有失焦信号**的路逐条点名给宿主
-    //    （[NON_REPORTING_INPUT_IDS]）：`PanelInputFocusOwner.onInputFocusChanged` 按
-    //    `activeInputId` 认人——不是它记着的那一格就直接 return，所以多发的那几句是空操作，
-    //    不会误关别处的编辑态；而真的由这三条路之一进的那一次编辑，这一刻就落回 PASSIVE。
-    //    「reply / counseling」两格不需要这一句：它们自己 `onFocusChanged(false)` 就会报（见上面）。
+    //    各输入面此刻还在树上（浮层退场动画未播完），清焦触发的是它们**真实的失焦边沿**，
+    //    由面内那颗上报器自己点名宿主；已摘除的节点由上报器的离树那一半兜住。
+    // 3. [NON_REPORTING_INPUT_IDS] 逐条点名——如今名单为空（各面都自己报了），
+    //    这一句保留为唯一出口上的登记点：`PanelInputFocusOwner.onInputFocusChanged` 按
+    //    `activeInputId` 认人，不是它记着的那一格就直接 return，多发的是空操作。
     // `rememberUpdatedState` 交出去的是**当下这一份**接线：切页/关层那些 `LaunchedEffect`
     // 的 key 变了也不会拿第一次组合的旧 lambda 去调新的宿主回调。
     val handOffInput: () -> Unit = {
         keyboard?.hide()
         focusManager.clearFocus(force = true)
-        NON_REPORTING_INPUT_IDS.forEach { onInputFocusChange(it, false) }
+        NON_REPORTING_INPUT_IDS.forEach { onInputFocusChange(Any(), it, false) }
     }
     val currentHandOffInput by rememberUpdatedState(handOffInput)
     DisposableEffect(onClearComposeFocus) {
@@ -521,8 +548,8 @@ fun LoveBrainPanelScreen(
         currentHandOffInput()
     }
 
-    // ── 另外三条失焦路径也走同一个交接出口 ─────────────────────────────────
-    // 设置页盖层打开/关闭、意图编辑器关闭这三条路径同样需要交出 Compose 焦点。
+    // ── 另外几条失焦路径也走同一个交接出口 ─────────────────────────────────
+    // 设置页盖层打开/关闭、意图编辑器关闭这两族路径同样需要交出 Compose 焦点。
     // 旧版只接了 `panelMode` 切页，设置页从主面盖上来（或收回去）时，正在获焦的那根
     // BasicTextField 不会自动失焦——`onFocusChanged(false)` 不触发，
     // `PanelInputFocusOwner.activeInputId` 不清、窗口仍挂 EDITING、IME 不收。
@@ -539,6 +566,14 @@ fun LoveBrainPanelScreen(
     // `showIntentEditor` 从 true→false 时清一次。
     LaunchedEffect(showIntentEditor) {
         if (!showIntentEditor) {
+            currentHandOffInput()
+        }
+    }
+
+    // 标错浮层的草稿框如今也带意图与焦点上报：关闭时同样经唯一出口交接——
+    // 退场动画未播完树还在，清焦触发真实失焦；树摘除后由面内上报器补离树那一次。
+    LaunchedEffect(memoryCorrectionFlow.wrongTargetId) {
+        if (memoryCorrectionFlow.wrongTargetId == null) {
             currentHandOffInput()
         }
     }
@@ -701,7 +736,6 @@ fun LoveBrainPanelScreen(
                     onCollapse = onCollapse,
 
                     // 页头整行也是拖动窗口的手柄：不接这颗，只能靠顶部那条细槽拖动
-                    // 输出模式（回复/主动发）的状态在 VM 里，页头不持有它
                     onHeaderDrag = onMove,
                     // 左上角齿轮：整窗切设置页（弹窗、半屏 Sheet、外部 Activity 都不是这一格的答案）
                     onOpenSettings = { surface.openSettings() }
@@ -845,6 +879,7 @@ fun LoveBrainPanelScreen(
                 // 正文全拖进纯缩进 diff，真改动就被 240 行缩进淹掉）。
                 Column(modifier = Modifier.fillMaxSize()) {
                 val inputFocusRequester = remember { FocusRequester() }
+                val replyFocusKey = remember { Any() }
                 // ── 次级控制的两处挂载点，共用同一份状态 ──────────────────────────
                 // 口径只算一次：`hasRealDialogueRows(messages)` 就是 `MessageList` 内部那一口，
                 // 有真实消息 → 挂输入区行 2；没有 → 收进消息卡空态分支。两处二选一，绝不在
@@ -869,24 +904,36 @@ fun LoveBrainPanelScreen(
                     onOnlyThisRoundChange = { viewModel.toggleOnlyThisRound() },
                     // hasRealMessages 与 MessageList 共用同一口径（hasRealRows）；仅看本轮不再随它二选一挂载。
                     hasRealMessages = hasRealRows,
+                    // 用户口径（2026-11-21 原话）："不要加入新的UI！！即不要长按解析！！直接输入 输入框直接解析"。
+                    // 轻点 ➕ 就是把输入框内容解析成多条消息——A/B 分流与入库都在 `addDraftAuto` 里，
+                    // 这一颗只是它唯一的手势入口：无预览、无浮层、不长按。
                     onAdd = {
-                        val text = draftText.trim()
-                        if (text.isNotEmpty()) {
+                        // 原样交给 A/B 分流：A 路正文的行首缩进/行尾空格是粘贴文本的一部分，
+                        // 在这里 trim 掉就再也补不回来（解析器与 AddMessages 都不削正文）；
+                        // B 路/备注/编辑各自的落点照旧自行 trim，两条路不共用同一份预清洗。
+                        val text = draftText
+                        if (text.isNotBlank()) {
                             if (editingIndex >= 0) {
                                 viewModel.updateMessage(editingIndex, composeRole, text)
                                 viewModel.setEditingIndex(-1)
-                            } else if (inputKind == ComposerInputKind.SUPPLEMENT) {
-                                // 选《补充》时这一格写的是"给军师的话"，不是聊天流里的一条消息。
+                                viewModel.setDraft("")
+                            } else if (composeRole == ChatMessage.Role.IDEA) {
+                                // IDEA（《补充》）不是消息角色：这一格写的是"给军师的话"，
                                 // 走 SubmitNote，绝不进 messages（进了就会被记成"我说过这句话"）。
+                                // 判据用 composeRole 而不是另读 inputKind：分流下游 `addDraftAuto`
+                                // 也只认这个角色，两处同源，IDEA 不可能漏进批量通道。
                                 viewModel.composer.accept(ComposerStore.Intent.SubmitNote(text))
+                                viewModel.setDraft("")
                             } else {
-                                viewModel.addMessage(composeRole, text)
+                                // A/B 分流都在它里面：A 路（空行分块）只取每块正文、角色全部用 composeRole
+                                // 整批入库；B 路原文一条按 `composeRole`；IDEA 不会走到这里（上一支）。
+                                // 返回 Unit，落空也清草稿。
+                                viewModel.addDraftAuto(text, composeRole)
+                                viewModel.setDraft("")
                             }
-                            viewModel.setDraft("")
                         }
                     },
-                    inputId = "reply",
-                    onFocusChange = { focused -> onInputFocusChange("reply", focused) },
+                    onFocusChange = { focused -> onInputFocusChange(replyFocusKey, "reply", focused) },
                     onInputIntent = { onInputIntent("reply") },
                     focusRequester = inputFocusRequester
                 )
@@ -1005,9 +1052,13 @@ fun LoveBrainPanelScreen(
                             )
                         }
                         ResultMode.REPLY -> {
+                            // 自定义改写那颗框的焦点边沿经此通道交回宿主（id 与下面那颗意图信号同名）
+                            CompositionLocalProvider(
+                                LocalOverlayInputFocus provides
+                                    rememberOverlayFocusReporter("scheme_adjust", onInputFocusChange)
+                            ) {
                             ResultArea(
                                 result = result,
-                                isGenerating = isGenerating,
                                 // 回复卡摆法：默认纵向，设置页那颗开关换的就是这一颗读数。
                                 // 它**不参与**请求、也不进本轮身份——换方向不重新生成、不重新付费、不清空回复。
                                 cardLayout = surface.cardLayout,
@@ -1075,6 +1126,7 @@ fun LoveBrainPanelScreen(
                                 onInputIntent = { onInputIntent("scheme_adjust") },
                                 modifier = Modifier.fillMaxSize()
                             )
+                            }
                         }
                     }
                 }
@@ -1084,12 +1136,18 @@ fun LoveBrainPanelScreen(
                 // 换成页槽位里的一页。`weight(1f)` 那一档高度现在由滑页宿主给（上面那行
                 // `modifier = Modifier.fillMaxWidth().weight(1f)`），这一格照旧铺满页。
                 Box(modifier = Modifier.fillMaxSize()) {
+                    val counselingFocusKey = remember { Any() }
+                    val followUpFocusKey = remember { Any() }
                     CounselingPanel(
                         viewModel = viewModel,
                         inputId = "counseling_main",
-                        onFocusChange = { focused -> onInputFocusChange("counseling_main", focused) },
+                        onFocusChange = { focused ->
+                            onInputFocusChange(counselingFocusKey, "counseling_main", focused)
+                        },
                         onInputIntent = { onInputIntent("counseling_main") },
-                        onFollowUpFocusChange = { focused -> onInputFocusChange("counseling_followup", focused) },
+                        onFollowUpFocusChange = { focused ->
+                            onInputFocusChange(followUpFocusKey, "counseling_followup", focused)
+                        },
                         onFollowUpInputIntent = { onInputIntent("counseling_followup") },
                         modifier = Modifier.fillMaxSize()
                     )
@@ -1128,15 +1186,20 @@ fun LoveBrainPanelScreen(
                 onMove = onMove,
                 hitHeight = DragBand.settingsHitHeight
             )
-            PanelSettingsPage(
-                viewModel = viewModel,
-                surface = surface,
-                onBack = { surface.closeSettings() },
-                onCollapse = onCollapse,
-                onInputIntent = onInputIntent,
-                onOpenAppPage = onOpenAppPage,
-                modifier = Modifier.fillMaxWidth().weight(1f)
-            )
+            // 设置页唯一的输入面是持续意图那一格：焦点边沿经此通道交回宿主（id 与意图信号同名）
+            CompositionLocalProvider(
+                LocalOverlayInputFocus provides rememberOverlayFocusReporter("settings", onInputFocusChange)
+            ) {
+                PanelSettingsPage(
+                    viewModel = viewModel,
+                    surface = surface,
+                    onBack = { surface.closeSettings() },
+                    onCollapse = onCollapse,
+                    onInputIntent = onInputIntent,
+                    onOpenAppPage = onOpenAppPage,
+                    modifier = Modifier.fillMaxWidth().weight(1f)
+                )
+            }
         }
     }
 
@@ -1153,6 +1216,9 @@ fun LoveBrainPanelScreen(
         // visible 直接传给 LbModalSheet：它自己的 AnimatedVisibility 负责入退场动画
         // （200ms 淡入+缩放 / 200ms 淡出+缩放），不再外裹一层 AnimatedVisibility——
         // 外裹那一层会在退场时把整棵树摘掉，LbModalSheet 的 exit 动画永远跑不到。
+            CompositionLocalProvider(
+                LocalOverlayInputFocus provides rememberOverlayFocusReporter("intent_editor", onInputFocusChange)
+            ) {
             IntentEditorDialog(
                 text = intentConfig.text,
                 enabled = intentConfig.enabled,
@@ -1168,6 +1234,7 @@ fun LoveBrainPanelScreen(
                 onDismiss = { viewModel.intents.dismissEditor() },
                 onInputIntent = { onInputIntent("intent_editor") }
             )
+            }
 
         // 「记录实际发送」那扇浮层连同它的状态接线一起摘掉，这里不留残件。
         // 点赞 / 采用 / 记入知识库这三条机制原样保留；VM 的 `recordActualSentMessage` 也原样留着，
@@ -1190,6 +1257,9 @@ fun LoveBrainPanelScreen(
         )
 
         // 纠正浮层的唯一渲染处，挂在面板这一层（不是结果行里）——遮罩与热区才按整屏算
+        CompositionLocalProvider(
+            LocalOverlayInputFocus provides rememberOverlayFocusReporter("memory_wrong", onInputFocusChange)
+        ) {
         MemoryCorrectionFlowHost(
             flow = memoryCorrectionFlow,
             onMute = { memoryId, duration ->
@@ -1206,8 +1276,11 @@ fun LoveBrainPanelScreen(
                     replacementText = text,
                     muteDuration = com.lovebrain.app.model.MuteDuration.UNTIL_RESTORE
                 )
-            }
+            },
+            // 标错草稿框与其余输入面同一条意图链路：不报这一颗，悬浮窗里 IME 永远起不来
+            onInputIntent = { onInputIntent("memory_wrong") }
         )
+        }
 
         ResizeGrip(
             onResize = onResize,
@@ -1222,10 +1295,10 @@ fun LoveBrainPanelScreen(
 /**
  * 面板顶部那一张通知条（知识库回执 / 面板级警告 / 五维重估摘要，**同一格一次只画一条**）。
  *
- * 它以前是本文件里自画的一颗异形（登记在 `OddShapeOwnershipTest` 的异形清单里），而且带着两个
+ * 它以前是本文件里自画的一颗异形（异形清单已随其登记文件删除），而且带着两个
  * **颜色旋钮**：`container: Color = SuccessBg`、`textColor: Color = Success`，
  * 第二处调用再现场填一对 `WarningBg`/`Warning`——"这条通知是什么语气"由调用方
- * 自选颜色，下一对颜色没有任何地方拦得住（`OddShapeOwnershipTest` 要挡的正是这个形状：
+ * 自选颜色，下一对颜色没有任何地方拦得住（要挡的正是这个形状：
  * 页面自己拿颜色决定语气，颜色就会一页一个样）。
  * 现在语气走 [LbStateTone] 那张词表（字色与浅底成对，都只在 `LbAsyncState.kt` 里写一次），
  * 容器走 [LbStateContainer.Notice]（面板通知原先太大，这一档就是它的落点：轻通知收成**单档**——

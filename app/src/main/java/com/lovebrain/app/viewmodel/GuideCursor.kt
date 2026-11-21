@@ -1,7 +1,7 @@
 package com.lovebrain.app.viewmodel
 
 /**
- * 首页遮罩引导的游标（基线 v1 §6.8；原始第 14 条 / 优化第 17 条）。
+ * 首页遮罩引导的游标（原始第 14 条 / 优化第 17 条）。
  *
  * 这一格**不回答"配了没配"**——那三件事从真状态读（`providerReady` / 无障碍已授权 /
  * 捕获已开且披露已同意，见 [SetupViewModel.guideFacts]）。游标只回答两件事：

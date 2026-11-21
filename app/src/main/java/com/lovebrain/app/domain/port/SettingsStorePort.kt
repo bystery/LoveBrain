@@ -23,9 +23,6 @@ interface SettingsStorePort {
     /** 思考模式二态：0=直出、1=思考·轻；写越界钳回 [0,1] */
     var thinkingMode: Int
 
-    /** 输出模式二态：0=普通、1=进攻 */
-    var outputMode: Int
-
     /** 面板模式：0=回复、1=谈心 */
     var panelMode: Int
 
@@ -61,7 +58,7 @@ interface SettingsStorePort {
     var hasCompletedOnboarding: Boolean
 
     /**
-     * 引导进度新键（基线 v1 §6.8，2026-10-05）：**只加键，旧 [hasCompletedOnboarding] 的语义一字不动**。
+     * 引导进度新键（2026-10-05）：**只加键，旧 [hasCompletedOnboarding] 的语义一字不动**。
      *
      * - [introSeen]：介绍层看过或明确跳过。它**只豁免介绍**，不豁免后续步骤；
      * - [guideCursor]：`GuideCursor` 枚举名（`NONE/PROVIDER/ACCESSIBILITY/CAPTURE/DONE/DEFERRED_TO_HINT`），
@@ -75,7 +72,7 @@ interface SettingsStorePort {
     /**
      * 介绍层走到第几格（0…3，默认 0）。与上面两颗分工清楚：`introSeen` 只管"介绍层豁免没豁免"、
      * `guideCursor` 只管"指引停在哪一步"，**这一步是介绍页内部的格号**——把它塞进上面任何一颗
-     * 就是基线 §6.8 明令废掉的"第二本账"（G1b 接线单 §4）。
+     * 就是明令废掉的"第二本账"（G1b）。
      */
     var introStep: Int
     /**
@@ -111,14 +108,31 @@ interface SettingsStorePort {
     var connectionVerified: Boolean
 
     /**
-     * 落盘 [connectionVerified] 时**所属的供应商身份**（指导书 §11.1）。
+     * 落盘 [connectionVerified] 时**所属的供应商身份**。
      *
      * 格式与 [HomeStatusViewModel.identityOf] 逐字一致：`"ticketId|model|地址摘要|Key摘要"`
      * （后两位是凭据的 12 位十六进制不可逆摘要，明文 Key/地址永远不落这一位；没配时为空串）。
      * 兜底时 [connectionFor] 比较当前身份与此值——只有同一身份才交回 Verified，
      * 换了供应商、模型、**地址或 Key** 都不沿用旧结论。空串 = 从没写过。
      * 旧版两位格式（`ticketId|model`）的记录升级后天然对不上四位新算式 ⇒ 判"身份不同"重测一次，
-     * 这是 §11.1 要的行为，不是数据损坏，不做迁移洗绿。
+     * 这是要的行为，不是数据损坏，不做迁移洗绿。
      */
     var connectionVerifiedIdentity: String
+
+    // ── 冠军引擎特征开关（T4 Kotlin 移植 W1；guide-6 Step 6 起 LIVE_AUTO 为默认生产档）──
+
+    /**
+     * 冠军引擎模式：`OFF | SHADOW | SINGLE_STYLE | FULL | LIVE_AUTO`。
+     * **默认 LIVE_AUTO（guide-6 Step 6 生产接线）**：键从未写入（null 哨兵）→ LIVE_AUTO
+     * （正常主请求按轮次自动选分域策略：≤24 域 guard、>24 域 uc）；显式 OFF 永远尊重
+     * （紧急回退原链路）；SHADOW 原样（独立诊断）；SINGLE_STYLE/FULL 与未知脏值
+     * fail-closed 为 OFF（旧档位未接线，收敛语义不动）。按轮冻结进生成输入，轮中不改。
+     */
+    var championEngineMode: String
+
+    /**
+     * 冠军引擎生效白名单（contactId×story 粒度）：条目格式 `<contactId>|<story>`，
+     * `*` = 全体；**空集 = 全体**（规范原文口径）。
+     */
+    var championEngineScope: Set<String>
 }

@@ -2,7 +2,7 @@
 #
 # scripts/emit_release_evidence.sh
 #
-# Builds the release evidence index that  第9节 demands ("证据索引" /
+# Builds the release evidence index that the release checklist demands ("证据索引" /
 # items 4, 7, 8): APK SHA-256, versionCode/versionName, signing certificate
 # fingerprint, SBOM, instrumentation test counts, upgrade assertions.
 #

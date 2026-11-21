@@ -73,6 +73,8 @@ class KnowledgeEngineContractTest {
     @Test
     fun `all registered assets contain no forbidden threshold phrases`() {
         val hits = mutableListOf<String>()
+        // 2026-11-21：aggressive.md 已随进攻模式整块删除，AssetRegistry 的常量与 ALL 登记同步清掉；
+        // 这里恢复"登记表 = 真实资产"的严格口径，任何一条登记都必须能加载。
         AssetRegistry.ALL.forEach { path ->
             val content = loadAsset(path)
             forbiddenPhrases.forEach { phrase ->
@@ -80,6 +82,15 @@ class KnowledgeEngineContractTest {
             }
         }
         assertTrue("资产禁词残留（与   同表）：$hits", hits.isEmpty())
+    }
+
+    @Test
+    fun `retired aggressive asset is not registered so the boot self-check stays green`() {
+        // 启动自检（LoveBrainApp）遍历 AssetRegistry.ALL 逐个开文件；登记已删资产 = 每次开机假红。
+        assertFalse(
+            "AssetRegistry.ALL 仍登记已删除的 aggressive.md",
+            AssetRegistry.ALL.any { it.contains("aggressive") }
+        )
     }
 
     // ═══ T6：reflect.md 输入行与 user prompt 实际输入一致 ═══

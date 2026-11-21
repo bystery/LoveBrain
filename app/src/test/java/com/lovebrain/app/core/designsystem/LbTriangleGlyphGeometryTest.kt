@@ -15,7 +15,7 @@ import kotlin.math.min
 import kotlin.math.sin
 
 /**
- * 基线 v1 §3.10 那颗公共件的**几何判据**：角到底圆没圆，只能用几何证。
+ * 那颗公共件的**几何判据**：角到底圆没圆，只能用几何证。
  *
  * ⚠ 这里刻意不断言"存在一个 Canvas"，也不截图：
  * `LbTriangleGlyph` 画的是一条被**切过角**的 Path，能读出来的事实全在
@@ -53,7 +53,7 @@ class LbTriangleGlyphGeometryTest {
      */
     @Test
     fun `the rounding is one ratio and both shapes read it from the same place`() {
-        assertEquals("§3.10 定版比例：边长 × 0.18", 0.18f, LB_GLYPH_CORNER_RATIO, 1e-6f)
+        assertEquals("定版比例：边长 × 0.18", 0.18f, LB_GLYPH_CORNER_RATIO, 1e-6f)
 
         // 三角：名义半径 = 边长 × 比例，两档尺寸各量一次
         listOf(heroSide, indicatorSide).forEach { side ->
@@ -68,7 +68,7 @@ class LbTriangleGlyphGeometryTest {
         assertEquals("20dp 停止块 ≈ 3.6dp", 20f * LB_GLYPH_CORNER_RATIO, lbGlyphCornerSize(20.dp).value, 1e-4f)
         assertEquals("10dp 停止块 ≈ 1.8dp", 10f * LB_GLYPH_CORNER_RATIO, lbGlyphCornerSize(10.dp).value, 1e-4f)
         assertFalse(
-            "圆角退回固定档（旧 LoveBrainShape.sm 的 6dp）了：可见字形一变就不同步，§3.10 要的是比例",
+            "圆角退回固定档（旧 LoveBrainShape.sm 的 6dp）了：可见字形一变就不同步，要的是比例",
             abs(lbGlyphCornerSize(20.dp).value - 6f) < 1e-3f
         )
     }
@@ -172,7 +172,7 @@ class LbTriangleGlyphGeometryTest {
     // ═══════════ 6. 切角不外扩：整块形状还在交进去的那个盒子里 ═══════════
 
     /**
-     * §3.10 与页面那两条账的接缝：`HomeComponents.kt` 的可见轴写着 20dp、热区轴写着 48dp，
+     * 与页面那两条账的接缝：`HomeComponents.kt` 的可见轴写着 20dp、热区轴写着 48dp，
      * 而 `HomeHeroActionTest` 钉着"热区垫到 48 就够了，不许把可见那一格撑大"（≤56dp）。
      * 走"同色粗描边 + StrokeJoin.Round"那条改法时，外形会整体向外扩 描边宽/2 ⇒ 这一句当场红。
      *

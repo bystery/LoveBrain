@@ -21,7 +21,7 @@ import com.lovebrain.app.core.designsystem.Spacing
 import com.lovebrain.app.core.designsystem.TextHint
 
 /**
- * 顶部拖动那一格的**三轴**（§4.3：可见尺寸、父布局占位、真实触控区域，不允许再混为一谈）。
+ * 顶部拖动那一格的**三轴**（可见尺寸、父布局占位、真实触控区域，不允许再混为一谈）。
  *
  * 这一族数值一颗没变大（用户明说不许把 `hitHeight` 从 20 一路改成 30/40/50 了事），
  * 换的是**谁来占这一格**：从前是外面那只 4dp 的盒子占、带子靠自定义布局向上下溢出画到 20dp；
@@ -53,7 +53,7 @@ internal object DragBand {
     /**
      * 主面顶部：容器真实占位 = 命中高度 = 12 + 4 + 4 = **20dp**（数值与从前一样）。
      *
-     * ⚠ 为什么不是 §9 里"可先以 24–32dp 高的空白带调试"的那一档：再往上只有两条路，
+     * ⚠ 为什么不是里"可先以 24–32dp 高的空白带调试"的那一档：再往上只有两条路，
      * 一条是凭空给页面顶部加一条空白（书里明写不要求），
      * 一条是让透明带盖住页头那两段的 clickable（书里明写"透明热区不能覆盖它们"）。
      * 两条都越线。这一轮的活不是把这一颗数抬高，而是让**这一颗数真的被人摸得到**。
@@ -86,7 +86,7 @@ internal const val DRAG_HANDLE_HIT_TAG = "panel_top_drag_hit_band"
 internal const val DRAG_HANDLE_SLOT_TAG = "panel_top_drag_visible_slot"
 
 /**
- * 顶部拖拽条：按住即可移动悬浮窗（§8.4 表末行"顶部明确空白拖动区域 = 移动悬浮窗"）。
+ * 顶部拖拽条：按住即可移动悬浮窗（表末行"顶部明确空白拖动区域 = 移动悬浮窗"）。
  *
  * 三轴各归各的（数值都在 [DragBand]）：
  * - 可见：仍是 [DragBand.slot] 那一寸细槽，体里不画箭头/横线装饰，也没为好拖把它画粗；
@@ -111,11 +111,11 @@ internal const val DRAG_HANDLE_SLOT_TAG = "panel_top_drag_visible_slot"
  * 不装手势（一行放得下、`gestureEnabled` 为假）时才真的归窗口。
  * 从前那句"带子左右那几 dp 的横向拖动仍然归窗口"是不成立的形状假设，已由实测改回。
  *
- * 时序（§9"按下之后立即跟手，短点击不导致窗口突然跳走"）：
+ * 时序（"按下之后立即跟手，短点击不导致窗口突然跳走"）：
  * 用 [detectDragGestures]，起手有系统 touch slop ⇒ 短点击不产生位移，窗口不会跳；
  * 过线之后每一帧的 `dragAmount` 直接交回 [onMove]，中间没有动画也没有节流（宿主的
  * `OverlayPanelWindow.move` 逐次 updateLayout），所以是跟手而不是追赶。
- * 这里**没有**给整扇窗加父手势（§8.4 正文）：横滑切页、长按重排、输入焦点仍归各自那一层。
+ * 这里**没有**给整扇窗加父手势（正文）：横滑切页、长按重排、输入焦点仍归各自那一层。
  *
  * 页头那一行自己也是拖动宿主（`PanelHeader.onHeaderDrag`），管的是页头**内部**那些没被
  * clickable 占走的空白（齿轮/收起外包盒上下那几 dp、两段左右那 8dp）；与这条带子上下相接、不重叠。
@@ -149,7 +149,7 @@ fun DragHandle(
 }
 
 /**
- * 展开/收起那一族用的**实心三角**：形状交回设计系统那颗 [LbTriangleGlyph]（基线 v1 §3.10）。
+ * 展开/收起那一族用的**实心三角**：形状交回设计系统那颗 [LbTriangleGlyph]。
  *
  * 旧体是这一颗文件自己拼的尖 Path（`moveTo(w/2,h) → lineTo(w,0) → lineTo(0,0) → close()`），
  * 三个顶点全是尖角。用户第 6 条（"所有朝右三角形的三个角都要真圆角，不许是尖角"）点名的
@@ -157,17 +157,17 @@ fun DragHandle(
  * 公共件的顶点表正是从这段旧 Path 逐字抄过去的（`LbTriangleGlyphGeometryTest` 第 2 格钉着），
  * 于是外形与重心一寸没挪，只是三个角各往里退掉一段切角长（10dp 那一档：半径 1.8dp，不被夹取）。
  *
- * 三轴分离（§3.1）：这里只有**可见尺寸**那一轴（`AppDimens.ARROW_SIZE_DP` = 10dp），
+ * 三轴分离：这里只有**可见尺寸**那一轴（`AppDimens.ARROW_SIZE_DP` = 10dp），
  * 字形自己不垫热区、体里没有 clickable——热区归调用方那一排（谈心页那颗 `LbChip` 动作）。
  * 方向语义一个字不改：旋转角仍由调用方拿着，挂在字形自己的 `graphicsLayer` 上；
- * 用的是 `TriangleDown` 那一档，**不许**顺手换成播放键 `TriangleRight`（§3.10 明写：
+ * 用的是 `TriangleDown` 那一档，**不许**顺手换成播放键 `TriangleRight`（明写：
  * 展开/折叠指示器不是播放形状）。
  *
  * ⚠ 旧的 `color: Color` 参数**本轮保留**：唯一调用方 `counseling/CounselingPanel.kt:303`
  * 交进来的是 `Primary`，而那颗文件的写入权在 S1b 席手上，本席不跨区动它。
  * 这里只做一次"收敛"——把页面自由挑的墨色折回公共件词表的两档之一，
  * **不是**把 `color` 透给字形（公共件体里没有 `color:` 旋钮，也不该有）。
- * 把这颗参数整族收掉是下一拍的账（已写进 impl-H1c 台账）。
+ * 把这颗参数整族收掉是下一拍的账（已写进 impl-H1c 记录）。
  */
 @Composable
 fun TriangleArrow(

@@ -8,8 +8,7 @@ import com.lovebrain.app.model.ChatMessage
  *
  * 这一块是 prompt 的**表示层**，职责是把本轮真实消息渲染成 `<chat>` 围栏里的对话记录，
  * 并交回「模型能引用的来源别名」。它不读知识库、不读资产、不读时钟，也不持有任何状态，
- * 因此是纯函数——搬运前后对同一批输入必须给出逐字相同的 header/body/sourceAliasMap
- * （字节证据见 `domain/prompt/PromptByteFreezeBaselineTest` 的冻结表）。
+ * 因此是纯函数——搬运前后对同一批输入必须给出逐字相同的 header/body/sourceAliasMap。
  *
  * 语义约束（搬运时一条都没改）：
  * - 围栏内是**不可信第三方文本**，所以正文走 JSON 序列化转义，不用字符串拼接；
@@ -48,18 +47,22 @@ object ChatTranscriptBlock {
         } else {
             chatMessages
         }
-        // 统一编号 m0, m1, m2...
+        // 统一编号 m0, m1, m2...——按**出现序号**编号，不按消息 id 反查：
+        // 历史数据里存在同一 id 的多条消息，id→alias 的 map 会让后一条覆盖前一条，
+        // 于是前一条在围栏里整条消失、别名的条数也对不上。
+        val aliases = arrayOfNulls<String>(effectiveMessages.size)
         val sourceAliasMap = mutableMapOf<String, String>()
-        val msgToAlias = mutableMapOf<String, String>()
         var msgIdx = 0
-        for (msg in effectiveMessages) {
-            val alias = when (msg.role) {
-                ChatMessage.Role.HER -> "m$msgIdx".also { msgIdx++ }
-                ChatMessage.Role.ME -> "m$msgIdx".also { msgIdx++ }
-                else -> continue
+        effectiveMessages.forEachIndexed { i, msg ->
+            when (msg.role) {
+                ChatMessage.Role.HER, ChatMessage.Role.ME -> {
+                    val alias = "m$msgIdx"
+                    msgIdx++
+                    aliases[i] = alias
+                    sourceAliasMap[alias] = msg.id
+                }
+                else -> Unit
             }
-            sourceAliasMap[alias] = msg.id
-            msgToAlias[msg.id] = alias
         }
         // 使用 JSON 数组格式——每条消息是独立 JSON 对象，正文通过序列化转义
         val chatBody = StringBuilder("<chat>\n")
@@ -67,12 +70,12 @@ object ChatTranscriptBlock {
             chatBody.append("（注：对话记录超过 ${AppConfig.REPLY_MAX_MESSAGES} 条，仅保留最近 ${AppConfig.REPLY_MAX_MESSAGES} 条）\n\n")
         }
         // 每条消息渲染为 JSON 行——`{"id":"m0","speaker":"PARTNER","text":"..."}`
-        for (msg in effectiveMessages) {
-            val alias = msgToAlias[msg.id] ?: continue
+        effectiveMessages.forEachIndexed { i, msg ->
+            val alias = aliases[i] ?: return@forEachIndexed
             val speakerLabel = when (msg.role) {
                 ChatMessage.Role.HER -> "PARTNER"
                 ChatMessage.Role.ME -> "USER"
-                else -> continue
+                else -> return@forEachIndexed
             }
             // 使用 JSON 序列化转义正文——防止换行、特殊字符、注入攻击
             val escapedText = kotlinx.serialization.json.Json.encodeToString(

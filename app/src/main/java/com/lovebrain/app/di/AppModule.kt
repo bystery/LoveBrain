@@ -15,6 +15,7 @@ import com.lovebrain.app.viewmodel.SetupViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import kotlinx.coroutines.launch
 import org.koin.dsl.module
 import java.io.File
 
@@ -86,16 +87,56 @@ val appModule = module {
     // 领域层（单例）
     // Clock 显式 get()，不靠构造参数默认值：默认值是给测试用的后门，
     // 图上必须能看见"生产的时间从哪来"，否则上面那条 single<Clock> 就是装饰。
-    single { com.lovebrain.app.domain.OngoingContextSelector(get(), get()) }
     // PromptBuilder 只认 PromptSourcePort（第一格），不再传 androidContext()
-    single { PromptBuilder(get(), get(), get(), get()) }
+    single { PromptBuilder(get(), get(), get()) }
     single { RoundCommitJournal(get()) }
     // 事务日志必须由容器给出，不能在这里再 new 一个：
     // TopicRecorder 持有手工构造的 journal、容器又注册另一个 journal，
     // 就等于同一份 WAL 有两把 txMutex——"唯一事务 owner"只剩名字。
     single { TopicRecorder(get(), get(), get()) }
     single { KnowledgeTriggerCoordinator(get(), get(), get(), get()) }
-    single { GenerationEngine(get(), get()) }
+    // ═══ 冠军引擎（T4 Kotlin 移植 W1；默认 OFF——不改变现有用户行为）═══
+    // 第 7 个写入面：champion_events/<contactId>__<story>.jsonl，与 kb 投影物理分离。
+    single<com.lovebrain.app.domain.champion.ChampionEventStorage> {
+        com.lovebrain.app.domain.champion.FileChampionEventStorage(
+            File(androidContext().filesDir, "champion/events")
+        )
+    }
+    single { com.lovebrain.app.domain.champion.ChampionEventStore(get()) }
+    // Prompt 资产与时间块都复用产品既有真源：资产走 PromptSourcePort（缺文件 fail-open 空
+    // 串语义在实现侧），「当前时间」段直接调 PromptBuilder.buildTimestampPrompt（不复制措辞）。
+    single {
+        com.lovebrain.app.domain.champion.ChampionPromptAssembler(
+            timestampBlock = { get<PromptBuilder>().buildTimestampPrompt() },
+            promptSource = { path -> get<com.lovebrain.app.domain.port.PromptSourcePort>().read(path) }
+        )
+    }
+    single {
+        com.lovebrain.app.domain.champion.ContractGuard(
+            com.lovebrain.app.domain.champion.ContractGuard.FileGuardAuditSink(
+                File(androidContext().filesDir, "champion")
+            )
+        )
+    }
+    single {
+        com.lovebrain.app.domain.champion.ChampionEngine(
+            gateway = get(),
+            eventStore = get(),
+            assembler = get(),
+            guard = get(),
+            settings = get(),
+            clock = get(),
+            // 单 Job owner 合同（SingleOwnerContractTest）：domain 不许接 CoroutineScope/launch。
+            // shadow 的 fire-and-forget 由 app 层（di）用 applicationScope 执行——
+            // scope 所有权与 ForegroundOperationCoordinator 同源，仍是图上可见的唯一 owner。
+            shadowExecutor = { body ->
+                (androidApplication() as LoveBrainApp).applicationScope.launch { body() }
+            },
+            rootDir = File(androidContext().filesDir, "champion")
+        )
+    }
+    // 第三依赖可空（getOrNull）：旧测试图不注册 ChampionEngine 时引擎恒 OFF。
+    single { GenerationEngine(get(), get(), getOrNull()) }
     // ForegroundOperationCoordinator 作为单例——使用 application scope
     single { com.lovebrain.app.domain.ForegroundOperationCoordinator((androidApplication() as LoveBrainApp).applicationScope) }
 
@@ -108,17 +149,19 @@ val appModule = module {
             // 这两行不接时 VM 那侧是"读默认 100%、写丢弃"，面板照常能画，但设置滑杆就不跨重启了。
             readBackdropOpacityPercent = { get<SecurePrefs>().panelBackdropOpacityPercent },
             writeBackdropOpacityPercent = { get<SecurePrefs>().panelBackdropOpacityPercent = it },
-            // 「仅看本轮」首次轻提示的"提示过没有"旗标（§2.2 第 3 条）：与上面那对同一形状、
+            // 「仅看本轮」首次轻提示的"提示过没有"旗标：与上面那对同一形状、
             // 接在同一个 SecurePrefs 上——盘上那一格只有一份，落盘后每次回来不再重弹。
             readRoundScopeHintShown = { get<SecurePrefs>().roundScopeHintShown },
             writeRoundScopeHintShown = { get<SecurePrefs>().roundScopeHintShown = it },
-            // 悬浮图标档位与回复卡方向那两对（指导书 2026-10-10 §1、§3）：与上面两对同一形状，
+            // 悬浮图标档位与回复卡方向那两对：与上面两对同一形状，
             // 盘上那两格都住在 SecurePrefs 这个具体实现类上（刻度与回落分别在 `BubbleSizeTier`、
             // `ReplyCardLayout` 身上），VM 只拿到两对函数、不认识存储类。
             readBubbleSizeDp = { get<SecurePrefs>().bubbleSizeDp },
             writeBubbleSizeDp = { get<SecurePrefs>().bubbleSizeDp = it },
             readReplyCardLayout = { get<SecurePrefs>().replyCardLayout },
-            writeReplyCardLayout = { get<SecurePrefs>().replyCardLayout = it }
+            writeReplyCardLayout = { get<SecurePrefs>().replyCardLayout = it },
+            // 冠军引擎（审计 R2-1）：可空注入——事件正式提交点在 nextRound。
+            championEngine = getOrNull()
         )
     }
     // 第四格是 KnowledgePresencePort（老用户判定的"本机有没有知识库"那一员），不再是 Context

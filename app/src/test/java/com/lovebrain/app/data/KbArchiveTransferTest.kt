@@ -296,4 +296,51 @@ class KbArchiveTransferTest {
         assertTrue("文案不该把包里的库名甩出来：$msg", !msg.contains(weird))
         assertTrue("应给出可读的中文原因：$msg", msg.contains("命名规则"))
     }
+
+    // ═══════════ P0-2：导入是搬目录，不经过写链——未来 schema 必须在搬入前拒 ═══════════
+
+    /**
+     * 旧实现只校验结构，v4 的包照样搬进 knowledge/ 树；之后"只读保护"全凭进程内
+     * 迁移集合，没先打开过这本库时 v3 代码就会覆写 v4 结构。这里钉住"版本比本机新
+     * 就整体中止，盘上不留任何东西"。
+     */
+    @Test
+    fun `archive from a newer schema is rejected before it is moved in`() {
+        val name = "kb_future"
+        val future = (com.lovebrain.app.model.KnowledgeSchemaVersion.CURRENT + 1).toString()
+        val packed = zipOf(
+            listOf(
+                "$name/" to null,
+                "$name/kb.json" to kbJson(name),
+                "$name/.schema_version" to future,
+                "$name/understand/me.md" to "未来版本写下的画像"
+            )
+        )
+        val root = knowledgeRoot()
+        val stage = staging()
+        val thrown = runCatching { KbArchiveTransfer.import(ByteArrayInputStream(packed), stage, root) }
+            .exceptionOrNull()
+
+        assertTrue("未来 schema 的包必须被拒，实到 $thrown", thrown is KbArchiveTransfer.TransferException)
+        assertFalse("被拒的包不许出现在 knowledge/ 下", File(root, name).exists())
+        assertEquals("knowledge/ 必须仍然为空", emptyList<String>(), root.list()?.sorted() ?: emptyList<String>())
+        assertFalse("暂存区也要清干净", stage.exists())
+    }
+
+    /** 边界另一侧：当前 schema（含 legacy marker 推断）的包照常导入——防"把门全关死" */
+    @Test
+    fun `archive at the current schema still imports`() {
+        val name = "kb_current"
+        val current = com.lovebrain.app.model.KnowledgeSchemaVersion.CURRENT.toString()
+        val packed = zipOf(
+            listOf(
+                "$name/" to null,
+                "$name/kb.json" to kbJson(name),
+                "$name/.schema_version" to current
+            )
+        )
+        val root = knowledgeRoot()
+        assertEquals("当前 schema 的包必须能导进来", name, import(packed, root))
+        assertTrue(File(root, "$name/.schema_version").isFile)
+    }
 }

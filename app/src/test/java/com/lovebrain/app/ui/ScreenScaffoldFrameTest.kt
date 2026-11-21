@@ -132,7 +132,6 @@ class ScreenScaffoldFrameTest {
      * 等捕获页那一批 IO 读数落位（`LbAsyncState` 的 `LOADING` 节点消失）再往下量。
      * 本项目锁定的 Compose 版本里 `waitUntil` 不交回布尔，所以等完独立判一次：还在转圈就红在这里
      * （"批次没落"），而不是带着一屏半的布局去比边距、红成"这一页边距不对"的假话。
-     * 判据与姊妹用例 `CaptureAppsScreenStatesTest.awaitCaptureBatch` 同一颗。
      */
     private fun awaitCaptureBatch() {
         rule.waitUntil(10_000L) {
@@ -146,7 +145,7 @@ class ScreenScaffoldFrameTest {
         )
     }
 
-    /** 与 `CaptureAppsScreenStatesTest` 同款：relaxed mock 扛不住泛型流，必须点名返回真流 */
+    /** relaxed mock 扛不住泛型流，必须点名返回真流 */
     private fun captureVm(): SetupViewModel = mockk<SetupViewModel>(relaxed = true).also {
         every { it.captureAllowedPackages } returns MutableStateFlow(setOf("PACKET_ALFRED"))
         // CaptureAppsScreen 读 captureEnabled（StateFlow<Boolean>）：relaxed 桩对泛型流会返回
@@ -234,7 +233,7 @@ class ScreenScaffoldFrameTest {
         // 这一页的安装包枚举挂在 `LaunchedEffect` 的 `Dispatchers.IO` 上（页面因此有真正的
         // Loading 那一格），而 `rule.waitForIdle()` / 上面那 16ms 手动推帧**都不跟踪后台线程上的
         // 协程**——机器一忙，`contentLeftInset()` 就在批次落位前读语义树，量到的是半屏（页头还没
-        // 和最左可点行对齐）。同族那颗 `CaptureAppsScreenStatesTest` 已在 CI 上为同一件事红过，
+        // 和最左可点行对齐）。同一件事已在 CI 上红过，
         // 用的是同一条确定性等待：等 `LbAsyncState` 的 `LOADING` 标签节点消失（批次落）再量。
         awaitCaptureBatch()
         assertScaffoldMargin("捕获范围页", contentLeftInset())

@@ -566,48 +566,35 @@ class LessonDocTidyTest {
     }
 
     /**
-     * 净化过的那一头进 prompt 时不带模板行。
+     * 2026-11-21 结构收敛后：经验教训不再进回复知识段（用户拍板整块删除）。
      *
-     * ⚠ 下面 `rawSeed` 那两句是**故意登记的缺口读数**，不是"这样才对"：生产链路 `PromptBuilder`
-     * 此刻把 `readFile("memory/lessons.md")` 的**原始字节**直接喂给段（`PromptKnowledgeSection:77` →
-     * `PromptBudget.lastH1Blocks`），那颗共用净化口现在只接到界面预览与写入侧。
-     * 于是：同一份 seed 模板，purify 过就一个字都不注入，没 purify 就整段照进 prompt。
-     * 等 prompt 侧接上同一颗函数，`rawSeed` 那句会反过来变红，提醒把这条登记撤掉。
-     *
-     * 反例（让主断言红）：`purify` 少剥一类模板行，或段里把原始文件与净化结果用反了。
-     * 用**只装 seed 的那份**做缺口对照不是随手挑的：长档里节头有 6 个，`lastH1Blocks(_, 3)`
-     * 只会取最后 3 块，模板那几块本来就被截掉了——拿它当"缺口存在"的证据是假读数。
+     * 旧版本这里钉的是"净化后的经验进 prompt 不带模板行 + 未净化会带"的缺口；
+     * 现在这个缺口从源头消失——`PromptKnowledgeSection.Input` 已没有 lessons 字段，
+     * 回复 prompt 里任何经验正文（无论是否净化）都不该出现。这一格改为钉住"整块删除"。
      */
     @Test
-    fun purifiedLessonsReachThePromptWithoutTemplateLines() {
-        val purified = LessonDoc.purify(historicalFile)
-        val section = knowledgeSectionOf(purified)
+    fun lessonsNeverReachTheReplyKnowledgeSection() {
+        val section = knowledgeSectionOf()
 
         (LessonDoc.PROMPT_COPIED_TEMPLATE_LINES + LessonDoc.LEGACY_TEMPLATE_LINES).forEach {
-            assertFalse("净化过的经验段还带着模板行：$it", section.text.contains(it))
+            assertFalse("知识段还带着经验模板行：$it", section.text.contains(it))
         }
-        assertTrue("真实正文要能进 prompt", section.text.contains("- 做对：她抱怨工作时只接情绪"))
-
-        // 缺口读数（同一颗输入、两条路）：seed 模板没经 purify 时确实照进 prompt
-        val rawSeed = knowledgeSectionOf(oldSeedTemplate)
-        val washedSeed = knowledgeSectionOf(LessonDoc.purify(oldSeedTemplate))
-        assertTrue(
-            "缺口读数：生产链路此刻没接 purify，seed 模板的序言照进 prompt",
-            rawSeed.text.contains("军师自动追加提取节")
-        )
-        assertFalse(
-            "同一份洗完就不该有任何东西被注入",
-            washedSeed.text.contains("军师自动追加提取节") || washedSeed.text.contains("# 经验库")
-        )
+        listOf(
+            "# 经验库", "军师自动追加提取节", "第1次提取",
+            "- 做对：她抱怨工作时只接情绪", "# 【记忆】经验教训"
+        ).forEach { gone ->
+            assertFalse("经验内容不得进回复知识段「$gone」：${section.text}", section.text.contains(gone))
+        }
+        assertTrue("画像仍在（结构没被删过头）", section.text.contains("## 我"))
     }
 
-    private fun knowledgeSectionOf(lessons: String): PromptKnowledgeSection.Output =
+    private fun knowledgeSectionOf(): PromptKnowledgeSection.Output =
         PromptKnowledgeSection.build(
             PromptKnowledgeSection.Input(
-                kbName = "kb", me = "我：短句", her = "她：猫奴", warmth = "温度：轻松", style = "偏好：短句",
-                stageSection = "", lessons = lessons, aggressiveText = "",
-                topicAge = 1, topic = "手冲", sceneChain = "", recent = "",
-                ongoingPlan = "", corrections = emptyMap()
+                kbName = "kb", me = "我：短句", her = "她：猫奴",
+                stageSection = "", topic = "手冲", sceneChain = "",
+                corrections = emptyMap(),
+                nowMs = 1_790_208_000_000L, today = "2026-09-24"
             )
         )
 

@@ -374,7 +374,7 @@ class UiStringLiteralBudgetTest {
         //   ② `IntentEditorSheet.kt` 原来有 5 条 TEXT（「启用」「有效期」「输入日期…」「标记为已完成」
         //      「输入你的持续意图…」），重构先删掉后 3 条（日期输入区与状态操作区整块移除），
         //      本轮再把剩下 2 条接上资源 → 0。两文件合计 TEXT −5（相对预算基线 90）。
-        // 81 → **73**（2026-10-07 台账席，删 `OnboardingFlow` 那三张死页那一拍）：
+        // 81 → **73**（2026-10-07 记录席，删 `OnboardingFlow` 那三张死页那一拍）：
         //   逐文件实测（同一把尺，剥注释）：`ui/panel/OnboardingFlow.kt` TEXT **16 → 8**，
         //   全仓 81 → 73，DESC / STATE / COMPONENT 三栏一字没动（0 / 0 / 38）。
         //   ⚠ 这一档是**真删不是换桶**：那 8 条写在 `OnboardingStep1/2/3` 与 `ConfigItem` 里，
@@ -385,7 +385,7 @@ class UiStringLiteralBudgetTest {
         //   ⚠ `ConfigItem(text = "…")` 与 `OnboardingButton(text = "…")` 那五处内联中文
         //   从来就不在这四把尺的射程里（锚点只认 `Text(` / `contentDescription =` /
         //   `stateDescription =` / `Lb…(`），它们随死页一起消失了，但**没算进这 −8**。
-        // 73 → **72**：主动发候选卡上「角度：」那一行进资源（§14.1 候选卡结构那一拍，
+        // 73 → **72**：主动发候选卡上「角度：」那一行进资源（候选卡结构那一拍，
         // `LoveBrainPanelScreen.kt` 的 `ProactiveOptionCard`）。**真还**：同一拍卡内新增的
         // 展开区标签（时机/先别发/需要准备）与行格式（"%1$s：%2$s"）连同整卡点击的动作名
         // `a11y_copy_opener` 一起进的 `values` 资源，页面里没有为它们写过任何内联中文——
@@ -507,7 +507,17 @@ class UiStringLiteralBudgetTest {
         //   COMPONENT（`LbFormField` / `LbFieldInput` / `LbModalSheetTitle("持续意图")` /
         //   `LbDialogAction("知道了")`）也一并搬进资源 → 0。**真还**：两栏一起降（TEXT −5 /
         //   COMPONENT −5），且两文件搬完 COMPONENT 读数都是 0。
-        Kind.COMPONENT to 38
+        // 38 → **40**：反馈案例页的导出加了确认闸（导出物含真实对话原文、落盘文件是明文）。
+        //   新增的两条是这个浮层的标题与正文——屏幕上多出来的两句用户可见文案，不是搬家，
+        //   所以这一栏涨 2 就是债涨 2；浮层那两颗动作词复用既有 `a11y_action_confirm` /
+        //   `a11y_action_cancel`，没有另造。等这两句迁进 `strings.xml` 时把数字降回去。
+        //   TEXT 那栏一格没动（浮层正文走 `LbDialog(message = …)` 的实参，不走页面自画的 `Text(`）。
+        // 38 → **43**（2026-11-21）：CompactInput 委托壳拆除后调用点直呼 LbFieldInput，构造计数+5
+        // 40 → **38**（2026-11-21，上一笔预告的回落兑现）：导出确认浮层的标题与正文迁进资源
+        //   （`feedback_export_confirm_title` / `feedback_export_confirm_message`，动作词仍是复用
+        //   a11y 两条）。**真还**：字面量从 `LbDialog(title/message = …)` 实参里消失、换 `stringResource`，
+        //   同一拍 TEXT 那栏没动、DESC/STATE 也没动，四栏合计 −2，不是换桶。
+        Kind.COMPONENT to 43
     )
 
     /**

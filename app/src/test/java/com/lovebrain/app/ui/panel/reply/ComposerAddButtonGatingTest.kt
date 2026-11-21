@@ -46,6 +46,9 @@ import org.robolectric.annotation.GraphicsMode
  *  A 不推帧就点 → ➕ 当时确实不带点击语义，点击确实什么都没启动（复现 CI 症状）；
  *  B 推到它带上点击语义再点 → 一次点击恰好投递一条消息。
  * B 就是夹具该照的样子：等的是"这个入口真的能点"，不是"我猜它已经能点了"。
+ *
+ * ⚠ 这颗按钮的手势面只有**一颗 clickable**：长按不再是任何入口（用户口径"不要长按解析"，
+ *   多行解析由 `onAdd` → `addDraftAuto` 直接吞），所以这里不再有长按那条台账。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -119,6 +122,23 @@ class ComposerAddButtonGatingTest {
         rule.waitForIdle()
 
         assertFalse("空草稿时 ➕ 不该带点击语义", addButtonIsActionable())
+    }
+
+    /**
+     * 非空草稿：➕ 可点，一次轻点恰好投递一次（多行解析也走同一次 `onAdd`，
+     * 这一颗按钮的账就是"一次点击 = 一次提交"，不在手势层数第二遍）。
+     */
+    @Test
+    fun withANonBlankDraftOneTapAddsExactlyOnce() {
+        mountComposer(autoAdvance = true)
+        rule.onNode(hasSetTextAction()).performTextInput("在吗")
+        rule.waitForIdle()
+        assertTrue("非空草稿 ➕ 必须带点击语义", addButtonIsActionable())
+
+        rule.onNodeWithContentDescription("添加").performClick()
+        rule.waitForIdle()
+        assertEquals("轻点恰好投递一条", 1, adds)
+        assertEquals("投递的必须是刚输入的那句草稿", "在吗", draftAtAdd)
     }
 
     /** B：夹具该照的样子——等到入口真的能点，再点，就恰好投递一条 */

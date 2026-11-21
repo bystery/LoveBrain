@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.lovebrain.app.R
 import com.lovebrain.app.core.designsystem.*
 import com.lovebrain.app.model.RewriteCommand
+import com.lovebrain.app.ui.panel.rememberOverlayInputFocusReporter
 
 /** 一排放两颗：卡内净宽 142dp 里两颗粒子各约 69dp，四颗塞同一行就点不准了 */
 private const val ADJUST_OPTIONS_PER_ROW = 2
@@ -43,7 +44,7 @@ private const val ADJUST_OPTIONS_PER_ROW = 2
  * （纵向档宽铺满、高按同一颗 150 当下限按内容长高，见 `SchemeCardDimens.widthFor/heightFor`），
  * 横向档内容顶不下就整块纵向滚动兜底。
  *
- * ⚠ 那句"内容顶不下就整块纵向滚动兜底"只属于**横向档**（[contentHeightBounded]＝true，§3）：
+ * ⚠ 那句"内容顶不下就整块纵向滚动兜底"只属于**横向档**（[contentHeightBounded]＝true）：
  * 纵向档卡片自己按内容长高，外层那一条唯一的纵向滚动已经接住了溢出，这里再嵌一条就是
  * 在可滚的柱里再套一条无限高的滚——所以纵向档这一块的根 Column 不挂 verticalScroll。
  * 两档共用这一份实现，分叉只有"溢出归谁管"这一条。
@@ -59,11 +60,12 @@ private const val ADJUST_OPTIONS_PER_ROW = 2
  * 本块调用过，已删——有槽必有线，没有就删槽）。
  * modifier（含 weight）由调用方传入。
  *
- * **焦点这一头本块是所有者**（§12.2「输入焦点生命周期」，与 `SettingsIntentEntry` 同一形状）：
+ * **焦点这一头本块是所有者**（与 `SettingsIntentEntry` 同一形状）：
  * `focusRequester` + 容器 `onFocusChanged` + 展开那一次点名 `onInputIntent`。
  * 这颗块以前一个焦点观测点都没有——"进入编辑"只剩 `LbFieldInput` 内部那颗自建入口，
  * 悬浮窗那一刻还挂着 NOT_FOCUSABLE，于是"点了自定义，光标在闪而键盘起不来"。
- * 失焦那一半本块只能观测、报不到宿主（这条链上没有失焦信号，接线单在账上）。
+ * 失焦那一半经面板绑定的共享通道交回宿主（字段边沿 + 离树补报，见
+ * `rememberOverlayInputFocusReporter`）；容器观测点保留，管的是"这一行有没有焦点"。
  */
 @Composable
 internal fun SchemeAdjustingBlock(
@@ -94,7 +96,7 @@ internal fun SchemeAdjustingBlock(
         if (isCustomInputOpen == null) localOpen = value
         onCustomInputOpenChange(value)
     }
-    // ── 「进入编辑」信号（§12.2 输入焦点生命周期，自定义改写这一条路）──────────
+    // ── 「进入编辑」信号（输入焦点生命周期，自定义改写这一条路）──────────
     // 这一族以前只有 `LbFieldInput` 内部那颗自建的焦点入口，本块**一个焦点观测点都没有**：
     // · 点「自定义」只是把框画出来，焦点没进去、也没点名宿主进 EDITING ⇒
     //   悬浮窗这一刻还挂着 NOT_FOCUSABLE，光标在闪而输入法起不来；
@@ -151,12 +153,15 @@ internal fun SchemeAdjustingBlock(
             }
         }
         if (open) {
+            // 字段焦点边沿 + 收起/滑出视口离树时的补报，都经这一颗交回宿主
+            val reportFocus = rememberOverlayInputFocusReporter()
             CustomRequirementEditor(
                 value = draft,
                 onValueChange = writeDraft,
                 name = customHint,
                 onInputIntent = onInputIntent,
                 focusRequester = customFocusRequester,
+                onFieldFocusChange = reportFocus,
                 onFocusChanged = { focused ->
                     if (focused) {
                         // 焦点真的落进来了：再确认一次编辑态（上面那次是"请求"，这一句是"已成"）。
@@ -165,11 +170,7 @@ internal fun SchemeAdjustingBlock(
                     } else if (fieldHadFocus) {
                         // 失焦：正文已经由 `onCustomDraftChange` 实时交回卡片行（这一格不私存草稿），
                         // 所以这里没有要落的东西，只把"焦点已经不在了"这一件事实记下来。
-                        // ⚠ 宿主那侧 `activeInputId` / EDITING **收不掉**：这条链路只有"进入编辑"
-                        //   信号、没有失焦信号，接法记在接线单（`ResultArea` → `SchemeCard` 需把
-                        //   `onInputFocusChange("scheme_adjust", focused)` 接上）。在那之前，
-                        //   面板那一侧的交接（返回键 / 切页 / 关层）由
-                        //   `LoveBrainPanelScreen` 那颗唯一出口兜住。
+                        // 交回宿主那一半由字段级上报器负责（边沿 + 离树补报），容器不重复点名。
                         fieldHadFocus = false
                     }
                 },
@@ -229,14 +230,16 @@ private fun AdjustOption(
  * 自定义那一格展开后的输入与提交：卡内紧凑档。
  *
  * 输入复用公共 [LbFieldInput]——五态视觉、焦点生命周期、编辑意图信号全走同一颗公共件，
- * 不再自己 Box + BasicTextField + pointerInput（§7.2「直接复用，不再自己做输入行为」）。
+ * 不再自己 Box + BasicTextField + pointerInput（「直接复用，不再自己做输入行为」）。
  *
  * 焦点这一头两颗都由调用方（[SchemeAdjustingBlock]）持有：
  * · [focusRequester] 交进 [LbFieldInput]——那颗组件的规则是"外部给了就用外部的，
  *   不另起第二个焦点拥有者"，所以本块不自建第二份；
  * · [onFocusChanged] 挂在**整行**容器上（与 `SettingsIntentEntry` 同一形状）：
  *   观测点是"这一格有没有焦点"，不是"那根光标有没有焦点"，点在行内的「确认改写」
- *   那颗上时容器仍算持焦，不会被误判成失焦。
+ *   那颗上时容器仍算持焦，不会被误判成失焦；
+ * · [onFieldFocusChange] 是字段自己的焦点边沿，交给面板绑定的宿主通道——
+ *   容器观测与字段上报各管各的，不互相替代。
  *
  * 卡内紧凑外形通过 [SchemeCardDimens.CUSTOM_FIELD_MIN_HEIGHT_DP]–[SchemeCardDimens.CUSTOM_FIELD_MAX_HEIGHT_DP]
  * 约束可见高度；提交是小字，不铺成整行大按钮。可编辑节点自己带读屏名字（placeholder 只是举例）。
@@ -249,6 +252,7 @@ private fun CustomRequirementEditor(
     onSubmit: (String) -> Unit,
     focusRequester: FocusRequester,
     onFocusChanged: (Boolean) -> Unit,
+    onFieldFocusChange: (Boolean) -> Unit,
     onInputIntent: (() -> Unit)? = null
 ) {
     Row(
@@ -270,7 +274,8 @@ private fun CustomRequirementEditor(
                 ),
             maxLines = 2,
             focusRequester = focusRequester,
-            onInputIntent = onInputIntent
+            onInputIntent = onInputIntent,
+            onFocusChange = onFieldFocusChange
         )
         Text(
             "确认改写",

@@ -1,12 +1,16 @@
 package com.lovebrain.app.ui
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
@@ -21,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import com.lovebrain.app.R
 import com.lovebrain.app.service.FloatingService
+import com.lovebrain.app.service.overlayPermissionGranted
 import com.lovebrain.app.ui.home.CoachStepCopy
 import com.lovebrain.app.ui.home.HomeDestination
 import com.lovebrain.app.ui.home.HomeCoachMarks
@@ -56,13 +61,23 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * - 游标的刷新点有三处，缺一处就是表行判的"子页返回未接上游标刷新"：`onResume`（从系统设置那一趟）、
  *   罩子三颗回调之后、以及**根导航回到 Home 那一格**（同一 Activity 内的子页来回不走 `onResume`，
  *   所以 [SetupRoot] 开一颗只读出口 [onHomeDestinationChanged]）；
- * - 同一个出口还只管一件事：罩子**只在 Home 那一格在场**（§9.1），进子页即整块离场——
+ * - 同一个出口还只管一件事：罩子**只在 Home 那一格在场**（遮罩只在首页这一格），进子页即整块离场——
  *   原先罩子只按"锚点没了"退化，结果是一张浮在子页上的提示板。
  */
 class SetupActivity : ComponentActivity() {
 
     // by viewModel() 而非 by inject()：后者不经 ViewModelStore，配置变更后 VM 内存态会丢
     private val viewModel: SetupViewModel by viewModel()
+
+    /**
+     * Android 13+ 前台服务那条通知要单独授权。
+     *
+     * 这颗回调**不做任何分支**：拒绝只意味着通知不可见（`FloatingService.startForeground` 照跑），
+     * 主流程一个字都不改——把可选的通知权限当启用前置，会变成"不给通知就不让用"。
+     */
+    private val notificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { /* 拒绝/取消 = 前台通知不可见，服务照常启动 */ }
 
     /** 介绍层在不在场（唯一的闸门；旧的那颗一次性 local val 就是"一翻页就没"的根） */
     private var introOnScreen by mutableStateOf(false)
@@ -74,12 +89,12 @@ class SetupActivity : ComponentActivity() {
      * 介绍页第几格。原先它只住在 `OnboardingFlow` 的 `remember` 里（重建即丢），
      * 现在归宿主持有并写进 [BUNDLE_KEY_INTRO_STEP]：旋转与 Activity 重建后回到同一步。
      * ⚠ 进程被杀后重进要回到同一步还缺 `SettingsStorePort` 上的一颗键——本席不许自己加键，
-     * 已落交接单 §4。
+     * 待设置层补上该键。
      */
     private var introStep by mutableIntStateOf(0)
 
     /**
-     * 罩子那颗主动作点名要跳的首页子页（G1b 接线单 §3 的那条接电线，宿主这一侧）。
+     * 罩子那颗主动作点名要跳的首页子页（首页引导接线，宿主这一侧）。
      * 只能由 `SetupRoot` 消费一次并交回 null：挂着不撤的话，下一次重组会再跳一次。
      */
     private var pendingGuideTarget by mutableStateOf<HomeDestination?>(null)
@@ -87,14 +102,14 @@ class SetupActivity : ComponentActivity() {
     /**
      * 现在站在根导航哪一格——**[SetupRoot] 的只读出口交进来的那份读数**，本席不回写导航。
      *
-     * 为什么必须由宿主拿着一份（§9.1「遮罩只在首页、当前步骤存在且真实锚点就绪时显示」）：
+     * 为什么必须由宿主拿着一份（「遮罩只在首页、当前步骤存在且真实锚点就绪时显示」）：
      * `destination` 住在 `SetupRoot`（`rememberSaveable`），罩子 `HomeCoachMarks` 是它的**兄弟节点**、
      * 拿不到那颗私有态 ⇒ 早先跳进子页后，罩子只按"锚点没了"退化成一张浮在子页上的提示板，
      * 也就是表行判的"遮罩没有限定只在首页显示"。这一颗就是那条缺的通道，只做"在不在首页"这一个判据。
      */
     private var homeDestination by mutableStateOf<HomeDestination>(HomeDestination.Home)
 
-    /** 根导航只读出口的两件事：① 罩子的页面闸 ② 回到 Home 补一次游标刷新（§9.1） */
+    /** 根导航只读出口的两件事：① 罩子的页面闸 ② 回到 Home 补一次游标刷新 */
     private fun onHomeDestinationChanged(destination: HomeDestination) {
         homeDestination = destination
         // 「子页返回也未完整接上游标刷新」的那一格：`SetupRoot` 内的子页来回**不走 `onResume`**
@@ -127,12 +142,24 @@ class SetupActivity : ComponentActivity() {
         ContextCompat.startForegroundService(this, intent)
     }
 
-    private var pendingOverlayStart = false
-    private var pendingPanelMode: Int? = null
+    private val pendingOverlayStart = PendingOverlayStart()
+
+    /**
+     * 通知权限：缺就顺手要一次（Android 13+）。只是让那条常驻通知可见，
+     * 拿不到也不阻止启动服务——所以调用点只放在"真要起前台服务"之前，不另造页面/弹窗。
+     */
+    private fun ensureNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        val granted = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
+        if (!granted) notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+    }
 
     private fun startFloatingService(): Boolean {
-        if (!Settings.canDrawOverlays(this)) {
-            pendingOverlayStart = true
+        if (!overlayPermissionGranted(this)) {
+            pendingOverlayStart.defer()
             startActivity(
                 Intent(
                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -141,13 +168,14 @@ class SetupActivity : ComponentActivity() {
             )
             return false
         }
+        ensureNotificationPermission()
         ContextCompat.startForegroundService(this, Intent(this, FloatingService::class.java))
         return true
     }
 
     private fun openPanelFromHome(mode: Int) {
         if (!startFloatingService()) {
-            pendingPanelMode = mode
+            pendingOverlayStart.defer(mode)
             return
         }
         viewModel.requestPanel(mode)
@@ -155,13 +183,13 @@ class SetupActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (pendingOverlayStart && Settings.canDrawOverlays(this)) {
-            pendingOverlayStart = false
+        // 从系统授权页回来：给没给权限都要**结算这一次待续跑**。
+        // 拒绝/取消分支同样清空（gate 内部先清后判），否则那两颗旧旗标会挂在之后任意一次 onResume 上，
+        // 让别的页面/别的原因回到前台时莫名起服务。
+        pendingOverlayStart.onResume(overlayPermissionGranted(this))?.let { resume ->
+            ensureNotificationPermission()
             ContextCompat.startForegroundService(this, Intent(this, FloatingService::class.java))
-            pendingPanelMode?.let { mode ->
-                viewModel.requestPanel(mode)
-                pendingPanelMode = null
-            }
+            resume.panelMode?.let { mode -> viewModel.requestPanel(mode) }
         }
         // 从系统设置/子页回来：权限与开关都可能被别的进程改过，重读事实并重算游标。
         // 罩子因此不靠"用户点过哪颗按钮"活着——撤销授权它会自己退回未满足那一格。
@@ -176,7 +204,7 @@ class SetupActivity : ComponentActivity() {
             android.view.WindowManager.LayoutParams.FLAG_SECURE
         )
 
-        // 步号的真源是偏好那一颗（`SettingsStorePort.introStep`，G1b 接线单 §4 落的新键）：
+        // 步号的真源是偏好那一颗（`SettingsStorePort.introStep`，引导接线落的新键）：
         // 进程被杀后重进也要回到同一步。Bundle 那一条留着当**第二层**（同一次会话内旋转/重建更快，
         // 且拿得到就先用它），两层不一致时以盘上那一份为准——不新开第二本账，读与写都只经 VM 那两颗口。
         introStep = savedInstanceState?.getInt(BUNDLE_KEY_INTRO_STEP)
@@ -222,7 +250,7 @@ class SetupActivity : ComponentActivity() {
                         HomeCoachMarks(
                             cursor = guideCursor,
                             copy = coachCopyFor(guideCursor),
-                            // §9.1 的页面闸：进了子页（含知识库那趟之外的三格）整块罩子离场，
+                            // 首页页面闸：进了子页（含知识库那趟之外的三格）整块罩子离场，
                             // 回 Home 由上面那颗出口重算游标 + 重新在场
                             onHome = homeDestination == HomeDestination.Home,
                             // 主动作做两件事：① 清掉"稍后"（否则回到首页游标还是 DEFERRED，罩子永不回来）
@@ -306,9 +334,47 @@ class SetupActivity : ComponentActivity() {
     }
 
     companion object {
-        /** 介绍页第几格的暂存键（进程重建用；跨进程死要 `SettingsStorePort` 加一颗，见交接单 §4） */
+        /** 介绍页第几格的暂存键（进程重建用；跨进程重进仍需 `SettingsStorePort` 提供该键） */
         private const val BUNDLE_KEY_INTRO_STEP = "setup_intro_step"
     }
+}
+
+/**
+ * "去系统授权页"那一趟的待续跑状态（悬浮窗权限）。
+ *
+ * 为什么单独一颗：旧写法是 Activity 上两颗裸布尔/Int，续跑判据夹在 `onResume` 的
+ * `if (pending && Settings.canDrawOverlays(...))` 里——**没给权限就没进那个 if**，
+ * 于是 `pendingOverlayStart` / `pendingPanelMode` 永远留着，之后任意一次 `onResume`
+ * （从任何子页、任何系统页回来）都会把服务"补启动"一次。
+ * 现在结算入口只有一颗 [onResume]：先清空、再谈给没给权限，拒绝/取消不可能留到下一拍。
+ */
+internal class PendingOverlayStart {
+
+    private var pending = false
+    private var panelMode: Int? = null
+
+    /** 记下"这趟去要悬浮窗权限"（可顺带捎上启动后要打开的面板档位） */
+    fun defer(panelMode: Int? = null) {
+        pending = true
+        // 只有带着档位来才覆盖；先 defer()（纯启动）再 defer(mode) 的两段调用不会丢档位
+        if (panelMode != null) this.panelMode = panelMode
+    }
+
+    /**
+     * 结算一次 `onResume`：
+     * - 没有待续跑 → null；
+     * - 有 → **无论如何先清空**；给了权限才交回 [Resume]（要不要启动服务由调用方接）。
+     */
+    fun onResume(granted: Boolean): Resume? {
+        if (!pending) return null
+        val mode = panelMode
+        pending = false
+        panelMode = null
+        return if (granted) Resume(mode) else null
+    }
+
+    /** 续跑内容：必须有服务启动；[panelMode] 非空时再请求打开对应面板 */
+    internal data class Resume(val panelMode: Int?)
 }
 
 /** 介绍层的三条出口——语义各不相同，见 [GuideExitPaths] */
@@ -325,7 +391,7 @@ internal enum class GuideExit {
 }
 
 /**
- * 介绍层三条出口各自的落盘（用户原话第 14 条 + 基线 v1.1 §6.8）。
+ * 介绍层三条出口各自的落盘（用户原话第 14 条 + 既有介绍页口径）。
  *
  * ⚠ 这里**没有任何一条**再写"引导完成"：`completeOnboarding()` 与 `recreate()` 两根通道都断了，
  * 完成与否一律由 `SetupViewModel.currentGuideCursor` 从真状态派生（供应商有效 / 无障碍已授权 /

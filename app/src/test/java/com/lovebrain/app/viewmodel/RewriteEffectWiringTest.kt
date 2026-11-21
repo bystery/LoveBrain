@@ -23,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -58,13 +57,11 @@ class RewriteEffectWiringTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
     private val prefs = mockk<SecurePrefs>(relaxed = true).also {
         every { it.thinkingMode } returns 0
-        every { it.outputMode } returns 0
         every { it.panelMode } returns 0
         every { it.counselingDraft } returns ""
         every { it.loadCounselingResult() } returns null
@@ -85,8 +82,8 @@ class RewriteEffectWiringTest {
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
 
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            PromptBuilder.ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            PromptBuilder.ConfigValidationResult(0, emptyList())
 
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),

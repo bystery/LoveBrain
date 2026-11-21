@@ -119,4 +119,35 @@ class TopicLineFormatTest {
             offenders.map { it.first }
         )
     }
+
+    /**
+     * 初始态那句话也只有一个字面量。
+     *
+     * 它现在住 `domain/TopicRecorder.kt`（读侧不能 import data，见 KbTextOps 那条注释），
+     * 写侧 `KbTextOps.TOPIC_INITIAL_LABEL` 转调它。任何一侧再抄一份字面量，
+     * `hasTopic` 与 prompt 的注入判据就会与落盘的那句话静默漂移——那种漂移不会报错，
+     * 只会让"当前话题"要么一直不显示、要么永远被判成新话题。
+     */
+    @Test
+    fun onlyOneFileInTheProductionCodeOwnsTheInitialLabelLiteral() {
+        val appRoot = File("src/main/java/com/lovebrain/app")
+            .takeIf { it.isDirectory }
+            ?: File("app/src/main/java/com/lovebrain/app")
+        val sources = appRoot.walkTopDown().filter { it.isFile && it.extension == "kt" }.toList()
+        assertTrue("扫到 ${sources.size} 个生产源文件——少于 10 个说明路径写错，这条尺会永远通过",
+            sources.size >= 10)
+
+        val offenders = sources.filter { f ->
+            f.readText(Charsets.UTF_8).lines().any { line ->
+                !line.trim().startsWith("*") && !line.trim().startsWith("//") &&
+                    !line.trim().startsWith("/*") && line.contains("（等待第一次对话）")
+            }
+        }.map { it.name }
+
+        assertEquals(
+            "初始话题标签的字面量只该出现在 TopicRecorder.kt（KbTextOps 转调它）：$offenders",
+            listOf("TopicRecorder.kt"),
+            offenders
+        )
+    }
 }

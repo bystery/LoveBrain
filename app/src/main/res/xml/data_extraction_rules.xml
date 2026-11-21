@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+（API 31+）的备份/迁移规则，由 manifest 的 android:dataExtractionRules 引用。
+     旧版（API 26–30）读同目录 backup_rules.xml；两份名单必须同步，漏一处就是一条旧系统出口。
+     cloud-backup 与 device-transfer 各列一遍：D2D 换机与云备份是两条通路，缺一段就放行一条。
+     domain 按官方定义取值：file = getFilesDir()，root = /data/data/<pkg>（cache 在其下）。
+     排除项与 backup_rules.xml 同一份真源：knowledge/（聊天归档、记忆、画像、库快照）、
+     champion/（审计 jsonl）、feedback/（含真实消息的快照）、两份日志、cache 暂存、
+     SecurePrefs 的加密主存与降级明文存。只写 exclude，保留系统默认纳入面。 -->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="file" path="knowledge" />
+        <exclude domain="file" path="champion" />
+        <exclude domain="file" path="feedback" />
+        <exclude domain="file" path="lb_log.txt" />
+        <exclude domain="file" path="capture_diag.log" />
+        <exclude domain="root" path="cache" />
+        <exclude domain="sharedpref" path="lovebrain_secure_prefs.xml" />
+        <exclude domain="sharedpref" path="lovebrain_prefs_fallback.xml" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="file" path="knowledge" />
+        <exclude domain="file" path="champion" />
+        <exclude domain="file" path="feedback" />
+        <exclude domain="file" path="lb_log.txt" />
+        <exclude domain="file" path="capture_diag.log" />
+        <exclude domain="root" path="cache" />
+        <exclude domain="sharedpref" path="lovebrain_secure_prefs.xml" />
+        <exclude domain="sharedpref" path="lovebrain_prefs_fallback.xml" />
+    </device-transfer>
+</data-extraction-rules>

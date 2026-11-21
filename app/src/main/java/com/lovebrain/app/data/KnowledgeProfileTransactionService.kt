@@ -30,14 +30,14 @@ internal interface ProfileTxStorage {
     /** 过 canonical 守门的读（与公开读同源，旧布局有回退） */
     fun read(kbName: String, relativePath: String): String
 
-    /** 唯一写链：仓库的 `writeFileUnlocked`，带着只读 schema 拒绝与备份节流 */
-    fun writeUnlocked(kbName: String, relativePath: String, content: String)
+    /** 唯一写链：仓库的 `writeFileUnlocked`，带着只读 schema 拒绝与备份节流。false = 一个字节都没落 */
+    fun writeUnlocked(kbName: String, relativePath: String, content: String): Boolean
 
     /** 画像五维状态向量（解析不到默认 50） */
     fun readVector(kbName: String): Map<String, Int>
 
-    /** 就地更新 warmth.md 的五维状态向量 */
-    fun writeVector(kbName: String, values: Map<String, Int>)
+    /** 就地更新 warmth.md 的五维状态向量。false = 没写（文件缺失或写被拒），事务必须据此回滚 */
+    fun writeVector(kbName: String, values: Map<String, Int>): Boolean
 
     /** 阶段白名单归一化；非白名单返回 null（留痕在画像格） */
     fun normalizeStage(raw: String, opLabel: String): String?
@@ -180,15 +180,20 @@ internal class KnowledgeProfileTransactionService(private val storage: ProfileTx
         } else null
 
         try {
-            // 逐个写入画像文件
+            // 逐个写入画像文件；任何一格被拒（只读库/守门）或落盘失败都必须走回滚，
+            // 不能把"只写了一部分"当成 Success 交回去。
             for ((path, content) in writeTargets) {
-                storage.writeUnlocked(kbName, path, content)
+                if (!storage.writeUnlocked(kbName, path, content)) {
+                    throw java.io.IOException("profile tx write refused or failed: $path")
+                }
             }
 
             // warmth 向量同步——保持 warmth.md 中的数值与文件内容一致
             // 注意：writeVector 会修改 warmth.md，如果 warmth 内容已写入
             if (warmth != null && oldVector != null && oldVector.isNotEmpty()) {
-                storage.writeVector(kbName, oldVector)
+                if (!storage.writeVector(kbName, oldVector)) {
+                    throw java.io.IOException("vector rewrite refused or failed: warmth.md")
+                }
             }
 
             // 阶段更新——使用 strict 版本，IO 失败必须抛出
@@ -327,7 +332,9 @@ internal class KnowledgeProfileTransactionService(private val storage: ProfileTx
         val warmth = storage.read(kbName, path)
         if (warmth.isBlank()) return
         val updated = storage.rewriteStageLine(warmth, stage)
-        if (updated != warmth) storage.writeUnlocked(kbName, path, updated)
+        if (updated != warmth && !storage.writeUnlocked(kbName, path, updated)) {
+            throw java.io.IOException("stage label write refused or failed: $path")
+        }
     }
 
     /**

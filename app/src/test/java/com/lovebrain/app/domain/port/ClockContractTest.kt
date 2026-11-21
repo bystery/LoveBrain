@@ -26,7 +26,7 @@ import org.junit.Test
  * - [FixedClock] 还另钉一条"拨快之后墙钟真的跟着变"——光有"固定"测不到依赖时间的逻辑，
  *   [ClockWiringTest] 头注同款理由：冷却、话题老化、当日锦囊换天都要时间真的往前走一步才触发被测分支。
  *
- * 时区：[SystemClock] 走设备默认时区，[FixedClock] 走 `Locale.getDefault()` 的 SimpleDateFormat。
+ * 时区：[SystemClock] 走设备默认时区，[FixedClock] 与生产同走 [com.lovebrain.app.util.TimeFmt]。
  * 合同不钉时区，只钉"三种形态自洽"——这样在 UTC 的 CI 与 +08:00 的本机都过。
  */
 abstract class ClockContract {

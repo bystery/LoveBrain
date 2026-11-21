@@ -10,6 +10,7 @@ import com.lovebrain.app.model.OngoingItem
 import com.lovebrain.app.model.Scheme
 import com.lovebrain.app.model.SceneFact
 import com.lovebrain.app.util.L
+import java.io.IOException
 
 /**
  * 话题生命周期管理器——**一轮提交的事务协调者**。
@@ -18,8 +19,9 @@ import com.lovebrain.app.util.L
  * - 每轮对话记录到 moment/recent.md（最近 2 轮，溢出→对话暂存）
  * - 场景事实写入 moment/scene.md（带时间戳的状态链）
  * - 超过 TTL/最大条数 的状态条目移入 memory/raw_scene.md
- * - 话题切换判定：仅凭 topic_status=new
- * - 话题切换时归档到 memory/raw_topic.md（状态倒序），重置此刻层
+ * - 话题切换判定：topic_status=new 只是主张，必须经 [TopicSwitchGate] 佐证（F2.1 加固）；
+ *   被否决的主张保持现状（不归档、不清空、不改标签），并在诊断日志记录否决原因
+ * - 话题切换确认后归档到 memory/raw_topic.md（状态倒序），重置此刻层
  * - ongoing 进行中事项合并写入 moment/plan.md（跨话题生存）
  * - 轮次/状态条目解析使用真实时间戳校验，防 schema 模板示例行混入
  *
@@ -90,7 +92,8 @@ class TopicRecorder(
      * 幂等判据是 [RoundCommitJournal.isRoundCommitted] + 每投影水位，
      * 不再拿 recent.md 的 HTML marker 当跨文件提交标记。
      *
-     * @param topicStatus 从 AI 回复 JSON 中提取的话题状态（same/drift/new）
+     * @param topicStatus 从 AI 回复 JSON 中提取的话题状态（same/drift/new）；
+     *                    new 只是模型主张，须经 [TopicSwitchGate] 佐证才触发归档/清空
      * @param topicLabel 从 AI 回复 JSON 中提取的话题标签
      * @param sceneFacts 从 AI 回复 JSON 中提取的场景关键事实（带来源 ID）
      * @param ongoing 从 AI 回复 JSON 中提取的进行中事项变化
@@ -119,8 +122,33 @@ class TopicRecorder(
 
         // 1. 确定本轮变更意图（不写任何 target）——必须在 WAL PREPARED 之前完成
         val curTopic = knowledgeRepo.getCurrentTopic(kb.name)
-        val hasTopic = curTopic.isNotBlank() && curTopic != "（等待第一次对话）"
-        val shouldRotate = topicLabel.isNotBlank() && topicStatus == "new"
+        val hasTopic = curTopic.isNotBlank() && curTopic != TOPIC_INITIAL_LABEL
+
+        // F2.1 加固 + R5 佐证独立性修正：topic_status=new 不再单独触发归档/清空——必须经
+        // TopicSwitchGate 命中至少一个**非模型源**佐证信号（scene 链已空 / 证据时间间隔 /
+        // 用户显式换话题标记）。LABEL_CHANGE 与 status=new 出自同一次模型输出（同源共误），
+        // 单独命中不可定案，详见 refs/version_closeout_20261106/R5_TOPIC_GATE_INDEPENDENCE.md。
+        // 门是纯函数、读的是既有数据字段，不新增模型调用；结论随 event.shouldRotate 进 WAL，
+        // 崩溃恢复与首提走同一个决定，不会出现"恢复路径重新判一次"的分歧。
+        val gate = if (topicLabel.isNotBlank() && topicStatus == "new") {
+            TopicSwitchGate.evaluate(
+                topicLabel = topicLabel,
+                currentTopic = curTopic,
+                sceneContent = knowledgeRepo.readFile(kb.name, "moment/scene.md"),
+                // 审计 #09：门必须知道 recent 层是否仍有内容——scene 空但 recent 有当前话题内容
+                // 时不算"无可丢记忆"（旋转会把 recent 一并归档清空）。
+                recentContent = knowledgeRepo.readFile(kb.name, "moment/recent.md"),
+                messageContents = conversationalMessages.map { it.content },
+                latestMessageTimeMs = conversationalMessages.maxOfOrNull { it.timestamp } ?: 0L,
+                nowMs = clock.epochMs()
+            )
+        } else null
+        val shouldRotate = gate?.confirmed == true
+        if (gate != null && !gate.confirmed) {
+            // 误判保护：疑似新话题被否决——保持现状（scene/recent 不清、标签不改）。
+            // 只记信号名与数值，不记消息正文与标签正文（util/L.kt 隐私红线）。
+            L.w("疑似新话题被否决（topic_status=new 无佐证）：${gate.rejectionReason}；signals=${gate.signals}")
+        }
 
         // 2. 构建本轮记录（纯函数，不写入）
         val entry = recentStore.buildRoundEntry(
@@ -167,7 +195,7 @@ class TopicRecorder(
 
         return when (val outcome = journal.commit(kb.name, event) { e -> applyRound(e) }) {
             is RoundCommitJournal.CommitOutcome.Committed -> outcome.value
-            // 另一个协程在本协程排队等锁时把这一轮提交了：本轮没有新话题切换
+            // 另一个协程在本协程排队等锁时把这一轮提交了：本轮没有新话题切换。
             RoundCommitJournal.CommitOutcome.AlreadyCommitted -> false
         }
     }
@@ -191,7 +219,7 @@ class TopicRecorder(
         val kbName = event.kbName
         var topicRotated = false
 
-        // 投影 1：话题归档（仅 status=new 且有有效旧话题）
+        // 投影 1：话题归档（仅 status=new 经 TopicSwitchGate 佐证确认且有有效旧话题）
         apply(RoundCommitJournal.PROJ_TOPIC_ROTATE) {
             if (event.shouldRotate && event.hadTopic) {
                 knowledgeRepo.rotateTopic(kbName)
@@ -213,7 +241,14 @@ class TopicRecorder(
         // 投影 3：moment/recent.md
         apply(RoundCommitJournal.PROJ_RECENT) {
             if (event.recentEntry.isNotBlank()) {
-                recentStore.writeRecent(kbName, event.recentEntry, event.roundMsgIds)
+                // writeRecent 只在两笔都真落盘时返回 true；false = 这一轮没落盘（溢出没进暂存，或 recent 被拒写/IO 失败）。
+                // 必须抛出去而不是记个日志继续：只有抛出才走不到 apply 的水位推进，
+                // journal 留在 WRITING，同一 roundId 重试只重跑本投影；调用方也收不到"已记入"。
+                // 只记 roundId 这类非内容信息（util/L.kt 隐私红线），正文一个字节都不进日志。
+                if (!recentStore.writeRecent(kbName, event.recentEntry, event.roundMsgIds)) {
+                    L.e("recent projection did not land (round ${event.roundId}); round kept for retry", null)
+                    throw IOException("recent projection did not land for round ${event.roundId}")
+                }
             }
         }
 
@@ -264,4 +299,15 @@ class TopicRecorder(
 
     /** 向量重估专用上下文：当前话题 + 场景 + 最近对话 + 最近 N 个话题档案 */
     suspend fun getVectorContext(kbName: String): String = contextReader.getVectorContext(kbName)
+
+    companion object {
+        /**
+         * 新库初始化时写进 moment/topic.md 的那句话。
+         *
+         * 字面量必须住在 domain：读侧（本类的 `hasTopic`、PromptKnowledgeSection 的注入判据）
+         * 不能 import data（PackageDependencyTest 禁 domain → data），写侧
+         * `KbTextOps.TOPIC_INITIAL_LABEL` 转调这里，全仓仍只有这一份字面量。
+         */
+        const val TOPIC_INITIAL_LABEL = "（等待第一次对话）"
+    }
 }

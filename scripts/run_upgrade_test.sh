@@ -5,7 +5,7 @@
 # The published-fixture -> candidate覆盖升级 gate (v1.4.0 -> candidate since
 # F04 2026-10-15; the fixture shares the CURRENT pin, so the pair is REAL),
 # driven from one repo-local script so
-# the workflow YAML contains no inline shell ( 第8节 step 1.2 / 第3节).
+# the workflow YAML contains no inline shell (2026-09-23 audit, step 1.2).
 #
 # What it does, in order, failing hard at any step:
 #   1. verifies BOTH APKs' metadata and signing certificates (candidate must be

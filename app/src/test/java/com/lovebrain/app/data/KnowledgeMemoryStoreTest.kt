@@ -132,12 +132,12 @@ class KnowledgeMemoryStoreTest {
     }
 
     /**
-     * revision 写失败时：标记必须保持原值。
+     * revision 写失败时：标记保持原值、纠正记录被回滚，且返回值必须是 false。
      *
-     * ⚠ 这里**照抄改造前的语义**：`saveCorrection` 当年就以"纠正文件有没有写成"作为返回值，
-     * 第二个写（revision 标记）失败时仍报 true。要不要收紧是另一件事（它会让"记下了纠正但
-     * 版本没跳"变成可见的失败），本轮只钉住一条：不许悄悄把 revision 跳上去，
-     * 否则后台防护会以为这一版已经处理过。
+     * 标记不许悄悄跳上去（否则后台防护以为这一版已处理过）；返回值也不许报成功——
+     * 纠正落了盘而版本没跳是可见的失败，调用方据此重试，而不是被 true 蒙混过去。
+     * 审计 #4：记录已写成、标记没写时必须把记录写回旧内容，否则"纠正表变了 ⇔ revision 跳了"
+     * 这条不变式在磁盘上不成立。
      */
     @Test
     fun aRefusedRevisionWriteLeavesTheRevisionMarkerUnbumped() {
@@ -146,18 +146,91 @@ class KnowledgeMemoryStoreTest {
         failRevisionWrite = true
         val s = store(files)
 
-        s.save("kb", "z", CorrectionAction.WRONG, "标记写失败")
+        assertFalse("revision 写失败必须如实报 false", s.save("kb", "z", CorrectionAction.WRONG, "标记写失败"))
 
         assertEquals("revision 标记保持原值", 4, s.revisionOf("kb"))
         assertEquals(
-            "失败的那一批：先成功写了纠正、再尝试写 revision（顺序与旧实现一致）",
+            "失败的那一批：先写纠正、再试写 revision，最后把纠正写回旧内容（回滚）",
             listOf(
                 KnowledgeMemoryStore.CORRECTIONS_FILE to true,
-                KnowledgeMemoryStore.MEMORY_REVISION_FILE to false
+                KnowledgeMemoryStore.MEMORY_REVISION_FILE to false,
+                KnowledgeMemoryStore.CORRECTIONS_FILE to true
             ),
             transactions.last()
         )
+        assertFalse("回滚后纠正表里不该留下这条", s.corrections("kb").containsKey("z"))
+        assertEquals("回滚后老记录原样", setOf("a"), s.corrections("kb").keys)
         failRevisionWrite = false
+    }
+
+    /** revision 写失败报 false 之后，恢复写入重试必须成功：标记推进、记录与标记一致。 */
+    @Test
+    fun aFailedRevisionWriteReportsFalseAndRecoversOnRetry() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 4, ids = listOf("a"))
+        failRevisionWrite = true
+        val s = store(files)
+
+        assertFalse("revision 写失败必须报 false，调用方才会重试", s.save("kb", "z", CorrectionAction.WRONG, "标记写失败"))
+        assertEquals("失败时标记不动", 4, s.revisionOf("kb"))
+
+        failRevisionWrite = false
+        assertTrue("恢复写入后重试必须成功", s.save("kb", "z", CorrectionAction.WRONG, "标记写失败"))
+        assertEquals("重试后标记推进到 5", 5, s.revisionOf("kb"))
+        assertEquals("5", files["kb/${KnowledgeMemoryStore.MEMORY_REVISION_FILE}"])
+        val records = s.corrections("kb")
+        assertEquals("记录与库级标记一致", 5, records.getValue("z").revision)
+        assertTrue("任何记录的 revision 都不超过库级标记", records.values.all { it.revision <= 5 })
+        assertEquals(
+            "重试这一批：纠正与 revision 都写成",
+            listOf(
+                KnowledgeMemoryStore.CORRECTIONS_FILE to true,
+                KnowledgeMemoryStore.MEMORY_REVISION_FILE to true
+            ),
+            transactions.last()
+        )
+    }
+
+    /**
+     * 审计 #4：纠正写成、revision 写失败时，回滚让"记录变了 ⇔ 版本跳了"重新成立，
+     * 重试从同一个号继续，不会出现两条记录共用一个 revision。
+     */
+    @Test
+    fun aFailedRevisionWriteLeavesNoCorrectionBehindAndTheRetryReusesTheSameNumber() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 4, ids = listOf("a"))
+        failRevisionWrite = true
+        val s = store(files)
+
+        assertFalse(s.save("kb", "z", CorrectionAction.WRONG, "标记写失败"))
+        assertFalse("回滚后这条纠正不该留在表里", s.corrections("kb").containsKey("z"))
+
+        failRevisionWrite = false
+        assertTrue(s.save("kb", "z", CorrectionAction.WRONG, "标记写失败"))
+        val records = s.corrections("kb")
+        assertEquals("重试从同一个号继续，不跳过也不重号", 5, records.getValue("z").revision)
+        assertEquals(5, s.revisionOf("kb"))
+        assertEquals("每条记录的 revision 都不同", records.size, records.values.map { it.revision }.toSet().size)
+    }
+
+    /**
+     * 回滚本身也失败（只读保护下并不罕见）时，磁盘上会留下"记录 revision 比标记大"的残留。
+     * 下一次纠正必须跟着两者的较大者走，不许复用旧号。
+     */
+    @Test
+    fun aRecordNewerThanTheMarkerStillAdvancesTheNextRevision() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 4, ids = emptyList())
+        files["kb/${KnowledgeMemoryStore.CORRECTIONS_FILE}"] = json.encodeToString(
+            ListSerializer(MemoryCorrection.serializer()),
+            listOf(MemoryCorrection(memoryId = "a", action = CorrectionAction.WRONG, revision = 9))
+        )
+        val s = store(files)
+
+        assertTrue(s.save("kb", "z", CorrectionAction.WRONG))
+
+        assertEquals("标记 4、记录 9 → 下一个号是 10", 10, s.revisionOf("kb"))
+        assertEquals(10, s.corrections("kb").getValue("z").revision)
     }
 
     @Test
@@ -190,5 +263,159 @@ class KnowledgeMemoryStoreTest {
         assertEquals(2, records.size)
         assertEquals(11, revision)
         assertTrue("快照里每条都要带自己的 revision", records.values.all { it.revision == 11 })
+    }
+
+    // ════════════ S3 遗漏 B：scene 纠正把"被纠正条目原文"一并持久化 ════════════
+
+    private val sceneWithFacts = "- [2026-11-05 20:00] 出差：她在杭州出差|src=m1|spk=HER；住西湖酒店\n"
+
+    @Test
+    fun `scene file correction persists the corrected fact texts in the same transaction`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 2, ids = listOf("a"))
+        files["kb/moment/scene.md"] = sceneWithFacts
+        val s = store(files)
+
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+
+        assertEquals(
+            "被纠正条目原文随纠正一并持久（归档后 scene.md 清空依据不再消失）",
+            "她在杭州出差\n住西湖酒店",
+            files["kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"]
+        )
+        assertEquals(
+            "顺序：纠正记录 → 持久依据 → revision，同一事务",
+            listOf(
+                KnowledgeMemoryStore.CORRECTIONS_FILE,
+                KnowledgeMemoryStore.PERSISTED_FACTS_FILE,
+                KnowledgeMemoryStore.MEMORY_REVISION_FILE
+            ),
+            writeLog.takeLast(3)
+        )
+        assertEquals("一批 = 一次写事务", 1, transactions.size)
+        assertEquals(3, s.revisionOf("kb"))
+    }
+
+    @Test
+    fun `legacy hash scene id also persists the fact texts`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        files["kb/moment/scene.md"] = sceneWithFacts
+        val s = store(files)
+
+        assertTrue(s.save("kb", "SCENE:moment/scene.md:old123", CorrectionAction.WRONG))
+
+        assertTrue(
+            "旧格式 `:hash` 的 scene ID 同样要落持久依据",
+            files.getValue("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}").contains("她在杭州出差")
+        )
+    }
+
+    @Test
+    fun `non scene correction never touches the persisted facts file`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 1, ids = listOf("a"))
+        files["kb/moment/scene.md"] = sceneWithFacts
+        val s = store(files)
+
+        assertTrue(s.save("kb", "PROFILE:understand/her.md", CorrectionAction.WRONG))
+
+        assertFalse("非 scene 纠正不得写依据文件", files.containsKey("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"))
+        assertEquals(
+            "顺序与旧实现一致：只有纠正记录与 revision",
+            listOf(KnowledgeMemoryStore.CORRECTIONS_FILE, KnowledgeMemoryStore.MEMORY_REVISION_FILE),
+            writeLog.takeLast(2)
+        )
+    }
+
+    @Test
+    fun `scene correction with an empty scene writes no basis file`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        val s = store(files)
+
+        assertTrue("scene.md 为空、无旧依据 → 没有可持久的内容，但纠正本身照常落盘",
+            s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+        assertFalse(files.containsKey("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"))
+        assertEquals(1, s.revisionOf("kb"))
+    }
+
+    @Test
+    fun `re saving the scene correction accumulates archived facts instead of overwriting`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        files["kb/moment/scene.md"] = "- [2026-11-04 09:00] 旧话题：她在杭州出差\n"
+        val s = store(files)
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+
+        // 话题切换归档（旧事实已进 raw_topic），scene.md 换了新话题，用户再次纠正
+        files["kb/moment/scene.md"] = "- [2026-11-06 09:00] 新话题：她感冒了\n"
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.MUTED, muteDuration = MuteDuration.TODAY))
+
+        val persisted = files.getValue("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}")
+        assertTrue("旧话题里被纠正的原文不因覆盖漏回", persisted.contains("她在杭州出差"))
+        assertTrue("新话题的被纠正原文一并累积", persisted.contains("她感冒了"))
+    }
+
+    @Test
+    fun `a failed revision write rolls the persisted facts back too`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        files["kb/moment/scene.md"] = "- [2026-11-04 09:00] 旧话题：她在杭州出差\n"
+        val s = store(files)
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+
+        files["kb/moment/scene.md"] = "- [2026-11-06 09:00] 新话题：她感冒了\n"
+        failRevisionWrite = true
+        assertFalse(
+            "revision 写失败必须如实报 false",
+            s.save("kb", "SCENE:moment/scene.md", CorrectionAction.MUTED, muteDuration = MuteDuration.TODAY)
+        )
+        assertEquals(
+            "依据文件回滚到写入前原文，不留下新依据+旧纠正+旧 revision 的混合态",
+            "她在杭州出差",
+            files["kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"]
+        )
+        assertEquals("revision 标记保持原值", 1, s.revisionOf("kb"))
+        assertEquals(
+            "失败那一批：纠正、依据、revision 依次落盘，失败后纠正与依据一起写回旧内容",
+            listOf(
+                KnowledgeMemoryStore.CORRECTIONS_FILE to true,
+                KnowledgeMemoryStore.PERSISTED_FACTS_FILE to true,
+                KnowledgeMemoryStore.MEMORY_REVISION_FILE to false,
+                KnowledgeMemoryStore.CORRECTIONS_FILE to true,
+                KnowledgeMemoryStore.PERSISTED_FACTS_FILE to true
+            ),
+            transactions.last()
+        )
+        failRevisionWrite = false
+    }
+
+    @Test
+    fun `undoing the scene correction clears the persisted basis`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        files["kb/moment/scene.md"] = sceneWithFacts
+        val s = store(files)
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+        assertTrue(files.containsKey("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"))
+
+        assertTrue(s.undo("kb", "SCENE:moment/scene.md"))
+
+        assertEquals("撤销 = 恢复可信注入，持久依据随之清空", "", files["kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"])
+    }
+
+    @Test
+    fun `undoing a non scene correction leaves the persisted basis alone`() {
+        val files = mutableMapOf<String, String>()
+        seed("kb", files, revision = 0, ids = emptyList())
+        files["kb/moment/scene.md"] = sceneWithFacts
+        val s = store(files)
+        assertTrue(s.save("kb", "SCENE:moment/scene.md", CorrectionAction.WRONG))
+        assertTrue(s.save("kb", "PROFILE:understand/her.md", CorrectionAction.WRONG))
+
+        assertTrue(s.undo("kb", "PROFILE:understand/her.md"))
+
+        assertTrue("撤销别的纠正不得清空 scene 依据", files.containsKey("kb/${KnowledgeMemoryStore.PERSISTED_FACTS_FILE}"))
     }
 }

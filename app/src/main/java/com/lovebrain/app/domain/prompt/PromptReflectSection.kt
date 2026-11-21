@@ -8,8 +8,7 @@ import com.lovebrain.app.domain.PromptBudget
  *
  * 这一块把**已经读出来的**画像 / 经验 / 话题档案 / 谈心分析文本拼成 reflect user 侧段。
  * 它不读知识库、不读资产、不读时钟，也不持有状态——所有读取由 `PromptBuilder` 在调用前
- * 完成并以 [Input] 传入，因此是纯函数。搬运前后对同一批输入必须给出逐字相同的字符串
- * （字节证据见 `domain/prompt/PromptByteFreezeBaselineTest` 的冻结表）。
+ * 完成并以 [Input] 传入，因此是纯函数。搬运前后对同一批输入必须给出逐字相同的字符串。
  *
  * 语义约束（搬运时一条都没改）：
  * - 画像三件（me/her/warmth）逐字 trim 后分 `### 文件名` 小节拼接。

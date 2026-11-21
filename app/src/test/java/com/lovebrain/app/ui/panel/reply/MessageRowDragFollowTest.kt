@@ -69,7 +69,7 @@ class MessageRowDragFollowTest {
      * 一格之内来回抖会一路交换下去，第一帧就满足条件，这一格当场红。
      */
     /**
-     * §8.3 第四判据"列表发生有效变化后清理拖动态"的**结构那一半**：被拖那一条已从数据里
+     * 第四判据"列表发生有效变化后清理拖动态"的**结构那一半**：被拖那一条已从数据里
      * 消失（拖拽途中被删/被本轮消耗）时，`reshowDraggedRow` 的 else 一支必须就地 `endDrag()`。
      * 拿掉它，`draggedId` 会悬住、全行横滑被 `reorderActive` 压到抬指（L1 复核挑中的形状）。
      * ⚠ 这一格只证明"那一支存在且不是空"；拖拽中的手指时序本机注入不稳（头注②），时序归真机。
@@ -313,7 +313,7 @@ class MessageRowDragFollowTest {
      * 边缘滚动只留一颗可取消的任务：`scrollBy` 全文件一处，挂在带拖拽会话键的 `LaunchedEffect` 上，
      * 且它前面 200 字符内不许出现 `launch`（那正是"每个手势事件起一颗新任务"的老写法），
      * 后面必须按帧 `delay`。
-     * §8 之后这一颗**不再自己拿速度滚**：每一帧先问 [runDragFrame]（同一份最新布局），
+     * 之后这一颗**不再自己拿速度滚**：每一帧先问 [runDragFrame]（同一份最新布局），
      * 只滚它交回的那个量，并把"没滚满"的那一截从补偿里退回来。
      * 反例：`scope.launch { listState.scrollBy(...) }` 回到 onDrag 里 ⇒ 三条判据一起红；
      * 反例：把取消键 `dragSession` 摘掉（任务停不下来）⇒ 第二条红；
@@ -460,7 +460,7 @@ class MessageRowDragFollowTest {
         val exits = linesWith("onDelete(")
         assertEquals("交给持有者的删除出口只该有一处：" + exits, 1, exits.size)
         assertTrue("那一处交出去的必须是 id：" + exits.single(), "id" in exits.single())
-        assertTrue("重排交的必须是原始下标那一对（展示位与它是两件事；§8 之后这一对由帧判据交回）",
+        assertTrue("重排交的必须是原始下标那一对（展示位与它是两件事；之后这一对由帧判据交回）",
             source.contains("onReorder(from, to)"))
         assertTrue("拖拽认人只认稳定 id，不许按格号认：" + linesWith("draggedId ="),
             source.contains("draggedId = hitId") && source.contains("hitItem?.key as? String"))

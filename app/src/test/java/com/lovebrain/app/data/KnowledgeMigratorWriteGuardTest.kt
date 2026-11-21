@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.Json
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -38,7 +39,13 @@ import java.nio.file.Files
  *
  * 注：`atomicWriteAt` 是**锁内**原语（`writeFileCheckedUnlocked` 不抢锁——Mutex 非重入，
  * 锁内再抢就是永久挂起）。生产路径上仓库一直在外层持 `fileMutex`（`migrateIfNeeded` 整段套在锁里）；
- * 这里直接开这一刀是单线程顺序调用，不构成交错，也不该被读成「可以从外面裸调」。
+ * 测试里也必须经 [atomicWriteAtLocked] 显式持同一把锁再调，不该被读成「可以从外面裸调」：
+ * 仓库构造时就会在 appScope 上启动 init 协程（启动恢复 + 备份，持同一把锁）——它是**真实的
+ * 并发写者**，「单线程顺序调用不构成交错」的前提已不成立。不持锁直调时，启动恢复会在写入的
+ * `.tmp` 存在窗口里把在飞的临时文件当中断残留 rename 走（POSIX 对打开中的文件 rename 照样
+ * 成功，CI 冷 JVM 慢盘正好落进这个窗口；Windows 本地快机赶不上），写核的原子 move 随即拿到
+ * NoSuchFileException、回退路 renameTo 失败，IOException 便从合法路径逃逸——CI/Linux 红、
+ * 本地绿。过锁不改判任何一格：每一格判的还是同一个返回值与同一棵盘上树。
  */
 class KnowledgeMigratorWriteGuardTest {
 
@@ -65,6 +72,15 @@ class KnowledgeMigratorWriteGuardTest {
     }
 
     private val kbDir get() = File(root, "kb")
+
+    /**
+     * 锁内原语的测试入口：直调必须过仓库那把锁（理由见类注释）。
+     * 同一份 `atomicWriteAt`、同一份实参——这里只补上生产调用方一直持有的那把锁。
+     */
+    private fun atomicWriteAtLocked(kbName: String, relativePath: String, content: String): Boolean =
+        runBlocking {
+            repo.fileMutex.withLock { repo.migratorStorage.atomicWriteAt(kbName, relativePath, content) }
+        }
 
     private fun relativeFiles(dir: File): List<String> =
         dir.walkTopDown().filter { it.isFile && it != dir }
@@ -106,7 +122,7 @@ class KnowledgeMigratorWriteGuardTest {
         ) {
             assertFalse(
                 "越界相对路径竟然写成功了：[$bad]",
-                repo.migratorStorage.atomicWriteAt("kb", bad, "越界内容")
+                atomicWriteAtLocked("kb", bad, "越界内容")
             )
         }
         assertFalse(
@@ -127,7 +143,7 @@ class KnowledgeMigratorWriteGuardTest {
         for (badName in listOf("../$sibling", "kb/../$sibling", "a/b", "a\\b", "")) {
             assertFalse(
                 "非法库名竟然写成功了：[$badName]",
-                repo.migratorStorage.atomicWriteAt(badName, ".schema_version", "3")
+                atomicWriteAtLocked(badName, ".schema_version", "3")
             )
         }
         assertFalse("`..` 库名把兄弟目录建出来了", File(root, sibling).exists())
@@ -141,13 +157,13 @@ class KnowledgeMigratorWriteGuardTest {
         seedKb()
         assertTrue(
             "合法路径被自己的守门挡下——那上面那一格拒绝就成了假安全",
-            repo.migratorStorage.atomicWriteAt("kb", "moment/scene.md", "此刻的场景")
+            atomicWriteAtLocked("kb", "moment/scene.md", "此刻的场景")
         )
         val scene = File(kbDir, "moment/scene.md")
         assertTrue("返回 true 却没落盘", scene.isFile)
         assertEquals("此刻的场景", scene.readText(Charsets.UTF_8))
         // 迁移器真的在写点开头的 marker：隐藏名不许被守门顺手挡掉
-        assertTrue(repo.migratorStorage.atomicWriteAt("kb", ".schema_version", "3"))
+        assertTrue(atomicWriteAtLocked("kb", ".schema_version", "3"))
         assertEquals("3", File(kbDir, ".schema_version").readText(Charsets.UTF_8))
         assertEquals(listOf(".schema_version", "kb.json", "moment/scene.md"), relativeFiles(kbDir))
     }

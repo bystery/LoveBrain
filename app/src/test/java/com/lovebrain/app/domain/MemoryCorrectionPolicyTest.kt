@@ -46,7 +46,10 @@ class MemoryCorrectionPolicyTest {
         assertEquals("m-1", built.memoryId)
         assertEquals(CorrectionAction.MUTED, built.action)
         assertEquals(MuteDuration.THIS_ROUND, built.muteDuration)
-        assertEquals("2026-09-24 09:59", built.muteTimestamp)
+        // 本轮瞬时静音没有墙钟窗口：muteTimestamp 留空，否则 MemoryRefPolicy 会把它判成
+        // "旧版本持久化的 THIS_ROUND" 直接过期——用户点了"仅本轮"，下一次生成照样注入。
+        assertEquals("瞬时 mute 不写 muteTimestamp", "", built.muteTimestamp)
+        assertEquals("时间戳只落诊断字段", "2026-09-24 09:59", built.updatedAt)
         assertEquals("换成‘她’而不是‘你’", built.replacementText)
         assertEquals("kb-2", built.targetKbId)
     }

@@ -7,7 +7,7 @@ import org.junit.Test
 import java.io.File
 
 /**
- * 切页动效与"一次有意横滑就切换"判据的**纯函数格 + 接线证人**（基线 v1.1 §6.5 / 需求映射 原始 11、20）。
+ * 切页动效与"一次有意横滑就切换"判据的**纯函数格 + 接线证人**（需求映射 原始 11、20）。
  *
  * 这一颗文件为什么单独存在（三件事，每件都只在这台仪器能测的范围内判）：
  *
@@ -44,7 +44,7 @@ class PanelPageMotionTest {
 
     /**
      * 剥掉注释与字符串，只留可执行代码（一趟字符扫描，不分先后两种剥法——
-     * `OddShapeOwnershipTest` 记过那两条自伤：先剥块注释会被行注释里的起头一路吃到很后面，
+     * 本仓库记过那两条自伤：先剥块注释会被行注释里的起头一路吃到很后面，
      * 先剥行注释会被 KDoc 里的 `https://` 吃掉行尾的收口）。
      * 这里不需要保留行结构（判据都是"这一段里有没有那颗符号"），所以命中就吐空格。
      */
@@ -97,7 +97,7 @@ class PanelPageMotionTest {
      */
     @Test
     fun `切页与页头读同一颗时长，没有第二条时序`() {
-        assertEquals("基线 v1.1 §6.5 定的切页时长", 200, PanelPageMotion.SLIDE_MS)
+        assertEquals("约定定的切页时长", 200, PanelPageMotion.SLIDE_MS)
         assertTrue(
             "页面平移必须读 PanelPageMotion.SLIDE_MS（实到 " +
                 Regex("SLIDE_MS").findAll(pagerCode).count() + " 处引用）",
@@ -170,13 +170,13 @@ class PanelPageMotionTest {
                 Regex("awaitEachGesture\\s*\\{").findAll(motionCode).count(),
             1,
             Regex("awaitEachGesture\\s*\\{").findAll(motionCode).count()
-        )
+)
     }
 
     // ─────────────── B. 松手判定：位移线 OR 甩速门（原始 11） ───────────────
 
     /**
-     * 提交线是页宽的比（0.25，基线 v1.1 §6.5 从 0.34 降下来），**不是**定值像素；
+     * 提交线是页宽的比（0.25，从 0.34 降下来），**不是**定值像素；
      * 页宽没量到时两条轴都不许凭空够门。
      * 反例：比写成固定 px ⇒ 换页宽那两句红（窄面板滑到底也换不了页）；
      * 反例：压线判成 `>` ⇒ "正好够线"两句红；

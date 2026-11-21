@@ -3,6 +3,7 @@ package com.lovebrain.app.data
 import android.util.Log
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.service.ClipBurstDedup
+import com.lovebrain.app.service.CopyCaptureService
 import io.mockk.every
 import io.mockk.mockkStatic
 import io.mockk.slot
@@ -12,6 +13,7 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 /**
@@ -22,9 +24,9 @@ import kotlin.test.assertTrue
  * ③ emitCapturedMessage 在 replay 缓冲可用时返回 true。
  * 注意：EventBus 为单例且带重放缓存，断言一律以本用例自发值为准。
  *
- * 后面那三格是 §15.1（K10/K11）要的**300ms 去重边界**：判据本体是
+ * 后面那三格是（K10/K11）要的**300ms 去重边界**：判据本体是
  * `service/ClipBurstDedup`（纯函数，不碰 SystemClock，所以 JVM 就能量到边界）。
- * §18.1 明写这一族是"会造成真实行为回归"的那一类，值得钉；每条都写着**怎么坏会红**。
+ * 明写这一族是"会造成真实行为回归"的那一类，值得钉；每条都写着**怎么坏会红**。
  */
 class EventBusCaptureTest {
 
@@ -68,10 +70,10 @@ class EventBusCaptureTest {
         assertTrue(accepted, "replay 缓冲可用时 tryEmit 应成功返回 true")
     }
 
-    // ═══════════ §15.1：300ms 去重边界（K10 / K11）═══════════
+    // ═══════════：300ms 去重边界（K10 / K11）═══════════
 
     /**
-     * 不同文本**本来就不该被这条规则阻挡**（§15.1 原话）。
+     * 不同文本**本来就不该被这条规则阻挡**（原话）。
      *
      * 怎么坏会红：
      * - 把这条判据写成"所有消息的统一冷却窗"（丢掉 `text == previousText`）⇒ 第二句红
@@ -114,7 +116,7 @@ class EventBusCaptureTest {
             window,
             "窗口宽度全仓只该有 AppConfig 那一颗，判据不许自己抄一份秒数"
         )
-        assertEquals(300L, window, "§15.1：这一格收敛到 300ms（1500 是改错层之前的读数）")
+        assertEquals(300L, window, "：这一格收敛到 300ms（1500 是改错层之前的读数）")
         assertTrue(window > 0L, "窗口写成 0 就等于把重复来源合并整条丢掉")
 
         val t0 = 1_000_000L
@@ -134,17 +136,19 @@ class EventBusCaptureTest {
     }
 
     /**
-     * 300ms **只收这一格**：事件配对与待捕获寿命都不跟着动（§15.1 末句"不继续盲改常量"）。
+     * 300ms **只收这一格**：去重窗与事件配对寿命是两笔账，不许互相凑数（末句"不继续盲改常量"）。
      *
-     * 怎么坏会红：有人把"长按 ↔ 复制菜单"那条配对预算一起收敛成 300ms ⇒ 这句红
-     * （慢菜单 >3s 就捕不到了，而用户的原话只针对重复合并那一格）。
+     * 配对寿命的唯一真源是 `CopyCaptureService.MENU_PENDING_MAX_AGE_MS`（5s，读者在捕获服务那边），
+     * AppConfig 只留去重窗这一颗。断言钉两件事：去重窗仍是 300ms、两颗数没有并成一颗——
+     * 谁把去重窗改成配对寿命、或反过来，这一格都红。
      */
     @Test
-    fun `待捕获事件寿命不吃这颗 300ms`() {
-        assertEquals(
-            30_000L,
-            AppConfig.PENDING_MAX_AGE_MS,
-            "pending 寿命是事件配对预算，不是洪峰去重，本轮不跟着收敛"
+    fun `去重窗与配对寿命是两笔账`() {
+        assertEquals(300L, AppConfig.BURST_DEDUP_WINDOW_MS)
+        assertNotEquals(
+            AppConfig.BURST_DEDUP_WINDOW_MS,
+            CopyCaptureService.MENU_PENDING_MAX_AGE_MS,
+            "洪峰去重与事件配对寿命各自记账，不许并成一颗"
         )
     }
 }

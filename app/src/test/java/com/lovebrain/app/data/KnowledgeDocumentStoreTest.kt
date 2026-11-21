@@ -42,12 +42,13 @@ class KnowledgeDocumentStoreTest {
             override val root: File get() = root
             override fun note(message: String) { notes += message }
             override fun kbExists(kbName: String): Boolean = kbName in existing
-            override fun writeUnlocked(kbName: String, relativePath: String, content: String) {
+            override fun writeUnlocked(kbName: String, relativePath: String, content: String): Boolean {
                 writes += Triple(kbName, relativePath, content)
                 File(root, "$kbName/$relativePath").let { f ->
                     f.parentFile?.mkdirs()
                     f.writeText(content, Charsets.UTF_8)
                 }
+                return true
             }
         }
     )
@@ -176,6 +177,32 @@ class KnowledgeDocumentStoreTest {
         assertTrue("解析根级路径不许产生任何写入", writes.isEmpty())
         assertEquals("也不许在盘上留下任何文件", emptyList<String>(),
             folder.root.walkTopDown().filter { it.isFile }.map { it.name }.toList())
+    }
+
+    @Test
+    fun `a document that exists but cannot be read degrades to empty with a content-free log`() {
+        // 存在却读不出来（权限/被占用/同名目录）不是"缺文件"：以前 IOException 会一路
+        // 抛到生成链路，整轮回复失败。读路径必须降级为空串，日志只记路径与异常类型。
+        val asDirectory = File(File(folder.root, "她"), "understand/me.md")
+        asDirectory.mkdirs()
+        try {
+            assertEquals("", store().read("她", "understand/me.md"))
+            assertTrue("要留下一条读取失败日志：$notes", notes.any { it.contains("read failed") })
+        } finally {
+            asDirectory.delete()
+        }
+    }
+
+    @Test
+    fun `the legacy fallback also degrades instead of throwing`() {
+        val oldPath = File(File(folder.root, "她"), "global/me.md")
+        oldPath.mkdirs()
+        try {
+            assertEquals("", store().read("她", "understand/me.md"))
+            assertTrue("回退路径的读取失败同样要有日志：$notes", notes.any { it.contains("read failed") })
+        } finally {
+            oldPath.delete()
+        }
     }
 
     // ═══ 版本化读写 ═══

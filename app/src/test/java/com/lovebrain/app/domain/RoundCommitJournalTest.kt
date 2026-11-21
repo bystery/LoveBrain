@@ -139,7 +139,9 @@ class RoundCommitJournalTest {
 
     private fun messages(): List<ChatMessage> = listOf(
         ChatMessage(id = "msg-0", role = ChatMessage.Role.HER, content = "下周我要去考雅思了"),
-        ChatMessage(id = "msg-1", role = ChatMessage.Role.ME, content = "需要我陪你练习口语吗")
+        // 审计 #09 弱信号规则：scene 空 + recent 有旧话题内容时，LABEL_CHANGE 不再单独定案——
+        // 这条 WAL 故障矩阵的基线需要旋转发生，用户显式换话题标记（确定性信号）在场。
+        ChatMessage(id = "msg-1", role = ChatMessage.Role.ME, content = "好，咱们换个话题吧，需要我陪你练习口语吗")
     )
 
     /** 一轮完整变更：话题切换 + recent + scene + plan + count 全部命中 */

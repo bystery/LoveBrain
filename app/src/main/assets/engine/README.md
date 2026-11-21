@@ -23,7 +23,6 @@
 | `stage.md` | 按阶段分节的相处策略（八阶段） | 大模型 | 阶段节标题必须与 `StageCatalog` 一致；extractStageSection 按节提取 |
 | `redline.md` | 红线与安全约束 | 大模型 | 涉安全边界，改动需主人口径 |
 | `naturalness_check.md` | 自然度自检清单 | 大模型 | 纯文案，改动跑构建与契约单测 |
-| `aggressive.md` | 激进风格附加段 | 大模型 | 纯文案，改动跑构建与契约单测 |
 | `format.md` | 回复排版格式约束 | 大模型 | 纯文案，改动跑构建与契约单测 |
 
 ## 流程资产（engine/）

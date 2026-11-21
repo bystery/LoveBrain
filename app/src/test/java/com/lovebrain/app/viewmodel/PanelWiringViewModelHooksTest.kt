@@ -32,7 +32,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -80,7 +79,6 @@ class PanelWiringViewModelHooksTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -93,7 +91,6 @@ class PanelWiringViewModelHooksTest {
     ): LoveBrainViewModel {
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -117,8 +114,8 @@ class PanelWiringViewModelHooksTest {
         coEvery { knowledgeRepo.getCorrectionsRevision(any()) } returns 0
 
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            PromptBuilder.ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            PromptBuilder.ConfigValidationResult(0, emptyList())
         every { promptBuilder.replyPromptAssetHash() } returns "reply-asset-hash"
 
         deepSeek = mockk(relaxed = true)

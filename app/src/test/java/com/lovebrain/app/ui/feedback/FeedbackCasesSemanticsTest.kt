@@ -37,7 +37,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 已踩案例页（第9节第2条 那一版：分类 chips 与导出格式切换都删了，卡片只剩正文 + 时间）。
+ * 已踩案例页（分类 chips 与导出格式切换都删了，卡片只剩正文 + 时间）。
  *
  * ## 这一版盯的是三件事
  *
@@ -49,9 +49,9 @@ import org.robolectric.annotation.GraphicsMode
  * 2. **旧 JSON 仍然读得起来**——夹具不是手搓的 `FeedbackCase(...)`，而是一段
  *    1.40 那一代写盘的 JSON 文本现解出来的（字段全在，含 `dialogueSnapshot`）。
  *    解不出来这一格直接红，不会悄悄退化成空列表。
- * 3. **导出只剩 JSON 一档，并且没有预览这一格**——点页头那颗导出，
- *    交给 ViewModel 的格式实参必须是 `json`；`exportStepOf` 把 `Success` 映射成
- *    "直接写系统保存流程"，映射一旦改回"先弹一张预览"就红。
+ * 3. **导出只剩 JSON 一档，先确认再落盘，而且没有预览这一格**——点页头那颗导出，
+ *    先出一层"文件是明文、里面是真实对话"的确认；点头之后交给 ViewModel 的格式实参必须是 `json`，
+ *    `exportStepOf` 把 `Success` 映射成"直接写系统保存流程"，映射一旦改回"先弹一张预览"就红。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -256,7 +256,7 @@ class FeedbackCasesSemanticsTest {
      * 判据不读"源码里还有没有 `FilterChip` 这个符号"（改了名没改行为它是瞎的），而是拿
      * 资源里那四句现成的话去语义树里点名：`feedback_filter_all`（「全部」）、
      * `feedback_format_markdown`（「Markdown」）、`feedback_format_json`（「JSON」）、
-     * `feedback_export_markdown`（「导出 MD」）。这四条资源**本轮没删**（`res/` 那一整棵归主线程），
+     * `feedback_export_markdown`（「导出 MD」）。这四条资源都还在盘上（`res/` 这一趟没动），
      * 所以它们照样解析得出来——谁把那一排 chip 或 Markdown/JSON 切换接回来，节点当场数得到，
      * 这一格就红。
      *
@@ -272,7 +272,7 @@ class FeedbackCasesSemanticsTest {
             1, rule.onAllNodesWithText(context.getString(R.string.feedback_export_json))
                 .fetchSemanticsNodes().size
         )
-        // R18：导出只有 JSON 一档，旧格式切换已整组删除——资源也一并清理了。
+        // 导出只有 JSON 一档，旧格式切换已整组删除——资源也一并清理了。
         // 这里改用内联字面量做负例探针，不依赖已删的资源 key。
         listOf("Markdown", "JSON", "导出 MD").forEach { label ->
             assertTrue("负例探针文案为空", label.isNotBlank())
@@ -294,10 +294,46 @@ class FeedbackCasesSemanticsTest {
         rule.onNodeWithText(context.getString(R.string.feedback_export_json)).performClick()
         rule.mainClock.advanceTimeBy(16L)
 
+        // 单击只到确认闸：导出物带着真实对话原文，没点头之前一行都不许交给 ViewModel
+        verify(exactly = 0) { vm.exportFeedback(any(), any()) }
+        rule.onNodeWithText(context.getString(R.string.a11y_action_confirm)).performClick()
+        rule.mainClock.advanceTimeBy(16L)
+
         verify(exactly = 1) { vm.exportFeedback(capture(sent), capture(format)) }
         assertEquals("格式只剩 JSON 这一档", "json", format.captured)
         assertEquals("导的是这一页的全部案例，没有筛选那一层了", 1, sent.captured.size)
         assertEquals("legacy-1", sent.captured.single().caseId)
+    }
+
+    /**
+     * 确认那一步得**说清要防的那件事**：文件是明文、里面是真实对话原文。
+     * 反例：把这层确认退回"点一下直接进系统保存流程"——这一格连浮层都找不到，当场红；
+     * 反例：浮层还在但正文被删成一句"确定要导出吗"，`真实对话` 那半句就数不到。
+     */
+    @Test
+    fun `the confirmation names the plain text and the real dialogue inside it`() {
+        mount(legacyCases)
+        rule.onNodeWithText(context.getString(R.string.feedback_export_json)).performClick()
+        rule.mainClock.advanceTimeBy(16L)
+        rule.onNodeWithText("真实对话", substring = true).assertExists()
+        rule.onNodeWithText("明文", substring = true).assertExists()
+    }
+
+    /** 取消等于放弃这一次：不调用导出、浮层收起，导出那颗还在（能再点一次） */
+    @Test
+    fun `cancelling the confirmation exports nothing`() {
+        val vm = mount(legacyCases)
+        rule.onNodeWithText(context.getString(R.string.feedback_export_json)).performClick()
+        rule.mainClock.advanceTimeBy(16L)
+        rule.onNodeWithText(context.getString(R.string.a11y_action_cancel)).performClick()
+        rule.mainClock.advanceTimeBy(16L)
+
+        verify(exactly = 0) { vm.exportFeedback(any(), any()) }
+        assertEquals(
+            "取消之后导出那颗必须还在树上",
+            1, rule.onAllNodesWithText(context.getString(R.string.feedback_export_json))
+                .fetchSemanticsNodes().size
+        )
     }
 
     /**
@@ -387,7 +423,7 @@ class FeedbackCasesSemanticsTest {
     }
 
     /**
-     * 指导书§6 那一句「导出可以是有分量的页面动作，但不能只有这里突然出现巨大的方形按钮」的**像素**判据：
+     * 「导出可以是有分量的页面动作，但不能只有这里突然出现巨大的方形按钮」的**像素**判据：
      * 页头那颗导出必须有**自己那一层可见底**（同族三页的文字动作都是那颗 32dp 浅灰胶囊：
      * 知识库卡的「导出」、供应商行的「编辑/删除」、首页那一格出口），而不是设计系统默认那一档
      * ——48dp 见方、无底的一整块。
@@ -441,7 +477,7 @@ class FeedbackCasesSemanticsTest {
         val exportBackground = PixelContrastMeter.backgroundOf(exportShot)
         assertTrue(
             ("导出那颗的可见底 #%06X 与页面底 #%06X 同色 ⇒ 它现在是 `LbTextAction` 的默认档" +
-                "（48dp 见方、无底的一整块），正是§6 点名不许出现的那种；")
+                "（48dp 见方、无底的一整块），正是这一族点名不许出现的那种；")
                 .format(exportBackground and 0xFFFFFF, pageBottomArgb and 0xFFFFFF) +
                 "同族三页的文字动作都带那颗浅灰胶囊底。",
             exportBackground != pageBottomArgb

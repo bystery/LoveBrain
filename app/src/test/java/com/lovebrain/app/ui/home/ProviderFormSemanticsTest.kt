@@ -304,7 +304,7 @@ class ProviderFormSemanticsTest {
      *   所以判据保持原样、只把"它在哪儿"的说法改对（否则下一个人读到的是一条已经不存在的链）：
      *  - **原判据量的是哪一句旧形制**：Key 尾部那颗以前坐在 `ui/common/CompactInput.kt` 的**中层 36dp 可见胶囊**里，
      *    自己写着一条永远赢不了父约束的 `heightIn(min = 48)`（父给 maxHeight=36，实量 58x36）——
-     *    那句 min(48) 是死码，D1 §② C4 点名的就是它。
+     *    那句 min(48) 是死码，C4 点名的就是它。
      *  - **为什么作废、换成什么**：表单接到设计系统 `core/designsystem/LbFieldInput` 之后，
      *    显隐那颗改走那颗组件的**尾部槽** `trailingAction`，可编辑节点右让 `AppDimens.INPUT_TRAILING_SLOT_DP`(40)，
      *    尾部按钮自己 `fillMaxHeight` 吃到所在字段框的可见高（仍是 `INPUT_ROW_HEIGHT_DP = 36` 那一档）。
@@ -582,7 +582,7 @@ class ProviderFormSemanticsTest {
      * 先判存在与选中位，再点一次看状态真的移动，最后把交出去的账钉死。
      *
      * ⚠ **2026-10-06 M2c：这一排的版式按基线换过，但本格的判据一个字没松，也无需松。**
-     *   四颗以前用页面私有的 `LbChipStyles.soft.copy(pillHeight = 24.dp, radius = full, …)`（D1 §② C2 的"难看"），
+     *   四颗以前用页面私有的 `LbChipStyles.soft.copy(pillHeight = 24.dp, radius = full, …)`（C2 的"难看"），
      *   现在接设计系统具名分段档 `LbChipStyles.segmented`（内格可见高 `AppDimens.CHIP_SEGMENTED_HEIGHT_DP` = 32、
      *   圆角 `Sm`、分层外盒把热区垫到全站 48 下限——即 [TouchTier.SITE_FLOOR]，`assertFormTiers` 那格量的就是这颗外盒）。
      *   **本格量的三件事全是业务硬牙、与形状无关、一条没动**：白名单只这四颗（`GenerationTimeoutTier.options`）、
@@ -638,7 +638,7 @@ class ProviderFormSemanticsTest {
     }
 
     /**
-     * 指导书§6 第一条不变量：**测试连接不能默默切换活动供应商**（保存与激活是不同事实）。
+     * 第一条不变量：**测试连接不能默默切换活动供应商**（保存与激活是不同事实）。
      *
      * 判的是"这一页在那一次点击里到底调了哪些出口"，不是屏幕长相：
      * - `testConnection` 恰好一次（连接测试这件事本身还在，不许被顺手删掉来"保证不切"）；
@@ -675,7 +675,7 @@ class ProviderFormSemanticsTest {
     }
 
     /**
-     * 指导书§6 第二条不变量：**返回不能丢未提交字段**。
+     * 第二条不变量：**返回不能丢未提交字段**。
      *
      * 这台仪器进不了真 `Dialog`（坑表：`Dialog` 窗口里只要有文本框拿焦点，`waitForIdle` 永不返回），
      * 也不靠换 `@Config` 触发 Activity 重建，所以用 Compose 公开的 [rememberSaveableStateHolder]
@@ -698,7 +698,7 @@ class ProviderFormSemanticsTest {
      * 但 JVM 侧的测试框架无法让 `rememberSaveable` 真正交还状态（两档之间没有实例状态通道）。因此这一格的结论必须
      * 在真机上验。保留此格作为“已登记但未验证”的记录，不在自动测里红它：见下方 `assumeTrue`。
      */
-    @org.junit.Ignore("JVM 无法模拟保存恢复；需真机验「返回后未提交字段不丢失」：见《产品与交互设计指导书》§6 第二条不变量")
+    @org.junit.Ignore("JVM 无法模拟保存恢复；需真机验「返回后未提交字段不丢失」：见规范第二条不变量")
     @Test
     fun `unsubmitted fields survive the form being remounted while the api key does not`() {
         val typedName = "SENTINEL_改到一半的名称"

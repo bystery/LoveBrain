@@ -8,7 +8,7 @@ import org.junit.Test
 import java.io.File
 
 /**
- * 行 1 上那颗「仅看本轮」的**符号主人**与**三轴形状**（request2 §四 表「仅看本轮符号 — 当前硬编码 `◉`，应改」）。
+ * 行 1 上那颗「仅看本轮」的**符号主人**与**三轴形状**（四 表「仅看本轮符号 — 当前硬编码 `◉`，应改」）。
  *
  * 这一族全是**源码 / 资源级**的静态自证格（本机不跑构建，也一条都不靠渲染）：
  * 判的是"这颗字面量现在住在谁那里"与"那一格的三轴有没有各归各位"，这两件事都能从源码读出来。
@@ -18,16 +18,16 @@ import java.io.File
  * 1. **符号不再硬编码在生产 Kotlin 里**：扫 `app/src/main/java` 全部 `.kt`，掩平注释之后
  *    那颗 U+25C9 一颗都不许出现。坏实现：把字符写回 `const val` 或内联进 `label = "…"` ⇒ 红。
  * 2. **主人确实在位**（反向证人 A）：那颗字符必须**在资源里**读得到，而且页面真的读那一颗键
- *    ——删掉字面量却没有主人，等于把 §2.2 第 3 条要的那颗形状一起弄丢。
+ *    ——删掉字面量却没有主人，等于把要的那颗形状一起弄丢。
  * 3. **反向证人 B（尺不许是死的）**：同一把判据喂一份"坏实现"样本必须报命中，
  *    喂"只在注释里讲这颗字符"的样本必须不报（KDoc 里的历史不算字面量，否则没人敢写解释）。
  * 4. **语义一条都不许改**：读屏仍念中文全称、名中不含"锁"、单色（不许 emoji 位平面外的字形）、
  *    不新增常驻文字、三轴分开（可见那颗 22dp 胶囊没被动、命中仍指回 core 紧凑档、
  *    占位轴不许再包一层全站下限）。
  *
- * ⚠ **字形保持 U+25C9**：request2 §三 那份约 22KB 的完整 Worker 指导书没落到本机，§四 那一行
+ * ⚠ **字形保持 U+25C9**：三 那份约 22KB 的完整 Worker 规范没落到本机，四 那一行
  * 只给了"不许硬编码"这个结论、没给字形细则，所以本轮只把字面量挪出 Kotlin；
- * **要不要换形已登记为待主线程指认（台账 M22），不在这一轮自决**。
+ * **要不要换形已登记为待主线程指认（记录 M22），不在这一轮自决**。
  */
 class ReplyInputSymbolOwnerTest {
 
@@ -51,8 +51,8 @@ class ReplyInputSymbolOwnerTest {
      *
      * ⚠ 这一步不是装饰：仓库 `.gitattributes` 写的是 `* text=auto`，同一份 `.kt` 在本机签出来是
      * CRLF、CI 的 ubuntu 上是 LF。不统一，下面按 `}` 收尾找函数体的那两把就会在 Windows 上
-     * 永远对不上（`}\r` ≠ `}`），函数体一路读到文件末尾 ⇒ 一格假红（同仓 `OddShapeOwnershipTest`
-     * 的注释里记着"第一发就是把 `\r` 忘了去掉，四格全红"这一课）。
+     * 永远对不上（`}\r` ≠ `}`），函数体一路读到文件末尾 ⇒ 一格假红（本仓库第一发
+     * 就是把 `\r` 忘了去掉、四格全红的那一课）。
      */
     private fun maskedCode(file: File): String {
         assertTrue("找不到本轮要读的文件：$file", file.isFile)
@@ -105,7 +105,7 @@ class ReplyInputSymbolOwnerTest {
     fun `the scope symbol is no longer a literal in production kotlin`() {
         val measured = productionSitesHoldingGlyph()
         assertTrue(
-            "「仅看本轮」那颗符号又被写回生产 Kotlin 的字面量了（request2 §四 点名的就是这件事，" +
+            "「仅看本轮」那颗符号又被写回生产 Kotlin 的字面量了（四 点名的就是这件事，" +
                 "主人应当是资源 `$glyphKey`）：" +
                 measured.map { (f, lines) -> "$f:${lines.joinToString(",")}" },
             measured.isEmpty()
@@ -151,10 +151,10 @@ class ReplyInputSymbolOwnerTest {
     @Test
     fun `the read-aloud name stays a Chinese full name with no lock word`() {
         val name = PANEL_ROUND_SCOPE_LABEL
-        assertTrue("读屏名必须是中文全称（§2.2 第 3 条），实到：'$name'", name.all { it.isHan() })
+        assertTrue("读屏名必须是中文全称，实到：'$name'", name.all { it.isHan() })
         assertEquals("全称就是那四个字，多一个字就是在往这一排新增常驻文字", 4, name.length)
         assertTrue(
-            "读屏名里不许再出现\"锁\"那个歧义（§2.2 第 3 条点名要治的就是它）：'$name'",
+            "读屏名里不许再出现\"锁\"那个歧义（点名要治的就是它）：'$name'",
             !name.contains('锁')
         )
     }
@@ -168,7 +168,7 @@ class ReplyInputSymbolOwnerTest {
         val value = glyphResourceValue()
         assertEquals("画在屏上的那颗只许一颗字符（不是词、更不是四字常驻按钮）：'$value'", 1, value.length)
         assertEquals(
-            "那颗符号换了字形——换形不在本轮范围内（request2 §三 那份 22KB 指导书没落到本机，" +
+            "那颗符号换了字形——换形不在本轮范围内（三 那份 22KB 规范没落到本机，" +
                 "M22 已登记为待主线程指认），要改先回来改这一格并写明出处",
             0x25C9, value[0].code
         )
@@ -187,7 +187,7 @@ class ReplyInputSymbolOwnerTest {
             Regex("""contentDescription\s*=\s*(PANEL_ROUND_SCOPE_LABEL|stringResource\()""").containsMatchIn(body)
         )
         assertEquals(
-            "RoundScopeChip 里内联了中文（§2.2 与 `UiStringLiteralBudgetTest` 都不认这份账）：" +
+            "RoundScopeChip 里内联了中文（与 `UiStringLiteralBudgetTest` 都不认这份账）：" +
                 hanLiteralsIn(body),
             emptyList<String>(), hanLiteralsIn(body)
         )
@@ -198,17 +198,17 @@ class ReplyInputSymbolOwnerTest {
     /**
      * 那颗符号的**形状链**这一半（数值那一半在 `ReplyInputWidthBudgetTest`）：
      * 命中轴两轴都垫到 core 那颗紧凑档（只垫高度＝假分层，正是本轮实测过的坏形状）、
-     * 可见轴那颗 22dp 胶囊一寸没动、占位轴不许再包一层全站下限（§4.3：那会把紧凑档作废）。
+     * 可见轴那颗 22dp 胶囊一寸没动、占位轴不许再包一层全站下限（那会把紧凑档作废）。
      *
-     * ⚠ 这里判的是"链上写了谁"，不是"屏上量到几 dp"——量边界那两把是 `RoundScopeChipFootprintTest`
-     * （占位两轴 < 48）与 `PanelHostSemanticsTest`（整屏逐颗换尺），三把尺各看一件事。
+     * ⚠ 这里判的是"链上写了谁"，不是"屏上量到几 dp"——量边界那把是 `ResultAreaTouchTargetsTest`
+     * 一族同款的占位两轴 < 48 尺，两把尺各看一件事。
      */
     @Test
     fun `the symbol keeps the hit floor on its own tier without resizing the visible pill`() {
         val code = maskedCode(replyInput)
         val body = functionBody(code, "private fun RoundScopeChip(")
         // ① 命中轴：两轴都垫、都指回页面那颗具名档
-        assertTrue("宽度轴没垫到紧凑档（§4.3 要两轴各自垫到位）：$body",
+        assertTrue("宽度轴没垫到紧凑档（要两轴各自垫到位）：$body",
             Regex("""widthIn\(\s*min\s*=\s*ReplyDimens\.ROUND_SCOPE_HIT""").containsMatchIn(body))
         assertTrue("高度轴没垫到紧凑档：$body",
             Regex("""heightIn\(\s*min\s*=\s*ReplyDimens\.ROUND_SCOPE_HIT""").containsMatchIn(body))
@@ -222,7 +222,7 @@ class ReplyInputSymbolOwnerTest {
         val siteFloorCopies = Regex("""\b48\b""").findAll(body).count()
         assertEquals(
             "范围符号这一颗上数到 $siteFloorCopies 处 48 —— " +
-                "§4.3 禁的就是给紧凑件再包一层占 48dp 的容器",
+                "禁的就是给紧凑件再包一层占 48dp 的容器",
             0, siteFloorCopies
         )
         // ⑤ 命中轴那颗数指回 core 的紧凑档，不是页面自造的第二颗 28

@@ -5,7 +5,7 @@
 # Writes the REAL upgrade fixture with the OLD published app installed
 # (the pinned fixture since F04 2026-10-15: released v1.4.0, same key as the candidate).
 #
-#  2026-09-23 第3节/第4节: "没有真实'写入升级夹具'; 注释写了, 命令没有做" —
+#  2026-09-23 audit: "没有真实'写入升级夹具'; 注释写了, 命令没有做" —
 # the old workflow only had a comment (`# Start old version, write fixture data`)
 # followed by `adb shell am start … || true`. This script writes genuine
 # user-visible knowledge-base content into the installed old app's private data

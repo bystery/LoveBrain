@@ -14,7 +14,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -46,7 +45,6 @@ class LoveBrainViewModelDraftPersistTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Log::class)
     }
 
@@ -54,7 +52,6 @@ class LoveBrainViewModelDraftPersistTest {
     private fun newViewModel(): LoveBrainViewModel {
         prefs = mockk(relaxed = true)
         every { prefs.thinkingMode } returns 0
-        every { prefs.outputMode } returns 0
         every { prefs.panelMode } returns 0
         every { prefs.counselingDraft } returns ""
         every { prefs.loadCounselingResult() } returns null
@@ -63,8 +60,8 @@ class LoveBrainViewModelDraftPersistTest {
         every { prefs.getWorkerTickets() } returns emptyList()
         every { prefs.activeTicketId } returns null
         val promptBuilder = mockk<PromptBuilder>()
-        every { promptBuilder.validateConfig(any(), any()) } returns
-            ConfigValidationResult(0, 0, emptyList())
+        every { promptBuilder.validateConfig(any()) } returns
+            ConfigValidationResult(0, emptyList())
         return LoveBrainViewModel(
             deepSeekRepo = mockk(relaxed = true),
             // relaxed：suspend 读取面（getActive 等）默认返回 null，无需显式桩

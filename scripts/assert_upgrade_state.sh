@@ -2,7 +2,7 @@
 #
 # scripts/assert_upgrade_state.sh
 #
-# Post-覆盖安装 assertions ( 2026-09-23 第3节: "没有断言旧数据仍可读、
+# Post-覆盖安装 assertions (2026-09-23 audit: "没有断言旧数据仍可读、
 # schema 已升级、主要页面可用").
 #
 # Every check below is an assertion that FAILS the job:

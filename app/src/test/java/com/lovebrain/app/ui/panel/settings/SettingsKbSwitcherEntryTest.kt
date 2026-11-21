@@ -352,6 +352,35 @@ class SettingsKbSwitcherEntryTest {
     }
 
     /**
+     * 目录空 + 没有当前库时，这一行**照样在**：它是"当前知识库"的唯一读数。
+     *
+     * 旧写法在这里 `return` 整行消失，用户会以为设置页坏了，连点开确认"扫描真的没有库"
+     * 的机会都没有（展开触发也一起被抽走）。空态用资源里那句现成的话，不另造一句。
+     */
+    @Test
+    fun `an empty directory still shows the row with the empty state line`() {
+        val switches = mutableListOf<String>()
+        val activeKb = mutableStateOf<String?>(null)
+        mount(knowledgeBases = emptyList(), activeKb = activeKb, switches = switches)
+
+        assertEquals(
+            "目录空时整行不许消失",
+            1,
+            rule.onAllNodes(hasTestTag(SETTINGS_ROW_KB_TAG), useUnmergedTree = true)
+                .fetchSemanticsNodes().size
+        )
+        val emptyLabel = ctx.getString(R.string.kb_empty_message)
+        assertEquals(
+            "空态要说清「还没有库」，且箭头照画（这一行仍可点开）",
+            listOf(currentLabel, emptyLabel, arrowClosed),
+            toggleTexts()
+        )
+        openOptions()
+        assertEquals("点得开：列表就是空的（零本也是扫描到的事实）", 0, optionCount())
+        assertEquals("开合这一件事不投任何切库请求", 0, switches.size)
+    }
+
+    /**
      * 形状合同（源码级，补语义树量不到的那几件——颜色、字阶、来路与展开门）：
      * · 全量枚举只许出现在展开门后面——"永久逐条铺在设置页上"那一族旧规则到此为止；
      * · 展开那一段的第一颗布局节点必须是一颗真正的纵向 `Column`（`AnimatedVisibility` 不是

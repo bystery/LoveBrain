@@ -1,5 +1,6 @@
 package com.lovebrain.app.data
 
+import com.lovebrain.app.domain.TopicRecorder
 import com.lovebrain.app.util.TimeFmt
 import java.security.MessageDigest
 
@@ -35,8 +36,11 @@ internal object KbTextOps {
     /** 话题行尾部的键值后缀（`| key：xxx`），不属于话题名 */
     const val TOPIC_KEY_SUFFIX = " | key："
 
-    /** 新库初始化的那句话 */
-    const val TOPIC_INITIAL_LABEL = "（等待第一次对话）"
+    /**
+     * 新库初始化的那句话——字面量的唯一 owner 在 domain（[TopicRecorder.TOPIC_INITIAL_LABEL]）：
+     * 读侧不能 import data，所以字面量只能住那边；这里转调，写侧 4 处调用点一字不动。
+     */
+    const val TOPIC_INITIAL_LABEL = TopicRecorder.TOPIC_INITIAL_LABEL
 
     /** 唯一的话题行写法 */
     fun topicLine(time: String, label: String): String = "- [$time] $TOPIC_MARKER$label"

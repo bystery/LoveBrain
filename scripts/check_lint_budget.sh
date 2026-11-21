@@ -2,14 +2,14 @@
 #
 # scripts/check_lint_budget.sh
 #
-#  第3节第3条 最后一条：
+#  审计意见最后一条：
 #   "80 个 lint warning 不应永久作为绿色背景噪声。保存 baseline 后设
 #    '新增 warning = 0'，逐批消债。"
 #
 # 为什么按**每条规则**记账而不是只记一个总数：修掉 3 条 UnusedResources 的同时
 # 新加 3 条 ModifierParameter，总数一点没动，只看总数的预算就被"债务搬家"糊过去了。
 #
-# 为什么要区分「进预算」与「advisory」两类（ 踩出来的）：
+# 为什么要区分「进预算」与「advisory」两类（实测踩出来的）：
 #   同一份代码、同一个 lint 8.6.0，CI 量到 81 条 / 16 规则，本机量到 71 条 / 15 规则，
 #   verify 就因为这一步红着。差出来的 10 条全部来自两条**发现不属于这个仓库**的规则：
 #     GradleDependency —— 报的是"上游又有新版本可升"。同一句 androidx.test.ext:junit:1.1.5

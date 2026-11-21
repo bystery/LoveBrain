@@ -1,6 +1,6 @@
 # 人工发布辅助工作流（Release assistant）
 #
-# 发布模型（2026-09-29 用户书面改需求；2026-09-30 复核   /  第 3 条把本文件对齐到它）：
+# 发布模型（2026-09-29 用户书面改需求；2026-09-30 复核把本文件对齐到它）：
 #   · GitHub Actions 只做**构建与测试** —— 全部在 .github/workflows/ci.yml
 #     （CI 精简后 push/PR 只有 `verify` 一个必过 job；模拟器 ui-test、视觉基线、
 #      R8 打包、覆盖安装都在 .github/workflows/manual.yml，只在 workflow_dispatch 跑，
@@ -14,7 +14,7 @@
 #   · 发布是**一条人工命令**：APK 与证据由人一起 `gh release create` 上传。
 #
 # ⚠ 签名与覆盖安装**不在 CI 内**。本文件因此不再做下面三件事
-#   （这三件正是复核   点名"无法同时成立"的三处）：
+#   （这三件正是复核点名"无法同时成立"的三处）：
 #   1. 不再由 `push: tags: v*` 自动触发 ⇒ 改成 workflow_dispatch：人不点就不跑；
 #      跑完也**不碰 Release 页**（permissions 只有 contents: read，没有 publish 动作）。
 #   2. 不再在 CI 里 assembleRelease 造签名 APK、不再引用任何签名 secret：
@@ -25,7 +25,7 @@
 #      自 2026-09-29 起 push 事件里那个 job 的结论就是 `skipped`（run 36730225255 实测），
 #      等它 = 永远等不到；签名/覆盖安装的证据改由清单第 4-7 步在**本地**产出并交回仓库。
 #
-# 取证命令修正（  后半）：
+# 取证命令修正（复核后半）：
 #   旧代码 `gh run download "$GITHUB_SHA" --name ...` 把 commit SHA 当位置参数，而
 #   `gh run download` 要的是 workflow run **database ID** ⇒ 即使 CI 全绿也取不到证据。
 #   现在唯一实现在 scripts/resolve_ci_run.sh：按 (repo, ci.yml, head_sha[, event/branch])
@@ -36,7 +36,7 @@
 #     显式给了 ci_run → 仍校验它属于 ci.yml、head_sha == commit、且已完成，否则 exit 1；
 #     之后再按 job 名要求 verify 结论为 success（那个 job 名**不存在**也算失败）。
 #     CI 精简后这里只传一个 --require-job verify：ui-test 已不在 ci.yml 这一发里，
-#     拿它当门禁 = resolve_ci_run.sh 永远 "job not found" → 发布永远找不到任务（§13.2 L342）。
+#     拿它当门禁 = resolve_ci_run.sh 永远 "job not found" → 发布永远找不到任务。
 #
 # 本文件能独立核对的（机器判据，红得起）：
 #   · tag == v${versionName}@那个 build commit，且证据提交在这之后（祖先关系实测）；
@@ -151,7 +151,7 @@ jobs:
       - name: Resolve the CI run of the build commit and require build+tests green
         # 唯一实现就是脚本，checklist 里人跑的是同一条命令（不写第二份解析逻辑）。
         # 只要求 verify：`ui-test` 现在住在 manual.yml（workflow_dispatch），它是**另一个
-        # workflow run** 的 job，写进 --require-job 就等于让发布永远找不到任务（§13.2 L342）；
+        # workflow run** 的 job，写进 --require-job 就等于让发布永远找不到任务；
         # `upgrade-test` 同理——2026-09-29 起签名与覆盖安装是本地动作，push 那一发里它天然 skipped。
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -174,7 +174,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p evidence/ci
-          #  CI 精简（/.md ）：ci.yml 已把 license_scan/SBOM
+          # CI 精简：ci.yml 已把 license_scan/SBOM
           # 移出 push，不再产出 sbom-and-licenses 产物；留着它本步每发必 "artifact not on run → red"。
           # 只洗这一依赖，其余必需产物与 --require-job 语义一字未动。
           # CI 精简：ui-test 从 push 移到 manual，push 那一发不再产 test-xml-report /
@@ -300,7 +300,7 @@ jobs:
               "$TAG" "$BUILD_COMMIT" "$TAG" "${PREREL:+$PREREL }" "$EVID"
             printf '```\n\n'
             printf 'SHA-256 不等就别发：这一步是人唯一还能自己核字节的地方。\n'
-            printf '发完把 Release 页 URL 记回中央台账 releases/1.4.0.md（其后各版照此）。\n'
+            printf '发完把 Release 页 URL 回填到发布记录（Release notes/变更记录），其后各版照此。\n'
           } >> dist/release-assistant-report.md
           cat dist/release-assistant-report.md
           cat dist/release-assistant-report.md >> "$GITHUB_STEP_SUMMARY"

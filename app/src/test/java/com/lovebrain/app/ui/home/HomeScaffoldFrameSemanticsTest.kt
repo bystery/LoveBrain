@@ -141,7 +141,7 @@ class HomeScaffoldFrameSemanticsTest {
         assertTrue("那一行在状态卡之后", topOf(LbHomeTags.SETUP_HINT) > topOf(LbHomeTags.STATUS_CARD))
         assertTrue("那一行在入口之前", topOf(LbHomeTags.SETUP_HINT) < topOf(LbHomeTags.ENTRY_KNOWLEDGE))
 
-        // §5.1「调整对齐」：这一行是**主卡那一档状态**的说明，它的文字必须与主卡的内容柱同一条左边缘。
+        // 「调整对齐」：这一行是**主卡那一档状态**的说明，它的文字必须与主卡的内容柱同一条左边缘。
         // 数不写死、也不读源码里那个 padding 常量：对照物是同一棵树里量到的那颗灯（灯就是主卡内容柱的第一格）。
         // 反例：容器内距与主卡内距不同档（本轮改之前是 12 对 16，同一屏两块文字左边缘差 4dp）⇒ 红；
         // 反例：给浅底容器外面再写一道水平边距（旧版那"两层"形状）⇒ 红；

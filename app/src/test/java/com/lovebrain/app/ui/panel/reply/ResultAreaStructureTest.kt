@@ -122,8 +122,8 @@ class ResultAreaStructureTest {
     @Test
     fun `the merged list keeps all eight schemes including blank direction cards`() {
         // 方向只活两条（一位输出 null、一位是空白串）⇒ 两张空卡都保留，但**成因不同**：
-        // null 那一张念「本轮不适合」，空白串那一张念「未生成」（§11.2 三因分家，
-        // 卡片文案见 SchemeEmptyCardReasonTest）；这里判的是卡位不许被删
+        // null 那一张念「本轮不适合」，空白串那一张念「未生成」（三因分家）；
+        // 这里判的是卡位不许被删
         val merged = mergedSchemesInRoundOrder(
             responseOf(directions = listOf("F 的话术", null, "X 的话术", "   "))
         )
@@ -212,10 +212,10 @@ class ResultAreaStructureTest {
         )
     }
 
-    // ═══ §11.2 八项提示语：三个成因各归各，合法 null 不占缺项那一格 ═══
+    // ═══八项提示语：三个成因各归各，合法 null 不占缺项那一格 ═══
     //
     // 判的是 replyCompletenessNotice 这颗纯函数的读数（提示条那一侧），与卡片文案分家：
-    // 「本轮不适合」由空卡自己念（见 SchemeEmptyCardReasonTest），提示条只说**真没生成**与**重复凑数**。
+    // 「本轮不适合」由空卡自己念，提示条只说**真没生成**与**重复凑数**。
     // 旧混判态下这几格会红在：合法 null 被写进「未生成 N/8 项」那一句里。
 
     private fun poolOf(

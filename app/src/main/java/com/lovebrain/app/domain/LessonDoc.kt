@@ -12,8 +12,8 @@ package com.lovebrain.app.domain
  *   （`buildKnowledgeSection` / `buildCoreKnowledgeSubset` / `buildReflectUserPrompt`，
  *   原 `:303`/`:424`/`:459` → `domain/prompt/PromptKnowledgeSection.kt:77` 的 `PromptBudget.lastH1Blocks`）
  *   全部接成 `LessonDoc.purify(readFile(...))`——模板行从此既进不了界面也进不了 prompt。
- *   字节证据随重录钉在 `PromptByteFreezeBaselineTest`（夹具那份干净 LESSONS 洗完逐字恒等，
- *   接线本身零字节贡献）；`LessonDocTidyTest.purifiedLessonsReachThePromptWithoutTemplateLines`
+ *   夹具那份干净 LESSONS 洗完逐字恒等、接线本身零字节贡献；
+ *   `LessonDocTidyTest.purifiedLessonsReachThePromptWithoutTemplateLines`
  *   的 rawSeed 缺口读数直接喂段、不经 `PromptBuilder`，接线后仍绿——它的撤登记与否归那颗格子自判；
  * - [tidy] / [nextExtractionNumber]：旧数据按「有效提取批」整理与编号。
  *

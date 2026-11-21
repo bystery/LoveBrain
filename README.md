@@ -69,6 +69,30 @@ main 分支源码分层实测（236 个 Kotlin 文件）：ui 65 · domain 47 ·
 
 延迟、缓存命中率、单轮成本这类量化读数，连同它们的适用边界，单独放在 [`BENCHMARK.md`](BENCHMARK.md)：数字只代表 2026-09-03 那一轮真实运行（19 场景 / 50 题，deepseek-v4-flash），换模型、换时段就是另一组数，所以不进 README 正文，要看边界说明请点进去。
 
+## 为什么这套方案有效
+
+这套机制不是凭感觉设计的：每一条都在独立考场里，用带逐字标注的合成对话数据验证过。
+
+### 长程事实不再丢失
+
+多轮对话后仍能记住前面约定的具体事实（金额、日期、约定、原话）。滑窗基线的保持率为 38.6–55.7%，LoveBrain 的完整机制在 4 个新域上均为 100%。详见 [评估详情](research/EVALUATION.md)。
+
+### 更省的上下文，更稳的输出
+
+提示用量最多减少 52.2%，输出契约违规从 7/72 降到 2/72。详见 [机制原理](research/MECHANISMS.md)。
+
+### 盲评胜出
+
+两组候选的组级盲评分别为 11:1 与 11:0（另 1 平）；首选建议直接可用 12/12，候选之间零重复。详见 [盲评终账](research/evaluation/user_value_v1/report.md)。
+
+### 建立在可核验的数据之上
+
+317 个合成故事、299 个 Gold episode、4,082 轮对话、9,646 条逐字可核验断言，全部通过 quote 回验。详见 [数据集文档](research/DATASET.md) 与 [统计口径](research/benchmark/STATISTICS.md)。
+
+### 想读完整研究？
+
+从 [research/](research/README.md) 进入：[论文稿](research/PAPER.md) · [研究总览](research/OVERVIEW.md) · [复现指引](research/REPRODUCIBILITY.md)。
+
 ## 关于隐私
 
 - **不需要 LoveBrain 账号。** 知识库、关系画像和聊天归档主要保存在设备的 App 私有空间，API Key 使用 Android 加密存储。

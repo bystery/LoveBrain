@@ -206,6 +206,9 @@ class KnowledgeRepository(
         // 备份经 fileMutex 序列化，与 delete 互斥防竞态
         appScope.launch(Dispatchers.IO + SupervisorJob()) {
             try {
+                // 先收拾上一次进程中断留下的 `.tmp` / `.bak`：回退路（两次 rename）
+                // 在中途被杀时目标文件会暂时寄居在 `.bak` 里，不恢复就等于那次写入凭空消失。
+                fileMutex.withLock { recoverInterruptedWritesUnlocked() }
                 backupIfNeeded()
             } catch (e: CancellationException) {
                 // 作用域被取消不是"备份失败"，记成失败会丢真相
@@ -255,9 +258,6 @@ class KnowledgeRepository(
         }
     }
 
-    /** 该库当前是否可写（schema 过新时为 false） */
-    fun isWritable(kbName: String): Boolean = !migrator.isReadOnly(kbName)
-
     // ═══════════ 唯一写边界（ 2026-09-24）═══════════
 
     /** 一次 [transaction] 的结果。三个分支各自对应"有没有写过字节"。 */
@@ -291,7 +291,12 @@ class KnowledgeRepository(
 
     // ═══════════ schema 版本与迁移（实现见 KnowledgeMigrator）═══════════
 
-    /** 该库是否因 schema 过新而进入只读保护 */
+    /**
+     * 该库是否因 schema 过新而进入只读保护。
+     *
+     * 只读判据只有这一份：以前的 `isWritable(kb) = !isReadOnly(kb)` 是它的逐字取反，
+     * 两份判据各自被测试引用，改一处就静默漂移，已随本轮收敛删掉。
+     */
     fun isSchemaReadOnly(kbName: String): Boolean = migrator.isReadOnly(kbName)
 
     /**
@@ -329,12 +334,39 @@ class KnowledgeRepository(
         catalog.list()
     }
 
+    /**
+     * 当前在用的知识库。
+     *
+     * 三级回退保留：枚举认下的 active → 同名但 active=false → 第一本。
+     * **但"偏好指向的库目录还在、只是 kb.json 坏了"不再静默换库**：
+     * 旧实现会让枚举把它丢掉，然后回退到 `all.firstOrNull()`——用户明明在 A 库，
+     * 一次坏元数据就把读写悄悄切到 B 库（消息落错库、画像串库）。
+     * 现在这种情况记一条错误级日志并交回 null，由调用方决定"提示修复"而不是继续换库。
+     * 目录已经不在（用户删了库）仍按旧口径回退到现有库，那是正常的删除后收尾。
+     */
     override suspend fun getActive(): KnowledgeBase? = withContext(Dispatchers.IO) {
         val all = listAll()
         val activeName = securePrefs.activeKbName
-        all.firstOrNull { it.name == activeName && it.active }
-            ?: all.firstOrNull { it.name == activeName }
-            ?: all.firstOrNull()
+        val named = all.firstOrNull { it.name == activeName }
+        if (named != null) {
+            return@withContext all.firstOrNull { it.name == activeName && it.active } ?: named
+        }
+        val activeDir = if (activeName.isNotBlank() && documents.toKbName(activeName) != null) {
+            File(knowledgeRoot, activeName)
+        } else {
+            null
+        }
+        val activeMetaCorrupt = activeDir != null &&
+            activeDir.isDirectory &&
+            File(activeDir, "kb.json").isFile &&
+            readMetaUnlocked(activeName) == null
+        if (activeMetaCorrupt) {
+            com.lovebrain.app.util.L.e(
+                "active library metadata is unreadable; refusing to switch libraries silently: $activeName", null
+            )
+            return@withContext null
+        }
+        all.firstOrNull()
     }
 
     // ═══════════ 库的存在性（建 / 删 / 切当前 / 改名）归 KnowledgeCatalogWriteStore ═══════════
@@ -436,7 +468,7 @@ class KnowledgeRepository(
 
     /** b3-8: 带修订版这条件校验的原子追加——在锁内一次性完成 revision 检查和文件写入，
      * 消除 KnowledgeTriggerCoordinator 中先检查后写入的竞态窗口。
-     * @return true = 写入成功，false = revision 已变或 KB 不存在 */
+     * @return true = 写入成功，false = revision 已变、KB 不存在，或写被拒/失败 */
     override suspend fun appendFileWithRevisionCheck(
         kbName: String,
         relativePath: String,
@@ -447,7 +479,7 @@ class KnowledgeRepository(
     }
 
     /** b3-8: 带修订版这条件校验的原子写入——在锁内一次性完成 revision 检查和文件写入。
-     * @return true = 写入成功，false = revision 已变或 KB 不存在 */
+     * @return true = 写入成功，false = revision 已变、KB 不存在，或写被拒/失败 */
     suspend fun writeFileWithRevisionCheck(
         kbName: String,
         relativePath: String,
@@ -458,7 +490,7 @@ class KnowledgeRepository(
     }
 
     /** b3-8: 带修订版这条件校验的向量写入——在锁内一次性完成 revision 检查和向量写入。
-     * @return true = 写入成功，false = revision 已变或 KB 不存在 */
+     * @return true = 写入成功，false = revision 已变、KB 不存在，或写被拒/失败 */
     override suspend fun writeVectorWithRevisionCheck(
         kbName: String,
         values: Map<String, Int>,
@@ -526,13 +558,15 @@ class KnowledgeRepository(
 
     /** 线程安全的文件追加（fileMutex 锁 + I/O 线程； 合并原 appendFileSafe）
      *  目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
-    override suspend fun appendFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
+    override suspend fun appendFile(kbName: String, relativePath: String, content: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("appendFile skipped: kb no longer exists")
-                return@withLock
+                return@withLock false
             }
-            appendFileUnlocked(kbName, relativePath, content)
+            appendFileUnlocked(kbName, relativePath, content).also { landed ->
+                if (!landed) com.lovebrain.app.util.L.e("appendFile did not land: $kbName/$relativePath", null)
+            }
         }
     }
 
@@ -548,13 +582,15 @@ class KnowledgeRepository(
 
     /** 线程安全的文件写入（fileMutex 锁 + I/O 线程； 合并原 writeFileSafe）
      *  目标 KB 已删除时 no-op，不自动 mkdirs 复活 */
-    override suspend fun writeFile(kbName: String, relativePath: String, content: String) = withContext(Dispatchers.IO) {
+    override suspend fun writeFile(kbName: String, relativePath: String, content: String): Boolean = withContext(Dispatchers.IO) {
         fileMutex.withLock {
             if (!kbExistsUnlocked(kbName)) {
                 com.lovebrain.app.util.L.w("writeFile skipped: kb no longer exists")
-                return@withLock
+                return@withLock false
             }
-            writeFileUnlocked(kbName, relativePath, content)
+            writeFileUnlocked(kbName, relativePath, content).also { landed ->
+                if (!landed) com.lovebrain.app.util.L.e("writeFile did not land: $kbName/$relativePath", null)
+            }
         }
     }
 
@@ -565,7 +601,7 @@ class KnowledgeRepository(
      * 如果文件已被修改（后台追加等），拒绝写入并返回 null，调用方保留草稿。
      * 成功写入后返回新内容的 SHA-256 作为新版本号，调用方应更新本地版本快照。
      *
-     * @return 新版本号（SHA-256）=写入成功，null=版本冲突或 KB 不存在
+     * @return 新版本号（SHA-256）=写入成功；null=版本冲突、KB 不存在、路径非法，或写被拒/失败
      */
     override suspend fun writeFileWithVersion(
         kbName: String, relativePath: String, content: String, expectedVersion: String
@@ -607,7 +643,7 @@ class KnowledgeRepository(
         }
     }
 
-    /** 读取当前轮次数（kb.json 的 turnCount 字段），供 OngoingContextSelector 冷却逻辑使用 */
+    /** 读取当前轮次数（kb.json 的 turnCount 字段），供 TopicRecorder 轮次快照与页面侧轮次读数使用 */
     override suspend fun getTurnCount(kbName: String): Int = withContext(Dispatchers.IO) {
         readMetaUnlocked(kbName)?.turnCount ?: 0
     }
@@ -746,11 +782,6 @@ class KnowledgeRepository(
         topicText.readPlanActive(kbName)
     }
 
-    /** 获取当前话题的年龄（小时），用于时间衰减判断 */
-    override suspend fun getTopicAgeHours(kbName: String): Int = withContext(Dispatchers.IO) {
-        topicText.topicAgeHours(kbName)
-    }
-
     // ═══════════ 话题归档（第5节第3条 第七格：实现见 KnowledgeArchiveService）═══════════
 
     /**
@@ -763,7 +794,21 @@ class KnowledgeRepository(
      * 它们与 kb.json 的读写挤在同一段 80 行的方法体里，只能连着临时目录和互斥锁间接测。
      */
     override suspend fun rotateTopic(kbName: String) = withContext(Dispatchers.IO) {
-        fileMutex.withLock { archive.rotate(kbName) }
+        fileMutex.withLock {
+            // 库不在就不归档：旧实现直接读四个源文件（读到空串）再一轮写事务，
+            // 于是"已删除的库"会被状态文件/源文件清空那一步重新 mkdirs 出来（僵尸库复活），
+            // 计数与归档条目也会落在不存在的库上。
+            if (!kbExistsUnlocked(kbName)) {
+                com.lovebrain.app.util.L.w("rotateTopic skipped: kb no longer exists")
+                return@withLock
+            }
+            // 只读库一个字节都不许动；归档格内部再逐段检查落盘结果，
+            // 这里提前收手可以保证连状态文件都不创建（不留下"半成品恢复记录"）。
+            if (refusedByReadOnlySchema(kbName, "rotateTopic", "memory/raw_topic.md")) return@withLock
+            if (!archive.rotate(kbName)) {
+                com.lovebrain.app.util.L.w("rotateTopic incomplete: a step did not land, state kept for retry")
+            }
+        }
     }
 
     /**

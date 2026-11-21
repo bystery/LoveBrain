@@ -29,6 +29,9 @@ class KnowledgeArchiveServiceTest {
         /** 状态文件被写了几次——幂等靠的就是"每做一步就落一次"，所以要能数 */
         var stateWrites = 0
         var refused = false
+        /** 只让某几条路径写失败（模拟磁盘拒绝/守门拒收），其余照常 */
+        val failingWrites = mutableSetOf<String>()
+        val failingAppends = mutableSetOf<String>()
         private var tick = 0
 
         override fun note(message: String) {
@@ -50,12 +53,14 @@ class KnowledgeArchiveServiceTest {
             if (refused) return
             val tx = object : ArchiveTx {
                 override fun write(relativePath: String, content: String): Boolean {
+                    if (relativePath in failingWrites) return false
                     files.getOrPut(kbName) { mutableMapOf() }[relativePath] = content
                     if (relativePath == KnowledgeArchiveService.STATE_FILE) stateWrites += 1
                     return true
                 }
 
                 override fun append(relativePath: String, content: String): Boolean {
+                    if (relativePath in failingAppends) return false
                     val dir = files.getOrPut(kbName) { mutableMapOf() }
                     dir[relativePath] = (dir[relativePath] ?: "") + content
                     return true
@@ -260,13 +265,48 @@ class KnowledgeArchiveServiceTest {
         seedConversation()
         storage.refused = true
 
-        svc.rotate(kb)
+        val ok = svc.rotate(kb)
 
+        assertFalse("整段事务被挡下时 rotate 必须报失败（旧实现四步全记成完成）", ok)
         assertTrue(
             "整个事务被挡下时要能查出来说过几次：${storage.notes}",
             storage.notes.any { it.contains("归档操作状态没落盘") }
         )
         assertEquals("被挡下时一个字节都不该落", null, get(KnowledgeArchiveService.ARCHIVE_FILE))
+        assertNull("没落状态就没有恢复记录，不许留下半成品", get(KnowledgeArchiveService.STATE_FILE))
+    }
+
+    /**
+     * P0-3：归档是一段四步状态机，但每个事务的写入返回值以前被丢掉——
+     * 追加被拒也照样把 APPEND_ARCHIVE 记成完成，重试时永远跳过错过的内容。
+     * 这一格钉"中途失败就停在原地、状态可重试、重试不重复"。
+     */
+    @Test
+    fun aRefusedAppendStopsTheMachineAndTheRetryDoesNotDuplicate() {
+        seedConversation()
+        storage.failingAppends += KnowledgeArchiveService.ARCHIVE_FILE
+
+        val first = svc.rotate(kb)
+
+        assertFalse("追加没落成就必须报失败", first)
+        assertNull("归档文件不该被写出来", get(KnowledgeArchiveService.ARCHIVE_FILE))
+        val state = get(KnowledgeArchiveService.STATE_FILE) ?: error("首次状态必须已落盘，供重试用")
+        val recorded = storage.decodeState(state)!!.completedSteps
+        assertFalse("没落成的步骤不许记成完成：$recorded", ArchiveStep.APPEND_ARCHIVE in recorded)
+        assertEquals("失败时不许推进计数", 0, storage.meta?.topicCount ?: 0)
+
+        // 放开写限制重跑：只补没做的那一步，且归档条目只出现一次
+        storage.failingAppends.clear()
+        val second = svc.rotate(kb)
+
+        assertTrue("重试必须能完成：${storage.notes}", second)
+        val archive = get(KnowledgeArchiveService.ARCHIVE_FILE) ?: error("重试后应当归档")
+        assertEquals(
+            "同一次操作重试不许追加第二份归档条目：$archive",
+            1, Regex("^# \\[", RegexOption.MULTILINE).findAll(archive).count()
+        )
+        assertEquals("计数只 +1", 1, storage.meta?.topicCount ?: 0)
+        assertNull("完成后状态文件收掉", get(KnowledgeArchiveService.STATE_FILE))
     }
 
     /** 每一步做完都要把状态落一次：幂等靠的就是这个，少写一次崩溃就会重做已完成的步骤 */

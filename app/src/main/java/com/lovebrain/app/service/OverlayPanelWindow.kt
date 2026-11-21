@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.platform.ComposeView
 import com.lovebrain.app.AppConfig
 import com.lovebrain.app.BubbleSizeTier
@@ -23,7 +24,7 @@ import com.lovebrain.app.ui.theme.LoveBrainTheme
  *
  * @param bubbleLeft / bubbleTop 球窗口当前位置；球还没建时传 null，回落到球的默认起点
  * @param bubbleSizeDp **当前档位直径**：球的中心是贴边判断的参照点，它必须跟着档位走，
- *        否则 48 / 64 两档下面板会按 56 的半径算中心（书 §1 要求所有读数同源）
+ *        否则 48 / 64 两档下面板会按 56 的半径算中心（所有读数同源）
  */
 internal fun panelPositionFor(
     pw: Int,
@@ -62,6 +63,34 @@ internal fun panelFittedSize(
 internal fun panelClampedSize(newWpx: Int, newHpx: Int, dp: (Int) -> Int): Pair<Int, Int> =
     newWpx.coerceIn(dp(AppConfig.PANEL_MIN_W), dp(AppConfig.PANEL_MAX_W)) to
         newHpx.coerceIn(dp(AppConfig.PANEL_MIN_H), dp(AppConfig.PANEL_MAX_H))
+
+/**
+ * 菜单矩形判定（主判据）的外扩余量（dp）：盖住选区手柄与手指落点。
+ */
+internal const val TOOLBAR_RECT_TOUCH_SLOP_DP = 24
+
+/**
+ * rect 探针拿不到菜单矩形时的兜底带（dp）：菜单抬高 44dp（见 `OverlayTextToolbar.Content`
+ * 的 liftPx），这一圈只盖住菜单与手柄悬在面板外的那一档。
+ */
+internal const val TOOLBAR_BAND_MARGIN_DP = 48
+
+/**
+ * 一次 ACTION_OUTSIDE 是否落在"面板边框 + [marginPx] 一圈"之内。
+ *
+ * 菜单与选区手柄是**贴着面板的子窗口**（菜单抬高一档、手柄贴在输入框两端），
+ * 落在它们上面的手指对本窗口就是 ACTION_OUTSIDE。rect 探针拿不到菜单矩形时，
+ * 这是外点要不要释放输入的兜底判据（见 [OverlayPanelWindow] 的触摸监听）。
+ */
+internal fun outsideTouchWithinPanelBand(
+    x: Float,
+    y: Float,
+    panelW: Int,
+    panelH: Int,
+    marginPx: Int
+): Boolean =
+    x >= -marginPx && x <= panelW + marginPx &&
+        y >= -marginPx && y <= panelH + marginPx
 
 /** 拖拽移动后的位置：整块面板不许被推出屏幕 */
 internal fun panelMovedOrigin(
@@ -111,9 +140,70 @@ internal class OverlayPanelWindow(
     /** 焦点与输入框所有权的唯一持有者；本类只当它的那扇真窗口 */
     private val focus = PanelInputFocusOwner(this)
 
+    /**
+     * Overlay 文字工具栏"正在显示"探针（组合侧经 [registerTextToolbarShowingProbe] 注册）。
+     * null = 未注册（按不显示处理）。为什么需要它见 [ensureCreated] 里 ACTION_OUTSIDE 那条注释。
+     */
+    @Volatile
+    private var textToolbarShowingProbe: (() -> Boolean)? = null
+
+    /** 菜单矩形探针（组合侧经 [registerTextToolbarRectProbe] 注册）：showMenu 快照里的同一份 rect */
+    @Volatile
+    private var textToolbarRectProbe: (() -> Rect?)? = null
+
+    /** 组合侧注册/注销工具栏显示探针（FloatingService 的 PanelContent 持有 toolbar 实例） */
+    fun registerTextToolbarShowingProbe(probe: (() -> Boolean)?) {
+        textToolbarShowingProbe = probe
+    }
+
+    /** 组合侧注册/注销菜单矩形探针（Popup 定位用的那份快照，窗口内坐标口径） */
+    fun registerTextToolbarRectProbe(probe: (() -> Rect?)?) {
+        textToolbarRectProbe = probe
+    }
+
+    private fun isTextToolbarShowing(): Boolean = textToolbarShowingProbe?.invoke() ?: false
+
+    /**
+     * 菜单开着时，这次 ACTION_OUTSIDE 该不该当成"点在菜单/选区手柄上"（是则不释放输入）。
+     *
+     * 主判据是菜单矩形本身：组合侧探针（[registerTextToolbarRectProbe]）交来 Popup 定位用的
+     * 那份 showMenu 快照，外扩 [TOOLBAR_RECT_TOUCH_SLOP_DP] 后看外点落不落进去；rect 拿不到
+     * 才退回"面板边框 + [TOOLBAR_BAND_MARGIN_DP]"的带状判定（[outsideTouchWithinPanelBand]）。
+     * 坐标口径在 ROM 之间不一致（窗口内坐标与屏幕坐标都见过），rect 这一支两种口径按**或**
+     * 认——只要有一种口径说它贴着菜单就算；带状兜底维持两种口径**同时**说"贴着"才认的旧口径
+     * （菜单悬在面板外时，屏幕坐标口径要扣掉窗口原点，"与"会把整条菜单判出去）。
+     * 读不到窗口几何时保守按"菜单吃这一下"处理——H2 那一族（菜单被当场拆掉）比菜单多留一瞬更糟。
+     */
+    private fun toolbarOwnsOutsideTouch(v: View, event: MotionEvent): Boolean {
+        val params = v.layoutParams as? WindowManager.LayoutParams ?: return true
+        val menu = textToolbarRectProbe?.invoke()
+        if (menu != null) {
+            val slop = host.dp(TOOLBAR_RECT_TOUCH_SLOP_DP).toFloat()
+            fun inside(x: Float, y: Float) = x >= menu.left - slop && x <= menu.right + slop &&
+                y >= menu.top - slop && y <= menu.bottom + slop
+            return inside(event.x, event.y) ||
+                inside(event.rawX - params.x, event.rawY - params.y)
+        }
+        val width = params.width.takeIf { it > 0 } ?: v.width
+        val height = params.height.takeIf { it > 0 } ?: v.height
+        if (width <= 0 || height <= 0) return true
+        val margin = host.dp(TOOLBAR_BAND_MARGIN_DP)
+        return outsideTouchWithinPanelBand(event.x, event.y, width, height, margin) &&
+            outsideTouchWithinPanelBand(
+                event.rawX - params.x, event.rawY - params.y, width, height, margin
+            )
+    }
+
     /** 面板是否处于展示中（窗口状态机由 Service 驱动，这里只记事实） */
     var isShowing = false
         private set
+
+    /**
+     * 屏幕上是否还看得见这扇窗。淡出动画一开始 [isShowing] 就置 false，
+     * 但窗口要到动画结束才 GONE——临时隐藏记"隐藏前形态"必须认这一颗，
+     * 否则淡出途中隐藏会把面板误记成球，恢复时只亮球不亮面板。
+     */
+    val isOnScreen: Boolean get() = isShowing || isPanelHiding
 
     // ═══════════ PanelFocusWindow：焦点状态机对窗口的全部需求 ═══════════
 
@@ -122,8 +212,14 @@ internal class OverlayPanelWindow(
     override fun applyFlags(flags: Int): Boolean {
         val cv = composeView ?: return false
         val params = cv.layoutParams as? WindowManager.LayoutParams ?: return false
+        val previousFlags = params.flags
         params.flags = flags
-        return host.updateLayout(cv, params)
+        val applied = host.updateLayout(cv, params)
+        // 失败必须连活着的 LayoutParams 一起回滚：状态机只退 mode，若 EDITING flags
+        // 留在这份对象上，下一次 setMode(PASSIVE) 因 mode 已相等而早退，
+        // 窗口就永久抢着宿主焦点。
+        if (!applied) params.flags = previousFlags
+        return applied
     }
 
     override fun hideIme() {
@@ -159,9 +255,26 @@ internal class OverlayPanelWindow(
             // ACTION_OUTSIDE 外点监听：用户点击 Panel 窗口外 →
             // 不关 Panel（用户需边看回复边操作宿主 App），只退出编辑态：
             // 清 Compose 焦点 → 隐藏 IME → Window 恢复 NOT_FOCUSABLE
-            setOnTouchListener { _, event ->
+            //
+            // H2 例外：自绘文字菜单与选区手柄（OverlayTextToolbar / 选区 Popup）都挂在
+            // **本窗口 token 的子窗口**里，位置常在面板 frame 之外（菜单固定抬高 44dp、
+            // 手柄贴输入框两端）。手指落在这些子窗口上，对本窗口就是 ACTION_OUTSIDE——
+            // 此刻 releaseInput 会当场拆掉选区和菜单（"菜单闪一下消失 / 手柄拖不动 /
+            // 点复制没反应"那一族）。所以外点进不进这一例外由 [toolbarOwnsOutsideTouch] 判：
+            // 菜单矩形（组合侧探针交来的同一份快照）为主，面板边框带兜底。
+            //
+            // 反过来，点面板外的宿主 App 时必须释放输入（即使菜单开着）：不释放的话
+            // 菜单会一直浮在宿主 App 上，而 Panel 停在 EDITING、窗口继续抢着焦点。
+            // releaseInput 里的 clearFocus 会让框架把菜单一起收起，等于"先收起工具栏"。
+            //
+            // 没有菜单时维持原判定（只有 EDITING 才释放）：面板里还有自成一扇窗的
+            // IntentEditorDialog，落在它上面的手指对本窗口同样是 ACTION_OUTSIDE——
+            // PASSIVE 时也 release 会顺手把对话框正在用的输入法收掉。
+            setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_OUTSIDE) {
-                    if (focus.mode == PanelFocusMode.EDITING) {
+                    if (isTextToolbarShowing()) {
+                        if (!toolbarOwnsOutsideTouch(v, event)) releaseInput("outside_touch_menu")
+                    } else if (focus.mode == PanelFocusMode.EDITING) {
                         releaseInput("outside_touch")
                     }
                     true
@@ -256,17 +369,32 @@ internal class OverlayPanelWindow(
                 cv.alpha = anim.animatedValue as Float
             }
             addListener(object : AnimatorListenerAdapter() {
+                /**
+                 * `Animator.cancel()` 会在 onAnimationCancel 之后**同步补发** onAnimationEnd。
+                 * 取消的三条来路（打开面板 / 临时隐藏 / 停服销毁）都不许借这次补发把球亮回来：
+                 * 那会把 `VISIBLE_BUBBLE` 写回刚被置成 `VISIBLE_PANEL` / `STOPPED` 的状态机
+                 * （"面板已开、全局态却上报球"／"停服后状态回弹"）。
+                 * 所以取消只清账，不碰视图、不调 [revealBubble]。
+                 */
+                private var cancelled = false
+
                 override fun onAnimationEnd(animation: Animator) {
+                    // 实例身份保护：旧动画的收尾不许清掉后来那颗新动画的引用
+                    if (panelExitAnim === animation) panelExitAnim = null
+                    if (cancelled) {
+                        isPanelHiding = false
+                        return
+                    }
                     cv.visibility = View.GONE
                     restoreFadeBaseline(cv)   // 复位动画通道，避免下次打开残留透明（与用户设的底色透明度无关）
                     // 旧动画回调必须守卫全部窗口操作，不能只守卫状态变量。
                     // TEMP_HIDDEN 时气泡不应重新可见——否则状态显示隐藏、实际球可见。
                     revealBubble()
                     isPanelHiding = false
-                    panelExitAnim = null
                 }
 
                 override fun onAnimationCancel(animation: Animator) {
+                    cancelled = true
                     isPanelHiding = false
                 }
             })
@@ -278,10 +406,17 @@ internal class OverlayPanelWindow(
     /**
      * 立即隐藏（临时隐藏用）：只改可见性，不留拦截层、不跑淡出。
      * 同样只复位动画那一格；底色透明度不归这一格管。
+     *
+     * H5：临时隐藏**必须**先释放输入（与 [fadeOut] 同一道兜底）。菜单 Popup 是独立子窗口，
+     * `visibility = GONE` 收不掉它——不释放输入的话，长按菜单开着时临时隐藏会留一枚
+     * 孤儿菜单悬浮在宿主 App 上（也把 EDITING 状态泄漏到下一次打开）。
      */
     fun hideInstantly() {
-        if (!isShowing) return
+        // 淡出途中 isShowing 已是 false 但动画还在跑：不认 isPanelHiding 就会早退，
+        // 留下退出动画在临时隐藏之后继续回调。
+        if (!isShowing && !isPanelHiding) return
         isShowing = false
+        focus.releaseInput("hide_instant")
         composeView?.let { cv ->
             panelExitAnim?.cancel()
             cv.visibility = View.GONE
@@ -290,7 +425,12 @@ internal class OverlayPanelWindow(
         isPanelHiding = false
     }
 
-    /** Service 销毁：取消退出动画（：防动画回调持有已销毁 Service） */
+    /**
+     * Service 销毁：取消退出动画（：防动画回调持有已销毁 Service）。
+     *
+     * 取消**不会**再把球亮回来（见 [fadeOut] 监听里的 `cancelled`）：销毁路径已经先把窗口状态
+     * 落成 `STOPPED`，补发的 onAnimationEnd 若照常 reveal，就会把它写回 `VISIBLE_BUBBLE`。
+     */
     fun cancelExitAnimation() {
         panelExitAnim?.cancel()
     }
@@ -362,8 +502,8 @@ internal class OverlayPanelWindow(
 
     fun onInputIntent(inputId: String) = focus.onInputIntent(inputId)
 
-    fun onInputFocusChanged(inputId: String, focused: Boolean) =
-        focus.onInputFocusChanged(inputId, focused)
+    fun onInputFocusChanged(instanceKey: Any, inputId: String, focused: Boolean) =
+        focus.onInputFocusChanged(instanceKey, inputId, focused)
 
     /** 注册 Compose 焦点清理回调，releaseInput 时调用 */
     fun registerClearFocusCallback(callback: () -> Unit) {

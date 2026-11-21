@@ -22,7 +22,18 @@ object MemoryCorrectionPolicy {
     fun isTransientRoundMute(action: CorrectionAction, duration: MuteDuration): Boolean =
         action == CorrectionAction.MUTED && duration == MuteDuration.THIS_ROUND
 
-    /** 记瞬时 mute 时要带的时间戳字段名在这，值由调用方取——这里不碰时钟 */
+    /**
+     * 本轮瞬时 mute 的时间语义：**没有墙钟窗口**，所以 [MemoryCorrection.muteTimestamp] 留空。
+     *
+     * 这条记录只活在 [RoundCorrectionStore] 里，生命周期由 nextRound / 切库清空决定：
+     * 在 map 里 = 立即生效（下一次生成就过滤），map 清掉 = 失效。
+     * 一旦把时间戳写进 muteTimestamp，[com.lovebrain.app.domain.prompt.MemoryRefPolicy.isMuteExpired]
+     * 会把它当成"旧版本持久化下来的 THIS_ROUND"判过期——瞬时静音当场失效，
+     * 而界面还提示"下次生成将过滤"，提示与行为对不上。
+     *
+     * 时间戳仍由调用方给，落在 updatedAt 上只作诊断，不参与过期判定。
+     * 写入点（LoveBrainViewModel.applyMemoryCorrection）不需要改签名或传值。
+     */
     fun transientMute(memoryId: String, replacementText: String, targetKbId: String, timestamp: String): MemoryCorrection =
         MemoryCorrection(
             memoryId = memoryId,
@@ -30,7 +41,8 @@ object MemoryCorrectionPolicy {
             replacementText = replacementText,
             targetKbId = targetKbId,
             muteDuration = MuteDuration.THIS_ROUND,
-            muteTimestamp = timestamp
+            muteTimestamp = "",
+            updatedAt = timestamp
         )
 
     fun roundMuteApplied(): String = "已暂停本轮提及，下次生成将过滤此条记忆"

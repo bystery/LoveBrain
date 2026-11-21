@@ -15,10 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
@@ -27,14 +25,14 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * 首页那盏灯的派生表与状态机（）。
+ * 首页那盏灯的派生表与状态机。
  *
  * 三条纪律各自有格钉着，每格都写明"什么反例会让它红"：
  * 1. 绿只认真凭据：连接成功 + 服务在跑 + 当前对象有知识库 + 权限在（本地有 Key 只算配置存在）；
  * 2. 关掉之后回来的响应不许把灯再点绿（token + `userStarted` 两道）；
  * 3. **探针只由按 ▶ 发起**：冷启动、重组、脉冲、进页面、切供应商、切当前知识库都只重读事实，
  *    一次都不许多发（`probe.calls` 就是这条的读数）。作废那一步只跟着**供应商配置**走
- *    （指导书 §11.1：连接身份里没有知识库那一位）。
+ *    （连接身份里没有知识库那一位）。
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeStatusViewModelTest {
@@ -75,9 +73,6 @@ class HomeStatusViewModelTest {
         // 用例控的是 gate 什么时候响，而不是"睡一会儿再看"（后者是时序赌博）。
         Dispatchers.setMain(UnconfinedTestDispatcher())
     }
-
-    @After
-    fun tearDown() = Dispatchers.resetMain()
 
     // ═══════════ 1. 齐 + 检查成功 → 绿（这份夹具里压根没有"捕获辅助权限"这个输入）═══════════
 
@@ -210,7 +205,7 @@ class HomeStatusViewModelTest {
      * 在用户没有按 ▶ 的情况下真发了一次付费请求。合同那句"不每次重组发微请求 + 下次开始再检查"
      * 判的就是这个。
      *
-     * §11.1 修改：连接身份只属于供应商配置，切知识库不再作废连接结论。
+     * 修改：连接身份只属于供应商配置，切知识库不再作废连接结论。
      *
      * 反例（坏实现怎么把这格弄红）：
      * - 把 `runCheck()` 留在 `returnedFromSubpage` 里 → 换供应商那一步 `probe.calls` 变 2；
@@ -231,7 +226,7 @@ class HomeStatusViewModelTest {
         assertEquals("身份没变的刷新不许再发微请求", 1, probe.calls)
         assertEquals(AdvisorState.RunningReady, vm.status.value.state)
 
-        // 切知识库不改连接身份（§11.1）：连接结论原样保留，不补发探针
+        // 切知识库不改连接身份：连接结论原样保留，不补发探针
         knowledge.kbName = "另一个人"
         vm.returnedFromSubpage(overlayGranted = true)
         advanceUntilIdle()
@@ -321,10 +316,10 @@ class HomeStatusViewModelTest {
 
     /**
      * 修"重进屏幕灯落回黄"：Activity 销毁 → VM 重建 → ledger 整本空 → 落盘副本
-     * （`store.connectionVerified` + 它所绑的那组配置身份，指导书 §11.1）兜底交回
+     * （`store.connectionVerified` + 它所绑的那组配置身份）兜底交回
      * [HomeConnectionVerdict.Verified]，不把已经绿过的灯落回 NotChecked（黄）。
      *
-     * 摆形状走**生产写路**（第一趟 VM 真的按一次 ▶），不手摆盘上的字段：§11.1 之后落盘是一对
+     * 摆形状走**生产写路**（第一趟 VM 真的按一次 ▶），不手摆盘上的字段：之后落盘是一对
      * （布尔 + 成功所属的配置身份，见 `connectionVerifiedIdentity`），"只有布尔、身份位是空串"
      * 那条记录在生产里根本写不出来，硬摆它测的是不存在的态——上一版这一格就是这么红的
      * （它只 `apply { connectionVerified = true }`，兜底那句比身份永远对不上）。
@@ -333,7 +328,7 @@ class HomeStatusViewModelTest {
      * - ledger 纯内存、随 VM 生灭、`connectionFor` 不查盘（修前形状）⇒ 第二趟那句 `RunningReady` 红；
      * - 落盘没写 / 只写了布尔没写身份 ⇒ 第二趟取不到兜底，同一句红；
      * - **兜底太宽**（不看身份就沿用到盘上那一次成功）⇒ 第三趟那句"换配置不许借盘变绿"红，
-     *   §11.1 的「换配置后新旧 VM 结论可能不同」正是这一句；
+     *   约定的「换配置后新旧 VM 结论可能不同」正是这一句；
      * - 返回路径自己补发探针 ⇒ 最后一句 `probe.calls` 从 1 变 2 红。
      */
     @Test
@@ -361,7 +356,7 @@ class HomeStatusViewModelTest {
         )
         assertEquals("重进屏幕不该发探针", 1, probe.calls)
 
-        // 同一块盘、换了配置（§11.1：只有地址/Key/模型真变了才作废）再来一趟新 VM：
+        // 同一块盘、换了配置（只有地址/Key/模型真变了才作废）再来一趟新 VM：
         // 那一次成功不属于这组身份，兜底不许替没验过的新配置说话
         provider.ref = ref(id = "t9", model = "brand-new")
         val otherConfig = HomeStatusViewModel(service, provider, knowledge, probe, store)
@@ -379,7 +374,7 @@ class HomeStatusViewModelTest {
     }
 
     /**
-     * §11.1 的末句收口：**只换 Key、只换地址**也算"配置真变了"——旧成功不许借盘变绿。
+     * 约定的末句收口：**只换 Key、只换地址**也算"配置真变了"——旧成功不许借盘变绿。
      *
      * 上一格只证到"换 id/model"会作废；身份式若还停在旧两位（`id|model`），下面两趟
      * `assertNotEquals(RunningReady)` 都会**绿不红**——绿灯带着旧凭据继续，正是这次补
@@ -423,7 +418,7 @@ class HomeStatusViewModelTest {
 
     /**
      * ② 同身份下**已验证结论不许变黄**：切出去再切回来时知识库那一格"读不动"，
-     * 连接身份只属于供应商配置（§11.1），所以连接结论必须原样留着；黄字只念"还没读到知识库"这一句真话。
+     * 连接身份只属于供应商配置，所以连接结论必须原样留着；黄字只念"还没读到知识库"这一句真话。
      * 读回来之后当场是绿，全程 `probe.calls` 还是 1。
      *
      * 反例（把改动回退成什么样它会红）：

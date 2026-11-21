@@ -20,12 +20,12 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
+import com.lovebrain.app.core.designsystem.LbFieldInput
 import com.lovebrain.app.core.testing.RenderIn
 import com.lovebrain.app.core.testing.SemanticsProbe
 import com.lovebrain.app.core.testing.UiMatrix
 import com.lovebrain.app.core.testing.UiProbeApplication
 import com.lovebrain.app.model.ChatMessage
-import com.lovebrain.app.ui.common.CompactInput
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
@@ -168,13 +168,13 @@ class ComposerInputLabelTest {
         )
     }
 
-    /** 第二个实例：问卷页与供应商弹窗用的 CompactInput 同样有过这颗无名输入框 */
+    /** 第二个实例：问卷页与供应商弹窗用的 LbFieldInput 同样有过这颗无名输入框 */
     @Test
-    fun compactInputAlsoCarriesASpokenLabel() {
+    fun fieldInputAlsoCarriesASpokenLabel() {
         val draft = mutableStateOf("")
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
-                CompactInput(
+                LbFieldInput(
                     value = draft.value,
                     onValueChange = { draft.value = it },
                     placeholder = "COMPACT_LABEL_SENTINEL"
@@ -227,9 +227,9 @@ class ComposerInputLabelTest {
      *
      * ⚠ 上一格（`theComposerInputSitsInsideAFullHeightTouchLayer`）能直接按 tag 取热区，
      * 是因为 `PanelTextInput` 外层那颗透明盒**在生产里就带** `PANEL_INPUT_TOUCH_TAG`。
-     * `CompactInput` 那两层（只转焦点、不声明点击的透明盒 + 36dp 可见胶囊）都不带语义：
+     * `LbFieldInput` 那两层（只转焦点、不声明点击的透明盒 + 36dp 可见胶囊）都不带语义：
      * 生产侧这一轮**有意不补**——给这一排凭空加一颗"入口"会把"这屏有几个可点项"的守卫数错
-     * （同一处取舍写在 `ReplyInput.kt` 里 `PanelTextInput` 那段注释与 `CompactInput.kt` 的
+     * （同一处取舍写在 `ReplyInput.kt` 里 `PanelTextInput` 那段注释与 `LbFieldInput.kt` 的
      * 热区层注释上）。
      * 于是树上只有那颗文字行（本机实量 336x15dp），拿它去比 36 或 48 都是许愿。
      *
@@ -239,12 +239,12 @@ class ComposerInputLabelTest {
      * 生产把可编辑节点自己再撑成 48（两层塌成一层、外观回退），第三条当场红。
      */
     @Test
-    fun compactInputIsBigEnoughToBeItsOwnTouchTarget() {
+    fun fieldInputIsBigEnoughToBeItsOwnTouchTarget() {
         val draft = mutableStateOf("")
         rule.setContent {
             UiMatrix(360).RenderIn(LocalDensity.current.density) {
                 Box(modifier = Modifier.testTag(COMPACT_HOTSPOT_PROBE_TAG)) {
-                    CompactInput(
+                    LbFieldInput(
                         value = draft.value,
                         onValueChange = { draft.value = it },
                         placeholder = "COMPACT_SIZE_SENTINEL"
@@ -256,7 +256,7 @@ class ComposerInputLabelTest {
 
         val touch = probe.of(rule.onNodeWithTag(COMPACT_HOTSPOT_PROBE_TAG).fetchSemanticsNode())
         assertTrue(
-            "CompactInput 外层那颗热区不足 ${probe.floorDp.toInt()}dp（整行 = 这颗量测盒，" +
+            "LbFieldInput 外层那颗热区不足 ${probe.floorDp.toInt()}dp（整行 = 这颗量测盒，" +
                 "它包的就是生产那一层）：" + touch.describe(),
             !touch.tooSmall(probe.floorDp)
         )

@@ -13,6 +13,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
@@ -32,6 +33,11 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -40,6 +46,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -256,14 +263,13 @@ fun PanelTextInput(
             .testTag(PANEL_INPUT_TOUCH_TAG)
             .then(
                 if (focusRequester != null) Modifier.pointerInput(focusRequester) {
-                    // 胶囊外的空档也是输入行的热区：轻点→把焦点转给可编辑节点，
-                    // 并同步上报编辑意图（碰到输入区 = 想编辑，与胶囊内触碰同一语义）
-                    detectTapGestures(onTap = {
-                        focusRequester.requestFocus()
-                        onInputIntent?.invoke()
-                    })
+                    // 胶囊外的空档也是输入行的热区：轻点→把焦点转给可编辑节点。
+                    // 编辑意图由下面整块热区上的边沿机制统一持有，这里不再重复上报。
+                    detectTapGestures(onTap = { focusRequester.requestFocus() })
                 } else Modifier
             )
+            // 编辑意图唯一拥有者：整块热区（含胶囊外空档）按下那一跳报一次。
+            .overlayInputIntent(onInputIntent)
     ) {
         // 视觉层：旧版那颗胶囊（min 高度语义，防系统大字号截断）
         Box(
@@ -273,18 +279,6 @@ fun PanelTextInput(
                 .heightIn(min = height)
                 .background(SurfaceCard, LoveBrainShape.md)
                 .border(AppDimens.BORDER_WIDTH_DP.dp, if (value.isNotEmpty()) PrimarySubtle else Border, LoveBrainShape.md)
-                // 编辑意图：用户触碰输入框区域 → 通知 FloatingService 进入 EDITING
-                // 使用 pointerInput 检测 Press 事件但不消费，让 BasicTextField 仍能收到点击获焦
-                .then(if (onInputIntent != null) Modifier.pointerInput(Unit) {
-                    awaitPointerEventScope {
-                        while (true) {
-                            val event = awaitPointerEvent()
-                            if (event.changes.any { it.pressed }) {
-                                onInputIntent()
-                            }
-                        }
-                    }
-                } else Modifier)
                 .padding(horizontal = Spacing.lg)
         ) {
             if (value.isEmpty()) {
@@ -305,12 +299,23 @@ fun PanelTextInput(
                 // 这里把同一句话挂成 contentDescription：节点本身永远有名字，
                 // 名字随输入对象变（她/我/补充），但不写死在语义里——传进来什么就是什么。
                 .semantics { contentDescription = placeholder }
+                .onPreviewKeyEvent { e ->
+                    // 单行胶囊只画一行：硬件回车不许往值里注入看不见的换行（IME 动作键仍走 Done；
+                    // 粘贴文本里的 \n 不经过键盘事件，原样保留给块结构解析）。
+                    e.type == KeyEventType.KeyDown && (e.key == Key.Enter || e.key == Key.NumPadEnter)
+                }
             if (focusRequester != null) tfModifier = tfModifier.focusRequester(focusRequester)
             if (onFocusChange != null) tfModifier = tfModifier.onFocusChanged { onFocusChange(it.isFocused) }
             BasicTextField(
                 value = value,
                 onValueChange = onValueChange,
-                singleLine = true,
+                // singleLine=false 让 EditorInfo 带上 MULTI_LINE：真机 IME 粘贴时才保留换行，
+                // 空行分块的转录（块头/时间行/正文）才有块边界可切（单行编辑器会被 IME 拍平成一行）。
+                // maxLines=1 保住 28dp 胶囊与宽度预算不变；动作键仍是 Done，硬件回车由上面那颗
+                // onPreviewKeyEvent 吃掉——不往值里注入看不见的换行（粘贴文本的 \n 不经键事件）。
+                singleLine = false,
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 // 裸字号走排版令牌（bodyMedium = 13sp）
                 textStyle = AppTypography.bodyMedium.copy(color = TextPrimary),
                 cursorBrush = SolidColor(Primary),
@@ -392,8 +397,6 @@ fun ReplyInput(
     showRoleChips: Boolean = true,
     showAddButton: Boolean = true,
     placeholderOverride: String? = null,
-    // 输入框身份令牌（目前仅用于文档追踪，实际透传由调用方完成）
-    inputId: String = "reply",
     /**
      * 输入对象（她/我/补充）。 的三轴之一，**不传就按 [currentRole] 推**
      * （旧宿主传的是 `composeRole`，IDEA 读成补充）——两种给法算出来的那一颗 chip 是同一颗。
@@ -605,16 +608,16 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
  * · 它仍是一颗符号，不是一句话：不往这一排新增常驻文字，行宽预算一寸没多占
  *   （§2.2 第 3 条"不要新增常驻文字撑宽整行"、§7.1"不恢复四字常驻按钮"）。
  *
- * ⚠ **换形与否不由这一轮定**：request2 §三 那份约 22KB 的完整 Worker 指导书没有落到本机，
- * §四 那一行只给了结论（不许硬编码）没给字形细则。⇒ 本轮落的是**字形保持 U+25C9、
- * 只把硬编码挪出 Kotlin**；"要不要换成另一颗形状"已登记为待主线程指认（M22），不自决。
+ * ⚠ **换形与否不由这一轮定**：相应规格文档没有落到本机，
+ * 规格里只给了结论（不许硬编码）没给字形细则。⇒ 本轮落的是**字形保持 U+25C9、
+ * 只把硬编码挪出 Kotlin**；"要不要换成另一颗形状"已登记为待主线程指认，不自决。
  *
  * ⚠ **它还不是"既有图标族"的那一颗线条图标**：这一排另一颗符号是 `Icons.Filled.Add`，
  * 要拿同一族的 ImageVector 摆在这里，得让 `LbChip` 交出一个图标/前缀槽（现在只收 `label: String`），
- * 或者由 core 给悬浮窗那颗紧凑胶囊立一档图标 toggle。在这一页自己画一颗 Box + Icon 会撞上两处闸：
- * `OddShapeOwnershipTest` 把 `ReplyInput.kt#RoundScopeChip` 记在**委托壳**那一本（壳里长出 Box 当场红），
- * `UiLayerDependencyContractTest` 的 `BrandLedger` 只给这一页留了一处品牌底。
- * ⇒ 这一条已按缺口报回主线程（要的是 core 那一颗槽，不是这里破两处账）。
+ * 或者由 core 给悬浮窗那颗紧凑胶囊立一档图标 toggle。在这一页自己画一颗 Box + Icon 会撞上闸：
+ * `UiLayerDependencyContractTest` 的 `BrandLedger` 只给这一页留了一处品牌底
+ * （RoundScopeChip 原在异形登记文件的委托壳那一本，那本已随文件删除）。
+ * ⇒ 这一条已按缺口报回主线程（要的是 core 那一颗槽，不是这里破账）。
  *
  * 读屏念的全名仍是 [PANEL_ROUND_SCOPE_LABEL]（挂在 contentDescription 上，这就是 §2.2 第 3 条与 §7.1 要的
  * "中文语义描述"——名字里没有任何"锁"字）。开与不开真正的行为（下一轮快照生效、
@@ -691,26 +694,36 @@ private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
  *   带上点击语义 = CI 那 7 格的成因"。这一颗试过写成 `clickable(enabled = canAdd, ...)`，
  *   那是**顺手改掉别人守卫着的性质**，已退回。"禁用是灰着还在"那条只管
  *   页面唯一主动作（主动发回退合同），次级入口不在它范围内。
+ *
+ * 轻点是唯一入口：草稿里的空行分块转录由宿主在 `onAdd` 里整批入库（角色全部用输入框当前角色），
+ * 其余文本整段一条；这一颗不上长按、不上浮层——手势面就是一颗 `clickable`。
  */
 @Composable
-private fun AddMessageButton(canAdd: Boolean, isEditing: Boolean, onAdd: () -> Unit) {
+private fun AddMessageButton(
+    canAdd: Boolean,
+    isEditing: Boolean,
+    onAdd: () -> Unit
+) {
     val (addInteraction, addScale) = rememberPressScale(0.92f, "addScale")
     // 热区与视觉分两层（与 RoleChip / RoundScopeChip 同一范式）：
     // 外层透明盒垫到 48dp 见方承担点击/热区下限，内层可见胶囊只有 24dp——
     // 视觉紧凑（用户要求的"缩小按钮占用空间"），手指与读屏拿到的都是 48。
-    // 旧版把 widthIn(min=48) 撑在外层但内层只有 24dp 可见、且高度只有 36dp，
-    // 两轴都没到 48 → PanelHostSemanticsTest 量的就是这一颗。
     Box(
         modifier = Modifier
             .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .widthIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
             .then(
-                if (canAdd) Modifier.clickable(
-                    interactionSource = addInteraction,
-                    indication = null,
-                    role = Role.Button,
-                    onClick = onAdd
-                ) else Modifier
+                if (canAdd) {
+                    Modifier.clickable(
+                        interactionSource = addInteraction,
+                        indication = null,
+                        role = Role.Button,
+                        onClick = onAdd
+                    )
+                } else {
+                    // 空草稿不带 OnClick 语义（门控合同，ComposerAddButtonGatingTest 守着）。
+                    Modifier
+                }
             ),
         contentAlignment = Alignment.Center
     ) {

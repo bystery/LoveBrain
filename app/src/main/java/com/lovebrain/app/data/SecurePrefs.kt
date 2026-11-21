@@ -68,6 +68,7 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         prefs.edit()
             .remove("saved_messages")
             .remove("saved_user_hint")
+            .remove("output_mode")
             .apply()
 
         // CAP4（2026-10-06）：captureEnabled 默认翻成 fail-closed 之后，老安装里
@@ -105,14 +106,6 @@ class SecurePrefs(context: Context) : SettingsStorePort {
     override var thinkingMode: Int
         get() = prefs.getInt(KEY_THINKING, 0).coerceIn(0, 1)  // ← 越界钳制为 0 或 1
         set(value) = prefs.edit().putInt(KEY_THINKING, value.coerceIn(0, 1)).apply()  // ← 写入时钳制
-
-    /**
-     * 输出模式二态：0=普通 1=进攻（进攻模式在 system prompt 追加 aggressive.md）
-     * 默认 0
-     */
-    override var outputMode: Int
-        get() = prefs.getInt(KEY_OUTPUT_MODE, 0)
-        set(value) = prefs.edit().putInt(KEY_OUTPUT_MODE, value).apply()
 
     // ═══ 状态持久化（重启不丢失）═══
 
@@ -201,7 +194,7 @@ class SecurePrefs(context: Context) : SettingsStorePort {
             .putInt(PanelBackdropOpacity.PREF_KEY, PanelBackdropOpacity.snapPercent(value)).apply()
 
     /**
-     * 悬浮图标大小（dp）——指导书 2026-10-10 §1 的三档。键、合法档、回落全归 [BubbleSizeTier]，
+     * 悬浮图标大小（dp）——约定的三档。键、合法档、回落全归 [BubbleSizeTier]，
      * 这里不复制字面量、也不另发明一套回落：读写两侧共用同一个 [BubbleSizeTier.snapDp]，
      * 于是盘上只可能出现 48 / 56 / 64 三颗数，窗口宽高与画侧因此永远拿到**同一个**尺寸。
      */
@@ -212,7 +205,7 @@ class SecurePrefs(context: Context) : SettingsStorePort {
             .putInt(BubbleSizeTier.PREF_KEY, BubbleSizeTier.snapDp(value)).apply()
 
     /**
-     * 回复卡片排列方向——指导书 §3。存枚举名（同 `guideCursor` 的先例），脏值与"从没写过"
+     * 回复卡片排列方向。存枚举名（同 `guideCursor` 的先例），脏值与"从没写过"
      * 都经 [ReplyCardLayout.from] 落回纵向；解析口只有这一处，画侧与 VM 都不再第二次判断。
      */
     var replyCardLayout: ReplyCardLayout
@@ -220,7 +213,7 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         set(value) = prefs.edit().putString(ReplyCardLayout.PREF_KEY, value.name).apply()
 
     /**
-     * 「仅看本轮」首次轻提示的"提示过没有"（§2.2 第 3 条）：true = 那条轻提示已经给过，
+     * 「仅看本轮」首次轻提示的"提示过没有"：true = 那条轻提示已经给过，
      * 此后无论开关再开多少次（含重启之后的第一次）都不再弹；取消/关闭从不写这一格。
      * 与持续意图介绍那格（`intent_intro_seen`）同一先例——每次回来不再重弹。
      * 消费方是 `LoveBrainViewModel`（经 `di/AppModule` 那对函数接进去，与背景浓度同形状）；
@@ -333,12 +326,54 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         set(value) = prefs.edit().putBoolean(KEY_CONNECTION_VERIFIED, value).apply()
 
     /**
-     * 落盘 [connectionVerified] 时所属的供应商身份（指导书 §11.1）。
+     * 落盘 [connectionVerified] 时所属的供应商身份。
      * 空串 = 从没写过；格式 `"ticketId|model"`。
      */
     override var connectionVerifiedIdentity: String
         get() = prefs.getString(KEY_CONNECTION_VERIFIED_IDENTITY, "") ?: ""
         set(value) = prefs.edit().putString(KEY_CONNECTION_VERIFIED_IDENTITY, value).apply()
+
+    /**
+     * 冠军引擎模式（T4 Kotlin 移植 W1）：`OFF | SHADOW | SINGLE_STYLE | FULL | LIVE_AUTO`。
+     *
+     * guide-6 Step 6（LIVE_AUTO 生产接线默认启用）：**null 哨兵区分「从未写入」与
+     * 「显式 OFF」**——键不存在（用户从没碰过这颗开关）→ 默认 `LIVE_AUTO`（正常主请求按
+     * 轮次自动选分域策略）；显式 `OFF` → 永远尊重（紧急回退原链路，绝不覆盖用户显式设置
+     * R4，不在启动时无条件写盘）；`SHADOW` 原样（独立诊断档）；`SINGLE_STYLE`/`FULL` 与
+     * 未知脏值 → fail-closed 读为 OFF（原语义不动）。键名 `champion_engine_mode` 不变
+     * （L648）→ 已有显式设置无损迁移。
+     *
+     * 审计 R2-3（模式诚实化）仍有效：S2/S3 尚未接线（主请求 prompt 未切
+     * ChampionPromptAssembler），读/写两侧都把 SINGLE_STYLE/FULL 收敛成 OFF 并记日志
+     * （档位名在枚举里保留，登记见 PORT_IDENTITY.json 与 W1_CHAMPION_ENGINE_IMPL.md）。
+     */
+    override var championEngineMode: String
+        get() {
+            // null 哨兵：默认值参数必须是 null 才能区分「键不存在」与「显式 OFF」
+            val raw = prefs.getString(KEY_CHAMPION_ENGINE_MODE, null) ?: return "LIVE_AUTO"
+            return when (raw) {
+                "OFF", "SHADOW", "LIVE_AUTO" -> raw
+                else -> {
+                    L.w("championEngineMode=$raw 未接线/脏值（S2/S3 not wired），fail-closed 读为 OFF")
+                    "OFF"
+                }
+            }
+        }
+        set(value) {
+            val toWrite = if (value == "SINGLE_STYLE" || value == "FULL") {
+                L.w("championEngineMode=$value 未接线（S2/S3 not wired），落为 OFF")
+                "OFF"
+            } else value
+            prefs.edit().putString(KEY_CHAMPION_ENGINE_MODE, toWrite).apply()
+        }
+
+    /**
+     * 冠军引擎生效白名单（contactId×story）：条目 `<contactId>|<story>`，`*` = 全体，
+     * **空集 = 全体**（规范原文口径）。
+     */
+    override var championEngineScope: Set<String>
+        get() = prefs.getStringSet(KEY_CHAMPION_ENGINE_SCOPE, emptySet())?.toSet() ?: emptySet()
+        set(value) = prefs.edit().putStringSet(KEY_CHAMPION_ENGINE_SCOPE, value.toSet()).apply()
 
     /** 追加一个允许抓取的包名 */
     fun addCaptureAllowedPackage(pkg: String) {
@@ -499,7 +534,7 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         set(value) = prefs.edit().putBoolean(KEY_ONBOARDING_DONE, value).apply()
 
     /**
-     * 介绍层看过/明确跳过（基线 v1 §6.8 新增键；与 [hasCompletedOnboarding] 各管各的层：
+     * 介绍层看过/明确跳过（新增键；与 [hasCompletedOnboarding] 各管各的层：
      * 这颗只豁免介绍，不代表引导整体完成）。语义钉在 `SettingsStorePortContractTest` 同一份合同里。
      */
     override var introSeen: Boolean
@@ -518,7 +553,7 @@ class SecurePrefs(context: Context) : SettingsStorePort {
      * 介绍层第几格（0…3）。越界**不在这里钳**——钳制归 `SetupViewModel` 那两颗读写口
      * （`restoreIntroStep` / `saveIntroStep`），这里只做"存一个整数、读不回脏值（缺省 0）"。
      * 为什么值得单独一键：见 `SettingsStorePort.introStep` 上方——把格号塞进 `guideCursor`
-     * 就是基线 §6.8 废掉的第二本账。
+     * 就是废掉的第二本账。
      */
     override var introStep: Int
         get() = prefs.getInt(KEY_ONBOARDING_INTRO_STEP, 0)
@@ -556,7 +591,6 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         private const val KEY_BASE_URL = "api_base_url"
         private const val KEY_ACTIVE_KB = "active_kb_name"
         private const val KEY_THINKING = "thinking_enabled"
-        private const val KEY_OUTPUT_MODE = "output_mode"
         // 状态持久化
         private const val KEY_PANEL_MODE = "saved_panel_mode"
         private const val KEY_API_STATS = "saved_api_stats"
@@ -577,7 +611,7 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         private const val KEY_TOTAL_ADOPT_COUNT = "total_adopt_count"
         private const val KEY_TOTAL_REWRITE_COUNT = "total_rewrite_count"
         private const val KEY_ONBOARDING_DONE = "onboarding_done"
-        // 引导进度新键（基线 v1 §6.8；旧 onboarding_done 语义不动，迁移规则见 SetupViewModel 那一族）
+        // 引导进度新键（旧 onboarding_done 语义不动，迁移规则见 SetupViewModel 那一族）
         private const val KEY_ONBOARDING_INTRO_SEEN = "onboarding_intro_seen"
         private const val KEY_ONBOARDING_GUIDE_CURSOR = "onboarding_guide_cursor"
         private const val KEY_ONBOARDING_INTRO_STEP = "onboarding_intro_step"
@@ -589,11 +623,16 @@ class SecurePrefs(context: Context) : SettingsStorePort {
         private const val KEY_CONNECTION_VERIFIED = "connection_verified"
 private const val KEY_CONNECTION_VERIFIED_IDENTITY = "connection_verified_identity"
 
-        // 「仅看本轮」首次轻提示的"提示过没有"（§2.2 第 3 条；先例同 intent_intro_seen：落盘后不再重弹）
+        // 「仅看本轮」首次轻提示的"提示过没有"（先例同 intent_intro_seen：落盘后不再重弹）
         private const val KEY_ROUND_SCOPE_HINT_SHOWN = "round_scope_hint_seen"
 
         // 工单系统键
         private const val KEY_TICKER_LIST_JSON = "worker_tickets_json"
         private const val KEY_ACTIVE_TICKET_ID = "active_ticket_id"
+
+        // 冠军引擎特征开关（T4 Kotlin 移植 W1；guide-6 Step 6：键不存在默认 LIVE_AUTO，
+        // 显式 OFF 尊重、SINGLE_STYLE/FULL/脏值 fail-closed 为 OFF——getter null 哨兵实现）
+        private const val KEY_CHAMPION_ENGINE_MODE = "champion_engine_mode"
+        private const val KEY_CHAMPION_ENGINE_SCOPE = "champion_engine_scope"
     }
 }

@@ -1,11 +1,12 @@
 package com.lovebrain.app.service
 
 import android.accessibilityservice.AccessibilityService
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-import com.lovebrain.app.AppConfig
 import com.lovebrain.app.data.EventBus
 import com.lovebrain.app.data.SecurePrefs
 import com.lovebrain.app.domain.CapturePolicy
@@ -25,7 +26,7 @@ import java.io.File
  *
  * 改进：
  * - 通过 EventBus（SharedFlow）发送捕获的消息，不再直接调用 FloatingService 静态方法
- * - 使用 AppConfig 常量
+ * - 事件配对寿命与诊断上限等常量集中在 companion（见 [MENU_PENDING_MAX_AGE_MS]）
  * - ：消息捕获总开关（captureEnabled）在事件入口前置判断；不再主动 startService 重启悬浮窗
  * - ：捕获链路本地诊断文件（capture_diag.log），只记类型/长度/毫秒，不记内容
  * - 诊断日志进有界 channel，由 IO worker 批量写；release 默认关闭或只保留脱敏环形计数
@@ -51,60 +52,19 @@ class CopyCaptureService : AccessibilityService() {
         /** 凭据节点探测最多访问多少个节点——大页面不无限遍历 */
         private const val CREDENTIAL_SCAN_MAX_NODES = 120
 
-        // ═══ CAP1 可读性读数（2026-10-06）：拒绝与当场不记都不再只有 diag 文件一份账 ═══
-        //
-        // 三颗 @Volatile 读数只记**原因标签与毫秒时刻**，绝不记包名、正文、节点文本。
-        // 用途有两个：① 真机分诊时与 capture_diag.log 互相核对（A1 报告 §6-5/§6-6 的映射读数）；
-        // ② 界面侧"缺哪件念哪件"的六格状态（`ui/home/CaptureConsentGate.captureTruthOf`）说的
-        // 就是同一批判据——用户可以拿这一行读数核页面有没有撒谎。
-        // 行为一个没改：allowlist 空仍然全拒（对的隐私默认），悬浮窗不在仍然当场不记
-        // （不暂存、不补录、不自动拉起，代价已登台账 impl-CAP1-capture）。
-
-        /** 最近一次"事件被拒/被闸住"的原因标签（allowlist_empty / switch_off / consent_pending / …） */
-        @Volatile
-        var lastRejectReason: String? = null
-            private set
-
-        /** 那次拒绝的 uptime 毫秒（0 = 从未发生过） */
-        @Volatile
-        var lastRejectUptimeMs: Long = 0L
-            private set
-
-        /** 候选③：长按确认到了内容、却因悬浮窗不在而当场不记的累计次数 */
-        @Volatile
-        var serviceDownDropCount: Int = 0
-            private set
-
-        /** 最近一次当场不记的 uptime 毫秒（0 = 从未发生过） */
-        @Volatile
-        var lastDropUptimeMs: Long = 0L
-            private set
+        /** 整树取文的预算：长按取文与菜单确认共用同一把尺（深度 / 节点数 / 毫秒） */
+        private const val TEXT_SCAN_MAX_DEPTH = 4
+        private const val TEXT_SCAN_MAX_NODES = 256
+        private const val TEXT_SCAN_BUDGET_MS = 100L
 
         /**
-         * CAP2（2026-10-06，档位 D）：当前声明到事件送达面（`ServiceInfo.packageNames`）的
-         * **包名数量**这一级读数（-1 = 从未设过）。只记数量，绝不记包名明细、正文、Key——
-         * 真机分诊时对 `dumpsys accessibility` 的 `packageNames` 行数一眼就能核对。
+         * 长按 → 复制菜单的配对寿命。
+         *
+         * 为什么不再是 30s：旧配对只比包名，同包正文里出现"复制"二字就会被当成菜单吞掉正文；
+         * 现在配对还要求**菜单来自另一个窗口**（见 `menuPairingOf`），菜单本来就是长按后立刻弹出的，
+         * 几秒内不出现就不是这次长按的配对，剩余寿命只会放大误配窗口。
          */
-        @Volatile
-        var declaredPackageNameCount: Int = -1
-            private set
-
-        /** 记一笔"送达面声明了 N 个包名"读数（数量级，不含明细）。 */
-        internal fun recordDeclaredPackageCount(count: Int) {
-            declaredPackageNameCount = count
-        }
-
-        /** 记一笔拒绝读数。时间参数可注入：JVM 用例不碰 SystemClock。 */
-        internal fun recordCaptureReject(reason: String, uptimeMs: Long = SystemClock.uptimeMillis()) {
-            lastRejectReason = reason
-            lastRejectUptimeMs = uptimeMs
-        }
-
-        /** 记一笔"悬浮窗不在 ⇒ 当场不记"读数。 */
-        internal fun recordServiceDownDrop(uptimeMs: Long = SystemClock.uptimeMillis()) {
-            serviceDownDropCount++
-            lastDropUptimeMs = uptimeMs
-        }
+        internal const val MENU_PENDING_MAX_AGE_MS = 5_000L
 
         /** CAP-04：关闭捕获时主动废弃 pending，无需等下一条 AccessibilityEvent */
         fun discardPendingCapture() {
@@ -116,22 +76,41 @@ class CopyCaptureService : AccessibilityService() {
     private var pendingTime = 0L
     /** H1 包名锁定：pending 来自哪个 App，窗口事件须同包名才消费（防跨 App 幽灵捕获） */
     private var pendingPkg: String? = null
+    /** H1 窗口锁定：长按发生在哪个窗口；复制菜单必须是长按之后新开的另一个窗口（防同包正文吞掉） */
+    private var pendingWindowId: Int = WINDOW_ID_UNSPECIFIED
 
     /** 诊断日志异步写入——有界 channel + IO worker，不阻塞主回调线程 */
-    private val diagScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private var diagScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val diagChannel = Channel<String>(capacity = 64, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     private var diagWorkerStarted = false
 
-    /** CAP-02：统一清理 pending 捕获事务，避免多路径手写三字段清理遗漏 */
+    /** CAP-02：统一清理 pending 捕获事务，避免多路径手写各字段清理遗漏 */
     internal fun clearPending(reason: String) {
         val hadPending = pendingContent != null
 
         pendingContent = null
         pendingTime = 0L
         pendingPkg = null
+        pendingWindowId = WINDOW_ID_UNSPECIFIED
 
         if (hadPending) {
             appendDiag("PENDING_CLEAR|reason=$reason")
+        }
+    }
+
+    /**
+     * 捕获入库的唯一出口：长按菜单确认与多选点选两条路径共用——悬浮窗在跑才投递，
+     * 不在就只记账丢弃（不暂存、不补录，代价与取舍登台账 impl-CAP1-capture）。
+     */
+    private fun deliverCapturedMessage(content: String, diagTag: String) {
+        if (FloatingService.instance == null) {
+            L.w("FloatingService not running, capture dropped (len=${content.length})")
+            appendDiag("$diagTag|serviceDown|dropped")
+            clearPending("capture_finished")
+        } else {
+            val accepted = EventBus.emitCapturedMessage(content)
+            appendDiag("$diagTag|accepted=$accepted|len=${content.length}")
+            clearPending("capture_finished")
         }
     }
 
@@ -179,12 +158,32 @@ class CopyCaptureService : AccessibilityService() {
         serviceInfo = info // ← 回写：没有这一行，上面两行等于没做
         lastAppliedPackageNames = allowed
         packageScopeApplied = true
-        recordDeclaredPackageCount(allowed.size)
         appendDiag("PACKAGE_SCOPE|count=${allowed.size}")
+    }
+
+    /**
+     * 点选捕获的送达面：XML 静态声明保持隐私审计签字的"长按 + 窗口状态"两枚不动，
+     * 点击事件在服务连上时经 serviceInfo 运行时补声明（与 packageNames 同一条回写通道，
+     * 同样必须整颗回写才生效）。
+     */
+    private fun declareTapSelectDelivery() {
+        val info = serviceInfo ?: run {
+            appendDiag("TAP_DELIVERY|noInfo")
+            return
+        }
+        if ((info.eventTypes and AccessibilityEvent.TYPE_VIEW_CLICKED) != 0) return
+        info.eventTypes = info.eventTypes or AccessibilityEvent.TYPE_VIEW_CLICKED
+        serviceInfo = info
+        appendDiag("TAP_DELIVERY|declared")
     }
 
     override fun onServiceConnected() {
         super.onServiceConnected()
+        // 上一次 onUnbind/onDestroy 已取消 IO scope：同一实例重连时先复位 scope 与 worker 标志，
+        // 否则 diagWorkerStarted 还挂着 true，appendDiag 再也不会起新 worker（诊断静默丢光），
+        // 而 clearPending/syncDeclaredPackageScope 这些路径本身也会写诊断。
+        diagScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+        diagWorkerStarted = false
         clearPending("service_connected_reset")
         instance = this
         isRunning = true
@@ -193,24 +192,33 @@ class CopyCaptureService : AccessibilityService() {
         // 服务一连上就把当前范围声明出去（此后 allowlist 变更由 onAccessibilityEvent 里的复检接管，
         // 无需重启服务）。
         syncDeclaredPackageScope(securePrefs.captureAllowedPackages)
+        // 多选点选的点击事件同理：XML 不动，连上时把送达面补到 CLICK
+        declareTapSelectDelivery()
         // ⚠ 光靠事件里的复检不够：新勾的那一个 App 在**送达面还没跟上之前根本不会有事件进来**
         //（框架按 packageNames 先滤）。所以订阅偏好变更，让范围页一保存就重声明。
         // 幂等由 `syncDeclaredPackageScope` 自己兜（值没变就早退），这里不必再比一次。
+        // 重连（同一实例再次 onServiceConnected）时旧订阅必须先退订再换：SharedPreferences 持着
+        // 上一颗监听器＝持着一份旧回调，换掉而不退订会越积越多。
+        runCatching { scopeSubscription?.invoke() }
         scopeSubscription = securePrefs.onAnyPreferenceChanged {
             syncDeclaredPackageScope(securePrefs.captureAllowedPackages)
         }
         appendDiag("SERVICE_CONNECTED")
     }
 
-    override fun onDestroy() {
-        clearPending("service_destroy")
+    /** 停侧复位唯一入口（onUnbind/onDestroy 共用）：清 pending → 退订偏好订阅并释放静态句柄 → 取消 diag IO scope。 */
+    private fun resetLifecycleState(reason: String) {
+        clearPending(reason)
         // 先退订：`SharedPreferences` 若还持着这颗监听器，就等于持着整个服务实例（漏 + 服务死后还会回调）
         runCatching { scopeSubscription?.invoke() }
         scopeSubscription = null
         instance = null
         isRunning = false
-        // 取消诊断 IO scope
         diagScope.cancel()
+    }
+
+    override fun onDestroy() {
+        resetLifecycleState("service_destroy")
         super.onDestroy()
     }
 
@@ -242,71 +250,53 @@ class CopyCaptureService : AccessibilityService() {
     }
 
     /**
-     *  修复：递归遍历无障碍节点树，收集所有非空文本。
-     * 新版微信消息文本常挂在子节点上，长按的容器节点本身不带字 → 直接取 event.text 取不到。
-     * 深度限制 4 层防性能问题，取最长的一条（最可能是完整消息内容）。
+     * 取节点子树里最长的一条非空文本（长按事件与多选点选共用）。
      *
-     * 增加节点数预算（maxNodes）和截止时间（deadline），超限 fail closed。
+     * 新版微信的消息文本常挂在子节点上，容器节点本身不带字，所以必须下探；
+     * 判定本体在 [longestTextIn]，深度 / 节点数 / 毫秒三道闸与菜单确认共用 [walkNodeTreeDepthFirst]。
      *
-     * 注意：入参 node（通常 = event.source）的生命周期由系统管理，调用方不应 recycle 它。
-     * 本方法只 recycle 自己创建的子节点（node.getChild(i)）。
-     * 本方法仅在 TYPE_VIEW_LONG_CLICKED 事件中调用，与 collectAllTextFromTree（WINDOW 事件）
-     * 不会在同一次事件中执行，不存在对同一子节点重复 recycle 的问题。
+     * 入参 node（通常 = event.source 或多选行容器）的生命周期由系统管理，不回收；
+     * 只回收遍历取到的子节点。
      */
-    private fun collectTextFromChildren(node: AccessibilityNodeInfo?, depth: Int = 0, maxDepth: Int = 4): String? {
-        return collectTextFromChildrenBounded(node, depth, maxDepth, IntArray(1).apply { this[0] = 256 }, SystemClock.uptimeMillis() + 100L)
-    }
-
-    private fun collectTextFromChildrenBounded(node: AccessibilityNodeInfo?, depth: Int, maxDepth: Int, nodeCount: IntArray, deadline: Long): String? {
-        if (node == null || depth > maxDepth) return null
-        if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) return null
-        nodeCount[0]--
-        var best: String? = null
-        node.text?.toString()?.trim()?.let { t ->
-            if (t.isNotEmpty()) best = t
-        }
-        for (i in 0 until node.childCount) {
-            if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) break
-            val child = runCatching { node.getChild(i) }.getOrNull() ?: continue
-            val childText = collectTextFromChildrenBounded(child, depth + 1, maxDepth, nodeCount, deadline)
-            if (childText != null) {
-                val currentBest = best
-                if (currentBest == null || childText.length > currentBest.length) {
-                    best = childText
-                }
-            }
-            child.recycle()
-        }
-        return best
+    private fun collectTextFromChildren(node: AccessibilityNodeInfo?): String? {
+        if (node == null) return null
+        return longestTextIn(
+            root = node,
+            maxDepth = TEXT_SCAN_MAX_DEPTH,
+            maxNodes = TEXT_SCAN_MAX_NODES,
+            budgetMs = TEXT_SCAN_BUDGET_MS,
+            childCount = { it.childCount },
+            childAt = { parent, index -> parent.getChild(index) },
+            textOf = { it.text?.toString()?.trim() },
+            release = { it.recycle() }
+        )
     }
 
     /**
-     *  修复：递归收集节点树中所有文本（用于弹窗菜单关键词匹配）。
-     * 弹窗菜单项"复制"/"转发"等分散在各子节点，直取 event.text 经常取不到 → 菜单匹配失败。
-     * 返回所有文本用 "|" 拼接，供 contains 关键词校验。
+     * 取节点子树全部文本 + contentDescription，用 "|" 拼接（弹窗菜单关键词匹配用）。
+     * 菜单项"复制"/"转发"分散在各子节点，直取 event.text 经常取不到；遍历与预算同 [collectTextFromChildren]。
      *
-     * 注意：入参 node（通常 = event.source）的生命周期由系统管理，调用方不应 recycle 它。
-     * 本方法只 recycle 自己创建的子节点。仅在 TYPE_WINDOW_STATE_CHANGED 事件中调用，
-     * 与 collectTextFromChildren（LONGCLICK 事件）不会在同一次事件中执行。
+     * 入参 node 归系统，不回收；只回收遍历取到的子节点。
      */
-    private fun collectAllTextFromTree(node: AccessibilityNodeInfo?, depth: Int = 0, maxDepth: Int = 4): String {
-        return collectAllTextFromTreeBounded(node, depth, maxDepth, IntArray(1).apply { this[0] = 256 }, SystemClock.uptimeMillis() + 100L)
-    }
-
-    private fun collectAllTextFromTreeBounded(node: AccessibilityNodeInfo?, depth: Int, maxDepth: Int, nodeCount: IntArray, deadline: Long): String {
-        if (node == null || depth > maxDepth) return ""
-        if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) return ""
-        nodeCount[0]--
-        val sb = StringBuilder()
-        node.text?.toString()?.trim()?.let { if (it.isNotEmpty()) sb.append(it).append("|") }
-        node.contentDescription?.toString()?.trim()?.let { if (it.isNotEmpty()) sb.append(it).append("|") }
-        for (i in 0 until node.childCount) {
-            if (nodeCount[0] <= 0 || SystemClock.uptimeMillis() > deadline) break
-            val child = runCatching { node.getChild(i) }.getOrNull() ?: continue
-            sb.append(collectAllTextFromTreeBounded(child, depth + 1, maxDepth, nodeCount, deadline))
-            child.recycle()
-        }
-        return sb.toString()
+    private fun collectAllTextFromTree(node: AccessibilityNodeInfo?): String {
+        if (node == null) return ""
+        val builder = StringBuilder()
+        walkNodeTreeDepthFirst(
+            root = node,
+            maxDepth = TEXT_SCAN_MAX_DEPTH,
+            maxNodes = TEXT_SCAN_MAX_NODES,
+            budgetMs = TEXT_SCAN_BUDGET_MS,
+            childCount = { it.childCount },
+            childAt = { parent, index -> parent.getChild(index) },
+            visit = { current ->
+                current.text?.toString()?.trim()?.let { if (it.isNotEmpty()) builder.append(it).append('|') }
+                current.contentDescription?.toString()?.trim()?.let {
+                    if (it.isNotEmpty()) builder.append(it).append('|')
+                }
+            },
+            release = { it.recycle() }
+        )
+        return builder.toString()
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
@@ -328,10 +318,8 @@ class CopyCaptureService : AccessibilityService() {
             )
         )
         if (decision is CapturePolicy.Decision.Deny) {
-            // 只记录裁决原因，绝不记录正文或节点文本。
-            // CAP1：拒绝从此留一份可核对的进程内读数（页面侧的六格状态吃同一批判据，不再只有 diag 一本账）
+            // 只记录裁决原因，绝不记录正文或节点文本；真机分诊只认 capture_diag.log 这一本账。
             clearPending("capture_denied:${decision.reason}")
-            recordCaptureReject(decision.reason)
             appendDiag("DENY|pkg=${pkg.takeLast(24)}|reason=${decision.reason}")
             return
         }
@@ -347,9 +335,9 @@ class CopyCaptureService : AccessibilityService() {
         val capEnabled = securePrefs.captureEnabled
         if (!capEnabled) {
             clearPending("capture_disabled")
-            recordCaptureReject("switch_off")
             val typeTag = when (type) {
                 AccessibilityEvent.TYPE_VIEW_LONG_CLICKED -> "LONGCLICK"
+                AccessibilityEvent.TYPE_VIEW_CLICKED -> "CLICK"
                 AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> "WINDOW"
                 else -> "TYPE$type"
             }
@@ -361,7 +349,6 @@ class CopyCaptureService : AccessibilityService() {
         val consentVersion = securePrefs.accessibilityDisclosureVersion
         if (consentVersion < CURRENT_DISCLOSURE_VERSION) {
             clearPending("disclosure_not_confirmed")
-            recordCaptureReject("consent_pending")
             appendDiag("CONSENT_PENDING|version=$consentVersion")
             return
         }
@@ -372,20 +359,20 @@ class CopyCaptureService : AccessibilityService() {
             event.contentDescription?.let { texts.add("evDesc:" + it.toString()) }
             event.source?.contentDescription?.let { texts.add("srcDesc:" + it.toString()) }
         }
-        var joined = texts.joinToString("|")
-        //  修复：弹窗菜单项文本常在子节点里——直取不含"复制"时补查子节点树
-        if (!joined.contains("复制")) {
+        // 弹窗菜单项文本常挂在子节点里，直取事件字段并不可靠：事件够格（窗口切换 + 确有 pending）时，
+        // 就用共享遍历一次取齐整树文本，不再"先拼一遍、发现缺关键词再补扫一遍"。
+        // 普通事件（含长按本事件）不遍历，别把主线程整树扫描挂在每条事件上。
+        if (shouldScanMenuTree(type, pendingContent != null)) {
             runCatching {
-                val childTexts = collectAllTextFromTree(event.source)
-                if (childTexts.contains("复制")) {
-                    texts.add("tree:$childTexts")
-                    joined = texts.joinToString("|")
-                    appendDiag("WINDOW_MENU_FROM_TREE|matched")
-                }
+                val treeTexts = collectAllTextFromTree(event.source)
+                texts.add("tree:$treeTexts")
+                if (treeTexts.contains("复制")) appendDiag("WINDOW_MENU_FROM_TREE|matched")
             }
         }
+        val joined = texts.joinToString("|")
         val typeName = when (type) {
             AccessibilityEvent.TYPE_VIEW_LONG_CLICKED -> "LONGCLICK"
+            AccessibilityEvent.TYPE_VIEW_CLICKED -> "CLICK"
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> "WINDOW"
             else -> "TYPE$type"
         }
@@ -403,7 +390,7 @@ class CopyCaptureService : AccessibilityService() {
                         event.source?.text?.toString()?.trim()
                     }.getOrNull()
                 }
-                //  修复：三处都取不到时，递归遍历子节点树取最长文本
+                // 事件字段只带容器不带字时，内容就在子节点里：走共享遍历取最长的一条。
                 if (content.isNullOrEmpty()) {
                     content = runCatching {
                         collectTextFromChildren(event.source)
@@ -412,18 +399,21 @@ class CopyCaptureService : AccessibilityService() {
                         appendDiag("LONGCLICK_TEXT_FROM_CHILDREN|len=${content.length}")
                     }
                 }
-                if (!content.isNullOrEmpty() && content.length >= 1) {
+                if (!content.isNullOrEmpty()) {
                     pendingContent = content
                     pendingTime = SystemClock.uptimeMillis()
                     pendingPkg = pkg
+                    // 记下长按所在窗口：复制菜单必须是这之后新开的另一个窗口（见 menuPairingOf）
+                    pendingWindowId = event.windowId
                     L.w("long-press stored pending: len=${content.length}")
                     appendDiag("LONGCLICK_ARRIVE|len=${content.length}")
                 } else {
-                    //  修复：提取失败时必须清空 pending，否则旧值残留到下次捕获造成 off-by-one
+                    // 取不到字就必须清 pending：旧值残留到下一次捕获会造成 off-by-one。
                     clearPending("longclick_no_text")
                     appendDiag("LONGCLICK_ARRIVE|len=0|noTextFound|pendingCleared")
                 }
             }
+
 
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 // 消息菜单 = 弹窗文字含「复制」即可确认；转发/删除/多选等七词门槛已删（分享/拷贝类菜单也能捕）
@@ -431,39 +421,51 @@ class CopyCaptureService : AccessibilityService() {
                 val pending = pendingContent
                 val now = SystemClock.uptimeMillis()
                 val sinceLongClick = if (pendingTime > 0L) now - pendingTime else -1L
+                val eventWindowId = event.windowId
                 if (pending != null) {
-                    appendDiag("WINDOW_ARRIVE|menuMatch=$isMessageMenu|pkgMatch=${pendingPkg == pkg}|sinceLong=${sinceLongClick}ms|pendingLen=${pending.length}")
+                    appendDiag("WINDOW_ARRIVE|menuMatch=$isMessageMenu|pkgMatch=${pendingPkg == pkg}|sameWindow=${pendingWindowId == eventWindowId}|sinceLong=${sinceLongClick}ms|pendingLen=${pending.length}")
                 } else {
                     appendDiag("WINDOW_ARRIVE|noPending|sinceLong=${sinceLongClick}ms")
                 }
                 if (isMessageMenu && pending != null) {
-                    val pkgOk = pendingPkg == pkg
-                    // H2：超过 30s 的旧 pending 视为过期（惰性校验，无定时器开销）；慢菜单(>3s)不再作废
-                    val notExpired = sinceLongClick <= AppConfig.PENDING_MAX_AGE_MS
-                    if (pkgOk && notExpired) {
-                        L.w(">>> message menu confirmed, capture len=${pending.length}")
-                        appendDiag("CAPTURE_OK|len=${pending.length}")
-                        if (FloatingService.instance == null) {
-                            // 悬浮服务没在跑：不再暂存补录（旧话自己冒出来的源头），直接丢弃并在 diag 里交代。
-                            // CAP1 定性（候选③，1.3.1 同款老行为）：**当场不记 + 读数留账 + 页面说原因**——
-                            // 不自动拉起悬浮窗去"偷偷开始抓"，也不新增暂存队列（那会扩大采集面）。
-                            // 恢复抓取的唯一入口是用户自己点悬浮窗/开始；代价与取舍登台账 impl-CAP1-capture。
-                            L.w("FloatingService not running, capture dropped (len=${pending.length})")
-                            recordServiceDownDrop()
-                            appendDiag("CAPTURE_OK|serviceDown|dropped")
-                            clearPending("capture_finished")
-                        } else {
-                            val accepted = EventBus.emitCapturedMessage(pending)
-                            appendDiag("CAPTURE_EVENTBUS|accepted=$accepted|len=${pending.length}")
-                            clearPending("capture_finished")
+                    // H1/H2：配对同时看包名、寿命与窗口归属——同包正文含"复制"、旧 pending 都不消费
+                    when (menuPairingOf(
+                        pendingPkg,
+                        pendingWindowId,
+                        pkg,
+                        eventWindowId,
+                        sinceLongClick,
+                        eventClassName = event.className?.toString()
+                    )) {
+                        MenuPairing.MATCH -> {
+                            L.w(">>> message menu confirmed, capture len=${pending.length}")
+                            appendDiag("CAPTURE_OK|len=${pending.length}")
+                            runCatching {
+                                val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                val clipText = cm.primaryClip?.getItemAt(0)?.text?.toString().orEmpty()
+                                appendDiag("CLIP_DUMP|len=${clipText.length}>>>")
+                                appendDiag(clipText)
+                                appendDiag("<<<CLIP_END")
+                            }
+                            deliverCapturedMessage(pending, diagTag = "CAPTURE_OK")
                         }
-                    } else if (!pkgOk) {
-                        // H1：跨 App 的复制菜单不是这次长按的确认——不消费，保留 pending 等原 App 的菜单
-                        appendDiag("WINDOW_ARRIVE|CROSS_PKG_SKIP|pendingPkg=$pendingPkg|pkg=$pkg")
-                    } else {
-                        // H2 过期：这次长按的机会已结束，清掉脏 pending，防止残留到下次捕获造成 off-by-one
-                        clearPending("expired")
-                        appendDiag("WINDOW_ARRIVE|PENDING_EXPIRED|age=${sinceLongClick}ms|pendingCleared")
+
+                        MenuPairing.CROSS_PKG -> {
+                            // H1：跨 App 的复制菜单不是这次长按的确认——不消费，保留 pending 等原 App 的菜单
+                            appendDiag("WINDOW_ARRIVE|CROSS_PKG_SKIP")
+                        }
+
+                        MenuPairing.SAME_WINDOW -> {
+                            // 同窗事件（含读不到窗口号）证不了"这是长按后新开的菜单"：
+                            // 不消费也不清 pending——同包正文里出现"复制"不再吞掉这次长按
+                            appendDiag("WINDOW_ARRIVE|SAME_WINDOW_SKIP|eventWindow=$eventWindowId")
+                        }
+
+                        MenuPairing.EXPIRED -> {
+                            // H2 过期：这次长按的机会已结束，清掉脏 pending，防止残留到下次捕获造成 off-by-one
+                            clearPending("expired")
+                            appendDiag("WINDOW_ARRIVE|PENDING_EXPIRED|age=${sinceLongClick}ms|pendingCleared")
+                        }
                     }
                 }
             }
@@ -473,6 +475,12 @@ class CopyCaptureService : AccessibilityService() {
       }
     }
 
+    /**
+     * 多选模式"点选即捕获"：与长按捕获共用同一入库通道，只多一道结构闸门——
+     * 点击节点沿祖先链存在挂 checkable=true 子节点的容器（多选行的勾选圆圈，
+     * 这是多选行独有的结构特征）。普通聊天点击消息没有勾选祖先、底栏按钮不在
+     * 勾选行容器内，都判不进；图片行结构上命中但没有可取文本，跳过不投递。
+     */
     override fun onInterrupt() {
         clearPending("service_interrupted")
         L.w("CopyCaptureService interrupted")
@@ -494,42 +502,242 @@ class CopyCaptureService : AccessibilityService() {
      *
      * 判定只用 isPassword 布尔位与 className，绝不把节点正文带进判断，
      * 因此聊天正文里出现"password"字样不会被误杀。
+     *
+     * 节点账：入参 root（= event.source）归系统，不回收；遍历中 `getChild` 取到的每个节点
+     * 由 [scanNodesBounded] 交回 [AccessibilityNodeInfo.recycle]。此前这条路径从不回收，
+     * 每条事件最多漏 120 个节点——高频事件下就是连接池与 Parcel 的慢性泄漏。
      */
     private fun hasCredentialNode(root: AccessibilityNodeInfo?): Boolean {
         if (root == null) return false
-        var found = false
-        runCatching {
-            val queue = ArrayDeque<AccessibilityNodeInfo>()
-            queue.add(root)
-            var visited = 0
-            while (queue.isNotEmpty() && !found && visited < CREDENTIAL_SCAN_MAX_NODES) {
-                val node = queue.removeFirst()
-                visited++
+        return scanNodesBounded(
+            root = root,
+            maxNodes = CREDENTIAL_SCAN_MAX_NODES,
+            childCount = { it.childCount },
+            childAt = { node, index -> node.getChild(index) },
+            visit = { node ->
                 // AccessibilityNodeInfo 在 API 30 之前不暴露 inputType，
                 // 所以这里能用的凭据信号就是 isPassword 布尔位本身；
                 // 第三参数留给能拿到 inputType 的调用方，这里不假装知道更多。
-                if (CapturePolicy.looksLikeCredentialNode(
-                        className = node.className?.toString(),
-                        isPassword = node.isPassword,
-                        textHintsPasswordInputType = false
-                    )
-                ) {
-                    found = true
-                    break
-                }
-                for (i in 0 until node.childCount) node.getChild(i)?.let { queue.add(it) }
-            }
-        }
-        return found
+                CapturePolicy.looksLikeCredentialNode(
+                    className = node.className?.toString(),
+                    isPassword = node.isPassword,
+                    textHintsPasswordInputType = false
+                )
+            },
+            release = { it.recycle() }
+        )
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        clearPending("service_unbind")
-        isRunning = false
-        instance = null
-        // 取消诊断 IO scope
-        diagScope.cancel()
+        resetLifecycleState("service_unbind")
         L.w("CopyCaptureService unbound")
         return super.onUnbind(intent)
+    }
+}
+
+/** 事件没带窗口号（`AccessibilityWindowInfo.UNDEFINED_WINDOW_ID`）——判不了"菜单在另一个窗口"。 */
+private const val WINDOW_ID_UNSPECIFIED = -1
+
+/** 长按 ↔ 复制菜单的配对结论：只有 [MATCH] 允许消费并投递暂存内容。 */
+internal enum class MenuPairing {
+
+    /** 同包、没过期、且来自长按之后新开的另一个窗口——这次才是同一次手势的复制菜单 */
+    MATCH,
+
+    /** 不是长按那个 App 的菜单：不消费，保留 pending 等原 App 的菜单 */
+    CROSS_PKG,
+
+    /** 同窗事件（或窗口号读不到）：证不了"这是长按后新开的菜单"，不消费也不清 pending */
+    SAME_WINDOW,
+
+    /** 超过 [CopyCaptureService.MENU_PENDING_MAX_AGE_MS] 的旧暂存：清掉，防止残留到下次捕获 */
+    EXPIRED
+}
+
+/**
+ * 长按暂存与"复制"菜单窗口的配对判据（纯函数，便于摆正反例）。
+ *
+ * 只按包名 + 寿命配对的老口径会把**同包正文里出现的"复制"二字**当成菜单确认吞掉长按内容，
+ * 所以再加一条窗口归属：菜单必须是长按所在窗口之外的新窗口；窗口号读不到/相同但事件类名
+ * 明确是弹窗（[looksLikePopupWindow]）时按"可证的弹出窗口"放行，两者都不成立就按
+ * [MenuPairing.SAME_WINDOW] 不消费）。寿命同时从 30s 收到 [CopyCaptureService.MENU_PENDING_MAX_AGE_MS]。
+ */
+internal fun menuPairingOf(
+    pendingPkg: String?,
+    pendingWindowId: Int,
+    eventPkg: String?,
+    eventWindowId: Int,
+    sinceLongClickMs: Long,
+    eventClassName: String? = null,
+    maxAgeMs: Long = CopyCaptureService.MENU_PENDING_MAX_AGE_MS
+): MenuPairing {
+    if (pendingPkg == null || pendingPkg != eventPkg) return MenuPairing.CROSS_PKG
+    if (sinceLongClickMs < 0L || sinceLongClickMs > maxAgeMs) return MenuPairing.EXPIRED
+    val windowKnown =
+        pendingWindowId != WINDOW_ID_UNSPECIFIED && eventWindowId != WINDOW_ID_UNSPECIFIED
+    if (windowKnown && eventWindowId != pendingWindowId) return MenuPairing.MATCH
+    return if (looksLikePopupWindow(eventClassName)) MenuPairing.MATCH else MenuPairing.SAME_WINDOW
+}
+
+/**
+ * 弹窗容器类名（`PopupWindow$PopupDecorView` 之类）是"这是一个弹出菜单窗口"的可证标识。
+ * 只在窗口号证不了跨窗时兜底用，凭类名放行；正文/标题不参与判断。
+ */
+internal fun looksLikePopupWindow(eventClassName: String?): Boolean =
+    eventClassName != null && eventClassName.contains("popup", ignoreCase = true)
+
+/**
+ * 整树扫描只服务"这次长按的菜单确认"：只有窗口切换事件 + 真有 pending 时才值得做。
+ * 普通事件（含长按本事件）不做 256 节点 / 100ms 的主线程遍历。
+ */
+internal fun shouldScanMenuTree(eventType: Int, hasPending: Boolean): Boolean =
+    hasPending && eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+
+/**
+ * 取子树里最长一条非空文本的判定本体（泛型壳）：真机侧适配 AccessibilityNodeInfo，
+ * JVM 用例用假节点钉行为——长按取文与多选点选取文共用这一份逻辑，
+ * 预算与回收语义同 [walkNodeTreeDepthFirst]（入参 [root] 不回收，取到的子节点后序恰好还一次）。
+ *
+ * @param now 时钟注入点：JVM 用例不碰 SystemClock，真机默认 uptime。
+ */
+internal fun <T : Any> longestTextIn(
+    root: T,
+    maxDepth: Int,
+    maxNodes: Int,
+    budgetMs: Long,
+    childCount: (T) -> Int,
+    childAt: (T, Int) -> T?,
+    textOf: (T) -> String?,
+    release: (T) -> Unit,
+    now: () -> Long = { SystemClock.uptimeMillis() }
+): String? {
+    var best: String? = null
+    walkNodeTreeDepthFirst(
+        root = root,
+        maxDepth = maxDepth,
+        maxNodes = maxNodes,
+        budgetMs = budgetMs,
+        childCount = childCount,
+        childAt = childAt,
+        visit = { current ->
+            val text = textOf(current)
+            val bestSoFar = best
+            if (!text.isNullOrEmpty() && (bestSoFar == null || text.length > bestSoFar.length)) {
+                best = text
+            }
+        },
+        release = release,
+        now = now
+    )
+    return best
+}
+
+/**
+ * 多选行识别：从点击节点沿祖先链向上最多 [maxUpLevels] 层，找"直接子节点里有 checkable=true
+ * 节点的容器"——微信多选模式里每一行都挂着一个勾选圆圈，这是多选行独有的结构特征；
+ * 普通聊天点击消息没有勾选祖先，底栏按钮也不在勾选行容器内，都判不进。
+ *
+ * 节点账：入参 [clicked] 归系统/调用方，绝不回收；childAt 取来做勾选检查的子节点当场交
+ * [release]，爬层换下的中间父节点也交 [release]；命中的行容器原样交回调用方
+ * （它此刻归调用方所有，用完由调用方归还）。
+ */
+
+
+/**
+ * 有界广度优先访问，并**由遍历自己记账回收**。
+ *
+ * 只有经 [childAt] 新取到的节点才会交 [release]（入参 [root] 归调用方/系统所有，绝不回收）；
+ * 回收统一发生在遍历结束之后，所以不会把还要取子节点/继续遍历的父节点提前还掉。
+ * 泛型壳是为了让 JVM 用例能拿假节点钉"取了多少、还了多少、父节点何时能还"——
+ * `AccessibilityNodeInfo` 在测试里造不出可 `getChild` 的真树。
+ *
+ * @return 是否命中（[visit] 返回 true 即提前结束）
+ */
+internal fun <T : Any> scanNodesBounded(
+    root: T,
+    maxNodes: Int,
+    childCount: (T) -> Int,
+    childAt: (T, Int) -> T?,
+    visit: (T) -> Boolean,
+    release: (T) -> Unit
+): Boolean {
+    val queue = ArrayDeque<T>()
+    val owned = ArrayList<T>()
+    queue.add(root)
+    var visited = 0
+    var matched = false
+    try {
+        while (queue.isNotEmpty() && !matched && visited < maxNodes) {
+            val node = queue.removeFirst()
+            visited++
+            if (runCatching { visit(node) }.getOrDefault(false)) {
+                matched = true
+                break
+            }
+            val count = runCatching { childCount(node) }.getOrDefault(0)
+            for (i in 0 until count) {
+                val child = runCatching { childAt(node, i) }.getOrNull() ?: continue
+                owned.add(child)
+                queue.add(child)
+            }
+        }
+    } finally {
+        owned.forEach { runCatching { release(it) } }
+    }
+    return matched
+}
+
+/**
+ * 深度优先、三道闸（深度 / 节点数 / 毫秒）的节点树访问原语。
+ *
+ * 长按取"最长文本"与菜单取"全部文本"只在 [visit] 的回调里不同，遍历与预算必须共用这一份：
+ * 以前两棵递归各写一遍同样的 4 层 / 256 节点 / 100ms，任何一处预算漂移都会让两条路径的行径不一致。
+ *
+ * 节点账：入参 [root] 归系统/调用方，绝不回收；[childAt] 取到的子节点在**其子树访问完之后**
+ * 立刻交 [release] 回收（后序），所以父节点取子节点时仍然有效。
+ * 泛型壳与 [scanNodesBounded] 同因：JVM 用例要用假节点钉取还数量与顺序。
+ *
+ * @param now 时钟注入点：JVM 用例不碰 SystemClock，真机默认 uptime。
+ */
+internal fun <T : Any> walkNodeTreeDepthFirst(
+    root: T,
+    maxDepth: Int,
+    maxNodes: Int,
+    budgetMs: Long,
+    childCount: (T) -> Int,
+    childAt: (T, Int) -> T?,
+    visit: (T) -> Unit,
+    release: (T) -> Unit,
+    now: () -> Long = { SystemClock.uptimeMillis() }
+) {
+    val budget = NodeWalkBudget(maxNodes, budgetMs, now)
+    fun descend(node: T, depth: Int) {
+        if (depth > maxDepth || budget.exhausted) return
+        budget.take()
+        visit(node)
+        val count = runCatching { childCount(node) }.getOrDefault(0)
+        for (i in 0 until count) {
+            if (budget.exhausted) break
+            val child = runCatching { childAt(node, i) }.getOrNull() ?: continue
+            try {
+                descend(child, depth + 1)
+            } finally {
+                release(child)
+            }
+        }
+    }
+    descend(root, 0)
+}
+
+/** 节点访问预算：节点数在访问前扣，毫秒闸在每次下探前看一次（与旧两棵递归同口径） */
+private class NodeWalkBudget(
+    private var remaining: Int,
+    budgetMs: Long,
+    private val now: () -> Long
+) {
+    private val deadline = now() + budgetMs
+    val exhausted: Boolean get() = remaining <= 0 || now() > deadline
+    fun take() {
+        remaining--
     }
 }
