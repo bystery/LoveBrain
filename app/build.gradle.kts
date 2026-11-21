@@ -4,10 +4,6 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
-    //  的截图基线：JVM 渲染（Robolectric + Compose），不依赖设备截屏——
-    // 三个 Activity 都设了 FLAG_SECURE，设备侧 screencap 结构上拍不到那一屏
-    // （CI run 36236822959 实测：装回去、前台确认是 app 之后，screencap 交回 0 字节）。
-    id("io.github.takahirom.roborazzi")
 }
 
 // 正式签名：仓库根目录的 keystore.properties（已 gitignore，不入库）提供 keystore 路径与密码。
@@ -26,11 +22,10 @@ android {
         applicationId = "com.lovebrain.app"
         minSdk = 26
         targetSdk = 35
-// 2026-10-17：1.4.2 / versionCode 11。这一批只有回复卡片的阅读修正：上下排列时卡片按内容
-// 多少决定高度（不再一律垫到固定高，短回复不留大段空白），以及"这轮参考了哪些信息？"
-// 从每张卡下面一条改成整组卡片下面一条。签名沿用同一把发布钥匙，1.4.1 可直接覆盖升级。
-versionCode = 11
-versionName = "1.4.2"
+// 2026-11-21：1.5.0 / versionCode 12。提示词六段收敛、进攻/进行中/表达偏好/经验注入全删、
+// 契约守卫接管输出解析、A/B 粘贴解析、memoryRefs 断链修复、参考区紧凑化。签名沿用同一把发布钥匙。
+versionCode = 12
+versionName = "1.5.0"
         // : Compose UI test runner
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -130,7 +125,6 @@ dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.06.00")
     implementation(composeBom)
     implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     // 2026-08-17：icons-extended 已移除（6MB 全家桶），只保留 core；功能卡图标改用自制 drawable
     implementation("androidx.compose.material:material-icons-core")
@@ -162,8 +156,6 @@ dependencies {
     // Core
     implementation("androidx.core:core-ktx:1.13.1")
 
-    debugImplementation("androidx.compose.ui:ui-tooling")
-
     // M6 单元测试（纯 JVM，无 Android 依赖）
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.24")
@@ -176,14 +168,7 @@ dependencies {
     // 而复核  第 4 条禁止用源码 grep 顶替它。Robolectric 让同一批断言在 CI 之前就能红。
     testImplementation(platform(composeBom))
     testImplementation("org.robolectric:robolectric:4.14.1")
-    //  截图基线（JVM 渲染）：见上面的 roborazzi 插件。
-    // 钉版本的理由：1.7x 用 Kotlin 2.0.21 编，本仓库还是 Kotlin 1.9.24。
-    testImplementation("io.github.takahirom.roborazzi:roborazzi-core:1.30.0")
-    testImplementation("io.github.takahirom.roborazzi:roborazzi:1.30.0")
-    testImplementation("io.github.takahirom.roborazzi:roborazzi-junit-rule:1.30.0")
-    testImplementation("io.github.takahirom.roborazzi:roborazzi-compose:1.30.0")
     testImplementation("androidx.test:core:1.6.1")
-    testImplementation("androidx.test.ext:junit:1.2.1")
     testImplementation("androidx.compose.ui:ui-test-junit4")
     // ui-test-manifest 走下面已有的 debugImplementation：Robolectric 读的是 debug 变体
     // 合并后的 manifest，再声明一份 testImplementation 会被 lint 判成配置放错
@@ -198,48 +183,37 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
 
-// §13 CI 精简（§13.2 原文口径）：`-Pci-lite` 只由默认 push/PR 门禁传（ci.yml「Unit tests」步骤）。
-// 指导书点名"移到已有手动工作流"的两族在这里排除：
-//   ① 视觉快照族 `ui.visual.*`——专用比对入口是 manual job 的 scripts/verify_visual_baseline.sh
-//      （:app:verifyRoborazziDebug），不为 push 陪跑；
-//   ② 源码文本/字符串预算/形状所有权扫描族 `architecture.*`——§13.2 原句点名，随 manual 的
-//      发布前全量步骤跑；
-//   ③【本轮补】昂贵的全量 JVM UI 渲染 / 多尺寸多字号**矩阵循环族**——§13.2 L340 同半句
-//      "昂贵的全量 JVM UI 渲染/多尺寸多字号……移到已有手动工作流"。此前只落了前半句
-//      （快照+源码扫描），"多尺寸多字号"这一半没落实：两类逐档扫的矩阵渲染仍在 push 陪跑。
-//      只移**整类皆为多档 for/forEach 循环**的类（每颗 @Test 都跑满 UiMatrix.FULL / WIDTHS_DP /
-//      FONT_SCALES，无单档语义测试可被误伤）：
-//        · com.lovebrain.app.ui.matrix.UiMatrixFullSweepTest —— 6 格全为 4 宽×3 字逐格扫；
-//          其单档语义判据本就钉在 LbChipTest / LbStatusBadgeTest / LbSettingRowStateTest /
-//          LbPrimaryButtonStateTest（文件头自述"本文件只**扩矩阵**，不改那些用例的判据口径"），
-//          移出后 push 仍保留那四颗单档语义；
-//        · com.lovebrain.app.ui.home.LongProviderNameSemanticsTest —— 2 格皆为 FULL 逐格扫 +
-//          FONT_SCALES 字号族，判据本身依赖宽度/字号上涨，无单档形态可留。
+// CI 精简（原文口径）：`-Pci-lite` 只由默认 push/PR 门禁传（ci.yml「Unit tests」步骤）。
+// 规范点名"移到已有手动工作流"的两族在这里排除：
+//   ① 视觉快照族 `ui.visual.*`——整族测试已删除，专用比对入口（manual job 的
+//      视觉基线比对脚本）一并下线，此档不再命中任何类；
+//   ② 源码文本/字符串预算/形状所有权扫描族 `architecture.*`——原句点名，测试仍在，
+//      其发布前运行入口原挂在 manual 的 visual-baseline job，该 job 已随视觉基线族一并删除；
+//   ③【本轮补】昂贵的全量 JVM UI 渲染 / 多尺寸多字号**矩阵循环族**——原移两颗
+//      （ui.matrix 全量扫描档 + ui.home 字号族档）已整类删除，类名档 exclude 一并撤销；
 //      ⚠ 保留清单（不动）：ui.visual.* / architecture.* 之外的**大量 UiMatrix 用点属"单档挂载
-//      夹具"**——只 `UiMatrix(360, …).RenderIn` 钉一次密度/字号，是 §13.2 L338 核心语义回归的载体，
+//      夹具"**——只 `UiMatrix(360, …).RenderIn` 钉一次密度/字号，是核心语义回归的载体，
 //      一律保留。带"1 颗矩阵循环 + N 颗单档语义"混合的类也不整类移出（移一颗会连带杀其语义覆盖，
-//      违 §13.2 L338）：HomeScaffoldFrameSemanticsTest / LbAsyncStateTest / KbOnboardingWizardSemanticsTest /
+//      违）：HomeScaffoldFrameSemanticsTest / LbAsyncStateTest / KbOnboardingWizardSemanticsTest /
 //      EmptyStateOwnershipSemanticsTest / PanelHeaderTouchTargetsTest / UsageStatBarSemanticsTest /
-//      MessageListEmptyStateTest / HomeScreenStructureTest。本轮 §7–§11 落地的行为测试（含带 FULL 循环的
+//      MessageListEmptyStateTest / HomeScreenStructureTest。本轮落地的行为测试（含带 FULL 循环的
 //      CaptureAppRowSemanticsTest / CaptureAppsScreenStatesTest）按保护清单一律保留，矩阵循环不作移出面。
-// 这两类经类名档 excludeTestsMatching 移出 push 后，在 manual.yml 的 visual-baseline
-// "发布前扫描族专用入口"同一步骤照跑（--tests 并列），移出 ≠ 删除，§13.2 "不能全删/不能假绿"由此兑现。
+// architecture.* 的发布前运行入口原挂在 manual.yml 的 visual-baseline job（--tests 并列），
+// 该 job 已随视觉基线族一并删除——此族测试仍在，但当前没有 CI 运行入口。
 // ⚠ 黑名单制：excludeTestsMatching 只**追加排除**，新写的测试默认仍在 push 跑；不用包名一把梭
 //   （一把梭会把同包里大量"单档挂载夹具"语义测试一并静默漏跑＝假绿）。本地不带开关的全量跑一档不跳。
-// §13.2 要求保留的核心回归族（知识库生命周期与隔离、生成解析与取消、配置/连接状态、范围和意图
+// 要求保留的核心回归族（知识库生命周期与隔离、生成解析与取消、配置/连接状态、范围和意图
 // 装配、本轮直接修复的输入/列表行为）全部留在 push——套件"几千格"的本体是这些快断言族，
 // 不是被移走的渲染/扫描族。本地不带开关的全量跑一档不跳，读数不变。
 // 懒配置（configureEach）+ 名字判断：`tasks.named("testDebugUnitTest")` 在脚本位置急切执行，
 // 那时 AGP 还没注册变体任务，整条配置链直接炸（本机实测）；`withType<Test>` 不带名字判断
 // 又会把 roborazzi 的 verify/record 同型任务一起排掉——那是"静默漏跑＝假绿"的形状。
 tasks.withType<Test>().configureEach {
+    // 测试 JVM 并行 fork：默认全挤 1 个 JVM 串行，16 核全在闲。8 路×1GB 堆 + 守护进程
+    // ≈12GB < 16GB 物理内存；各 fork 独立 JVM，静态状态互不串扰。OOM 就降回 4。
+    maxParallelForks = 2
+    maxHeapSize = "1g"
     if (name == "testDebugUnitTest" && project.hasProperty("ci-lite")) {
         exclude("**/com/lovebrain/app/ui/visual/**")
-        exclude("**/com/lovebrain/app/architecture/**")
-        // §13.2 L340 "多尺寸多字号"半句：整类皆为逐档矩阵扫描的两颗，类名档精确移出（黑名单追加）。
-        // 用文件模式而非 `excludeTestsMatching`：后者在 Gradle 8.0 的 Test 任务上不存在
-        // （本机实测脚本编译红），且 `*` 尾一并挡掉 `$1`/lambda 内部类文件。
-        exclude("**/com/lovebrain/app/ui/matrix/UiMatrixFullSweepTest*")
-        exclude("**/com/lovebrain/app/ui/home/LongProviderNameSemanticsTest*")
     }
 }
