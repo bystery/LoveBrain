@@ -89,7 +89,7 @@ private const val TITLE_FIRST_LINE_LIMIT = 60
 private const val TITLE_FALLBACK_LIMIT = 40
 
 /**
- * 「仅看本轮」首次轻提示的文案（§2.2 第 3 条"一次轻提示"）：一句话，走通知位那一格，
+ * 「仅看本轮」首次轻提示的文案（产品规格定的"一次轻提示"）：一句话，走通知位那一格，
  * 不落在行 1、不撑宽输入行。语义对着真实合同写：只带这一轮的真实对话与军师备注
  * （`PromptBuilder.buildReplyUserPromptOnlyThisRound` 的 KDoc），剥掉的是画像/阶段/记忆/
  * 意图/偏好那一族持久内容（`RewritePrompt.styleAndIntentForScope` 剥的正是那两段）。
@@ -129,9 +129,9 @@ class LoveBrainViewModel(
     // 反馈案例仓库——点踩时本地保存
     private val feedbackCaseRepository: com.lovebrain.app.data.FeedbackCaseRepository? = null,
     /**
-     * 冠军引擎（审计 R2-1）：可空注入（getOrNull），缺位 = 恒 OFF，行为与从前逐字同形。
+     * 冠军引擎（当初审计钉下的一格）：可空注入（getOrNull），缺位 = 恒 OFF，行为与从前逐字同形。
      * 只为 [nextRound] 的 `commitConfirmedTurn` 服务——冠军事件入库的唯一入口挂在本 VM
-     * 的产品正式提交点上（T4 §1.1：`actualSent`/下一轮事务点），生成路径（GenerationEngine
+     * 的产品正式提交点上（正式提交判据：`actualSent`/下一轮事务点），生成路径（GenerationEngine
      * 的 shadow）对未确认输入不产生任何持久痕迹。
      */
     private val championEngine: com.lovebrain.app.domain.champion.ChampionEngine? = null,
@@ -151,7 +151,7 @@ class LoveBrainViewModel(
     private val readBackdropOpacityPercent: (() -> Int)? = null,
     private val writeBackdropOpacityPercent: ((Int) -> Unit)? = null,
     /**
-     * 「仅看本轮」首次轻提示的"提示过没有"旗标那一对接口（读 / 写，§2.2 第 3 条"一次轻提示"）。
+     * 「仅看本轮」首次轻提示的"提示过没有"旗标那一对接口（读 / 写，产品规格定的"一次轻提示"）。
      *
      * 与上面背景浓度那一对同一形状、同一理由：盘上那一格（`round_scope_hint_seen`）住在
      * `data/SecurePrefs` 这个具体实现类上，而这里的 [securePrefs] 是端口视图、端口面没有这一员；
@@ -163,7 +163,7 @@ class LoveBrainViewModel(
     private val readRoundScopeHintShown: (() -> Boolean)? = null,
     private val writeRoundScopeHintShown: ((Boolean) -> Unit)? = null,
     /**
-     * 悬浮图标大小那一档（dp）的落盘口子（指导书 2026-10-10 §1「大小调节」）。
+     * 悬浮图标大小那一档（dp）的落盘口子（2026-10-10 定下的「大小调节」）。
      *
      * 与上面两对同一形状、同一理由：盘上那一格（`BubbleSizeTier.PREF_KEY`）住在 `data/SecurePrefs`
      * 这个具体实现类上，端口面没有这一员，页面层按具体类去点加密偏好正是 `PackageDependencyTest`
@@ -173,7 +173,7 @@ class LoveBrainViewModel(
     private val readBubbleSizeDp: (() -> Int)? = null,
     private val writeBubbleSizeDp: ((Int) -> Unit)? = null,
     /**
-     * 回复卡片排列方向（纵向 / 横向）的落盘口子（指导书 §3）。
+     * 回复卡片排列方向（纵向 / 横向）的落盘口子（产品规格定的方向设置）。
      *
      * 同上：盘上那一格是 `ReplyCardLayout.PREF_KEY`，存枚举名，脏值与"从没写过"都经
      * `AppConfig.kt` 里 `ReplyCardLayout.from` 落回默认纵向。切换方向**不重新请求、不清空回复**——
@@ -289,9 +289,9 @@ class LoveBrainViewModel(
         val sourceAliasMap: Map<String, String> = emptyMap(), // B项修复：别名→实际消息ID映射
         val inputFingerprint: String = "", // 输入指纹——对 KB+消息正文+角色+顺序+IDEA+onlyThisRound+intent revision 做哈希
         val onlyThisRound: Boolean = false, // 冻结 onlyThisRound 状态
-        // guide-6 Step 5：本轮冻结的有效 Champion 模式快照（effectiveMode().raw；
+        // 本轮冻结的有效 Champion 模式快照（effectiveMode().raw；
         // "OFF"|"SHADOW"|"LIVE_AUTO"）。生成开始时各只读一次——生成中途改设置不影响
-        // 本轮：引擎分流读 GenerationInput.championMode（单一快照源，§10.1），提交门禁
+        // 本轮：引擎分流读 GenerationInput.championMode（单一快照源），提交门禁
         // 与 commitConfirmedTurn 的 modeSnapshot 都只认这份快照，不再现场回读设置。
         // committedTurnCount 不复制进 context（同一快照已随 GenerationInput 走域内）。
         val championMode: String = "OFF",
@@ -362,7 +362,7 @@ class LoveBrainViewModel(
      * 知识库列表快照——悬浮设置页用它显示可切库。
      *
      * 以前面板页用 `produceState` 只在首次组合时加载一次，
-     * 设置一直打开时新建/改名后列表陈旧（指导书 §10.3）。
+     * 设置一直打开时新建/改名后列表陈旧（产品规格定的刷新要求）。
      * 改成 StateFlow 后 [refreshKnowledgeBases] 每次执行都会更新它，
      * 面板页用 `collectAsStateWithLifecycle` 自动收到新值。
      */
@@ -583,11 +583,11 @@ class LoveBrainViewModel(
     }
 
     /**
-     * 悬浮图标当前生效的档位（dp）——指导书 2026-10-10 §1。
+     * 悬浮图标当前生效的档位（dp）——2026-10-10 定下的那一项。
      *
      * 读数只过一次 [com.lovebrain.app.BubbleSizeTier.snapDp]：装配没接口子时给默认档（56dp＝
      * 这一项出现之前的外观），接了也只会是 48 / 56 / 64 三颗数之一。**画侧与系统窗口必须拿同一颗数**
-     * （§1 明写不能只对 Compose 用 `scale()` 而让窗口点击区还留在 56dp），所以这里不做第二份换算。
+     * （当初明写不能只对 Compose 用 `scale()` 而让窗口点击区还留在 56dp），所以这里不做第二份换算。
      */
     val bubbleSizeDp: Int
         get() = com.lovebrain.app.BubbleSizeTier.snapDp(readBubbleSizeDp?.invoke())
@@ -598,7 +598,7 @@ class LoveBrainViewModel(
     }
 
     /**
-     * 回复卡片排列方向（§3）：默认纵向。
+     * 回复卡片排列方向（产品规格定的设置项）：默认纵向。
      *
      * 这一员**只是方向**，不参与生成：读它、换它都不会重新请求 AI、不会重新付费、不会清空当前回复
      * （结果集与阅读位置的主人在 `ResultArea` / 本轮 `generationRoundId` 那一侧，不在这里）。
@@ -722,7 +722,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
     val onlyThisRound: StateFlow<Boolean> = roundStateStore.onlyThisRound
 
     /**
-     * 「仅看本轮」首次轻提示"提示过没有"（§2.2 第 3 条那次轻提示只弹一次的凭据）。
+     * 「仅看本轮」首次轻提示"提示过没有"（产品规格那次轻提示只弹一次的凭据）。
      * 落盘先例是持续意图介绍那格（`intent_intro_seen` 落在设置存储，每次回来不再重弹）——
      * **不许用 remember**（组合一没就忘 = 假持久），也不落在屏上那颗：ReplyInput 那颗只消费
      * [onlyThisRound]，"提示过没有"是开关事件上游的账（ReplyInput.kt `RoundScopeChip`
@@ -743,12 +743,12 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         // 切换走 store：翻转状态后 store 同步回调 checkInputChanged()，让旧结果标 stale
         val wasOn = roundStateStore.onlyThisRoundNow
         roundStateStore.accept(RoundStateStore.Intent.ToggleOnlyThisRound)
-        // §2.2 第 3 条的"一次轻提示"只挂在**开**那一跳：弹是开启的反馈，取消/关闭没有它。
+        // 产品规格的"一次轻提示"只挂在**开**那一跳：弹是开启的反馈，取消/关闭没有它。
         if (!wasOn) maybeShowRoundScopeFirstHint()
     }
 
     /**
-     * 首次轻提示（§2.2 第 3 条"仅看本轮开启时有明显选中态＋中文语义描述与一次轻提示"）：
+     * 首次轻提示（产品规格"仅看本轮开启时有明显选中态＋中文语义描述与一次轻提示"那一行）：
      * 屏上出现一条紧凑短通知，说明这一档只带本轮输入、不带画像历史；此后不再弹。
      *
      * 判据三条，各钉在 `RoundScopeFirstHintTest`：
@@ -757,7 +757,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      *   新轮次/切库；长按 [RoundScope.CurrentRoundOnly] 是每次请求各算各的，不写开关）；
      * · 投一次就落旗标——旗标从盘上读回来之后，重启后的第一次开启也不再弹；
      * · 走 [NoticeBoard.Channel.Knowledge]（回执形态 + 到点自散）**不走 Warning**：
-     *   那一格画成黄色警告，§4.4 明写普通提示不许画成大黄警告。
+     *   那一格画成黄色警告，产品规格明写普通提示不许画成大黄警告。
      */
     private fun maybeShowRoundScopeFirstHint() {
         if (roundScopeHintShown) return
@@ -1192,10 +1192,10 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
             val onlyThisRound = roundStateStore.resolveOnlyThisRound(roundScope)
             val providerConfig = deepSeekRepo.snapshotProviderConfig()
 
-            // ── guide-6 Step 5：Champion 冻结输入——本轮各只读一次（§5.2 拆现场回读）──
+            // ── Champion 冻结输入——本轮各只读一次（拆现场回读的口径）──
             // 模式快照 = effectiveMode().raw（OFF/SHADOW/LIVE_AUTO；scope 未命中=OFF）。
             // 已提交轮数 = getTurnCount 原值口径（kb.json turnCount；读失败 → null →
-            // 域内全链回退原生路径，不猜轮次 §5.4）。两项冻结后，本轮内生成中途改设置、
+            // 域内全链回退原生路径，不猜轮次）。两项冻结后，本轮内生成中途改设置、
             // 写盘递增轮数都不再回读——分域判据与提交门禁只认这份快照。
             val championModeSnapshot =
                 kbName?.let { championEngine?.effectiveMode(it, it)?.raw } ?: "OFF"
@@ -1505,10 +1505,6 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      */
     private val triggerRunLock = kotlinx.coroutines.sync.Mutex()
 
-    /* private val _probeFakeInBlock = MutableStateFlow(0)
-       private var probeFakeInBlockVar = 0 */
-    // private val _probeFakeInLine = MutableSharedFlow<Int>()
-
     /**
      * 提交顺序改为「先写盘成功 → 再提交 UI」。
      * 写盘失败时保留所有本轮数据（消息/结果/反馈/context），用户可重试。
@@ -1604,14 +1600,14 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 }
                 L.w("PERF t7 kb write done (${System.currentTimeMillis() - t7Start}ms)")
 
-                // ── 冠军引擎事件正式提交点（审计 R2-1 / T4 §1.1）──
+                // ── 冠军引擎事件正式提交点（当初审计钉下的正式提交点）──
                 // 事件入库挂在本产品正式提交历史的同一事务点（topicRecorder.record 成功之后、
                 // commitReplyRound 之前）；生成/shadow 路径不写事件库——用户删掉重来的未确认
                 // 输入永不进事件库，同一输入多次生成只在本提交点记一次（按 msgUid 去重）。
                 // 提交失败只记日志：冠军事件是辅助账，绝不把本轮产品落盘拖成「保存失败」。
-                // 审计 S1-P0-1（OFF 零副作用）：提交点检查 Champion 有效模式+作用域——
-                // guide-6 Step 5：门禁判据从「现场回读 effectiveMode」换成**冻结快照**
-                // context.championMode（与生成输入同一份快照，单一快照源 §10.1）——生成中
+                // OFF 零副作用格：提交点检查 Champion 有效模式+作用域——
+                // 门禁判据从「现场回读 effectiveMode」换成**冻结快照**
+                // context.championMode（与生成输入同一份快照，单一快照源口径）——生成中
                 // 改设置不影响本轮提交判定；fromRaw 对脏值 fail-closed 为 OFF。
                 // OFF（显式回退档）零副作用，连事件库目录都不创建。
                 // commitConfirmedTurn 内部还有同一道门禁兜底（双保险，modeSnapshot 同值）；
@@ -1620,7 +1616,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     com.lovebrain.app.domain.champion.ChampionMode.fromRaw(context.championMode) !=
                         com.lovebrain.app.domain.champion.ChampionMode.OFF
                 ) {
-                    // §10.5：turn = record 成功后的 getTurnCount（record 已把本轮计入），
+                    // turn = record 成功后的 getTurnCount（record 已把本轮计入），
                     // 读失败传 -1 → commitConfirmedTurn 内部按事件库 nextTurn 兜底；
                     // 轮数读失败不影响本轮已保存事实。
                     val championTurn = try {
@@ -1944,7 +1940,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 成败只认**重读之后的真实数据流**（与知识库管理页 `reportSwitch` 同一条判据）：
      * 写侧那一次切库在被只读保护拒掉时是静默返回的（端口上这一员是 `Unit`，没有失败通道），
      * "调用没抛"证明不了切换落地。重读回来真的换人才算成功——成功不发通知，
-     * 列表高亮与选中态就是反馈；失败在面板警告位说一句可重试的话，不假成功（§11.1）。
+     * 列表高亮与选中态就是反馈；失败在面板警告位说一句可重试的话，不假成功（产品规格定的失败反馈口径）。
      */
     fun switchActiveKb(name: String) {
         viewModelScope.launch {
@@ -2011,7 +2007,7 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                     roundCorrections.clear()
                 }
                 _activeKb.value = newKb
-                // §10.3：刷新库列表快照——设置一直打开时新建/改名后也能看到最新列表
+                // 刷新库列表快照——设置一直打开时新建/改名后也能看到最新列表
                 val kbList = knowledgeRepo.listAll()
                 // listAll 同样有挂起点：回来时再对一次号，慢读不许把旧列表落账
                 if (seq != kbRefreshSeq) return@launch
@@ -2284,8 +2280,17 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
         }
     }
 
-    /** 撤销纠正——纠正中心入口。没有生成上下文时允许回落到当前激活库 */
-    fun undoCorrectionFromCenter(memoryId: String) = undoCorrection(memoryId, allowActiveKbFallback = true)
+    /**
+     * 撤销纠正——纠正中心入口。没有生成上下文时允许回落到当前激活库。
+     *
+     * [onPersisted] 在撤销**落盘完成之后**（写盘失败也算落定）由同一条协程链回调：
+     * 清单读回必须挂在这一拍之后。撤销的写住在本类自己的协程里，读回若在动作旁
+     * 自立一条协程，读回可能抢在写完成之前到达，清单会短暂闪回旧态。
+     * 本轮瞬时 mute（不碰盘）与拿不到 KB 名这两条提前返回的路径同样回调——
+     * 调用方不需要分辨撤销走的是哪条路。
+     */
+    fun undoCorrectionFromCenter(memoryId: String, onPersisted: () -> Unit = {}) =
+        undoCorrection(memoryId, allowActiveKbFallback = true, onPersisted = onPersisted)
 
     /**
      * 撤销纠正——方案卡片入口。
@@ -2299,14 +2304,22 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
      * 失败一律给提示——过去只有纠正中心那条路有失败提示，卡片那条路静默，
      * 同一次失败在两个地方看得见不一样。
      */
-    private fun undoCorrection(memoryId: String, allowActiveKbFallback: Boolean) {
+    private fun undoCorrection(
+        memoryId: String,
+        allowActiveKbFallback: Boolean,
+        onPersisted: () -> Unit = {}
+    ) {
         if (roundCorrections.remove(memoryId)) {
             notices.show(NoticeBoard.Channel.Knowledge, MemoryCorrectionPolicy.roundMuteUndone())
+            onPersisted()
             return
         }
         val kbName = replyGenerationContext?.kbName
             ?: (if (allowActiveKbFallback) _activeKb.value?.name else null)
-            ?: return
+            ?: run {
+                onPersisted()
+                return
+            }
         viewModelScope.launch {
             val ok = try {
                 withContext(Dispatchers.IO) { knowledgeRepo.undoCorrection(kbName, memoryId) }
@@ -2320,6 +2333,8 @@ val isForegroundBusy: Boolean get() = operationCoordinator.isForegroundBusy
                 NoticeBoard.Channel.Knowledge,
                 if (ok) MemoryCorrectionPolicy.undone() else MemoryCorrectionPolicy.undoFailed()
             )
+            // 写已经落定（成败都算），此刻才放行清单读回——顺序由同一条协程保证
+            onPersisted()
         }
     }
 

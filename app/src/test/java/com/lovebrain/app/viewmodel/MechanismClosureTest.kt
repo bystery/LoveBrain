@@ -539,4 +539,39 @@ class MechanismClosureTest {
         // 跑到这里没抛出去就是"不崩"，文案再证明用户看得见失败
         assertEquals("纠正保存失败，请重试", vm.kbNotice.value)
     }
+
+    @Test
+    fun f14_undo_from_center_reads_back_only_after_the_write_completes() = runBlocking {
+        val (vm, repo) = vmWithGeneratedContext()
+        val undoneId = "PROFILE:understand/me.md"
+        val order = mutableListOf<String>()
+        coEvery { repo.undoCorrection(any(), any()) } answers { order.add("undo"); true }
+        // 读回按"撤销写是否已落定"给两份清单：写没落定就给撤销前的旧态（被撤那条还在）。
+        // 旧竞态下读回抢在写完成之前跑，回调后拿到的就是这份旧态；顺序正确时它永远到不了。
+        coEvery { repo.readCorrections(any()) } answers {
+            order.add("read")
+            if ("undo" in order) {
+                mapOf(
+                    "MEMORY:archive.md#1" to
+                        MemoryCorrection(memoryId = "MEMORY:archive.md#1", action = CorrectionAction.MUTED)
+                )
+            } else {
+                mapOf(undoneId to MemoryCorrection(memoryId = undoneId, action = CorrectionAction.MUTED))
+            }
+        }
+        vm.dismissKbNotice()
+
+        // 与修复后的纠正中心调用点同一条链：撤销落盘完成后才发起清单读回
+        var seen: Map<String, MemoryCorrection>? = null
+        vm.undoCorrectionFromCenter(undoneId) {
+            vm.loadAllCorrections { corrections -> seen = corrections }
+        }
+        delay(200)
+
+        assertEquals("清单读回必须排在撤销写完成之后", listOf("undo", "read"), order)
+        assertTrue(
+            "撤销返回后清单已含撤销结果（被撤那条不再出现）",
+            seen != null && !seen!!.containsKey(undoneId)
+        )
+    }
 }

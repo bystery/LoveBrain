@@ -1248,10 +1248,13 @@ fun LoveBrainPanelScreen(
             holder = correctionCenter,
             corrections = correctionCenterCorrections,
             onUndoCorrection = { memoryId ->
-                viewModel.undoCorrectionFromCenter(memoryId)
-                // 撤销后刷新列表
-                viewModel.loadAllCorrections { corrections ->
-                    correctionCenterCorrections = corrections
+                // 撤销落盘完成后由同一条链刷新清单（VM 的 onPersisted 回调放行）：
+                // 以前这格在撤销动作旁自立一条 loadAllCorrections——撤销的写住在 VM
+                // 自己的协程里，读回可能抢在写完成之前到达，清单会短暂闪回旧态。
+                viewModel.undoCorrectionFromCenter(memoryId) {
+                    viewModel.loadAllCorrections { corrections ->
+                        correctionCenterCorrections = corrections
+                    }
                 }
             }
         )
