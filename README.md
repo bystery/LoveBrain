@@ -2,8 +2,6 @@
 
 <img src="https://github.com/bystery/LoveBrain/releases/latest/download/LoveBrain-demo.gif" alt="LoveBrain 悬浮面板演示" width="360"/>
 
-<sub>演示录制于 v1.3.x，其后的界面已经改版，看流程就好。</sub>
-
 # LoveBrain
 
 **想好下一句，再发出去。**
