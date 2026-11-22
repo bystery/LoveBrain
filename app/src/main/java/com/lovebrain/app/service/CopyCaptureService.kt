@@ -1,8 +1,6 @@
 package com.lovebrain.app.service
 
 import android.accessibilityservice.AccessibilityService
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
@@ -161,22 +159,6 @@ class CopyCaptureService : AccessibilityService() {
         appendDiag("PACKAGE_SCOPE|count=${allowed.size}")
     }
 
-    /**
-     * 点选捕获的送达面：XML 静态声明保持隐私审计签字的"长按 + 窗口状态"两枚不动，
-     * 点击事件在服务连上时经 serviceInfo 运行时补声明（与 packageNames 同一条回写通道，
-     * 同样必须整颗回写才生效）。
-     */
-    private fun declareTapSelectDelivery() {
-        val info = serviceInfo ?: run {
-            appendDiag("TAP_DELIVERY|noInfo")
-            return
-        }
-        if ((info.eventTypes and AccessibilityEvent.TYPE_VIEW_CLICKED) != 0) return
-        info.eventTypes = info.eventTypes or AccessibilityEvent.TYPE_VIEW_CLICKED
-        serviceInfo = info
-        appendDiag("TAP_DELIVERY|declared")
-    }
-
     override fun onServiceConnected() {
         super.onServiceConnected()
         // 上一次 onUnbind/onDestroy 已取消 IO scope：同一实例重连时先复位 scope 与 worker 标志，
@@ -192,8 +174,6 @@ class CopyCaptureService : AccessibilityService() {
         // 服务一连上就把当前范围声明出去（此后 allowlist 变更由 onAccessibilityEvent 里的复检接管，
         // 无需重启服务）。
         syncDeclaredPackageScope(securePrefs.captureAllowedPackages)
-        // 多选点选的点击事件同理：XML 不动，连上时把送达面补到 CLICK
-        declareTapSelectDelivery()
         // ⚠ 光靠事件里的复检不够：新勾的那一个 App 在**送达面还没跟上之前根本不会有事件进来**
         //（框架按 packageNames 先滤）。所以订阅偏好变更，让范围页一保存就重声明。
         // 幂等由 `syncDeclaredPackageScope` 自己兜（值没变就早退），这里不必再比一次。
@@ -337,7 +317,6 @@ class CopyCaptureService : AccessibilityService() {
             clearPending("capture_disabled")
             val typeTag = when (type) {
                 AccessibilityEvent.TYPE_VIEW_LONG_CLICKED -> "LONGCLICK"
-                AccessibilityEvent.TYPE_VIEW_CLICKED -> "CLICK"
                 AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> "WINDOW"
                 else -> "TYPE$type"
             }
@@ -372,7 +351,6 @@ class CopyCaptureService : AccessibilityService() {
         val joined = texts.joinToString("|")
         val typeName = when (type) {
             AccessibilityEvent.TYPE_VIEW_LONG_CLICKED -> "LONGCLICK"
-            AccessibilityEvent.TYPE_VIEW_CLICKED -> "CLICK"
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> "WINDOW"
             else -> "TYPE$type"
         }
@@ -440,13 +418,6 @@ class CopyCaptureService : AccessibilityService() {
                         MenuPairing.MATCH -> {
                             L.w(">>> message menu confirmed, capture len=${pending.length}")
                             appendDiag("CAPTURE_OK|len=${pending.length}")
-                            runCatching {
-                                val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                val clipText = cm.primaryClip?.getItemAt(0)?.text?.toString().orEmpty()
-                                appendDiag("CLIP_DUMP|len=${clipText.length}>>>")
-                                appendDiag(clipText)
-                                appendDiag("<<<CLIP_END")
-                            }
                             deliverCapturedMessage(pending, diagTag = "CAPTURE_OK")
                         }
 
