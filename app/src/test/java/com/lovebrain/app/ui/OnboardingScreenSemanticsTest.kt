@@ -27,7 +27,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 新建知识库那张五步问卷（`OnboardingScreen`）——第6节第5条 :531/:532 在这一屏的第一次逐颗量。
+ * 新建知识库那张五步问卷（`OnboardingScreen`）——触控下限与读屏名字两条尺在这一屏的第一次逐颗量。
  *
  * 这一屏以前没进过仪器。它不是浮层窗口（`ScreenPage` 只是普通外框），所以**不用抽组件也能挂**——
  * 门槛只是"从来没人点过它"。先做了一次一次性诊断
@@ -240,7 +240,7 @@ class OnboardingScreenSemanticsTest {
     }
 
     /**
-     * 第6节第5条 :532 第二栏——每题那些选项得让读屏听得出"现在选的是哪一颗"。
+     * 读屏名字那一栏——每题那些选项得让读屏听得出"现在选的是哪一颗"。
      *
      * 本机实扫到的是 `role=RadioButton selected=false` / `role=Checkbox selected=false`，
      * 也就是说状态**有**在播报。这一格把它钉住：换成不带 `selected` 的实现要能红。

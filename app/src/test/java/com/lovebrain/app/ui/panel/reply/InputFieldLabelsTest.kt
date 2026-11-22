@@ -31,7 +31,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 第6节第5条 第②栏：**输入框自己有没有名字**（TalkBack 的 contentDescription 那一栏）。
+ * 读屏名字那一栏：**输入框自己有没有名字**（TalkBack 的 contentDescription 那一栏）。
  *
  * 上一格（`5245788`）新写的那格守卫一上来红在输入框身上，顺着量到全仓 7 处
  * `OutlinedTextField` 有 6 处既没文案也没 contentDescription。
@@ -65,8 +65,8 @@ class InputFieldLabelsTest {
      * 名字**只认 contentDescription**。
      *
      * 第一版这里写成"contentDescription 或 Text 或 EditableText 三者取第一个非空"，
-     * 于是 L2 探针（只摘掉第二颗输入框的 contentDescription）照样绿——那颗节点还能从别处蹭到字。
-     * 第6节第5条 第②栏点名的就是 contentDescription 这一栏；放宽成"有字就行"等于把判据退回"看起来念得到"。
+     * 于是复量探针（只摘掉第二颗输入框的 contentDescription）照样绿——那颗节点还能从别处蹭到字。
+     * 读屏名字那一栏点名的就是 contentDescription 这一栏；放宽成"有字就行"等于把判据退回"看起来念得到"。
      * （`after()` 留着是给第三格当反证用的：它量的是"节点自己有没有这句话"。）
      */
     private fun nameOf(node: androidx.compose.ui.semantics.SemanticsNode): String =

@@ -37,7 +37,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 输入框在语义树上到底有没有名字（第6节第5条 无障碍第②栏：读屏念不出这是什么输入框）。
+ * 输入框在语义树上到底有没有名字（无障碍读屏名字那一栏：读屏念不出这是什么输入框）。
  *
  * 缺陷的形状很具体：placeholder 是**兄弟节点**的一行 `Text`，只在草稿为空时画出来。
  * TalkBack 因此只报「编辑框」，念不到那句提示；用户敲进第一个字之后连那行字都不在树上了，

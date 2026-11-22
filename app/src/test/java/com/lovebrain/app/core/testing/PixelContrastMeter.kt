@@ -12,7 +12,7 @@ import kotlin.math.min
 import kotlin.math.pow
 
 /**
- * 第6节第5条「颜色对比度」那一栏的**像素**尺：从真的渲染出来的一屏里取像素算 WCAG 比值。
+ * 无障碍复核「颜色对比度」那一栏的**像素**尺：从真的渲染出来的一屏里取像素算 WCAG 比值。
  *
  * 为什么要有这把新的尺，而不是接着改 `ContrastRegressionTest`：那一格读 `Color.kt` 的源码文本，
  * 拿两个 token 的 HSL 三元组自己算——它**结构上看不见**「状态色 15% 透明底」这一档配方。

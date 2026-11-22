@@ -78,8 +78,8 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
          * 加这一栏是因为有一条判据不能套在输入框上：本机实量供应商表单的三颗输入框，
          * 尺寸与名字都对，`role` 却是 `无`——1.6.8 的 `BasicTextField` 根本不报角色。
          * 拿"可交互就得有角色"去判输入框，得到的是一条**永远修不红**的假闸
-         * （与坑表 66 那一族同形：判据换了对象就不再成立）。
-         * 输入框那一面该判的是 第6节第5条 第②栏的"读屏说得出它是什么"。
+         * （与坑表里另一格同形：判据换了对象就不再成立）。
+         * 输入框那一面该判的是"读屏说得出它是什么"那一栏。
          */
         val editable: Boolean,
         val widthDp: Float,
@@ -198,7 +198,7 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
         )
     }
 
-    /** 第6节第5条：所有 clickable/toggleable 的边界都要 ≥ **这一把尺**（默认 = 全站下限 [TouchTier.SITE_FLOOR]） */
+    /** 触控下限复核：所有 clickable/toggleable 的边界都要 ≥ **这一把尺**（默认 = 全站下限 [TouchTier.SITE_FLOOR]） */
     fun assertAllActionableMeetTouchFloor(
         rule: ComposeTestRule,
         screen: String,
@@ -270,7 +270,7 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
         return targets
     }
 
-    /** 第6节第5条：读屏必须能说出每个可交互节点是什么 */
+    /** 读屏名字复核：读屏必须能说出每个可交互节点是什么 */
     fun assertAllActionableLabeled(
         rule: ComposeTestRule,
         screen: String,
@@ -289,7 +289,7 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
     }
 
     /**
-     * 第6节第5条：同一个名字不许念两遍。
+     * 读屏名字复核：同一个名字不许念两遍。
      *
      * 语义树合并时，父节点自己声明的 contentDescription 会和子图标的拼成
      * `"X+X"` 这种串——读屏就把一个按钮念成两遍。修法是把子图标显式设为装饰
@@ -314,7 +314,7 @@ class SemanticsProbe(private val density: Float, private val minTouchDp: Float =
     }
 
     /**
-     * 第6节第5条：一组互斥选项（模式切换这类）必须让读屏听得出"现在在哪一格"。
+     * 读屏语义复核：一组互斥选项（模式切换这类）必须让读屏听得出"现在在哪一格"。
      * 每个可选项要么带 selected，要么带 stateDescription / toggle 状态。
      */
     fun assertSelectableAnnounceState(targets: List<Target>, group: String, context: String = "") {

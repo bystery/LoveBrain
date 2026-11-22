@@ -107,7 +107,7 @@ object LbHomeTags {
     const val ENTRY_CAPTURE = "lb_home_entry_capture"
     const val ENTRY_PROVIDER = "lb_home_entry_provider"
     /**
-     * 累计使用那一块只读小卡（M25 五 取舍③：首页重新加入一块简洁小卡）。
+     * 累计使用那一块只读小卡（2026-10-10 定下的取舍：首页重新加入一块简洁小卡）。
      * 它自己**不可点**——只是一个读数，不是第五颗按钮，也不并进主卡（主卡仍只有一颗可点）。
      */
     const val USAGE_CARD = "lb_home_usage_card"

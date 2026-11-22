@@ -178,7 +178,7 @@ class LbAsyncStateTest {
                 ) { }
             }
         }
-        for (matrix in UiMatrix.FULL) {  // 第6节第5条：4 宽 × 3 字 = 12 格全跑（320/360/412/600 × 1.0/1.3/2.0）
+        for (matrix in UiMatrix.FULL) {  // 复核矩阵：4 宽 × 3 字 = 12 格全跑（320/360/412/600 × 1.0/1.3/2.0）
             rule.runOnIdle { cell.value = matrix }
             rule.waitForIdle()
             probe.assertAllActionableMeetTouchFloor(rule, "LbEmptyState", "（${matrix.id}）")

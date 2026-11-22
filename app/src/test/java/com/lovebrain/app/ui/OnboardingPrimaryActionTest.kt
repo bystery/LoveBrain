@@ -17,15 +17,15 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 第6节第1条 :490「禁止创建只在一个页面看起来不一样的按钮/卡片」——**第一手证据是量出来的，
+ * 当初复核定的「禁止创建只在一个页面看起来不一样的按钮/卡片」——**第一手证据是量出来的，
  * 不是在源码里数 `.background(Primary)` 数出来的**。
  *
  * 上一格收 `LbScreenScaffold` 时顺手量到首次引导那颗主按钮是 **328x34dp**，
- * 不到 第6节第5条 :531 的 48dp，当时只记了账没改。这一格把它量全：
+ * 不到 48dp 的触控下限，当时只记了账没改。这一格把它量全：
  * 整页所有可交互节点过一遍热区下限。
  *
  * 为什么先做这一页而不是十处一起动：静态扫"自造品牌色按钮"这次实扫到
- * **20 处 / 9 个文件**（`_temp/primary_inventory.json`，账本 第38节 有逐处判读），
+ * **20 处 / 9 个文件**（`_temp/primary_inventory.json`，当时有逐处判读），
  * 但**扫出来的位置不等于该搬的位置**——同一串 `.background(Primary)` 里
  * 有的是页面主动作（该走 `LbPrimaryButton`），有的是选中态 chip、
  * 有的是"生成中/停止"这种带状态的切换。哪一处算哪种，得一处一处读；
@@ -55,7 +55,7 @@ class OnboardingPrimaryActionTest {
         rule.mainClock.advanceTimeBy(16L)
     }
 
-    /** 整页每一颗可交互节点都要够 48dp（第6节第5条 :531） */
+    /** 整页每一颗可交互节点都要够 48dp（触控下限那一栏） */
     @Test
     fun `every control on the onboarding screen meets the touch floor`() {
         mount()

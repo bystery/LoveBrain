@@ -18,7 +18,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 第6节第5条 :532「可交互控件在语义树里说得出角色」——**设计系统自己欠的那笔**。
+ * 无障碍复核「可交互控件在语义树里说得出角色」那一栏——**设计系统自己欠的那笔**。
  *
  * 起因不是这一格想到了要查，是搬首页那颗主按钮时撞出来的：
  * `LbPrimaryButton`（手画 `Box + clickable`）**四态都没声明 `Role.Button`**，
@@ -160,7 +160,7 @@ class DesignSystemRolesTest {
             "返回那颗必须报成按钮——它同时是这一页唯一的退出入口：" + got.single().describe(),
             "Button", got.single().role
         )
-        // 名字仍得来自资源（第6节第5条 第②栏那笔的判据形状，这里顺手钉住不回退）
+        // 名字仍得来自资源（读屏名字那一栏判据的形状，这里顺手钉住不回退）
         val expected = ApplicationProvider.getApplicationContext<Context>()
             .getString(R.string.common_back)
         assertEquals("返回那颗的名字来自资源", expected, got.single().contentDescriptions.joinToString())

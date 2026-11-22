@@ -27,8 +27,8 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 第6节第1条 `LbStatusBadge`：状态词与颜色只有这一张表，且**读屏听得出这是一枚状态、
- * 状态变了会补播**（第6节第5条 第②栏）。
+ * 无障碍复核里的 `LbStatusBadge`：状态词与颜色只有这一张表，且**读屏听得出这是一枚状态、
+ * 状态变了会补播**（读屏名字那一栏的口径）。
  *
  * 三件事各自都有反面：
  * - 五档各有一句中文（本项目已改为中文-only，删掉了 `values-en`，不再做中英逐档比）；

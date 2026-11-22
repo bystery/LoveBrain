@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 
 /**
- * 第6节第5条 要求的视觉矩阵坐标：一个「多宽、多大字」的组合。
+ * 无障碍复核要求的视觉矩阵坐标：一个「多宽、多大字」的组合。
  *
- * 复核在 第6节第5条 里点名要覆盖 320/360/412/600dp × 字体 1.0/1.3/2.0 × 中英文，
+ * 复核时点名要覆盖 320/360/412/600dp × 字体 1.0/1.3/2.0 × 中英文，
  * 而仓库此前只有一条通道能测这些：instrumentation（要 emulator）。本机没有 system image，
  * 于是"大字体下会不会裁切"这类问题在本机永远是"没测过"。这里把它变成 JVM 能跑的坐标。
  *
@@ -31,10 +31,10 @@ data class UiMatrix(
     val id: String get() = "${widthDp}dp-font${(fontScale * 100).toInt()}"
 
     companion object {
-        /** 第6节第5条 点名的四个宽度 */
+        /** 复核点名的四个宽度 */
         val WIDTHS_DP = listOf(320, 360, 412, 600)
 
-        /** 第6节第5条 点名的三档字体倍率 */
+        /** 复核点名的三档字体倍率 */
         val FONT_SCALES = listOf(1.0f, 1.3f, 2.0f)
 
         /** 全矩阵：4 宽 × 3 字 = 12 格 */

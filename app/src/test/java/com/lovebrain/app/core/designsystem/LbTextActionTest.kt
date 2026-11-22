@@ -81,7 +81,7 @@ class LbTextActionTest {
      *
      * ⚠ 这把尺**看不见颜色与字号**——语义树里没有这两个属性，所以它证明的是
      * "两档语气的可点范围一样"，不是"两档语气长得符合词表"。后者只能等截图基线
-     * （第6节第5条 :538，仍记在未做里）。
+     * （截图基线那一步，仍记在未做里）。
      */
     @Test
     fun `weakening the tone must not weaken the target`() {

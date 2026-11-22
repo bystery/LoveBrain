@@ -27,7 +27,7 @@ import org.robolectric.annotation.GraphicsMode
  * 第6节第1条 表里 `LbModalSheet/Dialog` 的 Dialog 半边：**浮层里那颗用户要点到的按钮，到底点不点得到**。
  *
  * 这一格存在的理由是一个**量出来的缺陷**：`DialogProbeTest` 在同一台仪器上量到
- * Material `AlertDialog` 里的 `TextButton` 只有 **188x40dp**，而 第6节第5条 :531 的下限是 48dp。
+ * Material `AlertDialog` 里的 `TextButton` 只有 **188x40dp**，而可点击节点的下限是 48dp。
  * 仓库原先 11 个浮层的"确定/取消/删除"全是那个 40dp 的形状，
  * 而之前那把 48dp 的尺**从没往对话框里看过**——它扫的是页面里的节点，对话框是另一扇窗。
  * `LbDialog` 给动作垫到 48dp，下面这几格逐颗读 `boundsInRoot` 钉住它。
@@ -62,7 +62,7 @@ class LbDialogTest {
         mainClock.advanceTimeBy(16L)
     }
 
-    /** 浮层里的每一颗动作都必须过 第6节第5条 的下限——这一格就是那条 40dp 缺陷的直接反证 */
+    /** 浮层里的每一颗动作都必须过 48dp 下限——这一格就是那条 40dp 缺陷的直接反证 */
     @Test
     fun `every action in a dialog meets the touch floor`() {
         rule.mountSample()

@@ -169,7 +169,7 @@ class OngoingSectionSemanticsTest {
         )
     }
 
-    /** ② 第6节第5条 :531：折叠入口热区 ≥48dp */
+    /** ② 折叠入口热区 ≥48dp */
     @Test
     fun `the fold entry meets the touch floor`() {
         mount()
@@ -183,7 +183,7 @@ class OngoingSectionSemanticsTest {
         probe.assertAllActionableMeetTouchFloor(rule, "进行中事项卡", "（320dp-font200）")
     }
 
-    /** ④ 第6节第5条 :532：可访问名要说得出"现在收起 / 展开"，换状态时那句公告跟着换 */
+    /** ④ 可访问名要说得出"现在收起 / 展开"，换状态时那句公告跟着换 */
     @Test
     fun `the fold entry announces collapsed then expanded`() {
         mount()

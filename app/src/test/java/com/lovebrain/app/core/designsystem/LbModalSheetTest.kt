@@ -21,7 +21,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 第6节第1条 表里 `LbModalSheet/Dialog` 的 Sheet 半边：浮层里那些"点得下去的出口"合不合 第6节第5条。
+ * 复核表里 `LbModalSheet/Dialog` 的 Sheet 半边：浮层里那些"点得下去的出口"合不合热区与读屏名字那两条尺。
  *
  * 这三条断言每一条都对着一个**量出来的**旧缺陷（旧形状实测值见 `SheetProbeTest`（已删）的注释）：
  * ① 动作按钮 26dp / 22dp 高 → 现在下限 48dp；
@@ -61,7 +61,7 @@ class LbModalSheetTest {
         LbDialogAction("SHEET_OK", {})
     )
 
-    /** 第6节第5条 :531——浮层里每一颗出口都得过 48dp 下限（旧形状实测 26dp / 22dp） */
+    /** 触控下限——浮层里每一颗出口都得过 48dp 下限（旧形状实测 26dp / 22dp） */
     @Test
     fun `every action in a sheet meets the touch floor`() {
         rule.mountSheet(twoActions)

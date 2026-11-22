@@ -82,7 +82,7 @@ class MessageListEmptyStateTest {
         )
     }
 
-    /** 第6节第5条：这个入口的触摸区 ≥48dp，并且带按钮角色 */
+    /** 复核判据：这个入口的触摸区 ≥48dp，并且带按钮角色 */
     @Test
     fun `the empty state entry is a 48dp button not a bare line of text`() {
         mount(proactiveActive = false) {}
@@ -154,7 +154,7 @@ class MessageListEmptyStateTest {
         )
     }
     /**
-     * 第6节第5条 的宽度 × 字体矩阵：空态这个入口在 12 格里都得保持 ≥48dp 且念得出来。
+     * 复核要求的宽度 × 字体矩阵：空态这个入口在 12 格里都得保持 ≥48dp 且念得出来。
      *
      * 一个用例只能 setContent 一次，所以矩阵靠改 hoisted 的那格值来换尺寸。
      */

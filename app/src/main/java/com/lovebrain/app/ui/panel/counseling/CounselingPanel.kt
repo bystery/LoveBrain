@@ -67,11 +67,11 @@ fun CounselingPanel(
 
     var inputHeight by remember { mutableFloatStateOf(48f) }
     val density = LocalDensity.current.density
-    // 入口的占位文案与读屏名字共用一条资源（第6节第5条 第②栏的口径）
+    // 入口的占位文案与读屏名字共用一条资源（读屏名字那一栏的口径）
     val inputLabel = stringResource(R.string.counseling_input_hint)
 
     Column(modifier = modifier.fillMaxWidth()) {
-        // 第6节第4条 位移修复：输入框高度从固定 100dp 改为 heightIn(min = ...)，
+        // 位移修复：输入框高度从固定 100dp 改为 heightIn(min = ...)，
         // 与回复档的 PanelTextInput（heightIn(min = INPUT_ROW_HEIGHT_DP)）同一写法。
         // 之前 100dp 固定高度 vs 回复档 48dp 最小高度 = 高差 28dp（实测 76dp vs 48dp）。
         // 现在两档都走 heightIn，高度由内容决定，最小值统一。
@@ -97,7 +97,7 @@ fun CounselingPanel(
                     .fillMaxWidth()
                     .heightIn(min = AppDimens.TOUCH_TARGET_MIN_DP.dp)
                     .verticalScroll(rememberScrollState())
-                    // 第6节第5条 :532 第②栏：这颗输入框此前**没有任何可读名字**（本机实量
+                    // 读屏名字复核：这颗输入框此前**没有任何可读名字**（本机实量
                     // 336x76dp、文案与 contentDescription 两样都空，读屏只念「编辑框」）。
                     // 它比输入框自己的那行占位文案更糟：占位文案只在草稿为空时才画，
                     // 用户打了一个字之后连那句话都没了。

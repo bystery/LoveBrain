@@ -62,19 +62,19 @@ import com.lovebrain.app.ui.theme.*
 /**
  * 输入区内部尺寸常量（外观全部照旧版数值：胶囊 28dp、加号内边距 2dp、图标 20dp）。
  *
- * ⚠ **§7.1「先计算固定控件与必要间隔，剩余宽度全部给输入框」落在这一个 object 里**：
+ * ⚠ **「先计算固定控件与必要间隔，剩余宽度全部给输入框」这条宽度分配规则落在这一个 object 里**：
  * 行 1 的宽度预算只有这一份口径（[chipsCap]），不藏在某一颗粒子的 `widthIn` 里。
  * 三颗固定件各自的数都是从令牌与 core 那颗下限现取的，页面不抄第二份：
  *
  * · 一颗角色 chip 的**布局盒 = 高 48、宽随可见胶囊**——可见胶囊 28dp 高、"她/我"横向 29dp、
  *   "补充" 46dp（本机语义树实测）；过去外盒 `widthIn(min = 48)` 带来的 18dp 纯占位
  *   已由 core 那颗宽度轴旋钮收掉（[LbChipStyle.widthFloor]，本页认领 false），
- *   §2.1 第 1 行点名的那颗"额外触控盒"在宽度轴上不复存在；
+ *   产品规格当初点名的那颗"额外触控盒"在宽度轴上不复存在；
  * · ➕ 那颗同理 48×48（[ADD_HIT]，可见胶囊 28dp 高=宽，实拍读数）；
  * · 范围符号自己占的是**紧凑档那一颗热区**（[ReplyDimens.ROUND_SCOPE_HIT] = 28dp 见方，
  *   行宽按 [roundScopeFootprint] 扣——占位轴就是那颗热区，**间隔不在它身上烧第二遍**，
  *   见 [tailWidth] 的 ⚠；上限由 `RoundScopeChipFootprintTest` 钉在 48 以下，
- *   再包一层 48 就是 §4.3 禁的"把紧凑档作废"）。
+ *   再包一层 48 就是规格禁的"把紧凑档作废"）。
  *
  * ⇒ 所以行 1 能用的手段**只有让位**：chip 段按档收缩、输入框吃剩下的宽度、多出来的那颗
  * 由这一段本来就有的 `horizontalScroll` 接住。谁都不缩小可见尺寸，也不缩热区下限。
@@ -88,7 +88,7 @@ internal object ReplyDimens {
      * 旧值 156 是三颗 48dp 大方盒那一代的账（3×48+2×4+4），F03 把宽度轴拆掉后它多留了
      * 40dp 空转——L1 复核挑中的正是这个：默认窗宽（行 268）那一档的余量（固定件重复预留
      * 并成一处之后是 130）被 156 挡住，
-     * "补充"在生产任何窗宽下都只能藏在横滑里，违反 §7.1"不能悄悄把必需控件藏掉"。
+     * "补充"在生产任何窗宽下都只能藏在横滑里，违反"不能悄悄把必需控件藏掉"那条宽度规则。
      */
     const val ROLE_CHIPS_MAX_WIDTH_DP = 116
 
@@ -131,7 +131,7 @@ internal object ReplyDimens {
 
     /**
      * 那颗范围符号的**热区边长**（命中轴，两轴同一颗）：core 给紧凑族立的那颗具名矮档（28dp），
-     * 不是全站那颗 48。为什么不能拿 48：§4.3 与 `RoleChipSemanticsTest`、
+     * 不是全站那颗 48。为什么不能拿 48：规格与 `RoleChipSemanticsTest`、
      * `RoundScopeChipFootprintTest` 三处钉着同一件事——再给这颗包一层 48dp 见方容器
      * 就是把悬浮窗的紧凑档作废。
      * ⚠ 这一颗的**可见**胶囊仍按 [RoundScopeChip] 里那一档的 22dp 画：这里垫的是外层
@@ -142,18 +142,18 @@ internal object ReplyDimens {
 
     /**
      * 那颗范围符号的**父布局占位**（占位轴；行 1 的预算只读这一颗）＝ 上面那颗热区，
-     * 字号放大时跟着字号轴长。三轴各归各位（§4.3）：可见轴＝ [RoundScopeChip] 里那颗 22dp 胶囊、
+     * 字号放大时跟着字号轴长。三轴各归各位：可见轴＝ [RoundScopeChip] 里那颗 22dp 胶囊、
      * 命中轴＝ [ROUND_SCOPE_HIT]、占位轴＝ 这一颗——谁都不再顶替谁。
      *
      * ⚠ **它与前一颗粒之间那一段 `Spacing.sm` 不在这里**：那一段由行 1 画出的 `Spacer` 承担，
      * 只在 [tailWidth] 里扣一次。旧写法把它烧进这颗
      * （`ROUND_SCOPE_RESERVE = ROUND_SCOPE_HIT + Spacing.sm`，旧 121 行），而 [tailWidth]
      * 又写 `Spacing.sm + ROUND_SCOPE_RESERVE`（旧 145 行）⇒ **同一格 4dp 被扣两遍**，
-     * 这就是 request2 §四 那颗"宽度预算里的重复预留"。旧写法还把整颗乘 `fontScale`，
+     * 这就是当初需求点名的那颗"宽度预算里的重复预留"。旧写法还把整颗乘 `fontScale`，
      * 连那颗**固定间隔**也一起放大：字号 1.3 时旧账按 `4 + (28+4)×1.3 = 45.6dp` 扣。
      *
      * 本轮之后按 `4 + 28×fontScale` 扣：热区盒本身永远是 28 见方（屏上那格占位的**下限**就是它），
-     * 乘字号那一份是给符号字形与选中那个勾留的余量——**只乘在这一颗粒上，不吃字体测量**（§7.1）。
+     * 乘字号那一份是给符号字形与选中那个勾留的余量——**只乘在这一颗粒上，不吃字体测量**。
      * 本机读数：热区 28×28（外层垫的这颗）、里面可见胶囊 14×22；选中带勾那一刻胶囊真会长出热区盒，
      * 长出的一份由输入框自己的 `weight(1f)` 接住（各档余量见 [chipsCap] 的账），
      * 不再靠把间隔烧进这颗来假接。这颗的**上限**不由这里说，
@@ -164,10 +164,10 @@ internal object ReplyDimens {
     /**
      * 输入框的可见下限 = 它自己的左右内边距（`Spacing.lg`×2）+ **两颗正文**。
      *
-     * §7.1 给输入框的那句是"正常宽度可见光标和可编辑内容"，§7.1 极窄那一行禁的是"遮住输入"，
+     * 规格给输入框的那句是"正常宽度可见光标和可编辑内容"，极窄那一档禁的是"遮住输入"，
      * 所以这一档取的是"看得见自己在打什么字"的最小份，不是舒适份（舒适份要行宽更松的档才谈得起）。
      * 字号放大时两颗字也要跟着变宽，所以乘 `fontScale`——
-     * 这就是 §7.1 要的"较大系统字号至少做一次检查"在预算里的那一半落点。
+     * 这就是规格要的"较大系统字号至少做一次检查"在预算里的那一半落点。
      */
     fun inputFloor(fontScale: Float): Dp =
         Spacing.lg * 2 + (2f * AppTypography.bodyMedium.fontSize.value * fontScale).dp
@@ -204,9 +204,9 @@ internal object ReplyDimens {
      *
      * 三档全部只看"扣完固定件与输入框下限之后还剩多少"——**不再有一行 360dp 的旧门槛**：
      * 那个数是 48dp 大方盒那一代推出来的，宽度轴拆掉后它在生产最高窗宽（行 318）下都进不来，
-     * 等于永远强制"第三颗藏进横滑"，违反 §7.1"不能悄悄把必需控件藏掉"（L1 复核挑中，本行修正）。
+     * 等于永远强制"第三颗藏进横滑"，违反"不能悄悄把必需控件藏掉"（当初复核挑中，本行修正）。
      *
-     * 按 §7.1 末句把账说明白（字号 1.0、➕ 与符号都上树那一档；每一格只扣一次）：
+     * 按规格末句把账说明白（字号 1.0、➕ 与符号都上树那一档；每一格只扣一次）：
      * · 固定件 `tailWidth` = `4 + (4+48) + (4+28)` = **88**；
      * · 输入框下限 `inputFloor` = `12×2 + 13×2` = **50**；
      * · ⇒ 三颗全可见需要行宽 ≥ `116 + 88 + 50` = **254dp，即窗口 ≥ 286dp**。
@@ -215,7 +215,7 @@ internal object ReplyDimens {
      * PANEL_DEFAULT 300 → 行 268 → 余量 **130**（三颗全可见）；
      * PANEL_MAX 350 → 行 318 → 余量 **180**（三颗全可见）。
      * 档位判定只吃常量与令牌，不吃字体测量——字号放大时 inputFloor 与 [roundScopeFootprint]
-     * 跟着长，档位自然下沉，这是 §7.1"较大系统字号至少做一次检查"的几何那一半。
+     * 跟着长，档位自然下沉，这是"较大系统字号至少做一次检查"的几何那一半。
      */
     fun chipsCap(maxWidth: Dp, fontScale: Float, withAdd: Boolean, withScope: Boolean): Dp {
         val room = maxWidth - tailWidth(fontScale, withAdd, withScope) - inputFloor(fontScale)
@@ -330,14 +330,14 @@ fun PanelTextInput(
  *
  * 写在这里而不是画在 `Text("…")` 里，是为了不往用户可见字面量的那本账上加新页
  * （`architecture/UiStringLiteralBudgetTest` 数的是 `Text(` / `contentDescription =` / `Lb*(`
- * 三把锚点里的中文字面量）。文案已经由 PRODUCT_SPEC 第3节 定死。
+ * 三把锚点里的中文字面量）。文案已经由产品规格定死。
  *
  * ⚠ **这颗的名额还在 Kotlin 这一侧**：`res/values/strings.xml` 本轮由主线程持有，代理不动它，
  * 所以这颗仍走"既有 const"那一条（同文件的 `ROLE_LABEL_*` 同一写法）。
  * 真正的归宿是资源（`a11y_round_scope`，与 `a11y_edit_advisor_note` 同一族——那句 KDoc 写的
  * "屏幕上不画、只说给耳朵的中文进了资源，英文环境才不会念中文"这一理在这一颗上同样成立），
  * **缺的键已写进本轮交付报告**，主线程补键之后这一颗 const 与它那两个引用点一起换掉。
- * 名字里不许出现"锁"这个字（§2.2 第 3 条要治的正是那个歧义），守卫见 `ReplyInputSymbolOwnerTest`。
+ * 名字里不许出现"锁"这个字（产品规格要治的正是那个歧义），守卫见 `ReplyInputSymbolOwnerTest`。
  */
 internal const val PANEL_ROUND_SCOPE_LABEL = "仅看本轮"
 
@@ -358,10 +358,10 @@ internal const val PANEL_ROUND_SCOPE_TEST_TAG = "round_scope_entry"
 /**
  * 消息输入区。
  *
- * 形状（§7.1 固定顺序与空间分配；窄窗那一档的依据另见基线 v1 §3 第 11 条，
+ * 形状（产品规格定的固定顺序与空间分配；窄窗那一档的依据另见版式基线的约定，
  * 宽度预算只住在 [ReplyDimens.chipsCap] 一处）：
  * · **行 1 的视觉顺序** = 她 / 我 / 补充 / 输入框(weight 1f) / ＋ / 范围符号（仅看本轮） 同一条中线。
- *   §7.1 明写这只是**视觉顺序，不是按它算宽度**：宽度先扣固定件（➕ 那颗 48dp 见方的热区、
+ *   产品规格明写这只是**视觉顺序，不是按它算宽度**：宽度先扣固定件（➕ 那颗 48dp 见方的热区、
  *   那颗范围符号的占位档、三段必要间隔——**每一格只扣一次**，见 [ReplyDimens.tailWidth]）
  *   与输入框自己那份可见下限，剩下的才给 chip 段——
  *   这一份预算只写在 `ReplyDimens.chipsCap` 一处。窄档按原话**先缩短输入框**（chip 段同时让位，
@@ -425,7 +425,7 @@ fun ReplyInput(
     // ── 三颗输入对象 chip（她/我/补充） ────────────────────────────────
     // [chipsCap] 由行 1 那一级按当前可用宽度选定（三档：全可见 156 / 让到两颗 96 /
     // 极窄让到一颗，见 ReplyDimens.chipsCap），这一族自己不知道整行有多宽，也不该知道——
-    // 宽度分配归行 1，§7.1 那句"先计算固定控件与必要间隔，剩余宽度全部给输入框"只在那里落一次。
+    // 宽度分配归行 1，"先计算固定控件与必要间隔，剩余宽度全部给输入框"那句规格只在那里落一次。
     val chipsSection: @Composable RowScope.(chipsCap: Dp) -> Unit = { chipsCap ->
         if (showRoleChips) {
             // 放不下就这一段自己横滑（那颗 `horizontalScroll` 本来就在，是它的退路不是补丁）：
@@ -460,7 +460,7 @@ fun ReplyInput(
         }
     }
 
-    // ── 输入框（吃剩余宽度；让位那一档按 §7.1 "剩余宽度全部给输入框"先缩短它，但仍是一行） ──
+    // ── 输入框（吃剩余宽度；让位那一档按"剩余宽度全部给输入框"先缩短它，但仍是一行） ──
     val inputSection: @Composable RowScope.() -> Unit = {
         PanelTextInput(
             value = draftText,
@@ -468,7 +468,7 @@ fun ReplyInput(
             placeholder = placeholderOverride ?: when (kind) {
                 ComposerInputKind.HER -> "输入她说的话…"
                 ComposerInputKind.ME -> "输入你说的话…"
-                // 第6节第1条 定死的 placeholder：这一段不是"你想怎么回"，是你给军师的补充
+                // 产品规格定死的 placeholder：这一段不是"你想怎么回"，是你给军师的补充
                 ComposerInputKind.SUPPLEMENT -> "补充背景或告诉军师你的要求…"
             },
             height = ReplyDimens.ROLE_CHIP_HEIGHT_DP.dp,
@@ -492,11 +492,11 @@ fun ReplyInput(
     }
 
     // ── 行 1：她 / 我 / 补充 / [自适应输入框] / ＋ / 范围符号（仅看本轮） ──
-    // §7.1 的视觉顺序：她 → 我 → 补充 → 输入框 → ＋ → 仅看本轮符号。
+    // 行 1 的视觉顺序：她 → 我 → 补充 → 输入框 → ＋ → 仅看本轮符号。
     // 顺序是**视觉**的，宽度不按它算：先扣固定件（➕ 的热区、那颗范围符号、必要间隔）与输入框
     // 那份可见下限，剩下的才轮到 chip 段（ReplyDimens.chipsCap 一处算完），输入框吃其余（weight 1f）。
     // 主动发（showRoleChips = showAddButton = false）时 chipsSection/addSection 各自短路，
-    // 行 1 自然只剩那颗吃满宽度的输入框——这就是 §7.1 要的第一行，不是遗留单行分支。
+    // 行 1 自然只剩那颗吃满宽度的输入框——这就是规格要的第一行，不是遗留单行分支。
     // 「仅看本轮」常驻行 1（不再随有没有真实消息在行 2 / 消息卡之间二选一挂载），
     // 接了回调才画（roundEntryArmed），否则一颗都不长出来。
     Column(
@@ -508,10 +508,10 @@ fun ReplyInput(
         // 现成先例：`ui/panel/reply/MessageList.kt:984` 用同一颗 BoxWithConstraints 量行宽。
         // ⚠ 量的是**这一行的可用宽**，不是屏幕宽：悬浮窗自己只有 260–350dp
         //   （`AppConfig.PANEL_MIN/DEFAULT/MAX_W`），面板再扣掉左右各 `Spacing.xl`，
-        //   行可用宽只有 228–318dp——把屏幕那一头的 320/360 当成这里的档位是三种尺寸混为一谈
-        //   （§4.3），所以这里只读 maxWidth，档位一律由它推出来。
+        //   行可用宽只有 228–318dp——把屏幕那一头的 320/360 当成这里的档位是三种尺寸混为一谈，
+        //   所以这里只读 maxWidth，档位一律由它推出来。
         BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
-            // 字号放大时两颗正文与那颗符号都要跟着变宽，预算跟着走（§7.1「较大系统字号至少做一次检查」）
+            // 字号放大时两颗正文与那颗符号都要跟着变宽，预算跟着走（「较大系统字号至少做一次检查」那条规格）
             val fontScale = LocalDensity.current.fontScale
             val chipsCap = ReplyDimens.chipsCap(
                 maxWidth = maxWidth,
@@ -545,8 +545,8 @@ fun ReplyInput(
  *
  * ⚠ **热区与视觉分两层，两轴分开垫**。外层那颗**可点的**高度垫到 48dp，胶囊在里面按
  * 旧版的 28dp 画；宽度轴认领了 [LbChipStyle.widthFloor]=false——"她/我"可见横向只有
- * 30dp 上下，过去外盒 `widthIn(min = 48)` 把每颗白撑出 18dp 纯占位（§2.1 第 1 行点名的
- * "额外触控盒"、§4.3 的"小胶囊包大方盒"），横向命中区回落到可见胶囊本体，纵向仍是 48
+ * 30dp 上下，过去外盒 `widthIn(min = 48)` 把每颗白撑出 18dp 纯占位（产品规格点名的
+ * "额外触控盒"、"小胶囊包大方盒"），横向命中区回落到可见胶囊本体，纵向仍是 48
  * 满档。角色 `Role.Tab` + 语义里的 `Selected` 由 `Single` 这一档发（与页头那三档模式同一写法）。
  *
  * 档位 = 旧版那条链逐项抄过来：圆角 `LoveBrainShape.md`、字 `labelMedium`、
@@ -587,26 +587,26 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 /**
- * 「仅看本轮」那一颗：常驻行 1，位置在 **＋ 之后**（§7.1 的视觉顺序：她 → 我 → 补充 → 输入框 → ＋ → 范围符号），
+ * 「仅看本轮」那一颗：常驻行 1，位置在 **＋ 之后**（行 1 的视觉顺序：她 → 我 → 补充 → 输入框 → ＋ → 范围符号），
  * 画在 `LbChipStyles.pill` 那一档上、可见高度 22dp（与 [IntentChip] 同一档、同一个 22dp），
- * 选中带勾（第10节第4条 的可见判据）+ 那一档自己的选中底/描边/墨色一起变。
+ * 选中带勾（产品规格定的可见判据）+ 那一档自己的选中底/描边/墨色一起变。
  *
- * ── **屏上那颗符号由资源持有**（§2.2 第 3 条换掉的就是它；request2 §四 点名它"硬编码在 Kotlin 里"）──
+ * ── **屏上那颗符号由资源持有**（产品规格换掉的就是它；当初需求点名它"硬编码在 Kotlin 里"）──
  * 字形住在 `R.string.panel_round_scope_glyph`（U+25C9，几何形状那一族的单色符号），
  * 这一颗只 `stringResource(...)` 读它，生产 Kotlin 里**不留那颗字面量**
  * （守卫：`ReplyInputSymbolOwnerTest` 的源码扫描格；反向证人是那颗字符确实住在资源里）。
  * 主人选资源而不是页面常量，与这一族已有的两处同一理：`strings.xml` 里那颗 `provider_add`
- * 就是把行首的 `＋` 连同词一起交给资源，而 PRODUCT_SPEC §2.2 那一行要的是"复用已有矢量／图标组件"
+ * 就是把行首的 `＋` 连同词一起交给资源，而产品规格那一行要的是"复用已有矢量／图标组件"
  * ——符号与词一样是资产，不写死在某一页的源码里。
  *
  * 为什么是 U+25C9 而不是从前那颗 🔒：
- * · 🔒 被读成"把这个悬浮窗锁住"——那是窗口操作，不是这一轮的上下文范围（§2.2 第 3 条原话）；
+ * · 🔒 被读成"把这个悬浮窗锁住"——那是窗口操作，不是这一轮的上下文范围（产品规格原话）；
  * · emoji 位平面外的字符在 Android 上走**彩色 emoji 字形**，`Text` 的墨色对它无效——
  *   于是 `pill` 那一档为"开/关"准备的两套字色（`TextHint` ↔ `PrimaryDark`）在它身上一分都不显，
  *   只剩底色与那个勾在说状态。换成同一颗墨色画的单色符号，**开与关连字形自己的颜色一起分开**，
- *   这才叫"关/开状态可辨"（§7.1 范围符号那一行）；
+ *   这才叫"关/开状态可辨"（产品规格对范围符号那一行）；
  * · 它仍是一颗符号，不是一句话：不往这一排新增常驻文字，行宽预算一寸没多占
- *   （§2.2 第 3 条"不要新增常驻文字撑宽整行"、§7.1"不恢复四字常驻按钮"）。
+ *   （产品规格明写"不要新增常驻文字撑宽整行"、"不恢复四字常驻按钮"）。
  *
  * ⚠ **换形与否不由这一轮定**：相应规格文档没有落到本机，
  * 规格里只给了结论（不许硬编码）没给字形细则。⇒ 本轮落的是**字形保持 U+25C9、
@@ -619,12 +619,12 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
  * （RoundScopeChip 原在异形登记文件的委托壳那一本，那本已随文件删除）。
  * ⇒ 这一条已按缺口报回主线程（要的是 core 那一颗槽，不是这里破账）。
  *
- * 读屏念的全名仍是 [PANEL_ROUND_SCOPE_LABEL]（挂在 contentDescription 上，这就是 §2.2 第 3 条与 §7.1 要的
+ * 读屏念的全名仍是 [PANEL_ROUND_SCOPE_LABEL]（挂在 contentDescription 上，这就是产品规格要的
  * "中文语义描述"——名字里没有任何"锁"字）。开与不开真正的行为（下一轮快照生效、
  * 旧结果标过时）住在 `RoundStateStore` 与主线程那一侧，不归这颗管（）。
  *
- * ⚠ **首次轻提示不在这一颗里画**（§2.2 第 3 条要的那一句）：这一屏只有一条通知位，
- * 归 `feature/notice/NoticeBoard`（§4.2 通知那一行"共用一个紧凑位置"），这里再画一条就地横条
+ * ⚠ **首次轻提示不在这一颗里画**（产品规格要的那一句）：这一屏只有一条通知位，
+ * 归 `feature/notice/NoticeBoard`（产品规格通知那一行要的"共用一个紧凑位置"），这里再画一条就地横条
  * 就是第二条通知位。现成的同一写法是持续意图那一族——`IntentController.kt:152`
  * `onNotice(if (enabled) "持续意图已开启" else "持续意图已关闭")`，由宿主投进通知位。
  * 这一颗的事件只有一条（[onClick] → 宿主的 `toggleOnlyThisRound()`），**首次那一次**该由
@@ -638,14 +638,14 @@ private fun RoleChip(label: String, selected: Boolean, onClick: () -> Unit) {
  * ⚠ **热区与视觉分两层，但外层不买 48**：下面 `pill.copy` 里 `layeredTouch = true` 把带切换语义
  * 的那一层拆出来，`touchFloor = false` 关掉的是 core 那颗**全站 48 见方**的下限盒，
  * 外层自己按紧凑档垫到 [ReplyDimens.ROUND_SCOPE_HIT]（28dp，两轴都垫）——
- * 那是用户那句"缩小按钮占用空间"换来的取舍，也是 §4.3 明写的那一条：
+ * 那是用户那句"缩小按钮占用空间"换来的取舍，也是产品规格明写的那一条：
  * 悬浮窗沿用项目已有的紧凑档，**不给每颗紧凑控件再包一个占位 48dp 的容器**（那会把紧凑档作废）。
  * 画出来的胶囊仍是 22dp，外面那层透明盒才可点、才进语义树（与 [RoleChip]、`AddMessageButton`
  * 同一范式，只是各自垫到各自那一档：角色 chip 与 ➕ 买 48，这颗买 28）。
  * ⚠ 与谈心模板芯片（`TouchTier.COMPACT_CHIP` 那一族）同档不同颗：那颗本来就是 28dp 高。
  * 验收读数是三轴分开量的：可见 14×22 / 命中 28×28 / 布局占位 28 宽——
  * 由 `PanelHostSemanticsTest`（整屏逐颗换尺）、`RoundScopeChipFootprintTest`（不许占回 48）
- * 与 `RoleChipSemanticsTest`（§4.3 三轴）三处各钉一件，别拿其中一把去说另一把。
+ * 与 `RoleChipSemanticsTest`（三轴）三处各钉一件，别拿其中一把去说另一把。
  * ⚠ 预算那一侧读的是**占位轴**那颗数（[ReplyDimens.roundScopeFootprint]，与命中轴同一颗），
  * 而它与前一颗粒之间那段 `Spacing.sm` 只由行 1 的 `Spacer` 画一次、只由
  * [ReplyDimens.tailWidth] 扣一次（旧写法扣了两遍，见那颗函数 ⚠ 的账）。
@@ -656,7 +656,7 @@ private fun RoundScopeChip(selected: Boolean, onClick: () -> Unit) {
     // 墨色走），页面不留字面量；读屏仍念全名 [PANEL_ROUND_SCOPE_LABEL]。
     // 紧凑胶囊档与 [IntentChip] 同走 LbChipStyles.pill 的默认形状
     //（可见 22dp），选中带勾；只有热区这一层按紧凑档自己垫出去。
-    // 热区不垫 48dp——用户要求"缩小按钮占用空间"，§4.3 禁的就是给紧凑控件再包一层 48 占位。
+    // 热区不垫 48dp——用户要求"缩小按钮占用空间"，产品规格禁的就是给紧凑控件再包一层 48 占位。
     val glyph = stringResource(R.string.panel_round_scope_glyph)
     LbChip(
         label = glyph,
@@ -746,7 +746,7 @@ private fun AddMessageButton(
 }
 
 /**
- * 军师备注那一行**黄色小字**（用户原话第 15 条的渲染件，依据基线 v1 §3.2「不新增色相」）。
+ * 军师备注那一行**黄色小字**（用户原话的渲染件，依据版式基线「不新增色相」的约束）。
  *
  * 它是"最后一条真实消息下方的一行黄色小字"，不是一张大盒子、更不是一张卡：
  * 1. 没有备注 → 什么都不画，连空标题/大占位都不留；
@@ -759,9 +759,9 @@ private fun AddMessageButton(
  *    绝不碰消息删除链（备注不是 HER/ME 消息，不进重排数组、不计轮次、不进归档）。
  *
  * 可见尺寸就是这一行文字本身（labelMedium + 竖 [Spacing.xs] 内边距），旧的
- * `heightIn(min = 48)` 大盒子随原话第 15 条一起撤；行版式矮下来后消息列能多露出内容
+ * `heightIn(min = 48)` 大盒子随用户那句原话一起撤；行版式矮下来后消息列能多露出内容
  * （宿主固定的 160dp 槽已撤、改由消息列内测量——当年的接线单从未落盘，依据以
- * 本行 KDoc 与产品规格 §2.2 为准）。
+ * 本行 KDoc 与产品规格为准）。
  *
  * 文案前缀是常量 [ADVISOR_NOTE_PREFIX]，不重复"想法："，也不再画第二块《我的想法》。
  */

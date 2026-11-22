@@ -29,7 +29,7 @@ import java.io.File
  * 才允许它去判真文件。
  *
  * 为什么放在 data 包而不是 architecture：`-Pci-lite`（push/PR 门禁）把 architecture 整包
- * 移出（app/build.gradle.kts §13 注释），这道尺要每次 push 都跑；排除名单本身就是 data 层
+ * 移出（app/build.gradle.kts 里的门禁注释），这道尺要每次 push 都跑；排除名单本身就是 data 层
  * 的落盘名（knowledge / champion / feedback / 两份日志 / SecurePrefs），归这里也顺。
  */
 class BackupRulesManifestTest {

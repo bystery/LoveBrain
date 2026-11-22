@@ -35,9 +35,9 @@ import org.robolectric.annotation.GraphicsMode
  * 第6节第4条 :523 第三刀——记忆纠正中心。
  *
  * 搬之前它是面板顶层 `Box` 里一块 `Column(fillMaxWidth)` 内联展开区，
- * 这台仪器在同一块 360x900dp 挂载槽里量到（账本 第33节 记了原文）：
+ * 这台仪器在同一块 360x900dp 挂载槽里量到（当时记了原文）：
  * 里面**每一颗**可点的东西——「关闭」和两条「撤销」——都是同一个尺寸，
- * 够不到 第6节第5条 :531 的 48dp 下限；而它没有遮罩，也就谈不上"盖住面板"。
+ * 够不到 48dp 的触控下限；而它没有遮罩，也就谈不上"盖住面板"。
  *
  * 挂载槽用 900dp 高而不是 400dp，是为了让"居中"和"贴着顶"差出几百 dp，
  * 不靠猜阈值。
@@ -94,7 +94,7 @@ class CorrectionCenterTest {
         rule.onAllNodes(hasText(label)).fetchSemanticsNodes().firstOrNull()
             ?.boundsInRoot?.let { it.top / density }
 
-    /** 第6节第5条 第①栏：纠正中心里每一颗可点的东西，热区都得够 48dp */
+    /** 热区那一栏：纠正中心里每一颗可点的东西，热区都得够 48dp */
     @Test
     fun `every control in the correction center meets the touch floor`() {
         mount()
@@ -106,7 +106,7 @@ class CorrectionCenterTest {
         )
     }
 
-    /** 第6节第5条 第②栏：可点的东西要有读屏名字 */
+    /** 读屏名字那一栏：可点的东西要有读屏名字 */
     @Test
     fun `every control in the correction center is announced`() {
         mount()

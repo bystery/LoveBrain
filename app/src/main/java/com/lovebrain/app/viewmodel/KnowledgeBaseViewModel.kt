@@ -50,10 +50,10 @@ sealed interface KbEvent {
     data object RenameFailed : KbEvent
 
     /**
-     * 切库成功（§12.2「点击非活动卡用于切换当前知识库时，应明确反馈『已切换到……』」）。
+     * 切库成功（产品规格：「点击非活动卡用于切换当前知识库时，应明确反馈『已切换到……』」）。
      *
      * 带的必须是**显示名**：卡片那一行念的就是它，内部库名（目录身份）不该出现在给用户的
-     * 那句话里（§12.2「卡片信息不展示内部文件名与路径」同一口径）。
+     * 那句话里（产品规格「卡片信息不展示内部文件名与路径」同一口径）。
      */
     data class ActiveSwitched(val displayName: String) : KbEvent
 
@@ -63,14 +63,14 @@ sealed interface KbEvent {
 
 /** 建库事务结果 */
 enum class KbCreationOutcome {
-    /** 空模板库已创建；首次流程里也可能是复用了那座还没被用过的初始库（§4 场景②：结果同样是 1 座可用空库） */
+    /** 空模板库已创建；首次流程里也可能是复用了那座还没被用过的初始库（复用场景：结果同样是 1 座可用空库） */
     EmptyCreated,
 
     /** 知识库已创建且 AI 画像三段齐全（创建或复用同一套判据，见 [KnowledgeBaseViewModel.runOnboardingCreation]） */
     ProfileCreated,
 
     /** 引擎答了话但画像一段都没解析出来——降级为模板库，需告知用户可稍后补充。
-     *  ⚠ 引擎**报错或答了空**不再是这一支：那种情况下一次目录都不许多造（§4 场景⑤） */
+     *  ⚠ 引擎**报错或答了空**不再是这一支：那种情况下一次目录都不许多造（失败场景） */
     TemplateOnlyCreated,
 
     /** 空模板建库失败（名称碰撞/IO 失败） */
@@ -180,7 +180,7 @@ class KnowledgeBaseViewModel(
      *
      * 为什么不能只信调用：目录写侧那一次切库是先写加密偏好、再逐库改 kb.json，
      * 后者被只读保护拒掉时它是静默返回的（端口上这一员是 `Unit`，压根没有失败通道），
-     * 于是"没抛 = 成功"会把一次没落地的切换说成成功——而 §12.3 要的正是
+     * 于是"没抛 = 成功"会把一次没落地的切换说成成功——而产品规格要的正是
      * 「活动库选择…使用同一身份」这条引用真的落在那一个库上。
      *
      * 重读本身失败时**一个事件都不发**：那一格由页面顶上去的 Error 说话
@@ -220,7 +220,7 @@ class KnowledgeBaseViewModel(
     /**
      * 重命名的判据同 [reportSwitch]：`updateDisplayName` 在端口上是 `Unit`，
      * 只读库、目录已不在、kb.json 坏掉这三种情况它都是**静默不写**（写侧 KDoc 明写的降级），
-     * 不核对真实数据流就会"卡片上名字没变、却一声不响"（§12.3「重命名只影响显示名及必要元数据」
+     * 不核对真实数据流就会"卡片上名字没变、却一声不响"（产品规格「重命名只影响显示名及必要元数据」
      * 的另一半是：改没改成得让人知道）。
      */
     private fun reportRename(name: String, wanted: String, written: Boolean) {
@@ -251,7 +251,7 @@ class KnowledgeBaseViewModel(
             when {
                 !ok -> _events.tryEmit(KbEvent.DeleteFailed)
                 !snapshot.loadFailed && snapshot.knowledgeBases.any { it.name == name } ->
-                    // 目录还在清单里 = 这一删根本没落到真实数据流上（§12.1 三分法里的「列表没刷新」那一支）
+                    // 目录还在清单里 = 这一删根本没落到真实数据流上（规格三分法里的「列表没刷新」那一支）
                     _events.tryEmit(KbEvent.DeleteFailed)
             }
         }
@@ -313,16 +313,16 @@ class KnowledgeBaseViewModel(
     }
 
     private suspend fun runOnboardingCreation(schema: OnboardingSchema): KbCreationOutcome {
-        // §12.3「生成或写入在开始时绑定目标库」：这一次事务**发起时**就绑好"这一次要落进哪一座"，
+        // 产品规格「生成或写入在开始时绑定目标库」：这一次事务**发起时**就绑好"这一次要落进哪一座"，
         // 全程不回来问"现在在用哪一个库"。注意绑的是"这一次流程的目标库"而不是"这一次要的库名"：
-        // §4（M01/M02）把首次初始化与首次正式建库定为同一个用户流程的两步，盘上要是有那顶
+        // 首次初始化与首次正式建库被定为同一个用户流程的两步，盘上要是有那顶
         // 还没被用过的初始库，写侧会把它当目标库（内部身份不动，只改显示名），
         // 回来的 `created.name` 就是这一次真正该写进去的那一座。
         val name = autoKbName()
         val system = readEngineAsset(AssetRegistry.ONBOARDING)
         // 问卷输入以 JSON Schema 传给引擎（取代文本拼接块）
         val user = Json.encodeToString(OnboardingSchema.serializer(), schema)
-        // §4 场景⑤「首次问卷失败 ⇒ 不留下额外半成品库」的顺序修法：
+        // 失败场景「首次问卷失败 ⇒ 不留下额外半成品库」的顺序修法：
         // 引擎报错时 raw 只能是空串，解析出来的四段也全是空——**还没拿到可写内容就不建目录**。
         // 旧顺序（raw="" 照样往下走）会在 default 之外再造一座 13 格全模板的空库，
         // 那正是"首次建库出现两个库"里最难解释的那一支。
@@ -347,7 +347,7 @@ class KnowledgeBaseViewModel(
         }
         // 回落值读阶段词表那颗主人（`StageCatalog.UNKNOWN`），与写侧 seed 用的
         // `KnowledgeCatalogWriteStore.INITIAL_STAGE` 同一颗——两处各抄一遍字面量时，
-        // 任何一处改字都会让"这还是不是那顶没用过的空壳"那条判据悄悄恒假（§4）。
+        // 任何一处改字都会让"这还是不是那顶没用过的空壳"那条判据悄悄恒假（首次流程场景）。
         val stage = parsed.stage.ifBlank { StageCatalog.UNKNOWN }
 
         val created = createKnowledgeBase(name, display) ?: return KbCreationOutcome.OnboardingCreateFailed
@@ -362,7 +362,7 @@ class KnowledgeBaseViewModel(
             if (parsed.warmth.isNotBlank()) repo.writeFile(target, "understand/warmth.md", parsed.warmth)
             repo.updateStage(target, stage)
         } catch (e: CancellationException) {
-            // §4 场景⑤另一半：取消落在"目录已落盘、画像还在挂起"这一支时，
+            // 失败场景的另一半：取消落在"目录已落盘、画像还在挂起"这一支时，
             // 只回收**本次调用自造**的那一座（沿用写侧 seed 失败回收自己目录的同一先例），
             // 绝不动用户那座——把 selfCreated 判丢一次，就会以"修复重复"为名删掉真实数据。
             if (selfCreated) discardSelfCreatedKb(target)
@@ -406,7 +406,7 @@ class KnowledgeBaseViewModel(
         creationJob = viewModelScope.launch {
             // cancel-safe: 同上——取消先回传 Cancelled（不伪装成 CreateFailed），再把取消抛回
             try {
-                // §4 场景②「全新安装跳过问卷 ⇒ 1 个可使用的空库」：
+                // 跳过场景「全新安装跳过问卷 ⇒ 1 个可使用的空库」：
                 // 首次初始化那一步留下的空壳若还没被用过，它就是这一次要的结果（写侧复用它），
                 // 于是"跳过"得到的是一座能直接用的空库而不是第二座；没有可复用的才真的加一座库。
                 val outcome =

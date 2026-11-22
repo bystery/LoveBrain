@@ -57,7 +57,7 @@ enum class HomeKnowledgePresence { Present, Missing, Unknown }
 data class HomeKnowledgeSnapshot(val presence: HomeKnowledgePresence, val name: String?)
 
 /**
- * 首页那一块累计使用小卡的**只读快照**。2026-10-10 五 取舍③（历史背景 M25）新决定：
+ * 首页那一块累计使用小卡的**只读快照**。2026-10-10 定下的新决定：
  * 首页重新加入一块累计使用小卡，**替代**旧规「不恢复使用概览/统计仪表盘」——但上限就是
  * **一块简洁小卡**，不是放行复杂版，所以这里只交出那一屏要画的四颗既有读数，
  * **不新建第二本统计账**。
@@ -341,7 +341,7 @@ class HomeStatusViewModel(
     val status: StateFlow<AdvisorStatus> = _status.asStateFlow()
 
     /**
-     * 累计使用那一块小卡的**只读**读数（M25 五 取舍③）。**这只是一个新增的只读物**：
+     * 累计使用那一块小卡的**只读**读数（2026-10-10 定下的取舍）。**这只是一个新增的只读物**：
      * 它不改 [status]、不参与 [advisorStatusOf] / [advisorMissingSteps] / `render` 那三张派生表，
      * 也不新建统计账——数字全部原样读自 [store] 上那四颗被这一屏画出来的 `total*`
      * （端口第五颗 `totalRewriteCount` 不在这一格里，理由见 [HomeUsageReadout]）。

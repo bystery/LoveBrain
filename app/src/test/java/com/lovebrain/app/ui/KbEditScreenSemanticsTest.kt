@@ -25,9 +25,9 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * 知识库编辑屏（`KbEditScreen`）——第6节第5条 :531/:532 在这一屏的第一次逐颗量。
+ * 知识库编辑屏（`KbEditScreen`）——触控下限与读屏名字两条尺在这一屏的第一次逐颗量。
  *
- * 旧账说这一屏"要 VM 和真实磁盘所以测不了"——**那是一条抄来的事实**（坑表 84 第五次复发）：
+ * 旧账说这一屏"要 VM 和真实磁盘所以测不了"——**那是一条抄来的事实**（坑表里那一格第五次复发）：
  * 它的签名是 `KbEditScreen(files, lastFile, onLastFileChange, readFile, saveFile, onBack)`，
  * **一个 ViewModel 都不收**，读盘走两个 suspend lambda ⇒ 交桩就行。
  *
@@ -230,7 +230,7 @@ class KbEditScreenSemanticsTest {
      *
      * 选中态原来**只画在底色上**（`containerColor = if (isSel) PrimaryLight else SurfaceCard`），
      * 语义树里那两颗报的是 `role=Button selected=null`：眼睛看得见哪份是当前的，
-     * 读屏看不见（第6节第5条 :532 那一栏；与点踩面板、方案卡同一族，量之前谁都不知道）。
+     * 读屏看不见（读屏名字那一栏；与点踩面板、方案卡同一族，量之前谁都不知道）。
      */
     @Test
     fun `the file tabs announce which one is open`() {

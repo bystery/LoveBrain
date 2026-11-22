@@ -35,7 +35,7 @@ import org.robolectric.annotation.GraphicsMode
 import java.io.File
 
 /**
- * 第6节第5条 第⑤栏「浅色/深色；不支持深色就明确锁浅色」的**锁**（复核账本 :155 那一行下的判语是
+ * 复核「浅色/深色；不支持深色就明确锁浅色」那一栏的**锁**（当时复核下的判语是
  * "需要写死『锁浅色』，而不是做半套主题"）。
  *
  * 为什么这一格到今天还是空的：产品**故意**只有浅色（`Theme.kt` 只建 `lightColorScheme`，

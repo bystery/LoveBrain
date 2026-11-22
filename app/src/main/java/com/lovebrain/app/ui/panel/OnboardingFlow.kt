@@ -162,8 +162,8 @@ private fun OnboardingStep0(onComplete: () -> Unit) {
  * 首次引导每一步的主动作——走 `LbPrimaryButton`。
  *
  * 之前它是一颗自己拼的 `Box.fillMaxWidth.background(Primary).clickable.padding(md)`，
- * 本机量到 **312x34dp**（第6节第5条 :531 的下限是 48dp）。形状本身和
- * `LbPrimaryButton` 一模一样（整宽、品牌底、白字加粗），也就是 :490
+ * 本机量到 **312x34dp**（可点节点的下限是 48dp）。形状本身和
+ * `LbPrimaryButton` 一模一样（整宽、品牌底、白字加粗），也就是当初复核点名的
  * "只在一个页面看起来不一样的按钮"的标准样本——它不是看起来不一样，
  * 它是**同一个语义长出了第二份实现**，连热区都各修各的。
  */

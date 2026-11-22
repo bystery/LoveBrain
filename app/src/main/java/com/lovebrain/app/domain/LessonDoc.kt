@@ -410,12 +410,3 @@ internal object LessonDoc {
     private fun isLevelOneHeading(line: String): Boolean =
         LEVEL_ONE_HEADING.matches(line.trimEnd())
 }
-
-/**
- * 统计 lessons.md 中真实提取批数（ 计数口径）。
- *
- * ⚠ 这颗现在是 [LessonDoc.batchCount] 的别名，不再是"一级标题数量"：`# [四位年-` 那种
- * 裸正则会把模型重复输出的包裹标题也数成一批，编号就一路 1、3、5 地翻。
- * 保留这个名字是给旧调用与旧用例的，编号一律走 [LessonDoc.nextExtractionNumber]。
- */
-internal fun countLessonSections(existing: String): Int = LessonDoc.batchCount(existing)

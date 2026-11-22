@@ -183,7 +183,7 @@ class LbSectionTest {
         )
     }
 
-    /** ③ 第6节第5条 :531：折叠入口的热区 ≥48dp（归并前那一页实量 41dp） */
+    /** ③ 折叠入口的热区 ≥48dp（归并前那一页实量 41dp） */
     @Test
     fun `the fold entry meets the touch floor`() {
         mountBoth()

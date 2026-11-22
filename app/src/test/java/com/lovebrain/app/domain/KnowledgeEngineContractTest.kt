@@ -128,13 +128,13 @@ class KnowledgeEngineContractTest {
     fun `lesson extraction count only matches real dated sections`() {
         // 0 个真实节（模板骨架， 已删示例节）→ 首次提取 = 第 1 次
         val skeleton = "# 经验库\n\n军师自动追加提取节，节头格式见写入侧。\n"
-        assertEquals("0 个真实节 → 第 1 次提取", 1, countLessonSections(skeleton) + 1)
+        assertEquals("0 个真实节 → 第 1 次提取", 1, LessonDoc.batchCount(skeleton) + 1)
 
         // 2 个真实节：节头与 extractLessonsAsync 的 entry 格式逐字同构（`\n\n# [time] 第N次提取\n\n`）
         val twoSections = "# 经验库\n" +
             "\n\n# [2026-08-30 21:00] 第1次提取\n\n- 测试：行为；接法：有效回复\n" +
             "\n\n# [2026-08-30 22:05] 第2次提取\n\n- 测试：行为；接法：有效回复\n"
-        assertEquals("2 个真实节 → 第 3 次提取", 3, countLessonSections(twoSections) + 1)
+        assertEquals("2 个真实节 → 第 3 次提取", 3, LessonDoc.batchCount(twoSections) + 1)
     }
 
     // ═══ T10： schema/lessons.md 模板无示例提取节（恰 1 个一级标题）═══

@@ -133,20 +133,6 @@ class PromptBuilder(
         return if (body.isBlank()) "" else "## $stage\n$body"
     }
 
-    // ═══════════ 知识库注入（回复 user 知识段） ═══════════
-
-    /**
-     * 回复系 knowledge 段（user 侧，无历史块、无引用清单）：懂得 + 阶段节选 + 此刻。
-     * 委托给 [PromptKnowledgeSection]，本类只负责把文本读出来。
-     *
-     * 2026-11-21 结构收敛后「我们 / 我的表达偏好 / 经验教训 / 进攻段 / 进行中事项 /
-     * 最近对话 / 距上次对话」都已删除。
-     */
-    suspend fun buildKnowledgeInsertion(kb: KnowledgeBase?, messages: List<ChatMessage> = emptyList()): String {
-        if (kb == null) return "（暂无知识库，按通用策略处理）\n\n"
-        return buildKnowledgeSection(kb, emptyMap(), "").text
-    }
-
     // ═══════════ 当前场景推断 → `domain/prompt/CurrentSceneInjection` ═══════════
 
     // 「本轮属于哪一种场景」与「场景段怎么写进 prompt」是纯函数行为块（不读库、不读资产、不读时钟），

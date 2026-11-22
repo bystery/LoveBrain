@@ -134,7 +134,7 @@ class LbPrimaryButtonStateTest {
         assertTrue("宽度应当铺满 360dp 槽位，实到 ${t.widthDp}", t.widthDp > 300f)
     }
 
-    /** 第6节第5条 :531 ——四态每一态的可点击盒子都得过 48dp 下限 */
+    /** 四态每一态的可点击盒子都得过 48dp 下限 */
     @Test
     fun `every state meets the touch floor`() {
         mountPrimary()
@@ -146,7 +146,7 @@ class LbPrimaryButtonStateTest {
             // ⚠ 这一条是**搬首页那颗主按钮时量出来的缺陷**补进来的：
             // Material `Button` 自带 role=Button，而本组件是手画 Box + clickable，
             // 四态**全都没声明角色**（`role=无`）。搬过来那天语义树就从 Button 掉回无——
-            // "换成设计系统的组件"这一步自己引入了 第6节第5条 :532 的回归，
+            // "换成设计系统的组件"这一步自己引入了读屏名字那一栏的回归，
             // 只有把两边的性质都量一遍才会发现（读代码读不出来，Material 那侧的角色不在源码里）。
             assertEquals(
                 "${s.name} 必须在语义树里说得出自己是按钮：" + got.single().describe(),

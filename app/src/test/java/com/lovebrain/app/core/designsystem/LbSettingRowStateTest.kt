@@ -35,7 +35,7 @@ import org.robolectric.annotation.GraphicsMode
  * - 供应商行传 `statusText = ""`，本意是"我只要一颗点"，等于用空串替一个不存在的开关。
  *
  * 这一组用例钉的是拆开的两个旋钮：点画不画（`dot`）与词画不画（`statusText`），
- * 外加尾部那颗"管理"按钮的热区（旧值 `heightIn(min = 32dp)`，低于 第6节第5条 的 48dp）。
+ * 外加尾部那颗"管理"按钮的热区（旧值 `heightIn(min = 32dp)`，低于 48dp 的下限）。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -134,7 +134,7 @@ class LbSettingRowStateTest {
         assertEquals("供应商行那种只要一颗点的情况", 1, dotCount())
     }
 
-    /** 第6节第5条 :531 所有 clickable 节点 bounds ≥48×48dp —— 尾部那颗"管理"以前是 32dp */
+    /** 所有 clickable 节点 bounds ≥48×48dp —— 尾部那颗"管理"以前是 32dp */
     @Test
     fun `every interactive node in the row meets the touch and labeling floor`() {
         mountRow()
